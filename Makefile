@@ -60,6 +60,7 @@
 .PHONY: clean clean-builds clean-artifacts clean-all host-profile
 .PHONY: run-e183
 .PHONY: cpd-audit cpd-audit-strict cargo-cache-status cargo-cache-prune cargo-cache-smoke
+.PHONY: cd-row-upgrade-batch cd-row-upgrade-jacobson cd-row-upgrade-freudenthal
 
 .NOTPARALLEL: bootstrap-dev check smoke integrity integrity-rust rust-smoke rust-regression rust-regression-scoped heavy cargo-deny-check gate-local gate-ci-registry gate-ci-rust gate-audit pre-push-gate pre-push-gate-scoped pre-push-gate-strict governance-gate governance-gate-readonly registry-control-plane-gate-readonly registry-acceptance-gate-readonly
 
@@ -113,6 +114,21 @@ SYNTHESIS_CONTRACT_DATE ?= 2026_02_14
 SYNTHESIS_CONTRACT_REPORT ?= reports/synthesis_execution_contract_$(SYNTHESIS_CONTRACT_DATE).toml
 PROFILE_TIMESTAMP := $(shell date +%Y-%m-%d/%H%M%S)
 PROFILE_ROOT ?= reports/gates/profiles/$(PROFILE_TIMESTAMP)
+
+CD_CACHE_ROOT ?= /home/eirikr/Documents/Projects/CayleyDickson
+CD_ROW_UPGRADE_OPERATOR ?= Codex
+CD_ROW_UPGRADE_LANE ?=
+CD_ROW_UPGRADE_WITNESS ?=
+CD_ROW_UPGRADE_STATUS ?=
+CD_ROW_UPGRADE_ROWS ?=
+
+JACOBSON_ROW_UPGRADE_WITNESS ?= $(CD_CACHE_ROOT)/tier1_core_cd_algebra/composition_alternative_algebras/jacobson_1958_composition_algebras_and_their_automorphisms_preview.pdf
+JACOBSON_ROW_UPGRADE_STATUS ?= official-fragment
+JACOBSON_ROW_UPGRADE_ROWS ?= --row-id J58-DEF-01 --row-id J58-THM-01 --row-id J58-LEM-01 --row-id J58-NUM-01 --row-id J58-DEP-01
+
+FREUDENTHAL_ROW_UPGRADE_WITNESS ?= $(CD_CACHE_ROOT)/tier1_core_cd_algebra/composition_alternative_algebras/freudenthal_1985_translation_oktaven_ausnahmegruppen_oktavengeometrie.pdf
+FREUDENTHAL_ROW_UPGRADE_STATUS ?= translation-rewriting
+FREUDENTHAL_ROW_UPGRADE_ROWS ?= --row-id F51-DEF-01 --row-id F51-THM-01 --row-id F51-LEM-01 --row-id F51-NUM-01 --row-id F51-DEP-01
 
 # ---- Three-layer registry build ----
 # Layer 1 (Source): TOML files in registry/ (human-edited, git-tracked).
@@ -261,7 +277,7 @@ gate-local: cache-check
 	if command -v cargo >/dev/null 2>&1; then \
 	    scope_file="$$(mktemp)"; \
 	    meta_file="$$(mktemp)"; \
-	    CARGO_HOME=$(REPO_CARGO_HOME) CARGO_TARGET_DIR=$(REPO_CARGO_TARGET_DIR) MAKEFLAGS= MFLAGS= CARGO_MAKEFLAGS= CARGO_BUILD_JOBS=$$HOST_CARGO_JOBS RAYON_NUM_THREADS=$$HOST_RAYON_THREADS RUST_TEST_THREADS=$$HOST_RUST_TEST_THREADS cargo run -q -p gororoba_cli_governance --bin workspace-routing -- --local --verbose 1>"$$scope_file" 2>"$$meta_file" || true; \
+	    CARGO_HOME=$(REPO_CARGO_HOME) CARGO_TARGET_DIR=$(REPO_CARGO_TARGET_DIR) MAKEFLAGS= MFLAGS= CARGO_MAKEFLAGS= CARGO_BUILD_JOBS=$$HOST_CARGO_JOBS RAYON_NUM_THREADS=$$HOST_RAYON_THREADS RUST_TEST_THREADS=$$HOST_RUST_TEST_THREADS cargo run -q -p gororoba_cli_data --bin workspace-routing -- --local --verbose 1>"$$scope_file" 2>"$$meta_file" || true; \
 	    scope="$$(cat "$$scope_file" 2>/dev/null || true)"; \
 	    routing_meta="$$(cat "$$meta_file" 2>/dev/null || true)"; \
 	    rm -f "$$scope_file" "$$meta_file"; \
@@ -1363,6 +1379,33 @@ docs-publish: registry-export-markdown
 docs-rustdoc:
 	@mkdir -p "$(DOCS_CARGO_TARGET_DIR)"
 	$(DOCS_CARGO_ENV) cargo doc --workspace --all-features --no-deps --document-private-items
+
+cd-row-upgrade-batch:
+	@test -n "$(CD_ROW_UPGRADE_LANE)" || (echo "ERROR: set CD_ROW_UPGRADE_LANE=<jacobson1958|freudenthal1951>" && exit 1)
+	@test -n "$(CD_ROW_UPGRADE_WITNESS)" || (echo "ERROR: set CD_ROW_UPGRADE_WITNESS=/abs/path/to/witness.pdf" && exit 1)
+	@test -n "$(CD_ROW_UPGRADE_STATUS)" || (echo "ERROR: set CD_ROW_UPGRADE_STATUS=<exact-original|full-official-reprint|full-official-witness|official-fragment|official-toc|translation-rewriting|support-reconstruction|reconstruction-dossier>" && exit 1)
+	@test -n "$(CD_ROW_UPGRADE_ROWS)" || (echo "ERROR: set CD_ROW_UPGRADE_ROWS='--row-id ... --row-id ...'" && exit 1)
+	$(CARGO_ENV) cargo run -q -p gororoba_cli_data --bin cd-row-upgrade-batch -- \
+		--cache-root "$(CD_CACHE_ROOT)" \
+		--lane "$(CD_ROW_UPGRADE_LANE)" \
+		--source-witness "$(CD_ROW_UPGRADE_WITNESS)" \
+		--source-status "$(CD_ROW_UPGRADE_STATUS)" \
+		--operator "$(CD_ROW_UPGRADE_OPERATOR)" \
+		$(CD_ROW_UPGRADE_ROWS)
+
+cd-row-upgrade-jacobson:
+	$(MAKE) cd-row-upgrade-batch \
+		CD_ROW_UPGRADE_LANE=jacobson1958 \
+		CD_ROW_UPGRADE_WITNESS="$(JACOBSON_ROW_UPGRADE_WITNESS)" \
+		CD_ROW_UPGRADE_STATUS="$(JACOBSON_ROW_UPGRADE_STATUS)" \
+		CD_ROW_UPGRADE_ROWS="$(JACOBSON_ROW_UPGRADE_ROWS)"
+
+cd-row-upgrade-freudenthal:
+	$(MAKE) cd-row-upgrade-batch \
+		CD_ROW_UPGRADE_LANE=freudenthal1951 \
+		CD_ROW_UPGRADE_WITNESS="$(FREUDENTHAL_ROW_UPGRADE_WITNESS)" \
+		CD_ROW_UPGRADE_STATUS="$(FREUDENTHAL_ROW_UPGRADE_STATUS)" \
+		CD_ROW_UPGRADE_ROWS="$(FREUDENTHAL_ROW_UPGRADE_ROWS)"
 	@if [ -d "$(DOCS_CARGO_TARGET_DIR)/doc" ]; then \
 		rm -rf "$(DOCS_RUSTDOC_DIR)"; \
 		mkdir -p "$(DOCS_RUSTDOC_DIR)"; \

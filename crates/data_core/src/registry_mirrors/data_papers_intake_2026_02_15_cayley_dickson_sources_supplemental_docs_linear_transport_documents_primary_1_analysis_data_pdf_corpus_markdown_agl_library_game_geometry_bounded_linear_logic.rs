@@ -27,7 +27,7 @@
 //! Electrical engineering department, faculty of sciences and applied sciences, University of Akli Mouhand Oulhadj-Bouira,
 //! Algeria
 //! 2
-//! Department of Electrical Engineering, Faculty of Technology, Ferhat Abbas Sétif 1 University, LAS laboratory, Sétif, Algeria
+//! Department of Electrical Engineering, Faculty of Technology, Ferhat Abbas Setif 1 University, LAS laboratory, Setif, Algeria
 //! 3 Department of Electrical Engineering, LGEER Laboratory, Hassiba Benbouali University, Chlef, Algeria
 //! Corresponding Author Email: has.mel@gmail.com
 //! https://doi.org/10.18280/ria.xxxxxx
@@ -71,7 +71,7 @@
 //! temperature variation, also the electrical resistance and its
 //! back EMF depend on temperature [1]; during operation, the
 //! chara cteristics, performance of electric motors were not the
-//! same as those the design’s [2], as a result, the temperature
+//! same as those the design's [2], as a result, the temperature
 //! quantification is very important to the best control and the
 //! reliability of electrical machines.
 //! The normal effect of thermal aging is to make the insulation
@@ -185,7 +185,7 @@
 //! (1)
 //!
 //! Where: Va is armature voltage, R a0 is armature resistance
-//! at ambient temperature, α cu (αcu = 0.004 /°C) temperature
+//! at ambient temperature, \alpha cu (\alphacu = 0.004 /°C) temperature
 //! coefficient of resistance,  temperature above ambient, ia
 //!
 //! armature current, la is armature inductance, ke is torque
@@ -199,8 +199,8 @@
 //!
 //! (2)
 //!
-//! where J (kg × m 2 ) is total inertia, b (N × m × s) is the viscous
-//! friction constant, and TL (N × m) is the load torque.
+//! where J (kg x m 2 ) is total inertia, b (N x m x s) is the viscous
+//! friction constant, and TL (N x m) is the load torque.
 //! The thermal model is derived by considering the power
 //! dissipation and heat transfer [32]. The power dissipated by the
 //! armature current flowing through the armature resistance,
@@ -237,7 +237,7 @@
 //! system as:
 //! dia
 //!
-//! =−
+//! =-
 //!
 //! Ra 0 (1 +  cu )
 //!
@@ -251,18 +251,18 @@
 //! d
 //! dt
 //!
-//! ia −
+//! ia -
 //!
 //! ke
 //! J
 //!
 //! =
 //!
-//! ia −
+//! ia -
 //!
 //! b
 //!
-//! −
+//! -
 //!
 //! J
 //!
@@ -296,7 +296,7 @@
 //!
 //! H
 //!
-//! ia + ir  2 −
+//! ia + ir  2 -
 //!
 //! 
 //!
@@ -355,17 +355,17 @@
 //! In this application, the CFNN inputs are the voltage and
 //! current and the outputs are the speed and the armature
 //! temperature and resistance, to test the robustness and to make
-//! the CFNN’s inputs similar to the output of the sensor for the
+//! the CFNN's inputs similar to the output of the sensor for the
 //! real-time applications, a random white Gaussian noise has
 //! been added to the inputs patterns.
 //! 3.1 Back-propagation training algorithms
 //! The backpropagation algorithm is used to form the neural
 //! network such that on all training patterns, the sum squared
-//! error ‘E’ between the actual network outputs, ‘y’ and the
+//! error 'E' between the actual network outputs, 'y' and the
 //! corresponding desired outputs, yd, is minimized to a supposed
 //! value:
 //!
-//! E =  ( y d − y )2
+//! E =  ( y d - y )2
 //!
 //! (6)
 //!
@@ -379,9 +379,9 @@
 //! 2
 //! 1+ e
 //!
-//! −2 net j
+//! -2 net j
 //!
-//! −1
+//! -1
 //!
 //! (7)
 //!
@@ -396,7 +396,7 @@
 //! (9)
 //!
 //! The size of the weight change is exclusively determined by a
-//! weight-specific, so-called ‘update-value’ performed as
+//! weight-specific, so-called 'update-value' performed as
 //! follows:
 //!
 //! Model
@@ -418,11 +418,11 @@
 //! is a batch update algorithm [86] for supervised learning [84,
 //! 87] and Rprop is a first-order optimization algorithm [88].
 //! Rprop performs a local adaptation of the weight-updates
-//! based on the sign of the partial derivative ∂E/∂wij to eliminate
+//! based on the sign of the partial derivative \partialE/\partialwij to eliminate
 //! the harmful influence of the size of the partial derivative on
 //! the weight step. It is based on the so-called Manhattan
 //!
-//! − ,
+//! - ,
 //!
 //! if
 //!
@@ -450,8 +450,8 @@
 //! The second step of Rprop learning is to determine the new
 //! update-values, the step size update rules are:
 //!
-//!  + (t −1)
-//! E (t −1) E (t )
+//!  + (t -1)
+//! E (t -1) E (t )
 //! 
 //! 
 //! 
@@ -464,43 +464,43 @@
 //! w ij w ij
 //! 
 //! 
-//! E (t −1) E (t )
-//!  ij(t ) =  −   ij(t −1) , if
+//! E (t -1) E (t )
+//!  ij(t ) =  -   ij(t -1) , if
 //! 
 //! 0
 //! w ij w ij
 //! 
 //! 
-//!  ij(t −1) , otherwise
+//!  ij(t -1) , otherwise
 //! 
 //! 
 //!
 //! (12)
 //!
-//! With 0 < 𝜂 − < 1 < 𝜂 + , For each weight, if there was a sign
+//! With 0 < η - < 1 < η + , For each weight, if there was a sign
 //! change of the partial derivative of the total error function for
 //! two successive iteration, the update value for that weight is
-//! multiplied by a factor η−, where η− < 1, the preferred value of
-//! the decrease factor which gives us the best results is −=0.5
+//! multiplied by a factor \eta-, where \eta- < 1, the preferred value of
+//! the decrease factor which gives us the best results is -=0.5
 //! [84, 87], but if two successive iteration produced the same
-//! sign, the update value is multiplied by a factor of η+, where η+
+//! sign, the update value is multiplied by a factor of \eta+, where \eta+
 //! > 1, the preferred value of the increase factor which gives us
-//! the best results is η+ =1.2 [84, 87], the maximum weight step
+//! the best results is \eta+ =1.2 [84, 87], the maximum weight step
 //! is fixed to max =50, and the minimum step-size is min =10-6
 //! [84, 87], for more detailed the interested reader is referred to
 //! [49, 81-84, 87, 89].
 //! 3.3 Rprop Variants
-//! Two variants have been firstly created, with weightbacktracking [83, 84] named Rprop + [82] and without weightbacktracking [87] named Rprop − [82]. A performance
+//! Two variants have been firstly created, with weightbacktracking [83, 84] named Rprop + [82] and without weightbacktracking [87] named Rprop - [82]. A performance
 //! comparative studies between these algorithms and many other
 //! of feedforward supervised learning techniques for many
 //! benchmark problems has been presented in [84, 87].
 //! Igel et al create two new versions is based to adding a stored
-//! the previous error E(t−1) as a new variable to Rprop+, this
+//! the previous error E(t-1) as a new variable to Rprop+, this
 //! version named iRprop+ [82] , the second one is that the
-//! derivative (∂E(t)/∂wij ) is set to zero [82], iRPROP− is described
-//! [49, 82], so, the only difference between Rprop− and iRprop−
-//! is that the derivative (∂E (t)/∂wij ) is set to zero [82], and as
-//! comparison between iRprop− and iRprop+, iRprop− is the
+//! derivative (\partialE(t)/\partialwij ) is set to zero [82], iRPROP- is described
+//! [49, 82], so, the only difference between Rprop- and iRprop-
+//! is that the derivative (\partialE (t)/\partialwij ) is set to zero [82], and as
+//! comparison between iRprop- and iRprop+, iRprop- is the
 //! same as iRprop+, but without weight-backtracking [49]. The
 //!
 //!
@@ -511,131 +511,131 @@
 //! variants and several learning algorithms has been ca rried out
 //! with four neural network benchmark problems.
 //!
-//! Initialisation ( − = 0.5 , η+= 1,2,
-//! max =50 , min =10 -6 ,…)
+//! Initialisation ( - = 0.5 , \eta+= 1,2,
+//! max =50 , min =10 -6 ,...)
 //!
-//! 𝜕𝐸
+//! ∂E
 //!
-//! 𝜕𝜔𝑖𝑗
+//! ∂ωij
 //!
-//! 𝑖𝑓
+//! if
 //!
-//! 𝜕𝐸
+//! ∂E
 //!
-//! 𝜕𝑠
+//! ∂s
 //!
-//! 𝜕 𝑛𝑒𝑡
+//! ∂ net
 //!
-//! = 𝜕 𝑠 . 𝜕𝑛𝑒𝑡𝑖 𝜕 𝜔 𝑖
-//! 𝑖
+//! = ∂ s . ∂neti ∂ ω i
+//! i
 //!
-//! 𝑖
+//! i
 //!
-//! 𝜕𝐸ሺ𝑡 −1ሻ 𝜕𝐸 ሺ𝑡ሻ
+//! ∂Eሺt -1ሻ ∂E ሺtሻ
 //!
 //! .
 //!
-//! 𝑖𝑗
+//! ij
 //!
 //! >0
 //!
-//! 𝜕 𝜔𝑖𝑗
-//! 𝜕𝜔𝑖𝑗
-//! ሺ 𝑡ሻ
-//! ሺ𝑡−1ሻ
-//! 𝛥ⅈ𝑗 = 𝑚𝑖𝑛ሺ𝜂 + . 𝛥ⅈ𝑗 , 𝛥⬚
-//! 𝑚𝑎𝑥 ሻ
-//! ሺ 𝑡ሻ
-//! ሺ 𝑡ሻ
-//! 𝜕𝐸 ሺ𝑡ሻ
-//! 𝛥𝑤ⅈ𝑗 = −𝒔𝒊𝒈𝒏
-//! *𝛥ⅈ𝑗
-//! 𝜕 𝜔𝑖𝑗
-//! ሺ𝑡+1ሻ
-//! ሺ 𝑡ሻ
-//! ሺ 𝑡ሻ
-//! 𝑤ⅈ𝑗
-//! = 𝑤ⅈ𝑗 + 𝛥𝑤ⅈ𝑗
-//! 𝜕𝐸ሺ𝑡 −1ሻ 𝜕𝐸ሺ𝑡ሻ
+//! ∂ ωij
+//! ∂ωij
+//! ሺ tሻ
+//! ሺt-1ሻ
+//! Δij = minሺη + . Δij , Δ⬚
+//! max ሻ
+//! ሺ tሻ
+//! ሺ tሻ
+//! ∂E ሺtሻ
+//! Δwij = -sign
+//! *Δij
+//! ∂ ωij
+//! ሺt+1ሻ
+//! ሺ tሻ
+//! ሺ tሻ
+//! wij
+//! = wij + Δwij
+//! ∂Eሺt -1ሻ ∂Eሺtሻ
 //!
-//! else 𝑖𝑓
+//! else if
 //!
 //! .
 //!
-//! 𝜕 𝜔𝑖𝑗
+//! ∂ ωij
 //!
 //! <0
 //!
 //! Compute the error partial derivative
-//! E with respect to each weight 𝜔ⅈ𝑗 as
+//! E with respect to each weight ωij as
 //! follows:
-//! 𝜕𝐸
-//! 𝜕𝐸 𝜕 𝑠 𝜕𝑛𝑒𝑡𝑖
-//! = . 𝑖
-//! 𝜕𝜔𝑖𝑗
+//! ∂E
+//! ∂E ∂ s ∂neti
+//! = . i
+//! ∂ωij
 //!
-//! 𝜕𝑠𝑖 𝜕𝑛𝑒𝑡𝑖 𝜕𝜔𝑖𝑗
+//! ∂si ∂neti ∂ωij
 //!
 //! Wher :
 //! si is the output.
 //! Net is the weighted sum of the inputs
 //! of neuron i.
 //!
-//! 𝜕𝜔𝑖𝑗
-//! ሺ 𝑡ሻ
-//! ሺ𝑡−1ሻ
-//! 𝛥 ⅈ𝑗 = 𝑚𝑎𝑥ሺ𝜂 − . 𝛥ⅈ𝑗 , 𝛥⬚
-//! 𝑚ⅈ𝑛 ሻ
-//! ሺ𝑡+1ሻ
-//! ሺ 𝑡ሻ
-//! ሺ𝑡−1ሻ
-//! 𝑤ⅈ𝑗
-//! = 𝑤ⅈ𝑗 − 𝛥𝑤ⅈ𝑗
-//! ሺ 𝑡ሻ
+//! ∂ωij
+//! ሺ tሻ
+//! ሺt-1ሻ
+//! Δ ij = maxሺη - . Δij , Δ⬚
+//! min ሻ
+//! ሺt+1ሻ
+//! ሺ tሻ
+//! ሺt-1ሻ
+//! wij
+//! = wij - Δwij
+//! ሺ tሻ
 //!
-//! 𝜕𝐸
+//! ∂E
 //!
 //! =0
 //!
-//! 𝜕 𝜔ⅈ𝑗
+//! ∂ ωij
 //!
-//! else 𝑖𝑓
+//! else if
 //!
-//! 𝜕𝐸ሺ𝑡 −1ሻ
-//! 𝜕 𝜔𝑖𝑗
+//! ∂Eሺt -1ሻ
+//! ∂ ωij
 //!
-//! ሺ 𝑡ሻ
+//! ሺ tሻ
 //!
-//! 𝛥𝑤ⅈ𝑗 = −𝒔𝒊𝒈𝒏
-//! ሺ𝑡+1ሻ
+//! Δwij = -sign
+//! ሺt+1ሻ
 //!
-//! 𝑤ⅈ𝑗
+//! wij
 //!
 //! .
 //!
-//! 𝜕𝐸ሺ𝑡ሻ
-//! 𝜕𝜔𝑖𝑗
+//! ∂Eሺtሻ
+//! ∂ωij
 //!
-//! 𝜕𝐸 ሺ𝑡ሻ
+//! ∂E ሺtሻ
 //!
-//! 𝜕 𝜔𝑖𝑗
+//! ∂ ωij
 //!
-//! ሺ 𝑡ሻ
+//! ሺ tሻ
 //!
 //! =0
-//! ሺ 𝑡ሻ
+//! ሺ tሻ
 //!
-//! *𝛥ⅈ𝑗
-//! ሺ 𝑡ሻ
+//! *Δij
+//! ሺ tሻ
 //!
-//! = 𝑤ⅈ𝑗 + 𝛥𝑤ⅈ𝑗
+//! = wij + Δwij
 //!
 //! No
 //!
-//! Répéter les étapes pour chaque
-//! itération jusqu’à la convergence
-//! ou un critère d’arrêt est verifié
-//! (nombre d'itération maximal,
+//! Repeter les etapes pour chaque
+//! iteration jusqu'a la convergence
+//! ou un critere d'arret est verifie
+//! (nombre d'iteration maximal,
 //! erreur minimale, ..).
 //!
 //! Yes
@@ -665,7 +665,7 @@
 //! Va = 240 V
 //! P =3 kW
 //! TL = 11 N.m
-//! Ra = 3.5 Ω
+//! Ra = 3.5 \Omega
 //! la = 34 mH
 //!
 //!
@@ -684,7 +684,7 @@
 //! model response, from this figure, it can be seen that the
 //! resistance has the same curvature as the armature temperature,
 //! wherein the steady state the estimated resistance reached
-//! almost 4,56 Ω less than 0.04 Ω of simulated resistance,
+//! almost 4,56 \Omega less than 0.04 \Omega of simulated resistance,
 //! practically, this difference is negligible quantity and represents
 //! only 0.9 % of the final value, this results in this paper are more
 //! precise than the Zhang et al. results presented in [30], also this
@@ -1082,7 +1082,7 @@
 //! Absolute error
 //! 0.015 rad/s
 //! 3 0C
-//! 0.04 Ω
+//! 0.04 \Omega
 //!
 //! Speed
 //! Temperature
@@ -1162,7 +1162,7 @@
 //! on short-time and intermittent duty cycles. IEEE
 //! Transactions on Industry Applications. 39(1): 45-52.
 //! http://doi.org/10.1109/TIA.2002.807244
-//! [8] Gnaciński, P. (2008). Windings temperature and loss of
+//! [8] Gnacinski, P. (2008). Windings temperature and loss of
 //! life of an induction machine under voltage unbalance
 //! combined with
 //! over-or
@@ -1247,7 +1247,7 @@
 //! 53(2):
 //! 352-362.
 //! http://doi.org/10.1109/TIE.2006.870868
-//! [23] Gamazo-Real, J.C., Vázquez-Sánchez, E., Gómez-Gil, J.
+//! [23] Gamazo-Real, J.C., Vazquez-Sanchez, E., Gomez-Gil, J.
 //! (2010). Position and speed control of brushless DC
 //! motors using sensorless techniques and application
 //! trends.
@@ -1378,7 +1378,7 @@
 //! des sciences techniques-serie electrotechnique et
 //! energetique, 62(2): 209-214
 //! [44] Kayri, M. (2016). Predictive abilities of bayesian
-//! regularization and Levenberg–Marquardt algorithms in
+//! regularization and Levenberg-Marquardt algorithms in
 //! artificial neural networks: a comparative empirical study
 //! on social data. Mathematical and Computational
 //! Applications,
@@ -1392,7 +1392,7 @@
 //! residential HVAC system. Energy and Buildings, 141,
 //! 96-113. http://doi.org/10.1016/j.enbuild.2017.02.012
 //! [46] Wang, S.H., Du, S., Zhang, Y., Phillips, P., Wu, L.N.,
-//! Chen, X.Q., Zhang, Y.D. (2017). Alzheimer’s disease
+//! Chen, X.Q., Zhang, Y.D. (2017). Alzheimer's disease
 //! detection by pseudo Zernike moment and linear
 //! regression
 //! classification. CNS & Neurologica l
@@ -1411,7 +1411,7 @@
 //! through image processing and resilient propagation
 //! algorithms. Neurocomputing, 35(1-4): 123-135.
 //! http://doi.org/10.1016/S0925-2312(00)00301-5
-//! [49] Igel, C., Hüsken, M. (2003). Empirical evaluation of the
+//! [49] Igel, C., Husken, M. (2003). Empirical evaluation of the
 //! improved Rprop learning algorithms. Neurocomputing,
 //! 50:105-123.
 //! http://doi.org/10.1016/S09252312(01)00700-7
@@ -1600,7 +1600,7 @@
 //! IEEE.
 //! http://doi.org/10.1109/ICPHM.2012.6299515
 //! [79] Beale, M.H., Hagan, M.T., Demuth, H.B. (2008). Neural
-//! network toolbox. User’s Guide, MathWorks.
+//! network toolbox. User's Guide, MathWorks.
 //! [80] Filik, U. B., Kurban, M. (2007). A new approach for the
 //! short-term load forecasting with autoregressive and
 //! artificial neural network models. International Journal of
@@ -1610,7 +1610,7 @@
 //! Adaptive Learning Algorithm. In International
 //! Symposium on Computer and Information Science VII
 //! (ISCIS VII). Antalya, Turkey. 279-286.
-//! [82] Igel, C., Hüsken, M. (2000). Improving the Rprop
+//! [82] Igel, C., Husken, M. (2000). Improving the Rprop
 //! learning algorithm. In Proceedings of the second
 //! international ICSC symposium on neural computation
 //! (NC 2000). ICSC Academic Press. Berlin, Germany.
@@ -1633,7 +1633,7 @@
 //! (2005). Sign-based learning schemes for pattern
 //! classification. Pattern Recognition Letters. 26(12): 1926 1936. http://doi.org/10.1016/j.patrec.2005.03.013
 //! [87] Riedmiller, M. (1994). Advanced supervised learning in
-//! multi-layer perceptrons—from backpropagation to
+//! multi-layer perceptrons--from backpropagation to
 //! adaptive learning algorithms. Computer Standards &
 //! Interfaces. 16(3): 265-278. http://doi.org/10.1016/09205489(94)90017-5
 //! [88] Battiti, R. (1992). First-and second-order methods for
@@ -1658,7 +1658,7 @@
 //! [92] Magrini, A., Lazzari, S., Marenco, L., Guazzi, G. (2017).
 //! A procedure to evaluate the most suitable integrated
 //! solutions for increasing energy performance of the
-//! building’s envelope, avoiding moisture problems.
+//! building's envelope, avoiding moisture problems.
 //! International Journal of Heat and Technology, 35(4):
 //! 689-699. https://doi.org/10.18280/ijht.350401
 //!
@@ -1695,17 +1695,17 @@
 //! Inductance, H
 //! weighted sum of the input unit
 //! power, W
-//! resistance, Ω
+//! resistance, \Omega
 //! torque, N. m
 //! voltage, V
 //! network outputs
 //!
 //! Greek symbols
-//! α
+//! \alpha
 //! 
 //! 
 //! 
-//! η
+//! \eta
 //!
 //! temperature coefficient of resistance, K-1
 //! temperature above ambient, K
@@ -1724,7 +1724,7 @@
 //! max
 //! min
 //! 0
-//! −
+//! -
 //! +
 //! l
 //!

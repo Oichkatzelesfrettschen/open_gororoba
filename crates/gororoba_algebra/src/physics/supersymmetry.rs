@@ -34,8 +34,8 @@ pub fn is_valid_super_2_brane_dimension(d: usize) -> bool {
     allowed_super_2_brane_dimensions().contains(&d)
 }
 
-/// Validates the 3-ψ's rule (tri(ψ) = 0) proxy requirement for SYM.
-/// The 3-ψ's rule holds if and only if a division algebra structure exists in dim = d - 2.
+/// Validates the 3-\psi's rule (tri(\psi) = 0) proxy requirement for SYM.
+/// The 3-\psi's rule holds if and only if a division algebra structure exists in dim = d - 2.
 pub fn check_3_psi_rule_algebra_existence(d: usize) -> Result<&'static str, &'static str> {
     if d < 2 {
         return Err("Spacetime dimension too low.");
@@ -55,7 +55,7 @@ pub fn check_3_psi_rule_algebra_existence(d: usize) -> Result<&'static str, &'st
 /// Lie 2-Supergroup Construction for String Theory.
 ///
 /// Spacetime dimension d = k + 2 corresponds to a division algebra K of dim k.
-/// This construction extends the Poincaré supergroup to describe parallel
+/// This construction extends the Poincare supergroup to describe parallel
 /// transport of strings.
 pub struct Lie2Supergroup {
     pub spacetime_dim: usize,

@@ -97,6 +97,6 @@ mod tests {
         assert!((c2 - 6.0).abs() < 1e-9, "C2(26) must be exactly 6");
         assert!((epsilon - 0.25).abs() < 1e-9, "Epsilon must be exactly 1/4");
         
-        println!("✅ Theorem 12.6 Verified: epsilon = 1/4 EXACTLY.");
+        println!("<EMOJI+2705> Theorem 12.6 Verified: epsilon = 1/4 EXACTLY.");
     }
 }

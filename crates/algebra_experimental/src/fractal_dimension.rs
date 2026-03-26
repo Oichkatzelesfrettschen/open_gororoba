@@ -91,6 +91,6 @@ mod tests {
         println!("Computed Fractal Dimension (64D): {:.4}", df_64);
         assert!((df_64 - 2.2154).abs() < 1e-4);
         
-        println!("✅ Fractional Variance properly cascades: The geometry compacts as dimension increases!");
+        println!("<EMOJI+2705> Fractional Variance properly cascades: The geometry compacts as dimension increases!");
     }
 }

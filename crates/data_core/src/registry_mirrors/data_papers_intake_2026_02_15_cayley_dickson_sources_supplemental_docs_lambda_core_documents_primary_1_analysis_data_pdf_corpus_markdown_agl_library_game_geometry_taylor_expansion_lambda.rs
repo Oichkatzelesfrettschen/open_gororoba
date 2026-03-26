@@ -31,7 +31,7 @@
 //! the author and a group of ParaSail users, has been that it is possible to simultaneously simplify the language,
 //! support parallel programming with advanced data structures, and maintain flexibility and efficiency.
 //! ACM CCS 2012
-//! Software and its engineering → Parallel programming languages; Multiparadigm languages;
+//! Software and its engineering -> Parallel programming languages; Multiparadigm languages;
 //! Keywords pointer-free, region-based storage management, expandable objects, parallel programming,
 //!
 //! irregular computation, syntactic sugar
@@ -49,7 +49,7 @@
 //!
 //! 10.22152/programming-journal.org/2019/3/7
 //! © S. Tucker Taft
-//! This work is licensed under a “CC BY 4.0” license.
+//! This work is licensed under a "CC BY 4.0" license.
 //! In The Art, Science, and Engineering of Programming, vol. 3, no. 3, 2019, article 7; 32 pages.
 //!
 //!
@@ -85,7 +85,7 @@
 //! analysis capability was developed (in ParaSail) to provide more advanced compiletime error messages, as well as identify for the compiler places where run-time checks
 //! should be inserted to ensure safe execution.
 //! The ParaSail front end generates instructions for a virtual machine specifically
-//! designed for pervasively parallel semantics (ParaSail Virtual Machine – PSVM) – see
+//! designed for pervasively parallel semantics (ParaSail Virtual Machine - PSVM) - see
 //! figure 1. These PSVM instructions can be directly executed in the ParaSail interpreter,
 //! or can be translated by the ParaSail compiler to an LLVM representation and then to
 //! machine code. The PSVM instructions may also be analysed statically, using an analyser
@@ -112,7 +112,7 @@
 //!
 //! ParaSail Tool Chain
 //!
-//! describes related work. Section 6 evaluates ParaSail’s features relative to other parallel
+//! describes related work. Section 6 evaluates ParaSail's features relative to other parallel
 //! programming languages, and summarizes the contributions of the ParaSail design.
 //!
 //! 2
@@ -131,7 +131,7 @@
 //!
 //! A ParaSail program is composed of a set of hierarchically named modules, along with
 //! one or more stand-alone operations. A module defines the data components and the
-//! operations that together encapsulate a portion of the program’s logical structure.
+//! operations that together encapsulate a portion of the program's logical structure.
 //! An operation is a callable entity, referred to as a function or a procedure in many
 //! languages. A module consists of an interface, which defines the externally visible data
 //! components and operations of the module, and, optionally, a class that implements
@@ -147,11 +147,11 @@
 //! ParaSail: A Pointer-Free Pervasively-Parallel Language
 //!
 //! which case it inherits both code (operations) and data (components) from that parent
-//! module. A module may also be declared to implement one or more other module’s
+//! module. A module may also be declared to implement one or more other module's
 //! interfaces. Note that even if a module has its own class part, its interface may be
 //! implemented by other modules. In other words, ParaSail supports single inheritance of
 //! implementation (by extending a parent module) and multiple inheritance of interfaces
-//! (by implementing one or more other modules’ interfaces).
+//! (by implementing one or more other modules' interfaces).
 //! The interface of a module declares its module parameters (types or values), defines
 //! zero or more visible data components, and declares zero or more visible operations.
 //! Each component is declared as either a const or a var component, determining whether
@@ -270,7 +270,7 @@
 //! 4 end interface PSL::Core::Hashable
 //! Hashable has no module parameters (empty <>). The parameterless interfaces that a
 //!
-//! module implements need not be specified explicitly – any module that provides the
+//! module implements need not be specified explicitly - any module that provides the
 //! required operations of a parameterless interface is automatically defined to implement
 //! the interface. This allows a parameterized module to define exactly the operations it
 //! needs of a given type parameter using a parameterless interface, without requiring
@@ -284,12 +284,12 @@
 //!
 //! of its implemented interfaces. Hence, if a hypothetical type Integer provides the "=?"
 //! and Hash operations, then Map<Integer, String> is permitted, even if the module defining
-//! Integer doesn’t explicitly mention Hashable among the modules that it implements.
-//! 2.3.2 The “=?” Operator
+//! Integer doesn't explicitly mention Hashable among the modules that it implements.
+//! 2.3.2 The "=?" Operator
 //!
 //! The "=?" operator in Hashable is used to define the equality and relational properties of
 //! the associated type. Syntactic sugar is used to map both of the equality operators ("=="
-//! and "!=") and all four of the relational operators ("<", "<=", ">=", ‘">") to this one compare
+//! and "!=") and all four of the relational operators ("<", "<=", ">=", '">") to this one compare
 //! operator. The Ordering result type of "=?" is an enumeration type with four possible
 //! values, #less, #equal, #greater, and #unordered. The expression A == B is de-sugared into
 //! (A =? B) in [#equal] while A <= B is de-sugared into (A =? B) in [#less, #equal], where [X, Y, ...]
@@ -353,7 +353,7 @@
 //! The above is an example of a wrapper module, meaning it has exactly one component,
 //! while providing a different set of operations than the underlying data object. ParaSail
 //! is designed so that no per-object space overhead is necessary for such a wrapper
-//! module – it can have exactly the same run-time representation as its underlying
+//! module - it can have exactly the same run-time representation as its underlying
 //! component, even though its compile-time interface is potentially quite different. This
 //! contrasts with some languages where each layer of compile-time abstraction becomes
 //! another layer of run-time object overhead [26].
@@ -452,8 +452,8 @@
 //! subcomponents out of the Next field (see section 3 below for more discussion of the
 //! pointer-free memory model). In this example, we see two internal data components,
 //! Backbone and Count, and a local module Node that has two visible components (Entry
-//! and Next) and no operations (thus requiring no class part to implement the module’s
-//! interface). The functioning of the “in” and “index_set” operations is described in the
+//! and Next) and no operations (thus requiring no class part to implement the module's
+//! interface). The functioning of the "in" and "index_set" operations is described in the
 //! next section.
 //! 1 class PSL::Containers::Hash_Table is
 //! 2
@@ -538,12 +538,12 @@
 //! 39 end class PSL::Containers::Hash_Table
 //!
 //! The Hash_Table class above illustrates a couple of operations
-//! with more complex implementations. The operator “in” hashes the given Key to identify
+//! with more complex implementations. The operator "in" hashes the given Key to identify
 //! the Hash_Table bucket which should be scanned to see whether the Key is already
 //! present. This uses one of the three forms of for loop provided by ParaSail, the one
 //! allowing an initial object (for N => Root) or value (for I := First), the next object or value
 //! (then N.Next or then I+1), and a termination test (while N not null, or while I <= Last).
-//! The “index_set” operator returns a set of keys, given a hash table. This uses both
+//! The "index_set" operator returns a set of keys, given a hash table. This uses both
 //! the for/then/while form of for loop, as well as a container element iterator, which uses
 //! for each Element of Indexed_Container to iterate through the set of Elements of the
 //! given indexed container. The element iterator is syntactic sugar for the following
@@ -567,13 +567,13 @@
 //! end loop
 //!
 //! where @K and @Keys are meant to represent compiler-generated unique names.
-//! In the above expansion, and in the declaration for the “indexing” operators, we
+//! In the above expansion, and in the declaration for the "indexing" operators, we
 //! see the use of the ref keyword to indicate a local, short-lived name for an existing
 //! object (Element is the local name for the given element of Indexed_Container). Such
 //! names inherit the type and writability of the referenced object. Any use of such a ref
 //! is equivalent to a use of the referenced object. An operation may return a ref, but only
 //! if it is a reference to some part of an object passed to it as a ref parameter. This is how
-//! the “indexing” operator works.
+//! the "indexing" operator works.
 //!
 //! 7: 9
 //!
@@ -586,7 +586,7 @@
 //! their semantics. In addition we have used the Univ_Integer type and also Integer
 //! as an example of a type over which a Set might be defined. There are actually five
 //! different sorts of literals in ParaSail: integer, real, character, string, and enumeration.
-//! Each has a distinct syntax, and each has an associated type in which the literal’s value
+//! Each has a distinct syntax, and each has an associated type in which the literal's value
 //! is initially represented. This is summarized in the following table:
 //! Kind of Literal
 //!
@@ -619,16 +619,16 @@
 //! Lisp-based languages, but less common in imperative languages. By using a distinct
 //! syntax, with its own Univ_Enumeration type, we enable significant flexibility to users
 //! in defining the mapping from such literals to the values of a given type.
-//! In general, to allow a given kind of literal to be used with a user-defined type, the associated module must define two operators, “from_univ” and “to_univ”. These are conversion functions, from a Univ type, or back to such a type. By defining a function of the
+//! In general, to allow a given kind of literal to be used with a user-defined type, the associated module must define two operators, "from_univ" and "to_univ". These are conversion functions, from a Univ type, or back to such a type. By defining a function of the
 //! form `"from_univ"(Univ_Integer) -> My_Type integer literals may be used to represent values of My_Type. Similarly, by defining a "from_univ"(Univ_Enumeration) -> My_Enum_Type,
 //! enumeration literals may be used to represent values of My_Enum_Type. Calls on
 //! these conversion functions are inserted implicitly during name and type resolution
 //! by the ParaSail front end, when a literal is used within an expression. Effectively, a
-//! literal is actually syntactic sugar for “from_univ”(literal).
-//! These “from_univ” conversion functions must include a precondition (specified with
-//! the syntax “{Boolean-expression}” as illustrated in the “indexing” operators above)
+//! literal is actually syntactic sugar for "from_univ"(literal).
+//! These "from_univ" conversion functions must include a precondition (specified with
+//! the syntax "{Boolean-expression}" as illustrated in the "indexing" operators above)
 //! which determines which literals can be converted into values of the given type. So, for
-//! example, the precondition for the Ordering type’s “from_univ” operator, presuming it
+//! example, the precondition for the Ordering type's "from_univ" operator, presuming it
 //! is declared "from_univ"(Univ : Univ_Enumeration) -> Ordering, would be:
 //! {Univ in [#less,#equal,#greater,#unordered]}
 //!
@@ -836,14 +836,14 @@
 //! nodes connected with pointers, operating under reference semantics, provides a number of benefits, such as simpler storage management, simpler assignment semantics,
 //! easier analyzability, etc. while preserving flexibility in representing potentially highly
 //! irregular structures.
-//! ParaSail’s move and swap operations have well-defined semantics independent of
+//! ParaSail's move and swap operations have well-defined semantics independent of
 //! the region-based storage management, but they provide significant added efficiency
 //! when the objects named on the left and right-hand side are associated with the
 //! same region, because then their dynamic semantics can be accomplished simply by
 //! manipulating pointers. In some cases the programmer knows when declaring an
 //! object that it is intended to be moved into or swapped with another existing object.
 //! In that case, ParaSail allows the programmer to give a hint to that effect by specifying
-//! in the object’s declaration that it is “for X” meaning that it should be associated with
+//! in the object's declaration that it is "for X" meaning that it should be associated with
 //! the same region as X. With region-based storage management, it is always safe to
 //! associate an object with a longer-lived region, but to avoid a storage leak the ParaSail
 //! implementation sets the value of such an object to null on scope exit, as its storage
@@ -948,9 +948,9 @@
 //! end func Search
 //!
 //! When one iteration forces another iteration to terminate, the iteration to be terminated is flagged, and the underlying scheduler attempts to terminate the iteration as
-//! soon as it is safe and efficient to do so, where “safe” in this context means that the
+//! soon as it is safe and efficient to do so, where "safe" in this context means that the
 //! flagged iteration is not currently executing within the body of a locked (or queued)
-//! operation of a concurrent object (see section 4.2 below), and “efficient” means that the
+//! operation of a concurrent object (see section 4.2 below), and "efficient" means that the
 //! implementation may choose to provide immediate termination, or instead to check
 //! for such a termination flag only periodically. In any case, any attempt by a flagged
 //! iteration to spawn a new parallel computation (outside of a locked operation) results
@@ -992,7 +992,7 @@
 //! are checked to see whether they are in order, and if not, they are swapped (using
 //! the ParaSail "<=>" swap operation). If the slice Arr comprises more than two elements,
 //! then the iteration proceeds to partition the slice into subslices, by picking a pivot
-//! value (Mid), and then looking (in parallel) for two elements that are on the “wrong”
+//! value (Mid), and then looking (in parallel) for two elements that are on the "wrong"
 //! side, and swapping them (again using "<=>"). Once there are no more elements to
 //! swap, the original array slice has been partitioned, and the two partitions (subslices)
 //! are themselves sorted. Rather than recursion, the implicit bag or work-list model of
@@ -1134,7 +1134,7 @@
 //! end func Quicksort;
 //!
 //! It is worth noting that ParaSail also has sufficient expressiveness that a much
-//! simpler, fully “functional” implementation of Quicksort is possible, though it is no
+//! simpler, fully "functional" implementation of Quicksort is possible, though it is no
 //! longer solving the challenge involved in an in-place sort provided by the above. Here
 //! is such a fully functional (non in-place) implementation of recursive Quicksort in
 //! ParaSail, using an extensible array-like generic Vector abstraction over Comparable
@@ -1165,7 +1165,7 @@
 //!
 //! The above constructs three sub-vectors from the elements of the original vector V
 //! using filters E < Mid, E == Mid, and E > Mid specified in braces, and then concatenates the
-//! sorted sub-vectors using the | operator. ParaSail’s default concurrent evaluation of
+//! sorted sub-vectors using the | operator. ParaSail's default concurrent evaluation of
 //! complex operands of a binary operation will produce similar levels of parallelism.
 //!
 //! 7: 18
@@ -1178,7 +1178,7 @@
 //! The handoff model of parameter passing applies to objects that are not designed for
 //! concurrent access. ParaSail also supports the construction of concurrent objects, which
 //! allow lock-free, locked, and queued simultaneous access. Concurrent objects are not
-//! “handed off” as part of parameter passing, and aliasing of such parameters is permitted;
+//! "handed off" as part of parameter passing, and aliasing of such parameters is permitted;
 //! concurrent objects provide operations that synchronize any attempts at concurrent
 //! access. Three kinds of synchronization are supported. Lock-free synchronization
 //! relies on low-level hardware-supported operations such as atomic load and store, and
@@ -1194,9 +1194,9 @@
 //! operation requested by the queued caller is performed before the lock is released. If
 //! there are multiple queued callers, then they are serviced in turn until there are none
 //! with satisfied dequeue conditions.
-//! One way to understand the distinction between “normal” objects and concurrent
+//! One way to understand the distinction between "normal" objects and concurrent
 //! objects is that the compiler performs compile-time checks to ensure there are no
-//! data races on accessing “normal” objects, while concurrent objects use run-time
+//! data races on accessing "normal" objects, while concurrent objects use run-time
 //! synchronization to prevent data races.
 //! Below is a simple example of a concurrent module, a Locked_Box. This concurrent
 //! module has both an interface and a class that implements it. In the interface we see
@@ -1306,10 +1306,10 @@
 //! end func Get;xs
 //! 45 end class Locked_Box;
 //!
-//! The above Get operation makes use of the move construct (“<==”) which moves the
+//! The above Get operation makes use of the move construct ("<==") which moves the
 //! value of the right-hand side (B.Content) into the left-hand side (Result) leaving the
 //! right-hand side null afterward. This matches the desired semantics, namely that Get
-//! waits until the box B is “full” (i.e. non-null), but then leaves it “empty” (i.e. null) upon
+//! waits until the box B is "full" (i.e. non-null), but then leaves it "empty" (i.e. null) upon
 //! return.
 //!
 //! 7: 20
@@ -1340,14 +1340,14 @@
 //! garbage collection for storage reclamation [8].
 //! The Hermes language (and its predecessor NIL) was a language specifically designed for distributed processing [32]. The Hermes type system had high-level type
 //! constructors, which allowed them to eliminate pointers. As the designer of Hermes
-//! explained it, “pointers are useful constructs for implementing many different data
+//! explained it, "pointers are useful constructs for implementing many different data
 //! structures, but they also introduce aliasing and increase the complexity of program
-//! analysis” [32, p. 80]. NIL, the precursor to Hermes, pioneered the notion of type
+//! analysis" [32, p. 80]. NIL, the precursor to Hermes, pioneered the notion of type
 //! state [33], as well as handoff semantics for communication, both of which are relevant
 //! to ParaSail, where compile-time assertion checking depends on flow analysis, and
 //! handoff semantics are used for passing var parameters in a call on an operation.
 //! Another distributed-systems language that is pointer-free is Composita, described
-//! in the 2007 Ph. D. thesis of Dr. Luc Bläser from ETH in Zurich [4]. Composita is a
+//! in the 2007 Ph. D. thesis of Dr. Luc Blaser from ETH in Zurich [4]. Composita is a
 //! component-based language, which uses message passing between active components.
 //! Sequences of statements are identified as either exclusive or shared to provide synchronization between concurrent activities. Composita has the notion of empty and
 //! installed components, analogous to the notion of optional values in ParaSail.
@@ -1399,7 +1399,7 @@
 //! data structure manipulations. More generally, the Rust language addresses many
 //! of the same challenges that ParaSail addresses using similar approaches, such as a
 //! borrowing mechanism on parameter passing, analogous to the handoff semantics used
-//! in ParaSail. Rust goes somewhat beyond the implicit semantics of ParaSail’s handoff
+//! in ParaSail. Rust goes somewhat beyond the implicit semantics of ParaSail's handoff
 //! semantics and region-based storage management, providing, for example, the ability
 //! to annotate references with explicit lifetimes [29].
 //! Object ownership continues to be an area of active research, driven by interest in
@@ -1443,8 +1443,8 @@
 //! syntax and semantics reminiscent of this early proposal have appeared in functional
 //! languages, but have not been widely followed in languages with mutable values.
 //! Mostly-functional languages such as ML have also more followed the Algol 68 model
-//! of explicit references when defining mutable recursive data structures, despite Hoare’s
-//! many good arguments favoring a pointer-free semantics at the language level. Hoare’s
+//! of explicit references when defining mutable recursive data structures, despite Hoare's
+//! many good arguments favoring a pointer-free semantics at the language level. Hoare's
 //! notation did not introduce the notion of optional values, but instead relied on types
 //! defined by a tagged union of generators, at least one of which was required to be nonrecursive. ParaSail adopts the optional value approach and allows the set of generators
 //! that can be used to create objects to be open-ended, by relying on object-oriented
@@ -1467,8 +1467,8 @@
 //! ParaSail: A Pointer-Free Pervasively-Parallel Language
 //!
 //! another as part of message passing. No particular attempt is made to ensure thread
-//! safety through this region-based ownership – the focus is strictly on memory safety.
-//! Many functional (or mostly functional) languages have a notion similar to ParaSail’s
+//! safety through this region-based ownership - the focus is strictly on memory safety.
+//! Many functional (or mostly functional) languages have a notion similar to ParaSail's
 //! optional objects. For example, in Haskell they are called maybe objects [23]. In ParaSail,
 //! because of its fundamental role in supporting recursive data structures, optional is
 //! a built-in property usable with every object, component, or type declaration, rather
@@ -1492,7 +1492,7 @@
 //! includes special instructions for spawning and awaiting such picothreads. The PSVM
 //! run-time uses the work stealing model [5] to execute the picothreads; work stealing
 //! incorporates heavier weight server processes which each service their own queue
-//! of picothreads (in a LIFO manner), stealing from another server’s queue (in a FIFO
+//! of picothreads (in a LIFO manner), stealing from another server's queue (in a FIFO
 //! manner) only when their own queue becomes empty.
 //! ParaSail adopted a pointer-free model initially to enable easy and safe pervasively
 //! parallel programming for potentially irregular computations. However, the ongoing
@@ -1522,10 +1522,10 @@
 //! for example, a proof that two variables contain different indices, as would be needed
 //! for a proof of non-aliasing when the indices are used to index into a container.
 //! Evaluating a programming language in a fully objective sense is challenging, and
-//! even deciding on what criteria are relevant is by itself difficult. The “-ilities” and
-//! “-arities” such as usability, reliability, portability, modularity, etc., might be easily
+//! even deciding on what criteria are relevant is by itself difficult. The "-ilities" and
+//! "-arities" such as usability, reliability, portability, modularity, etc., might be easily
 //! agreed to be relevant, but ranking languages according to such criteria generally
-//! involves subjective evaluation, bordering on the “religious” at times. For the purposes
+//! involves subjective evaluation, bordering on the "religious" at times. For the purposes
 //! of evaluating the design of ParaSail, we have attempted to assess how well we accomplished our various goals, and how ParaSail compares to other modern systems
 //! programming languages in achieving these goals.
 //! One of our initial goals for ParaSail was to create a language that would be familiar
@@ -1547,8 +1547,8 @@
 //! analysis in other ways.
 //! A second important goal was for ParaSail to enable the creation of safe, parallel
 //! programs, of significant size, with the same ease and productivity of sequential programming. For our own use, we have written two major programs in ParaSail: a
-//! compiler “back end” that reads the PSVM representation of a ParaSail program and
-//! generates the corresponding LLVM [21] instructions, and a static analyzer (“ParaScope”) that does an advanced static analysis of ParaSail programs identifying all
+//! compiler "back end" that reads the PSVM representation of a ParaSail program and
+//! generates the corresponding LLVM [21] instructions, and a static analyzer ("ParaScope") that does an advanced static analysis of ParaSail programs identifying all
 //! places where a precondition or postcondition might fail. These programs have confirmed the safety, flexibility, and convenience provided by pointer-free expandable
 //! objects and region-based storage management. In addition, the elimination of global
 //! variables and aliasing meant that these programs were trivial to parallelize, resulting
@@ -1590,15 +1590,15 @@
 //! programmed in a parallel programing language before. Nevertheless, as can be seen
 //! from the table, executing this ParaSail program using multiple threads, while it did
 //! incur CPU scheduling overhead, more than made up for this overhead thanks to the
-//! parallelism “naturally” available in the program, producing a two times speed-up
+//! parallelism "naturally" available in the program, producing a two times speed-up
 //! when going from single-threaded single core to hyper-threaded dual core. Note that
-//! “CPU” Time and Utilization in the above effectively refers to hyper-thread time and
+//! "CPU" Time and Utilization in the above effectively refers to hyper-thread time and
 //! hyper-thread utilization. This simple comparison showed us, anecdotally, that a large
 //! program could be written by a parallel-programming neophyte using the inherently
 //! safe, parallel, and pointer-free constructs of ParaSail, and still achieve significant
 //! speed-up from parallel execution.
 //! As an example of a speed up provided by implicit parallelism associated with
-//! a naive divide-and-conquer recursive Quicksort algorithm, the “functional” non-inplace recursive function Qsort, shown in section 4.1 above, was timed on sorting
+//! a naive divide-and-conquer recursive Quicksort algorithm, the "functional" non-inplace recursive function Qsort, shown in section 4.1 above, was timed on sorting
 //! one million random integers, once in a single-threaded implementation, and once
 //! using parallelism inserted implicitly by the ParaSail compiler, on the same processor
 //! configuration as above and again averaged over 8 runs:
@@ -1625,7 +1625,7 @@
 //! Here we see that parallelism can be significant even when provided automatically in
 //! ParaSail by concurrent evaluation of complex operands of binary operations.
 //! A third important goal was that ParaSail would raise the level of abstraction so as to
-//! increase expressivity, without incurring the kind of “abstraction bloat” that can arise
+//! increase expressivity, without incurring the kind of "abstraction bloat" that can arise
 //! in some object-oriented languages [26]. The ParaScope static analyser mentioned
 //! above was essentially a rewrite of a commercial static analyser written in Ada. As a
 //! simple comparison in expressivity, lines of code for the value propagation phase of
@@ -1661,10 +1661,10 @@
 //! implicit safe synchronization of access to shared data, along with signaling between
 //! threads, without the need for explicit lock, unlock, signal, or wait operations.
 //! And perhaps the overarching goal of the ParaSail design was to achieve our various
-//! other goals with economy of means – to minimize the number of distinct concepts in the
+//! other goals with economy of means - to minimize the number of distinct concepts in the
 //! language without hampering expressivity. Other language designers have expressed
 //! similar goals, with the Modula-3 design team giving themselves an explicit fifty-page
-//! “complexity budget” for their reference manual [8]. Other than the reference manual
+//! "complexity budget" for their reference manual [8]. Other than the reference manual
 //! size, what other measures might be used to measure inherent language complexity?
 //! In the design of ParaSail, we attempted to remove redundancy in the language design
 //! from the beginning. Many languages have adopted the notion of package or namespace
@@ -1676,7 +1676,7 @@
 //! Each ParaSail data type is defined as an instantiation of a module, giving the actual
 //! parameters for any formal parameters of the module. And a ParaSail data object is
 //! defined as an instance of a type. There is no distinction between reference types and
-//! value types – assignment is always by value, implying having two copies of the same
+//! value types - assignment is always by value, implying having two copies of the same
 //! value when done, while a move operation is provided to move the value of one object
 //! into a second object while nulling out the value of the source object, such that there is
 //! no net increase in the amount of storage in use. Finally ParaSail has essentially one kind
@@ -1718,22 +1718,22 @@
 //!
 //! References
 //!
-//! [1] Jonathan Aldrich, Valentin Kostadinov, and Craig Chambers. “Alias Annotations for Program Understanding”. In: Proceedings of the 17th ACM SIGPLAN
-//! Conference on Object-oriented Programming, Systems, Languages, and Applications. OOPSLA ’02. Seattle, Washington, USA: ACM, 2002, pages 311–330. isbn:
+//! [1] Jonathan Aldrich, Valentin Kostadinov, and Craig Chambers. "Alias Annotations for Program Understanding". In: Proceedings of the 17th ACM SIGPLAN
+//! Conference on Object-oriented Programming, Systems, Languages, and Applications. OOPSLA '02. Seattle, Washington, USA: ACM, 2002, pages 311-330. isbn:
 //! 1-58113-471-1. doi: 10.1145/582419.582448.
 //! [2] John W. Backus, Friedrich L. Bauer, Julien Green, Charles Katz, John McCarthy,
 //! Alan J. Perlis, Heinz Rutishauser, Klaus Samelson, Bernard Vauquois, Joseph H.
-//! Wegstein, Adriaan van Wijngaarden, and Michael Woodger. “Revised Report
-//! on the Algorithm Language ALGOL 60”. In: Communications of the ACM 6.1
-//! (Jan. 1963). Edited by Peter Naur, pages 1–17. issn: 0001-0782. doi: 10.1145/
+//! Wegstein, Adriaan van Wijngaarden, and Michael Woodger. "Revised Report
+//! on the Algorithm Language ALGOL 60". In: Communications of the ACM 6.1
+//! (Jan. 1963). Edited by Peter Naur, pages 1-17. issn: 0001-0782. doi: 10.1145/
 //! 366193.366201. url: http://www.masswerk.at/algol60/report.htm (visited on
 //! 2018-08-30).
-//! [3] David F. Bacon, Robert E. Strom, and Ashis Tarafdar. “Guava: A Dialect of Java
-//! Without Data Races”. In: Proceedings of the 15th ACM SIGPLAN Conference on
+//! [3] David F. Bacon, Robert E. Strom, and Ashis Tarafdar. "Guava: A Dialect of Java
+//! Without Data Races". In: Proceedings of the 15th ACM SIGPLAN Conference on
 //! Object-oriented Programming, Systems, Languages, and Applications. OOPSLA
-//! ’00. Minneapolis, Minnesota, USA: ACM, 2000, pages 382–400. isbn: 1-58113200-X. doi: 10.1145/353171.353197.
-//! [4] Luc Bläser. “A component language for pointer-free concurrent programming
-//! and its application to simulation”. PhD thesis. Zurich: ETH, 2007. doi: 10.3929/
+//! '00. Minneapolis, Minnesota, USA: ACM, 2000, pages 382-400. isbn: 1-58113200-X. doi: 10.1145/353171.353197.
+//! [4] Luc Blaser. "A component language for pointer-free concurrent programming
+//! and its application to simulation". PhD thesis. Zurich: ETH, 2007. doi: 10.3929/
 //! ethz-a-005539347. url: http://e-collection.library.ethz.ch/eserv/eth:30090/eth30090-02.pdf (visited on 2018-08-30).
 //!
 //! 7: 28
@@ -1742,38 +1742,38 @@
 //! --- PAGE BREAK ---
 //! S. Tucker Taft
 //!
-//! [5] Robert D. Blumofe and Charles E. Leiserson. “Scheduling Multithreaded Computations by Work Stealing”. In: Journal of the ACM 46.5 (Sept. 1999), pages 720–
+//! [5] Robert D. Blumofe and Charles E. Leiserson. "Scheduling Multithreaded Computations by Work Stealing". In: Journal of the ACM 46.5 (Sept. 1999), pages 720-
 //! 748. issn: 0004-5411. doi: 10.1145/324133.324234.
-//! [6] Chandrasekhar Boyapati, Robert Lee, and Martin Rinard. “Ownership Types
-//! for Safe Programming: Preventing Data Races and Deadlocks”. In: Proceedings
+//! [6] Chandrasekhar Boyapati, Robert Lee, and Martin Rinard. "Ownership Types
+//! for Safe Programming: Preventing Data Races and Deadlocks". In: Proceedings
 //! of the 17th ACM SIGPLAN Conference on Object-oriented Programming, Systems,
-//! Languages, and Applications. OOPSLA ’02. Seattle, Washington, USA: ACM,
-//! 2002, pages 211–230. isbn: 1-58113-471-1. doi: 10.1145/582419.582440.
-//! [7] Chandrasekhar Boyapati and Martin Rinard. “A Parameterized Type System for
-//! Race-free Java Programs”. In: Proceedings of the 16th ACM SIGPLAN Conference
+//! Languages, and Applications. OOPSLA '02. Seattle, Washington, USA: ACM,
+//! 2002, pages 211-230. isbn: 1-58113-471-1. doi: 10.1145/582419.582440.
+//! [7] Chandrasekhar Boyapati and Martin Rinard. "A Parameterized Type System for
+//! Race-free Java Programs". In: Proceedings of the 16th ACM SIGPLAN Conference
 //! on Object-oriented Programming, Systems, Languages, and Applications. OOPSLA
-//! ’01. Tampa Bay, FL, USA: ACM, 2001, pages 56–69. isbn: 1-58113-335-9. doi:
+//! '01. Tampa Bay, FL, USA: ACM, 2001, pages 56-69. isbn: 1-58113-335-9. doi:
 //! 10.1145/504282.504287.
 //! [8] Luca Cardelli, James Donahue, Lucille Glassman, Mick Jordan, Bill Kalsow, and
 //! Greg Nelson. Modula-3 Report (revised). Technical report SRC-RR-52. CompaqDEC-SRC, Nov. 1989. url: http : / / www . hpl . hp . com / techreports / Compaq DEC/SRC-RR-52.pdf (visited on 2018-08-30).
-//! [9] Rod Chapman and Peter Amey. SPARK-95 – The SPADE Ada Kernel (including
+//! [9] Rod Chapman and Peter Amey. SPARK-95 - The SPADE Ada Kernel (including
 //! RavenSPARK). 2008. url: http://docs.adacore.com/sparkdocs-docs/SPARK_LRM.
 //! htm (visited on 2018-08-30).
-//! [10] Dave Clarke. “Object Ownership and Containment”. PhD thesis. Australia:
+//! [10] Dave Clarke. "Object Ownership and Containment". PhD thesis. Australia:
 //! University of New South Wales, July 2001.
-//! [11] Patrick Cousot and Radhia Cousot. “Abstract Interpretation: A Unified Lattice
+//! [11] Patrick Cousot and Radhia Cousot. "Abstract Interpretation: A Unified Lattice
 //! Model for Static Analysis of Programs by Construction or Approximation of
-//! Fixpoints”. In: Proceedings of the 4th ACM SIGACT-SIGPLAN Symposium on
-//! Principles of Programming Languages. POPL ’77. Los Angeles, California: ACM,
-//! 1977, pages 238–252. doi: 10.1145/512950.512973.
+//! Fixpoints". In: Proceedings of the 4th ACM SIGACT-SIGPLAN Symposium on
+//! Principles of Programming Languages. POPL '77. Los Angeles, California: ACM,
+//! 1977, pages 238-252. doi: 10.1145/512950.512973.
 //! [12] Erich Gamma, Richard Helm, Ralph Johnson, and John Vlissides. Design Patterns. Addison-Wesley, 1994. isbn: 0-201-63361-2.
 //! [13] Dan Grossman, Greg Morrisett, Trevor Jim, Michael Hicks, Yanling Wang, and
-//! James Cheney. “Region-based Memory Management in Cyclone”. In: Proceedings
+//! James Cheney. "Region-based Memory Management in Cyclone". In: Proceedings
 //! of the ACM SIGPLAN 2002 Conference on Programming Language Design and
-//! Implementation. PLDI ’02. Berlin, Germany: ACM, 2002, pages 282–293. isbn:
+//! Implementation. PLDI '02. Berlin, Germany: ACM, 2002, pages 282-293. isbn:
 //! 1-58113-463-0. doi: 10.1145/512529.512563.
-//! [14] Philipp Haller and Alex Loiko. “LaCasa: Lightweight Affinity and Object Capabilities in Scala”. In: Proceedings of the 2016 ACM SIGPLAN International
-//! Conference on Object-Oriented Programming, Systems, Languages, and Applications. OOPSLA 2016. Amsterdam, Netherlands: ACM, 2016, pages 272–291. isbn:
+//! [14] Philipp Haller and Alex Loiko. "LaCasa: Lightweight Affinity and Object Capabilities in Scala". In: Proceedings of the 2016 ACM SIGPLAN International
+//! Conference on Object-Oriented Programming, Systems, Languages, and Applications. OOPSLA 2016. Amsterdam, Netherlands: ACM, 2016, pages 272-291. isbn:
 //! 978-1-4503-4444-9. doi: 10.1145/2983990.2984042.
 //! [15] Robert Harper. Programming in Standard ML. 2005. url: http://www.cs.cmu.
 //! edu/~rwh/isml/book.pdf (visited on 2018-08-30).
@@ -1784,42 +1784,42 @@
 //! --- PAGE BREAK ---
 //! ParaSail: A Pointer-Free Pervasively-Parallel Language
 //!
-//! [16] C. A. R. Hoare. “Recursive Data Structures”. In: Essays in Computing Science.
+//! [16] C. A. R. Hoare. "Recursive Data Structures". In: Essays in Computing Science.
 //! Edited by Clifford B. Jones. Upper Saddle River, NJ, USA: Prentice-Hall, Inc.,
-//! 1989, pages 217–244. isbn: 0-13-284027-8.
+//! 1989, pages 217-244. isbn: 0-13-284027-8.
 //! [17] Gregor Hohpe and Bobby Woolf. JMS Publish/Subscribe Example. 2003. url:
 //! http://www.eaipatterns.com/ObserverJmsExample.html (visited on 2018-08-30).
-//! [18] Gowtham Kaki and G. Ramalingam. “Safe Transferable Regions”. In: 32nd European Conference on Object-Oriented Programming, July 16-21, 2018, Amsterdam,
-//! The Netherlands. ECOOP. 2018, 11:1–11:31. doi: 10.4230/LIPIcs.ECOOP.2018.11.
+//! [18] Gowtham Kaki and G. Ramalingam. "Safe Transferable Regions". In: 32nd European Conference on Object-Oriented Programming, July 16-21, 2018, Amsterdam,
+//! The Netherlands. ECOOP. 2018, 11:1-11:31. doi: 10.4230/LIPIcs.ECOOP.2018.11.
 //! [19] John G. Kemeny and Thomas E. Kurtz. BASIC, 4th Edition, Trustees of Dartmouth
 //! College. 1968. url: http://www.bitsavers.org/pdf/dartmouth/BASIC_4th_Edition_
 //! Jan68.pdf (visited on 2018-08-30).
-//! [20] Peter J. Landin. “The Mechanical Evaluation of Expressions”. In: The Computer
-//! Journal 6.4 (1964), pages 308–320. doi: 10.1093/comjnl/6.4.308.
-//! [21] Chris Lattner. “LLVM: An Infrastructure for Multi-Stage Optimization”. Master’s
+//! [20] Peter J. Landin. "The Mechanical Evaluation of Expressions". In: The Computer
+//! Journal 6.4 (1964), pages 308-320. doi: 10.1093/comjnl/6.4.308.
+//! [21] Chris Lattner. "LLVM: An Infrastructure for Multi-Stage Optimization". Master's
 //! thesis. Computer Science Dept., University of Illinois at Urbana-Champaign,
 //! Dec. 2002. url: http://llvm.org/pubs/2002-12-LattnerMSThesis.html (visited on
 //! 2018-08-30).
-//! [22] Charles H. Lindsey. “A History of ALGOL 68”. In: The Second ACM SIGPLAN
-//! Conference on History of Programming Languages. HOPL-II. Cambridge, Massachusetts, USA: ACM, 1993, pages 97–132. isbn: 0-89791-570-4. doi: 10.1145/
+//! [22] Charles H. Lindsey. "A History of ALGOL 68". In: The Second ACM SIGPLAN
+//! Conference on History of Programming Languages. HOPL-II. Cambridge, Massachusetts, USA: ACM, 1993, pages 97-132. isbn: 0-89791-570-4. doi: 10.1145/
 //! 154766.155365.
 //! [23] Simon Marlow. Haskell 2010 Language Report. url: http://www.haskell.org/
 //! onlinereport/haskell2010/ (visited on 2018-08-30).
-//! [24] Simon Marlow, Ryan Newton, and Simon Peyton Jones. “A Monad for Deterministic Parallelism”. In: Proceedings of the 4th ACM Symposium on Haskell.
-//! Haskell ’11. Tokyo, Japan: ACM, 2011, pages 71–82. isbn: 978-1-4503-0860-1.
+//! [24] Simon Marlow, Ryan Newton, and Simon Peyton Jones. "A Monad for Deterministic Parallelism". In: Proceedings of the 4th ACM Symposium on Haskell.
+//! Haskell '11. Tokyo, Japan: ACM, 2011, pages 71-82. isbn: 978-1-4503-0860-1.
 //! doi: 10.1145/2034675.2034685.
-//! [25] Microsoft. Visual Basic Guide – Value Types and Reference Types. url: https:
+//! [25] Microsoft. Visual Basic Guide - Value Types and Reference Types. url: https:
 //! //docs.microsoft.com/en-us/dotnet/visual-basic/programming-guide/languagefeatures/data-types/value-types-and-reference-types (visited on 2018-08-30).
 //!
-//! [26] Nick Mitchell, Edith Schonberg, and Gary Sevitsky. “Four Trends Leading to
-//! Java Runtime Bloat”. In: IEEE Software 27.1 (Jan. 2010), pages 56–63. issn:
+//! [26] Nick Mitchell, Edith Schonberg, and Gary Sevitsky. "Four Trends Leading to
+//! Java Runtime Bloat". In: IEEE Software 27.1 (Jan. 2010), pages 56-63. issn:
 //! 0740-7459. doi: 10.1109/MS.2010.7.
-//! [27] Yannick Moy, Steve Baird, Arnaud Charlet, and Tucker Taft. “CodePeer – Beyond
-//! Bug-finding with Static Analysis”. In: Static Analysis of Software: The Abstract
+//! [27] Yannick Moy, Steve Baird, Arnaud Charlet, and Tucker Taft. "CodePeer - Beyond
+//! Bug-finding with Static Analysis". In: Static Analysis of Software: The Abstract
 //! Interpretation. Wiley-ISTE, 2011. isbn: 978-1-84821-320-3.
 //! [28] Mozilla. The Rust Programming Language. url: http://rust-lang.org (visited on
 //! 2018-08-30).
-//! [29] Mozilla. The Rust Programming Language – Validating References with Lifetimes.
+//! [29] Mozilla. The Rust Programming Language - Validating References with Lifetimes.
 //! url: https://doc.rust-lang.org/book/2018-edition/ch10-03-lifetime-syntax.html
 //! (visited on 2018-08-30).
 //!
@@ -1830,36 +1830,36 @@
 //! S. Tucker Taft
 //!
 //! [30] Matthew Parkinson, Dimitrios Vytiniotis, Kapil Vaswani, Manuel Costa, Pantazis Deligiannis, Dylan McDermott, Aaron Blankstein, and Jonathan Balkind.
-//! “Project Snowflake: Non-blocking Safe Manual Memory Management in .NET”.
+//! "Project Snowflake: Non-blocking Safe Manual Memory Management in .NET".
 //! In: Proceedings of the ACM on Programming Languages 1.OOPSLA (Oct. 2017),
-//! 95:1–95:25. issn: 2475-1421. doi: 10.1145/3141879.
-//! [31] Martin Reiman and Paul E. Wright. “Performance Analysis of Concurrentread Exclusive-write”. In: Proceedings of the 1991 ACM SIGMETRICS Conference
-//! on Measurement and Modeling of Computer Systems. SIGMETRICS ’91. San
-//! Diego, California, USA: ACM, 1991, pages 168–177. isbn: 0-89791-392-2. doi:
+//! 95:1-95:25. issn: 2475-1421. doi: 10.1145/3141879.
+//! [31] Martin Reiman and Paul E. Wright. "Performance Analysis of Concurrentread Exclusive-write". In: Proceedings of the 1991 ACM SIGMETRICS Conference
+//! on Measurement and Modeling of Computer Systems. SIGMETRICS '91. San
+//! Diego, California, USA: ACM, 1991, pages 168-177. isbn: 0-89791-392-2. doi:
 //! 10.1145/107971.107989.
-//! [32] Robert E. Strom. “Hermes: an integrated language and system for distributed
-//! programming”. In: IEEE Workshop on Experimental Distributed Systems. Oct.
-//! 1990, pages 75–82. doi: 10.1109/EDS.1990.138054.
-//! [33] Robert E. Strom and Shaula Yemini. “Typestate: A Programming Language
-//! Concept for Enhancing Software Reliability”. In: IEEE Transactions on Software
-//! Engineering 12.1 (Jan. 1986), pages 157–171. issn: 0098-5589. doi: 10.1109/TSE.
+//! [32] Robert E. Strom. "Hermes: an integrated language and system for distributed
+//! programming". In: IEEE Workshop on Experimental Distributed Systems. Oct.
+//! 1990, pages 75-82. doi: 10.1109/EDS.1990.138054.
+//! [33] Robert E. Strom and Shaula Yemini. "Typestate: A Programming Language
+//! Concept for Enhancing Software Reliability". In: IEEE Transactions on Software
+//! Engineering 12.1 (Jan. 1986), pages 157-171. issn: 0098-5589. doi: 10.1109/TSE.
 //! 1986.6312929.
 //! [34] S. Tucker Taft. Blog: Designing ParaSail: A New Programming Language. 2009.
 //! url: http://parasail-programming-language.blogspot.com (visited on 2018-08-30).
 //! [35]
 //!
-//! S. Tucker Taft. “ParaSail: A Pointer-Free Path to Object-Oriented Parallel Programming”. Presented at 19th International Workshop on Foundations of ObjectOriented Languages (FOOL 2012), Tuscon, AZ, 2012. 2012.
+//! S. Tucker Taft. "ParaSail: A Pointer-Free Path to Object-Oriented Parallel Programming". Presented at 19th International Workshop on Foundations of ObjectOriented Languages (FOOL 2012), Tuscon, AZ, 2012. 2012.
 //!
 //! [36] Phil Thornley. SPARKSure Data Structures. 2009. url: http://www.sparksure.
 //! com/resources/SPARK_Data_Structures_10_09.zip (visited on 2012-08-10).
-//! [37] Phil Thornley. “The Implementation of High Integrity Data Structures”. In:
-//! Ada User Journal 32.3 (Sept. 2011), pages 182–187. url: http : / / www . ada europe.org/archive/auj/auj-32-3.pdf (visited on 2018-10-18).
-//! [38] Mads Tofte and Jean-Pierre Talpin. “Implementation of the Typed Call-byvalue λ-calculus Using a Stack of Regions”. In: Proceedings of the 21st ACM
+//! [37] Phil Thornley. "The Implementation of High Integrity Data Structures". In:
+//! Ada User Journal 32.3 (Sept. 2011), pages 182-187. url: http : / / www . ada europe.org/archive/auj/auj-32-3.pdf (visited on 2018-10-18).
+//! [38] Mads Tofte and Jean-Pierre Talpin. "Implementation of the Typed Call-byvalue \lambda-calculus Using a Stack of Regions". In: Proceedings of the 21st ACM
 //! SIGPLAN-SIGACT Symposium on Principles of Programming Languages. POPL
-//! ’94. Portland, Oregon, USA: ACM, 1994, pages 188–201. isbn: 0-89791-636-0.
+//! '94. Portland, Oregon, USA: ACM, 1994, pages 188-201. isbn: 0-89791-636-0.
 //! doi: 10.1145/174675.177855.
-//! [39] Mads Tofte and Jean-Pierre Talpin. “Region-Based Memory Management”. In:
-//! Information and Computation 132.2 (Feb. 1997), pages 109–176. issn: 0890-5401.
+//! [39] Mads Tofte and Jean-Pierre Talpin. "Region-Based Memory Management". In:
+//! Information and Computation 132.2 (Feb. 1997), pages 109-176. issn: 0890-5401.
 //! doi: 10.1006/inco.1996.2613.
 //! [40] Patrick C. Walton. Blog: Removing Garbage Collection From the Rust Language.
 //! url: http://pcwalton.github.io/2013/06/02/removing-garbage-collection-fromthe-rust-language.html (visited on 2018-08-30).

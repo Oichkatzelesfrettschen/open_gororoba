@@ -357,7 +357,7 @@ pub fn exceptional_casimirs() -> Vec<ExceptionalCasimir> {
             group: "E6",
             lie_dim: 78,
             rank: 6,
-            // E6 27-dim fundamental: C_2 = 26/3 ≈ 8.667
+            // E6 27-dim fundamental: C_2 = 26/3 ~= 8.667
             c2_fundamental: 26.0 / 3.0,
             rep_dim: 27,
         },
@@ -485,9 +485,9 @@ mod tests {
         
         assert_eq!(actual_0, expected_0, "Mismatch in level 0 count for {}D", dim);
         assert_eq!(actual_1, expected_1, "Mismatch in level 1 count for {}D", dim);
-        assert_eq!(actual_sqrt2, expected_sqrt2, "Mismatch in level √2 count for {}D", dim);
+        assert_eq!(actual_sqrt2, expected_sqrt2, "Mismatch in level sqrt2 count for {}D", dim);
         
-        println!("✅ {}D Invariant verified: 0: {}, 1: {}, √2: {}", dim, actual_0, actual_1, actual_sqrt2);
+        println!("<EMOJI+2705> {}D Invariant verified: 0: {}, 1: {}, sqrt2: {}", dim, actual_0, actual_1, actual_sqrt2);
     }
 
     #[test]

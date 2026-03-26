@@ -5,10 +5,10 @@
 //! correction for multiple testing.
 //!
 //! ## Design
-//! - 2 sign groups (positive / negative mean residual) × 5 mass bins = 10 cells
+//! - 2 sign groups (positive / negative mean residual) x 5 mass bins = 10 cells
 //! - Plus 2 marginal tests (sign-only, mass-only) = 12 total tests
 //! - For each cell: stack residuals, compute Fourier power, test significance
-//! - Bonferroni correction: α_effective = 0.05 / 12
+//! - Bonferroni correction: \alpha_effective = 0.05 / 12
 //! - Tests both phase-randomization AND Feshbach mass-resonance hypotheses
 //!
 //! ## Ablations
@@ -67,7 +67,7 @@ impl Default for H3Config {
 /// Which splitting strategy to apply.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum SplitMode {
-    /// Full 2×5 sign × mass grid.
+    /// Full 2x5 sign x mass grid.
     SignAndMass,
     /// Sign-only ablation (2 groups).
     SignOnly,
@@ -278,8 +278,8 @@ pub fn run_h3(config: &H3Config, mode: SplitMode) -> H3Result {
     let n_significant = raw_results.iter().filter(|r| r.significant).count();
 
     let summary = format!(
-        "H3 Sign-Split+Mass-Binned Stacking: mode={:?}, {} cells, \
-         {} galaxies, {} significant (correction={:?}, α={})",
+        r"H3 Sign-Split+Mass-Binned Stacking: mode={:?}, {} cells, \
+         {} galaxies, {} significant (correction={:?}, \alpha={})",
         mode,
         raw_results.len(),
         config.n_galaxies,
@@ -296,7 +296,7 @@ pub fn run_h3(config: &H3Config, mode: SplitMode) -> H3Result {
     }
 }
 
-/// Run the full experiment (sign × mass) with both ablations.
+/// Run the full experiment (sign x mass) with both ablations.
 pub fn run_h3_full(config: &H3Config) -> (H3Result, H3Result, H3Result) {
     let full = run_h3(config, SplitMode::SignAndMass);
     let sign_only = run_h3(config, SplitMode::SignOnly);
@@ -322,7 +322,7 @@ mod tests {
         };
         let (full, sign_abl, mass_abl) = run_h3_full(&config);
 
-        // Full: 2 sign × 5 mass = 10 cells
+        // Full: 2 sign x 5 mass = 10 cells
         assert_eq!(full.cells.len(), 10);
         assert_eq!(full.mode, SplitMode::SignAndMass);
 
@@ -386,7 +386,7 @@ mod tests {
         let p = p_value_from_power(0.0, 7, 1.0);
         assert!((p - 1.0).abs() < 0.01);
 
-        // Very large power should give p ≈ 0.
+        // Very large power should give p ~= 0.
         let p = p_value_from_power(1e6, 7, 1.0);
         assert!(p < 0.001);
     }

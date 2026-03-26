@@ -234,6 +234,21 @@ fn is_combining_mark(ch: char) -> bool {
     )
 }
 
+fn is_emoji(ch: char) -> bool {
+    let val = ch as u32;
+    matches!(
+        val,
+        0x1F600..=0x1F64F | // Emoticons
+        0x1F300..=0x1F5FF | // Misc Symbols and Pictographs
+        0x1F680..=0x1F6FF | // Transport and Map
+        0x2600..=0x26FF   | // Misc Symbols
+        0x2700..=0x27BF   | // Dingbats
+        0xFE00..=0xFE0F   | // Variation Selectors
+        0x1F900..=0x1F9FF | // Supplemental Symbols and Pictographs
+        0x1F1E6..=0x1F1FF   // Flags
+    )
+}
+
 fn sanitize_text(text: &str) -> String {
     let mut current = text.to_string();
     for (src, dst) in CHARACTER_POLICY_REPLACEMENTS {
@@ -245,8 +260,10 @@ fn sanitize_text(text: &str) -> String {
         .collect();
     let mut out = String::new();
     for ch in normalized.chars() {
-        if ch.is_ascii() {
+        if ch.is_ascii() || (!is_emoji(ch) && (ch as u32) > 127) {
             out.push(ch);
+        } else if is_emoji(ch) {
+            out.push_str(&format!("<EMOJI+{:04X}>", ch as u32));
         } else {
             out.push_str(&format!("<U+{:04X}>", ch as u32));
         }
@@ -262,9 +279,16 @@ fn strip_ansi_sequences(text: &str) -> String {
     without_osc.replace('\u{001b}', "")
 }
 
-fn has_disallowed_controls(text: &str) -> bool {
-    text.chars()
-        .any(|ch| ch.is_control() && !matches!(ch, '\n' | '\r' | '\t'))
+fn has_disallowed_characters(text: &str) -> bool {
+    text.chars().any(|ch| {
+        if ch.is_control() && !matches!(ch, '\n' | '\r' | '\t') {
+            return true;
+        }
+        if is_emoji(ch) {
+            return true;
+        }
+        false
+    })
 }
 
 fn iter_character_policy_files(root: &Path) -> Vec<PathBuf> {
@@ -338,8 +362,10 @@ fn run_character_policy(args: CharacterPolicyArgs) -> Result<()> {
         } else {
             text.clone()
         };
-        if has_disallowed_controls(&new_text) {
-            failures.push(rel.clone());
+        if let Some(bad_ch) = new_text.chars().find(|&ch| {
+            (ch.is_control() && !matches!(ch, '\n' | '\r' | '\t')) || is_emoji(ch)
+        }) {
+            failures.push(format!("{} (first bad char: U+{:04X})", rel, bad_ch as u32));
             continue;
         }
         if args.strict_placeholders {
@@ -347,7 +373,7 @@ fn run_character_policy(args: CharacterPolicyArgs) -> Result<()> {
                 || scope_prefixes
                     .iter()
                     .any(|prefix| rel == *prefix || rel.starts_with(&format!("{prefix}/")));
-            if in_scope && !allowlist.contains(&rel) && new_text.contains("<U+") {
+            if in_scope && !allowlist.contains(&rel) && (new_text.contains("<U+") || new_text.contains("<EMOJI+")) {
                 placeholder_failures.push(rel.clone());
                 continue;
             }
@@ -361,7 +387,7 @@ fn run_character_policy(args: CharacterPolicyArgs) -> Result<()> {
         println!(
             "{}",
             style_text(
-                "Files with disallowed ANSI/control bytes detected:",
+                "Files with disallowed characters (emojis or controls) detected:",
                 AnsiColor::Red,
                 true
             )
@@ -375,7 +401,7 @@ fn run_character_policy(args: CharacterPolicyArgs) -> Result<()> {
         println!(
             "{}",
             style_text(
-                "Placeholder tokens detected in strict ANSI/UTF-8 mode:",
+                "Placeholder tokens detected in strict character mode:",
                 AnsiColor::Red,
                 true
             )

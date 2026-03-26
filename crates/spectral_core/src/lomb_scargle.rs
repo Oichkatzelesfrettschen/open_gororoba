@@ -6,7 +6,7 @@
 //! # Literature
 //! - Lomb (1976): Least-squares frequency analysis of unequally spaced data
 //! - Scargle (1982): Studies in astronomical time series analysis
-//! - Zechmeister & Kürster (2009): A generalized Lomb-Scargle periodogram
+//! - Zechmeister & Kurster (2009): A generalized Lomb-Scargle periodogram
 //! - Baluev (2008): Assessing the statistical significance of periodogram peaks
 
 use std::f64::consts::PI;
@@ -37,7 +37,7 @@ impl LombScargleResult {
 
 /// Compute the Generalized Lomb-Scargle periodogram.
 ///
-/// This version includes a floating mean offset (Zechmeister & Kürster 2009).
+/// This version includes a floating mean offset (Zechmeister & Kurster 2009).
 ///
 /// # Arguments
 /// * `t` - Observation times
@@ -78,7 +78,7 @@ pub fn compute_lomb_scargle(t: &[f64], y: &[f64], freqs: &[f64]) -> LombScargleR
             ys += yi * si;
         }
 
-        // Floating mean normalization (Zechmeister & Kürster Eq. 5)
+        // Floating mean normalization (Zechmeister & Kurster Eq. 5)
         // We solve the 3x3 system for [offset, A, B] where y ~ offset + A*cos + B*sin
         // But centered y_mean=0 and unit weights simplifies it slightly.
 

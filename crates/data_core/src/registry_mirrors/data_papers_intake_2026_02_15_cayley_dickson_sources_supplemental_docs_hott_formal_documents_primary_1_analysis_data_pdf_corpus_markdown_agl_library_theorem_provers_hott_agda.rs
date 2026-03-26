@@ -220,7 +220,7 @@
 //! maximizes the posterior possibility:
 //!
 //! supervised node classification, obeys the following rule to aggregate neighboring features:
-//! 
+//! 
 //! 1
 //! 1
 //! H k+1 = σ D̂− 2 ÂD̂− 2 H k W k ,
@@ -400,8 +400,8 @@
 //! (11)
 //!
 //! The continuous optimization problem 11 is solved by projected gradient descent (PGD):
-//! 
-//! 
+//! 
+//! 
 //! at+1 = P[0,1] at − ηt gt ,
 //! (12)
 //! where t is the iteration index of PGD, ηt is the learning rate,
@@ -634,9 +634,9 @@
 //!
 //! GraphMI AUC
 //!
-//!  = 1.0
-//!  = 5.0
-//!  = 10.0
+//!  = 1.0
+//!  = 5.0
+//!  = 10.0
 //! no DP
 //!
 //! 0.48
@@ -679,13 +679,13 @@
 //! 1.00 in Cora dataset. This implies that the privacy leakage
 //! will be more severe if sensitive edges are those with greater
 //! influence.
-//! Defense Performance of Differentail Privacy. Differential privacy (DP) is one general approach for protecting privacy. Here, we investigate the impact of differential privacy on GraphMI attacks. (, δ) - DP is ensured by adding
+//! Defense Performance of Differentail Privacy. Differential privacy (DP) is one general approach for protecting privacy. Here, we investigate the impact of differential privacy on GraphMI attacks. (, δ) - DP is ensured by adding
 //! Gaussian noise to clipped gradients in each training iteration
 //! [Abadi et al., 2016]. In experiments, δ is set to 10−5 and the
 //!
-//! noise scale is varied to obtain target GNN models with different  from 1.0 to 10.0. The GraphMI attack performance and
+//! noise scale is varied to obtain target GNN models with different  from 1.0 to 10.0. The GraphMI attack performance and
 //! their model utility are presented in Table 2. As the privacy
-//! budget  drops, the performance of GraphMI attack deteriorates at the price of a huge utility drop. Generally, enforcing
+//! budget  drops, the performance of GraphMI attack deteriorates at the price of a huge utility drop. Generally, enforcing
 //! DP on target models cannot prevent GraphMI attack.
 //!
 //! 6

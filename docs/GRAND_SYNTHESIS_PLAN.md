@@ -16,38 +16,38 @@ This document captures the execution plan for the grand synthesis research progr
 
 ## Completed (Closed) Work
 
-### Phase 0 — Algebraic Foundation (Done)
+### Phase 0 -- Algebraic Foundation (Done)
 
 - [x] Cayley-Dickson multiplication correctness (C-001, C-002, Rocq-verified)
 - [x] 42 assessors / 7 box-kites / PSL(2,7) identification (C-003, C-004, C-013)
-- [x] Annihilator geometry S³ ≅ SU(2) (C-014)
+- [x] Annihilator geometry S^3 ≅ SU(2) (C-014)
 - [x] Hurwitz theorem verification (C-031)
 - [x] Quantised gap theorem at dim=16 and dim=32 (C-1137, C-1140)
 - [x] ZD graph parametric structure (C-1141)
 - [x] XOR scatter-gather duality for GPU (C-1142)
 - [x] Wick rotation friction bridge (C-1138)
 
-### Phase 1 — Negative-Result Sweep (Done)
+### Phase 1 -- Negative-Result Sweep (Done)
 
 - [x] C-010: Nonlocal metamaterial holographic entropy (Closed/Negative-Result)
-- [x] C-011: Sedenion–gravastar soliton (Closed/Obstructed)
+- [x] C-011: Sedenion-gravastar soliton (Closed/Obstructed)
 - [x] C-012: Negative dimension dark energy (Refuted)
-- [x] C-036–C-041: Exceptional cosmology strong predictions (all Refuted except C-035, C-039)
+- [x] C-036-C-041: Exceptional cosmology strong predictions (all Refuted except C-035, C-039)
 - [x] C-025: GWTC-3 sky position clustering (Refuted)
 
-### Phase 2 — Heliospheric Baseline (Done)
+### Phase 2 -- Heliospheric Baseline (Done)
 
-- [x] Parker spiral validation: B_r ~ r⁻², B_φ ~ r⁻¹ (C-1162)
+- [x] Parker spiral validation: B_r ~ r-^2, B_\phi ~ r-^1 (C-1162)
 - [x] GCR modulation potential Φ(r) monotone (C-1171)
 - [x] DM null invariance across heliosphere (C-1156)
-- [x] LBM Knudsen breakdown at 30–50 AU (C-1159)
+- [x] LBM Knudsen breakdown at 30-50 AU (C-1159)
 - [x] Pioneer/Voyager merged data ingestion pipeline
 
 ---
 
 ## In Progress
 
-### Phase 3 — Anomaly Characterisation
+### Phase 3 -- Anomaly Characterisation
 
 - [ ] Pioneer fractal metric D_f(r): resolve magnitude discrepancy (4 orders off)
   - Working hypothesis: scale-dependent D_f(r), approaching 3 near planets
@@ -55,11 +55,11 @@ This document captures the execution plan for the grand synthesis research progr
   - Requires: Doppler residual time series (not yet in repo)
 
 - [ ] Flyby anomaly geometry decomposition
-  - C-952 established α_chingon ≠ universal; need PSL(2,7) spin-decomposition
+  - C-952 established \alpha_chingon = universal; need PSL(2,7) spin-decomposition
   - Key deliverable: 7-channel coupling model
   - Requires: precise attitude/geometry data for all 6 canonical flybys
 
-### Phase 4 — Materials Bridge
+### Phase 4 -- Materials Bridge
 
 - [ ] 7-bridge sedenion metamaterial design
   - C-010 established local topology insufficient; non-local inter-clique bridges needed
@@ -71,12 +71,12 @@ This document captures the execution plan for the grand synthesis research progr
   - Key deliverable: phonon spectrum entropy comparison between dim=8 and dim=16 lattice
   - Requires: experimental collaboration or DFT calculation
 
-### Phase 5 — Cosmological Extension
+### Phase 5 -- Cosmological Extension
 
 - [ ] D_f ~ 2.73 universal fractal floor conjecture
   - E-166 recovered D_f = 2.732 ± 0.034 from LBM galaxy simulations
   - Need: higher Reynolds number LBM runs; ISM observation comparison
-  - Key deliverable: LBM at Re > 10⁵, D_f measurement vs. Re curve
+  - Key deliverable: LBM at Re > 105, D_f measurement vs. Re curve
 
 - [ ] Gap universality verification at dim ≥ 64
   - Rocq spot-checks planned for dim=64, dim=128, dim=256
@@ -90,7 +90,7 @@ This document captures the execution plan for the grand synthesis research progr
 |----------|------|--------------------|-----------------| 
 | P0 | Pioneer D_f(r) scale-dependence sweep | Doppler residual data | S85 |
 | P1 | Gap universality Rocq proof at dim=64 | dim=32 proof passes CI | S85 |
-| P0 | LBM Re > 10⁵ fractal floor measurement | GPU resources | S86 |
+| P0 | LBM Re > 105 fractal floor measurement | GPU resources | S86 |
 | P2 | 7-bridge metamaterial coupling bound | Annihilator geometry analysis | S87 |
 | P2 | Flyby 7-channel decomposition | All flyby geometry data | S88 |
 | P3 | Tight-binding AVT entropy gap | Experimental/DFT collaboration | TBD |
@@ -109,7 +109,7 @@ All new analysis must be implemented in Rust crates or binaries (`gororoba_cli_p
 
 ### Falsifiability
 
-Each new claim must specify a concrete falsification criterion. For the D_f(r) conjecture: if the magnitude discrepancy persists at all trajectory intervals, the fractal metric hypothesis is refuted. For gap universality: if any dim ≥ 64 shows ||[e_i,e_k,e_{i⊕half}]||² ≠ 4, the universality conjecture is refuted.
+Each new claim must specify a concrete falsification criterion. For the D_f(r) conjecture: if the magnitude discrepancy persists at all trajectory intervals, the fractal metric hypothesis is refuted. For gap universality: if any dim ≥ 64 shows ||[e_i,e_k,e_{i\oplushalf}]||^2 = 4, the universality conjecture is refuted.
 
 ---
 

@@ -3,7 +3,7 @@
 //! Last updated: 2026-02-13
 //!
 //! ## Current Phase
-//! Phase 5 — Root-module synthesis and conflict harmonization
+//! Phase 5 -- Root-module synthesis and conflict harmonization
 //!
 //! ## Progress Snapshot
 //! - [x] Sync/pull all three repos from origin.

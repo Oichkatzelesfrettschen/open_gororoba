@@ -151,7 +151,7 @@
 //! codes and thus achieve flexible and continuous control of attributes via mixing and interpolation operations in explicit
 //! style representations. (Huang et al. 2020) introduces an
 //! appearance-aware pose stylizer, which generates human images by coupling the target pose with the conditioned person
-//! appearance progressively. (Lathuilière et al. 2020) employs
+//! appearance progressively. (Lathuiliere et al. 2020) employs
 //! the local attention mechanism to select relevant information
 //! from multi-source human images for human image generation. RATE-Net (Yang et al. 2020) leverages an additional
 //! texture enhancing module to extract appearance information
@@ -161,7 +161,7 @@
 //! photo recapture system with two modules that complement
 //! each other from both intra-part and inter-part perspectives to
 //! easily transform their portraits to the desired posture.
-//! Several approaches adopt DensePose (Alp Güler,
+//! Several approaches adopt DensePose (Alp Guler,
 //! Neverova, and Kokkinos 2018), 3D pose (Li, Huang, and
 //! Loy 2019), or human parsing (Dong et al. 2018) to generate
 //! person images since they contain more information, e.g.,
@@ -221,20 +221,20 @@
 //!
 //! Appearance Transfer Block (AT-Block)
 //!
-//! As shown in Fig. 2, an AT-block takes as input the twostream feature maps Fs ∈ RC×H×W and Ft ∈ RC×H×W
-//! obtained from the previous block or the encoder and outputs their updated feature maps F0s ∈ RC×H×W and F0t ∈
-//! RC×H×W . Here C, H and W respectively denote the channels, height and width of a feature map, and the subscripts s
+//! As shown in Fig. 2, an AT-block takes as input the twostream feature maps Fs ∈ RCxHxW and Ft ∈ RCxHxW
+//! obtained from the previous block or the encoder and outputs their updated feature maps F0s ∈ RCxHxW and F0t ∈
+//! RCxHxW . Here C, H and W respectively denote the channels, height and width of a feature map, and the subscripts s
 //! and t respectively indicate the source and target streams. An
 //! AT-block consists of an AT-module and several two-stream
 //! feature fusion modules, which are detailed below.
 //! Appearance transfer module (AT-module). The
 //! pipeline of an AT-module is illustrated in Fig. 3. We first
 //! pass the two-stream feature maps Fs and Ft through
-//! convolutions and reshape the results as S ∈ RC×HW and
-//! T ∈ RC×HW , respectively. Then we feed them into 1 × 1
+//! convolutions and reshape the results as S ∈ RCxHW and
+//! T ∈ RCxHW , respectively. Then we feed them into 1 x 1
 //! convolution layers (implemented as matrix multiplications)
-//! to produce three matrices K ∈ RC̄×HW , V ∈ RĈ×HW and
-//! Q ∈ RC̄×HW :
+//! to produce three matrices K ∈ RCxHW , V ∈ RCxHW and
+//! Q ∈ RCxHW :
 //! K = Wk S
 //! V = Wv S
 //! Q = Wq T
@@ -243,8 +243,8 @@
 //! (2)
 //! (3)
 //!
-//! where Wk ,Wq ∈ RC̄×C , Wv ∈ RĈ×C are learnable
-//! weight matrices. We set C̄ = C/8, Ĉ = C/2 for mem-
+//! where Wk ,Wq ∈ RCxC , Wv ∈ RCxC are learnable
+//! weight matrices. We set C = C/8, C = C/2 for mem-
 //!
 //!
 //! --- PAGE BREAK ---
@@ -255,7 +255,7 @@
 //! a query respectively. Our AT-module means to match (target) queries to the (source) keys and then use the correspondence to transfer the relevant (source) values from the source
 //! stream to the target stream.
 //! To achieve this goal, we first obtain a correspondence map
-//! D ∈ RHW ×HW by applying a softmax normalization to
+//! D ∈ RHW xHW by applying a softmax normalization to
 //! each row of QT K:
 //! exp(QTi Kj )
 //! Dij = PHW
@@ -273,13 +273,13 @@
 //! transfer.
 //! Then we retrieve the value for the ith query as a linear
 //! combination of the columns of V weighted by the ith row
-//! of D. A matrix Wo ∈ RC×Ĉ is multiplied to the retrieved
+//! of D. A matrix Wo ∈ RCxC is multiplied to the retrieved
 //! values to increase their dimension:
 //! A = Wo VDT
 //!
 //! (5)
 //!
-//! where A ∈ RC×HW is the appearance information to be
+//! where A ∈ RCxHW is the appearance information to be
 //! transferred from the source stream to the target stream. During the query-and-transfer process, the source appearance
 //! is aligned with the target pose. Since the alignment is nonlocal, our AT-module can handle large pose transform.
 //! Not all content of the target image can be found in the
@@ -288,11 +288,11 @@
 //!
 //! source stream, we update A by multiplying it with a scale
 //! parameter and adding back the target stream T:
-//! A0 = σA + T
+//! A0 = \sigmaA + T
 //!
 //! (6)
 //!
-//! where σ is a learnable scalar.
+//! where \sigma is a learnable scalar.
 //! Two-stream feature fusion modules. As shown in Fig.
 //! 2, the features in the target stream are updated by fusing
 //! the features in the source stream and the transferred appearance. We also add a residual connection (He et al. 2016) to
@@ -308,32 +308,32 @@
 //! Loss Function
 //!
 //! The full loss function is:
-//! L = arg min max αg LGAN + α1 L1 + αp Lp
+//! L = arg min max \alphag LGAN + \alpha1 L1 + \alphap Lp
 //! G
 //!
 //! D
 //!
 //! (7)
 //!
-//! where LGAN , L1 and Lp respectively denote the adversarial loss, the `1 -norm loss and the perceptual loss, and αg ,
-//! α1 and αp represent their respective weights. L1 calculates
+//! where LGAN , L1 and Lp respectively denote the adversarial loss, the `1 -norm loss and the perceptual loss, and \alphag ,
+//! \alpha1 and \alphap represent their respective weights. L1 calculates
 //! the `1 -norm distance between the generated image It and the
-//! ground truth target image Igt : `1 = ||Igt −It ||1 . The perceptual loss Lp has been widely used for image generation and
+//! ground truth target image Igt : `1 = ||Igt -It ||1 . The perceptual loss Lp has been widely used for image generation and
 //! translation (Esser, Sutter, and Ommer 2018; Siarohin et al.
 //! 2018; Ledig et al. 2017; Johnson, Alahi, and Fei-Fei 2016)
 //! as it helps generate more realistic and smoother images. It is
 //! defined as:
 //! 1
-//! ||φρ (Igt ) − φρ (It )||1
+//! ||\phi\rho (Igt ) - \phi\rho (It )||1
 //! (8)
 //! Lp =
-//! Wρ Hρ Cρ
+//! W\rho H\rho C\rho
 //!
 //!
 //! --- PAGE BREAK ---
 //! Figure 4: Qualitative comparison on Market-1501 and DeepFashion.
-//! where φρ is the output of the conv1 2 layer from the VGG19 model (Simonyan and Zisserman 2014) pretrained on ImageNet (Russakovsky et al. 2015), and Wρ , Hρ , Cρ are the
-//! width, height and depth of φρ , respectively. We adopt the
+//! where \phi\rho is the output of the conv1 2 layer from the VGG19 model (Simonyan and Zisserman 2014) pretrained on ImageNet (Russakovsky et al. 2015), and W\rho , H\rho , C\rho are the
+//! width, height and depth of \phi\rho , respectively. We adopt the
 //! adversarial loss introduced in (Zhu et al. 2019). It consists
 //! of an appearance discriminator and a shape discriminator to
 //! determine the possibility that the generated image contains
@@ -349,7 +349,7 @@
 //! Datasets. We use two challenging person image datasets:
 //! Market-1501 (Zheng et al. 2015) and DeepFashion (Liu
 //! et al. 2016). The resolution of images in DeepFashion is
-//! higher (256 × 256) than images in Market-1501 (128 × 64).
+//! higher (256 x 256) than images in Market-1501 (128 x 64).
 //! We employ OpenPose (Cao et al. 2017) to detect human
 //! body joints. Both the source and target poses consist of an
 //! 18-channel heatmap encoding the positions of 18 human
@@ -368,11 +368,11 @@
 //! Implement details. Our method is implemented in PyTorch using two NVIDIA GeForce RTX 2080 Ti GPUs.
 //! The Adam optimizer (Kingma and Ba 2014) is adopted to
 //! train the proposed model for around 90k iterations with
-//! β1 = 0.5, β2 = 0.999. The learning rate is fixed as
+//! \beta1 = 0.5, \beta2 = 0.999. The learning rate is fixed as
 //! 0.0001 in the first 60k iterations and then linearly decayed
 //! to 0 in the last 30k iterations. We use 9 AT-blocks in
 //! the generator for both datasets. For the hyper-parameters,
-//! (αg ,α1 ,αp ) are set as (20, 17, 17) for DeepFashion and (20,
+//! (\alphag ,\alpha1 ,\alphap ) are set as (20, 17, 17) for DeepFashion and (20,
 //! 17, 17) for Market-1501, respectively. Instance normalization (Ulyanov, Vedaldi, and Lempitsky 2016) is applied for
 //! both datasets. The batch size is set as 7 for DeepFashion and
 //! 32 for Market-1501. Dropout (Hinton et al. 2012) is only
@@ -413,9 +413,9 @@
 //! 0.266
 //! 0.290
 //! 0.311
-//! −
+//! -
 //! 0.282
-//! −
+//! -
 //! 0.312
 //! 0.301
 //! 0.320
@@ -426,9 +426,9 @@
 //! 2.965
 //! 3.185
 //! 3.323
-//! −
+//! -
 //! 3.349
-//! −
+//! -
 //! 3.132
 //! 3.344
 //! 3.504
@@ -444,12 +444,12 @@
 //! 3.502
 //! 0.811
 //! 3.773
-//! −
-//! −
+//! -
+//! -
 //! 0.811
 //! 3.510
-//! −
-//! −
+//! -
+//! -
 //! 0.808
 //! 3.729
 //! 0.805
@@ -460,13 +460,13 @@
 //! 3.706
 //!
 //! PCKh
-//! −
+//! -
 //! 0.92
-//! −
+//! -
 //! 0.94
-//! −
-//! −
-//! −
+//! -
+//! -
+//! -
 //! 0.94
 //! 0.94
 //! 0.94
@@ -478,24 +478,24 @@
 //! PCKh
 //! 0.614
 //! 3.228
-//! −
+//! -
 //! 0.763 3.440
 //! 0.93
 //! 0.756
 //! 3.439
-//! −
+//! -
 //! 0.773
 //! 3.209
 //! 0.96
 //! 0.767
 //! 3.220
-//! −
-//! −
-//! −
-//! −
+//! -
+//! -
+//! -
+//! -
 //! 0.772
 //! 3.364
-//! −
+//! -
 //! 0.775
 //! 3.295
 //! 0.96
@@ -611,7 +611,7 @@
 //! 3.675
 //!
 //! Table 4: Ablation study on the two-stream feature fusion
-//! modules. “T” and “S” denote the target stream and source
+//! modules. "T" and "S" denote the target stream and source
 //! stream, respectively.
 //!
 //! results show the images generated by the full model look
@@ -620,8 +620,8 @@
 //! photo-realistic person images as it enables the network to
 //! perform non-local spatial manipulation.
 //! Effect of two-stream feature fusion modules. Qualitative and quantitative results are shown in Fig. 5 and Tab. 4.
-//! “T” and “S” denote the two fusion modules in the target
-//! stream and the source stream, respectively. “Cat” and “add”
+//! "T" and "S" denote the two fusion modules in the target
+//! stream and the source stream, respectively. "Cat" and "add"
 //! are short for concatenation and summation, respectively.
 //! The quantitative results in Tab. 4 indicate concatenation generally works better than summation for both fusion modules.
 //!
@@ -699,31 +699,31 @@
 //! References
 //! AlBahar, B.; and Huang, J.-B. 2019. Guided image-to-image
 //! translation with bi-directional feature transformation. In
-//! Proceedings of the IEEE International Conference on Computer Vision, 9016–9025.
-//! Alp Güler, R.; Neverova, N.; and Kokkinos, I. 2018. Densepose: Dense human pose estimation in the wild. In Proceedings of the IEEE Conference on Computer Vision and
-//! Pattern Recognition, 7297–7306.
+//! Proceedings of the IEEE International Conference on Computer Vision, 9016-9025.
+//! Alp Guler, R.; Neverova, N.; and Kokkinos, I. 2018. Densepose: Dense human pose estimation in the wild. In Proceedings of the IEEE Conference on Computer Vision and
+//! Pattern Recognition, 7297-7306.
 //! Cao, Z.; Simon, T.; Wei, S.-E.; and Sheikh, Y. 2017. Realtime multi-person 2d pose estimation using part affinity
 //! fields. In Proceedings of the IEEE conference on computer
-//! vision and pattern recognition, 7291–7299.
+//! vision and pattern recognition, 7291-7299.
 //! Cheng, J.; Dong, L.; and Lapata, M. 2016. Long shortterm memory-networks for machine reading. arXiv preprint
 //! arXiv:1601.06733 .
 //! Dong, H.; Liang, X.; Gong, K.; Lai, H.; Zhu, J.; and Yin,
 //! J. 2018. Soft-gated warping-gan for pose-guided person image synthesis. In Advances in neural information processing
-//! systems, 474–484.
+//! systems, 474-484.
 //! Esser, P.; Sutter, E.; and Ommer, B. 2018. A variational
 //! u-net for conditional appearance and shape generation. In
 //! Proceedings of the IEEE Conference on Computer Vision
-//! and Pattern Recognition, 8857–8866.
+//! and Pattern Recognition, 8857-8866.
 //! Gao, C.; Liu, S.; He, R.; Yan, S.; and Li, B. 2020. Recapture
 //! as You Want. arXiv preprint arXiv:2006.01435 .
 //! Goodfellow, I.; Pouget-Abadie, J.; Mirza, M.; Xu, B.;
 //! Warde-Farley, D.; Ozair, S.; Courville, A.; and Bengio, Y.
 //! 2014. Generative adversarial nets. In Advances in neural
-//! information processing systems, 2672–2680.
+//! information processing systems, 2672-2680.
 //! Han, X.; Hu, X.; Huang, W.; and Scott, M. R. 2019. Clothflow: A flow-based model for clothed person generation. In
-//! Proceedings of the IEEE International Conference on Computer Vision, 10471–10480.
+//! Proceedings of the IEEE International Conference on Computer Vision, 10471-10480.
 //! He, K.; Zhang, X.; Ren, S.; and Sun, J. 2016. Deep residual learning for image recognition. In Proceedings of the
-//! IEEE conference on computer vision and pattern recognition, 770–778.
+//! IEEE conference on computer vision and pattern recognition, 770-778.
 //! Hinton, G. E.; Srivastava, N.; Krizhevsky, A.; Sutskever, I.;
 //! and Salakhutdinov, R. R. 2012. Improving neural networks
 //! by preventing co-adaptation of feature detectors. arXiv
@@ -733,48 +733,48 @@
 //! arXiv:2007.09077 .
 //! Isola, P.; Zhu, J.-Y.; Zhou, T.; and Efros, A. A. 2017. Imageto-image translation with conditional adversarial networks.
 //! In Proceedings of the IEEE conference on computer vision
-//! and pattern recognition, 1125–1134.
+//! and pattern recognition, 1125-1134.
 //! Johnson, J.; Alahi, A.; and Fei-Fei, L. 2016. Perceptual losses for real-time style transfer and super-resolution.
-//! In European conference on computer vision, 694–711.
+//! In European conference on computer vision, 694-711.
 //! Springer.
 //!
 //! Kingma, D. P.; and Ba, J. 2014. Adam: A method for
 //! stochastic optimization. arXiv preprint arXiv:1412.6980 .
 //! Kingma, D. P.; and Welling, M. 2013. Auto-encoding variational bayes. arXiv preprint arXiv:1312.6114 .
-//! Lathuilière, S.; Sangineto, E.; Siarohin, A.; and Sebe, N.
-//! 2020. Attention-based Fusion for Multi-source Human Image Generation. In The IEEE Winter Conference on Applications of Computer Vision, 439–448.
+//! Lathuiliere, S.; Sangineto, E.; Siarohin, A.; and Sebe, N.
+//! 2020. Attention-based Fusion for Multi-source Human Image Generation. In The IEEE Winter Conference on Applications of Computer Vision, 439-448.
 //! LeCun, Y.; Bottou, L.; Bengio, Y.; and Haffner, P. 1998.
 //! Gradient-based learning applied to document recognition.
-//! Proceedings of the IEEE 86(11): 2278–2324.
-//! Ledig, C.; Theis, L.; Huszár, F.; Caballero, J.; Cunningham,
+//! Proceedings of the IEEE 86(11): 2278-2324.
+//! Ledig, C.; Theis, L.; Huszar, F.; Caballero, J.; Cunningham,
 //! A.; Acosta, A.; Aitken, A.; Tejani, A.; Totz, J.; Wang, Z.;
 //! et al. 2017. Photo-realistic single image super-resolution using a generative adversarial network. In Proceedings of the
-//! IEEE conference on computer vision and pattern recognition, 4681–4690.
+//! IEEE conference on computer vision and pattern recognition, 4681-4690.
 //! Li, Y.; Huang, C.; and Loy, C. C. 2019. Dense intrinsic appearance flow for human pose transfer. In Proceedings of the
-//! IEEE Conference on Computer Vision and Pattern Recognition, 3693–3702.
+//! IEEE Conference on Computer Vision and Pattern Recognition, 3693-3702.
 //! Liu, W.; Piao, Z.; Min, J.; Luo, W.; Ma, L.; and Gao, S.
 //! 2019. Liquid warping GAN: A unified framework for human motion imitation, appearance transfer and novel view
-//! synthesis. In Proceedings of the IEEE International Conference on Computer Vision, 5904–5913.
+//! synthesis. In Proceedings of the IEEE International Conference on Computer Vision, 5904-5913.
 //! Liu, Z.; Luo, P.; Qiu, S.; Wang, X.; and Tang, X. 2016. Deepfashion: Powering robust clothes recognition and retrieval
-//! with rich annotations. In Proceedings of the IEEE conference on computer vision and pattern recognition, 1096–
+//! with rich annotations. In Proceedings of the IEEE conference on computer vision and pattern recognition, 1096-
 //! 1104.
 //! Ma, L.; Jia, X.; Sun, Q.; Schiele, B.; Tuytelaars, T.; and
 //! Van Gool, L. 2017. Pose guided person image generation.
-//! In Advances in neural information processing systems, 406–
+//! In Advances in neural information processing systems, 406-
 //! 416.
 //! Ma, L.; Sun, Q.; Georgoulis, S.; Van Gool, L.; Schiele, B.;
 //! and Fritz, M. 2018. Disentangled person image generation.
 //! In Proceedings of the IEEE Conference on Computer Vision
-//! and Pattern Recognition, 99–108.
+//! and Pattern Recognition, 99-108.
 //! Maas, A. L.; Hannun, A. Y.; and Ng, A. Y. 2013. Rectifier
 //! nonlinearities improve neural network acoustic models. In
 //! Proc. icml, volume 30, 3.
 //! Men, Y.; Mao, Y.; Jiang, Y.; Ma, W.-Y.; and Lian, Z.
-//! 2020. Controllable person image synthesis with attributedecomposed gan. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, 5084–
+//! 2020. Controllable person image synthesis with attributedecomposed gan. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, 5084-
 //! 5093.
 //! Mirza, M.; and Osindero, S. 2014. Conditional generative
 //! adversarial nets. arXiv preprint arXiv:1411.1784 .
-//! Parikh, A. P.; Täckström, O.; Das, D.; and Uszkoreit, J.
+//! Parikh, A. P.; Tackstrom, O.; Das, D.; and Uszkoreit, J.
 //! 2016. A decomposable attention model for natural language
 //! inference. arXiv preprint arXiv:1606.01933 .
 //! Parmar, N.; Vaswani, A.; Uszkoreit, J.; Kaiser, Ł.; Shazeer,
@@ -786,60 +786,60 @@
 //! Qian, X.; Fu, Y.; Xiang, T.; Wang, W.; Qiu, J.; Wu, Y.; Jiang,
 //! Y.-G.; and Xue, X. 2018. Pose-normalized image generation
 //! for person re-identification. In Proceedings of the European
-//! conference on computer vision (ECCV), 650–667.
+//! conference on computer vision (ECCV), 650-667.
 //! Ren, Y.; Yu, X.; Chen, J.; Li, T. H.; and Li, G. 2020. Deep
 //! image spatial transformation for person image generation.
 //! In Proceedings of the IEEE/CVF Conference on Computer
-//! Vision and Pattern Recognition, 7690–7699.
+//! Vision and Pattern Recognition, 7690-7699.
 //! Ronneberger, O.; Fischer, P.; and Brox, T. 2015. U-net: Convolutional networks for biomedical image segmentation. In
 //! International Conference on Medical image computing and
-//! computer-assisted intervention, 234–241. Springer.
+//! computer-assisted intervention, 234-241. Springer.
 //! Russakovsky, O.; Deng, J.; Su, H.; Krause, J.; Satheesh, S.;
 //! Ma, S.; Huang, Z.; Karpathy, A.; Khosla, A.; Bernstein, M.;
-//! et al. 2015. Imagenet large scale visual recognition challenge. International journal of computer vision 115(3): 211–
+//! et al. 2015. Imagenet large scale visual recognition challenge. International journal of computer vision 115(3): 211-
 //! 252.
-//! Salimans, T.; Goodfellow, I.; Zaremba, W.; Cheung, V.; Radford, A.; and Chen, X. 2016. Improved techniques for training gans. In Advances in neural information processing systems, 2234–2242.
+//! Salimans, T.; Goodfellow, I.; Zaremba, W.; Cheung, V.; Radford, A.; and Chen, X. 2016. Improved techniques for training gans. In Advances in neural information processing systems, 2234-2242.
 //! Siarohin, A.; Sangineto, E.; Lathuiliere, S.; and Sebe, N.
 //! 2018. Deformable gans for pose-based human image generation. In Proceedings of the IEEE Conference on Computer
-//! Vision and Pattern Recognition, 3408–3416.
+//! Vision and Pattern Recognition, 3408-3416.
 //! Simonyan, K.; and Zisserman, A. 2014. Very deep convolutional networks for large-scale image recognition. arXiv
 //! preprint arXiv:1409.1556 .
 //! Tang, H.; Xu, D.; Liu, G.; Wang, W.; Sebe, N.; and Yan,
 //! Y. 2019. Cycle in cycle generative adversarial networks for
 //! keypoint-guided image generation. In Proceedings of the
-//! 27th ACM International Conference on Multimedia, 2052–
+//! 27th ACM International Conference on Multimedia, 2052-
 //! 2060.
 //! Ulyanov, D.; Vedaldi, A.; and Lempitsky, V. 2016. Instance
 //! normalization: The missing ingredient for fast stylization.
 //! arXiv preprint arXiv:1607.08022 .
 //! Vaswani, A.; Shazeer, N.; Parmar, N.; Uszkoreit, J.; Jones,
 //! L.; Gomez, A. N.; Kaiser, Ł.; and Polosukhin, I. 2017. Attention is all you need. In Advances in neural information
-//! processing systems, 5998–6008.
-//! Wang, X.; Girshick, R.; Gupta, A.; and He, K. 2018. Nonlocal neural networks. In Proceedings of the IEEE conference on computer vision and pattern recognition, 7794–
+//! processing systems, 5998-6008.
+//! Wang, X.; Girshick, R.; Gupta, A.; and He, K. 2018. Nonlocal neural networks. In Proceedings of the IEEE conference on computer vision and pattern recognition, 7794-
 //! 7803.
 //! Wang, Z.; Bovik, A. C.; Sheikh, H. R.; and Simoncelli, E. P.
 //! 2004. Image quality assessment: from error visibility to
-//! structural similarity. IEEE transactions on image processing 13(4): 600–612.
+//! structural similarity. IEEE transactions on image processing 13(4): 600-612.
 //! Yang, C.; Wang, Z.; Zhu, X.; Huang, C.; Shi, J.; and Lin, D.
 //! 2018. Pose guided human video generation. In Proceedings
 //! of the European Conference on Computer Vision (ECCV),
-//! 201–216.
+//! 201-216.
 //! Yang, L.; Wang, P.; Zhang, X.; Wang, S.; Gao, Z.; Ren,
 //! P.; Xie, X.; Ma, S.; and Gao, W. 2020. Region-adaptive
 //!
 //! texture enhancement for detailed person image synthesis.
 //! In 2020 IEEE International Conference on Multimedia and
-//! Expo (ICME), 1–6. IEEE.
+//! Expo (ICME), 1-6. IEEE.
 //! Zhang, H.; Goodfellow, I.; Metaxas, D.; and Odena, A.
-//! 2019. Self-attention generative adversarial networks. In International Conference on Machine Learning, 7354–7363.
+//! 2019. Self-attention generative adversarial networks. In International Conference on Machine Learning, 7354-7363.
 //! Zheng, L.; Shen, L.; Tian, L.; Wang, S.; Wang, J.; and Tian,
 //! Q. 2015. Scalable person re-identification: A benchmark. In
-//! Proceedings of the IEEE international conference on computer vision, 1116–1124.
+//! Proceedings of the IEEE international conference on computer vision, 1116-1124.
 //! Zhu, J.-Y.; Park, T.; Isola, P.; and Efros, A. A. 2017. Unpaired image-to-image translation using cycle-consistent adversarial networks. In Proceedings of the IEEE international
-//! conference on computer vision, 2223–2232.
+//! conference on computer vision, 2223-2232.
 //! Zhu, Z.; Huang, T.; Shi, B.; Yu, M.; Wang, B.; and Bai, X.
 //! 2019. Progressive pose attention transfer for person image
-//! generation. In Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition, 2347–2356.
+//! generation. In Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition, 2347-2356.
 //!
 //!
 //! --- PAGE BREAK ---

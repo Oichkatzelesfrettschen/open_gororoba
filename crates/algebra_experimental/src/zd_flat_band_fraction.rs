@@ -188,7 +188,7 @@ mod tests {
         
         assert_eq!(n, 84, "Sedenions must have exactly 84 primitive ZD 2-blades");
         assert!((fbf - 0.5).abs() < 1e-6, "FBF must be exactly 1/2 for 16D");
-        println!("✅ 16D Topological Flat Band Proven");
+        println!("<EMOJI+2705> 16D Topological Flat Band Proven");
     }
 
     #[test]
@@ -204,7 +204,7 @@ mod tests {
         // This is the true mathematical manifestation of the "Pathion Cubic Anomaly".
         assert_eq!(n, 588, "Pathions must have exactly 588 primitive ZD 2-blades");
         assert!((fbf - (4.0 / 7.0)).abs() < 1e-6, "FBF is exactly 4/7 for 32D! (Pathion Anomaly)");
-        println!("✅ 32D Pathion Anomaly Proven: FBF jumps from 1/2 to 4/7!");
+        println!("<EMOJI+2705> 32D Pathion Anomaly Proven: FBF jumps from 1/2 to 4/7!");
     }
 
     #[test]
@@ -218,6 +218,6 @@ mod tests {
         println!("Flat Band Fraction (FBF): {:.4}", fbf);
         
         assert!(n > 588, "Chingon ZD graph must be larger than Pathion");
-        println!("✅ 64D Chingon FBF evaluated successfully: {} / {} = {:.4}", nullity, n, fbf);
+        println!("<EMOJI+2705> 64D Chingon FBF evaluated successfully: {} / {} = {:.4}", nullity, n, fbf);
     }
 }

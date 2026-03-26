@@ -321,7 +321,7 @@
 //! the zeros of the k-th Hermite polynomial H
 //! pk (−u) = 0
 //! with u denoting the scaled distance from l− (k) (see
-//! inset of Fig. 1 (c)). Finally, in the limit where k  1,
+//! inset of Fig. 1 (c)). Finally, in the limit where k  1,
 //! the edge profile approaches a nontrivial limiting form,
 //! which we compute exactly. Interestingly, the same limiting form has appeared in completely different problems,
 //! such as in a propagating one-dimensional fermionic front
@@ -496,8 +496,8 @@
 //! = 2k ∗ + (1 − ν 2 )γ < µ and
 //! ∗
 //! Ek∗ +1,l? =
-//! + 2 + (1 − ν 2 )γ > µ which yields
-//!  2k
+//! + 2 + (1 − ν 2 )γ > µ which yields
+//!  2k
 //! √
 //! µ− (1−ν 2 )γ
 //! k ∗ = Int
@@ -555,7 +555,7 @@
 //! the Fermi level includes n bands below it. For instance,
 //! c1 (M ) and c2 (M ) can be explicitly computed (see
 //! Appendix C for details) and are plotted in Fig. 1 a), e.g.,
-//! 2
+//! 2
 //! c1 (M ) = (1/M ) M 2 /16 − 1 Θ(M − 4) where Θ(x) is
 //! the Heaviside step function.
 //!
@@ -678,7 +678,7 @@
 //! FIG. 3. Density profile in Eq. (14) for M = 5 plotted as a
 //! function of the scaled distance s [49] for increasing values of
 //! t = 1, 10, 15 and 25. As t increases, the scaled density approaches the constant value 1 for |s| < v1 t and decays rapidly
-//! to 0 for |s| > v1 t. For t  1, the forward and backward fronts
+//! to 0 for |s| > v1 t. For t  1, the forward and backward fronts
 //! separating the constant density 1/π and the zero-density outside move ballistically in opposite directions with a constant
 //! speed v1 .
 //!
@@ -783,15 +783,15 @@
 //! √
 //! to the√two endpoints u ≈ ± 2k. For example, setting
 //! u = − 2k + √2kw1/6 with w = O(1)
-//! 
-//! 
+//! 
+//! 
 //! √
 //! w
 //! lim k 1/3 π fkedge − 2k + √
 //! = F(w) (13)
 //! k→∞
 //! 2k 1/6
-//! 
+//! 
 //! where F(w) = [Ai0 (−w)]2 + wAi2 (−w) where Ai(z) denotes the Airy function. Interestingly, the same scaling
 //! function describes the tail of the density of eigenvalues
 //! (centered and scaled) in the Gaussian Unitary Ensemble
@@ -824,7 +824,7 @@
 //! +
 //! c1 M by a small
 //! √
-//! amount δ: µ = 2 + c1 M + δ where δ  1. As k ∗ jumps
+//! amount δ: µ = 2 + c1 M + δ where δ  1. As k ∗ jumps
 //! from 0 to 1, we find that the additional macroscopic density in the
 //! layer appears
 //! region
@@ -842,8 +842,8 @@
 //! appears at zc = (c1 /M )1/4 . Here, we give a scaling description of this density in the second layer justpafter its
 //! c1
 //! appearance, i.e., in the limit δ → 0. Let z 2 = M
-//! + ,
-//! where  measures the distance from the center of the second layer. We analyse Eq. (7) with k = 1 by replacing,
+//! + ,
+//! where  measures the distance from the center of the second layer. We analyse Eq. (7) with k = 1 by replacing,
 //! for large N , the sum by an integral and evaluating it by
 //! the saddle point method (see Appendix F for details).
 //! This leads to the following density profile of the droplet
@@ -860,7 +860,7 @@
 //! p the complementary error function.
 //! measured
 //! from
-//!  N/2(M/c1 )1/4 is the scaled distance
+//!  N/2(M/c1 )1/4 is the scaled distance
 //! p
 //! √
 //! the center of the droplet, while t = N/2(M/c1 )1/4 δ
@@ -936,8 +936,8 @@
 //! --- PAGE BREAK ---
 //! 6
 //! In polar coordinates (r, θ), the Hamiltonian reads,
-//! 
-//! 
+//! 
+//! 
 //! 1
 //! γ
 //! 1
@@ -968,7 +968,7 @@
 //! "
 //!
 //! #
-//! 
+//! 
 //! 2
 //! γ
 //! +
@@ -986,8 +986,8 @@
 //! which gives us,
 //! "
 //! #
-//! 
-//! 
+//! 
+//! 
 //! 2
 //! 1
 //! 1
@@ -1013,7 +1013,7 @@
 //! −
 //! 2
 //!
-//! 
+//! 
 //!
 //! It is then easy to see that G(z) satisfies the differential
 //! equation
@@ -1087,9 +1087,9 @@
 //! √ 2
 //! 2
 //! ψ(r) = e−ωr /2 r γ+l ×
-//! 
+//! 
 //! A1 (ω r2 )1−b M (a − b + 1, 2 − b, ω r2 )
-//! 
+//! 
 //! + A2 M (a, b, ω r2 ) ,
 //! (A14)
 //! where a and b are given in Eq. A10.
@@ -1664,8 +1664,8 @@
 //! get the first critical line c = c1 (M ) in the (M, c) plane
 //! [see Fig. 6],
 //! 
-//! 2
-//! 
+//! 2
+//! 
 //! 
 //! 1 M2
 //! 
@@ -1700,8 +1700,8 @@
 //! discussed before. The upper limit gives a new√critical
 //! line c = c2 (M ) obtained by substituting µ = 4 + cM in
 //! Eq. B20 with k ∗ = 1, i.e.,
-//! q
-//! 
+//! q
+//! 
 //! q
 //! √
 //! √
@@ -1889,7 +1889,7 @@
 //!
 //! (E1)
 //!
-//! Approximating the Gamma function in Eq. D4 by the
+//! Approximating the Gamma function in Eq. D4 by the
 //! √
 //! 1
 //! Stirling formula Γ(z√+ 1) ∼ 2π e z+ 2 log(z)−z for large
@@ -1997,8 +1997,8 @@
 //! total density is obtained by summing over all the bands
 //! below the Fermi energy and is given by its large N scaling
 //! form,
-//! 
-//! 
+//! 
+//! 
 //! r
 //! ρ(r, θ, N ) ∼ f √
 //! ,
@@ -2263,8 +2263,8 @@
 //! N
 //! 2λ− (k)
 //!
-//!  2
-//! 
+//!  2
+//! 
 //! r
 //! − λ− (k) .
 //! N
@@ -2299,7 +2299,7 @@
 //! fkedge (u) and Hermite polynomials naturally points to
 //! a possible connection to RMT, which we elucidate below.
 //! 3. Edge density in the limit of high Landau levels
-//! (k  1) and connection to Random Matrix Theory
+//! (k  1) and connection to Random Matrix Theory
 //!
 //! It turns out that as k → ∞, the edge profile fkedge (u)
 //! given in Eq. E13, property shifted and scaled, has a nice
@@ -2322,7 +2322,7 @@
 //! π Γ(k + 1) 0
 //!
 //! We can now use the Plancherel-Rotach asymptotic formula for Hermite polynomials,
-//!  1/4
+//!  1/4
 //! √
 //! 2
 //! 2k/2
@@ -2332,8 +2332,8 @@
 //! k −1/4 (k!)1/2 ×
 //! π
 //! (1 − X 2 )1/4
-//! 
-//!  
+//! 
+//!  
 //! 1
 //! gk (X) 1 + O
 //! , −1 < X < 1
@@ -2343,8 +2343,8 @@
 //! (E16)
 //!
 //! with
-//!  p
-//! 
+//!  p
+//! 
 //! gk (X) = cos kX 1 − X 2 + (k + 1/2) sin−1 X − kπ/2
 //! (E18)
 //!
@@ -2503,9 +2503,9 @@
 //! 
 //! 
 //! 
-//! 
+//! 
 //! √
-//! 1 π
+//! 1 π
 //! edge
 //! −1
 //! lim fk (u = 2k y) =
@@ -2564,7 +2564,7 @@
 //!
 //! 0.8
 //!
-//! where δ  1. Inserting this value of µ in Eq. B20 and
+//! where δ  1. Inserting this value of µ in Eq. B20 and
 //! expanding for small δ gives a relation between ∆ and δ
 //!
 //! <latexit
@@ -2661,7 +2661,7 @@
 //! 1
 //! [Ai0 (−w)]2
 //! π
-//! 
+//! 
 //! + wAi2 (−w)
 //! (E23)
 //!
@@ -2683,7 +2683,7 @@
 //! the first layer. In this subsection, we describe the density profile of this emerging blob in the second layer for
 //! c slightly below c1 for fixed 4 < M < 12 (see Fig. 6),
 //! where c1 is given in Eq. C2. We therefore set
-//! c = c1 − ∆ where 0 < ∆  1 .
+//! c = c1 − ∆ where 0 < ∆  1 .
 //!
 //! (F1)
 //!
@@ -2703,8 +2703,8 @@
 //! When k ∗ increases from 0 to 1, the additional density in
 //! the second layer is given by,
 //! √ 2
-//!  √
-//! 2
+//!  √
+//! 2
 //! l+ (1)
 //! 2
 //! e−r X
@@ -2720,8 +2720,8 @@
 //! 2k + √2kw1/6
 //!
 //! with w = O(1)
-//! 
-//! 
+//! 
+//! 
 //! √
 //! w
 //! 1
@@ -2748,8 +2748,8 @@
 //!
 //! We can rewrite Eq. F6 using Eq. F2 (to leading order in
 //! δ for small δ) as,
-//! 
-//! r
+//! 
+//! r
 //! √
 //! c1
 //! ± v1 δ
@@ -2791,12 +2791,12 @@
 //! c1
 //! 2
 //! z =
-//! +,
+//! +,
 //! (F10)
 //! M
-//! where  is proportional to the distance from the center
+//! where  is proportional to the distance from the center
 //! of the second layer. Thus the density is just a function
-//! of  and δ in the vicinity of the critical line c = c1 (M )
+//! of  and δ in the vicinity of the critical line c = c1 (M )
 //!
 //!
 //! --- PAGE BREAK ---
@@ -2840,7 +2840,7 @@
 //! dx
 //! λ−
 //!
-//! 2
+//! 2
 //! r2N x
 //! N x − r2
 //! Γ(N x + 2)
@@ -2863,7 +2863,7 @@
 //!
 //! p c1
 //! We now substitute z 2 = M
-//! +  from Eq. F10 and make
+//! +  from Eq. F10 and make
 //! p
 //! the change of variable x =
 //! c1 /M + v. Since |v| <
@@ -2874,7 +2874,7 @@
 //! ρ1 (r = z N , θ, N ) ≈ √
 //! π 2πN
 //!
-//! 
+//! 
 //!
 //! M
 //! c1
@@ -2899,27 +2899,27 @@
 //! N
 //! 2
 //!
-//! 
+//! 
 //!
 //! M
 //! c1
 //!
-//! 1/4
+//! 1/4
 //!
 //! √
-//! (±v1 δ − ) .
+//! (±v1 δ − ) .
 //!
 //! √
 //! v1 δ, we can expand the integrand for small v and retain
 //! only up to O(v 2 ) terms inside the exponential. After
 //! straightforward algebra, one obtains,
 //!
-//! 3/4 Z +v1 √δ
+//! 3/4 Z +v1 √δ
 //!
 //! In order that this√integral√ is of order√O(1), we see that
-//! we need to scale δ ∼ t/ N ,  ∼ s/ N where t > 0 as
+//! we need to scale δ ∼ t/ N ,  ∼ s/ N where t > 0 as
 //! well as s are both of order O(1). Making the change of
-//! variable w̃ = [N /2]1/2 (M/c1 )1/4 (v − ) in Eq. F13, we
+//! variable w̃ = [N /2]1/2 (M/c1 )1/4 (v − ) in Eq. F13, we
 //! get,
 //!
 //! (F15)
@@ -2927,22 +2927,22 @@
 //! In order that the integral remains
 //! √ of order O(1) in the
 //! large √
-//! N limit, we see that both δ and  should scale as
+//! N limit, we see that both δ and  should scale as
 //! O(1/ N ). We therefore set,
-//! r  
-//! r  
+//! r  
+//! r  
 //! √
 //! 2 c1 1/4
 //! 2 c1 1/4
 //! δ=
-//! t and  =
+//! t and  =
 //! s,
 //! N M
 //! N M
 //! (F16)
 //! where t and s are both of order O(1). Therefore, the
 //! density in the large N limit, a function of the original
-//! variables  and δ, can be re-paramaterized in terms of
+//! variables  and δ, can be re-paramaterized in terms of
 //!
 //! (F12)
 //!
@@ -2957,9 +2957,9 @@
 //! pM
 //!
 //! 2
-//! 4c1 (v−)
+//! 4c1 (v−)
 //!
-//! N 2 (v − )2 .
+//! N 2 (v − )2 .
 //!
 //! (F13)
 //!
@@ -2974,8 +2974,8 @@
 //! √
 //!
 //! where v1 = M2 (c1 M )1/4 and
-//! 
-//! 
+//! 
+//! 
 //! Z z
 //! 2
 //! 2
@@ -2998,8 +2998,8 @@
 //! first relation can be obtained by eliminating δ between
 //! Eqs. F3 and F16
 //! √
-//! 
-//! 1/4
+//! 
+//! 1/4
 //! √
 //! M
 //! 64 2
@@ -3011,11 +3011,11 @@
 //! (M − 16)
 //! Similarlyp
 //! the second relation is obtained by substituting
-//!  = z 2 − c1 /M in Eq. F16. This gives
-//! 
-//! 1/4 
+//!  = z 2 − c1 /M in Eq. F16. This gives
+//! 
+//! 1/4 
 //! M
-//! c1  √
+//! c1  √
 //! s=
 //! z2 −
 //! N,
@@ -3031,7 +3031,7 @@
 //! Interestingly, the scaled density profile in Eq. F17 has
 //! an interesting traveling front structure. To see this, we
 //! consider the density as a function of s, for a fixed t. The
-//! density decays to 0 very rapidly as |s|  v1 t (see Fig.
+//! density decays to 0 very rapidly as |s|  v1 t (see Fig.
 //! 10). Therefore the two edges of this profile move “ballistically” with increasing t with a “speed” given by v1 . If
 //! we interpret t as a “time”, then at late times, the density
 //! profile develops a traveling front structure with velocity

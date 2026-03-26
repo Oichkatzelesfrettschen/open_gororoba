@@ -6,7 +6,7 @@
 //!
 //! ## Workflow Design Philosophy
 //!
-//! ### ✅ What We Do
+//! ### <EMOJI+2705> What We Do
 //!
 //! 1. **Single Unified Workflow** - One `ci.yml` file instead of multiple scattered workflows
 //! 2. **Fast-Fail Quality Checks** - Code quality issues caught immediately before expensive tests
@@ -16,7 +16,7 @@
 //! 6. **Clear Failure Modes** - No silent failures with `|| true`
 //! 7. **Artifact Retention** - Security reports, coverage, and build artifacts properly stored
 //!
-//! ### ❌ What We Avoid
+//! ### <EMOJI+274C> What We Avoid
 //!
 //! 1. **Multiple Redundant Workflows** - No separate workflows for each task
 //! 2. **Duplicate Dependency Installation** - Share cache across jobs
@@ -91,7 +91,7 @@
 //! - Reports on all job results
 //! - Fails if any critical job fails
 //! - Security is informational (can continue-on-error)
-//! - Provides clear ✅/❌ status
+//! - Provides clear <EMOJI+2705>/<EMOJI+274C> status
 //!
 //! ## Configuration Details
 //!
@@ -117,10 +117,10 @@
 //! ```ignore
 //!
 //! **Single version (3.11)** chosen for:
-//! - ✅ Latest stable with best performance
-//! - ✅ Fastest CI execution (no matrix overhead)
-//! - ✅ 99% of users on 3.10+ anyway
-//! - ✅ Can expand matrix if needed
+//! - <EMOJI+2705> Latest stable with best performance
+//! - <EMOJI+2705> Fastest CI execution (no matrix overhead)
+//! - <EMOJI+2705> 99% of users on 3.10+ anyway
+//! - <EMOJI+2705> Can expand matrix if needed
 //!
 //! **When to add matrix:**
 //! - Supporting enterprise environments stuck on 3.9
@@ -154,7 +154,7 @@
 //! ```ignore
 //! ├── 5 separate jobs (all parallel)
 //! ├── 15 dependency installations (3 duplicated per job)
-//! ├── Matrix: 3 Python versions × tests = 3 test runs
+//! ├── Matrix: 3 Python versions x tests = 3 test runs
 //! ├── No job dependencies
 //! ├── Bandit run twice (redundant)
 //! ├── `|| true` silencing failures
@@ -181,11 +181,11 @@
 //! ```ignore
 //!
 //! **Benefits:**
-//! - ✅ 20-40% faster execution
-//! - ✅ Clear failure points
-//! - ✅ No redundant work
-//! - ✅ Proper dependencies
-//! - ✅ Single status check for PRs
+//! - <EMOJI+2705> 20-40% faster execution
+//! - <EMOJI+2705> Clear failure points
+//! - <EMOJI+2705> No redundant work
+//! - <EMOJI+2705> Proper dependencies
+//! - <EMOJI+2705> Single status check for PRs
 //!
 //! ## Usage
 //!
@@ -279,14 +279,14 @@
 //!
 //! ## Best Practices Implemented
 //!
-//! ✅ **Fail Fast** - Quality checks before expensive tests  
-//! ✅ **Cache Dependencies** - Pip cache for faster installs  
-//! ✅ **Artifact Retention** - Keep reports for debugging  
-//! ✅ **Continue on Error** - Non-critical checks don't block  
-//! ✅ **Clear Naming** - Job names match their purpose  
-//! ✅ **Minimal Matrix** - Only test what's necessary  
-//! ✅ **Status Summary** - Single check for PR status  
-//! ✅ **Retention Policies** - Balance storage vs usefulness  
+//! <EMOJI+2705> **Fail Fast** - Quality checks before expensive tests  
+//! <EMOJI+2705> **Cache Dependencies** - Pip cache for faster installs  
+//! <EMOJI+2705> **Artifact Retention** - Keep reports for debugging  
+//! <EMOJI+2705> **Continue on Error** - Non-critical checks don't block  
+//! <EMOJI+2705> **Clear Naming** - Job names match their purpose  
+//! <EMOJI+2705> **Minimal Matrix** - Only test what's necessary  
+//! <EMOJI+2705> **Status Summary** - Single check for PR status  
+//! <EMOJI+2705> **Retention Policies** - Balance storage vs usefulness  
 //!
 //! ## Metrics
 //!

@@ -1,4 +1,4 @@
-//! # TODOWRITE — Lambda Workspace Consolidation Ledger
+//! # TODOWRITE -- Lambda Workspace Consolidation Ledger
 //!
 //! Status legend: [ ] not started, [~] in progress, [x] done
 //!
@@ -16,7 +16,7 @@
 //! 7. [x] Generate baseline TODO/FIXME extraction and per-module counts for source control visibility (owner: Codex; done).
 //! 8. [x] Reconcile roadmaps from child repos into `ROADMAP_SYNTHESIS.md` and preserve provenance links (owner: Codex).
 //! 9. [x] Build `MODULE_REQUIREMENTS_MATRIX.md` and keep it synced (owner: Codex).
-//! 10. [x] Standardize each module’s `requirements.md` structure and cross-link to authoritative sources (owner: Codex; done: 2026-02-13).
+//! 10. [x] Standardize each module's `requirements.md` structure and cross-link to authoritative sources (owner: Codex; done: 2026-02-13).
 //! 11. [x] Audit and harmonize license files to a common `GPL-2.0-only` target (owner: Codex; decision: final harmonization applied across all target repos).
 //! 12. [x] Define workspace quality policy where TODO/FIXME, warnings, and unverified claims are tracked as blocking risks (owner: Codex; policy in `docs/QUALITY_POLICY.md`).
 //! 13. [x] Draft unified backup + restore playbook with checksums and timestamps (owner: Codex).

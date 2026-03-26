@@ -44,7 +44,7 @@ use verified_core::{
 // Simulating thermal noise effects on the algebraic vacuum attractor
 // By injecting an effective "temperature" (T) that broadens the topological friction well
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    println!("🌌 Initializing Hyperdimensional Thermal Phase Diagram Sweep...");
+    println!("<EMOJI+1F30C> Initializing Hyperdimensional Thermal Phase Diagram Sweep...");
     println!("   Probing Topo-Thermal Unlocking across dimensions up to D = 10^9");
 
     let steps = 5000;
@@ -76,7 +76,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     for &dim in &dimensions {
         println!("===================================================");
-        println!("🔥 Sweeping Manifold Dimension: {}", dim);
+        println!("<EMOJI+1F525> Sweeping Manifold Dimension: {}", dim);
 
         for &t in &temperatures {
             let mut max_action = f64::NEG_INFINITY;
@@ -135,7 +135,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     println!(
-        "✅ Phase Diagram complete. Data written to {}",
+        "<EMOJI+2705> Phase Diagram complete. Data written to {}",
         out_path.display()
     );
     Ok(())

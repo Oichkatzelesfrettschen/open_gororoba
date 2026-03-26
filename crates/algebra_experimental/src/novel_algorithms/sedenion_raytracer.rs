@@ -5,7 +5,7 @@
 //! a manifold that contains Zero-Divisor (ZD) singularities.
 //!
 //! When a ray enters a ZD region, its momentum tensor undergoes non-associative
-//! fracturing—the light path splits deterministically based on the failure of
+//! fracturing--the light path splits deterministically based on the failure of
 //! the alternative property.
 
 use cd_kernel::cayley_dickson::cd_multiply;

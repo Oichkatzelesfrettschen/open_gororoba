@@ -68,7 +68,7 @@ fn main() -> Result<()> {
     let mut associator_data: Vec<(f64, f64, f64, String)> = Vec::new(); // (r_au, lat_deg, associator, mission)
 
     println!("[1/2] Computing Takens associators with 3D (r, lat) awareness...");
-    for ((mission, product), rows) in mission_groups {
+    for ((mission, _product), rows) in mission_groups {
         if rows.len() < 6 { continue; }
 
         let mut embedded_vectors = Vec::new();

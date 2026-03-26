@@ -194,6 +194,16 @@ description = "Deterministic audit for refuted Cayley-Dickson spectrum, shape-ma
 experiment = "E-207"
 
 [[binary]]
+name = "cd-gap-binders"
+crate = "gororoba_cli_data"
+description = "Pure-Rust generator for CayleyDickson exact-gap reconstruction binders with embedded provenance covers and deterministic PDF merge output."
+
+[[binary]]
+name = "cd-row-upgrade-batch"
+crate = "gororoba_cli_data"
+description = "Pure-Rust generator for CayleyDickson exact-witness row-upgrade batch reports, validating lane preconditions before any blocked inventory row is promoted."
+
+[[binary]]
 name = "cd-tower-report"
 crate = "gororoba_cli"
 description = "Comprehensive CD tower analysis: property retention, psi/eta convergence, ZD geometry, face sign census, imbalance indexs, split-CD, scaling laws"
@@ -1947,4 +1957,3 @@ name = "zd-spectral-dimension"
 crate = "gororoba_cli_data"
 description = "Spectral-dimension census for Cayley-Dickson zero-divisor graphs via Laplacian heat-kernel plateaus and gaps."
 experiment = "E-084"
-

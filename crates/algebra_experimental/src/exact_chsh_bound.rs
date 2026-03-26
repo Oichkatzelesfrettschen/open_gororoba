@@ -178,7 +178,7 @@ mod tests {
         // If S > 2.0, the algebra possesses quantum non-locality.
         // If S <= 2.0, the algebra is strictly classical.
         assert!(s_max <= 2.0 + 1e-4, "Algebra violated classical Bell Bound! S = {}", s_max);
-        println!("✅ 16D CHSH Bound strictly <= 2.0. Cayley-Dickson Algebra is classically local!");
+        println!("<EMOJI+2705> 16D CHSH Bound strictly <= 2.0. Cayley-Dickson Algebra is classically local!");
     }
     
     #[test]
@@ -189,6 +189,6 @@ mod tests {
         println!("Exact Max CHSH Observable (S): {:.4}", s_max);
         
         assert!(s_max <= 2.0 + 1e-4, "Algebra violated classical Bell Bound! S = {}", s_max);
-        println!("✅ 64D CHSH Bound strictly <= 2.0. No dimensional quantum anomaly detected.");
+        println!("<EMOJI+2705> 64D CHSH Bound strictly <= 2.0. No dimensional quantum anomaly detected.");
     }
 }

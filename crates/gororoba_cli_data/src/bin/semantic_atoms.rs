@@ -738,9 +738,7 @@ fn verify_semantic_atoms(repo_root: &Path, args: &Args) -> Result<()> {
     let chunks_path = repo_root.join(&args.payload_chunks_path);
     let have_payloads = payload_path.exists() && chunks_path.exists();
     if !have_payloads {
-        println!(
-            "WARN: payload files not built yet (stub), skipping payload checks"
-        );
+        println!("WARN: payload files not built yet (stub), skipping payload checks");
     }
 
     for path in required.iter().skip(1) {
@@ -759,8 +757,16 @@ fn verify_semantic_atoms(repo_root: &Path, args: &Args) -> Result<()> {
     let equation_symbols_raw = load_toml(&repo_root.join(&args.symbol_table_out))?;
     let proof_raw = load_toml(&repo_root.join(&args.proof_skeletons_out))?;
     let empty_toml: toml::Value = toml::Value::Table(Default::default());
-    let payload_raw = if have_payloads { load_toml(&payload_path)? } else { empty_toml.clone() };
-    let chunk_raw = if have_payloads { load_toml(&chunks_path)? } else { empty_toml };
+    let payload_raw = if have_payloads {
+        load_toml(&payload_path)?
+    } else {
+        empty_toml.clone()
+    };
+    let chunk_raw = if have_payloads {
+        load_toml(&chunks_path)?
+    } else {
+        empty_toml
+    };
 
     let claim_atoms = table_array(&claim_atoms_raw, "atom");
     let claim_edges = table_array(&claim_edges_raw, "edge");
@@ -931,192 +937,194 @@ fn verify_semantic_atoms(repo_root: &Path, args: &Args) -> Result<()> {
     }
 
     if have_payloads {
-    if table_int_in(&payload_raw, "markdown_payloads", "document_count")
-        != payload_docs.len() as i64
-    {
-        failures.push("markdown_payloads document_count metadata mismatch.".to_string());
-    }
-    if table_int_in(&chunk_raw, "markdown_payload_chunks", "chunk_count")
-        != payload_chunks.len() as i64
-    {
-        failures.push("markdown_payload_chunks chunk_count metadata mismatch.".to_string());
-    }
-    if table_str_in(&payload_raw, "markdown_payloads", "representation") != "structured_toml_units"
-    {
-        failures
-            .push("markdown_payloads representation must be structured_toml_units.".to_string());
-    }
-    if table_str_in(&chunk_raw, "markdown_payload_chunks", "representation")
-        != "structured_toml_units"
-    {
-        failures.push(
-            "markdown_payload_chunks representation must be structured_toml_units.".to_string(),
-        );
-    }
+        if table_int_in(&payload_raw, "markdown_payloads", "document_count")
+            != payload_docs.len() as i64
+        {
+            failures.push("markdown_payloads document_count metadata mismatch.".to_string());
+        }
+        if table_int_in(&chunk_raw, "markdown_payload_chunks", "chunk_count")
+            != payload_chunks.len() as i64
+        {
+            failures.push("markdown_payload_chunks chunk_count metadata mismatch.".to_string());
+        }
+        if table_str_in(&payload_raw, "markdown_payloads", "representation")
+            != "structured_toml_units"
+        {
+            failures.push(
+                "markdown_payloads representation must be structured_toml_units.".to_string(),
+            );
+        }
+        if table_str_in(&chunk_raw, "markdown_payload_chunks", "representation")
+            != "structured_toml_units"
+        {
+            failures.push(
+                "markdown_payload_chunks representation must be structured_toml_units.".to_string(),
+            );
+        }
 
-    let discovered_md = discover_markdown_files(repo_root)?;
-    let payload_paths = payload_docs
-        .iter()
-        .map(|row| table_str(row, "path").to_string())
-        .collect::<BTreeSet<_>>();
-    if discovered_md != payload_paths {
-        let missing = discovered_md
-            .difference(&payload_paths)
+        let discovered_md = discover_markdown_files(repo_root)?;
+        let payload_paths = payload_docs
+            .iter()
+            .map(|row| table_str(row, "path").to_string())
+            .collect::<BTreeSet<_>>();
+        if discovered_md != payload_paths {
+            let missing = discovered_md
+                .difference(&payload_paths)
+                .cloned()
+                .collect::<Vec<_>>();
+            let extra = payload_paths
+                .difference(&discovered_md)
+                .cloned()
+                .collect::<Vec<_>>();
+            if !missing.is_empty() {
+                failures.push(format!(
+                    "markdown_payloads missing paths: {}",
+                    missing.len()
+                ));
+                for item in missing.iter().take(20) {
+                    failures.push(format!("  missing: {}", item));
+                }
+            }
+            if !extra.is_empty() {
+                failures.push(format!("markdown_payloads extra paths: {}", extra.len()));
+                for item in extra.iter().take(20) {
+                    failures.push(format!("  extra: {}", item));
+                }
+            }
+        }
+
+        let existing_payload_paths = payload_paths
+            .iter()
+            .filter(|rel_path| repo_root.join(rel_path.as_str()).exists())
             .cloned()
             .collect::<Vec<_>>();
-        let extra = payload_paths
-            .difference(&discovered_md)
-            .cloned()
-            .collect::<Vec<_>>();
-        if !missing.is_empty() {
-            failures.push(format!(
-                "markdown_payloads missing paths: {}",
-                missing.len()
-            ));
-            for item in missing.iter().take(20) {
-                failures.push(format!("  missing: {}", item));
+        let file_digests = existing_payload_paths
+            .par_iter()
+            .map(|rel_path| {
+                let digest = sha256_file(&repo_root.join(rel_path))?;
+                Ok((rel_path.clone(), digest))
+            })
+            .collect::<Result<Vec<_>>>()?
+            .into_iter()
+            .collect::<BTreeMap<_, _>>();
+
+        let mut chunk_by_id = BTreeMap::<String, &Value>::new();
+        for row in payload_chunks {
+            chunk_by_id.insert(table_str(row, "id").to_string(), row);
+        }
+        if chunk_by_id.len() != payload_chunks.len() {
+            failures.push("duplicate markdown payload chunk ids detected.".to_string());
+        }
+
+        let mut chunks_by_doc = BTreeMap::<String, usize>::new();
+        for row in payload_chunks {
+            let doc_id = table_str(row, "document_id").to_string();
+            *chunks_by_doc.entry(doc_id).or_insert(0) += 1;
+        }
+
+        let allowed_chunk_kinds = ALLOWED_CHUNK_KINDS.iter().copied().collect::<BTreeSet<_>>();
+        let mut third_party_count = 0usize;
+        for row in payload_docs {
+            let doc_id = table_str(row, "id").to_string();
+            let rel_path = table_str(row, "path").to_string();
+            let origin_class = table_str(row, "origin_class");
+            if origin_class == "third_party_cache" {
+                third_party_count += 1;
             }
-        }
-        if !extra.is_empty() {
-            failures.push(format!("markdown_payloads extra paths: {}", extra.len()));
-            for item in extra.iter().take(20) {
-                failures.push(format!("  extra: {}", item));
-            }
-        }
-    }
 
-    let existing_payload_paths = payload_paths
-        .iter()
-        .filter(|rel_path| repo_root.join(rel_path.as_str()).exists())
-        .cloned()
-        .collect::<Vec<_>>();
-    let file_digests = existing_payload_paths
-        .par_iter()
-        .map(|rel_path| {
-            let digest = sha256_file(&repo_root.join(rel_path))?;
-            Ok((rel_path.clone(), digest))
-        })
-        .collect::<Result<Vec<_>>>()?
-        .into_iter()
-        .collect::<BTreeMap<_, _>>();
-
-    let mut chunk_by_id = BTreeMap::<String, &Value>::new();
-    for row in payload_chunks {
-        chunk_by_id.insert(table_str(row, "id").to_string(), row);
-    }
-    if chunk_by_id.len() != payload_chunks.len() {
-        failures.push("duplicate markdown payload chunk ids detected.".to_string());
-    }
-
-    let mut chunks_by_doc = BTreeMap::<String, usize>::new();
-    for row in payload_chunks {
-        let doc_id = table_str(row, "document_id").to_string();
-        *chunks_by_doc.entry(doc_id).or_insert(0) += 1;
-    }
-
-    let allowed_chunk_kinds = ALLOWED_CHUNK_KINDS.iter().copied().collect::<BTreeSet<_>>();
-    let mut third_party_count = 0usize;
-    for row in payload_docs {
-        let doc_id = table_str(row, "id").to_string();
-        let rel_path = table_str(row, "path").to_string();
-        let origin_class = table_str(row, "origin_class");
-        if origin_class == "third_party_cache" {
-            third_party_count += 1;
-        }
-
-        let file_path = repo_root.join(&rel_path);
-        if !file_path.exists() {
-            failures.push(format!(
-                "payload doc path missing on disk: {} -> {}",
-                doc_id, rel_path
-            ));
-            continue;
-        }
-
-        let digest = file_digests.get(&rel_path).cloned().unwrap_or_default();
-        if digest != table_str(row, "content_sha256") {
-            failures.push(format!("sha mismatch for {} ({})", doc_id, rel_path));
-        }
-
-        let chunk_ids = string_list(row, "chunk_ids");
-        if table_int(row, "chunk_count") != chunk_ids.len() as i64 {
-            failures.push(format!("chunk_count mismatch for {}", doc_id));
-            continue;
-        }
-
-        let mut heading_count = 0usize;
-        let mut paragraph_count = 0usize;
-        let mut list_item_count = 0usize;
-        let mut table_row_count = 0usize;
-        let mut code_block_count = 0usize;
-        for (expected_next, chunk_id) in (1i64..).zip(chunk_ids) {
-            let Some(chunk) = chunk_by_id.get(&chunk_id).copied() else {
-                failures.push(format!("missing chunk id {} for {}", chunk_id, doc_id));
-                break;
-            };
-            if table_str(chunk, "document_id") != doc_id {
-                failures.push(format!("chunk document_id mismatch: {}", chunk_id));
-            }
-            let idx = table_int(chunk, "chunk_index");
-            if idx != expected_next {
+            let file_path = repo_root.join(&rel_path);
+            if !file_path.exists() {
                 failures.push(format!(
-                    "chunk index sequence mismatch for {}: got {} expected {}",
-                    doc_id, idx, expected_next
+                    "payload doc path missing on disk: {} -> {}",
+                    doc_id, rel_path
                 ));
+                continue;
             }
 
-            let kind = table_str(chunk, "kind");
-            if !allowed_chunk_kinds.contains(kind) {
-                failures.push(format!("invalid chunk kind for {}: {}", chunk_id, kind));
-            }
-            match kind {
-                "heading" => heading_count += 1,
-                "paragraph" => paragraph_count += 1,
-                "list_item" => list_item_count += 1,
-                "table_row" => table_row_count += 1,
-                "code_block" => code_block_count += 1,
-                _ => {}
+            let digest = file_digests.get(&rel_path).cloned().unwrap_or_default();
+            if digest != table_str(row, "content_sha256") {
+                failures.push(format!("sha mismatch for {} ({})", doc_id, rel_path));
             }
 
-            let line_start = table_int(chunk, "line_start");
-            let line_end = table_int(chunk, "line_end");
-            if line_start <= 0 || line_end < line_start {
-                failures.push(format!(
-                    "invalid line range for {}: {}-{}",
-                    chunk_id, line_start, line_end
-                ));
+            let chunk_ids = string_list(row, "chunk_ids");
+            if table_int(row, "chunk_count") != chunk_ids.len() as i64 {
+                failures.push(format!("chunk_count mismatch for {}", doc_id));
+                continue;
             }
 
-            let text_ascii = table_str(chunk, "text_ascii");
-            let text_sha = sha256_hex(text_ascii.as_bytes());
-            if text_sha != table_str(chunk, "text_sha256") {
-                failures.push(format!("text_sha256 mismatch for {}", chunk_id));
+            let mut heading_count = 0usize;
+            let mut paragraph_count = 0usize;
+            let mut list_item_count = 0usize;
+            let mut table_row_count = 0usize;
+            let mut code_block_count = 0usize;
+            for (expected_next, chunk_id) in (1i64..).zip(chunk_ids) {
+                let Some(chunk) = chunk_by_id.get(&chunk_id).copied() else {
+                    failures.push(format!("missing chunk id {} for {}", chunk_id, doc_id));
+                    break;
+                };
+                if table_str(chunk, "document_id") != doc_id {
+                    failures.push(format!("chunk document_id mismatch: {}", chunk_id));
+                }
+                let idx = table_int(chunk, "chunk_index");
+                if idx != expected_next {
+                    failures.push(format!(
+                        "chunk index sequence mismatch for {}: got {} expected {}",
+                        doc_id, idx, expected_next
+                    ));
+                }
+
+                let kind = table_str(chunk, "kind");
+                if !allowed_chunk_kinds.contains(kind) {
+                    failures.push(format!("invalid chunk kind for {}: {}", chunk_id, kind));
+                }
+                match kind {
+                    "heading" => heading_count += 1,
+                    "paragraph" => paragraph_count += 1,
+                    "list_item" => list_item_count += 1,
+                    "table_row" => table_row_count += 1,
+                    "code_block" => code_block_count += 1,
+                    _ => {}
+                }
+
+                let line_start = table_int(chunk, "line_start");
+                let line_end = table_int(chunk, "line_end");
+                if line_start <= 0 || line_end < line_start {
+                    failures.push(format!(
+                        "invalid line range for {}: {}-{}",
+                        chunk_id, line_start, line_end
+                    ));
+                }
+
+                let text_ascii = table_str(chunk, "text_ascii");
+                let text_sha = sha256_hex(text_ascii.as_bytes());
+                if text_sha != table_str(chunk, "text_sha256") {
+                    failures.push(format!("text_sha256 mismatch for {}", chunk_id));
+                }
+            }
+
+            if table_int(row, "heading_count") != heading_count as i64 {
+                failures.push(format!("heading_count mismatch for {}", doc_id));
+            }
+            if table_int(row, "paragraph_count") != paragraph_count as i64 {
+                failures.push(format!("paragraph_count mismatch for {}", doc_id));
+            }
+            if table_int(row, "list_item_count") != list_item_count as i64 {
+                failures.push(format!("list_item_count mismatch for {}", doc_id));
+            }
+            if table_int(row, "table_row_count") != table_row_count as i64 {
+                failures.push(format!("table_row_count mismatch for {}", doc_id));
+            }
+            if table_int(row, "code_block_count") != code_block_count as i64 {
+                failures.push(format!("code_block_count mismatch for {}", doc_id));
+            }
+            if !chunks_by_doc.contains_key(&doc_id) {
+                failures.push(format!("no chunks indexed for document {}", doc_id));
             }
         }
 
-        if table_int(row, "heading_count") != heading_count as i64 {
-            failures.push(format!("heading_count mismatch for {}", doc_id));
+        if third_party_count == 0 {
+            failures.push("expected third_party_cache markdown documents, found none.".to_string());
         }
-        if table_int(row, "paragraph_count") != paragraph_count as i64 {
-            failures.push(format!("paragraph_count mismatch for {}", doc_id));
-        }
-        if table_int(row, "list_item_count") != list_item_count as i64 {
-            failures.push(format!("list_item_count mismatch for {}", doc_id));
-        }
-        if table_int(row, "table_row_count") != table_row_count as i64 {
-            failures.push(format!("table_row_count mismatch for {}", doc_id));
-        }
-        if table_int(row, "code_block_count") != code_block_count as i64 {
-            failures.push(format!("code_block_count mismatch for {}", doc_id));
-        }
-        if !chunks_by_doc.contains_key(&doc_id) {
-            failures.push(format!("no chunks indexed for document {}", doc_id));
-        }
-    }
-
-    if third_party_count == 0 {
-        failures.push("expected third_party_cache markdown documents, found none.".to_string());
-    }
     } // have_payloads
 
     if !failures.is_empty() {

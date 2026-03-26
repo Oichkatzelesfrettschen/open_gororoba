@@ -141,6 +141,79 @@ Record WedderburnPrimitiveN2Surface (A : Type) := {
       @wcy_mul A wp_cyclic_surface (wp_inv z) z = wp_one;
 }.
 
+Fixpoint wedderburn_right_pow {A : Type}
+    (mul : A -> A -> A) (one y : A) (n : nat) : A :=
+  match n with
+  | O => one
+  | S k => mul (wedderburn_right_pow mul one y k) y
+  end.
+
+Fixpoint wedderburn_section1_sum {A : Type}
+    (add : A -> A -> A) (zero : A) (f : nat -> A) (n : nat) : A :=
+  match n with
+  | O => zero
+  | S k => add (wedderburn_section1_sum add zero f k) (f k)
+  end.
+
+Record WedderburnSection1CyclicPresentationSurface (A : Type) := {
+  wcp_mul : A -> A -> A;
+  wcp_add : A -> A -> A;
+  wcp_zero : A;
+  wcp_one : A;
+  wcp_x : A;
+  wcp_y : A;
+  wcp_theta : A -> A;
+  wcp_g : A;
+  wcp_n : nat;
+  wcp_coeff : nat -> A -> A;
+  wcp_cyclic_relation :
+    wcp_mul wcp_x wcp_y = wcp_mul wcp_y (wcp_theta wcp_x);
+  wcp_y_power :
+    wedderburn_right_pow wcp_mul wcp_one wcp_y wcp_n = wcp_g;
+  wcp_decomposition :
+    forall z : A,
+      z =
+      wedderburn_section1_sum wcp_add wcp_zero
+        (fun k => wcp_mul (wedderburn_right_pow wcp_mul wcp_one wcp_y k)
+                          (wcp_coeff k z))
+        wcp_n;
+}.
+
+Record WedderburnSection1AssociativePresentationSurface (A : Type) := {
+  wcpa_presentation_surface : WedderburnSection1CyclicPresentationSurface A;
+  wcpa_mul_assoc :
+    forall a b c : A,
+      @wcp_mul A wcpa_presentation_surface
+        (@wcp_mul A wcpa_presentation_surface a b) c =
+      @wcp_mul A wcpa_presentation_surface a
+        (@wcp_mul A wcpa_presentation_surface b c);
+  wcpa_mul_one_left :
+    forall a : A,
+      @wcp_mul A wcpa_presentation_surface (@wcp_one A wcpa_presentation_surface) a = a;
+  wcpa_mul_one_right :
+    forall a : A,
+      @wcp_mul A wcpa_presentation_surface a (@wcp_one A wcpa_presentation_surface) = a;
+}.
+
+Definition wedderburn_section1_assoc_presentation_to_cyclic_n2 {A : Type}
+    (S : WedderburnSection1AssociativePresentationSurface A)
+    (Hn : @wcp_n A (wcpa_presentation_surface A S) = 2%nat)
+    : WedderburnCyclicN2Surface A.
+Proof.
+  refine
+    {| wcy_mul := @wcp_mul A (wcpa_presentation_surface A S);
+       wcy_theta := @wcp_theta A (wcpa_presentation_surface A S);
+       wcy_x := @wcp_x A (wcpa_presentation_surface A S);
+       wcy_y := @wcp_y A (wcpa_presentation_surface A S);
+       wcy_g := @wcp_g A (wcpa_presentation_surface A S) |}.
+  - exact (@wcp_cyclic_relation A (wcpa_presentation_surface A S)).
+  - pose proof (@wcp_y_power A (wcpa_presentation_surface A S)) as Hy.
+    rewrite Hn in Hy.
+    simpl in Hy.
+    rewrite (@wcpa_mul_one_left A S (@wcp_y A (wcpa_presentation_surface A S))) in Hy.
+    exact Hy.
+Defined.
+
 (** Wedderburn's cyclic presentation in the quaternion case:
     choose x = i and y = j. Then xy = y * theta(x) with theta = conjugation,
     and y^2 = -1. *)
@@ -835,6 +908,1323 @@ Definition wedderburn_generalized_section2_surface
        wedderburn_generalized_affine_singular_iff_base_norm_represents c2 c3;
      ws2_affine_nonrepresentation_criterion :=
        wedderburn_generalized_affine_nonrepresentation_iff_all_det_nonzero c2 c3 |}.
+
+Definition wedderburn_section1_u (q : CDQuat) : CDQuat :=
+  wedderburn_coeff_elem (qa q) (qb q).
+
+Definition wedderburn_section1_v (q : CDQuat) : CDQuat :=
+  wedderburn_coeff_elem (qc q) (- qd q).
+
+Definition wedderburn_section1_col12 (c3 : R) (q : CDQuat) : CDQuat :=
+  quat_scale c3 (quat_conj (wedderburn_section1_v q)).
+
+Definition wedderburn_section1_col22 (q : CDQuat) : CDQuat :=
+  quat_conj (wedderburn_section1_u q).
+
+Theorem wedderburn_section1_coeff_conj :
+  forall a b : R,
+    quat_conj (wedderburn_coeff_elem a b) = wedderburn_coeff_elem a (- b).
+Proof.
+  intros a b.
+  unfold wedderburn_coeff_elem, quat_conj.
+  simpl.
+  f_equal; ring.
+Qed.
+
+Theorem wedderburn_section1_coeff_mul_closed :
+  forall c2 c3 a b x y : R,
+    dickson1921_param_mul c2 c3
+      (wedderburn_coeff_elem a b) (wedderburn_coeff_elem x y) =
+    wedderburn_coeff_elem (a * x + c2 * b * y) (a * y + b * x).
+Proof.
+  intros c2 c3 a b x y.
+  unfold dickson1921_param_mul, wedderburn_coeff_elem.
+  simpl.
+  f_equal; ring.
+Qed.
+
+Theorem wedderburn_section1_decomposition :
+  forall c2 c3 : R, forall q : CDQuat,
+    q = quat_add (wedderburn_section1_u q)
+          (dickson1921_param_mul c2 c3 qj (wedderburn_section1_v q)).
+Proof.
+  intros c2 c3 [a b c d].
+  unfold wedderburn_section1_u, wedderburn_section1_v.
+  exact (wedderburn_generalized_decomposition c2 c3 a b c d).
+Qed.
+
+Theorem wedderburn_section1_left_on_one :
+  forall c2 c3 : R, forall q : CDQuat,
+    dickson1921_param_mul c2 c3 q quat_one =
+    quat_add (wedderburn_section1_u q)
+      (dickson1921_param_mul c2 c3 qj (wedderburn_section1_v q)).
+Proof.
+  intros c2 c3 q.
+  rewrite dickson1921_param_mul_one_right.
+  exact (wedderburn_section1_decomposition c2 c3 q).
+Qed.
+
+Theorem wedderburn_section1_left_on_y :
+  forall c2 c3 : R, forall q : CDQuat,
+    dickson1921_param_mul c2 c3 q qj =
+    quat_add (wedderburn_section1_col12 c3 q)
+      (dickson1921_param_mul c2 c3 qj (wedderburn_section1_col22 q)).
+Proof.
+  intros c2 c3 [a b c d].
+  unfold wedderburn_section1_col12, wedderburn_section1_col22,
+         wedderburn_section1_u, wedderburn_section1_v.
+  unfold wedderburn_coeff_elem, quat_conj, quat_scale, quat_add.
+  unfold dickson1921_param_mul, qj.
+  simpl.
+  f_equal; ring.
+Qed.
+
+Record WedderburnSection1N2MatricSurface (c2 c3 : R) := {
+  ws1_coeff_conj_closed :
+    forall a b : R,
+      quat_conj (wedderburn_coeff_elem a b) = wedderburn_coeff_elem a (- b);
+  ws1_coeff_mul_closed :
+    forall a b x y : R,
+      dickson1921_param_mul c2 c3
+        (wedderburn_coeff_elem a b) (wedderburn_coeff_elem x y) =
+      wedderburn_coeff_elem (a * x + c2 * b * y) (a * y + b * x);
+  ws1_decompose :
+    forall q : CDQuat,
+      q = quat_add (wedderburn_section1_u q)
+            (dickson1921_param_mul c2 c3 qj (wedderburn_section1_v q));
+  ws1_left_basis_one :
+    forall q : CDQuat,
+      dickson1921_param_mul c2 c3 q quat_one =
+      quat_add (wedderburn_section1_u q)
+        (dickson1921_param_mul c2 c3 qj (wedderburn_section1_v q));
+  ws1_left_basis_y :
+    forall q : CDQuat,
+      dickson1921_param_mul c2 c3 q qj =
+      quat_add (wedderburn_section1_col12 c3 q)
+        (dickson1921_param_mul c2 c3 qj (wedderburn_section1_col22 q));
+}.
+
+Definition wedderburn_generalized_section1_surface
+    (c2 c3 : R) : WedderburnSection1N2MatricSurface c2 c3 :=
+  {| ws1_coeff_conj_closed := wedderburn_section1_coeff_conj;
+     ws1_coeff_mul_closed := wedderburn_section1_coeff_mul_closed c2 c3;
+     ws1_decompose := wedderburn_section1_decomposition c2 c3;
+     ws1_left_basis_one := wedderburn_section1_left_on_one c2 c3;
+     ws1_left_basis_y := wedderburn_section1_left_on_y c2 c3 |}.
+
+Definition wedderburn_quaternion_section1_surface :
+    WedderburnSection1N2MatricSurface (-1) (-1) :=
+  wedderburn_generalized_section1_surface (-1) (-1).
+
+Theorem wedderburn_quat_add_zero_left :
+  forall q : CDQuat,
+    quat_add quat_zero q = q.
+Proof.
+  intros [a b c d].
+  unfold quat_add, quat_zero.
+  simpl.
+  apply (f_equal4 mkQuat); ring.
+Qed.
+
+Theorem wedderburn_generalized_section1_presentation_y_power :
+  forall c2 c3 : R,
+    wedderburn_right_pow (dickson1921_param_mul c2 c3) quat_one qj 2%nat =
+    quat_scale c3 quat_one.
+Proof.
+  intros c2 c3.
+  simpl.
+  rewrite dickson1921_param_mul_one_left.
+  exact (wedderburn_generalized_quaternion_y_square c2 c3).
+Qed.
+
+Theorem wedderburn_generalized_section1_presentation_decomposition :
+  forall c2 c3 : R, forall q : CDQuat,
+    q =
+    wedderburn_section1_sum quat_add quat_zero
+      (fun k =>
+         dickson1921_param_mul c2 c3
+           (wedderburn_right_pow (dickson1921_param_mul c2 c3) quat_one qj k)
+           (match k with
+            | O => wedderburn_section1_u q
+            | S O => wedderburn_section1_v q
+            | _ => quat_zero
+            end))
+      2%nat.
+Proof.
+  intros c2 c3 q.
+  transitivity
+    (quat_add (wedderburn_section1_u q)
+      (dickson1921_param_mul c2 c3 qj (wedderburn_section1_v q))).
+  - exact (wedderburn_section1_decomposition c2 c3 q).
+  - unfold wedderburn_section1_sum.
+    simpl.
+    rewrite dickson1921_param_mul_one_left.
+    rewrite dickson1921_param_mul_one_left.
+    rewrite wedderburn_quat_add_zero_left.
+    reflexivity.
+Qed.
+
+Definition wedderburn_generalized_section1_presentation_surface
+    (c2 c3 : R) : WedderburnSection1CyclicPresentationSurface CDQuat :=
+  {| wcp_mul := dickson1921_param_mul c2 c3;
+     wcp_add := quat_add;
+     wcp_zero := quat_zero;
+     wcp_one := quat_one;
+     wcp_x := qi;
+     wcp_y := qj;
+     wcp_theta := quat_conj;
+     wcp_g := quat_scale c3 quat_one;
+     wcp_n := 2%nat;
+     wcp_coeff := fun k q =>
+       match k with
+       | O => wedderburn_section1_u q
+       | S O => wedderburn_section1_v q
+       | _ => quat_zero
+       end;
+     wcp_cyclic_relation := wedderburn_generalized_quaternion_cyclic_relation c2 c3;
+     wcp_y_power := wedderburn_generalized_section1_presentation_y_power c2 c3;
+     wcp_decomposition := wedderburn_generalized_section1_presentation_decomposition c2 c3 |}.
+
+Definition wedderburn_quaternion_section1_presentation_surface :
+    WedderburnSection1CyclicPresentationSurface CDQuat :=
+  wedderburn_generalized_section1_presentation_surface (-1) (-1).
+
+Definition wedderburn_generalized_section1_associative_presentation_surface
+    (c2 c3 : R) : WedderburnSection1AssociativePresentationSurface CDQuat :=
+  {| wcpa_presentation_surface :=
+       wedderburn_generalized_section1_presentation_surface c2 c3;
+     wcpa_mul_assoc := dickson1921_param_mul_assoc c2 c3;
+     wcpa_mul_one_left := dickson1921_param_mul_one_left c2 c3;
+     wcpa_mul_one_right := dickson1921_param_mul_one_right c2 c3 |}.
+
+Definition wedderburn_quaternion_section1_associative_presentation_surface :
+    WedderburnSection1AssociativePresentationSurface CDQuat :=
+  wedderburn_generalized_section1_associative_presentation_surface (-1) (-1).
+
+Theorem wedderburn_generalized_section1_presentation_n_eq_2 :
+  forall c2 c3 : R,
+    @wcp_n CDQuat
+      (wcpa_presentation_surface CDQuat
+        (wedderburn_generalized_section1_associative_presentation_surface c2 c3)) =
+    2%nat.
+Proof.
+  intros c2 c3.
+  reflexivity.
+Qed.
+
+Definition wedderburn_generalized_section1_presentation_cyclic_n2_surface
+    (c2 c3 : R) : WedderburnCyclicN2Surface CDQuat :=
+  wedderburn_section1_assoc_presentation_to_cyclic_n2
+    (wedderburn_generalized_section1_associative_presentation_surface c2 c3)
+    (wedderburn_generalized_section1_presentation_n_eq_2 c2 c3).
+
+Definition wedderburn_quaternion_section1_presentation_cyclic_n2_surface :
+    WedderburnCyclicN2Surface CDQuat :=
+  wedderburn_generalized_section1_presentation_cyclic_n2_surface (-1) (-1).
+
+Theorem wedderburn_generalized_section1_handoff_to_dickson1921 :
+  forall c2 c3 : R,
+    let W :=
+      wcpa_presentation_surface CDQuat
+        (wedderburn_generalized_section1_associative_presentation_surface c2 c3) in
+    let D := dickson1921_param_surface c2 c3 in
+    @wcp_mul CDQuat W = d1921_mul D /\
+    @wcp_one CDQuat W = d1921_one D /\
+    @wcp_theta CDQuat W = d1921_conj D /\
+    @wcp_g CDQuat W = quat_scale c3 quat_one /\
+    @wcp_n CDQuat W = 2%nat /\
+    @wcp_x CDQuat W = qi /\
+    @wcp_y CDQuat W = qj.
+Proof.
+  intros c2 c3.
+  repeat split; reflexivity.
+Qed.
+
+Theorem wedderburn_generalized_section1_cyclic_handoff_to_dickson1921 :
+  forall c2 c3 : R,
+    let C := wedderburn_generalized_section1_presentation_cyclic_n2_surface c2 c3 in
+    let D := dickson1921_param_surface c2 c3 in
+    @wcy_mul CDQuat C = d1921_mul D /\
+    @wcy_theta CDQuat C = d1921_conj D /\
+    @wcy_g CDQuat C = quat_scale c3 quat_one /\
+    @wcy_x CDQuat C = qi /\
+    @wcy_y CDQuat C = qj.
+Proof.
+  intros c2 c3.
+  repeat split; reflexivity.
+Qed.
+
+Definition wedderburn_section1_projector_plus (r : R) : CDQuat :=
+  wedderburn_coeff_elem (/ 2) (/ (2 * r)).
+
+Definition wedderburn_section1_projector_minus (r : R) : CDQuat :=
+  wedderburn_coeff_elem (/ 2) (- / (2 * r)).
+
+Theorem wedderburn_section1_coeff_cyclic_relation :
+  forall c2 c3 a b : R,
+    dickson1921_param_mul c2 c3 (wedderburn_coeff_elem a b) qj =
+    dickson1921_param_mul c2 c3 qj (wedderburn_coeff_elem a (- b)).
+Proof.
+  intros c2 c3 a b.
+  unfold dickson1921_param_mul, wedderburn_coeff_elem, qj.
+  simpl.
+  f_equal; ring.
+Qed.
+
+Theorem wedderburn_section1_projector_plus_idempotent :
+  forall c2 c3 r : R,
+    r <> 0 ->
+    r * r = c2 ->
+    dickson1921_param_mul c2 c3
+      (wedderburn_section1_projector_plus r)
+      (wedderburn_section1_projector_plus r) =
+    wedderburn_section1_projector_plus r.
+Proof.
+  intros c2 c3 r Hr0 Hroot.
+  symmetry in Hroot.
+  subst c2.
+  assert (H2r : 2 * r <> 0) by nra.
+  unfold wedderburn_section1_projector_plus.
+  rewrite wedderburn_section1_coeff_mul_closed.
+  unfold wedderburn_coeff_elem.
+  simpl.
+  repeat f_equal.
+  - field; nra.
+  - field; nra.
+Qed.
+
+Theorem wedderburn_section1_projector_minus_idempotent :
+  forall c2 c3 r : R,
+    r <> 0 ->
+    r * r = c2 ->
+    dickson1921_param_mul c2 c3
+      (wedderburn_section1_projector_minus r)
+      (wedderburn_section1_projector_minus r) =
+    wedderburn_section1_projector_minus r.
+Proof.
+  intros c2 c3 r Hr0 Hroot.
+  symmetry in Hroot.
+  subst c2.
+  assert (H2r : 2 * r <> 0) by nra.
+  unfold wedderburn_section1_projector_minus.
+  rewrite wedderburn_section1_coeff_mul_closed.
+  unfold wedderburn_coeff_elem.
+  simpl.
+  repeat f_equal.
+  - field; nra.
+  - field; nra.
+Qed.
+
+Theorem wedderburn_section1_projectors_orthogonal :
+  forall c2 c3 r : R,
+    r <> 0 ->
+    r * r = c2 ->
+    dickson1921_param_mul c2 c3
+      (wedderburn_section1_projector_plus r)
+      (wedderburn_section1_projector_minus r) = quat_zero /\
+    dickson1921_param_mul c2 c3
+      (wedderburn_section1_projector_minus r)
+      (wedderburn_section1_projector_plus r) = quat_zero.
+Proof.
+  intros c2 c3 r Hr0 Hroot.
+  symmetry in Hroot.
+  subst c2.
+  assert (H2r : 2 * r <> 0) by nra.
+  split.
+  - unfold wedderburn_section1_projector_plus, wedderburn_section1_projector_minus.
+    rewrite wedderburn_section1_coeff_mul_closed.
+    unfold wedderburn_coeff_elem, quat_zero.
+    simpl.
+    repeat f_equal.
+    + field; nra.
+    + field; nra.
+  - unfold wedderburn_section1_projector_plus, wedderburn_section1_projector_minus.
+    rewrite wedderburn_section1_coeff_mul_closed.
+    unfold wedderburn_coeff_elem, quat_zero.
+    simpl.
+    repeat f_equal.
+    + field; nra.
+    + field; nra.
+Qed.
+
+Theorem wedderburn_section1_projectors_sum_to_one :
+  forall r : R,
+    r <> 0 ->
+    quat_add (wedderburn_section1_projector_plus r)
+      (wedderburn_section1_projector_minus r) = quat_one.
+Proof.
+  intros r Hr0.
+  assert (H2r : 2 * r <> 0) by nra.
+  unfold wedderburn_section1_projector_plus, wedderburn_section1_projector_minus,
+         wedderburn_coeff_elem, quat_add, quat_one.
+  simpl.
+  f_equal; field; nra.
+Qed.
+
+Theorem wedderburn_section1_projector_conj_swap :
+  forall r : R,
+    quat_conj (wedderburn_section1_projector_plus r) =
+      wedderburn_section1_projector_minus r /\
+    quat_conj (wedderburn_section1_projector_minus r) =
+      wedderburn_section1_projector_plus r.
+Proof.
+  intro r.
+  split;
+  unfold wedderburn_section1_projector_plus, wedderburn_section1_projector_minus;
+  rewrite wedderburn_section1_coeff_conj;
+  unfold wedderburn_coeff_elem;
+  simpl;
+  f_equal; ring.
+Qed.
+
+Theorem wedderburn_section1_y_swaps_projectors :
+  forall c2 c3 r : R,
+    dickson1921_param_mul c2 c3
+      (wedderburn_section1_projector_plus r) qj =
+    dickson1921_param_mul c2 c3 qj
+      (wedderburn_section1_projector_minus r) /\
+    dickson1921_param_mul c2 c3
+      (wedderburn_section1_projector_minus r) qj =
+    dickson1921_param_mul c2 c3 qj
+      (wedderburn_section1_projector_plus r).
+Proof.
+  intros c2 c3 r.
+  split.
+  - unfold wedderburn_section1_projector_plus, wedderburn_section1_projector_minus.
+    rewrite wedderburn_section1_coeff_cyclic_relation.
+    unfold wedderburn_coeff_elem.
+    simpl.
+    reflexivity.
+  - unfold wedderburn_section1_projector_plus, wedderburn_section1_projector_minus.
+    rewrite wedderburn_section1_coeff_cyclic_relation.
+    unfold wedderburn_coeff_elem.
+    simpl.
+    replace (- - / (2 * r)) with (/ (2 * r)) by ring.
+    reflexivity.
+Qed.
+
+Theorem wedderburn_section1_coeff_projector_decomposition :
+  forall r a b : R,
+    r <> 0 ->
+    wedderburn_coeff_elem a b =
+    quat_add
+      (quat_scale (a + r * b) (wedderburn_section1_projector_plus r))
+      (quat_scale (a - r * b) (wedderburn_section1_projector_minus r)).
+Proof.
+  intros r a b Hr0.
+  assert (H2r : 2 * r <> 0) by nra.
+  unfold wedderburn_coeff_elem, wedderburn_section1_projector_plus,
+         wedderburn_section1_projector_minus, quat_add, quat_scale.
+  simpl.
+  repeat f_equal.
+  - field; nra.
+  - field; nra.
+  - ring.
+  - ring.
+Qed.
+
+Record WedderburnSection1ProjectorSurface (c2 c3 r : R) := {
+  wsp_root_nonzero : r <> 0;
+  wsp_root_square : r * r = c2;
+  wsp_plus_idempotent :
+    dickson1921_param_mul c2 c3
+      (wedderburn_section1_projector_plus r)
+      (wedderburn_section1_projector_plus r) =
+    wedderburn_section1_projector_plus r;
+  wsp_minus_idempotent :
+    dickson1921_param_mul c2 c3
+      (wedderburn_section1_projector_minus r)
+      (wedderburn_section1_projector_minus r) =
+    wedderburn_section1_projector_minus r;
+  wsp_projectors_orthogonal :
+    dickson1921_param_mul c2 c3
+      (wedderburn_section1_projector_plus r)
+      (wedderburn_section1_projector_minus r) = quat_zero /\
+    dickson1921_param_mul c2 c3
+      (wedderburn_section1_projector_minus r)
+      (wedderburn_section1_projector_plus r) = quat_zero;
+  wsp_projectors_sum_to_one :
+    quat_add (wedderburn_section1_projector_plus r)
+      (wedderburn_section1_projector_minus r) = quat_one;
+  wsp_projector_conj_swap :
+    quat_conj (wedderburn_section1_projector_plus r) =
+      wedderburn_section1_projector_minus r /\
+    quat_conj (wedderburn_section1_projector_minus r) =
+      wedderburn_section1_projector_plus r;
+  wsp_y_swaps_projectors :
+    dickson1921_param_mul c2 c3
+      (wedderburn_section1_projector_plus r) qj =
+    dickson1921_param_mul c2 c3 qj
+      (wedderburn_section1_projector_minus r) /\
+    dickson1921_param_mul c2 c3
+      (wedderburn_section1_projector_minus r) qj =
+    dickson1921_param_mul c2 c3 qj
+      (wedderburn_section1_projector_plus r);
+}.
+
+Record WedderburnSection1SpectralSurface (c2 c3 r : R) := {
+  wss_projector_surface : WedderburnSection1ProjectorSurface c2 c3 r;
+  wss_coeff_decomposition :
+    forall a b : R,
+      wedderburn_coeff_elem a b =
+      quat_add
+        (quat_scale (a + r * b) (wedderburn_section1_projector_plus r))
+        (quat_scale (a - r * b) (wedderburn_section1_projector_minus r));
+}.
+
+Definition wedderburn_generalized_section1_projector_surface
+    (c2 c3 r : R)
+    (Hr0 : r <> 0)
+    (Hroot : r * r = c2)
+    : WedderburnSection1ProjectorSurface c2 c3 r :=
+  {| wsp_root_nonzero := Hr0;
+     wsp_root_square := Hroot;
+     wsp_plus_idempotent :=
+       wedderburn_section1_projector_plus_idempotent c2 c3 r Hr0 Hroot;
+     wsp_minus_idempotent :=
+       wedderburn_section1_projector_minus_idempotent c2 c3 r Hr0 Hroot;
+     wsp_projectors_orthogonal :=
+       wedderburn_section1_projectors_orthogonal c2 c3 r Hr0 Hroot;
+     wsp_projectors_sum_to_one :=
+       wedderburn_section1_projectors_sum_to_one r Hr0;
+     wsp_projector_conj_swap :=
+       wedderburn_section1_projector_conj_swap r;
+     wsp_y_swaps_projectors :=
+       wedderburn_section1_y_swaps_projectors c2 c3 r |}.
+
+Definition wedderburn_generalized_section1_spectral_surface
+    (c2 c3 r : R)
+    (Hr0 : r <> 0)
+    (Hroot : r * r = c2)
+    : WedderburnSection1SpectralSurface c2 c3 r :=
+  {| wss_projector_surface :=
+       wedderburn_generalized_section1_projector_surface c2 c3 r Hr0 Hroot;
+     wss_coeff_decomposition :=
+       fun a b => wedderburn_section1_coeff_projector_decomposition r a b Hr0 |}.
+
+Definition wedderburn_section1_e11 (r : R) : CDQuat :=
+  wedderburn_section1_projector_plus r.
+
+Definition wedderburn_section1_e22 (r : R) : CDQuat :=
+  wedderburn_section1_projector_minus r.
+
+Definition wedderburn_section1_e12 (c2 c3 r : R) : CDQuat :=
+  dickson1921_param_mul c2 c3 (wedderburn_section1_e11 r) qj.
+
+Definition wedderburn_section1_e21 (c2 c3 r : R) : CDQuat :=
+  dickson1921_param_mul c2 c3 (wedderburn_section1_e22 r) qj.
+
+Theorem wedderburn_section1_e12_explicit :
+  forall c2 c3 r : R,
+    r <> 0 ->
+    r * r = c2 ->
+    wedderburn_section1_e12 c2 c3 r = mkQuat 0 0 (/ 2) (/ (2 * r)).
+Proof.
+  intros c2 c3 r Hr0 Hroot.
+  symmetry in Hroot.
+  subst c2.
+  assert (H2r : 2 * r <> 0) by nra.
+  unfold wedderburn_section1_e12, wedderburn_section1_e11,
+         wedderburn_section1_projector_plus.
+  unfold dickson1921_param_mul, wedderburn_coeff_elem, qj.
+  simpl.
+  repeat f_equal.
+  - ring.
+  - ring.
+  - field; nra.
+  - field; nra.
+Qed.
+
+Theorem wedderburn_section1_e21_explicit :
+  forall c2 c3 r : R,
+    r <> 0 ->
+    r * r = c2 ->
+    wedderburn_section1_e21 c2 c3 r = mkQuat 0 0 (/ 2) (- / (2 * r)).
+Proof.
+  intros c2 c3 r Hr0 Hroot.
+  symmetry in Hroot.
+  subst c2.
+  assert (H2r : 2 * r <> 0) by nra.
+  unfold wedderburn_section1_e21, wedderburn_section1_e22,
+         wedderburn_section1_projector_minus.
+  unfold dickson1921_param_mul, wedderburn_coeff_elem, qj.
+  simpl.
+  repeat f_equal.
+  - ring.
+  - ring.
+  - field; nra.
+  - field; nra.
+Qed.
+
+Theorem wedderburn_section1_e12_right :
+  forall c2 c3 r : R,
+    wedderburn_section1_e12 c2 c3 r =
+    dickson1921_param_mul c2 c3 qj (wedderburn_section1_e22 r).
+Proof.
+  intros c2 c3 r.
+  unfold wedderburn_section1_e12, wedderburn_section1_e11, wedderburn_section1_e22.
+  exact (proj1 (wedderburn_section1_y_swaps_projectors c2 c3 r)).
+Qed.
+
+Theorem wedderburn_section1_e21_right :
+  forall c2 c3 r : R,
+    wedderburn_section1_e21 c2 c3 r =
+    dickson1921_param_mul c2 c3 qj (wedderburn_section1_e11 r).
+Proof.
+  intros c2 c3 r.
+  unfold wedderburn_section1_e21, wedderburn_section1_e11, wedderburn_section1_e22.
+  exact (proj2 (wedderburn_section1_y_swaps_projectors c2 c3 r)).
+Qed.
+
+Theorem wedderburn_section1_e12_sq_zero :
+  forall c2 c3 r : R,
+    r <> 0 ->
+    r * r = c2 ->
+    dickson1921_param_mul c2 c3
+      (wedderburn_section1_e12 c2 c3 r)
+      (wedderburn_section1_e12 c2 c3 r) = quat_zero.
+Proof.
+  intros c2 c3 r Hr0 Hroot.
+  symmetry in Hroot.
+  subst c2.
+  assert (H2r : 2 * r <> 0) by nra.
+  rewrite wedderburn_section1_e12_explicit by (assumption || reflexivity).
+  unfold dickson1921_param_mul, quat_zero.
+  simpl.
+  repeat f_equal; field; nra.
+Qed.
+
+Theorem wedderburn_section1_e21_sq_zero :
+  forall c2 c3 r : R,
+    r <> 0 ->
+    r * r = c2 ->
+    dickson1921_param_mul c2 c3
+      (wedderburn_section1_e21 c2 c3 r)
+      (wedderburn_section1_e21 c2 c3 r) = quat_zero.
+Proof.
+  intros c2 c3 r Hr0 Hroot.
+  symmetry in Hroot.
+  subst c2.
+  assert (H2r : 2 * r <> 0) by nra.
+  rewrite wedderburn_section1_e21_explicit by (assumption || reflexivity).
+  unfold dickson1921_param_mul, quat_zero.
+  simpl.
+  repeat f_equal; field; nra.
+Qed.
+
+Theorem wedderburn_section1_e12_e21 :
+  forall c2 c3 r : R,
+    r <> 0 ->
+    r * r = c2 ->
+    dickson1921_param_mul c2 c3
+      (wedderburn_section1_e12 c2 c3 r)
+      (wedderburn_section1_e21 c2 c3 r) =
+    quat_scale c3 (wedderburn_section1_e11 r).
+Proof.
+  intros c2 c3 r Hr0 Hroot.
+  symmetry in Hroot.
+  subst c2.
+  assert (H2r : 2 * r <> 0) by nra.
+  rewrite wedderburn_section1_e12_explicit by (assumption || reflexivity).
+  rewrite wedderburn_section1_e21_explicit by (assumption || reflexivity).
+  unfold dickson1921_param_mul, quat_scale, wedderburn_section1_e11,
+         wedderburn_section1_projector_plus, wedderburn_coeff_elem.
+  simpl.
+  apply (f_equal4 mkQuat).
+  - field; nra.
+  - field; nra.
+  - field; nra.
+  - field; nra.
+Qed.
+
+Theorem wedderburn_section1_e21_e12 :
+  forall c2 c3 r : R,
+    r <> 0 ->
+    r * r = c2 ->
+    dickson1921_param_mul c2 c3
+      (wedderburn_section1_e21 c2 c3 r)
+      (wedderburn_section1_e12 c2 c3 r) =
+    quat_scale c3 (wedderburn_section1_e22 r).
+Proof.
+  intros c2 c3 r Hr0 Hroot.
+  symmetry in Hroot.
+  subst c2.
+  assert (H2r : 2 * r <> 0) by nra.
+  rewrite wedderburn_section1_e21_explicit by (assumption || reflexivity).
+  rewrite wedderburn_section1_e12_explicit by (assumption || reflexivity).
+  unfold dickson1921_param_mul, quat_scale, wedderburn_section1_e22,
+         wedderburn_section1_projector_minus, wedderburn_coeff_elem.
+  simpl.
+  apply (f_equal4 mkQuat).
+  - field; nra.
+  - field; nra.
+  - field; nra.
+  - field; nra.
+Qed.
+
+Record WedderburnSection1MatrixUnitSurface (c2 c3 r : R) := {
+  wmu_spectral_surface : WedderburnSection1SpectralSurface c2 c3 r;
+  wmu_e12_right :
+    wedderburn_section1_e12 c2 c3 r =
+    dickson1921_param_mul c2 c3 qj (wedderburn_section1_e22 r);
+  wmu_e21_right :
+    wedderburn_section1_e21 c2 c3 r =
+    dickson1921_param_mul c2 c3 qj (wedderburn_section1_e11 r);
+  wmu_e12_sq_zero :
+    dickson1921_param_mul c2 c3
+      (wedderburn_section1_e12 c2 c3 r)
+      (wedderburn_section1_e12 c2 c3 r) = quat_zero;
+  wmu_e21_sq_zero :
+    dickson1921_param_mul c2 c3
+      (wedderburn_section1_e21 c2 c3 r)
+      (wedderburn_section1_e21 c2 c3 r) = quat_zero;
+  wmu_e12_e21 :
+    dickson1921_param_mul c2 c3
+      (wedderburn_section1_e12 c2 c3 r)
+      (wedderburn_section1_e21 c2 c3 r) =
+    quat_scale c3 (wedderburn_section1_e11 r);
+  wmu_e21_e12 :
+    dickson1921_param_mul c2 c3
+      (wedderburn_section1_e21 c2 c3 r)
+      (wedderburn_section1_e12 c2 c3 r) =
+    quat_scale c3 (wedderburn_section1_e22 r);
+}.
+
+Definition wedderburn_generalized_section1_matrix_unit_surface
+    (c2 c3 r : R)
+    (Hr0 : r <> 0)
+    (Hroot : r * r = c2)
+    : WedderburnSection1MatrixUnitSurface c2 c3 r :=
+  {| wmu_spectral_surface :=
+       wedderburn_generalized_section1_spectral_surface c2 c3 r Hr0 Hroot;
+     wmu_e12_right := wedderburn_section1_e12_right c2 c3 r;
+     wmu_e21_right := wedderburn_section1_e21_right c2 c3 r;
+     wmu_e12_sq_zero := wedderburn_section1_e12_sq_zero c2 c3 r Hr0 Hroot;
+     wmu_e21_sq_zero := wedderburn_section1_e21_sq_zero c2 c3 r Hr0 Hroot;
+     wmu_e12_e21 := wedderburn_section1_e12_e21 c2 c3 r Hr0 Hroot;
+     wmu_e21_e12 := wedderburn_section1_e21_e12 c2 c3 r Hr0 Hroot |}.
+
+Definition wedderburn_section1_m12 (c2 c3 r : R) : CDQuat :=
+  quat_scale (/ c3) (wedderburn_section1_e12 c2 c3 r).
+
+Definition wedderburn_section1_m21 (c2 c3 r : R) : CDQuat :=
+  wedderburn_section1_e21 c2 c3 r.
+
+Theorem wedderburn_section1_m12_explicit :
+  forall c2 c3 r : R,
+    r <> 0 ->
+    c3 <> 0 ->
+    r * r = c2 ->
+    wedderburn_section1_m12 c2 c3 r =
+    mkQuat 0 0 (/ (2 * c3)) (/ (2 * r * c3)).
+Proof.
+  intros c2 c3 r Hr0 Hc3 Hroot.
+  symmetry in Hroot.
+  subst c2.
+  assert (H2c3 : 2 * c3 <> 0) by nra.
+  assert (H2rc3 : 2 * r * c3 <> 0) by nra.
+  unfold wedderburn_section1_m12, quat_scale.
+  rewrite wedderburn_section1_e12_explicit with (c2 := r * r).
+  2: exact Hr0.
+  2: reflexivity.
+  simpl.
+  apply (f_equal4 mkQuat).
+  - ring.
+  - ring.
+  - field; nra.
+  - field; nra.
+Qed.
+
+Theorem wedderburn_section1_m12_sq_zero :
+  forall c2 c3 r : R,
+    r <> 0 ->
+    c3 <> 0 ->
+    r * r = c2 ->
+    dickson1921_param_mul c2 c3
+      (wedderburn_section1_m12 c2 c3 r)
+      (wedderburn_section1_m12 c2 c3 r) = quat_zero.
+Proof.
+  intros c2 c3 r Hr0 Hc3 Hroot.
+  symmetry in Hroot.
+  subst c2.
+  assert (H2c3 : 2 * c3 <> 0) by nra.
+  assert (H2rc3 : 2 * r * c3 <> 0) by nra.
+  rewrite wedderburn_section1_m12_explicit with (c2 := r * r).
+  2: exact Hr0.
+  2: exact Hc3.
+  2: reflexivity.
+  unfold dickson1921_param_mul, quat_zero.
+  simpl.
+  apply (f_equal4 mkQuat).
+  - field; nra.
+  - field; nra.
+  - field; nra.
+  - field; nra.
+Qed.
+
+Theorem wedderburn_section1_m12_m21 :
+  forall c2 c3 r : R,
+    r <> 0 ->
+    c3 <> 0 ->
+    r * r = c2 ->
+    dickson1921_param_mul c2 c3
+      (wedderburn_section1_m12 c2 c3 r)
+      (wedderburn_section1_m21 c2 c3 r) =
+    wedderburn_section1_e11 r.
+Proof.
+  intros c2 c3 r Hr0 Hc3 Hroot.
+  symmetry in Hroot.
+  subst c2.
+  assert (H2r : 2 * r <> 0) by nra.
+  assert (H2c3 : 2 * c3 <> 0) by nra.
+  assert (H2rc3 : 2 * r * c3 <> 0) by nra.
+  rewrite wedderburn_section1_m12_explicit with (c2 := r * r).
+  2: exact Hr0.
+  2: exact Hc3.
+  2: reflexivity.
+  rewrite wedderburn_section1_e21_explicit with (c2 := r * r).
+  2: exact Hr0.
+  2: reflexivity.
+  unfold wedderburn_section1_m21, dickson1921_param_mul,
+         wedderburn_section1_e11, wedderburn_section1_projector_plus,
+         wedderburn_coeff_elem.
+  simpl.
+  apply (f_equal4 mkQuat).
+  - field; nra.
+  - field; nra.
+  - ring.
+  - ring.
+Qed.
+
+Theorem wedderburn_section1_m21_m12 :
+  forall c2 c3 r : R,
+    r <> 0 ->
+    c3 <> 0 ->
+    r * r = c2 ->
+    dickson1921_param_mul c2 c3
+      (wedderburn_section1_m21 c2 c3 r)
+      (wedderburn_section1_m12 c2 c3 r) =
+    wedderburn_section1_e22 r.
+Proof.
+  intros c2 c3 r Hr0 Hc3 Hroot.
+  symmetry in Hroot.
+  subst c2.
+  assert (H2r : 2 * r <> 0) by nra.
+  assert (H2c3 : 2 * c3 <> 0) by nra.
+  assert (H2rc3 : 2 * r * c3 <> 0) by nra.
+  rewrite wedderburn_section1_e21_explicit with (c2 := r * r).
+  2: exact Hr0.
+  2: reflexivity.
+  rewrite wedderburn_section1_m12_explicit with (c2 := r * r).
+  2: exact Hr0.
+  2: exact Hc3.
+  2: reflexivity.
+  unfold wedderburn_section1_m21, dickson1921_param_mul,
+         wedderburn_section1_e22, wedderburn_section1_projector_minus,
+         wedderburn_coeff_elem.
+  simpl.
+  apply (f_equal4 mkQuat).
+  - field; nra.
+  - field; nra.
+  - ring.
+  - ring.
+Qed.
+
+Theorem wedderburn_section1_e11_m12 :
+  forall c2 c3 r : R,
+    r <> 0 ->
+    c3 <> 0 ->
+    r * r = c2 ->
+    dickson1921_param_mul c2 c3
+      (wedderburn_section1_e11 r)
+      (wedderburn_section1_m12 c2 c3 r) =
+    wedderburn_section1_m12 c2 c3 r.
+Proof.
+  intros c2 c3 r Hr0 Hc3 Hroot.
+  symmetry in Hroot.
+  subst c2.
+  assert (H2r : 2 * r <> 0) by nra.
+  assert (H2c3 : 2 * c3 <> 0) by nra.
+  assert (H2rc3 : 2 * r * c3 <> 0) by nra.
+  rewrite wedderburn_section1_m12_explicit with (c2 := r * r).
+  2: exact Hr0.
+  2: exact Hc3.
+  2: reflexivity.
+  unfold dickson1921_param_mul, wedderburn_section1_e11,
+         wedderburn_section1_projector_plus, wedderburn_coeff_elem,
+         wedderburn_section1_m12.
+  simpl.
+  apply (f_equal4 mkQuat).
+  - ring.
+  - ring.
+  - field; nra.
+  - field; nra.
+Qed.
+
+Theorem wedderburn_section1_m12_e22 :
+  forall c2 c3 r : R,
+    r <> 0 ->
+    c3 <> 0 ->
+    r * r = c2 ->
+    dickson1921_param_mul c2 c3
+      (wedderburn_section1_m12 c2 c3 r)
+      (wedderburn_section1_e22 r) =
+    wedderburn_section1_m12 c2 c3 r.
+Proof.
+  intros c2 c3 r Hr0 Hc3 Hroot.
+  symmetry in Hroot.
+  subst c2.
+  assert (H2r : 2 * r <> 0) by nra.
+  assert (H2c3 : 2 * c3 <> 0) by nra.
+  assert (H2rc3 : 2 * r * c3 <> 0) by nra.
+  rewrite wedderburn_section1_m12_explicit with (c2 := r * r).
+  2: exact Hr0.
+  2: exact Hc3.
+  2: reflexivity.
+  unfold dickson1921_param_mul, wedderburn_section1_e22,
+         wedderburn_section1_projector_minus, wedderburn_coeff_elem,
+         wedderburn_section1_m12.
+  simpl.
+  apply (f_equal4 mkQuat).
+  - ring.
+  - ring.
+  - field; nra.
+  - field; nra.
+Qed.
+
+Theorem wedderburn_section1_e22_m21 :
+  forall c2 c3 r : R,
+    r <> 0 ->
+    r * r = c2 ->
+    dickson1921_param_mul c2 c3
+      (wedderburn_section1_e22 r)
+      (wedderburn_section1_m21 c2 c3 r) =
+    wedderburn_section1_m21 c2 c3 r.
+Proof.
+  intros c2 c3 r Hr0 Hroot.
+  symmetry in Hroot.
+  subst c2.
+  assert (H2r : 2 * r <> 0) by nra.
+  rewrite wedderburn_section1_e21_explicit with (c2 := r * r).
+  2: exact Hr0.
+  2: reflexivity.
+  unfold wedderburn_section1_m21, dickson1921_param_mul,
+         wedderburn_section1_e22, wedderburn_section1_projector_minus,
+         wedderburn_coeff_elem.
+  simpl.
+  apply (f_equal4 mkQuat).
+  - field; nra.
+  - field; nra.
+  - field; nra.
+  - field; nra.
+Qed.
+
+Theorem wedderburn_section1_m21_e11 :
+  forall c2 c3 r : R,
+    r <> 0 ->
+    r * r = c2 ->
+    dickson1921_param_mul c2 c3
+      (wedderburn_section1_m21 c2 c3 r)
+      (wedderburn_section1_e11 r) =
+    wedderburn_section1_m21 c2 c3 r.
+Proof.
+  intros c2 c3 r Hr0 Hroot.
+  symmetry in Hroot.
+  subst c2.
+  assert (H2r : 2 * r <> 0) by nra.
+  rewrite wedderburn_section1_e21_explicit with (c2 := r * r).
+  2: exact Hr0.
+  2: reflexivity.
+  unfold wedderburn_section1_m21, dickson1921_param_mul,
+         wedderburn_section1_e11, wedderburn_section1_projector_plus,
+         wedderburn_coeff_elem.
+  simpl.
+  apply (f_equal4 mkQuat).
+  - field; nra.
+  - field; nra.
+  - field; nra.
+  - field; nra.
+Qed.
+
+Theorem wedderburn_section1_e22_m12_zero :
+  forall c2 c3 r : R,
+    r <> 0 ->
+    c3 <> 0 ->
+    r * r = c2 ->
+    dickson1921_param_mul c2 c3
+      (wedderburn_section1_e22 r)
+      (wedderburn_section1_m12 c2 c3 r) = quat_zero.
+Proof.
+  intros c2 c3 r Hr0 Hc3 Hroot.
+  symmetry in Hroot.
+  subst c2.
+  assert (H2r : 2 * r <> 0) by nra.
+  assert (H2c3 : 2 * c3 <> 0) by nra.
+  assert (H2rc3 : 2 * r * c3 <> 0) by nra.
+  rewrite wedderburn_section1_m12_explicit with (c2 := r * r).
+  2: exact Hr0.
+  2: exact Hc3.
+  2: reflexivity.
+  unfold dickson1921_param_mul, wedderburn_section1_e22,
+         wedderburn_section1_projector_minus, wedderburn_coeff_elem, quat_zero.
+  simpl.
+  apply (f_equal4 mkQuat).
+  - ring.
+  - ring.
+  - field; nra.
+  - field; nra.
+Qed.
+
+Theorem wedderburn_section1_m12_e11_zero :
+  forall c2 c3 r : R,
+    r <> 0 ->
+    c3 <> 0 ->
+    r * r = c2 ->
+    dickson1921_param_mul c2 c3
+      (wedderburn_section1_m12 c2 c3 r)
+      (wedderburn_section1_e11 r) = quat_zero.
+Proof.
+  intros c2 c3 r Hr0 Hc3 Hroot.
+  symmetry in Hroot.
+  subst c2.
+  assert (H2r : 2 * r <> 0) by nra.
+  assert (H2c3 : 2 * c3 <> 0) by nra.
+  assert (H2rc3 : 2 * r * c3 <> 0) by nra.
+  rewrite wedderburn_section1_m12_explicit with (c2 := r * r).
+  2: exact Hr0.
+  2: exact Hc3.
+  2: reflexivity.
+  unfold dickson1921_param_mul, wedderburn_section1_e11,
+         wedderburn_section1_projector_plus, wedderburn_coeff_elem, quat_zero.
+  simpl.
+  apply (f_equal4 mkQuat).
+  - ring.
+  - ring.
+  - field; nra.
+  - field; nra.
+Qed.
+
+Theorem wedderburn_section1_e11_m21_zero :
+  forall c2 c3 r : R,
+    r <> 0 ->
+    r * r = c2 ->
+    dickson1921_param_mul c2 c3
+      (wedderburn_section1_e11 r)
+      (wedderburn_section1_m21 c2 c3 r) = quat_zero.
+Proof.
+  intros c2 c3 r Hr0 Hroot.
+  symmetry in Hroot.
+  subst c2.
+  assert (H2r : 2 * r <> 0) by nra.
+  rewrite wedderburn_section1_e21_explicit with (c2 := r * r).
+  2: exact Hr0.
+  2: reflexivity.
+  unfold wedderburn_section1_m21, dickson1921_param_mul,
+         wedderburn_section1_e11, wedderburn_section1_projector_plus,
+         wedderburn_coeff_elem, quat_zero.
+  simpl.
+  apply (f_equal4 mkQuat).
+  - field; nra.
+  - field; nra.
+  - field; nra.
+  - field; nra.
+Qed.
+
+Theorem wedderburn_section1_m21_e22_zero :
+  forall c2 c3 r : R,
+    r <> 0 ->
+    r * r = c2 ->
+    dickson1921_param_mul c2 c3
+      (wedderburn_section1_m21 c2 c3 r)
+      (wedderburn_section1_e22 r) = quat_zero.
+Proof.
+  intros c2 c3 r Hr0 Hroot.
+  symmetry in Hroot.
+  subst c2.
+  assert (H2r : 2 * r <> 0) by nra.
+  rewrite wedderburn_section1_e21_explicit with (c2 := r * r).
+  2: exact Hr0.
+  2: reflexivity.
+  unfold wedderburn_section1_m21, dickson1921_param_mul,
+         wedderburn_section1_e22, wedderburn_section1_projector_minus,
+         wedderburn_coeff_elem, quat_zero.
+  simpl.
+  apply (f_equal4 mkQuat).
+  - field; nra.
+  - field; nra.
+  - field; nra.
+  - field; nra.
+Qed.
+
+Theorem wedderburn_section1_total_matric_decomposition :
+  forall c2 c3 r : R, forall q : CDQuat,
+    r <> 0 ->
+    c3 <> 0 ->
+    r * r = c2 ->
+    q =
+    quat_add
+      (quat_add
+        (quat_scale (qa q + r * qb q) (wedderburn_section1_e11 r))
+        (quat_scale (c3 * (qc q + r * qd q)) (wedderburn_section1_m12 c2 c3 r)))
+      (quat_add
+        (quat_scale (qc q - r * qd q) (wedderburn_section1_m21 c2 c3 r))
+        (quat_scale (qa q - r * qb q) (wedderburn_section1_e22 r))).
+Proof.
+  intros c2 c3 r [a b c d] Hr0 Hc3 Hroot.
+  symmetry in Hroot.
+  subst c2.
+  assert (H2r : 2 * r <> 0) by nra.
+  assert (H2c3 : 2 * c3 <> 0) by nra.
+  assert (H2rc3 : 2 * r * c3 <> 0) by nra.
+  rewrite wedderburn_section1_m12_explicit with (c2 := r * r).
+  2: exact Hr0.
+  2: exact Hc3.
+  2: reflexivity.
+  rewrite wedderburn_section1_e21_explicit with (c2 := r * r).
+  2: exact Hr0.
+  2: reflexivity.
+  unfold wedderburn_section1_m21, wedderburn_section1_e11, wedderburn_section1_e22,
+         wedderburn_section1_projector_plus, wedderburn_section1_projector_minus,
+         wedderburn_coeff_elem, quat_add, quat_scale.
+  simpl.
+  apply (f_equal4 mkQuat).
+  - field; nra.
+  - field; nra.
+  - field; nra.
+  - field; nra.
+Qed.
+
+Record WedderburnSection1TotalMatricSurface (c2 c3 r : R) := {
+  wtm_matrix_surface : WedderburnSection1MatrixUnitSurface c2 c3 r;
+  wtm_c3_nonzero : c3 <> 0;
+  wtm_e11_m12 :
+    dickson1921_param_mul c2 c3
+      (wedderburn_section1_e11 r)
+      (wedderburn_section1_m12 c2 c3 r) =
+    wedderburn_section1_m12 c2 c3 r;
+  wtm_m12_e22 :
+    dickson1921_param_mul c2 c3
+      (wedderburn_section1_m12 c2 c3 r)
+      (wedderburn_section1_e22 r) =
+    wedderburn_section1_m12 c2 c3 r;
+  wtm_e22_m21 :
+    dickson1921_param_mul c2 c3
+      (wedderburn_section1_e22 r)
+      (wedderburn_section1_m21 c2 c3 r) =
+    wedderburn_section1_m21 c2 c3 r;
+  wtm_m21_e11 :
+    dickson1921_param_mul c2 c3
+      (wedderburn_section1_m21 c2 c3 r)
+      (wedderburn_section1_e11 r) =
+    wedderburn_section1_m21 c2 c3 r;
+  wtm_e22_m12_zero :
+    dickson1921_param_mul c2 c3
+      (wedderburn_section1_e22 r)
+      (wedderburn_section1_m12 c2 c3 r) = quat_zero;
+  wtm_m12_e11_zero :
+    dickson1921_param_mul c2 c3
+      (wedderburn_section1_m12 c2 c3 r)
+      (wedderburn_section1_e11 r) = quat_zero;
+  wtm_e11_m21_zero :
+    dickson1921_param_mul c2 c3
+      (wedderburn_section1_e11 r)
+      (wedderburn_section1_m21 c2 c3 r) = quat_zero;
+  wtm_m21_e22_zero :
+    dickson1921_param_mul c2 c3
+      (wedderburn_section1_m21 c2 c3 r)
+      (wedderburn_section1_e22 r) = quat_zero;
+  wtm_m12_m12_zero :
+    dickson1921_param_mul c2 c3
+      (wedderburn_section1_m12 c2 c3 r)
+      (wedderburn_section1_m12 c2 c3 r) = quat_zero;
+  wtm_m21_m21_zero :
+    dickson1921_param_mul c2 c3
+      (wedderburn_section1_m21 c2 c3 r)
+      (wedderburn_section1_m21 c2 c3 r) = quat_zero;
+  wtm_m12_m21 :
+    dickson1921_param_mul c2 c3
+      (wedderburn_section1_m12 c2 c3 r)
+      (wedderburn_section1_m21 c2 c3 r) =
+    wedderburn_section1_e11 r;
+  wtm_m21_m12 :
+    dickson1921_param_mul c2 c3
+      (wedderburn_section1_m21 c2 c3 r)
+      (wedderburn_section1_m12 c2 c3 r) =
+    wedderburn_section1_e22 r;
+  wtm_decomposition :
+    forall q : CDQuat,
+      q =
+      quat_add
+        (quat_add
+          (quat_scale (qa q + r * qb q) (wedderburn_section1_e11 r))
+          (quat_scale (c3 * (qc q + r * qd q)) (wedderburn_section1_m12 c2 c3 r)))
+        (quat_add
+          (quat_scale (qc q - r * qd q) (wedderburn_section1_m21 c2 c3 r))
+          (quat_scale (qa q - r * qb q) (wedderburn_section1_e22 r)));
+}.
+
+Definition wedderburn_generalized_section1_total_matric_surface
+    (c2 c3 r : R)
+    (Hr0 : r <> 0)
+    (Hc3 : c3 <> 0)
+    (Hroot : r * r = c2)
+    : WedderburnSection1TotalMatricSurface c2 c3 r :=
+  {| wtm_matrix_surface :=
+       wedderburn_generalized_section1_matrix_unit_surface c2 c3 r Hr0 Hroot;
+     wtm_c3_nonzero := Hc3;
+     wtm_e11_m12 := wedderburn_section1_e11_m12 c2 c3 r Hr0 Hc3 Hroot;
+     wtm_m12_e22 := wedderburn_section1_m12_e22 c2 c3 r Hr0 Hc3 Hroot;
+     wtm_e22_m21 := wedderburn_section1_e22_m21 c2 c3 r Hr0 Hroot;
+     wtm_m21_e11 := wedderburn_section1_m21_e11 c2 c3 r Hr0 Hroot;
+     wtm_e22_m12_zero := wedderburn_section1_e22_m12_zero c2 c3 r Hr0 Hc3 Hroot;
+     wtm_m12_e11_zero := wedderburn_section1_m12_e11_zero c2 c3 r Hr0 Hc3 Hroot;
+     wtm_e11_m21_zero := wedderburn_section1_e11_m21_zero c2 c3 r Hr0 Hroot;
+     wtm_m21_e22_zero := wedderburn_section1_m21_e22_zero c2 c3 r Hr0 Hroot;
+     wtm_m12_m12_zero := wedderburn_section1_m12_sq_zero c2 c3 r Hr0 Hc3 Hroot;
+     wtm_m21_m21_zero := wedderburn_section1_e21_sq_zero c2 c3 r Hr0 Hroot;
+     wtm_m12_m21 := wedderburn_section1_m12_m21 c2 c3 r Hr0 Hc3 Hroot;
+     wtm_m21_m12 := wedderburn_section1_m21_m12 c2 c3 r Hr0 Hc3 Hroot;
+     wtm_decomposition := fun q =>
+       wedderburn_section1_total_matric_decomposition c2 c3 r q Hr0 Hc3 Hroot |}.
+
+Theorem wedderburn_quat_scale_zero_one :
+  quat_scale 0 quat_one = quat_zero.
+Proof.
+  unfold quat_scale, quat_one, quat_zero.
+  simpl.
+  apply (f_equal4 mkQuat); ring.
+Qed.
+
+Record WedderburnSection1AbstractCyclicMatricSurface (A : Type) := {
+  wsac_cyclic_surface : WedderburnCyclicN2Surface A;
+  wsac_add : A -> A -> A;
+  wsac_scale : R -> A -> A;
+  wsac_one : A;
+  wsac_e11 : A;
+  wsac_e22 : A;
+  wsac_e12 : A;
+  wsac_e21 : A;
+  wsac_a11 : A -> R;
+  wsac_a12 : A -> R;
+  wsac_a21 : A -> R;
+  wsac_a22 : A -> R;
+  wsac_projectors_sum_to_one :
+    wsac_add wsac_e11 wsac_e22 = wsac_one;
+  wsac_e11_sq :
+    @wcy_mul A wsac_cyclic_surface wsac_e11 wsac_e11 = wsac_e11;
+  wsac_e22_sq :
+    @wcy_mul A wsac_cyclic_surface wsac_e22 wsac_e22 = wsac_e22;
+  wsac_e11e22_zero :
+    @wcy_mul A wsac_cyclic_surface wsac_e11 wsac_e22 =
+    wsac_scale 0 wsac_one;
+  wsac_e22e11_zero :
+    @wcy_mul A wsac_cyclic_surface wsac_e22 wsac_e11 =
+    wsac_scale 0 wsac_one;
+  wsac_e11e12 :
+    @wcy_mul A wsac_cyclic_surface wsac_e11 wsac_e12 = wsac_e12;
+  wsac_e12e22 :
+    @wcy_mul A wsac_cyclic_surface wsac_e12 wsac_e22 = wsac_e12;
+  wsac_e22e21 :
+    @wcy_mul A wsac_cyclic_surface wsac_e22 wsac_e21 = wsac_e21;
+  wsac_e21e11 :
+    @wcy_mul A wsac_cyclic_surface wsac_e21 wsac_e11 = wsac_e21;
+  wsac_e22e12_zero :
+    @wcy_mul A wsac_cyclic_surface wsac_e22 wsac_e12 =
+    wsac_scale 0 wsac_one;
+  wsac_e12e11_zero :
+    @wcy_mul A wsac_cyclic_surface wsac_e12 wsac_e11 =
+    wsac_scale 0 wsac_one;
+  wsac_e11e21_zero :
+    @wcy_mul A wsac_cyclic_surface wsac_e11 wsac_e21 =
+    wsac_scale 0 wsac_one;
+  wsac_e21e22_zero :
+    @wcy_mul A wsac_cyclic_surface wsac_e21 wsac_e22 =
+    wsac_scale 0 wsac_one;
+  wsac_e12_sq_zero :
+    @wcy_mul A wsac_cyclic_surface wsac_e12 wsac_e12 =
+    wsac_scale 0 wsac_one;
+  wsac_e21_sq_zero :
+    @wcy_mul A wsac_cyclic_surface wsac_e21 wsac_e21 =
+    wsac_scale 0 wsac_one;
+  wsac_e12e21 :
+    @wcy_mul A wsac_cyclic_surface wsac_e12 wsac_e21 = wsac_e11;
+  wsac_e21e12 :
+    @wcy_mul A wsac_cyclic_surface wsac_e21 wsac_e12 = wsac_e22;
+  wsac_decomposition :
+    forall z : A,
+      z =
+      wsac_add
+        (wsac_add
+          (wsac_scale (wsac_a11 z) wsac_e11)
+          (wsac_scale (wsac_a12 z) wsac_e12))
+        (wsac_add
+          (wsac_scale (wsac_a21 z) wsac_e21)
+          (wsac_scale (wsac_a22 z) wsac_e22));
+}.
+
+Definition wedderburn_generalized_section1_abstract_cyclic_matric_surface
+    (c2 c3 r : R)
+    (Hr0 : r <> 0)
+    (Hc3 : c3 <> 0)
+    (Hroot : r * r = c2)
+    : WedderburnSection1AbstractCyclicMatricSurface CDQuat :=
+  {| wsac_cyclic_surface := wedderburn_generalized_quaternion_cyclic_surface c2 c3;
+     wsac_add := quat_add;
+     wsac_scale := quat_scale;
+     wsac_one := quat_one;
+     wsac_e11 := wedderburn_section1_e11 r;
+     wsac_e22 := wedderburn_section1_e22 r;
+     wsac_e12 := wedderburn_section1_m12 c2 c3 r;
+     wsac_e21 := wedderburn_section1_m21 c2 c3 r;
+     wsac_a11 := fun q => qa q + r * qb q;
+     wsac_a12 := fun q => c3 * (qc q + r * qd q);
+     wsac_a21 := fun q => qc q - r * qd q;
+     wsac_a22 := fun q => qa q - r * qb q;
+     wsac_projectors_sum_to_one := wedderburn_section1_projectors_sum_to_one r Hr0;
+     wsac_e11_sq :=
+       wedderburn_section1_projector_plus_idempotent c2 c3 r Hr0 Hroot;
+     wsac_e22_sq :=
+       wedderburn_section1_projector_minus_idempotent c2 c3 r Hr0 Hroot;
+     wsac_e11e22_zero :=
+       eq_trans
+         (proj1 (wedderburn_section1_projectors_orthogonal c2 c3 r Hr0 Hroot))
+         (eq_sym wedderburn_quat_scale_zero_one);
+     wsac_e22e11_zero :=
+       eq_trans
+         (proj2 (wedderburn_section1_projectors_orthogonal c2 c3 r Hr0 Hroot))
+         (eq_sym wedderburn_quat_scale_zero_one);
+     wsac_e11e12 := wedderburn_section1_e11_m12 c2 c3 r Hr0 Hc3 Hroot;
+     wsac_e12e22 := wedderburn_section1_m12_e22 c2 c3 r Hr0 Hc3 Hroot;
+     wsac_e22e21 := wedderburn_section1_e22_m21 c2 c3 r Hr0 Hroot;
+     wsac_e21e11 := wedderburn_section1_m21_e11 c2 c3 r Hr0 Hroot;
+     wsac_e22e12_zero :=
+       eq_trans
+         (wedderburn_section1_e22_m12_zero c2 c3 r Hr0 Hc3 Hroot)
+         (eq_sym wedderburn_quat_scale_zero_one);
+     wsac_e12e11_zero :=
+       eq_trans
+         (wedderburn_section1_m12_e11_zero c2 c3 r Hr0 Hc3 Hroot)
+         (eq_sym wedderburn_quat_scale_zero_one);
+     wsac_e11e21_zero :=
+       eq_trans
+         (wedderburn_section1_e11_m21_zero c2 c3 r Hr0 Hroot)
+         (eq_sym wedderburn_quat_scale_zero_one);
+     wsac_e21e22_zero :=
+       eq_trans
+         (wedderburn_section1_m21_e22_zero c2 c3 r Hr0 Hroot)
+         (eq_sym wedderburn_quat_scale_zero_one);
+     wsac_e12_sq_zero :=
+       eq_trans
+         (wedderburn_section1_m12_sq_zero c2 c3 r Hr0 Hc3 Hroot)
+         (eq_sym wedderburn_quat_scale_zero_one);
+     wsac_e21_sq_zero :=
+       eq_trans
+         (wedderburn_section1_e21_sq_zero c2 c3 r Hr0 Hroot)
+         (eq_sym wedderburn_quat_scale_zero_one);
+     wsac_e12e21 := wedderburn_section1_m12_m21 c2 c3 r Hr0 Hc3 Hroot;
+     wsac_e21e12 := wedderburn_section1_m21_m12 c2 c3 r Hr0 Hc3 Hroot;
+     wsac_decomposition := fun q =>
+       wedderburn_section1_total_matric_decomposition c2 c3 r q Hr0 Hc3 Hroot |}.
 
 Definition wedderburn_base_norm_anisotropic (c2 : R) : Prop :=
   forall a b : R, wedderburn_base_norm c2 a b = 0 -> a = 0 /\ b = 0.

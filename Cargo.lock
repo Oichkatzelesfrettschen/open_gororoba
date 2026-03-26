@@ -4417,6 +4417,7 @@ dependencies = [
  "hdf5-metno",
  "hifitime",
  "lit_search",
+ "lopdf 0.39.0",
  "materials_core",
  "md-5",
  "nalgebra 0.33.2",

@@ -15,7 +15,7 @@ pub fn download_orix_dataset(target_dir: &Path) -> Result<()> {
         create_dir_all(target_dir).context("Failed to create orix-data directory")?;
     }
 
-    println!("📥 Downloading orix-data from: {}", ORIX_DATA_URL);
+    println!("<EMOJI+1F4E5> Downloading orix-data from: {}", ORIX_DATA_URL);
     let agent = ureq::Agent::new_with_defaults();
     let response = agent.get(ORIX_DATA_URL).call()?;
 
@@ -63,6 +63,6 @@ pub fn download_orix_dataset(target_dir: &Path) -> Result<()> {
         }
     }
 
-    println!("✅ orix-data extracted to: {:?}", target_dir);
+    println!("<EMOJI+2705> orix-data extracted to: {:?}", target_dir);
     Ok(())
 }

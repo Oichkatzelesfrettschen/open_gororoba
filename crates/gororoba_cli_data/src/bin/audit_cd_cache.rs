@@ -1,13 +1,14 @@
 use anyhow::Result;
 use clap::Parser;
 use regex::Regex;
-use std::collections::BTreeMap;
-use std::fs;
-use std::path::PathBuf;
+use std::{collections::BTreeMap, fs, path::PathBuf};
 use walkdir::WalkDir;
 
 #[derive(Parser, Debug)]
-#[command(name = "audit-cd-cache", about = "Audit the off-site Cayley-Dickson document cache (Rust replacement for audit_cayley_dickson_cache.py)")]
+#[command(
+    name = "audit-cd-cache",
+    about = "Audit the off-site Cayley-Dickson document cache (Rust replacement for audit_cayley_dickson_cache.py)"
+)]
 struct Cli {
     #[arg(long, default_value = "/home/eirikr/Documents/Projects/CayleyDickson")]
     cache_root: PathBuf,
@@ -57,7 +58,11 @@ fn main() -> Result<()> {
 
     data.total_files = files.len();
     for path in &files {
-        let ext = path.extension().and_then(|s| s.to_str()).unwrap_or("").to_lowercase();
+        let ext = path
+            .extension()
+            .and_then(|s| s.to_str())
+            .unwrap_or("")
+            .to_lowercase();
         match ext.as_str() {
             "pdf" => data.pdf_count += 1,
             "md" => data.markdown_count += 1,
@@ -80,8 +85,18 @@ fn main() -> Result<()> {
 
             let rel_str = rel.to_string_lossy().to_string();
             let rel_lower = rel_str.to_lowercase();
-            if ["_dup.", "_mirror.", "blocked.html", "captcha.html", "placeholder", "_full.pdf", "_full.tex"]
-                .iter().any(|token| rel_lower.contains(token)) {
+            if [
+                "_dup.",
+                "_mirror.",
+                "blocked.html",
+                "captcha.html",
+                "placeholder",
+                "_full.pdf",
+                "_full.tex",
+            ]
+            .iter()
+            .any(|token| rel_lower.contains(token))
+            {
                 data.flagged_paths.push(rel_str);
             }
         }
@@ -89,7 +104,9 @@ fn main() -> Result<()> {
     data.flagged_paths.sort();
 
     // Manifest audit
-    let manifest_path = cli.cache_root.join("metadata/repo_extracted_metadata/MANIFEST.toml");
+    let manifest_path = cli
+        .cache_root
+        .join("metadata/repo_extracted_metadata/MANIFEST.toml");
     if manifest_path.exists() {
         let content = fs::read_to_string(&manifest_path)?;
         let manifest_re = Regex::new(r#"(?m)^local_pdf\s*=\s*"([^"]*)""#)?;
@@ -110,11 +127,23 @@ fn main() -> Result<()> {
     if chrono_path.exists() {
         let content = fs::read_to_string(&chrono_path)?;
         for line in content.lines() {
-            if !line.trim().starts_with('|') { continue; }
-            let cells: Vec<_> = line.trim_matches('|').split('|').map(|s| s.trim()).collect();
-            if cells.len() < 7 { continue; }
-            if ["#", "ID", "Family"].contains(&cells[0]) { continue; }
-            if cells.iter().all(|c| c.chars().all(|ch| ch == '-')) { continue; }
+            if !line.trim().starts_with('|') {
+                continue;
+            }
+            let cells: Vec<_> = line
+                .trim_matches('|')
+                .split('|')
+                .map(|s| s.trim())
+                .collect();
+            if cells.len() < 7 {
+                continue;
+            }
+            if ["#", "ID", "Family"].contains(&cells[0]) {
+                continue;
+            }
+            if cells.iter().all(|c| c.chars().all(|ch| ch == '-')) {
+                continue;
+            }
 
             data.chronology_entry_count += 1;
             let status = cells[cells.len() - 1];
@@ -130,17 +159,26 @@ fn main() -> Result<()> {
 
     // Repo audit
     data.proofs_theories = WalkDir::new(cli.repo_root.join("proofs/theories"))
-        .into_iter().filter_map(|e| e.ok()).filter(|e| e.path().extension().is_some_and(|ext| ext == "v")).count();
+        .into_iter()
+        .filter_map(|e| e.ok())
+        .filter(|e| e.path().extension().is_some_and(|ext| ext == "v"))
+        .count();
     data.proofs_verified = WalkDir::new(cli.repo_root.join("proofs/verified"))
-        .into_iter().filter_map(|e| e.ok()).filter(|e| e.path().extension().is_some_and(|ext| ext == "v")).count();
+        .into_iter()
+        .filter_map(|e| e.ok())
+        .filter(|e| e.path().extension().is_some_and(|ext| ext == "v"))
+        .count();
     data.crate_count = WalkDir::new(cli.repo_root.join("crates"))
-        .into_iter().filter_map(|e| e.ok()).filter(|e| e.file_name() == "Cargo.toml").count();
+        .into_iter()
+        .filter_map(|e| e.ok())
+        .filter(|e| e.file_name() == "Cargo.toml")
+        .count();
 
     let mut report = String::new();
     report.push_str("# Cayley-Dickson Cache Audit\n\n");
     report.push_str(&format!("- Cache root: `{}`\n", cli.cache_root.display()));
     report.push_str(&format!("- Repo root: `{}`\n\n", cli.repo_root.display()));
-    
+
     report.push_str("## Corpus Snapshot\n\n");
     report.push_str(&format!("- Total files: {}\n", data.total_files));
     report.push_str(&format!("- PDFs: {}\n", data.pdf_count));
@@ -163,12 +201,15 @@ fn main() -> Result<()> {
     }
 
     report.push_str("\n## Drift Findings\n\n");
-    report.push_str(&format!("- `CHRONOLOGICAL_REFERENCE_MATRIX.md` currently has {} table entries.\n", data.chronology_entry_count));
+    report.push_str(&format!(
+        "- `CHRONOLOGICAL_REFERENCE_MATRIX.md` currently has {} table entries.\n",
+        data.chronology_entry_count
+    ));
     report.push_str(&format!("- Chronology row statuses normalize to {} on-disk/formalized, {} missing/audit-needed, and {} mislabeled.\n",
         data.chronology_on_disk_like, data.chronology_missing, data.chronology_mislabeled));
     report.push_str(&format!("- `metadata/repo_extracted_metadata/MANIFEST.toml` tracks {} `local_pdf` entries; {} currently fail to resolve under the cache root and {} are blank placeholders.\n",
         data.manifest_total_paths, data.manifest_missing_paths.len(), data.manifest_empty_paths));
-    
+
     report.push_str("\n### Flagged Files\n\n");
     for rel in &data.flagged_paths {
         report.push_str(&format!("- `{}`\n", rel));
@@ -182,13 +223,19 @@ fn main() -> Result<()> {
             report.push_str(&format!("- `{}`\n", rel));
         }
         if data.manifest_missing_paths.len() > 40 {
-            report.push_str(&format!("- ... and {} more\n", data.manifest_missing_paths.len() - 40));
+            report.push_str(&format!(
+                "- ... and {} more\n",
+                data.manifest_missing_paths.len() - 40
+            ));
         }
     }
 
     report.push_str("\n## Repo Surface Crosswalk\n\n");
     report.push_str(&format!("- Rocq theory files: {}\n", data.proofs_theories));
-    report.push_str(&format!("- Rocq verified files: {}\n", data.proofs_verified));
+    report.push_str(&format!(
+        "- Rocq verified files: {}\n",
+        data.proofs_verified
+    ));
     report.push_str(&format!("- Rust crates: {}\n", data.crate_count));
 
     if let Some(out_path) = cli.output {

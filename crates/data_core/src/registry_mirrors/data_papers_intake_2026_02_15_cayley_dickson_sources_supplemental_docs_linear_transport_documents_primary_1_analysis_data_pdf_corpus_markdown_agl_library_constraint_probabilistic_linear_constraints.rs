@@ -168,7 +168,7 @@
 //! the y−direction, having translational symmetry in the
 //! x−direction as depicted in Fig. 1a. For that geometry,
 //! we compute the momentum-resolved spectral function at
-//! −1
+//! −1
 //! the edge A(k|| , ω) = − π1 Im ω − H(k|| ) + i0+
 //! using
 //! the Dyson formalism48 . For both isolated superconductor and antiferromagnet, the surface spectral function
@@ -581,12 +581,12 @@
 //! σs,s
 //! 0λ
 //!
-//! 
+//! 
 //!
 //! rα + rβ
 //! 2
 //!
-//! 
+//! 
 //!
 //! ναβ c†α,s cβ,s0
 //!
@@ -597,12 +597,12 @@
 //! χKM
 //! αβss0 = iσs,s0 λ
 //!
-//! 
+//! 
 //!
 //! rα + rβ
 //! 2
 //!
-//! 
+//! 
 //! ναβ
 //!
 //! (S2)

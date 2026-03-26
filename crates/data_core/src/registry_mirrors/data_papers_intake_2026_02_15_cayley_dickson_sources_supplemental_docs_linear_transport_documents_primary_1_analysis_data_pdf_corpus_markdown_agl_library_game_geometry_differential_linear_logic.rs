@@ -1683,10 +1683,10 @@
 //!
 //! Monoidal structure
 //!
-//! A symmetric monoidal category is a structure (L, I, , λ, ρ, α, σ) where L is a
-//! category, I is an object of L,  : L2 → L is a functor and λX ∈ L(I  X, X),
-//! ρX ∈ L(X  I, X), αX,Y,Z ∈ L((X  Y )  Z, X  (Y  Z)) and σX,Y ∈
-//! L(X  Y, Y  X) are natural isomorphisms satisfying coherence conditions
+//! A symmetric monoidal category is a structure (L, I, , λ, ρ, α, σ) where L is a
+//! category, I is an object of L,  : L2 → L is a functor and λX ∈ L(I  X, X),
+//! ρX ∈ L(X  I, X), αX,Y,Z ∈ L((X  Y )  Z, X  (Y  Z)) and σX,Y ∈
+//! L(X  Y, Y  X) are natural isomorphisms satisfying coherence conditions
 //! which can be expressed as commutative diagrams, and that we do not recall
 //! here. Following McLane [Mac71], we present these coherence conditions using
 //! a notion of monoidal trees (called binary words in [Mac71]).
@@ -1700,35 +1700,35 @@
 //! L(∗) = 1
 //! L(hτ1 , τ2 i) = L(τ1 ) + L(τ2 ) .
 //! Let Tn be the set of trees τ such that L(τ ) = n. This set is infinite for all n.
-//! Let τ ∈ Tn . Then we define in an obvious way a functor τ : Ln → L. On
+//! Let τ ∈ Tn . Then we define in an obvious way a functor τ : Ln → L. On
 //! object, it is defined as follows:
-//! hi = I
-//! ∗ X = X
+//! hi = I
+//! ∗ X = X
 //! →
 //! −
 //! →
 //! −
-//! hτ1 ,τ2 i (X1 , . . . , XL(τ1 ) , Y1 , . . . , YL(τ2 ) ) = (τ1 ( X ))  (τ2 ( Y )) .
+//! hτ1 ,τ2 i (X1 , . . . , XL(τ1 ) , Y1 , . . . , YL(τ2 ) ) = (τ1 ( X ))  (τ2 ( Y )) .
 //! The definition on morphisms is similar.
 //! 2.2.1
 //!
 //! Generalized associativity.
 //!
 //! Given τ1 , τ2 ∈ Tn , the isomorphisms λ, ρ and α of the monoidal structure of L
-//! allow us to build an unique natural isomorphism ττ12 from τ1 to τ2 . We have
+//! allow us to build an unique natural isomorphism ττ12 from τ1 to τ2 . We have
 //! in particular
 //! hhi,∗i
 //!
-//! λX = ∗
+//! λX = ∗
 //!
 //! X
 //!
 //! h∗,hii
-//! ρX = ∗
+//! ρX = ∗
 //! X
 //! hh∗,∗i,∗i
 //!
-//! αX,Y,Z = h∗,h∗,∗ii
+//! αX,Y,Z = h∗,h∗,∗ii
 //!
 //! X,Y,Z
 //!
@@ -1743,20 +1743,20 @@
 //! −
 //! →
 //! −
-//! τ1 ( X ) → τ2 ( X ) using these basic ingredients give rise to the same result.
+//! τ1 ( X ) → τ2 ( X ) using these basic ingredients give rise to the same result.
 //! This is McLane coherence Theorem for monoidal categories. In particular the
 //! following properties will be quite useful:
 //! − = Id τ →
 //! −
-//! ττ →
+//! ττ →
 //! X
-//!  (X )
+//!  (X )
 //!
 //! 1−
-//! − τ
+//! − τ
 //! − .
-//! and ττ23 →
-//! = ττ13 →
+//! and ττ23 →
+//! = ττ13 →
 //! τ2 →
 //! X
 //! X
@@ -1767,7 +1767,7 @@
 //! →
 //! −
 //! We shall often omit the indexing sequence X when using these natural isomor−.
-//! phisms, writing στ instead of στ →
+//! phisms, writing στ instead of στ →
 //! X
 //! 2.2.2
 //!
@@ -1779,13 +1779,13 @@
 //! (Xϕ(1) , . . . , Xϕ(n) )
 //! Assume that the monoidal category L is also symmetric. The corresponding
 //! b ϕ,τ from the
-//! additional structure allows one to define a natural isomorphism 
+//! additional structure allows one to define a natural isomorphism 
 //! τ
 //! τ
 //! ϕ,τ
 //! b
-//! functor  to the functor  ◦ ϕ.
-//! b The correspondence ϕ 7→ 
+//! functor  to the functor  ◦ ϕ.
+//! b The correspondence ϕ 7→ 
 //! is of course
 //! functorial. Moreover, given σ, τ ∈ Tn and ϕ ∈ Sn , the following diagram is
 //! commutative
@@ -1793,25 +1793,25 @@
 //! →
 //! −
 //! →
-//! − 
-//! σ ϕ(
+//! − 
+//! σ ϕ(
 //! b X)
-//! σ X
-//! σ
+//! σ X
+//! σ
 //! τ
 //!
 //! →
 //! −
-//! τ X
+//! τ X
 //!
-//! σ
+//! σ
 //! τ
 //! b ϕ,τ
-//! 
+//! 
 //!
 //! →
 //! −
-//! τ ϕ(
+//! τ ϕ(
 //! b X)
 //!
 //! (4)
@@ -2344,7 +2344,7 @@
 //!
 //! where the µi ’s and the νj ’s are elements of k. It follows that, P
 //! given a finite
-//! 
+//! 
 //! family
 //! (s
 //! )
@@ -4119,10 +4119,10 @@
 //! · N = λy
 //! ·N
 //! ∂x
-//!  ∂x
-//! 
-//! 
-//! 
+//!  ∂x
+//! 
+//! 
+//! 
 //! ∂M
 //! ∂N
 //! ∂DM · N
@@ -4132,11 +4132,11 @@
 //! ∂x
 //! ∂x
 //! ∂x
-//! 
-//! 
-//! 
-//! 
-//! 
+//! 
+//! 
+//! 
+//! 
+//! 
 //! ∂ (M ) R
 //! ∂M
 //! ∂R
@@ -4161,8 +4161,8 @@
 //! ∂x · N is linear in both M
 //! and N . There are two reduction rules:
 //! (λx M ) R β M [R/x]
-//! 
-//! 
+//! 
+//! 
 //! ∂M
 //! ·N
 //! D(λx M ) · N βd λx
@@ -4216,8 +4216,8 @@
 //! In the finite resource calculus, it is natural to perform several βd -reductions
 //! in one step, and one gets
 //! (P
-//! 
-//! 
+//! 
+//! 
 //! if degs x = n
 //! f ∈Sn s sf (1) /x1 , . . . , sf (n) /xn
 //! hλx si S βd
@@ -4945,8 +4945,8 @@
 //!
 //! t∈∆x
 //!
-//! 
-//! 
+//! 
+//! 
 //! X
 //! ∂t
 //! 1
@@ -4957,9 +4957,9 @@
 //! (d)
 //! t∈∆x
 //!
-//! 
-//! 
-//! 
+//! 
+//! 
+//! 
 //! X
 //! ∂t [h0 /h]
 //! 1
@@ -4973,8 +4973,8 @@
 //!
 //! t∈∆x
 //!
-//! 
-//! 
+//! 
+//! 
 //! X
 //! ∂t [h0 /h]
 //! 1
@@ -5676,7 +5676,7 @@
 //! L
 //! Thanks to ∗-autonomy, the coproduct of the Xi ’s is given by
 //! i∈I Xi =
-//! 
+//! 
 //! ˘
 //! L
 //! Q
@@ -5779,10 +5779,10 @@
 //! transformation cX : !X → !X ⊗ !X and the weakening morphism wX : !X → 1.
 //! We check that (wX )m,∗ = δm,[] and that (cX )m,(p,q) = δm,p+q . We also get the
 //! cocontraction natural transformation cX : !X ⊗ !X → !X and the coweakening morphism wX : 1 → !X. And we check that (wX )∗,m = δm,[] , and that
-//! 
+//! 
 //! (cX )(p,q),m = p+q
 //! p δm,p+q where
-//!  
+//!  
 //! Y
 //! m
 //! m(a)!

@@ -44,17 +44,17 @@ impl CliffordSignature {
         }
     }
 
-    /// Cl(0,1) ≅ ℂ (Complex numbers)
+    /// Cl(0,1) ≅ C (Complex numbers)
     pub fn complex() -> Self {
         Self::new(0, 1)
     }
 
-    /// Cl(0,2) ≅ ℍ (Quaternions)
+    /// Cl(0,2) ≅ H (Quaternions)
     pub fn quaternions() -> Self {
         Self::new(0, 2)
     }
 
-    /// Cl(3,0) ≅ ℍ ⊕ ℍ (Pauli algebra structure related)
+    /// Cl(3,0) ≅ H \oplus H (Pauli algebra structure related)
     pub fn split_biquaternions() -> Self {
         Self::new(3, 0)
     }

@@ -89,7 +89,7 @@ fn main() {
     let nx_i = nx as i32;
     let ny_i = ny as i32;
     let nz_i = nz as i32;
-    let radius = 240.0f32; // (4/3)*pi*(240)^3 / 1024^3 ≈ 0.054 -> 5.4% sparsity. Let's use 300.0 for ~10%.
+    let radius = 240.0f32; // (4/3)*pi*(240)^3 / 1024^3 ~= 0.054 -> 5.4% sparsity. Let's use 300.0 for ~10%.
 
     let mut b = stream.launch_builder(&init_mask_kernel);
     b.arg(&mut d_mask)

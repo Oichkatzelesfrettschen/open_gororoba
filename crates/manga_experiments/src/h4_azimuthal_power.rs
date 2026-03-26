@@ -2,7 +2,7 @@
 //!
 //! First-ever angular analysis of MaNGA velocity residuals for algebraic
 //! dark-matter signatures.  Computes the azimuthal power spectrum C_l at
-//! multipoles l = 2–8 in 4 radial annuli, with optional beam correction.
+//! multipoles l = 2-8 in 4 radial annuli, with optional beam correction.
 //!
 //! ## Design
 //! - For each galaxy with 2D IFU velocity map:
@@ -10,7 +10,7 @@
 //!   2. Divide residual map into 4 radial annuli
 //!   3. In each annulus, compute azimuthal Fourier decomposition C_l
 //!   4. Average C_l over galaxies
-//! - Beam correction: deconvolve MaNGA PSF (FWHM ≈ 2.5″) from C_l
+//! - Beam correction: deconvolve MaNGA PSF (FWHM ~= 2.5′′) from C_l
 //! - Prediction: excess at l = 4 or l = 6 matching partner-graph degeneracies
 //!
 //! ## Ablation
@@ -43,7 +43,7 @@ pub struct H4Config {
     pub psf_fwhm_arcsec: f64,
     /// Pixel scale (arcsec per pixel).
     pub pixel_scale_arcsec: f64,
-    /// Map half-size in pixels (map is 2*n+1 × 2*n+1).
+    /// Map half-size in pixels (map is 2*n+1 x 2*n+1).
     pub map_half_size: usize,
     /// RNG seed.
     pub seed: u64,
@@ -84,7 +84,7 @@ pub struct VelocityMap {
 
 /// Generate a synthetic 2D velocity residual map.
 ///
-/// The model is: v(r, θ) = v_rot(r) · sin(θ) · sin(i)
+/// The model is: v(r, \theta) = v_rot(r) * sin(\theta) * sin(i)
 /// plus an optional azimuthal perturbation at specific multipoles.
 fn generate_velocity_map(
     half_size: usize,
@@ -112,7 +112,7 @@ fn generate_velocity_map(
             let theta = dy.atan2(dx);
 
             // Convert pixel radius to kpc (assume 1 pixel = some fraction of r_s).
-            let r_kpc = (r_pix / r_s_pixels) * 10.0; // r_s ≈ 10 kpc scaling
+            let r_kpc = (r_pix / r_s_pixels) * 10.0; // r_s ~= 10 kpc scaling
 
             // Rotation model: v_rot(r) * sin(theta) * sin(i) (i=45°)
             let v_rot = nfw_v_circ(r_kpc.max(0.1), m200, z);
@@ -146,7 +146,7 @@ fn generate_velocity_map(
 
 /// Compute C_l for a given annulus on a velocity map.
 ///
-/// C_l = |a_l|² where a_l = (1/N) Σ_j v(r_j, θ_j) exp(-i l θ_j)
+/// C_l = |a_l|^2 where a_l = (1/N) \Sigma_j v(r_j, \theta_j) exp(-i l \theta_j)
 fn azimuthal_power_in_annulus(
     map: &VelocityMap,
     r_inner: f64,
@@ -201,7 +201,7 @@ fn azimuthal_power_in_annulus(
 ///
 /// Uses an effective smoothing kernel for azimuthal modes on an IFU pixel
 /// grid.  The suppression is gentler than the full-sky formula
-/// `B_l = exp(-l(l+1) σ² / 2)` because IFU azimuthal modes sample a
+/// `B_l = exp(-l(l+1) \sigma^2 / 2)` because IFU azimuthal modes sample a
 /// small angular range.  The factor 100 in the denominator accounts for
 /// the ratio of the full-sky solid angle to the IFU field of view.
 const BEAM_FOV_SCALING: f64 = 100.0;

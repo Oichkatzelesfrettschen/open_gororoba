@@ -85,8 +85,8 @@ pub fn nfw_v_circ(r_kpc: f64, m200_solar: f64, z: f64) -> f64 {
 /// Predicted CD-ZD wavenumbers for 16-dimensional (sedenion) algebra.
 ///
 /// In the Cayley-Dickson zero-divisor (CD-ZD) framework, a dim-D algebra
-/// has `N = D/2 − 1` independent modes.  For the sedenion (D = 16),
-/// `N = 7`.  The predicted wavenumbers are `k_n = 2π n / N` for
+/// has `N = D/2 - 1` independent modes.  For the sedenion (D = 16),
+/// `N = 7`.  The predicted wavenumbers are `k_n = 2\pi n / N` for
 /// `n = 1..N`, corresponding to harmonic partners in the projective
 /// geometry PG(2, 2).
 pub fn predicted_wavenumbers_cd16() -> Vec<f64> {

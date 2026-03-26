@@ -9,49 +9,49 @@
 //! | Level *n* | Dim 2^*n* | Name               | Key property lost       |
 //! |-----------|-----------|--------------------|-------------------------|
 //! | 4         | 16        | Sedenion           | Alternativity           |
-//! | 5         | 32        | Trigintaduonion     | —                       |
-//! | 6         | 64        | Sexagintaquattuornion | —                     |
-//! | 7         | 128       | 128-nion           | —                       |
-//! | 8         | 256       | 256-nion           | —                       |
-//! | 9         | 512       | 512-nion           | —                       |
-//! | 10        | 1024      | Deca-nion          | —                       |
+//! | 5         | 32        | Trigintaduonion     | --                       |
+//! | 6         | 64        | Sexagintaquattuornion | --                     |
+//! | 7         | 128       | 128-nion           | --                       |
+//! | 8         | 256       | 256-nion           | --                       |
+//! | 9         | 512       | 512-nion           | --                       |
+//! | 10        | 1024      | Deca-nion          | --                       |
 //!
 //! # Spectral Model
 //!
 //! The baseline GWB spectrum is a power law in frequency:
 //!
 //! ```text
-//!   log₁₀(ρ_k) = A + γ · log₁₀(f_k / f_ref)
+//!   log_1_0(\rho_k) = A + \gamma * log_1_0(f_k / f_ref)
 //! ```
 //!
 //! At each CD dimension *d* = 2^*n*, a correction term is added:
 //!
 //! ```text
-//!   log₁₀(ρ_k) = A + γ · log₁₀(f_k / f_ref) + λ_d · Φ_d(k)
+//!   log_1_0(\rho_k) = A + \gamma * log_1_0(f_k / f_ref) + \lambda_d * Φ_d(k)
 //! ```
 //!
 //! where `Φ_d(k)` is a basis function derived from the associator structure
-//! at dimension *d*. The fitting determines the coupling strength `λ_d` and
-//! evaluates goodness-of-fit (χ²/dof, BIC) to identify which CD dimension
+//! at dimension *d*. The fitting determines the coupling strength `\lambda_d` and
+//! evaluates goodness-of-fit (\chi^2/dof, BIC) to identify which CD dimension
 //! best explains the observed spectral residuals.
 //!
 //! The basis function encodes the doubling level:
 //!
 //! ```text
-//!   Φ_d(k) = σ_d · cos(2π · (n − 3) · (k + 0.5) / N_bins)
+//!   Φ_d(k) = \sigma_d * cos(2\pi * (n - 3) * (k + 0.5) / N_bins)
 //! ```
 //!
-//! where σ_d is the associator density at dimension *d* and *n* = log₂(*d*).
+//! where \sigma_d is the associator density at dimension *d* and *n* = log_2(*d*).
 //! The (k + 0.5) factor evaluates the cosine at bin centers (a half-bin
 //! offset) to reduce edge artifacts. Higher doubling levels create finer
 //! spectral modulation, weighted by the degree of non-associativity.
 //!
 //! # References
 //!
-//! - Agazie et al. (2023), ApJL 951, L8 — NANOGrav 15-year GWB
-//! - Lamb, Taylor & van Haasteren (2023), PhysRevD 108, 103019 — KDE method
-//! - Baez (2002), Bull. AMS 39, 145-205 — The Octonions
-//! - Schafer (1966) — On the algebras formed by the Cayley-Dickson process
+//! - Agazie et al. (2023), ApJL 951, L8 -- NANOGrav 15-year GWB
+//! - Lamb, Taylor & van Haasteren (2023), PhysRevD 108, 103019 -- KDE method
+//! - Baez (2002), Bull. AMS 39, 145-205 -- The Octonions
+//! - Schafer (1966) -- On the algebras formed by the Cayley-Dickson process
 
 use cd_kernel::cayley_dickson::{AssociatorStats, associator_independence_stats};
 use nalgebra::{DMatrix, DVector};
@@ -61,7 +61,7 @@ use std::f64::consts::PI;
 // Constants
 // ---------------------------------------------------------------------------
 
-/// Cayley-Dickson doubling levels from 16D (2⁴) to 1024D (2¹⁰).
+/// Cayley-Dickson doubling levels from 16D (24) to 1024D (2^10).
 pub const CD_STACK: [usize; 7] = [16, 32, 64, 128, 256, 512, 1024];
 
 /// Reference frequency: 1 / (1 year) in Hz.
@@ -79,11 +79,11 @@ pub const N_BINS: usize = 30;
 pub struct FreqBin {
     /// Frequency [Hz], nanohertz range.
     pub f_hz: f64,
-    /// Median log₁₀(ρ) (characteristic strain power).
+    /// Median log_1_0(\rho) (characteristic strain power).
     pub log10_rho: f64,
-    /// Lower 5th percentile of log₁₀(ρ).
+    /// Lower 5th percentile of log_1_0(\rho).
     pub log10_rho_lo: f64,
-    /// Upper 95th percentile of log₁₀(ρ).
+    /// Upper 95th percentile of log_1_0(\rho).
     pub log10_rho_hi: f64,
 }
 
@@ -105,21 +105,21 @@ pub struct CdDimFitResult {
     pub dim: usize,
     /// Doubling level.
     pub level: u32,
-    /// Fitted log₁₀ amplitude (intercept).
+    /// Fitted log_1_0 amplitude (intercept).
     pub amplitude: f64,
     /// Fitted spectral index (slope in log-log space).
     pub spectral_index: f64,
-    /// Fitted CD coupling strength λ_d.
+    /// Fitted CD coupling strength \lambda_d.
     pub cd_coupling: f64,
     /// Chi-squared statistic.
     pub chi_sq: f64,
-    /// Degrees of freedom (N_bins − 3).
+    /// Degrees of freedom (N_bins - 3).
     pub dof: usize,
-    /// Reduced chi-squared (χ²/dof).
+    /// Reduced chi-squared (\chi^2/dof).
     pub chi_sq_per_dof: f64,
-    /// Bayesian Information Criterion: χ² + k·ln(n).
+    /// Bayesian Information Criterion: \chi^2 + k*ln(n).
     pub bic: f64,
-    /// Per-bin residuals (data − model) / σ.
+    /// Per-bin residuals (data - model) / \sigma.
     pub residuals: Vec<f64>,
     /// Algebraic properties at this dimension.
     pub algebraic_props: CdAlgebraicProps,
@@ -128,13 +128,13 @@ pub struct CdDimFitResult {
 /// Baseline (power-law only) fit result.
 #[derive(Debug, Clone)]
 pub struct BaselineFitResult {
-    /// Fitted log₁₀ amplitude.
+    /// Fitted log_1_0 amplitude.
     pub amplitude: f64,
     /// Fitted spectral index.
     pub spectral_index: f64,
     /// Chi-squared.
     pub chi_sq: f64,
-    /// Degrees of freedom (N_bins − 2).
+    /// Degrees of freedom (N_bins - 2).
     pub dof: usize,
     /// Reduced chi-squared.
     pub chi_sq_per_dof: f64,
@@ -151,11 +151,11 @@ pub struct CdTowerFitResult {
     pub baseline: BaselineFitResult,
     /// Per-dimension fit results, one per CD stack entry.
     pub fits: Vec<CdDimFitResult>,
-    /// Dimension with the lowest χ²/dof.
+    /// Dimension with the lowest \chi^2/dof.
     pub best_dim: usize,
-    /// Lowest χ²/dof achieved.
+    /// Lowest \chi^2/dof achieved.
     pub best_chi_sq_per_dof: f64,
-    /// Improvement in χ² over baseline at the best dimension.
+    /// Improvement in \chi^2 over baseline at the best dimension.
     pub delta_chi_sq_best: f64,
 }
 
@@ -357,9 +357,9 @@ pub const HD_FREE_SPECTRUM: [FreqBin; N_BINS] = [
 /// Compute associator statistics at a given CD dimension via Monte Carlo.
 ///
 /// # Arguments
-/// * `dim` — Cayley-Dickson dimension (must be power of two, ≥ 16).
-/// * `n_trials` — Number of random triples to sample.
-/// * `seed` — Deterministic seed for reproducibility.
+/// * `dim` -- Cayley-Dickson dimension (must be power of two, ≥ 16).
+/// * `n_trials` -- Number of random triples to sample.
+/// * `seed` -- Deterministic seed for reproducibility.
 pub fn compute_cd_algebraic_props(dim: usize, n_trials: usize, seed: u64) -> CdAlgebraicProps {
     assert!(
         dim.is_power_of_two() && dim >= 16,
@@ -383,11 +383,11 @@ pub fn compute_cd_algebraic_props(dim: usize, n_trials: usize, seed: u64) -> CdA
 /// The basis function at bin index *k* (0-indexed) is:
 ///
 /// ```text
-///   Φ_d(k) = σ_d · cos(2π · step · (k + 0.5) / N)
+///   Φ_d(k) = \sigma_d * cos(2\pi * step * (k + 0.5) / N)
 /// ```
 ///
-/// where `step = log₂(d) − 3` is the number of doublings past the octonions,
-/// σ_d is the RMS associator norm at dimension *d*, and *N* is the total
+/// where `step = log_2(d) - 3` is the number of doublings past the octonions,
+/// \sigma_d is the RMS associator norm at dimension *d*, and *N* is the total
 /// number of bins. The half-bin offset avoids edge artifacts.
 pub fn cd_basis_function(dim: usize, mean_assoc_sq: f64, n_bins: usize) -> Vec<f64> {
     // Validate inputs: CD dimension must be a power of two and at least octonionic,
@@ -413,10 +413,10 @@ pub fn cd_basis_function(dim: usize, mean_assoc_sq: f64, n_bins: usize) -> Vec<f
 // Measurement uncertainties
 // ---------------------------------------------------------------------------
 
-/// Convert 90 % credible interval bounds to an approximate Gaussian σ.
+/// Convert 90 % credible interval bounds to an approximate Gaussian \sigma.
 ///
 /// Assumes the posterior is approximately Gaussian:
-///   σ ≈ (hi − lo) / (2 × 1.645)
+///   \sigma ~= (hi - lo) / (2 x 1.645)
 ///
 /// Clamps to a minimum of 0.1 to prevent singular weights.
 fn sigma_from_ci(lo: f64, hi: f64) -> f64 {
@@ -428,7 +428,7 @@ fn sigma_from_ci(lo: f64, hi: f64) -> f64 {
 // Weighted least squares
 // ---------------------------------------------------------------------------
 
-/// Solve weighted least squares: min_β ‖W^{1/2}(y − Xβ)‖² .
+/// Solve weighted least squares: min_\beta ‖W^{1/2}(y - X\beta)‖^2 .
 ///
 /// Returns `None` if the normal equations are singular.
 fn wls_solve(
@@ -446,7 +446,7 @@ fn wls_solve(
     xtx.lu().solve(&xty)
 }
 
-/// Compute weighted chi-squared: Σ w_k (y_k − ŷ_k)².
+/// Compute weighted chi-squared: \Sigma w_k (y_k - y_k)^2.
 fn chi_squared(y: &DVector<f64>, y_hat: &DVector<f64>, weights: &DVector<f64>) -> f64 {
     y.iter()
         .zip(y_hat.iter())
@@ -455,12 +455,12 @@ fn chi_squared(y: &DVector<f64>, y_hat: &DVector<f64>, weights: &DVector<f64>) -
         .sum()
 }
 
-/// BIC = χ² + k·ln(n), where k = number of parameters, n = number of data points.
+/// BIC = \chi^2 + k*ln(n), where k = number of parameters, n = number of data points.
 fn bic(chi_sq: f64, k: usize, n: usize) -> f64 {
     chi_sq + k as f64 * (n as f64).ln()
 }
 
-/// Compute standardized residuals: (y_k − ŷ_k) / σ_k .
+/// Compute standardized residuals: (y_k - y_k) / \sigma_k .
 fn standardized_residuals(y: &DVector<f64>, y_hat: &DVector<f64>, sigma: &[f64]) -> Vec<f64> {
     y.iter()
         .zip(y_hat.iter())
@@ -475,9 +475,9 @@ fn standardized_residuals(y: &DVector<f64>, y_hat: &DVector<f64>, sigma: &[f64])
 
 /// Fit a pure power-law model to the free spectrum data.
 ///
-/// Model: log₁₀(ρ_k) = A + γ · log₁₀(f_k / f_ref)
+/// Model: log_1_0(\rho_k) = A + \gamma * log_1_0(f_k / f_ref)
 ///
-/// Two free parameters (A, γ) fitted via weighted least squares.
+/// Two free parameters (A, \gamma) fitted via weighted least squares.
 pub fn fit_baseline(data: &[FreqBin]) -> BaselineFitResult {
     let n = data.len();
     let f_ref = F_YR;
@@ -522,9 +522,9 @@ pub fn fit_baseline(data: &[FreqBin]) -> BaselineFitResult {
 
 /// Fit the power-law + CD correction model at a single dimension.
 ///
-/// Model: log₁₀(ρ_k) = A + γ · log₁₀(f_k / f_ref) + λ_d · Φ_d(k)
+/// Model: log_1_0(\rho_k) = A + \gamma * log_1_0(f_k / f_ref) + \lambda_d * Φ_d(k)
 ///
-/// Three free parameters (A, γ, λ_d) fitted via WLS.
+/// Three free parameters (A, \gamma, \lambda_d) fitted via WLS.
 pub fn fit_single_dim(data: &[FreqBin], props: &CdAlgebraicProps) -> CdDimFitResult {
     let n = data.len();
     let f_ref = F_YR;
@@ -577,7 +577,7 @@ pub fn fit_single_dim(data: &[FreqBin], props: &CdAlgebraicProps) -> CdDimFitRes
 // Full tower fit
 // ---------------------------------------------------------------------------
 
-/// Fit the full Cayley-Dickson tower (16D → 1024D) to the NANOGrav spectrum.
+/// Fit the full Cayley-Dickson tower (16D -> 1024D) to the NANOGrav spectrum.
 ///
 /// At each doubling step the associator statistics are computed via Monte
 /// Carlo (`n_trials` random unit-vector triples, seeded by `seed`), a
@@ -586,10 +586,10 @@ pub fn fit_single_dim(data: &[FreqBin], props: &CdAlgebraicProps) -> CdDimFitRes
 /// comparison.
 ///
 /// # Arguments
-/// * `n_trials` — Number of Monte Carlo samples per dimension for
+/// * `n_trials` -- Number of Monte Carlo samples per dimension for
 ///   associator statistics.  Larger values yield more stable density
 ///   estimates but increase runtime (especially for dim ≥ 256).
-/// * `seed` — Deterministic PRNG seed for reproducibility.
+/// * `seed` -- Deterministic PRNG seed for reproducibility.
 pub fn fit_nanograv_cd_tower(n_trials: usize, seed: u64) -> CdTowerFitResult {
     let data = &HD_FREE_SPECTRUM;
     let baseline = fit_baseline(data);
@@ -686,7 +686,7 @@ mod tests {
     fn basis_function_bounded() {
         let phi = cd_basis_function(64, 1.0, 30);
         for &v in &phi {
-            assert!(v.abs() <= 1.0 + 1e-12, "Basis must be bounded by σ_d");
+            assert!(v.abs() <= 1.0 + 1e-12, r"Basis must be bounded by \sigma_d");
         }
     }
 
@@ -694,7 +694,7 @@ mod tests {
     fn basis_function_zero_for_zero_associator() {
         let phi = cd_basis_function(16, 0.0, 30);
         for &v in &phi {
-            assert!(v.abs() < 1e-15, "Zero associator → zero basis");
+            assert!(v.abs() < 1e-15, "Zero associator -> zero basis");
         }
     }
 
@@ -808,7 +808,7 @@ mod tests {
 
     // -- Full tower fit -------------------------------------------------------
     // These tests share a single `OnceLock`-cached tower fit (via
-    // `cached_tower_fit()`) so the expensive 16D→1024D Monte Carlo
+    // `cached_tower_fit()`) so the expensive 16D->1024D Monte Carlo
     // sweep is computed only once for the entire test module.
 
     #[test]

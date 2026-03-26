@@ -5,17 +5,17 @@
 //! post-fit; this tests whether NFW freedom can mimic the ZD signature.
 //!
 //! ## Design
-//! - 500 synthetic galaxies × 4 α_zd values × 5 RNG seeds = 10 000 trials
+//! - 500 synthetic galaxies x 4 \alpha_zd values x 5 RNG seeds = 10 000 trials
 //! - For each trial:
 //!   1. Generate clean NFW rotation curve
-//!   2. Inject ZD harmonic signal (amplitude α_zd)
+//!   2. Inject ZD harmonic signal (amplitude \alpha_zd)
 //!   3. Fit NFW to the *contaminated* curve (Nelder-Mead)
 //!   4. Compute residuals of the fit
 //!   5. Measure Fourier power at CD-predicted wavenumbers
-//!   6. Compare recovered power to injected power → absorption fraction
-//! - **Gate**: if mean absorption > 60 %, the pipeline is blind → STOP.
+//!   6. Compare recovered power to injected power -> absorption fraction
+//! - **Gate**: if mean absorption > 60 %, the pipeline is blind -> STOP.
 //!
-//! ## Ablation: no injection (α = 0) establishes the noise floor.
+//! ## Ablation: no injection (\alpha = 0) establishes the noise floor.
 //!
 //! ~125 seconds compute (synthetic data, no I/O).
 
@@ -33,9 +33,9 @@ use rayon::prelude::*;
 /// Parameters for the H1 experiment.
 #[derive(Debug, Clone)]
 pub struct H1Config {
-    /// Number of synthetic galaxies per (α, seed) cell.
+    /// Number of synthetic galaxies per (\alpha, seed) cell.
     pub n_galaxies: usize,
-    /// α_zd injection amplitudes to sweep.
+    /// \alpha_zd injection amplitudes to sweep.
     pub alpha_values: Vec<f64>,
     /// RNG seeds for each independent realization.
     pub seeds: Vec<u64>,
@@ -67,13 +67,13 @@ impl Default for H1Config {
 /// Result from a single galaxy injection-recovery trial.
 #[derive(Debug, Clone)]
 pub struct GalaxyInjectionResult {
-    /// Injected α_zd.
+    /// Injected \alpha_zd.
     pub alpha_injected: f64,
     /// Total injected Fourier power (at CD wavenumbers).
     pub injected_power: f64,
     /// Recovered Fourier power after NFW re-fit.
     pub recovered_power: f64,
-    /// Absorption fraction: 1 − recovered/injected.  Clamped to [0,1].
+    /// Absorption fraction: 1 - recovered/injected.  Clamped to [0,1].
     pub absorption: f64,
     /// Detection SNR of residuals.
     pub snr: f64,
@@ -83,7 +83,7 @@ pub struct GalaxyInjectionResult {
 // Aggregate result
 // ---------------------------------------------------------------------------
 
-/// Aggregate result for one (α, seed) cell.
+/// Aggregate result for one (\alpha, seed) cell.
 #[derive(Debug, Clone)]
 pub struct CellResult {
     pub alpha: f64,
@@ -97,9 +97,9 @@ pub struct CellResult {
 /// Full H1 experiment result.
 #[derive(Debug, Clone)]
 pub struct H1Result {
-    /// Per-cell results (one per (α, seed) pair).
+    /// Per-cell results (one per (\alpha, seed) pair).
     pub cells: Vec<CellResult>,
-    /// Grand-mean absorption across all non-zero-α cells.
+    /// Grand-mean absorption across all non-zero-\alpha cells.
     pub mean_absorption: f64,
     /// Gate verdict.
     pub verdict: Verdict,
@@ -325,7 +325,7 @@ pub fn run_h1(config: &H1Config) -> H1Result {
     };
 
     let summary = format!(
-        "H1 Pre-Fit Injection Recovery: mean_absorption={:.3} (gate={:.2}) → {:?}\n\
+        "H1 Pre-Fit Injection Recovery: mean_absorption={:.3} (gate={:.2}) -> {:?}\n\
          {} cells, {} galaxies/cell, {} alpha values, {} seeds",
         mean_absorption,
         config.absorption_gate_threshold,
@@ -364,13 +364,13 @@ mod tests {
             noise_frac: 0.05,
         };
         let result = run_h1(&config);
-        assert_eq!(result.cells.len(), 2); // 2 alpha × 1 seed
+        assert_eq!(result.cells.len(), 2); // 2 alpha x 1 seed
         assert!(result.mean_absorption >= 0.0 && result.mean_absorption <= 1.0);
-        // With α=0.01, absorption should be moderate (pipeline should pass)
+        // With \alpha=0.01, absorption should be moderate (pipeline should pass)
         println!("{}", result.summary);
     }
 
-    /// The noise-floor cell (α=0) should have ~0 absorption.
+    /// The noise-floor cell (\alpha=0) should have ~0 absorption.
     #[test]
     fn test_h1_noise_floor() {
         let config = H1Config {
@@ -382,7 +382,7 @@ mod tests {
             noise_frac: 0.05,
         };
         let result = run_h1(&config);
-        // α=0 → no injection → absorption is meaningless (filtered out)
+        // \alpha=0 -> no injection -> absorption is meaningless (filtered out)
         assert_eq!(result.mean_absorption, 0.0);
         assert_eq!(result.verdict, Verdict::Pass);
     }

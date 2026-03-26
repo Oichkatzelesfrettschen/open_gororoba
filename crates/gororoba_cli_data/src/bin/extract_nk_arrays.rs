@@ -1,8 +1,10 @@
-use anyhow::{Context, Result};
+use anyhow::Result;
 use regex::Regex;
-use std::collections::HashMap;
-use std::fs;
-use std::path::{Path, PathBuf};
+use std::{
+    collections::HashMap,
+    fs,
+    path::Path,
+};
 
 const SRC: &str = "crates/materials_core/src/tabulated_nk.rs";
 const OUT: &str = "crates/materials_data/data/nk";
@@ -20,7 +22,8 @@ fn main() -> Result<()> {
     let mut arrays: HashMap<String, Vec<f64>> = HashMap::new();
 
     // Regex: capture const name, size, and the array body (across multiple lines)
-    let const_re = Regex::new(r"(?s)const\s+([A-Z0-9_]+)\s*:\s*\[f64\s*;\s*(\d+)\]\s*=\s*\[(.*?)\];")?;
+    let const_re =
+        Regex::new(r"(?s)const\s+([A-Z0-9_]+)\s*:\s*\[f64\s*;\s*(\d+)\]\s*=\s*\[(.*?)\];")?;
     let float_re = Regex::new(r"[-+]?\d+\.?\d*(?:e[-+]?\d+)?")?;
     let comment_re = Regex::new(r"//[^\n]*")?;
 
@@ -28,7 +31,7 @@ fn main() -> Result<()> {
         let name = cap[1].to_string();
         let size: usize = cap[2].parse()?;
         let body = &cap[3];
-        
+
         let body_no_comments = comment_re.replace_all(body, "");
         let values: Vec<f64> = float_re
             .find_iter(&body_no_comments)
@@ -36,22 +39,31 @@ fn main() -> Result<()> {
             .collect::<Result<Vec<f64>, _>>()?;
 
         if values.len() != size {
-            eprintln!("WARNING: {} expected {} values, got {}", name, size, values.len());
+            eprintln!(
+                "WARNING: {} expected {} values, got {}",
+                name,
+                size,
+                values.len()
+            );
         }
         arrays.insert(name, values);
     }
 
-    println!("Found {} const arrays: {:?}", arrays.len(), arrays.keys().collect::<Vec<_>>());
+    println!(
+        "Found {} const arrays: {:?}",
+        arrays.len(),
+        arrays.keys().collect::<Vec<_>>()
+    );
 
     let groups = [
-        ("JC_AU",      "au_jc1972"),
-        ("JC_AG",      "ag_jc1972"),
-        ("JC_CU",      "cu_jc1972"),
+        ("JC_AU", "au_jc1972"),
+        ("JC_AG", "ag_jc1972"),
+        ("JC_CU", "cu_jc1972"),
         ("SPLICED_AU", "au_ordal_jc"),
         ("SPLICED_CU", "cu_ordal_jc"),
-        ("SPLICED3_AU","au_ordal_jc_henke"),
-        ("SPLICED3_AG","ag_ordal_jc_henke"),
-        ("SPLICED3_CU","cu_ordal_jc_henke"),
+        ("SPLICED3_AU", "au_ordal_jc_henke"),
+        ("SPLICED3_AG", "ag_ordal_jc_henke"),
+        ("SPLICED3_CU", "cu_ordal_jc_henke"),
     ];
 
     fs::create_dir_all(out_dir)?;
@@ -59,20 +71,29 @@ fn main() -> Result<()> {
 
     for (prefix, fname) in groups {
         let ev_key = format!("{}_EV", prefix);
-        let n_key  = format!("{}_N", prefix);
-        let k_key  = format!("{}_K", prefix);
+        let n_key = format!("{}_N", prefix);
+        let k_key = format!("{}_K", prefix);
 
-        if !arrays.contains_key(&ev_key) || !arrays.contains_key(&n_key) || !arrays.contains_key(&k_key) {
+        if !arrays.contains_key(&ev_key)
+            || !arrays.contains_key(&n_key)
+            || !arrays.contains_key(&k_key)
+        {
             eprintln!("SKIP {}: missing one or more channels", prefix);
             continue;
         }
 
         let ev = &arrays[&ev_key];
-        let n  = &arrays[&n_key];
-        let k  = &arrays[&k_key];
+        let n = &arrays[&n_key];
+        let k = &arrays[&k_key];
 
         if ev.len() != n.len() || n.len() != k.len() {
-            eprintln!("ERROR {}: mismatched lengths EV={} N={} K={}", prefix, ev.len(), n.len(), k.len());
+            eprintln!(
+                "ERROR {}: mismatched lengths EV={} N={} K={}",
+                prefix,
+                ev.len(),
+                n.len(),
+                k.len()
+            );
             continue;
         }
 
