@@ -1,2 +1,0 @@
-bench,mode,tile_bytes,elapsed_seconds,throughput_mlups,effective_glups,stdout_path,nsys_report,ncu_csv,skipped_reason
-gpu_sparse_1024,device,,3.320600,1858.630000,32.340000,reports/gpu_profiles/gpu_sparse_1024_device.stdout.txt,,,

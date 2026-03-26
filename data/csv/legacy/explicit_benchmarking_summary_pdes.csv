@@ -1,5 +1,0 @@
-PDE Model,Final Max Absolute Value,Dominant Precision,Average Execution Time per Step (s)
-Quantum Foam PDE,0.0099,float128,0.0016239166259765625
-Domain-Wall Electron Transport PDE,0.0009894,float128,0.00244140625
-Dielectric Polarization Dynamics PDE,0.0009945,float128,0.0021880626678466796
-Field-Induced Electron Density Modulation PDE,0.0009947,float128,0.0008153438568115235

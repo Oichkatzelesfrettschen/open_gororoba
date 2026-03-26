@@ -5,3 +5,8 @@ data/external/documents_ingest/**/*.pdf    -text
 data/external/documents_extracted/**/*.png    -text
 data/output/heliosphere/soho/celias_pm_native_5min.csv    -text
 # SQLite databases removed from git tracking (derived from TOML source of truth)
+*.csv    -text
+*.bin    -text
+*.pdf    -text
+*.nsys-rep    -text
+*.sqlite    -text

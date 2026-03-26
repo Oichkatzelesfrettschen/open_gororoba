@@ -113,6 +113,17 @@ Proof.
   exact FinDimHModule.h_module_dim_mod4.
 Qed.
 
+Record WedderburnCyclicN2Surface (A : Type) := {
+  wcy_mul : A -> A -> A;
+  wcy_theta : A -> A;
+  wcy_x : A;
+  wcy_y : A;
+  wcy_g : A;
+  wcy_cyclic_relation :
+    wcy_mul wcy_x wcy_y = wcy_mul wcy_y (wcy_theta wcy_x);
+  wcy_y_square : wcy_mul wcy_y wcy_y = wcy_g;
+}.
+
 (** Wedderburn's cyclic presentation in the quaternion case:
     choose x = i and y = j. Then xy = y * theta(x) with theta = conjugation,
     and y^2 = -1. *)
@@ -131,6 +142,16 @@ Proof.
   simpl.
   f_equal; ring.
 Qed.
+
+Definition wedderburn_quaternion_cyclic_surface :
+    WedderburnCyclicN2Surface CDQuat :=
+  {| wcy_mul := quat_mul;
+     wcy_theta := quat_conj;
+     wcy_x := qi;
+     wcy_y := qj;
+     wcy_g := quat_neg quat_one;
+     wcy_cyclic_relation := wedderburn_quaternion_cyclic_relation;
+     wcy_y_square := wedderburn_quaternion_y_square |}.
 
 (** The full quaternion basis is generated from the cyclic pair {i, j}. *)
 Theorem wedderburn_quaternion_cyclic_generation :
@@ -191,6 +212,27 @@ Proof.
   nra.
 Qed.
 
+Theorem wedderburn_quaternion_det_implies_left_inverse :
+  forall q : CDQuat,
+    wedderburn_quaternion_left_det q <> 0 ->
+    exists l : CDQuat, quat_mul l q = quat_one.
+Proof.
+  intros [a b c d] Hdet.
+  exists (quat_inv {| qa := a; qb := b; qc := c; qd := d |}).
+  unfold quat_inv, quat_mul, quat_conj, quat_scale, quat_one, quat_norm_sq.
+  simpl in *.
+  assert (Hn' : a * a + b * b + c * c + d * d <> 0).
+  {
+    intro Habs.
+    apply Hdet.
+    rewrite wedderburn_quaternion_det_equals_norm_sq.
+    unfold quat_norm_sq in *.
+    simpl in *.
+    nra.
+  }
+  repeat f_equal; field; exact Hn'.
+Qed.
+
 (** Packaged surface for the two main Wedderburn consequences used later:
     cyclic generation in the n=2 quaternion case, and the determinant
     criterion for invertibility. *)
@@ -206,7 +248,10 @@ Theorem wedderburn_quaternion_surface_summary :
       wedderburn_quaternion_left_det q <> 0 <-> quat_norm_sq q <> 0) /\
   (forall q : CDQuat,
       wedderburn_quaternion_left_det q <> 0 ->
-      exists r : CDQuat, quat_mul q r = quat_one).
+      exists r : CDQuat, quat_mul q r = quat_one) /\
+  (forall q : CDQuat,
+      wedderburn_quaternion_left_det q <> 0 ->
+      exists l : CDQuat, quat_mul l q = quat_one).
 Proof.
   split.
   - exact wedderburn_quaternion_cyclic_relation.
@@ -218,7 +263,9 @@ Proof.
         -- exact wedderburn_quaternion_det_equals_norm_sq.
         -- split.
            ++ exact wedderburn_quaternion_det_nonzero_iff_norm_nonzero.
-           ++ exact wedderburn_quaternion_det_implies_right_inverse.
+           ++ split.
+              ** exact wedderburn_quaternion_det_implies_right_inverse.
+              ** exact wedderburn_quaternion_det_implies_left_inverse.
 Qed.
 
 Definition wedderburn_generalized_quaternion_left_det
@@ -248,6 +295,17 @@ Theorem wedderburn_generalized_quaternion_y_square :
 Proof.
   exact dickson1921_param_j_sq.
 Qed.
+
+Definition wedderburn_generalized_quaternion_cyclic_surface
+    (c2 c3 : R) : WedderburnCyclicN2Surface CDQuat :=
+  {| wcy_mul := dickson1921_param_mul c2 c3;
+     wcy_theta := quat_conj;
+     wcy_x := qi;
+     wcy_y := qj;
+     wcy_g := quat_scale c3 quat_one;
+     wcy_cyclic_relation :=
+       wedderburn_generalized_quaternion_cyclic_relation c2 c3;
+     wcy_y_square := wedderburn_generalized_quaternion_y_square c2 c3 |}.
 
 Theorem wedderburn_generalized_quaternion_cyclic_generation :
   forall c2 c3 : R,
@@ -331,6 +389,41 @@ Proof.
   nra.
 Qed.
 
+Theorem wedderburn_generalized_quaternion_left_inverse :
+  forall c2 c3 : R, forall q : CDQuat,
+    dickson1921_param_norm c2 c3 q <> 0 ->
+    dickson1921_param_mul c2 c3
+      (wedderburn_generalized_quaternion_inv c2 c3 q) q = quat_one.
+Proof.
+  intros c2 c3 [a b c d] Hn.
+  unfold dickson1921_param_norm in Hn.
+  simpl in Hn.
+  assert (Hn' : a * a - c2 * (b * b) - c3 * (c * c) + c2 * c3 * (d * d) <> 0).
+  {
+    intro Habs.
+    apply Hn.
+    lra.
+  }
+  unfold wedderburn_generalized_quaternion_inv, dickson1921_param_mul,
+         dickson1921_param_norm, quat_scale, quat_conj, quat_one.
+  simpl in *.
+  repeat f_equal; field; exact Hn'.
+Qed.
+
+Theorem wedderburn_generalized_quaternion_det_implies_left_inverse :
+  forall c2 c3 : R, forall q : CDQuat,
+    wedderburn_generalized_quaternion_left_det c2 c3 q <> 0 ->
+    exists l : CDQuat, dickson1921_param_mul c2 c3 l q = quat_one.
+Proof.
+  intros c2 c3 q Hdet.
+  exists (wedderburn_generalized_quaternion_inv c2 c3 q).
+  apply wedderburn_generalized_quaternion_left_inverse.
+  intro Hn.
+  apply Hdet.
+  rewrite wedderburn_generalized_quaternion_det_equals_norm_sq.
+  nra.
+Qed.
+
 Theorem wedderburn_generalized_quaternion_surface_summary :
   (forall c2 c3 : R,
       dickson1921_param_mul c2 c3 qi qj =
@@ -351,7 +444,10 @@ Theorem wedderburn_generalized_quaternion_surface_summary :
       dickson1921_param_norm c2 c3 q <> 0) /\
   (forall c2 c3 : R, forall q : CDQuat,
       wedderburn_generalized_quaternion_left_det c2 c3 q <> 0 ->
-      exists r : CDQuat, dickson1921_param_mul c2 c3 q r = quat_one).
+      exists r : CDQuat, dickson1921_param_mul c2 c3 q r = quat_one) /\
+  (forall c2 c3 : R, forall q : CDQuat,
+      wedderburn_generalized_quaternion_left_det c2 c3 q <> 0 ->
+      exists l : CDQuat, dickson1921_param_mul c2 c3 l q = quat_one).
 Proof.
   split.
   - exact wedderburn_generalized_quaternion_cyclic_relation.
@@ -363,5 +459,7 @@ Proof.
         -- exact wedderburn_generalized_quaternion_det_equals_norm_sq.
         -- split.
            ++ exact wedderburn_generalized_quaternion_det_nonzero_iff_norm_nonzero.
-           ++ exact wedderburn_generalized_quaternion_det_implies_right_inverse.
+           ++ split.
+              ** exact wedderburn_generalized_quaternion_det_implies_right_inverse.
+              ** exact wedderburn_generalized_quaternion_det_implies_left_inverse.
 Qed.

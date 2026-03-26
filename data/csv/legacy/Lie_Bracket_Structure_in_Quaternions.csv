@@ -1,4 +1,0 @@
-Bracket,Computed Result,Expected
-"[i, j]","[0, 1, 0, 1]",2k
-"[j, k]","[0, 1, 1, 0]",2i
-"[k, i]","[0, 0, 1, 1]",2j

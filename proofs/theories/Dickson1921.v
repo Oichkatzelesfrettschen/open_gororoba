@@ -2118,13 +2118,90 @@ Module Dickson1921FloatSection7Lane (F : FLOAT_OPS).
         (1 <= k <= 3)%nat ->
         P.Q.quat_param_eq7_linear_form c2 c3 k x = zero).
 
+  Definition d1921_float_param_section7_dimension (n : nat) : Prop :=
+    dickson1921_section7_dimension n.
+
+  Theorem d1921_float_param_dim5_square_excluded :
+    ~ hurwitz_square_dimension 5%nat.
+  Proof.
+    intro H.
+    destruct H as [H1 | [H2 | [H4 | H8]]]; lia.
+  Qed.
+
+  Theorem d1921_float_param_dim6_square_excluded :
+    ~ hurwitz_square_dimension 6%nat.
+  Proof.
+    intro H.
+    destruct H as [H1 | [H2 | [H4 | H8]]]; lia.
+  Qed.
+
+  Theorem d1921_float_param_small_internal_square_exclusions :
+    ~ hurwitz_square_dimension 5%nat /\
+    ~ hurwitz_square_dimension 6%nat.
+  Proof.
+    split.
+    - exact d1921_float_param_dim5_square_excluded.
+    - exact d1921_float_param_dim6_square_excluded.
+  Qed.
+
+  Theorem d1921_float_param_hurwitz_handoff :
+    forall n : nat,
+      tracked_cd_tower_dimension n ->
+      ~ hurwitz_square_dimension n ->
+      hurwitz_radon n <> n.
+  Proof.
+    exact dickson1921_hurwitz_handoff.
+  Qed.
+
+  Theorem d1921_float_param_section7_square_case_classification :
+    forall n : nat,
+      d1921_float_param_section7_dimension n ->
+      (hurwitz_radon n = n <-> hurwitz_square_dimension n).
+  Proof.
+    exact dickson1921_section7_square_case_classification.
+  Qed.
+
+  Theorem d1921_float_param_section7_noncomposition_summary :
+    forall n : nat,
+      d1921_float_param_section7_dimension n ->
+      ~ hurwitz_square_dimension n ->
+      hurwitz_radon n <> n.
+  Proof.
+    exact dickson1921_section7_noncomposition_summary.
+  Qed.
+
+  Theorem d1921_float_param_section7_exclusion_summary :
+    ~ hurwitz_square_dimension 5%nat /\
+    ~ hurwitz_square_dimension 6%nat /\
+    (forall n : nat,
+        tracked_cd_tower_dimension n ->
+        ~ hurwitz_square_dimension n ->
+        hurwitz_radon n <> n) /\
+    (forall n : nat,
+        d1921_float_param_section7_dimension n ->
+        ~ hurwitz_square_dimension n ->
+        hurwitz_radon n <> n).
+  Proof.
+    repeat split.
+    - exact d1921_float_param_dim5_square_excluded.
+    - exact d1921_float_param_dim6_square_excluded.
+    - exact d1921_float_param_hurwitz_handoff.
+    - exact d1921_float_param_section7_noncomposition_summary.
+  Qed.
+
   Theorem d1921_float_param_foundation_section7_summary :
     (forall c2 c3 : t, d1921_float_param_section5_6_foundation c2 c3) /\
+    (~ hurwitz_square_dimension 5%nat /\
+     ~ hurwitz_square_dimension 6%nat) /\
     (forall n : nat,
-        dickson1921_section7_dimension n ->
+        tracked_cd_tower_dimension n ->
+        ~ hurwitz_square_dimension n ->
+        hurwitz_radon n <> n) /\
+    (forall n : nat,
+        d1921_float_param_section7_dimension n ->
         (hurwitz_radon n = n <-> hurwitz_square_dimension n)) /\
     (forall n : nat,
-        dickson1921_section7_dimension n ->
+        d1921_float_param_section7_dimension n ->
         ~ hurwitz_square_dimension n ->
         hurwitz_radon n <> n).
   Proof.
@@ -2146,8 +2223,12 @@ Module Dickson1921FloatSection7Lane (F : FLOAT_OPS).
       + exact Hinf.
       + exact Heq7.
     - split.
-      + exact dickson1921_section7_square_case_classification.
-      + exact dickson1921_section7_noncomposition_summary.
+      + exact d1921_float_param_small_internal_square_exclusions.
+      + split.
+        * exact d1921_float_param_hurwitz_handoff.
+        * split.
+          -- exact d1921_float_param_section7_square_case_classification.
+          -- exact d1921_float_param_section7_noncomposition_summary.
   Qed.
 End Dickson1921FloatSection7Lane.
 

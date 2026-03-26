@@ -1,2 +1,0 @@
-family,size,backend,status,selected_by_default_policy,policy_backend,median_ns,best_ns,worst_ns,max_abs_error,rms_abs_error,error_message
-quantized_shell_permutation,72,reference_f64,ok,false,x87,16888942,16617043,17001243,0.0000000000054569682106375694,0.0000000000009147253668210106,

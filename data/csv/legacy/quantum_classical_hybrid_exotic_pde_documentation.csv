@@ -1,2 +1,0 @@
-PDE Model,Quantum-Compatible Tensor Shape,Hybrid Tensor Contraction Result,Dominant Numeric Precision,Low-Rank Decomposition Rank,Numerical Stability Confirmation
-Exotic Quantum Nonlocal Interaction PDE,"(100, 100, 1)",0.00271578,float128 (adaptive RL),10,Explicitly Confirmed Stable

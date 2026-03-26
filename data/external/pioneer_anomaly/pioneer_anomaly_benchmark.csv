@@ -1,2 +1,0 @@
-spacecraft,interval_start_utc,interval_end_utc,observed_anomalous_accel_m_s2,observed_sigma_m_s2,source_bib,source_doi,benchmark_kind,notes
-Pioneer 11,1987-01-05T00:00:00Z,1990-10-01T00:00:00Z,8.74e-10,1.33e-10,BIB-0317,10.1103/PhysRevD.65.082004,combined_reference,Anderson et al. 2002 combined benchmark acceleration for Pioneer 11 (Pioneer 10 removed: data lane ends 1995 but interval extended to 1998)

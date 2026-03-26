@@ -1,4 +1,0 @@
-precision,step,ke,wall_ms_per_step,ke_rel_error_vs_ref
-fp64_cpu,0,0.000000000000e0,0.0000,1.000000e0
-fp64_cpu,50,1.177538292845e-5,0.6264,7.417117e-1
-fp64_cpu,100,4.650517169062e-5,0.6297,2.007239e-2

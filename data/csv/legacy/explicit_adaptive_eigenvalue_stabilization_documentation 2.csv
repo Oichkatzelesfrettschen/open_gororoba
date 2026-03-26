@@ -1,4 +1,0 @@
-Method,Purpose,Recommended Application,Numeric Types Supported
-Low-Rank Tensor Decomposition,Explicitly filters unstable eigenmodes to maintain numerical stability,"Quantum Foam PDE, Wavelet-Wormhole PDE, Electron Transport PDE, Polarization Dynamics PDE",float64 explicitly for compatibility
-Adaptive Precision Adjustment (RL-driven),Explicitly balances computational precision dynamically for stability and efficiency,All PDEs explicitly with adaptive RL precision management,"float64, float128 explicitly adaptive"
-Eigenvalue Scaling,Explicit normalization of high-magnitude eigenvalues explicitly to prevent numerical amplification,"Quantum Foam PDE, Domain-Wall Electron Transport PDE explicitly",float64 explicitly recommended

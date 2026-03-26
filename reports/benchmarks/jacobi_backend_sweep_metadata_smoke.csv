@@ -1,4 +1,0 @@
-family,size,workload_class,symmetric,nonnegative,zero_diagonal,isolated_zero_modes,quantized_value_ladder,equitable_partition_candidate,backend,status,selected_by_default_policy,policy_backend,median_ns,best_ns,worst_ns,max_abs_error,rms_abs_error,error_message
-quantized_obstruction_graph,8,obstruction_structured,true,true,true,true,true,false,double_double,ok,false,reference_f64,36360,36360,36360,0.00000000000028421709430404007,0.00000000000011064863871295526,
-quantized_obstruction_graph,8,obstruction_structured,true,true,true,true,true,false,reference_f64,ok,true,reference_f64,15910,15910,15910,0.0000000000006252776074688882,0.0000000000002318536985372039,
-quantized_obstruction_graph,8,obstruction_structured,true,true,true,true,true,false,x87,ok,false,reference_f64,13230,13230,13230,0.0000000000003979039320256561,0.0000000000001492562627277039,

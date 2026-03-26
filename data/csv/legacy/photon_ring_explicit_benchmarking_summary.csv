@@ -1,2 +1,0 @@
-PDE Model,Dominant Numeric Precision,Average Execution Time per Step (s),Final Max Absolute Value,Tensor Rank (Decomposition),Decomposition Norm Difference
-Photon Ring Recursive Kernel PDE,float128 (adaptive RL),0.007309484481811524,0.0009918938815100986,10,

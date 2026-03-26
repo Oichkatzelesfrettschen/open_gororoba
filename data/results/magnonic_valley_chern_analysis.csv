@@ -1,7 +1,0 @@
-model,band,vcn_k,vcn_kprime,total_chern
-TRS_Motif,0,-0.5000,0.5000,0.0000
-TRS_Motif,1,0.1531,-1.1531,-1.0000
-TRS_Motif,2,0.3459,0.6541,1.0000
-Broken_TRS,0,-0.0344,1.0291,1.0000
-Broken_TRS,1,0.3565,-0.3543,0.0000
-Broken_TRS,2,-0.3221,-0.6748,-1.0000

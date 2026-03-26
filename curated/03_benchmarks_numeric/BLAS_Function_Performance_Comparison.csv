@@ -1,3 +1,0 @@
-Method,Execution Time (s)
-BLAS ddot() (Vectorized Dot Product),0.09739613700003247
-BLAS dgemm() (Matrix Multiplication),2.1342838569999003
