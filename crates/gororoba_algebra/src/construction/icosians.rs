@@ -121,7 +121,7 @@ pub fn verify_icosian_group_closure() -> bool {
             // Check if p is in the set of icosians
             let mut found = false;
             for candidate in icosians.iter().take(120) {
-                let mut diff = 0.0;
+                let mut diff: f64 = 0.0;
                 for idx in 0..4 {
                     diff += (p[idx] - candidate[idx]).powi(2);
                 }

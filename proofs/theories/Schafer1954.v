@@ -37,7 +37,9 @@
 From OpenGororoba Require Import Prelude CayleyDicksonAlgebra Sedenion OctonionNorm.
 From OpenGororoba Require Export
   CDPowerAssociative
-  CDPropertyTower.
+  CDPropertyTower
+  G2StabilizerDimension
+  G2OctonionAutomorphisms.
 
 (** Schafer 1954, Section 1: flexibility anchor at dim 4. *)
 Theorem schafer1954_quaternion_flexibility :
@@ -79,6 +81,36 @@ Theorem schafer1954_property_tower_surface :
   division_lost_at_16.
 Proof.
   exact cd_property_tower.
+Qed.
+
+(** Theorem 4 support surface:
+    the repo already carries the octonion/G2 dimensional data that Schafer
+    cites when identifying the derivation algebra with the 14-dimensional
+    type-G Lie algebra.  This is support material for the paper theorem lane,
+    not yet the full derivation-extension proof. *)
+Record Schafer1954TypeGSupportSurface := {
+  s54_dim_g2_is_14 : dim_g2 = 14%nat;
+  s54_stabilizer_dim_is_8 : dim_stabilizer = 8%nat;
+  s54_g2_action_support :
+    21 - 7 = 14 /\ 14 - 6 = 8 /\ (2^3 - 1) * (2^3 - 2) * (2^3 - 4) = 168;
+}.
+
+Definition schafer1954_type_g_support_surface :
+    Schafer1954TypeGSupportSurface :=
+  {| s54_dim_g2_is_14 := eq_refl;
+     s54_stabilizer_dim_is_8 := stabilizer_dimension_is_8;
+     s54_g2_action_support := g2_acts_on_7_fano_points |}.
+
+Theorem schafer1954_theorem4_type_g_support :
+  dim_g2 = 14%nat /\
+  dim_stabilizer = 8%nat /\
+  (21 - 7 = 14 /\ 14 - 6 = 8 /\ (2^3 - 1) * (2^3 - 2) * (2^3 - 4) = 168).
+Proof.
+  split.
+  - exact (s54_dim_g2_is_14 schafer1954_type_g_support_surface).
+  - split.
+    + exact (s54_stabilizer_dim_is_8 schafer1954_type_g_support_surface).
+    + exact (s54_g2_action_support schafer1954_type_g_support_surface).
 Qed.
 
 Theorem Schafer1954_lane_compiles : True.

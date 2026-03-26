@@ -78,11 +78,7 @@ impl QGPImbalanceBridge {
 
         // Simplification: add a term proportional to omega . sigma x I + I x omega . sigma
         let (d1, d2, d3) = gororoba_algebra::physics::clifford::pauli_matrices();
-        let to_m2 =
-            |m: gororoba_algebra::physics::clifford::GammaMatrix| -> nalgebra::Matrix2<Complex64> {
-                nalgebra::Matrix2::from_iterator(m.into_iter().cloned())
-            };
-        let sigmas = [to_m2(d1), to_m2(d2), to_m2(d3)];
+        let sigmas = [d1, d2, d3];
         let eye2 = nalgebra::Matrix2::<Complex64>::identity();
 
         let omega_hat = if qgp.vorticity.norm() > 1e-12 {
