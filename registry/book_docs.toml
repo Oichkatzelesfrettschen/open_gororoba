@@ -1772,7 +1772,7 @@ pre-Moreno dependency chain and its missing-source audit now live in
 | 1835-1866 | Hamilton, Graves, Cayley, Cockle formation chain | reference only | cached off-repo |
 | 1845 | Cayley quaternion/octave note | reference only | cached off-repo |
 | 1898 | Hurwitz, composition of quadratic forms | paired Rust + Rocq | formalized |
-| 1914 | Wedderburn, primitive algebra | Rocq paper surface | abstract n=2 cyclic surface plus quaternion/generalized-quaternion determinant theorem surface landed |
+| 1914 | Wedderburn, primitive algebra | Rocq paper surface | abstract n=2 cyclic, primitive, and section-2 criterion surfaces plus decomposition, nonrepresentation/singular-witness criteria, and a surfaced generalized-quaternion division criterion under anisotropy landed |
 | 1919 | Dickson, Cayley-Dickson process | paired Rust + Rocq | formalized |
 | 1945 | Schafer, division algebras of order 16 | paired Rust + Rocq | formalized |
 | 1954 | Schafer, algebras formed by the CD process | Rocq-first paper index | initial surface landed |
@@ -1917,7 +1917,7 @@ off-repo chronology matrix and roadmap as reference surfaces:
 | Year | Paper | Current landing | Gap |
 |------|-------|-----------------|-----|
 | 1898 | Hurwitz | `crates/hurwitz_1898/` + `proofs/theories/HurwitzTheorem.v` | tracked CD-tower fixed-point classification is formalized; full all-`n` matrix converse still open |
-| 1914 | Wedderburn | `proofs/theories/WedderburnPrimitive.v` | module-dimension surface plus an abstract n=2 cyclic interface and quaternion/generalized-quaternion cyclic-generation and determinant/two-sided-invertibility lanes landed; broader primitive-algebra generality still open |
+| 1914 | Wedderburn | `proofs/theories/WedderburnPrimitive.v` | module-dimension surface plus abstract n=2 cyclic, primitive, and section-2 criterion interfaces, quaternion/generalized-quaternion cyclic-generation and determinant/two-sided-invertibility lanes, and section-2 decomposition plus coefficient/affine primitive criteria, nonrepresentation/singular-witness criteria, and a surfaced generalized-quaternion division criterion under anisotropy landed; broader primitive-algebra generality still open |
 | 1919 | Dickson | `crates/dickson_1919/` + `proofs/theories/DicksonCDProcess.v` | paired lane is in place |
 | 1921 | Dickson companion note | `proofs/theories/Dickson1921.v` | abstract paper surface plus real-parameter generalized family, generalized/canonical matrix lanes, generalized basis-generator relations, section-6 determinant/table/conclusion, section-7 exclusion summary and paper-dimension classification, and a FLOAT_OPS-based abstract quaternion lift plus abstract matrix action/Gram/generator slice, abstract parameterized generalized-family lane, abstract near-identity/infinitesimal slice, abstract section-5/6-to-section-7 handoff, and abstract section-7 exclusion/classification slice landed; broader field-abstract obstruction semantics still open |
 | 1935-1942 | Zorn, Jacobson, Albert | sources on disk | still tracked as context, not yet broken into paper lanes |
@@ -1936,7 +1936,8 @@ off-repo chronology matrix and roadmap as reference surfaces:
 - Newly unblocked source lane: Cullen (1965) is no longer a source gap; the
   reconstructed PDF and OCR now live in the CayleyDickson source cache.
 - Distillation gaps: Wedderburn (1914) still needs its broader
-  primitive-algebra generality beyond the generalized quaternion case,
+  primitive-algebra generality beyond the landed generalized-quaternion
+  division-criterion lane,
   Dickson (1921) still needs its fuller field-abstract obstruction semantics beyond the landed abstract section-7 exclusion/classification slice,
   Schafer (1954) still
   needs its derivation-algebra / type-G lane,

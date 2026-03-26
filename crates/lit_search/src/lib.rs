@@ -12,12 +12,24 @@
 //! - **Tier 2** (requires API key or scraping): CORE, ADS, CiNii, Lens,
 //!   Unpaywall, Google Scholar
 
+pub mod cache;
+pub mod crawler;
+pub mod critique;
 pub mod dedup;
+pub mod domain_queries;
 pub mod download;
+pub mod evolution;
 pub mod models;
+pub mod novelty;
+pub mod pdf;
+pub mod pipeline;
+pub mod query_adapter;
 pub mod search;
 pub mod sources;
+pub mod verify;
 
 pub use download::{DownloadResult, download_pdfs};
 pub use models::{Author, Paper};
+pub use novelty::{NoveltyReport, SimilarPaper, check_novelty};
 pub use search::SearchEngine;
+pub use verify::{CitationResult, VerificationReport, VerifyStatus, verify_citations};

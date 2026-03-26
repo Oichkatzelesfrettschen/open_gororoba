@@ -68,12 +68,20 @@ fn main() -> Result<()> {
     let mut associator_data: Vec<(f64, f64, f64, String)> = Vec::new(); // (r_au, lat_deg, associator, mission)
 
     println!("[1/2] Computing Takens associators with 3D (r, lat) awareness...");
-    for ((mission, _product), rows) in mission_groups {
+    for ((mission, product), rows) in mission_groups {
         if rows.len() < 6 { continue; }
 
         let mut embedded_vectors = Vec::new();
         let mut r_aus = Vec::new();
         let mut lats = Vec::new();
+
+        // Special handling for MMS: High-cadence dissipation scale (Sprint 50)
+        // We use a smaller window or specialized normalization if needed,
+        // but for global map consistency, we stick to 4-point Takens.
+        let is_mms = mission == "MMS";
+        if is_mms {
+            println!("  Processing MMS high-cadence tranche: {} samples", rows.len());
+        }
 
         for window in rows.windows(4) {
             let mut v16 = [0.0; 16];
@@ -93,7 +101,8 @@ fn main() -> Result<()> {
 
         let associators = cd_kernel::batch_sedenion_associator_norms_parallel(&embedded_vectors);
         for (i, &norm) in associators.iter().enumerate() {
-            associator_data.push((r_aus[i + 2], lats[i + 2], norm, mission.clone()));
+            // For MMS, r_au is ~1.0, lat is ~0.0 (near Earth)
+            associator_data.push((r_aus[i], lats[i], norm, mission.clone()));
         }
     }
 

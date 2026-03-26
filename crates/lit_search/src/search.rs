@@ -1,9 +1,12 @@
 //! Unified search engine combining multiple sources.
 
 use crate::{
+    cache::{get_cached_search, put_cached_search},
     dedup::deduplicate,
+    domain_queries::get_domain_queries,
     models::Paper,
-    sources::{self, ApiKeys},
+    query_adapter::adapt_query,
+    sources::{self, ApiKeys, SourceError},
 };
 use reqwest::Client;
 use std::time::Duration;
@@ -41,10 +44,24 @@ impl SearchEngine {
     pub async fn search(&self, query: &str, limit: usize, year_min: u32) -> Vec<Paper> {
         let mut all_papers = Vec::new();
 
+        let openalex_query = adapt_query(query, "openalex", year_min);
+        let semantic_query = adapt_query(query, "semantic_scholar", year_min);
+        let arxiv_query = adapt_query(query, "arxiv", year_min);
+
         // Tier 0: always-on
         let (oa_res, s2_res) = tokio::join!(
-            sources::search_openalex(&self.client, query, limit, year_min),
-            sources::search_semantic_scholar(&self.client, query, limit, &self.keys),
+            cached_source_search(
+                "openalex",
+                &openalex_query,
+                limit,
+                sources::search_openalex(&self.client, &openalex_query, limit, year_min),
+            ),
+            cached_source_search(
+                "semantic_scholar",
+                &semantic_query,
+                limit,
+                sources::search_semantic_scholar(&self.client, &semantic_query, limit, &self.keys),
+            ),
         );
 
         if let Ok(papers) = oa_res {
@@ -62,22 +79,78 @@ impl SearchEngine {
         }
 
         // Tier 0: arXiv
-        if let Ok(papers) = sources::search_arxiv(&self.client, query, limit).await {
+        if let Ok(papers) = cached_source_search(
+            "arxiv",
+            &arxiv_query,
+            limit,
+            sources::search_arxiv(&self.client, &arxiv_query, limit),
+        )
+        .await
+        {
             tracing::info!("arXiv: {} results", papers.len());
             all_papers.extend(papers);
         }
 
         // Tier 1: open sources (no key needed)
         if self.tier != SourceTier::Core {
+            let crossref_query = adapt_query(query, "crossref", year_min);
+            let inspirehep_query = adapt_query(query, "inspirehep", year_min);
+            let dblp_query = adapt_query(query, "dblp", year_min);
+            let europepmc_query = adapt_query(query, "europepmc", year_min);
+            let hal_query = adapt_query(query, "hal", year_min);
+            let datacite_query = adapt_query(query, "datacite", year_min);
+            let scielo_query = adapt_query(query, "scielo", year_min);
+            let jstage_query = adapt_query(query, "jstage", year_min);
+
             let (cr, ihep, dblp, epmc, hal, dc, scielo, jst) = tokio::join!(
-                sources::search_crossref(&self.client, query, limit),
-                sources::search_inspirehep(&self.client, query, limit),
-                sources::search_dblp(&self.client, query, limit),
-                sources::search_europepmc(&self.client, query, limit),
-                sources::search_hal(&self.client, query, limit),
-                sources::search_datacite(&self.client, query, limit),
-                sources::search_scielo(&self.client, query, limit),
-                sources::search_jstage(&self.client, query, limit),
+                cached_source_search(
+                    "crossref",
+                    &crossref_query,
+                    limit,
+                    sources::search_crossref(&self.client, &crossref_query, limit),
+                ),
+                cached_source_search(
+                    "inspirehep",
+                    &inspirehep_query,
+                    limit,
+                    sources::search_inspirehep(&self.client, &inspirehep_query, limit),
+                ),
+                cached_source_search(
+                    "dblp",
+                    &dblp_query,
+                    limit,
+                    sources::search_dblp(&self.client, &dblp_query, limit),
+                ),
+                cached_source_search(
+                    "europepmc",
+                    &europepmc_query,
+                    limit,
+                    sources::search_europepmc(&self.client, &europepmc_query, limit),
+                ),
+                cached_source_search(
+                    "hal",
+                    &hal_query,
+                    limit,
+                    sources::search_hal(&self.client, &hal_query, limit),
+                ),
+                cached_source_search(
+                    "datacite",
+                    &datacite_query,
+                    limit,
+                    sources::search_datacite(&self.client, &datacite_query, limit),
+                ),
+                cached_source_search(
+                    "scielo",
+                    &scielo_query,
+                    limit,
+                    sources::search_scielo(&self.client, &scielo_query, limit),
+                ),
+                cached_source_search(
+                    "jstage",
+                    &jstage_query,
+                    limit,
+                    sources::search_jstage(&self.client, &jstage_query, limit),
+                ),
             );
 
             for (name, res) in [
@@ -103,12 +176,41 @@ impl SearchEngine {
 
         // Tier 2: keyed sources + Google Scholar
         if self.tier == SourceTier::All {
+            let core_query = adapt_query(query, "core", year_min);
+            let cinii_query = adapt_query(query, "cinii", year_min);
+            let ads_query = adapt_query(query, "ads", year_min);
+            let lens_query = adapt_query(query, "lens", year_min);
             let (core_r, cinii_r, ads_r, lens_r, gs_r) = tokio::join!(
-                sources::search_core(&self.client, query, limit, &self.keys),
-                sources::search_cinii(&self.client, query, limit, &self.keys),
-                sources::search_ads(&self.client, query, limit, &self.keys),
-                sources::search_lens(&self.client, query, limit, &self.keys),
-                sources::search_google_scholar(&self.client, query, limit),
+                cached_source_search(
+                    "core",
+                    &core_query,
+                    limit,
+                    sources::search_core(&self.client, &core_query, limit, &self.keys),
+                ),
+                cached_source_search(
+                    "cinii",
+                    &cinii_query,
+                    limit,
+                    sources::search_cinii(&self.client, &cinii_query, limit, &self.keys),
+                ),
+                cached_source_search(
+                    "ads",
+                    &ads_query,
+                    limit,
+                    sources::search_ads(&self.client, &ads_query, limit, &self.keys),
+                ),
+                cached_source_search(
+                    "lens",
+                    &lens_query,
+                    limit,
+                    sources::search_lens(&self.client, &lens_query, limit, &self.keys),
+                ),
+                cached_source_search(
+                    "google_scholar",
+                    query,
+                    limit,
+                    sources::search_google_scholar(&self.client, query, limit),
+                ),
             );
 
             for (name, res) in [
@@ -150,6 +252,35 @@ impl SearchEngine {
         results
     }
 
+    /// Search a topic plus domain-specific expansion queries.
+    pub async fn search_topic(
+        &self,
+        topic: &str,
+        domains: &[String],
+        limit: usize,
+        year_min: u32,
+    ) -> Vec<Paper> {
+        let mut queries = vec![topic.to_string()];
+        for expanded in get_domain_queries(topic, domains) {
+            if !queries
+                .iter()
+                .any(|existing| existing.eq_ignore_ascii_case(&expanded))
+            {
+                queries.push(expanded);
+            }
+        }
+
+        let mut all_papers = Vec::new();
+        for expanded_query in queries {
+            tracing::info!("Expanded search query: {}", expanded_query);
+            all_papers.extend(self.search(&expanded_query, limit, year_min).await);
+        }
+
+        let mut results = deduplicate(all_papers);
+        results.sort_by_key(|p| std::cmp::Reverse(p.citation_count));
+        results
+    }
+
     /// Search by DOI across all sources.
     pub async fn search_by_doi(&self, doi: &str) -> Vec<Paper> {
         self.search(&format!("DOI:{doi}"), 5, 0).await
@@ -159,4 +290,23 @@ impl SearchEngine {
     pub fn client(&self) -> &Client {
         &self.client
     }
+}
+
+async fn cached_source_search<F>(
+    source: &str,
+    query: &str,
+    limit: usize,
+    fetch: F,
+) -> Result<Vec<Paper>, SourceError>
+where
+    F: std::future::Future<Output = Result<Vec<Paper>, SourceError>>,
+{
+    if let Some(papers) = get_cached_search(query, source, limit) {
+        tracing::debug!("{source} cache hit: {} results", papers.len());
+        return Ok(papers);
+    }
+
+    let papers = fetch.await?;
+    put_cached_search(query, source, limit, &papers);
+    Ok(papers)
 }

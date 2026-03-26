@@ -170,6 +170,68 @@ pub struct DownloadCampaignQueryResult {
     pub failure_count: usize,
 }
 
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+pub struct LiteratureVerificationRunRecord {
+    pub id: Option<i64>,
+    pub input_path: String,
+    pub topic: Option<String>,
+    pub hypotheses_path: Option<String>,
+    pub domains: Vec<String>,
+    pub search_queries: Vec<String>,
+    pub total_entries: usize,
+    pub verified_count: usize,
+    pub suspicious_count: usize,
+    pub hallucinated_count: usize,
+    pub skipped_count: usize,
+    pub integrity_score: f64,
+    pub novelty_score: Option<f64>,
+    pub novelty_assessment: Option<String>,
+    pub recommendation: Option<String>,
+    pub search_coverage: Option<String>,
+    pub total_papers_retrieved: Option<usize>,
+    pub created_at: String,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+pub struct LiteratureVerificationResultRecord {
+    pub id: Option<i64>,
+    pub run_id: Option<i64>,
+    pub cite_key: String,
+    pub title: String,
+    pub status: String,
+    pub confidence: f64,
+    pub method: String,
+    pub details: String,
+    pub doi: Option<String>,
+    pub arxiv_id: Option<String>,
+    pub matched_paper_title: Option<String>,
+    pub matched_paper_source: Option<String>,
+    pub matched_paper_year: Option<i64>,
+    pub matched_paper_url: Option<String>,
+    pub relevance_score: Option<f64>,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+pub struct LiteratureNoveltySimilarPaperRecord {
+    pub id: Option<i64>,
+    pub run_id: Option<i64>,
+    pub title: String,
+    pub paper_id: String,
+    pub year: i64,
+    pub venue: String,
+    pub citation_count: i64,
+    pub similarity: f64,
+    pub url: String,
+    pub cite_key: String,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+pub struct LiteratureVerificationQueryResult {
+    pub run: LiteratureVerificationRunRecord,
+    pub results: Vec<LiteratureVerificationResultRecord>,
+    pub similar_papers: Vec<LiteratureNoveltySimilarPaperRecord>,
+}
+
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 pub struct CountSummary {
     pub key: String,
