@@ -437,13 +437,13 @@ Section Schafer1954Theorem3Coordinates.
     s54_t3_eq51 :
       forall i j k : Index,
         s54_triple_rel i j k ->
-        s54_t3_diag_scalar i + s54_t3_diag_scalar j =
+        (s54_t3_diag_scalar i + s54_t3_diag_scalar j)%R =
         s54_t3_diag_scalar k;
     s54_t3_eq52 :
       s54_eq52_formula s54_triple_rel;
     s54_t3_eq51_eq52_force_zero :
       forall i : Index,
-        tracked_index i -> s54_t3_diag_scalar i = 0;
+        tracked_index i -> s54_t3_diag_scalar i = 0%R;
   }.
 
   Theorem s54_t3_coordinate_surface_forces_C_eq_A :
@@ -464,7 +464,7 @@ Section Schafer1954Theorem3Coordinates.
   Theorem s54_t3_coordinate_surface_diag_zero :
     forall S : Schafer1954Theorem3CoordinateSurface,
     forall i : Index,
-      tracked_index i -> s54_t3_diag_scalar S i = 0.
+      tracked_index i -> s54_t3_diag_scalar S i = 0%R.
   Proof.
     intros S i Hi.
     exact (s54_t3_eq51_eq52_force_zero S i Hi).
@@ -478,7 +478,7 @@ Section Schafer1954Theorem3Coordinates.
         s54_t3_block_A_map (s54_t3_coord_block S) x;
     s54_t3_coord_surface_diag_zero :
       forall i : Index,
-        tracked_index i -> s54_t3_diag_scalar S i = 0;
+        tracked_index i -> s54_t3_diag_scalar S i = 0%R;
   }.
 
   Definition schafer1954_theorem3_coordinate_uniqueness_surface
