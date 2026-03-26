@@ -2121,6 +2121,30 @@ Module Dickson1921FloatSection7Lane (F : FLOAT_OPS).
   Definition d1921_float_param_section7_dimension (n : nat) : Prop :=
     dickson1921_section7_dimension n.
 
+  Record Dickson1921FloatPresentationObstructionSurface := {
+    d1921_fpo_dimension : nat -> Prop;
+    d1921_fpo_foundation :
+      forall c2 c3 : t, d1921_float_param_section5_6_foundation c2 c3;
+    d1921_fpo_dim5_square_excluded :
+      ~ hurwitz_square_dimension 5%nat;
+    d1921_fpo_dim6_square_excluded :
+      ~ hurwitz_square_dimension 6%nat;
+    d1921_fpo_hurwitz_handoff :
+      forall n : nat,
+        tracked_cd_tower_dimension n ->
+        ~ hurwitz_square_dimension n ->
+        hurwitz_radon n <> n;
+    d1921_fpo_square_case_classification :
+      forall n : nat,
+        d1921_fpo_dimension n ->
+        (hurwitz_radon n = n <-> hurwitz_square_dimension n);
+    d1921_fpo_noncomposition :
+      forall n : nat,
+        d1921_fpo_dimension n ->
+        ~ hurwitz_square_dimension n ->
+        hurwitz_radon n <> n;
+  }.
+
   Theorem d1921_float_param_dim5_square_excluded :
     ~ hurwitz_square_dimension 5%nat.
   Proof.
@@ -2229,6 +2253,47 @@ Module Dickson1921FloatSection7Lane (F : FLOAT_OPS).
         * split.
           -- exact d1921_float_param_section7_square_case_classification.
           -- exact d1921_float_param_section7_noncomposition_summary.
+  Qed.
+
+  Definition d1921_float_param_presentation_obstruction_surface :
+      Dickson1921FloatPresentationObstructionSurface :=
+    {| d1921_fpo_dimension := d1921_float_param_section7_dimension;
+       d1921_fpo_foundation :=
+         fun c2 c3 =>
+           proj1 d1921_float_param_foundation_section7_summary c2 c3;
+       d1921_fpo_dim5_square_excluded :=
+         d1921_float_param_dim5_square_excluded;
+       d1921_fpo_dim6_square_excluded :=
+         d1921_float_param_dim6_square_excluded;
+       d1921_fpo_hurwitz_handoff :=
+         d1921_float_param_hurwitz_handoff;
+       d1921_fpo_square_case_classification :=
+         d1921_float_param_section7_square_case_classification;
+       d1921_fpo_noncomposition :=
+         d1921_float_param_section7_noncomposition_summary |}.
+
+  Theorem d1921_float_param_presentation_obstruction_summary :
+    (forall c2 c3 : t,
+        d1921_float_param_section5_6_foundation c2 c3) /\
+    (forall n : nat,
+        d1921_fpo_dimension d1921_float_param_presentation_obstruction_surface n ->
+        (hurwitz_radon n = n <-> hurwitz_square_dimension n)) /\
+    (forall n : nat,
+        d1921_fpo_dimension d1921_float_param_presentation_obstruction_surface n ->
+        ~ hurwitz_square_dimension n ->
+        hurwitz_radon n <> n).
+  Proof.
+    split.
+    - exact
+        (d1921_fpo_foundation
+          d1921_float_param_presentation_obstruction_surface).
+    - split.
+      + exact
+          (d1921_fpo_square_case_classification
+            d1921_float_param_presentation_obstruction_surface).
+      + exact
+          (d1921_fpo_noncomposition
+            d1921_float_param_presentation_obstruction_surface).
   Qed.
 End Dickson1921FloatSection7Lane.
 

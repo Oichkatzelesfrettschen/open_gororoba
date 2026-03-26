@@ -233,19 +233,17 @@ fn is_combining_mark(ch: char) -> bool {
         0x0300..=0x036F | 0x1AB0..=0x1AFF | 0x1DC0..=0x1DFF | 0x20D0..=0x20FF | 0xFE20..=0xFE2F
     )
 }
-
 fn is_emoji(ch: char) -> bool {
     let val = ch as u32;
+    // Block: Emoticons, Transport, Misc Pictographs, Supplemental Pictographs, Flags, Variation Selectors
     matches!(
         val,
         0x1F600..=0x1F64F | // Emoticons
         0x1F300..=0x1F5FF | // Misc Symbols and Pictographs
         0x1F680..=0x1F6FF | // Transport and Map
-        0x2600..=0x26FF   | // Misc Symbols
-        0x2700..=0x27BF   | // Dingbats
-        0xFE00..=0xFE0F   | // Variation Selectors
         0x1F900..=0x1F9FF | // Supplemental Symbols and Pictographs
-        0x1F1E6..=0x1F1FF   // Flags
+        0x1F1E6..=0x1F1FF | // Flags
+        0xFE00..=0xFE0F     // Variation Selectors
     )
 }
 
@@ -277,18 +275,6 @@ fn strip_ansi_sequences(text: &str) -> String {
     let without_csi = csi.replace_all(text, "");
     let without_osc = osc.replace_all(&without_csi, "");
     without_osc.replace('\u{001b}', "")
-}
-
-fn has_disallowed_characters(text: &str) -> bool {
-    text.chars().any(|ch| {
-        if ch.is_control() && !matches!(ch, '\n' | '\r' | '\t') {
-            return true;
-        }
-        if is_emoji(ch) {
-            return true;
-        }
-        false
-    })
 }
 
 fn iter_character_policy_files(root: &Path) -> Vec<PathBuf> {
@@ -362,12 +348,14 @@ fn run_character_policy(args: CharacterPolicyArgs) -> Result<()> {
         } else {
             text.clone()
         };
+        
         if let Some(bad_ch) = new_text.chars().find(|&ch| {
             (ch.is_control() && !matches!(ch, '\n' | '\r' | '\t')) || is_emoji(ch)
         }) {
             failures.push(format!("{} (first bad char: U+{:04X})", rel, bad_ch as u32));
             continue;
         }
+
         if args.strict_placeholders {
             let in_scope = scope_prefixes.is_empty()
                 || scope_prefixes

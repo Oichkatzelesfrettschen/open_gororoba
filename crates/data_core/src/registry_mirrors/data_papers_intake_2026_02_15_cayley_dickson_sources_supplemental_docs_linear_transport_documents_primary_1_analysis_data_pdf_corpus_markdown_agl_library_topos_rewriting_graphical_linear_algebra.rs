@@ -1040,7 +1040,7 @@
 //!
 //! 𝑒 (𝑏𝑡 , 𝑏𝑝 ) =
 //!
-//! 1 ∑︁
+//! 1 ∑
 //! ((𝑏 𝑝 )𝑖 − (𝑏𝑡 )𝑖 ) 2 .
 //! 2 𝑖=1
 //!
@@ -1067,7 +1067,7 @@
 //! 𝑅 [𝑒] : Z𝑏 × Z𝑏 × Z𝑏 → Z𝑏 × Z𝑏 given by 𝑅 [𝑒] (𝑏𝑡 , 𝑏 𝑝 , 𝛼) = (𝛼, 𝛼).
 //! Example 3.6 (Softmax cross entropy). The Softmax cross entropy loss is a R𝑏 -parameterized map
 //! R → R defined by
-//! ∑︁
+//! ∑
 //! 𝑒 (𝑏𝑡 , 𝑏 𝑝 ) =
 //! (𝑏𝑡 )𝑖 ((𝑏 𝑝 )𝑖 − log(Softmax(𝑏 𝑝 )𝑖 )
 //! 𝑏
