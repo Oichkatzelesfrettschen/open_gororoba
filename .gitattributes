@@ -10,3 +10,5 @@ data/output/heliosphere/soho/celias_pm_native_5min.csv filter=lfs diff=lfs merge
 *.pdf filter=lfs diff=lfs merge=lfs -text
 *.nsys-rep filter=lfs diff=lfs merge=lfs -text
 *.sqlite filter=lfs diff=lfs merge=lfs -text
+*.h5 filter=lfs diff=lfs merge=lfs -text
+*.cdf filter=lfs diff=lfs merge=lfs -text
