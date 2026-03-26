@@ -18,7 +18,7 @@
 From Stdlib Require Import Reals Lia Lra.
 From OpenGororoba Require Import
   Prelude CayleyDicksonAlgebra Sedenion OctonionNorm
-  CDLinearLemmas CDNegLemmas.
+  CDConjAntimorph CDLinearLemmas CDNegLemmas.
 
 Open Scope R_scope.
 
@@ -178,6 +178,30 @@ Section Moreno29Abstract.
              apply oct_add_neg_cancel.
   Qed.
 
+  Lemma moreno29_nested_product_pure : forall y : CDOct,
+    oct_conj a = oct_neg a ->
+    oct_conj b = oct_neg b ->
+    oct_conj y = oct_neg y ->
+    oct_mul y b = oct_neg (oct_mul b y) ->
+    oct_mul (oct_mul b y) a = oct_neg (oct_mul a (oct_mul b y)) ->
+    oct_conj (oct_mul a (oct_mul b y)) = oct_neg (oct_mul a (oct_mul b y)).
+  Proof.
+    intros y Ha_pure Hb_pure Hy_pure Hyb Hbya.
+    rewrite oct_conj_antimorphism.
+    rewrite oct_conj_antimorphism.
+    rewrite Hy_pure.
+    rewrite Hb_pure.
+    rewrite Ha_pure.
+    rewrite oct_neg_mul_right.
+    rewrite oct_neg_mul_left.
+    rewrite oct_neg_mul_right.
+    rewrite oct_neg_neg.
+    rewrite Hyb.
+    rewrite oct_neg_mul_left.
+    rewrite oct_neg_neg.
+    exact Hbya.
+  Qed.
+
   Corollary moreno29_abstract_iff : forall y : CDOct,
     oct_conj y = oct_neg y ->
     oct_mul y a = oct_neg (oct_mul a y) ->
@@ -195,5 +219,21 @@ Section Moreno29Abstract.
       + exact (moreno29_witness_implies_eigen _ _ Hw).
     - intros [Hy Heig].
       exact (moreno29_eigen_implies_witness y Hy Hy_pure Hya Hyb Haby_pure Heig).
+  Qed.
+
+  Corollary moreno29_abstract_iff_anticomm : forall y : CDOct,
+    oct_conj a = oct_neg a ->
+    oct_conj b = oct_neg b ->
+    oct_conj y = oct_neg y ->
+    oct_mul y a = oct_neg (oct_mul a y) ->
+    oct_mul y b = oct_neg (oct_mul b y) ->
+    oct_mul (oct_mul b y) a = oct_neg (oct_mul a (oct_mul b y)) ->
+    (moreno29_witness_eqns (moreno29_partner y) y <->
+     y <> oct_zero /\
+     oct_mul moreno29_c (oct_mul moreno29_c y) = oct_scale (-2) y).
+  Proof.
+    intros y Ha_pure Hb_pure Hy_pure Hya Hyb Hbya.
+    apply moreno29_abstract_iff; try assumption.
+    exact (moreno29_nested_product_pure y Ha_pure Hb_pure Hy_pure Hyb Hbya).
   Qed.
 End Moreno29Abstract.

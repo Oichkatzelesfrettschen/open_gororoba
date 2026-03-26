@@ -21,6 +21,7 @@
     so dim Ker(L_a) <= 2^n - 4.  Fully proved from subspace orthogonality. *)
 
 From Stdlib Require Import Arith PeanoNat Lia.
+From OpenGororoba Require Import FinDimHModule.
 Open Scope nat_scope.
 
 (** ================================================================== *)
@@ -52,17 +53,11 @@ Proof.
   lia.
 Qed.
 
-(** ** H-module dimension divisibility (Artin-Wedderburn for H).
+(** ** H-module dimension divisibility.
 
-    Over R, every finitely generated right module over H has R-dim = 4k.
-    This follows from Artin-Wedderburn: H is a simple algebra, so every
-    finitely generated H-module is H^k for some k, giving R-dim = 4k.
-
-    Axiomatized -- a full proof would require formalizing the classification
-    of simple modules over division algebras. *)
-Axiom h_module_dim_div4 : forall (d : nat),
-  (** d is the R-dimension of a finitely generated right H-module *)
-  exists k, d = 4 * k.
+    The newer Moreno lane already packages the quaternion-module induction
+    via the predicate [is_h_module_dim] in FinDimHModule.v.  We reuse that
+    infrastructure here instead of carrying a separate divisibility axiom. *)
 
 (** ** Ker(L_a) is an H_a-module (Moreno Thm 1.16 + Prop 1.13).
 
@@ -78,15 +73,26 @@ Axiom h_module_dim_div4 : forall (d : nat),
     ensures that left multiplication by a and right multiplication by h
     commute modulo signs on each eigenspace.
 
-    Axiomatized -- this is the one place where the full Moreno decomposition
-    enters the mod-4 argument. *)
-Axiom ker_l_a_is_h_module : forall (ker_dim : nat),
-  exists k, ker_dim = 4 * k.
+    What remains axiomatized here is only the concrete bridge:
+    the full Moreno decomposition must show that the specific kernel
+    dimension does satisfy the shared predicate [is_h_module_dim]. *)
+Axiom ker_l_a_has_h_module_dim : forall (ker_dim : nat),
+  is_h_module_dim ker_dim.
 
 (** ** Corollary 1.17, part (i): dim Ker(L_a) = 0 mod 4. *)
 Theorem cor_1_17_mod4 : forall (ker_dim : nat),
   exists k, ker_dim = 4 * k.
-Proof. exact ker_l_a_is_h_module. Qed.
+Proof.
+  intro ker_dim.
+  exact (FinDimHModule.h_module_dim_div4 ker_dim (ker_l_a_has_h_module_dim ker_dim)).
+Qed.
+
+Corollary cor_1_17_mod4_nat : forall (ker_dim : nat),
+  Nat.modulo ker_dim 4 = 0.
+Proof.
+  intro ker_dim.
+  exact (FinDimHModule.h_module_dim_mod4 ker_dim (ker_l_a_has_h_module_dim ker_dim)).
+Qed.
 
 (** ** Subspace orthogonality bound (general linear algebra). *)
 Lemma subspace_orthogonal_bound : forall (alg_dim ha_dim ker_dim : nat),

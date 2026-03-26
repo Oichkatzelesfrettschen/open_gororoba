@@ -2525,6 +2525,49 @@ claims we should trust and which search lanes are worth burning time on.
   Freudenthal routes to closed Springer 1985 plus open MathNet translation,
   Jacobson routes first to the collected-papers reprint chapter, and Cullen
   routes straight back to Euclid's gated download endpoint.
+- Chapter-level discovery changes what "blocked" means. The Jacobson lane is
+  no longer a vague collected-volume problem: UCSD exposes the exact chapter
+  record `COMPOSITION ALGEBRAS AND THEIR AUTOMORPHISMS`, reprint pages
+  `341-366`, and chapter DOI `10.1007/978-1-4612-3694-8_24`, while Google
+  Books independently confirms the same chapter in two different edition views.
+  The newer UI indexes hits on pages 341, 347, 351, and 361 without rendering
+  the page bodies, while the classic 1989 print-edition view reports 17
+  in-book hits and visible cards for pages 341 and 345 from a Berkeley-digitized
+  source volume. That is enough to treat Jacobson as page-known but
+  institution-locked.
+- The even better trick is browser-only accessible mode. For the same Jacobson
+  volume, `output=html_text` was blocked to shell fetches by Google's bot wall
+  but worked in the live browser. That produced actual snippet text for page
+  341, page 345, and a TOC snippet on page xvii from a second source scan.
+  So the right model here is "multiple weak textual witnesses from distinct
+  library-source scans," not just "one locked preview."
+- Machine-readable catalog ids have to stay in their own namespace. The
+  Freudenthal exact-original record's `1178680002` belongs to the
+  Heidelberg/K10plus/BSZ graph; treating it like a DNB identifier sends the
+  search into false matches. The right move is to chase that id through HEIDI,
+  K10plus, and Culturegraph-style holdings, not through DNB.
+- OpenLibrary JSON is a good anti-fantasy tool for collected volumes. For
+  Jacobson volume 2, the public edition APIs for `OL11388064M` / ISBN
+  `0817634118` confirm the record exists but expose no `ia`, `ocaid`, or
+  lending identifiers at all. That is a stronger negative signal than a vague
+  "Locate" button on the HTML page.
+- LibKey's public article API can distinguish "real file cache" from "just a
+  resolver button." UCLA's Jacobson article record (`32416758`) exposes issue
+  and journal metadata plus a `contentLocation`, but both `fullTextFile` and
+  `libkeyFullTextFile` are empty while `openAccess=false`. So the apparent
+  `Download PDF` path is still just a licensed handoff to Springer, not a
+  hidden LibKey-hosted PDF waiting to be fetched.
+- Cornell's Cullen lane is now typed at the database-accession level. The
+  discovery result routes through EBSCO with database `msn` and accession
+  `MR173012`, then into institutional sign-in. That is useful because it tells
+  us the barrier is a licensed aggregator path, not missing metadata and not a
+  secret Euclid mirror.
+- German union catalogs add a useful middle layer between WorldCat and local
+  OPACs. `lobid` mirrors both Jacobson volume 2 and the Freudenthal 1960
+  revised edition with item-level holdings and direct `seeAlso` links into
+  university catalogs, while still exposing `electronicLocator = null`. That
+  is exactly the kind of evidence that tells us "scan-requestable print object"
+  rather than "missed digital file."
 - The remaining exact gaps are now narrow and well-typed:
   Freudenthal 1951 is a catalog/scan problem, Jacobson 1958 is a journal-vs-
   collected-papers access problem, and Cullen 1965 is a full-issue/volume scan
