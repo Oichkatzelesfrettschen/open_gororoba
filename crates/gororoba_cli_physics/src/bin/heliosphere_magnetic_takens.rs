@@ -1,7 +1,7 @@
 use anyhow::{Context, Result};
 use clap::Parser;
 use csv::{ReaderBuilder, WriterBuilder};
-use data_core::{HeliosphereFeatureRow, magnetic_takens_embed};
+use data_core::{HeliosphereFeatureRow, magnetic_plasma_takens_embed, magnetic_takens_embed};
 use serde::Serialize;
 use std::{collections::BTreeMap, path::PathBuf};
 
@@ -28,6 +28,11 @@ struct Cli {
     /// Takens lag in time steps (1 = consecutive hourly, 2 = every other, ...).
     #[arg(long, default_value_t = 1)]
     takens_lag: usize,
+
+    /// Embedding mode: "magnetic" (pure B-field) or "magnetic-plasma" (B + plasma).
+    /// magnetic-plasma uses 4 steps x 8 channels (always 32D, ignores --embedding-dim).
+    #[arg(long, default_value = "magnetic")]
+    embedding_mode: String,
 }
 
 #[derive(Debug, Clone, Serialize)]
@@ -82,24 +87,39 @@ fn main() -> Result<()> {
         });
     }
 
-    let steps = cli.embedding_dim / 4;
+    let is_mixed = cli.embedding_mode == "magnetic-plasma";
+    let dim = if is_mixed { 32 } else { cli.embedding_dim };
+    let steps = if is_mixed { 4 } else { dim / 4 };
     let mut results = Vec::new();
 
     println!(
-        "[1/2] Computing Takens {}D embedding ({}-step delay, lag={}) for B-field...",
-        cli.embedding_dim, steps, cli.takens_lag
+        "[1/2] Computing Takens {}D embedding ({}-step delay, lag={}, mode={}) ...",
+        dim, steps, cli.takens_lag, cli.embedding_mode
     );
     for ((mission, product), rows) in groups {
         if rows.len() < steps + 5 {
             continue;
         }
 
-        let (embedded_vectors, meta_idx) =
-            magnetic_takens_embed(&rows, cli.embedding_dim, cli.takens_lag);
+        let (embedded_vectors, meta_idx) = if is_mixed {
+            let (vecs, idx, eligible) =
+                magnetic_plasma_takens_embed(&rows, cli.takens_lag);
+            let eligible_frac =
+                eligible.iter().filter(|&&e| e).count() as f64 / eligible.len() as f64;
+            println!(
+                "  {mission}/{product}: {:.1}% eligible ({}/{})",
+                eligible_frac * 100.0,
+                eligible.iter().filter(|&&e| e).count(),
+                eligible.len()
+            );
+            (vecs, idx)
+        } else {
+            magnetic_takens_embed(&rows, dim, cli.takens_lag)
+        };
 
         let associators = cd_kernel::batch_sliding_associator_norms_parallel(
             &embedded_vectors,
-            cli.embedding_dim,
+            dim,
         );
 
         if associators.is_empty() {
