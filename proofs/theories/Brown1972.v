@@ -661,6 +661,116 @@ Proof.
     reflexivity.
 Qed.
 
+Lemma brown1972_quat_mul_zero_right : forall x : CDQuat,
+  quat_mul x quat_zero = quat_zero.
+Proof.
+  intros [a b c d].
+  unfold quat_mul, quat_zero.
+  simpl.
+  apply (f_equal4 mkQuat); ring.
+Qed.
+
+Lemma brown1972_quat_norm_zero : forall a : CDQuat,
+  quat_norm_sq a = 0%R -> a = quat_zero.
+Proof.
+  intros [a b c d] Hnorm.
+  unfold quat_norm_sq, quat_zero in Hnorm |- *.
+  simpl in Hnorm.
+  assert (Ha2 : (0 <= a * a)%R) by nra.
+  assert (Hb2 : (0 <= b * b)%R) by nra.
+  assert (Hc2 : (0 <= c * c)%R) by nra.
+  assert (Hd2 : (0 <= d * d)%R) by nra.
+  assert (Ha0 : (a * a = 0)%R) by lra.
+  assert (Hb0 : (b * b = 0)%R) by lra.
+  assert (Hc0 : (c * c = 0)%R) by lra.
+  assert (Hd0 : (d * d = 0)%R) by lra.
+  assert (a = 0%R) by nra.
+  assert (b = 0%R) by nra.
+  assert (c = 0%R) by nra.
+  assert (d = 0%R) by nra.
+  subst.
+  reflexivity.
+Qed.
+
+Theorem brown1972_corollary_5_3_quaternion : forall a : CDQuat,
+  quat_mul a a = a <-> a = quat_zero \/ a = quat_one.
+Proof.
+  intros [a b c d].
+  split.
+  - intro Hidem.
+    assert (Hre : qa (quat_mul (mkQuat a b c d) (mkQuat a b c d)) = qa (mkQuat a b c d))
+      by exact (f_equal qa Hidem).
+    assert (Hb : qb (quat_mul (mkQuat a b c d) (mkQuat a b c d)) = qb (mkQuat a b c d))
+      by exact (f_equal qb Hidem).
+    assert (Hc : qc (quat_mul (mkQuat a b c d) (mkQuat a b c d)) = qc (mkQuat a b c d))
+      by exact (f_equal qc Hidem).
+    assert (Hd : qd (quat_mul (mkQuat a b c d) (mkQuat a b c d)) = qd (mkQuat a b c d))
+      by exact (f_equal qd Hidem).
+    unfold quat_mul, qa, qb, qc, qd in Hre, Hb, Hc, Hd.
+    simpl in Hre, Hb, Hc, Hd.
+    set (s := (b * b + c * c + d * d)%R).
+    assert (Hs : (s = a * a - a)%R).
+    { unfold s. nra. }
+    assert (Hb' : ((2 * a - 1) * b = 0)%R) by nra.
+    assert (Hc' : ((2 * a - 1) * c = 0)%R) by nra.
+    assert (Hd' : ((2 * a - 1) * d = 0)%R) by nra.
+    assert (Hlin : ((2 * a - 1) * s = 0)%R).
+    {
+      unfold s.
+      replace
+        ((2 * a - 1) * (b * b + c * c + d * d))%R
+        with ((((2 * a - 1) * b) * b + ((2 * a - 1) * c) * c +
+               ((2 * a - 1) * d) * d)%R) by ring.
+      rewrite Hb', Hc', Hd'.
+      ring.
+    }
+    destruct (Req_EM_T s 0) as [Hs0 | Hs0].
+    + assert (b = 0%R) by (unfold s in Hs0; nra).
+      assert (c = 0%R) by (unfold s in Hs0; nra).
+      assert (d = 0%R) by (unfold s in Hs0; nra).
+      subst b c d.
+      assert (a = 0%R \/ a = 1%R) by nra.
+      destruct H as [Ha0 | Ha1].
+      * left. subst a. reflexivity.
+      * right. subst a. reflexivity.
+    + assert (Hspos : (s > 0)%R) by nra.
+      assert (Ha : (a = / 2)%R) by nra.
+      unfold s in Hs.
+      nra.
+  - intros [Hz | Ho].
+    + rewrite Hz. cbv [quat_mul quat_zero qa qb qc qd]. apply (f_equal4 mkQuat); ring.
+    + rewrite Ho. cbv [quat_mul quat_one qa qb qc qd]. apply (f_equal4 mkQuat); ring.
+Qed.
+
+Theorem brown1972_corollary_5_5_quaternion : forall a n,
+  brown1972_quat_nat_pow a (S n) = quat_zero ->
+  a = quat_zero.
+Proof.
+  intros a n.
+  induction n as [|n IH].
+  - intro Hpow.
+    simpl in Hpow.
+    rewrite quat_mul_one_left in Hpow.
+    exact Hpow.
+  - intro Hpow.
+    destruct (Req_EM_T (quat_norm_sq a) 0) as [Hz | Hnz].
+    + exact (brown1972_quat_norm_zero a Hz).
+    + pose proof (brown1972_lemma_5_2_quaternion a (S n) Hnz) as Hstep.
+      rewrite Hpow in Hstep.
+      rewrite brown1972_quat_mul_zero_right in Hstep.
+      exact (IH Hstep).
+Qed.
+
+Theorem brown1972_lemma_5_8_quaternion : forall a,
+  brown1972_quat_trace (quat_mul a a) =
+  (brown1972_quat_trace a * brown1972_quat_trace a - 2 * quat_norm_sq a)%R.
+Proof.
+  intros a.
+  unfold brown1972_quat_trace.
+  rewrite quat_re_square.
+  ring.
+Qed.
+
 Lemma brown1972_quat_zpow_succ : forall a n,
   quat_norm_sq a <> 0%R ->
   brown1972_quat_zpow a (Z.succ n) =
@@ -952,6 +1062,110 @@ Proof.
   apply quat_assoc_zero.
 Qed.
 
+Definition brown1972_oct_one : CDOct := mkOct quat_one quat_zero.
+
+Definition brown1972_oct_inv (a : CDOct) : CDOct :=
+  oct_scale (/ oct_norm_sq a) (oct_conj a).
+
+Fixpoint brown1972_oct_nat_pow (a : CDOct) (n : nat) : CDOct :=
+  match n with
+  | O => brown1972_oct_one
+  | S k => oct_mul (brown1972_oct_nat_pow a k) a
+  end.
+
+Definition brown1972_oct_zpow (a : CDOct) (n : Z) : CDOct :=
+  match n with
+  | Z0 => brown1972_oct_one
+  | Zpos p => brown1972_oct_nat_pow a (Pos.to_nat p)
+  | Zneg p => brown1972_oct_nat_pow (brown1972_oct_inv a) (Pos.to_nat p)
+  end.
+
+Lemma brown1972_oct_mul_one_left : forall x : CDOct,
+  oct_mul brown1972_oct_one x = x.
+Proof.
+  intros [[a1 a2 a3 a4] [a5 a6 a7 a8]].
+  cbv [brown1972_oct_one oct_mul oct_conj oct_zero oct_lo oct_hi
+       quat_mul quat_add quat_neg quat_conj quat_one quat_zero
+       qa qb qc qd].
+  f_equal; f_equal; ring.
+Qed.
+
+Lemma brown1972_oct_conj_involution : forall x : CDOct,
+  oct_conj (oct_conj x) = x.
+Proof.
+  intros [[a1 a2 a3 a4] [a5 a6 a7 a8]].
+  cbv [oct_conj oct_lo oct_hi quat_conj quat_neg qa qb qc qd].
+  f_equal; f_equal; ring.
+Qed.
+
+Lemma brown1972_oct_norm_conj_preserved : forall a,
+  oct_norm_sq (oct_conj a) = oct_norm_sq a.
+Proof.
+  intros [[a1 a2 a3 a4] [a5 a6 a7 a8]].
+  cbv [oct_norm_sq oct_conj quat_norm_sq quat_conj quat_neg oct_lo oct_hi qa qb qc qd].
+  ring.
+Qed.
+
+Lemma brown1972_oct_inv_conj : forall a,
+  oct_conj (brown1972_oct_inv a) = brown1972_oct_inv (oct_conj a).
+Proof.
+  intros a.
+  unfold brown1972_oct_inv.
+  rewrite oct_conj_scale.
+  rewrite brown1972_oct_conj_involution.
+  rewrite brown1972_oct_norm_conj_preserved.
+  reflexivity.
+Qed.
+
+Lemma brown1972_oct_nat_pow_commute_base : forall a n,
+  oct_mul a (brown1972_oct_nat_pow a n) =
+  oct_mul (brown1972_oct_nat_pow a n) a.
+Proof.
+  intros a n.
+  induction n as [|n IH].
+  - simpl. rewrite oct_mul_one_right. symmetry. apply brown1972_oct_mul_one_left.
+  - simpl.
+    symmetry.
+    rewrite oct_flexible.
+    rewrite IH.
+    reflexivity.
+Qed.
+
+Lemma brown1972_oct_nat_pow_left_step : forall a n,
+  oct_mul a (brown1972_oct_nat_pow a n) =
+  brown1972_oct_nat_pow a (S n).
+Proof.
+  intros a n.
+  rewrite brown1972_oct_nat_pow_commute_base.
+  simpl.
+  reflexivity.
+Qed.
+
+Lemma brown1972_oct_nat_pow_conj : forall a n,
+  oct_conj (brown1972_oct_nat_pow a n) =
+  brown1972_oct_nat_pow (oct_conj a) n.
+Proof.
+  intros a n.
+  induction n as [|n IH].
+  - unfold oct_conj, brown1972_oct_one. simpl. f_equal; apply quat_conj_involution.
+  - simpl.
+    rewrite oct_conj_antimorphism.
+    rewrite IH.
+    apply brown1972_oct_nat_pow_left_step.
+Qed.
+
+Theorem brown1972_lemma_5_1_octonion : forall a n,
+  oct_conj (brown1972_oct_zpow a n) =
+  brown1972_oct_zpow (oct_conj a) n.
+Proof.
+  intros a [|p|p]; simpl.
+  - unfold oct_conj, brown1972_oct_one. simpl. f_equal; apply quat_conj_involution.
+  - apply brown1972_oct_nat_pow_conj.
+  - rewrite brown1972_oct_nat_pow_conj.
+    rewrite brown1972_oct_inv_conj.
+    reflexivity.
+Qed.
+
 Record Brown1972ChapterVQuaternionSurface := {
   brown1972_ch5_l51_quat :
     forall a n,
@@ -962,6 +1176,17 @@ Record Brown1972ChapterVQuaternionSurface := {
       quat_norm_sq a <> 0%R ->
       quat_mul (brown1972_quat_inv a) (brown1972_quat_nat_pow a (S n)) =
       brown1972_quat_nat_pow a n;
+  brown1972_ch5_c53_quat :
+    forall a : CDQuat,
+      quat_mul a a = a <-> a = quat_zero \/ a = quat_one;
+  brown1972_ch5_c55_quat :
+    forall a n,
+      brown1972_quat_nat_pow a (S n) = quat_zero ->
+      a = quat_zero;
+  brown1972_ch5_l58_quat :
+    forall a,
+      brown1972_quat_trace (quat_mul a a) =
+      (brown1972_quat_trace a * brown1972_quat_trace a - 2 * quat_norm_sq a)%R;
   brown1972_ch5_t511_quat :
     forall a m n,
       quat_norm_sq a <> 0%R ->
@@ -998,6 +1223,9 @@ Definition brown1972_quaternion_chapter_v_surface :
 Proof.
   refine {| brown1972_ch5_l51_quat := brown1972_lemma_5_1_quaternion;
             brown1972_ch5_l52_quat := brown1972_lemma_5_2_quaternion;
+            brown1972_ch5_c53_quat := brown1972_corollary_5_3_quaternion;
+            brown1972_ch5_c55_quat := brown1972_corollary_5_5_quaternion;
+            brown1972_ch5_l58_quat := brown1972_lemma_5_8_quaternion;
             brown1972_ch5_t511_quat := brown1972_theorem_5_11_quaternion;
             brown1972_ch5_t512_quat := brown1972_theorem_5_12_quaternion;
             brown1972_ch5_l513_quat := brown1972_lemma_5_13_quaternion;
@@ -1005,6 +1233,19 @@ Proof.
             brown1972_ch5_l515_quat := brown1972_lemma_5_15_quaternion;
             brown1972_ch5_l516_quat := brown1972_lemma_5_16_quaternion;
             brown1972_ch5_t517_quat := brown1972_theorem_5_17_quaternion |}.
+Defined.
+
+Record Brown1972ChapterVInitialOctonionLift := {
+  brown1972_ch5_l51_oct :
+    forall a n,
+      oct_conj (brown1972_oct_zpow a n) =
+      brown1972_oct_zpow (oct_conj a) n
+}.
+
+Definition brown1972_chapter_v_initial_octonion_lift :
+  Brown1972ChapterVInitialOctonionLift.
+Proof.
+  refine {| brown1972_ch5_l51_oct := brown1972_lemma_5_1_octonion |}.
 Defined.
 
 Theorem Brown1972_lane_compiles : True.
