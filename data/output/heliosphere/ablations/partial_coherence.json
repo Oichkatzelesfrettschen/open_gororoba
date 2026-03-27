@@ -1,0 +1,14 @@
+{
+  "heliosheath_110_118": {
+    "n": 220206,
+    "total_coherence": 0.027751,
+    "partial_coherence_control_bmag": 0.021112,
+    "ratio_partial_total": 0.7608
+  },
+  "ism_121_126": {
+    "n": 50523,
+    "total_coherence": 0.031452,
+    "partial_coherence_control_bmag": 0.347804,
+    "ratio_partial_total": 11.0582
+  }
+}
