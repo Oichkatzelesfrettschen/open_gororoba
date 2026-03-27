@@ -1,0 +1,85 @@
+{
+  "search_date": "2026-03-27",
+  "purpose": "Defend novelty of CD associator as multichannel time-series diagnostic",
+  "searches": [
+    {
+      "venue": "arXiv",
+      "query": "cayley-dickson embedding turbulence magnetic",
+      "results": 0
+    },
+    {
+      "venue": "arXiv",
+      "query": "non-associative algebra signal processing time series",
+      "results": 0
+    },
+    {
+      "venue": "arXiv",
+      "query": "octonion magnetic field topology non-associative",
+      "results": 0
+    },
+    {
+      "venue": "arXiv",
+      "query": "hypercomplex signal processing octonion",
+      "results": 5,
+      "nearest": [
+        {
+          "id": "arXiv:2602.23946",
+          "title": "Hypercomplex Phase Retrieval",
+          "authors": "Mishra, Arguello, Sadler",
+          "relevance": "Uses quaternion/octonion for imaging phase retrieval. Adjacent but does NOT use non-associativity or associator norms. Stays within Clifford algebra framework. Operates on images, not time series."
+        },
+        {
+          "id": "arXiv:2308.15784",
+          "title": "Octonion Phase Retrieval",
+          "authors": "Jacome, Mishra, Sadler, Arguello",
+          "relevance": "Octonion Wirtinger flow for 8-band imaging. Does not exploit non-associativity as a diagnostic."
+        }
+      ]
+    },
+    {
+      "venue": "arXiv",
+      "query": "associator norm algebra physics",
+      "results": 24,
+      "nearest": [
+        {
+          "id": "arXiv:hep-th/0409173",
+          "title": "Octonionic Geometry",
+          "relevance": "Discusses non-associativity conceptually in gravity. Does NOT quantify associator as a measurable physical observable."
+        },
+        {
+          "id": "arXiv:1101.5690",
+          "title": "Division Algebras and Quantum Theory (Baez)",
+          "relevance": "Restricts to associative algebras (R, C, H). Explicitly excludes octonions. No associator as observable."
+        }
+      ]
+    }
+  ],
+  "adjacent_literatures": [
+    {
+      "field": "Quaternion/Clifford signal processing",
+      "status": "Well-established (Ell, Le Bihan, Sangwine). Restricted to 4D associative algebras. Does not venture into non-associative territory.",
+      "gap": "No use of non-associativity as a signal diagnostic"
+    },
+    {
+      "field": "Takens delay embedding",
+      "status": "Classical (Takens 1981, Sauer et al. 1991). Always embeds into Euclidean R^n.",
+      "gap": "Never embeds into hypercomplex algebras. No algebraic structure exploited."
+    },
+    {
+      "field": "Topological data analysis (TDA)",
+      "status": "Persistent homology for shape detection. Conceptually similar boundary detection.",
+      "gap": "Different mathematical framework. No connection to CD algebras."
+    },
+    {
+      "field": "Nonlinear time-series analysis",
+      "status": "Recurrence plots, Lyapunov exponents, fractal dimensions.",
+      "gap": "Uses scalar invariants of the embedding, not algebraic structure of the target space."
+    },
+    {
+      "field": "Conceptual non-associative physics",
+      "status": "Octonions in string theory, M-theory, exceptional groups (Baez, Duff).",
+      "gap": "Treats non-associativity as a theoretical framework property, not as a quantitative observable on data."
+    }
+  ],
+  "novelty_statement": "To our knowledge, no prior work uses Cayley-Dickson associator observables as multichannel time-series diagnostics for physical field data. Adjacent literatures exist in quaternion/Clifford signal processing, Takens embeddings, and conceptual non-associative physics, but they do not appear to operationalize non-associativity as a quantitative cross-channel phase-geometry probe."
+}
