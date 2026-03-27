@@ -2606,6 +2606,116 @@ Definition schafer1954_octonion_sedenion_converse_surface_of_residual_coordinate
   schafer1954_octonion_sedenion_converse_surface_of_backward
     (s54_octonion_sedenion_backward_from_residual_coordinate_builder Hcoords).
 
+Section Schafer1954ConcreteTheorem4FromTheorem3.
+  Variable s54_eq30_formula : (CDOct -> CDOct) -> CDOct -> Prop.
+  Variable s54_eq31_formula : (CDOct -> CDOct) -> CDOct -> Prop.
+  Variable s54_eq32_formula : (CDOct -> CDOct) -> CDOct -> Prop.
+  Variable s54_eq37_formula : (CDOct -> CDOct) -> Prop.
+  Variable s54_eq38_formula : (CDOct -> CDOct) -> Prop.
+  Variable s54_eq39_formula : (CDOct -> CDOct) -> CDOct -> Prop.
+  Variable s54_eq40_formula : (CDOct -> CDOct) -> Prop.
+  Variable s54_eq42_formula : (CDOct -> CDOct) -> Prop.
+  Variable s54_eq46_formula : (CDOct -> CDOct) -> Prop.
+  Variable s54_eq47_formula : (CDOct -> CDOct) -> Prop.
+  Variable s54_eq48_formula : (CDOct -> CDOct) -> Prop.
+  Variable s54_eq49_formula : (CDOct -> CDOct) -> Prop.
+  Variable s54_eq50_formula : (Schafer1954Basis7 -> R) -> (CDOct -> CDOct) -> Prop.
+  Variable s54_eq52_formula :
+    (Schafer1954Basis7 -> Schafer1954Basis7 -> Schafer1954Basis7 -> Prop) -> Prop.
+
+  Hypothesis s54_eq50_formula_concrete :
+    forall mu B,
+      s54_eq50_formula mu B ->
+      forall i : Schafer1954Basis7,
+        B (s54_basis7_oct i) = oct_scale (mu i) (s54_basis7_oct i).
+
+  Hypothesis s54_theorem3_instantiation_builder :
+    forall D : CDSed -> CDSed,
+      Schafer1954IsSedenionDerivation D ->
+      Schafer1954ConcreteTheorem3InstantiationSurface
+        s54_eq30_formula s54_eq31_formula s54_eq32_formula
+        s54_eq37_formula s54_eq38_formula s54_eq39_formula
+        s54_eq40_formula s54_eq42_formula s54_eq46_formula
+        s54_eq47_formula s54_eq48_formula s54_eq49_formula
+        s54_eq50_formula s54_eq52_formula
+        D.
+
+  Definition schafer1954_octonion_sedenion_converse_surface_of_theorem3_instantiation :
+      Schafer1954OctonionSedenionConverseSurface :=
+    schafer1954_octonion_sedenion_converse_surface_of_backward
+      (s54_octonion_sedenion_backward_from_theorem3_instantiation
+         s54_eq30_formula s54_eq31_formula s54_eq32_formula
+         s54_eq37_formula s54_eq38_formula s54_eq39_formula
+         s54_eq40_formula s54_eq42_formula s54_eq46_formula
+         s54_eq47_formula s54_eq48_formula s54_eq49_formula
+         s54_eq50_formula s54_eq52_formula
+         s54_eq50_formula_concrete s54_theorem3_instantiation_builder).
+
+  Theorem schafer1954_theorem4_octonion_sedenion_identification_from_theorem3_instantiation :
+    forall D : CDSed -> CDSed,
+      Schafer1954IsSedenionDerivation D <->
+      exists A : CDOct -> CDOct,
+        schafer1954_octonion_derivation A /\
+        D = schafer1954_sedenion_extend A.
+  Proof.
+    intro D.
+    split.
+    - exact
+        (s54_octsed_converse_backward
+           schafer1954_octonion_sedenion_converse_surface_of_theorem3_instantiation
+           D).
+    - intros [A [HA ->]].
+      exact (schafer1954_theorem2_octonion_to_sedenion_extension_map A HA).
+  Qed.
+
+  Theorem schafer1954_theorem4_octonion_sedenion_type_g_from_theorem3_instantiation :
+    (forall D : CDSed -> CDSed,
+        Schafer1954IsSedenionDerivation D <->
+        exists A : CDOct -> CDOct,
+          schafer1954_octonion_derivation A /\
+          D = schafer1954_sedenion_extend A) /\
+    dim_g2 = 14%nat /\
+    dim_stabilizer = 8%nat /\
+    (21 - 7 = 14 /\ 14 - 6 = 8 /\ (2^3 - 1) * (2^3 - 2) * (2^3 - 4) = 168).
+  Proof.
+    split.
+    - exact schafer1954_theorem4_octonion_sedenion_identification_from_theorem3_instantiation.
+    - exact schafer1954_theorem4_type_g_support.
+  Qed.
+
+  Record Schafer1954Theorem4FromTheorem3Surface := {
+    s54_t4_from_t3_converse_surface_data :
+      Schafer1954OctonionSedenionConverseSurface;
+    s54_t4_from_t3_identification :
+      forall D : CDSed -> CDSed,
+        Schafer1954IsSedenionDerivation D <->
+        exists A : CDOct -> CDOct,
+          schafer1954_octonion_derivation A /\
+          D = schafer1954_sedenion_extend A;
+    s54_t4_from_t3_type_g :
+      (forall D : CDSed -> CDSed,
+          Schafer1954IsSedenionDerivation D <->
+          exists A : CDOct -> CDOct,
+            schafer1954_octonion_derivation A /\
+            D = schafer1954_sedenion_extend A) /\
+      dim_g2 = 14%nat /\
+      dim_stabilizer = 8%nat /\
+      (21 - 7 = 14 /\ 14 - 6 = 8 /\ (2^3 - 1) * (2^3 - 2) * (2^3 - 4) = 168);
+  }.
+
+  Definition schafer1954_theorem4_from_theorem3_surface :
+      Schafer1954Theorem4FromTheorem3Surface.
+  Proof.
+    refine
+      {| s54_t4_from_t3_converse_surface_data :=
+           schafer1954_octonion_sedenion_converse_surface_of_theorem3_instantiation;
+         s54_t4_from_t3_identification := _;
+         s54_t4_from_t3_type_g := _ |}.
+    - exact schafer1954_theorem4_octonion_sedenion_identification_from_theorem3_instantiation.
+    - exact schafer1954_theorem4_octonion_sedenion_type_g_from_theorem3_instantiation.
+  Defined.
+End Schafer1954ConcreteTheorem4FromTheorem3.
+
 Theorem schafer1954_theorem4_octonion_sedenion_identification :
   (forall D : CDSed -> CDSed,
       Schafer1954IsSedenionDerivation D ->
@@ -2733,10 +2843,11 @@ Defined.
       coordinate normalization surface for `(36)`-`(52)`.
     - Theorem 4 now has both an abstract identification surface expressing the
       `D(M_t) = D(C)` equivalence and the concrete real-octonion `(51)`-`(52)`
-      discharge, plus a canonical octonion/sedenion converse surface and
-      theorem package; the remaining gap is to inhabit that converse surface
-      from the full paper-specific uniqueness argument instead of supplying it
-      as a named boundary assumption. *)
+      discharge, plus a canonical octonion/sedenion converse surface, a
+      residual-coordinate backward bridge, and a concrete theorem-4-from-
+      theorem-3 package; the remaining gap is to prove the concrete
+      Theorem 3 instantiation builder itself from the full paper-specific
+      uniqueness argument. *)
 Theorem schafer1954_theorems2_to_4_scope_summary :
   True.
 Proof. exact I. Qed.
