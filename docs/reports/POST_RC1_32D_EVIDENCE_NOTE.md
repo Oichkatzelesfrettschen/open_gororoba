@@ -134,12 +134,49 @@ Verdict: quench transition is structurally robust under leave-one-out.
    channel phases) would test whether cross-channel nonlinear coupling
    contributes beyond within-channel spectral shape.
 
-5. Block-shuffle with K=10 is one choice of block size. Sensitivity to
-   K (5, 20, 50) has not been tested.
+5. Block-shuffle sensitivity to K has been tested (K=5,10,20,50,100).
+   OMNI approaches 1.0 monotonically (spectral confound confirmed).
+   Voyager 2 strengthens with larger K (1.09 to 1.53). Caveat closed.
 
-6. 32D remains the preferred working embedding, not the canonical
-   physical claim surface. Promotion requires the mixed-embedding test
-   (Task G) and further invariance validation.
+6. 32D remains the preferred working embedding. 64D was tested and
+   DILUTES the signal: every null ratio moves toward 1.0 at 64D vs 32D.
+   The dimension ladder confirms 32D as the sweet spot.
+
+7. Mixed magnetic+plasma embedding does not significantly lift the
+   inner-heliosphere signal (ratio 0.76-1.02). Voyager plasma drops out
+   at heliosheath distances, making magnetic-only the correct tool for
+   r > 30 AU. Documented non-result.
+
+8. Cassini cruise densification (1998-2004, 0.7-9 AU) changed only
+   the 7.5 AU bin by -6.5%. All other bins unchanged. The quench
+   structure is not sensitive to mid-heliosphere densification.
+
+## Dimension Ladder: 16D -> 32D -> 64D
+
+| Dim | Inner (2.5 AU) | Transition (117.5 AU) | ISM (137.5 AU) | V2 mv-phase ratio |
+|-----|----------------|-----------------------|-----------------|--------------------|
+| 16D | 3.95 | 0.16 | 0.16 | N/A |
+| 32D | 11.03 | 2.39 | 0.022 | 0.574 |
+| 64D | 37.58 | 8.84 | 0.072 | 0.544 |
+
+64D/32D ratio is uniform 3.1-3.8x. No qualitative new structure emerges.
+The excess algebraic order signal at 32D is diluted at 64D because additional
+components do not carry physically meaningful cross-channel coupling.
+
+## Data Source Audit
+
+19 active heliosphere catalogs, 67 total catalog modules.
+Key coverage after densification:
+- 0.05-0.87 AU: PSP
+- 0.29-1.0 AU: Helios 1/2, OMNI, ACE, WIND, STEREO-A
+- 0.7-9.0 AU: Cassini cruise (1998-2004)
+- 1.3-5.4 AU: Ulysses (1990-2009, all 3 polar orbits)
+- 31-58 AU: New Horizons SWAP (plasma-only, 2015-2023)
+- 1-166 AU: Voyager 1 (1977-2024), Voyager 2 (1977-2020)
+
+Remaining radial gaps: 10-31 AU (sparse), 58-80 AU (no data).
+Highest-value potential additions: extended Cassini (Saturn excursions),
+Voyager high-res MAG (48-sec), Galileo cruise.
 
 ## Artifact Index
 
@@ -157,3 +194,15 @@ Verdict: quench transition is structurally robust under leave-one-out.
 | `invariance_no_ulysses_32d.csv` | Leave-Ulysses-out quench map |
 | `invariance_fast_wind_no_ulysses_32d.csv` | Fast wind without Ulysses |
 | `densified_provenance_qa.json` | Provenance QA report |
+| `v2_5family_null_audit_32d.json` | Voyager 2 five-family null (incl. multivariate) |
+| `v2_5family_null_audit_64d.json` | Voyager 2 five-family null at 64D |
+| `heliosheath_block_sweep_32d.csv` | Heliosheath-specific K-sweep |
+| `heliosheath_5family_64d.json` | Heliosheath 64D null audit |
+| `block_size_sensitivity_32d.csv` | OMNI + V2 block-size sweep |
+| `quench_scan_densified_64d.csv` | 64D quench map (dimension ladder) |
+| `quench_scan_densified_v3_32d.csv` | 32D on v3 cube (with Cassini cruise) |
+| `magnetic_plasma_takens_32d.csv` | Mixed mag+plasma embedding results |
+| `omni_5family_null_audit_64d.json` | OMNI 64D null audit |
+| `data_source_audit.json` | Comprehensive source audit (19 active, 9 potential) |
+| `quench_v2_inner_32d.csv` | V2 inner half (1-60 AU) |
+| `quench_v2_outer_32d.csv` | V2 outer half (60-126 AU) |
