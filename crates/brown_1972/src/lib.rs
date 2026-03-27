@@ -18,7 +18,8 @@
 //! # Chapter map
 //!
 //! - Chapter III, pp. 15-16: norm symmetry and involution identities.
-//!   Rust lane: `norm_symmetry.rs`. Dedicated Rocq lane still open.
+//!   Rust lane: `norm_symmetry.rs`. Rocq now has an abstract Chapter III
+//!   surface plus standard-octonion Theorem 3.9 / Lemma 3.10 witnesses.
 //! - Chapter IV, pp. 20-22: flexibility and associator formulas.
 //!   Rocq support exists, but Brown-numbered theorem surfacing is still partial.
 //! - Chapter V, pp. 27-30: exponent properties and power laws.

@@ -67,8 +67,15 @@ not a limitation to hide.
 The G2 automorphism group of the octonions is constructively identified
 with su(3) via stabilizer extraction (Rocq-verified). The Jacobi identity
 for the full SU(3) structure constants is formally verified in Rocq using
-Z[sqrt(3)] arithmetic. 88 Rocq theory files, 155 verified .v files
-(243 total .v files), 50+ Rust tests across the algebra trilogy.
+Z[sqrt(3)] arithmetic. 105 Rocq theory files, 155 verified .v files
+(262 total .v files), 50+ Rust tests across the algebra trilogy.
+
+Status refresh since `d28e79a2`: the directly relevant repo deltas are now
+(i) concrete Schafer 1954 theorem-4 closure on the octonion/sedenion
+derivation lane, (ii) a post-RC1 tightening of the 32D control stack via the
+evidence note / null-audit / invariance cluster, and (iii) the sedenion SIMD
+bug fix plus 32D pathion SIMD support. The granular commit audit lives in
+`docs/reports/sedenion_standard_model_commit_audit_2026-03-27.md`.
 
 ## I. Executive Summary
 
@@ -999,10 +1006,23 @@ All C(8,3) = 56 triples x 8 indices = 448 checks via single vm_compute.
 
 ### Proof Statistics
 
-- 88 theory files in proofs/theories/
+- 105 theory files in proofs/theories/
 - 155 verified files in proofs/verified/
-- 243 total .v files
+- 262 total .v files
 - All proofs compile with Rocq 9.1.1 (nightly-2026-03-05)
+
+### Formalization Status (2026-03-27)
+
+- Schafer 1954 is no longer an open theorem-4 blocker. The concrete
+  octonion/sedenion theorem-4 identification and type-G lane is now closed in
+  Rocq.
+- Brown 1972 is the next direct handoff. The Rocq lane now has a dedicated
+  Chapter III surface plus standard-octonion witnesses for Theorem 3.9 and
+  Lemma 3.10; the 16D Brown generalized-norm lane remains computational /
+  Rust-backed rather than fully surfaced in Rocq.
+- The older-paper queue is now ranked explicitly in
+  `docs/reports/cd_legacy_pre1954_roadmap_2026-03-27.md` instead of being
+  left as a loose chronology backlog.
 
 ### FanoPlane Projective Axioms (2026-03-25)
 
@@ -1550,7 +1570,11 @@ No point has angles < 2% AND r < 3 sigma. (Complementarity theorem)
    artifact bundle is derived stepwise in pure Rust from `cd_kernel`,
    `extract_vk_basis`, and the shared higher-CD control report layer. The
    downstream resonance consumer now reads through that same normalized
-   spectrum instead of maintaining a separate 32D control stack. (C-1506)
+   spectrum instead of maintaining a separate 32D control stack. The post-RC1
+   32D evidence note further sharpens that reading: the inner-heliosphere 32D
+   signal is mostly spectral/autocorrelation structure, while Voyager 2 in the
+   heliosheath remains the only current "genuine nonlinear" classification.
+   (C-1506; see `docs/reports/POST_RC1_32D_EVIDENCE_NOTE.md`)
 
 8. **sin^2(theta_W) = 0.250 is tree-level structural output**: The 8% gap
    from PDG 0.231 is plausibly the size of omitted radiative corrections.
