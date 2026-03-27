@@ -1117,6 +1117,128 @@ Proof.
   reflexivity.
 Qed.
 
+Lemma brown1972_oct_scale_scale : forall r s : R, forall x : CDOct,
+  oct_scale r (oct_scale s x) = oct_scale (r * s) x.
+Proof.
+  intros r s [[a1 a2 a3 a4] [a5 a6 a7 a8]].
+  unfold oct_scale, quat_scale.
+  simpl.
+  apply (f_equal2 mkOct).
+  + apply (f_equal4 mkQuat); ring.
+  + apply (f_equal4 mkQuat); ring.
+Qed.
+
+Lemma brown1972_oct_scale_one : forall x : CDOct,
+  oct_scale 1 x = x.
+Proof.
+  intros [[a1 a2 a3 a4] [a5 a6 a7 a8]].
+  unfold oct_scale, quat_scale.
+  simpl.
+  apply (f_equal2 mkOct).
+  + apply (f_equal4 mkQuat); ring.
+  + apply (f_equal4 mkQuat); ring.
+Qed.
+
+Lemma brown1972_oct_inv_mul_left : forall a,
+  oct_norm_sq a <> 0%R ->
+  oct_mul (brown1972_oct_inv a) a = brown1972_oct_one.
+Proof.
+  intros a Hnz.
+  unfold brown1972_oct_inv.
+  rewrite oct_mul_scale_left.
+  pose proof (dickson_oct_conj_norm (oct_conj a)) as Hnorm.
+  rewrite brown1972_oct_conj_involution in Hnorm.
+  rewrite brown1972_oct_norm_conj_preserved in Hnorm.
+  rewrite Hnorm.
+  assert (Hscale :
+    mkOct (mkQuat (oct_norm_sq a) 0 0 0) quat_zero =
+    oct_scale (oct_norm_sq a) brown1972_oct_one).
+  {
+    unfold brown1972_oct_one, oct_scale, quat_scale.
+    simpl.
+    apply (f_equal2 mkOct).
+    + apply (f_equal4 mkQuat); ring.
+    + apply (f_equal4 mkQuat); ring.
+  }
+  rewrite Hscale.
+  rewrite brown1972_oct_scale_scale.
+  replace ((/ oct_norm_sq a) * oct_norm_sq a)%R with 1%R by (field; exact Hnz).
+  apply brown1972_oct_scale_one.
+Qed.
+
+Lemma brown1972_oct_inv_mul_right : forall a,
+  oct_norm_sq a <> 0%R ->
+  oct_mul a (brown1972_oct_inv a) = brown1972_oct_one.
+Proof.
+  intros a Hnz.
+  unfold brown1972_oct_inv.
+  rewrite oct_mul_scale_right.
+  rewrite dickson_oct_conj_norm.
+  assert (Hscale :
+    mkOct (mkQuat (oct_norm_sq a) 0 0 0) quat_zero =
+    oct_scale (oct_norm_sq a) brown1972_oct_one).
+  {
+    unfold brown1972_oct_one, oct_scale, quat_scale.
+    simpl.
+    apply (f_equal2 mkOct).
+    + apply (f_equal4 mkQuat); ring.
+    + apply (f_equal4 mkQuat); ring.
+  }
+  rewrite Hscale.
+  rewrite brown1972_oct_scale_scale.
+  replace ((/ oct_norm_sq a) * oct_norm_sq a)%R with 1%R by (field; exact Hnz).
+  apply brown1972_oct_scale_one.
+Qed.
+
+Lemma brown1972_oct_sub_eq_zero : forall x y : CDOct,
+  oct_sub x y = oct_zero ->
+  x = y.
+Proof.
+  intros [[a1 a2 a3 a4] [a5 a6 a7 a8]]
+         [[b1 b2 b3 b4] [b5 b6 b7 b8]] H.
+  unfold oct_sub, oct_add, oct_neg, oct_zero in H.
+  simpl in H.
+  inversion H.
+  inversion H1.
+  inversion H2.
+  inversion H3.
+  inversion H4.
+  inversion H5.
+  inversion H6.
+  inversion H7.
+  inversion H8.
+  subst.
+  apply (f_equal2 mkOct).
+  + apply (f_equal4 mkQuat); lra.
+  + apply (f_equal4 mkQuat); lra.
+Qed.
+
+Lemma brown1972_oct_right_alternative_eq : forall y x : CDOct,
+  oct_mul (oct_mul y x) x = oct_mul y (oct_mul x x).
+Proof.
+  intros y x.
+  apply brown1972_oct_sub_eq_zero.
+  unfold oct_assoc.
+  apply brown1972_corollary_4_4_octonion_right.
+Qed.
+
+Definition brown1972_oct_trace (x : CDOct) : R := 2 * qa (oct_lo x).
+
+Lemma brown1972_oct_quadratic_identity : forall a,
+  oct_mul a a =
+  oct_add (oct_scale (brown1972_oct_trace a) a)
+          (oct_scale (- oct_norm_sq a) brown1972_oct_one).
+Proof.
+  intros [[a1 a2 a3 a4] [a5 a6 a7 a8]].
+  cbv [brown1972_oct_trace brown1972_oct_one
+       oct_add oct_scale oct_mul oct_conj oct_norm_sq oct_lo oct_hi
+       quat_add quat_scale quat_mul quat_neg quat_conj quat_one quat_zero
+       quat_norm_sq qa qb qc qd].
+  apply (f_equal2 mkOct).
+  + apply (f_equal4 mkQuat); ring.
+  + apply (f_equal4 mkQuat); ring.
+Qed.
+
 Lemma brown1972_oct_nat_pow_commute_base : forall a n,
   oct_mul a (brown1972_oct_nat_pow a n) =
   oct_mul (brown1972_oct_nat_pow a n) a.
@@ -1174,8 +1296,6 @@ Proof.
     reflexivity.
 Qed.
 
-Definition brown1972_oct_trace (x : CDOct) : R := 2 * qa (oct_lo x).
-
 Theorem brown1972_lemma_5_8_octonion : forall a,
   brown1972_oct_trace (oct_mul a a) =
   (brown1972_oct_trace a * brown1972_oct_trace a - 2 * oct_norm_sq a)%R.
@@ -1184,6 +1304,60 @@ Proof.
   cbv [brown1972_oct_trace oct_mul oct_norm_sq oct_lo oct_hi oct_conj
        quat_mul quat_add quat_neg quat_conj quat_norm_sq qa qb qc qd].
   ring.
+Qed.
+
+Lemma brown1972_oct_nat_pow_quadratic_step : forall a n,
+  brown1972_oct_nat_pow a (S (S n)) =
+  oct_add (oct_scale (brown1972_oct_trace a) (brown1972_oct_nat_pow a (S n)))
+          (oct_scale (- oct_norm_sq a) (brown1972_oct_nat_pow a n)).
+Proof.
+  intros a n.
+  simpl.
+  rewrite brown1972_oct_right_alternative_eq.
+  rewrite brown1972_oct_quadratic_identity.
+  rewrite oct_mul_add_right.
+  repeat rewrite oct_mul_scale_right.
+  rewrite oct_mul_one_right.
+  change (oct_mul (brown1972_oct_nat_pow a n) a) with (brown1972_oct_nat_pow a (S n)).
+  reflexivity.
+Qed.
+
+Theorem brown1972_lemma_5_2_octonion : forall a n,
+  oct_norm_sq a <> 0%R ->
+  oct_mul (brown1972_oct_inv a) (brown1972_oct_nat_pow a (S n)) =
+  brown1972_oct_nat_pow a n.
+Proof.
+  intros a n Hnz.
+  assert (Hpair :
+    forall k,
+      oct_mul (brown1972_oct_inv a) (brown1972_oct_nat_pow a (S k)) =
+      brown1972_oct_nat_pow a k /\
+      oct_mul (brown1972_oct_inv a) (brown1972_oct_nat_pow a (S (S k))) =
+      brown1972_oct_nat_pow a (S k)).
+  {
+    intro k.
+    induction k as [|k [IHk IHSk]].
+    - split.
+      + simpl.
+        rewrite brown1972_oct_mul_one_left.
+        apply brown1972_oct_inv_mul_left.
+        exact Hnz.
+      + simpl.
+        rewrite brown1972_oct_mul_one_left.
+        rewrite <- brown1972_oct_right_alternative_eq.
+        rewrite brown1972_oct_inv_mul_left by exact Hnz.
+        apply brown1972_oct_mul_one_left.
+    - split.
+      + exact IHSk.
+      + rewrite brown1972_oct_nat_pow_quadratic_step.
+        rewrite oct_mul_add_right.
+        repeat rewrite oct_mul_scale_right.
+        rewrite IHSk.
+        rewrite IHk.
+        symmetry.
+        apply brown1972_oct_nat_pow_quadratic_step.
+  }
+  exact (proj1 (Hpair n)).
 Qed.
 
 Record Brown1972ChapterVQuaternionSurface := {
@@ -1260,6 +1434,11 @@ Record Brown1972ChapterVInitialOctonionLift := {
     forall a n,
       oct_conj (brown1972_oct_zpow a n) =
       brown1972_oct_zpow (oct_conj a) n;
+  brown1972_ch5_l52_oct :
+    forall a n,
+      oct_norm_sq a <> 0%R ->
+      oct_mul (brown1972_oct_inv a) (brown1972_oct_nat_pow a (S n)) =
+      brown1972_oct_nat_pow a n;
   brown1972_ch5_l58_oct :
     forall a,
       brown1972_oct_trace (oct_mul a a) =
@@ -1270,6 +1449,7 @@ Definition brown1972_chapter_v_initial_octonion_lift :
   Brown1972ChapterVInitialOctonionLift.
 Proof.
   refine {| brown1972_ch5_l51_oct := brown1972_lemma_5_1_octonion;
+            brown1972_ch5_l52_oct := brown1972_lemma_5_2_octonion;
             brown1972_ch5_l58_oct := brown1972_lemma_5_8_octonion |}.
 Defined.
 
