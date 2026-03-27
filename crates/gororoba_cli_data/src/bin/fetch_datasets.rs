@@ -381,50 +381,30 @@ fn build_registry() -> Vec<DatasetEntry> {
             size_hint: "~directory placeholder",
         },
         DatasetEntry {
-            provider: Box::new(voyager::VoyagerProvider {
-                spacecraft: voyager::VoyagerSpacecraft::V1,
-                year_start: 2020,
-                year_end: 2020,
-            }),
-            category: "geophysical",
-            pillar: "geophysical",
-            size_hint: "~100 KB",
-        },
-        DatasetEntry {
             provider: Box::new(NamedDatasetProvider::new(
-                "Voyager 1 Merged Hourly (2016)",
+                "Voyager 1 Merged Hourly (1977-2024, full traverse)",
                 voyager::VoyagerProvider {
                     spacecraft: voyager::VoyagerSpacecraft::V1,
-                    year_start: 2016,
-                    year_end: 2016,
+                    year_start: 1977,
+                    year_end: 2024,
                 },
             )),
             category: "geophysical",
             pillar: "geophysical",
-            size_hint: "~100 KB",
-        },
-        DatasetEntry {
-            provider: Box::new(voyager::VoyagerProvider {
-                spacecraft: voyager::VoyagerSpacecraft::V2,
-                year_start: 2020,
-                year_end: 2020,
-            }),
-            category: "geophysical",
-            pillar: "geophysical",
-            size_hint: "~100 KB",
+            size_hint: "~5 MB total (48 years)",
         },
         DatasetEntry {
             provider: Box::new(NamedDatasetProvider::new(
-                "Voyager 2 Merged Hourly (2016)",
+                "Voyager 2 Merged Hourly (1977-2024, full traverse)",
                 voyager::VoyagerProvider {
                     spacecraft: voyager::VoyagerSpacecraft::V2,
-                    year_start: 2016,
-                    year_end: 2016,
+                    year_start: 1977,
+                    year_end: 2024,
                 },
             )),
             category: "geophysical",
             pillar: "geophysical",
-            size_hint: "~100 KB",
+            size_hint: "~5 MB total (48 years)",
         },
         DatasetEntry {
             provider: Box::new(voyager_crs_flux::VoyagerCrsFluxProvider {

@@ -106,14 +106,13 @@ lbm_step_sparse_aa(
             int n_brick_idx = bxn + bx_max * (byn + by_max * bzn);
             int n_pool_idx = indirect_table[n_brick_idx];
             
-            if (n_pool_idx != -1) {
-                read_dir = OPP[i];
-                src_tid = n_pool_idx * 512 + lxn + 8 * (lyn + 8 * lzn);
-            } else {
-                // Bounce-back: neighbor is solid.
-                read_dir = i;
-                src_tid = tid;
-            }
+            // Predicated select: avoids warp divergence at brick boundaries.
+            // SELP instruction instead of divergent branch.
+            // Pattern source: YSU-engine sass_re/instant_ngp/volume_render.cu
+            int is_fluid = (n_pool_idx != -1);
+            int dst_local = lxn + 8 * (lyn + 8 * lzn);
+            read_dir = is_fluid ? OPP[i] : i;
+            src_tid  = is_fluid ? (n_pool_idx * 512 + dst_local) : tid;
         }
         
         float fi = __ldg(&f[read_dir * n_active_cells_total + src_tid]);
@@ -189,13 +188,11 @@ lbm_step_sparse_aa(
             int n_brick_idx = bxn + bx_max * (byn + by_max * bzn);
             int n_pool_idx = indirect_table[n_brick_idx];
             
-            if (n_pool_idx != -1) {
-                int dst_tid = n_pool_idx * 512 + lxn + 8 * (lyn + 8 * lzn);
-                f[OPP[i] * n_active_cells_total + dst_tid] = f_local[i];
-            } else {
-                // Bounce-back: neighbor is solid. Write to own OPP[i] slot.
-                f[OPP[i] * n_active_cells_total + tid] = f_local[i];
-            }
+            // Predicated push: same SELP pattern as pull phase.
+            int is_fluid = (n_pool_idx != -1);
+            int dst_local = lxn + 8 * (lyn + 8 * lzn);
+            int write_tid = is_fluid ? (n_pool_idx * 512 + dst_local) : tid;
+            f[OPP[i] * n_active_cells_total + write_tid] = f_local[i];
         } else {
             // Odd step: write to canonical slot at self
             f[i * n_active_cells_total + tid] = f_local[i];

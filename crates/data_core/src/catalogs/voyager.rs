@@ -286,8 +286,8 @@ impl Default for VoyagerProvider {
     fn default() -> Self {
         Self {
             spacecraft: VoyagerSpacecraft::V1,
-            year_start: 2020,
-            year_end: 2020,
+            year_start: 1977,
+            year_end: 2024,
         }
     }
 }
