@@ -6,7 +6,7 @@ description = "Multi-source academic literature search with deduplication"
 
 [dependencies]
 reqwest = { workspace = true, features = ["json"] }
-tokio = { workspace = true, features = ["process", "rt-multi-thread", "macros"] }
+tokio = { workspace = true, features = ["process", "rt-multi-thread", "macros", "sync", "time"] }
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
 strsim = { workspace = true }

@@ -25,6 +25,7 @@ pub mod pdf;
 pub mod pipeline;
 pub mod query_adapter;
 pub mod search;
+pub mod semantic_scholar;
 pub mod sources;
 pub mod verify;
 
@@ -38,5 +39,9 @@ pub use search::{
     SEARCHABLE_SOURCE_NAMES, SOURCE_FAMILY_NAMES, SearchEngine, SearchExecutionOutcome,
     SearchExecutionReport, SourceExecutionReport, SourceTier, normalize_source_family_name,
     normalize_source_name, source_names_for_family, source_names_for_tier,
+};
+pub use semantic_scholar::{
+    DatasetDiff, DatasetDiffEntry, DatasetManifest, DatasetRelease, DatasetSummary,
+    SemanticScholarDatasetsClient, SemanticScholarError,
 };
 pub use verify::{CitationResult, VerificationReport, VerifyStatus, verify_citations};
