@@ -10608,3 +10608,39 @@ where_stated = "docs/reports/POST_RC1_32D_EVIDENCE_NOTE.md, data/output/heliosph
 last_verified = "2026-03-27"
 formal_proof = ""
 status_note = "Post-RC1 mixed embedding with strict missingness policy. No zero-fill. Explicit eligibility mask per mission/product."
+
+[[claim]]
+id = "C-1557"
+status = "Verified"
+statement = "The 32D pathion associator norm is anticorrelated with cross-channel B-field phase coherence (Spearman rho = -0.63, p = 7.3e-5 across 34 radial bins from 2.5 to 167.5 AU). Inner heliosphere: coherence 0.02-0.07, associator 2-15 (turbulent, independent components). ISM: coherence 0.26-0.55, associator 0.01-0.03 (laminar, coupled components). The 32D associator measures the degree of cross-channel phase organization: turbulent B-field -> high non-associativity, laminar B-field -> low non-associativity."
+where_stated = "data/output/heliosphere/ablations/coherence_vs_associator.json, data/output/heliosphere/ablations/cross_channel_coherence.json"
+last_verified = "2026-03-27"
+formal_proof = ""
+status_note = "Welch-method cross-spectral coherence (Bx-By, Bx-Bz, By-Bz) with 256-point Hanning-windowed segments. The anticorrelation is primarily a boundary phenomenon driven by the heliosheath/ISM transition. Inner heliosphere alone shows rho ~ -0.15."
+
+[[claim]]
+id = "C-1558"
+status = "Verified"
+statement = "The 32D pathion associator locates the Voyager 2 heliopause crossing to within 0.6 AU (~2 months) at 118.2-118.8 AU, with a 24x drop (6.17 -> 0.26) in a single 0.5 AU bin. The pre-crossing peak at 118.2 AU may correspond to heliopause precursor magnetic compression. The ISM floor at 119.2+ AU (mean 0.044) is consistent with the accepted V2 crossing date of 2018 November 5. This is model-free boundary detection from hourly B-field algebraic structure alone."
+where_stated = "data/output/heliosphere/ablations/v2_heliopause_halfau_32d.csv, data/output/heliosphere/ablations/v2_heliopause_fine_32d.csv"
+last_verified = "2026-03-27"
+formal_proof = ""
+status_note = "0.5 AU radial bins on V2 2016-2020 window (110-126 AU, 47188 rows). At V2 velocity ~3.3 AU/yr, the 0.6 AU transition width = ~2 months temporal resolution."
+
+[[claim]]
+id = "C-1559"
+status = "Verified"
+statement = "Ulysses high-latitude polar-cap algebraic order (|lat| > 55 deg) is solar-cycle invariant across three orbits: 1994-95 (solar minimum), 2000-01 (solar maximum), 2007-08 (deep minimum). Max/min ratio 1.02-1.21 at polar caps vs up to 2.5x at equatorial latitudes. Consistent with persistent fast polar wind structure (McComas et al. 2008) vs reorganizing equatorial slow wind / heliospheric current sheet."
+where_stated = "data/output/heliosphere/ablations/quench_uly_orbit*_32d.csv"
+last_verified = "2026-03-27"
+formal_proof = ""
+status_note = "Three Ulysses orbits at similar heliocentric distances (1.3-5.4 AU) during different solar cycle phases. The equatorial +35 deg bin at deep minimum (2007) reaches 16.57, 2.5x higher than solar max (6.69)."
+
+[[claim]]
+id = "C-1560"
+status = "Verified"
+statement = "The dimension ladder 16D -> 32D -> 64D confirms 32D as the optimal embedding dimension for the heliosphere Takens analysis. 64D/32D amplification ratio is uniform 3.1-3.8x across all distances with no qualitative new structure. Every 5-family null separation ratio moves TOWARD 1.0 at 64D vs 32D, indicating signal dilution from additional degrees of freedom that do not carry physically meaningful cross-channel coupling."
+where_stated = "data/output/heliosphere/ablations/quench_scan_densified_64d.csv, data/output/heliosphere/ablations/v2_5family_null_audit_64d.json, data/output/heliosphere/ablations/heliosheath_5family_64d.json"
+last_verified = "2026-03-27"
+formal_proof = ""
+status_note = "64D chingon SIMD implementation via CD doubling of pathion. 16D sedenion, 32D pathion, 64D chingon all implemented with AVX2+FMA SIMD fast paths (zero heap allocation). 32D sweet spot confirmed by both global and heliosheath-specific null analysis."
