@@ -1,0 +1,51 @@
+format_version = 1
+session_id = "cayley_dickson_jacobson_1958_exact_original"
+created_utc = "2026-03-27T04:20:51.578547080+00:00"
+updated_utc = "2026-03-27T04:20:51.580533131+00:00"
+status = "in_progress"
+
+[source]
+source_id = "jacobson_1958_exact_original"
+title = "Jacobson 1958 exact original"
+
+[search]
+queue_path = "/home/eirikr/Documents/Projects/CayleyDickson/metadata/project_api/search_queue.toml"
+project_id = "cayley-dickson"
+search_target_id = "jacobson_1958_exact_original"
+window = "1900-1999"
+priority = "critical"
+kind = "article_or_chapter_delivery_followup"
+status = "delivery_workflow_in_progress"
+why_now = "This remains the sharpest exact composition-algebra hole in the corpus."
+preferred_lanes = [
+    "Bielefeld article-only follow-up",
+    "SUBITO authenticated order lane",
+    "TIB or Springer article-delivery escalation",
+]
+query_seeds = [
+    '"Composition Algebras and Their Automorphisms"',
+    '"10.1007/BF02854388"',
+    '"0817634118" Jacobson volume 2',
+]
+
+[controller]
+sessions_dir_rel = "reports/acquisition_sessions"
+transport_substrate = "auto"
+requested_backend = "auto"
+probe_bytes = 1024
+probe_requested = false
+
+[evidence]
+
+[[events]]
+at_utc = "2026-03-27T04:20:51.578547080+00:00"
+action = "import_dossier_stage_parent"
+status = "staged"
+note = "staged from dossier /home/eirikr/Documents/Projects/CayleyDickson/metadata/project_api/search_queue.toml"
+
+[[events]]
+at_utc = "2026-03-27T04:20:51.580533131+00:00"
+action = "promote"
+status = "in_progress"
+note = "spawned_child_sessions=cayley_dickson_jacobson_1958_exact_original_www_semanticscholar_org_22b4f272ec42ec89c1ea1ca6ef5d295e3e93a56c,cayley_dickson_jacobson_1958_exact_original_msp_org_ant_v19_n3_p05_s_pdf,cayley_dickson_jacobson_1958_exact_original_arxiv_org_2304_08573"
+

@@ -1,0 +1,455 @@
+{
+  "schema_version": 1,
+  "generated_at_utc": "2026-03-27T04:19:39.648800762+00:00",
+  "project_id": "cayley-dickson",
+  "project_api_root": "/home/eirikr/Documents/Projects/CayleyDickson",
+  "search_queue_path": "/home/eirikr/Documents/Projects/CayleyDickson/metadata/project_api/search_queue.toml",
+  "search_target_id": "century_2000_2026_tower_name_audit",
+  "crosswalk_id": "century_2000_2026_tower_name_audit",
+  "title": "Tower-name and zero-divisor terminology expansion",
+  "window": "2000-2026",
+  "priority": "high",
+  "status": "needs_normalization",
+  "kind": "terminology_and_alias_audit",
+  "why_now": "The modern corpus has the papers, but not yet a normalized alias surface for higher-dimensional names and zero-divisor substructures.",
+  "query_seeds": [
+    "pathions chingons routons voudons dekavoudons",
+    "trigintaduonions sedenions zero divisors box-kites assessors",
+    "\"Cayley-Dickson loops\" annihilators emanation tables dyads making zero"
+  ],
+  "requested_sources": [
+    "openalex",
+    "semantic_scholar",
+    "crossref",
+    "datacite",
+    "unpaywall",
+    "arxiv",
+    "jstage",
+    "inspirehep",
+    "hal",
+    "dblp"
+  ],
+  "preferred_source_families": [
+    "archive",
+    "citation_graph",
+    "open"
+  ],
+  "limit_per_query": 3,
+  "year_min": 0,
+  "min_relevance": 12,
+  "report": {
+    "queries": [
+      "pathions chingons routons voudons dekavoudons",
+      "trigintaduonions sedenions zero divisors box-kites assessors",
+      "\"Cayley-Dickson loops\" annihilators emanation tables dyads making zero"
+    ],
+    "limit": 3,
+    "year_min": 0,
+    "requested_sources": [
+      "openalex",
+      "semantic_scholar",
+      "crossref",
+      "datacite",
+      "unpaywall",
+      "arxiv",
+      "jstage",
+      "inspirehep",
+      "hal",
+      "dblp"
+    ],
+    "raw_result_count": 9,
+    "deduplicated_result_count": 6,
+    "query_reports": [
+      {
+        "query": "pathions chingons routons voudons dekavoudons",
+        "limit": 3,
+        "year_min": 0,
+        "requested_sources": [
+          "openalex",
+          "semantic_scholar",
+          "crossref",
+          "datacite",
+          "unpaywall",
+          "arxiv",
+          "jstage",
+          "inspirehep",
+          "hal",
+          "dblp"
+        ],
+        "raw_result_count": 1,
+        "deduplicated_result_count": 1,
+        "cache_hit_count": 0,
+        "source_reports": [
+          {
+            "source": "openalex",
+            "adapted_query": "pathions chingons routons voudons dekavoudons",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "semantic_scholar",
+            "adapted_query": "pathions chingons routons voudons dekavoudons",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "crossref",
+            "adapted_query": "pathions chingons routons voudons dekavoudons",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "datacite",
+            "adapted_query": "pathions chingons routons voudons dekavoudons",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "arxiv",
+            "adapted_query": "all:\"pathions chingons\" AND all:\"routons voudons\" AND all:dekavoudons",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "jstage",
+            "adapted_query": "pathions chingons routons voudons dekavoudons",
+            "result_count": 1,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "inspirehep",
+            "adapted_query": "t:\"pathions chingons\" and t:\"routons voudons\" and t:dekavoudons",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "hal",
+            "adapted_query": "pathions chingons routons voudons dekavoudons",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "dblp",
+            "adapted_query": "pathions chingons routons voudons dekavoudons",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "unpaywall",
+            "adapted_query": "pathions chingons routons voudons dekavoudons",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": "missing_unpaywall_email"
+          }
+        ]
+      },
+      {
+        "query": "trigintaduonions sedenions zero divisors box-kites assessors",
+        "limit": 3,
+        "year_min": 0,
+        "requested_sources": [
+          "openalex",
+          "semantic_scholar",
+          "crossref",
+          "datacite",
+          "unpaywall",
+          "arxiv",
+          "jstage",
+          "inspirehep",
+          "hal",
+          "dblp"
+        ],
+        "raw_result_count": 4,
+        "deduplicated_result_count": 4,
+        "cache_hit_count": 0,
+        "source_reports": [
+          {
+            "source": "openalex",
+            "adapted_query": "trigintaduonions sedenions zero divisors box-kites assessors",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "semantic_scholar",
+            "adapted_query": "trigintaduonions sedenions zero divisors box-kites assessors",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "Rate limited",
+            "skipped_reason": ""
+          },
+          {
+            "source": "crossref",
+            "adapted_query": "trigintaduonions sedenions zero divisors box-kites assessors",
+            "result_count": 3,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "datacite",
+            "adapted_query": "trigintaduonions sedenions zero divisors box-kites assessors",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "arxiv",
+            "adapted_query": "all:\"trigintaduonions sedenions\" AND all:\"zero divisors\" AND all:\"box-kites assessors\"",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "jstage",
+            "adapted_query": "trigintaduonions sedenions zero divisors box-kites assessors",
+            "result_count": 1,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "inspirehep",
+            "adapted_query": "t:\"trigintaduonions sedenions\" and t:\"zero divisors\" and t:\"box-kites assessors\"",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "hal",
+            "adapted_query": "trigintaduonions sedenions zero divisors box-kites assessors",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "dblp",
+            "adapted_query": "trigintaduonions sedenions zero divisors box-kites assessors",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "unpaywall",
+            "adapted_query": "trigintaduonions sedenions zero divisors box-kites assessors",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": "missing_unpaywall_email"
+          }
+        ]
+      },
+      {
+        "query": "\"Cayley-Dickson loops\" annihilators emanation tables dyads making zero",
+        "limit": 3,
+        "year_min": 0,
+        "requested_sources": [
+          "openalex",
+          "semantic_scholar",
+          "crossref",
+          "datacite",
+          "unpaywall",
+          "arxiv",
+          "jstage",
+          "inspirehep",
+          "hal",
+          "dblp"
+        ],
+        "raw_result_count": 4,
+        "deduplicated_result_count": 3,
+        "cache_hit_count": 0,
+        "source_reports": [
+          {
+            "source": "openalex",
+            "adapted_query": "\"Cayley-Dickson loops\" annihilators emanation tables dyads making zero",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "semantic_scholar",
+            "adapted_query": "\"Cayley-Dickson loops\" annihilators emanation tables dyads making zero",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "Rate limited",
+            "skipped_reason": ""
+          },
+          {
+            "source": "crossref",
+            "adapted_query": "\"Cayley-Dickson loops\" annihilators emanation tables dyads making zero",
+            "result_count": 3,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "datacite",
+            "adapted_query": "\"Cayley-Dickson loops\" annihilators emanation tables dyads making zero",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "arxiv",
+            "adapted_query": "all:\"Cayley-Dickson loops\" AND all:\"annihilators emanation\" AND all:\"tables dyads\" AND all:\"making zero\"",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "jstage",
+            "adapted_query": "\"Cayley-Dickson loops\" annihilators emanation tables dyads making zero",
+            "result_count": 1,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "inspirehep",
+            "adapted_query": "t:\"Cayley-Dickson loops\" and t:\"annihilators emanation\" and t:\"tables dyads\" and t:\"making zero\"",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "hal",
+            "adapted_query": "\"Cayley-Dickson loops\" annihilators emanation tables dyads making zero",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "dblp",
+            "adapted_query": "\"Cayley-Dickson loops\" annihilators emanation tables dyads",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "unpaywall",
+            "adapted_query": "\"Cayley-Dickson loops\" annihilators emanation tables dyads making zero",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": "missing_unpaywall_email"
+          }
+        ]
+      }
+    ]
+  },
+  "top_hits": [
+    {
+      "rank": 1,
+      "canonical_id": "doi:10.58837/chula.the.2020.297",
+      "relevance_score": 50,
+      "source_family": "resolver",
+      "route_class": "doi_resolver",
+      "host_class": "doi_org",
+      "title": "Definable modules over definable rings without zero divisors in o-minimal structures",
+      "year": 0,
+      "source": "crossref",
+      "venue": "",
+      "citation_count": 0,
+      "doi": "10.58837/chula.the.2020.297",
+      "url": "https://doi.org/10.58837/chula.the.2020.297",
+      "pdf_url": ""
+    },
+    {
+      "rank": 2,
+      "canonical_id": "doi:10.17077/etd.skkt7f53",
+      "relevance_score": 50,
+      "source_family": "resolver",
+      "route_class": "doi_resolver",
+      "host_class": "doi_org",
+      "title": "Generalized factorization in commutative rings with zero-divisors",
+      "year": 0,
+      "source": "crossref",
+      "venue": "",
+      "citation_count": 0,
+      "doi": "10.17077/etd.skkt7f53",
+      "url": "https://doi.org/10.17077/etd.skkt7f53",
+      "pdf_url": ""
+    },
+    {
+      "rank": 3,
+      "canonical_id": "doi:10.1080/00927870701724094",
+      "relevance_score": 30,
+      "source_family": "resolver",
+      "route_class": "doi_resolver",
+      "host_class": "doi_org",
+      "title": "Large Annihilators in Cayley–Dickson Algebras",
+      "year": 2008,
+      "source": "crossref",
+      "venue": "Communications in Algebra",
+      "citation_count": 19,
+      "doi": "10.1080/00927870701724094",
+      "url": "https://doi.org/10.1080/00927870701724094",
+      "pdf_url": ""
+    },
+    {
+      "rank": 4,
+      "canonical_id": "doi:10.4303/jglta/s060101",
+      "relevance_score": 30,
+      "source_family": "resolver",
+      "route_class": "doi_resolver",
+      "host_class": "doi_org",
+      "title": "Cayley-Dickson algebras and loops",
+      "year": 2007,
+      "source": "crossref",
+      "venue": "Journal of Generalized Lie Theory and Applications",
+      "citation_count": 12,
+      "doi": "10.4303/jglta/s060101",
+      "url": "https://doi.org/10.4303/jglta/s060101",
+      "pdf_url": ""
+    },
+    {
+      "rank": 5,
+      "canonical_id": "title:",
+      "relevance_score": 24,
+      "source_family": "archive",
+      "route_class": "generic_landing",
+      "host_class": "unknown_host",
+      "title": "",
+      "year": 0,
+      "source": "jstage",
+      "venue": "",
+      "citation_count": 0,
+      "doi": "",
+      "url": "",
+      "pdf_url": ""
+    }
+  ],
+  "stage_suggestions": [],
+  "batch_manifest_rel": "docs/reports/cd_cache_dossiers/batch_centuries_1500_2000plus_20260326.toml"
+}

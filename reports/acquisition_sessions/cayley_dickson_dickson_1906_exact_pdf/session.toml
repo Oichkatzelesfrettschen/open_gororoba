@@ -1,0 +1,63 @@
+format_version = 1
+session_id = "cayley_dickson_dickson_1906_exact_pdf"
+created_utc = "2026-03-27T04:20:49.526277683+00:00"
+updated_utc = "2026-03-27T04:22:33.081603263+00:00"
+status = "in_progress"
+
+[source]
+source_id = "dickson_1906_exact_pdf"
+title = "Dickson 1906 exact PDF body"
+
+[search]
+queue_path = "/home/eirikr/Documents/Projects/CayleyDickson/metadata/project_api/search_queue.toml"
+project_id = "cayley-dickson"
+search_target_id = "dickson_1906_exact_pdf"
+window = "1900-1999"
+priority = "critical"
+kind = "browser_confirmed_free_pdf_lane"
+status = "landing_page_confirmed_pdf_click_challenged"
+why_now = "Immediate dependency for the pre-1919 Dickson classification lane."
+preferred_lanes = [
+    "headed AMS session with human click-through",
+    "session-cookie export into deterministic downloader",
+    "alternate mirror search after the official AMS capture",
+]
+query_seeds = [
+    '"Linear algebras in which division is always uniquely possible"',
+    '"S0002-9947-1906-1500755-5"',
+    '"Dickson" 1906 linear algebras division uniquely possible',
+]
+
+[controller]
+sessions_dir_rel = "reports/acquisition_sessions"
+transport_substrate = "auto"
+requested_backend = "auto"
+probe_bytes = 1024
+probe_requested = false
+
+[evidence]
+
+[[events]]
+at_utc = "2026-03-27T04:20:49.526277683+00:00"
+action = "import_dossier_stage_parent"
+status = "staged"
+note = "staged from dossier /home/eirikr/Documents/Projects/CayleyDickson/metadata/project_api/search_queue.toml"
+
+[[events]]
+at_utc = "2026-03-27T04:20:49.529164293+00:00"
+action = "promote"
+status = "in_progress"
+note = "spawned_child_sessions=cayley_dickson_dickson_1906_exact_pdf_openalex_org_w2025927713,cayley_dickson_dickson_1906_exact_pdf_www_ams_org_s0002_9904_1950_09407_5_pdf,cayley_dickson_dickson_1906_exact_pdf_directory_doabooks_org_92829"
+
+[[events]]
+at_utc = "2026-03-27T04:21:52.525455665+00:00"
+action = "promote"
+status = "in_progress"
+note = "spawned_child_sessions=cayley_dickson_dickson_1906_exact_pdf_127_0_0_1_fixture_pdf | smoke_cache_validation"
+
+[[events]]
+at_utc = "2026-03-27T04:22:33.081603263+00:00"
+action = "promote"
+status = "in_progress"
+note = "spawned_child_sessions=cayley_dickson_dickson_1906_exact_pdf_127_0_0_1_fixture_pdf_2 | smoke_cache_validation_live"
+

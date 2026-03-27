@@ -1,0 +1,66 @@
+format_version = 1
+session_id = "cayley_dickson_jacobson_1958_exact_original_arxiv_org_2304_08573"
+created_utc = "2026-03-27T04:20:51.580291538+00:00"
+updated_utc = "2026-03-27T04:20:51.580291538+00:00"
+status = "staged"
+
+[source]
+url = "https://arxiv.org/pdf/2304.08573"
+source_id = "openalex"
+title = "An isomorphism of unitals, and an isomorphism of classical groups"
+site = "arxiv_org"
+access_class = "direct_pdf"
+
+[lineage]
+parent_session_id = "cayley_dickson_jacobson_1958_exact_original"
+parent_manifest = "reports/acquisition_sessions/cayley_dickson_jacobson_1958_exact_original/session.toml"
+relation = "promoted_child"
+
+[search]
+queue_path = "/home/eirikr/Documents/Projects/CayleyDickson/metadata/project_api/search_queue.toml"
+project_id = "cayley-dickson"
+search_target_id = "jacobson_1958_exact_original"
+window = "1900-1999"
+priority = "critical"
+kind = "article_or_chapter_delivery_followup"
+status = "delivery_workflow_in_progress"
+why_now = "This remains the sharpest exact composition-algebra hole in the corpus."
+preferred_lanes = [
+    "Bielefeld article-only follow-up",
+    "SUBITO authenticated order lane",
+    "TIB or Springer article-delivery escalation",
+]
+query_seeds = [
+    '"Composition Algebras and Their Automorphisms"',
+    '"10.1007/BF02854388"',
+    '"0817634118" Jacobson volume 2',
+]
+
+[controller]
+policy_registry_rel = "registry/download_host_policies.toml"
+sessions_dir_rel = "reports/acquisition_sessions"
+transport_substrate = "auto"
+requested_backend = "auto"
+probe_bytes = 1024
+probe_requested = false
+
+[route]
+scheme = "https"
+host = "arxiv.org"
+retry_class = "curl_first"
+policy_name = "arxiv"
+backends = [
+    "curl-cli",
+    "reqwest",
+    "ureq",
+]
+
+[evidence]
+host_scope = "arxiv_org"
+
+[[events]]
+at_utc = "2026-03-27T04:20:51.580291538+00:00"
+action = "promote_child"
+status = "staged"
+note = "promoted from cayley_dickson_jacobson_1958_exact_original | dossier_search_target_id=jacobson_1958_exact_original | dossier_suggestion_id=jacobson_1958_exact_original_doi_10_48550_arxiv_2304_08573 | canonical_id=doi:10.48550/arxiv.2304.08573 | source_family=citation_graph | route_class=direct_pdf"
+
