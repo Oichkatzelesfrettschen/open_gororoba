@@ -1174,6 +1174,18 @@ Proof.
     reflexivity.
 Qed.
 
+Definition brown1972_oct_trace (x : CDOct) : R := 2 * qa (oct_lo x).
+
+Theorem brown1972_lemma_5_8_octonion : forall a,
+  brown1972_oct_trace (oct_mul a a) =
+  (brown1972_oct_trace a * brown1972_oct_trace a - 2 * oct_norm_sq a)%R.
+Proof.
+  intros [[a1 a2 a3 a4] [a5 a6 a7 a8]].
+  cbv [brown1972_oct_trace oct_mul oct_norm_sq oct_lo oct_hi oct_conj
+       quat_mul quat_add quat_neg quat_conj quat_norm_sq qa qb qc qd].
+  ring.
+Qed.
+
 Record Brown1972ChapterVQuaternionSurface := {
   brown1972_ch5_l51_quat :
     forall a n,
@@ -1247,13 +1259,18 @@ Record Brown1972ChapterVInitialOctonionLift := {
   brown1972_ch5_l51_oct :
     forall a n,
       oct_conj (brown1972_oct_zpow a n) =
-      brown1972_oct_zpow (oct_conj a) n
+      brown1972_oct_zpow (oct_conj a) n;
+  brown1972_ch5_l58_oct :
+    forall a,
+      brown1972_oct_trace (oct_mul a a) =
+      (brown1972_oct_trace a * brown1972_oct_trace a - 2 * oct_norm_sq a)%R
 }.
 
 Definition brown1972_chapter_v_initial_octonion_lift :
   Brown1972ChapterVInitialOctonionLift.
 Proof.
-  refine {| brown1972_ch5_l51_oct := brown1972_lemma_5_1_octonion |}.
+  refine {| brown1972_ch5_l51_oct := brown1972_lemma_5_1_octonion;
+            brown1972_ch5_l58_oct := brown1972_lemma_5_8_octonion |}.
 Defined.
 
 Theorem Brown1972_lane_compiles : True.
