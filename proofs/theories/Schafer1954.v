@@ -2323,6 +2323,198 @@ Proof.
     lra.
 Qed.
 
+Theorem s54_residual_block_C_basis_zero_of_eq50 :
+  forall D : CDSed -> CDSed,
+    Schafer1954IsSedenionDerivation D ->
+    forall mu : Schafer1954Basis7 -> R,
+      (forall i : Schafer1954Basis7,
+          s54_block_C (s54_sed_residual D) (s54_basis7_oct i) =
+          oct_scale (mu i) (s54_basis7_oct i)) ->
+      forall i : Schafer1954Basis7,
+        s54_block_C (s54_sed_residual D) (s54_basis7_oct i) = oct_zero.
+Proof.
+  intros D HD mu Hdiag i.
+  assert (Hmu0 : mu i = 0%R).
+  {
+    apply (schafer1954_eq52_real_solution_zero mu).
+    intros j k l Htr.
+    exact (s54_residual_block_C_eq51_of_eq50 D HD mu Hdiag j k l Htr).
+  }
+  rewrite (Hdiag i).
+  rewrite Hmu0.
+  apply oct_scale_zero.
+Qed.
+
+Theorem s54_residual_block_C_zero_of_eq50 :
+  forall D : CDSed -> CDSed,
+    Schafer1954IsSedenionDerivation D ->
+    forall mu : Schafer1954Basis7 -> R,
+      (forall i : Schafer1954Basis7,
+          s54_block_C (s54_sed_residual D) (s54_basis7_oct i) =
+          oct_scale (mu i) (s54_basis7_oct i)) ->
+      forall a : CDOct,
+        s54_block_C (s54_sed_residual D) a = oct_zero.
+Proof.
+  intros D HD mu Hdiag [[r0 r1 r2 r3] [r4 r5 r6 r7]].
+  rewrite s54_oct_coords_eq_sum.
+  repeat rewrite s54_block_C_add by exact (s54_sed_residual_is_derivation D HD).
+  repeat rewrite s54_block_C_scale by exact (s54_sed_residual_is_derivation D HD).
+  change (s54_block_C (s54_sed_residual D) (oct_e 0)) with
+    (s54_block_C (s54_sed_residual D) s54_oct_one).
+  change (s54_block_C (s54_sed_residual D) (oct_e 1)) with
+    (s54_block_C (s54_sed_residual D) (s54_basis7_oct s54_b1)).
+  change (s54_block_C (s54_sed_residual D) (oct_e 2)) with
+    (s54_block_C (s54_sed_residual D) (s54_basis7_oct s54_b2)).
+  change (s54_block_C (s54_sed_residual D) (oct_e 3)) with
+    (s54_block_C (s54_sed_residual D) (s54_basis7_oct s54_b3)).
+  change (s54_block_C (s54_sed_residual D) (oct_e 4)) with
+    (s54_block_C (s54_sed_residual D) (s54_basis7_oct s54_b4)).
+  change (s54_block_C (s54_sed_residual D) (oct_e 5)) with
+    (s54_block_C (s54_sed_residual D) (s54_basis7_oct s54_b5)).
+  change (s54_block_C (s54_sed_residual D) (oct_e 6)) with
+    (s54_block_C (s54_sed_residual D) (s54_basis7_oct s54_b6)).
+  change (s54_block_C (s54_sed_residual D) (oct_e 7)) with
+    (s54_block_C (s54_sed_residual D) (s54_basis7_oct s54_b7)).
+  rewrite (s54_block_C_one_zero (s54_sed_residual D)
+             (s54_sed_residual_is_derivation D HD)).
+  rewrite (s54_residual_block_C_basis_zero_of_eq50 D HD mu Hdiag s54_b1).
+  rewrite (s54_residual_block_C_basis_zero_of_eq50 D HD mu Hdiag s54_b2).
+  rewrite (s54_residual_block_C_basis_zero_of_eq50 D HD mu Hdiag s54_b3).
+  rewrite (s54_residual_block_C_basis_zero_of_eq50 D HD mu Hdiag s54_b4).
+  rewrite (s54_residual_block_C_basis_zero_of_eq50 D HD mu Hdiag s54_b5).
+  rewrite (s54_residual_block_C_basis_zero_of_eq50 D HD mu Hdiag s54_b6).
+  rewrite (s54_residual_block_C_basis_zero_of_eq50 D HD mu Hdiag s54_b7).
+  repeat rewrite s54_oct_scale_zero_right.
+  repeat rewrite oct_add_zero_left.
+  reflexivity.
+Qed.
+
+Theorem s54_residual_block_u_anticomm_basis_of_eq50 :
+  forall D : CDSed -> CDSed,
+    Schafer1954IsSedenionDerivation D ->
+    forall mu : Schafer1954Basis7 -> R,
+      (forall i : Schafer1954Basis7,
+          s54_block_C (s54_sed_residual D) (s54_basis7_oct i) =
+          oct_scale (mu i) (s54_basis7_oct i)) ->
+      forall i : Schafer1954Basis7,
+        oct_mul (s54_block_u (s54_sed_residual D)) (s54_basis7_oct i) =
+        oct_neg
+          (oct_mul (s54_basis7_oct i) (s54_block_u (s54_sed_residual D))).
+Proof.
+  intros D HD mu Hdiag i.
+  destruct (s54_blocks_from_right_generator
+              (s54_sed_residual D)
+              (s54_sed_residual_is_derivation D HD)
+              (s54_basis7_oct i)) as [Hright _].
+  destruct (s54_blocks_from_left_generator
+              (s54_sed_residual D)
+              (s54_sed_residual_is_derivation D HD)
+              (s54_basis7_oct i)) as [Hleft _].
+  rewrite (s54_residual_block_C_basis_zero_of_eq50 D HD mu Hdiag i) in Hright.
+  rewrite (s54_residual_block_C_basis_zero_of_eq50 D HD mu Hdiag i) in Hleft.
+  rewrite oct_neg_zero in Hright.
+  rewrite s54_oct_conj_zero in Hleft.
+  rewrite oct_neg_zero in Hleft.
+  rewrite oct_add_zero_right in Hright.
+  rewrite oct_add_zero_right in Hleft.
+  rewrite (schafer1954_basis7_conj_neg i) in Hleft.
+  rewrite <- s54_oct_scale_neg_one in Hleft.
+  rewrite (s54_block_B_scale
+             (s54_sed_residual D)
+             (s54_sed_residual_is_derivation D HD)
+             (-1) (s54_basis7_oct i)) in Hleft.
+  rewrite s54_oct_scale_neg_one in Hleft.
+  rewrite Hright in Hleft.
+  symmetry.
+  exact Hleft.
+Qed.
+
+Lemma s54_oct_pure_anticomm_basis_zero_raw :
+  forall v : CDOct,
+    oct_conj v = oct_neg v ->
+    oct_mul v (oct_e 1) = oct_neg (oct_mul (oct_e 1) v) ->
+    oct_mul v (oct_e 2) = oct_neg (oct_mul (oct_e 2) v) ->
+    oct_mul v (oct_e 3) = oct_neg (oct_mul (oct_e 3) v) ->
+    oct_mul v (oct_e 4) = oct_neg (oct_mul (oct_e 4) v) ->
+    oct_mul v (oct_e 5) = oct_neg (oct_mul (oct_e 5) v) ->
+    oct_mul v (oct_e 6) = oct_neg (oct_mul (oct_e 6) v) ->
+    oct_mul v (oct_e 7) = oct_neg (oct_mul (oct_e 7) v) ->
+    v = oct_zero.
+Proof.
+  intros [[v0 v1 v2 v3] [v4 v5 v6 v7]] Hpure H1 H2 H3 H4 H5 H6 H7.
+  cbv [oct_conj oct_neg oct_mul oct_e oct_zero oct_lo oct_hi
+       quat_mul quat_add quat_neg quat_conj quat_zero quat_one
+       qa qb qc qd] in Hpure, H1, H2, H3, H4, H5, H6, H7 |- *.
+  repeat match goal with
+  | H : mkOct _ _ = mkOct _ _ |- _ => inversion H; clear H; subst
+  | H : mkQuat _ _ _ _ = mkQuat _ _ _ _ |- _ => inversion H; clear H; subst
+  end.
+  assert (Hv0 : v0 = 0%R) by lra.
+  assert (Hv1 : v1 = 0%R) by lra.
+  assert (Hv2 : v2 = 0%R) by lra.
+  assert (Hv3 : v3 = 0%R) by lra.
+  assert (Hv4 : v4 = 0%R) by lra.
+  assert (Hv5 : v5 = 0%R) by lra.
+  assert (Hv6 : v6 = 0%R) by lra.
+  assert (Hv7 : v7 = 0%R) by lra.
+  subst.
+  cbv [oct_zero quat_zero].
+  apply (f_equal2 mkOct); apply (f_equal4 mkQuat); ring.
+Qed.
+
+Theorem s54_residual_block_u_zero_of_eq50 :
+  forall D : CDSed -> CDSed,
+    Schafer1954IsSedenionDerivation D ->
+    forall mu : Schafer1954Basis7 -> R,
+      (forall i : Schafer1954Basis7,
+          s54_block_C (s54_sed_residual D) (s54_basis7_oct i) =
+          oct_scale (mu i) (s54_basis7_oct i)) ->
+      s54_block_u (s54_sed_residual D) = oct_zero.
+Proof.
+  intros D HD mu Hdiag.
+  apply s54_oct_pure_anticomm_basis_zero_raw.
+  - exact (s54_residual_block_u_pure D HD).
+  - change (s54_basis7_oct s54_b1) with (oct_e 1).
+    exact (s54_residual_block_u_anticomm_basis_of_eq50 D HD mu Hdiag s54_b1).
+  - change (s54_basis7_oct s54_b2) with (oct_e 2).
+    exact (s54_residual_block_u_anticomm_basis_of_eq50 D HD mu Hdiag s54_b2).
+  - change (s54_basis7_oct s54_b3) with (oct_e 3).
+    exact (s54_residual_block_u_anticomm_basis_of_eq50 D HD mu Hdiag s54_b3).
+  - change (s54_basis7_oct s54_b4) with (oct_e 4).
+    exact (s54_residual_block_u_anticomm_basis_of_eq50 D HD mu Hdiag s54_b4).
+  - change (s54_basis7_oct s54_b5) with (oct_e 5).
+    exact (s54_residual_block_u_anticomm_basis_of_eq50 D HD mu Hdiag s54_b5).
+  - change (s54_basis7_oct s54_b6) with (oct_e 6).
+    exact (s54_residual_block_u_anticomm_basis_of_eq50 D HD mu Hdiag s54_b6).
+  - change (s54_basis7_oct s54_b7) with (oct_e 7).
+    exact (s54_residual_block_u_anticomm_basis_of_eq50 D HD mu Hdiag s54_b7).
+Qed.
+
+Theorem s54_residual_block_B_eq_A_of_eq50 :
+  forall D : CDSed -> CDSed,
+    Schafer1954IsSedenionDerivation D ->
+    forall mu : Schafer1954Basis7 -> R,
+      (forall i : Schafer1954Basis7,
+          s54_block_C (s54_sed_residual D) (s54_basis7_oct i) =
+          oct_scale (mu i) (s54_basis7_oct i)) ->
+      forall a : CDOct,
+        s54_block_B (s54_sed_residual D) a =
+        s54_block_A (s54_sed_residual D) a.
+Proof.
+  intros D HD mu Hdiag a.
+  destruct (s54_blocks_from_right_generator
+              (s54_sed_residual D)
+              (s54_sed_residual_is_derivation D HD)
+              a) as [HB _].
+  rewrite (s54_residual_block_u_zero_of_eq50 D HD mu Hdiag) in HB.
+  rewrite oct_mul_zero_right in HB.
+  rewrite (s54_residual_block_C_zero_of_eq50 D HD mu Hdiag a) in HB.
+  rewrite oct_neg_zero in HB.
+  rewrite oct_add_zero_left in HB.
+  rewrite (s54_sed_residual_block_A_zero D a).
+  exact HB.
+Qed.
+
 Record Schafer1954ConcreteResidualTheorem3Facts
     (D : CDSed -> CDSed) : Type := {
   s54_concrete_residual_mu : Schafer1954Basis7 -> R;
@@ -2354,6 +2546,23 @@ Record Schafer1954ConcreteResidualDiagonalFacts
       s54_block_B (s54_sed_residual D) a =
       s54_block_A (s54_sed_residual D) a;
 }.
+
+Definition s54_concrete_residual_diagonal_facts_of_eq50
+    (D : CDSed -> CDSed)
+    (HD : Schafer1954IsSedenionDerivation D)
+    (mu : Schafer1954Basis7 -> R)
+    (Hdiag : forall i : Schafer1954Basis7,
+        s54_block_C (s54_sed_residual D) (s54_basis7_oct i) =
+        oct_scale (mu i) (s54_basis7_oct i)) :
+    Schafer1954ConcreteResidualDiagonalFacts D.
+Proof.
+  refine
+    {| s54_concrete_residual_diag_mu := mu;
+       s54_concrete_residual_diag_eq50 := Hdiag;
+       s54_concrete_residual_diag_B_eq_A := _ |}.
+  intro a.
+  exact (s54_residual_block_B_eq_A_of_eq50 D HD mu Hdiag a).
+Defined.
 
 Definition s54_concrete_residual_theorem3_facts_of_diagonal_facts
     (D : CDSed -> CDSed)
