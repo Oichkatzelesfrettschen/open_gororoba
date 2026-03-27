@@ -12,7 +12,7 @@ updated = "2026-03-25"
 authoritative = true
 status = "active"
 status_token = "ACTIVE"
-document_count = 97
+document_count = 104
 
 [[owner]]
 path = "README.md"
@@ -598,6 +598,48 @@ removal_reason = ""
 
 [[owner]]
 path = "leipzig_freudenthal_request_login.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/reports/cd_cache_dossiers/dickson_1906_exact_pdf_20260327.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/reports/cd_cache_dossiers/dickson_1912_exact_pdf_20260327.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/reports/cd_cache_dossiers/dickson_1935_exact_pdf_20260327.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/reports/cd_cache_dossiers/freudenthal_1951_exact_original_20260327.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/reports/cd_cache_dossiers/jacobson_1958_exact_original_20260327.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/reports/lit_search_autoresearchclaw_parity_2026_03_26.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "~/.gemini/plans/rc1-tightening.md"
 owner_group = "project"
 removal_status = "active"
 removal_reason = ""

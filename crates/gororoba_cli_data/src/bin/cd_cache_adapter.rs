@@ -1,20 +1,31 @@
-use anyhow::{Context, Result};
+use anyhow::{Context, Result, bail};
 use chrono::Utc;
 use clap::{Args, Parser, Subcommand, ValueEnum};
-use gororoba_cli_data::project_api_contract::{
-    ProjectApiContext, ProjectApiCrosswalkBinding, ProjectApiCrosswalkFile,
-    load_project_api_context, load_project_api_crosswalk,
+use gororoba_cli_data::{
+    acquisition_dossier::{
+        DossierBatchEntry, DossierBatchManifest, DossierHit, ResearchDossier, StageSuggestion,
+        load_dossier_batch_manifest, write_dossier_batch_manifest, write_research_dossier,
+    },
+    project_api_contract::{
+        ProjectApiContext, ProjectApiCrosswalkBinding, ProjectApiCrosswalkFile,
+        load_project_api_context, load_project_api_crosswalk,
+    },
 };
 use lit_search::{
-    MultiQueryExecutionOutcome, Paper, SearchEngine, normalize_source_name, search::SourceTier,
+    MultiQueryExecutionOutcome, Paper, SearchEngine, canonicalize_doi, normalize_source_name,
+    search::{
+        SOURCE_FAMILY_NAMES, SourceTier, normalize_source_family_name, source_names_for_family,
+    },
     sources::ApiKeys,
 };
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
 use std::{
-    collections::BTreeMap,
+    collections::{BTreeMap, HashMap, HashSet},
     fs,
     path::{Path, PathBuf},
+    process::Command,
 };
+use url::Url;
 
 #[derive(Parser, Debug)]
 #[command(
@@ -37,6 +48,7 @@ enum Commands {
     Status(StatusArgs),
     EmitActions(EmitActionsArgs),
     ResearchDossier(ResearchDossierArgs),
+    StageFromDossier(StageFromDossierArgs),
 }
 
 #[derive(Args, Debug, Clone, Default)]
@@ -98,11 +110,47 @@ struct ResearchDossierArgs {
     #[arg(long = "source")]
     source: Vec<String>,
 
+    #[arg(long = "source-family")]
+    source_family: Vec<String>,
+
+    #[arg(long = "preferred-source-family")]
+    preferred_source_family: Vec<String>,
+
     #[arg(long, default_value = "docs/reports/cd_cache_dossiers")]
     output_dir: PathBuf,
 
     #[arg(long, default_value_t = 10)]
     max_hits: usize,
+
+    #[arg(long)]
+    min_relevance: Option<i64>,
+
+    #[arg(long)]
+    batch_manifest_out: Option<PathBuf>,
+}
+
+#[derive(Args, Debug)]
+struct StageFromDossierArgs {
+    #[arg(long)]
+    dossier: Vec<PathBuf>,
+
+    #[arg(long)]
+    batch_manifest: Vec<PathBuf>,
+
+    #[arg(long)]
+    sessions_dir: Option<PathBuf>,
+
+    #[arg(long)]
+    max_rank: Option<usize>,
+
+    #[arg(long = "rank")]
+    rank: Vec<usize>,
+
+    #[arg(long, default_value_t = false)]
+    all_suggestions: bool,
+
+    #[arg(long = "note")]
+    note: Vec<String>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -125,7 +173,7 @@ struct SearchQueueSummary {
     terminology_audit_tracks: Option<usize>,
 }
 
-#[derive(Debug, Clone, Deserialize, Serialize)]
+#[derive(Debug, Clone, Deserialize)]
 struct SearchQueueTarget {
     id: String,
     window: String,
@@ -157,58 +205,33 @@ struct ActionRow {
     query_seed_preview: String,
 }
 
-#[derive(Debug, Serialize)]
-struct ResearchDossier {
-    generated_at_utc: String,
-    project_id: String,
-    search_target_id: String,
-    crosswalk_id: String,
-    title: String,
-    window: String,
-    priority: String,
-    status: String,
-    kind: String,
-    why_now: String,
-    query_seeds: Vec<String>,
-    requested_sources: Vec<String>,
-    limit_per_query: usize,
-    year_min: u32,
-    report: lit_search::MultiQueryExecutionReport,
-    top_hits: Vec<DossierHit>,
-    stage_suggestions: Vec<StageSuggestion>,
-}
-
-#[derive(Debug, Serialize)]
-struct DossierHit {
-    rank: usize,
-    relevance_score: i64,
-    title: String,
-    year: u32,
-    source: String,
-    venue: String,
-    citation_count: u32,
-    doi: String,
-    url: String,
-    pdf_url: String,
-}
-
-#[derive(Debug, Serialize)]
-struct StageSuggestion {
-    rank: usize,
-    relevance_score: i64,
-    paper_title: String,
-    action: String,
-    candidate_url: String,
-    command: String,
-    rationale: String,
-}
-
+#[derive(Debug, Clone)]
 struct DossierBuildConfig<'a> {
     project_id: &'a str,
-    gororoba_repo_root: &'a Path,
+    project_api_root: &'a Path,
+    search_queue_path: &'a Path,
     limit_per_query: usize,
     year_min: u32,
     max_hits: usize,
+    min_relevance: i64,
+    preferred_source_families: Vec<String>,
+}
+
+#[derive(Debug)]
+struct PendingDossier {
+    json_path: PathBuf,
+    markdown_path: PathBuf,
+    dossier: ResearchDossier,
+}
+
+#[derive(Debug, Clone)]
+struct RankedPaper<'a> {
+    paper: &'a Paper,
+    canonical_id: String,
+    relevance_score: i64,
+    source_family: String,
+    route_class: String,
+    host_class: String,
 }
 
 #[tokio::main]
@@ -227,6 +250,7 @@ async fn main() -> Result<()> {
         Commands::ResearchDossier(args) => {
             run_research_dossier(&project_api, &crosswalk, &queue, &gororoba_repo_root, args).await
         }
+        Commands::StageFromDossier(args) => run_stage_from_dossier(&gororoba_repo_root, args),
     }
 }
 
@@ -336,11 +360,7 @@ fn run_emit_actions(
                 .first()
                 .cloned()
                 .unwrap_or_default(),
-            query_seed_preview: target
-                .query_seeds
-                .first()
-                .cloned()
-                .unwrap_or_default(),
+            query_seed_preview: target.query_seeds.first().cloned().unwrap_or_default(),
         });
     }
 
@@ -362,7 +382,7 @@ fn run_emit_actions(
 }
 
 async fn run_research_dossier(
-    _project_api: &ProjectApiContext,
+    project_api: &ProjectApiContext,
     crosswalk: &ProjectApiCrosswalkFile,
     queue: &SearchQueueFile,
     gororoba_repo_root: &Path,
@@ -372,17 +392,23 @@ async fn run_research_dossier(
     fs::create_dir_all(&output_dir).with_context(|| format!("create {}", output_dir.display()))?;
 
     let tier = parse_source_tier(&args.tier);
-    let sources = args
-        .source
-        .iter()
-        .map(|source| normalize_source_name(source))
-        .collect::<Vec<_>>();
+    let sources = resolve_requested_sources(&args.source, &args.source_family)?;
     let engine = SearchEngine::new(ApiKeys::from_env(), tier);
     let project_id = queue.project_id.as_deref().unwrap_or("cayley-dickson");
+    let targets = filtered_targets(queue, &args.filters);
+    let mut pending = Vec::new();
 
-    for target in filtered_targets(queue, &args.filters) {
+    for target in targets {
         let binding = binding_for_target(crosswalk, target);
         let queries = deduplicate_query_seeds(target);
+        let preferred_source_families = if args.preferred_source_family.is_empty() {
+            default_preferred_source_families(target)
+        } else {
+            normalize_source_family_list(&args.preferred_source_family)
+        };
+        let min_relevance = args
+            .min_relevance
+            .unwrap_or_else(|| default_min_relevance(target));
         let outcome = engine
             .search_queries_parallel_with_sources(
                 &queries,
@@ -394,10 +420,13 @@ async fn run_research_dossier(
         let dossier = build_dossier(
             DossierBuildConfig {
                 project_id,
-                gororoba_repo_root,
+                project_api_root: &project_api.repo_root,
+                search_queue_path: &project_api.search_queue_path,
                 limit_per_query: args.limit_per_query,
                 year_min: args.year_min,
                 max_hits: args.max_hits,
+                min_relevance,
+                preferred_source_families,
             },
             target,
             binding,
@@ -409,21 +438,152 @@ async fn run_research_dossier(
             sanitize_token(&dossier.search_target_id),
             Utc::now().format("%Y%m%d")
         );
-        let json_path = output_dir.join(format!("{stem}.json"));
-        let markdown_path = output_dir.join(format!("{stem}.md"));
-        fs::write(&json_path, serde_json::to_string_pretty(&dossier)?)
-            .with_context(|| format!("write {}", json_path.display()))?;
-        fs::write(&markdown_path, render_research_markdown(&dossier))
-            .with_context(|| format!("write {}", markdown_path.display()))?;
+        pending.push(PendingDossier {
+            json_path: output_dir.join(format!("{stem}.json")),
+            markdown_path: output_dir.join(format!("{stem}.md")),
+            dossier,
+        });
+    }
+
+    let batch_manifest_path = args
+        .batch_manifest_out
+        .as_ref()
+        .map(|path| resolve_output_dir(gororoba_repo_root, path))
+        .unwrap_or_else(|| default_batch_manifest_path(&output_dir, &args.filters));
+    let batch_manifest_rel = repo_display_path(gororoba_repo_root, &batch_manifest_path);
+
+    for pending_dossier in &mut pending {
+        pending_dossier.dossier.batch_manifest_rel = Some(batch_manifest_rel.clone());
+        hydrate_stage_suggestion_commands(
+            &mut pending_dossier.dossier,
+            gororoba_repo_root,
+            project_api,
+            &pending_dossier.json_path,
+        );
+        write_research_dossier(&pending_dossier.json_path, &pending_dossier.dossier)?;
+        fs::write(
+            &pending_dossier.markdown_path,
+            render_research_markdown(&pending_dossier.dossier),
+        )
+        .with_context(|| format!("write {}", pending_dossier.markdown_path.display()))?;
         println!(
-            "wrote_json={} wrote_markdown={} search_target={} hits={}",
-            json_path.display(),
-            markdown_path.display(),
-            dossier.search_target_id,
-            dossier.top_hits.len()
+            "wrote_json={} wrote_markdown={} search_target={} hits={} suggestions={}",
+            pending_dossier.json_path.display(),
+            pending_dossier.markdown_path.display(),
+            pending_dossier.dossier.search_target_id,
+            pending_dossier.dossier.top_hits.len(),
+            pending_dossier.dossier.stage_suggestions.len()
         );
     }
 
+    let batch_manifest = DossierBatchManifest {
+        schema_version: 1,
+        generated_at_utc: Utc::now().to_rfc3339(),
+        project_id: project_id.to_string(),
+        project_api_root: project_api.repo_root.display().to_string(),
+        search_queue_path: project_api.search_queue_path.display().to_string(),
+        output_dir: repo_display_path(gororoba_repo_root, &output_dir),
+        requested_sources: sources,
+        preferred_source_families: pending
+            .first()
+            .map(|item| item.dossier.preferred_source_families.clone())
+            .unwrap_or_default(),
+        year_min: args.year_min,
+        limit_per_query: args.limit_per_query,
+        min_relevance: pending
+            .first()
+            .map(|item| item.dossier.min_relevance)
+            .unwrap_or_default(),
+        windows: args.filters.window.clone(),
+        priorities: args.filters.priority.clone(),
+        statuses: args.filters.status.clone(),
+        critical_only: args.filters.critical_only,
+        entries: pending
+            .iter()
+            .map(|item| DossierBatchEntry {
+                search_target_id: item.dossier.search_target_id.clone(),
+                title: item.dossier.title.clone(),
+                window: item.dossier.window.clone(),
+                priority: item.dossier.priority.clone(),
+                kind: item.dossier.kind.clone(),
+                dossier_json: repo_display_path(gororoba_repo_root, &item.json_path),
+                dossier_markdown: repo_display_path(gororoba_repo_root, &item.markdown_path),
+                suggestion_count: item.dossier.stage_suggestions.len(),
+            })
+            .collect(),
+    };
+    write_dossier_batch_manifest(&batch_manifest_path, &batch_manifest)?;
+    println!("batch_manifest={}", batch_manifest_path.display());
+
+    Ok(())
+}
+
+fn run_stage_from_dossier(gororoba_repo_root: &Path, args: StageFromDossierArgs) -> Result<()> {
+    let dossier_paths = collect_dossier_paths(gororoba_repo_root, &args)?;
+    if dossier_paths.is_empty() {
+        bail!("stage-from-dossier requires at least one --dossier or --batch-manifest");
+    }
+
+    let mut staged = 0_usize;
+    for dossier_path in dossier_paths {
+        let mut command = Command::new("cargo");
+        command.current_dir(gororoba_repo_root);
+        command.args([
+            "run",
+            "-q",
+            "-p",
+            "gororoba_cli_data",
+            "--bin",
+            "human-acquire",
+            "--",
+            "--repo-root",
+            gororoba_repo_root.to_string_lossy().as_ref(),
+        ]);
+        if let Some(sessions_dir) = &args.sessions_dir {
+            command.args(["--sessions-dir", sessions_dir.to_string_lossy().as_ref()]);
+        }
+        command.args([
+            "import-dossier",
+            "--dossier",
+            dossier_path.to_string_lossy().as_ref(),
+        ]);
+        if args.all_suggestions {
+            command.arg("--all-suggestions");
+        }
+        if let Some(max_rank) = args.max_rank {
+            command.args(["--max-rank", &max_rank.to_string()]);
+        }
+        for rank in &args.rank {
+            command.args(["--rank", &rank.to_string()]);
+        }
+        for note in &args.note {
+            command.args(["--note", note]);
+        }
+        let output = command.output().with_context(|| {
+            format!(
+                "run human-acquire import-dossier for {}",
+                dossier_path.display()
+            )
+        })?;
+        if !output.status.success() {
+            bail!(
+                "human-acquire import-dossier failed for {}\nstdout:\n{}\nstderr:\n{}",
+                dossier_path.display(),
+                String::from_utf8_lossy(&output.stdout),
+                String::from_utf8_lossy(&output.stderr)
+            );
+        }
+        let stdout = String::from_utf8_lossy(&output.stdout);
+        if !stdout.trim().is_empty() {
+            print!("{stdout}");
+        }
+        let stderr = String::from_utf8_lossy(&output.stderr);
+        if !stderr.trim().is_empty() {
+            eprint!("{stderr}");
+        }
+        staged += 1;
+    }
+    println!("staged_dossiers={staged}");
     Ok(())
 }
 
@@ -434,43 +594,63 @@ fn build_dossier(
     queries: &[String],
     outcome: MultiQueryExecutionOutcome,
 ) -> ResearchDossier {
-    let ranked_candidates = rank_papers_for_target(target, &outcome.papers);
+    let ranked_candidates = collapse_ranked_candidates(rank_papers_for_target(
+        target,
+        &outcome.papers,
+        &config.preferred_source_families,
+    ));
     let top_hits = ranked_candidates
         .iter()
         .take(config.max_hits)
         .enumerate()
-        .map(|(index, (paper, relevance_score))| DossierHit {
+        .map(|(index, ranked)| DossierHit {
             rank: index + 1,
-            relevance_score: *relevance_score,
-            title: paper.title.clone(),
-            year: paper.year,
-            source: paper.source.clone(),
-            venue: paper.venue.clone(),
-            citation_count: paper.citation_count,
-            doi: paper.doi.clone(),
-            url: paper.url.clone(),
-            pdf_url: paper.pdf_url.clone(),
+            canonical_id: ranked.canonical_id.clone(),
+            relevance_score: ranked.relevance_score,
+            source_family: ranked.source_family.clone(),
+            route_class: ranked.route_class.clone(),
+            host_class: ranked.host_class.clone(),
+            title: ranked.paper.title.clone(),
+            year: ranked.paper.year,
+            source: ranked.paper.source.clone(),
+            venue: ranked.paper.venue.clone(),
+            citation_count: ranked.paper.citation_count,
+            doi: ranked.paper.doi.clone(),
+            url: ranked.paper.url.clone(),
+            pdf_url: ranked.paper.pdf_url.clone(),
         })
         .collect::<Vec<_>>();
 
+    let preferred_set = config
+        .preferred_source_families
+        .iter()
+        .cloned()
+        .collect::<HashSet<_>>();
+    let preferred_hits_available = ranked_candidates
+        .iter()
+        .any(|ranked| preferred_set.contains(&ranked.source_family));
     let stage_suggestions = ranked_candidates
         .iter()
         .take(config.max_hits)
         .enumerate()
-        .filter_map(|(index, (paper, relevance_score))| {
+        .filter_map(|(index, ranked)| {
             build_stage_suggestion(
-                config.gororoba_repo_root,
                 target,
-                paper,
-                *relevance_score,
+                ranked,
                 index + 1,
+                config.min_relevance,
+                preferred_hits_available,
+                &preferred_set,
             )
         })
         .collect::<Vec<_>>();
 
     ResearchDossier {
+        schema_version: 1,
         generated_at_utc: Utc::now().to_rfc3339(),
         project_id: config.project_id.to_string(),
+        project_api_root: config.project_api_root.display().to_string(),
+        search_queue_path: config.search_queue_path.display().to_string(),
         search_target_id: target.id.clone(),
         crosswalk_id: binding
             .map(|binding| binding.id.clone())
@@ -483,70 +663,104 @@ fn build_dossier(
         why_now: target.why_now.clone(),
         query_seeds: queries.to_vec(),
         requested_sources: outcome.report.requested_sources.clone(),
+        preferred_source_families: config.preferred_source_families,
         limit_per_query: config.limit_per_query,
         year_min: config.year_min,
+        min_relevance: config.min_relevance,
         report: outcome.report,
         top_hits,
         stage_suggestions,
+        batch_manifest_rel: None,
     }
 }
 
 fn build_stage_suggestion(
-    gororoba_repo_root: &Path,
     target: &SearchQueueTarget,
-    paper: &Paper,
-    relevance_score: i64,
+    ranked: &RankedPaper<'_>,
     rank: usize,
+    min_relevance: i64,
+    preferred_hits_available: bool,
+    preferred_source_families: &HashSet<String>,
 ) -> Option<StageSuggestion> {
-    let candidate_url = if !paper.pdf_url.is_empty() {
-        paper.pdf_url.clone()
-    } else {
-        paper.url.clone()
-    };
-    if candidate_url.is_empty() || relevance_score < 20 {
+    let candidate_url = preferred_candidate_url(ranked.paper);
+    if candidate_url.is_empty() || ranked.relevance_score < min_relevance {
+        return None;
+    }
+    if preferred_hits_available && !preferred_source_families.contains(&ranked.source_family) {
         return None;
     }
 
-    let action = if !paper.pdf_url.is_empty() {
-        "stage_direct_pdf"
-    } else {
-        "stage_landing_page"
+    let action = match ranked.route_class.as_str() {
+        "direct_pdf" => "stage_direct_pdf_child",
+        "doi_resolver" => "stage_doi_resolver_child",
+        "openalex_landing" | "crossref_landing" | "metadata_landing" => {
+            "stage_metadata_landing_child"
+        }
+        _ => "stage_browser_landing_child",
     };
-    let command = format!(
-        "cargo run -q -p gororoba_cli_data --bin human-acquire -- --repo-root {} stage --url {} --source-id {} --title {} --note {}",
-        sh_quote(&gororoba_repo_root.display().to_string()),
-        sh_quote(&candidate_url),
-        sh_quote(&paper.source),
-        sh_quote(&paper.title),
-        sh_quote(&format!("search_target_id={}", target.id)),
-    );
+
     Some(StageSuggestion {
         rank,
-        relevance_score,
-        paper_title: paper.title.clone(),
+        suggestion_id: sanitize_token(&format!("{}_{}", target.id, ranked.canonical_id)),
+        canonical_id: ranked.canonical_id.clone(),
+        relevance_score: ranked.relevance_score,
+        source: ranked.paper.source.clone(),
+        source_family: ranked.source_family.clone(),
+        route_class: ranked.route_class.clone(),
+        host_class: ranked.host_class.clone(),
+        paper_title: ranked.paper.title.clone(),
         action: action.to_string(),
         candidate_url,
-        command,
+        command: String::new(),
         rationale: format!(
-            "Top dossier hit from {} with relevance score {} and {} citations for queue target {}.",
-            paper.source, relevance_score, paper.citation_count, target.id
+            "Candidate from {} [{}] with relevance score {} and {} citations for queue target {}.",
+            ranked.paper.source,
+            ranked.source_family,
+            ranked.relevance_score,
+            ranked.paper.citation_count,
+            target.id
         ),
+        default_selected: rank == 1 || ranked.route_class == "direct_pdf",
     })
+}
+
+fn hydrate_stage_suggestion_commands(
+    dossier: &mut ResearchDossier,
+    gororoba_repo_root: &Path,
+    project_api: &ProjectApiContext,
+    dossier_json_path: &Path,
+) {
+    let dossier_path = repo_display_path(gororoba_repo_root, dossier_json_path);
+    for suggestion in &mut dossier.stage_suggestions {
+        suggestion.command = format!(
+            "cargo run -q -p gororoba_cli_data --bin cd-cache-adapter -- --project-api-root '{}' --gororoba-repo-root '{}' stage-from-dossier --dossier '{}' --rank '{}'",
+            project_api.repo_root.display(),
+            gororoba_repo_root.display(),
+            dossier_path,
+            suggestion.rank
+        );
+    }
 }
 
 fn render_research_markdown(dossier: &ResearchDossier) -> String {
     let mut body = String::new();
     body.push_str(&format!("# {}\n\n", dossier.title));
     body.push_str(&format!(
-        "- search_target_id: `{}`\n- crosswalk_id: `{}`\n- window: `{}`\n- priority: `{}`\n- status: `{}`\n- kind: `{}`\n- generated_at_utc: `{}`\n\n",
+        "- search_target_id: `{}`\n- crosswalk_id: `{}`\n- window: `{}`\n- priority: `{}`\n- status: `{}`\n- kind: `{}`\n- generated_at_utc: `{}`\n- min_relevance: `{}`\n- preferred_source_families: `{}`\n",
         dossier.search_target_id,
         dossier.crosswalk_id,
         dossier.window,
         dossier.priority,
         dossier.status,
         dossier.kind,
-        dossier.generated_at_utc
+        dossier.generated_at_utc,
+        dossier.min_relevance,
+        dossier.preferred_source_families.join(", ")
     ));
+    if let Some(batch_manifest_rel) = &dossier.batch_manifest_rel {
+        body.push_str(&format!("- batch_manifest: `{}`\n", batch_manifest_rel));
+    }
+    body.push('\n');
     body.push_str(&format!("{}\n\n", dossier.why_now));
     body.push_str("## Query Seeds\n");
     for query in &dossier.query_seeds {
@@ -591,34 +805,38 @@ fn render_research_markdown(dossier: &ResearchDossier) -> String {
     }
 
     body.push_str("## Top Hits\n");
-    body.push_str("| rank | relevance | year | source | citations | title | url | pdf |\n");
-    body.push_str("| --- | --- | --- | --- | --- | --- | --- | --- |\n");
+    body.push_str("| rank | relevance | canonical_id | source_family | route_class | year | source | citations | title | url |\n");
+    body.push_str("| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n");
     for hit in &dossier.top_hits {
         body.push_str(&format!(
-            "| {} | {} | {} | {} | {} | {} | {} | {} |\n",
+            "| {} | {} | {} | {} | {} | {} | {} | {} | {} | {} |\n",
             hit.rank,
             hit.relevance_score,
+            escape_markdown_cell(&hit.canonical_id),
+            escape_markdown_cell(&hit.source_family),
+            escape_markdown_cell(&hit.route_class),
             hit.year,
             escape_markdown_cell(&hit.source),
             hit.citation_count,
             escape_markdown_cell(&hit.title),
-            escape_markdown_cell(&hit.url),
-            escape_markdown_cell(&hit.pdf_url),
+            escape_markdown_cell(&preferred_link(hit)),
         ));
     }
     body.push('\n');
 
     body.push_str("## Stage Suggestions\n");
     if dossier.stage_suggestions.is_empty() {
-        body.push_str("- No stageable URLs were present in the top hits.\n");
+        body.push_str("- No stageable URLs cleared the dossier filters.\n");
     } else {
         for suggestion in &dossier.stage_suggestions {
             body.push_str(&format!(
-                "- rank {}: `{}`\n  relevance: `{}`\n  action: `{}`\n  url: `{}`\n  command: `{}`\n",
+                "- rank {}: `{}`\n  canonical_id: `{}`\n  source_family: `{}`\n  route_class: `{}`\n  default_selected: `{}`\n  url: `{}`\n  command: `{}`\n",
                 suggestion.rank,
                 suggestion.paper_title,
-                suggestion.relevance_score,
-                suggestion.action,
+                suggestion.canonical_id,
+                suggestion.source_family,
+                suggestion.route_class,
+                suggestion.default_selected,
                 suggestion.candidate_url,
                 suggestion.command,
             ));
@@ -787,7 +1005,8 @@ fn deduplicate_query_seeds(target: &SearchQueueTarget) -> Vec<String> {
 fn rank_papers_for_target<'a>(
     target: &SearchQueueTarget,
     papers: &'a [Paper],
-) -> Vec<(&'a Paper, i64)> {
+    preferred_source_families: &[String],
+) -> Vec<RankedPaper<'a>> {
     let normalized_target_title = normalize_text_for_match(&target.title);
     let cleaned_queries = deduplicate_query_seeds(target)
         .into_iter()
@@ -799,6 +1018,7 @@ fn rank_papers_for_target<'a>(
         .iter()
         .flat_map(|query| collect_match_tokens(query))
         .collect::<Vec<_>>();
+    let preferred_set = preferred_source_families.iter().collect::<HashSet<_>>();
 
     let mut ranked = papers
         .iter()
@@ -825,22 +1045,64 @@ fn rank_papers_for_target<'a>(
                     score += 6;
                 }
             }
+            let source_family = map_source_family(&paper.source);
+            if preferred_set.contains(&source_family) {
+                score += 24;
+            }
+            let route_class = classify_route_class(paper);
+            if route_class == "direct_pdf" {
+                score += 20;
+            } else if route_class == "doi_resolver" {
+                score += 8;
+            }
             if normalized_paper_title.contains("cayley")
                 || normalized_paper_title.contains("dickson")
             {
                 score += 4;
             }
-            (paper, score)
+            RankedPaper {
+                paper,
+                canonical_id: canonical_candidate_id(paper),
+                relevance_score: score,
+                source_family,
+                route_class,
+                host_class: classify_host_class(&preferred_candidate_url(paper)),
+            }
         })
         .collect::<Vec<_>>();
 
-    ranked.sort_by(|(left_paper, left_score), (right_paper, right_score)| {
-        right_score
-            .cmp(left_score)
-            .then_with(|| right_paper.citation_count.cmp(&left_paper.citation_count))
-            .then_with(|| right_paper.year.cmp(&left_paper.year))
+    ranked.sort_by(|left, right| {
+        right
+            .relevance_score
+            .cmp(&left.relevance_score)
+            .then_with(|| right.paper.citation_count.cmp(&left.paper.citation_count))
+            .then_with(|| right.paper.year.cmp(&left.paper.year))
     });
     ranked
+}
+
+fn collapse_ranked_candidates<'a>(ranked: Vec<RankedPaper<'a>>) -> Vec<RankedPaper<'a>> {
+    let mut best_by_id: HashMap<String, RankedPaper<'a>> = HashMap::new();
+    for candidate in ranked {
+        match best_by_id.get(&candidate.canonical_id) {
+            Some(existing)
+                if existing.relevance_score > candidate.relevance_score
+                    || (existing.relevance_score == candidate.relevance_score
+                        && existing.paper.citation_count >= candidate.paper.citation_count) => {}
+            _ => {
+                best_by_id.insert(candidate.canonical_id.clone(), candidate);
+            }
+        }
+    }
+    let mut collapsed = best_by_id.into_values().collect::<Vec<_>>();
+    collapsed.sort_by(|left, right| {
+        right
+            .relevance_score
+            .cmp(&left.relevance_score)
+            .then_with(|| right.paper.citation_count.cmp(&left.paper.citation_count))
+            .then_with(|| right.paper.year.cmp(&left.paper.year))
+    });
+    collapsed
 }
 
 fn normalize_text_for_match(value: &str) -> String {
@@ -893,6 +1155,234 @@ fn resolve_output_dir(gororoba_repo_root: &Path, output_dir: &Path) -> PathBuf {
     }
 }
 
+fn repo_display_path(repo_root: &Path, path: &Path) -> String {
+    path.strip_prefix(repo_root)
+        .unwrap_or(path)
+        .display()
+        .to_string()
+}
+
+fn resolve_requested_sources(
+    explicit_sources: &[String],
+    source_families: &[String],
+) -> Result<Vec<String>> {
+    let mut sources = Vec::new();
+    for source in explicit_sources {
+        let normalized = normalize_source_name(source);
+        if !sources
+            .iter()
+            .any(|existing: &String| existing == &normalized)
+        {
+            sources.push(normalized);
+        }
+    }
+    for family in normalize_source_family_list(source_families) {
+        let Some(family_sources) = source_names_for_family(&family) else {
+            bail!(
+                "unknown source family '{}'; valid families: {}",
+                family,
+                SOURCE_FAMILY_NAMES.join(", ")
+            );
+        };
+        for source in family_sources {
+            let normalized = normalize_source_name(source);
+            if !sources.iter().any(|existing| existing == &normalized) {
+                sources.push(normalized);
+            }
+        }
+    }
+    Ok(sources)
+}
+
+fn normalize_source_family_list(families: &[String]) -> Vec<String> {
+    let mut normalized = Vec::new();
+    for family in families {
+        let normalized_family = normalize_source_family_name(family);
+        if !normalized
+            .iter()
+            .any(|existing: &String| existing == &normalized_family)
+        {
+            normalized.push(normalized_family);
+        }
+    }
+    normalized
+}
+
+fn default_preferred_source_families(target: &SearchQueueTarget) -> Vec<String> {
+    match target.kind.as_str() {
+        "browser_confirmed_free_pdf_lane" => vec![
+            "resolver".to_string(),
+            "citation_graph".to_string(),
+            "archive".to_string(),
+        ],
+        "metadata_confirmed_pdf_path_resolution" => vec![
+            "archive".to_string(),
+            "resolver".to_string(),
+            "citation_graph".to_string(),
+        ],
+        "holder_workflow_followup" | "article_or_chapter_delivery_followup" => vec![
+            "citation_graph".to_string(),
+            "resolver".to_string(),
+            "catalog".to_string(),
+        ],
+        "terminology_and_alias_audit" => vec![
+            "archive".to_string(),
+            "citation_graph".to_string(),
+            "open".to_string(),
+        ],
+        _ => vec![
+            "archive".to_string(),
+            "citation_graph".to_string(),
+            "resolver".to_string(),
+        ],
+    }
+}
+
+fn default_min_relevance(target: &SearchQueueTarget) -> i64 {
+    match target.kind.as_str() {
+        "browser_confirmed_free_pdf_lane" => 24,
+        "metadata_confirmed_pdf_path_resolution" => 22,
+        "holder_workflow_followup" | "article_or_chapter_delivery_followup" => 18,
+        "terminology_and_alias_audit" => 12,
+        _ => 14,
+    }
+}
+
+fn map_source_family(source: &str) -> String {
+    match normalize_source_name(source).as_str() {
+        "openalex" | "semantic_scholar" => "citation_graph".to_string(),
+        "crossref" | "datacite" | "unpaywall" => "resolver".to_string(),
+        "arxiv" | "jstage" | "inspirehep" | "hal" | "dblp" => "archive".to_string(),
+        "europepmc" | "scielo" | "core" | "cinii" | "ads" | "lens" | "google_scholar" => {
+            "catalog".to_string()
+        }
+        other => other.to_string(),
+    }
+}
+
+fn canonical_candidate_id(paper: &Paper) -> String {
+    let canonical_doi = canonicalize_doi(&paper.doi);
+    if !canonical_doi.is_empty() {
+        return format!("doi:{canonical_doi}");
+    }
+    for candidate in [&paper.url, &paper.pdf_url, &paper.paper_id] {
+        if let Some(openalex_id) = openalex_id(candidate) {
+            return format!("openalex:{openalex_id}");
+        }
+    }
+    if !paper.arxiv_id.is_empty() {
+        return format!("arxiv:{}", paper.arxiv_id.to_ascii_lowercase());
+    }
+    format!("title:{}", sanitize_token(&paper.title))
+}
+
+fn openalex_id(value: &str) -> Option<String> {
+    let trimmed = value.trim();
+    if trimmed.is_empty() {
+        return None;
+    }
+    if trimmed.starts_with('W') && trimmed[1..].chars().all(|ch| ch.is_ascii_digit()) {
+        return Some(trimmed.to_string());
+    }
+    let parsed = Url::parse(trimmed).ok()?;
+    if !parsed.host_str()?.contains("openalex.org") {
+        return None;
+    }
+    parsed
+        .path_segments()?
+        .find(|segment| segment.starts_with('W'))
+        .map(ToOwned::to_owned)
+}
+
+fn preferred_candidate_url(paper: &Paper) -> String {
+    if !paper.pdf_url.trim().is_empty() {
+        paper.pdf_url.clone()
+    } else {
+        paper.url.clone()
+    }
+}
+
+fn classify_route_class(paper: &Paper) -> String {
+    let candidate_url = preferred_candidate_url(paper);
+    if !paper.pdf_url.trim().is_empty() || candidate_url.to_ascii_lowercase().ends_with(".pdf") {
+        return "direct_pdf".to_string();
+    }
+    let Some(host) = Url::parse(&candidate_url)
+        .ok()
+        .and_then(|parsed| parsed.host_str().map(ToOwned::to_owned))
+    else {
+        return "generic_landing".to_string();
+    };
+    if host == "doi.org" || host == "dx.doi.org" {
+        "doi_resolver".to_string()
+    } else if host.contains("openalex.org") {
+        "openalex_landing".to_string()
+    } else if host.contains("crossref") {
+        "crossref_landing".to_string()
+    } else if host.contains("ams.org") || host.contains("springer") || host.contains("celebratio") {
+        "metadata_landing".to_string()
+    } else {
+        "generic_landing".to_string()
+    }
+}
+
+fn classify_host_class(url: &str) -> String {
+    Url::parse(url)
+        .ok()
+        .and_then(|parsed| parsed.host_str().map(sanitize_token))
+        .filter(|value| !value.is_empty())
+        .unwrap_or_else(|| "unknown_host".to_string())
+}
+
+fn preferred_link(hit: &DossierHit) -> String {
+    if !hit.pdf_url.is_empty() {
+        hit.pdf_url.clone()
+    } else {
+        hit.url.clone()
+    }
+}
+
+fn default_batch_manifest_path(output_dir: &Path, filters: &QueueFilters) -> PathBuf {
+    let batch_label = if !filters.window.is_empty() {
+        sanitize_token(&filters.window.join("_"))
+    } else if filters.critical_only {
+        "critical".to_string()
+    } else {
+        "mixed".to_string()
+    };
+    output_dir.join(format!(
+        "batch_{}_{}.toml",
+        batch_label,
+        Utc::now().format("%Y%m%dT%H%M%SZ")
+    ))
+}
+
+fn collect_dossier_paths(
+    gororoba_repo_root: &Path,
+    args: &StageFromDossierArgs,
+) -> Result<Vec<PathBuf>> {
+    let mut seen = HashSet::new();
+    let mut paths = Vec::new();
+    for dossier in &args.dossier {
+        let path = resolve_output_dir(gororoba_repo_root, dossier);
+        if seen.insert(path.clone()) {
+            paths.push(path);
+        }
+    }
+    for manifest_path in &args.batch_manifest {
+        let resolved_manifest = resolve_output_dir(gororoba_repo_root, manifest_path);
+        let manifest = load_dossier_batch_manifest(&resolved_manifest)?;
+        for entry in manifest.entries {
+            let dossier_path =
+                resolve_output_dir(gororoba_repo_root, Path::new(&entry.dossier_json));
+            if seen.insert(dossier_path.clone()) {
+                paths.push(dossier_path);
+            }
+        }
+    }
+    Ok(paths)
+}
+
 fn sanitize_token(value: &str) -> String {
     let mut out = String::new();
     let mut prev_underscore = false;
@@ -913,10 +1403,6 @@ fn sanitize_token(value: &str) -> String {
         out.push(mapped);
     }
     out.trim_matches('_').to_string()
-}
-
-fn sh_quote(value: &str) -> String {
-    format!("'{}'", value.replace('\'', "'\"'\"'"))
 }
 
 fn escape_tsv_field(value: &str) -> String {
