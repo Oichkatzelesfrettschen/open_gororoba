@@ -578,7 +578,8 @@ Lemma brown1972_quat_zpow_succ : forall a n,
     simpl.
     reflexivity.
   - destruct p as [|p|p].
-    + simpl. apply eq_sym. apply brown1972_quat_inv_mul_left. exact Hnz.
+    + simpl. rewrite quat_mul_one_left.
+      apply eq_sym. apply brown1972_quat_inv_mul_left. exact Hnz.
     + replace (Pos.to_nat p~0) with (S (Pos.to_nat (Pos.pred_double p))).
       2:{
         rewrite <- Pos2Nat.inj_succ.
