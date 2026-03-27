@@ -286,13 +286,34 @@ Three rank measures (participation ratio, stable rank, entropy rank)
 are concordant on the collapse -> expansion -> relaxation shape.
 The specific magnitude should be reported with CI.
 
-### ISM Directional Analysis
+### ISM Directional Analysis (Band-Resolved, Local-Mean Corrected)
 
 The ISM dominant SVD mode is perfectly stable (CV < 0.003) across 6.4-min
 windows. The mean ISM field is predominantly tangential (Bt/|B| = -0.91),
-consistent with a draped interstellar field. The dominant variability
-direction is perpendicular to the mean field, consistent with Alfvenic
-fluctuations propagating along the draped sheet.
+consistent with a draped interstellar field.
+
+Band-resolved field-aligned polarization (circular bootstrap, 500 resamples):
+
+| Zone | 30 min-2 hr perp | CI | 2-8 hr perp | CI |
+|------|-----------------|-----|------------|-----|
+| Heliosheath | 59.9% | [59.5%, 60.4%] | 71.0% | [70.8%, 71.1%] |
+| Transition | 54.1% | [53.3%, 55.1%] | 28.8% | [28.5%, 29.1%] |
+| ISM | 61.5% | [58.9%, 63.7%] | 0.4% | [0.3%, 0.4%] |
+
+The ISM exhibits frequency-dependent polarization: the 30 min-2 hr band
+is transverse-dominant (61.5% perp), while the 2-8 hr band is compressive/
+parallel-dominant (0.4% perp). This 150x polarization contrast between
+bands is a quantitative result with tight CIs.
+
+The strongest partial-coherence lift (4.6x after controlling for |B|)
+sits in the transverse 30 min-2 hr band. The compressive 2-8 hr band
+carries physically distinct structure.
+
+IMPORTANT CAVEAT: In weak-field, rotating zones like the heliosheath,
+field-aligned geometry requires local mean-field definitions. Zone-mean
+alignment can mislead (heliosheath 2-8hr drops from 71% to 11.5% perp
+under local-mean). ISM results are unaffected by this choice because the
+field is strong and steady.
 
 ### Literature Uniqueness
 

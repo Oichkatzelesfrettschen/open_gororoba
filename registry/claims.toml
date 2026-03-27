@@ -10756,3 +10756,30 @@ where_stated = "data/output/heliosphere/ablations/associator_dimensionality.json
 last_verified = "2026-03-27"
 formal_proof = ""
 status_note = "SVD participation ratio and 32D associator computed per 5-AU bin on V2 densified data. The non-reducibility is one of the strongest theoretical results: it establishes that the CD algebraic framework provides genuinely new information beyond standard spectral/SVD methods."
+
+[[claim]]
+id = "C-1573"
+status = "Verified"
+statement = "The partial-coherence mechanism for the ISM cross-channel order surplus is methodologically robust: time-domain residualization and frequency-domain cross-spectral partial coherence agree within ~3% across all tested zones and frequency bands. The ISM directional phase organization survives both constructions and is not an artifact of the control procedure (phase-scrambled |B| surrogate gives only 1.1x vs 4.6x for real |B| control in the 30 min-2 hr band)."
+where_stated = "data/output/heliosphere/ablations/cross_spectral_partial_coherence.json, data/output/heliosphere/ablations/partial_coherence_robustness.json"
+last_verified = "2026-03-27"
+formal_proof = ""
+status_note = "Strengthens C-1571. Two mathematically independent estimators. Band-specific: strongest lift in 30 min-2 hr transverse-dominant band."
+
+[[claim]]
+id = "C-1574"
+status = "Verified"
+statement = "In weak-field, rotating magnetic environments (heliosheath), field-aligned polarization analysis requires local mean-field definitions. Zone-mean alignment inflates perpendicular fractions: heliosheath 2-8 hr band drops from 71% to 11.5% perpendicular under local-mean alignment. ISM results are unaffected because the field is strong and steady. This is a methods result applicable to any field-aligned decomposition in weakly magnetized, rotating-field environments."
+where_stated = "data/output/heliosphere/ablations/field_aligned_robustness.json"
+last_verified = "2026-03-27"
+formal_proof = ""
+status_note = "Discovered during heliosheath field-aligned analysis. Promotes local-mean alignment as primary method for weak-field zones."
+
+[[claim]]
+id = "C-1575"
+status = "Verified"
+statement = "The local interstellar medium exhibits frequency-dependent magnetic polarization structure: the 30 min-2 hr band is transverse-dominant (61.5% perpendicular [58.9%, 63.7%] circular bootstrap) while the 2-8 hr band is compressive/parallel-dominant (0.4% perpendicular [0.3%, 0.4%]). This 150x polarization contrast between frequency bands is a quantitative, CI-backed result. The strongest partial-coherence mechanism (4.6x |B|-controlled lift) sits specifically in the transverse 30 min-2 hr band."
+where_stated = "data/output/heliosphere/ablations/field_aligned_circular_bootstrap.json, data/output/heliosphere/ablations/field_aligned_ci_final.json"
+last_verified = "2026-03-27"
+formal_proof = ""
+status_note = "Circular bootstrap (500 resamples) resolves earlier CI mismatch from block bootstrap spectral leakage. Band-dependent ISM polarization connects the partial-coherence mechanism to specific fluctuation geometry."
