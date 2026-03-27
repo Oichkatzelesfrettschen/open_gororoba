@@ -1,0 +1,51 @@
+format_version = 1
+session_id = "cayley_dickson_dickson_1935_exact_pdf"
+created_utc = "2026-03-27T04:20:50.543767320+00:00"
+updated_utc = "2026-03-27T04:20:50.545489177+00:00"
+status = "in_progress"
+
+[source]
+source_id = "dickson_1935_exact_pdf"
+title = "Dickson 1935 stable direct PDF endpoint"
+
+[search]
+queue_path = "/home/eirikr/Documents/Projects/CayleyDickson/metadata/project_api/search_queue.toml"
+project_id = "cayley-dickson"
+search_target_id = "dickson_1935_exact_pdf"
+window = "1900-1999"
+priority = "high"
+kind = "metadata_confirmed_pdf_path_resolution"
+status = "bibliographic_record_confirmed_pdf_href_unresolved"
+why_now = "This is the clean bridge between the earlier Dickson line and the later Jacobson composition lane."
+preferred_lanes = [
+    "Celebratio page inspection in headed browser",
+    "linked media path resolution",
+    "secondary catalog and mirror search",
+]
+query_seeds = [
+    '"Linear algebras with associativity not assumed"',
+    '"Dickson" 1935 associativity not assumed',
+    '"Celebratio" Dickson article 80 pdf',
+]
+
+[controller]
+sessions_dir_rel = "reports/acquisition_sessions"
+transport_substrate = "auto"
+requested_backend = "auto"
+probe_bytes = 1024
+probe_requested = false
+
+[evidence]
+
+[[events]]
+at_utc = "2026-03-27T04:20:50.543767320+00:00"
+action = "import_dossier_stage_parent"
+status = "staged"
+note = "staged from dossier /home/eirikr/Documents/Projects/CayleyDickson/metadata/project_api/search_queue.toml"
+
+[[events]]
+at_utc = "2026-03-27T04:20:50.545489177+00:00"
+action = "promote"
+status = "in_progress"
+note = "spawned_child_sessions=cayley_dickson_dickson_1935_exact_pdf_openalex_org_w2009510707,cayley_dickson_dickson_1935_exact_pdf_ajrccm_atsjournals_org_347_full_pdf_html"
+

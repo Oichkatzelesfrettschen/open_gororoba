@@ -1,0 +1,65 @@
+format_version = 1
+session_id = "cayley_dickson_dickson_1906_exact_pdf_www_ams_org_s0002_9904_1950_09407_5_pdf"
+created_utc = "2026-03-27T04:20:49.528426485+00:00"
+updated_utc = "2026-03-27T04:20:49.528426485+00:00"
+status = "staged"
+
+[source]
+url = "https://www.ams.org/bull/1950-56-05/S0002-9904-1950-09407-5/S0002-9904-1950-09407-5.pdf"
+source_id = "openalex"
+title = "Self-dual configurations and regular graphs"
+site = "www_ams_org"
+access_class = "direct_pdf"
+
+[lineage]
+parent_session_id = "cayley_dickson_dickson_1906_exact_pdf"
+parent_manifest = "reports/acquisition_sessions/cayley_dickson_dickson_1906_exact_pdf/session.toml"
+relation = "promoted_child"
+
+[search]
+queue_path = "/home/eirikr/Documents/Projects/CayleyDickson/metadata/project_api/search_queue.toml"
+project_id = "cayley-dickson"
+search_target_id = "dickson_1906_exact_pdf"
+window = "1900-1999"
+priority = "critical"
+kind = "browser_confirmed_free_pdf_lane"
+status = "landing_page_confirmed_pdf_click_challenged"
+why_now = "Immediate dependency for the pre-1919 Dickson classification lane."
+preferred_lanes = [
+    "headed AMS session with human click-through",
+    "session-cookie export into deterministic downloader",
+    "alternate mirror search after the official AMS capture",
+]
+query_seeds = [
+    '"Linear algebras in which division is always uniquely possible"',
+    '"S0002-9947-1906-1500755-5"',
+    '"Dickson" 1906 linear algebras division uniquely possible',
+]
+
+[controller]
+policy_registry_rel = "registry/download_host_policies.toml"
+sessions_dir_rel = "reports/acquisition_sessions"
+transport_substrate = "auto"
+requested_backend = "auto"
+probe_bytes = 1024
+probe_requested = false
+
+[route]
+scheme = "https"
+host = "www.ams.org"
+retry_class = "probe_first"
+backends = [
+    "reqwest",
+    "curl-cli",
+    "ureq",
+]
+
+[evidence]
+host_scope = "www_ams_org"
+
+[[events]]
+at_utc = "2026-03-27T04:20:49.528426485+00:00"
+action = "promote_child"
+status = "staged"
+note = "promoted from cayley_dickson_dickson_1906_exact_pdf | dossier_search_target_id=dickson_1906_exact_pdf | dossier_suggestion_id=dickson_1906_exact_pdf_doi_10_1090_s0002_9904_1950_09407_5 | canonical_id=doi:10.1090/s0002-9904-1950-09407-5 | source_family=citation_graph | route_class=direct_pdf"
+

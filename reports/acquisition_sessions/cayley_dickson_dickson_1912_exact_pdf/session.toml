@@ -1,0 +1,51 @@
+format_version = 1
+session_id = "cayley_dickson_dickson_1912_exact_pdf"
+created_utc = "2026-03-27T04:20:50.038760103+00:00"
+updated_utc = "2026-03-27T04:20:50.040494300+00:00"
+status = "in_progress"
+
+[source]
+source_id = "dickson_1912_exact_pdf"
+title = "Dickson 1912 exact PDF body"
+
+[search]
+queue_path = "/home/eirikr/Documents/Projects/CayleyDickson/metadata/project_api/search_queue.toml"
+project_id = "cayley-dickson"
+search_target_id = "dickson_1912_exact_pdf"
+window = "1900-1999"
+priority = "critical"
+kind = "browser_confirmed_free_pdf_lane"
+status = "landing_page_confirmed_pdf_click_challenged"
+why_now = "Immediate dependency for the early Dickson prehistory of the 1919 Cayley-Dickson lane."
+preferred_lanes = [
+    "headed AMS session with human click-through",
+    "session-cookie export into deterministic downloader",
+    "alternate mirror search after the official AMS capture",
+]
+query_seeds = [
+    '"Linear algebras" Dickson 1912',
+    '"S0002-9947-1912-1500905-3"',
+    '"Dickson" 1912 "Linear algebras"',
+]
+
+[controller]
+sessions_dir_rel = "reports/acquisition_sessions"
+transport_substrate = "auto"
+requested_backend = "auto"
+probe_bytes = 1024
+probe_requested = false
+
+[evidence]
+
+[[events]]
+at_utc = "2026-03-27T04:20:50.038760103+00:00"
+action = "import_dossier_stage_parent"
+status = "staged"
+note = "staged from dossier /home/eirikr/Documents/Projects/CayleyDickson/metadata/project_api/search_queue.toml"
+
+[[events]]
+at_utc = "2026-03-27T04:20:50.040494300+00:00"
+action = "promote"
+status = "in_progress"
+note = "spawned_child_sessions=cayley_dickson_dickson_1912_exact_pdf_www_ams_org_s0002_9947_1944_0011083_5_pdf,cayley_dickson_dickson_1912_exact_pdf_journals_uwyo_edu_167"
+

@@ -1,0 +1,65 @@
+format_version = 1
+session_id = "cayley_dickson_jacobson_1958_exact_original_www_semanticscholar_org_22b4f272ec42ec89c1ea1ca6ef5d295e3e93a56c"
+created_utc = "2026-03-27T04:20:51.579710132+00:00"
+updated_utc = "2026-03-27T04:20:51.579710132+00:00"
+status = "staged"
+
+[source]
+url = "https://www.semanticscholar.org/paper/22b4f272ec42ec89c1ea1ca6ef5d295e3e93a56c"
+source_id = "semantic_scholar"
+title = "Composition algebras and their automorphisms"
+site = "www_semanticscholar_org"
+access_class = "generic_landing"
+
+[lineage]
+parent_session_id = "cayley_dickson_jacobson_1958_exact_original"
+parent_manifest = "reports/acquisition_sessions/cayley_dickson_jacobson_1958_exact_original/session.toml"
+relation = "promoted_child"
+
+[search]
+queue_path = "/home/eirikr/Documents/Projects/CayleyDickson/metadata/project_api/search_queue.toml"
+project_id = "cayley-dickson"
+search_target_id = "jacobson_1958_exact_original"
+window = "1900-1999"
+priority = "critical"
+kind = "article_or_chapter_delivery_followup"
+status = "delivery_workflow_in_progress"
+why_now = "This remains the sharpest exact composition-algebra hole in the corpus."
+preferred_lanes = [
+    "Bielefeld article-only follow-up",
+    "SUBITO authenticated order lane",
+    "TIB or Springer article-delivery escalation",
+]
+query_seeds = [
+    '"Composition Algebras and Their Automorphisms"',
+    '"10.1007/BF02854388"',
+    '"0817634118" Jacobson volume 2',
+]
+
+[controller]
+policy_registry_rel = "registry/download_host_policies.toml"
+sessions_dir_rel = "reports/acquisition_sessions"
+transport_substrate = "auto"
+requested_backend = "auto"
+probe_bytes = 1024
+probe_requested = false
+
+[route]
+scheme = "https"
+host = "www.semanticscholar.org"
+retry_class = "probe_first"
+backends = [
+    "reqwest",
+    "curl-cli",
+    "ureq",
+]
+
+[evidence]
+host_scope = "www_semanticscholar_org"
+
+[[events]]
+at_utc = "2026-03-27T04:20:51.579710132+00:00"
+action = "promote_child"
+status = "staged"
+note = "promoted from cayley_dickson_jacobson_1958_exact_original | dossier_search_target_id=jacobson_1958_exact_original | dossier_suggestion_id=jacobson_1958_exact_original_doi_10_1007_978_1_4612_3694_8_24 | canonical_id=doi:10.1007/978-1-4612-3694-8_24 | source_family=citation_graph | route_class=generic_landing"
+

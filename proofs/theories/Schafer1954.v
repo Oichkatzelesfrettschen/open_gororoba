@@ -1849,6 +1849,178 @@ Record Schafer1954ResidualCoordinateSurface
       s54_block_A (s54_sed_residual D) a;
 }.
 
+Section Schafer1954ConcreteTheorem3Instantiation.
+  Variable s54_eq30_formula : (CDOct -> CDOct) -> CDOct -> Prop.
+  Variable s54_eq31_formula : (CDOct -> CDOct) -> CDOct -> Prop.
+  Variable s54_eq32_formula : (CDOct -> CDOct) -> CDOct -> Prop.
+  Variable s54_eq37_formula : (CDOct -> CDOct) -> Prop.
+  Variable s54_eq38_formula : (CDOct -> CDOct) -> Prop.
+  Variable s54_eq39_formula : (CDOct -> CDOct) -> CDOct -> Prop.
+  Variable s54_eq40_formula : (CDOct -> CDOct) -> Prop.
+  Variable s54_eq42_formula : (CDOct -> CDOct) -> Prop.
+  Variable s54_eq46_formula : (CDOct -> CDOct) -> Prop.
+  Variable s54_eq47_formula : (CDOct -> CDOct) -> Prop.
+  Variable s54_eq48_formula : (CDOct -> CDOct) -> Prop.
+  Variable s54_eq49_formula : (CDOct -> CDOct) -> Prop.
+  Variable s54_eq50_formula : (Schafer1954Basis7 -> R) -> (CDOct -> CDOct) -> Prop.
+  Variable s54_eq52_formula :
+    (Schafer1954Basis7 -> Schafer1954Basis7 -> Schafer1954Basis7 -> Prop) -> Prop.
+
+  Hypothesis s54_eq50_formula_concrete :
+    forall mu B,
+      s54_eq50_formula mu B ->
+      forall i : Schafer1954Basis7,
+        B (s54_basis7_oct i) = oct_scale (mu i) (s54_basis7_oct i).
+
+  Definition s54_t3_concrete_coord_t : Type :=
+    Schafer1954Theorem3CoordinateSurface
+      CDOct oct_add oct_mul oct_zero s54_oct_one
+      s54_eq30_formula s54_eq31_formula s54_eq32_formula
+      s54_eq37_formula s54_eq38_formula s54_eq39_formula
+      s54_eq40_formula s54_eq42_formula s54_eq46_formula
+      s54_eq47_formula s54_eq48_formula s54_eq49_formula
+      Schafer1954Basis7 schafer1954_basis7_tracked
+      schafer1954_eq52_cayley_triple
+      s54_eq50_formula s54_eq52_formula.
+
+  Definition s54_t3_concrete_A (S : s54_t3_concrete_coord_t) : CDOct -> CDOct :=
+    s54_t3_block_A_map
+      CDOct oct_add oct_mul oct_zero
+      s54_eq30_formula s54_eq31_formula s54_eq32_formula
+      (s54_t3_coord_block
+         CDOct oct_add oct_mul oct_zero s54_oct_one
+         s54_eq30_formula s54_eq31_formula s54_eq32_formula
+         s54_eq37_formula s54_eq38_formula s54_eq39_formula
+         s54_eq40_formula s54_eq42_formula s54_eq46_formula
+         s54_eq47_formula s54_eq48_formula s54_eq49_formula
+         Schafer1954Basis7 schafer1954_basis7_tracked
+         schafer1954_eq52_cayley_triple
+         s54_eq50_formula s54_eq52_formula S).
+
+  Definition s54_t3_concrete_B (S : s54_t3_concrete_coord_t) : CDOct -> CDOct :=
+    s54_t3_block_B_map
+      CDOct oct_add oct_mul oct_zero
+      s54_eq30_formula s54_eq31_formula s54_eq32_formula
+      (s54_t3_coord_block
+         CDOct oct_add oct_mul oct_zero s54_oct_one
+         s54_eq30_formula s54_eq31_formula s54_eq32_formula
+         s54_eq37_formula s54_eq38_formula s54_eq39_formula
+         s54_eq40_formula s54_eq42_formula s54_eq46_formula
+         s54_eq47_formula s54_eq48_formula s54_eq49_formula
+         Schafer1954Basis7 schafer1954_basis7_tracked
+         schafer1954_eq52_cayley_triple
+         s54_eq50_formula s54_eq52_formula S).
+
+  Definition s54_t3_concrete_C (S : s54_t3_concrete_coord_t) : CDOct -> CDOct :=
+    s54_t3_block_C_map
+      CDOct oct_add oct_mul oct_zero
+      s54_eq30_formula s54_eq31_formula s54_eq32_formula
+      (s54_t3_coord_block
+         CDOct oct_add oct_mul oct_zero s54_oct_one
+         s54_eq30_formula s54_eq31_formula s54_eq32_formula
+         s54_eq37_formula s54_eq38_formula s54_eq39_formula
+         s54_eq40_formula s54_eq42_formula s54_eq46_formula
+         s54_eq47_formula s54_eq48_formula s54_eq49_formula
+         Schafer1954Basis7 schafer1954_basis7_tracked
+         schafer1954_eq52_cayley_triple
+         s54_eq50_formula s54_eq52_formula S).
+
+  Definition s54_t3_concrete_mu (S : s54_t3_concrete_coord_t) :
+      Schafer1954Basis7 -> R :=
+    s54_t3_diag_scalar
+      CDOct oct_add oct_mul oct_zero s54_oct_one
+      s54_eq30_formula s54_eq31_formula s54_eq32_formula
+      s54_eq37_formula s54_eq38_formula s54_eq39_formula
+      s54_eq40_formula s54_eq42_formula s54_eq46_formula
+      s54_eq47_formula s54_eq48_formula s54_eq49_formula
+      Schafer1954Basis7 schafer1954_basis7_tracked
+      schafer1954_eq52_cayley_triple
+      s54_eq50_formula s54_eq52_formula S.
+
+  Record Schafer1954ConcreteTheorem3InstantiationSurface
+      (D : CDSed -> CDSed) : Type := {
+    s54_t3_concrete_surface : s54_t3_concrete_coord_t;
+    s54_t3_concrete_A_matches :
+      forall a : CDOct,
+        s54_t3_concrete_A s54_t3_concrete_surface a =
+        s54_block_A (s54_sed_residual D) a;
+    s54_t3_concrete_B_matches :
+      forall a : CDOct,
+        s54_t3_concrete_B s54_t3_concrete_surface a =
+        s54_block_B (s54_sed_residual D) a;
+    s54_t3_concrete_C_matches :
+      forall a : CDOct,
+        s54_t3_concrete_C s54_t3_concrete_surface a =
+        s54_block_C (s54_sed_residual D) a;
+  }.
+
+  Definition s54_residual_coordinate_surface_of_theorem3_instantiation
+      (D : CDSed -> CDSed)
+      (S : Schafer1954ConcreteTheorem3InstantiationSurface D) :
+      Schafer1954ResidualCoordinateSurface D.
+  Proof.
+    refine
+      {| s54_res_coord_mu := s54_t3_concrete_mu (s54_t3_concrete_surface D S);
+         s54_res_coord_eq36 := _;
+         s54_res_coord_eq50 := _;
+         s54_res_coord_eq51 := _;
+         s54_res_coord_C_eq_A := _ |}.
+    - rewrite <- (s54_t3_concrete_B_matches D S s54_oct_one).
+      exact
+        (s54_t3_eq36
+           CDOct oct_add oct_mul oct_zero s54_oct_one
+           s54_eq30_formula s54_eq31_formula s54_eq32_formula
+           s54_eq37_formula s54_eq38_formula s54_eq39_formula
+           s54_eq40_formula s54_eq42_formula s54_eq46_formula
+           s54_eq47_formula s54_eq48_formula s54_eq49_formula
+           Schafer1954Basis7 schafer1954_basis7_tracked
+           schafer1954_eq52_cayley_triple
+           s54_eq50_formula s54_eq52_formula
+           (s54_t3_concrete_surface D S)).
+    - intro i.
+      rewrite <- (s54_t3_concrete_B_matches D S (s54_basis7_oct i)).
+      apply s54_eq50_formula_concrete.
+      exact
+        (s54_t3_eq50
+           CDOct oct_add oct_mul oct_zero s54_oct_one
+           s54_eq30_formula s54_eq31_formula s54_eq32_formula
+           s54_eq37_formula s54_eq38_formula s54_eq39_formula
+           s54_eq40_formula s54_eq42_formula s54_eq46_formula
+           s54_eq47_formula s54_eq48_formula s54_eq49_formula
+           Schafer1954Basis7 schafer1954_basis7_tracked
+           schafer1954_eq52_cayley_triple
+           s54_eq50_formula s54_eq52_formula
+           (s54_t3_concrete_surface D S)).
+    - exact
+        (s54_t3_eq51
+           CDOct oct_add oct_mul oct_zero s54_oct_one
+           s54_eq30_formula s54_eq31_formula s54_eq32_formula
+           s54_eq37_formula s54_eq38_formula s54_eq39_formula
+           s54_eq40_formula s54_eq42_formula s54_eq46_formula
+           s54_eq47_formula s54_eq48_formula s54_eq49_formula
+           Schafer1954Basis7 schafer1954_basis7_tracked
+           schafer1954_eq52_cayley_triple
+           s54_eq50_formula s54_eq52_formula
+           (s54_t3_concrete_surface D S)).
+    - intro a.
+      rewrite <- (s54_t3_concrete_C_matches D S a).
+      rewrite <- (s54_t3_concrete_A_matches D S a).
+      exact
+        (s54_t3_coordinate_surface_forces_C_eq_A
+           CDOct oct_add oct_mul oct_zero s54_oct_one
+           oct_add_zero_right oct_mul_zero_left
+           s54_eq30_formula s54_eq31_formula s54_eq32_formula
+           s54_eq37_formula s54_eq38_formula s54_eq39_formula
+           s54_eq40_formula s54_eq42_formula s54_eq46_formula
+           s54_eq47_formula s54_eq48_formula s54_eq49_formula
+           Schafer1954Basis7 schafer1954_basis7_tracked
+           schafer1954_eq52_cayley_triple
+           s54_eq50_formula s54_eq52_formula
+           (s54_t3_concrete_surface D S) a).
+  Defined.
+
+End Schafer1954ConcreteTheorem3Instantiation.
+
 Theorem s54_residual_coordinate_mu_zero :
   forall D : CDSed -> CDSed,
     forall S : Schafer1954ResidualCoordinateSurface D,
@@ -2340,6 +2512,59 @@ Proof.
   exact
     (s54_octonion_sedenion_backward_from_residual_coordinates
        D HD (Hcoords D HD)).
+Qed.
+
+Theorem s54_octonion_sedenion_backward_from_theorem3_instantiation :
+  forall s54_eq30_formula : (CDOct -> CDOct) -> CDOct -> Prop,
+  forall s54_eq31_formula : (CDOct -> CDOct) -> CDOct -> Prop,
+  forall s54_eq32_formula : (CDOct -> CDOct) -> CDOct -> Prop,
+  forall s54_eq37_formula : (CDOct -> CDOct) -> Prop,
+  forall s54_eq38_formula : (CDOct -> CDOct) -> Prop,
+  forall s54_eq39_formula : (CDOct -> CDOct) -> CDOct -> Prop,
+  forall s54_eq40_formula : (CDOct -> CDOct) -> Prop,
+  forall s54_eq42_formula : (CDOct -> CDOct) -> Prop,
+  forall s54_eq46_formula : (CDOct -> CDOct) -> Prop,
+  forall s54_eq47_formula : (CDOct -> CDOct) -> Prop,
+  forall s54_eq48_formula : (CDOct -> CDOct) -> Prop,
+  forall s54_eq49_formula : (CDOct -> CDOct) -> Prop,
+  forall s54_eq50_formula : (Schafer1954Basis7 -> R) -> (CDOct -> CDOct) -> Prop,
+  forall s54_eq52_formula :
+    (Schafer1954Basis7 -> Schafer1954Basis7 -> Schafer1954Basis7 -> Prop) -> Prop,
+  (forall mu B,
+      s54_eq50_formula mu B ->
+      forall i : Schafer1954Basis7,
+        B (s54_basis7_oct i) = oct_scale (mu i) (s54_basis7_oct i)) ->
+  (forall D : CDSed -> CDSed,
+      Schafer1954IsSedenionDerivation D ->
+      Schafer1954ConcreteTheorem3InstantiationSurface
+        s54_eq30_formula s54_eq31_formula s54_eq32_formula
+        s54_eq37_formula s54_eq38_formula s54_eq39_formula
+        s54_eq40_formula s54_eq42_formula s54_eq46_formula
+        s54_eq47_formula s54_eq48_formula s54_eq49_formula
+        s54_eq50_formula s54_eq52_formula
+        D) ->
+  forall D : CDSed -> CDSed,
+    Schafer1954IsSedenionDerivation D ->
+    exists A : CDOct -> CDOct,
+      schafer1954_octonion_derivation A /\
+      D = schafer1954_sedenion_extend A.
+Proof.
+  intros s54_eq30_formula s54_eq31_formula s54_eq32_formula
+         s54_eq37_formula s54_eq38_formula s54_eq39_formula
+         s54_eq40_formula s54_eq42_formula s54_eq46_formula
+         s54_eq47_formula s54_eq48_formula s54_eq49_formula
+         s54_eq50_formula s54_eq52_formula H50 Hcoord D HD.
+  exact
+    (s54_octonion_sedenion_backward_from_residual_coordinate_builder
+       (fun D' HD' =>
+          s54_residual_coordinate_surface_of_theorem3_instantiation
+            s54_eq30_formula s54_eq31_formula s54_eq32_formula
+            s54_eq37_formula s54_eq38_formula s54_eq39_formula
+            s54_eq40_formula s54_eq42_formula s54_eq46_formula
+            s54_eq47_formula s54_eq48_formula s54_eq49_formula
+            s54_eq50_formula s54_eq52_formula H50
+            D' (Hcoord D' HD'))
+       D HD).
 Qed.
 
 Record Schafer1954OctonionSedenionConverseSurface := {

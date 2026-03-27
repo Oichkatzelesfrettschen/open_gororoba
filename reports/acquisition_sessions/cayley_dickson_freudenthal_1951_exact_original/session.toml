@@ -1,0 +1,51 @@
+format_version = 1
+session_id = "cayley_dickson_freudenthal_1951_exact_original"
+created_utc = "2026-03-27T04:20:51.066094483+00:00"
+updated_utc = "2026-03-27T04:20:51.067845661+00:00"
+status = "in_progress"
+
+[source]
+source_id = "freudenthal_1951_exact_original"
+title = "Freudenthal 1951 exact Utrecht original"
+
+[search]
+queue_path = "/home/eirikr/Documents/Projects/CayleyDickson/metadata/project_api/search_queue.toml"
+project_id = "cayley-dickson"
+search_target_id = "freudenthal_1951_exact_original"
+window = "1900-1999"
+priority = "critical"
+kind = "holder_workflow_followup"
+status = "holder_bound_exact_original"
+why_now = "This remains the sharpest exact octonion-era hole in the corpus."
+preferred_lanes = [
+    "Heidelberg reproduction order follow-up",
+    "Leipzig alternate-holder request lane",
+    "K10plus and local-holder metadata reuse for scan requests",
+]
+query_seeds = [
+    '"Oktaven, Ausnahmegruppen und Oktavengeometrie"',
+    '"1178680002" Freudenthal',
+    '"1356848117" Freudenthal',
+]
+
+[controller]
+sessions_dir_rel = "reports/acquisition_sessions"
+transport_substrate = "auto"
+requested_backend = "auto"
+probe_bytes = 1024
+probe_requested = false
+
+[evidence]
+
+[[events]]
+at_utc = "2026-03-27T04:20:51.066094483+00:00"
+action = "import_dossier_stage_parent"
+status = "staged"
+note = "staged from dossier /home/eirikr/Documents/Projects/CayleyDickson/metadata/project_api/search_queue.toml"
+
+[[events]]
+at_utc = "2026-03-27T04:20:51.067845661+00:00"
+action = "promote"
+status = "in_progress"
+note = "spawned_child_sessions=cayley_dickson_freudenthal_1951_exact_original_openalex_org_w2024024636,cayley_dickson_freudenthal_1951_exact_original_www_ams_org_s0273_0979_01_00934_x_pdf"
+

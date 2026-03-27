@@ -1,0 +1,536 @@
+{
+  "schema_version": 1,
+  "generated_at_utc": "2026-03-27T04:19:23.953860562+00:00",
+  "project_id": "cayley-dickson",
+  "project_api_root": "/home/eirikr/Documents/Projects/CayleyDickson",
+  "search_queue_path": "/home/eirikr/Documents/Projects/CayleyDickson/metadata/project_api/search_queue.toml",
+  "search_target_id": "century_1500_1599_prebachet_prehistory",
+  "crosswalk_id": "century_1500_1599_prebachet_prehistory",
+  "title": "Pre-Bachet arithmetic and symbolic-algebra prehistory lane",
+  "window": "1500-1599",
+  "priority": "high",
+  "status": "not_yet_encoded",
+  "kind": "historical_density_and_normalization",
+  "why_now": "The strict-century contract still begins at 1600-1699, so sixteenth-century precursor witnesses are missing from the machine-readable queue entirely.",
+  "query_seeds": [
+    "\"Cardano\" arithmetic algebra 1500 1599",
+    "\"Bombelli\" algebra imaginary numbers 1572",
+    "\"Vieta\" symbolic algebra sixteenth century number theory"
+  ],
+  "requested_sources": [
+    "openalex",
+    "semantic_scholar",
+    "crossref",
+    "datacite",
+    "unpaywall",
+    "arxiv",
+    "jstage",
+    "inspirehep",
+    "hal",
+    "dblp"
+  ],
+  "preferred_source_families": [
+    "archive",
+    "citation_graph",
+    "resolver"
+  ],
+  "limit_per_query": 3,
+  "year_min": 0,
+  "min_relevance": 14,
+  "report": {
+    "queries": [
+      "\"Cardano\" arithmetic algebra 1500 1599",
+      "\"Bombelli\" algebra imaginary numbers 1572",
+      "\"Vieta\" symbolic algebra sixteenth century number theory"
+    ],
+    "limit": 3,
+    "year_min": 0,
+    "requested_sources": [
+      "openalex",
+      "semantic_scholar",
+      "crossref",
+      "datacite",
+      "unpaywall",
+      "arxiv",
+      "jstage",
+      "inspirehep",
+      "hal",
+      "dblp"
+    ],
+    "raw_result_count": 23,
+    "deduplicated_result_count": 18,
+    "query_reports": [
+      {
+        "query": "\"Cardano\" arithmetic algebra 1500 1599",
+        "limit": 3,
+        "year_min": 0,
+        "requested_sources": [
+          "openalex",
+          "semantic_scholar",
+          "crossref",
+          "datacite",
+          "unpaywall",
+          "arxiv",
+          "jstage",
+          "inspirehep",
+          "hal",
+          "dblp"
+        ],
+        "raw_result_count": 9,
+        "deduplicated_result_count": 9,
+        "cache_hit_count": 0,
+        "source_reports": [
+          {
+            "source": "openalex",
+            "adapted_query": "\"Cardano\" arithmetic algebra 1500 1599",
+            "result_count": 3,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "semantic_scholar",
+            "adapted_query": "\"Cardano\" arithmetic algebra 1500 1599",
+            "result_count": 2,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "crossref",
+            "adapted_query": "\"Cardano\" arithmetic algebra 1500 1599",
+            "result_count": 3,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "datacite",
+            "adapted_query": "\"Cardano\" arithmetic algebra 1500 1599",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "arxiv",
+            "adapted_query": "all:Cardano AND all:\"arithmetic algebra\" AND all:\"1500 1599\"",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "jstage",
+            "adapted_query": "\"Cardano\" arithmetic algebra 1500 1599",
+            "result_count": 1,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "inspirehep",
+            "adapted_query": "t:Cardano and t:\"arithmetic algebra\" and t:\"1500 1599\"",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "hal",
+            "adapted_query": "\"Cardano\" arithmetic algebra 1500 1599",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "dblp",
+            "adapted_query": "\"Cardano\" arithmetic algebra 1500 1599",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "unpaywall",
+            "adapted_query": "\"Cardano\" arithmetic algebra 1500 1599",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": "missing_unpaywall_email"
+          }
+        ]
+      },
+      {
+        "query": "\"Bombelli\" algebra imaginary numbers 1572",
+        "limit": 3,
+        "year_min": 0,
+        "requested_sources": [
+          "openalex",
+          "semantic_scholar",
+          "crossref",
+          "datacite",
+          "unpaywall",
+          "arxiv",
+          "jstage",
+          "inspirehep",
+          "hal",
+          "dblp"
+        ],
+        "raw_result_count": 7,
+        "deduplicated_result_count": 6,
+        "cache_hit_count": 0,
+        "source_reports": [
+          {
+            "source": "openalex",
+            "adapted_query": "\"Bombelli\" algebra imaginary numbers 1572",
+            "result_count": 3,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "semantic_scholar",
+            "adapted_query": "\"Bombelli\" algebra imaginary numbers 1572",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "Rate limited",
+            "skipped_reason": ""
+          },
+          {
+            "source": "crossref",
+            "adapted_query": "\"Bombelli\" algebra imaginary numbers 1572",
+            "result_count": 3,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "datacite",
+            "adapted_query": "\"Bombelli\" algebra imaginary numbers 1572",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "arxiv",
+            "adapted_query": "all:Bombelli AND all:\"algebra imaginary\" AND all:\"numbers 1572\"",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "jstage",
+            "adapted_query": "\"Bombelli\" algebra imaginary numbers 1572",
+            "result_count": 1,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "inspirehep",
+            "adapted_query": "t:Bombelli and t:\"algebra imaginary\" and t:\"numbers 1572\"",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "hal",
+            "adapted_query": "\"Bombelli\" algebra imaginary numbers 1572",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "dblp",
+            "adapted_query": "\"Bombelli\" algebra imaginary numbers 1572",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "unpaywall",
+            "adapted_query": "\"Bombelli\" algebra imaginary numbers 1572",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": "missing_unpaywall_email"
+          }
+        ]
+      },
+      {
+        "query": "\"Vieta\" symbolic algebra sixteenth century number theory",
+        "limit": 3,
+        "year_min": 0,
+        "requested_sources": [
+          "openalex",
+          "semantic_scholar",
+          "crossref",
+          "datacite",
+          "unpaywall",
+          "arxiv",
+          "jstage",
+          "inspirehep",
+          "hal",
+          "dblp"
+        ],
+        "raw_result_count": 7,
+        "deduplicated_result_count": 5,
+        "cache_hit_count": 0,
+        "source_reports": [
+          {
+            "source": "openalex",
+            "adapted_query": "\"Vieta\" symbolic algebra sixteenth century number theory",
+            "result_count": 3,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "semantic_scholar",
+            "adapted_query": "\"Vieta\" symbolic algebra sixteenth century number theory",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "Rate limited",
+            "skipped_reason": ""
+          },
+          {
+            "source": "crossref",
+            "adapted_query": "\"Vieta\" symbolic algebra sixteenth century number theory",
+            "result_count": 3,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "datacite",
+            "adapted_query": "\"Vieta\" symbolic algebra sixteenth century number theory",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "arxiv",
+            "adapted_query": "all:Vieta AND all:\"symbolic algebra\" AND all:\"sixteenth century\" AND all:\"number theory\"",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "HTTP error: error sending request for url (http://export.arxiv.org/api/query?search_query=all:all%3AVieta+AND+all%3A%22symbolic+algebra%22+AND+all%3A%22sixteenth+century%22+AND+all%3A%22number+theory%22&max_results=3)",
+            "skipped_reason": ""
+          },
+          {
+            "source": "jstage",
+            "adapted_query": "\"Vieta\" symbolic algebra sixteenth century number theory",
+            "result_count": 1,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "inspirehep",
+            "adapted_query": "t:Vieta and t:\"symbolic algebra\" and t:\"sixteenth century\" and t:\"number theory\"",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "hal",
+            "adapted_query": "\"Vieta\" symbolic algebra sixteenth century number theory",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "dblp",
+            "adapted_query": "\"Vieta\" symbolic algebra sixteenth century number",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "unpaywall",
+            "adapted_query": "\"Vieta\" symbolic algebra sixteenth century number theory",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": "missing_unpaywall_email"
+          }
+        ]
+      }
+    ]
+  },
+  "top_hits": [
+    {
+      "rank": 1,
+      "canonical_id": "doi:10.1007/bf01883676",
+      "relevance_score": 80,
+      "source_family": "resolver",
+      "route_class": "doi_resolver",
+      "host_class": "doi_org",
+      "title": "Imaginary numbers are not real—The geometric algebra of spacetime",
+      "year": 1993,
+      "source": "crossref",
+      "venue": "Foundations of Physics",
+      "citation_count": 90,
+      "doi": "10.1007/bf01883676",
+      "url": "https://doi.org/10.1007/bf01883676",
+      "pdf_url": ""
+    },
+    {
+      "rank": 2,
+      "canonical_id": "doi:10.2140/ant.2019.13.1879",
+      "relevance_score": 80,
+      "source_family": "resolver",
+      "route_class": "doi_resolver",
+      "host_class": "doi_org",
+      "title": "Infinitely generated symbolic Rees algebras over finite fields",
+      "year": 2019,
+      "source": "crossref",
+      "venue": "Algebra &amp; Number Theory",
+      "citation_count": 2,
+      "doi": "10.2140/ant.2019.13.1879",
+      "url": "https://doi.org/10.2140/ant.2019.13.1879",
+      "pdf_url": ""
+    },
+    {
+      "rank": 3,
+      "canonical_id": "doi:10.1093/actrade/9780198732822.003.0006",
+      "relevance_score": 80,
+      "source_family": "resolver",
+      "route_class": "doi_resolver",
+      "host_class": "doi_org",
+      "title": "6. Algebra and the arithmetic of remainders",
+      "year": 2015,
+      "source": "crossref",
+      "venue": "Algebra: A Very Short Introduction",
+      "citation_count": 0,
+      "doi": "10.1093/actrade/9780198732822.003.0006",
+      "url": "https://doi.org/10.1093/actrade/9780198732822.003.0006",
+      "pdf_url": ""
+    },
+    {
+      "rank": 4,
+      "canonical_id": "doi:10.1007/s10699-008-9124-0",
+      "relevance_score": 72,
+      "source_family": "citation_graph",
+      "route_class": "openalex_landing",
+      "host_class": "openalex_org",
+      "title": "The Emergence of Symbolic Algebra as a Shift in Predominant Models",
+      "year": 2008,
+      "source": "openalex",
+      "venue": "Foundations of Science",
+      "citation_count": 16,
+      "doi": "https://doi.org/10.1007/s10699-008-9124-0",
+      "url": "https://openalex.org/W2016505877",
+      "pdf_url": ""
+    },
+    {
+      "rank": 5,
+      "canonical_id": "doi:10.1093/philmat/s2-4.2.195",
+      "relevance_score": 56,
+      "source_family": "resolver",
+      "route_class": "doi_resolver",
+      "host_class": "doi_org",
+      "title": "CARDANO: “ARITHMETIC SUBTLETY” AND IMPOSSIBLE SOLUTIONS",
+      "year": 1989,
+      "source": "crossref",
+      "venue": "Philosophia Mathematica",
+      "citation_count": 3,
+      "doi": "10.1093/philmat/s2-4.2.195",
+      "url": "https://doi.org/10.1093/philmat/s2-4.2.195",
+      "pdf_url": ""
+    }
+  ],
+  "stage_suggestions": [
+    {
+      "rank": 1,
+      "suggestion_id": "century_1500_1599_prebachet_prehistory_doi_10_1007_bf01883676",
+      "canonical_id": "doi:10.1007/bf01883676",
+      "relevance_score": 80,
+      "source": "crossref",
+      "source_family": "resolver",
+      "route_class": "doi_resolver",
+      "host_class": "doi_org",
+      "paper_title": "Imaginary numbers are not real—The geometric algebra of spacetime",
+      "action": "stage_doi_resolver_child",
+      "candidate_url": "https://doi.org/10.1007/bf01883676",
+      "command": "cargo run -q -p gororoba_cli_data --bin cd-cache-adapter -- --project-api-root '/home/eirikr/Documents/Projects/CayleyDickson' --gororoba-repo-root '/home/eirikr/Github/open_gororoba' stage-from-dossier --dossier 'docs/reports/cd_cache_dossiers/century_1500_1599_prebachet_prehistory_20260327.json' --rank '1'",
+      "rationale": "Candidate from crossref [resolver] with relevance score 80 and 90 citations for queue target century_1500_1599_prebachet_prehistory.",
+      "default_selected": true
+    },
+    {
+      "rank": 2,
+      "suggestion_id": "century_1500_1599_prebachet_prehistory_doi_10_2140_ant_2019_13_1879",
+      "canonical_id": "doi:10.2140/ant.2019.13.1879",
+      "relevance_score": 80,
+      "source": "crossref",
+      "source_family": "resolver",
+      "route_class": "doi_resolver",
+      "host_class": "doi_org",
+      "paper_title": "Infinitely generated symbolic Rees algebras over finite fields",
+      "action": "stage_doi_resolver_child",
+      "candidate_url": "https://doi.org/10.2140/ant.2019.13.1879",
+      "command": "cargo run -q -p gororoba_cli_data --bin cd-cache-adapter -- --project-api-root '/home/eirikr/Documents/Projects/CayleyDickson' --gororoba-repo-root '/home/eirikr/Github/open_gororoba' stage-from-dossier --dossier 'docs/reports/cd_cache_dossiers/century_1500_1599_prebachet_prehistory_20260327.json' --rank '2'",
+      "rationale": "Candidate from crossref [resolver] with relevance score 80 and 2 citations for queue target century_1500_1599_prebachet_prehistory.",
+      "default_selected": false
+    },
+    {
+      "rank": 3,
+      "suggestion_id": "century_1500_1599_prebachet_prehistory_doi_10_1093_actrade_9780198732822_003_0006",
+      "canonical_id": "doi:10.1093/actrade/9780198732822.003.0006",
+      "relevance_score": 80,
+      "source": "crossref",
+      "source_family": "resolver",
+      "route_class": "doi_resolver",
+      "host_class": "doi_org",
+      "paper_title": "6. Algebra and the arithmetic of remainders",
+      "action": "stage_doi_resolver_child",
+      "candidate_url": "https://doi.org/10.1093/actrade/9780198732822.003.0006",
+      "command": "cargo run -q -p gororoba_cli_data --bin cd-cache-adapter -- --project-api-root '/home/eirikr/Documents/Projects/CayleyDickson' --gororoba-repo-root '/home/eirikr/Github/open_gororoba' stage-from-dossier --dossier 'docs/reports/cd_cache_dossiers/century_1500_1599_prebachet_prehistory_20260327.json' --rank '3'",
+      "rationale": "Candidate from crossref [resolver] with relevance score 80 and 0 citations for queue target century_1500_1599_prebachet_prehistory.",
+      "default_selected": false
+    },
+    {
+      "rank": 4,
+      "suggestion_id": "century_1500_1599_prebachet_prehistory_doi_10_1007_s10699_008_9124_0",
+      "canonical_id": "doi:10.1007/s10699-008-9124-0",
+      "relevance_score": 72,
+      "source": "openalex",
+      "source_family": "citation_graph",
+      "route_class": "openalex_landing",
+      "host_class": "openalex_org",
+      "paper_title": "The Emergence of Symbolic Algebra as a Shift in Predominant Models",
+      "action": "stage_metadata_landing_child",
+      "candidate_url": "https://openalex.org/W2016505877",
+      "command": "cargo run -q -p gororoba_cli_data --bin cd-cache-adapter -- --project-api-root '/home/eirikr/Documents/Projects/CayleyDickson' --gororoba-repo-root '/home/eirikr/Github/open_gororoba' stage-from-dossier --dossier 'docs/reports/cd_cache_dossiers/century_1500_1599_prebachet_prehistory_20260327.json' --rank '4'",
+      "rationale": "Candidate from openalex [citation_graph] with relevance score 72 and 16 citations for queue target century_1500_1599_prebachet_prehistory.",
+      "default_selected": false
+    },
+    {
+      "rank": 5,
+      "suggestion_id": "century_1500_1599_prebachet_prehistory_doi_10_1093_philmat_s2_4_2_195",
+      "canonical_id": "doi:10.1093/philmat/s2-4.2.195",
+      "relevance_score": 56,
+      "source": "crossref",
+      "source_family": "resolver",
+      "route_class": "doi_resolver",
+      "host_class": "doi_org",
+      "paper_title": "CARDANO: “ARITHMETIC SUBTLETY” AND IMPOSSIBLE SOLUTIONS",
+      "action": "stage_doi_resolver_child",
+      "candidate_url": "https://doi.org/10.1093/philmat/s2-4.2.195",
+      "command": "cargo run -q -p gororoba_cli_data --bin cd-cache-adapter -- --project-api-root '/home/eirikr/Documents/Projects/CayleyDickson' --gororoba-repo-root '/home/eirikr/Github/open_gororoba' stage-from-dossier --dossier 'docs/reports/cd_cache_dossiers/century_1500_1599_prebachet_prehistory_20260327.json' --rank '5'",
+      "rationale": "Candidate from crossref [resolver] with relevance score 56 and 3 citations for queue target century_1500_1599_prebachet_prehistory.",
+      "default_selected": false
+    }
+  ],
+  "batch_manifest_rel": "docs/reports/cd_cache_dossiers/batch_centuries_1500_2000plus_20260326.toml"
+}
