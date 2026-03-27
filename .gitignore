@@ -203,6 +203,7 @@ credentials.*
 !docs/db/ARCHITECTURE.md
 !docs/physics/sedenion_standard_model.md
 !docs/reports/RC1_EVIDENCE_NOTE.md
+!docs/reports/POST_RC1_32D_EVIDENCE_NOTE.md
 
 # ------------------------------------------------------------------------------
 # 7. Root Directory Protection (Keep Root Clean)
