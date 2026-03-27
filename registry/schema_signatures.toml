@@ -35,11 +35,11 @@ id = "SIG-0003"
 path = "registry/claims.toml"
 top_level_keys = ["claim"]
 schema_version = "v1"
-schema_sha256 = "460d3a47db4f04f93b95d3146a079cc8280ba1914805ddc029408f3a8106c3cc"
-content_sha256 = "4c9500b46b16203f8651d9d5ba82b68f796bb3f213bcdfdda91bc7da177f1120"
+schema_sha256 = "1280e3d591b2697c49bf11b73ab476dfa2e3b5cd2ee43117c2f964237a064dd1"
+content_sha256 = "6a620001b42eddc287b405eaabc2d2b52c597bc17a3c656bd7ec75adfb61b4b9"
 array_table_count = 1
 table_count = 0
-shape_json = "{\"path\":\"registry/claims.toml\",\"shapes\":{\"claim\":{\"entry_kind\":\"table\",\"required_keys\":[\"id\",\"last_verified\",\"statement\",\"status\",\"where_stated\"],\"row_count\":1426,\"type\":\"array\",\"union_keys\":[\"formal_proof\",\"id\",\"last_verified\",\"statement\",\"status\",\"status_note\",\"where_stated\"]}},\"top_level_keys\":[\"claim\"]}"
+shape_json = "{\"path\":\"registry/claims.toml\",\"shapes\":{\"claim\":{\"entry_kind\":\"table\",\"required_keys\":[\"id\",\"last_verified\",\"statement\",\"status\",\"where_stated\"],\"row_count\":1428,\"type\":\"array\",\"union_keys\":[\"formal_proof\",\"id\",\"last_verified\",\"statement\",\"status\",\"status_note\",\"where_stated\"]}},\"top_level_keys\":[\"claim\"]}"
 
 [[signature]]
 id = "SIG-0004"
