@@ -12,6 +12,8 @@
     Source-driven inventory note:
     - the on-disk Brown source packet shows a nine-chapter dissertation plus
       three appendices
+    - Chapters I-II are contextual source chapters (introduction and review of
+      literature) with no numbered theorem payload in the dissertation text
     - Chapter III is foundational but not the whole Brown picture
     - the theorem-dense Brown backlog is really spread across Chapters IV-VII,
       with Appendix C still relevant for the historical computation lane
@@ -22,9 +24,10 @@
       landed here; Rust lane `crates/brown_1972/src/norm_symmetry.rs` remains
       the computational mirror and still carries the broader 16D/generalized
       norm exploration.
-    - Chapter IV, pp. 20-22, Theorems 4.2-4.3:
-      partially reflected by local flexibility / associator infrastructure, but
-      Brown-numbered Rocq theorems are still open.
+    - Chapter IV, pp. 20-22, Theorems 4.2-4.3 and Corollary 4.4:
+      source-driven standard-tower witnesses for 4.2 and 4.4 are now landed
+      here; the exact one-step associator formula of 4.3 is the next local
+      Brown theorem still open.
     - Chapter V, pp. 27-30, Theorems 5.11-5.17:
       Rust lane `crates/brown_1972/src/exponent_properties.rs`; dedicated Rocq
       lane is still open.
@@ -47,7 +50,7 @@
     paper surfaces, includes `CDPowerAssociative.v` and later Moreno bridges.
 
     Remaining Brown-specific Rocq backlog:
-    - Brown-numbered Chapter IV theorem surface (4.2, 4.3, cor. 4.4)
+    - exact Brown-numbered Chapter IV theorem 4.3 formula
     - Brown-numbered Chapter V theorem surface over the landed exponent lane
     - broader 16D/generalized-norm Chapter III lane
     - Brown-numbered Chapter VI basis-element theorem lanes
@@ -63,7 +66,12 @@ From OpenGororoba Require Import
   ZDGraph
   Sedenion
   CayleyDicksonAlgebra
-  OctonionNorm.
+  OctonionNorm
+  CDAssociator
+  CDPowerAssociative
+  SedenionAssociator
+  DicksonCDProcess
+  SedenionAlternativityFails.
 From OpenGororoba Require Export
   C1538_MorZDSymmetry
   ZD_Criterion
@@ -262,6 +270,93 @@ Proof.
   - exact brown1972_theorem_3_9_iii_octonion.
   - exact brown1972_octonion_lemma_3_10.
 Qed.
+
+(** Brown Chapter IV starts the source-driven structural lane:
+    4.2 proves flexibility for the tower,
+    4.3 gives the one-step associator formula,
+    4.4 extracts alternativity exactly when the generating algebra is
+    associative. We currently land these as standard-tower witnesses. *)
+
+Theorem brown1972_theorem_4_2_quaternion : forall x y : CDQuat,
+  quat_mul (quat_mul x y) x = quat_mul x (quat_mul y x).
+Proof.
+  exact quat_flexible.
+Qed.
+
+Theorem brown1972_theorem_4_2_octonion : forall x y : CDOct,
+  oct_mul (oct_mul x y) x = oct_mul x (oct_mul y x).
+Proof.
+  exact oct_flexible.
+Qed.
+
+Theorem brown1972_corollary_4_4_octonion_left :
+  forall x y : CDOct,
+    oct_assoc x x y = oct_zero.
+Proof.
+  intros [[a1 a2 a3 a4] [a5 a6 a7 a8]]
+         [[b1 b2 b3 b4] [b5 b6 b7 b8]].
+  cbv [oct_assoc oct_sub oct_add oct_neg oct_mul oct_conj
+       oct_zero oct_lo oct_hi
+       quat_mul quat_add quat_neg quat_conj quat_zero
+       qa qb qc qd].
+  repeat f_equal; ring.
+Qed.
+
+Theorem brown1972_corollary_4_4_octonion_right :
+  forall x y : CDOct,
+    oct_assoc y x x = oct_zero.
+Proof.
+  intros [[a1 a2 a3 a4] [a5 a6 a7 a8]]
+         [[b1 b2 b3 b4] [b5 b6 b7 b8]].
+  cbv [oct_assoc oct_sub oct_add oct_neg oct_mul oct_conj
+       oct_zero oct_lo oct_hi
+       quat_mul quat_add quat_neg quat_conj quat_zero
+       qa qb qc qd].
+  repeat f_equal; ring.
+Qed.
+
+Theorem brown1972_corollary_4_4_octonion_from_quaternion_associativity :
+  (forall a b c : CDQuat, quat_assoc a b c = quat_zero) /\
+  (forall x y : CDOct, oct_assoc x x y = oct_zero) /\
+  (forall x y : CDOct, oct_assoc y x x = oct_zero).
+Proof.
+  repeat split.
+  - exact quat_assoc_zero.
+  - exact brown1972_corollary_4_4_octonion_left.
+  - exact brown1972_corollary_4_4_octonion_right.
+Qed.
+
+Theorem brown1972_corollary_4_4_sedenion_counterexample :
+  (oct_mul (oct_mul (oct_e 1) (oct_e 2)) (oct_e 4) <>
+   oct_mul (oct_e 1) (oct_mul (oct_e 2) (oct_e 4))) /\
+  (exists i j : nat,
+      i < 16 /\ j < 16 /\ i <> j /\ i <> 0 /\ j <> 0 /\
+      (sign_1_10 * sign_1_11)%Z <> (-1)%Z).
+Proof.
+  split.
+  - exact dickson_oct_not_associative.
+  - exact sedenion_not_alternative.
+Qed.
+
+Record Brown1972ChapterIVSurface := {
+  brown1972_ch4_t42_quat :
+    forall x y : CDQuat, quat_mul (quat_mul x y) x = quat_mul x (quat_mul y x);
+  brown1972_ch4_t42_oct :
+    forall x y : CDOct, oct_mul (oct_mul x y) x = oct_mul x (oct_mul y x);
+  brown1972_ch4_c44_oct_left :
+    forall x y : CDOct, oct_assoc x x y = oct_zero;
+  brown1972_ch4_c44_oct_right :
+    forall x y : CDOct, oct_assoc y x x = oct_zero
+}.
+
+Definition brown1972_standard_tower_chapter_iv_surface :
+  Brown1972ChapterIVSurface.
+Proof.
+  refine {| brown1972_ch4_t42_quat := brown1972_theorem_4_2_quaternion;
+            brown1972_ch4_t42_oct := brown1972_theorem_4_2_octonion;
+            brown1972_ch4_c44_oct_left := brown1972_corollary_4_4_octonion_left;
+            brown1972_ch4_c44_oct_right := brown1972_corollary_4_4_octonion_right |}.
+Defined.
 
 Theorem Brown1972_lane_compiles : True.
 Proof. exact I. Qed.
