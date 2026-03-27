@@ -12,7 +12,7 @@ updated = "2026-03-25"
 authoritative = true
 status = "active"
 status_token = "ACTIVE"
-document_count = 104
+document_count = 126
 
 [[owner]]
 path = "README.md"
@@ -609,6 +609,18 @@ removal_status = "active"
 removal_reason = ""
 
 [[owner]]
+path = "docs/reports/cd_cache_dossiers/century_1500_1599_prebachet_prehistory_20260327.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/reports/cd_cache_dossiers/century_2000_2026_tower_name_audit_20260327.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
 path = "docs/reports/cd_cache_dossiers/dickson_1912_exact_pdf_20260327.md"
 owner_group = "project"
 removal_status = "active"
@@ -628,6 +640,126 @@ removal_reason = ""
 
 [[owner]]
 path = "docs/reports/cd_cache_dossiers/jacobson_1958_exact_original_20260327.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/acquisition_sessions/cayley_dickson_dickson_1906_exact_pdf/checklist.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/acquisition_sessions/cayley_dickson_dickson_1906_exact_pdf_127_0_0_1_fixture_pdf/checklist.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/acquisition_sessions/cayley_dickson_dickson_1906_exact_pdf_127_0_0_1_fixture_pdf_2/checklist.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/acquisition_sessions/cayley_dickson_dickson_1906_exact_pdf_directory_doabooks_org_92829/checklist.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/acquisition_sessions/cayley_dickson_dickson_1906_exact_pdf_openalex_org_w2025927713/checklist.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/acquisition_sessions/cayley_dickson_dickson_1906_exact_pdf_www_ams_org_s0002_9904_1950_09407_5_pdf/checklist.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/acquisition_sessions/cayley_dickson_dickson_1912_exact_pdf/checklist.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/acquisition_sessions/cayley_dickson_dickson_1912_exact_pdf_doi_org_s0002_9947_1912_1500905_3/checklist.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/acquisition_sessions/cayley_dickson_dickson_1912_exact_pdf_journals_uwyo_edu_167/checklist.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/acquisition_sessions/cayley_dickson_dickson_1912_exact_pdf_www_ams_org_s0002_9947_1944_0011083_5_pdf/checklist.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/acquisition_sessions/cayley_dickson_dickson_1935_exact_pdf/checklist.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/acquisition_sessions/cayley_dickson_dickson_1935_exact_pdf_ajrccm_atsjournals_org_347_full_pdf_html/checklist.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/acquisition_sessions/cayley_dickson_dickson_1935_exact_pdf_openalex_org_w2009510707/checklist.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/acquisition_sessions/cayley_dickson_freudenthal_1951_exact_original/checklist.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/acquisition_sessions/cayley_dickson_freudenthal_1951_exact_original_openalex_org_w2024024636/checklist.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/acquisition_sessions/cayley_dickson_freudenthal_1951_exact_original_www_ams_org_s0273_0979_01_00934_x_pdf/checklist.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/acquisition_sessions/cayley_dickson_jacobson_1958_exact_original/checklist.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/acquisition_sessions/cayley_dickson_jacobson_1958_exact_original_arxiv_org_2304_08573/checklist.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/acquisition_sessions/cayley_dickson_jacobson_1958_exact_original_msp_org_ant_v19_n3_p05_s_pdf/checklist.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/acquisition_sessions/cayley_dickson_jacobson_1958_exact_original_www_semanticscholar_org_22b4f272ec42ec89c1ea1ca6ef5d295e3e93a56c/checklist.md"
 owner_group = "project"
 removal_status = "active"
 removal_reason = ""
