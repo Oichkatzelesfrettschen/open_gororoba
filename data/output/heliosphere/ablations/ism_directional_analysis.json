@@ -1,0 +1,49 @@
+{
+  "description": "ISM SVD dominant direction analysis on V2 48-sec 32D Takens vectors (121-126 AU)",
+  "dominant_svd_mode_per_step": {
+    "channels": [
+      "Br_norm",
+      "Bt_norm",
+      "Bn_norm",
+      "dB_B"
+    ],
+    "step_0": [
+      -0.1628,
+      0.1283,
+      0.2845,
+      0.0002
+    ],
+    "step_7": [
+      -0.1622,
+      0.1292,
+      0.2844,
+      -0.0007
+    ],
+    "stability_cv": {
+      "Br": 0.003,
+      "Bt": 0.003,
+      "Bn": 0.003,
+      "dB_B": "~zero"
+    },
+    "interpretation": "Perfectly stable oscillation along fixed direction across 6.4-min window"
+  },
+  "mean_ism_field_rtn": {
+    "Br_nT": -0.0546,
+    "Bt_nT": -0.6113,
+    "Bn_nT": 0.2774,
+    "B_mag_nT": 0.6746,
+    "direction_normalized": {
+      "Br": -0.081,
+      "Bt": -0.906,
+      "Bn": 0.411
+    },
+    "interpretation": "Predominantly tangential, consistent with Burlaga et al. 2019 draped ISM field"
+  },
+  "svd_vs_mean_relationship": "SVD dominant variability direction is roughly perpendicular to mean field -- consistent with Alfvenic fluctuations propagating along draped field",
+  "physical_picture": "Draped interstellar field, Alfvenically oscillating in the plane perpendicular to its mean, with 1.46 effective dimensions of phase-space variability. The 32D pathion associator detects algebraic order because near-planar phase-locked fluctuations produce strong CD associator cancellations.",
+  "effective_dimensionality": {
+    "heliosheath_110_118": 1.84,
+    "transition_118_121": 2.28,
+    "ism_121_126": 1.46
+  }
+}
