@@ -27,7 +27,9 @@ pub mod surrogates;
 pub mod warp_physics;
 pub mod wavelet;
 
-pub use coherence::{magnitude_squared_coherence, welch_cpsd};
+pub use coherence::{
+    field_aligned_spectral_fractions, magnitude_squared_coherence, partial_coherence, welch_cpsd,
+};
 pub use lomb_scargle::{LombScargleResult, compute_lomb_scargle, false_alarm_probability_baluev};
 pub use multitaper::{MultitaperResult, dpss_tapers, multitaper_psd, thomson_f_test};
 pub use neg_dim::{
