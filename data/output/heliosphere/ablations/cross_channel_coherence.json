@@ -1,0 +1,30 @@
+{
+  "inner_1au_OMNI": {
+    "n_points": 17542,
+    "lo_freq_coherence": 0.0269,
+    "mid_freq_coherence": 0.0184,
+    "hi_freq_coherence": 0.0141,
+    "overall_coherence": 0.0183
+  },
+  "mid_40_80au_V2": {
+    "n_points": 55302,
+    "lo_freq_coherence": 0.01,
+    "mid_freq_coherence": 0.0095,
+    "hi_freq_coherence": 0.0327,
+    "overall_coherence": 0.0214
+  },
+  "sheath_100_118au_V2": {
+    "n_points": 17464,
+    "lo_freq_coherence": 0.054,
+    "mid_freq_coherence": 0.0674,
+    "hi_freq_coherence": 0.0567,
+    "overall_coherence": 0.0587
+  },
+  "ism_120_160au_V1": {
+    "n_points": 34769,
+    "lo_freq_coherence": 0.2424,
+    "mid_freq_coherence": 0.2491,
+    "hi_freq_coherence": 0.2568,
+    "overall_coherence": 0.2514
+  }
+}
