@@ -8,11 +8,11 @@
 #   - owner_group=third_party or owner_group=external MUST have removal_status=locked.
 
 [markdown_owner_map]
-updated = "2026-03-25"
+updated = "2026-03-27"
 authoritative = true
 status = "active"
 status_token = "ACTIVE"
-document_count = 164
+document_count = 166
 
 [[owner]]
 path = "README.md"
@@ -808,6 +808,18 @@ removal_reason = ""
 
 [[owner]]
 path = "docs/reports/POST_RC1_32D_EVIDENCE_NOTE.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/reports/sedenion_standard_model_commit_audit_2026-03-27.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/reports/cd_legacy_pre1954_roadmap_2026-03-27.md"
 owner_group = "project"
 removal_status = "active"
 removal_reason = ""

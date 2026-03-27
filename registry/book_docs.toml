@@ -1775,9 +1775,9 @@ pre-Moreno dependency chain and its missing-source audit now live in
 | 1914 | Wedderburn, primitive algebra | Rocq paper surface | abstract n=2 cyclic, section-1 matric, split-root projector, coefficient spectral, matrix-unit, total-matric, abstract cyclic/matric, and higher-n-shaped section-1 cyclic-presentation and associative-presentation surfaces plus the generic n=2 specialization bridge and explicit Dickson 1921 handoff theorems, primitive and section-2 criterion surfaces, nonrepresentation/singular-witness criteria, and a surfaced generalized-quaternion division criterion under anisotropy landed |
 | 1919 | Dickson, Cayley-Dickson process | paired Rust + Rocq | formalized |
 | 1945 | Schafer, division algebras of order 16 | paired Rust + Rocq | formalized |
-| 1954 | Schafer, algebras formed by the CD process | Rocq-first paper index | Section 1 anchors plus abstract Theorem 2 extension map, Theorem 3 block-restriction and coordinate surfaces, the concrete real-octonion equation (51)/(52) discharge, a concrete residual eq.(50) builder, and named octonion/sedenion Theorem 4 identification, type-G, converse-surface, and canonical theorem-package lanes landed |
+| 1954 | Schafer, algebras formed by the CD process | Rocq-first paper index | Section 1 anchors plus abstract Theorem 2 extension map, Theorem 3 block-restriction and coordinate surfaces, the concrete real-octonion equation (51)/(52) discharge, a concrete residual eq.(50) builder, and the final concrete octonion/sedenion Theorem 4 identification/type-G theorem package landed |
 | 1967 | Brown, generalized CD algebras | paired Rust + Rocq | formalized |
-| 1972 | Brown, zero-divisor structure dissertation | paired, Rocq-heavy | formalized |
+| 1972 | Brown, zero-divisor structure dissertation | paired, Rocq-heavy | Chapter III abstract surface + standard-octonion witnesses and Chapter VII lane formalized; later chapters still partial |
 | 1997 | Moreno, zero divisors over the reals | paired Rust + Rocq | extracted |
 | 2000 | de Marrais, box-kites and assessors | paired Rust + Rocq | formalized |
 | 2002 | Baez, The Octonions | Rocq-first reference lane | partially formalized |
@@ -1863,8 +1863,9 @@ different first landings:
    pre-Moreno chain.
 5. Extend Schafer (1954) beyond the new paper index, especially the
    derivation-algebra and type-G theorem lane.
-6. Extend Brown (1972) beyond the new Chapter VII map, especially the
-   norm-defect, star-operator, and Chapter III-VI theorem lanes.
+6. Extend Brown (1972) beyond the new Chapter III + Chapter VII map,
+   especially the 16D generalized-norm Chapter III surfacing, norm-defect,
+   star-operator, and the Chapter IV-VI theorem lanes.
 7. Finish the remaining Moreno abstract bridges, especially the arbitrary-`a`
    eigenspace/module discharge and the CD-specific cleanup around the 2.9 iff
    lane.
@@ -1925,11 +1926,11 @@ off-repo chronology matrix and roadmap as reference surfaces:
 | 1935-1942 | Zorn, Jacobson, Albert | sources on disk | still tracked as context, not yet broken into paper lanes |
 | 1945 | Schafer | `crates/schafer_1945/` + `proofs/theories/SchaferDivAlg16.v` | paired lane is in place |
 | 1951 | Freudenthal | support material only | exact original remains missing |
-| 1954 | Schafer | `proofs/theories/Schafer1954.v` | Rocq paper index, Section 1 anchors, an abstract Theorem 2 derivation-extension map, the Theorem 3 block-restriction bridge through equations (29)-(35), a coordinate normalization/uniqueness surface for equations (36)-(52), the concrete real-octonion equation (51)/(52) discharge over the seven Cayley triples, a concrete residual eq.(50) builder, named octonion/sedenion Theorem 4 identification and type-G theorems on the repo's actual derivation objects, a canonical octonion/sedenion converse surface, a residual-coordinate backward bridge, and concrete theorem-4-from-theorem-3 and theorem-4-without-extra-converse-assumption packages landed; the remaining gap is a more direct paper-numbered Theorem 3 builder matching the printed uniqueness chain line-by-line, rather than a stronger theorem-4 blocker |
+| 1954 | Schafer | `proofs/theories/Schafer1954.v` | Rocq paper index, Section 1 anchors, an abstract Theorem 2 derivation-extension map, the Theorem 3 block-restriction bridge through equations (29)-(35), a coordinate normalization/uniqueness surface for equations (36)-(52), the concrete real-octonion equation (51)/(52) discharge over the seven Cayley triples, a concrete residual eq.(50) builder, named octonion/sedenion Theorem 4 identification and type-G theorems on the repo's actual derivation objects, a canonical octonion/sedenion converse surface, a residual-coordinate backward bridge, concrete theorem-4-from-theorem-3 packages, and the final concrete theorem-4 identification/type-G package without the extra converse-side assumption landed; remaining work is now paper-numbering and presentation cleanup, not a live theorem-4 blocker |
 | 1958 | Jacobson | previews and support on disk | exact full text remains institution-locked |
 | 1965 | Cullen | reconstructed PDF + OCR cached off-repo | source gap resolved; paper lane not yet started |
 | 1967 | Brown | `crates/brown_1967/` + `proofs/theories/BrownGeneralizedCD.v` | extend dim-32/dim-64 theorem surfacing |
-| 1972 | Brown | `crates/brown_1972/` + `proofs/theories/Brown1972.v` | paper index plus initial Chapter VII map landed; Chapters III-VI remain partial |
+| 1972 | Brown | `crates/brown_1972/` + `proofs/theories/Brown1972.v` | paper index plus an abstract Chapter III norm/involution surface, standard-octonion Theorem 3.9 / Lemma 3.10 witnesses, and the initial Chapter VII map landed; the 16D generalized-norm Chapter III surfacing and Chapters IV-VI remain partial |
 
 ## Chronological gaps we still need to track
 
@@ -1950,10 +1951,12 @@ off-repo chronology matrix and roadmap as reference surfaces:
   real-octonion equation (51)/(52) discharge over the seven Cayley triples,
   named octonion/sedenion Theorem 4 identification and type-G theorems on the
   repo's actual derivation objects, a canonical octonion/sedenion converse
-  surface, a residual-coordinate backward bridge, and a concrete
-  theorem-4-from-theorem-3 package, but still needs the concrete Theorem 3
-  instantiation builder proved from the paper's uniqueness chain,
-  and Brown (1972) still needs Chapters III-VI plus a Rocq Appendix C bridge.
+  surface, a residual-coordinate backward bridge, a concrete residual eq.(50)
+  builder, and the final concrete theorem-4 package without the extra
+  converse-side assumption; Brown (1972) now has an abstract Chapter III
+  norm/involution surface plus standard-octonion Theorem 3.9 / Lemma 3.10
+  witnesses, but still needs the 16D generalized-norm Chapter III surfacing,
+  Chapters IV-VI, and a Rocq Appendix C bridge.
 - Earlier reference foundation is now explicitly tracked but not yet lifted
   into dedicated Rocq paper lanes: Euler (1770), Degen (1818), and the
   Hamilton/Graves/Cayley/Cockle formation chain (1835-1866) are cached
@@ -1976,13 +1979,13 @@ off-repo chronology matrix and roadmap as reference surfaces:
 4. Record Cullen (1965) as source-available rather than blocked, then decide
    where its quaternionic-analysis lane belongs relative to the algebra-first
    pre-Moreno chain.
-5. Extend Schafer (1954) from the landed abstract Theorem 2 extension map,
-   Theorem 3 block-restriction bridge, coordinate normalization surface,
-   concrete equation (51)/(52) discharge, named octonion/sedenion
-   Theorem 4 identification/type-G theorems, and canonical converse/theorem
-   package to the final paper-specific converse uniqueness discharge that
-   inhabits the remaining converse surface.
-6. Extend Brown (1972) beyond the current Chapter VII map.
+5. Extend Brown (1972) from the landed abstract Chapter III
+   norm/involution surface plus standard-octonion Theorem 3.9 / Lemma 3.10
+   witnesses to the 16D generalized-norm Chapter III surfacing and the later
+   Chapter IV-VI theorem lanes.
+6. Split the already-cached Zorn (1935), Jacobson (1939), and Albert (1942)
+   context materials into explicit paper lanes instead of leaving them as
+   tracker-only references.
 7. Continue Moreno only after those pre-Moreno surfaces stay readable and
    tracked in-repo.
 '''
