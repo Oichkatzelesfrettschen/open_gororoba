@@ -1,0 +1,50 @@
+{
+  "heliosheath_110_118": {
+    "n": 220206,
+    "mean_b_nT": 0.0358,
+    "30min_2hr_point": 0.5822,
+    "30min_2hr_median": 0.5988,
+    "30min_2hr_ci_lo": 0.5946,
+    "30min_2hr_ci_hi": 0.604,
+    "30min_2hr_ci_width": 0.0094,
+    "30min_2hr_consistent": "NO",
+    "2_8hr_point": 0.7077,
+    "2_8hr_median": 0.7095,
+    "2_8hr_ci_lo": 0.7078,
+    "2_8hr_ci_hi": 0.711,
+    "2_8hr_ci_width": 0.0033,
+    "2_8hr_consistent": "NO"
+  },
+  "transition_118_121": {
+    "n": 135370,
+    "mean_b_nT": 0.1079,
+    "30min_2hr_point": 0.5701,
+    "30min_2hr_median": 0.5415,
+    "30min_2hr_ci_lo": 0.5331,
+    "30min_2hr_ci_hi": 0.5506,
+    "30min_2hr_ci_width": 0.0175,
+    "30min_2hr_consistent": "NO",
+    "2_8hr_point": 0.2846,
+    "2_8hr_median": 0.2881,
+    "2_8hr_ci_lo": 0.2851,
+    "2_8hr_ci_hi": 0.2909,
+    "2_8hr_ci_width": 0.0057,
+    "2_8hr_consistent": "NO"
+  },
+  "ism_121_126": {
+    "n": 50523,
+    "mean_b_nT": 0.6735,
+    "30min_2hr_point": 0.6556,
+    "30min_2hr_median": 0.6145,
+    "30min_2hr_ci_lo": 0.5885,
+    "30min_2hr_ci_hi": 0.6373,
+    "30min_2hr_ci_width": 0.0488,
+    "30min_2hr_consistent": "NO",
+    "2_8hr_point": 0.0035,
+    "2_8hr_median": 0.0035,
+    "2_8hr_ci_lo": 0.0034,
+    "2_8hr_ci_hi": 0.0037,
+    "2_8hr_ci_width": 0.0003,
+    "2_8hr_consistent": "YES"
+  }
+}
