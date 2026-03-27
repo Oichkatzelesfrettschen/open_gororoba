@@ -10523,3 +10523,41 @@ where_stated = "crates/gororoba_cli_physics/src/bin/zd_resonance_cuda.rs"
 last_verified = "2026-03-25"
 formal_proof = ""
 status_note = "Verified via CUDA coupling sweep at 128^3 resolution. Sedenion frustration introduces discrete phase-scrambling that prevents the establishment of coherent lattice artifacts observed in the control baseline."
+
+# ---- RC1 Tightening Ablations (2026-03-27) ----
+
+[[claim]]
+id = "C-1548"
+status = "Verified"
+statement = "Ulysses ablation: removing Ulysses from the full heliosphere feature cube eliminates 7 of 23 quench-scan bins (all at |lat| >= 55 deg, r = 2.5 AU) and reduces mission_diversity to 1 in all remaining inner-heliosphere bins. Outer heliosphere bins (107-137 AU) are unaffected."
+where_stated = "docs/reports/RC1_EVIDENCE_NOTE.md (Section 1), data/output/heliosphere/ablations/quench_scan_no_ulysses.csv"
+last_verified = "2026-03-27"
+formal_proof = ""
+status_note = "RC1 tightening Phase 1. Baseline 23 bins / 100943 samples -> no-Ulysses 16 bins / 92191 samples. Delta: -7 bins, -8752 samples. All lost bins are Ulysses-exclusive high-latitude coverage."
+
+[[claim]]
+id = "C-1549"
+status = "Verified"
+statement = "OMNI magnetic-takens base mean associator (3.205) sits below both null families: temporal-shuffle (5.496, suppression ratio 0.583) and channel-permutation (4.965, suppression ratio 0.645). The OMNI signal is below the noise floor, consistent with the claim that heliocentric distance gradient drives the structured deviations."
+where_stated = "docs/reports/RC1_EVIDENCE_NOTE.md (Section 2), data/output/heliosphere/ablations/omni_null_audit.json"
+last_verified = "2026-03-27"
+formal_proof = ""
+status_note = "RC1 tightening Phase 2. OMNI-only rows: 17542 valid out of 17544 total. 20 null iterations. Suppression ratios < 1.0 confirm null dominance for single-spacecraft 1 AU data."
+
+[[claim]]
+id = "C-1550"
+status = "Verified"
+statement = "Box-kite alignment backend parity: CPU (Rayon) and Vulkan compute backends produce identical max_alignment values within 1 ULP (max_abs_diff = 4.44e-16, max_rel_diff = 6.12e-16) across 100973 paired rows. All 55148 orientation index mismatches are FP tie-breaking artifacts with zero real divergence."
+where_stated = "docs/reports/RC1_EVIDENCE_NOTE.md (Section 3), data/output/heliosphere/ablations/boxkite_parity.json"
+last_verified = "2026-03-27"
+formal_proof = ""
+status_note = "RC1 tightening Phase 3. 0 real orient mismatches, 0 alignment failures. Numerical equivalence confirmed across backends."
+
+[[claim]]
+id = "C-1551"
+status = "Verified"
+statement = "RC1 evidence envelope: the outer2001 window ablation (excluding the 2001-epoch data for Cassini+OMNI+Ulysses) is strictly more aggressive than single-mission ablations, distinguishing Ulysses latitude densification from outer-window temporal densification. No-outer2001 loses 9 bins (23->14), no-Ulysses loses 7 bins (23->16), no-Cassini loses 2 bins (23->21)."
+where_stated = "docs/reports/RC1_EVIDENCE_NOTE.md (Section 1 sensitivity), data/output/heliosphere/ablations/"
+last_verified = "2026-03-27"
+formal_proof = ""
+status_note = "RC1 tightening Phase 1 sensitivity. Demonstrates that latitude coverage (Ulysses) and temporal depth (outer2001 window) are orthogonal ablation axes."

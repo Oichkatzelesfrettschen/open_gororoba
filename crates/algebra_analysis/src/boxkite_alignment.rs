@@ -55,7 +55,7 @@ pub fn generate_psl_2_7_permutations_16d() -> Vec<[usize; 16]> {
     }
 
     let mut result: Vec<[usize; 16]> = permutations.into_iter().collect();
-    result.sort_by(|a, b| a.cmp(b)); // Deterministic order
+    result.sort(); // Deterministic order
     result
 }
 

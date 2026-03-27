@@ -202,6 +202,7 @@ credentials.*
 !docs/GRAND_SYNTHESIS_PLAN.md
 !docs/db/ARCHITECTURE.md
 !docs/physics/sedenion_standard_model.md
+!docs/reports/RC1_EVIDENCE_NOTE.md
 
 # ------------------------------------------------------------------------------
 # 7. Root Directory Protection (Keep Root Clean)

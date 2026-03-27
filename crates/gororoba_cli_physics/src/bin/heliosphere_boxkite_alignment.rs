@@ -87,7 +87,7 @@ fn main() -> Result<()> {
             if local_mean_b <= 0.0 { continue; }
 
             for i in 0..4 {
-                v16[i * 4 + 0] = window[i].bx / local_mean_b;
+                v16[i * 4] = window[i].bx / local_mean_b;
                 v16[i * 4 + 1] = window[i].by / local_mean_b;
                 v16[i * 4 + 2] = window[i].bz / local_mean_b;
                 v16[i * 4 + 3] = (window[i].b_mag - local_mean_b) / local_mean_b;
@@ -105,9 +105,9 @@ fn main() -> Result<()> {
     // Compute bounds for Morton normalization
     let mut mins = [f64::INFINITY; 16];
     let mut maxs = [f64::NEG_INFINITY; 16];
-    for i in 0..n_vectors {
+    for vec in &all_vectors {
         for d in 0..16 {
-            let v = all_vectors[i][d];
+            let v = vec[d];
             if v < mins[d] { mins[d] = v; }
             if v > maxs[d] { maxs[d] = v; }
         }
@@ -233,10 +233,8 @@ fn main() -> Result<()> {
     }
 
     if used_backend == "None" {
-        if let Some(ref b) = target_backend {
-            if b != "cpu" {
-                return Err(anyhow::anyhow!("Requested backend '{}' failed or unavailable, and fallback disabled", b));
-            }
+        if let Some(ref b) = target_backend.as_ref().filter(|b| b.as_str() != "cpu") {
+            return Err(anyhow::anyhow!("Requested backend '{}' failed or unavailable, and fallback disabled", b));
         }
         println!("[3/4] Using CPU backend (Rayon)...");
         let (m, b) = box_kite_alignment_scan_cpu(&sorted_vectors, &orientations, boxkites);

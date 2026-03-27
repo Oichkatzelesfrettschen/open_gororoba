@@ -1,9 +1,10 @@
 # open\_gororoba
 
-A pure-Rust computational physics workspace exploring Cayley-Dickson
-algebraic structures, dark-matter phenomenology, lattice-Boltzmann
-turbulence, formal verification, and multi-scale observational data
-analysis.
+A pure-Rust computational physics workspace bridging Cayley-Dickson
+algebra, heliospheric plasma dynamics, lattice-Boltzmann turbulence,
+GPU-accelerated simulations, formal verification, and multi-spacecraft
+observational analysis -- from quaternions to 16384-dimensional algebras,
+from 0.05 AU (Parker Solar Probe) to 137 AU (Voyager interstellar).
 
 ## Quick start
 
@@ -16,38 +17,38 @@ cd open_gororoba
 cargo build --workspace
 
 # Run the quality gates
-make rust-clippy          # Clippy with warnings-as-errors
-make rust-semver-check    # Public API SemVer compliance
-cargo test --workspace    # Full test suite (~3700 tests)
+make governance-gate       # Full 7-check registry + integrity gate
+make rust-clippy           # Clippy with warnings-as-errors
+cargo test --workspace     # Full test suite
 ```
 
 ## Project layout
 
 ```
 open_gororoba/
-  crates/              54 Rust crates (libraries + CLI binaries)
+  crates/              68 Rust crates (libraries + CLI binaries)
   registry/            TOML registries (claims, insights, experiments, binaries)
   registry/canonical/  SQLite source-of-truth database (control_plane.sqlite3)
-  proofs/              193 Rocq (Coq 9.1.1) formal proofs
-  data/                External datasets and computed results (gitignored)
-  db/migrations/       10 SQLite migration scripts
-  docs/                Synthesis documents and architecture references
+  proofs/              262 Rocq 9.1.1 formal proofs (105 verified theories)
+  data/                External datasets and computed results (LFS-tracked)
+  db/migrations/       12 SQLite migration scripts
+  docs/                Synthesis documents, evidence notes, architecture references
   Makefile             Build, test, governance, and CI targets
 ```
 
 ## Registry and claims system
 
 The project tracks every conjecture, measurement, and computation as a
-**claim** with a unique ID (C-001 through C-1300+). Each claim has a
-status (`verified`, `falsified`, `open`), a source location in the
-codebase, and optionally a formal proof in Rocq.
+**claim** with a unique ID (C-001 through C-1551). Each claim has a
+status (`Verified`, `Refuted`, `Provisional`), a source location in
+the codebase, and optionally a formal proof in Rocq.
 
 | Registry | Entries | Purpose |
 |----------|---------|---------|
-| `registry/claims.toml` | 1300+ | Conjectures, theorems, measurements |
+| `registry/claims.toml` | 1412 | Conjectures, theorems, measurements |
 | `registry/insights.toml` | 182 | Cross-domain research discoveries |
-| `registry/experiments.toml` | 200 | Reproducible experiment definitions |
-| `registry/binaries.toml` | 261+ | CLI binary inventory |
+| `registry/experiments.toml` | 210 | Reproducible experiment definitions |
+| `registry/binaries.toml` | 377 | CLI binary inventory |
 
 ### SQLite source of truth
 
@@ -55,7 +56,7 @@ The `registry/canonical/control_plane.sqlite3` database is the
 **authoritative source of truth** for all structured metadata. TOML
 files are read-only compatibility exports. The database provides:
 
-- 35+ tables across 10 migrations
+- 73 tables across 12 migrations
 - FTS5 full-text search over research narratives
 - Provenance tracking for all artifacts
 - Planning tables (roadmap, todo, next-actions) with dependency graphs
@@ -89,10 +90,10 @@ The workspace is organized into domain-specific crates:
 
 | Crate | Purpose |
 |-------|---------|
-| `cd_kernel` | Cayley-Dickson algebra engine (signs, zero divisors, SIMD) |
-| `algebra_analysis` | Spectral analysis, obstruction theory |
+| `cd_kernel` | Cayley-Dickson algebra engine (signs, zero divisors, AVX2 SIMD) |
+| `algebra_analysis` | Box-kite alignment, spectral analysis, obstruction theory |
 | `algebra_experimental` | Experimental algebraic structures (SU(5), braiding, imbalance) |
-| `gororoba_algebra` | Lie algebras, physics bridges, GPU dispatch |
+| `gororoba_algebra` | Lie algebras, Golay code, Leech lattice, GPU dispatch |
 | `verified_core` | Formally verified computations (unified action, spectral dim) |
 | `cosmology_core` | NFW halos, harmonic stacking, DC14 profiles |
 | `quantum_core` | Quantum field manifolds, renormalization |
@@ -100,33 +101,49 @@ The workspace is organized into domain-specific crates:
 | `stats_core` | Bootstrap CI, mutual information, quantile regression |
 | `tensor_core` | Tensor-train cross approximation |
 | `spectral_core` | Surrogate models, spectral methods |
-| `lbm_3d` / `lbm_3d_cuda` | Lattice-Boltzmann 3D (CPU + CUDA MRT) |
+| `lbm_3d` / `lbm_3d_cuda` | Lattice-Boltzmann 3D (CPU + CUDA MRT + Vulkan) |
 
 ### Data and provenance
 
 | Crate | Purpose |
 |-------|---------|
-| `data_core` | Catalog loaders (MaNGA, LoTSS, FITS, VOTable) |
+| `data_core` | Catalog loaders (MaNGA, LoTSS, FITS, VOTable, OMNI, Ulysses) |
 | `provenance_store` | SQLite-backed artifact and metadata store |
 | `provenance_core` | Provenance data model |
-| `provenance_ops` | Data ingest pipelines (ORIX, HEASARC) |
+| `provenance_ops` | Data ingest pipelines (ORIX, HEASARC, AMDA HAPI) |
 | `gororoba_db` | `gororoba-db` CLI for database operations |
-| `manga_experiments` | MaNGA dark-matter hypothesis experiments |
+| `lit_search` | 17-source academic literature search and deduplication |
 
-### CLI binaries
+### CLI binaries (377 registered)
 
-| Crate | Binaries |
-|-------|----------|
-| `gororoba_cli_data` | NanoGrav timing, LoTSS fetch, entropy audit |
-| `gororoba_cli_physics` | Harmonic halo curves, crystal integrals, CHSH sweeps |
-| `gororoba_cli_algebra` | Spectral flow, majorana braiding |
+| Crate | Representative binaries |
+|-------|------------------------|
+| `gororoba_cli_data` | NanoGrav timing, LoTSS fetch, CD cache, entropy audit |
+| `gororoba_cli_physics` | Heliosphere pipeline (15 bins), box-kite alignment, LBM sims |
+| `gororoba_cli_algebra` | Spectral flow, Majorana braiding, ZD resonance |
 | `gororoba_cli_quantum` | Fracton codes, pseudospectrum, absorber Pareto |
-| `gororoba_cli_governance` | Registry integrity resolution |
+| `gororoba_cli_governance` | Registry integrity resolution, markdown registry |
+
+## Heliosphere research pipeline
+
+The project includes a complete multi-spacecraft heliosphere analysis
+pipeline spanning 13 missions (ACE, Cassini, Helios 1/2, IBEX, IMP 8,
+Juno, New Horizons, OMNI, Parker Solar Probe, Solar Orbiter, STEREO-A,
+Ulysses, Voyager 1/2, WIND) from 0.05 to 157 AU:
+
+1. **Feature cube**: Unified 16D hourly records from all missions
+2. **Magnetic Takens embedding**: 4-step delay into sedenion (16D) space
+3. **Quench scan**: Associator norm mapped across (r, latitude) bins
+4. **Box-kite alignment**: GPU-accelerated PSL(2,7) permutation scan
+5. **Null audit**: Temporal-shuffle and channel-permutation deconfounding
+6. **Backend parity**: CPU/CUDA/Vulkan numerical equivalence verified
+
+See `docs/reports/RC1_EVIDENCE_NOTE.md` for the frozen evidence envelope.
 
 ## Formal verification
 
-193 Rocq theories in `proofs/` verify algebraic identities, norm
-bounds, and obstruction invariants. Build with:
+262 Rocq files in `proofs/` (105 verified theories) verify algebraic
+identities, norm bounds, and obstruction invariants. Build with:
 
 ```bash
 make -C proofs vos   # Interface-only compilation (fast)
@@ -135,7 +152,8 @@ make -C proofs vok   # Full parallel body verification
 
 Key tactics: `ring_simplify; lra` for concrete norm proofs,
 `cbv [whitelist]` for Cayley-Dickson dimension >= 8 (avoids OOM from
-`simpl`).
+`simpl`). Tower proofs use `rewrite sed_mul_scale_left` for O(seconds)
+compilation vs O(hours) for monolithic `ring`.
 
 ## Quality gates
 
@@ -143,10 +161,10 @@ Key tactics: `ring_simplify; lra` for concrete norm proofs,
 |------|---------|----------|
 | Clippy | `make rust-clippy` | Warnings-as-errors (`-D warnings`) |
 | SemVer | `make rust-semver-check` | Public API compatibility |
-| Tests | `cargo test --workspace` | ~3700 tests, 0 tolerance |
-| Character | `make ansi-check` | Emoji-blocking UTF-8 |
+| Tests | `cargo test --workspace` | Full suite, 0 tolerance |
+| ASCII | `make ansi-check` | No Unicode/emoji in source |
 | Terminology | `make terminology-gate` | 8 banned patterns |
-| Governance | `make governance-gate` | Full registry + integrity |
+| Governance | `make governance-gate` | 7-check registry + integrity |
 | Pre-push | `make pre-push-gate` | Scoped clippy + test + governance |
 
 ## Toolchain
@@ -154,8 +172,9 @@ Key tactics: `ring_simplify; lra` for concrete norm proofs,
 - **Rust**: nightly-2026-03-05 (pinned via `rust-toolchain.toml`)
 - **Edition**: 2024
 - **Build**: Cranelift backend for dev (opt-level 2), LLVM for release
-- **CUDA**: Optional via `cudarc 0.19.1` (feature-gated)
+- **GPU**: CUDA via `cudarc 0.19.1`, Vulkan via `ash` (feature-gated)
 - **Formal proofs**: Rocq 9.1.1
+- **Allocator**: mimalloc (workspace default)
 
 ## License
 
