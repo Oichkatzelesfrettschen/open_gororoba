@@ -1018,8 +1018,9 @@ All C(8,3) = 56 triples x 8 indices = 448 checks via single vm_compute.
   Rocq.
 - Brown 1972 is the next direct handoff. The Rocq lane now has a dedicated
   Chapter III surface plus standard-octonion witnesses for Theorem 3.9 and
-  Lemma 3.10; the 16D Brown generalized-norm lane remains computational /
-  Rust-backed rather than fully surfaced in Rocq.
+  Lemma 3.10, but the live Brown roadmap is now source-driven across the full
+  dissertation rather than only Chapter III; the 16D generalized-norm lane,
+  Chapters IV-VI, and the later witness/extraction slices remain backlog.
 - The older-paper queue is now ranked explicitly in
   `docs/reports/cd_legacy_pre1954_roadmap_2026-03-27.md` instead of being
   left as a loose chronology backlog.

@@ -9,6 +9,13 @@
     recording which dissertation chapters already have direct Rocq landings and
     which still live only in the Rust paper crate.
 
+    Source-driven inventory note:
+    - the on-disk Brown source packet shows a nine-chapter dissertation plus
+      three appendices
+    - Chapter III is foundational but not the whole Brown picture
+    - the theorem-dense Brown backlog is really spread across Chapters IV-VII,
+      with Appendix C still relevant for the historical computation lane
+
     Chapter/page surfacing status:
     - Chapter III, pp. 15-16, Theorem 3.9 and Lemma 3.10:
       abstract Rocq norm/involution surface plus standard-octonion witnesses
@@ -40,9 +47,11 @@
     paper surfaces, includes `CDPowerAssociative.v` and later Moreno bridges.
 
     Remaining Brown-specific Rocq backlog:
+    - Brown-numbered Chapter IV theorem surface (4.2, 4.3, cor. 4.4)
+    - Brown-numbered Chapter V theorem surface over the landed exponent lane
     - broader 16D/generalized-norm Chapter III lane
-    - Brown-numbered Chapter IV-VI theorem lanes
-    - star-operator and Appendix C search / extraction bridge in Rocq
+    - Brown-numbered Chapter VI basis-element theorem lanes
+    - remaining Chapter VII numbering gaps plus Appendix C extraction bridge in Rocq
 
     The executable Rust companion for this paper is `crates/brown_1972/`. *)
 
