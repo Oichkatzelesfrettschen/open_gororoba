@@ -241,3 +241,64 @@ V1 48-sec MAG (2012-2013, 415K records) independently detects the heliopause:
 This upgrades the heliopause detection from single-trajectory to
 cross-mission validated structure. Both Voyager spacecraft independently
 show the quench transition within 2 AU of their accepted crossing distances.
+
+## Phase 3: Order-Parameter Formalization Results
+
+### Order Surplus Index (C-1567)
+
+Omega_mv = 1 - A_base / A_mv_phase quantifies cross-channel algebraic order.
+Omega_phase = 1 - A_base / A_shared_phase quantifies within-channel spectral order.
+
+Fleet-wide: Omega_phase is near-zero ([-0.04, +0.07]) for all missions.
+Omega_mv ranges from 0.045 (Solar Orbiter) to 0.594 (Voyager 1 ISM).
+The dominant detectable surplus is cross-channel rather than within-channel
+spectral; within-channel spectral contribution is small but nonzero.
+
+### Non-Reducibility (C-1572)
+
+The 32D associator is NOT analytically reducible to linear effective
+dimensionality (SVD participation ratio). Spearman rho = 0.43 globally,
+near-zero in the transition zone. The associator captures nonlinear
+cross-channel phase geometry that linear rank statistics do not resolve.
+
+### Lag-Radius Threshold Invariance (C-1569, revised)
+
+Within V2 2017-2018 48-sec data, the transition radius r_c is threshold-
+invariant at 120.8 AU from ~6 min to ~8 hr under the 3x-ISM-floor
+persistence criterion. The prior 118.8 vs 120.8 AU split from the hourly
+densified cube is likely methodological or epochal rather than timescale-
+intrinsic. V1 shows r_c at 122.2-123.8 AU with modest lag dependence.
+
+### Partial Coherence Robustness
+
+Bandwise analysis confirms the ISM directional phase organization is:
+- REAL (not a control-procedure artifact): phase-scrambled |B| surrogate
+  gives only 1.1x amplification vs 4.6x for real |B| control
+- Band-specific: strongest in the 30 min-2 hr regime-boundary band (4.6x)
+- Directional: controlling for |B| REDUCES heliosheath coherence but
+  AMPLIFIES ISM coherence, confirming different physical mechanisms
+
+### V1 Topology Mixing Peak
+
+The V1 effective-dimensionality peak at 123 AU (PR = 5.61, bootstrap
+95% CI [3.56, 5.51]) is confirmed as a robust structural feature.
+Three rank measures (participation ratio, stable rank, entropy rank)
+are concordant on the collapse -> expansion -> relaxation shape.
+The specific magnitude should be reported with CI.
+
+### ISM Directional Analysis
+
+The ISM dominant SVD mode is perfectly stable (CV < 0.003) across 6.4-min
+windows. The mean ISM field is predominantly tangential (Bt/|B| = -0.91),
+consistent with a draped interstellar field. The dominant variability
+direction is perpendicular to the mean field, consistent with Alfvenic
+fluctuations propagating along the draped sheet.
+
+### Literature Uniqueness
+
+To our knowledge, no prior work uses Cayley-Dickson associator observables
+as multichannel time-series diagnostics for physical field data. Adjacent
+literatures exist in quaternion/Clifford signal processing, Takens
+embeddings, and conceptual non-associative physics, but they do not appear
+to operationalize non-associativity as a quantitative cross-channel
+phase-geometry probe in this way.
