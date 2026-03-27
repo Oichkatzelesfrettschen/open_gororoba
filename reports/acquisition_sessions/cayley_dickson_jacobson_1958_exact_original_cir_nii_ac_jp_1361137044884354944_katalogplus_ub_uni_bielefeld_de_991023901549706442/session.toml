@@ -1,7 +1,7 @@
 format_version = 1
 session_id = "cayley_dickson_jacobson_1958_exact_original_cir_nii_ac_jp_1361137044884354944_katalogplus_ub_uni_bielefeld_de_991023901549706442"
 created_utc = "2026-03-27T07:00:53.279923848+00:00"
-updated_utc = "2026-03-27T07:25:09.683182616+00:00"
+updated_utc = "2026-03-27T15:28:58.166692262+00:00"
 status = "in_progress"
 
 [source]
@@ -74,4 +74,10 @@ at_utc = "2026-03-27T07:25:09.683182616+00:00"
 action = "record"
 status = "in_progress"
 note = "Bielefeld article-only follow-up already sent; awaiting reply or internal service redirect."
+
+[[events]]
+at_utc = "2026-03-27T15:28:58.166692262+00:00"
+action = "record"
+status = "in_progress"
+note = "Bielefeld chapter-only follow-up draft prepared at docs/reports/cd_blocker_packets/jacobson_1958_bielefeld_chapter_followup_20260327.eml using the exact page range 341-366 instead of a whole-volume request."
 

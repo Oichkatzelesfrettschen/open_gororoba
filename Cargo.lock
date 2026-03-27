@@ -4529,6 +4529,7 @@ dependencies = [
  "rand_distr 0.4.3",
  "rayon",
  "rusqlite",
+ "rustfft",
  "serde",
  "serde_json",
  "sha2",
