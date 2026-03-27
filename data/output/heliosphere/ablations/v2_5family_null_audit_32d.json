@@ -1,0 +1,482 @@
+{
+  "generated_at_utc": "2026-03-27T16:01:13.553930368+00:00",
+  "cube_csv": "data/output/heliosphere/densified_feature_cube.csv",
+  "results": [
+    {
+      "embedding_name": "legacy-raw",
+      "base_summaries": [
+        {
+          "mission": "Voyager 2",
+          "product": "Merged hourly",
+          "mean_associator_norm": 9378554.411058314,
+          "max_associator_norm": 3388677339.203775
+        },
+        {
+          "mission": "Voyager 2",
+          "product": "Merged support",
+          "mean_associator_norm": 38707250.16061702,
+          "max_associator_norm": 463219482.30657864
+        }
+      ],
+      "null_summaries": {
+        "block-shuffle": [
+          {
+            "mission": "Voyager 2",
+            "product": "Merged hourly",
+            "null_mean_of_means": 30903406.608741015,
+            "null_std_of_means": 309130.8250790478,
+            "null_median_of_means": 31042395.33288138,
+            "null_p05": 30324757.75278344,
+            "null_p95": 31338313.114098795
+          },
+          {
+            "mission": "Voyager 2",
+            "product": "Merged support",
+            "null_mean_of_means": 39993555.7290384,
+            "null_std_of_means": 472388.99782433355,
+            "null_median_of_means": 39959308.90049438,
+            "null_p05": 39359544.452901274,
+            "null_p95": 40736156.07034737
+          }
+        ],
+        "channel-permutation": [
+          {
+            "mission": "Voyager 2",
+            "product": "Merged hourly",
+            "null_mean_of_means": 93386227.83534971,
+            "null_std_of_means": 69389669.77541955,
+            "null_median_of_means": 111733857.48939118,
+            "null_p05": 198885.93987301944,
+            "null_p95": 194592836.41866934
+          },
+          {
+            "mission": "Voyager 2",
+            "product": "Merged support",
+            "null_mean_of_means": 68818202.06437278,
+            "null_std_of_means": 67071128.19147202,
+            "null_median_of_means": 62058217.26490428,
+            "null_p05": 105645.785303134,
+            "null_p95": 238058860.201859
+          }
+        ],
+        "multivariate-phase-randomized": [
+          {
+            "mission": "Voyager 2",
+            "product": "Merged hourly",
+            "null_mean_of_means": 153800941.14420915,
+            "null_std_of_means": 282341.2986365335,
+            "null_median_of_means": 153777233.12950957,
+            "null_p05": 153473181.6333029,
+            "null_p95": 154375753.52383637
+          },
+          {
+            "mission": "Voyager 2",
+            "product": "Merged support",
+            "null_mean_of_means": 228143189.359279,
+            "null_std_of_means": 4316137.5720185395,
+            "null_median_of_means": 228058689.33439392,
+            "null_p05": 221607959.28807095,
+            "null_p95": 236307721.45674035
+          }
+        ],
+        "phase-randomized": [
+          {
+            "mission": "Voyager 2",
+            "product": "Merged hourly",
+            "null_mean_of_means": 72680983.90355727,
+            "null_std_of_means": 145401.80224826597,
+            "null_median_of_means": 72746428.85487719,
+            "null_p05": 72396978.01931481,
+            "null_p95": 72842876.19668442
+          },
+          {
+            "mission": "Voyager 2",
+            "product": "Merged support",
+            "null_mean_of_means": 56737522.61917063,
+            "null_std_of_means": 1223519.8021307592,
+            "null_median_of_means": 56851144.314280026,
+            "null_p05": 54544599.26787598,
+            "null_p95": 59325495.31225676
+          }
+        ],
+        "temporal-shuffle": [
+          {
+            "mission": "Voyager 2",
+            "product": "Merged hourly",
+            "null_mean_of_means": 300363763.6419805,
+            "null_std_of_means": 1014553.9618061977,
+            "null_median_of_means": 300444526.0500294,
+            "null_p05": 298537053.8006284,
+            "null_p95": 302282819.66585666
+          },
+          {
+            "mission": "Voyager 2",
+            "product": "Merged support",
+            "null_mean_of_means": 48971452.173453465,
+            "null_std_of_means": 1857482.5005207923,
+            "null_median_of_means": 49416562.2327931,
+            "null_p05": 44601896.953830875,
+            "null_p95": 51167152.679375075
+          }
+        ]
+      }
+    },
+    {
+      "embedding_name": "dynamic-bias-free",
+      "base_summaries": [
+        {
+          "mission": "Voyager 2",
+          "product": "Merged hourly",
+          "mean_associator_norm": 137038.65052399447,
+          "max_associator_norm": 302191714.66129273
+        },
+        {
+          "mission": "Voyager 2",
+          "product": "Merged support",
+          "mean_associator_norm": 82601.45333327913,
+          "max_associator_norm": 907900.8084402444
+        }
+      ],
+      "null_summaries": {
+        "block-shuffle": [
+          {
+            "mission": "Voyager 2",
+            "product": "Merged hourly",
+            "null_mean_of_means": 264132.741192122,
+            "null_std_of_means": 4045.57620193181,
+            "null_median_of_means": 266101.060062982,
+            "null_p05": 257556.25263198867,
+            "null_p95": 269910.61741356825
+          },
+          {
+            "mission": "Voyager 2",
+            "product": "Merged support",
+            "null_mean_of_means": 111307.8931395177,
+            "null_std_of_means": 1710.8154038958378,
+            "null_median_of_means": 111017.49353132215,
+            "null_p05": 109130.63382027771,
+            "null_p95": 115143.02783661842
+          }
+        ],
+        "channel-permutation": [
+          {
+            "mission": "Voyager 2",
+            "product": "Merged hourly",
+            "null_mean_of_means": 156919.90906406933,
+            "null_std_of_means": 91068.61509212313,
+            "null_median_of_means": 173223.7285848277,
+            "null_p05": 351.24503110694536,
+            "null_p95": 283278.31112099614
+          },
+          {
+            "mission": "Voyager 2",
+            "product": "Merged support",
+            "null_mean_of_means": 124116.04664422588,
+            "null_std_of_means": 73441.40897953184,
+            "null_median_of_means": 150268.36802153496,
+            "null_p05": 1.2532066831363025,
+            "null_p95": 206499.09050591497
+          }
+        ],
+        "multivariate-phase-randomized": [
+          {
+            "mission": "Voyager 2",
+            "product": "Merged hourly",
+            "null_mean_of_means": 1946545.8395781498,
+            "null_std_of_means": 8053.611825032742,
+            "null_median_of_means": 1947518.1205932843,
+            "null_p05": 1934760.7354493192,
+            "null_p95": 1963212.5064650807
+          },
+          {
+            "mission": "Voyager 2",
+            "product": "Merged support",
+            "null_mean_of_means": 259069.52705146495,
+            "null_std_of_means": 5138.949086436833,
+            "null_median_of_means": 259530.47757544083,
+            "null_p05": 250747.67397823045,
+            "null_p95": 267205.7553967338
+          }
+        ],
+        "phase-randomized": [
+          {
+            "mission": "Voyager 2",
+            "product": "Merged hourly",
+            "null_mean_of_means": 1728232.274235574,
+            "null_std_of_means": 2598.507396367743,
+            "null_median_of_means": 1728323.6721377396,
+            "null_p05": 1723694.061395404,
+            "null_p95": 1733328.7489922072
+          },
+          {
+            "mission": "Voyager 2",
+            "product": "Merged support",
+            "null_mean_of_means": 108703.49126555146,
+            "null_std_of_means": 661.4994504284582,
+            "null_median_of_means": 108642.91491756434,
+            "null_p05": 107524.98346904837,
+            "null_p95": 109660.51999857197
+          }
+        ],
+        "temporal-shuffle": [
+          {
+            "mission": "Voyager 2",
+            "product": "Merged hourly",
+            "null_mean_of_means": 2845230.852445417,
+            "null_std_of_means": 14322.408433141049,
+            "null_median_of_means": 2849452.2284298283,
+            "null_p05": 2808502.5415019006,
+            "null_p95": 2862189.8524758606
+          },
+          {
+            "mission": "Voyager 2",
+            "product": "Merged support",
+            "null_mean_of_means": 339054.1105252897,
+            "null_std_of_means": 5452.14439506979,
+            "null_median_of_means": 341190.0448314278,
+            "null_p05": 331212.30733618164,
+            "null_p95": 346611.9323186613
+          }
+        ]
+      }
+    },
+    {
+      "embedding_name": "invariant-residuals",
+      "base_summaries": [
+        {
+          "mission": "Voyager 2",
+          "product": "Merged hourly",
+          "mean_associator_norm": 1.4872736377286427e+22,
+          "max_associator_norm": 4.478936823586321e+26
+        },
+        {
+          "mission": "Voyager 2",
+          "product": "Merged support",
+          "mean_associator_norm": 5.18506439344999e+17,
+          "max_associator_norm": 2.7290917300132928e+20
+        }
+      ],
+      "null_summaries": {
+        "block-shuffle": [
+          {
+            "mission": "Voyager 2",
+            "product": "Merged hourly",
+            "null_mean_of_means": 1.2450370422328875e+22,
+            "null_std_of_means": 2.7899797128882107e+21,
+            "null_median_of_means": 1.1223009594202556e+22,
+            "null_p05": 9.63836072417655e+21,
+            "null_p95": 1.818027790471855e+22
+          },
+          {
+            "mission": "Voyager 2",
+            "product": "Merged support",
+            "null_mean_of_means": 5.561916164713824e+17,
+            "null_std_of_means": 7.676908396629685e+16,
+            "null_median_of_means": 5.6547392715466656e+17,
+            "null_p05": 4.4067523462334714e+17,
+            "null_p95": 7.102973690859848e+17
+          }
+        ],
+        "channel-permutation": [
+          {
+            "mission": "Voyager 2",
+            "product": "Merged hourly",
+            "null_mean_of_means": 9.13693115022937e+21,
+            "null_std_of_means": 4.871714113408981e+21,
+            "null_median_of_means": 1.055235017172953e+22,
+            "null_p05": 3.2972671286088876e+19,
+            "null_p95": 1.4877134661847527e+22
+          },
+          {
+            "mission": "Voyager 2",
+            "product": "Merged support",
+            "null_mean_of_means": 2.6160655048519773e+17,
+            "null_std_of_means": 2.1714817291773622e+17,
+            "null_median_of_means": 3.430706674528846e+17,
+            "null_p05": 3238608506380992.5,
+            "null_p95": 5.226364799957397e+17
+          }
+        ],
+        "multivariate-phase-randomized": [
+          {
+            "mission": "Voyager 2",
+            "product": "Merged hourly",
+            "null_mean_of_means": 1.4423733028134757e+25,
+            "null_std_of_means": 3.465392415747324e+22,
+            "null_median_of_means": 1.4438899447933678e+25,
+            "null_p05": 1.4362061865167183e+25,
+            "null_p95": 1.4476548640243364e+25
+          },
+          {
+            "mission": "Voyager 2",
+            "product": "Merged support",
+            "null_mean_of_means": 3.7049291636799434e+24,
+            "null_std_of_means": 5.677159692584938e+22,
+            "null_median_of_means": 3.72165667522052e+24,
+            "null_p05": 3.6341083931169383e+24,
+            "null_p95": 3.820392358283544e+24
+          }
+        ],
+        "phase-randomized": [
+          {
+            "mission": "Voyager 2",
+            "product": "Merged hourly",
+            "null_mean_of_means": 1.0549901084730837e+24,
+            "null_std_of_means": 2.062814011044961e+21,
+            "null_median_of_means": 1.054977634045103e+24,
+            "null_p05": 1.0526659184198324e+24,
+            "null_p95": 1.0584054833372519e+24
+          },
+          {
+            "mission": "Voyager 2",
+            "product": "Merged support",
+            "null_mean_of_means": 3.635120932988626e+23,
+            "null_std_of_means": 5.829958356575033e+21,
+            "null_median_of_means": 3.6455649563113013e+23,
+            "null_p05": 3.499432017379909e+23,
+            "null_p95": 3.705027020126294e+23
+          }
+        ],
+        "temporal-shuffle": [
+          {
+            "mission": "Voyager 2",
+            "product": "Merged hourly",
+            "null_mean_of_means": 4.6227054388789715e+21,
+            "null_std_of_means": 7.051196474922842e+21,
+            "null_median_of_means": 3.2343690308343347e+21,
+            "null_p05": 1.380447822408437e+20,
+            "null_p95": 2.5313563460556693e+22
+          },
+          {
+            "mission": "Voyager 2",
+            "product": "Merged support",
+            "null_mean_of_means": 4.231206616496469e+21,
+            "null_std_of_means": 1.2627771369561937e+22,
+            "null_median_of_means": 6.976508727769786e+17,
+            "null_p05": 3.11665637212336e+17,
+            "null_p95": 4.211428417071048e+22
+          }
+        ]
+      }
+    },
+    {
+      "embedding_name": "magnetic-takens",
+      "base_summaries": [
+        {
+          "mission": "Voyager 2",
+          "product": "Merged hourly",
+          "mean_associator_norm": 9.382975443888858,
+          "max_associator_norm": 3888.41030089531
+        },
+        {
+          "mission": "Voyager 2",
+          "product": "Merged support",
+          "mean_associator_norm": 5.868767847479845,
+          "max_associator_norm": 80.16645032740884
+        }
+      ],
+      "null_summaries": {
+        "block-shuffle": [
+          {
+            "mission": "Voyager 2",
+            "product": "Merged hourly",
+            "null_mean_of_means": 11.142103326561791,
+            "null_std_of_means": 0.010722951231474256,
+            "null_median_of_means": 11.145349865980185,
+            "null_p05": 11.119831420805266,
+            "null_p95": 11.155790230366017
+          },
+          {
+            "mission": "Voyager 2",
+            "product": "Merged support",
+            "null_mean_of_means": 7.258149268316252,
+            "null_std_of_means": 0.05724974331490603,
+            "null_median_of_means": 7.261590985033267,
+            "null_p05": 7.146113537703722,
+            "null_p95": 7.388905793855796
+          }
+        ],
+        "channel-permutation": [
+          {
+            "mission": "Voyager 2",
+            "product": "Merged hourly",
+            "null_mean_of_means": 15.48006644373063,
+            "null_std_of_means": 0.6065112160633378,
+            "null_median_of_means": 15.509704188380521,
+            "null_p05": 14.381037199186459,
+            "null_p95": 16.415882403311542
+          },
+          {
+            "mission": "Voyager 2",
+            "product": "Merged support",
+            "null_mean_of_means": 12.179345532626577,
+            "null_std_of_means": 0.738667616846405,
+            "null_median_of_means": 12.280117359694595,
+            "null_p05": 11.14817237092949,
+            "null_p95": 13.157442859901492
+          }
+        ],
+        "multivariate-phase-randomized": [
+          {
+            "mission": "Voyager 2",
+            "product": "Merged hourly",
+            "null_mean_of_means": 14.783745263185386,
+            "null_std_of_means": 0.05631424220871403,
+            "null_median_of_means": 14.789953613072662,
+            "null_p05": 14.660958756287307,
+            "null_p95": 14.86788523424928
+          },
+          {
+            "mission": "Voyager 2",
+            "product": "Merged support",
+            "null_mean_of_means": 10.222086050653278,
+            "null_std_of_means": 0.16932348487074353,
+            "null_median_of_means": 10.23115072177887,
+            "null_p05": 9.876855413109194,
+            "null_p95": 10.461508248253182
+          }
+        ],
+        "phase-randomized": [
+          {
+            "mission": "Voyager 2",
+            "product": "Merged hourly",
+            "null_mean_of_means": 10.071010308061494,
+            "null_std_of_means": 0.005748311053152975,
+            "null_median_of_means": 10.072615339674801,
+            "null_p05": 10.061353438640728,
+            "null_p95": 10.07817501703226
+          },
+          {
+            "mission": "Voyager 2",
+            "product": "Merged support",
+            "null_mean_of_means": 6.322001406754818,
+            "null_std_of_means": 0.02380312675441247,
+            "null_median_of_means": 6.326859547030189,
+            "null_p05": 6.287779244673145,
+            "null_p95": 6.362671468570942
+          }
+        ],
+        "temporal-shuffle": [
+          {
+            "mission": "Voyager 2",
+            "product": "Merged hourly",
+            "null_mean_of_means": 38.64498833960329,
+            "null_std_of_means": 0.042741126096542265,
+            "null_median_of_means": 38.65010639085096,
+            "null_p05": 38.581955102387276,
+            "null_p95": 38.73412320015073
+          },
+          {
+            "mission": "Voyager 2",
+            "product": "Merged support",
+            "null_mean_of_means": 27.308949206291402,
+            "null_std_of_means": 0.3982206457988716,
+            "null_median_of_means": 27.259601591617713,
+            "null_p05": 26.73826814187594,
+            "null_p95": 27.923833342560226
+          }
+        ]
+      }
+    }
+  ]
+}

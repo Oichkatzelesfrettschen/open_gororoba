@@ -299,8 +299,56 @@ fn phase_randomize_surrogate(vectors: &[Vec<f64>], dim: usize) -> Vec<Vec<f64>> 
     result
 }
 
+/// Multivariate phase-randomized surrogate: INDEPENDENT random phases per channel.
+/// This destroys cross-channel phase coupling while preserving per-channel power spectrum.
+/// Stronger than the shared-phase version which preserves cross-channel coherence.
+fn phase_randomize_surrogate_multivariate(vectors: &[Vec<f64>], dim: usize) -> Vec<Vec<f64>> {
+    let n = vectors.len();
+    if n < 2 {
+        return vectors.to_vec();
+    }
+    let mut planner = FftPlanner::<f64>::new();
+    let fft_fwd = planner.plan_fft_forward(n);
+    let fft_inv = planner.plan_fft_inverse(n);
+    let mut rng = thread_rng();
+    let half = n / 2;
+
+    let mut result = vec![vec![0.0; dim]; n];
+
+    for ch in 0..dim {
+        // Independent random phases PER CHANNEL (not shared)
+        let channel_phases: Vec<f64> = (0..=half).map(|_| rng.r#gen::<f64>() * 2.0 * PI).collect();
+
+        let mut buf: Vec<Complex64> = vectors
+            .iter()
+            .map(|v| Complex64::new(v[ch], 0.0))
+            .collect();
+
+        fft_fwd.process(&mut buf);
+
+        for k in 1..half {
+            let phase = Complex64::from_polar(1.0, channel_phases[k]);
+            buf[k] *= phase;
+            buf[n - k] *= phase.conj();
+        }
+        if n.is_multiple_of(2) {
+            let sign = if channel_phases[half] > PI { -1.0 } else { 1.0 };
+            buf[half] *= sign;
+        }
+
+        fft_inv.process(&mut buf);
+
+        let scale = 1.0 / n as f64;
+        for (i, c) in buf.iter().enumerate() {
+            result[i][ch] = c.re * scale;
+        }
+    }
+
+    result
+}
+
 /// Dimension-generic audit: embed, compute base associators, then run
-/// four null families:
+/// five null families:
 /// - temporal-shuffle (harsh: destroys all temporal order)
 /// - channel-permutation (harsh: destroys algebraic channel assignment)
 /// - block-shuffle (moderate: preserves short-range autocorrelation)
@@ -404,11 +452,29 @@ where
         phase_nulls.push(build_null_summary(mission, product, &iteration_means));
     }
 
+    // Multivariate Phase-Randomized Null (strongest spectral: independent phases per channel)
+    let mut mv_phase_nulls = Vec::new();
+    for ((mission, product), vectors) in &group_vectors {
+        let mut iteration_means = Vec::new();
+        let n = vectors.len();
+        if n < 4 {
+            mv_phase_nulls.push(build_null_summary(mission, product, &[]));
+            continue;
+        }
+        for _ in 0..null_iters {
+            let surrogate = phase_randomize_surrogate_multivariate(vectors, dim);
+            let norms = cd_kernel::batch_sliding_associator_norms(&surrogate, dim);
+            iteration_means.push(associator_mean(&norms));
+        }
+        mv_phase_nulls.push(build_null_summary(mission, product, &iteration_means));
+    }
+
     let mut null_summaries = BTreeMap::new();
     null_summaries.insert("temporal-shuffle".to_string(), shuffle_nulls);
     null_summaries.insert("channel-permutation".to_string(), permute_nulls);
     null_summaries.insert("block-shuffle".to_string(), block_shuffle_nulls);
     null_summaries.insert("phase-randomized".to_string(), phase_nulls);
+    null_summaries.insert("multivariate-phase-randomized".to_string(), mv_phase_nulls);
 
     EmbeddingResult {
         embedding_name: name.to_string(),
