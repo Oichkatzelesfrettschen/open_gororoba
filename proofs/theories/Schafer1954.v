@@ -37,7 +37,7 @@
     - a tighter bridge from the G2 support files to Schafer's derivation language
 *)
 
-From OpenGororoba Require Import Prelude CayleyDicksonAlgebra Sedenion OctonionNorm.
+From OpenGororoba Require Import Prelude CayleyDicksonAlgebra Sedenion OctonionNorm CDNegLemmas.
 From OpenGororoba Require Export
   CDPowerAssociative
   CDPropertyTower
@@ -437,8 +437,9 @@ Section Schafer1954Theorem3Coordinates.
     s54_t3_eq51 :
       forall i j k : Index,
         s54_triple_rel i j k ->
-        (s54_t3_diag_scalar i + s54_t3_diag_scalar j)%R =
-        s54_t3_diag_scalar k;
+        (s54_t3_diag_scalar i +
+         s54_t3_diag_scalar j +
+         s54_t3_diag_scalar k)%R = 0%R;
     s54_t3_eq52 :
       s54_eq52_formula s54_triple_rel;
     s54_t3_eq51_eq52_force_zero :
@@ -586,13 +587,420 @@ Section Schafer1954Theorem4Identification.
          schafer1954_type_g_support_surface |}.
 End Schafer1954Theorem4Identification.
 
+(** Concrete paper-specific discharge for equations (51)-(52):
+    Schafer lists the seven Cayley triples on the standard octonion basis and
+    proves that, over characteristic <> 2,3, the only real solution of the
+    corresponding linear system is the trivial one.  This is the concrete
+    finite-basis discharge that closes the abstract coordinate uniqueness lane
+    in the real octonion case tracked by this repository. *)
+Inductive Schafer1954Basis7 :=
+| s54_b1 | s54_b2 | s54_b3 | s54_b4 | s54_b5 | s54_b6 | s54_b7.
+
+Inductive schafer1954_eq52_cayley_triple :
+    Schafer1954Basis7 -> Schafer1954Basis7 -> Schafer1954Basis7 -> Prop :=
+| s54_eq52_123 :
+    schafer1954_eq52_cayley_triple s54_b1 s54_b2 s54_b3
+| s54_eq52_145 :
+    schafer1954_eq52_cayley_triple s54_b1 s54_b4 s54_b5
+| s54_eq52_167 :
+    schafer1954_eq52_cayley_triple s54_b1 s54_b6 s54_b7
+| s54_eq52_246 :
+    schafer1954_eq52_cayley_triple s54_b2 s54_b4 s54_b6
+| s54_eq52_257 :
+    schafer1954_eq52_cayley_triple s54_b2 s54_b5 s54_b7
+| s54_eq52_347 :
+    schafer1954_eq52_cayley_triple s54_b3 s54_b4 s54_b7
+| s54_eq52_356 :
+    schafer1954_eq52_cayley_triple s54_b3 s54_b5 s54_b6.
+
+Definition schafer1954_basis7_tracked (_ : Schafer1954Basis7) : Prop := True.
+
+Theorem schafer1954_eq52_real_solution_zero :
+  forall p : Schafer1954Basis7 -> R,
+    (forall i j k : Schafer1954Basis7,
+        schafer1954_eq52_cayley_triple i j k ->
+        (p i + p j + p k)%R = 0%R) ->
+    forall i : Schafer1954Basis7,
+      p i = 0%R.
+Proof.
+  intros p Hp i.
+  assert (H123 : (p s54_b1 + p s54_b2 + p s54_b3)%R = 0%R).
+  { apply (Hp s54_b1 s54_b2 s54_b3). exact s54_eq52_123. }
+  assert (H145 : (p s54_b1 + p s54_b4 + p s54_b5)%R = 0%R).
+  { apply (Hp s54_b1 s54_b4 s54_b5). exact s54_eq52_145. }
+  assert (H167 : (p s54_b1 + p s54_b6 + p s54_b7)%R = 0%R).
+  { apply (Hp s54_b1 s54_b6 s54_b7). exact s54_eq52_167. }
+  assert (H246 : (p s54_b2 + p s54_b4 + p s54_b6)%R = 0%R).
+  { apply (Hp s54_b2 s54_b4 s54_b6). exact s54_eq52_246. }
+  assert (H257 : (p s54_b2 + p s54_b5 + p s54_b7)%R = 0%R).
+  { apply (Hp s54_b2 s54_b5 s54_b7). exact s54_eq52_257. }
+  assert (H347 : (p s54_b3 + p s54_b4 + p s54_b7)%R = 0%R).
+  { apply (Hp s54_b3 s54_b4 s54_b7). exact s54_eq52_347. }
+  assert (H356 : (p s54_b3 + p s54_b5 + p s54_b6)%R = 0%R).
+  { apply (Hp s54_b3 s54_b5 s54_b6). exact s54_eq52_356. }
+  destruct i; lra.
+Qed.
+
+Section Schafer1954Theorem4Concrete.
+  Variable U : Type.
+  Variable IsDerivation : (U -> U) -> Prop.
+  Variable IsPairDerivation : ((U * U)%type -> (U * U)%type) -> Prop.
+  Variable extend : (U -> U) -> ((U * U)%type -> (U * U)%type).
+  Hypothesis s54_t4_forward :
+    forall A : U -> U,
+      IsDerivation A -> IsPairDerivation (extend A).
+  Hypothesis s54_t4_backward :
+    forall D : (U * U)%type -> (U * U)%type,
+      IsPairDerivation D ->
+      exists A : U -> U, IsDerivation A /\ D = extend A.
+
+  Record Schafer1954Theorem4ConcreteTypeGSurface := {
+    s54_t4_concrete_identification_data :
+      Schafer1954Theorem4IdentificationSurface
+        U IsDerivation IsPairDerivation extend;
+    s54_t4_concrete_eq52_discharge :
+      forall p : Schafer1954Basis7 -> R,
+        (forall i j k : Schafer1954Basis7,
+            schafer1954_eq52_cayley_triple i j k ->
+            (p i + p j + p k)%R = 0%R) ->
+        forall i : Schafer1954Basis7, p i = 0%R;
+    s54_t4_concrete_type_g_support_data :
+      Schafer1954TypeGSupportSurface;
+  }.
+
+  Definition schafer1954_theorem4_concrete_type_g_surface :
+      Schafer1954Theorem4ConcreteTypeGSurface :=
+    {| s54_t4_concrete_identification_data :=
+         schafer1954_theorem4_identification_surface
+           U IsDerivation IsPairDerivation extend
+           s54_t4_forward s54_t4_backward;
+       s54_t4_concrete_eq52_discharge :=
+         schafer1954_eq52_real_solution_zero;
+       s54_t4_concrete_type_g_support_data :=
+         schafer1954_type_g_support_surface |}.
+End Schafer1954Theorem4Concrete.
+
+(** Concrete instantiation on the repo's actual octonion/sedenion objects. *)
+Definition schafer1954_octonion_derivation (A : CDOct -> CDOct) : Prop :=
+  Schafer1954IsDerivation CDOct oct_add oct_mul oct_scale oct_conj A.
+
+Definition schafer1954_octonion_pair_derivation
+    (D : s54_pair CDOct -> s54_pair CDOct) : Prop :=
+  Schafer1954IsPairDerivation
+    CDOct oct_add oct_mul oct_scale oct_conj (-1) D.
+
+Record Schafer1954IsSedenionDerivation (D : CDSed -> CDSed) : Prop := {
+  s54_sed_deriv_add :
+    forall x y : CDSed, D (sed_add x y) = sed_add (D x) (D y);
+  s54_sed_deriv_scale :
+    forall r : R, forall x : CDSed, D (sed_scale r x) = sed_scale r (D x);
+  s54_sed_deriv_mul :
+    forall x y : CDSed, D (sed_mul x y) = sed_add (sed_mul (D x) y) (sed_mul x (D y));
+}.
+
+Definition s54_sed_to_pair (x : CDSed) : s54_pair CDOct :=
+  (sed_lo x, sed_hi x).
+
+Definition s54_pair_to_sed (p : s54_pair CDOct) : CDSed :=
+  mkSed (fst p) (snd p).
+
+Definition s54_pair_derivation_to_sed
+    (D : s54_pair CDOct -> s54_pair CDOct) :
+    CDSed -> CDSed :=
+  fun x => s54_pair_to_sed (D (s54_sed_to_pair x)).
+
+Definition schafer1954_sedenion_extend
+    (A : CDOct -> CDOct) : CDSed -> CDSed :=
+  s54_pair_derivation_to_sed (s54_pair_extend CDOct A).
+
+Lemma s54_oct_add_assoc : forall x y z : CDOct,
+  oct_add x (oct_add y z) = oct_add (oct_add x y) z.
+Proof.
+  intros [xlo xhi] [ylo yhi] [zlo zhi].
+  unfold oct_add; simpl.
+  apply (f_equal2 mkOct); unfold quat_add; simpl;
+  apply (f_equal4 mkQuat); ring.
+Qed.
+
+Lemma s54_oct_scale_add_distr : forall r : R, forall x y : CDOct,
+  oct_scale r (oct_add x y) = oct_add (oct_scale r x) (oct_scale r y).
+Proof.
+  intros r [xlo xhi] [ylo yhi].
+  unfold oct_scale, oct_add; simpl.
+  apply (f_equal2 mkOct); unfold quat_scale, quat_add; simpl;
+  apply (f_equal4 mkQuat); ring.
+Qed.
+
+Lemma s54_oct_scale_one : forall x : CDOct,
+  oct_scale 1 x = x.
+Proof.
+  intros [[a b c d] [e f g h]].
+  unfold oct_scale; simpl.
+  apply (f_equal2 mkOct); unfold quat_scale; simpl;
+  apply (f_equal4 mkQuat); ring.
+Qed.
+
+Lemma s54_oct_scale_neg_one : forall x : CDOct,
+  oct_scale (-1) x = oct_neg x.
+Proof.
+  intros [[a b c d] [e f g h]].
+  unfold oct_scale, oct_neg; simpl.
+  apply (f_equal2 mkOct); unfold quat_scale, quat_neg; simpl;
+  apply (f_equal4 mkQuat); ring.
+Qed.
+
+Lemma s54_pair_to_sed_add :
+  forall p q : s54_pair CDOct,
+    s54_pair_to_sed (s54_pair_add CDOct oct_add p q) =
+    sed_add (s54_pair_to_sed p) (s54_pair_to_sed q).
+Proof.
+  intros [a b] [c d]. reflexivity.
+Qed.
+
+Lemma s54_sed_to_pair_add :
+  forall x y : CDSed,
+    s54_sed_to_pair (sed_add x y) =
+    s54_pair_add CDOct oct_add (s54_sed_to_pair x) (s54_sed_to_pair y).
+Proof.
+  intros [a b] [c d]. reflexivity.
+Qed.
+
+Lemma s54_pair_to_sed_scale :
+  forall r : R, forall p : s54_pair CDOct,
+    s54_pair_to_sed (s54_pair_scale CDOct oct_scale r p) =
+    sed_scale r (s54_pair_to_sed p).
+Proof.
+  intros r [a b]. reflexivity.
+Qed.
+
+Lemma s54_sed_to_pair_scale :
+  forall r : R, forall x : CDSed,
+    s54_sed_to_pair (sed_scale r x) =
+    s54_pair_scale CDOct oct_scale r (s54_sed_to_pair x).
+Proof.
+  intros r [a b]. reflexivity.
+Qed.
+
+Lemma s54_pair_to_sed_mul :
+  forall p q : s54_pair CDOct,
+    s54_pair_to_sed
+      (s54_pair_mul CDOct oct_add oct_mul oct_scale oct_conj (-1) p q) =
+    sed_mul (s54_pair_to_sed p) (s54_pair_to_sed q).
+Proof.
+  intros [a b] [c d].
+  unfold s54_pair_to_sed, sed_mul, s54_pair_mul; simpl.
+  apply (f_equal2 mkSed).
+  - rewrite s54_oct_scale_neg_one.
+    unfold oct_add, oct_neg; simpl.
+    reflexivity.
+  - unfold oct_add; simpl.
+    reflexivity.
+Qed.
+
+Lemma s54_sed_to_pair_mul :
+  forall x y : CDSed,
+    s54_sed_to_pair (sed_mul x y) =
+    s54_pair_mul CDOct oct_add oct_mul oct_scale oct_conj (-1)
+      (s54_sed_to_pair x) (s54_sed_to_pair y).
+Proof.
+  intros [a b] [c d].
+  unfold s54_sed_to_pair, sed_mul, s54_pair_mul; simpl.
+  rewrite s54_oct_scale_neg_one.
+  unfold oct_add, oct_neg; simpl.
+  reflexivity.
+Qed.
+
+Theorem schafer1954_octonion_pair_derivation_to_sedenion :
+  forall D : s54_pair CDOct -> s54_pair CDOct,
+    schafer1954_octonion_pair_derivation D ->
+    Schafer1954IsSedenionDerivation (s54_pair_derivation_to_sed D).
+Proof.
+  intros D HD.
+  destruct HD as [Hadd Hscale Hmul].
+  constructor.
+  - intros x y.
+    unfold s54_pair_derivation_to_sed.
+    rewrite s54_sed_to_pair_add.
+    rewrite Hadd.
+    rewrite s54_pair_to_sed_add.
+    reflexivity.
+  - intros r x.
+    unfold s54_pair_derivation_to_sed.
+    rewrite s54_sed_to_pair_scale.
+    rewrite Hscale.
+    rewrite s54_pair_to_sed_scale.
+    reflexivity.
+  - intros x y.
+    unfold s54_pair_derivation_to_sed.
+    rewrite s54_sed_to_pair_mul.
+    rewrite Hmul.
+    repeat rewrite s54_pair_to_sed_add.
+    repeat rewrite s54_pair_to_sed_mul.
+    reflexivity.
+Qed.
+
+Theorem schafer1954_theorem2_octonion_to_sedenion_extension_map :
+  forall A : CDOct -> CDOct,
+    schafer1954_octonion_derivation A ->
+    Schafer1954IsSedenionDerivation (schafer1954_sedenion_extend A).
+Proof.
+  intros A HA.
+  unfold schafer1954_sedenion_extend.
+  apply schafer1954_octonion_pair_derivation_to_sedenion.
+  apply
+    (schafer1954_theorem2_extension_map
+       CDOct oct_add oct_mul oct_scale oct_conj (-1)).
+  - exact s54_oct_add_assoc.
+  - exact oct_add_comm.
+  - exact s54_oct_scale_add_distr.
+  - exact HA.
+Qed.
+
+Record Schafer1954OctonionSedenionConverseSurface := {
+  s54_octsed_converse_eq52_discharge :
+    forall p : Schafer1954Basis7 -> R,
+      (forall i j k : Schafer1954Basis7,
+          schafer1954_eq52_cayley_triple i j k ->
+          (p i + p j + p k)%R = 0%R) ->
+      forall i : Schafer1954Basis7, p i = 0%R;
+  s54_octsed_converse_backward :
+    forall D : CDSed -> CDSed,
+      Schafer1954IsSedenionDerivation D ->
+      exists A : CDOct -> CDOct,
+        schafer1954_octonion_derivation A /\
+        D = schafer1954_sedenion_extend A;
+}.
+
+Definition schafer1954_octonion_sedenion_converse_surface_of_backward
+    (Hbackward :
+      forall D : CDSed -> CDSed,
+        Schafer1954IsSedenionDerivation D ->
+        exists A : CDOct -> CDOct,
+          schafer1954_octonion_derivation A /\
+          D = schafer1954_sedenion_extend A) :
+    Schafer1954OctonionSedenionConverseSurface.
+Proof.
+  refine
+    {| s54_octsed_converse_eq52_discharge :=
+         schafer1954_eq52_real_solution_zero;
+       s54_octsed_converse_backward := Hbackward |}.
+Defined.
+
+Theorem schafer1954_theorem4_octonion_sedenion_identification :
+  (forall D : CDSed -> CDSed,
+      Schafer1954IsSedenionDerivation D ->
+      exists A : CDOct -> CDOct,
+        schafer1954_octonion_derivation A /\
+        D = schafer1954_sedenion_extend A) ->
+  forall D : CDSed -> CDSed,
+    Schafer1954IsSedenionDerivation D <->
+    exists A : CDOct -> CDOct,
+      schafer1954_octonion_derivation A /\
+      D = schafer1954_sedenion_extend A.
+Proof.
+  intros Hbackward D.
+  split.
+  - exact (Hbackward D).
+  - intros [A [HA ->]].
+    exact (schafer1954_theorem2_octonion_to_sedenion_extension_map A HA).
+Qed.
+
+Theorem schafer1954_theorem4_octonion_sedenion_identification_from_converse_surface :
+  forall S : Schafer1954OctonionSedenionConverseSurface,
+    forall D : CDSed -> CDSed,
+      Schafer1954IsSedenionDerivation D <->
+      exists A : CDOct -> CDOct,
+        schafer1954_octonion_derivation A /\
+        D = schafer1954_sedenion_extend A.
+Proof.
+  intros S.
+  apply schafer1954_theorem4_octonion_sedenion_identification.
+  exact (s54_octsed_converse_backward S).
+Qed.
+
+Theorem schafer1954_theorem4_octonion_sedenion_type_g :
+  (forall D : CDSed -> CDSed,
+      Schafer1954IsSedenionDerivation D ->
+      exists A : CDOct -> CDOct,
+        schafer1954_octonion_derivation A /\
+        D = schafer1954_sedenion_extend A) ->
+  (forall D : CDSed -> CDSed,
+      Schafer1954IsSedenionDerivation D <->
+      exists A : CDOct -> CDOct,
+        schafer1954_octonion_derivation A /\
+        D = schafer1954_sedenion_extend A) /\
+  dim_g2 = 14%nat /\
+  dim_stabilizer = 8%nat /\
+  (21 - 7 = 14 /\ 14 - 6 = 8 /\ (2^3 - 1) * (2^3 - 2) * (2^3 - 4) = 168).
+Proof.
+  intro Hbackward.
+  split.
+  - exact (schafer1954_theorem4_octonion_sedenion_identification Hbackward).
+  - exact schafer1954_theorem4_type_g_support.
+Qed.
+
+Theorem schafer1954_theorem4_octonion_sedenion_type_g_from_converse_surface :
+  forall S : Schafer1954OctonionSedenionConverseSurface,
+    (forall D : CDSed -> CDSed,
+        Schafer1954IsSedenionDerivation D <->
+        exists A : CDOct -> CDOct,
+          schafer1954_octonion_derivation A /\
+          D = schafer1954_sedenion_extend A) /\
+    dim_g2 = 14%nat /\
+    dim_stabilizer = 8%nat /\
+    (21 - 7 = 14 /\ 14 - 6 = 8 /\ (2^3 - 1) * (2^3 - 2) * (2^3 - 4) = 168).
+Proof.
+  intros S.
+  split.
+  - exact
+      (schafer1954_theorem4_octonion_sedenion_identification_from_converse_surface S).
+  - exact schafer1954_theorem4_type_g_support.
+Qed.
+
+Record Schafer1954Theorem4OctonionSedenionSurface := {
+  s54_t4_octsed_converse_surface_data :
+    Schafer1954OctonionSedenionConverseSurface;
+  s54_t4_octsed_identification :
+    forall D : CDSed -> CDSed,
+      Schafer1954IsSedenionDerivation D <->
+      exists A : CDOct -> CDOct,
+        schafer1954_octonion_derivation A /\
+        D = schafer1954_sedenion_extend A;
+  s54_t4_octsed_type_g :
+    (forall D : CDSed -> CDSed,
+        Schafer1954IsSedenionDerivation D <->
+        exists A : CDOct -> CDOct,
+          schafer1954_octonion_derivation A /\
+          D = schafer1954_sedenion_extend A) /\
+    dim_g2 = 14%nat /\
+    dim_stabilizer = 8%nat /\
+    (21 - 7 = 14 /\ 14 - 6 = 8 /\ (2^3 - 1) * (2^3 - 2) * (2^3 - 4) = 168);
+}.
+
+Definition schafer1954_theorem4_octonion_sedenion_surface
+    (S : Schafer1954OctonionSedenionConverseSurface) :
+    Schafer1954Theorem4OctonionSedenionSurface.
+Proof.
+  refine
+    {| s54_t4_octsed_converse_surface_data := S;
+       s54_t4_octsed_identification := _;
+       s54_t4_octsed_type_g := _ |}.
+  - exact
+      (schafer1954_theorem4_octonion_sedenion_identification_from_converse_surface S).
+  - exact
+      (schafer1954_theorem4_octonion_sedenion_type_g_from_converse_surface S).
+Defined.
+
 (** Paper-order scope checkpoint:
     - Theorem 2 is now landed abstractly as the generic extension map above.
     - Theorem 3 now has both the block-restriction bridge `(29)`-`(35)` and a
       coordinate normalization surface for `(36)`-`(52)`.
-    - Theorem 4 now has an abstract identification surface expressing the
-      `D(M_t) = D(C)` equivalence, while the concrete coordinate uniqueness
-      discharge and the final paper-specific type-G theorem still remain open. *)
+    - Theorem 4 now has both an abstract identification surface expressing the
+      `D(M_t) = D(C)` equivalence and the concrete real-octonion `(51)`-`(52)`
+      discharge, plus a canonical octonion/sedenion converse surface and
+      theorem package; the remaining gap is to inhabit that converse surface
+      from the full paper-specific uniqueness argument instead of supplying it
+      as a named boundary assumption. *)
 Theorem schafer1954_theorems2_to_4_scope_summary :
   True.
 Proof. exact I. Qed.
