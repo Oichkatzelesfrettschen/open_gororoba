@@ -1,0 +1,38 @@
+{
+  "heliosheath_110_118": {
+    "n": 220206,
+    "mean_b_nT": 0.0358,
+    "30min_2hr_perp_zone_mean": 0.5822,
+    "30min_2hr_perp_ci_lo": 0.6786,
+    "30min_2hr_perp_ci_hi": 0.7227,
+    "30min_2hr_perp_local_mean": 0.6053,
+    "2_8hr_perp_zone_mean": 0.7077,
+    "2_8hr_perp_ci_lo": 0.6668,
+    "2_8hr_perp_ci_hi": 0.7503,
+    "2_8hr_perp_local_mean": 0.1147
+  },
+  "transition_118_121": {
+    "n": 135370,
+    "mean_b_nT": 0.1079,
+    "30min_2hr_perp_zone_mean": 0.5701,
+    "30min_2hr_perp_ci_lo": 0.3715,
+    "30min_2hr_perp_ci_hi": 0.4676,
+    "30min_2hr_perp_local_mean": 0.5532,
+    "2_8hr_perp_zone_mean": 0.2846,
+    "2_8hr_perp_ci_lo": 0.254,
+    "2_8hr_perp_ci_hi": 0.34,
+    "2_8hr_perp_local_mean": 0.0978
+  },
+  "ism_121_126": {
+    "n": 50523,
+    "mean_b_nT": 0.6735,
+    "30min_2hr_perp_zone_mean": 0.6556,
+    "30min_2hr_perp_ci_lo": 0.3686,
+    "30min_2hr_perp_ci_hi": 0.6372,
+    "30min_2hr_perp_local_mean": 0.6588,
+    "2_8hr_perp_zone_mean": 0.0035,
+    "2_8hr_perp_ci_lo": 0.0026,
+    "2_8hr_perp_ci_hi": 0.0052,
+    "2_8hr_perp_local_mean": 0.0026
+  }
+}
