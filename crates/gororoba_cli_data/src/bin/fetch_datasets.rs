@@ -407,6 +407,19 @@ fn build_registry() -> Vec<DatasetEntry> {
             size_hint: "~5 MB total (48 years)",
         },
         DatasetEntry {
+            provider: Box::new(NamedDatasetProvider::new(
+                "Voyager 2 MAG 48-sec (2017-2019, heliopause pilot)",
+                voyager::VoyagerMag48Provider {
+                    spacecraft: voyager::VoyagerSpacecraft::V2,
+                    year_start: 2017,
+                    year_end: 2019,
+                },
+            )),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~5 MB total (48 years)",
+        },
+        DatasetEntry {
             provider: Box::new(voyager_crs_flux::VoyagerCrsFluxProvider {
                 spacecraft: 1,
                 year_start: 2020,

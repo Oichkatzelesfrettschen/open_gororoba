@@ -369,6 +369,165 @@ impl DatasetProvider for VoyagerProvider {
     }
 }
 
+// ---------------------------------------------------------------------------
+// Voyager 48-second MAG high-resolution data
+// ---------------------------------------------------------------------------
+
+/// SPDF base URLs for Voyager 48-second MAG ASCII data.
+const VOYAGER1_MAG48_BASE: &str =
+    "https://spdf.gsfc.nasa.gov/pub/data/voyager/voyager1/magnetic_fields/ip_48s_ascii/";
+const VOYAGER2_MAG48_BASE: &str =
+    "https://spdf.gsfc.nasa.gov/pub/data/voyager/voyager2/magnetic_fields/ip_48s_ascii/";
+
+/// 48-second MAG record (B-field only, no plasma).
+///
+/// ASCII format: Year DOY Hour Min Sec Br Bt Bn |B| r_au lat lon
+/// 12 columns, space-separated. Fill value: 999.999 for B components.
+#[derive(Debug, Clone)]
+pub struct VoyagerMag48Record {
+    pub year: u16,
+    pub doy: u16,
+    pub hour: u8,
+    pub minute: u8,
+    pub second: u8,
+    pub br: f64,
+    pub bt: f64,
+    pub bn: f64,
+    pub b_mag: f64,
+    pub r_au: f64,
+    pub lat_deg: f64,
+    pub lon_deg: f64,
+}
+
+/// Parse a Voyager 48-second MAG ASCII file.
+pub fn parse_voyager_mag48_file(path: &std::path::Path) -> Result<Vec<VoyagerMag48Record>, FetchError> {
+    let content = std::fs::read_to_string(path)
+        .map_err(|e| FetchError::Validation(format!("read error: {e}")))?;
+    let mut records = Vec::new();
+    for line in content.lines() {
+        let line = line.trim();
+        if line.is_empty() || line.starts_with('#') {
+            continue;
+        }
+        let fields: Vec<&str> = line.split_whitespace().collect();
+        if fields.len() < 12 {
+            continue;
+        }
+        let year = fields[0].parse::<u16>().unwrap_or(0);
+        let doy = fields[1].parse::<u16>().unwrap_or(0);
+        let hour = fields[2].parse::<u8>().unwrap_or(0);
+        let minute = fields[3].parse::<u8>().unwrap_or(0);
+        let second = fields[4].parse::<u8>().unwrap_or(0);
+        let br = fields[5].parse::<f64>().unwrap_or(f64::NAN);
+        let bt = fields[6].parse::<f64>().unwrap_or(f64::NAN);
+        let bn = fields[7].parse::<f64>().unwrap_or(f64::NAN);
+        let b_mag = fields[8].parse::<f64>().unwrap_or(f64::NAN);
+        let r_au = fields[9].parse::<f64>().unwrap_or(f64::NAN);
+        let lat_deg = fields[10].parse::<f64>().unwrap_or(f64::NAN);
+        let lon_deg = fields[11].parse::<f64>().unwrap_or(f64::NAN);
+
+        // Fill value filtering
+        let br = if br.abs() > 999.0 { f64::NAN } else { br };
+        let bt = if bt.abs() > 999.0 { f64::NAN } else { bt };
+        let bn = if bn.abs() > 999.0 { f64::NAN } else { bn };
+        let b_mag = if b_mag.abs() > 999.0 { f64::NAN } else { b_mag };
+
+        records.push(VoyagerMag48Record {
+            year, doy, hour, minute, second, br, bt, bn, b_mag, r_au, lat_deg, lon_deg,
+        });
+    }
+    Ok(records)
+}
+
+/// Convert 48-sec MAG records to OmniRecord format (B-field only, plasma NaN).
+pub fn voyager_mag48_to_omni(records: &[VoyagerMag48Record]) -> Vec<OmniRecord> {
+    records
+        .iter()
+        .map(|r| OmniRecord {
+            year: r.year,
+            doy: r.doy,
+            hour: r.hour,
+            b_magnitude: r.b_mag,
+            bx_gse: r.br,
+            by_gse: r.bt,
+            bz_gse: r.bn,
+            proton_density: f64::NAN,
+            bulk_speed: f64::NAN,
+            proton_temperature: f64::NAN,
+            flow_pressure: f64::NAN,
+            plasma_beta: f64::NAN,
+            alfven_mach: f64::NAN,
+            dst_index: f64::NAN,
+            ae_index: f64::NAN,
+            kp_times_10: 99,
+            r_au: r.r_au,
+            lat_deg: r.lat_deg,
+            lon_deg: r.lon_deg,
+        })
+        .collect()
+}
+
+/// Provider for Voyager 48-second MAG high-resolution data.
+pub struct VoyagerMag48Provider {
+    pub spacecraft: VoyagerSpacecraft,
+    pub year_start: u16,
+    pub year_end: u16,
+}
+
+impl DatasetProvider for VoyagerMag48Provider {
+    fn name(&self) -> &str {
+        match self.spacecraft {
+            VoyagerSpacecraft::V1 => "Voyager 1 MAG 48-sec",
+            VoyagerSpacecraft::V2 => "Voyager 2 MAG 48-sec",
+        }
+    }
+
+    fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
+        let subdir = match self.spacecraft {
+            VoyagerSpacecraft::V1 => "voyager1_mag48",
+            VoyagerSpacecraft::V2 => "voyager2_mag48",
+        };
+        let dir = config.output_dir.join(subdir);
+        std::fs::create_dir_all(&dir)?;
+
+        let base = match self.spacecraft {
+            VoyagerSpacecraft::V1 => VOYAGER1_MAG48_BASE,
+            VoyagerSpacecraft::V2 => VOYAGER2_MAG48_BASE,
+        };
+        let prefix = match self.spacecraft {
+            VoyagerSpacecraft::V1 => "vy1",
+            VoyagerSpacecraft::V2 => "vy2",
+        };
+
+        for year in self.year_start..=self.year_end {
+            let fname = format!("{prefix}_{year}.asc");
+            let output = dir.join(&fname);
+            if config.skip_existing && output.exists() {
+                continue;
+            }
+            let url = format!("{base}{fname}");
+            match download_to_string(&url) {
+                Ok(data) => {
+                    std::fs::write(&output, data)?;
+                    log::info!("saved {}", fname);
+                }
+                Err(e) => {
+                    log::warn!("SPDF 48-sec MAG failed for {prefix} {year}: {e}");
+                }
+            }
+        }
+        Ok(dir)
+    }
+
+    fn is_cached(&self, config: &FetchConfig) -> bool {
+        let subdir = match self.spacecraft {
+            VoyagerSpacecraft::V1 => "voyager1_mag48",
+            VoyagerSpacecraft::V2 => "voyager2_mag48",
+        };
+        config.output_dir.join(subdir).exists()
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
