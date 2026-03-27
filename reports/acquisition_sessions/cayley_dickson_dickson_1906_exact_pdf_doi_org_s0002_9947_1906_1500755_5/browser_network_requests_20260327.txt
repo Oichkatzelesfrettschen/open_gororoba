@@ -1,0 +1,11 @@
+[GET] https://www.ams.org/journals/tran/1906-007-03/S0002-9947-1906-1500755-5/S0002-9947-1906-1500755-5.pdf => [403] 
+[GET] https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516 => [FAILED] net::ERR_CERT_AUTHORITY_INVALID
+[GET] https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516 => [FAILED] net::ERR_CERT_AUTHORITY_INVALID
+[GET] blob:https://www.ams.org/589f2eae-bf61-4063-bb68-e5421698e68b
+[POST] https://www.ams.org/cdn-cgi/challenge-platform/h/g/flow/ov1/1999988631:1774424211:ufj9z36p3lrOYP8bcoAv7UVXu4jYYHVmCKOcowaP_oM/9e2bf109de771360/QttlkAolIzg8KQSXxIhjjNl6mXNiLcNmFKmErNJWaj0-1774588781-1.2.1.1-xwl5GwmQe2TSsBTr_aO7mV7GbohefWQh7k9Y4GnW7eS6w7B.qy91xtre3o77.MLf => [200] 
+[GET] blob:https://challenges.cloudflare.com/c6235d42-0cda-4a7b-9124-76c38c07d345
+[POST] https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/flow/ov1/1151758751:1774424211:4o8Wa4Enn-QTt2lnuwi1reIgADkO95lDbuYaz16VfCU/9e2bf10b9f30da41/jaKC2qauEcCEBa4cbteeNHdxByvAxsPmKcGNtNJCnPA-1774588781-1.2.1.1-Td33nhLgGIrBilXw.PbDPFFydQ11MzRfGMEBjgHaAVTQOpYbJT3sxWvH8bFCjZA_ => [200] 
+[GET] https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/pat/9e2bf10b9f30da41/1774588781632/4c0824b2194719bab51366eebd0f22b71ec49b9a82ec466d097b5c636ace1c95/g09-EKjbK5L8lah => [401] 
+[GET] blob:https://challenges.cloudflare.com/6906ad36-265a-4f69-b4fd-db50d759ab94
+[GET] blob:https://challenges.cloudflare.com/6906ad36-265a-4f69-b4fd-db50d759ab94
+[POST] https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/flow/ov1/1151758751:1774424211:4o8Wa4Enn-QTt2lnuwi1reIgADkO95lDbuYaz16VfCU/9e2bf10b9f30da41/jaKC2qauEcCEBa4cbteeNHdxByvAxsPmKcGNtNJCnPA-1774588781-1.2.1.1-Td33nhLgGIrBilXw.PbDPFFydQ11MzRfGMEBjgHaAVTQOpYbJT3sxWvH8bFCjZA_ => [200] 

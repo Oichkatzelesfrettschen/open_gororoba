@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "generated_utc": "2026-03-27T04:43:04.092293746+00:00",
+  "session_id": "cayley_dickson_dickson_1912_exact_pdf_doi_org_s0002_9947_1912_1500905_3",
+  "parent_session_id": "cayley_dickson_dickson_1912_exact_pdf",
+  "url": "https://doi.org/10.1090/s0002-9947-1912-1500905-3",
+  "effective_url": "https://www.ams.org/journals/tran/1912-013-01/S0002-9947-1912-1500905-3/S0002-9947-1912-1500905-3.pdf?t=1774586421303",
+  "host_scope": "ams_org",
+  "source_id": "crossref",
+  "title": "Linear algebras",
+  "site": "doi_org",
+  "access_class": "doi_resolver",
+  "search_queue_path": "/home/eirikr/Documents/Projects/CayleyDickson/metadata/project_api/search_queue.toml",
+  "search_project_id": "cayley-dickson",
+  "search_target_id": "dickson_1912_exact_pdf",
+  "search_window": "1900-1999",
+  "search_priority": "critical",
+  "search_status": "landing_page_confirmed_pdf_click_challenged",
+  "cookie_jar_rel": "reports/acquisition_sessions/cayley_dickson_dickson_1912_exact_pdf_doi_org_s0002_9947_1912_1500905_3/browser_cookies_20260327.json",
+  "browser_trace_rel": "reports/acquisition_sessions/cayley_dickson_dickson_1912_exact_pdf_doi_org_s0002_9947_1912_1500905_3/browser_network_requests_20260327.txt",
+  "request_capsule_rel": "reports/acquisition_sessions/cayley_dickson_dickson_1912_exact_pdf_doi_org_s0002_9947_1912_1500905_3/request_capsule.json",
+  "http_code": 200,
+  "policy_registry_rel": "registry/download_host_policies.toml",
+  "sessions_dir_rel": "reports/acquisition_sessions",
+  "header_hints": [
+    {
+      "name": "Referer",
+      "value": "https://www.ams.org/journals/tran/1912-013-01/S0002-9947-1912-1500905-3/S0002-9947-1912-1500905-3.pdf?t=1774586421303",
+      "source": "effective_url"
+    },
+    {
+      "name": "Origin",
+      "value": "https://www.ams.org",
+      "source": "effective_url"
+    },
+    {
+      "name": "Cookie",
+      "value": "AMS.Bookstore.Session=CfDJ8M%2FrhMCUemRGskpfEOc%2BGK6yvXUFKvsY96bZoDLSBeWPUmj63M9PPyV7lIYCte%2FRLmgbcNGTixu9D5K3jZyfYAGriWI8mpiMGmppRwk9FZp2hG7YOHtsC2QEPUGICQPsnaFwwK529uejAaDVTxdO0E5HviCViUmhb0%2FQnw3MpPn1; AMS_BP37qb3Zu9=717dbf1c.64df434a483f0; cf_clearance=Ugm.PXR.b.BK9dOXW2eGzDq_VlfQe3sX27dzf0BA4xA-1774586409-1.2.1.1-5cplHq0dphAGq3XbMxOtNSrPHywP9CcvxQm0AEe7SoZ_YJrfHdEb65ltmc3qCeLDCyoX2uwRajEAz.qWY.0TRD3Z3vkXh6rpLqvUKVtAtgCqjhjiXRGQHUuRq5bpLxsoyBxuEAmt1tAkAfLlqIh5bMEwBTdaaEG4M9oJo8Zm8ngBbWpXLnzJJSRNHNqdwPS5UEBMI_N11AHlT6.c.qpjKG0N14yLAfSW4ZrfEW3gnas; __cf_bm=xwKobWs_2hYrfnHERHMhSG5fGRrao0xbAB6FQ8zvoIs-1774586409.915665-1.0.1.1-fkz3ocvXc3_E6_hWnXWzx4RyeZtStvVU0RqBqODG2Mhd5U7JBEp00kHtSd5110egqcuIderGomkozFcAX582q03nddsbHwlLkOTKuS531h07_OrZ9xURl9FFNEIWA8GB; cookieconsent_status=dismiss",
+      "source": "cookie_jar"
+    }
+  ],
+  "transport_substrate": "auto",
+  "requested_backend": "auto",
+  "note": "headed_browser_pdf_lane_confirmed_200_but_shell_fetch_403"
+}

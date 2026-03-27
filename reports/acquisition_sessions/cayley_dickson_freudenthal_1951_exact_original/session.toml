@@ -1,7 +1,7 @@
 format_version = 1
 session_id = "cayley_dickson_freudenthal_1951_exact_original"
 created_utc = "2026-03-27T04:20:51.066094483+00:00"
-updated_utc = "2026-03-27T04:20:51.067845661+00:00"
+updated_utc = "2026-03-27T05:26:56.283613605+00:00"
 status = "in_progress"
 
 [source]
@@ -48,4 +48,10 @@ at_utc = "2026-03-27T04:20:51.067845661+00:00"
 action = "promote"
 status = "in_progress"
 note = "spawned_child_sessions=cayley_dickson_freudenthal_1951_exact_original_openalex_org_w2024024636,cayley_dickson_freudenthal_1951_exact_original_www_ams_org_s0273_0979_01_00934_x_pdf"
+
+[[events]]
+at_utc = "2026-03-27T05:26:56.283613605+00:00"
+action = "record"
+status = "in_progress"
+note = "holder_catalog_lane_only_currently; no default-selected exact-original acquisition child"
 

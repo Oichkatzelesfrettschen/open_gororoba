@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at_utc": "2026-03-27T04:34:44.823435450+00:00",
+  "generated_at_utc": "2026-03-27T05:18:19.398519901+00:00",
   "project_id": "cayley-dickson",
   "project_api_root": "/home/eirikr/Documents/Projects/CayleyDickson",
   "search_queue_path": "/home/eirikr/Documents/Projects/CayleyDickson/metadata/project_api/search_queue.toml",
@@ -18,11 +18,11 @@
     "\"Dickson\" 1906 linear algebras division uniquely possible"
   ],
   "requested_sources": [
-    "openalex",
-    "semantic_scholar",
     "crossref",
     "datacite",
     "unpaywall",
+    "openalex",
+    "semantic_scholar",
     "arxiv",
     "jstage",
     "inspirehep",
@@ -34,7 +34,7 @@
     "citation_graph",
     "archive"
   ],
-  "limit_per_query": 2,
+  "limit_per_query": 5,
   "year_min": 0,
   "min_relevance": 24,
   "report": {
@@ -43,63 +43,47 @@
       "\"S0002-9947-1906-1500755-5\"",
       "\"Dickson\" 1906 linear algebras division uniquely possible"
     ],
-    "limit": 2,
+    "limit": 5,
     "year_min": 0,
     "requested_sources": [
-      "openalex",
-      "semantic_scholar",
       "crossref",
       "datacite",
       "unpaywall",
+      "openalex",
+      "semantic_scholar",
       "arxiv",
       "jstage",
       "inspirehep",
       "hal",
       "dblp"
     ],
-    "raw_result_count": 15,
-    "deduplicated_result_count": 8,
+    "raw_result_count": 33,
+    "deduplicated_result_count": 19,
     "query_reports": [
       {
         "query": "\"Linear algebras in which division is always uniquely possible\"",
-        "limit": 2,
+        "limit": 5,
         "year_min": 0,
         "requested_sources": [
-          "openalex",
-          "semantic_scholar",
           "crossref",
           "datacite",
           "unpaywall",
+          "openalex",
+          "semantic_scholar",
           "arxiv",
           "jstage",
           "inspirehep",
           "hal",
           "dblp"
         ],
-        "raw_result_count": 5,
-        "deduplicated_result_count": 3,
+        "raw_result_count": 12,
+        "deduplicated_result_count": 8,
         "cache_hit_count": 8,
         "source_reports": [
           {
-            "source": "openalex",
-            "adapted_query": "\"Linear algebras in which division is always uniquely possible\"",
-            "result_count": 2,
-            "cache_hit": true,
-            "error": "",
-            "skipped_reason": ""
-          },
-          {
-            "source": "semantic_scholar",
-            "adapted_query": "\"Linear algebras in which division is always uniquely possible\"",
-            "result_count": 0,
-            "cache_hit": false,
-            "error": "Rate limited",
-            "skipped_reason": ""
-          },
-          {
             "source": "crossref",
             "adapted_query": "\"Linear algebras in which division is always uniquely possible\"",
-            "result_count": 2,
+            "result_count": 5,
             "cache_hit": true,
             "error": "",
             "skipped_reason": ""
@@ -113,9 +97,25 @@
             "skipped_reason": ""
           },
           {
+            "source": "openalex",
+            "adapted_query": "\"Linear algebras in which division is always uniquely possible\"",
+            "result_count": 5,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "semantic_scholar",
+            "adapted_query": "\"Linear algebras in which division is always uniquely possible\"",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "Rate limited",
+            "skipped_reason": ""
+          },
+          {
             "source": "arxiv",
             "adapted_query": "all:\"Linear algebras in which division is always uniquely possible\"",
-            "result_count": 0,
+            "result_count": 1,
             "cache_hit": true,
             "error": "",
             "skipped_reason": ""
@@ -164,44 +164,28 @@
       },
       {
         "query": "\"S0002-9947-1906-1500755-5\"",
-        "limit": 2,
+        "limit": 5,
         "year_min": 0,
         "requested_sources": [
-          "openalex",
-          "semantic_scholar",
           "crossref",
           "datacite",
           "unpaywall",
+          "openalex",
+          "semantic_scholar",
           "arxiv",
           "jstage",
           "inspirehep",
           "hal",
           "dblp"
         ],
-        "raw_result_count": 5,
-        "deduplicated_result_count": 5,
-        "cache_hit_count": 9,
+        "raw_result_count": 9,
+        "deduplicated_result_count": 8,
+        "cache_hit_count": 8,
         "source_reports": [
-          {
-            "source": "openalex",
-            "adapted_query": "\"S0002-9947-1906-1500755-5\"",
-            "result_count": 2,
-            "cache_hit": true,
-            "error": "",
-            "skipped_reason": ""
-          },
-          {
-            "source": "semantic_scholar",
-            "adapted_query": "\"S0002-9947-1906-1500755-5\"",
-            "result_count": 0,
-            "cache_hit": true,
-            "error": "",
-            "skipped_reason": ""
-          },
           {
             "source": "crossref",
             "adapted_query": "\"S0002-9947-1906-1500755-5\"",
-            "result_count": 2,
+            "result_count": 5,
             "cache_hit": true,
             "error": "",
             "skipped_reason": ""
@@ -215,9 +199,25 @@
             "skipped_reason": ""
           },
           {
+            "source": "openalex",
+            "adapted_query": "\"S0002-9947-1906-1500755-5\"",
+            "result_count": 2,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "semantic_scholar",
+            "adapted_query": "\"S0002-9947-1906-1500755-5\"",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "Rate limited",
+            "skipped_reason": ""
+          },
+          {
             "source": "arxiv",
             "adapted_query": "all:S0002-9947-1906-1500755-5",
-            "result_count": 0,
+            "result_count": 1,
             "cache_hit": true,
             "error": "",
             "skipped_reason": ""
@@ -266,44 +266,28 @@
       },
       {
         "query": "\"Dickson\" 1906 linear algebras division uniquely possible",
-        "limit": 2,
+        "limit": 5,
         "year_min": 0,
         "requested_sources": [
-          "openalex",
-          "semantic_scholar",
           "crossref",
           "datacite",
           "unpaywall",
+          "openalex",
+          "semantic_scholar",
           "arxiv",
           "jstage",
           "inspirehep",
           "hal",
           "dblp"
         ],
-        "raw_result_count": 5,
-        "deduplicated_result_count": 5,
-        "cache_hit_count": 9,
+        "raw_result_count": 12,
+        "deduplicated_result_count": 12,
+        "cache_hit_count": 8,
         "source_reports": [
-          {
-            "source": "openalex",
-            "adapted_query": "\"Dickson\" 1906 linear algebras division uniquely possible",
-            "result_count": 2,
-            "cache_hit": true,
-            "error": "",
-            "skipped_reason": ""
-          },
-          {
-            "source": "semantic_scholar",
-            "adapted_query": "\"Dickson\" 1906 linear algebras division uniquely possible",
-            "result_count": 0,
-            "cache_hit": true,
-            "error": "",
-            "skipped_reason": ""
-          },
           {
             "source": "crossref",
             "adapted_query": "\"Dickson\" 1906 linear algebras division uniquely possible",
-            "result_count": 2,
+            "result_count": 5,
             "cache_hit": true,
             "error": "",
             "skipped_reason": ""
@@ -317,9 +301,25 @@
             "skipped_reason": ""
           },
           {
+            "source": "openalex",
+            "adapted_query": "\"Dickson\" 1906 linear algebras division uniquely possible",
+            "result_count": 5,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "semantic_scholar",
+            "adapted_query": "\"Dickson\" 1906 linear algebras division uniquely possible",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "Rate limited",
+            "skipped_reason": ""
+          },
+          {
             "source": "arxiv",
             "adapted_query": "all:Dickson AND all:\"1906 linear\" AND all:\"algebras division\" AND all:\"uniquely possible\"",
-            "result_count": 0,
+            "result_count": 1,
             "cache_hit": true,
             "error": "",
             "skipped_reason": ""
@@ -371,24 +371,8 @@
   "top_hits": [
     {
       "rank": 1,
-      "canonical_id": "doi:10.1090/s0002-9947-1906-1500764-6",
-      "relevance_score": 226,
-      "source_family": "citation_graph",
-      "route_class": "openalex_landing",
-      "host_class": "openalex_org",
-      "title": "On commutative linear algebras in which division is always uniquely possible",
-      "year": 1906,
-      "source": "openalex",
-      "venue": "Transactions of the American Mathematical Society",
-      "citation_count": 75,
-      "doi": "https://doi.org/10.1090/s0002-9947-1906-1500764-6",
-      "url": "https://openalex.org/W2025927713",
-      "pdf_url": ""
-    },
-    {
-      "rank": 2,
       "canonical_id": "doi:10.1090/s0002-9947-1906-1500755-5",
-      "relevance_score": 226,
+      "relevance_score": 446,
       "source_family": "citation_graph",
       "route_class": "openalex_landing",
       "host_class": "openalex_org",
@@ -402,25 +386,105 @@
       "pdf_url": ""
     },
     {
+      "rank": 2,
+      "canonical_id": "doi:10.1090/s0002-9947-1906-1500764-6",
+      "relevance_score": 136,
+      "source_family": "citation_graph",
+      "route_class": "openalex_landing",
+      "host_class": "openalex_org",
+      "title": "On commutative linear algebras in which division is always uniquely possible",
+      "year": 1906,
+      "source": "openalex",
+      "venue": "Transactions of the American Mathematical Society",
+      "citation_count": 75,
+      "doi": "https://doi.org/10.1090/s0002-9947-1906-1500764-6",
+      "url": "https://openalex.org/W2025927713",
+      "pdf_url": ""
+    },
+    {
       "rank": 3,
-      "canonical_id": "doi:10.1090/s0002-9947-1906-1500744-0",
-      "relevance_score": 72,
+      "canonical_id": "doi:10.1080/00029890.1906.11997333",
+      "relevance_score": 18,
       "source_family": "resolver",
-      "route_class": "doi_resolver",
-      "host_class": "doi_org",
+      "route_class": "direct_pdf",
+      "host_class": "www_tandfonline_com",
+      "title": "On Linear Algebras",
+      "year": 1906,
+      "source": "crossref",
+      "venue": "The American Mathematical Monthly",
+      "citation_count": 4,
+      "doi": "10.1080/00029890.1906.11997333",
+      "url": "https://www.tandfonline.com/doi/full/10.1080/00029890.1906.11997333",
+      "pdf_url": "https://www.tandfonline.com/doi/pdf/10.1080/00029890.1906.11997333"
+    },
+    {
+      "rank": 4,
+      "canonical_id": "doi:10.1090/s0002-9947-1906-1500744-0",
+      "relevance_score": -6,
+      "source_family": "resolver",
+      "route_class": "direct_pdf",
+      "host_class": "www_ams_org",
       "title": "On the pentadeltoid",
       "year": 1906,
       "source": "crossref",
       "venue": "Transactions of the American Mathematical Society",
       "citation_count": 1,
       "doi": "10.1090/s0002-9947-1906-1500744-0",
-      "url": "https://doi.org/10.1090/s0002-9947-1906-1500744-0",
-      "pdf_url": ""
+      "url": "https://www.ams.org/tran/1906-007-02/S0002-9947-1906-1500744-0/",
+      "pdf_url": "http://www.ams.org/tran/1906-007-02/S0002-9947-1906-1500744-0/S0002-9947-1906-1500744-0.pdf"
     },
     {
-      "rank": 4,
+      "rank": 5,
+      "canonical_id": "doi:10.1090/s0002-9947-1906-1500759-2",
+      "relevance_score": -6,
+      "source_family": "resolver",
+      "route_class": "direct_pdf",
+      "host_class": "www_ams_org",
+      "title": "Improper multiple integrals",
+      "year": 1906,
+      "source": "crossref",
+      "venue": "Transactions of the American Mathematical Society",
+      "citation_count": 1,
+      "doi": "10.1090/s0002-9947-1906-1500759-2",
+      "url": "https://www.ams.org/tran/1906-007-03/S0002-9947-1906-1500759-2/",
+      "pdf_url": "http://www.ams.org/tran/1906-007-03/S0002-9947-1906-1500759-2/S0002-9947-1906-1500759-2.pdf"
+    },
+    {
+      "rank": 6,
+      "canonical_id": "doi:10.1090/s0002-9947-1906-1500761-0",
+      "relevance_score": -6,
+      "source_family": "resolver",
+      "route_class": "direct_pdf",
+      "host_class": "www_ams_org",
+      "title": "Area of curved surfaces",
+      "year": 1906,
+      "source": "crossref",
+      "venue": "Transactions of the American Mathematical Society",
+      "citation_count": 1,
+      "doi": "10.1090/s0002-9947-1906-1500761-0",
+      "url": "https://www.ams.org/tran/1906-007-04/S0002-9947-1906-1500761-0/",
+      "pdf_url": "http://www.ams.org/tran/1906-007-04/S0002-9947-1906-1500761-0/S0002-9947-1906-1500761-0.pdf"
+    },
+    {
+      "rank": 7,
+      "canonical_id": "arxiv:errors",
+      "relevance_score": -46,
+      "source_family": "archive",
+      "route_class": "direct_pdf",
+      "host_class": "arxiv_org",
+      "title": "Error",
+      "year": 0,
+      "source": "arxiv",
+      "venue": "",
+      "citation_count": 0,
+      "doi": "",
+      "url": "https://arxiv.org/api/errors",
+      "pdf_url": "https://arxiv.org/pdf/errors"
+    },
+    {
+      "rank": 8,
       "canonical_id": "title:",
-      "relevance_score": 24,
+      "relevance_score": -66,
       "source_family": "archive",
       "route_class": "generic_landing",
       "host_class": "unknown_host",
@@ -432,30 +496,46 @@
       "doi": "",
       "url": "",
       "pdf_url": ""
+    },
+    {
+      "rank": 9,
+      "canonical_id": "doi:10.1016/0024-3795(93)00140-u",
+      "relevance_score": -136,
+      "source_family": "resolver",
+      "route_class": "direct_pdf",
+      "host_class": "api_elsevier_com",
+      "title": "Positive linear maps between matrix algebras which fix diagonals",
+      "year": 1995,
+      "source": "crossref",
+      "venue": "Linear Algebra and its Applications",
+      "citation_count": 16,
+      "doi": "10.1016/0024-3795(93)00140-u",
+      "url": "https://linkinghub.elsevier.com/retrieve/pii/002437959300140U",
+      "pdf_url": "https://api.elsevier.com/content/article/PII:002437959300140U?httpAccept=text/xml"
+    },
+    {
+      "rank": 10,
+      "canonical_id": "doi:10.1090/s0002-9947-1944-0011083-5",
+      "relevance_score": -142,
+      "source_family": "citation_graph",
+      "route_class": "direct_pdf",
+      "host_class": "www_ams_org",
+      "title": "Some results in the theory of linear non-associative algebras",
+      "year": 1944,
+      "source": "openalex",
+      "venue": "Transactions of the American Mathematical Society",
+      "citation_count": 74,
+      "doi": "https://doi.org/10.1090/s0002-9947-1944-0011083-5",
+      "url": "https://openalex.org/W2022821512",
+      "pdf_url": "https://www.ams.org/tran/1944-056-00/S0002-9947-1944-0011083-5/S0002-9947-1944-0011083-5.pdf"
     }
   ],
   "stage_suggestions": [
     {
       "rank": 1,
-      "suggestion_id": "dickson_1906_exact_pdf_doi_10_1090_s0002_9947_1906_1500764_6",
-      "canonical_id": "doi:10.1090/s0002-9947-1906-1500764-6",
-      "relevance_score": 226,
-      "source": "openalex",
-      "source_family": "citation_graph",
-      "route_class": "openalex_landing",
-      "host_class": "openalex_org",
-      "paper_title": "On commutative linear algebras in which division is always uniquely possible",
-      "action": "stage_metadata_landing_child",
-      "candidate_url": "https://openalex.org/W2025927713",
-      "command": "cargo run -q -p gororoba_cli_data --bin cd-cache-adapter -- --project-api-root '/home/eirikr/Documents/Projects/CayleyDickson' --gororoba-repo-root '/home/eirikr/Github/open_gororoba' stage-from-dossier --dossier 'docs/reports/cd_cache_dossiers/dickson_1906_exact_pdf_20260327.json' --rank '1'",
-      "rationale": "Candidate from openalex [citation_graph] with relevance score 226 and 75 citations for queue target dickson_1906_exact_pdf.",
-      "default_selected": true
-    },
-    {
-      "rank": 2,
       "suggestion_id": "dickson_1906_exact_pdf_doi_10_1090_s0002_9947_1906_1500755_5",
       "canonical_id": "doi:10.1090/s0002-9947-1906-1500755-5",
-      "relevance_score": 226,
+      "relevance_score": 446,
       "source": "openalex",
       "source_family": "citation_graph",
       "route_class": "openalex_landing",
@@ -463,10 +543,26 @@
       "paper_title": "Linear algebras in which division is always uniquely possible",
       "action": "stage_metadata_landing_child",
       "candidate_url": "https://openalex.org/W1998520828",
+      "command": "cargo run -q -p gororoba_cli_data --bin cd-cache-adapter -- --project-api-root '/home/eirikr/Documents/Projects/CayleyDickson' --gororoba-repo-root '/home/eirikr/Github/open_gororoba' stage-from-dossier --dossier 'docs/reports/cd_cache_dossiers/dickson_1906_exact_pdf_20260327.json' --rank '1'",
+      "rationale": "Candidate from openalex [citation_graph] with relevance score 446 and 73 citations for queue target dickson_1906_exact_pdf.",
+      "default_selected": true
+    },
+    {
+      "rank": 2,
+      "suggestion_id": "dickson_1906_exact_pdf_doi_10_1090_s0002_9947_1906_1500764_6",
+      "canonical_id": "doi:10.1090/s0002-9947-1906-1500764-6",
+      "relevance_score": 136,
+      "source": "openalex",
+      "source_family": "citation_graph",
+      "route_class": "openalex_landing",
+      "host_class": "openalex_org",
+      "paper_title": "On commutative linear algebras in which division is always uniquely possible",
+      "action": "stage_metadata_landing_child",
+      "candidate_url": "https://openalex.org/W2025927713",
       "command": "cargo run -q -p gororoba_cli_data --bin cd-cache-adapter -- --project-api-root '/home/eirikr/Documents/Projects/CayleyDickson' --gororoba-repo-root '/home/eirikr/Github/open_gororoba' stage-from-dossier --dossier 'docs/reports/cd_cache_dossiers/dickson_1906_exact_pdf_20260327.json' --rank '2'",
-      "rationale": "Candidate from openalex [citation_graph] with relevance score 226 and 73 citations for queue target dickson_1906_exact_pdf.",
+      "rationale": "Candidate from openalex [citation_graph] with relevance score 136 and 75 citations for queue target dickson_1906_exact_pdf.",
       "default_selected": false
     }
   ],
-  "batch_manifest_rel": "docs/reports/cd_cache_dossiers/batch_critical_20260326.toml"
+  "batch_manifest_rel": "docs/reports/cd_cache_dossiers/batch_dickson_exact_20260327.toml"
 }

@@ -1,7 +1,7 @@
 format_version = 1
 session_id = "cayley_dickson_dickson_1935_exact_pdf"
 created_utc = "2026-03-27T04:20:50.543767320+00:00"
-updated_utc = "2026-03-27T04:20:50.545489177+00:00"
+updated_utc = "2026-03-27T05:19:03.447328275+00:00"
 status = "in_progress"
 
 [source]
@@ -48,4 +48,10 @@ at_utc = "2026-03-27T04:20:50.545489177+00:00"
 action = "promote"
 status = "in_progress"
 note = "spawned_child_sessions=cayley_dickson_dickson_1935_exact_pdf_openalex_org_w2009510707,cayley_dickson_dickson_1935_exact_pdf_ajrccm_atsjournals_org_347_full_pdf_html"
+
+[[events]]
+at_utc = "2026-03-27T05:19:03.447328275+00:00"
+action = "promote"
+status = "in_progress"
+note = "spawned_child_sessions=cayley_dickson_dickson_1935_exact_pdf_projecteuclid_org_download | exact_crossref_content_link_from_doi_metadata"
 

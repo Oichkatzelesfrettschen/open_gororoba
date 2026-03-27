@@ -1,0 +1,99 @@
+format_version = 1
+session_id = "cayley_dickson_dickson_1906_exact_pdf_doi_org_s0002_9947_1906_1500755_5"
+created_utc = "2026-03-27T05:19:14.963486694+00:00"
+updated_utc = "2026-03-27T05:46:01.619058497+00:00"
+status = "downloaded"
+
+[source]
+url = "https://doi.org/10.1090/S0002-9947-1906-1500755-5"
+source_id = "dickson_1906_exact_pdf"
+title = "Dickson 1906 exact PDF body"
+site = "doi_org"
+access_class = "doi_resolver"
+
+[lineage]
+parent_session_id = "cayley_dickson_dickson_1906_exact_pdf"
+parent_manifest = "reports/acquisition_sessions/cayley_dickson_dickson_1906_exact_pdf/session.toml"
+relation = "promoted_child"
+
+[search]
+queue_path = "/home/eirikr/Documents/Projects/CayleyDickson/metadata/project_api/search_queue.toml"
+project_id = "cayley-dickson"
+search_target_id = "dickson_1906_exact_pdf"
+window = "1900-1999"
+priority = "critical"
+kind = "browser_confirmed_free_pdf_lane"
+status = "landing_page_confirmed_pdf_click_challenged"
+why_now = "Immediate dependency for the pre-1919 Dickson classification lane."
+preferred_lanes = [
+    "headed AMS session with human click-through",
+    "session-cookie export into deterministic downloader",
+    "alternate mirror search after the official AMS capture",
+]
+query_seeds = [
+    '"Linear algebras in which division is always uniquely possible"',
+    '"S0002-9947-1906-1500755-5"',
+    '"Dickson" 1906 linear algebras division uniquely possible',
+]
+
+[controller]
+policy_registry_rel = "registry/download_host_policies.toml"
+sessions_dir_rel = "reports/acquisition_sessions"
+transport_substrate = "auto"
+requested_backend = "auto"
+probe_bytes = 1024
+probe_requested = false
+
+[route]
+scheme = "https"
+host = "doi.org"
+retry_class = "curl_first"
+backends = [
+    "curl-cli",
+    "reqwest",
+    "ureq",
+]
+
+[evidence]
+artifact_rel = "/home/eirikr/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/foundational_legacy/cayley_dickson_dickson_1906_exact_pdf_doi_org_s0002_9947_1906_1500755_5/S0002-9947-1906-1500755-5.pdf"
+text_sidecar_rel = "/home/eirikr/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/foundational_legacy/cayley_dickson_dickson_1906_exact_pdf_doi_org_s0002_9947_1906_1500755_5/S0002-9947-1906-1500755-5.md"
+browser_trace_rel = "reports/acquisition_sessions/cayley_dickson_dickson_1906_exact_pdf_doi_org_s0002_9947_1906_1500755_5/browser_network_requests_20260327.txt"
+cookie_jar_rel = "reports/acquisition_sessions/cayley_dickson_dickson_1906_exact_pdf_doi_org_s0002_9947_1906_1500755_5/edge_cookies_20260326.json"
+profile_bundle_rel = "reports/browser_profiles/ams_1906_edge/ams_org/bundle.toml"
+request_capsule_rel = "reports/acquisition_sessions/cayley_dickson_dickson_1906_exact_pdf_doi_org_s0002_9947_1906_1500755_5/request_capsule.json"
+host_scope = "ams_org"
+effective_url = "https://www.ams.org/journals/tran/1906-007-03/S0002-9947-1906-1500755-5/S0002-9947-1906-1500755-5.pdf"
+http_code = 403
+bytes = 1735472
+sha256 = "003746990a6d10604af5c1ab24d25c13a7877a1e05bad6a79b8dd9fbfdddab8c"
+
+[[events]]
+at_utc = "2026-03-27T05:19:14.963486694+00:00"
+action = "promote_child"
+status = "staged"
+note = "promoted from cayley_dickson_dickson_1906_exact_pdf | exact_doi_from_search_target_identifier"
+
+[[events]]
+at_utc = "2026-03-27T05:20:08.934720916+00:00"
+action = "record"
+status = "blocked"
+note = "direct_pdf_endpoint_confirmed_cloudflare_challenge_403_in_headed_browser"
+
+[[events]]
+at_utc = "2026-03-27T05:39:19.322282075+00:00"
+action = "record"
+status = "in_progress"
+note = "real_edge_clearance_cookie_exported_from_dedicated_profile"
+
+[[events]]
+at_utc = "2026-03-27T05:39:54.198448658+00:00"
+action = "consume_handoff"
+status = "blocked"
+note = "consume-handoff failed output=/home/eirikr/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/foundational_legacy/cayley_dickson_dickson_1906_exact_pdf_doi_org_s0002_9947_1906_1500755_5/S0002-9947-1906-1500755-5.pdf headers=3 error=expected pdf artifact but downloader reported non-pdf content_type=text/html; charset=utf-8 final_url=https://pubs.ams.org/journals/tran/1906-007-03/S0002-9947-1906-1500755-5"
+
+[[events]]
+at_utc = "2026-03-27T05:46:01.619058497+00:00"
+action = "consume_handoff"
+status = "downloaded"
+note = "skipped existing artifact during consume-handoff output=/home/eirikr/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/foundational_legacy/cayley_dickson_dickson_1906_exact_pdf_doi_org_s0002_9947_1906_1500755_5/S0002-9947-1906-1500755-5.pdf bytes=1735472 sha256=003746990a6d10604af5c1ab24d25c13a7877a1e05bad6a79b8dd9fbfdddab8c headers=3"
+

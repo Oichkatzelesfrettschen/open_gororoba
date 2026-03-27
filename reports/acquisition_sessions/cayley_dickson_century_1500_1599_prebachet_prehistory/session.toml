@@ -1,0 +1,45 @@
+format_version = 1
+session_id = "cayley_dickson_century_1500_1599_prebachet_prehistory"
+created_utc = "2026-03-27T04:51:33.878692109+00:00"
+updated_utc = "2026-03-27T04:51:33.878692109+00:00"
+status = "staged"
+
+[source]
+source_id = "century_1500_1599_prebachet_prehistory"
+title = "Pre-Bachet arithmetic and symbolic-algebra prehistory lane"
+
+[search]
+queue_path = "/home/eirikr/Documents/Projects/CayleyDickson/metadata/project_api/search_queue.toml"
+project_id = "cayley-dickson"
+search_target_id = "century_1500_1599_prebachet_prehistory"
+window = "1500-1599"
+priority = "high"
+kind = "historical_density_and_normalization"
+status = "not_yet_encoded"
+why_now = "The strict-century contract still begins at 1600-1699, so sixteenth-century precursor witnesses are missing from the machine-readable queue entirely."
+preferred_lanes = [
+    "Cardano arithmetic witness search",
+    "Bombelli algebra and complex-number prehistory lane",
+    "Vieta symbolic-algebra bridge search",
+]
+query_seeds = [
+    '"Cardano" arithmetic algebra 1500 1599',
+    '"Bombelli" algebra imaginary numbers 1572',
+    '"Vieta" symbolic algebra sixteenth century number theory',
+]
+
+[controller]
+sessions_dir_rel = "reports/acquisition_sessions"
+transport_substrate = "auto"
+requested_backend = "auto"
+probe_bytes = 1024
+probe_requested = false
+
+[evidence]
+
+[[events]]
+at_utc = "2026-03-27T04:51:33.878692109+00:00"
+action = "import_dossier_stage_parent"
+status = "staged"
+note = "staged from dossier /home/eirikr/Documents/Projects/CayleyDickson/metadata/project_api/search_queue.toml"
+

@@ -1,0 +1,18 @@
+[GET] https://www.ams.org/journals/tran/1912-013-01/S0002-9947-1912-1500905-3/S0002-9947-1912-1500905-3.pdf?t=1774586421303 => [200] 
+[GET] chrome-extension://mhjfbmdgcfjbbpaeojofohoefgiehjai/pdf_embedder.css => [200] OK
+[GET] chrome-extension://mhjfbmdgcfjbbpaeojofohoefgiehjai/index.html => [200] OK
+[GET] chrome://resources/css/text_defaults_md.css => [200] OK
+[GET] chrome-extension://mhjfbmdgcfjbbpaeojofohoefgiehjai/index.css => [200] OK
+[GET] chrome-extension://mhjfbmdgcfjbbpaeojofohoefgiehjai/main.js => [200] OK
+[GET] chrome-extension://mhjfbmdgcfjbbpaeojofohoefgiehjai/pdf_viewer_wrapper.js => [200] OK
+[GET] chrome://resources/css/roboto.css => [200] OK
+[GET] chrome-extension://mhjfbmdgcfjbbpaeojofohoefgiehjai/browser_api.js => [200] OK
+[GET] chrome-extension://mhjfbmdgcfjbbpaeojofohoefgiehjai/shared.rollup.js => [200] OK
+[GET] chrome://resources/lit/v3_0/lit.rollup.js => [200] OK
+[GET] chrome://resources/js/load_time_data.js => [200] OK
+[GET] chrome-extension://mhjfbmdgcfjbbpaeojofohoefgiehjai/pdf_scripting_api.js => [200] OK
+[GET] chrome://resources/mojo/mojo/public/js/bindings.js => [200] OK
+[GET] chrome://resources/js/assert.js => [200] OK
+[GET] https://www.ams.org/journals/tran/1912-013-01/S0002-9947-1912-1500905-3/S0002-9947-1912-1500905-3.pdf?t=1774586421303 => [200] OK
+[GET] chrome-extension://mhjfbmdgcfjbbpaeojofohoefgiehjai/3fdbec46-0fc8-4555-ace3-d0bac93b861e => [200] 
+[GET] chrome-extension://mhjfbmdgcfjbbpaeojofohoefgiehjai/3fdbec46-0fc8-4555-ace3-d0bac93b861e => [200] 

@@ -229,6 +229,7 @@ struct RankedPaper<'a> {
     paper: &'a Paper,
     canonical_id: String,
     relevance_score: i64,
+    identifier_match: bool,
     source_family: String,
     route_class: String,
     host_class: String,
@@ -392,13 +393,18 @@ async fn run_research_dossier(
     fs::create_dir_all(&output_dir).with_context(|| format!("create {}", output_dir.display()))?;
 
     let tier = parse_source_tier(&args.tier);
-    let sources = resolve_requested_sources(&args.source, &args.source_family)?;
     let engine = SearchEngine::new(ApiKeys::from_env(), tier);
     let project_id = queue.project_id.as_deref().unwrap_or("cayley-dickson");
     let targets = filtered_targets(queue, &args.filters);
     let mut pending = Vec::new();
 
     for target in targets {
+        let requested_source_families = if args.source.is_empty() && args.source_family.is_empty() {
+            default_search_source_families(target)
+        } else {
+            normalize_source_family_list(&args.source_family)
+        };
+        let sources = resolve_requested_sources(&args.source, &requested_source_families)?;
         let binding = binding_for_target(crosswalk, target);
         let queries = deduplicate_query_seeds(target);
         let preferred_source_families = if args.preferred_source_family.is_empty() {
@@ -476,6 +482,16 @@ async fn run_research_dossier(
         );
     }
 
+    let requested_sources = pending
+        .iter()
+        .flat_map(|item| item.dossier.report.requested_sources.iter().cloned())
+        .fold(Vec::new(), |mut acc, source| {
+            if !acc.iter().any(|existing| existing == &source) {
+                acc.push(source);
+            }
+            acc
+        });
+
     let batch_manifest = DossierBatchManifest {
         schema_version: 1,
         generated_at_utc: Utc::now().to_rfc3339(),
@@ -483,7 +499,7 @@ async fn run_research_dossier(
         project_api_root: project_api.repo_root.display().to_string(),
         search_queue_path: project_api.search_queue_path.display().to_string(),
         output_dir: repo_display_path(gororoba_repo_root, &output_dir),
-        requested_sources: sources,
+        requested_sources,
         preferred_source_families: pending
             .first()
             .map(|item| item.dossier.preferred_source_families.clone())
@@ -596,7 +612,7 @@ fn build_dossier(
 ) -> ResearchDossier {
     let ranked_candidates = collapse_ranked_candidates(rank_papers_for_target(
         target,
-        &outcome.papers,
+        &outcome.raw_papers,
         &config.preferred_source_families,
     ));
     let top_hits = ranked_candidates
@@ -704,7 +720,10 @@ fn build_stage_suggestion(
 
     Some(StageSuggestion {
         rank,
-        suggestion_id: sanitize_token(&format!("{}_{}", target.id, ranked.canonical_id)),
+        suggestion_id: sanitize_token(&format!(
+            "{}_{}_{}_{}",
+            target.id, ranked.canonical_id, ranked.host_class, ranked.route_class
+        )),
         canonical_id: ranked.canonical_id.clone(),
         relevance_score: ranked.relevance_score,
         source: ranked.paper.source.clone(),
@@ -1029,6 +1048,7 @@ fn rank_papers_for_target<'a>(
         .map(|paper| {
             let normalized_paper_title = normalize_text_for_match(&paper.title);
             let mut score = 0_i64;
+            let identifier_match = candidate_matches_target_identifier(target, paper);
             if !normalized_target_title.is_empty()
                 && normalized_paper_title.contains(&normalized_target_title)
             {
@@ -1048,6 +1068,11 @@ fn rank_papers_for_target<'a>(
                 if normalized_paper_title.contains(token) {
                     score += 6;
                 }
+            }
+            if identifier_match {
+                score += 220;
+            } else if is_exact_retrieval_kind(target) {
+                score -= 90;
             }
             let source_family = map_source_family(&paper.source);
             if preferred_set.contains(&source_family) {
@@ -1084,6 +1109,7 @@ fn rank_papers_for_target<'a>(
                 paper,
                 canonical_id: canonical_candidate_id(paper),
                 relevance_score: score,
+                identifier_match,
                 source_family,
                 route_class,
                 host_class: classify_host_class(&preferred_candidate_url(paper)),
@@ -1102,27 +1128,64 @@ fn rank_papers_for_target<'a>(
 }
 
 fn collapse_ranked_candidates<'a>(ranked: Vec<RankedPaper<'a>>) -> Vec<RankedPaper<'a>> {
-    let mut best_by_id: HashMap<String, RankedPaper<'a>> = HashMap::new();
+    let mut best_by_variant: HashMap<String, RankedPaper<'a>> = HashMap::new();
     for candidate in ranked {
-        match best_by_id.get(&candidate.canonical_id) {
+        let variant_key = candidate_variant_key(&candidate);
+        match best_by_variant.get(&variant_key) {
             Some(existing)
                 if existing.relevance_score > candidate.relevance_score
                     || (existing.relevance_score == candidate.relevance_score
+                        && route_preference(existing) > route_preference(&candidate))
+                    || (existing.relevance_score == candidate.relevance_score
+                        && route_preference(existing) == route_preference(&candidate)
+                        && existing.identifier_match
+                        && !candidate.identifier_match)
+                    || (existing.relevance_score == candidate.relevance_score
+                        && route_preference(existing) == route_preference(&candidate)
                         && existing.paper.citation_count >= candidate.paper.citation_count) => {}
             _ => {
-                best_by_id.insert(candidate.canonical_id.clone(), candidate);
+                best_by_variant.insert(variant_key, candidate);
             }
         }
     }
-    let mut collapsed = best_by_id.into_values().collect::<Vec<_>>();
+    let mut collapsed = best_by_variant.into_values().collect::<Vec<_>>();
     collapsed.sort_by(|left, right| {
         right
             .relevance_score
             .cmp(&left.relevance_score)
+            .then_with(|| route_preference(right).cmp(&route_preference(left)))
+            .then_with(|| right.identifier_match.cmp(&left.identifier_match))
             .then_with(|| right.paper.citation_count.cmp(&left.paper.citation_count))
             .then_with(|| right.paper.year.cmp(&left.paper.year))
     });
     collapsed
+}
+
+fn candidate_variant_key(candidate: &RankedPaper<'_>) -> String {
+    let candidate_url = preferred_candidate_url(candidate.paper);
+    if !candidate_url.trim().is_empty() {
+        return format!(
+            "{}::{}",
+            candidate.canonical_id,
+            candidate_url.trim().to_ascii_lowercase()
+        );
+    }
+    format!(
+        "{}::{}::{}::{}",
+        candidate.canonical_id,
+        candidate.route_class,
+        candidate.host_class,
+        normalize_source_name(&candidate.paper.source)
+    )
+}
+
+fn route_preference(candidate: &RankedPaper<'_>) -> u8 {
+    match candidate.route_class.as_str() {
+        "direct_pdf" => 3,
+        "doi_resolver" => 2,
+        "openalex_landing" | "crossref_landing" | "metadata_landing" => 1,
+        _ => 0,
+    }
 }
 
 fn normalize_text_for_match(value: &str) -> String {
@@ -1238,12 +1301,44 @@ fn default_preferred_source_families(target: &SearchQueueTarget) -> Vec<String> 
         "metadata_confirmed_pdf_path_resolution" => vec![
             "archive".to_string(),
             "resolver".to_string(),
+            "catalog".to_string(),
             "citation_graph".to_string(),
         ],
         "holder_workflow_followup" | "article_or_chapter_delivery_followup" => vec![
+            "catalog".to_string(),
+            "resolver".to_string(),
+            "citation_graph".to_string(),
+        ],
+        "terminology_and_alias_audit" => vec![
+            "archive".to_string(),
+            "citation_graph".to_string(),
+            "open".to_string(),
+        ],
+        _ => vec![
+            "archive".to_string(),
             "citation_graph".to_string(),
             "resolver".to_string(),
+        ],
+    }
+}
+
+fn default_search_source_families(target: &SearchQueueTarget) -> Vec<String> {
+    match target.kind.as_str() {
+        "browser_confirmed_free_pdf_lane" => vec![
+            "resolver".to_string(),
+            "citation_graph".to_string(),
+            "archive".to_string(),
+        ],
+        "metadata_confirmed_pdf_path_resolution" => vec![
+            "mirror_hunt".to_string(),
+            "archive".to_string(),
+            "resolver".to_string(),
+            "citation_graph".to_string(),
+        ],
+        "holder_workflow_followup" | "article_or_chapter_delivery_followup" => vec![
+            "holder_catalog".to_string(),
             "catalog".to_string(),
+            "resolver".to_string(),
         ],
         "terminology_and_alias_audit" => vec![
             "archive".to_string(),
@@ -1465,10 +1560,11 @@ fn map_source_family(source: &str) -> String {
     match normalize_source_name(source).as_str() {
         "openalex" | "semantic_scholar" => "citation_graph".to_string(),
         "crossref" | "datacite" | "unpaywall" => "resolver".to_string(),
-        "arxiv" | "jstage" | "inspirehep" | "hal" | "dblp" => "archive".to_string(),
-        "europepmc" | "scielo" | "core" | "cinii" | "ads" | "lens" | "google_scholar" => {
-            "catalog".to_string()
+        "arxiv" | "jstage" | "inspirehep" | "hal" | "dblp" | "internet_archive" => {
+            "archive".to_string()
         }
+        "europepmc" | "scielo" | "core" | "cinii" | "ads" | "lens" | "google_scholar"
+        | "open_library" | "google_books" => "catalog".to_string(),
         other => other.to_string(),
     }
 }

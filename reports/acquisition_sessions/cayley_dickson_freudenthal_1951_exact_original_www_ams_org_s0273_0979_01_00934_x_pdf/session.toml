@@ -1,8 +1,8 @@
 format_version = 1
 session_id = "cayley_dickson_freudenthal_1951_exact_original_www_ams_org_s0273_0979_01_00934_x_pdf"
 created_utc = "2026-03-27T04:20:51.067587029+00:00"
-updated_utc = "2026-03-27T04:20:51.067587029+00:00"
-status = "staged"
+updated_utc = "2026-03-27T05:26:56.074071575+00:00"
+status = "deferred"
 
 [source]
 url = "https://www.ams.org/bull/2002-39-02/S0273-0979-01-00934-X/S0273-0979-01-00934-X.pdf"
@@ -62,4 +62,10 @@ at_utc = "2026-03-27T04:20:51.067587029+00:00"
 action = "promote_child"
 status = "staged"
 note = "promoted from cayley_dickson_freudenthal_1951_exact_original | dossier_search_target_id=freudenthal_1951_exact_original | dossier_suggestion_id=freudenthal_1951_exact_original_doi_10_1090_s0273_0979_01_00934_x | canonical_id=doi:10.1090/s0273-0979-01-00934-x | source_family=citation_graph | route_class=direct_pdf"
+
+[[events]]
+at_utc = "2026-03-27T05:26:56.074071575+00:00"
+action = "record"
+status = "deferred"
+note = "legacy exploratory later-review lead; not the 1951 exact Utrecht original"
 

@@ -1,7 +1,7 @@
 format_version = 1
 session_id = "cayley_dickson_dickson_1906_exact_pdf"
 created_utc = "2026-03-27T04:20:49.526277683+00:00"
-updated_utc = "2026-03-27T04:22:33.081603263+00:00"
+updated_utc = "2026-03-27T05:19:14.963807515+00:00"
 status = "in_progress"
 
 [source]
@@ -60,4 +60,10 @@ at_utc = "2026-03-27T04:22:33.081603263+00:00"
 action = "promote"
 status = "in_progress"
 note = "spawned_child_sessions=cayley_dickson_dickson_1906_exact_pdf_127_0_0_1_fixture_pdf_2 | smoke_cache_validation_live"
+
+[[events]]
+at_utc = "2026-03-27T05:19:14.963807515+00:00"
+action = "promote"
+status = "in_progress"
+note = "spawned_child_sessions=cayley_dickson_dickson_1906_exact_pdf_doi_org_s0002_9947_1906_1500755_5 | exact_doi_from_search_target_identifier"
 

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at_utc": "2026-03-27T04:19:39.648800762+00:00",
+  "generated_at_utc": "2026-03-27T04:50:57.798376421+00:00",
   "project_id": "cayley-dickson",
   "project_api_root": "/home/eirikr/Documents/Projects/CayleyDickson",
   "search_queue_path": "/home/eirikr/Documents/Projects/CayleyDickson/metadata/project_api/search_queue.toml",
@@ -18,16 +18,17 @@
     "\"Cayley-Dickson loops\" annihilators emanation tables dyads making zero"
   ],
   "requested_sources": [
-    "openalex",
-    "semantic_scholar",
-    "crossref",
-    "datacite",
-    "unpaywall",
     "arxiv",
     "jstage",
     "inspirehep",
     "hal",
-    "dblp"
+    "dblp",
+    "openalex",
+    "semantic_scholar",
+    "crossref",
+    "europepmc",
+    "datacite",
+    "scielo"
   ],
   "preferred_source_families": [
     "archive",
@@ -46,16 +47,17 @@
     "limit": 3,
     "year_min": 0,
     "requested_sources": [
-      "openalex",
-      "semantic_scholar",
-      "crossref",
-      "datacite",
-      "unpaywall",
       "arxiv",
       "jstage",
       "inspirehep",
       "hal",
-      "dblp"
+      "dblp",
+      "openalex",
+      "semantic_scholar",
+      "crossref",
+      "europepmc",
+      "datacite",
+      "scielo"
     ],
     "raw_result_count": 9,
     "deduplicated_result_count": 6,
@@ -65,26 +67,67 @@
         "limit": 3,
         "year_min": 0,
         "requested_sources": [
-          "openalex",
-          "semantic_scholar",
-          "crossref",
-          "datacite",
-          "unpaywall",
           "arxiv",
           "jstage",
           "inspirehep",
           "hal",
-          "dblp"
+          "dblp",
+          "openalex",
+          "semantic_scholar",
+          "crossref",
+          "europepmc",
+          "datacite",
+          "scielo"
         ],
         "raw_result_count": 1,
         "deduplicated_result_count": 1,
-        "cache_hit_count": 0,
+        "cache_hit_count": 9,
         "source_reports": [
+          {
+            "source": "arxiv",
+            "adapted_query": "all:\"pathions chingons\" AND all:\"routons voudons\" AND all:dekavoudons",
+            "result_count": 0,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "jstage",
+            "adapted_query": "pathions chingons routons voudons dekavoudons",
+            "result_count": 1,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "inspirehep",
+            "adapted_query": "t:\"pathions chingons\" and t:\"routons voudons\" and t:dekavoudons",
+            "result_count": 0,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "hal",
+            "adapted_query": "pathions chingons routons voudons dekavoudons",
+            "result_count": 0,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "dblp",
+            "adapted_query": "pathions chingons routons voudons dekavoudons",
+            "result_count": 0,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          },
           {
             "source": "openalex",
             "adapted_query": "pathions chingons routons voudons dekavoudons",
             "result_count": 0,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -92,13 +135,21 @@
             "source": "semantic_scholar",
             "adapted_query": "pathions chingons routons voudons dekavoudons",
             "result_count": 0,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
           {
             "source": "crossref",
             "adapted_query": "pathions chingons routons voudons dekavoudons",
+            "result_count": 0,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "europepmc",
+            "adapted_query": "\"pathions chingons\" AND \"routons voudons\" AND dekavoudons",
             "result_count": 0,
             "cache_hit": false,
             "error": "",
@@ -108,57 +159,17 @@
             "source": "datacite",
             "adapted_query": "pathions chingons routons voudons dekavoudons",
             "result_count": 0,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
           {
-            "source": "arxiv",
-            "adapted_query": "all:\"pathions chingons\" AND all:\"routons voudons\" AND all:dekavoudons",
-            "result_count": 0,
-            "cache_hit": false,
-            "error": "",
-            "skipped_reason": ""
-          },
-          {
-            "source": "jstage",
-            "adapted_query": "pathions chingons routons voudons dekavoudons",
-            "result_count": 1,
-            "cache_hit": false,
-            "error": "",
-            "skipped_reason": ""
-          },
-          {
-            "source": "inspirehep",
-            "adapted_query": "t:\"pathions chingons\" and t:\"routons voudons\" and t:dekavoudons",
-            "result_count": 0,
-            "cache_hit": false,
-            "error": "",
-            "skipped_reason": ""
-          },
-          {
-            "source": "hal",
+            "source": "scielo",
             "adapted_query": "pathions chingons routons voudons dekavoudons",
             "result_count": 0,
             "cache_hit": false,
-            "error": "",
+            "error": "HTTP error: error decoding response body",
             "skipped_reason": ""
-          },
-          {
-            "source": "dblp",
-            "adapted_query": "pathions chingons routons voudons dekavoudons",
-            "result_count": 0,
-            "cache_hit": false,
-            "error": "",
-            "skipped_reason": ""
-          },
-          {
-            "source": "unpaywall",
-            "adapted_query": "pathions chingons routons voudons dekavoudons",
-            "result_count": 0,
-            "cache_hit": false,
-            "error": "",
-            "skipped_reason": "missing_unpaywall_email"
           }
         ]
       },
@@ -167,26 +178,67 @@
         "limit": 3,
         "year_min": 0,
         "requested_sources": [
-          "openalex",
-          "semantic_scholar",
-          "crossref",
-          "datacite",
-          "unpaywall",
           "arxiv",
           "jstage",
           "inspirehep",
           "hal",
-          "dblp"
+          "dblp",
+          "openalex",
+          "semantic_scholar",
+          "crossref",
+          "europepmc",
+          "datacite",
+          "scielo"
         ],
         "raw_result_count": 4,
         "deduplicated_result_count": 4,
-        "cache_hit_count": 0,
+        "cache_hit_count": 8,
         "source_reports": [
+          {
+            "source": "arxiv",
+            "adapted_query": "all:\"trigintaduonions sedenions\" AND all:\"zero divisors\" AND all:\"box-kites assessors\"",
+            "result_count": 0,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "jstage",
+            "adapted_query": "trigintaduonions sedenions zero divisors box-kites assessors",
+            "result_count": 1,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "inspirehep",
+            "adapted_query": "t:\"trigintaduonions sedenions\" and t:\"zero divisors\" and t:\"box-kites assessors\"",
+            "result_count": 0,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "hal",
+            "adapted_query": "trigintaduonions sedenions zero divisors box-kites assessors",
+            "result_count": 0,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "dblp",
+            "adapted_query": "trigintaduonions sedenions zero divisors box-kites assessors",
+            "result_count": 0,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          },
           {
             "source": "openalex",
             "adapted_query": "trigintaduonions sedenions zero divisors box-kites assessors",
             "result_count": 0,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -202,6 +254,14 @@
             "source": "crossref",
             "adapted_query": "trigintaduonions sedenions zero divisors box-kites assessors",
             "result_count": 3,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "europepmc",
+            "adapted_query": "\"trigintaduonions sedenions\" AND \"zero divisors\" AND \"box-kites assessors\"",
+            "result_count": 0,
             "cache_hit": false,
             "error": "",
             "skipped_reason": ""
@@ -210,57 +270,17 @@
             "source": "datacite",
             "adapted_query": "trigintaduonions sedenions zero divisors box-kites assessors",
             "result_count": 0,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
           {
-            "source": "arxiv",
-            "adapted_query": "all:\"trigintaduonions sedenions\" AND all:\"zero divisors\" AND all:\"box-kites assessors\"",
-            "result_count": 0,
-            "cache_hit": false,
-            "error": "",
-            "skipped_reason": ""
-          },
-          {
-            "source": "jstage",
-            "adapted_query": "trigintaduonions sedenions zero divisors box-kites assessors",
-            "result_count": 1,
-            "cache_hit": false,
-            "error": "",
-            "skipped_reason": ""
-          },
-          {
-            "source": "inspirehep",
-            "adapted_query": "t:\"trigintaduonions sedenions\" and t:\"zero divisors\" and t:\"box-kites assessors\"",
-            "result_count": 0,
-            "cache_hit": false,
-            "error": "",
-            "skipped_reason": ""
-          },
-          {
-            "source": "hal",
+            "source": "scielo",
             "adapted_query": "trigintaduonions sedenions zero divisors box-kites assessors",
             "result_count": 0,
             "cache_hit": false,
-            "error": "",
+            "error": "HTTP error: error decoding response body",
             "skipped_reason": ""
-          },
-          {
-            "source": "dblp",
-            "adapted_query": "trigintaduonions sedenions zero divisors box-kites assessors",
-            "result_count": 0,
-            "cache_hit": false,
-            "error": "",
-            "skipped_reason": ""
-          },
-          {
-            "source": "unpaywall",
-            "adapted_query": "trigintaduonions sedenions zero divisors box-kites assessors",
-            "result_count": 0,
-            "cache_hit": false,
-            "error": "",
-            "skipped_reason": "missing_unpaywall_email"
           }
         ]
       },
@@ -269,26 +289,67 @@
         "limit": 3,
         "year_min": 0,
         "requested_sources": [
-          "openalex",
-          "semantic_scholar",
-          "crossref",
-          "datacite",
-          "unpaywall",
           "arxiv",
           "jstage",
           "inspirehep",
           "hal",
-          "dblp"
+          "dblp",
+          "openalex",
+          "semantic_scholar",
+          "crossref",
+          "europepmc",
+          "datacite",
+          "scielo"
         ],
         "raw_result_count": 4,
         "deduplicated_result_count": 3,
-        "cache_hit_count": 0,
+        "cache_hit_count": 8,
         "source_reports": [
+          {
+            "source": "arxiv",
+            "adapted_query": "all:\"Cayley-Dickson loops\" AND all:\"annihilators emanation\" AND all:\"tables dyads\" AND all:\"making zero\"",
+            "result_count": 0,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "jstage",
+            "adapted_query": "\"Cayley-Dickson loops\" annihilators emanation tables dyads making zero",
+            "result_count": 1,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "inspirehep",
+            "adapted_query": "t:\"Cayley-Dickson loops\" and t:\"annihilators emanation\" and t:\"tables dyads\" and t:\"making zero\"",
+            "result_count": 0,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "hal",
+            "adapted_query": "\"Cayley-Dickson loops\" annihilators emanation tables dyads making zero",
+            "result_count": 0,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "dblp",
+            "adapted_query": "\"Cayley-Dickson loops\" annihilators emanation tables dyads",
+            "result_count": 0,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          },
           {
             "source": "openalex",
             "adapted_query": "\"Cayley-Dickson loops\" annihilators emanation tables dyads making zero",
             "result_count": 0,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -304,6 +365,14 @@
             "source": "crossref",
             "adapted_query": "\"Cayley-Dickson loops\" annihilators emanation tables dyads making zero",
             "result_count": 3,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "europepmc",
+            "adapted_query": "\"Cayley-Dickson loops\" AND \"annihilators emanation\" AND \"tables dyads\" AND \"making zero\"",
+            "result_count": 0,
             "cache_hit": false,
             "error": "",
             "skipped_reason": ""
@@ -312,57 +381,17 @@
             "source": "datacite",
             "adapted_query": "\"Cayley-Dickson loops\" annihilators emanation tables dyads making zero",
             "result_count": 0,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
           {
-            "source": "arxiv",
-            "adapted_query": "all:\"Cayley-Dickson loops\" AND all:\"annihilators emanation\" AND all:\"tables dyads\" AND all:\"making zero\"",
-            "result_count": 0,
-            "cache_hit": false,
-            "error": "",
-            "skipped_reason": ""
-          },
-          {
-            "source": "jstage",
-            "adapted_query": "\"Cayley-Dickson loops\" annihilators emanation tables dyads making zero",
-            "result_count": 1,
-            "cache_hit": false,
-            "error": "",
-            "skipped_reason": ""
-          },
-          {
-            "source": "inspirehep",
-            "adapted_query": "t:\"Cayley-Dickson loops\" and t:\"annihilators emanation\" and t:\"tables dyads\" and t:\"making zero\"",
-            "result_count": 0,
-            "cache_hit": false,
-            "error": "",
-            "skipped_reason": ""
-          },
-          {
-            "source": "hal",
+            "source": "scielo",
             "adapted_query": "\"Cayley-Dickson loops\" annihilators emanation tables dyads making zero",
             "result_count": 0,
             "cache_hit": false,
-            "error": "",
+            "error": "HTTP error: error decoding response body",
             "skipped_reason": ""
-          },
-          {
-            "source": "dblp",
-            "adapted_query": "\"Cayley-Dickson loops\" annihilators emanation tables dyads",
-            "result_count": 0,
-            "cache_hit": false,
-            "error": "",
-            "skipped_reason": ""
-          },
-          {
-            "source": "unpaywall",
-            "adapted_query": "\"Cayley-Dickson loops\" annihilators emanation tables dyads making zero",
-            "result_count": 0,
-            "cache_hit": false,
-            "error": "",
-            "skipped_reason": "missing_unpaywall_email"
           }
         ]
       }
@@ -447,6 +476,22 @@
       "citation_count": 0,
       "doi": "",
       "url": "",
+      "pdf_url": ""
+    },
+    {
+      "rank": 6,
+      "canonical_id": "doi:10.2307/j.ctv224tz56.20",
+      "relevance_score": -36,
+      "source_family": "resolver",
+      "route_class": "doi_resolver",
+      "host_class": "doi_org",
+      "title": "Box Kites at Nags Head",
+      "year": 2016,
+      "source": "crossref",
+      "venue": "Compass and Clock",
+      "citation_count": 0,
+      "doi": "10.2307/j.ctv224tz56.20",
+      "url": "https://doi.org/10.2307/j.ctv224tz56.20",
       "pdf_url": ""
     }
   ],

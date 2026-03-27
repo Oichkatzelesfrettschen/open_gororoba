@@ -1,0 +1,42 @@
+schema_version = 1
+generated_at_utc = "2026-03-27T04:49:22.333733768+00:00"
+project_id = "cayley-dickson"
+project_api_root = "/home/eirikr/Documents/Projects/CayleyDickson"
+search_queue_path = "/home/eirikr/Documents/Projects/CayleyDickson/metadata/project_api/search_queue.toml"
+output_dir = "docs/reports/cd_cache_dossiers"
+requested_sources = [
+    "google_scholar",
+    "crossref",
+    "cinii",
+    "core",
+    "lens",
+    "dblp",
+    "europepmc",
+    "scielo",
+    "ads",
+    "datacite",
+    "unpaywall",
+]
+preferred_source_families = [
+    "catalog",
+    "resolver",
+    "citation_graph",
+]
+year_min = 0
+limit_per_query = 5
+min_relevance = 18
+windows = []
+priorities = []
+statuses = []
+critical_only = false
+
+[[entries]]
+search_target_id = "freudenthal_1951_exact_original"
+title = "Freudenthal 1951 exact Utrecht original"
+window = "1900-1999"
+priority = "critical"
+kind = "holder_workflow_followup"
+dossier_json = "docs/reports/cd_cache_dossiers/freudenthal_1951_exact_original_20260327.json"
+dossier_markdown = "docs/reports/cd_cache_dossiers/freudenthal_1951_exact_original_20260327.md"
+suggestion_count = 1
+

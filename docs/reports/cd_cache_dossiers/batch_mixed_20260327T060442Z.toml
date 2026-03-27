@@ -1,0 +1,48 @@
+schema_version = 1
+generated_at_utc = "2026-03-27T06:04:42.937220771+00:00"
+project_id = "cayley-dickson"
+project_api_root = "/home/eirikr/Documents/Projects/CayleyDickson"
+search_queue_path = "/home/eirikr/Documents/Projects/CayleyDickson/metadata/project_api/search_queue.toml"
+output_dir = "docs/reports/cd_cache_dossiers"
+requested_sources = [
+    "openalex",
+    "semantic_scholar",
+    "crossref",
+    "datacite",
+    "unpaywall",
+    "hal",
+    "europepmc",
+    "scielo",
+    "dblp",
+    "jstage",
+    "core",
+    "cinii",
+    "lens",
+    "google_scholar",
+    "arxiv",
+    "inspirehep",
+]
+preferred_source_families = [
+    "archive",
+    "resolver",
+    "catalog",
+    "citation_graph",
+]
+year_min = 0
+limit_per_query = 8
+min_relevance = 22
+windows = []
+priorities = []
+statuses = []
+critical_only = false
+
+[[entries]]
+search_target_id = "dickson_1935_exact_pdf"
+title = "Dickson 1935 stable direct PDF endpoint"
+window = "1900-1999"
+priority = "high"
+kind = "metadata_confirmed_pdf_path_resolution"
+dossier_json = "docs/reports/cd_cache_dossiers/dickson_1935_exact_pdf_20260327.json"
+dossier_markdown = "docs/reports/cd_cache_dossiers/dickson_1935_exact_pdf_20260327.md"
+suggestion_count = 1
+

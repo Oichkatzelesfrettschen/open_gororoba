@@ -1,0 +1,81 @@
+format_version = 1
+session_id = "cayley_dickson_dickson_1935_exact_pdf_projecteuclid_org_download"
+created_utc = "2026-03-27T05:19:03.444824350+00:00"
+updated_utc = "2026-03-27T05:58:56.992318257+00:00"
+status = "blocked"
+
+[source]
+url = "https://projecteuclid.org/journalArticle/Download?urlid=10.1215/S0012-7094-35-00112-0"
+source_id = "dickson_1935_exact_pdf"
+title = "Dickson 1935 stable direct PDF endpoint"
+site = "projecteuclid_org"
+access_class = "projecteuclid_download"
+
+[lineage]
+parent_session_id = "cayley_dickson_dickson_1935_exact_pdf"
+parent_manifest = "reports/acquisition_sessions/cayley_dickson_dickson_1935_exact_pdf/session.toml"
+relation = "promoted_child"
+
+[search]
+queue_path = "/home/eirikr/Documents/Projects/CayleyDickson/metadata/project_api/search_queue.toml"
+project_id = "cayley-dickson"
+search_target_id = "dickson_1935_exact_pdf"
+window = "1900-1999"
+priority = "high"
+kind = "metadata_confirmed_pdf_path_resolution"
+status = "bibliographic_record_confirmed_pdf_href_unresolved"
+why_now = "This is the clean bridge between the earlier Dickson line and the later Jacobson composition lane."
+preferred_lanes = [
+    "Celebratio page inspection in headed browser",
+    "linked media path resolution",
+    "secondary catalog and mirror search",
+]
+query_seeds = [
+    '"Linear algebras with associativity not assumed"',
+    '"Dickson" 1935 associativity not assumed',
+    '"Celebratio" Dickson article 80 pdf',
+]
+
+[controller]
+policy_registry_rel = "registry/download_host_policies.toml"
+sessions_dir_rel = "reports/acquisition_sessions"
+transport_substrate = "auto"
+requested_backend = "auto"
+probe_bytes = 1024
+probe_requested = false
+
+[route]
+scheme = "https"
+host = "projecteuclid.org"
+retry_class = "probe_first"
+backends = [
+    "reqwest",
+    "curl-cli",
+    "ureq",
+]
+
+[evidence]
+browser_trace_rel = "reports/acquisition_sessions/cayley_dickson_dickson_1935_exact_pdf_projecteuclid_org_download/browser_network_requests_20260327.txt"
+profile_bundle_rel = "reports/browser_profiles/projecteuclid_1935_edge/projecteuclid_org/bundle.toml"
+request_capsule_rel = "reports/acquisition_sessions/cayley_dickson_dickson_1935_exact_pdf_projecteuclid_org_download/request_capsule.json"
+host_scope = "projecteuclid_org"
+effective_url = "https://projecteuclid.org/journals/duke-mathematical-journal/volume-1/issue-2/Linear-algebras-with-associativity-not-assumed/10.1215/S0012-7094-35-00112-0.short"
+
+[[events]]
+at_utc = "2026-03-27T05:19:03.444824350+00:00"
+action = "promote_child"
+status = "staged"
+note = "promoted from cayley_dickson_dickson_1935_exact_pdf | exact_crossref_content_link_from_doi_metadata"
+
+[[events]]
+at_utc = "2026-03-27T05:20:35.271064863+00:00"
+action = "record"
+status = "blocked"
+note = "exact_projecteuclid_download_endpoint_reaches_hcaptcha_gate_in_headed_browser"
+
+[[events]]
+at_utc = "2026-03-27T05:58:56.992318257+00:00"
+action = "record"
+status = "blocked"
+note = "real_edge_window_confirms_signin_purchase_modal_not_human_verification_gate | screenshot=reports/acquisition_sessions/cayley_dickson_dickson_1935_exact_pdf_projecteuclid_org_download/edge_window_1935_20260326.png"
+
