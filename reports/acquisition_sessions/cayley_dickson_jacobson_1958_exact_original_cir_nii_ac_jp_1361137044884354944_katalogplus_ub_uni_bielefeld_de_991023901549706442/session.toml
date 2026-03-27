@@ -1,0 +1,77 @@
+format_version = 1
+session_id = "cayley_dickson_jacobson_1958_exact_original_cir_nii_ac_jp_1361137044884354944_katalogplus_ub_uni_bielefeld_de_991023901549706442"
+created_utc = "2026-03-27T07:00:53.279923848+00:00"
+updated_utc = "2026-03-27T07:25:09.683182616+00:00"
+status = "in_progress"
+
+[source]
+url = "https://katalogplus.ub.uni-bielefeld.de/Record/991023901549706442"
+source_id = "cinii"
+title = "Composition algebras and their automorphisms"
+site = "katalogplus_ub_uni_bielefeld_de"
+access_class = "delivery_record"
+
+[lineage]
+parent_session_id = "cayley_dickson_jacobson_1958_exact_original_cir_nii_ac_jp_1361137044884354944"
+parent_manifest = "reports/acquisition_sessions/cayley_dickson_jacobson_1958_exact_original_cir_nii_ac_jp_1361137044884354944/session.toml"
+relation = "promoted_child"
+
+[search]
+queue_path = "/home/eirikr/Documents/Projects/CayleyDickson/metadata/project_api/search_queue.toml"
+project_id = "cayley-dickson"
+search_target_id = "jacobson_1958_exact_original"
+window = "1900-1999"
+priority = "critical"
+kind = "article_or_chapter_delivery_followup"
+status = "delivery_workflow_in_progress"
+why_now = "This remains the sharpest exact composition-algebra hole in the corpus."
+preferred_lanes = [
+    "Bielefeld article-only follow-up",
+    "SUBITO authenticated order lane",
+    "TIB or Springer article-delivery escalation",
+]
+query_seeds = [
+    '"Composition Algebras and Their Automorphisms"',
+    '"10.1007/BF02854388"',
+    '"0817634118" Jacobson volume 2',
+]
+
+[controller]
+policy_registry_rel = "registry/download_host_policies.toml"
+sessions_dir_rel = "reports/acquisition_sessions"
+transport_substrate = "auto"
+requested_backend = "auto"
+probe_bytes = 1024
+probe_requested = false
+
+[route]
+scheme = "https"
+host = "katalogplus.ub.uni-bielefeld.de"
+retry_class = "probe_first"
+backends = [
+    "reqwest",
+    "curl-cli",
+    "ureq",
+]
+
+[evidence]
+host_scope = "katalogplus_ub_uni_bielefeld_de"
+
+[[events]]
+at_utc = "2026-03-27T07:00:53.279923848+00:00"
+action = "promote_child"
+status = "staged"
+note = "promoted from cayley_dickson_jacobson_1958_exact_original_cir_nii_ac_jp_1361137044884354944 | promoted from CiNii exact record into Bielefeld article-only delivery lane"
+
+[[events]]
+at_utc = "2026-03-27T07:24:46.665844134+00:00"
+action = "record"
+status = "in_progress"
+note = "Bielefeld article-only follow-up already sent; awaiting reply or internal service redirect."
+
+[[events]]
+at_utc = "2026-03-27T07:25:09.683182616+00:00"
+action = "record"
+status = "in_progress"
+note = "Bielefeld article-only follow-up already sent; awaiting reply or internal service redirect."
+

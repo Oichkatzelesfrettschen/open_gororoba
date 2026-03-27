@@ -1,0 +1,77 @@
+format_version = 1
+session_id = "cayley_dickson_freudenthal_1951_exact_original_cir_nii_ac_jp_1570291224321248768_ndlsearch_ndl_go_jp_search"
+created_utc = "2026-03-27T07:00:52.759052739+00:00"
+updated_utc = "2026-03-27T07:25:09.044524593+00:00"
+status = "deferred"
+
+[source]
+url = "https://ndlsearch.ndl.go.jp/search?keyword=Oktaven%2C%20Ausnahmegruppen%20und%20Oktavengeometrie"
+source_id = "cinii"
+title = "Oktaven, Ausnahmegruppen und Oktavengeometrie"
+site = "ndlsearch_ndl_go_jp"
+access_class = "catalog_search"
+
+[lineage]
+parent_session_id = "cayley_dickson_freudenthal_1951_exact_original_cir_nii_ac_jp_1570291224321248768"
+parent_manifest = "reports/acquisition_sessions/cayley_dickson_freudenthal_1951_exact_original_cir_nii_ac_jp_1570291224321248768/session.toml"
+relation = "promoted_child"
+
+[search]
+queue_path = "/home/eirikr/Documents/Projects/CayleyDickson/metadata/project_api/search_queue.toml"
+project_id = "cayley-dickson"
+search_target_id = "freudenthal_1951_exact_original"
+window = "1900-1999"
+priority = "critical"
+kind = "holder_workflow_followup"
+status = "holder_bound_exact_original"
+why_now = "This remains the sharpest exact octonion-era hole in the corpus."
+preferred_lanes = [
+    "Heidelberg reproduction order follow-up",
+    "Leipzig alternate-holder request lane",
+    "K10plus and local-holder metadata reuse for scan requests",
+]
+query_seeds = [
+    '"Oktaven, Ausnahmegruppen und Oktavengeometrie"',
+    '"1178680002" Freudenthal',
+    '"1356848117" Freudenthal',
+]
+
+[controller]
+policy_registry_rel = "registry/download_host_policies.toml"
+sessions_dir_rel = "reports/acquisition_sessions"
+transport_substrate = "auto"
+requested_backend = "auto"
+probe_bytes = 1024
+probe_requested = false
+
+[route]
+scheme = "https"
+host = "ndlsearch.ndl.go.jp"
+retry_class = "probe_first"
+backends = [
+    "reqwest",
+    "curl-cli",
+    "ureq",
+]
+
+[evidence]
+host_scope = "ndlsearch_ndl_go_jp"
+
+[[events]]
+at_utc = "2026-03-27T07:00:52.759052739+00:00"
+action = "promote_child"
+status = "staged"
+note = "promoted from cayley_dickson_freudenthal_1951_exact_original_cir_nii_ac_jp_1570291224321248768 | promoted from CiNii exact record into NDL catalog search lane"
+
+[[events]]
+at_utc = "2026-03-27T07:24:45.997776861+00:00"
+action = "record"
+status = "deferred"
+note = "NDL live search resolved only 1960 revised editions, not the exact 1951 original; keep as supporting metadata lane only."
+
+[[events]]
+at_utc = "2026-03-27T07:25:09.044524593+00:00"
+action = "record"
+status = "deferred"
+note = "NDL live search resolved only 1960 revised editions, not the exact 1951 original; keep as supporting metadata lane only."
+

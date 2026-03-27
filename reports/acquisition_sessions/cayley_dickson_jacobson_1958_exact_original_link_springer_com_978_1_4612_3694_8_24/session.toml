@@ -1,0 +1,83 @@
+format_version = 1
+session_id = "cayley_dickson_jacobson_1958_exact_original_link_springer_com_978_1_4612_3694_8_24"
+created_utc = "2026-03-27T06:53:16.207354619+00:00"
+updated_utc = "2026-03-27T07:29:58-07:00"
+status = "in_progress"
+
+[source]
+url = "https://link.springer.com/chapter/10.1007/978-1-4612-3694-8_24"
+source_id = "google_scholar"
+title = "Composition algebras and their automorphisms"
+site = "link_springer_com"
+access_class = "metadata_landing"
+
+[lineage]
+parent_session_id = "cayley_dickson_jacobson_1958_exact_original"
+parent_manifest = "reports/acquisition_sessions/cayley_dickson_jacobson_1958_exact_original/session.toml"
+relation = "promoted_child"
+
+[search]
+queue_path = "/home/eirikr/Documents/Projects/CayleyDickson/metadata/project_api/search_queue.toml"
+project_id = "cayley-dickson"
+search_target_id = "jacobson_1958_exact_original"
+window = "1900-1999"
+priority = "critical"
+kind = "article_or_chapter_delivery_followup"
+status = "delivery_workflow_in_progress"
+why_now = "This remains the sharpest exact composition-algebra hole in the corpus."
+preferred_lanes = [
+    "Bielefeld article-only follow-up",
+    "SUBITO authenticated order lane",
+    "TIB or Springer article-delivery escalation",
+]
+query_seeds = [
+    '"Composition Algebras and Their Automorphisms"',
+    '"10.1007/BF02854388"',
+    '"0817634118" Jacobson volume 2',
+]
+
+[controller]
+policy_registry_rel = "registry/download_host_policies.toml"
+sessions_dir_rel = "reports/acquisition_sessions"
+transport_substrate = "auto"
+requested_backend = "auto"
+probe_bytes = 1024
+probe_requested = false
+
+[route]
+scheme = "https"
+host = "link.springer.com"
+retry_class = "curl_first"
+policy_name = "link-springer"
+backends = [
+    "curl-cli",
+    "reqwest",
+    "ureq",
+]
+
+[evidence]
+host_scope = "link_springer_com"
+
+[[events]]
+at_utc = "2026-03-27T06:53:16.207354619+00:00"
+action = "promote_child"
+status = "staged"
+note = "promoted from cayley_dickson_jacobson_1958_exact_original | dossier_search_target_id=jacobson_1958_exact_original | dossier_suggestion_id=jacobson_1958_exact_original_title_composition_algebras_and_their_automorphisms_link_springer_com_metadata_landing | canonical_id=title:composition_algebras_and_their_automorphisms | source_family=catalog | route_class=metadata_landing"
+
+[[events]]
+at_utc = "2026-03-27T07:25:11.689041233+00:00"
+action = "record"
+status = "in_progress"
+note = "Springer chapter landing remains a viable reprint-equivalent fallback for chapter-level delivery or purchase."
+
+[[events]]
+at_utc = "2026-03-27T07:29:58-07:00"
+action = "record"
+status = "in_progress"
+note = "Springer fallback sharpened in browser. Full text requires Log in via an institution, but a preview PDF endpoint exists at page-one.springer.com for first-page witness and rights/permissions remain available through the Springer reprints flow."
+
+[[events]]
+at_utc = "2026-03-27T07:30:38-07:00"
+action = "record"
+status = "in_progress"
+note = "Springer preview witness captured successfully as reports/acquisition_sessions/cayley_dickson_jacobson_1958_exact_original_link_springer_com_978_1_4612_3694_8_24/jacobson_1958_springer_preview_20260327.pdf with SHA-256 0db5b4179e0e79e7ba16218b79e48598a40a06c79ae4fe1771478db88cfae7ea. Extracted text confirms this is the Jacobson article reprinted in the 1989 collected papers, but it is not the exact 1958 original."

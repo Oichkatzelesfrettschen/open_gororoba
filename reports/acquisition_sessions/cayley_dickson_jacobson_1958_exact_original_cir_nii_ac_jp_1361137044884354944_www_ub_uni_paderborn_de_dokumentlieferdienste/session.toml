@@ -1,0 +1,83 @@
+format_version = 1
+session_id = "cayley_dickson_jacobson_1958_exact_original_cir_nii_ac_jp_1361137044884354944_www_ub_uni_paderborn_de_dokumentlieferdienste"
+created_utc = "2026-03-27T07:00:54.329859413+00:00"
+updated_utc = "2026-03-27T07:25:49.940852016+00:00"
+status = "blocked"
+
+[source]
+url = "https://www.ub.uni-paderborn.de/nutzen-und-leihen/dokumentlieferdienste"
+source_id = "cinii"
+title = "Composition algebras and their automorphisms"
+site = "www_ub_uni_paderborn_de"
+access_class = "delivery_portal"
+
+[lineage]
+parent_session_id = "cayley_dickson_jacobson_1958_exact_original_cir_nii_ac_jp_1361137044884354944"
+parent_manifest = "reports/acquisition_sessions/cayley_dickson_jacobson_1958_exact_original_cir_nii_ac_jp_1361137044884354944/session.toml"
+relation = "promoted_child"
+
+[search]
+queue_path = "/home/eirikr/Documents/Projects/CayleyDickson/metadata/project_api/search_queue.toml"
+project_id = "cayley-dickson"
+search_target_id = "jacobson_1958_exact_original"
+window = "1900-1999"
+priority = "critical"
+kind = "article_or_chapter_delivery_followup"
+status = "delivery_workflow_in_progress"
+why_now = "This remains the sharpest exact composition-algebra hole in the corpus."
+preferred_lanes = [
+    "Bielefeld article-only follow-up",
+    "SUBITO authenticated order lane",
+    "TIB or Springer article-delivery escalation",
+]
+query_seeds = [
+    '"Composition Algebras and Their Automorphisms"',
+    '"10.1007/BF02854388"',
+    '"0817634118" Jacobson volume 2',
+]
+
+[controller]
+policy_registry_rel = "registry/download_host_policies.toml"
+sessions_dir_rel = "reports/acquisition_sessions"
+transport_substrate = "auto"
+requested_backend = "auto"
+probe_bytes = 1024
+probe_requested = false
+
+[route]
+scheme = "https"
+host = "www.ub.uni-paderborn.de"
+retry_class = "probe_first"
+backends = [
+    "reqwest",
+    "curl-cli",
+    "ureq",
+]
+
+[evidence]
+host_scope = "www_ub_uni_paderborn_de"
+
+[[events]]
+at_utc = "2026-03-27T07:00:54.329859413+00:00"
+action = "promote_child"
+status = "staged"
+note = "promoted from cayley_dickson_jacobson_1958_exact_original_cir_nii_ac_jp_1361137044884354944 | promoted from CiNii exact record into Paderborn/TIB document-delivery lane"
+
+[[events]]
+at_utc = "2026-03-27T07:24:43.992482734+00:00"
+action = "promote"
+status = "in_progress"
+note = "spawned_child_sessions=cayley_dickson_jacobson_1958_exact_original_cir_nii_ac_jp_1361137044884354944_www_ub_uni_paderborn_de_dokumentlieferdienste_site_child_01 | promoted from Paderborn TIB lane into direct TIB customer service email endpoint"
+
+[[events]]
+at_utc = "2026-03-27T07:25:11.012455677+00:00"
+action = "record"
+status = "blocked"
+note = "Paderborn confirms TIB as fallback, but direct TIB web route is blocked from this host by Anubis; use customerservice@tib.eu as the next escalation lane."
+
+[[events]]
+at_utc = "2026-03-27T07:25:49.940852016+00:00"
+action = "record"
+status = "blocked"
+note = "Visual blocker evidence captured at reports/acquisition_sessions/cayley_dickson_jacobson_1958_exact_original_cir_nii_ac_jp_1361137044884354944_www_ub_uni_paderborn_de_dokumentlieferdienste/tib_anubis_gate_20260327.png."
+
