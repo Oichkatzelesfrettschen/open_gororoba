@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at_utc": "2026-03-27T06:07:34.485295292+00:00",
+  "generated_at_utc": "2026-03-27T06:14:34.986358230+00:00",
   "project_id": "cayley-dickson",
   "project_api_root": "/home/eirikr/Documents/Projects/CayleyDickson",
   "search_queue_path": "/home/eirikr/Documents/Projects/CayleyDickson/metadata/project_api/search_queue.toml",
@@ -28,6 +28,9 @@
     "scielo",
     "dblp",
     "jstage",
+    "open_library",
+    "internet_archive",
+    "google_books",
     "core",
     "cinii",
     "lens",
@@ -63,6 +66,9 @@
       "scielo",
       "dblp",
       "jstage",
+      "open_library",
+      "internet_archive",
+      "google_books",
       "core",
       "cinii",
       "lens",
@@ -70,8 +76,8 @@
       "arxiv",
       "inspirehep"
     ],
-    "raw_result_count": 51,
-    "deduplicated_result_count": 44,
+    "raw_result_count": 59,
+    "deduplicated_result_count": 49,
     "query_reports": [
       {
         "query": "\"Linear algebras with associativity not assumed\"",
@@ -88,6 +94,9 @@
           "scielo",
           "dblp",
           "jstage",
+          "open_library",
+          "internet_archive",
+          "google_books",
           "core",
           "cinii",
           "lens",
@@ -95,8 +104,8 @@
           "arxiv",
           "inspirehep"
         ],
-        "raw_result_count": 18,
-        "deduplicated_result_count": 13,
+        "raw_result_count": 26,
+        "deduplicated_result_count": 18,
         "cache_hit_count": 11,
         "source_reports": [
           {
@@ -110,9 +119,9 @@
           {
             "source": "semantic_scholar",
             "adapted_query": "\"Linear algebras with associativity not assumed\"",
-            "result_count": 0,
+            "result_count": 8,
             "cache_hit": false,
-            "error": "Rate limited",
+            "error": "",
             "skipped_reason": ""
           },
           {
@@ -160,7 +169,7 @@
             "adapted_query": "\"Linear algebras with associativity assumed\"",
             "result_count": 0,
             "cache_hit": false,
-            "error": "HTTP error: error decoding response body",
+            "error": "",
             "skipped_reason": ""
           },
           {
@@ -169,6 +178,30 @@
             "result_count": 0,
             "cache_hit": true,
             "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "open_library",
+            "adapted_query": "\"Linear algebras with associativity not assumed\"",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "internet_archive",
+            "adapted_query": "\"Linear algebras with associativity not assumed\"",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "google_books",
+            "adapted_query": "\"Linear algebras with associativity not assumed\"",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "Rate limited",
             "skipped_reason": ""
           },
           {
@@ -244,6 +277,9 @@
           "scielo",
           "dblp",
           "jstage",
+          "open_library",
+          "internet_archive",
+          "google_books",
           "core",
           "cinii",
           "lens",
@@ -316,7 +352,7 @@
             "adapted_query": "\"Dickson\" 1935 associativity assumed",
             "result_count": 0,
             "cache_hit": false,
-            "error": "HTTP error: error decoding response body",
+            "error": "",
             "skipped_reason": ""
           },
           {
@@ -325,6 +361,30 @@
             "result_count": 0,
             "cache_hit": true,
             "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "open_library",
+            "adapted_query": "\"Dickson\" 1935 associativity not assumed",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "internet_archive",
+            "adapted_query": "\"Dickson\" 1935 associativity not assumed",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "google_books",
+            "adapted_query": "\"Dickson\" 1935 associativity not assumed",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "Rate limited",
             "skipped_reason": ""
           },
           {
@@ -400,6 +460,9 @@
           "scielo",
           "dblp",
           "jstage",
+          "open_library",
+          "internet_archive",
+          "google_books",
           "core",
           "cinii",
           "lens",
@@ -472,7 +535,7 @@
             "adapted_query": "\"Celebratio\" Dickson article 80 pdf",
             "result_count": 0,
             "cache_hit": false,
-            "error": "HTTP error: error decoding response body",
+            "error": "",
             "skipped_reason": ""
           },
           {
@@ -481,6 +544,30 @@
             "result_count": 0,
             "cache_hit": true,
             "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "open_library",
+            "adapted_query": "\"Celebratio\" Dickson article 80 pdf",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "internet_archive",
+            "adapted_query": "\"Celebratio\" Dickson article 80 pdf",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "google_books",
+            "adapted_query": "\"Celebratio\" Dickson article 80 pdf",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "Rate limited",
             "skipped_reason": ""
           },
           {
@@ -578,6 +665,22 @@
     },
     {
       "rank": 3,
+      "canonical_id": "doi:10.1215/s0012-7094-35-00112-0",
+      "relevance_score": 106,
+      "source_family": "citation_graph",
+      "route_class": "generic_landing",
+      "host_class": "www_semanticscholar_org",
+      "title": "Linear algebras with associativity not assumed",
+      "year": 1935,
+      "source": "semantic_scholar",
+      "venue": "",
+      "citation_count": 64,
+      "doi": "10.1215/S0012-7094-35-00112-0",
+      "url": "https://www.semanticscholar.org/paper/fd3d64c4d98c38ba5aab882abab1c29ee57bf94f",
+      "pdf_url": ""
+    },
+    {
+      "rank": 4,
       "canonical_id": "title:linear_algebras_with_associativity_not_assumed",
       "relevance_score": 106,
       "source_family": "catalog",
@@ -593,7 +696,7 @@
       "pdf_url": ""
     },
     {
-      "rank": 4,
+      "rank": 5,
       "canonical_id": "doi:10.1215/s0012-7094-35-00112-0",
       "relevance_score": 74,
       "source_family": "catalog",
@@ -609,7 +712,7 @@
       "pdf_url": ""
     },
     {
-      "rank": 5,
+      "rank": 6,
       "canonical_id": "doi:10.1086/216818",
       "relevance_score": 6,
       "source_family": "resolver",
@@ -625,7 +728,7 @@
       "pdf_url": "http://www.journals.uchicago.edu/doi/pdf/10.1086/216818"
     },
     {
-      "rank": 6,
+      "rank": 7,
       "canonical_id": "doi:10.1016/b978-1-4831-6671-1.50038-1",
       "relevance_score": 6,
       "source_family": "resolver",
@@ -641,7 +744,7 @@
       "pdf_url": "https://api.elsevier.com/content/article/PII:B9781483166711500381?httpAccept=text/xml"
     },
     {
-      "rank": 7,
+      "rank": 8,
       "canonical_id": "doi:10.25291/vr/1935-vlr-168",
       "relevance_score": 2,
       "source_family": "resolver",
@@ -657,7 +760,7 @@
       "pdf_url": ""
     },
     {
-      "rank": 8,
+      "rank": 9,
       "canonical_id": "doi:10.1136/bmj.2.3899.602-a",
       "relevance_score": -6,
       "source_family": "resolver",
@@ -673,7 +776,7 @@
       "pdf_url": "https://syndication.highwire.org/content/doi/10.1136/bmj.2.3899.602-a"
     },
     {
-      "rank": 9,
+      "rank": 10,
       "canonical_id": "doi:10.1136/bmj.1.3882.1144-b",
       "relevance_score": -6,
       "source_family": "resolver",
@@ -689,7 +792,7 @@
       "pdf_url": "https://syndication.highwire.org/content/doi/10.1136/bmj.1.3882.1144-b"
     },
     {
-      "rank": 10,
+      "rank": 11,
       "canonical_id": "doi:10.1090/s0002-9947-1944-0011083-5",
       "relevance_score": -34,
       "source_family": "citation_graph",
@@ -705,7 +808,55 @@
       "pdf_url": "https://www.ams.org/tran/1944-056-00/S0002-9947-1944-0011083-5/S0002-9947-1944-0011083-5.pdf"
     },
     {
-      "rank": 11,
+      "rank": 12,
+      "canonical_id": "title:cssall_web_site_http_l1vww_ud1_ac_zi1_80_te_art_alternation_home_page_http_l_ww_v_1_dn_ac_1a_80_stewart_altemat_html",
+      "relevance_score": -46,
+      "source_family": "catalog",
+      "route_class": "direct_pdf",
+      "host_class": "alternation_ukzn_ac_za",
+      "title": "CSSALL, web-site: http:/l1vww. ud1~, ac. zi1: 80/-~ te\\~ art~ Alternation home page: http: l/ww~ v. 1~ dn. ac. 1a: 80/-stewart~ altemat. html",
+      "year": 0,
+      "source": "google_scholar",
+      "venue": "alternation.ukzn.ac.za",
+      "citation_count": 0,
+      "doi": "",
+      "url": "https://alternation.ukzn.ac.za/wp-content/uploads/2025/11/Alternation-3.2-1996-min.pdf",
+      "pdf_url": "https://alternation.ukzn.ac.za/wp-content/uploads/2025/11/Alternation-3.2-1996-min.pdf"
+    },
+    {
+      "rank": 13,
+      "canonical_id": "title:wj_dominik_ed_scholia_index_volumes_1_20_1992_2011_otago_department_of_classics_2012_52_pp",
+      "relevance_score": -46,
+      "source_family": "catalog",
+      "route_class": "direct_pdf",
+      "host_class": "www_academia_edu",
+      "title": "WJ Dominik (ed.), Scholia Index: Volumes 1-20 (1992-2011)(Otago: Department of Classics 2012). 52 pp.",
+      "year": 0,
+      "source": "google_scholar",
+      "venue": "academia.edu",
+      "citation_count": 0,
+      "doi": "",
+      "url": "https://www.academia.edu/download/121890537/ScholiaIndex1_20_Dominik_1992_2011.pdf",
+      "pdf_url": "https://www.academia.edu/download/121890537/ScholiaIndex1_20_Dominik_1992_2011.pdf"
+    },
+    {
+      "rank": 14,
+      "canonical_id": "title:mathematica",
+      "relevance_score": -46,
+      "source_family": "catalog",
+      "route_class": "direct_pdf",
+      "host_class": "celebratio_org",
+      "title": "MATHEMATICA",
+      "year": 0,
+      "source": "google_scholar",
+      "venue": "celebratio.org",
+      "citation_count": 0,
+      "doi": "",
+      "url": "https://celebratio.org/media/essaypdf/75_main.pdf",
+      "pdf_url": "https://celebratio.org/media/essaypdf/75_main.pdf"
+    },
+    {
+      "rank": 15,
       "canonical_id": "title:the_later_mediaeval_doctrine_of_the_eucharistic_sacrifice",
       "relevance_score": -46,
       "source_family": "catalog",
@@ -721,20 +872,20 @@
       "pdf_url": "https://books.google.com/books?hl=en&lr=&id=_2RIAAAAYAAJ&oi=fnd&pg=PA6&dq=%22Celebratio%22+Dickson+article+80+pdf&ots=K9XUUtWb8X&sig=b4hK9ouhHmZsLJpYz6wUPtadTgg"
     },
     {
-      "rank": 12,
-      "canonical_id": "title:wj_dominik_ed_scholia_index_volumes_1_20_1992_2011_otago_department_of_classics_2012_52_pp",
-      "relevance_score": -46,
-      "source_family": "catalog",
-      "route_class": "direct_pdf",
-      "host_class": "www_academia_edu",
-      "title": "WJ Dominik (ed.), Scholia Index: Volumes 1-20 (1992-2011)(Otago: Department of Classics 2012). 52 pp.",
+      "rank": 16,
+      "canonical_id": "doi:10.5198/jtlu.2017.890.s320",
+      "relevance_score": -60,
+      "source_family": "resolver",
+      "route_class": "generic_landing",
+      "host_class": "www_jtlu_org",
+      "title": "Original Article PDF",
       "year": 0,
-      "source": "google_scholar",
-      "venue": "academia.edu",
-      "citation_count": 0,
-      "doi": "",
-      "url": "https://www.academia.edu/download/121890537/ScholiaIndex1_20_Dominik_1992_2011.pdf",
-      "pdf_url": "https://www.academia.edu/download/121890537/ScholiaIndex1_20_Dominik_1992_2011.pdf"
+      "source": "crossref",
+      "venue": "",
+      "citation_count": 2,
+      "doi": "10.5198/jtlu.2017.890.s320",
+      "url": "https://www.jtlu.org/index.php/jtlu/article/downloadSuppFile/890/320",
+      "pdf_url": ""
     }
   ],
   "stage_suggestions": [
@@ -772,6 +923,22 @@
     },
     {
       "rank": 3,
+      "suggestion_id": "dickson_1935_exact_pdf_doi_10_1215_s0012_7094_35_00112_0_www_semanticscholar_org_generic_landing",
+      "canonical_id": "doi:10.1215/s0012-7094-35-00112-0",
+      "relevance_score": 106,
+      "source": "semantic_scholar",
+      "source_family": "citation_graph",
+      "route_class": "generic_landing",
+      "host_class": "www_semanticscholar_org",
+      "paper_title": "Linear algebras with associativity not assumed",
+      "action": "stage_browser_landing_child",
+      "candidate_url": "https://www.semanticscholar.org/paper/fd3d64c4d98c38ba5aab882abab1c29ee57bf94f",
+      "command": "cargo run -q -p gororoba_cli_data --bin cd-cache-adapter -- --project-api-root '/home/eirikr/Documents/Projects/CayleyDickson' --gororoba-repo-root '/home/eirikr/Github/open_gororoba' stage-from-dossier --dossier 'docs/reports/cd_cache_dossiers/dickson_1935_exact_pdf_20260327.json' --rank '3'",
+      "rationale": "Candidate from semantic_scholar [citation_graph] with relevance score 106 and 64 citations for queue target dickson_1935_exact_pdf.",
+      "default_selected": false
+    },
+    {
+      "rank": 4,
       "suggestion_id": "dickson_1935_exact_pdf_title_linear_algebras_with_associativity_not_assumed_projecteuclid_org_generic_landing",
       "canonical_id": "title:linear_algebras_with_associativity_not_assumed",
       "relevance_score": 106,
@@ -782,10 +949,10 @@
       "paper_title": "Linear algebras with associativity not assumed",
       "action": "stage_browser_landing_child",
       "candidate_url": "https://projecteuclid.org/journals/duke-mathematical-journal/volume-1/issue-2/Linear-algebras-with-associativity-not-assumed/10.1215/S0012-7094-35-00112-0.short",
-      "command": "cargo run -q -p gororoba_cli_data --bin cd-cache-adapter -- --project-api-root '/home/eirikr/Documents/Projects/CayleyDickson' --gororoba-repo-root '/home/eirikr/Github/open_gororoba' stage-from-dossier --dossier 'docs/reports/cd_cache_dossiers/dickson_1935_exact_pdf_20260327.json' --rank '3'",
+      "command": "cargo run -q -p gororoba_cli_data --bin cd-cache-adapter -- --project-api-root '/home/eirikr/Documents/Projects/CayleyDickson' --gororoba-repo-root '/home/eirikr/Github/open_gororoba' stage-from-dossier --dossier 'docs/reports/cd_cache_dossiers/dickson_1935_exact_pdf_20260327.json' --rank '4'",
       "rationale": "Candidate from google_scholar [catalog] with relevance score 106 and 0 citations for queue target dickson_1935_exact_pdf.",
       "default_selected": false
     }
   ],
-  "batch_manifest_rel": "docs/reports/cd_cache_dossiers/batch_mixed_20260327T060734Z.toml"
+  "batch_manifest_rel": "docs/reports/cd_cache_dossiers/batch_mixed_20260327T061434Z.toml"
 }
