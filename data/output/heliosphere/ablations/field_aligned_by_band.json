@@ -1,0 +1,38 @@
+{
+  "heliosheath_110_118": {
+    "mean_b_hat": [
+      -0.5055,
+      -0.4456,
+      0.7388
+    ],
+    "mean_b_nT": 0.0358,
+    "30min_2hr_parallel_frac": 0.4178,
+    "30min_2hr_perp_frac": 0.5822,
+    "2_8hr_parallel_frac": 0.2923,
+    "2_8hr_perp_frac": 0.7077
+  },
+  "transition_118_121": {
+    "mean_b_hat": [
+      0.1193,
+      -0.8846,
+      -0.4508
+    ],
+    "mean_b_nT": 0.1079,
+    "30min_2hr_parallel_frac": 0.4299,
+    "30min_2hr_perp_frac": 0.5701,
+    "2_8hr_parallel_frac": 0.7154,
+    "2_8hr_perp_frac": 0.2846
+  },
+  "ism_121_126": {
+    "mean_b_hat": [
+      -0.081,
+      -0.9076,
+      0.4119
+    ],
+    "mean_b_nT": 0.6735,
+    "30min_2hr_parallel_frac": 0.3444,
+    "30min_2hr_perp_frac": 0.6556,
+    "2_8hr_parallel_frac": 0.9965,
+    "2_8hr_perp_frac": 0.0035
+  }
+}
