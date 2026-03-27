@@ -1,0 +1,13 @@
+{
+  "cpu_rows": 100973,
+  "vulkan_rows": 100973,
+  "cuda_rows": null,
+  "orient_mismatches_total": 55148,
+  "orient_mismatches_tied": 55148,
+  "orient_mismatches_real": 0,
+  "alignment_failures": 0,
+  "max_abs_diff": 4.440892098500626e-16,
+  "max_rel_diff": 6.122143133051176e-16,
+  "pass": true,
+  "pairs_checked": 100973
+}

@@ -681,6 +681,8 @@ struct RequestCapsule {
     #[serde(skip_serializing_if = "Option::is_none")]
     search_priority: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    search_kind: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     search_status: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     cookie_jar_rel: Option<String>,
@@ -1535,6 +1537,54 @@ fn run_consume_handoff(
         let request_headers = request_headers_for_capsule(repo_root, &capsule, &explicit_headers);
         let output_path = handoff_output_path(&output_root, &capsule);
         if args.skip_existing && output_path.exists() {
+            if capsule_expects_pdf_artifact(&capsule, None, &output_path)
+                && !file_looks_like_pdf(&output_path)?
+            {
+                failed += 1;
+                let error = format!(
+                    "existing artifact is not a PDF: {}",
+                    to_repo_display_path(repo_root, &output_path)
+                );
+                let outcome = ConsumeOutcome::Failed {
+                    output_path: output_path.clone(),
+                    error: error.clone(),
+                    header_count: request_headers.len(),
+                };
+                report_rows.push(ConsumeReportRow::failure(
+                    repo_root,
+                    &capsule,
+                    &output_path,
+                    request_headers.len(),
+                    &error,
+                ));
+                writeback_session_outcome(repo_root, &capsule, &outcome)?;
+                if capsule.search_target_id.is_some() {
+                    queue_updates.push(build_queue_update(repo_root, &capsule, &outcome));
+                }
+                if let (Some(project_api), Some(crosswalk)) = (&project_api, &project_api_crosswalk)
+                {
+                    let binding = resolve_crosswalk_binding(
+                        crosswalk,
+                        capsule.search_target_id.as_deref(),
+                        capsule.source_id.as_deref(),
+                    );
+                    journal_rows.push(journal_row_from_consume_outcome(
+                        repo_root,
+                        &project_api.repo_root,
+                        &capsule,
+                        &outcome,
+                        binding,
+                        project_cache_root.as_deref(),
+                    ));
+                }
+                println!(
+                    "validation_failed session_id={} output={} error={}",
+                    capsule.session_id,
+                    to_repo_display_path(repo_root, &output_path),
+                    error
+                );
+                continue;
+            }
             let sha256 = hash_file(&output_path)?;
             let bytes = fs::metadata(&output_path)
                 .with_context(|| format!("metadata {}", output_path.display()))?
@@ -1595,6 +1645,56 @@ fn run_consume_handoff(
         let trace = stack.recover_with_trace(&request);
         match trace.into_result(&request.url) {
             Ok(result) => {
+                if capsule_expects_pdf_artifact(&capsule, result.final_url.as_deref(), &output_path)
+                    && !result.is_pdf
+                {
+                    failed += 1;
+                    let error = format!(
+                        "expected pdf artifact but downloader reported non-pdf content_type={} final_url={}",
+                        result.content_type.clone().unwrap_or_default(),
+                        result.final_url.clone().unwrap_or_default()
+                    );
+                    let outcome = ConsumeOutcome::Failed {
+                        output_path: output_path.clone(),
+                        error: error.clone(),
+                        header_count: request_headers.len(),
+                    };
+                    println!(
+                        "validation_failed session_id={} output={} error={}",
+                        capsule.session_id,
+                        to_repo_display_path(repo_root, &output_path),
+                        error
+                    );
+                    writeback_session_outcome(repo_root, &capsule, &outcome)?;
+                    if capsule.search_target_id.is_some() {
+                        queue_updates.push(build_queue_update(repo_root, &capsule, &outcome));
+                    }
+                    if let (Some(project_api), Some(crosswalk)) =
+                        (&project_api, &project_api_crosswalk)
+                    {
+                        let binding = resolve_crosswalk_binding(
+                            crosswalk,
+                            capsule.search_target_id.as_deref(),
+                            capsule.source_id.as_deref(),
+                        );
+                        journal_rows.push(journal_row_from_consume_outcome(
+                            repo_root,
+                            &project_api.repo_root,
+                            &capsule,
+                            &outcome,
+                            binding,
+                            project_cache_root.as_deref(),
+                        ));
+                    }
+                    report_rows.push(ConsumeReportRow::failure(
+                        repo_root,
+                        &capsule,
+                        &output_path,
+                        request_headers.len(),
+                        &error,
+                    ));
+                    continue;
+                }
                 succeeded += 1;
                 let outcome = ConsumeOutcome::Downloaded {
                     output_path: output_path.clone(),
@@ -1766,11 +1866,7 @@ fn maybe_extract_pdf_sidecar(
     if !enabled {
         return Ok(None);
     }
-    let is_pdf = output_path
-        .extension()
-        .and_then(|ext| ext.to_str())
-        .map(|ext| ext.eq_ignore_ascii_case("pdf"))
-        .unwrap_or(false);
+    let is_pdf = file_looks_like_pdf(output_path)?;
     if !is_pdf || !output_path.exists() {
         return Ok(None);
     }
@@ -1780,6 +1876,58 @@ fn maybe_extract_pdf_sidecar(
     fs::write(&sidecar_path, markdown)
         .with_context(|| format!("write {}", sidecar_path.display()))?;
     Ok(Some(to_repo_display_path(repo_root, &sidecar_path)))
+}
+
+fn file_looks_like_pdf(path: &Path) -> Result<bool> {
+    if !path.exists() {
+        return Ok(false);
+    }
+    let mut file = fs::File::open(path).with_context(|| format!("open {}", path.display()))?;
+    let mut header = [0_u8; 1024];
+    let read = file
+        .read(&mut header)
+        .with_context(|| format!("read {}", path.display()))?;
+    Ok(read >= 5 && header[..read].windows(5).any(|window| window == b"%PDF-"))
+}
+
+fn capsule_expects_pdf_artifact(
+    capsule: &RequestCapsule,
+    final_url: Option<&str>,
+    output_path: &Path,
+) -> bool {
+    if capsule
+        .search_kind
+        .as_deref()
+        .is_some_and(is_exact_pdf_search_kind)
+    {
+        return true;
+    }
+    if output_path
+        .extension()
+        .and_then(|ext| ext.to_str())
+        .is_some_and(|ext| ext.eq_ignore_ascii_case("pdf"))
+    {
+        return true;
+    }
+    [
+        Some(capsule.url.as_str()),
+        capsule.effective_url.as_deref(),
+        final_url,
+    ]
+    .into_iter()
+    .flatten()
+    .any(url_suggests_pdf)
+}
+
+fn is_exact_pdf_search_kind(kind: &str) -> bool {
+    matches!(
+        kind,
+        "browser_confirmed_free_pdf_lane" | "metadata_confirmed_pdf_path_resolution"
+    )
+}
+
+fn url_suggests_pdf(url: &str) -> bool {
+    url.to_ascii_lowercase().contains(".pdf")
 }
 
 fn run_cd_cache_reconcile(repo_root: &Path, project_api_root: &Path) -> Result<()> {
@@ -3043,7 +3191,19 @@ fn handoff_output_path(output_root: &Path, capsule: &RequestCapsule) -> PathBuf 
         }
         return output_root.join(dest_path);
     }
-    let leaf = Url::parse(&capsule.url)
+    let leaf = inferred_download_leaf(capsule).unwrap_or_else(|| "artifact.bin".to_string());
+    output_root.join(&capsule.session_id).join(leaf)
+}
+
+fn inferred_download_leaf(capsule: &RequestCapsule) -> Option<String> {
+    leaf_from_url(capsule.effective_url.as_deref())
+        .filter(|leaf| leaf_has_useful_extension(leaf))
+        .or_else(|| leaf_from_url(Some(&capsule.url)))
+        .filter(|leaf| !leaf.is_empty())
+}
+
+fn leaf_from_url(url: Option<&str>) -> Option<String> {
+    Url::parse(url?)
         .ok()
         .and_then(|parsed| {
             parsed
@@ -3052,8 +3212,14 @@ fn handoff_output_path(output_root: &Path, capsule: &RequestCapsule) -> PathBuf 
                 .map(str::to_string)
         })
         .filter(|value| !value.is_empty())
-        .unwrap_or_else(|| "artifact.bin".to_string());
-    output_root.join(&capsule.session_id).join(leaf)
+}
+
+fn leaf_has_useful_extension(leaf: &str) -> bool {
+    Path::new(leaf)
+        .extension()
+        .and_then(|ext| ext.to_str())
+        .map(|ext| !ext.is_empty())
+        .unwrap_or(false)
 }
 
 fn preferred_backend(capsule: &RequestCapsule, fallback: BackendArg) -> DownloadBackend {
@@ -3498,7 +3664,13 @@ fn writeback_session_outcome(
             error,
             header_count,
         } => {
-            if !matches!(session.status, SessionStatus::Downloaded) {
+            if consume_failure_invalidates_artifact(error) {
+                session.status = SessionStatus::Blocked;
+                session.evidence.artifact_rel = None;
+                session.evidence.text_sidecar_rel = None;
+                session.evidence.bytes = None;
+                session.evidence.sha256 = None;
+            } else if !matches!(session.status, SessionStatus::Downloaded) {
                 session.status = SessionStatus::Blocked;
             }
             session.events.push(SessionEvent {
@@ -3518,6 +3690,10 @@ fn writeback_session_outcome(
     write_session(repo_root, &manifest_path, &session)?;
     write_checklist(repo_root, &checklist_path, &manifest_path, &session)?;
     Ok(())
+}
+
+fn consume_failure_invalidates_artifact(error: &str) -> bool {
+    error.contains("not a PDF") || error.contains("expected pdf artifact")
 }
 
 fn build_queue_update(
@@ -3860,6 +4036,7 @@ impl RequestCapsule {
                 .search
                 .as_ref()
                 .map(|search| search.priority.clone()),
+            search_kind: session.search.as_ref().map(|search| search.kind.clone()),
             search_status: session.search.as_ref().map(|search| search.status.clone()),
             cookie_jar_rel: session.evidence.cookie_jar_rel.clone(),
             storage_state_rel: session.evidence.storage_state_rel.clone(),
@@ -3917,6 +4094,7 @@ impl RequestCapsule {
             search_target_id: None,
             search_window: None,
             search_priority: None,
+            search_kind: None,
             search_status: None,
             cookie_jar_rel: (!row.cookie_jar_rel.is_empty()).then_some(row.cookie_jar_rel.clone()),
             storage_state_rel: (!row.storage_state_rel.is_empty())
@@ -4069,7 +4247,11 @@ fn escape_tsv_field(value: &str) -> String {
 
 #[cfg(test)]
 mod tests {
-    use super::{TransportSubstrate, derive_host_scope, escape_tsv_field, sanitize_token};
+    use super::{
+        RequestCapsule, TransportSubstrate, capsule_expects_pdf_artifact, derive_host_scope,
+        escape_tsv_field, file_looks_like_pdf, handoff_output_path, sanitize_token,
+    };
+    use std::{fs, path::PathBuf};
 
     #[test]
     fn sanitize_token_collapses_noise() {
@@ -4093,5 +4275,122 @@ mod tests {
             derive_host_scope("https://example.com/foo", Some("https://www.ams.org/bar")),
             Some("www_ams_org".to_string())
         );
+    }
+
+    #[test]
+    fn handoff_output_path_prefers_effective_pdf_leaf() {
+        let capsule = RequestCapsule {
+            schema_version: 1,
+            generated_utc: String::new(),
+            session_id: "session".to_string(),
+            parent_session_id: String::new(),
+            url: "https://doi.org/10.1090/s0002-9947-1912-1500905-3".to_string(),
+            effective_url: Some("https://www.ams.org/journals/tran/1912-013-01/S0002-9947-1912-1500905-3/S0002-9947-1912-1500905-3.pdf?t=1".to_string()),
+            host_scope: None,
+            source_id: None,
+            title: None,
+            site: None,
+            access_class: None,
+            search_queue_path: None,
+            search_project_id: None,
+            search_target_id: None,
+            search_window: None,
+            search_priority: None,
+            search_kind: None,
+            search_status: None,
+            cookie_jar_rel: None,
+            storage_state_rel: None,
+            browser_trace_rel: None,
+            profile_bundle_rel: None,
+            request_capsule_rel: None,
+            http_code: None,
+            policy_registry_rel: None,
+            sessions_dir_rel: None,
+            bundle_root_rel: None,
+            bundle_latest_session_id: None,
+            bundle_latest_manifest_rel: None,
+            bundle_updated_utc: None,
+            header_hints: Vec::new(),
+            transport_substrate: "auto".to_string(),
+            requested_backend: "auto".to_string(),
+            dest_rel: None,
+            note: String::new(),
+        };
+        let output_path = handoff_output_path(&PathBuf::from("/tmp/out"), &capsule);
+        assert_eq!(
+            output_path,
+            PathBuf::from("/tmp/out/session/S0002-9947-1912-1500905-3.pdf")
+        );
+    }
+
+    #[test]
+    fn file_looks_like_pdf_accepts_magic_header_without_extension() {
+        let temp_root =
+            std::env::temp_dir().join(format!("human_acquire_pdf_magic_{}", std::process::id()));
+        let _ = fs::remove_dir_all(&temp_root);
+        fs::create_dir_all(&temp_root).expect("create temp dir");
+        let path = temp_root.join("artifact");
+        fs::write(&path, b"%PDF-1.7\nrest").expect("write pdf header");
+        assert!(file_looks_like_pdf(&path).expect("detect pdf"));
+        fs::remove_dir_all(&temp_root).expect("cleanup temp dir");
+    }
+
+    #[test]
+    fn file_looks_like_pdf_rejects_html_named_pdf() {
+        let temp_root =
+            std::env::temp_dir().join(format!("human_acquire_pdf_html_{}", std::process::id()));
+        let _ = fs::remove_dir_all(&temp_root);
+        fs::create_dir_all(&temp_root).expect("create temp dir");
+        let path = temp_root.join("artifact.pdf");
+        fs::write(&path, b"<!DOCTYPE html><html><body>challenge</body></html>")
+            .expect("write html");
+        assert!(!file_looks_like_pdf(&path).expect("reject html"));
+        fs::remove_dir_all(&temp_root).expect("cleanup temp dir");
+    }
+
+    #[test]
+    fn capsule_expects_pdf_for_exact_pdf_search_kinds() {
+        let capsule = RequestCapsule {
+            schema_version: 1,
+            generated_utc: String::new(),
+            session_id: "session".to_string(),
+            parent_session_id: String::new(),
+            url: "https://doi.org/10.1215/S0012-7094-35-00112-0".to_string(),
+            effective_url: None,
+            host_scope: None,
+            source_id: None,
+            title: None,
+            site: None,
+            access_class: None,
+            search_queue_path: None,
+            search_project_id: None,
+            search_target_id: Some("dickson_1935_exact_pdf".to_string()),
+            search_window: Some("1900-1999".to_string()),
+            search_priority: Some("high".to_string()),
+            search_kind: Some("metadata_confirmed_pdf_path_resolution".to_string()),
+            search_status: Some("bibliographic_record_confirmed_pdf_href_unresolved".to_string()),
+            cookie_jar_rel: None,
+            storage_state_rel: None,
+            browser_trace_rel: None,
+            profile_bundle_rel: None,
+            request_capsule_rel: None,
+            http_code: None,
+            policy_registry_rel: None,
+            sessions_dir_rel: None,
+            bundle_root_rel: None,
+            bundle_latest_session_id: None,
+            bundle_latest_manifest_rel: None,
+            bundle_updated_utc: None,
+            header_hints: Vec::new(),
+            transport_substrate: "auto".to_string(),
+            requested_backend: "auto".to_string(),
+            dest_rel: None,
+            note: String::new(),
+        };
+        assert!(capsule_expects_pdf_artifact(
+            &capsule,
+            None,
+            &PathBuf::from("/tmp/out/session/artifact.bin")
+        ));
     }
 }

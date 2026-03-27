@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at_utc": "2026-03-27T04:34:45.544627095+00:00",
+  "generated_at_utc": "2026-03-27T04:49:22.333201165+00:00",
   "project_id": "cayley-dickson",
   "project_api_root": "/home/eirikr/Documents/Projects/CayleyDickson",
   "search_queue_path": "/home/eirikr/Documents/Projects/CayleyDickson/metadata/project_api/search_queue.toml",
@@ -18,23 +18,24 @@
     "\"1356848117\" Freudenthal"
   ],
   "requested_sources": [
-    "openalex",
-    "semantic_scholar",
+    "google_scholar",
     "crossref",
+    "cinii",
+    "core",
+    "lens",
+    "dblp",
+    "europepmc",
+    "scielo",
+    "ads",
     "datacite",
-    "unpaywall",
-    "arxiv",
-    "jstage",
-    "inspirehep",
-    "hal",
-    "dblp"
+    "unpaywall"
   ],
   "preferred_source_families": [
-    "citation_graph",
+    "catalog",
     "resolver",
-    "catalog"
+    "citation_graph"
   ],
-  "limit_per_query": 2,
+  "limit_per_query": 5,
   "year_min": 0,
   "min_relevance": 18,
   "report": {
@@ -43,69 +44,87 @@
       "\"1178680002\" Freudenthal",
       "\"1356848117\" Freudenthal"
     ],
-    "limit": 2,
+    "limit": 5,
     "year_min": 0,
     "requested_sources": [
-      "openalex",
-      "semantic_scholar",
+      "google_scholar",
       "crossref",
+      "cinii",
+      "core",
+      "lens",
+      "dblp",
+      "europepmc",
+      "scielo",
+      "ads",
       "datacite",
-      "unpaywall",
-      "arxiv",
-      "jstage",
-      "inspirehep",
-      "hal",
-      "dblp"
+      "unpaywall"
     ],
-    "raw_result_count": 11,
-    "deduplicated_result_count": 6,
+    "raw_result_count": 24,
+    "deduplicated_result_count": 15,
     "query_reports": [
       {
         "query": "\"Oktaven, Ausnahmegruppen und Oktavengeometrie\"",
-        "limit": 2,
+        "limit": 5,
         "year_min": 0,
         "requested_sources": [
-          "openalex",
-          "semantic_scholar",
+          "google_scholar",
           "crossref",
+          "cinii",
+          "core",
+          "lens",
+          "dblp",
+          "europepmc",
+          "scielo",
+          "ads",
           "datacite",
-          "unpaywall",
-          "arxiv",
-          "jstage",
-          "inspirehep",
-          "hal",
-          "dblp"
+          "unpaywall"
         ],
-        "raw_result_count": 5,
-        "deduplicated_result_count": 4,
-        "cache_hit_count": 8,
+        "raw_result_count": 14,
+        "deduplicated_result_count": 10,
+        "cache_hit_count": 6,
         "source_reports": [
           {
-            "source": "openalex",
+            "source": "google_scholar",
             "adapted_query": "\"Oktaven, Ausnahmegruppen und Oktavengeometrie\"",
-            "result_count": 2,
+            "result_count": 5,
             "cache_hit": true,
             "error": "",
-            "skipped_reason": ""
-          },
-          {
-            "source": "semantic_scholar",
-            "adapted_query": "\"Oktaven, Ausnahmegruppen und Oktavengeometrie\"",
-            "result_count": 0,
-            "cache_hit": false,
-            "error": "Rate limited",
             "skipped_reason": ""
           },
           {
             "source": "crossref",
             "adapted_query": "\"Oktaven, Ausnahmegruppen und Oktavengeometrie\"",
-            "result_count": 2,
+            "result_count": 5,
             "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
           {
-            "source": "datacite",
+            "source": "cinii",
+            "adapted_query": "\"Oktaven, Ausnahmegruppen und Oktavengeometrie\"",
+            "result_count": 3,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "core",
+            "adapted_query": "title:\"Oktaven, Ausnahmegruppen und Oktavengeometrie\"",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "lens",
+            "adapted_query": "\"Oktaven, Ausnahmegruppen und Oktavengeometrie\"",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "Source unavailable: LENS_API_KEY not set",
+            "skipped_reason": ""
+          },
+          {
+            "source": "dblp",
             "adapted_query": "\"Oktaven, Ausnahmegruppen und Oktavengeometrie\"",
             "result_count": 0,
             "cache_hit": true,
@@ -113,15 +132,7 @@
             "skipped_reason": ""
           },
           {
-            "source": "arxiv",
-            "adapted_query": "all:\"Oktaven, Ausnahmegruppen und Oktavengeometrie\"",
-            "result_count": 0,
-            "cache_hit": true,
-            "error": "",
-            "skipped_reason": ""
-          },
-          {
-            "source": "jstage",
+            "source": "europepmc",
             "adapted_query": "\"Oktaven, Ausnahmegruppen und Oktavengeometrie\"",
             "result_count": 1,
             "cache_hit": true,
@@ -129,23 +140,23 @@
             "skipped_reason": ""
           },
           {
-            "source": "inspirehep",
-            "adapted_query": "t:\"Oktaven, Ausnahmegruppen und Oktavengeometrie\"",
-            "result_count": 0,
-            "cache_hit": true,
-            "error": "",
-            "skipped_reason": ""
-          },
-          {
-            "source": "hal",
+            "source": "scielo",
             "adapted_query": "\"Oktaven, Ausnahmegruppen und Oktavengeometrie\"",
             "result_count": 0,
-            "cache_hit": true,
-            "error": "",
+            "cache_hit": false,
+            "error": "HTTP error: error decoding response body",
             "skipped_reason": ""
           },
           {
-            "source": "dblp",
+            "source": "ads",
+            "adapted_query": "abs:\"Oktaven, Ausnahmegruppen und Oktavengeometrie\"",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "Source unavailable: NASA_ADS_TOKEN not set",
+            "skipped_reason": ""
+          },
+          {
+            "source": "datacite",
             "adapted_query": "\"Oktaven, Ausnahmegruppen und Oktavengeometrie\"",
             "result_count": 0,
             "cache_hit": true,
@@ -164,50 +175,43 @@
       },
       {
         "query": "\"1178680002\" Freudenthal",
-        "limit": 2,
+        "limit": 5,
         "year_min": 0,
         "requested_sources": [
-          "openalex",
-          "semantic_scholar",
+          "google_scholar",
           "crossref",
+          "cinii",
+          "core",
+          "lens",
+          "dblp",
+          "europepmc",
+          "scielo",
+          "ads",
           "datacite",
-          "unpaywall",
-          "arxiv",
-          "jstage",
-          "inspirehep",
-          "hal",
-          "dblp"
+          "unpaywall"
         ],
-        "raw_result_count": 3,
-        "deduplicated_result_count": 3,
-        "cache_hit_count": 8,
+        "raw_result_count": 5,
+        "deduplicated_result_count": 5,
+        "cache_hit_count": 6,
         "source_reports": [
           {
-            "source": "openalex",
+            "source": "google_scholar",
             "adapted_query": "\"1178680002\" Freudenthal",
             "result_count": 0,
             "cache_hit": true,
             "error": "",
-            "skipped_reason": ""
-          },
-          {
-            "source": "semantic_scholar",
-            "adapted_query": "\"1178680002\" Freudenthal",
-            "result_count": 0,
-            "cache_hit": false,
-            "error": "Rate limited",
             "skipped_reason": ""
           },
           {
             "source": "crossref",
             "adapted_query": "\"1178680002\" Freudenthal",
-            "result_count": 2,
+            "result_count": 5,
             "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
           {
-            "source": "datacite",
+            "source": "cinii",
             "adapted_query": "\"1178680002\" Freudenthal",
             "result_count": 0,
             "cache_hit": true,
@@ -215,39 +219,55 @@
             "skipped_reason": ""
           },
           {
-            "source": "arxiv",
-            "adapted_query": "all:1178680002 AND all:Freudenthal",
+            "source": "core",
+            "adapted_query": "1178680002 AND Freudenthal",
             "result_count": 0,
-            "cache_hit": true,
+            "cache_hit": false,
             "error": "",
             "skipped_reason": ""
           },
           {
-            "source": "jstage",
-            "adapted_query": "\"1178680002\" Freudenthal",
-            "result_count": 1,
-            "cache_hit": true,
-            "error": "",
-            "skipped_reason": ""
-          },
-          {
-            "source": "inspirehep",
-            "adapted_query": "t:1178680002 and t:Freudenthal",
-            "result_count": 0,
-            "cache_hit": true,
-            "error": "",
-            "skipped_reason": ""
-          },
-          {
-            "source": "hal",
+            "source": "lens",
             "adapted_query": "\"1178680002\" Freudenthal",
             "result_count": 0,
-            "cache_hit": true,
-            "error": "",
+            "cache_hit": false,
+            "error": "Source unavailable: LENS_API_KEY not set",
             "skipped_reason": ""
           },
           {
             "source": "dblp",
+            "adapted_query": "\"1178680002\" Freudenthal",
+            "result_count": 0,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "europepmc",
+            "adapted_query": "1178680002 AND Freudenthal",
+            "result_count": 0,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "scielo",
+            "adapted_query": "\"1178680002\" Freudenthal",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "HTTP error: error decoding response body",
+            "skipped_reason": ""
+          },
+          {
+            "source": "ads",
+            "adapted_query": "abs:1178680002 abs:Freudenthal",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "Source unavailable: NASA_ADS_TOKEN not set",
+            "skipped_reason": ""
+          },
+          {
+            "source": "datacite",
             "adapted_query": "\"1178680002\" Freudenthal",
             "result_count": 0,
             "cache_hit": true,
@@ -266,50 +286,43 @@
       },
       {
         "query": "\"1356848117\" Freudenthal",
-        "limit": 2,
+        "limit": 5,
         "year_min": 0,
         "requested_sources": [
-          "openalex",
-          "semantic_scholar",
+          "google_scholar",
           "crossref",
+          "cinii",
+          "core",
+          "lens",
+          "dblp",
+          "europepmc",
+          "scielo",
+          "ads",
           "datacite",
-          "unpaywall",
-          "arxiv",
-          "jstage",
-          "inspirehep",
-          "hal",
-          "dblp"
+          "unpaywall"
         ],
-        "raw_result_count": 3,
-        "deduplicated_result_count": 3,
-        "cache_hit_count": 8,
+        "raw_result_count": 5,
+        "deduplicated_result_count": 5,
+        "cache_hit_count": 6,
         "source_reports": [
           {
-            "source": "openalex",
+            "source": "google_scholar",
             "adapted_query": "\"1356848117\" Freudenthal",
             "result_count": 0,
             "cache_hit": true,
             "error": "",
-            "skipped_reason": ""
-          },
-          {
-            "source": "semantic_scholar",
-            "adapted_query": "\"1356848117\" Freudenthal",
-            "result_count": 0,
-            "cache_hit": false,
-            "error": "Rate limited",
             "skipped_reason": ""
           },
           {
             "source": "crossref",
             "adapted_query": "\"1356848117\" Freudenthal",
-            "result_count": 2,
+            "result_count": 5,
             "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
           {
-            "source": "datacite",
+            "source": "cinii",
             "adapted_query": "\"1356848117\" Freudenthal",
             "result_count": 0,
             "cache_hit": true,
@@ -317,39 +330,55 @@
             "skipped_reason": ""
           },
           {
-            "source": "arxiv",
-            "adapted_query": "all:1356848117 AND all:Freudenthal",
+            "source": "core",
+            "adapted_query": "1356848117 AND Freudenthal",
             "result_count": 0,
-            "cache_hit": true,
+            "cache_hit": false,
             "error": "",
             "skipped_reason": ""
           },
           {
-            "source": "jstage",
-            "adapted_query": "\"1356848117\" Freudenthal",
-            "result_count": 1,
-            "cache_hit": true,
-            "error": "",
-            "skipped_reason": ""
-          },
-          {
-            "source": "inspirehep",
-            "adapted_query": "t:1356848117 and t:Freudenthal",
-            "result_count": 0,
-            "cache_hit": true,
-            "error": "",
-            "skipped_reason": ""
-          },
-          {
-            "source": "hal",
+            "source": "lens",
             "adapted_query": "\"1356848117\" Freudenthal",
             "result_count": 0,
-            "cache_hit": true,
-            "error": "",
+            "cache_hit": false,
+            "error": "Source unavailable: LENS_API_KEY not set",
             "skipped_reason": ""
           },
           {
             "source": "dblp",
+            "adapted_query": "\"1356848117\" Freudenthal",
+            "result_count": 0,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "europepmc",
+            "adapted_query": "1356848117 AND Freudenthal",
+            "result_count": 0,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "scielo",
+            "adapted_query": "\"1356848117\" Freudenthal",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "HTTP error: error decoding response body",
+            "skipped_reason": ""
+          },
+          {
+            "source": "ads",
+            "adapted_query": "abs:1356848117 abs:Freudenthal",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "Source unavailable: NASA_ADS_TOKEN not set",
+            "skipped_reason": ""
+          },
+          {
+            "source": "datacite",
             "adapted_query": "\"1356848117\" Freudenthal",
             "result_count": 0,
             "cache_hit": true,
@@ -387,6 +416,22 @@
     },
     {
       "rank": 2,
+      "canonical_id": "title:elements_de_la_g_ometrie_des_octaves_de_cayley",
+      "relevance_score": 48,
+      "source_family": "catalog",
+      "route_class": "direct_pdf",
+      "host_class": "www_numdam_org",
+      "title": "Elements de la g�ometrie des octaves de Cayley",
+      "year": 0,
+      "source": "google_scholar",
+      "venue": "numdam.org",
+      "citation_count": 0,
+      "doi": "",
+      "url": "https://www.numdam.org/item/PDML_1986___2D_A1_0.pdf",
+      "pdf_url": "https://www.numdam.org/item/PDML_1986___2D_A1_0.pdf"
+    },
+    {
+      "rank": 3,
       "canonical_id": "doi:10.53846/goediss-2456",
       "relevance_score": 38,
       "source_family": "resolver",
@@ -402,38 +447,71 @@
       "pdf_url": ""
     },
     {
-      "rank": 3,
-      "canonical_id": "doi:10.1007/bf00233101",
-      "relevance_score": 12,
-      "source_family": "citation_graph",
-      "route_class": "openalex_landing",
-      "host_class": "openalex_org",
-      "title": "Oktaven, Ausnahmegruppen und Oktavengeometrie",
-      "year": 1985,
-      "source": "openalex",
-      "venue": "Geometriae Dedicata",
-      "citation_count": 121,
-      "doi": "https://doi.org/10.1007/bf00233101",
-      "url": "https://openalex.org/W2024024636",
+      "rank": 4,
+      "canonical_id": "doi:10.31030/2231136",
+      "relevance_score": 38,
+      "source_family": "resolver",
+      "route_class": "doi_resolver",
+      "host_class": "doi_org",
+      "title": "DIN EN 61260-1:2014-10, Elektroakustik_- Bandfilter für Oktaven und Bruchteile von Oktaven_- Teil_1: Anforderungen (IEC_61260-1:2014); Deutsche Fassung EN_61260-1:2014",
+      "year": 0,
+      "source": "crossref",
+      "venue": "",
+      "citation_count": 0,
+      "doi": "10.31030/2231136",
+      "url": "https://doi.org/10.31030/2231136",
       "pdf_url": ""
     },
     {
-      "rank": 4,
+      "rank": 5,
       "canonical_id": "title:",
-      "relevance_score": 0,
-      "source_family": "archive",
+      "relevance_score": 24,
+      "source_family": "catalog",
       "route_class": "generic_landing",
-      "host_class": "unknown_host",
+      "host_class": "cir_nii_ac_jp",
       "title": "",
       "year": 0,
-      "source": "jstage",
+      "source": "cinii",
       "venue": "",
       "citation_count": 0,
       "doi": "",
-      "url": "",
+      "url": "https://cir.nii.ac.jp/crid/1572824498960904832",
+      "pdf_url": ""
+    },
+    {
+      "rank": 6,
+      "canonical_id": "doi:10.1007/bf00233101",
+      "relevance_score": 20,
+      "source_family": "resolver",
+      "route_class": "doi_resolver",
+      "host_class": "doi_org",
+      "title": "Oktaven, Ausnahmegruppen und Oktavengeometrie",
+      "year": 1985,
+      "source": "crossref",
+      "venue": "Geometriae Dedicata",
+      "citation_count": 46,
+      "doi": "10.1007/bf00233101",
+      "url": "https://doi.org/10.1007/bf00233101",
       "pdf_url": ""
     }
   ],
-  "stage_suggestions": [],
-  "batch_manifest_rel": "docs/reports/cd_cache_dossiers/batch_critical_20260326.toml"
+  "stage_suggestions": [
+    {
+      "rank": 6,
+      "suggestion_id": "freudenthal_1951_exact_original_doi_10_1007_bf00233101",
+      "canonical_id": "doi:10.1007/bf00233101",
+      "relevance_score": 20,
+      "source": "crossref",
+      "source_family": "resolver",
+      "route_class": "doi_resolver",
+      "host_class": "doi_org",
+      "paper_title": "Oktaven, Ausnahmegruppen und Oktavengeometrie",
+      "action": "stage_doi_resolver_child",
+      "candidate_url": "https://doi.org/10.1007/bf00233101",
+      "command": "cargo run -q -p gororoba_cli_data --bin cd-cache-adapter -- --project-api-root '/home/eirikr/Documents/Projects/CayleyDickson' --gororoba-repo-root '/home/eirikr/Github/open_gororoba' stage-from-dossier --dossier 'docs/reports/cd_cache_dossiers/freudenthal_1951_exact_original_20260327.json' --rank '6'",
+      "rationale": "Candidate from crossref [resolver] with relevance score 20 and 46 citations for queue target freudenthal_1951_exact_original.",
+      "default_selected": false
+    }
+  ],
+  "batch_manifest_rel": "docs/reports/cd_cache_dossiers/batch_mixed_20260327T044922Z.toml"
 }

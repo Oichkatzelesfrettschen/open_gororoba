@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "generated_utc": "2026-03-27T05:58:56.992444639+00:00",
+  "session_id": "cayley_dickson_dickson_1935_exact_pdf_projecteuclid_org_download",
+  "parent_session_id": "cayley_dickson_dickson_1935_exact_pdf",
+  "url": "https://projecteuclid.org/journalArticle/Download?urlid=10.1215/S0012-7094-35-00112-0",
+  "effective_url": "https://projecteuclid.org/journals/duke-mathematical-journal/volume-1/issue-2/Linear-algebras-with-associativity-not-assumed/10.1215/S0012-7094-35-00112-0.short",
+  "host_scope": "projecteuclid_org",
+  "source_id": "dickson_1935_exact_pdf",
+  "title": "Dickson 1935 stable direct PDF endpoint",
+  "site": "projecteuclid_org",
+  "access_class": "projecteuclid_download",
+  "search_queue_path": "/home/eirikr/Documents/Projects/CayleyDickson/metadata/project_api/search_queue.toml",
+  "search_project_id": "cayley-dickson",
+  "search_target_id": "dickson_1935_exact_pdf",
+  "search_window": "1900-1999",
+  "search_priority": "high",
+  "search_kind": "metadata_confirmed_pdf_path_resolution",
+  "search_status": "bibliographic_record_confirmed_pdf_href_unresolved",
+  "browser_trace_rel": "reports/acquisition_sessions/cayley_dickson_dickson_1935_exact_pdf_projecteuclid_org_download/browser_network_requests_20260327.txt",
+  "profile_bundle_rel": "reports/browser_profiles/projecteuclid_1935_edge/projecteuclid_org/bundle.toml",
+  "request_capsule_rel": "reports/acquisition_sessions/cayley_dickson_dickson_1935_exact_pdf_projecteuclid_org_download/request_capsule.json",
+  "policy_registry_rel": "registry/download_host_policies.toml",
+  "sessions_dir_rel": "reports/acquisition_sessions",
+  "bundle_root_rel": "reports/browser_profiles/projecteuclid_1935_edge/projecteuclid_org",
+  "bundle_latest_session_id": "cayley_dickson_dickson_1935_exact_pdf_projecteuclid_org_download",
+  "bundle_latest_manifest_rel": "reports/acquisition_sessions/cayley_dickson_dickson_1935_exact_pdf_projecteuclid_org_download/session.toml",
+  "bundle_updated_utc": "2026-03-27T05:58:56.992225186+00:00",
+  "header_hints": [
+    {
+      "name": "Referer",
+      "value": "https://projecteuclid.org/journals/duke-mathematical-journal/volume-1/issue-2/Linear-algebras-with-associativity-not-assumed/10.1215/S0012-7094-35-00112-0.short",
+      "source": "effective_url"
+    },
+    {
+      "name": "Origin",
+      "value": "https://projecteuclid.org",
+      "source": "effective_url"
+    }
+  ],
+  "transport_substrate": "auto",
+  "requested_backend": "auto",
+  "note": "real_edge_window_confirms_signin_purchase_modal_not_human_verification_gate | screenshot=reports/acquisition_sessions/cayley_dickson_dickson_1935_exact_pdf_projecteuclid_org_download/edge_window_1935_20260326.png"
+}

@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "generated_utc": "2026-03-27T05:39:19.322413225+00:00",
+  "session_id": "cayley_dickson_dickson_1906_exact_pdf_doi_org_s0002_9947_1906_1500755_5",
+  "parent_session_id": "cayley_dickson_dickson_1906_exact_pdf",
+  "url": "https://doi.org/10.1090/S0002-9947-1906-1500755-5",
+  "effective_url": "https://www.ams.org/journals/tran/1906-007-03/S0002-9947-1906-1500755-5/S0002-9947-1906-1500755-5.pdf",
+  "host_scope": "ams_org",
+  "source_id": "dickson_1906_exact_pdf",
+  "title": "Dickson 1906 exact PDF body",
+  "site": "doi_org",
+  "access_class": "doi_resolver",
+  "search_queue_path": "/home/eirikr/Documents/Projects/CayleyDickson/metadata/project_api/search_queue.toml",
+  "search_project_id": "cayley-dickson",
+  "search_target_id": "dickson_1906_exact_pdf",
+  "search_window": "1900-1999",
+  "search_priority": "critical",
+  "search_kind": "browser_confirmed_free_pdf_lane",
+  "search_status": "landing_page_confirmed_pdf_click_challenged",
+  "cookie_jar_rel": "reports/acquisition_sessions/cayley_dickson_dickson_1906_exact_pdf_doi_org_s0002_9947_1906_1500755_5/edge_cookies_20260326.json",
+  "browser_trace_rel": "reports/acquisition_sessions/cayley_dickson_dickson_1906_exact_pdf_doi_org_s0002_9947_1906_1500755_5/browser_network_requests_20260327.txt",
+  "profile_bundle_rel": "reports/browser_profiles/ams_1906_edge/ams_org/bundle.toml",
+  "request_capsule_rel": "reports/acquisition_sessions/cayley_dickson_dickson_1906_exact_pdf_doi_org_s0002_9947_1906_1500755_5/request_capsule.json",
+  "http_code": 403,
+  "policy_registry_rel": "registry/download_host_policies.toml",
+  "sessions_dir_rel": "reports/acquisition_sessions",
+  "bundle_root_rel": "reports/browser_profiles/ams_1906_edge/ams_org",
+  "bundle_latest_session_id": "cayley_dickson_dickson_1906_exact_pdf_doi_org_s0002_9947_1906_1500755_5",
+  "bundle_latest_manifest_rel": "reports/acquisition_sessions/cayley_dickson_dickson_1906_exact_pdf_doi_org_s0002_9947_1906_1500755_5/session.toml",
+  "bundle_updated_utc": "2026-03-27T05:39:19.322187205+00:00",
+  "header_hints": [
+    {
+      "name": "Referer",
+      "value": "https://www.ams.org/journals/tran/1906-007-03/S0002-9947-1906-1500755-5/S0002-9947-1906-1500755-5.pdf",
+      "source": "effective_url"
+    },
+    {
+      "name": "Origin",
+      "value": "https://www.ams.org",
+      "source": "effective_url"
+    },
+    {
+      "name": "Cookie",
+      "value": "AMS_BP37qb3Zu9=b6935fdb.64dfae648c870; __cf_bm=U7.iVpdgNPnoaLOZ.6RoVsG0iDU0jcP0ICO84VrUHz4-1774589862.311532-1.0.1.1-C0b51s2rEVOp7jN2BP8h3qvXB3tk1QcsH1c8S60UDt0V9_fSOAEIPn4I5cY_ge_YnjQhke1r5ihPt7iS6_c9UftdT0MyHXVO4VJlK0TuzjNytU1nxV5_sOQzaxZ.cnCn; cf_clearance=8N0wuhbDPZnO7DiwkKQ0n7nbBwSc0Dr00gzB7FdEH8I-1774589862-1.2.1.1-m4W4zEs6_HfiJ9JlrU0NjUMnm202Jt_wO.hkzmL7eL4Nhi9vMp7ISQHcFhOvoA_iCoKgPRCElv_DUAqHgMdDOYdGL0U9Dq2U6Tt.U4PLaJEAYDSAH.DCp2xXSB51ubAYwUORlydPZhCf0jzrgrvr94cUNw1DqJPq3E3ys1xzo384yhLBJ94apTKkRSMP.CKCXLd6_iPV3QDT6E0I2477zEiMY1MKohyfLL03WB3yKE0",
+      "source": "cookie_jar"
+    }
+  ],
+  "transport_substrate": "auto",
+  "requested_backend": "auto",
+  "note": "real_edge_clearance_cookie_exported_from_dedicated_profile"
+}

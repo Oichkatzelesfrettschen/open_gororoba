@@ -48,11 +48,13 @@ fn reconcile_project_api(project_api: &ProjectApiContext) -> Result<()> {
     let crosswalk = load_project_api_crosswalk(&project_api.crosswalk_path)?;
     let journal_rows = load_acquisition_journal_rows(&project_api.acquisition_journal_path)?;
     let mut ledger_rows = load_row_ledger(&project_api.row_ledger_path)?;
-    let latest_successes = latest_contract_successes(&journal_rows);
+    let latest_states = latest_contract_states(&journal_rows);
 
     for row in &mut ledger_rows {
         let row_ref = format!("{}:{}", row.source_scope, row.row_id);
-        if let Some(journal_row) = latest_successes.get(&row_ref) {
+        if let Some(journal_row) = latest_states.get(&row_ref)
+            && journal_row_updates_contract(journal_row)
+        {
             apply_journal_success_to_row(row, journal_row);
         }
     }
@@ -128,13 +130,13 @@ fn write_row_ledger(path: &Path, rows: &[RowLedgerRow]) -> Result<()> {
     fs::write(path, body).with_context(|| format!("write {}", path.display()))
 }
 
-fn latest_contract_successes(
+fn latest_contract_states(
     journal_rows: &[AcquisitionJournalRow],
 ) -> HashMap<String, AcquisitionJournalRow> {
     let mut latest: HashMap<String, AcquisitionJournalRow> = HashMap::new();
     for row in journal_rows
         .iter()
-        .filter(|row| journal_row_updates_contract(row))
+        .filter(|row| journal_row_affects_contract_state(row))
     {
         for row_ref in split_journal_multi_value(&row.row_ledger_refs) {
             match latest.get(&row_ref) {
@@ -148,10 +150,19 @@ fn latest_contract_successes(
     latest
 }
 
+fn journal_row_affects_contract_state(row: &AcquisitionJournalRow) -> bool {
+    !row.row_ledger_refs.is_empty()
+        && (journal_row_updates_contract(row) || journal_row_invalidates_contract(row))
+}
+
 fn journal_row_updates_contract(row: &AcquisitionJournalRow) -> bool {
     !row.project_artifact_rel.is_empty()
         && (matches!(row.outcome.as_str(), "downloaded" | "skipped_existing")
             || (row.action == "record" && row.status == "downloaded"))
+}
+
+fn journal_row_invalidates_contract(row: &AcquisitionJournalRow) -> bool {
+    row.action == "consume_handoff" && row.status == "blocked" && row.outcome.starts_with("failed:")
 }
 
 fn apply_journal_success_to_row(row: &mut RowLedgerRow, journal_row: &AcquisitionJournalRow) {
@@ -558,10 +569,14 @@ fn reconciled_recent_downloads(
     let row_lookup = row_lookup_map(rows);
     let mut derived = Vec::new();
     let mut seen = HashSet::new();
-    let mut successes = journal_rows
-        .iter()
-        .filter(|row| journal_row_updates_contract(row))
-        .cloned()
+    let latest_states = latest_contract_states(journal_rows);
+    let known_ids = latest_states
+        .values()
+        .map(contract_state_identity)
+        .collect::<HashSet<_>>();
+    let mut successes = latest_states
+        .into_values()
+        .filter(journal_row_updates_contract)
         .collect::<Vec<_>>();
     successes.sort_by(|left, right| right.at_utc.cmp(&left.at_utc));
     for row in successes {
@@ -593,12 +608,24 @@ fn reconciled_recent_downloads(
             let Some(id) = entry["id"].as_str() else {
                 continue;
             };
-            if seen.insert(id.to_string()) {
+            if !known_ids.contains(id) && seen.insert(id.to_string()) {
                 derived.push(entry.clone());
             }
         }
     }
     derived
+}
+
+fn contract_state_identity(row: &AcquisitionJournalRow) -> String {
+    if !row.inventory_blocker_id.is_empty() {
+        row.inventory_blocker_id.clone()
+    } else if !row.candidate_id.is_empty() {
+        row.candidate_id.clone()
+    } else if !row.crosswalk_id.is_empty() {
+        row.crosswalk_id.clone()
+    } else {
+        row.session_id.clone()
+    }
 }
 
 fn toml_array(values: &[String]) -> String {

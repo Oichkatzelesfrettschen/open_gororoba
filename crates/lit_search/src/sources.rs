@@ -7,6 +7,45 @@ use crate::models::{Author, Paper};
 use reqwest::Client;
 use serde_json::Value;
 
+fn json_string(value: &Value) -> String {
+    value.as_str().unwrap_or("").trim().to_string()
+}
+
+fn json_string_array(value: &Value) -> Vec<String> {
+    value
+        .as_array()
+        .map(|items| {
+            items
+                .iter()
+                .filter_map(|item| item.as_str().map(str::trim))
+                .filter(|item| !item.is_empty())
+                .map(ToOwned::to_owned)
+                .collect::<Vec<_>>()
+        })
+        .unwrap_or_default()
+}
+
+fn json_year(value: &Value) -> u32 {
+    if let Some(year) = value.as_u64() {
+        return year as u32;
+    }
+    value
+        .as_str()
+        .and_then(|text| text.get(..4))
+        .and_then(|year| year.parse().ok())
+        .unwrap_or(0)
+}
+
+fn paper_authors(names: Vec<String>) -> Vec<Author> {
+    names
+        .into_iter()
+        .map(|name| Author {
+            name,
+            affiliation: String::new(),
+        })
+        .collect()
+}
+
 /// Error type for source queries.
 #[derive(Debug, thiserror::Error)]
 pub enum SourceError {
@@ -217,6 +256,12 @@ pub async fn search_crossref(
                 .and_then(|t| t.first())
                 .and_then(|t| t.as_str())
                 .unwrap_or("");
+            let primary_url = item["resource"]["primary"]["URL"]
+                .as_str()
+                .filter(|value| !value.trim().is_empty())
+                .or_else(|| item["URL"].as_str())
+                .unwrap_or("");
+            let pdf_url = crossref_link_url(item).unwrap_or_default();
 
             Paper {
                 paper_id: item["DOI"].as_str().unwrap_or("").to_string(),
@@ -233,12 +278,23 @@ pub async fn search_crossref(
                 citation_count: item["is-referenced-by-count"].as_u64().unwrap_or(0) as u32,
                 doi: item["DOI"].as_str().unwrap_or("").to_string(),
                 arxiv_id: String::new(),
-                url: item["URL"].as_str().unwrap_or("").to_string(),
-                pdf_url: String::new(),
+                url: primary_url.to_string(),
+                pdf_url,
                 source: "crossref".to_string(),
             }
         })
         .collect())
+}
+
+fn crossref_link_url(item: &Value) -> Option<String> {
+    item["link"].as_array().and_then(|links| {
+        links
+            .iter()
+            .filter_map(|link| link["URL"].as_str())
+            .map(str::trim)
+            .find(|url| !url.is_empty())
+            .map(ToOwned::to_owned)
+    })
 }
 
 // ---------------------------------------------------------------------------
@@ -685,6 +741,199 @@ pub async fn search_jstage(
 }
 
 // ---------------------------------------------------------------------------
+// Open Library (Tier 1, no key)
+// ---------------------------------------------------------------------------
+
+pub async fn search_open_library(
+    client: &Client,
+    query: &str,
+    limit: usize,
+) -> Result<Vec<Paper>, SourceError> {
+    let url = format!(
+        "https://openlibrary.org/search.json?q={}&fields=key,title,author_name,first_publish_year,ia,public_scan_b,edition_count&limit={}",
+        urlencoding::encode(query),
+        limit.min(25)
+    );
+
+    let resp: Value = client.get(&url).send().await?.json().await?;
+    let docs = resp["docs"].as_array().unwrap_or(&Vec::new()).clone();
+
+    Ok(docs
+        .iter()
+        .map(|doc| {
+            let ol_key = json_string(&doc["key"]);
+            let ia_id = json_string_array(&doc["ia"])
+                .into_iter()
+                .next()
+                .unwrap_or_default();
+            let public_scan = doc["public_scan_b"].as_bool().unwrap_or(false);
+            let url = if public_scan && !ia_id.is_empty() {
+                format!("https://archive.org/details/{ia_id}")
+            } else if !ol_key.is_empty() {
+                format!("https://openlibrary.org{ol_key}")
+            } else {
+                String::new()
+            };
+
+            Paper {
+                paper_id: if !ol_key.is_empty() {
+                    ol_key.clone()
+                } else {
+                    format!("openlibrary:{}", json_string(&doc["title"]))
+                },
+                title: json_string(&doc["title"]),
+                authors: paper_authors(json_string_array(&doc["author_name"])),
+                year: json_year(&doc["first_publish_year"]),
+                venue: if let Some(count) = doc["edition_count"].as_u64() {
+                    format!("{count} editions")
+                } else {
+                    String::new()
+                },
+                url,
+                source: "open_library".to_string(),
+                ..Default::default()
+            }
+        })
+        .collect())
+}
+
+// ---------------------------------------------------------------------------
+// Internet Archive (Tier 1, no key)
+// ---------------------------------------------------------------------------
+
+pub async fn search_internet_archive(
+    client: &Client,
+    query: &str,
+    limit: usize,
+) -> Result<Vec<Paper>, SourceError> {
+    let url = format!(
+        "https://archive.org/advancedsearch.php?q={}&fl[]=identifier&fl[]=title&fl[]=creator&fl[]=year&fl[]=mediatype&fl[]=downloads&output=json&rows={}",
+        urlencoding::encode(query),
+        limit.min(20)
+    );
+
+    let resp: Value = client.get(&url).send().await?.json().await?;
+    let docs = resp["response"]["docs"]
+        .as_array()
+        .unwrap_or(&Vec::new())
+        .clone();
+
+    let mut papers = Vec::new();
+    for doc in docs {
+        let identifier = json_string(&doc["identifier"]);
+        if identifier.is_empty() {
+            continue;
+        }
+        let detail_url = format!("https://archive.org/details/{identifier}");
+        let pdf_url = lookup_internet_archive_pdf_url(client, &identifier)
+            .await
+            .unwrap_or_default();
+        papers.push(Paper {
+            paper_id: identifier.clone(),
+            title: json_string(&doc["title"]),
+            authors: paper_authors(json_string_array(&doc["creator"])),
+            year: json_year(&doc["year"]),
+            citation_count: doc["downloads"].as_u64().unwrap_or(0) as u32,
+            venue: json_string(&doc["mediatype"]),
+            url: detail_url,
+            pdf_url,
+            source: "internet_archive".to_string(),
+            ..Default::default()
+        });
+    }
+
+    Ok(papers)
+}
+
+async fn lookup_internet_archive_pdf_url(
+    client: &Client,
+    identifier: &str,
+) -> Result<String, SourceError> {
+    let url = format!("https://archive.org/metadata/{identifier}");
+    let resp: Value = client.get(&url).send().await?.json().await?;
+    let files = resp["files"].as_array().cloned().unwrap_or_default();
+
+    for file in &files {
+        let name = json_string(&file["name"]);
+        if name.to_ascii_lowercase().ends_with(".pdf") {
+            return Ok(format!("https://archive.org/download/{identifier}/{name}"));
+        }
+    }
+
+    Ok(String::new())
+}
+
+// ---------------------------------------------------------------------------
+// Google Books (Tier 1, no key, quota-limited)
+// ---------------------------------------------------------------------------
+
+pub async fn search_google_books(
+    client: &Client,
+    query: &str,
+    limit: usize,
+) -> Result<Vec<Paper>, SourceError> {
+    let url = format!(
+        "https://www.googleapis.com/books/v1/volumes?q={}&maxResults={}&projection=lite",
+        urlencoding::encode(query),
+        limit.min(20)
+    );
+
+    let resp = client.get(&url).send().await?;
+    if resp.status().as_u16() == 429 {
+        return Err(SourceError::RateLimited);
+    }
+    let body: Value = resp.json().await?;
+    if body["error"]["status"].as_str() == Some("RESOURCE_EXHAUSTED") {
+        return Err(SourceError::RateLimited);
+    }
+    let items = body["items"].as_array().unwrap_or(&Vec::new()).clone();
+
+    Ok(items
+        .iter()
+        .map(|item| {
+            let volume_info = &item["volumeInfo"];
+            let access_info = &item["accessInfo"];
+            let doi = volume_info["industryIdentifiers"]
+                .as_array()
+                .and_then(|ids| {
+                    ids.iter().find_map(|identifier| {
+                        let value = identifier["identifier"].as_str().unwrap_or("").trim();
+                        if value.starts_with("10.") && value.contains('/') {
+                            Some(value.to_string())
+                        } else {
+                            None
+                        }
+                    })
+                })
+                .unwrap_or_default();
+
+            Paper {
+                paper_id: json_string(&item["id"]),
+                title: json_string(&volume_info["title"]),
+                authors: paper_authors(json_string_array(&volume_info["authors"])),
+                year: json_year(&volume_info["publishedDate"]),
+                r#abstract: json_string(&volume_info["description"]),
+                venue: json_string(&volume_info["publisher"]),
+                citation_count: 0,
+                doi,
+                arxiv_id: String::new(),
+                url: volume_info["infoLink"]
+                    .as_str()
+                    .or_else(|| volume_info["previewLink"].as_str())
+                    .or_else(|| volume_info["canonicalVolumeLink"].as_str())
+                    .unwrap_or("")
+                    .to_string(),
+                pdf_url: access_info["pdf"]["downloadLink"]
+                    .as_str()
+                    .unwrap_or("")
+                    .to_string(),
+                source: "google_books".to_string(),
+            }
+        })
+        .collect())
+}
+
+// ---------------------------------------------------------------------------
 // CiNii (Tier 2, appid required)
 // ---------------------------------------------------------------------------
 
@@ -1031,5 +1280,42 @@ fn parse_gs_info_line(info: &str) -> (Vec<Author>, u32, String) {
 mod urlencoding {
     pub fn encode(s: &str) -> String {
         url::form_urlencoded::byte_serialize(s.as_bytes()).collect()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::crossref_link_url;
+    use serde_json::json;
+
+    #[test]
+    fn crossref_link_url_prefers_first_present_link() {
+        let item = json!({
+            "link": [
+                {"URL": "https://projecteuclid.org/journalArticle/Download?urlid=10.1215/S0012-7094-35-00112-0"},
+                {"URL": "https://example.org/secondary.pdf"}
+            ]
+        });
+        assert_eq!(
+            crossref_link_url(&item).as_deref(),
+            Some(
+                "https://projecteuclid.org/journalArticle/Download?urlid=10.1215/S0012-7094-35-00112-0"
+            )
+        );
+    }
+
+    #[test]
+    fn crossref_link_url_ignores_empty_entries() {
+        let item = json!({
+            "link": [
+                {"URL": ""},
+                {"URL": "   "},
+                {"URL": "https://example.org/fallback.pdf"}
+            ]
+        });
+        assert_eq!(
+            crossref_link_url(&item).as_deref(),
+            Some("https://example.org/fallback.pdf")
+        );
     }
 }

@@ -1,0 +1,40 @@
+{
+  "cookies": [
+    {
+      "name": ".AspNetCore.Antiforgery.Pc7rQrlEJhQ",
+      "value": "CfDJ8M_rhMCUemRGskpfEOc-GK4k2TMY9F7FnUHYUzNeHzC9L-S94kwao46IfrQ_37Is4wHaybKVbrlf75Qc1mKtBc9g8DwDo1TiY9VD1pwypzJsODbntkLl69bVjNK9RILvtnmRhg7-c2ZaUdJVodAa0ZE",
+      "domain": "pubs.ams.org",
+      "path": "/"
+    },
+    {
+      "name": "AMS.Bookstore.Session",
+      "value": "CfDJ8M%2FrhMCUemRGskpfEOc%2BGK6yvXUFKvsY96bZoDLSBeWPUmj63M9PPyV7lIYCte%2FRLmgbcNGTixu9D5K3jZyfYAGriWI8mpiMGmppRwk9FZp2hG7YOHtsC2QEPUGICQPsnaFwwK529uejAaDVTxdO0E5HviCViUmhb0%2FQnw3MpPn1",
+      "domain": ".ams.org",
+      "path": "/"
+    },
+    {
+      "name": "AMS_BP37qb3Zu9",
+      "value": "717dbf1c.64df434a483f0",
+      "domain": "www.ams.org",
+      "path": "/"
+    },
+    {
+      "name": "cf_clearance",
+      "value": "Ugm.PXR.b.BK9dOXW2eGzDq_VlfQe3sX27dzf0BA4xA-1774586409-1.2.1.1-5cplHq0dphAGq3XbMxOtNSrPHywP9CcvxQm0AEe7SoZ_YJrfHdEb65ltmc3qCeLDCyoX2uwRajEAz.qWY.0TRD3Z3vkXh6rpLqvUKVtAtgCqjhjiXRGQHUuRq5bpLxsoyBxuEAmt1tAkAfLlqIh5bMEwBTdaaEG4M9oJo8Zm8ngBbWpXLnzJJSRNHNqdwPS5UEBMI_N11AHlT6.c.qpjKG0N14yLAfSW4ZrfEW3gnas",
+      "domain": ".ams.org",
+      "path": "/"
+    },
+    {
+      "name": "__cf_bm",
+      "value": "xwKobWs_2hYrfnHERHMhSG5fGRrao0xbAB6FQ8zvoIs-1774586409.915665-1.0.1.1-fkz3ocvXc3_E6_hWnXWzx4RyeZtStvVU0RqBqODG2Mhd5U7JBEp00kHtSd5110egqcuIderGomkozFcAX582q03nddsbHwlLkOTKuS531h07_OrZ9xURl9FFNEIWA8GB",
+      "domain": ".ams.org",
+      "path": "/"
+    },
+    {
+      "name": "cookieconsent_status",
+      "value": "dismiss",
+      "domain": ".ams.org",
+      "path": "/"
+    }
+  ]
+}

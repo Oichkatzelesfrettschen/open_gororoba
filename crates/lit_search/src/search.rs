@@ -2,7 +2,7 @@
 
 use crate::{
     cache::{get_cached_search, put_cached_search},
-    dedup::deduplicate,
+    dedup::{canonicalize_doi, deduplicate},
     domain_queries::get_domain_queries,
     models::Paper,
     query_adapter::adapt_query,
@@ -34,9 +34,31 @@ pub const OPEN_SOURCE_NAMES: &[&str] = &[
     "inspirehep",
     "dblp",
     "jstage",
+    "open_library",
+    "internet_archive",
+    "google_books",
 ];
 pub const KEYED_SOURCE_NAMES: &[&str] = &["core", "cinii", "ads", "lens", "google_scholar"];
 pub const AUGMENT_ONLY_SOURCE_NAMES: &[&str] = &["unpaywall"];
+pub const MIRROR_HUNT_SOURCE_NAMES: &[&str] = &[
+    "openalex",
+    "semantic_scholar",
+    "crossref",
+    "datacite",
+    "unpaywall",
+    "hal",
+    "europepmc",
+    "scielo",
+    "dblp",
+    "jstage",
+    "open_library",
+    "internet_archive",
+    "google_books",
+    "core",
+    "cinii",
+    "lens",
+    "google_scholar",
+];
 pub const SEARCHABLE_SOURCE_NAMES: &[&str] = &[
     "openalex",
     "semantic_scholar",
@@ -49,6 +71,9 @@ pub const SEARCHABLE_SOURCE_NAMES: &[&str] = &[
     "inspirehep",
     "dblp",
     "jstage",
+    "open_library",
+    "internet_archive",
+    "google_books",
     "core",
     "cinii",
     "ads",
@@ -67,6 +92,9 @@ pub const ALL_SOURCE_NAMES: &[&str] = &[
     "inspirehep",
     "dblp",
     "jstage",
+    "open_library",
+    "internet_archive",
+    "google_books",
     "core",
     "cinii",
     "ads",
@@ -83,6 +111,8 @@ pub const SOURCE_FAMILY_NAMES: &[&str] = &[
     "resolver",
     "archive",
     "catalog",
+    "holder_catalog",
+    "mirror_hunt",
 ];
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
@@ -110,6 +140,7 @@ pub struct SearchExecutionReport {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct SearchExecutionOutcome {
     pub papers: Vec<Paper>,
+    pub raw_papers: Vec<Paper>,
     pub report: SearchExecutionReport,
 }
 
@@ -127,6 +158,7 @@ pub struct MultiQueryExecutionReport {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct MultiQueryExecutionOutcome {
     pub papers: Vec<Paper>,
+    pub raw_papers: Vec<Paper>,
     pub report: MultiQueryExecutionReport,
 }
 
@@ -166,6 +198,9 @@ pub fn source_names_for_tier(tier: SourceTier) -> &'static [&'static str] {
             "inspirehep",
             "dblp",
             "jstage",
+            "open_library",
+            "internet_archive",
+            "google_books",
         ],
         SourceTier::All => &[
             "openalex",
@@ -179,6 +214,9 @@ pub fn source_names_for_tier(tier: SourceTier) -> &'static [&'static str] {
             "inspirehep",
             "dblp",
             "jstage",
+            "open_library",
+            "internet_archive",
+            "google_books",
             "core",
             "cinii",
             "ads",
@@ -216,8 +254,35 @@ pub fn source_names_for_family(family: &str) -> Option<&'static [&'static str]> 
         "augment" => Some(AUGMENT_ONLY_SOURCE_NAMES),
         "citation_graph" => Some(&["openalex", "semantic_scholar"]),
         "resolver" => Some(&["crossref", "datacite", "unpaywall"]),
-        "archive" => Some(&["arxiv", "jstage", "inspirehep", "hal", "dblp"]),
-        "catalog" => Some(&["europepmc", "scielo", "core", "cinii", "ads", "lens"]),
+        "archive" => Some(&[
+            "arxiv",
+            "jstage",
+            "inspirehep",
+            "hal",
+            "dblp",
+            "internet_archive",
+        ]),
+        "catalog" => Some(&[
+            "europepmc",
+            "scielo",
+            "core",
+            "cinii",
+            "ads",
+            "lens",
+            "open_library",
+            "google_books",
+        ]),
+        "holder_catalog" => Some(&[
+            "google_scholar",
+            "crossref",
+            "cinii",
+            "core",
+            "lens",
+            "dblp",
+            "open_library",
+            "google_books",
+        ]),
+        "mirror_hunt" => Some(MIRROR_HUNT_SOURCE_NAMES),
         _ => None,
     }
 }
@@ -281,18 +346,19 @@ impl SearchEngine {
         for source_run in source_runs {
             match source_run.outcome {
                 Ok(outcome) => {
+                    let normalized_papers = normalize_fetched_papers(outcome.papers);
                     if outcome.cache_hit {
                         cache_hit_count += 1;
                     }
                     source_reports.push(SourceExecutionReport {
                         source: source_run.source,
                         adapted_query: source_run.adapted_query,
-                        result_count: outcome.papers.len(),
+                        result_count: normalized_papers.len(),
                         cache_hit: outcome.cache_hit,
                         error: String::new(),
                         skipped_reason: String::new(),
                     });
-                    all_papers.extend(outcome.papers);
+                    all_papers.extend(normalized_papers);
                 }
                 Err(err) => {
                     source_reports.push(SourceExecutionReport {
@@ -341,13 +407,15 @@ impl SearchEngine {
             }
         }
 
-        let raw_result_count = all_papers.len();
-        let mut results = deduplicate(all_papers);
+        let raw_papers = all_papers;
+        let raw_result_count = raw_papers.len();
+        let mut results = deduplicate(raw_papers.clone());
         results.sort_by_key(|paper| std::cmp::Reverse(paper.citation_count));
         let deduplicated_result_count = results.len();
 
         SearchExecutionOutcome {
             papers: results,
+            raw_papers,
             report: SearchExecutionReport {
                 query: query.to_string(),
                 limit,
@@ -423,6 +491,7 @@ impl SearchEngine {
     ) -> MultiQueryExecutionOutcome {
         let deduped_queries = deduplicate_queries(queries);
         let mut all_papers = Vec::new();
+        let mut all_raw_papers = Vec::new();
         let mut query_reports = Vec::new();
         let mut raw_result_count = 0;
         let mut requested_report_sources = Vec::new();
@@ -437,6 +506,7 @@ impl SearchEngine {
                 requested_report_sources = outcome.report.requested_sources.clone();
             }
             query_reports.push(outcome.report);
+            all_raw_papers.extend(outcome.raw_papers);
             all_papers.extend(outcome.papers);
         }
 
@@ -446,6 +516,7 @@ impl SearchEngine {
 
         MultiQueryExecutionOutcome {
             papers: results,
+            raw_papers: all_raw_papers,
             report: MultiQueryExecutionReport {
                 queries: deduped_queries,
                 limit,
@@ -486,6 +557,7 @@ impl SearchEngine {
         });
         let outcomes = join_all(tasks).await;
         let mut all_papers = Vec::new();
+        let mut all_raw_papers = Vec::new();
         let mut query_reports = Vec::new();
         let mut raw_result_count = 0;
         let mut requested_report_sources = Vec::new();
@@ -496,6 +568,7 @@ impl SearchEngine {
                 requested_report_sources = outcome.report.requested_sources.clone();
             }
             query_reports.push(outcome.report);
+            all_raw_papers.extend(outcome.raw_papers);
             all_papers.extend(outcome.papers);
         }
 
@@ -505,6 +578,7 @@ impl SearchEngine {
 
         MultiQueryExecutionOutcome {
             papers: results,
+            raw_papers: all_raw_papers,
             report: MultiQueryExecutionReport {
                 queries: deduped_queries,
                 limit,
@@ -640,6 +714,33 @@ impl SearchEngine {
                 )
                 .await
             }
+            "open_library" => {
+                cached_source_search_outcome(
+                    source,
+                    &adapted_query,
+                    limit,
+                    sources::search_open_library(&self.client, &adapted_query, limit),
+                )
+                .await
+            }
+            "internet_archive" => {
+                cached_source_search_outcome(
+                    source,
+                    &adapted_query,
+                    limit,
+                    sources::search_internet_archive(&self.client, &adapted_query, limit),
+                )
+                .await
+            }
+            "google_books" => {
+                cached_source_search_outcome(
+                    source,
+                    &adapted_query,
+                    limit,
+                    sources::search_google_books(&self.client, &adapted_query, limit),
+                )
+                .await
+            }
             "core" => {
                 cached_source_search_outcome(
                     source,
@@ -709,6 +810,44 @@ fn deduplicate_queries(queries: &[String]) -> Vec<String> {
     deduped
 }
 
+fn normalize_fetched_papers(papers: Vec<Paper>) -> Vec<Paper> {
+    papers
+        .into_iter()
+        .filter_map(normalize_fetched_paper)
+        .collect()
+}
+
+fn normalize_fetched_paper(mut paper: Paper) -> Option<Paper> {
+    if is_placeholder_paper(&paper) {
+        return None;
+    }
+
+    if paper.url.trim().is_empty() {
+        let canonical_doi = canonicalize_doi(&paper.doi);
+        if !canonical_doi.is_empty() {
+            paper.url = format!("https://doi.org/{canonical_doi}");
+        }
+    }
+
+    if paper.pdf_url.trim().is_empty() && paper.url.to_ascii_lowercase().ends_with(".pdf") {
+        paper.pdf_url = paper.url.clone();
+    }
+
+    Some(paper)
+}
+
+fn is_placeholder_paper(paper: &Paper) -> bool {
+    let normalized_title = paper.title.trim().to_ascii_lowercase();
+    if normalized_title.is_empty() {
+        return true;
+    }
+    if normalized_title == "error" {
+        return true;
+    }
+    let combined_url = format!("{} {}", paper.url, paper.pdf_url).to_ascii_lowercase();
+    combined_url.contains("/api/errors")
+}
+
 fn resolve_requested_sources(
     tier: SourceTier,
     requested_sources: &[String],
@@ -738,6 +877,22 @@ fn resolve_requested_sources(
 
     for source in requested_sources {
         let normalized = normalize_source_name(source);
+        let is_explicit_source = SEARCHABLE_SOURCE_NAMES
+            .iter()
+            .any(|candidate| candidate == &normalized.as_str())
+            || normalized == "unpaywall";
+        if is_explicit_source {
+            if requested.iter().any(|existing| existing == &normalized) {
+                continue;
+            }
+            requested.push(normalized.clone());
+            if normalized == "unpaywall" {
+                augment_unpaywall = true;
+            } else {
+                primary_sources.push(normalized);
+            }
+            continue;
+        }
         if let Some(family_sources) = source_names_for_family(&normalized) {
             for family_source in family_sources {
                 let family_source = family_source.to_string();
@@ -805,8 +960,8 @@ where
 #[cfg(test)]
 mod tests {
     use super::{
-        SourceTier, deduplicate_queries, normalize_source_name, resolve_requested_sources,
-        source_names_for_family,
+        Paper, SourceTier, deduplicate_queries, normalize_fetched_paper, normalize_source_name,
+        resolve_requested_sources, source_names_for_family,
     };
 
     #[test]
@@ -854,5 +1009,52 @@ mod tests {
         assert!(plan.primary_sources.contains(&"arxiv".to_string()));
         assert!(plan.primary_sources.contains(&"jstage".to_string()));
         assert!(source_names_for_family("archive").is_some());
+    }
+
+    #[test]
+    fn resolve_requested_sources_expands_mirror_hunt_family() {
+        let requested = vec!["mirror_hunt".to_string()];
+        let plan = resolve_requested_sources(SourceTier::Open, &requested);
+        assert!(plan.primary_sources.contains(&"openalex".to_string()));
+        assert!(plan.primary_sources.contains(&"google_scholar".to_string()));
+        assert!(plan.primary_sources.contains(&"open_library".to_string()));
+        assert!(
+            plan.primary_sources
+                .contains(&"internet_archive".to_string())
+        );
+        assert!(plan.primary_sources.contains(&"core".to_string()));
+        assert!(plan.augment_unpaywall);
+        assert!(source_names_for_family("mirror_hunt").is_some());
+    }
+
+    #[test]
+    fn resolve_requested_sources_keeps_core_as_explicit_source() {
+        let requested = vec!["core".to_string()];
+        let plan = resolve_requested_sources(SourceTier::Open, &requested);
+        assert_eq!(plan.primary_sources, vec!["core".to_string()]);
+        assert_eq!(plan.requested_sources, vec!["core".to_string()]);
+        assert!(!plan.augment_unpaywall);
+        assert!(plan.invalid_sources.is_empty());
+    }
+
+    #[test]
+    fn normalize_fetched_paper_adds_doi_url_and_filters_placeholders() {
+        let paper = Paper {
+            title: "Linear algebras with associativity not assumed".to_string(),
+            doi: "https://doi.org/10.1215/S0012-7094-35-00112-0".to_string(),
+            ..Default::default()
+        };
+        let normalized = normalize_fetched_paper(paper).expect("paper should be retained");
+        assert_eq!(
+            normalized.url,
+            "https://doi.org/10.1215/s0012-7094-35-00112-0"
+        );
+
+        let placeholder = Paper {
+            title: "Error".to_string(),
+            url: "https://arxiv.org/api/errors".to_string(),
+            ..Default::default()
+        };
+        assert!(normalize_fetched_paper(placeholder).is_none());
     }
 }

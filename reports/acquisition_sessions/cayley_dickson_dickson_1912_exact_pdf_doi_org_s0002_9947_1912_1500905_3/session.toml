@@ -1,8 +1,8 @@
 format_version = 1
 session_id = "cayley_dickson_dickson_1912_exact_pdf_doi_org_s0002_9947_1912_1500905_3"
 created_utc = "2026-03-27T04:36:51.069317800+00:00"
-updated_utc = "2026-03-27T04:36:51.069317800+00:00"
-status = "staged"
+updated_utc = "2026-03-27T05:53:23.750047393+00:00"
+status = "downloaded"
 
 [source]
 url = "https://doi.org/10.1090/s0002-9947-1912-1500905-3"
@@ -55,10 +55,44 @@ backends = [
 ]
 
 [evidence]
-host_scope = "doi_org"
+artifact_rel = "/home/eirikr/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/foundational_legacy/cayley_dickson_dickson_1912_exact_pdf_doi_org_s0002_9947_1912_1500905_3/S0002-9947-1912-1500905-3.pdf"
+text_sidecar_rel = "/home/eirikr/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/foundational_legacy/cayley_dickson_dickson_1912_exact_pdf_doi_org_s0002_9947_1912_1500905_3/S0002-9947-1912-1500905-3.md"
+browser_trace_rel = "reports/acquisition_sessions/cayley_dickson_dickson_1912_exact_pdf_doi_org_s0002_9947_1912_1500905_3/browser_network_requests_20260327.txt"
+cookie_jar_rel = "reports/acquisition_sessions/cayley_dickson_dickson_1912_exact_pdf_doi_org_s0002_9947_1912_1500905_3/browser_cookies_20260327.json"
+request_capsule_rel = "reports/acquisition_sessions/cayley_dickson_dickson_1912_exact_pdf_doi_org_s0002_9947_1912_1500905_3/request_capsule.json"
+host_scope = "ams_org"
+effective_url = "https://pubs.ams.org/journals/tran/1912-013-01/S0002-9947-1912-1500905-3"
+http_code = 200
+bytes = 1031040
+sha256 = "013868da43773edeb005b94dc985334bbe28bae823b099316436e01a588620a5"
 
 [[events]]
 at_utc = "2026-03-27T04:36:51.069317800+00:00"
 action = "promote_child"
 status = "staged"
 note = "promoted from cayley_dickson_dickson_1912_exact_pdf | critical_dossier_refresh_after_title_overlap | dossier_search_target_id=dickson_1912_exact_pdf | dossier_suggestion_id=dickson_1912_exact_pdf_doi_10_1090_s0002_9947_1912_1500905_3 | canonical_id=doi:10.1090/s0002-9947-1912-1500905-3 | source_family=resolver | route_class=doi_resolver"
+
+[[events]]
+at_utc = "2026-03-27T04:43:04.092282896+00:00"
+action = "record"
+status = "in_progress"
+note = "headed_browser_pdf_lane_confirmed_200_but_shell_fetch_403"
+
+[[events]]
+at_utc = "2026-03-27T04:43:22.888893136+00:00"
+action = "consume_handoff"
+status = "downloaded"
+note = "downloaded via consume-handoff backend=reqwest output=/home/eirikr/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/foundational_legacy/cayley_dickson_dickson_1912_exact_pdf_doi_org_s0002_9947_1912_1500905_3/s0002-9947-1912-1500905-3 bytes=7720192 sha256=960f8b0d87078742f6f618ff31b26edb7d6dad7c126de3003e869b69c443e03c headers=3"
+
+[[events]]
+at_utc = "2026-03-27T05:15:25.074810773+00:00"
+action = "consume_handoff"
+status = "blocked"
+note = "consume-handoff failed output=/home/eirikr/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/foundational_legacy/cayley_dickson_dickson_1912_exact_pdf_doi_org_s0002_9947_1912_1500905_3/S0002-9947-1912-1500905-3.pdf headers=3 error=existing artifact is not a PDF: /home/eirikr/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/foundational_legacy/cayley_dickson_dickson_1912_exact_pdf_doi_org_s0002_9947_1912_1500905_3/S0002-9947-1912-1500905-3.pdf"
+
+[[events]]
+at_utc = "2026-03-27T05:53:23.750047393+00:00"
+action = "consume_handoff"
+status = "downloaded"
+note = "skipped existing artifact during consume-handoff output=/home/eirikr/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/foundational_legacy/cayley_dickson_dickson_1912_exact_pdf_doi_org_s0002_9947_1912_1500905_3/S0002-9947-1912-1500905-3.pdf bytes=1031040 sha256=013868da43773edeb005b94dc985334bbe28bae823b099316436e01a588620a5 headers=3"
+
