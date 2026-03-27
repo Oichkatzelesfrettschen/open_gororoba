@@ -37,6 +37,8 @@ pub const OPEN_SOURCE_NAMES: &[&str] = &[
     "open_library",
     "internet_archive",
     "google_books",
+    "hathitrust",
+    "worldcat",
 ];
 pub const KEYED_SOURCE_NAMES: &[&str] = &["core", "cinii", "ads", "lens", "google_scholar"];
 pub const AUGMENT_ONLY_SOURCE_NAMES: &[&str] = &["unpaywall"];
@@ -54,6 +56,8 @@ pub const MIRROR_HUNT_SOURCE_NAMES: &[&str] = &[
     "open_library",
     "internet_archive",
     "google_books",
+    "hathitrust",
+    "worldcat",
     "core",
     "cinii",
     "lens",
@@ -74,6 +78,8 @@ pub const SEARCHABLE_SOURCE_NAMES: &[&str] = &[
     "open_library",
     "internet_archive",
     "google_books",
+    "hathitrust",
+    "worldcat",
     "core",
     "cinii",
     "ads",
@@ -95,6 +101,8 @@ pub const ALL_SOURCE_NAMES: &[&str] = &[
     "open_library",
     "internet_archive",
     "google_books",
+    "hathitrust",
+    "worldcat",
     "core",
     "cinii",
     "ads",
@@ -201,6 +209,8 @@ pub fn source_names_for_tier(tier: SourceTier) -> &'static [&'static str] {
             "open_library",
             "internet_archive",
             "google_books",
+            "hathitrust",
+            "worldcat",
         ],
         SourceTier::All => &[
             "openalex",
@@ -217,6 +227,8 @@ pub fn source_names_for_tier(tier: SourceTier) -> &'static [&'static str] {
             "open_library",
             "internet_archive",
             "google_books",
+            "hathitrust",
+            "worldcat",
             "core",
             "cinii",
             "ads",
@@ -271,6 +283,8 @@ pub fn source_names_for_family(family: &str) -> Option<&'static [&'static str]> 
             "lens",
             "open_library",
             "google_books",
+            "hathitrust",
+            "worldcat",
         ]),
         "holder_catalog" => Some(&[
             "google_scholar",
@@ -281,6 +295,8 @@ pub fn source_names_for_family(family: &str) -> Option<&'static [&'static str]> 
             "dblp",
             "open_library",
             "google_books",
+            "hathitrust",
+            "worldcat",
         ]),
         "mirror_hunt" => Some(MIRROR_HUNT_SOURCE_NAMES),
         _ => None,
@@ -741,6 +757,24 @@ impl SearchEngine {
                 )
                 .await
             }
+            "hathitrust" => {
+                cached_source_search_outcome(
+                    source,
+                    &adapted_query,
+                    limit,
+                    sources::search_hathitrust(&self.client, &adapted_query, limit),
+                )
+                .await
+            }
+            "worldcat" => {
+                cached_source_search_outcome(
+                    source,
+                    &adapted_query,
+                    limit,
+                    sources::search_worldcat(&self.client, &adapted_query, limit),
+                )
+                .await
+            }
             "core" => {
                 cached_source_search_outcome(
                     source,
@@ -1022,6 +1056,8 @@ mod tests {
             plan.primary_sources
                 .contains(&"internet_archive".to_string())
         );
+        assert!(plan.primary_sources.contains(&"hathitrust".to_string()));
+        assert!(plan.primary_sources.contains(&"worldcat".to_string()));
         assert!(plan.primary_sources.contains(&"core".to_string()));
         assert!(plan.augment_unpaywall);
         assert!(source_names_for_family("mirror_hunt").is_some());

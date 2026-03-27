@@ -1276,6 +1276,120 @@ fn parse_gs_info_line(info: &str) -> (Vec<Author>, u32, String) {
     (authors, year, venue)
 }
 
+// ---------------------------------------------------------------------------
+// HathiTrust (Tier 1, browser-gated best-effort)
+// ---------------------------------------------------------------------------
+
+pub async fn search_hathitrust(
+    client: &Client,
+    query: &str,
+    _limit: usize,
+) -> Result<Vec<Paper>, SourceError> {
+    let url = format!(
+        "https://catalog.hathitrust.org/Search/Home?lookfor={}&searchtype=all&ft=",
+        urlencoding::encode(query)
+    );
+
+    let resp = client
+        .get(&url)
+        .header("Accept", "text/html")
+        .header("Accept-Language", "en-US,en;q=0.9")
+        .send()
+        .await?;
+    let status = resp.status();
+    let text = resp.text().await?;
+
+    if status.as_u16() == 403 || html_indicates_cloudflare_block(&text) {
+        return Err(SourceError::Unavailable(
+            "HathiTrust catalog search is browser-gated from this host".into(),
+        ));
+    }
+    if status.as_u16() == 429 {
+        return Err(SourceError::RateLimited);
+    }
+    if status.as_u16() != 200 {
+        return Err(SourceError::Unavailable(format!(
+            "HathiTrust returned HTTP {}",
+            status.as_u16()
+        )));
+    }
+
+    Ok(Vec::new())
+}
+
+// ---------------------------------------------------------------------------
+// WorldCat (Tier 1, browser-gated/best-effort)
+// ---------------------------------------------------------------------------
+
+pub async fn search_worldcat(
+    client: &Client,
+    query: &str,
+    limit: usize,
+) -> Result<Vec<Paper>, SourceError> {
+    use scraper::{Html, Selector};
+
+    let url = format!(
+        "https://search.worldcat.org/search?q={}",
+        urlencoding::encode(query)
+    );
+
+    let resp = client
+        .get(&url)
+        .header("Accept", "text/html")
+        .header("Accept-Language", "en-US,en;q=0.9")
+        .send()
+        .await?;
+    let status = resp.status();
+    let text = resp.text().await?;
+
+    if status.as_u16() == 429 || html_indicates_cloudflare_block(&text) {
+        return Err(SourceError::Unavailable(
+            "WorldCat search is browser-gated from this host".into(),
+        ));
+    }
+    if status.as_u16() != 200 {
+        return Err(SourceError::Unavailable(format!(
+            "WorldCat returned HTTP {}",
+            status.as_u16()
+        )));
+    }
+
+    let document = Html::parse_document(&text);
+    let link_sel = Selector::parse("a[href*=\"/title/\"]")
+        .map_err(|e| SourceError::Unavailable(format!("selector parse: {e:?}")))?;
+
+    let mut papers = Vec::new();
+    for link in document.select(&link_sel).take(limit.min(20)) {
+        let title = link.text().collect::<String>().trim().to_string();
+        let href = link.value().attr("href").unwrap_or("").trim().to_string();
+        if title.is_empty() || href.is_empty() {
+            continue;
+        }
+        let url = if href.starts_with("http://") || href.starts_with("https://") {
+            href
+        } else {
+            format!("https://search.worldcat.org{href}")
+        };
+        papers.push(Paper {
+            paper_id: url.clone(),
+            title,
+            url,
+            source: "worldcat".to_string(),
+            ..Default::default()
+        });
+    }
+
+    Ok(papers)
+}
+
+fn html_indicates_cloudflare_block(text: &str) -> bool {
+    let lower = text.to_ascii_lowercase();
+    lower.contains("just a moment")
+        || lower.contains("access denied")
+        || lower.contains("cloudflare")
+        || lower.contains("used cloudflare to restrict access")
+}
+
 // Encode URL component
 mod urlencoding {
     pub fn encode(s: &str) -> String {

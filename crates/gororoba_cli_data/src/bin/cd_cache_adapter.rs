@@ -1564,7 +1564,7 @@ fn map_source_family(source: &str) -> String {
             "archive".to_string()
         }
         "europepmc" | "scielo" | "core" | "cinii" | "ads" | "lens" | "google_scholar"
-        | "open_library" | "google_books" => "catalog".to_string(),
+        | "open_library" | "google_books" | "hathitrust" | "worldcat" => "catalog".to_string(),
         other => other.to_string(),
     }
 }
