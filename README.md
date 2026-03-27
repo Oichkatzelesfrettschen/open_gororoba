@@ -144,7 +144,7 @@ Key tactics: `ring_simplify; lra` for concrete norm proofs,
 | Clippy | `make rust-clippy` | Warnings-as-errors (`-D warnings`) |
 | SemVer | `make rust-semver-check` | Public API compatibility |
 | Tests | `cargo test --workspace` | ~3700 tests, 0 tolerance |
-| ASCII | `make ansi-check` | No Unicode in source |
+| Character | `make ansi-check` | Emoji-blocking UTF-8 |
 | Terminology | `make terminology-gate` | 8 banned patterns |
 | Governance | `make governance-gate` | Full registry + integrity |
 | Pre-push | `make pre-push-gate` | Scoped clippy + test + governance |

@@ -33,6 +33,10 @@ struct Args {
     /// Force CPU fallback.
     #[arg(long)]
     cpu_only: bool,
+
+    /// Explicit backend selection (cuda, vulkan, cpu).
+    #[arg(long)]
+    backend: Option<String>,
 }
 
 #[derive(Serialize)]
@@ -41,6 +45,7 @@ struct AlignmentResultRow {
     mission: String,
     max_alignment: f64,
     best_orient_idx: u32,
+    backend: String,
 }
 
 fn main() -> Result<()> {
@@ -133,44 +138,55 @@ fn main() -> Result<()> {
 
     let mut used_backend = "None";
 
-    if !args.cpu_only {
-        #[cfg(feature = "gpu")]
-        {
-            println!("[3/4] Attempting CUDA backend...");
-            if let Some(gpu) = GpuBoxKiteAlignmentEngine::try_new() {
-                // Flatten sorted_vectors for CUDA
-                let flat_vectors: Vec<f64> = sorted_vectors.iter().flatten().copied().collect();
-                
-                let mut bk_indices_u8 = Vec::with_capacity(7 * 12);
-                for bk in boxkites.iter() {
-                    let mut indices = std::collections::BTreeSet::new();
-                    for a in &bk.assessors {
-                        indices.insert(a.low);
-                        indices.insert(a.high);
-                    }
-                    let vec_indices: Vec<u8> = indices.iter().map(|&i| i as u8).collect();
-                    bk_indices_u8.extend_from_slice(&vec_indices);
-                }
+    let target_backend = args.backend.as_ref().map(|s| s.to_lowercase());
 
-                let mut orient_bytes = Vec::with_capacity(168 * 16);
-                for p in &orientations {
-                    for &idx in p {
-                        orient_bytes.push(idx as u8);
+    if !args.cpu_only && (target_backend.is_none() || target_backend.as_deref() == Some("cuda") || target_backend.as_deref() == Some("vulkan")) {
+        if target_backend.as_deref() == Some("cuda") || target_backend.is_none() {
+            #[cfg(feature = "gpu")]
+            {
+                println!("[3/4] Attempting CUDA backend...");
+                if let Some(gpu) = GpuBoxKiteAlignmentEngine::try_new() {
+                    // Flatten sorted_vectors for CUDA
+                    let flat_vectors: Vec<f64> = sorted_vectors.iter().flatten().copied().collect();
+                    
+                    let mut bk_indices_u8 = Vec::with_capacity(7 * 12);
+                    for bk in boxkites.iter() {
+                        let mut indices = std::collections::BTreeSet::new();
+                        for a in &bk.assessors {
+                            indices.insert(a.low);
+                            indices.insert(a.high);
+                        }
+                        let vec_indices: Vec<u8> = indices.iter().map(|&i| i as u8).collect();
+                        bk_indices_u8.extend_from_slice(&vec_indices);
                     }
-                }
 
-                match gpu.run_alignment_scan(&flat_vectors, &orient_bytes, &bk_indices_u8) {
-                    Ok((m, b)) => {
-                        max_alignments_sorted = m;
-                        best_orients_sorted = b;
-                        used_backend = "CUDA";
+                    let mut orient_bytes = Vec::with_capacity(168 * 16);
+                    for p in &orientations {
+                        for &idx in p {
+                            orient_bytes.push(idx as u8);
+                        }
                     }
-                    Err(e) => eprintln!("      CUDA scan failed: {}. Falling back...", e),
+
+                    match gpu.run_alignment_scan(&flat_vectors, &orient_bytes, &bk_indices_u8) {
+                        Ok((m, b)) => {
+                            max_alignments_sorted = m;
+                            best_orients_sorted = b;
+                            used_backend = "CUDA";
+                        }
+                        Err(e) => {
+                            if target_backend.as_deref() == Some("cuda") {
+                                return Err(anyhow::anyhow!("Forced CUDA backend failed: {}", e));
+                            }
+                            eprintln!("      CUDA scan failed: {}. Falling back...", e);
+                        }
+                    }
+                } else if target_backend.as_deref() == Some("cuda") {
+                    return Err(anyhow::anyhow!("CUDA backend requested but engine could not be initialized"));
                 }
             }
         }
 
-        if used_backend == "None" {
+        if used_backend == "None" && (target_backend.as_deref() == Some("vulkan") || target_backend.is_none()) {
             println!("[3/4] Attempting Vulkan backend...");
             if let Ok(v_ctx) = VulkanContext::new(false) {
                 if let Ok(mut v_engine) = VulkanBoxKiteAlignmentEngine::try_new(&v_ctx) {
@@ -200,14 +216,28 @@ fn main() -> Result<()> {
                             best_orients_sorted = b;
                             used_backend = "Vulkan";
                         }
-                        Err(e) => eprintln!("      Vulkan scan failed: {}. Falling back...", e),
+                        Err(e) => {
+                            if target_backend.as_deref() == Some("vulkan") {
+                                return Err(anyhow::anyhow!("Forced Vulkan backend failed: {}", e));
+                            }
+                            eprintln!("      Vulkan scan failed: {}. Falling back...", e);
+                        }
                     }
+                } else if target_backend.as_deref() == Some("vulkan") {
+                    return Err(anyhow::anyhow!("Vulkan backend requested but engine could not be initialized"));
                 }
+            } else if target_backend.as_deref() == Some("vulkan") {
+                return Err(anyhow::anyhow!("Vulkan backend requested but context could not be created"));
             }
         }
     }
 
     if used_backend == "None" {
+        if let Some(ref b) = target_backend {
+            if b != "cpu" {
+                return Err(anyhow::anyhow!("Requested backend '{}' failed or unavailable, and fallback disabled", b));
+            }
+        }
         println!("[3/4] Using CPU backend (Rayon)...");
         let (m, b) = box_kite_alignment_scan_cpu(&sorted_vectors, &orientations, boxkites);
         max_alignments_sorted = m;
@@ -236,6 +266,7 @@ fn main() -> Result<()> {
             mission: all_missions[i].clone(),
             max_alignment: max_alignments[i],
             best_orient_idx: best_orients[i],
+            backend: used_backend.to_string(),
         })?;
     }
     writer.flush()?;

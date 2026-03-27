@@ -55,7 +55,7 @@ pub fn generate_psl_2_7_permutations_16d() -> Vec<[usize; 16]> {
     }
 
     let mut result: Vec<[usize; 16]> = permutations.into_iter().collect();
-    result.sort(); // Deterministic order
+    result.sort_by(|a, b| a.cmp(b)); // Deterministic order
     result
 }
 
@@ -120,8 +120,7 @@ pub fn box_kite_alignment_scan_cpu(
             let mut best_orient_idx = 0;
 
             for (o_idx, perm) in orientations.iter().enumerate() {
-                let mut current_total_captured = 0.0;
-
+                let mut max_bk_weight = -1.0;
                 for indices in &bk_indices {
                     let mut proj_sq = 0.0;
                     for &basis_idx in indices {
@@ -130,13 +129,13 @@ pub fn box_kite_alignment_scan_cpu(
                     }
 
                     let weight = proj_sq / norm_sq;
-                    if weight > current_total_captured {
-                        current_total_captured = weight;
+                    if weight > max_bk_weight {
+                        max_bk_weight = weight;
                     }
                 }
 
-                if current_total_captured > global_max_alignment {
-                    global_max_alignment = current_total_captured;
+                if max_bk_weight > global_max_alignment {
+                    global_max_alignment = max_bk_weight;
                     best_orient_idx = o_idx;
                 }
             }
