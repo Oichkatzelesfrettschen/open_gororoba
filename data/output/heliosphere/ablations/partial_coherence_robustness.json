@@ -1,0 +1,20 @@
+{
+  "heliosheath_110_118": {
+    "n": 220206,
+    "30min_2hr_total": 0.06196,
+    "30min_2hr_partial_bmag": 0.05764,
+    "30min_2hr_surrogate_bmag": 0.064557,
+    "2_8hr_total": 0.059334,
+    "2_8hr_partial_bmag": 0.045441,
+    "2_8hr_surrogate_bmag": 0.054742
+  },
+  "ism_121_126": {
+    "n": 50523,
+    "30min_2hr_total": 0.1224,
+    "30min_2hr_partial_bmag": 0.561429,
+    "30min_2hr_surrogate_bmag": 0.138082,
+    "2_8hr_total": 0.447324,
+    "2_8hr_partial_bmag": 0.702238,
+    "2_8hr_surrogate_bmag": 0.291856
+  }
+}
