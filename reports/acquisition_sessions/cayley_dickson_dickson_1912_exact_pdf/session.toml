@@ -1,7 +1,7 @@
 format_version = 1
 session_id = "cayley_dickson_dickson_1912_exact_pdf"
 created_utc = "2026-03-27T04:20:50.038760103+00:00"
-updated_utc = "2026-03-27T04:20:50.040494300+00:00"
+updated_utc = "2026-03-27T04:36:51.069819523+00:00"
 status = "in_progress"
 
 [source]
@@ -48,4 +48,10 @@ at_utc = "2026-03-27T04:20:50.040494300+00:00"
 action = "promote"
 status = "in_progress"
 note = "spawned_child_sessions=cayley_dickson_dickson_1912_exact_pdf_www_ams_org_s0002_9947_1944_0011083_5_pdf,cayley_dickson_dickson_1912_exact_pdf_journals_uwyo_edu_167"
+
+[[events]]
+at_utc = "2026-03-27T04:36:51.069819523+00:00"
+action = "promote"
+status = "in_progress"
+note = "spawned_child_sessions=cayley_dickson_dickson_1912_exact_pdf_doi_org_s0002_9947_1912_1500905_3 | critical_dossier_refresh_after_title_overlap"
 

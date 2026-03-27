@@ -683,7 +683,10 @@ fn build_stage_suggestion(
     preferred_source_families: &HashSet<String>,
 ) -> Option<StageSuggestion> {
     let candidate_url = preferred_candidate_url(ranked.paper);
-    if candidate_url.is_empty() || ranked.relevance_score < min_relevance {
+    if candidate_url.is_empty()
+        || ranked.relevance_score < min_relevance
+        || !candidate_passes_stage_filters(target, ranked.paper)
+    {
         return None;
     }
     if preferred_hits_available && !preferred_source_families.contains(&ranked.source_family) {
@@ -720,7 +723,7 @@ fn build_stage_suggestion(
             ranked.paper.citation_count,
             target.id
         ),
-        default_selected: rank == 1 || ranked.route_class == "direct_pdf",
+        default_selected: candidate_is_default_selected(target, ranked, rank),
     })
 }
 
@@ -1007,6 +1010,7 @@ fn rank_papers_for_target<'a>(
     papers: &'a [Paper],
     preferred_source_families: &[String],
 ) -> Vec<RankedPaper<'a>> {
+    let expected_year = expected_year_from_target(target);
     let normalized_target_title = normalize_text_for_match(&target.title);
     let cleaned_queries = deduplicate_query_seeds(target)
         .into_iter()
@@ -1054,6 +1058,22 @@ fn rank_papers_for_target<'a>(
                 score += 20;
             } else if route_class == "doi_resolver" {
                 score += 8;
+            }
+            if let Some(expected_year) = expected_year
+                && paper.year > 0
+            {
+                let delta = paper.year.abs_diff(expected_year);
+                if delta == 0 {
+                    score += 40;
+                } else if delta <= 1 {
+                    score += 24;
+                } else if delta <= 5 {
+                    score += 12;
+                } else if delta >= 25 {
+                    score -= 120;
+                } else if delta >= 10 {
+                    score -= 50;
+                }
             }
             if normalized_paper_title.contains("cayley")
                 || normalized_paper_title.contains("dickson")
@@ -1246,6 +1266,199 @@ fn default_min_relevance(target: &SearchQueueTarget) -> i64 {
         "terminology_and_alias_audit" => 12,
         _ => 14,
     }
+}
+
+fn expected_year_from_target(target: &SearchQueueTarget) -> Option<u32> {
+    for token in target
+        .id
+        .split('_')
+        .chain(target.title.split_whitespace())
+        .chain(
+            target
+                .query_seeds
+                .iter()
+                .flat_map(|query| query.split_whitespace()),
+        )
+    {
+        let digits = token
+            .chars()
+            .filter(|ch| ch.is_ascii_digit())
+            .collect::<String>();
+        if digits.len() == 4
+            && let Ok(year) = digits.parse::<u32>()
+            && (1500..=2026).contains(&year)
+        {
+            return Some(year);
+        }
+    }
+    None
+}
+
+fn candidate_passes_stage_filters(target: &SearchQueueTarget, paper: &Paper) -> bool {
+    let title_overlap = title_overlap_score(target, paper);
+    let identifier_match = candidate_matches_target_identifier(target, paper);
+    let minimum_overlap = minimum_title_overlap(target);
+    if title_overlap < minimum_overlap && !identifier_match {
+        return false;
+    }
+    let Some(expected_year) = expected_year_from_target(target) else {
+        return true;
+    };
+    if paper.year == 0 {
+        return !is_exact_retrieval_kind(target);
+    }
+    let delta = paper.year.abs_diff(expected_year);
+    match target.kind.as_str() {
+        "browser_confirmed_free_pdf_lane" | "metadata_confirmed_pdf_path_resolution" => delta <= 10,
+        "holder_workflow_followup" | "article_or_chapter_delivery_followup" => delta <= 35,
+        _ => true,
+    }
+}
+
+fn candidate_is_default_selected(
+    target: &SearchQueueTarget,
+    ranked: &RankedPaper<'_>,
+    rank: usize,
+) -> bool {
+    let expected_year = expected_year_from_target(target);
+    let year_matches = expected_year
+        .map(|expected| ranked.paper.year > 0 && ranked.paper.year.abs_diff(expected) <= 5)
+        .unwrap_or(false);
+    match target.kind.as_str() {
+        "browser_confirmed_free_pdf_lane" | "metadata_confirmed_pdf_path_resolution" => {
+            rank == 1 && year_matches
+        }
+        "holder_workflow_followup" | "article_or_chapter_delivery_followup" => {
+            rank == 1 && candidate_passes_stage_filters(target, ranked.paper)
+        }
+        _ => rank == 1,
+    }
+}
+
+fn is_exact_retrieval_kind(target: &SearchQueueTarget) -> bool {
+    matches!(
+        target.kind.as_str(),
+        "browser_confirmed_free_pdf_lane" | "metadata_confirmed_pdf_path_resolution"
+    )
+}
+
+fn minimum_title_overlap(target: &SearchQueueTarget) -> usize {
+    match target.kind.as_str() {
+        "browser_confirmed_free_pdf_lane" | "metadata_confirmed_pdf_path_resolution" => 2,
+        "holder_workflow_followup" | "article_or_chapter_delivery_followup" => 2,
+        _ => 1,
+    }
+}
+
+fn title_overlap_score(target: &SearchQueueTarget, paper: &Paper) -> usize {
+    let paper_tokens = collect_match_tokens(&paper.title)
+        .into_iter()
+        .collect::<HashSet<_>>();
+    if paper_tokens.is_empty() {
+        return 0;
+    }
+    collect_target_match_tokens(target)
+        .into_iter()
+        .filter(|token| paper_tokens.contains(token))
+        .count()
+}
+
+fn collect_target_match_tokens(target: &SearchQueueTarget) -> HashSet<String> {
+    target
+        .query_seeds
+        .iter()
+        .chain(std::iter::once(&target.title))
+        .flat_map(|value| collect_match_tokens(value))
+        .filter(|token| !is_generic_match_token(token))
+        .collect()
+}
+
+fn is_generic_match_token(token: &str) -> bool {
+    matches!(
+        token,
+        "exact"
+            | "original"
+            | "utrecht"
+            | "body"
+            | "stable"
+            | "direct"
+            | "follow"
+            | "followup"
+            | "workflow"
+            | "delivery"
+            | "article"
+            | "chapter"
+            | "lane"
+            | "with"
+            | "their"
+            | "always"
+    )
+}
+
+fn candidate_matches_target_identifier(target: &SearchQueueTarget, paper: &Paper) -> bool {
+    let haystack = [
+        paper.doi.as_str(),
+        paper.url.as_str(),
+        paper.pdf_url.as_str(),
+        paper.paper_id.as_str(),
+        paper.title.as_str(),
+    ]
+    .join(" ")
+    .to_ascii_lowercase();
+    if haystack.is_empty() {
+        return false;
+    }
+    collect_target_identifiers(target)
+        .into_iter()
+        .any(|identifier| haystack.contains(&identifier))
+}
+
+fn collect_target_identifiers(target: &SearchQueueTarget) -> HashSet<String> {
+    let mut identifiers = HashSet::new();
+    for value in target
+        .query_seeds
+        .iter()
+        .chain(std::iter::once(&target.id))
+        .chain(std::iter::once(&target.title))
+    {
+        let lower = value.to_ascii_lowercase();
+        if let Some(doi) = extract_target_doi(&lower) {
+            identifiers.insert(doi);
+        }
+        for token in lower.split(|ch: char| {
+            ch.is_whitespace() || matches!(ch, '"' | '\'' | ',' | ';' | '(' | ')')
+        }) {
+            let cleaned = token.trim_matches(|ch: char| ch == '.' || ch == ':');
+            if looks_like_identifier(cleaned) {
+                identifiers.insert(cleaned.to_string());
+            }
+        }
+    }
+    identifiers
+}
+
+fn extract_target_doi(value: &str) -> Option<String> {
+    value
+        .find("10.")
+        .map(|index| &value[index..])
+        .map(|tail| {
+            tail.chars()
+                .take_while(|ch| !ch.is_whitespace() && *ch != '"' && *ch != '\'' && *ch != ')')
+                .collect::<String>()
+        })
+        .filter(|candidate| candidate.contains('/'))
+}
+
+fn looks_like_identifier(value: &str) -> bool {
+    if value.len() >= 8 && value.chars().all(|ch| ch.is_ascii_digit()) {
+        return true;
+    }
+    value.len() >= 12
+        && value.chars().any(|ch| ch.is_ascii_digit())
+        && value.contains('-')
+        && value
+            .chars()
+            .all(|ch| ch.is_ascii_alphanumeric() || matches!(ch, '-' | '.' | '/'))
 }
 
 fn map_source_family(source: &str) -> String {

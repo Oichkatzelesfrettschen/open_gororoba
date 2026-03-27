@@ -1,0 +1,64 @@
+format_version = 1
+session_id = "cayley_dickson_dickson_1912_exact_pdf_doi_org_s0002_9947_1912_1500905_3"
+created_utc = "2026-03-27T04:36:51.069317800+00:00"
+updated_utc = "2026-03-27T04:36:51.069317800+00:00"
+status = "staged"
+
+[source]
+url = "https://doi.org/10.1090/s0002-9947-1912-1500905-3"
+source_id = "crossref"
+title = "Linear algebras"
+site = "doi_org"
+access_class = "doi_resolver"
+
+[lineage]
+parent_session_id = "cayley_dickson_dickson_1912_exact_pdf"
+parent_manifest = "reports/acquisition_sessions/cayley_dickson_dickson_1912_exact_pdf/session.toml"
+relation = "promoted_child"
+
+[search]
+queue_path = "/home/eirikr/Documents/Projects/CayleyDickson/metadata/project_api/search_queue.toml"
+project_id = "cayley-dickson"
+search_target_id = "dickson_1912_exact_pdf"
+window = "1900-1999"
+priority = "critical"
+kind = "browser_confirmed_free_pdf_lane"
+status = "landing_page_confirmed_pdf_click_challenged"
+why_now = "Immediate dependency for the early Dickson prehistory of the 1919 Cayley-Dickson lane."
+preferred_lanes = [
+    "headed AMS session with human click-through",
+    "session-cookie export into deterministic downloader",
+    "alternate mirror search after the official AMS capture",
+]
+query_seeds = [
+    '"Linear algebras" Dickson 1912',
+    '"S0002-9947-1912-1500905-3"',
+    '"Dickson" 1912 "Linear algebras"',
+]
+
+[controller]
+policy_registry_rel = "registry/download_host_policies.toml"
+sessions_dir_rel = "reports/acquisition_sessions"
+transport_substrate = "auto"
+requested_backend = "auto"
+probe_bytes = 1024
+probe_requested = false
+
+[route]
+scheme = "https"
+host = "doi.org"
+retry_class = "curl_first"
+backends = [
+    "curl-cli",
+    "reqwest",
+    "ureq",
+]
+
+[evidence]
+host_scope = "doi_org"
+
+[[events]]
+at_utc = "2026-03-27T04:36:51.069317800+00:00"
+action = "promote_child"
+status = "staged"
+note = "promoted from cayley_dickson_dickson_1912_exact_pdf | critical_dossier_refresh_after_title_overlap | dossier_search_target_id=dickson_1912_exact_pdf | dossier_suggestion_id=dickson_1912_exact_pdf_doi_10_1090_s0002_9947_1912_1500905_3 | canonical_id=doi:10.1090/s0002-9947-1912-1500905-3 | source_family=resolver | route_class=doi_resolver"

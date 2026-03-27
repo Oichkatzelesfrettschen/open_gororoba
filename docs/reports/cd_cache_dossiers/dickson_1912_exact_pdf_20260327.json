@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at_utc": "2026-03-27T04:19:53.683952270+00:00",
+  "generated_at_utc": "2026-03-27T04:34:45.426446185+00:00",
   "project_id": "cayley-dickson",
   "project_api_root": "/home/eirikr/Documents/Projects/CayleyDickson",
   "search_queue_path": "/home/eirikr/Documents/Projects/CayleyDickson/metadata/project_api/search_queue.toml",
@@ -57,8 +57,8 @@
       "hal",
       "dblp"
     ],
-    "raw_result_count": 13,
-    "deduplicated_result_count": 6,
+    "raw_result_count": 15,
+    "deduplicated_result_count": 7,
     "query_reports": [
       {
         "query": "\"Linear algebras\" Dickson 1912",
@@ -78,7 +78,7 @@
         ],
         "raw_result_count": 5,
         "deduplicated_result_count": 5,
-        "cache_hit_count": 2,
+        "cache_hit_count": 8,
         "source_reports": [
           {
             "source": "openalex",
@@ -108,7 +108,7 @@
             "source": "datacite",
             "adapted_query": "\"Linear algebras\" Dickson 1912",
             "result_count": 0,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -116,15 +116,15 @@
             "source": "arxiv",
             "adapted_query": "all:\"Linear algebras\" AND all:\"Dickson 1912\"",
             "result_count": 0,
-            "cache_hit": false,
-            "error": "HTTP error: error sending request for url (http://export.arxiv.org/api/query?search_query=all:all%3A%22Linear+algebras%22+AND+all%3A%22Dickson+1912%22&max_results=2)",
+            "cache_hit": true,
+            "error": "",
             "skipped_reason": ""
           },
           {
             "source": "jstage",
             "adapted_query": "\"Linear algebras\" Dickson 1912",
             "result_count": 1,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -132,7 +132,7 @@
             "source": "inspirehep",
             "adapted_query": "t:\"Linear algebras\" and t:\"Dickson 1912\"",
             "result_count": 0,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -140,7 +140,7 @@
             "source": "hal",
             "adapted_query": "\"Linear algebras\" Dickson 1912",
             "result_count": 0,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -148,7 +148,7 @@
             "source": "dblp",
             "adapted_query": "\"Linear algebras\" Dickson 1912",
             "result_count": 0,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -180,7 +180,7 @@
         ],
         "raw_result_count": 3,
         "deduplicated_result_count": 3,
-        "cache_hit_count": 2,
+        "cache_hit_count": 8,
         "source_reports": [
           {
             "source": "openalex",
@@ -195,7 +195,7 @@
             "adapted_query": "\"S0002-9947-1912-1500905-3\"",
             "result_count": 0,
             "cache_hit": false,
-            "error": "Rate limited",
+            "error": "",
             "skipped_reason": ""
           },
           {
@@ -210,7 +210,7 @@
             "source": "datacite",
             "adapted_query": "\"S0002-9947-1912-1500905-3\"",
             "result_count": 0,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -218,7 +218,7 @@
             "source": "arxiv",
             "adapted_query": "all:S0002-9947-1912-1500905-3",
             "result_count": 0,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -226,7 +226,7 @@
             "source": "jstage",
             "adapted_query": "\"S0002-9947-1912-1500905-3\"",
             "result_count": 1,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -234,7 +234,7 @@
             "source": "inspirehep",
             "adapted_query": "t:S0002-9947-1912-1500905-3",
             "result_count": 0,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -242,7 +242,7 @@
             "source": "hal",
             "adapted_query": "\"S0002-9947-1912-1500905-3\"",
             "result_count": 0,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -250,7 +250,7 @@
             "source": "dblp",
             "adapted_query": "\"S0002-9947-1912-1500905-3\"",
             "result_count": 0,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -280,9 +280,9 @@
           "hal",
           "dblp"
         ],
-        "raw_result_count": 5,
-        "deduplicated_result_count": 5,
-        "cache_hit_count": 2,
+        "raw_result_count": 7,
+        "deduplicated_result_count": 6,
+        "cache_hit_count": 9,
         "source_reports": [
           {
             "source": "openalex",
@@ -295,9 +295,9 @@
           {
             "source": "semantic_scholar",
             "adapted_query": "\"Dickson\" 1912 \"Linear algebras\"",
-            "result_count": 0,
-            "cache_hit": false,
-            "error": "Rate limited",
+            "result_count": 2,
+            "cache_hit": true,
+            "error": "",
             "skipped_reason": ""
           },
           {
@@ -312,7 +312,7 @@
             "source": "datacite",
             "adapted_query": "\"Dickson\" 1912 \"Linear algebras\"",
             "result_count": 0,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -320,15 +320,15 @@
             "source": "arxiv",
             "adapted_query": "all:Dickson AND all:\"Linear algebras\" AND all:1912",
             "result_count": 0,
-            "cache_hit": false,
-            "error": "HTTP error: error sending request for url (http://export.arxiv.org/api/query?search_query=all:all%3ADickson+AND+all%3A%22Linear+algebras%22+AND+all%3A1912&max_results=2)",
+            "cache_hit": true,
+            "error": "",
             "skipped_reason": ""
           },
           {
             "source": "jstage",
             "adapted_query": "\"Dickson\" 1912 \"Linear algebras\"",
             "result_count": 1,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -336,7 +336,7 @@
             "source": "inspirehep",
             "adapted_query": "t:Dickson and t:\"Linear algebras\" and t:1912",
             "result_count": 0,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -344,7 +344,7 @@
             "source": "hal",
             "adapted_query": "\"Dickson\" 1912 \"Linear algebras\"",
             "result_count": 0,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -352,7 +352,7 @@
             "source": "dblp",
             "adapted_query": "\"Dickson\" 1912 \"Linear algebras\"",
             "result_count": 0,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -371,40 +371,8 @@
   "top_hits": [
     {
       "rank": 1,
-      "canonical_id": "doi:10.1090/s0002-9947-1944-0011083-5",
-      "relevance_score": 68,
-      "source_family": "citation_graph",
-      "route_class": "direct_pdf",
-      "host_class": "www_ams_org",
-      "title": "Some results in the theory of linear non-associative algebras",
-      "year": 1944,
-      "source": "openalex",
-      "venue": "Transactions of the American Mathematical Society",
-      "citation_count": 74,
-      "doi": "https://doi.org/10.1090/s0002-9947-1944-0011083-5",
-      "url": "https://openalex.org/W2022821512",
-      "pdf_url": "https://www.ams.org/tran/1944-056-00/S0002-9947-1944-0011083-5/S0002-9947-1944-0011083-5.pdf"
-    },
-    {
-      "rank": 2,
-      "canonical_id": "doi:10.1215/s0012-7094-35-00112-0",
-      "relevance_score": 56,
-      "source_family": "resolver",
-      "route_class": "doi_resolver",
-      "host_class": "doi_org",
-      "title": "Linear algebras with associativity not assumed",
-      "year": 1935,
-      "source": "crossref",
-      "venue": "Duke Mathematical Journal",
-      "citation_count": 40,
-      "doi": "10.1215/s0012-7094-35-00112-0",
-      "url": "https://doi.org/10.1215/s0012-7094-35-00112-0",
-      "pdf_url": ""
-    },
-    {
-      "rank": 3,
       "canonical_id": "doi:10.1090/s0002-9947-1912-1500905-3",
-      "relevance_score": 56,
+      "relevance_score": 96,
       "source_family": "resolver",
       "route_class": "doi_resolver",
       "host_class": "doi_org",
@@ -418,60 +386,60 @@
       "pdf_url": ""
     },
     {
-      "rank": 4,
-      "canonical_id": "doi:10.13001/1081-3810.1083",
-      "relevance_score": 44,
+      "rank": 2,
+      "canonical_id": "doi:10.1090/s0002-9947-1912-1500921-1",
+      "relevance_score": 72,
+      "source_family": "resolver",
+      "route_class": "doi_resolver",
+      "host_class": "doi_org",
+      "title": "Functional-differential geometry",
+      "year": 1912,
+      "source": "crossref",
+      "venue": "Transactions of the American Mathematical Society",
+      "citation_count": 0,
+      "doi": "10.1090/s0002-9947-1912-1500921-1",
+      "url": "https://doi.org/10.1090/s0002-9947-1912-1500921-1",
+      "pdf_url": ""
+    },
+    {
+      "rank": 3,
+      "canonical_id": "doi:10.1090/s0002-9947-1906-1500755-5",
+      "relevance_score": 68,
       "source_family": "citation_graph",
       "route_class": "direct_pdf",
-      "host_class": "journals_uwyo_edu",
-      "title": "The Moore of the Moore-Penrose inverse",
-      "year": 2002,
-      "source": "openalex",
-      "venue": "Electronic Journal of Linear Algebra",
-      "citation_count": 49,
-      "doi": "https://doi.org/10.13001/1081-3810.1083",
-      "url": "https://openalex.org/W2141669160",
-      "pdf_url": "https://journals.uwyo.edu/index.php/ela/article/download/167/167"
+      "host_class": "doi_org",
+      "title": "Linear algebras in which division is always uniquely possible",
+      "year": 1906,
+      "source": "semantic_scholar",
+      "venue": "",
+      "citation_count": 148,
+      "doi": "10.1090/S0002-9947-1906-1500755-5",
+      "url": "https://www.semanticscholar.org/paper/207f30f667531868fd058dded2271360a7187d2d",
+      "pdf_url": "https://doi.org/10.2307/1986243"
+    },
+    {
+      "rank": 4,
+      "canonical_id": "title:",
+      "relevance_score": 24,
+      "source_family": "archive",
+      "route_class": "generic_landing",
+      "host_class": "unknown_host",
+      "title": "",
+      "year": 0,
+      "source": "jstage",
+      "venue": "",
+      "citation_count": 0,
+      "doi": "",
+      "url": "",
+      "pdf_url": ""
     }
   ],
   "stage_suggestions": [
     {
       "rank": 1,
-      "suggestion_id": "dickson_1912_exact_pdf_doi_10_1090_s0002_9947_1944_0011083_5",
-      "canonical_id": "doi:10.1090/s0002-9947-1944-0011083-5",
-      "relevance_score": 68,
-      "source": "openalex",
-      "source_family": "citation_graph",
-      "route_class": "direct_pdf",
-      "host_class": "www_ams_org",
-      "paper_title": "Some results in the theory of linear non-associative algebras",
-      "action": "stage_direct_pdf_child",
-      "candidate_url": "https://www.ams.org/tran/1944-056-00/S0002-9947-1944-0011083-5/S0002-9947-1944-0011083-5.pdf",
-      "command": "cargo run -q -p gororoba_cli_data --bin cd-cache-adapter -- --project-api-root '/home/eirikr/Documents/Projects/CayleyDickson' --gororoba-repo-root '/home/eirikr/Github/open_gororoba' stage-from-dossier --dossier 'docs/reports/cd_cache_dossiers/dickson_1912_exact_pdf_20260327.json' --rank '1'",
-      "rationale": "Candidate from openalex [citation_graph] with relevance score 68 and 74 citations for queue target dickson_1912_exact_pdf.",
-      "default_selected": true
-    },
-    {
-      "rank": 2,
-      "suggestion_id": "dickson_1912_exact_pdf_doi_10_1215_s0012_7094_35_00112_0",
-      "canonical_id": "doi:10.1215/s0012-7094-35-00112-0",
-      "relevance_score": 56,
-      "source": "crossref",
-      "source_family": "resolver",
-      "route_class": "doi_resolver",
-      "host_class": "doi_org",
-      "paper_title": "Linear algebras with associativity not assumed",
-      "action": "stage_doi_resolver_child",
-      "candidate_url": "https://doi.org/10.1215/s0012-7094-35-00112-0",
-      "command": "cargo run -q -p gororoba_cli_data --bin cd-cache-adapter -- --project-api-root '/home/eirikr/Documents/Projects/CayleyDickson' --gororoba-repo-root '/home/eirikr/Github/open_gororoba' stage-from-dossier --dossier 'docs/reports/cd_cache_dossiers/dickson_1912_exact_pdf_20260327.json' --rank '2'",
-      "rationale": "Candidate from crossref [resolver] with relevance score 56 and 40 citations for queue target dickson_1912_exact_pdf.",
-      "default_selected": false
-    },
-    {
-      "rank": 3,
       "suggestion_id": "dickson_1912_exact_pdf_doi_10_1090_s0002_9947_1912_1500905_3",
       "canonical_id": "doi:10.1090/s0002-9947-1912-1500905-3",
-      "relevance_score": 56,
+      "relevance_score": 96,
       "source": "crossref",
       "source_family": "resolver",
       "route_class": "doi_resolver",
@@ -479,25 +447,25 @@
       "paper_title": "Linear algebras",
       "action": "stage_doi_resolver_child",
       "candidate_url": "https://doi.org/10.1090/s0002-9947-1912-1500905-3",
-      "command": "cargo run -q -p gororoba_cli_data --bin cd-cache-adapter -- --project-api-root '/home/eirikr/Documents/Projects/CayleyDickson' --gororoba-repo-root '/home/eirikr/Github/open_gororoba' stage-from-dossier --dossier 'docs/reports/cd_cache_dossiers/dickson_1912_exact_pdf_20260327.json' --rank '3'",
-      "rationale": "Candidate from crossref [resolver] with relevance score 56 and 10 citations for queue target dickson_1912_exact_pdf.",
-      "default_selected": false
+      "command": "cargo run -q -p gororoba_cli_data --bin cd-cache-adapter -- --project-api-root '/home/eirikr/Documents/Projects/CayleyDickson' --gororoba-repo-root '/home/eirikr/Github/open_gororoba' stage-from-dossier --dossier 'docs/reports/cd_cache_dossiers/dickson_1912_exact_pdf_20260327.json' --rank '1'",
+      "rationale": "Candidate from crossref [resolver] with relevance score 96 and 10 citations for queue target dickson_1912_exact_pdf.",
+      "default_selected": true
     },
     {
-      "rank": 4,
-      "suggestion_id": "dickson_1912_exact_pdf_doi_10_13001_1081_3810_1083",
-      "canonical_id": "doi:10.13001/1081-3810.1083",
-      "relevance_score": 44,
-      "source": "openalex",
+      "rank": 3,
+      "suggestion_id": "dickson_1912_exact_pdf_doi_10_1090_s0002_9947_1906_1500755_5",
+      "canonical_id": "doi:10.1090/s0002-9947-1906-1500755-5",
+      "relevance_score": 68,
+      "source": "semantic_scholar",
       "source_family": "citation_graph",
       "route_class": "direct_pdf",
-      "host_class": "journals_uwyo_edu",
-      "paper_title": "The Moore of the Moore-Penrose inverse",
+      "host_class": "doi_org",
+      "paper_title": "Linear algebras in which division is always uniquely possible",
       "action": "stage_direct_pdf_child",
-      "candidate_url": "https://journals.uwyo.edu/index.php/ela/article/download/167/167",
-      "command": "cargo run -q -p gororoba_cli_data --bin cd-cache-adapter -- --project-api-root '/home/eirikr/Documents/Projects/CayleyDickson' --gororoba-repo-root '/home/eirikr/Github/open_gororoba' stage-from-dossier --dossier 'docs/reports/cd_cache_dossiers/dickson_1912_exact_pdf_20260327.json' --rank '4'",
-      "rationale": "Candidate from openalex [citation_graph] with relevance score 44 and 49 citations for queue target dickson_1912_exact_pdf.",
-      "default_selected": true
+      "candidate_url": "https://doi.org/10.2307/1986243",
+      "command": "cargo run -q -p gororoba_cli_data --bin cd-cache-adapter -- --project-api-root '/home/eirikr/Documents/Projects/CayleyDickson' --gororoba-repo-root '/home/eirikr/Github/open_gororoba' stage-from-dossier --dossier 'docs/reports/cd_cache_dossiers/dickson_1912_exact_pdf_20260327.json' --rank '3'",
+      "rationale": "Candidate from semantic_scholar [citation_graph] with relevance score 68 and 148 citations for queue target dickson_1912_exact_pdf.",
+      "default_selected": false
     }
   ],
   "batch_manifest_rel": "docs/reports/cd_cache_dossiers/batch_critical_20260326.toml"
