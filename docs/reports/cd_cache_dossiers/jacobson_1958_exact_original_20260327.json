@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at_utc": "2026-03-27T04:34:45.786941936+00:00",
+  "generated_at_utc": "2026-03-27T06:52:31.256463541+00:00",
   "project_id": "cayley-dickson",
   "project_api_root": "/home/eirikr/Documents/Projects/CayleyDickson",
   "search_queue_path": "/home/eirikr/Documents/Projects/CayleyDickson/metadata/project_api/search_queue.toml",
@@ -18,23 +18,28 @@
     "\"0817634118\" Jacobson volume 2"
   ],
   "requested_sources": [
-    "openalex",
-    "semantic_scholar",
+    "google_scholar",
     "crossref",
+    "cinii",
+    "core",
+    "lens",
+    "dblp",
+    "open_library",
+    "google_books",
+    "hathitrust",
+    "worldcat",
+    "europepmc",
+    "scielo",
+    "ads",
     "datacite",
-    "unpaywall",
-    "arxiv",
-    "jstage",
-    "inspirehep",
-    "hal",
-    "dblp"
+    "unpaywall"
   ],
   "preferred_source_families": [
-    "citation_graph",
+    "catalog",
     "resolver",
-    "catalog"
+    "citation_graph"
   ],
-  "limit_per_query": 2,
+  "limit_per_query": 5,
   "year_min": 0,
   "min_relevance": 18,
   "report": {
@@ -43,64 +48,154 @@
       "\"10.1007/BF02854388\"",
       "\"0817634118\" Jacobson volume 2"
     ],
-    "limit": 2,
+    "limit": 5,
     "year_min": 0,
     "requested_sources": [
-      "openalex",
-      "semantic_scholar",
+      "google_scholar",
       "crossref",
+      "cinii",
+      "core",
+      "lens",
+      "dblp",
+      "open_library",
+      "google_books",
+      "hathitrust",
+      "worldcat",
+      "europepmc",
+      "scielo",
+      "ads",
       "datacite",
-      "unpaywall",
-      "arxiv",
-      "jstage",
-      "inspirehep",
-      "hal",
-      "dblp"
+      "unpaywall"
     ],
-    "raw_result_count": 14,
-    "deduplicated_result_count": 7,
+    "raw_result_count": 20,
+    "deduplicated_result_count": 14,
     "query_reports": [
       {
         "query": "\"Composition Algebras and Their Automorphisms\"",
-        "limit": 2,
+        "limit": 5,
         "year_min": 0,
         "requested_sources": [
-          "openalex",
-          "semantic_scholar",
+          "google_scholar",
           "crossref",
+          "cinii",
+          "core",
+          "lens",
+          "dblp",
+          "open_library",
+          "google_books",
+          "hathitrust",
+          "worldcat",
+          "europepmc",
+          "scielo",
+          "ads",
           "datacite",
-          "unpaywall",
-          "arxiv",
-          "jstage",
-          "inspirehep",
-          "hal",
-          "dblp"
+          "unpaywall"
         ],
-        "raw_result_count": 6,
-        "deduplicated_result_count": 2,
-        "cache_hit_count": 9,
+        "raw_result_count": 8,
+        "deduplicated_result_count": 5,
+        "cache_hit_count": 0,
         "source_reports": [
           {
-            "source": "openalex",
-            "adapted_query": "\"Composition Algebras and Their Automorphisms\"",
-            "result_count": 2,
-            "cache_hit": true,
-            "error": "",
-            "skipped_reason": ""
-          },
-          {
-            "source": "semantic_scholar",
+            "source": "google_scholar",
             "adapted_query": "\"Composition Algebras and Their Automorphisms\"",
             "result_count": 1,
-            "cache_hit": true,
+            "cache_hit": false,
             "error": "",
             "skipped_reason": ""
           },
           {
             "source": "crossref",
             "adapted_query": "\"Composition Algebras and Their Automorphisms\"",
-            "result_count": 2,
-            "cache_hit": true,
+            "result_count": 5,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "cinii",
+            "adapted_query": "\"Composition Algebras and Their Automorphisms\"",
+            "result_count": 1,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "core",
+            "adapted_query": "title:\"Composition Algebras and Their Automorphisms\"",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "lens",
+            "adapted_query": "\"Composition Algebras and Their Automorphisms\"",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "Source unavailable: LENS_API_KEY not set",
+            "skipped_reason": ""
+          },
+          {
+            "source": "dblp",
+            "adapted_query": "\"Composition Algebras Their Automorphisms\"",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "open_library",
+            "adapted_query": "\"Composition Algebras and Their Automorphisms\"",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "google_books",
+            "adapted_query": "\"Composition Algebras and Their Automorphisms\"",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "Rate limited",
+            "skipped_reason": ""
+          },
+          {
+            "source": "hathitrust",
+            "adapted_query": "\"Composition Algebras and Their Automorphisms\"",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "Source unavailable: HathiTrust catalog HTML is reachable but not yet parsed; use browser lane",
+            "skipped_reason": ""
+          },
+          {
+            "source": "worldcat",
+            "adapted_query": "\"Composition Algebras and Their Automorphisms\"",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "Source unavailable: WorldCat search is browser-gated from this host",
+            "skipped_reason": ""
+          },
+          {
+            "source": "europepmc",
+            "adapted_query": "\"Composition Algebras and Their Automorphisms\"",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "scielo",
+            "adapted_query": "\"Composition Algebras and Their Automorphisms\"",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "HTTP error: error decoding response body",
+            "skipped_reason": ""
+          },
+          {
+            "source": "ads",
+            "adapted_query": "abs:\"Composition Algebras and Their Automorphisms\"",
+            "result_count": 1,
+            "cache_hit": false,
             "error": "",
             "skipped_reason": ""
           },
@@ -108,47 +203,7 @@
             "source": "datacite",
             "adapted_query": "\"Composition Algebras and Their Automorphisms\"",
             "result_count": 0,
-            "cache_hit": true,
-            "error": "",
-            "skipped_reason": ""
-          },
-          {
-            "source": "arxiv",
-            "adapted_query": "all:\"Composition Algebras and Their Automorphisms\"",
-            "result_count": 0,
-            "cache_hit": true,
-            "error": "",
-            "skipped_reason": ""
-          },
-          {
-            "source": "jstage",
-            "adapted_query": "\"Composition Algebras and Their Automorphisms\"",
-            "result_count": 1,
-            "cache_hit": true,
-            "error": "",
-            "skipped_reason": ""
-          },
-          {
-            "source": "inspirehep",
-            "adapted_query": "t:\"Composition Algebras and Their Automorphisms\"",
-            "result_count": 0,
-            "cache_hit": true,
-            "error": "",
-            "skipped_reason": ""
-          },
-          {
-            "source": "hal",
-            "adapted_query": "\"Composition Algebras and Their Automorphisms\"",
-            "result_count": 0,
-            "cache_hit": true,
-            "error": "",
-            "skipped_reason": ""
-          },
-          {
-            "source": "dblp",
-            "adapted_query": "\"Composition Algebras Their Automorphisms\"",
-            "result_count": 0,
-            "cache_hit": true,
+            "cache_hit": false,
             "error": "",
             "skipped_reason": ""
           },
@@ -164,34 +219,87 @@
       },
       {
         "query": "\"10.1007/BF02854388\"",
-        "limit": 2,
+        "limit": 5,
         "year_min": 0,
         "requested_sources": [
-          "openalex",
-          "semantic_scholar",
+          "google_scholar",
           "crossref",
+          "cinii",
+          "core",
+          "lens",
+          "dblp",
+          "open_library",
+          "google_books",
+          "hathitrust",
+          "worldcat",
+          "europepmc",
+          "scielo",
+          "ads",
           "datacite",
-          "unpaywall",
-          "arxiv",
-          "jstage",
-          "inspirehep",
-          "hal",
-          "dblp"
+          "unpaywall"
         ],
-        "raw_result_count": 5,
+        "raw_result_count": 7,
         "deduplicated_result_count": 5,
-        "cache_hit_count": 7,
+        "cache_hit_count": 0,
         "source_reports": [
           {
-            "source": "openalex",
+            "source": "google_scholar",
             "adapted_query": "\"10.1007/BF02854388\"",
-            "result_count": 2,
-            "cache_hit": true,
+            "result_count": 1,
+            "cache_hit": false,
             "error": "",
             "skipped_reason": ""
           },
           {
-            "source": "semantic_scholar",
+            "source": "crossref",
+            "adapted_query": "\"10.1007/BF02854388\"",
+            "result_count": 5,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "cinii",
+            "adapted_query": "\"10.1007/BF02854388\"",
+            "result_count": 1,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "core",
+            "adapted_query": "10.1007/BF02854388",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "lens",
+            "adapted_query": "\"10.1007/BF02854388\"",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "Source unavailable: LENS_API_KEY not set",
+            "skipped_reason": ""
+          },
+          {
+            "source": "dblp",
+            "adapted_query": "\"10.1007/BF02854388\"",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "open_library",
+            "adapted_query": "\"10.1007/BF02854388\"",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "google_books",
             "adapted_query": "\"10.1007/BF02854388\"",
             "result_count": 0,
             "cache_hit": false,
@@ -199,10 +307,42 @@
             "skipped_reason": ""
           },
           {
-            "source": "crossref",
+            "source": "hathitrust",
             "adapted_query": "\"10.1007/BF02854388\"",
-            "result_count": 2,
-            "cache_hit": true,
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "Source unavailable: HathiTrust catalog HTML is reachable but not yet parsed; use browser lane",
+            "skipped_reason": ""
+          },
+          {
+            "source": "worldcat",
+            "adapted_query": "\"10.1007/BF02854388\"",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "Source unavailable: WorldCat search is browser-gated from this host",
+            "skipped_reason": ""
+          },
+          {
+            "source": "europepmc",
+            "adapted_query": "10.1007/BF02854388",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "scielo",
+            "adapted_query": "\"10.1007/BF02854388\"",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "HTTP error: error decoding response body",
+            "skipped_reason": ""
+          },
+          {
+            "source": "ads",
+            "adapted_query": "abs:10.1007/BF02854388",
+            "result_count": 0,
+            "cache_hit": false,
             "error": "",
             "skipped_reason": ""
           },
@@ -210,47 +350,7 @@
             "source": "datacite",
             "adapted_query": "\"10.1007/BF02854388\"",
             "result_count": 0,
-            "cache_hit": true,
-            "error": "",
-            "skipped_reason": ""
-          },
-          {
-            "source": "arxiv",
-            "adapted_query": "all:10.1007/BF02854388",
-            "result_count": 0,
             "cache_hit": false,
-            "error": "",
-            "skipped_reason": ""
-          },
-          {
-            "source": "jstage",
-            "adapted_query": "\"10.1007/BF02854388\"",
-            "result_count": 1,
-            "cache_hit": true,
-            "error": "",
-            "skipped_reason": ""
-          },
-          {
-            "source": "inspirehep",
-            "adapted_query": "t:10.1007/BF02854388",
-            "result_count": 0,
-            "cache_hit": true,
-            "error": "",
-            "skipped_reason": ""
-          },
-          {
-            "source": "hal",
-            "adapted_query": "\"10.1007/BF02854388\"",
-            "result_count": 0,
-            "cache_hit": true,
-            "error": "",
-            "skipped_reason": ""
-          },
-          {
-            "source": "dblp",
-            "adapted_query": "\"10.1007/BF02854388\"",
-            "result_count": 0,
-            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -266,34 +366,87 @@
       },
       {
         "query": "\"0817634118\" Jacobson volume 2",
-        "limit": 2,
+        "limit": 5,
         "year_min": 0,
         "requested_sources": [
-          "openalex",
-          "semantic_scholar",
+          "google_scholar",
           "crossref",
+          "cinii",
+          "core",
+          "lens",
+          "dblp",
+          "open_library",
+          "google_books",
+          "hathitrust",
+          "worldcat",
+          "europepmc",
+          "scielo",
+          "ads",
           "datacite",
-          "unpaywall",
-          "arxiv",
-          "jstage",
-          "inspirehep",
-          "hal",
-          "dblp"
+          "unpaywall"
         ],
-        "raw_result_count": 3,
-        "deduplicated_result_count": 3,
-        "cache_hit_count": 8,
+        "raw_result_count": 5,
+        "deduplicated_result_count": 5,
+        "cache_hit_count": 0,
         "source_reports": [
           {
-            "source": "openalex",
+            "source": "google_scholar",
             "adapted_query": "\"0817634118\" Jacobson volume 2",
             "result_count": 0,
-            "cache_hit": true,
+            "cache_hit": false,
             "error": "",
             "skipped_reason": ""
           },
           {
-            "source": "semantic_scholar",
+            "source": "crossref",
+            "adapted_query": "\"0817634118\" Jacobson volume 2",
+            "result_count": 5,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "cinii",
+            "adapted_query": "\"0817634118\" Jacobson volume 2",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "core",
+            "adapted_query": "0817634118 AND title:\"Jacobson volume\"",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "lens",
+            "adapted_query": "\"0817634118\" Jacobson volume 2",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "Source unavailable: LENS_API_KEY not set",
+            "skipped_reason": ""
+          },
+          {
+            "source": "dblp",
+            "adapted_query": "\"0817634118\" Jacobson volume 2",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "open_library",
+            "adapted_query": "\"0817634118\" Jacobson volume 2",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "google_books",
             "adapted_query": "\"0817634118\" Jacobson volume 2",
             "result_count": 0,
             "cache_hit": false,
@@ -301,10 +454,42 @@
             "skipped_reason": ""
           },
           {
-            "source": "crossref",
+            "source": "hathitrust",
             "adapted_query": "\"0817634118\" Jacobson volume 2",
-            "result_count": 2,
-            "cache_hit": true,
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "Source unavailable: HathiTrust catalog HTML is reachable but not yet parsed; use browser lane",
+            "skipped_reason": ""
+          },
+          {
+            "source": "worldcat",
+            "adapted_query": "\"0817634118\" Jacobson volume 2",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "Source unavailable: WorldCat search is browser-gated from this host",
+            "skipped_reason": ""
+          },
+          {
+            "source": "europepmc",
+            "adapted_query": "0817634118 AND \"Jacobson volume\"",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "scielo",
+            "adapted_query": "\"0817634118\" Jacobson volume 2",
+            "result_count": 0,
+            "cache_hit": false,
+            "error": "HTTP error: error decoding response body",
+            "skipped_reason": ""
+          },
+          {
+            "source": "ads",
+            "adapted_query": "abs:0817634118 abs:\"Jacobson volume\"",
+            "result_count": 0,
+            "cache_hit": false,
             "error": "",
             "skipped_reason": ""
           },
@@ -312,47 +497,7 @@
             "source": "datacite",
             "adapted_query": "\"0817634118\" Jacobson volume 2",
             "result_count": 0,
-            "cache_hit": true,
-            "error": "",
-            "skipped_reason": ""
-          },
-          {
-            "source": "arxiv",
-            "adapted_query": "all:0817634118 AND all:\"Jacobson volume\"",
-            "result_count": 0,
-            "cache_hit": true,
-            "error": "",
-            "skipped_reason": ""
-          },
-          {
-            "source": "jstage",
-            "adapted_query": "\"0817634118\" Jacobson volume 2",
-            "result_count": 1,
-            "cache_hit": true,
-            "error": "",
-            "skipped_reason": ""
-          },
-          {
-            "source": "inspirehep",
-            "adapted_query": "t:0817634118 and t:\"Jacobson volume\"",
-            "result_count": 0,
-            "cache_hit": true,
-            "error": "",
-            "skipped_reason": ""
-          },
-          {
-            "source": "hal",
-            "adapted_query": "\"0817634118\" Jacobson volume 2",
-            "result_count": 0,
-            "cache_hit": true,
-            "error": "",
-            "skipped_reason": ""
-          },
-          {
-            "source": "dblp",
-            "adapted_query": "\"0817634118\" Jacobson volume 2",
-            "result_count": 0,
-            "cache_hit": true,
+            "cache_hit": false,
             "error": "",
             "skipped_reason": ""
           },
@@ -371,86 +516,214 @@
   "top_hits": [
     {
       "rank": 1,
-      "canonical_id": "doi:10.1007/978-1-4612-3694-8_24",
-      "relevance_score": 178,
-      "source_family": "citation_graph",
-      "route_class": "generic_landing",
-      "host_class": "www_semanticscholar_org",
+      "canonical_id": "doi:10.1007/bf02854388",
+      "relevance_score": 418,
+      "source_family": "resolver",
+      "route_class": "direct_pdf",
+      "host_class": "link_springer_com",
       "title": "Composition algebras and their automorphisms",
       "year": 1958,
-      "source": "semantic_scholar",
-      "venue": "",
-      "citation_count": 225,
-      "doi": "10.1007/978-1-4612-3694-8_24",
-      "url": "https://www.semanticscholar.org/paper/22b4f272ec42ec89c1ea1ca6ef5d295e3e93a56c",
-      "pdf_url": ""
+      "source": "crossref",
+      "venue": "Rendiconti del Circolo Matematico di Palermo",
+      "citation_count": 165,
+      "doi": "10.1007/bf02854388",
+      "url": "http://link.springer.com/10.1007/BF02854388",
+      "pdf_url": "http://link.springer.com/content/pdf/10.1007/BF02854388.pdf"
     },
     {
       "rank": 2,
-      "canonical_id": "title:",
-      "relevance_score": 0,
-      "source_family": "archive",
-      "route_class": "generic_landing",
-      "host_class": "unknown_host",
-      "title": "",
+      "canonical_id": "title:composition_algebras_and_their_automorphisms",
+      "relevance_score": 138,
+      "source_family": "catalog",
+      "route_class": "metadata_landing",
+      "host_class": "link_springer_com",
+      "title": "Composition algebras and their automorphisms",
       "year": 0,
-      "source": "jstage",
-      "venue": "",
+      "source": "google_scholar",
+      "venue": "Springer",
       "citation_count": 0,
       "doi": "",
-      "url": "",
+      "url": "https://link.springer.com/chapter/10.1007/978-1-4612-3694-8_24",
       "pdf_url": ""
     },
     {
       "rank": 3,
-      "canonical_id": "doi:10.1007/978-1-4612-3694-8",
-      "relevance_score": -70,
+      "canonical_id": "title:composition_algebras_and_their_automorphisms",
+      "relevance_score": 138,
+      "source_family": "catalog",
+      "route_class": "generic_landing",
+      "host_class": "cir_nii_ac_jp",
+      "title": "Composition algebras and their automorphisms",
+      "year": 0,
+      "source": "cinii",
+      "venue": "",
+      "citation_count": 0,
+      "doi": "",
+      "url": "https://cir.nii.ac.jp/crid/1361137044884354944",
+      "pdf_url": ""
+    },
+    {
+      "rank": 4,
+      "canonical_id": "doi:10.1007/978-3-642-94985-2_3",
+      "relevance_score": 56,
       "source_family": "resolver",
-      "route_class": "doi_resolver",
-      "host_class": "doi_org",
+      "route_class": "direct_pdf",
+      "host_class": "link_springer_com",
+      "title": "Automorphisms of the Classical Algebras",
+      "year": 1967,
+      "source": "crossref",
+      "venue": "Modular Lie Algebras",
+      "citation_count": 0,
+      "doi": "10.1007/978-3-642-94985-2_3",
+      "url": "http://link.springer.com/10.1007/978-3-642-94985-2_3",
+      "pdf_url": "http://link.springer.com/content/pdf/10.1007/978-3-642-94985-2_3.pdf"
+    },
+    {
+      "rank": 5,
+      "canonical_id": "doi:10.1007/978-1-4612-3694-8_24",
+      "relevance_score": 38,
+      "source_family": "resolver",
+      "route_class": "direct_pdf",
+      "host_class": "link_springer_com",
+      "title": "Composition Algebras and Their Automorphisms",
+      "year": 1989,
+      "source": "crossref",
+      "venue": "Nathan Jacobson Collected Mathematical Papers",
+      "citation_count": 0,
+      "doi": "10.1007/978-1-4612-3694-8_24",
+      "url": "http://link.springer.com/10.1007/978-1-4612-3694-8_24",
+      "pdf_url": "http://link.springer.com/content/pdf/10.1007/978-1-4612-3694-8_24.pdf"
+    },
+    {
+      "rank": 6,
+      "canonical_id": "doi:10.1252/kakoronbunshu1953.37.1007",
+      "relevance_score": -6,
+      "source_family": "resolver",
+      "route_class": "direct_pdf",
+      "host_class": "www_jstage_jst_go_jp",
+      "title": "カラム",
+      "year": 1973,
+      "source": "crossref",
+      "venue": "Chemical engineering",
+      "citation_count": 0,
+      "doi": "10.1252/kakoronbunshu1953.37.1007",
+      "url": "http://www.jstage.jst.go.jp/article/kakoronbunshu1953/37/10/37_10_1007/_article/-char/ja/",
+      "pdf_url": "http://www.jstage.jst.go.jp/article/kakoronbunshu1953/37/10/37_10_1007/_pdf"
+    },
+    {
+      "rank": 7,
+      "canonical_id": "doi:10.1080/00927872.2016.1175603",
+      "relevance_score": -58,
+      "source_family": "resolver",
+      "route_class": "direct_pdf",
+      "host_class": "www_tandfonline_com",
+      "title": "Composition algebras and outer automorphisms of algebraic groups via triality",
+      "year": 2017,
+      "source": "crossref",
+      "venue": "Communications in Algebra",
+      "citation_count": 0,
+      "doi": "10.1080/00927872.2016.1175603",
+      "url": "https://www.tandfonline.com/doi/full/10.1080/00927872.2016.1175603",
+      "pdf_url": "https://www.tandfonline.com/doi/pdf/10.1080/00927872.2016.1175603"
+    },
+    {
+      "rank": 8,
+      "canonical_id": "doi:10.1007/978-1-4612-3694-8",
+      "relevance_score": -58,
+      "source_family": "resolver",
+      "route_class": "direct_pdf",
+      "host_class": "link_springer_com",
       "title": "Nathan Jacobson Collected Mathematical Papers",
       "year": 1989,
       "source": "crossref",
       "venue": "",
       "citation_count": 0,
       "doi": "10.1007/978-1-4612-3694-8",
-      "url": "https://doi.org/10.1007/978-1-4612-3694-8",
-      "pdf_url": ""
-    },
-    {
-      "rank": 4,
-      "canonical_id": "doi:10.2140/ant.2025.19.551",
-      "relevance_score": -76,
-      "source_family": "citation_graph",
-      "route_class": "direct_pdf",
-      "host_class": "msp_org",
-      "title": "Algebraic cycles and functorial lifts from G2 toPGSp6",
-      "year": 2025,
-      "source": "openalex",
-      "venue": "Algebra & Number Theory",
-      "citation_count": 2,
-      "doi": "https://doi.org/10.2140/ant.2025.19.551",
-      "url": "https://openalex.org/W4377197553",
-      "pdf_url": "https://msp.org/ant/2025/19-3/ant-v19-n3-p05-s.pdf"
+      "url": "http://link.springer.com/10.1007/978-1-4612-3694-8",
+      "pdf_url": "http://link.springer.com/content/pdf/10.1007/978-1-4612-3694-8.pdf"
     }
   ],
   "stage_suggestions": [
     {
       "rank": 1,
-      "suggestion_id": "jacobson_1958_exact_original_doi_10_1007_978_1_4612_3694_8_24",
-      "canonical_id": "doi:10.1007/978-1-4612-3694-8_24",
-      "relevance_score": 178,
-      "source": "semantic_scholar",
-      "source_family": "citation_graph",
+      "suggestion_id": "jacobson_1958_exact_original_doi_10_1007_bf02854388_link_springer_com_direct_pdf",
+      "canonical_id": "doi:10.1007/bf02854388",
+      "relevance_score": 418,
+      "source": "crossref",
+      "source_family": "resolver",
+      "route_class": "direct_pdf",
+      "host_class": "link_springer_com",
+      "paper_title": "Composition algebras and their automorphisms",
+      "action": "stage_direct_pdf_child",
+      "candidate_url": "http://link.springer.com/content/pdf/10.1007/BF02854388.pdf",
+      "command": "cargo run -q -p gororoba_cli_data --bin cd-cache-adapter -- --project-api-root '/home/eirikr/Documents/Projects/CayleyDickson' --gororoba-repo-root '/home/eirikr/Github/open_gororoba' stage-from-dossier --dossier 'docs/reports/cd_cache_dossiers/jacobson_1958_exact_original_20260327.json' --rank '1'",
+      "rationale": "Candidate from crossref [resolver] with relevance score 418 and 165 citations for queue target jacobson_1958_exact_original.",
+      "default_selected": true
+    },
+    {
+      "rank": 2,
+      "suggestion_id": "jacobson_1958_exact_original_title_composition_algebras_and_their_automorphisms_link_springer_com_metadata_landing",
+      "canonical_id": "title:composition_algebras_and_their_automorphisms",
+      "relevance_score": 138,
+      "source": "google_scholar",
+      "source_family": "catalog",
+      "route_class": "metadata_landing",
+      "host_class": "link_springer_com",
+      "paper_title": "Composition algebras and their automorphisms",
+      "action": "stage_metadata_landing_child",
+      "candidate_url": "https://link.springer.com/chapter/10.1007/978-1-4612-3694-8_24",
+      "command": "cargo run -q -p gororoba_cli_data --bin cd-cache-adapter -- --project-api-root '/home/eirikr/Documents/Projects/CayleyDickson' --gororoba-repo-root '/home/eirikr/Github/open_gororoba' stage-from-dossier --dossier 'docs/reports/cd_cache_dossiers/jacobson_1958_exact_original_20260327.json' --rank '2'",
+      "rationale": "Candidate from google_scholar [catalog] with relevance score 138 and 0 citations for queue target jacobson_1958_exact_original.",
+      "default_selected": false
+    },
+    {
+      "rank": 3,
+      "suggestion_id": "jacobson_1958_exact_original_title_composition_algebras_and_their_automorphisms_cir_nii_ac_jp_generic_landing",
+      "canonical_id": "title:composition_algebras_and_their_automorphisms",
+      "relevance_score": 138,
+      "source": "cinii",
+      "source_family": "catalog",
       "route_class": "generic_landing",
-      "host_class": "www_semanticscholar_org",
+      "host_class": "cir_nii_ac_jp",
       "paper_title": "Composition algebras and their automorphisms",
       "action": "stage_browser_landing_child",
-      "candidate_url": "https://www.semanticscholar.org/paper/22b4f272ec42ec89c1ea1ca6ef5d295e3e93a56c",
-      "command": "cargo run -q -p gororoba_cli_data --bin cd-cache-adapter -- --project-api-root '/home/eirikr/Documents/Projects/CayleyDickson' --gororoba-repo-root '/home/eirikr/Github/open_gororoba' stage-from-dossier --dossier 'docs/reports/cd_cache_dossiers/jacobson_1958_exact_original_20260327.json' --rank '1'",
-      "rationale": "Candidate from semantic_scholar [citation_graph] with relevance score 178 and 225 citations for queue target jacobson_1958_exact_original.",
-      "default_selected": true
+      "candidate_url": "https://cir.nii.ac.jp/crid/1361137044884354944",
+      "command": "cargo run -q -p gororoba_cli_data --bin cd-cache-adapter -- --project-api-root '/home/eirikr/Documents/Projects/CayleyDickson' --gororoba-repo-root '/home/eirikr/Github/open_gororoba' stage-from-dossier --dossier 'docs/reports/cd_cache_dossiers/jacobson_1958_exact_original_20260327.json' --rank '3'",
+      "rationale": "Candidate from cinii [catalog] with relevance score 138 and 0 citations for queue target jacobson_1958_exact_original.",
+      "default_selected": false
+    },
+    {
+      "rank": 4,
+      "suggestion_id": "jacobson_1958_exact_original_doi_10_1007_978_3_642_94985_2_3_link_springer_com_direct_pdf",
+      "canonical_id": "doi:10.1007/978-3-642-94985-2_3",
+      "relevance_score": 56,
+      "source": "crossref",
+      "source_family": "resolver",
+      "route_class": "direct_pdf",
+      "host_class": "link_springer_com",
+      "paper_title": "Automorphisms of the Classical Algebras",
+      "action": "stage_direct_pdf_child",
+      "candidate_url": "http://link.springer.com/content/pdf/10.1007/978-3-642-94985-2_3.pdf",
+      "command": "cargo run -q -p gororoba_cli_data --bin cd-cache-adapter -- --project-api-root '/home/eirikr/Documents/Projects/CayleyDickson' --gororoba-repo-root '/home/eirikr/Github/open_gororoba' stage-from-dossier --dossier 'docs/reports/cd_cache_dossiers/jacobson_1958_exact_original_20260327.json' --rank '4'",
+      "rationale": "Candidate from crossref [resolver] with relevance score 56 and 0 citations for queue target jacobson_1958_exact_original.",
+      "default_selected": false
+    },
+    {
+      "rank": 5,
+      "suggestion_id": "jacobson_1958_exact_original_doi_10_1007_978_1_4612_3694_8_24_link_springer_com_direct_pdf",
+      "canonical_id": "doi:10.1007/978-1-4612-3694-8_24",
+      "relevance_score": 38,
+      "source": "crossref",
+      "source_family": "resolver",
+      "route_class": "direct_pdf",
+      "host_class": "link_springer_com",
+      "paper_title": "Composition Algebras and Their Automorphisms",
+      "action": "stage_direct_pdf_child",
+      "candidate_url": "http://link.springer.com/content/pdf/10.1007/978-1-4612-3694-8_24.pdf",
+      "command": "cargo run -q -p gororoba_cli_data --bin cd-cache-adapter -- --project-api-root '/home/eirikr/Documents/Projects/CayleyDickson' --gororoba-repo-root '/home/eirikr/Github/open_gororoba' stage-from-dossier --dossier 'docs/reports/cd_cache_dossiers/jacobson_1958_exact_original_20260327.json' --rank '5'",
+      "rationale": "Candidate from crossref [resolver] with relevance score 38 and 0 citations for queue target jacobson_1958_exact_original.",
+      "default_selected": false
     }
   ],
-  "batch_manifest_rel": "docs/reports/cd_cache_dossiers/batch_critical_20260326.toml"
+  "batch_manifest_rel": "docs/reports/cd_cache_dossiers/batch_mixed_20260327T065231Z.toml"
 }

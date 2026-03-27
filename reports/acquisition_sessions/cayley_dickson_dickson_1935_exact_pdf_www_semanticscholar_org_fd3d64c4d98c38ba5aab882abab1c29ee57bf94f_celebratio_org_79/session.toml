@@ -1,0 +1,65 @@
+format_version = 1
+session_id = "cayley_dickson_dickson_1935_exact_pdf_www_semanticscholar_org_fd3d64c4d98c38ba5aab882abab1c29ee57bf94f_celebratio_org_79"
+created_utc = "2026-03-27T07:00:55.928617320+00:00"
+updated_utc = "2026-03-27T07:00:55.928617320+00:00"
+status = "staged"
+
+[source]
+url = "https://celebratio.org/Dickson_LE/article/79/"
+source_id = "semantic_scholar"
+title = "Linear algebras with associativity not assumed"
+site = "celebratio_org"
+access_class = "citation_edge"
+
+[lineage]
+parent_session_id = "cayley_dickson_dickson_1935_exact_pdf_www_semanticscholar_org_fd3d64c4d98c38ba5aab882abab1c29ee57bf94f"
+parent_manifest = "reports/acquisition_sessions/cayley_dickson_dickson_1935_exact_pdf_www_semanticscholar_org_fd3d64c4d98c38ba5aab882abab1c29ee57bf94f/session.toml"
+relation = "promoted_child"
+
+[search]
+queue_path = "/home/eirikr/Documents/Projects/CayleyDickson/metadata/project_api/search_queue.toml"
+project_id = "cayley-dickson"
+search_target_id = "dickson_1935_exact_pdf"
+window = "1900-1999"
+priority = "high"
+kind = "metadata_confirmed_pdf_path_resolution"
+status = "bibliographic_record_confirmed_pdf_href_unresolved"
+why_now = "This is the clean bridge between the earlier Dickson line and the later Jacobson composition lane."
+preferred_lanes = [
+    "Celebratio page inspection in headed browser",
+    "linked media path resolution",
+    "secondary catalog and mirror search",
+]
+query_seeds = [
+    '"Linear algebras with associativity not assumed"',
+    '"Dickson" 1935 associativity not assumed',
+    '"Celebratio" Dickson article 80 pdf',
+]
+
+[controller]
+policy_registry_rel = "registry/download_host_policies.toml"
+sessions_dir_rel = "reports/acquisition_sessions"
+transport_substrate = "auto"
+requested_backend = "auto"
+probe_bytes = 1024
+probe_requested = false
+
+[route]
+scheme = "https"
+host = "celebratio.org"
+retry_class = "probe_first"
+backends = [
+    "reqwest",
+    "curl-cli",
+    "ureq",
+]
+
+[evidence]
+host_scope = "celebratio_org"
+
+[[events]]
+at_utc = "2026-03-27T07:00:55.928617320+00:00"
+action = "promote_child"
+status = "staged"
+note = "promoted from cayley_dickson_dickson_1935_exact_pdf_www_semanticscholar_org_fd3d64c4d98c38ba5aab882abab1c29ee57bf94f | promoted from Semantic Scholar landing into Celebratio bibliography edge"
+

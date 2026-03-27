@@ -1,0 +1,126 @@
+Reprinted from
+Rendicotti del Circolo Mathematico di Palermo, 2, No.7, 1958.
+
+COMPOSITION ALGEBRAS AND THEIR AUTOMORPHISMS
+
+N. Jacobson (Paris) (1)
+
+The principal objective of the present paper is the study of the automorphisms
+and groups of automorphisms of composition algebras, that is, the algebras
+arising from quadratic forms which permit composition. These algebras are
+mainly quaternion algebras and Cayley algebras. The problem of determining
+the quadratic forms which permit composition (HUlW·itz's problem) has been
+treated by many authors C). In spite of this, there does not appear in anyone
+place a complete solution of this problem in its most general form - which amounts
+to the determination of the algebras for an arbitrary field and not just to the
+determination of the possible dimensionalities. We give such a solution here
+for the case of characteristic not two. Aside from its intrinsic interest and applications to other fields (for example Jordan algebras, absolute valued algebras)
+we have still another reason for treating the Hurvitz problem again, namely:
+The analysis of the composition algebras is essential for our study of their
+automorphisms.
+The problem of studying directly the automorphisms of Cayley algebras
+has been touched previously by Zorn (3). If the base field is the field of complexes
+then the group of automorphisms is the group O2 in the Killing-Cartan classification of simple Lie groups. Analogues of these groups for arbitrary fields
+(1) This research was supported in part by the Air Force Office of Scientific Research
+under contract AF 49 (638) 1 to.
+e) Hurvitz [13], Albert [1], Freudenthal [12]. Linnik [19], Chevalley [7]. Kaplansky [16J.
+C) Zorn [21].
+
+[60]
+
+N. Jacobson, Collected Mathematical Papers
+© Birkhäuser Boston 1989
+
+341
+
+2
+
+N. JACOBSON
+
+have been defined by Dickson and, quite recently, by Chevalley (1). The groups
+of automorphisms of split Cayley algebras are undoubtedly the groups which
+Dickson and Chevalley have considered, but we do not establish this here. In
+the present paper we study the structure of the group of automorphisms of an
+arbitrary Cayley algebra of characteristic not two. We obtain some particularly
+simple generators for these groups and we determine the subgroups leaving
+fixed the elements of a quaternion subalgebra or a quadratic subalgebra. We
+prove also an analogue for Cayley algebras of the theorem that the automorph isms of a central simple associative algebra are all inner.
+1. Hurvitz' problem. Let
+be a vector space over a field <1>, N(x) a quadratic form defined on
+We recall the definition: x ~ N(x) is a mapping of a:
+into the base field satisfying N(rxx) = rx 2 N(x) for rx in <1> and having the property that the mapping defined by N(x
+y) - N(x) - N(y) is bilinear. The
+problem of Hurvitz is that of determining the quadratic forms N(x) which permit
+composition in the following sense: There exists a bilinear composition xy in
+such that
+
+a:
+
+a:.
+
++
+
+a:
+
+N(x)N(y) = N(xy),
+
+(1)
+
+x, yEa:.
+
+a:
+
+The assumption that we have a bilinear composition in
+is just equivalent
+to saying that
+is a (non-associative) algebra relative to the given addition,
+scalar multiplication and the product xy. We propose to give a completely elementary and self-contained solution of Hurvitz' problem under the following
+assumptions: 1. The characteristic of <1> is not two: 2. The bilinear form
+
+a:
+
+(2)
+
+(x, y)
+
+1
+= 2[N(x
++ y) - N(x) - N(y)]
+
+a:
+
+a:.
+
+is non-degenerate. 3.
+has an identity element 1: 1 x = x = x 1 for all x in
+We shall call
+together with the quadratic form N a composition algebra.
+We note first that 3. is in a certain sense superfluous if the dimensionality
+is finite and it can be replaced by another apparently weaker condition in the
+general case. Thus assume 1. and 2. (together with (1» and let a be an element
+of
+such that N(a) ~ O. Such elements exist because of the assumption 2.
+Set u = N(a)-l a2 • Then N(u) = 1; hence N(x u) = N(x) = N(u x). It follows
+that the linear mappings u x ~ x u and u x ~ u x are 1 - ]. Assume u and
+liB are onto. This is automatically satisfied if
+is finite dimensional. We call
+
+a:
+
+a:
+
+R :
+
+L :
+
+a:
+
+L
+
+(1) Dickson [9), Chevalley [8).
+
+342
+
+NATHAN JACOBSON: COLLECTED PAPERS-VOLUME 2
+
+

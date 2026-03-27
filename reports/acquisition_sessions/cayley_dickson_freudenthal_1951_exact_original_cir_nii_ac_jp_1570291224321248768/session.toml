@@ -1,0 +1,89 @@
+format_version = 1
+session_id = "cayley_dickson_freudenthal_1951_exact_original_cir_nii_ac_jp_1570291224321248768"
+created_utc = "2026-03-27T06:53:15.170935384+00:00"
+updated_utc = "2026-03-27T07:00:52.759358399+00:00"
+status = "in_progress"
+
+[source]
+url = "https://cir.nii.ac.jp/crid/1570291224321248768"
+source_id = "cinii"
+title = "Oktaven, Ausnahmegruppen und Oktavengeometrie"
+site = "cir_nii_ac_jp"
+access_class = "generic_landing"
+
+[lineage]
+parent_session_id = "cayley_dickson_freudenthal_1951_exact_original"
+parent_manifest = "reports/acquisition_sessions/cayley_dickson_freudenthal_1951_exact_original/session.toml"
+relation = "promoted_child"
+
+[search]
+queue_path = "/home/eirikr/Documents/Projects/CayleyDickson/metadata/project_api/search_queue.toml"
+project_id = "cayley-dickson"
+search_target_id = "freudenthal_1951_exact_original"
+window = "1900-1999"
+priority = "critical"
+kind = "holder_workflow_followup"
+status = "holder_bound_exact_original"
+why_now = "This remains the sharpest exact octonion-era hole in the corpus."
+preferred_lanes = [
+    "Heidelberg reproduction order follow-up",
+    "Leipzig alternate-holder request lane",
+    "K10plus and local-holder metadata reuse for scan requests",
+]
+query_seeds = [
+    '"Oktaven, Ausnahmegruppen und Oktavengeometrie"',
+    '"1178680002" Freudenthal',
+    '"1356848117" Freudenthal',
+]
+
+[controller]
+policy_registry_rel = "registry/download_host_policies.toml"
+sessions_dir_rel = "reports/acquisition_sessions"
+transport_substrate = "auto"
+requested_backend = "auto"
+probe_bytes = 1024
+probe_requested = false
+
+[route]
+scheme = "https"
+host = "cir.nii.ac.jp"
+retry_class = "probe_first"
+backends = [
+    "reqwest",
+    "curl-cli",
+    "ureq",
+]
+
+[evidence]
+host_scope = "cir_nii_ac_jp"
+
+[[events]]
+at_utc = "2026-03-27T06:53:15.170935384+00:00"
+action = "promote_child"
+status = "staged"
+note = "promoted from cayley_dickson_freudenthal_1951_exact_original | dossier_search_target_id=freudenthal_1951_exact_original | dossier_suggestion_id=freudenthal_1951_exact_original_title_oktaven_ausnahmegruppen_und_oktavengeometrie_cir_nii_ac_jp_generic_landing | canonical_id=title:oktaven_ausnahmegruppen_und_oktavengeometrie | source_family=catalog | route_class=generic_landing"
+
+[[events]]
+at_utc = "2026-03-27T07:00:32.179374371+00:00"
+action = "promote"
+status = "in_progress"
+note = "spawned_child_sessions=cayley_dickson_freudenthal_1951_exact_original_cir_nii_ac_jp_1570291224321248768_katalog_ub_uni_heidelberg_de_65684364 | promoted from CiNii exact record into Heidelberg holder resolution"
+
+[[events]]
+at_utc = "2026-03-27T07:00:51.708517994+00:00"
+action = "promote"
+status = "in_progress"
+note = "spawned_child_sessions=cayley_dickson_freudenthal_1951_exact_original_cir_nii_ac_jp_1570291224321248768_infomath_bib_koha_mpg_de_opac_detail_pl | promoted from CiNii exact record into Saarland/MPIM local holder resolution"
+
+[[events]]
+at_utc = "2026-03-27T07:00:52.232468599+00:00"
+action = "promote"
+status = "in_progress"
+note = "spawned_child_sessions=cayley_dickson_freudenthal_1951_exact_original_cir_nii_ac_jp_1570291224321248768_katalog_ub_uni_leipzig_de_0_1356848117 | promoted from CiNii exact record into Leipzig holder resolution"
+
+[[events]]
+at_utc = "2026-03-27T07:00:52.759358399+00:00"
+action = "promote"
+status = "in_progress"
+note = "spawned_child_sessions=cayley_dickson_freudenthal_1951_exact_original_cir_nii_ac_jp_1570291224321248768_ndlsearch_ndl_go_jp_search | promoted from CiNii exact record into NDL catalog search lane"
+

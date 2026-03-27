@@ -1,0 +1,83 @@
+format_version = 1
+session_id = "cayley_dickson_jacobson_1958_exact_original_cir_nii_ac_jp_1361137044884354944"
+created_utc = "2026-03-27T06:53:16.218446776+00:00"
+updated_utc = "2026-03-27T07:00:54.330180203+00:00"
+status = "in_progress"
+
+[source]
+url = "https://cir.nii.ac.jp/crid/1361137044884354944"
+source_id = "cinii"
+title = "Composition algebras and their automorphisms"
+site = "cir_nii_ac_jp"
+access_class = "generic_landing"
+
+[lineage]
+parent_session_id = "cayley_dickson_jacobson_1958_exact_original"
+parent_manifest = "reports/acquisition_sessions/cayley_dickson_jacobson_1958_exact_original/session.toml"
+relation = "promoted_child"
+
+[search]
+queue_path = "/home/eirikr/Documents/Projects/CayleyDickson/metadata/project_api/search_queue.toml"
+project_id = "cayley-dickson"
+search_target_id = "jacobson_1958_exact_original"
+window = "1900-1999"
+priority = "critical"
+kind = "article_or_chapter_delivery_followup"
+status = "delivery_workflow_in_progress"
+why_now = "This remains the sharpest exact composition-algebra hole in the corpus."
+preferred_lanes = [
+    "Bielefeld article-only follow-up",
+    "SUBITO authenticated order lane",
+    "TIB or Springer article-delivery escalation",
+]
+query_seeds = [
+    '"Composition Algebras and Their Automorphisms"',
+    '"10.1007/BF02854388"',
+    '"0817634118" Jacobson volume 2',
+]
+
+[controller]
+policy_registry_rel = "registry/download_host_policies.toml"
+sessions_dir_rel = "reports/acquisition_sessions"
+transport_substrate = "auto"
+requested_backend = "auto"
+probe_bytes = 1024
+probe_requested = false
+
+[route]
+scheme = "https"
+host = "cir.nii.ac.jp"
+retry_class = "probe_first"
+backends = [
+    "reqwest",
+    "curl-cli",
+    "ureq",
+]
+
+[evidence]
+host_scope = "cir_nii_ac_jp"
+
+[[events]]
+at_utc = "2026-03-27T06:53:16.218446776+00:00"
+action = "promote_child"
+status = "staged"
+note = "promoted from cayley_dickson_jacobson_1958_exact_original | dossier_search_target_id=jacobson_1958_exact_original | dossier_suggestion_id=jacobson_1958_exact_original_title_composition_algebras_and_their_automorphisms_cir_nii_ac_jp_generic_landing | canonical_id=title:composition_algebras_and_their_automorphisms | source_family=catalog | route_class=generic_landing"
+
+[[events]]
+at_utc = "2026-03-27T07:00:53.280233429+00:00"
+action = "promote"
+status = "in_progress"
+note = "spawned_child_sessions=cayley_dickson_jacobson_1958_exact_original_cir_nii_ac_jp_1361137044884354944_katalogplus_ub_uni_bielefeld_de_991023901549706442 | promoted from CiNii exact record into Bielefeld article-only delivery lane"
+
+[[events]]
+at_utc = "2026-03-27T07:00:53.801537149+00:00"
+action = "promote"
+status = "in_progress"
+note = "spawned_child_sessions=cayley_dickson_jacobson_1958_exact_original_cir_nii_ac_jp_1361137044884354944_search_subito_doc_de_vufind | promoted from CiNii exact record into authenticated SUBITO delivery lane"
+
+[[events]]
+at_utc = "2026-03-27T07:00:54.330180203+00:00"
+action = "promote"
+status = "in_progress"
+note = "spawned_child_sessions=cayley_dickson_jacobson_1958_exact_original_cir_nii_ac_jp_1361137044884354944_www_ub_uni_paderborn_de_dokumentlieferdienste | promoted from CiNii exact record into Paderborn/TIB document-delivery lane"
+

@@ -1,0 +1,82 @@
+format_version = 1
+session_id = "cayley_dickson_dickson_1935_exact_pdf_www_semanticscholar_org_fd3d64c4d98c38ba5aab882abab1c29ee57bf94f_projecteuclid_org_s0012_7094_35_00112_0_short_projecteuclid_org_previewfirstpage"
+created_utc = "2026-03-27T07:19:11.490385469+00:00"
+updated_utc = "2026-03-27T07:29:58-07:00"
+status = "blocked"
+
+[source]
+url = "https://projecteuclid.org/JournalArticle/PreviewFirstPage?urlid=10.1215%2fS0012-7094-35-00112-0"
+source_id = "semantic_scholar"
+title = "Linear algebras with associativity not assumed"
+site = "projecteuclid_org"
+access_class = "preview_pdf"
+
+[lineage]
+parent_session_id = "cayley_dickson_dickson_1935_exact_pdf_www_semanticscholar_org_fd3d64c4d98c38ba5aab882abab1c29ee57bf94f_projecteuclid_org_s0012_7094_35_00112_0_short"
+parent_manifest = "reports/acquisition_sessions/cayley_dickson_dickson_1935_exact_pdf_www_semanticscholar_org_fd3d64c4d98c38ba5aab882abab1c29ee57bf94f_projecteuclid_org_s0012_7094_35_00112_0_short/session.toml"
+relation = "promoted_child"
+
+[search]
+queue_path = "/home/eirikr/Documents/Projects/CayleyDickson/metadata/project_api/search_queue.toml"
+project_id = "cayley-dickson"
+search_target_id = "dickson_1935_exact_pdf"
+window = "1900-1999"
+priority = "high"
+kind = "metadata_confirmed_pdf_path_resolution"
+status = "bibliographic_record_confirmed_pdf_href_unresolved"
+why_now = "This is the clean bridge between the earlier Dickson line and the later Jacobson composition lane."
+preferred_lanes = [
+    "Celebratio page inspection in headed browser",
+    "linked media path resolution",
+    "secondary catalog and mirror search",
+]
+query_seeds = [
+    '"Linear algebras with associativity not assumed"',
+    '"Dickson" 1935 associativity not assumed',
+    '"Celebratio" Dickson article 80 pdf',
+]
+
+[controller]
+policy_registry_rel = "registry/download_host_policies.toml"
+sessions_dir_rel = "reports/acquisition_sessions"
+transport_substrate = "auto"
+requested_backend = "auto"
+probe_bytes = 1024
+probe_requested = false
+
+[route]
+scheme = "https"
+host = "projecteuclid.org"
+retry_class = "probe_first"
+backends = [
+    "reqwest",
+    "curl-cli",
+    "ureq",
+]
+
+[evidence]
+host_scope = "projecteuclid_org"
+
+[[events]]
+at_utc = "2026-03-27T07:19:11.490385469+00:00"
+action = "promote_child"
+status = "staged"
+note = "promoted from cayley_dickson_dickson_1935_exact_pdf_www_semanticscholar_org_fd3d64c4d98c38ba5aab882abab1c29ee57bf94f_projecteuclid_org_s0012_7094_35_00112_0_short | promoted from Project Euclid landing into first-page preview PDF lane"
+
+[[events]]
+at_utc = "2026-03-27T07:25:13.104734499+00:00"
+action = "record"
+status = "blocked"
+note = "Project Euclid first-page preview route presents a live hCaptcha human-check in browser; manual clearance would be required."
+
+[[events]]
+at_utc = "2026-03-27T07:25:50.666070575+00:00"
+action = "record"
+status = "blocked"
+note = "Visual blocker evidence captured at reports/acquisition_sessions/cayley_dickson_dickson_1935_exact_pdf_www_semanticscholar_org_fd3d64c4d98c38ba5aab882abab1c29ee57bf94f_projecteuclid_org_s0012_7094_35_00112_0_short_projecteuclid_org_previewfirstpage/projecteuclid_preview_hcaptcha_20260327.png."
+
+[[events]]
+at_utc = "2026-03-27T07:29:58-07:00"
+action = "record"
+status = "blocked"
+note = "Real Edge window launched on the Project Euclid first-page preview route. The next useful step is human hCaptcha clearance, after which fresh session evidence and any preview witness can be captured immediately."

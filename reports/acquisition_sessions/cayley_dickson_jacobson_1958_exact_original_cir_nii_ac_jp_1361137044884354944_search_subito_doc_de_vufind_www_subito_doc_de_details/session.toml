@@ -1,0 +1,94 @@
+format_version = 1
+session_id = "cayley_dickson_jacobson_1958_exact_original_cir_nii_ac_jp_1361137044884354944_search_subito_doc_de_vufind_www_subito_doc_de_details"
+created_utc = "2026-03-27T07:19:10.419631539+00:00"
+updated_utc = "2026-03-27T07:29:58-07:00"
+status = "blocked"
+
+[source]
+url = "https://www.subito-doc.de/hitlist/details/?RID=1&POS=2&cat=K10"
+source_id = "cinii"
+title = "Composition algebras and their automorphisms"
+site = "www_subito_doc_de"
+access_class = "delivery_record"
+
+[lineage]
+parent_session_id = "cayley_dickson_jacobson_1958_exact_original_cir_nii_ac_jp_1361137044884354944_search_subito_doc_de_vufind"
+parent_manifest = "reports/acquisition_sessions/cayley_dickson_jacobson_1958_exact_original_cir_nii_ac_jp_1361137044884354944_search_subito_doc_de_vufind/session.toml"
+relation = "promoted_child"
+
+[search]
+queue_path = "/home/eirikr/Documents/Projects/CayleyDickson/metadata/project_api/search_queue.toml"
+project_id = "cayley-dickson"
+search_target_id = "jacobson_1958_exact_original"
+window = "1900-1999"
+priority = "critical"
+kind = "article_or_chapter_delivery_followup"
+status = "delivery_workflow_in_progress"
+why_now = "This remains the sharpest exact composition-algebra hole in the corpus."
+preferred_lanes = [
+    "Bielefeld article-only follow-up",
+    "SUBITO authenticated order lane",
+    "TIB or Springer article-delivery escalation",
+]
+query_seeds = [
+    '"Composition Algebras and Their Automorphisms"',
+    '"10.1007/BF02854388"',
+    '"0817634118" Jacobson volume 2',
+]
+
+[controller]
+policy_registry_rel = "registry/download_host_policies.toml"
+sessions_dir_rel = "reports/acquisition_sessions"
+transport_substrate = "auto"
+requested_backend = "auto"
+probe_bytes = 1024
+probe_requested = false
+
+[route]
+scheme = "https"
+host = "www.subito-doc.de"
+retry_class = "probe_first"
+backends = [
+    "reqwest",
+    "curl-cli",
+    "ureq",
+]
+
+[evidence]
+host_scope = "www_subito_doc_de"
+
+[[events]]
+at_utc = "2026-03-27T07:19:10.419631539+00:00"
+action = "promote_child"
+status = "staged"
+note = "promoted from cayley_dickson_jacobson_1958_exact_original_cir_nii_ac_jp_1361137044884354944_search_subito_doc_de_vufind | promoted from SUBITO search into exact Jacobson K10 detail page with authenticated order gate"
+
+[[events]]
+at_utc = "2026-03-27T07:24:42.554006956+00:00"
+action = "promote"
+status = "in_progress"
+note = "spawned_child_sessions=cayley_dickson_jacobson_1958_exact_original_cir_nii_ac_jp_1361137044884354944_search_subito_doc_de_vufind_www_subito_doc_de_details_www_subito_doc_de_login | promoted from exact SUBITO detail page into direct login gate"
+
+[[events]]
+at_utc = "2026-03-27T07:24:43.254093608+00:00"
+action = "promote"
+status = "in_progress"
+note = "spawned_child_sessions=cayley_dickson_jacobson_1958_exact_original_cir_nii_ac_jp_1361137044884354944_search_subito_doc_de_vufind_www_subito_doc_de_details_www_subito_doc_de_start | promoted from exact SUBITO detail page into direct registration gate"
+
+[[events]]
+at_utc = "2026-03-27T07:24:47.288066230+00:00"
+action = "record"
+status = "blocked"
+note = "Exact SUBITO K10 detail page confirmed; authenticated login or registration is now the blocker."
+
+[[events]]
+at_utc = "2026-03-27T07:25:10.324832478+00:00"
+action = "record"
+status = "blocked"
+note = "Exact SUBITO K10 detail page confirmed; authenticated login or registration is now the blocker."
+
+[[events]]
+at_utc = "2026-03-27T07:29:58-07:00"
+action = "record"
+status = "blocked"
+note = "Real browser check confirmed the exact SUBITO K10 detail page for Contemporary Mathematicians, Band 2, Birkhaeuser 1989, pp. 341-366. Discovery is solved; authenticated login or registration is the only blocker."

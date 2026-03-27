@@ -1,0 +1,88 @@
+format_version = 1
+session_id = "cayley_dickson_freudenthal_1951_exact_original_cir_nii_ac_jp_1570291224321248768_katalog_ub_uni_leipzig_de_0_1356848117"
+created_utc = "2026-03-27T07:00:52.232167888+00:00"
+updated_utc = "2026-03-27T07:29:58-07:00"
+status = "in_progress"
+
+[source]
+url = "https://katalog.ub.uni-leipzig.de/Record/0-1356848117"
+source_id = "cinii"
+title = "Oktaven, Ausnahmegruppen und Oktavengeometrie"
+site = "katalog_ub_uni_leipzig_de"
+access_class = "holder_record"
+
+[lineage]
+parent_session_id = "cayley_dickson_freudenthal_1951_exact_original_cir_nii_ac_jp_1570291224321248768"
+parent_manifest = "reports/acquisition_sessions/cayley_dickson_freudenthal_1951_exact_original_cir_nii_ac_jp_1570291224321248768/session.toml"
+relation = "promoted_child"
+
+[search]
+queue_path = "/home/eirikr/Documents/Projects/CayleyDickson/metadata/project_api/search_queue.toml"
+project_id = "cayley-dickson"
+search_target_id = "freudenthal_1951_exact_original"
+window = "1900-1999"
+priority = "critical"
+kind = "holder_workflow_followup"
+status = "holder_bound_exact_original"
+why_now = "This remains the sharpest exact octonion-era hole in the corpus."
+preferred_lanes = [
+    "Heidelberg reproduction order follow-up",
+    "Leipzig alternate-holder request lane",
+    "K10plus and local-holder metadata reuse for scan requests",
+]
+query_seeds = [
+    '"Oktaven, Ausnahmegruppen und Oktavengeometrie"',
+    '"1178680002" Freudenthal',
+    '"1356848117" Freudenthal',
+]
+
+[controller]
+policy_registry_rel = "registry/download_host_policies.toml"
+sessions_dir_rel = "reports/acquisition_sessions"
+transport_substrate = "auto"
+requested_backend = "auto"
+probe_bytes = 1024
+probe_requested = false
+
+[route]
+scheme = "https"
+host = "katalog.ub.uni-leipzig.de"
+retry_class = "probe_first"
+backends = [
+    "reqwest",
+    "curl-cli",
+    "ureq",
+]
+
+[evidence]
+host_scope = "katalog_ub_uni_leipzig_de"
+
+[[events]]
+at_utc = "2026-03-27T07:00:52.232167888+00:00"
+action = "promote_child"
+status = "staged"
+note = "promoted from cayley_dickson_freudenthal_1951_exact_original_cir_nii_ac_jp_1570291224321248768 | promoted from CiNii exact record into Leipzig holder resolution"
+
+[[events]]
+at_utc = "2026-03-27T07:24:40.974537843+00:00"
+action = "promote"
+status = "in_progress"
+note = "spawned_child_sessions=cayley_dickson_freudenthal_1951_exact_original_cir_nii_ac_jp_1570291224321248768_katalog_ub_uni_leipzig_de_0_1356848117_site_child_01 | promoted from Leipzig holder record into direct copy-scan contact email lane"
+
+[[events]]
+at_utc = "2026-03-27T07:24:45.339632817+00:00"
+action = "record"
+status = "in_progress"
+note = "Leipzig alternate-holder request lane remains active; direct contact email lane staged."
+
+[[events]]
+at_utc = "2026-03-27T07:25:08.386933772+00:00"
+action = "record"
+status = "in_progress"
+note = "Leipzig alternate-holder request lane remains active; use info@ub.uni-leipzig.de or official service contact for scan/copy follow-up."
+
+[[events]]
+at_utc = "2026-03-27T07:29:58-07:00"
+action = "record"
+status = "in_progress"
+note = "Leipzig holder route sharpened in browser. Campus Library lists copy as Available with Request this item, call number Magazin 02B-2023-189, phone +49 341 97-30811, email zbcb@ub.uni-leipzig.de, and official contact form at ub.uni-leipzig.de/id=1326. Raw wget gets HTTP 419, so browser/manual follow-up is the reliable lane."

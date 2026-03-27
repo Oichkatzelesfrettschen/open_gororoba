@@ -1,7 +1,7 @@
 format_version = 1
 session_id = "cayley_dickson_freudenthal_1951_exact_original"
 created_utc = "2026-03-27T04:20:51.066094483+00:00"
-updated_utc = "2026-03-27T05:26:56.283613605+00:00"
+updated_utc = "2026-03-27T06:53:15.181565770+00:00"
 status = "in_progress"
 
 [source]
@@ -54,4 +54,10 @@ at_utc = "2026-03-27T05:26:56.283613605+00:00"
 action = "record"
 status = "in_progress"
 note = "holder_catalog_lane_only_currently; no default-selected exact-original acquisition child"
+
+[[events]]
+at_utc = "2026-03-27T06:53:15.181565770+00:00"
+action = "promote"
+status = "in_progress"
+note = "spawned_child_sessions=cayley_dickson_freudenthal_1951_exact_original_cir_nii_ac_jp_1570291224321248768,cayley_dickson_freudenthal_1951_exact_original_www_mathnet_ru_mat7"
 

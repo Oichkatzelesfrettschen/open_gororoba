@@ -1,7 +1,7 @@
 format_version = 1
 session_id = "cayley_dickson_jacobson_1958_exact_original"
 created_utc = "2026-03-27T04:20:51.578547080+00:00"
-updated_utc = "2026-03-27T04:20:51.580533131+00:00"
+updated_utc = "2026-03-27T06:53:16.218708406+00:00"
 status = "in_progress"
 
 [source]
@@ -48,4 +48,10 @@ at_utc = "2026-03-27T04:20:51.580533131+00:00"
 action = "promote"
 status = "in_progress"
 note = "spawned_child_sessions=cayley_dickson_jacobson_1958_exact_original_www_semanticscholar_org_22b4f272ec42ec89c1ea1ca6ef5d295e3e93a56c,cayley_dickson_jacobson_1958_exact_original_msp_org_ant_v19_n3_p05_s_pdf,cayley_dickson_jacobson_1958_exact_original_arxiv_org_2304_08573"
+
+[[events]]
+at_utc = "2026-03-27T06:53:16.218708406+00:00"
+action = "promote"
+status = "in_progress"
+note = "spawned_child_sessions=cayley_dickson_jacobson_1958_exact_original_link_springer_com_978_1_4612_3694_8_24,cayley_dickson_jacobson_1958_exact_original_cir_nii_ac_jp_1361137044884354944"
 
