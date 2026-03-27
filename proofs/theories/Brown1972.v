@@ -28,8 +28,10 @@
       source-driven standard-tower witnesses for 4.2, 4.3, and 4.4 are now
       landed here.
     - Chapter V, pp. 27-30, Theorems 5.11-5.17:
-      Rust lane `crates/brown_1972/src/exponent_properties.rs`; dedicated Rocq
-      lane is still open.
+      Brown-numbered quaternion witness surface landed here; Rust lane
+      `crates/brown_1972/src/exponent_properties.rs` remains the broader
+      computational mirror and still carries the non-quaternion/generalized
+      follow-on exploration.
     - Chapter VI, pp. 30-37, Theorems 6.1-6.11:
       Rust lane `crates/brown_1972/src/basis_element_properties.rs`; direct
       Rocq chapter surface is still open.
@@ -49,7 +51,7 @@
     paper surfaces, includes `CDPowerAssociative.v` and later Moreno bridges.
 
     Remaining Brown-specific Rocq backlog:
-    - Brown-numbered Chapter V theorem surface over the landed exponent lane
+    - broader Chapter V exponent surface beyond the new quaternion witness lane
     - broader 16D/generalized-norm Chapter III lane
     - Brown-numbered Chapter VI basis-element theorem lanes
     - remaining Chapter VII numbering gaps plus Appendix C extraction bridge in Rocq
@@ -577,24 +579,12 @@ Lemma brown1972_quat_zpow_succ : forall a n,
     }
     simpl.
     reflexivity.
-  - destruct p as [|p|p].
-    + simpl.
-      change (Pos.to_nat 1) with 1%nat.
-      simpl.
-      apply eq_sym. apply brown1972_quat_inv_mul_left. exact Hnz.
-    + replace (Pos.to_nat p~0) with (S (Pos.to_nat (Pos.pred_double p))).
-      2:{
-        rewrite <- Pos2Nat.inj_succ.
-        rewrite Pos.succ_pred_double.
-        reflexivity.
-      }
-      change
-        (brown1972_quat_nat_pow (brown1972_quat_inv a) (Pos.to_nat (Pos.pred_double p)) =
-         quat_mul
-           (brown1972_quat_nat_pow (brown1972_quat_inv a)
-             (S (Pos.to_nat (Pos.pred_double p)))) a).
-      symmetry. apply brown1972_quat_nat_pow_inv_step_left. exact Hnz.
-    + replace (Pos.to_nat p~1) with (S (Pos.to_nat p~0)).
+  - destruct p as [p|p|].
+    + change
+        (brown1972_quat_zpow a (Zneg p~0) =
+         quat_mul (brown1972_quat_zpow a (Zneg p~1)) a).
+      cbn [brown1972_quat_zpow].
+      replace (Pos.to_nat p~1) with (S (Pos.to_nat p~0)).
       2:{
         rewrite Pos2Nat.inj_xI.
         rewrite Pos2Nat.inj_xO.
@@ -606,6 +596,30 @@ Lemma brown1972_quat_zpow_succ : forall a n,
            (brown1972_quat_nat_pow (brown1972_quat_inv a)
              (S (Pos.to_nat p~0))) a).
       symmetry. apply brown1972_quat_nat_pow_inv_step_left. exact Hnz.
+    + change
+        (brown1972_quat_zpow a (Zneg (Pos.pred_double p)) =
+         quat_mul (brown1972_quat_zpow a (Zneg p~0)) a).
+      cbn [brown1972_quat_zpow].
+      replace (Pos.to_nat p~0) with (S (Pos.to_nat (Pos.pred_double p))).
+      2:{
+        rewrite <- Pos2Nat.inj_succ.
+        rewrite Pos.succ_pred_double.
+        reflexivity.
+      }
+      change
+        (brown1972_quat_nat_pow (brown1972_quat_inv a) (Pos.to_nat (Pos.pred_double p)) =
+         quat_mul
+           (brown1972_quat_nat_pow (brown1972_quat_inv a)
+             (S (Pos.to_nat (Pos.pred_double p)))) a).
+      symmetry. apply brown1972_quat_nat_pow_inv_step_left. exact Hnz.
+    + change
+        (brown1972_quat_zpow a 0%Z =
+         quat_mul (brown1972_quat_zpow a (-1)%Z) a).
+      cbn [brown1972_quat_zpow brown1972_quat_nat_pow].
+      change (Pos.to_nat 1) with 1%nat.
+      cbn [brown1972_quat_nat_pow].
+      rewrite quat_mul_one_left.
+      apply eq_sym. apply brown1972_quat_inv_mul_left. exact Hnz.
 Qed.
 
 Lemma brown1972_quat_zpow_pred : forall a n,
@@ -614,21 +628,21 @@ Lemma brown1972_quat_zpow_pred : forall a n,
   quat_mul (brown1972_quat_zpow a n) (brown1972_quat_inv a).
 Proof.
   intros a [|p|p] Hnz.
-  - simpl. apply quat_mul_one_left.
-  - destruct p as [|p|p].
-    + simpl. apply eq_sym. apply brown1972_quat_inv_mul_right. exact Hnz.
-    + replace (Pos.to_nat p~0) with (S (Pos.to_nat (Pos.pred_double p))).
-      2:{
-        rewrite <- Pos2Nat.inj_succ.
-        rewrite Pos.succ_pred_double.
-        reflexivity.
-      }
-      change
-        (brown1972_quat_nat_pow a (Pos.to_nat (Pos.pred_double p)) =
-         quat_mul (brown1972_quat_nat_pow a
-           (S (Pos.to_nat (Pos.pred_double p)))) (brown1972_quat_inv a)).
-      symmetry. apply brown1972_quat_nat_pow_inv_step_right. exact Hnz.
-    + replace (Pos.to_nat p~1) with (S (Pos.to_nat p~0)).
+  - change
+      (brown1972_quat_zpow a (Zneg 1) =
+       quat_mul quat_one (brown1972_quat_inv a)).
+    cbn [brown1972_quat_zpow brown1972_quat_nat_pow].
+    change (Pos.to_nat 1) with 1%nat.
+    cbn [brown1972_quat_nat_pow].
+    rewrite quat_mul_one_left.
+    reflexivity.
+  - destruct p as [p|p|].
+    + change
+        (brown1972_quat_zpow a (Zpos p~0) =
+         quat_mul (brown1972_quat_zpow a (Zpos p~1))
+           (brown1972_quat_inv a)).
+      cbn [brown1972_quat_zpow].
+      replace (Pos.to_nat p~1) with (S (Pos.to_nat p~0)).
       2:{
         rewrite Pos2Nat.inj_xI.
         rewrite Pos2Nat.inj_xO.
@@ -639,11 +653,36 @@ Proof.
          quat_mul (brown1972_quat_nat_pow a (S (Pos.to_nat p~0)))
            (brown1972_quat_inv a)).
       symmetry. apply brown1972_quat_nat_pow_inv_step_right. exact Hnz.
-  - change
-      (brown1972_quat_nat_pow (brown1972_quat_inv a) (Pos.to_nat (Pos.succ p)) =
-       quat_mul (brown1972_quat_nat_pow (brown1972_quat_inv a) (Pos.to_nat p))
-         (brown1972_quat_inv a)).
-    rewrite Pos2Nat.inj_succ. simpl. reflexivity.
+    + change
+        (brown1972_quat_zpow a (Zpos (Pos.pred_double p)) =
+         quat_mul (brown1972_quat_zpow a (Zpos p~0))
+           (brown1972_quat_inv a)).
+      cbn [brown1972_quat_zpow].
+      replace (Pos.to_nat p~0) with (S (Pos.to_nat (Pos.pred_double p))).
+      2:{
+        rewrite <- Pos2Nat.inj_succ.
+        rewrite Pos.succ_pred_double.
+        reflexivity.
+      }
+      change
+        (brown1972_quat_nat_pow a (Pos.to_nat (Pos.pred_double p)) =
+         quat_mul (brown1972_quat_nat_pow a
+           (S (Pos.to_nat (Pos.pred_double p)))) (brown1972_quat_inv a)).
+      symmetry. apply brown1972_quat_nat_pow_inv_step_right. exact Hnz.
+    + change
+        (brown1972_quat_zpow a 0%Z =
+         quat_mul (brown1972_quat_zpow a 1%Z) (brown1972_quat_inv a)).
+      cbn [brown1972_quat_zpow brown1972_quat_nat_pow].
+      change (Pos.to_nat 1) with 1%nat.
+      cbn [brown1972_quat_nat_pow].
+      rewrite quat_mul_one_left.
+      apply eq_sym. apply brown1972_quat_inv_mul_right. exact Hnz.
+  - replace (Z.pred (Zneg p)) with (Zneg (Pos.succ p)).
+    2:{ destruct p; reflexivity. }
+    cbn [brown1972_quat_zpow].
+    rewrite Pos2Nat.inj_succ.
+    simpl.
+    reflexivity.
 Qed.
 
 Theorem brown1972_theorem_5_11_quaternion : forall a m n,
@@ -716,7 +755,7 @@ Proof.
   intros x y z Hy Hz.
   rewrite <- (quat_mul_one_right y).
   rewrite <- Hz.
-  rewrite quat_mul_assoc.
+  rewrite <- quat_mul_assoc.
   rewrite Hy.
   apply quat_mul_one_left.
 Qed.

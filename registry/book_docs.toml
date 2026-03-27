@@ -1777,7 +1777,7 @@ pre-Moreno dependency chain and its missing-source audit now live in
 | 1945 | Schafer, division algebras of order 16 | paired Rust + Rocq | formalized |
 | 1954 | Schafer, algebras formed by the CD process | Rocq-first paper index | Section 1 anchors plus abstract Theorem 2 extension map, Theorem 3 block-restriction and coordinate surfaces, the concrete real-octonion equation (51)/(52) discharge, a concrete residual eq.(50) builder, and the final concrete octonion/sedenion Theorem 4 identification/type-G theorem package landed |
 | 1967 | Brown, generalized CD algebras | paired Rust + Rocq | formalized |
-| 1972 | Brown, zero-divisor structure dissertation | paired, Rocq-heavy | source-driven dissertation map now in place; Chapters I-II are tracked explicitly as contextual source chapters, Chapter III abstract surface, Chapter IV source-driven 4.2/4.3/4.4 standard-tower witness surface, and the Chapter VII lane are formalized, while Chapters V-VI, VIII, and Appendix C remain partial |
+| 1972 | Brown, zero-divisor structure dissertation | paired, Rocq-heavy | source-driven dissertation map now in place; Chapters I-II are tracked explicitly as contextual source chapters, Chapter III abstract surface, Chapter IV source-driven 4.2/4.3/4.4 standard-tower witness surface, a Chapter V quaternion witness surface for 5.11/5.12/5.17, and the Chapter VII lane are formalized, while the broader Chapter V generalized exponent lane, Chapter VI, VIII, and Appendix C remain partial |
 | 1997 | Moreno, zero divisors over the reals | paired Rust + Rocq | extracted |
 | 2000 | de Marrais, box-kites and assessors | paired Rust + Rocq | formalized |
 | 2002 | Baez, The Octonions | Rocq-first reference lane | partially formalized |
@@ -1930,7 +1930,7 @@ off-repo chronology matrix and roadmap as reference surfaces:
 | 1958 | Jacobson | previews and support on disk | exact full text remains institution-locked |
 | 1965 | Cullen | reconstructed PDF + OCR cached off-repo | source gap resolved; paper lane not yet started |
 | 1967 | Brown | `crates/brown_1967/` + `proofs/theories/BrownGeneralizedCD.v` | extend dim-32/dim-64 theorem surfacing |
-| 1972 | Brown | `crates/brown_1972/` + `proofs/theories/Brown1972.v` | paper index plus a source-driven nine-chapter dissertation map with Chapters I-II kept explicit as non-theorem context, an abstract Chapter III norm/involution surface, standard-octonion Theorem 3.9 / Lemma 3.10 witnesses, a Chapter IV source-driven 4.2 / 4.3 / 4.4 standard-tower witness surface, and the initial Chapter VII map landed; the Chapter V-VI theorem surfaces, the 16D generalized-norm Chapter III surfacing, Chapter VIII examples, and the Appendix C bridge remain partial |
+| 1972 | Brown | `crates/brown_1972/` + `proofs/theories/Brown1972.v` | paper index plus a source-driven nine-chapter dissertation map with Chapters I-II kept explicit as non-theorem context, an abstract Chapter III norm/involution surface, standard-octonion Theorem 3.9 / Lemma 3.10 witnesses, a Chapter IV source-driven 4.2 / 4.3 / 4.4 standard-tower witness surface, a Chapter V quaternion witness surface for 5.11 / 5.12 / 5.17, and the initial Chapter VII map landed; the broader Chapter V generalized exponent surface, the 16D generalized-norm Chapter III surfacing, Chapter VI, Chapter VIII examples, and the Appendix C bridge remain partial |
 
 ## Chronological gaps we still need to track
 
@@ -1956,9 +1956,11 @@ off-repo chronology matrix and roadmap as reference surfaces:
   converse-side assumption; Brown (1972) now has a source-driven dissertation
   map plus an abstract Chapter III norm/involution surface, standard-octonion
   Theorem 3.9 / Lemma 3.10 witnesses, a Chapter IV source-driven 4.2 / 4.3 /
-  4.4 standard-tower witness surface, and an initial Chapter VII map, but
-  still needs the Chapter V-VI theorem surfaces, the 16D generalized-norm
-  Chapter III surfacing, Chapter VIII examples, and a Rocq Appendix C bridge.
+  4.4 standard-tower witness surface, a Chapter V quaternion witness surface
+  for 5.11 / 5.12 / 5.17, and an initial Chapter VII map, but still needs the
+  broader Chapter V generalized exponent surface, the 16D generalized-norm
+  Chapter III surfacing, Chapter VI, Chapter VIII examples, and a Rocq
+  Appendix C bridge.
 - Earlier reference foundation is now explicitly tracked but not yet lifted
   into dedicated Rocq paper lanes: Euler (1770), Degen (1818), and the
   Hamilton/Graves/Cayley/Cockle formation chain (1835-1866) are cached
@@ -1983,9 +1985,9 @@ off-repo chronology matrix and roadmap as reference surfaces:
    pre-Moreno chain.
 5. Mine Brown (1972) as a full source-driven dissertation lane rather than as
    only a Chapter III follow-up: continue from the landed Chapter IV witness
-   surface into Chapter V exponent theorems, then the 16D generalized-norm
-   Chapter III surfacing, then the Chapter VI basis-element lanes, and
-   finally the remaining Chapter VII / VIII / Appendix C bridges.
+   surface into the broader Chapter V generalized exponent lane, then the 16D
+   generalized-norm Chapter III surfacing, then the Chapter VI basis-element
+   lanes, and finally the remaining Chapter VII / VIII / Appendix C bridges.
 6. Split the already-cached Zorn (1935), Jacobson (1939), and Albert (1942)
    context materials into explicit paper lanes instead of leaving them as
    tracker-only references.
