@@ -1,0 +1,211 @@
+{
+  "spearman_rho": -0.6269,
+  "spearman_p": 7.276531302864502e-05,
+  "n_bins": 34,
+  "data": [
+    {
+      "r_au": 2.5,
+      "coherence": 0.022618,
+      "associator": 10.1578,
+      "n_samples": 208858
+    },
+    {
+      "r_au": 7.5,
+      "coherence": 0.029369,
+      "associator": 8.4064,
+      "n_samples": 84828
+    },
+    {
+      "r_au": 12.5,
+      "coherence": 0.047651,
+      "associator": 8.0113,
+      "n_samples": 21201
+    },
+    {
+      "r_au": 17.5,
+      "coherence": 0.040165,
+      "associator": 7.8804,
+      "n_samples": 14024
+    },
+    {
+      "r_au": 22.5,
+      "coherence": 0.071751,
+      "associator": 15.5075,
+      "n_samples": 13382
+    },
+    {
+      "r_au": 27.5,
+      "coherence": 0.030846,
+      "associator": 9.8357,
+      "n_samples": 12095
+    },
+    {
+      "r_au": 32.5,
+      "coherence": 0.338866,
+      "associator": 8.9132,
+      "n_samples": 16579
+    },
+    {
+      "r_au": 37.5,
+      "coherence": 0.049021,
+      "associator": 5.8672,
+      "n_samples": 14623
+    },
+    {
+      "r_au": 42.5,
+      "coherence": 0.045654,
+      "associator": 6.638,
+      "n_samples": 15899
+    },
+    {
+      "r_au": 47.5,
+      "coherence": 0.041461,
+      "associator": 6.9972,
+      "n_samples": 17661
+    },
+    {
+      "r_au": 52.5,
+      "coherence": 0.03808,
+      "associator": 9.2298,
+      "n_samples": 14438
+    },
+    {
+      "r_au": 57.5,
+      "coherence": 0.017732,
+      "associator": 10.0475,
+      "n_samples": 16227
+    },
+    {
+      "r_au": 62.5,
+      "coherence": 0.035034,
+      "associator": 12.8819,
+      "n_samples": 15307
+    },
+    {
+      "r_au": 67.5,
+      "coherence": 0.033322,
+      "associator": 15.3611,
+      "n_samples": 14001
+    },
+    {
+      "r_au": 72.5,
+      "coherence": 0.029413,
+      "associator": 9.1788,
+      "n_samples": 12425
+    },
+    {
+      "r_au": 77.5,
+      "coherence": 0.023109,
+      "associator": 7.0795,
+      "n_samples": 12016
+    },
+    {
+      "r_au": 82.5,
+      "coherence": 0.050562,
+      "associator": 9.4952,
+      "n_samples": 11784
+    },
+    {
+      "r_au": 87.5,
+      "coherence": 0.045996,
+      "associator": 10.4263,
+      "n_samples": 11747
+    },
+    {
+      "r_au": 92.5,
+      "coherence": 0.105851,
+      "associator": 9.8062,
+      "n_samples": 11560
+    },
+    {
+      "r_au": 97.5,
+      "coherence": 0.020172,
+      "associator": 10.8065,
+      "n_samples": 10908
+    },
+    {
+      "r_au": 102.5,
+      "coherence": 0.025885,
+      "associator": 9.4369,
+      "n_samples": 10020
+    },
+    {
+      "r_au": 107.5,
+      "coherence": 0.024816,
+      "associator": 9.7904,
+      "n_samples": 10829
+    },
+    {
+      "r_au": 112.5,
+      "coherence": 0.020588,
+      "associator": 5.4385,
+      "n_samples": 11694
+    },
+    {
+      "r_au": 117.5,
+      "coherence": 0.031218,
+      "associator": 2.1613,
+      "n_samples": 9050
+    },
+    {
+      "r_au": 122.5,
+      "coherence": 0.255627,
+      "associator": 0.3207,
+      "n_samples": 8813
+    },
+    {
+      "r_au": 127.5,
+      "coherence": 0.287806,
+      "associator": 0.0241,
+      "n_samples": 4981
+    },
+    {
+      "r_au": 132.5,
+      "coherence": 0.323094,
+      "associator": 0.0273,
+      "n_samples": 4220
+    },
+    {
+      "r_au": 137.5,
+      "coherence": 0.28875,
+      "associator": 0.0221,
+      "n_samples": 5105
+    },
+    {
+      "r_au": 142.5,
+      "coherence": 0.295215,
+      "associator": 0.0308,
+      "n_samples": 3427
+    },
+    {
+      "r_au": 147.5,
+      "coherence": 0.283274,
+      "associator": 0.0321,
+      "n_samples": 3687
+    },
+    {
+      "r_au": 152.5,
+      "coherence": 0.280787,
+      "associator": 0.0197,
+      "n_samples": 3572
+    },
+    {
+      "r_au": 157.5,
+      "coherence": 0.334493,
+      "associator": 0.0192,
+      "n_samples": 5337
+    },
+    {
+      "r_au": 162.5,
+      "coherence": 0.375802,
+      "associator": 0.0187,
+      "n_samples": 2165
+    },
+    {
+      "r_au": 167.5,
+      "coherence": 0.54704,
+      "associator": 0.0143,
+      "n_samples": 612
+    }
+  ]
+}
