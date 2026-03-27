@@ -515,6 +515,8 @@ Definition brown1972_quat_zpow (a : CDQuat) (n : Z) : CDQuat :=
   | Zneg p => brown1972_quat_nat_pow (brown1972_quat_inv a) (Pos.to_nat p)
   end.
 
+Definition brown1972_quat_trace (q : CDQuat) : R := 2 * qa q.
+
 Lemma brown1972_quat_inv_mul_left : forall a,
   quat_norm_sq a <> 0%R ->
   quat_mul (brown1972_quat_inv a) a = quat_one.
@@ -758,7 +760,7 @@ Proof.
     + pose proof (brown1972_lemma_5_2_quaternion a (S n) Hnz) as Hstep.
       rewrite Hpow in Hstep.
       rewrite brown1972_quat_mul_zero_right in Hstep.
-      exact (IH Hstep).
+      exact (IH (eq_sym Hstep)).
 Qed.
 
 Theorem brown1972_lemma_5_8_quaternion : forall a,
@@ -1013,8 +1015,6 @@ Proof.
     reflexivity.
 Qed.
 
-Definition brown1972_quat_trace (q : CDQuat) : R := 2 * qa q.
-
 Theorem brown1972_lemma_5_13_quaternion : forall x,
   brown1972_quat_trace x = 0%R ->
   quat_mul x x = quat_scale (- quat_norm_sq x) quat_one.
@@ -1125,8 +1125,7 @@ Proof.
   induction n as [|n IH].
   - simpl. rewrite oct_mul_one_right. symmetry. apply brown1972_oct_mul_one_left.
   - simpl.
-    symmetry.
-    rewrite oct_flexible.
+    rewrite <- oct_flexible.
     rewrite IH.
     reflexivity.
 Qed.
