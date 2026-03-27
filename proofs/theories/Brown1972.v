@@ -1146,7 +1146,12 @@ Lemma brown1972_oct_nat_pow_conj : forall a n,
 Proof.
   intros a n.
   induction n as [|n IH].
-  - unfold oct_conj, brown1972_oct_one. simpl. f_equal; apply quat_conj_involution.
+  - simpl.
+    unfold oct_conj, brown1972_oct_one, quat_conj, quat_one, quat_zero, quat_neg.
+    simpl.
+    apply (f_equal2 mkOct).
+    + apply (f_equal4 mkQuat); ring.
+    + apply (f_equal4 mkQuat); ring.
   - simpl.
     rewrite oct_conj_antimorphism.
     rewrite IH.
@@ -1158,7 +1163,11 @@ Theorem brown1972_lemma_5_1_octonion : forall a n,
   brown1972_oct_zpow (oct_conj a) n.
 Proof.
   intros a [|p|p]; simpl.
-  - unfold oct_conj, brown1972_oct_one. simpl. f_equal; apply quat_conj_involution.
+  - unfold oct_conj, brown1972_oct_one, quat_conj, quat_one, quat_zero, quat_neg.
+    simpl.
+    apply (f_equal2 mkOct).
+    + apply (f_equal4 mkQuat); ring.
+    + apply (f_equal4 mkQuat); ring.
   - apply brown1972_oct_nat_pow_conj.
   - rewrite brown1972_oct_nat_pow_conj.
     rewrite brown1972_oct_inv_conj.
