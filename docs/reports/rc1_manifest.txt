@@ -1,0 +1,20 @@
+=== RC1 Artifact Manifest ===
+Anchor Commit: 6f69a59228d8160429b92e2f9e4ff9d84f5673ba
+Generated at: Fri Mar 27 02:54:34 AM UTC 2026
+---
+Path: data/output/heliosphere/full_feature_cube.csv
+Size: 26862534 bytes
+LFS OID: 96347a0c62b93b53997cb69c44167365c5a449e6af6d68493247353e547d6435
+---
+Path: data/output/heliosphere/takens_quench_scan.csv
+Size: 1758 bytes
+LFS OID: 42fd5622981c66f4d958a5fae29d7a06d5e92365dd47916a67713c527592a636
+---
+Path: data/output/heliosphere/associator_null_audit.json
+Size: 29990 bytes
+LFS OID: ff19dc85a7132197cb10f6f3122dab555717d2d148dbdf6ec9cff988c3e12401
+---
+Path: data/output/test_mms/mms/mms1_fgm_srvy_l2_2024_1_1.csv
+Size: 113394600 bytes
+LFS OID: 47eb16fc196596472add434bf8b3698b2230eb4371e00c5bde614bec9079e684
+---

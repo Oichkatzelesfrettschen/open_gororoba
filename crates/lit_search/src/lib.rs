@@ -28,8 +28,15 @@ pub mod search;
 pub mod sources;
 pub mod verify;
 
+pub use dedup::canonicalize_doi;
 pub use download::{DownloadResult, download_pdfs};
 pub use models::{Author, Paper};
 pub use novelty::{NoveltyReport, SimilarPaper, check_novelty};
-pub use search::SearchEngine;
+pub use search::{
+    ALL_SOURCE_NAMES, AUGMENT_ONLY_SOURCE_NAMES, CORE_SOURCE_NAMES, KEYED_SOURCE_NAMES,
+    MultiQueryExecutionOutcome, MultiQueryExecutionReport, OPEN_SOURCE_NAMES,
+    SEARCHABLE_SOURCE_NAMES, SOURCE_FAMILY_NAMES, SearchEngine, SearchExecutionOutcome,
+    SearchExecutionReport, SourceExecutionReport, SourceTier, normalize_source_family_name,
+    normalize_source_name, source_names_for_family, source_names_for_tier,
+};
 pub use verify::{CitationResult, VerificationReport, VerifyStatus, verify_citations};

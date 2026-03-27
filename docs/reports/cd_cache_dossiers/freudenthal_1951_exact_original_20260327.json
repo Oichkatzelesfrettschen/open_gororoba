@@ -1,0 +1,209 @@
+{
+  "generated_at_utc": "2026-03-27T03:35:22.873480557+00:00",
+  "project_id": "cayley-dickson",
+  "search_target_id": "freudenthal_1951_exact_original",
+  "crosswalk_id": "freudenthal_1951_exact_original",
+  "title": "Freudenthal 1951 exact Utrecht original",
+  "window": "1900-1999",
+  "priority": "critical",
+  "status": "holder_bound_exact_original",
+  "kind": "holder_workflow_followup",
+  "why_now": "This remains the sharpest exact octonion-era hole in the corpus.",
+  "query_seeds": [
+    "\"Oktaven, Ausnahmegruppen und Oktavengeometrie\"",
+    "\"1178680002\" Freudenthal",
+    "\"1356848117\" Freudenthal"
+  ],
+  "requested_sources": [
+    "openalex",
+    "crossref"
+  ],
+  "limit_per_query": 2,
+  "year_min": 0,
+  "report": {
+    "queries": [
+      "\"Oktaven, Ausnahmegruppen und Oktavengeometrie\"",
+      "\"1178680002\" Freudenthal",
+      "\"1356848117\" Freudenthal"
+    ],
+    "limit": 2,
+    "year_min": 0,
+    "requested_sources": [
+      "openalex",
+      "crossref"
+    ],
+    "raw_result_count": 8,
+    "deduplicated_result_count": 5,
+    "query_reports": [
+      {
+        "query": "\"Oktaven, Ausnahmegruppen und Oktavengeometrie\"",
+        "limit": 2,
+        "year_min": 0,
+        "requested_sources": [
+          "openalex",
+          "crossref"
+        ],
+        "raw_result_count": 4,
+        "deduplicated_result_count": 3,
+        "cache_hit_count": 2,
+        "source_reports": [
+          {
+            "source": "openalex",
+            "adapted_query": "\"Oktaven, Ausnahmegruppen und Oktavengeometrie\"",
+            "result_count": 2,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "crossref",
+            "adapted_query": "\"Oktaven, Ausnahmegruppen und Oktavengeometrie\"",
+            "result_count": 2,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          }
+        ]
+      },
+      {
+        "query": "\"1178680002\" Freudenthal",
+        "limit": 2,
+        "year_min": 0,
+        "requested_sources": [
+          "openalex",
+          "crossref"
+        ],
+        "raw_result_count": 2,
+        "deduplicated_result_count": 2,
+        "cache_hit_count": 2,
+        "source_reports": [
+          {
+            "source": "openalex",
+            "adapted_query": "\"1178680002\" Freudenthal",
+            "result_count": 0,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "crossref",
+            "adapted_query": "\"1178680002\" Freudenthal",
+            "result_count": 2,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          }
+        ]
+      },
+      {
+        "query": "\"1356848117\" Freudenthal",
+        "limit": 2,
+        "year_min": 0,
+        "requested_sources": [
+          "openalex",
+          "crossref"
+        ],
+        "raw_result_count": 2,
+        "deduplicated_result_count": 2,
+        "cache_hit_count": 2,
+        "source_reports": [
+          {
+            "source": "openalex",
+            "adapted_query": "\"1356848117\" Freudenthal",
+            "result_count": 0,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "crossref",
+            "adapted_query": "\"1356848117\" Freudenthal",
+            "result_count": 2,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          }
+        ]
+      }
+    ]
+  },
+  "top_hits": [
+    {
+      "rank": 1,
+      "relevance_score": 108,
+      "title": "Oktaven, Ausnahmegruppen und Oktavengeometrie",
+      "year": 1985,
+      "source": "openalex",
+      "venue": "Geometriae Dedicata",
+      "citation_count": 121,
+      "doi": "https://doi.org/10.1007/bf00233101",
+      "url": "https://openalex.org/W2024024636",
+      "pdf_url": ""
+    },
+    {
+      "rank": 2,
+      "relevance_score": 24,
+      "title": "Rezension von: Freudenthal, Lars; Freudenthal, Annette, Historische Pfade Schwäbische Alb",
+      "year": 2022,
+      "source": "crossref",
+      "venue": "Schwäbische Heimat",
+      "citation_count": 0,
+      "doi": "10.53458/sh.v73i3.4438",
+      "url": "https://doi.org/10.53458/sh.v73i3.4438",
+      "pdf_url": ""
+    },
+    {
+      "rank": 3,
+      "relevance_score": 24,
+      "title": "Wrbna und Freudenthal (Würben und Freudenthal), Rudolph Johann Nepomuk Gf. von",
+      "year": 0,
+      "source": "crossref",
+      "venue": "",
+      "citation_count": 0,
+      "doi": "10.1553/0x003d2c4b",
+      "url": "https://doi.org/10.1553/0x003d2c4b",
+      "pdf_url": ""
+    },
+    {
+      "rank": 4,
+      "relevance_score": 6,
+      "title": "Oktaven und Reduktionstheorie",
+      "year": 0,
+      "source": "crossref",
+      "venue": "",
+      "citation_count": 0,
+      "doi": "10.53846/goediss-2456",
+      "url": "https://doi.org/10.53846/goediss-2456",
+      "pdf_url": ""
+    }
+  ],
+  "stage_suggestions": [
+    {
+      "rank": 1,
+      "relevance_score": 108,
+      "paper_title": "Oktaven, Ausnahmegruppen und Oktavengeometrie",
+      "action": "stage_landing_page",
+      "candidate_url": "https://openalex.org/W2024024636",
+      "command": "cargo run -q -p gororoba_cli_data --bin human-acquire -- --repo-root '/home/eirikr/Github/open_gororoba' stage --url 'https://openalex.org/W2024024636' --source-id 'openalex' --title 'Oktaven, Ausnahmegruppen und Oktavengeometrie' --note 'search_target_id=freudenthal_1951_exact_original'",
+      "rationale": "Top dossier hit from openalex with relevance score 108 and 121 citations for queue target freudenthal_1951_exact_original."
+    },
+    {
+      "rank": 2,
+      "relevance_score": 24,
+      "paper_title": "Rezension von: Freudenthal, Lars; Freudenthal, Annette, Historische Pfade Schwäbische Alb",
+      "action": "stage_landing_page",
+      "candidate_url": "https://doi.org/10.53458/sh.v73i3.4438",
+      "command": "cargo run -q -p gororoba_cli_data --bin human-acquire -- --repo-root '/home/eirikr/Github/open_gororoba' stage --url 'https://doi.org/10.53458/sh.v73i3.4438' --source-id 'crossref' --title 'Rezension von: Freudenthal, Lars; Freudenthal, Annette, Historische Pfade Schwäbische Alb' --note 'search_target_id=freudenthal_1951_exact_original'",
+      "rationale": "Top dossier hit from crossref with relevance score 24 and 0 citations for queue target freudenthal_1951_exact_original."
+    },
+    {
+      "rank": 3,
+      "relevance_score": 24,
+      "paper_title": "Wrbna und Freudenthal (Würben und Freudenthal), Rudolph Johann Nepomuk Gf. von",
+      "action": "stage_landing_page",
+      "candidate_url": "https://doi.org/10.1553/0x003d2c4b",
+      "command": "cargo run -q -p gororoba_cli_data --bin human-acquire -- --repo-root '/home/eirikr/Github/open_gororoba' stage --url 'https://doi.org/10.1553/0x003d2c4b' --source-id 'crossref' --title 'Wrbna und Freudenthal (Würben und Freudenthal), Rudolph Johann Nepomuk Gf. von' --note 'search_target_id=freudenthal_1951_exact_original'",
+      "rationale": "Top dossier hit from crossref with relevance score 24 and 0 citations for queue target freudenthal_1951_exact_original."
+    }
+  ]
+}

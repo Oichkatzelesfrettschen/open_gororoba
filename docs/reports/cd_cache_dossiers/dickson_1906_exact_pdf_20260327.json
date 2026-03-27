@@ -1,0 +1,200 @@
+{
+  "generated_at_utc": "2026-03-27T03:35:22.859051610+00:00",
+  "project_id": "cayley-dickson",
+  "search_target_id": "dickson_1906_exact_pdf",
+  "crosswalk_id": "dickson_1906_exact_pdf",
+  "title": "Dickson 1906 exact PDF body",
+  "window": "1900-1999",
+  "priority": "critical",
+  "status": "landing_page_confirmed_pdf_click_challenged",
+  "kind": "browser_confirmed_free_pdf_lane",
+  "why_now": "Immediate dependency for the pre-1919 Dickson classification lane.",
+  "query_seeds": [
+    "\"Linear algebras in which division is always uniquely possible\"",
+    "\"S0002-9947-1906-1500755-5\"",
+    "\"Dickson\" 1906 linear algebras division uniquely possible"
+  ],
+  "requested_sources": [
+    "openalex",
+    "crossref"
+  ],
+  "limit_per_query": 2,
+  "year_min": 0,
+  "report": {
+    "queries": [
+      "\"Linear algebras in which division is always uniquely possible\"",
+      "\"S0002-9947-1906-1500755-5\"",
+      "\"Dickson\" 1906 linear algebras division uniquely possible"
+    ],
+    "limit": 2,
+    "year_min": 0,
+    "requested_sources": [
+      "openalex",
+      "crossref"
+    ],
+    "raw_result_count": 12,
+    "deduplicated_result_count": 7,
+    "query_reports": [
+      {
+        "query": "\"Linear algebras in which division is always uniquely possible\"",
+        "limit": 2,
+        "year_min": 0,
+        "requested_sources": [
+          "openalex",
+          "crossref"
+        ],
+        "raw_result_count": 4,
+        "deduplicated_result_count": 2,
+        "cache_hit_count": 2,
+        "source_reports": [
+          {
+            "source": "openalex",
+            "adapted_query": "\"Linear algebras in which division is always uniquely possible\"",
+            "result_count": 2,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "crossref",
+            "adapted_query": "\"Linear algebras in which division is always uniquely possible\"",
+            "result_count": 2,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          }
+        ]
+      },
+      {
+        "query": "\"S0002-9947-1906-1500755-5\"",
+        "limit": 2,
+        "year_min": 0,
+        "requested_sources": [
+          "openalex",
+          "crossref"
+        ],
+        "raw_result_count": 4,
+        "deduplicated_result_count": 4,
+        "cache_hit_count": 2,
+        "source_reports": [
+          {
+            "source": "openalex",
+            "adapted_query": "\"S0002-9947-1906-1500755-5\"",
+            "result_count": 2,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "crossref",
+            "adapted_query": "\"S0002-9947-1906-1500755-5\"",
+            "result_count": 2,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          }
+        ]
+      },
+      {
+        "query": "\"Dickson\" 1906 linear algebras division uniquely possible",
+        "limit": 2,
+        "year_min": 0,
+        "requested_sources": [
+          "openalex",
+          "crossref"
+        ],
+        "raw_result_count": 4,
+        "deduplicated_result_count": 4,
+        "cache_hit_count": 2,
+        "source_reports": [
+          {
+            "source": "openalex",
+            "adapted_query": "\"Dickson\" 1906 linear algebras division uniquely possible",
+            "result_count": 2,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "crossref",
+            "adapted_query": "\"Dickson\" 1906 linear algebras division uniquely possible",
+            "result_count": 2,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          }
+        ]
+      }
+    ]
+  },
+  "top_hits": [
+    {
+      "rank": 1,
+      "relevance_score": 162,
+      "title": "On commutative linear algebras in which division is always uniquely possible",
+      "year": 1906,
+      "source": "openalex",
+      "venue": "Transactions of the American Mathematical Society",
+      "citation_count": 75,
+      "doi": "https://doi.org/10.1090/s0002-9947-1906-1500764-6",
+      "url": "https://openalex.org/W2025927713",
+      "pdf_url": ""
+    },
+    {
+      "rank": 2,
+      "relevance_score": 162,
+      "title": "Linear algebras in which division is always uniquely possible",
+      "year": 1906,
+      "source": "openalex",
+      "venue": "Transactions of the American Mathematical Society",
+      "citation_count": 73,
+      "doi": "https://doi.org/10.1090/s0002-9947-1906-1500755-5",
+      "url": "https://openalex.org/W1998520828",
+      "pdf_url": ""
+    },
+    {
+      "rank": 3,
+      "relevance_score": 0,
+      "title": "Self-dual configurations and regular graphs",
+      "year": 1950,
+      "source": "openalex",
+      "venue": "Bulletin of the American Mathematical Society",
+      "citation_count": 341,
+      "doi": "https://doi.org/10.1090/s0002-9904-1950-09407-5",
+      "url": "https://openalex.org/W2083763715",
+      "pdf_url": "https://www.ams.org/bull/1950-56-05/S0002-9904-1950-09407-5/S0002-9904-1950-09407-5.pdf"
+    },
+    {
+      "rank": 4,
+      "relevance_score": 0,
+      "title": "What is Social Network Analysis?",
+      "year": 2012,
+      "source": "openalex",
+      "venue": "Bloomsbury Publishing Plc eBooks",
+      "citation_count": 279,
+      "doi": "https://doi.org/10.5040/9781849668187",
+      "url": "https://openalex.org/W1595512173",
+      "pdf_url": "https://directory.doabooks.org/handle/20.500.12854/92829"
+    }
+  ],
+  "stage_suggestions": [
+    {
+      "rank": 1,
+      "relevance_score": 162,
+      "paper_title": "On commutative linear algebras in which division is always uniquely possible",
+      "action": "stage_landing_page",
+      "candidate_url": "https://openalex.org/W2025927713",
+      "command": "cargo run -q -p gororoba_cli_data --bin human-acquire -- --repo-root '/home/eirikr/Github/open_gororoba' stage --url 'https://openalex.org/W2025927713' --source-id 'openalex' --title 'On commutative linear algebras in which division is always uniquely possible' --note 'search_target_id=dickson_1906_exact_pdf'",
+      "rationale": "Top dossier hit from openalex with relevance score 162 and 75 citations for queue target dickson_1906_exact_pdf."
+    },
+    {
+      "rank": 2,
+      "relevance_score": 162,
+      "paper_title": "Linear algebras in which division is always uniquely possible",
+      "action": "stage_landing_page",
+      "candidate_url": "https://openalex.org/W1998520828",
+      "command": "cargo run -q -p gororoba_cli_data --bin human-acquire -- --repo-root '/home/eirikr/Github/open_gororoba' stage --url 'https://openalex.org/W1998520828' --source-id 'openalex' --title 'Linear algebras in which division is always uniquely possible' --note 'search_target_id=dickson_1906_exact_pdf'",
+      "rationale": "Top dossier hit from openalex with relevance score 162 and 73 citations for queue target dickson_1906_exact_pdf."
+    }
+  ]
+}

@@ -1,0 +1,209 @@
+{
+  "generated_at_utc": "2026-03-27T03:35:22.862387303+00:00",
+  "project_id": "cayley-dickson",
+  "search_target_id": "dickson_1912_exact_pdf",
+  "crosswalk_id": "dickson_1912_exact_pdf",
+  "title": "Dickson 1912 exact PDF body",
+  "window": "1900-1999",
+  "priority": "critical",
+  "status": "landing_page_confirmed_pdf_click_challenged",
+  "kind": "browser_confirmed_free_pdf_lane",
+  "why_now": "Immediate dependency for the early Dickson prehistory of the 1919 Cayley-Dickson lane.",
+  "query_seeds": [
+    "\"Linear algebras\" Dickson 1912",
+    "\"S0002-9947-1912-1500905-3\"",
+    "\"Dickson\" 1912 \"Linear algebras\""
+  ],
+  "requested_sources": [
+    "openalex",
+    "crossref"
+  ],
+  "limit_per_query": 2,
+  "year_min": 0,
+  "report": {
+    "queries": [
+      "\"Linear algebras\" Dickson 1912",
+      "\"S0002-9947-1912-1500905-3\"",
+      "\"Dickson\" 1912 \"Linear algebras\""
+    ],
+    "limit": 2,
+    "year_min": 0,
+    "requested_sources": [
+      "openalex",
+      "crossref"
+    ],
+    "raw_result_count": 10,
+    "deduplicated_result_count": 5,
+    "query_reports": [
+      {
+        "query": "\"Linear algebras\" Dickson 1912",
+        "limit": 2,
+        "year_min": 0,
+        "requested_sources": [
+          "openalex",
+          "crossref"
+        ],
+        "raw_result_count": 4,
+        "deduplicated_result_count": 4,
+        "cache_hit_count": 2,
+        "source_reports": [
+          {
+            "source": "openalex",
+            "adapted_query": "\"Linear algebras\" Dickson 1912",
+            "result_count": 2,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "crossref",
+            "adapted_query": "\"Linear algebras\" Dickson 1912",
+            "result_count": 2,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          }
+        ]
+      },
+      {
+        "query": "\"S0002-9947-1912-1500905-3\"",
+        "limit": 2,
+        "year_min": 0,
+        "requested_sources": [
+          "openalex",
+          "crossref"
+        ],
+        "raw_result_count": 2,
+        "deduplicated_result_count": 2,
+        "cache_hit_count": 2,
+        "source_reports": [
+          {
+            "source": "openalex",
+            "adapted_query": "\"S0002-9947-1912-1500905-3\"",
+            "result_count": 0,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "crossref",
+            "adapted_query": "\"S0002-9947-1912-1500905-3\"",
+            "result_count": 2,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          }
+        ]
+      },
+      {
+        "query": "\"Dickson\" 1912 \"Linear algebras\"",
+        "limit": 2,
+        "year_min": 0,
+        "requested_sources": [
+          "openalex",
+          "crossref"
+        ],
+        "raw_result_count": 4,
+        "deduplicated_result_count": 4,
+        "cache_hit_count": 2,
+        "source_reports": [
+          {
+            "source": "openalex",
+            "adapted_query": "\"Dickson\" 1912 \"Linear algebras\"",
+            "result_count": 2,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "crossref",
+            "adapted_query": "\"Dickson\" 1912 \"Linear algebras\"",
+            "result_count": 2,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          }
+        ]
+      }
+    ]
+  },
+  "top_hits": [
+    {
+      "rank": 1,
+      "relevance_score": 24,
+      "title": "Some results in the theory of linear non-associative algebras",
+      "year": 1944,
+      "source": "openalex",
+      "venue": "Transactions of the American Mathematical Society",
+      "citation_count": 74,
+      "doi": "https://doi.org/10.1090/s0002-9947-1944-0011083-5",
+      "url": "https://openalex.org/W2022821512",
+      "pdf_url": "https://www.ams.org/tran/1944-056-00/S0002-9947-1944-0011083-5/S0002-9947-1944-0011083-5.pdf"
+    },
+    {
+      "rank": 2,
+      "relevance_score": 24,
+      "title": "Linear algebras with associativity not assumed",
+      "year": 1935,
+      "source": "crossref",
+      "venue": "Duke Mathematical Journal",
+      "citation_count": 40,
+      "doi": "10.1215/s0012-7094-35-00112-0",
+      "url": "https://doi.org/10.1215/s0012-7094-35-00112-0",
+      "pdf_url": ""
+    },
+    {
+      "rank": 3,
+      "relevance_score": 24,
+      "title": "Linear algebras",
+      "year": 1912,
+      "source": "crossref",
+      "venue": "Transactions of the American Mathematical Society",
+      "citation_count": 10,
+      "doi": "10.1090/s0002-9947-1912-1500905-3",
+      "url": "https://doi.org/10.1090/s0002-9947-1912-1500905-3",
+      "pdf_url": ""
+    },
+    {
+      "rank": 4,
+      "relevance_score": 0,
+      "title": "The Moore of the Moore-Penrose inverse",
+      "year": 2002,
+      "source": "openalex",
+      "venue": "Electronic Journal of Linear Algebra",
+      "citation_count": 49,
+      "doi": "https://doi.org/10.13001/1081-3810.1083",
+      "url": "https://openalex.org/W2141669160",
+      "pdf_url": "https://journals.uwyo.edu/index.php/ela/article/download/167/167"
+    }
+  ],
+  "stage_suggestions": [
+    {
+      "rank": 1,
+      "relevance_score": 24,
+      "paper_title": "Some results in the theory of linear non-associative algebras",
+      "action": "stage_direct_pdf",
+      "candidate_url": "https://www.ams.org/tran/1944-056-00/S0002-9947-1944-0011083-5/S0002-9947-1944-0011083-5.pdf",
+      "command": "cargo run -q -p gororoba_cli_data --bin human-acquire -- --repo-root '/home/eirikr/Github/open_gororoba' stage --url 'https://www.ams.org/tran/1944-056-00/S0002-9947-1944-0011083-5/S0002-9947-1944-0011083-5.pdf' --source-id 'openalex' --title 'Some results in the theory of linear non-associative algebras' --note 'search_target_id=dickson_1912_exact_pdf'",
+      "rationale": "Top dossier hit from openalex with relevance score 24 and 74 citations for queue target dickson_1912_exact_pdf."
+    },
+    {
+      "rank": 2,
+      "relevance_score": 24,
+      "paper_title": "Linear algebras with associativity not assumed",
+      "action": "stage_landing_page",
+      "candidate_url": "https://doi.org/10.1215/s0012-7094-35-00112-0",
+      "command": "cargo run -q -p gororoba_cli_data --bin human-acquire -- --repo-root '/home/eirikr/Github/open_gororoba' stage --url 'https://doi.org/10.1215/s0012-7094-35-00112-0' --source-id 'crossref' --title 'Linear algebras with associativity not assumed' --note 'search_target_id=dickson_1912_exact_pdf'",
+      "rationale": "Top dossier hit from crossref with relevance score 24 and 40 citations for queue target dickson_1912_exact_pdf."
+    },
+    {
+      "rank": 3,
+      "relevance_score": 24,
+      "paper_title": "Linear algebras",
+      "action": "stage_landing_page",
+      "candidate_url": "https://doi.org/10.1090/s0002-9947-1912-1500905-3",
+      "command": "cargo run -q -p gororoba_cli_data --bin human-acquire -- --repo-root '/home/eirikr/Github/open_gororoba' stage --url 'https://doi.org/10.1090/s0002-9947-1912-1500905-3' --source-id 'crossref' --title 'Linear algebras' --note 'search_target_id=dickson_1912_exact_pdf'",
+      "rationale": "Top dossier hit from crossref with relevance score 24 and 10 citations for queue target dickson_1912_exact_pdf."
+    }
+  ]
+}

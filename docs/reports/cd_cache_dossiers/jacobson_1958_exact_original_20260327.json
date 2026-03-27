@@ -1,0 +1,191 @@
+{
+  "generated_at_utc": "2026-03-27T03:35:22.878510687+00:00",
+  "project_id": "cayley-dickson",
+  "search_target_id": "jacobson_1958_exact_original",
+  "crosswalk_id": "jacobson_1958_exact_original",
+  "title": "Jacobson 1958 exact original",
+  "window": "1900-1999",
+  "priority": "critical",
+  "status": "delivery_workflow_in_progress",
+  "kind": "article_or_chapter_delivery_followup",
+  "why_now": "This remains the sharpest exact composition-algebra hole in the corpus.",
+  "query_seeds": [
+    "\"Composition Algebras and Their Automorphisms\"",
+    "\"10.1007/BF02854388\"",
+    "\"0817634118\" Jacobson volume 2"
+  ],
+  "requested_sources": [
+    "openalex",
+    "crossref"
+  ],
+  "limit_per_query": 2,
+  "year_min": 0,
+  "report": {
+    "queries": [
+      "\"Composition Algebras and Their Automorphisms\"",
+      "\"10.1007/BF02854388\"",
+      "\"0817634118\" Jacobson volume 2"
+    ],
+    "limit": 2,
+    "year_min": 0,
+    "requested_sources": [
+      "openalex",
+      "crossref"
+    ],
+    "raw_result_count": 10,
+    "deduplicated_result_count": 6,
+    "query_reports": [
+      {
+        "query": "\"Composition Algebras and Their Automorphisms\"",
+        "limit": 2,
+        "year_min": 0,
+        "requested_sources": [
+          "openalex",
+          "crossref"
+        ],
+        "raw_result_count": 4,
+        "deduplicated_result_count": 1,
+        "cache_hit_count": 2,
+        "source_reports": [
+          {
+            "source": "openalex",
+            "adapted_query": "\"Composition Algebras and Their Automorphisms\"",
+            "result_count": 2,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "crossref",
+            "adapted_query": "\"Composition Algebras and Their Automorphisms\"",
+            "result_count": 2,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          }
+        ]
+      },
+      {
+        "query": "\"10.1007/BF02854388\"",
+        "limit": 2,
+        "year_min": 0,
+        "requested_sources": [
+          "openalex",
+          "crossref"
+        ],
+        "raw_result_count": 4,
+        "deduplicated_result_count": 4,
+        "cache_hit_count": 2,
+        "source_reports": [
+          {
+            "source": "openalex",
+            "adapted_query": "\"10.1007/BF02854388\"",
+            "result_count": 2,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "crossref",
+            "adapted_query": "\"10.1007/BF02854388\"",
+            "result_count": 2,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          }
+        ]
+      },
+      {
+        "query": "\"0817634118\" Jacobson volume 2",
+        "limit": 2,
+        "year_min": 0,
+        "requested_sources": [
+          "openalex",
+          "crossref"
+        ],
+        "raw_result_count": 2,
+        "deduplicated_result_count": 2,
+        "cache_hit_count": 2,
+        "source_reports": [
+          {
+            "source": "openalex",
+            "adapted_query": "\"0817634118\" Jacobson volume 2",
+            "result_count": 0,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "crossref",
+            "adapted_query": "\"0817634118\" Jacobson volume 2",
+            "result_count": 2,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          }
+        ]
+      }
+    ]
+  },
+  "top_hits": [
+    {
+      "rank": 1,
+      "relevance_score": 114,
+      "title": "Composition Algebras and Their Automorphisms",
+      "year": 1989,
+      "source": "openalex",
+      "venue": "Birkhäuser Boston eBooks",
+      "citation_count": 177,
+      "doi": "https://doi.org/10.1007/978-1-4612-3694-8_24",
+      "url": "https://openalex.org/W2046009902",
+      "pdf_url": ""
+    },
+    {
+      "rank": 2,
+      "relevance_score": 18,
+      "title": "Nathan Jacobson Collected Mathematical Papers",
+      "year": 1989,
+      "source": "crossref",
+      "venue": "",
+      "citation_count": 0,
+      "doi": "10.1007/978-1-4612-3694-8",
+      "url": "https://doi.org/10.1007/978-1-4612-3694-8",
+      "pdf_url": ""
+    },
+    {
+      "rank": 3,
+      "relevance_score": 6,
+      "title": "Operator Commutativity in Jordan algebras",
+      "year": 1989,
+      "source": "crossref",
+      "venue": "Nathan Jacobson Collected Mathematical Papers",
+      "citation_count": 0,
+      "doi": "10.1007/978-1-4612-3694-8_13",
+      "url": "https://doi.org/10.1007/978-1-4612-3694-8_13",
+      "pdf_url": ""
+    },
+    {
+      "rank": 4,
+      "relevance_score": 0,
+      "title": "Algebraic cycles and functorial lifts from G2 toPGSp6",
+      "year": 2025,
+      "source": "openalex",
+      "venue": "Algebra & Number Theory",
+      "citation_count": 2,
+      "doi": "https://doi.org/10.2140/ant.2025.19.551",
+      "url": "https://openalex.org/W4377197553",
+      "pdf_url": "https://msp.org/ant/2025/19-3/ant-v19-n3-p05-s.pdf"
+    }
+  ],
+  "stage_suggestions": [
+    {
+      "rank": 1,
+      "relevance_score": 114,
+      "paper_title": "Composition Algebras and Their Automorphisms",
+      "action": "stage_landing_page",
+      "candidate_url": "https://openalex.org/W2046009902",
+      "command": "cargo run -q -p gororoba_cli_data --bin human-acquire -- --repo-root '/home/eirikr/Github/open_gororoba' stage --url 'https://openalex.org/W2046009902' --source-id 'openalex' --title 'Composition Algebras and Their Automorphisms' --note 'search_target_id=jacobson_1958_exact_original'",
+      "rationale": "Top dossier hit from openalex with relevance score 114 and 177 citations for queue target jacobson_1958_exact_original."
+    }
+  ]
+}
