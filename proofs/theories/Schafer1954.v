@@ -700,6 +700,24 @@ Proof.
   destruct Htr; cbn [s54_basis7_oct]; s54_close_eq52_basis_case.
 Qed.
 
+Lemma schafer1954_eq52_basis_mul_cyclic_l :
+  forall i j k : Schafer1954Basis7,
+    schafer1954_eq52_cayley_triple i j k ->
+    oct_mul (s54_basis7_oct j) (s54_basis7_oct k) = s54_basis7_oct i.
+Proof.
+  intros i j k Htr.
+  destruct Htr; cbn [s54_basis7_oct]; s54_close_eq52_basis_case.
+Qed.
+
+Lemma schafer1954_eq52_basis_mul_cyclic_r :
+  forall i j k : Schafer1954Basis7,
+    schafer1954_eq52_cayley_triple i j k ->
+    oct_mul (s54_basis7_oct k) (s54_basis7_oct i) = s54_basis7_oct j.
+Proof.
+  intros i j k Htr.
+  destruct Htr; cbn [s54_basis7_oct]; s54_close_eq52_basis_case.
+Qed.
+
 Section Schafer1954Theorem4Concrete.
   Variable U : Type.
   Variable IsDerivation : (U -> U) -> Prop.
@@ -2288,6 +2306,171 @@ Lemma s54_concrete_eq50_formula_concrete :
 Proof.
   intros mu B Hmu i.
   exact (Hmu i).
+Qed.
+
+Ltac s54_invert_oct_equalities :=
+  repeat match goal with
+  | H : mkOct _ _ = mkOct _ _ |- _ =>
+      inversion H; clear H; subst
+  | H : mkQuat _ _ _ _ = mkQuat _ _ _ _ |- _ =>
+      inversion H; clear H; subst
+  end.
+
+Theorem s54_residual_block_C_basis_zero_direct :
+  forall D : CDSed -> CDSed,
+    Schafer1954IsSedenionDerivation D ->
+    forall i : Schafer1954Basis7,
+      s54_block_C (s54_sed_residual D) (s54_basis7_oct i) = oct_zero.
+Proof.
+  intros D HD i.
+  remember (s54_block_C (s54_sed_residual D) (s54_basis7_oct s54_b1)) as C1 eqn:HC1.
+  remember (s54_block_C (s54_sed_residual D) (s54_basis7_oct s54_b2)) as C2 eqn:HC2.
+  remember (s54_block_C (s54_sed_residual D) (s54_basis7_oct s54_b3)) as C3 eqn:HC3.
+  remember (s54_block_C (s54_sed_residual D) (s54_basis7_oct s54_b4)) as C4 eqn:HC4.
+  remember (s54_block_C (s54_sed_residual D) (s54_basis7_oct s54_b5)) as C5 eqn:HC5.
+  remember (s54_block_C (s54_sed_residual D) (s54_basis7_oct s54_b6)) as C6 eqn:HC6.
+  remember (s54_block_C (s54_sed_residual D) (s54_basis7_oct s54_b7)) as C7 eqn:HC7.
+  pose proof
+    (s54_residual_block_C_twisted_derivation
+       D HD (s54_basis7_oct s54_b1) (s54_basis7_oct s54_b2)) as H12.
+  pose proof
+    (s54_residual_block_C_twisted_derivation
+       D HD (s54_basis7_oct s54_b2) (s54_basis7_oct s54_b3)) as H23.
+  pose proof
+    (s54_residual_block_C_twisted_derivation
+       D HD (s54_basis7_oct s54_b3) (s54_basis7_oct s54_b1)) as H31.
+  pose proof
+    (s54_residual_block_C_twisted_derivation
+       D HD (s54_basis7_oct s54_b1) (s54_basis7_oct s54_b4)) as H14.
+  pose proof
+    (s54_residual_block_C_twisted_derivation
+       D HD (s54_basis7_oct s54_b4) (s54_basis7_oct s54_b5)) as H45.
+  pose proof
+    (s54_residual_block_C_twisted_derivation
+       D HD (s54_basis7_oct s54_b5) (s54_basis7_oct s54_b1)) as H51.
+  pose proof
+    (s54_residual_block_C_twisted_derivation
+       D HD (s54_basis7_oct s54_b1) (s54_basis7_oct s54_b7)) as H17.
+  pose proof
+    (s54_residual_block_C_twisted_derivation
+       D HD (s54_basis7_oct s54_b7) (s54_basis7_oct s54_b6)) as H76.
+  pose proof
+    (s54_residual_block_C_twisted_derivation
+       D HD (s54_basis7_oct s54_b6) (s54_basis7_oct s54_b1)) as H61.
+  pose proof
+    (s54_residual_block_C_twisted_derivation
+       D HD (s54_basis7_oct s54_b2) (s54_basis7_oct s54_b4)) as H24.
+  pose proof
+    (s54_residual_block_C_twisted_derivation
+       D HD (s54_basis7_oct s54_b4) (s54_basis7_oct s54_b6)) as H46.
+  pose proof
+    (s54_residual_block_C_twisted_derivation
+       D HD (s54_basis7_oct s54_b6) (s54_basis7_oct s54_b2)) as H62.
+  pose proof
+    (s54_residual_block_C_twisted_derivation
+       D HD (s54_basis7_oct s54_b2) (s54_basis7_oct s54_b5)) as H25.
+  pose proof
+    (s54_residual_block_C_twisted_derivation
+       D HD (s54_basis7_oct s54_b5) (s54_basis7_oct s54_b7)) as H57.
+  pose proof
+    (s54_residual_block_C_twisted_derivation
+       D HD (s54_basis7_oct s54_b7) (s54_basis7_oct s54_b2)) as H72.
+  pose proof
+    (s54_residual_block_C_twisted_derivation
+       D HD (s54_basis7_oct s54_b3) (s54_basis7_oct s54_b4)) as H34.
+  pose proof
+    (s54_residual_block_C_twisted_derivation
+       D HD (s54_basis7_oct s54_b4) (s54_basis7_oct s54_b7)) as H47.
+  pose proof
+    (s54_residual_block_C_twisted_derivation
+       D HD (s54_basis7_oct s54_b7) (s54_basis7_oct s54_b3)) as H73.
+  pose proof
+    (s54_residual_block_C_twisted_derivation
+       D HD (s54_basis7_oct s54_b3) (s54_basis7_oct s54_b6)) as H36.
+  pose proof
+    (s54_residual_block_C_twisted_derivation
+       D HD (s54_basis7_oct s54_b6) (s54_basis7_oct s54_b5)) as H65.
+  pose proof
+    (s54_residual_block_C_twisted_derivation
+       D HD (s54_basis7_oct s54_b5) (s54_basis7_oct s54_b3)) as H53.
+  rewrite (schafer1954_eq52_basis_mul s54_b1 s54_b2 s54_b3 s54_eq52_123) in H12.
+  rewrite (schafer1954_eq52_basis_mul_cyclic_l s54_b1 s54_b2 s54_b3 s54_eq52_123) in H23.
+  rewrite (schafer1954_eq52_basis_mul_cyclic_r s54_b1 s54_b2 s54_b3 s54_eq52_123) in H31.
+  rewrite (schafer1954_eq52_basis_mul s54_b1 s54_b4 s54_b5 s54_eq52_145) in H14.
+  rewrite (schafer1954_eq52_basis_mul_cyclic_l s54_b1 s54_b4 s54_b5 s54_eq52_145) in H45.
+  rewrite (schafer1954_eq52_basis_mul_cyclic_r s54_b1 s54_b4 s54_b5 s54_eq52_145) in H51.
+  rewrite (schafer1954_eq52_basis_mul s54_b1 s54_b7 s54_b6 s54_eq52_167) in H17.
+  rewrite (schafer1954_eq52_basis_mul_cyclic_l s54_b1 s54_b7 s54_b6 s54_eq52_167) in H76.
+  rewrite (schafer1954_eq52_basis_mul_cyclic_r s54_b1 s54_b7 s54_b6 s54_eq52_167) in H61.
+  rewrite (schafer1954_eq52_basis_mul s54_b2 s54_b4 s54_b6 s54_eq52_246) in H24.
+  rewrite (schafer1954_eq52_basis_mul_cyclic_l s54_b2 s54_b4 s54_b6 s54_eq52_246) in H46.
+  rewrite (schafer1954_eq52_basis_mul_cyclic_r s54_b2 s54_b4 s54_b6 s54_eq52_246) in H62.
+  rewrite (schafer1954_eq52_basis_mul s54_b2 s54_b5 s54_b7 s54_eq52_257) in H25.
+  rewrite (schafer1954_eq52_basis_mul_cyclic_l s54_b2 s54_b5 s54_b7 s54_eq52_257) in H57.
+  rewrite (schafer1954_eq52_basis_mul_cyclic_r s54_b2 s54_b5 s54_b7 s54_eq52_257) in H72.
+  rewrite (schafer1954_eq52_basis_mul s54_b3 s54_b4 s54_b7 s54_eq52_347) in H34.
+  rewrite (schafer1954_eq52_basis_mul_cyclic_l s54_b3 s54_b4 s54_b7 s54_eq52_347) in H47.
+  rewrite (schafer1954_eq52_basis_mul_cyclic_r s54_b3 s54_b4 s54_b7 s54_eq52_347) in H73.
+  rewrite (schafer1954_eq52_basis_mul s54_b3 s54_b6 s54_b5 s54_eq52_356) in H36.
+  rewrite (schafer1954_eq52_basis_mul_cyclic_l s54_b3 s54_b6 s54_b5 s54_eq52_356) in H65.
+  rewrite (schafer1954_eq52_basis_mul_cyclic_r s54_b3 s54_b6 s54_b5 s54_eq52_356) in H53.
+  repeat rewrite schafer1954_basis7_conj_neg in
+    H12, H23, H31, H14, H45, H51, H17, H76, H61,
+    H24, H46, H62, H25, H57, H72, H34, H47, H73,
+    H36, H65, H53.
+  repeat rewrite <- HC1 in H23, H45, H76.
+  repeat rewrite <- HC2 in H31, H46, H57.
+  repeat rewrite <- HC3 in H12, H47, H65.
+  repeat rewrite <- HC4 in H51, H62, H73.
+  repeat rewrite <- HC5 in H14, H72, H36.
+  repeat rewrite <- HC6 in H17, H24, H53.
+  repeat rewrite <- HC7 in H61, H25, H34.
+  destruct C1 as [[c10 c11 c12 c13] [c14 c15 c16 c17]].
+  destruct C2 as [[c20 c21 c22 c23] [c24 c25 c26 c27]].
+  destruct C3 as [[c30 c31 c32 c33] [c34 c35 c36 c37]].
+  destruct C4 as [[c40 c41 c42 c43] [c44 c45 c46 c47]].
+  destruct C5 as [[c50 c51 c52 c53] [c54 c55 c56 c57]].
+  destruct C6 as [[c60 c61 c62 c63] [c64 c65 c66 c67]].
+  destruct C7 as [[c70 c71 c72 c73] [c74 c75 c76 c77]].
+  cbv [oct_add oct_mul oct_neg oct_conj oct_zero oct_e
+       oct_lo oct_hi quat_add quat_mul quat_neg quat_conj
+       qa qb qc qd quat_zero quat_one] in
+    H12, H23, H31, H14, H45, H51, H17, H76, H61,
+    H24, H46, H62, H25, H57, H72, H34, H47, H73,
+    H36, H65, H53 |- *.
+  repeat match goal with
+  | H : mkOct _ _ = mkOct _ _ |- _ =>
+      inversion H; clear H
+  | H : mkQuat _ _ _ _ = mkQuat _ _ _ _ |- _ =>
+      inversion H; clear H
+  end.
+  cbv [s54_basis7_oct oct_e oct_lo oct_hi qa qb qc qd quat_zero quat_one] in *.
+  repeat match goal with
+  | H : _ |- _ => ring_simplify in H
+  end.
+  destruct i;
+    [rewrite <- HC1 | rewrite <- HC2 | rewrite <- HC3
+    |rewrite <- HC4 | rewrite <- HC5 | rewrite <- HC6 | rewrite <- HC7];
+    clear HC1 HC2 HC3 HC4 HC5 HC6 HC7;
+    cbv [oct_zero];
+    apply (f_equal2 mkOct);
+    apply (f_equal4 mkQuat);
+    nra.
+Qed.
+
+Theorem s54_residual_eq50_builder_zero :
+  forall D : CDSed -> CDSed,
+    Schafer1954IsSedenionDerivation D ->
+    { mu : Schafer1954Basis7 -> R &
+      forall i : Schafer1954Basis7,
+        s54_block_C (s54_sed_residual D) (s54_basis7_oct i) =
+        oct_scale (mu i) (s54_basis7_oct i) }.
+Proof.
+  intros D HD.
+  exists (fun _ : Schafer1954Basis7 => 0%R).
+  intro i.
+  rewrite (s54_residual_block_C_basis_zero_direct D HD i).
+  apply oct_scale_zero.
 Qed.
 
 Theorem s54_residual_block_C_eq51_of_eq50 :
