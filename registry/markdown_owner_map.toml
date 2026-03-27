@@ -12,7 +12,7 @@ updated = "2026-03-25"
 authoritative = true
 status = "active"
 status_token = "ACTIVE"
-document_count = 131
+document_count = 164
 
 [[owner]]
 path = "README.md"
@@ -802,6 +802,204 @@ removal_reason = ""
 
 [[owner]]
 path = "reports/acquisition_sessions/cayley_dickson_dickson_1935_exact_pdf_projecteuclid_org_download/checklist.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/reports/POST_RC1_32D_EVIDENCE_NOTE.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/acquisition_sessions/cayley_dickson_freudenthal_1951_exact_original_cir_nii_ac_jp_1570291224321248768_katalog_ub_uni_leipzig_de_0_1356848117_site_child_01/checklist.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/acquisition_sessions/cayley_dickson_freudenthal_1951_exact_original_cir_nii_ac_jp_1570291224321248768_ndlsearch_ndl_go_jp_search/checklist.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/acquisition_sessions/cayley_dickson_freudenthal_1951_exact_original_www_mathnet_ru_mat7/checklist.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/acquisition_sessions/cayley_dickson_jacobson_1958_exact_original_cir_nii_ac_jp_1361137044884354944/checklist.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/acquisition_sessions/cayley_dickson_jacobson_1958_exact_original_cir_nii_ac_jp_1361137044884354944_katalogplus_ub_uni_bielefeld_de_991023901549706442/checklist.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/acquisition_sessions/cayley_dickson_jacobson_1958_exact_original_cir_nii_ac_jp_1361137044884354944_search_subito_doc_de_vufind/checklist.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/acquisition_sessions/cayley_dickson_jacobson_1958_exact_original_cir_nii_ac_jp_1361137044884354944_search_subito_doc_de_vufind_www_subito_doc_de_details/checklist.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/acquisition_sessions/cayley_dickson_jacobson_1958_exact_original_cir_nii_ac_jp_1361137044884354944_search_subito_doc_de_vufind_www_subito_doc_de_details_www_subito_doc_de_login/checklist.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/acquisition_sessions/cayley_dickson_jacobson_1958_exact_original_cir_nii_ac_jp_1361137044884354944_search_subito_doc_de_vufind_www_subito_doc_de_details_www_subito_doc_de_start/checklist.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/acquisition_sessions/cayley_dickson_jacobson_1958_exact_original_cir_nii_ac_jp_1361137044884354944_www_ub_uni_paderborn_de_dokumentlieferdienste/checklist.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/acquisition_sessions/cayley_dickson_jacobson_1958_exact_original_cir_nii_ac_jp_1361137044884354944_www_ub_uni_paderborn_de_dokumentlieferdienste_site_child_01/checklist.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/acquisition_sessions/cayley_dickson_jacobson_1958_exact_original_link_springer_com_978_1_4612_3694_8_24/checklist.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/browser_profiles/ams_1906_edge/Edge Wallet/128.18367.18366.1/json/wallet/README.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/browser_profiles/ams_1912_edge/Edge Wallet/128.18367.18366.1/json/wallet/README.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/reports/cd_blocker_packets/dickson_1935_catalog_browser_packet_20260327.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/reports/cd_blocker_packets/freudenthal_1951_holder_followup_actions_20260327.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/reports/cd_blocker_packets/freudenthal_1951_holder_packet_20260327.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/reports/cd_blocker_packets/jacobson_1958_delivery_followup_actions_20260327.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/reports/cd_blocker_packets/jacobson_1958_delivery_packet_20260327.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/acquisition_sessions/cayley_dickson_dickson_1935_exact_pdf_catalog_hathitrust_org_home/checklist.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/acquisition_sessions/cayley_dickson_dickson_1935_exact_pdf_search_worldcat_org_search/checklist.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/acquisition_sessions/cayley_dickson_dickson_1935_exact_pdf_www_semanticscholar_org_fd3d64c4d98c38ba5aab882abab1c29ee57bf94f_celebratio_org_79/checklist.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/acquisition_sessions/cayley_dickson_dickson_1935_exact_pdf_www_semanticscholar_org_fd3d64c4d98c38ba5aab882abab1c29ee57bf94f_celebratio_org_80/checklist.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/acquisition_sessions/cayley_dickson_dickson_1935_exact_pdf_www_semanticscholar_org_fd3d64c4d98c38ba5aab882abab1c29ee57bf94f/checklist.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/acquisition_sessions/cayley_dickson_dickson_1935_exact_pdf_www_semanticscholar_org_fd3d64c4d98c38ba5aab882abab1c29ee57bf94f_doi_org_s0012_7094_35_00112_0/checklist.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/acquisition_sessions/cayley_dickson_dickson_1935_exact_pdf_www_semanticscholar_org_fd3d64c4d98c38ba5aab882abab1c29ee57bf94f_projecteuclid_org_s0012_7094_35_00112_0_short/checklist.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/acquisition_sessions/cayley_dickson_dickson_1935_exact_pdf_www_semanticscholar_org_fd3d64c4d98c38ba5aab882abab1c29ee57bf94f_projecteuclid_org_s0012_7094_35_00112_0_short_projecteuclid_org_1077488971/checklist.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/acquisition_sessions/cayley_dickson_dickson_1935_exact_pdf_www_semanticscholar_org_fd3d64c4d98c38ba5aab882abab1c29ee57bf94f_projecteuclid_org_s0012_7094_35_00112_0_short_projecteuclid_org_previewfirstpage/checklist.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/acquisition_sessions/cayley_dickson_freudenthal_1951_exact_original_cir_nii_ac_jp_1570291224321248768/checklist.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/acquisition_sessions/cayley_dickson_freudenthal_1951_exact_original_cir_nii_ac_jp_1570291224321248768_infomath_bib_koha_mpg_de_opac_detail_pl/checklist.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/acquisition_sessions/cayley_dickson_freudenthal_1951_exact_original_cir_nii_ac_jp_1570291224321248768_katalog_ub_uni_heidelberg_de_65684364/checklist.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/acquisition_sessions/cayley_dickson_freudenthal_1951_exact_original_cir_nii_ac_jp_1570291224321248768_katalog_ub_uni_leipzig_de_0_1356848117/checklist.md"
 owner_group = "project"
 removal_status = "active"
 removal_reason = ""

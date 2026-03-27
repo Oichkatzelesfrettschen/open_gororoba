@@ -10561,3 +10561,50 @@ where_stated = "docs/reports/RC1_EVIDENCE_NOTE.md (Section 1 sensitivity), data/
 last_verified = "2026-03-27"
 formal_proof = ""
 status_note = "RC1 tightening Phase 1 sensitivity. Demonstrates that latitude coverage (Ulysses) and temporal depth (outer2001 window) are orthogonal ablation axes."
+
+# ---- Post-RC1 32D + Densification Tranche (2026-03-27) ----
+
+[[claim]]
+id = "C-1552"
+status = "Verified"
+statement = "Densified 32D quench map resolves the heliospheric quench transition in 87 bins covering 2.5-167.5 AU: inner plateau at mean ~10 (r < 107 AU), steep 45x descent over 107-122 AU, ISM floor at ~0.02 (r > 127 AU). The quench front aligns with the heliopause (~120 AU), not the termination shock (~84-94 AU). Verified via leave-Voyager-2-out and leave-Ulysses-out invariance tests."
+where_stated = "docs/reports/POST_RC1_32D_EVIDENCE_NOTE.md, data/output/heliosphere/ablations/quench_scan_densified_32d.csv"
+last_verified = "2026-03-27"
+formal_proof = ""
+status_note = "Post-RC1 densified 32D. 632913 embedded samples from 1.15M-row cube. Quench shape survives leave-one-out with up to 40% magnitude shift at boundary bins but preserved transition structure."
+
+[[claim]]
+id = "C-1553"
+status = "Verified"
+statement = "Inner-heliosphere 32D signal (1 AU, all near-Earth missions) is primarily spectral autocorrelation, not genuine nonlinear phase geometry. Phase-randomized null ratio = 0.99 for OMNI, and block-shuffle ratio approaches 1.0 as block size K increases (0.87 at K=5, 0.93 at K=10, 0.96 at K=20, 0.99 at K=50). The 32D associator at 1 AU is almost entirely explained by B-field power spectrum shape."
+where_stated = "docs/reports/POST_RC1_32D_EVIDENCE_NOTE.md, data/output/heliosphere/ablations/block_size_sensitivity_32d.csv"
+last_verified = "2026-03-27"
+formal_proof = ""
+status_note = "Post-RC1 richer null analysis. 4 null families: temporal-shuffle (harsh), channel-permutation (harsh), block-shuffle (moderate, K-parameterized), phase-randomized (spectral). Block-size sweep K=5,10,20,50 closes the sensitivity caveat."
+
+[[claim]]
+id = "C-1554"
+status = "Provisional"
+statement = "Voyager 2 heliosheath (110-125 AU) is the only mission classified GENUINE_NONLINEAR under the 4-family null suite: phase-randomized ratio = 0.929, block-shuffle ratio = 0.809 (densified per-mission audit). Block-size sensitivity STRENGTHENS with larger K (ratio increases from 1.09 at K=5 to 1.53 at K=50), confirming genuine long-range nonlinear temporal geometry beyond spectral autocorrelation."
+where_stated = "docs/reports/POST_RC1_32D_EVIDENCE_NOTE.md, data/output/heliosphere/ablations/spectral_excess_by_mission_32d.csv"
+last_verified = "2026-03-27"
+formal_proof = ""
+status_note = "Provisional: single-trajectory evidence (Voyager 2 only, mission_diversity=1 at heliosheath distances). No independent cross-mission confirmation at the same heliocentric distances. 32D is preferred working embedding, not canonical claim surface."
+
+[[claim]]
+id = "C-1555"
+status = "Verified"
+statement = "Fast-wind (v_sw > 550 km/s) regime conditioning produces 2-4x amplification of the 32D associator at 27-82 AU relative to slow wind, with the strongest signal at 82.5 AU (fast=68.2, slow=15.8, ratio=4.33). At 1 AU, fast/slow ratio is 1.01 (no discrimination). The fast-wind amplification is consistent with Alfvenic turbulence carrying nonlinear phase coupling (McComas et al. 2000)."
+where_stated = "docs/reports/POST_RC1_32D_EVIDENCE_NOTE.md, data/output/heliosphere/ablations/quench_scan_densified_32d_fast_wind.csv"
+last_verified = "2026-03-27"
+formal_proof = ""
+status_note = "Post-RC1 regime conditioning. Fast-wind tranche is Ulysses-heavy (68K/82K rows). Leave-Ulysses-out on fast wind leaves 14K rows with thinner coverage."
+
+[[claim]]
+id = "C-1556"
+status = "Verified"
+statement = "Mixed magnetic+plasma 32D embedding (4 steps x 8 channels: Bx,By,Bz,dB/B,n_p,v_sw,T_p,v_A) does not significantly lift the inner-heliosphere signal beyond magnetic-only 32D (mixed/magnetic ratio 0.76-1.02). The mixed embedding is uninformative for the outer heliosphere because Voyager plasma coverage drops out at heliosheath distances (Voyager 2: 12% eligible, Voyager 1: 2.1% eligible). Documented non-result: magnetic-only remains the right tool for r > 30 AU."
+where_stated = "docs/reports/POST_RC1_32D_EVIDENCE_NOTE.md, data/output/heliosphere/ablations/magnetic_plasma_takens_32d.csv"
+last_verified = "2026-03-27"
+formal_proof = ""
+status_note = "Post-RC1 mixed embedding with strict missingness policy. No zero-fill. Explicit eligibility mask per mission/product."
