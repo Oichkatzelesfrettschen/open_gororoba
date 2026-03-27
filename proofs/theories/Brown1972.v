@@ -803,6 +803,47 @@ Proof.
     reflexivity.
 Qed.
 
+Definition brown1972_quat_trace (q : CDQuat) : R := 2 * qa q.
+
+Theorem brown1972_lemma_5_13_quaternion : forall x,
+  brown1972_quat_trace x = 0%R ->
+  quat_mul x x = quat_scale (- quat_norm_sq x) quat_one.
+Proof.
+  intros x Htr.
+  destruct x as [a b c d].
+  unfold brown1972_quat_trace in Htr.
+  simpl in Htr.
+  apply quat_imaginary_square.
+  simpl.
+  nra.
+Qed.
+
+Theorem brown1972_lemma_5_14_quaternion : forall a b c,
+  quat_mul (quat_assoc a b c) (quat_assoc a b c) =
+  quat_scale (- quat_norm_sq (quat_assoc a b c)) quat_one.
+Proof.
+  intros a b c.
+  rewrite quat_assoc_zero.
+  unfold quat_mul, quat_scale, quat_norm_sq, quat_zero, quat_one.
+  simpl.
+  apply (f_equal4 mkQuat); ring.
+Qed.
+
+Theorem brown1972_lemma_5_15_quaternion : forall a b n,
+  quat_assoc (brown1972_quat_nat_pow a n) b a = quat_zero.
+Proof.
+  intros a b n.
+  apply quat_assoc_zero.
+Qed.
+
+Theorem brown1972_lemma_5_16_quaternion : forall a b m n,
+  quat_assoc (brown1972_quat_nat_pow a m) b (brown1972_quat_nat_pow a n) =
+  quat_zero.
+Proof.
+  intros a b m n.
+  apply quat_assoc_zero.
+Qed.
+
 Theorem brown1972_theorem_5_17_quaternion : forall a b m n,
   quat_assoc (brown1972_quat_zpow a m) b (brown1972_quat_zpow a n) =
   quat_zero.
@@ -831,6 +872,21 @@ Record Brown1972ChapterVQuaternionSurface := {
       quat_norm_sq a <> 0%R ->
       brown1972_quat_zpow (brown1972_quat_zpow a m) n =
       brown1972_quat_zpow a (m * n)%Z;
+  brown1972_ch5_l513_quat :
+    forall x,
+      brown1972_quat_trace x = 0%R ->
+      quat_mul x x = quat_scale (- quat_norm_sq x) quat_one;
+  brown1972_ch5_l514_quat :
+    forall a b c,
+      quat_mul (quat_assoc a b c) (quat_assoc a b c) =
+      quat_scale (- quat_norm_sq (quat_assoc a b c)) quat_one;
+  brown1972_ch5_l515_quat :
+    forall a b n,
+      quat_assoc (brown1972_quat_nat_pow a n) b a = quat_zero;
+  brown1972_ch5_l516_quat :
+    forall a b m n,
+      quat_assoc (brown1972_quat_nat_pow a m) b (brown1972_quat_nat_pow a n) =
+      quat_zero;
   brown1972_ch5_t517_quat :
     forall a b m n,
       quat_assoc (brown1972_quat_zpow a m) b (brown1972_quat_zpow a n) =
@@ -844,6 +900,10 @@ Proof.
             brown1972_ch5_l52_quat := brown1972_lemma_5_2_quaternion;
             brown1972_ch5_t511_quat := brown1972_theorem_5_11_quaternion;
             brown1972_ch5_t512_quat := brown1972_theorem_5_12_quaternion;
+            brown1972_ch5_l513_quat := brown1972_lemma_5_13_quaternion;
+            brown1972_ch5_l514_quat := brown1972_lemma_5_14_quaternion;
+            brown1972_ch5_l515_quat := brown1972_lemma_5_15_quaternion;
+            brown1972_ch5_l516_quat := brown1972_lemma_5_16_quaternion;
             brown1972_ch5_t517_quat := brown1972_theorem_5_17_quaternion |}.
 Defined.
 
