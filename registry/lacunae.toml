@@ -10,7 +10,7 @@ open_count = 5
 high_priority_count = 72
 medium_priority_count = 108
 low_priority_count = 6
-origin_kind_count = 2
+origin_kind_count = 1
 
 [[lacuna]]
 id = "L-001"
@@ -146,14 +146,14 @@ related_marker_ids = []
 
 [[lacuna]]
 id = "L-1546"
-origin = "claims_status_scan"
+origin = "legacy_manual"
 area = "claims"
 title = "Unresolved claim status for C-1546"
 description = "C-1546 remains unresolved with status token THEORETICAL: Moreno Theorem 2.9 (ZD eigenvalue characterization): For alternative unit-norm trace-zero a, b in A_n, the pair (a,b) in A_{n+1} is a zero divisor iff -2 is an eigenvalue of L_{a+b}^2 on A_n. This is an O(dim^3) criterion replacing O(dim^4) brute-force search. In A_3 (alternative algebra), c=a+b with orthogonal unit a,b gives c^2=-2 so L_c^2=-2I; ALL such pairs lift to ZDs in A_4. Verified: known pair (e1+e10, e4-e15)/sqrt(2) in 16D satisfies the criterion. Source: Moreno (1997) arXiv:q-alg/9710013v1."
 priority = "medium"
 status = "open"
-claim_refs = ["C-1546"]
-source_refs = ["registry/claims.toml"]
+claim_refs = []
+source_refs = []
 related_marker_ids = []
 
 [[lacuna]]

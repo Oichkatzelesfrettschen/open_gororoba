@@ -785,6 +785,10 @@ path = "src/bin/unified_action_sweep.rs"
 name = "heliosphere-boxkite-alignment"
 path = "src/bin/heliosphere_boxkite_alignment.rs"
 
+[[bin]]
+name = "heliosphere-boxkite-parity"
+path = "src/bin/heliosphere_boxkite_parity.rs"
+
 # ---- GUT (1) ----
 
 [[bin]]

@@ -16,6 +16,10 @@ struct Cli {
 
     #[arg(long)]
     out_csv: PathBuf,
+
+    /// Exclude rows from these missions (repeatable, case-sensitive).
+    #[arg(long = "exclude-mission")]
+    exclude_missions: Vec<String>,
 }
 
 #[derive(Debug, Clone, Serialize)]
@@ -34,10 +38,18 @@ fn main() -> Result<()> {
         .from_path(&cli.cube_csv)
         .with_context(|| format!("open {}", cli.cube_csv.display()))?;
 
+    let exclude: std::collections::HashSet<&str> =
+        cli.exclude_missions.iter().map(|s| s.as_str()).collect();
+    if !exclude.is_empty() {
+        println!("Excluding missions: {:?}", cli.exclude_missions);
+    }
+
     let mut all_rows = Vec::new();
     for result in reader.deserialize::<HeliosphereFeatureRow>() {
         let r = result?;
-        // ONLY keep rows with valid magnetic field data
+        if exclude.contains(r.mission.as_str()) {
+            continue;
+        }
         if r.bx.is_finite() && r.by.is_finite() && r.bz.is_finite() && r.b_mag.is_finite() && r.b_mag > 0.0 {
             all_rows.push(r);
         }
@@ -81,7 +93,7 @@ fn main() -> Result<()> {
 
             for i in 0..4 {
                 // Difference from local mean, normalized by local mean (dimensionless)
-                v16[i * 4 + 0] = (window[i].bx) / local_mean_b;
+                v16[i * 4] = (window[i].bx) / local_mean_b;
                 v16[i * 4 + 1] = (window[i].by) / local_mean_b;
                 v16[i * 4 + 2] = (window[i].bz) / local_mean_b;
                 v16[i * 4 + 3] = (window[i].b_mag - local_mean_b) / local_mean_b;

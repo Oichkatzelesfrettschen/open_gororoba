@@ -12,7 +12,7 @@ updated = "2026-03-25"
 authoritative = true
 status = "active"
 status_token = "ACTIVE"
-document_count = 126
+document_count = 131
 
 [[owner]]
 path = "README.md"
@@ -772,6 +772,36 @@ removal_reason = ""
 
 [[owner]]
 path = "~/.gemini/plans/rc1-tightening.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/reports/RC1_EVIDENCE_NOTE.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/acquisition_sessions/cayley_dickson_century_1500_1599_prebachet_prehistory/checklist.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/acquisition_sessions/cayley_dickson_century_2000_2026_tower_name_audit/checklist.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/acquisition_sessions/cayley_dickson_dickson_1906_exact_pdf_doi_org_s0002_9947_1906_1500755_5/checklist.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/acquisition_sessions/cayley_dickson_dickson_1935_exact_pdf_projecteuclid_org_download/checklist.md"
 owner_group = "project"
 removal_status = "active"
 removal_reason = ""
