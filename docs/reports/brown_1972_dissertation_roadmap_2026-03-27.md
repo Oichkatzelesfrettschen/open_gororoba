@@ -90,7 +90,7 @@ Practical reading of the source:
 |--------------|----------------------|--------|
 | Chapter I | Brown lane header / roadmap only | contextual chapter, not a theorem surface |
 | Chapter II | Brown lane header / roadmap only | literature chapter, not a theorem surface |
-| Chapter III | `proofs/theories/Brown1972.v` + `crates/brown_1972/src/norm_symmetry.rs` | abstract Rocq surface plus standard-octonion witnesses landed; 16D/generalized-norm surfacing still open |
+| Chapter III | `proofs/theories/Brown1972.v` + `crates/brown_1972/src/norm_symmetry.rs` | abstract Rocq surface plus standard-octonion and direct standard-sedenion witnesses for Brown 3.9 / 3.10 landed; broader generalized-norm surfacing still open |
 | Chapter IV | `proofs/theories/Brown1972.v` plus local associator support | source-driven standard-tower witness surface for 4.2, 4.3, and 4.4 landed |
 | Chapter V | `proofs/theories/Brown1972.v` + `crates/brown_1972/src/exponent_properties.rs` | Brown-numbered quaternion witness surface for 5.11 / 5.12 / 5.13 / 5.14 / 5.15 / 5.16 / 5.17 landed; broader generalized exponent surface still open |
 | Chapter VI | `crates/brown_1972/src/basis_element_properties.rs` plus sign-table infrastructure | source present, Brown-numbered Rocq surface still open |
@@ -108,7 +108,7 @@ To avoid overfitting to Chapter III, Brown should now be mined in this order:
 2. Chapter V generalized exponent surface
    - extend the landed quaternion witness surface beyond the associative witness case
    - keep reusing `CDPowerAssociative.v` and related infrastructure
-3. Chapter III 16D/generalized-norm surfacing
+3. Chapter III broader generalized-norm surfacing beyond the landed standard-sedenion witnesses
    - extend the current abstract surface beyond the standard octonion witness
    - use the dissertation statements directly, not only the Rust checklist
 4. Chapter VI basis-element surface
@@ -134,7 +134,7 @@ The next Rocq tranche should therefore be:
 
 1. keep the landed Chapter IV surface as the structural anchor
 2. move next into the broader Brown Chapter V generalized exponent surface
-3. then resume the generalized 16D Chapter III surfacing with the source text
+3. then resume the broader Chapter III generalized-norm surfacing with the source text
    still open beside the proof file
 
 ## Remaining Brown steps
@@ -147,7 +147,7 @@ The next Rocq tranche should therefore be:
 3. Chapter V
    - broaden the new 5.11 / 5.12 / 5.13 / 5.14 / 5.15 / 5.16 / 5.17 quaternion witness surface toward Brown's fuller generalized exponent lane
 4. Chapter III
-   - extend from the standard-octonion witness to the sourced 16D generalized-norm lane
+   - extend from the landed octonion and standard-sedenion witnesses to the broader sourced generalized-norm lane
 5. Chapter VI
    - mine basis-element identities theorem-by-theorem from the source packet
 6. Chapter VII

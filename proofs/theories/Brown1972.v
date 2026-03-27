@@ -21,9 +21,10 @@
     Chapter/page surfacing status:
     - Chapter III, pp. 15-16, Theorem 3.9 and Lemma 3.10:
       abstract Rocq norm/involution surface plus standard-octonion witnesses
-      landed here; Rust lane `crates/brown_1972/src/norm_symmetry.rs` remains
-      the computational mirror and still carries the broader 16D/generalized
-      norm exploration.
+      and direct standard-sedenion witnesses landed here; Rust lane
+      `crates/brown_1972/src/norm_symmetry.rs` remains the computational
+      mirror and still carries the broader generalized-norm exploration beyond
+      these concrete 8D/16D witnesses.
     - Chapter IV, pp. 20-22, Theorems 4.2-4.3 and Corollary 4.4:
       source-driven standard-tower witnesses for 4.2, 4.3, and 4.4 are now
       landed here.
@@ -52,7 +53,8 @@
 
     Remaining Brown-specific Rocq backlog:
     - broader Chapter V exponent surface beyond the new quaternion witness lane
-    - broader 16D/generalized-norm Chapter III lane
+    - broader generalized-norm Chapter III lane beyond the concrete octonion
+      and sedenion witnesses
     - Brown-numbered Chapter VI basis-element theorem lanes
     - remaining Chapter VII numbering gaps plus Appendix C extraction bridge in Rocq
 
@@ -273,6 +275,104 @@ Proof.
   - exact brown1972_theorem_3_9_ii_octonion.
   - exact brown1972_theorem_3_9_iii_octonion.
   - exact brown1972_octonion_lemma_3_10.
+Qed.
+
+(** Brown Chapter III, sourced 16D standard-sedenion witnesses.
+
+    The dissertation states Theorem 3.9 for flexible algebras with centered
+    involution. The current abstract Rocq functor above still packages the
+    stronger octonion/multiplicative-norm route. For the standard sedenions we
+    instead land the Brown-numbered identities directly on coordinates, so the
+    16D lane is source-driven without forcing it through the stronger abstract
+    interface. *)
+
+Theorem brown1972_lemma_3_10_sedenion : forall x y : CDSed,
+  (sed_norm_sq (sed_add x y) + sed_norm_sq (sed_sub x y))%R =
+  (2 * (sed_norm_sq x + sed_norm_sq y))%R.
+Proof.
+  intros [[[a1 a2 a3 a4] [a5 a6 a7 a8]] [[a9 a10 a11 a12] [a13 a14 a15 a16]]]
+         [[[b1 b2 b3 b4] [b5 b6 b7 b8]] [[b9 b10 b11 b12] [b13 b14 b15 b16]]].
+  cbv [sed_norm_sq sed_add sed_sub sed_neg
+       oct_norm_sq oct_add oct_neg
+       quat_norm_sq quat_add quat_neg
+       sed_lo sed_hi oct_lo oct_hi qa qb qc qd].
+  ring.
+Qed.
+
+Theorem brown1972_theorem_3_9_i_sedenion : forall x y : CDSed,
+  sed_norm_sq (sed_mul x (sed_conj y)) = sed_norm_sq (sed_mul x y).
+Proof.
+  intros [[[a1 a2 a3 a4] [a5 a6 a7 a8]] [[a9 a10 a11 a12] [a13 a14 a15 a16]]]
+         [[[b1 b2 b3 b4] [b5 b6 b7 b8]] [[b9 b10 b11 b12] [b13 b14 b15 b16]]].
+  cbv [sed_norm_sq sed_mul sed_conj
+       oct_norm_sq oct_mul oct_conj oct_neg
+       quat_norm_sq quat_mul quat_add quat_neg quat_conj
+       sed_lo sed_hi oct_lo oct_hi qa qb qc qd].
+  ring.
+Qed.
+
+Theorem brown1972_theorem_3_9_ii_sedenion : forall x y : CDSed,
+  sed_norm_sq (sed_mul (sed_conj x) y) = sed_norm_sq (sed_mul x y).
+Proof.
+  intros [[[a1 a2 a3 a4] [a5 a6 a7 a8]] [[a9 a10 a11 a12] [a13 a14 a15 a16]]]
+         [[[b1 b2 b3 b4] [b5 b6 b7 b8]] [[b9 b10 b11 b12] [b13 b14 b15 b16]]].
+  cbv [sed_norm_sq sed_mul sed_conj
+       oct_norm_sq oct_mul oct_conj oct_neg
+       quat_norm_sq quat_mul quat_add quat_neg quat_conj
+       sed_lo sed_hi oct_lo oct_hi qa qb qc qd].
+  ring.
+Qed.
+
+Theorem brown1972_theorem_3_9_iii_sedenion : forall x y : CDSed,
+  sed_norm_sq (sed_mul x y) = sed_norm_sq (sed_mul y x).
+Proof.
+  intros [[[a1 a2 a3 a4] [a5 a6 a7 a8]] [[a9 a10 a11 a12] [a13 a14 a15 a16]]]
+         [[[b1 b2 b3 b4] [b5 b6 b7 b8]] [[b9 b10 b11 b12] [b13 b14 b15 b16]]].
+  cbv [sed_norm_sq sed_mul
+       oct_norm_sq oct_mul oct_conj oct_neg
+       quat_norm_sq quat_mul quat_add quat_neg quat_conj
+       sed_lo sed_hi oct_lo oct_hi qa qb qc qd].
+  ring.
+Qed.
+
+Record Brown1972ChapterIIISedenionSurface := {
+  brown1972_ch3_t39_i_sed :
+    forall x y : CDSed, sed_norm_sq (sed_mul x (sed_conj y)) = sed_norm_sq (sed_mul x y);
+  brown1972_ch3_t39_ii_sed :
+    forall x y : CDSed, sed_norm_sq (sed_mul (sed_conj x) y) = sed_norm_sq (sed_mul x y);
+  brown1972_ch3_t39_iii_sed :
+    forall x y : CDSed, sed_norm_sq (sed_mul x y) = sed_norm_sq (sed_mul y x);
+  brown1972_ch3_l310_sed :
+    forall x y : CDSed,
+      (sed_norm_sq (sed_add x y) + sed_norm_sq (sed_sub x y))%R =
+      (2 * (sed_norm_sq x + sed_norm_sq y))%R
+}.
+
+Definition brown1972_sedenion_chapter_iii_surface :
+  Brown1972ChapterIIISedenionSurface.
+Proof.
+  refine {| brown1972_ch3_t39_i_sed := brown1972_theorem_3_9_i_sedenion;
+            brown1972_ch3_t39_ii_sed := brown1972_theorem_3_9_ii_sedenion;
+            brown1972_ch3_t39_iii_sed := brown1972_theorem_3_9_iii_sedenion;
+            brown1972_ch3_l310_sed := brown1972_lemma_3_10_sedenion |}.
+Defined.
+
+Theorem brown1972_chapter_iii_sedenion_summary :
+  (forall x y : CDSed,
+      sed_norm_sq (sed_mul x (sed_conj y)) = sed_norm_sq (sed_mul x y)) /\
+  (forall x y : CDSed,
+      sed_norm_sq (sed_mul (sed_conj x) y) = sed_norm_sq (sed_mul x y)) /\
+  (forall x y : CDSed,
+      sed_norm_sq (sed_mul x y) = sed_norm_sq (sed_mul y x)) /\
+  (forall x y : CDSed,
+      (sed_norm_sq (sed_add x y) + sed_norm_sq (sed_sub x y))%R =
+      (2 * (sed_norm_sq x + sed_norm_sq y))%R).
+Proof.
+  repeat split.
+  - exact brown1972_theorem_3_9_i_sedenion.
+  - exact brown1972_theorem_3_9_ii_sedenion.
+  - exact brown1972_theorem_3_9_iii_sedenion.
+  - exact brown1972_lemma_3_10_sedenion.
 Qed.
 
 (** Brown Chapter IV starts the source-driven structural lane:
