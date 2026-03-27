@@ -5917,38 +5917,30 @@ Scope: `/home/eirikr/Playground/ChatGPT Experiments`
 
 ## Top-level directories (depth<=2)
 
-- `archive/` (legacy snapshots)
-- `benchmarks/` (microbenchmarks and study harnesses)
-- `bin/` (repo scripts and verifiers)
-- `convos/` (immutable chat transcripts, may contain Unicode)
-- `cpp/` (C++ components)
+- `crates/` (Rust workspace components)
 - `curated/` (curated artifacts and theory folders)
 - `data/` (artifacts, cached externals with provenance, reproduced datasets)
 - `docker/` (container build for quantum environment)
-- `docs/` (repo-authored documentation; ANSI-safe UTF-8)
-  - `docs/convos/` (ANSI-safe UTF-8 extracts derived from `convos/` PDFs)
-  - `docs/external_sources/` (external-source indices and summaries; excluded from overclaim gate)
-  - `docs/preregistered/` (preregistered plans; excluded from overclaim gate)
+- `docs/` (repo-authored documentation; emoji-blocking UTF-8)
 - `examples/` (small runnable examples)
-- `reports/` (generated human-readable reports; ANSI-safe UTF-8)
-- `src/` (Python source code)
-- `tests/` (pytest suite)
+- `proofs/` (formal verification source - Rocq/Coq)
+- `reports/` (generated human-readable reports; emoji-blocking UTF-8)
+- `xtask/` (repo-local automation tasks)
 
-## File counts (approx; excludes `.git/`, `venv/`, and caches)
+## File counts (approx; excludes `.git/` and caches)
 
-- `src/`: ~987 files
+- `crates/`: ~1250 files
 - `data/`: ~688 files
 - `curated/`: ~621 files
-- `tests/`: ~577 files
 - `docs/`: ~212 files
+- `proofs/`: ~145 files
 - `convos/`: ~20 files
 
 ## Repo gates (high level)
 
-- ANSI-safe UTF-8 gate: `make ansi-check` (repo-authored content; `convos/` exempt)
-- Warnings-as-errors gate: run checks/tests with `PYTHONWARNINGS=error`
-- Overclaim-phrase gate: `src/verification/verify_no_overclaim_phrases.py`
-- External provenance coverage: `src/verification/verify_external_provenance_coverage.py`
+- Character policy gate: `make ansi-check` (verifies emoji-blocking UTF-8)
+- Warnings-as-errors gate: `cargo clippy -- -D warnings`
+- Scoped verification: `make gate-local` (scope-aware local push gate)
 
 ## Working tree notes
 

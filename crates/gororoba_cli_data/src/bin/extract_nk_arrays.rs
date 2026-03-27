@@ -1,10 +1,6 @@
 use anyhow::Result;
 use regex::Regex;
-use std::{
-    collections::HashMap,
-    fs,
-    path::Path,
-};
+use std::{collections::HashMap, fs, path::Path};
 
 const SRC: &str = "crates/materials_core/src/tabulated_nk.rs";
 const OUT: &str = "crates/materials_data/data/nk";

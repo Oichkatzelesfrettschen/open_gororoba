@@ -1,8 +1,7 @@
 use anyhow::{Context, Result};
 use clap::Parser;
 use polars::prelude::*;
-use std::collections::BTreeMap;
-use std::path::PathBuf;
+use std::{collections::BTreeMap, path::PathBuf};
 
 #[derive(Parser, Debug)]
 #[command(
@@ -84,12 +83,7 @@ fn main() -> Result<()> {
         }
     }
 
-    println!(
-        "{:<20} {:<24} {}",
-        "mission",
-        "product",
-        cols.join(" | ")
-    );
+    println!("{:<20} {:<24} {}", "mission", "product", cols.join(" | "));
     for ((mission_value, product_value), (count, sums)) in groups {
         let means = sums
             .into_iter()

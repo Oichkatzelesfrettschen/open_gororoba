@@ -259,9 +259,15 @@ fn build_checks(
             question: "Is the source witness a complete-text witness rather than a fragment, translation, rewriting, or reconstruction?",
             yes: complete_text,
             notes: if complete_text {
-                format!("source status `{}` is complete-text eligible", cli.source_status.render_label())
+                format!(
+                    "source status `{}` is complete-text eligible",
+                    cli.source_status.render_label()
+                )
             } else {
-                format!("source status `{}` is not a complete-text witness", cli.source_status.render_label())
+                format!(
+                    "source status `{}` is not a complete-text witness",
+                    cli.source_status.render_label()
+                )
             },
         },
         CheckRow {
@@ -279,9 +285,17 @@ fn build_checks(
             question: "Is the witness class allowed by the lane runbook for wording-safe upgrades?",
             yes: allowed,
             notes: if allowed {
-                format!("{} runbook allows `{}`", spec.title, cli.source_status.render_label())
+                format!(
+                    "{} runbook allows `{}`",
+                    spec.title,
+                    cli.source_status.render_label()
+                )
             } else {
-                format!("{} runbook does not allow `{}`", spec.title, cli.source_status.render_label())
+                format!(
+                    "{} runbook does not allow `{}`",
+                    spec.title,
+                    cli.source_status.render_label()
+                )
             },
         },
         CheckRow {
@@ -412,7 +426,10 @@ fn render_batch(
     out.push_str(&format!("- {}\n\n", batch_type));
     out.push_str("Companion workflow:\n\n");
     out.push_str(&format!("- `{}`\n", spec.runbook_rel));
-    out.push_str(&format!("- `{}`\n", render_rel(&cli.cache_root, inventory_path)));
+    out.push_str(&format!(
+        "- `{}`\n",
+        render_rel(&cli.cache_root, inventory_path)
+    ));
     out.push_str("- `metadata/reconstruction_notes/row_upgrade_checklist.md`\n\n");
     out.push_str("## Batch Header\n\n");
     out.push_str(&format!("- lane: `{}`\n", spec.title));
@@ -420,9 +437,15 @@ fn render_batch(
     out.push_str(&format!("- operator: `{}`\n", cli.operator));
     out.push_str("- source witness:\n");
     out.push_str(&format!("  `{}`\n", witness_display));
-    out.push_str(&format!("- source status: `{}`\n", cli.source_status.render_label()));
+    out.push_str(&format!(
+        "- source status: `{}`\n",
+        cli.source_status.render_label()
+    ));
     out.push_str("- inventory file:\n");
-    out.push_str(&format!("  `{}`\n", render_rel(&cli.cache_root, inventory_path)));
+    out.push_str(&format!(
+        "  `{}`\n",
+        render_rel(&cli.cache_root, inventory_path)
+    ));
     out.push_str("- row ids to upgrade:\n");
     out.push_str(&format!("  `{}`\n\n", cli.row_id.join("`, `")));
 
@@ -450,7 +473,11 @@ fn render_batch(
         } else {
             "`missing row`"
         };
-        let new_status = if promotable { "`ready for manual promotion`" } else { "`blocked`" };
+        let new_status = if promotable {
+            "`ready for manual promotion`"
+        } else {
+            "`blocked`"
+        };
         let notes = if !row.found {
             "row id not found in inventory template".to_string()
         } else if promotable {
@@ -468,7 +495,11 @@ fn render_batch(
             new_status,
             escape_md_cell(&basename_or_full(witness_display)),
             "",
-            if promotable { "pending manual confirmation" } else { "no" },
+            if promotable {
+                "pending manual confirmation"
+            } else {
+                "no"
+            },
             if promotable { "not yet" } else { "no" },
             escape_md_cell(&notes)
         ));
@@ -497,13 +528,17 @@ fn render_batch(
     out.push_str("\n## Next Unlock\n\n");
     match cli.lane {
         Lane::Jacobson1958 => {
-            out.push_str("Safe promotion can begin only after one of the following is acquired:\n\n");
+            out.push_str(
+                "Safe promotion can begin only after one of the following is acquired:\n\n",
+            );
             out.push_str("- exact article PDF\n");
             out.push_str("- full official reprint chapter\n");
             out.push_str("- another complete official witness\n");
         }
         Lane::Freudenthal1951 => {
-            out.push_str("Safe promotion can begin only after one of the following is acquired:\n\n");
+            out.push_str(
+                "Safe promotion can begin only after one of the following is acquired:\n\n",
+            );
             out.push_str("- Heidelberg-delivered exact witness\n");
             out.push_str("- Leipzig-delivered exact witness\n");
             out.push_str("- another complete official witness of the 1951 report\n");

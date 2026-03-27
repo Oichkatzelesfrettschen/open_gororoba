@@ -348,10 +348,11 @@ fn run_character_policy(args: CharacterPolicyArgs) -> Result<()> {
         } else {
             text.clone()
         };
-        
-        if let Some(bad_ch) = new_text.chars().find(|&ch| {
-            (ch.is_control() && !matches!(ch, '\n' | '\r' | '\t')) || is_emoji(ch)
-        }) {
+
+        if let Some(bad_ch) = new_text
+            .chars()
+            .find(|&ch| (ch.is_control() && !matches!(ch, '\n' | '\r' | '\t')) || is_emoji(ch))
+        {
             failures.push(format!("{} (first bad char: U+{:04X})", rel, bad_ch as u32));
             continue;
         }
@@ -361,7 +362,10 @@ fn run_character_policy(args: CharacterPolicyArgs) -> Result<()> {
                 || scope_prefixes
                     .iter()
                     .any(|prefix| rel == *prefix || rel.starts_with(&format!("{prefix}/")));
-            if in_scope && !allowlist.contains(&rel) && (new_text.contains("<U+") || new_text.contains("<EMOJI+")) {
+            if in_scope
+                && !allowlist.contains(&rel)
+                && (new_text.contains("<U+") || new_text.contains("<EMOJI+"))
+            {
                 placeholder_failures.push(rel.clone());
                 continue;
             }

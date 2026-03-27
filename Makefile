@@ -374,17 +374,6 @@ cache-check:
 		printf '[cache-check] OK: cargo target dirs at %dMB\n' "$$TOTAL"; \
 	fi
 
-profile-python-toml-inventory:
-	@mkdir -p "$(PROFILE_ROOT)"
-	@if command -v /usr/bin/time >/dev/null 2>&1; then \
-		echo "[profile] timing Rust TOML inventory builder"; \
-		/usr/bin/time -v -o "$(PROFILE_ROOT)/toml_inventory.time.txt" $(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- build-toml-inventory; \
-	else \
-		echo "[profile] running Rust TOML inventory builder without /usr/bin/time"; \
-		$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- build-toml-inventory; \
-	fi
-	@echo "OK: Rust TOML inventory profile written under $(PROFILE_ROOT)"
-
 pre-push-gate-strict: gate-audit
 	@echo "OK: pre-push-gate-strict is a compatibility alias for gate-audit."
 
@@ -1478,9 +1467,6 @@ verify-grand:
 verify-c010-c011-theses:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin repo-utilities -- verify-c010-c011-theses
 
-verify-python-core-algorithms:
-	@echo "SKIP: legacy Python core algorithms verification removed."
-
 doctor:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin repo-utilities -- doctor
 	sh scripts/detect_native_blas.sh
@@ -1520,10 +1506,7 @@ semantic-data-validate:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin data-semantic-validate -- --out reports/data_semantic_validate_$$(date +%F).toml
 
 semantic-data-validate-strict:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin data-semantic-validate -- --fail-on-unverifiable true --out reports/data_semantic_validate_$$(date +%F)_strict.toml
-
-patch-pyfilesystem2:
-	@echo "SKIP: patch-pyfilesystem2 removed (no Python runtime dependency)."
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin data-semantic-validate -- --fail-on-unverifiable true --out reports/data_semantic_validate_$(date +%F)_strict.toml
 
 # ---- Artifact generation ----
 
@@ -1668,8 +1651,6 @@ clean-artifacts:
 	@echo "Done. Regenerate and verify with cargo-native data governance commands."
 
 clean:
-	rm -rf .pytest_cache .ruff_cache
-	rm -rf src/*.egg-info
 	rm -rf $(REPO_CARGO_TARGET_DIR)
 
 clean-builds:
@@ -1681,6 +1662,7 @@ clean-builds:
 	rm -rf /srv/fast/tmp/open_gororoba_*_target 2>/dev/null || true
 	rm -rf /srv/fast/tmp/open_gororoba-cargo-build-* 2>/dev/null || true
 	@echo "Removed all Rust build artifacts. Run 'cargo build' to rebuild."
+
 
 cargo-cache-status:
 	CARGO_CACHE_REPO_BUDGET_GIB=$(CARGO_CACHE_REPO_BUDGET_GIB) \
@@ -1768,8 +1750,8 @@ help:
 	@echo "    make smoke                Composite fast smoke lane (check + rust-smoke)"
 	@echo "    make integrity-rust       Cargo-backed integrity lane (claims + inventory + typed policy)"
 	@echo "    make check                Fast local check (ansi + terminology + no-reports)"
-	@echo "    make ansi-check           Verify ANSI-safe UTF-8 character policy"
-	@echo "    make ansi-check-strict    Verify ANSI-safe UTF-8 policy + fail on <U+....> placeholders"
+	@echo "    make ansi-check           Verify emoji-blocking UTF-8 character policy"
+	@echo "    make ansi-check-strict    Verify UTF-8 policy + fail on <U+....>/<EMOJI+...> placeholders"
 	@echo "    make verify-pantheon-physicsforge-mapping Verify migration completeness"
 	@echo "    make verify-pantheon-physicsforge-license-headers Verify license headers"
 	@echo "    make rust-smoke           Dedicated Rust smoke suites via nextest"

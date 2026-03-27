@@ -115,6 +115,10 @@ name = "fetch-datasets"
 path = "src/bin/fetch_datasets.rs"
 
 [[bin]]
+name = "human-acquire"
+path = "src/bin/human_acquire.rs"
+
+[[bin]]
 name = "things-fetch"
 path = "src/bin/things_fetch.rs"
 
