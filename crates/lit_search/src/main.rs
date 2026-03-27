@@ -9,10 +9,11 @@
 use anyhow::{Context, Result, bail};
 use clap::{Parser, Subcommand};
 use lit_search::{
-    ALL_SOURCE_NAMES, MultiQueryExecutionReport, SOURCE_FAMILY_NAMES, SearchEngine,
-    SearchExecutionReport, crawler::WebCrawler, critique::build_critique_prompt, download,
-    evolution::EvolutionStore, normalize_source_name, pdf::PdfExtractor, search::SourceTier,
-    source_names_for_family, sources::ApiKeys,
+    ALL_SOURCE_NAMES, DatasetDiff, DatasetManifest, DatasetRelease, MultiQueryExecutionReport,
+    SOURCE_FAMILY_NAMES, SearchEngine, SearchExecutionReport, SemanticScholarDatasetsClient,
+    crawler::WebCrawler, critique::build_critique_prompt, download, evolution::EvolutionStore,
+    normalize_source_name, pdf::PdfExtractor, search::SourceTier, source_names_for_family,
+    sources::ApiKeys,
 };
 use serde::Serialize;
 use std::path::{Path, PathBuf};
@@ -120,6 +121,51 @@ enum Commands {
         #[arg(long)]
         skills: Option<PathBuf>,
     },
+    /// Inspect Semantic Scholar dataset releases, manifests, and diffs
+    S2Datasets {
+        #[command(subcommand)]
+        command: DatasetCommands,
+    },
+}
+
+#[derive(Subcommand, Debug)]
+enum DatasetCommands {
+    /// List available release IDs
+    Releases {
+        #[arg(long, default_value_t = 20)]
+        limit: usize,
+        #[arg(long)]
+        json_out: Option<PathBuf>,
+    },
+    /// Show one release and its dataset summaries
+    Release {
+        release_id: Option<String>,
+        #[arg(long, default_value_t = false)]
+        latest: bool,
+        #[arg(long)]
+        json_out: Option<PathBuf>,
+    },
+    /// Show one dataset manifest for a release
+    Dataset {
+        dataset_name: String,
+        release_id: Option<String>,
+        #[arg(long, default_value_t = false)]
+        latest: bool,
+        #[arg(long)]
+        file_limit: Option<usize>,
+        #[arg(long)]
+        json_out: Option<PathBuf>,
+    },
+    /// Show incremental diff manifests between two releases
+    Diff {
+        start_release_id: String,
+        end_release_id: String,
+        dataset_name: String,
+        #[arg(long)]
+        file_limit: Option<usize>,
+        #[arg(long)]
+        json_out: Option<PathBuf>,
+    },
 }
 
 struct RunSearchArgs {
@@ -220,6 +266,9 @@ async fn main() -> Result<()> {
                 let overlay = store_inst.build_overlay(&stage, 5, skills.as_deref());
                 println!("{}", overlay);
             }
+            Commands::S2Datasets { command } => {
+                run_s2_datasets(command).await?;
+            }
         }
     } else if let Some(query) = cli.query {
         run_search(RunSearchArgs {
@@ -242,6 +291,64 @@ async fn main() -> Result<()> {
     } else {
         eprintln!("Error: No query or command provided. Use --help for usage.");
         std::process::exit(1);
+    }
+
+    Ok(())
+}
+
+async fn run_s2_datasets(command: DatasetCommands) -> Result<()> {
+    let keys = ApiKeys::from_env();
+    let client = SemanticScholarDatasetsClient::new(keys.s2_api_key.clone());
+
+    match command {
+        DatasetCommands::Releases { limit, json_out } => {
+            let releases = client.list_releases().await?;
+            let total = releases.len();
+            let start = total.saturating_sub(limit);
+            let visible = releases[start..].to_vec();
+            println!("Semantic Scholar dataset releases: {} total", total);
+            for release in &visible {
+                println!("  {release}");
+            }
+            write_optional_json(&json_out, &visible)?;
+        }
+        DatasetCommands::Release {
+            release_id,
+            latest,
+            json_out,
+        } => {
+            let release_id = resolve_release_id(&client, release_id, latest).await?;
+            let release = client.fetch_release(&release_id).await?;
+            print_release(&release);
+            write_optional_json(&json_out, &release)?;
+        }
+        DatasetCommands::Dataset {
+            dataset_name,
+            release_id,
+            latest,
+            file_limit,
+            json_out,
+        } => {
+            let release_id = resolve_release_id(&client, release_id, latest).await?;
+            let manifest = client
+                .fetch_dataset_manifest(&release_id, &dataset_name)
+                .await?;
+            print_manifest(&release_id, &manifest, file_limit);
+            write_optional_json(&json_out, &manifest)?;
+        }
+        DatasetCommands::Diff {
+            start_release_id,
+            end_release_id,
+            dataset_name,
+            file_limit,
+            json_out,
+        } => {
+            let diff = client
+                .fetch_dataset_diff(&start_release_id, &end_release_id, &dataset_name)
+                .await?;
+            print_diff(&diff, file_limit);
+            write_optional_json(&json_out, &diff)?;
+        }
     }
 
     Ok(())
@@ -399,6 +506,92 @@ fn print_available_sources() {
             .unwrap_or_default();
         println!("source_family[{family}]={entries}");
     }
+}
+
+async fn resolve_release_id(
+    client: &SemanticScholarDatasetsClient,
+    release_id: Option<String>,
+    latest: bool,
+) -> Result<String> {
+    match (release_id, latest) {
+        (Some(id), false) => Ok(id),
+        (None, true) => client.latest_release_id().await.map_err(Into::into),
+        (Some(_), true) => bail!("provide either a release_id or --latest, not both"),
+        (None, false) => bail!("provide a release_id or pass --latest"),
+    }
+}
+
+fn print_release(release: &DatasetRelease) {
+    println!("release_id={}", release.release_id);
+    println!("datasets={}", release.datasets.len());
+    for dataset in &release.datasets {
+        println!("- {}", dataset.name);
+        if !dataset.description.is_empty() {
+            println!("  {}", single_line(&dataset.description));
+        }
+    }
+}
+
+fn print_manifest(release_id: &str, manifest: &DatasetManifest, file_limit: Option<usize>) {
+    println!("release_id={release_id}");
+    println!("dataset={}", manifest.name);
+    if !manifest.description.is_empty() {
+        println!("description={}", single_line(&manifest.description));
+    }
+    println!("files={}", manifest.files.len());
+    let visible = file_limit.unwrap_or(10).min(manifest.files.len());
+    for file in manifest.files.iter().take(visible) {
+        println!("  file={file}");
+    }
+    if visible < manifest.files.len() {
+        println!("  ... {} more files", manifest.files.len() - visible);
+    }
+}
+
+fn print_diff(diff: &DatasetDiff, file_limit: Option<usize>) {
+    println!("dataset={}", diff.dataset);
+    println!("start_release={}", diff.start_release);
+    println!("end_release={}", diff.end_release);
+    println!("diff_segments={}", diff.diffs.len());
+    for segment in &diff.diffs {
+        println!(
+            "- {} -> {} | update_files={} delete_files={}",
+            segment.from_release,
+            segment.to_release,
+            segment.update_files.len(),
+            segment.delete_files.len()
+        );
+        let visible = file_limit.unwrap_or(5).min(segment.update_files.len());
+        for file in segment.update_files.iter().take(visible) {
+            println!("  update={file}");
+        }
+        if visible < segment.update_files.len() {
+            println!(
+                "  ... {} more update files",
+                segment.update_files.len() - visible
+            );
+        }
+    }
+}
+
+fn single_line(text: &str) -> String {
+    text.lines()
+        .find(|line| !line.trim().is_empty())
+        .unwrap_or("")
+        .trim()
+        .to_string()
+}
+
+fn write_optional_json<T: Serialize>(path: &Option<PathBuf>, value: &T) -> Result<()> {
+    if let Some(path) = path {
+        if let Some(parent) = path.parent() {
+            std::fs::create_dir_all(parent)
+                .with_context(|| format!("Failed to create {}", parent.display()))?;
+        }
+        std::fs::write(path, serde_json::to_string_pretty(value)?)
+            .with_context(|| format!("Failed to write {}", path.display()))?;
+    }
+    Ok(())
 }
 
 fn load_query_file(path: &Path) -> Result<Vec<String>> {

@@ -3,8 +3,11 @@
 //! Each source implements the `PaperSource` trait: an async function that
 //! takes a query string and returns a list of papers.
 
-use crate::models::{Author, Paper};
-use reqwest::Client;
+use crate::{
+    models::{Author, Paper},
+    semantic_scholar::wait_for_semantic_scholar_slot,
+};
+use reqwest::{Client, StatusCode};
 use serde_json::Value;
 
 fn json_string(value: &Value) -> String {
@@ -70,16 +73,23 @@ pub struct ApiKeys {
     pub lens_api_key: String,
 }
 
+fn env_first(names: &[&str]) -> String {
+    names
+        .iter()
+        .find_map(|name| std::env::var(name).ok().filter(|value| !value.is_empty()))
+        .unwrap_or_default()
+}
+
 impl ApiKeys {
     /// Load from environment variables.
     pub fn from_env() -> Self {
         Self {
-            s2_api_key: std::env::var("S2_API_KEY").unwrap_or_default(),
-            core_api_key: std::env::var("CORE_API_KEY").unwrap_or_default(),
-            cinii_appid: std::env::var("CINII_APPID").unwrap_or_default(),
-            unpaywall_email: std::env::var("UNPAYWALL_EMAIL").unwrap_or_default(),
-            ads_token: std::env::var("NASA_ADS_TOKEN").unwrap_or_default(),
-            lens_api_key: std::env::var("LENS_API_KEY").unwrap_or_default(),
+            s2_api_key: env_first(&["SEMANTIC_SCHOLAR_API_KEY", "S2_API_KEY"]),
+            core_api_key: env_first(&["CORE_API_KEY"]),
+            cinii_appid: env_first(&["CINII_APPID"]),
+            unpaywall_email: env_first(&["UNPAYWALL_EMAIL"]),
+            ads_token: env_first(&["ADS_API_KEY", "NASA_ADS_TOKEN"]),
+            lens_api_key: env_first(&["LENS_API_KEY"]),
         }
     }
 }
@@ -161,20 +171,19 @@ pub async fn search_semantic_scholar(
         limit.min(100)
     );
 
-    let mut req = client.get(&url);
-    if !keys.s2_api_key.is_empty() {
-        req = req.header("x-api-key", &keys.s2_api_key);
+    let mut response =
+        fetch_semantic_scholar_response(client, &url, Some(&keys.s2_api_key)).await?;
+    if response.status == StatusCode::FORBIDDEN && !keys.s2_api_key.is_empty() {
+        response = fetch_semantic_scholar_response(client, &url, None).await?;
+    }
+    if let Some(err) = semantic_scholar_response_error(response.status, &response.payload) {
+        return Err(err);
     }
 
-    let resp: Value = req.send().await?.json().await?;
-    if resp["message"]
-        .as_str()
-        .is_some_and(|m| m.contains("Too Many"))
-    {
-        return Err(SourceError::RateLimited);
-    }
-
-    let data = resp["data"].as_array().unwrap_or(&Vec::new()).clone();
+    let data = response.payload["data"]
+        .as_array()
+        .unwrap_or(&Vec::new())
+        .clone();
 
     Ok(data
         .iter()
@@ -208,6 +217,46 @@ pub async fn search_semantic_scholar(
             }
         })
         .collect())
+}
+
+struct SemanticScholarResponse {
+    status: StatusCode,
+    payload: Value,
+}
+
+async fn fetch_semantic_scholar_response(
+    client: &Client,
+    url: &str,
+    api_key: Option<&str>,
+) -> Result<SemanticScholarResponse, SourceError> {
+    wait_for_semantic_scholar_slot().await;
+    let mut req = client.get(url);
+    if let Some(key) = api_key.filter(|key| !key.is_empty()) {
+        req = req.header("x-api-key", key);
+    }
+    let resp = req.send().await?;
+    let status = resp.status();
+    let payload: Value = resp.json().await?;
+    Ok(SemanticScholarResponse { status, payload })
+}
+
+fn semantic_scholar_response_error(status: StatusCode, payload: &Value) -> Option<SourceError> {
+    let message = payload["message"].as_str().unwrap_or("");
+    if status == StatusCode::TOO_MANY_REQUESTS || message.contains("Too Many") {
+        return Some(SourceError::RateLimited);
+    }
+    if status == StatusCode::FORBIDDEN || message.contains("Forbidden") {
+        return Some(SourceError::Unavailable(
+            "Semantic Scholar request forbidden".into(),
+        ));
+    }
+    if !status.is_success() {
+        return Some(SourceError::Unavailable(format!(
+            "Semantic Scholar HTTP {}",
+            status.as_u16()
+        )));
+    }
+    None
 }
 
 // ---------------------------------------------------------------------------
@@ -981,7 +1030,9 @@ pub async fn search_ads(
     keys: &ApiKeys,
 ) -> Result<Vec<Paper>, SourceError> {
     if keys.ads_token.is_empty() {
-        return Err(SourceError::Unavailable("NASA_ADS_TOKEN not set".into()));
+        return Err(SourceError::Unavailable(
+            "ADS_API_KEY/NASA_ADS_TOKEN not set".into(),
+        ));
     }
 
     let url = format!(
@@ -1401,7 +1452,8 @@ mod urlencoding {
 
 #[cfg(test)]
 mod tests {
-    use super::crossref_link_url;
+    use super::{crossref_link_url, semantic_scholar_response_error};
+    use reqwest::StatusCode;
     use serde_json::json;
 
     #[test]
@@ -1433,5 +1485,21 @@ mod tests {
             crossref_link_url(&item).as_deref(),
             Some("https://example.org/fallback.pdf")
         );
+    }
+
+    #[test]
+    fn semantic_scholar_response_error_maps_rate_limit() {
+        let payload = json!({"message": "Too Many Requests"});
+        let err = semantic_scholar_response_error(StatusCode::TOO_MANY_REQUESTS, &payload)
+            .expect("rate limit should map to an error");
+        assert!(matches!(err, super::SourceError::RateLimited));
+    }
+
+    #[test]
+    fn semantic_scholar_response_error_maps_forbidden() {
+        let payload = json!({"message": "Forbidden"});
+        let err = semantic_scholar_response_error(StatusCode::FORBIDDEN, &payload)
+            .expect("forbidden should map to an error");
+        assert!(matches!(err, super::SourceError::Unavailable(_)));
     }
 }
