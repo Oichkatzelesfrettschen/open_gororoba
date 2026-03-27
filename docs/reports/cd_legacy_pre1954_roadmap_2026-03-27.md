@@ -9,8 +9,10 @@ Priority rule:
 
 - source-complete papers with immediate theorem-lane payoff come first
 - provenance-only cleanup stays behind theorem-lane work
-- Brown 1972 remains the active next paper lane, but the older corpus is now
-  ranked tightly enough that the post-Brown queue is decision-complete
+- Brown 1972 remains the active next paper lane, but it should now be treated
+  as a source-driven full-dissertation tranche rather than a Chapter III-only
+  follow-up; the older corpus is ranked tightly enough that the post-Brown
+  queue is decision-complete
 
 ## Ranked paper queue
 
@@ -29,7 +31,7 @@ Priority rule:
 | 11 | Degen 1818 | source on disk | reference only | add a short provenance-backed chronology distillation row and eight-square predecessor note | tracker |
 | 12 | Hamilton / Graves / Cayley / Cockle 1835-1866 | source packet family on disk | reference only | distill into a single precursor-chain report plus a small chronology update, not a theorem lane | tracker |
 
-## Immediate theorem-lane order after Brown Chapter III
+## Immediate theorem-lane order after the current Brown dissertation tranche
 
 1. Hurwitz 1898 converse / matrix-classification extension
 2. Wedderburn 1914 all-`n` primitive/matric lift
@@ -51,6 +53,7 @@ lightweight in-repo until the theorem-first papers above are further along:
 
 The legacy audit changes the post-Schafer queue in one practical way:
 
-- Brown 1972 Chapter III starts immediately
+- Brown 1972 now proceeds as a full source-driven dissertation lane, not only
+  as a Chapter III extension
 - after that, the highest-value older papers are no longer “open-ended legacy
   mining”; they are the ranked theorem lanes above
