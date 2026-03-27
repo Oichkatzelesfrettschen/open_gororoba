@@ -23,8 +23,8 @@
       abstract derivation extension map to the doubled algebra.
     - Theorem 4, pp. 445-446:
       derivation algebras `D(M_t) = D(C)` with 14-dimensional type-G surface.
-      The extension map is now abstractly formalized, but the equality and
-      type-G identification still remain open as dedicated paper theorem lanes.
+      The abstract and concrete octonion/sedenion theorem lanes are now
+      formalized, including a concrete residual `eq.(50)` builder.
 
     Current Rocq companion map:
     - CDPowerAssociative.v : flexibility / power-associativity anchors
@@ -32,8 +32,9 @@
 
     Remaining Schafer 1954 backlog:
     - dedicated basis-law lane matching Lemma 4 and the restricted basis claims
-    - Theorem 3 restriction/uniqueness lane in paper order
-    - explicit derivation-algebra equality formalization for Theorem 4
+    - a more direct paper-numbered Theorem 3 builder matching the printed
+      uniqueness chain line-by-line, even though the concrete theorem-4 lane
+      is now discharged through the residual `eq.(50)` builder
     - a tighter bridge from the G2 support files to Schafer's derivation language
 *)
 
@@ -2316,6 +2317,253 @@ Ltac s54_invert_oct_equalities :=
       inversion H; clear H; subst
   end.
 
+Lemma s54_eq_zero_of_eq :
+  forall x y : R, x = y -> (x - y)%R = 0%R.
+Proof.
+  intros x y Hxy.
+  lra.
+Qed.
+
+Ltac s54_scalarize_oct_eq H tag :=
+  let He0 := fresh tag "_0eq" in
+  let He1 := fresh tag "_1eq" in
+  let He2 := fresh tag "_2eq" in
+  let He3 := fresh tag "_3eq" in
+  let He4 := fresh tag "_4eq" in
+  let He5 := fresh tag "_5eq" in
+  let He6 := fresh tag "_6eq" in
+  let He7 := fresh tag "_7eq" in
+  let H0 := fresh tag "_0" in
+  let H1 := fresh tag "_1" in
+  let H2 := fresh tag "_2" in
+  let H3 := fresh tag "_3" in
+  let H4 := fresh tag "_4" in
+  let H5 := fresh tag "_5" in
+  let H6 := fresh tag "_6" in
+  let H7 := fresh tag "_7" in
+  pose proof (f_equal (fun x => qa (oct_lo x)) H) as He0;
+  pose proof (f_equal (fun x => qb (oct_lo x)) H) as He1;
+  pose proof (f_equal (fun x => qc (oct_lo x)) H) as He2;
+  pose proof (f_equal (fun x => qd (oct_lo x)) H) as He3;
+  pose proof (f_equal (fun x => qa (oct_hi x)) H) as He4;
+  pose proof (f_equal (fun x => qb (oct_hi x)) H) as He5;
+  pose proof (f_equal (fun x => qc (oct_hi x)) H) as He6;
+  pose proof (f_equal (fun x => qd (oct_hi x)) H) as He7;
+  vm_compute in He0, He1, He2, He3, He4, He5, He6, He7;
+  pose proof (s54_eq_zero_of_eq _ _ He0) as H0;
+  pose proof (s54_eq_zero_of_eq _ _ He1) as H1;
+  pose proof (s54_eq_zero_of_eq _ _ He2) as H2;
+  pose proof (s54_eq_zero_of_eq _ _ He3) as H3;
+  pose proof (s54_eq_zero_of_eq _ _ He4) as H4;
+  pose proof (s54_eq_zero_of_eq _ _ He5) as H5;
+  pose proof (s54_eq_zero_of_eq _ _ He6) as H6;
+  pose proof (s54_eq_zero_of_eq _ _ He7) as H7;
+  ring_simplify in H0;
+  ring_simplify in H1;
+  ring_simplify in H2;
+  ring_simplify in H3;
+  ring_simplify in H4;
+  ring_simplify in H5;
+  ring_simplify in H6;
+  ring_simplify in H7;
+  clear He0 He1 He2 He3 He4 He5 He6 He7.
+
+Local Open Scope R_scope.
+
+Lemma s54_residual_block_C_linear_zero_raw :
+  forall c10 c11 c12 c13 c14 c15 c16 c17
+         c20 c21 c22 c23 c24 c25 c26 c27
+         c30 c31 c32 c33 c34 c35 c36 c37
+         c40 c41 c42 c43 c44 c45 c46 c47
+         c50 c51 c52 c53 c54 c55 c56 c57
+         c60 c61 c62 c63 c64 c65 c66 c67
+         c70 c71 c72 c73 c74 c75 c76 c77 : R,
+    -c12 + c21 + c30 = 0 ->
+    -c13 - c20 + c31 = 0 ->
+    c10 - c23 + c32 = 0 ->
+    c11 + c22 + c33 = 0 ->
+    c16 - c25 + c34 = 0 ->
+    c17 + c24 + c35 = 0 ->
+    -c14 + c27 + c36 = 0 ->
+    -c15 - c26 + c37 = 0 ->
+    c10 - c23 + c32 = 0 ->
+    c11 + c22 + c33 = 0 ->
+    c12 - c21 - c30 = 0 ->
+    c13 + c20 - c31 = 0 ->
+    c14 + c27 - c36 = 0 ->
+    c15 - c26 - c37 = 0 ->
+    c16 + c25 + c34 = 0 ->
+    c17 - c24 + c35 = 0 ->
+    c13 + c20 - c31 = 0 ->
+    -c12 + c21 + c30 = 0 ->
+    c11 + c22 + c33 = 0 ->
+    -c10 + c23 - c32 = 0 ->
+    -c17 + c24 + c35 = 0 ->
+    c16 + c25 - c34 = 0 ->
+    -c15 + c26 - c37 = 0 ->
+    c14 + c27 + c36 = 0 ->
+    -c14 + c41 + c50 = 0 ->
+    -c15 - c40 + c51 = 0 ->
+    -c16 - c43 + c52 = 0 ->
+    -c17 + c42 + c53 = 0 ->
+    c10 - c45 + c54 = 0 ->
+    c11 + c44 + c55 = 0 ->
+    c12 + c47 + c56 = 0 ->
+    c13 - c46 + c57 = 0 ->
+    c10 - c45 + c54 = 0 ->
+    c11 + c44 + c55 = 0 ->
+    c12 - c47 + c56 = 0 ->
+    c13 + c46 + c57 = 0 ->
+    c14 - c41 - c50 = 0 ->
+    c15 + c40 - c51 = 0 ->
+    c16 - c43 - c52 = 0 ->
+    c17 + c42 - c53 = 0 ->
+    c15 + c40 - c51 = 0 ->
+    -c14 + c41 + c50 = 0 ->
+    c17 + c42 + c53 = 0 ->
+    -c16 + c43 - c52 = 0 ->
+    c11 + c44 + c55 = 0 ->
+    -c10 + c45 - c54 = 0 ->
+    c13 + c46 - c57 = 0 ->
+    -c12 + c47 + c56 = 0 ->
+    -c17 + c60 + c71 = 0 ->
+    -c16 + c61 - c70 = 0 ->
+    c15 + c62 - c73 = 0 ->
+    c14 + c63 + c72 = 0 ->
+    -c13 + c64 - c75 = 0 ->
+    -c12 + c65 + c74 = 0 ->
+    c11 + c66 + c77 = 0 ->
+    c10 + c67 - c76 = 0 ->
+    c10 + c67 - c76 = 0 ->
+    c11 + c66 + c77 = 0 ->
+    c12 - c65 + c74 = 0 ->
+    c13 - c64 - c75 = 0 ->
+    c14 + c63 - c72 = 0 ->
+    c15 + c62 + c73 = 0 ->
+    c16 - c61 + c70 = 0 ->
+    c17 - c60 - c71 = 0 ->
+    c16 - c61 + c70 = 0 ->
+    -c17 + c60 + c71 = 0 ->
+    -c14 + c63 + c72 = 0 ->
+    c15 - c62 + c73 = 0 ->
+    c12 + c65 + c74 = 0 ->
+    -c13 - c64 + c75 = 0 ->
+    -c10 - c67 + c76 = 0 ->
+    c11 + c66 + c77 = 0 ->
+    -c24 + c42 + c60 = 0 ->
+    -c25 + c43 + c61 = 0 ->
+    -c26 - c40 + c62 = 0 ->
+    -c27 - c41 + c63 = 0 ->
+    c20 - c46 + c64 = 0 ->
+    c21 - c47 + c65 = 0 ->
+    c22 + c44 + c66 = 0 ->
+    c23 + c45 + c67 = 0 ->
+    c20 - c46 + c64 = 0 ->
+    c21 + c47 + c65 = 0 ->
+    c22 + c44 + c66 = 0 ->
+    c23 - c45 + c67 = 0 ->
+    c24 - c42 - c60 = 0 ->
+    c25 + c43 - c61 = 0 ->
+    c26 + c40 - c62 = 0 ->
+    c27 - c41 - c63 = 0 ->
+    c26 + c40 - c62 = 0 ->
+    -c27 + c41 - c63 = 0 ->
+    -c24 + c42 + c60 = 0 ->
+    c25 + c43 + c61 = 0 ->
+    c22 + c44 + c66 = 0 ->
+    -c23 + c45 + c67 = 0 ->
+    -c20 + c46 - c64 = 0 ->
+    c21 + c47 - c65 = 0 ->
+    -c25 + c52 + c70 = 0 ->
+    c24 + c53 + c71 = 0 ->
+    -c27 - c50 + c72 = 0 ->
+    c26 - c51 + c73 = 0 ->
+    -c21 - c56 + c74 = 0 ->
+    c20 - c57 + c75 = 0 ->
+    -c23 + c54 + c76 = 0 ->
+    c22 + c55 + c77 = 0 ->
+    c20 - c57 + c75 = 0 ->
+    c21 - c56 - c74 = 0 ->
+    c22 + c55 + c77 = 0 ->
+    c23 + c54 - c76 = 0 ->
+    c24 - c53 + c71 = 0 ->
+    c25 - c52 - c70 = 0 ->
+    c26 + c51 + c73 = 0 ->
+    c27 + c50 - c72 = 0 ->
+    c27 + c50 - c72 = 0 ->
+    c26 + c51 - c73 = 0 ->
+    -c25 + c52 + c70 = 0 ->
+    -c24 + c53 + c71 = 0 ->
+    c23 + c54 + c76 = 0 ->
+    c22 + c55 + c77 = 0 ->
+    -c21 + c56 - c74 = 0 ->
+    -c20 + c57 - c75 = 0 ->
+    -c34 + c43 + c70 = 0 ->
+    -c35 - c42 + c71 = 0 ->
+    -c36 + c41 + c72 = 0 ->
+    -c37 - c40 + c73 = 0 ->
+    c30 - c47 + c74 = 0 ->
+    c31 + c46 + c75 = 0 ->
+    c32 - c45 + c76 = 0 ->
+    c33 + c44 + c77 = 0 ->
+    c30 - c47 + c74 = 0 ->
+    c31 - c46 + c75 = 0 ->
+    c32 + c45 + c76 = 0 ->
+    c33 + c44 + c77 = 0 ->
+    c34 - c43 - c70 = 0 ->
+    c35 - c42 - c71 = 0 ->
+    c36 + c41 - c72 = 0 ->
+    c37 + c40 - c73 = 0 ->
+    c37 + c40 - c73 = 0 ->
+    c36 + c41 + c72 = 0 ->
+    -c35 + c42 - c71 = 0 ->
+    -c34 + c43 + c70 = 0 ->
+    c33 + c44 + c77 = 0 ->
+    c32 + c45 - c76 = 0 ->
+    -c31 + c46 + c75 = 0 ->
+    -c30 + c47 - c74 = 0 ->
+    -c36 + c50 + c63 = 0 ->
+    c37 + c51 - c62 = 0 ->
+    c34 + c52 + c61 = 0 ->
+    -c35 + c53 - c60 = 0 ->
+    -c32 + c54 - c67 = 0 ->
+    c33 + c55 + c66 = 0 ->
+    c30 + c56 - c65 = 0 ->
+    -c31 + c57 + c64 = 0 ->
+    c30 + c56 - c65 = 0 ->
+    c31 - c57 + c64 = 0 ->
+    c32 - c54 - c67 = 0 ->
+    c33 + c55 + c66 = 0 ->
+    c34 + c52 - c61 = 0 ->
+    c35 - c53 + c60 = 0 ->
+    c36 - c50 - c63 = 0 ->
+    c37 + c51 + c62 = 0 ->
+    c35 - c53 + c60 = 0 ->
+    -c34 + c52 + c61 = 0 ->
+    c37 - c51 + c62 = 0 ->
+    -c36 + c50 + c63 = 0 ->
+    c31 + c57 + c64 = 0 ->
+    -c30 - c56 + c65 = 0 ->
+    c33 + c55 + c66 = 0 ->
+    -c32 - c54 + c67 = 0 ->
+    mkOct (mkQuat c10 c11 c12 c13) (mkQuat c14 c15 c16 c17) = oct_zero /\
+    mkOct (mkQuat c20 c21 c22 c23) (mkQuat c24 c25 c26 c27) = oct_zero /\
+    mkOct (mkQuat c30 c31 c32 c33) (mkQuat c34 c35 c36 c37) = oct_zero /\
+    mkOct (mkQuat c40 c41 c42 c43) (mkQuat c44 c45 c46 c47) = oct_zero /\
+    mkOct (mkQuat c50 c51 c52 c53) (mkQuat c54 c55 c56 c57) = oct_zero /\
+    mkOct (mkQuat c60 c61 c62 c63) (mkQuat c64 c65 c66 c67) = oct_zero /\
+    mkOct (mkQuat c70 c71 c72 c73) (mkQuat c74 c75 c76 c77) = oct_zero.
+Proof.
+  intros.
+  repeat split;
+    cbv [oct_zero quat_zero];
+    apply (f_equal2 mkOct);
+    apply (f_equal4 mkQuat);
+    lra.
+Qed.
+
+Local Close Scope R_scope.
+
 Theorem s54_residual_block_C_basis_zero_direct :
   forall D : CDSed -> CDSed,
     Schafer1954IsSedenionDerivation D ->
@@ -2418,13 +2666,6 @@ Proof.
     H12, H23, H31, H14, H45, H51, H17, H76, H61,
     H24, H46, H62, H25, H57, H72, H34, H47, H73,
     H36, H65, H53.
-  repeat rewrite <- HC1 in H23, H45, H76.
-  repeat rewrite <- HC2 in H31, H46, H57.
-  repeat rewrite <- HC3 in H12, H47, H65.
-  repeat rewrite <- HC4 in H51, H62, H73.
-  repeat rewrite <- HC5 in H14, H72, H36.
-  repeat rewrite <- HC6 in H17, H24, H53.
-  repeat rewrite <- HC7 in H61, H25, H34.
   destruct C1 as [[c10 c11 c12 c13] [c14 c15 c16 c17]].
   destruct C2 as [[c20 c21 c22 c23] [c24 c25 c26 c27]].
   destruct C3 as [[c30 c31 c32 c33] [c34 c35 c36 c37]].
@@ -2432,30 +2673,67 @@ Proof.
   destruct C5 as [[c50 c51 c52 c53] [c54 c55 c56 c57]].
   destruct C6 as [[c60 c61 c62 c63] [c64 c65 c66 c67]].
   destruct C7 as [[c70 c71 c72 c73] [c74 c75 c76 c77]].
-  cbv [oct_add oct_mul oct_neg oct_conj oct_zero oct_e
-       oct_lo oct_hi quat_add quat_mul quat_neg quat_conj
-       qa qb qc qd quat_zero quat_one] in
-    H12, H23, H31, H14, H45, H51, H17, H76, H61,
-    H24, H46, H62, H25, H57, H72, H34, H47, H73,
-    H36, H65, H53 |- *.
-  repeat match goal with
-  | H : mkOct _ _ = mkOct _ _ |- _ =>
-      inversion H; clear H
-  | H : mkQuat _ _ _ _ = mkQuat _ _ _ _ |- _ =>
-      inversion H; clear H
-  end.
-  cbv [s54_basis7_oct oct_e oct_lo oct_hi qa qb qc qd quat_zero quat_one] in *.
+  repeat rewrite <- HC1 in *.
+  repeat rewrite <- HC2 in *.
+  repeat rewrite <- HC3 in *.
+  repeat rewrite <- HC4 in *.
+  repeat rewrite <- HC5 in *.
+  repeat rewrite <- HC6 in *.
+  repeat rewrite <- HC7 in *.
+  s54_scalarize_oct_eq H12 E12.
+  s54_scalarize_oct_eq H23 E23.
+  s54_scalarize_oct_eq H31 E31.
+  s54_scalarize_oct_eq H14 E14.
+  s54_scalarize_oct_eq H45 E45.
+  s54_scalarize_oct_eq H51 E51.
+  s54_scalarize_oct_eq H17 E17.
+  s54_scalarize_oct_eq H76 E76.
+  s54_scalarize_oct_eq H61 E61.
+  s54_scalarize_oct_eq H24 E24.
+  s54_scalarize_oct_eq H46 E46.
+  s54_scalarize_oct_eq H62 E62.
+  s54_scalarize_oct_eq H25 E25.
+  s54_scalarize_oct_eq H57 E57.
+  s54_scalarize_oct_eq H72 E72.
+  s54_scalarize_oct_eq H34 E34.
+  s54_scalarize_oct_eq H47 E47.
+  s54_scalarize_oct_eq H73 E73.
+  s54_scalarize_oct_eq H36 E36.
+  s54_scalarize_oct_eq H65 E65.
+  s54_scalarize_oct_eq H53 E53.
+  clear H12 H23 H31 H14 H45 H51 H17 H76 H61
+        H24 H46 H62 H25 H57 H72 H34 H47 H73
+        H36 H65 H53.
   repeat match goal with
   | H : _ |- _ => ring_simplify in H
   end.
+  assert
+    (Hzero :
+      mkOct (mkQuat c10 c11 c12 c13) (mkQuat c14 c15 c16 c17) = oct_zero /\
+      mkOct (mkQuat c20 c21 c22 c23) (mkQuat c24 c25 c26 c27) = oct_zero /\
+      mkOct (mkQuat c30 c31 c32 c33) (mkQuat c34 c35 c36 c37) = oct_zero /\
+      mkOct (mkQuat c40 c41 c42 c43) (mkQuat c44 c45 c46 c47) = oct_zero /\
+      mkOct (mkQuat c50 c51 c52 c53) (mkQuat c54 c55 c56 c57) = oct_zero /\
+      mkOct (mkQuat c60 c61 c62 c63) (mkQuat c64 c65 c66 c67) = oct_zero /\
+      mkOct (mkQuat c70 c71 c72 c73) (mkQuat c74 c75 c76 c77) = oct_zero).
+  {
+    eapply (s54_residual_block_C_linear_zero_raw
+              c10 c11 c12 c13 c14 c15 c16 c17
+              c20 c21 c22 c23 c24 c25 c26 c27
+              c30 c31 c32 c33 c34 c35 c36 c37
+              c40 c41 c42 c43 c44 c45 c46 c47
+              c50 c51 c52 c53 c54 c55 c56 c57
+              c60 c61 c62 c63 c64 c65 c66 c67
+              c70 c71 c72 c73 c74 c75 c76 c77).
+    all: lra.
+  }
+  destruct Hzero as [HZ1 [HZ2 [HZ3 [HZ4 [HZ5 [HZ6 HZ7]]]]]].
   destruct i;
     [rewrite <- HC1 | rewrite <- HC2 | rewrite <- HC3
     |rewrite <- HC4 | rewrite <- HC5 | rewrite <- HC6 | rewrite <- HC7];
     clear HC1 HC2 HC3 HC4 HC5 HC6 HC7;
-    cbv [oct_zero];
-    apply (f_equal2 mkOct);
-    apply (f_equal4 mkQuat);
-    nra.
+    [exact HZ1 | exact HZ2 | exact HZ3
+    |exact HZ4 | exact HZ5 | exact HZ6 | exact HZ7].
 Qed.
 
 Theorem s54_residual_eq50_builder_zero :
@@ -2470,6 +2748,7 @@ Proof.
   exists (fun _ : Schafer1954Basis7 => 0%R).
   intro i.
   rewrite (s54_residual_block_C_basis_zero_direct D HD i).
+  symmetry.
   apply oct_scale_zero.
 Qed.
 
@@ -3567,6 +3846,33 @@ Proof.
   - exact schafer1954_theorem4_type_g_support.
 Qed.
 
+Theorem schafer1954_theorem4_octonion_sedenion_identification_concrete :
+  forall D : CDSed -> CDSed,
+    Schafer1954IsSedenionDerivation D <->
+    exists A : CDOct -> CDOct,
+      schafer1954_octonion_derivation A /\
+      D = schafer1954_sedenion_extend A.
+Proof.
+  exact
+    (schafer1954_theorem4_octonion_sedenion_identification_from_residual_eq50_builder
+       s54_residual_eq50_builder_zero).
+Qed.
+
+Theorem schafer1954_theorem4_octonion_sedenion_type_g_concrete :
+  (forall D : CDSed -> CDSed,
+      Schafer1954IsSedenionDerivation D <->
+      exists A : CDOct -> CDOct,
+        schafer1954_octonion_derivation A /\
+        D = schafer1954_sedenion_extend A) /\
+  dim_g2 = 14%nat /\
+  dim_stabilizer = 8%nat /\
+  (21 - 7 = 14 /\ 14 - 6 = 8 /\ (2^3 - 1) * (2^3 - 2) * (2^3 - 4) = 168).
+Proof.
+  exact
+    (schafer1954_theorem4_octonion_sedenion_type_g_from_residual_eq50_builder
+       s54_residual_eq50_builder_zero).
+Qed.
+
 Record Schafer1954OctonionSedenionConverseSurface := {
   s54_octsed_converse_eq52_discharge :
     forall p : Schafer1954Basis7 -> R,
@@ -3605,6 +3911,12 @@ Definition schafer1954_octonion_sedenion_converse_surface_of_residual_coordinate
     Schafer1954OctonionSedenionConverseSurface :=
   schafer1954_octonion_sedenion_converse_surface_of_backward
     (s54_octonion_sedenion_backward_from_residual_coordinate_builder Hcoords).
+
+Definition schafer1954_octonion_sedenion_converse_surface_of_residual_eq50_builder_zero :
+    Schafer1954OctonionSedenionConverseSurface :=
+  schafer1954_octonion_sedenion_converse_surface_of_backward
+    (s54_octonion_sedenion_backward_from_residual_eq50_builder
+       s54_residual_eq50_builder_zero).
 
 Section Schafer1954ConcreteTheorem4FromTheorem3.
   Variable s54_eq30_formula : (CDOct -> CDOct) -> CDOct -> Prop.
