@@ -3319,6 +3319,71 @@ Proof.
     exact (schafer1954_theorem2_octonion_to_sedenion_extension_map A HA).
 Qed.
 
+Theorem s54_octonion_sedenion_backward_from_residual_eq50_builder :
+  (forall D : CDSed -> CDSed,
+      Schafer1954IsSedenionDerivation D ->
+      { mu : Schafer1954Basis7 -> R &
+        forall i : Schafer1954Basis7,
+          s54_block_C (s54_sed_residual D) (s54_basis7_oct i) =
+          oct_scale (mu i) (s54_basis7_oct i) }) ->
+  forall D : CDSed -> CDSed,
+    Schafer1954IsSedenionDerivation D ->
+    exists A : CDOct -> CDOct,
+      schafer1954_octonion_derivation A /\
+      D = schafer1954_sedenion_extend A.
+Proof.
+  intros Heq50 D HD.
+  apply (s54_octonion_sedenion_backward_from_residual_diagonal_facts
+           (fun D' HD' =>
+              let (mu, Hdiag) := Heq50 D' HD' in
+              s54_concrete_residual_diagonal_facts_of_eq50 D' HD' mu Hdiag)
+           D HD).
+Qed.
+
+Theorem schafer1954_theorem4_octonion_sedenion_identification_from_residual_eq50_builder :
+  (forall D : CDSed -> CDSed,
+      Schafer1954IsSedenionDerivation D ->
+      { mu : Schafer1954Basis7 -> R &
+        forall i : Schafer1954Basis7,
+          s54_block_C (s54_sed_residual D) (s54_basis7_oct i) =
+          oct_scale (mu i) (s54_basis7_oct i) }) ->
+  forall D : CDSed -> CDSed,
+    Schafer1954IsSedenionDerivation D <->
+    exists A : CDOct -> CDOct,
+      schafer1954_octonion_derivation A /\
+      D = schafer1954_sedenion_extend A.
+Proof.
+  intros Heq50 D.
+  split.
+  - exact (s54_octonion_sedenion_backward_from_residual_eq50_builder Heq50 D).
+  - intros [A [HA ->]].
+    exact (schafer1954_theorem2_octonion_to_sedenion_extension_map A HA).
+Qed.
+
+Theorem schafer1954_theorem4_octonion_sedenion_type_g_from_residual_eq50_builder :
+  (forall D : CDSed -> CDSed,
+      Schafer1954IsSedenionDerivation D ->
+      { mu : Schafer1954Basis7 -> R &
+        forall i : Schafer1954Basis7,
+          s54_block_C (s54_sed_residual D) (s54_basis7_oct i) =
+          oct_scale (mu i) (s54_basis7_oct i) }) ->
+  (forall D : CDSed -> CDSed,
+      Schafer1954IsSedenionDerivation D <->
+      exists A : CDOct -> CDOct,
+        schafer1954_octonion_derivation A /\
+        D = schafer1954_sedenion_extend A) /\
+  dim_g2 = 14%nat /\
+  dim_stabilizer = 8%nat /\
+  (21 - 7 = 14 /\ 14 - 6 = 8 /\ (2^3 - 1) * (2^3 - 2) * (2^3 - 4) = 168).
+Proof.
+  intro Heq50.
+  split.
+  - exact
+      (schafer1954_theorem4_octonion_sedenion_identification_from_residual_eq50_builder
+         Heq50).
+  - exact schafer1954_theorem4_type_g_support.
+Qed.
+
 Record Schafer1954OctonionSedenionConverseSurface := {
   s54_octsed_converse_eq52_discharge :
     forall p : Schafer1954Basis7 -> R,
