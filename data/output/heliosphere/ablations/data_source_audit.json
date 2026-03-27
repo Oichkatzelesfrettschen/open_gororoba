@@ -1,0 +1,182 @@
+{
+  "current_catalogs": {
+    "ace_mag": {
+      "type": "MAG",
+      "r_au": "1.0",
+      "status": "ACTIVE",
+      "years": "2016-2017"
+    },
+    "cassini": {
+      "type": "MAG+plasma",
+      "r_au": "5-10",
+      "status": "ACTIVE",
+      "years": "2001"
+    },
+    "helios": {
+      "type": "MAG+plasma",
+      "r_au": "0.29-1.0",
+      "status": "ACTIVE",
+      "years": "1976"
+    },
+    "ibex": {
+      "type": "orbit only",
+      "r_au": "~1",
+      "status": "ACTIVE",
+      "years": "2016"
+    },
+    "imp8": {
+      "type": "MAG+plasma",
+      "r_au": "~1",
+      "status": "ACTIVE",
+      "years": "1976"
+    },
+    "juno": {
+      "type": "orbit only",
+      "r_au": "5.3",
+      "status": "ACTIVE",
+      "years": "2016"
+    },
+    "mms": {
+      "type": "MAG (high-cadence)",
+      "r_au": "~1",
+      "status": "EXCLUDED from baseline",
+      "years": "2024"
+    },
+    "new_horizons": {
+      "type": "plasma only (no MAG)",
+      "r_au": "31-58",
+      "status": "ACTIVE",
+      "years": "2015-2023"
+    },
+    "omni": {
+      "type": "MAG+plasma merged",
+      "r_au": "1.0",
+      "status": "ACTIVE",
+      "years": "2001-2016"
+    },
+    "pioneer": {
+      "type": "limited B, trajectory",
+      "r_au": "1-67",
+      "status": "CATALOG EXISTS, NOT INGESTED",
+      "years": "1972-2000"
+    },
+    "psp": {
+      "type": "MAG+plasma",
+      "r_au": "0.05-0.87",
+      "status": "ACTIVE",
+      "years": "2020"
+    },
+    "soho_celias": {
+      "type": "plasma only",
+      "r_au": "~1",
+      "status": "ACTIVE",
+      "years": "2020"
+    },
+    "solar_orbiter": {
+      "type": "MAG+plasma+RPW",
+      "r_au": "0.5-1.0",
+      "status": "ACTIVE",
+      "years": "2020"
+    },
+    "stereo_plastic": {
+      "type": "MAG+plasma",
+      "r_au": "1.0",
+      "status": "ACTIVE",
+      "years": "2016"
+    },
+    "ulysses": {
+      "type": "MAG+plasma",
+      "r_au": "1.3-5.4",
+      "status": "ACTIVE (full 1990-2009)",
+      "years": "1990-2009"
+    },
+    "voyager": {
+      "type": "MAG+plasma",
+      "r_au": "1-166",
+      "status": "ACTIVE (full 1977-2024)",
+      "years": "1977-2024"
+    },
+    "voyager_crs": {
+      "type": "cosmic ray flux",
+      "r_au": "1-166",
+      "status": "ACTIVE",
+      "years": "2016-2020"
+    },
+    "voyager_pws": {
+      "type": "plasma wave spectra",
+      "r_au": "1-166",
+      "status": "ACTIVE",
+      "years": "various"
+    },
+    "wind_swe": {
+      "type": "MAG+plasma",
+      "r_au": "1.0",
+      "status": "ACTIVE",
+      "years": "2016-2024"
+    }
+  },
+  "potential_sources": {
+    "Cluster/CAA": {
+      "type": "MAG+plasma (multi-point)",
+      "r_au": "~1 (magnetosphere)",
+      "value": "MEDIUM - near-Earth control, not heliosphere",
+      "archive": "ESA Cluster Active Archive"
+    },
+    "MAVEN": {
+      "type": "MAG+plasma",
+      "r_au": "Mars orbit (1.5 AU)",
+      "value": "LOW - planetary magnetosphere, not solar wind",
+      "archive": "PDS"
+    },
+    "MESSENGER": {
+      "type": "MAG",
+      "r_au": "0.31-0.47 (Mercury)",
+      "value": "MEDIUM - inner heliosphere radial point",
+      "archive": "PDS"
+    },
+    "Mariner 10": {
+      "type": "MAG+plasma",
+      "r_au": "0.46-1.0",
+      "value": "LOW - short mission, historical",
+      "archive": "NSSDC"
+    },
+    "DSCOVR": {
+      "type": "MAG+plasma",
+      "r_au": "1.0 (L1)",
+      "value": "MEDIUM - modern L1 monitor, alternative to ACE/WIND",
+      "archive": "NCEI/SPDF"
+    },
+    "Galileo": {
+      "type": "MAG",
+      "r_au": "1-5.2 (Jupiter)",
+      "value": "MEDIUM - inner-to-Jupiter radial bridge",
+      "archive": "PDS/SPDF"
+    },
+    "Cassini extended": {
+      "type": "MAG+plasma",
+      "r_au": "5-10 (Saturn orbit)",
+      "value": "HIGH - extends current Cassini 2001 to full mission",
+      "archive": "PDS/SPDF"
+    },
+    "Ulysses high-res": {
+      "type": "MAG 1-sec",
+      "r_au": "1.3-5.4",
+      "value": "HIGH - sub-hourly Alfvenic structure",
+      "archive": "CDAWeb"
+    },
+    "Voyager MAG high-res": {
+      "type": "MAG 48-sec",
+      "r_au": "1-166",
+      "value": "HIGH - sub-hourly structure at all distances",
+      "archive": "CDAWeb/PDS"
+    }
+  },
+  "radial_gaps": {
+    "5-30 AU": "Only Cassini (2001, one year) and Juno (orbit support). Galileo or extended Cassini would fill this.",
+    "58-80 AU": "No mission data between NH SWAP (58 AU) and Voyager 2 heliosheath (80 AU). Pioneer 10/11 could partially fill.",
+    "126-133 AU": "Only Voyager 1. Voyager 2 terminates at 126 AU.",
+    ">166 AU": "Only Voyager 1, ending 2024."
+  },
+  "total_catalog_modules": 67,
+  "heliosphere_relevant": 19
+}
