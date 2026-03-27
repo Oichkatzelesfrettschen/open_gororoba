@@ -1,7 +1,7 @@
 format_version = 1
 session_id = "cayley_dickson_freudenthal_1951_exact_original_cir_nii_ac_jp_1570291224321248768_katalog_ub_uni_leipzig_de_0_1356848117"
 created_utc = "2026-03-27T07:00:52.232167888+00:00"
-updated_utc = "2026-03-27T07:29:58-07:00"
+updated_utc = "2026-03-27T15:28:58.316227150+00:00"
 status = "in_progress"
 
 [source]
@@ -86,3 +86,10 @@ at_utc = "2026-03-27T07:29:58-07:00"
 action = "record"
 status = "in_progress"
 note = "Leipzig holder route sharpened in browser. Campus Library lists copy as Available with Request this item, call number Magazin 02B-2023-189, phone +49 341 97-30811, email zbcb@ub.uni-leipzig.de, and official contact form at ub.uni-leipzig.de/id=1326. Raw wget gets HTTP 419, so browser/manual follow-up is the reliable lane."
+
+[[events]]
+at_utc = "2026-03-27T15:28:58.316227150+00:00"
+action = "record"
+status = "in_progress"
+note = "Leipzig escalation draft prepared at docs/reports/cd_blocker_packets/freudenthal_1951_leipzig_followup_20260327.eml with the exact call number and record URL."
+

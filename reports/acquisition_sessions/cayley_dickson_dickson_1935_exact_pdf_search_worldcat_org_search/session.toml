@@ -1,0 +1,91 @@
+format_version = 1
+session_id = "cayley_dickson_dickson_1935_exact_pdf_search_worldcat_org_search"
+created_utc = "2026-03-27T15:04:08.663046316+00:00"
+updated_utc = "2026-03-27T15:21:11.198713648+00:00"
+status = "blocked"
+
+[source]
+url = "https://search.worldcat.org/search?q=ti%3A%22Linear+algebras+with+associativity+not+assumed%22+au%3ADickson"
+source_id = "dickson_1935_exact_pdf"
+title = "Dickson 1935 stable direct PDF endpoint"
+site = "browser_catalog_search"
+access_class = "metadata_landing"
+
+[lineage]
+parent_session_id = "cayley_dickson_dickson_1935_exact_pdf"
+parent_manifest = "reports/acquisition_sessions/cayley_dickson_dickson_1935_exact_pdf/session.toml"
+relation = "promoted_child"
+
+[search]
+queue_path = "/home/eirikr/Documents/Projects/CayleyDickson/metadata/project_api/search_queue.toml"
+project_id = "cayley-dickson"
+search_target_id = "dickson_1935_exact_pdf"
+window = "1900-1999"
+priority = "high"
+kind = "metadata_confirmed_pdf_path_resolution"
+status = "bibliographic_record_confirmed_pdf_href_unresolved"
+why_now = "This is the clean bridge between the earlier Dickson line and the later Jacobson composition lane."
+preferred_lanes = [
+    "Celebratio page inspection in headed browser",
+    "linked media path resolution",
+    "secondary catalog and mirror search",
+]
+query_seeds = [
+    '"Linear algebras with associativity not assumed"',
+    '"Dickson" 1935 associativity not assumed',
+    '"Celebratio" Dickson article 80 pdf',
+]
+
+[controller]
+policy_registry_rel = "registry/download_host_policies.toml"
+sessions_dir_rel = "reports/acquisition_sessions"
+transport_substrate = "auto"
+requested_backend = "auto"
+probe_bytes = 1024
+probe_requested = false
+
+[route]
+scheme = "https"
+host = "search.worldcat.org"
+retry_class = "probe_first"
+backends = [
+    "reqwest",
+    "curl-cli",
+    "ureq",
+]
+
+[evidence]
+request_capsule_rel = "reports/acquisition_sessions/cayley_dickson_dickson_1935_exact_pdf_search_worldcat_org_search/request_capsule.json"
+host_scope = "search_worldcat_org"
+http_code = 429
+
+[[events]]
+at_utc = "2026-03-27T15:04:08.663046316+00:00"
+action = "promote_child"
+status = "staged"
+note = "promoted from cayley_dickson_dickson_1935_exact_pdf | promoted from 1935 blocker into browser-shaped HathiTrust and WorldCat catalog lanes"
+
+[[events]]
+at_utc = "2026-03-27T15:06:37.810282883+00:00"
+action = "record"
+status = "in_progress"
+note = "Browser-shaped WorldCat catalog lane staged from main 1935 blocker; next step is headed holdings and copy-route inspection rather than direct fetch."
+
+[[events]]
+at_utc = "2026-03-27T15:07:12.446885571+00:00"
+action = "record"
+status = "in_progress"
+note = "Raw Edge-UA wget probe hit Cloudflare throttling with HTTP 429; keep this as a headed browser lane and avoid aggressive repeat probing."
+
+[[events]]
+at_utc = "2026-03-27T15:17:39.116551924+00:00"
+action = "record"
+status = "blocked"
+note = "Playwright loads the WorldCat search shell, but the results pane collapses to Unable to process this request and the console shows Cloudflare Turnstile errors. Treat this as a human/browser challenge lane from this host, not a stable search-results page."
+
+[[events]]
+at_utc = "2026-03-27T15:21:11.198713648+00:00"
+action = "record"
+status = "blocked"
+note = "Human browser observation: WorldCat is returning 1015 rate-limited behavior from this host. Treat this as a challenge/throttle lane, not an immediately actionable holdings page."
+
