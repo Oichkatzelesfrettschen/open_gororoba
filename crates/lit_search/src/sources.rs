@@ -1314,7 +1314,9 @@ pub async fn search_hathitrust(
         )));
     }
 
-    Ok(Vec::new())
+    Err(SourceError::Unavailable(
+        "HathiTrust catalog HTML is reachable but not yet parsed; use browser lane".into(),
+    ))
 }
 
 // ---------------------------------------------------------------------------
