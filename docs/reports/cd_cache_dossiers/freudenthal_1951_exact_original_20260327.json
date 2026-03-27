@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at_utc": "2026-03-27T04:20:09.101303506+00:00",
+  "generated_at_utc": "2026-03-27T04:34:45.544627095+00:00",
   "project_id": "cayley-dickson",
   "project_api_root": "/home/eirikr/Documents/Projects/CayleyDickson",
   "search_queue_path": "/home/eirikr/Documents/Projects/CayleyDickson/metadata/project_api/search_queue.toml",
@@ -78,7 +78,7 @@
         ],
         "raw_result_count": 5,
         "deduplicated_result_count": 4,
-        "cache_hit_count": 2,
+        "cache_hit_count": 8,
         "source_reports": [
           {
             "source": "openalex",
@@ -108,7 +108,7 @@
             "source": "datacite",
             "adapted_query": "\"Oktaven, Ausnahmegruppen und Oktavengeometrie\"",
             "result_count": 0,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -116,7 +116,7 @@
             "source": "arxiv",
             "adapted_query": "all:\"Oktaven, Ausnahmegruppen und Oktavengeometrie\"",
             "result_count": 0,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -124,7 +124,7 @@
             "source": "jstage",
             "adapted_query": "\"Oktaven, Ausnahmegruppen und Oktavengeometrie\"",
             "result_count": 1,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -132,7 +132,7 @@
             "source": "inspirehep",
             "adapted_query": "t:\"Oktaven, Ausnahmegruppen und Oktavengeometrie\"",
             "result_count": 0,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -140,7 +140,7 @@
             "source": "hal",
             "adapted_query": "\"Oktaven, Ausnahmegruppen und Oktavengeometrie\"",
             "result_count": 0,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -148,7 +148,7 @@
             "source": "dblp",
             "adapted_query": "\"Oktaven, Ausnahmegruppen und Oktavengeometrie\"",
             "result_count": 0,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -180,7 +180,7 @@
         ],
         "raw_result_count": 3,
         "deduplicated_result_count": 3,
-        "cache_hit_count": 2,
+        "cache_hit_count": 8,
         "source_reports": [
           {
             "source": "openalex",
@@ -210,7 +210,7 @@
             "source": "datacite",
             "adapted_query": "\"1178680002\" Freudenthal",
             "result_count": 0,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -218,7 +218,7 @@
             "source": "arxiv",
             "adapted_query": "all:1178680002 AND all:Freudenthal",
             "result_count": 0,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -226,7 +226,7 @@
             "source": "jstage",
             "adapted_query": "\"1178680002\" Freudenthal",
             "result_count": 1,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -234,7 +234,7 @@
             "source": "inspirehep",
             "adapted_query": "t:1178680002 and t:Freudenthal",
             "result_count": 0,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -242,7 +242,7 @@
             "source": "hal",
             "adapted_query": "\"1178680002\" Freudenthal",
             "result_count": 0,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -250,7 +250,7 @@
             "source": "dblp",
             "adapted_query": "\"1178680002\" Freudenthal",
             "result_count": 0,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -282,7 +282,7 @@
         ],
         "raw_result_count": 3,
         "deduplicated_result_count": 3,
-        "cache_hit_count": 2,
+        "cache_hit_count": 8,
         "source_reports": [
           {
             "source": "openalex",
@@ -312,7 +312,7 @@
             "source": "datacite",
             "adapted_query": "\"1356848117\" Freudenthal",
             "result_count": 0,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -320,7 +320,7 @@
             "source": "arxiv",
             "adapted_query": "all:1356848117 AND all:Freudenthal",
             "result_count": 0,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -328,7 +328,7 @@
             "source": "jstage",
             "adapted_query": "\"1356848117\" Freudenthal",
             "result_count": 1,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -336,7 +336,7 @@
             "source": "inspirehep",
             "adapted_query": "t:1356848117 and t:Freudenthal",
             "result_count": 0,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -344,7 +344,7 @@
             "source": "hal",
             "adapted_query": "\"1356848117\" Freudenthal",
             "result_count": 0,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -352,7 +352,7 @@
             "source": "dblp",
             "adapted_query": "\"1356848117\" Freudenthal",
             "result_count": 0,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -371,38 +371,6 @@
   "top_hits": [
     {
       "rank": 1,
-      "canonical_id": "doi:10.1007/bf00233101",
-      "relevance_score": 132,
-      "source_family": "citation_graph",
-      "route_class": "openalex_landing",
-      "host_class": "openalex_org",
-      "title": "Oktaven, Ausnahmegruppen und Oktavengeometrie",
-      "year": 1985,
-      "source": "openalex",
-      "venue": "Geometriae Dedicata",
-      "citation_count": 121,
-      "doi": "https://doi.org/10.1007/bf00233101",
-      "url": "https://openalex.org/W2024024636",
-      "pdf_url": ""
-    },
-    {
-      "rank": 2,
-      "canonical_id": "doi:10.53458/sh.v73i3.4438",
-      "relevance_score": 56,
-      "source_family": "resolver",
-      "route_class": "doi_resolver",
-      "host_class": "doi_org",
-      "title": "Rezension von: Freudenthal, Lars; Freudenthal, Annette, Historische Pfade Schwäbische Alb",
-      "year": 2022,
-      "source": "crossref",
-      "venue": "Schwäbische Heimat",
-      "citation_count": 0,
-      "doi": "10.53458/sh.v73i3.4438",
-      "url": "https://doi.org/10.53458/sh.v73i3.4438",
-      "pdf_url": ""
-    },
-    {
-      "rank": 3,
       "canonical_id": "doi:10.1553/0x003d2c4b",
       "relevance_score": 56,
       "source_family": "resolver",
@@ -418,87 +386,54 @@
       "pdf_url": ""
     },
     {
-      "rank": 4,
-      "canonical_id": "doi:10.1090/s0273-0979-01-00934-x",
-      "relevance_score": 44,
-      "source_family": "citation_graph",
-      "route_class": "direct_pdf",
-      "host_class": "www_ams_org",
-      "title": "The octonions",
-      "year": 2001,
-      "source": "openalex",
-      "venue": "Bulletin of the American Mathematical Society",
-      "citation_count": 815,
-      "doi": "https://doi.org/10.1090/s0273-0979-01-00934-x",
-      "url": "https://openalex.org/W4235693166",
-      "pdf_url": "https://www.ams.org/bull/2002-39-02/S0273-0979-01-00934-X/S0273-0979-01-00934-X.pdf"
-    }
-  ],
-  "stage_suggestions": [
-    {
-      "rank": 1,
-      "suggestion_id": "freudenthal_1951_exact_original_doi_10_1007_bf00233101",
-      "canonical_id": "doi:10.1007/bf00233101",
-      "relevance_score": 132,
-      "source": "openalex",
-      "source_family": "citation_graph",
-      "route_class": "openalex_landing",
-      "host_class": "openalex_org",
-      "paper_title": "Oktaven, Ausnahmegruppen und Oktavengeometrie",
-      "action": "stage_metadata_landing_child",
-      "candidate_url": "https://openalex.org/W2024024636",
-      "command": "cargo run -q -p gororoba_cli_data --bin cd-cache-adapter -- --project-api-root '/home/eirikr/Documents/Projects/CayleyDickson' --gororoba-repo-root '/home/eirikr/Github/open_gororoba' stage-from-dossier --dossier 'docs/reports/cd_cache_dossiers/freudenthal_1951_exact_original_20260327.json' --rank '1'",
-      "rationale": "Candidate from openalex [citation_graph] with relevance score 132 and 121 citations for queue target freudenthal_1951_exact_original.",
-      "default_selected": true
-    },
-    {
       "rank": 2,
-      "suggestion_id": "freudenthal_1951_exact_original_doi_10_53458_sh_v73i3_4438",
-      "canonical_id": "doi:10.53458/sh.v73i3.4438",
-      "relevance_score": 56,
-      "source": "crossref",
+      "canonical_id": "doi:10.53846/goediss-2456",
+      "relevance_score": 38,
       "source_family": "resolver",
       "route_class": "doi_resolver",
       "host_class": "doi_org",
-      "paper_title": "Rezension von: Freudenthal, Lars; Freudenthal, Annette, Historische Pfade Schwäbische Alb",
-      "action": "stage_doi_resolver_child",
-      "candidate_url": "https://doi.org/10.53458/sh.v73i3.4438",
-      "command": "cargo run -q -p gororoba_cli_data --bin cd-cache-adapter -- --project-api-root '/home/eirikr/Documents/Projects/CayleyDickson' --gororoba-repo-root '/home/eirikr/Github/open_gororoba' stage-from-dossier --dossier 'docs/reports/cd_cache_dossiers/freudenthal_1951_exact_original_20260327.json' --rank '2'",
-      "rationale": "Candidate from crossref [resolver] with relevance score 56 and 0 citations for queue target freudenthal_1951_exact_original.",
-      "default_selected": false
+      "title": "Oktaven und Reduktionstheorie",
+      "year": 0,
+      "source": "crossref",
+      "venue": "",
+      "citation_count": 0,
+      "doi": "10.53846/goediss-2456",
+      "url": "https://doi.org/10.53846/goediss-2456",
+      "pdf_url": ""
     },
     {
       "rank": 3,
-      "suggestion_id": "freudenthal_1951_exact_original_doi_10_1553_0x003d2c4b",
-      "canonical_id": "doi:10.1553/0x003d2c4b",
-      "relevance_score": 56,
-      "source": "crossref",
-      "source_family": "resolver",
-      "route_class": "doi_resolver",
-      "host_class": "doi_org",
-      "paper_title": "Wrbna und Freudenthal (Würben und Freudenthal), Rudolph Johann Nepomuk Gf. von",
-      "action": "stage_doi_resolver_child",
-      "candidate_url": "https://doi.org/10.1553/0x003d2c4b",
-      "command": "cargo run -q -p gororoba_cli_data --bin cd-cache-adapter -- --project-api-root '/home/eirikr/Documents/Projects/CayleyDickson' --gororoba-repo-root '/home/eirikr/Github/open_gororoba' stage-from-dossier --dossier 'docs/reports/cd_cache_dossiers/freudenthal_1951_exact_original_20260327.json' --rank '3'",
-      "rationale": "Candidate from crossref [resolver] with relevance score 56 and 0 citations for queue target freudenthal_1951_exact_original.",
-      "default_selected": false
+      "canonical_id": "doi:10.1007/bf00233101",
+      "relevance_score": 12,
+      "source_family": "citation_graph",
+      "route_class": "openalex_landing",
+      "host_class": "openalex_org",
+      "title": "Oktaven, Ausnahmegruppen und Oktavengeometrie",
+      "year": 1985,
+      "source": "openalex",
+      "venue": "Geometriae Dedicata",
+      "citation_count": 121,
+      "doi": "https://doi.org/10.1007/bf00233101",
+      "url": "https://openalex.org/W2024024636",
+      "pdf_url": ""
     },
     {
       "rank": 4,
-      "suggestion_id": "freudenthal_1951_exact_original_doi_10_1090_s0273_0979_01_00934_x",
-      "canonical_id": "doi:10.1090/s0273-0979-01-00934-x",
-      "relevance_score": 44,
-      "source": "openalex",
-      "source_family": "citation_graph",
-      "route_class": "direct_pdf",
-      "host_class": "www_ams_org",
-      "paper_title": "The octonions",
-      "action": "stage_direct_pdf_child",
-      "candidate_url": "https://www.ams.org/bull/2002-39-02/S0273-0979-01-00934-X/S0273-0979-01-00934-X.pdf",
-      "command": "cargo run -q -p gororoba_cli_data --bin cd-cache-adapter -- --project-api-root '/home/eirikr/Documents/Projects/CayleyDickson' --gororoba-repo-root '/home/eirikr/Github/open_gororoba' stage-from-dossier --dossier 'docs/reports/cd_cache_dossiers/freudenthal_1951_exact_original_20260327.json' --rank '4'",
-      "rationale": "Candidate from openalex [citation_graph] with relevance score 44 and 815 citations for queue target freudenthal_1951_exact_original.",
-      "default_selected": true
+      "canonical_id": "title:",
+      "relevance_score": 0,
+      "source_family": "archive",
+      "route_class": "generic_landing",
+      "host_class": "unknown_host",
+      "title": "",
+      "year": 0,
+      "source": "jstage",
+      "venue": "",
+      "citation_count": 0,
+      "doi": "",
+      "url": "",
+      "pdf_url": ""
     }
   ],
+  "stage_suggestions": [],
   "batch_manifest_rel": "docs/reports/cd_cache_dossiers/batch_critical_20260326.toml"
 }

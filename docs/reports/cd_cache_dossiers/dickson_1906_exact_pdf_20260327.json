@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at_utc": "2026-03-27T04:19:23.679151049+00:00",
+  "generated_at_utc": "2026-03-27T04:34:44.823435450+00:00",
   "project_id": "cayley-dickson",
   "project_api_root": "/home/eirikr/Documents/Projects/CayleyDickson",
   "search_queue_path": "/home/eirikr/Documents/Projects/CayleyDickson/metadata/project_api/search_queue.toml",
@@ -78,7 +78,7 @@
         ],
         "raw_result_count": 5,
         "deduplicated_result_count": 3,
-        "cache_hit_count": 2,
+        "cache_hit_count": 8,
         "source_reports": [
           {
             "source": "openalex",
@@ -108,7 +108,7 @@
             "source": "datacite",
             "adapted_query": "\"Linear algebras in which division is always uniquely possible\"",
             "result_count": 0,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -116,7 +116,7 @@
             "source": "arxiv",
             "adapted_query": "all:\"Linear algebras in which division is always uniquely possible\"",
             "result_count": 0,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -124,7 +124,7 @@
             "source": "jstage",
             "adapted_query": "\"Linear algebras in which division is always uniquely possible\"",
             "result_count": 1,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -132,7 +132,7 @@
             "source": "inspirehep",
             "adapted_query": "t:\"Linear algebras in which division is always uniquely possible\"",
             "result_count": 0,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -140,7 +140,7 @@
             "source": "hal",
             "adapted_query": "\"Linear algebras in which division is always uniquely possible\"",
             "result_count": 0,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -148,7 +148,7 @@
             "source": "dblp",
             "adapted_query": "\"Linear algebras in which division is",
             "result_count": 0,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -180,7 +180,7 @@
         ],
         "raw_result_count": 5,
         "deduplicated_result_count": 5,
-        "cache_hit_count": 2,
+        "cache_hit_count": 9,
         "source_reports": [
           {
             "source": "openalex",
@@ -194,8 +194,8 @@
             "source": "semantic_scholar",
             "adapted_query": "\"S0002-9947-1906-1500755-5\"",
             "result_count": 0,
-            "cache_hit": false,
-            "error": "Rate limited",
+            "cache_hit": true,
+            "error": "",
             "skipped_reason": ""
           },
           {
@@ -210,7 +210,7 @@
             "source": "datacite",
             "adapted_query": "\"S0002-9947-1906-1500755-5\"",
             "result_count": 0,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -218,15 +218,15 @@
             "source": "arxiv",
             "adapted_query": "all:S0002-9947-1906-1500755-5",
             "result_count": 0,
-            "cache_hit": false,
-            "error": "HTTP error: error sending request for url (http://export.arxiv.org/api/query?search_query=all:all%3AS0002-9947-1906-1500755-5&max_results=2)",
+            "cache_hit": true,
+            "error": "",
             "skipped_reason": ""
           },
           {
             "source": "jstage",
             "adapted_query": "\"S0002-9947-1906-1500755-5\"",
             "result_count": 1,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -234,7 +234,7 @@
             "source": "inspirehep",
             "adapted_query": "t:S0002-9947-1906-1500755-5",
             "result_count": 0,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -242,7 +242,7 @@
             "source": "hal",
             "adapted_query": "\"S0002-9947-1906-1500755-5\"",
             "result_count": 0,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -250,7 +250,7 @@
             "source": "dblp",
             "adapted_query": "\"S0002-9947-1906-1500755-5\"",
             "result_count": 0,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -282,7 +282,7 @@
         ],
         "raw_result_count": 5,
         "deduplicated_result_count": 5,
-        "cache_hit_count": 2,
+        "cache_hit_count": 9,
         "source_reports": [
           {
             "source": "openalex",
@@ -296,8 +296,8 @@
             "source": "semantic_scholar",
             "adapted_query": "\"Dickson\" 1906 linear algebras division uniquely possible",
             "result_count": 0,
-            "cache_hit": false,
-            "error": "Rate limited",
+            "cache_hit": true,
+            "error": "",
             "skipped_reason": ""
           },
           {
@@ -312,7 +312,7 @@
             "source": "datacite",
             "adapted_query": "\"Dickson\" 1906 linear algebras division uniquely possible",
             "result_count": 0,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -320,7 +320,7 @@
             "source": "arxiv",
             "adapted_query": "all:Dickson AND all:\"1906 linear\" AND all:\"algebras division\" AND all:\"uniquely possible\"",
             "result_count": 0,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -328,7 +328,7 @@
             "source": "jstage",
             "adapted_query": "\"Dickson\" 1906 linear algebras division uniquely possible",
             "result_count": 1,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -336,7 +336,7 @@
             "source": "inspirehep",
             "adapted_query": "t:Dickson and t:\"1906 linear\" and t:\"algebras division\" and t:\"uniquely possible\"",
             "result_count": 0,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -344,7 +344,7 @@
             "source": "hal",
             "adapted_query": "\"Dickson\" 1906 linear algebras division uniquely possible",
             "result_count": 0,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -352,7 +352,7 @@
             "source": "dblp",
             "adapted_query": "\"Dickson\" 1906 linear algebras division uniquely",
             "result_count": 0,
-            "cache_hit": false,
+            "cache_hit": true,
             "error": "",
             "skipped_reason": ""
           },
@@ -372,7 +372,7 @@
     {
       "rank": 1,
       "canonical_id": "doi:10.1090/s0002-9947-1906-1500764-6",
-      "relevance_score": 186,
+      "relevance_score": 226,
       "source_family": "citation_graph",
       "route_class": "openalex_landing",
       "host_class": "openalex_org",
@@ -388,7 +388,7 @@
     {
       "rank": 2,
       "canonical_id": "doi:10.1090/s0002-9947-1906-1500755-5",
-      "relevance_score": 186,
+      "relevance_score": 226,
       "source_family": "citation_graph",
       "route_class": "openalex_landing",
       "host_class": "openalex_org",
@@ -403,35 +403,35 @@
     },
     {
       "rank": 3,
-      "canonical_id": "doi:10.1090/s0002-9904-1950-09407-5",
-      "relevance_score": 44,
-      "source_family": "citation_graph",
-      "route_class": "direct_pdf",
-      "host_class": "www_ams_org",
-      "title": "Self-dual configurations and regular graphs",
-      "year": 1950,
-      "source": "openalex",
-      "venue": "Bulletin of the American Mathematical Society",
-      "citation_count": 341,
-      "doi": "https://doi.org/10.1090/s0002-9904-1950-09407-5",
-      "url": "https://openalex.org/W2083763715",
-      "pdf_url": "https://www.ams.org/bull/1950-56-05/S0002-9904-1950-09407-5/S0002-9904-1950-09407-5.pdf"
+      "canonical_id": "doi:10.1090/s0002-9947-1906-1500744-0",
+      "relevance_score": 72,
+      "source_family": "resolver",
+      "route_class": "doi_resolver",
+      "host_class": "doi_org",
+      "title": "On the pentadeltoid",
+      "year": 1906,
+      "source": "crossref",
+      "venue": "Transactions of the American Mathematical Society",
+      "citation_count": 1,
+      "doi": "10.1090/s0002-9947-1906-1500744-0",
+      "url": "https://doi.org/10.1090/s0002-9947-1906-1500744-0",
+      "pdf_url": ""
     },
     {
       "rank": 4,
-      "canonical_id": "doi:10.5040/9781849668187",
-      "relevance_score": 44,
-      "source_family": "citation_graph",
-      "route_class": "direct_pdf",
-      "host_class": "directory_doabooks_org",
-      "title": "What is Social Network Analysis?",
-      "year": 2012,
-      "source": "openalex",
-      "venue": "Bloomsbury Publishing Plc eBooks",
-      "citation_count": 279,
-      "doi": "https://doi.org/10.5040/9781849668187",
-      "url": "https://openalex.org/W1595512173",
-      "pdf_url": "https://directory.doabooks.org/handle/20.500.12854/92829"
+      "canonical_id": "title:",
+      "relevance_score": 24,
+      "source_family": "archive",
+      "route_class": "generic_landing",
+      "host_class": "unknown_host",
+      "title": "",
+      "year": 0,
+      "source": "jstage",
+      "venue": "",
+      "citation_count": 0,
+      "doi": "",
+      "url": "",
+      "pdf_url": ""
     }
   ],
   "stage_suggestions": [
@@ -439,7 +439,7 @@
       "rank": 1,
       "suggestion_id": "dickson_1906_exact_pdf_doi_10_1090_s0002_9947_1906_1500764_6",
       "canonical_id": "doi:10.1090/s0002-9947-1906-1500764-6",
-      "relevance_score": 186,
+      "relevance_score": 226,
       "source": "openalex",
       "source_family": "citation_graph",
       "route_class": "openalex_landing",
@@ -448,14 +448,14 @@
       "action": "stage_metadata_landing_child",
       "candidate_url": "https://openalex.org/W2025927713",
       "command": "cargo run -q -p gororoba_cli_data --bin cd-cache-adapter -- --project-api-root '/home/eirikr/Documents/Projects/CayleyDickson' --gororoba-repo-root '/home/eirikr/Github/open_gororoba' stage-from-dossier --dossier 'docs/reports/cd_cache_dossiers/dickson_1906_exact_pdf_20260327.json' --rank '1'",
-      "rationale": "Candidate from openalex [citation_graph] with relevance score 186 and 75 citations for queue target dickson_1906_exact_pdf.",
+      "rationale": "Candidate from openalex [citation_graph] with relevance score 226 and 75 citations for queue target dickson_1906_exact_pdf.",
       "default_selected": true
     },
     {
       "rank": 2,
       "suggestion_id": "dickson_1906_exact_pdf_doi_10_1090_s0002_9947_1906_1500755_5",
       "canonical_id": "doi:10.1090/s0002-9947-1906-1500755-5",
-      "relevance_score": 186,
+      "relevance_score": 226,
       "source": "openalex",
       "source_family": "citation_graph",
       "route_class": "openalex_landing",
@@ -464,40 +464,8 @@
       "action": "stage_metadata_landing_child",
       "candidate_url": "https://openalex.org/W1998520828",
       "command": "cargo run -q -p gororoba_cli_data --bin cd-cache-adapter -- --project-api-root '/home/eirikr/Documents/Projects/CayleyDickson' --gororoba-repo-root '/home/eirikr/Github/open_gororoba' stage-from-dossier --dossier 'docs/reports/cd_cache_dossiers/dickson_1906_exact_pdf_20260327.json' --rank '2'",
-      "rationale": "Candidate from openalex [citation_graph] with relevance score 186 and 73 citations for queue target dickson_1906_exact_pdf.",
+      "rationale": "Candidate from openalex [citation_graph] with relevance score 226 and 73 citations for queue target dickson_1906_exact_pdf.",
       "default_selected": false
-    },
-    {
-      "rank": 3,
-      "suggestion_id": "dickson_1906_exact_pdf_doi_10_1090_s0002_9904_1950_09407_5",
-      "canonical_id": "doi:10.1090/s0002-9904-1950-09407-5",
-      "relevance_score": 44,
-      "source": "openalex",
-      "source_family": "citation_graph",
-      "route_class": "direct_pdf",
-      "host_class": "www_ams_org",
-      "paper_title": "Self-dual configurations and regular graphs",
-      "action": "stage_direct_pdf_child",
-      "candidate_url": "https://www.ams.org/bull/1950-56-05/S0002-9904-1950-09407-5/S0002-9904-1950-09407-5.pdf",
-      "command": "cargo run -q -p gororoba_cli_data --bin cd-cache-adapter -- --project-api-root '/home/eirikr/Documents/Projects/CayleyDickson' --gororoba-repo-root '/home/eirikr/Github/open_gororoba' stage-from-dossier --dossier 'docs/reports/cd_cache_dossiers/dickson_1906_exact_pdf_20260327.json' --rank '3'",
-      "rationale": "Candidate from openalex [citation_graph] with relevance score 44 and 341 citations for queue target dickson_1906_exact_pdf.",
-      "default_selected": true
-    },
-    {
-      "rank": 4,
-      "suggestion_id": "dickson_1906_exact_pdf_doi_10_5040_9781849668187",
-      "canonical_id": "doi:10.5040/9781849668187",
-      "relevance_score": 44,
-      "source": "openalex",
-      "source_family": "citation_graph",
-      "route_class": "direct_pdf",
-      "host_class": "directory_doabooks_org",
-      "paper_title": "What is Social Network Analysis?",
-      "action": "stage_direct_pdf_child",
-      "candidate_url": "https://directory.doabooks.org/handle/20.500.12854/92829",
-      "command": "cargo run -q -p gororoba_cli_data --bin cd-cache-adapter -- --project-api-root '/home/eirikr/Documents/Projects/CayleyDickson' --gororoba-repo-root '/home/eirikr/Github/open_gororoba' stage-from-dossier --dossier 'docs/reports/cd_cache_dossiers/dickson_1906_exact_pdf_20260327.json' --rank '4'",
-      "rationale": "Candidate from openalex [citation_graph] with relevance score 44 and 279 citations for queue target dickson_1906_exact_pdf.",
-      "default_selected": true
     }
   ],
   "batch_manifest_rel": "docs/reports/cd_cache_dossiers/batch_critical_20260326.toml"

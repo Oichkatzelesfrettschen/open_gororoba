@@ -1136,6 +1136,19 @@ fn promote_specs(
     let mut handoff_rows = Vec::new();
 
     for (index, spec) in specs.into_iter().enumerate() {
+        if let Some(existing_manifest) =
+            find_existing_child_manifest_for_url(sessions_dir, &parent.session_id, &spec.url)?
+        {
+            let existing = load_session(&existing_manifest)?;
+            println!(
+                "child_session_skip_existing={} parent_session={} url={} manifest={}",
+                existing.session_id,
+                parent.session_id,
+                spec.url,
+                to_repo_display_path(repo_root, &existing_manifest)
+            );
+            continue;
+        }
         let child_session_id =
             allocate_child_session_id(sessions_dir, &parent.session_id, &spec.url, index);
         let child_dir = sessions_dir.join(&child_session_id);
@@ -1286,6 +1299,12 @@ fn promote_specs(
         child_ids.push(child_session_id);
     }
 
+    if child_ids.is_empty() && handoff_rows.is_empty() {
+        println!("promote_new_children=0");
+        print_stage_summary(repo_root, parent_manifest, &parent_checklist, &parent);
+        return Ok(());
+    }
+
     if !matches!(
         parent.status,
         SessionStatus::Downloaded | SessionStatus::Abandoned
@@ -1427,7 +1446,8 @@ fn run_record(repo_root: &Path, sessions_dir: &Path, args: RecordArgs) -> Result
             &session,
             binding,
         );
-        let should_reconcile = args.reconcile_project_api && !journal_row.project_artifact_rel.is_empty();
+        let should_reconcile =
+            args.reconcile_project_api && !journal_row.project_artifact_rel.is_empty();
         append_acquisition_journal_rows(&project_api.acquisition_journal_path, &[journal_row])?;
         println!(
             "acquisition_journal={}",
@@ -2658,7 +2678,7 @@ fn select_dossier_suggestions<'a>(
 fn dossier_suggestion_to_promote_spec(
     dossier: &ResearchDossier,
     suggestion: &StageSuggestion,
-    notes: &[String],
+    _notes: &[String],
 ) -> PromoteSpec {
     PromoteSpec {
         url: suggestion.candidate_url.clone(),
@@ -2678,7 +2698,6 @@ fn dossier_suggestion_to_promote_spec(
             Some(format!("canonical_id={}", suggestion.canonical_id)),
             Some(format!("source_family={}", suggestion.source_family)),
             Some(format!("route_class={}", suggestion.route_class)),
-            join_notes(notes),
         ]),
     }
 }
@@ -2749,6 +2768,57 @@ fn allocate_child_session_id(
         counter += 1;
     }
     candidate
+}
+
+fn find_existing_child_manifest_for_url(
+    sessions_dir: &Path,
+    parent_session_id: &str,
+    url: &str,
+) -> Result<Option<PathBuf>> {
+    let normalized_url = normalize_session_url(url);
+    for entry in fs::read_dir(sessions_dir)
+        .with_context(|| format!("read_dir {}", sessions_dir.display()))?
+    {
+        let entry = entry.with_context(|| format!("read_dir {}", sessions_dir.display()))?;
+        if !entry
+            .file_type()
+            .with_context(|| format!("file_type {}", entry.path().display()))?
+            .is_dir()
+        {
+            continue;
+        }
+        let manifest_path = entry.path().join("session.toml");
+        if !manifest_path.exists() {
+            continue;
+        }
+        let session = load_session(&manifest_path)?;
+        let Some(lineage) = &session.lineage else {
+            continue;
+        };
+        if lineage.parent_session_id != parent_session_id {
+            continue;
+        }
+        let Some(existing_url) = &session.source.url else {
+            continue;
+        };
+        if normalize_session_url(existing_url) == normalized_url {
+            return Ok(Some(manifest_path));
+        }
+    }
+    Ok(None)
+}
+
+fn normalize_session_url(value: &str) -> String {
+    if let Ok(mut parsed) = Url::parse(value) {
+        parsed.set_fragment(None);
+        let mut normalized = parsed.to_string();
+        while normalized.ends_with('/') && normalized.len() > "https://x".len() {
+            normalized.pop();
+        }
+        normalized
+    } else {
+        value.trim().trim_end_matches('/').to_ascii_lowercase()
+    }
 }
 
 fn derive_child_session_id(parent_session_id: &str, url: &str, ordinal: usize) -> String {

@@ -1,5 +1,5 @@
 schema_version = 1
-generated_at_utc = "2026-03-27T04:20:39.128828593+00:00"
+generated_at_utc = "2026-03-27T04:34:45.788553645+00:00"
 project_id = "cayley-dickson"
 project_api_root = "/home/eirikr/Documents/Projects/CayleyDickson"
 search_queue_path = "/home/eirikr/Documents/Projects/CayleyDickson/metadata/project_api/search_queue.toml"
@@ -37,7 +37,7 @@ priority = "critical"
 kind = "browser_confirmed_free_pdf_lane"
 dossier_json = "docs/reports/cd_cache_dossiers/dickson_1906_exact_pdf_20260327.json"
 dossier_markdown = "docs/reports/cd_cache_dossiers/dickson_1906_exact_pdf_20260327.md"
-suggestion_count = 4
+suggestion_count = 2
 
 [[entries]]
 search_target_id = "dickson_1912_exact_pdf"
@@ -47,7 +47,7 @@ priority = "critical"
 kind = "browser_confirmed_free_pdf_lane"
 dossier_json = "docs/reports/cd_cache_dossiers/dickson_1912_exact_pdf_20260327.json"
 dossier_markdown = "docs/reports/cd_cache_dossiers/dickson_1912_exact_pdf_20260327.md"
-suggestion_count = 4
+suggestion_count = 2
 
 [[entries]]
 search_target_id = "freudenthal_1951_exact_original"
@@ -57,7 +57,7 @@ priority = "critical"
 kind = "holder_workflow_followup"
 dossier_json = "docs/reports/cd_cache_dossiers/freudenthal_1951_exact_original_20260327.json"
 dossier_markdown = "docs/reports/cd_cache_dossiers/freudenthal_1951_exact_original_20260327.md"
-suggestion_count = 4
+suggestion_count = 0
 
 [[entries]]
 search_target_id = "jacobson_1958_exact_original"
@@ -67,5 +67,5 @@ priority = "critical"
 kind = "article_or_chapter_delivery_followup"
 dossier_json = "docs/reports/cd_cache_dossiers/jacobson_1958_exact_original_20260327.json"
 dossier_markdown = "docs/reports/cd_cache_dossiers/jacobson_1958_exact_original_20260327.md"
-suggestion_count = 4
+suggestion_count = 1
 
