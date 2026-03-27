@@ -26,7 +26,8 @@ pub use arith::{
 pub use associator::{
     AssociatorStats, associator_independence_stats, batch_associator_norms,
     batch_associator_norms_parallel, batch_associator_norms_sq, batch_octonion_basis_associators,
-    batch_sedenion_associator_norms, batch_sedenion_associator_norms_parallel, cd_associator,
+    batch_sedenion_associator_norms, batch_sedenion_associator_norms_parallel,
+    batch_sliding_associator_norms, batch_sliding_associator_norms_parallel, cd_associator,
     cd_associator_norm, measure_associator_density, octonion_associator_simd,
 };
 pub use signature::{

@@ -1,14 +1,14 @@
 use anyhow::{Context, Result};
 use clap::Parser;
 use csv::{ReaderBuilder, WriterBuilder};
-use data_core::HeliosphereFeatureRow;
+use data_core::{HeliosphereFeatureRow, magnetic_takens_embed};
 use serde::Serialize;
 use std::{collections::BTreeMap, path::PathBuf};
 
 #[derive(Parser, Debug)]
 #[command(
     name = "heliosphere-magnetic-takens",
-    about = "Takens time-delay embedding of magnetic field into 16D Sedenion space"
+    about = "Takens time-delay embedding of magnetic field into Cayley-Dickson space"
 )]
 struct Cli {
     #[arg(long)]
@@ -20,6 +20,14 @@ struct Cli {
     /// Exclude rows from these missions (repeatable, case-sensitive).
     #[arg(long = "exclude-mission")]
     exclude_missions: Vec<String>,
+
+    /// Embedding dimension (must be power of 2, >= 16). Default 16 = sedenion.
+    #[arg(long, default_value_t = 16)]
+    embedding_dim: usize,
+
+    /// Takens lag in time steps (1 = consecutive hourly, 2 = every other, ...).
+    #[arg(long, default_value_t = 1)]
+    takens_lag: usize,
 }
 
 #[derive(Debug, Clone, Serialize)]
@@ -74,44 +82,39 @@ fn main() -> Result<()> {
         });
     }
 
+    let steps = cli.embedding_dim / 4;
     let mut results = Vec::new();
 
-    println!("[1/2] Computing Takens 16D embedding (4-step delay) for B-field...");
+    println!(
+        "[1/2] Computing Takens {}D embedding ({}-step delay, lag={}) for B-field...",
+        cli.embedding_dim, steps, cli.takens_lag
+    );
     for ((mission, product), rows) in groups {
-        if rows.len() < 10 { continue; }
-
-        let mut embedded_vectors = Vec::new();
-        let mut r_aus = Vec::new();
-
-        // 4-step sliding window to build 16D vector from 4D B-field (Bx, By, Bz, |B|)
-        // We use relative fluctuations (dB / mean_B) to remove the 1/r^2 heliospheric scaling
-        for window in rows.windows(4) {
-            let mut v16 = [0.0; 16];
-            let local_mean_b = (window[0].b_mag + window[1].b_mag + window[2].b_mag + window[3].b_mag) / 4.0;
-            
-            if local_mean_b <= 0.0 { continue; }
-
-            for i in 0..4 {
-                // Difference from local mean, normalized by local mean (dimensionless)
-                v16[i * 4] = (window[i].bx) / local_mean_b;
-                v16[i * 4 + 1] = (window[i].by) / local_mean_b;
-                v16[i * 4 + 2] = (window[i].bz) / local_mean_b;
-                v16[i * 4 + 3] = (window[i].b_mag - local_mean_b) / local_mean_b;
-            }
-            
-            embedded_vectors.push(v16);
-            r_aus.push(window[3].r_au); // tag with latest distance
+        if rows.len() < steps + 5 {
+            continue;
         }
 
-        // Now compute Sedenion associator over triples of these 16D states
-        let associators = cd_kernel::batch_sedenion_associator_norms_parallel(&embedded_vectors);
-        let valid_r = &r_aus[2..];
+        let (embedded_vectors, meta_idx) =
+            magnetic_takens_embed(&rows, cli.embedding_dim, cli.takens_lag);
 
-        if associators.is_empty() { continue; }
+        let associators = cd_kernel::batch_sliding_associator_norms_parallel(
+            &embedded_vectors,
+            cli.embedding_dim,
+        );
+
+        if associators.is_empty() {
+            continue;
+        }
+
+        // associator[k] corresponds to triple (emb[k], emb[k+1], emb[k+2])
+        // spatial tag comes from meta_idx[k+2] (last row of last vector in triple)
+        let tagged_r: Vec<f64> = (0..associators.len())
+            .map(|k| rows[meta_idx[k + 2]].r_au)
+            .collect();
 
         let mean = associators.iter().sum::<f64>() / associators.len() as f64;
         let max = associators.iter().copied().fold(f64::NEG_INFINITY, f64::max);
-        let mean_r = valid_r.iter().sum::<f64>() / valid_r.len() as f64;
+        let mean_r = tagged_r.iter().sum::<f64>() / tagged_r.len() as f64;
 
         results.push(TakensBin {
             mission,
@@ -123,10 +126,9 @@ fn main() -> Result<()> {
         });
     }
 
-    // Sort by heliocentric distance
     results.sort_by(|a, b| a.r_au.partial_cmp(&b.r_au).unwrap());
 
-    println!("[2/2] Writing clean magnetic quench scan...");
+    println!("[2/2] Writing magnetic Takens results...");
     let mut writer = WriterBuilder::new().from_path(&cli.out_csv)?;
     for res in results {
         writer.serialize(res)?;

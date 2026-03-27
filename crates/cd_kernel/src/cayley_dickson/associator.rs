@@ -162,6 +162,93 @@ pub fn batch_sedenion_associator_norms_parallel(vectors: &[[f64; 16]]) -> Vec<f6
         .collect()
 }
 
+/// Batch compute associator norms for a sequence of vectors of arbitrary
+/// power-of-2 dimension using a sliding window of 3.
+///
+/// For dim=16, delegates to the SIMD-accelerated sedenion path.
+/// For all other dims, uses the generic recursive `cd_associator_norm`.
+///
+/// Returns `n - 2` norms for `n` input vectors (one per consecutive triple).
+pub fn batch_sliding_associator_norms(vectors: &[Vec<f64>], dim: usize) -> Vec<f64> {
+    assert!(dim.is_power_of_two(), "dim must be a power of 2, got {dim}");
+    if vectors.len() < 3 {
+        return Vec::new();
+    }
+    debug_assert!(vectors.iter().all(|v| v.len() == dim));
+
+    let use_simd = simd_available_x86_64();
+
+    if dim == 16 && use_simd {
+        let fixed: Vec<[f64; 16]> = vectors
+            .iter()
+            .map(|v| {
+                let mut arr = [0.0; 16];
+                arr.copy_from_slice(v);
+                arr
+            })
+            .collect();
+        return batch_sedenion_associator_norms(&fixed);
+    }
+
+    if dim == 32 && use_simd {
+        return (0..vectors.len() - 2)
+            .map(|i| {
+                let a: [f64; 32] = vectors[i].as_slice().try_into().unwrap();
+                let b: [f64; 32] = vectors[i + 1].as_slice().try_into().unwrap();
+                let c: [f64; 32] = vectors[i + 2].as_slice().try_into().unwrap();
+                super::simd::pathion_associator_norm_sq_flat(&a, &b, &c).sqrt()
+            })
+            .collect();
+    }
+
+    (0..vectors.len() - 2)
+        .map(|i| cd_associator_norm(&vectors[i], &vectors[i + 1], &vectors[i + 2]))
+        .collect()
+}
+
+/// Parallel variant of [`batch_sliding_associator_norms`].
+///
+/// Uses Rayon for multi-core scaling. For dim=16 and dim=32, leverages
+/// AVX2+FMA SIMD via the sedenion/pathion fast paths.
+pub fn batch_sliding_associator_norms_parallel(vectors: &[Vec<f64>], dim: usize) -> Vec<f64> {
+    assert!(dim.is_power_of_two(), "dim must be a power of 2, got {dim}");
+    if vectors.len() < 3 {
+        return Vec::new();
+    }
+    debug_assert!(vectors.iter().all(|v| v.len() == dim));
+
+    let use_simd = simd_available_x86_64();
+
+    if dim == 16 && use_simd {
+        let fixed: Vec<[f64; 16]> = vectors
+            .iter()
+            .map(|v| {
+                let mut arr = [0.0; 16];
+                arr.copy_from_slice(v);
+                arr
+            })
+            .collect();
+        return batch_sedenion_associator_norms_parallel(&fixed);
+    }
+
+    if dim == 32 && use_simd {
+        return (0..vectors.len() - 2)
+            .into_par_iter()
+            .map(|i| {
+                let a: [f64; 32] = vectors[i].as_slice().try_into().unwrap();
+                let b: [f64; 32] = vectors[i + 1].as_slice().try_into().unwrap();
+                let c: [f64; 32] = vectors[i + 2].as_slice().try_into().unwrap();
+                super::simd::pathion_associator_norm_sq_flat(&a, &b, &c).sqrt()
+            })
+            .collect();
+    }
+
+    (0..vectors.len() - 2)
+        .into_par_iter()
+        .map(|i| cd_associator_norm(&vectors[i], &vectors[i + 1], &vectors[i + 2]))
+        .collect()
+}
+
 /// SIMD-optimized octonion associator using flat AVX2 multiply.
 #[inline]
 pub fn octonion_associator_simd(a: &[f64; 8], b: &[f64; 8], c: &[f64; 8]) -> [f64; 8] {

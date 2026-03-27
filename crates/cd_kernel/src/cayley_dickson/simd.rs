@@ -243,7 +243,7 @@ pub fn sedenion_multiply_flat(a: &[f64; 16], b: &[f64; 16]) -> [f64; 16] {
     let left_lo = f64x4::from([ac[0], ac[1], ac[2], ac[3]]) - f64x4::from([conj_cr_ar[0], conj_cr_ar[1], conj_cr_ar[2], conj_cr_ar[3]]);
     let left_hi = f64x4::from([ac[4], ac[5], ac[6], ac[7]]) - f64x4::from([conj_cr_ar[4], conj_cr_ar[5], conj_cr_ar[6], conj_cr_ar[7]]);
     let right_lo = f64x4::from([cr_al[0], cr_al[1], cr_al[2], cr_al[3]]) + f64x4::from([ar_conj_cl[0], ar_conj_cl[1], ar_conj_cl[2], ar_conj_cl[3]]);
-    let right_hi = f64x4::from([cr_al[4], cr_al[5], cr_al[6], ar_conj_cl[7]]) + f64x4::from([ar_conj_cl[4], ar_conj_cl[5], ar_conj_cl[6], ar_conj_cl[7]]);
+    let right_hi = f64x4::from([cr_al[4], cr_al[5], cr_al[6], cr_al[7]]) + f64x4::from([ar_conj_cl[4], ar_conj_cl[5], ar_conj_cl[6], ar_conj_cl[7]]);
 
     let ll = left_lo.to_array();
     let lh = left_hi.to_array();
@@ -277,6 +277,90 @@ pub fn sedenion_associator_flat(a: &[f64; 16], b: &[f64; 16], c: &[f64; 16]) -> 
 pub fn sedenion_associator_norm_sq_flat(a: &[f64; 16], b: &[f64; 16], c: &[f64; 16]) -> f64 {
     let assoc = sedenion_associator_flat(a, b, c);
     crate::avx2_primitives::avx2_norm_sq_16(&assoc)
+}
+
+// ---------------------------------------------------------------------------
+// Pathion (32D) SIMD -- CD doubling of sedenion, zero heap allocation
+// ---------------------------------------------------------------------------
+
+/// CD conjugate for a 16D half: negate all imaginary components (indices 1..16).
+/// Uses f64x4 SIMD for the bulk negation.
+#[inline]
+fn conjugate_16(x: &[f64; 16]) -> [f64; 16] {
+    let mut out = [0.0; 16];
+    out[0] = x[0];
+    // Negate indices 1-3 (partial first chunk)
+    out[1] = -x[1];
+    out[2] = -x[2];
+    out[3] = -x[3];
+    // Negate indices 4..16 in SIMD chunks of 4
+    for i in (4..16).step_by(4) {
+        let v = f64x4::from([x[i], x[i + 1], x[i + 2], x[i + 3]]);
+        let neg = f64x4::ZERO - v;
+        out[i..i + 4].copy_from_slice(&neg.to_array());
+    }
+    out
+}
+
+/// Flat pathion (32D CD) multiply using sedenion_multiply_flat.
+/// CD doubling: (a_l, a_r) * (b_l, b_r) = (a_l*b_l - conj(b_r)*a_r, b_r*a_l + a_r*conj(b_l))
+/// Zero heap allocation -- everything in fixed [f64; 32] arrays.
+#[inline]
+pub fn pathion_multiply_flat(a: &[f64; 32], b: &[f64; 32]) -> [f64; 32] {
+    let a_l: [f64; 16] = a[..16].try_into().unwrap();
+    let a_r: [f64; 16] = a[16..].try_into().unwrap();
+    let b_l: [f64; 16] = b[..16].try_into().unwrap();
+    let b_r: [f64; 16] = b[16..].try_into().unwrap();
+
+    let conj_b_r = conjugate_16(&b_r);
+    let conj_b_l = conjugate_16(&b_l);
+
+    // Left half: a_l*b_l - conj(b_r)*a_r
+    let al_bl = sedenion_multiply_flat(&a_l, &b_l);
+    let cbr_ar = sedenion_multiply_flat(&conj_b_r, &a_r);
+
+    // Right half: b_r*a_l + a_r*conj(b_l)
+    let br_al = sedenion_multiply_flat(&b_r, &a_l);
+    let ar_cbl = sedenion_multiply_flat(&a_r, &conj_b_l);
+
+    let mut result = [0.0; 32];
+    // SIMD subtract for left half (4 x f64x4 = 16 elements)
+    for i in (0..16).step_by(4) {
+        let l = f64x4::from([al_bl[i], al_bl[i+1], al_bl[i+2], al_bl[i+3]]);
+        let r = f64x4::from([cbr_ar[i], cbr_ar[i+1], cbr_ar[i+2], cbr_ar[i+3]]);
+        result[i..i+4].copy_from_slice(&(l - r).to_array());
+    }
+    // SIMD add for right half
+    for i in (0..16).step_by(4) {
+        let l = f64x4::from([br_al[i], br_al[i+1], br_al[i+2], br_al[i+3]]);
+        let r = f64x4::from([ar_cbl[i], ar_cbl[i+1], ar_cbl[i+2], ar_cbl[i+3]]);
+        result[16+i..16+i+4].copy_from_slice(&(l + r).to_array());
+    }
+    result
+}
+
+/// Flat pathion (32D) associator: (a*b)*c - a*(b*c)
+#[inline]
+pub fn pathion_associator_flat(a: &[f64; 32], b: &[f64; 32], c: &[f64; 32]) -> [f64; 32] {
+    let ab = pathion_multiply_flat(a, b);
+    let abc_left = pathion_multiply_flat(&ab, c);
+    let bc = pathion_multiply_flat(b, c);
+    let abc_right = pathion_multiply_flat(a, &bc);
+
+    let mut assoc = [0.0; 32];
+    for i in (0..32).step_by(4) {
+        let l = f64x4::from([abc_left[i], abc_left[i+1], abc_left[i+2], abc_left[i+3]]);
+        let r = f64x4::from([abc_right[i], abc_right[i+1], abc_right[i+2], abc_right[i+3]]);
+        assoc[i..i+4].copy_from_slice(&(l - r).to_array());
+    }
+    assoc
+}
+
+/// Pathion associator norm squared using AVX2+FMA.
+#[inline]
+pub fn pathion_associator_norm_sq_flat(a: &[f64; 32], b: &[f64; 32], c: &[f64; 32]) -> f64 {
+    let assoc = pathion_associator_flat(a, b, c);
+    crate::avx2_primitives::avx2_norm_sq(&assoc)
 }
 
 // ---------------------------------------------------------------------------

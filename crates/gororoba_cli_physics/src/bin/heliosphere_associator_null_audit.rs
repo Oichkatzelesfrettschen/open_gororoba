@@ -3,7 +3,8 @@ use chrono::Utc;
 use clap::Parser;
 use csv::ReaderBuilder;
 use data_core::{
-    compute_invariant_samples, HeliosphereFeatureRow, HeliosphereInvariantSample,
+    compute_invariant_samples, magnetic_takens_embed, HeliosphereFeatureRow,
+    HeliosphereInvariantSample,
 };
 use rand::seq::SliceRandom;
 use rand::thread_rng;
@@ -33,6 +34,14 @@ struct Cli {
     /// When set, --exclude-mission is ignored.
     #[arg(long = "include-mission")]
     include_missions: Vec<String>,
+
+    /// Embedding dimension for magnetic-takens lane (power of 2, >= 16).
+    #[arg(long, default_value_t = 16)]
+    embedding_dim: usize,
+
+    /// Takens lag in time steps (1 = consecutive hourly).
+    #[arg(long, default_value_t = 1)]
+    takens_lag: usize,
 }
 
 #[derive(Debug, Clone, Serialize)]
@@ -62,6 +71,48 @@ struct GroupNullSummary {
     mission: String,
     product: String,
     null_mean_of_means: f64,
+    null_std_of_means: f64,
+    null_median_of_means: f64,
+    null_p05: f64,
+    null_p95: f64,
+}
+
+fn null_stats(means: &[f64]) -> (f64, f64, f64, f64, f64) {
+    if means.is_empty() {
+        return (0.0, 0.0, 0.0, 0.0, 0.0);
+    }
+    let n = means.len() as f64;
+    let avg = means.iter().sum::<f64>() / n;
+    let var = means.iter().map(|&m| (m - avg).powi(2)).sum::<f64>() / n;
+    let std = var.sqrt();
+
+    let mut sorted = means.to_vec();
+    sorted.sort_by(|a, b| a.partial_cmp(b).unwrap());
+    let median = sorted[sorted.len() / 2];
+    let p05_idx = ((sorted.len() as f64 * 0.05).floor() as usize).min(sorted.len() - 1);
+    let p95_idx = ((sorted.len() as f64 * 0.95).floor() as usize).min(sorted.len() - 1);
+    (avg, std, sorted[p05_idx], median, sorted[p95_idx])
+}
+
+fn build_null_summary(
+    mission: &str,
+    product: &str,
+    iteration_means: &[f64],
+) -> GroupNullSummary {
+    let (avg, std, p05, med, p95) = null_stats(iteration_means);
+    GroupNullSummary {
+        mission: mission.to_string(),
+        product: product.to_string(),
+        null_mean_of_means: avg,
+        null_std_of_means: std,
+        null_median_of_means: med,
+        null_p05: p05,
+        null_p95: p95,
+    }
+}
+
+fn associator_mean(norms: &[f64]) -> f64 {
+    if norms.is_empty() { 0.0 } else { norms.iter().sum::<f64>() / norms.len() as f64 }
 }
 
 fn main() -> Result<()> {
@@ -94,7 +145,6 @@ fn main() -> Result<()> {
         }
     }
 
-    // Group by mission + product
     let mut groups: BTreeMap<(String, String), Vec<HeliosphereFeatureRow>> = BTreeMap::new();
     for row in all_rows.iter() {
         groups
@@ -102,36 +152,33 @@ fn main() -> Result<()> {
             .or_default()
             .push(row.clone());
     }
-
-    // Sort rows by time within each group
     for rows in groups.values_mut() {
         rows.sort_by(|a, b| {
-            a.year
-                .cmp(&b.year)
-                .then(a.doy.cmp(&b.doy))
-                .then(a.hour.cmp(&b.hour))
+            a.year.cmp(&b.year).then(a.doy.cmp(&b.doy)).then(a.hour.cmp(&b.hour))
         });
     }
 
     let mut results = Vec::new();
 
-    // 1. Legacy Raw Embedding
-    results.push(audit_embedding(
+    // 1. Legacy Raw Embedding (always 16D)
+    results.push(audit_generic(
         "legacy-raw",
         &groups,
-        |rows| rows.iter().map(|r| r.algebra_vector()).collect(),
+        |rows| rows.iter().map(|r| r.algebra_vector().to_vec()).collect(),
+        16,
         cli.null_iterations,
     ));
 
-    // 2. Dynamic Bias-Free Embedding
-    results.push(audit_embedding(
+    // 2. Dynamic Bias-Free Embedding (always 16D)
+    results.push(audit_generic(
         "dynamic-bias-free",
         &groups,
-        |rows| rows.iter().map(|r| r.algebra_vector_dynamic_bias_free()).collect(),
+        |rows| rows.iter().map(|r| r.algebra_vector_dynamic_bias_free().to_vec()).collect(),
+        16,
         cli.null_iterations,
     ));
 
-    // 3. Invariant Embedding (Dimensionless residuals)
+    // 3. Invariant Embedding (10 channels padded to 16D)
     let invariant_samples = compute_invariant_samples(&all_rows);
     let mut inv_groups: BTreeMap<(String, String), Vec<HeliosphereInvariantSample>> =
         BTreeMap::new();
@@ -141,44 +188,36 @@ fn main() -> Result<()> {
             .or_default()
             .push(sample);
     }
-
-    // Sort rows by time within each group
     for rows in inv_groups.values_mut() {
         rows.sort_by(|a, b| {
-            a.year
-                .cmp(&b.year)
-                .then(a.doy.cmp(&b.doy))
-                .then(a.hour.cmp(&b.hour))
+            a.year.cmp(&b.year).then(a.doy.cmp(&b.doy)).then(a.hour.cmp(&b.hour))
         });
     }
-
-    results.push(audit_invariant_embedding(
+    results.push(audit_generic(
         "invariant-residuals",
         &inv_groups,
+        |samples: &[HeliosphereInvariantSample]| {
+            samples
+                .iter()
+                .map(|s| {
+                    let mut v = vec![0.0; 16];
+                    v[..10].copy_from_slice(&s.channels[..10]);
+                    v
+                })
+                .collect()
+        },
+        16,
         cli.null_iterations,
     ));
 
-    // 4. Magnetic Takens Embedding (16D phase space)
-    results.push(audit_embedding(
+    // 4. Magnetic Takens Embedding (dimension-parameterized)
+    let dim = cli.embedding_dim;
+    let lag = cli.takens_lag;
+    results.push(audit_generic(
         "magnetic-takens",
         &groups,
-        |rows| {
-            let mut v16s = Vec::new();
-            for window in rows.windows(4) {
-                let mut v16 = [0.0; 16];
-                let local_mean_b = (window[0].b_mag + window[1].b_mag + window[2].b_mag + window[3].b_mag) / 4.0;
-                if local_mean_b > 0.0 {
-                    for i in 0..4 {
-                        v16[i * 4] = window[i].bx / local_mean_b;
-                        v16[i * 4 + 1] = window[i].by / local_mean_b;
-                        v16[i * 4 + 2] = window[i].bz / local_mean_b;
-                        v16[i * 4 + 3] = (window[i].b_mag - local_mean_b) / local_mean_b;
-                    }
-                    v16s.push(v16);
-                }
-            }
-            v16s
-        },
+        |rows: &[HeliosphereFeatureRow]| magnetic_takens_embed(rows, dim, lag).0,
+        dim,
         cli.null_iterations,
     ));
 
@@ -192,29 +231,36 @@ fn main() -> Result<()> {
     if let Some(out_path) = cli.out {
         fs::write(out_path, json)?;
     } else {
-        println!("{}", json);
+        println!("{json}");
     }
 
     Ok(())
 }
 
-fn audit_embedding<F>(
+/// Dimension-generic audit: embed, compute base associators, then run
+/// temporal-shuffle and channel-permutation null families.
+fn audit_generic<T, F>(
     name: &str,
-    groups: &BTreeMap<(String, String), Vec<HeliosphereFeatureRow>>,
+    groups: &BTreeMap<(String, String), Vec<T>>,
     embed_fn: F,
+    dim: usize,
     null_iters: usize,
 ) -> EmbeddingResult
 where
-    F: Fn(&[HeliosphereFeatureRow]) -> Vec<[f64; 16]>,
+    T: Clone,
+    F: Fn(&[T]) -> Vec<Vec<f64>>,
 {
     let mut base_summaries = Vec::new();
-    let mut group_vectors = BTreeMap::new();
+    let mut group_vectors: BTreeMap<(String, String), Vec<Vec<f64>>> = BTreeMap::new();
 
     for ((mission, product), rows) in groups {
         let vectors = embed_fn(rows);
-        let associators = cd_kernel::batch_sedenion_associator_norms(&vectors);
+        let associators =
+            cd_kernel::batch_sliding_associator_norms(&vectors, dim);
 
-        if associators.is_empty() { continue; }
+        if associators.is_empty() {
+            continue;
+        }
 
         let mean = associators.iter().sum::<f64>() / associators.len() as f64;
         let max = associators.iter().copied().fold(f64::NEG_INFINITY, f64::max);
@@ -235,17 +281,10 @@ where
         for _ in 0..null_iters {
             let mut shuffled = vectors.clone();
             shuffled.shuffle(&mut thread_rng());
-            let associators = cd_kernel::batch_sedenion_associator_norms(&shuffled);
-            let m = if associators.is_empty() { 0.0 } else {
-                associators.iter().sum::<f64>() / associators.len() as f64
-            };
-            iteration_means.push(m);
+            let norms = cd_kernel::batch_sliding_associator_norms(&shuffled, dim);
+            iteration_means.push(associator_mean(&norms));
         }
-        shuffle_nulls.push(GroupNullSummary {
-            mission: mission.clone(),
-            product: product.clone(),
-            null_mean_of_means: iteration_means.iter().sum::<f64>() / null_iters as f64,
-        });
+        shuffle_nulls.push(build_null_summary(mission, product, &iteration_means));
     }
 
     // Channel Permutation Null
@@ -253,29 +292,18 @@ where
     for ((mission, product), vectors) in &group_vectors {
         let mut iteration_means = Vec::new();
         for _ in 0..null_iters {
-            let mut shuffled_vectors = Vec::new();
-            let mut indices: Vec<usize> = (0..16).collect();
+            let mut indices: Vec<usize> = (0..dim).collect();
             indices.shuffle(&mut thread_rng());
-            
-            for v in vectors {
-                let mut v_perm = [0.0; 16];
-                for (i, &idx) in indices.iter().enumerate() {
-                    v_perm[i] = v[idx];
-                }
-                shuffled_vectors.push(v_perm);
-            }
 
-            let associators = cd_kernel::batch_sedenion_associator_norms(&shuffled_vectors);
-            let m = if associators.is_empty() { 0.0 } else {
-                associators.iter().sum::<f64>() / associators.len() as f64
-            };
-            iteration_means.push(m);
+            let permuted: Vec<Vec<f64>> = vectors
+                .iter()
+                .map(|v| indices.iter().map(|&idx| v[idx]).collect())
+                .collect();
+
+            let norms = cd_kernel::batch_sliding_associator_norms(&permuted, dim);
+            iteration_means.push(associator_mean(&norms));
         }
-        permute_nulls.push(GroupNullSummary {
-            mission: mission.clone(),
-            product: product.clone(),
-            null_mean_of_means: iteration_means.iter().sum::<f64>() / null_iters as f64,
-        });
+        permute_nulls.push(build_null_summary(mission, product, &iteration_means));
     }
 
     let mut null_summaries = BTreeMap::new();
@@ -288,96 +316,3 @@ where
         null_summaries,
     }
 }
-
-fn audit_invariant_embedding(
-    name: &str,
-    groups: &BTreeMap<(String, String), Vec<HeliosphereInvariantSample>>,
-    null_iters: usize,
-) -> EmbeddingResult {
-    let mut base_summaries = Vec::new();
-    let mut group_vectors = BTreeMap::new();
-
-    for ((mission, product), samples) in groups {
-        let vectors: Vec<[f64; 16]> = samples.iter().map(|s| {
-            let mut v = [0.0; 16];
-            v[..10].copy_from_slice(&s.channels[..10]);
-            v
-        }).collect();
-
-        let associators = cd_kernel::batch_sedenion_associator_norms(&vectors);
-
-        if associators.is_empty() { continue; }
-
-        let mean = associators.iter().sum::<f64>() / associators.len() as f64;
-        let max = associators.iter().copied().fold(f64::NEG_INFINITY, f64::max);
-
-        base_summaries.push(GroupSummary {
-            mission: mission.clone(),
-            product: product.clone(),
-            mean_associator_norm: mean,
-            max_associator_norm: max,
-        });
-        group_vectors.insert((mission.clone(), product.clone()), vectors);
-    }
-
-    // Temporal Shuffle Null
-    let mut shuffle_nulls = Vec::new();
-    for ((mission, product), vectors) in &group_vectors {
-        let mut iteration_means = Vec::new();
-        for _ in 0..null_iters {
-            let mut shuffled = vectors.clone();
-            shuffled.shuffle(&mut thread_rng());
-            let associators = cd_kernel::batch_sedenion_associator_norms(&shuffled);
-            let m = if associators.is_empty() { 0.0 } else {
-                associators.iter().sum::<f64>() / associators.len() as f64
-            };
-            iteration_means.push(m);
-        }
-        shuffle_nulls.push(GroupNullSummary {
-            mission: mission.clone(),
-            product: product.clone(),
-            null_mean_of_means: iteration_means.iter().sum::<f64>() / null_iters as f64,
-        });
-    }
-
-    // Channel Permutation Null
-    let mut permute_nulls = Vec::new();
-    for ((mission, product), vectors) in &group_vectors {
-        let mut iteration_means = Vec::new();
-        for _ in 0..null_iters {
-            let mut shuffled_vectors = Vec::new();
-            let mut indices: Vec<usize> = (0..16).collect();
-            indices.shuffle(&mut thread_rng());
-            
-            for v in vectors {
-                let mut v_perm = [0.0; 16];
-                for (i, &idx) in indices.iter().enumerate() {
-                    v_perm[i] = v[idx];
-                }
-                shuffled_vectors.push(v_perm);
-            }
-
-            let associators = cd_kernel::batch_sedenion_associator_norms(&shuffled_vectors);
-            let m = if associators.is_empty() { 0.0 } else {
-                associators.iter().sum::<f64>() / associators.len() as f64
-            };
-            iteration_means.push(m);
-        }
-        permute_nulls.push(GroupNullSummary {
-            mission: mission.clone(),
-            product: product.clone(),
-            null_mean_of_means: iteration_means.iter().sum::<f64>() / null_iters as f64,
-        });
-    }
-
-    let mut null_summaries = BTreeMap::new();
-    null_summaries.insert("temporal-shuffle".to_string(), shuffle_nulls);
-    null_summaries.insert("channel-permutation".to_string(), permute_nulls);
-
-    EmbeddingResult {
-        embedding_name: name.to_string(),
-        base_summaries,
-        null_summaries,
-    }
-}
-
