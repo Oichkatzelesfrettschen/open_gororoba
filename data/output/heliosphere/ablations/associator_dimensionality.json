@@ -1,0 +1,191 @@
+{
+  "spearman_rho": 0.427,
+  "spearman_p": 0.029582300883681346,
+  "power_law_alpha": -0.0389,
+  "power_law_beta": 1.842,
+  "pearson_r_loglog": -0.0087,
+  "data": [
+    {
+      "r_au": 2.5,
+      "participation_ratio": 3.1834,
+      "mean_associator": 10.1578,
+      "log_participation": 1.1579,
+      "log_associator": 2.3182
+    },
+    {
+      "r_au": 7.5,
+      "participation_ratio": 2.7074,
+      "mean_associator": 8.4064,
+      "log_participation": 0.996,
+      "log_associator": 2.129
+    },
+    {
+      "r_au": 12.5,
+      "participation_ratio": 2.5544,
+      "mean_associator": 8.0113,
+      "log_participation": 0.9378,
+      "log_associator": 2.0809
+    },
+    {
+      "r_au": 17.5,
+      "participation_ratio": 3.3879,
+      "mean_associator": 7.8804,
+      "log_participation": 1.2202,
+      "log_associator": 2.0644
+    },
+    {
+      "r_au": 22.5,
+      "participation_ratio": 3.3166,
+      "mean_associator": 15.5075,
+      "log_participation": 1.1989,
+      "log_associator": 2.7413
+    },
+    {
+      "r_au": 27.5,
+      "participation_ratio": 2.6734,
+      "mean_associator": 9.8357,
+      "log_participation": 0.9834,
+      "log_associator": 2.286
+    },
+    {
+      "r_au": 32.5,
+      "participation_ratio": 2.2064,
+      "mean_associator": 8.9132,
+      "log_participation": 0.7914,
+      "log_associator": 2.1875
+    },
+    {
+      "r_au": 37.5,
+      "participation_ratio": 2.1594,
+      "mean_associator": 5.8672,
+      "log_participation": 0.7698,
+      "log_associator": 1.7694
+    },
+    {
+      "r_au": 42.5,
+      "participation_ratio": 2.9336,
+      "mean_associator": 6.638,
+      "log_participation": 1.0762,
+      "log_associator": 1.8928
+    },
+    {
+      "r_au": 47.5,
+      "participation_ratio": 3.0656,
+      "mean_associator": 6.9972,
+      "log_participation": 1.1202,
+      "log_associator": 1.9455
+    },
+    {
+      "r_au": 52.5,
+      "participation_ratio": 3.7524,
+      "mean_associator": 9.2298,
+      "log_participation": 1.3224,
+      "log_associator": 2.2224
+    },
+    {
+      "r_au": 57.5,
+      "participation_ratio": 2.996,
+      "mean_associator": 10.0475,
+      "log_participation": 1.0973,
+      "log_associator": 2.3073
+    },
+    {
+      "r_au": 62.5,
+      "participation_ratio": 3.0326,
+      "mean_associator": 12.8819,
+      "log_participation": 1.1094,
+      "log_associator": 2.5558
+    },
+    {
+      "r_au": 67.5,
+      "participation_ratio": 2.8933,
+      "mean_associator": 15.3611,
+      "log_participation": 1.0624,
+      "log_associator": 2.7318
+    },
+    {
+      "r_au": 72.5,
+      "participation_ratio": 2.7501,
+      "mean_associator": 9.1788,
+      "log_participation": 1.0116,
+      "log_associator": 2.2169
+    },
+    {
+      "r_au": 77.5,
+      "participation_ratio": 2.8388,
+      "mean_associator": 7.0795,
+      "log_participation": 1.0434,
+      "log_associator": 1.9572
+    },
+    {
+      "r_au": 82.5,
+      "participation_ratio": 3.3923,
+      "mean_associator": 9.4952,
+      "log_participation": 1.2215,
+      "log_associator": 2.2508
+    },
+    {
+      "r_au": 87.5,
+      "participation_ratio": 5.196,
+      "mean_associator": 10.4263,
+      "log_participation": 1.6479,
+      "log_associator": 2.3443
+    },
+    {
+      "r_au": 92.5,
+      "participation_ratio": 5.8381,
+      "mean_associator": 9.8062,
+      "log_participation": 1.7644,
+      "log_associator": 2.283
+    },
+    {
+      "r_au": 97.5,
+      "participation_ratio": 4.2183,
+      "mean_associator": 10.8065,
+      "log_participation": 1.4394,
+      "log_associator": 2.3801
+    },
+    {
+      "r_au": 102.5,
+      "participation_ratio": 2.5836,
+      "mean_associator": 9.4369,
+      "log_participation": 0.9492,
+      "log_associator": 2.2446
+    },
+    {
+      "r_au": 107.5,
+      "participation_ratio": 2.1917,
+      "mean_associator": 9.7904,
+      "log_participation": 0.7847,
+      "log_associator": 2.2814
+    },
+    {
+      "r_au": 112.5,
+      "participation_ratio": 2.5313,
+      "mean_associator": 5.4385,
+      "log_participation": 0.9287,
+      "log_associator": 1.6935
+    },
+    {
+      "r_au": 117.5,
+      "participation_ratio": 1.4377,
+      "mean_associator": 2.1613,
+      "log_participation": 0.363,
+      "log_associator": 0.7707
+    },
+    {
+      "r_au": 122.5,
+      "participation_ratio": 1.9978,
+      "mean_associator": 0.3207,
+      "log_participation": 0.692,
+      "log_associator": -1.1372
+    },
+    {
+      "r_au": 127.5,
+      "participation_ratio": 4.8486,
+      "mean_associator": 0.0241,
+      "log_participation": 1.5787,
+      "log_associator": -3.7258
+    }
+  ]
+}

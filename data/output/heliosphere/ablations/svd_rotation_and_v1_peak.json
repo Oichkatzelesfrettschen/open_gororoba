@@ -1,0 +1,108 @@
+{
+  "v2_direction_rotation": [
+    {
+      "r_au": 5,
+      "d_eff": 2.89,
+      "v1_br": 0.0006,
+      "v1_bt": 0.0491,
+      "v1_bn": 0.3501,
+      "tangential_fraction": 0.1389
+    },
+    {
+      "r_au": 15,
+      "d_eff": 2.86,
+      "v1_br": 0.0012,
+      "v1_bt": 0.0185,
+      "v1_bn": 0.353,
+      "tangential_fraction": 0.0523
+    },
+    {
+      "r_au": 25,
+      "d_eff": 3.08,
+      "v1_br": 0.0005,
+      "v1_bt": 0.0666,
+      "v1_bn": 0.3472,
+      "tangential_fraction": 0.1883
+    },
+    {
+      "r_au": 35,
+      "d_eff": 2.22,
+      "v1_br": 0.0007,
+      "v1_bt": 0.0601,
+      "v1_bn": 0.3484,
+      "tangential_fraction": 0.1699
+    },
+    {
+      "r_au": 45,
+      "d_eff": 3.13,
+      "v1_br": 0.0005,
+      "v1_bt": 0.0213,
+      "v1_bn": 0.3529,
+      "tangential_fraction": 0.0603
+    },
+    {
+      "r_au": 55,
+      "d_eff": 3.35,
+      "v1_br": 0.0038,
+      "v1_bt": 0.3271,
+      "v1_bn": 0.1333,
+      "tangential_fraction": 0.926
+    },
+    {
+      "r_au": 65,
+      "d_eff": 3.12,
+      "v1_br": 0.0008,
+      "v1_bt": 0.1028,
+      "v1_bn": 0.3382,
+      "tangential_fraction": 0.2908
+    },
+    {
+      "r_au": 75,
+      "d_eff": 2.8,
+      "v1_br": 0.0013,
+      "v1_bt": 0.0227,
+      "v1_bn": 0.3528,
+      "tangential_fraction": 0.0641
+    },
+    {
+      "r_au": 85,
+      "d_eff": 4.02,
+      "v1_br": 0.0014,
+      "v1_bt": 0.017,
+      "v1_bn": 0.353,
+      "tangential_fraction": 0.0482
+    },
+    {
+      "r_au": 95,
+      "d_eff": 4.87,
+      "v1_br": 0.0011,
+      "v1_bt": 0.349,
+      "v1_bn": 0.0562,
+      "tangential_fraction": 0.9873
+    },
+    {
+      "r_au": 105,
+      "d_eff": 2.32,
+      "v1_br": 0.0016,
+      "v1_bt": 0.0148,
+      "v1_bn": 0.3532,
+      "tangential_fraction": 0.0419
+    },
+    {
+      "r_au": 115,
+      "d_eff": 1.89,
+      "v1_br": 0.0004,
+      "v1_bt": 0.0032,
+      "v1_bn": 0.3535,
+      "tangential_fraction": 0.0091
+    },
+    {
+      "r_au": 125,
+      "d_eff": 1.91,
+      "v1_br": 0.0025,
+      "v1_bt": 0.3322,
+      "v1_bn": 0.1208,
+      "tangential_fraction": 0.9397
+    }
+  ]
+}
