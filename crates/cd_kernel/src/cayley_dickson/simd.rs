@@ -364,6 +364,81 @@ pub fn pathion_associator_norm_sq_flat(a: &[f64; 32], b: &[f64; 32], c: &[f64; 3
 }
 
 // ---------------------------------------------------------------------------
+// Chingon (64D) SIMD -- CD doubling of pathion, zero heap allocation
+// ---------------------------------------------------------------------------
+
+/// CD conjugate for a 32D half: negate all imaginary components (indices 1..32).
+#[inline]
+fn conjugate_32(x: &[f64; 32]) -> [f64; 32] {
+    let mut out = [0.0; 32];
+    out[0] = x[0];
+    for i in (1..4).step_by(1) {
+        out[i] = -x[i];
+    }
+    for i in (4..32).step_by(4) {
+        let v = f64x4::from([x[i], x[i + 1], x[i + 2], x[i + 3]]);
+        let neg = f64x4::ZERO - v;
+        out[i..i + 4].copy_from_slice(&neg.to_array());
+    }
+    out
+}
+
+/// Flat chingon (64D CD) multiply using pathion_multiply_flat.
+/// CD doubling: (a_l, a_r) * (b_l, b_r) = (a_l*b_l - conj(b_r)*a_r, b_r*a_l + a_r*conj(b_l))
+#[inline]
+pub fn chingon_multiply_flat(a: &[f64; 64], b: &[f64; 64]) -> [f64; 64] {
+    let a_l: [f64; 32] = a[..32].try_into().unwrap();
+    let a_r: [f64; 32] = a[32..].try_into().unwrap();
+    let b_l: [f64; 32] = b[..32].try_into().unwrap();
+    let b_r: [f64; 32] = b[32..].try_into().unwrap();
+
+    let conj_b_r = conjugate_32(&b_r);
+    let conj_b_l = conjugate_32(&b_l);
+
+    let al_bl = pathion_multiply_flat(&a_l, &b_l);
+    let cbr_ar = pathion_multiply_flat(&conj_b_r, &a_r);
+    let br_al = pathion_multiply_flat(&b_r, &a_l);
+    let ar_cbl = pathion_multiply_flat(&a_r, &conj_b_l);
+
+    let mut result = [0.0; 64];
+    for i in (0..32).step_by(4) {
+        let l = f64x4::from([al_bl[i], al_bl[i+1], al_bl[i+2], al_bl[i+3]]);
+        let r = f64x4::from([cbr_ar[i], cbr_ar[i+1], cbr_ar[i+2], cbr_ar[i+3]]);
+        result[i..i+4].copy_from_slice(&(l - r).to_array());
+    }
+    for i in (0..32).step_by(4) {
+        let l = f64x4::from([br_al[i], br_al[i+1], br_al[i+2], br_al[i+3]]);
+        let r = f64x4::from([ar_cbl[i], ar_cbl[i+1], ar_cbl[i+2], ar_cbl[i+3]]);
+        result[32+i..32+i+4].copy_from_slice(&(l + r).to_array());
+    }
+    result
+}
+
+/// Flat chingon (64D) associator: (a*b)*c - a*(b*c)
+#[inline]
+pub fn chingon_associator_flat(a: &[f64; 64], b: &[f64; 64], c: &[f64; 64]) -> [f64; 64] {
+    let ab = chingon_multiply_flat(a, b);
+    let abc_left = chingon_multiply_flat(&ab, c);
+    let bc = chingon_multiply_flat(b, c);
+    let abc_right = chingon_multiply_flat(a, &bc);
+
+    let mut assoc = [0.0; 64];
+    for i in (0..64).step_by(4) {
+        let l = f64x4::from([abc_left[i], abc_left[i+1], abc_left[i+2], abc_left[i+3]]);
+        let r = f64x4::from([abc_right[i], abc_right[i+1], abc_right[i+2], abc_right[i+3]]);
+        assoc[i..i+4].copy_from_slice(&(l - r).to_array());
+    }
+    assoc
+}
+
+/// Chingon associator norm squared using AVX2+FMA.
+#[inline]
+pub fn chingon_associator_norm_sq_flat(a: &[f64; 64], b: &[f64; 64], c: &[f64; 64]) -> f64 {
+    let assoc = chingon_associator_flat(a, b, c);
+    crate::avx2_primitives::avx2_norm_sq(&assoc)
+}
+
+// ---------------------------------------------------------------------------
 // Flat scalar baselines (no SIMD, no Vec -- pure unrolled arithmetic)
 // ---------------------------------------------------------------------------
 

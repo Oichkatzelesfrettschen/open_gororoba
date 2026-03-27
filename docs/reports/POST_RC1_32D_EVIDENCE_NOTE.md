@@ -57,15 +57,27 @@ Classification per mission (phase_ratio / block_ratio):
 - BEYOND_SPECTRUM: IMP 8
 - GENUINE_NONLINEAR: **Voyager 2 only** (phase=0.929, block=0.809)
 
-## Where 32D Exceeds Spectrum-Preserving Nulls
+## Where 32D Reveals Excess Algebraic Order
 
-**Voyager 2 heliosheath (110-125 AU)** is the only mission classified as
-GENUINE_NONLINEAR. The B-field temporal geometry in the heliosheath
-contains non-spectral, non-autocorrelation structure that the 32D
-pathion associator detects.
+**Voyager 2 heliosheath (100-130 AU)** exhibits a specific cross-channel
+B-field phase geometry that produces LESS non-associative structure than
+independently phase-randomized channels would. Under the 5-family null
+suite (including multivariate phase-randomized with independent per-channel
+phases), the base signal sits at 0.574-0.581x the multivariate null -- well
+below, and stable across all block sizes K=5 through K=100.
 
-The quench transition at the heliopause (117-122 AU) is genuine
-non-spectral structure. The ISM floor at >127 AU is real quenching.
+This is NOT best described as "excess nonlinearity." The heliosheath does
+not have MORE non-associative structure than spectral nulls; it has a
+SPECIFIC cross-channel phase coupling that is more algebraically ordered
+than random phase relationships would produce. The quench transition at
+the heliopause (117-122 AU) marks the boundary where this ordered phase
+geometry breaks down and the field becomes algebraically inert.
+
+Within-mission split validation (inner 1-60 AU vs outer 60-126 AU) confirms
+the quench transition is stable across disjoint observation epochs.
+
+The quench front aligns with the heliopause (~120 AU), not the termination
+shock (~84-94 AU). The ISM floor at >127 AU is real quenching.
 
 ## Regime-Conditioned Results
 

@@ -10585,11 +10585,11 @@ status_note = "Post-RC1 richer null analysis. 4 null families: temporal-shuffle 
 [[claim]]
 id = "C-1554"
 status = "Provisional"
-statement = "Voyager 2 heliosheath (110-125 AU) is the only mission classified GENUINE_NONLINEAR under the 4-family null suite: phase-randomized ratio = 0.929, block-shuffle ratio = 0.809 (densified per-mission audit). Block-size sensitivity STRENGTHENS with larger K (ratio increases from 1.09 at K=5 to 1.53 at K=50), confirming genuine long-range nonlinear temporal geometry beyond spectral autocorrelation."
-where_stated = "docs/reports/POST_RC1_32D_EVIDENCE_NOTE.md, data/output/heliosphere/ablations/spectral_excess_by_mission_32d.csv"
+statement = "Voyager 2 heliosheath (100-130 AU) exhibits excess algebraic order under the 5-family null suite: the 32D pathion associator norm is LOWER than multivariate-phase-randomized surrogates (ratio 0.574-0.581, stable across block sizes K=5-100), indicating specific cross-channel B-field phase geometry that reduces non-associativity relative to independently phase-randomized channels. This is not excess nonlinearity but rather structured phase coupling. Block-size sensitivity confirms the signal is not short-range autocorrelation (block ratio increases from 0.68 to 0.98 as K grows). Within-mission split (inner 1-60 AU vs outer 60-126 AU) shows the quench transition is stable across disjoint observation epochs."
+where_stated = "docs/reports/POST_RC1_32D_EVIDENCE_NOTE.md, data/output/heliosphere/ablations/v2_5family_null_audit_32d.json, data/output/heliosphere/ablations/heliosheath_block_sweep_32d.csv"
 last_verified = "2026-03-27"
 formal_proof = ""
-status_note = "Provisional: single-trajectory evidence (Voyager 2 only, mission_diversity=1 at heliosheath distances). No independent cross-mission confirmation at the same heliocentric distances. 32D is preferred working embedding, not canonical claim surface."
+status_note = "Provisional: single-trajectory evidence (Voyager 2 only, mission_diversity=1 at heliosheath distances). Interpretation refined by multivariate null: the signal is excess algebraic order (structured cross-channel phase coupling), not excess nonlinearity. Within-mission split validates epoch stability. 32D is preferred working embedding, not canonical claim surface."
 
 [[claim]]
 id = "C-1555"

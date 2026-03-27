@@ -179,7 +179,12 @@ credentials.*
 # ------------------------------------------------------------------------------
 
 # Strict TOML-only policy: markdown files are generated/ephemeral and not tracked.
-# EXCEPTIONS: Mandatory repo entrypoints and authoritative research syntheses.
+# EXCEPTIONS:
+#   - mandatory repo entrypoints and authoritative syntheses
+#   - curated top-level docs/reports markdown that is explicitly governed by
+#     registry/markdown_owner_map.toml and the markdown inventory gate
+# This keeps opportunistic LLM-spam markdown out of the repo while permitting
+# real report artifacts that have ownership and removal policy.
 *.md
 !docs/THEOREMS.md
 !docs/generated/THEOREMS_REGISTRY_MIRROR.md
@@ -204,6 +209,8 @@ credentials.*
 !docs/physics/sedenion_standard_model.md
 !docs/reports/RC1_EVIDENCE_NOTE.md
 !docs/reports/POST_RC1_32D_EVIDENCE_NOTE.md
+!docs/reports/*_commit_audit_*.md
+!docs/reports/*_roadmap_*.md
 
 # ------------------------------------------------------------------------------
 # 7. Root Directory Protection (Keep Root Clean)
