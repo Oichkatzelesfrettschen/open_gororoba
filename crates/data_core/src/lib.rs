@@ -74,7 +74,8 @@ pub use heliosphere_feature_cube::{
     HeliosphereTransformGroupStats, HeliosphereTransformMode, HeliosphereTransformResult,
     SparseExecutionMode, SparseExecutionPlan, SparseHardwareEnvelope, SparseMemoryPlan,
     compute_invariant_samples, estimate_sparse_execution_plan, estimate_sparse_memory_plan,
-    heliosphere_row_datetime, magnetic_takens_embed, transform_feature_rows,
+    heliosphere_row_datetime, magnetic_plasma_takens_embed, magnetic_takens_embed,
+    transform_feature_rows,
     transform_feature_rows_with_stats,
 };
 pub use quality::{

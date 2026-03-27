@@ -1750,3 +1750,90 @@ pub fn magnetic_takens_embed(
 
     (embedded, indices)
 }
+
+/// Build mixed magnetic+plasma Takens embedding (32D = 4 steps x 8 channels).
+///
+/// Channels per step: Bx/mean_B, By/mean_B, Bz/mean_B, (|B|-mean_B)/mean_B,
+/// n_p/mean_n, v_sw/mean_v, T_p/mean_T, v_A/mean_vA
+/// where v_A = |B| * 21.81 / sqrt(n_p) [nT, cm^-3 -> km/s].
+///
+/// **Missingness policy**: NO zero-filling. Only rows with ALL 8 channels
+/// finite and positive are eligible. Returns `(vectors, indices, eligible_mask)`
+/// where `eligible_mask[i]` is true if row `i` was usable.
+pub fn magnetic_plasma_takens_embed(
+    rows: &[HeliosphereFeatureRow],
+    lag_steps: usize,
+) -> (Vec<Vec<f64>>, Vec<usize>, Vec<bool>) {
+    let channels: usize = 8;
+    let steps: usize = 4;
+    let dim = channels * steps; // 32
+    let window_rows = (steps - 1) * lag_steps + 1;
+
+    let mut embedded = Vec::new();
+    let mut indices = Vec::new();
+
+    // Build eligibility mask: all 8 channels must be finite and positive
+    let eligible: Vec<bool> = rows
+        .iter()
+        .map(|r| {
+            let va = if r.density_cm3 > 0.0 { r.b_mag * 21.81 / r.density_cm3.sqrt() } else { f64::NAN };
+            r.bx.is_finite()
+                && r.by.is_finite()
+                && r.bz.is_finite()
+                && r.b_mag.is_finite()
+                && r.b_mag > 0.0
+                && r.density_cm3.is_finite()
+                && r.density_cm3 > 0.0
+                && r.speed_kms.is_finite()
+                && r.speed_kms > 0.0
+                && r.temperature_k.is_finite()
+                && r.temperature_k > 0.0
+                && va.is_finite()
+        })
+        .collect();
+
+    if rows.len() < window_rows {
+        return (embedded, indices, eligible);
+    }
+
+    for w_start in 0..=(rows.len() - window_rows) {
+        let sample_indices: Vec<usize> = (0..steps).map(|s| w_start + s * lag_steps).collect();
+
+        // ALL samples in window must be eligible
+        if !sample_indices.iter().all(|&i| eligible[i]) {
+            continue;
+        }
+
+        // Compute local means for normalization
+        let mean_b: f64 = sample_indices.iter().map(|&i| rows[i].b_mag).sum::<f64>() / steps as f64;
+        let mean_n: f64 = sample_indices.iter().map(|&i| rows[i].density_cm3).sum::<f64>() / steps as f64;
+        let mean_v: f64 = sample_indices.iter().map(|&i| rows[i].speed_kms).sum::<f64>() / steps as f64;
+        let mean_t: f64 = sample_indices.iter().map(|&i| rows[i].temperature_k).sum::<f64>() / steps as f64;
+        let alfven_speeds: Vec<f64> = sample_indices
+            .iter()
+            .map(|&i| rows[i].b_mag * 21.81 / rows[i].density_cm3.sqrt())
+            .collect();
+        let mean_va: f64 = alfven_speeds.iter().sum::<f64>() / steps as f64;
+
+        if mean_b <= 0.0 || mean_n <= 0.0 || mean_v <= 0.0 || mean_t <= 0.0 || mean_va <= 0.0 {
+            continue;
+        }
+
+        let mut v = vec![0.0; dim];
+        for (s, &ri) in sample_indices.iter().enumerate() {
+            let r = &rows[ri];
+            v[s * channels] = r.bx / mean_b;
+            v[s * channels + 1] = r.by / mean_b;
+            v[s * channels + 2] = r.bz / mean_b;
+            v[s * channels + 3] = (r.b_mag - mean_b) / mean_b;
+            v[s * channels + 4] = r.density_cm3 / mean_n;
+            v[s * channels + 5] = r.speed_kms / mean_v;
+            v[s * channels + 6] = r.temperature_k / mean_t;
+            v[s * channels + 7] = alfven_speeds[s] / mean_va;
+        }
+        embedded.push(v);
+        indices.push(*sample_indices.last().unwrap());
+    }
+
+    (embedded, indices, eligible)
+}
