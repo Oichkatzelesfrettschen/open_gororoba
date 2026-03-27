@@ -144,7 +144,7 @@ impl Default for NhSwapProvider {
     fn default() -> Self {
         Self {
             year_start: 2015,
-            year_end: 2020,
+            year_end: 2023,
         }
     }
 }

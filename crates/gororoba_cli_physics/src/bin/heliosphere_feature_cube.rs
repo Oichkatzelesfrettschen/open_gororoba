@@ -142,6 +142,7 @@ fn build_cube(repo_root: &Path, window: &str) -> Result<HeliosphereFeatureCube> 
             // Add all available Voyager and Ulysses year files not already covered
             ingest_all_voyager_years(repo_root, &mut rows, &mut sources, &mut notes)?;
             ingest_all_ulysses_years(repo_root, &mut rows, &mut sources, &mut notes)?;
+            ingest_all_nh_swap_years(repo_root, &mut rows, &mut sources, &mut notes)?;
         }
         other => bail!(
             "unsupported window {other}; expected fleet2016, inner1976, modern2020, outer2001, boundary2009, remote2024, imap2025, imap2026, psp2025, mms2024, full-heliosphere, or densified"
@@ -2141,6 +2142,55 @@ fn ingest_all_ulysses_years(
                     "Ulysses",
                     "Merged hourly",
                     &ulysses_to_omni(&merged),
+                );
+            }
+            Err(e) => {
+                notes.push(format!("WARN: failed to parse {}: {e}", path.display()));
+            }
+        }
+    }
+    Ok(())
+}
+
+/// Scan all `new_horizons_helio1hr_position_YYYY.csv` in `data/external/new_horizons/`
+/// and ingest any year not already present.
+fn ingest_all_nh_swap_years(
+    repo_root: &Path,
+    rows: &mut Vec<HeliosphereFeatureRow>,
+    sources: &mut Vec<String>,
+    notes: &mut Vec<String>,
+) -> Result<()> {
+    let existing: BTreeSet<u16> = rows
+        .iter()
+        .filter(|r| r.mission == "New Horizons")
+        .map(|r| r.year)
+        .collect();
+
+    let dir_path = repo_root.join("data/external/new_horizons");
+    if !dir_path.exists() {
+        return Ok(());
+    }
+    for entry in WalkDir::new(&dir_path).min_depth(1).max_depth(1) {
+        let entry = entry?;
+        let name = entry.file_name().to_string_lossy();
+        let year = name
+            .strip_prefix("new_horizons_helio1hr_position_")
+            .and_then(|s| s.strip_suffix(".csv"))
+            .and_then(|s| s.parse::<u16>().ok());
+        let Some(year) = year else { continue };
+        if existing.contains(&year) {
+            continue;
+        }
+        let path = entry.path().to_path_buf();
+        match parse_nh_swap_file(&path) {
+            Ok(records) => {
+                sources.push(rel(repo_root, &path));
+                push_omni_rows(
+                    rows,
+                    "densified",
+                    "New Horizons",
+                    "SWAP+support",
+                    &nh_swap_to_omni(&records),
                 );
             }
             Err(e) => {
