@@ -709,6 +709,11 @@ Definition s54_pair_derivation_to_sed
     CDSed -> CDSed :=
   fun x => s54_pair_to_sed (D (s54_sed_to_pair x)).
 
+Definition s54_sed_derivation_to_pair
+    (D : CDSed -> CDSed) :
+    s54_pair CDOct -> s54_pair CDOct :=
+  fun p => s54_sed_to_pair (D (s54_pair_to_sed p)).
+
 Definition schafer1954_sedenion_extend
     (A : CDOct -> CDOct) : CDSed -> CDSed :=
   s54_pair_derivation_to_sed (s54_pair_extend CDOct A).
@@ -747,6 +752,55 @@ Proof.
   unfold oct_scale, oct_neg; simpl.
   apply (f_equal2 mkOct); unfold quat_scale, quat_neg; simpl;
   apply (f_equal4 mkQuat); ring.
+Qed.
+
+Lemma s54_oct_scale_zero_right : forall r : R,
+  oct_scale r oct_zero = oct_zero.
+Proof.
+  intro r.
+  unfold oct_scale, oct_zero; simpl.
+  apply (f_equal2 mkOct); unfold quat_scale, quat_zero; simpl;
+  apply (f_equal4 mkQuat); ring.
+Qed.
+
+Lemma s54_oct_conj_zero : oct_conj oct_zero = oct_zero.
+Proof.
+  cbv [oct_conj oct_zero oct_lo oct_hi
+       quat_conj quat_neg quat_zero qa qb qc qd].
+  apply (f_equal2 mkOct); apply (f_equal4 mkQuat); ring.
+Qed.
+
+Lemma s54_oct_conj_one :
+  oct_conj (mkOct quat_one quat_zero) = mkOct quat_one quat_zero.
+Proof.
+  cbv [oct_conj oct_lo oct_hi
+       quat_conj quat_neg quat_zero quat_one qa qb qc qd].
+  apply (f_equal2 mkOct); apply (f_equal4 mkQuat); ring.
+Qed.
+
+Lemma s54_oct_mul_one_left : forall x : CDOct,
+  oct_mul (mkOct quat_one quat_zero) x = x.
+Proof.
+  intros [[a b c d] [e f g h]].
+  cbv [oct_mul oct_conj oct_zero oct_lo oct_hi
+       quat_mul quat_add quat_neg quat_conj quat_one quat_zero
+       qa qb qc qd].
+  apply (f_equal2 mkOct); apply (f_equal4 mkQuat); ring.
+Qed.
+
+Lemma s54_oct_add_cancel_left : forall z x y : CDOct,
+  oct_add z x = oct_add z y -> x = y.
+Proof.
+  intros [[z1 z2 z3 z4] [z5 z6 z7 z8]]
+         [[x1 x2 x3 x4] [x5 x6 x7 x8]]
+         [[y1 y2 y3 y4] [y5 y6 y7 y8]] H.
+  cbv [oct_add oct_lo oct_hi quat_add qa qb qc qd] in H.
+  inversion H; clear H; subst.
+  repeat match goal with
+  | Hq : mkQuat _ _ _ _ = mkQuat _ _ _ _ |- _ =>
+      inversion Hq; clear Hq; subst
+  end.
+  apply (f_equal2 mkOct); apply (f_equal4 mkQuat); lra.
 Qed.
 
 Lemma s54_pair_to_sed_add :
@@ -810,6 +864,35 @@ Proof.
   reflexivity.
 Qed.
 
+Theorem schafer1954_sedenion_derivation_to_octonion_pair :
+  forall D : CDSed -> CDSed,
+    Schafer1954IsSedenionDerivation D ->
+    schafer1954_octonion_pair_derivation (s54_sed_derivation_to_pair D).
+Proof.
+  intros D HD.
+  destruct HD as [Hadd Hscale Hmul].
+  constructor.
+  - intros [a b] [c d].
+    unfold s54_sed_derivation_to_pair; simpl.
+    rewrite s54_pair_to_sed_add.
+    rewrite Hadd.
+    rewrite s54_sed_to_pair_add.
+    reflexivity.
+  - intros r [a b].
+    unfold s54_sed_derivation_to_pair; simpl.
+    rewrite s54_pair_to_sed_scale.
+    rewrite Hscale.
+    rewrite s54_sed_to_pair_scale.
+    reflexivity.
+  - intros [a b] [c d].
+    unfold s54_sed_derivation_to_pair; simpl.
+    rewrite s54_pair_to_sed_mul.
+    rewrite Hmul.
+    rewrite s54_sed_to_pair_add.
+    rewrite !s54_sed_to_pair_mul.
+    reflexivity.
+Qed.
+
 Theorem schafer1954_octonion_pair_derivation_to_sedenion :
   forall D : s54_pair CDOct -> s54_pair CDOct,
     schafer1954_octonion_pair_derivation D ->
@@ -856,6 +939,378 @@ Proof.
   - exact HA.
 Qed.
 
+Definition s54_oct_one : CDOct := mkOct quat_one quat_zero.
+
+Definition s54_oct_embed (a : CDOct) : CDSed := mkSed a oct_zero.
+
+Definition s54_hi_embed (a : CDOct) : CDSed := mkSed oct_zero a.
+
+Definition s54_y : CDSed := s54_hi_embed s54_oct_one.
+
+Lemma s54_sed_mul_one_left : forall x : CDSed,
+  sed_mul sed_one x = x.
+Proof.
+  intros [[[a1 a2 a3 a4] [a5 a6 a7 a8]] [[a9 a10 a11 a12] [a13 a14 a15 a16]]].
+  cbv [sed_mul sed_one sed_lo sed_hi
+       oct_mul oct_conj oct_zero oct_lo oct_hi
+       quat_mul quat_add quat_neg quat_conj quat_one quat_zero
+       qa qb qc qd].
+  f_equal; f_equal; f_equal; ring.
+Qed.
+
+Lemma s54_sed_self_add_eq_zero : forall x : CDSed,
+  x = sed_add x x -> x = sed_zero.
+Proof.
+  intros [[[a1 a2 a3 a4] [a5 a6 a7 a8]] [[a9 a10 a11 a12] [a13 a14 a15 a16]]] H.
+  cbv [sed_add sed_zero oct_add oct_zero quat_add quat_zero
+       qa qb qc qd oct_lo oct_hi sed_lo sed_hi] in H.
+  inversion H; clear H; subst.
+  repeat match goal with
+  | Hq : mkOct _ _ = mkOct _ _ |- _ => inversion Hq; clear Hq; subst
+  | Hq : mkQuat _ _ _ _ = mkQuat _ _ _ _ |- _ => inversion Hq; clear Hq; subst
+  end.
+  assert (Ha1 : a1 = 0%R) by lra.
+  assert (Ha2 : a2 = 0%R) by lra.
+  assert (Ha3 : a3 = 0%R) by lra.
+  assert (Ha4 : a4 = 0%R) by lra.
+  assert (Ha5 : a5 = 0%R) by lra.
+  assert (Ha6 : a6 = 0%R) by lra.
+  assert (Ha7 : a7 = 0%R) by lra.
+  assert (Ha8 : a8 = 0%R) by lra.
+  assert (Ha9 : a9 = 0%R) by lra.
+  assert (Ha10 : a10 = 0%R) by lra.
+  assert (Ha11 : a11 = 0%R) by lra.
+  assert (Ha12 : a12 = 0%R) by lra.
+  assert (Ha13 : a13 = 0%R) by lra.
+  assert (Ha14 : a14 = 0%R) by lra.
+  assert (Ha15 : a15 = 0%R) by lra.
+  assert (Ha16 : a16 = 0%R) by lra.
+  subst a1 a2 a3 a4 a5 a6 a7 a8 a9 a10 a11 a12 a13 a14 a15 a16.
+  cbv [sed_zero oct_zero quat_zero].
+  apply f_equal2.
+  - apply f_equal2.
+    + apply f_equal4; ring.
+    + apply f_equal4; ring.
+  - apply f_equal2.
+    + apply f_equal4; ring.
+    + apply f_equal4; ring.
+Qed.
+
+Lemma s54_oct_embed_mul : forall a b : CDOct,
+  sed_mul (s54_oct_embed a) (s54_oct_embed b) = s54_oct_embed (oct_mul a b).
+Proof.
+  intros [[a1 a2 a3 a4] [a5 a6 a7 a8]] [[b1 b2 b3 b4] [b5 b6 b7 b8]].
+  cbv [s54_oct_embed sed_mul sed_lo sed_hi
+       oct_mul oct_conj oct_zero oct_lo oct_hi oct_neg
+       quat_mul quat_add quat_neg quat_conj quat_zero
+       qa qb qc qd].
+  apply f_equal2.
+  - apply f_equal2.
+    + apply f_equal4; ring.
+    + apply f_equal4; ring.
+  - apply f_equal2.
+    + apply f_equal4; ring.
+    + apply f_equal4; ring.
+Qed.
+
+Lemma s54_oct_embed_mul_y : forall a : CDOct,
+  sed_mul (s54_oct_embed a) s54_y = s54_hi_embed a.
+Proof.
+  intros [[a1 a2 a3 a4] [a5 a6 a7 a8]].
+  cbv [s54_oct_embed s54_hi_embed s54_y s54_oct_one sed_mul sed_lo sed_hi
+       oct_mul oct_conj oct_zero oct_lo oct_hi oct_neg
+       quat_mul quat_add quat_neg quat_conj quat_zero quat_one
+       qa qb qc qd].
+  apply f_equal2.
+  - apply f_equal2.
+    + apply f_equal4; ring.
+    + apply f_equal4; ring.
+  - apply f_equal2.
+    + apply f_equal4; ring.
+    + apply f_equal4; ring.
+Qed.
+
+Lemma s54_y_mul_oct_embed : forall a : CDOct,
+  sed_mul s54_y (s54_oct_embed a) = s54_hi_embed (oct_conj a).
+Proof.
+  intros [[a1 a2 a3 a4] [a5 a6 a7 a8]].
+  cbv [s54_oct_embed s54_hi_embed s54_y s54_oct_one sed_mul sed_lo sed_hi
+       oct_mul oct_conj oct_zero oct_lo oct_hi oct_neg
+       quat_mul quat_add quat_neg quat_conj quat_zero quat_one
+       qa qb qc qd].
+  apply f_equal2.
+  - apply f_equal2.
+    + apply f_equal4; ring.
+    + apply f_equal4; ring.
+  - apply f_equal2.
+    + apply f_equal4; ring.
+    + apply f_equal4; ring.
+Qed.
+
+Lemma s54_y_square :
+  sed_mul s54_y s54_y = sed_neg sed_one.
+Proof.
+  cbv [s54_y s54_hi_embed s54_oct_one sed_mul sed_neg sed_one sed_lo sed_hi
+       oct_mul oct_conj oct_zero oct_lo oct_hi oct_neg
+       quat_mul quat_add quat_neg quat_conj quat_zero quat_one
+       qa qb qc qd].
+  f_equal; f_equal; f_equal; ring.
+Qed.
+
+Theorem s54_sed_derivation_zero :
+  forall D : CDSed -> CDSed,
+    Schafer1954IsSedenionDerivation D ->
+    D sed_zero = sed_zero.
+Proof.
+  intros D HD.
+  destruct HD as [_ Hscale _].
+  specialize (Hscale 0%R sed_one).
+  rewrite sed_scale_zero in Hscale.
+  rewrite sed_scale_zero in Hscale.
+  exact Hscale.
+Qed.
+
+Theorem s54_sed_derivation_one_zero :
+  forall D : CDSed -> CDSed,
+    Schafer1954IsSedenionDerivation D ->
+    D sed_one = sed_zero.
+Proof.
+  intros D HD.
+  destruct HD as [_ _ Hmul].
+  specialize (Hmul sed_one sed_one).
+  rewrite s54_sed_mul_one_left in Hmul.
+  rewrite sed_mul_one_right in Hmul.
+  rewrite s54_sed_mul_one_left in Hmul.
+  apply s54_sed_self_add_eq_zero.
+  exact Hmul.
+Qed.
+
+Lemma s54_pair_mul_lo_lo :
+  forall a b : CDOct,
+    s54_pair_mul CDOct oct_add oct_mul oct_scale oct_conj (-1)
+      (a, oct_zero) (b, oct_zero) =
+    (oct_mul a b, oct_zero).
+Proof.
+  intros a b.
+  unfold s54_pair_mul; simpl.
+  rewrite s54_oct_conj_zero.
+  rewrite oct_mul_zero_left.
+  rewrite s54_oct_scale_zero_right.
+  rewrite oct_add_zero_right.
+  repeat rewrite oct_mul_zero_left.
+  rewrite oct_add_zero_left.
+  reflexivity.
+Qed.
+
+Lemma s54_pair_mul_any_lo :
+  forall x1 x2 b : CDOct,
+    s54_pair_mul CDOct oct_add oct_mul oct_scale oct_conj (-1)
+      (x1, x2) (b, oct_zero) =
+    (oct_mul x1 b, oct_mul x2 (oct_conj b)).
+Proof.
+  intros x1 x2 b.
+  unfold s54_pair_mul; simpl.
+  rewrite s54_oct_conj_zero.
+  rewrite oct_mul_zero_left.
+  rewrite s54_oct_scale_zero_right.
+  rewrite oct_add_zero_right.
+  rewrite oct_mul_zero_left.
+  rewrite oct_add_zero_left.
+  reflexivity.
+Qed.
+
+Lemma s54_pair_mul_lo_any :
+  forall a u v : CDOct,
+    s54_pair_mul CDOct oct_add oct_mul oct_scale oct_conj (-1)
+      (a, oct_zero) (u, v) =
+    (oct_mul a u, oct_mul v a).
+Proof.
+  intros a u v.
+  unfold s54_pair_mul; simpl.
+  rewrite oct_mul_zero_right.
+  rewrite s54_oct_scale_zero_right.
+  rewrite oct_add_zero_right.
+  rewrite oct_mul_zero_left.
+  rewrite oct_add_zero_right.
+  reflexivity.
+Qed.
+
+Lemma s54_pair_mul_lo_y :
+  forall a : CDOct,
+    s54_pair_mul CDOct oct_add oct_mul oct_scale oct_conj (-1)
+      (a, oct_zero) (oct_zero, s54_oct_one) =
+    (oct_zero, a).
+Proof.
+  intro a.
+  unfold s54_oct_one.
+  rewrite s54_pair_mul_lo_any.
+  rewrite oct_mul_zero_right.
+  repeat rewrite s54_oct_mul_one_left.
+  reflexivity.
+Qed.
+
+Lemma s54_pair_mul_y_lo :
+  forall a : CDOct,
+    s54_pair_mul CDOct oct_add oct_mul oct_scale oct_conj (-1)
+      (oct_zero, s54_oct_one) (a, oct_zero) =
+    (oct_zero, oct_conj a).
+Proof.
+  intro a.
+  unfold s54_oct_one.
+  rewrite s54_pair_mul_any_lo.
+  rewrite oct_mul_zero_left.
+  repeat rewrite s54_oct_mul_one_left.
+  reflexivity.
+Qed.
+
+Lemma s54_pair_mul_any_y :
+  forall aa cc : CDOct,
+    s54_pair_mul CDOct oct_add oct_mul oct_scale oct_conj (-1)
+      (aa, cc) (oct_zero, s54_oct_one) =
+    (oct_neg cc, aa).
+Proof.
+  intros aa cc.
+  unfold s54_pair_mul, s54_oct_one; simpl.
+  rewrite oct_mul_zero_right.
+  rewrite s54_oct_conj_one.
+  repeat rewrite s54_oct_mul_one_left.
+  rewrite s54_oct_scale_neg_one.
+  rewrite oct_add_zero_left.
+  rewrite s54_oct_conj_zero.
+  rewrite oct_mul_zero_right.
+  rewrite oct_add_zero_right.
+  reflexivity.
+Qed.
+
+Lemma s54_pair_mul_y_any :
+  forall aa cc : CDOct,
+    s54_pair_mul CDOct oct_add oct_mul oct_scale oct_conj (-1)
+      (oct_zero, s54_oct_one) (aa, cc) =
+    (oct_neg (oct_conj cc), oct_conj aa).
+Proof.
+  intros aa cc.
+  unfold s54_pair_mul, s54_oct_one; simpl.
+  rewrite oct_mul_zero_left.
+  rewrite oct_mul_one_right.
+  rewrite s54_oct_scale_neg_one.
+  rewrite oct_add_zero_left.
+  rewrite oct_mul_zero_right.
+  repeat rewrite s54_oct_mul_one_left.
+  rewrite oct_add_zero_left.
+  reflexivity.
+Qed.
+
+Definition s54_block_A (D : CDSed -> CDSed) (a : CDOct) : CDOct :=
+  sed_lo (D (s54_oct_embed a)).
+
+Definition s54_block_C (D : CDSed -> CDSed) (a : CDOct) : CDOct :=
+  sed_hi (D (s54_oct_embed a)).
+
+Definition s54_block_B (D : CDSed -> CDSed) (a : CDOct) : CDOct :=
+  sed_lo (D (s54_hi_embed a)).
+
+Definition s54_block_E (D : CDSed -> CDSed) (a : CDOct) : CDOct :=
+  sed_hi (D (s54_hi_embed a)).
+
+Definition s54_block_u (D : CDSed -> CDSed) : CDOct :=
+  s54_block_B D s54_oct_one.
+
+Definition s54_block_v (D : CDSed -> CDSed) : CDOct :=
+  s54_block_E D s54_oct_one.
+
+Theorem s54_block_A_is_derivation :
+  forall D : CDSed -> CDSed,
+    Schafer1954IsSedenionDerivation D ->
+    forall a b : CDOct,
+      s54_block_A D (oct_mul a b) =
+      oct_add (oct_mul (s54_block_A D a) b)
+              (oct_mul a (s54_block_A D b)).
+Proof.
+  intros D HD a b.
+  pose proof (schafer1954_sedenion_derivation_to_octonion_pair D HD) as HDp.
+  destruct HDp as [_ _ Hpair_mul].
+  specialize (Hpair_mul (a, oct_zero) (b, oct_zero)).
+  unfold s54_sed_derivation_to_pair, s54_block_A,
+         s54_pair_add, s54_pair_to_sed, s54_sed_to_pair in Hpair_mul |- *.
+  cbn [fst snd] in Hpair_mul |- *.
+  rewrite s54_pair_mul_lo_lo in Hpair_mul.
+  rewrite s54_pair_mul_any_lo in Hpair_mul.
+  rewrite s54_pair_mul_lo_any in Hpair_mul.
+  pose proof (f_equal fst Hpair_mul) as Hlo.
+  cbn [fst] in Hlo.
+  exact Hlo.
+Qed.
+
+Theorem s54_blocks_from_right_generator :
+  forall D : CDSed -> CDSed,
+    Schafer1954IsSedenionDerivation D ->
+    forall a : CDOct,
+      s54_block_B D a =
+      oct_add (oct_mul a (s54_block_u D)) (oct_neg (s54_block_C D a)) /\
+      s54_block_E D a =
+      oct_add (s54_block_A D a) (oct_mul (s54_block_v D) a).
+Proof.
+  intros D HD a.
+  pose proof (schafer1954_sedenion_derivation_to_octonion_pair D HD) as HDp.
+  destruct HDp as [_ _ Hpair_mul].
+  specialize (Hpair_mul (a, oct_zero) (oct_zero, s54_oct_one)).
+  unfold s54_sed_derivation_to_pair, s54_block_A, s54_block_B, s54_block_C,
+         s54_block_E, s54_block_u, s54_block_v,
+         s54_pair_add, s54_pair_to_sed, s54_sed_to_pair in Hpair_mul |- *.
+  cbn [fst snd] in Hpair_mul |- *.
+  rewrite s54_pair_mul_lo_y in Hpair_mul.
+  rewrite s54_pair_mul_any_y in Hpair_mul.
+  rewrite s54_pair_mul_lo_any in Hpair_mul.
+  pose proof (f_equal fst Hpair_mul) as HB.
+  pose proof (f_equal snd Hpair_mul) as HE.
+  cbn [fst snd] in HB, HE.
+  rewrite oct_add_comm in HB.
+  split; [exact HB | exact HE].
+Qed.
+
+Theorem s54_blocks_from_left_generator :
+  forall D : CDSed -> CDSed,
+    Schafer1954IsSedenionDerivation D ->
+    forall a : CDOct,
+      s54_block_B D (oct_conj a) =
+      oct_add (oct_mul (s54_block_u D) a)
+              (oct_neg (oct_conj (s54_block_C D a))) /\
+      s54_block_E D (oct_conj a) =
+      oct_add (oct_mul (s54_block_v D) (oct_conj a))
+              (oct_conj (s54_block_A D a)).
+Proof.
+  intros D HD a.
+  pose proof (schafer1954_sedenion_derivation_to_octonion_pair D HD) as HDp.
+  destruct HDp as [_ _ Hpair_mul].
+  specialize (Hpair_mul (oct_zero, s54_oct_one) (a, oct_zero)).
+  unfold s54_sed_derivation_to_pair, s54_block_A, s54_block_B, s54_block_C,
+         s54_block_E, s54_block_u, s54_block_v,
+         s54_pair_add, s54_pair_to_sed, s54_sed_to_pair in Hpair_mul |- *.
+  cbn [fst snd] in Hpair_mul |- *.
+  rewrite s54_pair_mul_y_lo in Hpair_mul.
+  rewrite s54_pair_mul_any_lo in Hpair_mul.
+  rewrite s54_pair_mul_y_any in Hpair_mul.
+  pose proof (f_equal fst Hpair_mul) as HB.
+  pose proof (f_equal snd Hpair_mul) as HE.
+  cbn [fst snd] in HB, HE.
+  split; [exact HB | exact HE].
+Qed.
+
+Theorem s54_block_A_conj :
+  forall D : CDSed -> CDSed,
+    Schafer1954IsSedenionDerivation D ->
+    forall a : CDOct,
+      s54_block_A D (oct_conj a) = oct_conj (s54_block_A D a).
+Proof.
+  intros D HD a.
+  destruct (s54_blocks_from_right_generator D HD (oct_conj a)) as [_ Hright].
+  destruct (s54_blocks_from_left_generator D HD a) as [_ Hleft].
+  rewrite oct_add_comm in Hright.
+  rewrite Hleft in Hright.
+  symmetry in Hright.
+  eapply s54_oct_add_cancel_left.
+  exact Hright.
+Qed.
 Record Schafer1954OctonionSedenionConverseSurface := {
   s54_octsed_converse_eq52_discharge :
     forall p : Schafer1954Basis7 -> R,
