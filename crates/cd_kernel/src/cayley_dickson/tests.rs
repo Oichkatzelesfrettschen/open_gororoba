@@ -157,6 +157,80 @@ fn test_batch_sedenion_associator_matches_recursive() {
     }
 
     #[test]
+    fn test_randomized_associator_agreement_16d_32d_64d() {
+        // Randomized property test: for each dimension, generate random triples
+        // and verify the SIMD fast path agrees with the generic recursive path.
+        use std::collections::hash_map::DefaultHasher;
+        use std::hash::{Hash, Hasher};
+
+        fn pseudo_random(seed: u64, idx: usize) -> f64 {
+            let mut h = DefaultHasher::new();
+            seed.hash(&mut h);
+            idx.hash(&mut h);
+            let bits = h.finish();
+            // Map to [-1, 1]
+            (bits as f64 / u64::MAX as f64) * 2.0 - 1.0
+        }
+
+        for &dim in &[16usize, 32, 64] {
+            for trial in 0..20 {
+                let seed = 42u64 + trial * 1000 + dim as u64;
+                let a: Vec<f64> = (0..dim).map(|j| pseudo_random(seed, j)).collect();
+                let b: Vec<f64> = (0..dim).map(|j| pseudo_random(seed + 1, j)).collect();
+                let c: Vec<f64> = (0..dim).map(|j| pseudo_random(seed + 2, j)).collect();
+
+                let generic = cd_associator_norm(&a, &b, &c);
+
+                // Test via batch_sliding (which uses SIMD fast path for 16/32)
+                let vecs = vec![a.clone(), b.clone(), c.clone()];
+                let batch = batch_sliding_associator_norms(&vecs, dim);
+                assert_eq!(batch.len(), 1);
+
+                let rel_err = if generic.abs().max(batch[0].abs()) > 1e-15 {
+                    (generic - batch[0]).abs() / generic.abs().max(batch[0].abs())
+                } else {
+                    (generic - batch[0]).abs()
+                };
+                assert!(
+                    rel_err < 1e-6,
+                    "dim={dim} trial={trial}: generic={generic:.8e}, batch={:.8e}, rel_err={rel_err:.2e}",
+                    batch[0]
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn test_randomized_serial_parallel_agreement() {
+        use std::collections::hash_map::DefaultHasher;
+        use std::hash::{Hash, Hasher};
+
+        fn pseudo_random(seed: u64, idx: usize) -> f64 {
+            let mut h = DefaultHasher::new();
+            seed.hash(&mut h);
+            idx.hash(&mut h);
+            (h.finish() as f64 / u64::MAX as f64) * 2.0 - 1.0
+        }
+
+        for &dim in &[16usize, 32] {
+            let seed = 99u64 + dim as u64;
+            let vecs: Vec<Vec<f64>> = (0..12)
+                .map(|i| (0..dim).map(|j| pseudo_random(seed + i, j)).collect())
+                .collect();
+
+            let serial = batch_sliding_associator_norms(&vecs, dim);
+            let parallel = batch_sliding_associator_norms_parallel(&vecs, dim);
+            assert_eq!(serial.len(), parallel.len());
+            for (i, (s, p)) in serial.iter().zip(&parallel).enumerate() {
+                assert!(
+                    (s - p).abs() < 1e-12,
+                    "dim={dim} idx={i}: serial={s}, parallel={p}"
+                );
+            }
+        }
+    }
+
+    #[test]
     fn test_batch_sliding_empty_and_short() {
         let empty: Vec<Vec<f64>> = Vec::new();
         assert!(batch_sliding_associator_norms(&empty, 16).is_empty());

@@ -1,0 +1,290 @@
+{
+  "total_rows": 1153207,
+  "unique_keys": 1153151,
+  "duplicate_key_count": 7,
+  "duplicate_examples": {
+    "('Solar Orbiter', 'MAG RTN 1-minute', '2020', '111', '23')": 27,
+    "('Solar Orbiter', 'RPW BIA SCPOT 10-second', '2020', '250', '23')": 8,
+    "('Solar Orbiter', 'MAG RTN 1-minute', '2020', '301', '23')": 8,
+    "('Solar Orbiter', 'MAG RTN 1-minute', '2020', '226', '23')": 6,
+    "('Solar Orbiter', 'RPW BIA SCPOT 10-second', '2020', '226', '23')": 6,
+    "('Solar Orbiter', 'MAG RTN 1-minute', '2020', '250', '23')": 6,
+    "('Parker Solar Probe', 'FIELDS MAG RTN', '2020', '14', '20')": 2
+  },
+  "missions": {
+    "ACE": {
+      "rows": 17568,
+      "year_range": [
+        2016,
+        2017
+      ],
+      "r_au_range": [
+        1.0,
+        1.0
+      ],
+      "b_valid_fraction": 0.49863387978142076,
+      "windows": [
+        "fleet2016"
+      ]
+    },
+    "BepiColombo": {
+      "rows": 8784,
+      "year_range": [
+        2020,
+        2020
+      ],
+      "r_au_range": [
+        0.6259,
+        1.0124
+      ],
+      "b_valid_fraction": 0.0,
+      "windows": [
+        "modern2020"
+      ]
+    },
+    "Cassini": {
+      "rows": 8758,
+      "year_range": [
+        2001,
+        2001
+      ],
+      "r_au_range": [
+        5.023,
+        6.796
+      ],
+      "b_valid_fraction": 0.8842201415848367,
+      "windows": [
+        "outer2001"
+      ]
+    },
+    "Helios 1": {
+      "rows": 8784,
+      "year_range": [
+        1976,
+        1976
+      ],
+      "r_au_range": [
+        0.31,
+        1.0
+      ],
+      "b_valid_fraction": 0.530851548269581,
+      "windows": [
+        "inner1976"
+      ]
+    },
+    "Helios 2": {
+      "rows": 8784,
+      "year_range": [
+        1976,
+        1976
+      ],
+      "r_au_range": [
+        0.29,
+        1.0
+      ],
+      "b_valid_fraction": 0.4422814207650273,
+      "windows": [
+        "inner1976"
+      ]
+    },
+    "IBEX": {
+      "rows": 8784,
+      "year_range": [
+        2016,
+        2016
+      ],
+      "r_au_range": [
+        0.0004110032914371472,
+        0.002039241434589082
+      ],
+      "b_valid_fraction": 0.0,
+      "windows": [
+        "fleet2016"
+      ]
+    },
+    "IMP 8": {
+      "rows": 3409,
+      "year_range": [
+        1976,
+        1976
+      ],
+      "r_au_range": [
+        0.0012649671104203767,
+        0.001674322985330712
+      ],
+      "b_valid_fraction": 0.8310354942798475,
+      "windows": [
+        "inner1976"
+      ]
+    },
+    "Juno": {
+      "rows": 8784,
+      "year_range": [
+        2016,
+        2016
+      ],
+      "r_au_range": [
+        5.2702,
+        5.4658
+      ],
+      "b_valid_fraction": 0.0,
+      "windows": [
+        "fleet2016"
+      ]
+    },
+    "New Horizons": {
+      "rows": 8784,
+      "year_range": [
+        2016,
+        2016
+      ],
+      "r_au_range": [
+        34.312,
+        37.3246
+      ],
+      "b_valid_fraction": 0.0,
+      "windows": [
+        "fleet2016"
+      ]
+    },
+    "OMNI": {
+      "rows": 17544,
+      "year_range": [
+        2001,
+        2016
+      ],
+      "r_au_range": [
+        1.0,
+        1.0
+      ],
+      "b_valid_fraction": 0.9999430004559964,
+      "windows": [
+        "fleet2016",
+        "outer2001"
+      ]
+    },
+    "Parker Solar Probe": {
+      "rows": 9948,
+      "year_range": [
+        2020,
+        2020
+      ],
+      "r_au_range": [
+        0.09,
+        0.87
+      ],
+      "b_valid_fraction": 0.8162444712505026,
+      "windows": [
+        "modern2020"
+      ]
+    },
+    "SOHO": {
+      "rows": 8091,
+      "year_range": [
+        2020,
+        2020
+      ],
+      "r_au_range": [
+        0.008286964839276975,
+        0.011266412766687259
+      ],
+      "b_valid_fraction": 0.0,
+      "windows": [
+        "modern2020"
+      ]
+    },
+    "STEREO-A": {
+      "rows": 8777,
+      "year_range": [
+        2016,
+        2016
+      ],
+      "r_au_range": [
+        1.0,
+        1.0
+      ],
+      "b_valid_fraction": 0.9969237780562835,
+      "windows": [
+        "fleet2016"
+      ]
+    },
+    "Solar Orbiter": {
+      "rows": 20514,
+      "year_range": [
+        2020,
+        2020
+      ],
+      "r_au_range": [
+        0.515768222491982,
+        1.0
+      ],
+      "b_valid_fraction": 0.33976796334210785,
+      "windows": [
+        "modern2020"
+      ]
+    },
+    "Ulysses": {
+      "rows": 175320,
+      "year_range": [
+        1990,
+        2009
+      ],
+      "r_au_range": [
+        1.0,
+        5.41
+      ],
+      "b_valid_fraction": 0.884263061829797,
+      "windows": [
+        "densified",
+        "outer2001"
+      ]
+    },
+    "Voyager 1": {
+      "rows": 423962,
+      "year_range": [
+        1977,
+        2024
+      ],
+      "r_au_range": [
+        1.0,
+        165.66
+      ],
+      "b_valid_fraction": 0.5099843853930305,
+      "windows": [
+        "densified",
+        "fleet2016"
+      ]
+    },
+    "Voyager 2": {
+      "rows": 389044,
+      "year_range": [
+        1977,
+        2020
+      ],
+      "r_au_range": [
+        1.0,
+        125.83
+      ],
+      "b_valid_fraction": 0.4501367454580973,
+      "windows": [
+        "densified",
+        "fleet2016"
+      ]
+    },
+    "WIND": {
+      "rows": 17568,
+      "year_range": [
+        2016,
+        2024
+      ],
+      "r_au_range": [
+        1.0,
+        1.0
+      ],
+      "b_valid_fraction": 0.993226320582878,
+      "windows": [
+        "fleet2016"
+      ]
+    }
+  }
+}

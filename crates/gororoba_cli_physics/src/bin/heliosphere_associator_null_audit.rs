@@ -7,9 +7,10 @@ use data_core::{
     HeliosphereInvariantSample,
 };
 use rand::seq::SliceRandom;
-use rand::thread_rng;
+use rand::{Rng, thread_rng};
+use rustfft::{FftPlanner, num_complex::Complex64};
 use serde::Serialize;
-use std::{collections::BTreeMap, fs, path::PathBuf};
+use std::{collections::BTreeMap, f64::consts::PI, fs, path::PathBuf};
 
 #[derive(Parser, Debug)]
 #[command(
@@ -38,6 +39,10 @@ struct Cli {
     /// Embedding dimension for magnetic-takens lane (power of 2, >= 16).
     #[arg(long, default_value_t = 16)]
     embedding_dim: usize,
+
+    /// Block size for block-shuffle null (preserves short-range autocorrelation).
+    #[arg(long, default_value_t = 10)]
+    block_size: usize,
 
     /// Takens lag in time steps (1 = consecutive hourly).
     #[arg(long, default_value_t = 1)]
@@ -167,6 +172,7 @@ fn main() -> Result<()> {
         |rows| rows.iter().map(|r| r.algebra_vector().to_vec()).collect(),
         16,
         cli.null_iterations,
+        cli.block_size,
     ));
 
     // 2. Dynamic Bias-Free Embedding (always 16D)
@@ -176,6 +182,7 @@ fn main() -> Result<()> {
         |rows| rows.iter().map(|r| r.algebra_vector_dynamic_bias_free().to_vec()).collect(),
         16,
         cli.null_iterations,
+        cli.block_size,
     ));
 
     // 3. Invariant Embedding (10 channels padded to 16D)
@@ -208,6 +215,7 @@ fn main() -> Result<()> {
         },
         16,
         cli.null_iterations,
+        cli.block_size,
     ));
 
     // 4. Magnetic Takens Embedding (dimension-parameterized)
@@ -219,6 +227,7 @@ fn main() -> Result<()> {
         |rows: &[HeliosphereFeatureRow]| magnetic_takens_embed(rows, dim, lag).0,
         dim,
         cli.null_iterations,
+        cli.block_size,
     ));
 
     let report = AuditReport {
@@ -237,14 +246,72 @@ fn main() -> Result<()> {
     Ok(())
 }
 
+/// Phase-randomize a sequence of D-dimensional vectors.
+/// For each channel independently: FFT, randomize phases (preserving conjugate
+/// symmetry for real output), IFFT. This preserves the power spectrum and
+/// cross-time autocorrelation structure while destroying nonlinear phase coupling.
+fn phase_randomize_surrogate(vectors: &[Vec<f64>], dim: usize) -> Vec<Vec<f64>> {
+    let n = vectors.len();
+    if n < 2 {
+        return vectors.to_vec();
+    }
+    let mut planner = FftPlanner::<f64>::new();
+    let fft_fwd = planner.plan_fft_forward(n);
+    let fft_inv = planner.plan_fft_inverse(n);
+    let mut rng = thread_rng();
+
+    // Generate one set of random phases (shared across channels for cross-channel
+    // coherence preservation). Phases are conjugate-symmetric: phi[k] = -phi[n-k].
+    let half = n / 2;
+    let random_phases: Vec<f64> = (0..=half).map(|_| rng.r#gen::<f64>() * 2.0 * PI).collect();
+
+    let mut result = vec![vec![0.0; dim]; n];
+
+    for ch in 0..dim {
+        let mut buf: Vec<Complex64> = vectors
+            .iter()
+            .map(|v| Complex64::new(v[ch], 0.0))
+            .collect();
+
+        fft_fwd.process(&mut buf);
+
+        // Randomize phases while preserving conjugate symmetry
+        // DC component (k=0) and Nyquist (k=n/2 if n even) keep real values
+        for k in 1..half {
+            let phase = Complex64::from_polar(1.0, random_phases[k]);
+            buf[k] *= phase;
+            buf[n - k] *= phase.conj();
+        }
+        if n.is_multiple_of(2) {
+            // Nyquist: keep magnitude, flip sign randomly
+            let sign = if random_phases[half] > PI { -1.0 } else { 1.0 };
+            buf[half] *= sign;
+        }
+
+        fft_inv.process(&mut buf);
+
+        let scale = 1.0 / n as f64;
+        for (i, c) in buf.iter().enumerate() {
+            result[i][ch] = c.re * scale;
+        }
+    }
+
+    result
+}
+
 /// Dimension-generic audit: embed, compute base associators, then run
-/// temporal-shuffle and channel-permutation null families.
+/// four null families:
+/// - temporal-shuffle (harsh: destroys all temporal order)
+/// - channel-permutation (harsh: destroys algebraic channel assignment)
+/// - block-shuffle (moderate: preserves short-range autocorrelation)
+/// - phase-randomized (spectral: preserves power spectrum, destroys phase)
 fn audit_generic<T, F>(
     name: &str,
     groups: &BTreeMap<(String, String), Vec<T>>,
     embed_fn: F,
     dim: usize,
     null_iters: usize,
+    block_size: usize,
 ) -> EmbeddingResult
 where
     T: Clone,
@@ -306,9 +373,42 @@ where
         permute_nulls.push(build_null_summary(mission, product, &iteration_means));
     }
 
+    // Block-Shuffle Null (moderate: preserves short-range autocorrelation)
+    let mut block_shuffle_nulls = Vec::new();
+    for ((mission, product), vectors) in &group_vectors {
+        let mut iteration_means = Vec::new();
+        for _ in 0..null_iters {
+            let mut blocks: Vec<&[Vec<f64>]> = vectors.chunks(block_size).collect();
+            blocks.shuffle(&mut thread_rng());
+            let shuffled: Vec<Vec<f64>> = blocks.into_iter().flatten().cloned().collect();
+            let norms = cd_kernel::batch_sliding_associator_norms(&shuffled, dim);
+            iteration_means.push(associator_mean(&norms));
+        }
+        block_shuffle_nulls.push(build_null_summary(mission, product, &iteration_means));
+    }
+
+    // Phase-Randomized Surrogate Null (spectral: preserves power spectrum, destroys phase)
+    let mut phase_nulls = Vec::new();
+    for ((mission, product), vectors) in &group_vectors {
+        let mut iteration_means = Vec::new();
+        let n = vectors.len();
+        if n < 4 {
+            phase_nulls.push(build_null_summary(mission, product, &[]));
+            continue;
+        }
+        for _ in 0..null_iters {
+            let surrogate = phase_randomize_surrogate(vectors, dim);
+            let norms = cd_kernel::batch_sliding_associator_norms(&surrogate, dim);
+            iteration_means.push(associator_mean(&norms));
+        }
+        phase_nulls.push(build_null_summary(mission, product, &iteration_means));
+    }
+
     let mut null_summaries = BTreeMap::new();
     null_summaries.insert("temporal-shuffle".to_string(), shuffle_nulls);
     null_summaries.insert("channel-permutation".to_string(), permute_nulls);
+    null_summaries.insert("block-shuffle".to_string(), block_shuffle_nulls);
+    null_summaries.insert("phase-randomized".to_string(), phase_nulls);
 
     EmbeddingResult {
         embedding_name: name.to_string(),
