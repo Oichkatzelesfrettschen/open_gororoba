@@ -91,7 +91,7 @@ Practical reading of the source:
 | Chapter I | Brown lane header / roadmap only | contextual chapter, not a theorem surface |
 | Chapter II | Brown lane header / roadmap only | literature chapter, not a theorem surface |
 | Chapter III | `proofs/theories/Brown1972.v` + `crates/brown_1972/src/norm_symmetry.rs` | abstract Rocq surface plus standard-octonion witnesses landed; 16D/generalized-norm surfacing still open |
-| Chapter IV | `proofs/theories/Brown1972.v` plus local associator support | source-driven 4.2 and 4.4 standard-tower witnesses landed; exact 4.3 formula still open |
+| Chapter IV | `proofs/theories/Brown1972.v` plus local associator support | source-driven standard-tower witness surface for 4.2, 4.3, and 4.4 landed |
 | Chapter V | `crates/brown_1972/src/exponent_properties.rs` plus generic Rocq support files | Rust-rich, Brown-numbered Rocq surface still open |
 | Chapter VI | `crates/brown_1972/src/basis_element_properties.rs` plus sign-table infrastructure | source present, Brown-numbered Rocq surface still open |
 | Chapter VII | `ZD_Criterion.v`, `C1538_MorZDSymmetry.v`, `BrownAssessorEquivalence.v`, Rust support | partially formalized, but not yet chapter-complete in Brown numbering |
@@ -105,21 +105,17 @@ To avoid overfitting to Chapter III, Brown should now be mined in this order:
 1. Keep Chapters I-II explicit but non-theorem
    - preserve their role as scope, motivation, and literature map
    - do not treat them as missing Rocq theorem lanes
-2. Finish Chapter IV theorem surface
-   - exact 4.3 one-step associator formula is the next local theorem
-   - 4.2 and 4.4 standard-tower witnesses are already landed
-   - use existing flexibility and associator infrastructure
-3. Chapter V theorem surface
+2. Chapter V theorem surface
    - mirror the Rust exponent lane into Brown-numbered Rocq theorems
    - reuse `CDPowerAssociative.v` and related infrastructure
-4. Chapter III 16D/generalized-norm surfacing
+3. Chapter III 16D/generalized-norm surfacing
    - extend the current abstract surface beyond the standard octonion witness
    - use the dissertation statements directly, not only the Rust checklist
-5. Chapter VI basis-element surface
+4. Chapter VI basis-element surface
    - map Brown's basis identities onto the repo's sign-table and basis-index infrastructure
-6. Chapter VII gap fill
+5. Chapter VII gap fill
    - continue from the already-landed zero-divisor lane to the remaining Brown-numbered theorems
-7. Chapter VIII and Appendix C
+6. Chapter VIII and Appendix C
    - extract explicit examples/counterexamples and connect the PL/1 program lane to the modern executable witness stack
 
 ## Why this reordering is better
@@ -136,18 +132,18 @@ This order follows the real dissertation shape more closely:
 
 The next Rocq tranche should therefore be:
 
-1. finish the exact Chapter IV theorem 4.3 formula in `proofs/theories/Brown1972.v`
-2. keep the landed 4.2 and 4.4 witnesses as the structural anchors
-3. only then resume the generalized 16D Chapter III surfacing with the source
-   text still open beside the proof file
+1. keep the landed Chapter IV surface as the structural anchor
+2. move next into the Brown-numbered Chapter V theorem surface
+3. then resume the generalized 16D Chapter III surfacing with the source text
+   still open beside the proof file
 
 ## Remaining Brown steps
 
 1. Chapters I-II
    - keep explicit in the paper map as context, not as theorem backlogs
 2. Chapter IV
-   - finish the exact theorem 4.3 formula
-   - then tighten the full 4.2/4.3/4.4 Chapter IV surface
+   - source-driven 4.2/4.3/4.4 witness surface is landed
+   - next work there is only presentation cleanup if needed
 3. Chapter V
    - mirror the exponent lane into Brown-numbered Rocq theorems
 4. Chapter III

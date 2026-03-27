@@ -10700,3 +10700,50 @@ where_stated = "data/output/heliosphere/ablations/v1_mag48_quench_halfau_32d.csv
 last_verified = "2026-03-27"
 formal_proof = ""
 status_note = "V1 48-sec MAG from SPDF VIM_48s_mag_ascii. Position estimated from linear trajectory (121 AU + 3.6 AU/yr from 2012). Cross-mission validation: V1 and V2 independently detect heliopause within 2 AU of accepted crossing distances. Upgrades C-1554 from single-trajectory to cross-mission."
+
+# ---- Phase 3: Order-Parameter Formalization (2026-03-27) ----
+
+[[claim]]
+id = "C-1567"
+status = "Verified"
+statement = "The Order Surplus Index Omega_mv = 1 - A_base/A_mv_phase quantifies cross-channel algebraic order relative to the multivariate phase-randomized null. Fleet-wide Omega_mv ranges from 0.045 (Solar Orbiter, weak order) to 0.594 (Voyager 1 ISM, strongest order). The gap Omega_mv - Omega_phase isolates cross-channel coupling from within-channel spectral structure. Three tiers emerge: outer heliosphere (GAP 0.30-0.56), mid-heliosphere (0.07-0.24), inner solar system (0.04-0.10). Omega_phase is near-zero for all missions ([-0.04, +0.07]), confirming the signal is entirely cross-channel."
+where_stated = "data/output/heliosphere/ablations/order_surplus_by_mission.csv"
+last_verified = "2026-03-27"
+formal_proof = ""
+status_note = "Computed from densified 5-family null audit (5 exploratory iterations). Omega is upper-bounded by 1 but not lower-bounded by -1. All values finite. V1 ISM has highest Omega_mv in fleet (0.594)."
+
+[[claim]]
+id = "C-1568"
+status = "Verified"
+statement = "The heliosphere decomposes into 4 concentric algebraic shells under the null-decomposition state diagram: SPECTRAL_ONLY (34 bins, r < 12 AU), CROSS_CHANNEL_ORDER (36 bins, 12-107 AU), BOUNDARY_TRANSITION (8 bins, 107-122 AU), ISM_FLOOR (9 bins, > 122 AU). Classification uses Q75-derived Omega_mv thresholds with state precedence order. No bins are UNSTABLE_SUPPORT or unclassified."
+where_stated = "data/output/heliosphere/ablations/state_diagram_32d.csv"
+last_verified = "2026-03-27"
+formal_proof = ""
+status_note = "87 bins from densified 32D quench scan. Thresholds: Omega_mv Q75=0.1525 for CROSS_CHANNEL_ORDER, ISM floor at associator<0.05 AND coherence>0.2. State precedence: UNSTABLE > ISM > BOUNDARY > CROSS_CHANNEL > AUTOCORRELATION > SPECTRAL."
+
+[[claim]]
+id = "C-1569"
+status = "Verified"
+statement = "The lag-radius transition surface r_c(tau) is CONSTANT at 120.8 AU for V2 across all 11 tested lags (6.4 min to 480 min). For V1, r_c ranges from 122.2 AU (inertial lags) to 123.8 AU (extended mesoscale), showing modest timescale dependence. The V1/V2 r_c offset (~2 AU) is consistent with different heliopause positions at their respective crossing epochs (V1: solar max 2012, V2: solar min 2018)."
+where_stated = "data/output/heliosphere/ablations/transition_radius_vs_lag.csv, data/output/heliosphere/ablations/v1_lag_radius_lag*_32d.csv"
+last_verified = "2026-03-27"
+formal_proof = ""
+status_note = "Lags: 1,2,4,8,12,16,24,32,48,64,75 on 48-sec data. Threshold: 3x pooled ISM floor with 2-bin persistence. V2 is timescale-invariant; V1 has ~1.6 AU shift. The heliopause is sharp at all measured timescales."
+
+[[claim]]
+id = "C-1570"
+status = "Verified"
+statement = "Frequency-band-resolved coherence on 48-sec V2 data reveals that ISM cross-channel phase organization is DOMINATED by the 2-8 hour (mesoscale) band: coherence 0.447 in ISM vs 0.059 in heliosheath (8x increase). At sub-10-minute timescales, all zones have similar low coherence (0.009-0.019). The 30min-2hr regime boundary band shows intermediate ISM coherence (0.122). The cross-channel organization that the 32D associator detects lives primarily at mesoscale timescales."
+where_stated = "data/output/heliosphere/ablations/frequency_coherence_bands.json"
+last_verified = "2026-03-27"
+formal_proof = ""
+status_note = "Welch coherence with 512-point Hanning windows on 48-sec data (75 samples/hour). 5 bands in cycles per hour. Analysis on V2 2017-2018 data in 3 radial zones."
+
+[[claim]]
+id = "C-1571"
+status = "Verified"
+statement = "Partial coherence controlling for |B| AMPLIFIES ISM cross-channel coherence from 0.031 (total) to 0.348 (partial), an 11x increase. In the heliosheath, controlling for |B| slightly reduces coherence (0.028 -> 0.021). This confirms the 32D associator detects directional PHASE LOCKING between B-field components, not field-strength correlations. The ISM's raw low coherence was an artifact of |B| fluctuations introducing a common-mode dilution signal."
+where_stated = "data/output/heliosphere/ablations/partial_coherence.json"
+last_verified = "2026-03-27"
+formal_proof = ""
+status_note = "Stage 1 partial coherence: linear regression of |B| from each B component before coherence computation. The 11x amplification in ISM is the strongest mechanistic finding: the physical signal is directional phase geometry, not magnitude."
