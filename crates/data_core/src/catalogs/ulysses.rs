@@ -270,7 +270,7 @@ pub struct UlyssesProvider {
 impl Default for UlyssesProvider {
     fn default() -> Self {
         Self {
-            year_start: 1997,
+            year_start: 1990,
             year_end: 2009,
         }
     }

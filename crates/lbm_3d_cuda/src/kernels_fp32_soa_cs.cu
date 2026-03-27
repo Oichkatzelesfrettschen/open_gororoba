@@ -80,14 +80,25 @@ extern "C" __launch_bounds__(128, 4) __global__ void lbm_step_fp32_soa_cs_kernel
     float rho_local = 0.0f;
     float mx = 0.0f, my = 0.0f, mz = 0.0f;
 
-    // Pull reads via __ldg (read-only cache path; L1 not polluted by stores).
+    // Phase 1: Batch-issue all 19 __ldg reads (software pipelining).
+    // By writing all loads before any accumulation, the compiler recognizes
+    // 19 independent memory requests and issues them back-to-back, hiding
+    // the ~200 cycle L2 latency rather than serializing it.
+    // Pattern source: YSU-engine sass_re/instant_ngp/hashgrid_encode.cu
     #pragma unroll
     for (int i = 0; i < 19; i++) {
         int xb = (x - CX_CS[i] + nx) % nx;
         int yb = (y - CY_CS[i] + ny) % ny;
         int zb = (z - CZ_CS[i] + nz) % nz;
         int idx_back = xb + nx * (yb + ny * zb);
-        float fi = __ldg(&f_in[(long long)i * n_cells + idx_back]);
+        f_local[i] = __ldg(&f_in[(long long)i * n_cells + idx_back]);
+    }
+
+    // Phase 2: Accumulate macroscopic quantities from cached f_local[].
+    // All 19 loads are already in-flight or completed by now.
+    #pragma unroll
+    for (int i = 0; i < 19; i++) {
+        float fi = f_local[i];
         if (!finite_cs(fi)) fi = 0.0f;
         f_local[i] = fi;
         rho_local += fi;

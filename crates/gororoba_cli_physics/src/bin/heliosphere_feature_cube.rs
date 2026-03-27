@@ -133,8 +133,18 @@ fn build_cube(repo_root: &Path, window: &str) -> Result<HeliosphereFeatureCube> 
             build_fleet2016(repo_root, &mut rows, &mut sources, &mut notes)?;
             build_modern2020(repo_root, &mut rows, &mut sources, &mut notes)?;
         }
+        "densified" => {
+            // Start from the full-heliosphere baseline
+            build_inner1976(repo_root, &mut rows, &mut sources, &mut notes)?;
+            build_outer2001(repo_root, &mut rows, &mut sources, &mut notes)?;
+            build_fleet2016(repo_root, &mut rows, &mut sources, &mut notes)?;
+            build_modern2020(repo_root, &mut rows, &mut sources, &mut notes)?;
+            // Add all available Voyager and Ulysses year files not already covered
+            ingest_all_voyager_years(repo_root, &mut rows, &mut sources, &mut notes)?;
+            ingest_all_ulysses_years(repo_root, &mut rows, &mut sources, &mut notes)?;
+        }
         other => bail!(
-            "unsupported window {other}; expected fleet2016, inner1976, modern2020, outer2001, boundary2009, remote2024, imap2025, imap2026, psp2025, mms2024, or full-heliosphere"
+            "unsupported window {other}; expected fleet2016, inner1976, modern2020, outer2001, boundary2009, remote2024, imap2025, imap2026, psp2025, mms2024, full-heliosphere, or densified"
         ),
     }
 
@@ -2022,4 +2032,121 @@ fn stddev(values: &[f64], mean: f64) -> f64 {
         .sum::<f64>()
         / values.len() as f64;
     var.sqrt()
+}
+
+/// Scan all `vy1_YYYY.asc` / `vy2_YYYY.asc` files in `data/external/voyager{1,2}/`
+/// and ingest any year not already present in `rows` for that mission.
+fn ingest_all_voyager_years(
+    repo_root: &Path,
+    rows: &mut Vec<HeliosphereFeatureRow>,
+    sources: &mut Vec<String>,
+    notes: &mut Vec<String>,
+) -> Result<()> {
+    let existing: BTreeSet<(String, u16)> = rows
+        .iter()
+        .filter(|r| r.mission.starts_with("Voyager"))
+        .map(|r| (r.mission.clone(), r.year))
+        .collect();
+
+    for (sc, prefix, dir) in [
+        (VoyagerSpacecraft::V1, "vy1", "voyager1"),
+        (VoyagerSpacecraft::V2, "vy2", "voyager2"),
+    ] {
+        let mission = match sc {
+            VoyagerSpacecraft::V1 => "Voyager 1",
+            VoyagerSpacecraft::V2 => "Voyager 2",
+        };
+        let dir_path = repo_root.join("data/external").join(dir);
+        if !dir_path.exists() {
+            continue;
+        }
+        for entry in WalkDir::new(&dir_path).min_depth(1).max_depth(1) {
+            let entry = entry?;
+            let name = entry.file_name().to_string_lossy();
+            if !name.starts_with(prefix) || !name.ends_with(".asc") {
+                continue;
+            }
+            // Extract year from filename: vy1_YYYY.asc
+            let year_str = name
+                .strip_prefix(&format!("{prefix}_"))
+                .and_then(|s| s.strip_suffix(".asc"));
+            let Some(year_str) = year_str else { continue };
+            let Ok(year) = year_str.parse::<u16>() else { continue };
+            if existing.contains(&(mission.to_string(), year)) {
+                continue;
+            }
+            let path = entry.path().to_path_buf();
+            match parse_voyager_file(&path, sc) {
+                Ok(merged) => {
+                    sources.push(rel(repo_root, &path));
+                    push_omni_rows(
+                        rows,
+                        "densified",
+                        mission,
+                        "Merged hourly",
+                        &voyager_to_omni(&merged),
+                    );
+                }
+                Err(e) => {
+                    notes.push(format!("WARN: failed to parse {}: {e}", path.display()));
+                }
+            }
+        }
+    }
+    Ok(())
+}
+
+/// Scan all `uly_YYYY.asc` and `uy_coho1hr_*.csv` files in `data/external/ulysses/`
+/// and ingest any year not already present in `rows`.
+fn ingest_all_ulysses_years(
+    repo_root: &Path,
+    rows: &mut Vec<HeliosphereFeatureRow>,
+    sources: &mut Vec<String>,
+    notes: &mut Vec<String>,
+) -> Result<()> {
+    let existing: BTreeSet<u16> = rows
+        .iter()
+        .filter(|r| r.mission == "Ulysses")
+        .map(|r| r.year)
+        .collect();
+
+    let dir_path = repo_root.join("data/external/ulysses");
+    if !dir_path.exists() {
+        return Ok(());
+    }
+    for entry in WalkDir::new(&dir_path).min_depth(1).max_depth(1) {
+        let entry = entry?;
+        let name = entry.file_name().to_string_lossy();
+        let year = if let Some(s) = name.strip_prefix("uly_").and_then(|s| s.strip_suffix(".asc")) {
+            s.parse::<u16>().ok()
+        } else if let Some(s) = name
+            .strip_prefix("uy_coho1hr_merged_mag_plasma_")
+            .and_then(|s| s.strip_suffix(".csv"))
+        {
+            s.parse::<u16>().ok()
+        } else {
+            None
+        };
+        let Some(year) = year else { continue };
+        if existing.contains(&year) {
+            continue;
+        }
+        let path = entry.path().to_path_buf();
+        match parse_ulysses_file(&path) {
+            Ok(merged) => {
+                sources.push(rel(repo_root, &path));
+                push_omni_rows(
+                    rows,
+                    "densified",
+                    "Ulysses",
+                    "Merged hourly",
+                    &ulysses_to_omni(&merged),
+                );
+            }
+            Err(e) => {
+                notes.push(format!("WARN: failed to parse {}: {e}", path.display()));
+            }
+        }
+    }
+    Ok(())
 }
