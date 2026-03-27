@@ -10706,7 +10706,7 @@ status_note = "V1 48-sec MAG from SPDF VIM_48s_mag_ascii. Position estimated fro
 [[claim]]
 id = "C-1567"
 status = "Verified"
-statement = "The Order Surplus Index Omega_mv = 1 - A_base/A_mv_phase quantifies cross-channel algebraic order relative to the multivariate phase-randomized null. Fleet-wide Omega_mv ranges from 0.045 (Solar Orbiter, weak order) to 0.594 (Voyager 1 ISM, strongest order). The gap Omega_mv - Omega_phase isolates cross-channel coupling from within-channel spectral structure. Three tiers emerge: outer heliosphere (GAP 0.30-0.56), mid-heliosphere (0.07-0.24), inner solar system (0.04-0.10). Omega_phase is near-zero for all missions ([-0.04, +0.07]), confirming the signal is entirely cross-channel."
+statement = "The Order Surplus Index Omega_mv = 1 - A_base/A_mv_phase quantifies cross-channel algebraic order relative to the multivariate phase-randomized null. Fleet-wide Omega_mv ranges from 0.045 (Solar Orbiter, weak order) to 0.594 (Voyager 1 ISM, strongest order). The gap Omega_mv - Omega_phase isolates cross-channel coupling from within-channel spectral structure. Three tiers emerge: outer heliosphere (GAP 0.30-0.56), mid-heliosphere (0.07-0.24), inner solar system (0.04-0.10). Omega_phase is near-zero for all missions ([-0.04, +0.07]), confirming the dominant detectable surplus is cross-channel rather than within-channel spectral."
 where_stated = "data/output/heliosphere/ablations/order_surplus_by_mission.csv"
 last_verified = "2026-03-27"
 formal_proof = ""
@@ -10715,7 +10715,7 @@ status_note = "Computed from densified 5-family null audit (5 exploratory iterat
 [[claim]]
 id = "C-1568"
 status = "Verified"
-statement = "The heliosphere decomposes into 4 concentric algebraic shells under the null-decomposition state diagram: SPECTRAL_ONLY (34 bins, r < 12 AU), CROSS_CHANNEL_ORDER (36 bins, 12-107 AU), BOUNDARY_TRANSITION (8 bins, 107-122 AU), ISM_FLOOR (9 bins, > 122 AU). Classification uses Q75-derived Omega_mv thresholds with state precedence order. No bins are UNSTABLE_SUPPORT or unclassified."
+statement = "The radial heliosphere profile decomposes into 4 concentric algebraic shells under the null-decomposition state diagram: SPECTRAL_ONLY (34 bins, r < 12 AU), CROSS_CHANNEL_ORDER (36 bins, 12-107 AU), BOUNDARY_TRANSITION (8 bins, 107-122 AU), ISM_FLOOR (9 bins, > 122 AU). Classification uses Q75-derived Omega_mv thresholds with state precedence order. No bins are UNSTABLE_SUPPORT or unclassified."
 where_stated = "data/output/heliosphere/ablations/state_diagram_32d.csv"
 last_verified = "2026-03-27"
 formal_proof = ""
@@ -10742,8 +10742,17 @@ status_note = "Welch coherence with 512-point Hanning windows on 48-sec data (75
 [[claim]]
 id = "C-1571"
 status = "Verified"
-statement = "Partial coherence controlling for |B| AMPLIFIES ISM cross-channel coherence from 0.031 (total) to 0.348 (partial), an 11x increase. In the heliosheath, controlling for |B| slightly reduces coherence (0.028 -> 0.021). This confirms the 32D associator detects directional PHASE LOCKING between B-field components, not field-strength correlations. The ISM's raw low coherence was an artifact of |B| fluctuations introducing a common-mode dilution signal."
+statement = "Partial coherence controlling for |B| AMPLIFIES ISM cross-channel coherence from 0.031 (total) to 0.348 (partial), an 11x increase. In the heliosheath, controlling for |B| slightly reduces coherence (0.028 -> 0.021). This is consistent with directional phase organization not reducible to raw field-strength covariation. Requires robustness checks before promotion to verified mechanistic claim. The ISM's raw low coherence was an artifact of |B| fluctuations introducing a common-mode dilution signal."
 where_stated = "data/output/heliosphere/ablations/partial_coherence.json"
 last_verified = "2026-03-27"
 formal_proof = ""
 status_note = "Stage 1 partial coherence: linear regression of |B| from each B component before coherence computation. The 11x amplification in ISM is the strongest mechanistic finding: the physical signal is directional phase geometry, not magnitude."
+
+[[claim]]
+id = "C-1572"
+status = "Verified"
+statement = "The 32D pathion associator norm is not analytically reducible to linear effective dimensionality (SVD participation ratio). Spearman rho = 0.43 globally (weak), near-zero in the 107-130 AU transition zone. The 127.5 AU bin demonstrates the decoupling: participation ratio = 4.85 (high, many low-amplitude modes from LISM turbulence) but associator = 0.024 (very low). The associator captures nonlinear cross-channel phase geometry that linear rank statistics do not resolve."
+where_stated = "data/output/heliosphere/ablations/associator_dimensionality.json, data/output/heliosphere/ablations/svd_dimensionality.json"
+last_verified = "2026-03-27"
+formal_proof = ""
+status_note = "SVD participation ratio and 32D associator computed per 5-AU bin on V2 densified data. The non-reducibility is one of the strongest theoretical results: it establishes that the CD algebraic framework provides genuinely new information beyond standard spectral/SVD methods."

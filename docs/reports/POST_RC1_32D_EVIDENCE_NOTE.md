@@ -221,10 +221,15 @@ heliopause crossing:
 | 102 min | 8x48s, lag=16 | 120.8 AU | ~0.5-0.8 | 0.014-0.051 |
 | 8 hours | hourly, lag=1 | 118.8 AU | 4-6 | 0.04-0.12 |
 
-The quench front is LOCKED at 120.8 AU for all inertial-range timescales
-(6-102 min). It jumps to 118.8 AU at mesoscale (8 hours). This is a
-two-regime phenomenon, not a continuous gradient. The regime boundary
-likely corresponds to the heliosheath turbulence correlation time (~1-2 hours).
+Within the V2 2017-2018 48-sec data, the quench front is threshold-invariant
+at 120.8 AU from ~6 min to ~8 hr under the 3x-ISM-floor persistence criterion
+(C-1569). The earlier 118.8 AU mesoscale result came from the densified hourly
+cube spanning all V2 years, a different product definition and epoch span.
+The prior discrepancy is now understood as likely methodological or epochal
+rather than a genuine timescale-intrinsic two-regime structure. The new
+threshold-invariant result supersedes the old split as the lead interpretation
+for V2, though further reconciliation with the full-traverse hourly data
+is warranted.
 
 ## Voyager 1 ISM Confirmation (48-sec)
 
