@@ -1925,7 +1925,7 @@ off-repo chronology matrix and roadmap as reference surfaces:
 | 1935-1942 | Zorn, Jacobson, Albert | sources on disk | still tracked as context, not yet broken into paper lanes |
 | 1945 | Schafer | `crates/schafer_1945/` + `proofs/theories/SchaferDivAlg16.v` | paired lane is in place |
 | 1951 | Freudenthal | support material only | exact original remains missing |
-| 1954 | Schafer | `proofs/theories/Schafer1954.v` | Rocq paper index, Section 1 anchors, an abstract Theorem 2 derivation-extension map, the Theorem 3 block-restriction bridge through equations (29)-(35), a coordinate normalization/uniqueness surface for equations (36)-(52), the concrete real-octonion equation (51)/(52) discharge over the seven Cayley triples, named octonion/sedenion Theorem 4 identification and type-G theorems on the repo's actual derivation objects, a canonical octonion/sedenion converse surface, a residual-coordinate backward bridge, and a canonical Theorem 4 theorem package landed; the remaining gap is to construct the concrete residual-coordinate surface from the full paper-specific Theorem 3 uniqueness argument so the final converse-side assumption disappears entirely |
+| 1954 | Schafer | `proofs/theories/Schafer1954.v` | Rocq paper index, Section 1 anchors, an abstract Theorem 2 derivation-extension map, the Theorem 3 block-restriction bridge through equations (29)-(35), a coordinate normalization/uniqueness surface for equations (36)-(52), the concrete real-octonion equation (51)/(52) discharge over the seven Cayley triples, named octonion/sedenion Theorem 4 identification and type-G theorems on the repo's actual derivation objects, a canonical octonion/sedenion converse surface, a residual-coordinate backward bridge, and a concrete theorem-4-from-theorem-3 package landed; the remaining gap is to prove the concrete Theorem 3 instantiation builder itself from the full paper-specific uniqueness argument |
 | 1958 | Jacobson | previews and support on disk | exact full text remains institution-locked |
 | 1965 | Cullen | reconstructed PDF + OCR cached off-repo | source gap resolved; paper lane not yet started |
 | 1967 | Brown | `crates/brown_1967/` + `proofs/theories/BrownGeneralizedCD.v` | extend dim-32/dim-64 theorem surfacing |
@@ -1950,10 +1950,9 @@ off-repo chronology matrix and roadmap as reference surfaces:
   real-octonion equation (51)/(52) discharge over the seven Cayley triples,
   named octonion/sedenion Theorem 4 identification and type-G theorems on the
   repo's actual derivation objects, a canonical octonion/sedenion converse
-  surface, a residual-coordinate backward bridge, and a canonical Theorem 4
-  theorem package, but still needs the concrete residual-coordinate builder
-  extracted from the paper's Theorem 3 uniqueness chain so the last
-  converse-side assumption disappears entirely,
+  surface, a residual-coordinate backward bridge, and a concrete
+  theorem-4-from-theorem-3 package, but still needs the concrete Theorem 3
+  instantiation builder proved from the paper's uniqueness chain,
   and Brown (1972) still needs Chapters III-VI plus a Rocq Appendix C bridge.
 - Earlier reference foundation is now explicitly tracked but not yet lifted
   into dedicated Rocq paper lanes: Euler (1770), Degen (1818), and the
