@@ -1,0 +1,26 @@
+{
+  "heliosheath_110_118": {
+    "n": 220206,
+    "30min_2hr_total": 0.06196,
+    "30min_2hr_partial_xspec": 0.0575,
+    "30min_2hr_ratio": 0.928,
+    "2_8hr_total": 0.059334,
+    "2_8hr_partial_xspec": 0.045679,
+    "2_8hr_ratio": 0.7699,
+    "broadband_total": 0.025419,
+    "broadband_partial_xspec": 0.019271,
+    "broadband_ratio": 0.7581
+  },
+  "ism_121_126": {
+    "n": 50523,
+    "30min_2hr_total": 0.1224,
+    "30min_2hr_partial_xspec": 0.549658,
+    "30min_2hr_ratio": 4.4907,
+    "2_8hr_total": 0.447324,
+    "2_8hr_partial_xspec": 0.690666,
+    "2_8hr_ratio": 1.544,
+    "broadband_total": 0.029687,
+    "broadband_partial_xspec": 0.345255,
+    "broadband_ratio": 11.6298
+  }
+}

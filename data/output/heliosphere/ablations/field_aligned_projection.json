@@ -1,0 +1,53 @@
+{
+  "heliosheath_110_118": {
+    "mean_field_RTN": [
+      -0.0181,
+      -0.0159,
+      0.0264
+    ],
+    "mean_field_mag_nT": 0.0358,
+    "b_hat": [
+      -0.5055,
+      -0.4456,
+      0.7388
+    ],
+    "parallel_fraction": 0.1626,
+    "perpendicular_fraction": 0.8374,
+    "perp_to_parallel_ratio": 5.15,
+    "n_vectors": 220199
+  },
+  "transition_118_121": {
+    "mean_field_RTN": [
+      0.0129,
+      -0.0954,
+      -0.0486
+    ],
+    "mean_field_mag_nT": 0.1079,
+    "b_hat": [
+      0.1193,
+      -0.8846,
+      -0.4508
+    ],
+    "parallel_fraction": 0.7883,
+    "perpendicular_fraction": 0.2117,
+    "perp_to_parallel_ratio": 0.27,
+    "n_vectors": 135363
+  },
+  "ism_121_126": {
+    "mean_field_RTN": [
+      -0.0546,
+      -0.6113,
+      0.2774
+    ],
+    "mean_field_mag_nT": 0.6735,
+    "b_hat": [
+      -0.081,
+      -0.9076,
+      0.4119
+    ],
+    "parallel_fraction": 0.0015,
+    "perpendicular_fraction": 0.9985,
+    "perp_to_parallel_ratio": 663.38,
+    "n_vectors": 50516
+  }
+}
