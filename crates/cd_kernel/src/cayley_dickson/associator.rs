@@ -201,6 +201,17 @@ pub fn batch_sliding_associator_norms(vectors: &[Vec<f64>], dim: usize) -> Vec<f
             .collect();
     }
 
+    if dim == 64 && use_simd {
+        return (0..vectors.len() - 2)
+            .map(|i| {
+                let a: [f64; 64] = vectors[i].as_slice().try_into().unwrap();
+                let b: [f64; 64] = vectors[i + 1].as_slice().try_into().unwrap();
+                let c: [f64; 64] = vectors[i + 2].as_slice().try_into().unwrap();
+                super::simd::chingon_associator_norm_sq_flat(&a, &b, &c).sqrt()
+            })
+            .collect();
+    }
+
     (0..vectors.len() - 2)
         .map(|i| cd_associator_norm(&vectors[i], &vectors[i + 1], &vectors[i + 2]))
         .collect()
@@ -208,8 +219,8 @@ pub fn batch_sliding_associator_norms(vectors: &[Vec<f64>], dim: usize) -> Vec<f
 
 /// Parallel variant of [`batch_sliding_associator_norms`].
 ///
-/// Uses Rayon for multi-core scaling. For dim=16 and dim=32, leverages
-/// AVX2+FMA SIMD via the sedenion/pathion fast paths.
+/// Uses Rayon for multi-core scaling. For dim=16, 32, and 64, leverages
+/// AVX2+FMA SIMD via the sedenion/pathion/chingon fast paths.
 pub fn batch_sliding_associator_norms_parallel(vectors: &[Vec<f64>], dim: usize) -> Vec<f64> {
     assert!(dim.is_power_of_two(), "dim must be a power of 2, got {dim}");
     if vectors.len() < 3 {
@@ -239,6 +250,18 @@ pub fn batch_sliding_associator_norms_parallel(vectors: &[Vec<f64>], dim: usize)
                 let b: [f64; 32] = vectors[i + 1].as_slice().try_into().unwrap();
                 let c: [f64; 32] = vectors[i + 2].as_slice().try_into().unwrap();
                 super::simd::pathion_associator_norm_sq_flat(&a, &b, &c).sqrt()
+            })
+            .collect();
+    }
+
+    if dim == 64 && use_simd {
+        return (0..vectors.len() - 2)
+            .into_par_iter()
+            .map(|i| {
+                let a: [f64; 64] = vectors[i].as_slice().try_into().unwrap();
+                let b: [f64; 64] = vectors[i + 1].as_slice().try_into().unwrap();
+                let c: [f64; 64] = vectors[i + 2].as_slice().try_into().unwrap();
+                super::simd::chingon_associator_norm_sq_flat(&a, &b, &c).sqrt()
             })
             .collect();
     }

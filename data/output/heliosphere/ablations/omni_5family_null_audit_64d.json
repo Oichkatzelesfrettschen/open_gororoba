@@ -1,0 +1,278 @@
+{
+  "generated_at_utc": "2026-03-27T16:45:33.418378012+00:00",
+  "cube_csv": "data/output/heliosphere/full_feature_cube.csv",
+  "results": [
+    {
+      "embedding_name": "legacy-raw",
+      "base_summaries": [
+        {
+          "mission": "OMNI",
+          "product": "Hourly merged",
+          "mean_associator_norm": 129968231.70321761,
+          "max_associator_norm": 128285851058.9518
+        }
+      ],
+      "null_summaries": {
+        "block-shuffle": [
+          {
+            "mission": "OMNI",
+            "product": "Hourly merged",
+            "null_mean_of_means": 177701883.33471292,
+            "null_std_of_means": 1022204.3749463712,
+            "null_median_of_means": 177321178.1706052,
+            "null_p05": 176735695.13317215,
+            "null_p95": 179549484.82112113
+          }
+        ],
+        "channel-permutation": [
+          {
+            "mission": "OMNI",
+            "product": "Hourly merged",
+            "null_mean_of_means": 272103742.9410477,
+            "null_std_of_means": 171600749.4733588,
+            "null_median_of_means": 217377894.66695184,
+            "null_p05": 103524841.8467029,
+            "null_p95": 528328370.7501422
+          }
+        ],
+        "multivariate-phase-randomized": [
+          {
+            "mission": "OMNI",
+            "product": "Hourly merged",
+            "null_mean_of_means": 190321273.95009807,
+            "null_std_of_means": 668551.4073875293,
+            "null_median_of_means": 190608931.2930968,
+            "null_p05": 189259193.1985691,
+            "null_p95": 191521883.62876356
+          }
+        ],
+        "phase-randomized": [
+          {
+            "mission": "OMNI",
+            "product": "Hourly merged",
+            "null_mean_of_means": 184180086.0393434,
+            "null_std_of_means": 508331.5559861837,
+            "null_median_of_means": 184180109.27246004,
+            "null_p05": 183403164.11046162,
+            "null_p95": 185241490.8689908
+          }
+        ],
+        "temporal-shuffle": [
+          {
+            "mission": "OMNI",
+            "product": "Hourly merged",
+            "null_mean_of_means": 1034455635.1837947,
+            "null_std_of_means": 7120896.652412774,
+            "null_median_of_means": 1035684335.4953765,
+            "null_p05": 1023274027.409438,
+            "null_p95": 1044064265.1370724
+          }
+        ]
+      }
+    },
+    {
+      "embedding_name": "dynamic-bias-free",
+      "base_summaries": [
+        {
+          "mission": "OMNI",
+          "product": "Hourly merged",
+          "mean_associator_norm": 125549494.21710473,
+          "max_associator_norm": 128265741328.16544
+        }
+      ],
+      "null_summaries": {
+        "block-shuffle": [
+          {
+            "mission": "OMNI",
+            "product": "Hourly merged",
+            "null_mean_of_means": 170812121.18222275,
+            "null_std_of_means": 1226441.623456042,
+            "null_median_of_means": 170573695.72808623,
+            "null_p05": 169148564.81374064,
+            "null_p95": 173464400.18051508
+          }
+        ],
+        "channel-permutation": [
+          {
+            "mission": "OMNI",
+            "product": "Hourly merged",
+            "null_mean_of_means": 247685725.70393077,
+            "null_std_of_means": 195965880.79823408,
+            "null_median_of_means": 262946613.34844914,
+            "null_p05": 17239.932538253746,
+            "null_p95": 507811413.7263247
+          }
+        ],
+        "multivariate-phase-randomized": [
+          {
+            "mission": "OMNI",
+            "product": "Hourly merged",
+            "null_mean_of_means": 185732840.77965766,
+            "null_std_of_means": 537923.1048220176,
+            "null_median_of_means": 185685599.70569924,
+            "null_p05": 184854729.17501676,
+            "null_p95": 186670917.85698807
+          }
+        ],
+        "phase-randomized": [
+          {
+            "mission": "OMNI",
+            "product": "Hourly merged",
+            "null_mean_of_means": 179326808.76096317,
+            "null_std_of_means": 444278.2249231431,
+            "null_median_of_means": 179488221.06903064,
+            "null_p05": 178432129.65888843,
+            "null_p95": 179830826.04304194
+          }
+        ],
+        "temporal-shuffle": [
+          {
+            "mission": "OMNI",
+            "product": "Hourly merged",
+            "null_mean_of_means": 1033795493.2376931,
+            "null_std_of_means": 8758555.767599393,
+            "null_median_of_means": 1036833876.7072179,
+            "null_p05": 1012408533.268466,
+            "null_p95": 1045456711.3642298
+          }
+        ]
+      }
+    },
+    {
+      "embedding_name": "invariant-residuals",
+      "base_summaries": [
+        {
+          "mission": "OMNI",
+          "product": "Hourly merged",
+          "mean_associator_norm": 23376915328.126884,
+          "max_associator_norm": 16436570222920.318
+        }
+      ],
+      "null_summaries": {
+        "block-shuffle": [
+          {
+            "mission": "OMNI",
+            "product": "Hourly merged",
+            "null_mean_of_means": 484392993790187.6,
+            "null_std_of_means": 1083465640159686.2,
+            "null_median_of_means": 27992034332.52106,
+            "null_p05": 26102297231.007893,
+            "null_p95": 3514182215713369.5
+          }
+        ],
+        "channel-permutation": [
+          {
+            "mission": "OMNI",
+            "product": "Hourly merged",
+            "null_mean_of_means": 23873905097.27384,
+            "null_std_of_means": 9798588848.693073,
+            "null_median_of_means": 23718545142.361454,
+            "null_p05": 588508608.3021302,
+            "null_p95": 33546379373.750713
+          }
+        ],
+        "multivariate-phase-randomized": [
+          {
+            "mission": "OMNI",
+            "product": "Hourly merged",
+            "null_mean_of_means": 6.173673532808278e+25,
+            "null_std_of_means": 6.15308386601717e+23,
+            "null_median_of_means": 6.210212787609925e+25,
+            "null_p05": 6.070992825301347e+25,
+            "null_p95": 6.250624622213908e+25
+          }
+        ],
+        "phase-randomized": [
+          {
+            "mission": "OMNI",
+            "product": "Hourly merged",
+            "null_mean_of_means": 4.151410853064732e+23,
+            "null_std_of_means": 5.031915243906534e+21,
+            "null_median_of_means": 4.158798371122333e+23,
+            "null_p05": 4.089535389936563e+23,
+            "null_p95": 4.2170463895346645e+23
+          }
+        ],
+        "temporal-shuffle": [
+          {
+            "mission": "OMNI",
+            "product": "Hourly merged",
+            "null_mean_of_means": 4.1836971012441006e+18,
+            "null_std_of_means": 5.630991049400645e+18,
+            "null_median_of_means": 1827660748257078.0,
+            "null_p05": 57402133407.198654,
+            "null_p95": 1.278966474399223e+19
+          }
+        ]
+      }
+    },
+    {
+      "embedding_name": "magnetic-takens",
+      "base_summaries": [
+        {
+          "mission": "OMNI",
+          "product": "Hourly merged",
+          "mean_associator_norm": 32.27372580761562,
+          "max_associator_norm": 781.8178774921332
+        }
+      ],
+      "null_summaries": {
+        "block-shuffle": [
+          {
+            "mission": "OMNI",
+            "product": "Hourly merged",
+            "null_mean_of_means": 34.49839565069896,
+            "null_std_of_means": 0.02089113086222875,
+            "null_median_of_means": 34.49785874751033,
+            "null_p05": 34.471337042574,
+            "null_p95": 34.527867318004326
+          }
+        ],
+        "channel-permutation": [
+          {
+            "mission": "OMNI",
+            "product": "Hourly merged",
+            "null_mean_of_means": 36.41209933666549,
+            "null_std_of_means": 0.55074239842754,
+            "null_median_of_means": 36.45395010526183,
+            "null_p05": 35.58572741445796,
+            "null_p95": 37.38465133453073
+          }
+        ],
+        "multivariate-phase-randomized": [
+          {
+            "mission": "OMNI",
+            "product": "Hourly merged",
+            "null_mean_of_means": 36.69423620832515,
+            "null_std_of_means": 0.05258366264453883,
+            "null_median_of_means": 36.71265123258107,
+            "null_p05": 36.58057470893418,
+            "null_p95": 36.74579786895107
+          }
+        ],
+        "phase-randomized": [
+          {
+            "mission": "OMNI",
+            "product": "Hourly merged",
+            "null_mean_of_means": 31.942201573339492,
+            "null_std_of_means": 0.12524435264560174,
+            "null_median_of_means": 31.948920721069275,
+            "null_p05": 31.746371481022457,
+            "null_p95": 32.14511034107635
+          }
+        ],
+        "temporal-shuffle": [
+          {
+            "mission": "OMNI",
+            "product": "Hourly merged",
+            "null_mean_of_means": 58.99276323975296,
+            "null_std_of_means": 0.08829233653064468,
+            "null_median_of_means": 59.01386341496391,
+            "null_p05": 58.820849597717206,
+            "null_p95": 59.107297343435306
+          }
+        ]
+      }
+    }
+  ]
+}
