@@ -64,17 +64,26 @@ extern "C" __global__ void compute_macroscopic_kernel(
     int n_cells = nx * ny * nz;
     if (idx >= n_cells) return;
 
+    // Batch-issue all 19 loads before accumulation (software pipelining).
+    // Pattern source: YSU-engine sass_re/instant_ngp/hashgrid_encode.cu
+    // The AoS layout (19 contiguous floats per cell) is not 16-byte aligned
+    // (19*4=76 bytes), so we use scalar __ldg rather than float4 to avoid
+    // alignment penalties. The batch-issue pattern still hides L2 latency.
+    const float* base = &f[idx * 19];
+    float f_local[19];
+    #pragma unroll
+    for (int i = 0; i < 19; i++) f_local[i] = __ldg(base + i);
+
     float rho_local = 0.0f;
     #pragma unroll
-    for (int i = 0; i < 19; i++) rho_local += __ldg(&f[idx * 19 + i]);
+    for (int i = 0; i < 19; i++) rho_local += f_local[i];
 
     float ux = 0.0f, uy = 0.0f, uz = 0.0f;
     #pragma unroll
     for (int i = 0; i < 19; i++) {
-        float fi = __ldg(&f[idx * 19 + i]);
-        ux += D3Q19_CX[i] * fi;
-        uy += D3Q19_CY[i] * fi;
-        uz += D3Q19_CZ[i] * fi;
+        ux += D3Q19_CX[i] * f_local[i];
+        uy += D3Q19_CY[i] * f_local[i];
+        uz += D3Q19_CZ[i] * f_local[i];
     }
 
     if (!finite_f32(rho_local) || rho_local <= 1.0e-20f) {
