@@ -6,6 +6,10 @@ use data_core::download_stack::{
     TransferRequest, TransferResult, TransferTrace, load_host_policy_registry,
 };
 use gororoba_cli_data::{
+    acquisition_dossier::{
+        ResearchDossier, StageSuggestion, load_dossier_batch_manifest, load_research_dossier,
+        resolve_manifest_entry_path,
+    },
     project_api_contract::{
         AcquisitionJournalRow, ProjectApiCrosswalkBinding, append_acquisition_journal_rows,
         journal_multi_value, load_project_api_context, load_project_api_crosswalk,
@@ -13,6 +17,7 @@ use gororoba_cli_data::{
     },
     source_provenance,
 };
+use lit_search::pdf::PdfExtractor;
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use std::{
@@ -20,6 +25,7 @@ use std::{
     fs,
     io::Read,
     path::{Path, PathBuf},
+    process::Command,
 };
 use url::Url;
 
@@ -47,6 +53,7 @@ enum Commands {
     Stage(StageArgs),
     StageQueue(StageQueueArgs),
     Promote(PromoteArgs),
+    ImportDossier(ImportDossierArgs),
     Record(RecordArgs),
     Show(ShowArgs),
     ConsumeHandoff(ConsumeHandoffArgs),
@@ -186,6 +193,9 @@ struct RecordArgs {
     #[arg(long)]
     project_api_root: Option<PathBuf>,
 
+    #[arg(long, default_value_t = false)]
+    reconcile_project_api: bool,
+
     #[arg(long, value_enum)]
     status: SessionStatus,
 
@@ -230,6 +240,27 @@ struct ShowArgs {
 }
 
 #[derive(Parser, Debug)]
+struct ImportDossierArgs {
+    #[arg(long)]
+    dossier: Vec<PathBuf>,
+
+    #[arg(long)]
+    batch_manifest: Vec<PathBuf>,
+
+    #[arg(long)]
+    max_rank: Option<usize>,
+
+    #[arg(long = "rank")]
+    rank: Vec<usize>,
+
+    #[arg(long, default_value_t = false)]
+    all_suggestions: bool,
+
+    #[arg(long = "note")]
+    note: Vec<String>,
+}
+
+#[derive(Parser, Debug)]
 struct ConsumeHandoffArgs {
     #[arg(long)]
     capsule: Vec<PathBuf>,
@@ -239,6 +270,12 @@ struct ConsumeHandoffArgs {
 
     #[arg(long)]
     project_api_root: Option<PathBuf>,
+
+    #[arg(long)]
+    project_cache_root: Option<PathBuf>,
+
+    #[arg(long, default_value_t = false)]
+    reconcile_project_api: bool,
 
     #[arg(long)]
     output_root: PathBuf,
@@ -257,6 +294,9 @@ struct ConsumeHandoffArgs {
 
     #[arg(long, default_value_t = false)]
     skip_existing: bool,
+
+    #[arg(long, default_value_t = false)]
+    extract_pdf_sidecar: bool,
 }
 
 #[derive(Copy, Clone, Debug, Eq, PartialEq, Serialize, Deserialize, ValueEnum)]
@@ -482,6 +522,8 @@ struct EvidenceState {
     #[serde(skip_serializing_if = "Option::is_none")]
     artifact_rel: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    text_sidecar_rel: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     browser_trace_rel: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     cookie_jar_rel: Option<String>,
@@ -694,6 +736,7 @@ enum ConsumeOutcome {
         output_path: PathBuf,
         result: TransferResult,
         header_count: usize,
+        text_sidecar_rel: Option<String>,
     },
     Failed {
         output_path: PathBuf,
@@ -705,6 +748,7 @@ enum ConsumeOutcome {
         bytes: u64,
         sha256: String,
         header_count: usize,
+        text_sidecar_rel: Option<String>,
     },
 }
 
@@ -720,6 +764,16 @@ struct QueueSyncUpdate {
     note: String,
 }
 
+#[derive(Debug, Clone)]
+struct PromoteSpec {
+    url: String,
+    source_id: Option<String>,
+    title: Option<String>,
+    site: Option<String>,
+    access_class: Option<String>,
+    note: Option<String>,
+}
+
 fn main() -> Result<()> {
     let cli = Cli::parse();
     let repo_root = resolve_repo_root(&cli.repo_root);
@@ -730,6 +784,9 @@ fn main() -> Result<()> {
         Commands::Stage(args) => run_stage(&repo_root, &policy_registry, &sessions_dir, args),
         Commands::StageQueue(args) => run_stage_queue(&repo_root, &sessions_dir, args),
         Commands::Promote(args) => run_promote(&repo_root, &policy_registry, &sessions_dir, args),
+        Commands::ImportDossier(args) => {
+            run_import_dossier(&repo_root, &policy_registry, &sessions_dir, args)
+        }
         Commands::Record(args) => run_record(&repo_root, &sessions_dir, args),
         Commands::Show(args) => run_show(&repo_root, &sessions_dir, args),
         Commands::ConsumeHandoff(args) => run_consume_handoff(&repo_root, &policy_registry, args),
@@ -809,6 +866,7 @@ fn run_stage(
             .map(|trace| ProbeSummary::from_trace(trace, &now)),
         evidence: EvidenceState {
             artifact_rel: None,
+            text_sidecar_rel: None,
             browser_trace_rel: None,
             cookie_jar_rel: None,
             storage_state_rel: None,
@@ -949,74 +1007,174 @@ fn run_promote(
     args: PromoteArgs,
 ) -> Result<()> {
     let parent_manifest = resolve_session_manifest(repo_root, sessions_dir, &args.session);
-    let parent_checklist = parent_manifest
-        .parent()
-        .context("session manifest must have a parent directory")?
-        .join("checklist.md");
-    let mut parent = load_session(&parent_manifest)?;
     let urls = collect_promotion_urls(repo_root, &args)?;
     if urls.is_empty() {
         bail!("promotion requires at least one URL");
     }
+    let specs = urls
+        .into_iter()
+        .map(|url| PromoteSpec {
+            url,
+            source_id: None,
+            title: None,
+            site: args.site.clone(),
+            access_class: args.access_class.clone(),
+            note: None,
+        })
+        .collect::<Vec<_>>();
+    promote_specs(
+        repo_root,
+        policy_registry,
+        sessions_dir,
+        &parent_manifest,
+        specs,
+        args.dest_rel.as_ref(),
+        args.browser_trace_rel.as_ref(),
+        args.cookie_jar_rel.as_ref(),
+        args.storage_state_rel.as_ref(),
+        args.profile_root_rel.as_ref(),
+        args.effective_url.clone(),
+        args.http_code,
+        args.transport_substrate,
+        args.backend,
+        args.probe_bytes,
+        args.probe,
+        args.handoff_out.as_ref(),
+        &args.note,
+    )
+}
 
+fn run_import_dossier(
+    repo_root: &Path,
+    policy_registry: &Path,
+    sessions_dir: &Path,
+    args: ImportDossierArgs,
+) -> Result<()> {
+    let dossier_paths = collect_import_dossier_paths(repo_root, &args)?;
+    if dossier_paths.is_empty() {
+        bail!("import-dossier requires at least one --dossier or --batch-manifest");
+    }
+
+    for dossier_path in dossier_paths {
+        let dossier = load_research_dossier(&dossier_path)?;
+        let parent_manifest = ensure_parent_session_for_dossier(repo_root, sessions_dir, &dossier)?;
+        let selected = select_dossier_suggestions(&dossier, &args)?;
+        if selected.is_empty() {
+            println!(
+                "import_skip_dossier={} reason=no_selected_suggestions",
+                dossier_path.display()
+            );
+            continue;
+        }
+        let specs = selected
+            .into_iter()
+            .map(|suggestion| dossier_suggestion_to_promote_spec(&dossier, suggestion, &args.note))
+            .collect::<Vec<_>>();
+        promote_specs(
+            repo_root,
+            policy_registry,
+            sessions_dir,
+            &parent_manifest,
+            specs,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            BackendArg::Auto,
+            DEFAULT_PROBE_BYTES,
+            false,
+            None,
+            &args.note,
+        )?;
+    }
+
+    Ok(())
+}
+
+#[allow(clippy::too_many_arguments)]
+fn promote_specs(
+    repo_root: &Path,
+    policy_registry: &Path,
+    sessions_dir: &Path,
+    parent_manifest: &Path,
+    specs: Vec<PromoteSpec>,
+    dest_rel: Option<&PathBuf>,
+    browser_trace_rel: Option<&PathBuf>,
+    cookie_jar_rel: Option<&PathBuf>,
+    storage_state_rel: Option<&PathBuf>,
+    profile_root_rel: Option<&PathBuf>,
+    effective_url: Option<String>,
+    http_code: Option<u16>,
+    transport_substrate: Option<TransportSubstrate>,
+    backend: BackendArg,
+    probe_bytes: usize,
+    probe: bool,
+    handoff_out: Option<&PathBuf>,
+    notes: &[String],
+) -> Result<()> {
+    let parent_checklist = parent_manifest
+        .parent()
+        .context("session manifest must have a parent directory")?
+        .join("checklist.md");
+    let mut parent = load_session(parent_manifest)?;
     let stack = build_stack(policy_registry)?;
-    let inherited_substrate = args
-        .transport_substrate
-        .unwrap_or(parent.controller.transport_substrate);
-    let shared_browser_trace = args
-        .browser_trace_rel
+    let inherited_substrate = transport_substrate.unwrap_or(parent.controller.transport_substrate);
+    let shared_browser_trace = browser_trace_rel
         .as_ref()
         .map(|path| display_input_path(repo_root, path));
-    let shared_cookie_jar = args
-        .cookie_jar_rel
+    let shared_cookie_jar = cookie_jar_rel
         .as_ref()
         .map(|path| display_input_path(repo_root, path));
-    let shared_storage_state = args
-        .storage_state_rel
+    let shared_storage_state = storage_state_rel
         .as_ref()
         .map(|path| display_input_path(repo_root, path));
     let mut child_ids = Vec::new();
     let mut handoff_rows = Vec::new();
 
-    for (index, url) in urls.into_iter().enumerate() {
+    for (index, spec) in specs.into_iter().enumerate() {
         let child_session_id =
-            allocate_child_session_id(sessions_dir, &parent.session_id, &url, index);
+            allocate_child_session_id(sessions_dir, &parent.session_id, &spec.url, index);
         let child_dir = sessions_dir.join(&child_session_id);
         let child_manifest = child_dir.join("session.toml");
         let child_checklist = child_dir.join("checklist.md");
-        let host_scope = derive_host_scope(url.as_str(), args.effective_url.as_deref());
-        let inherited_bundle = if let Some(profile_root_rel) = &args.profile_root_rel {
+        let host_scope = derive_host_scope(spec.url.as_str(), effective_url.as_deref());
+        let inherited_bundle = if let Some(profile_root_rel) = profile_root_rel {
             load_profile_bundle(repo_root, profile_root_rel, host_scope.as_deref())?
         } else {
             None
         };
-        let effective_url = args.effective_url.clone().or_else(|| {
+        let resolved_effective_url = effective_url.clone().or_else(|| {
             inherited_bundle
                 .as_ref()
                 .and_then(|bundle| bundle.effective_url.clone())
         });
-        let browser_trace_rel = shared_browser_trace.clone().or_else(|| {
+        let resolved_browser_trace = shared_browser_trace.clone().or_else(|| {
             inherited_bundle
                 .as_ref()
                 .and_then(|bundle| bundle.browser_trace_rel.clone())
         });
-        let cookie_jar_rel = shared_cookie_jar.clone().or_else(|| {
+        let resolved_cookie_jar = shared_cookie_jar.clone().or_else(|| {
             inherited_bundle
                 .as_ref()
                 .and_then(|bundle| bundle.cookie_jar_rel.clone())
         });
-        let storage_state_rel = shared_storage_state.clone().or_else(|| {
+        let resolved_storage_state = shared_storage_state.clone().or_else(|| {
             inherited_bundle
                 .as_ref()
                 .and_then(|bundle| bundle.storage_state_rel.clone())
         });
-        let mut request = TransferRequest::probe(url.clone());
-        request.backend = args.backend.into();
-        request.probe_bytes = args.probe_bytes;
-        if !args.note.is_empty() {
-            request.note = Some(args.note.join(" | "));
+        let mut request = TransferRequest::probe(spec.url.clone());
+        request.backend = backend.into();
+        request.probe_bytes = probe_bytes;
+        let note_text = join_optional_notes(&[join_notes(notes), spec.note.clone()]);
+        if let Some(note_text) = &note_text {
+            request.note = Some(note_text.clone());
         }
-        let trace = if args.probe {
+        let trace = if probe {
             Some(stack.probe_with_trace(&request))
         } else {
             None
@@ -1026,14 +1184,18 @@ fn run_promote(
             .map(RouteSummary::from_trace)
             .unwrap_or_else(|| RouteSummary::from_request(&stack, &request));
         let now = utc_now();
-        let promote_note = promote_note(&parent.session_id, &args.note);
-        let promote_note = if inherited_bundle.is_some() {
-            format!(
+        let promote_note = promote_note(&parent.session_id, notes);
+        let promote_note = match (inherited_bundle.is_some(), spec.note.as_deref()) {
+            (true, Some(spec_note)) => format!(
+                "{promote_note} | reused_profile_bundle_for_host_scope={} | {spec_note}",
+                host_scope.as_deref().unwrap_or("generic_host")
+            ),
+            (true, None) => format!(
                 "{promote_note} | reused_profile_bundle_for_host_scope={}",
                 host_scope.as_deref().unwrap_or("generic_host")
-            )
-        } else {
-            promote_note
+            ),
+            (false, Some(spec_note)) => format!("{promote_note} | {spec_note}"),
+            (false, None) => promote_note,
         };
         let mut child = AcquisitionSession {
             format_version: 1,
@@ -1042,32 +1204,32 @@ fn run_promote(
             updated_utc: now.clone(),
             status: SessionStatus::Staged,
             source: SourceTarget {
-                url: Some(url.clone()),
-                source_id: parent.source.source_id.clone(),
-                title: parent.source.title.clone(),
-                site: args.site.clone().or_else(|| parent.source.site.clone()),
-                access_class: args
+                url: Some(spec.url.clone()),
+                source_id: spec
+                    .source_id
+                    .clone()
+                    .or_else(|| parent.source.source_id.clone()),
+                title: spec.title.clone().or_else(|| parent.source.title.clone()),
+                site: spec.site.clone().or_else(|| parent.source.site.clone()),
+                access_class: spec
                     .access_class
                     .clone()
                     .or_else(|| parent.source.access_class.clone()),
             },
             lineage: Some(SessionLineage {
                 parent_session_id: parent.session_id.clone(),
-                parent_manifest: to_repo_display_path(repo_root, &parent_manifest),
+                parent_manifest: to_repo_display_path(repo_root, parent_manifest),
                 relation: "promoted_child".to_string(),
             }),
             search: parent.search.clone(),
             controller: ControllerPlan {
                 policy_registry_rel: Some(to_repo_display_path(repo_root, policy_registry)),
                 sessions_dir_rel: to_repo_display_path(repo_root, sessions_dir),
-                dest_rel: args
-                    .dest_rel
-                    .as_ref()
-                    .map(|path| display_input_path(repo_root, path)),
+                dest_rel: dest_rel.map(|path| display_input_path(repo_root, path)),
                 transport_substrate: inherited_substrate,
                 requested_backend: request.backend.as_str().to_string(),
-                probe_bytes: args.probe_bytes,
-                probe_requested: args.probe,
+                probe_bytes,
+                probe_requested: probe,
             },
             route: Some(route),
             probe: trace
@@ -1075,14 +1237,15 @@ fn run_promote(
                 .map(|trace| ProbeSummary::from_trace(trace, &now)),
             evidence: EvidenceState {
                 artifact_rel: None,
-                browser_trace_rel,
-                cookie_jar_rel,
-                storage_state_rel,
+                text_sidecar_rel: None,
+                browser_trace_rel: resolved_browser_trace,
+                cookie_jar_rel: resolved_cookie_jar,
+                storage_state_rel: resolved_storage_state,
                 profile_bundle_rel: None,
                 request_capsule_rel: None,
                 host_scope,
-                effective_url,
-                http_code: args.http_code,
+                effective_url: resolved_effective_url,
+                http_code,
                 bytes: None,
                 sha256: None,
             },
@@ -1094,7 +1257,7 @@ fn run_promote(
             }],
         };
 
-        if let Some(profile_root_rel) = &args.profile_root_rel {
+        if let Some(profile_root_rel) = profile_root_rel {
             let bundle_manifest =
                 write_profile_bundle(repo_root, profile_root_rel, &child, &child_manifest)?;
             if let Some(bundle_manifest) = bundle_manifest {
@@ -1137,18 +1300,18 @@ fn run_promote(
         note: Some(format!(
             "spawned_child_sessions={}{}",
             child_ids.join(","),
-            render_optional_suffix(&join_notes(&args.note))
+            render_optional_suffix(&join_notes(notes))
         )),
     });
-    write_session(repo_root, &parent_manifest, &parent)?;
-    write_checklist(repo_root, &parent_checklist, &parent_manifest, &parent)?;
-    if let Some(handoff_out) = &args.handoff_out {
+    write_session(repo_root, parent_manifest, &parent)?;
+    write_checklist(repo_root, &parent_checklist, parent_manifest, &parent)?;
+    if let Some(handoff_out) = handoff_out {
         let handoff_path = repo_path(repo_root, handoff_out);
         write_handoff_rows(&handoff_path, &handoff_rows)?;
         println!("handoff={}", to_repo_display_path(repo_root, &handoff_path));
         println!("handoff_rows={}", handoff_rows.len());
     }
-    print_stage_summary(repo_root, &parent_manifest, &parent_checklist, &parent);
+    print_stage_summary(repo_root, parent_manifest, &parent_checklist, &parent);
     Ok(())
 }
 
@@ -1264,6 +1427,7 @@ fn run_record(repo_root: &Path, sessions_dir: &Path, args: RecordArgs) -> Result
             &session,
             binding,
         );
+        let should_reconcile = args.reconcile_project_api && !journal_row.project_artifact_rel.is_empty();
         append_acquisition_journal_rows(&project_api.acquisition_journal_path, &[journal_row])?;
         println!(
             "acquisition_journal={}",
@@ -1273,6 +1437,9 @@ fn run_record(repo_root: &Path, sessions_dir: &Path, args: RecordArgs) -> Result
                 .unwrap_or(&project_api.acquisition_journal_path)
                 .display()
         );
+        if should_reconcile {
+            run_cd_cache_reconcile(repo_root, &project_api.repo_root)?;
+        }
     }
     print_stage_summary(repo_root, &manifest_path, &checklist_path, &session);
     Ok(())
@@ -1328,6 +1495,10 @@ fn run_consume_handoff(
     } else {
         None
     };
+    let project_cache_root = args
+        .project_cache_root
+        .as_ref()
+        .map(|path| repo_path(repo_root, path));
     let project_api_crosswalk = if let Some(project_api) = &project_api {
         Some(load_project_api_crosswalk(&project_api.crosswalk_path)?)
     } else {
@@ -1354,6 +1525,11 @@ fn run_consume_handoff(
                 bytes,
                 sha256: sha256.clone(),
                 header_count: request_headers.len(),
+                text_sidecar_rel: maybe_extract_pdf_sidecar(
+                    repo_root,
+                    &output_path,
+                    args.extract_pdf_sidecar,
+                )?,
             };
             report_rows.push(ConsumeReportRow::skipped(
                 repo_root,
@@ -1378,6 +1554,7 @@ fn run_consume_handoff(
                     &capsule,
                     &outcome,
                     binding,
+                    project_cache_root.as_deref(),
                 ));
             }
             println!(
@@ -1403,6 +1580,11 @@ fn run_consume_handoff(
                     output_path: output_path.clone(),
                     result: result.clone(),
                     header_count: request_headers.len(),
+                    text_sidecar_rel: maybe_extract_pdf_sidecar(
+                        repo_root,
+                        &output_path,
+                        args.extract_pdf_sidecar,
+                    )?,
                 };
                 println!(
                     "downloaded session_id={} output={} backend={} bytes={} sha256={}",
@@ -1429,6 +1611,7 @@ fn run_consume_handoff(
                         &capsule,
                         &outcome,
                         binding,
+                        project_cache_root.as_deref(),
                     ));
                 }
                 report_rows.push(ConsumeReportRow::success(
@@ -1469,6 +1652,7 @@ fn run_consume_handoff(
                         &capsule,
                         &outcome,
                         binding,
+                        project_cache_root.as_deref(),
                     ));
                 }
                 report_rows.push(ConsumeReportRow::failure(
@@ -1502,6 +1686,13 @@ fn run_consume_handoff(
                 .unwrap_or(&project_api.acquisition_journal_path)
                 .display()
         );
+        if args.reconcile_project_api
+            && journal_rows
+                .iter()
+                .any(|row| !row.project_artifact_rel.is_empty())
+        {
+            run_cd_cache_reconcile(repo_root, &project_api.repo_root)?;
+        }
     }
 
     if let Some(report_out) = &args.report_out {
@@ -1530,6 +1721,80 @@ fn journal_parent_session_id(session: &AcquisitionSession) -> String {
         .as_ref()
         .map(|lineage| lineage.parent_session_id.clone())
         .unwrap_or_else(|| session.session_id.clone())
+}
+
+fn intentional_project_artifact_rel(
+    project_repo_root: &Path,
+    project_cache_root: Option<&Path>,
+    output_path: &Path,
+) -> String {
+    let Some(project_cache_root) = project_cache_root else {
+        return String::new();
+    };
+    if output_path.starts_with(project_cache_root) && output_path.starts_with(project_repo_root) {
+        project_relative_path(project_repo_root, output_path)
+    } else {
+        String::new()
+    }
+}
+
+fn maybe_extract_pdf_sidecar(
+    repo_root: &Path,
+    output_path: &Path,
+    enabled: bool,
+) -> Result<Option<String>> {
+    if !enabled {
+        return Ok(None);
+    }
+    let is_pdf = output_path
+        .extension()
+        .and_then(|ext| ext.to_str())
+        .map(|ext| ext.eq_ignore_ascii_case("pdf"))
+        .unwrap_or(false);
+    if !is_pdf || !output_path.exists() {
+        return Ok(None);
+    }
+    let markdown = PdfExtractor::extract_to_markdown(output_path)
+        .with_context(|| format!("extract markdown from {}", output_path.display()))?;
+    let sidecar_path = output_path.with_extension("md");
+    fs::write(&sidecar_path, markdown)
+        .with_context(|| format!("write {}", sidecar_path.display()))?;
+    Ok(Some(to_repo_display_path(repo_root, &sidecar_path)))
+}
+
+fn run_cd_cache_reconcile(repo_root: &Path, project_api_root: &Path) -> Result<()> {
+    let output = Command::new("cargo")
+        .current_dir(repo_root)
+        .args([
+            "run",
+            "-q",
+            "-p",
+            "gororoba_cli_data",
+            "--bin",
+            "cd-cache-reconcile",
+            "--",
+            "--project-api-root",
+            project_api_root.to_string_lossy().as_ref(),
+        ])
+        .output()
+        .with_context(|| format!("run cd-cache-reconcile for {}", project_api_root.display()))?;
+    if !output.status.success() {
+        bail!(
+            "cd-cache-reconcile failed for {}\nstdout:\n{}\nstderr:\n{}",
+            project_api_root.display(),
+            String::from_utf8_lossy(&output.stdout),
+            String::from_utf8_lossy(&output.stderr)
+        );
+    }
+    let stdout = String::from_utf8_lossy(&output.stdout);
+    if !stdout.trim().is_empty() {
+        print!("{stdout}");
+    }
+    let stderr = String::from_utf8_lossy(&output.stderr);
+    if !stderr.trim().is_empty() {
+        eprint!("{stderr}");
+    }
+    Ok(())
 }
 
 fn journal_row_from_record_session(
@@ -1641,6 +1906,7 @@ fn journal_row_from_consume_outcome(
     capsule: &RequestCapsule,
     outcome: &ConsumeOutcome,
     binding: Option<&ProjectApiCrosswalkBinding>,
+    project_cache_root: Option<&Path>,
 ) -> AcquisitionJournalRow {
     let (artifact_rel, project_artifact_rel, bytes, sha256, http_code, outcome_name) = match outcome
     {
@@ -1650,7 +1916,7 @@ fn journal_row_from_consume_outcome(
             ..
         } => (
             to_repo_display_path(local_repo_root, output_path),
-            project_relative_path(project_repo_root, output_path),
+            intentional_project_artifact_rel(project_repo_root, project_cache_root, output_path),
             result.bytes.to_string(),
             result.sha256.clone().unwrap_or_default(),
             result
@@ -1663,7 +1929,7 @@ fn journal_row_from_consume_outcome(
             output_path, error, ..
         } => (
             to_repo_display_path(local_repo_root, output_path),
-            project_relative_path(project_repo_root, output_path),
+            String::new(),
             String::new(),
             String::new(),
             capsule
@@ -1679,7 +1945,7 @@ fn journal_row_from_consume_outcome(
             ..
         } => (
             to_repo_display_path(local_repo_root, output_path),
-            project_relative_path(project_repo_root, output_path),
+            intentional_project_artifact_rel(project_repo_root, project_cache_root, output_path),
             bytes.to_string(),
             sha256.clone(),
             capsule
@@ -1971,6 +2237,7 @@ fn render_checklist(
 
 fn render_evidence_section(out: &mut String, session: &AcquisitionSession) {
     if session.evidence.artifact_rel.is_none()
+        && session.evidence.text_sidecar_rel.is_none()
         && session.evidence.browser_trace_rel.is_none()
         && session.evidence.cookie_jar_rel.is_none()
         && session.evidence.storage_state_rel.is_none()
@@ -2010,6 +2277,9 @@ fn render_evidence_section(out: &mut String, session: &AcquisitionSession) {
     }
     if let Some(artifact_rel) = &session.evidence.artifact_rel {
         out.push_str(&format!("- Artifact: `{artifact_rel}`\n"));
+    }
+    if let Some(text_sidecar_rel) = &session.evidence.text_sidecar_rel {
+        out.push_str(&format!("- Text Sidecar: `{text_sidecar_rel}`\n"));
     }
 }
 
@@ -2086,6 +2356,9 @@ fn print_stage_summary(
     }
     if let Some(artifact_rel) = &session.evidence.artifact_rel {
         println!("artifact={artifact_rel}");
+    }
+    if let Some(text_sidecar_rel) = &session.evidence.text_sidecar_rel {
+        println!("text_sidecar={text_sidecar_rel}");
     }
 }
 
@@ -2183,6 +2456,20 @@ fn join_notes(notes: &[String]) -> Option<String> {
     }
 }
 
+fn join_optional_notes(notes: &[Option<String>]) -> Option<String> {
+    let joined = notes
+        .iter()
+        .filter_map(|note| note.as_ref())
+        .map(|note| note.trim())
+        .filter(|note| !note.is_empty())
+        .collect::<Vec<_>>();
+    if joined.is_empty() {
+        None
+    } else {
+        Some(joined.join(" | "))
+    }
+}
+
 fn collect_promotion_urls(repo_root: &Path, args: &PromoteArgs) -> Result<Vec<String>> {
     let mut urls = Vec::new();
     for url in &args.url {
@@ -2203,6 +2490,197 @@ fn collect_promotion_urls(repo_root: &Path, args: &PromoteArgs) -> Result<Vec<St
         }
     }
     Ok(urls)
+}
+
+fn collect_import_dossier_paths(
+    repo_root: &Path,
+    args: &ImportDossierArgs,
+) -> Result<Vec<PathBuf>> {
+    let mut seen = HashSet::new();
+    let mut paths = Vec::new();
+    for dossier in &args.dossier {
+        let resolved = repo_path(repo_root, dossier);
+        if seen.insert(resolved.clone()) {
+            paths.push(resolved);
+        }
+    }
+    for manifest in &args.batch_manifest {
+        let manifest_path = repo_path(repo_root, manifest);
+        let batch = load_dossier_batch_manifest(&manifest_path)?;
+        for entry in batch.entries {
+            let resolved = resolve_manifest_entry_path(&manifest_path, &entry.dossier_json);
+            if seen.insert(resolved.clone()) {
+                paths.push(resolved);
+            }
+        }
+    }
+    Ok(paths)
+}
+
+fn ensure_parent_session_for_dossier(
+    repo_root: &Path,
+    sessions_dir: &Path,
+    dossier: &ResearchDossier,
+) -> Result<PathBuf> {
+    let session_id = sanitize_token(&format!(
+        "{}_{}",
+        dossier.project_id, dossier.search_target_id
+    ));
+    let manifest_path = sessions_dir.join(&session_id).join("session.toml");
+    if manifest_path.exists() {
+        return Ok(manifest_path);
+    }
+
+    let queue_path = PathBuf::from(&dossier.search_queue_path);
+    let queue = load_search_queue(&queue_path)?;
+    let target = queue
+        .search_target
+        .iter()
+        .find(|target| target.id == dossier.search_target_id)
+        .with_context(|| {
+            format!(
+                "search target {} missing from {}",
+                dossier.search_target_id, dossier.search_queue_path
+            )
+        })?;
+    let checklist_path = manifest_path
+        .parent()
+        .context("session manifest must have a parent directory")?
+        .join("checklist.md");
+    let now = utc_now();
+    let session = AcquisitionSession {
+        format_version: 1,
+        session_id: session_id.clone(),
+        created_utc: now.clone(),
+        updated_utc: now.clone(),
+        status: SessionStatus::Staged,
+        source: SourceTarget {
+            url: None,
+            source_id: Some(target.id.clone()),
+            title: Some(target.title.clone()),
+            site: None,
+            access_class: None,
+        },
+        lineage: None,
+        search: Some(SearchContext {
+            queue_path: dossier.search_queue_path.clone(),
+            project_id: Some(dossier.project_id.clone()),
+            search_target_id: target.id.clone(),
+            window: target.window.clone(),
+            priority: target.priority.clone(),
+            kind: target.kind.clone(),
+            status: target.status.clone(),
+            why_now: target.why_now.clone(),
+            preferred_lanes: target.preferred_lanes.clone(),
+            query_seeds: target.query_seeds.clone(),
+        }),
+        controller: ControllerPlan {
+            policy_registry_rel: None,
+            sessions_dir_rel: to_repo_display_path(repo_root, sessions_dir),
+            dest_rel: None,
+            transport_substrate: TransportSubstrate::Auto,
+            requested_backend: DownloadBackend::Auto.as_str().to_string(),
+            probe_bytes: DEFAULT_PROBE_BYTES,
+            probe_requested: false,
+        },
+        route: None,
+        probe: None,
+        evidence: EvidenceState::default(),
+        events: vec![SessionEvent {
+            at_utc: now,
+            action: "import_dossier_stage_parent".to_string(),
+            status: SessionStatus::Staged,
+            note: Some(format!(
+                "staged from dossier {}",
+                to_repo_display_path(
+                    repo_root,
+                    &repo_path(repo_root, Path::new(&dossier.search_queue_path))
+                )
+            )),
+        }],
+    };
+    write_session(repo_root, &manifest_path, &session)?;
+    write_checklist(repo_root, &checklist_path, &manifest_path, &session)?;
+    Ok(manifest_path)
+}
+
+fn select_dossier_suggestions<'a>(
+    dossier: &'a ResearchDossier,
+    args: &ImportDossierArgs,
+) -> Result<Vec<&'a StageSuggestion>> {
+    let mut selected = dossier
+        .stage_suggestions
+        .iter()
+        .filter(|suggestion| {
+            if let Some(max_rank) = args.max_rank {
+                suggestion.rank <= max_rank
+            } else {
+                true
+            }
+        })
+        .collect::<Vec<_>>();
+
+    if !args.rank.is_empty() {
+        let rank_set = args.rank.iter().copied().collect::<HashSet<_>>();
+        selected.retain(|suggestion| rank_set.contains(&suggestion.rank));
+    } else if !args.all_suggestions {
+        selected.retain(|suggestion| suggestion.default_selected);
+        if selected.is_empty()
+            && let Some(first) = dossier.stage_suggestions.first()
+        {
+            selected.push(first);
+        }
+    }
+
+    let available_ranks = dossier
+        .stage_suggestions
+        .iter()
+        .map(|suggestion| suggestion.rank.to_string())
+        .collect::<Vec<_>>()
+        .join(", ");
+    for rank in &args.rank {
+        if !dossier
+            .stage_suggestions
+            .iter()
+            .any(|suggestion| suggestion.rank == *rank)
+        {
+            bail!(
+                "dossier {} does not contain rank {}; available ranks: {}",
+                dossier.search_target_id,
+                rank,
+                available_ranks
+            );
+        }
+    }
+    Ok(selected)
+}
+
+fn dossier_suggestion_to_promote_spec(
+    dossier: &ResearchDossier,
+    suggestion: &StageSuggestion,
+    notes: &[String],
+) -> PromoteSpec {
+    PromoteSpec {
+        url: suggestion.candidate_url.clone(),
+        source_id: Some(suggestion.source.clone()),
+        title: Some(suggestion.paper_title.clone()),
+        site: Some(suggestion.host_class.clone()),
+        access_class: Some(suggestion.route_class.clone()),
+        note: join_optional_notes(&[
+            Some(format!(
+                "dossier_search_target_id={}",
+                dossier.search_target_id
+            )),
+            Some(format!(
+                "dossier_suggestion_id={}",
+                suggestion.suggestion_id
+            )),
+            Some(format!("canonical_id={}", suggestion.canonical_id)),
+            Some(format!("source_family={}", suggestion.source_family)),
+            Some(format!("route_class={}", suggestion.route_class)),
+            join_notes(notes),
+        ]),
+    }
 }
 
 fn load_search_queue(path: &Path) -> Result<SearchQueueFile> {
@@ -2893,9 +3371,11 @@ fn writeback_session_outcome(
             output_path,
             result,
             header_count,
+            text_sidecar_rel,
         } => {
             session.status = SessionStatus::Downloaded;
             session.evidence.artifact_rel = Some(to_repo_display_path(repo_root, output_path));
+            session.evidence.text_sidecar_rel = text_sidecar_rel.clone();
             session.evidence.bytes = Some(result.bytes);
             session.evidence.sha256 = result.sha256.clone();
             if let Some(http_code) = result.http_code {
@@ -2923,9 +3403,11 @@ fn writeback_session_outcome(
             bytes,
             sha256,
             header_count,
+            text_sidecar_rel,
         } => {
             session.status = SessionStatus::Downloaded;
             session.evidence.artifact_rel = Some(to_repo_display_path(repo_root, output_path));
+            session.evidence.text_sidecar_rel = text_sidecar_rel.clone();
             session.evidence.bytes = Some(*bytes);
             session.evidence.sha256 = Some(sha256.clone());
             session.events.push(SessionEvent {
@@ -2978,6 +3460,7 @@ fn build_queue_update(
             output_path,
             result,
             header_count,
+            ..
         } => QueueSyncUpdate {
             search_target_id: capsule.search_target_id.clone().unwrap_or_default(),
             attempted_utc: utc_now(),

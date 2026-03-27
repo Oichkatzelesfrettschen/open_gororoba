@@ -9,9 +9,10 @@
 use anyhow::{Context, Result, bail};
 use clap::{Parser, Subcommand};
 use lit_search::{
-    MultiQueryExecutionReport, SearchEngine, SearchExecutionReport, crawler::WebCrawler,
-    critique::build_critique_prompt, download, evolution::EvolutionStore, normalize_source_name,
-    pdf::PdfExtractor, search::SourceTier, sources::ApiKeys,
+    ALL_SOURCE_NAMES, MultiQueryExecutionReport, SOURCE_FAMILY_NAMES, SearchEngine,
+    SearchExecutionReport, crawler::WebCrawler, critique::build_critique_prompt, download,
+    evolution::EvolutionStore, normalize_source_name, pdf::PdfExtractor, search::SourceTier,
+    source_names_for_family, sources::ApiKeys,
 };
 use serde::Serialize;
 use std::path::{Path, PathBuf};
@@ -60,6 +61,10 @@ struct Cli {
     #[arg(long = "source")]
     source: Vec<String>,
 
+    /// Expand a named source family into concrete sources
+    #[arg(long = "source-family")]
+    source_family: Vec<String>,
+
     /// Read multiple queries from a newline-delimited file
     #[arg(long)]
     query_file: Option<PathBuf>,
@@ -75,6 +80,10 @@ struct Cli {
     /// Write the execution report to JSON
     #[arg(long)]
     report_json_out: Option<PathBuf>,
+
+    /// Print the available sources and source families, then exit
+    #[arg(long)]
+    list_sources: bool,
 }
 
 #[derive(Subcommand, Debug)]
@@ -123,6 +132,7 @@ struct RunSearchArgs {
     domains: Vec<String>,
     expand_domains: bool,
     sources: Vec<String>,
+    source_families: Vec<String>,
     query_file: Option<PathBuf>,
     parallel_queries: bool,
     show_source_stats: bool,
@@ -141,6 +151,11 @@ async fn main() -> Result<()> {
     tracing_subscriber::fmt::init();
     let cli = Cli::parse();
 
+    if cli.list_sources {
+        print_available_sources();
+        return Ok(());
+    }
+
     if let Some(cmd) = cli.command {
         match cmd {
             Commands::Search { query, limit } => {
@@ -154,6 +169,7 @@ async fn main() -> Result<()> {
                     domains: cli.domain,
                     expand_domains: cli.expand_domains,
                     sources: cli.source,
+                    source_families: cli.source_family,
                     query_file: cli.query_file,
                     parallel_queries: cli.parallel_queries,
                     show_source_stats: cli.show_source_stats,
@@ -216,6 +232,7 @@ async fn main() -> Result<()> {
             domains: cli.domain,
             expand_domains: cli.expand_domains,
             sources: cli.source,
+            source_families: cli.source_family,
             query_file: cli.query_file,
             parallel_queries: cli.parallel_queries,
             show_source_stats: cli.show_source_stats,
@@ -239,11 +256,26 @@ async fn run_search(args: RunSearchArgs) -> Result<()> {
 
     let keys = ApiKeys::from_env();
     let engine = SearchEngine::new(keys, tier);
-    let sources = args
+    let mut sources = args
         .sources
         .iter()
         .map(|source| normalize_source_name(source))
         .collect::<Vec<_>>();
+    for family in &args.source_families {
+        let Some(family_sources) = source_names_for_family(family) else {
+            bail!(
+                "unknown source family '{}'; valid families: {}",
+                family,
+                SOURCE_FAMILY_NAMES.join(", ")
+            );
+        };
+        for source in family_sources {
+            let normalized = normalize_source_name(source);
+            if !sources.iter().any(|existing| existing == &normalized) {
+                sources.push(normalized);
+            }
+        }
+    }
     let queries = if let Some(query_file) = &args.query_file {
         load_query_file(query_file)?
     } else {
@@ -357,6 +389,16 @@ async fn run_search(args: RunSearchArgs) -> Result<()> {
     }
 
     Ok(())
+}
+
+fn print_available_sources() {
+    println!("searchable_sources={}", ALL_SOURCE_NAMES.join(", "));
+    for family in SOURCE_FAMILY_NAMES {
+        let entries = source_names_for_family(family)
+            .map(|sources| sources.join(", "))
+            .unwrap_or_default();
+        println!("source_family[{family}]={entries}");
+    }
 }
 
 fn load_query_file(path: &Path) -> Result<Vec<String>> {

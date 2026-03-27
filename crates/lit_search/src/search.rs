@@ -201,10 +201,7 @@ pub fn normalize_source_name(source: &str) -> String {
 }
 
 pub fn normalize_source_family_name(family: &str) -> String {
-    let normalized = family
-        .trim()
-        .to_ascii_lowercase()
-        .replace(['-', ' '], "_");
+    let normalized = family.trim().to_ascii_lowercase().replace(['-', ' '], "_");
     normalized
         .strip_prefix("family:")
         .unwrap_or(&normalized)

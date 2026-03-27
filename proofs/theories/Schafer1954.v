@@ -2326,6 +2326,22 @@ Proof.
   - exact (s54_concrete_backward_from_residual_coordinates D HD S).
 Qed.
 
+Theorem s54_octonion_sedenion_backward_from_residual_coordinate_builder :
+  (forall D : CDSed -> CDSed,
+      Schafer1954IsSedenionDerivation D ->
+      Schafer1954ResidualCoordinateSurface D) ->
+  forall D : CDSed -> CDSed,
+    Schafer1954IsSedenionDerivation D ->
+    exists A : CDOct -> CDOct,
+      schafer1954_octonion_derivation A /\
+      D = schafer1954_sedenion_extend A.
+Proof.
+  intros Hcoords D HD.
+  exact
+    (s54_octonion_sedenion_backward_from_residual_coordinates
+       D HD (Hcoords D HD)).
+Qed.
+
 Record Schafer1954OctonionSedenionConverseSurface := {
   s54_octsed_converse_eq52_discharge :
     forall p : Schafer1954Basis7 -> R,
@@ -2355,6 +2371,15 @@ Proof.
          schafer1954_eq52_real_solution_zero;
        s54_octsed_converse_backward := Hbackward |}.
 Defined.
+
+Definition schafer1954_octonion_sedenion_converse_surface_of_residual_coordinates
+    (Hcoords :
+      forall D : CDSed -> CDSed,
+        Schafer1954IsSedenionDerivation D ->
+        Schafer1954ResidualCoordinateSurface D) :
+    Schafer1954OctonionSedenionConverseSurface :=
+  schafer1954_octonion_sedenion_converse_surface_of_backward
+    (s54_octonion_sedenion_backward_from_residual_coordinate_builder Hcoords).
 
 Theorem schafer1954_theorem4_octonion_sedenion_identification :
   (forall D : CDSed -> CDSed,
@@ -2386,6 +2411,22 @@ Proof.
   intros S.
   apply schafer1954_theorem4_octonion_sedenion_identification.
   exact (s54_octsed_converse_backward S).
+Qed.
+
+Theorem schafer1954_theorem4_octonion_sedenion_identification_from_residual_coordinates :
+  (forall D : CDSed -> CDSed,
+      Schafer1954IsSedenionDerivation D ->
+      Schafer1954ResidualCoordinateSurface D) ->
+  forall D : CDSed -> CDSed,
+    Schafer1954IsSedenionDerivation D <->
+    exists A : CDOct -> CDOct,
+      schafer1954_octonion_derivation A /\
+      D = schafer1954_sedenion_extend A.
+Proof.
+  intro Hcoords.
+  apply schafer1954_theorem4_octonion_sedenion_identification.
+  exact
+    (s54_octonion_sedenion_backward_from_residual_coordinate_builder Hcoords).
 Qed.
 
 Theorem schafer1954_theorem4_octonion_sedenion_type_g :

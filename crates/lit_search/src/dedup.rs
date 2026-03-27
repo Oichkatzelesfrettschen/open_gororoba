@@ -121,7 +121,10 @@ mod tests {
         ];
         let result = deduplicate(papers);
         assert_eq!(result.len(), 1);
-        assert_eq!(canonicalize_doi("https://doi.org/10.1007/BF02854388"), "10.1007/bf02854388");
+        assert_eq!(
+            canonicalize_doi("https://doi.org/10.1007/BF02854388"),
+            "10.1007/bf02854388"
+        );
     }
 
     #[test]
