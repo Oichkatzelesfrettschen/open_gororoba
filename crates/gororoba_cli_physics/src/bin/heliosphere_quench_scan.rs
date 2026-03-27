@@ -1,7 +1,7 @@
 use anyhow::{Context, Result};
 use clap::Parser;
 use csv::{ReaderBuilder, WriterBuilder};
-use data_core::HeliosphereFeatureRow;
+use data_core::{HeliosphereFeatureRow, magnetic_takens_embed};
 use serde::Serialize;
 use std::{collections::BTreeMap, path::PathBuf};
 
@@ -30,6 +30,14 @@ struct Cli {
     /// Exclude rows from these window names (repeatable, case-sensitive).
     #[arg(long = "exclude-window")]
     exclude_windows: Vec<String>,
+
+    /// Embedding dimension (must be power of 2, >= 16). Default 16 = sedenion.
+    #[arg(long, default_value_t = 16)]
+    embedding_dim: usize,
+
+    /// Takens lag in time steps (1 = consecutive hourly, 2 = every other, ...).
+    #[arg(long, default_value_t = 1)]
+    takens_lag: usize,
 }
 
 #[derive(Debug, Clone, Serialize)]
@@ -76,13 +84,11 @@ fn main() -> Result<()> {
         println!("Filtered out {} rows by mission/window exclusion.", skipped);
     }
 
-    // Group rows by mission+product to compute temporal Takens associators
     let mut mission_groups: BTreeMap<(String, String), Vec<HeliosphereFeatureRow>> = BTreeMap::new();
     for row in all_rows {
         mission_groups.entry((row.mission.clone(), row.product.clone())).or_default().push(row);
     }
 
-    // Sort rows by time within each group
     for rows in mission_groups.values_mut() {
         rows.sort_by(|a, b| {
             a.year
@@ -92,44 +98,37 @@ fn main() -> Result<()> {
         });
     }
 
-    let mut associator_data: Vec<(f64, f64, f64, String)> = Vec::new(); // (r_au, lat_deg, associator, mission)
+    let steps = cli.embedding_dim / 4;
+    // (r_au, lat_deg, associator_norm, mission_name)
+    let mut associator_data: Vec<(f64, f64, f64, String)> = Vec::new();
 
-    println!("[1/2] Computing Takens associators with 3D (r, lat) awareness...");
-    for ((mission, _product), rows) in mission_groups {
-        if rows.len() < 6 { continue; }
-
-        let mut embedded_vectors = Vec::new();
-        let mut r_aus = Vec::new();
-        let mut lats = Vec::new();
-
-        // Special handling for MMS: High-cadence dissipation scale (Sprint 50)
-        // We use a smaller window or specialized normalization if needed,
-        // but for global map consistency, we stick to 4-point Takens.
-        let is_mms = mission == "MMS";
-        if is_mms {
-            println!("  Processing MMS high-cadence tranche: {} samples", rows.len());
+    println!(
+        "[1/2] Computing Takens {}D associators ({}-step, lag={}) with (r, lat) binning...",
+        cli.embedding_dim, steps, cli.takens_lag
+    );
+    for ((mission, _product), rows) in &mission_groups {
+        if rows.len() < steps + 5 {
+            continue;
         }
 
-        for window in rows.windows(4) {
-            let mut v16 = [0.0; 16];
-            let local_mean_b = (window[0].b_mag + window[1].b_mag + window[2].b_mag + window[3].b_mag) / 4.0;
-            if local_mean_b <= 0.0 { continue; }
+        let (embedded_vectors, meta_idx) =
+            magnetic_takens_embed(rows, cli.embedding_dim, cli.takens_lag);
 
-            for i in 0..4 {
-                v16[i * 4] = window[i].bx / local_mean_b;
-                v16[i * 4 + 1] = window[i].by / local_mean_b;
-                v16[i * 4 + 2] = window[i].bz / local_mean_b;
-                v16[i * 4 + 3] = (window[i].b_mag - local_mean_b) / local_mean_b;
-            }
-            embedded_vectors.push(v16);
-            r_aus.push(window[3].r_au);
-            lats.push(window[3].lat_deg);
-        }
+        let associators = cd_kernel::batch_sliding_associator_norms_parallel(
+            &embedded_vectors,
+            cli.embedding_dim,
+        );
 
-        let associators = cd_kernel::batch_sedenion_associator_norms_parallel(&embedded_vectors);
-        for (i, &norm) in associators.iter().enumerate() {
-            // For MMS, r_au is ~1.0, lat is ~0.0 (near Earth)
-            associator_data.push((r_aus[i], lats[i], norm, mission.clone()));
+        // associator[k] = triple (emb[k], emb[k+1], emb[k+2])
+        // spatial tag from meta_idx[k+2] (last row of last vector in triple)
+        for (k, &norm) in associators.iter().enumerate() {
+            let tag_row = meta_idx[k + 2];
+            associator_data.push((
+                rows[tag_row].r_au,
+                rows[tag_row].lat_deg,
+                norm,
+                mission.clone(),
+            ));
         }
     }
 
@@ -145,10 +144,10 @@ fn main() -> Result<()> {
     for ((r_bin, lat_bin), samples) in bins {
         let r_center = (r_bin as f64 + 0.5) * cli.bin_size_au;
         let lat_center = (lat_bin as f64 + 0.5) * cli.lat_bin_size_deg;
-        
+
         let mut values: Vec<f64> = samples.iter().map(|(v, _)| *v).collect();
         values.sort_by(|a, b| a.partial_cmp(b).unwrap());
-        
+
         let mean = values.iter().sum::<f64>() / values.len() as f64;
         let median = values[values.len() / 2];
         let max = *values.last().unwrap_or(&0.0);

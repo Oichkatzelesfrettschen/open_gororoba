@@ -92,6 +92,87 @@ fn test_batch_sedenion_associator_matches_recursive() {
     }
 
     #[test]
+    fn test_batch_sliding_16d_matches_sedenion() {
+        let mut vectors_fixed = Vec::new();
+        let mut vectors_vec = Vec::new();
+        for i in 0..10 {
+            let mut v = [0.0_f64; 16];
+            for (j, item) in v.iter_mut().enumerate() {
+                *item = (i * 16 + j) as f64 * 0.1;
+            }
+            vectors_fixed.push(v);
+            vectors_vec.push(v.to_vec());
+        }
+
+        let sedenion_results = batch_sedenion_associator_norms_parallel(&vectors_fixed);
+        let generic_results =
+            batch_sliding_associator_norms_parallel(&vectors_vec, 16);
+
+        assert_eq!(sedenion_results.len(), generic_results.len());
+        for (i, (s, g)) in sedenion_results.iter().zip(&generic_results).enumerate() {
+            assert!(
+                (s - g).abs() < 1e-14,
+                "16D regression at index {i}: sedenion={s} vs generic={g}"
+            );
+        }
+    }
+
+    #[test]
+    fn test_batch_sliding_32d() {
+        // Use basis-like vectors that are guaranteed non-associative in pathion space
+        let mut vectors = Vec::new();
+        for i in 0..8 {
+            let mut v = vec![0.0; 32];
+            // Spread values across multiple components to avoid accidental associativity
+            for j in 0..32 {
+                v[j] = ((i * 32 + j + 1) as f64 * 0.31).cos() * (j as f64 + 1.0);
+            }
+            vectors.push(v);
+        }
+
+        let results = batch_sliding_associator_norms(&vectors, 32);
+        assert_eq!(results.len(), 6); // 8 - 2
+
+        // Self-consistency: serial and parallel must agree
+        let results_par = batch_sliding_associator_norms_parallel(&vectors, 32);
+        assert_eq!(results.len(), results_par.len());
+        for i in 0..6 {
+            assert!(
+                (results[i] - results_par[i]).abs() < 1e-10,
+                "32D serial/parallel mismatch at {i}: {} vs {}",
+                results[i],
+                results_par[i]
+            );
+        }
+        // Verify against generic cd_associator_norm (now that sedenion bug is fixed,
+        // the generic recursive path should agree with the SIMD pathion path)
+        for i in 0..6 {
+            let generic = cd_associator_norm(&vectors[i], &vectors[i + 1], &vectors[i + 2]);
+            assert!(
+                (results[i] - generic).abs() / results[i].max(generic).max(1e-15) < 1e-8,
+                "32D SIMD vs generic mismatch at {i}: SIMD={}, generic={generic}",
+                results[i]
+            );
+        }
+    }
+
+    #[test]
+    fn test_batch_sliding_empty_and_short() {
+        let empty: Vec<Vec<f64>> = Vec::new();
+        assert!(batch_sliding_associator_norms(&empty, 16).is_empty());
+
+        let two = vec![vec![0.0; 16], vec![1.0; 16]];
+        assert!(batch_sliding_associator_norms(&two, 16).is_empty());
+    }
+
+    #[test]
+    #[should_panic(expected = "power of 2")]
+    fn test_batch_sliding_non_power_of_two_panics() {
+        let vecs = vec![vec![0.0; 12]; 5];
+        let _ = batch_sliding_associator_norms(&vecs, 12);
+    }
+
+    #[test]
     fn test_associator_density_quaternions() {
 
     let (density, failures) = measure_associator_density(4, 200, 42, 1e-8);

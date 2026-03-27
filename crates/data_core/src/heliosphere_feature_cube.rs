@@ -1600,4 +1600,153 @@ mod tests {
                 .all(|value| value.abs() <= 8.0)
         }));
     }
+
+    fn b_row(hour: u8, bx: f64, by: f64, bz: f64) -> HeliosphereFeatureRow {
+        let b_mag = (bx * bx + by * by + bz * bz).sqrt();
+        HeliosphereFeatureRow {
+            window_name: "test".to_string(),
+            mission: "Test".to_string(),
+            product: "TestProd".to_string(),
+            year: 2020,
+            doy: 1,
+            hour,
+            r_au: 1.0 + hour as f64 * 0.1,
+            lat_deg: 10.0,
+            lon_deg: 0.0,
+            density_cm3: 5.0,
+            speed_kms: 400.0,
+            temperature_k: 100000.0,
+            bx,
+            by,
+            bz,
+            b_mag,
+            crs_flux: 0.0,
+            spectral_mean: 0.0,
+            spectral_peak: 0.0,
+            map_flux_mean: 0.0,
+            map_flux_std: 0.0,
+            event_score: None,
+            event_mask: None,
+            event_segment_id: None,
+        }
+    }
+
+    #[test]
+    fn test_magnetic_takens_embed_dim16_basic() {
+        // 6 rows -> 4-step windows -> 3 embedded vectors (at indices 3, 4, 5)
+        let rows: Vec<HeliosphereFeatureRow> = (1..=6)
+            .map(|h| b_row(h, h as f64 * 1.0, h as f64 * 0.5, h as f64 * 0.3))
+            .collect();
+        let (vecs, idx) = magnetic_takens_embed(&rows, 16, 1);
+        assert_eq!(vecs.len(), 3);
+        assert_eq!(idx.len(), 3);
+        // Each vector should be 16 components
+        assert!(vecs.iter().all(|v| v.len() == 16));
+        // metadata_indices point to last row in each 4-step window
+        assert_eq!(idx[0], 3); // window [0,1,2,3] -> last = 3
+        assert_eq!(idx[1], 4);
+        assert_eq!(idx[2], 5);
+
+        // Verify normalization: first window rows 0-3
+        let mean_b = (rows[0].b_mag + rows[1].b_mag + rows[2].b_mag + rows[3].b_mag) / 4.0;
+        assert!(mean_b > 0.0);
+        let expected_bx0 = rows[0].bx / mean_b;
+        assert!((vecs[0][0] - expected_bx0).abs() < 1e-12);
+    }
+
+    #[test]
+    fn test_magnetic_takens_embed_dim32() {
+        // 10 rows -> 8-step windows -> 3 embedded vectors
+        let rows: Vec<HeliosphereFeatureRow> = (1..=10)
+            .map(|h| b_row(h, h as f64 * 1.0, h as f64 * 0.5, h as f64 * 0.3))
+            .collect();
+        let (vecs, idx) = magnetic_takens_embed(&rows, 32, 1);
+        assert_eq!(vecs.len(), 3); // 10 - 8 + 1 = 3
+        assert!(vecs.iter().all(|v| v.len() == 32));
+        assert_eq!(idx[0], 7); // window [0..7] -> last = 7
+        assert_eq!(idx[1], 8);
+        assert_eq!(idx[2], 9);
+    }
+
+    #[test]
+    fn test_magnetic_takens_embed_lag2() {
+        // 10 rows, dim=16 (4 steps), lag=2 -> window spans rows 0,2,4,6
+        // window_rows = (4-1)*2 + 1 = 7
+        // sliding from w_start=0 to w_start=3 -> 4 embedded vectors
+        let rows: Vec<HeliosphereFeatureRow> = (1..=10)
+            .map(|h| b_row(h, h as f64 * 1.0, h as f64 * 0.5, h as f64 * 0.3))
+            .collect();
+        let (vecs, idx) = magnetic_takens_embed(&rows, 16, 2);
+        assert_eq!(vecs.len(), 4);
+        assert_eq!(idx[0], 6); // w_start=0: samples [0,2,4,6] -> last=6
+        assert_eq!(idx[1], 7); // w_start=1: samples [1,3,5,7] -> last=7
+    }
+
+    #[test]
+    fn test_magnetic_takens_embed_too_short() {
+        let rows: Vec<HeliosphereFeatureRow> = (1..=3)
+            .map(|h| b_row(h, h as f64, 0.0, 0.0))
+            .collect();
+        let (vecs, _) = magnetic_takens_embed(&rows, 16, 1);
+        assert!(vecs.is_empty()); // 3 rows < 4-step window
+    }
+}
+
+/// Build magnetic Takens embedding vectors of dimension `dim` from a
+/// time-ordered sequence of [`HeliosphereFeatureRow`].
+///
+/// `dim` must be a positive multiple of 4 and a power of 2 (16, 32, 64, ...).
+/// `lag_steps` controls the temporal spacing between samples in the delay
+/// window (1 = consecutive hourly steps, 2 = every other hour, etc.).
+///
+/// The sliding window spans `(dim/4 - 1) * lag_steps + 1` rows.
+/// Each window produces one embedded vector with 4 channels per time step:
+/// `Bx/mean_B, By/mean_B, Bz/mean_B, (|B| - mean_B)/mean_B`.
+///
+/// Returns `(embedded_vectors, metadata_indices)` where `metadata_indices[k]`
+/// is the row index of the *last* sample in the window that produced
+/// `embedded_vectors[k]`. Callers use `metadata_indices[k]` to retrieve
+/// spatial tags (r_au, lat_deg, etc.) from the original row slice.
+pub fn magnetic_takens_embed(
+    rows: &[HeliosphereFeatureRow],
+    dim: usize,
+    lag_steps: usize,
+) -> (Vec<Vec<f64>>, Vec<usize>) {
+    assert!(
+        dim >= 4 && dim.is_power_of_two(),
+        "dim must be a power-of-2 >= 4, got {dim}"
+    );
+    assert!(lag_steps >= 1, "lag_steps must be >= 1, got {lag_steps}");
+    let channels: usize = 4;
+    let steps = dim / channels;
+    let window_rows = (steps - 1) * lag_steps + 1;
+
+    let mut embedded = Vec::new();
+    let mut indices = Vec::new();
+
+    if rows.len() < window_rows {
+        return (embedded, indices);
+    }
+
+    for w_start in 0..=(rows.len() - window_rows) {
+        let sample_indices: Vec<usize> = (0..steps).map(|s| w_start + s * lag_steps).collect();
+
+        let sum_b: f64 = sample_indices.iter().map(|&i| rows[i].b_mag).sum();
+        let local_mean_b = sum_b / steps as f64;
+        if local_mean_b <= 0.0 {
+            continue;
+        }
+
+        let mut v = vec![0.0; dim];
+        for (s, &ri) in sample_indices.iter().enumerate() {
+            v[s * channels] = rows[ri].bx / local_mean_b;
+            v[s * channels + 1] = rows[ri].by / local_mean_b;
+            v[s * channels + 2] = rows[ri].bz / local_mean_b;
+            v[s * channels + 3] = (rows[ri].b_mag - local_mean_b) / local_mean_b;
+        }
+        embedded.push(v);
+        indices.push(*sample_indices.last().unwrap());
+    }
+
+    (embedded, indices)
 }
