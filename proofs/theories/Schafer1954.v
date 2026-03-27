@@ -1495,6 +1495,17 @@ Proof.
   exact (f_equal sed_lo Hone).
 Qed.
 
+Theorem s54_block_C_one_zero :
+  forall D : CDSed -> CDSed,
+    Schafer1954IsSedenionDerivation D ->
+    s54_block_C D s54_oct_one = oct_zero.
+Proof.
+  intros D HD.
+  unfold s54_block_C, s54_oct_one, s54_oct_embed.
+  pose proof (s54_sed_derivation_one_zero D HD) as Hone.
+  exact (f_equal sed_hi Hone).
+Qed.
+
 Theorem s54_block_A_zero :
   forall D : CDSed -> CDSed,
     Schafer1954IsSedenionDerivation D ->
@@ -1795,6 +1806,60 @@ Proof.
     rewrite s54_sed_residual_block_E in HEa by exact HD.
     apply s54_oct_add_neg_zero_implies_eq.
     exact HEa.
+Qed.
+
+Lemma s54_pair_mul_hi_hi_raw :
+  forall a b : CDOct,
+    s54_pair_mul CDOct oct_add oct_mul oct_scale oct_conj (-1)
+      (oct_zero, a) (oct_zero, b) =
+    (oct_neg (oct_mul (oct_conj b) a), oct_zero).
+Proof.
+  intros a b.
+  unfold s54_pair_mul; simpl.
+  rewrite oct_mul_zero_left.
+  rewrite s54_oct_scale_neg_one.
+  rewrite s54_oct_conj_zero.
+  repeat rewrite oct_mul_zero_right.
+  repeat rewrite oct_add_zero_left.
+  repeat rewrite oct_add_zero_right.
+  reflexivity.
+Qed.
+
+Lemma s54_pair_y_square :
+  s54_pair_mul CDOct oct_add oct_mul oct_scale oct_conj (-1)
+    (oct_zero, s54_oct_one) (oct_zero, s54_oct_one) =
+  (oct_neg s54_oct_one, oct_zero).
+Proof.
+  rewrite s54_pair_mul_hi_hi_raw.
+  unfold s54_oct_one.
+  apply f_equal2.
+  - rewrite s54_oct_conj_one.
+    rewrite s54_oct_mul_one_left.
+    reflexivity.
+  - reflexivity.
+Qed.
+
+Lemma s54_sed_derivation_neg_one_pair_zero :
+  forall D : CDSed -> CDSed,
+    Schafer1954IsSedenionDerivation D ->
+    s54_sed_derivation_to_pair D (oct_neg s54_oct_one, oct_zero) =
+    (oct_zero, oct_zero).
+Proof.
+  intros D HD.
+  unfold s54_sed_derivation_to_pair, s54_sed_to_pair, s54_pair_to_sed.
+  cbn [fst snd].
+  change (sed_lo (D (mkSed (oct_neg s54_oct_one) oct_zero)))
+    with (s54_block_A D (oct_neg s54_oct_one)).
+  change (sed_hi (D (mkSed (oct_neg s54_oct_one) oct_zero)))
+    with (s54_block_C D (oct_neg s54_oct_one)).
+  rewrite <- s54_oct_scale_neg_one.
+  rewrite (s54_block_A_scale D HD (-1) s54_oct_one).
+  rewrite (s54_block_A_one_zero D HD).
+  rewrite s54_oct_scale_zero_right.
+  rewrite (s54_block_C_scale D HD (-1) s54_oct_one).
+  rewrite (s54_block_C_one_zero D HD).
+  rewrite s54_oct_scale_zero_right.
+  reflexivity.
 Qed.
 
 Definition s54_basis7_oct (i : Schafer1954Basis7) : CDOct :=
