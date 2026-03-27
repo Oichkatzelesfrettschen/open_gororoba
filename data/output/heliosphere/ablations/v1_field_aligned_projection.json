@@ -1,0 +1,20 @@
+{
+  "v1_pre_117_121": {
+    "n": 3284,
+    "mean_b_nT": 0.1824,
+    "parallel_frac": 0.0005,
+    "perpendicular_frac": 0.9995
+  },
+  "v1_crossing_121_125": {
+    "n": 4167,
+    "mean_b_nT": 0.6111,
+    "parallel_frac": 0.4053,
+    "perpendicular_frac": 0.5947
+  },
+  "v1_post_125_135": {
+    "n": 8678,
+    "mean_b_nT": 0.64,
+    "parallel_frac": 0.023,
+    "perpendicular_frac": 0.977
+  }
+}
