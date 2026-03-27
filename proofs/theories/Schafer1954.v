@@ -37,6 +37,8 @@
     - a tighter bridge from the G2 support files to Schafer's derivation language
 *)
 
+From Stdlib Require Import Logic.FunctionalExtensionality.
+
 From OpenGororoba Require Import Prelude CayleyDicksonAlgebra Sedenion OctonionNorm CDNegLemmas.
 From OpenGororoba Require Export
   CDPowerAssociative
@@ -947,6 +949,56 @@ Definition s54_hi_embed (a : CDOct) : CDSed := mkSed oct_zero a.
 
 Definition s54_y : CDSed := s54_hi_embed s54_oct_one.
 
+Lemma s54_oct_embed_add : forall a b : CDOct,
+  s54_oct_embed (oct_add a b) =
+  sed_add (s54_oct_embed a) (s54_oct_embed b).
+Proof.
+  intros a b.
+  unfold s54_oct_embed, sed_add; simpl.
+  rewrite oct_add_zero_left.
+  reflexivity.
+Qed.
+
+Lemma s54_oct_embed_scale : forall r : R, forall a : CDOct,
+  s54_oct_embed (oct_scale r a) =
+  sed_scale r (s54_oct_embed a).
+Proof.
+  intros r a.
+  unfold s54_oct_embed, sed_scale; simpl.
+  rewrite s54_oct_scale_zero_right.
+  reflexivity.
+Qed.
+
+Lemma s54_hi_embed_add : forall a b : CDOct,
+  s54_hi_embed (oct_add a b) =
+  sed_add (s54_hi_embed a) (s54_hi_embed b).
+Proof.
+  intros a b.
+  unfold s54_hi_embed, sed_add; simpl.
+  rewrite oct_add_zero_left.
+  reflexivity.
+Qed.
+
+Lemma s54_hi_embed_scale : forall r : R, forall a : CDOct,
+  s54_hi_embed (oct_scale r a) =
+  sed_scale r (s54_hi_embed a).
+Proof.
+  intros r a.
+  unfold s54_hi_embed, sed_scale; simpl.
+  rewrite s54_oct_scale_zero_right.
+  reflexivity.
+Qed.
+
+Lemma s54_sed_split : forall a b : CDOct,
+  mkSed a b = sed_add (s54_oct_embed a) (s54_hi_embed b).
+Proof.
+  intros a b.
+  unfold s54_oct_embed, s54_hi_embed, sed_add; simpl.
+  rewrite oct_add_zero_right.
+  rewrite oct_add_zero_left.
+  reflexivity.
+Qed.
+
 Lemma s54_sed_mul_one_left : forall x : CDSed,
   sed_mul sed_one x = x.
 Proof.
@@ -1241,6 +1293,126 @@ Proof.
   exact Hlo.
 Qed.
 
+Theorem s54_block_A_add :
+  forall D : CDSed -> CDSed,
+    Schafer1954IsSedenionDerivation D ->
+    forall a b : CDOct,
+      s54_block_A D (oct_add a b) =
+      oct_add (s54_block_A D a) (s54_block_A D b).
+Proof.
+  intros D HD a b.
+  destruct HD as [Hadd _ _].
+  unfold s54_block_A.
+  rewrite s54_oct_embed_add.
+  rewrite Hadd.
+  reflexivity.
+Qed.
+
+Theorem s54_block_A_scale :
+  forall D : CDSed -> CDSed,
+    Schafer1954IsSedenionDerivation D ->
+    forall r : R, forall a : CDOct,
+      s54_block_A D (oct_scale r a) =
+      oct_scale r (s54_block_A D a).
+Proof.
+  intros D HD r a.
+  destruct HD as [_ Hscale _].
+  unfold s54_block_A.
+  rewrite s54_oct_embed_scale.
+  rewrite Hscale.
+  reflexivity.
+Qed.
+
+Theorem s54_block_C_add :
+  forall D : CDSed -> CDSed,
+    Schafer1954IsSedenionDerivation D ->
+    forall a b : CDOct,
+      s54_block_C D (oct_add a b) =
+      oct_add (s54_block_C D a) (s54_block_C D b).
+Proof.
+  intros D HD a b.
+  destruct HD as [Hadd _ _].
+  unfold s54_block_C.
+  rewrite s54_oct_embed_add.
+  rewrite Hadd.
+  reflexivity.
+Qed.
+
+Theorem s54_block_C_scale :
+  forall D : CDSed -> CDSed,
+    Schafer1954IsSedenionDerivation D ->
+    forall r : R, forall a : CDOct,
+      s54_block_C D (oct_scale r a) =
+      oct_scale r (s54_block_C D a).
+Proof.
+  intros D HD r a.
+  destruct HD as [_ Hscale _].
+  unfold s54_block_C.
+  rewrite s54_oct_embed_scale.
+  rewrite Hscale.
+  reflexivity.
+Qed.
+
+Theorem s54_block_B_add :
+  forall D : CDSed -> CDSed,
+    Schafer1954IsSedenionDerivation D ->
+    forall a b : CDOct,
+      s54_block_B D (oct_add a b) =
+      oct_add (s54_block_B D a) (s54_block_B D b).
+Proof.
+  intros D HD a b.
+  destruct HD as [Hadd _ _].
+  unfold s54_block_B.
+  rewrite s54_hi_embed_add.
+  rewrite Hadd.
+  reflexivity.
+Qed.
+
+Theorem s54_block_B_scale :
+  forall D : CDSed -> CDSed,
+    Schafer1954IsSedenionDerivation D ->
+    forall r : R, forall a : CDOct,
+      s54_block_B D (oct_scale r a) =
+      oct_scale r (s54_block_B D a).
+Proof.
+  intros D HD r a.
+  destruct HD as [_ Hscale _].
+  unfold s54_block_B.
+  rewrite s54_hi_embed_scale.
+  rewrite Hscale.
+  reflexivity.
+Qed.
+
+Theorem s54_block_E_add :
+  forall D : CDSed -> CDSed,
+    Schafer1954IsSedenionDerivation D ->
+    forall a b : CDOct,
+      s54_block_E D (oct_add a b) =
+      oct_add (s54_block_E D a) (s54_block_E D b).
+Proof.
+  intros D HD a b.
+  destruct HD as [Hadd _ _].
+  unfold s54_block_E.
+  rewrite s54_hi_embed_add.
+  rewrite Hadd.
+  reflexivity.
+Qed.
+
+Theorem s54_block_E_scale :
+  forall D : CDSed -> CDSed,
+    Schafer1954IsSedenionDerivation D ->
+    forall r : R, forall a : CDOct,
+      s54_block_E D (oct_scale r a) =
+      oct_scale r (s54_block_E D a).
+Proof.
+  intros D HD r a.
+  destruct HD as [_ Hscale _].
+  unfold s54_block_E.
+  rewrite s54_hi_embed_scale.
+  rewrite Hscale.
+  reflexivity.
+Qed.
+
 Theorem s54_blocks_from_right_generator :
   forall D : CDSed -> CDSed,
     Schafer1954IsSedenionDerivation D ->
@@ -1310,6 +1482,68 @@ Proof.
   symmetry in Hright.
   eapply s54_oct_add_cancel_left.
   exact Hright.
+Qed.
+
+Theorem s54_block_A_one_zero :
+  forall D : CDSed -> CDSed,
+    Schafer1954IsSedenionDerivation D ->
+    s54_block_A D s54_oct_one = oct_zero.
+Proof.
+  intros D HD.
+  unfold s54_block_A, s54_oct_one, s54_oct_embed.
+  pose proof (s54_sed_derivation_one_zero D HD) as Hone.
+  exact (f_equal sed_lo Hone).
+Qed.
+
+Theorem s54_block_A_is_octonion_derivation :
+  forall D : CDSed -> CDSed,
+    Schafer1954IsSedenionDerivation D ->
+    schafer1954_octonion_derivation (s54_block_A D).
+Proof.
+  intros D HD.
+  constructor.
+  - exact (s54_block_A_add D HD).
+  - exact (s54_block_A_scale D HD).
+  - exact (s54_block_A_is_derivation D HD).
+  - exact (s54_block_A_conj D HD).
+Qed.
+
+Theorem s54_blocks_decompose_sedenion_derivation :
+  forall D : CDSed -> CDSed,
+    Schafer1954IsSedenionDerivation D ->
+    forall a b : CDOct,
+      D (mkSed a b) =
+      mkSed
+        (oct_add (s54_block_A D a) (s54_block_B D b))
+        (oct_add (s54_block_C D a) (s54_block_E D b)).
+Proof.
+  intros D HD a b.
+  destruct HD as [Hadd _ _].
+  rewrite s54_sed_split.
+  rewrite Hadd.
+  reflexivity.
+Qed.
+
+Theorem s54_concrete_backward_from_block_equalities :
+  forall D : CDSed -> CDSed,
+    Schafer1954IsSedenionDerivation D ->
+    (forall a : CDOct, s54_block_B D a = oct_zero) ->
+    (forall a : CDOct, s54_block_C D a = oct_zero) ->
+    (forall a : CDOct, s54_block_E D a = s54_block_A D a) ->
+    D = schafer1954_sedenion_extend (s54_block_A D).
+Proof.
+  intros D HD HB HC HE.
+  extensionality x.
+  destruct x as [a b].
+  rewrite s54_blocks_decompose_sedenion_derivation by exact HD.
+  unfold schafer1954_sedenion_extend,
+         s54_pair_derivation_to_sed, s54_pair_extend,
+         s54_pair_to_sed, s54_sed_to_pair, s54_block_A.
+  cbn [fst snd].
+  rewrite HB, HC, HE.
+  rewrite oct_add_zero_right.
+  rewrite oct_add_zero_left.
+  reflexivity.
 Qed.
 Record Schafer1954OctonionSedenionConverseSurface := {
   s54_octsed_converse_eq52_discharge :
