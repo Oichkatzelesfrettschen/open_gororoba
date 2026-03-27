@@ -1,0 +1,191 @@
+{
+  "generated_at_utc": "2026-03-27T03:35:08.844522628+00:00",
+  "project_id": "cayley-dickson",
+  "search_target_id": "dickson_1935_exact_pdf",
+  "crosswalk_id": "dickson_1935_exact_pdf",
+  "title": "Dickson 1935 stable direct PDF endpoint",
+  "window": "1900-1999",
+  "priority": "high",
+  "status": "bibliographic_record_confirmed_pdf_href_unresolved",
+  "kind": "metadata_confirmed_pdf_path_resolution",
+  "why_now": "This is the clean bridge between the earlier Dickson line and the later Jacobson composition lane.",
+  "query_seeds": [
+    "\"Linear algebras with associativity not assumed\"",
+    "\"Dickson\" 1935 associativity not assumed",
+    "\"Celebratio\" Dickson article 80 pdf"
+  ],
+  "requested_sources": [
+    "openalex",
+    "crossref"
+  ],
+  "limit_per_query": 2,
+  "year_min": 0,
+  "report": {
+    "queries": [
+      "\"Linear algebras with associativity not assumed\"",
+      "\"Dickson\" 1935 associativity not assumed",
+      "\"Celebratio\" Dickson article 80 pdf"
+    ],
+    "limit": 2,
+    "year_min": 0,
+    "requested_sources": [
+      "openalex",
+      "crossref"
+    ],
+    "raw_result_count": 10,
+    "deduplicated_result_count": 8,
+    "query_reports": [
+      {
+        "query": "\"Linear algebras with associativity not assumed\"",
+        "limit": 2,
+        "year_min": 0,
+        "requested_sources": [
+          "openalex",
+          "crossref"
+        ],
+        "raw_result_count": 4,
+        "deduplicated_result_count": 3,
+        "cache_hit_count": 2,
+        "source_reports": [
+          {
+            "source": "openalex",
+            "adapted_query": "\"Linear algebras with associativity not assumed\"",
+            "result_count": 2,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "crossref",
+            "adapted_query": "\"Linear algebras with associativity not assumed\"",
+            "result_count": 2,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          }
+        ]
+      },
+      {
+        "query": "\"Dickson\" 1935 associativity not assumed",
+        "limit": 2,
+        "year_min": 0,
+        "requested_sources": [
+          "openalex",
+          "crossref"
+        ],
+        "raw_result_count": 4,
+        "deduplicated_result_count": 4,
+        "cache_hit_count": 2,
+        "source_reports": [
+          {
+            "source": "openalex",
+            "adapted_query": "\"Dickson\" 1935 associativity not assumed",
+            "result_count": 2,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "crossref",
+            "adapted_query": "\"Dickson\" 1935 associativity not assumed",
+            "result_count": 2,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          }
+        ]
+      },
+      {
+        "query": "\"Celebratio\" Dickson article 80 pdf",
+        "limit": 2,
+        "year_min": 0,
+        "requested_sources": [
+          "openalex",
+          "crossref"
+        ],
+        "raw_result_count": 2,
+        "deduplicated_result_count": 2,
+        "cache_hit_count": 2,
+        "source_reports": [
+          {
+            "source": "openalex",
+            "adapted_query": "\"Celebratio\" Dickson article 80 pdf",
+            "result_count": 0,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          },
+          {
+            "source": "crossref",
+            "adapted_query": "\"Celebratio\" Dickson article 80 pdf",
+            "result_count": 2,
+            "cache_hit": true,
+            "error": "",
+            "skipped_reason": ""
+          }
+        ]
+      }
+    ]
+  },
+  "top_hits": [
+    {
+      "rank": 1,
+      "relevance_score": 132,
+      "title": "Linear algebras with associativity not assumed",
+      "year": 1935,
+      "source": "openalex",
+      "venue": "Duke Mathematical Journal",
+      "citation_count": 57,
+      "doi": "https://doi.org/10.1215/s0012-7094-35-00112-0",
+      "url": "https://openalex.org/W2009510707",
+      "pdf_url": ""
+    },
+    {
+      "rank": 2,
+      "relevance_score": 18,
+      "title": "Associativity-like conditions on protomodular algebras",
+      "year": 2019,
+      "source": "crossref",
+      "venue": "Algebra universalis",
+      "citation_count": 1,
+      "doi": "10.1007/s00012-019-0630-4",
+      "url": "https://doi.org/10.1007/s00012-019-0630-4",
+      "pdf_url": ""
+    },
+    {
+      "rank": 3,
+      "relevance_score": 12,
+      "title": "THE POSITION ASSUMED DURING LABOUR AMONG THE ANCIENT CIVILISED NATIONS",
+      "year": 1935,
+      "source": "crossref",
+      "venue": "Woman",
+      "citation_count": 0,
+      "doi": "10.1016/b978-1-4831-6671-1.50038-1",
+      "url": "https://doi.org/10.1016/b978-1-4831-6671-1.50038-1",
+      "pdf_url": ""
+    },
+    {
+      "rank": 4,
+      "relevance_score": 6,
+      "title": "Quadratic division algebras",
+      "year": 1962,
+      "source": "openalex",
+      "venue": "Transactions of the American Mathematical Society",
+      "citation_count": 96,
+      "doi": "https://doi.org/10.1090/s0002-9947-1962-0140550-x",
+      "url": "https://openalex.org/W2063529029",
+      "pdf_url": ""
+    }
+  ],
+  "stage_suggestions": [
+    {
+      "rank": 1,
+      "relevance_score": 132,
+      "paper_title": "Linear algebras with associativity not assumed",
+      "action": "stage_landing_page",
+      "candidate_url": "https://openalex.org/W2009510707",
+      "command": "cargo run -q -p gororoba_cli_data --bin human-acquire -- --repo-root '/home/eirikr/Github/open_gororoba' stage --url 'https://openalex.org/W2009510707' --source-id 'openalex' --title 'Linear algebras with associativity not assumed' --note 'search_target_id=dickson_1935_exact_pdf'",
+      "rationale": "Top dossier hit from openalex with relevance score 132 and 57 citations for queue target dickson_1935_exact_pdf."
+    }
+  ]
+}

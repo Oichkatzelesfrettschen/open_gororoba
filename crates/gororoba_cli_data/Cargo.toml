@@ -119,6 +119,14 @@ name = "human-acquire"
 path = "src/bin/human_acquire.rs"
 
 [[bin]]
+name = "cd-cache-reconcile"
+path = "src/bin/cd_cache_reconcile.rs"
+
+[[bin]]
+name = "cd-cache-adapter"
+path = "src/bin/cd_cache_adapter.rs"
+
+[[bin]]
 name = "things-fetch"
 path = "src/bin/things_fetch.rs"
 

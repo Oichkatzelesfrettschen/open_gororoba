@@ -1,10 +1,28 @@
 //! Deduplication of paper results across sources.
 //!
-//! Strategy: DOI match (exact) -> arXiv ID match (exact) -> fuzzy title match.
+//! Strategy: DOI match (canonicalized) -> arXiv ID match (exact) -> fuzzy title match.
 
 use crate::models::Paper;
 use std::collections::HashSet;
 use strsim::normalized_levenshtein;
+
+pub fn canonicalize_doi(value: &str) -> String {
+    let trimmed = value.trim();
+    if trimmed.is_empty() {
+        return String::new();
+    }
+
+    let lowered = trimmed.to_ascii_lowercase();
+    let without_scheme = lowered
+        .strip_prefix("https://")
+        .or_else(|| lowered.strip_prefix("http://"))
+        .unwrap_or(&lowered);
+    let without_host = without_scheme
+        .strip_prefix("doi.org/")
+        .or_else(|| without_scheme.strip_prefix("dx.doi.org/"))
+        .unwrap_or(without_scheme);
+    without_host.trim_matches('/').to_string()
+}
 
 /// Deduplicate papers, preferring entries with more metadata.
 pub fn deduplicate(papers: Vec<Paper>) -> Vec<Paper> {
@@ -79,6 +97,31 @@ mod tests {
         let result = deduplicate(papers);
         assert_eq!(result.len(), 1);
         assert_eq!(result[0].source, "openalex"); // higher citation count
+    }
+
+    #[test]
+    fn test_canonical_doi_dedup() {
+        let papers = vec![
+            Paper {
+                paper_id: "1".into(),
+                title: "Exact Same Paper".into(),
+                doi: "https://doi.org/10.1007/BF02854388".into(),
+                source: "openalex".into(),
+                citation_count: 10,
+                ..Default::default()
+            },
+            Paper {
+                paper_id: "2".into(),
+                title: "Exact Same Paper".into(),
+                doi: "10.1007/bf02854388".into(),
+                source: "crossref".into(),
+                citation_count: 8,
+                ..Default::default()
+            },
+        ];
+        let result = deduplicate(papers);
+        assert_eq!(result.len(), 1);
+        assert_eq!(canonicalize_doi("https://doi.org/10.1007/BF02854388"), "10.1007/bf02854388");
     }
 
     #[test]

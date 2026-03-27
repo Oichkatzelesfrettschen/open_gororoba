@@ -1,5 +1,6 @@
 //! Data models for literature search results.
 
+use crate::dedup::canonicalize_doi;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
@@ -38,8 +39,9 @@ pub struct Paper {
 impl Paper {
     /// Normalized dedup key: DOI if available, else arXiv ID, else title hash.
     pub fn dedup_key(&self) -> String {
-        if !self.doi.is_empty() {
-            return format!("doi:{}", self.doi.to_lowercase());
+        let canonical_doi = canonicalize_doi(&self.doi);
+        if !canonical_doi.is_empty() {
+            return format!("doi:{canonical_doi}");
         }
         if !self.arxiv_id.is_empty() {
             return format!("arxiv:{}", self.arxiv_id);

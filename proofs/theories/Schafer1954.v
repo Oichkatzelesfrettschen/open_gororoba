@@ -39,7 +39,7 @@
 
 From Stdlib Require Import Logic.FunctionalExtensionality.
 
-From OpenGororoba Require Import Prelude CayleyDicksonAlgebra Sedenion OctonionNorm CDNegLemmas CDLinearLemmas.
+From OpenGororoba Require Import Prelude CayleyDicksonAlgebra Sedenion OctonionNorm CDNegLemmas CDLinearLemmas CDConjAntimorph.
 From OpenGororoba Require Export
   CDPowerAssociative
   CDPropertyTower
@@ -1660,6 +1660,22 @@ Proof.
   apply (f_equal2 mkOct); apply (f_equal4 mkQuat); lra.
 Qed.
 
+Lemma s54_oct_neg_injective :
+  forall x y : CDOct,
+    oct_neg x = oct_neg y ->
+    x = y.
+Proof.
+  intros [[x1 x2 x3 x4] [x5 x6 x7 x8]]
+         [[y1 y2 y3 y4] [y5 y6 y7 y8]] Hxy.
+  cbv [oct_neg quat_neg oct_lo oct_hi qa qb qc qd] in Hxy.
+  inversion Hxy; clear Hxy; subst.
+  repeat match goal with
+  | Hq : mkQuat _ _ _ _ = mkQuat _ _ _ _ |- _ =>
+      inversion Hq; clear Hq; subst
+  end.
+  apply (f_equal2 mkOct); apply (f_equal4 mkQuat); lra.
+Qed.
+
 Definition s54_sed_residual (D : CDSed -> CDSed) : CDSed -> CDSed :=
   fun x => sed_sub (D x) (schafer1954_sedenion_extend (s54_block_A D) x).
 
@@ -1780,6 +1796,536 @@ Proof.
     apply s54_oct_add_neg_zero_implies_eq.
     exact HEa.
 Qed.
+
+Definition s54_basis7_oct (i : Schafer1954Basis7) : CDOct :=
+  match i with
+  | s54_b1 => oct_e 1
+  | s54_b2 => oct_e 2
+  | s54_b3 => oct_e 3
+  | s54_b4 => oct_e 4
+  | s54_b5 => oct_e 5
+  | s54_b6 => oct_e 6
+  | s54_b7 => oct_e 7
+  end.
+
+Lemma s54_oct_coords_eq_sum :
+  forall r0 r1 r2 r3 r4 r5 r6 r7 : R,
+    mkOct (mkQuat r0 r1 r2 r3) (mkQuat r4 r5 r6 r7) =
+    oct_add (oct_scale r0 (oct_e 0))
+      (oct_add (oct_scale r1 (oct_e 1))
+        (oct_add (oct_scale r2 (oct_e 2))
+          (oct_add (oct_scale r3 (oct_e 3))
+            (oct_add (oct_scale r4 (oct_e 4))
+              (oct_add (oct_scale r5 (oct_e 5))
+                (oct_add (oct_scale r6 (oct_e 6))
+                  (oct_scale r7 (oct_e 7)))))))).
+Proof.
+  intros r0 r1 r2 r3 r4 r5 r6 r7.
+  unfold oct_add, oct_scale.
+  cbn [oct_e oct_lo oct_hi quat_one quat_zero].
+  unfold quat_add, quat_scale.
+  simpl.
+  apply (f_equal2 mkOct); apply (f_equal4 mkQuat); ring.
+Qed.
+
+Record Schafer1954ResidualCoordinateSurface
+    (D : CDSed -> CDSed) : Type := {
+  s54_res_coord_mu : Schafer1954Basis7 -> R;
+  s54_res_coord_eq36 :
+    s54_block_B (s54_sed_residual D) s54_oct_one = oct_zero;
+  s54_res_coord_eq50 :
+    forall i : Schafer1954Basis7,
+      s54_block_B (s54_sed_residual D) (s54_basis7_oct i) =
+      oct_scale (s54_res_coord_mu i) (s54_basis7_oct i);
+  s54_res_coord_eq51 :
+    forall i j k : Schafer1954Basis7,
+      schafer1954_eq52_cayley_triple i j k ->
+      (s54_res_coord_mu i +
+       s54_res_coord_mu j +
+       s54_res_coord_mu k)%R = 0%R;
+  s54_res_coord_C_eq_A :
+    forall a : CDOct,
+      s54_block_C (s54_sed_residual D) a =
+      s54_block_A (s54_sed_residual D) a;
+}.
+
+Theorem s54_residual_coordinate_mu_zero :
+  forall D : CDSed -> CDSed,
+    forall S : Schafer1954ResidualCoordinateSurface D,
+    forall i : Schafer1954Basis7,
+      s54_res_coord_mu D S i = 0%R.
+Proof.
+  intros D S i.
+  apply (schafer1954_eq52_real_solution_zero (s54_res_coord_mu D S)).
+  intros j k l Htrl.
+  exact (s54_res_coord_eq51 D S j k l Htrl).
+Qed.
+
+Theorem s54_residual_coordinate_B_basis_zero :
+  forall D : CDSed -> CDSed,
+    forall S : Schafer1954ResidualCoordinateSurface D,
+    forall i : Schafer1954Basis7,
+      s54_block_B (s54_sed_residual D) (s54_basis7_oct i) = oct_zero.
+Proof.
+  intros D S i.
+  rewrite (s54_res_coord_eq50 D S i).
+  rewrite (s54_residual_coordinate_mu_zero D S i).
+  apply oct_scale_zero.
+Qed.
+
+Theorem s54_residual_coordinate_C_zero :
+  forall D : CDSed -> CDSed,
+    forall S : Schafer1954ResidualCoordinateSurface D,
+    forall a : CDOct,
+      s54_block_C (s54_sed_residual D) a = oct_zero.
+Proof.
+  intros D S a.
+  rewrite (s54_res_coord_C_eq_A D S a).
+  apply s54_sed_residual_block_A_zero.
+Qed.
+
+Theorem s54_residual_coordinate_B_zero :
+  forall D : CDSed -> CDSed,
+    Schafer1954IsSedenionDerivation D ->
+    forall S : Schafer1954ResidualCoordinateSurface D,
+    forall a : CDOct,
+      s54_block_B (s54_sed_residual D) a = oct_zero.
+Proof.
+  intros D HD S [[r0 r1 r2 r3] [r4 r5 r6 r7]].
+  rewrite s54_oct_coords_eq_sum.
+  repeat rewrite s54_block_B_add by exact (s54_sed_residual_is_derivation D HD).
+  repeat rewrite s54_block_B_scale by exact (s54_sed_residual_is_derivation D HD).
+  change (s54_block_B (s54_sed_residual D) (oct_e 0)) with
+    (s54_block_B (s54_sed_residual D) s54_oct_one).
+  change (s54_block_B (s54_sed_residual D) (oct_e 1)) with
+    (s54_block_B (s54_sed_residual D) (s54_basis7_oct s54_b1)).
+  change (s54_block_B (s54_sed_residual D) (oct_e 2)) with
+    (s54_block_B (s54_sed_residual D) (s54_basis7_oct s54_b2)).
+  change (s54_block_B (s54_sed_residual D) (oct_e 3)) with
+    (s54_block_B (s54_sed_residual D) (s54_basis7_oct s54_b3)).
+  change (s54_block_B (s54_sed_residual D) (oct_e 4)) with
+    (s54_block_B (s54_sed_residual D) (s54_basis7_oct s54_b4)).
+  change (s54_block_B (s54_sed_residual D) (oct_e 5)) with
+    (s54_block_B (s54_sed_residual D) (s54_basis7_oct s54_b5)).
+  change (s54_block_B (s54_sed_residual D) (oct_e 6)) with
+    (s54_block_B (s54_sed_residual D) (s54_basis7_oct s54_b6)).
+  change (s54_block_B (s54_sed_residual D) (oct_e 7)) with
+    (s54_block_B (s54_sed_residual D) (s54_basis7_oct s54_b7)).
+  rewrite (s54_res_coord_eq36 D S).
+  rewrite (s54_residual_coordinate_B_basis_zero D S s54_b1).
+  rewrite (s54_residual_coordinate_B_basis_zero D S s54_b2).
+  rewrite (s54_residual_coordinate_B_basis_zero D S s54_b3).
+  rewrite (s54_residual_coordinate_B_basis_zero D S s54_b4).
+  rewrite (s54_residual_coordinate_B_basis_zero D S s54_b5).
+  rewrite (s54_residual_coordinate_B_basis_zero D S s54_b6).
+  rewrite (s54_residual_coordinate_B_basis_zero D S s54_b7).
+  repeat rewrite s54_oct_scale_zero_right.
+  repeat rewrite oct_add_zero_left.
+  reflexivity.
+Qed.
+
+Theorem s54_residual_coordinate_E_formula :
+  forall D : CDSed -> CDSed,
+    Schafer1954IsSedenionDerivation D ->
+    forall S : Schafer1954ResidualCoordinateSurface D,
+    forall a : CDOct,
+      s54_block_E (s54_sed_residual D) a =
+      oct_mul (s54_block_v (s54_sed_residual D)) a.
+Proof.
+  intros D HD S a.
+  destruct (s54_blocks_from_right_generator
+              (s54_sed_residual D)
+              (s54_sed_residual_is_derivation D HD)
+              a) as [_ HE].
+  rewrite (s54_sed_residual_block_A_zero D a) in HE.
+  rewrite oct_add_zero_left in HE.
+  exact HE.
+Qed.
+
+Lemma s54_pair_mul_hi_hi :
+  forall a b : CDOct,
+    s54_pair_mul CDOct oct_add oct_mul oct_scale oct_conj (-1)
+      (oct_zero, a) (oct_zero, b) =
+    (oct_neg (oct_mul (oct_conj b) a), oct_zero).
+Proof.
+  intros a b.
+  unfold s54_pair_mul; simpl.
+  rewrite oct_mul_zero_left.
+  rewrite s54_oct_scale_neg_one.
+  rewrite s54_oct_conj_zero.
+  repeat rewrite oct_mul_zero_right.
+  repeat rewrite oct_add_zero_left.
+  repeat rewrite oct_add_zero_right.
+  reflexivity.
+Qed.
+
+Theorem s54_residual_coordinate_pair_lo_zero :
+  forall D : CDSed -> CDSed,
+    Schafer1954IsSedenionDerivation D ->
+    forall S : Schafer1954ResidualCoordinateSurface D,
+    forall a : CDOct,
+      s54_sed_derivation_to_pair (s54_sed_residual D) (a, oct_zero) =
+      (oct_zero, oct_zero).
+Proof.
+  intros D HD S a.
+  unfold s54_sed_derivation_to_pair, s54_pair_to_sed.
+  cbn [fst snd].
+  rewrite s54_blocks_decompose_sedenion_derivation
+    with (D := s54_sed_residual D)
+         (a := a) (b := oct_zero).
+  - rewrite (s54_sed_residual_block_A_zero D a).
+    rewrite (s54_residual_coordinate_B_zero D HD S oct_zero).
+    rewrite (s54_residual_coordinate_C_zero D S a).
+    rewrite (s54_residual_coordinate_E_formula D HD S oct_zero).
+    unfold s54_sed_to_pair.
+    simpl.
+    rewrite oct_mul_zero_right.
+    repeat rewrite oct_add_zero_left.
+    repeat rewrite oct_add_zero_right.
+    reflexivity.
+  - exact (s54_sed_residual_is_derivation D HD).
+Qed.
+
+Theorem s54_residual_coordinate_pair_hi :
+  forall D : CDSed -> CDSed,
+    Schafer1954IsSedenionDerivation D ->
+    forall S : Schafer1954ResidualCoordinateSurface D,
+    forall a : CDOct,
+      s54_sed_derivation_to_pair (s54_sed_residual D) (oct_zero, a) =
+      (oct_zero, oct_mul (s54_block_v (s54_sed_residual D)) a).
+Proof.
+  intros D HD S a.
+  unfold s54_sed_derivation_to_pair, s54_pair_to_sed.
+  cbn [fst snd].
+  rewrite s54_blocks_decompose_sedenion_derivation
+    with (D := s54_sed_residual D)
+         (a := oct_zero) (b := a).
+  - rewrite (s54_sed_residual_block_A_zero D oct_zero).
+    rewrite (s54_residual_coordinate_B_zero D HD S a).
+    rewrite (s54_residual_coordinate_C_zero D S oct_zero).
+    rewrite (s54_residual_coordinate_E_formula D HD S a).
+    unfold s54_sed_to_pair.
+    simpl.
+    repeat rewrite oct_add_zero_left.
+    repeat rewrite oct_add_zero_right.
+    reflexivity.
+  - exact (s54_sed_residual_is_derivation D HD).
+Qed.
+
+Theorem s54_residual_coordinate_v_pure :
+  forall D : CDSed -> CDSed,
+    Schafer1954IsSedenionDerivation D ->
+    forall S : Schafer1954ResidualCoordinateSurface D,
+      oct_conj (s54_block_v (s54_sed_residual D)) =
+      oct_neg (s54_block_v (s54_sed_residual D)).
+Proof.
+  intros D HD S.
+  pose proof
+    (schafer1954_sedenion_derivation_to_octonion_pair
+       (s54_sed_residual D) (s54_sed_residual_is_derivation D HD))
+    as Hpair.
+  destruct Hpair as [_ _ Hpair_mul].
+  specialize Hpair_mul with (p := (oct_zero, s54_oct_one))
+                            (q := (oct_zero, s54_oct_one)).
+  rewrite s54_pair_mul_hi_hi in Hpair_mul.
+  rewrite (s54_residual_coordinate_pair_lo_zero
+             D HD S
+             (oct_neg (oct_mul (oct_conj s54_oct_one) s54_oct_one))) in Hpair_mul.
+  rewrite (s54_residual_coordinate_pair_hi D HD S s54_oct_one) in Hpair_mul.
+  rewrite s54_pair_mul_hi_hi in Hpair_mul.
+  rewrite s54_pair_mul_hi_hi in Hpair_mul.
+  pose proof (f_equal fst Hpair_mul) as Hlo.
+  unfold s54_pair_add in Hlo.
+  cbn [fst snd] in Hlo.
+  repeat rewrite s54_oct_mul_one_left in Hlo.
+  repeat rewrite oct_mul_one_right in Hlo.
+  symmetry in Hlo.
+  apply s54_oct_add_neg_zero_implies_eq in Hlo.
+  unfold s54_oct_one in Hlo.
+  simpl in Hlo.
+  assert (Hone :
+    oct_conj {| oct_lo := quat_one; oct_hi := quat_zero |} =
+    {| oct_lo := quat_one; oct_hi := quat_zero |}).
+  {
+    cbv [oct_conj quat_conj quat_neg quat_zero quat_one
+         oct_lo oct_hi qa qb qc qd].
+    apply (f_equal2 mkOct); apply (f_equal4 mkQuat); ring.
+  }
+  rewrite Hone in Hlo.
+  repeat rewrite s54_oct_mul_one_left in Hlo.
+  repeat rewrite oct_mul_one_right in Hlo.
+  symmetry.
+  exact Hlo.
+Qed.
+
+Theorem s54_residual_coordinate_middle_nucleus_21_raw :
+  forall D : CDSed -> CDSed,
+    Schafer1954IsSedenionDerivation D ->
+    forall S : Schafer1954ResidualCoordinateSurface D,
+      oct_mul (oct_mul (oct_conj (oct_e 2))
+                       (s54_block_v (s54_sed_residual D)))
+              (oct_e 1) =
+      oct_mul (oct_conj (oct_e 2))
+              (oct_mul (s54_block_v (s54_sed_residual D)) (oct_e 1)).
+Proof.
+  intros D HD S.
+  pose proof
+    (schafer1954_sedenion_derivation_to_octonion_pair
+       (s54_sed_residual D) (s54_sed_residual_is_derivation D HD))
+    as Hpair.
+  destruct Hpair as [_ _ Hpair_mul].
+  specialize Hpair_mul with (p := (oct_zero, oct_e 1))
+                            (q := (oct_zero, oct_e 2)).
+  rewrite s54_pair_mul_hi_hi in Hpair_mul.
+  rewrite (s54_residual_coordinate_pair_lo_zero
+             D HD S
+             (oct_neg (oct_mul (oct_conj (oct_e 2)) (oct_e 1)))) in Hpair_mul.
+  rewrite (s54_residual_coordinate_pair_hi D HD S (oct_e 1)) in Hpair_mul.
+  rewrite (s54_residual_coordinate_pair_hi D HD S (oct_e 2)) in Hpair_mul.
+  rewrite s54_pair_mul_hi_hi in Hpair_mul.
+  rewrite s54_pair_mul_hi_hi in Hpair_mul.
+  pose proof (f_equal fst Hpair_mul) as Hlo.
+  unfold s54_pair_add in Hlo.
+  cbn [fst snd] in Hlo.
+  symmetry in Hlo.
+  apply s54_oct_add_neg_zero_implies_eq in Hlo.
+  rewrite oct_conj_antimorphism in Hlo.
+  rewrite (s54_residual_coordinate_v_pure D HD S) in Hlo.
+  rewrite oct_neg_mul_right in Hlo.
+  rewrite oct_neg_mul_left in Hlo.
+  apply s54_oct_neg_injective in Hlo.
+  symmetry.
+  exact Hlo.
+Qed.
+
+Theorem s54_residual_coordinate_middle_nucleus_41_raw :
+  forall D : CDSed -> CDSed,
+    Schafer1954IsSedenionDerivation D ->
+    forall S : Schafer1954ResidualCoordinateSurface D,
+      oct_mul (oct_mul (oct_conj (oct_e 4))
+                       (s54_block_v (s54_sed_residual D)))
+              (oct_e 1) =
+      oct_mul (oct_conj (oct_e 4))
+              (oct_mul (s54_block_v (s54_sed_residual D)) (oct_e 1)).
+Proof.
+  intros D HD S.
+  pose proof
+    (schafer1954_sedenion_derivation_to_octonion_pair
+       (s54_sed_residual D) (s54_sed_residual_is_derivation D HD))
+    as Hpair.
+  destruct Hpair as [_ _ Hpair_mul].
+  specialize Hpair_mul with (p := (oct_zero, oct_e 1))
+                            (q := (oct_zero, oct_e 4)).
+  rewrite s54_pair_mul_hi_hi in Hpair_mul.
+  rewrite (s54_residual_coordinate_pair_lo_zero
+             D HD S
+             (oct_neg (oct_mul (oct_conj (oct_e 4)) (oct_e 1)))) in Hpair_mul.
+  rewrite (s54_residual_coordinate_pair_hi D HD S (oct_e 1)) in Hpair_mul.
+  rewrite (s54_residual_coordinate_pair_hi D HD S (oct_e 4)) in Hpair_mul.
+  rewrite s54_pair_mul_hi_hi in Hpair_mul.
+  rewrite s54_pair_mul_hi_hi in Hpair_mul.
+  pose proof (f_equal fst Hpair_mul) as Hlo.
+  unfold s54_pair_add in Hlo.
+  cbn [fst snd] in Hlo.
+  symmetry in Hlo.
+  apply s54_oct_add_neg_zero_implies_eq in Hlo.
+  rewrite oct_conj_antimorphism in Hlo.
+  rewrite (s54_residual_coordinate_v_pure D HD S) in Hlo.
+  rewrite oct_neg_mul_right in Hlo.
+  rewrite oct_neg_mul_left in Hlo.
+  apply s54_oct_neg_injective in Hlo.
+  symmetry.
+  exact Hlo.
+Qed.
+
+Theorem s54_residual_coordinate_middle_nucleus_24_raw :
+  forall D : CDSed -> CDSed,
+    Schafer1954IsSedenionDerivation D ->
+    forall S : Schafer1954ResidualCoordinateSurface D,
+      oct_mul (oct_mul (oct_conj (oct_e 2))
+                       (s54_block_v (s54_sed_residual D)))
+              (oct_e 4) =
+      oct_mul (oct_conj (oct_e 2))
+              (oct_mul (s54_block_v (s54_sed_residual D)) (oct_e 4)).
+Proof.
+  intros D HD S.
+  pose proof
+    (schafer1954_sedenion_derivation_to_octonion_pair
+       (s54_sed_residual D) (s54_sed_residual_is_derivation D HD))
+    as Hpair.
+  destruct Hpair as [_ _ Hpair_mul].
+  specialize Hpair_mul with (p := (oct_zero, oct_e 4))
+                            (q := (oct_zero, oct_e 2)).
+  rewrite s54_pair_mul_hi_hi in Hpair_mul.
+  rewrite (s54_residual_coordinate_pair_lo_zero
+             D HD S
+             (oct_neg (oct_mul (oct_conj (oct_e 2)) (oct_e 4)))) in Hpair_mul.
+  rewrite (s54_residual_coordinate_pair_hi D HD S (oct_e 4)) in Hpair_mul.
+  rewrite (s54_residual_coordinate_pair_hi D HD S (oct_e 2)) in Hpair_mul.
+  rewrite s54_pair_mul_hi_hi in Hpair_mul.
+  rewrite s54_pair_mul_hi_hi in Hpair_mul.
+  pose proof (f_equal fst Hpair_mul) as Hlo.
+  unfold s54_pair_add in Hlo.
+  cbn [fst snd] in Hlo.
+  symmetry in Hlo.
+  apply s54_oct_add_neg_zero_implies_eq in Hlo.
+  rewrite oct_conj_antimorphism in Hlo.
+  rewrite (s54_residual_coordinate_v_pure D HD S) in Hlo.
+  rewrite oct_neg_mul_right in Hlo.
+  rewrite oct_neg_mul_left in Hlo.
+  apply s54_oct_neg_injective in Hlo.
+  symmetry.
+  exact Hlo.
+Qed.
+
+Lemma s54_oct_pure_raw_component0 :
+  forall v0 v1 v2 v3 v4 v5 v6 v7 : R,
+    let v := mkOct (mkQuat v0 v1 v2 v3) (mkQuat v4 v5 v6 v7) in
+    oct_conj v = oct_neg v ->
+    v0 = 0%R.
+Proof.
+  intros v0 v1 v2 v3 v4 v5 v6 v7 v Hpure.
+  cbv [v oct_conj oct_neg oct_lo oct_hi
+       quat_conj quat_neg qa qb qc qd] in Hpure.
+  repeat match goal with
+  | H : mkOct _ _ = mkOct _ _ |- _ => inversion H; clear H; subst
+  | H : mkQuat _ _ _ _ = mkQuat _ _ _ _ |- _ => inversion H; clear H; subst
+  end.
+  lra.
+Qed.
+
+Lemma s54_oct_middle_raw_21_components :
+  forall v0 v1 v2 v3 v4 v5 v6 v7 : R,
+    let v := mkOct (mkQuat v0 v1 v2 v3) (mkQuat v4 v5 v6 v7) in
+    oct_mul (oct_mul (oct_conj (oct_e 2)) v) (oct_e 1) =
+    oct_mul (oct_conj (oct_e 2)) (oct_mul v (oct_e 1)) ->
+    v4 = 0%R /\ v5 = 0%R /\ v6 = 0%R /\ v7 = 0%R.
+Proof.
+  intros v0 v1 v2 v3 v4 v5 v6 v7 v H21.
+  cbv [v oct_conj oct_mul oct_e oct_lo oct_hi
+       quat_mul quat_add quat_neg quat_conj quat_zero quat_one
+       qa qb qc qd] in H21.
+  repeat match goal with
+  | H : mkOct _ _ = mkOct _ _ |- _ => inversion H; clear H; subst
+  | H : mkQuat _ _ _ _ = mkQuat _ _ _ _ |- _ => inversion H; clear H; subst
+  end.
+  repeat split; lra.
+Qed.
+
+Lemma s54_oct_middle_raw_41_components :
+  forall v0 v1 v2 v3 v4 v5 v6 v7 : R,
+    let v := mkOct (mkQuat v0 v1 v2 v3) (mkQuat v4 v5 v6 v7) in
+    oct_mul (oct_mul (oct_conj (oct_e 4)) v) (oct_e 1) =
+    oct_mul (oct_conj (oct_e 4)) (oct_mul v (oct_e 1)) ->
+    v2 = 0%R /\ v3 = 0%R /\ v6 = 0%R /\ v7 = 0%R.
+Proof.
+  intros v0 v1 v2 v3 v4 v5 v6 v7 v H41.
+  cbv [v oct_conj oct_mul oct_e oct_lo oct_hi
+       quat_mul quat_add quat_neg quat_conj quat_zero quat_one
+       qa qb qc qd] in H41.
+  repeat match goal with
+  | H : mkOct _ _ = mkOct _ _ |- _ => inversion H; clear H; subst
+  | H : mkQuat _ _ _ _ = mkQuat _ _ _ _ |- _ => inversion H; clear H; subst
+  end.
+  repeat split; lra.
+Qed.
+
+Lemma s54_oct_middle_raw_24_components :
+  forall v0 v1 v2 v3 v4 v5 v6 v7 : R,
+    let v := mkOct (mkQuat v0 v1 v2 v3) (mkQuat v4 v5 v6 v7) in
+    oct_mul (oct_mul (oct_conj (oct_e 2)) v) (oct_e 4) =
+    oct_mul (oct_conj (oct_e 2)) (oct_mul v (oct_e 4)) ->
+    v1 = 0%R /\ v3 = 0%R /\ v5 = 0%R /\ v7 = 0%R.
+Proof.
+  intros v0 v1 v2 v3 v4 v5 v6 v7 v H24.
+  cbv [v oct_conj oct_mul oct_e oct_lo oct_hi
+       quat_mul quat_add quat_neg quat_conj quat_zero quat_one
+       qa qb qc qd] in H24.
+  repeat match goal with
+  | H : mkOct _ _ = mkOct _ _ |- _ => inversion H; clear H; subst
+  | H : mkQuat _ _ _ _ = mkQuat _ _ _ _ |- _ => inversion H; clear H; subst
+  end.
+  repeat split; lra.
+Qed.
+
+Theorem s54_oct_middle_nucleus_pure_zero_raw :
+  forall v : CDOct,
+    oct_conj v = oct_neg v ->
+    oct_mul (oct_mul (oct_conj (oct_e 2)) v) (oct_e 1) =
+    oct_mul (oct_conj (oct_e 2)) (oct_mul v (oct_e 1)) ->
+    oct_mul (oct_mul (oct_conj (oct_e 4)) v) (oct_e 1) =
+    oct_mul (oct_conj (oct_e 4)) (oct_mul v (oct_e 1)) ->
+    oct_mul (oct_mul (oct_conj (oct_e 2)) v) (oct_e 4) =
+    oct_mul (oct_conj (oct_e 2)) (oct_mul v (oct_e 4)) ->
+    v = oct_zero.
+Proof.
+  intros [[v0 v1 v2 v3] [v4 v5 v6 v7]] Hpure H21 H41 H24.
+  assert (Hv0 : v0 = 0%R).
+  { eapply s54_oct_pure_raw_component0; exact Hpure. }
+  destruct (s54_oct_middle_raw_21_components
+              v0 v1 v2 v3 v4 v5 v6 v7 H21)
+    as [Hv4 [Hv5 [Hv6 Hv7]]].
+  destruct (s54_oct_middle_raw_41_components
+              v0 v1 v2 v3 v4 v5 v6 v7 H41)
+    as [Hv2 [Hv3 [_ _]]].
+  destruct (s54_oct_middle_raw_24_components
+              v0 v1 v2 v3 v4 v5 v6 v7 H24)
+    as [Hv1 [_ [_ _]]].
+  subst.
+  reflexivity.
+Qed.
+
+Theorem s54_residual_coordinate_E_zero :
+  forall D : CDSed -> CDSed,
+    Schafer1954IsSedenionDerivation D ->
+    forall S : Schafer1954ResidualCoordinateSurface D,
+    forall a : CDOct,
+      s54_block_E (s54_sed_residual D) a = oct_zero.
+Proof.
+  intros D HD S a.
+  rewrite (s54_residual_coordinate_E_formula D HD S a).
+  assert
+    (Hv :
+      s54_block_v (s54_sed_residual D) = oct_zero).
+  {
+    apply s54_oct_middle_nucleus_pure_zero_raw.
+    - exact (s54_residual_coordinate_v_pure D HD S).
+    - exact (s54_residual_coordinate_middle_nucleus_21_raw D HD S).
+    - exact (s54_residual_coordinate_middle_nucleus_41_raw D HD S).
+    - exact (s54_residual_coordinate_middle_nucleus_24_raw D HD S).
+  }
+  rewrite Hv.
+  apply oct_mul_zero_left.
+Qed.
+
+Theorem s54_concrete_backward_from_residual_coordinates :
+  forall D : CDSed -> CDSed,
+    Schafer1954IsSedenionDerivation D ->
+    forall S : Schafer1954ResidualCoordinateSurface D,
+      D = schafer1954_sedenion_extend (s54_block_A D).
+Proof.
+  intros D HD S.
+  apply s54_concrete_backward_from_residual_blocks; try exact HD.
+  - exact (s54_residual_coordinate_B_zero D HD S).
+  - exact (s54_residual_coordinate_C_zero D S).
+  - exact (s54_residual_coordinate_E_zero D HD S).
+Qed.
+
+Theorem s54_octonion_sedenion_backward_from_residual_coordinates :
+  forall D : CDSed -> CDSed,
+    Schafer1954IsSedenionDerivation D ->
+    forall S : Schafer1954ResidualCoordinateSurface D,
+      exists A : CDOct -> CDOct,
+        schafer1954_octonion_derivation A /\
+        D = schafer1954_sedenion_extend A.
+Proof.
+  intros D HD S.
+  exists (s54_block_A D).
+  split.
+  - exact (s54_block_A_is_octonion_derivation D HD).
+  - exact (s54_concrete_backward_from_residual_coordinates D HD S).
+Qed.
+
 Record Schafer1954OctonionSedenionConverseSurface := {
   s54_octsed_converse_eq52_discharge :
     forall p : Schafer1954Basis7 -> R,

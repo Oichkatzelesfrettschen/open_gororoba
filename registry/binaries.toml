@@ -199,6 +199,16 @@ crate = "gororoba_cli_data"
 description = "Pure-Rust generator for CayleyDickson exact-gap reconstruction binders with embedded provenance covers and deterministic PDF merge output."
 
 [[binary]]
+name = "cd-cache-reconcile"
+crate = "gororoba_cli_data"
+description = "Project-specific CayleyDickson cache/project-API reconciler: consumes append-only acquisition journal rows and regenerates derived cache-tracker ledgers."
+
+[[binary]]
+name = "cd-cache-adapter"
+crate = "gororoba_cli_data"
+description = "Project-specific CayleyDickson cache adapter that reads the thin cache contract and emits search, promote, and reconcile action plans for open_gororoba tooling."
+
+[[binary]]
 name = "cd-row-upgrade-batch"
 crate = "gororoba_cli_data"
 description = "Pure-Rust generator for CayleyDickson exact-witness row-upgrade batch reports, validating lane preconditions before any blocked inventory row is promoted."

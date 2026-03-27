@@ -129,6 +129,7 @@ fn build_cube(repo_root: &Path, window: &str) -> Result<HeliosphereFeatureCube> 
         "mms2024" => build_mms2024(repo_root, &mut rows, &mut sources, &mut notes)?,
         "full-heliosphere" => {
             build_inner1976(repo_root, &mut rows, &mut sources, &mut notes)?;
+            build_outer2001(repo_root, &mut rows, &mut sources, &mut notes)?;
             build_fleet2016(repo_root, &mut rows, &mut sources, &mut notes)?;
             build_modern2020(repo_root, &mut rows, &mut sources, &mut notes)?;
         }
