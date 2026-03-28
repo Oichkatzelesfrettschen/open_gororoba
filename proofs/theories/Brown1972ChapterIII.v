@@ -166,6 +166,189 @@ Module BrownChapterIII (Alg : BrownChapterIIINormAlg).
   Qed.
 End BrownChapterIII.
 
+Definition brown1972_quat_trace (q : CDQuat) : R := 2 * qa q.
+
+Definition brown1972_quat_sub (x y : CDQuat) : CDQuat :=
+  quat_add x (quat_neg y).
+
+Lemma brown1972_quaternion_norm_conj_preserved : forall q : CDQuat,
+  quat_norm_sq (quat_conj q) = quat_norm_sq q.
+Proof.
+  intros [a b c d].
+  cbv [quat_norm_sq quat_conj].
+  simpl.
+  ring.
+Qed.
+
+Lemma brown1972_quat_trace_add : forall x y : CDQuat,
+  brown1972_quat_trace (quat_add x y) =
+  (brown1972_quat_trace x + brown1972_quat_trace y)%R.
+Proof.
+  intros [a b c d] [e f g h].
+  cbv [brown1972_quat_trace quat_add qa].
+  ring.
+Qed.
+
+Lemma brown1972_quat_trace_neg : forall x : CDQuat,
+  brown1972_quat_trace (quat_neg x) = (- brown1972_quat_trace x)%R.
+Proof.
+  intros [a b c d].
+  cbv [brown1972_quat_trace quat_neg qa].
+  ring.
+Qed.
+
+Lemma brown1972_quat_trace_conj : forall x : CDQuat,
+  brown1972_quat_trace (quat_conj x) = brown1972_quat_trace x.
+Proof.
+  intros [a b c d].
+  cbv [brown1972_quat_trace quat_conj qa].
+  ring.
+Qed.
+
+Lemma brown1972_quat_trace_sub : forall x y : CDQuat,
+  brown1972_quat_trace (brown1972_quat_sub x y) =
+  (brown1972_quat_trace x - brown1972_quat_trace y)%R.
+Proof.
+  intros x y.
+  unfold brown1972_quat_sub.
+  rewrite brown1972_quat_trace_add.
+  rewrite brown1972_quat_trace_neg.
+  ring.
+Qed.
+
+Lemma brown1972_quat_scale_zero : forall x : CDQuat,
+  quat_scale 0 x = quat_zero.
+Proof.
+  intros [a b c d].
+  unfold quat_scale, quat_zero.
+  simpl.
+  apply (f_equal4 mkQuat); ring.
+Qed.
+
+Theorem brown1972_theorem_3_1_i_quaternion : forall x y : CDQuat,
+  brown1972_quat_trace (quat_mul x y) =
+  brown1972_quat_trace (quat_mul y x).
+Proof.
+  intros [a b c d] [e f g h].
+  cbv [brown1972_quat_trace quat_mul qa qb qc qd].
+  ring.
+Qed.
+
+Theorem brown1972_theorem_3_1_ii_quaternion : forall x y z : CDQuat,
+  brown1972_quat_trace (quat_mul (quat_mul x y) z) =
+  brown1972_quat_trace (quat_mul x (quat_mul y z)).
+Proof.
+  intros [a b c d] [e f g h] [i j k l].
+  cbv [brown1972_quat_trace quat_mul qa qb qc qd].
+  ring.
+Qed.
+
+Lemma brown1972_quat_trace_zero_iff_pure : forall x : CDQuat,
+  brown1972_quat_trace x = 0%R <-> quat_conj x = quat_neg x.
+Proof.
+  intros [a b c d].
+  split.
+  - intro H.
+    cbv [brown1972_quat_trace quat_conj quat_neg qa] in H |- *.
+    assert (Ha : a = 0%R) by lra.
+    subst a.
+    f_equal; ring.
+  - intro H.
+    apply (f_equal brown1972_quat_trace) in H.
+    rewrite brown1972_quat_trace_conj in H.
+    rewrite brown1972_quat_trace_neg in H.
+    lra.
+Qed.
+
+Lemma brown1972_quat_quadratic_identity : forall x : CDQuat,
+  quat_mul x x =
+  quat_add (quat_scale (brown1972_quat_trace x) x)
+           (quat_scale (- quat_norm_sq x) quat_one).
+Proof.
+  intros [a b c d].
+  cbv [brown1972_quat_trace quat_mul quat_add quat_scale quat_norm_sq
+       quat_one quat_zero quat_conj qa qb qc qd].
+  f_equal; ring.
+Qed.
+
+Lemma brown1972_quaternion_chapter_iii_pure_square : forall x : CDQuat,
+  brown1972_quat_trace x = 0%R ->
+  quat_mul x x = quat_scale (- quat_norm_sq x) quat_one.
+Proof.
+  intros x Htr.
+  rewrite brown1972_quat_quadratic_identity.
+  assert (Hzero :
+    quat_scale (brown1972_quat_trace x) x = quat_zero).
+  {
+    rewrite Htr.
+    destruct x as [a b c d].
+    unfold quat_scale, quat_zero.
+    simpl.
+    apply (f_equal4 mkQuat); ring.
+  }
+  rewrite Hzero.
+  apply quat_add_zero_left.
+Qed.
+
+Module BrownChapterIIIQuatAlg <: BrownChapterIIINormAlg.
+  Definition A := CDQuat.
+  Definition add := quat_add.
+  Definition sub := brown1972_quat_sub.
+  Definition mul := quat_mul.
+  Definition conj := quat_conj.
+  Definition norm_sq := quat_norm_sq.
+
+  Theorem brown_norm_conj_preserved : forall x,
+    norm_sq (conj x) = norm_sq x.
+  Proof.
+    exact brown1972_quaternion_norm_conj_preserved.
+  Qed.
+
+  Theorem brown_norm_mul : forall x y,
+    norm_sq (mul x y) = (norm_sq x * norm_sq y)%R.
+  Proof.
+    intros [a b c d] [e f g h].
+    cbv [norm_sq mul quat_norm_sq quat_mul qa qb qc qd].
+    ring.
+  Qed.
+
+  Theorem brown_polarization_identity : forall x y,
+    (norm_sq (add x y) + norm_sq (sub x y))%R =
+    (2 * (norm_sq x + norm_sq y))%R.
+  Proof.
+    intros [a b c d] [e f g h].
+    cbv [norm_sq add sub brown1972_quat_sub quat_norm_sq quat_add quat_neg qa qb qc qd].
+    ring.
+  Qed.
+End BrownChapterIIIQuatAlg.
+
+Module BrownQuaternionChapterIII := BrownChapterIII(BrownChapterIIIQuatAlg).
+
+Theorem brown1972_theorem_3_9_i_quaternion : forall x y : CDQuat,
+  quat_norm_sq (quat_mul x (quat_conj y)) = quat_norm_sq (quat_mul x y).
+Proof.
+  exact BrownQuaternionChapterIII.brown1972_theorem_3_9_i.
+Qed.
+
+Theorem brown1972_theorem_3_9_ii_quaternion : forall x y : CDQuat,
+  quat_norm_sq (quat_mul (quat_conj x) y) = quat_norm_sq (quat_mul x y).
+Proof.
+  exact BrownQuaternionChapterIII.brown1972_theorem_3_9_ii.
+Qed.
+
+Theorem brown1972_theorem_3_9_iii_quaternion : forall x y : CDQuat,
+  quat_norm_sq (quat_mul x y) = quat_norm_sq (quat_mul y x).
+Proof.
+  exact BrownQuaternionChapterIII.brown1972_theorem_3_9_iii.
+Qed.
+
+Theorem brown1972_lemma_3_10_quaternion : forall x y : CDQuat,
+  (quat_norm_sq (quat_add x y) + quat_norm_sq (brown1972_quat_sub x y))%R =
+  (2 * (quat_norm_sq x + quat_norm_sq y))%R.
+Proof.
+  exact BrownQuaternionChapterIII.brown1972_lemma_3_10.
+Qed.
+
 Lemma brown1972_octonion_norm_conj_preserved : forall x : CDOct,
   oct_norm_sq (oct_conj x) = oct_norm_sq x.
 Proof.
@@ -1115,4 +1298,54 @@ Proof.
               brown1972_chapter_iii_quadratic_core_lift_surface;
             brown1972_ch3_stab_tqc_lift :=
               brown1972_chapter_iii_trace_quadratic_lift_surface |}.
+Defined.
+
+Definition brown1972_quaternion_chapter_iii_quadratic_core_surface :
+  Brown1972QuadraticConjugationCoreSurface
+    quat_zero quat_one quat_add quat_mul quat_neg quat_conj quat_scale
+    brown1972_quat_trace quat_norm_sq.
+Proof.
+  refine {| brown1972_ch3_qcc_add_zero_left := quat_add_zero_left;
+            brown1972_ch3_qcc_scale_zero := brown1972_quat_scale_zero;
+            brown1972_ch3_qcc_quadratic :=
+              brown1972_quat_quadratic_identity;
+            brown1972_ch3_qcc_trace_zero_iff_pure :=
+              brown1972_quat_trace_zero_iff_pure |}.
+Defined.
+
+Definition brown1972_quaternion_chapter_iii_trace_quadratic_surface :
+  Brown1972TraceQuadraticConjugationSurface
+    quat_zero quat_one quat_add quat_mul quat_neg quat_conj quat_scale
+    brown1972_quat_trace quat_norm_sq.
+Proof.
+  refine {| brown1972_ch3_tqc_core :=
+              brown1972_quaternion_chapter_iii_quadratic_core_surface;
+            brown1972_ch3_tqc_t31_i :=
+              brown1972_theorem_3_1_i_quaternion;
+            brown1972_ch3_tqc_t31_ii :=
+              brown1972_theorem_3_1_ii_quaternion |}.
+Defined.
+
+Record Brown1972ChapterIIIExtendedTowerSurface := {
+  brown1972_ch3_ext_base :
+    Brown1972ChapterIIIStabilizedSurface;
+  brown1972_ch3_ext_quat_qc_core :
+    Brown1972QuadraticConjugationCoreSurface
+      quat_zero quat_one quat_add quat_mul quat_neg quat_conj quat_scale
+      brown1972_quat_trace quat_norm_sq;
+  brown1972_ch3_ext_quat_tqc :
+    Brown1972TraceQuadraticConjugationSurface
+      quat_zero quat_one quat_add quat_mul quat_neg quat_conj quat_scale
+      brown1972_quat_trace quat_norm_sq
+}.
+
+Definition brown1972_chapter_iii_extended_tower_surface :
+  Brown1972ChapterIIIExtendedTowerSurface.
+Proof.
+  refine {| brown1972_ch3_ext_base :=
+              brown1972_chapter_iii_stabilized_surface;
+            brown1972_ch3_ext_quat_qc_core :=
+              brown1972_quaternion_chapter_iii_quadratic_core_surface;
+            brown1972_ch3_ext_quat_tqc :=
+              brown1972_quaternion_chapter_iii_trace_quadratic_surface |}.
 Defined.

@@ -1435,3 +1435,76 @@ Proof.
   - apply (f_equal2 mkOct); apply (f_equal4 mkQuat); nra.
   - apply (f_equal2 mkOct); apply (f_equal4 mkQuat); nra.
 Qed.
+
+Record Brown1972ChapterVIAdjoinedConjugationDecompositionSurface
+  (Ext : Type)
+  (trace_hi : Ext -> R)
+  (mul : Ext -> Ext -> Ext)
+  (conj neg : Ext -> Ext)
+  (adjoined_e : Ext) := {
+  brown1972_ch6_acd_68 :
+    forall x,
+      mul x adjoined_e = mul adjoined_e (conj x) <->
+      trace_hi x = 0%R;
+  brown1972_ch6_acd_69_i_forward :
+    forall A B,
+      trace_hi A = 0%R ->
+      mul A (mul adjoined_e B) =
+      mul adjoined_e (mul (conj A) B);
+  brown1972_ch6_acd_69_i_family :
+    forall A,
+      (forall B,
+          mul A (mul adjoined_e B) =
+          mul adjoined_e (mul (conj A) B)) <->
+      trace_hi A = 0%R;
+  brown1972_ch6_acd_69_ii :
+    forall A B,
+      trace_hi A = 0%R ->
+      trace_hi (mul A B) = 0%R ->
+      trace_hi B = 0%R ->
+      mul (mul adjoined_e A) B =
+      mul adjoined_e (mul B A);
+  brown1972_ch6_acd_69_iii :
+    forall A B,
+      trace_hi (mul A (conj B)) = 0%R ->
+      trace_hi B = 0%R ->
+      mul (mul adjoined_e A) (mul adjoined_e B) =
+      neg (mul B (conj A))
+}.
+
+Definition brown1972_sedenion_chapter_vi_adjoined_conjugation_decomposition_surface :
+  Brown1972ChapterVIAdjoinedConjugationDecompositionSurface
+    CDSed
+    (fun x => brown1972_oct_trace (sed_hi x))
+    sed_mul sed_conj sed_neg brown1972_sed_adjoined_e.
+Proof.
+  refine {| brown1972_ch6_acd_68 :=
+              brown1972_lemma_6_8_sedenion;
+            brown1972_ch6_acd_69_i_forward :=
+              brown1972_lemma_6_9_i_sedenion_forward;
+            brown1972_ch6_acd_69_i_family :=
+              brown1972_lemma_6_9_i_sedenion_family;
+            brown1972_ch6_acd_69_ii :=
+              brown1972_lemma_6_9_ii_sedenion_of_trace_conditions;
+            brown1972_ch6_acd_69_iii :=
+              brown1972_lemma_6_9_iii_sedenion_of_trace_conditions |}.
+Defined.
+
+Record Brown1972ChapterVIExtendedStabilizedSurface := {
+  brown1972_ch6_ext_base :
+    Brown1972ChapterVIStabilizedSurface;
+  brown1972_ch6_ext_adjoined_conjugation :
+    Brown1972ChapterVIAdjoinedConjugationDecompositionSurface
+      CDSed
+      (fun x => brown1972_oct_trace (sed_hi x))
+      sed_mul sed_conj sed_neg brown1972_sed_adjoined_e
+}.
+
+Definition brown1972_chapter_vi_extended_stabilized_surface :
+  Brown1972ChapterVIExtendedStabilizedSurface.
+Proof.
+  refine {| brown1972_ch6_ext_base :=
+              brown1972_chapter_vi_stabilized_surface;
+            brown1972_ch6_ext_adjoined_conjugation :=
+              brown1972_sedenion_chapter_vi_adjoined_conjugation_decomposition_surface |}.
+Defined.
