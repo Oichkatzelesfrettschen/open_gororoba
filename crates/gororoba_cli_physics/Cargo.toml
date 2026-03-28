@@ -269,8 +269,16 @@ name = "heliosphere-magnetic-takens"
 path = "src/bin/heliosphere_magnetic_takens.rs"
 
 [[bin]]
+name = "heliosphere-rosetta-draping"
+path = "src/bin/heliosphere_rosetta_draping.rs"
+
+[[bin]]
 name = "heliosphere-mms-multiday"
 path = "src/bin/heliosphere_mms_multiday.rs"
+
+[[bin]]
+name = "heliosphere-switchback-omega"
+path = "src/bin/heliosphere_switchback_omega.rs"
 
 [[bin]]
 name = "heliosphere-quench-scan"
