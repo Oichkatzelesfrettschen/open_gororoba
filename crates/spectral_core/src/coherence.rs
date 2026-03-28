@@ -66,6 +66,15 @@ pub fn welch_cpsd(
     (frequencies, sum_cpsd)
 }
 
+/// Compute the power spectral density (PSD) using Welch's method.
+///
+/// Convenience wrapper: `welch_psd(x, n, o)` = real part of `welch_cpsd(x, x, n, o)`.
+pub fn welch_psd(signal: &[f64], nperseg: usize, noverlap: usize) -> (Vec<f64>, Vec<f64>) {
+    let (freqs, cpsd) = welch_cpsd(signal, signal, nperseg, noverlap);
+    let psd: Vec<f64> = cpsd.iter().map(|c| c.re).collect();
+    (freqs, psd)
+}
+
 /// Compute magnitude-squared coherence (MSC).
 ///
 /// MSC(f) = |CPSD(f)|^2 / (PSD_x(f) * PSD_y(f))

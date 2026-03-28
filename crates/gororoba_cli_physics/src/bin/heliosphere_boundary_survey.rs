@@ -50,6 +50,17 @@ struct Cli {
     #[arg(long, default_value_t = 10000.0)]
     max_bmag: f64,
 
+    /// Curated crossing list file (TSV or space-delimited timestamps).
+    /// If provided, crossings from this list replace |B|-gradient detection.
+    /// Supports THEMIS V2 format (TIMESTAMP\tX\tY\tZ\t...\tPROBE) and
+    /// MESSENGER format (start_time end_time per line).
+    #[arg(long)]
+    crossing_list: Option<PathBuf>,
+
+    /// Probe filter for crossing list (e.g., "a" for THEMIS-A).
+    #[arg(long)]
+    crossing_probe: Option<String>,
+
     /// Output JSON path.
     #[arg(long, default_value = "data/output/heliosphere/ablations/boundary_survey.json")]
     out_json: PathBuf,
@@ -85,6 +96,12 @@ struct SurveyResults {
     false_alarm_rate: f64,
     mean_offset_minutes: f64,
     median_offset_minutes: f64,
+    /// Curated crossing list results (if --crossing-list provided).
+    curated_n_crossings: Option<usize>,
+    curated_detection_rate: Option<f64>,
+    curated_false_alarm_rate: Option<f64>,
+    curated_mean_offset: Option<f64>,
+    curated_median_offset: Option<f64>,
     global_mean_associator: f64,
     global_std_associator: f64,
     transition_threshold: f64,
@@ -244,11 +261,75 @@ fn main() -> Result<()> {
     let mean_off = if offsets.is_empty() { 0.0 } else { offsets.iter().sum::<f64>() / offsets.len() as f64 };
     let med_off = if offsets.is_empty() { 0.0 } else { offsets[offsets.len() / 2] };
 
-    println!("\n=== {} Results ===", cli.mission);
+    println!("\n=== {} Results (|B|-gradient) ===", cli.mission);
     println!("  Boundaries: {}, Transitions: {}", boundaries.len(), transitions.len());
     println!("  Detection rate: {}/{} = {:.1}%", matched, boundaries.len(), det_rate * 100.0);
     println!("  False alarm rate: {:.1}%", fa_rate * 100.0);
     println!("  Mean offset: {:.1} min, Median: {:.1} min", mean_off, med_off);
+
+    // --- Curated crossing list comparison (if provided) ---
+    let (cur_n, cur_det, cur_fa, cur_mean, cur_med) =
+        if let Some(ref list_path) = cli.crossing_list {
+            println!("\n--- Curated crossing list comparison ---");
+            let curated_hours = parse_curated_crossings(
+                list_path,
+                cli.crossing_probe.as_deref(),
+                &start,
+                &end,
+            )?;
+            println!("  Curated crossings in window: {}", curated_hours.len());
+
+            if curated_hours.is_empty() {
+                (Some(0), Some(0.0), Some(0.0), Some(0.0), Some(0.0))
+            } else {
+                // Compare: for each curated crossing, is there a transition nearby?
+                let mut c_matched = 0usize;
+                let mut c_offsets: Vec<f64> = Vec::new();
+
+                // First record's elapsed_hours is 0 at start of data
+                let data_start_hours = all_minutes.first().map(|r| r.elapsed_hours).unwrap_or(0.0);
+                let _ = data_start_hours; // used below in curated_hours mapping
+
+                for &ch in &curated_hours {
+                    let hit = transitions.iter().any(|&ti| {
+                        (all_minutes[ti].elapsed_hours - ch).abs() < tol_hours
+                    });
+                    if hit {
+                        c_matched += 1;
+                        let best = transitions.iter()
+                            .map(|&ti| (all_minutes[ti].elapsed_hours - ch).abs() * 60.0)
+                            .fold(f64::MAX, f64::min);
+                        c_offsets.push(best);
+                    }
+                }
+
+                let c_matched_trans = transitions.iter()
+                    .filter(|&&ti| {
+                        let th = all_minutes[ti].elapsed_hours;
+                        curated_hours.iter().any(|&ch| (ch - th).abs() < tol_hours)
+                    })
+                    .count();
+
+                let c_det = c_matched as f64 / curated_hours.len() as f64;
+                let c_fa = if transitions.is_empty() { 0.0 }
+                    else { (transitions.len() - c_matched_trans) as f64 / transitions.len() as f64 };
+
+                c_offsets.sort_by(|a, b| a.partial_cmp(b).unwrap());
+                let c_mean = if c_offsets.is_empty() { 0.0 }
+                    else { c_offsets.iter().sum::<f64>() / c_offsets.len() as f64 };
+                let c_med = if c_offsets.is_empty() { 0.0 }
+                    else { c_offsets[c_offsets.len() / 2] };
+
+                println!("  Curated detection rate: {}/{} = {:.1}%",
+                    c_matched, curated_hours.len(), c_det * 100.0);
+                println!("  Curated false alarm rate: {:.1}%", c_fa * 100.0);
+                println!("  Curated mean offset: {:.1} min, median: {:.1} min", c_mean, c_med);
+
+                (Some(curated_hours.len()), Some(c_det), Some(c_fa), Some(c_mean), Some(c_med))
+            }
+        } else {
+            (None, None, None, None, None)
+        };
 
     let results = SurveyResults {
         mission: cli.mission.clone(),
@@ -262,6 +343,11 @@ fn main() -> Result<()> {
         false_alarm_rate: fa_rate,
         mean_offset_minutes: mean_off,
         median_offset_minutes: med_off,
+        curated_n_crossings: cur_n,
+        curated_detection_rate: cur_det,
+        curated_false_alarm_rate: cur_fa,
+        curated_mean_offset: cur_mean,
+        curated_median_offset: cur_med,
         global_mean_associator: global_mean,
         global_std_associator: global_std,
         transition_threshold: threshold,
@@ -464,6 +550,66 @@ fn fetch_maven(cli: &Cli, start: NaiveDate, end: NaiveDate) -> Result<Vec<MagMin
     }
     recompute_elapsed(&mut all);
     Ok(all)
+}
+
+/// Parse a curated crossing list file into elapsed-hours relative to `start`.
+///
+/// Supports two formats:
+/// - THEMIS V2: tab-separated TIMESTAMP X Y Z ... PROBE (header + comment lines)
+/// - MESSENGER: space-separated start_time end_time per line (no header)
+fn parse_curated_crossings(
+    path: &PathBuf,
+    probe_filter: Option<&str>,
+    start: &NaiveDate,
+    end: &NaiveDate,
+) -> Result<Vec<f64>> {
+    let content = fs::read_to_string(path)
+        .with_context(|| format!("read crossing list: {}", path.display()))?;
+
+    let start_dt = start.and_hms_opt(0, 0, 0).unwrap();
+    let end_dt = end.and_hms_opt(23, 59, 59).unwrap();
+
+    let mut hours: Vec<f64> = Vec::new();
+
+    for line in content.lines() {
+        let trimmed = line.trim();
+        if trimmed.is_empty() || trimmed.starts_with('#') || trimmed.starts_with("TIMESTAMP") {
+            continue;
+        }
+
+        // Try THEMIS format: TIMESTAMP\tX\tY\tZ\t...\tPROBE
+        let fields: Vec<&str> = trimmed.split('\t').collect();
+        if fields.len() >= 2 {
+            if let Some(filter) = probe_filter
+                && fields.last().is_some_and(|pf| pf.trim().to_lowercase() != filter.to_lowercase())
+            {
+                continue;
+            }
+            if let Ok(dt) = chrono::NaiveDateTime::parse_from_str(
+                fields[0].trim().trim_end_matches('Z'),
+                "%Y-%m-%dT%H:%M:%S",
+            ) && dt >= start_dt && dt <= end_dt {
+                let elapsed = (dt - start_dt).num_minutes() as f64 / 60.0;
+                hours.push(elapsed);
+            }
+            continue;
+        }
+
+        // Try MESSENGER format: start_time end_time (space-separated)
+        let parts: Vec<&str> = trimmed.split_whitespace().collect();
+        if !parts.is_empty() {
+            let ts = parts[0].trim_end_matches('Z');
+            if let Ok(dt) = chrono::NaiveDateTime::parse_from_str(ts, "%Y-%m-%d/%H:%M:%S")
+                && dt >= start_dt && dt <= end_dt
+            {
+                let elapsed = (dt - start_dt).num_minutes() as f64 / 60.0;
+                hours.push(elapsed);
+            }
+        }
+    }
+
+    hours.sort_by(|a, b| a.partial_cmp(b).unwrap());
+    Ok(hours)
 }
 
 fn recompute_elapsed(records: &mut [MagMinute]) {
