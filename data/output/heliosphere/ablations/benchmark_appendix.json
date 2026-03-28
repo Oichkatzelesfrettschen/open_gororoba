@@ -1,0 +1,111 @@
+{
+  "title": "Benchmark Appendix: Cross-Domain Validation Summary",
+  "generated": "2026-03-27",
+  "caveat": "Detection-rate numbers are not directly comparable across rows because the label models differ. Bayesian change-point localization, curated boundary timestamps, |B|-gradient heuristics, and switchback sign criteria are different validation modes, not one shared leaderboard.",
+  "tier_1_flagship": [
+    {
+      "environment": "V2 heliopause (heliosheath -> ISM)",
+      "label_type": "Bayesian change-point (algorithmic)",
+      "response_phenotype": "Ordered-entry drop",
+      "best_metric": "CP at 119.5 AU; pre=4.35, post=0.13 (33x drop)",
+      "main_caveat": "Single crossing event per spacecraft; validated by V1/V2 agreement"
+    },
+    {
+      "environment": "V1 heliopause (heliosheath -> ISM)",
+      "label_type": "Bayesian change-point (algorithmic)",
+      "response_phenotype": "Ordered-entry drop",
+      "best_metric": "CP at 123.8 AU; pre=0.12, post=0.02 (7x drop)",
+      "main_caveat": "V1 pre-crossing associator is lower than V2 (different heliosheath conditions)"
+    }
+  ],
+  "tier_2_cross_domain": [
+    {
+      "environment": "THEMIS-A Earth magnetopause",
+      "label_type": "Curated (Zenodo V2, Staples et al. 2020)",
+      "validation_tier": "A",
+      "response_phenotype": "Ordered-entry drop",
+      "best_metric": "89.0% detection (105/118), 16.7% FA, 6 min offset",
+      "main_caveat": "Strongest Earth result. Single probe, single 7-day window."
+    },
+    {
+      "environment": "MMS Earth magnetopause",
+      "label_type": "Heuristic (|B| gradient, 5 nT)",
+      "validation_tier": "B",
+      "response_phenotype": "Ordered-entry drop",
+      "best_metric": "61.5% detection (64/104), 40.0% FA, 6 min offset",
+      "main_caveat": "Heuristic labels inflate crossing count. FPI composite upgrade available."
+    },
+    {
+      "environment": "Cluster-1 Earth bow shock",
+      "label_type": "Curated (OMNI SPDF bow shock database)",
+      "validation_tier": "A",
+      "response_phenotype": "Ordered-entry drop",
+      "best_metric": "64.9% detection (24/37), 73.9% FA, 8 min offset",
+      "main_caveat": "Bow shock is noisier than magnetopause; downstream turbulence generates extra transitions."
+    },
+    {
+      "environment": "ARTEMIS THB lunar wake / magnetotail",
+      "label_type": "Heuristic (|B| gradient, 3 nT)",
+      "validation_tier": "B",
+      "response_phenotype": "Cavity/wake",
+      "best_metric": "75.0% detection (21/28), 68.1% FA, 4 min offset",
+      "main_caveat": "Lunar orbit post-2011; mixing wake crossings with magnetotail structures."
+    },
+    {
+      "environment": "MESSENGER Mercury magnetopause",
+      "label_type": "Curated (Zenodo, doi:10.5281/zenodo.13958819)",
+      "validation_tier": "A",
+      "response_phenotype": "Ordered-entry drop",
+      "best_metric": "64.3% detection (9/14), 84.8% FA, 3 min offset",
+      "main_caveat": "Compact magnetosphere with many substructures; MP-only list misses BS and FTE events."
+    },
+    {
+      "environment": "Rosetta 67P diamagnetic cavity",
+      "label_type": "Heuristic (|B| gradient, 3 nT)",
+      "validation_tier": "C",
+      "response_phenotype": "Weak-field cavity amplification",
+      "best_metric": "1.9x genuine (direction-only) / 5.3x (current norm); 0.7% FA",
+      "main_caveat": "Normalization-sensitive: ~40% genuine phase geometry, ~60% amplification. Direction-only ablation is the honest number."
+    },
+    {
+      "environment": "PSP switchbacks (4 encounters, 0.07-0.17 AU)",
+      "label_type": "Published criterion (Br/|B| < -0.5)",
+      "validation_tier": "C",
+      "response_phenotype": "Coherent-structure suppression",
+      "best_metric": "SB/quiet ratio 0.42-0.70 (mean 0.57), stable across E1/E4/E6/E10",
+      "main_caveat": "Regime classification, not point-event detection. Possible radial trend (weaker contrast closer to Sun)."
+    },
+    {
+      "environment": "MAVEN Mars induced magnetosphere boundary",
+      "label_type": "Heuristic (|B| gradient, 5 nT)",
+      "validation_tier": "B",
+      "response_phenotype": "Induced boundary",
+      "best_metric": "53.3% detection (14-day), 25.8% FA, 7 min offset",
+      "main_caveat": "Cleanest heuristic result; induced boundaries are easier than dipolar. Curated IMB list upgrade available."
+    },
+    {
+      "environment": "Solar Orbiter inner heliosphere baseline",
+      "label_type": "Null hierarchy (5-family surrogates)",
+      "validation_tier": "B",
+      "response_phenotype": "Baseline (lowest Omega_mv)",
+      "best_metric": "Omega_mv = 0.045",
+      "main_caveat": "Establishes the inner-heliosphere floor. Signal is spectral-only (destroyed by phase randomization)."
+    },
+    {
+      "environment": "Ulysses out-of-ecliptic fast/slow wind",
+      "label_type": "Regime conditioning (v_sw > 550 km/s)",
+      "validation_tier": "B",
+      "response_phenotype": "Regime contrast",
+      "best_metric": "Fast-wind 2-4x amplification at 27-82 AU; ratio 1.01 at 1 AU",
+      "main_caveat": "Radial-distance-dependent effect. Fast/slow discrimination only emerges beyond ~5 AU."
+    },
+    {
+      "environment": "Cassini + New Horizons outer heliosphere",
+      "label_type": "Densified feature cube (1.26M rows)",
+      "validation_tier": "B",
+      "response_phenotype": "Radial profile",
+      "best_metric": "Continuous radial coverage 1-50 AU in densified cube",
+      "main_caveat": "Part of densified pipeline; no independent boundary detection, provides radial context."
+    }
+  ]
+}
