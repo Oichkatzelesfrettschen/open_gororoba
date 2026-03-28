@@ -83,6 +83,77 @@ impl SoaEmbeddingCache {
     }
 }
 
+/// Ring-buffer embedding cache: O(3*dim) memory for sliding window associator.
+/// Translated from steinmarder's A-A streaming single-buffer parity pattern.
+/// Instead of storing ALL embeddings (O(N*dim)), keeps only the 3-element
+/// sliding window needed for the associator triplet (a, b, c).
+pub struct RingEmbeddingCache {
+    /// Three slots for the sliding window [oldest, middle, newest]
+    slots: [Vec<f32>; 3],
+    /// Embedding dimension
+    dim: usize,
+    /// Current write position (0, 1, 2, wraps around)
+    write_pos: usize,
+    /// Number of vectors pushed so far
+    count: usize,
+}
+
+impl RingEmbeddingCache {
+    pub fn new(dim: usize) -> Self {
+        Self {
+            slots: [vec![0.0f32; dim], vec![0.0f32; dim], vec![0.0f32; dim]],
+            dim,
+            write_pos: 0,
+            count: 0,
+        }
+    }
+
+    /// Push a new embedding vector into the ring buffer.
+    /// Returns Some(associator_norm) if we have a complete triplet.
+    pub fn push_and_compute(&mut self, vector: &[f32]) -> Option<f32> {
+        debug_assert!(vector.len() >= self.dim);
+        self.slots[self.write_pos][..self.dim].copy_from_slice(&vector[..self.dim]);
+        self.write_pos = (self.write_pos + 1) % 3;
+        self.count += 1;
+
+        if self.count >= 3 {
+            // The three slots contain [newest-2, newest-1, newest] but in ring order.
+            // Oldest is at write_pos (just overwritten by the PREVIOUS push).
+            let a_idx = self.write_pos; // oldest (just wrapped past)
+            let b_idx = (self.write_pos + 1) % 3;
+            let c_idx = (self.write_pos + 2) % 3;
+            Some(super::simd::cd_associator_norm_f32(
+                &self.slots[a_idx],
+                &self.slots[b_idx],
+                &self.slots[c_idx],
+                self.dim,
+            ))
+        } else {
+            None
+        }
+    }
+
+    /// Stream through a sequence of embeddings, computing associator norms on the fly.
+    /// Memory usage: O(3 * dim) regardless of sequence length.
+    pub fn stream_norms(&mut self, embeddings: impl Iterator<Item = Vec<f32>>) -> Vec<f32> {
+        let mut norms = Vec::new();
+        for v in embeddings {
+            if let Some(norm) = self.push_and_compute(&v) {
+                norms.push(norm);
+            }
+        }
+        norms
+    }
+
+    pub fn dim(&self) -> usize {
+        self.dim
+    }
+
+    pub fn count(&self) -> usize {
+        self.count
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -103,5 +174,69 @@ mod tests {
         // Check SoA component layout
         assert_eq!(cache.component_slice(0), &[1.0, 5.0, 9.0]);
         assert_eq!(cache.component_slice(1), &[2.0, 6.0, 10.0]);
+    }
+
+    #[test]
+    fn test_ring_buffer_streaming() {
+        let dim = 8; // octonion dimension
+        let mut ring = RingEmbeddingCache::new(dim);
+
+        // Push 5 vectors, should get 3 norms (after first triplet completes)
+        let vecs: Vec<Vec<f32>> = (0..5)
+            .map(|i| {
+                let mut v = vec![0.0f32; dim];
+                v[0] = 1.0;
+                v[(i % dim) as usize] = (i as f32 + 1.0) * 0.1;
+                // Normalize
+                let norm: f32 = v.iter().map(|x| x * x).sum::<f32>().sqrt();
+                for x in v.iter_mut() {
+                    *x /= norm;
+                }
+                v
+            })
+            .collect();
+
+        let norms = ring.stream_norms(vecs.into_iter());
+        assert_eq!(norms.len(), 3); // 5 vectors -> 3 triplets
+        assert_eq!(ring.count(), 5);
+        // All norms should be non-negative
+        for n in &norms {
+            assert!(*n >= 0.0, "Norm should be non-negative, got {}", n);
+        }
+    }
+
+    #[test]
+    fn test_ring_matches_batch() {
+        // Verify ring buffer gives same results as batch computation
+        let dim = 16; // sedenion
+        let vecs: Vec<Vec<f32>> = (0..10)
+            .map(|i| {
+                let mut v = vec![0.0f32; dim];
+                for j in 0..dim {
+                    v[j] = ((i * 7 + j * 3) as f32).sin();
+                }
+                let norm: f32 = v.iter().map(|x| x * x).sum::<f32>().sqrt();
+                for x in v.iter_mut() {
+                    *x /= norm;
+                }
+                v
+            })
+            .collect();
+
+        // Ring buffer path
+        let mut ring = RingEmbeddingCache::new(dim);
+        let ring_norms = ring.stream_norms(vecs.clone().into_iter());
+
+        // Batch path
+        let batch_norms = crate::cayley_dickson::simd::batch_sliding_associator_norms_f32(&vecs, dim);
+
+        assert_eq!(ring_norms.len(), batch_norms.len());
+        for (r, b) in ring_norms.iter().zip(batch_norms.iter()) {
+            assert!(
+                (r - b).abs() < 1e-5,
+                "Ring {} != Batch {} (diff {})",
+                r, b, (r - b).abs()
+            );
+        }
     }
 }
