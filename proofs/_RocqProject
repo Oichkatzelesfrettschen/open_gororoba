@@ -245,6 +245,9 @@ theories/WalkerFermatAlgebras.v
 theories/CDPowerAssociative.v
 theories/WilmotCDStructure.v
 theories/BrownGeneralizedCD.v
+theories/Brown1972ChapterIII.v
+theories/Brown1972ChapterIV.v
+theories/Brown1972ChapterVI.v
 theories/Brown1972.v
 theories/ZD_Criterion.v
 theories/SStructuralGaps.v

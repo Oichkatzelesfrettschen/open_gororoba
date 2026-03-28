@@ -12,7 +12,7 @@ updated = "2026-03-28"
 authoritative = true
 status = "active"
 status_token = "ACTIVE"
-document_count = 169
+document_count = 173
 
 [[owner]]
 path = "README.md"
@@ -820,6 +820,30 @@ removal_reason = ""
 
 [[owner]]
 path = "docs/reports/POST_RC1_CROSS_DOMAIN_EVIDENCE_NOTE.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/reports/cd_cross_domain_synthesis_2026_03_28.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/reports/diii_d_project_proposal_draft.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/reports/fusion_enrollment_forms_ready_to_submit.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/reports/turboquant_cd_optimization_analysis.md"
 owner_group = "project"
 removal_status = "active"
 removal_reason = ""

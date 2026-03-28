@@ -183,3 +183,7 @@ theories/SU3StructureConstants.v
 theories/SU3JacobiFull.v
 theories/SedenionAlternativityFails.v
 theories/HomotopyTransferAssociator.v
+theories/Brown1972ChapterIII.v
+theories/Brown1972ChapterIV.v
+theories/Brown1972ChapterVI.v
+theories/Brown1972.v
