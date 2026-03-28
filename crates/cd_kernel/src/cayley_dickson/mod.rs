@@ -39,6 +39,8 @@ pub use simd::{
     cd_multiply_flat_into, cd_multiply_simd, cd_norm_sq_simd, octonion_multiply_flat,
     octonion_multiply_scalar_flat, quaternion_multiply_flat, quaternion_multiply_scalar_flat,
     sedenion_multiply_flat,
+    // f32 quantized CD multiply for high-dimensional (256D+) performance
+    batch_sliding_associator_norms_f32, cd_associator_norm_f32, cd_multiply_f32_into,
 };
 pub use symmetry::{cross_generational_friction, gourlay_epsilon, gourlay_psi, gourlay_psi_n};
 pub use zero_divisors::{
