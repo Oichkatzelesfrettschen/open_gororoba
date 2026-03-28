@@ -1997,3 +1997,23 @@ description = "Extract B-field from nubhlight GRMHD HDF5 dumps, compute 32D CD a
 name = "bout-cd-analysis"
 crate = "gororoba_cli_physics"
 description = "Read BOUT++ NetCDF4 output (HDF5-based), extract evolved field variables (n, phi, vort), build 32D Takens embedding from spatial profiles along sweep axis, compute CD associator at each timestep. Supports multi-channel embedding, direction-only normalization, configurable sweep axis."
+
+[[binary]]
+name = "bout-grid-inspect"
+crate = "gororoba_cli_physics"
+description = "Inspect BOUT++ tokamak grid files (NetCDF-3 classic format) using pure-Rust netcdf3 crate. Lists dimensions, variables, attributes, and reads key magnetic geometry fields (Rxy, Zxy, Bpxy, Btxy, psixy)."
+
+[[binary]]
+name = "bout-grid-cd"
+crate = "gororoba_cli_physics"
+description = "CD analysis on BOUT++ tokamak equilibrium grid (NetCDF-3). Extracts multi-variable radial profiles, builds 16D/32D/64D embeddings, computes A(psi) profile. Validates that CD is a dynamics diagnostic (smooth equilibria give A=0)."
+
+[[binary]]
+name = "mast-fetch"
+crate = "gororoba_cli_physics"
+description = "Pure Rust MAST Zarr downloader using ureq HTTP + rayon parallel chunk fetching. Downloads Mirnov diagnostic data from FAIR-MAST public S3 bucket (s3://mast/ at s3.echo.stfc.ac.uk). Zero authentication, blosc/lz4 compressed Zarr v2."
+
+[[binary]]
+name = "mast-mirnov-cd"
+crate = "gororoba_cli_physics"
+description = "CD analysis on FAIR-MAST experimental Mirnov coil data (Zarr v2, blosc/lz4). Reads n=2 and n=odd toroidal mode signals, builds 32D Takens embedding, computes sliding-window CD associator. Pure Rust: zarrs + cd_kernel."
