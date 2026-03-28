@@ -93,7 +93,7 @@ Practical reading of the source:
 | Chapter III | `proofs/theories/Brown1972.v` + `crates/brown_1972/src/norm_symmetry.rs` | Brown 3.1 standard-octonion trace surface, Brown 3.3 / Lemma 3.7 standard-octonion involution-quadratic surface, and abstract Rocq 3.9 / 3.10 surface with standard-octonion and direct standard-sedenion witnesses landed; broader generalized-norm surfacing still open |
 | Chapter IV | `proofs/theories/Brown1972.v` plus local associator support | source-driven standard-tower witness surface for 4.2, 4.3, and 4.4 landed |
 | Chapter V | `proofs/theories/Brown1972.v` + `crates/brown_1972/src/exponent_properties.rs` | generic one-generated/trace-zero Rocq exponent surface landed, instantiated at quaternion and octonion level |
-| Chapter VI | `proofs/theories/Brown1972.v` plus sign-table infrastructure and `crates/brown_1972/src/basis_element_properties.rs` | standard-octonion Brown 6.10 basis anticommutation and Brown 6.11 basis alternativity witness surface landed; next source-driven tranche is 6.2 / 6.3 / 6.8 / 6.9 around the adjoined basis element `e`, then broader basis lifts beyond the current octonion witness layer |
+| Chapter VI | `proofs/theories/Brown1972.v` plus sign-table infrastructure and `crates/brown_1972/src/basis_element_properties.rs` | standard-octonion Brown 6.10 basis anticommutation and Brown 6.11 basis alternativity witness surface landed, plus a direct standard-sedenion adjoined-element surface for 6.1 / 6.2 / 6.3; next source-driven tranche is 6.8 / 6.9 after reconciling Brown's adjoined-element notation with the repo's standard pair model, then broader basis lifts beyond the current octonion witness layer |
 | Chapter VII | `ZD_Criterion.v`, `C1538_MorZDSymmetry.v`, `BrownAssessorEquivalence.v`, Rust support | partially formalized, but not yet chapter-complete in Brown numbering |
 | Chapter VIII | no dedicated paper surface yet | open |
 | Appendix C | `crates/brown_1972/src/pl1_emulator.rs` | Rust bridge only |
@@ -114,7 +114,8 @@ To avoid overfitting to Chapter III, Brown should now be mined in this order:
    - use the dissertation statements directly, not only the Rust checklist
 4. Chapter VI basis-element surface
    - standard-octonion 6.10 / 6.11 witnesses are now landed
-   - next fold in 6.2 / 6.3 / 6.8 / 6.9 around the adjoined basis element `e`
+   - standard-sedenion adjoined-element 6.1 / 6.2 / 6.3 witnesses are now landed
+   - next fold is 6.8 / 6.9 once Brown's adjoined-element notation is reconciled with the repo's standard pair model
    - then lift beyond the current octonion witness layer
 5. Chapter VII gap fill
    - continue from the already-landed zero-divisor lane to the remaining Brown-numbered theorems
@@ -139,7 +140,7 @@ The next Rocq tranche should therefore be:
 2. move next beyond the landed generic Chapter V one-generated/trace-zero surface
    - the next non-quaternion lift should target the genuinely broader exponent/generalized associator surface, not the already-landed local corollaries and associative base chain
 3. then split the fresh follow-on work:
-   - Chapter VI follow-on: 6.2 / 6.3 / 6.8 / 6.9 around the adjoined basis element `e`
+   - Chapter VI follow-on: 6.8 / 6.9 around the adjoined basis element `e`, after notation reconciliation, then broader basis lifts
    - Chapter III follow-on: broader generalized-norm surfacing on top of the landed 3.1 / 3.3 / Lemma 3.7 source layer
 
 ## Remaining Brown steps
@@ -155,7 +156,8 @@ The next Rocq tranche should therefore be:
    - extend from the landed Brown 3.1 / 3.3 / Lemma 3.7 standard-octonion source surface and the octonion/sedenion 3.9 / 3.10 witnesses to the broader sourced generalized-norm lane
 5. Chapter VI
    - standard-octonion 6.10 basis anticommutation and 6.11 basis alternativity are landed
-   - next target 6.2 / 6.3 / 6.8 / 6.9, then broaden beyond the current octonion witness surface
+   - direct standard-sedenion adjoined-element 6.1 / 6.2 / 6.3 are now landed
+   - next target 6.8 / 6.9 after Brown-notation reconciliation, then broaden beyond the current octonion witness surface
 6. Chapter VII
    - continue from the already-landed zero-divisor surfaces to the remaining Brown-numbered theorems
 7. Chapter VIII and Appendix C
