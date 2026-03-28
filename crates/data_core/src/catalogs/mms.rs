@@ -358,3 +358,172 @@ pub fn average_to_hourly(records: &[MmsFgmRecord]) -> Vec<MmsFgmRecord> {
         })
     }).collect()
 }
+
+// ---------------------------------------------------------------------------
+// MMS FPI DIS-MOMS: ion density + bulk velocity for composite crossing labels
+// ---------------------------------------------------------------------------
+
+/// HAPI dataset ID for MMS1 FPI Fast Survey DIS moments (ion density + velocity).
+pub const MMS_FPI_DIS_HAPI_DATASET: &str = "MMS1_FPI_FAST_L2_DIS-MOMS";
+
+/// Minute-resolution MMS FPI ion moments (density + velocity).
+#[derive(Debug, Clone)]
+pub struct MmsFpiMinuteRecord {
+    pub year: u16,
+    pub doy: u16,
+    pub hour: u8,
+    pub minute: u8,
+    pub elapsed_hours: f64,
+    pub ion_density: f64,    // cm^-3
+    pub vx_gse: f64,        // km/s
+    pub vy_gse: f64,
+    pub vz_gse: f64,
+}
+
+/// Parse MMS FPI DIS-MOMS HAPI CSV into minute-averaged ion moments.
+pub fn parse_mms_fpi_hapi_csv_minutes(content: &str) -> Vec<MmsFpiMinuteRecord> {
+    let mut reader = ReaderBuilder::new()
+        .has_headers(true)
+        .from_reader(content.as_bytes());
+
+    let headers = match reader.headers() {
+        Ok(h) => h.clone(),
+        Err(_) => return Vec::new(),
+    };
+
+    // Find density and velocity columns
+    let den_col = headers.iter().position(|h| h == "mms1_dis_numberdensity_fast");
+    let vx_col = headers.iter().position(|h| h == "mms1_dis_bulkv_gse_fast_0");
+    let vy_col = headers.iter().position(|h| h == "mms1_dis_bulkv_gse_fast_1");
+    let vz_col = headers.iter().position(|h| h == "mms1_dis_bulkv_gse_fast_2");
+
+    let Some(den_col) = den_col else { return Vec::new() };
+
+    #[derive(Default)]
+    struct Acc { den: f64, vx: f64, vy: f64, vz: f64, count: usize }
+
+    let mut buckets: BTreeMap<(u16, u16, u8, u8), Acc> = BTreeMap::new();
+
+    for record in reader.records().flatten() {
+        let Some(time_str) = record.get(0) else { continue };
+        let Ok(dt) = DateTime::parse_from_rfc3339(time_str) else { continue };
+        let utc = dt.with_timezone(&Utc);
+
+        let den = parse_hapi_spacephysics_f64_or_nan(record.get(den_col).unwrap_or(""));
+        if !den.is_finite() || den <= 0.0 { continue; }
+
+        let vx = vx_col.and_then(|c| record.get(c)).map(parse_hapi_spacephysics_f64_or_nan).unwrap_or(0.0);
+        let vy = vy_col.and_then(|c| record.get(c)).map(parse_hapi_spacephysics_f64_or_nan).unwrap_or(0.0);
+        let vz = vz_col.and_then(|c| record.get(c)).map(parse_hapi_spacephysics_f64_or_nan).unwrap_or(0.0);
+
+        let key = (utc.year() as u16, utc.ordinal() as u16, utc.hour() as u8, utc.minute() as u8);
+        let acc = buckets.entry(key).or_default();
+        acc.den += den; acc.vx += vx; acc.vy += vy; acc.vz += vz; acc.count += 1;
+    }
+
+    let keys: Vec<_> = buckets.keys().copied().collect();
+    let first = keys.first().copied();
+
+    keys.into_iter()
+        .filter_map(|key| {
+            let acc = &buckets[&key];
+            if acc.count == 0 { return None; }
+            let n = acc.count as f64;
+            let (year, doy, hour, minute) = key;
+
+            let elapsed = match first {
+                Some((fy, fd, fh, fm)) => {
+                    (year as f64 - fy as f64) * 365.25 * 24.0
+                        + (doy as f64 - fd as f64) * 24.0
+                        + (hour as f64 - fh as f64)
+                        + (minute as f64 - fm as f64) / 60.0
+                }
+                None => 0.0,
+            };
+
+            Some(MmsFpiMinuteRecord {
+                year, doy, hour, minute, elapsed_hours: elapsed,
+                ion_density: acc.den / n,
+                vx_gse: acc.vx / n, vy_gse: acc.vy / n, vz_gse: acc.vz / n,
+            })
+        })
+        .collect()
+}
+
+/// Composite magnetopause crossing detector using FGM + FPI data.
+///
+/// A crossing is identified when BOTH conditions hold across adjacent windows:
+/// 1. Ion density ratio > `density_ratio_threshold` (magnetosheath is denser)
+/// 2. Magnetic field rotation > `rotation_threshold_deg`
+///
+/// This is strictly stronger than |B|-gradient alone and matches standard
+/// MMS magnetopause identification practice (Trattner et al., Paschmann et al.).
+pub fn detect_composite_crossings(
+    mag: &[MmsFgmMinuteRecord],
+    fpi: &[MmsFpiMinuteRecord],
+    window_minutes: usize,
+    density_ratio_threshold: f64,
+    rotation_threshold_deg: f64,
+) -> Vec<usize> {
+    if mag.len() < window_minutes * 2 + 1 { return vec![]; }
+
+    // Build density lookup by (year, doy, hour, minute)
+    let mut density_map: BTreeMap<(u16, u16, u8, u8), f64> = BTreeMap::new();
+    for r in fpi {
+        density_map.insert((r.year, r.doy, r.hour, r.minute), r.ion_density);
+    }
+
+    let half = window_minutes;
+    let mut crossings = Vec::new();
+
+    for i in half..mag.len().saturating_sub(half) {
+        // |B| rotation angle between pre and post windows
+        let pre_bx: f64 = mag[i.saturating_sub(half)..i].iter().map(|r| r.bx_gse).sum::<f64>() / half as f64;
+        let pre_by: f64 = mag[i.saturating_sub(half)..i].iter().map(|r| r.by_gse).sum::<f64>() / half as f64;
+        let pre_bz: f64 = mag[i.saturating_sub(half)..i].iter().map(|r| r.bz_gse).sum::<f64>() / half as f64;
+
+        let post_end = (i + half).min(mag.len());
+        let post_n = (post_end - i) as f64;
+        let post_bx: f64 = mag[i..post_end].iter().map(|r| r.bx_gse).sum::<f64>() / post_n;
+        let post_by: f64 = mag[i..post_end].iter().map(|r| r.by_gse).sum::<f64>() / post_n;
+        let post_bz: f64 = mag[i..post_end].iter().map(|r| r.bz_gse).sum::<f64>() / post_n;
+
+        let pre_mag = (pre_bx * pre_bx + pre_by * pre_by + pre_bz * pre_bz).sqrt();
+        let post_mag = (post_bx * post_bx + post_by * post_by + post_bz * post_bz).sqrt();
+
+        let cos_angle = if pre_mag > 1e-6 && post_mag > 1e-6 {
+            ((pre_bx * post_bx + pre_by * post_by + pre_bz * post_bz) / (pre_mag * post_mag)).clamp(-1.0, 1.0)
+        } else {
+            1.0
+        };
+        let rotation_deg = cos_angle.acos().to_degrees();
+
+        // Density ratio: compare pre/post window mean densities
+        let pre_densities: Vec<f64> = mag[i.saturating_sub(half)..i]
+            .iter()
+            .filter_map(|r| density_map.get(&(r.year, r.doy, r.hour, r.minute)).copied())
+            .collect();
+        let post_densities: Vec<f64> = mag[i..post_end]
+            .iter()
+            .filter_map(|r| density_map.get(&(r.year, r.doy, r.hour, r.minute)).copied())
+            .collect();
+
+        if pre_densities.is_empty() || post_densities.is_empty() { continue; }
+
+        let pre_den = pre_densities.iter().sum::<f64>() / pre_densities.len() as f64;
+        let post_den = post_densities.iter().sum::<f64>() / post_densities.len() as f64;
+        let den_ratio = if pre_den > 0.01 && post_den > 0.01 {
+            (pre_den / post_den).max(post_den / pre_den)
+        } else {
+            1.0
+        };
+
+        // Composite criterion: BOTH density jump AND field rotation
+        if den_ratio >= density_ratio_threshold && rotation_deg >= rotation_threshold_deg {
+            let dominated = crossings.last().is_some_and(|&prev: &usize| i.saturating_sub(prev) < half);
+            if !dominated { crossings.push(i); }
+        }
+    }
+
+    crossings
+}

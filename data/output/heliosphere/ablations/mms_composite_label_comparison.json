@@ -1,0 +1,16 @@
+{
+  "method": "composite (FPI density ratio > 3x AND |B| rotation > 45 deg)",
+  "n_composite_crossings": 3,
+  "n_associator_transitions": 70,
+  "matched": 0,
+  "detection_rate": 0.0,
+  "false_alarm_rate": 1.0,
+  "mean_offset_minutes": 0.0,
+  "median_offset_minutes": 0,
+  "comparison_with_heuristic": {
+    "heuristic_detection_rate": 0.6153846153846154,
+    "heuristic_n_crossings": 104,
+    "composite_detection_rate": 0.0,
+    "composite_n_crossings": 3
+  }
+}
