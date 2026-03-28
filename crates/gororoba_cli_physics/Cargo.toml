@@ -893,6 +893,10 @@ path = "src/bin/bout_grid_cd.rs"
 required-features = ["netcdf-read"]
 
 [[bin]]
+name = "mast-fetch"
+path = "src/bin/mast_fetch.rs"
+
+[[bin]]
 name = "mast-mirnov-cd"
 path = "src/bin/mast_mirnov_cd.rs"
 required-features = ["zarr-read"]
