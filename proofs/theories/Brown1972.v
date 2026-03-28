@@ -26,7 +26,7 @@
       norm/involution surface with standard-octonion and direct
       standard-sedenion Brown 3.9 / 3.10 witnesses are landed here; Rust lane
       `crates/brown_1972/src/norm_symmetry.rs` remains the computational
-      mirror for the broader generalized-norm exploration beyond these
+      mirror for the broader quadratic/conjugation exploration beyond these
       concrete 8D/16D witnesses.
     - Chapter IV, pp. 20-22, Theorems 4.2-4.3 and Corollary 4.4:
       source-driven standard-tower witnesses for 4.2, 4.3, and 4.4 are now
@@ -38,15 +38,17 @@
       computational mirror for farther non-quaternion/generalized follow-on
       exploration.
     - Chapter VI, pp. 30-42, Theorems 6.2-6.17:
-      a standard-octonion Brown 6.10 / 6.11 / 6.12 / 6.13 basis witness surface is now
-      landed, and a direct standard-sedenion adjoined-element surface for
-      6.1 / 6.2 / 6.3 / 6.8 plus proof-faithful constructive 6.9 witnesses
-      is now landed; the printed Brown 6.9 pointwise iff wording does not
-      survive unchanged in the repo's literal standard-pair coordinates, so
-      the current Rocq surface records the constructive implications and the
-      family form Brown's p.35 proof actually uses, with the next broader
-      basis-associator lift beginning at Brown 6.14 and the broader Chapter III
-      generalized-norm lane still open beside it.
+      a standard-octonion Brown 6.10 / 6.11 / 6.12 / 6.13 / 6.14 / 6.15
+      basis-associator surface is now landed, a source-faithful standard-
+      octonion anticommutator lane for Brown 6.16 / 6.17 is now landed, and
+      a direct standard-sedenion adjoined-element surface for 6.1 / 6.2 /
+      6.3 / 6.8 plus proof-faithful constructive 6.9 witnesses is now
+      landed; the printed Brown 6.9 pointwise iff wording does not survive
+      unchanged in the repo's literal standard-pair coordinates, so the
+      current Rocq surface records the constructive implications and the
+      family form Brown's p.35 proof actually uses; the next Chapter VI work
+      is the remaining 6.4 / 6.5 / 6.6 / 6.7 lane together with any broader
+      non-octonion lift.
     - Chapter VII, pp. 45-56, Theorems 7.3-7.18:
       direct Rocq landing via `ZD_Criterion.v`, `C1538_MorZDSymmetry.v`, and
       `BrownAssessorEquivalence.v`.
@@ -65,11 +67,14 @@
     Remaining Brown-specific Rocq backlog:
     - broader Chapter V exponent surface beyond the current quaternion/octonion
       one-generated/trace-zero surface
-    - broader generalized-norm Chapter III lane beyond the landed Brown
-      3.1 / 3.3 / 3.7 standard-octonion source surface and the concrete
-      octonion/sedenion 3.9 / 3.10 witnesses
+    - broader Chapter III quadratic/conjugation lane beyond the landed Brown
+      3.1 / 3.3 / 3.7 standard-octonion source surface, the packaged weaker
+      quadratic/conjugation surface, and the concrete octonion/sedenion
+      3.9 / 3.10 witnesses
     - broader Brown-numbered Chapter VI basis-element theorem lanes beyond the
-      landed standard-octonion 6.10 / 6.11 / 6.12 / 6.13 witness surface
+      landed standard-octonion 6.10 / 6.11 / 6.12 / 6.13 / 6.14 / 6.15
+      basis-associator surface and the landed standard-octonion 6.16 / 6.17
+      anticommutator surface
     - remaining Chapter VII numbering gaps plus Appendix C extraction bridge in Rocq
 
     The executable Rust companion for this paper is `crates/brown_1972/`. *)
@@ -2649,6 +2654,33 @@ Proof.
   apply brown1972_corollary_4_4_octonion_left.
 Qed.
 
+Lemma brown1972_oct_lxor_lt8 : forall i j : nat,
+  (i < 8)%nat -> (j < 8)%nat -> (Nat.lxor i j < 8)%nat.
+Proof.
+  intros i j Hi Hj.
+  destruct i as [|[|[|[|[|[|[|[|]]]]]]]]; try lia;
+  destruct j as [|[|[|[|[|[|[|[|]]]]]]]]; try lia;
+  vm_compute; lia.
+Qed.
+
+Lemma brown1972_sign_to_R_square_one : forall s : Z,
+  (sign_to_R s * sign_to_R s = 1)%R.
+Proof.
+  intro s.
+  destruct (sign_to_R_pm1 s) as [Hs|Hs]; rewrite Hs; ring.
+Qed.
+
+Lemma brown1972_ch6_614_coeff_reduce : forall a b c d : R,
+  (c * c = 1)%R ->
+  (d * d = 1)%R ->
+  (a * b = (a * b * c * d * d * c))%R.
+Proof.
+  intros a b c d Hc Hd.
+  replace (a * b * c * d * d * c)%R with (a * b * (c * c) * (d * d))%R by ring.
+  rewrite Hc, Hd.
+  ring.
+Qed.
+
 Definition brown1972_ch6_613_oct_rhs (i j : nat) : CDOct :=
   if Nat.eqb i 0 then oct_e j
   else if Nat.eqb j 0 then oct_neg (oct_e 0)
@@ -2690,6 +2722,88 @@ Proof.
         apply oct_neg_neg.
 Qed.
 
+Definition brown1972_ch6_614_oct_epsilon (i j k : nat) : R :=
+  (sign_to_R (oct_sign i j) *
+   sign_to_R (oct_sign (Nat.lxor i j) k) *
+   sign_to_R (oct_sign i (Nat.lxor j k)) *
+   sign_to_R (oct_sign j k))%R.
+
+Definition brown1972_ch6_615_positive (i j k : nat) : bool :=
+  Nat.eqb i 0 || Nat.eqb j 0 || Nat.eqb k 0 ||
+  Nat.eqb i j || Nat.eqb j k || Nat.eqb i k ||
+  Nat.eqb (Nat.lxor i j) k.
+
+Definition brown1972_ch6_615_oct_rhs (i j k : nat) : CDOct :=
+  if brown1972_ch6_615_positive i j k
+  then oct_mul (oct_e i) (oct_mul (oct_e j) (oct_e k))
+  else oct_neg (oct_mul (oct_e i) (oct_mul (oct_e j) (oct_e k))).
+
+Theorem brown1972_theorem_6_14_octonion : forall i j k : nat,
+  (i < 8)%nat -> (j < 8)%nat -> (k < 8)%nat ->
+  oct_mul (oct_mul (oct_e i) (oct_e j)) (oct_e k) =
+  oct_scale (brown1972_ch6_614_oct_epsilon i j k)
+            (oct_mul (oct_e i) (oct_mul (oct_e j) (oct_e k))).
+Proof.
+  intros i j k Hi Hj Hk.
+  unfold brown1972_ch6_614_oct_epsilon.
+  assert (Hij : (Nat.lxor i j < 8)%nat).
+  { apply brown1972_oct_lxor_lt8; assumption. }
+  assert (Hjk : (Nat.lxor j k < 8)%nat).
+  { apply brown1972_oct_lxor_lt8; assumption. }
+  rewrite oct_basis_mul_xor with (i := i) (j := j) by assumption.
+  rewrite oct_mul_scale_left.
+  rewrite oct_basis_mul_xor with (i := Nat.lxor i j) (j := k) by assumption.
+  rewrite brown1972_oct_scale_scale.
+  rewrite oct_basis_mul_xor with (i := j) (j := k) by assumption.
+  rewrite oct_mul_scale_right.
+  rewrite oct_basis_mul_xor with (i := i) (j := Nat.lxor j k) by assumption.
+  rewrite brown1972_oct_scale_scale.
+  rewrite Nat.lxor_assoc.
+  rewrite brown1972_oct_scale_scale.
+  apply (f_equal2 oct_scale).
+  - set (a := sign_to_R (oct_sign i j)).
+    set (b := sign_to_R (oct_sign (Nat.lxor i j) k)).
+    set (c := sign_to_R (oct_sign i (Nat.lxor j k))).
+    set (d := sign_to_R (oct_sign j k)).
+    assert (Hsq1 : (c * c = 1)%R).
+    { unfold c. apply brown1972_sign_to_R_square_one. }
+    assert (Hsq2 : (d * d = 1)%R).
+    { unfold d. apply brown1972_sign_to_R_square_one. }
+    apply brown1972_ch6_614_coeff_reduce; assumption.
+  - reflexivity.
+Qed.
+
+Lemma brown1972_ch6_615_epsilon_classify : forall i j k : nat,
+  (i < 8)%nat -> (j < 8)%nat -> (k < 8)%nat ->
+  brown1972_ch6_614_oct_epsilon i j k =
+  if brown1972_ch6_615_positive i j k then 1%R else (-1)%R.
+Proof.
+  intros i j k Hi Hj Hk.
+  destruct i as [|[|[|[|[|[|[|[|]]]]]]]]; try lia;
+  destruct j as [|[|[|[|[|[|[|[|]]]]]]]]; try lia;
+  destruct k as [|[|[|[|[|[|[|[|]]]]]]]]; try lia;
+  vm_compute; ring.
+Qed.
+
+Theorem brown1972_lemma_6_15_octonion : forall i j k : nat,
+  (i < 8)%nat -> (j < 8)%nat -> (k < 8)%nat ->
+  oct_mul (oct_mul (oct_e i) (oct_e j)) (oct_e k) =
+  brown1972_ch6_615_oct_rhs i j k.
+Proof.
+  intros i j k Hi Hj Hk.
+  unfold brown1972_ch6_615_oct_rhs.
+  rewrite brown1972_theorem_6_14_octonion by assumption.
+  rewrite brown1972_ch6_615_epsilon_classify by assumption.
+  destruct (brown1972_ch6_615_positive i j k) eqn:Hcase.
+  - apply brown1972_oct_scale_one.
+  - destruct (oct_mul (oct_e i) (oct_mul (oct_e j) (oct_e k)))
+      as [[x1 x2 x3 x4] [x5 x6 x7 x8]].
+    cbv [oct_neg oct_scale quat_neg quat_scale qa qb qc qd].
+    apply (f_equal2 mkOct).
+    + apply (f_equal4 mkQuat); ring.
+    + apply (f_equal4 mkQuat); ring.
+Qed.
+
 Record Brown1972ChapterVIOctonionBasisSurface := {
   brown1972_ch6_l610_i_oct :
     forall i j : nat,
@@ -2714,7 +2828,18 @@ Record Brown1972ChapterVIOctonionBasisSurface := {
     forall i j : nat,
       (i < 8)%nat -> (j < 8)%nat ->
       oct_mul (oct_mul (oct_e i) (oct_e j)) (oct_e i) =
-      brown1972_ch6_613_oct_rhs i j
+      brown1972_ch6_613_oct_rhs i j;
+  brown1972_ch6_t614_oct :
+    forall i j k : nat,
+      (i < 8)%nat -> (j < 8)%nat -> (k < 8)%nat ->
+      oct_mul (oct_mul (oct_e i) (oct_e j)) (oct_e k) =
+      oct_scale (brown1972_ch6_614_oct_epsilon i j k)
+                (oct_mul (oct_e i) (oct_mul (oct_e j) (oct_e k)));
+  brown1972_ch6_l615_oct :
+    forall i j k : nat,
+      (i < 8)%nat -> (j < 8)%nat -> (k < 8)%nat ->
+      oct_mul (oct_mul (oct_e i) (oct_e j)) (oct_e k) =
+      brown1972_ch6_615_oct_rhs i j k
 }.
 
 Definition brown1972_octonion_chapter_vi_basis_surface :
@@ -2724,7 +2849,178 @@ Proof.
             brown1972_ch6_l610_ii_oct := brown1972_lemma_6_10_ii_octonion;
             brown1972_ch6_t611_oct := brown1972_theorem_6_11_octonion;
             brown1972_ch6_c612_oct := brown1972_corollary_6_12_octonion;
-            brown1972_ch6_t613_oct := brown1972_theorem_6_13_octonion |}.
+            brown1972_ch6_t613_oct := brown1972_theorem_6_13_octonion;
+            brown1972_ch6_t614_oct := brown1972_theorem_6_14_octonion;
+            brown1972_ch6_l615_oct := brown1972_lemma_6_15_octonion |}.
+Defined.
+
+Definition brown1972_oct_imag_dot (A B : CDOct) : R :=
+  match A, B with
+  | mkOct (mkQuat _ a1 a2 a3) (mkQuat a4 a5 a6 a7),
+    mkOct (mkQuat _ b1 b2 b3) (mkQuat b4 b5 b6 b7) =>
+      (a1 * b1 + a2 * b2 + a3 * b3 + a4 * b4 + a5 * b5 + a6 * b6 + a7 * b7)%R
+  end.
+
+Definition brown1972_ch6_616_rhs (A B : CDOct) : CDOct :=
+  match A, B with
+  | mkOct (mkQuat a0 a1 a2 a3) (mkQuat a4 a5 a6 a7),
+    mkOct (mkQuat b0 b1 b2 b3) (mkQuat b4 b5 b6 b7) =>
+      mkOct
+        (mkQuat
+           (2 * (a0 * b0 - (a1 * b1 + a2 * b2 + a3 * b3 + a4 * b4 +
+                            a5 * b5 + a6 * b6 + a7 * b7)))
+           (2 * (a0 * b1 + a1 * b0))
+           (2 * (a0 * b2 + a2 * b0))
+           (2 * (a0 * b3 + a3 * b0)))
+        (mkQuat
+           (2 * (a0 * b4 + a4 * b0))
+           (2 * (a0 * b5 + a5 * b0))
+           (2 * (a0 * b6 + a6 * b0))
+           (2 * (a0 * b7 + a7 * b0)))
+  end.
+
+Theorem brown1972_lemma_6_16_octonion : forall A B : CDOct,
+  oct_add (oct_mul A B) (oct_mul B A) = brown1972_ch6_616_rhs A B.
+Proof.
+  intros [[a0 a1 a2 a3] [a4 a5 a6 a7]]
+         [[b0 b1 b2 b3] [b4 b5 b6 b7]].
+  cbv [brown1972_ch6_616_rhs brown1972_oct_imag_dot].
+  brown1972_close_oct_ring.
+Qed.
+
+Theorem brown1972_theorem_6_17_octonion : forall A B : CDOct,
+  A <> oct_zero ->
+  B <> oct_zero ->
+  oct_add (oct_mul A B) (oct_mul B A) = oct_zero <->
+  brown1972_oct_trace A = 0%R /\
+  brown1972_oct_trace B = 0%R /\
+  brown1972_oct_imag_dot A B = 0%R.
+Proof.
+  intros A B HAnz HBnz.
+  split.
+  - destruct A as [[a0 a1 a2 a3] [a4 a5 a6 a7]];
+    destruct B as [[b0 b1 b2 b3] [b4 b5 b6 b7]].
+    intro Hzero.
+    rewrite brown1972_lemma_6_16_octonion in Hzero.
+    cbv [brown1972_ch6_616_rhs brown1972_oct_imag_dot brown1972_oct_trace
+         oct_zero quat_zero oct_lo oct_hi qa qb qc qd] in Hzero |- *.
+    inversion Hzero; clear Hzero; subst.
+    repeat match goal with
+    | Hq : mkQuat _ _ _ _ = mkQuat _ _ _ _ |- _ => inversion Hq; clear Hq; subst
+    end.
+    assert (Hreal :
+      (a0 * b0 - (a1 * b1 + a2 * b2 + a3 * b3 + a4 * b4 +
+                  a5 * b5 + a6 * b6 + a7 * b7) = 0)%R) by lra.
+    assert (Hc1 : (a0 * b1 + a1 * b0 = 0)%R) by lra.
+    assert (Hc2 : (a0 * b2 + a2 * b0 = 0)%R) by lra.
+    assert (Hc3 : (a0 * b3 + a3 * b0 = 0)%R) by lra.
+    assert (Hc4 : (a0 * b4 + a4 * b0 = 0)%R) by lra.
+    assert (Hc5 : (a0 * b5 + a5 * b0 = 0)%R) by lra.
+    assert (Hc6 : (a0 * b6 + a6 * b0 = 0)%R) by lra.
+    assert (Hc7 : (a0 * b7 + a7 * b0 = 0)%R) by lra.
+    assert (Hb0 : b0 = 0%R).
+    {
+      destruct (Req_EM_T a0 0) as [Ha0|Ha0].
+      - subst a0.
+        destruct (Req_EM_T b0 0) as [Hb0|Hb0]; auto.
+        assert (Ha1 : a1 = 0%R) by nra.
+        assert (Ha2 : a2 = 0%R) by nra.
+        assert (Ha3 : a3 = 0%R) by nra.
+        assert (Ha4 : a4 = 0%R) by nra.
+        assert (Ha5 : a5 = 0%R) by nra.
+        assert (Ha6 : a6 = 0%R) by nra.
+        assert (Ha7 : a7 = 0%R) by nra.
+        subst.
+        exfalso. apply HAnz. reflexivity.
+      - destruct (Req_EM_T b0 0) as [Hb0|Hb0]; auto.
+        assert (Hsum :
+          (a0 * (a1 * b1 + a2 * b2 + a3 * b3 + a4 * b4 +
+                 a5 * b5 + a6 * b6 + a7 * b7) +
+           b0 * (a1 * a1 + a2 * a2 + a3 * a3 + a4 * a4 +
+                 a5 * a5 + a6 * a6 + a7 * a7) = 0)%R).
+        {
+          replace
+            (a0 * (a1 * b1 + a2 * b2 + a3 * b3 + a4 * b4 +
+                   a5 * b5 + a6 * b6 + a7 * b7) +
+             b0 * (a1 * a1 + a2 * a2 + a3 * a3 + a4 * a4 +
+                   a5 * a5 + a6 * a6 + a7 * a7))%R
+            with
+            (a1 * (a0 * b1 + a1 * b0) +
+             a2 * (a0 * b2 + a2 * b0) +
+             a3 * (a0 * b3 + a3 * b0) +
+             a4 * (a0 * b4 + a4 * b0) +
+             a5 * (a0 * b5 + a5 * b0) +
+             a6 * (a0 * b6 + a6 * b0) +
+             a7 * (a0 * b7 + a7 * b0))%R by ring.
+          rewrite Hc1, Hc2, Hc3, Hc4, Hc5, Hc6, Hc7.
+          ring.
+        }
+        assert (Hquad :
+          (b0 * (a0 * a0 + a1 * a1 + a2 * a2 + a3 * a3 +
+                 a4 * a4 + a5 * a5 + a6 * a6 + a7 * a7) = 0)%R).
+        { nra. }
+        assert (Hsum0 :
+          (a0 * a0 + a1 * a1 + a2 * a2 + a3 * a3 +
+           a4 * a4 + a5 * a5 + a6 * a6 + a7 * a7 = 0)%R) by nra.
+        assert (HnormA : oct_norm_sq (mkOct (mkQuat a0 a1 a2 a3) (mkQuat a4 a5 a6 a7)) = 0%R).
+        {
+          unfold oct_norm_sq, quat_norm_sq.
+          simpl.
+          nra.
+        }
+        exfalso.
+        apply HAnz.
+        apply brown1972_oct_norm_zero.
+        exact HnormA.
+    }
+    assert (Ha0 : a0 = 0%R).
+    {
+      destruct (Req_EM_T a0 0) as [Ha0|Ha0]; auto.
+      assert (Hb1 : b1 = 0%R) by nra.
+      assert (Hb2 : b2 = 0%R) by nra.
+      assert (Hb3 : b3 = 0%R) by nra.
+      assert (Hb4 : b4 = 0%R) by nra.
+      assert (Hb5 : b5 = 0%R) by nra.
+      assert (Hb6 : b6 = 0%R) by nra.
+      assert (Hb7 : b7 = 0%R) by nra.
+      subst.
+      exfalso. apply HBnz. reflexivity.
+    }
+    split.
+    + lra.
+    + split.
+      * lra.
+      * unfold brown1972_oct_imag_dot. simpl. nra.
+  - destruct A as [[a0 a1 a2 a3] [a4 a5 a6 a7]];
+    destruct B as [[b0 b1 b2 b3] [b4 b5 b6 b7]].
+    intros [HA [HB Hdot]].
+    rewrite brown1972_lemma_6_16_octonion.
+    cbv [brown1972_ch6_616_rhs brown1972_oct_imag_dot brown1972_oct_trace
+         oct_zero quat_zero oct_lo oct_hi qa qb qc qd] in HA, HB, Hdot |- *.
+    apply (f_equal2 mkOct).
+    + apply (f_equal4 mkQuat); nra.
+    + apply (f_equal4 mkQuat); nra.
+Qed.
+
+Record Brown1972ChapterVIOctonionAnticommutatorSurface := {
+  brown1972_ch6_l616_oct :
+    forall A B : CDOct,
+      oct_add (oct_mul A B) (oct_mul B A) = brown1972_ch6_616_rhs A B;
+  brown1972_ch6_t617_oct :
+    forall A B : CDOct,
+      A <> oct_zero ->
+      B <> oct_zero ->
+      oct_add (oct_mul A B) (oct_mul B A) = oct_zero <->
+      brown1972_oct_trace A = 0%R /\
+      brown1972_oct_trace B = 0%R /\
+      brown1972_oct_imag_dot A B = 0%R
+}.
+
+Definition brown1972_octonion_chapter_vi_anticommutator_surface :
+  Brown1972ChapterVIOctonionAnticommutatorSurface.
+Proof.
+  refine {| brown1972_ch6_l616_oct := brown1972_lemma_6_16_octonion;
+            brown1972_ch6_t617_oct := brown1972_theorem_6_17_octonion |}.
 Defined.
 
 Definition brown1972_sed_adjoined_e : CDSed := sed_e 8.
@@ -3065,6 +3361,38 @@ Proof.
     rewrite brown1972_oct_trace_neg in H.
     lra.
 Qed.
+
+Record Brown1972ChapterIIIQuadraticConjugationSurface := {
+  brown1972_ch3_qc_t31_i :
+    forall x y : CDOct,
+      brown1972_oct_trace (oct_mul x y) = brown1972_oct_trace (oct_mul y x);
+  brown1972_ch3_qc_t31_ii :
+    forall x y z : CDOct,
+      brown1972_oct_trace (oct_mul (oct_mul x y) z) =
+      brown1972_oct_trace (oct_mul x (oct_mul y z));
+  brown1972_ch3_qc_quadratic :
+    forall x : CDOct,
+      oct_mul x x =
+      oct_add (oct_scale (brown1972_oct_trace x) x)
+              (oct_scale (- oct_norm_sq x) brown1972_oct_one);
+  brown1972_ch3_qc_trace_zero_iff_pure :
+    forall x : CDOct,
+      brown1972_oct_trace x = 0%R <-> oct_conj x = oct_neg x;
+  brown1972_ch3_qc_pure_square :
+    forall x : CDOct,
+      brown1972_oct_trace x = 0%R ->
+      oct_mul x x = oct_scale (- oct_norm_sq x) brown1972_oct_one
+}.
+
+Definition brown1972_octonion_chapter_iii_quadratic_conjugation_surface :
+  Brown1972ChapterIIIQuadraticConjugationSurface.
+Proof.
+  refine {| brown1972_ch3_qc_t31_i := brown1972_theorem_3_1_i_octonion;
+            brown1972_ch3_qc_t31_ii := brown1972_theorem_3_1_ii_octonion;
+            brown1972_ch3_qc_quadratic := brown1972_oct_quadratic_identity;
+            brown1972_ch3_qc_trace_zero_iff_pure := brown1972_oct_trace_zero_iff_pure;
+            brown1972_ch3_qc_pure_square := brown1972_lemma_5_13_octonion |}.
+Defined.
 
 Lemma brown1972_sed_hi_trace_zero_iff_adjoined_commutes_with_conj :
   forall x : CDSed,
