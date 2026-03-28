@@ -1,0 +1,75 @@
+{
+  "zarr_dir": "data/external/mast/shot22000.zarr/ama",
+  "embedding_dim": 32,
+  "stride": 50,
+  "normalization": "direction",
+  "n_samples": 250000,
+  "time_range": [
+    0.0,
+    0.6249974966049194
+  ],
+  "signal_range": [
+    -0.0007420596666634083,
+    0.000877103244420141
+  ],
+  "n_windows": 9,
+  "results": [
+    {
+      "center_time": 0.0625,
+      "mean_associator": 1.6017093224363845,
+      "max_associator": 3.2608257291371876,
+      "n_embeddings": 984
+    },
+    {
+      "center_time": 0.125,
+      "mean_associator": 1.5772556238971398,
+      "max_associator": 3.4440926701915293,
+      "n_embeddings": 984
+    },
+    {
+      "center_time": 0.1875,
+      "mean_associator": 1.5034572249136797,
+      "max_associator": 3.4440926701915293,
+      "n_embeddings": 984
+    },
+    {
+      "center_time": 0.25,
+      "mean_associator": 1.3748349755621616,
+      "max_associator": 3.156721042361686,
+      "n_embeddings": 984
+    },
+    {
+      "center_time": 0.3125,
+      "mean_associator": 1.3041518738239875,
+      "max_associator": 3.4033440427540076,
+      "n_embeddings": 984
+    },
+    {
+      "center_time": 0.375,
+      "mean_associator": 1.3731208431547046,
+      "max_associator": 3.4373122465778136,
+      "n_embeddings": 984
+    },
+    {
+      "center_time": 0.4375,
+      "mean_associator": 1.3617149242578457,
+      "max_associator": 3.4373122465778136,
+      "n_embeddings": 984
+    },
+    {
+      "center_time": 0.5,
+      "mean_associator": 1.1206462772898447,
+      "max_associator": 3.1820030408248843,
+      "n_embeddings": 984
+    },
+    {
+      "center_time": 0.5625,
+      "mean_associator": 0.9459600971116972,
+      "max_associator": 3.1820030408248843,
+      "n_embeddings": 984
+    }
+  ],
+  "overall_mean_a": 1.3514279069386053,
+  "overall_max_a": 3.4440926701915293,
+  "interpretation": "MAST shot 30420 ama Mirnov (n=2 + n=odd, 2 channels). 9 windows, overall A_mean=1.351428, A_max=3.444093. 32D embedding, stride=50, direction."
+}
