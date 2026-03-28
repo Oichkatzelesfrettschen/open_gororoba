@@ -4,8 +4,8 @@
 [conflict_markers]
 updated = "deterministic"
 authoritative = true
-marker_count = 104
-high_severity_count = 91
+marker_count = 105
+high_severity_count = 92
 medium_severity_count = 13
 low_severity_count = 0
 kind_count = 2
@@ -1468,6 +1468,22 @@ notes = "Verified status conflicts with negative language in statement."
 
 [[marker]]
 id = "CM-0092"
+marker_kind = "claim_status_statement_tension"
+severity = "high"
+status = "open"
+claim_refs = ["C-1578"]
+source_registry = "registry/claims.toml"
+source_document = "C-1578"
+section_label = "statement"
+line_start = 0
+line_end = 0
+positive_evidence = ["VERIFIED"]
+negative_evidence = ["The download_to_file path in data_core::fetcher supports aria2c fallback for large HAPI datasets. MMS FGM SRVY L2 at ~16 Hz produces ~113 MB/day CSV; the default 120s reqwest timeout is insufficient. The download_hapi_csv_to_file function routes through the file-based download stack with aria2c resume capability and multi-connection support."]
+jaccard_overlap = 0.000000
+notes = "Verified status conflicts with negative language in statement."
+
+[[marker]]
+id = "CM-0093"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"
@@ -1483,7 +1499,7 @@ jaccard_overlap = 0.000000
 notes = "Section contains both positive and negative validation language."
 
 [[marker]]
-id = "CM-0093"
+id = "CM-0094"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"
@@ -1499,7 +1515,7 @@ jaccard_overlap = 0.000000
 notes = "Section contains both positive and negative validation language."
 
 [[marker]]
-id = "CM-0094"
+id = "CM-0095"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"
@@ -1515,7 +1531,7 @@ jaccard_overlap = 0.000000
 notes = "Section contains both positive and negative validation language."
 
 [[marker]]
-id = "CM-0095"
+id = "CM-0096"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"
@@ -1531,7 +1547,7 @@ jaccard_overlap = 0.000000
 notes = "Section contains both positive and negative validation language."
 
 [[marker]]
-id = "CM-0096"
+id = "CM-0097"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"
@@ -1547,7 +1563,7 @@ jaccard_overlap = 0.000000
 notes = "Section contains both positive and negative validation language."
 
 [[marker]]
-id = "CM-0097"
+id = "CM-0098"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"
@@ -1563,7 +1579,7 @@ jaccard_overlap = 0.000000
 notes = "Section contains both positive and negative validation language."
 
 [[marker]]
-id = "CM-0098"
+id = "CM-0099"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"
@@ -1579,7 +1595,7 @@ jaccard_overlap = 0.000000
 notes = "Section contains both positive and negative validation language."
 
 [[marker]]
-id = "CM-0099"
+id = "CM-0100"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"
@@ -1595,7 +1611,7 @@ jaccard_overlap = 0.000000
 notes = "Section contains both positive and negative validation language."
 
 [[marker]]
-id = "CM-0100"
+id = "CM-0101"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"
@@ -1611,7 +1627,7 @@ jaccard_overlap = 0.000000
 notes = "Section contains both positive and negative validation language."
 
 [[marker]]
-id = "CM-0101"
+id = "CM-0102"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"
@@ -1627,7 +1643,7 @@ jaccard_overlap = 0.000000
 notes = "Section contains both positive and negative validation language."
 
 [[marker]]
-id = "CM-0102"
+id = "CM-0103"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"
@@ -1643,7 +1659,7 @@ jaccard_overlap = 0.000000
 notes = "Section contains both positive and negative validation language."
 
 [[marker]]
-id = "CM-0103"
+id = "CM-0104"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"
@@ -1659,7 +1675,7 @@ jaccard_overlap = 0.000000
 notes = "Section contains both positive and negative validation language."
 
 [[marker]]
-id = "CM-0104"
+id = "CM-0105"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"

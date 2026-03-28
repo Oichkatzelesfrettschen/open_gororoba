@@ -470,6 +470,11 @@ impl DownloadStack {
         self
     }
 
+    pub fn with_timeout(mut self, timeout: Duration) -> Self {
+        self.timeout = timeout;
+        self
+    }
+
     pub fn with_host_policies(mut self, host_policies: Vec<HostRoutingPolicy>) -> Self {
         self.host_policies = host_policies;
         self

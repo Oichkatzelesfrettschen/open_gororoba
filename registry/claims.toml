@@ -10783,3 +10783,30 @@ where_stated = "data/output/heliosphere/ablations/field_aligned_circular_bootstr
 last_verified = "2026-03-27"
 formal_proof = ""
 status_note = "Circular bootstrap (500 resamples) resolves earlier CI mismatch from block bootstrap spectral leakage. Band-dependent ISM polarization connects the partial-coherence mechanism to specific fluctuation geometry."
+
+[[claim]]
+id = "C-1576"
+status = "Verified"
+statement = "Bayesian change-point detection on 32D CD associator radial profiles localizes the V2 heliopause transition at 119.5 AU (pre=4.35, post=0.13) and the V1 heliopause at 123.8 AU (pre=0.12, post=0.02). Both are consistent with independent quench-scan boundary estimates, providing data-driven (not threshold-dependent) confirmation of heliopause localization."
+where_stated = "data/output/heliosphere/ablations/changepoint_detection.json"
+last_verified = "2026-03-27"
+formal_proof = ""
+status_note = "Penalized Gaussian log-likelihood change-point detector. V2 and V1 transition radii agree with quench-scan estimates to within 1 AU."
+
+[[claim]]
+id = "C-1577"
+status = "Provisional"
+statement = "Multi-day MMS1 FGM analysis (7 days, Jan 2024, 9460 minute records after |B|>100 nT inner-magnetosphere filtering) demonstrates that the 32D CD associator detects magnetopause-region boundary transitions with 61.5% concordance against standard |B|-gradient detection (104 crossings, 70 associator transitions, 64 matched within 20 min, median offset 6.0 min). The associator responds to both magnetopause crossings and sub-MHD-scale phase transitions invisible to scalar |B| gradient."
+where_stated = "data/output/heliosphere/ablations/mms_multiday_crossing_analysis.json"
+last_verified = "2026-03-27"
+formal_proof = ""
+status_note = "Provisional: |B|-gradient reference is not a curated magnetopause crossing list. The 5 nT threshold detects many minor discontinuities. A curated SITL/published crossing list comparison is needed for Verified status."
+
+[[claim]]
+id = "C-1578"
+status = "Verified"
+statement = "The download_to_file path in data_core::fetcher supports aria2c fallback for large HAPI datasets. MMS FGM SRVY L2 at ~16 Hz produces ~113 MB/day CSV; the default 120s reqwest timeout is insufficient. The download_hapi_csv_to_file function routes through the file-based download stack with aria2c resume capability and multi-connection support."
+where_stated = "crates/data_core/src/fetcher.rs"
+last_verified = "2026-03-27"
+formal_proof = ""
+status_note = "Infrastructure claim. Validated by successful download of 7 days of MMS1 FGM data (791 MB total) where 5 of 7 days initially failed via reqwest-only path."
