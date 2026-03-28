@@ -269,6 +269,10 @@ name = "heliosphere-magnetic-takens"
 path = "src/bin/heliosphere_magnetic_takens.rs"
 
 [[bin]]
+name = "geomag-cd-jerk"
+path = "src/bin/geomag_cd_jerk.rs"
+
+[[bin]]
 name = "tokamak-cd-proof"
 path = "src/bin/tokamak_cd_proof.rs"
 
