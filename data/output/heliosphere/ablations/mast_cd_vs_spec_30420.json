@@ -1,0 +1,235 @@
+{
+  "n_samples": 650000,
+  "n_windows": 25,
+  "embedding_dim": 32,
+  "fft_size": 4096,
+  "results": [
+    {
+      "center_time": -0.04999919608235359,
+      "cd_mean": 1.5460376867135037,
+      "cd_max": 3.3147549631482667,
+      "spectral_peak_freq_hz": 4768.477611940299,
+      "spectral_peak_power": 4.832794661191395e-13,
+      "spectral_total_power": 1.1107937530311009e-11,
+      "spectral_bandwidth_hz": 366.8059701492537
+    },
+    {
+      "center_time": 8.046627044677734e-7,
+      "cd_mean": 1.495644672230771,
+      "cd_max": 3.3147549631482667,
+      "spectral_peak_freq_hz": 5624.358208955224,
+      "spectral_peak_power": 2.168452544420999e-13,
+      "spectral_total_power": 6.819712780460631e-12,
+      "spectral_bandwidth_hz": 733.6119402985074
+    },
+    {
+      "center_time": 0.050000809133052826,
+      "cd_mean": 1.5449416417487716,
+      "cd_max": 4.316484859888766,
+      "spectral_peak_freq_hz": 13938.626865671642,
+      "spectral_peak_power": 3.520722553306522e-10,
+      "spectral_total_power": 1.470445236212712e-8,
+      "spectral_bandwidth_hz": 1222.686567164179
+    },
+    {
+      "center_time": 0.10000080615282059,
+      "cd_mean": 1.58695727899903,
+      "cd_max": 4.316484859888766,
+      "spectral_peak_freq_hz": 24209.194029850747,
+      "spectral_peak_power": 1.0127920865976696e-9,
+      "spectral_total_power": 4.84013875580614e-8,
+      "spectral_bandwidth_hz": 1956.2985074626865
+    },
+    {
+      "center_time": 0.15000081062316895,
+      "cd_mean": 1.570852434602712,
+      "cd_max": 3.9324564414464676,
+      "spectral_peak_freq_hz": 18340.298507462685,
+      "spectral_peak_power": 1.6608676168185203e-9,
+      "spectral_total_power": 5.27509563249812e-8,
+      "spectral_bandwidth_hz": 1100.4179104477612
+    },
+    {
+      "center_time": 0.2000008225440979,
+      "cd_mean": 1.5832586549177257,
+      "cd_max": 3.9324564414464676,
+      "spectral_peak_freq_hz": 16506.268656716416,
+      "spectral_peak_power": 3.391745960576826e-11,
+      "spectral_total_power": 1.4309776487044323e-9,
+      "spectral_bandwidth_hz": 1344.955223880597
+    },
+    {
+      "center_time": 0.25000080466270447,
+      "cd_mean": 1.5353397519347671,
+      "cd_max": 3.71453857917327,
+      "spectral_peak_freq_hz": 21152.4776119403,
+      "spectral_peak_power": 6.614486849201678e-11,
+      "spectral_total_power": 2.1571753864893745e-9,
+      "spectral_bandwidth_hz": 1100.4179104477612
+    },
+    {
+      "center_time": 0.3000008165836334,
+      "cd_mean": 1.5152932928536098,
+      "cd_max": 3.71453857917327,
+      "spectral_peak_freq_hz": 20174.328358208953,
+      "spectral_peak_power": 6.494043954873187e-11,
+      "spectral_total_power": 3.2632125061989113e-9,
+      "spectral_bandwidth_hz": 1956.2985074626865
+    },
+    {
+      "center_time": 0.35000079870224,
+      "cd_mean": 1.4974499576509492,
+      "cd_max": 3.04157871837321,
+      "spectral_peak_freq_hz": 26776.83582089552,
+      "spectral_peak_power": 3.310705645521428e-8,
+      "spectral_total_power": 1.8968366632461407e-6,
+      "spectral_bandwidth_hz": 2934.4477611940297
+    },
+    {
+      "center_time": 0.40000081062316895,
+      "cd_mean": 1.4548993753656956,
+      "cd_max": 3.2123596556027656,
+      "spectral_peak_freq_hz": 120190.0895522388,
+      "spectral_peak_power": 6.653014346172916e-13,
+      "spectral_total_power": 1.3130547644106337e-11,
+      "spectral_bandwidth_hz": 244.53731343283582
+    },
+    {
+      "center_time": 0.4500008225440979,
+      "cd_mean": 1.4914991469189594,
+      "cd_max": 3.3240033231924735,
+      "spectral_peak_freq_hz": 4890.746268656716,
+      "spectral_peak_power": 7.226217165555113e-13,
+      "spectral_total_power": 1.376376142556316e-11,
+      "spectral_bandwidth_hz": 733.6119402985074
+    },
+    {
+      "center_time": 0.5000008344650269,
+      "cd_mean": 1.409123302000584,
+      "cd_max": 3.3240033231924735,
+      "spectral_peak_freq_hz": 16017.194029850745,
+      "spectral_peak_power": 1.2747865169477833e-12,
+      "spectral_total_power": 2.743047724695199e-11,
+      "spectral_bandwidth_hz": 733.6119402985074
+    },
+    {
+      "center_time": 0.550000786781311,
+      "cd_mean": 1.3956523703967385,
+      "cd_max": 3.2982750353439747,
+      "spectral_peak_freq_hz": 17239.880597014926,
+      "spectral_peak_power": 1.9908529492598052e-13,
+      "spectral_total_power": 4.641684785622179e-12,
+      "spectral_bandwidth_hz": 366.8059701492537
+    },
+    {
+      "center_time": 0.60000079870224,
+      "cd_mean": 1.5359920222057832,
+      "cd_max": 4.123866502599515,
+      "spectral_peak_freq_hz": 6602.507462686567,
+      "spectral_peak_power": 2.385745800833625e-13,
+      "spectral_total_power": 6.241720426513713e-12,
+      "spectral_bandwidth_hz": 489.07462686567163
+    },
+    {
+      "center_time": 0.650000810623169,
+      "cd_mean": 1.6116175919154376,
+      "cd_max": 4.123866502599515,
+      "spectral_peak_freq_hz": 6602.507462686567,
+      "spectral_peak_power": 1.508465813893442e-13,
+      "spectral_total_power": 3.019918164460053e-12,
+      "spectral_bandwidth_hz": 122.26865671641791
+    },
+    {
+      "center_time": 0.7000008225440979,
+      "cd_mean": 1.6086599260489662,
+      "cd_max": 3.429508275163988,
+      "spectral_peak_freq_hz": 6602.507462686567,
+      "spectral_peak_power": 2.4956100451241763e-13,
+      "spectral_total_power": 3.793586746248656e-12,
+      "spectral_bandwidth_hz": 244.53731343283582
+    },
+    {
+      "center_time": 0.7500008344650269,
+      "cd_mean": 1.5860540412849538,
+      "cd_max": 3.3240279213260933,
+      "spectral_peak_freq_hz": 6602.507462686567,
+      "spectral_peak_power": 2.6468679341803307e-13,
+      "spectral_total_power": 5.934103762439432e-12,
+      "spectral_bandwidth_hz": 244.53731343283582
+    },
+    {
+      "center_time": 0.800000786781311,
+      "cd_mean": 1.623632728202102,
+      "cd_max": 3.671372682490864,
+      "spectral_peak_freq_hz": 23353.31343283582,
+      "spectral_peak_power": 1.7743285144433647e-13,
+      "spectral_total_power": 2.749176993283273e-12,
+      "spectral_bandwidth_hz": 244.53731343283582
+    },
+    {
+      "center_time": 0.85000079870224,
+      "cd_mean": 1.6223303431986502,
+      "cd_max": 3.671372682490864,
+      "spectral_peak_freq_hz": 6602.507462686567,
+      "spectral_peak_power": 2.0243217655674543e-13,
+      "spectral_total_power": 3.1328112585389343e-12,
+      "spectral_bandwidth_hz": 366.8059701492537
+    },
+    {
+      "center_time": 0.900000810623169,
+      "cd_mean": 1.585454397511358,
+      "cd_max": 3.2520953594648896,
+      "spectral_peak_freq_hz": 6602.507462686567,
+      "spectral_peak_power": 2.2446762793658694e-13,
+      "spectral_total_power": 2.6830764989163222e-12,
+      "spectral_bandwidth_hz": 244.53731343283582
+    },
+    {
+      "center_time": 0.9500007629394531,
+      "cd_mean": 1.562046595325337,
+      "cd_max": 3.2520953594648896,
+      "spectral_peak_freq_hz": 6602.507462686567,
+      "spectral_peak_power": 2.4421102456626944e-13,
+      "spectral_total_power": 3.141574677813566e-12,
+      "spectral_bandwidth_hz": 244.53731343283582
+    },
+    {
+      "center_time": 1.0000008344650269,
+      "cd_mean": 1.5445328929170146,
+      "cd_max": 3.2433631113479717,
+      "spectral_peak_freq_hz": 6602.507462686567,
+      "spectral_peak_power": 1.1315741396337722e-13,
+      "spectral_total_power": 2.541555029898131e-12,
+      "spectral_bandwidth_hz": 366.8059701492537
+    },
+    {
+      "center_time": 1.050000786781311,
+      "cd_mean": 1.5780950878580793,
+      "cd_max": 3.2433631113479717,
+      "spectral_peak_freq_hz": 6602.507462686567,
+      "spectral_peak_power": 9.934161490867652e-14,
+      "spectral_total_power": 2.4816080681013545e-12,
+      "spectral_bandwidth_hz": 366.8059701492537
+    },
+    {
+      "center_time": 1.1000008583068848,
+      "cd_mean": 1.5416346310690832,
+      "cd_max": 3.1492853307690303,
+      "spectral_peak_freq_hz": 17239.880597014926,
+      "spectral_peak_power": 1.1591266293243038e-13,
+      "spectral_total_power": 2.9505543214967975e-12,
+      "spectral_bandwidth_hz": 733.6119402985074
+    },
+    {
+      "center_time": 1.150000810623169,
+      "cd_mean": 1.5308680692916765,
+      "cd_max": 3.2243535962204235,
+      "spectral_peak_freq_hz": 6602.507462686567,
+      "spectral_peak_power": 1.25099143262772e-13,
+      "spectral_total_power": 2.715566229724878e-12,
+      "spectral_bandwidth_hz": 366.8059701492537
+    }
+  ],
+  "cd_spectral_correlation": -0.14905625325654878,
+  "interpretation": "CD vs Spectrogram on 25 windows. CD-spectral_power correlation: r=-0.1491. Weak correlation: CD measures DIFFERENT information than spectral analysis."
+}

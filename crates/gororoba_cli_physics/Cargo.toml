@@ -921,6 +921,11 @@ name = "turboquant-sedenion-rotation"
 path = "src/bin/turboquant_sedenion_rotation.rs"
 
 [[bin]]
+name = "mast-cd-vs-spectrogram"
+path = "src/bin/mast_cd_vs_spectrogram.rs"
+required-features = ["zarr-read"]
+
+[[bin]]
 name = "mast-fetch"
 path = "src/bin/mast_fetch.rs"
 
