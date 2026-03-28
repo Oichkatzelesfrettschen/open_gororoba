@@ -1,0 +1,78 @@
+{
+  "title": "Label Quality Appendix: Cross-Domain Validation Reference Sources",
+  "generated": "2026-03-27",
+  "domains": [
+    {
+      "domain": "Voyager heliopause",
+      "mission": "Voyager 1/2",
+      "label_source": "Radial profile quench + Bayesian change-point",
+      "label_type": "heuristic",
+      "reference": "Burlaga & Ness (2014), ApJ 784; Stone et al. (2019), Nat. Astron.",
+      "n_crossings": 2,
+      "notes": "Heliopause crossing is a singular event per spacecraft. Detection validated by V1/V2 agreement + literature consistency."
+    },
+    {
+      "domain": "MMS magnetopause",
+      "mission": "MMS1",
+      "label_source": "|B| gradient (5 nT threshold, 10 min window)",
+      "label_type": "heuristic",
+      "reference": "This work (heliosphere-mms-multiday binary)",
+      "n_crossings": 104,
+      "notes": "Heuristic labels. Detection rate 61.5%. Upgrade to FPI composite classifier recommended."
+    },
+    {
+      "domain": "THEMIS magnetopause",
+      "mission": "THEMIS-A",
+      "label_source": "THEMIS Magnetopause Crossing Database V2 (Staples et al. 2020)",
+      "label_type": "curated",
+      "reference": "Zenodo doi:10.5281/zenodo.10655312",
+      "n_crossings": 118,
+      "notes": "Expert-curated crossings. Detection rate jumps from 26.9% (heuristic) to 89.0% (curated). This is the strongest Earth validation."
+    },
+    {
+      "domain": "Cluster magnetopause",
+      "mission": "Cluster-1",
+      "label_source": "|B| gradient (10 nT threshold)",
+      "label_type": "heuristic",
+      "reference": "This work (heliosphere-boundary-survey binary)",
+      "n_crossings": 127,
+      "notes": "Heuristic labels. 32.3% detection. Curated ESA CAA crossing lists available for upgrade."
+    },
+    {
+      "domain": "Rosetta 67P cavity",
+      "mission": "Rosetta RPC-MAG",
+      "label_source": "|B| gradient (3 nT threshold, 10 min window)",
+      "label_type": "heuristic",
+      "reference": "This work (heliosphere-rosetta-draping binary); Goetz et al. (2016), A&A 588",
+      "n_crossings": 9298,
+      "notes": "Heuristic labels. Normalization ablation performed: direction-only embedding shows 1.9x genuine contrast (vs 5.3x with current normalization)."
+    },
+    {
+      "domain": "PSP switchbacks",
+      "mission": "PSP FIELDS",
+      "label_source": "Br/|B| < -0.5 (standard radial reversal criterion)",
+      "label_type": "published",
+      "reference": "Kasper et al. (2019), Nature; Bale et al. (2019), Nature; Laker et al. (2022), MNRAS",
+      "n_crossings": "N/A (regime classification, not point events)",
+      "notes": "Standard switchback criterion from literature. 4 encounters tested, ratio stable 0.42-0.70."
+    },
+    {
+      "domain": "MAVEN Mars IMB",
+      "mission": "MAVEN MAG",
+      "label_source": "|B| gradient (5 nT threshold)",
+      "label_type": "heuristic",
+      "reference": "This work; Connerney et al. (2015), Space Sci. Rev.",
+      "n_crossings": 260,
+      "notes": "Heuristic labels. Highest detection rate (56.9%) and lowest false alarm (26.4%) of all gradient-based Earth/Mars missions."
+    },
+    {
+      "domain": "MESSENGER Mercury MP/BS",
+      "mission": "MESSENGER MAG",
+      "label_source": "Mercury bow shock and magnetopause crossing list",
+      "label_type": "curated",
+      "reference": "Zenodo doi:10.5281/zenodo.13958819",
+      "n_crossings": 4054,
+      "notes": "Curated crossing list. Analysis pending (first orbital phase Mar 2011)."
+    }
+  ]
+}

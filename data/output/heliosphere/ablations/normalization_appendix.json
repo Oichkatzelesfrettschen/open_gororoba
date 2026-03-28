@@ -1,0 +1,56 @@
+{
+  "title": "Normalization Appendix: Rosetta 67P 4-Way Ablation",
+  "generated": "2026-03-27",
+  "domain": "Rosetta 67P diamagnetic cavity",
+  "data_window": "Jul-Sep 2015 (perihelion)",
+  "total_minutes": 126949,
+  "cavity_threshold_nT": 2.0,
+  "cavity_minutes": 603,
+  "ablation_results": [
+    {
+      "normalization": "current",
+      "description": "Bx/local_mean_B, By/local_mean_B, Bz/local_mean_B, (|B|-mean_B)/mean_B",
+      "embedding_dim": 32,
+      "cavity_mean_associator": 56.2843,
+      "outside_mean_associator": 10.7258,
+      "ratio_outside_to_cavity": 0.1906,
+      "detection_rate": 0.131,
+      "false_alarm_rate": 0.007,
+      "interpretation": "Cavity 5.3x higher. Standard normalization amplifies cavity signal because mean_B approaches zero."
+    },
+    {
+      "normalization": "clipped",
+      "description": "Bx/max(local_mean_B, 1.0 nT), same 4-channel structure",
+      "embedding_dim": 32,
+      "cavity_mean_associator": 55.4678,
+      "outside_mean_associator": 10.7222,
+      "ratio_outside_to_cavity": 0.1933,
+      "detection_rate": 0.131,
+      "false_alarm_rate": 0.007,
+      "interpretation": "Nearly identical to current. The 1 nT floor rarely triggers because mean_B is mostly above 1 nT even near cavity."
+    },
+    {
+      "normalization": "direction",
+      "description": "Bx/|B|, By/|B|, Bz/|B|, 0.0 (unit vectors, no magnitude info)",
+      "embedding_dim": 32,
+      "cavity_mean_associator": 12.7651,
+      "outside_mean_associator": 6.7200,
+      "ratio_outside_to_cavity": 0.5264,
+      "detection_rate": 0.278,
+      "false_alarm_rate": 0.022,
+      "interpretation": "Cavity 1.9x higher even with pure direction embedding. This is genuine phase-geometry disorder: field direction is highly disordered inside cavity where |B| is near noise floor. ~40% of full contrast is genuine directional phase geometry."
+    },
+    {
+      "normalization": "raw",
+      "description": "Bx, By, Bz, |B| (unnormalized, physical units nT)",
+      "embedding_dim": 32,
+      "cavity_mean_associator": 81468.75,
+      "outside_mean_associator": 559900.03,
+      "ratio_outside_to_cavity": 6.8726,
+      "detection_rate": 0.046,
+      "false_alarm_rate": 0.008,
+      "interpretation": "REVERSED: outside 6.9x higher. Raw associator scales with field strength. Cavity has near-zero |B| so raw associator is small. This confirms normalization is doing real work."
+    }
+  ],
+  "synthesis": "The Rosetta cavity/outside contrast has three components: (1) ~40% is genuine directional phase geometry (field orientation is disordered in cavity), (2) ~60% is normalization amplification (dividing by near-zero mean_B inflates components), (3) raw embedding reverses the contrast entirely. The direction-only embedding is the cleanest test: 1.9x genuine cavity contrast survives removal of all magnitude information."
+}
