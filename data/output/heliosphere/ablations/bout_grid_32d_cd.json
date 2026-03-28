@@ -1,0 +1,26 @@
+{
+  "grid_file": "/home/eirikr/Github/pkgbuilds/bout-next/src/bout-next/examples/tokamak-grids/cbm18_dens8.grid_nx68ny64.nc",
+  "embedding_dim": 32,
+  "variables": [
+    "Rxy",
+    "Zxy",
+    "Bpxy",
+    "Btxy",
+    "psixy",
+    "Bxy",
+    "pressure",
+    "Ni0",
+    "Te0",
+    "Ti0",
+    "bxcvx",
+    "bxcvy"
+  ],
+  "nx": 68,
+  "ny": 64,
+  "n_radial_windows": 0,
+  "results": [],
+  "pedestal_a": -0.0,
+  "core_a": -0.0,
+  "edge_a": -0.0,
+  "interpretation": "32D grid CD: 12 vars, 68x64 grid. Core(psi<0.3) A=-0.000000, Pedestal(0.7-0.95) A=-0.000000, Edge(>0.95) A=-0.000000. Ratio pedestal/core=0.00x."
+}

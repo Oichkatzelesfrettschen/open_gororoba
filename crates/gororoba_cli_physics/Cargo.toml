@@ -839,12 +839,20 @@ rusqlite = { workspace = true }
 walkdir = { workspace = true }
 minifb = { workspace = true }
 tensor_core = { version = "0.1.0", path = "../tensor_core" }
+hdf5 = { workspace = true, optional = true }
+netcdf3 = { workspace = true, optional = true }
+netcdf-reader = { workspace = true, optional = true }
+zarrs = { workspace = true, optional = true }
+zarrs_filesystem = { workspace = true, optional = true }
 
 [features]
 default = ["gpu"]
 gpu = ["lbm_3d_cuda", "sign_imbalance/gpu"]
 cufft = ["lbm_3d_cuda/cufft"]
 hdf5-export = ["data_core/hdf5-export"]
+hdf5-read = ["dep:hdf5"]
+netcdf-read = ["dep:netcdf3", "dep:netcdf-reader"]
+zarr-read = ["dep:zarrs", "dep:zarrs_filesystem"]
 euclid-catalog = ["cosmology_core/euclid-catalog"]
 
 [lints]
@@ -861,6 +869,33 @@ path = "src/bin/heliosphere_boxkite_alignment.rs"
 [[bin]]
 name = "heliosphere-boxkite-parity"
 path = "src/bin/heliosphere_boxkite_parity.rs"
+
+# ---- GRMHD / Accretion (2) ----
+
+[[bin]]
+name = "grmhd-mri-cd"
+path = "src/bin/grmhd_mri_cd.rs"
+required-features = ["hdf5-read"]
+
+[[bin]]
+name = "bout-cd-analysis"
+path = "src/bin/bout_cd_analysis.rs"
+required-features = ["hdf5-read"]
+
+[[bin]]
+name = "bout-grid-inspect"
+path = "src/bin/bout_grid_inspect.rs"
+required-features = ["netcdf-read"]
+
+[[bin]]
+name = "bout-grid-cd"
+path = "src/bin/bout_grid_cd.rs"
+required-features = ["netcdf-read"]
+
+[[bin]]
+name = "mast-mirnov-cd"
+path = "src/bin/mast_mirnov_cd.rs"
+required-features = ["zarr-read"]
 
 # ---- GUT (1) ----
 
