@@ -1,0 +1,17 @@
+{
+  "year": 2009,
+  "week": 26,
+  "start_date": "2009-06-22",
+  "end_date": "2009-06-28",
+  "n_minutes": 6170,
+  "n_curated": 3,
+  "cd_detection_rate": 0.0,
+  "cd_false_alarm_rate": 1.0,
+  "cd_n_transitions": 35,
+  "cd_n_extra": 35,
+  "cd_median_offset": 0.0,
+  "pvi_detection_rate": 0.0,
+  "pvi_false_alarm_rate": 1.0,
+  "bmag_detection_rate": 0.0,
+  "bmag_false_alarm_rate": 1.0
+}

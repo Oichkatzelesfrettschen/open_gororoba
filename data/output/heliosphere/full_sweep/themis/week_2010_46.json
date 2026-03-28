@@ -1,0 +1,17 @@
+{
+  "year": 2010,
+  "week": 46,
+  "start_date": "2010-11-15",
+  "end_date": "2010-11-21",
+  "n_minutes": 1183,
+  "n_curated": 60,
+  "cd_detection_rate": 0.23333333333333334,
+  "cd_false_alarm_rate": 0.0,
+  "cd_n_transitions": 7,
+  "cd_n_extra": 0,
+  "cd_median_offset": 5.000000000000142,
+  "pvi_detection_rate": 0.26666666666666666,
+  "pvi_false_alarm_rate": 0.1111111111111111,
+  "bmag_detection_rate": 0.3,
+  "bmag_false_alarm_rate": 0.7368421052631579
+}

@@ -1,0 +1,17 @@
+{
+  "year": 2016,
+  "week": 20,
+  "start_date": "2016-05-16",
+  "end_date": "2016-05-22",
+  "n_minutes": 1244,
+  "n_curated": 9,
+  "cd_detection_rate": 0.4444444444444444,
+  "cd_false_alarm_rate": 0.6,
+  "cd_n_transitions": 10,
+  "cd_n_extra": 6,
+  "cd_median_offset": 1.9999999999998863,
+  "pvi_detection_rate": 0.7777777777777778,
+  "pvi_false_alarm_rate": 0.0,
+  "bmag_detection_rate": 0.7777777777777778,
+  "bmag_false_alarm_rate": 0.6153846153846154
+}

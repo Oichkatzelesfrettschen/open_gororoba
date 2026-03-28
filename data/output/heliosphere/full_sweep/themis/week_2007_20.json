@@ -1,0 +1,17 @@
+{
+  "year": 2007,
+  "week": 20,
+  "start_date": "2007-05-14",
+  "end_date": "2007-05-20",
+  "n_minutes": 8896,
+  "n_curated": 33,
+  "cd_detection_rate": 0.42424242424242425,
+  "cd_false_alarm_rate": 0.7692307692307693,
+  "cd_n_transitions": 26,
+  "cd_n_extra": 20,
+  "cd_median_offset": 4.999999999999929,
+  "pvi_detection_rate": 0.7575757575757576,
+  "pvi_false_alarm_rate": 0.725,
+  "bmag_detection_rate": 0.6363636363636364,
+  "bmag_false_alarm_rate": 0.864406779661017
+}
