@@ -1,0 +1,31 @@
+{
+  "question": "Q: Does switchback suppression reflect dimensionality reduction?",
+  "switchback_participation_ratio": 4.8549189705452545,
+  "quiet_participation_ratio": 10.610228865378854,
+  "ratio_sb_to_quiet": 0.45756967471143256,
+  "switchback_explained_variance": [
+    0.8688734870839647,
+    0.9254542697392137,
+    0.9473618630499001,
+    0.9587667495224055,
+    0.968057155284584,
+    0.9736597134261753,
+    0.9788343051416631,
+    0.9826257762745211,
+    0.9857476584450745,
+    0.9880253097277253
+  ],
+  "quiet_explained_variance": [
+    0.4414579891384253,
+    0.7372380003998036,
+    0.801824277474553,
+    0.8359018314633543,
+    0.8682916628321926,
+    0.8905623459417771,
+    0.9095650150731477,
+    0.924456157857223,
+    0.9368566364243396,
+    0.9470845579309906
+  ],
+  "interpretation": "Switchbacks have LOWER effective dimensionality (4.9) than quiet wind (10.6). This supports the hypothesis: coherent structures reduce the embedding to fewer effective degrees of freedom, making the algebra more associative (lower non-associativity). The non-associativity suppression during switchbacks is a DIMENSIONALITY effect."
+}
