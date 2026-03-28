@@ -153,6 +153,8 @@ data/external/**
 !data/external/flyby_anomaly/anderson_2008_flyby_catalog.csv
 !data/external/pioneer_anomaly/
 !data/external/pioneer_anomaly/pioneer_anomaly_benchmark.csv
+!data/external/crossing_lists/
+!data/external/crossing_lists/**
 
 # Archived non-replayable payloads (track only retirement manifests)
 archive/external_legacy_placeholders/**

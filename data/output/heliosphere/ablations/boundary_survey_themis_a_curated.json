@@ -1,0 +1,21 @@
+{
+  "mission": "themis-a",
+  "start_date": "2008-10-27",
+  "end_date": "2008-11-02",
+  "embedding_dim": 32,
+  "total_minutes": 8225,
+  "n_boundaries": 119,
+  "n_associator_transitions": 36,
+  "detection_rate": 0.2689075630252101,
+  "false_alarm_rate": 0.3333333333333333,
+  "mean_offset_minutes": 6.093750000000027,
+  "median_offset_minutes": 5.000000000000142,
+  "curated_n_crossings": 118,
+  "curated_detection_rate": 0.8898305084745762,
+  "curated_false_alarm_rate": 0.16666666666666666,
+  "curated_mean_offset": 6.866666666666701,
+  "curated_median_offset": 6.000000000000512,
+  "global_mean_associator": 2.517102203357218,
+  "global_std_associator": 8.540868776834147,
+  "transition_threshold": 12.811303165251221
+}
