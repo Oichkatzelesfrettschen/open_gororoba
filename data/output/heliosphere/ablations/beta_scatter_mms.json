@@ -1,0 +1,8 @@
+{
+  "n_matched_hours": 94,
+  "power_law_exponent": 0.2583789896339592,
+  "r_squared": 0.17289532644124872,
+  "spearman_r": 0.08628400101145108,
+  "themis_exponent": 0.775,
+  "agreement": "MMS exponent (0.26) differs from THEMIS (0.78). Different regime."
+}
