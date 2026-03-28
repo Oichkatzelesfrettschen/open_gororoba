@@ -1,0 +1,52 @@
+{
+  "n_steps": 50000,
+  "elm_onset_step": 15000,
+  "disruption_onset_step": 35000,
+  "phases": [
+    {
+      "name": "Quiet H-mode",
+      "start_step": 0,
+      "end_step": 13700,
+      "mean_associator": 11.415005347419562,
+      "max_associator": 15.970135378849383
+    },
+    {
+      "name": "ELM crash",
+      "start_step": 14800,
+      "end_step": 17500,
+      "mean_associator": 39.19233984427976,
+      "max_associator": 61.710665787748546
+    },
+    {
+      "name": "Post-ELM recovery",
+      "start_step": 17500,
+      "end_step": 30000,
+      "mean_associator": 12.513992903176884,
+      "max_associator": 61.712149541941145
+    },
+    {
+      "name": "Pre-disruption (locked mode)",
+      "start_step": 30000,
+      "end_step": 35000,
+      "mean_associator": 9.112826522597235,
+      "max_associator": 60.79269575904981
+    },
+    {
+      "name": "Disruption (thermal quench)",
+      "start_step": 35000,
+      "end_step": 36600,
+      "mean_associator": 47.68482580519394,
+      "max_associator": 103.16753179717806
+    },
+    {
+      "name": "Post-disruption (current quench)",
+      "start_step": 36600,
+      "end_step": 49100,
+      "mean_associator": 30.46552295732663,
+      "max_associator": 70.17053456043354
+    }
+  ],
+  "elm_detection_lead": 1.4000000000000001,
+  "disruption_detection_lead": 11.4,
+  "interpretation": "Synthetic tokamak proof: the CD associator detects ELM crashes and disruption onset in synthetic 4-channel Mirnov signals. Quiet H-mode has organized rotating modes (low A). ELM burst produces A spike. Pre-disruption locked mode growth produces A rise. Thermal quench produces maximum A. ELM detected with 1.4% lead, disruption with 11.4% lead."
+}
