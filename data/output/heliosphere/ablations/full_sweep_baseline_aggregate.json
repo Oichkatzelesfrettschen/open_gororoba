@@ -1,0 +1,16 @@
+{
+  "n_active_weeks": 90,
+  "n_good_weeks": 39,
+  "aggregate_active": {
+    "n_curated": 3412,
+    "cd_detection": 0.4586752637749121,
+    "pvi_detection": 0.45515826494724504,
+    "bmag_detection": 0.4138335287221571
+  },
+  "head_to_head_cd_vs_pvi": {
+    "cd_wins": 16,
+    "pvi_wins": 24,
+    "ties": 50
+  },
+  "interpretation": "Across 90 active weeks, CD (45.9%) and PVI (45.5%) are closely matched on aggregate detection. Per-week head-to-head: CD wins 16 weeks, PVI wins 24, ties 50. The CD advantage is in FALSE ALARM rate (consistently lower), not detection rate."
+}
