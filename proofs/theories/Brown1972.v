@@ -38,14 +38,15 @@
       computational mirror for farther non-quaternion/generalized follow-on
       exploration.
     - Chapter VI, pp. 30-42, Theorems 6.2-6.17:
-      a standard-octonion Brown 6.10 / 6.11 basis witness surface is now
+      a standard-octonion Brown 6.10 / 6.11 / 6.12 / 6.13 basis witness surface is now
       landed, and a direct standard-sedenion adjoined-element surface for
       6.1 / 6.2 / 6.3 / 6.8 plus proof-faithful constructive 6.9 witnesses
       is now landed; the printed Brown 6.9 pointwise iff wording does not
       survive unchanged in the repo's literal standard-pair coordinates, so
       the current Rocq surface records the constructive implications and the
-      family form Brown's p.35 proof actually uses, with broader basis lifts
-      beyond the current octonion witness layer still open.
+      family form Brown's p.35 proof actually uses, with the next broader
+      basis-associator lift beginning at Brown 6.14 and the broader Chapter III
+      generalized-norm lane still open beside it.
     - Chapter VII, pp. 45-56, Theorems 7.3-7.18:
       direct Rocq landing via `ZD_Criterion.v`, `C1538_MorZDSymmetry.v`, and
       `BrownAssessorEquivalence.v`.
@@ -68,7 +69,7 @@
       3.1 / 3.3 / 3.7 standard-octonion source surface and the concrete
       octonion/sedenion 3.9 / 3.10 witnesses
     - broader Brown-numbered Chapter VI basis-element theorem lanes beyond the
-      landed standard-octonion 6.10 / 6.11 witness surface
+      landed standard-octonion 6.10 / 6.11 / 6.12 / 6.13 witness surface
     - remaining Chapter VII numbering gaps plus Appendix C extraction bridge in Rocq
 
     The executable Rust companion for this paper is `crates/brown_1972/`. *)
@@ -2640,6 +2641,55 @@ Proof.
     apply brown1972_oct_mul_neg_e0_right.
 Qed.
 
+Theorem brown1972_corollary_6_12_octonion : forall i : nat, forall x : CDOct,
+  (i < 8)%nat ->
+  oct_assoc (oct_e i) (oct_e i) x = oct_zero.
+Proof.
+  intros i x Hi.
+  apply brown1972_corollary_4_4_octonion_left.
+Qed.
+
+Definition brown1972_ch6_613_oct_rhs (i j : nat) : CDOct :=
+  if Nat.eqb i 0 then oct_e j
+  else if Nat.eqb j 0 then oct_neg (oct_e 0)
+  else if Nat.eqb i j then oct_neg (oct_e j)
+  else oct_e j.
+
+Theorem brown1972_theorem_6_13_octonion : forall i j : nat,
+  (i < 8)%nat -> (j < 8)%nat ->
+  oct_mul (oct_mul (oct_e i) (oct_e j)) (oct_e i) =
+  brown1972_ch6_613_oct_rhs i j.
+Proof.
+  intros i j Hi Hj.
+  unfold brown1972_ch6_613_oct_rhs.
+  destruct (Nat.eqb i 0) eqn:Hi0.
+  - apply Nat.eqb_eq in Hi0. subst i.
+    change (oct_e 0) with brown1972_oct_one.
+    rewrite brown1972_oct_mul_one_left.
+    rewrite oct_mul_one_right.
+    reflexivity.
+  - apply Nat.eqb_neq in Hi0.
+    destruct (Nat.eqb j 0) eqn:Hj0.
+    + apply Nat.eqb_eq in Hj0. subst j.
+      assert (Hi1 : (1 <= i)%nat) by lia.
+      change (oct_e 0) with brown1972_oct_one.
+      rewrite oct_mul_one_right.
+      exact (oct_mul_self_neg i Hi1 Hi).
+    + apply Nat.eqb_neq in Hj0.
+      destruct (Nat.eqb i j) eqn:Hij.
+      * apply Nat.eqb_eq in Hij. subst i.
+        assert (Hj1 : (1 <= j)%nat) by lia.
+        rewrite (oct_mul_self_neg j Hj1 Hj).
+        apply brown1972_oct_mul_neg_e0_left.
+      * apply Nat.eqb_neq in Hij.
+        rewrite (brown1972_lemma_6_10_ii_octonion i j Hi Hj Hi0 Hj0 Hij).
+        rewrite oct_neg_mul_left.
+        assert (Hi1 : (1 <= i)%nat) by lia.
+        destruct (brown1972_theorem_6_11_octonion i j Hi1 Hi Hj) as [_ Hright].
+        rewrite Hright.
+        apply oct_neg_neg.
+Qed.
+
 Record Brown1972ChapterVIOctonionBasisSurface := {
   brown1972_ch6_l610_i_oct :
     forall i j : nat,
@@ -2655,7 +2705,16 @@ Record Brown1972ChapterVIOctonionBasisSurface := {
     forall i j : nat,
       (1 <= i)%nat -> (i < 8)%nat -> (j < 8)%nat ->
       oct_mul (oct_e i) (oct_mul (oct_e i) (oct_e j)) = oct_neg (oct_e j) /\
-      oct_mul (oct_mul (oct_e j) (oct_e i)) (oct_e i) = oct_neg (oct_e j)
+      oct_mul (oct_mul (oct_e j) (oct_e i)) (oct_e i) = oct_neg (oct_e j);
+  brown1972_ch6_c612_oct :
+    forall i : nat, forall x : CDOct,
+      (i < 8)%nat ->
+      oct_assoc (oct_e i) (oct_e i) x = oct_zero;
+  brown1972_ch6_t613_oct :
+    forall i j : nat,
+      (i < 8)%nat -> (j < 8)%nat ->
+      oct_mul (oct_mul (oct_e i) (oct_e j)) (oct_e i) =
+      brown1972_ch6_613_oct_rhs i j
 }.
 
 Definition brown1972_octonion_chapter_vi_basis_surface :
@@ -2663,7 +2722,9 @@ Definition brown1972_octonion_chapter_vi_basis_surface :
 Proof.
   refine {| brown1972_ch6_l610_i_oct := brown1972_lemma_6_10_i_octonion;
             brown1972_ch6_l610_ii_oct := brown1972_lemma_6_10_ii_octonion;
-            brown1972_ch6_t611_oct := brown1972_theorem_6_11_octonion |}.
+            brown1972_ch6_t611_oct := brown1972_theorem_6_11_octonion;
+            brown1972_ch6_c612_oct := brown1972_corollary_6_12_octonion;
+            brown1972_ch6_t613_oct := brown1972_theorem_6_13_octonion |}.
 Defined.
 
 Definition brown1972_sed_adjoined_e : CDSed := sed_e 8.
