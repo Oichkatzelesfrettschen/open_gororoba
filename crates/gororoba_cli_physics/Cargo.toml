@@ -269,6 +269,10 @@ name = "heliosphere-magnetic-takens"
 path = "src/bin/heliosphere_magnetic_takens.rs"
 
 [[bin]]
+name = "heliosphere-baseline-comparison"
+path = "src/bin/heliosphere_baseline_comparison.rs"
+
+[[bin]]
 name = "heliosphere-q2-transverse"
 path = "src/bin/heliosphere_q2_transverse.rs"
 
