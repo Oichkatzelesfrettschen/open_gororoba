@@ -15,6 +15,7 @@ pub mod sedenion;
 mod signature;
 mod signs;
 pub mod simd;
+pub mod soa_cache;
 mod symmetry;
 pub mod trigintaduonion;
 mod zero_divisors;
