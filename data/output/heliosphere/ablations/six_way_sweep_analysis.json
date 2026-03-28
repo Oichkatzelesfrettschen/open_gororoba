@@ -1,0 +1,32 @@
+{
+  "n_active_weeks": 90,
+  "total_curated": 3412,
+  "aggregates": {
+    "CD associator": {
+      "detection": 0.4586752637749121,
+      "false_alarm": 0.5972433431276121
+    },
+    "PVI": {
+      "detection": 0.45515826494724504,
+      "false_alarm": 0.6115484703555937
+    },
+    "|B| gradient": {
+      "detection": 0.4138335287221571,
+      "false_alarm": 0.8551584254434847
+    },
+    "Magnetic shear": {
+      "detection": 0.34671746776084406,
+      "false_alarm": 0.6437985561499524
+    },
+    "Wavelet variance": {
+      "detection": 0.2995310668229777,
+      "false_alarm": 0.901453391924057
+    },
+    "Spectral entropy": {
+      "detection": 0.3308909730363423,
+      "false_alarm": 0.6853721939236633
+    }
+  },
+  "cd_dominates_weeks": 7,
+  "pvi_dominates_weeks": 7
+}
