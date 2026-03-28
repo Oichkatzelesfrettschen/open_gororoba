@@ -1360,6 +1360,493 @@ Proof.
   exact (proj1 (Hpair n)).
 Qed.
 
+Definition brown1972_oct_in_span (a x : CDOct) : Prop :=
+  exists r s,
+    x = oct_add (oct_scale r brown1972_oct_one) (oct_scale s a).
+
+Lemma brown1972_oct_in_span_one : forall a,
+  brown1972_oct_in_span a brown1972_oct_one.
+Proof.
+  intro a.
+  exists 1%R, 0%R.
+  rewrite oct_scale_zero.
+  rewrite oct_add_zero_right.
+  rewrite brown1972_oct_scale_one.
+  reflexivity.
+Qed.
+
+Lemma brown1972_oct_in_span_base : forall a,
+  brown1972_oct_in_span a a.
+Proof.
+  intro a.
+  exists 0%R, 1%R.
+  rewrite oct_scale_zero.
+  rewrite oct_add_zero_left.
+  rewrite brown1972_oct_scale_one.
+  reflexivity.
+Qed.
+
+Lemma brown1972_oct_scale_add_distr : forall r x y,
+  oct_scale r (oct_add x y) = oct_add (oct_scale r x) (oct_scale r y).
+Proof.
+  intros r [xlo xhi] [ylo yhi].
+  unfold oct_scale, oct_add; simpl.
+  f_equal; unfold quat_scale, quat_add; simpl; f_equal; ring.
+Qed.
+
+Lemma brown1972_oct_in_span_add : forall a x y,
+  brown1972_oct_in_span a x ->
+  brown1972_oct_in_span a y ->
+  brown1972_oct_in_span a (oct_add x y).
+Proof.
+  intros a x y [rx [sx Hx]] [ry [sy Hy]].
+  subst x y.
+  exists (rx + ry)%R, (sx + sy)%R.
+  destruct a as [alo ahi].
+  unfold brown1972_oct_one, oct_add, oct_scale, quat_add, quat_scale, quat_one, quat_zero.
+  simpl.
+  apply (f_equal2 mkOct); apply (f_equal4 mkQuat); ring.
+Qed.
+
+Lemma brown1972_oct_in_span_scale : forall a r x,
+  brown1972_oct_in_span a x ->
+  brown1972_oct_in_span a (oct_scale r x).
+Proof.
+  intros a r x [u [v Hx]].
+  subst x.
+  exists (r * u)%R, (r * v)%R.
+  destruct a as [alo ahi].
+  unfold brown1972_oct_one, oct_add, oct_scale, quat_add, quat_scale, quat_one, quat_zero.
+  simpl.
+  apply (f_equal2 mkOct); apply (f_equal4 mkQuat); ring.
+Qed.
+
+Lemma brown1972_oct_conj_trace_split : forall a,
+  oct_conj a =
+  oct_add (oct_scale (brown1972_oct_trace a) brown1972_oct_one)
+          (oct_scale (-1) a).
+Proof.
+  intros [[a1 a2 a3 a4] [a5 a6 a7 a8]].
+  cbv [brown1972_oct_trace brown1972_oct_one
+       oct_conj oct_add oct_scale oct_lo oct_hi
+       quat_add quat_scale quat_conj quat_neg quat_one quat_zero
+       qa qb qc qd].
+  apply (f_equal2 mkOct).
+  - apply (f_equal4 mkQuat); ring.
+  - apply (f_equal4 mkQuat); ring.
+Qed.
+
+Lemma brown1972_oct_assoc_add_left : forall x y z w,
+  oct_assoc (oct_add x y) z w =
+  oct_add (oct_assoc x z w) (oct_assoc y z w).
+Proof.
+  intros [[x1 x2 x3 x4] [x5 x6 x7 x8]]
+         [[y1 y2 y3 y4] [y5 y6 y7 y8]]
+         [[z1 z2 z3 z4] [z5 z6 z7 z8]]
+         [[w1 w2 w3 w4] [w5 w6 w7 w8]].
+  cbv [oct_assoc oct_sub oct_add oct_scale oct_neg oct_mul oct_conj oct_lo oct_hi
+       quat_add quat_scale quat_neg quat_mul quat_conj qa qb qc qd].
+  apply (f_equal2 mkOct); apply (f_equal4 mkQuat); ring.
+Qed.
+
+Lemma brown1972_oct_assoc_scale_left : forall r x y z,
+  oct_assoc (oct_scale r x) y z = oct_scale r (oct_assoc x y z).
+Proof.
+  intros r [[x1 x2 x3 x4] [x5 x6 x7 x8]]
+           [[y1 y2 y3 y4] [y5 y6 y7 y8]]
+           [[z1 z2 z3 z4] [z5 z6 z7 z8]].
+  cbv [oct_assoc oct_sub oct_add oct_scale oct_neg oct_mul oct_conj oct_lo oct_hi
+       quat_add quat_scale quat_neg quat_mul quat_conj qa qb qc qd].
+  apply (f_equal2 mkOct); apply (f_equal4 mkQuat); ring.
+Qed.
+
+Lemma brown1972_oct_assoc_add_right : forall x y z w,
+  oct_assoc x y (oct_add z w) =
+  oct_add (oct_assoc x y z) (oct_assoc x y w).
+Proof.
+  intros [[x1 x2 x3 x4] [x5 x6 x7 x8]]
+         [[y1 y2 y3 y4] [y5 y6 y7 y8]]
+         [[z1 z2 z3 z4] [z5 z6 z7 z8]]
+         [[w1 w2 w3 w4] [w5 w6 w7 w8]].
+  cbv [oct_assoc oct_sub oct_add oct_scale oct_neg oct_mul oct_conj oct_lo oct_hi
+       quat_add quat_scale quat_neg quat_mul quat_conj qa qb qc qd].
+  apply (f_equal2 mkOct); apply (f_equal4 mkQuat); ring.
+Qed.
+
+Lemma brown1972_oct_assoc_scale_right : forall r x y z,
+  oct_assoc x y (oct_scale r z) = oct_scale r (oct_assoc x y z).
+Proof.
+  intros r [[x1 x2 x3 x4] [x5 x6 x7 x8]]
+           [[y1 y2 y3 y4] [y5 y6 y7 y8]]
+           [[z1 z2 z3 z4] [z5 z6 z7 z8]].
+  cbv [oct_assoc oct_sub oct_add oct_scale oct_neg oct_mul oct_conj oct_lo oct_hi
+       quat_add quat_scale quat_neg quat_mul quat_conj qa qb qc qd].
+  apply (f_equal2 mkOct); apply (f_equal4 mkQuat); ring.
+Qed.
+
+Lemma brown1972_oct_assoc_one_left : forall b c,
+  oct_assoc brown1972_oct_one b c = oct_zero.
+Proof.
+  intros b c.
+  unfold oct_assoc, oct_sub.
+  rewrite brown1972_oct_mul_one_left.
+  rewrite brown1972_oct_mul_one_left.
+  apply oct_add_neg_cancel.
+Qed.
+
+Lemma brown1972_oct_assoc_one_right : forall x y,
+  oct_assoc x y brown1972_oct_one = oct_zero.
+Proof.
+  intros x y.
+  unfold oct_assoc, oct_sub.
+  rewrite oct_mul_one_right.
+  rewrite oct_mul_one_right.
+  apply oct_add_neg_cancel.
+Qed.
+
+Lemma brown1972_oct_assoc_flexible_zero : forall a b,
+  oct_assoc a b a = oct_zero.
+Proof.
+  intros a b.
+  unfold oct_assoc, oct_sub.
+  rewrite brown1972_theorem_4_2_octonion.
+  apply oct_add_neg_cancel.
+Qed.
+
+Lemma brown1972_oct_in_span_mul : forall a x y,
+  brown1972_oct_in_span a x ->
+  brown1972_oct_in_span a y ->
+  brown1972_oct_in_span a (oct_mul x y).
+Proof.
+  intros a x y [rx [sx Hx]] [ry [sy Hy]].
+  subst x y.
+  exists (rx * ry - sx * sy * oct_norm_sq a)%R,
+         (rx * sy + sx * ry + sx * sy * brown1972_oct_trace a)%R.
+  destruct a as [[a1 a2 a3 a4] [a5 a6 a7 a8]].
+  cbv [brown1972_oct_one brown1972_oct_trace
+       oct_add oct_scale oct_mul oct_conj oct_norm_sq oct_lo oct_hi
+       quat_add quat_scale quat_mul quat_neg quat_conj quat_one quat_zero
+       quat_norm_sq qa qb qc qd].
+  apply (f_equal2 mkOct); apply (f_equal4 mkQuat); ring.
+Qed.
+
+Lemma brown1972_oct_nat_pow_in_span_of : forall a x n,
+  brown1972_oct_in_span a x ->
+  brown1972_oct_in_span a (brown1972_oct_nat_pow x n).
+Proof.
+  intros a x n Hx.
+  induction n as [|n IH].
+  - apply brown1972_oct_in_span_one.
+  - simpl.
+    apply brown1972_oct_in_span_mul; assumption.
+Qed.
+
+Lemma brown1972_oct_nat_pow_in_span : forall a n,
+  brown1972_oct_in_span a (brown1972_oct_nat_pow a n).
+Proof.
+  intros a n.
+  apply brown1972_oct_nat_pow_in_span_of.
+  apply brown1972_oct_in_span_base.
+Qed.
+
+Lemma brown1972_oct_inv_in_span : forall a,
+  oct_norm_sq a <> 0%R ->
+  brown1972_oct_in_span a (brown1972_oct_inv a).
+Proof.
+  intros a Hnz.
+  unfold brown1972_oct_inv.
+  rewrite brown1972_oct_conj_trace_split.
+  apply brown1972_oct_in_span_scale.
+  apply brown1972_oct_in_span_add.
+  - apply brown1972_oct_in_span_scale.
+    apply brown1972_oct_in_span_one.
+  - apply brown1972_oct_in_span_scale.
+    apply brown1972_oct_in_span_base.
+Qed.
+
+Lemma brown1972_oct_zpow_in_span : forall a n,
+  oct_norm_sq a <> 0%R ->
+  brown1972_oct_in_span a (brown1972_oct_zpow a n).
+Proof.
+  intros a [|p|p] Hnz.
+  - apply brown1972_oct_in_span_one.
+  - apply brown1972_oct_nat_pow_in_span.
+  - apply brown1972_oct_nat_pow_in_span_of.
+    apply brown1972_oct_inv_in_span.
+    exact Hnz.
+Qed.
+
+Lemma brown1972_oct_assoc_span_ends : forall a x b z,
+  brown1972_oct_in_span a x ->
+  brown1972_oct_in_span a z ->
+  oct_assoc x b z = oct_zero.
+Proof.
+  intros a x b z [rx [sx Hx]] [rz [sz Hz]].
+  subst x z.
+  destruct a as [[a1 a2 a3 a4] [a5 a6 a7 a8]].
+  destruct b as [[b1 b2 b3 b4] [b5 b6 b7 b8]].
+  cbv [brown1972_oct_one
+       oct_assoc oct_sub oct_add oct_scale oct_neg oct_mul oct_conj oct_lo oct_hi
+       quat_add quat_scale quat_neg quat_mul quat_conj quat_one quat_zero
+       qa qb qc qd oct_zero].
+  apply (f_equal2 mkOct); apply (f_equal4 mkQuat); ring.
+Qed.
+
+Theorem brown1972_lemma_5_15_octonion : forall a b n,
+  oct_assoc (brown1972_oct_nat_pow a n) b a = oct_zero.
+Proof.
+  intros a b n.
+  apply (brown1972_oct_assoc_span_ends a).
+  - apply brown1972_oct_nat_pow_in_span.
+  - apply brown1972_oct_in_span_base.
+Qed.
+
+Theorem brown1972_lemma_5_16_octonion : forall a b m n,
+  oct_assoc (brown1972_oct_nat_pow a m) b (brown1972_oct_nat_pow a n) =
+  oct_zero.
+Proof.
+  intros a b m n.
+  apply (brown1972_oct_assoc_span_ends a).
+  - apply brown1972_oct_nat_pow_in_span.
+  - apply brown1972_oct_nat_pow_in_span.
+Qed.
+
+Theorem brown1972_theorem_5_17_octonion : forall a b m n,
+  oct_norm_sq a <> 0%R ->
+  oct_assoc (brown1972_oct_zpow a m) b (brown1972_oct_zpow a n) = oct_zero.
+Proof.
+  intros a b m n Hnz.
+  apply (brown1972_oct_assoc_span_ends a).
+  - apply brown1972_oct_zpow_in_span. exact Hnz.
+  - apply brown1972_oct_zpow_in_span. exact Hnz.
+Qed.
+
+Lemma brown1972_oct_nat_pow_add : forall a m n,
+  brown1972_oct_nat_pow a (m + n) =
+  oct_mul (brown1972_oct_nat_pow a m) (brown1972_oct_nat_pow a n).
+Proof.
+  intros a m n.
+  induction n as [|n IH].
+  - rewrite Nat.add_0_r. simpl. rewrite oct_mul_one_right. reflexivity.
+  - rewrite Nat.add_succ_r.
+    simpl.
+    rewrite IH.
+    pose proof
+      (brown1972_lemma_5_15_octonion a (brown1972_oct_nat_pow a n) m) as Hassoc.
+    unfold oct_assoc in Hassoc.
+    apply brown1972_oct_sub_eq_zero in Hassoc.
+    exact Hassoc.
+Qed.
+
+Lemma brown1972_oct_nat_pow_inv_step_right : forall a n,
+  oct_norm_sq a <> 0%R ->
+  oct_mul (brown1972_oct_nat_pow a (S n)) (brown1972_oct_inv a) =
+  brown1972_oct_nat_pow a n.
+Proof.
+  intros a n Hnz.
+  simpl.
+  pose proof
+    (brown1972_oct_assoc_span_ends a
+       (brown1972_oct_nat_pow a n) a (brown1972_oct_inv a)
+       (brown1972_oct_nat_pow_in_span a n)
+       (brown1972_oct_inv_in_span a Hnz)) as Hassoc.
+  unfold oct_assoc in Hassoc.
+  apply brown1972_oct_sub_eq_zero in Hassoc.
+  rewrite Hassoc.
+  rewrite brown1972_oct_inv_mul_right by exact Hnz.
+  rewrite oct_mul_one_right.
+  reflexivity.
+Qed.
+
+Lemma brown1972_oct_nat_pow_inv_step_left : forall a n,
+  oct_norm_sq a <> 0%R ->
+  oct_mul (brown1972_oct_nat_pow (brown1972_oct_inv a) (S n)) a =
+  brown1972_oct_nat_pow (brown1972_oct_inv a) n.
+Proof.
+  intros a n Hnz.
+  simpl.
+  pose proof
+    (brown1972_oct_assoc_span_ends a
+       (brown1972_oct_nat_pow (brown1972_oct_inv a) n) (brown1972_oct_inv a) a
+       (brown1972_oct_nat_pow_in_span_of a (brown1972_oct_inv a) n
+          (brown1972_oct_inv_in_span a Hnz))
+       (brown1972_oct_in_span_base a)) as Hassoc.
+  unfold oct_assoc in Hassoc.
+  apply brown1972_oct_sub_eq_zero in Hassoc.
+  rewrite Hassoc.
+  rewrite brown1972_oct_inv_mul_left by exact Hnz.
+  rewrite oct_mul_one_right.
+  reflexivity.
+Qed.
+
+Lemma brown1972_oct_zpow_succ : forall a n,
+  oct_norm_sq a <> 0%R ->
+  brown1972_oct_zpow a (Z.succ n) =
+  oct_mul (brown1972_oct_zpow a n) a.
+Proof.
+  intros a [|p|p] Hnz.
+  - simpl. rewrite brown1972_oct_mul_one_left. reflexivity.
+  - change
+      (brown1972_oct_nat_pow a (Pos.to_nat (p + 1)) =
+       oct_mul (brown1972_oct_nat_pow a (Pos.to_nat p)) a).
+    replace (Pos.to_nat (p + 1)) with (S (Pos.to_nat p)).
+    2:{
+      rewrite Pos2Nat.inj_add.
+      simpl.
+      lia.
+    }
+    simpl.
+    reflexivity.
+  - destruct p as [p|p|].
+    + change
+        (brown1972_oct_zpow a (Zneg p~0) =
+         oct_mul (brown1972_oct_zpow a (Zneg p~1)) a).
+      cbn [brown1972_oct_zpow].
+      replace (Pos.to_nat p~1) with (S (Pos.to_nat p~0)).
+      2:{
+        rewrite Pos2Nat.inj_xI.
+        rewrite Pos2Nat.inj_xO.
+        lia.
+      }
+      change
+        (brown1972_oct_nat_pow (brown1972_oct_inv a) (Pos.to_nat p~0) =
+         oct_mul
+           (brown1972_oct_nat_pow (brown1972_oct_inv a)
+             (S (Pos.to_nat p~0))) a).
+      symmetry. apply brown1972_oct_nat_pow_inv_step_left. exact Hnz.
+    + change
+        (brown1972_oct_zpow a (Zneg (Pos.pred_double p)) =
+         oct_mul (brown1972_oct_zpow a (Zneg p~0)) a).
+      cbn [brown1972_oct_zpow].
+      replace (Pos.to_nat p~0) with (S (Pos.to_nat (Pos.pred_double p))).
+      2:{
+        rewrite <- Pos2Nat.inj_succ.
+        rewrite Pos.succ_pred_double.
+        reflexivity.
+      }
+      change
+        (brown1972_oct_nat_pow (brown1972_oct_inv a) (Pos.to_nat (Pos.pred_double p)) =
+         oct_mul
+           (brown1972_oct_nat_pow (brown1972_oct_inv a)
+             (S (Pos.to_nat (Pos.pred_double p)))) a).
+      symmetry. apply brown1972_oct_nat_pow_inv_step_left. exact Hnz.
+    + change
+        (brown1972_oct_zpow a 0%Z =
+         oct_mul (brown1972_oct_zpow a (-1)%Z) a).
+      cbn [brown1972_oct_zpow brown1972_oct_nat_pow].
+      change (Pos.to_nat 1) with 1%nat.
+      cbn [brown1972_oct_nat_pow].
+      rewrite brown1972_oct_mul_one_left.
+      apply eq_sym. apply brown1972_oct_inv_mul_left. exact Hnz.
+Qed.
+
+Lemma brown1972_oct_zpow_pred : forall a n,
+  oct_norm_sq a <> 0%R ->
+  brown1972_oct_zpow a (Z.pred n) =
+  oct_mul (brown1972_oct_zpow a n) (brown1972_oct_inv a).
+Proof.
+  intros a [|p|p] Hnz.
+  - change
+      (brown1972_oct_zpow a (Zneg 1) =
+       oct_mul (brown1972_oct_zpow a 0%Z) (brown1972_oct_inv a)).
+    cbn [brown1972_oct_zpow brown1972_oct_nat_pow].
+    change (Pos.to_nat 1) with 1%nat.
+    cbn [brown1972_oct_nat_pow].
+    rewrite brown1972_oct_mul_one_left.
+    reflexivity.
+  - destruct p as [p|p|].
+    + change
+        (brown1972_oct_zpow a (Zpos p~0) =
+         oct_mul (brown1972_oct_zpow a (Zpos p~1))
+           (brown1972_oct_inv a)).
+      cbn [brown1972_oct_zpow].
+      replace (Pos.to_nat p~1) with (S (Pos.to_nat p~0)).
+      2:{
+        rewrite Pos2Nat.inj_xI.
+        rewrite Pos2Nat.inj_xO.
+        lia.
+      }
+      change
+        (brown1972_oct_nat_pow a (Pos.to_nat p~0) =
+         oct_mul (brown1972_oct_nat_pow a (S (Pos.to_nat p~0)))
+           (brown1972_oct_inv a)).
+      symmetry. apply brown1972_oct_nat_pow_inv_step_right. exact Hnz.
+    + change
+        (brown1972_oct_zpow a (Zpos (Pos.pred_double p)) =
+         oct_mul (brown1972_oct_zpow a (Zpos p~0))
+           (brown1972_oct_inv a)).
+      cbn [brown1972_oct_zpow].
+      replace (Pos.to_nat p~0) with (S (Pos.to_nat (Pos.pred_double p))).
+      2:{
+        rewrite <- Pos2Nat.inj_succ.
+        rewrite Pos.succ_pred_double.
+        reflexivity.
+      }
+      change
+        (brown1972_oct_nat_pow a (Pos.to_nat (Pos.pred_double p)) =
+         oct_mul (brown1972_oct_nat_pow a
+           (S (Pos.to_nat (Pos.pred_double p)))) (brown1972_oct_inv a)).
+      symmetry. apply brown1972_oct_nat_pow_inv_step_right. exact Hnz.
+    + change
+        (brown1972_oct_zpow a 0%Z =
+         oct_mul (brown1972_oct_zpow a 1%Z) (brown1972_oct_inv a)).
+      cbn [brown1972_oct_zpow brown1972_oct_nat_pow].
+      change (Pos.to_nat 1) with 1%nat.
+      cbn [brown1972_oct_nat_pow].
+      rewrite brown1972_oct_mul_one_left.
+      apply eq_sym. apply brown1972_oct_inv_mul_right. exact Hnz.
+  - replace (Z.pred (Zneg p)) with (Zneg (Pos.succ p)).
+    2:{ destruct p; reflexivity. }
+    cbn [brown1972_oct_zpow].
+    rewrite Pos2Nat.inj_succ.
+    simpl.
+    reflexivity.
+Qed.
+
+Theorem brown1972_theorem_5_11_octonion : forall a m n,
+  oct_norm_sq a <> 0%R ->
+  oct_mul (brown1972_oct_zpow a m) (brown1972_oct_zpow a n) =
+  brown1972_oct_zpow a (m + n)%Z.
+Proof.
+  intros a m.
+  apply (Z.peano_ind
+    (fun n =>
+       forall Hnz : oct_norm_sq a <> 0%R,
+         oct_mul (brown1972_oct_zpow a m) (brown1972_oct_zpow a n) =
+         brown1972_oct_zpow a (m + n)%Z)).
+  - intros Hnz. simpl. rewrite oct_mul_one_right. rewrite Z.add_0_r. reflexivity.
+  - intros n IH Hnz.
+    rewrite brown1972_oct_zpow_succ by exact Hnz.
+    pose proof
+      (brown1972_theorem_5_17_octonion a (brown1972_oct_zpow a n) m 1%Z Hnz)
+      as Hassoc.
+    cbn [brown1972_oct_zpow brown1972_oct_nat_pow] in Hassoc.
+    change (Pos.to_nat 1) with 1%nat in Hassoc.
+    cbn [brown1972_oct_nat_pow] in Hassoc.
+    rewrite brown1972_oct_mul_one_left in Hassoc.
+    unfold oct_assoc in Hassoc.
+    apply brown1972_oct_sub_eq_zero in Hassoc.
+    rewrite <- Hassoc.
+    rewrite IH by exact Hnz.
+    rewrite Z.add_succ_r.
+    symmetry. apply brown1972_oct_zpow_succ. exact Hnz.
+  - intros n IH Hnz.
+    rewrite brown1972_oct_zpow_pred by exact Hnz.
+    pose proof
+      (brown1972_theorem_5_17_octonion a (brown1972_oct_zpow a n) m (-1)%Z Hnz)
+      as Hassoc.
+    cbn [brown1972_oct_zpow brown1972_oct_nat_pow] in Hassoc.
+    change (Pos.to_nat 1) with 1%nat in Hassoc.
+    cbn [brown1972_oct_nat_pow] in Hassoc.
+    rewrite brown1972_oct_mul_one_left in Hassoc.
+    unfold oct_assoc in Hassoc.
+    apply brown1972_oct_sub_eq_zero in Hassoc.
+    rewrite <- Hassoc.
+    rewrite IH by exact Hnz.
+    rewrite Z.add_pred_r.
+    symmetry. apply brown1972_oct_zpow_pred. exact Hnz.
+Qed.
+
 Record Brown1972ChapterVQuaternionSurface := {
   brown1972_ch5_l51_quat :
     forall a n,
@@ -1442,7 +1929,23 @@ Record Brown1972ChapterVInitialOctonionLift := {
   brown1972_ch5_l58_oct :
     forall a,
       brown1972_oct_trace (oct_mul a a) =
-      (brown1972_oct_trace a * brown1972_oct_trace a - 2 * oct_norm_sq a)%R
+      (brown1972_oct_trace a * brown1972_oct_trace a - 2 * oct_norm_sq a)%R;
+  brown1972_ch5_l515_oct :
+    forall a b n,
+      oct_assoc (brown1972_oct_nat_pow a n) b a = oct_zero;
+  brown1972_ch5_l516_oct :
+    forall a b m n,
+      oct_assoc (brown1972_oct_nat_pow a m) b (brown1972_oct_nat_pow a n) =
+      oct_zero;
+  brown1972_ch5_t517_oct :
+    forall a b m n,
+      oct_norm_sq a <> 0%R ->
+      oct_assoc (brown1972_oct_zpow a m) b (brown1972_oct_zpow a n) = oct_zero;
+  brown1972_ch5_t511_oct :
+    forall a m n,
+      oct_norm_sq a <> 0%R ->
+      oct_mul (brown1972_oct_zpow a m) (brown1972_oct_zpow a n) =
+      brown1972_oct_zpow a (m + n)%Z
 }.
 
 Definition brown1972_chapter_v_initial_octonion_lift :
@@ -1450,7 +1953,11 @@ Definition brown1972_chapter_v_initial_octonion_lift :
 Proof.
   refine {| brown1972_ch5_l51_oct := brown1972_lemma_5_1_octonion;
             brown1972_ch5_l52_oct := brown1972_lemma_5_2_octonion;
-            brown1972_ch5_l58_oct := brown1972_lemma_5_8_octonion |}.
+            brown1972_ch5_l58_oct := brown1972_lemma_5_8_octonion;
+            brown1972_ch5_l515_oct := brown1972_lemma_5_15_octonion;
+            brown1972_ch5_l516_oct := brown1972_lemma_5_16_octonion;
+            brown1972_ch5_t517_oct := brown1972_theorem_5_17_octonion;
+            brown1972_ch5_t511_oct := brown1972_theorem_5_11_octonion |}.
 Defined.
 
 Theorem Brown1972_lane_compiles : True.
