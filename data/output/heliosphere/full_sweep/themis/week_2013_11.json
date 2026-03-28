@@ -1,0 +1,17 @@
+{
+  "year": 2013,
+  "week": 11,
+  "start_date": "2013-03-11",
+  "end_date": "2013-03-17",
+  "n_minutes": 1197,
+  "n_curated": 47,
+  "cd_detection_rate": 0.2765957446808511,
+  "cd_false_alarm_rate": 0.0,
+  "cd_n_transitions": 6,
+  "cd_n_extra": 0,
+  "cd_median_offset": 9.999999999999432,
+  "pvi_detection_rate": 0.3191489361702128,
+  "pvi_false_alarm_rate": 0.2,
+  "bmag_detection_rate": 0.06382978723404255,
+  "bmag_false_alarm_rate": 0.8461538461538461
+}
