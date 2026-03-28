@@ -39,9 +39,11 @@
       exploration.
     - Chapter VI, pp. 30-42, Theorems 6.2-6.17:
       a standard-octonion Brown 6.10 / 6.11 basis witness surface is now
-      landed; the next source-mined Rocq seam is 6.2 / 6.3 / 6.8 / 6.9 around
-      the adjoined basis element `e`, followed by broader basis lifts beyond
-      the current octonion witness layer.
+      landed, and a direct standard-sedenion adjoined-element surface for
+      6.1 / 6.2 / 6.3 is now landed; the next source-mined Rocq seam is 6.8 /
+      6.9, which still needs an honest Brown-notation-to-standard-pair
+      reconciliation around the adjoined basis element `e`, followed by
+      broader basis lifts beyond the current octonion witness layer.
     - Chapter VII, pp. 45-56, Theorems 7.3-7.18:
       direct Rocq landing via `ZD_Criterion.v`, `C1538_MorZDSymmetry.v`, and
       `BrownAssessorEquivalence.v`.
@@ -2603,6 +2605,275 @@ Proof.
   refine {| brown1972_ch6_l610_i_oct := brown1972_lemma_6_10_i_octonion;
             brown1972_ch6_l610_ii_oct := brown1972_lemma_6_10_ii_octonion;
             brown1972_ch6_t611_oct := brown1972_theorem_6_11_octonion |}.
+Defined.
+
+Definition brown1972_sed_adjoined_e : CDSed := sed_e 8.
+
+Ltac brown1972_close_sed_ring :=
+  cbv [brown1972_sed_adjoined_e sed_assoc sed_add sed_sub sed_neg
+       sed_mul sed_conj sed_scale sed_zero sed_e
+       oct_assoc oct_add oct_sub oct_neg oct_mul oct_conj oct_scale oct_zero oct_e
+       quat_add quat_neg quat_mul quat_conj quat_scale quat_zero quat_one
+       sed_lo sed_hi oct_lo oct_hi qa qb qc qd];
+  apply (f_equal2 mkSed);
+  [apply (f_equal2 mkOct);
+   [apply (f_equal4 mkQuat); ring | apply (f_equal4 mkQuat); ring]
+  |apply (f_equal2 mkOct);
+   [apply (f_equal4 mkQuat); ring | apply (f_equal4 mkQuat); ring]].
+
+Lemma brown1972_sed_mul_adjoined_right : forall a : CDSed,
+  sed_mul a brown1972_sed_adjoined_e = mkSed (oct_neg (sed_hi a)) (sed_lo a).
+Proof.
+  intros [[[a1 a2 a3 a4] [a5 a6 a7 a8]]
+         [[a9 a10 a11 a12] [a13 a14 a15 a16]]].
+  cbv [brown1972_sed_adjoined_e sed_mul sed_e sed_lo sed_hi
+       oct_add oct_neg oct_mul oct_conj oct_lo oct_hi oct_zero oct_e
+       quat_add quat_neg quat_mul quat_conj quat_zero quat_one
+       qa qb qc qd].
+  apply (f_equal2 mkSed).
+  - apply (f_equal2 mkOct); apply (f_equal4 mkQuat); ring.
+  - apply (f_equal2 mkOct); apply (f_equal4 mkQuat); ring.
+Qed.
+
+Lemma brown1972_sed_mul_adjoined_left : forall a : CDSed,
+  sed_mul brown1972_sed_adjoined_e a =
+  mkSed (oct_neg (oct_conj (sed_hi a))) (oct_conj (sed_lo a)).
+Proof.
+  intros [[[a1 a2 a3 a4] [a5 a6 a7 a8]]
+         [[a9 a10 a11 a12] [a13 a14 a15 a16]]].
+  cbv [brown1972_sed_adjoined_e sed_mul sed_e sed_lo sed_hi
+       oct_add oct_neg oct_mul oct_conj oct_lo oct_hi oct_zero oct_e
+       quat_add quat_neg quat_mul quat_conj quat_zero quat_one
+       qa qb qc qd].
+  apply (f_equal2 mkSed).
+  - apply (f_equal2 mkOct); apply (f_equal4 mkQuat); ring.
+  - apply (f_equal2 mkOct); apply (f_equal4 mkQuat); ring.
+Qed.
+
+Theorem brown1972_theorem_6_1_sedenion : forall a b : CDSed,
+  sed_add (sed_assoc brown1972_sed_adjoined_e a b)
+          (sed_assoc a brown1972_sed_adjoined_e b) =
+  sed_zero.
+Proof.
+  intros a b.
+  unfold sed_assoc, sed_sub, sed_add.
+  rewrite brown1972_sed_mul_adjoined_left.
+  rewrite brown1972_sed_mul_adjoined_left.
+  rewrite brown1972_sed_mul_adjoined_right.
+  rewrite brown1972_sed_mul_adjoined_left.
+  destruct a as [[[a1 a2 a3 a4] [a5 a6 a7 a8]]
+                 [[a9 a10 a11 a12] [a13 a14 a15 a16]]];
+  destruct b as [[[b1 b2 b3 b4] [b5 b6 b7 b8]]
+                 [[b9 b10 b11 b12] [b13 b14 b15 b16]]];
+  cbv [brown1972_sed_adjoined_e sed_mul sed_neg sed_lo sed_hi sed_zero sed_e
+       oct_add oct_neg oct_mul oct_conj oct_lo oct_hi oct_zero oct_e
+       quat_add quat_neg quat_mul quat_conj quat_zero quat_one
+       qa qb qc qd].
+  apply (f_equal2 mkSed);
+  [apply (f_equal2 mkOct); [apply (f_equal4 mkQuat); ring | apply (f_equal4 mkQuat); ring]
+  |apply (f_equal2 mkOct); [apply (f_equal4 mkQuat); ring | apply (f_equal4 mkQuat); ring]].
+Qed.
+
+Theorem brown1972_lemma_6_2_i_sedenion : forall a b : CDSed,
+  sed_add (sed_assoc a b brown1972_sed_adjoined_e)
+          (sed_assoc a brown1972_sed_adjoined_e b) =
+  sed_zero.
+Proof.
+  intros a b.
+  unfold sed_assoc, sed_sub, sed_add.
+  rewrite brown1972_sed_mul_adjoined_right.
+  rewrite brown1972_sed_mul_adjoined_right.
+  rewrite brown1972_sed_mul_adjoined_right.
+  rewrite brown1972_sed_mul_adjoined_left.
+  destruct a as [[[a1 a2 a3 a4] [a5 a6 a7 a8]]
+                 [[a9 a10 a11 a12] [a13 a14 a15 a16]]];
+  destruct b as [[[b1 b2 b3 b4] [b5 b6 b7 b8]]
+                 [[b9 b10 b11 b12] [b13 b14 b15 b16]]];
+  cbv [brown1972_sed_adjoined_e sed_mul sed_neg sed_lo sed_hi sed_zero sed_e
+       oct_add oct_neg oct_mul oct_conj oct_lo oct_hi oct_zero oct_e
+       quat_add quat_neg quat_mul quat_conj quat_zero quat_one
+       qa qb qc qd].
+  apply (f_equal2 mkSed);
+  [apply (f_equal2 mkOct); [apply (f_equal4 mkQuat); ring | apply (f_equal4 mkQuat); ring]
+  |apply (f_equal2 mkOct); [apply (f_equal4 mkQuat); ring | apply (f_equal4 mkQuat); ring]].
+Qed.
+
+Theorem brown1972_lemma_6_2_ii_sedenion : forall a : CDSed,
+  sed_assoc brown1972_sed_adjoined_e a a = sed_zero /\
+  sed_assoc a a brown1972_sed_adjoined_e = sed_zero /\
+  sed_assoc brown1972_sed_adjoined_e brown1972_sed_adjoined_e a = sed_zero /\
+  sed_assoc a brown1972_sed_adjoined_e brown1972_sed_adjoined_e = sed_zero.
+Proof.
+  intros [[[a1 a2 a3 a4] [a5 a6 a7 a8]]
+         [[a9 a10 a11 a12] [a13 a14 a15 a16]]].
+  repeat split; brown1972_close_sed_ring.
+Qed.
+
+Theorem brown1972_lemma_6_2_iii_sedenion : forall a b : CDSed,
+  sed_add (sed_assoc brown1972_sed_adjoined_e a b)
+          (sed_assoc brown1972_sed_adjoined_e b a) =
+  sed_zero.
+Proof.
+  intros a b.
+  unfold sed_assoc, sed_sub, sed_add.
+  repeat rewrite brown1972_sed_mul_adjoined_left.
+  destruct a as [[[a1 a2 a3 a4] [a5 a6 a7 a8]]
+                 [[a9 a10 a11 a12] [a13 a14 a15 a16]]];
+  destruct b as [[[b1 b2 b3 b4] [b5 b6 b7 b8]]
+                 [[b9 b10 b11 b12] [b13 b14 b15 b16]]];
+  cbv [brown1972_sed_adjoined_e sed_mul sed_neg sed_lo sed_hi sed_zero sed_e
+       oct_add oct_neg oct_mul oct_conj oct_lo oct_hi oct_zero oct_e
+       quat_add quat_neg quat_mul quat_conj quat_zero quat_one
+       qa qb qc qd].
+  apply (f_equal2 mkSed);
+  [apply (f_equal2 mkOct); [apply (f_equal4 mkQuat); ring | apply (f_equal4 mkQuat); ring]
+  |apply (f_equal2 mkOct); [apply (f_equal4 mkQuat); ring | apply (f_equal4 mkQuat); ring]].
+Qed.
+
+Theorem brown1972_lemma_6_2_iv_sedenion : forall a b : CDSed,
+  sed_add (sed_assoc a b brown1972_sed_adjoined_e)
+          (sed_assoc b a brown1972_sed_adjoined_e) =
+  sed_zero.
+Proof.
+  intros a b.
+  unfold sed_assoc, sed_sub, sed_add.
+  repeat rewrite brown1972_sed_mul_adjoined_right.
+  destruct a as [[[a1 a2 a3 a4] [a5 a6 a7 a8]]
+                 [[a9 a10 a11 a12] [a13 a14 a15 a16]]];
+  destruct b as [[[b1 b2 b3 b4] [b5 b6 b7 b8]]
+                 [[b9 b10 b11 b12] [b13 b14 b15 b16]]];
+  cbv [brown1972_sed_adjoined_e sed_mul sed_neg sed_lo sed_hi sed_zero sed_e
+       oct_add oct_neg oct_mul oct_conj oct_lo oct_hi oct_zero oct_e
+       quat_add quat_neg quat_mul quat_conj quat_zero quat_one
+       qa qb qc qd].
+  apply (f_equal2 mkSed);
+  [apply (f_equal2 mkOct); [apply (f_equal4 mkQuat); ring | apply (f_equal4 mkQuat); ring]
+  |apply (f_equal2 mkOct); [apply (f_equal4 mkQuat); ring | apply (f_equal4 mkQuat); ring]].
+Qed.
+
+Theorem brown1972_theorem_6_3_i_sedenion : forall a b : CDSed,
+  sed_mul (sed_mul (sed_mul brown1972_sed_adjoined_e a) brown1972_sed_adjoined_e) b =
+  sed_mul brown1972_sed_adjoined_e
+          (sed_mul a (sed_mul brown1972_sed_adjoined_e b)).
+Proof.
+  intros a b.
+  rewrite brown1972_sed_mul_adjoined_left.
+  rewrite brown1972_sed_mul_adjoined_right.
+  rewrite brown1972_sed_mul_adjoined_left.
+  destruct a as [[[a1 a2 a3 a4] [a5 a6 a7 a8]]
+                 [[a9 a10 a11 a12] [a13 a14 a15 a16]]];
+  destruct b as [[[b1 b2 b3 b4] [b5 b6 b7 b8]]
+                 [[b9 b10 b11 b12] [b13 b14 b15 b16]]];
+  cbv [brown1972_sed_adjoined_e sed_mul sed_neg sed_lo sed_hi sed_zero sed_e
+       oct_add oct_neg oct_mul oct_conj oct_lo oct_hi oct_zero oct_e
+       quat_add quat_neg quat_mul quat_conj quat_zero quat_one
+       qa qb qc qd].
+  apply (f_equal2 mkSed);
+  [apply (f_equal2 mkOct); [apply (f_equal4 mkQuat); ring | apply (f_equal4 mkQuat); ring]
+  |apply (f_equal2 mkOct); [apply (f_equal4 mkQuat); ring | apply (f_equal4 mkQuat); ring]].
+Qed.
+
+Theorem brown1972_theorem_6_3_ii_sedenion : forall a b : CDSed,
+  sed_mul b (sed_mul (sed_mul brown1972_sed_adjoined_e a) brown1972_sed_adjoined_e) =
+  sed_mul (sed_mul (sed_mul b brown1972_sed_adjoined_e) a) brown1972_sed_adjoined_e.
+Proof.
+  intros a b.
+  rewrite brown1972_sed_mul_adjoined_left.
+  rewrite brown1972_sed_mul_adjoined_right.
+  rewrite brown1972_sed_mul_adjoined_right.
+  rewrite brown1972_sed_mul_adjoined_right.
+  destruct a as [[[a1 a2 a3 a4] [a5 a6 a7 a8]]
+                 [[a9 a10 a11 a12] [a13 a14 a15 a16]]];
+  destruct b as [[[b1 b2 b3 b4] [b5 b6 b7 b8]]
+                 [[b9 b10 b11 b12] [b13 b14 b15 b16]]];
+  cbv [brown1972_sed_adjoined_e sed_mul sed_neg sed_lo sed_hi sed_zero sed_e
+       oct_add oct_neg oct_mul oct_conj oct_lo oct_hi oct_zero oct_e
+       quat_add quat_neg quat_mul quat_conj quat_zero quat_one
+       qa qb qc qd].
+  apply (f_equal2 mkSed);
+  [apply (f_equal2 mkOct); [apply (f_equal4 mkQuat); ring | apply (f_equal4 mkQuat); ring]
+  |apply (f_equal2 mkOct); [apply (f_equal4 mkQuat); ring | apply (f_equal4 mkQuat); ring]].
+Qed.
+
+Theorem brown1972_theorem_6_3_iii_sedenion : forall a b : CDSed,
+  sed_mul (sed_mul brown1972_sed_adjoined_e b)
+          (sed_mul a brown1972_sed_adjoined_e) =
+  sed_mul (sed_mul brown1972_sed_adjoined_e (sed_mul b a))
+          brown1972_sed_adjoined_e.
+Proof.
+  intros a b.
+  rewrite brown1972_sed_mul_adjoined_left.
+  rewrite brown1972_sed_mul_adjoined_right.
+  rewrite brown1972_sed_mul_adjoined_left.
+  rewrite brown1972_sed_mul_adjoined_right.
+  destruct a as [[[a1 a2 a3 a4] [a5 a6 a7 a8]]
+                 [[a9 a10 a11 a12] [a13 a14 a15 a16]]];
+  destruct b as [[[b1 b2 b3 b4] [b5 b6 b7 b8]]
+                 [[b9 b10 b11 b12] [b13 b14 b15 b16]]];
+  cbv [brown1972_sed_adjoined_e sed_mul sed_neg sed_lo sed_hi sed_zero sed_e
+       oct_add oct_neg oct_mul oct_conj oct_lo oct_hi oct_zero oct_e
+       quat_add quat_neg quat_mul quat_conj quat_zero quat_one
+       qa qb qc qd].
+  apply (f_equal2 mkSed);
+  [apply (f_equal2 mkOct); [apply (f_equal4 mkQuat); ring | apply (f_equal4 mkQuat); ring]
+  |apply (f_equal2 mkOct); [apply (f_equal4 mkQuat); ring | apply (f_equal4 mkQuat); ring]].
+Qed.
+
+Record Brown1972ChapterVISedenionAdjoinedSurface := {
+  brown1972_ch6_t61_sed :
+    forall a b : CDSed,
+      sed_add (sed_assoc brown1972_sed_adjoined_e a b)
+              (sed_assoc a brown1972_sed_adjoined_e b) =
+      sed_zero;
+  brown1972_ch6_l62_i_sed :
+    forall a b : CDSed,
+      sed_add (sed_assoc a b brown1972_sed_adjoined_e)
+              (sed_assoc a brown1972_sed_adjoined_e b) =
+      sed_zero;
+  brown1972_ch6_l62_ii_sed :
+    forall a : CDSed,
+      sed_assoc brown1972_sed_adjoined_e a a = sed_zero /\
+      sed_assoc a a brown1972_sed_adjoined_e = sed_zero /\
+      sed_assoc brown1972_sed_adjoined_e brown1972_sed_adjoined_e a = sed_zero /\
+      sed_assoc a brown1972_sed_adjoined_e brown1972_sed_adjoined_e = sed_zero;
+  brown1972_ch6_l62_iii_sed :
+    forall a b : CDSed,
+      sed_add (sed_assoc brown1972_sed_adjoined_e a b)
+              (sed_assoc brown1972_sed_adjoined_e b a) =
+      sed_zero;
+  brown1972_ch6_l62_iv_sed :
+    forall a b : CDSed,
+      sed_add (sed_assoc a b brown1972_sed_adjoined_e)
+              (sed_assoc b a brown1972_sed_adjoined_e) =
+      sed_zero;
+  brown1972_ch6_t63_i_sed :
+    forall a b : CDSed,
+      sed_mul (sed_mul (sed_mul brown1972_sed_adjoined_e a) brown1972_sed_adjoined_e) b =
+      sed_mul brown1972_sed_adjoined_e
+              (sed_mul a (sed_mul brown1972_sed_adjoined_e b));
+  brown1972_ch6_t63_ii_sed :
+    forall a b : CDSed,
+      sed_mul b (sed_mul (sed_mul brown1972_sed_adjoined_e a) brown1972_sed_adjoined_e) =
+      sed_mul (sed_mul (sed_mul b brown1972_sed_adjoined_e) a) brown1972_sed_adjoined_e;
+  brown1972_ch6_t63_iii_sed :
+    forall a b : CDSed,
+      sed_mul (sed_mul brown1972_sed_adjoined_e b)
+              (sed_mul a brown1972_sed_adjoined_e) =
+      sed_mul (sed_mul brown1972_sed_adjoined_e (sed_mul b a))
+              brown1972_sed_adjoined_e
+}.
+
+Definition brown1972_sedenion_chapter_vi_adjoined_surface :
+  Brown1972ChapterVISedenionAdjoinedSurface.
+Proof.
+  refine {| brown1972_ch6_t61_sed := brown1972_theorem_6_1_sedenion;
+            brown1972_ch6_l62_i_sed := brown1972_lemma_6_2_i_sedenion;
+            brown1972_ch6_l62_ii_sed := brown1972_lemma_6_2_ii_sedenion;
+            brown1972_ch6_l62_iii_sed := brown1972_lemma_6_2_iii_sedenion;
+            brown1972_ch6_l62_iv_sed := brown1972_lemma_6_2_iv_sedenion;
+            brown1972_ch6_t63_i_sed := brown1972_theorem_6_3_i_sedenion;
+            brown1972_ch6_t63_ii_sed := brown1972_theorem_6_3_ii_sedenion;
+            brown1972_ch6_t63_iii_sed := brown1972_theorem_6_3_iii_sedenion |}.
 Defined.
 
 Theorem Brown1972_lane_compiles : True.
