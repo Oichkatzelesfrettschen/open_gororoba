@@ -1,0 +1,135 @@
+{
+  "false_negative_analysis": {
+    "n_candidates": 13,
+    "mean_rotation_deg": 1.6,
+    "mean_b_jump_nT": 4.36923076923077,
+    "classification": {
+      "Low-rotation (<15 deg)": 13
+    },
+    "candidates": [
+      {
+        "elapsed_hours": 83.0,
+        "b_jump_nT": 2.3,
+        "rotation_deg": 0.7,
+        "compressive_cv": 0.2266,
+        "pre_bmag": 38.0,
+        "post_bmag": 40.3,
+        "likely_class": "Partial/grazing crossing (low rotation + low |B| jump)"
+      },
+      {
+        "elapsed_hours": 85.31666666666666,
+        "b_jump_nT": 2.3,
+        "rotation_deg": 0.9,
+        "compressive_cv": 0.0875,
+        "pre_bmag": 41.9,
+        "post_bmag": 39.7,
+        "likely_class": "Partial/grazing crossing (low rotation + low |B| jump)"
+      },
+      {
+        "elapsed_hours": 90.8,
+        "b_jump_nT": 3.4,
+        "rotation_deg": 1.0,
+        "compressive_cv": 0.2701,
+        "pre_bmag": 40.9,
+        "post_bmag": 44.3,
+        "likely_class": "Partial/grazing crossing (low rotation + low |B| jump)"
+      },
+      {
+        "elapsed_hours": 85.33333333333333,
+        "b_jump_nT": 0.2,
+        "rotation_deg": 1.3,
+        "compressive_cv": 0.0866,
+        "pre_bmag": 40.7,
+        "post_bmag": 40.9,
+        "likely_class": "Partial/grazing crossing (low rotation + low |B| jump)"
+      },
+      {
+        "elapsed_hours": 81.06666666666666,
+        "b_jump_nT": 0.0,
+        "rotation_deg": 1.5,
+        "compressive_cv": 0.0645,
+        "pre_bmag": 55.2,
+        "post_bmag": 55.2,
+        "likely_class": "Partial/grazing crossing (low rotation + low |B| jump)"
+      },
+      {
+        "elapsed_hours": 68.2,
+        "b_jump_nT": 9.5,
+        "rotation_deg": 1.7,
+        "compressive_cv": 0.4342,
+        "pre_bmag": 42.7,
+        "post_bmag": 33.2,
+        "likely_class": "Low-rotation crossing"
+      },
+      {
+        "elapsed_hours": 90.66666666666667,
+        "b_jump_nT": 6.4,
+        "rotation_deg": 1.8,
+        "compressive_cv": 0.3472,
+        "pre_bmag": 36.9,
+        "post_bmag": 43.3,
+        "likely_class": "Low-rotation crossing"
+      },
+      {
+        "elapsed_hours": 86.28333333333333,
+        "b_jump_nT": 2.2,
+        "rotation_deg": 1.8,
+        "compressive_cv": 0.4435,
+        "pre_bmag": 29.3,
+        "post_bmag": 27.2,
+        "likely_class": "Partial/grazing crossing (low rotation + low |B| jump)"
+      },
+      {
+        "elapsed_hours": 90.66666666666667,
+        "b_jump_nT": 6.4,
+        "rotation_deg": 1.8,
+        "compressive_cv": 0.3472,
+        "pre_bmag": 36.9,
+        "post_bmag": 43.3,
+        "likely_class": "Low-rotation crossing"
+      },
+      {
+        "elapsed_hours": 68.18333333333334,
+        "b_jump_nT": 8.5,
+        "rotation_deg": 1.9,
+        "compressive_cv": 0.4693,
+        "pre_bmag": 41.4,
+        "post_bmag": 32.9,
+        "likely_class": "Low-rotation crossing"
+      },
+      {
+        "elapsed_hours": 86.4,
+        "b_jump_nT": 3.8,
+        "rotation_deg": 2.0,
+        "compressive_cv": 0.3665,
+        "pre_bmag": 27.6,
+        "post_bmag": 31.4,
+        "likely_class": "Partial/grazing crossing (low rotation + low |B| jump)"
+      },
+      {
+        "elapsed_hours": 37.81666666666667,
+        "b_jump_nT": 5.4,
+        "rotation_deg": 2.1,
+        "compressive_cv": 0.1329,
+        "pre_bmag": 32.6,
+        "post_bmag": 38.1,
+        "likely_class": "Low-rotation crossing"
+      },
+      {
+        "elapsed_hours": 60.7,
+        "b_jump_nT": 6.4,
+        "rotation_deg": 2.3,
+        "compressive_cv": 0.1501,
+        "pre_bmag": 29.8,
+        "post_bmag": 23.4,
+        "likely_class": "Low-rotation crossing"
+      }
+    ]
+  },
+  "detected_comparison": {
+    "mean_rotation_deg": 39.359047619047615,
+    "mean_b_jump_nT": 7.711428571428572,
+    "rotation_ratio_det_to_fn": 24.599404761904758
+  },
+  "interpretation": "False negatives are crossings with low field rotation (<30 deg). The associator is insensitive to partial crossings where the phase-coupling geometry changes only slightly. Detected crossings have much larger rotation (higher coupling disruption)."
+}
