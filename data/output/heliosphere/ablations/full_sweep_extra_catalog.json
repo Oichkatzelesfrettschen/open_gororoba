@@ -1,0 +1,118 @@
+{
+  "total_extra": 2480,
+  "total_curated": 4498,
+  "total_transitions": 3520,
+  "extra_curated_ratio": 0.5513561582925744,
+  "by_year": {
+    "2007": {
+      "extras": 279,
+      "curated": 634
+    },
+    "2008": {
+      "extras": 553,
+      "curated": 518
+    },
+    "2009": {
+      "extras": 1048,
+      "curated": 724
+    },
+    "2010": {
+      "extras": 74,
+      "curated": 116
+    },
+    "2011": {
+      "extras": 51,
+      "curated": 47
+    },
+    "2012": {
+      "extras": 60,
+      "curated": 350
+    },
+    "2013": {
+      "extras": 67,
+      "curated": 106
+    },
+    "2014": {
+      "extras": 34,
+      "curated": 74
+    },
+    "2015": {
+      "extras": 81,
+      "curated": 625
+    },
+    "2016": {
+      "extras": 233,
+      "curated": 1304
+    }
+  },
+  "by_season": {
+    "spring": 281,
+    "summer": 834,
+    "fall": 1070
+  },
+  "solar_min_ratio": 1.2334315169366716,
+  "solar_max_ratio": 0.30377358490566037,
+  "top_10_weeks": [
+    {
+      "year": 2009,
+      "week": 42,
+      "extras": 75,
+      "curated": 13
+    },
+    {
+      "year": 2009,
+      "week": 33,
+      "extras": 61,
+      "curated": 13
+    },
+    {
+      "year": 2009,
+      "week": 40,
+      "extras": 60,
+      "curated": 14
+    },
+    {
+      "year": 2009,
+      "week": 43,
+      "extras": 59,
+      "curated": 9
+    },
+    {
+      "year": 2009,
+      "week": 44,
+      "extras": 58,
+      "curated": 20
+    },
+    {
+      "year": 2009,
+      "week": 41,
+      "extras": 55,
+      "curated": 17
+    },
+    {
+      "year": 2009,
+      "week": 49,
+      "extras": 55,
+      "curated": 29
+    },
+    {
+      "year": 2009,
+      "week": 37,
+      "extras": 54,
+      "curated": 23
+    },
+    {
+      "year": 2009,
+      "week": 34,
+      "extras": 53,
+      "curated": 17
+    },
+    {
+      "year": 2007,
+      "week": 19,
+      "extras": 51,
+      "curated": 28
+    }
+  ],
+  "interpretation": "The 2480 extra transitions concentrate in solar minimum (1675 vs 161 at solar max), consistent with a more structured magnetosheath during quiet solar wind. The extra/curated ratio (0.55) means the CD associator detects 0.6x as many phase-coupling disruptions beyond the magnetopause-only crossing list."
+}
