@@ -93,29 +93,6 @@ heliopause?
 | Rosetta | 67P cavity | 1.9x (dir) / 5.3x (current) | |B| gradient | 40% genuine, 60% norm amplification |
 | PSP (4 enc.) | Switchbacks | 0.42-0.70 ratio | Br/|B| < -0.5 | Regime classification, not point events |
 
-### All 18 analysis runs across 9 missions
-
-| # | Mission | Environment | Distance | Labels | Detection / Metric | FA | Offset | Regime |
-|---|---------|-------------|----------|--------|-------------------|-----|--------|--------|
-| 1 | Voyager 2 | Heliopause | 119.5 AU | Bayesian CP | CP at 119.5 AU (pre=4.35, post=0.13) | -- | -- | Ordered-entry drop |
-| 2 | Voyager 1 | Heliopause / ISM | 123.8 AU | Bayesian CP | CP at 123.8 AU (pre=0.12, post=0.02) | -- | -- | Ordered-entry drop |
-| 3 | **THEMIS-A** | **Earth magnetopause** | 1 AU | **Curated Zenodo V2** | **89.0%** (105/118) | **16.7%** | 6 min | Ordered-entry drop |
-| 4 | MMS | Earth magnetopause | 1 AU | |B| gradient | 61.5% (64/104) | 40.0% | 6 min | Ordered-entry drop |
-| 5 | **Cluster-1** | **Earth bow shock** | 1 AU | **Curated OMNI** | **64.9%** (24/37) | 73.9% | 8 min | Ordered-entry drop |
-| 6 | ARTEMIS THB | Lunar wake / magnetotail | 1 AU | |B| gradient | 75.0% (21/28) | 68.1% | 4 min | Cavity/wake |
-| 7 | **MESSENGER** | **Mercury magnetopause** | 0.39 AU | **Curated Zenodo** | **64.3%** (9/14) | 84.8% | **3 min** | Ordered-entry drop |
-| 8 | Rosetta (current) | 67P cavity | 3.4 AU | |B| gradient | 5.3x cavity/outside | 0.7% | 5 min | Weak-field cavity |
-| 9 | Rosetta (direction) | 67P cavity | 3.4 AU | |B| gradient | **1.9x genuine** | 2.2% | -- | Weak-field cavity |
-| 10 | PSP E1 | Switchbacks | 0.17 AU | Br/|B| < -0.5 | Ratio 0.418 (SB/quiet) | -- | -- | Coherent suppression |
-| 11 | PSP E4 | Switchbacks | 0.13 AU | Br/|B| < -0.5 | Ratio 0.598 | -- | -- | Coherent suppression |
-| 12 | PSP E6 | Switchbacks | 0.09 AU | Br/|B| < -0.5 | Ratio 0.566 | -- | -- | Coherent suppression |
-| 13 | PSP E10 | Switchbacks | 0.07 AU | Br/|B| < -0.5 | Ratio 0.699 | -- | -- | Coherent suppression |
-| 14 | MAVEN (7-day) | Mars IMB | 1.5 AU | |B| gradient | 56.9% (148/260) | 26.4% | 7 min | Induced boundary |
-| 15 | MAVEN (14-day) | Mars IMB | 1.5 AU | |B| gradient | 53.3% (264/495) | 25.8% | 7 min | Induced boundary |
-| 16 | Solar Orbiter | Inner heliosphere baseline | 0.3-1 AU | Null hierarchy | Omega_mv = 0.045 | -- | -- | Baseline (lowest) |
-| 17 | Ulysses | Out-of-ecliptic | 1-5.4 AU | Regime conditioning | Fast-wind 2-4x amplification | -- | -- | Regime contrast |
-| 18 | Cassini + NH | Outer heliosphere | 1-50 AU | Densified cube | Part of 1.26M-row radial profile | -- | -- | Radial profile |
-
 ## Regime Taxonomy
 
 ### 1. Ordered-Region Entry Drop
@@ -286,12 +263,47 @@ All analysis binaries are pure Rust, warnings-as-errors, governance-gated:
 - `spectral_core::coherence` -- welch_psd, partial_coherence, field-aligned projection
 - `cd_kernel::cayley_dickson::associator` -- SIMD 32D/64D batch associator
 
-## Open Items
+## Open Decomposition Questions
 
-1. MMS FPI composite classifier (lower priority after THEMIS curated result)
-2. Cluster magnetopause curated crossings from ESA CAA (bow shock done)
-3. MAVEN published IMB/MPB crossing intervals for curated comparison
-4. ARTEMIS lunar wake: specific wake crossing identification
-5. Normalization ablation for ARTEMIS (weak-field wake region)
-6. PSP radial trend: systematic study of ratio vs distance with more encounters
+The following five questions decompose what the CD associator actually
+measures. Each requires targeted experiments against the existing datasets.
+
+**Q1: Coherence/phase vs plain spectral structure**
+Run phase-randomized (destroys phase, keeps spectrum) and MV-phase-randomized
+(destroys cross-channel coupling) on each dataset. If signal survives (a)
+but not (b), it is cross-channel phase organization. If destroyed by (a),
+plain spectral. Apply to THEMIS, MAVEN, MMS, and PSP switchback/quiet.
+
+**Q2: Transverse vs compressive mode content**
+Use field_aligned_spectral_fractions to decompose each dataset. Do high-
+associator intervals correlate with transverse-dominant or compressive-
+dominant spectral content? Run on V2 ISM/heliosheath, MMS pre/post
+magnetopause, MAVEN IMB, and PSP switchback/quiet.
+
+**Q3: Draping/induced-boundary topology**
+Compare associator response at induced boundaries (MAVEN, Rosetta) vs
+intrinsic dipole boundaries (THEMIS, MMS, MESSENGER). Is detection rate
+systematically higher at induced boundaries? Is the associator's sensitivity
+to draping geometry distinct from its sensitivity to reconnection geometry?
+
+**Q4: Normalization-sensitive weak-field behavior**
+Extend 4-way normalization ablation from Rosetta to ARTEMIS lunar wake and
+any other weak-field environment. Build a normalization-sensitivity map:
+ratio of direction-only to current-norm contrast per environment.
+
+**Q5: Where do standard diagnostics and the CD observable disagree?**
+For each curated-label dataset, classify: (a) false negatives -- curated
+crossings the associator missed (low rotation? partial crossing?), (b) false
+alarms -- associator transitions with no curated crossing (tangential
+discontinuities? current sheets? FTEs?). This reveals the CD observable's
+blind spots and extra sensitivities relative to standard plasma diagnostics.
+
+## Open Engineering Items
+
+1. MMS FPI composite classifier (in progress)
+2. Mercury MP vs BS label separation (in progress)
+3. Cluster magnetopause curated crossings from ESA CAA
+4. MAVEN published IMB/MPB crossing intervals
+5. ARTEMIS lunar wake: specific wake crossing identification
+6. PSP radial trend: systematic ratio vs distance with more encounters
 7. Swarm FAC sheets: de-scoped from paper core, future work
