@@ -1,0 +1,33 @@
+{
+  "n_samples": 250000,
+  "embedding_dim": 32,
+  "results": [
+    {
+      "method": "cd_associator",
+      "overall_mean": 1.3457793247657948,
+      "overall_std": 0.5113165210198264,
+      "early_mean": 1.5704392413051165,
+      "late_mean": 1.1190207406393606,
+      "temporal_contrast": 0.28744728786234586
+    },
+    {
+      "method": "random_trilinear",
+      "overall_mean": 0.9572051313018085,
+      "overall_std": 0.33055496503849885,
+      "early_mean": 0.9551682830815996,
+      "late_mean": 0.9317073667412847,
+      "temporal_contrast": 0.024562076396239207
+    },
+    {
+      "method": "l2_triplet",
+      "overall_mean": 2.0975798221532433,
+      "overall_std": 0.7402849511060302,
+      "early_mean": 2.3986908934843205,
+      "late_mean": 1.5946799254401058,
+      "temporal_contrast": 0.3351874016898919
+    }
+  ],
+  "cd_vs_random_ratio": 11.702890391887145,
+  "cd_vs_l2_ratio": 0.8575718729676058,
+  "interpretation": "CD contrast=0.2874, Random contrast=0.0246, L2 contrast=0.3352. CD/Random=11.70x, CD/L2=0.86x. CD ALGEBRAIC STRUCTURE MATTERS: significantly higher temporal contrast than random trilinear."
+}
