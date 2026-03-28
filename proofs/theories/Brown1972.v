@@ -22,7 +22,8 @@
     - Chapter III, pp. 11-16, Theorem 3.1, Theorem 3.3, Lemma 3.7,
       Theorem 3.9, and Lemma 3.10:
       a standard-octonion Brown 3.1 trace surface, a standard-octonion
-      Brown 3.3 / 3.7 involution-quadratic surface, and the abstract Rocq
+      Brown 3.3 / 3.7 involution-quadratic surface, a weaker shared
+      octonion/sedenion quadratic/conjugation core, and the abstract Rocq
       norm/involution surface with standard-octonion and direct
       standard-sedenion Brown 3.9 / 3.10 witnesses are landed here; Rust lane
       `crates/brown_1972/src/norm_symmetry.rs` remains the computational
@@ -68,9 +69,9 @@
     - broader Chapter V exponent surface beyond the current quaternion/octonion
       one-generated/trace-zero surface
     - broader Chapter III quadratic/conjugation lane beyond the landed Brown
-      3.1 / 3.3 / 3.7 standard-octonion source surface, the packaged weaker
-      quadratic/conjugation surface, and the concrete octonion/sedenion
-      3.9 / 3.10 witnesses
+      3.1 / 3.3 / 3.7 standard-octonion source surface, the weaker shared
+      octonion/sedenion quadratic/conjugation core, and the concrete
+      octonion/sedenion 3.9 / 3.10 witnesses
     - broader Brown-numbered Chapter VI basis-element theorem lanes beyond the
       landed standard-octonion 6.10 / 6.11 / 6.12 / 6.13 / 6.14 / 6.15
       basis-associator surface and the landed standard-octonion 6.16 / 6.17
@@ -3544,6 +3545,47 @@ Defined.
 Definition brown1972_sed_trace (x : CDSed) : R :=
   2 * qa (oct_lo (sed_lo x)).
 
+Lemma brown1972_sed_trace_add : forall x y : CDSed,
+  brown1972_sed_trace (sed_add x y) =
+  (brown1972_sed_trace x + brown1972_sed_trace y)%R.
+Proof.
+  intros [[[a1 a2 a3 a4] [a5 a6 a7 a8]]
+         [[a9 a10 a11 a12] [a13 a14 a15 a16]]]
+         [[[b1 b2 b3 b4] [b5 b6 b7 b8]]
+         [[b9 b10 b11 b12] [b13 b14 b15 b16]]].
+  cbv [brown1972_sed_trace sed_add sed_lo oct_add oct_lo qa quat_add].
+  ring.
+Qed.
+
+Lemma brown1972_sed_trace_neg : forall x : CDSed,
+  brown1972_sed_trace (sed_neg x) = (- brown1972_sed_trace x)%R.
+Proof.
+  intros [[[a1 a2 a3 a4] [a5 a6 a7 a8]]
+         [[a9 a10 a11 a12] [a13 a14 a15 a16]]].
+  cbv [brown1972_sed_trace sed_neg sed_lo oct_lo qa oct_neg quat_neg].
+  ring.
+Qed.
+
+Lemma brown1972_sed_trace_conj : forall x : CDSed,
+  brown1972_sed_trace (sed_conj x) = brown1972_sed_trace x.
+Proof.
+  intros [[[a1 a2 a3 a4] [a5 a6 a7 a8]]
+         [[a9 a10 a11 a12] [a13 a14 a15 a16]]].
+  cbv [brown1972_sed_trace sed_conj sed_lo oct_lo qa oct_conj quat_conj].
+  ring.
+Qed.
+
+Lemma brown1972_sed_trace_sub : forall x y : CDSed,
+  brown1972_sed_trace (sed_sub x y) =
+  (brown1972_sed_trace x - brown1972_sed_trace y)%R.
+Proof.
+  intros x y.
+  unfold sed_sub.
+  rewrite brown1972_sed_trace_add.
+  rewrite brown1972_sed_trace_neg.
+  ring.
+Qed.
+
 Lemma brown1972_oct_trace_zero_iff_pure : forall x : CDOct,
   brown1972_oct_trace x = 0%R <-> oct_conj x = oct_neg x.
 Proof.
@@ -3559,6 +3601,96 @@ Proof.
     rewrite brown1972_oct_trace_neg in H.
     lra.
 Qed.
+
+Lemma brown1972_sed_trace_zero_iff_pure : forall x : CDSed,
+  brown1972_sed_trace x = 0%R <-> sed_conj x = sed_neg x.
+Proof.
+  intros [[[a1 a2 a3 a4] [a5 a6 a7 a8]]
+         [[a9 a10 a11 a12] [a13 a14 a15 a16]]].
+  split; intro H.
+  - cbv [brown1972_sed_trace sed_conj sed_neg sed_lo sed_hi
+         oct_conj oct_neg oct_lo oct_hi
+         quat_conj quat_neg qa qb qc qd] in H |- *.
+    apply (f_equal2 mkSed).
+    + apply (f_equal2 mkOct).
+      * apply (f_equal4 mkQuat); lra.
+      * apply (f_equal4 mkQuat); lra.
+    + apply (f_equal2 mkOct).
+      * apply (f_equal4 mkQuat); lra.
+      * apply (f_equal4 mkQuat); lra.
+  - apply (f_equal brown1972_sed_trace) in H.
+    rewrite brown1972_sed_trace_conj in H.
+    rewrite brown1972_sed_trace_neg in H.
+    lra.
+Qed.
+
+Lemma brown1972_sed_quadratic_identity : forall x : CDSed,
+  sed_mul x x =
+  sed_add (sed_scale (brown1972_sed_trace x) x)
+          (sed_scale (- sed_norm_sq x) sed_one).
+Proof.
+  intros [[[a1 a2 a3 a4] [a5 a6 a7 a8]]
+         [[a9 a10 a11 a12] [a13 a14 a15 a16]]].
+  cbv [brown1972_sed_trace sed_mul sed_add sed_scale sed_norm_sq sed_one
+       sed_lo sed_hi sed_conj sed_neg
+       oct_norm_sq oct_add oct_scale oct_mul oct_conj oct_neg oct_lo oct_hi
+       oct_zero quat_norm_sq quat_add quat_scale quat_mul quat_conj quat_neg
+       quat_zero quat_one qa qb qc qd].
+  apply (f_equal2 mkSed).
+  - apply (f_equal2 mkOct).
+    + apply (f_equal4 mkQuat); ring.
+    + apply (f_equal4 mkQuat); ring.
+  - apply (f_equal2 mkOct).
+    + apply (f_equal4 mkQuat); ring.
+    + apply (f_equal4 mkQuat); ring.
+Qed.
+
+Section BrownChapterIIIQuadraticConjugationCore.
+  Context {A : Type}.
+  Variable zero one : A.
+  Variable add mul : A -> A -> A.
+  Variable neg conj : A -> A.
+  Variable scale : R -> A -> A.
+  Variable trace norm_sq : A -> R.
+
+  Record Brown1972QuadraticConjugationCoreSurface := {
+    brown1972_ch3_qcc_add_zero_left :
+      forall x : A, add zero x = x;
+    brown1972_ch3_qcc_scale_zero :
+      forall x : A, scale 0 x = zero;
+    brown1972_ch3_qcc_quadratic :
+      forall x : A,
+        mul x x =
+        add (scale (trace x) x)
+            (scale (- norm_sq x) one);
+    brown1972_ch3_qcc_trace_zero_iff_pure :
+      forall x : A,
+        trace x = 0%R <-> conj x = neg x
+  }.
+
+  Context (Surf : Brown1972QuadraticConjugationCoreSurface).
+
+  Theorem brown1972_ch3_qcc_pure_square : forall x : A,
+    trace x = 0%R ->
+    mul x x = scale (- norm_sq x) one.
+  Proof.
+    intros x Htr.
+    rewrite (brown1972_ch3_qcc_quadratic Surf x).
+    rewrite Htr.
+    rewrite (brown1972_ch3_qcc_scale_zero Surf x).
+    apply (brown1972_ch3_qcc_add_zero_left Surf).
+  Qed.
+
+  Theorem brown1972_ch3_qcc_conj_neg_pure_square : forall x : A,
+    conj x = neg x ->
+    mul x x = scale (- norm_sq x) one.
+  Proof.
+    intros x Hpure.
+    apply brown1972_ch3_qcc_pure_square.
+    apply (proj2 (brown1972_ch3_qcc_trace_zero_iff_pure Surf x)).
+    exact Hpure.
+  Qed.
+End BrownChapterIIIQuadraticConjugationCore.
 
 Record Brown1972ChapterIIIQuadraticConjugationSurface := {
   brown1972_ch3_qc_t31_i :
@@ -3590,6 +3722,58 @@ Proof.
             brown1972_ch3_qc_quadratic := brown1972_oct_quadratic_identity;
             brown1972_ch3_qc_trace_zero_iff_pure := brown1972_oct_trace_zero_iff_pure;
             brown1972_ch3_qc_pure_square := brown1972_lemma_5_13_octonion |}.
+Defined.
+
+Definition brown1972_octonion_chapter_iii_quadratic_core_surface :
+  Brown1972QuadraticConjugationCoreSurface
+    oct_zero brown1972_oct_one oct_add oct_mul oct_neg oct_conj oct_scale
+    brown1972_oct_trace oct_norm_sq.
+Proof.
+  refine {| brown1972_ch3_qcc_add_zero_left := oct_add_zero_left;
+            brown1972_ch3_qcc_scale_zero := oct_scale_zero;
+            brown1972_ch3_qcc_quadratic := brown1972_oct_quadratic_identity;
+            brown1972_ch3_qcc_trace_zero_iff_pure := brown1972_oct_trace_zero_iff_pure |}.
+Defined.
+
+Definition brown1972_sedenion_chapter_iii_quadratic_core_surface :
+  Brown1972QuadraticConjugationCoreSurface
+    sed_zero sed_one sed_add sed_mul sed_neg sed_conj sed_scale
+    brown1972_sed_trace sed_norm_sq.
+Proof.
+  refine {| brown1972_ch3_qcc_add_zero_left := sed_add_zero_left;
+            brown1972_ch3_qcc_scale_zero := sed_scale_zero;
+            brown1972_ch3_qcc_quadratic := brown1972_sed_quadratic_identity;
+            brown1972_ch3_qcc_trace_zero_iff_pure := brown1972_sed_trace_zero_iff_pure |}.
+Defined.
+
+Theorem brown1972_sedenion_pure_square : forall x : CDSed,
+  brown1972_sed_trace x = 0%R ->
+  sed_mul x x = sed_scale (- sed_norm_sq x) sed_one.
+Proof.
+  apply (brown1972_ch3_qcc_pure_square
+           sed_zero sed_one sed_add sed_mul sed_neg sed_conj sed_scale
+           brown1972_sed_trace sed_norm_sq
+           brown1972_sedenion_chapter_iii_quadratic_core_surface).
+Qed.
+
+Record Brown1972ChapterIIIQuadraticCoreLiftSurface := {
+  brown1972_ch3_qc_core_oct :
+    Brown1972QuadraticConjugationCoreSurface
+      oct_zero brown1972_oct_one oct_add oct_mul oct_neg oct_conj oct_scale
+      brown1972_oct_trace oct_norm_sq;
+  brown1972_ch3_qc_core_sed :
+    Brown1972QuadraticConjugationCoreSurface
+      sed_zero sed_one sed_add sed_mul sed_neg sed_conj sed_scale
+      brown1972_sed_trace sed_norm_sq
+}.
+
+Definition brown1972_chapter_iii_quadratic_core_lift_surface :
+  Brown1972ChapterIIIQuadraticCoreLiftSurface.
+Proof.
+  refine {| brown1972_ch3_qc_core_oct :=
+              brown1972_octonion_chapter_iii_quadratic_core_surface;
+            brown1972_ch3_qc_core_sed :=
+              brown1972_sedenion_chapter_iii_quadratic_core_surface |}.
 Defined.
 
 Lemma brown1972_sed_hi_trace_zero_iff_adjoined_commutes_with_conj :
