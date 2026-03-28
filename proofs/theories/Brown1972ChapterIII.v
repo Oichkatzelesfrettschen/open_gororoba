@@ -1349,3 +1349,112 @@ Proof.
             brown1972_ch3_ext_quat_tqc :=
               brown1972_quaternion_chapter_iii_trace_quadratic_surface |}.
 Defined.
+
+Record Brown1972ChapterIIISourcedInterface
+  (A : Type)
+  (zero one : A)
+  (add sub mul : A -> A -> A)
+  (neg conj : A -> A)
+  (scale : R -> A -> A)
+  (trace norm_sq : A -> R) := {
+  brown1972_ch3_src_tqc :
+    Brown1972TraceQuadraticConjugationSurface
+      zero one add mul neg conj scale trace norm_sq;
+  brown1972_ch3_src_t39_i :
+    forall x y : A, norm_sq (mul x (conj y)) = norm_sq (mul x y);
+  brown1972_ch3_src_t39_ii :
+    forall x y : A, norm_sq (mul (conj x) y) = norm_sq (mul x y);
+  brown1972_ch3_src_t39_iii :
+    forall x y : A, norm_sq (mul x y) = norm_sq (mul y x);
+  brown1972_ch3_src_l310 :
+    forall x y : A,
+      (norm_sq (add x y) + norm_sq (sub x y))%R =
+      (2 * (norm_sq x + norm_sq y))%R
+}.
+
+Definition brown1972_quaternion_chapter_iii_sourced_interface :
+  Brown1972ChapterIIISourcedInterface
+    CDQuat
+    quat_zero quat_one quat_add brown1972_quat_sub quat_mul
+    quat_neg quat_conj quat_scale brown1972_quat_trace quat_norm_sq.
+Proof.
+  refine {| brown1972_ch3_src_tqc :=
+              brown1972_quaternion_chapter_iii_trace_quadratic_surface;
+            brown1972_ch3_src_t39_i :=
+              brown1972_theorem_3_9_i_quaternion;
+            brown1972_ch3_src_t39_ii :=
+              brown1972_theorem_3_9_ii_quaternion;
+            brown1972_ch3_src_t39_iii :=
+              brown1972_theorem_3_9_iii_quaternion;
+            brown1972_ch3_src_l310 :=
+              brown1972_lemma_3_10_quaternion |}.
+Defined.
+
+Definition brown1972_octonion_chapter_iii_sourced_interface :
+  Brown1972ChapterIIISourcedInterface
+    CDOct
+    oct_zero brown1972_oct_one oct_add oct_sub oct_mul
+    oct_neg oct_conj oct_scale brown1972_oct_trace oct_norm_sq.
+Proof.
+  refine {| brown1972_ch3_src_tqc :=
+              brown1972_octonion_chapter_iii_trace_quadratic_surface;
+            brown1972_ch3_src_t39_i :=
+              brown1972_theorem_3_9_i_octonion;
+            brown1972_ch3_src_t39_ii :=
+              brown1972_theorem_3_9_ii_octonion;
+            brown1972_ch3_src_t39_iii :=
+              brown1972_theorem_3_9_iii_octonion;
+            brown1972_ch3_src_l310 :=
+              brown1972_octonion_lemma_3_10 |}.
+Defined.
+
+Definition brown1972_sedenion_chapter_iii_sourced_interface :
+  Brown1972ChapterIIISourcedInterface
+    CDSed
+    sed_zero sed_one sed_add sed_sub sed_mul
+    sed_neg sed_conj sed_scale brown1972_sed_trace sed_norm_sq.
+Proof.
+  refine {| brown1972_ch3_src_tqc :=
+              brown1972_sedenion_chapter_iii_trace_quadratic_surface;
+            brown1972_ch3_src_t39_i :=
+              brown1972_theorem_3_9_i_sedenion;
+            brown1972_ch3_src_t39_ii :=
+              brown1972_theorem_3_9_ii_sedenion;
+            brown1972_ch3_src_t39_iii :=
+              brown1972_theorem_3_9_iii_sedenion;
+            brown1972_ch3_src_l310 :=
+              brown1972_lemma_3_10_sedenion |}.
+Defined.
+
+Record Brown1972ChapterIIIReusableAnchorSurface := {
+  brown1972_ch3_anchor_base :
+    Brown1972ChapterIIIExtendedTowerSurface;
+  brown1972_ch3_anchor_quat :
+    Brown1972ChapterIIISourcedInterface
+      CDQuat
+      quat_zero quat_one quat_add brown1972_quat_sub quat_mul
+      quat_neg quat_conj quat_scale brown1972_quat_trace quat_norm_sq;
+  brown1972_ch3_anchor_oct :
+    Brown1972ChapterIIISourcedInterface
+      CDOct
+      oct_zero brown1972_oct_one oct_add oct_sub oct_mul
+      oct_neg oct_conj oct_scale brown1972_oct_trace oct_norm_sq;
+  brown1972_ch3_anchor_sed :
+    Brown1972ChapterIIISourcedInterface
+      CDSed
+      sed_zero sed_one sed_add sed_sub sed_mul
+      sed_neg sed_conj sed_scale brown1972_sed_trace sed_norm_sq
+}.
+
+Definition brown1972_chapter_iii_reusable_anchor_surface :
+  Brown1972ChapterIIIReusableAnchorSurface.
+Proof.
+  refine {| brown1972_ch3_anchor_base :=
+              brown1972_chapter_iii_extended_tower_surface;
+            brown1972_ch3_anchor_quat :=
+              brown1972_quaternion_chapter_iii_sourced_interface;
+            brown1972_ch3_anchor_oct :=
+              brown1972_octonion_chapter_iii_sourced_interface;
+            brown1972_ch3_anchor_sed :=
+              brown1972_sedenion_chapter_iii_sourced_interface |}.
+Defined.
