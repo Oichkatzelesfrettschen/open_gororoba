@@ -3627,6 +3627,89 @@ Proof.
             brown1972_ch6_c67_lift := brown1972_corollary_6_7_sedenion_lift |}.
 Defined.
 
+Lemma brown1972_sedenion_adjoined_polynomial_decompose : forall x : CDSed,
+  x =
+  sed_add (brown1972_sed_oct_embed (sed_lo x))
+          (brown1972_sed_poly_embed (sed_hi x)).
+Proof.
+  intros [a b].
+  exact (brown1972_sed_oct_poly_decompose a b).
+Qed.
+
+Theorem brown1972_theorem_6_5_sedenion_decomposed : forall x y : CDSed,
+  brown1972_ch6_67_polynomial_mul (sed_lo x) (sed_hi x) (sed_lo y) (sed_hi y) =
+  sed_mul x y.
+Proof.
+  intros x y.
+  transitivity
+    (sed_mul
+       (sed_add (brown1972_sed_oct_embed (sed_lo x))
+                (brown1972_sed_poly_embed (sed_hi x)))
+       (sed_add (brown1972_sed_oct_embed (sed_lo y))
+                (brown1972_sed_poly_embed (sed_hi y)))).
+  - apply brown1972_theorem_6_5_standard_octonion_sedenion_lift.
+  - rewrite <- (brown1972_sedenion_adjoined_polynomial_decompose x).
+    rewrite <- (brown1972_sedenion_adjoined_polynomial_decompose y).
+    reflexivity.
+Qed.
+
+Section BrownChapterVIAdjoinedPolynomialDecomposition.
+  Context {Base Ext : Type}.
+  Variable base_mul : Base -> Base -> Base.
+  Variable base_neg : Base -> Base.
+  Variable base_conj : Base -> Base.
+  Variable ext_add : Ext -> Ext -> Ext.
+  Variable ext_mul : Ext -> Ext -> Ext.
+  Variable ext_assoc : Ext -> Ext -> Ext -> Ext.
+  Variable ext_neg : Ext -> Ext.
+  Variable base_embed poly_embed : Base -> Ext.
+  Variable adjoined_e : Ext.
+  Variable poly_mul : Base -> Base -> Base -> Base -> Ext.
+  Variable ext_lo ext_hi : Ext -> Base.
+
+  Variable Lift :
+    Brown1972ChapterVIAdjoinedPolynomialLiftSurface
+      Base Ext
+      base_mul base_neg base_conj
+      ext_add ext_mul ext_assoc ext_neg
+      base_embed poly_embed
+      adjoined_e poly_mul.
+
+  Hypothesis ext_decompose : forall x : Ext,
+    x = ext_add (base_embed (ext_lo x))
+                (poly_embed (ext_hi x)).
+
+  Theorem brown1972_ch6_t65_decomposed : forall x y : Ext,
+    poly_mul (ext_lo x) (ext_hi x) (ext_lo y) (ext_hi y) =
+    ext_mul x y.
+  Proof.
+    intros x y.
+    destruct Lift as [H64 H65 H66i H66ii H66iii H67].
+    transitivity
+      (ext_mul (ext_add (base_embed (ext_lo x)) (poly_embed (ext_hi x)))
+               (ext_add (base_embed (ext_lo y)) (poly_embed (ext_hi y)))).
+    - apply H65.
+    - rewrite <- (ext_decompose x).
+      rewrite <- (ext_decompose y).
+      reflexivity.
+  Qed.
+
+  Theorem brown1972_ch6_c67_decomposed : forall x y : Ext,
+    poly_mul (ext_lo x) (ext_hi x) (ext_lo y) (ext_hi y) =
+    ext_mul x y.
+  Proof.
+    intros x y.
+    destruct Lift as [H64 H65 H66i H66ii H66iii H67].
+    transitivity
+      (ext_mul (ext_add (base_embed (ext_lo x)) (poly_embed (ext_hi x)))
+               (ext_add (base_embed (ext_lo y)) (poly_embed (ext_hi y)))).
+    - apply H67.
+    - rewrite <- (ext_decompose x).
+      rewrite <- (ext_decompose y).
+      reflexivity.
+  Qed.
+End BrownChapterVIAdjoinedPolynomialDecomposition.
+
 Definition brown1972_sed_trace (x : CDSed) : R :=
   2 * qa (oct_lo (sed_lo x)).
 
@@ -3777,6 +3860,38 @@ Section BrownChapterIIIQuadraticConjugationCore.
   Qed.
 End BrownChapterIIIQuadraticConjugationCore.
 
+Section BrownChapterIIITraceQuadraticConjugation.
+  Context {A : Type}.
+  Variable zero one : A.
+  Variable add mul : A -> A -> A.
+  Variable neg conj : A -> A.
+  Variable scale : R -> A -> A.
+  Variable trace norm_sq : A -> R.
+
+  Record Brown1972TraceQuadraticConjugationSurface := {
+    brown1972_ch3_tqc_core :
+      Brown1972QuadraticConjugationCoreSurface
+        zero one add mul neg conj scale trace norm_sq;
+    brown1972_ch3_tqc_t31_i :
+      forall x y : A,
+        trace (mul x y) = trace (mul y x);
+    brown1972_ch3_tqc_t31_ii :
+      forall x y z : A,
+        trace (mul (mul x y) z) = trace (mul x (mul y z))
+  }.
+
+  Context (Surf : Brown1972TraceQuadraticConjugationSurface).
+
+  Theorem brown1972_ch3_tqc_pure_square : forall x : A,
+    trace x = 0%R ->
+    mul x x = scale (- norm_sq x) one.
+  Proof.
+    apply (brown1972_ch3_qcc_pure_square
+             zero one add mul neg conj scale trace norm_sq
+             (brown1972_ch3_tqc_core Surf)).
+  Qed.
+End BrownChapterIIITraceQuadraticConjugation.
+
 Record Brown1972ChapterIIIQuadraticConjugationSurface := {
   brown1972_ch3_qc_t31_i :
     forall x y : CDOct,
@@ -3829,6 +3944,17 @@ Proof.
             brown1972_ch3_qcc_scale_zero := sed_scale_zero;
             brown1972_ch3_qcc_quadratic := brown1972_sed_quadratic_identity;
             brown1972_ch3_qcc_trace_zero_iff_pure := brown1972_sed_trace_zero_iff_pure |}.
+Defined.
+
+Definition brown1972_octonion_chapter_iii_trace_quadratic_surface :
+  Brown1972TraceQuadraticConjugationSurface
+    oct_zero brown1972_oct_one oct_add oct_mul oct_neg oct_conj oct_scale
+    brown1972_oct_trace oct_norm_sq.
+Proof.
+  refine {| brown1972_ch3_tqc_core :=
+              brown1972_octonion_chapter_iii_quadratic_core_surface;
+            brown1972_ch3_tqc_t31_i := brown1972_theorem_3_1_i_octonion;
+            brown1972_ch3_tqc_t31_ii := brown1972_theorem_3_1_ii_octonion |}.
 Defined.
 
 Theorem brown1972_sedenion_pure_square : forall x : CDSed,

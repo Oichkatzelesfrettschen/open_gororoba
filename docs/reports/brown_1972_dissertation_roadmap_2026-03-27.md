@@ -90,10 +90,10 @@ Practical reading of the source:
 |--------------|----------------------|--------|
 | Chapter I | Brown lane header / roadmap only | contextual chapter, not a theorem surface |
 | Chapter II | Brown lane header / roadmap only | literature chapter, not a theorem surface |
-| Chapter III | `proofs/theories/Brown1972.v` + `crates/brown_1972/src/norm_symmetry.rs` | Brown 3.1 standard-octonion trace surface, Brown 3.3 / Lemma 3.7 standard-octonion involution-quadratic surface, abstract Rocq 3.9 / 3.10 surface with standard-octonion and direct standard-sedenion witnesses, and a shared weaker quadratic/conjugation core now instantiated for both octonions and sedenions are landed; the next abstraction step is to lift that core beyond the current octonion/sedenion standard-model packaging |
+| Chapter III | `proofs/theories/Brown1972.v` + `crates/brown_1972/src/norm_symmetry.rs` | Brown 3.1 standard-octonion trace surface, Brown 3.3 / Lemma 3.7 standard-octonion involution-quadratic surface, abstract Rocq 3.9 / 3.10 surface with standard-octonion and direct standard-sedenion witnesses, a shared weaker quadratic/conjugation core instantiated for both octonions and sedenions, and a generic trace/quadratic wrapper above that core with a standard-octonion instance are landed; the next abstraction step is to lift that lane farther beyond the current standard-model packaging |
 | Chapter IV | `proofs/theories/Brown1972.v` plus local associator support | source-driven standard-tower witness surface for 4.2, 4.3, and 4.4 landed |
 | Chapter V | `proofs/theories/Brown1972.v` + `crates/brown_1972/src/exponent_properties.rs` | generic one-generated/trace-zero Rocq exponent surface landed, instantiated at quaternion and octonion level |
-| Chapter VI | `proofs/theories/Brown1972.v` plus sign-table infrastructure and `crates/brown_1972/src/basis_element_properties.rs` | standard-octonion Brown 6.10 / 6.11 / 6.12 / 6.13 / 6.14 / 6.15 basis-associator surface landed, source-faithful standard-octonion Brown 6.16 / 6.17 anticommutator surface landed, a direct standard-sedenion adjoined-element / polynomial surface for 6.1 / 6.2 / 6.3 / 6.4 / 6.5 / 6.6 / 6.7 / 6.8 landed, that `6.4-6.7` lane is now also packaged as a broader adjoined/polynomial lift interface above the literal `mkSed` coordinates, and proof-faithful constructive 6.9 witnesses are landed; Brown's printed 6.9 pointwise iff wording does not survive unchanged in the repo's literal standard-pair coordinates, so the current Rocq surface records the constructive implications and the family form Brown's p.35 proof actually uses; next source-driven tranche is any farther non-standard-model Chapter VI lift |
+| Chapter VI | `proofs/theories/Brown1972.v` plus sign-table infrastructure and `crates/brown_1972/src/basis_element_properties.rs` | standard-octonion Brown 6.10 / 6.11 / 6.12 / 6.13 / 6.14 / 6.15 basis-associator surface landed, source-faithful standard-octonion Brown 6.16 / 6.17 anticommutator surface landed, a direct standard-sedenion adjoined-element / polynomial surface for 6.1 / 6.2 / 6.3 / 6.4 / 6.5 / 6.6 / 6.7 / 6.8 landed, that `6.4-6.7` lane is now also packaged both as a broader adjoined/polynomial lift interface above the literal `mkSed` coordinates and as a decomposition-level `lo/hi` theorem surface, and proof-faithful constructive 6.9 witnesses are landed; Brown's printed 6.9 pointwise iff wording does not survive unchanged in the repo's literal standard-pair coordinates, so the current Rocq surface records the constructive implications and the family form Brown's p.35 proof actually uses; next source-driven tranche is any farther non-standard-model Chapter VI lift |
 | Chapter VII | `ZD_Criterion.v`, `C1538_MorZDSymmetry.v`, `BrownAssessorEquivalence.v`, Rust support | partially formalized, but not yet chapter-complete in Brown numbering |
 | Chapter VIII | no dedicated paper surface yet | open |
 | Appendix C | `crates/brown_1972/src/pl1_emulator.rs` | Rust bridge only |
@@ -111,6 +111,7 @@ To avoid overfitting to Chapter III, Brown should now be mined in this order:
    - keep reusing `CDPowerAssociative.v` and related infrastructure
 3. Chapter III broader quadratic/conjugation surfacing beyond the landed Brown 3.1 / 3.3 / Lemma 3.7 standard-octonion source surface and standard-sedenion witnesses
    - the weaker packaged quadratic/conjugation core is now landed and instantiated for both octonions and sedenions
+   - a generic trace/quadratic wrapper above that core is also landed, with a standard-octonion instance
    - continue lifting away from full norm multiplicativity toward Brown's actual quadratic/conjugation hypotheses
    - use the dissertation statements directly, not only the Rust checklist
 4. Chapter VI basis-element surface
@@ -118,6 +119,7 @@ To avoid overfitting to Chapter III, Brown should now be mined in this order:
    - standard-octonion 6.16 / 6.17 anticommutator witnesses are now landed
    - standard-sedenion adjoined-element / polynomial 6.1 / 6.2 / 6.3 / 6.4 / 6.5 / 6.6 / 6.7 / 6.8 plus proof-faithful constructive 6.9 witnesses are now landed
    - the `6.4-6.7` adjoined/polynomial lane is now also packaged as a broader lift interface above the literal standard-sedenion coordinates
+   - the same lane now has a decomposition-level `lo/hi` theorem surface above the explicit standard embeddings
    - next fold is any farther non-standard-model Chapter VI lift
    - then lift beyond the current octonion witness layer
 5. Chapter VII gap fill
