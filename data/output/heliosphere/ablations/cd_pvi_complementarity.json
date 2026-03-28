@@ -1,0 +1,17 @@
+{
+  "cd_dominant_weeks": 7,
+  "pvi_dominant_weeks": 7,
+  "cd_dominant_characteristics": {
+    "mean_bmag": 50.39085834600105,
+    "mean_cv": 0.707080385185925,
+    "mean_rotation": 1.8570934942908133
+  },
+  "pvi_dominant_characteristics": {
+    "mean_bmag": 50.641975147042686,
+    "mean_cv": 0.7131443501048006,
+    "mean_rotation": 3.3725372274796164
+  },
+  "union_estimated_detection": 0.5454279015240329,
+  "max_per_week_detection": 0.49384525205158264,
+  "good_weeks_union": 0.8663271801400382
+}
