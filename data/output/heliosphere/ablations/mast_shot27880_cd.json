@@ -1,0 +1,171 @@
+{
+  "zarr_dir": "data/external/mast/shot27880.zarr/ama",
+  "embedding_dim": 32,
+  "stride": 50,
+  "normalization": "direction",
+  "n_samples": 650000,
+  "time_range": [
+    -0.09999919682741165,
+    1.1999988555908203
+  ],
+  "signal_range": [
+    -0.0006290997262112796,
+    0.0010842577321454883
+  ],
+  "n_windows": 25,
+  "results": [
+    {
+      "center_time": -0.04999919608235359,
+      "mean_associator": 1.559296402047471,
+      "max_associator": 3.460910824710494,
+      "n_embeddings": 984
+    },
+    {
+      "center_time": 8.046627044677734e-7,
+      "mean_associator": 1.5492171883871595,
+      "max_associator": 4.1670636866920345,
+      "n_embeddings": 984
+    },
+    {
+      "center_time": 0.050000809133052826,
+      "mean_associator": 1.5689536145626968,
+      "max_associator": 4.1670636866920345,
+      "n_embeddings": 984
+    },
+    {
+      "center_time": 0.10000080615282059,
+      "mean_associator": 1.6164949682124166,
+      "max_associator": 4.073478693693056,
+      "n_embeddings": 984
+    },
+    {
+      "center_time": 0.15000081062316895,
+      "mean_associator": 1.5137793135784845,
+      "max_associator": 3.536776144119521,
+      "n_embeddings": 984
+    },
+    {
+      "center_time": 0.2000008225440979,
+      "mean_associator": 1.4873114824935092,
+      "max_associator": 3.4462552794994297,
+      "n_embeddings": 984
+    },
+    {
+      "center_time": 0.25000080466270447,
+      "mean_associator": 1.5019353149589818,
+      "max_associator": 3.586413299242664,
+      "n_embeddings": 984
+    },
+    {
+      "center_time": 0.3000008165836334,
+      "mean_associator": 1.4526927825874867,
+      "max_associator": 3.357314446127033,
+      "n_embeddings": 984
+    },
+    {
+      "center_time": 0.35000079870224,
+      "mean_associator": 1.495632610637886,
+      "max_associator": 3.357314446127033,
+      "n_embeddings": 984
+    },
+    {
+      "center_time": 0.40000081062316895,
+      "mean_associator": 1.5045851135436246,
+      "max_associator": 3.259375962233708,
+      "n_embeddings": 984
+    },
+    {
+      "center_time": 0.4500008225440979,
+      "mean_associator": 1.5659440583413546,
+      "max_associator": 3.8482229491448803,
+      "n_embeddings": 984
+    },
+    {
+      "center_time": 0.5000008344650269,
+      "mean_associator": 1.6357764073683034,
+      "max_associator": 3.973572293907639,
+      "n_embeddings": 984
+    },
+    {
+      "center_time": 0.550000786781311,
+      "mean_associator": 1.563103902891678,
+      "max_associator": 3.973572293907639,
+      "n_embeddings": 984
+    },
+    {
+      "center_time": 0.60000079870224,
+      "mean_associator": 1.5282985662847717,
+      "max_associator": 3.284061201758416,
+      "n_embeddings": 984
+    },
+    {
+      "center_time": 0.650000810623169,
+      "mean_associator": 1.541168203808495,
+      "max_associator": 3.284061201758416,
+      "n_embeddings": 984
+    },
+    {
+      "center_time": 0.7000008225440979,
+      "mean_associator": 1.5155137422970593,
+      "max_associator": 2.767939887120977,
+      "n_embeddings": 984
+    },
+    {
+      "center_time": 0.7500008344650269,
+      "mean_associator": 1.514541917521502,
+      "max_associator": 3.0650600306455167,
+      "n_embeddings": 984
+    },
+    {
+      "center_time": 0.800000786781311,
+      "mean_associator": 1.5261270843207007,
+      "max_associator": 3.40050158093683,
+      "n_embeddings": 984
+    },
+    {
+      "center_time": 0.85000079870224,
+      "mean_associator": 1.5264290882354843,
+      "max_associator": 3.40050158093683,
+      "n_embeddings": 984
+    },
+    {
+      "center_time": 0.900000810623169,
+      "mean_associator": 1.5244800206196694,
+      "max_associator": 2.684192199645782,
+      "n_embeddings": 984
+    },
+    {
+      "center_time": 0.9500007629394531,
+      "mean_associator": 1.4879002588358434,
+      "max_associator": 2.6216239251434534,
+      "n_embeddings": 984
+    },
+    {
+      "center_time": 1.0000008344650269,
+      "mean_associator": 1.4855896553417893,
+      "max_associator": 2.751403028348249,
+      "n_embeddings": 984
+    },
+    {
+      "center_time": 1.050000786781311,
+      "mean_associator": 1.5070161826784403,
+      "max_associator": 2.751403028348249,
+      "n_embeddings": 984
+    },
+    {
+      "center_time": 1.1000008583068848,
+      "mean_associator": 1.5210753430031692,
+      "max_associator": 2.612202193036867,
+      "n_embeddings": 984
+    },
+    {
+      "center_time": 1.150000810623169,
+      "mean_associator": 1.5526193471292409,
+      "max_associator": 3.2209109830095883,
+      "n_embeddings": 984
+    }
+  ],
+  "overall_mean_a": 1.5298193027874891,
+  "overall_max_a": 4.1670636866920345,
+  "interpretation": "MAST shot 30420 ama Mirnov (n=2 + n=odd, 2 channels). 25 windows, overall A_mean=1.529819, A_max=4.167064. 32D embedding, stride=50, direction."
+}
