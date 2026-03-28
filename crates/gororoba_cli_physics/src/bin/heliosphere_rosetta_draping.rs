@@ -286,6 +286,29 @@ fn main() -> Result<()> {
                     v[s * channels + 2] = rec.bz_cseq / bmag;
                     v[s * channels + 3] = 0.0; // no magnitude info
                 }
+                "l2" => {
+                    // L2 energy-preserving: Bx / sqrt(mean(|B|^2))
+                    let sum_b2: f64 = sample_indices.iter()
+                        .map(|&i| all_minutes[i].b_magnitude.powi(2))
+                        .sum();
+                    let rms_b = (sum_b2 / steps as f64).sqrt();
+                    if rms_b < 1e-12 { skip = true; break; }
+                    v[s * channels] = rec.bx_cseq / rms_b;
+                    v[s * channels + 1] = rec.by_cseq / rms_b;
+                    v[s * channels + 2] = rec.bz_cseq / rms_b;
+                    v[s * channels + 3] = (rec.b_magnitude - rms_b) / rms_b;
+                }
+                "linf" => {
+                    // L-inf scale-invariant: Bx / max(|B|)
+                    let max_b: f64 = sample_indices.iter()
+                        .map(|&i| all_minutes[i].b_magnitude)
+                        .fold(0.0f64, f64::max);
+                    if max_b < 1e-12 { skip = true; break; }
+                    v[s * channels] = rec.bx_cseq / max_b;
+                    v[s * channels + 1] = rec.by_cseq / max_b;
+                    v[s * channels + 2] = rec.bz_cseq / max_b;
+                    v[s * channels + 3] = (rec.b_magnitude - max_b) / max_b;
+                }
                 "clipped" => {
                     let denom = local_mean_b.max(cli.clip_floor);
                     v[s * channels] = rec.bx_cseq / denom;
@@ -294,7 +317,7 @@ fn main() -> Result<()> {
                     v[s * channels + 3] = (rec.b_magnitude - denom) / denom;
                 }
                 _ => {
-                    anyhow::bail!("Unknown normalization: {}. Use current, raw, direction, clipped.", norm_mode);
+                    anyhow::bail!("Unknown normalization: {}. Use current, raw, direction, clipped, l2, linf.", norm_mode);
                 }
             }
         }
