@@ -35,6 +35,10 @@ struct Cli {
     #[arg(long, default_value = "f64")]
     precision: String,
 
+    /// Use ring-buffer streaming mode (O(3*dim) memory, from steinmarder A-A pattern).
+    #[arg(long, default_value_t = false)]
+    stream: bool,
+
     /// Output JSON path.
     #[arg(
         long,
@@ -136,6 +140,76 @@ fn main() -> Result<()> {
     } else {
         1
     };
+
+    // Streaming mode: use ring buffer for O(3*dim) memory
+    if cli.stream {
+        use cd_kernel::cayley_dickson::soa_cache::RingEmbeddingCache;
+        println!("  Streaming mode (ring buffer, O(3*{}) memory)", cli.embedding_dim);
+
+        let mut ring = RingEmbeddingCache::new(cli.embedding_dim);
+        let n_embed = if n > steps * cli.stride {
+            (n - steps * cli.stride) / cli.stride
+        } else {
+            0
+        };
+
+        let mut all_norms = Vec::new();
+        for w in 0..n_embed {
+            let mut v = Vec::with_capacity(cli.embedding_dim);
+            for s in 0..steps {
+                let idx = w * cli.stride + s * cli.stride;
+                if idx < n {
+                    v.push(sig_n2[idx] as f32);
+                    v.push(sig_nodd[idx] as f32);
+                }
+            }
+            for _ in 0..remainder {
+                v.push(0.0f32);
+            }
+            v.truncate(cli.embedding_dim);
+
+            if cli.normalization == "direction" {
+                let norm: f32 = v.iter().map(|x| x * x).sum::<f32>().sqrt();
+                if norm > 1e-7 {
+                    for x in v.iter_mut() {
+                        *x /= norm;
+                    }
+                }
+            }
+
+            if let Some(norm) = ring.push_and_compute(&v) {
+                all_norms.push(norm);
+            }
+        }
+
+        let mean_a = if all_norms.is_empty() {
+            0.0
+        } else {
+            all_norms.iter().sum::<f32>() / all_norms.len() as f32
+        };
+        let max_a = all_norms.iter().cloned().fold(0.0f32, f32::max);
+
+        println!(
+            "  Stream: {} norms, A_mean={:.6}, A_max={:.6}",
+            all_norms.len(), mean_a, max_a
+        );
+
+        let output = serde_json::json!({
+            "mode": "stream",
+            "n_samples": n,
+            "n_norms": all_norms.len(),
+            "overall_mean_a": mean_a,
+            "overall_max_a": max_a,
+            "embedding_dim": cli.embedding_dim,
+            "stride": cli.stride,
+        });
+        if let Some(parent) = cli.out_json.parent() {
+            fs::create_dir_all(parent)?;
+        }
+        fs::write(&cli.out_json, serde_json::to_string_pretty(&output)?)?;
+        println!("  Wrote {}", cli.out_json.display());
+        return Ok(());
+    }
 
     println!(
         "  Processing {} mega-windows of {} samples (stride {})",
