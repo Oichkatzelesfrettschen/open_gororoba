@@ -1,0 +1,150 @@
+{
+  "start_date": "2008-10-27",
+  "end_date": "2008-11-02",
+  "n_cd_transitions": 58,
+  "n_curated_matched": 47,
+  "n_extras": 11,
+  "n_attributed": 7,
+  "attribution_fraction": 0.6363636363636364,
+  "type_counts": {
+    "FTE_candidate": 3,
+    "Mirror_mode": 1,
+    "Partial_crossing": 2,
+    "TD": 1,
+    "Unclassified": 4
+  },
+  "events": [
+    {
+      "index": 1925,
+      "doy": 302,
+      "hour": 17,
+      "minute": 0,
+      "associator_norm": 0.5203446911118258,
+      "rotation_deg": 8.2,
+      "b_jump_nt": 15.0,
+      "cv_bmag": 0.401,
+      "bn_change": 4.8,
+      "event_type": "Mirror_mode"
+    },
+    {
+      "index": 1935,
+      "doy": 302,
+      "hour": 17,
+      "minute": 10,
+      "associator_norm": 72.40369403490477,
+      "rotation_deg": 40.7,
+      "b_jump_nt": 11.2,
+      "cv_bmag": 0.761,
+      "bn_change": 1.6,
+      "event_type": "Partial_crossing"
+    },
+    {
+      "index": 1945,
+      "doy": 302,
+      "hour": 17,
+      "minute": 20,
+      "associator_norm": 53.96126670283943,
+      "rotation_deg": 61.8,
+      "b_jump_nt": 1.1,
+      "cv_bmag": 0.869,
+      "bn_change": 8.0,
+      "event_type": "TD"
+    },
+    {
+      "index": 1955,
+      "doy": 302,
+      "hour": 17,
+      "minute": 30,
+      "associator_norm": 89.29311652269682,
+      "rotation_deg": 39.5,
+      "b_jump_nt": 17.2,
+      "cv_bmag": 0.59,
+      "bn_change": 8.8,
+      "event_type": "FTE_candidate"
+    },
+    {
+      "index": 1965,
+      "doy": 302,
+      "hour": 17,
+      "minute": 40,
+      "associator_norm": 2.388278352429123,
+      "rotation_deg": 2.6,
+      "b_jump_nt": 5.0,
+      "cv_bmag": 0.274,
+      "bn_change": 2.5,
+      "event_type": "Unclassified"
+    },
+    {
+      "index": 2115,
+      "doy": 302,
+      "hour": 20,
+      "minute": 10,
+      "associator_norm": 3.668105973423811,
+      "rotation_deg": 153.4,
+      "b_jump_nt": 25.2,
+      "cv_bmag": 0.397,
+      "bn_change": 4.3,
+      "event_type": "Partial_crossing"
+    },
+    {
+      "index": 2127,
+      "doy": 302,
+      "hour": 20,
+      "minute": 22,
+      "associator_norm": 13.446191856882235,
+      "rotation_deg": 43.9,
+      "b_jump_nt": 14.4,
+      "cv_bmag": 0.313,
+      "bn_change": 26.0,
+      "event_type": "FTE_candidate"
+    },
+    {
+      "index": 3093,
+      "doy": 303,
+      "hour": 16,
+      "minute": 56,
+      "associator_norm": 3.027023896258518,
+      "rotation_deg": 20.8,
+      "b_jump_nt": 5.8,
+      "cv_bmag": 0.399,
+      "bn_change": 3.0,
+      "event_type": "Unclassified"
+    },
+    {
+      "index": 3103,
+      "doy": 303,
+      "hour": 17,
+      "minute": 6,
+      "associator_norm": 36.129698722139246,
+      "rotation_deg": 35.7,
+      "b_jump_nt": 9.6,
+      "cv_bmag": 0.443,
+      "bn_change": 7.6,
+      "event_type": "FTE_candidate"
+    },
+    {
+      "index": 5439,
+      "doy": 305,
+      "hour": 16,
+      "minute": 49,
+      "associator_norm": 2.416952032242388,
+      "rotation_deg": 4.3,
+      "b_jump_nt": 0.7,
+      "cv_bmag": 0.249,
+      "bn_change": 1.5,
+      "event_type": "Unclassified"
+    },
+    {
+      "index": 5449,
+      "doy": 305,
+      "hour": 16,
+      "minute": 59,
+      "associator_norm": 1.608890858743327,
+      "rotation_deg": 3.5,
+      "b_jump_nt": 6.2,
+      "cv_bmag": 0.233,
+      "bn_change": 5.2,
+      "event_type": "Unclassified"
+    }
+  ]
+}

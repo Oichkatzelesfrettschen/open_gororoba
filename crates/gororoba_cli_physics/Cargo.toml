@@ -269,6 +269,10 @@ name = "heliosphere-magnetic-takens"
 path = "src/bin/heliosphere_magnetic_takens.rs"
 
 [[bin]]
+name = "heliosphere-fa-attribution"
+path = "src/bin/heliosphere_fa_attribution.rs"
+
+[[bin]]
 name = "heliosphere-embed-pca"
 path = "src/bin/heliosphere_embed_pca.rs"
 
