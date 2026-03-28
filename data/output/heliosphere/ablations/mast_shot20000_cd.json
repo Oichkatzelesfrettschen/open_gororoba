@@ -1,0 +1,45 @@
+{
+  "zarr_dir": "data/external/mast/shot20000.zarr/ama",
+  "embedding_dim": 32,
+  "stride": 50,
+  "normalization": "direction",
+  "n_samples": 132096,
+  "time_range": [
+    -0.004095999989658594,
+    0.5242840051651001
+  ],
+  "signal_range": [
+    -0.0011723245261237025,
+    0.0011668851366266608
+  ],
+  "n_windows": 4,
+  "results": [
+    {
+      "center_time": 0.09590400010347366,
+      "mean_associator": 1.4630237357727438,
+      "max_associator": 2.717336543955786,
+      "n_embeddings": 984
+    },
+    {
+      "center_time": 0.19590400159358978,
+      "mean_associator": 1.52769240578826,
+      "max_associator": 2.9832604144943953,
+      "n_embeddings": 984
+    },
+    {
+      "center_time": 0.2959040105342865,
+      "mean_associator": 1.550863511396903,
+      "max_associator": 2.9832604144943953,
+      "n_embeddings": 984
+    },
+    {
+      "center_time": 0.395904004573822,
+      "mean_associator": 1.5292373463506717,
+      "max_associator": 2.7775333182459887,
+      "n_embeddings": 984
+    }
+  ],
+  "overall_mean_a": 1.5177042498271447,
+  "overall_max_a": 2.9832604144943953,
+  "interpretation": "MAST shot 30420 ama Mirnov (n=2 + n=odd, 2 channels). 4 windows, overall A_mean=1.517704, A_max=2.983260. 32D embedding, stride=50, direction."
+}

@@ -893,6 +893,10 @@ path = "src/bin/bout_grid_cd.rs"
 required-features = ["netcdf-read"]
 
 [[bin]]
+name = "turboquant-cd-fidelity"
+path = "src/bin/turboquant_cd_fidelity.rs"
+
+[[bin]]
 name = "mast-fetch"
 path = "src/bin/mast_fetch.rs"
 

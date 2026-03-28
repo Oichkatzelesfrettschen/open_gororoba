@@ -1,0 +1,90 @@
+{
+  "n_vectors": 1024,
+  "dim": 128,
+  "embedding_dim": 32,
+  "n_windows": 1023,
+  "overall_a_pre": 1.3713989221152416,
+  "overall_a_post": 1.3711167413238046,
+  "overall_fidelity": 0.9997942387244976,
+  "cosine_sim_mean": 0.9688311993022083,
+  "results": [
+    {
+      "window_idx": 0,
+      "a_pre": 1.3664808702393079,
+      "a_post": 1.3541035633220604,
+      "fidelity_ratio": 0.9909422025680609,
+      "cosine_sim_mean": 0.8706301755318537
+    },
+    {
+      "window_idx": 1,
+      "a_pre": 1.3650340573988067,
+      "a_post": 1.3682899241307154,
+      "fidelity_ratio": 1.0023851908414014,
+      "cosine_sim_mean": 0.9518711430894572
+    },
+    {
+      "window_idx": 2,
+      "a_pre": 1.367164908075782,
+      "a_post": 1.3674842922913608,
+      "fidelity_ratio": 1.0002336106008078,
+      "cosine_sim_mean": 0.9830819565218464
+    },
+    {
+      "window_idx": 3,
+      "a_pre": 1.4565636662959776,
+      "a_post": 1.469337156921942,
+      "fidelity_ratio": 1.0087696067954566,
+      "cosine_sim_mean": 0.9828137541884437
+    },
+    {
+      "window_idx": 4,
+      "a_pre": 1.3568073897115804,
+      "a_post": 1.3549247956750918,
+      "fidelity_ratio": 0.998612482471157,
+      "cosine_sim_mean": 0.9829123686750972
+    },
+    {
+      "window_idx": 5,
+      "a_pre": 1.370142212042923,
+      "a_post": 1.3631814396616853,
+      "fidelity_ratio": 0.9949196716077676,
+      "cosine_sim_mean": 0.9824706448074303
+    },
+    {
+      "window_idx": 6,
+      "a_pre": 1.3853777836920453,
+      "a_post": 1.3688803970395573,
+      "fidelity_ratio": 0.9880917776748792,
+      "cosine_sim_mean": 0.9829498406797849
+    },
+    {
+      "window_idx": 7,
+      "a_pre": 1.358674021149295,
+      "a_post": 1.3467701793725797,
+      "fidelity_ratio": 0.991238632967571,
+      "cosine_sim_mean": 0.9826664957509778
+    },
+    {
+      "window_idx": 8,
+      "a_pre": 1.3884343446066696,
+      "a_post": 1.411215922795756,
+      "fidelity_ratio": 1.0164081062079606,
+      "cosine_sim_mean": 0.9823430073199539
+    },
+    {
+      "window_idx": 9,
+      "a_pre": 1.382123469010379,
+      "a_post": 1.3976934824040654,
+      "fidelity_ratio": 1.0112652839943705,
+      "cosine_sim_mean": 0.9832739592139638
+    },
+    {
+      "window_idx": 10,
+      "a_pre": 1.2885854210448913,
+      "a_post": 1.280403000947034,
+      "fidelity_ratio": 0.9936500755291626,
+      "cosine_sim_mean": 0.9826189707715605
+    }
+  ],
+  "interpretation": "TurboQuant 128D -> 32D CD fidelity: A_pre=1.371399, A_post=1.371117, ratio=0.9998. Cosine sim=0.9688. 11 blocks analyzed."
+}
