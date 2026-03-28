@@ -540,6 +540,35 @@ Qed.
     16D lane is source-driven without forcing it through the stronger abstract
     interface. *)
 
+Definition brown1972_sed_trace (x : CDSed) : R :=
+  2 * qa (oct_lo (sed_lo x)).
+
+Theorem brown1972_theorem_3_1_i_sedenion : forall x y : CDSed,
+  brown1972_sed_trace (sed_mul x y) = brown1972_sed_trace (sed_mul y x).
+Proof.
+  intros [[[a1 a2 a3 a4] [a5 a6 a7 a8]] [[a9 a10 a11 a12] [a13 a14 a15 a16]]]
+         [[[b1 b2 b3 b4] [b5 b6 b7 b8]] [[b9 b10 b11 b12] [b13 b14 b15 b16]]].
+  cbv [brown1972_sed_trace sed_mul
+       oct_add oct_mul oct_conj oct_neg
+       quat_add quat_mul quat_conj quat_neg
+       sed_lo sed_hi oct_lo oct_hi qa qb qc qd].
+  ring.
+Qed.
+
+Theorem brown1972_theorem_3_1_ii_sedenion : forall x y z : CDSed,
+  brown1972_sed_trace (sed_mul (sed_mul x y) z) =
+  brown1972_sed_trace (sed_mul x (sed_mul y z)).
+Proof.
+  intros [[[a1 a2 a3 a4] [a5 a6 a7 a8]] [[a9 a10 a11 a12] [a13 a14 a15 a16]]]
+         [[[b1 b2 b3 b4] [b5 b6 b7 b8]] [[b9 b10 b11 b12] [b13 b14 b15 b16]]]
+         [[[c1 c2 c3 c4] [c5 c6 c7 c8]] [[c9 c10 c11 c12] [c13 c14 c15 c16]]].
+  cbv [brown1972_sed_trace sed_mul
+       oct_add oct_mul oct_conj oct_neg
+       quat_add quat_mul quat_conj quat_neg
+       sed_lo sed_hi oct_lo oct_hi qa qb qc qd].
+  ring.
+Qed.
+
 Theorem brown1972_lemma_3_10_sedenion : forall x y : CDSed,
   (sed_norm_sq (sed_add x y) + sed_norm_sq (sed_sub x y))%R =
   (2 * (sed_norm_sq x + sed_norm_sq y))%R.
@@ -3653,6 +3682,23 @@ Proof.
     reflexivity.
 Qed.
 
+Corollary brown1972_corollary_6_7_sedenion_decomposed : forall x y : CDSed,
+  brown1972_ch6_67_polynomial_mul (sed_lo x) (sed_hi x) (sed_lo y) (sed_hi y) =
+  sed_mul x y.
+Proof.
+  intros x y.
+  transitivity
+    (sed_mul
+       (sed_add (brown1972_sed_oct_embed (sed_lo x))
+                (brown1972_sed_poly_embed (sed_hi x)))
+       (sed_add (brown1972_sed_oct_embed (sed_lo y))
+                (brown1972_sed_poly_embed (sed_hi y)))).
+  - apply brown1972_corollary_6_7_sedenion_lift.
+  - rewrite <- (brown1972_sedenion_adjoined_polynomial_decompose x).
+    rewrite <- (brown1972_sedenion_adjoined_polynomial_decompose y).
+    reflexivity.
+Qed.
+
 Section BrownChapterVIAdjoinedPolynomialDecomposition.
   Context {Base Ext : Type}.
   Variable base_mul : Base -> Base -> Base.
@@ -3710,8 +3756,29 @@ Section BrownChapterVIAdjoinedPolynomialDecomposition.
   Qed.
 End BrownChapterVIAdjoinedPolynomialDecomposition.
 
-Definition brown1972_sed_trace (x : CDSed) : R :=
-  2 * qa (oct_lo (sed_lo x)).
+Record Brown1972ChapterVIAdjoinedPolynomialDecompositionSurface
+    {Base Ext : Type}
+    (poly_mul : Base -> Base -> Base -> Base -> Ext)
+    (ext_lo ext_hi : Ext -> Base)
+    (ext_mul : Ext -> Ext -> Ext) := {
+  brown1972_ch6_t65_decomp :
+    forall x y : Ext,
+      poly_mul (ext_lo x) (ext_hi x) (ext_lo y) (ext_hi y) =
+      ext_mul x y;
+  brown1972_ch6_c67_decomp :
+    forall x y : Ext,
+      poly_mul (ext_lo x) (ext_hi x) (ext_lo y) (ext_hi y) =
+      ext_mul x y
+}.
+
+Definition brown1972_sedenion_chapter_vi_adjoined_polynomial_decomposition_surface :
+  Brown1972ChapterVIAdjoinedPolynomialDecompositionSurface
+    brown1972_ch6_67_polynomial_mul sed_lo sed_hi sed_mul.
+Proof.
+  refine {| brown1972_ch6_t65_decomp := brown1972_theorem_6_5_sedenion_decomposed;
+            brown1972_ch6_c67_decomp :=
+              brown1972_corollary_6_7_sedenion_decomposed |}.
+Defined.
 
 Lemma brown1972_sed_trace_add : forall x y : CDSed,
   brown1972_sed_trace (sed_add x y) =
@@ -3957,6 +4024,17 @@ Proof.
             brown1972_ch3_tqc_t31_ii := brown1972_theorem_3_1_ii_octonion |}.
 Defined.
 
+Definition brown1972_sedenion_chapter_iii_trace_quadratic_surface :
+  Brown1972TraceQuadraticConjugationSurface
+    sed_zero sed_one sed_add sed_mul sed_neg sed_conj sed_scale
+    brown1972_sed_trace sed_norm_sq.
+Proof.
+  refine {| brown1972_ch3_tqc_core :=
+              brown1972_sedenion_chapter_iii_quadratic_core_surface;
+            brown1972_ch3_tqc_t31_i := brown1972_theorem_3_1_i_sedenion;
+            brown1972_ch3_tqc_t31_ii := brown1972_theorem_3_1_ii_sedenion |}.
+Defined.
+
 Theorem brown1972_sedenion_pure_square : forall x : CDSed,
   brown1972_sed_trace x = 0%R ->
   sed_mul x x = sed_scale (- sed_norm_sq x) sed_one.
@@ -3985,6 +4063,26 @@ Proof.
               brown1972_octonion_chapter_iii_quadratic_core_surface;
             brown1972_ch3_qc_core_sed :=
               brown1972_sedenion_chapter_iii_quadratic_core_surface |}.
+Defined.
+
+Record Brown1972ChapterIIITraceQuadraticLiftSurface := {
+  brown1972_ch3_tqc_oct :
+    Brown1972TraceQuadraticConjugationSurface
+      oct_zero brown1972_oct_one oct_add oct_mul oct_neg oct_conj oct_scale
+      brown1972_oct_trace oct_norm_sq;
+  brown1972_ch3_tqc_sed :
+    Brown1972TraceQuadraticConjugationSurface
+      sed_zero sed_one sed_add sed_mul sed_neg sed_conj sed_scale
+      brown1972_sed_trace sed_norm_sq
+}.
+
+Definition brown1972_chapter_iii_trace_quadratic_lift_surface :
+  Brown1972ChapterIIITraceQuadraticLiftSurface.
+Proof.
+  refine {| brown1972_ch3_tqc_oct :=
+              brown1972_octonion_chapter_iii_trace_quadratic_surface;
+            brown1972_ch3_tqc_sed :=
+              brown1972_sedenion_chapter_iii_trace_quadratic_surface |}.
 Defined.
 
 Lemma brown1972_sed_hi_trace_zero_iff_adjoined_commutes_with_conj :
