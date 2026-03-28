@@ -1,0 +1,9 @@
+{
+  "mission": "themis-a",
+  "n_windows": 93,
+  "correlation_assoc_vs_perp_frac": -0.2450986243323088,
+  "high_assoc_mean_perp_frac": 0.314589246318031,
+  "low_assoc_mean_perp_frac": 0.36170236664917627,
+  "overall_mean_perp_frac": 0.33839910282947006,
+  "interpretation": "Negative correlation (r=-0.245): high associator correlates with compressive-dominant spectral content"
+}
