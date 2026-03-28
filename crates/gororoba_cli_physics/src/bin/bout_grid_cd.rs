@@ -174,7 +174,7 @@ fn main() -> Result<()> {
         }
 
         let norms =
-            cd_kernel::batch_sliding_associator_norms_parallel(&embedded, cli.embedding_dim);
+            cd_kernel::batch_sliding_associator_norms_dispatch(&embedded, cli.embedding_dim, if cli.embedding_dim >= 128 { "f32" } else { "f64" });
 
         let (mean_a, max_a) = if norms.is_empty() {
             (0.0, 0.0)

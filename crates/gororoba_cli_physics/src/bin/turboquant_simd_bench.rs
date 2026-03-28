@@ -152,17 +152,11 @@ fn main() -> Result<()> {
     let n_levels = 1u32 << cli.bits;
     let total_values = cli.n_vectors * cli.dim;
 
-    // Generate Lloyd-Max codebook for N(0, 1/d)
-    // Using the precomputed values from our Python run for d=128, bits=3
-    let centroids: Vec<f32> = vec![
-        -0.19020693, -0.11878592, -0.06682206, -0.02166347,
-        0.02166347, 0.06682206, 0.11878592, 0.19020693,
-    ];
-
-    // Compute boundaries (midpoints between adjacent centroids)
-    let boundaries: Vec<f32> = (0..centroids.len() - 1)
-        .map(|i| (centroids[i] + centroids[i + 1]) / 2.0)
-        .collect();
+    // Generate Lloyd-Max codebook using cached pure-Rust solver
+    // (replaces hardcoded centroids; TurboQuant pattern: cache per (d, bits))
+    let codebook = cd_kernel::lloyd_max::get_codebook(cli.dim, cli.bits);
+    let centroids = codebook.centroids.clone();
+    let boundaries = codebook.boundaries.clone();
 
     println!(
         "  Codebook: {} centroids ({}-bit), {} boundaries",
