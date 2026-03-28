@@ -10868,11 +10868,11 @@ status_note = "MAVEN MAG L2 SunState 1-sec via CDAWeb HAPI. Mars IMB is structur
 [[claim]]
 id = "C-1585"
 status = "Verified"
-statement = "The 32D CD associator boundary detection universality now spans 7 independent environments: (1) Voyager heliopause (119-124 AU), (2) MMS magnetopause (1 AU, 61.5%), (3) Rosetta 67P cavity (3.4 AU, 5.3x), (4) PSP switchbacks (0.13 AU, 0.60 ratio), (5) THEMIS bow shock (1 AU, 33.7%), (6) Cluster magnetopause (1 AU, 32.3%), (7) MAVEN Mars IMB (1.5 AU, 56.9%). Induced boundaries (Rosetta, MAVEN) consistently show highest detection rates and lowest false alarm rates."
+statement = "The 32D CD associator responds to major magnetic transition layers across 9 spacecraft and 7 boundary types spanning 0.07-124 AU. Against curated labels (THEMIS, Cluster, MESSENGER), it matches PVI sensitivity (89%) with half the false alarm rate (17% vs 31%). Against heuristic labels (MMS, MAVEN, ARTEMIS), detection rates are 53-75%. The comparison across label types is not directly meaningful: curated and heuristic benchmarks are different validation modes. Current evidence suggests induced boundaries may be more selective targets, but this remains partially label-confounded."
 where_stated = "data/output/heliosphere/ablations/"
 last_verified = "2026-03-27"
 formal_proof = ""
-status_note = "Supersedes C-1581. Seven environments spanning 0.13 to 124 AU with 5 physically distinct boundary types (heliopause, dipolar magnetopause, induced magnetosphere, cometary cavity, switchback). The pattern: induced boundaries > dipolar boundaries in associator detection efficiency."
+status_note = "Supersedes C-1581. Narrowed per hostile review: detection rates across curated vs heuristic labels are different validation modes, not one leaderboard. Induced-vs-dipole selectivity is a supported hypothesis, not a proven law. Baseline comparison (PVI, |B| grad, spectral entropy) shows CD matches PVI sensitivity with half the FA."
 
 [[claim]]
 id = "C-1586"
@@ -10904,7 +10904,7 @@ status_note = "Addresses peer review concern about normalization sensitivity. Th
 [[claim]]
 id = "C-1589"
 status = "Verified"
-statement = "The CD associator exhibits three distinct response phenotypes: (1) ordered-region entry drop (heliopause, magnetopause: associator spikes pre-boundary, drops on entry to ordered region), (2) coherent-structure suppression (PSP switchbacks: lower associator in coherent folds than quiet turbulence), (3) weak-field cavity amplification (Rosetta 67P: elevated associator where |B| approaches zero, mixing genuine phase disorder with normalization amplification). This taxonomy is the central methodological finding."
+statement = "The CD associator exhibits three response phenotypes unified by a single mechanism: organized cross-channel phase coupling suppresses non-associativity (Q1: real < surrogates everywhere). (1) At major transition layers, coupling breaks down -> spike (heliopause, THEMIS magnetopause); at dipolar boundaries, compressive modes correlate with higher associator (Q2: r=-0.42 at MMS). (2) In coherent structures (PSP switchbacks), coupling is maximal -> suppression below background. (3) In near-zero-field cavities (Rosetta), coupling is absent -> maximum associator, with normalization amplification. The taxonomy is regime-dependent, not universal: the first phenotype is best called response to major magnetic transitions, not specifically ordered-entry drop in every case."
 where_stated = "docs/reports/POST_RC1_CROSS_DOMAIN_EVIDENCE_NOTE.md"
 last_verified = "2026-03-27"
 formal_proof = ""
