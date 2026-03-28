@@ -269,6 +269,10 @@ name = "heliosphere-magnetic-takens"
 path = "src/bin/heliosphere_magnetic_takens.rs"
 
 [[bin]]
+name = "heliosphere-norm-dump"
+path = "src/bin/heliosphere_norm_dump.rs"
+
+[[bin]]
 name = "heliosphere-zd-audit"
 path = "src/bin/heliosphere_zd_audit.rs"
 
