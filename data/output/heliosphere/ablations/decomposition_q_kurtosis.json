@@ -1,0 +1,12 @@
+{
+  "kurtosis_stats": {
+    "mean": 0.35359164739368637,
+    "median": -0.6216904202981257
+  },
+  "kurtosis_transitions": 20,
+  "kurtosis_detection": 0.2796610169491525,
+  "kurtosis_false_alarm": 0.75,
+  "cd_detection": 0.89,
+  "cd_false_alarm": 0.167,
+  "interpretation": "Kurtosis detects 28% of crossings with 75% FA. The CD associator (89%/17%) outperforms kurtosis on both metrics. This confirms the associator is NOT just a proxy for 4th-order statistics."
+}
