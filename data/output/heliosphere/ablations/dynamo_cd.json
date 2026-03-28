@@ -1,0 +1,42 @@
+{
+  "samples_per_phase": 50000,
+  "embedding_dim": 32,
+  "phases": [
+    {
+      "phase": "subcritical",
+      "rm_value": 20.0,
+      "mean_a": 1.39314891370523,
+      "max_a": 2.543167746333066,
+      "mean_b_magnitude": 0.009602150530785157
+    },
+    {
+      "phase": "onset",
+      "rm_value": 32.0,
+      "mean_a": 0.07758429128501836,
+      "max_a": 0.3115440701194885,
+      "mean_b_magnitude": 9.511833438963029
+    },
+    {
+      "phase": "stationary",
+      "rm_value": 50.0,
+      "mean_a": 0.03029316345283104,
+      "max_a": 0.07134850671639081,
+      "mean_b_magnitude": 9.41269338170354
+    },
+    {
+      "phase": "reversal",
+      "rm_value": 50.0,
+      "mean_a": 0.26419147876191457,
+      "max_a": 2.054432467964903,
+      "mean_b_magnitude": 8.187640844823
+    },
+    {
+      "phase": "chaotic",
+      "rm_value": 45.0,
+      "mean_a": 0.6045516210994912,
+      "max_a": 2.424145177574497,
+      "mean_b_magnitude": 2.446687473886887
+    }
+  ],
+  "interpretation": "VKS-like dynamo 5 phases. Sub A=1.3931, Onset A=0.0776, Stationary A=0.0303, Reversal A=0.2642, Chaotic A=0.6046. Chaotic/Stationary=20.0x."
+}
