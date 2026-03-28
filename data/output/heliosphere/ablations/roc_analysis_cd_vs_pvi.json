@@ -1,0 +1,30 @@
+{
+  "roc_points_by_dimension": {
+    "16": {
+      "cd_det": 0.940677966101695,
+      "cd_fa": 0.22,
+      "pvi_det": 0.8983050847457628,
+      "pvi_fa": 0.3111111111111111
+    },
+    "32": {
+      "cd_det": 0.8898305084745762,
+      "cd_fa": 0.16666666666666666,
+      "pvi_det": 0.8983050847457628,
+      "pvi_fa": 0.3111111111111111
+    },
+    "64": {
+      "cd_det": 0.5508474576271186,
+      "cd_fa": 0.21052631578947367,
+      "pvi_det": 0.8983050847457628,
+      "pvi_fa": 0.3111111111111111
+    },
+    "128": {
+      "cd_det": 0.423728813559322,
+      "cd_fa": 0.2,
+      "pvi_det": 0.8983050847457628,
+      "pvi_fa": 0.3111111111111111
+    }
+  },
+  "interpretation": "CD dominates PVI across all dimensions: similar detection with consistently lower FA. The ROC curve for CD sits left of PVI, meaning better selectivity at every sensitivity level.",
+  "optimal_point": "32D balances detection (89%) and selectivity (17% FA). 16D gives higher detection (94%) at the cost of higher FA (22%)."
+}
