@@ -90,10 +90,10 @@ Practical reading of the source:
 |--------------|----------------------|--------|
 | Chapter I | Brown lane header / roadmap only | contextual chapter, not a theorem surface |
 | Chapter II | Brown lane header / roadmap only | literature chapter, not a theorem surface |
-| Chapter III | `proofs/theories/Brown1972.v` + `crates/brown_1972/src/norm_symmetry.rs` | abstract Rocq surface plus standard-octonion and direct standard-sedenion witnesses for Brown 3.9 / 3.10 landed; broader generalized-norm surfacing still open |
+| Chapter III | `proofs/theories/Brown1972.v` + `crates/brown_1972/src/norm_symmetry.rs` | Brown 3.1 standard-octonion trace surface, Brown 3.3 / Lemma 3.7 standard-octonion involution-quadratic surface, and abstract Rocq 3.9 / 3.10 surface with standard-octonion and direct standard-sedenion witnesses landed; broader generalized-norm surfacing still open |
 | Chapter IV | `proofs/theories/Brown1972.v` plus local associator support | source-driven standard-tower witness surface for 4.2, 4.3, and 4.4 landed |
-| Chapter V | `proofs/theories/Brown1972.v` + `crates/brown_1972/src/exponent_properties.rs` | Brown-numbered quaternion witness surface for 5.3 / 5.5 / 5.8 / 5.11 / 5.12 / 5.13 / 5.14 / 5.15 / 5.16 / 5.17 landed, plus non-quaternion octonion lifts of 5.1 / 5.2 / 5.8 / 5.11 and the octonion associator-control chain 5.15 / 5.16 / 5.17; broader generalized exponent surface and octonion 5.12 remain open |
-| Chapter VI | `crates/brown_1972/src/basis_element_properties.rs` plus sign-table infrastructure | source present, Brown-numbered Rocq surface still open |
+| Chapter V | `proofs/theories/Brown1972.v` + `crates/brown_1972/src/exponent_properties.rs` | generic one-generated/trace-zero Rocq exponent surface landed, instantiated at quaternion and octonion level |
+| Chapter VI | `proofs/theories/Brown1972.v` plus sign-table infrastructure and `crates/brown_1972/src/basis_element_properties.rs` | standard-octonion Brown 6.10 basis anticommutation and Brown 6.11 basis alternativity witness surface landed; next source-driven tranche is 6.2 / 6.3 / 6.8 / 6.9 around the adjoined basis element `e`, then broader basis lifts beyond the current octonion witness layer |
 | Chapter VII | `ZD_Criterion.v`, `C1538_MorZDSymmetry.v`, `BrownAssessorEquivalence.v`, Rust support | partially formalized, but not yet chapter-complete in Brown numbering |
 | Chapter VIII | no dedicated paper surface yet | open |
 | Appendix C | `crates/brown_1972/src/pl1_emulator.rs` | Rust bridge only |
@@ -106,14 +106,16 @@ To avoid overfitting to Chapter III, Brown should now be mined in this order:
    - preserve their role as scope, motivation, and literature map
    - do not treat them as missing Rocq theorem lanes
 2. Chapter V generalized exponent surface
-   - extend the landed quaternion witness surface, which now includes 5.3 / 5.5 / 5.8 as well as 5.11-5.17
-  - lift beyond the current octonion 5.1 / 5.2 / 5.8 / 5.11 and 5.15 / 5.16 / 5.17 witnesses into Brown's broader generalized exponent lane
+   - a generic one-generated/trace-zero exponent surface is now landed, instantiated at quaternion and octonion level
+   - lift beyond the current octonion 5.1 / 5.2 / 5.3 / 5.5 / 5.8 / 5.11 / 5.12 / 5.13 / 5.14 and 5.15 / 5.16 / 5.17 witnesses into Brown's broader generalized exponent lane
    - keep reusing `CDPowerAssociative.v` and related infrastructure
-3. Chapter III broader generalized-norm surfacing beyond the landed standard-sedenion witnesses
+3. Chapter III broader generalized-norm surfacing beyond the landed Brown 3.1 / 3.3 / Lemma 3.7 standard-octonion source surface and standard-sedenion witnesses
    - extend the current abstract surface beyond the standard octonion witness
    - use the dissertation statements directly, not only the Rust checklist
 4. Chapter VI basis-element surface
-   - map Brown's basis identities onto the repo's sign-table and basis-index infrastructure
+   - standard-octonion 6.10 / 6.11 witnesses are now landed
+   - next fold in 6.2 / 6.3 / 6.8 / 6.9 around the adjoined basis element `e`
+   - then lift beyond the current octonion witness layer
 5. Chapter VII gap fill
    - continue from the already-landed zero-divisor lane to the remaining Brown-numbered theorems
 6. Chapter VIII and Appendix C
@@ -134,9 +136,11 @@ This order follows the real dissertation shape more closely:
 The next Rocq tranche should therefore be:
 
 1. keep the landed Chapter IV surface as the structural anchor
-2. move next into the broader Brown Chapter V generalized exponent surface from the newly landed 5.3 / 5.5 / 5.8 quaternion anchors and current octonion 5.1 / 5.2 / 5.8 / 5.11 plus 5.15 / 5.16 / 5.17 lifts
-3. then resume the broader Chapter III generalized-norm surfacing with the source text
-   still open beside the proof file
+2. move next beyond the landed generic Chapter V one-generated/trace-zero surface
+   - the next non-quaternion lift should target the genuinely broader exponent/generalized associator surface, not the already-landed local corollaries and associative base chain
+3. then split the fresh follow-on work:
+   - Chapter VI follow-on: 6.2 / 6.3 / 6.8 / 6.9 around the adjoined basis element `e`
+   - Chapter III follow-on: broader generalized-norm surfacing on top of the landed 3.1 / 3.3 / Lemma 3.7 source layer
 
 ## Remaining Brown steps
 
@@ -146,11 +150,12 @@ The next Rocq tranche should therefore be:
    - source-driven 4.2/4.3/4.4 witness surface is landed
    - next work there is only presentation cleanup if needed
 3. Chapter V
-   - broaden the new 5.3 / 5.5 / 5.8 / 5.11 / 5.12 / 5.13 / 5.14 / 5.15 / 5.16 / 5.17 quaternion witness surface and current octonion 5.1 / 5.2 / 5.8 / 5.11 plus 5.15 / 5.16 / 5.17 lifts toward Brown's fuller generalized exponent lane
+   - broaden the landed generic quaternion/octonion one-generated/trace-zero surface toward Brown's fuller generalized exponent lane
 4. Chapter III
-   - extend from the landed octonion and standard-sedenion witnesses to the broader sourced generalized-norm lane
+   - extend from the landed Brown 3.1 / 3.3 / Lemma 3.7 standard-octonion source surface and the octonion/sedenion 3.9 / 3.10 witnesses to the broader sourced generalized-norm lane
 5. Chapter VI
-   - mine basis-element identities theorem-by-theorem from the source packet
+   - standard-octonion 6.10 basis anticommutation and 6.11 basis alternativity are landed
+   - next target 6.2 / 6.3 / 6.8 / 6.9, then broaden beyond the current octonion witness surface
 6. Chapter VII
    - continue from the already-landed zero-divisor surfaces to the remaining Brown-numbered theorems
 7. Chapter VIII and Appendix C
