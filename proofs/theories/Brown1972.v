@@ -82,6 +82,7 @@ From OpenGororoba Require Import
   OctonionNorm
   CDAssociator
   CDPowerAssociative
+  CDSignBridge
   CDConjAntimorph
   CDLinearLemmas
   CDNegLemmas
@@ -189,6 +190,14 @@ Lemma brown1972_oct_trace_neg : forall x : CDOct,
 Proof.
   intros [[a1 a2 a3 a4] [a5 a6 a7 a8]].
   cbv [brown1972_oct_trace oct_neg oct_lo qa quat_neg].
+  ring.
+Qed.
+
+Lemma brown1972_oct_trace_conj : forall x : CDOct,
+  brown1972_oct_trace (oct_conj x) = brown1972_oct_trace x.
+Proof.
+  intros [[a1 a2 a3 a4] [a5 a6 a7 a8]].
+  cbv [brown1972_oct_trace oct_conj oct_lo qa quat_conj].
   ring.
 Qed.
 
@@ -1321,6 +1330,26 @@ Proof.
        quat_mul quat_add quat_neg quat_conj quat_one quat_zero
        qa qb qc qd].
   f_equal; f_equal; ring.
+Qed.
+
+Lemma brown1972_oct_mul_neg_e0_left : forall x : CDOct,
+  oct_mul (oct_neg (oct_e 0)) x = oct_neg x.
+Proof.
+  intro x.
+  rewrite oct_neg_mul_left.
+  change (oct_e 0) with brown1972_oct_one.
+  rewrite brown1972_oct_mul_one_left.
+  reflexivity.
+Qed.
+
+Lemma brown1972_oct_mul_neg_e0_right : forall x : CDOct,
+  oct_mul x (oct_neg (oct_e 0)) = oct_neg x.
+Proof.
+  intro x.
+  rewrite oct_neg_mul_right.
+  change (oct_e 0) with brown1972_oct_one.
+  rewrite oct_mul_one_right.
+  reflexivity.
 Qed.
 
 Lemma brown1972_oct_conj_involution : forall x : CDOct,
@@ -2576,9 +2605,19 @@ Theorem brown1972_theorem_6_11_octonion : forall i j : nat,
   oct_mul (oct_mul (oct_e j) (oct_e i)) (oct_e i) = oct_neg (oct_e j).
 Proof.
   intros i j Hi Hi8 Hj8.
-  destruct i as [|[|[|[|[|[|[|[|]]]]]]]]; try lia;
-  destruct j as [|[|[|[|[|[|[|[|]]]]]]]]; try lia;
-  split; brown1972_close_oct_ring.
+  split.
+  - pose proof (brown1972_corollary_4_4_octonion_left (oct_e i) (oct_e j))
+      as Halt.
+    apply brown1972_oct_sub_eq_zero in Halt.
+    rewrite <- Halt.
+    rewrite (oct_mul_self_neg i Hi Hi8).
+    apply brown1972_oct_mul_neg_e0_left.
+  - pose proof (brown1972_corollary_4_4_octonion_right (oct_e i) (oct_e j))
+      as Halt.
+    apply brown1972_oct_sub_eq_zero in Halt.
+    rewrite Halt.
+    rewrite (oct_mul_self_neg i Hi Hi8).
+    apply brown1972_oct_mul_neg_e0_right.
 Qed.
 
 Record Brown1972ChapterVIOctonionBasisSurface := {
@@ -2698,17 +2737,6 @@ Proof.
   |apply (f_equal2 mkOct); [apply (f_equal4 mkQuat); ring | apply (f_equal4 mkQuat); ring]].
 Qed.
 
-Theorem brown1972_lemma_6_2_ii_sedenion : forall a : CDSed,
-  sed_assoc brown1972_sed_adjoined_e a a = sed_zero /\
-  sed_assoc a a brown1972_sed_adjoined_e = sed_zero /\
-  sed_assoc brown1972_sed_adjoined_e brown1972_sed_adjoined_e a = sed_zero /\
-  sed_assoc a brown1972_sed_adjoined_e brown1972_sed_adjoined_e = sed_zero.
-Proof.
-  intros [[[a1 a2 a3 a4] [a5 a6 a7 a8]]
-         [[a9 a10 a11 a12] [a13 a14 a15 a16]]].
-  repeat split; brown1972_close_sed_ring.
-Qed.
-
 Theorem brown1972_lemma_6_2_iii_sedenion : forall a b : CDSed,
   sed_add (sed_assoc brown1972_sed_adjoined_e a b)
           (sed_assoc brown1972_sed_adjoined_e b a) =
@@ -2749,6 +2777,68 @@ Proof.
   apply (f_equal2 mkSed);
   [apply (f_equal2 mkOct); [apply (f_equal4 mkQuat); ring | apply (f_equal4 mkQuat); ring]
   |apply (f_equal2 mkOct); [apply (f_equal4 mkQuat); ring | apply (f_equal4 mkQuat); ring]].
+Qed.
+
+Lemma brown1972_sed_add_self_eq_zero : forall x : CDSed,
+  sed_add x x = sed_zero -> x = sed_zero.
+Proof.
+  intros [[[a1 a2 a3 a4] [a5 a6 a7 a8]]
+         [[a9 a10 a11 a12] [a13 a14 a15 a16]]] H.
+  cbv [sed_add sed_zero oct_add oct_zero quat_add quat_zero
+       qa qb qc qd oct_lo oct_hi sed_lo sed_hi] in H.
+  inversion H; clear H; subst.
+  repeat match goal with
+  | Hq : mkOct _ _ = mkOct _ _ |- _ => inversion Hq; clear Hq; subst
+  | Hq : mkQuat _ _ _ _ = mkQuat _ _ _ _ |- _ => inversion Hq; clear Hq; subst
+  end.
+  assert (Ha1 : a1 = 0%R) by lra.
+  assert (Ha2 : a2 = 0%R) by lra.
+  assert (Ha3 : a3 = 0%R) by lra.
+  assert (Ha4 : a4 = 0%R) by lra.
+  assert (Ha5 : a5 = 0%R) by lra.
+  assert (Ha6 : a6 = 0%R) by lra.
+  assert (Ha7 : a7 = 0%R) by lra.
+  assert (Ha8 : a8 = 0%R) by lra.
+  assert (Ha9 : a9 = 0%R) by lra.
+  assert (Ha10 : a10 = 0%R) by lra.
+  assert (Ha11 : a11 = 0%R) by lra.
+  assert (Ha12 : a12 = 0%R) by lra.
+  assert (Ha13 : a13 = 0%R) by lra.
+  assert (Ha14 : a14 = 0%R) by lra.
+  assert (Ha15 : a15 = 0%R) by lra.
+  assert (Ha16 : a16 = 0%R) by lra.
+  subst.
+  reflexivity.
+Qed.
+
+Theorem brown1972_lemma_6_2_ii_sedenion : forall a : CDSed,
+  sed_assoc brown1972_sed_adjoined_e a a = sed_zero /\
+  sed_assoc a a brown1972_sed_adjoined_e = sed_zero /\
+  sed_assoc brown1972_sed_adjoined_e brown1972_sed_adjoined_e a = sed_zero /\
+  sed_assoc a brown1972_sed_adjoined_e brown1972_sed_adjoined_e = sed_zero.
+Proof.
+  intro a.
+  split.
+  - pose proof (brown1972_lemma_6_2_iii_sedenion a a) as Hdiag.
+    apply brown1972_sed_add_self_eq_zero in Hdiag.
+    exact Hdiag.
+  - pose proof (brown1972_theorem_6_1_sedenion a a) as H61.
+    pose proof (brown1972_lemma_6_2_i_sedenion a a) as H621.
+    pose proof (brown1972_lemma_6_2_iii_sedenion a a) as Hdiag.
+    apply brown1972_sed_add_self_eq_zero in Hdiag.
+    rewrite Hdiag in H61.
+    rewrite sed_add_zero_left in H61.
+    split.
+    + rewrite H61 in H621.
+      rewrite sed_add_zero_right in H621.
+      exact H621.
+    + split.
+      * pose proof (brown1972_theorem_6_1_sedenion brown1972_sed_adjoined_e a) as Hee.
+        apply brown1972_sed_add_self_eq_zero in Hee.
+        exact Hee.
+      * pose proof (brown1972_lemma_6_2_i_sedenion a brown1972_sed_adjoined_e) as Haee.
+        apply brown1972_sed_add_self_eq_zero in Haee.
+        exact Haee.
 Qed.
 
 Theorem brown1972_theorem_6_3_i_sedenion : forall a b : CDSed,
@@ -2875,6 +2965,95 @@ Proof.
             brown1972_ch6_t63_ii_sed := brown1972_theorem_6_3_ii_sedenion;
             brown1972_ch6_t63_iii_sed := brown1972_theorem_6_3_iii_sedenion |}.
 Defined.
+
+Definition brown1972_sed_trace (x : CDSed) : R :=
+  2 * qa (oct_lo (sed_lo x)).
+
+Lemma brown1972_oct_trace_zero_iff_pure : forall x : CDOct,
+  brown1972_oct_trace x = 0%R <-> oct_conj x = oct_neg x.
+Proof.
+  intros [[a1 a2 a3 a4] [a5 a6 a7 a8]].
+  split; intro H.
+  - cbv [brown1972_oct_trace oct_conj oct_neg oct_lo oct_hi
+         quat_conj quat_neg qa qb qc qd] in H |- *.
+    apply (f_equal2 mkOct).
+    + apply (f_equal4 mkQuat); lra.
+    + apply (f_equal4 mkQuat); lra.
+  - apply (f_equal brown1972_oct_trace) in H.
+    rewrite brown1972_oct_trace_conj in H.
+    rewrite brown1972_oct_trace_neg in H.
+    lra.
+Qed.
+
+Lemma brown1972_sed_hi_trace_zero_iff_adjoined_commutes_with_conj :
+  forall x : CDSed,
+    sed_mul x brown1972_sed_adjoined_e =
+    sed_mul brown1972_sed_adjoined_e (sed_conj x) <->
+    brown1972_oct_trace (sed_hi x) = 0%R.
+Proof.
+  intros [[[a1 a2 a3 a4] [a5 a6 a7 a8]]
+         [[a9 a10 a11 a12] [a13 a14 a15 a16]]].
+  split; intro H.
+  - cbv [brown1972_sed_adjoined_e brown1972_oct_trace
+         sed_mul sed_conj sed_neg sed_hi sed_lo sed_e
+         oct_add oct_neg oct_mul oct_conj oct_lo oct_hi oct_zero oct_e
+         quat_add quat_neg quat_mul quat_conj quat_zero quat_one
+         qa qb qc qd] in H |- *.
+    inversion H; subst; lra.
+  - cbv [brown1972_sed_adjoined_e brown1972_oct_trace
+         sed_mul sed_conj sed_neg sed_hi sed_lo sed_e
+         oct_add oct_neg oct_mul oct_conj oct_lo oct_hi oct_zero oct_e
+         quat_add quat_neg quat_mul quat_conj quat_zero quat_one
+         qa qb qc qd] in H |- *.
+    assert (Ha9 : a9 = 0%R) by lra.
+    subst a9.
+    apply (f_equal2 mkSed).
+    + apply (f_equal2 mkOct); apply (f_equal4 mkQuat); ring.
+    + apply (f_equal2 mkOct); apply (f_equal4 mkQuat); ring.
+Qed.
+
+Theorem brown1972_lemma_6_8_sedenion : forall x : CDSed,
+  sed_mul x brown1972_sed_adjoined_e =
+  sed_mul brown1972_sed_adjoined_e (sed_conj x) <->
+  brown1972_oct_trace (sed_hi x) = 0%R.
+Proof.
+  exact brown1972_sed_hi_trace_zero_iff_adjoined_commutes_with_conj.
+Qed.
+
+(** Brown's printed 6.9(i) statement is pointwise in [B], but the proof on pp.
+    34-35 actually uses the stronger family form: the identity holds for all
+    [B] exactly when the adjoined coefficient of [A] has trace zero. We surface
+    that proof-faithful family form here. *)
+Theorem brown1972_lemma_6_9_i_sedenion_family : forall A : CDSed,
+  (forall B : CDSed,
+      sed_mul A (sed_mul brown1972_sed_adjoined_e B) =
+      sed_mul brown1972_sed_adjoined_e (sed_mul (sed_conj A) B)) <->
+  brown1972_oct_trace (sed_hi A) = 0%R.
+Proof.
+  intros [a1 a2].
+  split.
+  - intro Hall.
+    specialize (Hall sed_one).
+    rewrite sed_mul_one_right in Hall.
+    rewrite sed_mul_one_right in Hall.
+    exact (proj1 (brown1972_lemma_6_8_sedenion (mkSed a1 a2)) Hall).
+  - intro Htr.
+    intro B.
+    destruct B as [[[b1 b2 b3 b4] [b5 b6 b7 b8]]
+                   [[b9 b10 b11 b12] [b13 b14 b15 b16]]].
+    destruct a1 as [[a1 a2' a3 a4] [a5 a6 a7 a8]].
+    destruct a2 as [[a9 a10 a11 a12] [a13 a14 a15 a16]].
+    cbv [brown1972_oct_trace brown1972_sed_adjoined_e
+         sed_mul sed_conj sed_neg sed_hi sed_lo sed_e sed_one
+         oct_mul oct_conj oct_neg oct_lo oct_hi oct_zero oct_e
+         quat_mul quat_add quat_neg quat_conj quat_one quat_zero
+         qa qb qc qd] in Htr |- *.
+    assert (Ha9 : a9 = 0%R) by lra.
+    subst a9.
+    apply (f_equal2 mkSed).
+    + apply (f_equal2 mkOct); apply (f_equal4 mkQuat); ring.
+    + apply (f_equal2 mkOct); apply (f_equal4 mkQuat); ring.
+Qed.
 
 Theorem Brown1972_lane_compiles : True.
 Proof. exact I. Qed.
