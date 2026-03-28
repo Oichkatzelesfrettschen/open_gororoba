@@ -41,15 +41,17 @@
     - Chapter VI, pp. 30-42, Theorems 6.2-6.17:
       a standard-octonion Brown 6.10 / 6.11 / 6.12 / 6.13 / 6.14 / 6.15
       basis-associator surface is now landed, a source-faithful standard-
-      octonion anticommutator lane for Brown 6.16 / 6.17 is now landed, and
-      a direct standard-sedenion adjoined-element / polynomial lane for
-      6.1 / 6.2 / 6.3 / 6.4 / 6.5 / 6.6 / 6.7 / 6.8 plus proof-faithful
-      constructive 6.9 witnesses is now landed; the printed Brown 6.9
+      octonion anticommutator lane for Brown 6.16 / 6.17 is now landed, a
+      direct standard-sedenion adjoined-element / polynomial lane for
+      6.1 / 6.2 / 6.3 / 6.4 / 6.5 / 6.6 / 6.7 / 6.8 is now landed, that
+      Brown 6.4-6.7 lane is also packaged as a broader adjoined/polynomial
+      lift interface above literal `mkSed` coordinates, and proof-faithful
+      constructive 6.9 witnesses are now landed; the printed Brown 6.9
       pointwise iff wording does not survive unchanged in the repo's literal
       standard-pair coordinates, so the current Rocq surface records the
       constructive implications and the family form Brown's p.35 proof
-      actually uses; the next Chapter VI work is any broader non-octonion
-      lift beside the broader Chapter III quadratic/conjugation lift.
+      actually uses; the next Chapter VI work is any farther non-standard-
+      model lift beside the broader Chapter III quadratic/conjugation lift.
     - Chapter VII, pp. 45-56, Theorems 7.3-7.18:
       direct Rocq landing via `ZD_Criterion.v`, `C1538_MorZDSymmetry.v`, and
       `BrownAssessorEquivalence.v`.
@@ -74,8 +76,9 @@
       octonion/sedenion 3.9 / 3.10 witnesses
     - broader Brown-numbered Chapter VI basis-element theorem lanes beyond the
       landed standard-octonion 6.10 / 6.11 / 6.12 / 6.13 / 6.14 / 6.15
-      basis-associator surface and the landed standard-octonion 6.16 / 6.17
-      anticommutator surface
+      basis-associator surface, the landed standard-octonion 6.16 / 6.17
+      anticommutator surface, and the new broader 6.4-6.7 adjoined/
+      polynomial lift interface
     - remaining Chapter VII numbering gaps plus Appendix C extraction bridge in Rocq
 
     The executable Rust companion for this paper is `crates/brown_1972/`. *)
@@ -3495,6 +3498,19 @@ Proof.
   exact brown1972_ch6_polynomial_mul_eq_cd.
 Qed.
 
+Theorem brown1972_theorem_6_5_standard_octonion_sedenion_lift :
+  forall a1 a2 b1 b2 : CDOct,
+    brown1972_ch6_67_polynomial_mul a1 a2 b1 b2 =
+    sed_mul
+      (sed_add (brown1972_sed_oct_embed a1) (brown1972_sed_poly_embed a2))
+      (sed_add (brown1972_sed_oct_embed b1) (brown1972_sed_poly_embed b2)).
+Proof.
+  intros a1 a2 b1 b2.
+  rewrite <- brown1972_sed_oct_poly_decompose.
+  rewrite <- brown1972_sed_oct_poly_decompose.
+  exact (brown1972_theorem_6_5_standard_octonion_sedenion a1 a2 b1 b2).
+Qed.
+
 Corollary brown1972_corollary_6_7_sedenion :
   forall a1 a2 b1 b2 : CDOct,
     brown1972_ch6_67_polynomial_mul a1 a2 b1 b2 =
@@ -3502,6 +3518,58 @@ Corollary brown1972_corollary_6_7_sedenion :
 Proof.
   exact brown1972_ch6_polynomial_mul_eq_cd.
 Qed.
+
+Corollary brown1972_corollary_6_7_sedenion_lift :
+  forall a1 a2 b1 b2 : CDOct,
+    brown1972_ch6_67_polynomial_mul a1 a2 b1 b2 =
+    sed_mul
+      (sed_add (brown1972_sed_oct_embed a1) (brown1972_sed_poly_embed a2))
+      (sed_add (brown1972_sed_oct_embed b1) (brown1972_sed_poly_embed b2)).
+Proof.
+  intros a1 a2 b1 b2.
+  exact (brown1972_theorem_6_5_standard_octonion_sedenion_lift a1 a2 b1 b2).
+Qed.
+
+Record Brown1972ChapterVIAdjoinedPolynomialLiftSurface
+  (Base Ext : Type)
+  (base_mul : Base -> Base -> Base)
+  (base_neg : Base -> Base)
+  (base_conj : Base -> Base)
+  (ext_add : Ext -> Ext -> Ext)
+  (ext_mul : Ext -> Ext -> Ext)
+  (ext_assoc : Ext -> Ext -> Ext -> Ext)
+  (ext_neg : Ext -> Ext)
+  (base_embed poly_embed : Base -> Ext)
+  (adjoined_e : Ext)
+  (poly_mul : Base -> Base -> Base -> Base -> Ext) := {
+  brown1972_ch6_c64_lift :
+    forall A B : Ext,
+      ext_assoc B (ext_mul adjoined_e A) adjoined_e =
+      ext_mul (ext_neg (ext_assoc B adjoined_e A))
+              adjoined_e;
+  brown1972_ch6_t65_lift :
+    forall a1 a2 b1 b2 : Base,
+      poly_mul a1 a2 b1 b2 =
+      ext_mul (ext_add (base_embed a1) (poly_embed a2))
+              (ext_add (base_embed b1) (poly_embed b2));
+  brown1972_ch6_t66_i_lift :
+    forall a b : Base,
+      ext_mul (base_embed a) (poly_embed b) =
+      poly_embed (base_mul b a);
+  brown1972_ch6_t66_ii_lift :
+    forall a b : Base,
+      ext_mul (poly_embed a) (base_embed b) =
+      poly_embed (base_mul a (base_conj b));
+  brown1972_ch6_t66_iii_lift :
+    forall a b : Base,
+      ext_mul (poly_embed a) (poly_embed b) =
+      base_embed (base_neg (base_mul (base_conj b) a));
+  brown1972_ch6_c67_lift :
+    forall a1 a2 b1 b2 : Base,
+      poly_mul a1 a2 b1 b2 =
+      ext_mul (ext_add (base_embed a1) (poly_embed a2))
+              (ext_add (base_embed b1) (poly_embed b2))
+}.
 
 Record Brown1972ChapterVISedenionPolynomialSurface := {
   brown1972_ch6_c64_sed :
@@ -3540,6 +3608,23 @@ Proof.
             brown1972_ch6_t66_ii_sed := brown1972_theorem_6_6_ii_sedenion;
             brown1972_ch6_t66_iii_sed := brown1972_theorem_6_6_iii_sedenion;
             brown1972_ch6_c67_sed := brown1972_corollary_6_7_sedenion |}.
+Defined.
+
+Definition brown1972_sedenion_chapter_vi_adjoined_polynomial_lift_surface :
+  Brown1972ChapterVIAdjoinedPolynomialLiftSurface
+    CDOct CDSed
+    oct_mul oct_neg oct_conj
+    sed_add sed_mul sed_assoc sed_neg
+    brown1972_sed_oct_embed brown1972_sed_poly_embed
+    brown1972_sed_adjoined_e
+    brown1972_ch6_67_polynomial_mul.
+Proof.
+  refine {| brown1972_ch6_c64_lift := brown1972_corollary_6_4_sedenion;
+            brown1972_ch6_t65_lift := brown1972_theorem_6_5_standard_octonion_sedenion_lift;
+            brown1972_ch6_t66_i_lift := brown1972_theorem_6_6_i_sedenion;
+            brown1972_ch6_t66_ii_lift := brown1972_theorem_6_6_ii_sedenion;
+            brown1972_ch6_t66_iii_lift := brown1972_theorem_6_6_iii_sedenion;
+            brown1972_ch6_c67_lift := brown1972_corollary_6_7_sedenion_lift |}.
 Defined.
 
 Definition brown1972_sed_trace (x : CDSed) : R :=
