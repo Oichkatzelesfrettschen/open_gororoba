@@ -1,0 +1,13 @@
+{
+  "mission": "themis-a",
+  "n_vectors": 5614,
+  "n_associator_norms": 5612,
+  "real_mean": 0.13399428778627154,
+  "real_std": 0.34230635450003405,
+  "shared_phase_mean": 0.13858709507872544,
+  "indep_phase_mean": 0.5460225012492094,
+  "ratio_real_to_shared": 0.9668597765914285,
+  "ratio_real_to_indep": 0.245400670264897,
+  "ratio_shared_to_indep": 0.2538120585903713,
+  "interpretation": "No signal above surrogates (associator is noise)"
+}

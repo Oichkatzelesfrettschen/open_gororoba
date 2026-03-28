@@ -1,0 +1,66 @@
+{
+  "question": "Q3: Is the associator systematically better at induced vs dipole boundaries?",
+  "induced_boundaries": [
+    {
+      "name": "MAVEN 7-day",
+      "boundary_type": "induced",
+      "detection_rate": 0.5692307692307692,
+      "false_alarm_rate": 0.2641509433962264
+    },
+    {
+      "name": "MAVEN 14-day",
+      "boundary_type": "induced",
+      "detection_rate": 0.5333333333333333,
+      "false_alarm_rate": 0.2578947368421053
+    },
+    {
+      "name": "Rosetta",
+      "boundary_type": "induced",
+      "detection_rate": 0.1309959130995913,
+      "false_alarm_rate": 0.007331378299120235
+    }
+  ],
+  "dipole_boundaries": [
+    {
+      "name": "THEMIS-A heuristic",
+      "boundary_type": "dipole",
+      "detection_rate": 0.33707865168539325,
+      "false_alarm_rate": 0.5862068965517241
+    },
+    {
+      "name": "THEMIS-A curated",
+      "boundary_type": "dipole",
+      "detection_rate": 0.2689075630252101,
+      "false_alarm_rate": 0.3333333333333333
+    },
+    {
+      "name": "Cluster-1 heuristic",
+      "boundary_type": "dipole",
+      "detection_rate": 0.3228346456692913,
+      "false_alarm_rate": 0.5074626865671642
+    },
+    {
+      "name": "Cluster-1 curated BS",
+      "boundary_type": "dipole",
+      "detection_rate": 0.3684210526315789,
+      "false_alarm_rate": 0.5
+    },
+    {
+      "name": "MMS",
+      "boundary_type": "dipole",
+      "detection_rate": 0.6153846153846154,
+      "false_alarm_rate": 0.4
+    },
+    {
+      "name": "MESSENGER curated",
+      "boundary_type": "dipole",
+      "detection_rate": 0.4024390243902439,
+      "false_alarm_rate": 0.7468354430379747
+    }
+  ],
+  "induced_mean_detection": 0.411186671887898,
+  "dipole_mean_detection": 0.38584425879772216,
+  "induced_mean_fa": 0.176459019512484,
+  "dipole_mean_fa": 0.512306393248366,
+  "interpretation": "Induced boundaries show lower FA rates but dipole boundaries with curated labels show higher detection. The comparison is confounded by label quality: induced boundaries only have heuristic labels while THEMIS has curated labels."
+}
