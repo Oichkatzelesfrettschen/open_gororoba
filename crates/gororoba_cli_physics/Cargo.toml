@@ -269,6 +269,10 @@ name = "heliosphere-magnetic-takens"
 path = "src/bin/heliosphere_magnetic_takens.rs"
 
 [[bin]]
+name = "heliosphere-mms-multiday"
+path = "src/bin/heliosphere_mms_multiday.rs"
+
+[[bin]]
 name = "heliosphere-quench-scan"
 path = "src/bin/heliosphere_quench_scan.rs"
 

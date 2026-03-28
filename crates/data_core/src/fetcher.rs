@@ -78,6 +78,20 @@ pub fn download_to_string(url: &str) -> Result<String, FetchError> {
         })
 }
 
+/// Download a URL as a string with a custom timeout.
+pub fn download_to_string_with_timeout(
+    url: &str,
+    timeout: std::time::Duration,
+) -> Result<String, FetchError> {
+    let stack = DownloadStack::default().with_timeout(timeout);
+    stack
+        .fetch_text(&TransferRequest::probe(url.to_string()))
+        .map_err(|source| FetchError::HttpError {
+            url: url.to_string(),
+            source: Box::new(source),
+        })
+}
+
 const HAPI_ROOT: &str = "https://cdaweb.gsfc.nasa.gov/hapi/data";
 const HAPI_INFO_ROOT: &str = "https://cdaweb.gsfc.nasa.gov/hapi/info";
 
@@ -219,6 +233,46 @@ pub fn download_hapi_csv(
         )));
     }
     synthesize_hapi_header_if_missing(dataset_id, &body, parameters)
+}
+
+/// Download HAPI CSV to a file using the file-based download path.
+///
+/// Routes through `download_to_file` which supports aria2c fallback for
+/// large transfers (MMS FGM SRVY: ~140 MB/day at 16 Hz). The HAPI header
+/// is synthesized from the info endpoint and prepended to the saved file.
+pub fn download_hapi_csv_to_file(
+    dataset_id: &str,
+    time_min: &str,
+    time_max: &str,
+    parameters: Option<&[&str]>,
+    output: &Path,
+) -> Result<u64, FetchError> {
+    let mut url =
+        format!("{HAPI_ROOT}?id={dataset_id}&time.min={time_min}&time.max={time_max}&format=csv");
+    if let Some(parameters) = parameters
+        && !parameters.is_empty()
+    {
+        url.push_str("&parameters=");
+        url.push_str(&parameters.join(","));
+    }
+
+    // Download raw CSV to a temp file first
+    let tmp = output.with_extension("csv.tmp");
+    download_to_file(&url, &tmp)?;
+
+    // Read, check for no-data, synthesize header, write final
+    let body = fs::read_to_string(&tmp)?;
+    if is_hapi_no_data_response(&body) {
+        let _ = fs::remove_file(&tmp);
+        return Err(FetchError::Validation(format!(
+            "dataset {dataset_id} returned no data for requested window {time_min}..{time_max}"
+        )));
+    }
+    let with_header = synthesize_hapi_header_if_missing(dataset_id, &body, parameters)?;
+    let bytes = with_header.len() as u64;
+    fs::write(output, with_header)?;
+    let _ = fs::remove_file(&tmp);
+    Ok(bytes)
 }
 
 /// AMDA/CDPP HAPI service root (European mirror, same protocol as CDAWeb HAPI).

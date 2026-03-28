@@ -24,22 +24,22 @@ id = "SIG-0002"
 path = "registry/binaries.toml"
 top_level_keys = ["binary"]
 schema_version = "v1"
-schema_sha256 = "65cd16342b377f6665c87eb2411e358f6c7e224793e0dd2da1bb76c6713b6101"
-content_sha256 = "4b39ba8eaa43521592a69ac76dca7dd0ae85898e40a383f9522c788c82ba6e09"
+schema_sha256 = "00efa49a13b956e0c18b54498fd0539e5bd878c210d6d4030264aaf0f0f6eb80"
+content_sha256 = "329c09639b3686767b88447c29758cc65dc965491becfea674c5ca75735369e1"
 array_table_count = 1
 table_count = 0
-shape_json = "{\"path\":\"registry/binaries.toml\",\"shapes\":{\"binary\":{\"entry_kind\":\"table\",\"required_keys\":[\"crate\",\"description\",\"name\"],\"row_count\":377,\"type\":\"array\",\"union_keys\":[\"crate\",\"description\",\"experiment\",\"name\"]}},\"top_level_keys\":[\"binary\"]}"
+shape_json = "{\"path\":\"registry/binaries.toml\",\"shapes\":{\"binary\":{\"entry_kind\":\"table\",\"required_keys\":[\"crate\",\"description\",\"name\"],\"row_count\":378,\"type\":\"array\",\"union_keys\":[\"crate\",\"description\",\"experiment\",\"name\"]}},\"top_level_keys\":[\"binary\"]}"
 
 [[signature]]
 id = "SIG-0003"
 path = "registry/claims.toml"
 top_level_keys = ["claim"]
 schema_version = "v1"
-schema_sha256 = "3ef40f4a4a52f6b3d1bdffc9f85c00675aa223602d48f1cb12f04764b393e6da"
-content_sha256 = "8faf3dad1856de7df3bbe817788ee7007c12236bfbced7150015e14a569deadc"
+schema_sha256 = "203ccad321d42c4a2259cc508018c3367cdd3b60d5ac14fc6bc69dedb888ee46"
+content_sha256 = "344e2e3da1ffa7d69ec687102a40a30d4001c8c8f21d40ca255cc9f21f06557c"
 array_table_count = 1
 table_count = 0
-shape_json = "{\"path\":\"registry/claims.toml\",\"shapes\":{\"claim\":{\"entry_kind\":\"table\",\"required_keys\":[\"id\",\"last_verified\",\"statement\",\"status\",\"where_stated\"],\"row_count\":1437,\"type\":\"array\",\"union_keys\":[\"formal_proof\",\"id\",\"last_verified\",\"statement\",\"status\",\"status_note\",\"where_stated\"]}},\"top_level_keys\":[\"claim\"]}"
+shape_json = "{\"path\":\"registry/claims.toml\",\"shapes\":{\"claim\":{\"entry_kind\":\"table\",\"required_keys\":[\"id\",\"last_verified\",\"statement\",\"status\",\"where_stated\"],\"row_count\":1440,\"type\":\"array\",\"union_keys\":[\"formal_proof\",\"id\",\"last_verified\",\"statement\",\"status\",\"status_note\",\"where_stated\"]}},\"top_level_keys\":[\"claim\"]}"
 
 [[signature]]
 id = "SIG-0004"

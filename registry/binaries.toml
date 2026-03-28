@@ -841,6 +841,11 @@ description = "Benchmark dense CPU/GPU heliosphere LBM runs from feature cubes a
 experiment = "E-119"
 
 [[binary]]
+name = "heliosphere-mms-multiday"
+crate = "gororoba_cli_physics"
+description = "Multi-day MMS magnetopause crossing analysis: fetch FGM SRVY L2 via HAPI, detect crossings via |B| gradient, run 32D CD associator, cross-compare detection methods."
+
+[[binary]]
 name = "heliosphere-predictive-eval"
 crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
