@@ -897,6 +897,10 @@ name = "turboquant-cd-fidelity"
 path = "src/bin/turboquant_cd_fidelity.rs"
 
 [[bin]]
+name = "magnetar-qpo-cd"
+path = "src/bin/magnetar_qpo_cd.rs"
+
+[[bin]]
 name = "mast-fetch"
 path = "src/bin/mast_fetch.rs"
 

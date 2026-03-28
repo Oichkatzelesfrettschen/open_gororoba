@@ -1,0 +1,66 @@
+{
+  "sample_rate": 8192.0,
+  "duration": 300.0,
+  "total_samples": 2457600,
+  "embedding_dim": 32,
+  "qpo_frequencies_hz": [
+    18.0,
+    26.0,
+    30.0,
+    92.0,
+    150.0,
+    625.0,
+    1840.0
+  ],
+  "phases": [
+    {
+      "phase": "initial_spike",
+      "time_start": 0.0,
+      "time_end": 10.0,
+      "mean_a": 0.026141210939835617,
+      "max_a": 0.07755437473061921,
+      "n_active_modes": 1
+    },
+    {
+      "phase": "qpo_onset",
+      "time_start": 10.0,
+      "time_end": 30.0,
+      "mean_a": 0.13565859673585295,
+      "max_a": 0.4416083648030356,
+      "n_active_modes": 3
+    },
+    {
+      "phase": "multi_mode",
+      "time_start": 30.0,
+      "time_end": 80.0,
+      "mean_a": 0.2746284254109515,
+      "max_a": 0.6552087392673671,
+      "n_active_modes": 6
+    },
+    {
+      "phase": "high_freq",
+      "time_start": 80.0,
+      "time_end": 120.0,
+      "mean_a": 0.20909258529030453,
+      "max_a": 0.5299966410289692,
+      "n_active_modes": 7
+    },
+    {
+      "phase": "decay",
+      "time_start": 120.0,
+      "time_end": 200.0,
+      "mean_a": 0.12675635460928922,
+      "max_a": 0.3893783521273271,
+      "n_active_modes": 4
+    },
+    {
+      "phase": "quiet_tail",
+      "time_start": 200.0,
+      "time_end": 300.0,
+      "mean_a": 0.06619008196446148,
+      "max_a": 0.21840989857873064,
+      "n_active_modes": 2
+    }
+  ],
+  "interpretation": "Synthetic SGR 1806-20: 7 QPO modes (18-1840 Hz). Peak A in 'multi_mode' phase (A=0.274628, 6 modes active). Min A in 'initial_spike' phase (A=0.026141). Ratio=10.51x."
+}
