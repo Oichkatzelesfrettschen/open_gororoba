@@ -28,6 +28,7 @@ pub mod hst;
 pub mod ibex;
 pub mod imap;
 pub mod imp8;
+pub mod intermagnet;
 pub mod jarvis;
 pub mod juno;
 pub mod jwst;
