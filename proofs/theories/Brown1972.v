@@ -40,10 +40,12 @@
     - Chapter VI, pp. 30-42, Theorems 6.2-6.17:
       a standard-octonion Brown 6.10 / 6.11 basis witness surface is now
       landed, and a direct standard-sedenion adjoined-element surface for
-      6.1 / 6.2 / 6.3 is now landed; the next source-mined Rocq seam is 6.8 /
-      6.9, which still needs an honest Brown-notation-to-standard-pair
-      reconciliation around the adjoined basis element `e`, followed by
-      broader basis lifts beyond the current octonion witness layer.
+      6.1 / 6.2 / 6.3 / 6.8 plus proof-faithful constructive 6.9 witnesses
+      is now landed; the printed Brown 6.9 pointwise iff wording does not
+      survive unchanged in the repo's literal standard-pair coordinates, so
+      the current Rocq surface records the constructive implications and the
+      family form Brown's p.35 proof actually uses, with broader basis lifts
+      beyond the current octonion witness layer still open.
     - Chapter VII, pp. 45-56, Theorems 7.3-7.18:
       direct Rocq landing via `ZD_Criterion.v`, `C1538_MorZDSymmetry.v`, and
       `BrownAssessorEquivalence.v`.
@@ -3038,39 +3040,113 @@ Proof.
   exact brown1972_sed_hi_trace_zero_iff_adjoined_commutes_with_conj.
 Qed.
 
-(** Brown's printed 6.9(i) statement is pointwise in [B], but the proof on pp.
-    34-35 actually uses the stronger family form: the identity holds for all
-    [B] exactly when the adjoined coefficient of [A] has trace zero. We surface
-    that proof-faithful family form here. *)
+(** Brown's printed 6.9(i) wording is pointwise in [A,B], but the proof on
+    p.35 uses the stronger family form and the literal pointwise iff is
+    degenerate at [B = 0]. We therefore land the proof-faithful family iff,
+    together with the forward pointwise consequence Brown actually needs. *)
+Theorem brown1972_lemma_6_9_i_sedenion_forward : forall A B : CDSed,
+  brown1972_oct_trace (sed_hi A) = 0%R ->
+  sed_mul A (sed_mul brown1972_sed_adjoined_e B) =
+  sed_mul brown1972_sed_adjoined_e (sed_mul (sed_conj A) B).
+Proof.
+  intros [a1 a2]
+         [[[b1 b2 b3 b4] [b5 b6 b7 b8]]
+          [[b9 b10 b11 b12] [b13 b14 b15 b16]]]
+         Htr.
+  destruct a1 as [[a1 a2' a3 a4] [a5 a6 a7 a8]].
+  destruct a2 as [[a9 a10 a11 a12] [a13 a14 a15 a16]].
+  cbv [brown1972_oct_trace brown1972_sed_adjoined_e
+       sed_mul sed_conj sed_neg sed_hi sed_lo sed_e
+       oct_mul oct_conj oct_neg oct_lo oct_hi oct_zero oct_e
+       quat_mul quat_add quat_neg quat_conj quat_one quat_zero
+       qa qb qc qd] in Htr |- *.
+  assert (Ha9 : a9 = 0%R) by lra.
+  subst a9.
+  apply (f_equal2 mkSed).
+  - apply (f_equal2 mkOct); apply (f_equal4 mkQuat); ring.
+  - apply (f_equal2 mkOct); apply (f_equal4 mkQuat); ring.
+Qed.
+
 Theorem brown1972_lemma_6_9_i_sedenion_family : forall A : CDSed,
   (forall B : CDSed,
       sed_mul A (sed_mul brown1972_sed_adjoined_e B) =
       sed_mul brown1972_sed_adjoined_e (sed_mul (sed_conj A) B)) <->
   brown1972_oct_trace (sed_hi A) = 0%R.
 Proof.
-  intros [a1 a2].
+  intro A.
   split.
   - intro Hall.
     specialize (Hall sed_one).
     rewrite sed_mul_one_right in Hall.
     rewrite sed_mul_one_right in Hall.
-    exact (proj1 (brown1972_lemma_6_8_sedenion (mkSed a1 a2)) Hall).
+    exact (proj1 (brown1972_lemma_6_8_sedenion A) Hall).
   - intro Htr.
     intro B.
-    destruct B as [[[b1 b2 b3 b4] [b5 b6 b7 b8]]
-                   [[b9 b10 b11 b12] [b13 b14 b15 b16]]].
-    destruct a1 as [[a1 a2' a3 a4] [a5 a6 a7 a8]].
-    destruct a2 as [[a9 a10 a11 a12] [a13 a14 a15 a16]].
-    cbv [brown1972_oct_trace brown1972_sed_adjoined_e
-         sed_mul sed_conj sed_neg sed_hi sed_lo sed_e sed_one
-         oct_mul oct_conj oct_neg oct_lo oct_hi oct_zero oct_e
-         quat_mul quat_add quat_neg quat_conj quat_one quat_zero
-         qa qb qc qd] in Htr |- *.
-    assert (Ha9 : a9 = 0%R) by lra.
-    subst a9.
-    apply (f_equal2 mkSed).
-    + apply (f_equal2 mkOct); apply (f_equal4 mkQuat); ring.
-    + apply (f_equal2 mkOct); apply (f_equal4 mkQuat); ring.
+    exact (brown1972_lemma_6_9_i_sedenion_forward A B Htr).
+Qed.
+
+(** Brown's scanned p.35 wording for 6.9(ii) is pointwise, but the literal
+    standard-pair converse degenerates on easy cases such as [A = 1]. In the
+    repo's concrete pair coordinates, the constructive direction also needs
+    the same [T(a_2)=0] purity used in 6.9(i). *)
+Theorem brown1972_lemma_6_9_ii_sedenion_of_trace_conditions :
+    forall A B : CDSed,
+  brown1972_oct_trace (sed_hi A) = 0%R ->
+  brown1972_oct_trace (sed_hi (sed_mul A B)) = 0%R ->
+  brown1972_oct_trace (sed_hi B) = 0%R ->
+  sed_mul (sed_mul brown1972_sed_adjoined_e A) B =
+  sed_mul brown1972_sed_adjoined_e (sed_mul B A).
+Proof.
+  intros [[[a1 a2 a3 a4] [a5 a6 a7 a8]]
+         [[a9 a10 a11 a12] [a13 a14 a15 a16]]]
+         [[[b1 b2 b3 b4] [b5 b6 b7 b8]]
+         [[b9 b10 b11 b12] [b13 b14 b15 b16]]]
+         Ha Hab Hb.
+  cbv [brown1972_oct_trace brown1972_sed_adjoined_e
+       sed_mul sed_conj sed_neg sed_hi sed_lo sed_e
+       oct_mul oct_conj oct_neg oct_lo oct_hi oct_zero oct_e
+       quat_mul quat_add quat_neg quat_conj quat_norm_sq
+       quat_one quat_zero qa qb qc qd] in Ha, Hab, Hb |- *.
+  ring_simplify in Ha.
+  ring_simplify in Hab.
+  ring_simplify in Hb.
+  assert (Ha9 : a9 = 0%R) by nra.
+  assert (Hb9 : b9 = 0%R) by nra.
+  subst a9.
+  subst b9.
+  apply (f_equal2 mkSed).
+  - apply (f_equal2 mkOct); apply (f_equal4 mkQuat); nra.
+  - apply (f_equal2 mkOct); apply (f_equal4 mkQuat); nra.
+Qed.
+
+(** Brown's scanned p.35 wording for 6.9(iii) has the same issue: we land the
+    proof-faithful constructive implication rather than a false literal
+    pointwise converse in standard-pair coordinates. *)
+Theorem brown1972_lemma_6_9_iii_sedenion_of_trace_conditions :
+    forall A B : CDSed,
+  brown1972_oct_trace (sed_hi (sed_mul A (sed_conj B))) = 0%R ->
+  brown1972_oct_trace (sed_hi B) = 0%R ->
+  sed_mul (sed_mul brown1972_sed_adjoined_e A)
+          (sed_mul brown1972_sed_adjoined_e B) =
+  sed_neg (sed_mul B (sed_conj A)).
+Proof.
+  intros [[[a1 a2 a3 a4] [a5 a6 a7 a8]]
+         [[a9 a10 a11 a12] [a13 a14 a15 a16]]]
+         [[[b1 b2 b3 b4] [b5 b6 b7 b8]]
+         [[b9 b10 b11 b12] [b13 b14 b15 b16]]]
+         Hab Hb.
+  cbv [brown1972_oct_trace brown1972_sed_adjoined_e
+       sed_mul sed_conj sed_neg sed_hi sed_lo sed_e
+       oct_mul oct_conj oct_neg oct_lo oct_hi oct_zero oct_e
+       quat_mul quat_add quat_neg quat_conj quat_norm_sq
+       quat_one quat_zero qa qb qc qd] in Hab, Hb |- *.
+  ring_simplify in Hab.
+  ring_simplify in Hb.
+  assert (Hb9 : b9 = 0%R) by nra.
+  subst b9.
+  apply (f_equal2 mkSed).
+  - apply (f_equal2 mkOct); apply (f_equal4 mkQuat); nra.
+  - apply (f_equal2 mkOct); apply (f_equal4 mkQuat); nra.
 Qed.
 
 Theorem Brown1972_lane_compiles : True.
