@@ -1777,7 +1777,7 @@ pre-Moreno dependency chain and its missing-source audit now live in
 | 1945 | Schafer, division algebras of order 16 | paired Rust + Rocq | formalized |
 | 1954 | Schafer, algebras formed by the CD process | Rocq-first paper index | Section 1 anchors plus abstract Theorem 2 extension map, Theorem 3 block-restriction and coordinate surfaces, the concrete real-octonion equation (51)/(52) discharge, a concrete residual eq.(50) builder, and the final concrete octonion/sedenion Theorem 4 identification/type-G theorem package landed |
 | 1967 | Brown, generalized CD algebras | paired Rust + Rocq | formalized |
-| 1972 | Brown, zero-divisor structure dissertation | paired, Rocq-heavy | source-driven dissertation map now in place; Chapters I-II are tracked explicitly as contextual source chapters, Chapter III abstract surface plus direct standard-octonion and standard-sedenion Brown 3.9/3.10 witnesses, Chapter IV source-driven 4.2/4.3/4.4 standard-tower witness surface, a Chapter V quaternion witness surface for 5.3/5.5/5.8/5.11/5.12/5.13/5.14/5.15/5.16/5.17 plus first octonion 5.1/5.2/5.8 lifts, and the Chapter VII lane are formalized, while the broader Chapter III generalized-norm lane, the broader Chapter V generalized exponent lane, Chapter VI, VIII, and Appendix C remain partial |
+| 1972 | Brown, zero-divisor structure dissertation | paired, Rocq-heavy | source-driven dissertation map now in place; Chapters I-II are tracked explicitly as contextual source chapters, Chapter III abstract surface plus direct standard-octonion and standard-sedenion Brown 3.9/3.10 witnesses, Chapter IV source-driven 4.2/4.3/4.4 standard-tower witness surface, a Chapter V quaternion witness surface for 5.3/5.5/5.8/5.11/5.12/5.13/5.14/5.15/5.16/5.17 plus octonion 5.1/5.2/5.8/5.11 and the octonion 5.15/5.16/5.17 associator chain, and the Chapter VII lane are formalized, while octonion 5.12, the broader Chapter III generalized-norm lane, the broader Chapter V generalized exponent lane, Chapter VI, VIII, and Appendix C remain partial |
 | 1997 | Moreno, zero divisors over the reals | paired Rust + Rocq | extracted |
 | 2000 | de Marrais, box-kites and assessors | paired Rust + Rocq | formalized |
 | 2002 | Baez, The Octonions | Rocq-first reference lane | partially formalized |
@@ -1930,7 +1930,7 @@ off-repo chronology matrix and roadmap as reference surfaces:
 | 1958 | Jacobson | previews and support on disk | exact full text remains institution-locked |
 | 1965 | Cullen | reconstructed PDF + OCR cached off-repo | source gap resolved; paper lane not yet started |
 | 1967 | Brown | `crates/brown_1967/` + `proofs/theories/BrownGeneralizedCD.v` | extend dim-32/dim-64 theorem surfacing |
-| 1972 | Brown | `crates/brown_1972/` + `proofs/theories/Brown1972.v` | paper index plus a source-driven nine-chapter dissertation map with Chapters I-II kept explicit as non-theorem context, an abstract Chapter III norm/involution surface plus standard-octonion and direct standard-sedenion Theorem 3.9 / Lemma 3.10 witnesses, a Chapter IV source-driven 4.2 / 4.3 / 4.4 standard-tower witness surface, a Chapter V quaternion witness surface for 5.3 / 5.5 / 5.8 / 5.11 / 5.12 / 5.13 / 5.14 / 5.15 / 5.16 / 5.17 plus first octonion 5.1 / 5.2 / 5.8 lifts, and the initial Chapter VII map landed; the broader Chapter III generalized-norm surface, the broader Chapter V generalized exponent surface, Chapter VI, Chapter VIII examples, and the Appendix C bridge remain partial |
+| 1972 | Brown | `crates/brown_1972/` + `proofs/theories/Brown1972.v` | paper index plus a source-driven nine-chapter dissertation map with Chapters I-II kept explicit as non-theorem context, an abstract Chapter III norm/involution surface plus standard-octonion and direct standard-sedenion Theorem 3.9 / Lemma 3.10 witnesses, a Chapter IV source-driven 4.2 / 4.3 / 4.4 standard-tower witness surface, a Chapter V quaternion witness surface for 5.3 / 5.5 / 5.8 / 5.11 / 5.12 / 5.13 / 5.14 / 5.15 / 5.16 / 5.17 plus octonion 5.1 / 5.2 / 5.8 / 5.11 and the octonion 5.15 / 5.16 / 5.17 associator chain, and the initial Chapter VII map landed; octonion 5.12, the broader Chapter III generalized-norm surface, the broader Chapter V generalized exponent surface, Chapter VI, Chapter VIII examples, and the Appendix C bridge remain partial |
 
 ## Chronological gaps we still need to track
 
@@ -1957,8 +1957,8 @@ off-repo chronology matrix and roadmap as reference surfaces:
   map plus an abstract Chapter III norm/involution surface, standard-octonion
   and direct standard-sedenion Theorem 3.9 / Lemma 3.10 witnesses, a Chapter IV source-driven 4.2 / 4.3 /
   4.4 standard-tower witness surface, a Chapter V quaternion witness surface
-  for 5.3 / 5.5 / 5.8 / 5.11 / 5.12 / 5.13 / 5.14 / 5.15 / 5.16 / 5.17 plus first
-  octonion 5.1 / 5.2 / 5.8 lifts, and an initial Chapter VII map, but still needs the broader Chapter III generalized-norm surface, the broader Chapter V generalized exponent surface,
+  for 5.3 / 5.5 / 5.8 / 5.11 / 5.12 / 5.13 / 5.14 / 5.15 / 5.16 / 5.17 plus octonion
+  5.1 / 5.2 / 5.8 / 5.11 and the octonion 5.15 / 5.16 / 5.17 associator chain, and an initial Chapter VII map, but still needs octonion 5.12, the broader Chapter III generalized-norm surface, the broader Chapter V generalized exponent surface,
   Chapter VI, Chapter VIII examples, and a Rocq
   Appendix C bridge.
 - Earlier reference foundation is now explicitly tracked but not yet lifted
@@ -1985,8 +1985,8 @@ off-repo chronology matrix and roadmap as reference surfaces:
    pre-Moreno chain.
 5. Mine Brown (1972) as a full source-driven dissertation lane rather than as
    only a Chapter III follow-up: continue from the landed Chapter IV witness
-   surface and the new Chapter V 5.3 / 5.5 / 5.8 quaternion anchors plus first
-   octonion 5.1 / 5.2 / 5.8 lifts into the broader Chapter V generalized exponent lane, then the broader
+   surface and the new Chapter V 5.3 / 5.5 / 5.8 quaternion anchors plus octonion
+   5.1 / 5.2 / 5.8 / 5.11 and the octonion 5.15 / 5.16 / 5.17 associator chain into the broader Chapter V generalized exponent lane, then the broader
    Chapter III generalized-norm surfacing beyond the landed standard-sedenion witnesses, then the Chapter VI basis-element
    lanes, and finally the remaining Chapter VII / VIII / Appendix C bridges.
 6. Split the already-cached Zorn (1935), Jacobson (1939), and Albert (1942)
