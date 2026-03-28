@@ -1,0 +1,16 @@
+{
+  "mission": "maven",
+  "start_date": "2015-03-01",
+  "end_date": "2015-03-07",
+  "embedding_dim": 32,
+  "total_minutes": 9651,
+  "n_boundaries": 260,
+  "n_associator_transitions": 106,
+  "detection_rate": 0.5692307692307692,
+  "false_alarm_rate": 0.2641509433962264,
+  "mean_offset_minutes": 8.216216216216155,
+  "median_offset_minutes": 7.000000000000028,
+  "global_mean_associator": 8.261319483715484,
+  "global_std_associator": 11.049557372066577,
+  "transition_threshold": 16.574336058099867
+}

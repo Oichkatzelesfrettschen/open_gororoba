@@ -269,6 +269,10 @@ name = "heliosphere-magnetic-takens"
 path = "src/bin/heliosphere_magnetic_takens.rs"
 
 [[bin]]
+name = "heliosphere-boundary-survey"
+path = "src/bin/heliosphere_boundary_survey.rs"
+
+[[bin]]
 name = "heliosphere-rosetta-draping"
 path = "src/bin/heliosphere_rosetta_draping.rs"
 

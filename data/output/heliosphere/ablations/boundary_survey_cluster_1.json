@@ -1,0 +1,16 @@
+{
+  "mission": "cluster-1",
+  "start_date": "2003-01-15",
+  "end_date": "2003-01-21",
+  "embedding_dim": 32,
+  "total_minutes": 8521,
+  "n_boundaries": 127,
+  "n_associator_transitions": 67,
+  "detection_rate": 0.3228346456692913,
+  "false_alarm_rate": 0.5074626865671642,
+  "mean_offset_minutes": 7.170731707317076,
+  "median_offset_minutes": 5.000000000000568,
+  "global_mean_associator": 3.4035359598903105,
+  "global_std_associator": 5.085058792540793,
+  "transition_threshold": 7.62758818881119
+}

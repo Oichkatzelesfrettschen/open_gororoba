@@ -1,0 +1,16 @@
+{
+  "mission": "themis-a",
+  "start_date": "2008-06-01",
+  "end_date": "2008-06-07",
+  "embedding_dim": 32,
+  "total_minutes": 7950,
+  "n_boundaries": 89,
+  "n_associator_transitions": 29,
+  "detection_rate": 0.33707865168539325,
+  "false_alarm_rate": 0.5862068965517241,
+  "mean_offset_minutes": 7.866666666666597,
+  "median_offset_minutes": 8.999999999999488,
+  "global_mean_associator": 0.1702518733357426,
+  "global_std_associator": 0.4942939753240222,
+  "transition_threshold": 0.7414409629860332
+}
