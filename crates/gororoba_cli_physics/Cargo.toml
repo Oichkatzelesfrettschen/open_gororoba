@@ -905,6 +905,10 @@ name = "turboquant-simd-bench"
 path = "src/bin/turboquant_simd_bench.rs"
 
 [[bin]]
+name = "jet-polarization-cd"
+path = "src/bin/jet_polarization_cd.rs"
+
+[[bin]]
 name = "mast-fetch"
 path = "src/bin/mast_fetch.rs"
 

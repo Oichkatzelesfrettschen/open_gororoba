@@ -1,0 +1,31 @@
+{
+  "n_samples": 10000,
+  "embedding_dim": 32,
+  "phases": [
+    {
+      "phase": "helical_quiescent",
+      "mean_a": 0.00008149261435315647,
+      "max_a": 0.00020084207272668883,
+      "mean_pol_frac": 0.03250798437876171
+    },
+    {
+      "phase": "shock_ejection",
+      "mean_a": 0.004959889926024223,
+      "max_a": 0.013450490860589746,
+      "mean_pol_frac": 0.11023495067098092
+    },
+    {
+      "phase": "faraday_screen",
+      "mean_a": 0.00022980456469577884,
+      "max_a": 0.0005260994456179461,
+      "mean_pol_frac": 0.05494409878546336
+    },
+    {
+      "phase": "turbulent_wake",
+      "mean_a": 0.02013623584687495,
+      "max_a": 0.049597650837360216,
+      "mean_pol_frac": 0.012446418460511472
+    }
+  ],
+  "interpretation": "Synthetic M87-like jet: 4 phases. Helical A=0.0001, Shock A=0.0050, Faraday A=0.0002, Turbulent A=0.0201. Shock/Helical ratio=60.9x."
+}
