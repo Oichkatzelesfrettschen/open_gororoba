@@ -1,0 +1,13 @@
+{
+  "mission": "maven",
+  "n_vectors": 4005,
+  "n_associator_norms": 4003,
+  "real_mean": 7.4764374726079605,
+  "real_std": 10.611616422664714,
+  "shared_phase_mean": 7.881724590162406,
+  "indep_phase_mean": 11.142744055916367,
+  "ratio_real_to_shared": 0.9485788785286527,
+  "ratio_real_to_indep": 0.6709691468358067,
+  "ratio_shared_to_indep": 0.7073414367780901,
+  "interpretation": "No signal above surrogates (associator is noise)"
+}

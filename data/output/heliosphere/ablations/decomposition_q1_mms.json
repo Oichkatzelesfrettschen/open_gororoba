@@ -1,0 +1,13 @@
+{
+  "mission": "mms",
+  "n_vectors": 1433,
+  "n_associator_norms": 1431,
+  "real_mean": 1.656820045886439,
+  "real_std": 2.881774302619813,
+  "shared_phase_mean": 1.6325754273048971,
+  "indep_phase_mean": 4.17712785664522,
+  "ratio_real_to_shared": 1.0148505350356556,
+  "ratio_real_to_indep": 0.3966409702424293,
+  "ratio_shared_to_indep": 0.3908368341437527,
+  "interpretation": "No signal above surrogates (associator is noise)"
+}

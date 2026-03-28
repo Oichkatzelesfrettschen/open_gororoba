@@ -269,6 +269,10 @@ name = "heliosphere-magnetic-takens"
 path = "src/bin/heliosphere_magnetic_takens.rs"
 
 [[bin]]
+name = "heliosphere-decomposition-audit"
+path = "src/bin/heliosphere_decomposition_audit.rs"
+
+[[bin]]
 name = "heliosphere-boundary-survey"
 path = "src/bin/heliosphere_boundary_survey.rs"
 
