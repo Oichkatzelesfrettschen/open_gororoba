@@ -1,0 +1,35 @@
+{
+  "grid_size": 64,
+  "embedding_dim": 32,
+  "phases": [
+    {
+      "phase": "warm_ionized",
+      "mean_rm": 0.02218289790396475,
+      "rm_std": 10.127050633995133,
+      "mean_a": 0.33028324259207503,
+      "max_a": 2.217278089239467
+    },
+    {
+      "phase": "hii_region",
+      "mean_rm": 63.45955024109777,
+      "rm_std": 49.72810885743899,
+      "mean_a": 0.1153565202162198,
+      "max_a": 0.23136639702383124
+    },
+    {
+      "phase": "snr_filament",
+      "mean_rm": 64.97738714910294,
+      "rm_std": 31.633102028452917,
+      "mean_a": 0.25112334360699506,
+      "max_a": 0.6226172107472996
+    },
+    {
+      "phase": "turbulent_cascade",
+      "mean_rm": -0.013161913563741372,
+      "rm_std": 34.66124789901091,
+      "mean_a": 0.905474542384805,
+      "max_a": 2.436774607008995
+    }
+  ],
+  "interpretation": "ISM RM 4 phases: WIM A=0.3303, HII A=0.1154, SNR A=0.2511, Turbulent A=0.9055. Turb/WIM=2.7x."
+}
