@@ -1,0 +1,10 @@
+{
+  "v1_ism_floor": 0.0171,
+  "v2_ism_floor": 0.1294,
+  "v2_v1_ratio": 7.567251461988303,
+  "themis_real_comparison": 0.134,
+  "indep_phase_null": 0.546,
+  "ism_below_null": true,
+  "v1_is_global_minimum": true,
+  "interpretation": "The ISM is NOT at the phase-random null floor. Both V1 and V2 ISM have associator values well below the independent-phase surrogate level (0.55), meaning the ISM retains organized cross-channel phase coupling. V1's floor (0.017) is the lowest observed value anywhere -- lower than even quiet inner heliosphere. This suggests the ISM has a very high degree of phase organization: the interstellar magnetic field is the most coherently coupled environment measured. V2's higher floor (0.13) may reflect residual heliospheric contamination or a different ISM sector."
+}
