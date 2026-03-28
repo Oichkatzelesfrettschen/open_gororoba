@@ -206,9 +206,11 @@ fn main() -> Result<()> {
             }
         }
 
-        // Compute actual CD associator norms
-        let norms =
-            cd_kernel::batch_sliding_associator_norms_parallel(&embedded, cli.embedding_dim);
+        // Compute CD associator norms (f32 dispatch for high dims)
+        let precision = if cli.embedding_dim >= 128 { "f32" } else { "f64" };
+        let norms = cd_kernel::batch_sliding_associator_norms_dispatch(
+            &embedded, cli.embedding_dim, precision,
+        );
 
         let (mean_a, max_a, std_a) = if norms.is_empty() {
             (0.0, 0.0, 0.0)

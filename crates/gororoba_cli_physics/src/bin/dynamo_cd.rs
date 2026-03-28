@@ -191,7 +191,7 @@ fn main() -> Result<()> {
         }
 
         let norms =
-            cd_kernel::batch_sliding_associator_norms_parallel(&embedded, cli.embedding_dim);
+            cd_kernel::batch_sliding_associator_norms_dispatch(&embedded, cli.embedding_dim, if cli.embedding_dim >= 128 { "f32" } else { "f64" });
 
         let mean_a = norms.iter().sum::<f64>() / norms.len().max(1) as f64;
         let max_a = norms.iter().cloned().fold(0.0f64, f64::max);
