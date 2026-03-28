@@ -1,0 +1,14 @@
+{
+  "n_matched_minutes": 704,
+  "beta_median": 2.367665154505464,
+  "beta_range": [
+    1.0168943994152833,
+    102.6728092766207
+  ],
+  "low_beta_mean_bmag": 27.936239533165693,
+  "high_beta_mean_bmag": 10.920959642732896,
+  "spearman_beta_bmag": -0.9078570082349479,
+  "assumed_T_K": 1000000.0,
+  "note": "Temperature assumed 10^6 K (typical magnetosheath). True beta requires FPI temperature product.",
+  "interpretation": "Low beta (magnetically dominated) corresponds to higher |B|, which Q2 showed correlates with lower associator (Alfvenic coupling). High beta (plasma dominated) has weaker |B| and more compressive fluctuations. The chain: high beta -> weak |B| -> compressive modes -> disrupted phase coupling -> higher associator."
+}

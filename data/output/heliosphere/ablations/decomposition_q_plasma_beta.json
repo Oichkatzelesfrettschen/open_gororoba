@@ -1,0 +1,8 @@
+{
+  "themis_n_matched": 2827,
+  "themis_median_beta": 0.23169597117210924,
+  "maven_n_matched": 4012,
+  "maven_median_beta": 2.253792897882145,
+  "mms_median_beta": 2.37,
+  "interpretation": "Plasma beta is the physical mediator of the coupling mechanism. Low beta (magnetically dominated) -> organized Alfvenic fluctuations -> strong phase coupling -> low associator. High beta (plasma dominated) -> compressive fluctuations -> disrupted coupling -> high associator. Boundary crossings are abrupt beta transitions. This connects Q2 (compressive modes elevate associator) to plasma physics: the compressive mode association is a beta effect."
+}
