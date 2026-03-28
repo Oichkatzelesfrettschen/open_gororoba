@@ -1,0 +1,21 @@
+{
+  "mission": "messenger",
+  "start_date": "2011-03-24",
+  "end_date": "2011-03-30",
+  "embedding_dim": 32,
+  "total_minutes": 9975,
+  "n_boundaries": 82,
+  "n_associator_transitions": 79,
+  "detection_rate": 0.4024390243902439,
+  "false_alarm_rate": 0.7468354430379747,
+  "mean_offset_minutes": 8.18181818181821,
+  "median_offset_minutes": 7.999999999999998,
+  "curated_n_crossings": 14,
+  "curated_detection_rate": 0.6428571428571429,
+  "curated_false_alarm_rate": 0.8481012658227848,
+  "curated_mean_offset": 5.2222222222222285,
+  "curated_median_offset": 2.999999999999936,
+  "global_mean_associator": 3.304432282370853,
+  "global_std_associator": 5.200895317558757,
+  "transition_threshold": 7.801342976338136
+}
