@@ -917,6 +917,10 @@ name = "dynamo-cd"
 path = "src/bin/dynamo_cd.rs"
 
 [[bin]]
+name = "turboquant-sedenion-rotation"
+path = "src/bin/turboquant_sedenion_rotation.rs"
+
+[[bin]]
 name = "mast-fetch"
 path = "src/bin/mast_fetch.rs"
 
