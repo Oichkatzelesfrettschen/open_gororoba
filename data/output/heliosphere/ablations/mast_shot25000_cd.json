@@ -1,0 +1,63 @@
+{
+  "zarr_dir": "data/external/mast/shot25000.zarr/ama",
+  "embedding_dim": 32,
+  "stride": 50,
+  "normalization": "direction",
+  "n_samples": 200000,
+  "time_range": [
+    -0.1499961018562317,
+    0.6499999165534973
+  ],
+  "signal_range": [
+    -0.0021453900262713432,
+    0.003112668637186289
+  ],
+  "n_windows": 7,
+  "results": [
+    {
+      "center_time": -0.04999610036611557,
+      "mean_associator": 1.4364677461390611,
+      "max_associator": 3.354195859000933,
+      "n_embeddings": 984
+    },
+    {
+      "center_time": 0.05000390112400055,
+      "mean_associator": 1.4993563954079319,
+      "max_associator": 3.558684452380453,
+      "n_embeddings": 984
+    },
+    {
+      "center_time": 0.15000391006469727,
+      "mean_associator": 1.5241335622289178,
+      "max_associator": 3.558684452380453,
+      "n_embeddings": 984
+    },
+    {
+      "center_time": 0.2500039041042328,
+      "mean_associator": 1.4060905976509561,
+      "max_associator": 3.6676053287151507,
+      "n_embeddings": 984
+    },
+    {
+      "center_time": 0.3500038981437683,
+      "mean_associator": 1.3231038042063374,
+      "max_associator": 3.6676053287151507,
+      "n_embeddings": 984
+    },
+    {
+      "center_time": 0.4500039219856262,
+      "mean_associator": 1.3672426872834378,
+      "max_associator": 2.8603973068382165,
+      "n_embeddings": 984
+    },
+    {
+      "center_time": 0.5500038862228394,
+      "mean_associator": 1.3622302731244156,
+      "max_associator": 3.077604899522792,
+      "n_embeddings": 984
+    }
+  ],
+  "overall_mean_a": 1.4169464380058654,
+  "overall_max_a": 3.6676053287151507,
+  "interpretation": "MAST shot 30420 ama Mirnov (n=2 + n=odd, 2 channels). 7 windows, overall A_mean=1.416946, A_max=3.667605. 32D embedding, stride=50, direction."
+}
