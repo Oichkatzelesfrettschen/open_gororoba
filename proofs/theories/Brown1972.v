@@ -3780,6 +3780,45 @@ Proof.
               brown1972_corollary_6_7_sedenion_decomposed |}.
 Defined.
 
+Record Brown1972ChapterVIStabilizedSurface := {
+  brown1972_ch6_stab_oct_basis :
+    Brown1972ChapterVIOctonionBasisSurface;
+  brown1972_ch6_stab_oct_anticommutator :
+    Brown1972ChapterVIOctonionAnticommutatorSurface;
+  brown1972_ch6_stab_sed_adjoined :
+    Brown1972ChapterVISedenionAdjoinedSurface;
+  brown1972_ch6_stab_sed_polynomial :
+    Brown1972ChapterVISedenionPolynomialSurface;
+  brown1972_ch6_stab_sed_lift :
+    Brown1972ChapterVIAdjoinedPolynomialLiftSurface
+      CDOct CDSed
+      oct_mul oct_neg oct_conj
+      sed_add sed_mul sed_assoc sed_neg
+      brown1972_sed_oct_embed brown1972_sed_poly_embed
+      brown1972_sed_adjoined_e
+      brown1972_ch6_67_polynomial_mul;
+  brown1972_ch6_stab_sed_decomp :
+    Brown1972ChapterVIAdjoinedPolynomialDecompositionSurface
+      brown1972_ch6_67_polynomial_mul sed_lo sed_hi sed_mul
+}.
+
+Definition brown1972_chapter_vi_stabilized_surface :
+  Brown1972ChapterVIStabilizedSurface.
+Proof.
+  refine {| brown1972_ch6_stab_oct_basis :=
+              brown1972_octonion_chapter_vi_basis_surface;
+            brown1972_ch6_stab_oct_anticommutator :=
+              brown1972_octonion_chapter_vi_anticommutator_surface;
+            brown1972_ch6_stab_sed_adjoined :=
+              brown1972_sedenion_chapter_vi_adjoined_surface;
+            brown1972_ch6_stab_sed_polynomial :=
+              brown1972_sedenion_chapter_vi_polynomial_surface;
+            brown1972_ch6_stab_sed_lift :=
+              brown1972_sedenion_chapter_vi_adjoined_polynomial_lift_surface;
+            brown1972_ch6_stab_sed_decomp :=
+              brown1972_sedenion_chapter_vi_adjoined_polynomial_decomposition_surface |}.
+Defined.
+
 Lemma brown1972_sed_trace_add : forall x y : CDSed,
   brown1972_sed_trace (sed_add x y) =
   (brown1972_sed_trace x + brown1972_sed_trace y)%R.
@@ -4083,6 +4122,38 @@ Proof.
               brown1972_octonion_chapter_iii_trace_quadratic_surface;
             brown1972_ch3_tqc_sed :=
               brown1972_sedenion_chapter_iii_trace_quadratic_surface |}.
+Defined.
+
+Record Brown1972ChapterIIIStabilizedSurface := {
+  brown1972_ch3_stab_oct_norm :
+    Brown1972ChapterIIISurface;
+  brown1972_ch3_stab_sed_norm :
+    Brown1972ChapterIIISedenionSurface;
+  brown1972_ch3_stab_oct_trace :
+    Brown1972ChapterIIITraceSurface;
+  brown1972_ch3_stab_oct_basic :
+    Brown1972ChapterIIIBasicConsequencesSurface;
+  brown1972_ch3_stab_qc_core_lift :
+    Brown1972ChapterIIIQuadraticCoreLiftSurface;
+  brown1972_ch3_stab_tqc_lift :
+    Brown1972ChapterIIITraceQuadraticLiftSurface
+}.
+
+Definition brown1972_chapter_iii_stabilized_surface :
+  Brown1972ChapterIIIStabilizedSurface.
+Proof.
+  refine {| brown1972_ch3_stab_oct_norm :=
+              brown1972_octonion_chapter_iii_surface;
+            brown1972_ch3_stab_sed_norm :=
+              brown1972_sedenion_chapter_iii_surface;
+            brown1972_ch3_stab_oct_trace :=
+              brown1972_octonion_chapter_iii_trace_surface;
+            brown1972_ch3_stab_oct_basic :=
+              brown1972_octonion_chapter_iii_basic_consequences_surface;
+            brown1972_ch3_stab_qc_core_lift :=
+              brown1972_chapter_iii_quadratic_core_lift_surface;
+            brown1972_ch3_stab_tqc_lift :=
+              brown1972_chapter_iii_trace_quadratic_lift_surface |}.
 Defined.
 
 Lemma brown1972_sed_hi_trace_zero_iff_adjoined_commutes_with_conj :
