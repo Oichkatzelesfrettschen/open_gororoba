@@ -1,0 +1,9 @@
+{
+  "mission": "maven",
+  "n_windows": 66,
+  "correlation_assoc_vs_perp_frac": -0.009957206972132345,
+  "high_assoc_mean_perp_frac": 0.5979122485936182,
+  "low_assoc_mean_perp_frac": 0.5588539007250354,
+  "overall_mean_perp_frac": 0.5777912815098027,
+  "interpretation": "Weak/no correlation (r=-0.010): associator is independent of transverse/compressive mode mix"
+}

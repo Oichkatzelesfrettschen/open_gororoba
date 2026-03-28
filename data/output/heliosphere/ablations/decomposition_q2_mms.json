@@ -1,0 +1,9 @@
+{
+  "mission": "mms",
+  "n_windows": 24,
+  "correlation_assoc_vs_perp_frac": -0.4234782608695652,
+  "high_assoc_mean_perp_frac": 0.6199357119188443,
+  "low_assoc_mean_perp_frac": 0.6659405156053726,
+  "overall_mean_perp_frac": 0.6448549805823804,
+  "interpretation": "Negative correlation (r=-0.423): high associator correlates with compressive-dominant spectral content"
+}
