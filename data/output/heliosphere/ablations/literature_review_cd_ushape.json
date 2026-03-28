@@ -1,0 +1,24 @@
+{
+  "title": "Literature Review: CD Algebras, U-Shape, and Cross-Domain Applications",
+  "generated": "2026-03-28",
+  "key_findings": {
+    "cd_in_plasma_physics": "ZERO prior art. Our work is genuinely novel.",
+    "u_shape_response": "Undocumented as named phenomenon. Closest analog: holographic discord non-monotonicity (Mori 2025). Our synthetic result may be novel.",
+    "non_associativity_breaks_bh_entropy": "Vacaru 2024 (2410.03701): R-flux non-associativity modifies RN black hole entropy. Standard Bekenstein-Hawking fails. Modified Perelman variables required.",
+    "sedenion_contribution_in_forecasting": "Numerion 2025 (2510.03251): sedenions contribute 40% of output weight in time series. Removing them causes largest single-dimension degradation. But response is monotonic, not U-shaped.",
+    "non_associativity_classification": "Wilmot 2025 (2505.11747): 4 types of non-associativity in CD algebras. ZD occur in multiples of 84 in sedenions. Connects to our AVT and Moreno decomposition."
+  },
+  "most_relevant_papers": [
+    {"id": "2505.11747", "relevance": "ZD structure, 4-type non-associativity classification"},
+    {"id": "2410.03701", "relevance": "Non-associative deformations modify BH entropy"},
+    {"id": "2510.03251", "relevance": "Sedenion 40% contribution in time series forecasting"},
+    {"id": "2506.02131", "relevance": "Non-monotone quantum discord analog to our U-shape"},
+    {"id": "2308.15784", "relevance": "Octonion phase retrieval: pseudo-real-matrix workaround for non-associativity"}
+  ],
+  "novelty_assessment": {
+    "cd_in_plasma_mhd": "Genuinely novel -- no prior work exists",
+    "u_shaped_associator_response": "Potentially novel observation",
+    "32d_takens_boundary_detection": "Novel application of hypercomplex delay embedding",
+    "regime_grammar_taxonomy": "Novel framework -- no prior taxonomy of this kind"
+  }
+}
