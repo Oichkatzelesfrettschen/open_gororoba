@@ -269,6 +269,10 @@ name = "heliosphere-magnetic-takens"
 path = "src/bin/heliosphere_magnetic_takens.rs"
 
 [[bin]]
+name = "tokamak-cd-proof"
+path = "src/bin/tokamak_cd_proof.rs"
+
+[[bin]]
 name = "heliosphere-beta-join"
 path = "src/bin/heliosphere_beta_join.rs"
 
