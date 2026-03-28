@@ -30,6 +30,21 @@
       "disruption_22000": 1.558,
       "ratio": 1.097560975609756,
       "gap": 0.1519999999999999
+    },
+    "256": {
+      "stable_30420": 1.722,
+      "disruption_22000": 1.705,
+      "ratio": 1.0099706744868036,
+      "gap": 0.016999999999999904,
+      "wall_time_sec": 215
+    },
+    "512": {
+      "stable_30420": 1.787,
+      "disruption_22000": null,
+      "ratio": null,
+      "gap": null,
+      "note": "estimated from stride=100 run"
     }
-  }
+  },
+  "performance_note": "256D: 3.5 min wall, 189% CPU (rayon 2-core). Need GPU or f32 for 1024D+"
 }
