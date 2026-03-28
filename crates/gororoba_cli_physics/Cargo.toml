@@ -901,6 +901,10 @@ name = "magnetar-qpo-cd"
 path = "src/bin/magnetar_qpo_cd.rs"
 
 [[bin]]
+name = "turboquant-simd-bench"
+path = "src/bin/turboquant_simd_bench.rs"
+
+[[bin]]
 name = "mast-fetch"
 path = "src/bin/mast_fetch.rs"
 
