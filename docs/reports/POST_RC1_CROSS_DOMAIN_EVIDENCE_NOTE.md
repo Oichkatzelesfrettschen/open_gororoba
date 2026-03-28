@@ -5,22 +5,93 @@
 **Claims**: C-1548 through C-1590 (43 claims)
 **Missions**: 9 spacecraft, 18 analysis runs, 0.07-124 AU
 
-## Core Claim
+## Positioning
 
-The 32D Cayley-Dickson associator is a multichannel magnetic-field
-phase-geometry diagnostic whose interpretation is regime-dependent. It is
-not a universal turbulence meter. Its sign and magnitude depend on boundary
-type, background field strength, and normalization choice.
+We propose an auxiliary null-stratified, defect-aware hypercomplex formalism
+for boundary excavation in multichannel heliospheric and magnetospheric
+measurements. In open_gororoba, the formalism is realized through
+32-dimensional Takens embeddings of lagged magnetic-field observables and
+evaluated via Cayley-Dickson associator diagnostics. The construction is not
+intended to replace standard plasma-physics observables, mission catalogs, or
+curated crossing labels. Its role is methodological: to provide an ambient
+structural shell in which cross-channel phase organization, boundary
+incidence, weak-field degeneracy, and transition deformation can be
+represented and compared across regimes using a common operator.
+
+The framework is useful only insofar as it satisfies two conditions: first,
+that known boundary structure remains recoverable under comparison with
+curated or established physics-based labels; and second, that the
+hypercomplex lift yields additional observables not reducible to scalar
+thresholds, linear spectra, or rank-based diagnostics. Within this
+interpretation, the associator should be treated not as a universal turbulence
+meter but as a regime-dependent order parameter for multichannel phase
+geometry, with explicit null-stratification and normalization controls in
+weak-field environments.
 
 **One-sentence paper claim**: We present a pure-Rust, null-stratified,
 multiscale hypercomplex framework for multichannel electromagnetic-field time
-series that yields an order parameter for cross-channel phase organization not
-reducible to standard linear spectral or rank-based diagnostics, and we
-validate it across heliopause, magnetopause, bow shock, induced-boundary,
-cometary-cavity, lunar-wake, and coherent-structure regimes spanning 9
-spacecraft from 0.07 to 124 AU.
+series that yields a regime-sensitive order parameter for cross-channel phase
+organization, validated across heliopause, magnetopause, induced-boundary,
+coherent-structure, and weak-field cavity environments.
 
-## Complete Validation Table
+**Important caveat**: Detection-rate numbers are not directly comparable
+across rows of the validation table, because the label models differ.
+Bayesian change-point localization, curated boundary timestamps, |B|-gradient
+heuristics, and switchback sign criteria are different validation modes, not
+one shared leaderboard.
+
+## Tier 1: Flagship Heliopause Domain (Voyager 1/2)
+
+The heliopause is the **anchor domain** -- the primary demonstration that the
+CD associator recovers known boundary structure.
+
+| Mission | Distance | Method | Metric |
+|---------|----------|--------|--------|
+| Voyager 2 | 119.5 AU | Bayesian CP | pre=4.35, post=0.13 (33x drop) |
+| Voyager 1 | 123.8 AU | Bayesian CP | pre=0.12, post=0.02 (7x drop) |
+
+Cross-spacecraft agreement: both V1 and V2 show the same pattern (associator
+quench at the heliopause), at distances consistent with the known crossing
+locations. The V2 pre-crossing level is 37x higher than V1's because V2
+traversed a more turbulent heliosheath sector.
+
+The densified 1.26M-row feature cube (Voyager 1/2, Ulysses, New Horizons,
+Cassini, Solar Orbiter, PSP) provides continuous radial coverage from 0.3 to
+124 AU with 5-family null stratification confirming that the outer-heliosphere
+signal survives all surrogate treatments.
+
+## Tier 2: Cross-Domain Validation
+
+These missions answer: does the same observable generalize beyond the
+heliopause?
+
+### Validation Quality Tiers
+
+**Tier A -- Curated-label benchmarks** (strongest external validation):
+
+| Mission | Environment | Detection | FA | Offset | Curated Source |
+|---------|-------------|-----------|-----|--------|----------------|
+| **THEMIS-A** | Earth magnetopause | **89.0%** | 16.7% | 6 min | Zenodo V2 (Staples 2020) |
+| **Cluster-1** | Earth bow shock | **64.9%** | 73.9% | 8 min | OMNI SPDF |
+| **MESSENGER** | Mercury magnetopause | **64.3%** | 84.8% | **3 min** | Zenodo |
+
+**Tier B -- Heuristic-labeled boundaries** (physics-based, label-contaminated):
+
+| Mission | Environment | Detection | FA | Offset | Label |
+|---------|-------------|-----------|-----|--------|-------|
+| MMS | Earth magnetopause | 61.5% | 40.0% | 6 min | |B| gradient 5 nT |
+| ARTEMIS THB | Lunar wake/tail | 75.0% | 68.1% | 4 min | |B| gradient 3 nT |
+| MAVEN (14-day) | Mars IMB | 53.3% | 25.8% | 7 min | |B| gradient 5 nT |
+| Solar Orbiter | Inner heliosphere | Omega_mv=0.045 | -- | -- | Null hierarchy |
+| Ulysses | Out-of-ecliptic | 2-4x fast/slow | -- | -- | v_sw > 550 km/s |
+| Cassini + NH | Outer heliosphere | Radial profile | -- | -- | Densified cube |
+
+**Tier C -- Non-boundary / normalization-sensitive demonstrations**:
+
+| Mission | Environment | Metric | Label | Caveat |
+|---------|-------------|--------|-------|--------|
+| Rosetta | 67P cavity | 1.9x (dir) / 5.3x (current) | |B| gradient | 40% genuine, 60% norm amplification |
+| PSP (4 enc.) | Switchbacks | 0.42-0.70 ratio | Br/|B| < -0.5 | Regime classification, not point events |
 
 ### All 18 analysis runs across 9 missions
 
