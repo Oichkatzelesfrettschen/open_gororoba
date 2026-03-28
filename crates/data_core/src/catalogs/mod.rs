@@ -43,6 +43,7 @@ pub mod pantheon;
 pub mod pdg;
 pub mod pioneer;
 pub mod planck;
+pub mod rosetta;
 pub mod psp;
 pub mod psp_fields;
 pub mod psp_spc;

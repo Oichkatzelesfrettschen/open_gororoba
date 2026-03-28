@@ -846,6 +846,16 @@ crate = "gororoba_cli_physics"
 description = "Multi-day MMS magnetopause crossing analysis: fetch FGM SRVY L2 via HAPI, detect crossings via |B| gradient, run 32D CD associator, cross-compare detection methods."
 
 [[binary]]
+name = "heliosphere-rosetta-draping"
+crate = "gororoba_cli_physics"
+description = "Rosetta 67P cometary draping analysis: fetch RPC-MAG via AMDA HAPI, detect diamagnetic cavity boundaries, run 32D CD associator for draping validation."
+
+[[binary]]
+name = "heliosphere-switchback-omega"
+crate = "gororoba_cli_physics"
+description = "PSP switchback detection and fast-wind Omega_mv analysis: classify Br reversals, compute 32D CD associator separately for switchback vs quiet intervals."
+
+[[binary]]
 name = "heliosphere-predictive-eval"
 crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
