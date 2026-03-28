@@ -15,7 +15,10 @@ use data_core::{
     fetcher::{DatasetProvider, FetchConfig},
 };
 use serde::{Deserialize, Serialize};
-use spectral_core::boundary_detectors::{bmag_gradient_crossings, pvi_crossings};
+use spectral_core::boundary_detectors::{
+    bmag_gradient_crossings, magnetic_shear_crossings, pvi_crossings,
+    spectral_entropy_crossings, wavelet_variance_crossings,
+};
 use std::{fs, path::PathBuf};
 
 #[derive(Parser, Debug)]
@@ -55,6 +58,10 @@ struct Cli {
 
     #[arg(long, default_value = "data/external")]
     data_dir: PathBuf,
+
+    /// Force recompute all weeks (ignore cached JSONs).
+    #[arg(long, default_value_t = false)]
+    force_recompute: bool,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -74,6 +81,18 @@ struct WeekResult {
     pvi_false_alarm_rate: f64,
     bmag_detection_rate: f64,
     bmag_false_alarm_rate: f64,
+    #[serde(default)]
+    shear_detection_rate: f64,
+    #[serde(default)]
+    shear_false_alarm_rate: f64,
+    #[serde(default)]
+    wavelet_detection_rate: f64,
+    #[serde(default)]
+    wavelet_false_alarm_rate: f64,
+    #[serde(default)]
+    entropy_detection_rate: f64,
+    #[serde(default)]
+    entropy_false_alarm_rate: f64,
 }
 
 #[derive(Debug, Serialize)]
@@ -135,8 +154,9 @@ fn main() -> Result<()> {
             week_num
         ));
 
-        // Skip if already computed (restartable)
-        if out_file.exists()
+        // Skip if already computed (restartable) unless --force-recompute
+        if !cli.force_recompute
+            && out_file.exists()
             && let Ok(content) = fs::read_to_string(&out_file)
             && let Ok(wr) = serde_json::from_str::<WeekResult>(&content)
         {
@@ -286,6 +306,18 @@ fn main() -> Result<()> {
         let bmag_idx = bmag_gradient_crossings(&bx, &by, &bz, 10, 10.0);
         let bmag_hours: Vec<f64> = bmag_idx.iter().map(|&i| elapsed[i.min(n - 1)]).collect();
 
+        // --- Magnetic shear ---
+        let shear_idx = magnetic_shear_crossings(&bx, &by, &bz, 10, 45.0);
+        let shear_hours: Vec<f64> = shear_idx.iter().map(|&i| elapsed[i.min(n - 1)]).collect();
+
+        // --- Wavelet variance ---
+        let wavelet_idx = wavelet_variance_crossings(&bx, &by, &bz, 30, 1.0);
+        let wavelet_hours: Vec<f64> = wavelet_idx.iter().map(|&i| elapsed[i.min(n - 1)]).collect();
+
+        // --- Spectral entropy ---
+        let entropy_idx = spectral_entropy_crossings(&bx, &by, &bz, 30, 0.1);
+        let entropy_hours: Vec<f64> = entropy_idx.iter().map(|&i| elapsed[i.min(n - 1)]).collect();
+
         // --- Match against curated ---
         let (cd_m, cd_off) = match_crossings(&curated_hours, &cd_trans_hours, tol_hours);
         let cd_rev = cd_trans_hours.iter()
@@ -317,6 +349,21 @@ fn main() -> Result<()> {
         let bmag_fa = if bmag_hours.is_empty() { 0.0 }
             else { (bmag_hours.len() - bmag_rev) as f64 / bmag_hours.len() as f64 };
 
+        let (shear_m, _) = match_crossings(&curated_hours, &shear_hours, tol_hours);
+        let shear_rev = shear_hours.iter().filter(|&&th| curated_hours.iter().any(|&ch| (ch - th).abs() < tol_hours)).count();
+        let shear_det = shear_m as f64 / nc as f64;
+        let shear_fa = if shear_hours.is_empty() { 0.0 } else { (shear_hours.len() - shear_rev) as f64 / shear_hours.len() as f64 };
+
+        let (wav_m, _) = match_crossings(&curated_hours, &wavelet_hours, tol_hours);
+        let wav_rev = wavelet_hours.iter().filter(|&&th| curated_hours.iter().any(|&ch| (ch - th).abs() < tol_hours)).count();
+        let wav_det = wav_m as f64 / nc as f64;
+        let wav_fa = if wavelet_hours.is_empty() { 0.0 } else { (wavelet_hours.len() - wav_rev) as f64 / wavelet_hours.len() as f64 };
+
+        let (ent_m, _) = match_crossings(&curated_hours, &entropy_hours, tol_hours);
+        let ent_rev = entropy_hours.iter().filter(|&&th| curated_hours.iter().any(|&ch| (ch - th).abs() < tol_hours)).count();
+        let ent_det = ent_m as f64 / nc as f64;
+        let ent_fa = if entropy_hours.is_empty() { 0.0 } else { (entropy_hours.len() - ent_rev) as f64 / entropy_hours.len() as f64 };
+
         let wr = WeekResult {
             year: current.year(),
             week: week_num,
@@ -333,6 +380,12 @@ fn main() -> Result<()> {
             pvi_false_alarm_rate: pvi_fa,
             bmag_detection_rate: bmag_det,
             bmag_false_alarm_rate: bmag_fa,
+            shear_detection_rate: shear_det,
+            shear_false_alarm_rate: shear_fa,
+            wavelet_detection_rate: wav_det,
+            wavelet_false_alarm_rate: wav_fa,
+            entropy_detection_rate: ent_det,
+            entropy_false_alarm_rate: ent_fa,
         };
 
         println!(
