@@ -1,0 +1,110 @@
+{
+  "title": "Benchmark Appendix v2: Split by Label Type",
+  "generated": "2026-03-27",
+  "caveat": "Detection-rate numbers are not directly comparable across Tables A and B because the label models differ fundamentally. Table A uses expert-curated or algorithmic crossing times; Table B uses heuristic thresholds or phenomenological criteria. Mixing rows from both tables in a single comparison is invalid.",
+  "baseline_comparison": {
+    "note": "All detectors run on the same THEMIS-A Oct 2008 window against 118 curated Zenodo V2 crossings.",
+    "detectors": [
+      {"name": "|B| gradient (10 nT)", "detection": 0.703, "false_alarm": 0.798, "median_offset_min": 4.0},
+      {"name": "PVI (lag=1, threshold=4)", "detection": 0.898, "false_alarm": 0.311, "median_offset_min": 4.0},
+      {"name": "Spectral entropy", "detection": 0.720, "false_alarm": 0.419, "median_offset_min": 11.0},
+      {"name": "CD associator (32D)", "detection": 0.890, "false_alarm": 0.167, "median_offset_min": 6.0}
+    ],
+    "key_finding": "CD associator matches PVI sensitivity (89.0% vs 89.8%) with half the false alarm rate (16.7% vs 31.1%). The CD observable adds selectivity beyond standard diagnostics."
+  },
+  "table_a_curated_benchmarks": [
+    {
+      "environment": "V2 heliopause",
+      "label_type": "Bayesian change-point",
+      "response_phenotype": "Ordered-entry drop",
+      "best_metric": "CP at 119.5 AU; 33x associator drop",
+      "main_caveat": "Single crossing per spacecraft"
+    },
+    {
+      "environment": "V1 heliopause",
+      "label_type": "Bayesian change-point",
+      "response_phenotype": "Ordered-entry drop",
+      "best_metric": "CP at 123.8 AU; 7x drop",
+      "main_caveat": "V1 heliosheath conditions differ from V2"
+    },
+    {
+      "environment": "THEMIS-A magnetopause",
+      "label_type": "Curated (Zenodo V2, Staples 2020)",
+      "response_phenotype": "Ordered-entry drop",
+      "best_metric": "89.0% detection, 16.7% FA, 6 min offset",
+      "main_caveat": "Strongest Earth result. Single probe, single 7-day window."
+    },
+    {
+      "environment": "Cluster-1 bow shock",
+      "label_type": "Curated (OMNI SPDF)",
+      "response_phenotype": "Ordered-entry drop",
+      "best_metric": "64.9% detection, 73.9% FA, 8 min offset",
+      "main_caveat": "Bow shock is noisier; foreshock turbulence generates extra transitions"
+    },
+    {
+      "environment": "MESSENGER Mercury magnetopause",
+      "label_type": "Curated (Zenodo)",
+      "response_phenotype": "Ordered-entry drop",
+      "best_metric": "64.3% detection, 84.8% FA, 3 min offset",
+      "main_caveat": "Compact magnetosphere; many sub-structures not in MP-only list"
+    }
+  ],
+  "table_b_heuristic_generalization": [
+    {
+      "environment": "MMS Earth magnetopause",
+      "label_type": "Heuristic (|B| gradient 5 nT)",
+      "response_phenotype": "Ordered-entry drop",
+      "best_metric": "61.5% detection, 40.0% FA",
+      "main_caveat": "Heuristic labels; Jan 2024 not a dayside MP interval"
+    },
+    {
+      "environment": "ARTEMIS THB lunar wake",
+      "label_type": "Heuristic (|B| gradient 3 nT)",
+      "response_phenotype": "Cavity/wake",
+      "best_metric": "75.0% detection, 68.1% FA",
+      "main_caveat": "Mixing wake crossings with magnetotail"
+    },
+    {
+      "environment": "MAVEN Mars IMB",
+      "label_type": "Heuristic (|B| gradient 5 nT)",
+      "response_phenotype": "Induced boundary",
+      "best_metric": "53.3% detection (14-day), 25.8% FA",
+      "main_caveat": "Cleanest heuristic result; curated IMB list upgrade available"
+    },
+    {
+      "environment": "Rosetta 67P cavity",
+      "label_type": "Heuristic + normalization ablation",
+      "response_phenotype": "Weak-field cavity amplification",
+      "best_metric": "1.9x genuine (direction-only) / 5.3x (current norm)",
+      "main_caveat": "40% genuine directional phase geometry, 60% normalization amplification"
+    },
+    {
+      "environment": "PSP switchbacks (4 encounters)",
+      "label_type": "Published criterion (Br/|B| < -0.5)",
+      "response_phenotype": "Coherent-structure suppression",
+      "best_metric": "SB/quiet ratio 0.42-0.70 (mean 0.57)",
+      "main_caveat": "Regime classification, not point events; possible radial trend"
+    },
+    {
+      "environment": "Solar Orbiter baseline",
+      "label_type": "Null hierarchy",
+      "response_phenotype": "Baseline",
+      "best_metric": "Omega_mv = 0.045 (inner heliosphere floor)",
+      "main_caveat": "Spectral-only signal destroyed by phase randomization"
+    },
+    {
+      "environment": "Ulysses fast/slow wind",
+      "label_type": "Regime conditioning (v_sw threshold)",
+      "response_phenotype": "Regime contrast",
+      "best_metric": "2-4x fast-wind amplification at 27-82 AU",
+      "main_caveat": "Radial-distance-dependent; no fast/slow discrimination at 1 AU"
+    }
+  ],
+  "decomposition_summary": {
+    "Q1_phase_vs_spectral": "Real < shared-phase < indep-phase: organized phase coupling suppresses associator (R/I = 0.25-0.67)",
+    "Q2_transverse_vs_compressive": "At dipolar boundaries, compressive modes elevate associator (r=-0.42 MMS). Induced: independent.",
+    "Q3_induced_vs_dipole": "Induced FA = 17.6%, dipole FA = 51.2%. Selectivity difference, partially label-confounded.",
+    "Q4_normalization": "Only Rosetta (near-zero |B|) is normalization-sensitive. All others: ratio ~1.0.",
+    "Q5_disagreements": "FN = partial/grazing crossings. FA = real TDs/FTEs/mirrors not in curated lists (attribution pending)."
+  }
+}
