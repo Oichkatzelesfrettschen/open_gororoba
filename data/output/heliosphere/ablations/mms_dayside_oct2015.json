@@ -1,0 +1,721 @@
+{
+  "start_date": "2015-10-16",
+  "n_days": 1,
+  "embedding_dim": 32,
+  "takens_lag": 1,
+  "total_minutes": 1172,
+  "n_crossings_detected": 26,
+  "n_associator_transitions": 7,
+  "crossings": [
+    {
+      "index": 10,
+      "elapsed_hours": 0.16666666666666666,
+      "year": 2015,
+      "doy": 289,
+      "hour": 2,
+      "minute": 21,
+      "b_magnitude": 176.73158958333337
+    },
+    {
+      "index": 20,
+      "elapsed_hours": 0.3333333333333333,
+      "year": 2015,
+      "doy": 289,
+      "hour": 2,
+      "minute": 31,
+      "b_magnitude": 159.65735625000013
+    },
+    {
+      "index": 30,
+      "elapsed_hours": 0.5,
+      "year": 2015,
+      "doy": 289,
+      "hour": 2,
+      "minute": 41,
+      "b_magnitude": 147.1398145833335
+    },
+    {
+      "index": 40,
+      "elapsed_hours": 0.6666666666666666,
+      "year": 2015,
+      "doy": 289,
+      "hour": 2,
+      "minute": 51,
+      "b_magnitude": 134.09988124999998
+    },
+    {
+      "index": 50,
+      "elapsed_hours": 0.8333333333333334,
+      "year": 2015,
+      "doy": 289,
+      "hour": 3,
+      "minute": 1,
+      "b_magnitude": 123.0816333333334
+    },
+    {
+      "index": 60,
+      "elapsed_hours": 1.0,
+      "year": 2015,
+      "doy": 289,
+      "hour": 3,
+      "minute": 11,
+      "b_magnitude": 112.15846874999997
+    },
+    {
+      "index": 448,
+      "elapsed_hours": 7.466666666666667,
+      "year": 2015,
+      "doy": 289,
+      "hour": 9,
+      "minute": 39,
+      "b_magnitude": 24.139737770833293
+    },
+    {
+      "index": 461,
+      "elapsed_hours": 7.683333333333334,
+      "year": 2015,
+      "doy": 289,
+      "hour": 9,
+      "minute": 52,
+      "b_magnitude": 19.827450374999977
+    },
+    {
+      "index": 471,
+      "elapsed_hours": 7.85,
+      "year": 2015,
+      "doy": 289,
+      "hour": 10,
+      "minute": 2,
+      "b_magnitude": 31.19521020833334
+    },
+    {
+      "index": 485,
+      "elapsed_hours": 8.083333333333334,
+      "year": 2015,
+      "doy": 289,
+      "hour": 10,
+      "minute": 16,
+      "b_magnitude": 19.563878645833338
+    },
+    {
+      "index": 505,
+      "elapsed_hours": 8.416666666666666,
+      "year": 2015,
+      "doy": 289,
+      "hour": 10,
+      "minute": 36,
+      "b_magnitude": 39.431684062500025
+    },
+    {
+      "index": 516,
+      "elapsed_hours": 8.6,
+      "year": 2015,
+      "doy": 289,
+      "hour": 10,
+      "minute": 47,
+      "b_magnitude": 37.974817187499966
+    },
+    {
+      "index": 526,
+      "elapsed_hours": 8.766666666666667,
+      "year": 2015,
+      "doy": 289,
+      "hour": 10,
+      "minute": 57,
+      "b_magnitude": 37.74049562500001
+    },
+    {
+      "index": 536,
+      "elapsed_hours": 8.933333333333334,
+      "year": 2015,
+      "doy": 289,
+      "hour": 11,
+      "minute": 7,
+      "b_magnitude": 42.49859927083334
+    },
+    {
+      "index": 557,
+      "elapsed_hours": 9.283333333333333,
+      "year": 2015,
+      "doy": 289,
+      "hour": 11,
+      "minute": 28,
+      "b_magnitude": 19.976093743750013
+    },
+    {
+      "index": 567,
+      "elapsed_hours": 9.45,
+      "year": 2015,
+      "doy": 289,
+      "hour": 11,
+      "minute": 38,
+      "b_magnitude": 14.669505739583327
+    },
+    {
+      "index": 577,
+      "elapsed_hours": 9.616666666666667,
+      "year": 2015,
+      "doy": 289,
+      "hour": 11,
+      "minute": 48,
+      "b_magnitude": 28.16954958333333
+    },
+    {
+      "index": 587,
+      "elapsed_hours": 9.783333333333333,
+      "year": 2015,
+      "doy": 289,
+      "hour": 11,
+      "minute": 58,
+      "b_magnitude": 20.48964553125001
+    },
+    {
+      "index": 642,
+      "elapsed_hours": 10.7,
+      "year": 2015,
+      "doy": 289,
+      "hour": 12,
+      "minute": 53,
+      "b_magnitude": 23.46909208333332
+    },
+    {
+      "index": 654,
+      "elapsed_hours": 10.9,
+      "year": 2015,
+      "doy": 289,
+      "hour": 13,
+      "minute": 5,
+      "b_magnitude": 33.36215495833332
+    },
+    {
+      "index": 684,
+      "elapsed_hours": 11.4,
+      "year": 2015,
+      "doy": 289,
+      "hour": 13,
+      "minute": 35,
+      "b_magnitude": 20.066847624999998
+    },
+    {
+      "index": 1104,
+      "elapsed_hours": 18.4,
+      "year": 2015,
+      "doy": 289,
+      "hour": 20,
+      "minute": 35,
+      "b_magnitude": 102.74434791666665
+    },
+    {
+      "index": 1127,
+      "elapsed_hours": 18.783333333333335,
+      "year": 2015,
+      "doy": 289,
+      "hour": 20,
+      "minute": 58,
+      "b_magnitude": 123.72538750000008
+    },
+    {
+      "index": 1137,
+      "elapsed_hours": 18.95,
+      "year": 2015,
+      "doy": 289,
+      "hour": 21,
+      "minute": 8,
+      "b_magnitude": 135.91443333333333
+    },
+    {
+      "index": 1147,
+      "elapsed_hours": 19.116666666666667,
+      "year": 2015,
+      "doy": 289,
+      "hour": 21,
+      "minute": 18,
+      "b_magnitude": 150.21890833333325
+    },
+    {
+      "index": 1157,
+      "elapsed_hours": 19.283333333333335,
+      "year": 2015,
+      "doy": 289,
+      "hour": 21,
+      "minute": 28,
+      "b_magnitude": 167.37366875000004
+    }
+  ],
+  "transitions": [
+    {
+      "index": 495,
+      "elapsed_hours": 8.25,
+      "year": 2015,
+      "doy": 289,
+      "hour": 10,
+      "minute": 26,
+      "associator_norm": 21.393394235689716,
+      "pre_mean": 16.05317612900191,
+      "post_mean": 27.867273686238157,
+      "transition_magnitude": 11.814097557236249
+    },
+    {
+      "index": 526,
+      "elapsed_hours": 8.766666666666667,
+      "year": 2015,
+      "doy": 289,
+      "hour": 10,
+      "minute": 57,
+      "associator_norm": 27.448853182989424,
+      "pre_mean": 27.681883553278944,
+      "post_mean": 8.720577249969619,
+      "transition_magnitude": 18.961306303309325
+    },
+    {
+      "index": 545,
+      "elapsed_hours": 9.083333333333334,
+      "year": 2015,
+      "doy": 289,
+      "hour": 11,
+      "minute": 16,
+      "associator_norm": 22.736908903683215,
+      "pre_mean": 5.321141087262729,
+      "post_mean": 28.462196815437892,
+      "transition_magnitude": 23.14105572817516
+    },
+    {
+      "index": 578,
+      "elapsed_hours": 9.633333333333333,
+      "year": 2015,
+      "doy": 289,
+      "hour": 11,
+      "minute": 49,
+      "associator_norm": 22.980065889730763,
+      "pre_mean": 30.849212219231184,
+      "post_mean": 17.988233473658738,
+      "transition_magnitude": 12.860978745572446
+    },
+    {
+      "index": 647,
+      "elapsed_hours": 10.783333333333333,
+      "year": 2015,
+      "doy": 289,
+      "hour": 12,
+      "minute": 58,
+      "associator_norm": 14.39342610354221,
+      "pre_mean": 2.3163591828746606,
+      "post_mean": 13.419278389697467,
+      "transition_magnitude": 11.102919206822808
+    },
+    {
+      "index": 697,
+      "elapsed_hours": 11.616666666666667,
+      "year": 2015,
+      "doy": 289,
+      "hour": 13,
+      "minute": 48,
+      "associator_norm": 5.718007949134671,
+      "pre_mean": 12.855633921133272,
+      "post_mean": 1.491056872753227,
+      "transition_magnitude": 11.364577048380045
+    },
+    {
+      "index": 759,
+      "elapsed_hours": 12.65,
+      "year": 2015,
+      "doy": 289,
+      "hour": 14,
+      "minute": 50,
+      "associator_norm": 0.6068990070443405,
+      "pre_mean": 0.266605384248026,
+      "post_mean": 11.26594812168565,
+      "transition_magnitude": 10.999342737437624
+    }
+  ],
+  "comparisons": [
+    {
+      "crossing_index": 10,
+      "crossing_hours": 0.16666666666666666,
+      "matched_transition_index": null,
+      "matched_transition_hours": null,
+      "offset_minutes": null
+    },
+    {
+      "crossing_index": 20,
+      "crossing_hours": 0.3333333333333333,
+      "matched_transition_index": null,
+      "matched_transition_hours": null,
+      "offset_minutes": null
+    },
+    {
+      "crossing_index": 30,
+      "crossing_hours": 0.5,
+      "matched_transition_index": null,
+      "matched_transition_hours": null,
+      "offset_minutes": null
+    },
+    {
+      "crossing_index": 40,
+      "crossing_hours": 0.6666666666666666,
+      "matched_transition_index": null,
+      "matched_transition_hours": null,
+      "offset_minutes": null
+    },
+    {
+      "crossing_index": 50,
+      "crossing_hours": 0.8333333333333334,
+      "matched_transition_index": null,
+      "matched_transition_hours": null,
+      "offset_minutes": null
+    },
+    {
+      "crossing_index": 60,
+      "crossing_hours": 1.0,
+      "matched_transition_index": null,
+      "matched_transition_hours": null,
+      "offset_minutes": null
+    },
+    {
+      "crossing_index": 448,
+      "crossing_hours": 7.466666666666667,
+      "matched_transition_index": null,
+      "matched_transition_hours": null,
+      "offset_minutes": null
+    },
+    {
+      "crossing_index": 461,
+      "crossing_hours": 7.683333333333334,
+      "matched_transition_index": null,
+      "matched_transition_hours": null,
+      "offset_minutes": null
+    },
+    {
+      "crossing_index": 471,
+      "crossing_hours": 7.85,
+      "matched_transition_index": null,
+      "matched_transition_hours": null,
+      "offset_minutes": null
+    },
+    {
+      "crossing_index": 485,
+      "crossing_hours": 8.083333333333334,
+      "matched_transition_index": 495,
+      "matched_transition_hours": 8.25,
+      "offset_minutes": 9.999999999999964
+    },
+    {
+      "crossing_index": 505,
+      "crossing_hours": 8.416666666666666,
+      "matched_transition_index": 495,
+      "matched_transition_hours": 8.25,
+      "offset_minutes": -9.999999999999964
+    },
+    {
+      "crossing_index": 516,
+      "crossing_hours": 8.6,
+      "matched_transition_index": 526,
+      "matched_transition_hours": 8.766666666666667,
+      "offset_minutes": 10.000000000000071
+    },
+    {
+      "crossing_index": 526,
+      "crossing_hours": 8.766666666666667,
+      "matched_transition_index": 526,
+      "matched_transition_hours": 8.766666666666667,
+      "offset_minutes": 0.0
+    },
+    {
+      "crossing_index": 536,
+      "crossing_hours": 8.933333333333334,
+      "matched_transition_index": 545,
+      "matched_transition_hours": 9.083333333333334,
+      "offset_minutes": 9.000000000000021
+    },
+    {
+      "crossing_index": 557,
+      "crossing_hours": 9.283333333333333,
+      "matched_transition_index": 545,
+      "matched_transition_hours": 9.083333333333334,
+      "offset_minutes": -11.999999999999957
+    },
+    {
+      "crossing_index": 567,
+      "crossing_hours": 9.45,
+      "matched_transition_index": 578,
+      "matched_transition_hours": 9.633333333333333,
+      "offset_minutes": 11.000000000000014
+    },
+    {
+      "crossing_index": 577,
+      "crossing_hours": 9.616666666666667,
+      "matched_transition_index": 578,
+      "matched_transition_hours": 9.633333333333333,
+      "offset_minutes": 0.9999999999999432
+    },
+    {
+      "crossing_index": 587,
+      "crossing_hours": 9.783333333333333,
+      "matched_transition_index": 578,
+      "matched_transition_hours": 9.633333333333333,
+      "offset_minutes": -9.000000000000021
+    },
+    {
+      "crossing_index": 642,
+      "crossing_hours": 10.7,
+      "matched_transition_index": 647,
+      "matched_transition_hours": 10.783333333333333,
+      "offset_minutes": 5.0000000000000355
+    },
+    {
+      "crossing_index": 654,
+      "crossing_hours": 10.9,
+      "matched_transition_index": 647,
+      "matched_transition_hours": 10.783333333333333,
+      "offset_minutes": -7.000000000000028
+    },
+    {
+      "crossing_index": 684,
+      "crossing_hours": 11.4,
+      "matched_transition_index": 697,
+      "matched_transition_hours": 11.616666666666667,
+      "offset_minutes": 13.000000000000007
+    },
+    {
+      "crossing_index": 1104,
+      "crossing_hours": 18.4,
+      "matched_transition_index": null,
+      "matched_transition_hours": null,
+      "offset_minutes": null
+    },
+    {
+      "crossing_index": 1127,
+      "crossing_hours": 18.783333333333335,
+      "matched_transition_index": null,
+      "matched_transition_hours": null,
+      "offset_minutes": null
+    },
+    {
+      "crossing_index": 1137,
+      "crossing_hours": 18.95,
+      "matched_transition_index": null,
+      "matched_transition_hours": null,
+      "offset_minutes": null
+    },
+    {
+      "crossing_index": 1147,
+      "crossing_hours": 19.116666666666667,
+      "matched_transition_index": null,
+      "matched_transition_hours": null,
+      "offset_minutes": null
+    },
+    {
+      "crossing_index": 1157,
+      "crossing_hours": 19.283333333333335,
+      "matched_transition_index": null,
+      "matched_transition_hours": null,
+      "offset_minutes": null
+    }
+  ],
+  "detection_rate": 0.46153846153846156,
+  "false_alarm_rate": 0.14285714285714285,
+  "mean_offset_minutes": 8.083333333333336,
+  "median_offset_minutes": 9.999999999999964,
+  "hourly_associator_summary": [
+    {
+      "elapsed_hours": 0.0,
+      "year": 2015,
+      "doy": 289,
+      "hour": 2,
+      "mean_associator": 0.006125611789419376,
+      "max_associator": 0.010768406808398724,
+      "mean_bmag": 149.83362661458338,
+      "n_samples": 40
+    },
+    {
+      "elapsed_hours": 1.0,
+      "year": 2015,
+      "doy": 289,
+      "hour": 3,
+      "mean_associator": 0.007627292785142444,
+      "max_associator": 0.02145072401808359,
+      "mean_bmag": 98.98844328952823,
+      "n_samples": 60
+    },
+    {
+      "elapsed_hours": 2.0,
+      "year": 2015,
+      "doy": 289,
+      "hour": 4,
+      "mean_associator": 0.06705659236470778,
+      "max_associator": 0.25125784957646563,
+      "mean_bmag": 67.67946746451916,
+      "n_samples": 60
+    },
+    {
+      "elapsed_hours": 3.0,
+      "year": 2015,
+      "doy": 289,
+      "hour": 5,
+      "mean_associator": 0.1413086505739202,
+      "max_associator": 0.7035917441513517,
+      "mean_bmag": 53.673407679215906,
+      "n_samples": 60
+    },
+    {
+      "elapsed_hours": 4.0,
+      "year": 2015,
+      "doy": 289,
+      "hour": 6,
+      "mean_associator": 0.4183123653276609,
+      "max_associator": 1.4440082036200392,
+      "mean_bmag": 48.8754327969094,
+      "n_samples": 60
+    },
+    {
+      "elapsed_hours": 5.0,
+      "year": 2015,
+      "doy": 289,
+      "hour": 7,
+      "mean_associator": 0.27607273147228545,
+      "max_associator": 0.9148423572193694,
+      "mean_bmag": 43.15901327805476,
+      "n_samples": 60
+    },
+    {
+      "elapsed_hours": 6.0,
+      "year": 2015,
+      "doy": 289,
+      "hour": 8,
+      "mean_associator": 2.1481808861326623,
+      "max_associator": 9.503971143130553,
+      "mean_bmag": 38.63632276024304,
+      "n_samples": 60
+    },
+    {
+      "elapsed_hours": 7.0,
+      "year": 2015,
+      "doy": 289,
+      "hour": 9,
+      "mean_associator": 5.448531077639372,
+      "max_associator": 14.573321163281658,
+      "mean_bmag": 34.774738315576656,
+      "n_samples": 60
+    },
+    {
+      "elapsed_hours": 8.0,
+      "year": 2015,
+      "doy": 289,
+      "hour": 10,
+      "mean_associator": 18.978375895431952,
+      "max_associator": 49.55263609730784,
+      "mean_bmag": 25.442718210296317,
+      "n_samples": 60
+    },
+    {
+      "elapsed_hours": 9.0,
+      "year": 2015,
+      "doy": 289,
+      "hour": 11,
+      "mean_associator": 19.83271414675365,
+      "max_associator": 41.0170254753184,
+      "mean_bmag": 25.39010287666918,
+      "n_samples": 60
+    },
+    {
+      "elapsed_hours": 10.0,
+      "year": 2015,
+      "doy": 289,
+      "hour": 12,
+      "mean_associator": 5.316982065271307,
+      "max_associator": 20.4654735059488,
+      "mean_bmag": 24.559458991840287,
+      "n_samples": 60
+    },
+    {
+      "elapsed_hours": 11.0,
+      "year": 2015,
+      "doy": 289,
+      "hour": 13,
+      "mean_associator": 8.044453950887288,
+      "max_associator": 21.054640945834727,
+      "mean_bmag": 26.474317337040898,
+      "n_samples": 60
+    },
+    {
+      "elapsed_hours": 12.0,
+      "year": 2015,
+      "doy": 289,
+      "hour": 14,
+      "mean_associator": 2.297980587172952,
+      "max_associator": 28.113576789232418,
+      "mean_bmag": 34.17983703112454,
+      "n_samples": 60
+    },
+    {
+      "elapsed_hours": 13.0,
+      "year": 2015,
+      "doy": 289,
+      "hour": 15,
+      "mean_associator": 1.0101116310627216,
+      "max_associator": 15.7418865333929,
+      "mean_bmag": 36.77824949827836,
+      "n_samples": 60
+    },
+    {
+      "elapsed_hours": 14.0,
+      "year": 2015,
+      "doy": 289,
+      "hour": 16,
+      "mean_associator": 0.09614492438812929,
+      "max_associator": 0.22497770130030045,
+      "mean_bmag": 37.31803194655849,
+      "n_samples": 60
+    },
+    {
+      "elapsed_hours": 15.0,
+      "year": 2015,
+      "doy": 289,
+      "hour": 17,
+      "mean_associator": 0.07080542559919305,
+      "max_associator": 0.22519708891442866,
+      "mean_bmag": 44.06814113098759,
+      "n_samples": 60
+    },
+    {
+      "elapsed_hours": 16.0,
+      "year": 2015,
+      "doy": 289,
+      "hour": 18,
+      "mean_associator": 0.00906489338243057,
+      "max_associator": 0.02665056865034082,
+      "mean_bmag": 53.49478276041662,
+      "n_samples": 60
+    },
+    {
+      "elapsed_hours": 17.0,
+      "year": 2015,
+      "doy": 289,
+      "hour": 19,
+      "mean_associator": 0.0035455342402896228,
+      "max_associator": 0.012349694989569917,
+      "mean_bmag": 68.16400250144254,
+      "n_samples": 60
+    },
+    {
+      "elapsed_hours": 18.0,
+      "year": 2015,
+      "doy": 289,
+      "hour": 20,
+      "mean_associator": 0.02261843892897706,
+      "max_associator": 0.06681429324768327,
+      "mean_bmag": 99.88061977083335,
+      "n_samples": 60
+    },
+    {
+      "elapsed_hours": 19.0,
+      "year": 2015,
+      "doy": 289,
+      "hour": 21,
+      "mean_associator": 0.010999453536206596,
+      "max_associator": 0.016807012439973186,
+      "mean_bmag": 157.89534118217063,
+      "n_samples": 43
+    }
+  ]
+}
