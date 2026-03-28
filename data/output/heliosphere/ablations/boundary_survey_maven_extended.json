@@ -1,0 +1,21 @@
+{
+  "mission": "maven",
+  "start_date": "2015-03-01",
+  "end_date": "2015-03-14",
+  "embedding_dim": 32,
+  "total_minutes": 18291,
+  "n_boundaries": 495,
+  "n_associator_transitions": 190,
+  "detection_rate": 0.5333333333333333,
+  "false_alarm_rate": 0.2578947368421053,
+  "mean_offset_minutes": 7.829545454545422,
+  "median_offset_minutes": 6.999999999999602,
+  "curated_n_crossings": null,
+  "curated_detection_rate": null,
+  "curated_false_alarm_rate": null,
+  "curated_mean_offset": null,
+  "curated_median_offset": null,
+  "global_mean_associator": 7.719092253319088,
+  "global_std_associator": 10.668966713309155,
+  "transition_threshold": 16.003450069963733
+}

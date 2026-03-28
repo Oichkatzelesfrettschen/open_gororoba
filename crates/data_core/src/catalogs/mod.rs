@@ -37,6 +37,7 @@ pub mod lotss;
 pub mod manga;
 pub mod maven_mag;
 pub mod mcgill;
+pub mod messenger;
 pub mod mms;
 pub mod nanograv;
 pub mod new_horizons;

@@ -372,8 +372,10 @@ fn fetch_and_parse(cli: &Cli, start: NaiveDate, end: NaiveDate) -> Result<Vec<Ma
         fetch_swarm(cli, start, end)
     } else if mission == "maven" {
         fetch_maven(cli, start, end)
+    } else if mission == "messenger" {
+        fetch_messenger(cli, start, end)
     } else {
-        anyhow::bail!("Unknown mission: {}. Use themis-a..e, cluster-1..4, swarm-a, maven", cli.mission);
+        anyhow::bail!("Unknown mission: {}. Use themis-a..e, cluster-1..4, swarm-a, maven, messenger", cli.mission);
     }
 }
 
@@ -543,6 +545,47 @@ fn fetch_maven(cli: &Cli, start: NaiveDate, end: NaiveDate) -> Result<Vec<MagMin
                         year: r.year, doy: r.doy, hour: r.hour, minute: r.minute,
                         elapsed_hours: r.elapsed_hours,
                         bx: r.bx_ss, by: r.by_ss, bz: r.bz_ss, b_magnitude: r.b_magnitude,
+                    });
+                }
+            }
+        }
+    }
+    recompute_elapsed(&mut all);
+    Ok(all)
+}
+
+fn fetch_messenger(cli: &Cli, start: NaiveDate, end: NaiveDate) -> Result<Vec<MagMinute>> {
+    use data_core::catalogs::messenger::{MessengerMagProvider, parse_messenger_mag_hapi_csv_minutes};
+    use data_core::fetcher::{DatasetProvider, FetchConfig};
+
+    let config = FetchConfig { output_dir: cli.data_dir.clone(), skip_existing: true, verify_checksums: false };
+
+    for doy_offset in 0..=(end - start).num_days() {
+        let date = start + chrono::Duration::days(doy_offset);
+        let provider = MessengerMagProvider {
+            year: date.year() as u16,
+            doy_start: date.ordinal() as u16,
+            doy_end: date.ordinal() as u16,
+        };
+        let _ = provider.fetch(&config);
+    }
+
+    let data_dir = cli.data_dir.join("messenger");
+    let mut all = Vec::new();
+    for doy_offset in 0..=(end - start).num_days() {
+        let date = start + chrono::Duration::days(doy_offset);
+        let fname = format!("messenger_mag_{:04}_{:03}.csv", date.year(), date.ordinal());
+        let path = data_dir.join(&fname);
+        if path.exists() {
+            let content = fs::read_to_string(&path)?;
+            let records = parse_messenger_mag_hapi_csv_minutes(&content);
+            println!("  MESSENGER DOY {}: {} min", date.ordinal(), records.len());
+            for r in records {
+                if r.b_magnitude <= cli.max_bmag {
+                    all.push(MagMinute {
+                        year: r.year, doy: r.doy, hour: r.hour, minute: r.minute,
+                        elapsed_hours: r.elapsed_hours,
+                        bx: r.br, by: r.bt, bz: r.bn, b_magnitude: r.b_magnitude,
                     });
                 }
             }
