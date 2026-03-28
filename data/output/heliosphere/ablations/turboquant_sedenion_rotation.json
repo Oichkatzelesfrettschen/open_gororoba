@@ -1,0 +1,23 @@
+{
+  "n_vectors": 10000,
+  "dim": 128,
+  "results": [
+    {
+      "method": "identity",
+      "n_parameters": 0,
+      "mean_coord_variance": 0.007811803753426849,
+      "max_coord_kurtosis": 1.8317683074320543,
+      "mean_cross_correlation": 0.007692328747125551,
+      "quantization_mse": 0.00023455312026308302
+    },
+    {
+      "method": "sedenion_block",
+      "n_parameters": 120,
+      "mean_coord_variance": 0.007817416909725396,
+      "max_coord_kurtosis": 2.9606369335271476,
+      "mean_cross_correlation": 0.007878224070215807,
+      "quantization_mse": 0.00025679975597385913
+    }
+  ],
+  "interpretation": "Sedenion block rotation (120 params) vs identity: variance 0.007817 vs 0.007812, cross_corr 0.007878 vs 0.007692, quant_mse 0.00025680 vs 0.00023455."
+}
