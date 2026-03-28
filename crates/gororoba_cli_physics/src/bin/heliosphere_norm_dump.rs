@@ -18,6 +18,9 @@ struct Cli {
     max_bmag: f64,
     #[arg(long, default_value = "data/external")]
     data_dir: String,
+    /// Normalization: current (default) or direction (unit vectors, zero magnitude channel).
+    #[arg(long, default_value = "current")]
+    normalization: String,
 }
 
 fn main() {
@@ -67,14 +70,24 @@ fn main() {
         }
 
         let mut v = vec![0.0; cli.embedding_dim];
+        let mut skip = false;
         for s in 0..steps {
             let i = w + s;
             let bmag = (bx[i].powi(2) + by[i].powi(2) + bz[i].powi(2)).sqrt();
-            v[s * channels] = bx[i] / mean_b;
-            v[s * channels + 1] = by[i] / mean_b;
-            v[s * channels + 2] = bz[i] / mean_b;
-            v[s * channels + 3] = (bmag - mean_b) / mean_b;
+            if cli.normalization == "direction" {
+                if bmag < 1e-12 { skip = true; break; }
+                v[s * channels] = bx[i] / bmag;
+                v[s * channels + 1] = by[i] / bmag;
+                v[s * channels + 2] = bz[i] / bmag;
+                v[s * channels + 3] = 0.0;
+            } else {
+                v[s * channels] = bx[i] / mean_b;
+                v[s * channels + 1] = by[i] / mean_b;
+                v[s * channels + 2] = bz[i] / mean_b;
+                v[s * channels + 3] = (bmag - mean_b) / mean_b;
+            }
         }
+        if skip { continue; }
         embedded.push(v);
         embed_keys.push(keys[w + steps - 1]);
     }

@@ -1,0 +1,121 @@
+{
+  "b0": 0.5,
+  "db_over_b0": 0.02,
+  "n_steps": 2000,
+  "embedding_dim": 32,
+  "results": [
+    {
+      "label": "Pure Alfvenic",
+      "compressive_fraction": 0.0,
+      "mean_associator": 0.005934457206883303,
+      "std_associator": 0.002475588724782683,
+      "n_vectors": 1991
+    },
+    {
+      "label": "90% Alfvenic",
+      "compressive_fraction": 0.1,
+      "mean_associator": 0.004535223774414564,
+      "std_associator": 0.0017888225218547673,
+      "n_vectors": 1991
+    },
+    {
+      "label": "70% Alfvenic",
+      "compressive_fraction": 0.3,
+      "mean_associator": 0.0033521645921131948,
+      "std_associator": 0.001152490545597626,
+      "n_vectors": 1991
+    },
+    {
+      "label": "50/50 Mixed",
+      "compressive_fraction": 0.5,
+      "mean_associator": 0.0029107999681180366,
+      "std_associator": 0.001038937774100564,
+      "n_vectors": 1991
+    },
+    {
+      "label": "70% Compressive",
+      "compressive_fraction": 0.7,
+      "mean_associator": 0.003261858438051512,
+      "std_associator": 0.0014191271884959932,
+      "n_vectors": 1991
+    },
+    {
+      "label": "90% Compressive",
+      "compressive_fraction": 0.9,
+      "mean_associator": 0.0046821114981689714,
+      "std_associator": 0.002644224835814245,
+      "n_vectors": 1991
+    },
+    {
+      "label": "Pure Compressive",
+      "compressive_fraction": 1.0,
+      "mean_associator": 0.005535063729855497,
+      "std_associator": 0.0030347829159299297,
+      "n_vectors": 1991
+    }
+  ],
+  "beta_sweep": [
+    {
+      "beta": 0.01,
+      "compressive_fraction": 0.009900990099009901,
+      "mean_associator": 0.005604484116819977
+    },
+    {
+      "beta": 0.03,
+      "compressive_fraction": 0.029126213592233007,
+      "mean_associator": 0.0054765713018730565
+    },
+    {
+      "beta": 0.1,
+      "compressive_fraction": 0.09090909090909091,
+      "mean_associator": 0.004615948762230112
+    },
+    {
+      "beta": 0.3,
+      "compressive_fraction": 0.23076923076923075,
+      "mean_associator": 0.0037300214507388386
+    },
+    {
+      "beta": 0.5,
+      "compressive_fraction": 0.3333333333333333,
+      "mean_associator": 0.0032764940832563116
+    },
+    {
+      "beta": 1.0,
+      "compressive_fraction": 0.5,
+      "mean_associator": 0.0028506054078509023
+    },
+    {
+      "beta": 2.0,
+      "compressive_fraction": 0.6666666666666666,
+      "mean_associator": 0.0030469188074340988
+    },
+    {
+      "beta": 3.0,
+      "compressive_fraction": 0.75,
+      "mean_associator": 0.0034345451163326803
+    },
+    {
+      "beta": 5.0,
+      "compressive_fraction": 0.8333333333333334,
+      "mean_associator": 0.003790382462224671
+    },
+    {
+      "beta": 10.0,
+      "compressive_fraction": 0.9090909090909091,
+      "mean_associator": 0.004554129570718446
+    },
+    {
+      "beta": 30.0,
+      "compressive_fraction": 0.967741935483871,
+      "mean_associator": 0.0052236927164541844
+    },
+    {
+      "beta": 100.0,
+      "compressive_fraction": 0.9900990099009901,
+      "mean_associator": 0.005456825496090108
+    }
+  ],
+  "empirical_exponent": 0.775,
+  "interpretation": "Synthetic exponent (-0.01) differs from empirical (0.78). The simple comp_frac=beta/(1+beta) model is too crude. A more realistic MHD mode-fraction model is needed."
+}

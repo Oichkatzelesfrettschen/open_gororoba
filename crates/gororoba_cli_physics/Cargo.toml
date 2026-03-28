@@ -269,6 +269,10 @@ name = "heliosphere-magnetic-takens"
 path = "src/bin/heliosphere_magnetic_takens.rs"
 
 [[bin]]
+name = "heliosphere-beta-join"
+path = "src/bin/heliosphere_beta_join.rs"
+
+[[bin]]
 name = "heliosphere-hybrid-detector"
 path = "src/bin/heliosphere_hybrid_detector.rs"
 
