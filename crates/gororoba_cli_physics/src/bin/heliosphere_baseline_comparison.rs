@@ -216,6 +216,20 @@ fn main() -> Result<()> {
         .count();
     detectors.push(make_result("CD associator (32D)", &curated_hours, &cd_hours, cd_matched, cd_rev, &cd_offsets));
 
+    // --- Hybrid union: CD OR PVI ---
+    let mut union_hours: Vec<f64> = cd_hours.clone();
+    for &ph in &pvi_hours {
+        if !union_hours.iter().any(|&uh| (uh - ph).abs() < tol_hours * 0.5) {
+            union_hours.push(ph);
+        }
+    }
+    union_hours.sort_by(|a, b| a.partial_cmp(b).unwrap());
+    let (union_matched, union_offsets) = match_crossings(&curated_hours, &union_hours, tol_hours);
+    let union_rev = union_hours.iter()
+        .filter(|&&th| curated_hours.iter().any(|&ch| (ch - th).abs() < tol_hours))
+        .count();
+    detectors.push(make_result("CD+PVI UNION", &curated_hours, &union_hours, union_matched, union_rev, &union_offsets));
+
     // --- Print results ---
     println!("\n=== Results against {} curated crossings ===\n", curated_hours.len());
     println!("{:<25} {:>8} {:>10} {:>8} {:>8} {:>8}",

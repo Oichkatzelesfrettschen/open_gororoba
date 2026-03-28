@@ -1,0 +1,47 @@
+{
+  "start_date": "2008-10-27",
+  "end_date": "2008-11-02",
+  "n_curated_crossings": 118,
+  "detectors": [
+    {
+      "name": "|B| gradient",
+      "n_detections": 119,
+      "detection_rate": 0.7033898305084746,
+      "false_alarm_rate": 0.7983193277310925,
+      "mean_offset_minutes": 4.734939759036045,
+      "median_offset_minutes": 3.9999999999997726
+    },
+    {
+      "name": "PVI",
+      "n_detections": 45,
+      "detection_rate": 0.8983050847457628,
+      "false_alarm_rate": 0.3111111111111111,
+      "mean_offset_minutes": 4.547169811320728,
+      "median_offset_minutes": 3.9999999999997726
+    },
+    {
+      "name": "Spectral entropy",
+      "n_detections": 31,
+      "detection_rate": 0.7203389830508474,
+      "false_alarm_rate": 0.41935483870967744,
+      "mean_offset_minutes": 10.741176470588252,
+      "median_offset_minutes": 11.000000000000227
+    },
+    {
+      "name": "CD associator (32D)",
+      "n_detections": 36,
+      "detection_rate": 0.8898305084745762,
+      "false_alarm_rate": 0.16666666666666666,
+      "mean_offset_minutes": 6.866666666666701,
+      "median_offset_minutes": 6.000000000000512
+    },
+    {
+      "name": "CD+PVI UNION",
+      "n_detections": 56,
+      "detection_rate": 0.940677966101695,
+      "false_alarm_rate": 0.2857142857142857,
+      "mean_offset_minutes": 5.189189189189211,
+      "median_offset_minutes": 5.000000000000568
+    }
+  ]
+}
