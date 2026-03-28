@@ -1662,6 +1662,34 @@ Proof.
   f_equal; unfold quat_scale, quat_add; simpl; f_equal; ring.
 Qed.
 
+Lemma brown1972_oct_sub_add_distr : forall x y z w : CDOct,
+  oct_sub (oct_add x y) (oct_add z w) =
+  oct_add (oct_sub x z) (oct_sub y w).
+Proof.
+  intros [[x1 x2 x3 x4] [x5 x6 x7 x8]]
+         [[y1 y2 y3 y4] [y5 y6 y7 y8]]
+         [[z1 z2 z3 z4] [z5 z6 z7 z8]]
+         [[w1 w2 w3 w4] [w5 w6 w7 w8]].
+  cbv [oct_sub oct_add oct_neg oct_lo oct_hi
+       quat_add quat_neg qa qb qc qd].
+  apply (f_equal2 mkOct).
+  - apply (f_equal4 mkQuat); ring.
+  - apply (f_equal4 mkQuat); ring.
+Qed.
+
+Lemma brown1972_oct_sub_scale_distr : forall (r : R) (x y : CDOct),
+  oct_sub (oct_scale r x) (oct_scale r y) =
+  oct_scale r (oct_sub x y).
+Proof.
+  intros r [[x1 x2 x3 x4] [x5 x6 x7 x8]]
+           [[y1 y2 y3 y4] [y5 y6 y7 y8]].
+  cbv [oct_sub oct_add oct_scale oct_neg oct_lo oct_hi
+       quat_add quat_scale quat_neg qa qb qc qd].
+  apply (f_equal2 mkOct).
+  - apply (f_equal4 mkQuat); ring.
+  - apply (f_equal4 mkQuat); ring.
+Qed.
+
 Lemma brown1972_oct_in_span_add : forall a x y,
   brown1972_oct_in_span a x ->
   brown1972_oct_in_span a y ->
@@ -1708,48 +1736,38 @@ Lemma brown1972_oct_assoc_add_left : forall x y z w,
   oct_assoc (oct_add x y) z w =
   oct_add (oct_assoc x z w) (oct_assoc y z w).
 Proof.
-  intros [[x1 x2 x3 x4] [x5 x6 x7 x8]]
-         [[y1 y2 y3 y4] [y5 y6 y7 y8]]
-         [[z1 z2 z3 z4] [z5 z6 z7 z8]]
-         [[w1 w2 w3 w4] [w5 w6 w7 w8]].
-  cbv [oct_assoc oct_sub oct_add oct_scale oct_neg oct_mul oct_conj oct_lo oct_hi
-       quat_add quat_scale quat_neg quat_mul quat_conj qa qb qc qd].
-  apply (f_equal2 mkOct); apply (f_equal4 mkQuat); ring.
+  intros x y z w.
+  unfold oct_assoc.
+  repeat rewrite oct_mul_add_left.
+  apply brown1972_oct_sub_add_distr.
 Qed.
 
 Lemma brown1972_oct_assoc_scale_left : forall r x y z,
   oct_assoc (oct_scale r x) y z = oct_scale r (oct_assoc x y z).
 Proof.
-  intros r [[x1 x2 x3 x4] [x5 x6 x7 x8]]
-           [[y1 y2 y3 y4] [y5 y6 y7 y8]]
-           [[z1 z2 z3 z4] [z5 z6 z7 z8]].
-  cbv [oct_assoc oct_sub oct_add oct_scale oct_neg oct_mul oct_conj oct_lo oct_hi
-       quat_add quat_scale quat_neg quat_mul quat_conj qa qb qc qd].
-  apply (f_equal2 mkOct); apply (f_equal4 mkQuat); ring.
+  intros r x y z.
+  unfold oct_assoc.
+  repeat rewrite oct_mul_scale_left.
+  apply brown1972_oct_sub_scale_distr.
 Qed.
 
 Lemma brown1972_oct_assoc_add_right : forall x y z w,
   oct_assoc x y (oct_add z w) =
   oct_add (oct_assoc x y z) (oct_assoc x y w).
 Proof.
-  intros [[x1 x2 x3 x4] [x5 x6 x7 x8]]
-         [[y1 y2 y3 y4] [y5 y6 y7 y8]]
-         [[z1 z2 z3 z4] [z5 z6 z7 z8]]
-         [[w1 w2 w3 w4] [w5 w6 w7 w8]].
-  cbv [oct_assoc oct_sub oct_add oct_scale oct_neg oct_mul oct_conj oct_lo oct_hi
-       quat_add quat_scale quat_neg quat_mul quat_conj qa qb qc qd].
-  apply (f_equal2 mkOct); apply (f_equal4 mkQuat); ring.
+  intros x y z w.
+  unfold oct_assoc.
+  repeat rewrite oct_mul_add_right.
+  apply brown1972_oct_sub_add_distr.
 Qed.
 
 Lemma brown1972_oct_assoc_scale_right : forall r x y z,
   oct_assoc x y (oct_scale r z) = oct_scale r (oct_assoc x y z).
 Proof.
-  intros r [[x1 x2 x3 x4] [x5 x6 x7 x8]]
-           [[y1 y2 y3 y4] [y5 y6 y7 y8]]
-           [[z1 z2 z3 z4] [z5 z6 z7 z8]].
-  cbv [oct_assoc oct_sub oct_add oct_scale oct_neg oct_mul oct_conj oct_lo oct_hi
-       quat_add quat_scale quat_neg quat_mul quat_conj qa qb qc qd].
-  apply (f_equal2 mkOct); apply (f_equal4 mkQuat); ring.
+  intros r x y z.
+  unfold oct_assoc.
+  repeat rewrite oct_mul_scale_right.
+  apply brown1972_oct_sub_scale_distr.
 Qed.
 
 Lemma brown1972_oct_assoc_one_left : forall b c,
