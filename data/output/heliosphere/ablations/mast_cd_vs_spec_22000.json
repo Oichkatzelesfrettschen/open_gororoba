@@ -1,0 +1,91 @@
+{
+  "n_samples": 250000,
+  "n_windows": 9,
+  "embedding_dim": 32,
+  "fft_size": 4096,
+  "results": [
+    {
+      "center_time": 0.0625,
+      "cd_mean": 1.6017093224363845,
+      "cd_max": 3.2608257291371876,
+      "spectral_peak_freq_hz": 13378.906587979607,
+      "spectral_peak_power": 6.233277973051585e-8,
+      "spectral_total_power": 4.497833751830195e-6,
+      "spectral_bandwidth_hz": 2343.7500592081064
+    },
+    {
+      "center_time": 0.125,
+      "cd_mean": 1.5772556238971398,
+      "cd_max": 3.4440926701915293,
+      "spectral_peak_freq_hz": 9863.281499167448,
+      "spectral_peak_power": 1.4475754908036767e-8,
+      "spectral_total_power": 4.5938524264348557e-7,
+      "spectral_bandwidth_hz": 683.5937672690311
+    },
+    {
+      "center_time": 0.1875,
+      "cd_mean": 1.5034572249136797,
+      "cd_max": 3.4440926701915293,
+      "spectral_peak_freq_hz": 15136.719132385688,
+      "spectral_peak_power": 1.3340524994999376e-8,
+      "spectral_total_power": 7.341846337963753e-7,
+      "spectral_bandwidth_hz": 2246.093806741102
+    },
+    {
+      "center_time": 0.25,
+      "cd_mean": 1.3748349755621616,
+      "cd_max": 3.156721042361686,
+      "spectral_peak_freq_hz": 16503.90666692375,
+      "spectral_peak_power": 1.8768621724035494e-8,
+      "spectral_total_power": 2.859462786858957e-7,
+      "spectral_bandwidth_hz": 488.2812623350222
+    },
+    {
+      "center_time": 0.3125,
+      "cd_mean": 1.3041518738239875,
+      "cd_max": 3.4033440427540076,
+      "spectral_peak_freq_hz": 9765.625246700443,
+      "spectral_peak_power": 2.9014473124887147e-9,
+      "spectral_total_power": 8.695892646902831e-8,
+      "spectral_bandwidth_hz": 390.62500986801774
+    },
+    {
+      "center_time": 0.375,
+      "cd_mean": 1.3731208431547046,
+      "cd_max": 3.4373122465778136,
+      "spectral_peak_freq_hz": 10546.875266436478,
+      "spectral_peak_power": 1.4448452623324296e-8,
+      "spectral_total_power": 2.5165190149879464e-7,
+      "spectral_bandwidth_hz": 683.5937672690311
+    },
+    {
+      "center_time": 0.4375,
+      "cd_mean": 1.3617149242578457,
+      "cd_max": 3.4373122465778136,
+      "spectral_peak_freq_hz": 8691.406469563395,
+      "spectral_peak_power": 4.1246111531739704e-9,
+      "spectral_total_power": 7.957408237634431e-8,
+      "spectral_bandwidth_hz": 976.5625246700444
+    },
+    {
+      "center_time": 0.5,
+      "cd_mean": 1.1206462772898447,
+      "cd_max": 3.1820030408248843,
+      "spectral_peak_freq_hz": 9472.65648929943,
+      "spectral_peak_power": 3.98116719106715e-9,
+      "spectral_total_power": 1.4980465594187123e-7,
+      "spectral_bandwidth_hz": 781.2500197360355
+    },
+    {
+      "center_time": 0.5625,
+      "cd_mean": 0.9459600971116972,
+      "cd_max": 3.1820030408248843,
+      "spectral_peak_freq_hz": 7128.906430091324,
+      "spectral_peak_power": 2.299827068227634e-9,
+      "spectral_total_power": 8.362415654919221e-8,
+      "spectral_bandwidth_hz": 1562.500039472071
+    }
+  ],
+  "cd_spectral_correlation": 0.5308703170874964,
+  "interpretation": "CD vs Spectrogram on 9 windows. CD-spectral_power correlation: r=0.5309. Moderate correlation: CD captures some spectral features but adds independent info."
+}
