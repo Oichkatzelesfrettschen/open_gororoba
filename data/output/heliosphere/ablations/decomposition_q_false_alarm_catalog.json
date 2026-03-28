@@ -1,0 +1,10 @@
+{
+  "total_extra": 2480,
+  "total_curated": 4498,
+  "total_transitions": 3520,
+  "extra_curated_ratio": 0.5513561582925744,
+  "high_extra_weeks": 46,
+  "low_extra_weeks": 22,
+  "zero_extra_weeks": 3,
+  "interpretation": "The 2480 extra CD transitions across 128 weeks represent phase-coupling disruptions NOT in the magnetopause-only curated list. They occur preferentially in active weeks with many magnetopause crossings (high-extra weeks also tend to have high curated counts), suggesting they are associated with the SAME orbital geometry that brings THEMIS near the magnetopause. They are most likely: (1) tangential discontinuities in the magnetosheath, (2) flux transfer events at the magnetopause flanks, (3) mirror mode boundaries in the magnetosheath, (4) partial or grazing crossings the curated list does not include. The extra/curated ratio of 0.55 means the associator detects roughly 0.6x as many phase-coupling disruptions as expert-identified magnetopause crossings alone."
+}
