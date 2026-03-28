@@ -1,0 +1,51 @@
+{
+  "zarr_dir": "data/external/mast/shot26000.zarr/ama",
+  "embedding_dim": 32,
+  "stride": 50,
+  "normalization": "direction",
+  "n_samples": 162500,
+  "time_range": [
+    -0.4999961853027344,
+    0.7999957799911499
+  ],
+  "signal_range": [
+    -0.0010728995548561215,
+    0.0008178800344467163
+  ],
+  "n_windows": 5,
+  "results": [
+    {
+      "center_time": -0.29999619722366333,
+      "mean_associator": 1.5582339719947136,
+      "max_associator": 3.1837808763897484,
+      "n_embeddings": 984
+    },
+    {
+      "center_time": -0.0999961793422699,
+      "mean_associator": 1.552176066870838,
+      "max_associator": 3.1659812897628146,
+      "n_embeddings": 984
+    },
+    {
+      "center_time": 0.10000383853912354,
+      "mean_associator": 1.5340394605159369,
+      "max_associator": 3.7545594536910487,
+      "n_embeddings": 984
+    },
+    {
+      "center_time": 0.3000038266181946,
+      "mean_associator": 1.504164987887671,
+      "max_associator": 3.7545594536910487,
+      "n_embeddings": 984
+    },
+    {
+      "center_time": 0.5000038146972656,
+      "mean_associator": 1.5049504491661132,
+      "max_associator": 3.4881524657219822,
+      "n_embeddings": 984
+    }
+  ],
+  "overall_mean_a": 1.5307129872870546,
+  "overall_max_a": 3.7545594536910487,
+  "interpretation": "MAST shot 30420 ama Mirnov (n=2 + n=odd, 2 channels). 5 windows, overall A_mean=1.530713, A_max=3.754559. 32D embedding, stride=50, direction."
+}
