@@ -1,0 +1,177 @@
+{
+  "n_curated": 118,
+  "individual": [
+    {
+      "combination": "CD",
+      "n_detections": 58,
+      "detection_rate": 0.9152542372881356,
+      "false_alarm_rate": 0.1896551724137931,
+      "f1_score": 0.85961049957663
+    },
+    {
+      "combination": "PVI",
+      "n_detections": 45,
+      "detection_rate": 0.8983050847457628,
+      "false_alarm_rate": 0.3111111111111111,
+      "f1_score": 0.7797816801139061
+    },
+    {
+      "combination": "|B|grad",
+      "n_detections": 119,
+      "detection_rate": 0.7033898305084746,
+      "false_alarm_rate": 0.7983193277310925,
+      "f1_score": 0.31347863718624597
+    },
+    {
+      "combination": "Shear",
+      "n_detections": 52,
+      "detection_rate": 0.5254237288135594,
+      "false_alarm_rate": 0.4230769230769231,
+      "f1_score": 0.5499704316972206
+    },
+    {
+      "combination": "Wavelet",
+      "n_detections": 89,
+      "detection_rate": 0.4915254237288136,
+      "false_alarm_rate": 0.8539325842696629,
+      "f1_score": 0.2252090800477897
+    },
+    {
+      "combination": "Entropy",
+      "n_detections": 31,
+      "detection_rate": 0.7203389830508474,
+      "false_alarm_rate": 0.41935483870967744,
+      "f1_score": 0.642992225257407
+    }
+  ],
+  "unions": [
+    {
+      "combination": "CD+PVI",
+      "n_detections": 74,
+      "detection_rate": 0.9491525423728814,
+      "false_alarm_rate": 0.28378378378378377,
+      "f1_score": 0.816393893549718
+    },
+    {
+      "combination": "CD+Shear",
+      "n_detections": 79,
+      "detection_rate": 0.940677966101695,
+      "false_alarm_rate": 0.3291139240506329,
+      "f1_score": 0.7831990947214271
+    },
+    {
+      "combination": "CD+Entropy",
+      "n_detections": 75,
+      "detection_rate": 0.9322033898305084,
+      "false_alarm_rate": 0.28,
+      "f1_score": 0.8124743537135822
+    },
+    {
+      "combination": "CD+Wavelet",
+      "n_detections": 137,
+      "detection_rate": 0.9491525423728814,
+      "false_alarm_rate": 0.6204379562043796,
+      "f1_score": 0.5422718808193668
+    },
+    {
+      "combination": "CD+|B|grad",
+      "n_detections": 124,
+      "detection_rate": 0.9576271186440678,
+      "false_alarm_rate": 0.5806451612903226,
+      "f1_score": 0.5832837006154458
+    },
+    {
+      "combination": "PVI+Shear",
+      "n_detections": 63,
+      "detection_rate": 0.9152542372881356,
+      "false_alarm_rate": 0.3968253968253968,
+      "f1_score": 0.7271438695960313
+    },
+    {
+      "combination": "CD+PVI+Shear",
+      "n_detections": 86,
+      "detection_rate": 0.9491525423728814,
+      "false_alarm_rate": 0.36046511627906974,
+      "f1_score": 0.7641731795062647
+    },
+    {
+      "combination": "CD+PVI+Entropy",
+      "n_detections": 89,
+      "detection_rate": 0.9491525423728814,
+      "false_alarm_rate": 0.33707865168539325,
+      "f1_score": 0.7806261075014767
+    },
+    {
+      "combination": "CD+Shear+Entropy",
+      "n_detections": 92,
+      "detection_rate": 0.940677966101695,
+      "false_alarm_rate": 0.3695652173913043,
+      "f1_score": 0.7549249530956849
+    },
+    {
+      "combination": "CD+PVI+Wavelet",
+      "n_detections": 150,
+      "detection_rate": 0.9745762711864406,
+      "false_alarm_rate": 0.62,
+      "f1_score": 0.5467967967967968
+    },
+    {
+      "combination": "PVI+Shear+Entropy",
+      "n_detections": 82,
+      "detection_rate": 0.9491525423728814,
+      "false_alarm_rate": 0.4268292682926829,
+      "f1_score": 0.7147318397827562
+    },
+    {
+      "combination": "ALL-6 UNION",
+      "n_detections": 210,
+      "detection_rate": 0.9830508474576272,
+      "false_alarm_rate": 0.6952380952380952,
+      "f1_score": 0.46527951867636
+    }
+  ],
+  "agreement_thresholds": [
+    {
+      "combination": ">=1-of-6 agree",
+      "n_detections": 116,
+      "detection_rate": 0.9830508474576272,
+      "false_alarm_rate": 0.0,
+      "f1_score": 0.9830508474576272
+    },
+    {
+      "combination": ">=2-of-6 agree",
+      "n_detections": 112,
+      "detection_rate": 0.9491525423728814,
+      "false_alarm_rate": 0.0,
+      "f1_score": 0.9491525423728814
+    },
+    {
+      "combination": ">=3-of-6 agree",
+      "n_detections": 111,
+      "detection_rate": 0.940677966101695,
+      "false_alarm_rate": 0.0,
+      "f1_score": 0.940677966101695
+    },
+    {
+      "combination": ">=4-of-6 agree",
+      "n_detections": 91,
+      "detection_rate": 0.7711864406779662,
+      "false_alarm_rate": 0.0,
+      "f1_score": 0.7711864406779662
+    },
+    {
+      "combination": ">=5-of-6 agree",
+      "n_detections": 57,
+      "detection_rate": 0.4830508474576271,
+      "false_alarm_rate": 0.0,
+      "f1_score": 0.4830508474576271
+    },
+    {
+      "combination": ">=6-of-6 agree",
+      "n_detections": 15,
+      "detection_rate": 0.1271186440677966,
+      "false_alarm_rate": 0.0,
+      "f1_score": 0.1271186440677966
+    }
+  ]
+}
