@@ -27,6 +27,7 @@ pub mod benchmarks;
 pub mod catalog_feature_cube;
 pub mod catalogs;
 pub mod cdf_support;
+pub mod crossing_lists;
 pub mod doc_links;
 pub mod download_stack;
 pub mod fetcher;
