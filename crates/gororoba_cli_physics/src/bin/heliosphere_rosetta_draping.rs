@@ -55,6 +55,16 @@ struct Cli {
     #[arg(long, default_value_t = 3.0)]
     bmag_gradient_threshold: f64,
 
+    /// Normalization mode: current, raw, direction, clipped.
+    /// current = Bx/mean_B (default), raw = unnormalized, direction = unit vectors,
+    /// clipped = Bx/max(mean_B, floor).
+    #[arg(long, default_value = "current")]
+    normalization: String,
+
+    /// Floor for clipped normalization (nT).
+    #[arg(long, default_value_t = 1.0)]
+    clip_floor: f64,
+
     /// Output JSON path.
     #[arg(long, default_value = "data/output/heliosphere/ablations/rosetta_draping_analysis.json")]
     out_json: PathBuf,
@@ -70,6 +80,7 @@ struct DrapingResults {
     month_start: u8,
     month_end: u8,
     embedding_dim: usize,
+    normalization: String,
     total_minutes: usize,
     cavity_minutes: usize,
     cavity_fraction: f64,
@@ -213,8 +224,14 @@ fn main() -> Result<()> {
     println!("  Found {} cavity boundaries", boundaries.len());
 
     // --- Step 4: Run 32D CD associator ---
-    println!("[4/5] Computing {}D Takens embedding + CD associator...", cli.embedding_dim);
+    let norm_mode = cli.normalization.as_str();
+    println!(
+        "[4/5] Computing {}D Takens embedding + CD associator (norm={})...",
+        cli.embedding_dim, norm_mode,
+    );
 
+    // Always 4 channels for CD power-of-2 dimension requirement.
+    // Direction mode sets 4th channel to zero (no magnitude info).
     let channels: usize = 4;
     let steps = cli.embedding_dim / channels;
     let window_rows = (steps - 1) + 1;
@@ -227,6 +244,8 @@ fn main() -> Result<()> {
         );
     }
 
+    let effective_dim = cli.embedding_dim;
+
     let mut embedded: Vec<Vec<f64>> = Vec::new();
     let mut embed_meta: Vec<usize> = Vec::new();
 
@@ -235,18 +254,51 @@ fn main() -> Result<()> {
 
         let sum_b: f64 = sample_indices.iter().map(|&i| all_minutes[i].b_magnitude).sum();
         let local_mean_b = sum_b / steps as f64;
-        if local_mean_b <= 0.0 || !local_mean_b.is_finite() {
+
+        // Skip zero-field windows for all modes except raw
+        if norm_mode != "raw" && (local_mean_b <= 0.0 || !local_mean_b.is_finite()) {
             continue;
         }
 
-        let mut v = vec![0.0; cli.embedding_dim];
+        let mut v = vec![0.0; effective_dim];
+        let mut skip = false;
         for (s, &ri) in sample_indices.iter().enumerate() {
             let rec = &all_minutes[ri];
-            v[s * channels] = rec.bx_cseq / local_mean_b;
-            v[s * channels + 1] = rec.by_cseq / local_mean_b;
-            v[s * channels + 2] = rec.bz_cseq / local_mean_b;
-            v[s * channels + 3] = (rec.b_magnitude - local_mean_b) / local_mean_b;
+            match norm_mode {
+                "current" => {
+                    v[s * channels] = rec.bx_cseq / local_mean_b;
+                    v[s * channels + 1] = rec.by_cseq / local_mean_b;
+                    v[s * channels + 2] = rec.bz_cseq / local_mean_b;
+                    v[s * channels + 3] = (rec.b_magnitude - local_mean_b) / local_mean_b;
+                }
+                "raw" => {
+                    v[s * channels] = rec.bx_cseq;
+                    v[s * channels + 1] = rec.by_cseq;
+                    v[s * channels + 2] = rec.bz_cseq;
+                    v[s * channels + 3] = rec.b_magnitude;
+                }
+                "direction" => {
+                    // Unit vectors: Bx/|B|, By/|B|, Bz/|B|, 0.0
+                    let bmag = rec.b_magnitude;
+                    if bmag < 1e-12 { skip = true; break; }
+                    v[s * channels] = rec.bx_cseq / bmag;
+                    v[s * channels + 1] = rec.by_cseq / bmag;
+                    v[s * channels + 2] = rec.bz_cseq / bmag;
+                    v[s * channels + 3] = 0.0; // no magnitude info
+                }
+                "clipped" => {
+                    let denom = local_mean_b.max(cli.clip_floor);
+                    v[s * channels] = rec.bx_cseq / denom;
+                    v[s * channels + 1] = rec.by_cseq / denom;
+                    v[s * channels + 2] = rec.bz_cseq / denom;
+                    v[s * channels + 3] = (rec.b_magnitude - denom) / denom;
+                }
+                _ => {
+                    anyhow::bail!("Unknown normalization: {}. Use current, raw, direction, clipped.", norm_mode);
+                }
+            }
         }
+        if skip { continue; }
         embedded.push(v);
         embed_meta.push(*sample_indices.last().unwrap());
     }
@@ -254,7 +306,7 @@ fn main() -> Result<()> {
     println!("  Embedded {} vectors ({}D)", embedded.len(), cli.embedding_dim);
 
     let associators =
-        cd_kernel::batch_sliding_associator_norms_parallel(&embedded, cli.embedding_dim);
+        cd_kernel::batch_sliding_associator_norms_parallel(&embedded, effective_dim);
 
     println!("  Computed {} associator norms", associators.len());
 
@@ -441,6 +493,7 @@ fn main() -> Result<()> {
         month_start: cli.month_start,
         month_end: cli.month_end,
         embedding_dim: cli.embedding_dim,
+        normalization: cli.normalization.clone(),
         total_minutes: total,
         cavity_minutes: cavity_count,
         cavity_fraction: cavity_count as f64 / total as f64,

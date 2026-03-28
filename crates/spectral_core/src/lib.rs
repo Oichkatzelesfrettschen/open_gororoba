@@ -36,7 +36,11 @@ pub use neg_dim::{
     ConvergenceResult, EigenResult, build_kinetic_operator, caffarelli_silvestre_eigenvalues,
     eigenvalues_imaginary_time, epsilon_convergence_sweep,
 };
-pub use surrogates::{empirical_p_value, iaaft_surrogate, phase_randomize};
+pub use surrogates::{
+    block_shuffle, circular_bootstrap, circular_bootstrap_ci, detect_change_point,
+    empirical_p_value, iaaft_surrogate, phase_randomize, phase_randomize_mv_independent,
+    phase_randomize_mv_shared,
+};
 pub use wavelet::{continuous_wavelet_transform, ricker_wavelet};
 
 use ndarray::{Array2, Array3, Axis};
