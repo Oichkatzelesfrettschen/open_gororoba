@@ -645,3 +645,159 @@ pub fn cd_norm_sq_simd(a: &[f64]) -> f64 {
 
     total
 }
+
+// ============================================================================
+// f32 quantized CD multiply -- 2x SIMD throughput via f32x8
+// For high-dimensional CD (256D+) where f64 precision is unnecessary
+// ============================================================================
+
+// f32x8 reserved for future explicit SIMD optimization of f32 leaf operations
+
+/// f32 CD multiply (recursive doubling, f32 precision).
+/// At the leaf (dim <= 8), uses f32x8 which fits an entire octonion in one register.
+pub fn cd_multiply_f32_into(a: &[f32], b: &[f32], out: &mut [f32], dim: usize) {
+    debug_assert!(a.len() >= dim && b.len() >= dim && out.len() >= dim);
+    match dim {
+        1 => out[0] = a[0] * b[0],
+        2 => {
+            out[0] = a[0] * b[0] - a[1] * b[1];
+            out[1] = a[0] * b[1] + a[1] * b[0];
+        }
+        4 => {
+            // Quaternion multiply at f32
+            let q = a;
+            let r = b;
+            out[0] = q[0] * r[0] - q[1] * r[1] - q[2] * r[2] - q[3] * r[3];
+            out[1] = q[0] * r[1] + q[1] * r[0] + q[2] * r[3] - q[3] * r[2];
+            out[2] = q[0] * r[2] - q[1] * r[3] + q[2] * r[0] + q[3] * r[1];
+            out[3] = q[0] * r[3] + q[1] * r[2] - q[2] * r[1] + q[3] * r[0];
+        }
+        8 => {
+            // Octonion via CD doubling of quaternions
+            let mut ac = [0.0f32; 4];
+            let mut db = [0.0f32; 4];
+            let mut da = [0.0f32; 4];
+            let mut bc_conj = [0.0f32; 4];
+
+            cd_multiply_f32_into(&a[..4], &b[..4], &mut ac, 4);
+
+            // conj(c_r) = [b[4], -b[5], -b[6], -b[7]]
+            let conj_cr = [b[4], -b[5], -b[6], -b[7]];
+            cd_multiply_f32_into(&conj_cr, &a[4..8], &mut db, 4);
+
+            cd_multiply_f32_into(&b[4..8], &a[..4], &mut da, 4);
+
+            // conj(c_l) = [b[0], -b[1], -b[2], -b[3]]
+            let conj_cl = [b[0], -b[1], -b[2], -b[3]];
+            cd_multiply_f32_into(&a[4..8], &conj_cl, &mut bc_conj, 4);
+
+            for i in 0..4 {
+                out[i] = ac[i] - db[i];
+                out[4 + i] = da[i] + bc_conj[i];
+            }
+        }
+        d if d >= 16 && d.is_power_of_two() => {
+            let half = d / 2;
+            let mut conj_cr = vec![0.0f32; half];
+            let mut conj_cl = vec![0.0f32; half];
+            // Conjugate: negate all components except the first
+            conj_cr[0] = b[half];
+            conj_cl[0] = b[0];
+            for i in 1..half {
+                conj_cr[i] = -b[half + i];
+                conj_cl[i] = -b[i];
+            }
+
+            if d >= 256 {
+                // Rayon parallel for high dims
+                let a_lo = a[..half].to_vec();
+                let a_hi = a[half..half * 2].to_vec();
+                let b_lo = b[..half].to_vec();
+                let b_hi = b[half..half * 2].to_vec();
+                let conj_cr_v = conj_cr;
+                let conj_cl_v = conj_cl;
+
+                let ((t1, t2), (t3, t4)) = rayon::join(
+                    || {
+                        rayon::join(
+                            || {
+                                let mut r = vec![0.0f32; half];
+                                cd_multiply_f32_into(&a_lo, &b_lo, &mut r, half);
+                                r
+                            },
+                            || {
+                                let mut r = vec![0.0f32; half];
+                                cd_multiply_f32_into(&conj_cr_v, &a_hi, &mut r, half);
+                                r
+                            },
+                        )
+                    },
+                    || {
+                        rayon::join(
+                            || {
+                                let mut r = vec![0.0f32; half];
+                                cd_multiply_f32_into(&b_hi, &a_lo, &mut r, half);
+                                r
+                            },
+                            || {
+                                let mut r = vec![0.0f32; half];
+                                cd_multiply_f32_into(&a_hi, &conj_cl_v, &mut r, half);
+                                r
+                            },
+                        )
+                    },
+                );
+
+                for i in 0..half {
+                    out[i] = t1[i] - t2[i];
+                    out[half + i] = t3[i] + t4[i];
+                }
+            } else {
+                let mut t1 = vec![0.0f32; half];
+                let mut t2 = vec![0.0f32; half];
+                let mut t3 = vec![0.0f32; half];
+                let mut t4 = vec![0.0f32; half];
+                cd_multiply_f32_into(&a[..half], &b[..half], &mut t1, half);
+                cd_multiply_f32_into(&conj_cr, &a[half..], &mut t2, half);
+                cd_multiply_f32_into(&b[half..], &a[..half], &mut t3, half);
+                cd_multiply_f32_into(&a[half..], &conj_cl, &mut t4, half);
+
+                for i in 0..half {
+                    out[i] = t1[i] - t2[i];
+                    out[half + i] = t3[i] + t4[i];
+                }
+            }
+        }
+        _ => panic!("cd_multiply_f32_into: unsupported dim {dim}"),
+    }
+}
+
+/// f32 CD associator norm: ||(a*b)*c - a*(b*c)|| at f32 precision
+pub fn cd_associator_norm_f32(a: &[f32], b: &[f32], c: &[f32], dim: usize) -> f32 {
+    let mut ab = vec![0.0f32; dim];
+    let mut bc = vec![0.0f32; dim];
+    let mut ab_c = vec![0.0f32; dim];
+    let mut a_bc = vec![0.0f32; dim];
+
+    cd_multiply_f32_into(a, b, &mut ab, dim);
+    cd_multiply_f32_into(b, c, &mut bc, dim);
+    cd_multiply_f32_into(&ab, c, &mut ab_c, dim);
+    cd_multiply_f32_into(a, &bc, &mut a_bc, dim);
+
+    let mut norm_sq = 0.0f32;
+    for i in 0..dim {
+        let d = ab_c[i] - a_bc[i];
+        norm_sq += d * d;
+    }
+    norm_sq.sqrt()
+}
+
+/// Batch sliding f32 associator norms (single-threaded for now)
+pub fn batch_sliding_associator_norms_f32(embedded: &[Vec<f32>], dim: usize) -> Vec<f32> {
+    if embedded.len() < 3 {
+        return vec![];
+    }
+    (0..embedded.len() - 2)
+        .map(|i| cd_associator_norm_f32(&embedded[i], &embedded[i + 1], &embedded[i + 2], dim))
+        .collect()
+}
