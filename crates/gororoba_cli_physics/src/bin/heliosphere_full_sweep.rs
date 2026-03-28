@@ -12,7 +12,7 @@ use clap::Parser;
 use data_core::{
     catalogs::themis::parse_themis_fgm_hapi_csv_minutes,
     crossing_lists::{match_crossings, parse_crossing_list},
-    fetcher::{FetchConfig, download_hapi_csv},
+    fetcher::{DatasetProvider, FetchConfig},
 };
 use serde::{Deserialize, Serialize};
 use spectral_core::boundary_detectors::{bmag_gradient_crossings, pvi_crossings};
@@ -109,7 +109,8 @@ fn main() -> Result<()> {
     let tol_hours = cli.match_tolerance_minutes as f64 / 60.0;
     let channels = 4usize;
     let steps = cli.embedding_dim / channels;
-    let probe_upper = cli.probe.to_uppercase();
+    // THEMIS probes: cli.probe is "a"-"e", provider needs "THA"-"THE"
+    let probe_upper = format!("TH{}", cli.probe.to_uppercase());
 
     let mut all_weeks: Vec<WeekResult> = Vec::new();
     let mut total_curated = 0usize;
@@ -175,21 +176,22 @@ fn main() -> Result<()> {
             let doy = date.ordinal();
             let fname = format!(
                 "{}_fgm_{:04}_{:03}.csv",
-                cli.probe, date.year(), doy
+                probe_upper.to_lowercase(), date.year(), doy
             );
             let dir = cli.data_dir.join("themis");
             fs::create_dir_all(&dir)?;
             let path = dir.join(&fname);
 
             if !path.exists() {
-                let dataset = format!("{}_L2_FGM@0", probe_upper);
-                let gse_param = format!("{}_fgs_gse", cli.probe);
-                let t_min = format!("{}T00:00:00Z", date);
-                let t_max = format!("{}T23:59:59Z", date);
-
-                match download_hapi_csv(&dataset, &t_min, &t_max, Some(&["Time", &gse_param])) {
-                    Ok(body) => { fs::write(&path, body)?; }
-                    Err(_) => { continue; }
+                let provider = data_core::catalogs::themis::ThemisFgmProvider {
+                    probe: probe_upper.clone(),
+                    year: date.year() as u16,
+                    doy_start: doy as u16,
+                    doy_end: doy as u16,
+                };
+                if let Err(e) = provider.fetch(&_config) {
+                    eprintln!("  Fetch error DOY {}: {}", doy, e);
+                    continue;
                 }
             }
 
