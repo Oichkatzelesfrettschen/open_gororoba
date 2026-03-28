@@ -1,0 +1,11 @@
+{
+  "n_cavity_vectors": 500,
+  "n_outside_vectors": 500,
+  "n_random_probes": 100,
+  "cavity_mean_min_product": 0.8386735339190152,
+  "outside_mean_min_product": 0.8708343261653319,
+  "cavity_mean_product": 0.9979441508222833,
+  "outside_mean_product": 0.9986297696826275,
+  "ratio_cavity_to_outside": 0.9630689888076245,
+  "interpretation": "Cavity and outside vectors have similar ZD proximity. The cavity amplification is NOT a zero-divisor artifact -- it is purely normalization-driven."
+}
