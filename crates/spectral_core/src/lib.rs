@@ -11,6 +11,7 @@
 //! - Kwasnicki (2017): Ten equivalent definitions of the fractional Laplacian
 //! - Caffarelli & Silvestre (2007): Extension problem for fractional Laplacian
 
+pub mod boundary_detectors;
 pub mod chsh_betti_bridge;
 pub mod coherence;
 pub mod entropy_pde;
