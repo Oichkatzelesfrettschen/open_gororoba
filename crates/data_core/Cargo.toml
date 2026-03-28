@@ -29,6 +29,8 @@ cdf = { workspace = true }
 gororoba_contracts = { path = "../gororoba_contracts" }
 gororoba_sparse_grid = { workspace = true }
 hdf5 = { workspace = true, optional = true }
+netcdf3 = { workspace = true, optional = true }
+netcdf-reader = { workspace = true, optional = true }
 polars = { workspace = true, optional = true }
 fitsio = { workspace = true, optional = true }
 quick-xml = { workspace = true, optional = true }
@@ -42,6 +44,7 @@ verified_core = { version = "0.1.0", path = "../verified_core" }
 [features]
 default = []
 hdf5-export = ["dep:hdf5"]
+netcdf = ["dep:netcdf3", "dep:netcdf-reader"]
 dataframe = ["dep:polars"]
 fits = ["dep:fitsio", "dep:quick-xml"]
 

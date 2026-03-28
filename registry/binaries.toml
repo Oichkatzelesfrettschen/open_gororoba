@@ -1987,3 +1987,13 @@ name = "zd-spectral-dimension"
 crate = "gororoba_cli_data"
 description = "Spectral-dimension census for Cayley-Dickson zero-divisor graphs via Laplacian heat-kernel plateaus and gaps."
 experiment = "E-084"
+
+[[binary]]
+name = "grmhd-mri-cd"
+crate = "gororoba_cli_physics"
+description = "Extract B-field from nubhlight GRMHD HDF5 dumps, compute 32D CD associator through MRI onset and saturation. Reads P[N1,N2,N3,8] primitives, takes midplane slice, builds Takens embedding with direction normalization."
+
+[[binary]]
+name = "bout-cd-analysis"
+crate = "gororoba_cli_physics"
+description = "Read BOUT++ NetCDF4 output (HDF5-based), extract evolved field variables (n, phi, vort), build 32D Takens embedding from spatial profiles along sweep axis, compute CD associator at each timestep. Supports multi-channel embedding, direction-only normalization, configurable sweep axis."

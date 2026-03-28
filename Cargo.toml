@@ -284,6 +284,17 @@ unicode-normalization = "0.1"    # Unicode normalization for ANSI-safe UTF-8 san
 # switch back to upstream once merged (eliminates fork dependency)
 hdf5 = { package = "hdf5-metno", version = "0.12" }
 
+# NetCDF support (pure Rust, no C dependencies)
+# netcdf3: read/write NetCDF-3 classic format (BOUT++ grid files, legacy datasets)
+# netcdf-reader: unified read-only for both NC3 classic and NC4/HDF5 (BOUT++ output)
+netcdf3 = "0.6"
+netcdf-reader = "0.1"
+
+# Zarr v2/v3 multidimensional array storage (pure Rust)
+# Used for FAIR-MAST tokamak data (S3 bucket, blosc/lz4 compressed)
+zarrs = { version = "0.23", features = ["blosc", "ndarray"] }
+zarrs_filesystem = "0.3"
+
 # Visualization
 plotters = "0.3"
 pgfplots = "0.5.1"                   # PGFPlots (LaTeX-quality figures)
