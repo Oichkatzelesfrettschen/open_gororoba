@@ -531,18 +531,64 @@ pub fn cd_multiply_flat_into(a: &[f64], b: &[f64], out: &mut [f64], dim: usize) 
             cd_conjugate_into(&b[half..], &mut conj_cr, half);
             cd_conjugate_into(&b[..half], &mut conj_cl, half);
 
-            let mut t1 = vec![0.0_f64; half];
-            let mut t2 = vec![0.0_f64; half];
-            let mut t3 = vec![0.0_f64; half];
-            let mut t4 = vec![0.0_f64; half];
-            cd_multiply_flat_into(&a[..half], &b[..half], &mut t1, half);
-            cd_multiply_flat_into(&conj_cr, &a[half..], &mut t2, half);
-            cd_multiply_flat_into(&b[half..], &a[..half], &mut t3, half);
-            cd_multiply_flat_into(&a[half..], &conj_cl, &mut t4, half);
+            // For dimensions >= 256, parallelize the 4 independent sub-multiplications
+            if d >= 256 {
+                let a_lo = a[..half].to_vec();
+                let a_hi = a[half..half * 2].to_vec();
+                let b_lo = b[..half].to_vec();
+                let b_hi = b[half..half * 2].to_vec();
+                let conj_cr_v = conj_cr.clone();
+                let conj_cl_v = conj_cl;
 
-            for i in 0..half {
-                out[i] = t1[i] - t2[i];
-                out[half + i] = t3[i] + t4[i];
+                let ((t1, t2), (t3, t4)) = rayon::join(
+                    || {
+                        rayon::join(
+                            || {
+                                let mut r = vec![0.0_f64; half];
+                                cd_multiply_flat_into(&a_lo, &b_lo, &mut r, half);
+                                r
+                            },
+                            || {
+                                let mut r = vec![0.0_f64; half];
+                                cd_multiply_flat_into(&conj_cr_v, &a_hi, &mut r, half);
+                                r
+                            },
+                        )
+                    },
+                    || {
+                        rayon::join(
+                            || {
+                                let mut r = vec![0.0_f64; half];
+                                cd_multiply_flat_into(&b_hi, &a_lo, &mut r, half);
+                                r
+                            },
+                            || {
+                                let mut r = vec![0.0_f64; half];
+                                cd_multiply_flat_into(&a_hi, &conj_cl_v, &mut r, half);
+                                r
+                            },
+                        )
+                    },
+                );
+
+                for i in 0..half {
+                    out[i] = t1[i] - t2[i];
+                    out[half + i] = t3[i] + t4[i];
+                }
+            } else {
+                let mut t1 = vec![0.0_f64; half];
+                let mut t2 = vec![0.0_f64; half];
+                let mut t3 = vec![0.0_f64; half];
+                let mut t4 = vec![0.0_f64; half];
+                cd_multiply_flat_into(&a[..half], &b[..half], &mut t1, half);
+                cd_multiply_flat_into(&conj_cr, &a[half..], &mut t2, half);
+                cd_multiply_flat_into(&b[half..], &a[..half], &mut t3, half);
+                cd_multiply_flat_into(&a[half..], &conj_cl, &mut t4, half);
+
+                for i in 0..half {
+                    out[i] = t1[i] - t2[i];
+                    out[half + i] = t3[i] + t4[i];
+                }
             }
         }
         _ => panic!("cd_multiply_flat_into: unsupported dim {dim}"),
