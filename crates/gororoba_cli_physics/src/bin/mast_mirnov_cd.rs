@@ -31,6 +31,10 @@ struct Cli {
     #[arg(long, default_value = "direction")]
     normalization: String,
 
+    /// Precision: "f64" (default) or "f32" (2x faster for 256D+).
+    #[arg(long, default_value = "f64")]
+    precision: String,
+
     /// Output JSON path.
     #[arg(
         long,
@@ -187,15 +191,34 @@ fn main() -> Result<()> {
             }
         }
 
-        let norms =
-            cd_kernel::batch_sliding_associator_norms_parallel(&embedded, cli.embedding_dim);
-
-        if norms.is_empty() {
-            continue;
-        }
-
-        let mean_a = norms.iter().sum::<f64>() / norms.len() as f64;
-        let max_a = norms.iter().cloned().fold(0.0f64, f64::max);
+        let (mean_a, max_a) = if cli.precision == "f32" {
+            // f32 quantized path: ~2x faster for 256D+
+            let embedded_f32: Vec<Vec<f32>> = embedded
+                .iter()
+                .map(|v| v.iter().map(|&x| x as f32).collect())
+                .collect();
+            let norms = cd_kernel::cayley_dickson::simd::batch_sliding_associator_norms_f32(
+                &embedded_f32,
+                cli.embedding_dim,
+            );
+            if norms.is_empty() {
+                continue;
+            }
+            let m = norms.iter().sum::<f32>() / norms.len() as f32;
+            let mx = norms.iter().cloned().fold(0.0f32, f32::max);
+            (m as f64, mx as f64)
+        } else {
+            let norms = cd_kernel::batch_sliding_associator_norms_parallel(
+                &embedded,
+                cli.embedding_dim,
+            );
+            if norms.is_empty() {
+                continue;
+            }
+            let m = norms.iter().sum::<f64>() / norms.len() as f64;
+            let mx = norms.iter().cloned().fold(0.0f64, f64::max);
+            (m, mx)
+        };
         let center_idx = start + local_n / 2;
         let center_time = if center_idx < n { time[center_idx] } else { 0.0 };
 
