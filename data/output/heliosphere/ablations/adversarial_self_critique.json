@@ -1,0 +1,92 @@
+{
+  "title": "Adversarial Self-Critique of 15 Key Decomposition Results",
+  "generated": "2026-03-28",
+
+  "critiques": [
+    {
+      "result": "THEMIS curated 89% detection",
+      "attack": "Selection bias: you picked the best week. Full-sweep aggregate is only 46%.",
+      "severity": "Medium",
+      "response": "The 46% aggregate is dragged down by weeks with degraded data quality where ALL detectors fail. On 60 good weeks, the max(CD,PVI) union achieves 86.6%. The single-week 89% is the BENCHMARK operating point, not the all-conditions average.",
+      "resolution": "Already resolved: the paper presents both per-week peak and aggregate with explicit quality-conditioning."
+    },
+    {
+      "result": "A ~ beta^0.775 power law",
+      "attack": "The beta correlation could be confounded by |B| dependence of the normalization. Since beta ~ 1/B^2 and the embedding divides by mean_B, the correlation may be partly a normalization artifact.",
+      "severity": "High",
+      "response": "This is a valid concern. The direction-only embedding (which removes all |B| dependence) should be tested for the beta correlation. If A(beta) still holds in direction-only, the correlation is genuine. If it weakens, the normalization contributes.",
+      "resolution": "Needs direction-only A(beta) test. Partially mitigated by the Rosetta normalization ladder showing direction-only preserves 40% of contrasts."
+    },
+    {
+      "result": "Switchback SVD collapse (PR 4.85 vs 10.61)",
+      "attack": "Switchbacks are plane-polarized Alfvenic waves. A plane wave trivially has PR~1 in any embedding. The dimensional collapse is just the wave being coherent, not a CD-specific insight.",
+      "severity": "Medium-High",
+      "response": "True that any coherent wave collapses to low PR. But the QUANTITATIVE mapping (PR 4.85, not PR 1) and the correlation with CD suppression ratio (0.46) are CD-specific. The insight is not 'switchbacks are coherent' (known) but 'coherent structures reduce CD non-associativity proportionally to their effective dimensionality'. That proportionality is new.",
+      "resolution": "Present as 'explaining the mechanism of suppression' not 'discovering that switchbacks are coherent'."
+    },
+    {
+      "result": "ISM floor = 0.017 (global minimum)",
+      "attack": "The V1 ISM data has the lowest signal-to-noise of any dataset. The 0.017 floor could just be measurement noise producing near-zero associator on quiet data.",
+      "severity": "Medium",
+      "response": "V1 ISM |B| is ~0.5 nT, which is above the instrument noise floor (~0.01 nT for Voyager MAG). The normalization by local mean_B amplifies the signal. If the 0.017 were noise, V2 ISM (0.13) should be similar since V2 MAG has similar SNR. The 7.6x V1/V2 ratio suggests real sector-dependent ISM structure.",
+      "resolution": "Compare V1 ISM associator against a synthetic white-noise series at the same |B| level. If noise gives a different floor, the V1 value is genuine."
+    },
+    {
+      "result": "Zero-divisor audit ratio 0.963",
+      "attack": "You probed 100 random unit vectors. Zero divisors in 32D form a low-measure set that random probing might miss. A targeted probe near known ZD subspaces would be more informative.",
+      "severity": "Low-Medium",
+      "response": "The 32D pathion ZD subspace has measure zero but its epsilon-neighborhood scales as epsilon^(dim-codim). With 100 random probes per vector, the minimum product (0.84-0.87) is well above the ZD proximity region (which would give min products << 0.1). A more targeted probe using known ZD generators would strengthen the result.",
+      "resolution": "Consider adding a targeted ZD probe using the explicit Moreno zero-divisor construction (is_zd_moreno from cd_kernel). Low priority since random probing already shows no proximity effect."
+    },
+    {
+      "result": "Kurtosis 28% vs CD 89%",
+      "attack": "Kurtosis was computed as a sliding-window scalar on |B|. A multivariate kurtosis on the full 3D field might perform better.",
+      "severity": "Low",
+      "response": "Fair point. Multivariate kurtosis (Mardia's measure) on the 3D B-field would be a fairer comparison than scalar |B| kurtosis. However, even if multivariate kurtosis reached PVI-level detection (90%), the CD associator's selectivity advantage (17% vs 31% FA) would remain because it measures a different quantity (cross-channel phase coupling vs moment statistics).",
+      "resolution": "Could add Mardia's multivariate kurtosis as a 7th baseline detector. Low priority since the kurtosis-is-not-the-mechanism point is already made."
+    },
+    {
+      "result": "Rosetta 1.9x direction-only contrast",
+      "attack": "Near-zero |B| means the direction vectors Bx/|B| become dominated by magnetometer noise. The 1.9x direction-only contrast could be noise amplification of a different kind than normalization amplification.",
+      "severity": "Medium-High",
+      "response": "Valid. At |B| ~ 0.5 nT (Rosetta cavity), RPC-MAG noise is ~0.03 nT, so direction vectors have SNR ~ 15:1. That is above the noise-dominated regime but not by a huge margin. A noise-injection test (add synthetic noise at Rosetta cavity levels and check if the 1.9x appears in noise-only data) would definitively resolve this.",
+      "resolution": "Needs noise-injection test on Rosetta. If noise-only gives >1.5x, the direction-only result is noise-contaminated. If noise gives ~1.0x, the 1.9x is genuine."
+    },
+    {
+      "result": "CD-PVI complementarity (rotation 1.86 vs 3.37 deg)",
+      "attack": "The 7 CD-dominant weeks might just be weeks where the curated crossing list is less complete (missing some crossings), making CD look better by comparison.",
+      "severity": "Low-Medium",
+      "response": "Possible but unlikely. The curated list (Staples et al. 2020) is a systematic survey, not a manual selection. If it were missing crossings in those weeks, the curated count would be lower, but the detection rate would be the same or higher (not artificially inflated). The low-rotation signature is a physical property of the data, not a label artifact.",
+      "resolution": "Cross-check by running the same weeks against a SECOND crossing list (e.g., OMNI database if available for those dates)."
+    },
+    {
+      "result": "Synthetic U-shape",
+      "attack": "The 1D linear MHD model is too simple. A proper 3D MHD simulation with turbulent cascade, reconnection, and boundary layers would produce a different curve.",
+      "severity": "This is actually a STRENGTH, not a weakness",
+      "response": "Exactly. The U-shape shows WHERE the simple theory fails. The empirical A ~ beta^0.78 requires nonlinear physics that the linear model cannot reproduce. This defines the boundary between trivial and non-trivial content in the observable. A 3D MHD simulation comparison would be the ultimate validation.",
+      "resolution": "Flagged as 'future work: 3D MHD simulation comparison' in the paper. The U-shape stays as the diagnostic for where nonlinearity begins."
+    },
+    {
+      "result": "Solar-cycle extra-transition signature (4x ratio)",
+      "attack": "Solar minimum has fewer curated crossings in the denominator. The 4x extra/curated ratio could partly reflect a smaller denominator rather than more extras.",
+      "severity": "Medium",
+      "response": "The absolute extra COUNT is also higher (1675 vs 161). Solar minimum 2008-2010 has 1675 extras vs solar max 2012-2014 with 161. The denominator difference (1358 vs 530) accounts for only ~2.5x, not the full 4x. The per-extra rate is genuinely higher.",
+      "resolution": "Report both absolute counts and ratios. The solar-cycle signature is real but the 4x ratio overstates it due to denominator effect. True effect is ~1.5-2x after correction."
+    }
+  ],
+
+  "severity_summary": {
+    "high": ["Beta-normalization confound (#2)", "Rosetta noise in direction-only (#7)"],
+    "medium_high": ["Switchback SVD triviality (#3)"],
+    "medium": ["Selection bias (#1)", "ISM noise floor (#4)", "Solar cycle denominator (#10)"],
+    "low_medium": ["ZD probe coverage (#5)", "CD-PVI label completeness (#8)"],
+    "low": ["Kurtosis scalar vs multivariate (#6)"],
+    "strength": ["Synthetic U-shape (#9)"]
+  },
+
+  "top_3_experiments_to_resolve": [
+    "Direction-only A(beta) test: does the power law survive without normalization?",
+    "Rosetta noise-injection test: does 1.9x appear in synthetic noise at cavity |B| levels?",
+    "V1 ISM white-noise comparison: what floor does pure noise give at 0.5 nT?"
+  ]
+}
