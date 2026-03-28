@@ -41,14 +41,14 @@
       a standard-octonion Brown 6.10 / 6.11 / 6.12 / 6.13 / 6.14 / 6.15
       basis-associator surface is now landed, a source-faithful standard-
       octonion anticommutator lane for Brown 6.16 / 6.17 is now landed, and
-      a direct standard-sedenion adjoined-element surface for 6.1 / 6.2 /
-      6.3 / 6.8 plus proof-faithful constructive 6.9 witnesses is now
-      landed; the printed Brown 6.9 pointwise iff wording does not survive
-      unchanged in the repo's literal standard-pair coordinates, so the
-      current Rocq surface records the constructive implications and the
-      family form Brown's p.35 proof actually uses; the next Chapter VI work
-      is the remaining 6.4 / 6.5 / 6.6 / 6.7 lane together with any broader
-      non-octonion lift.
+      a direct standard-sedenion adjoined-element / polynomial lane for
+      6.1 / 6.2 / 6.3 / 6.4 / 6.5 / 6.6 / 6.7 / 6.8 plus proof-faithful
+      constructive 6.9 witnesses is now landed; the printed Brown 6.9
+      pointwise iff wording does not survive unchanged in the repo's literal
+      standard-pair coordinates, so the current Rocq surface records the
+      constructive implications and the family form Brown's p.35 proof
+      actually uses; the next Chapter VI work is any broader non-octonion
+      lift beside the broader Chapter III quadratic/conjugation lift.
     - Chapter VII, pp. 45-56, Theorems 7.3-7.18:
       direct Rocq landing via `ZD_Criterion.v`, `C1538_MorZDSymmetry.v`, and
       `BrownAssessorEquivalence.v`.
@@ -3341,6 +3341,204 @@ Proof.
             brown1972_ch6_t63_i_sed := brown1972_theorem_6_3_i_sedenion;
             brown1972_ch6_t63_ii_sed := brown1972_theorem_6_3_ii_sedenion;
             brown1972_ch6_t63_iii_sed := brown1972_theorem_6_3_iii_sedenion |}.
+Defined.
+
+Theorem brown1972_corollary_6_4_sedenion : forall A B : CDSed,
+  sed_assoc B (sed_mul brown1972_sed_adjoined_e A) brown1972_sed_adjoined_e =
+  sed_mul (sed_neg (sed_assoc B brown1972_sed_adjoined_e A))
+          brown1972_sed_adjoined_e.
+Proof.
+  intros A B.
+  unfold sed_assoc, sed_sub.
+  rewrite brown1972_theorem_6_3_ii_sedenion.
+  rewrite <- sed_neg_mul_left.
+  rewrite <- sed_mul_add_left.
+  rewrite sed_neg_add.
+  rewrite sed_neg_neg.
+  rewrite sed_add_comm.
+  reflexivity.
+Qed.
+
+(** Brown 6.5/6.6 are stated in the dissertation with symbolic [a + e b]
+    notation. In the repo's fixed standard-pair sedenion coordinates, the
+    lower-octonion and adjoined-slot pieces are tracked explicitly by the
+    following two embeddings. *)
+Definition brown1972_sed_oct_embed (a : CDOct) : CDSed := mkSed a oct_zero.
+
+Definition brown1972_sed_poly_embed (a : CDOct) : CDSed := mkSed oct_zero a.
+
+Lemma brown1972_oct_add_assoc : forall x y z : CDOct,
+  oct_add x (oct_add y z) = oct_add (oct_add x y) z.
+Proof.
+  intros [xlo xhi] [ylo yhi] [zlo zhi].
+  unfold oct_add; simpl.
+  apply (f_equal2 mkOct); unfold quat_add; simpl;
+  apply (f_equal4 mkQuat); ring.
+Qed.
+
+Lemma brown1972_sed_add_assoc : forall x y z : CDSed,
+  sed_add x (sed_add y z) = sed_add (sed_add x y) z.
+Proof.
+  intros [xlo xhi] [ylo yhi] [zlo zhi].
+  unfold sed_add; simpl.
+  f_equal; apply brown1972_oct_add_assoc.
+Qed.
+
+Lemma brown1972_oct_add_rearrange : forall w x y z : CDOct,
+  oct_add (oct_add w x) (oct_add y z) =
+  oct_add (oct_add w z) (oct_add x y).
+Proof.
+  intros [wlo whi] [xlo xhi] [ylo yhi] [zlo zhi].
+  unfold oct_add; simpl.
+  apply (f_equal2 mkOct); unfold quat_add; simpl;
+  apply (f_equal4 mkQuat); ring.
+Qed.
+
+Lemma brown1972_sed_add_rearrange : forall w x y z : CDSed,
+  sed_add (sed_add w x) (sed_add y z) =
+  sed_add (sed_add w z) (sed_add x y).
+Proof.
+  intros [wlo whi] [xlo xhi] [ylo yhi] [zlo zhi].
+  unfold sed_add; simpl.
+  f_equal; apply brown1972_oct_add_rearrange.
+Qed.
+
+Lemma brown1972_sed_oct_poly_decompose : forall a b : CDOct,
+  mkSed a b = sed_add (brown1972_sed_oct_embed a) (brown1972_sed_poly_embed b).
+Proof.
+  intros a b.
+  unfold brown1972_sed_oct_embed, brown1972_sed_poly_embed, sed_add.
+  simpl.
+  f_equal.
+  - symmetry. apply oct_add_zero_right.
+  - symmetry. apply oct_add_zero_left.
+Qed.
+
+Lemma brown1972_sed_oct_embed_mul : forall a b : CDOct,
+  sed_mul (brown1972_sed_oct_embed a) (brown1972_sed_oct_embed b) =
+  brown1972_sed_oct_embed (oct_mul a b).
+Proof.
+  intros a b.
+  destruct a as [alo ahi], b as [blo bhi].
+  cbv [brown1972_sed_oct_embed].
+  brown1972_close_sed_ring.
+Qed.
+
+Theorem brown1972_theorem_6_6_i_sedenion : forall a b : CDOct,
+  sed_mul (brown1972_sed_oct_embed a) (brown1972_sed_poly_embed b) =
+  brown1972_sed_poly_embed (oct_mul b a).
+Proof.
+  intros a b.
+  destruct a as [alo ahi], b as [blo bhi].
+  cbv [brown1972_sed_oct_embed brown1972_sed_poly_embed].
+  brown1972_close_sed_ring.
+Qed.
+
+Theorem brown1972_theorem_6_6_ii_sedenion : forall a b : CDOct,
+  sed_mul (brown1972_sed_poly_embed a) (brown1972_sed_oct_embed b) =
+  brown1972_sed_poly_embed (oct_mul a (oct_conj b)).
+Proof.
+  intros a b.
+  destruct a as [alo ahi], b as [blo bhi].
+  cbv [brown1972_sed_oct_embed brown1972_sed_poly_embed].
+  brown1972_close_sed_ring.
+Qed.
+
+Theorem brown1972_theorem_6_6_iii_sedenion : forall a b : CDOct,
+  sed_mul (brown1972_sed_poly_embed a) (brown1972_sed_poly_embed b) =
+  brown1972_sed_oct_embed (oct_neg (oct_mul (oct_conj b) a)).
+Proof.
+  intros a b.
+  destruct a as [alo ahi], b as [blo bhi].
+  cbv [brown1972_sed_oct_embed brown1972_sed_poly_embed].
+  brown1972_close_sed_ring.
+Qed.
+
+Definition brown1972_ch6_67_polynomial_mul
+  (a1 a2 b1 b2 : CDOct) : CDSed :=
+  sed_add
+    (sed_add
+       (sed_mul (brown1972_sed_oct_embed a1) (brown1972_sed_oct_embed b1))
+       (sed_mul (brown1972_sed_poly_embed a2) (brown1972_sed_poly_embed b2)))
+    (sed_add
+       (sed_mul (brown1972_sed_oct_embed a1) (brown1972_sed_poly_embed b2))
+       (sed_mul (brown1972_sed_poly_embed a2) (brown1972_sed_oct_embed b1))).
+
+Lemma brown1972_ch6_polynomial_mul_eq_cd :
+  forall a1 a2 b1 b2 : CDOct,
+    brown1972_ch6_67_polynomial_mul a1 a2 b1 b2 =
+    sed_mul (mkSed a1 a2) (mkSed b1 b2).
+Proof.
+  intros a1 a2 b1 b2.
+  unfold brown1972_ch6_67_polynomial_mul.
+  rewrite brown1972_sed_oct_poly_decompose.
+  rewrite brown1972_sed_oct_poly_decompose.
+  rewrite sed_mul_add_left.
+  rewrite sed_mul_add_right.
+  rewrite sed_mul_add_right.
+  rewrite brown1972_sed_oct_embed_mul.
+  rewrite brown1972_theorem_6_6_i_sedenion.
+  rewrite brown1972_theorem_6_6_ii_sedenion.
+  rewrite brown1972_theorem_6_6_iii_sedenion.
+  rewrite <- brown1972_sed_add_assoc.
+  rewrite brown1972_sed_add_rearrange.
+  rewrite <- brown1972_sed_add_assoc.
+  reflexivity.
+Qed.
+
+Theorem brown1972_theorem_6_5_standard_octonion_sedenion :
+  forall a1 a2 b1 b2 : CDOct,
+    brown1972_ch6_67_polynomial_mul a1 a2 b1 b2 =
+    sed_mul (mkSed a1 a2) (mkSed b1 b2).
+Proof.
+  exact brown1972_ch6_polynomial_mul_eq_cd.
+Qed.
+
+Corollary brown1972_corollary_6_7_sedenion :
+  forall a1 a2 b1 b2 : CDOct,
+    brown1972_ch6_67_polynomial_mul a1 a2 b1 b2 =
+    sed_mul (mkSed a1 a2) (mkSed b1 b2).
+Proof.
+  exact brown1972_ch6_polynomial_mul_eq_cd.
+Qed.
+
+Record Brown1972ChapterVISedenionPolynomialSurface := {
+  brown1972_ch6_c64_sed :
+    forall A B : CDSed,
+      sed_assoc B (sed_mul brown1972_sed_adjoined_e A) brown1972_sed_adjoined_e =
+      sed_mul (sed_neg (sed_assoc B brown1972_sed_adjoined_e A))
+              brown1972_sed_adjoined_e;
+  brown1972_ch6_t65_sed :
+    forall a1 a2 b1 b2 : CDOct,
+      brown1972_ch6_67_polynomial_mul a1 a2 b1 b2 =
+      sed_mul (mkSed a1 a2) (mkSed b1 b2);
+  brown1972_ch6_t66_i_sed :
+    forall a b : CDOct,
+      sed_mul (brown1972_sed_oct_embed a) (brown1972_sed_poly_embed b) =
+      brown1972_sed_poly_embed (oct_mul b a);
+  brown1972_ch6_t66_ii_sed :
+    forall a b : CDOct,
+      sed_mul (brown1972_sed_poly_embed a) (brown1972_sed_oct_embed b) =
+      brown1972_sed_poly_embed (oct_mul a (oct_conj b));
+  brown1972_ch6_t66_iii_sed :
+    forall a b : CDOct,
+      sed_mul (brown1972_sed_poly_embed a) (brown1972_sed_poly_embed b) =
+      brown1972_sed_oct_embed (oct_neg (oct_mul (oct_conj b) a));
+  brown1972_ch6_c67_sed :
+    forall a1 a2 b1 b2 : CDOct,
+      brown1972_ch6_67_polynomial_mul a1 a2 b1 b2 =
+      sed_mul (mkSed a1 a2) (mkSed b1 b2)
+}.
+
+Definition brown1972_sedenion_chapter_vi_polynomial_surface :
+  Brown1972ChapterVISedenionPolynomialSurface.
+Proof.
+  refine {| brown1972_ch6_c64_sed := brown1972_corollary_6_4_sedenion;
+            brown1972_ch6_t65_sed := brown1972_theorem_6_5_standard_octonion_sedenion;
+            brown1972_ch6_t66_i_sed := brown1972_theorem_6_6_i_sedenion;
+            brown1972_ch6_t66_ii_sed := brown1972_theorem_6_6_ii_sedenion;
+            brown1972_ch6_t66_iii_sed := brown1972_theorem_6_6_iii_sedenion;
+            brown1972_ch6_c67_sed := brown1972_corollary_6_7_sedenion |}.
 Defined.
 
 Definition brown1972_sed_trace (x : CDSed) : R :=

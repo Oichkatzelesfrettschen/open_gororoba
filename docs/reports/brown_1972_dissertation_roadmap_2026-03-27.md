@@ -93,7 +93,7 @@ Practical reading of the source:
 | Chapter III | `proofs/theories/Brown1972.v` + `crates/brown_1972/src/norm_symmetry.rs` | Brown 3.1 standard-octonion trace surface, Brown 3.3 / Lemma 3.7 standard-octonion involution-quadratic surface, abstract Rocq 3.9 / 3.10 surface with standard-octonion and direct standard-sedenion witnesses, and a packaged weaker standard-octonion quadratic/conjugation surface are landed; the next abstraction step is to lift that weaker surface beyond the current octonion packaging |
 | Chapter IV | `proofs/theories/Brown1972.v` plus local associator support | source-driven standard-tower witness surface for 4.2, 4.3, and 4.4 landed |
 | Chapter V | `proofs/theories/Brown1972.v` + `crates/brown_1972/src/exponent_properties.rs` | generic one-generated/trace-zero Rocq exponent surface landed, instantiated at quaternion and octonion level |
-| Chapter VI | `proofs/theories/Brown1972.v` plus sign-table infrastructure and `crates/brown_1972/src/basis_element_properties.rs` | standard-octonion Brown 6.10 / 6.11 / 6.12 / 6.13 / 6.14 / 6.15 basis-associator surface landed, source-faithful standard-octonion Brown 6.16 / 6.17 anticommutator surface landed, plus a direct standard-sedenion adjoined-element surface for 6.1 / 6.2 / 6.3 / 6.8 and proof-faithful constructive 6.9 witnesses; Brown's printed 6.9 pointwise iff wording does not survive unchanged in the repo's literal standard-pair coordinates, so the current Rocq surface records the constructive implications and the family form Brown's p.35 proof actually uses; next source-driven tranche is the remaining Chapter VI 6.4 / 6.5 / 6.6 / 6.7 lane and any broader non-octonion lift |
+| Chapter VI | `proofs/theories/Brown1972.v` plus sign-table infrastructure and `crates/brown_1972/src/basis_element_properties.rs` | standard-octonion Brown 6.10 / 6.11 / 6.12 / 6.13 / 6.14 / 6.15 basis-associator surface landed, source-faithful standard-octonion Brown 6.16 / 6.17 anticommutator surface landed, plus a direct standard-sedenion adjoined-element / polynomial surface for 6.1 / 6.2 / 6.3 / 6.4 / 6.5 / 6.6 / 6.7 / 6.8 and proof-faithful constructive 6.9 witnesses; Brown's printed 6.9 pointwise iff wording does not survive unchanged in the repo's literal standard-pair coordinates, so the current Rocq surface records the constructive implications and the family form Brown's p.35 proof actually uses; next source-driven tranche is any broader non-octonion Chapter VI lift |
 | Chapter VII | `ZD_Criterion.v`, `C1538_MorZDSymmetry.v`, `BrownAssessorEquivalence.v`, Rust support | partially formalized, but not yet chapter-complete in Brown numbering |
 | Chapter VIII | no dedicated paper surface yet | open |
 | Appendix C | `crates/brown_1972/src/pl1_emulator.rs` | Rust bridge only |
@@ -116,8 +116,8 @@ To avoid overfitting to Chapter III, Brown should now be mined in this order:
 4. Chapter VI basis-element surface
    - standard-octonion 6.10 / 6.11 / 6.12 / 6.13 / 6.14 / 6.15 basis-associator witnesses are now landed
    - standard-octonion 6.16 / 6.17 anticommutator witnesses are now landed
-   - standard-sedenion adjoined-element 6.1 / 6.2 / 6.3 / 6.8 plus proof-faithful constructive 6.9 witnesses are now landed
-   - next fold is the remaining Brown 6.4 / 6.5 / 6.6 / 6.7 source lane
+   - standard-sedenion adjoined-element / polynomial 6.1 / 6.2 / 6.3 / 6.4 / 6.5 / 6.6 / 6.7 / 6.8 plus proof-faithful constructive 6.9 witnesses are now landed
+   - next fold is any broader non-octonion Chapter VI lift
    - then lift beyond the current octonion witness layer
 5. Chapter VII gap fill
    - continue from the already-landed zero-divisor lane to the remaining Brown-numbered theorems
@@ -141,7 +141,7 @@ The next Rocq tranche should therefore be:
 1. keep the landed Chapter IV surface as the structural anchor
 2. keep the landed generic Chapter V one-generated/trace-zero surface as a reusable exponent anchor
 3. then split the fresh follow-on work:
-   - Chapter VI follow-on: remaining Brown 6.4 / 6.5 / 6.6 / 6.7 on top of the current 6.1 / 6.2 / 6.3 / 6.8 / 6.9 / 6.10 / 6.11 / 6.12 / 6.13 / 6.14 / 6.15 / 6.16 / 6.17 landing
+   - Chapter VI follow-on: broader non-octonion lifting on top of the current 6.1 / 6.2 / 6.3 / 6.4 / 6.5 / 6.6 / 6.7 / 6.8 / 6.9 / 6.10 / 6.11 / 6.12 / 6.13 / 6.14 / 6.15 / 6.16 / 6.17 landing
    - Chapter III follow-on: broader quadratic/conjugation surfacing on top of the landed 3.1 / 3.3 / Lemma 3.7 source layer and the new weaker packaged surface
 
 ## Completed 42-step tranche
@@ -164,8 +164,8 @@ The next Rocq tranche should therefore be:
    - extend from the landed Brown 3.1 / 3.3 / Lemma 3.7 standard-octonion source surface, the weaker packaged quadratic/conjugation surface, and the octonion/sedenion 3.9 / 3.10 witnesses to the broader sourced quadratic/conjugation lane
 5. Chapter VI
    - standard-octonion 6.10 basis anticommutation, 6.11 basis alternativity, 6.12 repeated-basis associator vanishing, 6.13 basis conjugation, 6.14 sign-controlled basis reassociation, 6.15 sign-conditioned basis reassociation, and 6.16 / 6.17 anticommutator surfaces are landed
-   - direct standard-sedenion adjoined-element 6.1 / 6.2 / 6.3 / 6.8 plus proof-faithful constructive 6.9 witnesses are now landed
-   - next target is the remaining Brown 6.4 / 6.5 / 6.6 / 6.7 lane and any broader non-octonion lift beyond the current octonion witness surface and current Chapter VI adjoined-element surface
+   - direct standard-sedenion adjoined-element / polynomial 6.1 / 6.2 / 6.3 / 6.4 / 6.5 / 6.6 / 6.7 / 6.8 plus proof-faithful constructive 6.9 witnesses are now landed
+   - next target is any broader non-octonion lift beyond the current octonion witness surface and current Chapter VI adjoined-element / polynomial surface
 6. Chapter VII
    - continue from the already-landed zero-divisor surfaces to the remaining Brown-numbered theorems
 7. Chapter VIII and Appendix C
