@@ -30,13 +30,13 @@
       "notes": "Expert-curated crossings. Detection rate jumps from 26.9% (heuristic) to 89.0% (curated). This is the strongest Earth validation."
     },
     {
-      "domain": "Cluster magnetopause",
+      "domain": "Cluster bow shock",
       "mission": "Cluster-1",
-      "label_source": "|B| gradient (10 nT threshold)",
-      "label_type": "heuristic",
-      "reference": "This work (heliosphere-boundary-survey binary)",
-      "n_crossings": 127,
-      "notes": "Heuristic labels. 32.3% detection. Curated ESA CAA crossing lists available for upgrade."
+      "label_source": "OMNI Multiple Spacecraft Bow Shock Crossings Database (SPDF)",
+      "label_type": "curated",
+      "reference": "https://spdf.gsfc.nasa.gov/pub/event_lists/other-event-lists/aaa_boundary_crossings/bowshock_crossings/",
+      "n_crossings": 37,
+      "notes": "Curated OMNI bow shock crossings. Detection rate 64.9% (24/37), 73.9% FA. Bow shock is noisier than magnetopause."
     },
     {
       "domain": "Rosetta 67P cavity",
@@ -72,7 +72,7 @@
       "label_type": "curated",
       "reference": "Zenodo doi:10.5281/zenodo.13958819",
       "n_crossings": 4054,
-      "notes": "Curated crossing list. Analysis pending (first orbital phase Mar 2011)."
+      "notes": "Curated crossing list. Full 7-day analysis: 64.3% detection (9/14), 3.0 min median offset. Mercury's compact magnetosphere produces the tightest offsets."
     }
   ]
 }

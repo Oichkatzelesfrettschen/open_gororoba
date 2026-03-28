@@ -275,6 +275,69 @@ pub fn download_hapi_csv_to_file(
     Ok(bytes)
 }
 
+/// Datasets known to produce large per-day downloads (>50 MB) that should
+/// route through the file-based path with aria2c fallback.
+const LARGE_HAPI_DATASETS: &[&str] = &[
+    "MMS1_FGM_SRVY_L2",
+    "MMS2_FGM_SRVY_L2",
+    "MMS3_FGM_SRVY_L2",
+    "MMS4_FGM_SRVY_L2",
+    "MESSENGER_MAG_RTN",
+    "MVN_MAG_L2-SUNSTATE-1SEC",
+    "C1_CP_FGM_5VPS",
+    "C2_CP_FGM_5VPS",
+    "C3_CP_FGM_5VPS",
+    "C4_CP_FGM_5VPS",
+];
+
+/// Auto-routing HAPI download: uses file-based path (aria2c fallback) for
+/// known large datasets, string-based path for everything else.
+///
+/// WHY: High-cadence mission data (MMS 16 Hz, MESSENGER 1 Hz, Cluster 5 VPS)
+/// produces >100 MB/day CSV. The default reqwest 120s timeout is insufficient.
+/// The file-based path supports aria2c with resume, retry, and multi-connection.
+pub fn download_hapi_csv_auto(
+    dataset_id: &str,
+    time_min: &str,
+    time_max: &str,
+    parameters: Option<&[&str]>,
+    output: Option<&Path>,
+) -> Result<String, FetchError> {
+    let base_id = dataset_id.split('@').next().unwrap_or(dataset_id);
+    let is_large = LARGE_HAPI_DATASETS
+        .iter()
+        .any(|&prefix| base_id.starts_with(prefix));
+
+    if is_large {
+        if let Some(path) = output {
+            download_hapi_csv_to_file(dataset_id, time_min, time_max, parameters, path)?;
+            fs::read_to_string(path).map_err(FetchError::Io)
+        } else {
+            // No output path given for a large dataset -- fall back to string
+            // with extended timeout via download_to_string_with_timeout
+            let timeout = std::time::Duration::from_secs(600);
+            let mut url = format!(
+                "{HAPI_ROOT}?id={dataset_id}&time.min={time_min}&time.max={time_max}&format=csv"
+            );
+            if let Some(parameters) = parameters
+                && !parameters.is_empty()
+            {
+                url.push_str("&parameters=");
+                url.push_str(&parameters.join(","));
+            }
+            let body = download_to_string_with_timeout(&url, timeout)?;
+            if is_hapi_no_data_response(&body) {
+                return Err(FetchError::Validation(format!(
+                    "dataset {dataset_id} returned no data for {time_min}..{time_max}"
+                )));
+            }
+            synthesize_hapi_header_if_missing(dataset_id, &body, parameters)
+        }
+    } else {
+        download_hapi_csv(dataset_id, time_min, time_max, parameters)
+    }
+}
+
 /// AMDA/CDPP HAPI service root (European mirror, same protocol as CDAWeb HAPI).
 ///
 /// WHY a separate constant: AMDA uses a different origin and its CSV responses
