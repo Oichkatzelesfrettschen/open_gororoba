@@ -1508,3 +1508,65 @@ Proof.
             brown1972_ch6_ext_adjoined_conjugation :=
               brown1972_sedenion_chapter_vi_adjoined_conjugation_decomposition_surface |}.
 Defined.
+
+Record Brown1972ChapterVIReusableAdjoinedInterface
+  (Base Ext : Type)
+  (base_mul : Base -> Base -> Base)
+  (base_neg base_conj : Base -> Base)
+  (ext_add ext_mul : Ext -> Ext -> Ext)
+  (ext_assoc : Ext -> Ext -> Ext -> Ext)
+  (ext_neg ext_conj : Ext -> Ext)
+  (trace_hi : Ext -> R)
+  (base_embed poly_embed : Base -> Ext)
+  (adjoined_e : Ext)
+  (poly_mul : Base -> Base -> Base -> Base -> Ext) := {
+  brown1972_ch6_reuse_poly :
+    Brown1972ChapterVIAdjoinedPolynomialLiftSurface
+      Base Ext
+      base_mul base_neg base_conj
+      ext_add ext_mul ext_assoc ext_neg
+      base_embed poly_embed
+      adjoined_e poly_mul;
+  brown1972_ch6_reuse_conj :
+    Brown1972ChapterVIAdjoinedConjugationDecompositionSurface
+      Ext trace_hi ext_mul ext_conj ext_neg adjoined_e
+}.
+
+Definition brown1972_sedenion_chapter_vi_reusable_adjoined_interface :
+  Brown1972ChapterVIReusableAdjoinedInterface
+    CDOct CDSed
+    oct_mul oct_neg oct_conj
+    sed_add sed_mul sed_assoc sed_neg sed_conj
+    (fun x => brown1972_oct_trace (sed_hi x))
+    brown1972_sed_oct_embed brown1972_sed_poly_embed
+    brown1972_sed_adjoined_e
+    brown1972_ch6_67_polynomial_mul.
+Proof.
+  refine {| brown1972_ch6_reuse_poly :=
+              brown1972_sedenion_chapter_vi_adjoined_polynomial_lift_surface;
+            brown1972_ch6_reuse_conj :=
+              brown1972_sedenion_chapter_vi_adjoined_conjugation_decomposition_surface |}.
+Defined.
+
+Record Brown1972ChapterVIReusableAnchorSurface := {
+  brown1972_ch6_anchor_base :
+    Brown1972ChapterVIExtendedStabilizedSurface;
+  brown1972_ch6_anchor_reusable_adjoined :
+    Brown1972ChapterVIReusableAdjoinedInterface
+      CDOct CDSed
+      oct_mul oct_neg oct_conj
+      sed_add sed_mul sed_assoc sed_neg sed_conj
+      (fun x => brown1972_oct_trace (sed_hi x))
+      brown1972_sed_oct_embed brown1972_sed_poly_embed
+      brown1972_sed_adjoined_e
+      brown1972_ch6_67_polynomial_mul
+}.
+
+Definition brown1972_chapter_vi_reusable_anchor_surface :
+  Brown1972ChapterVIReusableAnchorSurface.
+Proof.
+  refine {| brown1972_ch6_anchor_base :=
+              brown1972_chapter_vi_extended_stabilized_surface;
+            brown1972_ch6_anchor_reusable_adjoined :=
+              brown1972_sedenion_chapter_vi_reusable_adjoined_interface |}.
+Defined.

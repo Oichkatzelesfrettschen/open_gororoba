@@ -90,10 +90,10 @@ Practical reading of the source:
 |--------------|----------------------|--------|
 | Chapter I | Brown lane header / roadmap only | contextual chapter, not a theorem surface |
 | Chapter II | Brown lane header / roadmap only | literature chapter, not a theorem surface |
-| Chapter III | `proofs/theories/Brown1972ChapterIII.v` + `crates/brown_1972/src/norm_symmetry.rs` | Brown 3.1 standard-octonion trace surface, direct standard-sedenion Brown 3.1 trace witnesses, Brown 3.3 / Lemma 3.7 standard-octonion involution-quadratic surface, abstract Rocq 3.9 / 3.10 surface with standard-octonion and direct standard-sedenion witnesses, a shared weaker quadratic/conjugation core instantiated for both octonions and sedenions, a generic trace/quadratic wrapper above that core with both octonion and sedenion instances, a quaternion trace/quadratic extension instance, and an extended packaged Chapter III surface are landed; the next abstraction step is to lift that lane farther beyond the current tower packaging |
+| Chapter III | `proofs/theories/Brown1972ChapterIII.v` + `crates/brown_1972/src/norm_symmetry.rs` | Brown 3.1 standard-octonion trace surface, direct standard-sedenion Brown 3.1 trace witnesses, Brown 3.3 / Lemma 3.7 standard-octonion involution-quadratic surface, abstract Rocq 3.9 / 3.10 surface with standard-octonion and direct standard-sedenion witnesses, a shared weaker quadratic/conjugation core instantiated for both octonions and sedenions, a generic trace/quadratic wrapper above that core with both octonion and sedenion instances, a quaternion trace/quadratic extension instance, an extended packaged Chapter III surface, and a reusable sourced Chapter III interface across quaternion/octonion/sedenion are landed; the next abstraction step is to lift that lane farther beyond the current tower packaging |
 | Chapter IV | `proofs/theories/Brown1972ChapterIV.v` plus local associator support | source-driven standard-tower witness surface for 4.2, 4.3, and 4.4 landed |
 | Chapter V | `proofs/theories/Brown1972ChapterV.v` + `crates/brown_1972/src/exponent_properties.rs` | generic one-generated/trace-zero Rocq exponent surface landed, instantiated at quaternion and octonion level, and now extracted chapterwise from the paper aggregator |
-| Chapter VI | `proofs/theories/Brown1972ChapterVI.v` plus sign-table infrastructure and `crates/brown_1972/src/basis_element_properties.rs` | standard-octonion Brown 6.10 / 6.11 / 6.12 / 6.13 / 6.14 / 6.15 basis-associator surface landed, source-faithful standard-octonion Brown 6.16 / 6.17 anticommutator surface landed, a direct standard-sedenion adjoined-element / polynomial surface for 6.1 / 6.2 / 6.3 / 6.4 / 6.5 / 6.6 / 6.7 / 6.8 landed, that `6.4-6.7` lane is now also packaged both as a broader adjoined/polynomial lift interface above the literal `mkSed` coordinates and as a packaged decomposition-level `lo/hi` surface, proof-faithful constructive 6.9 witnesses are landed, a packaged adjoined/conjugation decomposition surface is landed, and those Chapter VI pieces are now also bundled as an extended packaged surface; Brown's printed 6.9 pointwise iff wording does not survive unchanged in the repo's literal standard-pair coordinates, so the current Rocq surface records the constructive implications and the family form Brown's p.35 proof actually uses; next source-driven tranche is any farther non-standard-model Chapter VI lift |
+| Chapter VI | `proofs/theories/Brown1972ChapterVI.v` plus sign-table infrastructure and `crates/brown_1972/src/basis_element_properties.rs` | standard-octonion Brown 6.10 / 6.11 / 6.12 / 6.13 / 6.14 / 6.15 basis-associator surface landed, source-faithful standard-octonion Brown 6.16 / 6.17 anticommutator surface landed, a direct standard-sedenion adjoined-element / polynomial surface for 6.1 / 6.2 / 6.3 / 6.4 / 6.5 / 6.6 / 6.7 / 6.8 landed, that `6.4-6.7` lane is now also packaged both as a broader adjoined/polynomial lift interface above the literal `mkSed` coordinates and as a packaged decomposition-level `lo/hi` surface, proof-faithful constructive 6.9 witnesses are landed, a packaged adjoined/conjugation decomposition surface is landed, and those Chapter VI pieces are now also bundled as both an extended packaged surface and a reusable adjoined-interface anchor; Brown's printed 6.9 pointwise iff wording does not survive unchanged in the repo's literal standard-pair coordinates, so the current Rocq surface records the constructive implications and the family form Brown's p.35 proof actually uses; next source-driven tranche is any farther non-standard-model Chapter VI lift |
 | Chapter VII | `ZD_Criterion.v`, `C1538_MorZDSymmetry.v`, `BrownAssessorEquivalence.v`, Rust support | partially formalized, but not yet chapter-complete in Brown numbering |
 | Chapter VIII | no dedicated paper surface yet | open |
 | Appendix C | `crates/brown_1972/src/pl1_emulator.rs` | Rust bridge only |
@@ -147,8 +147,22 @@ The next Rocq tranche should therefore be:
 1. keep the landed Chapter IV surface as the structural anchor
 2. keep the landed generic Chapter V one-generated/trace-zero surface as a reusable exponent anchor
 3. then split the fresh follow-on work:
-   - Chapter VI follow-on: farther non-standard-model lifting on top of the current 6.1 / 6.2 / 6.3 / 6.4 / 6.5 / 6.6 / 6.7 / 6.8 / 6.9 / 6.10 / 6.11 / 6.12 / 6.13 / 6.14 / 6.15 / 6.16 / 6.17 landing and the new `6.4-6.7` adjoined/polynomial lift interface
-   - Chapter III follow-on: broader quadratic/conjugation surfacing on top of the landed 3.1 / 3.3 / Lemma 3.7 source layer and the new shared octonion/sedenion quadratic core
+   - Chapter VI follow-on: farther non-standard-model lifting on top of the current 6.1 / 6.2 / 6.3 / 6.4 / 6.5 / 6.6 / 6.7 / 6.8 / 6.9 / 6.10 / 6.11 / 6.12 / 6.13 / 6.14 / 6.15 / 6.16 / 6.17 landing and the new reusable adjoined-interface anchor
+   - Chapter III follow-on: broader quadratic/conjugation surfacing on top of the landed 3.1 / 3.3 / Lemma 3.7 source layer and the new reusable sourced Chapter III interface
+
+## Reusable anchor modules for the wider corpus
+
+The split Brown files are no longer only Brown-local cleanup; they are now
+intended anchor modules for later paper mining:
+
+- `proofs/theories/Brown1972ChapterIII.v` is the current reusable Rocq anchor
+  for trace/quadratic/conjugation statements that recur across the broader
+  Cayley-Dickson literature.
+- `proofs/theories/Brown1972ChapterVI.v` is the current reusable Rocq anchor
+  for adjoined-element, decomposition, and trace-conditioned reassociation
+  statements that later zero-divisor papers repeatedly touch.
+- `proofs/theories/Brown1972ChapterV.v` is the current reusable Rocq anchor
+  for one-generated exponent arguments and their quaternion/octonion witnesses.
 
 ## Completed 42-step tranche
 
