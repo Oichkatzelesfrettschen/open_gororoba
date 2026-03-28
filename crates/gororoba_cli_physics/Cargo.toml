@@ -913,6 +913,10 @@ name = "ism-rotation-measure-cd"
 path = "src/bin/ism_rotation_measure_cd.rs"
 
 [[bin]]
+name = "dynamo-cd"
+path = "src/bin/dynamo_cd.rs"
+
+[[bin]]
 name = "mast-fetch"
 path = "src/bin/mast_fetch.rs"
 
