@@ -14,7 +14,7 @@ pub mod predicates;
 pub mod sedenion;
 mod signature;
 mod signs;
-mod simd;
+pub mod simd;
 mod symmetry;
 pub mod trigintaduonion;
 mod zero_divisors;
