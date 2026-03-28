@@ -10873,3 +10873,48 @@ where_stated = "data/output/heliosphere/ablations/"
 last_verified = "2026-03-27"
 formal_proof = ""
 status_note = "Supersedes C-1581. Seven environments spanning 0.13 to 124 AU with 5 physically distinct boundary types (heliopause, dipolar magnetopause, induced magnetosphere, cometary cavity, switchback). The pattern: induced boundaries > dipolar boundaries in associator detection efficiency."
+
+[[claim]]
+id = "C-1586"
+status = "Verified"
+statement = "Against expert-curated magnetopause crossings (THEMIS Magnetopause Crossing Database V2, Staples et al. 2020, Zenodo doi:10.5281/zenodo.10655312), the 32D CD associator achieves 89.0% detection rate (105/118 crossings matched within 20 min, median offset 6.0 min) with 16.7% false alarm rate. The same THEMIS-A interval scored only 26.9% against |B|-gradient pseudo-labels. The |B|-gradient heuristic contaminates the reference with false crossings; the associator was already detecting real boundaries."
+where_stated = "data/output/heliosphere/ablations/boundary_survey_themis_a_curated.json"
+last_verified = "2026-03-27"
+formal_proof = ""
+status_note = "The strongest single Earth validation. Curated labels from published database, not self-generated. THEMIS-A Oct 27-Nov 2, 2008."
+
+[[claim]]
+id = "C-1587"
+status = "Verified"
+statement = "PSP switchback/quiet associator ratio is stable across 4 encounters at different perihelia: E1 (0.17 AU, 0.418), E4 (0.13 AU, 0.598), E6 (0.09 AU, 0.566), E10 (0.07 AU, 0.699). Range 0.42-0.70, mean ~0.57. Possible radial trend: closer perihelia show weaker contrast as background turbulence strengthens."
+where_stated = "data/output/heliosphere/ablations/psp_switchback_omega_e1.json, psp_switchback_omega_e6.json, psp_switchback_omega_e10.json"
+last_verified = "2026-03-27"
+formal_proof = ""
+status_note = "Four encounters spanning 0.07-0.17 AU. The stability confirms the switchback/quiet discrimination is a robust property, not a sample artifact."
+
+[[claim]]
+id = "C-1588"
+status = "Verified"
+statement = "Rosetta 67P normalization ablation: direction-only embedding (unit vectors Bx/|B|, By/|B|, Bz/|B|, zero magnitude channel) preserves 1.9x cavity/outside contrast (cavity=12.8, outside=6.7) compared to 5.3x under current normalization. ~40% of the cavity contrast is genuine directional phase geometry (field direction disorder in near-zero |B| environment); ~60% is normalization amplification. Raw unnormalized embedding reverses the contrast entirely (outside 6.9x higher)."
+where_stated = "data/output/heliosphere/ablations/normalization_appendix.json, rosetta_draping_norm_direction.json"
+last_verified = "2026-03-27"
+formal_proof = ""
+status_note = "Addresses peer review concern about normalization sensitivity. The direction-only ablation is the definitive test: genuine phase geometry survives removal of all magnitude information."
+
+[[claim]]
+id = "C-1589"
+status = "Verified"
+statement = "The CD associator exhibits three distinct response phenotypes: (1) ordered-region entry drop (heliopause, magnetopause: associator spikes pre-boundary, drops on entry to ordered region), (2) coherent-structure suppression (PSP switchbacks: lower associator in coherent folds than quiet turbulence), (3) weak-field cavity amplification (Rosetta 67P: elevated associator where |B| approaches zero, mixing genuine phase disorder with normalization amplification). This taxonomy is the central methodological finding."
+where_stated = "docs/reports/POST_RC1_CROSS_DOMAIN_EVIDENCE_NOTE.md"
+last_verified = "2026-03-27"
+formal_proof = ""
+status_note = "Supersedes C-1585. The regime taxonomy is the paper's core novelty. The observable is sensitive to phase geometry under different field-regime constraints, not to one single physical quantity."
+
+[[claim]]
+id = "C-1590"
+status = "Verified"
+statement = "spectral_core::surrogates now provides a complete toolbox for null-stratified spectral analysis: phase_randomize (univariate), phase_randomize_mv_shared (multivariate, cross-coherence preserving), phase_randomize_mv_independent (strongest MV null), iaaft_surrogate (amplitude+spectrum preserving), block_shuffle, circular_bootstrap, circular_bootstrap_ci, detect_change_point (Bayesian penalized Gaussian), and empirical_p_value. All are pure Rust with no external dependencies beyond rustfft and rand."
+where_stated = "crates/spectral_core/src/surrogates.rs"
+last_verified = "2026-03-27"
+formal_proof = ""
+status_note = "Infrastructure claim. The spectral/surrogate crate is the computing contribution of the methods paper."
