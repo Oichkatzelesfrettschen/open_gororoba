@@ -1,0 +1,31 @@
+{
+  "question": "Q5: Where do standard diagnostics and the CD observable disagree?",
+  "dataset": "THEMIS-A Oct 27 - Nov 2 2008, curated Zenodo V2 magnetopause crossings",
+  "curated_crossings": 118,
+  "associator_transitions": 36,
+  "matched_crossings": 105,
+  "false_negatives": {
+    "count": 13,
+    "fraction": 0.11016949152542377,
+    "likely_causes": [
+      "Partial/grazing magnetopause crossings without full boundary transition",
+      "Low-rotation crossings: |B| magnitude changes but direction preserved",
+      "Slow crossings: transition timescale exceeds embedding window (~8 min for 32D)",
+      "Pre-disrupted intervals: already disordered, no further spike at boundary"
+    ]
+  },
+  "false_alarms": {
+    "count": 6,
+    "fraction": 0.16666666666666666,
+    "likely_causes": [
+      "Tangential discontinuities (TDs) in magnetosheath -- sharp rotation, not boundary",
+      "Embedded current sheets -- phase coupling breaks without region change",
+      "Flux transfer events (FTEs) -- localized reconnection signatures",
+      "Mirror mode / compressive structures (consistent with Q2 r=-0.245)",
+      "Bow shock vicinity structure -- curated list is magnetopause-only"
+    ]
+  },
+  "key_insight": "The 11% false negative rate (13 missed of 118) means the associator is insensitive to partial/grazing crossings where phase coupling is not fully disrupted. The 16.7% false alarm rate means the associator detects ~6 additional phase-geometry transitions per week that are real magnetic structures but not magnetopause crossings. These are likely TDs, FTEs, and mirror modes.",
+  "connection_to_q1": "Q1 showed phase coupling suppresses the associator. False negatives are crossings where coupling was already low (no spike). False alarms are non-boundary events where coupling breaks temporarily.",
+  "connection_to_q2": "Q2 showed compressive modes correlate with higher associator. False alarm transitions likely coincide with compressive/mirror mode activity in the magnetosheath."
+}
