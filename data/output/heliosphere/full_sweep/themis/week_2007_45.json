@@ -13,5 +13,11 @@
   "pvi_detection_rate": 0.3333333333333333,
   "pvi_false_alarm_rate": 0.375,
   "bmag_detection_rate": 0.3076923076923077,
-  "bmag_false_alarm_rate": 0.8260869565217391
+  "bmag_false_alarm_rate": 0.8260869565217391,
+  "shear_detection_rate": 0.3333333333333333,
+  "shear_false_alarm_rate": 0.38461538461538464,
+  "wavelet_detection_rate": 0.28205128205128205,
+  "wavelet_false_alarm_rate": 0.7272727272727273,
+  "entropy_detection_rate": 0.2564102564102564,
+  "entropy_false_alarm_rate": 0.5
 }

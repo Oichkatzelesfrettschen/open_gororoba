@@ -1,14 +1,14 @@
 {
-  "total_weeks": 127,
-  "total_curated_crossings": 4386,
-  "total_cd_transitions": 3510,
-  "total_cd_extra": 2466,
-  "aggregate_cd_detection": 0.33082535339717284,
-  "aggregate_cd_false_alarm": 0.5866096866096866,
-  "aggregate_pvi_detection": 0.33059735522115824,
-  "aggregate_pvi_false_alarm": 0.3444846292947559,
-  "aggregate_bmag_detection": 0.29844961240310075,
-  "aggregate_bmag_false_alarm": 0.8099869356945856,
+  "total_weeks": 128,
+  "total_curated_crossings": 4498,
+  "total_cd_transitions": 3520,
+  "total_cd_extra": 2480,
+  "aggregate_cd_detection": 0.34815473543797243,
+  "aggregate_cd_false_alarm": 0.5551136363636363,
+  "aggregate_pvi_detection": 0.34526456202756783,
+  "aggregate_pvi_false_alarm": 0.3337623337623338,
+  "aggregate_bmag_detection": 0.31458425967096487,
+  "aggregate_bmag_false_alarm": 0.8074305933587371,
   "weeks": [
     {
       "year": 2007,
@@ -25,7 +25,13 @@
       "pvi_detection_rate": 0.3333333333333333,
       "pvi_false_alarm_rate": 0.8823529411764706,
       "bmag_detection_rate": 0.3333333333333333,
-      "bmag_false_alarm_rate": 0.9647058823529412
+      "bmag_false_alarm_rate": 0.9647058823529412,
+      "shear_detection_rate": 0.3333333333333333,
+      "shear_false_alarm_rate": 0.875,
+      "wavelet_detection_rate": 0.6666666666666666,
+      "wavelet_false_alarm_rate": 0.9743589743589743,
+      "entropy_detection_rate": 1.0,
+      "entropy_false_alarm_rate": 0.85
     },
     {
       "year": 2007,
@@ -42,7 +48,13 @@
       "pvi_detection_rate": 1.0,
       "pvi_false_alarm_rate": 0.8333333333333334,
       "bmag_detection_rate": 0.8,
-      "bmag_false_alarm_rate": 0.90625
+      "bmag_false_alarm_rate": 0.90625,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 1.0,
+      "wavelet_detection_rate": 0.4,
+      "wavelet_false_alarm_rate": 0.95,
+      "entropy_detection_rate": 0.4,
+      "entropy_false_alarm_rate": 0.8666666666666667
     },
     {
       "year": 2007,
@@ -59,7 +71,13 @@
       "pvi_detection_rate": 0.7857142857142857,
       "pvi_false_alarm_rate": 0.8484848484848485,
       "bmag_detection_rate": 0.7142857142857143,
-      "bmag_false_alarm_rate": 0.9473684210526315
+      "bmag_false_alarm_rate": 0.9473684210526315,
+      "shear_detection_rate": 0.9642857142857143,
+      "shear_false_alarm_rate": 0.8468468468468469,
+      "wavelet_detection_rate": 0.5357142857142857,
+      "wavelet_false_alarm_rate": 0.9183673469387755,
+      "entropy_detection_rate": 0.8214285714285714,
+      "entropy_false_alarm_rate": 0.8431372549019608
     },
     {
       "year": 2007,
@@ -76,7 +94,13 @@
       "pvi_detection_rate": 0.7575757575757576,
       "pvi_false_alarm_rate": 0.725,
       "bmag_detection_rate": 0.6363636363636364,
-      "bmag_false_alarm_rate": 0.864406779661017
+      "bmag_false_alarm_rate": 0.864406779661017,
+      "shear_detection_rate": 0.6666666666666666,
+      "shear_false_alarm_rate": 0.8592592592592593,
+      "wavelet_detection_rate": 0.3939393939393939,
+      "wavelet_false_alarm_rate": 0.935064935064935,
+      "entropy_detection_rate": 0.6666666666666666,
+      "entropy_false_alarm_rate": 0.8392857142857143
     },
     {
       "year": 2007,
@@ -93,7 +117,13 @@
       "pvi_detection_rate": 0.25,
       "pvi_false_alarm_rate": 0.5217391304347826,
       "bmag_detection_rate": 0.2717391304347826,
-      "bmag_false_alarm_rate": 0.8333333333333334
+      "bmag_false_alarm_rate": 0.8333333333333334,
+      "shear_detection_rate": 0.32608695652173914,
+      "shear_false_alarm_rate": 0.6881720430107527,
+      "wavelet_detection_rate": 0.20652173913043478,
+      "wavelet_false_alarm_rate": 0.8904109589041096,
+      "entropy_detection_rate": 0.29347826086956524,
+      "entropy_false_alarm_rate": 0.7105263157894737
     },
     {
       "year": 2007,
@@ -110,7 +140,13 @@
       "pvi_detection_rate": 0.022988505747126436,
       "pvi_false_alarm_rate": 0.75,
       "bmag_detection_rate": 0.022988505747126436,
-      "bmag_false_alarm_rate": 0.8666666666666667
+      "bmag_false_alarm_rate": 0.8666666666666667,
+      "shear_detection_rate": 0.022988505747126436,
+      "shear_false_alarm_rate": 0.8,
+      "wavelet_detection_rate": 0.0,
+      "wavelet_false_alarm_rate": 1.0,
+      "entropy_detection_rate": 0.0,
+      "entropy_false_alarm_rate": 1.0
     },
     {
       "year": 2007,
@@ -127,7 +163,13 @@
       "pvi_detection_rate": 0.05263157894736842,
       "pvi_false_alarm_rate": 0.8,
       "bmag_detection_rate": 0.05263157894736842,
-      "bmag_false_alarm_rate": 0.6666666666666666
+      "bmag_false_alarm_rate": 0.6666666666666666,
+      "shear_detection_rate": 0.05263157894736842,
+      "shear_false_alarm_rate": 0.9333333333333333,
+      "wavelet_detection_rate": 0.0,
+      "wavelet_false_alarm_rate": 1.0,
+      "entropy_detection_rate": 0.0,
+      "entropy_false_alarm_rate": 1.0
     },
     {
       "year": 2007,
@@ -144,7 +186,13 @@
       "pvi_detection_rate": 0.0,
       "pvi_false_alarm_rate": 1.0,
       "bmag_detection_rate": 0.0,
-      "bmag_false_alarm_rate": 1.0
+      "bmag_false_alarm_rate": 1.0,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 1.0,
+      "wavelet_detection_rate": 0.0,
+      "wavelet_false_alarm_rate": 1.0,
+      "entropy_detection_rate": 0.0,
+      "entropy_false_alarm_rate": 1.0
     },
     {
       "year": 2007,
@@ -161,7 +209,13 @@
       "pvi_detection_rate": 0.0,
       "pvi_false_alarm_rate": 1.0,
       "bmag_detection_rate": 0.0,
-      "bmag_false_alarm_rate": 1.0
+      "bmag_false_alarm_rate": 1.0,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 1.0,
+      "wavelet_detection_rate": 0.0,
+      "wavelet_false_alarm_rate": 1.0,
+      "entropy_detection_rate": 0.0,
+      "entropy_false_alarm_rate": 1.0
     },
     {
       "year": 2007,
@@ -178,7 +232,13 @@
       "pvi_detection_rate": 0.15,
       "pvi_false_alarm_rate": 0.6666666666666666,
       "bmag_detection_rate": 0.15,
-      "bmag_false_alarm_rate": 0.9333333333333333
+      "bmag_false_alarm_rate": 0.9333333333333333,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 1.0,
+      "wavelet_detection_rate": 0.15,
+      "wavelet_false_alarm_rate": 0.9285714285714286,
+      "entropy_detection_rate": 0.1,
+      "entropy_false_alarm_rate": 0.8888888888888888
     },
     {
       "year": 2007,
@@ -195,7 +255,13 @@
       "pvi_detection_rate": 0.0,
       "pvi_false_alarm_rate": 1.0,
       "bmag_detection_rate": 0.0,
-      "bmag_false_alarm_rate": 1.0
+      "bmag_false_alarm_rate": 1.0,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 1.0,
+      "wavelet_detection_rate": 0.0,
+      "wavelet_false_alarm_rate": 1.0,
+      "entropy_detection_rate": 0.0,
+      "entropy_false_alarm_rate": 1.0
     },
     {
       "year": 2007,
@@ -212,7 +278,13 @@
       "pvi_detection_rate": 0.038461538461538464,
       "pvi_false_alarm_rate": 0.5,
       "bmag_detection_rate": 0.038461538461538464,
-      "bmag_false_alarm_rate": 0.8571428571428571
+      "bmag_false_alarm_rate": 0.8571428571428571,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 1.0,
+      "wavelet_detection_rate": 0.038461538461538464,
+      "wavelet_false_alarm_rate": 0.9333333333333333,
+      "entropy_detection_rate": 0.0,
+      "entropy_false_alarm_rate": 1.0
     },
     {
       "year": 2007,
@@ -229,7 +301,13 @@
       "pvi_detection_rate": 0.0,
       "pvi_false_alarm_rate": 1.0,
       "bmag_detection_rate": 0.0,
-      "bmag_false_alarm_rate": 1.0
+      "bmag_false_alarm_rate": 1.0,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 1.0,
+      "wavelet_detection_rate": 0.0,
+      "wavelet_false_alarm_rate": 1.0,
+      "entropy_detection_rate": 0.0,
+      "entropy_false_alarm_rate": 1.0
     },
     {
       "year": 2007,
@@ -246,7 +324,13 @@
       "pvi_detection_rate": 0.19444444444444445,
       "pvi_false_alarm_rate": 0.0,
       "bmag_detection_rate": 0.19444444444444445,
-      "bmag_false_alarm_rate": 0.6666666666666666
+      "bmag_false_alarm_rate": 0.6666666666666666,
+      "shear_detection_rate": 0.25,
+      "shear_false_alarm_rate": 0.7368421052631579,
+      "wavelet_detection_rate": 0.16666666666666666,
+      "wavelet_false_alarm_rate": 0.8461538461538461,
+      "entropy_detection_rate": 0.2777777777777778,
+      "entropy_false_alarm_rate": 0.7692307692307693
     },
     {
       "year": 2007,
@@ -263,7 +347,13 @@
       "pvi_detection_rate": 0.0,
       "pvi_false_alarm_rate": 1.0,
       "bmag_detection_rate": 0.0,
-      "bmag_false_alarm_rate": 1.0
+      "bmag_false_alarm_rate": 1.0,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 1.0,
+      "wavelet_detection_rate": 0.0,
+      "wavelet_false_alarm_rate": 1.0,
+      "entropy_detection_rate": 0.0,
+      "entropy_false_alarm_rate": 1.0
     },
     {
       "year": 2007,
@@ -280,7 +370,13 @@
       "pvi_detection_rate": 0.0,
       "pvi_false_alarm_rate": 1.0,
       "bmag_detection_rate": 0.0,
-      "bmag_false_alarm_rate": 1.0
+      "bmag_false_alarm_rate": 1.0,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 1.0,
+      "wavelet_detection_rate": 0.0,
+      "wavelet_false_alarm_rate": 1.0,
+      "entropy_detection_rate": 0.0,
+      "entropy_false_alarm_rate": 1.0
     },
     {
       "year": 2007,
@@ -297,7 +393,13 @@
       "pvi_detection_rate": 0.3333333333333333,
       "pvi_false_alarm_rate": 0.375,
       "bmag_detection_rate": 0.3076923076923077,
-      "bmag_false_alarm_rate": 0.8260869565217391
+      "bmag_false_alarm_rate": 0.8260869565217391,
+      "shear_detection_rate": 0.3333333333333333,
+      "shear_false_alarm_rate": 0.38461538461538464,
+      "wavelet_detection_rate": 0.28205128205128205,
+      "wavelet_false_alarm_rate": 0.7272727272727273,
+      "entropy_detection_rate": 0.2564102564102564,
+      "entropy_false_alarm_rate": 0.5
     },
     {
       "year": 2007,
@@ -314,7 +416,13 @@
       "pvi_detection_rate": 0.0,
       "pvi_false_alarm_rate": 1.0,
       "bmag_detection_rate": 0.0,
-      "bmag_false_alarm_rate": 1.0
+      "bmag_false_alarm_rate": 1.0,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 1.0,
+      "wavelet_detection_rate": 0.0,
+      "wavelet_false_alarm_rate": 1.0,
+      "entropy_detection_rate": 0.0,
+      "entropy_false_alarm_rate": 1.0
     },
     {
       "year": 2008,
@@ -331,7 +439,13 @@
       "pvi_detection_rate": 1.0,
       "pvi_false_alarm_rate": 0.5714285714285714,
       "bmag_detection_rate": 1.0,
-      "bmag_false_alarm_rate": 0.8921568627450981
+      "bmag_false_alarm_rate": 0.8921568627450981,
+      "shear_detection_rate": 0.8666666666666667,
+      "shear_false_alarm_rate": 0.4444444444444444,
+      "wavelet_detection_rate": 0.8,
+      "wavelet_false_alarm_rate": 0.9558823529411765,
+      "entropy_detection_rate": 0.7333333333333333,
+      "entropy_false_alarm_rate": 0.25
     },
     {
       "year": 2008,
@@ -348,7 +462,13 @@
       "pvi_detection_rate": 0.5,
       "pvi_false_alarm_rate": 0.8888888888888888,
       "bmag_detection_rate": 0.0,
-      "bmag_false_alarm_rate": 1.0
+      "bmag_false_alarm_rate": 1.0,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 1.0,
+      "wavelet_detection_rate": 0.5,
+      "wavelet_false_alarm_rate": 0.9841269841269841,
+      "entropy_detection_rate": 0.0,
+      "entropy_false_alarm_rate": 0.0
     },
     {
       "year": 2008,
@@ -365,7 +485,13 @@
       "pvi_detection_rate": 1.0,
       "pvi_false_alarm_rate": 0.6666666666666666,
       "bmag_detection_rate": 0.8333333333333334,
-      "bmag_false_alarm_rate": 0.9651162790697675
+      "bmag_false_alarm_rate": 0.9651162790697675,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 1.0,
+      "wavelet_detection_rate": 0.5833333333333334,
+      "wavelet_false_alarm_rate": 0.972972972972973,
+      "entropy_detection_rate": 0.4166666666666667,
+      "entropy_false_alarm_rate": 0.8
     },
     {
       "year": 2008,
@@ -382,7 +508,13 @@
       "pvi_detection_rate": 1.0,
       "pvi_false_alarm_rate": 0.8,
       "bmag_detection_rate": 0.0,
-      "bmag_false_alarm_rate": 1.0
+      "bmag_false_alarm_rate": 1.0,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 1.0,
+      "wavelet_detection_rate": 1.0,
+      "wavelet_false_alarm_rate": 0.9871794871794872,
+      "entropy_detection_rate": 1.0,
+      "entropy_false_alarm_rate": 0.0
     },
     {
       "year": 2008,
@@ -399,7 +531,13 @@
       "pvi_detection_rate": 1.0,
       "pvi_false_alarm_rate": 0.7441860465116279,
       "bmag_detection_rate": 1.0,
-      "bmag_false_alarm_rate": 0.9065420560747663
+      "bmag_false_alarm_rate": 0.9065420560747663,
+      "shear_detection_rate": 0.8235294117647058,
+      "shear_false_alarm_rate": 0.8064516129032258,
+      "wavelet_detection_rate": 0.5882352941176471,
+      "wavelet_false_alarm_rate": 0.9594594594594594,
+      "entropy_detection_rate": 0.7647058823529411,
+      "entropy_false_alarm_rate": 0.6428571428571429
     },
     {
       "year": 2008,
@@ -416,7 +554,13 @@
       "pvi_detection_rate": 1.0,
       "pvi_false_alarm_rate": 0.5714285714285714,
       "bmag_detection_rate": 0.9090909090909091,
-      "bmag_false_alarm_rate": 0.8829787234042553
+      "bmag_false_alarm_rate": 0.8829787234042553,
+      "shear_detection_rate": 0.3181818181818182,
+      "shear_false_alarm_rate": 0.4,
+      "wavelet_detection_rate": 0.45454545454545453,
+      "wavelet_false_alarm_rate": 0.9420289855072463,
+      "entropy_detection_rate": 0.5,
+      "entropy_false_alarm_rate": 0.2222222222222222
     },
     {
       "year": 2008,
@@ -433,7 +577,13 @@
       "pvi_detection_rate": 1.0,
       "pvi_false_alarm_rate": 0.9347826086956522,
       "bmag_detection_rate": 1.0,
-      "bmag_false_alarm_rate": 0.957983193277311
+      "bmag_false_alarm_rate": 0.957983193277311,
+      "shear_detection_rate": 0.8333333333333334,
+      "shear_false_alarm_rate": 0.975609756097561,
+      "wavelet_detection_rate": 0.0,
+      "wavelet_false_alarm_rate": 1.0,
+      "entropy_detection_rate": 0.0,
+      "entropy_false_alarm_rate": 1.0
     },
     {
       "year": 2008,
@@ -450,7 +600,13 @@
       "pvi_detection_rate": 0.6774193548387096,
       "pvi_false_alarm_rate": 0.5675675675675675,
       "bmag_detection_rate": 0.6451612903225806,
-      "bmag_false_alarm_rate": 0.8207547169811321
+      "bmag_false_alarm_rate": 0.8207547169811321,
+      "shear_detection_rate": 0.5161290322580645,
+      "shear_false_alarm_rate": 0.4230769230769231,
+      "wavelet_detection_rate": 0.5161290322580645,
+      "wavelet_false_alarm_rate": 0.9318181818181818,
+      "entropy_detection_rate": 0.4838709677419355,
+      "entropy_false_alarm_rate": 0.3333333333333333
     },
     {
       "year": 2008,
@@ -467,7 +623,13 @@
       "pvi_detection_rate": 1.0,
       "pvi_false_alarm_rate": 0.9696969696969697,
       "bmag_detection_rate": 0.0,
-      "bmag_false_alarm_rate": 1.0
+      "bmag_false_alarm_rate": 1.0,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 1.0,
+      "wavelet_detection_rate": 1.0,
+      "wavelet_false_alarm_rate": 0.9876543209876543,
+      "entropy_detection_rate": 0.0,
+      "entropy_false_alarm_rate": 1.0
     },
     {
       "year": 2008,
@@ -484,7 +646,13 @@
       "pvi_detection_rate": 0.9523809523809523,
       "pvi_false_alarm_rate": 0.44,
       "bmag_detection_rate": 0.9523809523809523,
-      "bmag_false_alarm_rate": 0.8076923076923077
+      "bmag_false_alarm_rate": 0.8076923076923077,
+      "shear_detection_rate": 0.5714285714285714,
+      "shear_false_alarm_rate": 0.5833333333333334,
+      "wavelet_detection_rate": 0.7142857142857143,
+      "wavelet_false_alarm_rate": 0.9,
+      "entropy_detection_rate": 0.6190476190476191,
+      "entropy_false_alarm_rate": 0.6153846153846154
     },
     {
       "year": 2008,
@@ -501,7 +669,13 @@
       "pvi_detection_rate": 0.9841269841269841,
       "pvi_false_alarm_rate": 0.5614035087719298,
       "bmag_detection_rate": 0.9841269841269841,
-      "bmag_false_alarm_rate": 0.8012820512820513
+      "bmag_false_alarm_rate": 0.8012820512820513,
+      "shear_detection_rate": 0.6349206349206349,
+      "shear_false_alarm_rate": 0.6,
+      "wavelet_detection_rate": 0.42857142857142855,
+      "wavelet_false_alarm_rate": 0.9175257731958762,
+      "entropy_detection_rate": 0.8412698412698413,
+      "entropy_false_alarm_rate": 0.6176470588235294
     },
     {
       "year": 2008,
@@ -518,7 +692,13 @@
       "pvi_detection_rate": 0.8571428571428571,
       "pvi_false_alarm_rate": 0.8780487804878049,
       "bmag_detection_rate": 0.8571428571428571,
-      "bmag_false_alarm_rate": 0.940677966101695
+      "bmag_false_alarm_rate": 0.940677966101695,
+      "shear_detection_rate": 0.7142857142857143,
+      "shear_false_alarm_rate": 0.782608695652174,
+      "wavelet_detection_rate": 1.0,
+      "wavelet_false_alarm_rate": 0.9444444444444444,
+      "entropy_detection_rate": 0.5714285714285714,
+      "entropy_false_alarm_rate": 0.9230769230769231
     },
     {
       "year": 2008,
@@ -535,7 +715,13 @@
       "pvi_detection_rate": 1.0,
       "pvi_false_alarm_rate": 0.7346938775510204,
       "bmag_detection_rate": 1.0,
-      "bmag_false_alarm_rate": 0.8583333333333333
+      "bmag_false_alarm_rate": 0.8583333333333333,
+      "shear_detection_rate": 0.75,
+      "shear_false_alarm_rate": 0.7547169811320755,
+      "wavelet_detection_rate": 0.625,
+      "wavelet_false_alarm_rate": 0.926829268292683,
+      "entropy_detection_rate": 0.625,
+      "entropy_false_alarm_rate": 0.782608695652174
     },
     {
       "year": 2008,
@@ -552,7 +738,13 @@
       "pvi_detection_rate": 0.6060606060606061,
       "pvi_false_alarm_rate": 0.7608695652173914,
       "bmag_detection_rate": 0.696969696969697,
-      "bmag_false_alarm_rate": 0.8660714285714286
+      "bmag_false_alarm_rate": 0.8660714285714286,
+      "shear_detection_rate": 0.48484848484848486,
+      "shear_false_alarm_rate": 0.8055555555555556,
+      "wavelet_detection_rate": 0.6666666666666666,
+      "wavelet_false_alarm_rate": 0.9113924050632911,
+      "entropy_detection_rate": 0.3939393939393939,
+      "entropy_false_alarm_rate": 0.8275862068965517
     },
     {
       "year": 2008,
@@ -569,7 +761,13 @@
       "pvi_detection_rate": 0.8095238095238095,
       "pvi_false_alarm_rate": 0.71875,
       "bmag_detection_rate": 0.8571428571428571,
-      "bmag_false_alarm_rate": 0.8620689655172413
+      "bmag_false_alarm_rate": 0.8620689655172413,
+      "shear_detection_rate": 0.7142857142857143,
+      "shear_false_alarm_rate": 0.7407407407407407,
+      "wavelet_detection_rate": 0.6666666666666666,
+      "wavelet_false_alarm_rate": 0.9466666666666667,
+      "entropy_detection_rate": 0.6666666666666666,
+      "entropy_false_alarm_rate": 0.75
     },
     {
       "year": 2008,
@@ -586,7 +784,13 @@
       "pvi_detection_rate": 0.75,
       "pvi_false_alarm_rate": 0.851063829787234,
       "bmag_detection_rate": 0.625,
-      "bmag_false_alarm_rate": 0.946236559139785
+      "bmag_false_alarm_rate": 0.946236559139785,
+      "shear_detection_rate": 0.5,
+      "shear_false_alarm_rate": 0.7878787878787878,
+      "wavelet_detection_rate": 0.5,
+      "wavelet_false_alarm_rate": 0.963855421686747,
+      "entropy_detection_rate": 0.125,
+      "entropy_false_alarm_rate": 0.9230769230769231
     },
     {
       "year": 2008,
@@ -603,7 +807,13 @@
       "pvi_detection_rate": 1.0,
       "pvi_false_alarm_rate": 0.3953488372093023,
       "bmag_detection_rate": 0.6086956521739131,
-      "bmag_false_alarm_rate": 0.7924528301886793
+      "bmag_false_alarm_rate": 0.7924528301886793,
+      "shear_detection_rate": 0.5,
+      "shear_false_alarm_rate": 0.5476190476190477,
+      "wavelet_detection_rate": 0.5652173913043478,
+      "wavelet_false_alarm_rate": 0.8571428571428571,
+      "entropy_detection_rate": 0.4782608695652174,
+      "entropy_false_alarm_rate": 0.5217391304347826
     },
     {
       "year": 2008,
@@ -620,7 +830,13 @@
       "pvi_detection_rate": 0.8983050847457628,
       "pvi_false_alarm_rate": 0.3111111111111111,
       "bmag_detection_rate": 0.7033898305084746,
-      "bmag_false_alarm_rate": 0.7983193277310925
+      "bmag_false_alarm_rate": 0.7983193277310925,
+      "shear_detection_rate": 0.5254237288135594,
+      "shear_false_alarm_rate": 0.4230769230769231,
+      "wavelet_detection_rate": 0.4915254237288136,
+      "wavelet_false_alarm_rate": 0.8539325842696629,
+      "entropy_detection_rate": 0.7203389830508474,
+      "entropy_false_alarm_rate": 0.41935483870967744
     },
     {
       "year": 2008,
@@ -637,7 +853,13 @@
       "pvi_detection_rate": 0.6842105263157895,
       "pvi_false_alarm_rate": 0.7941176470588235,
       "bmag_detection_rate": 0.8421052631578947,
-      "bmag_false_alarm_rate": 0.9158878504672897
+      "bmag_false_alarm_rate": 0.9158878504672897,
+      "shear_detection_rate": 0.21052631578947367,
+      "shear_false_alarm_rate": 0.9142857142857143,
+      "wavelet_detection_rate": 0.5263157894736842,
+      "wavelet_false_alarm_rate": 0.9333333333333333,
+      "entropy_detection_rate": 0.5263157894736842,
+      "entropy_false_alarm_rate": 0.8125
     },
     {
       "year": 2008,
@@ -654,7 +876,13 @@
       "pvi_detection_rate": 1.0,
       "pvi_false_alarm_rate": 0.6428571428571429,
       "bmag_detection_rate": 0.3333333333333333,
-      "bmag_false_alarm_rate": 0.9642857142857143
+      "bmag_false_alarm_rate": 0.9642857142857143,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 1.0,
+      "wavelet_detection_rate": 0.75,
+      "wavelet_false_alarm_rate": 0.9651162790697675,
+      "entropy_detection_rate": 1.0,
+      "entropy_false_alarm_rate": 0.7692307692307693
     },
     {
       "year": 2008,
@@ -671,7 +899,13 @@
       "pvi_detection_rate": 1.0,
       "pvi_false_alarm_rate": 0.875,
       "bmag_detection_rate": 0.0,
-      "bmag_false_alarm_rate": 1.0
+      "bmag_false_alarm_rate": 1.0,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 1.0,
+      "wavelet_detection_rate": 1.0,
+      "wavelet_false_alarm_rate": 0.9871794871794872,
+      "entropy_detection_rate": 0.0,
+      "entropy_false_alarm_rate": 1.0
     },
     {
       "year": 2008,
@@ -688,7 +922,13 @@
       "pvi_detection_rate": 0.9,
       "pvi_false_alarm_rate": 0.6129032258064516,
       "bmag_detection_rate": 0.5,
-      "bmag_false_alarm_rate": 0.94
+      "bmag_false_alarm_rate": 0.94,
+      "shear_detection_rate": 0.45,
+      "shear_false_alarm_rate": 0.6363636363636364,
+      "wavelet_detection_rate": 0.25,
+      "wavelet_false_alarm_rate": 0.9733333333333334,
+      "entropy_detection_rate": 0.25,
+      "entropy_false_alarm_rate": 0.8
     },
     {
       "year": 2008,
@@ -705,7 +945,13 @@
       "pvi_detection_rate": 0.8823529411764706,
       "pvi_false_alarm_rate": 0.6666666666666666,
       "bmag_detection_rate": 0.6470588235294118,
-      "bmag_false_alarm_rate": 0.9655172413793104
+      "bmag_false_alarm_rate": 0.9655172413793104,
+      "shear_detection_rate": 0.5294117647058824,
+      "shear_false_alarm_rate": 0.7857142857142857,
+      "wavelet_detection_rate": 0.7058823529411765,
+      "wavelet_false_alarm_rate": 0.9540229885057471,
+      "entropy_detection_rate": 0.058823529411764705,
+      "entropy_false_alarm_rate": 0.9090909090909091
     },
     {
       "year": 2008,
@@ -722,7 +968,13 @@
       "pvi_detection_rate": 1.0,
       "pvi_false_alarm_rate": 0.7777777777777778,
       "bmag_detection_rate": 1.0,
-      "bmag_false_alarm_rate": 0.9682539682539683
+      "bmag_false_alarm_rate": 0.9682539682539683,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 1.0,
+      "wavelet_detection_rate": 1.0,
+      "wavelet_false_alarm_rate": 0.9859154929577465,
+      "entropy_detection_rate": 1.0,
+      "entropy_false_alarm_rate": 0.6666666666666666
     },
     {
       "year": 2009,
@@ -739,7 +991,13 @@
       "pvi_detection_rate": 0.0,
       "pvi_false_alarm_rate": 1.0,
       "bmag_detection_rate": 0.0,
-      "bmag_false_alarm_rate": 1.0
+      "bmag_false_alarm_rate": 1.0,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 1.0,
+      "wavelet_detection_rate": 0.0,
+      "wavelet_false_alarm_rate": 1.0,
+      "entropy_detection_rate": 0.0,
+      "entropy_false_alarm_rate": 1.0
     },
     {
       "year": 2009,
@@ -756,7 +1014,13 @@
       "pvi_detection_rate": 0.9444444444444444,
       "pvi_false_alarm_rate": 0.68,
       "bmag_detection_rate": 0.5555555555555556,
-      "bmag_false_alarm_rate": 0.9882352941176471
+      "bmag_false_alarm_rate": 0.9882352941176471,
+      "shear_detection_rate": 0.8333333333333334,
+      "shear_false_alarm_rate": 0.7142857142857143,
+      "wavelet_detection_rate": 0.8333333333333334,
+      "wavelet_false_alarm_rate": 0.972972972972973,
+      "entropy_detection_rate": 0.7222222222222222,
+      "entropy_false_alarm_rate": 0.8125
     },
     {
       "year": 2009,
@@ -773,7 +1037,13 @@
       "pvi_detection_rate": 0.6,
       "pvi_false_alarm_rate": 0.9375,
       "bmag_detection_rate": 0.0,
-      "bmag_false_alarm_rate": 1.0
+      "bmag_false_alarm_rate": 1.0,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 1.0,
+      "wavelet_detection_rate": 0.8,
+      "wavelet_false_alarm_rate": 0.9871794871794872,
+      "entropy_detection_rate": 0.6,
+      "entropy_false_alarm_rate": 0.8
     },
     {
       "year": 2009,
@@ -790,7 +1060,13 @@
       "pvi_detection_rate": 0.8484848484848485,
       "pvi_false_alarm_rate": 0.6071428571428571,
       "bmag_detection_rate": 0.5151515151515151,
-      "bmag_false_alarm_rate": 0.9263157894736842
+      "bmag_false_alarm_rate": 0.9263157894736842,
+      "shear_detection_rate": 0.5454545454545454,
+      "shear_false_alarm_rate": 0.7142857142857143,
+      "wavelet_detection_rate": 0.7272727272727273,
+      "wavelet_false_alarm_rate": 0.9036144578313253,
+      "entropy_detection_rate": 0.2727272727272727,
+      "entropy_false_alarm_rate": 0.6923076923076923
     },
     {
       "year": 2009,
@@ -807,7 +1083,13 @@
       "pvi_detection_rate": 0.9019607843137255,
       "pvi_false_alarm_rate": 0.66,
       "bmag_detection_rate": 0.7254901960784313,
-      "bmag_false_alarm_rate": 0.8613861386138614
+      "bmag_false_alarm_rate": 0.8613861386138614,
+      "shear_detection_rate": 0.17647058823529413,
+      "shear_false_alarm_rate": 0.8536585365853658,
+      "wavelet_detection_rate": 0.49019607843137253,
+      "wavelet_false_alarm_rate": 0.9239130434782609,
+      "entropy_detection_rate": 0.37254901960784315,
+      "entropy_false_alarm_rate": 0.8076923076923077
     },
     {
       "year": 2009,
@@ -824,7 +1106,13 @@
       "pvi_detection_rate": 0.5384615384615384,
       "pvi_false_alarm_rate": 0.9111111111111111,
       "bmag_detection_rate": 0.5384615384615384,
-      "bmag_false_alarm_rate": 0.9438202247191011
+      "bmag_false_alarm_rate": 0.9438202247191011,
+      "shear_detection_rate": 0.5384615384615384,
+      "shear_false_alarm_rate": 0.8695652173913043,
+      "wavelet_detection_rate": 0.15384615384615385,
+      "wavelet_false_alarm_rate": 0.987012987012987,
+      "entropy_detection_rate": 0.38461538461538464,
+      "entropy_false_alarm_rate": 0.9354838709677419
     },
     {
       "year": 2009,
@@ -841,7 +1129,13 @@
       "pvi_detection_rate": 0.8235294117647058,
       "pvi_false_alarm_rate": 0.6111111111111112,
       "bmag_detection_rate": 0.5882352941176471,
-      "bmag_false_alarm_rate": 0.9042553191489362
+      "bmag_false_alarm_rate": 0.9042553191489362,
+      "shear_detection_rate": 0.6470588235294118,
+      "shear_false_alarm_rate": 0.8235294117647058,
+      "wavelet_detection_rate": 0.8235294117647058,
+      "wavelet_false_alarm_rate": 0.9069767441860465,
+      "entropy_detection_rate": 0.47058823529411764,
+      "entropy_false_alarm_rate": 0.84375
     },
     {
       "year": 2009,
@@ -858,7 +1152,13 @@
       "pvi_detection_rate": 0.75,
       "pvi_false_alarm_rate": 0.5319148936170213,
       "bmag_detection_rate": 0.75,
-      "bmag_false_alarm_rate": 0.8363636363636363
+      "bmag_false_alarm_rate": 0.8363636363636363,
+      "shear_detection_rate": 0.5833333333333334,
+      "shear_false_alarm_rate": 0.6428571428571429,
+      "wavelet_detection_rate": 0.7291666666666666,
+      "wavelet_false_alarm_rate": 0.8681318681318682,
+      "entropy_detection_rate": 0.5833333333333334,
+      "entropy_false_alarm_rate": 0.7027027027027027
     },
     {
       "year": 2009,
@@ -875,7 +1175,13 @@
       "pvi_detection_rate": 0.7454545454545455,
       "pvi_false_alarm_rate": 0.5833333333333334,
       "bmag_detection_rate": 0.9454545454545454,
-      "bmag_false_alarm_rate": 0.7018633540372671
+      "bmag_false_alarm_rate": 0.7018633540372671,
+      "shear_detection_rate": 0.8727272727272727,
+      "shear_false_alarm_rate": 0.625,
+      "wavelet_detection_rate": 0.45454545454545453,
+      "wavelet_false_alarm_rate": 0.8522727272727273,
+      "entropy_detection_rate": 0.8181818181818182,
+      "entropy_false_alarm_rate": 0.6712328767123288
     },
     {
       "year": 2009,
@@ -892,7 +1198,13 @@
       "pvi_detection_rate": 0.6956521739130435,
       "pvi_false_alarm_rate": 0.8048780487804879,
       "bmag_detection_rate": 0.6956521739130435,
-      "bmag_false_alarm_rate": 0.8738738738738738
+      "bmag_false_alarm_rate": 0.8738738738738738,
+      "shear_detection_rate": 0.6956521739130435,
+      "shear_false_alarm_rate": 0.7777777777777778,
+      "wavelet_detection_rate": 0.6521739130434783,
+      "wavelet_false_alarm_rate": 0.9080459770114943,
+      "entropy_detection_rate": 0.6956521739130435,
+      "entropy_false_alarm_rate": 0.813953488372093
     },
     {
       "year": 2009,
@@ -909,7 +1221,13 @@
       "pvi_detection_rate": 0.425,
       "pvi_false_alarm_rate": 0.7058823529411765,
       "bmag_detection_rate": 0.85,
-      "bmag_false_alarm_rate": 0.8
+      "bmag_false_alarm_rate": 0.8,
+      "shear_detection_rate": 0.575,
+      "shear_false_alarm_rate": 0.8602150537634409,
+      "wavelet_detection_rate": 0.55,
+      "wavelet_false_alarm_rate": 0.8913043478260869,
+      "entropy_detection_rate": 0.625,
+      "entropy_false_alarm_rate": 0.7959183673469388
     },
     {
       "year": 2009,
@@ -926,7 +1244,13 @@
       "pvi_detection_rate": 0.75,
       "pvi_false_alarm_rate": 0.7674418604651163,
       "bmag_detection_rate": 0.8333333333333334,
-      "bmag_false_alarm_rate": 0.8785046728971962
+      "bmag_false_alarm_rate": 0.8785046728971962,
+      "shear_detection_rate": 0.5833333333333334,
+      "shear_false_alarm_rate": 0.8271604938271605,
+      "wavelet_detection_rate": 0.5833333333333334,
+      "wavelet_false_alarm_rate": 0.9387755102040817,
+      "entropy_detection_rate": 0.75,
+      "entropy_false_alarm_rate": 0.8979591836734694
     },
     {
       "year": 2009,
@@ -943,7 +1267,13 @@
       "pvi_detection_rate": 0.9285714285714286,
       "pvi_false_alarm_rate": 0.7941176470588235,
       "bmag_detection_rate": 0.7857142857142857,
-      "bmag_false_alarm_rate": 0.883495145631068
+      "bmag_false_alarm_rate": 0.883495145631068,
+      "shear_detection_rate": 0.5,
+      "shear_false_alarm_rate": 0.8688524590163934,
+      "wavelet_detection_rate": 0.6428571428571429,
+      "wavelet_false_alarm_rate": 0.9504950495049505,
+      "entropy_detection_rate": 0.7857142857142857,
+      "entropy_false_alarm_rate": 0.8723404255319149
     },
     {
       "year": 2009,
@@ -960,7 +1290,13 @@
       "pvi_detection_rate": 1.0,
       "pvi_false_alarm_rate": 0.6744186046511628,
       "bmag_detection_rate": 0.7058823529411765,
-      "bmag_false_alarm_rate": 0.8925619834710744
+      "bmag_false_alarm_rate": 0.8925619834710744,
+      "shear_detection_rate": 0.8235294117647058,
+      "shear_false_alarm_rate": 0.8,
+      "wavelet_detection_rate": 0.8235294117647058,
+      "wavelet_false_alarm_rate": 0.9186046511627907,
+      "entropy_detection_rate": 0.5294117647058824,
+      "entropy_false_alarm_rate": 0.8717948717948718
     },
     {
       "year": 2009,
@@ -977,7 +1313,13 @@
       "pvi_detection_rate": 1.0,
       "pvi_false_alarm_rate": 0.8163265306122449,
       "bmag_detection_rate": 0.7692307692307693,
-      "bmag_false_alarm_rate": 0.9646017699115044
+      "bmag_false_alarm_rate": 0.9646017699115044,
+      "shear_detection_rate": 0.6923076923076923,
+      "shear_false_alarm_rate": 0.891566265060241,
+      "wavelet_detection_rate": 0.8461538461538461,
+      "wavelet_false_alarm_rate": 0.95,
+      "entropy_detection_rate": 0.6153846153846154,
+      "entropy_false_alarm_rate": 0.9130434782608695
     },
     {
       "year": 2009,
@@ -994,7 +1336,13 @@
       "pvi_detection_rate": 0.5555555555555556,
       "pvi_false_alarm_rate": 0.8974358974358975,
       "bmag_detection_rate": 1.0,
-      "bmag_false_alarm_rate": 0.9375
+      "bmag_false_alarm_rate": 0.9375,
+      "shear_detection_rate": 0.3333333333333333,
+      "shear_false_alarm_rate": 0.927710843373494,
+      "wavelet_detection_rate": 1.0,
+      "wavelet_false_alarm_rate": 0.9315068493150684,
+      "entropy_detection_rate": 0.7777777777777778,
+      "entropy_false_alarm_rate": 0.9183673469387755
     },
     {
       "year": 2009,
@@ -1011,7 +1359,13 @@
       "pvi_detection_rate": 0.9,
       "pvi_false_alarm_rate": 0.7,
       "bmag_detection_rate": 0.85,
-      "bmag_false_alarm_rate": 0.875
+      "bmag_false_alarm_rate": 0.875,
+      "shear_detection_rate": 0.75,
+      "shear_false_alarm_rate": 0.7333333333333333,
+      "wavelet_detection_rate": 0.65,
+      "wavelet_false_alarm_rate": 0.9247311827956989,
+      "entropy_detection_rate": 0.8,
+      "entropy_false_alarm_rate": 0.8392857142857143
     },
     {
       "year": 2009,
@@ -1028,7 +1382,13 @@
       "pvi_detection_rate": 0.9230769230769231,
       "pvi_false_alarm_rate": 0.6071428571428571,
       "bmag_detection_rate": 1.0,
-      "bmag_false_alarm_rate": 0.8795180722891566
+      "bmag_false_alarm_rate": 0.8795180722891566,
+      "shear_detection_rate": 0.9230769230769231,
+      "shear_false_alarm_rate": 0.7413793103448276,
+      "wavelet_detection_rate": 0.6153846153846154,
+      "wavelet_false_alarm_rate": 0.9358974358974359,
+      "entropy_detection_rate": 0.7692307692307693,
+      "entropy_false_alarm_rate": 0.825
     },
     {
       "year": 2009,
@@ -1045,7 +1405,13 @@
       "pvi_detection_rate": 0.7931034482758621,
       "pvi_false_alarm_rate": 0.5714285714285714,
       "bmag_detection_rate": 0.6896551724137931,
-      "bmag_false_alarm_rate": 0.826530612244898
+      "bmag_false_alarm_rate": 0.826530612244898,
+      "shear_detection_rate": 0.6896551724137931,
+      "shear_false_alarm_rate": 0.7272727272727273,
+      "wavelet_detection_rate": 0.4827586206896552,
+      "wavelet_false_alarm_rate": 0.9036144578313253,
+      "entropy_detection_rate": 0.7241379310344828,
+      "entropy_false_alarm_rate": 0.8367346938775511
     },
     {
       "year": 2009,
@@ -1062,7 +1428,13 @@
       "pvi_detection_rate": 0.8,
       "pvi_false_alarm_rate": 0.5348837209302325,
       "bmag_detection_rate": 0.6777777777777778,
-      "bmag_false_alarm_rate": 0.8181818181818182
+      "bmag_false_alarm_rate": 0.8181818181818182,
+      "shear_detection_rate": 0.4,
+      "shear_false_alarm_rate": 0.8135593220338984,
+      "wavelet_detection_rate": 0.5444444444444444,
+      "wavelet_false_alarm_rate": 0.8666666666666667,
+      "entropy_detection_rate": 0.6666666666666666,
+      "entropy_false_alarm_rate": 0.7
     },
     {
       "year": 2009,
@@ -1079,7 +1451,13 @@
       "pvi_detection_rate": 0.9666666666666667,
       "pvi_false_alarm_rate": 0.6727272727272727,
       "bmag_detection_rate": 0.6666666666666666,
-      "bmag_false_alarm_rate": 0.9065420560747663
+      "bmag_false_alarm_rate": 0.9065420560747663,
+      "shear_detection_rate": 0.9666666666666667,
+      "shear_false_alarm_rate": 0.7297297297297297,
+      "wavelet_detection_rate": 0.3333333333333333,
+      "wavelet_false_alarm_rate": 0.9574468085106383,
+      "entropy_detection_rate": 0.6666666666666666,
+      "entropy_false_alarm_rate": 0.8780487804878049
     },
     {
       "year": 2009,
@@ -1096,7 +1474,13 @@
       "pvi_detection_rate": 0.7241379310344828,
       "pvi_false_alarm_rate": 0.8095238095238095,
       "bmag_detection_rate": 0.8620689655172413,
-      "bmag_false_alarm_rate": 0.8943089430894309
+      "bmag_false_alarm_rate": 0.8943089430894309,
+      "shear_detection_rate": 0.20689655172413793,
+      "shear_false_alarm_rate": 0.9315068493150684,
+      "wavelet_detection_rate": 0.41379310344827586,
+      "wavelet_false_alarm_rate": 0.9285714285714286,
+      "entropy_detection_rate": 0.7586206896551724,
+      "entropy_false_alarm_rate": 0.851063829787234
     },
     {
       "year": 2009,
@@ -1113,7 +1497,13 @@
       "pvi_detection_rate": 0.71875,
       "pvi_false_alarm_rate": 0.6571428571428571,
       "bmag_detection_rate": 0.5625,
-      "bmag_false_alarm_rate": 0.9101123595505618
+      "bmag_false_alarm_rate": 0.9101123595505618,
+      "shear_detection_rate": 0.53125,
+      "shear_false_alarm_rate": 0.75,
+      "wavelet_detection_rate": 0.53125,
+      "wavelet_false_alarm_rate": 0.927710843373494,
+      "entropy_detection_rate": 0.53125,
+      "entropy_false_alarm_rate": 0.6666666666666666
     },
     {
       "year": 2009,
@@ -1130,7 +1520,13 @@
       "pvi_detection_rate": 1.0,
       "pvi_false_alarm_rate": 0.44,
       "bmag_detection_rate": 0.6451612903225806,
-      "bmag_false_alarm_rate": 0.9534883720930233
+      "bmag_false_alarm_rate": 0.9534883720930233,
+      "shear_detection_rate": 0.7419354838709677,
+      "shear_false_alarm_rate": 0.3076923076923077,
+      "wavelet_detection_rate": 0.6451612903225806,
+      "wavelet_false_alarm_rate": 0.9176470588235294,
+      "entropy_detection_rate": 0.7419354838709677,
+      "entropy_false_alarm_rate": 0.4
     },
     {
       "year": 2009,
@@ -1147,7 +1543,13 @@
       "pvi_detection_rate": 0.8333333333333334,
       "pvi_false_alarm_rate": 0.8,
       "bmag_detection_rate": 0.6666666666666666,
-      "bmag_false_alarm_rate": 0.9743589743589743
+      "bmag_false_alarm_rate": 0.9743589743589743,
+      "shear_detection_rate": 0.8333333333333334,
+      "shear_false_alarm_rate": 0.7777777777777778,
+      "wavelet_detection_rate": 0.6666666666666666,
+      "wavelet_false_alarm_rate": 0.9659090909090909,
+      "entropy_detection_rate": 0.5833333333333334,
+      "entropy_false_alarm_rate": 0.8181818181818182
     },
     {
       "year": 2010,
@@ -1164,7 +1566,13 @@
       "pvi_detection_rate": 0.7142857142857143,
       "pvi_false_alarm_rate": 0.7222222222222222,
       "bmag_detection_rate": 0.7142857142857143,
-      "bmag_false_alarm_rate": 0.948051948051948
+      "bmag_false_alarm_rate": 0.948051948051948,
+      "shear_detection_rate": 0.42857142857142855,
+      "shear_false_alarm_rate": 0.25,
+      "wavelet_detection_rate": 0.5714285714285714,
+      "wavelet_false_alarm_rate": 0.9506172839506173,
+      "entropy_detection_rate": 0.5714285714285714,
+      "entropy_false_alarm_rate": 0.8333333333333334
     },
     {
       "year": 2010,
@@ -1181,7 +1589,13 @@
       "pvi_detection_rate": 1.0,
       "pvi_false_alarm_rate": 0.9285714285714286,
       "bmag_detection_rate": 1.0,
-      "bmag_false_alarm_rate": 0.9850746268656716
+      "bmag_false_alarm_rate": 0.9850746268656716,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 1.0,
+      "wavelet_detection_rate": 0.5,
+      "wavelet_false_alarm_rate": 0.9852941176470589,
+      "entropy_detection_rate": 1.0,
+      "entropy_false_alarm_rate": 0.9166666666666666
     },
     {
       "year": 2010,
@@ -1198,7 +1612,13 @@
       "pvi_detection_rate": 0.75,
       "pvi_false_alarm_rate": 0.6,
       "bmag_detection_rate": 0.75,
-      "bmag_false_alarm_rate": 0.9545454545454546
+      "bmag_false_alarm_rate": 0.9545454545454546,
+      "shear_detection_rate": 0.75,
+      "shear_false_alarm_rate": 0.0,
+      "wavelet_detection_rate": 1.0,
+      "wavelet_false_alarm_rate": 0.963855421686747,
+      "entropy_detection_rate": 0.5,
+      "entropy_false_alarm_rate": 0.6
     },
     {
       "year": 2010,
@@ -1215,7 +1635,13 @@
       "pvi_detection_rate": 1.0,
       "pvi_false_alarm_rate": 0.8181818181818182,
       "bmag_detection_rate": 0.0,
-      "bmag_false_alarm_rate": 1.0
+      "bmag_false_alarm_rate": 1.0,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 0.0,
+      "wavelet_detection_rate": 1.0,
+      "wavelet_false_alarm_rate": 0.9875,
+      "entropy_detection_rate": 1.0,
+      "entropy_false_alarm_rate": 0.5
     },
     {
       "year": 2010,
@@ -1232,7 +1658,13 @@
       "pvi_detection_rate": 0.3333333333333333,
       "pvi_false_alarm_rate": 0.8666666666666667,
       "bmag_detection_rate": 0.3333333333333333,
-      "bmag_false_alarm_rate": 0.9642857142857143
+      "bmag_false_alarm_rate": 0.9642857142857143,
+      "shear_detection_rate": 0.26666666666666666,
+      "shear_false_alarm_rate": 0.8888888888888888,
+      "wavelet_detection_rate": 0.3333333333333333,
+      "wavelet_false_alarm_rate": 0.9615384615384616,
+      "entropy_detection_rate": 0.2,
+      "entropy_false_alarm_rate": 0.3333333333333333
     },
     {
       "year": 2010,
@@ -1249,7 +1681,13 @@
       "pvi_detection_rate": 0.0,
       "pvi_false_alarm_rate": 1.0,
       "bmag_detection_rate": 0.0,
-      "bmag_false_alarm_rate": 1.0
+      "bmag_false_alarm_rate": 1.0,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 0.0,
+      "wavelet_detection_rate": 0.0,
+      "wavelet_false_alarm_rate": 1.0,
+      "entropy_detection_rate": 0.0,
+      "entropy_false_alarm_rate": 0.0
     },
     {
       "year": 2010,
@@ -1266,7 +1704,13 @@
       "pvi_detection_rate": 0.26666666666666666,
       "pvi_false_alarm_rate": 0.1111111111111111,
       "bmag_detection_rate": 0.3,
-      "bmag_false_alarm_rate": 0.7368421052631579
+      "bmag_false_alarm_rate": 0.7368421052631579,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 0.0,
+      "wavelet_detection_rate": 0.3333333333333333,
+      "wavelet_false_alarm_rate": 0.6470588235294118,
+      "entropy_detection_rate": 0.25,
+      "entropy_false_alarm_rate": 0.375
     },
     {
       "year": 2010,
@@ -1283,7 +1727,13 @@
       "pvi_detection_rate": 0.7894736842105263,
       "pvi_false_alarm_rate": 0.3125,
       "bmag_detection_rate": 0.7368421052631579,
-      "bmag_false_alarm_rate": 0.696969696969697
+      "bmag_false_alarm_rate": 0.696969696969697,
+      "shear_detection_rate": 0.7894736842105263,
+      "shear_false_alarm_rate": 0.23809523809523808,
+      "wavelet_detection_rate": 0.5263157894736842,
+      "wavelet_false_alarm_rate": 0.875,
+      "entropy_detection_rate": 0.47368421052631576,
+      "entropy_false_alarm_rate": 0.5714285714285714
     },
     {
       "year": 2011,
@@ -1300,7 +1750,13 @@
       "pvi_detection_rate": 0.0,
       "pvi_false_alarm_rate": 1.0,
       "bmag_detection_rate": 0.0,
-      "bmag_false_alarm_rate": 1.0
+      "bmag_false_alarm_rate": 1.0,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 0.0,
+      "wavelet_detection_rate": 0.0,
+      "wavelet_false_alarm_rate": 1.0,
+      "entropy_detection_rate": 0.0,
+      "entropy_false_alarm_rate": 1.0
     },
     {
       "year": 2011,
@@ -1317,7 +1773,13 @@
       "pvi_detection_rate": 0.0,
       "pvi_false_alarm_rate": 1.0,
       "bmag_detection_rate": 0.0,
-      "bmag_false_alarm_rate": 1.0
+      "bmag_false_alarm_rate": 1.0,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 0.0,
+      "wavelet_detection_rate": 0.0,
+      "wavelet_false_alarm_rate": 1.0,
+      "entropy_detection_rate": 0.0,
+      "entropy_false_alarm_rate": 1.0
     },
     {
       "year": 2011,
@@ -1334,7 +1796,13 @@
       "pvi_detection_rate": 0.0,
       "pvi_false_alarm_rate": 1.0,
       "bmag_detection_rate": 0.0,
-      "bmag_false_alarm_rate": 1.0
+      "bmag_false_alarm_rate": 1.0,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 0.0,
+      "wavelet_detection_rate": 0.0,
+      "wavelet_false_alarm_rate": 1.0,
+      "entropy_detection_rate": 0.0,
+      "entropy_false_alarm_rate": 1.0
     },
     {
       "year": 2011,
@@ -1351,7 +1819,13 @@
       "pvi_detection_rate": 0.0,
       "pvi_false_alarm_rate": 1.0,
       "bmag_detection_rate": 0.0,
-      "bmag_false_alarm_rate": 1.0
+      "bmag_false_alarm_rate": 1.0,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 0.0,
+      "wavelet_detection_rate": 0.0,
+      "wavelet_false_alarm_rate": 1.0,
+      "entropy_detection_rate": 0.0,
+      "entropy_false_alarm_rate": 1.0
     },
     {
       "year": 2011,
@@ -1368,7 +1842,13 @@
       "pvi_detection_rate": 0.0,
       "pvi_false_alarm_rate": 1.0,
       "bmag_detection_rate": 0.0,
-      "bmag_false_alarm_rate": 1.0
+      "bmag_false_alarm_rate": 1.0,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 1.0,
+      "wavelet_detection_rate": 0.0,
+      "wavelet_false_alarm_rate": 1.0,
+      "entropy_detection_rate": 0.0,
+      "entropy_false_alarm_rate": 1.0
     },
     {
       "year": 2012,
@@ -1385,7 +1865,13 @@
       "pvi_detection_rate": 0.19047619047619047,
       "pvi_false_alarm_rate": 0.6666666666666666,
       "bmag_detection_rate": 0.15873015873015872,
-      "bmag_false_alarm_rate": 0.8125
+      "bmag_false_alarm_rate": 0.8125,
+      "shear_detection_rate": 0.15873015873015872,
+      "shear_false_alarm_rate": 0.75,
+      "wavelet_detection_rate": 0.09523809523809523,
+      "wavelet_false_alarm_rate": 0.8181818181818182,
+      "entropy_detection_rate": 0.14285714285714285,
+      "entropy_false_alarm_rate": 0.3333333333333333
     },
     {
       "year": 2012,
@@ -1402,7 +1888,13 @@
       "pvi_detection_rate": 0.09259259259259259,
       "pvi_false_alarm_rate": 0.6,
       "bmag_detection_rate": 0.09259259259259259,
-      "bmag_false_alarm_rate": 0.8666666666666667
+      "bmag_false_alarm_rate": 0.8666666666666667,
+      "shear_detection_rate": 0.09259259259259259,
+      "shear_false_alarm_rate": 0.0,
+      "wavelet_detection_rate": 0.09259259259259259,
+      "wavelet_false_alarm_rate": 0.9333333333333333,
+      "entropy_detection_rate": 0.09259259259259259,
+      "entropy_false_alarm_rate": 0.6666666666666666
     },
     {
       "year": 2012,
@@ -1419,7 +1911,13 @@
       "pvi_detection_rate": 0.0,
       "pvi_false_alarm_rate": 1.0,
       "bmag_detection_rate": 0.0,
-      "bmag_false_alarm_rate": 1.0
+      "bmag_false_alarm_rate": 1.0,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 1.0,
+      "wavelet_detection_rate": 0.0,
+      "wavelet_false_alarm_rate": 1.0,
+      "entropy_detection_rate": 0.0,
+      "entropy_false_alarm_rate": 0.0
     },
     {
       "year": 2012,
@@ -1436,7 +1934,13 @@
       "pvi_detection_rate": 0.0,
       "pvi_false_alarm_rate": 1.0,
       "bmag_detection_rate": 0.0,
-      "bmag_false_alarm_rate": 1.0
+      "bmag_false_alarm_rate": 1.0,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 1.0,
+      "wavelet_detection_rate": 0.0,
+      "wavelet_false_alarm_rate": 1.0,
+      "entropy_detection_rate": 0.0,
+      "entropy_false_alarm_rate": 1.0
     },
     {
       "year": 2012,
@@ -1453,7 +1957,13 @@
       "pvi_detection_rate": 0.0,
       "pvi_false_alarm_rate": 1.0,
       "bmag_detection_rate": 0.0,
-      "bmag_false_alarm_rate": 1.0
+      "bmag_false_alarm_rate": 1.0,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 1.0,
+      "wavelet_detection_rate": 0.0,
+      "wavelet_false_alarm_rate": 1.0,
+      "entropy_detection_rate": 0.0,
+      "entropy_false_alarm_rate": 1.0
     },
     {
       "year": 2012,
@@ -1470,7 +1980,13 @@
       "pvi_detection_rate": 0.0,
       "pvi_false_alarm_rate": 1.0,
       "bmag_detection_rate": 0.0,
-      "bmag_false_alarm_rate": 1.0
+      "bmag_false_alarm_rate": 1.0,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 1.0,
+      "wavelet_detection_rate": 0.0,
+      "wavelet_false_alarm_rate": 1.0,
+      "entropy_detection_rate": 0.0,
+      "entropy_false_alarm_rate": 0.0
     },
     {
       "year": 2012,
@@ -1487,7 +2003,13 @@
       "pvi_detection_rate": 0.04285714285714286,
       "pvi_false_alarm_rate": 0.4,
       "bmag_detection_rate": 0.07142857142857142,
-      "bmag_false_alarm_rate": 0.7058823529411765
+      "bmag_false_alarm_rate": 0.7058823529411765,
+      "shear_detection_rate": 0.07142857142857142,
+      "shear_false_alarm_rate": 0.16666666666666666,
+      "wavelet_detection_rate": 0.02857142857142857,
+      "wavelet_false_alarm_rate": 0.9166666666666666,
+      "entropy_detection_rate": 0.02857142857142857,
+      "entropy_false_alarm_rate": 0.6666666666666666
     },
     {
       "year": 2012,
@@ -1504,7 +2026,13 @@
       "pvi_detection_rate": 0.0,
       "pvi_false_alarm_rate": 1.0,
       "bmag_detection_rate": 0.0,
-      "bmag_false_alarm_rate": 1.0
+      "bmag_false_alarm_rate": 1.0,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 1.0,
+      "wavelet_detection_rate": 0.0,
+      "wavelet_false_alarm_rate": 1.0,
+      "entropy_detection_rate": 0.0,
+      "entropy_false_alarm_rate": 1.0
     },
     {
       "year": 2012,
@@ -1521,24 +2049,13 @@
       "pvi_detection_rate": 0.0,
       "pvi_false_alarm_rate": 1.0,
       "bmag_detection_rate": 0.0,
-      "bmag_false_alarm_rate": 1.0
-    },
-    {
-      "year": 2012,
-      "week": 1,
-      "start_date": "2012-01-02",
-      "end_date": "2012-01-08",
-      "n_minutes": 1177,
-      "n_curated": 63,
-      "cd_detection_rate": 0.19047619047619047,
-      "cd_false_alarm_rate": 0.7142857142857143,
-      "cd_n_transitions": 14,
-      "cd_n_extra": 10,
-      "cd_median_offset": 3.9999999999997726,
-      "pvi_detection_rate": 0.19047619047619047,
-      "pvi_false_alarm_rate": 0.6666666666666666,
-      "bmag_detection_rate": 0.15873015873015872,
-      "bmag_false_alarm_rate": 0.8125
+      "bmag_false_alarm_rate": 1.0,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 1.0,
+      "wavelet_detection_rate": 0.0,
+      "wavelet_false_alarm_rate": 1.0,
+      "entropy_detection_rate": 0.0,
+      "entropy_false_alarm_rate": 1.0
     },
     {
       "year": 2013,
@@ -1555,7 +2072,13 @@
       "pvi_detection_rate": 0.0,
       "pvi_false_alarm_rate": 0.0,
       "bmag_detection_rate": 0.0,
-      "bmag_false_alarm_rate": 1.0
+      "bmag_false_alarm_rate": 1.0,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 0.0,
+      "wavelet_detection_rate": 0.0,
+      "wavelet_false_alarm_rate": 1.0,
+      "entropy_detection_rate": 0.0,
+      "entropy_false_alarm_rate": 0.0
     },
     {
       "year": 2013,
@@ -1572,7 +2095,13 @@
       "pvi_detection_rate": 0.3191489361702128,
       "pvi_false_alarm_rate": 0.2,
       "bmag_detection_rate": 0.06382978723404255,
-      "bmag_false_alarm_rate": 0.8461538461538461
+      "bmag_false_alarm_rate": 0.8461538461538461,
+      "shear_detection_rate": 0.2127659574468085,
+      "shear_false_alarm_rate": 0.5,
+      "wavelet_detection_rate": 0.02127659574468085,
+      "wavelet_false_alarm_rate": 0.9230769230769231,
+      "entropy_detection_rate": 0.02127659574468085,
+      "entropy_false_alarm_rate": 0.0
     },
     {
       "year": 2013,
@@ -1589,7 +2118,13 @@
       "pvi_detection_rate": 0.1702127659574468,
       "pvi_false_alarm_rate": 0.42857142857142855,
       "bmag_detection_rate": 0.1276595744680851,
-      "bmag_false_alarm_rate": 0.8974358974358975
+      "bmag_false_alarm_rate": 0.8974358974358975,
+      "shear_detection_rate": 0.1702127659574468,
+      "shear_false_alarm_rate": 0.6190476190476191,
+      "wavelet_detection_rate": 0.10638297872340426,
+      "wavelet_false_alarm_rate": 0.7142857142857143,
+      "entropy_detection_rate": 0.0851063829787234,
+      "entropy_false_alarm_rate": 0.7
     },
     {
       "year": 2013,
@@ -1606,7 +2141,13 @@
       "pvi_detection_rate": 0.0,
       "pvi_false_alarm_rate": 1.0,
       "bmag_detection_rate": 0.0,
-      "bmag_false_alarm_rate": 1.0
+      "bmag_false_alarm_rate": 1.0,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 1.0,
+      "wavelet_detection_rate": 0.0,
+      "wavelet_false_alarm_rate": 1.0,
+      "entropy_detection_rate": 0.0,
+      "entropy_false_alarm_rate": 1.0
     },
     {
       "year": 2013,
@@ -1623,7 +2164,13 @@
       "pvi_detection_rate": 0.0,
       "pvi_false_alarm_rate": 1.0,
       "bmag_detection_rate": 0.0,
-      "bmag_false_alarm_rate": 1.0
+      "bmag_false_alarm_rate": 1.0,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 1.0,
+      "wavelet_detection_rate": 0.0,
+      "wavelet_false_alarm_rate": 1.0,
+      "entropy_detection_rate": 0.0,
+      "entropy_false_alarm_rate": 1.0
     },
     {
       "year": 2013,
@@ -1640,7 +2187,13 @@
       "pvi_detection_rate": 0.0,
       "pvi_false_alarm_rate": 1.0,
       "bmag_detection_rate": 0.0,
-      "bmag_false_alarm_rate": 1.0
+      "bmag_false_alarm_rate": 1.0,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 0.0,
+      "wavelet_detection_rate": 0.0,
+      "wavelet_false_alarm_rate": 1.0,
+      "entropy_detection_rate": 0.0,
+      "entropy_false_alarm_rate": 0.0
     },
     {
       "year": 2014,
@@ -1657,7 +2210,13 @@
       "pvi_detection_rate": 0.0,
       "pvi_false_alarm_rate": 1.0,
       "bmag_detection_rate": 0.0,
-      "bmag_false_alarm_rate": 1.0
+      "bmag_false_alarm_rate": 1.0,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 0.0,
+      "wavelet_detection_rate": 0.0,
+      "wavelet_false_alarm_rate": 1.0,
+      "entropy_detection_rate": 0.0,
+      "entropy_false_alarm_rate": 1.0
     },
     {
       "year": 2014,
@@ -1674,7 +2233,13 @@
       "pvi_detection_rate": 0.045454545454545456,
       "pvi_false_alarm_rate": 0.5,
       "bmag_detection_rate": 0.045454545454545456,
-      "bmag_false_alarm_rate": 0.9166666666666666
+      "bmag_false_alarm_rate": 0.9166666666666666,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 0.0,
+      "wavelet_detection_rate": 0.09090909090909091,
+      "wavelet_false_alarm_rate": 0.8666666666666667,
+      "entropy_detection_rate": 0.0,
+      "entropy_false_alarm_rate": 1.0
     },
     {
       "year": 2014,
@@ -1691,7 +2256,13 @@
       "pvi_detection_rate": 0.24,
       "pvi_false_alarm_rate": 0.5,
       "bmag_detection_rate": 0.04,
-      "bmag_false_alarm_rate": 0.9285714285714286
+      "bmag_false_alarm_rate": 0.9285714285714286,
+      "shear_detection_rate": 0.04,
+      "shear_false_alarm_rate": 0.0,
+      "wavelet_detection_rate": 0.04,
+      "wavelet_false_alarm_rate": 0.9285714285714286,
+      "entropy_detection_rate": 0.04,
+      "entropy_false_alarm_rate": 0.5
     },
     {
       "year": 2014,
@@ -1708,7 +2279,13 @@
       "pvi_detection_rate": 0.2,
       "pvi_false_alarm_rate": 0.7142857142857143,
       "bmag_detection_rate": 0.08,
-      "bmag_false_alarm_rate": 0.96
+      "bmag_false_alarm_rate": 0.96,
+      "shear_detection_rate": 0.2,
+      "shear_false_alarm_rate": 0.4,
+      "wavelet_detection_rate": 0.08,
+      "wavelet_false_alarm_rate": 0.9743589743589743,
+      "entropy_detection_rate": 0.04,
+      "entropy_false_alarm_rate": 0.75
     },
     {
       "year": 2015,
@@ -1725,7 +2302,13 @@
       "pvi_detection_rate": 0.14375,
       "pvi_false_alarm_rate": 0.5,
       "bmag_detection_rate": 0.0125,
-      "bmag_false_alarm_rate": 0.8571428571428571
+      "bmag_false_alarm_rate": 0.8571428571428571,
+      "shear_detection_rate": 0.11875,
+      "shear_false_alarm_rate": 0.6190476190476191,
+      "wavelet_detection_rate": 0.0,
+      "wavelet_false_alarm_rate": 1.0,
+      "entropy_detection_rate": 0.0125,
+      "entropy_false_alarm_rate": 0.875
     },
     {
       "year": 2015,
@@ -1742,7 +2325,13 @@
       "pvi_detection_rate": 0.16666666666666666,
       "pvi_false_alarm_rate": 0.6666666666666666,
       "bmag_detection_rate": 0.19444444444444445,
-      "bmag_false_alarm_rate": 0.7857142857142857
+      "bmag_false_alarm_rate": 0.7857142857142857,
+      "shear_detection_rate": 0.19444444444444445,
+      "shear_false_alarm_rate": 0.5,
+      "wavelet_detection_rate": 0.3333333333333333,
+      "wavelet_false_alarm_rate": 0.6923076923076923,
+      "entropy_detection_rate": 0.19444444444444445,
+      "entropy_false_alarm_rate": 0.5
     },
     {
       "year": 2015,
@@ -1759,7 +2348,13 @@
       "pvi_detection_rate": 0.014492753623188406,
       "pvi_false_alarm_rate": 0.8,
       "bmag_detection_rate": 0.014492753623188406,
-      "bmag_false_alarm_rate": 0.9230769230769231
+      "bmag_false_alarm_rate": 0.9230769230769231,
+      "shear_detection_rate": 0.014492753623188406,
+      "shear_false_alarm_rate": 0.8666666666666667,
+      "wavelet_detection_rate": 0.014492753623188406,
+      "wavelet_false_alarm_rate": 0.9333333333333333,
+      "entropy_detection_rate": 0.0,
+      "entropy_false_alarm_rate": 1.0
     },
     {
       "year": 2015,
@@ -1776,7 +2371,13 @@
       "pvi_detection_rate": 0.352112676056338,
       "pvi_false_alarm_rate": 0.2222222222222222,
       "bmag_detection_rate": 0.19718309859154928,
-      "bmag_false_alarm_rate": 0.7916666666666666
+      "bmag_false_alarm_rate": 0.7916666666666666,
+      "shear_detection_rate": 0.3380281690140845,
+      "shear_false_alarm_rate": 0.5882352941176471,
+      "wavelet_detection_rate": 0.29577464788732394,
+      "wavelet_false_alarm_rate": 0.7142857142857143,
+      "entropy_detection_rate": 0.2112676056338028,
+      "entropy_false_alarm_rate": 0.5714285714285714
     },
     {
       "year": 2015,
@@ -1793,7 +2394,13 @@
       "pvi_detection_rate": 0.12,
       "pvi_false_alarm_rate": 0.3333333333333333,
       "bmag_detection_rate": 0.13333333333333333,
-      "bmag_false_alarm_rate": 0.75
+      "bmag_false_alarm_rate": 0.75,
+      "shear_detection_rate": 0.13333333333333333,
+      "shear_false_alarm_rate": 0.2,
+      "wavelet_detection_rate": 0.10666666666666667,
+      "wavelet_false_alarm_rate": 0.7272727272727273,
+      "entropy_detection_rate": 0.12,
+      "entropy_false_alarm_rate": 0.5
     },
     {
       "year": 2015,
@@ -1810,7 +2417,13 @@
       "pvi_detection_rate": 0.0,
       "pvi_false_alarm_rate": 1.0,
       "bmag_detection_rate": 0.0,
-      "bmag_false_alarm_rate": 1.0
+      "bmag_false_alarm_rate": 1.0,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 1.0,
+      "wavelet_detection_rate": 0.0,
+      "wavelet_false_alarm_rate": 1.0,
+      "entropy_detection_rate": 0.0,
+      "entropy_false_alarm_rate": 0.0
     },
     {
       "year": 2015,
@@ -1827,7 +2440,13 @@
       "pvi_detection_rate": 0.0,
       "pvi_false_alarm_rate": 1.0,
       "bmag_detection_rate": 0.0,
-      "bmag_false_alarm_rate": 1.0
+      "bmag_false_alarm_rate": 1.0,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 1.0,
+      "wavelet_detection_rate": 0.0,
+      "wavelet_false_alarm_rate": 1.0,
+      "entropy_detection_rate": 0.0,
+      "entropy_false_alarm_rate": 1.0
     },
     {
       "year": 2015,
@@ -1844,7 +2463,13 @@
       "pvi_detection_rate": 0.04838709677419355,
       "pvi_false_alarm_rate": 0.3333333333333333,
       "bmag_detection_rate": 0.20967741935483872,
-      "bmag_false_alarm_rate": 0.6666666666666666
+      "bmag_false_alarm_rate": 0.6666666666666666,
+      "shear_detection_rate": 0.1935483870967742,
+      "shear_false_alarm_rate": 0.5,
+      "wavelet_detection_rate": 0.14516129032258066,
+      "wavelet_false_alarm_rate": 0.625,
+      "entropy_detection_rate": 0.08064516129032258,
+      "entropy_false_alarm_rate": 0.2
     },
     {
       "year": 2015,
@@ -1861,7 +2486,13 @@
       "pvi_detection_rate": 0.0,
       "pvi_false_alarm_rate": 1.0,
       "bmag_detection_rate": 0.0,
-      "bmag_false_alarm_rate": 1.0
+      "bmag_false_alarm_rate": 1.0,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 1.0,
+      "wavelet_detection_rate": 0.0,
+      "wavelet_false_alarm_rate": 1.0,
+      "entropy_detection_rate": 0.0,
+      "entropy_false_alarm_rate": 1.0
     },
     {
       "year": 2015,
@@ -1878,7 +2509,13 @@
       "pvi_detection_rate": 0.0,
       "pvi_false_alarm_rate": 1.0,
       "bmag_detection_rate": 0.0,
-      "bmag_false_alarm_rate": 1.0
+      "bmag_false_alarm_rate": 1.0,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 1.0,
+      "wavelet_detection_rate": 0.0,
+      "wavelet_false_alarm_rate": 1.0,
+      "entropy_detection_rate": 0.0,
+      "entropy_false_alarm_rate": 1.0
     },
     {
       "year": 2016,
@@ -1895,7 +2532,13 @@
       "pvi_detection_rate": 0.0,
       "pvi_false_alarm_rate": 1.0,
       "bmag_detection_rate": 0.0,
-      "bmag_false_alarm_rate": 1.0
+      "bmag_false_alarm_rate": 1.0,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 0.0,
+      "wavelet_detection_rate": 0.0,
+      "wavelet_false_alarm_rate": 1.0,
+      "entropy_detection_rate": 0.0,
+      "entropy_false_alarm_rate": 1.0
     },
     {
       "year": 2016,
@@ -1912,7 +2555,13 @@
       "pvi_detection_rate": 0.0,
       "pvi_false_alarm_rate": 1.0,
       "bmag_detection_rate": 0.0,
-      "bmag_false_alarm_rate": 1.0
+      "bmag_false_alarm_rate": 1.0,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 1.0,
+      "wavelet_detection_rate": 0.0,
+      "wavelet_false_alarm_rate": 1.0,
+      "entropy_detection_rate": 0.0,
+      "entropy_false_alarm_rate": 1.0
     },
     {
       "year": 2016,
@@ -1929,7 +2578,13 @@
       "pvi_detection_rate": 0.7777777777777778,
       "pvi_false_alarm_rate": 0.0,
       "bmag_detection_rate": 0.7777777777777778,
-      "bmag_false_alarm_rate": 0.6153846153846154
+      "bmag_false_alarm_rate": 0.6153846153846154,
+      "shear_detection_rate": 0.6666666666666666,
+      "shear_false_alarm_rate": 0.6,
+      "wavelet_detection_rate": 0.6666666666666666,
+      "wavelet_false_alarm_rate": 0.7,
+      "entropy_detection_rate": 0.2222222222222222,
+      "entropy_false_alarm_rate": 0.8571428571428571
     },
     {
       "year": 2016,
@@ -1946,7 +2601,13 @@
       "pvi_detection_rate": 0.9333333333333333,
       "pvi_false_alarm_rate": 0.14285714285714285,
       "bmag_detection_rate": 0.9333333333333333,
-      "bmag_false_alarm_rate": 0.6875
+      "bmag_false_alarm_rate": 0.6875,
+      "shear_detection_rate": 0.9333333333333333,
+      "shear_false_alarm_rate": 0.5789473684210527,
+      "wavelet_detection_rate": 0.6666666666666666,
+      "wavelet_false_alarm_rate": 0.9166666666666666,
+      "entropy_detection_rate": 0.3333333333333333,
+      "entropy_false_alarm_rate": 0.75
     },
     {
       "year": 2016,
@@ -1963,7 +2624,13 @@
       "pvi_detection_rate": 0.06153846153846154,
       "pvi_false_alarm_rate": 0.8,
       "bmag_detection_rate": 0.07692307692307693,
-      "bmag_false_alarm_rate": 0.9
+      "bmag_false_alarm_rate": 0.9,
+      "shear_detection_rate": 0.046153846153846156,
+      "shear_false_alarm_rate": 0.9130434782608695,
+      "wavelet_detection_rate": 0.0,
+      "wavelet_false_alarm_rate": 1.0,
+      "entropy_detection_rate": 0.03076923076923077,
+      "entropy_false_alarm_rate": 0.9
     },
     {
       "year": 2016,
@@ -1980,7 +2647,13 @@
       "pvi_detection_rate": 0.0,
       "pvi_false_alarm_rate": 1.0,
       "bmag_detection_rate": 0.0,
-      "bmag_false_alarm_rate": 1.0
+      "bmag_false_alarm_rate": 1.0,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 1.0,
+      "wavelet_detection_rate": 0.0,
+      "wavelet_false_alarm_rate": 1.0,
+      "entropy_detection_rate": 0.0,
+      "entropy_false_alarm_rate": 1.0
     },
     {
       "year": 2016,
@@ -1997,7 +2670,13 @@
       "pvi_detection_rate": 0.15555555555555556,
       "pvi_false_alarm_rate": 0.3333333333333333,
       "bmag_detection_rate": 0.2222222222222222,
-      "bmag_false_alarm_rate": 0.7391304347826086
+      "bmag_false_alarm_rate": 0.7391304347826086,
+      "shear_detection_rate": 0.1111111111111111,
+      "shear_false_alarm_rate": 0.8571428571428571,
+      "wavelet_detection_rate": 0.0,
+      "wavelet_false_alarm_rate": 1.0,
+      "entropy_detection_rate": 0.1111111111111111,
+      "entropy_false_alarm_rate": 0.8333333333333334
     },
     {
       "year": 2016,
@@ -2014,7 +2693,13 @@
       "pvi_detection_rate": 0.2727272727272727,
       "pvi_false_alarm_rate": 0.25,
       "bmag_detection_rate": 0.2727272727272727,
-      "bmag_false_alarm_rate": 0.7142857142857143
+      "bmag_false_alarm_rate": 0.7142857142857143,
+      "shear_detection_rate": 0.2727272727272727,
+      "shear_false_alarm_rate": 0.42857142857142855,
+      "wavelet_detection_rate": 0.22727272727272727,
+      "wavelet_false_alarm_rate": 0.9090909090909091,
+      "entropy_detection_rate": 0.22727272727272727,
+      "entropy_false_alarm_rate": 0.8
     },
     {
       "year": 2016,
@@ -2031,7 +2716,13 @@
       "pvi_detection_rate": 0.4444444444444444,
       "pvi_false_alarm_rate": 0.42857142857142855,
       "bmag_detection_rate": 0.4444444444444444,
-      "bmag_false_alarm_rate": 0.7222222222222222
+      "bmag_false_alarm_rate": 0.7222222222222222,
+      "shear_detection_rate": 0.18518518518518517,
+      "shear_false_alarm_rate": 0.8,
+      "wavelet_detection_rate": 0.18518518518518517,
+      "wavelet_false_alarm_rate": 0.9230769230769231,
+      "entropy_detection_rate": 0.18518518518518517,
+      "entropy_false_alarm_rate": 0.75
     },
     {
       "year": 2016,
@@ -2048,7 +2739,13 @@
       "pvi_detection_rate": 0.07526881720430108,
       "pvi_false_alarm_rate": 0.3333333333333333,
       "bmag_detection_rate": 0.15053763440860216,
-      "bmag_false_alarm_rate": 0.6
+      "bmag_false_alarm_rate": 0.6,
+      "shear_detection_rate": 0.1827956989247312,
+      "shear_false_alarm_rate": 0.3333333333333333,
+      "wavelet_detection_rate": 0.06451612903225806,
+      "wavelet_false_alarm_rate": 0.7272727272727273,
+      "entropy_detection_rate": 0.16129032258064516,
+      "entropy_false_alarm_rate": 0.3076923076923077
     },
     {
       "year": 2016,
@@ -2065,7 +2762,36 @@
       "pvi_detection_rate": 0.03636363636363636,
       "pvi_false_alarm_rate": 0.5,
       "bmag_detection_rate": 0.0,
-      "bmag_false_alarm_rate": 1.0
+      "bmag_false_alarm_rate": 1.0,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 1.0,
+      "wavelet_detection_rate": 0.02727272727272727,
+      "wavelet_false_alarm_rate": 0.8,
+      "entropy_detection_rate": 0.02727272727272727,
+      "entropy_false_alarm_rate": 0.7777777777777778
+    },
+    {
+      "year": 2016,
+      "week": 33,
+      "start_date": "2016-08-15",
+      "end_date": "2016-08-21",
+      "n_minutes": 1189,
+      "n_curated": 61,
+      "cd_detection_rate": 0.0,
+      "cd_false_alarm_rate": 1.0,
+      "cd_n_transitions": 8,
+      "cd_n_extra": 8,
+      "cd_median_offset": 0.0,
+      "pvi_detection_rate": 0.0,
+      "pvi_false_alarm_rate": 1.0,
+      "bmag_detection_rate": 0.0,
+      "bmag_false_alarm_rate": 1.0,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 1.0,
+      "wavelet_detection_rate": 0.0,
+      "wavelet_false_alarm_rate": 1.0,
+      "entropy_detection_rate": 0.0,
+      "entropy_false_alarm_rate": 1.0
     },
     {
       "year": 2016,
@@ -2082,7 +2808,13 @@
       "pvi_detection_rate": 0.7321428571428571,
       "pvi_false_alarm_rate": 0.25,
       "bmag_detection_rate": 0.7455357142857143,
-      "bmag_false_alarm_rate": 0.7
+      "bmag_false_alarm_rate": 0.7,
+      "shear_detection_rate": 0.65625,
+      "shear_false_alarm_rate": 0.5769230769230769,
+      "wavelet_detection_rate": 0.3392857142857143,
+      "wavelet_false_alarm_rate": 0.7741935483870968,
+      "entropy_detection_rate": 0.4732142857142857,
+      "entropy_false_alarm_rate": 0.6666666666666666
     },
     {
       "year": 2016,
@@ -2099,7 +2831,13 @@
       "pvi_detection_rate": 0.15267175572519084,
       "pvi_false_alarm_rate": 0.36363636363636365,
       "bmag_detection_rate": 0.22137404580152673,
-      "bmag_false_alarm_rate": 0.6896551724137931
+      "bmag_false_alarm_rate": 0.6896551724137931,
+      "shear_detection_rate": 0.22137404580152673,
+      "shear_false_alarm_rate": 0.2222222222222222,
+      "wavelet_detection_rate": 0.1450381679389313,
+      "wavelet_false_alarm_rate": 0.7692307692307693,
+      "entropy_detection_rate": 0.11450381679389313,
+      "entropy_false_alarm_rate": 0.46153846153846156
     },
     {
       "year": 2016,
@@ -2116,7 +2854,36 @@
       "pvi_detection_rate": 0.0,
       "pvi_false_alarm_rate": 1.0,
       "bmag_detection_rate": 0.0,
-      "bmag_false_alarm_rate": 1.0
+      "bmag_false_alarm_rate": 1.0,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 1.0,
+      "wavelet_detection_rate": 0.0,
+      "wavelet_false_alarm_rate": 1.0,
+      "entropy_detection_rate": 0.0,
+      "entropy_false_alarm_rate": 0.0
+    },
+    {
+      "year": 2016,
+      "week": 39,
+      "start_date": "2016-09-26",
+      "end_date": "2016-10-02",
+      "n_minutes": 1216,
+      "n_curated": 114,
+      "cd_detection_rate": 0.0,
+      "cd_false_alarm_rate": 1.0,
+      "cd_n_transitions": 16,
+      "cd_n_extra": 16,
+      "cd_median_offset": 0.0,
+      "pvi_detection_rate": 0.0,
+      "pvi_false_alarm_rate": 1.0,
+      "bmag_detection_rate": 0.0,
+      "bmag_false_alarm_rate": 1.0,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 1.0,
+      "wavelet_detection_rate": 0.0,
+      "wavelet_false_alarm_rate": 1.0,
+      "entropy_detection_rate": 0.0,
+      "entropy_false_alarm_rate": 1.0
     },
     {
       "year": 2016,
@@ -2133,7 +2900,13 @@
       "pvi_detection_rate": 0.0,
       "pvi_false_alarm_rate": 1.0,
       "bmag_detection_rate": 0.0,
-      "bmag_false_alarm_rate": 1.0
+      "bmag_false_alarm_rate": 1.0,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 1.0,
+      "wavelet_detection_rate": 0.0,
+      "wavelet_false_alarm_rate": 1.0,
+      "entropy_detection_rate": 0.0,
+      "entropy_false_alarm_rate": 1.0
     },
     {
       "year": 2016,
@@ -2150,7 +2923,13 @@
       "pvi_detection_rate": 0.0,
       "pvi_false_alarm_rate": 1.0,
       "bmag_detection_rate": 0.0,
-      "bmag_false_alarm_rate": 1.0
+      "bmag_false_alarm_rate": 1.0,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 1.0,
+      "wavelet_detection_rate": 0.0,
+      "wavelet_false_alarm_rate": 1.0,
+      "entropy_detection_rate": 0.0,
+      "entropy_false_alarm_rate": 1.0
     },
     {
       "year": 2016,
@@ -2167,7 +2946,13 @@
       "pvi_detection_rate": 0.0,
       "pvi_false_alarm_rate": 1.0,
       "bmag_detection_rate": 0.0,
-      "bmag_false_alarm_rate": 1.0
+      "bmag_false_alarm_rate": 1.0,
+      "shear_detection_rate": 0.0,
+      "shear_false_alarm_rate": 1.0,
+      "wavelet_detection_rate": 0.0,
+      "wavelet_false_alarm_rate": 1.0,
+      "entropy_detection_rate": 0.0,
+      "entropy_false_alarm_rate": 1.0
     }
   ]
 }
