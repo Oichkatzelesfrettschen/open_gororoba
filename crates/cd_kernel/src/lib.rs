@@ -11,6 +11,7 @@ pub mod avx2_primitives;
 pub mod cayley_dickson;
 pub mod error;
 pub mod lattice_codebook;
+pub mod lloyd_max;
 pub mod mult_table;
 pub mod parallel_primitives;
 pub mod traits;
