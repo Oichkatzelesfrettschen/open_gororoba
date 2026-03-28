@@ -1,0 +1,21 @@
+{
+  "mission": "cluster-1",
+  "start_date": "2002-01-01",
+  "end_date": "2002-01-07",
+  "embedding_dim": 32,
+  "total_minutes": 6806,
+  "n_boundaries": 76,
+  "n_associator_transitions": 46,
+  "detection_rate": 0.3684210526315789,
+  "false_alarm_rate": 0.5,
+  "mean_offset_minutes": 7.749999999999953,
+  "median_offset_minutes": 7.999999999999545,
+  "curated_n_crossings": 37,
+  "curated_detection_rate": 0.6486486486486487,
+  "curated_false_alarm_rate": 0.7391304347826086,
+  "curated_mean_offset": 8.458333333333314,
+  "curated_median_offset": 7.999999999999972,
+  "global_mean_associator": 2.8820002239496256,
+  "global_std_associator": 6.3311795886483715,
+  "transition_threshold": 9.496769382972557
+}

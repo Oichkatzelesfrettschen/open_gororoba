@@ -647,7 +647,25 @@ fn parse_curated_crossings(
             {
                 let elapsed = (dt - start_dt).num_minutes() as f64 / 60.0;
                 hours.push(elapsed);
+                continue;
             }
+        }
+
+        // Try OMNI format: SC YEAR DOY HR MIN SS ... (space-delimited)
+        if parts.len() >= 5
+            && let (Ok(y), Ok(d), Ok(h), Ok(m)) = (
+                parts[1].parse::<i32>(),
+                parts[2].parse::<u32>(),
+                parts[3].parse::<u32>(),
+                parts[4].parse::<u32>(),
+            )
+            && let Some(date) = NaiveDate::from_yo_opt(y, d)
+            && let Some(dt) = date.and_hms_opt(h, m, 0)
+            && dt >= start_dt
+            && dt <= end_dt
+        {
+            let elapsed = (dt - start_dt).num_minutes() as f64 / 60.0;
+            hours.push(elapsed);
         }
     }
 
