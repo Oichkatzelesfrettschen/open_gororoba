@@ -1458,7 +1458,7 @@ fn test_cd_multiply_into_sweep() {
         let b: Vec<f64> = (0..dim).map(|_| rng.r#gen()).collect();
         let reference = cd_multiply(&a, &b);
         let mut out = vec![0.0; dim];
-        let mut workspace = vec![0.0; 2 * dim];
+        let mut workspace = vec![0.0; super::arith::cd_multiply_workspace_len(dim)];
         cd_multiply_into(&a, &b, &mut out, &mut workspace);
         for i in 0..dim {
             assert!(
