@@ -555,36 +555,22 @@ pub fn euler_step_3d(
         }
     }
 
-    // Step 3: Convert back to primitives (simplified con2prim)
-    // For mass: rho = D / (sqrt_g * u^t) where D = cons[0]
-    // For B: B^i = cons[5+i] / sqrt_g
-    // For u, v: use the old values as starting point (crude but stable)
+    // Step 3: Convert back to primitives using Kastaun con2prim
     for i in ng..ng + grid.n1 {
         for j in ng..ng + grid.n2 {
             for k in ng..ng + grid.n3 {
                 let idx = grid.idx(i, j, k);
                 let mc_idx = mc.idx(i, n2t, j);
                 let sg = if mc_idx < mc.sqrt_neg_g.len() { mc.sqrt_neg_g[mc_idx] } else { 1.0 };
-                let g_tt = mc.gcov[mc_idx.min(mc.gcov.len() - 1)][0];
-                let ut = 1.0 / (-g_tt).sqrt(); // approximate for slow flow
+                let gcov = if mc_idx < mc.gcov.len() { mc.gcov[mc_idx] } else { [0.0; 5] };
+                let gcon = if mc_idx < mc.gcon.len() { mc.gcon[mc_idx] } else { [0.0; 5] };
 
+                let result = crate::con2prim::con2prim_kastaun(
+                    &cons_grid[idx], &gcov, &gcon, sg, eos, 1e-8, 1e-10,
+                );
+                let recovered = result.prims();
                 let p = prims.get_mut(idx);
-
-                // Recover density from conserved mass
-                let d_new = cons_grid[idx][0];
-                if sg * ut > 1e-30 {
-                    p[prims::RHO] = d_new / (sg * ut);
-                }
-
-                // Recover B-field directly (exactly conserved)
-                if sg > 1e-30 {
-                    p[prims::B1] = cons_grid[idx][5] / sg;
-                    p[prims::B2] = cons_grid[idx][6] / sg;
-                    p[prims::B3] = cons_grid[idx][7] / sg;
-                }
-
-                // Internal energy: crude estimate from energy conservation
-                // Keep old velocity (proper con2prim Newton would solve for v)
+                p.copy_from_slice(recovered);
             }
         }
     }
