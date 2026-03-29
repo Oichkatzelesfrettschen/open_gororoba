@@ -28,3 +28,4 @@ pub mod eos;
 pub mod grid;
 pub mod metric;
 pub mod prims;
+pub mod torus;
