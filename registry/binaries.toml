@@ -2037,3 +2037,216 @@ description = "SDO/HMI SHARP FITS IMAGE parser: reads 2D vector magnetogram cuto
 name = "ism-multichannel-null"
 crate = "gororoba_cli_physics"
 description = "Per-dimension multivariate null test for 20-channel MAG+PWS ISM embedding. Independently phase-randomizes each channel and recomputes CD to identify which channels contribute genuine cross-instrument phase coupling. Splits by epoch for temporal comparison."
+
+[[binary]]
+name = "audit-cd-cache"
+crate = "gororoba_cli_data"
+description = "Workspace binary discovered from crates/gororoba_cli_data/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "cd-null-hypothesis"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "cpd-report"
+crate = "gororoba_cli_data"
+description = "Workspace binary discovered from crates/gororoba_cli_data/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "dynamo-cd"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "extract-nk-arrays"
+crate = "gororoba_cli_data"
+description = "Workspace binary discovered from crates/gororoba_cli_data/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "geomag-cd-jerk"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "grmhd-torus-cd"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "hapi-fetch"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "heliosphere-associator-null-audit"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "heliosphere-baseline-comparison"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "heliosphere-beta-join"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "heliosphere-boxkite-alignment"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "heliosphere-boxkite-parity"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "heliosphere-decomposition-audit"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "heliosphere-effective-rank"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "heliosphere-embed-pca"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "heliosphere-fa-attribution"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "heliosphere-full-sweep"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "heliosphere-hybrid-detector"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "heliosphere-magnetic-takens"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "heliosphere-norm-dump"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "heliosphere-order-surplus"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "heliosphere-q2-transverse"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "heliosphere-quench-scan"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "heliosphere-synthetic-mhd"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "heliosphere-zd-audit"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "human-acquire"
+crate = "gororoba_cli_data"
+description = "Workspace binary discovered from crates/gororoba_cli_data/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "inspect-feature-cube"
+crate = "gororoba_cli_data"
+description = "Workspace binary discovered from crates/gororoba_cli_data/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "ism-rotation-measure-cd"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "jet-polarization-cd"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "magnetar-qpo-cd"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "mast-cd-vs-spectrogram"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "mast-multidiag-cd"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "sharp-flare-cd"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "solar-aia-cd"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "solar-cycle-crosscorr"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "solar-flare-cd"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "tokamak-cd-proof"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "turboquant-bench"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "turboquant-cd-fidelity"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "turboquant-comparison"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "turboquant-onnx-eval"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "turboquant-production"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "turboquant-profile"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "turboquant-real-kv"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "turboquant-sedenion-rotation"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "turboquant-simd-bench"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "turboquant-sweep"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "turboquant-validate"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "voyager-cdf-ingest"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "voyager-hapi-ingest"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "voyager-ism-multichannel"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+[[binary]]
+name = "voyager-pws-ingest"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
