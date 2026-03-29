@@ -178,6 +178,9 @@ fn compute_flux_from_prim(
     }
 
     // Induction flux: F_{B^j} = sqrt(-g) * (v^dir * B^j - v^j * B^dir)
+    // Must include sqrt(-g) for consistency with the hydro flux terms.
+    // The RHS normalization (dividing by sqrt(-g)) happens in euler_step_3d
+    // when converting from conserved back to primitive.
     let b_spatial = [b1, b2, b3];
     let v_spatial = [v1, v2, v3];
     let b_dir_val = b_spatial[dir];
