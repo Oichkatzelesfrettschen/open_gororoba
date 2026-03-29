@@ -22,7 +22,7 @@ fn main() -> Result<()> {
         .finish()
         .context("Failed to read feature cube CSV")?;
 
-    let cols = vec![
+    let cols = [
         "density_cm3",
         "speed_kms",
         "temperature_k",

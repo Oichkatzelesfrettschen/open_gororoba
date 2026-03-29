@@ -82,8 +82,8 @@ fn quantize_simd_style(values: &[f32], boundaries: &[f32]) -> Vec<u8> {
         .map(|&v| {
             let mut count = 0u8;
             // Unrolled comparison (compiler will auto-vectorize with -O2)
-            for i in 0..n_bounds {
-                if v > boundaries[i] {
+            for &b in &boundaries[..n_bounds] {
+                if v > b {
                     count += 1;
                 }
             }
@@ -102,8 +102,7 @@ fn quantize_batched(values: &[f32], boundaries: &[f32]) -> Vec<u8> {
     let chunks = n / 8;
     for chunk in 0..chunks {
         let base = chunk * 8;
-        for bi in 0..n_bounds {
-            let b = boundaries[bi];
+        for &b in &boundaries[..n_bounds] {
             for j in 0..8 {
                 if values[base + j] > b {
                     result[base + j] += 1;
@@ -208,24 +207,24 @@ fn main() -> Result<()> {
         throughput(scalar_ms)
     );
     println!(
-        "  Boundary search:   {:7.2} ms ({:.1} Mval/s) [{}x] correct={}",
+        "  Boundary search:   {:7.2} ms ({:.1} Mval/s) [{:.1}x] correct={}",
         boundary_ms,
         throughput(boundary_ms),
-        format!("{:.1}", scalar_ms / boundary_ms),
+        scalar_ms / boundary_ms,
         boundary_correct
     );
     println!(
-        "  SIMD-style:        {:7.2} ms ({:.1} Mval/s) [{}x] correct={}",
+        "  SIMD-style:        {:7.2} ms ({:.1} Mval/s) [{:.1}x] correct={}",
         simd_ms,
         throughput(simd_ms),
-        format!("{:.1}", scalar_ms / simd_ms),
+        scalar_ms / simd_ms,
         simd_correct
     );
     println!(
-        "  Batched:           {:7.2} ms ({:.1} Mval/s) [{}x] correct={}",
+        "  Batched:           {:7.2} ms ({:.1} Mval/s) [{:.1}x] correct={}",
         batched_ms,
         throughput(batched_ms),
-        format!("{:.1}", scalar_ms / batched_ms),
+        scalar_ms / batched_ms,
         batched_correct
     );
 
