@@ -53,6 +53,7 @@ pub mod psp_fields;
 pub mod psp_spc;
 pub mod psp_spi;
 pub mod psp_sqtn;
+pub mod sdo_hmi;
 pub mod sdss;
 pub mod soho_celias;
 pub mod solar_orbiter;
