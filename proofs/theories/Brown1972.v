@@ -54,7 +54,8 @@
       actually uses; the next Chapter VI work is any farther non-standard-
       model lift beside the broader Chapter III quadratic/conjugation lift.
     - Chapter VII, pp. 45-56, Theorems 7.3-7.18:
-      direct Rocq landing via `ZD_Criterion.v`, `C1538_MorZDSymmetry.v`, and
+      a Brown-facing wrapper surface now lives in `Brown1972ChapterVII.v`,
+      reusing `ZD_Criterion.v`, `C1538_MorZDSymmetry.v`, and
       `BrownAssessorEquivalence.v`.
     - Appendix C, pp. 78-89:
       Rust lane `crates/brown_1972/src/pl1_emulator.rs`; Rocq extraction bridge
@@ -110,13 +111,14 @@ From OpenGororoba Require Export
   Brown1972ChapterIII
   Brown1972ChapterV
   Brown1972ChapterIV
-  Brown1972ChapterVI.
+  Brown1972ChapterVI
+  Brown1972ChapterVII.
 
 Theorem brown1972_theorem_7_3_witness :
   sed_mul sed_zd_a sed_zd_b = sed_zero /\
   sed_mul sed_zd_b sed_zd_a = sed_zero.
 Proof.
-  exact C1538_sedenion_zd_symmetry.
+  exact brown1972_chapter_vii_theorem_7_3_witness.
 Qed.
 
 (** Brown Theorem 7.15, concrete fundamental criterion witness. *)
@@ -125,7 +127,7 @@ Theorem brown1972_theorem_7_15_fundamental :
     zd_a1_fundamental zd_a2_fundamental
     zd_b1_fundamental zd_b2_fundamental.
 Proof.
-  exact zd_fundamental_major_theorem.
+  exact brown1972_chapter_vii_theorem_7_15_fundamental.
 Qed.
 
 (** Appendix C / assessor bridge summary currently formalized in Rocq. *)
@@ -135,7 +137,7 @@ Theorem brown1972_appendix_c_structure_summary :
   (6 * 4 = 24) /\
   (ZDGraph.boxkite_signatures = 15 :: 10 :: 11 :: 12 :: 13 :: 14 :: 9 :: nil).
 Proof.
-  exact brown_demarrais_bridge.
+  exact brown1972_chapter_vii_assessor_bridge_summary.
 Qed.
 
 Theorem Brown1972_lane_compiles : True.
