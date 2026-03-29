@@ -123,6 +123,31 @@ Proof.
   - exact zd_fundamental_condition_iii_fused.
 Qed.
 
+(** The full Brown Cor. 7.16 symmetry-group reduction is still beyond the
+    current formalized orbit infrastructure. The current Brown-facing landing
+    is the finite structural summary that packages the fused 7.15 witness
+    together with the box-kite count and signature data that the zero-divisor
+    corpus already uses concretely. *)
+Theorem brown1972_chapter_vii_corollary_7_16_structural_summary :
+  is_zd_pair_major_theorem
+    zd_a1_fundamental zd_a2_fundamental
+    zd_b1_fundamental zd_b2_fundamental /\
+  (42 * 4 = 168) /\
+  (7 * 6 * 4 = 168) /\
+  (6 * 4 = 24) /\
+  (ZDGraph.boxkite_signatures = 15 :: 10 :: 11 :: 12 :: 13 :: 14 :: 9 :: nil).
+Proof.
+  split.
+  - exact brown1972_chapter_vii_theorem_7_15_fundamental.
+  - split.
+    + reflexivity.
+    + split.
+      * reflexivity.
+      * split.
+        { reflexivity. }
+        { exact DeMarraisAssessors.bk_g_indices. }
+Qed.
+
 Theorem brown1972_chapter_vii_boxkite_partition_summary :
   length assessors = 42 /\
   length boxkites = 7 /\
@@ -196,7 +221,15 @@ Record Brown1972ChapterVIIReusableAnchorSurface := {
   brown1972_ch7_anchor_fused_t715 :
     zd_condition_ii zd_a1_fundamental zd_a2_fundamental
                     zd_b1_fundamental zd_b2_fundamental /\
-    zd_condition_iii zd_a1_fundamental zd_b1_fundamental zd_a2_fundamental
+    zd_condition_iii zd_a1_fundamental zd_b1_fundamental zd_a2_fundamental;
+  brown1972_ch7_anchor_c716 :
+    is_zd_pair_major_theorem
+      zd_a1_fundamental zd_a2_fundamental
+      zd_b1_fundamental zd_b2_fundamental /\
+    (42 * 4 = 168) /\
+    (7 * 6 * 4 = 168) /\
+    (6 * 4 = 24) /\
+    (ZDGraph.boxkite_signatures = 15 :: 10 :: 11 :: 12 :: 13 :: 14 :: 9 :: nil)
 }.
 
 Definition brown1972_chapter_vii_reusable_anchor_surface :
@@ -217,5 +250,7 @@ Proof.
             brown1972_ch7_anchor_fused_t73_basis :=
               brown1972_chapter_vii_theorem_7_3_witness_fused_basis;
             brown1972_ch7_anchor_fused_t715 :=
-              brown1972_chapter_vii_theorem_7_15_fundamental_fused_support |}.
+              brown1972_chapter_vii_theorem_7_15_fundamental_fused_support;
+            brown1972_ch7_anchor_c716 :=
+              brown1972_chapter_vii_corollary_7_16_structural_summary |}.
 Defined.

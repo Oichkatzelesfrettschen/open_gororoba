@@ -35,7 +35,7 @@
     Rust mirror: de_marrais_2000::assessors (all_assessors, co_assessor_buckets). *)
 
 From Stdlib Require Import Arith PeanoNat List Bool Lia.
-From OpenGororoba Require Import BoxKite ZDGraph DeMarraisAssessors.
+From OpenGororoba Require Import BoxKite ZDGraph DeMarraisAssessors ZD_Criterion.
 Import ListNotations.
 
 Open Scope nat_scope.
@@ -268,4 +268,24 @@ Proof.
   split. { reflexivity. }
   split. { reflexivity. }
   exact DeMarraisAssessors.bk_g_indices.
+Qed.
+
+Theorem brown_demarrais_fundamental_bridge_fused :
+  is_zd_pair_major_theorem
+    zd_a1_fundamental zd_a2_fundamental
+    zd_b1_fundamental zd_b2_fundamental /\
+  (42 * 4 = 168) /\
+  (7 * 6 * 4 = 168) /\
+  (6 * 4 = 24) /\
+  (ZDGraph.boxkite_signatures = [15; 10; 11; 12; 13; 14; 9]).
+Proof.
+  split.
+  - exact zd_fundamental_major_theorem_fused.
+  - split.
+    + reflexivity.
+    + split.
+      * reflexivity.
+      * split.
+        { reflexivity. }
+        { exact DeMarraisAssessors.bk_g_indices. }
 Qed.

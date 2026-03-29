@@ -1495,6 +1495,71 @@ Proof.
   - apply (f_equal2 mkOct); apply (f_equal4 mkQuat); nra.
 Qed.
 
+Theorem brown1972_lemma_6_8_sedenion_fused : forall x : CDSed,
+  sed_mul_fused x brown1972_sed_adjoined_e =
+  sed_mul_fused brown1972_sed_adjoined_e (sed_conj x) <->
+  brown1972_oct_trace (sed_hi x) = 0%R.
+Proof.
+  intro x.
+  repeat rewrite sed_mul_fused_eq.
+  exact (brown1972_lemma_6_8_sedenion x).
+Qed.
+
+Theorem brown1972_lemma_6_9_i_sedenion_forward_fused : forall A B : CDSed,
+  brown1972_oct_trace (sed_hi A) = 0%R ->
+  sed_mul_fused A (sed_mul_fused brown1972_sed_adjoined_e B) =
+  sed_mul_fused brown1972_sed_adjoined_e (sed_mul_fused (sed_conj A) B).
+Proof.
+  intros A B Htr.
+  repeat rewrite sed_mul_fused_eq.
+  exact (brown1972_lemma_6_9_i_sedenion_forward A B Htr).
+Qed.
+
+Theorem brown1972_lemma_6_9_i_sedenion_family_fused : forall A : CDSed,
+  (forall B : CDSed,
+      sed_mul_fused A (sed_mul_fused brown1972_sed_adjoined_e B) =
+      sed_mul_fused brown1972_sed_adjoined_e (sed_mul_fused (sed_conj A) B)) <->
+  brown1972_oct_trace (sed_hi A) = 0%R.
+Proof.
+  intro A.
+  split.
+  - intro Hall.
+    apply (proj1 (brown1972_lemma_6_9_i_sedenion_family A)).
+    intro B.
+    specialize (Hall B).
+    repeat rewrite sed_mul_fused_eq in Hall.
+    exact Hall.
+  - intro Htr.
+    intro B.
+    exact (brown1972_lemma_6_9_i_sedenion_forward_fused A B Htr).
+Qed.
+
+Theorem brown1972_lemma_6_9_ii_sedenion_of_trace_conditions_fused :
+    forall A B : CDSed,
+  brown1972_oct_trace (sed_hi A) = 0%R ->
+  brown1972_oct_trace (sed_hi (sed_mul A B)) = 0%R ->
+  brown1972_oct_trace (sed_hi B) = 0%R ->
+  sed_mul_fused (sed_mul_fused brown1972_sed_adjoined_e A) B =
+  sed_mul_fused brown1972_sed_adjoined_e (sed_mul_fused B A).
+Proof.
+  intros A B Ha Hab Hb.
+  repeat rewrite sed_mul_fused_eq.
+  exact (brown1972_lemma_6_9_ii_sedenion_of_trace_conditions A B Ha Hab Hb).
+Qed.
+
+Theorem brown1972_lemma_6_9_iii_sedenion_of_trace_conditions_fused :
+    forall A B : CDSed,
+  brown1972_oct_trace (sed_hi (sed_mul A (sed_conj B))) = 0%R ->
+  brown1972_oct_trace (sed_hi B) = 0%R ->
+  sed_mul_fused (sed_mul_fused brown1972_sed_adjoined_e A)
+                (sed_mul_fused brown1972_sed_adjoined_e B) =
+  sed_neg (sed_mul_fused B (sed_conj A)).
+Proof.
+  intros A B Hab Hb.
+  repeat rewrite sed_mul_fused_eq.
+  exact (brown1972_lemma_6_9_iii_sedenion_of_trace_conditions A B Hab Hb).
+Qed.
+
 Record Brown1972ChapterVIAdjoinedConjugationDecompositionSurface
   (Ext : Type)
   (trace_hi : Ext -> R)
@@ -1747,7 +1812,37 @@ Record Brown1972ChapterVIFusedBaseExtensionSurface := {
       sed_mul_fused (brown1972_sed_poly_embed (oct_e i))
                     (brown1972_sed_poly_embed (oct_e j)) =
       brown1972_sed_oct_embed
-        (oct_neg (oct_mul_fused (oct_conj (oct_e j)) (oct_e i)))
+        (oct_neg (oct_mul_fused (oct_conj (oct_e j)) (oct_e i)));
+  brown1972_ch6_fused_l68 :
+    forall x : CDSed,
+      sed_mul_fused x brown1972_sed_adjoined_e =
+      sed_mul_fused brown1972_sed_adjoined_e (sed_conj x) <->
+      brown1972_oct_trace (sed_hi x) = 0%R;
+  brown1972_ch6_fused_l69_i_forward :
+    forall A B : CDSed,
+      brown1972_oct_trace (sed_hi A) = 0%R ->
+      sed_mul_fused A (sed_mul_fused brown1972_sed_adjoined_e B) =
+      sed_mul_fused brown1972_sed_adjoined_e (sed_mul_fused (sed_conj A) B);
+  brown1972_ch6_fused_l69_i_family :
+    forall A : CDSed,
+      (forall B : CDSed,
+          sed_mul_fused A (sed_mul_fused brown1972_sed_adjoined_e B) =
+          sed_mul_fused brown1972_sed_adjoined_e (sed_mul_fused (sed_conj A) B)) <->
+      brown1972_oct_trace (sed_hi A) = 0%R;
+  brown1972_ch6_fused_l69_ii :
+    forall A B : CDSed,
+      brown1972_oct_trace (sed_hi A) = 0%R ->
+      brown1972_oct_trace (sed_hi (sed_mul A B)) = 0%R ->
+      brown1972_oct_trace (sed_hi B) = 0%R ->
+      sed_mul_fused (sed_mul_fused brown1972_sed_adjoined_e A) B =
+      sed_mul_fused brown1972_sed_adjoined_e (sed_mul_fused B A);
+  brown1972_ch6_fused_l69_iii :
+    forall A B : CDSed,
+      brown1972_oct_trace (sed_hi (sed_mul A (sed_conj B))) = 0%R ->
+      brown1972_oct_trace (sed_hi B) = 0%R ->
+      sed_mul_fused (sed_mul_fused brown1972_sed_adjoined_e A)
+                    (sed_mul_fused brown1972_sed_adjoined_e B) =
+      sed_neg (sed_mul_fused B (sed_conj A))
 }.
 
 Definition brown1972_chapter_vi_fused_base_extension_surface :
@@ -1767,5 +1862,15 @@ Proof.
             brown1972_ch6_fused_t66_ii_basis :=
               brown1972_theorem_6_6_ii_sedenion_fused_basis;
             brown1972_ch6_fused_t66_iii_basis :=
-              brown1972_theorem_6_6_iii_sedenion_fused_basis |}.
+              brown1972_theorem_6_6_iii_sedenion_fused_basis;
+            brown1972_ch6_fused_l68 :=
+              brown1972_lemma_6_8_sedenion_fused;
+            brown1972_ch6_fused_l69_i_forward :=
+              brown1972_lemma_6_9_i_sedenion_forward_fused;
+            brown1972_ch6_fused_l69_i_family :=
+              brown1972_lemma_6_9_i_sedenion_family_fused;
+            brown1972_ch6_fused_l69_ii :=
+              brown1972_lemma_6_9_ii_sedenion_of_trace_conditions_fused;
+            brown1972_ch6_fused_l69_iii :=
+              brown1972_lemma_6_9_iii_sedenion_of_trace_conditions_fused |}.
 Defined.
