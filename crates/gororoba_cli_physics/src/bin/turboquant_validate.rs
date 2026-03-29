@@ -145,20 +145,14 @@ fn validate_config(
             real_scores[s] = q.iter().zip(k.iter()).map(|(a, b)| a * b).sum();
         }
 
-        // Compressed scores via KeyCompressor
-        // Extract this head's compressed keys
-        let head_keys = &compressed_keys.keys[h * seq_len..(h + 1) * seq_len];
-        let mut comp_scores = vec![0.0f64; seq_len];
-        for (s, key) in head_keys.iter().enumerate() {
-            // Term 1: <q, k_mse>
-            comp_scores[s] = q
-                .iter()
-                .zip(key.k_mse.iter())
-                .map(|(&qv, &kv)| qv * kv as f64)
-                .sum();
-            // Note: full QJL correction requires S matrix access.
-            // This benchmarks the MSE-only attention score quality.
-        }
+        // Compressed scores via KeyCompressor (full QJL correction)
+        // Build a sub-batch for this head's keys
+        let head_keys = compressed_keys.keys[h * seq_len..(h + 1) * seq_len].to_vec();
+        let head_batch = cd_kernel::turboquant::compressor::CompressedKeyBatch {
+            keys: head_keys,
+            shape: (1, 1, seq_len, d),
+        };
+        let comp_scores = key_comp.attention_scores(q, 1, &head_batch);
 
         // Cosine similarity between real and compressed score vectors
         let cos = cosine_sim(&real_scores, &comp_scores);

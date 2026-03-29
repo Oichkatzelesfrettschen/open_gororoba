@@ -51,6 +51,7 @@ pub mod cuda;
 pub mod dispatch;
 pub mod e8_rotation;
 pub mod grouping;
+pub mod hierarchical;
 pub mod pipeline;
 pub mod qjl;
 pub mod rotation;
