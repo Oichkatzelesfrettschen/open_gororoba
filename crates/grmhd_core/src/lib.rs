@@ -24,8 +24,10 @@
 //! - Gammie, McKinney & Toth (2003) "HARM: A Numerical Scheme for GRMHD"
 //! - Noble et al. (2006) "Primitive variable solvers for conservative GRMHD"
 
+pub mod cons;
 pub mod eos;
 pub mod grid;
 pub mod metric;
 pub mod prims;
+pub mod recon;
 pub mod torus;
