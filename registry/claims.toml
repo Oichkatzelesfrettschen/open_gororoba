@@ -10972,3 +10972,39 @@ where_stated = "data/output/heliosphere/ablations/mast_mirnov_cd_real.json, mast
 last_verified = "2026-03-28"
 formal_proof = ""
 status_note = "Multi-shot experimental validation. Three MAST shots show three distinct CD signatures. Shot 28787's 47% A drop is particularly significant -- it demonstrates the CD associator can detect disruptive events in real tokamak data. Pure Rust pipeline: mast-fetch (ureq+rayon) -> zarrs (blosc) -> cd_kernel -> JSON."
+
+[[claim]]
+id = "C-1597"
+status = "Verified"
+statement = "GRMHD flux computation optimized from 70ms/step to 21.7ms/step (3.23x speedup) at 64x64x16 resolution via three-layer optimization: (1) cached metric eliminates ~900K sin/cos per step, (2) wide::f64x4 SIMD for momentum+induction flux, (3) rayon parallel all directional sweeps, source terms, prim2con, and con2prim. 189% CPU utilization. 50 tests pass, zero clippy warnings."
+where_stated = "crates/grmhd_core/src/flux.rs, crates/grmhd_core/src/cons.rs"
+last_verified = "2026-03-29"
+formal_proof = ""
+status_note = "Performance claim. Benchmark: /usr/bin/time on grmhd-torus-cd --n1 64 --n2 64 --n3 16 --n-steps 100. Baseline 70ms from prior session single-threaded measurement."
+
+[[claim]]
+id = "C-1598"
+status = "Verified"
+statement = "8-channel order surplus (Omega_mv) at 32D shows regime-dependent advantage over 4-channel: inner heliosphere (r<30 AU) 8-ch Omega_mv = 0.31-0.45 vs 4-ch 0.13-0.37 (plasma channels add genuine cross-channel order). Outer heliosphere (r>60 AU) 8-ch Omega_mv drops below 4-ch (0.01-0.12 vs 0.23-0.37) due to plasma data sparsity. Optimal channel count is distance-dependent, not universal."
+where_stated = "data/output/heliosphere/ablations/order_surplus_by_rbin_32d_8ch.csv, order_surplus_by_rbin_32d_opt.csv"
+last_verified = "2026-03-29"
+formal_proof = ""
+status_note = "Multi-channel comparison. 8-channel uses Bx,By,Bz,dB/B,n_p,v_sw,T_p,v_A. 4-channel uses Bx,By,Bz,dB/B. Both at 32D with f32 precision, 5 null iterations, 5 AU bins."
+
+[[claim]]
+id = "C-1599"
+status = "Verified"
+statement = "MAST dimension sweep (8D-256D, 2-channel Mirnov) confirms tower depth trichotomy for experimental tokamak data: stable/disruption ratio peaks at 8D (1.185) and 16D (1.167), monotonically degrades to 1.010 at 256D. Channel starvation with 2 channels makes 128D+ embedding useless for disruption discrimination. This is consistent with the heliosphere 4-channel finding where 32D is optimal -- both systems saturate at dim ~ 8 * n_channels."
+where_stated = "data/output/heliosphere/ablations/mast_dim_sweep.json"
+last_verified = "2026-03-29"
+formal_proof = ""
+status_note = "Cross-domain validation of the tower depth trichotomy. MAST data has 2 independent Mirnov channels, so discrimination peaks at 8-16D (= 4-8 delay steps x 2 channels). The dim ~ 8*n_channels saturation rule holds across heliosphere (4ch -> 32D sweet spot) and tokamak (2ch -> 8-16D sweet spot) domains."
+
+[[claim]]
+id = "C-1600"
+status = "Verified"
+statement = "Three-crate SIMD strategy for the CD pipeline established: wide (compile-time f64x4, GRMHD fixed-size arrays), pulp (runtime AVX-512 dispatch, CD kernel upgrade path for f64x8 single-pass), simsimd (hand-tuned C distance kernels for 128D+ embedding distances). Split rule: dim 4-64 = pulp/wide inline, dim 128+ = simsimd, dim 8 fixed = wide."
+where_stated = "crates/grmhd_core/Cargo.toml (wide), Cargo.toml (pulp, simsimd workspace deps)"
+last_verified = "2026-03-29"
+formal_proof = ""
+status_note = "Architecture decision claim based on exhaustive API review of all three crates from source. Pulp 0.22 provides V3 (AVX2) and V4 (AVX-512) tiers. SimSIMD 5.9 has i8 dot bug (fixed in 6.x). Wide 0.7 has no AVX-512."
