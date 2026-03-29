@@ -1,0 +1,126 @@
+%% Fig 49: Storm Propagation Cascade -- X9.3 Sep 2017 tracked SDO->ACE->V2
+%% 3-panel horizontal: source AR, 1 AU ICME, ISM response
+%% Data: C-1617, solar-storm-propagation binary output
+%%
+%% Each panel shows CD timeseries at a different heliocentric distance.
+%% Connected by arrows with propagation delay labels.
+\begin{tikzpicture}
+
+%% Panel 1: SDO SHARP (0 AU) -- source active region
+\begin{axis}[
+  name=sdo,
+  at={(0,0)},
+  width=0.33\textwidth,
+  height=0.4\textwidth,
+  xmin=0, xmax=26,
+  ymin=0, ymax=18,
+  xlabel={\sffamily Window index},
+  ylabel={\sffamily CD (32D)},
+  xlabel style={font=\sffamily\tiny, white},
+  ylabel style={font=\sffamily\tiny, white},
+  tick label style={font=\sffamily\tiny, white},
+  title={\sffamily\scriptsize\bfseries SDO SHARP (0 AU)},
+  title style={white},
+  axis background/.style={fill=black!95},
+  axis line style={white!70},
+  tick style={white!70},
+  grid=major,
+  major grid style={gray!15, dashed},
+]
+  \addplot[OIyellow, thick, mark=none, smooth] coordinates {
+    (0,0.8) (2,1.2) (4,1.5) (6,1.8) (8,2.1) (10,3.5)
+    (12,9.3) (14,15.3) (16,8.2) (18,4.1) (20,2.5)
+    (22,1.9) (24,1.5) (26,1.2)
+  };
+  %% Flare peak annotation
+  \node[OIyellow, font=\sffamily\tiny] at (axis cs:14,16.5) {X9.3 peak};
+  \draw[OIyellow, ->] (axis cs:14,16) -- (axis cs:14,15.5);
+\end{axis}
+
+%% Panel 2: ACE L1 (1 AU) -- ICME passage
+\begin{axis}[
+  name=ace,
+  at={(sdo.east)},
+  anchor=west,
+  xshift=0.8cm,
+  width=0.33\textwidth,
+  height=0.4\textwidth,
+  xmin=0, xmax=264,
+  ymin=0, ymax=1500,
+  xlabel={\sffamily Hours from Sep 4},
+  ylabel={\sffamily CD (32D)},
+  xlabel style={font=\sffamily\tiny, white},
+  ylabel style={font=\sffamily\tiny, white},
+  tick label style={font=\sffamily\tiny, white},
+  title={\sffamily\scriptsize\bfseries ACE L1 (1 AU)},
+  title style={white},
+  axis background/.style={fill=black!95},
+  axis line style={white!70},
+  tick style={white!70},
+  grid=major,
+  major grid style={gray!15, dashed},
+]
+  %% ICME shaded region (Sep 7-9, hours 72-120)
+  \fill[OIvermillion!20] (axis cs:72,0) rectangle (axis cs:120,1500);
+  \node[OIvermillion!60, font=\sffamily\tiny, rotate=90, anchor=south]
+    at (axis cs:96,750) {ICME};
+
+  \addplot[OIorange, thick, mark=none] coordinates {
+    (0,191) (12,72) (24,54) (36,37) (48,82)
+    (60,120) (72,460) (84,769) (96,1140)
+    (108,618) (120,400) (132,280) (144,200)
+    (156,150) (168,120) (180,90) (192,70)
+    (204,55) (216,45) (228,38) (240,32) (252,28) (264,25)
+  };
+  %% Peak annotation
+  \node[OIorange, font=\sffamily\tiny, anchor=south]
+    at (axis cs:96,1150) {A=1140};
+\end{axis}
+
+%% Panel 3: V2 PWS ISM (125 AU)
+\begin{axis}[
+  name=v2,
+  at={(ace.east)},
+  anchor=west,
+  xshift=0.8cm,
+  width=0.33\textwidth,
+  height=0.4\textwidth,
+  xmin=2018, xmax=2020.5,
+  ymin=0, ymax=0.005,
+  xlabel={\sffamily Year},
+  ylabel={\sffamily CD (32D)},
+  xlabel style={font=\sffamily\tiny, white},
+  ylabel style={font=\sffamily\tiny, white},
+  tick label style={font=\sffamily\tiny, white},
+  title={\sffamily\scriptsize\bfseries V2 PWS ISM (125 AU)},
+  title style={white},
+  axis background/.style={fill=black!95},
+  axis line style={white!70},
+  tick style={white!70},
+  grid=major,
+  major grid style={gray!15, dashed},
+]
+  %% ISM floor -- essentially flat (no CME signal at 125 AU in PWS-only)
+  \addplot[OIskyblue, thick, mark=none] coordinates {
+    (2018.0,0.001) (2018.5,0.0012) (2019.0,0.0011)
+    (2019.5,0.0013) (2020.0,0.0010) (2020.5,0.0011)
+  };
+  \node[white!60, font=\sffamily\tiny, anchor=center]
+    at (axis cs:2019.2,0.004) {ISM floor};
+  \node[white!60, font=\sffamily\tiny, anchor=center]
+    at (axis cs:2019.2,0.0035) {(no CME signal)};
+\end{axis}
+
+%% Propagation arrows between panels
+\draw[white, thick, ->, shorten >=3pt, shorten <=3pt]
+  ([xshift=3pt]sdo.east) -- ([xshift=-3pt]ace.west)
+  node[midway, above, font=\sffamily\tiny, white] {$\sim$32 hr};
+\draw[white, thick, ->, shorten >=3pt, shorten <=3pt]
+  ([xshift=3pt]ace.east) -- ([xshift=-3pt]v2.west)
+  node[midway, above, font=\sffamily\tiny, white] {$\sim$1 yr};
+
+%% Title
+\node[white, font=\sffamily\small\bfseries, anchor=south]
+  at ([yshift=8pt]ace.north) {Solar Storm Propagation: X9.3 Sep 2017 (C-1617)};
+
+\end{tikzpicture}

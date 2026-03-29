@@ -1,0 +1,131 @@
+%% Fig 48: V2 Lifetime Triptych -- 3-panel vertical strip
+%% Top: raw A(r) at 32D, Middle: dimension-normalized overlay, Bottom: enrichment
+%% Data: V2 MAG+PLS lifetime (C-1624), 1977-2007, 2-82 AU
+%%
+%% Shared x-axis (heliocentric distance), aligned grids
+\begin{tikzpicture}
+
+%% Panel 1 (top): Raw CD median vs distance
+\begin{axis}[
+  name=raw,
+  at={(0,0)},
+  width=\textwidth,
+  height=0.25\textwidth,
+  xmin=0, xmax=90,
+  ymin=4, ymax=12,
+  ylabel={\sffamily CD Median (32D)},
+  ylabel style={font=\sffamily\tiny, white},
+  tick label style={font=\sffamily\tiny, white},
+  xticklabels={},
+  axis background/.style={fill=black!95},
+  axis line style={white!70},
+  tick style={white!70},
+  grid=major,
+  major grid style={gray!10, dashed},
+  title={\sffamily\scriptsize\bfseries Raw Associator A(r)},
+  title style={white},
+]
+  \addplot[OIorange, thick, mark=*, mark size=1pt] coordinates {
+    (2,5.97) (4,6.91) (5,6.50) (7,6.26) (9,7.09)
+    (11,6.41) (13,7.23) (15,8.27) (18,7.10) (20,6.17)
+    (22,5.76) (25,5.67) (28,5.73) (31,5.55) (34,6.25)
+    (37,5.61) (40,6.23) (43,6.07) (46,5.99) (49,7.74)
+    (52,7.77) (55,7.14) (58,5.94) (61,6.54) (64,6.58)
+    (67,6.36) (70,6.45) (73,7.60) (76,7.84) (79,9.90)
+    (82,10.11)
+  };
+  %% Heliosheath rise annotation
+  \draw[white, ->, thin] (axis cs:75,10.5) -- (axis cs:80,10.0);
+  \node[white, font=\sffamily\tiny, anchor=east] at (axis cs:75,10.8) {Heliosheath};
+\end{axis}
+
+%% Panel 2 (middle): MAG-only vs Combined CD
+\begin{axis}[
+  name=compare,
+  at={(raw.south west)},
+  anchor=north west,
+  yshift=-0.3cm,
+  width=\textwidth,
+  height=0.25\textwidth,
+  xmin=0, xmax=90,
+  ymin=2, ymax=7,
+  ylabel={\sffamily MAG vs Combined},
+  ylabel style={font=\sffamily\tiny, white},
+  tick label style={font=\sffamily\tiny, white},
+  xticklabels={},
+  axis background/.style={fill=black!95},
+  axis line style={white!70},
+  tick style={white!70},
+  grid=major,
+  major grid style={gray!10, dashed},
+  title={\sffamily\scriptsize\bfseries MAG-only (blue) vs MAG+PLS (orange)},
+  title style={white},
+  legend style={
+    at={(0.03,0.97)}, anchor=north west,
+    fill=black!80, draw=gray!40,
+    text=white, font=\sffamily\tiny,
+  },
+]
+  %% MAG-only median
+  \addplot[OIskyblue, thick, mark=none] coordinates {
+    (2,3.39) (4,3.95) (5,3.75) (7,3.59) (9,3.96)
+    (11,3.63) (13,4.06) (15,4.59) (18,3.98) (20,3.52)
+    (22,3.23) (25,3.19) (28,3.19) (31,3.11) (34,3.52)
+    (37,3.20) (40,3.50) (43,3.41) (46,3.33) (49,4.26)
+    (52,4.29) (55,3.96) (58,3.29) (61,3.74) (64,3.73)
+    (67,3.53) (70,3.66) (73,4.18) (76,4.37) (79,5.55)
+    (82,5.49)
+  };
+  %% Combined median (same as Panel 1)
+  \addplot[OIorange, thick, mark=none, dashed] coordinates {
+    (2,5.97) (4,6.91) (5,6.50) (7,6.26) (9,7.09)
+    (11,6.41) (13,7.23) (15,8.27) (18,7.10) (20,6.17)
+    (22,5.76) (25,5.67) (28,5.73) (31,5.55) (34,6.25)
+    (37,5.61) (40,6.23) (43,6.07) (46,5.99) (49,7.74)
+    (52,7.77) (55,7.14) (58,5.94) (61,6.54) (64,6.58)
+    (67,6.36) (70,6.45) (73,7.60) (76,7.84) (79,9.90)
+    (82,10.11)
+  };
+  \legend{MAG-only, MAG+PLS combined}
+\end{axis}
+
+%% Panel 3 (bottom): Enrichment ratio
+\begin{axis}[
+  name=enrich,
+  at={(compare.south west)},
+  anchor=north west,
+  yshift=-0.3cm,
+  width=\textwidth,
+  height=0.25\textwidth,
+  xmin=0, xmax=90,
+  ymin=1.65, ymax=1.90,
+  xlabel={\sffamily Heliocentric Distance (AU)},
+  ylabel={\sffamily Enrichment Ratio},
+  xlabel style={font=\sffamily\small, white},
+  ylabel style={font=\sffamily\tiny, white},
+  tick label style={font=\sffamily\tiny, white},
+  axis background/.style={fill=black!95},
+  axis line style={white!70},
+  tick style={white!70},
+  grid=major,
+  major grid style={gray!10, dashed},
+  title={\sffamily\scriptsize\bfseries Plasma Enrichment Ratio (C-1624)},
+  title style={white},
+]
+  %% Reference line at 1.78
+  \addplot[OIgreen, thick, dashed, domain=0:90] {1.78};
+  %% Enrichment data
+  \addplot[OIgreen, thick, mark=*, mark size=1.5pt] coordinates {
+    (2,1.76) (4,1.75) (5,1.73) (7,1.74) (9,1.79)
+    (11,1.76) (13,1.78) (15,1.80) (18,1.79) (20,1.75)
+    (22,1.78) (25,1.78) (28,1.79) (31,1.78) (34,1.78)
+    (37,1.75) (40,1.78) (43,1.78) (46,1.80) (49,1.82)
+    (52,1.81) (55,1.80) (58,1.81) (61,1.75) (64,1.76)
+    (67,1.80) (70,1.76) (73,1.82) (76,1.80) (79,1.79)
+    (82,1.84)
+  };
+  \node[OIgreen, font=\sffamily\tiny\bfseries, anchor=west]
+    at (axis cs:45, 1.86) {1.78$\times$ constant};
+\end{axis}
+
+\end{tikzpicture}
