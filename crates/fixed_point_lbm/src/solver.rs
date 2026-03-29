@@ -78,7 +78,72 @@ impl<T: LbmStorage> LbmDomain<T> {
         total
     }
 
-    /// Run one BGK collision + streaming step.
+    /// BGK collision only (Phase 1 / Phi1).
+    /// Updates f in-place with post-collision values. Does NOT stream.
+    /// Used by TwoPhaseSystem integration (cosmic_scheduler).
+    pub fn collide(&mut self) {
+        let n = self.n_cells();
+        let inv_tau = 1.0f32 / self.tau;
+
+        for idx in 0..n {
+            let mut rho_local = 0.0f32;
+            let mut mx = 0.0f32;
+            let mut my = 0.0f32;
+            let mut mz_val = 0.0f32;
+
+            for i in 0..19 {
+                let fi = self.f[idx][i].to_f32();
+                rho_local += fi;
+                mx += d3q19::C[i][0] as f32 * fi;
+                my += d3q19::C[i][1] as f32 * fi;
+                mz_val += d3q19::C[i][2] as f32 * fi;
+            }
+
+            let (ux, uy, uz) = if rho_local > 1e-20 {
+                (mx / rho_local, my / rho_local, mz_val / rho_local)
+            } else {
+                (0.0, 0.0, 0.0)
+            };
+
+            self.rho[idx] = rho_local;
+            self.u[idx] = [ux, uy, uz];
+
+            let u_sq = ux * ux + uy * uy + uz * uz;
+            for (i, (&ci, &wi)) in d3q19::C.iter().zip(d3q19::W.iter()).enumerate() {
+                let eu = ci[0] as f32 * ux + ci[1] as f32 * uy + ci[2] as f32 * uz;
+                let w = wi as f32;
+                let f_eq = w * rho_local * (1.0 + 3.0 * eu + 4.5 * eu * eu - 1.5 * u_sq);
+                let fi = self.f[idx][i].to_f32();
+                self.f[idx][i] = T::from_f32(fi - (fi - f_eq) * inv_tau);
+            }
+        }
+    }
+
+    /// Streaming only (Phase 2 / Phi2).
+    /// Moves post-collision distributions to neighbor cells.
+    pub fn stream(&mut self) {
+        let (nx, ny, nz) = (self.nx, self.ny, self.nz);
+        let n = self.n_cells();
+        let mut f_new = vec![[T::zero(); 19]; n];
+
+        for idx in 0..n {
+            let z = idx / (nx * ny);
+            let y = (idx / nx) % ny;
+            let x = idx % nx;
+
+            for (i, &ci) in d3q19::C.iter().enumerate() {
+                let xn = (x as i32 + ci[0] + nx as i32) as usize % nx;
+                let yn = (y as i32 + ci[1] + ny as i32) as usize % ny;
+                let zn = (z as i32 + ci[2] + nz as i32) as usize % nz;
+                let idx_next = xn + nx * (yn + ny * zn);
+                f_new[idx_next][i] = self.f[idx][i];
+            }
+        }
+
+        self.f = f_new;
+    }
+
+    /// Run one BGK collision + streaming step (fused).
     pub fn step(&mut self) {
         let (nx, ny, nz) = (self.nx, self.ny, self.nz);
         let n = self.n_cells();
