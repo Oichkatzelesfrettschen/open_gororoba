@@ -135,7 +135,9 @@ path = "src/bin/makew.rs"
 [dependencies]
 # Workspace domain crates (used by dispatcher + thesis + orchestration bins)
 gororoba_algebra = { path = "../gororoba_algebra", features = ["lie"] }
+algebra_analysis = { workspace = true }
 algebra_experimental = { path = "../algebra_experimental" }
+cd_kernel = { path = "../cd_kernel" }
 cosmology_core = { path = "../cosmology_core" }
 gr_core = { path = "../gr_core" }
 materials_core = { path = "../materials_core" }

@@ -15,6 +15,7 @@ pub mod lloyd_max;
 pub mod mult_table;
 pub mod parallel_primitives;
 pub mod traits;
+pub mod turboquant;
 #[cfg(target_arch = "x86_64")]
 pub mod x87_ext80;
 #[cfg(target_arch = "x86_64")]

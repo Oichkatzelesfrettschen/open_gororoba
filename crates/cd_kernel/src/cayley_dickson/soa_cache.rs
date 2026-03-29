@@ -31,8 +31,8 @@ impl SoaEmbeddingCache {
     pub fn store(&mut self, idx: usize, vector: &[f32]) {
         debug_assert!(idx < self.n_vectors);
         debug_assert!(vector.len() >= self.dim);
-        for c in 0..self.dim {
-            self.data[c * self.n_vectors + idx] = vector[c];
+        for (c, &val) in vector[..self.dim].iter().enumerate() {
+            self.data[c * self.n_vectors + idx] = val;
         }
     }
 
