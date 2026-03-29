@@ -528,8 +528,12 @@ fn compute_rhs_3d_inner(
                 }
 
                 // Accumulate divergence
-                // Safety: grid.idx(i, j, k) is injective, so different (j, k)
-                // pairs never write to the same rhs cell.
+                // SAFETY: `v` indexes into a conserved-variable array of size
+                // NCONS * n_total. The rayon partition ensures each thread
+                // writes to a disjoint cell range (unique (j,k) per task).
+                // `base` points to valid heap memory from the RHS Vec whose
+                // lifetime spans this entire function. grid.idx is injective,
+                // so different (j,k) pairs never alias the same rhs cell.
                 if face_i > ng {
                     let cell_l = grid.idx(face_i - 1, j, k);
                     let base = unsafe { rhs_p.add(cell_l * NCONS) };
@@ -623,6 +627,9 @@ fn compute_rhs_3d_inner(
                         unsafe { *ep.add(i * n2t + face_j) = f_hll[5]; }
                     }
 
+                    // SAFETY: `v` indexes into NCONS * n_total RHS array.
+                    // Rayon partitions (i, k) pairs so each thread writes to
+                    // disjoint cells. `rp` is valid heap memory from the RHS Vec.
                     if face_j > ng {
                         let cell_l = grid.idx(i, face_j - 1, k);
                         let base = unsafe { rp.add(cell_l * NCONS) };
@@ -695,6 +702,9 @@ fn compute_rhs_3d_inner(
                     let f_hll = riemann::hll_flux(&ws.flux_l, &ws.flux_r, &ws.cons_l, &ws.cons_r, sl, sr);
 
                     // Accumulate phi divergence (periodic: both cells always exist)
+                    // SAFETY: `v` indexes into NCONS * n_total RHS array.
+                    // Rayon partitions (i, j) pairs so each thread writes to
+                    // disjoint cells. `rp` is valid heap memory from the RHS Vec.
                     let cell_l = grid.idx(i, j, km1);
                     let base_l = unsafe { rp.add(cell_l * NCONS) };
                     for (v, &fv) in f_hll.iter().enumerate() {
@@ -737,6 +747,10 @@ fn compute_rhs_3d_inner(
                     &p, &grid.metric, grid.r(i), grid.theta(j), eos, dr_phys, dth_phys,
                 );
 
+                // SAFETY: `v` indexes into NCONS * n_total RHS array.
+                // Rayon partitions (i, j) pairs; grid.idx is injective so
+                // each (i, j, k) triple maps to a unique offset. `rp` points
+                // to valid heap memory from the RHS Vec.
                 let base = unsafe { rp.add(idx * NCONS) };
                 for (v, &sv) in src.iter().enumerate() {
                     unsafe { *base.add(v) += sg * sv; }
@@ -791,6 +805,9 @@ pub fn euler_step_3d(
                     &{let mut p = [0.0; NPRIM]; p.copy_from_slice(prims.get(idx)); p},
                     gcov, eos, sg,
                 );
+                // SAFETY: idx = grid.idx(i,j,k) is injective and bounded by
+                // n_total. cg_p points to cons_grid (length n_total). Rayon
+                // partitions (i,j) pairs so each thread writes disjoint cells.
                 unsafe { *cg_p.add(idx) = cons_val; }
             }
         });
@@ -881,6 +898,10 @@ pub fn euler_step_3d(
                 );
                 let recovered = result.prims();
                 let base = idx * NPRIM;
+                // SAFETY: base = idx * NPRIM where idx is bounded by n_total
+                // and NPRIM is the stride. pp points to prims.data (length
+                // n_total * NPRIM). Rayon partitions (i,j) pairs so each
+                // thread writes disjoint cells. grid.idx is injective.
                 unsafe {
                     let p = pp.add(base);
                     if use_ct {

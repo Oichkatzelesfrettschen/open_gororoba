@@ -275,6 +275,10 @@ fn aosoa_pad(n: usize) -> usize {
 #[derive(Copy, Clone)]
 pub struct UnsafeAoSoAPtr<T>(pub *mut T);
 
+// SAFETY: UnsafeAoSoAPtr wraps a pointer into a Vec-backed buffer. Send+Sync
+// is safe because: (1) rayon's par_iter partitions index ranges so no two
+// threads access the same offset, (2) the backing Vec outlives all rayon tasks
+// via the enclosing scope, (3) writes target disjoint offsets only.
 unsafe impl<T> Send for UnsafeAoSoAPtr<T> {}
 unsafe impl<T> Sync for UnsafeAoSoAPtr<T> {}
 
@@ -286,6 +290,9 @@ impl<T> UnsafeAoSoAPtr<T> {
     /// to the same address occurs.
     #[inline(always)]
     pub unsafe fn read(&self, offset: usize) -> T {
+        // SAFETY: offset is computed from grid indices (i,j,k,q) bounded by
+        // grid dimensions. The total buffer length is n1*n2*n3*Q which exceeds
+        // any valid offset. The caller guarantees no concurrent write.
         unsafe { core::ptr::read(self.0.add(offset)) }
     }
 
@@ -296,6 +303,9 @@ impl<T> UnsafeAoSoAPtr<T> {
     /// (read or write) to the same address occurs.
     #[inline(always)]
     pub unsafe fn write(&self, offset: usize, val: T) {
+        // SAFETY: offset is computed from grid indices (i,j,k,q) bounded by
+        // grid dimensions. The total buffer length is n1*n2*n3*Q which exceeds
+        // any valid offset. The caller guarantees no concurrent access.
         unsafe { core::ptr::write(self.0.add(offset), val) }
     }
 }
