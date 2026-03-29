@@ -64,6 +64,7 @@ pub mod hierarchical;
 pub mod hybrid;
 pub mod optimized;
 pub mod pipeline;
+pub mod polar;
 pub mod qjl;
 pub mod rotation;
 pub mod rotation_diagnostics;
