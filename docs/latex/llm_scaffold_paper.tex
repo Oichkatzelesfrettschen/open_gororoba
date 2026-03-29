@@ -2804,6 +2804,142 @@ Schema integrity is verified by content hashes in
 \texttt{registry/schema\_signatures.toml}.
 
 
+%% ===================================================================
+%% Chapter: Heliospheric Atlas and Cross-Domain Validation
+%% Added 2026-03-29: Lion's Commentary figures and atlas data
+%% ===================================================================
+\chapter{Heliospheric Atlas}
+\label{ch:heliospheric-atlas}
+
+The Cayley--Dickson associator provides a single uniform diagnostic spanning
+the entire heliosphere, from the innermost measurements at Mercury's orbit
+(0.32~AU, MESSENGER) through the deep interstellar medium (167~AU, Voyager~1).
+This chapter presents the atlas as a series of publication-quality figures
+that encode the principal results of the cross-domain validation program.
+
+\section{Radial Profile: 0.3--170~AU}
+
+\begin{figure}[htbp]
+\centering
+\resizebox{\textwidth}{!}{\input{figures/fig_44_heliospheric_atlas_1d}}
+\caption{CD heliospheric atlas at 32D.
+The associator median spans five orders of magnitude from the ISM floor
+($A \approx 0.017$) to the ACE solar-maximum peak ($A \approx 282$).
+Annotated boundary zones: Mercury magnetosphere, inner/outer solar wind,
+heliosheath, termination shock (94~AU), heliopause (122~AU), and ISM.
+Data from MESSENGER, ACE, Voyager~1+2 MAG and PLS, and SHARP.}
+\label{fig:heliospheric-atlas}
+\end{figure}
+
+\section{Solar Cycle Modulation at 1~AU}
+
+\begin{figure}[htbp]
+\centering
+\resizebox{\textwidth}{!}{\input{figures/fig_45_solar_cycle_heartbeat}}
+\caption{Solar cycle CD heartbeat at ACE L1 (2000--2022).
+The yearly median CD tracks the sunspot number with $18.9\times$ amplitude
+ratio between solar maximum (2003: $A = 282$) and solar minimum
+(2009: $A = 14.9$).  Solar Cycles 23, 24, and 25 are labeled.}
+\label{fig:solar-cycle}
+\end{figure}
+
+\section{Dimension Scaling: Algebraic vs Physical}
+
+\begin{figure}[htbp]
+\centering
+\resizebox{0.85\textwidth}{!}{\input{figures/fig_46_dimension_scaling_grid}}
+\caption{Dimension scaling grid.
+The solar cycle ratio ($18.2$--$18.9\times$) is invariant across all
+embedding dimensions from 8D to 64D, while absolute CD scales by
+$\sim 4.83\times$ per doubling.  Horizontal bands encode physics;
+vertical gradient encodes algebra (C-1632).}
+\label{fig:dim-scaling}
+\end{figure}
+
+\section{Per-Channel Multivariate Null}
+
+\begin{figure}[htbp]
+\centering
+\resizebox{0.75\textwidth}{!}{\input{figures/fig_47_per_channel_null_radar}}
+\caption{Per-channel null radar for 20-channel ISM embedding (C-1620).
+The radial B$_x$ component dominates at $2.59\times$ (pre-2021), while
+all 16 PWS spectral channels show significant cross-instrument coupling
+($1.15$--$1.36\times$).  Post-2021 epoch (dashed) shows weakened coupling.}
+\label{fig:channel-null}
+\end{figure}
+
+\section{Voyager~2 Lifetime Triptych}
+
+\begin{figure}[htbp]
+\centering
+\resizebox{\textwidth}{!}{\input{figures/fig_48_v2_lifetime_triptych}}
+\caption{V2 MAG+PLS lifetime triptych (1977--2007, 2--82~AU).
+Top: raw CD median.  Middle: MAG-only (blue) vs combined (orange).
+Bottom: plasma enrichment ratio, constant at $1.78\times$ across all
+heliocentric distances (C-1624).}
+\label{fig:v2-triptych}
+\end{figure}
+
+\section{Storm Propagation Cascade}
+
+\begin{figure}[htbp]
+\centering
+\resizebox{\textwidth}{!}{\input{figures/fig_49_storm_propagation_cascade}}
+\caption{Solar storm propagation: X9.3 Sep~2017 (C-1617).
+Left: SDO SHARP source AR.  Center: ACE L1 ICME passage ($\sim$32~hr delay).
+Right: V2 PWS ISM floor (no CME signal at 125~AU in PWS-only embedding).}
+\label{fig:storm-cascade}
+\end{figure}
+
+\section{Distance-Independent Plasma Enrichment}
+
+\begin{figure}[htbp]
+\centering
+\resizebox{\textwidth}{!}{\input{figures/fig_50_plasma_enrichment_constant}}
+\caption{Plasma enrichment ratio: constant $1.78\times$ from 2 to 82~AU (C-1624).
+Adding PLS channels (V$_\mathrm{bulk}$, $n_p$, V$_\mathrm{th}$) to the B-field
+embedding enriches CD by a distance-independent factor, demonstrating that
+MAG--PLS cross-channel coupling is intrinsic to the solar wind.}
+\label{fig:plasma-enrichment}
+\end{figure}
+
+\section{Anomaly Census}
+
+\begin{figure}[htbp]
+\centering
+\resizebox{\textwidth}{!}{\input{figures/fig_51_anomaly_sigma_histogram}}
+\caption{Anomaly sigma histogram across 122 datasets (C-1618).
+5{,}973 anomalies detected with Tukey fence ($k = 2$).  ISM transients
+dominate the extreme tail (up to $140.9\sigma$).}
+\label{fig:anomaly-histogram}
+\end{figure}
+
+\section{Universality Class}
+
+\begin{figure}[htbp]
+\centering
+\resizebox{0.85\textwidth}{!}{\input{figures/fig_52_universality_class}}
+\caption{CD universality class across 8 physical domains (C-1627).
+Each domain supplies its own deformation of the shared algebraic
+response pattern: quench at boundaries, amplification at turbulence
+onset, and floor in quiescent regimes.}
+\label{fig:universality}
+\end{figure}
+
+\section{CD Kernel: Lion's Commentary Dependency Graph}
+
+\begin{figure}[htbp]
+\centering
+\resizebox{0.7\textwidth}{!}{\input{figures/fig_53_lions_dependency_graph}}
+\caption{Lion's Commentary module dependency graph for the CD kernel
+(5{,}681~LOC across 14 modules).  Pedagogical ordering from algebraic
+foundations (Section~1) through non-associativity analysis (Section~2),
+specialized dimensions (Section~3), SIMD optimization (Section~4),
+to measurement theory (Section~5).}
+\label{fig:lions-dag}
+\end{figure}
+
+
 \chapter{Reproducibility}
 \label{ch:reproducibility}
 
