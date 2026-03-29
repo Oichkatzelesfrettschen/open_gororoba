@@ -26,6 +26,7 @@
 
 pub mod cons;
 pub mod evolve;
+pub mod flux;
 pub mod eos;
 pub mod grid;
 pub mod metric;
