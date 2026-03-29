@@ -41,8 +41,10 @@
 //! - Ailon-Chazelle (STOC 2006) -- fast JL construction D*WHT*D'
 //! - HadaCore (arXiv 2412.08832) -- GPU Tensor Core FWHT (future CUDA path)
 
+pub mod adaptive_bits;
 pub mod backend;
 pub mod baselines;
+pub mod cd_fidelity;
 pub mod compressor;
 #[cfg(feature = "cuda")]
 pub mod cuda;
