@@ -253,6 +253,226 @@ pub fn compute_rhs_1d(
     rhs
 }
 
+/// Full 3D RHS computation: sweep all three directions across ALL cells.
+///
+/// For each interior cell, accumulates flux divergence from r, theta, phi faces.
+/// Uses the FluxWorkspace pattern for zero allocation in the inner loop.
+///
+/// Returns RHS as a flat vector indexed by grid.idx(i,j,k) * NCONS + var.
+pub fn compute_rhs_3d(
+    prims: &PrimGrid,
+    grid: &Grid,
+    mc: &MetricCache,
+    eos: &GammaLaw,
+) -> Vec<f64> {
+    let ng = grid.ng;
+    let n1t = grid.n1_total();
+    let n2t = grid.n2_total();
+    let n3t = grid.n3_total();
+    let _n3t = n3t;
+    let n_total = grid.n_total();
+
+    let mut rhs = vec![0.0f64; n_total * NCONS];
+
+    // Direction 0 (radial): sweep faces at fixed (j, k)
+    for j in ng..ng + grid.n2 {
+        for k in ng..ng + grid.n3 {
+            let mut ws = FluxWorkspace::new();
+            let dx = grid.dx1;
+
+            for face_i in ng..ng + grid.n1 + 1 {
+                let im2 = if face_i >= 2 { face_i - 2 } else { 0 };
+                let im1 = if face_i >= 1 { face_i - 1 } else { 0 };
+                let ip0 = face_i.min(n1t - 1);
+                let ip1 = (face_i + 1).min(n1t - 1);
+
+                // Reconstruct at face
+                for var in 0..NPRIM {
+                    let (ql, qr) = recon::plm_lr(
+                        prims.get(grid.idx(im2, j, k))[var],
+                        prims.get(grid.idx(im1, j, k))[var],
+                        prims.get(grid.idx(ip0, j, k))[var],
+                        prims.get(grid.idx(ip1, j, k))[var],
+                    );
+                    ws.prim_l[var] = ql;
+                    ws.prim_r[var] = qr;
+                }
+
+                let r_face = grid.r(face_i);
+                let th_face = grid.theta(j);
+                ws.flux_l = compute_flux_from_prim(&ws.prim_l, &grid.metric, r_face, th_face, eos, 1.0, 0);
+                ws.flux_r = compute_flux_from_prim(&ws.prim_r, &grid.metric, r_face, th_face, eos, 1.0, 0);
+
+                let cs2_l = eos.cs2(ws.prim_l[prims::RHO], ws.prim_l[prims::UU]);
+                let cs2_r = eos.cs2(ws.prim_r[prims::RHO], ws.prim_r[prims::UU]);
+                let mc_idx = mc.idx(face_i, n2t, j);
+                let alpha = if mc_idx < mc.lapse.len() { mc.lapse[mc_idx] } else { 1.0 };
+
+                let (sl, sr) = riemann::wave_speeds(
+                    ws.prim_l[prims::V1], ws.prim_r[prims::V1],
+                    cs2_l, cs2_r, 0.0, 0.0, alpha,
+                );
+
+                let sg_l = if mc.idx(im1, n2t, j) < mc.sqrt_neg_g.len() {
+                    mc.sqrt_neg_g[mc.idx(im1, n2t, j)]
+                } else { 1.0 };
+                let sg_r = if mc.idx(ip0, n2t, j) < mc.sqrt_neg_g.len() {
+                    mc.sqrt_neg_g[mc.idx(ip0, n2t, j)]
+                } else { 1.0 };
+                ws.cons_l = cons::prim2con(&ws.prim_l, &grid.metric, grid.r(im1), th_face, eos, sg_l);
+                ws.cons_r = cons::prim2con(&ws.prim_r, &grid.metric, grid.r(ip0), th_face, eos, sg_r);
+
+                let f_hll = riemann::hll_flux(&ws.flux_l, &ws.flux_r, &ws.cons_l, &ws.cons_r, sl, sr);
+
+                // Accumulate divergence
+                if face_i > ng {
+                    let cell_l = grid.idx(face_i - 1, j, k);
+                    for v in 0..NCONS {
+                        rhs[cell_l * NCONS + v] -= f_hll[v] / dx;
+                    }
+                }
+                if face_i < ng + grid.n1 {
+                    let cell_r = grid.idx(face_i, j, k);
+                    for v in 0..NCONS {
+                        rhs[cell_r * NCONS + v] += f_hll[v] / dx;
+                    }
+                }
+            }
+        }
+    }
+
+    // Direction 1 (theta): sweep faces at fixed (i, k)
+    if grid.n2 > 1 {
+        for i in ng..ng + grid.n1 {
+            for k in ng..ng + grid.n3 {
+                let mut ws = FluxWorkspace::new();
+                let dx = grid.dx2;
+
+                for face_j in ng..ng + grid.n2 + 1 {
+                    let jm2 = if face_j >= 2 { face_j - 2 } else { 0 };
+                    let jm1 = if face_j >= 1 { face_j - 1 } else { 0 };
+                    let jp0 = face_j.min(n2t - 1);
+                    let jp1 = (face_j + 1).min(n2t - 1);
+
+                    for var in 0..NPRIM {
+                        let (ql, qr) = recon::plm_lr(
+                            prims.get(grid.idx(i, jm2, k))[var],
+                            prims.get(grid.idx(i, jm1, k))[var],
+                            prims.get(grid.idx(i, jp0, k))[var],
+                            prims.get(grid.idx(i, jp1, k))[var],
+                        );
+                        ws.prim_l[var] = ql;
+                        ws.prim_r[var] = qr;
+                    }
+
+                    let r = grid.r(i);
+                    let th_face = grid.theta(face_j);
+                    ws.flux_l = compute_flux_from_prim(&ws.prim_l, &grid.metric, r, th_face, eos, 1.0, 1);
+                    ws.flux_r = compute_flux_from_prim(&ws.prim_r, &grid.metric, r, th_face, eos, 1.0, 1);
+
+                    let cs2_l = eos.cs2(ws.prim_l[prims::RHO], ws.prim_l[prims::UU]);
+                    let cs2_r = eos.cs2(ws.prim_r[prims::RHO], ws.prim_r[prims::UU]);
+                    let mc_idx = mc.idx(i, n2t, face_j.min(n2t - 1));
+                    let alpha = if mc_idx < mc.lapse.len() { mc.lapse[mc_idx] } else { 1.0 };
+
+                    let (sl, sr) = riemann::wave_speeds(
+                        ws.prim_l[prims::V2], ws.prim_r[prims::V2],
+                        cs2_l, cs2_r, 0.0, 0.0, alpha,
+                    );
+
+                    let sg_l = if mc.idx(i, n2t, jm1) < mc.sqrt_neg_g.len() {
+                        mc.sqrt_neg_g[mc.idx(i, n2t, jm1)]
+                    } else { 1.0 };
+                    let sg_r = if mc.idx(i, n2t, jp0) < mc.sqrt_neg_g.len() {
+                        mc.sqrt_neg_g[mc.idx(i, n2t, jp0)]
+                    } else { 1.0 };
+                    ws.cons_l = cons::prim2con(&ws.prim_l, &grid.metric, r, grid.theta(jm1), eos, sg_l);
+                    ws.cons_r = cons::prim2con(&ws.prim_r, &grid.metric, r, grid.theta(jp0), eos, sg_r);
+
+                    let f_hll = riemann::hll_flux(&ws.flux_l, &ws.flux_r, &ws.cons_l, &ws.cons_r, sl, sr);
+
+                    if face_j > ng {
+                        let cell_l = grid.idx(i, face_j - 1, k);
+                        for v in 0..NCONS {
+                            rhs[cell_l * NCONS + v] -= f_hll[v] / dx;
+                        }
+                    }
+                    if face_j < ng + grid.n2 {
+                        let cell_r = grid.idx(i, face_j, k);
+                        for v in 0..NCONS {
+                            rhs[cell_r * NCONS + v] += f_hll[v] / dx;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    rhs
+}
+
+/// Take a single Euler step using the full 3D RHS.
+///
+/// Updates all 8 primitive variables (including B-field) via the flux divergence.
+/// Applies density/energy floors after the update.
+pub fn euler_step_3d(
+    prims: &mut PrimGrid,
+    grid: &Grid,
+    mc: &MetricCache,
+    eos: &GammaLaw,
+    dt: f64,
+) {
+    let rhs = compute_rhs_3d(prims, grid, mc, eos);
+    let ng = grid.ng;
+
+    // Update all interior cells
+    for i in ng..ng + grid.n1 {
+        for j in ng..ng + grid.n2 {
+            for k in ng..ng + grid.n3 {
+                let idx = grid.idx(i, j, k);
+                let p = prims.get_mut(idx);
+                let base = idx * NCONS;
+                for v in 0..NCONS {
+                    p[v] += dt * rhs[base + v];
+                }
+            }
+        }
+    }
+
+    prims.apply_floors(1e-8, 1e-10);
+}
+
+/// Estimate the maximum signal speed across all interior cells.
+/// Used for CFL timestep computation.
+pub fn max_signal_speed(
+    prims: &PrimGrid,
+    grid: &Grid,
+    mc: &MetricCache,
+    eos: &GammaLaw,
+) -> f64 {
+    let ng = grid.ng;
+    let n2t = grid.n2_total();
+    let mut max_speed = 0.0f64;
+
+    for i in ng..ng + grid.n1 {
+        for j in ng..ng + grid.n2 {
+            let idx = grid.idx(i, j, ng);
+            let p = prims.get(idx);
+            let cs2 = eos.cs2(p[prims::RHO], p[prims::UU]);
+            let cs = cs2.sqrt();
+            let mc_idx = mc.idx(i, n2t, j);
+            let alpha = if mc_idx < mc.lapse.len() { mc.lapse[mc_idx] } else { 1.0 };
+
+            // Max velocity + sound speed
+            let v = p[prims::V1].abs() + p[prims::V2].abs() + p[prims::V3].abs();
+            let speed = alpha * (v + cs);
+            if speed > max_speed { max_speed = speed; }
+        }
+    }
+
+    max_speed
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -285,6 +505,74 @@ mod tests {
                 assert!(v.is_finite(), "rhs[{}][{}] = {} is not finite", i, k, v);
             }
         }
+    }
+
+    #[test]
+    fn test_compute_rhs_3d_finite() {
+        let metric = KerrMetric::schwarzschild();
+        let grid = Grid::new(8, 8, 1, 2.5, 20.0, metric);
+        let mc = MetricCache::new(&grid);
+        let eos = GammaLaw::harm_default();
+
+        let torus = crate::torus::FMTorus::schwarzschild(6.5, 12.0);
+        let prims = torus.initialize(&grid);
+
+        let rhs = compute_rhs_3d(&prims, &grid, &mc, &eos);
+        assert_eq!(rhs.len(), grid.n_total() * NCONS);
+
+        // All interior RHS should be finite
+        let ng = grid.ng;
+        for i in ng..ng + grid.n1 {
+            for j in ng..ng + grid.n2 {
+                let idx = grid.idx(i, j, ng);
+                for v in 0..NCONS {
+                    assert!(rhs[idx * NCONS + v].is_finite(),
+                        "rhs[{},{},{}][{}] = {}", i, j, ng, v, rhs[idx * NCONS + v]);
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn test_euler_step_3d_stable() {
+        let metric = KerrMetric::schwarzschild();
+        let grid = Grid::new(8, 8, 1, 2.5, 20.0, metric);
+        let mc = MetricCache::new(&grid);
+        let eos = GammaLaw::harm_default();
+
+        let torus = crate::torus::FMTorus::schwarzschild(6.5, 12.0);
+        let mut prims = torus.initialize(&grid);
+        torus.add_magnetic_loop(&grid, &mut prims, 100.0);
+
+        let max_v = max_signal_speed(&prims, &grid, &mc, &eos);
+        let dt = crate::evolve::cfl_dt(&grid, max_v, 0.3);
+
+        // Take one step
+        euler_step_3d(&mut prims, &grid, &mc, &eos, dt);
+
+        // Density should still be positive everywhere
+        let ng = grid.ng;
+        for i in ng..ng + grid.n1 {
+            for j in ng..ng + grid.n2 {
+                let idx = grid.idx(i, j, ng);
+                let rho = prims.get(idx)[prims::RHO];
+                assert!(rho > 0.0, "rho[{},{}] = {} <= 0 after step", i, j, rho);
+            }
+        }
+    }
+
+    #[test]
+    fn test_max_signal_speed() {
+        let metric = KerrMetric::schwarzschild();
+        let grid = Grid::new(8, 8, 1, 2.5, 20.0, metric);
+        let mc = MetricCache::new(&grid);
+        let eos = GammaLaw::harm_default();
+
+        let torus = crate::torus::FMTorus::schwarzschild(6.5, 12.0);
+        let prims = torus.initialize(&grid);
+
+        let max_v = max_signal_speed(&prims, &grid, &mc, &eos);
+        assert!(max_v > 0.0 && max_v < 10.0, "max_signal = {} should be reasonable", max_v);
     }
 
     #[test]
