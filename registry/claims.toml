@@ -11080,3 +11080,12 @@ where_stated = "data/output/heliosphere/ablations/ism_multichannel_20ch_64d.json
 last_verified = "2026-03-29"
 formal_proof = ""
 status_note = "First multi-instrument CD dimension sweep in the ISM. 8414-8426 joined hourly records from V1 MAG (48-sec CDF) + V1 PWS (16-channel spectral CDF). Null test needed to separate signal from noise amplification."
+
+[[claim]]
+id = "C-1609"
+status = "Provisional"
+statement = "V1 20-channel ISM regime change 2023->2024: A_median jumps from 13 to 1427 (110x) at 128D. The 4-channel MAG-only ISM floor is STABLE at A~0.012 through 2025, so the anomaly is in cross-instrument (MAG-PWS) coupling, not MAG alone. Possible explanations: (a) real ISM dynamic structure at 163-167 AU (first detection of ISM variability by multi-instrument CD), (b) PWS instrument gain/mode change in 2024, (c) MAG-PWS temporal alignment artifact. The 2020-2021 data also shows elevated median (55-66) compared to 2022-2023 (12-13), suggesting possible solar cycle modulation of ISM wave activity."
+where_stated = "data/output/heliosphere/ablations/ism_multichannel_20ch_64d.json (aggregate), yearly analysis via voyager-ism-multichannel"
+last_verified = "2026-03-29"
+formal_proof = ""
+status_note = "Provisional: the 110x jump needs instrument investigation before scientific interpretation. If PWS calibration is stable, this is a genuine ISM discovery. Contact Adam Szabo (NASA/GSFC) re: V1 PWS operational status 2024."
