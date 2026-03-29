@@ -5,7 +5,7 @@
 updated = "2026-02-10"
 status = "active"
 status_token = "ACTIVE"
-action_count = 36
+action_count = 38
 status_allowlist = ["todo", "in_progress", "done", "blocked", "deferred"]
 priority_allowlist = ["high", "medium", "low"]
 
@@ -445,3 +445,26 @@ dependencies = []
 acceptance_criteria = ["next_action status is constrained to declared enum values.", "next_action dependencies are explicit and machine-parseable."]
 evidence_refs = []
 
+[[action]]
+id = "NA-037"
+area = "proofs"
+title = "Finalize Brown 7.19(iii) Public Surface"
+description = "Audit downstream Brown imports, replace any remaining legacy/OCR references with the corrected reversal-order theorem, and remove the cyclic placeholder from the active Chapter VII proof lane once compatibility shims are no longer needed."
+priority = "high"
+status = "todo"
+status_token = "TODO"
+dependencies = []
+acceptance_criteria = ["next_action status is constrained to declared enum values.", "next_action dependencies are explicit and machine-parseable.", "The Brown Chapter VII anchor surface points only at the corrected 7.19(iii) theorem."]
+evidence_refs = ["proofs/theories/Brown1972ChapterVII.v", "proofs/theories/SStructuralGaps.v"]
+
+[[action]]
+id = "NA-038"
+area = "proofs"
+title = "Complete Moreno 1.16 Arbitrary-a Concrete Bridge"
+description = "Use the new explicit builder and non-canonical witness package to connect Moreno's concrete arbitrary-a V_lambda hypotheses to the H_a-module dimension theorem, then expose the full paper-facing arbitrary-a bridge in Moreno1997.v."
+priority = "high"
+status = "todo"
+status_token = "TODO"
+dependencies = []
+acceptance_criteria = ["next_action status is constrained to declared enum values.", "next_action dependencies are explicit and machine-parseable.", "The Moreno paper lane exports a source-faithful arbitrary-a Theorem 1.16 bridge beyond the current witness-only scaffolding."]
+evidence_refs = ["proofs/theories/C1542_MorVlambdaOrbit.v", "proofs/theories/Moreno1997.v"]

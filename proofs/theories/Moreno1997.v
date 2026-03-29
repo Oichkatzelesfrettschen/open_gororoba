@@ -31,11 +31,13 @@
     Remaining Moreno-specific Rocq backlog:
     - Theorem 1.16 concrete arbitrary-a CD instantiation; the abstract
       H_a-orbit/module proof, the canonical octonion profile, and a first
-      canonical concrete-to-abstract dimension bridge are now formalized, but
-      the bridge from arbitrary concrete V_lambda subspaces to that module
-      interface remains open; the next exact substeps are (a) a finite-dim
-      H_a-module witness for the arbitrary-a V_lambda lane and (b) a bridge
-      from Moreno's concrete V_lambda hypotheses to that witness
+      canonical concrete-to-abstract dimension bridge are now formalized, the
+      explicit arbitrary-a builder is landed, and a first non-canonical
+      witness package now routes through the paper lane, but the bridge from
+      arbitrary concrete V_lambda subspaces to that module interface remains
+      open; the next exact substeps are (a) a finite-dim H_a-module witness
+      for the arbitrary-a V_lambda lane and (b) a bridge from Moreno's
+      concrete V_lambda hypotheses to that witness
     - Theorem 2.9 full arbitrary-alternative CD discharge; the abstract iff
       core and the canonical witness lane are both formalized, but the bridge
       from Moreno's CD hypotheses to the explicit side conditions remains open
@@ -148,6 +150,14 @@ Proof.
   exact
     (moreno16_arbitrary_a_dim_mod4
        (moreno16_build_arbitrary_a_concrete_hypotheses a Ha_unit Ha_pure W)).
+Qed.
+
+Theorem Moreno1997_theorem_1_16_noncanonical_witness_bridge :
+  forall W : Moreno16ArbitraryAVlambdaWitness,
+    Nat.modulo (moreno16_arbitrary_vlambda_dim W) 4 = 0.
+Proof.
+  intro W.
+  exact (moreno16_arbitrary_witness_dim_mod4 W).
 Qed.
 
 Theorem Moreno1997_lane_compiles : True.
