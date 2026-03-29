@@ -78,6 +78,20 @@ impl PrimGrid {
             }
         }
     }
+
+    /// Apply B-field ceiling to prevent div(B)-driven runaway.
+    /// Caps each component at +/- b_max. This is a pragmatic stability
+    /// measure for the mini-solver, not a substitute for proper CT.
+    pub fn apply_b_ceiling(&mut self, b_max: f64) {
+        for idx in 0..self.n_cells {
+            let start = idx * NPRIM;
+            for b in [B1, B2, B3] {
+                let val = self.data[start + b];
+                if val > b_max { self.data[start + b] = b_max; }
+                if val < -b_max { self.data[start + b] = -b_max; }
+            }
+        }
+    }
 }
 
 #[cfg(test)]

@@ -652,6 +652,10 @@ pub fn euler_step_3d(
     }
 
     prims.apply_floors(1e-8, 1e-10);
+
+    // B-field ceiling: prevent div(B)-driven runaway while CT is being debugged.
+    // Caps B at 10x the initial maximum. Pragmatic for CD analysis.
+    prims.apply_b_ceiling(1e3);
 }
 
 /// Estimate the maximum signal speed across all interior cells.
