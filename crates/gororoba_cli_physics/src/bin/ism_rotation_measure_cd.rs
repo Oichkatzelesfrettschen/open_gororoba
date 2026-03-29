@@ -202,12 +202,12 @@ fn main() -> Result<()> {
 
     let interp = format!(
         "ISM RM 4 phases: WIM A={:.4}, HII A={:.4}, SNR A={:.4}, Turbulent A={:.4}. Turb/WIM={:.1}x.",
-        results.get(0).map(|r| r.mean_a).unwrap_or(0.0),
+        results.first().map(|r| r.mean_a).unwrap_or(0.0),
         results.get(1).map(|r| r.mean_a).unwrap_or(0.0),
         results.get(2).map(|r| r.mean_a).unwrap_or(0.0),
         results.get(3).map(|r| r.mean_a).unwrap_or(0.0),
-        if results.get(0).map(|r| r.mean_a).unwrap_or(0.0) > 1e-15 {
-            results.get(3).map(|r| r.mean_a).unwrap_or(0.0) / results.get(0).map(|r| r.mean_a).unwrap_or(1.0)
+        if results.first().map(|r| r.mean_a).unwrap_or(0.0) > 1e-15 {
+            results.get(3).map(|r| r.mean_a).unwrap_or(0.0) / results.first().map(|r| r.mean_a).unwrap_or(1.0)
         } else { 0.0 }
     );
     println!("\n  {}", interp);
