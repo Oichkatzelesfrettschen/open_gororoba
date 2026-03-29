@@ -1041,6 +1041,10 @@ path = "src/bin/ism_multichannel_null.rs"
 name = "solar-cycle-crosscorr"
 path = "src/bin/solar_cycle_crosscorr.rs"
 
+[[bin]]
+name = "voyager-mag-pls-cd"
+path = "src/bin/voyager_mag_pls_cd.rs"
+
 # ---- GUT (1) ----
 
 [[bin]]
