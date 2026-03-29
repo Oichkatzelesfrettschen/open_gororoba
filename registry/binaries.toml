@@ -2017,3 +2017,23 @@ description = "Pure Rust MAST Zarr downloader using ureq HTTP + rayon parallel c
 name = "mast-mirnov-cd"
 crate = "gororoba_cli_physics"
 description = "CD analysis on FAIR-MAST experimental Mirnov coil data (Zarr v2, blosc/lz4). Reads n=2 and n=odd toroidal mode signals, builds 32D Takens embedding, computes sliding-window CD associator. Pure Rust: zarrs + cd_kernel."
+
+[[binary]]
+name = "solar-storm-propagation"
+crate = "gororoba_cli_physics"
+description = "Solar storm propagation tracker: traces CME from SDO SHARP (0 AU) through ACE L1 (1 AU) to Voyager ISM (~125 AU). Computes CD at each segment with uniform embedding for cross-distance comparison. Supports hourly CD profile and storm ratio calculation."
+
+[[binary]]
+name = "cd-anomaly-scan"
+crate = "gororoba_cli_physics"
+description = "Systematic CD anomaly scanner using Tukey fence (IQR * k) outlier detection across all datasets. Scans JSON/CSV files in ablations directory, ranks anomalies by sigma above median, reports top events per dataset and globally."
+
+[[binary]]
+name = "sdo-fits-parse"
+crate = "gororoba_cli_physics"
+description = "SDO/HMI SHARP FITS IMAGE parser: reads 2D vector magnetogram cutouts (Bp, Br, Bt) via fitsio 0.21. Computes spatial statistics including RMS, unsigned flux proxy, skewness, kurtosis. Ready for per-pixel CD embedding."
+
+[[binary]]
+name = "ism-multichannel-null"
+crate = "gororoba_cli_physics"
+description = "Per-dimension multivariate null test for 20-channel MAG+PWS ISM embedding. Independently phase-randomizes each channel and recomputes CD to identify which channels contribute genuine cross-instrument phase coupling. Splits by epoch for temporal comparison."
