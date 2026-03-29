@@ -373,6 +373,10 @@ name = "voyager-hapi-ingest"
 path = "src/bin/voyager_hapi_ingest.rs"
 
 [[bin]]
+name = "hapi-fetch"
+path = "src/bin/hapi_fetch.rs"
+
+[[bin]]
 name = "heliosphere-order-surplus"
 path = "src/bin/heliosphere_order_surplus.rs"
 
