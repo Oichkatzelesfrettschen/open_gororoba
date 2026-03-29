@@ -1,0 +1,17 @@
+{
+  "n_rows": 177,
+  "embedding_dim": 32,
+  "n_channels": 12,
+  "multi_n_embed": 175,
+  "multi_eff_rank": 9,
+  "multi_cd_mean": 0.35653454964499265,
+  "multi_cd_max": 1.5715662967244006,
+  "delay_n_embed": 161,
+  "delay_cd_mean": 0.17017758461194804,
+  "delay_cd_max": 1.5282553791370672,
+  "pre_flare_cd_mean": 0.31476646656623675,
+  "flare_cd_mean": 0.4747826184017366,
+  "post_flare_cd_mean": 0.39863220273112815,
+  "flare_enhancement": 1.5083646729624784,
+  "interpretation": "FLARE DETECTED: 1.5x CD enhancement during X9.3 with 12 channels at 32D"
+}
