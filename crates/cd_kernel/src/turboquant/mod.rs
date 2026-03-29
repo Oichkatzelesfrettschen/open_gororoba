@@ -77,6 +77,7 @@ pub mod simd_codebook;
 pub mod simd_evaluation;
 pub mod synthesized;
 pub mod wht_crate_scope;
+pub mod workspace;
 pub mod zd_bias;
 #[cfg(feature = "vulkan")]
 pub mod vulkan;

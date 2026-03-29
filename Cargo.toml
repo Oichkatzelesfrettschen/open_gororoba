@@ -217,7 +217,7 @@ crossbeam-utils = "0.8"      # CachePadded (false-sharing), Backoff, scoped thre
 # Buffer/alignment/zero-copy layer
 aligned-vec = "0.6"          # AVec/ABox: runtime-aligned allocation for SIMD + cache
 dyn-stack = "0.11"           # Reusable scratch workspace (dynamic temp arrays, no alloc churn)
-bytemuck = "1.25"            # POD/slice casting (cast_slice, cast_ref -- lean zero-copy)
+bytemuck = { version = "1.25", features = ["derive"] }  # POD/slice casting + derive macros
 smallvec = "1.15"            # Inline small buffers, heap spill only when needed
 
 # Memory-mapped I/O (memmap2 already in data_core/cli_physics directly)
