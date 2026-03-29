@@ -126,36 +126,44 @@ fn bench_mse_pipeline(
     let use_wht = rotation_name != "haar";
     let use_e8 = rotation_name == "e8" && d == 128;
 
-    // MSE-only pipeline
+    // MSE-only pipeline (must match the rotation used by prod)
     let tq_mse = if use_e8 {
-        let cfg = cd_kernel::turboquant::config::TurboQuantConfig::recommended(d, bits);
+        let mut cfg = cd_kernel::turboquant::config::TurboQuantConfig::recommended(d, bits);
+        cfg.rotation = cd_kernel::turboquant::config::RotationMethod::E8Block;
         TurboQuantMSE::from_config(&cfg, bits, 42)
     } else {
         TurboQuantMSE::new(d, bits, 42, use_wht)
     };
-    // Prod pipeline (MSE + QJL)
-    let tq_prod = TurboQuantProd::new(d, bits, 42, use_wht, None);
+    // Prod pipeline (MSE + QJL) -- must use same rotation as MSE
+    let tq_prod = if use_e8 {
+        // E8 prod not yet supported -- use MSE-only for E8 bench
+        TurboQuantProd::new(d, bits, 42, true, None) // WHT fallback for QJL
+    } else {
+        TurboQuantProd::new(d, bits, 42, use_wht, None)
+    };
 
     let mut buf = vec![0.0f64; 3 * d];
 
-    // --- Quantize benchmark ---
+    // --- Quantize benchmark (MSE stage) ---
     let t0 = Instant::now();
+    let mut mse_compressed: Vec<_> = Vec::with_capacity(n);
+    for v in vectors {
+        mse_compressed.push(tq_mse.quantize(v, &mut buf));
+    }
+    let quantize_ms = t0.elapsed().as_secs_f64() * 1000.0;
+
+    // Also quantize with prod for QJL benchmarks (uses its own rotation)
     let mut compressed: Vec<_> = Vec::with_capacity(n);
     for v in vectors {
         compressed.push(tq_prod.quantize(v, &mut buf));
     }
-    let quantize_ms = t0.elapsed().as_secs_f64() * 1000.0;
 
-    // --- Dequantize benchmark (MSE reconstruction) ---
+    // --- Dequantize benchmark (using matched MSE rotation) ---
     let t0 = Instant::now();
     let mut reconstructed: Vec<Vec<f64>> = Vec::with_capacity(n);
-    for c in &compressed {
-        let mse_repr = cd_kernel::turboquant::pipeline::MseCompressed {
-            indices: c.mse_indices.clone(),
-            vec_norm: c.vec_norm,
-        };
+    for c in &mse_compressed {
         let mut out = vec![0.0f64; d];
-        tq_mse.dequantize(&mse_repr, &mut buf, &mut out);
+        tq_mse.dequantize(c, &mut buf, &mut out);
         reconstructed.push(out);
     }
     let dequantize_ms = t0.elapsed().as_secs_f64() * 1000.0;

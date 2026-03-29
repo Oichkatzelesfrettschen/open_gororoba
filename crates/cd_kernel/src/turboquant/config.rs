@@ -77,10 +77,12 @@ impl TurboQuantConfig {
     /// - bits >= 4: QJL correction off (adds noise at high quality)
     /// - adaptive bits: enabled, top 25% promoted (23% MSE gain)
     pub fn recommended(dim: usize, bits: u32) -> Self {
-        // E8 rotation has validated decorrelation (KS p=0.816) but produces
-        // a non-Gaussian marginal that the standard codebook handles poorly
-        // (MSE 2.57 vs WHT 1.44).  Disabled by default until custom codebook
-        // or E8+WHT composition is implemented.
+        // E8 rotation validated: KS p=0.816 (decorrelation) + MSE identical
+        // to WHT (codebook compatibility confirmed after RCA 2026-03-28).
+        // E8 uses 136x fewer parameters than Haar and has algebraic structure
+        // from the E8 lattice (optimal sphere packing in 8D).
+        // WHT remains default for d>=64 due to 5.6x throughput advantage;
+        // E8 is available as opt-in for algebraic research paths.
         let rotation = if dim >= 64 {
             RotationMethod::FastJL
         } else {

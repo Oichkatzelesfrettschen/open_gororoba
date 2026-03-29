@@ -59,6 +59,7 @@ pub mod optimized;
 pub mod pipeline;
 pub mod qjl;
 pub mod rotation;
+pub mod rotation_diagnostics;
 pub mod sign_pack;
 pub mod simd_codebook;
 pub mod zd_bias;
