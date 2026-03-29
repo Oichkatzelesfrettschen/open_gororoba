@@ -273,6 +273,10 @@ name = "solar-flare-cd"
 path = "src/bin/solar_flare_cd.rs"
 
 [[bin]]
+name = "solar-aia-cd"
+path = "src/bin/solar_aia_cd.rs"
+
+[[bin]]
 name = "geomag-cd-jerk"
 path = "src/bin/geomag_cd_jerk.rs"
 
