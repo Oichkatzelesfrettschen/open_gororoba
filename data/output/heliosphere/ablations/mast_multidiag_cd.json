@@ -1,0 +1,25 @@
+{
+  "shot_dir": "data/external/mast/shot30420.zarr",
+  "embedding_dim": 64,
+  "delay_n_embed": 625,
+  "delay_eff_rank": 64,
+  "delay_eff_rank_ratio": 1.0,
+  "delay_cd_mean": 1.5304643954740864,
+  "multidiag_channels": 7,
+  "multidiag_channel_names": [
+    "ama/n=2",
+    "ama/n=odd",
+    "amb/ccbv01",
+    "amb/ccbv10",
+    "amb/ccbv20",
+    "amb/ccbv30",
+    "ane/density"
+  ],
+  "multidiag_n_embed": 648,
+  "multidiag_eff_rank": 0,
+  "multidiag_eff_rank_ratio": 0.0,
+  "multidiag_cd_mean": 0.27096302554605317,
+  "rank_improvement": 0.0,
+  "cd_ratio": 0.17704627846773133,
+  "interpretation": "NOT CONFIRMED: Multi-diagnostic does not dramatically improve effective rank. Channels may still be correlated or resampling artifacts dominate."
+}
