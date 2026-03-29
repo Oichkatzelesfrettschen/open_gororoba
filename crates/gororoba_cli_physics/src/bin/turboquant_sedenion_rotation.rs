@@ -237,7 +237,7 @@ fn main() -> Result<()> {
         }
     };
 
-    let mut results = vec![
+    let results = vec![
         // No rotation (baseline)
         compute_stats(&vectors, "identity", 0),
         // Sedenion block rotation

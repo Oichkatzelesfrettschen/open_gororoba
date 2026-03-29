@@ -5,6 +5,7 @@ edition = "2024"
 
 [dependencies]
 rayon = { workspace = true }
+wide = { workspace = true }
 
 [lints]
 workspace = true

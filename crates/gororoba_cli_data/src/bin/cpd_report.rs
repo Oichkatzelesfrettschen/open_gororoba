@@ -90,11 +90,9 @@ fn main() -> Result<()> {
                 }
                 _ => {}
             },
-            Ok(Event::End(e)) => {
-                if e.name().as_ref() == b"duplication" {
-                    if let Some(dup) = current_dup.take() {
-                        dups.push(dup);
-                    }
+            Ok(Event::End(e)) if e.name().as_ref() == b"duplication" => {
+                if let Some(dup) = current_dup.take() {
+                    dups.push(dup);
                 }
             }
             Ok(Event::Eof) => break,
@@ -118,7 +116,7 @@ fn main() -> Result<()> {
         return Ok(());
     }
 
-    dups.sort_by(|a, b| b.lines.cmp(&a.lines));
+    dups.sort_by_key(|d| std::cmp::Reverse(d.lines));
     let show = &dups[..std::cmp::min(dups.len(), cli.top)];
 
     println!();

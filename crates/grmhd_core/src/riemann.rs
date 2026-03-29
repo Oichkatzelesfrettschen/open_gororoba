@@ -36,11 +36,30 @@ pub fn hll_flux(
         // All waves move left: use right flux
         f_hll.copy_from_slice(f_r);
     } else {
-        // Waves straddle the interface
-        let denom = 1.0 / (s_r - s_l);
-        for k in 0..NCONS {
-            f_hll[k] = (s_r * f_l[k] - s_l * f_r[k] + s_l * s_r * (u_r[k] - u_l[k])) * denom;
-        }
+        // Waves straddle: SIMD f64x4 for 8 components in 2 passes
+        use wide::f64x4;
+        let denom = f64x4::from([1.0 / (s_r - s_l); 4]);
+        let sr4 = f64x4::from([s_r; 4]);
+        let sl4 = f64x4::from([s_l; 4]);
+        let slsr4 = f64x4::from([s_l * s_r; 4]);
+
+        // First 4 components (mass, energy, 2 momenta)
+        let fl_lo = f64x4::from([f_l[0], f_l[1], f_l[2], f_l[3]]);
+        let fr_lo = f64x4::from([f_r[0], f_r[1], f_r[2], f_r[3]]);
+        let ul_lo = f64x4::from([u_l[0], u_l[1], u_l[2], u_l[3]]);
+        let ur_lo = f64x4::from([u_r[0], u_r[1], u_r[2], u_r[3]]);
+        let hll_lo = (sr4 * fl_lo - sl4 * fr_lo + slsr4 * (ur_lo - ul_lo)) * denom;
+        let lo = hll_lo.to_array();
+        f_hll[0] = lo[0]; f_hll[1] = lo[1]; f_hll[2] = lo[2]; f_hll[3] = lo[3];
+
+        // Last 4 components (1 momentum + 3 B-field)
+        let fl_hi = f64x4::from([f_l[4], f_l[5], f_l[6], f_l[7]]);
+        let fr_hi = f64x4::from([f_r[4], f_r[5], f_r[6], f_r[7]]);
+        let ul_hi = f64x4::from([u_l[4], u_l[5], u_l[6], u_l[7]]);
+        let ur_hi = f64x4::from([u_r[4], u_r[5], u_r[6], u_r[7]]);
+        let hll_hi = (sr4 * fl_hi - sl4 * fr_hi + slsr4 * (ur_hi - ul_hi)) * denom;
+        let hi = hll_hi.to_array();
+        f_hll[4] = hi[0]; f_hll[5] = hi[1]; f_hll[6] = hi[2]; f_hll[7] = hi[3];
     }
 
     f_hll

@@ -30,6 +30,19 @@ pub fn prim2con(
     eos: &GammaLaw,
     sqrt_neg_g: f64,
 ) -> [f64; NCONS] {
+    let gcov = metric.gcov(r, theta);
+    prim2con_cached(p, &gcov, eos, sqrt_neg_g)
+}
+
+/// Cached variant: takes precomputed metric components to avoid repeated trig.
+/// This is the hot-path version called from the flux sweep inner loop.
+#[inline]
+pub fn prim2con_cached(
+    p: &Prim,
+    gcov: &[f64; 5],
+    eos: &GammaLaw,
+    sqrt_neg_g: f64,
+) -> [f64; NCONS] {
     let rho = p[prims::RHO];
     let u = p[prims::UU];
     let v1 = p[prims::V1];
@@ -41,8 +54,8 @@ pub fn prim2con(
 
     let pressure = eos.pressure(u);
 
-    // Metric components
-    let [g_tt, g_rr, g_thth, g_phph, g_tph] = metric.gcov(r, theta);
+    // Metric components (from cache -- no trig)
+    let [g_tt, g_rr, g_thth, g_phph, g_tph] = *gcov;
 
     // 3-velocity squared: v^2 = g_ij v^i v^j
     let vsq = g_rr * v1 * v1 + g_thth * v2 * v2 + g_phph * v3 * v3;

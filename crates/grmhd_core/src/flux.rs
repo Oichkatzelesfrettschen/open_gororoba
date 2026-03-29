@@ -15,6 +15,16 @@ use crate::metric::KerrMetric;
 use crate::prims::{self, PrimGrid, Prim, NPRIM};
 use crate::recon;
 use crate::riemann;
+use rayon::prelude::*;
+
+/// Wrapper for parallel writes to non-overlapping grid regions.
+/// Safety: each (j, k) pair in a directional sweep writes to a unique set of
+/// cell indices (grid.idx is injective), so parallel writes never conflict.
+/// Derive Copy so the closure captures by value, avoiding &*mut f64 Sync issues.
+#[derive(Clone, Copy)]
+struct UnsafeSendPtr(*mut f64);
+unsafe impl Send for UnsafeSendPtr {}
+unsafe impl Sync for UnsafeSendPtr {}
 
 /// Pre-computed metric quantities at each grid point.
 /// Avoids repeated sqrt/trig during the flux loop.
