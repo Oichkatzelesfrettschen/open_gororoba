@@ -527,6 +527,31 @@ Proof.
   ring.
 Qed.
 
+Lemma brown1972_oct_trace_scale : forall r : R, forall x : CDOct,
+  brown1972_oct_trace (oct_scale r x) = (r * brown1972_oct_trace x)%R.
+Proof.
+  intros r [[a1 a2 a3 a4] [a5 a6 a7 a8]].
+  cbv [brown1972_oct_trace oct_scale oct_lo qa quat_scale].
+  ring.
+Qed.
+
+Lemma brown1972_oct_trace_scale_zero_iff : forall r : R, forall x : CDOct,
+  r <> 0%R ->
+  (brown1972_oct_trace (oct_scale r x) = 0%R <->
+   brown1972_oct_trace x = 0%R).
+Proof.
+  intros r x Hr.
+  rewrite brown1972_oct_trace_scale.
+  split.
+  - intro H.
+    apply Rmult_integral in H.
+    destruct H as [Hr0 | Hx0].
+    + contradiction.
+    + exact Hx0.
+  - intro H.
+    nra.
+Qed.
+
 Lemma brown1972_oct_trace_conj : forall x : CDOct,
   brown1972_oct_trace (oct_conj x) = brown1972_oct_trace x.
 Proof.

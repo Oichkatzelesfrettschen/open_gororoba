@@ -25,7 +25,8 @@ From Stdlib Require Import Reals Lra.
 From OpenGororoba Require Import
   Prelude CayleyDicksonAlgebra Sedenion OctonionNorm
   G2StabilizerDimension BaezNormedDivAlgebra HurwitzTheorem
-  OctonionStandardModel BrownGeneralizedCD ZD_Criterion.
+  OctonionStandardModel BrownGeneralizedCD ZD_Criterion
+  Brown1972ChapterIII.
 
 Open Scope R_scope.
 
@@ -114,6 +115,20 @@ Axiom s1_g2_stabilizer_is_su3 :
 Parameter abstract_sed_mul_lo : CDOct -> CDOct -> CDOct -> CDOct -> CDOct.
 Parameter abstract_sed_mul_hi : CDOct -> CDOct -> CDOct -> CDOct -> CDOct.
 
+Definition abstract_sed_pair_zero_divisor
+    (a1 a2 b1 b2 : CDOct) : Prop :=
+  (abstract_sed_mul_lo a1 a2 b1 b2 = oct_zero /\
+   abstract_sed_mul_hi a1 a2 b1 b2 = oct_zero).
+
+Lemma s2_oct_norm_sq_scale : forall (r : R) (x : CDOct),
+  oct_norm_sq (oct_scale r x) = (r * r * oct_norm_sq x)%R.
+Proof.
+  intros r [[a0 a1 a2 a3] [a4 a5 a6 a7]].
+  cbv [oct_norm_sq oct_scale quat_norm_sq oct_lo oct_hi qa qb qc qd
+       quat_scale].
+  ring.
+Qed.
+
 (** Axiom S2: Brown Theorem 7.15 (abstract biconditional).
 
     For any octonions a1 a2 b1 b2 with N(a1) > 0:
@@ -125,12 +140,130 @@ Parameter abstract_sed_mul_hi : CDOct -> CDOct -> CDOct -> CDOct -> CDOct.
 Axiom s2_brown_thm715_abstract :
   forall (a1 a2 b1 b2 : CDOct),
     oct_norm_sq a1 > 0 ->
-    (abstract_sed_mul_lo a1 a2 b1 b2 = oct_zero /\
-     abstract_sed_mul_hi a1 a2 b1 b2 = oct_zero)
+    abstract_sed_pair_zero_divisor a1 a2 b1 b2
     <->
     (zd_condition_i a1 a2 /\
      zd_condition_ii a1 a2 b1 b2 /\
      zd_condition_iii a1 b1 a2).
+
+(** Brown Theorem 7.14, in the only fragment needed by Brown's proof of
+    Lemma 7.17: if a nontrivial element a1 + e*a2 is a zero divisor in A4,
+    then both octonion halves have trace zero. *)
+Axiom s2_brown_thm714_trace_restriction :
+  forall (a1 a2 : CDOct),
+    oct_norm_sq a1 > 0 ->
+    oct_norm_sq a2 > 0 ->
+    (exists b1 b2 : CDOct, abstract_sed_pair_zero_divisor a1 a2 b1 b2) ->
+    brown1972_oct_trace a1 = 0%R /\
+    brown1972_oct_trace a2 = 0%R.
+
+(** Brown's proof of Lemma 7.17 normalizes an antiassociator-zero triple into
+    three zero-divisor elements in A4. We expose exactly that bridge here so
+    later chapter files can use the Brown proof shape without brute-force
+    coordinate elimination. *)
+Axiom s2_brown_lemma717_normalized_zero_divisors :
+  forall (a b c : CDOct),
+    oct_norm_sq a > 0 ->
+    oct_norm_sq b > 0 ->
+    oct_norm_sq c > 0 ->
+    oct_antiassociator a b c = oct_zero ->
+    (exists b2 : CDOct,
+        abstract_sed_pair_zero_divisor
+          (oct_scale (/ oct_norm_sq a) a)
+          (oct_scale (/ oct_norm_sq c) c)
+          b b2) /\
+    (exists c2 : CDOct,
+        abstract_sed_pair_zero_divisor
+          (oct_scale (/ oct_norm_sq b) b)
+          (oct_scale (/ oct_norm_sq a) a)
+          c c2) /\
+    (exists a2 : CDOct,
+        abstract_sed_pair_zero_divisor
+          (oct_scale (/ oct_norm_sq c) c)
+          (oct_scale (/ oct_norm_sq b) b)
+          a a2).
+
+Theorem s2_brown_lemma717_abstract :
+  forall (a b c : CDOct),
+    oct_norm_sq a > 0 ->
+    oct_norm_sq b > 0 ->
+    oct_norm_sq c > 0 ->
+    oct_antiassociator a b c = oct_zero ->
+    brown1972_oct_trace a = 0%R /\
+    brown1972_oct_trace b = 0%R /\
+    brown1972_oct_trace c = 0%R.
+Proof.
+  intros a b c Hna Hnb Hnc Hanti.
+  destruct (s2_brown_lemma717_normalized_zero_divisors a b c Hna Hnb Hnc Hanti)
+    as [[b2 Hab] [[c2 Hbc] [a2 Hca]]].
+  pose proof (s2_brown_thm714_trace_restriction
+                (oct_scale (/ oct_norm_sq a) a)
+                (oct_scale (/ oct_norm_sq c) c)) as Hac.
+  pose proof (s2_brown_thm714_trace_restriction
+                (oct_scale (/ oct_norm_sq b) b)
+                (oct_scale (/ oct_norm_sq a) a)) as Hba.
+  pose proof (s2_brown_thm714_trace_restriction
+                (oct_scale (/ oct_norm_sq c) c)
+                (oct_scale (/ oct_norm_sq b) b)) as Hcb.
+  assert (Hscaled_a : oct_norm_sq (oct_scale (/ oct_norm_sq a) a) > 0).
+  { rewrite s2_oct_norm_sq_scale.
+    assert (Hnza : oct_norm_sq a <> 0%R) by lra.
+    assert (Hinv_a : / oct_norm_sq a > 0) by (apply Rinv_0_lt_compat; exact Hna).
+    replace (/ oct_norm_sq a * / oct_norm_sq a * oct_norm_sq a)
+      with (/ oct_norm_sq a) by (field; exact Hnza).
+    exact Hinv_a. }
+  assert (Hscaled_b : oct_norm_sq (oct_scale (/ oct_norm_sq b) b) > 0).
+  { rewrite s2_oct_norm_sq_scale.
+    assert (Hnzb : oct_norm_sq b <> 0%R) by lra.
+    assert (Hinv_b : / oct_norm_sq b > 0) by (apply Rinv_0_lt_compat; exact Hnb).
+    replace (/ oct_norm_sq b * / oct_norm_sq b * oct_norm_sq b)
+      with (/ oct_norm_sq b) by (field; exact Hnzb).
+    exact Hinv_b. }
+  assert (Hscaled_c : oct_norm_sq (oct_scale (/ oct_norm_sq c) c) > 0).
+  { rewrite s2_oct_norm_sq_scale.
+    assert (Hnzc : oct_norm_sq c <> 0%R) by lra.
+    assert (Hinv_c : / oct_norm_sq c > 0) by (apply Rinv_0_lt_compat; exact Hnc).
+    replace (/ oct_norm_sq c * / oct_norm_sq c * oct_norm_sq c)
+      with (/ oct_norm_sq c) by (field; exact Hnzc).
+    exact Hinv_c. }
+  specialize (Hac Hscaled_a Hscaled_c).
+  specialize (Hba Hscaled_b Hscaled_a).
+  specialize (Hcb Hscaled_c Hscaled_b).
+  assert (Hex_ac : exists x y : CDOct,
+    abstract_sed_pair_zero_divisor
+      (oct_scale (/ oct_norm_sq a) a)
+      (oct_scale (/ oct_norm_sq c) c) x y).
+  { exists b, b2. exact Hab. }
+  assert (Hex_ba : exists x y : CDOct,
+    abstract_sed_pair_zero_divisor
+      (oct_scale (/ oct_norm_sq b) b)
+      (oct_scale (/ oct_norm_sq a) a) x y).
+  { exists c, c2. exact Hbc. }
+  assert (Hex_cb : exists x y : CDOct,
+    abstract_sed_pair_zero_divisor
+      (oct_scale (/ oct_norm_sq c) c)
+      (oct_scale (/ oct_norm_sq b) b) x y).
+  { exists a, a2. exact Hca. }
+  specialize (Hac Hex_ac).
+  specialize (Hba Hex_ba).
+  specialize (Hcb Hex_cb).
+  destruct Hac as [Hta _].
+  destruct Hba as [Htb _].
+  destruct Hcb as [Htc _].
+  assert (Hinv_nza : / oct_norm_sq a <> 0%R).
+  { apply Rinv_neq_0_compat. lra. }
+  assert (Hinv_nzb : / oct_norm_sq b <> 0%R).
+  { apply Rinv_neq_0_compat. lra. }
+  assert (Hinv_nzc : / oct_norm_sq c <> 0%R).
+  { apply Rinv_neq_0_compat. lra. }
+  repeat split.
+  - apply (proj1 (brown1972_oct_trace_scale_zero_iff (/ oct_norm_sq a) a Hinv_nza)).
+    exact Hta.
+  - apply (proj1 (brown1972_oct_trace_scale_zero_iff (/ oct_norm_sq b) b Hinv_nzb)).
+    exact Htb.
+  - apply (proj1 (brown1972_oct_trace_scale_zero_iff (/ oct_norm_sq c) c Hinv_nzc)).
+    exact Htc.
+Qed.
 
 (** ================================================================== *)
 (** * S3: Hurwitz uniqueness -- the four NDA are the ONLY ones.       *)

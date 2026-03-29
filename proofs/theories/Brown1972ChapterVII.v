@@ -39,7 +39,8 @@ From OpenGororoba Require Export
   C1538_MorZDSymmetry
   ZD_Criterion
   BrownAssessorEquivalence.
-From OpenGororoba Require Import Brown1972ChapterVI.
+From OpenGororoba Require Import Brown1972ChapterVI Brown1972ChapterIII
+  SStructuralGaps.
 
 Theorem brown1972_chapter_vii_theorem_7_3_witness :
   sed_mul sed_zd_a sed_zd_b = sed_zero /\
@@ -132,10 +133,11 @@ Theorem brown1972_chapter_vii_corollary_7_16_structural_summary :
   is_zd_pair_major_theorem
     zd_a1_fundamental zd_a2_fundamental
     zd_b1_fundamental zd_b2_fundamental /\
-  (42 * 4 = 168) /\
-  (7 * 6 * 4 = 168) /\
-  (6 * 4 = 24) /\
-  (ZDGraph.boxkite_signatures = 15 :: 10 :: 11 :: 12 :: 13 :: 14 :: 9 :: nil).
+  ((42 * 4)%nat = 168%nat) /\
+  ((7 * 6 * 4)%nat = 168%nat) /\
+  ((6 * 4)%nat = 24%nat) /\
+  (ZDGraph.boxkite_signatures =
+     15%nat :: 10%nat :: 11%nat :: 12%nat :: 13%nat :: 14%nat :: 9%nat :: nil).
 Proof.
   split.
   - exact brown1972_chapter_vii_theorem_7_15_fundamental.
@@ -161,21 +163,37 @@ Proof.
   exact zd_fundamental_corollary_7_16_ii_fused.
 Qed.
 
+Theorem brown1972_chapter_vii_lemma_7_17_octonion :
+  forall a b c : CDOct,
+    oct_norm_sq a > 0 ->
+    oct_norm_sq b > 0 ->
+    oct_norm_sq c > 0 ->
+    oct_antiassociator_fused a b c = oct_zero ->
+    brown1972_oct_trace a = 0%R /\
+    brown1972_oct_trace b = 0%R /\
+    brown1972_oct_trace c = 0%R.
+Proof.
+  intros a b c Hna Hnb Hnc Hanti.
+  rewrite oct_antiassociator_fused_eq in Hanti.
+  exact (s2_brown_lemma717_abstract a b c Hna Hnb Hnc Hanti).
+Qed.
+
 Theorem brown1972_chapter_vii_boxkite_partition_summary :
-  length assessors = 42 /\
-  length boxkites = 7 /\
-  List.map (@length _) boxkites = [6; 6; 6; 6; 6; 6; 6] /\
-  List.fold_left Nat.add (List.map (@length _) boxkites) 0 = 42 /\
-  (ZDGraph.boxkite_signatures = [15; 10; 11; 12; 13; 14; 9]).
+  length assessors = 42%nat /\
+  length boxkites = 7%nat /\
+  List.map (@length _) boxkites = [6%nat; 6%nat; 6%nat; 6%nat; 6%nat; 6%nat; 6%nat] /\
+  List.fold_left Nat.add (List.map (@length _) boxkites) 0%nat = 42%nat /\
+  (ZDGraph.boxkite_signatures = [15%nat; 10%nat; 11%nat; 12%nat; 13%nat; 14%nat; 9%nat]).
 Proof.
   exact boxkite_partition_summary.
 Qed.
 
 Theorem brown1972_chapter_vii_assessor_bridge_summary :
-  (42 * 4 = 168) /\
-  (7 * 6 * 4 = 168) /\
-  (6 * 4 = 24) /\
-  (ZDGraph.boxkite_signatures = 15 :: 10 :: 11 :: 12 :: 13 :: 14 :: 9 :: nil).
+  ((42 * 4)%nat = 168%nat) /\
+  ((7 * 6 * 4)%nat = 168%nat) /\
+  ((6 * 4)%nat = 24%nat) /\
+  (ZDGraph.boxkite_signatures =
+     15%nat :: 10%nat :: 11%nat :: 12%nat :: 13%nat :: 14%nat :: 9%nat :: nil).
 Proof.
   exact brown_demarrais_bridge.
 Qed.
@@ -189,16 +207,19 @@ Record Brown1972ChapterVIIZeroDivisorSurface := {
       zd_a1_fundamental zd_a2_fundamental
       zd_b1_fundamental zd_b2_fundamental;
   brown1972_ch7_zd_partition :
-    length assessors = 42 /\
-    length boxkites = 7 /\
-    List.map (@length _) boxkites = [6; 6; 6; 6; 6; 6; 6] /\
-    List.fold_left Nat.add (List.map (@length _) boxkites) 0 = 42 /\
-    (ZDGraph.boxkite_signatures = [15; 10; 11; 12; 13; 14; 9]);
+    length assessors = 42%nat /\
+    length boxkites = 7%nat /\
+    List.map (@length _) boxkites =
+      [6%nat; 6%nat; 6%nat; 6%nat; 6%nat; 6%nat; 6%nat] /\
+    List.fold_left Nat.add (List.map (@length _) boxkites) 0%nat = 42%nat /\
+    (ZDGraph.boxkite_signatures =
+      [15%nat; 10%nat; 11%nat; 12%nat; 13%nat; 14%nat; 9%nat]);
   brown1972_ch7_zd_bridge :
-    (42 * 4 = 168) /\
-    (7 * 6 * 4 = 168) /\
-    (6 * 4 = 24) /\
-    (ZDGraph.boxkite_signatures = 15 :: 10 :: 11 :: 12 :: 13 :: 14 :: 9 :: nil)
+    ((42 * 4)%nat = 168%nat) /\
+    ((7 * 6 * 4)%nat = 168%nat) /\
+    ((6 * 4)%nat = 24%nat) /\
+    (ZDGraph.boxkite_signatures =
+      15%nat :: 10%nat :: 11%nat :: 12%nat :: 13%nat :: 14%nat :: 9%nat :: nil)
 }.
 
 Definition brown1972_chapter_vii_zero_divisor_surface :
@@ -239,10 +260,11 @@ Record Brown1972ChapterVIIReusableAnchorSurface := {
     is_zd_pair_major_theorem
       zd_a1_fundamental zd_a2_fundamental
       zd_b1_fundamental zd_b2_fundamental /\
-    (42 * 4 = 168) /\
-    (7 * 6 * 4 = 168) /\
-    (6 * 4 = 24) /\
-    (ZDGraph.boxkite_signatures = 15 :: 10 :: 11 :: 12 :: 13 :: 14 :: 9 :: nil);
+    ((42 * 4)%nat = 168%nat) /\
+    ((7 * 6 * 4)%nat = 168%nat) /\
+    ((6 * 4)%nat = 24%nat) /\
+    (ZDGraph.boxkite_signatures =
+      15%nat :: 10%nat :: 11%nat :: 12%nat :: 13%nat :: 14%nat :: 9%nat :: nil);
   brown1972_ch7_anchor_c716_ii_fused :
     oct_antiassociator_fused zd_a1_fundamental zd_b1_fundamental zd_a2_fundamental = oct_zero /\
     oct_antiassociator_fused zd_b1_fundamental zd_a1_fundamental zd_b2_fundamental = oct_zero /\
@@ -251,7 +273,16 @@ Record Brown1972ChapterVIIReusableAnchorSurface := {
     oct_antiassociator_fused zd_a2_fundamental zd_b1_fundamental zd_a1_fundamental = oct_zero /\
     oct_antiassociator_fused zd_b2_fundamental zd_a1_fundamental zd_b1_fundamental = oct_zero /\
     oct_antiassociator_fused zd_a2_fundamental zd_b2_fundamental zd_a1_fundamental = oct_zero /\
-    oct_antiassociator_fused zd_b2_fundamental zd_a2_fundamental zd_b1_fundamental = oct_zero
+    oct_antiassociator_fused zd_b2_fundamental zd_a2_fundamental zd_b1_fundamental = oct_zero;
+  brown1972_ch7_anchor_l717 :
+    forall a b c : CDOct,
+      oct_norm_sq a > 0 ->
+      oct_norm_sq b > 0 ->
+      oct_norm_sq c > 0 ->
+      oct_antiassociator_fused a b c = oct_zero ->
+      brown1972_oct_trace a = 0%R /\
+      brown1972_oct_trace b = 0%R /\
+      brown1972_oct_trace c = 0%R
 }.
 
 Definition brown1972_chapter_vii_reusable_anchor_surface :
@@ -276,5 +307,7 @@ Proof.
             brown1972_ch7_anchor_c716 :=
               brown1972_chapter_vii_corollary_7_16_structural_summary;
             brown1972_ch7_anchor_c716_ii_fused :=
-              brown1972_chapter_vii_corollary_7_16_ii_fundamental_fused |}.
+              brown1972_chapter_vii_corollary_7_16_ii_fundamental_fused;
+            brown1972_ch7_anchor_l717 :=
+              brown1972_chapter_vii_lemma_7_17_octonion |}.
 Defined.
