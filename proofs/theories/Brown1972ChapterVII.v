@@ -125,6 +125,10 @@ Record Brown1972ChapterVIIReusableAnchorSurface := {
     Brown1972ChapterVIIZeroDivisorSurface;
   brown1972_ch7_anchor_ch6 :
     Brown1972ChapterVIReusableAnchorSurface;
+  brown1972_ch7_anchor_oct_basis_fused :
+    CDOctBasisFusedSurface;
+  brown1972_ch7_anchor_sed_basis_fused :
+    CDSedFocusedBasisFusedSurface;
   brown1972_ch7_anchor_fused_sed :
     CDFusedBilinearSurface CDSed sed_add sed_mul sed_mul_fused sed_scale;
   brown1972_ch7_anchor_fused_t73 :
@@ -139,6 +143,10 @@ Proof.
               brown1972_chapter_vii_zero_divisor_surface;
             brown1972_ch7_anchor_ch6 :=
               brown1972_chapter_vi_reusable_anchor_surface;
+            brown1972_ch7_anchor_oct_basis_fused :=
+              oct_basis_fused_surface;
+            brown1972_ch7_anchor_sed_basis_fused :=
+              sed_focused_basis_fused_surface;
             brown1972_ch7_anchor_fused_sed :=
               sed_fused_bilinear_surface;
             brown1972_ch7_anchor_fused_t73 :=

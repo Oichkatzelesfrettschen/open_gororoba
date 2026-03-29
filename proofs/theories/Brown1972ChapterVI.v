@@ -253,18 +253,20 @@ Theorem brown1972_theorem_6_14_octonion : forall i j k : nat,
             (oct_mul (oct_e i) (oct_mul (oct_e j) (oct_e k))).
 Proof.
   intros i j k Hi Hj Hk.
+  destruct oct_fused_bilinear_surface as [_ _ _ HfscaleL HfscaleR].
+  repeat rewrite <- oct_mul_fused_eq.
   unfold brown1972_ch6_614_oct_epsilon.
   assert (Hij : (Nat.lxor i j < 8)%nat).
   { apply brown1972_oct_lxor_lt8; assumption. }
   assert (Hjk : (Nat.lxor j k < 8)%nat).
   { apply brown1972_oct_lxor_lt8; assumption. }
-  rewrite oct_basis_mul_xor with (i := i) (j := j) by assumption.
-  rewrite oct_mul_scale_left.
-  rewrite oct_basis_mul_xor with (i := Nat.lxor i j) (j := k) by assumption.
+  rewrite oct_mul_fused_basis_xor with (i := i) (j := j) by assumption.
+  rewrite HfscaleL.
+  rewrite oct_mul_fused_basis_xor with (i := Nat.lxor i j) (j := k) by assumption.
   rewrite brown1972_oct_scale_scale.
-  rewrite oct_basis_mul_xor with (i := j) (j := k) by assumption.
-  rewrite oct_mul_scale_right.
-  rewrite oct_basis_mul_xor with (i := i) (j := Nat.lxor j k) by assumption.
+  rewrite oct_mul_fused_basis_xor with (i := j) (j := k) by assumption.
+  rewrite HfscaleR.
+  rewrite oct_mul_fused_basis_xor with (i := i) (j := Nat.lxor j k) by assumption.
   rewrite brown1972_oct_scale_scale.
   rewrite Nat.lxor_assoc.
   rewrite brown1972_oct_scale_scale.
