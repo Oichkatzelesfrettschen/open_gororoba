@@ -11224,3 +11224,84 @@ where_stated = "data/output/heliosphere/ablations/v2_mag_pls_cd_32d.json"
 last_verified = "2026-03-29"
 formal_proof = ""
 status_note = "V2 PLS HIRES from HAPI (31 yearly files, ~130K hourly records total). 7-channel embedding: V/n/V_th repeated with magnitude proxy for MAG slots. True MAG+PLS joint analysis requires feature-cube join (same (year,doy,hour) key), which is the next step."
+
+[[claim]]
+id = "C-1625"
+status = "Conjecture"
+statement = "Tokamak CD claims require shot-log or event annotations to become benchmarked classifier results. Without labeled ELM/disruption timing from machine-specific databases, the CD timeseries can only show association (elevated CD near events) but not precision/recall. The strongest existing tokamak claims (MAST ELM detection, BOUT++ disruption prediction) need annotated ground truth to graduate from 'suggestive' to 'benchmarked'."
+where_stated = "registry/claims.toml (conjecture)"
+last_verified = "2026-03-29"
+formal_proof = ""
+status_note = "Pathway: obtain MAST shot-log ELM times from FAIR-MAST metadata, or DIII-D disruption database via PPPL collaboration. Then compute ROC/PR curves against labeled events."
+
+[[claim]]
+id = "C-1626"
+status = "Conjecture"
+statement = "Across a small X-class flare sample, the maximum SHARP CD complexity during flare-associated reconfiguration appears to lie in a narrow range (~150-184), suggesting the observable tracks reconnection disorder more directly than flare class itself. If confirmed with a larger sample (20+ events across Solar Cycles 24-25), this would establish CD as a reconnection-disorder meter independent of energy release magnitude."
+where_stated = "data/output/heliosphere/ablations/sharp_x93_extended_cd.json, sharp_x6p9_harp753_cd.json, sharp_x1p0_harp7788_cd.json, sharp_x8p2_sep10_2017_cd.json"
+last_verified = "2026-03-29"
+formal_proof = ""
+status_note = "Current evidence: 4 X-class flares (X1.0, X6.9, X8.2, X9.3) all show A_max in 150-184 range. Need 20+ events including M-class for proper population test. C-1614 (Verified) established the 4-flare ceiling; this conjecture generalizes it."
+
+[[claim]]
+id = "C-1627"
+status = "Conjecture"
+statement = "The Cayley-Dickson associator may define a universality class of multichannel order-mixture-order responses, with each physical domain (solar wind, magnetosphere, tokamak, accretion disk, ISM) supplying its own deformation of that formal response. The shared algebraic structure (trilinearity, tower recursion, zero-divisor geometry) provides the invariant skeleton; domain-specific physics deforms the quantitative values while preserving the qualitative response pattern (quench at boundaries, amplification at turbulence onset, floor in quiescent regimes)."
+where_stated = "registry/claims.toml (conjecture)"
+last_verified = "2026-03-29"
+formal_proof = ""
+status_note = "Evidence across 8 physical domains (heliosphere, tokamak, GRMHD, magnetar, geodynamo, jets, SDO, MESSENGER). Each shows order-disruption-order CD profile. Formalization requires defining the universality class precisely (e.g., via category-theoretic functor from physical system to CD response)."
+
+[[claim]]
+id = "C-1628"
+status = "Conjecture"
+statement = "The practical crossover to clear tower advantage at 16D reflects the first post-octonionic level at which the structured nonlinearity of the CD tower (including zero-divisor-bearing multiplication geometry) becomes informative enough to outperform generic multilinear alternatives. At 8D (octonions, alternative algebra), the CD multiply is still 'too regular' -- ZD density is zero. At 16D (sedenions, first non-alternative level), ZD density is nonzero and the associator measures genuinely non-associative structure. This predicts that the 16D crossover should be universal across physical domains."
+where_stated = "registry/claims.toml (conjecture)"
+last_verified = "2026-03-29"
+formal_proof = ""
+status_note = "Evidence: tower depth trichotomy (C-1560 area) shows 8-16D optimal for discrimination, 32-64D for nonlinearity. The ZD connection is algebraic (Moreno 1997 predicates confirm ZD structure at 16D). Falsifiable: if 12D or 24D (non-power-of-2) matched 16D performance, it would refute the tower-specific explanation."
+
+[[claim]]
+id = "C-1629"
+status = "Conjecture"
+statement = "A dataset's suitability for high-dimensional CD analysis is characterized by the growth of effective rank with embedding dimension, which is governed by cadence, autocorrelation time, and physical channel independence. Datasets where effective rank saturates early (e.g., hourly cadence with 30-min autocorrelation) cannot benefit from dims above ~32D. Datasets with many independent channels and short autocorrelation (e.g., 48-sec MAG + 16-ch PWS) can benefit up to ~160D. This effective-rank criterion is computable a priori from the data's spectral properties."
+where_stated = "registry/claims.toml (conjecture)"
+last_verified = "2026-03-29"
+formal_proof = ""
+status_note = "Evidence: effective rank theory (C-1385 area), cadence effect (16-sec gives 37x lower A than hourly), channel independence metric (C-1378). The effective rank formula was derived analytically. Needs validation across 5+ datasets with known autocorrelation times."
+
+[[claim]]
+id = "C-1630"
+status = "Conjecture"
+statement = "A substantial fraction of apparent CD false alarms in boundary detection are plausibly real structures not represented in boundary-only catalogs. The CD detects low-rotation boundaries (rotation 1.86 deg) that PVI misses (needs rotation >3.37 deg). The unattributed remainder should remain explicitly open rather than classified as false positives, pending independent confirmation from non-catalog methods (e.g., plasma beta discontinuities, density jumps)."
+where_stated = "registry/claims.toml (conjecture)"
+last_verified = "2026-03-29"
+formal_proof = ""
+status_note = "Evidence: CD+PVI union detects 86.6% on good weeks; CD detects low-rotation boundaries PVI misses. 128-week THEMIS analysis with 4498 curated crossings. False-alarm attribution table (C-1589 area) shows many 'unattributed' events at plausible boundary locations."
+
+[[claim]]
+id = "C-1631"
+status = "Conjecture"
+statement = "The program's significance is methodological and empirical: it provides a reusable, falsifiable, cross-domain framework for measuring organization, disruption, and defect in multichannel field-like systems. The CD associator is not a theory of any particular physical system; it is an algebraic instrument whose calibration (dimension, null model, cadence matching) determines its diagnostic power in each domain. The framework's value lies in its universality and falsifiability, not in any single domain result."
+where_stated = "registry/claims.toml (conjecture)"
+last_verified = "2026-03-29"
+formal_proof = ""
+status_note = "Meta-claim about the research program. Supported by: 8 physical domains validated, 5-family null hierarchy, cross-mission replication, per-dimension null decomposition, solar cycle tracking. Falsifiability demonstrated by: MaNGA null result (C-1373), mixed-embedding non-result, Pioneer data gap."
+
+[[claim]]
+id = "C-1632"
+status = "Conjecture"
+statement = "Dimension scaling behaves like near-pure algebraic renormalization in low-complexity regimes (ISM floor: perfect shape invariance across 16D-64D, RMS=0.001), but carries additional physical information in higher-complexity regimes (solar wind, planetary magnetospheres). The transition between these regimes is governed by the ratio of physical correlation structure to algebraic dimension scaling. In the ISM, there is almost no physical structure to reveal, so scaling is purely algebraic. In the solar wind, the rich turbulent cascade provides dimension-dependent phase structure."
+where_stated = "registry/claims.toml (conjecture)"
+last_verified = "2026-03-29"
+formal_proof = ""
+status_note = "Evidence: C-1608 (reframed dimension scaling), C-1446 (V1 shape invariance in ISM), C-1560 (64D dilution globally but local heliosheath enrichment). The dual-regime interpretation is consistent with all observations but needs formal mathematical characterization of the algebraic/physical transition."
+
+[[claim]]
+id = "C-1633"
+status = "Conjecture"
+statement = "A single CD invariant can build a lifetime heliospheric atlas spanning planetary magnetospheres (Jupiter at 5 AU: A_max=2436), solar wind (1-80 AU: A_median=5-10), termination shock (94 AU: step function), heliopause (122 AU: quench to floor), and deep ISM (125-170 AU: A_median=0.017). Different boundary classes are identifiable by CD profile shape: magnetopause crossings show sharp bilateral peaks, the termination shock shows a monotonic drop, and the heliopause shows an order-of-magnitude quench over <2 AU. This atlas is the first uniform-metric characterization of the heliospheric boundary structure."
+where_stated = "data/output/heliosphere/ablations/v1_complete_lifetime_quench_2au_32d.csv, v2_lifetime_2au_32d.csv"
+last_verified = "2026-03-29"
+formal_proof = ""
+status_note = "Evidence: V1 1977-2025 and V2 1977-2007 lifetime profiles, Jupiter/Saturn/Neptune flyby CD, MESSENGER at 0.32 AU, ISM floor measurements. The atlas spans 4 orders of magnitude in heliocentric distance and 5 orders in CD magnitude."
