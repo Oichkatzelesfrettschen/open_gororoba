@@ -357,6 +357,10 @@ name = "voyager-cdf-ingest"
 path = "src/bin/voyager_cdf_ingest.rs"
 
 [[bin]]
+name = "voyager-pws-ingest"
+path = "src/bin/voyager_pws_ingest.rs"
+
+[[bin]]
 name = "heliosphere-order-surplus"
 path = "src/bin/heliosphere_order_surplus.rs"
 
