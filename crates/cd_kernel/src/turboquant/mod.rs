@@ -50,6 +50,7 @@ pub mod compressor;
 pub mod cuda;
 pub mod dispatch;
 pub mod e8_rotation;
+pub mod e8_validation;
 pub mod grouping;
 pub mod hierarchical;
 pub mod pipeline;
