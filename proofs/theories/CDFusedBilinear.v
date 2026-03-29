@@ -4,7 +4,9 @@ From OpenGororoba Require Import
   CayleyDicksonAlgebra
   Sedenion
   OctonionNorm
-  CDLinearLemmas.
+  CDLinearLemmas
+  CDSignBridge
+  SedenionSignBridge.
 Open Scope R_scope.
 
 (** * CDFusedBilinear: flattened multiplication specs for Cayley-Dickson levels.
@@ -149,4 +151,183 @@ Proof.
   - intros r x y.
     repeat rewrite sed_mul_fused_eq.
     apply sed_mul_scale_right.
+Defined.
+
+Theorem oct_mul_fused_basis_xor : forall i j : nat,
+  (i < 8)%nat -> (j < 8)%nat ->
+  oct_mul_fused (oct_e i) (oct_e j) =
+    oct_scale (sign_to_R (oct_sign i j)) (oct_e (Nat.lxor i j)).
+Proof.
+  intros i j Hi Hj.
+  rewrite oct_mul_fused_eq.
+  apply oct_basis_mul_xor; assumption.
+Qed.
+
+Record CDOctBasisFusedSurface := {
+  cd_oct_fused_basis_xor :
+    forall i j : nat,
+      (i < 8)%nat -> (j < 8)%nat ->
+      oct_mul_fused (oct_e i) (oct_e j) =
+        oct_scale (sign_to_R (oct_sign i j)) (oct_e (Nat.lxor i j));
+  cd_oct_fused_self_neg :
+    forall i : nat,
+      (1 <= i)%nat -> (i < 8)%nat ->
+      oct_mul_fused (oct_e i) (oct_e i) = oct_neg (oct_e 0)
+}.
+
+Definition oct_basis_fused_surface : CDOctBasisFusedSurface.
+Proof.
+  refine {| cd_oct_fused_basis_xor := oct_mul_fused_basis_xor |}.
+  intros i Hlo Hhi.
+  rewrite oct_mul_fused_eq.
+  apply oct_mul_self_neg; assumption.
+Defined.
+
+Lemma sed_mul_fused_e1_e9 :
+  sed_mul_fused (sed_e 1) (sed_e 9) = sed_scale (-1) (sed_e 8).
+Proof. rewrite sed_mul_fused_eq. exact sed_mul_e1_e9. Qed.
+Lemma sed_mul_fused_e9_e2 :
+  sed_mul_fused (sed_e 9) (sed_e 2) = sed_scale (-1) (sed_e 11).
+Proof. rewrite sed_mul_fused_eq. exact sed_mul_e9_e2. Qed.
+Lemma sed_mul_fused_e8_e2 :
+  sed_mul_fused (sed_e 8) (sed_e 2) = sed_scale (-1) (sed_e 10).
+Proof. rewrite sed_mul_fused_eq. exact sed_mul_e8_e2. Qed.
+Lemma sed_mul_fused_e1_e11 :
+  sed_mul_fused (sed_e 1) (sed_e 11) = sed_e 10.
+Proof. rewrite sed_mul_fused_eq. exact sed_mul_e1_e11. Qed.
+Lemma sed_mul_fused_e1_e2 :
+  sed_mul_fused (sed_e 1) (sed_e 2) = sed_e 3.
+Proof. rewrite sed_mul_fused_eq. exact sed_mul_e1_e2. Qed.
+Lemma sed_mul_fused_e2_e4 :
+  sed_mul_fused (sed_e 2) (sed_e 4) = sed_e 6.
+Proof. rewrite sed_mul_fused_eq. exact sed_mul_e2_e4. Qed.
+Lemma sed_mul_fused_e3_e4 :
+  sed_mul_fused (sed_e 3) (sed_e 4) = sed_e 7.
+Proof. rewrite sed_mul_fused_eq. exact sed_mul_e3_e4. Qed.
+Lemma sed_mul_fused_e1_e6 :
+  sed_mul_fused (sed_e 1) (sed_e 6) = sed_scale (-1) (sed_e 7).
+Proof. rewrite sed_mul_fused_eq. exact sed_mul_e1_e6. Qed.
+Lemma sed_mul_fused_e2_e9 :
+  sed_mul_fused (sed_e 2) (sed_e 9) = sed_e 11.
+Proof. rewrite sed_mul_fused_eq. exact sed_mul_e2_e9. Qed.
+Lemma sed_mul_fused_e3_e9 :
+  sed_mul_fused (sed_e 3) (sed_e 9) = sed_scale (-1) (sed_e 10).
+Proof. rewrite sed_mul_fused_eq. exact sed_mul_e3_e9. Qed.
+Lemma sed_mul_fused_e2_e1 :
+  sed_mul_fused (sed_e 2) (sed_e 1) = sed_scale (-1) (sed_e 3).
+Proof. rewrite sed_mul_fused_eq. exact sed_mul_e2_e1. Qed.
+Lemma sed_mul_fused_e1_e10 :
+  sed_mul_fused (sed_e 1) (sed_e 10) = sed_scale (-1) (sed_e 11).
+Proof. rewrite sed_mul_fused_eq. exact sed_mul_e1_e10. Qed.
+Lemma sed_mul_fused_e3_e10 :
+  sed_mul_fused (sed_e 3) (sed_e 10) = sed_e 9.
+Proof. rewrite sed_mul_fused_eq. exact sed_mul_e3_e10. Qed.
+Lemma sed_mul_fused_e2_e11 :
+  sed_mul_fused (sed_e 2) (sed_e 11) = sed_scale (-1) (sed_e 9).
+Proof. rewrite sed_mul_fused_eq. exact sed_mul_e2_e11. Qed.
+Lemma sed_mul_fused_e3_e1 :
+  sed_mul_fused (sed_e 3) (sed_e 1) = sed_e 2.
+Proof. rewrite sed_mul_fused_eq. exact sed_mul_e3_e1. Qed.
+Lemma sed_mul_fused_e4_e1 :
+  sed_mul_fused (sed_e 4) (sed_e 1) = sed_scale (-1) (sed_e 5).
+Proof. rewrite sed_mul_fused_eq. exact sed_mul_e4_e1. Qed.
+Lemma sed_mul_fused_e1_e12 :
+  sed_mul_fused (sed_e 1) (sed_e 12) = sed_scale (-1) (sed_e 13).
+Proof. rewrite sed_mul_fused_eq. exact sed_mul_e1_e12. Qed.
+Lemma sed_mul_fused_e5_e12 :
+  sed_mul_fused (sed_e 5) (sed_e 12) = sed_e 9.
+Proof. rewrite sed_mul_fused_eq. exact sed_mul_e5_e12. Qed.
+Lemma sed_mul_fused_e4_e13 :
+  sed_mul_fused (sed_e 4) (sed_e 13) = sed_scale (-1) (sed_e 9).
+Proof. rewrite sed_mul_fused_eq. exact sed_mul_e4_e13. Qed.
+Lemma sed_mul_fused_e5_e1 :
+  sed_mul_fused (sed_e 5) (sed_e 1) = sed_e 4.
+Proof. rewrite sed_mul_fused_eq. exact sed_mul_e5_e1. Qed.
+Lemma sed_mul_fused_e1_e13 :
+  sed_mul_fused (sed_e 1) (sed_e 13) = sed_e 12.
+Proof. rewrite sed_mul_fused_eq. exact sed_mul_e1_e13. Qed.
+Lemma sed_mul_fused_e5_e13 :
+  sed_mul_fused (sed_e 5) (sed_e 13) = sed_scale (-1) (sed_e 8).
+Proof. rewrite sed_mul_fused_eq. exact sed_mul_e5_e13. Qed.
+Lemma sed_mul_fused_e6_e1 :
+  sed_mul_fused (sed_e 6) (sed_e 1) = sed_e 7.
+Proof. rewrite sed_mul_fused_eq. exact sed_mul_e6_e1. Qed.
+Lemma sed_mul_fused_e1_e14 :
+  sed_mul_fused (sed_e 1) (sed_e 14) = sed_e 15.
+Proof. rewrite sed_mul_fused_eq. exact sed_mul_e1_e14. Qed.
+Lemma sed_mul_fused_e7_e14 :
+  sed_mul_fused (sed_e 7) (sed_e 14) = sed_scale (-1) (sed_e 9).
+Proof. rewrite sed_mul_fused_eq. exact sed_mul_e7_e14. Qed.
+Lemma sed_mul_fused_e6_e15 :
+  sed_mul_fused (sed_e 6) (sed_e 15) = sed_e 9.
+Proof. rewrite sed_mul_fused_eq. exact sed_mul_e6_e15. Qed.
+Lemma sed_mul_fused_e7_e1 :
+  sed_mul_fused (sed_e 7) (sed_e 1) = sed_scale (-1) (sed_e 6).
+Proof. rewrite sed_mul_fused_eq. exact sed_mul_e7_e1. Qed.
+Lemma sed_mul_fused_e1_e15 :
+  sed_mul_fused (sed_e 1) (sed_e 15) = sed_scale (-1) (sed_e 14).
+Proof. rewrite sed_mul_fused_eq. exact sed_mul_e1_e15. Qed.
+
+Record CDSedFocusedBasisFusedSurface := {
+  cd_sed_fused_e1_e9 : sed_mul_fused (sed_e 1) (sed_e 9) = sed_scale (-1) (sed_e 8);
+  cd_sed_fused_e9_e2 : sed_mul_fused (sed_e 9) (sed_e 2) = sed_scale (-1) (sed_e 11);
+  cd_sed_fused_e8_e2 : sed_mul_fused (sed_e 8) (sed_e 2) = sed_scale (-1) (sed_e 10);
+  cd_sed_fused_e1_e11 : sed_mul_fused (sed_e 1) (sed_e 11) = sed_e 10;
+  cd_sed_fused_e1_e2 : sed_mul_fused (sed_e 1) (sed_e 2) = sed_e 3;
+  cd_sed_fused_e2_e4 : sed_mul_fused (sed_e 2) (sed_e 4) = sed_e 6;
+  cd_sed_fused_e3_e4 : sed_mul_fused (sed_e 3) (sed_e 4) = sed_e 7;
+  cd_sed_fused_e1_e6 : sed_mul_fused (sed_e 1) (sed_e 6) = sed_scale (-1) (sed_e 7);
+  cd_sed_fused_e2_e9 : sed_mul_fused (sed_e 2) (sed_e 9) = sed_e 11;
+  cd_sed_fused_e3_e9 : sed_mul_fused (sed_e 3) (sed_e 9) = sed_scale (-1) (sed_e 10);
+  cd_sed_fused_e2_e1 : sed_mul_fused (sed_e 2) (sed_e 1) = sed_scale (-1) (sed_e 3);
+  cd_sed_fused_e1_e10 : sed_mul_fused (sed_e 1) (sed_e 10) = sed_scale (-1) (sed_e 11);
+  cd_sed_fused_e3_e10 : sed_mul_fused (sed_e 3) (sed_e 10) = sed_e 9;
+  cd_sed_fused_e2_e11 : sed_mul_fused (sed_e 2) (sed_e 11) = sed_scale (-1) (sed_e 9);
+  cd_sed_fused_e3_e1 : sed_mul_fused (sed_e 3) (sed_e 1) = sed_e 2;
+  cd_sed_fused_e4_e1 : sed_mul_fused (sed_e 4) (sed_e 1) = sed_scale (-1) (sed_e 5);
+  cd_sed_fused_e1_e12 : sed_mul_fused (sed_e 1) (sed_e 12) = sed_scale (-1) (sed_e 13);
+  cd_sed_fused_e5_e12 : sed_mul_fused (sed_e 5) (sed_e 12) = sed_e 9;
+  cd_sed_fused_e4_e13 : sed_mul_fused (sed_e 4) (sed_e 13) = sed_scale (-1) (sed_e 9);
+  cd_sed_fused_e5_e1 : sed_mul_fused (sed_e 5) (sed_e 1) = sed_e 4;
+  cd_sed_fused_e1_e13 : sed_mul_fused (sed_e 1) (sed_e 13) = sed_e 12;
+  cd_sed_fused_e5_e13 : sed_mul_fused (sed_e 5) (sed_e 13) = sed_scale (-1) (sed_e 8);
+  cd_sed_fused_e6_e1 : sed_mul_fused (sed_e 6) (sed_e 1) = sed_e 7;
+  cd_sed_fused_e1_e14 : sed_mul_fused (sed_e 1) (sed_e 14) = sed_e 15;
+  cd_sed_fused_e7_e14 : sed_mul_fused (sed_e 7) (sed_e 14) = sed_scale (-1) (sed_e 9);
+  cd_sed_fused_e6_e15 : sed_mul_fused (sed_e 6) (sed_e 15) = sed_e 9;
+  cd_sed_fused_e7_e1 : sed_mul_fused (sed_e 7) (sed_e 1) = sed_scale (-1) (sed_e 6);
+  cd_sed_fused_e1_e15 : sed_mul_fused (sed_e 1) (sed_e 15) = sed_scale (-1) (sed_e 14)
+}.
+
+Definition sed_focused_basis_fused_surface : CDSedFocusedBasisFusedSurface.
+Proof.
+  refine
+    {| cd_sed_fused_e1_e9 := sed_mul_fused_e1_e9;
+       cd_sed_fused_e9_e2 := sed_mul_fused_e9_e2;
+       cd_sed_fused_e8_e2 := sed_mul_fused_e8_e2;
+       cd_sed_fused_e1_e11 := sed_mul_fused_e1_e11;
+       cd_sed_fused_e1_e2 := sed_mul_fused_e1_e2;
+       cd_sed_fused_e2_e4 := sed_mul_fused_e2_e4;
+       cd_sed_fused_e3_e4 := sed_mul_fused_e3_e4;
+       cd_sed_fused_e1_e6 := sed_mul_fused_e1_e6;
+       cd_sed_fused_e2_e9 := sed_mul_fused_e2_e9;
+       cd_sed_fused_e3_e9 := sed_mul_fused_e3_e9;
+       cd_sed_fused_e2_e1 := sed_mul_fused_e2_e1;
+       cd_sed_fused_e1_e10 := sed_mul_fused_e1_e10;
+       cd_sed_fused_e3_e10 := sed_mul_fused_e3_e10;
+       cd_sed_fused_e2_e11 := sed_mul_fused_e2_e11;
+       cd_sed_fused_e3_e1 := sed_mul_fused_e3_e1;
+       cd_sed_fused_e4_e1 := sed_mul_fused_e4_e1;
+       cd_sed_fused_e1_e12 := sed_mul_fused_e1_e12;
+       cd_sed_fused_e5_e12 := sed_mul_fused_e5_e12;
+       cd_sed_fused_e4_e13 := sed_mul_fused_e4_e13;
+       cd_sed_fused_e5_e1 := sed_mul_fused_e5_e1;
+       cd_sed_fused_e1_e13 := sed_mul_fused_e1_e13;
+       cd_sed_fused_e5_e13 := sed_mul_fused_e5_e13;
+       cd_sed_fused_e6_e1 := sed_mul_fused_e6_e1;
+       cd_sed_fused_e1_e14 := sed_mul_fused_e1_e14;
+       cd_sed_fused_e7_e14 := sed_mul_fused_e7_e14;
+       cd_sed_fused_e6_e15 := sed_mul_fused_e6_e15;
+       cd_sed_fused_e7_e1 := sed_mul_fused_e7_e1;
+       cd_sed_fused_e1_e15 := sed_mul_fused_e1_e15 |}.
 Defined.

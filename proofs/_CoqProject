@@ -167,6 +167,7 @@ verified/C958_ZDGraphTopology.v
 verified/C016_ParityFlips.v
 verified/C010_ConnectivityObstruction.v
 theories/CDLinearLemmas.v
+theories/SedenionSignBridge.v
 theories/CDFusedBilinear.v
 verified/C1455_AssociatorTrilinear.v
 verified/C1463_ArithmeticInventory.v
