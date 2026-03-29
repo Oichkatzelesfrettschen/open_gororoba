@@ -110,7 +110,17 @@ Theorem brown1972_chapter_vii_theorem_7_15_fundamental :
     zd_a1_fundamental zd_a2_fundamental
     zd_b1_fundamental zd_b2_fundamental.
 Proof.
-  exact zd_fundamental_major_theorem.
+  exact zd_fundamental_major_theorem_fused.
+Qed.
+
+Theorem brown1972_chapter_vii_theorem_7_15_fundamental_fused_support :
+  zd_condition_ii zd_a1_fundamental zd_a2_fundamental
+                  zd_b1_fundamental zd_b2_fundamental /\
+  zd_condition_iii zd_a1_fundamental zd_b1_fundamental zd_a2_fundamental.
+Proof.
+  split.
+  - exact zd_fundamental_condition_ii_fused.
+  - exact zd_fundamental_condition_iii_fused.
 Qed.
 
 Theorem brown1972_chapter_vii_boxkite_partition_summary :
@@ -182,7 +192,11 @@ Record Brown1972ChapterVIIReusableAnchorSurface := {
     sed_mul_fused sed_zd_b sed_zd_a = sed_zero;
   brown1972_ch7_anchor_fused_t73_basis :
     sed_mul_fused sed_zd_a sed_zd_b = sed_zero /\
-    sed_mul_fused sed_zd_b sed_zd_a = sed_zero
+    sed_mul_fused sed_zd_b sed_zd_a = sed_zero;
+  brown1972_ch7_anchor_fused_t715 :
+    zd_condition_ii zd_a1_fundamental zd_a2_fundamental
+                    zd_b1_fundamental zd_b2_fundamental /\
+    zd_condition_iii zd_a1_fundamental zd_b1_fundamental zd_a2_fundamental
 }.
 
 Definition brown1972_chapter_vii_reusable_anchor_surface :
@@ -201,5 +215,7 @@ Proof.
             brown1972_ch7_anchor_fused_t73 :=
               brown1972_chapter_vii_theorem_7_3_witness_fused;
             brown1972_ch7_anchor_fused_t73_basis :=
-              brown1972_chapter_vii_theorem_7_3_witness_fused_basis |}.
+              brown1972_chapter_vii_theorem_7_3_witness_fused_basis;
+            brown1972_ch7_anchor_fused_t715 :=
+              brown1972_chapter_vii_theorem_7_15_fundamental_fused_support |}.
 Defined.

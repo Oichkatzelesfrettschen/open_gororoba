@@ -934,6 +934,22 @@ Proof.
   brown1972_close_sed_ring.
 Qed.
 
+Lemma brown1972_sed_oct_embed_basis : forall i : nat,
+  (i < 8)%nat ->
+  brown1972_sed_oct_embed (oct_e i) = sed_e i.
+Proof.
+  intros i Hi.
+  destruct i as [|[|[|[|[|[|[|[|]]]]]]]]; try lia; reflexivity.
+Qed.
+
+Lemma brown1972_sed_poly_embed_basis : forall i : nat,
+  (i < 8)%nat ->
+  brown1972_sed_poly_embed (oct_e i) = sed_e (8 + i).
+Proof.
+  intros i Hi.
+  destruct i as [|[|[|[|[|[|[|[|]]]]]]]]; try lia; reflexivity.
+Qed.
+
 Theorem brown1972_theorem_6_6_i_sedenion : forall a b : CDOct,
   sed_mul (brown1972_sed_oct_embed a) (brown1972_sed_poly_embed b) =
   brown1972_sed_poly_embed (oct_mul b a).
@@ -962,6 +978,46 @@ Proof.
   destruct a as [alo ahi], b as [blo bhi].
   cbv [brown1972_sed_oct_embed brown1972_sed_poly_embed].
   brown1972_close_sed_ring.
+Qed.
+
+Theorem brown1972_theorem_6_6_i_sedenion_fused_basis :
+  forall i j : nat,
+    (i < 8)%nat -> (j < 8)%nat ->
+    sed_mul_fused (brown1972_sed_oct_embed (oct_e i))
+                  (brown1972_sed_poly_embed (oct_e j)) =
+    brown1972_sed_poly_embed (oct_mul_fused (oct_e j) (oct_e i)).
+Proof.
+  intros i j Hi Hj.
+  rewrite sed_mul_fused_eq.
+  rewrite oct_mul_fused_eq.
+  apply brown1972_theorem_6_6_i_sedenion.
+Qed.
+
+Theorem brown1972_theorem_6_6_ii_sedenion_fused_basis :
+  forall i j : nat,
+    (i < 8)%nat -> (j < 8)%nat ->
+    sed_mul_fused (brown1972_sed_poly_embed (oct_e i))
+                  (brown1972_sed_oct_embed (oct_e j)) =
+    brown1972_sed_poly_embed (oct_mul_fused (oct_e i) (oct_conj (oct_e j))).
+Proof.
+  intros i j Hi Hj.
+  rewrite sed_mul_fused_eq.
+  rewrite oct_mul_fused_eq.
+  apply brown1972_theorem_6_6_ii_sedenion.
+Qed.
+
+Theorem brown1972_theorem_6_6_iii_sedenion_fused_basis :
+  forall i j : nat,
+    (i < 8)%nat -> (j < 8)%nat ->
+    sed_mul_fused (brown1972_sed_poly_embed (oct_e i))
+                  (brown1972_sed_poly_embed (oct_e j)) =
+    brown1972_sed_oct_embed
+      (oct_neg (oct_mul_fused (oct_conj (oct_e j)) (oct_e i))).
+Proof.
+  intros i j Hi Hj.
+  rewrite sed_mul_fused_eq.
+  rewrite oct_mul_fused_eq.
+  apply brown1972_theorem_6_6_iii_sedenion.
 Qed.
 
 Definition brown1972_ch6_67_polynomial_mul
@@ -1663,6 +1719,8 @@ Record Brown1972ChapterVIFusedBaseExtensionSurface := {
     CDFusedBilinearSurface CDOct oct_add oct_mul oct_mul_fused oct_scale;
   brown1972_ch6_fused_sed_bilinear :
     CDFusedBilinearSurface CDSed sed_add sed_mul sed_mul_fused sed_scale;
+  brown1972_ch6_fused_sed_basis :
+    CDSedBasisFusedSurface;
   brown1972_ch6_fused_t65 :
     forall x y : CDSed,
       brown1972_ch6_67_polynomial_mul (sed_lo x) (sed_hi x) (sed_lo y) (sed_hi y) =
@@ -1670,7 +1728,26 @@ Record Brown1972ChapterVIFusedBaseExtensionSurface := {
   brown1972_ch6_fused_c67 :
     forall x y : CDSed,
       brown1972_ch6_67_polynomial_mul (sed_lo x) (sed_hi x) (sed_lo y) (sed_hi y) =
-      sed_mul_fused x y
+      sed_mul_fused x y;
+  brown1972_ch6_fused_t66_i_basis :
+    forall i j : nat,
+      (i < 8)%nat -> (j < 8)%nat ->
+      sed_mul_fused (brown1972_sed_oct_embed (oct_e i))
+                    (brown1972_sed_poly_embed (oct_e j)) =
+      brown1972_sed_poly_embed (oct_mul_fused (oct_e j) (oct_e i));
+  brown1972_ch6_fused_t66_ii_basis :
+    forall i j : nat,
+      (i < 8)%nat -> (j < 8)%nat ->
+      sed_mul_fused (brown1972_sed_poly_embed (oct_e i))
+                    (brown1972_sed_oct_embed (oct_e j)) =
+      brown1972_sed_poly_embed (oct_mul_fused (oct_e i) (oct_conj (oct_e j)));
+  brown1972_ch6_fused_t66_iii_basis :
+    forall i j : nat,
+      (i < 8)%nat -> (j < 8)%nat ->
+      sed_mul_fused (brown1972_sed_poly_embed (oct_e i))
+                    (brown1972_sed_poly_embed (oct_e j)) =
+      brown1972_sed_oct_embed
+        (oct_neg (oct_mul_fused (oct_conj (oct_e j)) (oct_e i)))
 }.
 
 Definition brown1972_chapter_vi_fused_base_extension_surface :
@@ -1680,8 +1757,15 @@ Proof.
               brown1972_chapter_vi_broader_reusable_anchor_surface;
             brown1972_ch6_fused_oct_bilinear := oct_fused_bilinear_surface;
             brown1972_ch6_fused_sed_bilinear := sed_fused_bilinear_surface;
+            brown1972_ch6_fused_sed_basis := sed_basis_fused_surface;
             brown1972_ch6_fused_t65 :=
               brown1972_theorem_6_5_sedenion_fused_decomposed;
             brown1972_ch6_fused_c67 :=
-              brown1972_corollary_6_7_sedenion_fused_decomposed |}.
+              brown1972_corollary_6_7_sedenion_fused_decomposed;
+            brown1972_ch6_fused_t66_i_basis :=
+              brown1972_theorem_6_6_i_sedenion_fused_basis;
+            brown1972_ch6_fused_t66_ii_basis :=
+              brown1972_theorem_6_6_ii_sedenion_fused_basis;
+            brown1972_ch6_fused_t66_iii_basis :=
+              brown1972_theorem_6_6_iii_sedenion_fused_basis |}.
 Defined.

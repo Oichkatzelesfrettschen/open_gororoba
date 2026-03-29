@@ -24,7 +24,7 @@
     STATUS: Phase C Step 21 of Brown 1972 Formalization Plan
 *)
 
-From OpenGororoba Require Import Prelude CayleyDicksonAlgebra Sedenion OctonionNorm.
+From OpenGororoba Require Import Prelude CayleyDicksonAlgebra Sedenion OctonionNorm CDFusedBilinear.
 
 Open Scope R_scope.
 
@@ -220,6 +220,35 @@ Proof.
   f_equal; f_equal; abstract ring.
 Qed.
 
+Lemma zd_fundamental_condition_ii_fused_aux :
+  oct_scale (oct_norm_sq zd_a1_fundamental) zd_b2_fundamental =
+  oct_mul_fused (oct_mul_fused zd_a1_fundamental zd_b1_fundamental)
+                zd_a2_fundamental.
+Proof.
+  destruct oct_fused_bilinear_surface as [_ _ _ HscaleL HscaleR].
+  unfold zd_a1_fundamental, zd_a2_fundamental, zd_b1_fundamental, zd_b2_fundamental.
+  cbv [oct_norm_sq quat_norm_sq oct_scale oct_lo oct_hi qa qb qc qd quat_one quat_zero].
+  rewrite oct_mul_fused_basis_xor with (i := 1%nat) (j := 4%nat) by lia.
+  rewrite HscaleL.
+  rewrite oct_mul_fused_basis_xor with (i := Nat.lxor 1%nat 4%nat) (j := 2%nat).
+  2: { vm_compute; lia. }
+  2: { lia. }
+  vm_compute.
+  f_equal; f_equal; ring.
+Qed.
+
+Lemma zd_fundamental_condition_ii_fused :
+  zd_condition_ii zd_a1_fundamental zd_a2_fundamental
+                  zd_b1_fundamental zd_b2_fundamental.
+Proof.
+  unfold zd_condition_ii.
+  change
+    (oct_scale (oct_norm_sq zd_a1_fundamental) zd_b2_fundamental =
+     oct_mul_fused (oct_mul_fused zd_a1_fundamental zd_b1_fundamental)
+                   zd_a2_fundamental).
+  exact zd_fundamental_condition_ii_fused_aux.
+Qed.
+
 (** ================================================================== *)
 (** * Condition (iii): antiassociator = 0 for the fundamental pair.   *)
 (** ================================================================== *)
@@ -255,6 +284,44 @@ Proof.
   apply (f_equal2 mkOct); apply (f_equal4 mkQuat); ring.
 Qed.
 
+Lemma zd_fundamental_condition_iii_fused_aux :
+  oct_add
+    (oct_mul_fused (oct_mul_fused zd_a1_fundamental zd_b1_fundamental)
+                   zd_a2_fundamental)
+    (oct_mul_fused zd_a1_fundamental
+                   (oct_mul_fused zd_b1_fundamental zd_a2_fundamental)) =
+  oct_zero.
+Proof.
+  destruct oct_fused_bilinear_surface as [_ _ _ HscaleL HscaleR].
+  unfold zd_a1_fundamental, zd_b1_fundamental, zd_a2_fundamental.
+  rewrite oct_mul_fused_basis_xor with (i := 1%nat) (j := 4%nat) by lia.
+  rewrite HscaleL.
+  rewrite oct_mul_fused_basis_xor with (i := Nat.lxor 1%nat 4%nat) (j := 2%nat).
+  2: { vm_compute; lia. }
+  2: { lia. }
+  rewrite oct_mul_fused_basis_xor with (i := 4%nat) (j := 2%nat) by lia.
+  rewrite HscaleR.
+  rewrite oct_mul_fused_basis_xor with (i := 1%nat) (j := Nat.lxor 4%nat 2%nat).
+  2: { lia. }
+  2: { vm_compute; lia. }
+  vm_compute.
+  apply (f_equal2 mkOct); apply (f_equal4 mkQuat); ring.
+Qed.
+
+Lemma zd_fundamental_condition_iii_fused :
+  zd_condition_iii zd_a1_fundamental zd_b1_fundamental zd_a2_fundamental.
+Proof.
+  unfold zd_condition_iii, oct_antiassociator.
+  change
+    (oct_add
+       (oct_mul_fused (oct_mul_fused zd_a1_fundamental zd_b1_fundamental)
+                      zd_a2_fundamental)
+       (oct_mul_fused zd_a1_fundamental
+                      (oct_mul_fused zd_b1_fundamental zd_a2_fundamental)) =
+     oct_zero).
+  exact zd_fundamental_condition_iii_fused_aux.
+Qed.
+
 (** ================================================================== *)
 (** * Combined: fundamental pair satisfies all three conditions.       *)
 (** ================================================================== *)
@@ -271,6 +338,17 @@ Proof.
   split. { exact zd_fundamental_condition_i. }
   split. { exact zd_fundamental_condition_ii. }
   exact zd_fundamental_condition_iii.
+Qed.
+
+Theorem zd_fundamental_major_theorem_fused :
+  is_zd_pair_major_theorem
+    zd_a1_fundamental zd_a2_fundamental
+    zd_b1_fundamental zd_b2_fundamental.
+Proof.
+  unfold is_zd_pair_major_theorem.
+  split. { exact zd_fundamental_condition_i. }
+  split. { exact zd_fundamental_condition_ii_fused. }
+  exact zd_fundamental_condition_iii_fused.
 Qed.
 
 (** ================================================================== *)
