@@ -148,6 +148,19 @@ Proof.
         { exact DeMarraisAssessors.bk_g_indices. }
 Qed.
 
+Theorem brown1972_chapter_vii_corollary_7_16_ii_fundamental_fused :
+  oct_antiassociator_fused zd_a1_fundamental zd_b1_fundamental zd_a2_fundamental = oct_zero /\
+  oct_antiassociator_fused zd_b1_fundamental zd_a1_fundamental zd_b2_fundamental = oct_zero /\
+  oct_antiassociator_fused zd_a1_fundamental zd_b2_fundamental zd_a2_fundamental = oct_zero /\
+  oct_antiassociator_fused zd_b1_fundamental zd_a2_fundamental zd_b2_fundamental = oct_zero /\
+  oct_antiassociator_fused zd_a2_fundamental zd_b1_fundamental zd_a1_fundamental = oct_zero /\
+  oct_antiassociator_fused zd_b2_fundamental zd_a1_fundamental zd_b1_fundamental = oct_zero /\
+  oct_antiassociator_fused zd_a2_fundamental zd_b2_fundamental zd_a1_fundamental = oct_zero /\
+  oct_antiassociator_fused zd_b2_fundamental zd_a2_fundamental zd_b1_fundamental = oct_zero.
+Proof.
+  exact zd_fundamental_corollary_7_16_ii_fused.
+Qed.
+
 Theorem brown1972_chapter_vii_boxkite_partition_summary :
   length assessors = 42 /\
   length boxkites = 7 /\
@@ -229,7 +242,16 @@ Record Brown1972ChapterVIIReusableAnchorSurface := {
     (42 * 4 = 168) /\
     (7 * 6 * 4 = 168) /\
     (6 * 4 = 24) /\
-    (ZDGraph.boxkite_signatures = 15 :: 10 :: 11 :: 12 :: 13 :: 14 :: 9 :: nil)
+    (ZDGraph.boxkite_signatures = 15 :: 10 :: 11 :: 12 :: 13 :: 14 :: 9 :: nil);
+  brown1972_ch7_anchor_c716_ii_fused :
+    oct_antiassociator_fused zd_a1_fundamental zd_b1_fundamental zd_a2_fundamental = oct_zero /\
+    oct_antiassociator_fused zd_b1_fundamental zd_a1_fundamental zd_b2_fundamental = oct_zero /\
+    oct_antiassociator_fused zd_a1_fundamental zd_b2_fundamental zd_a2_fundamental = oct_zero /\
+    oct_antiassociator_fused zd_b1_fundamental zd_a2_fundamental zd_b2_fundamental = oct_zero /\
+    oct_antiassociator_fused zd_a2_fundamental zd_b1_fundamental zd_a1_fundamental = oct_zero /\
+    oct_antiassociator_fused zd_b2_fundamental zd_a1_fundamental zd_b1_fundamental = oct_zero /\
+    oct_antiassociator_fused zd_a2_fundamental zd_b2_fundamental zd_a1_fundamental = oct_zero /\
+    oct_antiassociator_fused zd_b2_fundamental zd_a2_fundamental zd_b1_fundamental = oct_zero
 }.
 
 Definition brown1972_chapter_vii_reusable_anchor_surface :
@@ -252,5 +274,7 @@ Proof.
             brown1972_ch7_anchor_fused_t715 :=
               brown1972_chapter_vii_theorem_7_15_fundamental_fused_support;
             brown1972_ch7_anchor_c716 :=
-              brown1972_chapter_vii_corollary_7_16_structural_summary |}.
+              brown1972_chapter_vii_corollary_7_16_structural_summary;
+            brown1972_ch7_anchor_c716_ii_fused :=
+              brown1972_chapter_vii_corollary_7_16_ii_fundamental_fused |}.
 Defined.

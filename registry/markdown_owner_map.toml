@@ -12,7 +12,7 @@ updated = "2026-03-28"
 authoritative = true
 status = "active"
 status_token = "ACTIVE"
-document_count = 173
+document_count = 174
 
 [[owner]]
 path = "README.md"
@@ -844,6 +844,12 @@ removal_reason = ""
 
 [[owner]]
 path = "docs/reports/turboquant_cd_optimization_analysis.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/reports/turboquant_claims_2026-03-28.md"
 owner_group = "project"
 removal_status = "active"
 removal_reason = ""
