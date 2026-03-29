@@ -114,15 +114,16 @@ impl StaggeredB {
 
     /// Compute the EMF at cell corners and update face-centered B.
     ///
-    /// The EMF (electromotive force) in 2D is the phi-component:
-    ///   EMF_phi = -(v^r * B^theta - v^theta * B^r)
+    /// Uses the FACE-CENTERED velocity from the staggered B-field
+    /// (not cell-centered), which is more stable because it's consistent
+    /// with the CT staggered grid. The EMF is:
+    ///   EMF_phi = -(v^r * B^theta_face - v^theta * B^r_face)
     ///
-    /// At corner (i+1/2, j+1/2), average from the 4 neighboring cells:
-    ///   EMF = -0.25 * sum of (v^r * B^theta - v^theta * B^r) at 4 cells
+    /// At corner (i+1/2, j+1/2), average from 2 adjacent faces:
+    ///   EMF = -0.5 * (v_r_face[j] * B^th[j] + v_r_face[j+1] * B^th[j+1])
+    ///       + 0.5 * (v_th_face[i] * B^r[i] + v_th_face[i+1] * B^r[i+1])
     ///
-    /// Then update via Stokes:
-    ///   B^r_{i+1/2,j}  -= dt/dtheta * (EMF_{i+1/2,j+1/2} - EMF_{i+1/2,j-1/2})
-    ///   B^th_{i,j+1/2} += dt/dr     * (EMF_{i+1/2,j+1/2} - EMF_{i-1/2,j+1/2})
+    /// This is the "flux-CT" approach (Toth 2000, simplified).
     pub fn ct_update(
         &mut self,
         prims: &crate::prims::PrimGrid,
@@ -133,34 +134,44 @@ impl StaggeredB {
         let n1t = self.n1t;
         let n2t = self.n2t;
 
-        // Step 1: Compute EMF at all corners
+        // Step 1: Compute EMF at corners using FACE B-fields (not cell-centered)
+        // This is more consistent with the staggered grid and reduces
+        // the amplification of sharp gradients.
         let mut emf = vec![0.0f64; n1t * n2t];
         for i in ng..ng + grid.n1 {
             for j in ng..ng + grid.n2 {
                 let k = ng;
-                // EMF at corner (i+1/2, j+1/2) from 4 neighboring cells:
-                // (i, j), (i+1, j), (i, j+1), (i+1, j+1)
-                let mut sum_emf = 0.0;
-                let mut count = 0;
+                // Use cell-centered velocity (average of neighbors for face values)
+                // and FACE-CENTERED B-fields from the staggered grid
+                let ci = i.min(n1t - 1);
+                let cj = j.min(n2t - 1);
+                let ci1 = (i + 1).min(n1t - 1);
+                let cj1 = (j + 1).min(n2t - 1);
+
+                // Average velocity at corner from 4 cells
+                let mut vr_avg = 0.0;
+                let mut vth_avg = 0.0;
+                let mut count = 0.0;
                 for di in 0..=1 {
                     for dj in 0..=1 {
-                        let ci = i + di;
-                        let cj = j + dj;
-                        if ci < n1t && cj < n2t {
-                            let cell_idx = grid.idx(ci, cj, k);
-                            let p = prims.get(cell_idx);
-                            let vr = p[prims::V1];
-                            let vth = p[prims::V2];
-                            let br_c = p[prims::B1];
-                            let bth_c = p[prims::B2];
-                            sum_emf += -(vr * bth_c - vth * br_c);
-                            count += 1;
-                        }
+                        let ii = (i + di).min(n1t - 1);
+                        let jj = (j + dj).min(n2t - 1);
+                        let cell_idx = grid.idx(ii, jj, k);
+                        let p = prims.get(cell_idx);
+                        vr_avg += p[prims::V1];
+                        vth_avg += p[prims::V2];
+                        count += 1.0;
                     }
                 }
-                if count > 0 {
-                    emf[i * n2t + j] = sum_emf / count as f64;
-                }
+                vr_avg /= count;
+                vth_avg /= count;
+
+                // Use FACE B-fields (staggered) instead of cell-centered
+                let br_face = 0.5 * (self.br[ci * n2t + cj] + self.br[ci * n2t + cj1]);
+                let bth_face = 0.5 * (self.bth[ci * n2t + cj] + self.bth[ci1 * n2t + cj]);
+
+                // EMF = -(v^r * B^theta - v^theta * B^r)
+                emf[i * n2t + j] = -(vr_avg * bth_face - vth_avg * br_face);
             }
         }
 
