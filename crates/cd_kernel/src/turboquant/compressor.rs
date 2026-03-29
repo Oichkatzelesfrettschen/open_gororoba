@@ -4,6 +4,7 @@
 //! matching `compressors.py:TurboQuantCompressorV2` (keys with QJL) and
 //! `compressors.py:TurboQuantCompressorMSE` (values, MSE-only).
 
+use super::config::TurboQuantConfig;
 use super::pipeline::{MseCompressed, TurboQuantMSE, TurboQuantProd};
 use super::sign_pack::BitPackedSigns;
 
@@ -47,14 +48,35 @@ pub struct CompressedValueBatch {
 pub struct KeyCompressor {
     quantizer: TurboQuantProd,
     d: usize,
+    apply_qjl: bool,
 }
 
 impl KeyCompressor {
+    /// Create from explicit parameters (legacy API).
     pub fn new(head_dim: usize, bits: u32, seed: u64, use_wht: bool) -> Self {
         let quantizer = TurboQuantProd::new(head_dim, bits, seed, use_wht, None);
         KeyCompressor {
             quantizer,
             d: head_dim,
+            apply_qjl: bits <= 3, // auto: on for low bits, off for high
+        }
+    }
+
+    /// Create from a TurboQuantConfig (recommended API).
+    ///
+    /// Respects all config settings: rotation method, QJL toggle, etc.
+    pub fn from_config(config: &TurboQuantConfig) -> Self {
+        let quantizer = TurboQuantProd::new(
+            config.dim,
+            config.bits,
+            config.seed,
+            config.use_wht(),
+            config.qjl_dim,
+        );
+        KeyCompressor {
+            quantizer,
+            d: config.dim,
+            apply_qjl: config.should_apply_qjl(),
         }
     }
 
@@ -141,10 +163,15 @@ impl KeyCompressor {
                     .map(|(&qv, &kv)| qv * kv as f64)
                     .sum();
 
-                // Term 2: ||r|| * sqrt(pi/2) / m * <signs, S@q>
-                // Use BitPackedSigns POPCNT inner product for speed
-                let sign_dot = key.signs.inner_product(&s_q);
-                let term2 = key.residual_norm as f64 * correction_scale * sign_dot;
+                // Term 2: QJL correction (only when beneficial)
+                // On at bits<=3 where MSE residuals are large.
+                // Off at bits>=4 where 1-bit sign noise exceeds residual.
+                let term2 = if self.apply_qjl {
+                    let sign_dot = key.signs.inner_product(&s_q);
+                    key.residual_norm as f64 * correction_scale * sign_dot
+                } else {
+                    0.0
+                };
 
                 scores[qi * n_keys + ki] = term1 + term2;
             }

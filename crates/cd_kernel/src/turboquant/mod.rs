@@ -46,6 +46,7 @@ pub mod backend;
 pub mod baselines;
 pub mod cd_fidelity;
 pub mod compressor;
+pub mod config;
 #[cfg(feature = "cuda")]
 pub mod cuda;
 pub mod dispatch;
