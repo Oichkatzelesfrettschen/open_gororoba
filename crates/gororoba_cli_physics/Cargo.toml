@@ -984,6 +984,10 @@ name = "turboquant-production"
 path = "src/bin/turboquant_production.rs"
 
 [[bin]]
+name = "turboquant-profile"
+path = "src/bin/turboquant_profile.rs"
+
+[[bin]]
 name = "mast-cd-vs-spectrogram"
 path = "src/bin/mast_cd_vs_spectrogram.rs"
 required-features = ["zarr-read"]
