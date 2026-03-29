@@ -99,15 +99,41 @@ impl KeyCompressor {
 
     /// Compute asymmetric attention scores: queries x compressed_keys.
     ///
+    /// Full TurboQuant estimator (matching `compressors.py:asymmetric_attention_scores`):
+    ///   score = <q, k_mse> + ||r|| * sqrt(pi/2) / m * <S@q, signs>
+    ///
+    /// Term 1 uses the stored MSE reconstruction.
+    /// Term 2 (QJL correction) projects the query through the QJL matrix S,
+    /// then computes the inner product with bit-packed signs via POPCNT.
+    ///
+    /// The QJL correction is most valuable at low bit-widths (2-bit) where
+    /// MSE residuals are large.  At higher bit-widths (4+), MSE-only can
+    /// be more accurate because the 1-bit sign noise exceeds the residual.
+    ///
     /// `queries` is (n_queries, d) flat f64 array.
     /// Returns (n_queries, n_keys) attention scores.
     pub fn attention_scores(&self, queries: &[f64], n_queries: usize, batch: &CompressedKeyBatch) -> Vec<f64> {
         let d = self.d;
+        let m = self.quantizer.qjl_dim();
+        let s_matrix = self.quantizer.s_matrix();
+        let correction_scale = (std::f64::consts::FRAC_PI_2).sqrt() / m as f64;
         let n_keys = batch.keys.len();
         let mut scores = vec![0.0f64; n_queries * n_keys];
 
         for qi in 0..n_queries {
             let q = &queries[qi * d..(qi + 1) * d];
+
+            // Project query through QJL matrix: s_q[j] = sum_i S[j*d + i] * q[i]
+            let mut s_q = vec![0.0f64; m];
+            for (j, sq_val) in s_q.iter_mut().enumerate() {
+                let row_start = j * d;
+                let mut dot = 0.0f64;
+                for i in 0..d {
+                    dot += s_matrix[row_start + i] * q[i];
+                }
+                *sq_val = dot;
+            }
+
             for (ki, key) in batch.keys.iter().enumerate() {
                 // Term 1: <q, k_mse>
                 let term1: f64 = q.iter()
@@ -115,13 +141,12 @@ impl KeyCompressor {
                     .map(|(&qv, &kv)| qv * kv as f64)
                     .sum();
 
-                // Term 2: ||r|| * sqrt(pi/2) / m * <packed_signs, S@q>
-                // For the full QJL correction, we need the S matrix.
-                // For now, store Term 1 only (MSE approximation).
-                // The full correction requires the projection matrix,
-                // which is stored in the quantizer.
-                // TODO: integrate full QJL correction with BitPackedSigns
-                scores[qi * n_keys + ki] = term1;
+                // Term 2: ||r|| * sqrt(pi/2) / m * <signs, S@q>
+                // Use BitPackedSigns POPCNT inner product for speed
+                let sign_dot = key.signs.inner_product(&s_q);
+                let term2 = key.residual_norm as f64 * correction_scale * sign_dot;
+
+                scores[qi * n_keys + ki] = term1 + term2;
             }
         }
 
