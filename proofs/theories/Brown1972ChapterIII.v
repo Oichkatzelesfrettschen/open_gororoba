@@ -96,6 +96,7 @@ From OpenGororoba Require Import
   CDPowerAssociative
   CDSignBridge
   CDConjAntimorph
+  CDFusedBilinear
   CDLinearLemmas
   CDNegLemmas
   CDInverse
@@ -1551,4 +1552,70 @@ Proof.
               brown1972_octonion_chapter_iii_sourced_quadratic_interface;
             brown1972_ch3_broader_sed :=
               brown1972_sedenion_chapter_iii_sourced_quadratic_interface |}.
+Defined.
+
+Theorem brown1972_quaternion_chapter_iii_pure_square_fused : forall x : CDQuat,
+  brown1972_quat_trace x = 0%R ->
+  quat_mul_fused x x = quat_scale (- quat_norm_sq x) quat_one.
+Proof.
+  intros x Htr.
+  rewrite quat_mul_fused_eq.
+  exact (brown1972_quaternion_chapter_iii_pure_square x Htr).
+Qed.
+
+Theorem brown1972_octonion_chapter_iii_pure_square_fused : forall x : CDOct,
+  brown1972_oct_trace x = 0%R ->
+  oct_mul_fused x x = oct_scale (- oct_norm_sq x) brown1972_oct_one.
+Proof.
+  intros x Htr.
+  rewrite oct_mul_fused_eq.
+  exact (brown1972_octonion_chapter_iii_pure_square x Htr).
+Qed.
+
+Theorem brown1972_sedenion_chapter_iii_pure_square_fused : forall x : CDSed,
+  brown1972_sed_trace x = 0%R ->
+  sed_mul_fused x x = sed_scale (- sed_norm_sq x) sed_one.
+Proof.
+  intros x Htr.
+  rewrite sed_mul_fused_eq.
+  exact (brown1972_sedenion_pure_square x Htr).
+Qed.
+
+Record Brown1972ChapterIIIFusedQuadraticAnchorSurface := {
+  brown1972_ch3_fused_base :
+    Brown1972ChapterIIIBroaderReusableAnchorSurface;
+  brown1972_ch3_fused_quat_bilinear :
+    CDFusedBilinearSurface CDQuat quat_add quat_mul quat_mul_fused quat_scale;
+  brown1972_ch3_fused_oct_bilinear :
+    CDFusedBilinearSurface CDOct oct_add oct_mul oct_mul_fused oct_scale;
+  brown1972_ch3_fused_sed_bilinear :
+    CDFusedBilinearSurface CDSed sed_add sed_mul sed_mul_fused sed_scale;
+  brown1972_ch3_fused_quat_pure_square :
+    forall x : CDQuat,
+      brown1972_quat_trace x = 0%R ->
+      quat_mul_fused x x = quat_scale (- quat_norm_sq x) quat_one;
+  brown1972_ch3_fused_oct_pure_square :
+    forall x : CDOct,
+      brown1972_oct_trace x = 0%R ->
+      oct_mul_fused x x = oct_scale (- oct_norm_sq x) brown1972_oct_one;
+  brown1972_ch3_fused_sed_pure_square :
+    forall x : CDSed,
+      brown1972_sed_trace x = 0%R ->
+      sed_mul_fused x x = sed_scale (- sed_norm_sq x) sed_one
+}.
+
+Definition brown1972_chapter_iii_fused_quadratic_anchor_surface :
+  Brown1972ChapterIIIFusedQuadraticAnchorSurface.
+Proof.
+  refine {| brown1972_ch3_fused_base :=
+              brown1972_chapter_iii_broader_reusable_anchor_surface;
+            brown1972_ch3_fused_quat_bilinear := quat_fused_bilinear_surface;
+            brown1972_ch3_fused_oct_bilinear := oct_fused_bilinear_surface;
+            brown1972_ch3_fused_sed_bilinear := sed_fused_bilinear_surface;
+            brown1972_ch3_fused_quat_pure_square :=
+              brown1972_quaternion_chapter_iii_pure_square_fused;
+            brown1972_ch3_fused_oct_pure_square :=
+              brown1972_octonion_chapter_iii_pure_square_fused;
+            brown1972_ch3_fused_sed_pure_square :=
+              brown1972_sedenion_chapter_iii_pure_square_fused |}.
 Defined.

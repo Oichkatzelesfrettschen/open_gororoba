@@ -28,6 +28,7 @@ From OpenGororoba Require Import
   CDPowerAssociative
   CDSignBridge
   CDConjAntimorph
+  CDFusedBilinear
   CDLinearLemmas
   CDNegLemmas
   CDInverse
@@ -45,6 +46,17 @@ Theorem brown1972_chapter_vii_theorem_7_3_witness :
   sed_mul sed_zd_b sed_zd_a = sed_zero.
 Proof.
   exact C1538_sedenion_zd_symmetry.
+Qed.
+
+Theorem brown1972_chapter_vii_theorem_7_3_witness_fused :
+  sed_mul_fused sed_zd_a sed_zd_b = sed_zero /\
+  sed_mul_fused sed_zd_b sed_zd_a = sed_zero.
+Proof.
+  split.
+  - rewrite sed_mul_fused_eq.
+    exact sed_zd_product_zero.
+  - rewrite sed_mul_fused_eq.
+    exact sed_zd_product_zero_rev.
 Qed.
 
 Theorem brown1972_chapter_vii_theorem_7_15_fundamental :
@@ -112,7 +124,12 @@ Record Brown1972ChapterVIIReusableAnchorSurface := {
   brown1972_ch7_anchor_base :
     Brown1972ChapterVIIZeroDivisorSurface;
   brown1972_ch7_anchor_ch6 :
-    Brown1972ChapterVIReusableAnchorSurface
+    Brown1972ChapterVIReusableAnchorSurface;
+  brown1972_ch7_anchor_fused_sed :
+    CDFusedBilinearSurface CDSed sed_add sed_mul sed_mul_fused sed_scale;
+  brown1972_ch7_anchor_fused_t73 :
+    sed_mul_fused sed_zd_a sed_zd_b = sed_zero /\
+    sed_mul_fused sed_zd_b sed_zd_a = sed_zero
 }.
 
 Definition brown1972_chapter_vii_reusable_anchor_surface :
@@ -121,5 +138,9 @@ Proof.
   refine {| brown1972_ch7_anchor_base :=
               brown1972_chapter_vii_zero_divisor_surface;
             brown1972_ch7_anchor_ch6 :=
-              brown1972_chapter_vi_reusable_anchor_surface |}.
+              brown1972_chapter_vi_reusable_anchor_surface;
+            brown1972_ch7_anchor_fused_sed :=
+              sed_fused_bilinear_surface;
+            brown1972_ch7_anchor_fused_t73 :=
+              brown1972_chapter_vii_theorem_7_3_witness_fused |}.
 Defined.
