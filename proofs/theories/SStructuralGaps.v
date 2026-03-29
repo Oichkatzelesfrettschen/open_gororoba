@@ -265,6 +265,18 @@ Proof.
     exact Htc.
 Qed.
 
+(** Brown Theorem 7.19(iii), in the basis-index cyclic form used by the
+    chapterized Brown VII landing. This remains outside the current proved
+    abstract zero-divisor infrastructure because the cyclic antiassociator sign
+    transport has not yet been derived from the generalized 7.15/7.14 lane. *)
+Axiom s2_brown_thm719_iii_basis_cyclic :
+  forall i j k : nat,
+    (1 <= i)%nat -> (i < 8)%nat ->
+    (1 <= j)%nat -> (j < 8)%nat ->
+    (1 <= k)%nat -> (k < 8)%nat ->
+    oct_antiassociator (oct_e i) (oct_e j) (oct_e k) =
+    oct_neg (oct_antiassociator (oct_e k) (oct_e i) (oct_e j)).
+
 (** ================================================================== *)
 (** * S3: Hurwitz uniqueness -- the four NDA are the ONLY ones.       *)
 (** ================================================================== *)

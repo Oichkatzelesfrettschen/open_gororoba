@@ -397,10 +397,8 @@ Theorem brown1972_chapter_vii_theorem_7_19_iii :
     oct_neg (oct_antiassociator_fused (oct_e k) (oct_e i) (oct_e j)).
 Proof.
   intros i j k Hi1 Hi8 Hj1 Hj8 Hk1 Hk8.
-  destruct i as [|[|[|[|[|[|[|[|i]]]]]]]]; try lia;
-  destruct j as [|[|[|[|[|[|[|[|j]]]]]]]]; try lia;
-  destruct k as [|[|[|[|[|[|[|[|k]]]]]]]]; try lia;
-  brown1972_ch7_close_oct_fused_ring.
+  rewrite !oct_antiassociator_fused_eq.
+  exact (s2_brown_thm719_iii_basis_cyclic i j k Hi1 Hi8 Hj1 Hj8 Hk1 Hk8).
 Qed.
 
 Theorem brown1972_chapter_vii_boxkite_partition_summary :
