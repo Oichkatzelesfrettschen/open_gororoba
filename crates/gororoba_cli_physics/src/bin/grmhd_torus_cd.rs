@@ -128,6 +128,10 @@ fn main() -> Result<()> {
     let mut prim_grid = torus.initialize(&grid);
     torus.add_magnetic_loop(&grid, &mut prim_grid, 100.0);
 
+    // Initialize constrained transport (staggered B-field)
+    let mut staggered_b = grmhd_core::ct::StaggeredB::new(&grid);
+    staggered_b.init_from_cell_centered(&prim_grid, &grid);
+
     let mut steps = Vec::new();
 
     // Step 0: initial state
@@ -143,8 +147,8 @@ fn main() -> Result<()> {
         let max_signal = flux::max_signal_speed(&prim_grid, &grid, &mc, &eos);
         let dt = evolve::cfl_dt(&grid, max_signal, cli.cfl);
 
-        // Full 3D Euler step: updates ALL primitives including B-field
-        flux::euler_step_3d(&mut prim_grid, &grid, &mc, &eos, dt);
+        // Full 3D Euler step with constrained transport for B-field
+        flux::euler_step_3d(&mut prim_grid, &grid, &mc, &eos, dt, Some(&mut staggered_b));
 
         // CD analysis
         let bf = extract_midplane_bfield(&prim_grid, &grid);
