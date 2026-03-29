@@ -215,6 +215,45 @@ pub fn polar_dequantize(
     }
 }
 
+/// Estimate inner product directly from polar codes (no dequantization).
+///
+/// Novel idea from turbo-quant crate (RecursiveIntell): for paired
+/// coordinates (x, y) = r*(cos(theta), sin(theta)), the dot product
+/// <(x1,y1), (x2,y2)> = r1*r2*cos(theta1-theta2).
+///
+/// At the first decomposition level, each pair contributes:
+///   r_i * (q_a * cos(theta_i) + q_b * sin(theta_i))
+/// where (q_a, q_b) is the corresponding query pair.
+///
+/// This avoids the full dequantization + unrotation pipeline.
+pub fn polar_inner_product_estimate(
+    query_rotated: &[f64],
+    compressed: &PolarCompressed,
+) -> f64 {
+    let d = query_rotated.len();
+    let bits = compressed.angle_bits;
+
+    // Use the first level (d/2 pairs) for the estimate
+    let n_pairs = d / 2;
+    let mut estimate = 0.0f64;
+
+    // The final radius scales the entire vector
+    let r_scale = compressed.final_radius * compressed.vec_norm;
+
+    // For each pair at level 0
+    for i in 0..n_pairs.min(compressed.angle_indices[0].len()) {
+        let theta = dequantize_angle(compressed.angle_indices[0][i], bits);
+        let q_a = query_rotated[2 * i];
+        let q_b = query_rotated[2 * i + 1];
+
+        // <(r*cos(theta), r*sin(theta)), (q_a, q_b)> = r*(q_a*cos + q_b*sin)
+        estimate += q_a * theta.cos() + q_b * theta.sin();
+    }
+
+    // Scale by the hierarchical radius product (approximation)
+    estimate * r_scale / (d as f64).sqrt()
+}
+
 /// Memory usage of PolarQuant compressed representation.
 pub fn polar_bits_per_vector(d: usize, angle_bits: u32) -> usize {
     let n_levels = d.trailing_zeros() as usize;
