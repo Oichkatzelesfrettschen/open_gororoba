@@ -39,7 +39,7 @@ From OpenGororoba Require Export
   C1538_MorZDSymmetry
   ZD_Criterion
   BrownAssessorEquivalence.
-From OpenGororoba Require Import Brown1972ChapterVI Brown1972ChapterIII
+From OpenGororoba Require Import Brown1972ChapterVI Brown1972ChapterV Brown1972ChapterIII
   SStructuralGaps.
 
 Theorem brown1972_chapter_vii_theorem_7_3_witness :
@@ -178,6 +178,129 @@ Proof.
   exact (s2_brown_lemma717_abstract a b c Hna Hnb Hnc Hanti).
 Qed.
 
+Definition brown1972_ch7_718_basis_rhs (i j k : nat) : Prop :=
+  (i <> 0)%nat /\
+  (j <> 0)%nat /\
+  (k <> 0)%nat /\
+  i <> j /\
+  j <> k /\
+  i <> k /\
+  Nat.lxor i j <> k.
+
+Lemma brown1972_ch7_718_positive_false_iff :
+  forall i j k : nat,
+    (i < 8)%nat -> (j < 8)%nat -> (k < 8)%nat ->
+    (brown1972_ch6_615_positive i j k = false <->
+     brown1972_ch7_718_basis_rhs i j k).
+Proof.
+  intros i j k Hi Hj Hk.
+  unfold brown1972_ch7_718_basis_rhs, brown1972_ch6_615_positive.
+  destruct i as [|[|[|[|[|[|[|[|i]]]]]]]]; try lia;
+  destruct j as [|[|[|[|[|[|[|[|j]]]]]]]]; try lia;
+  destruct k as [|[|[|[|[|[|[|[|k]]]]]]]]; try lia;
+  vm_compute; split; intro H; intuition congruence.
+Qed.
+
+Lemma brown1972_ch7_basis_double :
+  forall n : nat,
+    (n < 8)%nat ->
+    oct_add (oct_e n) (oct_e n) = oct_scale 2 (oct_e n).
+Proof.
+  intros n Hn.
+  destruct n as [|[|[|[|[|[|[|[|n]]]]]]]]; try lia;
+  brown1972_close_oct_ring.
+Qed.
+
+Lemma brown1972_ch7_add_scaled_basis_same :
+  forall c : R, forall n : nat,
+    (n < 8)%nat ->
+    oct_add (oct_scale c (oct_e n)) (oct_scale c (oct_e n)) =
+    oct_scale (2 * c) (oct_e n).
+Proof.
+  intros c n Hn.
+  rewrite <- brown1972_oct_scale_add_distr.
+  rewrite brown1972_ch7_basis_double by exact Hn.
+  rewrite brown1972_oct_scale_scale.
+  replace (c * 2)%R with (2 * c)%R by ring.
+  reflexivity.
+Qed.
+
+Theorem brown1972_chapter_vii_theorem_7_18_basis_xor_form :
+  forall i j k : nat,
+    (i < 8)%nat -> (j < 8)%nat -> (k < 8)%nat ->
+    (oct_antiassociator_fused (oct_e i) (oct_e j) (oct_e k) = oct_zero <->
+     brown1972_ch7_718_basis_rhs i j k).
+Proof.
+  intros i j k Hi Hj Hk.
+  assert (Hjk : (Nat.lxor j k < 8)%nat).
+  { apply brown1972_oct_lxor_lt8; assumption. }
+  assert (Hrhs :
+    oct_mul (oct_e i) (oct_mul (oct_e j) (oct_e k)) =
+    oct_scale
+      (sign_to_R (oct_sign j k) * sign_to_R (oct_sign i (Nat.lxor j k)))
+      (oct_e (Nat.lxor i (Nat.lxor j k)))).
+  {
+    destruct oct_fused_bilinear_surface as [_ _ _ _ HscaleR].
+    repeat rewrite <- oct_mul_fused_eq.
+    rewrite oct_mul_fused_basis_xor with (i := j) (j := k) by assumption.
+    rewrite HscaleR.
+    rewrite oct_mul_fused_basis_xor with (i := i) (j := Nat.lxor j k) by assumption.
+    rewrite brown1972_oct_scale_scale.
+    reflexivity.
+  }
+  assert (Hijk : (Nat.lxor i (Nat.lxor j k) < 8)%nat).
+  { apply brown1972_oct_lxor_lt8; assumption. }
+  rewrite oct_antiassociator_fused_eq.
+  unfold oct_antiassociator.
+  rewrite brown1972_lemma_6_15_octonion by assumption.
+  rewrite Hrhs.
+  destruct (brown1972_ch6_615_positive i j k) eqn:Hpos.
+  - split.
+    + intro Hzero.
+      exfalso.
+      unfold brown1972_ch6_615_oct_rhs in Hzero.
+      rewrite Hpos in Hzero.
+      simpl in Hzero.
+      rewrite Hrhs in Hzero.
+      set (c :=
+        (sign_to_R (oct_sign j k) * sign_to_R (oct_sign i (Nat.lxor j k)))%R) in *.
+      rewrite brown1972_ch7_add_scaled_basis_same in Hzero by exact Hijk.
+      assert (Hnorm0 :
+        oct_norm_sq (oct_scale (2 * c) (oct_e (Nat.lxor i (Nat.lxor j k)))) = 0%R).
+      {
+        apply (f_equal oct_norm_sq) in Hzero.
+        replace (oct_norm_sq oct_zero) with 0%R in Hzero by
+          (cbv [oct_norm_sq oct_zero quat_norm_sq quat_zero oct_lo oct_hi
+                qa qb qc qd];
+           ring).
+        exact Hzero.
+      }
+      rewrite s2_oct_norm_sq_scale in Hnorm0.
+      rewrite oct_e_norm in Hnorm0 by exact Hijk.
+      assert (Hcjk : (sign_to_R (oct_sign j k) * sign_to_R (oct_sign j k) = 1)%R).
+      { apply brown1972_sign_to_R_square_one. }
+      assert (Hcix : (sign_to_R (oct_sign i (Nat.lxor j k)) *
+                      sign_to_R (oct_sign i (Nat.lxor j k)) = 1)%R).
+      { apply brown1972_sign_to_R_square_one. }
+      unfold c in Hnorm0.
+      nra.
+    + intro Hbasis.
+      pose proof (proj2 (brown1972_ch7_718_positive_false_iff i j k Hi Hj Hk) Hbasis)
+        as Hfalse.
+      rewrite Hpos in Hfalse.
+      discriminate Hfalse.
+  - split; intro Hbranch.
+    { apply (proj1 (brown1972_ch7_718_positive_false_iff i j k Hi Hj Hk)).
+      exact Hpos. }
+    { clear Hbranch.
+      unfold brown1972_ch6_615_oct_rhs.
+      rewrite Hpos.
+      simpl.
+      rewrite Hrhs.
+      rewrite oct_add_comm.
+      apply oct_add_neg_cancel. }
+Qed.
+
 Theorem brown1972_chapter_vii_boxkite_partition_summary :
   length assessors = 42%nat /\
   length boxkites = 7%nat /\
@@ -282,7 +405,12 @@ Record Brown1972ChapterVIIReusableAnchorSurface := {
       oct_antiassociator_fused a b c = oct_zero ->
       brown1972_oct_trace a = 0%R /\
       brown1972_oct_trace b = 0%R /\
-      brown1972_oct_trace c = 0%R
+      brown1972_oct_trace c = 0%R;
+  brown1972_ch7_anchor_t718 :
+    forall i j k : nat,
+      (i < 8)%nat -> (j < 8)%nat -> (k < 8)%nat ->
+      (oct_antiassociator_fused (oct_e i) (oct_e j) (oct_e k) = oct_zero <->
+       brown1972_ch7_718_basis_rhs i j k)
 }.
 
 Definition brown1972_chapter_vii_reusable_anchor_surface :
@@ -309,5 +437,7 @@ Proof.
             brown1972_ch7_anchor_c716_ii_fused :=
               brown1972_chapter_vii_corollary_7_16_ii_fundamental_fused;
             brown1972_ch7_anchor_l717 :=
-              brown1972_chapter_vii_lemma_7_17_octonion |}.
+              brown1972_chapter_vii_lemma_7_17_octonion;
+            brown1972_ch7_anchor_t718 :=
+              brown1972_chapter_vii_theorem_7_18_basis_xor_form |}.
 Defined.
