@@ -21,6 +21,7 @@ From Stdlib Require Import List Arith.
 Import ListNotations.
 From OpenGororoba Require Import Prelude CayleyDicksonAlgebra Sedenion.
 From OpenGororoba Require Import BoxKite ZDGraph.
+From OpenGororoba Require Import ZD_Criterion.
 
 (** Force nat as the default numeral scope so that the O-trip/S-trip
     lists elaborate correctly alongside the R-scoped sedenion imports. *)
@@ -398,6 +399,27 @@ Proof.
        oct_zero quat_zero quat_one sed_zero
        sed_lo sed_hi oct_lo oct_hi qa qb qc qd].
   f_equal; f_equal; f_equal; abstract ring.
+Qed.
+
+(** The Brown 7.15 fundamental pair can be imported directly into the
+    de Marrais lane through the fused criterion support, without routing
+    through the Brown chapter wrapper. *)
+Theorem de_marrais_brown_fundamental_major_theorem_fused :
+  is_zd_pair_major_theorem
+    zd_a1_fundamental zd_a2_fundamental
+    zd_b1_fundamental zd_b2_fundamental.
+Proof.
+  exact zd_fundamental_major_theorem_fused.
+Qed.
+
+Theorem de_marrais_brown_fundamental_fused_support :
+  zd_condition_ii zd_a1_fundamental zd_a2_fundamental
+                  zd_b1_fundamental zd_b2_fundamental /\
+  zd_condition_iii zd_a1_fundamental zd_b1_fundamental zd_a2_fundamental.
+Proof.
+  split.
+  - exact zd_fundamental_condition_ii_fused.
+  - exact zd_fundamental_condition_iii_fused.
 Qed.
 
 (* ================================================================== *)
