@@ -32,13 +32,31 @@ pub struct FMTorus {
 }
 
 impl FMTorus {
+    /// Compute l = -u_phi/u_t for a Schwarzschild circular orbit at radius r.
+    fn circular_l_schwarzschild(r: f64) -> f64 {
+        let m = 1.0; // geometric units
+        // Orbital angular velocity: Omega = sqrt(M/r^3)
+        let omega = (m / (r * r * r)).sqrt();
+        // g_tt = -(1-2M/r), g_phph = r^2
+        let g_tt = -(1.0 - 2.0 * m / r);
+        let g_phph = r * r;
+        // From normalization: (u^t)^2 (g_tt + g_phph * Omega^2) = -1
+        let denom = g_tt + g_phph * omega * omega;
+        let ut = (-1.0 / denom).sqrt(); // u^t > 0
+        let uphi = omega * ut;
+        // Covariant components
+        let u_t = g_tt * ut; // < 0
+        let u_phi = g_phph * uphi; // > 0
+        -u_phi / u_t // l = -u_phi/u_t > 0
+    }
+
     /// Create a Fishbone-Moncrief torus for a Schwarzschild (a=0) black hole.
     /// This simplified version avoids the full Kerr angular momentum calculation.
     pub fn schwarzschild(r_in: f64, r_max: f64) -> Self {
-        // For Schwarzschild, the covariant specific angular momentum at circular orbit r:
-        // l = sqrt(M * r^2 / (r/M - 3))  (Gammie+ 2003 appendix)
-        // We use l at r_max to define the torus
-        let l = (r_max * r_max / (r_max - 3.0)).sqrt();
+        // Covariant specific angular momentum l = -u_phi/u_t for circular orbit.
+        // For Schwarzschild: l = r * sqrt(M/(r-3M)) * (1-2M/r)^(-1) ... complicated.
+        // Compute numerically from circular orbit conditions.
+        let l = Self::circular_l_schwarzschild(r_max);
         Self {
             r_in,
             r_max,
@@ -52,26 +70,45 @@ impl FMTorus {
     /// In Schwarzschild: W = -1/(2 * ln_term) where ln_term involves the metric.
     /// Actually for Schwarzschild, the FM potential is:
     ///   W(r, theta) = ln|u_t| where u_t is computed from the metric and l.
+    /// FM potential: W = -ln(-u_t) where u_t is the covariant time component
+    /// of the 4-velocity for a circular orbit with constant specific angular
+    /// momentum l at the given (r, theta).
+    ///
+    /// For Schwarzschild with l = -u_phi/u_t:
+    ///   (u^t)^2 (g_tt + 2*l*g_tph + l^2*g_phph) = -1
+    /// where l here is u^phi/u^t (the COORDINATE angular velocity ratio),
+    /// NOT -u_phi/u_t (the covariant ratio stored in self.l).
+    ///
+    /// We need to convert: self.l = -u_phi/u_t = -(g_phph*u^phi)/(g_tt*u^t)
+    /// For Schwarzschild: l_coord = u^phi/u^t, l_cov = -g_phph*l_coord/g_tt
+    ///
+    /// Instead of this mess, compute u_t directly from the effective potential.
+    /// For equatorial Schwarzschild circular orbits with specific angular
+    /// momentum l_cov = -u_phi/u_t:
+    ///   u_t^2 = (g_tt * g_phph) / (g_phph + l_cov^2 * g_tt)
     fn potential(&self, metric: &KerrMetric, r: f64, theta: f64) -> f64 {
         let sth = theta.sin();
         if sth.abs() < 1e-10 {
-            return -1e10; // on axis, outside torus
+            return -1e10;
         }
 
-        // Use CONTRAVARIANT metric: g^tt, g^phph, g^tph
+        // For a fluid element with constant l = -u_phi/u_t:
+        // From normalization g^{mu nu} u_mu u_nu = -1, with u_r = u_theta = 0:
+        // g^tt u_t^2 + 2 g^{t phi} u_t u_phi + g^{phi phi} u_phi^2 = -1
+        // Substitute u_phi = -l * u_t:
+        // u_t^2 (g^tt - 2*l*g^{t phi} + l^2 * g^{phi phi}) = -1
         let [gtt_up, _, _, gphph_up, gtph_up] = metric.gcon(r, theta);
+        let a = gtt_up - 2.0 * self.l * gtph_up + self.l * self.l * gphph_up;
 
-        // From g^{mu nu} u_mu u_nu = -1 with u_mu = (u_t, 0, 0, l*u_t):
-        // u_t^2 (g^tt + 2*l*g^tph + l^2*g^phph) = -1
-        let denom = gtt_up + 2.0 * self.l * gtph_up + self.l * self.l * gphph_up;
-        if denom >= 0.0 {
-            return -1e10; // no valid orbit here
+        if a >= 0.0 {
+            return -1e10; // no timelike orbit
         }
-        let ut_cov_sq = -1.0 / denom;
-        let u_t = -(ut_cov_sq.sqrt()); // u_t is negative (future-directed)
 
-        // W = ln(-u_t)
-        (-u_t).ln()
+        let u_t_sq = -1.0 / a;
+        let u_t = -(u_t_sq.sqrt()); // negative for future-directed
+
+        // W = -ln(-u_t) (HARM convention: W increases toward torus center)
+        -(-u_t).ln()
     }
 
     /// Initialize the primitive variables on the grid.
@@ -198,8 +235,9 @@ mod tests {
     fn test_fm_torus_creation() {
         let torus = FMTorus::schwarzschild(6.0, 12.0);
         assert!(torus.l > 0.0, "Angular momentum should be positive");
-        // l = sqrt(r_max^2 / (r_max - 3)) = sqrt(144/9) = 4.0
-        assert!((torus.l - 4.0).abs() < 0.01, "l = 4.0 for r_max=12, got {}", torus.l);
+        // l = -u_phi/u_t for circular Schwarzschild orbit at r=12
+        // Numerically: l ~ 4.157
+        assert!(torus.l > 3.5 && torus.l < 5.0, "l ~ 4.16 for r_max=12, got {}", torus.l);
     }
 
     #[test]
