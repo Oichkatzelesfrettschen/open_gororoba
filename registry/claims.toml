@@ -10584,12 +10584,12 @@ status_note = "Post-RC1 richer null analysis. 4 null families: temporal-shuffle 
 
 [[claim]]
 id = "C-1554"
-status = "Provisional"
+status = "Verified"
 statement = "Voyager 2 heliosheath (100-130 AU) exhibits excess algebraic order under the 5-family null suite: the 32D pathion associator norm is LOWER than multivariate-phase-randomized surrogates (ratio 0.574-0.581, stable across block sizes K=5-100), indicating specific cross-channel B-field phase geometry that reduces non-associativity relative to independently phase-randomized channels. This is not excess nonlinearity but rather structured phase coupling. Block-size sensitivity confirms the signal is not short-range autocorrelation (block ratio increases from 0.68 to 0.98 as K grows). Within-mission split (inner 1-60 AU vs outer 60-126 AU) shows the quench transition is stable across disjoint observation epochs."
 where_stated = "docs/reports/POST_RC1_32D_EVIDENCE_NOTE.md, data/output/heliosphere/ablations/v2_5family_null_audit_32d.json, data/output/heliosphere/ablations/heliosheath_block_sweep_32d.csv"
 last_verified = "2026-03-27"
 formal_proof = ""
-status_note = "Provisional: single-trajectory evidence (Voyager 2 only, mission_diversity=1 at heliosheath distances). Interpretation refined by multivariate null: the signal is excess algebraic order (structured cross-channel phase coupling), not excess nonlinearity. Within-mission split validates epoch stability. 32D is preferred working embedding, not canonical claim surface."
+status_note = "PROMOTED to Verified (2026-03-29): V1 cross-spacecraft validation confirms the heliosheath order surplus. V1 lag-radius analysis shows lag-independent transition at 124.25 AU (V2: 121.25 AU). Mission_diversity=2 in the 100-130 AU heliosheath slice with positive Omega_mv=0.33-0.71 from both spacecraft. The cross-channel phase coupling is spacecraft-independent."
 
 [[claim]]
 id = "C-1555"
@@ -11008,3 +11008,48 @@ where_stated = "crates/grmhd_core/Cargo.toml (wide), Cargo.toml (pulp, simsimd w
 last_verified = "2026-03-29"
 formal_proof = ""
 status_note = "Architecture decision claim based on exhaustive API review of all three crates from source. Pulp 0.22 provides V3 (AVX2) and V4 (AVX-512) tiers. SimSIMD 5.9 has i8 dot bug (fixed in 6.x). Wide 0.7 has no AVX-512."
+
+[[claim]]
+id = "C-1601"
+status = "Verified"
+statement = "Cross-spacecraft ISM floor consistency: V1 (2012-2013) ISM floor A=0.013-0.019 at r>124 AU, V2 (2017-2018) ISM floor A=0.009-0.010 at r>121 AU. Both spacecraft detect near-zero associator in the interstellar medium, confirming the heliopause as a genuine physical boundary for magnetic field phase organization. V1 heliopause crossing at ~122-124 AU, V2 at ~120.8 AU, consistent with known asymmetry. This is a spacecraft-independent result using 48-sec cadence Voyager MAG data at 32D."
+where_stated = "data/output/heliosphere/ablations/v1_mag48_quench_halfau_32d.csv, v2_mag48_quench_halfau_32d.csv"
+last_verified = "2026-03-29"
+formal_proof = ""
+status_note = "Dedicated ISM floor claim. V1 floor computed from 415K records (2012-2013), V2 from 406K records (2017-2018). Both use 4-channel magnetic Takens embedding at 32D, 0.5 AU radial bins."
+
+[[claim]]
+id = "C-1602"
+status = "Verified"
+statement = "V1 cross-spacecraft lag-radius generalization: V1 transition radius r_c=124.25 AU is LOCKED across all 6 lags (0.8-51.2 min at 48-sec cadence), identical to the V2 lag-independent behavior (r_c=121.25 AU locked at lags 0.8-6.4 min). The 3.0 AU V1-V2 offset is consistent with the known heliopause crossing asymmetry. This confirms the CD associator boundary detection is spacecraft-independent and timescale-invariant."
+where_stated = "data/output/heliosphere/ablations/v1_mag48_lag1_32d.csv through v1_mag48_lag64_32d.csv"
+last_verified = "2026-03-29"
+formal_proof = ""
+status_note = "V1 lag sweep at 6 lags (1,4,8,16,32,64 steps). All detect heliopause at 124.25 AU with threshold A<0.05 for 2 consecutive 0.5 AU bins."
+
+[[claim]]
+id = "C-1603"
+status = "Verified"
+statement = "Fast-wind replication outside Ulysses: SUPPORT-INSUFFICIENT at matched conditions. At 0.5-1.0 AU with v_sw>550, non-Ulysses missions (Helios, PSP, SolO, WIND, ACE, STEREO-A, OMNI) provide only 295-385 fast-wind samples per 0.1 AU bin vs 475-1225 for slow wind. Omega_mv ranges 0.02-0.08 for fast wind vs 0.03-0.14 for slow wind. The support is too thin for reliable per-bin comparison. This is outcome (c) from the plan: support-insufficient is a valid resolution, not a failure."
+where_stated = "data/output/heliosphere/ablations/fast_wind_replication_omega_32d.csv, slow_wind_replication_omega_32d.csv"
+last_verified = "2026-03-29"
+formal_proof = ""
+status_note = "Matched-condition replication attempt. 9247 fast-wind rows at 0.5-1.0 AU from 8 non-Ulysses missions. 23523 slow-wind comparison rows. 10 null iterations per bin."
+
+[[claim]]
+id = "C-1604"
+status = "Verified"
+statement = "64D heliosheath microscope (100-130 AU): 64D Omega_mv is systematically 0.02-0.05 lower than 32D across the heliosheath. The gap (Omega_mv - Omega_phase) is similar at both dimensions, meaning the cross-channel coupling signal is the same but 64D adds autocorrelated noise from 16 delay steps (vs 8 at 32D). 64D does NOT reveal additional cross-channel structure beyond 32D for 4-channel B-field embedding. The 32D sweet spot holds in the heliosheath."
+where_stated = "data/output/heliosphere/ablations/heliosheath_32d_omega.csv, heliosheath_64d_omega.csv"
+last_verified = "2026-03-29"
+formal_proof = ""
+status_note = "Targeted local probe as specified in Phase 3 plan Task 10. 148K rows (V1+V2) at 1.0 AU radial bins, 10 null iterations. Confirms the dim~8*n_channels saturation rule in the most physically interesting heliosheath zone."
+
+[[claim]]
+id = "C-1605"
+status = "Verified"
+statement = "C-1554 PROMOTED from Provisional to Verified: V1 cross-spacecraft validation confirms the Voyager 2 heliosheath order surplus. The V1 lag-radius analysis shows lag-independent boundary detection at 124.25 AU. Mission_diversity=2 in the 100-130 AU heliosheath slice with positive Omega_mv=0.33-0.71 from both V1 and V2. The excess algebraic order (structured cross-channel B-field phase coupling) is a spacecraft-independent, multi-epoch result."
+where_stated = "registry/claims.toml C-1554, data/output/heliosphere/ablations/heliosheath_32d_omega.csv, v1_mag48_lag*_32d.csv"
+last_verified = "2026-03-29"
+formal_proof = ""
+status_note = "Promotion claim. C-1554 was Provisional due to single-trajectory (V2-only) evidence. V1 cross-validation now provides mission_diversity=2 at heliosheath distances. Both Omega_mv > 0 and lag-invariant boundary detection replicate."
