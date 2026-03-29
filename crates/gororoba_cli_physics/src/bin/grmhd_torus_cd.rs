@@ -138,32 +138,13 @@ fn main() -> Result<()> {
     println!("  step 0: rho_max={:.4}, B_max={:.6}, CD={:.6}", max_rho, max_bmag, cd_mean);
     steps.push(StepResult { step: 0, dt: 0.0, max_rho, max_bmag, cd_mean });
 
-    // Evolution loop
+    // Evolution loop (full 3D Euler steps with B-field evolution)
     for step in 1..=cli.n_steps {
-        // Compute RHS (1D radial sweep for now)
-        let rhs = flux::compute_rhs_1d(&prim_grid, &grid, &mc, &eos, 0);
-
-        // Estimate max signal speed from RHS magnitude
-        let max_rhs: f64 = rhs.iter()
-            .flat_map(|r| r.iter())
-            .map(|v| v.abs())
-            .fold(0.0f64, f64::max);
-        let max_signal = if max_rhs > 1e-30 { max_rhs.sqrt() } else { 0.1 };
-
+        let max_signal = flux::max_signal_speed(&prim_grid, &grid, &mc, &eos);
         let dt = evolve::cfl_dt(&grid, max_signal, cli.cfl);
 
-        // Euler update on interior radial cells (simplified: update prims directly)
-        let j_mid = grid.ng + grid.n2 / 2;
-        let k = grid.ng;
-        for (cell_i, cell_rhs) in rhs.iter().enumerate() {
-            let i = grid.ng + cell_i;
-            let idx = grid.idx(i, j_mid, k);
-            let p = prim_grid.get_mut(idx);
-            // Crude: add dt * rhs to density and internal energy
-            p[prims::RHO] += dt * cell_rhs[0];
-            p[prims::UU] += dt * cell_rhs[1];
-        }
-        prim_grid.apply_floors(1e-8, 1e-10);
+        // Full 3D Euler step: updates ALL primitives including B-field
+        flux::euler_step_3d(&mut prim_grid, &grid, &mc, &eos, dt);
 
         // CD analysis
         let bf = extract_midplane_bfield(&prim_grid, &grid);
