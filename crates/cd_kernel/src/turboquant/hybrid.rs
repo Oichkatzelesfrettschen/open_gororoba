@@ -129,7 +129,7 @@ pub fn compare_hybrid(
     let hybrid = HybridQuantizer::new(d, bits, seed, true, group_size);
     let tq = super::pipeline::TurboQuantMSE::new(d, bits, seed, true);
 
-    let mut buf = vec![0.0f64; 2 * d];
+    let mut buf = vec![0.0f64; 3 * d];
 
     // Hybrid MSE
     let mut hybrid_mse = 0.0f64;
@@ -183,7 +183,7 @@ mod tests {
         let bits = 3;
         let hq = HybridQuantizer::new(d, bits, 42, true, 32);
         let x: Vec<f64> = (0..d).map(|i| (i as f64 * 0.1).sin()).collect();
-        let mut buf = vec![0.0f64; 2 * d];
+        let mut buf = vec![0.0f64; 3 * d];
         let comp = hq.quantize(&x, &mut buf);
         let mut recon = vec![0.0f64; d];
         hq.dequantize(&comp, &mut buf, &mut recon);

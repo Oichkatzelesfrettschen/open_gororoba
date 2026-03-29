@@ -136,22 +136,33 @@ impl SynthesizedQuantizer {
     }
 
     /// Quantize a batch with optional adaptive bit allocation.
+    ///
+    /// Uses rayon for parallel quantization across vectors.
+    /// Each vector is independent, so this is embarrassingly parallel.
     pub fn quantize_batch(&self, vectors: &[Vec<f64>]) -> Vec<SynthesizedCompressed> {
-        let mut buf = vec![0.0f64; 3 * self.d];
+        use rayon::prelude::*;
 
         if !self.adaptive {
-            return vectors.iter().map(|v| self.quantize(v, &mut buf)).collect();
+            // Parallel quantize: each thread gets its own buffer
+            return vectors.par_iter().map(|v| {
+                let mut buf = vec![0.0f64; 3 * self.d];
+                self.quantize(v, &mut buf)
+            }).collect();
         }
 
-        // Step 1: quantize all at base bits
-        let base_compressed: Vec<_> = vectors.iter()
-            .map(|v| self.quantize(v, &mut buf))
+        // Step 1: parallel quantize all at base bits
+        let base_compressed: Vec<_> = vectors.par_iter()
+            .map(|v| {
+                let mut buf = vec![0.0f64; 3 * self.d];
+                self.quantize(v, &mut buf)
+            })
             .collect();
 
-        // Step 2: compute residuals for adaptive allocation
-        let residuals: Vec<Vec<f64>> = vectors.iter()
-            .zip(base_compressed.iter())
+        // Step 2: parallel residual computation
+        let residuals: Vec<Vec<f64>> = vectors.par_iter()
+            .zip(base_compressed.par_iter())
             .map(|(orig, comp)| {
+                let mut buf = vec![0.0f64; 3 * self.d];
                 let mut recon = vec![0.0f64; self.d];
                 self.dequantize(comp, &mut buf, &mut recon);
                 orig.iter().zip(recon.iter()).map(|(a, b)| a - b).collect()
@@ -164,9 +175,10 @@ impl SynthesizedQuantizer {
         // Step 4: re-quantize promoted tokens at (bits+1)
         let promoted_sq = SynthesizedQuantizer::new(self.d, self.bits + 1, 42);
 
-        vectors.iter()
-            .zip(allocation.iter())
+        vectors.par_iter()
+            .zip(allocation.par_iter())
             .map(|(v, alloc)| {
+                let mut buf = vec![0.0f64; 3 * self.d];
                 match alloc {
                     BitAllocation::Base => self.quantize(v, &mut buf),
                     BitAllocation::Promoted => {
@@ -177,6 +189,13 @@ impl SynthesizedQuantizer {
                 }
             })
             .collect()
+    }
+
+    /// Create without adaptive bit allocation (faster for throughput benchmarks).
+    pub fn new_fast(d: usize, bits: u32, seed: u64) -> Self {
+        let mut sq = Self::new(d, bits, seed);
+        sq.adaptive = false;
+        sq
     }
 
     pub fn dim(&self) -> usize { self.d }
@@ -248,7 +267,7 @@ mod tests {
 
             // Compare with pure TQ
             let tq = TurboQuantMSE::new(d, bits, 42, true);
-            let mut buf = vec![0.0f64; 2 * d];
+            let mut buf = vec![0.0f64; 3 * d];
             let tq_mse: f64 = vectors.iter().map(|v| {
                 let comp = tq.quantize(v, &mut buf);
                 let mut recon = vec![0.0f64; d];

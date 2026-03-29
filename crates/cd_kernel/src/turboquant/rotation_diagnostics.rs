@@ -252,7 +252,7 @@ mod tests {
 
         // WHT pipeline
         let tq_wht = TurboQuantMSE::new(d, bits, 42, true);
-        let mut buf = vec![0.0f64; 2 * d];
+        let mut buf = vec![0.0f64; 3 * d];
         let comp_wht = tq_wht.quantize(&x, &mut buf);
         let mut recon_wht = vec![0.0f64; d];
         tq_wht.dequantize(&comp_wht, &mut buf, &mut recon_wht);

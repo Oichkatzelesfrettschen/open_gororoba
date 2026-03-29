@@ -76,26 +76,27 @@ impl TurboQuantMSE {
     /// `buf` is scratch space (>= 2*d elements).
     pub fn quantize(&self, x: &[f64], buf: &mut [f64]) -> MseCompressed {
         debug_assert_eq!(x.len(), self.d);
-        debug_assert!(buf.len() >= 2 * self.d);
+        debug_assert!(buf.len() >= 3 * self.d); // 3*d: normalized + scratch + rotated
         let d = self.d;
 
-        // Normalize to unit vector (store in first half of buf)
+        // Normalize to unit vector (store at buf[0..d])
         let norm: f64 = x.iter().map(|&v| v * v).sum::<f64>().sqrt();
         let inv_norm = if norm > 1e-15 { 1.0 / norm } else { 1.0 };
         for i in 0..d {
             buf[i] = x[i] * inv_norm;
         }
 
-        // Rotate: input from buf[..d], scratch = buf[d..2d], output to rotated
-        let mut rotated = vec![0.0; d];
+        // Rotate: buf[0..d] -> buf[2d..3d] using buf[d..2d] as scratch
+        // ZERO ALLOCATION -- all in caller's buffer
         {
-            let (input, scratch) = buf.split_at_mut(d);
-            self.rotation.forward(input, scratch, &mut rotated);
+            let (first_two_d, rot_out) = buf.split_at_mut(2 * d);
+            let (input, scratch) = first_two_d.split_at_mut(d);
+            self.rotation.forward(input, scratch, &mut rot_out[..d]);
         }
 
-        // Per-coordinate quantization via boundary search
+        // Per-coordinate quantization via boundary search on buf[2d..3d]
         let boundaries = &self.codebook.boundaries;
-        let indices: Vec<u8> = rotated
+        let indices: Vec<u8> = buf[2 * d..3 * d]
             .iter()
             .map(|&v| {
                 let mut idx = 0u8;
@@ -274,7 +275,7 @@ mod tests {
         let norm: f64 = x.iter().map(|v| v * v).sum::<f64>().sqrt();
         let x_unit: Vec<f64> = x.iter().map(|v| v / norm).collect();
 
-        let mut buf = vec![0.0; 2 * d];
+        let mut buf = vec![0.0; 3 * d];
         let compressed = tq.quantize(&x_unit, &mut buf);
         let mut reconstructed = vec![0.0; d];
         tq.dequantize(&compressed, &mut buf, &mut reconstructed);
@@ -361,7 +362,7 @@ mod tests {
         let tq_haar = TurboQuantMSE::new(d, bits, 42, false);
         let tq_wht = TurboQuantMSE::new(d, bits, 42, true);
 
-        let mut buf = vec![0.0; 2 * d];
+        let mut buf = vec![0.0; 3 * d];
 
         let comp_haar = tq_haar.quantize(&x, &mut buf);
         let comp_wht = tq_wht.quantize(&x, &mut buf);

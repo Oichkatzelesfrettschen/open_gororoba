@@ -206,7 +206,7 @@ impl ValueCompressor {
 
         let n_vectors = b * h * s;
         let mut values = Vec::with_capacity(n_vectors);
-        let mut buf = vec![0.0f64; 2 * d];
+        let mut buf = vec![0.0f64; 3 * d];
 
         for v in 0..n_vectors {
             let offset = v * d;
@@ -228,7 +228,7 @@ impl ValueCompressor {
         let d = self.d;
         let n_vectors = batch.values.len();
         let mut result = vec![0.0f64; n_vectors * d];
-        let mut buf = vec![0.0f64; 2 * d];
+        let mut buf = vec![0.0f64; 3 * d];
 
         for (v, cv) in batch.values.iter().enumerate() {
             let mse_compressed = MseCompressed {

@@ -181,7 +181,7 @@ pub fn hierarchical_quantize(
 
         // Quantize using a per-level TurboQuantMSE
         let tq = TurboQuantMSE::new(level.dim, level.bits, seed + li as u64, use_wht);
-        let mut buf = vec![0.0f64; 2 * level.dim];
+        let mut buf = vec![0.0f64; 3 * level.dim];
         let compressed = tq.quantize(component, &mut buf);
 
         // Dequantize and store
@@ -235,7 +235,7 @@ pub fn compare_hierarchical_vs_uniform(
     // Uniform quantization
     let tq_uniform = TurboQuantMSE::new(d, uniform_bits, seed, use_wht);
     let mut uniform_mse_sum = 0.0f64;
-    let mut buf = vec![0.0f64; 2 * d];
+    let mut buf = vec![0.0f64; 3 * d];
 
     for v in vectors {
         let compressed = tq_uniform.quantize(v, &mut buf);
