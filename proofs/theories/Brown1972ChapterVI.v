@@ -1980,3 +1980,52 @@ Proof.
             brown1972_ch6_fused_l69_iii :=
               brown1972_lemma_6_9_iii_sedenion_of_trace_conditions_fused |}.
 Defined.
+
+Theorem brown1972_lemma_6_9_nonstandard_trace_zero_transport_fused :
+  forall A B : CDSed,
+    brown1972_oct_trace (sed_hi A) = 0%R ->
+    brown1972_oct_trace (sed_hi (sed_mul A B)) = 0%R ->
+    brown1972_oct_trace (sed_hi B) = 0%R ->
+    sed_mul_fused A (sed_mul_fused brown1972_sed_adjoined_e B) =
+    sed_mul_fused brown1972_sed_adjoined_e (sed_mul_fused (sed_conj A) B) /\
+    sed_mul_fused (sed_mul_fused brown1972_sed_adjoined_e A) B =
+    sed_mul_fused brown1972_sed_adjoined_e (sed_mul_fused B A) /\
+    sed_mul_fused (sed_mul_fused brown1972_sed_adjoined_e A)
+                  (sed_mul_fused brown1972_sed_adjoined_e B) =
+    sed_neg (sed_mul_fused B (sed_conj A)).
+Proof.
+  intros A B HtrA HtrAB HtrB.
+  split.
+  - exact (brown1972_lemma_6_9_i_sedenion_forward_fused A B HtrA).
+  - split.
+    + exact (brown1972_lemma_6_9_ii_sedenion_of_trace_conditions_fused
+               A B HtrA HtrAB HtrB).
+    + exact (brown1972_lemma_6_9_iii_sedenion_of_trace_conditions_fused
+               A B HtrAB HtrB).
+Qed.
+
+Record Brown1972ChapterVINonstandardFusedTraceSurface := {
+  brown1972_ch6_nonstd_fused_base :
+    Brown1972ChapterVIFusedBaseExtensionSurface;
+  brown1972_ch6_nonstd_transport :
+    forall A B : CDSed,
+      brown1972_oct_trace (sed_hi A) = 0%R ->
+      brown1972_oct_trace (sed_hi (sed_mul A B)) = 0%R ->
+      brown1972_oct_trace (sed_hi B) = 0%R ->
+      sed_mul_fused A (sed_mul_fused brown1972_sed_adjoined_e B) =
+      sed_mul_fused brown1972_sed_adjoined_e (sed_mul_fused (sed_conj A) B) /\
+      sed_mul_fused (sed_mul_fused brown1972_sed_adjoined_e A) B =
+      sed_mul_fused brown1972_sed_adjoined_e (sed_mul_fused B A) /\
+      sed_mul_fused (sed_mul_fused brown1972_sed_adjoined_e A)
+                    (sed_mul_fused brown1972_sed_adjoined_e B) =
+      sed_neg (sed_mul_fused B (sed_conj A))
+}.
+
+Definition brown1972_chapter_vi_nonstandard_fused_trace_surface :
+  Brown1972ChapterVINonstandardFusedTraceSurface.
+Proof.
+  refine {| brown1972_ch6_nonstd_fused_base :=
+              brown1972_chapter_vi_fused_base_extension_surface;
+            brown1972_ch6_nonstd_transport :=
+              brown1972_lemma_6_9_nonstandard_trace_zero_transport_fused |}.
+Defined.

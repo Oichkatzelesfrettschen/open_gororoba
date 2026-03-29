@@ -237,13 +237,12 @@ fn main() -> Result<()> {
         }
     };
 
-    let mut results = Vec::new();
-
-    // No rotation (baseline)
-    results.push(compute_stats(&vectors, "identity", 0));
-
-    // Sedenion block rotation
-    results.push(compute_stats(&sed_rotated, "sedenion_block", n_blocks * 15));
+    let mut results = vec![
+        // No rotation (baseline)
+        compute_stats(&vectors, "identity", 0),
+        // Sedenion block rotation
+        compute_stats(&sed_rotated, "sedenion_block", n_blocks * 15),
+    ];
 
     let interp = format!(
         "Sedenion block rotation ({} params) vs identity: variance {:.6} vs {:.6}, cross_corr {:.6} vs {:.6}, quant_mse {:.8} vs {:.8}.",

@@ -1,0 +1,440 @@
+{
+  "n_vectors": 3000,
+  "total_configs": 42,
+  "results": [
+    {
+      "method": "NSNQuant",
+      "dim": 64,
+      "bits": 2,
+      "mse": 0.11450893247138555,
+      "cosine": 0.9417509105781289,
+      "throughput_kvec_s": 927.3160413620047,
+      "rank": 1
+    },
+    {
+      "method": "TQ-WHT",
+      "dim": 64,
+      "bits": 2,
+      "mse": 0.11456456127494055,
+      "cosine": 0.941637932945403,
+      "throughput_kvec_s": 735.8176663444602,
+      "rank": 2
+    },
+    {
+      "method": "Synthesized",
+      "dim": 64,
+      "bits": 2,
+      "mse": 0.11473520024823627,
+      "cosine": 0.9415808167542647,
+      "throughput_kvec_s": 1152.4007773327378,
+      "rank": 3
+    },
+    {
+      "method": "Hybrid-16",
+      "dim": 64,
+      "bits": 2,
+      "mse": 0.12737499440583758,
+      "cosine": 0.9457356419315794,
+      "throughput_kvec_s": 864.9112428082631,
+      "rank": 4
+    },
+    {
+      "method": "Group-16",
+      "dim": 64,
+      "bits": 2,
+      "mse": 0.12754155282231658,
+      "cosine": 0.9455280938290783,
+      "throughput_kvec_s": 2289.122243706058,
+      "rank": 5
+    },
+    {
+      "method": "KIVI",
+      "dim": 64,
+      "bits": 2,
+      "mse": 0.4928135495841824,
+      "cosine": 0.8326906942276256,
+      "throughput_kvec_s": 3412.914925132023,
+      "rank": 6
+    },
+    {
+      "method": "Hybrid-16",
+      "dim": 64,
+      "bits": 3,
+      "mse": 0.022675609002820393,
+      "cosine": 0.9890353723230779,
+      "throughput_kvec_s": 864.3776984791274,
+      "rank": 1
+    },
+    {
+      "method": "Synthesized",
+      "dim": 64,
+      "bits": 3,
+      "mse": 0.022675609002820393,
+      "cosine": 0.9890353723230779,
+      "throughput_kvec_s": 862.9110476775612,
+      "rank": 2
+    },
+    {
+      "method": "Group-16",
+      "dim": 64,
+      "bits": 3,
+      "mse": 0.022832906975618385,
+      "cosine": 0.9889379217981329,
+      "throughput_kvec_s": 2279.694156232,
+      "rank": 3
+    },
+    {
+      "method": "NSNQuant",
+      "dim": 64,
+      "bits": 3,
+      "mse": 0.03339015795132885,
+      "cosine": 0.9836297014161735,
+      "throughput_kvec_s": 933.1944739956027,
+      "rank": 4
+    },
+    {
+      "method": "TQ-WHT",
+      "dim": 64,
+      "bits": 3,
+      "mse": 0.03355086129562772,
+      "cosine": 0.9835228883982894,
+      "throughput_kvec_s": 643.285525067872,
+      "rank": 5
+    },
+    {
+      "method": "KIVI",
+      "dim": 64,
+      "bits": 3,
+      "mse": 0.08741289370469195,
+      "cosine": 0.9583182845211495,
+      "throughput_kvec_s": 3863.5696292518583,
+      "rank": 6
+    },
+    {
+      "method": "Group-16",
+      "dim": 64,
+      "bits": 4,
+      "mse": 0.004979891926154737,
+      "cosine": 0.9975519120388617,
+      "throughput_kvec_s": 2330.9190192114343,
+      "rank": 1
+    },
+    {
+      "method": "Hybrid-16",
+      "dim": 64,
+      "bits": 4,
+      "mse": 0.0050055968146075465,
+      "cosine": 0.9975461074958165,
+      "throughput_kvec_s": 863.3555637798166,
+      "rank": 2
+    },
+    {
+      "method": "Synthesized",
+      "dim": 64,
+      "bits": 4,
+      "mse": 0.0050055968146075465,
+      "cosine": 0.9975461074958165,
+      "throughput_kvec_s": 826.1353991858712,
+      "rank": 3
+    },
+    {
+      "method": "NSNQuant",
+      "dim": 64,
+      "bits": 4,
+      "mse": 0.009209495474153612,
+      "cosine": 0.9955481740174865,
+      "throughput_kvec_s": 837.5758878653401,
+      "rank": 4
+    },
+    {
+      "method": "TQ-WHT",
+      "dim": 64,
+      "bits": 4,
+      "mse": 0.009315452237780132,
+      "cosine": 0.9954991771865451,
+      "throughput_kvec_s": 563.2583217192597,
+      "rank": 5
+    },
+    {
+      "method": "KIVI",
+      "dim": 64,
+      "bits": 4,
+      "mse": 0.019015960956489844,
+      "cosine": 0.9904738710791368,
+      "throughput_kvec_s": 4385.17634986691,
+      "rank": 6
+    },
+    {
+      "method": "TQ-E8",
+      "dim": 128,
+      "bits": 2,
+      "mse": 0.11587061521676041,
+      "cosine": 0.9406621701125065,
+      "throughput_kvec_s": 66.18434311851934,
+      "rank": 1
+    },
+    {
+      "method": "TQ-WHT",
+      "dim": 128,
+      "bits": 2,
+      "mse": 0.11590182681967098,
+      "cosine": 0.9405732797388432,
+      "throughput_kvec_s": 369.6222731424817,
+      "rank": 2
+    },
+    {
+      "method": "Synthesized",
+      "dim": 128,
+      "bits": 2,
+      "mse": 0.11590182681967098,
+      "cosine": 0.9405732797388432,
+      "throughput_kvec_s": 368.8805030054539,
+      "rank": 3
+    },
+    {
+      "method": "NSNQuant",
+      "dim": 128,
+      "bits": 2,
+      "mse": 0.11593932928700545,
+      "cosine": 0.9406048144782211,
+      "throughput_kvec_s": 448.5747211098815,
+      "rank": 4
+    },
+    {
+      "method": "TQ-E8+WHT",
+      "dim": 128,
+      "bits": 2,
+      "mse": 0.11637756521179252,
+      "cosine": 0.9403442862451455,
+      "throughput_kvec_s": 61.276215675693756,
+      "rank": 5
+    },
+    {
+      "method": "Group-16",
+      "dim": 128,
+      "bits": 2,
+      "mse": 0.12719495798722003,
+      "cosine": 0.9453737535252197,
+      "throughput_kvec_s": 1154.4851169551148,
+      "rank": 6
+    },
+    {
+      "method": "Hybrid-16",
+      "dim": 128,
+      "bits": 2,
+      "mse": 0.1276478926334798,
+      "cosine": 0.9453037461300482,
+      "throughput_kvec_s": 444.57426012840193,
+      "rank": 7
+    },
+    {
+      "method": "KIVI",
+      "dim": 128,
+      "bits": 2,
+      "mse": 0.48441533941220594,
+      "cosine": 0.8334351672383631,
+      "throughput_kvec_s": 1601.8042723323551,
+      "rank": 8
+    },
+    {
+      "method": "Group-16",
+      "dim": 128,
+      "bits": 3,
+      "mse": 0.022803457617675372,
+      "cosine": 0.9889050294637418,
+      "throughput_kvec_s": 1140.9655306706745,
+      "rank": 1
+    },
+    {
+      "method": "Hybrid-16",
+      "dim": 128,
+      "bits": 3,
+      "mse": 0.022865140184487563,
+      "cosine": 0.9888844623609939,
+      "throughput_kvec_s": 438.6857676299036,
+      "rank": 2
+    },
+    {
+      "method": "Synthesized",
+      "dim": 128,
+      "bits": 3,
+      "mse": 0.022865140184487563,
+      "cosine": 0.9888844623609939,
+      "throughput_kvec_s": 442.60987568859036,
+      "rank": 3
+    },
+    {
+      "method": "TQ-WHT",
+      "dim": 128,
+      "bits": 3,
+      "mse": 0.033933142200241226,
+      "cosine": 0.9831208999104535,
+      "throughput_kvec_s": 322.00557091104713,
+      "rank": 4
+    },
+    {
+      "method": "TQ-E8",
+      "dim": 128,
+      "bits": 3,
+      "mse": 0.03403521466973377,
+      "cosine": 0.9830580940740773,
+      "throughput_kvec_s": 65.31451967462745,
+      "rank": 5
+    },
+    {
+      "method": "TQ-E8+WHT",
+      "dim": 128,
+      "bits": 3,
+      "mse": 0.0340719628136744,
+      "cosine": 0.983028767742171,
+      "throughput_kvec_s": 59.93175930158884,
+      "rank": 6
+    },
+    {
+      "method": "NSNQuant",
+      "dim": 128,
+      "bits": 3,
+      "mse": 0.03409158492008492,
+      "cosine": 0.9830412344943338,
+      "throughput_kvec_s": 426.29743624721846,
+      "rank": 7
+    },
+    {
+      "method": "KIVI",
+      "dim": 128,
+      "bits": 3,
+      "mse": 0.08630066654495896,
+      "cosine": 0.9591753603987436,
+      "throughput_kvec_s": 1775.9812740534462,
+      "rank": 8
+    },
+    {
+      "method": "Group-16",
+      "dim": 128,
+      "bits": 4,
+      "mse": 0.004979043927973287,
+      "cosine": 0.9975393478856346,
+      "throughput_kvec_s": 1136.4019468838153,
+      "rank": 1
+    },
+    {
+      "method": "Hybrid-16",
+      "dim": 128,
+      "bits": 4,
+      "mse": 0.005006229741520228,
+      "cosine": 0.9975272628968432,
+      "throughput_kvec_s": 441.67341813561114,
+      "rank": 2
+    },
+    {
+      "method": "Synthesized",
+      "dim": 128,
+      "bits": 4,
+      "mse": 0.005006229741520228,
+      "cosine": 0.9975272628968432,
+      "throughput_kvec_s": 442.96795023520855,
+      "rank": 3
+    },
+    {
+      "method": "TQ-E8",
+      "dim": 128,
+      "bits": 4,
+      "mse": 0.009311080840527704,
+      "cosine": 0.9954140874629935,
+      "throughput_kvec_s": 63.208155200461505,
+      "rank": 4
+    },
+    {
+      "method": "NSNQuant",
+      "dim": 128,
+      "bits": 4,
+      "mse": 0.009337833551016186,
+      "cosine": 0.9953981026440071,
+      "throughput_kvec_s": 400.81327685963333,
+      "rank": 5
+    },
+    {
+      "method": "TQ-E8+WHT",
+      "dim": 128,
+      "bits": 4,
+      "mse": 0.009365243383296924,
+      "cosine": 0.9953843475834534,
+      "throughput_kvec_s": 58.07746403127139,
+      "rank": 6
+    },
+    {
+      "method": "TQ-WHT",
+      "dim": 128,
+      "bits": 4,
+      "mse": 0.009375663467579232,
+      "cosine": 0.9953833930184663,
+      "throughput_kvec_s": 285.05745903201705,
+      "rank": 7
+    },
+    {
+      "method": "KIVI",
+      "dim": 128,
+      "bits": 4,
+      "mse": 0.01877320981976073,
+      "cosine": 0.9906775372598539,
+      "throughput_kvec_s": 1790.2036475996056,
+      "rank": 8
+    }
+  ],
+  "summary": [
+    {
+      "dim": 64,
+      "bits": 2,
+      "best_method": "NSNQuant",
+      "best_mse": 0.11450893247138555,
+      "worst_method": "KIVI",
+      "worst_mse": 0.4928135495841824,
+      "improvement_pct": 76.76424835153094
+    },
+    {
+      "dim": 64,
+      "bits": 3,
+      "best_method": "Hybrid-16",
+      "best_mse": 0.022675609002820393,
+      "worst_method": "KIVI",
+      "worst_mse": 0.08741289370469195,
+      "improvement_pct": 74.05919419688166
+    },
+    {
+      "dim": 64,
+      "bits": 4,
+      "best_method": "Group-16",
+      "best_mse": 0.004979891926154737,
+      "worst_method": "KIVI",
+      "worst_mse": 0.019015960956489844,
+      "improvement_pct": 73.81204169723972
+    },
+    {
+      "dim": 128,
+      "bits": 2,
+      "best_method": "TQ-E8",
+      "best_mse": 0.11587061521676041,
+      "worst_method": "KIVI",
+      "worst_mse": 0.48441533941220594,
+      "improvement_pct": 76.08031666434039
+    },
+    {
+      "dim": 128,
+      "bits": 3,
+      "best_method": "Group-16",
+      "best_mse": 0.022803457617675372,
+      "worst_method": "KIVI",
+      "worst_mse": 0.08630066654495896,
+      "improvement_pct": 73.57673059709714
+    },
+    {
+      "dim": 128,
+      "bits": 4,
+      "best_method": "Group-16",
+      "best_mse": 0.004979043927973287,
+      "worst_method": "KIVI",
+      "worst_mse": 0.01877320981976073,
+      "improvement_pct": 73.47792958275929
+    }
+  ]
+}

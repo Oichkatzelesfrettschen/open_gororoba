@@ -66,6 +66,13 @@ Ltac brown1972_ch7_close_sed_ring :=
   apply (f_equal4 mkQuat);
   ring.
 
+Ltac brown1972_ch7_close_oct_fused_ring :=
+  cbv [oct_antiassociator_fused oct_mul_fused oct_add oct_neg oct_scale oct_zero
+       oct_lo oct_hi oct_e quat_add quat_neg quat_mul quat_conj quat_scale
+       quat_zero quat_one qa qb qc qd];
+  apply (f_equal2 mkOct);
+  [apply (f_equal4 mkQuat); ring | apply (f_equal4 mkQuat); ring].
+
 Lemma brown1972_chapter_vii_zd_a_basis_decompose :
   sed_zd_a = sed_add (sed_e 3) (sed_e 10).
 Proof.
@@ -301,6 +308,101 @@ Proof.
       apply oct_add_neg_cancel. }
 Qed.
 
+Definition brown1972_ch7_719_ii_rhs (i j : nat) : CDOct :=
+  if Nat.eqb i j then oct_scale (-2) (oct_e j) else oct_scale 2 (oct_e j).
+
+Theorem brown1972_chapter_vii_theorem_7_19_i_left :
+  forall i j : nat,
+    (1 <= i)%nat -> (i < 8)%nat -> (j < 8)%nat ->
+    oct_antiassociator_fused (oct_e i) (oct_e i) (oct_e j) =
+    oct_scale (-2) (oct_e j).
+Proof.
+  intros i j Hi1 Hi8 Hj8.
+  rewrite oct_antiassociator_fused_eq.
+  unfold oct_antiassociator.
+  destruct (brown1972_theorem_6_11_octonion i j Hi1 Hi8 Hj8) as [H611 _].
+  rewrite (oct_mul_self_neg i Hi1 Hi8).
+  rewrite brown1972_oct_mul_neg_e0_left.
+  rewrite H611.
+  destruct j as [|[|[|[|[|[|[|[|j]]]]]]]]; try lia;
+  brown1972_close_oct_ring.
+Qed.
+
+Theorem brown1972_chapter_vii_theorem_7_19_i_right :
+  forall i j : nat,
+    (1 <= i)%nat -> (i < 8)%nat -> (j < 8)%nat ->
+    oct_antiassociator_fused (oct_e j) (oct_e i) (oct_e i) =
+    oct_scale (-2) (oct_e j).
+Proof.
+  intros i j Hi1 Hi8 Hj8.
+  rewrite oct_antiassociator_fused_eq.
+  unfold oct_antiassociator.
+  destruct (brown1972_theorem_6_11_octonion i j Hi1 Hi8 Hj8) as [_ H611].
+  rewrite H611.
+  rewrite (oct_mul_self_neg i Hi1 Hi8).
+  rewrite brown1972_oct_mul_neg_e0_right.
+  destruct j as [|[|[|[|[|[|[|[|j]]]]]]]]; try lia;
+  brown1972_close_oct_ring.
+Qed.
+
+Theorem brown1972_chapter_vii_theorem_7_19_ii :
+  forall i j : nat,
+    (1 <= i)%nat -> (i < 8)%nat -> (1 <= j)%nat -> (j < 8)%nat ->
+    oct_antiassociator_fused (oct_e i) (oct_e j) (oct_e i) =
+    brown1972_ch7_719_ii_rhs i j.
+Proof.
+  intros i j Hi1 Hi8 Hj1 Hj8.
+  rewrite oct_antiassociator_fused_eq.
+  unfold oct_antiassociator, brown1972_ch7_719_ii_rhs.
+  rewrite brown1972_theorem_6_13_octonion by assumption.
+  destruct (Nat.eqb i j) eqn:Hij.
+  - apply Nat.eqb_eq in Hij. subst j.
+    replace (brown1972_ch6_613_oct_rhs i i) with (oct_neg (oct_e i)).
+    2:{
+      unfold brown1972_ch6_613_oct_rhs.
+      destruct i as [|[|[|[|[|[|[|[|i]]]]]]]]; try lia;
+      reflexivity.
+    }
+    rewrite (oct_mul_self_neg i Hi1 Hi8).
+    rewrite brown1972_oct_mul_neg_e0_right.
+    destruct i as [|[|[|[|[|[|[|[|i]]]]]]]]; try lia;
+    brown1972_close_oct_ring.
+  - apply Nat.eqb_neq in Hij.
+    assert (Hj0 : j <> 0%nat) by lia.
+    assert (Hi0 : i <> 0%nat) by lia.
+    pose proof (brown1972_lemma_6_10_ii_octonion j i Hj8 Hi8
+                  Hj0 Hi0 (fun Heq => Hij (eq_sym Heq)))
+      as Hanti.
+    replace (brown1972_ch6_613_oct_rhs i j) with (oct_e j).
+    2:{
+      unfold brown1972_ch6_613_oct_rhs.
+      destruct i as [|[|[|[|[|[|[|[|i]]]]]]]]; try lia;
+      destruct j as [|[|[|[|[|[|[|[|j]]]]]]]]; try lia;
+      reflexivity.
+    }
+    rewrite Hanti.
+    rewrite oct_neg_mul_right.
+    destruct (brown1972_theorem_6_11_octonion i j Hi1 Hi8 Hj8) as [H611 _].
+    rewrite H611.
+    destruct j as [|[|[|[|[|[|[|[|j]]]]]]]]; try lia;
+    brown1972_close_oct_ring.
+Qed.
+
+Theorem brown1972_chapter_vii_theorem_7_19_iii :
+  forall i j k : nat,
+    (1 <= i)%nat -> (i < 8)%nat ->
+    (1 <= j)%nat -> (j < 8)%nat ->
+    (1 <= k)%nat -> (k < 8)%nat ->
+    oct_antiassociator_fused (oct_e i) (oct_e j) (oct_e k) =
+    oct_neg (oct_antiassociator_fused (oct_e k) (oct_e i) (oct_e j)).
+Proof.
+  intros i j k Hi1 Hi8 Hj1 Hj8 Hk1 Hk8.
+  destruct i as [|[|[|[|[|[|[|[|i]]]]]]]]; try lia;
+  destruct j as [|[|[|[|[|[|[|[|j]]]]]]]]; try lia;
+  destruct k as [|[|[|[|[|[|[|[|k]]]]]]]]; try lia;
+  brown1972_ch7_close_oct_fused_ring.
+Qed.
+
 Theorem brown1972_chapter_vii_boxkite_partition_summary :
   length assessors = 42%nat /\
   length boxkites = 7%nat /\
@@ -410,7 +512,29 @@ Record Brown1972ChapterVIIReusableAnchorSurface := {
     forall i j k : nat,
       (i < 8)%nat -> (j < 8)%nat -> (k < 8)%nat ->
       (oct_antiassociator_fused (oct_e i) (oct_e j) (oct_e k) = oct_zero <->
-       brown1972_ch7_718_basis_rhs i j k)
+       brown1972_ch7_718_basis_rhs i j k);
+  brown1972_ch7_anchor_t719_i_left :
+    forall i j : nat,
+      (1 <= i)%nat -> (i < 8)%nat -> (j < 8)%nat ->
+      oct_antiassociator_fused (oct_e i) (oct_e i) (oct_e j) =
+      oct_scale (-2) (oct_e j);
+  brown1972_ch7_anchor_t719_i_right :
+    forall i j : nat,
+      (1 <= i)%nat -> (i < 8)%nat -> (j < 8)%nat ->
+      oct_antiassociator_fused (oct_e j) (oct_e i) (oct_e i) =
+      oct_scale (-2) (oct_e j);
+  brown1972_ch7_anchor_t719_ii :
+    forall i j : nat,
+      (1 <= i)%nat -> (i < 8)%nat -> (1 <= j)%nat -> (j < 8)%nat ->
+      oct_antiassociator_fused (oct_e i) (oct_e j) (oct_e i) =
+      brown1972_ch7_719_ii_rhs i j;
+  brown1972_ch7_anchor_t719_iii :
+    forall i j k : nat,
+      (1 <= i)%nat -> (i < 8)%nat ->
+      (1 <= j)%nat -> (j < 8)%nat ->
+      (1 <= k)%nat -> (k < 8)%nat ->
+      oct_antiassociator_fused (oct_e i) (oct_e j) (oct_e k) =
+      oct_neg (oct_antiassociator_fused (oct_e k) (oct_e i) (oct_e j))
 }.
 
 Definition brown1972_chapter_vii_reusable_anchor_surface :
@@ -439,5 +563,13 @@ Proof.
             brown1972_ch7_anchor_l717 :=
               brown1972_chapter_vii_lemma_7_17_octonion;
             brown1972_ch7_anchor_t718 :=
-              brown1972_chapter_vii_theorem_7_18_basis_xor_form |}.
+              brown1972_chapter_vii_theorem_7_18_basis_xor_form;
+            brown1972_ch7_anchor_t719_i_left :=
+              brown1972_chapter_vii_theorem_7_19_i_left;
+            brown1972_ch7_anchor_t719_i_right :=
+              brown1972_chapter_vii_theorem_7_19_i_right;
+            brown1972_ch7_anchor_t719_ii :=
+              brown1972_chapter_vii_theorem_7_19_ii;
+            brown1972_ch7_anchor_t719_iii :=
+              brown1972_chapter_vii_theorem_7_19_iii |}.
 Defined.

@@ -85,7 +85,7 @@ fn main() -> Result<()> {
     let mut rng = rand::thread_rng();
     let mut flux = vec![0.0f64; n_samples];
 
-    for i in 0..n_samples {
+    for (i, flux_val) in flux.iter_mut().enumerate() {
         let t = i as f64 * dt;
 
         // Base flux: exponential decay (giant flare tail)
@@ -104,7 +104,7 @@ fn main() -> Result<()> {
 
         // Add Poisson-like noise (proportional to sqrt of flux)
         let noise = rng.gen_range(0.0..1.0) * 0.05 * base.sqrt();
-        flux[i] = (signal + noise).max(0.0);
+        *flux_val = (signal + noise).max(0.0);
     }
 
     println!("  Generated synthetic flare tail with {} QPO modes", qpo_modes.len());

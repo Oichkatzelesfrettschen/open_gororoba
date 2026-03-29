@@ -371,7 +371,7 @@ fn verify_claim_where_stated_from_db(store: &ProvenanceStore) -> Vec<String> {
             || ws.contains("https://")
             || ws.contains("github.com/")
             // Experiment-ID-only references: "E-NNN" is a stable pointer into registry/experiments.toml
-            || (ws.contains("E-") && ws.chars().skip(ws.find("E-").unwrap_or(0) + 2).next().map(|c| c.is_ascii_digit()).unwrap_or(false));
+            || (ws.contains("E-") && ws.chars().nth(ws.find("E-").unwrap_or(0) + 2).map(|c| c.is_ascii_digit()).unwrap_or(false));
         if !has_path {
             failures.push(format!(
                 "{}: missing stable path pointer in where_stated",

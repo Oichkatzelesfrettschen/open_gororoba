@@ -1858,7 +1858,7 @@ pub fn plasma_takens_embed_dim(
 ) -> (Vec<Vec<f64>>, Vec<usize>, Vec<bool>) {
     let channels: usize = 8;
     assert!(
-        dim >= 8 && dim.is_power_of_two() && dim % channels == 0,
+        dim >= 8 && dim.is_power_of_two() && dim.is_multiple_of(channels),
         "dim must be a power-of-2 multiple of 8, got {dim}"
     );
     let steps = dim / channels;

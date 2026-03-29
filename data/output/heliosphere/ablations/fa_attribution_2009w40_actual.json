@@ -1,0 +1,87 @@
+{
+  "week": "2009-W40",
+  "cd_transitions": 76,
+  "extras": 74,
+  "classified": 74,
+  "attribution": {
+    "Unclassified": 45,
+    "Mirror_mode": 11,
+    "FTE_candidate": 6,
+    "Partial_crossing": 2,
+    "TD": 8,
+    "Compressive": 2
+  },
+  "attribution_fraction": 0.3918918918918919,
+  "sample_events": [
+    {
+      "index": 177,
+      "type": "Unclassified",
+      "rotation": 6.3,
+      "b_jump": 0.0,
+      "cv": 0.045
+    },
+    {
+      "index": 189,
+      "type": "Unclassified",
+      "rotation": 11.2,
+      "b_jump": 0.1,
+      "cv": 0.194
+    },
+    {
+      "index": 294,
+      "type": "Unclassified",
+      "rotation": 15.6,
+      "b_jump": 0.1,
+      "cv": 0.083
+    },
+    {
+      "index": 315,
+      "type": "Mirror_mode",
+      "rotation": 5.3,
+      "b_jump": 0.1,
+      "cv": 0.308
+    },
+    {
+      "index": 331,
+      "type": "Mirror_mode",
+      "rotation": 12.9,
+      "b_jump": 4.3,
+      "cv": 0.536
+    },
+    {
+      "index": 341,
+      "type": "Mirror_mode",
+      "rotation": 10.1,
+      "b_jump": 1.6,
+      "cv": 0.317
+    },
+    {
+      "index": 395,
+      "type": "Unclassified",
+      "rotation": 26.0,
+      "b_jump": 3.8,
+      "cv": 0.185
+    },
+    {
+      "index": 406,
+      "type": "FTE_candidate",
+      "rotation": 174.3,
+      "b_jump": 18.3,
+      "cv": 0.891
+    },
+    {
+      "index": 416,
+      "type": "FTE_candidate",
+      "rotation": 2.9,
+      "b_jump": 28.2,
+      "cv": 0.497
+    },
+    {
+      "index": 864,
+      "type": "Unclassified",
+      "rotation": 1.0,
+      "b_jump": 0.0,
+      "cv": 0.015
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "n_vectors": 200000,
+  "dim": 128,
+  "bits": 3,
+  "total_values": 25600000,
+  "centroids": [
+    -0.19020693,
+    -0.11878592,
+    -0.06682206,
+    -0.02166347,
+    0.02166347,
+    0.06682206,
+    0.11878592,
+    0.19020693
+  ],
+  "boundaries": [
+    -0.15449642,
+    -0.09280399,
+    -0.044242762,
+    5.030698e-17,
+    0.044242762,
+    0.09280399,
+    0.15449642
+  ],
+  "results": [
+    {
+      "method": "scalar_argmin",
+      "n_values": 25600000,
+      "elapsed_ms": 239.651026,
+      "throughput_mvalues_per_sec": 106.82199207442575,
+      "correct": true
+    },
+    {
+      "method": "boundary_search",
+      "n_values": 25600000,
+      "elapsed_ms": 105.138191,
+      "throughput_mvalues_per_sec": 243.48906668938216,
+      "correct": false
+    },
+    {
+      "method": "simd_style",
+      "n_values": 25600000,
+      "elapsed_ms": 173.017877,
+      "throughput_mvalues_per_sec": 147.9615889634341,
+      "correct": false
+    },
+    {
+      "method": "batched",
+      "n_values": 25600000,
+      "elapsed_ms": 168.568317,
+      "throughput_mvalues_per_sec": 151.86721001669608,
+      "correct": false
+    }
+  ],
+  "speedup_boundary_vs_scalar": 2.2793908067145647,
+  "speedup_simd_vs_scalar": 1.385122914206143,
+  "speedup_batched_vs_scalar": 1.421684870947605
+}
