@@ -95,6 +95,7 @@ pub mod per_head_bits;
 pub mod pipeline;
 pub mod polar;
 pub mod qjl;
+pub mod regression_test;
 pub mod rotation;
 pub mod rotation_diagnostics;
 pub mod sign_pack;
