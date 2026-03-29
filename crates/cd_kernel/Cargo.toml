@@ -14,6 +14,7 @@ bytemuck = { workspace = true }
 smallvec = { workspace = true }
 aligned-vec = { workspace = true }
 dyn-stack = { workspace = true }
+crossbeam-utils = { workspace = true }
 bitvec = { workspace = true }
 rand = { workspace = true }
 rand_chacha = { workspace = true }

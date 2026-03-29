@@ -1611,6 +1611,7 @@ dependencies = [
  "bytemuck",
  "core_affinity",
  "criterion",
+ "crossbeam-utils",
  "cubecl-core 0.10.0-pre.2",
  "cudarc 0.19.3",
  "dyn-stack 0.11.0",
