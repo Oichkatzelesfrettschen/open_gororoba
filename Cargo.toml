@@ -13,6 +13,7 @@ repository = "https://github.com/Oichkatzelesfrettschen/open_gororoba"
 [workspace]
 resolver = "3"
 members = [
+    "crates/fixed_point_lbm",
     "crates/cd_kernel",
     "crates/hurwitz_1898",
     "crates/dickson_1919",
