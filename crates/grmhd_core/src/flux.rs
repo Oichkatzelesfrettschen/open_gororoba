@@ -234,8 +234,8 @@ pub fn compute_rhs_1d(
 
     // Sweep faces from ng to ng+n_active (inclusive for the last face)
     for face in ng..ng + n_active + 1 {
-        let i_m2 = if face >= 2 { face - 2 } else { 0 };
-        let i_m1 = if face >= 1 { face - 1 } else { 0 };
+        let i_m2 = face.saturating_sub(2);
+        let i_m1 = face.saturating_sub(1);
         let i_p0 = face;
         let i_p1 = (face + 1).min(grid.n1_total() - 1);
 
@@ -363,8 +363,8 @@ pub fn compute_rhs_3d(
             let dx = grid.dx1;
 
             for face_i in ng..ng + grid.n1 + 1 {
-                let im2 = if face_i >= 2 { face_i - 2 } else { 0 };
-                let im1 = if face_i >= 1 { face_i - 1 } else { 0 };
+                let im2 = face_i.saturating_sub(2);
+                let im1 = face_i.saturating_sub(1);
                 let ip0 = face_i.min(n1t - 1);
                 let ip1 = (face_i + 1).min(n1t - 1);
 
@@ -438,8 +438,8 @@ pub fn compute_rhs_3d(
                 let dx = grid.dx2;
 
                 for face_j in ng..ng + grid.n2 + 1 {
-                    let jm2 = if face_j >= 2 { face_j - 2 } else { 0 };
-                    let jm1 = if face_j >= 1 { face_j - 1 } else { 0 };
+                    let jm2 = face_j.saturating_sub(2);
+                    let jm1 = face_j.saturating_sub(1);
                     let jp0 = face_j.min(n2t - 1);
                     let jp1 = (face_j + 1).min(n2t - 1);
 

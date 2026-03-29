@@ -213,9 +213,8 @@ pub fn con2prim_kastaun(
         // tau = W - p - D + b^2 - (S.B)^2 / (2 W) ... simplified
         //
         // Using the standard relation (Noble 2006 eq. 28):
-        let f = w - p - d * gamma_val + 0.5 * b_sq * (1.0 + v_sq)
-            - 0.5 * s_dot_b * s_dot_b / (w * w) - tau;
-        f
+        w - p - d * gamma_val + 0.5 * b_sq * (1.0 + v_sq)
+            - 0.5 * s_dot_b * s_dot_b / (w * w) - tau
     };
 
     // Solve f(W) = 0 via Brent's method
