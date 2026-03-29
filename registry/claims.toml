@@ -11088,4 +11088,13 @@ statement = "V1 20-channel ISM regime change 2023->2024: A_median jumps from 13 
 where_stated = "data/output/heliosphere/ablations/ism_multichannel_20ch_64d.json (aggregate), yearly analysis via voyager-ism-multichannel"
 last_verified = "2026-03-29"
 formal_proof = ""
-status_note = "Provisional: the 110x jump needs instrument investigation before scientific interpretation. If PWS calibration is stable, this is a genuine ISM discovery. Contact Adam Szabo (NASA/GSFC) re: V1 PWS operational status 2024."
+status_note = "Provisional: the 110x jump needs instrument investigation before scientific interpretation. PWS median_ch08 is IDENTICAL across all years (1.2178e-6) -- the elevation is in the tail (14.6% of hours in 2024 vs 2% in 2022-2023). 2025 returns to baseline for quiet periods. V2 shows weaker version (6.1% elevated in 2025). Contact Adam Szabo (NASA/GSFC) re: V1 PWS operational status 2024."
+
+[[claim]]
+id = "C-1610"
+status = "Verified"
+statement = "SDO/HMI SHARP 15-channel CD detects pre-flare magnetic complexity buildup for the X9.3 flare (Sep 6, 2017, AR 12673, HARPNUM 7115). Extended 5-day analysis (540 records at 12-min cadence) reveals: (1) Pre-flare A=8.8-13.6 three hours before eruption (09:00-09:48 UT), (2) Quiet phase A=0.78 at 11:12 UT, (3) X9.3 flare A=15.3 at 12:12 UT, (4) POST-FLARE MAXIMUM A=28.0 at 20:48 UT. The maximum CD is at post-flare magnetic reconfiguration, not the flare itself. This is physically consistent: organized energy release (flare) creates less phase incoherence than disordered reconnection (reconfiguration)."
+where_stated = "data/output/heliosphere/ablations/sharp_x93_extended_cd.json, data/external/sdo_aia/hmi_sharp_7115_extended.json"
+last_verified = "2026-03-29"
+formal_proof = ""
+status_note = "First multi-parameter CD analysis of solar flare evolution. 15 SHARP channels at 12-min cadence. JSOC query for HARPNUM 7115 Sep 3-7 2017. AR 12673 produced X2.2 (Sep 3), M5.5 (Sep 4), X9.3 (Sep 6) -- the most flare-productive AR of Solar Cycle 24."
