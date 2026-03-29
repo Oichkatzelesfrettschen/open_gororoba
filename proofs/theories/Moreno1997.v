@@ -22,6 +22,8 @@
     - C1546_MorEigenIFF.v : Theorem 2.9 abstract iff core with explicit side conditions
     - C1547_MorSpecialTripleOct.v : Theorem 2.13 canonical special-triple witness
     - C1543_MorMod4Bound.v : Corollary 1.17, mod-4 and upper-bound lane
+    - ZD_Criterion.v       : fused Brown/de Marrais-compatible fundamental ZD criterion
+    - CDFusedBilinear.v    : fused 8D/16D bilinear and basis-sign surfaces
     - CDSignBridge.v       : finite sign-table bridge used by the concrete lane
     - CDSignHalfStep.v     : one-step structural lemmas for sign fuel
     - CDSignSection.v      : fixed-dimension sign-table sections
@@ -50,6 +52,8 @@ From OpenGororoba Require Export
   C1546_MorEigenIFF
   C1547_MorSpecialTripleOct
   C1543_MorMod4Bound
+  ZD_Criterion
+  CDFusedBilinear
   CDSignBridge
   CDSignHalfStep
   CDSignSection.
