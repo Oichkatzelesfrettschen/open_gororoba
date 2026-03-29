@@ -1,0 +1,45 @@
+{
+  "event_name": "X9.3_Sep2017",
+  "embedding_dim": 32,
+  "segments": [
+    {
+      "source": "ACE_L1",
+      "distance_au": 1.0,
+      "n_records": 64800,
+      "n_windows": 64792,
+      "cd_median": 53.34991455078125,
+      "cd_mean": 718.2032770437984,
+      "cd_max": 197641.84375,
+      "cd_p90": 1155.9820556640625,
+      "peak_timestamp": "2017-09-08T00:50:08.000Z",
+      "quiet_median": 14.760017395019531,
+      "storm_ratio": 3.6144885959811335
+    },
+    {
+      "source": "SDO_SHARP_7115",
+      "distance_au": 0.0,
+      "n_records": 27,
+      "n_windows": 26,
+      "cd_median": 2.098675489425659,
+      "cd_mean": 4.660590447485447,
+      "cd_max": 15.282973289489746,
+      "cd_p90": 9.29056453704834,
+      "peak_timestamp": "2017.09.06_12:00:00_TAI",
+      "quiet_median": 1.0853480100631714,
+      "storm_ratio": 1.933642914500307
+    },
+    {
+      "source": "V2_PWS_ISM",
+      "distance_au": 125.0,
+      "n_records": 8070,
+      "n_windows": 8068,
+      "cd_median": 1.1373430467704783e-18,
+      "cd_mean": 7.036061174228295e-10,
+      "cd_max": 5.098938800074393e-6,
+      "cd_p90": 2.091051390403615e-15,
+      "peak_timestamp": "2019-88 -0 ",
+      "quiet_median": 2.1972949203341305e-19,
+      "storm_ratio": 5.176105566191037
+    }
+  ]
+}

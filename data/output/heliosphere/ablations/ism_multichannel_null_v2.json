@@ -1,0 +1,433 @@
+{
+  "dim": 64,
+  "n_iter": 10,
+  "n_channels": 20,
+  "epochs": [
+    {
+      "epoch": "pre_2021",
+      "year_range": "2019-2020",
+      "n_windows": 3958,
+      "base_cd_median": 67.79947662353516,
+      "base_cd_mean": 220.96086965713752,
+      "base_cd_max": 4953.78955078125,
+      "channel_nulls": [
+        {
+          "channel_idx": 0,
+          "channel_name": "Bx",
+          "channel_type": "MAG",
+          "base_cd_median": 67.79947662353516,
+          "null_cd_median": 175.79329833984374,
+          "null_cd_std": 1.4048052646820715,
+          "ratio": 2.5928415246618703,
+          "significant": true
+        },
+        {
+          "channel_idx": 1,
+          "channel_name": "By",
+          "channel_type": "MAG",
+          "base_cd_median": 67.79947662353516,
+          "null_cd_median": 67.94559860229492,
+          "null_cd_std": 0.11033966003692032,
+          "ratio": 1.0021552080640848,
+          "significant": false
+        },
+        {
+          "channel_idx": 2,
+          "channel_name": "Bz",
+          "channel_type": "MAG",
+          "base_cd_median": 67.79947662353516,
+          "null_cd_median": 68.25692749023438,
+          "null_cd_std": 0.16668429007555405,
+          "ratio": 1.0067471150144605,
+          "significant": false
+        },
+        {
+          "channel_idx": 3,
+          "channel_name": "|B|",
+          "channel_type": "MAG",
+          "base_cd_median": 67.79947662353516,
+          "null_cd_median": 67.94863967895508,
+          "null_cd_std": 0.1330163771163111,
+          "ratio": 1.0022000620483866,
+          "significant": false
+        },
+        {
+          "channel_idx": 4,
+          "channel_name": "PWS_10Hz",
+          "channel_type": "PWS",
+          "base_cd_median": 67.79947662353516,
+          "null_cd_median": 81.0547721862793,
+          "null_cd_std": 0.9756419966140942,
+          "ratio": 1.1955073434614514,
+          "significant": true
+        },
+        {
+          "channel_idx": 5,
+          "channel_name": "PWS_18Hz",
+          "channel_type": "PWS",
+          "base_cd_median": 67.79947662353516,
+          "null_cd_median": 79.22151107788086,
+          "null_cd_std": 0.9528624473724367,
+          "ratio": 1.1684678853461943,
+          "significant": true
+        },
+        {
+          "channel_idx": 6,
+          "channel_name": "PWS_31Hz",
+          "channel_type": "PWS",
+          "base_cd_median": 67.79947662353516,
+          "null_cd_median": 78.01009597778321,
+          "null_cd_std": 0.4725007951282735,
+          "ratio": 1.1506002680661351,
+          "significant": true
+        },
+        {
+          "channel_idx": 7,
+          "channel_name": "PWS_56Hz",
+          "channel_type": "PWS",
+          "base_cd_median": 67.79947662353516,
+          "null_cd_median": 78.28849945068359,
+          "null_cd_std": 0.5201917323887824,
+          "ratio": 1.1547065456771888,
+          "significant": true
+        },
+        {
+          "channel_idx": 8,
+          "channel_name": "PWS_100Hz",
+          "channel_type": "PWS",
+          "base_cd_median": 67.79947662353516,
+          "null_cd_median": 82.62746200561523,
+          "null_cd_std": 0.7502697978041689,
+          "ratio": 1.2187035375569972,
+          "significant": true
+        },
+        {
+          "channel_idx": 9,
+          "channel_name": "PWS_178Hz",
+          "channel_type": "PWS",
+          "base_cd_median": 67.79947662353516,
+          "null_cd_median": 81.34169464111328,
+          "null_cd_std": 0.5080655713467327,
+          "ratio": 1.199739270743533,
+          "significant": true
+        },
+        {
+          "channel_idx": 10,
+          "channel_name": "PWS_311Hz",
+          "channel_type": "PWS",
+          "base_cd_median": 67.79947662353516,
+          "null_cd_median": 83.38309860229492,
+          "null_cd_std": 1.6412292771964694,
+          "ratio": 1.2298487061380978,
+          "significant": true
+        },
+        {
+          "channel_idx": 11,
+          "channel_name": "PWS_562Hz",
+          "channel_type": "PWS",
+          "base_cd_median": 67.79947662353516,
+          "null_cd_median": 84.02371673583984,
+          "null_cd_std": 0.7027106472626056,
+          "ratio": 1.2392974241142265,
+          "significant": true
+        },
+        {
+          "channel_idx": 12,
+          "channel_name": "PWS_1kHz",
+          "channel_type": "PWS",
+          "base_cd_median": 67.79947662353516,
+          "null_cd_median": 92.12324600219726,
+          "null_cd_std": 0.67843114159738,
+          "ratio": 1.3587604298735636,
+          "significant": true
+        },
+        {
+          "channel_idx": 13,
+          "channel_name": "PWS_1.8kHz",
+          "channel_type": "PWS",
+          "base_cd_median": 67.79947662353516,
+          "null_cd_median": 89.78829421997071,
+          "null_cd_std": 0.8335517736558155,
+          "ratio": 1.324321347176928,
+          "significant": true
+        },
+        {
+          "channel_idx": 14,
+          "channel_name": "PWS_3.1kHz",
+          "channel_type": "PWS",
+          "base_cd_median": 67.79947662353516,
+          "null_cd_median": 86.88645706176757,
+          "null_cd_std": 0.5119872388935861,
+          "ratio": 1.2815210586980663,
+          "significant": true
+        },
+        {
+          "channel_idx": 15,
+          "channel_name": "PWS_5.6kHz",
+          "channel_type": "PWS",
+          "base_cd_median": 67.79947662353516,
+          "null_cd_median": 87.72371063232421,
+          "null_cd_std": 0.7682306319008273,
+          "ratio": 1.2938700267469732,
+          "significant": true
+        },
+        {
+          "channel_idx": 16,
+          "channel_name": "PWS_10kHz",
+          "channel_type": "PWS",
+          "base_cd_median": 67.79947662353516,
+          "null_cd_median": 90.20933837890625,
+          "null_cd_std": 0.6529701369223045,
+          "ratio": 1.3305314859553354,
+          "significant": true
+        },
+        {
+          "channel_idx": 17,
+          "channel_name": "PWS_17.8kHz",
+          "channel_type": "PWS",
+          "base_cd_median": 67.79947662353516,
+          "null_cd_median": 89.52453155517578,
+          "null_cd_std": 1.1231552014050519,
+          "ratio": 1.320431012355326,
+          "significant": true
+        },
+        {
+          "channel_idx": 18,
+          "channel_name": "PWS_31.1kHz",
+          "channel_type": "PWS",
+          "base_cd_median": 67.79947662353516,
+          "null_cd_median": 89.263720703125,
+          "null_cd_std": 1.1297772342966095,
+          "ratio": 1.3165842149309304,
+          "significant": true
+        },
+        {
+          "channel_idx": 19,
+          "channel_name": "PWS_56.2kHz",
+          "channel_type": "PWS",
+          "base_cd_median": 67.79947662353516,
+          "null_cd_median": 90.02609786987304,
+          "null_cd_std": 0.860954282944295,
+          "ratio": 1.3278288027170755,
+          "significant": true
+        }
+      ],
+      "mag_only_null_ratio": 1.4009859774472004,
+      "pws_only_null_ratio": 1.2569199599723766,
+      "cross_null_ratio": 1.2569199599723766
+    },
+    {
+      "epoch": "post_2021",
+      "year_range": "2021-2022",
+      "n_windows": 4030,
+      "base_cd_median": 76.01190948486328,
+      "base_cd_mean": 198.2085163270705,
+      "base_cd_max": 5340.21923828125,
+      "channel_nulls": [
+        {
+          "channel_idx": 0,
+          "channel_name": "Bx",
+          "channel_type": "MAG",
+          "base_cd_median": 76.01190948486328,
+          "null_cd_median": 110.56276016235351,
+          "null_cd_std": 0.9680879900258555,
+          "ratio": 1.4545452273419148,
+          "significant": true
+        },
+        {
+          "channel_idx": 1,
+          "channel_name": "By",
+          "channel_type": "MAG",
+          "base_cd_median": 76.01190948486328,
+          "null_cd_median": 76.13092727661133,
+          "null_cd_std": 0.06513414378291736,
+          "ratio": 1.0015657782123175,
+          "significant": false
+        },
+        {
+          "channel_idx": 2,
+          "channel_name": "Bz",
+          "channel_type": "MAG",
+          "base_cd_median": 76.01190948486328,
+          "null_cd_median": 76.28199310302735,
+          "null_cd_std": 0.19010491688694064,
+          "ratio": 1.0035531750221043,
+          "significant": false
+        },
+        {
+          "channel_idx": 3,
+          "channel_name": "|B|",
+          "channel_type": "MAG",
+          "base_cd_median": 76.01190948486328,
+          "null_cd_median": 76.08935165405273,
+          "null_cd_std": 0.08325308411982206,
+          "ratio": 1.001018816258061,
+          "significant": false
+        },
+        {
+          "channel_idx": 4,
+          "channel_name": "PWS_10Hz",
+          "channel_type": "PWS",
+          "base_cd_median": 76.01190948486328,
+          "null_cd_median": 83.79263763427734,
+          "null_cd_std": 0.7212135775311607,
+          "ratio": 1.10236196146294,
+          "significant": true
+        },
+        {
+          "channel_idx": 5,
+          "channel_name": "PWS_18Hz",
+          "channel_type": "PWS",
+          "base_cd_median": 76.01190948486328,
+          "null_cd_median": 83.80794372558594,
+          "null_cd_std": 0.4977377219751664,
+          "ratio": 1.1025633258466574,
+          "significant": true
+        },
+        {
+          "channel_idx": 6,
+          "channel_name": "PWS_31Hz",
+          "channel_type": "PWS",
+          "base_cd_median": 76.01190948486328,
+          "null_cd_median": 84.64680709838868,
+          "null_cd_std": 0.4880315915703916,
+          "ratio": 1.1135992724303936,
+          "significant": true
+        },
+        {
+          "channel_idx": 7,
+          "channel_name": "PWS_56Hz",
+          "channel_type": "PWS",
+          "base_cd_median": 76.01190948486328,
+          "null_cd_median": 83.60123443603516,
+          "null_cd_std": 0.7146200672289849,
+          "ratio": 1.0998438929189536,
+          "significant": false
+        },
+        {
+          "channel_idx": 8,
+          "channel_name": "PWS_100Hz",
+          "channel_type": "PWS",
+          "base_cd_median": 76.01190948486328,
+          "null_cd_median": 84.89967880249023,
+          "null_cd_std": 0.9080288484345678,
+          "ratio": 1.116926010382581,
+          "significant": true
+        },
+        {
+          "channel_idx": 9,
+          "channel_name": "PWS_178Hz",
+          "channel_type": "PWS",
+          "base_cd_median": 76.01190948486328,
+          "null_cd_median": 83.82249069213867,
+          "null_cd_std": 0.4317714636784297,
+          "ratio": 1.1027547033117324,
+          "significant": true
+        },
+        {
+          "channel_idx": 10,
+          "channel_name": "PWS_311Hz",
+          "channel_type": "PWS",
+          "base_cd_median": 76.01190948486328,
+          "null_cd_median": 83.8995376586914,
+          "null_cd_std": 0.6614952407749176,
+          "ratio": 1.1037683203498372,
+          "significant": true
+        },
+        {
+          "channel_idx": 11,
+          "channel_name": "PWS_562Hz",
+          "channel_type": "PWS",
+          "base_cd_median": 76.01190948486328,
+          "null_cd_median": 86.75109024047852,
+          "null_cd_std": 0.7364375280868919,
+          "ratio": 1.1412828703869595,
+          "significant": true
+        },
+        {
+          "channel_idx": 12,
+          "channel_name": "PWS_1kHz",
+          "channel_type": "PWS",
+          "base_cd_median": 76.01190948486328,
+          "null_cd_median": 93.92435150146484,
+          "null_cd_std": 0.48239172640506606,
+          "ratio": 1.2356530988103722,
+          "significant": true
+        },
+        {
+          "channel_idx": 13,
+          "channel_name": "PWS_1.8kHz",
+          "channel_type": "PWS",
+          "base_cd_median": 76.01190948486328,
+          "null_cd_median": 92.76938934326172,
+          "null_cd_std": 0.8741715036222995,
+          "ratio": 1.2204586093411516,
+          "significant": true
+        },
+        {
+          "channel_idx": 14,
+          "channel_name": "PWS_3.1kHz",
+          "channel_type": "PWS",
+          "base_cd_median": 76.01190948486328,
+          "null_cd_median": 91.13717575073242,
+          "null_cd_std": 1.1140092945496194,
+          "ratio": 1.1989854796225206,
+          "significant": true
+        },
+        {
+          "channel_idx": 15,
+          "channel_name": "PWS_5.6kHz",
+          "channel_type": "PWS",
+          "base_cd_median": 76.01190948486328,
+          "null_cd_median": 91.1293212890625,
+          "null_cd_std": 0.9117657446187827,
+          "ratio": 1.198882147635163,
+          "significant": true
+        },
+        {
+          "channel_idx": 16,
+          "channel_name": "PWS_10kHz",
+          "channel_type": "PWS",
+          "base_cd_median": 76.01190948486328,
+          "null_cd_median": 92.56241607666016,
+          "null_cd_std": 0.7987968968312655,
+          "ratio": 1.2177357035754073,
+          "significant": true
+        },
+        {
+          "channel_idx": 17,
+          "channel_name": "PWS_17.8kHz",
+          "channel_type": "PWS",
+          "base_cd_median": 76.01190948486328,
+          "null_cd_median": 92.59275588989257,
+          "null_cd_std": 0.6185943401890012,
+          "ratio": 1.2181348490966555,
+          "significant": true
+        },
+        {
+          "channel_idx": 18,
+          "channel_name": "PWS_31.1kHz",
+          "channel_type": "PWS",
+          "base_cd_median": 76.01190948486328,
+          "null_cd_median": 91.90680160522462,
+          "null_cd_std": 0.7289730227011108,
+          "ratio": 1.209110548966364,
+          "significant": true
+        },
+        {
+          "channel_idx": 19,
+          "channel_name": "PWS_56.2kHz",
+          "channel_type": "PWS",
+          "base_cd_median": 76.01190948486328,
+          "null_cd_median": 91.05708465576171,
+          "null_cd_std": 0.5421615049774849,
+          "ratio": 1.1979318145388056,
+          "significant": true
+        }
+      ],
+      "mag_only_null_ratio": 1.1151707492085996,
+      "pws_only_null_ratio": 1.161249538042281,
+      "cross_null_ratio": 1.1151707492085996
+    }
+  ]
+}

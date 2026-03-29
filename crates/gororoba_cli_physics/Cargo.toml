@@ -992,6 +992,10 @@ name = "turboquant-profile"
 path = "src/bin/turboquant_profile.rs"
 
 [[bin]]
+name = "turboquant-real-kv"
+path = "src/bin/turboquant_real_kv.rs"
+
+[[bin]]
 name = "mast-cd-vs-spectrogram"
 path = "src/bin/mast_cd_vs_spectrogram.rs"
 required-features = ["zarr-read"]
@@ -1014,6 +1018,24 @@ path = "src/bin/mast_fetch.rs"
 name = "mast-mirnov-cd"
 path = "src/bin/mast_mirnov_cd.rs"
 required-features = ["zarr-read"]
+
+# ---- Cross-Domain (3) ----
+
+[[bin]]
+name = "solar-storm-propagation"
+path = "src/bin/solar_storm_propagation.rs"
+
+[[bin]]
+name = "cd-anomaly-scan"
+path = "src/bin/cd_anomaly_scan.rs"
+
+[[bin]]
+name = "sdo-fits-parse"
+path = "src/bin/sdo_fits_parse.rs"
+
+[[bin]]
+name = "ism-multichannel-null"
+path = "src/bin/ism_multichannel_null.rs"
 
 # ---- GUT (1) ----
 
