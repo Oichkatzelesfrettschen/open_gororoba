@@ -1,12 +1,16 @@
 use crate::fetcher::FetchError;
 use cdf::{
     cdf::Cdf,
+    decode::{Decodable, Decoder},
     record::{
+        vvr::VariableValuesRecord,
         vxr::{VariableIndexRecord, VariableIndexRecordChild},
         zvdr::ZVariableDescriptorRecord,
     },
     types::CdfType,
 };
+use flate2::read::GzDecoder;
+use std::io::Read as _;
 use chrono::{Datelike, NaiveDate, TimeZone, Timelike, Utc};
 use hifitime::{Duration, Epoch};
 use std::path::Path;
@@ -16,6 +20,16 @@ const TT2000_REF_TAI: (i32, u8, u8, u8, u8, u8, u32) = (2000, 1, 1, 11, 59, 27, 
 pub fn read_cdf_file(path: &Path) -> Result<Cdf, FetchError> {
     Cdf::read_cdf_file(path)
         .map_err(|err| FetchError::Validation(format!("CDF parse error: {err}")))
+}
+
+/// List all zVariable names in a CDF file.
+pub fn cdf_list_zvariables(cdf: &Cdf) -> Vec<String> {
+    cdf.cdr
+        .gdr
+        .zvdr_vec
+        .iter()
+        .map(|zvdr| zvdr.name.to_string())
+        .collect()
 }
 
 fn zvariable_by_name<'a>(cdf: &'a Cdf, name: &str) -> Option<&'a ZVariableDescriptorRecord> {
@@ -41,11 +55,34 @@ fn collect_vxr_rows(
                 }
             }
             VariableIndexRecordChild::VXR(inner) => collect_vxr_rows(inner, rows)?,
-            VariableIndexRecordChild::CVVR(_) => {
-                return Err(FetchError::Validation(
-                    "compressed CDF variable blocks are not yet supported in the Rust CDF helper"
-                        .to_string(),
-                ));
+            VariableIndexRecordChild::CVVR(cvvr) => {
+                // Decompress Gzip-compressed variable values using flate2 (pure Rust).
+                let mut gz = GzDecoder::new(cvvr.data.as_slice());
+                let mut decompressed = Vec::new();
+                gz.read_to_end(&mut decompressed).map_err(|e| {
+                    FetchError::Validation(format!("CVVR Gzip decompress failed: {e}"))
+                })?;
+
+                // The decompressed data contains VVR record bytes (with CDF record headers).
+                // Try parsing as a complete VVR first.
+                let mut cursor = std::io::Cursor::new(&decompressed);
+                let mut cdf_dec = Decoder::new(&mut cursor)
+                    .map_err(|e| FetchError::Validation(format!("CVVR decoder init: {e}")))?;
+                if let Ok(vvr) = VariableValuesRecord::decode_be(&mut cdf_dec) {
+                    for record in &vvr.records {
+                        rows.push(record.data.clone());
+                    }
+                } else {
+                    // Fallback: decompressed data is raw f32/f64 values without VVR headers.
+                    // Read as f32 values (most common for PWS spectral data).
+                    let n_f32 = decompressed.len() / 4;
+                    if n_f32 > 0 {
+                        for chunk in decompressed.chunks_exact(4) {
+                            let val = f32::from_be_bytes([chunk[0], chunk[1], chunk[2], chunk[3]]);
+                            rows.push(vec![CdfType::Real4(val.into())]);
+                        }
+                    }
+                }
             }
         }
     }

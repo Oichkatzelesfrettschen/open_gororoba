@@ -35,6 +35,10 @@ struct Cli {
     /// Maximum year to include (inclusive)
     #[arg(long, default_value_t = 2025)]
     year_max: u16,
+
+    /// List zVariable names in the first CDF file and exit (diagnostic mode).
+    #[arg(long)]
+    list_vars: bool,
 }
 
 fn main() -> Result<()> {
@@ -48,6 +52,32 @@ fn main() -> Result<()> {
 
     println!("=== Voyager CDF Ingest: {} ===", mission);
     println!("  dir: {}", cli.cdf_dir.display());
+
+    // --list-vars mode: inspect CDF structure and exit
+    if cli.list_vars {
+        let mut cdf_paths: Vec<PathBuf> = std::fs::read_dir(&cli.cdf_dir)?
+            .filter_map(|e| e.ok())
+            .map(|e| e.path())
+            .filter(|p| p.extension().is_some_and(|ext| ext == "cdf"))
+            .collect();
+        cdf_paths.sort();
+        for path in cdf_paths.iter().take(1) {
+            let fname = path.file_name().unwrap().to_string_lossy();
+            let cdf = data_core::cdf_support::read_cdf_file(path)
+                .with_context(|| format!("read {fname}"))?;
+            let vars = data_core::cdf_support::cdf_list_zvariables(&cdf);
+            println!("  File: {}", fname);
+            println!("  zVariables ({}):", vars.len());
+            for (i, name) in vars.iter().enumerate() {
+                let row_count = data_core::cdf_support::cdf_variable_rows(&cdf, name)
+                    .map(|r| r.len())
+                    .unwrap_or(0);
+                println!("    [{:>2}] {:30} ({} records)", i, name, row_count);
+            }
+        }
+        return Ok(());
+    }
+
     println!("  years: {}-{}", cli.year_min, cli.year_max);
 
     // Collect CDF files
