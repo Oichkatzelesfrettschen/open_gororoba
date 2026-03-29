@@ -692,9 +692,43 @@ pub fn euler_step_3d(
 
     prims.apply_floors(1e-8, 1e-10);
 
-    // B-field ceiling: prevent div(B)-driven runaway while CT is being debugged.
-    // Caps B at 10x the initial maximum. Pragmatic for CD analysis.
-    prims.apply_b_ceiling(1e3);
+    // Apply simple outflow boundary conditions: copy interior to ghost zones
+    let ng = grid.ng;
+    for j in 0..grid.n2_total() {
+        for k in 0..grid.n3_total() {
+            // Inner radial boundary: copy from first active cell
+            for g in 0..ng {
+                let src = grid.idx(ng, j, k);
+                let dst = grid.idx(g, j, k);
+                let src_p = { let s = prims.get(src); let mut a = [0.0; 8]; a.copy_from_slice(s); a };
+                prims.set(dst, &src_p);
+            }
+            // Outer radial boundary: copy from last active cell
+            for g in 0..ng {
+                let src = grid.idx(ng + grid.n1 - 1, j, k);
+                let dst = grid.idx(ng + grid.n1 + g, j, k);
+                let src_p = { let s = prims.get(src); let mut a = [0.0; 8]; a.copy_from_slice(s); a };
+                prims.set(dst, &src_p);
+            }
+        }
+    }
+    // Theta boundaries: copy from first/last active theta cell
+    for i in 0..grid.n1_total() {
+        for k in 0..grid.n3_total() {
+            for g in 0..ng {
+                let src = grid.idx(i, ng, k);
+                let dst = grid.idx(i, g, k);
+                let src_p = { let s = prims.get(src); let mut a = [0.0; 8]; a.copy_from_slice(s); a };
+                prims.set(dst, &src_p);
+            }
+            for g in 0..ng {
+                let src = grid.idx(i, ng + grid.n2 - 1, k);
+                let dst = grid.idx(i, ng + grid.n2 + g, k);
+                let src_p = { let s = prims.get(src); let mut a = [0.0; 8]; a.copy_from_slice(s); a };
+                prims.set(dst, &src_p);
+            }
+        }
+    }
 }
 
 /// Estimate the maximum signal speed across all interior cells.
