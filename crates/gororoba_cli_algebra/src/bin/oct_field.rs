@@ -12,7 +12,7 @@
 //!   oct-field sweep --n-min 32 --n-max 256 --mass 1.0
 
 use clap::{Parser, Subcommand};
-use gororoba_algebra::{FieldParams, evolve, gaussian_wave_packet, measure_dispersion};
+use gororoba_algebra::physics::octonion_field::{FieldParams, evolve, gaussian_wave_packet, measure_dispersion};
 use std::f64::consts::PI;
 
 #[derive(Parser)]

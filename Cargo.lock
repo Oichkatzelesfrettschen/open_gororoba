@@ -4353,10 +4353,12 @@ dependencies = [
 name = "gororoba_cli"
 version = "0.1.0"
 dependencies = [
+ "algebra_analysis",
  "algebra_experimental",
  "anyhow",
  "ash",
  "axum",
+ "cd_kernel",
  "chrono",
  "clap",
  "cosmology_core",
