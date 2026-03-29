@@ -63,6 +63,7 @@
 //! - HadaCore (arXiv 2412.08832) -- GPU Tensor Core FWHT (future CUDA path)
 
 pub mod adaptive_bits;
+pub mod adaptive_profiling;
 pub mod albert_algebra;
 pub mod autotune;
 pub mod backend;
