@@ -179,3 +179,14 @@ Proof.
             moreno16_concrete_a_pure := moreno16_canonical_a_pure;
             moreno16_concrete_witness := moreno16_canonical_vlambda_witness |}.
 Defined.
+
+Definition moreno16_build_arbitrary_a_concrete_hypotheses
+  (a : CDOct)
+  (Ha_unit : oct_norm_sq a = 1%R)
+  (Ha_pure : oct_conj a = oct_neg a)
+  (W : Moreno16ConcreteVlambdaWitness)
+  : Moreno16ArbitraryAConcreteHypotheses :=
+  {| moreno16_concrete_a := a;
+     moreno16_concrete_a_unit := Ha_unit;
+     moreno16_concrete_a_pure := Ha_pure;
+     moreno16_concrete_witness := W |}.

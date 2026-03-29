@@ -42,7 +42,10 @@
 
     The executable Rust companion for this paper is `crates/moreno_1997/`. *)
 
+From Stdlib Require Import Reals.
 From OpenGororoba Require Export
+  Sedenion
+  OctonionNorm
   FinDimHModule
   C1539_MorSkewSymm
   CDTraceZero
@@ -61,6 +64,8 @@ From OpenGororoba Require Export
   CDSignBridge
   CDSignHalfStep
   CDSignSection.
+
+Open Scope nat_scope.
 
 (** The first concrete-to-abstract Moreno 1.16 bridge.
 
@@ -127,6 +132,22 @@ Theorem Moreno1997_theorem_1_16_canonical_arbitrary_a_bridge :
 Proof.
   exact
     (moreno16_arbitrary_a_dim_mod4 moreno16_canonical_arbitrary_a_hypotheses).
+Qed.
+
+Theorem Moreno1997_theorem_1_16_explicit_hypotheses_builder_bridge :
+  forall (a : CDOct)
+         (Ha_unit : oct_norm_sq a = 1%R)
+         (Ha_pure : oct_conj a = oct_neg a)
+         (W : Moreno16ConcreteVlambdaWitness),
+    Nat.modulo
+      (moreno16_concrete_vlambda_dim
+         (moreno16_concrete_witness
+            (moreno16_build_arbitrary_a_concrete_hypotheses a Ha_unit Ha_pure W))) 4 = 0.
+Proof.
+  intros a Ha_unit Ha_pure W.
+  exact
+    (moreno16_arbitrary_a_dim_mod4
+       (moreno16_build_arbitrary_a_concrete_hypotheses a Ha_unit Ha_pure W)).
 Qed.
 
 Theorem Moreno1997_lane_compiles : True.
