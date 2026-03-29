@@ -59,10 +59,9 @@ fn main() -> Result<()> {
         // 2. Compute Spectrum
         // Construct (16, n_points) matrix for SVD
         let mut mat = Mat::<f64>::zeros(16, n_points);
-        #[allow(clippy::needless_range_loop)]
-        for i in 0..16 {
-            for j in 0..n_points {
-                mat.write(i, j, phi[j][i]);
+        for (j, phi_j) in phi.iter().enumerate() {
+            for (i, &val) in phi_j.iter().enumerate() {
+                mat.write(i, j, val);
             }
         }
 

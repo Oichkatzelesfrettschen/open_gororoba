@@ -292,13 +292,12 @@ fn find_simple_roots(
 
 /// Compute the E7 Cartan matrix from simple roots.
 /// For simply-laced (norm^2=2): C_ij = (s_i, s_j).
-#[allow(clippy::needless_range_loop)]
 fn compute_cartan_matrix(roots: &[E7Root], si: &[usize; 7]) -> [[i32; 7]; 7] {
     let mut c = [[0i32; 7]; 7];
-    for i in 0..7 {
-        for j in 0..7 {
-            let ip = roots[si[i]].root.inner_product(&roots[si[j]].root);
-            c[i][j] = ip.round() as i32;
+    for (c_row, &idx_i) in c.iter_mut().zip(si.iter()) {
+        for (c_ij, &idx_j) in c_row.iter_mut().zip(si.iter()) {
+            let ip = roots[idx_i].root.inner_product(&roots[idx_j].root);
+            *c_ij = ip.round() as i32;
         }
     }
     c
@@ -360,16 +359,18 @@ fn invert_7x7(m: [[i32; 7]; 7]) -> [[f64; 7]; 7] {
 /// - f(s_i, s_j) = 1 for i < j if adjacent (Cartan entry != 0), else 0
 /// - f(s_j, s_i) = (f(s_i, s_j) + C_ij) mod 2, ensuring
 ///   epsilon(a,b)*epsilon(b,a) = (-1)^{(a,b)}
-#[allow(clippy::needless_range_loop)]
 fn build_tits_form(cartan: &[[i32; 7]; 7]) -> [[u8; 7]; 7] {
     let mut f = [[0u8; 7]; 7];
-    for i in 0..7 {
-        f[i][i] = 1;
+    for (i, f_row) in f.iter_mut().enumerate() {
+        f_row[i] = 1;
     }
+    // Cross-indexed: f[i][j] and f[j][i] require both indices
+    #[allow(clippy::needless_range_loop)]
     for i in 0..7 {
         for j in (i + 1)..7 {
-            f[i][j] = if cartan[i][j] != 0 { 1 } else { 0 };
-            f[j][i] = ((i32::from(f[i][j]) + cartan[i][j]).rem_euclid(2)) as u8;
+            let val = u8::from(cartan[i][j] != 0);
+            f[i][j] = val;
+            f[j][i] = ((i32::from(val) + cartan[i][j]).rem_euclid(2)) as u8;
         }
     }
     f
@@ -377,7 +378,6 @@ fn build_tits_form(cartan: &[[i32; 7]; 7]) -> [[u8; 7]; 7] {
 
 /// Decompose all roots into simple root basis coordinates.
 /// Solves c = C^{-1} * b where b[j] = (root, s_j).
-#[allow(clippy::needless_range_loop)]
 fn decompose_all_roots(
     roots: &[E7Root],
     simple_indices: &[usize; 7],
@@ -387,15 +387,12 @@ fn decompose_all_roots(
     for root in roots {
         let key = coord_key(&root.root.coords);
         let mut b = [0.0; 7];
-        for j in 0..7 {
-            b[j] = root.root.inner_product(&roots[simple_indices[j]].root);
+        for (b_j, &si_j) in b.iter_mut().zip(simple_indices.iter()) {
+            *b_j = root.root.inner_product(&roots[si_j].root);
         }
         let mut c = [0i32; 7];
-        for i in 0..7 {
-            let mut val = 0.0;
-            for j in 0..7 {
-                val += cartan_inv[i][j] * b[j];
-            }
+        for (i, (c_i, inv_row)) in c.iter_mut().zip(cartan_inv.iter()).enumerate() {
+            let val: f64 = inv_row.iter().zip(b.iter()).map(|(&ci_j, &b_j)| ci_j * b_j).sum();
             let rounded = val.round() as i32;
             assert!(
                 (val - f64::from(rounded)).abs() < 0.01,
@@ -404,7 +401,7 @@ fn decompose_all_roots(
                 val,
                 root.root.coords
             );
-            c[i] = rounded;
+            *c_i = rounded;
         }
         decompositions.insert(key, c);
     }
@@ -416,18 +413,19 @@ mod tests {
     use super::*;
 
     #[test]
-    #[allow(clippy::needless_range_loop)]
     fn test_extraspecial_cocycle_is_2_cocycle() {
         let basis = ChevalleyBasis::new();
         let f = &basis.tits_form;
 
         // Diagonal: f(s_i, s_i) = 1
-        for i in 0..7 {
-            assert_eq!(f[i][i], 1, "f(s_{i}, s_{i}) should be 1");
+        for (i, f_row) in f.iter().enumerate() {
+            assert_eq!(f_row[i], 1, "f(s_{i}, s_{i}) should be 1");
         }
 
         // Cocycle condition: f(a,b) + f(b,a) = (a,b) mod 2
+        // Cross-indexed: f[i][j] and f[j][i] require both indices
         let cartan = compute_cartan_matrix(&basis.roots, &basis.simple_root_indices);
+        #[allow(clippy::needless_range_loop)]
         for i in 0..7 {
             for j in 0..7 {
                 if i != j {
@@ -494,25 +492,32 @@ mod tests {
     }
 
     #[test]
-    #[allow(clippy::needless_range_loop)]
     fn test_simple_root_structure_constants() {
         let basis = ChevalleyBasis::new();
         let cartan = compute_cartan_matrix(&basis.roots, &basis.simple_root_indices);
 
-        for i in 0..7 {
-            for j in 0..7 {
+        for (i, (cartan_row, &si_idx)) in cartan
+            .iter()
+            .zip(basis.simple_root_indices.iter())
+            .enumerate()
+        {
+            let si = &basis.roots[si_idx];
+            for (j, (&c_ij, &sj_idx)) in cartan_row
+                .iter()
+                .zip(basis.simple_root_indices.iter())
+                .enumerate()
+            {
                 if i == j {
                     continue;
                 }
-                let si = &basis.roots[basis.simple_root_indices[i]];
-                let sj = &basis.roots[basis.simple_root_indices[j]];
+                let sj = &basis.roots[sj_idx];
                 let n = basis.structure_constant(si, sj);
-                if cartan[i][j] == -1 {
+                if c_ij == -1 {
                     assert!(
                         n.abs() > 0.5,
                         "Adjacent simple roots {i},{j} should have |N|=1, got {n}",
                     );
-                } else if cartan[i][j] == 0 {
+                } else if c_ij == 0 {
                     assert_eq!(
                         n, 0.0,
                         "Non-adjacent simple roots {i},{j} should have N=0, got {n}",

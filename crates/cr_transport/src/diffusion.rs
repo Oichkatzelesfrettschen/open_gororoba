@@ -140,11 +140,10 @@ mod tests {
             assert!(row[i] > 0.0, "non-positive diagonal at [{i}][{i}]");
         }
         // Symmetric part should be symmetric
-        #[allow(clippy::needless_range_loop)]
-        for i in 0..3 {
-            for j in 0..3 {
-                let sym = (k[i][j] + k[j][i]) / 2.0;
-                let antisym = (k[i][j] - k[j][i]) / 2.0;
+        for (i, k_row) in k.iter().enumerate() {
+            for (j, &k_ij) in k_row.iter().enumerate() {
+                let sym = (k_ij + k[j][i]) / 2.0;
+                let antisym = (k_ij - k[j][i]) / 2.0;
                 let _ = (sym, antisym); // verify they exist without panic
             }
         }

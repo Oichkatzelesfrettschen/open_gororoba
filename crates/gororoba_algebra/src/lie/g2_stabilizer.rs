@@ -115,14 +115,16 @@ fn orthonormalize(basis: &[OctonionDerivation], tol: f64) -> Vec<OctonionDerivat
 /// of the Lie algebra Der(O) = g2).
 pub fn derivation_bracket(a: &OctonionDerivation, b: &OctonionDerivation) -> OctonionDerivation {
     let mut result = [[0.0f64; 8]; 8];
-    #[allow(clippy::needless_range_loop)]
-    for i in 0..8 {
+    for (result_row, (a_row, b_row)) in result
+        .iter_mut()
+        .zip(a.matrix.iter().zip(b.matrix.iter()))
+    {
         for j in 0..8 {
             let mut sum = 0.0;
             for k in 0..8 {
-                sum += a.matrix[i][k] * b.matrix[k][j] - b.matrix[i][k] * a.matrix[k][j];
+                sum += a_row[k] * b.matrix[k][j] - b_row[k] * a.matrix[k][j];
             }
-            result[i][j] = sum;
+            result_row[j] = sum;
         }
     }
     OctonionDerivation { matrix: result }

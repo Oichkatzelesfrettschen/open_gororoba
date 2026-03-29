@@ -103,9 +103,8 @@ fn generate_velocity_map(
     let mut data = vec![vec![0.0; size]; size];
     let center = half_size as f64;
 
-    #[allow(clippy::needless_range_loop)]
-    for iy in 0..size {
-        for ix in 0..size {
+    for (iy, row) in data.iter_mut().enumerate() {
+        for (ix, cell) in row.iter_mut().enumerate() {
             let dx = ix as f64 - center;
             let dy = iy as f64 - center;
             let r_pix = (dx * dx + dy * dy).sqrt();
@@ -129,7 +128,7 @@ fn generate_velocity_map(
                 residual += amp * (ell as f64 * theta).cos();
             }
 
-            data[iy][ix] = residual;
+            *cell = residual;
         }
     }
 
