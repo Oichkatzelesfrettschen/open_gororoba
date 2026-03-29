@@ -197,6 +197,25 @@ impl BitPackedSigns {
     pub fn words(&self) -> &[u64] {
         &self.words
     }
+
+    /// Zero-copy access to packed words as raw bytes via bytemuck.
+    ///
+    /// For GPU buffer transfer (CUDA memcpy, Vulkan buffer write)
+    /// without any data conversion.
+    pub fn as_bytes(&self) -> &[u8] {
+        bytemuck::cast_slice(&self.words)
+    }
+
+    /// Create from raw bytes (zero-copy, for GPU readback).
+    ///
+    /// `bytes` must be properly aligned and have length divisible by 8.
+    pub fn from_bytes(bytes: &[u8], len: usize) -> Self {
+        let words: &[u64] = bytemuck::cast_slice(bytes);
+        BitPackedSigns {
+            words: words.to_vec(),
+            len,
+        }
+    }
 }
 
 #[cfg(test)]

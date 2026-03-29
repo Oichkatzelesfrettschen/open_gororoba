@@ -35,11 +35,16 @@
 //!   - Range: approximately [-2.1e9, 2.1e9]
 
 /// Q16.16 fixed-point number (32-bit integer representation).
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+///
+/// Derives bytemuck Pod + Zeroable for zero-copy buffer packing
+/// (GPU transfer, serialization, memory-mapped I/O).
+#[derive(Clone, Copy, Debug, PartialEq, Eq, bytemuck::Pod, bytemuck::Zeroable)]
+#[repr(C)]
 pub struct Q16_16(pub i32);
 
 /// Q32.32 fixed-point number (64-bit integer representation).
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, bytemuck::Pod, bytemuck::Zeroable)]
+#[repr(C)]
 pub struct Q32_32(pub i64);
 
 const Q16_FRAC_BITS: u32 = 16;
