@@ -30,4 +30,5 @@ pub mod grid;
 pub mod metric;
 pub mod prims;
 pub mod recon;
+pub mod riemann;
 pub mod torus;
