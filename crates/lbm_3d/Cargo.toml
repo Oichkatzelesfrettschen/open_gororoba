@@ -12,6 +12,7 @@ verified_core = { version = "0.1.0", path = "../verified_core" }
 rayon = { workspace = true }
 thiserror.workspace = true
 wide = { workspace = true }
+pulp = { workspace = true }
 
 [dev-dependencies]
 approx = { workspace = true }

@@ -9,6 +9,7 @@ license = "GPL-2.0-or-later"
 core_affinity = { workspace = true }
 rayon = { workspace = true }
 wide = { workspace = true }
+pulp = { workspace = true }
 bitvec = { workspace = true }
 rand = { workspace = true }
 rand_chacha = { workspace = true }
