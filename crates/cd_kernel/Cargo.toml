@@ -38,10 +38,15 @@ cubecl = ["dep:cubecl-core"]
 [dev-dependencies]
 approx = { workspace = true }
 criterion = { workspace = true }
+iai-callgrind = { workspace = true }
 proptest = { workspace = true }
 
 [[bench]]
 name = "flat_multiply_bench"
+harness = false
+
+[[bench]]
+name = "turboquant_iai"
 harness = false
 
 [lints]

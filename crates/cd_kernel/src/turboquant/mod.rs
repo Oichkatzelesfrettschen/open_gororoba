@@ -49,6 +49,7 @@ pub mod baselines;
 pub mod cd_fidelity;
 pub mod compressor;
 pub mod compute_stack;
+pub mod cross_layer;
 pub mod config;
 #[cfg(feature = "cubecl")]
 pub mod cubecl_backend;
