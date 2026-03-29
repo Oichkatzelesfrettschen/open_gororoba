@@ -42,10 +42,12 @@
 //! - HadaCore (arXiv 2412.08832) -- GPU Tensor Core FWHT (future CUDA path)
 
 pub mod backend;
+pub mod baselines;
 pub mod compressor;
 #[cfg(feature = "cuda")]
 pub mod cuda;
 pub mod dispatch;
+pub mod grouping;
 pub mod pipeline;
 pub mod qjl;
 pub mod rotation;
