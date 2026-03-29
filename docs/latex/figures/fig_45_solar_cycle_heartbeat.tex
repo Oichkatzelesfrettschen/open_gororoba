@@ -1,0 +1,112 @@
+%% Fig 45: Solar Cycle CD Heartbeat -- 23-year ACE MAG at 1 AU
+%% Dual y-axis: CD median (left, log) + sunspot proxy (right, linear)
+%% Shows 18.9x solar cycle amplitude with phase markers for SC 23/24/25
+%%
+%% Data: ACE MAG 16-sec via HAPI, 45.4M records, 32D 4-channel embedding
+%% Sunspot numbers approximated from SILSO monthly means (smoothed yearly)
+%%
+%% Golden ratio: width/height = 1.618
+\begin{tikzpicture}
+\begin{axis}[
+  name=cdaxis,
+  width=\textwidth,
+  height=0.618\textwidth,
+  xmin=1999.5, xmax=2023.5,
+  ymin=5, ymax=400,
+  ymode=log,
+  xlabel={\sffamily Year},
+  ylabel={\sffamily CD Median (32D, log scale)},
+  xlabel style={font=\sffamily\small, white},
+  ylabel style={font=\sffamily\small, OIorange},
+  tick label style={font=\sffamily\scriptsize, white},
+  ytick style={OIorange},
+  yticklabel style={OIorange},
+  axis background/.style={fill=black!95},
+  axis line style={white!70},
+  tick style={white!70},
+  major grid style={gray!15, dashed},
+  grid=major,
+  axis y line*=left,
+  axis x line*=bottom,
+  legend style={
+    at={(0.5,0.97)}, anchor=north,
+    fill=black!80, draw=gray!40,
+    text=white, font=\sffamily\scriptsize,
+    legend columns=2,
+  },
+]
+  %% Solar cycle phase bands
+  %% SC23 max (2000-2004)
+  \fill[OIvermillion!12] (axis cs:2000,5) rectangle (axis cs:2004,400);
+  %% SC24 max (2012-2016)
+  \fill[OIvermillion!8] (axis cs:2012,5) rectangle (axis cs:2016,400);
+  %% SC25 rise (2021-2023)
+  \fill[OIvermillion!6] (axis cs:2021,5) rectangle (axis cs:2023.5,400);
+
+  %% Phase labels
+  \node[white!60, font=\sffamily\tiny] at (axis cs:2002,350) {SC 23 Max};
+  \node[white!40, font=\sffamily\tiny] at (axis cs:2009,350) {Min};
+  \node[white!60, font=\sffamily\tiny] at (axis cs:2014,350) {SC 24 Max};
+  \node[white!40, font=\sffamily\tiny] at (axis cs:2019.5,350) {Min};
+  \node[white!60, font=\sffamily\tiny] at (axis cs:2022,350) {SC 25};
+
+  %% CD median data (bar + line)
+  \addplot[
+    OIorange, very thick, mark=*, mark size=2pt,
+    mark options={fill=OIorange},
+  ] coordinates {
+    (2000, 104.0) (2001, 82.5) (2002, 154.7) (2003, 282.0)
+    (2004, 109.9) (2005, 79.8) (2006, 38.7) (2007, 31.5)
+    (2008, 31.4) (2009, 14.9) (2010, 30.3) (2011, 44.7)
+    (2012, 44.7) (2013, 35.3) (2014, 69.4) (2015, 104.1)
+    (2016, 84.6) (2017, 50.2) (2018, 29.6) (2019, 26.7)
+    (2020, 22.3) (2021, 33.1) (2022, 88.0)
+  };
+
+  %% Peak and trough annotations
+  \node[OIorange, font=\sffamily\tiny, anchor=south]
+    at (axis cs:2003, 290) {282};
+  \node[OIorange, font=\sffamily\tiny, anchor=north]
+    at (axis cs:2009, 13) {14.9};
+  \node[OIorange, font=\sffamily\tiny, anchor=south]
+    at (axis cs:2015, 108) {104};
+  \node[OIorange, font=\sffamily\tiny, anchor=north]
+    at (axis cs:2020, 20) {22.3};
+
+  %% 18.9x amplitude annotation
+  \draw[white, thick, <->] (axis cs:2009.5, 14.9) -- (axis cs:2009.5, 282);
+  \node[white, font=\sffamily\scriptsize, anchor=west, fill=black!80, inner sep=2pt]
+    at (axis cs:2009.8, 65) {18.9$\times$};
+
+  \addlegendentry{CD Median (32D)}
+\end{axis}
+
+%% Overlay: sunspot number (right y-axis, manually positioned)
+\begin{axis}[
+  at={(cdaxis.south west)},
+  anchor=south west,
+  width=\textwidth,
+  height=0.618\textwidth,
+  xmin=1999.5, xmax=2023.5,
+  ymin=0, ymax=200,
+  axis y line*=right,
+  axis x line=none,
+  ylabel={\sffamily Sunspot Number (yearly mean)},
+  ylabel style={font=\sffamily\small, OIskyblue},
+  ytick style={OIskyblue},
+  yticklabel style={font=\sffamily\scriptsize, OIskyblue},
+  tick style={OIskyblue},
+]
+  %% Approximate yearly sunspot numbers (SILSO)
+  \addplot[
+    OIskyblue, thick, mark=none, smooth, dashed, opacity=0.6,
+  ] coordinates {
+    (2000, 120) (2001, 111) (2002, 104) (2003, 64)
+    (2004, 40) (2005, 30) (2006, 15) (2007, 8)
+    (2008, 3) (2009, 4) (2010, 16) (2011, 56)
+    (2012, 58) (2013, 64) (2014, 79) (2015, 70)
+    (2016, 40) (2017, 21) (2018, 7) (2019, 4)
+    (2020, 8) (2021, 26) (2022, 73)
+  };
+\end{axis}
+\end{tikzpicture}
