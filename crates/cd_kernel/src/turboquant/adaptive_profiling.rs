@@ -165,11 +165,12 @@ pub fn adaptive_allocate_sampled(
     let mut allocation = vec![adaptive_bits::BitAllocation::Base; n];
     let n_to_promote = ((n as f64 * promote_fraction).ceil() as usize).min(n);
 
-    // Score all tokens by norm of the vector (O(d) per token, no CD multiply)
+    // Score all tokens by norm via simsimd (HW-accelerated, O(d) per token)
     let mut all_norms: Vec<(usize, f64)> = vectors.iter().enumerate()
         .map(|(i, v)| {
-            let norm: f64 = v.iter().map(|x| x * x).sum::<f64>().sqrt();
-            (i, norm)
+            // simsimd dot(v, v) = ||v||^2, then sqrt
+            let norm_sq = super::simsimd_bridge::dot_f64(v, v);
+            (i, norm_sq.sqrt())
         })
         .collect();
     all_norms.sort_by(|a, b| b.1.partial_cmp(&a.1).unwrap_or(std::cmp::Ordering::Equal));
