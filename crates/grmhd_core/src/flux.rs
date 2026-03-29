@@ -16,15 +16,7 @@ use crate::prims::{self, PrimGrid, Prim, NPRIM};
 use crate::recon;
 use crate::riemann;
 use rayon::prelude::*;
-
-/// Wrapper for parallel writes to non-overlapping grid regions.
-/// Safety: each (j, k) pair in a directional sweep writes to a unique set of
-/// cell indices (grid.idx is injective), so parallel writes never conflict.
-/// Derive Copy so the closure captures by value, avoiding &*mut f64 Sync issues.
-#[derive(Clone, Copy)]
-struct UnsafeSendPtr(*mut f64);
-unsafe impl Send for UnsafeSendPtr {}
-unsafe impl Sync for UnsafeSendPtr {}
+use wide::f64x4;
 
 /// Pre-computed metric quantities at each grid point.
 /// Avoids repeated sqrt/trig during the flux loop.
@@ -69,6 +61,12 @@ impl MetricCache {
     fn idx(&self, i: usize, n2t: usize, j: usize) -> usize {
         i * n2t + j
     }
+
+    /// Return a reference to the cached covariant metric at flat index.
+    #[inline]
+    pub fn gcov_at(&self, idx: usize) -> &[f64; 5] {
+        &self.gcov[idx]
+    }
 }
 
 /// Per-thread workspace for the fused flux computation.
@@ -95,23 +93,20 @@ impl FluxWorkspace {
     }
 }
 
-/// Compute the physical flux F^dir(P) for a given primitive state.
+/// Compute the physical flux F^dir(P) from precomputed metric components.
 ///
-/// This implements the PROPER GRMHD flux (Gammie+ 2003 eq. 2.15-2.17):
+/// This is the hot-path variant that avoids sin/cos by accepting cached gcov.
+/// Uses `wide::f64x4` SIMD for the momentum and induction flux loops.
+///
+/// GRMHD flux (Gammie+ 2003 eq. 2.15-2.17):
 ///   F^i_D     = rho * u^t * v^i                     (mass)
 ///   F^i_E     = T^i_t + rho * u^t * v^i             (energy)
 ///   F^i_{S_j} = T^i_j                                (momentum)
 ///   F^i_{B^j} = v^i * B^j - v^j * B^i               (induction)
-///
-/// where v^i = u^i / u^t is the 3-velocity.
-///
-/// The stress-energy tensor is:
-///   T^mu_nu = (rho + u + p + b^2) u^mu u_nu + (p + b^2/2) delta^mu_nu - b^mu b_nu
-pub fn compute_flux_from_prim(
+#[inline]
+pub fn compute_flux_cached(
     p: &Prim,
-    metric: &KerrMetric,
-    r: f64,
-    theta: f64,
+    gcov: &[f64; 5],
     eos: &GammaLaw,
     sqrt_neg_g: f64,
     dir: usize, // 0=r, 1=theta, 2=phi
@@ -126,14 +121,12 @@ pub fn compute_flux_from_prim(
     let b3 = p[prims::B3];
     let pressure = eos.pressure(u);
 
-    let [g_tt, g_rr, g_thth, g_phph, g_tph] = metric.gcov(r, theta);
+    let [g_tt, g_rr, g_thth, g_phph, g_tph] = *gcov;
 
     // 3-velocity squared and Lorentz factor
     let vsq = g_rr * v1 * v1 + g_thth * v2 * v2 + g_phph * v3 * v3;
     let alpha_sq = -(g_tt + 2.0 * g_tph * v3 + vsq);
     let ut = if alpha_sq > 1e-20 { 1.0 / alpha_sq.sqrt() } else { 1.0 };
-    // Precompute reciprocals to avoid repeated division (same pattern as
-    // steinmarder inv_tau: eliminates MUFU.RCP-equivalent stalls on CPU).
     let inv_ut = 1.0 / ut;
     let inv_ut_sq = inv_ut * inv_ut;
 
@@ -153,57 +146,125 @@ pub fn compute_flux_from_prim(
 
     // u^dir (contravariant spatial velocity component)
     let v_dir = match dir { 0 => v1, 1 => v2, _ => v3 };
-    let u_up_dir = ut * v_dir; // u^i = u^t * v^i
+    let u_up_dir = ut * v_dir;
 
-    // b^dir and b covariant components
+    // b^dir
     let b_up_dir = match dir {
-        0 => (b1 + bt * ut * v1) / ut,
-        1 => (b2 + bt * ut * v2) / ut,
-        _ => (b3 + bt * ut * v3) / ut,
+        0 => (b1 + bt * ut * v1) * inv_ut,
+        1 => (b2 + bt * ut * v2) * inv_ut,
+        _ => (b3 + bt * ut * v3) * inv_ut,
     };
 
     let mut f = [0.0f64; NCONS];
 
-    // Mass flux: F_D = sqrt(-g) * rho * u^dir
+    // Mass flux
     f[0] = sqrt_neg_g * rho * u_up_dir;
 
-    // Energy flux: F_E = sqrt(-g) * (T^dir_t + rho * u^dir)
-    // T^dir_t = w * u^dir * u_t + ptot * delta^dir_t - b^dir * b_t
-    // delta^dir_t = 0 for spatial dir
+    // Energy flux
     let b_cov_t = g_tt * bt + g_tph * match dir { 2 => b_up_dir, _ => 0.0 };
     let t_dir_t = w * u_up_dir * u_cov_t - b_up_dir * b_cov_t;
     f[1] = sqrt_neg_g * (t_dir_t + rho * u_up_dir);
 
-    // Momentum flux: F_{S_j} = sqrt(-g) * T^dir_j
-    let u_cov = [u_cov_r, u_cov_th, u_cov_ph];
-    let g_diag = [g_rr, g_thth, g_phph];
-    for j in 0..3 {
-        // b_j (covariant spatial)
-        let b_up_j = match j {
-            0 => (b1 + bt * ut * v1) / ut,
-            1 => (b2 + bt * ut * v2) / ut,
-            _ => (b3 + bt * ut * v3) / ut,
-        };
-        let b_cov_j = g_diag[j] * b_up_j;
+    // Momentum flux (SIMD: 3 components packed into f64x4, lane 3 unused)
+    {
+        let b_v = [v1, v2, v3];
+        let b_s = [b1, b2, b3];
+        let u_cov = [u_cov_r, u_cov_th, u_cov_ph];
+        let g_diag = [g_rr, g_thth, g_phph];
 
-        // T^dir_j = w * u^dir * u_j + ptot * delta^dir_j - b^dir * b_j
-        let delta = if j == dir { 1.0 } else { 0.0 };
-        f[2 + j] = sqrt_neg_g * (w * u_up_dir * u_cov[j] + ptot * delta - b_up_dir * b_cov_j);
+        // Compute b_up_j for all 3 spatial directions
+        let b_up_j_arr = [
+            (b_s[0] + bt * ut * b_v[0]) * inv_ut,
+            (b_s[1] + bt * ut * b_v[1]) * inv_ut,
+            (b_s[2] + bt * ut * b_v[2]) * inv_ut,
+        ];
+
+        // b_cov_j = g_diag[j] * b_up_j
+        let b_cov_j_arr = [
+            g_diag[0] * b_up_j_arr[0],
+            g_diag[1] * b_up_j_arr[1],
+            g_diag[2] * b_up_j_arr[2],
+        ];
+
+        // delta: 1.0 where j == dir, else 0.0
+        let delta_arr = [
+            if dir == 0 { 1.0 } else { 0.0 },
+            if dir == 1 { 1.0 } else { 0.0 },
+            if dir == 2 { 1.0 } else { 0.0 },
+        ];
+
+        // T^dir_j = w * u_up_dir * u_cov[j] + ptot * delta - b_up_dir * b_cov_j
+        // Pack into f64x4 for SIMD (lane 3 = 0, unused)
+        let wu = f64x4::from([
+            w * u_up_dir * u_cov[0],
+            w * u_up_dir * u_cov[1],
+            w * u_up_dir * u_cov[2],
+            0.0,
+        ]);
+        let pd = f64x4::from([
+            ptot * delta_arr[0],
+            ptot * delta_arr[1],
+            ptot * delta_arr[2],
+            0.0,
+        ]);
+        let bb = f64x4::from([
+            b_up_dir * b_cov_j_arr[0],
+            b_up_dir * b_cov_j_arr[1],
+            b_up_dir * b_cov_j_arr[2],
+            0.0,
+        ]);
+        let sg4 = f64x4::from(sqrt_neg_g);
+        let mom = sg4 * (wu + pd - bb);
+        let mom_arr: [f64; 4] = mom.into();
+        f[2] = mom_arr[0];
+        f[3] = mom_arr[1];
+        f[4] = mom_arr[2];
     }
 
-    // Induction flux: F_{B^j} = sqrt(-g) * (v^dir * B^j - v^j * B^dir)
-    // Must include sqrt(-g) for consistency with the hydro flux terms.
-    // The RHS normalization (dividing by sqrt(-g)) happens in euler_step_3d
-    // when converting from conserved back to primitive.
-    let b_spatial = [b1, b2, b3];
-    let v_spatial = [v1, v2, v3];
-    let b_dir_val = b_spatial[dir];
-    for j in 0..3 {
-        f[5 + j] = sqrt_neg_g * (v_dir * b_spatial[j] - v_spatial[j] * b_dir_val);
+    // Induction flux (SIMD: 3 components packed into f64x4)
+    {
+        let b_spatial = [b1, b2, b3];
+        let v_spatial = [v1, v2, v3];
+        let b_dir_val = b_spatial[dir];
+
+        let vd_b = f64x4::from([
+            v_dir * b_spatial[0],
+            v_dir * b_spatial[1],
+            v_dir * b_spatial[2],
+            0.0,
+        ]);
+        let vs_bd = f64x4::from([
+            v_spatial[0] * b_dir_val,
+            v_spatial[1] * b_dir_val,
+            v_spatial[2] * b_dir_val,
+            0.0,
+        ]);
+        let sg4 = f64x4::from(sqrt_neg_g);
+        let ind = sg4 * (vd_b - vs_bd);
+        let ind_arr: [f64; 4] = ind.into();
+        f[5] = ind_arr[0];
+        f[6] = ind_arr[1];
+        f[7] = ind_arr[2];
     }
     f[5 + dir] = 0.0; // div(B) = 0
 
     f
+}
+
+/// Compute the physical flux F^dir(P) for a given primitive state.
+///
+/// Delegates to `compute_flux_cached` after computing gcov from the metric.
+pub fn compute_flux_from_prim(
+    p: &Prim,
+    metric: &KerrMetric,
+    r: f64,
+    theta: f64,
+    eos: &GammaLaw,
+    sqrt_neg_g: f64,
+    dir: usize,
+) -> [f64; NCONS] {
+    let gcov = metric.gcov(r, theta);
+    compute_flux_cached(p, &gcov, eos, sqrt_neg_g, dir)
 }
 
 /// Compute the right-hand side dU/dt for a 1D sweep in direction `dir`.
@@ -227,7 +288,6 @@ pub fn compute_rhs_1d(
         _ => panic!("Invalid direction {}", dir),
     };
     let n2t = grid.n2_total();
-    let _n3t = grid.n3_total();
 
     // For simplicity, sweep radial direction (dir=0) at fixed j, k
     // Full 3D would loop over all (j, k) pairs
@@ -271,24 +331,19 @@ pub fn compute_rhs_1d(
             ws.prim_r[var] = qr;
         }
 
-        // Compute fluxes from L/R states (with proper sqrt(-g))
-        let r_face = grid.r(face);
-        let th_face = grid.theta(j_mid);
-        let sg_1d = if mc.idx(face, n2t, j_mid) < mc.sqrt_neg_g.len() {
-            mc.sqrt_neg_g[mc.idx(face, n2t, j_mid)]
+        // Compute fluxes from L/R states using cached metric
+        let mc_face = mc.idx(face, n2t, j_mid);
+        let gcov_face = if mc_face < mc.gcov.len() { mc.gcov_at(mc_face) } else { &[0.0; 5] };
+        let sg_1d = if mc_face < mc.sqrt_neg_g.len() {
+            mc.sqrt_neg_g[mc_face]
         } else { 1.0 };
-        ws.flux_l = compute_flux_from_prim(
-            &ws.prim_l, &grid.metric, r_face, th_face, eos, sg_1d, dir,
-        );
-        ws.flux_r = compute_flux_from_prim(
-            &ws.prim_r, &grid.metric, r_face, th_face, eos, sg_1d, dir,
-        );
+        ws.flux_l = compute_flux_cached(&ws.prim_l, gcov_face, eos, sg_1d, dir);
+        ws.flux_r = compute_flux_cached(&ws.prim_r, gcov_face, eos, sg_1d, dir);
 
         // Wave speed estimate
         let cs2_l = eos.cs2(ws.prim_l[prims::RHO], ws.prim_l[prims::UU]);
         let cs2_r = eos.cs2(ws.prim_r[prims::RHO], ws.prim_r[prims::UU]);
-        let mc_idx = mc.idx(face, n2t, j_mid);
-        let alpha = if mc_idx < mc.lapse.len() { mc.lapse[mc_idx] } else { 1.0 };
+        let alpha = if mc_face < mc.lapse.len() { mc.lapse[mc_face] } else { 1.0 };
 
         let (sl, sr) = riemann::wave_speeds(
             ws.prim_l[prims::V1 + dir],
@@ -298,13 +353,15 @@ pub fn compute_rhs_1d(
             alpha,
         );
 
-        // Compute conservative variables for HLL
+        // Compute conservative variables for HLL using cached metric
         let mc_l = mc.idx(i_m1, n2t, j_mid);
         let mc_r = mc.idx(i_p0, n2t, j_mid);
+        let gcov_l = if mc_l < mc.gcov.len() { mc.gcov_at(mc_l) } else { &[0.0; 5] };
+        let gcov_r = if mc_r < mc.gcov.len() { mc.gcov_at(mc_r) } else { &[0.0; 5] };
         let sg_l = if mc_l < mc.sqrt_neg_g.len() { mc.sqrt_neg_g[mc_l] } else { 1.0 };
         let sg_r = if mc_r < mc.sqrt_neg_g.len() { mc.sqrt_neg_g[mc_r] } else { 1.0 };
-        ws.cons_l = cons::prim2con(&ws.prim_l, &grid.metric, grid.r(i_m1), th_face, eos, sg_l);
-        ws.cons_r = cons::prim2con(&ws.prim_r, &grid.metric, grid.r(i_p0), th_face, eos, sg_r);
+        ws.cons_l = cons::prim2con_cached(&ws.prim_l, gcov_l, eos, sg_l);
+        ws.cons_r = cons::prim2con_cached(&ws.prim_r, gcov_r, eos, sg_r);
 
         // HLL flux at this face
         let f_hll = riemann::hll_flux(&ws.flux_l, &ws.flux_r, &ws.cons_l, &ws.cons_r, sl, sr);
@@ -385,10 +442,23 @@ fn compute_rhs_3d_inner(
     };
 
     // Direction 0 (radial): sweep faces at fixed (j, k)
-    for j in ng..ng + grid.n2 {
-        for k in ng..ng + grid.n3 {
-            let mut ws = FluxWorkspace::new();
-            let dx = grid.dx1;
+    // Parallelized over (j, k) pairs using rayon.
+    // Safety: different (j, k) pairs write to unique cell indices via grid.idx
+    // which is injective. EMF writes are gated on k == ng to avoid races.
+    {
+        // Cast pointers to usize for Send+Sync (usize is unconditionally both).
+        // Safety: pointers remain valid for the duration of this block.
+        let rhs_addr = rhs.as_mut_ptr() as usize;
+        let emf_addr = face_emfs.emf_r.as_mut_ptr() as usize;
+        let inv_dx = 1.0 / grid.dx1;
+
+        let jk_pairs: Vec<(usize, usize)> = (ng..ng + grid.n2)
+            .flat_map(|j| (ng..ng + grid.n3).map(move |k| (j, k)))
+            .collect();
+
+        jk_pairs.par_iter().for_each_init(FluxWorkspace::new, |ws, &(j, k)| {
+            let rhs_p = rhs_addr as *mut f64;
+            let emf_p = emf_addr as *mut f64;
 
             for face_i in ng..ng + grid.n1 + 1 {
                 let im2 = face_i.saturating_sub(2);
@@ -408,8 +478,6 @@ fn compute_rhs_3d_inner(
                     ws.prim_r[var] = qr;
                 }
 
-                // When CT handles B, zero the reconstructed B to prevent
-                // PLM from creating artificial v*B at velocity discontinuities.
                 if zero_b_in_recon {
                     for b in 5..8 {
                         ws.prim_l[b] = 0.0;
@@ -417,62 +485,81 @@ fn compute_rhs_3d_inner(
                     }
                 }
 
-                let r_face = grid.r(face_i);
-                let th_face = grid.theta(j);
-                let sg_face = if mc.idx(face_i, n2t, j) < mc.sqrt_neg_g.len() {
-                    mc.sqrt_neg_g[mc.idx(face_i, n2t, j)]
+                let mc_face = mc.idx(face_i, n2t, j);
+                let gcov_face = if mc_face < mc.gcov.len() { mc.gcov_at(mc_face) } else { &[0.0; 5] };
+                let sg_face = if mc_face < mc.sqrt_neg_g.len() {
+                    mc.sqrt_neg_g[mc_face]
                 } else { 1.0 };
-                ws.flux_l = compute_flux_from_prim(&ws.prim_l, &grid.metric, r_face, th_face, eos, sg_face, 0);
-                ws.flux_r = compute_flux_from_prim(&ws.prim_r, &grid.metric, r_face, th_face, eos, sg_face, 0);
+                ws.flux_l = compute_flux_cached(&ws.prim_l, gcov_face, eos, sg_face, 0);
+                ws.flux_r = compute_flux_cached(&ws.prim_r, gcov_face, eos, sg_face, 0);
 
                 let cs2_l = eos.cs2(ws.prim_l[prims::RHO], ws.prim_l[prims::UU]);
                 let cs2_r = eos.cs2(ws.prim_r[prims::RHO], ws.prim_r[prims::UU]);
-                let mc_idx = mc.idx(face_i, n2t, j);
-                let alpha = if mc_idx < mc.lapse.len() { mc.lapse[mc_idx] } else { 1.0 };
+                let alpha = if mc_face < mc.lapse.len() { mc.lapse[mc_face] } else { 1.0 };
 
                 let (sl, sr) = riemann::wave_speeds(
                     ws.prim_l[prims::V1], ws.prim_r[prims::V1],
                     cs2_l, cs2_r, 0.0, 0.0, alpha,
                 );
 
-                let sg_l = if mc.idx(im1, n2t, j) < mc.sqrt_neg_g.len() {
-                    mc.sqrt_neg_g[mc.idx(im1, n2t, j)]
+                let mc_l = mc.idx(im1, n2t, j);
+                let mc_r = mc.idx(ip0, n2t, j);
+                let gcov_l = if mc_l < mc.gcov.len() { mc.gcov_at(mc_l) } else { &[0.0; 5] };
+                let gcov_r = if mc_r < mc.gcov.len() { mc.gcov_at(mc_r) } else { &[0.0; 5] };
+                let sg_l = if mc_l < mc.sqrt_neg_g.len() {
+                    mc.sqrt_neg_g[mc_l]
                 } else { 1.0 };
-                let sg_r = if mc.idx(ip0, n2t, j) < mc.sqrt_neg_g.len() {
-                    mc.sqrt_neg_g[mc.idx(ip0, n2t, j)]
+                let sg_r = if mc_r < mc.sqrt_neg_g.len() {
+                    mc.sqrt_neg_g[mc_r]
                 } else { 1.0 };
-                ws.cons_l = cons::prim2con(&ws.prim_l, &grid.metric, grid.r(im1), th_face, eos, sg_l);
-                ws.cons_r = cons::prim2con(&ws.prim_r, &grid.metric, grid.r(ip0), th_face, eos, sg_r);
+                ws.cons_l = cons::prim2con_cached(&ws.prim_l, gcov_l, eos, sg_l);
+                ws.cons_r = cons::prim2con_cached(&ws.prim_r, gcov_r, eos, sg_r);
 
                 let f_hll = riemann::hll_flux(&ws.flux_l, &ws.flux_r, &ws.cons_l, &ws.cons_r, sl, sr);
 
-                // Store EMF from HLL induction flux at this radial face
-                // EMF_phi at (i+1/2, j) = -F_HLL[B^theta] (Gardiner-Stone CTU)
-                face_emfs.emf_r[face_i * n2t + j] = -f_hll[6]; // negative of B^theta flux
+                // Store EMF from HLL induction flux at this radial face.
+                // Only write from k == ng to avoid redundant writes across phi.
+                if k == ng {
+                    // Safety: each (face_i, j) pair is unique within this sweep.
+                    unsafe {
+                        let ep = emf_p.add(face_i * n2t + j);
+                        *ep = -f_hll[6]; // negative of B^theta flux
+                    }
+                }
 
                 // Accumulate divergence
+                // Safety: grid.idx(i, j, k) is injective, so different (j, k)
+                // pairs never write to the same rhs cell.
                 if face_i > ng {
                     let cell_l = grid.idx(face_i - 1, j, k);
-                    for v in 0..NCONS {
-                        rhs[cell_l * NCONS + v] -= f_hll[v] / dx;
+                    let base = unsafe { rhs_p.add(cell_l * NCONS) };
+                    for (v, &fv) in f_hll.iter().enumerate() {
+                        unsafe { *base.add(v) -= fv * inv_dx; }
                     }
                 }
                 if face_i < ng + grid.n1 {
                     let cell_r = grid.idx(face_i, j, k);
-                    for v in 0..NCONS {
-                        rhs[cell_r * NCONS + v] += f_hll[v] / dx;
+                    let base = unsafe { rhs_p.add(cell_r * NCONS) };
+                    for (v, &fv) in f_hll.iter().enumerate() {
+                        unsafe { *base.add(v) += fv * inv_dx; }
                     }
                 }
             }
-        }
+        });
     }
 
     // Direction 1 (theta): sweep faces at fixed (i, k)
     if grid.n2 > 1 {
-        for i in ng..ng + grid.n1 {
-            for k in ng..ng + grid.n3 {
-                let mut ws = FluxWorkspace::new();
-                let dx = grid.dx2;
+        // Parallelized over (i, k) pairs.
+        let rhs_addr_th = rhs.as_mut_ptr() as usize;
+        let emf_th_addr = face_emfs.emf_th.as_mut_ptr() as usize;
+        let ik_pairs: Vec<(usize, usize)> = (ng..ng + grid.n1)
+            .flat_map(|i| (ng..ng + grid.n3).map(move |k| (i, k)))
+            .collect();
+        ik_pairs.par_iter().for_each_init(FluxWorkspace::new, |ws, &(i, k)| {
+                let rp = rhs_addr_th as *mut f64;
+                let ep = emf_th_addr as *mut f64;
+                let inv_dx = 1.0 / grid.dx2;
 
                 for face_j in ng..ng + grid.n2 + 1 {
                     let jm2 = face_j.saturating_sub(2);
@@ -499,62 +586,71 @@ fn compute_rhs_3d_inner(
                         }
                     }
 
-                    let r = grid.r(i);
-                    let th_face = grid.theta(face_j);
-                    let sg_face_th = if mc.idx(i, n2t, face_j.min(n2t - 1)) < mc.sqrt_neg_g.len() {
-                        mc.sqrt_neg_g[mc.idx(i, n2t, face_j.min(n2t - 1))]
+                    let mc_face = mc.idx(i, n2t, face_j.min(n2t - 1));
+                    let gcov_face = if mc_face < mc.gcov.len() { mc.gcov_at(mc_face) } else { &[0.0; 5] };
+                    let sg_face_th = if mc_face < mc.sqrt_neg_g.len() {
+                        mc.sqrt_neg_g[mc_face]
                     } else { 1.0 };
-                    ws.flux_l = compute_flux_from_prim(&ws.prim_l, &grid.metric, r, th_face, eos, sg_face_th, 1);
-                    ws.flux_r = compute_flux_from_prim(&ws.prim_r, &grid.metric, r, th_face, eos, sg_face_th, 1);
+                    ws.flux_l = compute_flux_cached(&ws.prim_l, gcov_face, eos, sg_face_th, 1);
+                    ws.flux_r = compute_flux_cached(&ws.prim_r, gcov_face, eos, sg_face_th, 1);
 
                     let cs2_l = eos.cs2(ws.prim_l[prims::RHO], ws.prim_l[prims::UU]);
                     let cs2_r = eos.cs2(ws.prim_r[prims::RHO], ws.prim_r[prims::UU]);
-                    let mc_idx = mc.idx(i, n2t, face_j.min(n2t - 1));
-                    let alpha = if mc_idx < mc.lapse.len() { mc.lapse[mc_idx] } else { 1.0 };
+                    let alpha = if mc_face < mc.lapse.len() { mc.lapse[mc_face] } else { 1.0 };
 
                     let (sl, sr) = riemann::wave_speeds(
                         ws.prim_l[prims::V2], ws.prim_r[prims::V2],
                         cs2_l, cs2_r, 0.0, 0.0, alpha,
                     );
 
-                    let sg_l = if mc.idx(i, n2t, jm1) < mc.sqrt_neg_g.len() {
-                        mc.sqrt_neg_g[mc.idx(i, n2t, jm1)]
+                    let mc_l = mc.idx(i, n2t, jm1);
+                    let mc_r = mc.idx(i, n2t, jp0);
+                    let gcov_l = if mc_l < mc.gcov.len() { mc.gcov_at(mc_l) } else { &[0.0; 5] };
+                    let gcov_r = if mc_r < mc.gcov.len() { mc.gcov_at(mc_r) } else { &[0.0; 5] };
+                    let sg_l = if mc_l < mc.sqrt_neg_g.len() {
+                        mc.sqrt_neg_g[mc_l]
                     } else { 1.0 };
-                    let sg_r = if mc.idx(i, n2t, jp0) < mc.sqrt_neg_g.len() {
-                        mc.sqrt_neg_g[mc.idx(i, n2t, jp0)]
+                    let sg_r = if mc_r < mc.sqrt_neg_g.len() {
+                        mc.sqrt_neg_g[mc_r]
                     } else { 1.0 };
-                    ws.cons_l = cons::prim2con(&ws.prim_l, &grid.metric, r, grid.theta(jm1), eos, sg_l);
-                    ws.cons_r = cons::prim2con(&ws.prim_r, &grid.metric, r, grid.theta(jp0), eos, sg_r);
+                    ws.cons_l = cons::prim2con_cached(&ws.prim_l, gcov_l, eos, sg_l);
+                    ws.cons_r = cons::prim2con_cached(&ws.prim_r, gcov_r, eos, sg_r);
 
                     let f_hll = riemann::hll_flux(&ws.flux_l, &ws.flux_r, &ws.cons_l, &ws.cons_r, sl, sr);
 
-                    // Store EMF from HLL induction flux at this theta face
-                    // EMF_phi at (i, j+1/2) = +F_HLL[B^r] (Gardiner-Stone CTU)
-                    face_emfs.emf_th[i * n2t + face_j] = f_hll[5]; // positive B^r flux
+                    // Store EMF (only first k writes to avoid races on 2D EMF)
+                    if k == ng {
+                        unsafe { *ep.add(i * n2t + face_j) = f_hll[5]; }
+                    }
 
                     if face_j > ng {
                         let cell_l = grid.idx(i, face_j - 1, k);
-                        for v in 0..NCONS {
-                            rhs[cell_l * NCONS + v] -= f_hll[v] / dx;
+                        let base = unsafe { rp.add(cell_l * NCONS) };
+                        for (v, &fv) in f_hll.iter().enumerate() {
+                            unsafe { *base.add(v) -= fv * inv_dx; }
                         }
                     }
                     if face_j < ng + grid.n2 {
                         let cell_r = grid.idx(i, face_j, k);
-                        for v in 0..NCONS {
-                            rhs[cell_r * NCONS + v] += f_hll[v] / dx;
+                        let base = unsafe { rp.add(cell_r * NCONS) };
+                        for (v, &fv) in f_hll.iter().enumerate() {
+                            unsafe { *base.add(v) += fv * inv_dx; }
                         }
                     }
                 }
-            }
-        }
+        });
     }
 
     // Direction 2 (phi): sweep faces at fixed (i, j) with PERIODIC BC
+    // Parallelized over (i, j) pairs.
     if grid.n3 > 1 {
-        for i in ng..ng + grid.n1 {
-            for j in ng..ng + grid.n2 {
-                let mut ws = FluxWorkspace::new();
-                let dx = grid.dx3 * 2.0 * std::f64::consts::PI;
+        let rhs_addr_phi = rhs.as_mut_ptr() as usize;
+        let ij_pairs_phi: Vec<(usize, usize)> = (ng..ng + grid.n1)
+            .flat_map(|i| (ng..ng + grid.n2).map(move |j| (i, j)))
+            .collect();
+        ij_pairs_phi.par_iter().for_each_init(FluxWorkspace::new, |ws, &(i, j)| {
+                let rp = rhs_addr_phi as *mut f64;
+                let inv_dx = 1.0 / (grid.dx3 * 2.0 * std::f64::consts::PI);
 
                 for face_k in ng..ng + grid.n3 + 1 {
                     // Periodic wrapping for phi direction
@@ -578,14 +674,13 @@ fn compute_rhs_3d_inner(
                         for b in 5..8 { ws.prim_l[b] = 0.0; ws.prim_r[b] = 0.0; }
                     }
 
-                    let r = grid.r(i);
-                    let th = grid.theta(j);
                     let mc_idx = mc.idx(i, n2t, j);
+                    let gcov_ij = if mc_idx < mc.gcov.len() { mc.gcov_at(mc_idx) } else { &[0.0; 5] };
                     let sg = if mc_idx < mc.sqrt_neg_g.len() { mc.sqrt_neg_g[mc_idx] } else { 1.0 };
                     let alpha = if mc_idx < mc.lapse.len() { mc.lapse[mc_idx] } else { 1.0 };
 
-                    ws.flux_l = compute_flux_from_prim(&ws.prim_l, &grid.metric, r, th, eos, sg, 2);
-                    ws.flux_r = compute_flux_from_prim(&ws.prim_r, &grid.metric, r, th, eos, sg, 2);
+                    ws.flux_l = compute_flux_cached(&ws.prim_l, gcov_ij, eos, sg, 2);
+                    ws.flux_r = compute_flux_cached(&ws.prim_r, gcov_ij, eos, sg, 2);
 
                     let cs2_l = eos.cs2(ws.prim_l[prims::RHO], ws.prim_l[prims::UU]);
                     let cs2_r = eos.cs2(ws.prim_r[prims::RHO], ws.prim_r[prims::UU]);
@@ -594,31 +689,41 @@ fn compute_rhs_3d_inner(
                         cs2_l, cs2_r, 0.0, 0.0, alpha,
                     );
 
-                    ws.cons_l = cons::prim2con(&ws.prim_l, &grid.metric, r, th, eos, sg);
-                    ws.cons_r = cons::prim2con(&ws.prim_r, &grid.metric, r, th, eos, sg);
+                    ws.cons_l = cons::prim2con_cached(&ws.prim_l, gcov_ij, eos, sg);
+                    ws.cons_r = cons::prim2con_cached(&ws.prim_r, gcov_ij, eos, sg);
 
                     let f_hll = riemann::hll_flux(&ws.flux_l, &ws.flux_r, &ws.cons_l, &ws.cons_r, sl, sr);
 
                     // Accumulate phi divergence (periodic: both cells always exist)
                     let cell_l = grid.idx(i, j, km1);
-                    for v in 0..NCONS {
-                        rhs[cell_l * NCONS + v] -= f_hll[v] / dx;
+                    let base_l = unsafe { rp.add(cell_l * NCONS) };
+                    for (v, &fv) in f_hll.iter().enumerate() {
+                        unsafe { *base_l.add(v) -= fv * inv_dx; }
                     }
                     let cell_r = grid.idx(i, j, kp0);
-                    for v in 0..NCONS {
-                        rhs[cell_r * NCONS + v] += f_hll[v] / dx;
+                    let base_r = unsafe { rp.add(cell_r * NCONS) };
+                    for (v, &fv) in f_hll.iter().enumerate() {
+                        unsafe { *base_r.add(v) += fv * inv_dx; }
                     }
                 }
-            }
-        }
+        });
     }
 
-    // Add GR geometric source terms S_j = T^mu_nu * (1/2) * dg_{mu nu}/dx^j
-    // This compensates for curvature effects missing from the flux divergence.
-    let dr_phys = grid.dx1; // in log-r coordinates
-    let dth_phys = grid.dx2 * std::f64::consts::PI;
-    for i in ng..ng + grid.n1 {
-        for j in ng..ng + grid.n2 {
+    // Add GR geometric source terms, parallelized over (i, j) pairs.
+    // Safety: different (i, j, k) write to unique rhs indices (grid.idx is injective).
+    {
+        let rhs_addr = rhs.as_mut_ptr() as usize;
+        let dr_phys = grid.dx1;
+        let dth_phys = grid.dx2 * std::f64::consts::PI;
+        let ij_pairs: Vec<(usize, usize)> = (ng..ng + grid.n1)
+            .flat_map(|i| (ng..ng + grid.n2).map(move |j| (i, j)))
+            .collect();
+
+        ij_pairs.par_iter().for_each(|&(i, j)| {
+            let rp = rhs_addr as *mut f64;
+            let mc_idx = mc.idx(i, n2t, j);
+            let sg = if mc_idx < mc.sqrt_neg_g.len() { mc.sqrt_neg_g[mc_idx] } else { 1.0 };
+
             for k in ng..ng + grid.n3 {
                 let idx = grid.idx(i, j, k);
                 let p = {
@@ -627,18 +732,17 @@ fn compute_rhs_3d_inner(
                     arr.copy_from_slice(slice);
                     arr
                 };
-                let mc_idx = mc.idx(i, n2t, j);
-                let sg = if mc_idx < mc.sqrt_neg_g.len() { mc.sqrt_neg_g[mc_idx] } else { 1.0 };
 
                 let src = crate::source::geometric_source(
                     &p, &grid.metric, grid.r(i), grid.theta(j), eos, dr_phys, dth_phys,
                 );
 
-                for v in 0..NCONS {
-                    rhs[idx * NCONS + v] += sg * src[v];
+                let base = unsafe { rp.add(idx * NCONS) };
+                for (v, &sv) in src.iter().enumerate() {
+                    unsafe { *base.add(v) += sg * sv; }
                 }
             }
-        }
+        });
     }
 
     // Face EMFs are now collected from HLL flux during the sweeps above:
@@ -668,26 +772,33 @@ pub fn euler_step_3d(
     let ng = grid.ng;
     let n2t = grid.n2_total();
 
-    // Step 1: Convert all interior cells to conservative variables
+    // Step 1: Convert all interior cells to conservative variables (cached, parallel)
     let n_total = grid.n_total();
     let mut cons_grid = vec![[0.0f64; NCONS]; n_total];
-    for i in ng..ng + grid.n1 {
-        for j in ng..ng + grid.n2 {
+    {
+        let cg_addr = cons_grid.as_mut_ptr() as usize;
+        let ij_pairs: Vec<(usize, usize)> = (ng..ng + grid.n1)
+            .flat_map(|i| (ng..ng + grid.n2).map(move |j| (i, j)))
+            .collect();
+        ij_pairs.par_iter().for_each(|&(i, j)| {
+            let cg_p = cg_addr as *mut [f64; NCONS];
+            let mc_idx = mc.idx(i, n2t, j);
+            let gcov = if mc_idx < mc.gcov.len() { mc.gcov_at(mc_idx) } else { &[0.0; 5] };
+            let sg = if mc_idx < mc.sqrt_neg_g.len() { mc.sqrt_neg_g[mc_idx] } else { 1.0 };
             for k in ng..ng + grid.n3 {
                 let idx = grid.idx(i, j, k);
-                let mc_idx = mc.idx(i, n2t, j);
-                let sg = if mc_idx < mc.sqrt_neg_g.len() { mc.sqrt_neg_g[mc_idx] } else { 1.0 };
-                cons_grid[idx] = cons::prim2con(
+                let cons_val = cons::prim2con_cached(
                     &{let mut p = [0.0; NPRIM]; p.copy_from_slice(prims.get(idx)); p},
-                    &grid.metric, grid.r(i), grid.theta(j), eos, sg,
+                    gcov, eos, sg,
                 );
+                unsafe { *cg_p.add(idx) = cons_val; }
             }
-        }
+        });
     }
 
     // Step 2: Compute RHS and update conservative variables
     let use_ct = staggered_b.is_some();
-    let (mut rhs, face_emfs) = compute_rhs_3d_inner(prims, grid, mc, eos, use_ct);
+    let (rhs, face_emfs) = compute_rhs_3d_inner(prims, grid, mc, eos, use_ct);
     for i in ng..ng + grid.n1 {
         for j in ng..ng + grid.n2 {
             for k in ng..ng + grid.n3 {
@@ -702,6 +813,8 @@ pub fn euler_step_3d(
 
     // If using CT, zero out the B-field RHS from the HLL flux divergence.
     // B is evolved ONLY by CT, not by the HLL flux.
+    // Note: rhs is consumed above; we zero the B components in cons_grid directly
+    // by reverting the B update (subtract what we just added).
     let use_ct = staggered_b.is_some();
     if use_ct {
         for i in ng..ng + grid.n1 {
@@ -709,9 +822,10 @@ pub fn euler_step_3d(
                 for k in ng..ng + grid.n3 {
                     let idx = grid.idx(i, j, k);
                     let base = idx * NCONS;
-                    rhs[base + 5] = 0.0; // zero B^r RHS
-                    rhs[base + 6] = 0.0; // zero B^theta RHS
-                    rhs[base + 7] = 0.0; // zero B^phi RHS
+                    // Revert the B-field update from HLL flux divergence
+                    cons_grid[idx][5] -= dt * rhs[base + 5];
+                    cons_grid[idx][6] -= dt * rhs[base + 6];
+                    cons_grid[idx][7] -= dt * rhs[base + 7];
                 }
             }
         }
@@ -741,43 +855,52 @@ pub fn euler_step_3d(
         }
     }
 
-    // Con2prim: sequential for now (the Brent tolerance reduction gives 3x speedup).
+    // Con2prim: parallelized over (i, j) pairs (Brent per cell is independent).
     // Skip atmosphere cells where D is below floor (saves ~50% of iterations).
-    for i in ng..ng + grid.n1 {
-        for j in ng..ng + grid.n2 {
+    {
+        let prim_addr = prims.data.as_mut_ptr() as usize;
+        let ij_pairs_c2p: Vec<(usize, usize)> = (ng..ng + grid.n1)
+            .flat_map(|i| (ng..ng + grid.n2).map(move |j| (i, j)))
+            .collect();
+        ij_pairs_c2p.par_iter().for_each(|&(i, j)| {
+            let pp = prim_addr as *mut f64;
+            let mc_idx = mc.idx(i, n2t, j);
+            let sg = if mc_idx < mc.sqrt_neg_g.len() { mc.sqrt_neg_g[mc_idx] } else { 1.0 };
+            let gcov = if mc_idx < mc.gcov.len() { mc.gcov[mc_idx] } else { [0.0; 5] };
+            let gcon = if mc_idx < mc.gcon.len() { mc.gcon[mc_idx] } else { [0.0; 5] };
+
             for k in ng..ng + grid.n3 {
                 let idx = grid.idx(i, j, k);
-                let mc_idx = mc.idx(i, n2t, j);
-                let sg = if mc_idx < mc.sqrt_neg_g.len() { mc.sqrt_neg_g[mc_idx] } else { 1.0 };
 
-                // Skip atmosphere cells: if conserved density is near floor,
-                // just keep the primitive state (no Brent iteration needed).
                 if cons_grid[idx][0] < sg * 1e-6 {
                     continue;
                 }
-
-                let gcov = if mc_idx < mc.gcov.len() { mc.gcov[mc_idx] } else { [0.0; 5] };
-                let gcon = if mc_idx < mc.gcon.len() { mc.gcon[mc_idx] } else { [0.0; 5] };
 
                 let result = crate::con2prim::con2prim_kastaun(
                     &cons_grid[idx], &gcov, &gcon, sg, eos, 1e-8, 1e-10,
                 );
                 let recovered = result.prims();
-                let p = prims.get_mut(idx);
-
-                if use_ct {
-                    let ct_b1 = p[prims::B1];
-                    let ct_b2 = p[prims::B2];
-                    let ct_b3 = p[prims::B3];
-                    p.copy_from_slice(recovered);
-                    p[prims::B1] = ct_b1;
-                    p[prims::B2] = ct_b2;
-                    p[prims::B3] = ct_b3;
-                } else {
-                    p.copy_from_slice(recovered);
+                let base = idx * NPRIM;
+                unsafe {
+                    let p = pp.add(base);
+                    if use_ct {
+                        let ct_b1 = *p.add(prims::B1);
+                        let ct_b2 = *p.add(prims::B2);
+                        let ct_b3 = *p.add(prims::B3);
+                        for (v, &rv) in recovered.iter().enumerate() {
+                            *p.add(v) = rv;
+                        }
+                        *p.add(prims::B1) = ct_b1;
+                        *p.add(prims::B2) = ct_b2;
+                        *p.add(prims::B3) = ct_b3;
+                    } else {
+                        for (v, &rv) in recovered.iter().enumerate() {
+                            *p.add(v) = rv;
+                        }
+                    }
                 }
             }
-        }
+        });
     }
 
     prims.apply_floors(1e-8, 1e-10);
@@ -965,5 +1088,30 @@ mod tests {
         assert_eq!(ws.prim_l[prims::RHO], 1.0);
         ws.prim_l = p2;
         assert_eq!(ws.prim_l[prims::RHO], 2.0);
+    }
+
+    #[test]
+    fn test_compute_flux_cached_matches_original() {
+        // Verify cached variant produces identical results to the metric-based variant
+        let metric = KerrMetric::schwarzschild();
+        let eos = GammaLaw::harm_default();
+        let r = 10.0;
+        let th = std::f64::consts::FRAC_PI_2;
+        let sqrt_g = 100.0;
+
+        let p: Prim = [1.0, 0.01, 0.1, 0.05, 0.02, 0.01, 0.02, 0.005];
+
+        for dir in 0..3 {
+            let f_orig = compute_flux_from_prim(&p, &metric, r, th, &eos, sqrt_g, dir);
+            let gcov = metric.gcov(r, th);
+            let f_cached = compute_flux_cached(&p, &gcov, &eos, sqrt_g, dir);
+
+            for v in 0..NCONS {
+                assert!(
+                    (f_orig[v] - f_cached[v]).abs() < 1e-12,
+                    "dir={} var={}: orig={} cached={}", dir, v, f_orig[v], f_cached[v],
+                );
+            }
+        }
     }
 }
