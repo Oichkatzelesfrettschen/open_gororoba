@@ -43,6 +43,11 @@ pub use simd::{
     sedenion_multiply_flat,
     // f32 quantized CD multiply for high-dimensional (256D+) performance
     batch_sliding_associator_norms_f32, cd_associator_norm_f32, cd_multiply_f32_into,
+    // Zero-alloc fused CD multiply (steinmarder Instant-NGP pattern)
+    cd_multiply_f32_fused, cd_multiply_f32_workspace_size,
+};
+pub use fast_associator::{
+    AssociatorWorkspace, batch_fast_associator_norms_f32, fast_associator_norm_f32,
 };
 pub use symmetry::{cross_generational_friction, gourlay_epsilon, gourlay_psi, gourlay_psi_n};
 pub use zero_divisors::{

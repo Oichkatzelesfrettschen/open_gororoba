@@ -76,6 +76,7 @@ pub use heliosphere_feature_cube::{
     SparseExecutionMode, SparseExecutionPlan, SparseHardwareEnvelope, SparseMemoryPlan,
     compute_invariant_samples, estimate_sparse_execution_plan, estimate_sparse_memory_plan,
     heliosphere_row_datetime, magnetic_plasma_takens_embed, magnetic_takens_embed,
+    plasma_takens_embed_dim,
     transform_feature_rows,
     transform_feature_rows_with_stats,
 };
