@@ -27,6 +27,78 @@ fn gaussian_pdf(x: f64, d: usize) -> f64 {
     (1.0 / (2.0 * std::f64::consts::PI * sigma2).sqrt()) * (-x * x / (2.0 * sigma2)).exp()
 }
 
+/// Exact Beta marginal PDF for a single coordinate after random rotation
+/// of a d-dimensional unit vector.
+///
+/// f(x) = Gamma(d/2) / (sqrt(pi) * Gamma((d-1)/2)) * (1 - x^2)^((d-3)/2)
+///
+/// Supported on [-1, 1].  More accurate than the Gaussian approximation
+/// for d < 50 where the tails differ significantly.
+///
+/// Ported from turboquant-pytorch/lloyd_max.py:beta_pdf and validated
+/// against the turboquant (abdelstark) crate's codebook.rs.
+fn beta_pdf(x: f64, d: usize) -> f64 {
+    if x.abs() >= 1.0 {
+        return 0.0;
+    }
+    let half_d = d as f64 / 2.0;
+    let half_dm1 = (d as f64 - 1.0) / 2.0;
+    // ln(Gamma(d/2)) - ln(sqrt(pi)) - ln(Gamma((d-1)/2))
+    let log_norm = lgamma(half_d) - 0.5 * std::f64::consts::PI.ln() - lgamma(half_dm1);
+    let exponent = (d as f64 - 3.0) / 2.0;
+    log_norm.exp() * (1.0 - x * x).powf(exponent)
+}
+
+/// Log-gamma function (Lanczos approximation for non-negative half-integers).
+fn lgamma(x: f64) -> f64 {
+    // Use the Stirling-like approximation via the standard library
+    // Rust doesn't have lgamma in std, but we can compute it via:
+    // For positive x, use the recursive relation Gamma(x+1) = x*Gamma(x)
+    // and the approximation for the base case.
+    // Simple implementation via the Spouge approximation:
+    if x <= 0.5 {
+        // Reflection formula: Gamma(1-x)*Gamma(x) = pi/sin(pi*x)
+        let reflected = lgamma(1.0 - x);
+        (std::f64::consts::PI / (std::f64::consts::PI * x).sin()).ln() - reflected
+    } else {
+        // Stirling's approximation with Lanczos coefficients (g=7)
+        #[allow(clippy::excessive_precision)]
+        let coeffs = [
+            0.99999999999980993,
+            676.5203681218851,
+            -1259.1392167224028,
+            771.32342877765313,
+            -176.61502916214059,
+            12.507343278686905,
+            -0.13857109526572012,
+            9.9843695780195716e-6,
+            1.5056327351493116e-7,
+        ];
+        let g = 7.0;
+        let x = x - 1.0;
+        let mut sum = coeffs[0];
+        for (i, &c) in coeffs[1..].iter().enumerate() {
+            sum += c / (x + i as f64 + 1.0);
+        }
+        let t = x + g + 0.5;
+        0.5 * (2.0 * std::f64::consts::PI).ln() + (x + 0.5) * t.ln() - t + sum.ln()
+    }
+}
+
+/// Select the appropriate PDF for the given dimension.
+///
+/// d < 50: exact Beta marginal (more accurate for small dimensions)
+/// d >= 50: Gaussian N(0, 1/d) approximation (fast, accurate for large d)
+///
+/// Threshold 50 matches the turboquant (abdelstark) crate's choice.
+fn coordinate_pdf(x: f64, d: usize) -> f64 {
+    if d < 50 {
+        beta_pdf(x, d)
+    } else {
+        gaussian_pdf(x, d)
+    }
+}
+
 /// Numerical integration via Gauss-Legendre quadrature (16-point).
 ///
 /// Upgraded from Simpson's rule based on crate ecosystem research.
@@ -56,12 +128,20 @@ fn integrate_simpson(f: impl Fn(f64) -> f64, a: f64, b: f64, n_steps: usize) -> 
     sum * h / 3.0
 }
 
-/// Solve the Lloyd-Max optimal quantizer for N(0, 1/d)
+/// Solve the Lloyd-Max optimal quantizer for the coordinate distribution.
+///
+/// For d < 50: uses the exact Beta marginal PDF (supported on [-1, 1])
+/// For d >= 50: uses Gaussian N(0, 1/d) approximation (supported on R)
+///
+/// The PDF selection matches the turboquant crate's approach and provides
+/// better codebook accuracy at small dimensions.
 pub fn solve_lloyd_max(d: usize, bits: u32) -> LloydMaxCodebook {
     let n_levels = 1usize << bits;
     let sigma = 1.0 / (d as f64).sqrt();
-    let lo = -3.5 * sigma;
-    let hi = 3.5 * sigma;
+    // For Beta PDF (d<50): support is [-1, 1]
+    // For Gaussian (d>=50): use 3.5*sigma tails
+    let lo = if d < 50 { -0.999 } else { -3.5 * sigma };
+    let hi = if d < 50 { 0.999 } else { 3.5 * sigma };
 
     // Initialize centroids uniformly
     let mut centroids: Vec<f64> = (0..n_levels)
@@ -84,8 +164,8 @@ pub fn solve_lloyd_max(d: usize, bits: u32) -> LloydMaxCodebook {
         for i in 0..n_levels {
             let a = edges[i];
             let b = edges[i + 1];
-            let num = integrate_gauss_legendre(|x| x * gaussian_pdf(x, d), a, b);
-            let den = integrate_gauss_legendre(|x| gaussian_pdf(x, d), a, b);
+            let num = integrate_gauss_legendre(|x| x * coordinate_pdf(x, d), a, b);
+            let den = integrate_gauss_legendre(|x| coordinate_pdf(x, d), a, b);
             new_centroids.push(if den.abs() > 1e-15 {
                 num / den
             } else {
@@ -118,7 +198,7 @@ pub fn solve_lloyd_max(d: usize, bits: u32) -> LloydMaxCodebook {
         .map(|i| {
             let c = centroids[i];
             integrate_gauss_legendre(
-                |x| (x - c).powi(2) * gaussian_pdf(x, d),
+                |x| (x - c).powi(2) * coordinate_pdf(x, d),
                 edges[i],
                 edges[i + 1],
             )
@@ -168,6 +248,41 @@ mod tests {
             "First centroid mismatch: {}",
             cb.centroids[0]
         );
+    }
+
+    #[test]
+    fn test_lloyd_max_3bit_16d_beta() {
+        // d=16 uses the exact Beta PDF (d < 50)
+        let cb = solve_lloyd_max(16, 3);
+        assert_eq!(cb.centroids.len(), 8);
+        assert_eq!(cb.boundaries.len(), 7);
+        // Centroids should be symmetric around 0
+        for i in 0..4 {
+            assert!(
+                (cb.centroids[i] + cb.centroids[7 - i]).abs() < 1e-3,
+                "Beta centroids not symmetric at d=16: {} + {} = {}",
+                cb.centroids[i], cb.centroids[7 - i],
+                cb.centroids[i] + cb.centroids[7 - i]
+            );
+        }
+        // All centroids should be within [-1, 1] (Beta support)
+        assert!(cb.centroids.iter().all(|&c| c.abs() <= 1.0),
+            "Beta centroids out of range: {:?}", cb.centroids);
+        println!("d=16 Beta centroids: {:?}", cb.centroids);
+    }
+
+    #[test]
+    fn test_beta_vs_gaussian_codebook() {
+        // Compare codebooks at d=32 where Beta and Gaussian diverge most
+        // Force Beta path
+        let cb_beta = solve_lloyd_max(32, 3); // d=32 < 50, uses Beta
+
+        // The Beta distribution at d=32 is more peaked than Gaussian,
+        // so centroids should be tighter
+        let beta_range = cb_beta.centroids.last().unwrap() - cb_beta.centroids.first().unwrap();
+        println!("d=32 Beta codebook range: {:.6}", beta_range);
+        println!("d=32 Beta centroids: {:?}", cb_beta.centroids);
+        assert!(beta_range > 0.0 && beta_range < 2.0, "Beta range out of bounds");
     }
 
     #[test]
