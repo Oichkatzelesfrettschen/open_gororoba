@@ -124,15 +124,30 @@ fn main() -> Result<()> {
                 continue;
             }
         };
-        let br_rows = cdf_variable_rows(&cdf, "BR").unwrap_or_default();
-        let bt_rows = cdf_variable_rows(&cdf, "BT").unwrap_or_default();
-        let bn_rows = cdf_variable_rows(&cdf, "BN").unwrap_or_default();
+        // Try both VIM naming (BR/BT/BN/Radius) and planetary naming (B1/B2/B3/scDistance)
+        let br_rows = cdf_variable_rows(&cdf, "BR")
+            .or_else(|_| cdf_variable_rows(&cdf, "B1"))
+            .unwrap_or_default();
+        let bt_rows = cdf_variable_rows(&cdf, "BT")
+            .or_else(|_| cdf_variable_rows(&cdf, "B2"))
+            .unwrap_or_default();
+        let bn_rows = cdf_variable_rows(&cdf, "BN")
+            .or_else(|_| cdf_variable_rows(&cdf, "B3"))
+            .unwrap_or_default();
         let f1_rows = cdf_variable_rows(&cdf, "F1").unwrap_or_default();
 
-        // Ephemeris: daily cadence, needs interpolation
-        let radius_rows = cdf_variable_rows(&cdf, "Radius").unwrap_or_default();
-        let lat_rows = cdf_variable_rows(&cdf, "hg_lat").unwrap_or_default();
-        let lon_rows = cdf_variable_rows(&cdf, "hg_lon").unwrap_or_default();
+        // Ephemeris: try VIM names then planetary names
+        let radius_rows = cdf_variable_rows(&cdf, "Radius")
+            .or_else(|_| cdf_variable_rows(&cdf, "scDistance"))
+            .unwrap_or_default();
+        let lat_rows = cdf_variable_rows(&cdf, "hg_lat")
+            .or_else(|_| cdf_variable_rows(&cdf, "scLat"))
+            .or_else(|_| cdf_variable_rows(&cdf, "lat"))
+            .unwrap_or_default();
+        let lon_rows = cdf_variable_rows(&cdf, "hg_lon")
+            .or_else(|_| cdf_variable_rows(&cdf, "scLon"))
+            .or_else(|_| cdf_variable_rows(&cdf, "lon"))
+            .unwrap_or_default();
 
         // Get single radius/lat/lon values (approximate -- daily ephemeris)
         let r_au = radius_rows
