@@ -286,6 +286,7 @@ impl StaggeredB {
 mod tests {
     use super::*;
     use crate::metric::KerrMetric;
+    #[allow(unused_imports)]
     use crate::torus::FMTorus;
 
     #[test]
@@ -335,5 +336,115 @@ mod tests {
             divb_after <= divb_before * 1.01 + 1e-15,
             "div(B) grew: {} -> {}", divb_before, divb_after
         );
+    }
+
+    #[test]
+    fn test_b_zero_stays_zero() {
+        // CRITICAL: If B=0 everywhere, it must stay zero after a step.
+        // If this fails, we have a fundamental conservation bug.
+        let metric = KerrMetric::schwarzschild();
+        let grid = Grid::new(8, 8, 1, 2.5, 20.0, metric);
+        let torus = FMTorus::schwarzschild(6.5, 12.0);
+        let prims = torus.initialize(&grid); // B=0 (no magnetic loop)
+
+        // Verify initial B is zero
+        let ng = grid.ng;
+        for i in ng..ng + grid.n1 {
+            for j in ng..ng + grid.n2 {
+                let idx = grid.idx(i, j, ng);
+                let p = prims.get(idx);
+                assert!(p[crate::prims::B1].abs() < 1e-15, "Initial B1 nonzero at ({},{}): {}", i, j, p[crate::prims::B1]);
+                assert!(p[crate::prims::B2].abs() < 1e-15, "Initial B2 nonzero at ({},{}): {}", i, j, p[crate::prims::B2]);
+            }
+        }
+
+        // Run one RHS computation
+        let mc = crate::flux::MetricCache::new(&grid);
+        let eos = crate::eos::GammaLaw::harm_default();
+        let (rhs, face_emfs) = crate::flux::compute_rhs_3d(&prims, &grid, &mc, &eos);
+
+        // Check that all B-related RHS components are zero
+        for i in ng..ng + grid.n1 {
+            for j in ng..ng + grid.n2 {
+                let idx = grid.idx(i, j, ng);
+                let base = idx * crate::cons::NCONS;
+                for v in 5..8 {
+                    assert!(rhs[base + v].abs() < 1e-10,
+                        "B RHS[{}] nonzero at ({},{}): {}", v, i, j, rhs[base + v]);
+                }
+            }
+        }
+
+        // Check face EMFs are zero
+        for i in ng..ng + grid.n1 {
+            for j in ng..ng + grid.n2 {
+                let fidx = i * grid.n2_total() + j;
+                assert!(face_emfs.emf_r[fidx].abs() < 1e-10,
+                    "emf_r nonzero at ({},{}): {}", i, j, face_emfs.emf_r[fidx]);
+                assert!(face_emfs.emf_th[fidx].abs() < 1e-10,
+                    "emf_th nonzero at ({},{}): {}", i, j, face_emfs.emf_th[fidx]);
+            }
+        }
+    }
+
+    #[test]
+    fn test_b_growth_location() {
+        // Diagnose WHERE B blows up: at torus edge, grid boundary, or everywhere?
+        let metric = KerrMetric::schwarzschild();
+        let grid = Grid::new(16, 16, 1, 2.5, 40.0, metric);
+        let mc = crate::flux::MetricCache::new(&grid);
+        let eos = crate::eos::GammaLaw::harm_default();
+        let torus = FMTorus::schwarzschild(6.5, 12.0);
+        let mut prims = torus.initialize(&grid);
+        torus.add_magnetic_loop(&grid, &mut prims, 100.0);
+
+        let ng = grid.ng;
+
+        // Initial B profile by radial zone
+        let mut b_by_r_init = vec![0.0f64; grid.n1];
+        for i in ng..ng + grid.n1 {
+            let mut bmax = 0.0f64;
+            for j in ng..ng + grid.n2 {
+                let idx = grid.idx(i, j, ng);
+                let p = prims.get(idx);
+                let b = (p[crate::prims::B1].powi(2) + p[crate::prims::B2].powi(2)).sqrt();
+                if b > bmax { bmax = b; }
+            }
+            b_by_r_init[i - ng] = bmax;
+        }
+
+        // One RHS step WITHOUT CT (just the HLL flux)
+        let (rhs, _emfs) = crate::flux::compute_rhs_3d(&prims, &grid, &mc, &eos);
+
+        // B RHS magnitude by radial zone
+        let mut brhs_by_r = vec![0.0f64; grid.n1];
+        for i in ng..ng + grid.n1 {
+            let mut rhs_max = 0.0f64;
+            for j in ng..ng + grid.n2 {
+                let idx = grid.idx(i, j, ng);
+                let base = idx * crate::cons::NCONS;
+                let b_rhs = (rhs[base + 5].powi(2) + rhs[base + 6].powi(2)).sqrt();
+                if b_rhs > rhs_max { rhs_max = b_rhs; }
+            }
+            brhs_by_r[i - ng] = rhs_max;
+        }
+
+        // Print diagnostic
+        println!("\n=== B-field growth location diagnostic ===");
+        println!("  r_idx  r_au    B_init    B_RHS    ratio");
+        for i in 0..grid.n1 {
+            let r = grid.r(ng + i);
+            let ratio = if b_by_r_init[i] > 1e-10 {
+                brhs_by_r[i] / b_by_r_init[i]
+            } else if brhs_by_r[i] > 1e-10 {
+                f64::INFINITY
+            } else {
+                0.0
+            };
+            if b_by_r_init[i] > 0.1 || brhs_by_r[i] > 0.1 {
+                println!("  {:3}    {:.1}    {:.4}    {:.4}    {:.1}",
+                    i, r, b_by_r_init[i], brhs_by_r[i], ratio);
+            }
+        }
     }
 }
