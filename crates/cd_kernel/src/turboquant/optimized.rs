@@ -59,15 +59,19 @@ pub struct TurboQuantOptimized {
 
 impl TurboQuantOptimized {
     pub fn new(config: TurboQuantConfig) -> Self {
+        // For the Prod (MSE+QJL) pipeline, use WHT unless Haar is explicitly
+        // requested.  F4 rotation is handled by the MSE stage via from_config;
+        // the Prod stage uses WHT as its rotation (compatible with any codebook).
+        let prod_use_wht = !matches!(config.rotation, super::config::RotationMethod::Haar);
         let base_prod = TurboQuantProd::new(
             config.dim, config.bits, config.seed,
-            config.use_wht(), config.qjl_dim,
+            prod_use_wht, config.qjl_dim,
         );
 
         let promoted_prod = if config.adaptive.enabled {
             Some(TurboQuantProd::new(
                 config.dim, config.bits + 1, config.seed,
-                config.use_wht(), config.qjl_dim,
+                prod_use_wht, config.qjl_dim,
             ))
         } else {
             None
@@ -260,7 +264,7 @@ mod tests {
                 indices: token.indices.clone(),
                 vec_norm: token.vec_norm as f64,
             };
-            // Use the appropriate bit-width quantizer for dequantize
+            // Dequantize with WHT (matching the Prod's internal rotation)
             let dq = TurboQuantMSE::new(64, token.bits, 42, true);
             let mut recon = vec![0.0f64; 64];
             dq.dequantize(&mse_repr, &mut buf, &mut recon);

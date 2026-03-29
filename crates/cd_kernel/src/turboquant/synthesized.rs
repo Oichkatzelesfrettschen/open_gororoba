@@ -68,12 +68,20 @@ pub enum SynthesizedData {
 
 impl SynthesizedQuantizer {
     /// Create the synthesized quantizer with optimal method selection.
+    ///
+    /// Uses TurboQuantConfig::recommended() to pick the best rotation:
+    ///   d=64: F4 block (18% better MSE via quaternion algebra)
+    ///   d>=64: FastJL/WHT (5.6x faster than Haar)
     pub fn new(d: usize, bits: u32, seed: u64) -> Self {
-        let use_wht = d >= 64;
+        let cfg = super::config::TurboQuantConfig::recommended(d, bits);
+        let use_wht = cfg.use_wht() || cfg.use_f4(); // F4 also benefits from WHT in hybrid
         let group_size = if d >= 256 { 32 } else { 16 };
 
+        // Use from_config for the MSE quantizer to get the best rotation
+        let tq = TurboQuantMSE::from_config(&cfg, bits, seed);
+
         SynthesizedQuantizer {
-            tq: TurboQuantMSE::new(d, bits, seed, use_wht),
+            tq,
             hybrid: HybridQuantizer::new(d, bits, seed, use_wht, group_size),
             tq_prod: TurboQuantProd::new(d, bits, seed, use_wht, None),
             d,
