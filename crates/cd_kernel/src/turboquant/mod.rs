@@ -64,6 +64,7 @@ pub mod fixed_codebook;
 pub mod fixed_point;
 pub mod gpu_evaluation;
 pub mod grouping;
+pub mod inline_cd;
 pub mod hierarchical;
 pub mod hybrid;
 pub mod optimized;
