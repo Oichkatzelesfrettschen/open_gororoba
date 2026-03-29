@@ -317,7 +317,7 @@ End MorZDSymmetry.
       sed_zd_b = e6 - e15
     Both sed_zd_a * sed_zd_b = 0 and sed_zd_b * sed_zd_a = 0. *)
 
-From OpenGororoba Require Import Prelude CayleyDicksonAlgebra Sedenion OctonionNorm.
+From OpenGororoba Require Import Prelude CayleyDicksonAlgebra Sedenion OctonionNorm ZD_Criterion.
 
 (** Forward direction: a * b = 0.
     Already verified in C908_SedenionZeroDivisor; reproved here for
@@ -374,4 +374,12 @@ Proof.
   - exact sed_zd_b_nonzero.
   - exact sed_zd_product_ab.
   - exact sed_zd_product_ba.
+Qed.
+
+Theorem C1538_brown_fundamental_major_theorem_fused :
+  is_zd_pair_major_theorem
+    zd_a1_fundamental zd_a2_fundamental
+    zd_b1_fundamental zd_b2_fundamental.
+Proof.
+  exact zd_fundamental_major_theorem_fused.
 Qed.
