@@ -165,3 +165,102 @@ cargo test -p cd_kernel -- test_e8_rotation_roundtrip
 ```bash
 cargo test -p cd_kernel -- test_e8_root_count test_e8_root_norms test_e8_type1_count test_e8_type2_count
 ```
+
+---
+
+## Additional Claims (2026-03-29)
+
+### C-1607: F4 rotation 18% better MSE at d=64
+
+**Status**: Verified
+**Statement**: F4 block rotation (quaternion-level, 48 roots from the Albert
+exceptional Jordan algebra J3(O)) achieves 18% lower MSE than WHT at d=64,
+3-bit (MSE 0.017 vs 0.021).
+
+**Verification**: `cargo test -p cd_kernel -- test_f4_as_pipeline_rotation --nocapture`
+
+---
+
+### C-1608: E8+WHT = E8 = WHT quality
+
+**Statement**: E8 block rotation, WHT, and their composition all produce
+identical quantization quality at d=128 (MSE 0.034 for all three).
+Decorrelation between E8 and WHT is redundant. E8's value is algebraic
+structure, not additional decorrelation.
+
+**Verification**: `cargo run --release -p gororoba_cli_physics --bin turboquant-sweep`
+
+---
+
+### C-1609: Q16.16 codebook quality = f32 to 6 significant figures
+
+**Statement**: Q16.16 fixed-point codebook achieves ratio 0.999999 vs f32
+and Q32.32 achieves ratio 1.000000. Zero conversion error for Q32.32.
+
+**Verification**: `cargo test -p cd_kernel -- test_codebook_precision_comparison --nocapture`
+
+---
+
+### C-1610: Hybrid 38-60% better at 3-4 bit
+
+**Statement**: TurboQuant + GroupQuant hybrid achieves 38% better MSE at
+3-bit and 60% better at 4-bit compared to TurboQuant alone.
+
+**Verification**: `cargo test -p cd_kernel -- test_hybrid_vs_turbo_vs_group --nocapture`
+
+---
+
+### C-1611: Cross-layer SLERP 1.94x compression at d=128
+
+**Statement**: Adjacent-layer KV state merging via SLERP on direction
+components achieves 1.94x compression at d=128 (approaching 2x for large d).
+Orthogonal to per-vector quantization.
+
+**Verification**: `cargo test -p cd_kernel -- test_compression_ratio --nocapture` (cross_layer module)
+
+---
+
+### C-1612: SmallVec inline CD at d=16 -- zero heap allocation
+
+**Statement**: CD multiplication and associator computation for d<=16
+(sedenion) uses SmallVec<[f64; 16]> with zero heap allocation. Matches
+standard cd_multiply to 1e-10 precision.
+
+**Verification**: `cargo test -p cd_kernel -- test_inline_multiply_sedenion --nocapture`
+
+---
+
+### C-1613: AlignedWorkspace 256-byte alignment
+
+**Statement**: aligned-vec AVec achieves 256-byte alignment, sufficient
+for AVX-512 (64-byte) with 4x headroom.
+
+**Verification**: `cargo test -p cd_kernel -- test_aligned_workspace --nocapture`
+
+---
+
+### C-1614: simsimd dot product matches scalar to 1e-4 at d=128
+
+**Statement**: simsimd::SpatialSimilarity::dot matches scalar f64 dot
+product to 1e-4 precision at d=128.
+
+**Verification**: `cargo test -p cd_kernel -- test_large_vector_dot --nocapture`
+
+---
+
+### C-1615: Rayon parallel batch quantize
+
+**Statement**: SynthesizedQuantizer::quantize_batch uses rayon par_iter
+for embarrassingly parallel quantization across vectors.
+
+**Verification**: `cargo test -p cd_kernel -- test_synthesized_batch_adaptive --nocapture`
+
+---
+
+### C-1616: fwht standalone crate extracted and wired
+
+**Statement**: The Walsh-Hadamard Transform has been extracted to a
+standalone crate at ~/Github/cratesgororobas/fwht/ (7 tests, criterion
+benchmarks). rotation.rs now delegates to fwht::wht_inplace().
+
+**Verification**: `cd ~/Github/cratesgororobas/fwht && cargo test`

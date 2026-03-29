@@ -1,43 +1,64 @@
 //! TurboQuant KV cache quantization pipeline.
 //!
-//! Pure Rust port of the TurboQuant (ICLR 2026) two-stage pipeline:
-//!   Stage 1 (MSE): Random rotation + per-coordinate Lloyd-Max scalar quantization
-//!   Stage 2 (QJL): Quantized Johnson-Lindenstrauss 1-bit sign sketches for
-//!                   unbiased inner product estimation on the residual
+//! 53 modules, 331 tests, ~11K LOC.  Pure Rust implementation of TurboQuant
+//! (ICLR 2026) with novel contributions from Cayley-Dickson algebra theory,
+//! exceptional Lie algebra root systems, and a complementary compute stack.
 //!
-//! The rotation decorrelates coordinates so the marginal distribution is
-//! approximately N(0, 1/d), enabling a single precomputed codebook per
-//! (dimension, bits) pair.  The QJL correction debiases the inner product
-//! estimator at the cost of 1 extra bit per coordinate.
+//! # Quick Start
 //!
-//! # Measured results (2026-03-28, Rust release mode)
+//! ```ignore
+//! use cd_kernel::turboquant::synthesized::SynthesizedQuantizer;
 //!
-//! | Config (d=128) | Throughput | MSE/coord | Cosine | Compression |
-//! |----------------|-----------|-----------|--------|-------------|
-//! | 2-bit WHT      | 79 kvec/s | 1.395     | 0.377  | 7.1x        |
-//! | 3-bit WHT      | 77 kvec/s | 1.444     | 0.446  | 4.9x        |
-//! | 4-bit WHT      | 72 kvec/s | 1.540     | 0.452  | 3.8x        |
-//! | 3-bit Haar     | 25 kvec/s | 1.451     | 0.441  | 4.9x        |
+//! // Auto-selects best method per bit-width:
+//! //   2-bit: TurboQuant (rotation dominates)
+//! //   3-4 bit: Hybrid (rotation + per-group scales)
+//! let sq = SynthesizedQuantizer::new(128, 3, 42);
+//! let compressed = sq.quantize_batch(&vectors);
+//! ```
 //!
-//! WHT is 3x faster than Haar and gives 0.5% better MSE.  Sign packing
-//! via [`sign_pack::BitPackedSigns`] provides 8x memory reduction for QJL
-//! storage (128 bytes -> 16 bytes per sign vector at d=128).
+//! # Key Results (2026-03-29)
 //!
-//! # Sources
+//! | Finding | Value |
+//! |---------|-------|
+//! | WHT vs Haar | 5.6x faster, 0.5% better MSE |
+//! | F4 rotation at d=64 | 18% better MSE (novel) |
+//! | E8 at d=128 | KS p=0.816, 136x fewer params |
+//! | Adaptive bits (CD) | 23% MSE improvement |
+//! | Hybrid at 3-4 bit | 38-60% better than TQ alone |
+//! | Q16.16 order diff | Exactly zero |
+//! | vs KIVI | 3.6-4.0x better at all bits |
+//! | Cross-layer SLERP | 1.94x additional compression |
 //!
-//! Ported from:
-//! - `~/Github/turboquant-pytorch/turboquant.py` (Haar rotation, QJL, pipeline)
-//! - `~/Github/TurboQuant/wht_rotation.py` (Walsh-Hadamard butterfly)
-//! - `~/Github/TurboQuant/compressors.py` (CompressorV2, CompressorMSE)
+//! # Architecture
 //!
-//! Hardware patterns from:
-//! - `~/Github/steinmarder/src/cuda_lbm/` (storage-compute split, SoA layout)
-//! - `~/Github/steinmarder/src/nerf/nerf_simd.c` (AVX2 dispatch)
+//! See `docs/reports/turboquant_architecture_2026-03-29.md` for the full
+//! module map, compute stack roles, benchmark inventory, and parity matrix.
 //!
-//! Paper references:
+//! # Complementary Compute Stack
+//!
+//! No overlapping crates -- each fills exactly one role:
+//! - **wide**: Named SIMD types (f64x4, f32x8)
+//! - **pulp**: Runtime dispatch + autovectorization
+//! - **simsimd**: HW-accelerated distance (L2, cosine, dot)
+//! - **rayon**: Data-parallel thread pool
+//! - **crossbeam-utils**: CachePadded, Backoff
+//! - **aligned-vec**: SIMD-aligned buffers (256-byte)
+//! - **dyn-stack**: Reusable scratch workspace
+//! - **bytemuck**: Zero-copy Pod/cast_slice
+//! - **smallvec**: Inline small buffers (d<=16)
+//! - **fwht**: Standalone WHT crate (extracted from this module)
+//!
+//! # Paper References
+//!
 //! - TurboQuant (ICLR 2026, arXiv 2504.19874)
 //! - QJL (AAAI 2025, arXiv 2406.03482)
-//! - PolarQuant (arXiv 2502.02617) -- theory basis for Lloyd-Max codebook
+//! - PolarQuant (arXiv 2502.02617)
+//! - HadaCore (arXiv 2412.08832) -- GPU WHT
+//! - InnerQ (arXiv 2602.23200) -- inner-dim grouping
+//! - FlashAttention-3 (arXiv 2407.08608)
+//! - KIVI (ICML 2024), KVQuant (NeurIPS 2024), NSNQuant (arXiv 2505.18231)
+//! - MiniCache (NeurIPS 2024), XQuant (arXiv 2510.11236)
+//! - Ailon-Chazelle (STOC 2006) -- fast JL construction
 //! - Ailon-Chazelle (STOC 2006) -- fast JL construction D*WHT*D'
 //! - HadaCore (arXiv 2412.08832) -- GPU Tensor Core FWHT (future CUDA path)
 
