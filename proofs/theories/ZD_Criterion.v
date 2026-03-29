@@ -50,6 +50,20 @@ Definition oct_antiassociator (x y z : CDOct) : CDOct :=
   let xyz_right := oct_mul x yz in
   oct_add xyz_left xyz_right.
 
+Definition oct_antiassociator_fused (x y z : CDOct) : CDOct :=
+  oct_add
+    (oct_mul_fused (oct_mul_fused x y) z)
+    (oct_mul_fused x (oct_mul_fused y z)).
+
+Lemma oct_antiassociator_fused_eq : forall x y z : CDOct,
+  oct_antiassociator_fused x y z = oct_antiassociator x y z.
+Proof.
+  intros x y z.
+  unfold oct_antiassociator_fused, oct_antiassociator.
+  repeat rewrite oct_mul_fused_eq.
+  reflexivity.
+Qed.
+
 (** The norm of the antiassociator measures its magnitude. For ZD pairs,
     this should equal zero (up to numerical precision). *)
 
@@ -127,6 +141,13 @@ Definition zd_b1_fundamental : CDOct := oct_e 4.
 (** b2 = -e7 = (0, 0, 0, 0, 0, 0, 0, -1) in the basis representation *)
 Definition zd_b2_fundamental : CDOct :=
   mkOct quat_zero (mkQuat 0 0 0 (-1)).
+
+Lemma zd_b2_fundamental_as_scale :
+  zd_b2_fundamental = oct_scale (-1) (oct_e 7).
+Proof.
+  vm_compute.
+  apply (f_equal2 mkOct); apply (f_equal4 mkQuat); ring.
+Qed.
 
 (** The fundamental pair satisfies the norm condition of criterion (i). *)
 Lemma zd_fundamental_condition_i :
@@ -320,6 +341,28 @@ Proof.
                       (oct_mul_fused zd_b1_fundamental zd_a2_fundamental)) =
      oct_zero).
   exact zd_fundamental_condition_iii_fused_aux.
+Qed.
+
+Ltac zd_close_oct_fused_ring :=
+  apply (f_equal2 mkOct); apply (f_equal4 mkQuat); ring.
+
+Lemma zd_fundamental_corollary_7_16_ii_fused :
+  oct_antiassociator_fused zd_a1_fundamental zd_b1_fundamental zd_a2_fundamental = oct_zero /\
+  oct_antiassociator_fused zd_b1_fundamental zd_a1_fundamental zd_b2_fundamental = oct_zero /\
+  oct_antiassociator_fused zd_a1_fundamental zd_b2_fundamental zd_a2_fundamental = oct_zero /\
+  oct_antiassociator_fused zd_b1_fundamental zd_a2_fundamental zd_b2_fundamental = oct_zero /\
+  oct_antiassociator_fused zd_a2_fundamental zd_b1_fundamental zd_a1_fundamental = oct_zero /\
+  oct_antiassociator_fused zd_b2_fundamental zd_a1_fundamental zd_b1_fundamental = oct_zero /\
+  oct_antiassociator_fused zd_a2_fundamental zd_b2_fundamental zd_a1_fundamental = oct_zero /\
+  oct_antiassociator_fused zd_b2_fundamental zd_a2_fundamental zd_b1_fundamental = oct_zero.
+Proof.
+  repeat split;
+  unfold oct_antiassociator_fused,
+    zd_a1_fundamental, zd_a2_fundamental, zd_b1_fundamental, zd_b2_fundamental, oct_e;
+  cbv [oct_mul_fused oct_add oct_scale oct_lo oct_hi
+       quat_mul quat_add quat_neg quat_conj quat_scale
+       oct_zero quat_zero quat_one qa qb qc qd];
+  zd_close_oct_fused_ring.
 Qed.
 
 (** ================================================================== *)
