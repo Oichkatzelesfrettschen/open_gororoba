@@ -49,11 +49,13 @@ pub mod compressor;
 #[cfg(feature = "cuda")]
 pub mod cuda;
 pub mod dispatch;
+pub mod e8_rotation;
 pub mod grouping;
 pub mod pipeline;
 pub mod qjl;
 pub mod rotation;
 pub mod sign_pack;
 pub mod simd_codebook;
+pub mod zd_bias;
 #[cfg(feature = "vulkan")]
 pub mod vulkan;
