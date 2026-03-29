@@ -170,10 +170,12 @@ mod tests {
         // Check return-to-start: last_point + disp_{0} should give points[0]
         // Equivalently, sum of displacements should be zero
         let mut disp_sum = wl.points[0];
-        for i in 1..n {
-            #[allow(clippy::needless_range_loop)] // 2D point indexing
-            for d in 0..3 {
-                disp_sum[d] += wl.points[i][d] - wl.points[i - 1][d];
+        for pair in wl.points.windows(2).skip(0) {
+            for (ds, (&curr, &prev)) in disp_sum
+                .iter_mut()
+                .zip(pair[1].iter().zip(pair[0].iter()))
+            {
+                *ds += curr - prev;
             }
         }
         let err = (disp_sum[0].powi(2) + disp_sum[1].powi(2) + disp_sum[2].powi(2)).sqrt();
@@ -191,10 +193,12 @@ mod tests {
 
         // Check that displacements sum to zero
         let mut disp_sum = wl.points[0];
-        for i in 1..n {
-            #[allow(clippy::needless_range_loop)] // 2D point indexing
-            for d in 0..3 {
-                disp_sum[d] += wl.points[i][d] - wl.points[i - 1][d];
+        for pair in wl.points.windows(2).skip(0) {
+            for (ds, (&curr, &prev)) in disp_sum
+                .iter_mut()
+                .zip(pair[1].iter().zip(pair[0].iter()))
+            {
+                *ds += curr - prev;
             }
         }
         let err = (disp_sum[0].powi(2) + disp_sum[1].powi(2) + disp_sum[2].powi(2)).sqrt();
@@ -222,17 +226,16 @@ mod tests {
     }
 
     #[test]
-    #[allow(clippy::needless_range_loop)] // 2D point array comparison
     fn test_scaling() {
         let mut rng = ChaCha8Rng::seed_from_u64(99);
         let wl = generate_unit_loop(50, &mut rng);
         let t = 4.0;
         let scaled = wl.scaled_points(t);
         let scale = t.sqrt();
-        for i in 0..50 {
-            for d in 0..3 {
+        for (sp, op) in scaled.iter().zip(wl.points.iter()) {
+            for (&s, &o) in sp.iter().zip(op.iter()) {
                 assert!(
-                    (scaled[i][d] - wl.points[i][d] * scale).abs() < 1e-14,
+                    (s - o * scale).abs() < 1e-14,
                     "scaling failed"
                 );
             }
