@@ -11075,7 +11075,7 @@ status_note = "Infrastructure claim. 31 CDF files from SPDF (17 V1 + 14 V2), 138
 [[claim]]
 id = "C-1608"
 status = "Verified"
-statement = "20-channel MAG+PWS ISM dimension sweep: raw associator scales 10x per dimension doubling (A_mean: 31 at 64D, 372 at 128D, 2433 at 256D, 17805 at 512D). This is dramatically steeper than 4-channel B-only (which saturates at 32D with A~0.02). With 20 genuinely independent channels (4 MAG + 16 PWS spectral), the CD tower sustains meaningful growth past 256D, confirming the trichotomy prediction that optimal dim scales with channel count. Full Voyager PWS dataset: V1 4936 + V2 5127 daily CDF files (2012-2026, 595 MB)."
+statement = "20-channel MAG+PWS ISM dimension sweep: raw associator scales ~3.3x per dimension doubling (algebraic renormalization factor, not physical law). The physically meaningful content is that: (1) MAG+PWS carries far more cross-instrument structure than MAG alone, (2) the radial SHAPE of A(r) is dimension-invariant in the ISM (RMS deviation 0.001) but dimension-dependent in the solar wind (RMS 1-2), (3) the ISM is a low-complexity environment where dimension is pure rescaling, while the solar wind retains dimension-sensitive physics. Per-dimension multivariate nulls still needed to separate signal from noise amplification in the 20-channel case."
 where_stated = "data/output/heliosphere/ablations/ism_multichannel_20ch_64d.json through 256d.json"
 last_verified = "2026-03-29"
 formal_proof = ""
@@ -11098,3 +11098,57 @@ where_stated = "data/output/heliosphere/ablations/sharp_x93_extended_cd.json, da
 last_verified = "2026-03-29"
 formal_proof = ""
 status_note = "First multi-parameter CD analysis of solar flare evolution. 15 SHARP channels at 12-min cadence. JSOC query for HARPNUM 7115 Sep 3-7 2017. AR 12673 produced X2.2 (Sep 3), M5.5 (Sep 4), X9.3 (Sep 6) -- the most flare-productive AR of Solar Cycle 24."
+
+[[claim]]
+id = "C-1611"
+status = "Verified"
+statement = "V1 complete lifetime CD profile (3.48M records, 1977-2025, 5-167 AU) detects seven heliospheric regimes with a single algebraic invariant: (1) planetary magnetospheres at 5-9 AU (A_max=7656), (2) inner solar wind at 47-61 AU (A=6-9), (3) turbulence peak at 67 AU (A=14.3), (4) outer solar wind decline at 71-79 AU, (5) termination shock zone at 81-107 AU (A=5-9, broad 26 AU), (6) heliopause transition at 109-123 AU (100x drop in 14 AU), (7) ISM floor at 123-167 AU (A=0.012-0.020). First single-diagnostic heliospheric profile from planets to interstellar medium."
+where_stated = "data/output/heliosphere/ablations/v1_complete_lifetime_quench_2au_32d.csv"
+last_verified = "2026-03-29"
+formal_proof = ""
+status_note = "Three data sources merged: CDF planetary (903K records, 1977-1991), COHO HAPI hourly (89K, 1992-2008), VIM CDF (2.49M, 2009-2025). 5 orders of magnitude dynamic range."
+
+[[claim]]
+id = "C-1612"
+status = "Verified"
+statement = "V2 Neptune magnetopause detected at 30.15 AU with A_max=7658, 3x stronger than V1 Jupiter (A_max=2436). Neptune's 47-degree tilted and offset magnetosphere creates more extreme boundary phase incoherence. First CD analysis of an ice giant magnetosphere."
+where_stated = "data/output/heliosphere/ablations/v2_neptune_flyby_cd_32d.csv"
+last_verified = "2026-03-29"
+formal_proof = ""
+status_note = "640K 48-sec V2 records from 102 planetary CDF files (1989). Neptune closest approach Aug 25 1989."
+
+[[claim]]
+id = "C-1613"
+status = "Verified"
+statement = "Cadence effect calibration: ACE 16-sec at 1 AU gives A_median=0.28 vs fleet hourly A_median=10.27 (37x ratio). The absolute CD value depends on cadence/lag ratio, not just the physical environment. At 16-sec sampling, consecutive measurements are highly autocorrelated, reducing effective embedding rank. Cross-spacecraft CD comparisons must normalize for cadence."
+where_stated = "data/output/heliosphere/ablations/ace_2018_cd_32d.csv"
+last_verified = "2026-03-29"
+formal_proof = ""
+status_note = "1.96M ACE 16-sec MAG records (2018 full year). The solar wind correlation time (~30-60 min) means hourly cadence better matches the decorrelation timescale for CD embedding."
+
+[[claim]]
+id = "C-1614"
+status = "Verified"
+statement = "SHARP multi-flare study: post-flare reconfiguration CD has a characteristic A_max ceiling of ~150-184, independent of flare class (X1.0 to X9.3). Four X-class flares from AR 11263, AR 12673, and AR 12887 (Solar Cycles 24+25) all show similar peak complexity during reconnection. The CD distinguishes background AR stress level (A_median varies 0.66-12.98) from peak event complexity (A_max ceiling ~150-184)."
+where_stated = "data/output/heliosphere/ablations/sharp_x6p9_harp753_cd.json, sharp_x1p0_harp7788_cd.json, sharp_x93_extended_cd.json, sharp_x8p2_sep10_2017_cd.json"
+last_verified = "2026-03-29"
+formal_proof = ""
+status_note = "HARPNUMs resolved via JSOC SHARP catalog. X6.9=HARP 753 (2011), X9.3/X8.2=HARP 7115 (2017), X1.0=HARP 7788 (2021)."
+
+[[claim]]
+id = "C-1615"
+status = "Verified"
+statement = "ISM radial structure detected: the ISM floor is NOT uniform. Two elevated zones at 143-149 AU (A_median ~50% above floor) and 155-161 AU, plus isolated A_max spikes at 133 AU and 139 AU. The deepest ISM (163-167 AU) has the lowest floor (A=0.012), suggesting increasing magnetic order with distance from the heliopause. Consistent with V1 approaching the Local Interstellar Cloud (LIC) boundary."
+where_stated = "data/output/heliosphere/ablations/v1_complete_lifetime_quench_2au_32d.csv"
+last_verified = "2026-03-29"
+formal_proof = ""
+status_note = "Detected via systematic anomaly scan of V1 lifetime profile. The 143-149 AU elevation persists across 16D/32D/64D dimensions with near-perfect shape invariance (RMS=0.001)."
+
+[[claim]]
+id = "C-1616"
+status = "Provisional"
+statement = "V1/V2 ISM transient lag: quarterly PWS ch08 elevated fraction shows V1 onset 2023 Q4 (9.8%), ramping to 17-22% through 2025. V2 onset 2025 Q2 (6.7%), ramping to 10.4% by Q4. Lag ~1.5 years. At ISM flow speed ~26 km/s, this corresponds to ~12 AU propagation. V1 also had a brief 2019 Q2 spike (21.8%) that did NOT propagate to V2. Caveats: (1) V1 2024 has only 46% CDF file coverage (198/365 days), (2) the anomaly is exclusively in MAG+PWS cross-terms (MAG-only ISM floor stable), (3) per-dimension multivariate nulls still needed."
+where_stated = "data/output/heliosphere/ablations/v1_pws_hourly_2012_2026.csv, v2_pws_hourly_2012_2026.csv"
+last_verified = "2026-03-29"
+formal_proof = ""
+status_note = "Provisional: V1/V2 lag is intriguing but needs instrument mode verification (sc_mode from CDF) and per-dimension null tests before ISM disturbance interpretation is confirmed."
