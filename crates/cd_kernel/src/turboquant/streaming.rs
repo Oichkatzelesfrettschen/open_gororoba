@@ -103,6 +103,34 @@ impl StreamingKVCache {
             .collect()
     }
 
+    /// Get the importance score for a token (vector norm as proxy).
+    ///
+    /// Higher norm = more important = should get more quantization bits.
+    /// This is the same proxy used by the sampled adaptive allocation
+    /// (259x faster than full CD associator scoring).
+    pub fn token_importance(&self, token_idx: usize) -> f64 {
+        if token_idx >= self.key_cache.len() { return 0.0; }
+        self.key_cache[token_idx].vec_norm
+    }
+
+    /// Get importance scores for all cached tokens.
+    pub fn all_importances(&self) -> Vec<f64> {
+        self.key_cache.iter().map(|c| c.vec_norm).collect()
+    }
+
+    /// Find the top-k most important tokens (by norm).
+    ///
+    /// Useful for selective attention: only attend to the most
+    /// important tokens during decode (MiniKV pattern).
+    pub fn top_k_important(&self, k: usize) -> Vec<usize> {
+        let mut indexed: Vec<(usize, f64)> = self.key_cache.iter()
+            .enumerate()
+            .map(|(i, c)| (i, c.vec_norm))
+            .collect();
+        indexed.sort_by(|a, b| b.1.partial_cmp(&a.1).unwrap_or(std::cmp::Ordering::Equal));
+        indexed.iter().take(k).map(|&(i, _)| i).collect()
+    }
+
     /// Number of cached tokens.
     pub fn len(&self) -> usize {
         self.key_cache.len()

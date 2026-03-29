@@ -64,6 +64,7 @@
 
 pub mod adaptive_bits;
 pub mod adaptive_profiling;
+pub mod attention_correction;
 pub mod albert_algebra;
 pub mod autotune;
 pub mod backend;
