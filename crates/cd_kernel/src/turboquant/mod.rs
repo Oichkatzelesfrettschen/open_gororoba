@@ -29,20 +29,22 @@
 //! | vs KIVI | 3.6-4.0x better at all bits |
 //! | Cross-layer SLERP | 1.94x additional compression |
 //!
-//! # Real LLM Validation (6 models, 135M to 8B params)
+//! # Real LLM Validation (6 models, 135M-8B, WikiText-2)
 //!
-//! | Model | Params | 3-bit cos | 4-bit cos | PPL +3b | PPL +4b | Kurt raw | Kurt rot |
-//! |-------|--------|-----------|-----------|---------|---------|----------|----------|
-//! | SmolLM2 | 135M | 0.9847 | 0.9958 | +15.7% | +0.8% | 10.2 | 2.53 |
-//! | TinyLlama | 1.1B | 0.9847 | 0.9958 | -- | -- | 28.0 | 2.68 |
-//! | Qwen2.5 | 0.5B | 0.9844 | 0.9958 | -- | -- | 9.4 | 2.60 |
-//! | Qwen2.5 | 3.1B | 0.9839 | 0.9956 | +116% | +21.6% | 18.1 | 2.97 |
-//! | Mistral | 7.2B | 0.9836 | 0.9955 | -1.6% | +0.0% | 6.9 | 2.91 |
-//! | DeepSeek-R1 | 8.0B | 0.9837 | 0.9956 | +3.8% | +2.6% | 5.6 | 2.93 |
+//! | Model | Params | 3b cos | 4b cos | PPL +3b | PPL +4b | Kurt raw->rot |
+//! |-------|--------|--------|--------|---------|---------|---------------|
+//! | SmolLM2 | 135M | 0.9847 | 0.9958 | +13.9% | +1.3% | 10.2 -> 2.53 |
+//! | TinyLlama | 1.1B | 0.9847 | 0.9958 | -- | -- | 28.0 -> 2.68 |
+//! | Qwen2.5 | 3.1B | 0.9839 | 0.9956 | +101% | +8.1% | 18.1 -> 2.97 |
+//! | Mistral | 7.2B | 0.9836 | 0.9955 | +2.4% | -0.6% | 6.9 -> 2.91 |
+//! | DeepSeek-R1 | 8.0B | 0.9837 | 0.9956 | -13.6% | +0.2% | 5.6 -> 2.93 |
 //!
-//! FastJL rotation universally Gaussianizes heavy-tailed real KV data (kurtosis
-//! 5.6-28.0 becomes 2.5-3.0), making Gaussian codebook optimal across all models.
-//! 7B+ models show near-zero PPL degradation at 4-bit with 4x compression.
+//! Published SOTA comparison (RotateKV, Llama-2-7B, WT2/4096):
+//!   4-bit +0.2%, 3-bit +1.6%, 2-bit +7.4%
+//! Our Mistral-7B (WT2/128): 4-bit -0.6%, 3-bit +2.4%, 2-bit +13.8%
+//!
+//! Gap vs SOTA at 2-bit from: (1) symmetric vs asymmetric quant,
+//! (2) no outlier retention, (3) shorter eval context (128 vs 4096 tokens).
 //!
 //! # Architecture
 //!
