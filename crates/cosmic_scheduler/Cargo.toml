@@ -10,7 +10,7 @@ publish = false
 serde = { workspace = true, features = ["derive"] }
 
 [dev-dependencies]
-# None currently
+fixed_point_lbm = { path = "../fixed_point_lbm" }
 
 [[test]]
 name = "test_phase_scheduler"
@@ -23,6 +23,10 @@ path = "tests/test_lbm_integration.rs"
 [[test]]
 name = "test_deterministic_evolution"
 path = "tests/test_deterministic_evolution.rs"
+
+[[test]]
+name = "test_q32_lbm_integration"
+path = "tests/test_q32_lbm_integration.rs"
 
 [lints]
 workspace = true
