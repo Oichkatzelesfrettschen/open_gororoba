@@ -964,6 +964,10 @@ name = "turboquant-onnx-eval"
 path = "src/bin/turboquant_onnx_eval.rs"
 
 [[bin]]
+name = "turboquant-production"
+path = "src/bin/turboquant_production.rs"
+
+[[bin]]
 name = "mast-cd-vs-spectrogram"
 path = "src/bin/mast_cd_vs_spectrogram.rs"
 required-features = ["zarr-read"]
