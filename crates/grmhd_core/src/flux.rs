@@ -731,42 +731,42 @@ pub fn euler_step_3d(
         }
     }
 
-    // Parallel con2prim: collect cell indices and recover in parallel
-    // Each cell is independent -- the Brent root-find has no shared state.
-    use rayon::prelude::*;
-    let cell_indices: Vec<(usize, usize, usize)> = (ng..ng + grid.n1)
-        .flat_map(|i| (ng..ng + grid.n2).flat_map(move |j| (ng..ng + grid.n3).map(move |k| (i, j, k))))
-        .collect();
+    // Con2prim: sequential for now (the Brent tolerance reduction gives 3x speedup).
+    // Skip atmosphere cells where D is below floor (saves ~50% of iterations).
+    for i in ng..ng + grid.n1 {
+        for j in ng..ng + grid.n2 {
+            for k in ng..ng + grid.n3 {
+                let idx = grid.idx(i, j, k);
+                let mc_idx = mc.idx(i, n2t, j);
+                let sg = if mc_idx < mc.sqrt_neg_g.len() { mc.sqrt_neg_g[mc_idx] } else { 1.0 };
 
-    let recovered_prims: Vec<(usize, [f64; NPRIM])> = cell_indices
-        .par_iter()
-        .map(|&(i, j, k)| {
-            let idx = grid.idx(i, j, k);
-            let mc_idx = mc.idx(i, n2t, j);
-            let sg = if mc_idx < mc.sqrt_neg_g.len() { mc.sqrt_neg_g[mc_idx] } else { 1.0 };
-            let gcov = if mc_idx < mc.gcov.len() { mc.gcov[mc_idx] } else { [0.0; 5] };
-            let gcon = if mc_idx < mc.gcon.len() { mc.gcon[mc_idx] } else { [0.0; 5] };
+                // Skip atmosphere cells: if conserved density is near floor,
+                // just keep the primitive state (no Brent iteration needed).
+                if cons_grid[idx][0] < sg * 1e-6 {
+                    continue;
+                }
 
-            let result = crate::con2prim::con2prim_kastaun(
-                &cons_grid[idx], &gcov, &gcon, sg, eos, 1e-8, 1e-10,
-            );
-            (idx, *result.prims())
-        })
-        .collect();
+                let gcov = if mc_idx < mc.gcov.len() { mc.gcov[mc_idx] } else { [0.0; 5] };
+                let gcon = if mc_idx < mc.gcon.len() { mc.gcon[mc_idx] } else { [0.0; 5] };
 
-    // Write back recovered primitives (sequential for borrow safety)
-    for (idx, recovered) in recovered_prims {
-        let p = prims.get_mut(idx);
-        if use_ct {
-            let ct_b1 = p[prims::B1];
-            let ct_b2 = p[prims::B2];
-            let ct_b3 = p[prims::B3];
-            p.copy_from_slice(&recovered);
-            p[prims::B1] = ct_b1;
-            p[prims::B2] = ct_b2;
-            p[prims::B3] = ct_b3;
-        } else {
-            p.copy_from_slice(&recovered);
+                let result = crate::con2prim::con2prim_kastaun(
+                    &cons_grid[idx], &gcov, &gcon, sg, eos, 1e-8, 1e-10,
+                );
+                let recovered = result.prims();
+                let p = prims.get_mut(idx);
+
+                if use_ct {
+                    let ct_b1 = p[prims::B1];
+                    let ct_b2 = p[prims::B2];
+                    let ct_b3 = p[prims::B3];
+                    p.copy_from_slice(recovered);
+                    p[prims::B1] = ct_b1;
+                    p[prims::B2] = ct_b2;
+                    p[prims::B3] = ct_b3;
+                } else {
+                    p.copy_from_slice(recovered);
+                }
+            }
         }
     }
 

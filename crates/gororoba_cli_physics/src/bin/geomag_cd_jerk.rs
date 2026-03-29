@@ -130,12 +130,12 @@ fn main() -> Result<()> {
     println!("  Computed {} associator norms", norms.len());
 
     // Monthly mean associator
-    let mut monthly_sums = vec![0.0f64; 12];
-    let mut monthly_counts = vec![0usize; 12];
+    let mut monthly_sums = [0.0f64; 12];
+    let mut monthly_counts = [0usize; 12];
 
     for (k, &norm) in norms.iter().enumerate() {
         let month = embed_months[k + 2]; // triple offset
-        if month >= 1 && month <= 12 {
+        if (1..=12).contains(&month) {
             monthly_sums[(month - 1) as usize] += norm;
             monthly_counts[(month - 1) as usize] += 1;
         }
@@ -194,7 +194,7 @@ fn main() -> Result<()> {
         if transition_months.is_empty() { "No jerk detected" }
         else { "Transitions detected" },
         n_bins, transitions.len(),
-        if transition_months.iter().any(|&m| m >= 3 && m <= 6) {
+        if transition_months.iter().any(|&m| (3..=6).contains(&m)) {
             "Spring 2014 transition detected -- consistent with published 2014 geomagnetic jerk timing."
         } else if transition_months.is_empty() {
             "No transitions above threshold. The geomagnetic field may be too slowly varying for minute-level Takens embedding. Consider daily or weekly downsampling."
@@ -208,7 +208,7 @@ fn main() -> Result<()> {
         observatory: cli.observatory.clone(),
         year: cli.year,
         n_records: records.len(),
-        n_bins: n_bins,
+        n_bins,
         n_embedded: embedded.len(),
         n_transitions: transitions.len(),
         monthly_mean_associator: monthly_means,

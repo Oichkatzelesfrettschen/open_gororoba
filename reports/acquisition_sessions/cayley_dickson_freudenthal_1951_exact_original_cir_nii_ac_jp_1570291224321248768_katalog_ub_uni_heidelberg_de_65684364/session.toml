@@ -80,3 +80,9 @@ at_utc = "2026-03-27T07:29:58-07:00"
 action = "record"
 status = "in_progress"
 note = "Explicit holder wait-state confirmed. Heidelberg record shows Praesenznutzung only, shelf mark Freud, location Bereichsbibl. Mathematik+Informatik, and Mediennummer 34113569. Manual holder reply remains the next step."
+
+[[events]]
+at_utc = "2026-03-27T16:45:00-07:00"
+action = "record"
+status = "in_progress"
+note = "Heidelberg follow-up draft prepared against general UB contact info@ub.uni-heidelberg.de using the confirmed HEIDI record, call number Freud, and 2026-03-26 reproduction-order confirmation."

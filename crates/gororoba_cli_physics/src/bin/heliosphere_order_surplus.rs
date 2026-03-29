@@ -98,7 +98,7 @@ fn phase_randomize_shared(vectors: &[Vec<f64>], dim: usize) -> Vec<Vec<f64>> {
             buf[k] *= phase;
             buf[n - k] *= phase.conj();
         }
-        if n % 2 == 0 {
+        if n.is_multiple_of(2) {
             let sign = if random_phases[half] > PI { -1.0 } else { 1.0 };
             buf[half] *= sign;
         }
@@ -137,7 +137,7 @@ fn phase_randomize_multivariate(vectors: &[Vec<f64>], dim: usize) -> Vec<Vec<f64
             buf[k] *= phase;
             buf[n - k] *= phase.conj();
         }
-        if n % 2 == 0 {
+        if n.is_multiple_of(2) {
             let sign = if channel_phases[half] > PI { -1.0 } else { 1.0 };
             buf[half] *= sign;
         }

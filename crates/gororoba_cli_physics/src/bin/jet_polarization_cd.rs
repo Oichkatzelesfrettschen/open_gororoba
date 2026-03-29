@@ -58,7 +58,8 @@ fn main() -> Result<()> {
 
     // Generate synthetic Stokes parameters for 4 jet phases
     // Using M87-like parameters (EVPA ~-20 deg, pol fraction ~1-15%)
-    let phases: Vec<(&str, Box<dyn Fn(usize, &mut rand::rngs::ThreadRng) -> (f64, f64, f64, f64)>)> = vec![
+    type StokesGen = Box<dyn Fn(usize, &mut rand::rngs::ThreadRng) -> (f64, f64, f64, f64)>;
+    let phases: Vec<(&str, StokesGen)> = vec![
         // Phase 1: Quiescent helical field (ordered, low variability)
         ("helical_quiescent", Box::new(|i, rng: &mut rand::rngs::ThreadRng| {
             let t = i as f64 / 1000.0;
@@ -186,12 +187,12 @@ fn main() -> Result<()> {
 
     let interp = format!(
         "Synthetic M87-like jet: 4 phases. Helical A={:.4}, Shock A={:.4}, Faraday A={:.4}, Turbulent A={:.4}. Shock/Helical ratio={:.1}x.",
-        results.get(0).map(|r| r.mean_a).unwrap_or(0.0),
+        results.first().map(|r| r.mean_a).unwrap_or(0.0),
         results.get(1).map(|r| r.mean_a).unwrap_or(0.0),
         results.get(2).map(|r| r.mean_a).unwrap_or(0.0),
         results.get(3).map(|r| r.mean_a).unwrap_or(0.0),
-        if results.get(0).map(|r| r.mean_a).unwrap_or(0.0) > 1e-15 {
-            results.get(1).map(|r| r.mean_a).unwrap_or(0.0) / results.get(0).map(|r| r.mean_a).unwrap_or(1.0)
+        if results.first().map(|r| r.mean_a).unwrap_or(0.0) > 1e-15 {
+            results.get(1).map(|r| r.mean_a).unwrap_or(0.0) / results.first().map(|r| r.mean_a).unwrap_or(1.0)
         } else { 0.0 }
     );
     println!("\n  {}", interp);

@@ -212,7 +212,7 @@ fn main() -> Result<()> {
 
     let interp = format!(
         "VKS-like dynamo 5 phases. Sub A={:.4}, Onset A={:.4}, Stationary A={:.4}, Reversal A={:.4}, Chaotic A={:.4}. Chaotic/Stationary={:.1}x.",
-        results.get(0).map(|r| r.mean_a).unwrap_or(0.0),
+        results.first().map(|r| r.mean_a).unwrap_or(0.0),
         results.get(1).map(|r| r.mean_a).unwrap_or(0.0),
         results.get(2).map(|r| r.mean_a).unwrap_or(0.0),
         results.get(3).map(|r| r.mean_a).unwrap_or(0.0),

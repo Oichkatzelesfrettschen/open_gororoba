@@ -1,0 +1,77 @@
+{
+  "target_weeks": [
+    "2009-W40",
+    "2009-W44",
+    "2009-W41"
+  ],
+  "per_week": {
+    "2009-W40": {
+      "n_transitions": 8505,
+      "classification": {
+        "Unclassified": 7607,
+        "TD": 356,
+        "Mirror_mode": 220,
+        "Compressive_structure": 34,
+        "Partial_crossing": 110,
+        "FTE_candidate": 178
+      },
+      "classification_pct": {
+        "Unclassified": 89.4,
+        "TD": 4.2,
+        "Mirror_mode": 2.6,
+        "Compressive_structure": 0.4,
+        "Partial_crossing": 1.3,
+        "FTE_candidate": 2.1
+      }
+    },
+    "2009-W44": {
+      "n_transitions": 8546,
+      "classification": {
+        "Unclassified": 7311,
+        "Partial_crossing": 128,
+        "Mirror_mode": 375,
+        "FTE_candidate": 244,
+        "TD": 343,
+        "Compressive_structure": 145
+      },
+      "classification_pct": {
+        "Unclassified": 85.5,
+        "Partial_crossing": 1.5,
+        "Mirror_mode": 4.4,
+        "FTE_candidate": 2.9,
+        "TD": 4.0,
+        "Compressive_structure": 1.7
+      }
+    },
+    "2009-W41": {
+      "n_transitions": 8176,
+      "classification": {
+        "Unclassified": 7204,
+        "Partial_crossing": 169,
+        "TD": 403,
+        "FTE_candidate": 227,
+        "Mirror_mode": 138,
+        "Compressive_structure": 35
+      },
+      "classification_pct": {
+        "Unclassified": 88.1,
+        "Partial_crossing": 2.1,
+        "TD": 4.9,
+        "FTE_candidate": 2.8,
+        "Mirror_mode": 1.7,
+        "Compressive_structure": 0.4
+      }
+    }
+  },
+  "aggregate_total": 25227,
+  "aggregate_classification": {
+    "Unclassified": 22122,
+    "TD": 1102,
+    "Mirror_mode": 733,
+    "Compressive_structure": 214,
+    "Partial_crossing": 407,
+    "FTE_candidate": 649
+  },
+  "attribution_fraction": 0.12308241170174812,
+  "interpretation": "Of 25227 total transitions in 3 high-quality weeks, 3105 (12%) can be classified as known magnetosheath structures (TDs, FTE candidates, mirror modes, compressive structures, partial crossings). The dominant type is Unclassified."
+}
