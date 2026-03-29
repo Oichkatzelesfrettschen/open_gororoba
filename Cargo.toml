@@ -39,6 +39,7 @@ members = [
     "crates/optics_core",
     "crates/quantum_core",
     "crates/gr_core",
+    "crates/grmhd_core",
     "crates/stats_core",
     "crates/spectral_core",
     "crates/lbm_core",
