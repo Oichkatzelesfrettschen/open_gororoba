@@ -1604,13 +1604,16 @@ dependencies = [
 name = "cd_kernel"
 version = "0.1.0"
 dependencies = [
+ "aligned-vec",
  "approx",
  "ash",
  "bitvec",
+ "bytemuck",
  "core_affinity",
  "criterion",
  "cubecl-core 0.10.0-pre.2",
  "cudarc 0.19.3",
+ "dyn-stack 0.11.0",
  "gauss-quad 0.2.4",
  "proptest",
  "pulp 0.22.2",
@@ -1619,6 +1622,7 @@ dependencies = [
  "rand_distr 0.4.3",
  "rayon",
  "sha2",
+ "smallvec",
  "thiserror 2.0.18",
  "verified_core",
  "wide",
@@ -6116,12 +6120,17 @@ checksum = "bbd2bcb4c963f2ddae06a2efc7e9f3591312473c50c6685e1f298068316e66fe"
 name = "lbm_3d"
 version = "0.1.0"
 dependencies = [
+ "aligned-vec",
  "approx",
+ "bytemuck",
  "cosmic_scheduler",
  "cosmology_core",
  "criterion",
+ "crossbeam-utils",
+ "dyn-stack 0.11.0",
  "pulp 0.22.2",
  "rayon",
+ "smallvec",
  "thiserror 2.0.18",
  "verified_core",
  "wide",
