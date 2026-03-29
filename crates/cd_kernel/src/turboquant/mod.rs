@@ -53,6 +53,7 @@ pub mod dispatch;
 pub mod e8_rotation;
 pub mod e8_validation;
 pub mod exceptional_roots;
+pub mod f4_rotation;
 pub mod fixed_point;
 pub mod grouping;
 pub mod hierarchical;
