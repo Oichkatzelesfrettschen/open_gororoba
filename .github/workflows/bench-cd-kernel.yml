@@ -24,6 +24,9 @@ jobs:
       - name: Patch config for CI
         run: |
           sed -i '/build-dir/d' .cargo/config.toml
+          sed -i '/mold/d' .cargo/config.toml
+          sed -i 's/linker = "clang"//' .cargo/config.toml
+          sed -i 's/target-cpu=native/target-cpu=generic/' .cargo/config.toml
           git clone --depth 1 https://github.com/Oichkatzelesfrettschen/cratesgororobas.git ../cratesgororobas
       - name: Build benchmark binary
         run: cargo build --release -p cd_kernel --test bench_multiplatform
@@ -51,6 +54,9 @@ jobs:
       - name: Patch config for CI
         run: |
           sed -i '/build-dir/d' .cargo/config.toml
+          sed -i '/mold/d' .cargo/config.toml
+          sed -i 's/linker = "clang"//' .cargo/config.toml
+          sed -i 's/target-cpu=native/target-cpu=generic/' .cargo/config.toml
           git clone --depth 1 https://github.com/Oichkatzelesfrettschen/cratesgororobas.git ../cratesgororobas
       - name: Build benchmark binary
         run: cargo build --release -p cd_kernel --test bench_multiplatform
