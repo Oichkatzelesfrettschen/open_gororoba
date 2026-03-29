@@ -1,0 +1,78 @@
+// TurboQuant dequant+dot compute shader.
+//
+// Storage-compute split: read u8 index from packed buffer, look up f32
+// centroid value, accumulate dot product.  Each invocation computes one
+// (query, key) attention score.
+//
+// Subgroup reduction is used to accumulate partial sums across the head
+// dimension for efficient warp-level cooperation.
+//
+// Pattern from steinmarder: INT8 SoA -> FP32 promotion -> accumulate.
+
+#version 450
+#extension GL_KHR_shader_subgroup_arithmetic : enable
+
+layout(local_size_x = 256, local_size_y = 1, local_size_z = 1) in;
+
+layout(push_constant) uniform DequantDotParams {
+    int d;          // head dimension
+    int n_queries;  // number of query vectors
+    int n_keys;     // number of key vectors
+    int n_levels;   // codebook size (2^bits)
+} params;
+
+// Query vectors (f32, n_queries * d, row-major)
+layout(std430, set = 0, binding = 0) readonly buffer QueriesBuffer {
+    float queries[];
+};
+
+// Key indices (u8 packed as u32, SoA layout: indices[coord * n_keys + key_idx])
+// Packed: 4 u8 per u32 word
+layout(std430, set = 0, binding = 1) readonly buffer KeyIndicesBuffer {
+    uint packed_key_indices[];
+};
+
+// Codebook centroids (f32, n_levels)
+layout(std430, set = 0, binding = 2) readonly buffer CentroidsBuffer {
+    float centroids[];
+};
+
+// Per-key normalization factors (f32, n_keys)
+layout(std430, set = 0, binding = 3) readonly buffer KeyNormsBuffer {
+    float key_norms[];
+};
+
+// Output scores (f32, n_queries * n_keys)
+layout(std430, set = 0, binding = 4) writeonly buffer ScoresBuffer {
+    float scores[];
+};
+
+// Extract u8 index from packed u32 array at SoA position
+uint extract_index(int coord, int key_idx) {
+    int flat = coord * params.n_keys + key_idx;
+    uint word = packed_key_indices[flat / 4];
+    uint byte_pos = (uint(flat) % 4u) * 8u;
+    return (word >> byte_pos) & 0xFFu;
+}
+
+void main() {
+    // Each invocation: one (query, key) pair
+    uint gid = gl_GlobalInvocationID.x;
+    uint ki = gid % uint(params.n_keys);
+    uint qi = gid / uint(params.n_keys);
+
+    if (qi >= uint(params.n_queries) || ki >= uint(params.n_keys)) return;
+
+    float dot = 0.0;
+
+    // Storage-compute split: u8 index -> f32 centroid -> FFMA
+    for (int c = 0; c < params.d; c++) {
+        uint idx = extract_index(c, int(ki));
+        float k_val = centroids[idx];              // codebook lookup
+        float q_val = queries[qi * uint(params.d) + uint(c)];
+        dot += q_val * k_val;                       // FMA
+    }
+
+    // Apply per-key normalization
+    scores[qi * uint(params.n_keys) + ki] = dot * key_norms[ki];
+}

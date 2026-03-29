@@ -1,0 +1,54 @@
+// TurboQuant boundary-search quantization compute shader.
+//
+// Ported from steinmarder shader patterns (std430, push constants, local_size).
+// Each invocation quantizes one value via boundary counting.
+//
+// SoA output: indices[coord * n_vectors + vec_idx] for coalesced subgroup reads.
+
+#version 450
+#extension GL_KHR_shader_subgroup_basic : enable
+
+layout(local_size_x = 256, local_size_y = 1, local_size_z = 1) in;
+
+// Push constants: kernel parameters (< 256 bytes)
+layout(push_constant) uniform QuantizeParams {
+    int n_values;       // total values to quantize
+    int n_boundaries;   // number of boundaries (2^bits - 1)
+    int pad0;
+    int pad1;
+} params;
+
+// Input values (f32, length n_values)
+layout(std430, set = 0, binding = 0) readonly buffer ValuesBuffer {
+    float values[];
+};
+
+// Sorted boundaries (f32, length n_boundaries)
+layout(std430, set = 0, binding = 1) readonly buffer BoundariesBuffer {
+    float boundaries[];
+};
+
+// Output indices (u8 packed as u32 for alignment, length ceil(n_values/4))
+// Each u32 holds 4 consecutive u8 indices.
+layout(std430, set = 0, binding = 2) writeonly buffer IndicesBuffer {
+    uint packed_indices[];
+};
+
+void main() {
+    uint gid = gl_GlobalInvocationID.x;
+    if (gid >= uint(params.n_values)) return;
+
+    float v = values[gid];
+    uint count = 0u;
+
+    // Boundary-count: unrolled for typical 3-bit (7 boundaries)
+    for (int b = 0; b < params.n_boundaries; b++) {
+        if (v > boundaries[b]) count++;
+    }
+
+    // Pack 4 u8 indices into one u32 (byte-aligned storage)
+    // Use atomicOr for thread-safe packing into shared u32 words
+    uint word_idx = gid / 4u;
+    uint byte_pos = (gid % 4u) * 8u;
+    atomicOr(packed_indices[word_idx], count << byte_pos);
+}
