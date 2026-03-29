@@ -1,0 +1,58 @@
+name: CD Kernel Multi-Platform Benchmark
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'crates/cd_kernel/**'
+      - '.github/workflows/bench-cd-kernel.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  bench-x86:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@nightly
+      - name: System info
+        run: |
+          lscpu | grep -E "Model name|L1d|L2|L3|CPU|Thread|Architecture"
+          free -h
+          uname -a
+      - name: Build benchmark binary
+        run: cargo build --release -p cd_kernel --test bench_multiplatform
+        env:
+          CARGO_TARGET_DIR: target
+      - name: Run CD kernel benchmark
+        run: cargo test --release -p cd_kernel -- bench_multiplatform --nocapture 2>&1 | tee bench_x86.txt
+        env:
+          CARGO_TARGET_DIR: target
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bench-x86
+          path: bench_x86.txt
+
+  bench-arm:
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@nightly
+      - name: System info
+        run: |
+          lscpu | grep -E "Model name|L1d|L2|L3|CPU|Thread|Architecture"
+          free -h
+          uname -a
+      - name: Build benchmark binary
+        run: cargo build --release -p cd_kernel --test bench_multiplatform
+        env:
+          CARGO_TARGET_DIR: target
+      - name: Run CD kernel benchmark
+        run: cargo test --release -p cd_kernel -- bench_multiplatform --nocapture 2>&1 | tee bench_arm.txt
+        env:
+          CARGO_TARGET_DIR: target
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bench-arm
+          path: bench_arm.txt
