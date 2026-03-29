@@ -21,7 +21,7 @@ jobs:
           git lfs install
       - uses: actions/checkout@v4
         with:
-          lfs: true
+          lfs: false  # LFS budget exceeded; benchmark doesn't need archived data
       - uses: dtolnay/rust-toolchain@nightly
       - name: System info
         run: |
@@ -55,7 +55,7 @@ jobs:
           git lfs install
       - uses: actions/checkout@v4
         with:
-          lfs: true
+          lfs: false  # LFS budget exceeded; benchmark doesn't need archived data
       - uses: dtolnay/rust-toolchain@nightly
       - name: System info
         run: |
