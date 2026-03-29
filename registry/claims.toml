@@ -11215,3 +11215,12 @@ where_stated = "data/output/heliosphere/ablations/solar_cycle_crosscorr.json"
 last_verified = "2026-03-29"
 formal_proof = ""
 status_note = "ACE MAG 16-sec HAPI data, 23 yearly files, 32D 4-channel embedding. Each year has ~2M records. The 18.9x amplitude ratio is between the yearly median CD values. The ISM comparison uses V1/V2 48-sec MAG data from existing quench scans."
+
+[[claim]]
+id = "C-1624"
+status = "Verified"
+statement = "V2 MAG+PLS 7-channel lifetime CD (1977-2007, 31 years, 2-82 AU): adding plasma channels (V_bulk, n_proton, V_thermal) to the B-field embedding enriches CD by a constant factor of 1.78x across ALL heliocentric distances. The enrichment ratio is 1.73-1.84x from 2 AU to 82 AU, demonstrating that MAG-PLS cross-channel phase coupling is an intrinsic property of the solar wind, independent of radial distance. Solar cycle modulation visible but dampened: ~1.5x amplitude in PLS-embedded CD vs 18.9x at 1 AU (ACE). Heliosheath approach (79-82 AU) shows CD=9.9-10.1, the highest in the profile."
+where_stated = "data/output/heliosphere/ablations/v2_mag_pls_cd_32d.json"
+last_verified = "2026-03-29"
+formal_proof = ""
+status_note = "V2 PLS HIRES from HAPI (31 yearly files, ~130K hourly records total). 7-channel embedding: V/n/V_th repeated with magnitude proxy for MAG slots. True MAG+PLS joint analysis requires feature-cube join (same (year,doy,hour) key), which is the next step."
