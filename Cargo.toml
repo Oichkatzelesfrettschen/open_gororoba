@@ -288,6 +288,9 @@ md5 = { package = "md-5", version = "0.10.6" } # Zenodo checksum verification (c
 ureq = "3"                    # Minimal sync HTTP client for data fetching
 fitsio = { version = "0.21", features = ["default"] } # cfitsio bindings for FITS astronomy file I/O
 quick-xml = "0.38"            # SAX-style XML parser for VOTable and VO Cone Search responses
+# DSP / spectral analysis
+apodize = "0.3"               # Window functions (Hann, Hamming, Blackman) for FFT spectral analysis
+
 flate2 = "1.1"                # Gzip compression/decompression
 zip = "2.4"                   # ZIP archive extraction
 tar = "0.4"                   # Tar archive reading (WMAP/Planck chain extraction)
