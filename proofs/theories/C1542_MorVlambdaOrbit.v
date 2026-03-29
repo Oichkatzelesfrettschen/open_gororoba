@@ -18,7 +18,7 @@
     C1542_MorVlambdaMod4.v. *)
 
 From Stdlib Require Import Reals Arith PeanoNat Lia.
-From OpenGororoba Require Import Prelude FinDimHModule HModuleDim.
+From OpenGororoba Require Import Prelude CayleyDicksonAlgebra Sedenion OctonionNorm FinDimHModule HModuleDim.
 
 Open Scope R_scope.
 Open Scope nat_scope.
@@ -100,6 +100,13 @@ Record Moreno16ConcreteVlambdaWitness := {
     is_h_module_dim moreno16_concrete_vlambda_dim
 }.
 
+Record Moreno16ArbitraryAConcreteHypotheses := {
+  moreno16_concrete_a : CDOct;
+  moreno16_concrete_a_unit : oct_norm_sq moreno16_concrete_a = 1%R;
+  moreno16_concrete_a_pure : oct_conj moreno16_concrete_a = oct_neg moreno16_concrete_a;
+  moreno16_concrete_witness : Moreno16ConcreteVlambdaWitness
+}.
+
 Theorem moreno16_concrete_witness_dim_div4 :
   forall W : Moreno16ConcreteVlambdaWitness,
     exists k : nat, moreno16_concrete_vlambda_dim W = 4 * k.
@@ -119,4 +126,21 @@ Proof.
   rewrite Hk.
   rewrite Nat.mul_comm.
   apply Nat.Div0.mod_mul.
+Qed.
+
+Theorem moreno16_arbitrary_a_dim_div4 :
+  forall H : Moreno16ArbitraryAConcreteHypotheses,
+    exists k : nat,
+      moreno16_concrete_vlambda_dim (moreno16_concrete_witness H) = 4 * k.
+Proof.
+  intro H.
+  exact (moreno16_concrete_witness_dim_div4 (moreno16_concrete_witness H)).
+Qed.
+
+Corollary moreno16_arbitrary_a_dim_mod4 :
+  forall H : Moreno16ArbitraryAConcreteHypotheses,
+    Nat.modulo (moreno16_concrete_vlambda_dim (moreno16_concrete_witness H)) 4 = 0.
+Proof.
+  intro H.
+  exact (moreno16_concrete_witness_dim_mod4 (moreno16_concrete_witness H)).
 Qed.
