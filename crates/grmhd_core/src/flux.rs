@@ -122,6 +122,10 @@ fn compute_flux_from_prim(
     let vsq = g_rr * v1 * v1 + g_thth * v2 * v2 + g_phph * v3 * v3;
     let alpha_sq = -(g_tt + 2.0 * g_tph * v3 + vsq);
     let ut = if alpha_sq > 1e-20 { 1.0 / alpha_sq.sqrt() } else { 1.0 };
+    // Precompute reciprocals to avoid repeated division (same pattern as
+    // steinmarder inv_tau: eliminates MUFU.RCP-equivalent stalls on CPU).
+    let inv_ut = 1.0 / ut;
+    let inv_ut_sq = inv_ut * inv_ut;
 
     // Covariant 4-velocity components
     let u_cov_t = g_tt * ut + g_tph * ut * v3;
@@ -130,9 +134,9 @@ fn compute_flux_from_prim(
     let u_cov_ph = g_phph * ut * v3 + g_tph * ut;
 
     // Magnetic 4-vector b^mu
-    let bt = (b1 * u_cov_r + b2 * u_cov_th + b3 * u_cov_ph) / ut;
-    let bsq = ((b1 * b1 * g_rr + b2 * b2 * g_thth + b3 * b3 * g_phph) / (ut * ut)
-        + bt * bt * (-1.0 / (ut * ut) + vsq)).max(0.0);
+    let bt = (b1 * u_cov_r + b2 * u_cov_th + b3 * u_cov_ph) * inv_ut;
+    let bsq = ((b1 * b1 * g_rr + b2 * b2 * g_thth + b3 * b3 * g_phph) * inv_ut_sq
+        + bt * bt * (-inv_ut_sq + vsq)).max(0.0);
 
     let w = rho + u + pressure + bsq; // total enthalpy
     let ptot = pressure + 0.5 * bsq;
