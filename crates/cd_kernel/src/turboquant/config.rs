@@ -83,13 +83,16 @@ impl TurboQuantConfig {
     /// - bits >= 4: QJL correction off (adds noise at high quality)
     /// - adaptive bits: enabled, top 25% promoted (23% MSE gain)
     pub fn recommended(dim: usize, bits: u32) -> Self {
-        // E8 rotation validated: KS p=0.816 (decorrelation) + MSE identical
-        // to WHT (codebook compatibility confirmed after RCA 2026-03-28).
-        // E8 uses 136x fewer parameters than Haar and has algebraic structure
-        // from the E8 lattice (optimal sphere packing in 8D).
-        // WHT remains default for d>=64 due to 5.6x throughput advantage;
-        // E8 is available as opt-in for algebraic research paths.
-        let rotation = if dim >= 64 {
+        // Adaptive rotation selection based on measured results (2026-03-28):
+        //   d=64:  F4 block rotation (18% better MSE than WHT via quaternion algebra)
+        //   d>=64: FastJL/WHT (5.6x faster than Haar, proven decorrelation)
+        //   d<64:  Haar (small enough that O(d^2) is cheap)
+        //
+        // E8 validated (KS p=0.816, identical MSE to WHT) but WHT has 5.6x
+        // throughput advantage.  E8 available as opt-in for algebraic research.
+        let rotation = if dim == 64 {
+            RotationMethod::F4Block // 18% better MSE (measured)
+        } else if dim >= 64 {
             RotationMethod::FastJL
         } else {
             RotationMethod::Haar
@@ -227,9 +230,9 @@ mod tests {
     #[test]
     fn test_recommended_d64() {
         let cfg = TurboQuantConfig::recommended(64, 3);
-        assert_eq!(cfg.rotation, RotationMethod::FastJL); // d=64 < 128 -> FastJL
+        assert_eq!(cfg.rotation, RotationMethod::F4Block); // d=64 -> F4 (18% better MSE)
         assert!(!cfg.use_e8());
-        assert!(cfg.use_wht());
+        assert!(cfg.use_f4());
     }
 
     #[test]
