@@ -896,12 +896,11 @@ pub fn cd_associator_norm_f32(a: &[f32], b: &[f32], c: &[f32], dim: usize) -> f3
     norm_sq.sqrt()
 }
 
-/// Batch sliding f32 associator norms (single-threaded for now)
+/// Batch sliding f32 associator norms using workspace reuse.
+///
+/// Delegates to `fast_associator::batch_fast_associator_norms_f32` which uses
+/// `AssociatorWorkspace` (3-buffer reuse + `cd_multiply_f32_fused` zero-alloc)
+/// and rayon `map_init` per-thread workspace for n > 1000.
 pub fn batch_sliding_associator_norms_f32(embedded: &[Vec<f32>], dim: usize) -> Vec<f32> {
-    if embedded.len() < 3 {
-        return vec![];
-    }
-    (0..embedded.len() - 2)
-        .map(|i| cd_associator_norm_f32(&embedded[i], &embedded[i + 1], &embedded[i + 2], dim))
-        .collect()
+    super::fast_associator::batch_fast_associator_norms_f32(embedded, dim)
 }
