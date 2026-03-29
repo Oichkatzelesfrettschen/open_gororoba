@@ -36,6 +36,8 @@ fitsio = { workspace = true, optional = true }
 quick-xml = { workspace = true, optional = true }
 memmap2 = "0.9.10"
 wide.workspace = true
+pulp.workspace = true
+simsimd.workspace = true
 rayon = { workspace = true }
 core_affinity = { workspace = true }
 cd_kernel = { workspace = true }

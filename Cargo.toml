@@ -204,7 +204,11 @@ minifb = "0.28"
 core_affinity = "0.8"
 
 # SIMD
-wide = "0.7"                 # Portable SIMD (f64x4, f64x2, etc.)
+wide = "0.7"                 # Portable SIMD (f64x4, f64x2, etc.) -- legacy, migrating to pulp
+pulp = "0.22"                # Runtime-dispatched SIMD (powers faer, 8.5M downloads)
+
+# Hardware-accelerated distance metrics
+simsimd = "5"                # SIMD distance functions (L2, cosine, dot) -- AVX2/AVX-512/NEON
 
 # GPU compute (CUDA via dynamic loading -- binary works without GPU at runtime)
 cudarc = { version = "0.19", default-features = false, features = [

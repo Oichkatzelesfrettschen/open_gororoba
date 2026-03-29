@@ -1612,6 +1612,7 @@ dependencies = [
  "cudarc 0.19.3",
  "gauss-quad 0.2.4",
  "proptest",
+ "pulp 0.22.2",
  "rand 0.8.5",
  "rand_chacha 0.3.1",
  "rand_distr 0.4.3",
@@ -2179,6 +2180,7 @@ dependencies = [
 name = "cosmic_scheduler"
 version = "0.1.0"
 dependencies = [
+ "fixed_point_lbm",
  "serde",
 ]
 
@@ -2745,6 +2747,7 @@ dependencies = [
  "netcdf-reader",
  "netcdf3",
  "polars",
+ "pulp 0.22.2",
  "quick-xml 0.38.4",
  "rand 0.8.5",
  "rand_distr 0.4.3",
@@ -2754,6 +2757,7 @@ dependencies = [
  "serde",
  "serde_json",
  "sha2",
+ "simsimd",
  "tar",
  "tempfile",
  "thiserror 2.0.18",
@@ -5800,6 +5804,7 @@ dependencies = [
  "cosmic_scheduler",
  "cosmology_core",
  "criterion",
+ "pulp 0.22.2",
  "rayon",
  "thiserror 2.0.18",
  "verified_core",
@@ -6292,12 +6297,14 @@ dependencies = [
  "num-complex",
  "optics_core",
  "periodic-table-on-an-enum",
+ "pulp 0.22.2",
  "rand 0.8.5",
  "rand_chacha 0.3.1",
  "rayon",
  "regex",
  "rustfft",
  "serde",
+ "simsimd",
  "toml",
  "wide",
 ]
@@ -8897,6 +8904,29 @@ dependencies = [
 ]
 
 [[package]]
+name = "pulp"
+version = "0.22.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2e205bb30d5b916c55e584c22201771bcf2bad9aabd5d4127f38387140c38632"
+dependencies = [
+ "bytemuck",
+ "cfg-if",
+ "libm",
+ "num-complex",
+ "paste",
+ "pulp-wasm-simd-flag",
+ "raw-cpuid 11.6.0",
+ "reborrow",
+ "version_check",
+]
+
+[[package]]
+name = "pulp-wasm-simd-flag"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "40e24eee682d89fb193496edf918a7f407d30175b2e785fe057e4392dfd182e0"
+
+[[package]]
 name = "pxfm"
 version = "0.1.28"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -10154,6 +10184,15 @@ name = "simdutf8"
 version = "0.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e3a9fe34e3e7a50316060351f37187a3f546bce95496156754b601a5fa71b76e"
+
+[[package]]
+name = "simsimd"
+version = "5.9.11"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9638f2829f4887c62a01958903b58fa1b740a64d5dc2bbc4a75a33827ee1bd53"
+dependencies = [
+ "cc",
+]
 
 [[package]]
 name = "siphasher"
