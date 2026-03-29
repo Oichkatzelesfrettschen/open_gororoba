@@ -369,6 +369,10 @@ name = "sharp-flare-cd"
 path = "src/bin/sharp_flare_cd.rs"
 
 [[bin]]
+name = "voyager-hapi-ingest"
+path = "src/bin/voyager_hapi_ingest.rs"
+
+[[bin]]
 name = "heliosphere-order-surplus"
 path = "src/bin/heliosphere_order_surplus.rs"
 
