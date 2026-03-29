@@ -346,6 +346,20 @@ pub fn compute_rhs_3d(
     mc: &MetricCache,
     eos: &GammaLaw,
 ) -> (Vec<f64>, FaceEmfs) {
+    compute_rhs_3d_inner(prims, grid, mc, eos, false)
+}
+
+/// Inner RHS computation. When `zero_b_in_recon` is true, the B components
+/// in the PLM-reconstructed L/R states are zeroed before HLL flux computation.
+/// This prevents PLM from creating artificial v*B at velocity discontinuities
+/// (the root cause of B-field instability). CT handles B evolution separately.
+fn compute_rhs_3d_inner(
+    prims: &PrimGrid,
+    grid: &Grid,
+    mc: &MetricCache,
+    eos: &GammaLaw,
+    zero_b_in_recon: bool,
+) -> (Vec<f64>, FaceEmfs) {
     let ng = grid.ng;
     let n1t = grid.n1_total();
     let n2t = grid.n2_total();
@@ -382,6 +396,15 @@ pub fn compute_rhs_3d(
                     );
                     ws.prim_l[var] = ql;
                     ws.prim_r[var] = qr;
+                }
+
+                // When CT handles B, zero the reconstructed B to prevent
+                // PLM from creating artificial v*B at velocity discontinuities.
+                if zero_b_in_recon {
+                    for b in 5..8 {
+                        ws.prim_l[b] = 0.0;
+                        ws.prim_r[b] = 0.0;
+                    }
                 }
 
                 let r_face = grid.r(face_i);
@@ -456,6 +479,14 @@ pub fn compute_rhs_3d(
                         );
                         ws.prim_l[var] = ql;
                         ws.prim_r[var] = qr;
+                    }
+
+                    // Zero B in reconstruction when CT is active
+                    if zero_b_in_recon {
+                        for b in 5..8 {
+                            ws.prim_l[b] = 0.0;
+                            ws.prim_r[b] = 0.0;
+                        }
                     }
 
                     let r = grid.r(i);
@@ -581,7 +612,8 @@ pub fn euler_step_3d(
     }
 
     // Step 2: Compute RHS and update conservative variables
-    let (mut rhs, face_emfs) = compute_rhs_3d(prims, grid, mc, eos);
+    let use_ct = staggered_b.is_some();
+    let (mut rhs, face_emfs) = compute_rhs_3d_inner(prims, grid, mc, eos, use_ct);
     for i in ng..ng + grid.n1 {
         for j in ng..ng + grid.n2 {
             for k in ng..ng + grid.n3 {
