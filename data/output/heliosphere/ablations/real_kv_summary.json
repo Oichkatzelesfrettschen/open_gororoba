@@ -1,0 +1,71 @@
+{
+  "title": "TurboQuant Real LLM KV Cache Evaluation Summary",
+  "date": "2026-03-29",
+  "methodology": "Real KV cache extracted from HuggingFace models via scripts/extract_real_kv_cache.py, quantized by Rust turboquant-real-kv binary, perplexity measured via scripts/measure_perplexity.py with token-by-token autoregressive decode and per-token KV quantization injection.",
+  "key_finding": "FastJL rotation Gaussianizes heavy-tailed real KV data (kurtosis 10-28 -> 2.5-2.7), making Gaussian Lloyd-Max codebook optimal. Fitted codebooks (Laplace, GenGaussian) perform WORSE because rotation already normalizes the distribution.",
+  "models": [
+    {
+      "name": "SmolLM2-135M-Instruct",
+      "params_M": 134.5,
+      "layers": 30,
+      "kv_heads": 3,
+      "head_dim": 64,
+      "raw_kurtosis": 10.2,
+      "post_rotation_kurtosis": 2.53,
+      "quality": {
+        "2bit": {"key_mse": 0.4785, "key_cosine": 0.9465, "val_mse": 0.1084, "val_cosine": 0.9424},
+        "3bit": {"key_mse": 0.1416, "key_cosine": 0.9847, "val_mse": 0.0315, "val_cosine": 0.9838},
+        "4bit": {"key_mse": 0.0392, "key_cosine": 0.9958, "val_mse": 0.0087, "val_cosine": 0.9956}
+      },
+      "perplexity": {
+        "baseline": 86.70,
+        "2bit": {"ppl": 171.95, "delta_pct": 98.3},
+        "3bit": {"ppl": 100.34, "delta_pct": 15.7},
+        "4bit": {"ppl": 87.39, "delta_pct": 0.8}
+      }
+    },
+    {
+      "name": "TinyLlama-1.1B-Chat",
+      "params_M": 1100.0,
+      "layers": 22,
+      "kv_heads": 4,
+      "head_dim": 64,
+      "raw_kurtosis": 27.98,
+      "post_rotation_kurtosis": 2.68,
+      "quality": {
+        "2bit": {"key_mse": 0.5722, "key_cosine": 0.9463, "val_mse": 0.0075, "val_cosine": 0.9426},
+        "3bit": {"key_mse": 0.1683, "key_cosine": 0.9847, "val_mse": 0.0022, "val_cosine": 0.9837},
+        "4bit": {"key_mse": 0.0467, "key_cosine": 0.9958, "val_mse": 0.0006, "val_cosine": 0.9956}
+      }
+    },
+    {
+      "name": "Qwen2.5-0.5B-Instruct",
+      "params_M": 494.0,
+      "layers": 24,
+      "kv_heads": 2,
+      "head_dim": 64,
+      "raw_kurtosis": 9.40,
+      "post_rotation_kurtosis": 2.60,
+      "quality": {
+        "2bit": {"key_mse": 9.1005, "key_cosine": 0.9459, "val_mse": 0.0939, "val_cosine": 0.9431},
+        "3bit": {"key_mse": 2.8865, "key_cosine": 0.9844, "val_mse": 0.0275, "val_cosine": 0.9838},
+        "4bit": {"key_mse": 0.7445, "key_cosine": 0.9958, "val_mse": 0.0075, "val_cosine": 0.9957}
+      }
+    }
+  ],
+  "codebook_comparison": {
+    "note": "All tested at 3-bit on SmolLM2-135M. Gaussian is best because rotation Gaussianizes the data.",
+    "gaussian_key_mse": 0.1416,
+    "laplace_key_mse": 0.2087,
+    "gengauss_09_key_mse": 0.2246,
+    "gengauss_08_key_mse": 0.2449
+  },
+  "hardware": {
+    "cpu": "AMD Ryzen 5 5600X3D",
+    "gpu": "RTX 4070 Ti 12GB",
+    "ram_gb": 30,
+    "ipc": 2.60,
+    "cache_miss_rate_pct": 12.7,
+    "throughput_kvec_per_sec": "605-819"
+  }
+}

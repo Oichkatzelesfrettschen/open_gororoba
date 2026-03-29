@@ -1,0 +1,28 @@
+{
+  "model": "HuggingFaceTB/SmolLM2-135M-Instruct",
+  "n_params": 134515008,
+  "head_dim": 64,
+  "measurements": [
+    {
+      "bits": "fp32",
+      "ppl": 30.46943972338451,
+      "ppl_increase": 0.0
+    },
+    {
+      "bits": 2,
+      "ppl": 28207690455.27761,
+      "ppl_increase_pct": 92576990850.14514
+    },
+    {
+      "bits": 3,
+      "ppl": 10678862.25583197,
+      "ppl_increase_pct": 35047680.178367436
+    },
+    {
+      "bits": 4,
+      "ppl": 18398.010034979954,
+      "ppl_increase_pct": 60281.845554120766
+    }
+  ],
+  "baseline_ppl": 30.46943972338451
+}
