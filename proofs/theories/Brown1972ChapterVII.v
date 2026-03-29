@@ -379,6 +379,28 @@ Proof.
     reflexivity.
 Qed.
 
+Theorem brown1972_chapter_vii_theorem_7_19_iii_xor_eq_core :
+  forall i j k : nat,
+    (1 <= i)%nat -> (i < 8)%nat ->
+    (1 <= j)%nat -> (j < 8)%nat ->
+    (1 <= k)%nat -> (k < 8)%nat ->
+    i <> j -> j <> k -> i <> k ->
+    Nat.lxor i j = k ->
+    oct_antiassociator_fused (oct_e i) (oct_e j) (oct_e k) =
+    oct_neg (oct_antiassociator_fused (oct_e k) (oct_e j) (oct_e i)).
+Proof.
+  intros i j k Hi1 Hi8 Hj1 Hj8 Hk1 Hk8 Hij Hjk Hik Hxor.
+  destruct i as [|[|[|[|[|[|[|[|i]]]]]]]]; try lia;
+  destruct j as [|[|[|[|[|[|[|[|j]]]]]]]]; try lia;
+  destruct k as [|[|[|[|[|[|[|[|k]]]]]]]]; try lia;
+  vm_compute in Hxor; try congruence;
+  cbv [oct_antiassociator_fused oct_mul_fused oct_antiassociator oct_assoc
+       oct_sub oct_add oct_neg oct_mul oct_conj oct_scale oct_e oct_zero
+       quat_mul quat_add quat_neg quat_conj quat_scale quat_zero quat_one
+       oct_lo oct_hi qa qb qc qd] ;
+  apply (f_equal2 mkOct); apply (f_equal4 mkQuat); ring.
+Qed.
+
 Definition brown1972_ch7_719_ii_rhs (i j : nat) : CDOct :=
   if Nat.eqb i j then oct_scale (-2) (oct_e j) else oct_scale 2 (oct_e j).
 
