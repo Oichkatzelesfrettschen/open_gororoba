@@ -852,6 +852,7 @@ verified_core = { version = "0.1.0", path = "../verified_core" }
 cd_kernel = { workspace = true }
 grmhd_core = { version = "0.1.0", path = "../grmhd_core" }
 wide = { workspace = true }
+ort = { workspace = true, optional = true }
 rusqlite = { workspace = true }
 walkdir = { workspace = true }
 minifb = { workspace = true }
@@ -871,6 +872,7 @@ hdf5-read = ["dep:hdf5"]
 netcdf-read = ["dep:netcdf3", "dep:netcdf-reader"]
 zarr-read = ["dep:zarrs", "dep:zarrs_filesystem"]
 euclid-catalog = ["cosmology_core/euclid-catalog"]
+onnx-eval = ["dep:ort"]
 
 [lints]
 workspace = true
@@ -952,6 +954,10 @@ path = "src/bin/turboquant_bench.rs"
 [[bin]]
 name = "turboquant-validate"
 path = "src/bin/turboquant_validate.rs"
+
+[[bin]]
+name = "turboquant-onnx-eval"
+path = "src/bin/turboquant_onnx_eval.rs"
 
 [[bin]]
 name = "mast-cd-vs-spectrogram"

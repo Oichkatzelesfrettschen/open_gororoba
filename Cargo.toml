@@ -210,6 +210,9 @@ pulp = "0.22"                # Runtime-dispatched SIMD (powers faer, 8.5M downlo
 # Hardware-accelerated distance metrics
 simsimd = "5"                # SIMD distance functions (L2, cosine, dot) -- AVX2/AVX-512/NEON
 
+# ONNX Runtime for real-model evaluation
+ort = { version = "2.0.0-rc.12", default-features = false }
+
 # Unified GPU compute (cubecl: write once, dispatch to CUDA + Vulkan + WebGPU + Metal)
 cubecl = { version = "0.10.0-pre.2", default-features = false }
 cubecl-core = { version = "0.10.0-pre.2", default-features = false }
