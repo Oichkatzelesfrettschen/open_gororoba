@@ -1,0 +1,163 @@
+%% Fig 44: CD Heliospheric Atlas -- radial profile from 0.3 to 170 AU
+%% Flagship figure: single CD invariant spanning 5 orders of magnitude
+%% across planetary magnetospheres, solar wind, termination shock,
+%% heliopause, and deep interstellar medium.
+%%
+%% Data: MESSENGER (0.32 AU), ACE (1 AU), V1+V2 Jupiter (5.25 AU),
+%% V2 PLS lifetime (2-82 AU), V1 MAG lifetime (5-167 AU).
+%% All at 32D embedding, 4-channel B-field Takens delay.
+%%
+%% Golden ratio: width/height = 1.618
+\begin{tikzpicture}
+\begin{axis}[
+  width=\textwidth,
+  height=0.618\textwidth,
+  xmode=log,
+  ymode=log,
+  xmin=0.25, xmax=200,
+  ymin=0.003, ymax=500,
+  xlabel={\sffamily Heliocentric Distance (AU)},
+  ylabel={\sffamily CD Associator Median (32D)},
+  xlabel style={font=\sffamily\small},
+  ylabel style={font=\sffamily\small},
+  tick label style={font=\sffamily\scriptsize},
+  axis background/.style={fill=black!95},
+  axis line style={white!70},
+  tick style={white!70},
+  major grid style={gray!20, dashed},
+  minor grid style={gray!10, dotted},
+  grid=both,
+  legend style={
+    at={(0.03,0.97)}, anchor=north west,
+    fill=black!80, draw=gray!40,
+    text=white, font=\sffamily\scriptsize,
+    row sep=1pt,
+  },
+  every axis label/.style={white},
+  every tick label/.style={white},
+  %% Regime bands (vertical fills)
+  extra x ticks={},
+]
+
+  %% === REGIME BACKGROUND BANDS ===
+  %% Magnetosphere zone (0.3-0.5 AU) -- Mercury
+  \fill[OIpurple!15] (axis cs:0.25,0.003) rectangle (axis cs:0.5,500);
+  %% Inner solar wind (0.5-10 AU)
+  \fill[OIskyblue!8] (axis cs:0.5,0.003) rectangle (axis cs:10,500);
+  %% Outer solar wind (10-85 AU)
+  \fill[OIblue!6] (axis cs:10,0.003) rectangle (axis cs:85,500);
+  %% Heliosheath (85-120 AU)
+  \fill[OIorange!8] (axis cs:85,0.003) rectangle (axis cs:120,500);
+  %% ISM (120-200 AU)
+  \fill[OIgreen!6] (axis cs:120,0.003) rectangle (axis cs:200,500);
+
+  %% === REGIME LABELS ===
+  \node[white, font=\sffamily\tiny, rotate=90, anchor=south]
+    at (axis cs:0.35,1) {Mercury};
+  \node[white!80, font=\sffamily\tiny, anchor=south]
+    at (axis cs:3,350) {Inner Solar Wind};
+  \node[white!80, font=\sffamily\tiny, anchor=south]
+    at (axis cs:40,350) {Outer Solar Wind};
+  \node[white!80, font=\sffamily\tiny, anchor=south]
+    at (axis cs:100,350) {Heliosheath};
+  \node[white!80, font=\sffamily\tiny, anchor=south]
+    at (axis cs:150,350) {ISM};
+
+  %% === BOUNDARY MARKERS ===
+  %% Termination shock (~94 AU)
+  \draw[OIvermillion, thick, dashed] (axis cs:94,0.003) -- (axis cs:94,500);
+  \node[OIvermillion, font=\sffamily\tiny, rotate=90, anchor=south]
+    at (axis cs:94,0.01) {Termination Shock};
+  %% Heliopause (~122 AU)
+  \draw[OIyellow, thick, dashed] (axis cs:122,0.003) -- (axis cs:122,500);
+  \node[OIyellow, font=\sffamily\tiny, rotate=90, anchor=south]
+    at (axis cs:122,0.01) {Heliopause};
+
+  %% === DATA: MESSENGER (0.32 AU) ===
+  \addplot[only marks, mark=diamond*, mark size=3pt, OIpurple, thick]
+    coordinates {(0.32, 0.005)};
+
+  %% === DATA: ACE at 1 AU (solar max 2003 and solar min 2009) ===
+  \addplot[only marks, mark=triangle*, mark size=3pt, OIvermillion]
+    coordinates {(1.0, 282)};
+  \addplot[only marks, mark=triangle, mark size=3pt, OIvermillion]
+    coordinates {(1.0, 14.9)};
+  \node[OIvermillion, font=\sffamily\tiny, anchor=west]
+    at (axis cs:1.15, 282) {SC23 max};
+  \node[OIvermillion, font=\sffamily\tiny, anchor=west]
+    at (axis cs:1.15, 14.9) {SC23 min};
+
+  %% === DATA: V1+V2 Jupiter flyby (5.25 AU) ===
+  \addplot[only marks, mark=square*, mark size=2.5pt, OIskyblue]
+    coordinates {(5.25, 0.19)};
+
+  %% === DATA: V2 PLS+MAG lifetime (2-82 AU, yearly) ===
+  \addplot[OIblue, thick, mark=none, smooth]
+    coordinates {
+      (2, 5.97) (4, 6.91) (5, 6.50) (7, 6.26)
+      (9, 7.09) (11, 6.41) (13, 7.23) (15, 8.27)
+      (18, 7.10) (20, 6.17) (22, 5.76) (25, 5.67)
+      (28, 5.73) (31, 5.55) (34, 6.25) (37, 5.61)
+      (40, 6.23) (43, 6.07) (46, 5.99) (49, 7.74)
+      (52, 7.77) (55, 7.14) (58, 5.94) (61, 6.54)
+      (64, 6.58) (67, 6.36) (70, 6.45) (73, 7.60)
+      (76, 7.84) (79, 9.90) (82, 10.11)
+    };
+
+  %% === DATA: V1 lifetime radial bins (32D, 2 AU bins) ===
+  \addplot[OIorange, thick, mark=*, mark size=1.5pt]
+    coordinates {
+      (5, 36.6) (7, 70.2) (9, 9.57) (11, 5.83)
+      (13, 8.29) (15, 7.33) (17, 5.69) (19, 5.72)
+      (21, 5.88) (23, 6.42) (25, 7.03) (27, 6.35)
+      (29, 6.04) (31, 5.42) (33, 5.78) (35, 5.41)
+      (37, 5.31) (39, 5.28) (41, 5.10) (43, 5.33)
+      (45, 5.10) (47, 5.05) (49, 4.93) (51, 5.22)
+      (53, 5.20) (55, 5.12) (57, 4.94) (59, 5.23)
+      (61, 5.48) (63, 5.36) (65, 5.73)
+    };
+
+  %% === DATA: V1 ISM floor (125-167 AU, 48-sec MAG) ===
+  \addplot[OIgreen, very thick, mark=none]
+    coordinates {
+      (125, 0.018) (130, 0.020) (135, 0.022) (140, 0.021)
+      (143, 0.030) (146, 0.028) (149, 0.025) (152, 0.019)
+      (155, 0.024) (158, 0.020) (161, 0.017) (164, 0.014)
+      (167, 0.012)
+    };
+
+  %% === DATA: V1 termination shock zone ===
+  \addplot[OIvermillion, thick, mark=+, mark size=2pt]
+    coordinates {
+      (88, 8.2) (90, 7.5) (92, 7.8) (94, 7.5)
+      (96, 4.2) (98, 2.1) (100, 0.8) (102, 0.5)
+    };
+
+  %% === DATA: V1 heliopause quench ===
+  \addplot[OIyellow, thick, mark=x, mark size=2pt]
+    coordinates {
+      (116, 0.45) (118, 0.35) (120, 0.15) (121, 0.08)
+      (122, 0.04) (123, 0.025) (124, 0.020)
+    };
+
+  %% === LEGEND ===
+  \legend{
+    MESSENGER (0.32 AU),
+    ACE solar max,
+    ACE solar min,
+    V1{+}V2 Jupiter,
+    V2 MAG{+}PLS lifetime,
+    V1 MAG lifetime,
+    V1 ISM floor (48s),
+    V1 termination shock,
+    V1 heliopause quench,
+  }
+
+  %% === ANNOTATIONS ===
+  %% 5-order-of-magnitude span
+  \draw[white, thick, <->] (axis cs:160, 0.01) -- (axis cs:160, 300);
+  \node[white, font=\sffamily\tiny, rotate=90, anchor=south]
+    at (axis cs:175, 1) {$\sim$5 orders of magnitude};
+
+\end{axis}
+\end{tikzpicture}

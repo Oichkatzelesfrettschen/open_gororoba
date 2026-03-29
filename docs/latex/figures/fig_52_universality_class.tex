@@ -1,0 +1,132 @@
+%% Fig 52: CD Universality Class -- 8 physical domains deforming a shared algebra
+%% Conceptual diagram (no data): illustrates Conjecture C-1627
+%%
+%% Center: Cayley-Dickson tower (abstract algebraic structure)
+%% Ring: 8 validated physical domains, each with characteristic CD response
+%% Arrows: "deformation" from algebra to domain-specific physics
+%%
+%% Style: dark background, Okabe-Ito domain colors, Sans-serif throughout
+\begin{tikzpicture}[
+  domain/.style={
+    draw=#1, fill=#1!15, rounded corners=8pt,
+    minimum width=2.8cm, minimum height=1.4cm,
+    font=\sffamily\scriptsize, align=center,
+    thick, text=white,
+  },
+  center/.style={
+    draw=white!60, fill=black!80, rounded corners=12pt,
+    minimum width=3.5cm, minimum height=2.5cm,
+    font=\sffamily\small\bfseries, align=center,
+    very thick, text=white,
+  },
+  deform/.style={
+    -{Stealth[length=6pt]}, thick, #1!60,
+    shorten >=4pt, shorten <=4pt,
+  },
+  response/.style={
+    font=\sffamily\tiny, #1, anchor=center,
+  },
+]
+  %% Dark background
+  \fill[black!95] (-7.5,-7.5) rectangle (7.5,7.5);
+
+  %% Center: CD Tower
+  \node[center] (tower) at (0,0) {
+    Cayley--Dickson\\[2pt]
+    Tower Algebra\\[4pt]
+    {\scriptsize $\mathbb{R} \subset \mathbb{C} \subset \mathbb{H}
+      \subset \mathbb{O} \subset \mathbb{S} \subset \cdots$}\\[2pt]
+    {\tiny trilinear $\cdot$ recursive $\cdot$ zero-divisor geometry}
+  };
+
+  %% 8 domains arranged in ring (45-degree spacing)
+  %% 0 deg = right, counter-clockwise
+
+  %% Domain 1: Heliosphere (top-right, 22.5 deg)
+  \node[domain=OIorange] (helio) at (22.5:5.5) {
+    Heliosphere\\[1pt]
+    {\tiny 0.3--167 AU}\\[1pt]
+    {\tiny 7 missions}
+  };
+
+  %% Domain 2: Tokamak (top, 67.5 deg)
+  \node[domain=OIvermillion] (tokamak) at (67.5:5.5) {
+    Tokamak\\[1pt]
+    {\tiny MAST, BOUT++}\\[1pt]
+    {\tiny ELM/disruption}
+  };
+
+  %% Domain 3: Accretion (top-left, 112.5 deg)
+  \node[domain=OIpurple] (accretion) at (112.5:5.5) {
+    Accretion Disk\\[1pt]
+    {\tiny GRMHD MRI}\\[1pt]
+    {\tiny channel modes}
+  };
+
+  %% Domain 4: SDO/Solar (left, 157.5 deg)
+  \node[domain=OIyellow] (solar) at (157.5:5.5) {
+    Solar Flares\\[1pt]
+    {\tiny SDO/HMI SHARP}\\[1pt]
+    {\tiny reconnection}
+  };
+
+  %% Domain 5: Magnetar (bottom-left, 202.5 deg)
+  \node[domain=OIvermillion!80!black] (magnetar) at (202.5:5.5) {
+    Magnetar\\[1pt]
+    {\tiny SGR 1806-20}\\[1pt]
+    {\tiny QPO modes}
+  };
+
+  %% Domain 6: Geodynamo (bottom, 247.5 deg)
+  \node[domain=OIgreen] (geodynamo) at (247.5:5.5) {
+    Geodynamo\\[1pt]
+    {\tiny INTERMAGNET}\\[1pt]
+    {\tiny secular variation}
+  };
+
+  %% Domain 7: Jets (bottom-right, 292.5 deg)
+  \node[domain=OIblue] (jets) at (292.5:5.5) {
+    Relativistic Jets\\[1pt]
+    {\tiny EHT M87}\\[1pt]
+    {\tiny polarimetric}
+  };
+
+  %% Domain 8: ISM (right, 337.5 deg)
+  \node[domain=OIskyblue] (ism) at (337.5:5.5) {
+    Interstellar\\Medium\\[1pt]
+    {\tiny Voyager 1\&2}\\[1pt]
+    {\tiny floor 0.017}
+  };
+
+  %% Deformation arrows from center to each domain
+  \draw[deform=OIorange]     (tower) -- (helio);
+  \draw[deform=OIvermillion]  (tower) -- (tokamak);
+  \draw[deform=OIpurple]     (tower) -- (accretion);
+  \draw[deform=OIyellow]     (tower) -- (solar);
+  \draw[deform=OIvermillion]  (tower) -- (magnetar);
+  \draw[deform=OIgreen]      (tower) -- (geodynamo);
+  \draw[deform=OIblue]       (tower) -- (jets);
+  \draw[deform=OIskyblue]    (tower) -- (ism);
+
+  %% Response pattern labels (midpoint of each arrow)
+  \node[response=OIorange!80]    at (22.5:3)  {quench};
+  \node[response=OIvermillion!80] at (67.5:3)  {spike};
+  \node[response=OIpurple!80]    at (112.5:3) {U-shape};
+  \node[response=OIyellow!80]    at (157.5:3) {ceiling};
+  \node[response=OIvermillion!60] at (202.5:3) {QPO};
+  \node[response=OIgreen!80]     at (247.5:3) {jerk};
+  \node[response=OIblue!80]      at (292.5:3) {polarity};
+  \node[response=OIskyblue!80]   at (337.5:3) {floor};
+
+  %% Shared properties ring (inner)
+  \draw[white!30, dashed, thick] (0,0) circle (2cm);
+  \node[white!40, font=\sffamily\tiny, anchor=south] at (0,2.2)
+    {order $\rightarrow$ disruption $\rightarrow$ order};
+
+  %% Title
+  \node[white, font=\sffamily\normalsize\bfseries, anchor=south]
+    at (0,7) {CD Universality Class (C-1627)};
+  \node[white!60, font=\sffamily\tiny, anchor=north]
+    at (0,-7) {Each domain supplies its own deformation of the shared algebraic response};
+
+\end{tikzpicture}
