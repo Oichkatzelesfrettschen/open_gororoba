@@ -1617,6 +1617,7 @@ dependencies = [
  "dyn-stack 0.11.0",
  "fwht",
  "gauss-quad 0.2.4",
+ "iai-callgrind",
  "proptest",
  "pulp 0.22.2",
  "rand 0.8.5",
