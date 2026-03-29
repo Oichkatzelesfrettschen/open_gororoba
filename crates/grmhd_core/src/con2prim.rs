@@ -251,16 +251,11 @@ pub fn con2prim_kastaun(
     let inv_wb = 1.0 / wb.max(1e-30);
     let sb_over_w = s_dot_b / w_sol.max(1e-30);
 
-    let _v1 = (s_up_r + sb_over_w * b1) * inv_wb / (gamma_val * d).max(1e-30) * d;
-    let _v2 = (s_up_th + sb_over_w * b2) * inv_wb / (gamma_val * d).max(1e-30) * d;
-    let _v3 = (s_up_ph + sb_over_w * b3) * inv_wb / (gamma_val * d).max(1e-30) * d;
-
-    // Velocity recovery simplified for clarity:
-    // Actually v^i = (S^i + (S.B)/W * B^i) / (W + B^2) / u^t
-    // where u^t = Gamma / alpha. For now, use v^i ~ S^i / (W + B^2) as approximation.
-    let v1_final = s_up_r * inv_wb;
-    let v2_final = s_up_th * inv_wb;
-    let v3_final = s_up_ph * inv_wb;
+    // Velocity: v^i = (g^{ij} S_j + (S.B)/W * B^i) / (W + B^2)
+    // This is the 3-velocity v^i = u^i / u^t in the coordinate frame.
+    let v1_final = (s_up_r + sb_over_w * b1) * inv_wb;
+    let v2_final = (s_up_th + sb_over_w * b2) * inv_wb;
+    let v3_final = (s_up_ph + sb_over_w * b3) * inv_wb;
 
     let result: Prim = [rho, u, v1_final, v2_final, v3_final, b1, b2, b3];
 

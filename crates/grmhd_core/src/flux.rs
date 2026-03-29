@@ -600,8 +600,8 @@ pub fn max_signal_speed(
             let alpha = if mc_idx < mc.lapse.len() { mc.lapse[mc_idx] } else { 1.0 };
 
             // Max velocity + sound speed
-            let v = p[prims::V1].abs() + p[prims::V2].abs() + p[prims::V3].abs();
-            let speed = alpha * (v + cs);
+            let v = (p[prims::V1].abs() + p[prims::V2].abs() + p[prims::V3].abs()).min(0.99);
+            let speed = alpha * (v + cs).min(1.0); // cap at speed of light
             if speed > max_speed { max_speed = speed; }
         }
     }
