@@ -475,6 +475,34 @@ pub fn compute_rhs_3d(
         }
     }
 
+    // Add GR geometric source terms S_j = T^mu_nu * (1/2) * dg_{mu nu}/dx^j
+    // This compensates for curvature effects missing from the flux divergence.
+    let dr_phys = grid.dx1; // in log-r coordinates
+    let dth_phys = grid.dx2 * std::f64::consts::PI;
+    for i in ng..ng + grid.n1 {
+        for j in ng..ng + grid.n2 {
+            for k in ng..ng + grid.n3 {
+                let idx = grid.idx(i, j, k);
+                let p = {
+                    let slice = prims.get(idx);
+                    let mut arr = [0.0; NPRIM];
+                    arr.copy_from_slice(slice);
+                    arr
+                };
+                let mc_idx = mc.idx(i, n2t, j);
+                let sg = if mc_idx < mc.sqrt_neg_g.len() { mc.sqrt_neg_g[mc_idx] } else { 1.0 };
+
+                let src = crate::source::geometric_source(
+                    &p, &grid.metric, grid.r(i), grid.theta(j), eos, dr_phys, dth_phys,
+                );
+
+                for v in 0..NCONS {
+                    rhs[idx * NCONS + v] += sg * src[v];
+                }
+            }
+        }
+    }
+
     rhs
 }
 
