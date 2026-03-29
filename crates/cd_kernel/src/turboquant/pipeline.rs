@@ -70,6 +70,19 @@ impl TurboQuantMSE {
         TurboQuantMSE { rotation, codebook, d, bits }
     }
 
+    /// Create with a specific distribution-aware codebook.
+    ///
+    /// For real LLM KV cache data (non-Gaussian, heavy-tailed), use
+    /// `DistributionFamily::GeneralizedGaussian` with beta=0.9.
+    pub fn with_codebook(d: usize, bits: u32, seed: u64, use_wht: bool, codebook: LloydMaxCodebook) -> Self {
+        let rotation = if use_wht {
+            Rotation::new_fast_jl(d, seed)
+        } else {
+            Rotation::new_haar(d, seed)
+        };
+        TurboQuantMSE { rotation, codebook, d, bits }
+    }
+
     /// Quantize a single vector.  Returns compressed indices + vec_norm.
     ///
     /// `x` has length d.

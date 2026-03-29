@@ -29,6 +29,20 @@
 //! | vs KIVI | 3.6-4.0x better at all bits |
 //! | Cross-layer SLERP | 1.94x additional compression |
 //!
+//! # Real LLM Validation (SmolLM2-135M, TinyLlama-1.1B, Qwen2.5-0.5B)
+//!
+//! | Metric (3-bit) | SmolLM2 | TinyLlama | Qwen2.5 |
+//! |----------------|---------|-----------|---------|
+//! | Key cosine | 0.9847 | 0.9847 | 0.9844 |
+//! | Val cosine | 0.9838 | 0.9837 | 0.9838 |
+//! | PPL increase | +15.7% | -- | -- |
+//! | Raw kurtosis | 10.2 | 28.0 | 9.4 |
+//! | Post-rotation | 2.53 | 2.68 | 2.60 |
+//!
+//! FastJL rotation Gaussianizes heavy-tailed real KV data (kurtosis 10-28
+//! becomes 2.5-2.7), making Gaussian codebook optimal.  At 4-bit: +0.8% PPL
+//! with 4x compression.
+//!
 //! # Architecture
 //!
 //! See `docs/reports/turboquant_architecture_2026-03-29.md` for the full
