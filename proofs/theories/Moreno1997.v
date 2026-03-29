@@ -119,5 +119,15 @@ Proof.
   exact (moreno16_arbitrary_a_dim_mod4 H).
 Qed.
 
+Theorem Moreno1997_theorem_1_16_canonical_arbitrary_a_bridge :
+  Nat.modulo
+    (moreno16_concrete_vlambda_dim
+       (moreno16_concrete_witness moreno16_canonical_arbitrary_a_hypotheses))
+    4 = 0.
+Proof.
+  exact
+    (moreno16_arbitrary_a_dim_mod4 moreno16_canonical_arbitrary_a_hypotheses).
+Qed.
+
 Theorem Moreno1997_lane_compiles : True.
 Proof. exact I. Qed.
