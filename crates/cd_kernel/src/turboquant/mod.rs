@@ -52,6 +52,7 @@ pub mod cuda;
 pub mod dispatch;
 pub mod e8_rotation;
 pub mod e8_validation;
+pub mod fixed_point;
 pub mod grouping;
 pub mod hierarchical;
 pub mod optimized;

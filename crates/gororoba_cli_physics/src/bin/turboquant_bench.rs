@@ -35,8 +35,8 @@ struct Cli {
     #[arg(long, default_value_t = 10_000)]
     n_vectors: usize,
 
-    /// Rotation method: "haar" or "wht" or "both".
-    #[arg(long, default_value = "both")]
+    /// Rotation method: "haar", "wht", "e8", "all", or "both" (haar+wht).
+    #[arg(long, default_value = "all")]
     rotation: String,
 
     /// Output JSON path.
@@ -116,15 +116,23 @@ fn generate_random_vectors(n: usize, d: usize, seed: u64) -> Vec<Vec<f64>> {
 fn bench_mse_pipeline(
     d: usize,
     bits: u32,
-    use_wht: bool,
+    rotation_name: &str,
     vectors: &[Vec<f64>],
     queries: &[Vec<f64>],
 ) -> PipelineResult {
     let n = vectors.len();
-    let rotation_name = if use_wht { "wht" } else { "haar" };
+
+    // Select rotation method based on name
+    let use_wht = rotation_name != "haar";
+    let use_e8 = rotation_name == "e8" && d == 128;
 
     // MSE-only pipeline
-    let tq_mse = TurboQuantMSE::new(d, bits, 42, use_wht);
+    let tq_mse = if use_e8 {
+        let cfg = cd_kernel::turboquant::config::TurboQuantConfig::recommended(d, bits);
+        TurboQuantMSE::from_config(&cfg, bits, 42)
+    } else {
+        TurboQuantMSE::new(d, bits, 42, use_wht)
+    };
     // Prod pipeline (MSE + QJL)
     let tq_prod = TurboQuantProd::new(d, bits, 42, use_wht, None);
 
@@ -230,13 +238,15 @@ fn main() -> Result<()> {
     );
     println!("  Vectors per config: {}", cli.n_vectors);
 
-    let rotations: Vec<bool> = match cli.rotation.as_str() {
-        "haar" => vec![false],
-        "wht" => vec![true],
-        "both" => vec![false, true],
+    let rotation_names: Vec<&str> = match cli.rotation.as_str() {
+        "haar" => vec!["haar"],
+        "wht" => vec!["wht"],
+        "e8" => vec!["e8"],
+        "both" => vec!["haar", "wht"],
+        "all" => vec!["haar", "wht", "e8"],
         _ => {
-            eprintln!("Unknown rotation '{}', using both", cli.rotation);
-            vec![false, true]
+            eprintln!("Unknown rotation '{}', using all", cli.rotation);
+            vec!["haar", "wht", "e8"]
         }
     };
 
@@ -247,11 +257,14 @@ fn main() -> Result<()> {
         let queries = generate_random_vectors(cli.n_vectors.min(1000), d, 99);
 
         for &bits in &cli.bits {
-            for &use_wht in &rotations {
-                let rot_name = if use_wht { "wht" } else { "haar" };
+            for &rot_name in &rotation_names {
+                // E8 only works at d=128
+                if rot_name == "e8" && d != 128 {
+                    continue;
+                }
                 print!("  d={:<4} bits={} rot={:<4} ... ", d, bits, rot_name);
 
-                let result = bench_mse_pipeline(d, bits, use_wht, &vectors, &queries);
+                let result = bench_mse_pipeline(d, bits, rot_name, &vectors, &queries);
 
                 println!(
                     "quantize {:.0} kvec/s  MSE={:.6}  cos={:.4}  ratio={:.1}x",

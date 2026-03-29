@@ -77,9 +77,11 @@ impl TurboQuantConfig {
     /// - bits >= 4: QJL correction off (adds noise at high quality)
     /// - adaptive bits: enabled, top 25% promoted (23% MSE gain)
     pub fn recommended(dim: usize, bits: u32) -> Self {
-        let rotation = if dim == 128 {
-            RotationMethod::E8Block
-        } else if dim >= 64 {
+        // E8 rotation has validated decorrelation (KS p=0.816) but produces
+        // a non-Gaussian marginal that the standard codebook handles poorly
+        // (MSE 2.57 vs WHT 1.44).  Disabled by default until custom codebook
+        // or E8+WHT composition is implemented.
+        let rotation = if dim >= 64 {
             RotationMethod::FastJL
         } else {
             RotationMethod::Haar
@@ -193,18 +195,19 @@ mod tests {
     #[test]
     fn test_recommended_d128_3bit() {
         let cfg = TurboQuantConfig::recommended(128, 3);
-        assert_eq!(cfg.rotation, RotationMethod::E8Block); // d=128 -> E8
+        // FastJL for d=128 (E8 disabled pending custom codebook)
+        assert_eq!(cfg.rotation, RotationMethod::FastJL);
         assert!(cfg.should_apply_qjl()); // bits=3 <= max_bits=3
         assert!(cfg.adaptive.enabled);
         assert!((cfg.adaptive.promote_fraction - 0.25).abs() < 1e-10);
         assert!(cfg.use_wht());
-        assert!(cfg.use_e8());
+        assert!(!cfg.use_e8()); // E8 not default until codebook issue resolved
     }
 
     #[test]
     fn test_recommended_d128_4bit() {
         let cfg = TurboQuantConfig::recommended(128, 4);
-        assert_eq!(cfg.rotation, RotationMethod::E8Block);
+        assert_eq!(cfg.rotation, RotationMethod::FastJL);
         assert!(!cfg.should_apply_qjl()); // bits=4 > max_bits=3 -> off
     }
 
@@ -245,7 +248,7 @@ mod tests {
         let s = format!("{}", cfg);
         assert!(s.contains("128"));
         assert!(s.contains("3bit"));
-        assert!(s.contains("E8Block"));
+        assert!(s.contains("FastJL")); // default rotation for d=128
         println!("{}", s);
     }
 
