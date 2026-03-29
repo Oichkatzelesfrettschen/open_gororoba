@@ -30,9 +30,10 @@
 
     Remaining Moreno-specific Rocq backlog:
     - Theorem 1.16 concrete arbitrary-a CD instantiation; the abstract
-      H_a-orbit/module proof and the canonical octonion profile are both
-      formalized, but the bridge from concrete V_lambda subspaces to that
-      module interface remains open
+      H_a-orbit/module proof, the canonical octonion profile, and a first
+      canonical concrete-to-abstract dimension bridge are now formalized, but
+      the bridge from arbitrary concrete V_lambda subspaces to that module
+      interface remains open
     - Theorem 2.9 full arbitrary-alternative CD discharge; the abstract iff
       core and the canonical witness lane are both formalized, but the bridge
       from Moreno's CD hypotheses to the explicit side conditions remains open
@@ -40,6 +41,7 @@
     The executable Rust companion for this paper is `crates/moreno_1997/`. *)
 
 From OpenGororoba Require Export
+  FinDimHModule
   C1539_MorSkewSymm
   CDTraceZero
   C1538_MorZDSymmetry
@@ -57,6 +59,47 @@ From OpenGororoba Require Export
   CDSignBridge
   CDSignHalfStep
   CDSignSection.
+
+(** The first concrete-to-abstract Moreno 1.16 bridge.
+
+    The full arbitrary-a instantiation is still open, but the canonical A_3
+    witness now routes through the abstract H-module dimension theorem rather
+    than only through the direct 4 = 0 mod 4 arithmetic close-out. *)
+
+Theorem Moreno1997_theorem_1_16_canonical_v1_bridge :
+  is_h_module_dim moreno15_ker_t_tilde_dim /\
+  Nat.modulo moreno15_ker_t_tilde_dim 4 = 0.
+Proof.
+  split.
+  - unfold moreno15_ker_t_tilde_dim.
+    exact moreno16_hmd_4.
+  - apply moreno16_orbit_dim_mod4.
+    unfold moreno15_ker_t_tilde_dim.
+    exact moreno16_hmd_4.
+Qed.
+
+Theorem Moreno1997_theorem_1_16_canonical_nonunit_bridge :
+  is_h_module_dim moreno15_vlambda_total_dim /\
+  Nat.modulo moreno15_vlambda_total_dim 4 = 0.
+Proof.
+  split.
+  - unfold moreno15_vlambda_total_dim.
+    exact hmd_zero.
+  - apply moreno16_orbit_dim_mod4.
+    unfold moreno15_vlambda_total_dim.
+    exact hmd_zero.
+Qed.
+
+Corollary Moreno1997_theorem_1_16_canonical_bridge :
+  (is_h_module_dim moreno15_ker_t_tilde_dim /\
+   Nat.modulo moreno15_ker_t_tilde_dim 4 = 0) /\
+  (is_h_module_dim moreno15_vlambda_total_dim /\
+   Nat.modulo moreno15_vlambda_total_dim 4 = 0).
+Proof.
+  split.
+  - exact Moreno1997_theorem_1_16_canonical_v1_bridge.
+  - exact Moreno1997_theorem_1_16_canonical_nonunit_bridge.
+Qed.
 
 Theorem Moreno1997_lane_compiles : True.
 Proof. exact I. Qed.
