@@ -34,6 +34,8 @@
 //! assert!((check.to_f64() - 2.0/3.0).abs() < 1e-9);
 //! ```
 
+pub mod solver;
+
 use std::fmt;
 use std::ops::{Add, AddAssign, Sub, SubAssign, Neg};
 
