@@ -72,3 +72,19 @@ pub use wilmot_2025;
 pub use brown_1967;
 pub use brown_1972;
 pub use de_marrais_2000;
+
+#[cfg(test)]
+mod tests {
+    use super::prelude::*;
+
+    #[test]
+    fn hurwitz_dim8_is_composition() {
+        let h = classify(8);
+        assert!(h.is_composition);
+    }
+
+    #[test]
+    fn sedenion_assessor_count() {
+        assert_eq!(TOTAL_ASSESSORS, 42);
+    }
+}
