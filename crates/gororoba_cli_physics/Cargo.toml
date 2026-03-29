@@ -345,6 +345,14 @@ name = "heliosphere-quench-scan"
 path = "src/bin/heliosphere_quench_scan.rs"
 
 [[bin]]
+name = "heliosphere-order-surplus"
+path = "src/bin/heliosphere_order_surplus.rs"
+
+[[bin]]
+name = "heliosphere-effective-rank"
+path = "src/bin/heliosphere_effective_rank.rs"
+
+[[bin]]
 name = "heliosphere-feature-cube"
 path = "src/bin/heliosphere_feature_cube.rs"
 
@@ -919,6 +927,14 @@ path = "src/bin/dynamo_cd.rs"
 [[bin]]
 name = "turboquant-sedenion-rotation"
 path = "src/bin/turboquant_sedenion_rotation.rs"
+
+[[bin]]
+name = "turboquant-bench"
+path = "src/bin/turboquant_bench.rs"
+
+[[bin]]
+name = "turboquant-validate"
+path = "src/bin/turboquant_validate.rs"
 
 [[bin]]
 name = "mast-cd-vs-spectrogram"

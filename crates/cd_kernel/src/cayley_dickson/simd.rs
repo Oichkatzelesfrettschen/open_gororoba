@@ -772,6 +772,110 @@ pub fn cd_multiply_f32_into(a: &[f32], b: &[f32], out: &mut [f32], dim: usize) {
     }
 }
 
+/// Workspace size needed for `cd_multiply_f32_fused` at the given dimension.
+///
+/// Each recursion level needs 6 * half = 3 * dim floats (2 conjugation + 4 temp).
+/// The recursive formula W(d) = 3*d + W(d/2) with W(8) = 0 gives:
+///   W(16) = 48, W(32) = 144, W(64) = 336, W(128) = 720, W(256) = 1488
+///
+/// This pre-allocation eliminates all heap allocations during the hot multiply loop
+/// for dims 16-128 (the sequential path). Translated from steinmarder's Instant-NGP
+/// fused matmul pattern: keep intermediates in pre-allocated workspace instead of
+/// allocating per layer.
+pub fn cd_multiply_f32_workspace_size(dim: usize) -> usize {
+    if dim <= 8 {
+        return 0;
+    }
+    3 * dim + cd_multiply_f32_workspace_size(dim / 2)
+}
+
+/// Non-allocating f32 CD multiply using pre-allocated workspace.
+///
+/// Functionally identical to `cd_multiply_f32_into`, but uses `ws` for all
+/// intermediate storage instead of allocating Vecs. The workspace must have
+/// at least `cd_multiply_f32_workspace_size(dim)` elements.
+///
+/// For dim >= 256, falls through to the rayon-parallel allocating path since
+/// thread ownership requires separate allocations anyway.
+pub fn cd_multiply_f32_fused(a: &[f32], b: &[f32], out: &mut [f32], dim: usize, ws: &mut [f32]) {
+    debug_assert!(a.len() >= dim && b.len() >= dim && out.len() >= dim);
+    match dim {
+        1 => out[0] = a[0] * b[0],
+        2 => {
+            out[0] = a[0] * b[0] - a[1] * b[1];
+            out[1] = a[0] * b[1] + a[1] * b[0];
+        }
+        4 => {
+            let q = a;
+            let r = b;
+            out[0] = q[0] * r[0] - q[1] * r[1] - q[2] * r[2] - q[3] * r[3];
+            out[1] = q[0] * r[1] + q[1] * r[0] + q[2] * r[3] - q[3] * r[2];
+            out[2] = q[0] * r[2] - q[1] * r[3] + q[2] * r[0] + q[3] * r[1];
+            out[3] = q[0] * r[3] + q[1] * r[2] - q[2] * r[1] + q[3] * r[0];
+        }
+        8 => {
+            let mut ac = [0.0f32; 4];
+            let mut db = [0.0f32; 4];
+            let mut da = [0.0f32; 4];
+            let mut bc_conj = [0.0f32; 4];
+            cd_multiply_f32_fused(&a[..4], &b[..4], &mut ac, 4, ws);
+            let conj_cr = [b[4], -b[5], -b[6], -b[7]];
+            cd_multiply_f32_fused(&conj_cr, &a[4..8], &mut db, 4, ws);
+            cd_multiply_f32_fused(&b[4..8], &a[..4], &mut da, 4, ws);
+            let conj_cl = [b[0], -b[1], -b[2], -b[3]];
+            cd_multiply_f32_fused(&a[4..8], &conj_cl, &mut bc_conj, 4, ws);
+            for i in 0..4 {
+                out[i] = ac[i] - db[i];
+                out[4 + i] = da[i] + bc_conj[i];
+            }
+        }
+        d if d >= 16 && d.is_power_of_two() => {
+            if d >= 256 {
+                // Fall through to allocating rayon path at high dims
+                cd_multiply_f32_into(a, b, out, dim);
+                return;
+            }
+            let half = d / 2;
+            // Slice workspace into regions:
+            //   [0..half)          = conj_cr
+            //   [half..2*half)     = conj_cl
+            //   [2*half..3*half)   = t1
+            //   [3*half..4*half)   = t2
+            //   [4*half..5*half)   = t3
+            //   [5*half..6*half)   = t4
+            //   [6*half..)         = recursive workspace
+            let (level_ws, recurse_ws) = ws.split_at_mut(6 * half);
+
+            // Conjugation into workspace slices
+            level_ws[0] = b[half]; // conj_cr[0]
+            level_ws[half] = b[0]; // conj_cl[0]
+            for i in 1..half {
+                level_ws[i] = -b[half + i];         // conj_cr[i]
+                level_ws[half + i] = -b[i];          // conj_cl[i]
+            }
+
+            let (conj_region, temp_region) = level_ws.split_at_mut(2 * half);
+            let conj_cr_s = &conj_region[..half];
+            let conj_cl_s = &conj_region[half..2 * half];
+
+            // t1 = a_l * c_l
+            cd_multiply_f32_fused(&a[..half], &b[..half], &mut temp_region[..half], half, recurse_ws);
+            // t2 = conj(c_r) * a_r
+            cd_multiply_f32_fused(conj_cr_s, &a[half..], &mut temp_region[half..2 * half], half, recurse_ws);
+            // t3 = c_r * a_l
+            cd_multiply_f32_fused(&b[half..], &a[..half], &mut temp_region[2 * half..3 * half], half, recurse_ws);
+            // t4 = a_r * conj(c_l)
+            cd_multiply_f32_fused(&a[half..], conj_cl_s, &mut temp_region[3 * half..4 * half], half, recurse_ws);
+
+            for i in 0..half {
+                out[i] = temp_region[i] - temp_region[half + i];
+                out[half + i] = temp_region[2 * half + i] + temp_region[3 * half + i];
+            }
+        }
+        _ => panic!("cd_multiply_f32_fused: unsupported dim {dim}"),
+    }
+}
+
 /// f32 CD associator norm: ||(a*b)*c - a*(b*c)|| at f32 precision
 pub fn cd_associator_norm_f32(a: &[f32], b: &[f32], c: &[f32], dim: usize) -> f32 {
     let mut ab = vec![0.0f32; dim];

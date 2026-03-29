@@ -54,8 +54,9 @@ impl SoaEmbeddingCache {
         &self.data[start..start + self.n_vectors]
     }
 
-    /// Compute CD associator norms using SoA layout
-    /// The key optimization: component-wise operations are cache-line aligned
+    /// Compute CD associator norms using SoA layout with workspace reuse.
+    /// The key optimization: component-wise operations are cache-line aligned,
+    /// and the AssociatorWorkspace reuses 3 buffers across all triplets.
     pub fn batch_associator_norms(&self) -> Vec<f32> {
         if self.n_vectors < 3 {
             return vec![];
@@ -63,12 +64,13 @@ impl SoaEmbeddingCache {
 
         let n = self.n_vectors - 2;
         let mut norms = Vec::with_capacity(n);
+        let mut ws = super::fast_associator::AssociatorWorkspace::new(self.dim);
 
         for i in 0..n {
             let a = self.load(i);
             let b = self.load(i + 1);
             let c = self.load(i + 2);
-            norms.push(super::simd::cd_associator_norm_f32(&a, &b, &c, self.dim));
+            norms.push(ws.associator_norm(&a, &b, &c));
         }
 
         norms
@@ -87,9 +89,14 @@ impl SoaEmbeddingCache {
 /// Translated from steinmarder's A-A streaming single-buffer parity pattern.
 /// Instead of storing ALL embeddings (O(N*dim)), keeps only the 3-element
 /// sliding window needed for the associator triplet (a, b, c).
+///
+/// Uses AssociatorWorkspace internally: the ring buffer holds 3 embedding slots
+/// and the workspace holds 3 computation buffers, for a total of 6*dim f32 memory.
 pub struct RingEmbeddingCache {
     /// Three slots for the sliding window [oldest, middle, newest]
     slots: [Vec<f32>; 3],
+    /// Reusable workspace for associator computation
+    ws: super::fast_associator::AssociatorWorkspace,
     /// Embedding dimension
     dim: usize,
     /// Current write position (0, 1, 2, wraps around)
@@ -102,6 +109,7 @@ impl RingEmbeddingCache {
     pub fn new(dim: usize) -> Self {
         Self {
             slots: [vec![0.0f32; dim], vec![0.0f32; dim], vec![0.0f32; dim]],
+            ws: super::fast_associator::AssociatorWorkspace::new(dim),
             dim,
             write_pos: 0,
             count: 0,
@@ -110,6 +118,7 @@ impl RingEmbeddingCache {
 
     /// Push a new embedding vector into the ring buffer.
     /// Returns Some(associator_norm) if we have a complete triplet.
+    /// Uses the reusable AssociatorWorkspace to avoid per-call allocation.
     pub fn push_and_compute(&mut self, vector: &[f32]) -> Option<f32> {
         debug_assert!(vector.len() >= self.dim);
         self.slots[self.write_pos][..self.dim].copy_from_slice(&vector[..self.dim]);
@@ -122,11 +131,10 @@ impl RingEmbeddingCache {
             let a_idx = self.write_pos; // oldest (just wrapped past)
             let b_idx = (self.write_pos + 1) % 3;
             let c_idx = (self.write_pos + 2) % 3;
-            Some(super::simd::cd_associator_norm_f32(
+            Some(self.ws.associator_norm(
                 &self.slots[a_idx],
                 &self.slots[b_idx],
                 &self.slots[c_idx],
-                self.dim,
             ))
         } else {
             None
