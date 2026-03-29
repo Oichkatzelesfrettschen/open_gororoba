@@ -97,7 +97,7 @@ impl FluxWorkspace {
 ///
 /// The stress-energy tensor is:
 ///   T^mu_nu = (rho + u + p + b^2) u^mu u_nu + (p + b^2/2) delta^mu_nu - b^mu b_nu
-fn compute_flux_from_prim(
+pub fn compute_flux_from_prim(
     p: &Prim,
     metric: &KerrMetric,
     r: f64,

@@ -447,4 +447,58 @@ mod tests {
             }
         }
     }
+
+    #[test]
+    fn test_single_cell_b_trace() {
+        // Trace ONE CELL through prim2con -> flux -> HLL -> con2prim
+        // to find WHERE the sqrt(-g) amplification happens.
+        let metric = KerrMetric::schwarzschild();
+        let eos = crate::eos::GammaLaw::harm_default();
+        let r = 10.0;
+        let th = std::f64::consts::FRAC_PI_2;
+
+        // Compute sqrt(-g) the same way the grid does
+        let sigma: f64 = r * r; // at equator
+        let sqrt_neg_g_raw = sigma.sqrt() * th.sin().abs(); // = 10
+        let sg = sqrt_neg_g_raw * r * std::f64::consts::PI * 2.0 * std::f64::consts::PI;
+
+        println!("\n=== SINGLE CELL B-FIELD TRACE at r={} ===", r);
+        println!("  sqrt(-g)_raw = {:.4}", sqrt_neg_g_raw);
+        println!("  sg (with Jacobian) = {:.4}", sg);
+
+        // Primitive: torus-like with B and orbital velocity
+        let p: crate::prims::Prim = [1.0, 0.01, 0.0, 0.0, 0.1, 0.5, 0.3, 0.0];
+        println!("  P: rho={}, v3={}, B1={}, B2={}", p[0], p[4], p[5], p[6]);
+
+        // prim2con
+        let u = crate::cons::prim2con(&p, &metric, r, th, &eos, sg);
+        println!("  U[5] (sgB1) = {:.4}, U[6] (sgB2) = {:.4}", u[5], u[6]);
+        println!("  U[5]/sg = {:.6} (expect B1={})", u[5] / sg, p[5]);
+        println!("  U[6]/sg = {:.6} (expect B2={})", u[6] / sg, p[6]);
+
+        // Verify B conservation through prim2con
+        assert!((u[5] / sg - p[5]).abs() < 1e-10, "B1 not preserved in prim2con");
+        assert!((u[6] / sg - p[6]).abs() < 1e-10, "B2 not preserved in prim2con");
+
+        // Compute flux in r-direction
+        let f = crate::flux::compute_flux_from_prim(&p, &metric, r, th, &eos, sg, 0);
+        println!("  F[5] = {:.4}, F[6] = {:.4}", f[5], f[6]);
+
+        // The flux F[6] = sg * (v_r * B_th - v_th * B_r)
+        // v_r = p[2] = 0, v_th = p[3] = 0, so F[6] should be 0!
+        let expected_f6 = sg * (p[2] * p[6] - p[3] * p[5]);
+        println!("  Expected F[6] = sg*(vr*B2 - v2*Br) = {:.4}", expected_f6);
+        println!("  Actual F[6] = {:.4}", f[6]);
+        println!("  Difference: {:.6}", (f[6] - expected_f6).abs());
+
+        // If v_r = v_theta = 0, then the induction flux should be ZERO!
+        // Any nonzero value means the flux computation has a bug.
+        if p[2].abs() < 1e-10 && p[3].abs() < 1e-10 {
+            println!("\n  *** v_r = v_theta = 0, so induction flux MUST be zero ***");
+            println!("  F[5] = {:.6e} (should be 0)", f[5]);
+            println!("  F[6] = {:.6e} (should be 0)", f[6]);
+            assert!(f[5].abs() < 1e-8, "F[5] nonzero with v_r=v_theta=0: {}", f[5]);
+            assert!(f[6].abs() < 1e-8, "F[6] nonzero with v_r=v_theta=0: {}", f[6]);
+        }
+    }
 }
