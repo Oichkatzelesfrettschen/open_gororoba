@@ -203,12 +203,26 @@ minifb = "0.28"
 # CPU affinity
 core_affinity = "0.8"
 
-# SIMD
-wide = "0.7"                 # Portable SIMD (f64x4, f64x2, etc.) -- legacy, migrating to pulp
-pulp = "0.22"                # Runtime-dispatched SIMD (powers faer, 8.5M downloads)
+# === Complementary Compute Stack ===
+# Each crate fills a strictly non-overlapping role:
 
-# Hardware-accelerated distance metrics
-simsimd = "5"                # SIMD distance functions (L2, cosine, dot) -- AVX2/AVX-512/NEON
+# SIMD types + dispatch + distance
+wide = "0.7"                 # Named SIMD types (f64x4, f32x8) for explicit vectorization
+pulp = "0.22"                # Runtime-dispatched SIMD autovectorization (powers faer)
+simsimd = "5"                # Hardware-accelerated distance functions (L2, cosine, dot)
+
+# Parallelism (rayon already in workspace) + concurrency hygiene
+crossbeam-utils = "0.8"      # CachePadded (false-sharing), Backoff, scoped threads
+
+# Buffer/alignment/zero-copy layer
+aligned-vec = "0.6"          # AVec/ABox: runtime-aligned allocation for SIMD + cache
+dyn-stack = "0.11"           # Reusable scratch workspace (dynamic temp arrays, no alloc churn)
+bytemuck = "1.25"            # POD/slice casting (cast_slice, cast_ref -- lean zero-copy)
+smallvec = "1.15"            # Inline small buffers, heap spill only when needed
+
+# Memory-mapped I/O (memmap2 already in data_core/cli_physics directly)
+
+# Benchmarking (criterion + iai-callgrind already in workspace)
 
 # ONNX Runtime for real-model evaluation
 ort = { version = "2.0.0-rc.12", default-features = false }
