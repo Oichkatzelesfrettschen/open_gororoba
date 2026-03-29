@@ -54,6 +54,7 @@ pub mod e8_rotation;
 pub mod e8_validation;
 pub mod grouping;
 pub mod hierarchical;
+pub mod optimized;
 pub mod pipeline;
 pub mod qjl;
 pub mod rotation;

@@ -52,6 +52,22 @@ impl TurboQuantMSE {
         TurboQuantMSE { rotation, codebook, d, bits }
     }
 
+    /// Create from a TurboQuantConfig, using the configured rotation method.
+    ///
+    /// This is the recommended constructor: it selects E8 for d=128,
+    /// FastJL for d>=64, and Haar for smaller dimensions.
+    pub fn from_config(config: &super::config::TurboQuantConfig, bits: u32, seed: u64) -> Self {
+        use super::config::RotationMethod;
+        let d = config.dim;
+        let rotation = match &config.rotation {
+            RotationMethod::E8Block => Rotation::new_e8(d, seed),
+            RotationMethod::FastJL => Rotation::new_fast_jl(d, seed),
+            RotationMethod::Haar => Rotation::new_haar(d, seed),
+        };
+        let codebook = lloyd_max::get_codebook(d, bits);
+        TurboQuantMSE { rotation, codebook, d, bits }
+    }
+
     /// Quantize a single vector.  Returns compressed indices + vec_norm.
     ///
     /// `x` has length d.
