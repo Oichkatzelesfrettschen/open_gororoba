@@ -64,6 +64,7 @@ pub mod rotation;
 pub mod rotation_diagnostics;
 pub mod sign_pack;
 pub mod simd_codebook;
+pub mod synthesized;
 pub mod zd_bias;
 #[cfg(feature = "vulkan")]
 pub mod vulkan;
