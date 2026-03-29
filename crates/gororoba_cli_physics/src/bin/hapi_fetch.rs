@@ -65,6 +65,8 @@ fn hapi_get(url: &str) -> Result<String> {
         .call()
         .map_err(|e| anyhow::anyhow!("HAPI request failed: {}", e))?
         .into_body()
+        .with_config()
+        .limit(500 * 1024 * 1024) // 500 MB limit for large datasets
         .read_to_string()
         .map_err(|e| anyhow::anyhow!("HAPI read failed: {}", e))?;
     Ok(body)
