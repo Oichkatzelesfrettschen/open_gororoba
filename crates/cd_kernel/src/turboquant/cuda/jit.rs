@@ -13,6 +13,8 @@ pub mod kernel_names {
     pub const DEQUANT_DOT: &str = "turboquant_dequant_dot";
     pub const SIGN_DOT: &str = "turboquant_sign_dot";
     pub const FAST_JL_ROTATE: &str = "turboquant_fast_jl_rotate";
+    /// Q16.16 fixed-point exact dequant+dot (zero accumulation drift).
+    pub const DEQUANT_DOT_Q16: &str = "turboquant_dequant_dot_q16";
 }
 
 /// Compile the TurboQuant kernel source for the detected architecture.
@@ -57,6 +59,7 @@ mod tests {
         assert!(KERNEL_SRC.contains("turboquant_dequant_dot"));
         assert!(KERNEL_SRC.contains("turboquant_sign_dot"));
         assert!(KERNEL_SRC.contains("turboquant_fast_jl_rotate"));
+        assert!(KERNEL_SRC.contains("turboquant_dequant_dot_q16"));
     }
 
     #[test]

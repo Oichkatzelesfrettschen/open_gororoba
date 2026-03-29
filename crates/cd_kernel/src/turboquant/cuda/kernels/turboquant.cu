@@ -197,4 +197,50 @@ __global__ void turboquant_fast_jl_rotate(
     }
 }
 
+// ---------- Kernel 5: Q16.16 fixed-point dequant+dot ----------
+// Exact order-independent attention score computation via integer arithmetic.
+// Based on steinmarder's Q16.16 LBM kernel: 1945 MLUPS, zero mass drift.
+//
+// Q16.16 format: 32-bit integer, bits[31:16]=integer, bits[15:0]=fraction.
+// Resolution: 1/65536 = 1.53e-5.  Accumulation via IADD3 is exact.
+//
+// centroids_q16: (n_levels,) int32, Q16.16 centroids
+// queries_q16:   (n_queries, d) int32, Q16.16 query vectors
+// key_indices:   (d, n_keys) u8, SoA layout
+// key_norms_q16: (n_keys,) int32, Q16.16 norms
+// scores:        (n_queries, n_keys) float, output (converted from Q16.16)
+__global__ void turboquant_dequant_dot_q16(
+    const int* __restrict__ centroids_q16,
+    const int* __restrict__ queries_q16,
+    const unsigned char* __restrict__ key_indices,
+    const int* __restrict__ key_norms_q16,
+    float* __restrict__ scores,
+    int d,
+    int n_queries,
+    int n_keys
+) {
+    int qi = blockIdx.y;
+    int ki = blockIdx.x * blockDim.x + threadIdx.x;
+    if (qi >= n_queries || ki >= n_keys) return;
+
+    const int* q = queries_q16 + qi * d;
+
+    // Integer accumulation: exact, order-independent.
+    // Uses IADD3 on Ada (3-input integer add, 2.51 cyc latency).
+    long long acc = 0;  // i64 accumulator
+
+    for (int c = 0; c < d; c++) {
+        unsigned char idx = key_indices[c * n_keys + ki];  // SoA coalesced read
+        int k_val = centroids_q16[idx];                     // Q16.16 centroid
+        int q_val = q[c];                                    // Q16.16 query
+        acc += (long long)q_val * (long long)k_val;          // Exact integer multiply
+    }
+
+    // Finalize: shift right by 16 to get Q16.16 result, apply norm, convert to float
+    int dot_q16 = (int)(acc >> 16);
+    long long scaled = (long long)dot_q16 * (long long)key_norms_q16[ki];
+    float result = (float)(scaled >> 16) / 65536.0f;  // Q16.16 -> float
+    scores[qi * n_keys + ki] = result;
+}
+
 }  // extern "C"

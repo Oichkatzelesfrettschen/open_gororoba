@@ -61,6 +61,7 @@ impl TurboQuantMSE {
         let d = config.dim;
         let rotation = match &config.rotation {
             RotationMethod::E8Block => Rotation::new_e8(d, seed),
+            RotationMethod::E8Wht => Rotation::new_e8_wht(d, seed),
             RotationMethod::FastJL => Rotation::new_fast_jl(d, seed),
             RotationMethod::Haar => Rotation::new_haar(d, seed),
         };

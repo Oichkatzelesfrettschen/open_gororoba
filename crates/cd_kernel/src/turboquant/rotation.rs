@@ -236,6 +236,15 @@ pub struct E8BlockData {
     pub d: usize,
 }
 
+/// E8 + WHT composition data.
+#[derive(Clone, Debug)]
+pub struct E8WhtData {
+    pub e8: E8BlockData,
+    pub d1: Vec<f64>,
+    pub d2: Vec<f64>,
+    pub d: usize,
+}
+
 /// Rotation method selector.
 #[derive(Clone, Debug)]
 pub enum Rotation {
@@ -247,6 +256,10 @@ pub enum Rotation {
     /// Validated: KS p=0.816 vs Haar at d=128.  136x fewer parameters.
     /// Only works for d=128 (8 blocks of 16D sedenion).
     E8Block(Box<E8BlockData>),
+    /// E8 + WHT composition: E8 for block-level algebraic decorrelation,
+    /// then per-block WHT for within-block Gaussianization.
+    /// Combines E8's CD-native structure with WHT's throughput.
+    E8Wht(Box<E8WhtData>),
 }
 
 impl Rotation {
@@ -289,11 +302,36 @@ impl Rotation {
         Rotation::E8Block(Box::new(E8BlockData { roots, conj_roots, d }))
     }
 
+    /// Create E8 + WHT composition rotation for d=128.
+    ///
+    /// Forward: E8 block rotate -> WHT with Rademacher diagonals.
+    /// This gives E8's algebraic structure plus WHT's Gaussianization.
+    pub fn new_e8_wht(d: usize, seed: u64) -> Self {
+        assert_eq!(d, 128, "E8+WHT requires d=128");
+
+        // Build E8 part
+        let all_roots = super::e8_rotation::generate_e8_roots();
+        let roots = super::e8_rotation::select_diverse_roots(&all_roots, seed);
+        let mut conj_roots = roots;
+        for root in &mut conj_roots {
+            for c in root.coords[1..].iter_mut() {
+                *c = -*c;
+            }
+        }
+        let e8 = E8BlockData { roots, conj_roots, d };
+
+        // Build WHT Rademacher part (use different seed to avoid correlation)
+        let (d1, d2) = generate_rademacher_diagonals(d, seed + 500);
+
+        Rotation::E8Wht(Box::new(E8WhtData { e8, d1, d2, d }))
+    }
+
     pub fn dim(&self) -> usize {
         match self {
             Rotation::Haar { d, .. }
             | Rotation::FastJL { d, .. } => *d,
             Rotation::E8Block(data) => data.d,
+            Rotation::E8Wht(data) => data.d,
         }
     }
 
@@ -305,6 +343,13 @@ impl Rotation {
             Rotation::E8Block(data) => {
                 super::e8_rotation::e8_block_rotate(x, &data.roots, out);
             }
+            Rotation::E8Wht(data) => {
+                // Step 1: E8 block rotation
+                let mut e8_out = vec![0.0f64; data.d];
+                super::e8_rotation::e8_block_rotate(x, &data.e8.roots, &mut e8_out);
+                // Step 2: WHT with Rademacher diagonals
+                fast_jl_rotate(&e8_out, &data.d1, &data.d2, buf, out);
+            }
         }
     }
 
@@ -315,6 +360,12 @@ impl Rotation {
             Rotation::FastJL { d1, d2, .. } => fast_jl_unrotate(y, d1, d2, buf, out),
             Rotation::E8Block(data) => {
                 super::e8_rotation::e8_block_rotate(y, &data.conj_roots, out);
+            }
+            Rotation::E8Wht(data) => {
+                // Inverse: undo WHT first, then undo E8
+                let mut wht_inv = vec![0.0f64; data.d];
+                fast_jl_unrotate(y, &data.d1, &data.d2, buf, &mut wht_inv);
+                super::e8_rotation::e8_block_rotate(&wht_inv, &data.e8.conj_roots, out);
             }
         }
     }
@@ -474,6 +525,47 @@ mod tests {
             max_err < 1e-8,
             "E8 roundtrip max error: {} (expected < 1e-8)",
             max_err
+        );
+    }
+
+    #[test]
+    fn test_e8_wht_roundtrip() {
+        let d = 128;
+        let x: Vec<f64> = (0..d).map(|i| (i as f64 * 0.07).sin()).collect();
+        let rotation = Rotation::new_e8_wht(d, 42);
+
+        let mut buf = vec![0.0; d];
+        let mut y = vec![0.0; d];
+        let mut x_rt = vec![0.0; d];
+        rotation.forward(&x, &mut buf, &mut y);
+        rotation.inverse(&y, &mut buf, &mut x_rt);
+
+        let max_err: f64 = x.iter().zip(x_rt.iter())
+            .map(|(a, b)| (a - b).abs())
+            .fold(0.0f64, f64::max);
+        assert!(
+            max_err < 1e-7,
+            "E8+WHT roundtrip max error: {} (expected < 1e-7)",
+            max_err
+        );
+    }
+
+    #[test]
+    fn test_e8_wht_norm_preservation() {
+        let d = 128;
+        let x: Vec<f64> = (0..d).map(|i| (i as f64 * 0.13).cos()).collect();
+        let norm_x: f64 = x.iter().map(|v| v * v).sum::<f64>().sqrt();
+
+        let rotation = Rotation::new_e8_wht(d, 42);
+        let mut buf = vec![0.0; d];
+        let mut y = vec![0.0; d];
+        rotation.forward(&x, &mut buf, &mut y);
+        let norm_y: f64 = y.iter().map(|v| v * v).sum::<f64>().sqrt();
+
+        assert!(
+            (norm_x - norm_y).abs() / norm_x < 1e-8,
+            "E8+WHT norm not preserved: {} vs {}",
+            norm_x, norm_y
         );
     }
 }
