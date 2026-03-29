@@ -481,33 +481,16 @@ Proof.
     brown1972_close_oct_ring.
 Qed.
 
-(** Legacy OCR placeholder for Brown 7.19(iii).
-
-    The local Brown source packet no longer supports this cyclic ordering as
-    the paper-facing theorem statement; it is kept only as a compatibility
-    shim until all downstream callers migrate to the corrected reversal-order
-    version below. *)
-Theorem brown1972_chapter_vii_theorem_7_19_iii_legacy_ocr_cyclic :
-  forall i j k : nat,
-    (1 <= i)%nat -> (i < 8)%nat ->
-    (1 <= j)%nat -> (j < 8)%nat ->
-    (1 <= k)%nat -> (k < 8)%nat ->
-    oct_antiassociator_fused (oct_e i) (oct_e j) (oct_e k) =
-    oct_neg (oct_antiassociator_fused (oct_e k) (oct_e i) (oct_e j)).
-Proof.
-  intros i j k Hi1 Hi8 Hj1 Hj8 Hk1 Hk8.
-  rewrite !oct_antiassociator_fused_eq.
-  exact (s2_brown_thm719_iii_basis_cyclic i j k Hi1 Hi8 Hj1 Hj8 Hk1 Hk8).
-Qed.
-
 (** Source-faithful Brown 7.19(iii).
 
     The local Brown source packet prints the reversal-order form
 
       )e_i,e_j,e_k( = - )e_k,e_j,e_i(
 
-    for nonzero basis indices.  The currently landed proof splits this into
-    the direct `xor <>` vanishing branch and the finite `xor =` core. *)
+    for nonzero basis indices, and the current theorem records the explicit
+    pairwise-distinct side conditions needed to avoid the false equal-index
+    OCR branches.  The proof splits this into the direct `xor <>` vanishing
+    branch and the finite `xor =` core. *)
 Theorem brown1972_chapter_vii_theorem_7_19_iii :
   forall i j k : nat,
     (1 <= i)%nat -> (i < 8)%nat ->

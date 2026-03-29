@@ -265,19 +265,6 @@ Proof.
     exact Htc.
 Qed.
 
-(** Brown Theorem 7.19(iii), in the older cyclic OCR form used by the current
-    chapterized Brown VII landing.  The local Brown source packet now points
-    instead to a reversal-order statement and suggests extra side conditions,
-    but those hypotheses are still being normalized.  The current axiom
-    remains as an honest placeholder until that corrected theorem is landed. *)
-Axiom s2_brown_thm719_iii_basis_cyclic :
-  forall i j k : nat,
-    (1 <= i)%nat -> (i < 8)%nat ->
-    (1 <= j)%nat -> (j < 8)%nat ->
-    (1 <= k)%nat -> (k < 8)%nat ->
-    oct_antiassociator (oct_e i) (oct_e j) (oct_e k) =
-    oct_neg (oct_antiassociator (oct_e k) (oct_e i) (oct_e j)).
-
 (** ================================================================== *)
 (** * S3: Hurwitz uniqueness -- the four NDA are the ONLY ones.       *)
 (** ================================================================== *)
