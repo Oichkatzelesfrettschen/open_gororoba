@@ -1581,6 +1581,35 @@ Proof.
   exact (brown1972_sedenion_pure_square x Htr).
 Qed.
 
+Theorem brown1972_theorem_3_3_i_octonion_fused : forall x y : CDOct,
+  oct_mul_fused (oct_conj x) (oct_mul_fused x y) = oct_scale (oct_norm_sq x) y /\
+  oct_mul_fused x (oct_mul_fused (oct_conj x) y) = oct_scale (oct_norm_sq x) y.
+Proof.
+  intros x y.
+  repeat rewrite oct_mul_fused_eq.
+  exact (brown1972_theorem_3_3_i_octonion x y).
+Qed.
+
+Theorem brown1972_theorem_3_3_ii_octonion_fused : forall x y : CDOct,
+  oct_mul_fused (oct_mul_fused y x) (oct_conj x) = oct_scale (oct_norm_sq x) y /\
+  oct_mul_fused (oct_mul_fused y (oct_conj x)) x = oct_scale (oct_norm_sq x) y.
+Proof.
+  intros x y.
+  repeat rewrite oct_mul_fused_eq.
+  exact (brown1972_theorem_3_3_ii_octonion x y).
+Qed.
+
+Theorem brown1972_lemma_3_7_octonion_fused : forall x : CDOct,
+  oct_add (oct_mul_fused x x)
+          (oct_add (oct_scale (- brown1972_oct_trace x) x)
+                   (oct_scale (oct_norm_sq x) brown1972_oct_one)) =
+  oct_zero.
+Proof.
+  intros x.
+  rewrite oct_mul_fused_eq.
+  exact (brown1972_lemma_3_7_octonion x).
+Qed.
+
 Record Brown1972ChapterIIIFusedQuadraticAnchorSurface := {
   brown1972_ch3_fused_base :
     Brown1972ChapterIIIBroaderReusableAnchorSurface;
@@ -1601,7 +1630,25 @@ Record Brown1972ChapterIIIFusedQuadraticAnchorSurface := {
   brown1972_ch3_fused_sed_pure_square :
     forall x : CDSed,
       brown1972_sed_trace x = 0%R ->
-      sed_mul_fused x x = sed_scale (- sed_norm_sq x) sed_one
+      sed_mul_fused x x = sed_scale (- sed_norm_sq x) sed_one;
+  brown1972_ch3_fused_oct_t33_i :
+    forall x y : CDOct,
+      oct_mul_fused (oct_conj x) (oct_mul_fused x y) =
+      oct_scale (oct_norm_sq x) y /\
+      oct_mul_fused x (oct_mul_fused (oct_conj x) y) =
+      oct_scale (oct_norm_sq x) y;
+  brown1972_ch3_fused_oct_t33_ii :
+    forall x y : CDOct,
+      oct_mul_fused (oct_mul_fused y x) (oct_conj x) =
+      oct_scale (oct_norm_sq x) y /\
+      oct_mul_fused (oct_mul_fused y (oct_conj x)) x =
+      oct_scale (oct_norm_sq x) y;
+  brown1972_ch3_fused_oct_l37 :
+    forall x : CDOct,
+      oct_add (oct_mul_fused x x)
+              (oct_add (oct_scale (- brown1972_oct_trace x) x)
+                       (oct_scale (oct_norm_sq x) brown1972_oct_one)) =
+      oct_zero
 }.
 
 Definition brown1972_chapter_iii_fused_quadratic_anchor_surface :
@@ -1617,5 +1664,11 @@ Proof.
             brown1972_ch3_fused_oct_pure_square :=
               brown1972_octonion_chapter_iii_pure_square_fused;
             brown1972_ch3_fused_sed_pure_square :=
-              brown1972_sedenion_chapter_iii_pure_square_fused |}.
+              brown1972_sedenion_chapter_iii_pure_square_fused;
+            brown1972_ch3_fused_oct_t33_i :=
+              brown1972_theorem_3_3_i_octonion_fused;
+            brown1972_ch3_fused_oct_t33_ii :=
+              brown1972_theorem_3_3_ii_octonion_fused;
+            brown1972_ch3_fused_oct_l37 :=
+              brown1972_lemma_3_7_octonion_fused |}.
 Defined.
