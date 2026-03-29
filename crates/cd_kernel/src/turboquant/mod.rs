@@ -69,6 +69,7 @@ pub mod albert_algebra;
 pub mod autotune;
 pub mod backend;
 pub mod baselines;
+pub mod batch_ops;
 pub mod cd_fidelity;
 pub mod compressor;
 pub mod compute_stack;
