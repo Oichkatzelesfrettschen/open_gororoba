@@ -1037,6 +1037,10 @@ path = "src/bin/sdo_fits_parse.rs"
 name = "ism-multichannel-null"
 path = "src/bin/ism_multichannel_null.rs"
 
+[[bin]]
+name = "solar-cycle-crosscorr"
+path = "src/bin/solar_cycle_crosscorr.rs"
+
 # ---- GUT (1) ----
 
 [[bin]]
