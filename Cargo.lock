@@ -1605,9 +1605,11 @@ name = "cd_kernel"
 version = "0.1.0"
 dependencies = [
  "approx",
+ "ash",
  "bitvec",
  "core_affinity",
  "criterion",
+ "cudarc 0.19.3",
  "proptest",
  "rand 0.8.5",
  "rand_chacha 0.3.1",
