@@ -102,6 +102,9 @@ pub fn probe_cuda_available() -> bool {
 pub fn query_free_vram_mb() -> usize {
     let mut free: usize = 0;
     let mut total: usize = 0;
+    // SAFETY: cuMemGetInfo_v2 is a read-only CUDA driver API call that writes
+    // to stack-local variables. The CUDA context is valid (cuInit was called
+    // during driver initialization by cudarc).
     unsafe {
         cudarc::driver::sys::cuMemGetInfo_v2(&mut free as *mut usize, &mut total as *mut usize);
     }
@@ -661,6 +664,9 @@ impl LbmSolver3DCuda {
         {
             let mut free: usize = 0;
             let mut total: usize = 0;
+            // SAFETY: cuMemGetInfo_v2 is a read-only CUDA driver API call that
+            // writes to stack-local variables. The CUDA context was established
+            // by CudaDevice::new above.
             unsafe {
                 cudarc::driver::sys::cuMemGetInfo_v2(
                     &mut free as *mut usize,
@@ -2374,6 +2380,9 @@ impl DarkHaloCudaSolver {
         let total_mem = {
             let mut free: usize = 0;
             let mut total: usize = 0;
+            // SAFETY: cuMemGetInfo_v2 is a read-only CUDA driver API call that
+            // writes to stack-local variables. The CUDA context is valid
+            // (established by CudaDevice::new in the enclosing constructor).
             unsafe {
                 cudarc::driver::sys::cuMemGetInfo_v2(
                     &mut free as *mut usize,

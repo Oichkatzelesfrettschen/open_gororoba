@@ -1233,6 +1233,10 @@ impl GororobaEngine {
             "stg",
             MemoryLocation::CpuToGpu,
         )?;
+        // SAFETY: mapped_ptr was obtained from vkMapMemory with sufficient size
+        // (checked at buffer creation via f_size). f_bytes length matches the
+        // staging buffer size. Source (host slice) and destination (GPU staging)
+        // do not overlap.
         unsafe {
             let mapped_ptr = staging.allocation.mapped_ptr().ok_or_else(|| {
                 VulkanEngineError::MappingError("Failed to map staging buffer".to_string())
@@ -1243,6 +1247,9 @@ impl GororobaEngine {
                 f_bytes.len(),
             );
         }
+        // SAFETY: force_buffer was allocated with size >= force.len() * size_of::<f32>().
+        // mapped_ptr points to persistently-mapped GPU staging memory that does
+        // not alias the host `force` slice.
         unsafe {
             let mapped_ptr = self.force_buffer.allocation.mapped_ptr().ok_or_else(|| {
                 VulkanEngineError::MappingError("Failed to map force buffer".to_string())
@@ -1321,6 +1328,10 @@ impl GororobaEngine {
             "stg",
             MemoryLocation::CpuToGpu,
         )?;
+        // SAFETY: mapped_ptr was obtained from vkMapMemory with sufficient size
+        // (checked at buffer creation via f_size). f_init length matches the
+        // staging buffer size. Source (host slice) and destination (GPU staging)
+        // do not overlap.
         unsafe {
             let mapped_ptr = staging.allocation.mapped_ptr().ok_or_else(|| {
                 VulkanEngineError::MappingError("Failed to map staging buffer".to_string())
@@ -1331,6 +1342,9 @@ impl GororobaEngine {
                 f_init.len(),
             );
         }
+        // SAFETY: force_buffer was allocated with size >= force.len() * size_of::<f32>().
+        // mapped_ptr points to persistently-mapped GPU staging memory that does
+        // not alias the host `force` slice.
         unsafe {
             let mapped_ptr = self.force_buffer.allocation.mapped_ptr().ok_or_else(|| {
                 VulkanEngineError::MappingError("Failed to map force buffer".to_string())
@@ -1431,6 +1445,13 @@ impl GororobaEngine {
     }
 
     pub fn step(&mut self, cmd: vk::CommandBuffer, frame: u32) -> Result<()> {
+        // SAFETY (all ptr::write in this function): Each uniform buffer was
+        // allocated with size_of::<T>() via gpu-allocator and is persistently
+        // mapped. The structs are repr(C) with no padding requirements beyond
+        // natural alignment. The mapped pointer is aligned to the struct's
+        // alignment (guaranteed by Vulkan minUniformBufferOffsetAlignment).
+        // No concurrent GPU reads occur because writes happen before command
+        // buffer submission.
         unsafe {
             let zd_pc = ZdGenConstants {
                 nx: self.grid_dim.0,
@@ -1623,6 +1644,9 @@ impl GororobaEngine {
         frame: u32,
         camera: &CameraParams,
     ) -> Result<()> {
+        // SAFETY (all ptr::write in this function): see step() -- uniform buffers
+        // are sized for their struct, persistently mapped, aligned per Vulkan
+        // spec, and written before command buffer submission (no GPU race).
         unsafe {
             // ZD generation (same as step())
             let zd_pc = ZdGenConstants {
@@ -1824,6 +1848,9 @@ impl GororobaEngine {
         coupling: f32,
         damping: f32,
     ) -> Result<()> {
+        // SAFETY (all ptr::write in this function): see step() -- uniform buffers
+        // are sized for their struct, persistently mapped, aligned per Vulkan
+        // spec, and written before command buffer submission (no GPU race).
         unsafe {
             // 1. Generate ZD field (Viscosity modulation)
             let zd_pc = ZdGenConstants {
@@ -2017,6 +2044,9 @@ impl GororobaEngine {
         tau_amp: f32,
         lambda: f32,
     ) -> Result<()> {
+        // SAFETY (all ptr::write in this function): see step() -- uniform buffers
+        // are sized for their struct, persistently mapped, aligned per Vulkan
+        // spec, and written before command buffer submission (no GPU race).
         unsafe {
             let zd_pc = ZdGenConstants {
                 nx: self.grid_dim.0,
