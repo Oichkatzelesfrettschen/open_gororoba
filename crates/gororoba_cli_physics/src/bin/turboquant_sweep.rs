@@ -144,6 +144,27 @@ fn main() -> Result<()> {
                 config_results.push(("TQ-E8".into(), mse_sum / n as f64, cos_sum / n as f64, n as f64 / ms));
             }
 
+            // 2b. TQ-E8+WHT (d=128 only)
+            if d == 128 {
+                let mut cfg = cd_kernel::turboquant::config::TurboQuantConfig::recommended(d, bits);
+                cfg.rotation = cd_kernel::turboquant::config::RotationMethod::E8Wht;
+                let tq = TurboQuantMSE::from_config(&cfg, bits, 42);
+                let mut buf = vec![0.0f64; 2 * d];
+                let t0 = Instant::now();
+                let mut mse_sum = 0.0f64;
+                let mut cos_sum = 0.0f64;
+                for v in 0..n {
+                    let x = &data[v * d..(v + 1) * d];
+                    let comp = tq.quantize(x, &mut buf);
+                    let mut recon = vec![0.0f64; d];
+                    tq.dequantize(&comp, &mut buf, &mut recon);
+                    mse_sum += x.iter().zip(recon.iter()).map(|(a, b)| (a - b).powi(2)).sum::<f64>() / d as f64;
+                    cos_sum += cosine_sim(x, &recon);
+                }
+                let ms = t0.elapsed().as_secs_f64() * 1000.0;
+                config_results.push(("TQ-E8+WHT".into(), mse_sum / n as f64, cos_sum / n as f64, n as f64 / ms));
+            }
+
             // 3. KIVI
             {
                 let t0 = Instant::now();

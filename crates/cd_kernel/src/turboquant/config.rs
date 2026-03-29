@@ -21,6 +21,9 @@ pub enum RotationMethod {
     /// E8 lattice block rotation. O(d) via 8 sedenion multiplies.
     /// Validated: KS p=0.816 vs Haar. Only for d=128.
     E8Block,
+    /// E8 + WHT composition: E8 for block-level algebraic decorrelation,
+    /// then WHT for Gaussianization. Combines algebraic structure with speed.
+    E8Wht,
 }
 
 /// QJL correction behavior.
@@ -150,14 +153,14 @@ impl TurboQuantConfig {
         }
     }
 
-    /// Whether to use WHT-based rotation (FastJL or E8Block).
+    /// Whether to use WHT-based rotation (FastJL, E8Block, or E8Wht).
     pub fn use_wht(&self) -> bool {
-        matches!(self.rotation, RotationMethod::FastJL | RotationMethod::E8Block)
+        matches!(self.rotation, RotationMethod::FastJL | RotationMethod::E8Block | RotationMethod::E8Wht)
     }
 
     /// Whether to use E8 block rotation specifically.
     pub fn use_e8(&self) -> bool {
-        matches!(self.rotation, RotationMethod::E8Block)
+        matches!(self.rotation, RotationMethod::E8Block | RotationMethod::E8Wht)
     }
 }
 
