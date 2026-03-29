@@ -131,23 +131,21 @@ impl GeneralizedCartanMatrix {
         }
 
         // Verify GCM axioms
-        #[allow(clippy::needless_range_loop)]
-        for i in 0..rank {
+        for (i, row) in entries.iter().enumerate() {
             // Axiom 1: diagonal = 2
-            if entries[i][i] != 2 {
+            if row[i] != 2 {
                 return Err("GCM diagonal entries must be 2");
             }
 
-            #[allow(clippy::needless_range_loop)]
-            for j in 0..rank {
+            for (j, &val) in row.iter().enumerate() {
                 if i != j {
                     // Axiom 2: off-diagonal <= 0
-                    if entries[i][j] > 0 {
+                    if val > 0 {
                         return Err("GCM off-diagonal entries must be <= 0");
                     }
 
                     // Axiom 3: symmetry of zeros
-                    if (entries[i][j] == 0) != (entries[j][i] == 0) {
+                    if (val == 0) != (entries[j][i] == 0) {
                         return Err("GCM zero entries must be symmetric");
                     }
                 }
@@ -750,7 +748,6 @@ impl KacMoodyRootSystem {
 
     /// Apply a simple reflection s_i to a weight vector.
     pub fn simple_reflection(&self, weight: &[f64], i: usize) -> Vec<f64> {
-        let n = weight.len();
         let mut result = weight.to_vec();
 
         // s_i(lambda) = lambda - <lambda, alpha_i^v> * alpha_i
@@ -760,9 +757,8 @@ impl KacMoodyRootSystem {
             .map(|(w, c)| w * c)
             .sum();
 
-        #[allow(clippy::needless_range_loop)]
-        for j in 0..n {
-            result[j] -= pairing * self.simple_roots[i][j];
+        for (r_j, &s_ij) in result.iter_mut().zip(self.simple_roots[i].iter()) {
+            *r_j -= pairing * s_ij;
         }
 
         result

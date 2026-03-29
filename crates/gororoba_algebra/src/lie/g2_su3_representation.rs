@@ -263,10 +263,9 @@ pub fn align_with_gell_mann(rep: &FundamentalRepresentation) -> GellMannAlignmen
 
     // Compute overlap matrix O[a][b] = <computed[a], standard[b]>
     let mut overlap = [[0.0f64; 8]; 8];
-    #[allow(clippy::needless_range_loop)]
-    for a in 0..8 {
-        for b in 0..8 {
-            overlap[a][b] = hs_inner_product(&rep.matrices[a], &standard[b]);
+    for (row, mat_a) in overlap.iter_mut().zip(rep.matrices.iter()) {
+        for (val, std_b) in row.iter_mut().zip(standard.iter()) {
+            *val = hs_inner_product(mat_a, std_b);
         }
     }
 
@@ -313,16 +312,15 @@ pub fn fundamental_casimir(matrices: &[Mat3c; 8]) -> Mat3c {
 pub fn adjoint_casimir_contraction(f: &[Vec<Vec<f64>>]) -> Vec<Vec<f64>> {
     let n = f.len();
     let mut c2 = vec![vec![0.0; n]; n];
-    #[allow(clippy::needless_range_loop)]
-    for a in 0..n {
-        for b in 0..n {
+    for (a, c2_row) in c2.iter_mut().enumerate() {
+        for (b, c2_ab) in c2_row.iter_mut().enumerate() {
             let mut sum = 0.0;
             for ci in 0..n {
                 for d in 0..n {
                     sum += f[a][ci][d] * f[b][ci][d];
                 }
             }
-            c2[a][b] = sum;
+            *c2_ab = sum;
         }
     }
     c2

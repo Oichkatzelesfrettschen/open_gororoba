@@ -118,9 +118,8 @@ fn run_tracer(cfg: &Config) -> Result<()> {
         let (_rho_slice, vel_slice) = solver.read_slice(2, z_mid as i32)?;
 
         // Advect particles using extracted velocity
-        #[allow(clippy::needless_range_loop)]
-        for pid in 0..np {
-            let [px, py, pz] = positions[pid];
+        for (pid, pos) in positions.iter_mut().enumerate() {
+            let [px, py, pz] = *pos;
             let ix = (px as usize).clamp(0, n - 1);
             let iy = (py as usize).clamp(0, n - 1);
 
@@ -138,7 +137,7 @@ fn run_tracer(cfg: &Config) -> Result<()> {
             let vy = vmag * ((py * 0.1).cos()) * 0.5;
             let vz = vmag * 0.01;
 
-            positions[pid] = [
+            *pos = [
                 (px + vx * dt).rem_euclid(n as f32),
                 (py + vy * dt).rem_euclid(n as f32),
                 (pz + vz * dt).rem_euclid(n as f32),
@@ -149,13 +148,13 @@ fn run_tracer(cfg: &Config) -> Result<()> {
             writeln!(
                 csv,
                 "{lbm_step},{pid},{:.4},{:.4},{:.4},{:.6e},{:.6e},{:.6e}",
-                positions[pid][0], positions[pid][1], positions[pid][2], vx, vy, vz
+                pos[0], pos[1], pos[2], vx, vy, vz
             )?;
 
             trajectory.push(VtpPoint {
                 step: lbm_step,
                 pid: pid as u32,
-                pos: positions[pid],
+                pos: *pos,
                 vel: [vx, vy, vz],
             });
         }

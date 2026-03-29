@@ -220,9 +220,8 @@ fn wls_baryonic(bundle: &DataBundle) -> Vec<Vec<f64>> {
             }
         }
         // Add regularization
-        #[allow(clippy::needless_range_loop)]
-        for k in 0..3 {
-            a[k][k] += 1e-8;
+        for (k, row) in a.iter_mut().enumerate() {
+            row[k] += 1e-8;
         }
 
         // Solve 3x3 by Cramer's rule (small system)

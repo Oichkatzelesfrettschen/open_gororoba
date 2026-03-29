@@ -29,19 +29,20 @@
 //! | vs KIVI | 3.6-4.0x better at all bits |
 //! | Cross-layer SLERP | 1.94x additional compression |
 //!
-//! # Real LLM Validation (SmolLM2-135M, TinyLlama-1.1B, Qwen2.5-0.5B)
+//! # Real LLM Validation (6 models, 135M to 8B params)
 //!
-//! | Metric (3-bit) | SmolLM2 | TinyLlama | Qwen2.5 |
-//! |----------------|---------|-----------|---------|
-//! | Key cosine | 0.9847 | 0.9847 | 0.9844 |
-//! | Val cosine | 0.9838 | 0.9837 | 0.9838 |
-//! | PPL increase | +15.7% | -- | -- |
-//! | Raw kurtosis | 10.2 | 28.0 | 9.4 |
-//! | Post-rotation | 2.53 | 2.68 | 2.60 |
+//! | Model | Params | 3-bit cos | 4-bit cos | PPL +3b | PPL +4b | Kurt raw | Kurt rot |
+//! |-------|--------|-----------|-----------|---------|---------|----------|----------|
+//! | SmolLM2 | 135M | 0.9847 | 0.9958 | +15.7% | +0.8% | 10.2 | 2.53 |
+//! | TinyLlama | 1.1B | 0.9847 | 0.9958 | -- | -- | 28.0 | 2.68 |
+//! | Qwen2.5 | 0.5B | 0.9844 | 0.9958 | -- | -- | 9.4 | 2.60 |
+//! | Qwen2.5 | 3.1B | 0.9839 | 0.9956 | +116% | +21.6% | 18.1 | 2.97 |
+//! | Mistral | 7.2B | 0.9836 | 0.9955 | -1.6% | +0.0% | 6.9 | 2.91 |
+//! | DeepSeek-R1 | 8.0B | 0.9837 | 0.9956 | +3.8% | +2.6% | 5.6 | 2.93 |
 //!
-//! FastJL rotation Gaussianizes heavy-tailed real KV data (kurtosis 10-28
-//! becomes 2.5-2.7), making Gaussian codebook optimal.  At 4-bit: +0.8% PPL
-//! with 4x compression.
+//! FastJL rotation universally Gaussianizes heavy-tailed real KV data (kurtosis
+//! 5.6-28.0 becomes 2.5-3.0), making Gaussian codebook optimal across all models.
+//! 7B+ models show near-zero PPL degradation at 4-bit with 4x compression.
 //!
 //! # Architecture
 //!

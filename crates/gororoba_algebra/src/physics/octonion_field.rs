@@ -158,9 +158,8 @@ pub fn hamiltonian(phi: &[Octonion], pi: &[Octonion], params: &FieldParams) -> f
     let mut v_grad = 0.0;
     for i in 0..n {
         let j = (i + 1) % n;
-        #[allow(clippy::needless_range_loop)]
-        for k in 0..8 {
-            let diff = phi[j][k] - phi[i][k];
+        for (&pj, &pi) in phi[j].iter().zip(phi[i].iter()) {
+            let diff = pj - pi;
             v_grad += diff * diff;
         }
     }
@@ -329,10 +328,9 @@ pub fn standing_wave(
     let mut phi = vec![[0.0; 8]; n];
     let pi = vec![[0.0; 8]; n];
 
-    #[allow(clippy::needless_range_loop)]
-    for i in 0..n {
+    for (i, phi_i) in phi.iter_mut().enumerate() {
         let x = i as f64 * dx;
-        phi[i][1] = amplitude * (k * x).sin();
+        phi_i[1] = amplitude * (k * x).sin();
     }
 
     (phi, pi)

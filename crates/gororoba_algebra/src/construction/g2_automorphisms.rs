@@ -149,17 +149,15 @@ pub fn compute_g2_basis() -> Vec<OctonionDerivation> {
                 for (k, pm) in param_matrices.iter().enumerate() {
                     // LHS: D(e_i * e_j) component c
                     let mut lhs_c = 0.0;
-                    #[allow(clippy::needless_range_loop)]
-                    for s in 0..8 {
-                        lhs_c += pm[c][s] * ei_ej.components[s];
+                    for (&pm_cs, &comp_s) in pm[c].iter().zip(ei_ej.components.iter()) {
+                        lhs_c += pm_cs * comp_s;
                     }
 
                     // RHS: D(e_i)*e_j + e_i*D(e_j) component c
                     // D(e_i) = M_k * e_i
                     let mut d_ei = [0.0; 8];
-                    #[allow(clippy::needless_range_loop)]
-                    for s in 0..8 {
-                        d_ei[s] = pm[s][i];
+                    for (s, d_ei_s) in d_ei.iter_mut().enumerate() {
+                        *d_ei_s = pm[s][i];
                     }
                     let d_ei_oct = Octonion::new(d_ei);
                     let d_ei_ej = d_ei_oct.multiply(&ej);
@@ -205,10 +203,9 @@ pub fn compute_g2_basis() -> Vec<OctonionDerivation> {
         // Find pivot
         let mut max_val = 0.0;
         let mut max_row = current_row;
-        #[allow(clippy::needless_range_loop)]
-        for row in current_row..n_constraints {
-            if matrix[row][col].abs() > max_val {
-                max_val = matrix[row][col].abs();
+        for (row, mat_row) in matrix.iter().enumerate().skip(current_row) {
+            if mat_row[col].abs() > max_val {
+                max_val = mat_row[col].abs();
                 max_row = row;
             }
         }

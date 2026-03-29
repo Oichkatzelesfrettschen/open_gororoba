@@ -700,19 +700,18 @@ fn add_triple_full(
 }
 
 /// Group eigenvalues by degeneracy within tolerance.
-#[allow(clippy::needless_range_loop)]
 pub fn group_by_degeneracy(eigenvalues: &[f64], tol: f64) -> Vec<Vec<usize>> {
     let dim = eigenvalues.len();
     let mut groups = Vec::new();
     let mut used = vec![false; dim];
-    for i in 0..dim {
+    for (i, &ev_i) in eigenvalues.iter().enumerate() {
         if used[i] {
             continue;
         }
         let mut group = vec![i];
         used[i] = true;
-        for j in (i + 1)..dim {
-            if !used[j] && (eigenvalues[i] - eigenvalues[j]).abs() < tol {
+        for (j, &ev_j) in eigenvalues.iter().enumerate().skip(i + 1) {
+            if !used[j] && (ev_i - ev_j).abs() < tol {
                 group.push(j);
                 used[j] = true;
             }

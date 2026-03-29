@@ -93,10 +93,9 @@ pub fn generate_e8_roots() -> Vec<E8Root> {
         let minus_count = sign_pattern.count_ones();
         if minus_count % 2 == 0 {
             let mut coords = [0.5; 8];
-            #[allow(clippy::needless_range_loop)]
-            for bit in 0..8 {
+            for (bit, coord) in coords.iter_mut().enumerate() {
                 if (sign_pattern >> bit) & 1 == 1 {
-                    coords[bit] = -0.5;
+                    *coord = -0.5;
                 }
             }
             roots.push(E8Root::new(coords));
@@ -199,21 +198,18 @@ impl E8Lattice {
         let c = &self.cartan_matrix;
 
         // Check diagonal elements are 2
-        #[allow(clippy::needless_range_loop)]
-        for i in 0..8 {
-            if c[i][i] != 2 {
+        for (i, row) in c.iter().enumerate() {
+            if row[i] != 2 {
                 return false;
             }
         }
 
         // Check symmetry of A_ij * A_ji pattern
-        #[allow(clippy::needless_range_loop)]
-        for i in 0..8 {
-            #[allow(clippy::needless_range_loop)]
-            for j in 0..8 {
-                if i != j && c[i][j] != 0 && c[j][i] != 0 {
+        for (i, row_i) in c.iter().enumerate() {
+            for (j, &c_ij) in row_i.iter().enumerate() {
+                if i != j && c_ij != 0 && c[j][i] != 0 {
                     // Off-diagonal product should be 0, 1, 2, or 3
-                    let prod = c[i][j] * c[j][i];
+                    let prod = c_ij * c[j][i];
                     if !(0..=3).contains(&prod) {
                         return false;
                     }
@@ -424,14 +420,12 @@ pub fn verify_cartan_matrix_with_atlas() -> bool {
     // Check our matrix has the same fundamental properties
     // Diagonal entries = 2, off-diagonal <= 0
     let mut our_valid = true;
-    #[allow(clippy::needless_range_loop)]
-    for i in 0..8 {
-        if our_cartan[i][i] != 2 {
+    for (i, row) in our_cartan.iter().enumerate() {
+        if row[i] != 2 {
             our_valid = false;
         }
-        #[allow(clippy::needless_range_loop)]
-        for j in 0..8 {
-            if i != j && our_cartan[i][j] > 0 {
+        for (j, &val) in row.iter().enumerate() {
+            if i != j && val > 0 {
                 our_valid = false;
             }
         }
@@ -628,7 +622,6 @@ pub struct FreudenthalTitsMagicSquare {
 
 impl FreudenthalTitsMagicSquare {
     /// Construct the magic square.
-    #[allow(clippy::needless_range_loop)]
     pub fn new() -> Self {
         use MagicSquareLieAlgebra::*;
 
