@@ -308,6 +308,54 @@ Proof.
       apply oct_add_neg_cancel. }
 Qed.
 
+Lemma brown1972_ch7_lxor_solve_right :
+  forall i j k : nat,
+    Nat.lxor i j = k ->
+    Nat.lxor k j = i.
+Proof.
+  intros i j k Hk.
+  subst k.
+  apply Nat.bits_inj.
+  intro n.
+  rewrite !Nat.lxor_spec.
+  rewrite Bool.xorb_assoc.
+  rewrite Bool.xorb_nilpotent.
+  apply Bool.xorb_false_r.
+Qed.
+
+Theorem brown1972_chapter_vii_theorem_7_19_iii_xor_neq_left_zero :
+  forall i j k : nat,
+    (1 <= i)%nat -> (i < 8)%nat ->
+    (1 <= j)%nat -> (j < 8)%nat ->
+    (1 <= k)%nat -> (k < 8)%nat ->
+    i <> j -> j <> k -> i <> k ->
+    Nat.lxor i j <> k ->
+    oct_antiassociator_fused (oct_e i) (oct_e j) (oct_e k) = oct_zero.
+Proof.
+  intros i j k Hi1 Hi8 Hj1 Hj8 Hk1 Hk8 Hij Hjk Hik Hxor.
+  apply (proj2 (brown1972_chapter_vii_theorem_7_18_basis_xor_form i j k Hi8 Hj8 Hk8)).
+  unfold brown1972_ch7_718_basis_rhs.
+  repeat split; try lia; try congruence.
+Qed.
+
+Theorem brown1972_chapter_vii_theorem_7_19_iii_xor_neq_right_zero :
+  forall i j k : nat,
+    (1 <= i)%nat -> (i < 8)%nat ->
+    (1 <= j)%nat -> (j < 8)%nat ->
+    (1 <= k)%nat -> (k < 8)%nat ->
+    i <> j -> j <> k -> i <> k ->
+    Nat.lxor i j <> k ->
+    oct_antiassociator_fused (oct_e k) (oct_e j) (oct_e i) = oct_zero.
+Proof.
+  intros i j k Hi1 Hi8 Hj1 Hj8 Hk1 Hk8 Hij Hjk Hik Hxor.
+  apply (proj2 (brown1972_chapter_vii_theorem_7_18_basis_xor_form k j i Hk8 Hj8 Hi8)).
+  unfold brown1972_ch7_718_basis_rhs.
+  repeat split; try lia; try congruence.
+  intro Hrev.
+  apply Hxor.
+  exact (brown1972_ch7_lxor_solve_right k j i Hrev).
+Qed.
+
 Definition brown1972_ch7_719_ii_rhs (i j : nat) : CDOct :=
   if Nat.eqb i j then oct_scale (-2) (oct_e j) else oct_scale 2 (oct_e j).
 
@@ -388,6 +436,17 @@ Proof.
     brown1972_close_oct_ring.
 Qed.
 
+(** Source-faithful normalization note for Brown 7.19(iii):
+
+    The local Brown source packet prints the reversal-order form
+
+      )e_i,e_j,e_k( = - )e_k,e_j,e_i(
+
+    for nonzero basis indices.  The older cyclic OCR rendering in this repo is
+    not trustworthy.  The fully corrected theorem still needs the missing side
+    conditions to be normalized; the `xor <>` branch is now proved directly
+    through Brown 7.18, while the smaller `xor =` core is isolated as the
+    remaining proof kernel. *)
 Theorem brown1972_chapter_vii_theorem_7_19_iii :
   forall i j k : nat,
     (1 <= i)%nat -> (i < 8)%nat ->

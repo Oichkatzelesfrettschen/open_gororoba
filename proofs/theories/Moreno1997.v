@@ -33,7 +33,9 @@
       H_a-orbit/module proof, the canonical octonion profile, and a first
       canonical concrete-to-abstract dimension bridge are now formalized, but
       the bridge from arbitrary concrete V_lambda subspaces to that module
-      interface remains open
+      interface remains open; the next exact substeps are (a) a finite-dim
+      H_a-module witness for the arbitrary-a V_lambda lane and (b) a bridge
+      from Moreno's concrete V_lambda hypotheses to that witness
     - Theorem 2.9 full arbitrary-alternative CD discharge; the abstract iff
       core and the canonical witness lane are both formalized, but the bridge
       from Moreno's CD hypotheses to the explicit side conditions remains open
