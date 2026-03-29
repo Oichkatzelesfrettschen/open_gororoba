@@ -397,6 +397,25 @@ pub struct ExternalSourceDossiersMeta {
     pub document_count: usize,
 }
 
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn artifact_status_roundtrip() {
+        let variants = ["downloaded", "downloadable", "blocked", "citation_only_no_link", "unverified"];
+        for s in variants {
+            let parsed = ArtifactStatus::parse(s).expect("parse should succeed");
+            assert_eq!(parsed.as_str(), s);
+        }
+    }
+
+    #[test]
+    fn artifact_status_parse_invalid_returns_none() {
+        assert!(ArtifactStatus::parse("nonexistent").is_none());
+    }
+}
+
 #[derive(Clone, Debug, Default, Serialize, Deserialize, PartialEq, Eq)]
 pub struct ExternalSourceDossierRecord {
     pub id: String,

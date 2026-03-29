@@ -21,3 +21,15 @@
 include!(concat!(env!("OUT_DIR"), "/generated_nk_tables.rs"));
 include!(concat!(env!("OUT_DIR"), "/generated_optical_params.rs"));
 include!(concat!(env!("OUT_DIR"), "/generated_crystal_tables.rs"));
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn jc_au_tables_nonempty_and_consistent_lengths() {
+        assert!(!JC_AU_EV.is_empty(), "JC_AU_EV table must not be empty");
+        assert_eq!(JC_AU_EV.len(), JC_AU_N.len());
+        assert_eq!(JC_AU_EV.len(), JC_AU_K.len());
+    }
+}

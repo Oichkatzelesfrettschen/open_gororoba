@@ -1518,3 +1518,15 @@ fn cmd_audit_cmd(store: &ProvenanceStore, repo_root: &Path, args: &AuditArgs) ->
     }
     Ok(())
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use clap::Parser;
+
+    #[test]
+    fn cli_parses_stats_subcommand() {
+        let cli = Cli::try_parse_from(["gororoba-db", "stats"]);
+        assert!(cli.is_ok(), "stats subcommand should parse: {cli:?}");
+    }
+}
