@@ -933,6 +933,10 @@ name = "turboquant-sedenion-rotation"
 path = "src/bin/turboquant_sedenion_rotation.rs"
 
 [[bin]]
+name = "turboquant-comparison"
+path = "src/bin/turboquant_comparison.rs"
+
+[[bin]]
 name = "turboquant-bench"
 path = "src/bin/turboquant_bench.rs"
 
