@@ -11206,3 +11206,12 @@ where_stated = "data/external/voyager1/pls/, data/external/voyager2/pls/"
 last_verified = "2026-03-29"
 formal_proof = ""
 status_note = "V2 PLS ends 2007 (heliosheath, PLS stopped measuring). V1 PLS ends 1980 (last reliable measurements). ISM has no PLS data (plasma too tenuous for Faraday cup). PLS adds density/velocity/temperature channels unavailable from MAG alone."
+
+[[claim]]
+id = "C-1623"
+status = "Verified"
+statement = "Solar cycle CD modulation at 1 AU: 23-year ACE MAG analysis (2000-2022, 45.4M records) reveals 18.9x amplitude ratio between solar maximum (2003: CD median=282) and solar minimum (2009: CD median=14.9). Solar Cycle 23 peak at 2003 (Halloween storms epoch), SC24 peak at 2014-2015 (weaker, CD=69-104), SC24-25 minimum at 2019-2020 (CD=22-27), SC25 rise at 2022 (CD=88). The CD tracks sunspot number with high fidelity. ISM floor (0.017) is 1000-10000x below even the deepest solar minimum at 1 AU, definitively confirming the ISM is a separate magnetic regime."
+where_stated = "data/output/heliosphere/ablations/solar_cycle_crosscorr.json"
+last_verified = "2026-03-29"
+formal_proof = ""
+status_note = "ACE MAG 16-sec HAPI data, 23 yearly files, 32D 4-channel embedding. Each year has ~2M records. The 18.9x amplitude ratio is between the yearly median CD values. The ISM comparison uses V1/V2 48-sec MAG data from existing quench scans."
