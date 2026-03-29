@@ -31,6 +31,10 @@ struct Cli {
     #[arg(long, default_value_t = 16)]
     n2: usize,
 
+    /// Phi resolution (1 = 2D, >1 = 3D with periodic phi).
+    #[arg(long, default_value_t = 1)]
+    n3: usize,
+
     /// Number of evolution steps.
     #[arg(long, default_value_t = 10)]
     n_steps: usize,
@@ -116,10 +120,10 @@ fn cd_on_bfield(bfield: &[[f64; 3]], dim: usize) -> f64 {
 fn main() -> Result<()> {
     let cli = Cli::parse();
     println!("=== GRMHD Torus -> CD Pipeline ===");
-    println!("  grid: {}x{}x1, steps: {}, dim: {}", cli.n1, cli.n2, cli.n_steps, cli.embedding_dim);
+    println!("  grid: {}x{}x{}, steps: {}, dim: {}", cli.n1, cli.n2, cli.n3, cli.n_steps, cli.embedding_dim);
 
     let metric = KerrMetric::schwarzschild();
-    let grid = Grid::new(cli.n1, cli.n2, 1, 2.5, 40.0, metric);
+    let grid = Grid::new(cli.n1, cli.n2, cli.n3, 2.5, 40.0, metric);
     let eos = GammaLaw::harm_default();
     let mc = MetricCache::new(&grid);
 

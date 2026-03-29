@@ -206,7 +206,7 @@ fn main() -> Result<()> {
                 .sum::<f64>()
                 / tw.min(norms.len() - i) as f64;
             if (post - pre).abs() > threshold
-                && !last.is_some_and(|prev| i.saturating_sub(prev) < tw)
+                && last.is_none_or(|prev| i.saturating_sub(prev) >= tw)
             {
                 n_trans += 1;
                 last = Some(i);

@@ -138,12 +138,13 @@ fn validate_config(
         let q = &queries[h * d..(h + 1) * d];
 
         // Real attention scores: q @ K[h]^T
-        let mut real_scores = vec![0.0f64; seq_len];
-        for s in 0..seq_len {
-            let k_offset = (h * seq_len + s) * d;
-            let k = &keys[k_offset..k_offset + d];
-            real_scores[s] = q.iter().zip(k.iter()).map(|(a, b)| a * b).sum();
-        }
+        let real_scores: Vec<f64> = (0..seq_len)
+            .map(|s| {
+                let k_offset = (h * seq_len + s) * d;
+                let k = &keys[k_offset..k_offset + d];
+                q.iter().zip(k.iter()).map(|(a, b)| a * b).sum()
+            })
+            .collect();
 
         // Compressed scores via KeyCompressor (full QJL correction)
         // Build a sub-batch for this head's keys
