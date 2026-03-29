@@ -27,5 +27,6 @@
 
 pub mod device;
 pub mod jit;
+pub mod launch;
 
 pub use device::{CudaDeviceProps, probe_device};
