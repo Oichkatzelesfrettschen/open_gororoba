@@ -539,6 +539,70 @@ fn compute_rhs_3d_inner(
         }
     }
 
+    // Direction 2 (phi): sweep faces at fixed (i, j) with PERIODIC BC
+    if grid.n3 > 1 {
+        for i in ng..ng + grid.n1 {
+            for j in ng..ng + grid.n2 {
+                let mut ws = FluxWorkspace::new();
+                let dx = grid.dx3 * 2.0 * std::f64::consts::PI;
+
+                for face_k in ng..ng + grid.n3 + 1 {
+                    // Periodic wrapping for phi direction
+                    let km2 = ng + ((face_k as isize - 2 - ng as isize).rem_euclid(grid.n3 as isize)) as usize;
+                    let km1 = ng + ((face_k as isize - 1 - ng as isize).rem_euclid(grid.n3 as isize)) as usize;
+                    let kp0 = ng + ((face_k as isize - ng as isize).rem_euclid(grid.n3 as isize)) as usize;
+                    let kp1 = ng + ((face_k as isize + 1 - ng as isize).rem_euclid(grid.n3 as isize)) as usize;
+
+                    for var in 0..NPRIM {
+                        let (ql, qr) = recon::plm_lr(
+                            prims.get(grid.idx(i, j, km2))[var],
+                            prims.get(grid.idx(i, j, km1))[var],
+                            prims.get(grid.idx(i, j, kp0))[var],
+                            prims.get(grid.idx(i, j, kp1))[var],
+                        );
+                        ws.prim_l[var] = ql;
+                        ws.prim_r[var] = qr;
+                    }
+
+                    if zero_b_in_recon {
+                        for b in 5..8 { ws.prim_l[b] = 0.0; ws.prim_r[b] = 0.0; }
+                    }
+
+                    let r = grid.r(i);
+                    let th = grid.theta(j);
+                    let mc_idx = mc.idx(i, n2t, j);
+                    let sg = if mc_idx < mc.sqrt_neg_g.len() { mc.sqrt_neg_g[mc_idx] } else { 1.0 };
+                    let alpha = if mc_idx < mc.lapse.len() { mc.lapse[mc_idx] } else { 1.0 };
+
+                    ws.flux_l = compute_flux_from_prim(&ws.prim_l, &grid.metric, r, th, eos, sg, 2);
+                    ws.flux_r = compute_flux_from_prim(&ws.prim_r, &grid.metric, r, th, eos, sg, 2);
+
+                    let cs2_l = eos.cs2(ws.prim_l[prims::RHO], ws.prim_l[prims::UU]);
+                    let cs2_r = eos.cs2(ws.prim_r[prims::RHO], ws.prim_r[prims::UU]);
+                    let (sl, sr) = riemann::wave_speeds(
+                        ws.prim_l[prims::V3], ws.prim_r[prims::V3],
+                        cs2_l, cs2_r, 0.0, 0.0, alpha,
+                    );
+
+                    ws.cons_l = cons::prim2con(&ws.prim_l, &grid.metric, r, th, eos, sg);
+                    ws.cons_r = cons::prim2con(&ws.prim_r, &grid.metric, r, th, eos, sg);
+
+                    let f_hll = riemann::hll_flux(&ws.flux_l, &ws.flux_r, &ws.cons_l, &ws.cons_r, sl, sr);
+
+                    // Accumulate phi divergence (periodic: both cells always exist)
+                    let cell_l = grid.idx(i, j, km1);
+                    for v in 0..NCONS {
+                        rhs[cell_l * NCONS + v] -= f_hll[v] / dx;
+                    }
+                    let cell_r = grid.idx(i, j, kp0);
+                    for v in 0..NCONS {
+                        rhs[cell_r * NCONS + v] += f_hll[v] / dx;
+                    }
+                }
+            }
+        }
+    }
+
     // Add GR geometric source terms S_j = T^mu_nu * (1/2) * dg_{mu nu}/dx^j
     // This compensates for curvature effects missing from the flux divergence.
     let dr_phys = grid.dx1; // in log-r coordinates
