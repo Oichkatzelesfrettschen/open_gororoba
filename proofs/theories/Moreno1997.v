@@ -111,5 +111,13 @@ Proof.
   exact (moreno16_concrete_witness_dim_mod4 W).
 Qed.
 
+Theorem Moreno1997_theorem_1_16_arbitrary_a_hypotheses_bridge :
+  forall H : Moreno16ArbitraryAConcreteHypotheses,
+    Nat.modulo (moreno16_concrete_vlambda_dim (moreno16_concrete_witness H)) 4 = 0.
+Proof.
+  intro H.
+  exact (moreno16_arbitrary_a_dim_mod4 H).
+Qed.
+
 Theorem Moreno1997_lane_compiles : True.
 Proof. exact I. Qed.
