@@ -1,0 +1,9 @@
+[package]
+name = "fixed_point_lbm"
+version = "0.1.0"
+edition = "2021"
+description = "Fixed-point arithmetic for Lattice Boltzmann methods, inspired by SASS RE measurements"
+
+[dependencies]
+
+[dev-dependencies]
