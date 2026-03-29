@@ -10,6 +10,7 @@ core_affinity = { workspace = true }
 rayon = { workspace = true }
 wide = { workspace = true }
 pulp = { workspace = true }
+fwht = { workspace = true }
 bytemuck = { workspace = true }
 smallvec = { workspace = true }
 aligned-vec = { workspace = true }

@@ -206,6 +206,12 @@ core_affinity = "0.8"
 # === Complementary Compute Stack ===
 # Each crate fills a strictly non-overlapping role:
 
+# Fast Walsh-Hadamard Transform (extracted standalone crate)
+# TODO: after `cargo publish` of fwht, switch to: fwht = "0.1"
+# TODO: after pushing cratesgororobas to GitHub, switch to git dep
+# For now, local path dep during development:
+fwht = { path = "../cratesgororobas/fwht" }
+
 # SIMD types + dispatch + distance
 wide = "0.7"                 # Named SIMD types (f64x4, f32x8) for explicit vectorization
 pulp = "0.22"                # Runtime-dispatched SIMD autovectorization (powers faer)
