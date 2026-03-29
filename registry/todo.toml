@@ -5,7 +5,7 @@
 updated = "2026-02-10"
 status = "active"
 status_token = "ACTIVE"
-item_count = 63
+item_count = 65
 status_allowlist = ["open", "in_progress", "done", "blocked", "deferred"]
 priority_allowlist = ["high", "medium", "low"]
 
@@ -769,3 +769,26 @@ dependencies = []
 acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
 evidence_refs = []
 
+[[item]]
+id = "T-064"
+area = "proofs"
+title = "Retire the Brown 7.19(iii) OCR placeholder lane"
+description = "Now that Brown 7.19(iii) is landed publicly in reversal-order form with explicit pairwise-distinct side conditions, remove remaining legacy/OCR placeholder exposure and any stale structural-gap references once downstream imports are audited."
+priority = "high"
+status = "open"
+status_token = "OPEN"
+dependencies = []
+acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable.", "The Brown Chapter VII public surface exports only the corrected theorem shape."]
+evidence_refs = ["proofs/theories/Brown1972ChapterVII.v", "proofs/theories/SStructuralGaps.v"]
+
+[[item]]
+id = "T-065"
+area = "proofs"
+title = "Bridge Moreno arbitrary-a concrete V_lambda hypotheses into the H_a witness lane"
+description = "Finish the remaining Theorem 1.16 gap by connecting Moreno's concrete arbitrary-a V_lambda hypotheses to Moreno16ArbitraryAVlambdaWitness instead of stopping at the current explicit-builder and non-canonical witness packages."
+priority = "high"
+status = "open"
+status_token = "OPEN"
+dependencies = []
+acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable.", "The Moreno paper lane exposes a source-faithful arbitrary-a bridge from concrete V_lambda data to the mod-4 theorem."]
+evidence_refs = ["proofs/theories/C1542_MorVlambdaOrbit.v", "proofs/theories/Moreno1997.v"]

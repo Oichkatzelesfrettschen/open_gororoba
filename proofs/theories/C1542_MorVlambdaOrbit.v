@@ -108,6 +108,18 @@ Record Moreno16ArbitraryAConcreteHypotheses := {
   moreno16_concrete_witness : Moreno16ConcreteVlambdaWitness
 }.
 
+Record Moreno16ArbitraryAVlambdaWitness := {
+  moreno16_arbitrary_a : CDOct;
+  moreno16_arbitrary_a_unit : oct_norm_sq moreno16_arbitrary_a = 1%R;
+  moreno16_arbitrary_a_pure :
+    oct_conj moreno16_arbitrary_a = oct_neg moreno16_arbitrary_a;
+  moreno16_arbitrary_lambda : R;
+  moreno16_arbitrary_lambda_pos : (0 < moreno16_arbitrary_lambda)%R;
+  moreno16_arbitrary_vlambda_dim : nat;
+  moreno16_arbitrary_vlambda_is_h_module_dim :
+    is_h_module_dim moreno16_arbitrary_vlambda_dim
+}.
+
 Theorem moreno16_concrete_witness_dim_div4 :
   forall W : Moreno16ConcreteVlambdaWitness,
     exists k : nat, moreno16_concrete_vlambda_dim W = 4 * k.
@@ -190,3 +202,39 @@ Definition moreno16_build_arbitrary_a_concrete_hypotheses
      moreno16_concrete_a_unit := Ha_unit;
      moreno16_concrete_a_pure := Ha_pure;
      moreno16_concrete_witness := W |}.
+
+Definition moreno16_arbitrary_witness_to_concrete
+  (W : Moreno16ArbitraryAVlambdaWitness)
+  : Moreno16ConcreteVlambdaWitness :=
+  {| moreno16_concrete_lambda := moreno16_arbitrary_lambda W;
+     moreno16_concrete_lambda_pos := moreno16_arbitrary_lambda_pos W;
+     moreno16_concrete_vlambda_dim := moreno16_arbitrary_vlambda_dim W;
+     moreno16_concrete_vlambda_is_h_module_dim :=
+       moreno16_arbitrary_vlambda_is_h_module_dim W |}.
+
+Definition moreno16_arbitrary_witness_to_hypotheses
+  (W : Moreno16ArbitraryAVlambdaWitness)
+  : Moreno16ArbitraryAConcreteHypotheses :=
+  moreno16_build_arbitrary_a_concrete_hypotheses
+    (moreno16_arbitrary_a W)
+    (moreno16_arbitrary_a_unit W)
+    (moreno16_arbitrary_a_pure W)
+    (moreno16_arbitrary_witness_to_concrete W).
+
+Theorem moreno16_arbitrary_witness_dim_div4 :
+  forall W : Moreno16ArbitraryAVlambdaWitness,
+    exists k : nat, moreno16_arbitrary_vlambda_dim W = 4 * k.
+Proof.
+  intro W.
+  exact (moreno16_concrete_witness_dim_div4
+           (moreno16_arbitrary_witness_to_concrete W)).
+Qed.
+
+Corollary moreno16_arbitrary_witness_dim_mod4 :
+  forall W : Moreno16ArbitraryAVlambdaWitness,
+    Nat.modulo (moreno16_arbitrary_vlambda_dim W) 4 = 0.
+Proof.
+  intro W.
+  exact (moreno16_concrete_witness_dim_mod4
+           (moreno16_arbitrary_witness_to_concrete W)).
+Qed.

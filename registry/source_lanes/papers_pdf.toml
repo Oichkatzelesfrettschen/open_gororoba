@@ -6,8 +6,8 @@ name = "papers_pdf"
 description = "Paper-oriented references with PDF documents or PDF mirrors."
 generated_at = "2026-03-19"
 artifact_count = 327
-downloaded_count = 59
-downloadable_count = 166
+downloaded_count = 62
+downloadable_count = 163
 blocked_count = 0
 citation_only_no_link_count = 11
 unverified_count = 91
@@ -837,10 +837,10 @@ source_refs = ["data/papers/documents_ingest/1_CAYLEYDICKSON_AND_MORE/de_marrais
 id = "ASOT-2790"
 key = "url:https://arxiv.org/abs/math/0105155"
 title = "https://arxiv.org/abs/math/0105155"
-status = "downloadable"
+status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = "https://math.ucr.edu/home/baez/octonions/octonions.pdf"
-canonical_download_path = ""
+canonical_download_path = "data/papers/corpus/baez_2002_octonions.pdf"
 source_refs = ["data/papers/intake/2026_02_14_hypercomplex_news/provenance_resolved.toml::artifact/6::RI-007", "papers/bib/cayley_dickson.bib::baez2002", "reports/literature_canonical_gap_matrix_2026_02_14.toml::canonical_check/7::CAN-OCT-2002-BAEZ"]
 
 [[artifact_ref]]
@@ -1627,10 +1627,10 @@ source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_
 id = "ASOT-2886"
 key = "url:https://arxiv.org/pdf/math/0105155.pdf"
 title = "octonions/real-division"
-status = "downloadable"
+status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = "https://arxiv.org/pdf/math/0105155.pdf"
-canonical_download_path = ""
+canonical_download_path = "data/papers/corpus/baez_2002_octonions.pdf"
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:97", "data/papers/intake/2026_02_15_cayley_dickson_sources/batches/hypercomplex/raw_links.txt:160"]
 
 [[artifact_ref]]
@@ -1797,10 +1797,10 @@ source_refs = ["data/papers/intake/global_link_audit_2026_02_15/tmp/arxiv.org_pd
 id = "ASOT-2903"
 key = "url:https://arxiv.org/pdf/q-alg/9710013.pdf"
 title = "m3/zero-divisors"
-status = "downloadable"
+status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = "https://arxiv.org/pdf/q-alg/9710013.pdf"
-canonical_download_path = ""
+canonical_download_path = "data/papers/corpus/moreno_1997_zero_divisors_cd_over_reals.pdf"
 source_refs = ["data/papers/intake/2026_02_15_cayley_dickson_sources/batches/cd_synthesis_axes/raw_links.txt:16"]
 
 [[artifact_ref]]
