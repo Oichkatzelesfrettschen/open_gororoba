@@ -210,6 +210,10 @@ pulp = "0.22"                # Runtime-dispatched SIMD (powers faer, 8.5M downlo
 # Hardware-accelerated distance metrics
 simsimd = "5"                # SIMD distance functions (L2, cosine, dot) -- AVX2/AVX-512/NEON
 
+# Unified GPU compute (cubecl: write once, dispatch to CUDA + Vulkan + WebGPU + Metal)
+cubecl = { version = "0.10.0-pre.2", default-features = false }
+cubecl-core = { version = "0.10.0-pre.2", default-features = false }
+
 # GPU compute (CUDA via dynamic loading -- binary works without GPU at runtime)
 cudarc = { version = "0.19", default-features = false, features = [
     "std", "driver", "runtime", "nvrtc", "dynamic-loading", "cuda-version-from-build-system",

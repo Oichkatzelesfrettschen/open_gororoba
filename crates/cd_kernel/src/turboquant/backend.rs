@@ -20,6 +20,9 @@ pub enum Backend {
     /// Vulkan compute shaders.
     #[cfg(feature = "vulkan")]
     Vulkan(super::vulkan::context::VulkanShaderTier),
+    /// cubecl unified GPU backend (CUDA + Vulkan + WebGPU + Metal).
+    #[cfg(feature = "cubecl")]
+    CubeCL,
 }
 
 impl std::fmt::Display for Backend {
@@ -30,6 +33,8 @@ impl std::fmt::Display for Backend {
             Backend::Cuda(tier) => write!(f, "cuda-{}", tier),
             #[cfg(feature = "vulkan")]
             Backend::Vulkan(tier) => write!(f, "vulkan-{}", tier),
+            #[cfg(feature = "cubecl")]
+            Backend::CubeCL => write!(f, "cubecl"),
         }
     }
 }
@@ -39,7 +44,15 @@ impl std::fmt::Display for Backend {
 /// Probes in order: CUDA -> Vulkan -> CPU.
 /// Returns the highest-throughput backend that is available and functional.
 pub fn detect_best_backend() -> Backend {
-    // Try CUDA first (highest throughput)
+    // Try cubecl first (unified, multi-platform)
+    #[cfg(feature = "cubecl")]
+    {
+        if super::cubecl_backend::probe_cubecl().is_some() {
+            return Backend::CubeCL;
+        }
+    }
+
+    // Try CUDA next (highest throughput for NVIDIA)
     #[cfg(feature = "cuda")]
     {
         if let Some(props) = super::cuda::device::probe_device() {
@@ -66,6 +79,13 @@ pub fn detect_all_backends() -> Vec<Backend> {
     // CPU is always available; mut needed when cuda/vulkan features add GPU backends
     #[allow(unused_mut)]
     let mut backends = vec![Backend::Cpu(detect_simd_level())];
+
+    #[cfg(feature = "cubecl")]
+    {
+        if super::cubecl_backend::probe_cubecl().is_some() {
+            backends.push(Backend::CubeCL);
+        }
+    }
 
     #[cfg(feature = "cuda")]
     {
@@ -133,7 +153,12 @@ impl BackendQuantizer {
             #[cfg(feature = "vulkan")]
             Backend::Vulkan(_tier) => {
                 // TODO: dispatch Vulkan compute shader
-                // For now, fall through to CPU
+                self.cpu.quantize(values, out);
+            }
+            #[cfg(feature = "cubecl")]
+            Backend::CubeCL => {
+                // TODO: dispatch cubecl unified kernel
+                // Falls through to CPU until cubecl kernels are implemented
                 self.cpu.quantize(values, out);
             }
         }
