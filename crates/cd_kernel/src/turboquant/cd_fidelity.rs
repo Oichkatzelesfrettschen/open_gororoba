@@ -336,7 +336,7 @@ mod tests {
             .collect();
 
         // Quantize each vector
-        let mut buf = vec![0.0f64; 2 * d];
+        let mut buf = vec![0.0f64; 3 * d];
         let quantized: Vec<Vec<f64>> = original.iter().map(|v| {
             let compressed = tq.quantize(v, &mut buf);
             let mut out = vec![0.0f64; d];

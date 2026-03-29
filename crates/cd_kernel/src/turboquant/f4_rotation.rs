@@ -186,7 +186,7 @@ mod tests {
         // but we can test the rotation quality directly)
         let tq = TurboQuantMSE::new(d, bits, 42, true);
         let v: Vec<f64> = (0..d).map(|i| (i as f64 * 0.1).sin()).collect();
-        let mut buf = vec![0.0f64; 2 * d];
+        let mut buf = vec![0.0f64; 3 * d];
         let comp = tq.quantize(&v, &mut buf);
         let mut recon = vec![0.0f64; d];
         tq.dequantize(&comp, &mut buf, &mut recon);

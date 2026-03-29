@@ -84,7 +84,7 @@ pub fn adaptive_quantize(
     let tq_base = TurboQuantMSE::new(d, base_bits, seed, use_wht);
     let tq_promoted = TurboQuantMSE::new(d, base_bits + 1, seed, use_wht);
 
-    let mut buf = vec![0.0f64; 2 * d];
+    let mut buf = vec![0.0f64; 3 * d];
     let mut results = Vec::with_capacity(n);
 
     for i in 0..n {
@@ -131,7 +131,7 @@ pub fn compare_adaptive_vs_uniform(
 
     // Uniform quantization at base_bits
     let tq_uniform = TurboQuantMSE::new(d, base_bits, seed, use_wht);
-    let mut buf = vec![0.0f64; 2 * d];
+    let mut buf = vec![0.0f64; 3 * d];
     let mut uniform_mse_sum = 0.0f64;
     let mut residuals = Vec::with_capacity(n);
 

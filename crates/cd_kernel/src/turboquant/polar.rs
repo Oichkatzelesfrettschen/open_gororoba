@@ -310,7 +310,7 @@ mod tests {
         let bits = 3;
         let x: Vec<f64> = (0..d).map(|i| (i as f64 * 0.1).sin()).collect();
         let rotation = super::super::rotation::Rotation::new_fast_jl(d, 42);
-        let mut buf = vec![0.0f64; 2 * d];
+        let mut buf = vec![0.0f64; 3 * d];
 
         let compressed = polar_quantize(&x, &rotation, bits, &mut buf);
         let mut recon = vec![0.0f64; d];
