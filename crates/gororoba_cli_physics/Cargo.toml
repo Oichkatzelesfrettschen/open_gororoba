@@ -353,6 +353,10 @@ name = "heliosphere-quench-scan"
 path = "src/bin/heliosphere_quench_scan.rs"
 
 [[bin]]
+name = "voyager-cdf-ingest"
+path = "src/bin/voyager_cdf_ingest.rs"
+
+[[bin]]
 name = "heliosphere-order-surplus"
 path = "src/bin/heliosphere_order_surplus.rs"
 
