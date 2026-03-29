@@ -1,0 +1,107 @@
+%% Fig 53: Lion's Commentary Dependency Graph -- CD Kernel Module DAG
+%% Pedagogical ordering of 15 modules from algebraic foundations to GPU kernel
+%% Inspired by Lions' Commentary on UNIX 6th Edition (1977)
+%%
+%% Concept-dependency ordering: a student reads top-to-bottom,
+%% each module builds on previously explained primitives.
+\begin{tikzpicture}[
+  mod/.style={
+    draw=#1, fill=#1!15, rounded corners=4pt,
+    minimum width=2.6cm, minimum height=0.7cm,
+    font=\sffamily\scriptsize, text=white, thick, align=center,
+  },
+  dep/.style={-{Stealth[length=4pt]}, thick, gray!50},
+  section/.style={font=\sffamily\tiny\bfseries, white!60, anchor=east},
+  loc/.style={font=\sffamily\tiny, white!40, anchor=west},
+]
+  %% Dark background
+  \fill[black!95] (-5.5,-16.5) rectangle (7.5,1);
+
+  %% === SECTION 1: FOUNDATION ===
+  \node[section] at (-3.5, 0.5) {Sec 1: Foundation};
+
+  \node[mod=OIorange] (mod) at (0, 0) {mod.rs};
+  \node[loc] at (2.5, 0) {61 LOC -- API surface};
+
+  \node[mod=OIorange] (signs) at (0, -1.2) {signs.rs};
+  \node[loc] at (2.5, -1.2) {248 LOC -- sign table};
+
+  \node[mod=OIorange] (sig) at (0, -2.4) {signature.rs};
+  \node[loc] at (2.5, -2.4) {273 LOC -- parameterization};
+
+  \node[mod=OIorange] (arith) at (0, -3.6) {arith.rs};
+  \node[loc] at (2.5, -3.6) {260 LOC -- core multiply};
+
+  \draw[dep] (mod) -- (signs);
+  \draw[dep] (signs) -- (sig);
+  \draw[dep] (sig) -- (arith);
+
+  %% === SECTION 2: ALGEBRAIC PROPERTIES ===
+  \node[section] at (-3.5, -4.8) {Sec 2: Properties};
+
+  \node[mod=OIskyblue] (assoc) at (0, -5.0) {associator.rs};
+  \node[loc] at (2.5, -5.0) {404 LOC -- non-associativity};
+
+  \node[mod=OIskyblue] (zd) at (-2, -6.2) {zero\_divisors.rs};
+  \node[loc] at (2.5, -6.2) {423 LOC -- algebraic defects};
+
+  \node[mod=OIskyblue] (pred) at (2, -6.2) {predicates.rs};
+  \node[loc] at (5, -6.2) {417 LOC};
+
+  \draw[dep] (arith) -- (assoc);
+  \draw[dep] (assoc) -- (zd);
+  \draw[dep] (assoc) -- (pred);
+
+  %% === SECTION 3: SPECIALIZED DIMENSIONS ===
+  \node[section] at (-3.5, -7.4) {Sec 3: Specializations};
+
+  \node[mod=OIpurple] (sed) at (-2, -7.8) {sedenion.rs};
+  \node[loc] at (2.5, -7.8) {121 LOC -- 16D explicit};
+
+  \node[mod=OIpurple] (tri) at (2, -7.8) {trigintaduonion.rs};
+
+  \node[mod=OIpurple] (cariow) at (0, -9.0) {cariow\_fact.rs};
+  \node[loc] at (2.5, -9.0) {278 LOC -- O($N^{1.58}$)};
+
+  \draw[dep] (arith) -- (sed);
+  \draw[dep] (arith) -- (tri);
+  \draw[dep] (sed) -- (cariow);
+  \draw[dep] (tri) -- (cariow);
+
+  %% === SECTION 4: OPTIMIZATIONS ===
+  \node[section] at (-3.5, -10.2) {Sec 4: Performance};
+
+  \node[mod=OIvermillion] (soa) at (-2, -10.6) {soa\_cache.rs};
+  \node[loc] at (2.5, -10.6) {250 LOC -- SoA layout};
+
+  \node[mod=OIvermillion] (simd) at (0, -11.8) {\textbf{simd.rs}};
+  \node[loc] at (2.5, -11.8) {\textbf{906 LOC -- THE KERNEL}};
+
+  \node[mod=OIvermillion] (fast) at (2, -13.0) {fast\_associator.rs};
+  \node[loc] at (5, -13.0) {264 LOC -- batch};
+
+  \draw[dep] (cariow) -- (soa);
+  \draw[dep] (soa) -- (simd);
+  \draw[dep] (simd) -- (fast);
+  \draw[dep] (assoc) -- (fast);
+
+  %% === SECTION 5: MEASUREMENT ===
+  \node[section] at (-3.5, -14.2) {Sec 5: Theory};
+
+  \node[mod=OIgreen] (sym) at (-2, -14.4) {symmetry.rs};
+  \node[loc] at (2.5, -14.4) {125 LOC -- metrics};
+
+  \node[mod=OIgreen] (tests) at (2, -14.4) {tests.rs};
+  \node[loc] at (5, -14.4) {1473 LOC -- spec};
+
+  \draw[dep] (fast) -- (sym);
+  \draw[dep] (fast) -- (tests);
+  \draw[dep] (simd) -- (tests);
+
+  %% Total
+  \node[white, font=\sffamily\scriptsize\bfseries, anchor=north]
+    at (0, -15.8) {Total: 5{,}681 LOC across 14 modules};
+  \node[white!50, font=\sffamily\tiny, anchor=north]
+    at (0, -16.2) {Read top-to-bottom: each module builds on previously explained primitives};
+
+\end{tikzpicture}
