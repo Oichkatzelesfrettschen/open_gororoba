@@ -59,6 +59,52 @@ Proof.
     exact sed_zd_product_zero_rev.
 Qed.
 
+Ltac brown1972_ch7_close_sed_ring :=
+  apply (f_equal2 mkSed);
+  apply (f_equal2 mkOct);
+  apply (f_equal4 mkQuat);
+  ring.
+
+Lemma brown1972_chapter_vii_zd_a_basis_decompose :
+  sed_zd_a = sed_add (sed_e 3) (sed_e 10).
+Proof.
+  vm_compute.
+  brown1972_ch7_close_sed_ring.
+Qed.
+
+Lemma brown1972_chapter_vii_zd_b_basis_decompose :
+  sed_zd_b = sed_add (sed_e 6) (sed_scale (-1) (sed_e 15)).
+Proof.
+  vm_compute.
+  brown1972_ch7_close_sed_ring.
+Qed.
+
+Theorem brown1972_chapter_vii_theorem_7_3_witness_fused_basis :
+  sed_mul_fused sed_zd_a sed_zd_b = sed_zero /\
+  sed_mul_fused sed_zd_b sed_zd_a = sed_zero.
+Proof.
+  destruct sed_fused_bilinear_surface as [_ HaddL HaddR HscaleL HscaleR].
+  split.
+  - rewrite brown1972_chapter_vii_zd_a_basis_decompose.
+    rewrite brown1972_chapter_vii_zd_b_basis_decompose.
+    rewrite HaddL.
+    rewrite HaddR.
+    rewrite HaddR.
+    rewrite HscaleR.
+    repeat rewrite sed_mul_fused_basis_xor by lia.
+    vm_compute.
+    brown1972_ch7_close_sed_ring.
+  - rewrite brown1972_chapter_vii_zd_b_basis_decompose.
+    rewrite brown1972_chapter_vii_zd_a_basis_decompose.
+    rewrite HaddL.
+    rewrite HscaleL.
+    rewrite HaddR.
+    rewrite HaddR.
+    repeat rewrite sed_mul_fused_basis_xor by lia.
+    vm_compute.
+    brown1972_ch7_close_sed_ring.
+Qed.
+
 Theorem brown1972_chapter_vii_theorem_7_15_fundamental :
   is_zd_pair_major_theorem
     zd_a1_fundamental zd_a2_fundamental
@@ -133,6 +179,9 @@ Record Brown1972ChapterVIIReusableAnchorSurface := {
     CDFusedBilinearSurface CDSed sed_add sed_mul sed_mul_fused sed_scale;
   brown1972_ch7_anchor_fused_t73 :
     sed_mul_fused sed_zd_a sed_zd_b = sed_zero /\
+    sed_mul_fused sed_zd_b sed_zd_a = sed_zero;
+  brown1972_ch7_anchor_fused_t73_basis :
+    sed_mul_fused sed_zd_a sed_zd_b = sed_zero /\
     sed_mul_fused sed_zd_b sed_zd_a = sed_zero
 }.
 
@@ -150,5 +199,7 @@ Proof.
             brown1972_ch7_anchor_fused_sed :=
               sed_fused_bilinear_surface;
             brown1972_ch7_anchor_fused_t73 :=
-              brown1972_chapter_vii_theorem_7_3_witness_fused |}.
+              brown1972_chapter_vii_theorem_7_3_witness_fused;
+            brown1972_ch7_anchor_fused_t73_basis :=
+              brown1972_chapter_vii_theorem_7_3_witness_fused_basis |}.
 Defined.

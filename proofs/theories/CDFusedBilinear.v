@@ -1,4 +1,4 @@
-From Stdlib Require Import Reals.
+From Stdlib Require Import Reals Bool Arith ZArith Lia.
 From OpenGororoba Require Import
   Prelude
   CayleyDicksonAlgebra
@@ -183,6 +183,79 @@ Proof.
   apply oct_mul_self_neg; assumption.
 Defined.
 
+Definition sed_sign (i j : nat) : Z := cd_sign_fuel 5 16 i j.
+
+Ltac close_sed_fused_case :=
+  vm_compute;
+  apply (f_equal2 mkSed);
+  apply (f_equal2 mkOct);
+  apply (f_equal4 mkQuat);
+  ring.
+
+Ltac destruct_nat_disjunction H :=
+  repeat match type of H with
+         | _ \/ _ =>
+             let H' := fresh H in
+             destruct H as [->|H'];
+             [| rename H' into H]
+         end;
+  subst.
+
+Theorem sed_mul_fused_basis_xor : forall i j : nat,
+  (i < 16)%nat -> (j < 16)%nat ->
+  sed_mul_fused (sed_e i) (sed_e j) =
+    sed_scale (sign_to_R (sed_sign i j)) (sed_e (Nat.lxor i j)).
+Proof.
+  intros i j Hi Hj.
+  assert (Hcasesi :
+    i = 0%nat \/ i = 1%nat \/ i = 2%nat \/ i = 3%nat \/
+    i = 4%nat \/ i = 5%nat \/ i = 6%nat \/ i = 7%nat \/
+    i = 8%nat \/ i = 9%nat \/ i = 10%nat \/ i = 11%nat \/
+    i = 12%nat \/ i = 13%nat \/ i = 14%nat \/ i = 15%nat)
+    by lia.
+  assert (Hcasesj :
+    j = 0%nat \/ j = 1%nat \/ j = 2%nat \/ j = 3%nat \/
+    j = 4%nat \/ j = 5%nat \/ j = 6%nat \/ j = 7%nat \/
+    j = 8%nat \/ j = 9%nat \/ j = 10%nat \/ j = 11%nat \/
+    j = 12%nat \/ j = 13%nat \/ j = 14%nat \/ j = 15%nat)
+    by lia.
+  destruct_nat_disjunction Hcasesi.
+  all: destruct_nat_disjunction Hcasesj.
+  all: close_sed_fused_case.
+Qed.
+
+Theorem sed_mul_fused_self_neg : forall i : nat,
+  (1 <= i)%nat -> (i < 16)%nat ->
+  sed_mul_fused (sed_e i) (sed_e i) = sed_neg (sed_e 0).
+Proof.
+  intros i Hlo Hhi.
+  assert (Hcases :
+    i = 1%nat \/ i = 2%nat \/ i = 3%nat \/ i = 4%nat \/ i = 5%nat \/
+    i = 6%nat \/ i = 7%nat \/ i = 8%nat \/ i = 9%nat \/ i = 10%nat \/
+    i = 11%nat \/ i = 12%nat \/ i = 13%nat \/ i = 14%nat \/ i = 15%nat)
+    by lia.
+  destruct_nat_disjunction Hcases.
+  all: close_sed_fused_case.
+Qed.
+
+Record CDSedBasisFusedSurface := {
+  cd_sed_fused_basis_xor :
+    forall i j : nat,
+      (i < 16)%nat -> (j < 16)%nat ->
+      sed_mul_fused (sed_e i) (sed_e j) =
+        sed_scale (sign_to_R (sed_sign i j)) (sed_e (Nat.lxor i j));
+  cd_sed_fused_self_neg :
+    forall i : nat,
+      (1 <= i)%nat -> (i < 16)%nat ->
+      sed_mul_fused (sed_e i) (sed_e i) = sed_neg (sed_e 0)
+}.
+
+Definition sed_basis_fused_surface : CDSedBasisFusedSurface.
+Proof.
+  refine {| cd_sed_fused_basis_xor := sed_mul_fused_basis_xor;
+            cd_sed_fused_self_neg := sed_mul_fused_self_neg |}.
+Defined.
+
 Lemma sed_mul_fused_e1_e9 :
   sed_mul_fused (sed_e 1) (sed_e 9) = sed_scale (-1) (sed_e 8).
 Proof. rewrite sed_mul_fused_eq. exact sed_mul_e1_e9. Qed.
@@ -269,6 +342,7 @@ Lemma sed_mul_fused_e1_e15 :
 Proof. rewrite sed_mul_fused_eq. exact sed_mul_e1_e15. Qed.
 
 Record CDSedFocusedBasisFusedSurface := {
+  cd_sed_fused_full : CDSedBasisFusedSurface;
   cd_sed_fused_e1_e9 : sed_mul_fused (sed_e 1) (sed_e 9) = sed_scale (-1) (sed_e 8);
   cd_sed_fused_e9_e2 : sed_mul_fused (sed_e 9) (sed_e 2) = sed_scale (-1) (sed_e 11);
   cd_sed_fused_e8_e2 : sed_mul_fused (sed_e 8) (sed_e 2) = sed_scale (-1) (sed_e 10);
@@ -302,7 +376,8 @@ Record CDSedFocusedBasisFusedSurface := {
 Definition sed_focused_basis_fused_surface : CDSedFocusedBasisFusedSurface.
 Proof.
   refine
-    {| cd_sed_fused_e1_e9 := sed_mul_fused_e1_e9;
+    {| cd_sed_fused_full := sed_basis_fused_surface;
+       cd_sed_fused_e1_e9 := sed_mul_fused_e1_e9;
        cd_sed_fused_e9_e2 := sed_mul_fused_e9_e2;
        cd_sed_fused_e8_e2 := sed_mul_fused_e8_e2;
        cd_sed_fused_e1_e11 := sed_mul_fused_e1_e11;
