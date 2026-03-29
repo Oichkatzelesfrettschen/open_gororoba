@@ -576,6 +576,24 @@ Proof.
   - apply (f_equal2 mkOct); apply (f_equal4 mkQuat); ring.
 Qed.
 
+Lemma brown1972_sed_mul_fused_adjoined_right : forall a : CDSed,
+  sed_mul_fused a brown1972_sed_adjoined_e =
+  mkSed (oct_neg (sed_hi a)) (sed_lo a).
+Proof.
+  intro a.
+  rewrite sed_mul_fused_eq.
+  exact (brown1972_sed_mul_adjoined_right a).
+Qed.
+
+Lemma brown1972_sed_mul_fused_adjoined_left : forall a : CDSed,
+  sed_mul_fused brown1972_sed_adjoined_e a =
+  mkSed (oct_neg (oct_conj (sed_hi a))) (oct_conj (sed_lo a)).
+Proof.
+  intro a.
+  rewrite sed_mul_fused_eq.
+  exact (brown1972_sed_mul_adjoined_left a).
+Qed.
+
 Theorem brown1972_theorem_6_1_sedenion : forall a b : CDSed,
   sed_add (sed_assoc brown1972_sed_adjoined_e a b)
           (sed_assoc a brown1972_sed_adjoined_e b) =
@@ -867,6 +885,50 @@ Proof.
   rewrite sed_neg_neg.
   rewrite sed_add_comm.
   reflexivity.
+Qed.
+
+Theorem brown1972_theorem_6_3_i_sedenion_fused : forall a b : CDSed,
+  sed_mul_fused (sed_mul_fused (sed_mul_fused brown1972_sed_adjoined_e a)
+                               brown1972_sed_adjoined_e) b =
+  sed_mul_fused brown1972_sed_adjoined_e
+                (sed_mul_fused a (sed_mul_fused brown1972_sed_adjoined_e b)).
+Proof.
+  intros a b.
+  repeat rewrite sed_mul_fused_eq.
+  exact (brown1972_theorem_6_3_i_sedenion a b).
+Qed.
+
+Theorem brown1972_theorem_6_3_ii_sedenion_fused : forall a b : CDSed,
+  sed_mul_fused b
+                (sed_mul_fused (sed_mul_fused brown1972_sed_adjoined_e a)
+                               brown1972_sed_adjoined_e) =
+  sed_mul_fused (sed_mul_fused (sed_mul_fused b brown1972_sed_adjoined_e) a)
+                brown1972_sed_adjoined_e.
+Proof.
+  intros a b.
+  repeat rewrite sed_mul_fused_eq.
+  exact (brown1972_theorem_6_3_ii_sedenion a b).
+Qed.
+
+Theorem brown1972_theorem_6_3_iii_sedenion_fused : forall a b : CDSed,
+  sed_mul_fused (sed_mul_fused brown1972_sed_adjoined_e b)
+                (sed_mul_fused a brown1972_sed_adjoined_e) =
+  sed_mul_fused (sed_mul_fused brown1972_sed_adjoined_e (sed_mul_fused b a))
+                brown1972_sed_adjoined_e.
+Proof.
+  intros a b.
+  repeat rewrite sed_mul_fused_eq.
+  exact (brown1972_theorem_6_3_iii_sedenion a b).
+Qed.
+
+Theorem brown1972_corollary_6_4_sedenion_fused : forall A B : CDSed,
+  sed_assoc B (sed_mul_fused brown1972_sed_adjoined_e A) brown1972_sed_adjoined_e =
+  sed_mul_fused (sed_neg (sed_assoc B brown1972_sed_adjoined_e A))
+                brown1972_sed_adjoined_e.
+Proof.
+  intros A B.
+  repeat rewrite sed_mul_fused_eq.
+  exact (brown1972_corollary_6_4_sedenion A B).
 Qed.
 
 (** Brown 6.5/6.6 are stated in the dissertation with symbolic [a + e b]
@@ -1786,6 +1848,38 @@ Record Brown1972ChapterVIFusedBaseExtensionSurface := {
     CDFusedBilinearSurface CDSed sed_add sed_mul sed_mul_fused sed_scale;
   brown1972_ch6_fused_sed_basis :
     CDSedBasisFusedSurface;
+  brown1972_ch6_fused_adjoined_left :
+    forall a : CDSed,
+      sed_mul_fused brown1972_sed_adjoined_e a =
+      mkSed (oct_neg (oct_conj (sed_hi a))) (oct_conj (sed_lo a));
+  brown1972_ch6_fused_adjoined_right :
+    forall a : CDSed,
+      sed_mul_fused a brown1972_sed_adjoined_e =
+      mkSed (oct_neg (sed_hi a)) (sed_lo a);
+  brown1972_ch6_fused_t63_i :
+    forall a b : CDSed,
+      sed_mul_fused (sed_mul_fused (sed_mul_fused brown1972_sed_adjoined_e a)
+                                   brown1972_sed_adjoined_e) b =
+      sed_mul_fused brown1972_sed_adjoined_e
+                    (sed_mul_fused a (sed_mul_fused brown1972_sed_adjoined_e b));
+  brown1972_ch6_fused_t63_ii :
+    forall a b : CDSed,
+      sed_mul_fused b
+                    (sed_mul_fused (sed_mul_fused brown1972_sed_adjoined_e a)
+                                   brown1972_sed_adjoined_e) =
+      sed_mul_fused (sed_mul_fused (sed_mul_fused b brown1972_sed_adjoined_e) a)
+                    brown1972_sed_adjoined_e;
+  brown1972_ch6_fused_t63_iii :
+    forall a b : CDSed,
+      sed_mul_fused (sed_mul_fused brown1972_sed_adjoined_e b)
+                    (sed_mul_fused a brown1972_sed_adjoined_e) =
+      sed_mul_fused (sed_mul_fused brown1972_sed_adjoined_e (sed_mul_fused b a))
+                    brown1972_sed_adjoined_e;
+  brown1972_ch6_fused_c64 :
+    forall A B : CDSed,
+      sed_assoc B (sed_mul_fused brown1972_sed_adjoined_e A) brown1972_sed_adjoined_e =
+      sed_mul_fused (sed_neg (sed_assoc B brown1972_sed_adjoined_e A))
+                    brown1972_sed_adjoined_e;
   brown1972_ch6_fused_t65 :
     forall x y : CDSed,
       brown1972_ch6_67_polynomial_mul (sed_lo x) (sed_hi x) (sed_lo y) (sed_hi y) =
@@ -1853,6 +1947,18 @@ Proof.
             brown1972_ch6_fused_oct_bilinear := oct_fused_bilinear_surface;
             brown1972_ch6_fused_sed_bilinear := sed_fused_bilinear_surface;
             brown1972_ch6_fused_sed_basis := sed_basis_fused_surface;
+            brown1972_ch6_fused_adjoined_left :=
+              brown1972_sed_mul_fused_adjoined_left;
+            brown1972_ch6_fused_adjoined_right :=
+              brown1972_sed_mul_fused_adjoined_right;
+            brown1972_ch6_fused_t63_i :=
+              brown1972_theorem_6_3_i_sedenion_fused;
+            brown1972_ch6_fused_t63_ii :=
+              brown1972_theorem_6_3_ii_sedenion_fused;
+            brown1972_ch6_fused_t63_iii :=
+              brown1972_theorem_6_3_iii_sedenion_fused;
+            brown1972_ch6_fused_c64 :=
+              brown1972_corollary_6_4_sedenion_fused;
             brown1972_ch6_fused_t65 :=
               brown1972_theorem_6_5_sedenion_fused_decomposed;
             brown1972_ch6_fused_c67 :=
