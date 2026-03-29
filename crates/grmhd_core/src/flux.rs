@@ -319,13 +319,26 @@ pub fn compute_rhs_1d(
 /// For each interior cell, accumulates flux divergence from r, theta, phi faces.
 /// Uses the FluxWorkspace pattern for zero allocation in the inner loop.
 ///
-/// Returns RHS as a flat vector indexed by grid.idx(i,j,k) * NCONS + var.
+/// Face EMFs extracted from HLL flux for constrained transport.
+/// EMF_phi at radial face (i+1/2, j) = -F_HLL_Btheta at that face.
+/// EMF_phi at theta face (i, j+1/2) = +F_HLL_Br at that face.
+pub struct FaceEmfs {
+    /// EMF from radial faces: emf_r[i * n2t + j] = EMF at (i+1/2, j)
+    pub emf_r: Vec<f64>,
+    /// EMF from theta faces: emf_th[i * n2t + j] = EMF at (i, j+1/2)
+    pub emf_th: Vec<f64>,
+    pub n1t: usize,
+    pub n2t: usize,
+}
+
+/// Returns RHS as a flat vector indexed by grid.idx(i,j,k) * NCONS + var,
+/// plus face EMFs for constrained transport.
 pub fn compute_rhs_3d(
     prims: &PrimGrid,
     grid: &Grid,
     mc: &MetricCache,
     eos: &GammaLaw,
-) -> Vec<f64> {
+) -> (Vec<f64>, FaceEmfs) {
     let ng = grid.ng;
     let n1t = grid.n1_total();
     let n2t = grid.n2_total();
@@ -334,6 +347,11 @@ pub fn compute_rhs_3d(
     let n_total = grid.n_total();
 
     let mut rhs = vec![0.0f64; n_total * NCONS];
+    let mut face_emfs = FaceEmfs {
+        emf_r: vec![0.0; n1t * n2t],
+        emf_th: vec![0.0; n1t * n2t],
+        n1t, n2t,
+    };
 
     // Direction 0 (radial): sweep faces at fixed (j, k)
     for j in ng..ng + grid.n2 {
@@ -387,6 +405,10 @@ pub fn compute_rhs_3d(
                 ws.cons_r = cons::prim2con(&ws.prim_r, &grid.metric, grid.r(ip0), th_face, eos, sg_r);
 
                 let f_hll = riemann::hll_flux(&ws.flux_l, &ws.flux_r, &ws.cons_l, &ws.cons_r, sl, sr);
+
+                // Store EMF from HLL induction flux at this radial face
+                // EMF_phi at (i+1/2, j) = -F_HLL[B^theta] (Gardiner-Stone CTU)
+                face_emfs.emf_r[face_i * n2t + j] = -f_hll[6]; // negative of B^theta flux
 
                 // Accumulate divergence
                 if face_i > ng {
@@ -458,6 +480,10 @@ pub fn compute_rhs_3d(
 
                     let f_hll = riemann::hll_flux(&ws.flux_l, &ws.flux_r, &ws.cons_l, &ws.cons_r, sl, sr);
 
+                    // Store EMF from HLL induction flux at this theta face
+                    // EMF_phi at (i, j+1/2) = +F_HLL[B^r] (Gardiner-Stone CTU)
+                    face_emfs.emf_th[i * n2t + face_j] = f_hll[5]; // positive B^r flux
+
                     if face_j > ng {
                         let cell_l = grid.idx(i, face_j - 1, k);
                         for v in 0..NCONS {
@@ -503,7 +529,12 @@ pub fn compute_rhs_3d(
         }
     }
 
-    rhs
+    // Face EMFs are now collected from HLL flux during the sweeps above:
+    // emf_r[i*n2t+j] = -F_HLL_Btheta at radial face (i+1/2, j)
+    // emf_th[i*n2t+j] = +F_HLL_Br at theta face (i, j+1/2)
+    // These have the correct upwind property from the Riemann solver.
+
+    (rhs, face_emfs)
 }
 
 /// Take a single Euler step using the full 3D RHS.
@@ -543,7 +574,7 @@ pub fn euler_step_3d(
     }
 
     // Step 2: Compute RHS and update conservative variables
-    let mut rhs = compute_rhs_3d(prims, grid, mc, eos);
+    let (mut rhs, face_emfs) = compute_rhs_3d(prims, grid, mc, eos);
     for i in ng..ng + grid.n1 {
         for j in ng..ng + grid.n2 {
             for k in ng..ng + grid.n3 {
@@ -573,9 +604,9 @@ pub fn euler_step_3d(
         }
     }
 
-    // Step 2b: Update B-field via constrained transport (CT)
+    // Step 2b: Update B-field via constrained transport with HLL-derived EMFs
     if let Some(sb) = staggered_b {
-        sb.ct_update(prims, grid, dt);
+        sb.ct_update_from_face_emfs(&face_emfs, grid, dt);
         sb.to_cell_centered(prims, grid);
     }
 
@@ -698,7 +729,7 @@ mod tests {
         let torus = crate::torus::FMTorus::schwarzschild(6.5, 12.0);
         let prims = torus.initialize(&grid);
 
-        let rhs = compute_rhs_3d(&prims, &grid, &mc, &eos);
+        let (rhs, _face_emfs) = compute_rhs_3d(&prims, &grid, &mc, &eos);
         assert_eq!(rhs.len(), grid.n_total() * NCONS);
 
         // All interior RHS should be finite

@@ -202,6 +202,66 @@ impl StaggeredB {
         }
     }
 
+    /// Update face B using HLL-derived face EMFs (upwind CT).
+    ///
+    /// Instead of computing EMF from cell-centered v*B (which is unstable),
+    /// use the EMF extracted from the HLL induction flux at each face.
+    /// The corner EMF is averaged from the two adjacent face EMFs.
+    ///
+    /// This is the Gardiner & Stone (2005) approach: the Riemann solver
+    /// provides the upwind EMF, and CT averages it to corners for Stokes update.
+    pub fn ct_update_from_face_emfs(
+        &mut self,
+        face_emfs: &super::flux::FaceEmfs,
+        grid: &Grid,
+        dt: f64,
+    ) {
+        let ng = grid.ng;
+        let n2t = self.n2t;
+
+        // Step 1: Average face EMFs to corners
+        // EMF at corner (i+1/2, j+1/2) = 0.5 * (emf_r[i,j] + emf_r[i,j+1])
+        //   + 0.5 * (emf_th[i,j] + emf_th[i+1,j])
+        // But emf_r and emf_th represent different components.
+        // For 2D: EMF_phi is the only component. At a radial face, it comes
+        // from the r-sweep HLL. At a theta face, from the theta-sweep HLL.
+        // The corner value is just the average of the two adjacent face values.
+        let mut emf_corner = vec![0.0f64; self.n1t * n2t];
+        for i in ng..ng + grid.n1 {
+            for j in ng..ng + grid.n2 {
+                // Average the radial face EMF (along theta) and theta face EMF (along r)
+                let emf_r_here = face_emfs.emf_r[i * n2t + j];
+                let emf_r_jp1 = if j + 1 < n2t { face_emfs.emf_r[i * n2t + j + 1] } else { emf_r_here };
+                let emf_th_here = face_emfs.emf_th[i * n2t + j];
+                let emf_th_ip1 = if i + 1 < self.n1t { face_emfs.emf_th[(i + 1) * n2t + j] } else { emf_th_here };
+
+                emf_corner[i * n2t + j] = 0.25 * (emf_r_here + emf_r_jp1 + emf_th_here + emf_th_ip1);
+            }
+        }
+
+        // Step 2: Update B^r at faces via dB^r/dt = -(dEMF/dtheta)
+        let dtheta = grid.dx2 * std::f64::consts::PI;
+        for i in ng..ng + grid.n1 {
+            for j in ng + 1..ng + grid.n2 {
+                let emf_top = emf_corner[i * n2t + j];
+                let emf_bot = emf_corner[i * n2t + (j - 1)];
+                let face = i * n2t + j;
+                self.br[face] -= dt * (emf_top - emf_bot) / dtheta;
+            }
+        }
+
+        // Step 3: Update B^theta at faces via dB^th/dt = +(dEMF/dr)
+        let dr = grid.dx1;
+        for i in ng + 1..ng + grid.n1 {
+            for j in ng..ng + grid.n2 {
+                let emf_right = emf_corner[i * n2t + j];
+                let emf_left = emf_corner[(i - 1) * n2t + j];
+                let face = i * n2t + j;
+                self.bth[face] += dt * (emf_right - emf_left) / dr;
+            }
+        }
+    }
+
     /// Compute the maximum |div(B)| across the grid (diagnostic).
     /// Should be ~machine epsilon for CT, ~O(1) without CT.
     pub fn max_divb(&self, grid: &Grid) -> f64 {
