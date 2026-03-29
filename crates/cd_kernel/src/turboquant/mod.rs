@@ -89,6 +89,7 @@ pub mod fixed_point;
 pub mod gpu_evaluation;
 pub mod grouping;
 pub mod inline_cd;
+pub mod integration_test;
 pub mod lazy_promote;
 pub mod multi_resolution;
 pub mod hierarchical;

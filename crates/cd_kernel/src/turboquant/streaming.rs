@@ -51,10 +51,20 @@ impl StreamingKVCache {
         }
     }
 
+    /// Whether we have enough tokens for adaptive scoring.
+    ///
+    /// The CD associator needs triplets (3 consecutive vectors).
+    /// During the warmup period (< 3 tokens), base bits are used.
+    pub fn is_warmed_up(&self) -> bool {
+        self.key_cache.len() >= 3
+    }
+
     /// Append a new key-value pair (single token, decode step).
     ///
     /// Quantizes the key and value incrementally using the pre-allocated
     /// buffer.  No re-processing of existing cache entries.
+    /// During warmup (< 3 tokens), uses base quantization.
+    /// After warmup, the importance scoring is available for adaptive allocation.
     pub fn append(&mut self, key: &[f64], value: &[f64]) {
         debug_assert_eq!(key.len(), self.d);
         debug_assert_eq!(value.len(), self.d);
