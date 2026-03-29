@@ -59,6 +59,7 @@ pub mod exceptional_roots;
 pub mod f4_rotation;
 pub mod fixed_codebook;
 pub mod fixed_point;
+pub mod gpu_evaluation;
 pub mod grouping;
 pub mod hierarchical;
 pub mod hybrid;
@@ -70,7 +71,9 @@ pub mod rotation;
 pub mod rotation_diagnostics;
 pub mod sign_pack;
 pub mod simd_codebook;
+pub mod simd_evaluation;
 pub mod synthesized;
+pub mod wht_crate_scope;
 pub mod zd_bias;
 #[cfg(feature = "vulkan")]
 pub mod vulkan;
