@@ -1,0 +1,10 @@
+{
+  "total_joined": 8426,
+  "embedding_dim": 64,
+  "n_channels": 20,
+  "n_windows": 8425,
+  "mean_associator": 30.770406267669298,
+  "median_associator": 5.484971046447754,
+  "max_associator": 711.436767578125,
+  "year_range": "2019-2022"
+}

@@ -361,6 +361,10 @@ name = "voyager-pws-ingest"
 path = "src/bin/voyager_pws_ingest.rs"
 
 [[bin]]
+name = "voyager-ism-multichannel"
+path = "src/bin/voyager_ism_multichannel.rs"
+
+[[bin]]
 name = "heliosphere-order-surplus"
 path = "src/bin/heliosphere_order_surplus.rs"
 
