@@ -107,7 +107,7 @@ fn main() -> Result<()> {
                     1
                 };
                 if chunk_val > 0 {
-                    ((shape_val + chunk_val - 1) / chunk_val) as usize
+                    shape_val.div_ceil(chunk_val) as usize
                 } else {
                     1
                 }
@@ -132,12 +132,9 @@ fn main() -> Result<()> {
             let mut total_bytes = 0usize;
             let mut ok_count = 0usize;
             for (_, result) in &results {
-                match result {
-                    Ok(n) => {
-                        total_bytes += n;
-                        ok_count += 1;
-                    }
-                    Err(_) => {}
+                if let Ok(n) = result {
+                    total_bytes += n;
+                    ok_count += 1;
                 }
             }
             println!(
