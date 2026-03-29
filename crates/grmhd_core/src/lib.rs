@@ -25,6 +25,7 @@
 //! - Noble et al. (2006) "Primitive variable solvers for conservative GRMHD"
 
 pub mod cons;
+pub mod evolve;
 pub mod eos;
 pub mod grid;
 pub mod metric;
