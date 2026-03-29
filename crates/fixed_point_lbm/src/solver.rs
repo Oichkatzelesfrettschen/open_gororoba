@@ -52,9 +52,9 @@ impl<T: LbmStorage> LbmDomain<T> {
         let u = vec![[0.0f32; 3]; n];
 
         // Initialize f_i = w_i * rho (equilibrium at rest)
-        for cell in 0..n {
-            for i in 0..19 {
-                f[cell][i] = T::from_f32(d3q19::W[i] as f32);
+        for cell_f in &mut f {
+            for (i, fi) in cell_f.iter_mut().enumerate() {
+                *fi = T::from_f32(d3q19::W[i] as f32);
             }
         }
 
@@ -68,10 +68,10 @@ impl<T: LbmStorage> LbmDomain<T> {
     pub fn total_mass(&self) -> f64 {
         // Sum f_i directly in the storage type's integer domain for exact mass.
         let mut total = 0.0f64;
-        for cell in 0..self.n_cells() {
+        for cell_f in &self.f {
             let mut rho_cell = 0.0f64;
-            for i in 0..19 {
-                rho_cell += self.f[cell][i].to_f32() as f64;
+            for fi in cell_f {
+                rho_cell += fi.to_f32() as f64;
             }
             total += rho_cell;
         }
@@ -117,21 +117,21 @@ impl<T: LbmStorage> LbmDomain<T> {
 
             // BGK collision
             let u_sq = ux * ux + uy * uy + uz * uz;
-            for i in 0..19 {
-                let cx = d3q19::C[i][0] as f32;
-                let cy = d3q19::C[i][1] as f32;
-                let cz = d3q19::C[i][2] as f32;
+            for (i, (&ci, &wi)) in d3q19::C.iter().zip(d3q19::W.iter()).enumerate() {
+                let cx = ci[0] as f32;
+                let cy = ci[1] as f32;
+                let cz = ci[2] as f32;
                 let eu = cx * ux + cy * uy + cz * uz;
-                let w = d3q19::W[i] as f32;
+                let w = wi as f32;
                 let f_eq = w * rho_local * (1.0 + 3.0 * eu + 4.5 * eu * eu - 1.5 * u_sq);
 
                 let fi = self.f[idx][i].to_f32();
                 let fi_new = fi - (fi - f_eq) * inv_tau;
 
                 // Streaming: push to neighbor
-                let xn = (x as i32 + d3q19::C[i][0] + nx as i32) as usize % nx;
-                let yn = (y as i32 + d3q19::C[i][1] + ny as i32) as usize % ny;
-                let zn = (z as i32 + d3q19::C[i][2] + nz as i32) as usize % nz;
+                let xn = (x as i32 + ci[0] + nx as i32) as usize % nx;
+                let yn = (y as i32 + ci[1] + ny as i32) as usize % ny;
+                let zn = (z as i32 + ci[2] + nz as i32) as usize % nz;
                 let idx_next = xn + nx * (yn + ny * zn);
 
                 f_new[idx_next][i] = T::from_f32(fi_new);
