@@ -77,16 +77,24 @@ pub fn fractional_laplacian_periodic_1d(u: &[f64], s: f64, length: f64) -> Vec<f
     fft.process(&mut buffer);
 
     // Apply multiplier |k|^{2s}
-    let _dx = length / n as f64;
+    // Precompute multipliers: depends only on grid size and s, not on input data.
+    // For s=1 (standard Laplacian): mult = k^2 (avoids powf entirely).
+    let two_s = 2.0 * s;
+    let is_integer_s = (s - s.round()).abs() < 1e-14;
+    let k_scale = 2.0 * PI / length;
     for (i, val) in buffer.iter_mut().enumerate() {
-        // Frequency in cycles per unit length, then angular frequency
-        let freq = if i <= n / 2 {
-            i as f64
+        let freq = if i <= n / 2 { i as f64 } else { i as f64 - n as f64 };
+        let k = freq * k_scale;
+        let k_abs = k.abs();
+        // Fast path for common integer orders (avoids powf)
+        let mult = if is_integer_s && (two_s - 2.0).abs() < 1e-14 {
+            k_abs * k_abs  // s=1: standard Laplacian
+        } else if is_integer_s && (two_s - 4.0).abs() < 1e-14 {
+            let k2 = k_abs * k_abs;
+            k2 * k2  // s=2: biharmonic
         } else {
-            i as f64 - n as f64
+            k_abs.powf(two_s)  // General fractional order
         };
-        let k = 2.0 * PI * freq / length;
-        let mult = k.abs().powf(2.0 * s);
         *val *= mult;
     }
 
