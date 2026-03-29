@@ -1985,6 +1985,7 @@ Theorem brown1972_lemma_6_9_nonstandard_trace_zero_transport_fused :
   forall A B : CDSed,
     brown1972_oct_trace (sed_hi A) = 0%R ->
     brown1972_oct_trace (sed_hi (sed_mul A B)) = 0%R ->
+    brown1972_oct_trace (sed_hi (sed_mul A (sed_conj B))) = 0%R ->
     brown1972_oct_trace (sed_hi B) = 0%R ->
     sed_mul_fused A (sed_mul_fused brown1972_sed_adjoined_e B) =
     sed_mul_fused brown1972_sed_adjoined_e (sed_mul_fused (sed_conj A) B) /\
@@ -1994,14 +1995,14 @@ Theorem brown1972_lemma_6_9_nonstandard_trace_zero_transport_fused :
                   (sed_mul_fused brown1972_sed_adjoined_e B) =
     sed_neg (sed_mul_fused B (sed_conj A)).
 Proof.
-  intros A B HtrA HtrAB HtrB.
+  intros A B HtrA HtrAB HtrAconjB HtrB.
   split.
   - exact (brown1972_lemma_6_9_i_sedenion_forward_fused A B HtrA).
   - split.
     + exact (brown1972_lemma_6_9_ii_sedenion_of_trace_conditions_fused
                A B HtrA HtrAB HtrB).
     + exact (brown1972_lemma_6_9_iii_sedenion_of_trace_conditions_fused
-               A B HtrAB HtrB).
+               A B HtrAconjB HtrB).
 Qed.
 
 Record Brown1972ChapterVINonstandardFusedTraceSurface := {
@@ -2011,6 +2012,7 @@ Record Brown1972ChapterVINonstandardFusedTraceSurface := {
     forall A B : CDSed,
       brown1972_oct_trace (sed_hi A) = 0%R ->
       brown1972_oct_trace (sed_hi (sed_mul A B)) = 0%R ->
+      brown1972_oct_trace (sed_hi (sed_mul A (sed_conj B))) = 0%R ->
       brown1972_oct_trace (sed_hi B) = 0%R ->
       sed_mul_fused A (sed_mul_fused brown1972_sed_adjoined_e B) =
       sed_mul_fused brown1972_sed_adjoined_e (sed_mul_fused (sed_conj A) B) /\
