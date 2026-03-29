@@ -24,6 +24,7 @@
 //! - Gammie, McKinney & Toth (2003) "HARM: A Numerical Scheme for GRMHD"
 //! - Noble et al. (2006) "Primitive variable solvers for conservative GRMHD"
 
+pub mod con2prim;
 pub mod cons;
 pub mod evolve;
 pub mod flux;
