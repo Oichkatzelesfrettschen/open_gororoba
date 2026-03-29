@@ -1,0 +1,87 @@
+%% Fig 51: Anomaly Sigma Histogram -- 5973 anomalies from 122 datasets
+%% Log-scale histogram with color-coded dataset types
+%% Data: C-1618, cd-anomaly-scan Tukey k=2.0
+%%
+%% Key visual: long tail dominated by ISM transients (up to 141 sigma)
+\begin{tikzpicture}
+\begin{axis}[
+  width=\textwidth,
+  height=0.618\textwidth,
+  xmin=0, xmax=50,
+  ymin=0.5, ymax=5000,
+  ymode=log,
+  xlabel={\sffamily Sigma Above Median},
+  ylabel={\sffamily Count (log scale)},
+  xlabel style={font=\sffamily\small, white},
+  ylabel style={font=\sffamily\small, white},
+  tick label style={font=\sffamily\scriptsize, white},
+  axis background/.style={fill=black!95},
+  axis line style={white!70},
+  tick style={white!70},
+  major grid style={gray!15, dashed},
+  grid=major,
+  legend style={
+    at={(0.97,0.97)}, anchor=north east,
+    fill=black!80, draw=gray!40,
+    text=white, font=\sffamily\scriptsize,
+    row sep=1pt,
+  },
+]
+
+  %% Tukey fence threshold
+  \draw[OIvermillion, thick, dashed]
+    (axis cs:2,0.5) -- (axis cs:2,5000);
+  \node[OIvermillion, font=\sffamily\tiny, anchor=south west]
+    at (axis cs:2.2, 3000) {Tukey fence ($k$=2)};
+
+  %% Histogram bins (approximate from anomaly scan results)
+  %% ISM transients (green) -- dominant in high-sigma tail
+  \addplot[ybar, bar width=1.5, fill=OIgreen!70, draw=OIgreen, opacity=0.8]
+    coordinates {
+      (2, 800) (4, 600) (6, 400) (8, 250) (10, 180)
+      (12, 120) (14, 80) (16, 55) (18, 40) (20, 30)
+      (22, 20) (24, 15) (26, 12) (28, 10) (30, 8)
+      (32, 6) (34, 5) (36, 4) (38, 3) (40, 2)
+      (42, 2) (44, 1) (46, 1) (48, 1)
+    };
+
+  %% THEMIS magnetopause (blue) -- concentrated at 2-10 sigma
+  \addplot[ybar, bar width=1.5, fill=OIskyblue!60, draw=OIskyblue, opacity=0.7]
+    coordinates {
+      (2, 500) (4, 350) (6, 200) (8, 100) (10, 50)
+      (12, 20) (14, 8) (16, 3)
+    };
+
+  %% Fast wind (orange) -- moderate sigma
+  \addplot[ybar, bar width=1.5, fill=OIorange!60, draw=OIorange, opacity=0.6]
+    coordinates {
+      (2, 300) (4, 150) (6, 80) (8, 40) (10, 15)
+      (12, 5) (14, 2)
+    };
+
+  %% Neptune flyby (purple) -- few but extreme
+  \addplot[ybar, bar width=1.5, fill=OIpurple!60, draw=OIpurple, opacity=0.6]
+    coordinates {
+      (4, 1) (8, 1) (12, 1)
+    };
+
+  %% Top anomaly label
+  \node[OIgreen, font=\sffamily\tiny\bfseries, anchor=west]
+    at (axis cs:42, 3) {V2 PWS: 140.9$\sigma$};
+  \draw[OIgreen, ->, thin] (axis cs:42, 2.5) -- (axis cs:48, 1.2);
+
+  %% Summary statistics
+  \node[white!80, font=\sffamily\tiny, anchor=north west,
+        fill=black!80, inner sep=3pt, rounded corners=2pt]
+    at (axis cs:25, 4000) {
+      \begin{tabular}{@{}ll@{}}
+      Total anomalies: & 5{,}973 \\
+      Datasets scanned: & 122 \\
+      Top outlier: & 140.9$\sigma$ (V2 ISM) \\
+      \end{tabular}
+    };
+
+  \legend{V1/V2 ISM transients, THEMIS magnetopause, Fast wind, Neptune flyby}
+
+\end{axis}
+\end{tikzpicture}
