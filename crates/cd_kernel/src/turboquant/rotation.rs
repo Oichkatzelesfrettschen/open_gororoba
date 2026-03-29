@@ -36,6 +36,8 @@
 use rand::SeedableRng;
 use rand_chacha::ChaCha20Rng;
 use rand_distr::{Distribution, StandardNormal};
+// Note: WHT, Rademacher, and fast JL functions now delegate to the
+// standalone fwht crate (~/Github/cratesgororobas/fwht/).
 
 /// Haar-distributed random orthogonal matrix via QR of Gaussian matrix.
 ///
@@ -133,99 +135,38 @@ pub fn unrotate(y: &[f64], pi: &[f64], d: usize, out: &mut [f64]) {
     }
 }
 
-// ---- Walsh-Hadamard Transform (Fast JL rotation) ----
+// ---- Walsh-Hadamard Transform (via standalone fwht crate) ----
 
 /// In-place Walsh-Hadamard Transform, normalized by 1/sqrt(d).
 ///
-/// Algorithm (from `wht_rotation.py:hadamard_transform`):
-///   7-level butterfly for d=128.  Each level pairs elements at stride 2^level
-///   and replaces (a, b) with (a+b, a-b).  Final result divided by sqrt(d).
+/// Delegates to the standalone `fwht` crate (extracted from this module).
+/// The crate provides the same algorithm: k-level butterfly for d = 2^k,
+/// normalized by 1/sqrt(d), self-inverse.
 ///
 /// d must be a power of 2.
 pub fn wht_inplace(data: &mut [f64]) {
-    let d = data.len();
-    debug_assert!(d.is_power_of_two(), "WHT requires power-of-two dimension");
-
-    let mut h = 1;
-    while h < d {
-        let mut i = 0;
-        while i < d {
-            for j in i..(i + h) {
-                let a = data[j];
-                let b = data[j + h];
-                data[j] = a + b;
-                data[j + h] = a - b;
-            }
-            i += h * 2;
-        }
-        h *= 2;
-    }
-
-    // Normalize
-    let scale = 1.0 / (d as f64).sqrt();
-    for v in data.iter_mut() {
-        *v *= scale;
-    }
+    fwht::wht_inplace(data);
 }
 
 /// Generate random Rademacher sign vectors for fast JL rotation.
 ///
-/// Returns (d1, d2) where each is a Vec<f64> of +1/-1 values.
-/// From `wht_rotation.py:generate_wht_rotation`.
+/// Delegates to the standalone `fwht` crate.
 pub fn generate_rademacher_diagonals(d: usize, seed: u64) -> (Vec<f64>, Vec<f64>) {
-    let mut rng = ChaCha20Rng::seed_from_u64(seed);
-    let normal = StandardNormal;
-
-    let sign = |rng: &mut ChaCha20Rng| -> f64 {
-        let v: f64 = normal.sample(rng);
-        if v >= 0.0 { 1.0 } else { -1.0 }
-    };
-
-    let d1: Vec<f64> = (0..d).map(|_| sign(&mut rng)).collect();
-    let d2: Vec<f64> = (0..d).map(|_| sign(&mut rng)).collect();
-
-    (d1, d2)
+    fwht::generate_rademacher_diagonals(d, seed)
 }
 
 /// Fast JL rotation: y = D1 * WHT * D2 * x
 ///
-/// O(d log d) structured random rotation (Ailon-Chazelle 2006).
-/// Workspace `buf` must have length >= d.
+/// Delegates to the standalone `fwht` crate.
 pub fn fast_jl_rotate(x: &[f64], d1: &[f64], d2: &[f64], buf: &mut [f64], out: &mut [f64]) {
-    let d = x.len();
-    debug_assert_eq!(d1.len(), d);
-    debug_assert_eq!(d2.len(), d);
-    debug_assert!(buf.len() >= d);
-    debug_assert_eq!(out.len(), d);
-
-    // Step 1: multiply by D2
-    for i in 0..d {
-        buf[i] = x[i] * d2[i];
-    }
-
-    // Step 2: apply WHT in-place
-    wht_inplace(&mut buf[..d]);
-
-    // Step 3: multiply by D1
-    for i in 0..d {
-        out[i] = buf[i] * d1[i];
-    }
+    fwht::fast_jl_rotate(x, d1, d2, buf, out);
 }
 
 /// Inverse fast JL rotation: x = D2 * WHT * D1 * y
 ///
-/// WHT and Rademacher diagonals are self-inverse (up to scaling).
+/// Delegates to the standalone `fwht` crate.
 pub fn fast_jl_unrotate(y: &[f64], d1: &[f64], d2: &[f64], buf: &mut [f64], out: &mut [f64]) {
-    let d = y.len();
-
-    // Inverse is: D2 * WHT * D1 * y
-    for i in 0..d {
-        buf[i] = y[i] * d1[i];
-    }
-    wht_inplace(&mut buf[..d]);
-    for i in 0..d {
-        out[i] = buf[i] * d2[i];
-    }
+    fwht::fast_jl_unrotate(y, d1, d2, buf, out);
 }
 
 /// E8 block rotation data (boxed to keep Rotation enum small).
