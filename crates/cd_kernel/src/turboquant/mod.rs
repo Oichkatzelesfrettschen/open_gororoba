@@ -52,6 +52,7 @@ pub mod config;
 #[cfg(feature = "cuda")]
 pub mod cuda;
 pub mod dispatch;
+pub mod dot_product_bench;
 pub mod e8_rotation;
 pub mod e8_validation;
 pub mod exceptional_roots;
