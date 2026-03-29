@@ -1610,6 +1610,7 @@ dependencies = [
  "core_affinity",
  "criterion",
  "cudarc 0.19.3",
+ "gauss-quad 0.2.4",
  "proptest",
  "rand 0.8.5",
  "rand_chacha 0.3.1",
@@ -3505,6 +3506,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "fixed_point_lbm"
+version = "0.1.0"
+
+[[package]]
 name = "fixedbitset"
 version = "0.4.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4555,6 +4560,7 @@ dependencies = [
  "gororoba_view_core",
  "gororoba_view_raster",
  "gr_core",
+ "grmhd_core",
  "hdf5-metno",
  "hifitime",
  "kiddo",
@@ -4864,6 +4870,13 @@ dependencies = [
  "ode_solvers",
  "rayon",
  "verified_core",
+]
+
+[[package]]
+name = "grmhd_core"
+version = "0.1.0"
+dependencies = [
+ "rayon",
 ]
 
 [[package]]
