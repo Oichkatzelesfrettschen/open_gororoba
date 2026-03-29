@@ -40,6 +40,14 @@ struct Cli {
     #[arg(long, default_value = "f32")]
     precision: String,
 
+    /// Use only amb Mirnov B coils (same 500kHz timebase, no resampling needed).
+    #[arg(long, default_value_t = false)]
+    mirnov_only: bool,
+
+    /// Number of Mirnov coils to use in mirnov-only mode (max 36).
+    #[arg(long, default_value_t = 8)]
+    n_coils: usize,
+
     /// Output JSON path.
     #[arg(long, default_value = "data/output/heliosphere/ablations/mast_multidiag_cd.json")]
     out_json: PathBuf,
@@ -221,60 +229,81 @@ fn main() -> Result<()> {
     multi_channels.push(sig_nodd.clone());
     channel_names.push("ama/n=odd".to_string());
 
-    // Try loading amb (Mirnov B coils) -- pick 4 spatially distributed coils
-    let amb_store = Arc::new(
-        FilesystemStore::new(&cli.zarr_dir.join("amb"))
-            .map_err(|e| anyhow::anyhow!("amb store: {:?}", e))?,
-    );
-    for coil in &["ccbv01", "ccbv10", "ccbv20", "ccbv30"] {
-        if let Some(data) = try_read_zarr_f32(&amb_store, coil) {
-            if data.len() > 1000 {
-                println!("  amb/{}: {} samples", coil, data.len());
-                multi_channels.push(data);
-                channel_names.push(format!("amb/{}", coil));
-            }
-        }
-    }
-
-    // Try loading ane (density)
-    let ane_store_result = FilesystemStore::new(&cli.zarr_dir.join("ane"));
-    if let Ok(ane_store) = ane_store_result {
-        let ane_store = Arc::new(ane_store);
-        if let Some(data) = try_read_zarr_f32(&ane_store, "density") {
-            if data.len() > 1000 {
-                println!("  ane/density: {} samples", data.len());
-                multi_channels.push(data);
-                channel_names.push("ane/density".to_string());
-            }
-        }
-    }
-
-    // Try loading ayc (Thomson Te and ne) -- these are 2D (time x space) profiles.
-    // Extract the spatial midpoint as a representative core time series.
-    let ayc_store_result = FilesystemStore::new(&cli.zarr_dir.join("ayc"));
-    if let Ok(ayc_store) = ayc_store_result {
-        let ayc_store = Arc::new(ayc_store);
-        for sig in &["te", "ne"] {
-            if let Some(data) = read_zarr_timeseries(&ayc_store, sig) {
-                if data.len() > 10 {
-                    println!("  ayc/{}: {} time points (spatial midpoint)", sig, data.len());
+    if cli.mirnov_only {
+        // Mirnov-only mode: use N coils from amb, all at the same 500kHz timebase.
+        // This tests the channel independence hypothesis without resampling artifacts.
+        let amb_store = Arc::new(
+            FilesystemStore::new(&cli.zarr_dir.join("amb"))
+                .map_err(|e| anyhow::anyhow!("amb store: {:?}", e))?,
+        );
+        let all_coils: Vec<String> = (1..=36)
+            .map(|i| format!("ccbv{:02}", i))
+            .collect();
+        let mut loaded = 0;
+        for coil in &all_coils {
+            if loaded >= cli.n_coils { break; }
+            if let Some(data) = try_read_zarr_f32(&amb_store, coil) {
+                if data.len() > 1000 {
+                    println!("  amb/{}: {} samples", coil, data.len());
                     multi_channels.push(data);
-                    channel_names.push(format!("ayc/{}", sig));
+                    channel_names.push(format!("amb/{}", coil));
+                    loaded += 1;
                 }
             }
         }
-    }
-
-    // Try loading efm (equilibrium: betan, li, bphi)
-    let efm_store_result = FilesystemStore::new(&cli.zarr_dir.join("efm"));
-    if let Ok(efm_store) = efm_store_result {
-        let efm_store = Arc::new(efm_store);
-        for sig in &["betan", "li", "bphi_rgeom"] {
-            if let Some(data) = try_read_zarr_f32(&efm_store, sig) {
-                if data.len() > 100 {
-                    println!("  efm/{}: {} samples", sig, data.len());
+        println!("  Loaded {} Mirnov coils (same 500kHz timebase)", loaded);
+    } else {
+        // Mixed-diagnostic mode: load from multiple diagnostics
+        let amb_store = Arc::new(
+            FilesystemStore::new(&cli.zarr_dir.join("amb"))
+                .map_err(|e| anyhow::anyhow!("amb store: {:?}", e))?,
+        );
+        for coil in &["ccbv01", "ccbv10", "ccbv20", "ccbv30"] {
+            if let Some(data) = try_read_zarr_f32(&amb_store, coil) {
+                if data.len() > 1000 {
+                    println!("  amb/{}: {} samples", coil, data.len());
                     multi_channels.push(data);
-                    channel_names.push(format!("efm/{}", sig));
+                    channel_names.push(format!("amb/{}", coil));
+                }
+            }
+        }
+
+        let ane_store_result = FilesystemStore::new(&cli.zarr_dir.join("ane"));
+        if let Ok(ane_store) = ane_store_result {
+            let ane_store = Arc::new(ane_store);
+            if let Some(data) = try_read_zarr_f32(&ane_store, "density") {
+                if data.len() > 1000 {
+                    println!("  ane/density: {} samples", data.len());
+                    multi_channels.push(data);
+                    channel_names.push("ane/density".to_string());
+                }
+            }
+        }
+
+        let ayc_store_result = FilesystemStore::new(&cli.zarr_dir.join("ayc"));
+        if let Ok(ayc_store) = ayc_store_result {
+            let ayc_store = Arc::new(ayc_store);
+            for sig in &["te", "ne"] {
+                if let Some(data) = read_zarr_timeseries(&ayc_store, sig) {
+                    if data.len() > 10 {
+                        println!("  ayc/{}: {} time points (spatial midpoint)", sig, data.len());
+                        multi_channels.push(data);
+                        channel_names.push(format!("ayc/{}", sig));
+                    }
+                }
+            }
+        }
+
+        let efm_store_result = FilesystemStore::new(&cli.zarr_dir.join("efm"));
+        if let Ok(efm_store) = efm_store_result {
+            let efm_store = Arc::new(efm_store);
+            for sig in &["betan", "li", "bphi_rgeom"] {
+                if let Some(data) = try_read_zarr_f32(&efm_store, sig) {
+                    if data.len() > 100 {
+                        println!("  efm/{}: {} samples", sig, data.len());
+                        multi_channels.push(data);
+                        channel_names.push(format!("efm/{}", sig));
+                    }
                 }
             }
         }
