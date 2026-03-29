@@ -14,20 +14,24 @@ jobs:
   bench-x86:
     runs-on: ubuntu-latest
     steps:
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq mold clang git-lfs
+          git lfs install
       - uses: actions/checkout@v4
+        with:
+          lfs: true
       - uses: dtolnay/rust-toolchain@nightly
       - name: System info
         run: |
           lscpu | grep -E "Model name|L1d|L2|L3|CPU|Thread|Architecture"
           free -h
           uname -a
-      - name: Patch config for CI
+      - name: Prepare sibling crate and build-dir
         run: |
-          sed -i '/build-dir/d' .cargo/config.toml
-          sed -i '/mold/d' .cargo/config.toml
-          sed -i 's/linker = "clang"//' .cargo/config.toml
-          sed -i 's/target-cpu=native/target-cpu=generic/' .cargo/config.toml
           git clone --depth 1 https://github.com/Oichkatzelesfrettschen/cratesgororobas.git ../cratesgororobas
+          sed -i 's|build-dir = .*|build-dir = "target/ambient"|' .cargo/config.toml
       - name: Build benchmark binary
         run: cargo build --release -p cd_kernel --test bench_multiplatform
         env:
@@ -44,20 +48,24 @@ jobs:
   bench-arm:
     runs-on: ubuntu-24.04-arm
     steps:
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq mold clang git-lfs
+          git lfs install
       - uses: actions/checkout@v4
+        with:
+          lfs: true
       - uses: dtolnay/rust-toolchain@nightly
       - name: System info
         run: |
           lscpu | grep -E "Model name|L1d|L2|L3|CPU|Thread|Architecture"
           free -h
           uname -a
-      - name: Patch config for CI
+      - name: Prepare sibling crate and build-dir
         run: |
-          sed -i '/build-dir/d' .cargo/config.toml
-          sed -i '/mold/d' .cargo/config.toml
-          sed -i 's/linker = "clang"//' .cargo/config.toml
-          sed -i 's/target-cpu=native/target-cpu=generic/' .cargo/config.toml
           git clone --depth 1 https://github.com/Oichkatzelesfrettschen/cratesgororobas.git ../cratesgororobas
+          sed -i 's|build-dir = .*|build-dir = "target/ambient"|' .cargo/config.toml
       - name: Build benchmark binary
         run: cargo build --release -p cd_kernel --test bench_multiplatform
         env:
