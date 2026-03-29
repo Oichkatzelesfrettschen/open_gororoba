@@ -1,3 +1,31 @@
+//! Cayley-Dickson basis product sign table: the primitive truth of the algebra.
+//!
+//! # Prerequisite modules: none (this is the foundation)
+//! # Depended on by: [`arith`], [`signature`], [`sedenion`]
+//!
+//! # Why this module matters
+//!
+//! Every CD algebra is completely determined by its sign table: the function
+//! `cd_basis_mul_sign(dim, p, q)` that returns +1 or -1 for `e_p * e_q = sign * e_{p^q}`.
+//! The product index `p ^ q` (XOR) is a consequence of the doubling construction --
+//! it encodes which basis element results from the multiplication.
+//!
+//! The sign is computed recursively through the tower: quaternion signs determine
+//! octonion signs, which determine sedenion signs, and so on. This recursion
+//! mirrors the Cayley-Dickson doubling itself. At each level, the sign depends
+//! on which "half" of the algebra the operands live in (p < half vs p >= half).
+//!
+//! # Key insight
+//!
+//! The sign table is NOT arbitrary. It satisfies constraints imposed by the
+//! doubling formula: `(a,b)(c,d) = (ac - conj(d)*b, d*a + b*conj(c))`.
+//! The four sub-products each contribute different sign patterns. The recursive
+//! `cd_basis_mul_sign` function implements exactly these constraints.
+//!
+//! For dim <= 8 (octonions), the algebra is alternative and the sign table
+//! satisfies the Moufang identities. For dim >= 16, zero divisors appear
+//! and the sign table encodes non-trivial algebraic defects.
+
 /// Compute the sign in the Cayley-Dickson basis product: `e_p * e_q = sign * e_{p^q}`.
 pub fn cd_basis_mul_sign(dim: usize, p: usize, q: usize) -> i32 {
     debug_assert!(dim.is_power_of_two() && dim >= 1);
