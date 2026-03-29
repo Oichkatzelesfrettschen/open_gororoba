@@ -520,6 +520,7 @@ pub fn euler_step_3d(
     mc: &MetricCache,
     eos: &GammaLaw,
     dt: f64,
+    staggered_b: Option<&mut crate::ct::StaggeredB>,
 ) {
     let ng = grid.ng;
     let n2t = grid.n2_total();
@@ -542,7 +543,7 @@ pub fn euler_step_3d(
     }
 
     // Step 2: Compute RHS and update conservative variables
-    let rhs = compute_rhs_3d(prims, grid, mc, eos);
+    let mut rhs = compute_rhs_3d(prims, grid, mc, eos);
     for i in ng..ng + grid.n1 {
         for j in ng..ng + grid.n2 {
             for k in ng..ng + grid.n3 {
@@ -555,6 +556,29 @@ pub fn euler_step_3d(
         }
     }
 
+    // If using CT, zero out the B-field RHS from the HLL flux divergence.
+    // B is evolved ONLY by CT, not by the HLL flux.
+    let use_ct = staggered_b.is_some();
+    if use_ct {
+        for i in ng..ng + grid.n1 {
+            for j in ng..ng + grid.n2 {
+                for k in ng..ng + grid.n3 {
+                    let idx = grid.idx(i, j, k);
+                    let base = idx * NCONS;
+                    rhs[base + 5] = 0.0; // zero B^r RHS
+                    rhs[base + 6] = 0.0; // zero B^theta RHS
+                    rhs[base + 7] = 0.0; // zero B^phi RHS
+                }
+            }
+        }
+    }
+
+    // Step 2b: Update B-field via constrained transport (CT)
+    if let Some(sb) = staggered_b {
+        sb.ct_update(prims, grid, dt);
+        sb.to_cell_centered(prims, grid);
+    }
+
     // Step 3: Convert back to primitives using Kastaun con2prim
     for i in ng..ng + grid.n1 {
         for j in ng..ng + grid.n2 {
@@ -565,12 +589,33 @@ pub fn euler_step_3d(
                 let gcov = if mc_idx < mc.gcov.len() { mc.gcov[mc_idx] } else { [0.0; 5] };
                 let gcon = if mc_idx < mc.gcon.len() { mc.gcon[mc_idx] } else { [0.0; 5] };
 
+                // If CT is active, override the conserved B with CT-derived B
+                // before con2prim, so the Kastaun solver sees the div(B)=0 field
+                if use_ct {
+                    let p_ct = prims.get(idx);
+                    cons_grid[idx][5] = sg * p_ct[prims::B1];
+                    cons_grid[idx][6] = sg * p_ct[prims::B2];
+                    cons_grid[idx][7] = sg * p_ct[prims::B3];
+                }
+
                 let result = crate::con2prim::con2prim_kastaun(
                     &cons_grid[idx], &gcov, &gcon, sg, eos, 1e-8, 1e-10,
                 );
                 let recovered = result.prims();
                 let p = prims.get_mut(idx);
-                p.copy_from_slice(recovered);
+
+                if use_ct {
+                    // Preserve CT-derived B-field, only update hydro vars from con2prim
+                    let ct_b1 = p[prims::B1];
+                    let ct_b2 = p[prims::B2];
+                    let ct_b3 = p[prims::B3];
+                    p.copy_from_slice(recovered);
+                    p[prims::B1] = ct_b1;
+                    p[prims::B2] = ct_b2;
+                    p[prims::B3] = ct_b3;
+                } else {
+                    p.copy_from_slice(recovered);
+                }
             }
         }
     }
@@ -684,7 +729,7 @@ mod tests {
         let dt = crate::evolve::cfl_dt(&grid, max_v, 0.3);
 
         // Take one step
-        euler_step_3d(&mut prims, &grid, &mc, &eos, dt);
+        euler_step_3d(&mut prims, &grid, &mc, &eos, dt, None);
 
         // Density should still be positive everywhere
         let ng = grid.ng;
