@@ -1,3 +1,28 @@
+//! Zero-divisor analysis: algebraic defects in the Cayley-Dickson tower.
+//!
+//! # Prerequisite modules: [`arith`] (multiply), [`signs`] (basis product)
+//! # Depended on by: [`predicates`], Moreno theorem implementations
+//!
+//! # What are zero divisors?
+//!
+//! A zero divisor is a nonzero element `a` such that there exists a nonzero
+//! `b` with `a * b = 0`. In the reals, complex numbers, quaternions, and
+//! octonions (dim 1-8), NO zero divisors exist -- these are division algebras.
+//!
+//! At dim 16 (sedenions), zero divisors appear for the first time. This is
+//! the algebraic fingerprint of the "post-octonionic breakdown" -- the moment
+//! where the Cayley-Dickson construction produces algebras that are no longer
+//! alternative. Zero-divisor density increases with dimension.
+//!
+//! # Why this matters for the CD associator
+//!
+//! The associator norm is sensitive to zero-divisor-bearing directions in the
+//! embedding. When field data aligns with ZD subspaces, the associator can be
+//! anomalously low (ZDs "kill" the product). This is the algebraic mechanism
+//! behind the 16D crossover (conjecture C-1628): at 16D, ZD structure first
+//! becomes available to the associator, providing genuinely non-associative
+//! information beyond what generic multilinear forms can access.
+
 use rayon::prelude::*;
 
 use super::{

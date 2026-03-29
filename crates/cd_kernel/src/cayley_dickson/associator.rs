@@ -1,3 +1,32 @@
+//! CD associator: the core diagnostic measuring non-associativity.
+//!
+//! # Prerequisite modules: [`arith`] (multiply, norm), [`signs`] (basis product)
+//! # Depended on by: [`fast_associator`], [`symmetry`], all analysis binaries
+//!
+//! # Mathematical definition
+//!
+//! For three elements a, b, c in a Cayley-Dickson algebra:
+//!   `[a, b, c] = (a * b) * c - a * (b * c)`
+//!
+//! The associator is zero for reals, complex, and quaternions (dim <= 4).
+//! It is nonzero but alternating for octonions (dim 8).
+//! It is fully non-associative for sedenions and beyond (dim >= 16).
+//!
+//! The NORM of the associator, `||[a,b,c]||`, is our primary observable.
+//! For a sliding window of embedded vectors, we compute this norm at each
+//! triplet position. The resulting timeseries captures the degree of
+//! algebraic disorder in the multichannel field data.
+//!
+//! # Why this matters physically
+//!
+//! A magnetic field that is smoothly varying produces small associator norms
+//! (the embedding vectors are nearly collinear, so the non-associative
+//! "defect" is small). A turbulent or discontinuous field produces large
+//! associator norms (the vectors point in diverse directions, maximizing
+//! the non-associative contribution). Boundary crossings -- magnetopause,
+//! termination shock, heliopause -- appear as sharp peaks in the associator
+//! timeseries because the field geometry changes abruptly.
+
 use rayon::prelude::*;
 
 use super::arith::{allclose, cd_multiply, cd_norm_sq};
