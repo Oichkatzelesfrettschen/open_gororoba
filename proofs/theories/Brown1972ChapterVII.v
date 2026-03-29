@@ -356,6 +356,29 @@ Proof.
   exact (brown1972_ch7_lxor_solve_right k j i Hrev).
 Qed.
 
+Lemma brown1972_chapter_vii_theorem_7_19_iii_reduce_to_xor_eq_core :
+  forall i j k : nat,
+    (1 <= i)%nat -> (i < 8)%nat ->
+    (1 <= j)%nat -> (j < 8)%nat ->
+    (1 <= k)%nat -> (k < 8)%nat ->
+    i <> j -> j <> k -> i <> k ->
+    (Nat.lxor i j = k ->
+      oct_antiassociator_fused (oct_e i) (oct_e j) (oct_e k) =
+      oct_neg (oct_antiassociator_fused (oct_e k) (oct_e j) (oct_e i))) ->
+    oct_antiassociator_fused (oct_e i) (oct_e j) (oct_e k) =
+    oct_neg (oct_antiassociator_fused (oct_e k) (oct_e j) (oct_e i)).
+Proof.
+  intros i j k Hi1 Hi8 Hj1 Hj8 Hk1 Hk8 Hij Hjk Hik Hcore.
+  destruct (Nat.eq_dec (Nat.lxor i j) k) as [Hxor_eq | Hxor_neq].
+  - exact (Hcore Hxor_eq).
+  - rewrite (brown1972_chapter_vii_theorem_7_19_iii_xor_neq_left_zero
+               i j k Hi1 Hi8 Hj1 Hj8 Hk1 Hk8 Hij Hjk Hik Hxor_neq).
+    rewrite (brown1972_chapter_vii_theorem_7_19_iii_xor_neq_right_zero
+               i j k Hi1 Hi8 Hj1 Hj8 Hk1 Hk8 Hij Hjk Hik Hxor_neq).
+    rewrite oct_neg_zero.
+    reflexivity.
+Qed.
+
 Definition brown1972_ch7_719_ii_rhs (i j : nat) : CDOct :=
   if Nat.eqb i j then oct_scale (-2) (oct_e j) else oct_scale 2 (oct_e j).
 

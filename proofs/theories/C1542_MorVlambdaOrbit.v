@@ -19,6 +19,7 @@
 
 From Stdlib Require Import Reals Arith PeanoNat Lia.
 From OpenGororoba Require Import Prelude CayleyDicksonAlgebra Sedenion OctonionNorm FinDimHModule HModuleDim.
+From OpenGororoba Require Import C1540_MorHaQuaternion.
 
 Open Scope R_scope.
 Open Scope nat_scope.
@@ -144,3 +145,37 @@ Proof.
   intro H.
   exact (moreno16_concrete_witness_dim_mod4 (moreno16_concrete_witness H)).
 Qed.
+
+Definition moreno16_canonical_vlambda_witness : Moreno16ConcreteVlambdaWitness.
+Proof.
+  refine {| moreno16_concrete_lambda := 1%R;
+            moreno16_concrete_lambda_pos := Rlt_0_1;
+            moreno16_concrete_vlambda_dim := 4%nat;
+            moreno16_concrete_vlambda_is_h_module_dim := moreno16_hmd_4 |}.
+Defined.
+
+Lemma moreno16_canonical_a_unit :
+  oct_norm_sq moreno_a = 1%R.
+Proof.
+  unfold moreno_a.
+  apply oct_basis_unit_norm.
+  lia.
+Qed.
+
+Lemma moreno16_canonical_a_pure :
+  oct_conj moreno_a = oct_neg moreno_a.
+Proof.
+  unfold moreno_a.
+  cbv [oct_conj oct_neg oct_e oct_lo oct_hi
+       quat_conj quat_neg quat_zero quat_one qa qb qc qd].
+  apply (f_equal2 mkOct); apply (f_equal4 mkQuat); ring.
+Qed.
+
+Definition moreno16_canonical_arbitrary_a_hypotheses :
+  Moreno16ArbitraryAConcreteHypotheses.
+Proof.
+  refine {| moreno16_concrete_a := moreno_a;
+            moreno16_concrete_a_unit := moreno16_canonical_a_unit;
+            moreno16_concrete_a_pure := moreno16_canonical_a_pure;
+            moreno16_concrete_witness := moreno16_canonical_vlambda_witness |}.
+Defined.
