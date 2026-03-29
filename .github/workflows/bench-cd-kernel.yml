@@ -21,6 +21,9 @@ jobs:
           lscpu | grep -E "Model name|L1d|L2|L3|CPU|Thread|Architecture"
           free -h
           uname -a
+      - name: Patch fwht dependency to published version
+        run: |
+          sed -i 's|fwht = { path = "../cratesgororobas/fwht" }|fwht = "0.1"|' Cargo.toml
       - name: Build benchmark binary
         run: cargo build --release -p cd_kernel --test bench_multiplatform
         env:
@@ -44,6 +47,9 @@ jobs:
           lscpu | grep -E "Model name|L1d|L2|L3|CPU|Thread|Architecture"
           free -h
           uname -a
+      - name: Patch fwht dependency to published version
+        run: |
+          sed -i 's|fwht = { path = "../cratesgororobas/fwht" }|fwht = "0.1"|' Cargo.toml
       - name: Build benchmark binary
         run: cargo build --release -p cd_kernel --test bench_multiplatform
         env:
