@@ -96,6 +96,7 @@ From OpenGororoba Require Import
   CDPowerAssociative
   CDSignBridge
   CDConjAntimorph
+  CDFusedBilinear
   CDLinearLemmas
   CDNegLemmas
   CDInverse
@@ -1633,4 +1634,52 @@ Proof.
               brown1972_chapter_vi_reusable_anchor_surface;
             brown1972_ch6_broader_ext :=
               brown1972_sedenion_chapter_vi_base_extension_lift_surface |}.
+Defined.
+
+Theorem brown1972_theorem_6_5_sedenion_fused_decomposed : forall x y : CDSed,
+  brown1972_ch6_67_polynomial_mul (sed_lo x) (sed_hi x) (sed_lo y) (sed_hi y) =
+  sed_mul_fused x y.
+Proof.
+  intros x y.
+  rewrite sed_mul_fused_eq.
+  apply brown1972_theorem_6_5_sedenion_decomposed.
+Qed.
+
+Theorem brown1972_corollary_6_7_sedenion_fused_decomposed : forall x y : CDSed,
+  brown1972_ch6_67_polynomial_mul (sed_lo x) (sed_hi x) (sed_lo y) (sed_hi y) =
+  sed_mul_fused x y.
+Proof.
+  intros x y.
+  rewrite sed_mul_fused_eq.
+  apply brown1972_corollary_6_7_sedenion_decomposed.
+Qed.
+
+Record Brown1972ChapterVIFusedBaseExtensionSurface := {
+  brown1972_ch6_fused_base :
+    Brown1972ChapterVIBroaderReusableAnchorSurface;
+  brown1972_ch6_fused_oct_bilinear :
+    CDFusedBilinearSurface CDOct oct_add oct_mul oct_mul_fused oct_scale;
+  brown1972_ch6_fused_sed_bilinear :
+    CDFusedBilinearSurface CDSed sed_add sed_mul sed_mul_fused sed_scale;
+  brown1972_ch6_fused_t65 :
+    forall x y : CDSed,
+      brown1972_ch6_67_polynomial_mul (sed_lo x) (sed_hi x) (sed_lo y) (sed_hi y) =
+      sed_mul_fused x y;
+  brown1972_ch6_fused_c67 :
+    forall x y : CDSed,
+      brown1972_ch6_67_polynomial_mul (sed_lo x) (sed_hi x) (sed_lo y) (sed_hi y) =
+      sed_mul_fused x y
+}.
+
+Definition brown1972_chapter_vi_fused_base_extension_surface :
+  Brown1972ChapterVIFusedBaseExtensionSurface.
+Proof.
+  refine {| brown1972_ch6_fused_base :=
+              brown1972_chapter_vi_broader_reusable_anchor_surface;
+            brown1972_ch6_fused_oct_bilinear := oct_fused_bilinear_surface;
+            brown1972_ch6_fused_sed_bilinear := sed_fused_bilinear_surface;
+            brown1972_ch6_fused_t65 :=
+              brown1972_theorem_6_5_sedenion_fused_decomposed;
+            brown1972_ch6_fused_c67 :=
+              brown1972_corollary_6_7_sedenion_fused_decomposed |}.
 Defined.
