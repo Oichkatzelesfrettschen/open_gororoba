@@ -91,3 +91,32 @@ Example moreno16_example_dim8 :
 Proof.
   exact (moreno16_orbit_dim_mod4 8 moreno16_hmd_8).
 Qed.
+
+Record Moreno16ConcreteVlambdaWitness := {
+  moreno16_concrete_lambda : R;
+  moreno16_concrete_lambda_pos : (0 < moreno16_concrete_lambda)%R;
+  moreno16_concrete_vlambda_dim : nat;
+  moreno16_concrete_vlambda_is_h_module_dim :
+    is_h_module_dim moreno16_concrete_vlambda_dim
+}.
+
+Theorem moreno16_concrete_witness_dim_div4 :
+  forall W : Moreno16ConcreteVlambdaWitness,
+    exists k : nat, moreno16_concrete_vlambda_dim W = 4 * k.
+Proof.
+  intro W.
+  exact (FinDimHModule.h_module_dim_div4
+           (moreno16_concrete_vlambda_dim W)
+           (moreno16_concrete_vlambda_is_h_module_dim W)).
+Qed.
+
+Corollary moreno16_concrete_witness_dim_mod4 :
+  forall W : Moreno16ConcreteVlambdaWitness,
+    Nat.modulo (moreno16_concrete_vlambda_dim W) 4 = 0.
+Proof.
+  intro W.
+  destruct (moreno16_concrete_witness_dim_div4 W) as [k Hk].
+  rewrite Hk.
+  rewrite Nat.mul_comm.
+  apply Nat.Div0.mod_mul.
+Qed.

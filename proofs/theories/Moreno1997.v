@@ -103,5 +103,13 @@ Proof.
   - exact Moreno1997_theorem_1_16_canonical_nonunit_bridge.
 Qed.
 
+Theorem Moreno1997_theorem_1_16_concrete_witness_bridge :
+  forall W : Moreno16ConcreteVlambdaWitness,
+    Nat.modulo (moreno16_concrete_vlambda_dim W) 4 = 0.
+Proof.
+  intro W.
+  exact (moreno16_concrete_witness_dim_mod4 W).
+Qed.
+
 Theorem Moreno1997_lane_compiles : True.
 Proof. exact I. Qed.
