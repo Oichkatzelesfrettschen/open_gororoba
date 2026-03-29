@@ -76,6 +76,7 @@ pub mod rotation_diagnostics;
 pub mod sign_pack;
 pub mod simd_codebook;
 pub mod simd_evaluation;
+pub mod simsimd_bridge;
 pub mod synthesized;
 pub mod wht_crate_scope;
 pub mod workspace;
