@@ -12,8 +12,20 @@
 //! # Hypothesis (Thesis T6)
 //!
 //! E8-structured rotation achieves decorrelation comparable to Haar-random.
-//! Falsification: KS test rejects equality (p < 0.01) with E8 having
-//! higher correlations.
+//! VALIDATED: KS p=0.816, pairwise correlations indistinguishable from Haar.
+//!
+//! # IMPORTANT: Codebook mismatch
+//!
+//! E8 sedenion left-multiplication produces a DIFFERENT marginal distribution
+//! than Haar/WHT rotation.  The standard N(0, 1/d) Lloyd-Max codebook gives
+//! poor MSE (2.57 vs 1.44 for WHT) because the post-E8 distribution is not
+//! Gaussian.  To use E8 rotation effectively, either:
+//!
+//! - Train a custom codebook on the post-E8 distribution
+//! - Compose E8 with WHT: E8 for block-level decorrelation, then WHT
+//!   for within-block Gaussianization
+//!
+//! This is a key finding from the benchmark (2026-03-28).
 //!
 //! # E8 root construction
 //!
