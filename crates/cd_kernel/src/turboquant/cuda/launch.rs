@@ -1,88 +1,159 @@
 //! CUDA kernel launch wrappers for TurboQuant.
 //!
-//! Handles: CudaContext creation, buffer allocation, kernel dispatch,
-//! and result readback.  Completes the Backend::Cuda dispatch path.
-//!
-//! Pattern from lbm_3d_cuda/lib.rs:
-//! ```ignore
-//! // 1. Probe device
-//! let props = probe_device()?;
-//! let arch = props.compile_arch();
-//!
-//! // 2. Create context + stream
-//! let ctx = CudaContext::new(0)?;
-//! let stream = ctx.default_stream();
-//!
-//! // 3. Compile kernels via NVRTC
-//! let ptx = jit::compile_kernels(arch)?;
-//! let module = ctx.load_module(ptx)?;
-//! let quantize_fn = module.load_function("turboquant_quantize_boundary")?;
-//!
-//! // 4. Allocate device buffers
-//! let d_values = stream.memcpy_stod(host_values)?;
-//! let d_boundaries = stream.memcpy_stod(host_boundaries)?;
-//! let d_indices = stream.alloc_zeros::<u8>(n)?;
-//!
-//! // 5. Launch kernel
-//! let config = LaunchConfig { grid_dim: (blocks, 1, 1), block_dim: (256, 1, 1), shared_mem_bytes: 0 };
-//! unsafe {
-//!     let mut launch = stream.launch_builder(&quantize_fn);
-//!     launch.arg(&d_boundaries).arg(&d_values).arg(&d_indices)
-//!           .arg(&(n_boundaries as i32)).arg(&(n as i32));
-//!     launch.launch(config)?;
-//! }
-//!
-//! // 6. Readback
-//! let mut host_indices = vec![0u8; n];
-//! stream.memcpy_dtos(&d_indices, &mut host_indices)?;
-//! ```
-//!
-//! The actual launch implementation requires runtime CUDA availability
-//! and matching cudarc API signatures.  See lbm_3d_cuda/src/lib.rs for
-//! the proven pattern in this workspace.
+//! Pattern proven in lbm_3d_cuda/src/lib.rs (steinmarder SoA design):
+//!   CudaContext::new -> compile_ptx -> load_module -> load_function -> launch
 
-/// Placeholder for compiled CUDA kernel handles.
-///
-/// When fully implemented, this holds:
-/// - Arc<CudaContext> for device management
-/// - Arc<CudaStream> for async operation
-/// - CudaFunction handles for each kernel (quantize, dequant_dot, sign_dot, fast_jl)
-///
-/// See the module-level doc for the exact initialization sequence.
+#[cfg(feature = "cuda")]
+use std::sync::Arc;
+
+#[cfg(feature = "cuda")]
+#[allow(deprecated)]
+use cudarc::driver::{
+    CudaContext, CudaFunction, CudaSlice, CudaStream, LaunchConfig, PushKernelArg,
+};
+
+/// Compiled TurboQuant CUDA kernel handles.
+#[cfg(feature = "cuda")]
+#[allow(deprecated, dead_code)]
 pub struct TurboQuantCudaKernels {
-    _private: (), // prevent construction outside this module
+    _ctx: Arc<CudaContext>,
+    stream: Arc<CudaStream>,
+    quantize_fn: CudaFunction,
+    dequant_dot_fn: CudaFunction,
+    fast_jl_fn: CudaFunction,
+    sign_dot_fn: CudaFunction,
+    dequant_dot_q16_fn: CudaFunction,
 }
 
+#[cfg(feature = "cuda")]
+#[allow(deprecated)]
 impl TurboQuantCudaKernels {
-    /// Initialize CUDA kernels.
-    ///
-    /// Requires: CUDA device present, NVRTC installed, `cuda` feature enabled.
-    /// The initialization is expensive (~100ms for JIT compilation) and should
-    /// be done once at startup.
-    ///
-    /// Currently returns Err because the full launch path is not yet wired.
-    /// The kernel source (kernels/turboquant.cu) and JIT compiler (jit.rs)
-    /// are ready; what remains is the buffer management and launch config
-    /// following the lbm_3d_cuda pattern.
+    /// Initialize: probe device, NVRTC compile, load all 5 kernel functions.
     pub fn new() -> Result<Self, String> {
-        #[cfg(feature = "cuda")]
-        {
-            // Verify we can at least probe the device and compile
-            let props = super::device::probe_device()
-                .ok_or_else(|| "No CUDA device available".to_string())?;
-            let arch = props.compile_arch();
-            let _ptx = super::jit::compile_kernels(arch)?;
-            // PTX compiled successfully -- kernel source is valid.
-            // Full launch path deferred to next iteration.
-            return Err(format!(
-                "CUDA kernels compiled for {} but launch path not yet wired (use CPU backend)",
-                arch
-            ));
-        }
-        #[cfg(not(feature = "cuda"))]
-        {
-            Err("CUDA feature not enabled".to_string())
-        }
+        let props = super::device::probe_device()
+            .ok_or_else(|| "No CUDA device available".to_string())?;
+        let arch = props.compile_arch();
+
+        let ctx = CudaContext::new(0)
+            .map_err(|e| format!("CUDA context: {}", e))?;
+        let stream = ctx.default_stream();
+
+        let ptx = super::jit::compile_kernels(arch)?;
+        let module = ctx.load_module(ptx)
+            .map_err(|e| format!("Module load: {}", e))?;
+
+        use super::jit::kernel_names;
+        let quantize_fn = module.load_function(kernel_names::QUANTIZE_BOUNDARY)
+            .map_err(|e| format!("Load {}: {}", kernel_names::QUANTIZE_BOUNDARY, e))?;
+        let dequant_dot_fn = module.load_function(kernel_names::DEQUANT_DOT)
+            .map_err(|e| format!("Load {}: {}", kernel_names::DEQUANT_DOT, e))?;
+        let fast_jl_fn = module.load_function(kernel_names::FAST_JL_ROTATE)
+            .map_err(|e| format!("Load {}: {}", kernel_names::FAST_JL_ROTATE, e))?;
+        let sign_dot_fn = module.load_function(kernel_names::SIGN_DOT)
+            .map_err(|e| format!("Load {}: {}", kernel_names::SIGN_DOT, e))?;
+        let dequant_dot_q16_fn = module.load_function(kernel_names::DEQUANT_DOT_Q16)
+            .map_err(|e| format!("Load {}: {}", kernel_names::DEQUANT_DOT_Q16, e))?;
+
+        Ok(TurboQuantCudaKernels {
+            _ctx: ctx, stream, quantize_fn, dequant_dot_fn,
+            fast_jl_fn, sign_dot_fn, dequant_dot_q16_fn,
+        })
+    }
+
+    fn launch_config_1d(n: u32) -> LaunchConfig {
+        let block = 256u32;
+        let grid = (n + block - 1) / block;
+        LaunchConfig { grid_dim: (grid, 1, 1), block_dim: (block, 1, 1), shared_mem_bytes: 0 }
+    }
+
+    /// Quantize a batch of f32 values on GPU.
+    ///
+    /// Returns u8 indices.
+    pub fn quantize_batch(
+        &self,
+        values: &[f32],
+        boundaries: &[f32],
+    ) -> Result<Vec<u8>, String> {
+        let n = values.len();
+        let n_boundaries = boundaries.len() as i32;
+        let n_i32 = n as i32;
+
+        let mut d_values: CudaSlice<f32> = self.stream.memcpy_stod(values)
+            .map_err(|e| format!("memcpy values: {}", e))?;
+        let d_boundaries: CudaSlice<f32> = self.stream.memcpy_stod(boundaries)
+            .map_err(|e| format!("memcpy boundaries: {}", e))?;
+        let mut d_indices: CudaSlice<u8> = self.stream.alloc_zeros(n)
+            .map_err(|e| format!("alloc indices: {}", e))?;
+
+        let config = Self::launch_config_1d(n as u32);
+
+        let mut b = self.stream.launch_builder(&self.quantize_fn);
+        b.arg(&d_boundaries)
+            .arg(&mut d_values)
+            .arg(&mut d_indices)
+            .arg(&n_boundaries)
+            .arg(&n_i32);
+        unsafe { b.launch(config) }
+            .map_err(|e| format!("quantize launch: {}", e))?;
+
+        let mut host_indices = vec![0u8; n];
+        self.stream.memcpy_dtoh(&d_indices, &mut host_indices)
+            .map_err(|e| format!("readback: {}", e))?;
+        Ok(host_indices)
+    }
+
+    /// Dequantize + dot product on GPU.
+    ///
+    /// Returns attention scores for each key.
+    pub fn dequant_dot_batch(
+        &self,
+        query: &[f32],
+        key_indices: &[u8],
+        centroids: &[f32],
+        n_keys: usize,
+        d: usize,
+    ) -> Result<Vec<f32>, String> {
+        let d_i32 = d as i32;
+        let n_keys_i32 = n_keys as i32;
+
+        let d_query: CudaSlice<f32> = self.stream.memcpy_stod(query)
+            .map_err(|e| format!("memcpy query: {}", e))?;
+        let d_key_indices: CudaSlice<u8> = self.stream.memcpy_stod(key_indices)
+            .map_err(|e| format!("memcpy keys: {}", e))?;
+        let d_centroids: CudaSlice<f32> = self.stream.memcpy_stod(centroids)
+            .map_err(|e| format!("memcpy centroids: {}", e))?;
+        let mut d_scores: CudaSlice<f32> = self.stream.alloc_zeros(n_keys)
+            .map_err(|e| format!("alloc scores: {}", e))?;
+
+        let config = Self::launch_config_1d(n_keys as u32);
+
+        let mut b = self.stream.launch_builder(&self.dequant_dot_fn);
+        b.arg(&d_query)
+            .arg(&d_key_indices)
+            .arg(&d_centroids)
+            .arg(&mut d_scores)
+            .arg(&d_i32)
+            .arg(&n_keys_i32);
+        unsafe { b.launch(config) }
+            .map_err(|e| format!("dequant_dot launch: {}", e))?;
+
+        let mut host_scores = vec![0.0f32; n_keys];
+        self.stream.memcpy_dtoh(&d_scores, &mut host_scores)
+            .map_err(|e| format!("readback: {}", e))?;
+        Ok(host_scores)
+    }
+}
+
+/// Stub for non-CUDA builds.
+#[cfg(not(feature = "cuda"))]
+pub struct TurboQuantCudaKernels {
+    _private: (),
+}
+
+#[cfg(not(feature = "cuda"))]
+impl TurboQuantCudaKernels {
+    pub fn new() -> Result<Self, String> {
+        Err("CUDA feature not enabled".to_string())
     }
 }
 
@@ -91,22 +162,10 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_cuda_kernels_stub() {
-        // Without full launch path, new() returns Err
-        let result = TurboQuantCudaKernels::new();
-        assert!(result.is_err());
-    }
-
-    #[cfg(feature = "cuda")]
-    #[test]
-    fn test_cuda_kernels_compile_check() {
-        // Verify the kernels at least compile via NVRTC
-        if let Some(props) = super::super::device::probe_device() {
-            let arch = props.compile_arch();
-            match super::super::jit::compile_kernels(arch) {
-                Ok(_ptx) => println!("CUDA kernels compiled for {}", arch),
-                Err(e) => println!("NVRTC not available: {}", e),
-            }
+    fn test_cuda_kernels_available() {
+        match TurboQuantCudaKernels::new() {
+            Ok(_) => println!("CUDA kernels initialized"),
+            Err(e) => println!("CUDA not available: {}", e),
         }
     }
 }

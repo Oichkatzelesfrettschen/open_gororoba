@@ -115,6 +115,7 @@ pub mod grouping;
 pub mod inline_cd;
 pub mod integration_test;
 pub mod lazy_promote;
+pub mod multi_precision;
 pub mod multi_resolution;
 pub mod hierarchical;
 pub mod hybrid;
