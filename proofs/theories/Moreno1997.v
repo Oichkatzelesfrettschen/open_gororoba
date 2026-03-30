@@ -37,7 +37,10 @@
       arbitrary concrete V_lambda subspaces to that module interface remains
       open; the next exact substeps are (a) a finite-dim H_a-module witness
       for the arbitrary-a V_lambda lane and (b) a bridge from Moreno's
-      concrete V_lambda hypotheses to that witness
+      concrete V_lambda hypotheses to that witness; the first concrete
+      hypothesis package now lands in C1542_MorVlambdaOrbit.v, but it still
+      assumes the module-dimension witness rather than deriving it from the
+      full V_lambda geometry
     - Theorem 2.9 full arbitrary-alternative CD discharge; the abstract iff
       core and the canonical witness lane are both formalized, but the bridge
       from Moreno's CD hypotheses to the explicit side conditions remains open
@@ -158,6 +161,30 @@ Theorem Moreno1997_theorem_1_16_noncanonical_witness_bridge :
 Proof.
   intro W.
   exact (moreno16_arbitrary_witness_dim_mod4 W).
+Qed.
+
+Theorem Moreno1997_theorem_1_16_arbitrary_a_concrete_to_witness_bridge :
+  forall H : Moreno16ArbitraryAConcreteVlambdaHypotheses,
+    exists W : Moreno16ArbitraryAVlambdaWitness,
+      moreno16_arbitrary_a W = moreno16_concrete_hyp_a H /\
+      moreno16_arbitrary_lambda W = moreno16_concrete_hyp_lambda H /\
+      moreno16_arbitrary_vlambda_dim W = moreno16_concrete_hyp_vlambda_dim H /\
+      Nat.modulo (moreno16_arbitrary_vlambda_dim W) 4 = 0.
+Proof.
+  intro H.
+  exists (moreno16_build_arbitrary_a_witness_from_concrete_hypotheses H).
+  repeat split; try reflexivity.
+  exact
+    (moreno16_arbitrary_witness_dim_mod4
+       (moreno16_build_arbitrary_a_witness_from_concrete_hypotheses H)).
+Qed.
+
+Theorem Moreno1997_theorem_1_16_arbitrary_a_concrete_hypotheses_bridge :
+  forall H : Moreno16ArbitraryAConcreteVlambdaHypotheses,
+    Nat.modulo (moreno16_concrete_hyp_vlambda_dim H) 4 = 0.
+Proof.
+  intro H.
+  exact (moreno16_concrete_hypotheses_dim_mod4 H).
 Qed.
 
 Theorem Moreno1997_lane_compiles : True.
