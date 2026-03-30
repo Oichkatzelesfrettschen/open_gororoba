@@ -8,11 +8,11 @@
 #   - owner_group=third_party or owner_group=external MUST have removal_status=locked.
 
 [markdown_owner_map]
-updated = "2026-03-28"
+updated = "2026-03-29"
 authoritative = true
 status = "active"
 status_token = "ACTIVE"
-document_count = 175
+document_count = 179
 
 [[owner]]
 path = "README.md"
@@ -1066,6 +1066,30 @@ removal_reason = ""
 
 [[owner]]
 path = "reports/acquisition_sessions/cayley_dickson_freudenthal_1951_exact_original_cir_nii_ac_jp_1570291224321248768_katalog_ub_uni_leipzig_de_0_1356848117/checklist.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "cdaweb-voyager-datasets.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/benchmark_cross_platform.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/lions_commentary_cd_kernel.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/reports/turboquant_architecture_2026-03-29.md"
 owner_group = "project"
 removal_status = "active"
 removal_reason = ""
