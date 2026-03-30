@@ -111,10 +111,24 @@ pub fn batch_fast_associator_norms_f32(
     }
     let n = embedded.len() - 2;
 
-    if n > 1000 {
+    // Cache-aware dispatch: at high dims (128D+), the input vectors exceed
+    // L1d capacity when accessed randomly. Use the RingEmbeddingCache streaming
+    // path which keeps only 3 vectors (3*D*4 bytes) resident at any time.
+    // At 128D: ring = 1.5KB (fits any L1d) vs batch = 1MB (overflows 32KB L1d).
+    if dim >= 128 {
+        // Streaming ring cache: sequential but cache-optimal for high dims.
+        // Each vector is copied into the 3-slot ring before computing.
+        let mut ring = super::soa_cache::RingEmbeddingCache::new(dim);
+        let mut norms = Vec::with_capacity(n);
+        for v in embedded.iter() {
+            if let Some(norm) = ring.push_and_compute(v) {
+                norms.push(norm);
+            }
+        }
+        norms
+    } else if n > 1000 {
         // Rayon parallel: each thread gets its own workspace via map_init.
-        // The workspace is created once per thread and reused for all triplets
-        // assigned to that thread.
+        // At dim < 128, the batch fits in L2/L3 so random access is fast.
         use rayon::prelude::*;
         (0..n)
             .into_par_iter()
