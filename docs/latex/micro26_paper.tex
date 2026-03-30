@@ -1,0 +1,132 @@
+\documentclass[sigconf,10pt,anonymous]{acmart}
+% MICRO 2026 -- IEEE/ACM double-column, double-blind, 11 pages + refs
+% Compile: latexmk -pdf micro26_paper.tex
+
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{calc,positioning,arrows.meta}
+\usepgfplotslibrary{groupplots,statistics,colormaps,fillbetween}
+\usepackage{subcaption}
+\usepackage{xcolor}
+
+%% Okabe-Ito palette
+\definecolor{OIorange}{RGB}{230,159,0}
+\definecolor{OIskyblue}{RGB}{86,180,233}
+\definecolor{OIblue}{RGB}{0,114,178}
+\definecolor{OIpurple}{RGB}{204,121,167}
+\definecolor{OIvermillion}{RGB}{213,94,0}
+\definecolor{OIyellow}{RGB}{240,228,66}
+\definecolor{OIgreen}{RGB}{0,158,115}
+
+\title{Composable SIMD/GPU Optimization for Non-Associative\\
+Hypercomplex Algebra: Cache-Geometry-Determined\\
+Performance Across Five Microarchitectures}
+
+\author{Anonymous for double-blind review}
+
+\begin{document}
+
+\begin{abstract}
+\input{micro26_abstract}
+\end{abstract}
+
+\maketitle
+
+%% ===================================================================
+\section{Introduction}
+\label{sec:intro}
+
+% TODO: The CD tower as compute primitive
+% TODO: Composability thesis
+% TODO: 5-architecture cross-platform finding
+% TODO: Contribution list (5 items)
+
+\section{Background}
+\label{sec:background}
+
+% TODO: Cayley-Dickson construction
+% TODO: Associator as trilinear form
+% TODO: Why 4 recursive multiplies are hard
+% TODO: Connection to KV cache quantization
+
+\section{Composable Optimization Stack}
+\label{sec:stack}
+
+\subsection{SIMD-Optimized CD Multiply}
+% TODO: Three-tier dispatch (simd.rs, 906 LOC)
+% TODO: wide::f64x4 quaternion base case
+
+\subsection{Zero-Allocation Workspace}
+% TODO: 3-buffer overlap (fast_associator.rs)
+% TODO: Ring embedding cache (soa_cache.rs)
+
+\subsection{Structure-of-Arrays Cache Layout}
+% TODO: SoA from D3Q19 LBM pattern
+
+\subsection{Cariow Fast Multiply}
+% TODO: O(N^1.58) factorization
+
+\subsection{Adaptive Sampling with Norm Proxy}
+% TODO: 10% sample, simsimd norms
+
+\subsection{CUDA Multi-Precision Kernels}
+% TODO: 23 kernel files, 6 precision levels
+
+\section{Cache-Aware Ring Streaming}
+\label{sec:ring}
+
+% This is the key microarchitectural contribution
+% TODO: Analysis of L1d overflow at 128D
+% TODO: Ring cache fix (14 lines, 23.5x speedup)
+% TODO: D_opt ~ L1d / (6 * sizeof(f32))
+
+\section{Cross-Platform Evaluation}
+\label{sec:eval}
+
+% TODO: Table 1: 5-architecture specs (L1d, L2, L3, SIMD)
+% TODO: Table 2: throughput matrix (dim x platform)
+% TODO: Figure: throughput vs dimension, all 5 platforms
+% TODO: L1d cliff analysis
+% TODO: Apple M1 wins at 32D explanation
+
+\section{Application: Heliospheric Atlas}
+\label{sec:atlas}
+
+% TODO: 48M records, 8 domains, 5 orders of magnitude
+% TODO: Solar cycle detection (18.9x at 1 AU)
+% TODO: The atlas as workload characterization
+
+\section{Application: KV Cache Quantization}
+\label{sec:turboquant}
+
+% TODO: TurboQuant end-to-end (289x)
+% TODO: Attention correction
+
+\section{Discussion and Limitations}
+\label{sec:discussion}
+
+% TODO: What we do NOT claim
+% TODO: 16D crossover is conjecture
+% TODO: MAST non-result
+% TODO: Single-GPU evaluation pending
+
+\section{Related Work}
+\label{sec:related}
+
+% TODO: Hypercomplex neural networks
+% TODO: KV cache compression
+% TODO: SIMD algebra libraries
+% TODO: Cariow 2012
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+% TODO: 5-architecture, L1d-determined, composable
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{refs}
+
+\end{document}
