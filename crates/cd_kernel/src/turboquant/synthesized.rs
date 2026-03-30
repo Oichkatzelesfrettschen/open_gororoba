@@ -126,6 +126,7 @@ impl SynthesizedQuantizer {
                 let mse_repr = super::pipeline::MseCompressed {
                     indices: indices.clone(),
                     vec_norm: *vec_norm,
+                    outliers: Vec::new(),
                 };
                 self.tq.dequantize(&mse_repr, buf, out);
             }

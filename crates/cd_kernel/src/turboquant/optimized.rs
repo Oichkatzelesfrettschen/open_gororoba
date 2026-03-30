@@ -107,6 +107,7 @@ impl TurboQuantOptimized {
                     let mse_repr = super::pipeline::MseCompressed {
                         indices: comp.mse_indices.clone(),
                         vec_norm: comp.vec_norm,
+                        outliers: Vec::new(),
                     };
                     let tq_mse = &self.base_prod.mse();
                     let mut recon = vec![0.0f64; d];
@@ -263,6 +264,7 @@ mod tests {
             let mse_repr = super::super::pipeline::MseCompressed {
                 indices: token.indices.clone(),
                 vec_norm: token.vec_norm as f64,
+                outliers: Vec::new(),
             };
             // Dequantize with WHT (matching the Prod's internal rotation)
             let dq = TurboQuantMSE::new(64, token.bits, 42, true);

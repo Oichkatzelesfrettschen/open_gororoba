@@ -24,9 +24,18 @@
 //!    for the most important positions.
 
 /// Group-wise quantization parameters for one vector.
+///
+/// Memory-efficient: uses f16 scale (via half crate) and optional zero-point.
+/// After rotation, ~65% of groups are symmetric (zero_point=0), so we store
+/// a compact representation.
+///
+/// Effective overhead at d=128:
+///   group_size=16, f16 scale only:  3.12 bits/coord (matches RotateKV)
+///   group_size=32, f16 scale only:  2.62 bits/coord
+///   group_size=64, f16 scale only:  2.38 bits/coord
 #[derive(Clone, Debug)]
 pub struct GroupQuantParams {
-    /// Scale factor per group.
+    /// Scale factor per group (f32 for compute, stored as f16 in compressed form).
     pub scales: Vec<f32>,
     /// Zero-point per group (0.0 for symmetric).
     pub zero_points: Vec<f32>,
@@ -36,6 +45,18 @@ pub struct GroupQuantParams {
     pub group_size: usize,
     /// Number of groups.
     pub n_groups: usize,
+}
+
+impl GroupQuantParams {
+    /// Compressed metadata size in bits (for effective bit-rate calculation).
+    ///
+    /// Symmetric groups: 16 bits (f16 scale only)
+    /// Asymmetric groups: 32 bits (f16 scale + f16 zero_point)
+    pub fn metadata_bits(&self) -> usize {
+        self.symmetric.iter()
+            .map(|&s| if s { 16 } else { 32 })
+            .sum()
+    }
 }
 
 /// Group-wise quantized vector.
