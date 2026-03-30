@@ -121,7 +121,7 @@ fn synthetic_eval(cli: &Cli) -> Vec<EvalResult> {
 
         // Quantize keys via TurboQuant
         let tq = cd_kernel::turboquant::pipeline::TurboQuantMSE::new(d, bits, 42, true);
-        let mut buf = vec![0.0f64; 2 * d];
+        let mut buf = vec![0.0f64; 3 * d];
         let mut quant_scores = vec![0.0f64; h * s];
 
         for head in 0..h {
