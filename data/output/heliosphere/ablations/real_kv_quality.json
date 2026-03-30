@@ -1,910 +1,312 @@
 {
-  "model": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
-  "n_params": 8030261248,
+  "model": "mistralai/Mistral-7B-Instruct-v0.3",
+  "n_params": 7248023552,
   "n_layers": 32,
   "n_heads": 8,
-  "seq_len": 31,
+  "seq_len": 35,
   "head_dim": 128,
-  "total_kv_vectors": 15872,
+  "total_kv_vectors": 17920,
   "aggregates": [
     {
       "bits": 2,
-      "mean_key_mse": 0.3219017568880035,
-      "mean_key_cosine": 0.9428450904414567,
-      "mean_value_mse": 0.012840597689582293,
-      "mean_value_cosine": 0.9410249432319986,
+      "mean_key_mse": 0.2844456416460354,
+      "mean_key_cosine": 0.942219659749005,
+      "mean_value_mse": 0.029223564237325146,
+      "mean_value_cosine": 0.9412154356011864,
       "compression_ratio_vs_fp16": 8.0,
       "streaming_compression_ratio": 1.8823529411764706,
-      "total_vectors": 15872,
-      "quantize_throughput_kvec_per_sec": 394.6663645665395
-    },
-    {
-      "bits": 3,
-      "mean_key_mse": 0.0942048832282552,
-      "mean_key_cosine": 0.9836961109437484,
-      "mean_value_mse": 0.0037473745910108613,
-      "mean_value_cosine": 0.9831905450030851,
-      "compression_ratio_vs_fp16": 5.333333333333333,
-      "streaming_compression_ratio": 1.8823529411764706,
-      "total_vectors": 15872,
-      "quantize_throughput_kvec_per_sec": 281.44118455530503
-    },
-    {
-      "bits": 4,
-      "mean_key_mse": 0.02595071101076641,
-      "mean_key_cosine": 0.9955500904839005,
-      "mean_value_mse": 0.0010289429365308107,
-      "mean_value_cosine": 0.9954453557280606,
-      "compression_ratio_vs_fp16": 4.0,
-      "streaming_compression_ratio": 1.8823529411764706,
-      "total_vectors": 15872,
-      "quantize_throughput_kvec_per_sec": 255.5840534423164
+      "total_vectors": 17920,
+      "quantize_throughput_kvec_per_sec": 173.63578904918222
     }
   ],
   "per_layer": [
     {
       "layer": 0,
       "bits": 2,
-      "key_mse": 0.2350811020730488,
-      "key_cosine": 0.9419810290959832,
-      "value_mse": 0.00015088993998666302,
-      "value_cosine": 0.9421196716622406,
-      "n_vectors": 248
+      "key_mse": 0.1580282307140477,
+      "key_cosine": 0.94231200317703,
+      "value_mse": 0.00005821402405084231,
+      "value_cosine": 0.9439304964757185,
+      "n_vectors": 280
     },
     {
       "layer": 1,
       "bits": 2,
-      "key_mse": 0.37961031877188683,
-      "key_cosine": 0.9414122912270605,
-      "value_mse": 0.0005703074967924789,
-      "value_cosine": 0.9424840747072502,
-      "n_vectors": 248
+      "key_mse": 0.3784613688679345,
+      "key_cosine": 0.9412501142422611,
+      "value_mse": 0.000541754754832818,
+      "value_cosine": 0.9413455922530742,
+      "n_vectors": 280
     },
     {
       "layer": 2,
       "bits": 2,
-      "key_mse": 0.3936943946434187,
-      "key_cosine": 0.9423649056708805,
-      "value_mse": 0.0029831925427931927,
-      "value_cosine": 0.9416299684709217,
-      "n_vectors": 248
+      "key_mse": 0.2712522574651762,
+      "key_cosine": 0.9439777934245951,
+      "value_mse": 0.003954828749661394,
+      "value_cosine": 0.9416727743986499,
+      "n_vectors": 280
     },
     {
       "layer": 3,
       "bits": 2,
-      "key_mse": 0.3124551475019316,
-      "key_cosine": 0.9428923116950194,
-      "value_mse": 0.004533792194238707,
-      "value_cosine": 0.9413520510883683,
-      "n_vectors": 248
+      "key_mse": 0.32957174634245645,
+      "key_cosine": 0.9409927758186513,
+      "value_mse": 0.003255304803844779,
+      "value_cosine": 0.9418372608703373,
+      "n_vectors": 280
     },
     {
       "layer": 4,
       "bits": 2,
-      "key_mse": 0.35316901759233976,
-      "key_cosine": 0.941746625416988,
-      "value_mse": 0.004410653140788734,
-      "value_cosine": 0.9405871629790297,
-      "n_vectors": 248
+      "key_mse": 0.27172201699826426,
+      "key_cosine": 0.9410098625929448,
+      "value_mse": 0.005255020614562589,
+      "value_cosine": 0.9404324944359749,
+      "n_vectors": 280
     },
     {
       "layer": 5,
       "bits": 2,
-      "key_mse": 0.36813900253396326,
-      "key_cosine": 0.942428870874438,
-      "value_mse": 0.004466386619651426,
-      "value_cosine": 0.9407728869147739,
-      "n_vectors": 248
+      "key_mse": 0.2872953608015208,
+      "key_cosine": 0.9418434610752945,
+      "value_mse": 0.005994750356288549,
+      "value_cosine": 0.9405587090042744,
+      "n_vectors": 280
     },
     {
       "layer": 6,
       "bits": 2,
-      "key_mse": 0.3804109474596266,
-      "key_cosine": 0.9433131654398023,
-      "value_mse": 0.005023347638938192,
-      "value_cosine": 0.940739797250255,
-      "n_vectors": 248
+      "key_mse": 0.3193532560778961,
+      "key_cosine": 0.9412302988235459,
+      "value_mse": 0.0064928180631585895,
+      "value_cosine": 0.939930501284737,
+      "n_vectors": 280
     },
     {
       "layer": 7,
       "bits": 2,
-      "key_mse": 0.4123107437947135,
-      "key_cosine": 0.9433456502783524,
-      "value_mse": 0.005880487729025563,
-      "value_cosine": 0.940957832585069,
-      "n_vectors": 248
+      "key_mse": 0.3049841785767909,
+      "key_cosine": 0.9429420687914862,
+      "value_mse": 0.006742793791815344,
+      "value_cosine": 0.9405141991770835,
+      "n_vectors": 280
     },
     {
       "layer": 8,
       "bits": 2,
-      "key_mse": 0.3477532510245129,
-      "key_cosine": 0.9423872571013493,
-      "value_mse": 0.006573088827916021,
-      "value_cosine": 0.9405122217365884,
-      "n_vectors": 248
+      "key_mse": 0.3179839519339179,
+      "key_cosine": 0.9417577459359374,
+      "value_mse": 0.009001508932222681,
+      "value_cosine": 0.9411010140588187,
+      "n_vectors": 280
     },
     {
       "layer": 9,
       "bits": 2,
-      "key_mse": 0.29702350191520843,
-      "key_cosine": 0.943863870623847,
-      "value_mse": 0.008037901735218459,
-      "value_cosine": 0.9413755828336365,
-      "n_vectors": 248
+      "key_mse": 0.2570990402240276,
+      "key_cosine": 0.9421513744407944,
+      "value_mse": 0.010247163404231523,
+      "value_cosine": 0.94063207426702,
+      "n_vectors": 280
     },
     {
       "layer": 10,
       "bits": 2,
-      "key_mse": 0.3431304800946663,
-      "key_cosine": 0.9427817884543602,
-      "value_mse": 0.007044929795538075,
-      "value_cosine": 0.9405985351744023,
-      "n_vectors": 248
+      "key_mse": 0.3429442059223323,
+      "key_cosine": 0.9412598783965546,
+      "value_mse": 0.010707200163343698,
+      "value_cosine": 0.9415013685528444,
+      "n_vectors": 280
     },
     {
       "layer": 11,
       "bits": 2,
-      "key_mse": 0.30734003940343607,
-      "key_cosine": 0.9441009589275092,
-      "value_mse": 0.007849127233969593,
-      "value_cosine": 0.9409006913688096,
-      "n_vectors": 248
+      "key_mse": 0.301188076334364,
+      "key_cosine": 0.9426701682972799,
+      "value_mse": 0.014333659750643199,
+      "value_cosine": 0.9405286981567006,
+      "n_vectors": 280
     },
     {
       "layer": 12,
       "bits": 2,
-      "key_mse": 0.3412487745682929,
-      "key_cosine": 0.944674948394404,
-      "value_mse": 0.007787880957624161,
-      "value_cosine": 0.9408141594457914,
-      "n_vectors": 248
+      "key_mse": 0.317383359678223,
+      "key_cosine": 0.9426405590390755,
+      "value_mse": 0.01436933437950779,
+      "value_cosine": 0.9410701961467802,
+      "n_vectors": 280
     },
     {
       "layer": 13,
       "bits": 2,
-      "key_mse": 0.3207639165889675,
-      "key_cosine": 0.943451873830764,
-      "value_mse": 0.008600774791915395,
-      "value_cosine": 0.9404777590200399,
-      "n_vectors": 248
+      "key_mse": 0.3362406908263959,
+      "key_cosine": 0.943090584522637,
+      "value_mse": 0.013352505829954462,
+      "value_cosine": 0.9426514039829538,
+      "n_vectors": 280
     },
     {
       "layer": 14,
       "bits": 2,
-      "key_mse": 0.35482925365818757,
-      "key_cosine": 0.9439350319280619,
-      "value_mse": 0.0086323250776193,
-      "value_cosine": 0.9408590668304059,
-      "n_vectors": 248
+      "key_mse": 0.2794473534999495,
+      "key_cosine": 0.9417522162717124,
+      "value_mse": 0.019436273242385067,
+      "value_cosine": 0.9416934830657602,
+      "n_vectors": 280
     },
     {
       "layer": 15,
       "bits": 2,
-      "key_mse": 0.32296306277886444,
-      "key_cosine": 0.9418606173340348,
-      "value_mse": 0.008519351838630361,
-      "value_cosine": 0.9409647656075598,
-      "n_vectors": 248
+      "key_mse": 0.30558957792786257,
+      "key_cosine": 0.9418866987872598,
+      "value_mse": 0.019424437125724316,
+      "value_cosine": 0.9412718083833141,
+      "n_vectors": 280
     },
     {
       "layer": 16,
       "bits": 2,
-      "key_mse": 0.33254011316846727,
-      "key_cosine": 0.9444457871675022,
-      "value_mse": 0.008655794857290148,
-      "value_cosine": 0.9412749089230482,
-      "n_vectors": 248
+      "key_mse": 0.3140538440800944,
+      "key_cosine": 0.9405945676571689,
+      "value_mse": 0.018273332464294707,
+      "value_cosine": 0.9415619384312,
+      "n_vectors": 280
     },
     {
       "layer": 17,
       "bits": 2,
-      "key_mse": 0.30671112028605535,
-      "key_cosine": 0.9426226294775835,
-      "value_mse": 0.009248475043398145,
-      "value_cosine": 0.9406967775074682,
-      "n_vectors": 248
+      "key_mse": 0.35232254032546473,
+      "key_cosine": 0.9404291390906198,
+      "value_mse": 0.022757370599940218,
+      "value_cosine": 0.9420845222127153,
+      "n_vectors": 280
     },
     {
       "layer": 18,
       "bits": 2,
-      "key_mse": 0.32189720490026597,
-      "key_cosine": 0.9415307178167135,
-      "value_mse": 0.011552808449019536,
-      "value_cosine": 0.9414782072187063,
-      "n_vectors": 248
+      "key_mse": 0.28800103985787645,
+      "key_cosine": 0.9439524915224047,
+      "value_mse": 0.024315735790287354,
+      "value_cosine": 0.9417632169347578,
+      "n_vectors": 280
     },
     {
       "layer": 19,
       "bits": 2,
-      "key_mse": 0.2888701762746631,
-      "key_cosine": 0.9425984027817521,
-      "value_mse": 0.011982699131954296,
-      "value_cosine": 0.94097918989004,
-      "n_vectors": 248
+      "key_mse": 0.3134006926631976,
+      "key_cosine": 0.9429188178595327,
+      "value_mse": 0.027918023370207577,
+      "value_cosine": 0.9399570826528852,
+      "n_vectors": 280
     },
     {
       "layer": 20,
       "bits": 2,
-      "key_mse": 0.2960487002849914,
-      "key_cosine": 0.9445885174592321,
-      "value_mse": 0.012279234406602012,
-      "value_cosine": 0.9412503872924995,
-      "n_vectors": 248
+      "key_mse": 0.2985739065609547,
+      "key_cosine": 0.9412935019205088,
+      "value_mse": 0.032800671835529614,
+      "value_cosine": 0.9411806536232191,
+      "n_vectors": 280
     },
     {
       "layer": 21,
       "bits": 2,
-      "key_mse": 0.2910750073827941,
-      "key_cosine": 0.9437081812589588,
-      "value_mse": 0.01374944641950793,
-      "value_cosine": 0.9402120217609456,
-      "n_vectors": 248
+      "key_mse": 0.2939128464644477,
+      "key_cosine": 0.9432763961360026,
+      "value_mse": 0.03956277469144427,
+      "value_cosine": 0.9414033091745186,
+      "n_vectors": 280
     },
     {
       "layer": 22,
       "bits": 2,
-      "key_mse": 0.2931501763286966,
-      "key_cosine": 0.9421161699814704,
-      "value_mse": 0.016517024720578474,
-      "value_cosine": 0.9406214521997719,
-      "n_vectors": 248
+      "key_mse": 0.24445000218098067,
+      "key_cosine": 0.9419039175428964,
+      "value_mse": 0.04342100437933412,
+      "value_cosine": 0.9413069980020812,
+      "n_vectors": 280
     },
     {
       "layer": 23,
       "bits": 2,
-      "key_mse": 0.27881193020167205,
-      "key_cosine": 0.9432885561090881,
-      "value_mse": 0.01784332999895113,
-      "value_cosine": 0.9408312350587911,
-      "n_vectors": 248
+      "key_mse": 0.27727931502423786,
+      "key_cosine": 0.9437381632144545,
+      "value_mse": 0.037228571592414085,
+      "value_cosine": 0.9410657061626657,
+      "n_vectors": 280
     },
     {
       "layer": 24,
       "bits": 2,
-      "key_mse": 0.26716017876540077,
-      "key_cosine": 0.9435091842994404,
-      "value_mse": 0.02186762560280604,
-      "value_cosine": 0.9406795395048803,
-      "n_vectors": 248
+      "key_mse": 0.2513137905781392,
+      "key_cosine": 0.9426403265470323,
+      "value_mse": 0.03913536206195875,
+      "value_cosine": 0.941207494578312,
+      "n_vectors": 280
     },
     {
       "layer": 25,
       "bits": 2,
-      "key_mse": 0.2904600080089547,
-      "key_cosine": 0.9429171463351587,
-      "value_mse": 0.023488748139293098,
-      "value_cosine": 0.9415441755095929,
-      "n_vectors": 248
+      "key_mse": 0.2346685106786223,
+      "key_cosine": 0.9433706953645402,
+      "value_mse": 0.045751386636155605,
+      "value_cosine": 0.9403023185222774,
+      "n_vectors": 280
     },
     {
       "layer": 26,
       "bits": 2,
-      "key_mse": 0.29090062234271596,
-      "key_cosine": 0.9421893649691536,
-      "value_mse": 0.01846673349775614,
-      "value_cosine": 0.9406439628787667,
-      "n_vectors": 248
+      "key_mse": 0.24355376523819677,
+      "key_cosine": 0.9408191684982246,
+      "value_mse": 0.05026096396259347,
+      "value_cosine": 0.9411109378270938,
+      "n_vectors": 280
     },
     {
       "layer": 27,
       "bits": 2,
-      "key_mse": 0.3089072479854273,
-      "key_cosine": 0.9413177629294641,
-      "value_mse": 0.030131888812850116,
-      "value_cosine": 0.9407187887953508,
-      "n_vectors": 248
+      "key_mse": 0.2632527343843001,
+      "key_cosine": 0.9453265785708926,
+      "value_mse": 0.05394508172553967,
+      "value_cosine": 0.9408788158418765,
+      "n_vectors": 280
     },
     {
       "layer": 28,
       "bits": 2,
-      "key_mse": 0.29908937056119533,
-      "key_cosine": 0.9431873784148486,
-      "value_mse": 0.026212086378955876,
-      "value_cosine": 0.9405339650380197,
-      "n_vectors": 248
+      "key_mse": 0.24156308141779143,
+      "key_cosine": 0.9421778542498266,
+      "value_mse": 0.06871020586031332,
+      "value_cosine": 0.9404762906055938,
+      "n_vectors": 280
     },
     {
       "layer": 29,
       "bits": 2,
-      "key_mse": 0.3458311210131593,
-      "key_cosine": 0.9439196640849031,
-      "value_mse": 0.031351460056501926,
-      "value_cosine": 0.9413490001477641,
-      "n_vectors": 248
+      "key_mse": 0.2696925972323034,
+      "key_cosine": 0.9417813214119761,
+      "value_mse": 0.09072486517957896,
+      "value_cosine": 0.9407364378496709,
+      "n_vectors": 280
     },
     {
       "layer": 30,
       "bits": 2,
-      "key_mse": 0.2835922007825261,
-      "key_cosine": 0.9410324448531485,
-      "value_mse": 0.037393920108495016,
-      "value_cosine": 0.9409713779413811,
-      "n_vectors": 248
+      "key_mse": 0.2217561589928305,
+      "key_cosine": 0.9411534676802503,
+      "value_mse": 0.09627155900784748,
+      "value_cosine": 0.941871373033907,
+      "n_vectors": 280
     },
     {
       "layer": 31,
       "bits": 2,
-      "key_mse": 0.3358880877260623,
-      "key_cosine": 0.941529789895345,
-      "value_mse": 0.029093412882027162,
-      "value_cosine": 0.941866966081786,
-      "n_vectors": 248
-    },
-    {
-      "layer": 0,
-      "bits": 3,
-      "key_mse": 0.0692228355975169,
-      "key_cosine": 0.9834698795026258,
-      "value_mse": 0.00004430409492444508,
-      "value_cosine": 0.9834704495031609,
-      "n_vectors": 248
-    },
-    {
-      "layer": 1,
-      "bits": 3,
-      "key_mse": 0.11173464672960198,
-      "key_cosine": 0.9831979712124028,
-      "value_mse": 0.0001698999636680195,
-      "value_cosine": 0.983464817208665,
-      "n_vectors": 248
-    },
-    {
-      "layer": 2,
-      "bits": 3,
-      "key_mse": 0.1153436590270762,
-      "key_cosine": 0.9835966368168036,
-      "value_mse": 0.0008827452320800689,
-      "value_cosine": 0.9832746575561111,
-      "n_vectors": 248
-    },
-    {
-      "layer": 3,
-      "bits": 3,
-      "key_mse": 0.0911462884072574,
-      "key_cosine": 0.983782097859294,
-      "value_mse": 0.001319920094224703,
-      "value_cosine": 0.983374412422299,
-      "n_vectors": 248
-    },
-    {
-      "layer": 4,
-      "bits": 3,
-      "key_mse": 0.10599795509102516,
-      "key_cosine": 0.9830308362847353,
-      "value_mse": 0.0012998849411304395,
-      "value_cosine": 0.9829354037675112,
-      "n_vectors": 248
-    },
-    {
-      "layer": 5,
-      "bits": 3,
-      "key_mse": 0.10640554790728358,
-      "key_cosine": 0.9837298955428391,
-      "value_mse": 0.0013034422375184165,
-      "value_cosine": 0.9832381891703301,
-      "n_vectors": 248
-    },
-    {
-      "layer": 6,
-      "bits": 3,
-      "key_mse": 0.11191102512385821,
-      "key_cosine": 0.9837864430535455,
-      "value_mse": 0.001471301550299823,
-      "value_cosine": 0.9830451076104155,
-      "n_vectors": 248
-    },
-    {
-      "layer": 7,
-      "bits": 3,
-      "key_mse": 0.11864806120969283,
-      "key_cosine": 0.9840262747529078,
-      "value_mse": 0.0017244150390684971,
-      "value_cosine": 0.9831346742330517,
-      "n_vectors": 248
-    },
-    {
-      "layer": 8,
-      "bits": 3,
-      "key_mse": 0.10066268635936829,
-      "key_cosine": 0.9837925901243696,
-      "value_mse": 0.001911740070127121,
-      "value_cosine": 0.9831235454657928,
-      "n_vectors": 248
-    },
-    {
-      "layer": 9,
-      "bits": 3,
-      "key_mse": 0.08705466395712787,
-      "key_cosine": 0.9838753514413865,
-      "value_mse": 0.0023166079878737937,
-      "value_cosine": 0.9835187154304212,
-      "n_vectors": 248
-    },
-    {
-      "layer": 10,
-      "bits": 3,
-      "key_mse": 0.10054417804078364,
-      "key_cosine": 0.9835899820479737,
-      "value_mse": 0.0020763937794164838,
-      "value_cosine": 0.9829075296455794,
-      "n_vectors": 248
-    },
-    {
-      "layer": 11,
-      "bits": 3,
-      "key_mse": 0.08990786356114445,
-      "key_cosine": 0.9840339667026184,
-      "value_mse": 0.0023146243728347673,
-      "value_cosine": 0.9830191783622064,
-      "n_vectors": 248
-    },
-    {
-      "layer": 12,
-      "bits": 3,
-      "key_mse": 0.09946599319580933,
-      "key_cosine": 0.9842688487229594,
-      "value_mse": 0.0022739811349797782,
-      "value_cosine": 0.9832027058637391,
-      "n_vectors": 248
-    },
-    {
-      "layer": 13,
-      "bits": 3,
-      "key_mse": 0.09440848532396656,
-      "key_cosine": 0.9837412443434993,
-      "value_mse": 0.002494057380861254,
-      "value_cosine": 0.9831861783172019,
-      "n_vectors": 248
-    },
-    {
-      "layer": 14,
-      "bits": 3,
-      "key_mse": 0.10378640822902478,
-      "key_cosine": 0.9839498519616138,
-      "value_mse": 0.002513658257949886,
-      "value_cosine": 0.9832488679475342,
-      "n_vectors": 248
-    },
-    {
-      "layer": 15,
-      "bits": 3,
-      "key_mse": 0.09455996354582491,
-      "key_cosine": 0.9834374414224063,
-      "value_mse": 0.0025024058661750792,
-      "value_cosine": 0.9830883506940127,
-      "n_vectors": 248
-    },
-    {
-      "layer": 16,
-      "bits": 3,
-      "key_mse": 0.09817621800158932,
-      "key_cosine": 0.9840248822354679,
-      "value_mse": 0.002536767467690734,
-      "value_cosine": 0.9832689224965931,
-      "n_vectors": 248
-    },
-    {
-      "layer": 17,
-      "bits": 3,
-      "key_mse": 0.0891833873515347,
-      "key_cosine": 0.983702495069862,
-      "value_mse": 0.002723927855973319,
-      "value_cosine": 0.9830928069271387,
-      "n_vectors": 248
-    },
-    {
-      "layer": 18,
-      "bits": 3,
-      "key_mse": 0.09354015294752309,
-      "key_cosine": 0.9834756676374634,
-      "value_mse": 0.003365399299172653,
-      "value_cosine": 0.9833712858561794,
-      "n_vectors": 248
-    },
-    {
-      "layer": 19,
-      "bits": 3,
-      "key_mse": 0.08544886066147056,
-      "key_cosine": 0.9834432516162349,
-      "value_mse": 0.0034856817070804316,
-      "value_cosine": 0.9832593847871369,
-      "n_vectors": 248
-    },
-    {
-      "layer": 20,
-      "bits": 3,
-      "key_mse": 0.08679715103740629,
-      "key_cosine": 0.9841572974361189,
-      "value_mse": 0.003616287339910312,
-      "value_cosine": 0.9831972859913476,
-      "n_vectors": 248
-    },
-    {
-      "layer": 21,
-      "bits": 3,
-      "key_mse": 0.08505215186517934,
-      "key_cosine": 0.9839061846608956,
-      "value_mse": 0.004033318526601533,
-      "value_cosine": 0.9828407600054535,
-      "n_vectors": 248
-    },
-    {
-      "layer": 22,
-      "bits": 3,
-      "key_mse": 0.08515694981245577,
-      "key_cosine": 0.983560258649432,
-      "value_mse": 0.004769891711186381,
-      "value_cosine": 0.9831914163935391,
-      "n_vectors": 248
-    },
-    {
-      "layer": 23,
-      "bits": 3,
-      "key_mse": 0.08173859841948888,
-      "key_cosine": 0.9837588461684365,
-      "value_mse": 0.005224974171077162,
-      "value_cosine": 0.9831454406332599,
-      "n_vectors": 248
-    },
-    {
-      "layer": 24,
-      "bits": 3,
-      "key_mse": 0.07800934366172799,
-      "key_cosine": 0.9839551079688484,
-      "value_mse": 0.006353474639729948,
-      "value_cosine": 0.9831161047610456,
-      "n_vectors": 248
-    },
-    {
-      "layer": 25,
-      "bits": 3,
-      "key_mse": 0.08392339201684018,
-      "key_cosine": 0.9839466305437575,
-      "value_mse": 0.007013242400616665,
-      "value_cosine": 0.983037734874241,
-      "n_vectors": 248
-    },
-    {
-      "layer": 26,
-      "bits": 3,
-      "key_mse": 0.08423154705846378,
-      "key_cosine": 0.9836595206138982,
-      "value_mse": 0.005440881244491204,
-      "value_cosine": 0.9829815137044349,
-      "n_vectors": 248
-    },
-    {
-      "layer": 27,
-      "bits": 3,
-      "key_mse": 0.08905520409314995,
-      "key_cosine": 0.983536512729892,
-      "value_mse": 0.008703290786860551,
-      "value_cosine": 0.9832017587966121,
-      "n_vectors": 248
-    },
-    {
-      "layer": 28,
-      "bits": 3,
-      "key_mse": 0.0875338903333474,
-      "key_cosine": 0.9837715605379599,
-      "value_mse": 0.007804478585628311,
-      "value_cosine": 0.9829177161189253,
-      "n_vectors": 248
-    },
-    {
-      "layer": 29,
-      "bits": 3,
-      "key_mse": 0.1047860305122918,
-      "key_cosine": 0.9835776873149009,
-      "value_mse": 0.00906787559366993,
-      "value_cosine": 0.9834364504187407,
-      "n_vectors": 248
-    },
-    {
-      "layer": 30,
-      "bits": 3,
-      "key_mse": 0.08373815476444184,
-      "key_cosine": 0.9830201499406633,
-      "value_mse": 0.010717758966965004,
-      "value_cosine": 0.9833248351115573,
-      "n_vectors": 248
-    },
-    {
-      "layer": 31,
-      "bits": 3,
-      "key_mse": 0.09738496946089296,
-      "key_cosine": 0.9834701852841289,
-      "value_mse": 0.00843935461256084,
-      "value_cosine": 0.9834812400244952,
-      "n_vectors": 248
-    },
-    {
-      "layer": 0,
-      "bits": 4,
-      "key_mse": 0.01883081259167153,
-      "key_cosine": 0.995527745050913,
-      "value_mse": 0.000012142389635567139,
-      "value_cosine": 0.9954928557067335,
-      "n_vectors": 248
-    },
-    {
-      "layer": 1,
-      "bits": 4,
-      "key_mse": 0.030294824220601844,
-      "key_cosine": 0.9954794230368963,
-      "value_mse": 0.000046363278637773014,
-      "value_cosine": 0.9955138715584403,
-      "n_vectors": 248
-    },
-    {
-      "layer": 2,
-      "bits": 4,
-      "key_mse": 0.03186418119001227,
-      "key_cosine": 0.9955012041433834,
-      "value_mse": 0.00023925046596832918,
-      "value_cosine": 0.9955404475258416,
-      "n_vectors": 248
-    },
-    {
-      "layer": 3,
-      "bits": 4,
-      "key_mse": 0.0257000899635382,
-      "key_cosine": 0.9955038069323795,
-      "value_mse": 0.00035526991090280454,
-      "value_cosine": 0.9955479469947085,
-      "n_vectors": 248
-    },
-    {
-      "layer": 4,
-      "bits": 4,
-      "key_mse": 0.0290498545726488,
-      "key_cosine": 0.9954060872892748,
-      "value_mse": 0.0003478725395918277,
-      "value_cosine": 0.9954852736087766,
-      "n_vectors": 248
-    },
-    {
-      "layer": 5,
-      "bits": 4,
-      "key_mse": 0.0295709461607146,
-      "key_cosine": 0.9955302245642048,
-      "value_mse": 0.000360041204822585,
-      "value_cosine": 0.995460366467862,
-      "n_vectors": 248
-    },
-    {
-      "layer": 6,
-      "bits": 4,
-      "key_mse": 0.03132338844659854,
-      "key_cosine": 0.9954965753505007,
-      "value_mse": 0.0004009482883993869,
-      "value_cosine": 0.9954464878873239,
-      "n_vectors": 248
-    },
-    {
-      "layer": 7,
-      "bits": 4,
-      "key_mse": 0.03323942887135495,
-      "key_cosine": 0.9955656287068749,
-      "value_mse": 0.0004716837003668965,
-      "value_cosine": 0.995409676954061,
-      "n_vectors": 248
-    },
-    {
-      "layer": 8,
-      "bits": 4,
-      "key_mse": 0.027382516444185774,
-      "key_cosine": 0.9956032698318684,
-      "value_mse": 0.000523651351473099,
-      "value_cosine": 0.9954315181789247,
-      "n_vectors": 248
-    },
-    {
-      "layer": 9,
-      "bits": 4,
-      "key_mse": 0.023849682903923433,
-      "key_cosine": 0.9956267663003449,
-      "value_mse": 0.0006321604598771943,
-      "value_cosine": 0.9955105476196671,
-      "n_vectors": 248
-    },
-    {
-      "layer": 10,
-      "bits": 4,
-      "key_mse": 0.027649347985821048,
-      "key_cosine": 0.9955272850227265,
-      "value_mse": 0.0005677334960623235,
-      "value_cosine": 0.9953637070189099,
-      "n_vectors": 248
-    },
-    {
-      "layer": 11,
-      "bits": 4,
-      "key_mse": 0.025125124229328017,
-      "key_cosine": 0.9955546354547183,
-      "value_mse": 0.000636053753021209,
-      "value_cosine": 0.9953577121996294,
-      "n_vectors": 248
-    },
-    {
-      "layer": 12,
-      "bits": 4,
-      "key_mse": 0.027857348542490338,
-      "key_cosine": 0.9956484631566269,
-      "value_mse": 0.0006102139079103441,
-      "value_cosine": 0.9955388136594823,
-      "n_vectors": 248
-    },
-    {
-      "layer": 13,
-      "bits": 4,
-      "key_mse": 0.026162669847182452,
-      "key_cosine": 0.9955180935176541,
-      "value_mse": 0.0006741844982668845,
-      "value_cosine": 0.9954961215871365,
-      "n_vectors": 248
-    },
-    {
-      "layer": 14,
-      "bits": 4,
-      "key_mse": 0.02854238699032218,
-      "key_cosine": 0.9956359680259951,
-      "value_mse": 0.0006815575130758547,
-      "value_cosine": 0.9954955924267741,
-      "n_vectors": 248
-    },
-    {
-      "layer": 15,
-      "bits": 4,
-      "key_mse": 0.025634121870233662,
-      "key_cosine": 0.9955371713896353,
-      "value_mse": 0.0006834901557305464,
-      "value_cosine": 0.9954043692690052,
-      "n_vectors": 248
-    },
-    {
-      "layer": 16,
-      "bits": 4,
-      "key_mse": 0.02696622117274385,
-      "key_cosine": 0.9956521766961919,
-      "value_mse": 0.0006912409465963258,
-      "value_cosine": 0.9954646297942575,
-      "n_vectors": 248
-    },
-    {
-      "layer": 17,
-      "bits": 4,
-      "key_mse": 0.02475219694304818,
-      "key_cosine": 0.995533516669539,
-      "value_mse": 0.0007390652345789023,
-      "value_cosine": 0.9954634157203485,
-      "n_vectors": 248
-    },
-    {
-      "layer": 18,
-      "bits": 4,
-      "key_mse": 0.02538610544959376,
-      "key_cosine": 0.9955545594093109,
-      "value_mse": 0.0009136762535017741,
-      "value_cosine": 0.9955354768481515,
-      "n_vectors": 248
-    },
-    {
-      "layer": 19,
-      "bits": 4,
-      "key_mse": 0.02317150191341019,
-      "key_cosine": 0.9955572839540985,
-      "value_mse": 0.000953491544844885,
-      "value_cosine": 0.9954527325736247,
-      "n_vectors": 248
-    },
-    {
-      "layer": 20,
-      "bits": 4,
-      "key_mse": 0.024170975909633165,
-      "key_cosine": 0.9956101991644788,
-      "value_mse": 0.0009991657261137717,
-      "value_cosine": 0.9954193544356968,
-      "n_vectors": 248
-    },
-    {
-      "layer": 21,
-      "bits": 4,
-      "key_mse": 0.0236841013816357,
-      "key_cosine": 0.9955609519163098,
-      "value_mse": 0.0011105796037568561,
-      "value_cosine": 0.995366843676187,
-      "n_vectors": 248
-    },
-    {
-      "layer": 22,
-      "bits": 4,
-      "key_mse": 0.023375292021280285,
-      "key_cosine": 0.9955345879791411,
-      "value_mse": 0.001300594213960192,
-      "value_cosine": 0.9954658796907052,
-      "n_vectors": 248
-    },
-    {
-      "layer": 23,
-      "bits": 4,
-      "key_mse": 0.02266842308389911,
-      "key_cosine": 0.9955235821517534,
-      "value_mse": 0.0014488408567980963,
-      "value_cosine": 0.995342926034501,
-      "n_vectors": 248
-    },
-    {
-      "layer": 24,
-      "bits": 4,
-      "key_mse": 0.021780608098183985,
-      "key_cosine": 0.9955726746203859,
-      "value_mse": 0.0017369420429775879,
-      "value_cosine": 0.9954236102095517,
-      "n_vectors": 248
-    },
-    {
-      "layer": 25,
-      "bits": 4,
-      "key_mse": 0.02308754308563662,
-      "key_cosine": 0.9956460075399678,
-      "value_mse": 0.0019308034737919436,
-      "value_cosine": 0.9953620399372697,
-      "n_vectors": 248
-    },
-    {
-      "layer": 26,
-      "bits": 4,
-      "key_mse": 0.023166055377490884,
-      "key_cosine": 0.9955434521349644,
-      "value_mse": 0.001508356530630945,
-      "value_cosine": 0.99529816401766,
-      "n_vectors": 248
-    },
-    {
-      "layer": 27,
-      "bits": 4,
-      "key_mse": 0.024326025714305297,
-      "key_cosine": 0.9955464490089768,
-      "value_mse": 0.0023774608467048842,
-      "value_cosine": 0.9954279040110151,
-      "n_vectors": 248
-    },
-    {
-      "layer": 28,
-      "bits": 4,
-      "key_mse": 0.02416962004625152,
-      "key_cosine": 0.9955547615653605,
-      "value_mse": 0.0021954077719132967,
-      "value_cosine": 0.9952975870508127,
-      "n_vectors": 248
-    },
-    {
-      "layer": 29,
-      "bits": 4,
-      "key_mse": 0.028540693507758678,
-      "key_cosine": 0.9955653684939917,
-      "value_mse": 0.0025123269519472117,
-      "value_cosine": 0.9954637186064588,
-      "n_vectors": 248
-    },
-    {
-      "layer": 30,
-      "bits": 4,
-      "key_mse": 0.022998191974226725,
-      "key_cosine": 0.9953917488972169,
-      "value_mse": 0.002951982262851207,
-      "value_cosine": 0.9954610754436185,
-      "n_vectors": 248
-    },
-    {
-      "layer": 31,
-      "bits": 4,
-      "key_mse": 0.026102471834799572,
-      "key_cosine": 0.9955932275091289,
-      "value_mse": 0.0023136227942754358,
-      "value_cosine": 0.9955107165847986,
-      "n_vectors": 248
+      "key_mse": 0.21592103480253838,
+      "key_cosine": 0.9428851010647671,
+      "value_mse": 0.10090957845073772,
+      "value_cosine": 0.9413147692711448,
+      "n_vectors": 280
     }
   ]
 }

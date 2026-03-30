@@ -103,6 +103,7 @@ impl KeyCompressor {
             let mse_repr = MseCompressed {
                 indices: compressed.mse_indices.clone(),
                 vec_norm: compressed.vec_norm,
+                outliers: Vec::new(),
             };
             let mut x_mse = vec![0.0f64; d];
             self.quantizer.mse().dequantize(&mse_repr, &mut buf, &mut x_mse);
@@ -234,6 +235,7 @@ impl ValueCompressor {
             let mse_compressed = MseCompressed {
                 indices: cv.indices.clone(),
                 vec_norm: cv.vec_norm as f64,
+                outliers: Vec::new(),
             };
             self.quantizer.dequantize(&mse_compressed, &mut buf, &mut result[v * d..(v + 1) * d]);
         }

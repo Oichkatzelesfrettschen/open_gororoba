@@ -43,8 +43,12 @@
 //!   4-bit +0.2%, 3-bit +1.6%, 2-bit +7.4%
 //! Our Mistral-7B (WT2/128): 4-bit -0.6%, 3-bit +2.4%, 2-bit +13.8%
 //!
-//! Gap vs SOTA at 2-bit from: (1) symmetric vs asymmetric quant,
-//! (2) no outlier retention, (3) shorter eval context (128 vs 4096 tokens).
+//! Gap vs SOTA at 2-bit from: (1) per-group metadata overhead,
+//! (2) random vs calibrated channel reordering, (3) shorter eval context.
+//!
+//! CDAQ module (`cdaq.rs`): E8-structured channel reordering + per-group
+//! scales + precision windows + outlier retention.  Improves cosine by
+//! +0.7% on real data (0.9422 -> 0.9494 on Mistral-7B 2-bit).
 //!
 //! # Architecture
 //!
@@ -81,6 +85,7 @@
 
 pub mod adaptive_bits;
 pub mod adaptive_profiling;
+pub mod cdaq;
 pub mod attention_correction;
 pub mod albert_algebra;
 pub mod autotune;
@@ -103,6 +108,7 @@ pub mod e8_validation;
 pub mod exceptional_roots;
 pub mod f4_rotation;
 pub mod fixed_codebook;
+pub mod fp8;
 pub mod fixed_point;
 pub mod gpu_evaluation;
 pub mod grouping;

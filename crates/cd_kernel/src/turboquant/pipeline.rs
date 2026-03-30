@@ -16,6 +16,10 @@ pub struct MseCompressed {
     pub indices: Vec<u8>,
     /// Original vector norm (for denormalization).
     pub vec_norm: f64,
+    /// Dense-and-sparse outlier retention: (coordinate_index, original_f32_value)
+    /// for the top-k coordinates by quantization error magnitude.
+    /// Empty when outlier_keep_frac is 0 (default).
+    pub outliers: Vec<(u16, f32)>,
 }
 
 /// Compressed representation from TurboQuantProd (Stage 1 + 2).
@@ -39,6 +43,9 @@ pub struct TurboQuantMSE {
     codebook: LloydMaxCodebook,
     d: usize,
     bits: u32,
+    /// Fraction of coordinates to keep as outliers (0.0 = none, 0.01 = 1%).
+    /// Each outlier costs 16 bits (f16 value) + 16 bits (index) = 32 bits.
+    outlier_keep_frac: f64,
 }
 
 impl TurboQuantMSE {
@@ -49,7 +56,7 @@ impl TurboQuantMSE {
             Rotation::new_haar(d, seed)
         };
         let codebook = lloyd_max::get_codebook(d, bits);
-        TurboQuantMSE { rotation, codebook, d, bits }
+        TurboQuantMSE { rotation, codebook, d, bits, outlier_keep_frac: 0.0 }
     }
 
     /// Create from a TurboQuantConfig, using the configured rotation method.
@@ -67,7 +74,7 @@ impl TurboQuantMSE {
             RotationMethod::Haar => Rotation::new_haar(d, seed),
         };
         let codebook = lloyd_max::get_codebook(d, bits);
-        TurboQuantMSE { rotation, codebook, d, bits }
+        TurboQuantMSE { rotation, codebook, d, bits, outlier_keep_frac: 0.0 }
     }
 
     /// Create with a specific distribution-aware codebook.
@@ -80,7 +87,20 @@ impl TurboQuantMSE {
         } else {
             Rotation::new_haar(d, seed)
         };
-        TurboQuantMSE { rotation, codebook, d, bits }
+        TurboQuantMSE { rotation, codebook, d, bits, outlier_keep_frac: 0.0 }
+    }
+
+    /// Enable dense-and-sparse outlier retention.
+    ///
+    /// `frac` is the fraction of coordinates to keep in fp32 (e.g. 0.01 = 1%).
+    /// Each outlier costs 32 bits (16-bit index + 16-bit value).
+    /// At d=128, 1% = 1.28 outliers -> effectively 2.25 bits/coord at 2-bit.
+    ///
+    /// Published KVQuant-1% uses 0.5-1% and achieves +5.8% PPL at 2-bit
+    /// vs our baseline of +9.0%.
+    pub fn with_outlier_retention(mut self, frac: f64) -> Self {
+        self.outlier_keep_frac = frac;
+        self
     }
 
     /// Quantize a single vector.  Returns compressed indices + vec_norm.
@@ -109,7 +129,9 @@ impl TurboQuantMSE {
 
         // Per-coordinate quantization via boundary search on buf[2d..3d]
         let boundaries = &self.codebook.boundaries;
-        let indices: Vec<u8> = buf[2 * d..3 * d]
+        let centroids = &self.codebook.centroids;
+        let rotated = &buf[2 * d..3 * d];
+        let indices: Vec<u8> = rotated
             .iter()
             .map(|&v| {
                 let mut idx = 0u8;
@@ -124,9 +146,31 @@ impl TurboQuantMSE {
             })
             .collect();
 
+        // Dense-and-sparse outlier retention: keep top-k by quantization error
+        let outliers = if self.outlier_keep_frac > 0.0 {
+            let n_keep = (d as f64 * self.outlier_keep_frac).ceil().max(1.0) as usize;
+            // Compute per-coordinate quantization error
+            let mut errors: Vec<(usize, f64)> = indices.iter().enumerate()
+                .map(|(i, &idx)| {
+                    let orig = rotated[i];
+                    let quant = centroids[idx as usize] as f64;
+                    (i, (orig - quant).abs())
+                })
+                .collect();
+            // Partial sort: find top-k by error magnitude
+            errors.sort_unstable_by(|a, b| b.1.partial_cmp(&a.1).unwrap_or(std::cmp::Ordering::Equal));
+            errors.truncate(n_keep);
+            errors.iter()
+                .map(|&(i, _)| (i as u16, rotated[i] as f32))
+                .collect()
+        } else {
+            Vec::new()
+        };
+
         MseCompressed {
             indices,
             vec_norm: norm,
+            outliers,
         }
     }
 
@@ -144,6 +188,11 @@ impl TurboQuantMSE {
         let centroids = &self.codebook.centroids;
         for i in 0..self.d {
             buf1[i] = centroids[compressed.indices[i] as usize] as f64;
+        }
+
+        // Overwrite outlier positions with their stored fp32 values
+        for &(idx, val) in &compressed.outliers {
+            buf1[idx as usize] = val as f64;
         }
 
         // Unrotate
@@ -236,6 +285,7 @@ impl TurboQuantProd {
         let mse_compressed = MseCompressed {
             indices: compressed.mse_indices.clone(),
             vec_norm: compressed.vec_norm,
+            outliers: Vec::new(),
         };
         let mut x_mse = vec![0.0; self.d];
         self.mse.dequantize(&mse_compressed, buf, &mut x_mse);
@@ -393,5 +443,62 @@ mod tests {
         // Both should be reasonable (< 0.01 for 3-bit at d=64)
         assert!(mse_haar < 0.05, "Haar MSE too high: {}", mse_haar);
         assert!(mse_wht < 0.05, "WHT MSE too high: {}", mse_wht);
+    }
+
+    #[test]
+    fn test_outlier_retention_improves_2bit() {
+        use rand::SeedableRng;
+        use rand_chacha::ChaCha20Rng;
+        use rand_distr::{Distribution, StandardNormal};
+
+        let d = 128;
+        let bits = 2;
+        let mut rng = ChaCha20Rng::seed_from_u64(42);
+        let normal = StandardNormal;
+
+        // Without outlier retention
+        let tq_base = TurboQuantMSE::new(d, bits, 42, true);
+        // With 1% outlier retention
+        let tq_outlier = TurboQuantMSE::new(d, bits, 42, true).with_outlier_retention(0.01);
+
+        let mut buf = vec![0.0f64; 3 * d];
+        let mut base_mse_sum = 0.0;
+        let mut outlier_mse_sum = 0.0;
+        let n = 500;
+
+        for _ in 0..n {
+            let x: Vec<f64> = (0..d).map(|_| normal.sample(&mut rng)).collect();
+
+            let comp_base = tq_base.quantize(&x, &mut buf);
+            let comp_outlier = tq_outlier.quantize(&x, &mut buf);
+
+            assert!(comp_base.outliers.is_empty());
+            assert!(!comp_outlier.outliers.is_empty());
+
+            let mut recon_base = vec![0.0; d];
+            let mut recon_outlier = vec![0.0; d];
+            tq_base.dequantize(&comp_base, &mut buf, &mut recon_base);
+            tq_outlier.dequantize(&comp_outlier, &mut buf, &mut recon_outlier);
+
+            let mse_base: f64 = x.iter().zip(recon_base.iter())
+                .map(|(a, b)| (a - b).powi(2)).sum::<f64>() / d as f64;
+            let mse_outlier: f64 = x.iter().zip(recon_outlier.iter())
+                .map(|(a, b)| (a - b).powi(2)).sum::<f64>() / d as f64;
+
+            base_mse_sum += mse_base;
+            outlier_mse_sum += mse_outlier;
+        }
+
+        let base_mse = base_mse_sum / n as f64;
+        let outlier_mse = outlier_mse_sum / n as f64;
+        let improvement = (1.0 - outlier_mse / base_mse) * 100.0;
+
+        println!("2-bit d=128: base MSE={:.6}, outlier(1%) MSE={:.6}, improvement={:.1}%",
+            base_mse, outlier_mse, improvement);
+        assert!(outlier_mse < base_mse,
+            "Outlier retention should improve MSE: base={:.6} vs outlier={:.6}",
+            base_mse, outlier_mse);
+        assert!(improvement > 5.0,
+            "Expected >5% improvement from 1% outlier retention, got {:.1}%", improvement);
     }
 }

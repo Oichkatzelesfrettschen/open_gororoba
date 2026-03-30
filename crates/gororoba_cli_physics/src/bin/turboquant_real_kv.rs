@@ -16,6 +16,7 @@ use std::path::PathBuf;
 use std::time::Instant;
 
 use cd_kernel::lloyd_max::{self, DistributionFamily};
+use cd_kernel::turboquant::cdaq::CdaqQuantizer;
 use cd_kernel::turboquant::pipeline::TurboQuantMSE;
 use cd_kernel::turboquant::streaming::StreamingKVCache;
 
@@ -354,6 +355,100 @@ fn main() -> Result<()> {
         println!("    Gaussian kurtosis=3.0 -> rotation {}",
             if (pr_kurt - 3.0).abs() < 1.5 { "GAUSSIANIZES the data (codebook is optimal)" }
             else { "does NOT fully Gaussianize (fitted codebook may help)" });
+    }
+    println!();
+
+    // === Outlier Retention Comparison (2-bit) ===
+    println!("=== Outlier Retention at 2-bit ===");
+    println!();
+    for keep_pct in [0.0, 0.5, 1.0, 2.0] {
+        let tq = TurboQuantMSE::new(meta.head_dim, 2, 42, true)
+            .with_outlier_retention(keep_pct / 100.0);
+        let mut buf = vec![0.0f64; 3 * meta.head_dim];
+        let mut total_mse = 0.0;
+        let mut total_cos = 0.0;
+        let mut count = 0usize;
+        let mut total_outlier_bytes = 0usize;
+
+        for layer_idx in 0..meta.n_layers {
+            let key_path = cli.data_dir.join(format!("keys_layer{:02}.f64", layer_idx));
+            let keys = read_f64_vectors(&key_path, meta.head_dim)?;
+            for k in &keys {
+                let comp = tq.quantize(k, &mut buf);
+                total_outlier_bytes += comp.outliers.len() * 4; // u16 + f32
+                let mut recon = vec![0.0f64; meta.head_dim];
+                tq.dequantize(&comp, &mut buf, &mut recon);
+                total_mse += k.iter().zip(recon.iter())
+                    .map(|(a, b)| (a - b).powi(2)).sum::<f64>() / meta.head_dim as f64;
+                total_cos += cosine_similarity(k, &recon);
+                count += 1;
+            }
+        }
+        let mean_mse = total_mse / count as f64;
+        let mean_cos = total_cos / count as f64;
+        let eff_bits = if count > 0 {
+            (count * meta.head_dim * 2 / 8 + total_outlier_bytes) as f64 * 8.0 / (count * meta.head_dim) as f64
+        } else { 2.0 };
+        println!("  Keep {:4.1}%: key MSE={:.6} cos={:.4} eff_bits={:.2}",
+            keep_pct, mean_mse, mean_cos, eff_bits);
+    }
+    println!();
+
+    // === CDAQ Pipeline Comparison (2-bit) ===
+    println!("=== CDAQ vs Baseline at 2-bit (calibrated channel reorder + per-group scales) ===");
+    println!();
+    {
+        // Collect calibration vectors from first 3 layers
+        let mut cal_vecs: Vec<Vec<f64>> = Vec::new();
+        for layer_idx in 0..3.min(meta.n_layers) {
+            let key_path = cli.data_dir.join(format!("keys_layer{:02}.f64", layer_idx));
+            let keys = read_f64_vectors(&key_path, meta.head_dim)?;
+            cal_vecs.extend(keys);
+        }
+        let cal_refs: Vec<&[f64]> = cal_vecs.iter().map(|v| v.as_slice()).collect();
+
+        // CDAQ with calibration
+        let cdaq = CdaqQuantizer::new(meta.head_dim, 2, 42, &cal_refs, 16, 0.01);
+        // Baseline TurboQuant
+        let tq_base = TurboQuantMSE::new(meta.head_dim, 2, 42, true);
+
+        let mut buf = vec![0.0f64; 3 * meta.head_dim];
+        let mut cdaq_mse = 0.0;
+        let mut cdaq_cos = 0.0;
+        let mut base_mse = 0.0;
+        let mut base_cos = 0.0;
+        let mut count = 0usize;
+
+        for layer_idx in 0..meta.n_layers {
+            let key_path = cli.data_dir.join(format!("keys_layer{:02}.f64", layer_idx));
+            let keys = read_f64_vectors(&key_path, meta.head_dim)?;
+            for k in &keys {
+                // CDAQ
+                let comp_c = cdaq.quantize(k, &mut buf);
+                let mut recon_c = vec![0.0f64; meta.head_dim];
+                cdaq.dequantize(&comp_c, &mut buf, &mut recon_c);
+                cdaq_mse += k.iter().zip(recon_c.iter())
+                    .map(|(a, b)| (a - b).powi(2)).sum::<f64>() / meta.head_dim as f64;
+                cdaq_cos += cosine_similarity(k, &recon_c);
+
+                // Baseline
+                let comp_b = tq_base.quantize(k, &mut buf);
+                let mut recon_b = vec![0.0f64; meta.head_dim];
+                tq_base.dequantize(&comp_b, &mut buf, &mut recon_b);
+                base_mse += k.iter().zip(recon_b.iter())
+                    .map(|(a, b)| (a - b).powi(2)).sum::<f64>() / meta.head_dim as f64;
+                base_cos += cosine_similarity(k, &recon_b);
+
+                count += 1;
+            }
+        }
+
+        let n = count as f64;
+        let improvement = (1.0 - cdaq_mse / base_mse) * 100.0;
+        println!("  TurboQuant baseline: key MSE={:.6} cos={:.4}", base_mse / n, base_cos / n);
+        println!("  CDAQ (calibrated):   key MSE={:.6} cos={:.4} ({:+.1}% MSE)",
+            cdaq_mse / n, cdaq_cos / n, improvement);
+        println!("  CDAQ eff bits: {:.2}", cdaq.effective_bits_per_coord());
     }
     println!();
 

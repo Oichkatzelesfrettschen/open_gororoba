@@ -227,6 +227,67 @@ impl Rotation {
         Rotation::FastJL { d1, d2, d }
     }
 
+    /// ZD-avoidance Fast JL: evaluate multiple candidate Rademacher diagonal
+    /// pairs and select the one that maximizes minimum Koebisu D_2 score
+    /// (furthest from zero-divisor manifold) on calibration vectors.
+    ///
+    /// D_2(v) = (||v_1||^2 - ||v_2||^2)^2 + 4*<v_1, v_2>^2
+    /// where v_1, v_2 are the upper/lower halves of the sedenion (16D) blocks.
+    ///
+    /// Higher D_2 -> further from ZD manifold -> quantization error has more
+    /// algebraic redundancy to absorb it.  O(n_candidates * n_cal * d) total.
+    ///
+    /// Returns the FastJL rotation with the best D_2 score.
+    /// If d < 16 or calibration is empty, falls back to standard FastJL.
+    pub fn new_fast_jl_zd_avoid(d: usize, seed: u64, calibration: &[&[f64]], n_candidates: usize) -> Self {
+        if d < 16 || calibration.is_empty() || n_candidates <= 1 {
+            return Self::new_fast_jl(d, seed);
+        }
+
+        let mut best_d1 = Vec::new();
+        let mut best_d2 = Vec::new();
+        let mut best_min_d2 = f64::NEG_INFINITY;
+
+        let mut buf = vec![0.0f64; d];
+        let mut out = vec![0.0f64; d];
+
+        for candidate in 0..n_candidates {
+            let candidate_seed = seed.wrapping_add(candidate as u64 * 997);
+            let (d1, d2) = generate_rademacher_diagonals(d, candidate_seed);
+
+            // Evaluate D_2 on calibration vectors after rotation
+            let mut min_d2 = f64::MAX;
+            for cal_vec in calibration.iter().take(50) {
+                // Normalize
+                let norm: f64 = cal_vec.iter().map(|x| x * x).sum::<f64>().sqrt();
+                if norm < 1e-15 { continue; }
+                let normalized: Vec<f64> = cal_vec.iter().map(|x| x / norm).collect();
+
+                // Rotate
+                fast_jl_rotate(&normalized, &d1, &d2, &mut buf, &mut out);
+
+                // Evaluate D_2 on each 16D block of the rotated vector
+                let n_blocks = d / 16;
+                for block in 0..n_blocks {
+                    let block_start = block * 16;
+                    let block_slice = &out[block_start..block_start + 16];
+                    let d2_val = crate::cayley_dickson::koebisu_d2(block_slice);
+                    if d2_val < min_d2 {
+                        min_d2 = d2_val;
+                    }
+                }
+            }
+
+            if min_d2 > best_min_d2 {
+                best_min_d2 = min_d2;
+                best_d1 = d1;
+                best_d2 = d2;
+            }
+        }
+
+        Rotation::FastJL { d1: best_d1, d2: best_d2, d }
+    }
+
     /// Create E8 block rotation for d=128.
     ///
     /// Selects 8 diverse E8 roots and precomputes their conjugates
@@ -532,5 +593,62 @@ mod tests {
             "E8+WHT norm not preserved: {} vs {}",
             norm_x, norm_y
         );
+    }
+
+    #[test]
+    fn test_zd_avoidance_rotation() {
+        use rand::SeedableRng;
+        use rand_chacha::ChaCha20Rng;
+        use rand_distr::{Distribution, StandardNormal};
+
+        let d = 128;
+        let mut rng = ChaCha20Rng::seed_from_u64(42);
+        let normal = StandardNormal;
+        let cal_vecs: Vec<Vec<f64>> = (0..30)
+            .map(|_| (0..d).map(|_| normal.sample(&mut rng)).collect())
+            .collect();
+        let cal_refs: Vec<&[f64]> = cal_vecs.iter().map(|v| v.as_slice()).collect();
+
+        // Standard rotation
+        let rot_std = Rotation::new_fast_jl(d, 42);
+        // ZD-avoidance rotation with 32 candidates
+        let rot_zd = Rotation::new_fast_jl_zd_avoid(d, 42, &cal_refs, 32);
+
+        // Both should produce valid rotations (roundtrip)
+        let x: Vec<f64> = (0..d).map(|i| (i as f64 * 0.1).sin()).collect();
+        let mut buf = vec![0.0; d];
+        let mut y = vec![0.0; d];
+        let mut x_rt = vec![0.0; d];
+
+        rot_zd.forward(&x, &mut buf, &mut y);
+        rot_zd.inverse(&y, &mut buf, &mut x_rt);
+        let err: f64 = x.iter().zip(x_rt.iter()).map(|(a, b)| (a - b).abs()).sum();
+        assert!(err < 1e-8, "ZD-avoidance roundtrip error: {}", err);
+
+        // ZD-avoidance should have higher minimum D_2 on the calibration data
+        let mut min_d2_std = f64::MAX;
+        let mut min_d2_zd = f64::MAX;
+        let mut out_std = vec![0.0f64; d];
+        let mut out_zd = vec![0.0f64; d];
+
+        for cal in &cal_refs {
+            let norm: f64 = cal.iter().map(|x| x * x).sum::<f64>().sqrt();
+            let normalized: Vec<f64> = cal.iter().map(|x| x / norm).collect();
+
+            rot_std.forward(&normalized, &mut buf, &mut out_std);
+            rot_zd.forward(&normalized, &mut buf, &mut out_zd);
+
+            for block in 0..(d / 16) {
+                let s = block * 16;
+                let d2_std = crate::cayley_dickson::koebisu_d2(&out_std[s..s + 16]);
+                let d2_zd = crate::cayley_dickson::koebisu_d2(&out_zd[s..s + 16]);
+                min_d2_std = min_d2_std.min(d2_std);
+                min_d2_zd = min_d2_zd.min(d2_zd);
+            }
+        }
+
+        println!("D_2 scores: standard min={:.6}, ZD-avoidance min={:.6}", min_d2_std, min_d2_zd);
+        assert!(min_d2_zd >= min_d2_std,
+            "ZD-avoidance should have higher or equal D_2: {} vs {}", min_d2_zd, min_d2_std);
     }
 }

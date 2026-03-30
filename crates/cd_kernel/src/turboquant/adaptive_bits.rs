@@ -65,6 +65,91 @@ pub fn allocate_bits(
     allocation
 }
 
+/// Closed-form Lagrange bit allocation from rate-distortion theory.
+///
+/// From the quantization force analogy (Pais -> rate-distortion):
+///   F_Q = b * ln(2) * 4^b / (sigma^2 * C)
+///
+/// The optimal per-region bit allocation that minimizes total distortion
+/// subject to a total bit budget is:
+///   b_r = b_mean + (1 / (2 * ln(4))) * ln(sigma_r^2 / sigma_mean^2)
+///
+/// where sigma_r^2 is the variance of region r after rotation.
+///
+/// This replaces O(n*B) greedy allocation with O(n) closed-form.
+/// Rounds to nearest integer bit-width (2, 3, or 4).
+///
+/// Returns per-token bit allocation.
+pub fn allocate_bits_lagrange(
+    variances: &[f64],
+    base_bits: u32,
+    min_bits: u32,
+    max_bits: u32,
+) -> Vec<u32> {
+    let n = variances.len();
+    if n == 0 { return vec![]; }
+
+    // Geometric mean variance (sigma_mean^2)
+    let log_var_sum: f64 = variances.iter()
+        .map(|&v| if v > 1e-30 { v.ln() } else { -69.0 }) // ln(1e-30)
+        .sum();
+    let log_var_mean = log_var_sum / n as f64;
+
+    // b_r = b_mean + (1/(2*ln(4))) * ln(sigma_r^2 / sigma_mean^2)
+    // = b_mean + (1/(2*ln(4))) * (ln(sigma_r^2) - ln(sigma_mean^2))
+    let scale = 1.0 / (2.0 * 4.0_f64.ln()); // 1/(2*ln(4)) ~ 0.3607
+
+    let allocations: Vec<u32> = variances.iter()
+        .map(|&v| {
+            let log_v = if v > 1e-30 { v.ln() } else { -69.0 };
+            let b_continuous = base_bits as f64 + scale * (log_v - log_var_mean);
+            let b_rounded = b_continuous.round().max(min_bits as f64).min(max_bits as f64);
+            b_rounded as u32
+        })
+        .collect();
+
+    allocations
+}
+
+/// Compute per-token variance in rotated space (for Lagrange allocation).
+///
+/// For each vector: normalize, rotate, compute coordinate variance.
+/// Returns one variance per vector.
+pub fn compute_rotated_variances(
+    vectors: &[Vec<f64>],
+    tq: &TurboQuantMSE,
+) -> Vec<f64> {
+    let d = vectors[0].len();
+    let mut buf = vec![0.0f64; 3 * d];
+
+    vectors.iter().map(|v| {
+        // Quantize to get the rotated representation
+        let compressed = tq.quantize(v, &mut buf);
+        // The variance in rotated space is approximately 1/d for unit vectors
+        // But real data has non-uniform variance per coordinate
+        // Use the vec_norm as a proxy (higher norm = higher variance)
+        compressed.vec_norm.powi(2) / d as f64
+    }).collect()
+}
+
+/// Multi-precision bit allocation: allocate 2, 3, or 4 bits per token
+/// based on the closed-form Lagrange solver.
+///
+/// Returns (allocation, avg_bits) where allocation[i] is the bit-width for token i.
+pub fn multi_precision_allocate(
+    vectors: &[Vec<f64>],
+    base_bits: u32,
+    seed: u64,
+    use_wht: bool,
+) -> (Vec<u32>, f64) {
+    let d = vectors[0].len();
+    let tq = TurboQuantMSE::new(d, base_bits, seed, use_wht);
+    let variances = compute_rotated_variances(vectors, &tq);
+    let allocations = allocate_bits_lagrange(&variances, base_bits, 2, 4);
+    let avg = allocations.iter().sum::<u32>() as f64 / allocations.len() as f64;
+    (allocations, avg)
+}
+
 /// Adaptive quantization: apply different bit-widths per token.
 ///
 /// Tokens marked `Promoted` get (base_bits + 1) bits.
@@ -253,5 +338,72 @@ mod tests {
         assert_eq!(results[1].1, 4); // promoted
         assert_eq!(results[0].1, 3); // base
         assert_eq!(results[4].1, 4); // promoted
+    }
+
+    #[test]
+    fn test_lagrange_bit_allocation() {
+        // Test with heterogeneous variances: some vectors 10x larger
+        let variances: Vec<f64> = (0..100).map(|i| {
+            if i < 25 { 10.0 } // high-variance tokens
+            else { 1.0 }       // normal tokens
+        }).collect();
+
+        let alloc = allocate_bits_lagrange(&variances, 3, 2, 4);
+        assert_eq!(alloc.len(), 100);
+
+        // High-variance tokens should get more bits
+        let high_var_bits: f64 = alloc[0..25].iter().map(|&b| b as f64).sum::<f64>() / 25.0;
+        let low_var_bits: f64 = alloc[25..100].iter().map(|&b| b as f64).sum::<f64>() / 75.0;
+        let avg_bits: f64 = alloc.iter().sum::<u32>() as f64 / 100.0;
+
+        println!("Lagrange allocation: high_var={:.2} bits, low_var={:.2} bits, avg={:.2}",
+            high_var_bits, low_var_bits, avg_bits);
+
+        assert!(high_var_bits > low_var_bits,
+            "High-variance tokens should get more bits: {} vs {}", high_var_bits, low_var_bits);
+        // Average should be near base_bits (3.0)
+        assert!((avg_bits - 3.0).abs() < 0.5,
+            "Average bits should be near base: {}", avg_bits);
+    }
+
+    #[test]
+    fn test_lagrange_uniform_variance() {
+        // Uniform variance -> uniform allocation
+        let variances = vec![1.0; 100];
+        let alloc = allocate_bits_lagrange(&variances, 3, 2, 4);
+        assert!(alloc.iter().all(|&b| b == 3),
+            "Uniform variance should give uniform allocation: {:?}", &alloc[..5]);
+    }
+
+    #[test]
+    fn test_lagrange_vs_greedy_heterogeneous() {
+        // Create vectors with heterogeneous norms (simulating real KV cache)
+        let d = 64;
+        let mut rng = ChaCha20Rng::seed_from_u64(42);
+        let normal = StandardNormal;
+        let mut vectors: Vec<Vec<f64>> = (0..200)
+            .map(|_| (0..d).map(|_| normal.sample(&mut rng)).collect())
+            .collect();
+
+        // Make first 50 vectors 5x larger (high variance)
+        for v in vectors[..50].iter_mut() {
+            for x in v.iter_mut() { *x *= 5.0; }
+        }
+
+        let (lagrange_alloc, lagrange_avg) = multi_precision_allocate(&vectors, 3, 42, true);
+
+        println!("Lagrange avg bits: {:.2}", lagrange_avg);
+        let n_promoted = lagrange_alloc.iter().filter(|&&b| b > 3).count();
+        let n_demoted = lagrange_alloc.iter().filter(|&&b| b < 3).count();
+        println!("Promoted (>3): {}, Demoted (<3): {}", n_promoted, n_demoted);
+
+        // With heterogeneous data, Lagrange should differentiate
+        // High-variance vectors should get more bits
+        let high_var_bits: f64 = lagrange_alloc[..50].iter().map(|&b| b as f64).sum::<f64>() / 50.0;
+        let low_var_bits: f64 = lagrange_alloc[50..].iter().map(|&b| b as f64).sum::<f64>() / 150.0;
+        println!("High-var avg bits: {:.2}, Low-var avg bits: {:.2}", high_var_bits, low_var_bits);
+
+        assert!(high_var_bits >= low_var_bits,
+            "High-variance vectors should get >= bits: {:.2} vs {:.2}", high_var_bits, low_var_bits);
     }
 }
