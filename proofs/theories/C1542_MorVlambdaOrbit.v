@@ -132,6 +132,37 @@ Record Moreno16ArbitraryAConcreteVlambdaHypotheses := {
     is_h_module_dim moreno16_concrete_hyp_vlambda_dim
 }.
 
+(** A first geometry-shaped arbitrary-a package.
+
+    Instead of assuming `is_h_module_dim` directly, this package records the
+    concrete dimensional shadow of Moreno's geometric claim: V_lambda(a)
+    decomposes into a finite number of quaternionic 4-blocks.  From that block
+    count we derive both the H-module-dimension predicate and the mod-4
+    conclusion.  This is still weaker than a full formalization of the
+    subspace geometry, but it is closer to Moreno's actual proof shape than
+    the earlier witness-only package. *)
+Record Moreno16ArbitraryAGeometricVlambdaData := {
+  moreno16_geom_a : CDOct;
+  moreno16_geom_a_unit : oct_norm_sq moreno16_geom_a = 1%R;
+  moreno16_geom_a_pure :
+    oct_conj moreno16_geom_a = oct_neg moreno16_geom_a;
+  moreno16_geom_lambda : R;
+  moreno16_geom_lambda_pos : (0 < moreno16_geom_lambda)%R;
+  moreno16_geom_vlambda_dim : nat;
+  moreno16_geom_block_count : nat;
+  moreno16_geom_vlambda_dim_is_blocks :
+    moreno16_geom_vlambda_dim = 4 * moreno16_geom_block_count
+}.
+
+Theorem moreno16_geometry_is_h_module_dim :
+  forall G : Moreno16ArbitraryAGeometricVlambdaData,
+    is_h_module_dim (moreno16_geom_vlambda_dim G).
+Proof.
+  intro G.
+  rewrite (moreno16_geom_vlambda_dim_is_blocks G).
+  exact (div4_implies_h_module_dim (moreno16_geom_block_count G)).
+Qed.
+
 Theorem moreno16_concrete_witness_dim_div4 :
   forall W : Moreno16ConcreteVlambdaWitness,
     exists k : nat, moreno16_concrete_vlambda_dim W = 4 * k.
@@ -245,11 +276,29 @@ Definition moreno16_build_arbitrary_a_witness_from_concrete_hypotheses
      moreno16_arbitrary_vlambda_is_h_module_dim :=
        moreno16_concrete_hyp_vlambda_is_h_module_dim H |}.
 
+Definition moreno16_geometry_to_concrete_hypotheses
+  (G : Moreno16ArbitraryAGeometricVlambdaData)
+  : Moreno16ArbitraryAConcreteVlambdaHypotheses :=
+  {| moreno16_concrete_hyp_a := moreno16_geom_a G;
+     moreno16_concrete_hyp_a_unit := moreno16_geom_a_unit G;
+     moreno16_concrete_hyp_a_pure := moreno16_geom_a_pure G;
+     moreno16_concrete_hyp_lambda := moreno16_geom_lambda G;
+     moreno16_concrete_hyp_lambda_pos := moreno16_geom_lambda_pos G;
+     moreno16_concrete_hyp_vlambda_dim := moreno16_geom_vlambda_dim G;
+     moreno16_concrete_hyp_vlambda_is_h_module_dim :=
+       moreno16_geometry_is_h_module_dim G |}.
+
 Definition moreno16_concrete_hypotheses_to_hypotheses
   (H : Moreno16ArbitraryAConcreteVlambdaHypotheses)
   : Moreno16ArbitraryAConcreteHypotheses :=
   moreno16_arbitrary_witness_to_hypotheses
     (moreno16_build_arbitrary_a_witness_from_concrete_hypotheses H).
+
+Definition moreno16_geometry_to_witness
+  (G : Moreno16ArbitraryAGeometricVlambdaData)
+  : Moreno16ArbitraryAVlambdaWitness :=
+  moreno16_build_arbitrary_a_witness_from_concrete_hypotheses
+    (moreno16_geometry_to_concrete_hypotheses G).
 
 Theorem moreno16_arbitrary_witness_dim_div4 :
   forall W : Moreno16ArbitraryAVlambdaWitness,
@@ -287,4 +336,23 @@ Proof.
   exact
     (moreno16_arbitrary_witness_dim_mod4
        (moreno16_build_arbitrary_a_witness_from_concrete_hypotheses H)).
+Qed.
+
+Theorem moreno16_geometry_dim_div4 :
+  forall G : Moreno16ArbitraryAGeometricVlambdaData,
+    exists k : nat, moreno16_geom_vlambda_dim G = 4 * k.
+Proof.
+  intro G.
+  exists (moreno16_geom_block_count G).
+  exact (moreno16_geom_vlambda_dim_is_blocks G).
+Qed.
+
+Corollary moreno16_geometry_dim_mod4 :
+  forall G : Moreno16ArbitraryAGeometricVlambdaData,
+    Nat.modulo (moreno16_geom_vlambda_dim G) 4 = 0.
+Proof.
+  intro G.
+  rewrite (moreno16_geom_vlambda_dim_is_blocks G).
+  rewrite Nat.mul_comm.
+  apply Nat.Div0.mod_mul.
 Qed.
