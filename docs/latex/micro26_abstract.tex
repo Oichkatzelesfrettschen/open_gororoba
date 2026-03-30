@@ -1,20 +1,24 @@
-% MICRO26 Abstract -- Final (Iteration 7/7)
+% MICRO26 Abstract -- Revision 2 (cross-platform validated)
 % Title: Composable SIMD/GPU Optimization for Non-Associative
-%        Hypercomplex Algebra: 289x Speedup via Six Independent Layers
+%        Hypercomplex Algebra: Cache-Geometry-Determined Performance
+%        Across Four Microarchitectures
 
-Six independently-designed optimization layers for Cayley--Dickson
-non-associative algebra compose multiplicatively, achieving 289$\times$
-end-to-end speedup on a 6-core Zen4 consumer CPU.  The target
-primitive---the CD associator, a trilinear form requiring four recursive
-$O(D \log D)$ multiplications at dimension~$D$---becomes impractical
-beyond 16D without such composition.  Our layers: SIMD three-tier
-dispatch (3--4$\times$), zero-allocation workspace overlap
-(1.5$\times$), structure-of-arrays cache layout (2.8$\times$), Cariow
-$O(N^{1.58})$ fast multiply (2--3$\times$), adaptive norm-proxy sampling
-(10$\times$), and hardware-accelerated distance kernels
-(259$\times$).  Each layer is independently benchmarkable.  The
-resulting throughput (1{,}155\,kvec/s at 64D) enables a
-48-million-record heliospheric atlas at 32D embedding spanning five
-orders of magnitude across 0.32--167\,AU---a workload previously
-infeasible on consumer hardware.  A GPU path extends to six precision
-levels (FP64--INT4) via 23 CUDA kernels.
+Non-associative hypercomplex multiplication in the Cayley--Dickson tower
+requires four recursive $O(D \log D)$ calls per associator evaluation,
+making dimensions beyond 64 impractical without cache-aware optimization.
+We present a composable six-layer stack in Rust achieving up to
+2{,}508\,kvec/s at 32D (Apple~M1) and characterize a sharp
+\emph{L1d-determined performance cliff}: throughput drops $70\times$ at
+128D on 32\,KB L1d (Zen3) but only $3\times$ on 256\,KB L1d
+(Cobalt~100), because the recursive workspace ($6D$ floats per level)
+overflows the smaller cache.  Measured across four microarchitectures
+(AMD Zen3 96\,MB 3D V-Cache, Intel Xeon 32\,MB L3, ARM Cobalt~100
+256\,KB L1d, Apple~M1 unified memory), the optimal embedding dimension
+$D_\mathrm{opt} \approx L_{1d} / (6 \cdot \mathsf{sizeof}(f32))$
+is set by cache geometry, not algebra.  Our layers---SIMD three-tier
+dispatch, zero-allocation workspace, SoA cache layout, Cariow
+$O(N^{1.58})$ multiply, adaptive norm-proxy sampling, and
+hardware-accelerated kernels---compose to enable a 48-million-record
+heliospheric atlas at 32D that was previously infeasible on consumer
+hardware.  A GPU path extends to six precision levels (FP64--INT4)
+via 23 CUDA kernels.
