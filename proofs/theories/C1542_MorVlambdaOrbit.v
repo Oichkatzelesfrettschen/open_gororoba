@@ -120,6 +120,18 @@ Record Moreno16ArbitraryAVlambdaWitness := {
     is_h_module_dim moreno16_arbitrary_vlambda_dim
 }.
 
+Record Moreno16ArbitraryAConcreteVlambdaHypotheses := {
+  moreno16_concrete_hyp_a : CDOct;
+  moreno16_concrete_hyp_a_unit : oct_norm_sq moreno16_concrete_hyp_a = 1%R;
+  moreno16_concrete_hyp_a_pure :
+    oct_conj moreno16_concrete_hyp_a = oct_neg moreno16_concrete_hyp_a;
+  moreno16_concrete_hyp_lambda : R;
+  moreno16_concrete_hyp_lambda_pos : (0 < moreno16_concrete_hyp_lambda)%R;
+  moreno16_concrete_hyp_vlambda_dim : nat;
+  moreno16_concrete_hyp_vlambda_is_h_module_dim :
+    is_h_module_dim moreno16_concrete_hyp_vlambda_dim
+}.
+
 Theorem moreno16_concrete_witness_dim_div4 :
   forall W : Moreno16ConcreteVlambdaWitness,
     exists k : nat, moreno16_concrete_vlambda_dim W = 4 * k.
@@ -221,6 +233,24 @@ Definition moreno16_arbitrary_witness_to_hypotheses
     (moreno16_arbitrary_a_pure W)
     (moreno16_arbitrary_witness_to_concrete W).
 
+Definition moreno16_build_arbitrary_a_witness_from_concrete_hypotheses
+  (H : Moreno16ArbitraryAConcreteVlambdaHypotheses)
+  : Moreno16ArbitraryAVlambdaWitness :=
+  {| moreno16_arbitrary_a := moreno16_concrete_hyp_a H;
+     moreno16_arbitrary_a_unit := moreno16_concrete_hyp_a_unit H;
+     moreno16_arbitrary_a_pure := moreno16_concrete_hyp_a_pure H;
+     moreno16_arbitrary_lambda := moreno16_concrete_hyp_lambda H;
+     moreno16_arbitrary_lambda_pos := moreno16_concrete_hyp_lambda_pos H;
+     moreno16_arbitrary_vlambda_dim := moreno16_concrete_hyp_vlambda_dim H;
+     moreno16_arbitrary_vlambda_is_h_module_dim :=
+       moreno16_concrete_hyp_vlambda_is_h_module_dim H |}.
+
+Definition moreno16_concrete_hypotheses_to_hypotheses
+  (H : Moreno16ArbitraryAConcreteVlambdaHypotheses)
+  : Moreno16ArbitraryAConcreteHypotheses :=
+  moreno16_arbitrary_witness_to_hypotheses
+    (moreno16_build_arbitrary_a_witness_from_concrete_hypotheses H).
+
 Theorem moreno16_arbitrary_witness_dim_div4 :
   forall W : Moreno16ArbitraryAVlambdaWitness,
     exists k : nat, moreno16_arbitrary_vlambda_dim W = 4 * k.
@@ -237,4 +267,24 @@ Proof.
   intro W.
   exact (moreno16_concrete_witness_dim_mod4
            (moreno16_arbitrary_witness_to_concrete W)).
+Qed.
+
+Theorem moreno16_concrete_hypotheses_dim_div4 :
+  forall H : Moreno16ArbitraryAConcreteVlambdaHypotheses,
+    exists k : nat, moreno16_concrete_hyp_vlambda_dim H = 4 * k.
+Proof.
+  intro H.
+  exact
+    (moreno16_arbitrary_witness_dim_div4
+       (moreno16_build_arbitrary_a_witness_from_concrete_hypotheses H)).
+Qed.
+
+Corollary moreno16_concrete_hypotheses_dim_mod4 :
+  forall H : Moreno16ArbitraryAConcreteVlambdaHypotheses,
+    Nat.modulo (moreno16_concrete_hyp_vlambda_dim H) 4 = 0.
+Proof.
+  intro H.
+  exact
+    (moreno16_arbitrary_witness_dim_mod4
+       (moreno16_build_arbitrary_a_witness_from_concrete_hypotheses H)).
 Qed.
