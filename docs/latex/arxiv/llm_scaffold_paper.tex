@@ -13,9 +13,9 @@
 \usepackage[capitalize,noabbrev]{cleveref}
 
 \hypersetup{
-  pdftitle={Algebraic Structure Constrains Physical Dynamics: Four Theses on Cayley-Dickson Lattice-Boltzmann Coupling},
+  pdftitle={Cayley-Dickson Algebra as a Cross-Domain Phase-Geometry Diagnostic: Four LBM Theses, the 3:1 Theorem, and Thirteen Physical Domains},
   pdfauthor={open\_gororoba Project},
-  pdfkeywords={Cayley-Dickson, lattice Boltzmann, zero divisors, algebraic topology, non-associative algebra},
+  pdfkeywords={Cayley-Dickson, lattice Boltzmann, zero divisors, associator, heliosphere, magnetopause, tokamak, phase coupling, non-associative algebra, cross-domain},
   colorlinks=true,
   linkcolor=blue!60!black,
   citecolor=green!50!black,
@@ -73,9 +73,22 @@ purity in Cayley--Dickson box-kite triangles.  The theorem is verified
 computationally at dimensions 16 through 512 with zero mismatches across
 14.2 million triangles.
 
+We further demonstrate the 32-dimensional Cayley--Dickson (pathion) associator
+as a null-stratified, regime-sensitive order parameter for cross-channel
+phase coupling disorder, validated in a pure-Rust pipeline across
+13 spacecraft and physical environments spanning 0.07--124\,AU.
+The associator achieves $89\%$ recall against 118 expert-identified
+Earth magnetopause crossings (THEMIS-A, curated Zenodo~V2 labels),
+a $33\times$ quench at the Voyager~2 heliopause (Bayesian change-point),
+and a $36$--$41\%$ pre-disruption drop in MAST tokamak shots.
+Additional domains include MRI onset in GRMHD accretion discs ($22\times$),
+BOUT$+$$+$ drift-wave turbulence onset ($78\times$), Mars induced
+magnetosphere (MAVEN, $53\%$), and LLM KV-cache quantization
+($23\%$ MSE reduction via adaptive bit allocation).
+
 All results are reproducible from the TOML evidence registry
-(\texttt{registry/claims.toml}, 818 claims) and accompanying Rust test suite
-(4110 tests, zero warnings).
+(\texttt{registry/claims.toml}, 1495 claims) and accompanying Rust test suite
+(4554 tests, zero warnings).
 \end{abstract}
 
 \tableofcontents
