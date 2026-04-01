@@ -130,12 +130,12 @@
 %% ===================================================================
 %% Centralized counters -- update here, propagates throughout paper
 %% ===================================================================
-\newcommand{\claimcount}{880}
+\newcommand{\claimcount}{1495}
 \newcommand{\testcount}{4554}
 \newcommand{\binarycount}{153}
 \newcommand{\cratecount}{35}
-\newcommand{\prooffilecount}{38}
-\newcommand{\prooflinecount}{2049}
+\newcommand{\prooffilecount}{269}
+\newcommand{\prooflinecount}{40538}
 \newcommand{\kernelchecked}{21}
 
 %% ===================================================================
@@ -180,11 +180,19 @@ each step.  Beyond the octonions ($n \geq 4$), zero divisors organize
 into combinatorial structures called box-kites, whose sign patterns
 define a GF(2) invariant---the \emph{sign-imbalance index}
 $\phi$---that converges to $3/8$ with increasing dimension.
+The associator $A(a,b,c) = (ab)c - a(bc)$, embedded via
+32-dimensional Takens delay vectors of multichannel observables,
+provides a regime-sensitive order parameter for cross-channel phase
+coupling: coherent and ordered states suppress $A$; turbulent and
+disordered states amplify it.
 
 \textbf{Gap.}
 No prior work has coupled this purely algebraic quantity to measurable
-physical dynamics or provided a complete mechanism for the empirically
-observed $3{:}1$ ratio of mixed to pure box-kite triangles.
+physical dynamics, provided a complete mechanism for the empirically
+observed $3{:}1$ ratio of mixed to pure box-kite triangles, or
+demonstrated that the CD associator functions as a universal
+boundary and phase-transition diagnostic across electromagnetic,
+plasma-physics, and computational domains.
 
 \textbf{Approach.}
 We couple $\phi$ to a D3Q19 lattice--Boltzmann fluid simulation
@@ -197,31 +205,51 @@ and (T4)~a power-law first-return time distribution
 ($\gamma = -2.41$, $R^2 = 0.995$).  The Anti-Diagonal Parity Theorem
 provides a complete GF(2)-algebraic proof of the 3:1 Theorem,
 verified across 14.2 million triangles with zero mismatches.
+In parallel, a null-stratified, pure-Rust pipeline applies 32D
+pathion Takens embeddings to multichannel electromagnetic time series
+across thirteen physical environments and domains.
 
 \textbf{Results.}
-The investigation spans eight research domains---algebra, fluid
-dynamics, general relativity, quantum information, materials science,
-optics, statistics, and cosmology---documented through \claimcount{}
-computationally verified claims, \testcount{} automated tests, and
-\kernelchecked{} kernel-checked formal proofs in the Rocq Prover.
-Cross-domain applications include nacelle warp-bubble geometry with ADM
-decomposition, impedance-matched metamaterial absorbers ($A = 0.969$),
-worldline Monte Carlo Casimir energy, SFWM phase-matching, and
-cosmological model comparison (quantum bounce disfavored against
-$\Lambda$CDM, $\Delta\mathrm{BIC} = +7.4$).  A seven-method
-falsification pipeline definitively rules out a hypothesized ghost
-frequency in LBM density fields.  Nine falsified claims are disclosed
-with full evidence.
+The investigation spans thirteen research domains---algebra, fluid
+dynamics, heliospheric and interplanetary physics, magnetospheric
+boundaries, plasma turbulence, accretion-disc MHD, magnetar
+oscillations, general relativity, quantum information, materials
+science, optics, statistics, and cosmology---documented through
+\claimcount{} computationally verified claims, \testcount{} automated
+tests, and \kernelchecked{} kernel-checked formal proofs in the Rocq
+Prover.  Cross-domain boundary detection achieves $89\%$ recall
+against 118 expert-identified Earth magnetopause crossings
+(THEMIS-A, curated Zenodo~V2 labels), a $33\times$ associator quench
+at the Voyager~2 heliopause (119.5~AU, Bayesian change-point
+localisation), and a $36$--$41\%$ pre-disruption associator drop
+across MAST tokamak shots, covering heliocentric distances from
+$0.07$ to $124$~AU across 13~spacecraft.  Additional validated
+environments include the Earth bow shock (Cluster-1, $64.9\%$),
+Mercury magnetopause (MESSENGER, $64.3\%$), Mars induced
+magnetosphere (MAVEN, $53\%$), MRI onset in GRMHD accretion discs
+($22\times$ ratio), BOUT$+$$+$ drift-wave turbulence onset ($78\times$
+contrast), and adaptive bit-allocation for LLM KV-cache quantization
+($23\%$ MSE reduction at 3-bit).  Cross-domain applications further
+include nacelle warp-bubble geometry with ADM decomposition,
+impedance-matched metamaterial absorbers ($A = 0.969$), worldline
+Monte Carlo Casimir energy, SFWM phase-matching, and cosmological
+model comparison (quantum bounce disfavored against $\Lambda$CDM,
+$\Delta\mathrm{BIC} = +7.4$).  A seven-method falsification pipeline
+definitively rules out a hypothesized ghost frequency in LBM density
+fields.  Nine falsified claims are disclosed with full evidence.
 
 \textbf{Significance.}
-The 3:1 Theorem is the main novel contribution: a dimension-free
-result requiring only GF(2) linear algebra.  The coupling theses are
-exploratory; T1 is tautological under any monotone model, and the
-remaining three demonstrate non-trivial signatures that merit
-independent replication.  All 43 figures use a colorblind-safe
-Okabe--Ito palette with redundant encoding.  All results are
-reproducible from the TOML claims registry and accompanying Rust test
-suite (\testcount{} tests, zero warnings).
+The 3:1 Theorem is the main novel algebraic contribution: a
+dimension-free result requiring only GF(2) linear algebra.  The CD
+associator emerges as a regime-sensitive order parameter for
+cross-channel phase coupling disorder---a principle reproduced across
+MHD, plasma physics, and neural-network quantization domains.  The
+coupling theses are exploratory; T1 is tautological under any
+monotone model, and the remaining three demonstrate non-trivial
+signatures that merit independent replication.  All 43 figures use a
+colorblind-safe Okabe--Ito palette with redundant encoding.  All
+results are reproducible from the TOML claims registry and
+accompanying Rust test suite (\testcount{} tests, zero warnings).
 \end{abstract}
 
 \hypersetup{pageanchor=true}
@@ -275,20 +303,24 @@ collision operator of a D3Q19 lattice--Boltzmann simulation, producing
 spatially varying viscosity fields whose topology can be measured,
 compared, and verified.
 
-The investigation spans eight research domains
+The investigation spans thirteen research domains
 (\cref{fig:concept-map}), each with a consistent Okabe--Ito color
 throughout all figures: algebra (orange), fluid dynamics (sky blue),
 general relativity (blue), quantum information (purple), materials
 science (green), optics (yellow), statistics (gray), and cosmology
-(vermillion).
+(vermillion).  The heliospheric, magnetospheric, plasma-turbulence,
+accretion-disc, magnetar, and computational (LLM) domains share colors
+with their closest physical relatives and are distinguished by domain
+tags where figures overlap.
 
 \begin{figure}[htbp]
 \centering
 \input{figures/fig_01_concept_map}
-\caption{Conceptual landscape of the project.  Eight research domains
+\caption{Conceptual landscape of the project.  Thirteen research domains
 (colored by the Okabe--Ito palette) connected through shared mathematical
 structures.  Algebra sits at the center, feeding into fluid dynamics,
-geometry, and beyond.}
+heliospheric and magnetospheric boundary physics, plasma turbulence,
+accretion-disc MHD, geometry, and beyond.}
 \label{fig:concept-map}
 \end{figure}
 
@@ -325,7 +357,8 @@ pipeline and definitively ruled out.  Nine falsified claims are
 disclosed with full evidence.
 
 The framework extends beyond the algebraic--dynamical core to five
-additional research domains.  In general relativity, a nacelle
+additional research domains and, further, to a cross-domain
+electromagnetic boundary survey.  In general relativity, a nacelle
 warp-bubble geometry is decomposed via the ADM formalism with
 13 PPN constraint gates for scalar--tensor theories.  In materials
 science, an impedance-matched metamaterial absorber achieves
@@ -338,6 +371,21 @@ a quantum bounce model is disfavored against $\Lambda$CDM
 data, and the spectral-dimension mapping to primordial tilt is
 falsified.  In statistics, the ghost frequency pipeline calibrated
 on 17 synthetic datasets achieves zero false negatives.
+
+In a separate cross-domain validation campaign, 32-dimensional
+Cayley--Dickson (pathion) Takens embeddings of multichannel
+electromagnetic time series are evaluated as a null-stratified
+boundary and phase-transition diagnostic across 13 spacecraft and
+physical environments spanning 0.07 to 124~AU.  The CD associator
+achieves $89\%$ recall against 118 expert-identified Earth
+magnetopause crossings (THEMIS-A), a $33\times$ quench at the
+Voyager~2 heliopause, and a $36$--$41\%$ pre-disruption drop in
+MAST tokamak shots.  The same observable detects MRI onset in
+GRMHD simulations ($22\times$), drift-wave turbulence onset in
+BOUT$+$$+$ slabs ($78\times$), and identifies quantization-vulnerable
+attention tokens in LLM KV-cache compression ($23\%$ MSE reduction),
+establishing the associator as a universal order parameter for
+cross-channel phase coupling disorder.
 
 All results are backed by \claimcount{} computationally verified claims
 in a TOML registry, \testcount{} automated tests, and
