@@ -627,7 +627,7 @@ fn write_summary(path: &Path, rows: &[HotspotRow], top: usize) -> Result<()> {
     }
 
     markdown.push_str("## Synthesis\n\n");
-    markdown.push_str("- The comparer now prefers repo-local inline frames over generic `core` iterator frames, which fixes the earlier DD misattribution.\n");
+    markdown.push_str("- The comparer now prefers repo-scoped inline frames over generic `core` iterator frames, which fixes the earlier DD misattribution.\n");
     markdown.push_str("- `reference_f64` should show backend-core lines in `reference_jacobi.rs`, shared/support rows in the sweep/scaffold, dependency rows for `nalgebra`, and external libm trig work.\n");
     markdown.push_str("- `x87` should surface the x87 Jacobi path plus shared `cd_kernel` Givens/ext80 helpers, with unresolved inline-asm pseudo-symbols remaining in the external bucket.\n");
     markdown.push_str("- `double_double` should now show `dd_jacobi.rs` as backend-core even when smaller DD helpers remain inlined.\n");

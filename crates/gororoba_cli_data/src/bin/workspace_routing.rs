@@ -10,11 +10,9 @@ use std::{
 const CI_WORKSPACE_TRIGGERS: &[&str] = &[
     "Cargo.toml",
     "Cargo.lock",
-    ".cargo/config.toml",
     "rust-toolchain.toml",
     "Makefile",
     "agents.toml",
-    ".config/nextest.toml",
     "registry/test_taxonomy.toml",
     "registry/engineering_standards.toml",
 ];
@@ -22,10 +20,8 @@ const CI_WORKSPACE_TRIGGERS: &[&str] = &[
 const LOCAL_SHARED_RUST_TRIGGERS: &[&str] = &[
     "Cargo.toml",
     "Cargo.lock",
-    ".cargo/config.toml",
     "Makefile",
     "agents.toml",
-    ".config/nextest.toml",
     "registry/test_taxonomy.toml",
     "registry/engineering_standards.toml",
 ];

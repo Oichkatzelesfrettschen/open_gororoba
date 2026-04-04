@@ -2,7 +2,7 @@
 name = "lit_search"
 version = "0.1.0"
 edition = "2024"
-description = "Multi-source academic literature search with deduplication"
+description = "Repo-owned Rust literature search, deduplication, citation verification, and PDF retrieval"
 
 [dependencies]
 reqwest = { workspace = true, features = ["json"] }

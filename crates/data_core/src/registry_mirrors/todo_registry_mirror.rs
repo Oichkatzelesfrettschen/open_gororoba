@@ -674,7 +674,7 @@
 //! - Area: `qa`
 //! - Priority: `medium`
 //! - Status: `open`
-//! - Description: Execute the keep-going gate audit after the local, Python, and Rust gates are revalidated so the tranche closes with one current summary instead of a chain of stale partial reports. Include the post-fast-path gate state, including the ripgrep-backed terminology lane, the repo-local scoped Rust routing, the local heavy-lane skip, and the ambient Cargo target separation, so any remaining slow lane is measured from current conditions rather than the pre-optimization baseline.
+//! - Description: Execute the keep-going gate audit after the local, Python, and Rust gates are revalidated so the tranche closes with one current summary instead of a chain of stale partial reports. Include the post-fast-path gate state, including the ripgrep-backed terminology lane, the repo-scoped Rust routing, the local heavy-lane skip, and the ambient Cargo target separation, so any remaining slow lane is measured from current conditions rather than the pre-optimization baseline.
 //! - Dependencies: (none)
 //! - Acceptance criteria:
 //!   - todo_item status is constrained to declared enum values.

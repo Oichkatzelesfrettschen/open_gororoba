@@ -1,18 +1,21 @@
 //! Markdown document registry management.
 //!
-//! Enforces the TOML-first discipline for markdown files: every .md file in the
-//! repository must have a corresponding [[owner]] entry in registry/markdown_owner_map.toml
-//! BEFORE it is added to the repo. The owner map is the authoritative source of truth;
-//! files on disk are derived artifacts of the decisions recorded there.
+//! Enforces the markdown governance compatibility discipline for a SQLite-first
+//! repository: every .md file in the repository must have a corresponding
+//! [[owner]] entry in registry/markdown_owner_map.toml BEFORE it is added to the
+//! repo. The owner map remains authoritative for this lane until markdown
+//! governance is promoted into the SQLite control plane; files on disk are
+//! derived artifacts of the decisions recorded there.
 //!
-//! WHY TOML-first?
+//! WHY registry-first ownership?
 //! Markdown files accumulate silently. Without a registry, documents are added,
 //! become stale, and are never removed because no one knows who owns them.
-//! By requiring TOML registration first, ownership and removal policy are decided
-//! at creation time rather than during an emergency cleanup.
+//! By requiring registration first, ownership and removal policy are decided at
+//! creation time rather than during an emergency cleanup.
 //!
 //! Subcommands relevant to the governance gate:
-//!   verify-inventory-toml-first  -- TOML registry is complete and matches disk state
+//!   verify-inventory-toml-first  -- legacy command name; verifies the
+//!                                   compatibility registry matches disk state
 //!   verify-owner-map             -- owner map fields are structurally valid
 
 use anyhow::{Context, Result, bail};
@@ -27,7 +30,7 @@ use walkdir::WalkDir;
 #[derive(Parser, Debug)]
 #[command(
     name = "markdown-registry",
-    about = "Manage and verify the TOML-first markdown document registry"
+    about = "Manage and verify the markdown owner-map compatibility registry"
 )]
 struct Cli {
     #[command(subcommand)]
@@ -40,15 +43,17 @@ struct Cli {
 
 #[derive(Subcommand, Debug)]
 enum Command {
-    /// Verify that every .md file on disk has a TOML registry entry (TOML-first invariant)
+    /// Verify that every .md file on disk has a compatibility registry entry
+    /// (legacy `verify-inventory-toml-first` invariant)
     VerifyInventoryTomlFirst,
     /// Verify that all owner map entries have valid fields and all paths exist on disk
     VerifyOwnerMap,
     /// Run both gate checks (inventory + owner map) in a single process invocation.
     VerifyGateAll,
-    /// Build a TOML inventory of all .md files (used by non-gate Makefile targets)
+    /// Build a compatibility inventory of all .md files
+    /// (used by legacy non-gate Makefile targets)
     BuildTomlInventory,
-    /// Verify an existing TOML inventory matches the current disk state
+    /// Verify an existing compatibility inventory matches the current disk state
     VerifyTomlInventory,
     /// Verify the markdown corpus structural integrity
     VerifyCorpus,
@@ -131,11 +136,14 @@ fn main() -> Result<()> {
         // Implement them as stubs that succeed rather than fail, so full Makefile pipelines
         // that call them do not break the build.
         Command::BuildTomlInventory => {
-            println!("OK: build-toml-inventory (stub -- no-op in this implementation)");
+            println!(
+                "OK: build-toml-inventory (legacy name; compatibility inventory stub -- no-op in this implementation)"
+            );
             Ok(())
         }
         Command::VerifyTomlInventory => {
-            // Delegate to the same check as verify-inventory-toml-first for consistency
+            // Delegate to the same check as the legacy verify-inventory-toml-first
+            // command for consistency.
             verify_inventory_toml_first(&repo_root)
         }
         Command::VerifyCorpus => {
@@ -257,20 +265,22 @@ fn table_array<'a>(value: &'a toml::Value, key: &str) -> &'a [toml::Value] {
         .unwrap_or(&[])
 }
 
-/// `verify-inventory-toml-first`: every .md file on disk must be registered in the
-/// owner map, and every owner map path must correspond to a file that exists on disk.
+/// `verify-inventory-toml-first`: legacy command name for verifying that every
+/// `.md` file on disk is registered in the owner map, and every owner-map path
+/// corresponds to a file that exists on disk.
 ///
-/// WHY bidirectional? The TOML-first invariant has two failure modes:
+/// WHY bidirectional? The compatibility invariant has two failure modes:
 ///
 /// 1. A file exists on disk but was never registered (escape from governance).
-/// 2. A TOML entry points to a file that was deleted (stale registry).
+/// 2. A registry entry points to a file that was deleted (stale compatibility record).
 ///
 /// Both are violations of the invariant.
 fn verify_inventory_toml_first(repo_root: &Path) -> Result<()> {
     let owner_map = load_owner_map(repo_root)?;
     let rows = table_array(&owner_map, "owner");
 
-    // Build the set of paths declared in TOML (normalize to forward-slash).
+    // Build the set of paths declared in the owner map (normalize to
+    // forward-slash).
     let registered: BTreeSet<String> = rows
         .iter()
         .filter(|row| {
@@ -286,14 +296,15 @@ fn verify_inventory_toml_first(repo_root: &Path) -> Result<()> {
 
     let mut failures = Vec::new();
 
-    // Files on disk but not in TOML -- governance escape.
+    // Files on disk but not in the owner map -- governance escape.
     for path in &on_disk {
         if !registered.contains(path.as_str()) {
             failures.push(format!("UNREGISTERED: {path} exists on disk but has no entry in registry/markdown_owner_map.toml"));
         }
     }
 
-    // TOML entries whose paths do not exist on disk -- stale registry.
+    // Owner-map entries whose paths do not exist on disk -- stale compatibility
+    // record.
     for path in &registered {
         if !on_disk.contains(path.as_str()) {
             failures.push(format!(
@@ -306,7 +317,7 @@ fn verify_inventory_toml_first(repo_root: &Path) -> Result<()> {
         bail!("{}", failures.join("\n"));
     }
 
-    println!("PASS: markdown inventory toml-first");
+    println!("PASS: markdown inventory compatibility gate");
     println!(
         "  registered={} on_disk={}",
         registered.len(),

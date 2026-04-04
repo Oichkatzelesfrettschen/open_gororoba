@@ -1,0 +1,147 @@
+# Root directory audit snapshot after the first cleanup pass.
+
+[root_directory_audit]
+updated = "2026-04-03"
+status = "entrypoint_cleanup_advanced"
+status_token = "ENTRYPOINT_CLEANUP_ADVANCED"
+layout_references = [
+  "README.md",
+  "docs/book/src/architecture/layout.md",
+  "docs/book/src/architecture/canonical-sources.md",
+  "docs/engineering/user_local_bootstrap.txt",
+]
+
+[counts]
+top_level_entry_count = 53
+top_level_directory_count = 31
+top_level_file_count = 22
+canonical_root_file_count = 15
+tracked_root_test_fixture_count = 3
+local_only_directory_count = 7
+registry_linked_loose_root_file_count = 0
+safe_moved_file_count = 52
+safe_moved_directory_count = 1
+
+[classification]
+canonical_root_files = [
+  ".editorconfig",
+  ".gitattributes",
+  ".gitignore",
+  "Cargo.lock",
+  "Cargo.toml",
+  "LICENSE",
+  "Makefile",
+  "README.md",
+  "_typos.toml",
+  "agents.toml",
+  "deny.toml",
+  "dprint.json",
+  "results.json",
+  "rust-toolchain.toml",
+  "rustfmt.toml",
+]
+tracked_root_test_fixtures = [
+  "test_e8",
+  "test_hapi.csv",
+  "test_xor.rs",
+]
+local_only_heavy_directories = [
+  ".cache",
+  "build",
+  "logs",
+  "out",
+  "target",
+  "target_codex_hve",
+  "target_codex_hve2",
+]
+[[section]]
+name = "local_only_directory_sizes"
+[[section.item]]
+key = ".cache"
+value = "6.7G"
+[[section.item]]
+key = "build"
+value = "248K"
+[[section.item]]
+key = "logs"
+value = "1004K"
+[[section.item]]
+key = "out"
+value = "8.0K"
+[[section.item]]
+key = "target"
+value = "881M"
+[[section.item]]
+key = "target_codex_hve"
+value = "2.0G"
+[[section.item]]
+key = "target_codex_hve2"
+value = "1.3G"
+[[section]]
+name = "root_visible_files_remaining"
+[[section.item]]
+key = "visible_root_files"
+value = "Cargo.lock,Cargo.toml,LICENSE,Makefile,README.md,_typos.toml,agents.toml,deny.toml,dprint.json,results.json,rust-toolchain.toml,rustfmt.toml,test_e8,test_hapi.csv,test_xor.rs"
+
+[[section]]
+name = "promoted_markdown_files"
+[[section.item]]
+key = "docs/monograph/MERGED_MONOGRAPH.md"
+value = "migrated from the root and re-registered in registry/markdown_owner_map.toml"
+[[section.item]]
+key = "docs/reports/root_promoted/"
+value = "9 root-owned Markdown notes migrated under docs/"
+
+[[section]]
+name = "profiling_files_left_in_place"
+[[section.item]]
+key = "reports/profiling/root_legacy/perf.data"
+value = "moved out of the root into the profiling lane"
+[[section.item]]
+key = "reports/profiling/root_legacy/perf.data.old"
+value = "moved out of the root into the profiling lane"
+
+[[section]]
+name = "safe_moves_completed"
+[[section.item]]
+key = "archive_bundle"
+value = "archive/root_cleanup_2026-04-03"
+[[section.item]]
+key = "screenshots"
+value = "34 orphaned root PNG files moved"
+[[section.item]]
+key = "logs"
+value = "1 orphaned root log moved"
+[[section.item]]
+key = "scripts"
+value = "1 orphaned root shell script moved"
+[[section.item]]
+key = "tests"
+value = "1 orphaned root test shell script moved"
+[[section.item]]
+key = "text"
+value = "1 orphaned root text file moved"
+[[section.item]]
+key = "accidental_dirs"
+value = "1 accidental root directory moved"
+[[section.item]]
+key = "promoted_markdown"
+value = "10 root markdown files moved into docs/"
+[[section.item]]
+key = "artifact_duplicate"
+value = "root warp_ring_integration.png moved to archive after explicit data/artifacts path promotion"
+[[section.item]]
+key = "hidden_marker"
+value = "empty root .codex marker moved into the cleanup bundle"
+[[section.item]]
+key = "profiling_payloads"
+value = "root perf.data and perf.data.old moved into reports/profiling/root_legacy/"
+
+[[section]]
+name = "next_tracked_migration_batch"
+[[section.item]]
+key = "user_local_config_rule"
+value = "resolved: .cargo, .config, .gemini, and .gororoba_lit_cache are user-local only and no longer belong to the repository root"
+[[section.item]]
+key = "bootstrap_helper"
+value = "make bootstrap-user-local-xdg / scripts/bootstrap_user_local_xdg.sh install the supported user-local developer config bundle and honor XDG_CONFIG_HOME/XDG_CACHE_HOME when set"

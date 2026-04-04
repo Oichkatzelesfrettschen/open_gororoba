@@ -31,7 +31,7 @@
 //!
 //! | Client  | File(s) | Notes |
 //! | Codex   | `~/.codex/config.toml`, `~/.codex/mcp-config.json` | Primary + secondary to keep Codex parity with the other clients. |
-//! | Claude  | `~/.claude/.mcp.json` | Claude CLI/Desktop both read this; the `reports/claude_dotfiles_gap_audit_2026_02_14.toml` audit flagged drift between the home tree and repo-local copies. |
+//! | Claude  | `~/.claude/.mcp.json` | Claude CLI/Desktop both read this; the `reports/claude_dotfiles_gap_audit_2026_02_14.toml` audit flagged drift between the home tree and repo-root mirrors. |
 //! | Gemini  | `~/.gemini/settings.json` | The leaner Gemini runtime mirrors the same set of MCP names after the MCP skills audit. |
 //!
 //! Treat these files as home-level references only; updates should happen via the matrix or the audit process, not by random manual edits. (The audit also copies servers to `~/.codex/mcp-config.json` when cross-client sync is required.)
@@ -43,5 +43,5 @@
 //! ## Related context
 //! - `registry/agents_contract.toml` reminds us to treat MCP as a model-agnostic control plane and prefer MCP Git/GitHub over shell fallbacks.
 //! - The MCP skills audit captured in `registry/knowledge/docs/DOC-0122.toml` (source markdown: `docs/engineering/MCP_SKILLS_AUDIT_2026-02-09.md`) explains how the MCP configs were harmonized across Codex, Gemini, Copilot, and Claude.
-//! - `reports/claude_dotfiles_gap_audit_2026_02_14.toml` suggested adding a repo-local notes file; this page satisfies that suggestion in a lightweight way that points back to the canonical data.
+//! - `reports/claude_dotfiles_gap_audit_2026_02_14.toml` suggested adding a registry-backed notes page; this page satisfies that suggestion in a lightweight way that points back to the canonical data.
 //!

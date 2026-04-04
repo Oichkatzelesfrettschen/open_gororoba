@@ -672,12 +672,13 @@ fn fetch_donki_json(
     end_date: NaiveDate,
     cache_root: &Path,
 ) -> Result<String, FetchError> {
-    let api_key = env::var("NASA_API_KEY").unwrap_or_else(|_| "DEMO_KEY".to_string());
-    let nasa_url = format!(
-        "{DONKI_API_ROOT}/{endpoint}?startDate={}&endDate={}&api_key={api_key}",
-        start_date.format("%Y-%m-%d"),
-        end_date.format("%Y-%m-%d")
-    );
+    let nasa_url = env::var("NASA_API_KEY").ok().map(|api_key| {
+        format!(
+            "{DONKI_API_ROOT}/{endpoint}?startDate={}&endDate={}&api_key={api_key}",
+            start_date.format("%Y-%m-%d"),
+            end_date.format("%Y-%m-%d")
+        )
+    });
     let ccmc_url = format!(
         "{DONKI_CCMC_ROOT}/{endpoint}?startDate={}&endDate={}",
         start_date.format("%Y-%m-%d"),
@@ -699,13 +700,15 @@ fn fetch_donki_json(
         .timeout(StdDuration::from_secs(60))
         .build()
         .map_err(|source| FetchError::HttpError {
-            url: nasa_url.clone(),
+            url: nasa_url.clone().unwrap_or_else(|| ccmc_url.clone()),
             source: Box::new(source),
         })?;
-    if let Ok(body) = fetch_donki_json_from_url(&client, &nasa_url) {
-        validate_not_html(body.as_bytes())?;
-        fs::write(&cache_path, &body)?;
-        return Ok(body);
+    if let Some(nasa_url) = nasa_url {
+        if let Ok(body) = fetch_donki_json_from_url(&client, &nasa_url) {
+            validate_not_html(body.as_bytes())?;
+            fs::write(&cache_path, &body)?;
+            return Ok(body);
+        }
     }
     let body = fetch_donki_json_from_url(&client, &ccmc_url)?;
     validate_not_html(body.as_bytes())?;

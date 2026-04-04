@@ -12,7 +12,7 @@ Current layout
 - Heavy intermediate build state lives under `/srv/fast/tmp/open_gororoba-cargo-build/`.
 - Docs still stage final rustdoc output through `target/docs-target/`, which is
   already gitignored and not the main source of ballooning.
-- Gate/docs targets use repo-local `CARGO_HOME=.cache/cargo-home`.
+- Gate/docs targets use repo-scoped `CARGO_HOME=.cache/cargo-home`.
 - Ambient interactive shells may still use `~/.cargo` unless explicitly
   overridden for a hermetic run.
 
@@ -27,6 +27,7 @@ Practical commands
 - `make cargo-cache-status`
 - `make cargo-cache-prune`
 - `make cargo-cache-smoke`
+- `scripts/bootstrap_user_local_xdg.sh`
 
 Budget warnings
 ---------------
@@ -43,9 +44,11 @@ Override them ad hoc if needed:
 
 Decision guidance
 -----------------
-- Keep repo-local `CARGO_HOME` for gates/docs/CI where reproducibility matters.
+- Keep repo-scoped `CARGO_HOME` for gates/docs/CI where reproducibility matters.
 - Keep `~/.cargo` as the default interactive home unless disk duplication is no
   longer acceptable or a workflow specifically needs hermetic dependency state.
+- Use `scripts/bootstrap_user_local_xdg.sh` if you want the open_gororoba
+  ambient Cargo defaults recreated in `~/.cargo/config.toml`.
 - Do not move docs staging off `target/` until it is actually the bottleneck.
   The urgent problem was the intermediate build churn, which already moved to
   `/srv/fast/tmp`.

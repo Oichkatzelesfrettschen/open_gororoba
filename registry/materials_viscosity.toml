@@ -1,5 +1,5 @@
 # Materials Viscosity Database
-# TOML-first registry for kinematic and dynamic viscosity
+# TOML registry for kinematic and dynamic viscosity (pending SQLite promotion)
 # All data from NIST, peer-reviewed literature, or authoritative handbooks
 # Units: kinematic nu [m^2/s], dynamic eta [Pa*s], density rho [kg/m^3]
 # Relation: nu = eta / rho

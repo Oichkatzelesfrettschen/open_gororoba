@@ -188,7 +188,7 @@
 //! To reconcile those three raw captures at line level without manual JSON
 //! inspection, the repo now also supports `make jacobi-backend-samply-compare`.
 //! That Rust-native comparer joins the three presymbolicated captures with their
-//! sidecars, prefers repo-local inline frames over generic `core` iterator
+//! sidecars, prefers repo-scoped inline frames over generic `core` iterator
 //! frames, and emits one backend-core/shared/dependency/runtime report. That step
 //! fixes the earlier DD misattribution where the first inline frame obscured the
 //! fact that the actual solver work was in `dd_jacobi.rs`.

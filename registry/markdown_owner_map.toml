@@ -69,7 +69,7 @@ removal_status = "active"
 removal_reason = ""
 
 [[owner]]
-path = "MERGED_MONOGRAPH.md"
+path = "docs/monograph/MERGED_MONOGRAPH.md"
 owner_group = "project"
 removal_status = "active"
 removal_reason = ""
@@ -549,25 +549,25 @@ removal_status = "active"
 removal_reason = ""
 
 [[owner]]
-path = "jacobson_googlebooks_accessible_berkeley.md"
+path = "docs/reports/root_promoted/jacobson_googlebooks_accessible_berkeley.md"
 owner_group = "project"
 removal_status = "active"
 removal_reason = ""
 
 [[owner]]
-path = "jacobson_googlebooks_accessible_virginia.md"
+path = "docs/reports/root_promoted/jacobson_googlebooks_accessible_virginia.md"
 owner_group = "project"
 removal_status = "active"
 removal_reason = ""
 
 [[owner]]
-path = "jacobson_googlebooks_classic_search_results.md"
+path = "docs/reports/root_promoted/jacobson_googlebooks_classic_search_results.md"
 owner_group = "project"
 removal_status = "active"
 removal_reason = ""
 
 [[owner]]
-path = "jacobson_googlebooks_search_results.md"
+path = "docs/reports/root_promoted/jacobson_googlebooks_search_results.md"
 owner_group = "project"
 removal_status = "active"
 removal_reason = ""
@@ -579,25 +579,25 @@ removal_status = "active"
 removal_reason = ""
 
 [[owner]]
-path = "researchgate_huang_security_check.md"
+path = "docs/reports/root_promoted/researchgate_huang_security_check.md"
 owner_group = "project"
 removal_status = "active"
 removal_reason = ""
 
 [[owner]]
-path = "ucsd_jacobson_chapter_detail.md"
+path = "docs/reports/root_promoted/ucsd_jacobson_chapter_detail.md"
 owner_group = "project"
 removal_status = "active"
 removal_reason = ""
 
 [[owner]]
-path = "bielefeld_jacobson_prefilled_form.md"
+path = "docs/reports/root_promoted/bielefeld_jacobson_prefilled_form.md"
 owner_group = "project"
 removal_status = "active"
 removal_reason = ""
 
 [[owner]]
-path = "leipzig_freudenthal_request_login.md"
+path = "docs/reports/root_promoted/leipzig_freudenthal_request_login.md"
 owner_group = "project"
 removal_status = "active"
 removal_reason = ""
@@ -765,7 +765,7 @@ removal_status = "active"
 removal_reason = ""
 
 [[owner]]
-path = "docs/reports/lit_search_autoresearchclaw_parity_2026_03_26.md"
+path = "docs/reports/lit_search_legacy_baseline_audit_2026_03_26.md"
 owner_group = "project"
 removal_status = "active"
 removal_reason = ""
@@ -1071,7 +1071,7 @@ removal_status = "active"
 removal_reason = ""
 
 [[owner]]
-path = "cdaweb-voyager-datasets.md"
+path = "docs/reports/root_promoted/cdaweb-voyager-datasets.md"
 owner_group = "project"
 removal_status = "active"
 removal_reason = ""

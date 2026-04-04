@@ -1,6 +1,6 @@
 //! Novelty / overlap scoring for topic and hypothesis text.
 //!
-//! Ported in spirit from AutoResearchClaw's `novelty.py`.
+//! Rust-native novelty scoring derived from the repository's legacy literature baseline.
 
 use crate::{Paper, SearchEngine};
 use regex::Regex;

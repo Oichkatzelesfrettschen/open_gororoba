@@ -1,0 +1,95 @@
+open_gororoba runtime environment inventory
+===========================================
+
+Purpose
+-------
+This file is the repo-level inventory of environment variables that affect
+runtime behavior. It separates secret-bearing variables from ordinary tuning
+or CI variables so future cleanup does not confuse "config" with "credential."
+
+Credential-bearing variables
+----------------------------
+These must stay user-local or secret-manager managed. Do not commit them into
+the repository, shell scripts under version control, or checked-in env files.
+
+- `NASA_API_KEY`
+  Optional key for NASA DONKI requests in heliosphere ingestion. If unset, the
+  runtime falls back to public CCMC endpoints rather than a bundled demo key.
+- `SEMANTIC_SCHOLAR_API_KEY`
+- `S2_API_KEY`
+  Alias for Semantic Scholar.
+- `CORE_API_KEY`
+- `CINII_APPID`
+- `UNPAYWALL_EMAIL`
+- `ADS_API_KEY`
+- `NASA_ADS_TOKEN`
+  Alias for NASA ADS.
+- `LENS_API_KEY`
+
+Install pattern:
+
+```bash
+export NASA_API_KEY="replace-with-issued-nasa-api-key"
+export SEMANTIC_SCHOLAR_API_KEY="replace-with-issued-semantic-scholar-key"
+```
+
+For the complete `lit_search` key list and placeholders, see
+`docs/engineering/lit_search_env_vars.txt`. For the user-local bootstrap path
+that installs the supported non-secret config surfaces, see
+`docs/engineering/user_local_bootstrap.txt`.
+
+Non-secret runtime variables
+----------------------------
+These variables tune execution, cache placement, profiling, or CI behavior.
+They are not secrets, but they are still user-local and should not be baked
+into versioned workspace dotfiles.
+
+- `XDG_CACHE_HOME`
+- `HOME`
+- `XDG_CONFIG_HOME`
+- `LIT_SEARCH_JSON`
+- `GOROROBA_TENSOR_AVT_PTX_CACHE_DIR`
+- `GOROROBA_CUDA_ARCH`
+- `GOROROBA_LBM_BLOCK_DIM`
+- `GOROROBA_SPARSE_KERNEL`
+- `GOROROBA_SPARSE_TILE_BRICKS`
+- `GOROROBA_SPARSE_TILE_BYTES`
+- `GOROROBA_SPARSE_MEMORY_MODE`
+- `VK_PROFILE`
+- `GOROROBA_WARP_GATE_POLICY_PATH`
+- `GOROROBA_WARP_FORCING_POLICY_PATH`
+- `GOROROBA_WARP_FORCING_PROFILE`
+- `GOROROBA_FASTPATH_BASELINE_BLOCK_DIM`
+- `GOROROBA_STUDIO_PIPELINE_CATALOG`
+- `C590_FAST_MODE`
+- `C590_RUNTIME_BASELINE_DIMS`
+- `C590_SWEEP_DIMS`
+- `C590_TIMEOUT_S`
+- `C590_INCLUDE_DIM512`
+- `C590_INCLUDE_DIM1024`
+- `CD_ATTRACTOR_INCLUDE_512`
+- `CD_ATTRACTOR_SKIP_HEAVY`
+- `TENSOR_AVT_BENCH_LARGE`
+- `GITHUB_ACTIONS`
+- `GITHUB_BASE_REF`
+- `GITHUB_EVENT_BEFORE`
+- `GITHUB_OUTPUT`
+- `HOSTNAME`
+- `OUT_DIR`
+- `CARGO_MANIFEST_DIR`
+- `CARGO_FEATURE_AOT_CUBIN`
+
+Policy summary
+--------------
+- Secret-bearing variables belong in user-local shell rc files, session
+  managers, or secret managers.
+- Non-secret tuning variables may be set locally for development, CI, or
+  benchmarking, but should remain out of versioned workspace dot-config.
+- Cargo-provided build variables such as `OUT_DIR` and `CARGO_MANIFEST_DIR`
+  are still part of the effective runtime surface when build scripts depend on
+  them, but they are supplied by Cargo rather than installed by the user.
+- If a new runtime variable is added, extend this inventory and classify it as
+  either credential-bearing or non-secret.
+- If a helper script installs local config, have it point back to this file and
+  `docs/engineering/lit_search_env_vars.txt` rather than duplicating secret
+  handling guidance inline.

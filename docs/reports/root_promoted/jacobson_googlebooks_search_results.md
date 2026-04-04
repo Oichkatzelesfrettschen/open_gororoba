@@ -1,0 +1,541 @@
+- generic [ref=e1]:
+  - generic [ref=e4]:
+    - button [expanded] [ref=e5] [cursor=pointer]:
+      - img [ref=e6]
+    - link [ref=e9] [cursor=pointer]:
+      - /url: https://books.google.com/?sa=X&ved=0ahUKEwjanLvItbyTAxXQMTQIHf8bE7kQPAgD
+      - img [ref=e11]
+      - generic [ref=e12]: Books
+    - generic [ref=e13]:
+      - search [ref=e15]:
+        - img [ref=e17]
+        - combobox [ref=e19]
+        - link [ref=e20] [cursor=pointer]:
+          - /url: https://books.google.com/advanced_book_search?hl=en
+          - text: Advanced search
+      - button [ref=e22]:
+        - img [ref=e24]
+    - generic [ref=e26]:
+      - button [ref=e28] [cursor=pointer]:
+        - img [ref=e29]
+      - link [ref=e33] [cursor=pointer]:
+        - /url: https://accounts.google.com/ServiceLogin?hl=en&passive=true&continue=https://www.google.com/books/edition/Nathan_Jacobson_Collected_Mathematical_P/Py7rBwAAQBAJ%3Fhl%3Den%26gbpv%3D1%26dq%3DNathan%2BJacobson%2BCollected%2BMathematical%2BPapers%2BVolume%2B2%2B1947-1965%26printsec%3Dfrontcover&ec=futura_srp_og_si_72236_p
+        - text: Sign in
+  - dialog [ref=e36]:
+    - button "Close preview dialog" [ref=e37] [cursor=pointer]:
+      - img [ref=e39]
+    - iframe [active] [ref=e41]:
+      - generic [active] [ref=f254e1]:
+        - iframe [ref=f254e2]:
+          
+        - alert "The limited preview of this book is available as an image only."
+        - generic [ref=f254e4]:
+          - generic [ref=f254e5]:
+            - generic [ref=f254e6]:
+              - img [ref=f254e7]
+              - textbox "Search in this book" [ref=f254e9]: Composition Algebras and Their Automorphisms
+              - generic [ref=f254e110]: 7 results
+              - button "Close search" [ref=f254e11] [cursor=pointer]:
+                - img [ref=f254e12]
+            - button "Order by relevance" [ref=f254e112] [cursor=pointer]:
+              - generic [ref=f254e113]: Order by relevance
+              - img [ref=f254e114]
+          - generic [ref=f254e21]:
+            - button "Front Cover" [disabled]:
+              - generic: Front Cover
+              - img
+            - generic [ref=f254e25]:
+              - button "Zoom in" [disabled]:
+                - img
+              - button "Zoom out" [disabled]:
+                - img
+            - generic [ref=f254e30]:
+              - button "Single page view" [disabled]:
+                - img
+              - button "Two page view unavailable" [disabled]:
+                - img
+              - button "Thumbnail view unavailable" [disabled]:
+                - img
+            - generic [ref=f254e33]:
+              - button "Link to this result" [ref=f254e34] [cursor=pointer]:
+                - img [ref=f254e35]
+              - button "Select a clip unavailable" [disabled]:
+                - img
+        - generic [ref=f254e36]:
+          - 'generic "Nathan Jacobson Collected Mathematical Papers: Volume 2 (1947-1965) By N. Jacobson" [ref=f254e37]':
+            - generic [ref=f254e38]: "Nathan Jacobson Collected Mathematical Papers: Volume 2 (1947-1965)"
+            - generic [ref=f254e39]: By N. Jacobson
+          - button "More actions menu" [ref=f254e40] [cursor=pointer]:
+            - img [ref=f254e41]
+        - generic [ref=f254e42]:
+          - button "Previous Page" [disabled]:
+            - img
+          - button "Next Page" [disabled]:
+            - img
+        - main [ref=f254e50]:
+          - generic [ref=f254e116]:
+            - 'link "Search result: Page 341 ... COMPOSITION ALGEBRAS AND THEIR AUTOMORPHISMS N. Jacobson ( Paris ) ( 1 ) The principal objective of the present paper is the study of the automorphisms and groups of automorphisms of composition algebras , that is , the algebras arising ... No preview available for this page." [disabled] [ref=f254e117]':
+              - 'generic "Search result: Page 341" [ref=f254e119]': Page 341
+              - generic [ref=f254e120]:
+                - generic [ref=f254e121]: ... COMPOSITION ALGEBRAS AND THEIR AUTOMORPHISMS N. Jacobson ( Paris ) ( 1 ) The principal objective of the present paper is the study of the automorphisms and groups of automorphisms of composition algebras , that is , the algebras arising ...
+                - generic [ref=f254e122]: No preview available for this page.
+            - 'link "Search result: Page 361 ... automorphisms of B to C in such a way that they leave I fixed , we may use Lemma 3 to suppose thatp2 = 1 in JS . Since 1o = 1 and l2 = 1 , p is a split reflection . Hence again H = G ... COMPOSITION ALGEBRAS AND THEIR AUTOMORPHISMS 21. No preview available for this page." [disabled] [ref=f254e123]':
+              - 'generic "Search result: Page 361" [ref=f254e125]': Page 361
+              - generic [ref=f254e126]:
+                - generic [ref=f254e127]: ... automorphisms of B to C in such a way that they leave I fixed , we may use Lemma 3 to suppose thatp2 = 1 in JS . Since 1o = 1 and l2 = 1 , p is a split reflection . Hence again H = G ... COMPOSITION ALGEBRAS AND THEIR AUTOMORPHISMS 21.
+                - generic [ref=f254e128]: No preview available for this page.
+            - 'link "Search result: Page 347 ... algebras breaks off with IV . Note that the dimensionalities of the algebras in I , II , III , IV are respectively 1 , 2 , 4 and 8. We shall now prove that the only composition ... COMPOSITION ALGEBRAS AND THEIR AUTOMORPHISMS 7. No preview available for this page." [disabled] [ref=f254e129]':
+              - 'generic "Search result: Page 347" [ref=f254e131]': Page 347
+              - generic [ref=f254e132]:
+                - generic [ref=f254e133]: ... algebras breaks off with IV . Note that the dimensionalities of the algebras in I , II , III , IV are respectively 1 , 2 , 4 and 8. We shall now prove that the only composition ... COMPOSITION ALGEBRAS AND THEIR AUTOMORPHISMS 7.
+                - generic [ref=f254e134]: No preview available for this page.
+            - 'link "Search result: Page xiv ... automorphisms and derivations of Lie algebras 251 [ 54 ] Commutative restricted Lie algebras 254 [ 55 ] A note on two dimensional division ring ... algebras for algebras with involution of TABLE OF CONTENTS xvii Table of Contents. No preview available for this page." [disabled] [ref=f254e135]':
+              - 'generic "Search result: Page xiv" [ref=f254e137]': Page xiv
+              - generic [ref=f254e138]:
+                - generic [ref=f254e139]: ... automorphisms and derivations of Lie algebras 251 [ 54 ] Commutative restricted Lie algebras 254 [ 55 ] A note on two dimensional division ring ... algebras for algebras with involution of TABLE OF CONTENTS xvii Table of Contents.
+                - generic [ref=f254e140]: No preview available for this page.
+            - 'link "Search result: Page vii ... automorphisms and derivations of Lie algebras \" , Proc . Amer . Math . Soc . 6 ( 1955 ) 281-283 . ( 2 ) [ 54 ] \" Commutative restricted Lie ... Structure groups and Lie algebras of BIBLIOGRAPHY OF NATHAN JACOBSON''S BOOKS AND PAPERS vii. No preview available for this page." [disabled] [ref=f254e141]':
+              - 'generic "Search result: Page vii" [ref=f254e143]': Page vii
+              - generic [ref=f254e144]:
+                - generic [ref=f254e145]: ... automorphisms and derivations of Lie algebras " , Proc . Amer . Math . Soc . 6 ( 1955 ) 281-283 . ( 2 ) [ 54 ] " Commutative restricted Lie ... Structure groups and Lie algebras of BIBLIOGRAPHY OF NATHAN JACOBSON'S BOOKS AND PAPERS vii.
+                - generic [ref=f254e146]: No preview available for this page.
+            - 'link "Search result: Page 351 ... algebras can be classified by a result of Zorn''s . The number of non - isomorphic ones is 2t where t is the number of real conjugates of the base field P ( 1 ) . For example , there ... COMPOSITION ALGEBRAS AND THEIR AUTOMORPHISMS 11. No preview available for this page." [disabled] [ref=f254e147]':
+              - 'generic "Search result: Page 351" [ref=f254e149]': Page 351
+              - generic [ref=f254e150]:
+                - generic [ref=f254e151]: ... algebras can be classified by a result of Zorn's . The number of non - isomorphic ones is 2t where t is the number of real conjugates of the base field P ( 1 ) . For example , there ... COMPOSITION ALGEBRAS AND THEIR AUTOMORPHISMS 11.
+                - generic [ref=f254e152]: No preview available for this page.
+        - generic [ref=f254e100]: Selection copied to clipboard
+        - generic [ref=f254e102]: Selection copied to clipboard
+  - generic [ref=e42]:
+    - navigation [ref=e43]:
+      - generic [ref=e45]:
+        - generic [ref=e46]: Classic Google Books will be turned off
+        - generic [ref=e47]: Import your existing bookshelves before they're no longer available.
+        - generic [ref=e48]:
+          - button [ref=e50] [cursor=pointer]:
+            - generic [ref=e51]: Import shelves
+          - button [ref=e54] [cursor=pointer]:
+            - generic [ref=e55]: Dismiss
+      - heading [ref=e56]: Your Library
+      - generic [ref=e62]:
+        - link [ref=e64] [cursor=pointer]:
+          - /url: https://accounts.google.com/ServiceLogin?service=print&hl=en&continue=https://google.com/books/library?hl%3Den
+          - img [ref=e66]
+          - generic [ref=e70]: All books
+        - link [ref=e72] [cursor=pointer]:
+          - /url: https://accounts.google.com/ServiceLogin?service=print&hl=en&continue=https://google.com/books/library/readinglist?hl%3Den
+          - img [ref=e74]
+          - generic [ref=e77]: Reading list
+        - link [ref=e79] [cursor=pointer]:
+          - /url: https://accounts.google.com/ServiceLogin?service=print&hl=en&continue=https://google.com/books/library/booksyouveread?hl%3Den
+          - img [ref=e81]
+          - generic [ref=e84]: Books you've read
+      - heading [ref=e85]: Classic Google Books
+      - link [ref=e86] [cursor=pointer]:
+        - /url: https://books.google.com/books?id=Py7rBwAAQBAJ&newbks=0&printsec=frontcover&dq=Nathan+Jacobson+Collected+Mathematical+Papers+Volume+2+1947-1965&hl=en
+        - img [ref=e88]
+        - generic [ref=e90]:
+          - generic [ref=e91]: Back to classic Google Books
+          - text: Classic Google Books will be turned off
+    - generic [ref=e92]:
+      - generic [ref=e93]:
+        - generic [ref=e95]:
+          - generic [ref=e97]:
+            - generic [ref=e98]:
+              - heading [level=1] [ref=e99]: Nathan Jacobson Collected Mathematical Papers
+              - generic [ref=e100]: Volume 2 (1947-1965)
+            - generic [ref=e101]:
+              - text: By
+              - link [ref=e102] [cursor=pointer]:
+                - /url: /search?sca_esv=5c0b035e3551f679&hl=en&q=inauthor:%22N.+Jacobson%22&udm=36
+                - text: N. Jacobson
+              - text: * 2013
+          - generic [ref=e103]:
+            - button [ref=e106] [cursor=pointer]:
+              - generic [ref=e107]: Preview 59 pages
+            - button [ref=e111] [cursor=pointer]
+            - button [ref=e115] [cursor=pointer]
+        - generic [ref=e117]:
+          - button [ref=e121] [cursor=pointer]:
+            - generic [ref=e123]:
+              - img [ref=e125]
+              - generic [ref=e127]: Preview
+          - button [ref=e132] [cursor=pointer]:
+            - generic [ref=e134]:
+              - img [ref=e136]
+              - generic [ref=e138]: Search inside
+          - link [ref=e142] [cursor=pointer]:
+            - /url: https://accounts.google.com/ServiceLogin?service=print&hl=en&continue=https://google.com/books/edition/Nathan_Jacobson_Collected_Mathematical_P/Py7rBwAAQBAJ?hl%3Den%26gbpv%3D1%26dq%3DNathan%2BJacobson%2BCollected%2BMathematical%2BPapers%2BVolume%2B2%2B1947-1965
+            - generic [ref=e144]:
+              - img [ref=e146]
+              - generic [ref=e148]: Save
+      - generic [ref=e149]:
+        - tablist [ref=e152]:
+          - generic [ref=e154]:
+            - tab [selected] [ref=e158] [cursor=pointer]:
+              - generic [ref=e160]: Overview
+            - tab [ref=e161] [cursor=pointer]:
+              - generic [ref=e162]: Get the book
+            - tab [ref=e163] [cursor=pointer]:
+              - generic [ref=e164]: Other editions
+            - tab [ref=e165] [cursor=pointer]:
+              - generic [ref=e166]: Publisher collection
+            - tab [ref=e167] [cursor=pointer]:
+              - generic [ref=e168]: More by author
+        - generic [ref=e171]:
+          - listitem [ref=e172]:
+            - generic [ref=e176]:
+              - generic [ref=e177]:
+                - heading [level=2] [ref=e179]: About this edition
+                - generic [ref=e180]:
+                  - generic [ref=e182]:
+                    - generic [ref=e183]: "ISBN:"
+                    - generic [ref=e184]: 9781461236948, 1461236940
+                  - generic [ref=e186]:
+                    - generic [ref=e187]: "Page count:"
+                    - generic [ref=e188]: "556"
+                  - generic [ref=e190]:
+                    - generic [ref=e191]: "Published:"
+                    - generic [ref=e192]: June 29, 2013
+                  - generic [ref=e194]:
+                    - generic [ref=e195]: "Format:"
+                    - generic [ref=e196]: ebook
+                  - generic [ref=e198]:
+                    - generic [ref=e199]: "Publisher:"
+                    - link [ref=e202] [cursor=pointer]:
+                      - /url: https://www.google.com/search?hl=en&gbpv=1&dq=Nathan+Jacobson+Collected+Mathematical+Papers+Volume+2+1947-1965&printsec=frontcover&q=inpublisher:%22Birkh%C3%A4user+Boston%22&tbm=bks&sa=X&ved=2ahUKEwjanLvItbyTAxXQMTQIHf8bE7kQmxN6BAgSEAI
+                      - text: Birkhauser Boston
+                  - generic [ref=e204]:
+                    - generic [ref=e205]: "Language:"
+                    - link [ref=e208] [cursor=pointer]:
+                      - /url: /search?sca_esv=5c0b035e3551f679&hl=en&q=&si=AL3DRZGDMkmBg1SB5TH8o8Xeh03tgmwpgZCgiYi5BFB_ELNOTCLzRPsUgnJA-A64wBlW-LwcNN5fR5-6oCVwI-HEf1dXBN-VdBW3wuDyzpbbaa94ssAYEDFpMj3rMv6rtPrdzoEL9YNnY1_VVBKs6ksykXsBpv1zrCeXMdJzNORRG_CYtsWAaQuQwCUXE_UWNTEmgSGrHcUn&sa=X&ved=2ahUKEwjanLvItbyTAxXQMTQIHf8bE7kQmxN6BAgYEAI
+                      - text: English
+                  - generic [ref=e210]:
+                    - generic [ref=e211]: "Author:"
+                    - link [ref=e214] [cursor=pointer]:
+                      - /url: https://www.google.com/search?hl=en&gbpv=1&dq=Nathan+Jacobson+Collected+Mathematical+Papers+Volume+2+1947-1965&printsec=frontcover&q=inauthor:%22N.+Jacobson%22&tbm=bks&sa=X&ved=2ahUKEwjanLvItbyTAxXQMTQIHf8bE7kQmxN6BAgUEAI
+                      - text: N. Jacobson
+                  - generic [ref=e215]:
+                    - button [ref=e219]:
+                      - generic [ref=e221]:
+                        - img [ref=e223]
+                        - generic [ref=e225]: Create Citation
+                    - button [ref=e229] [cursor=pointer]:
+                      - generic [ref=e231]:
+                        - img [ref=e233]
+                        - generic [ref=e235]: Table of contents
+                  - generic [ref=e239]:
+                    - generic [ref=e241]:
+                      - generic [ref=e245]:
+                        - generic [ref=e246]: This collection contains all my published papers, both research and expository, that were published from 1934 to 1988. The research papers arranged in chronological order appear in Volume I and II and in the first part of Volume III. The expository papers, which are mainly reports presented at conferences, appear in chronological order in the last part of Volume III. Volume I covers the period 1910 to 1947, the year I moved to Yale, Volume II covers the period 1947 to 1965 when I became Chairman of the Department at Yale and Volume III covers the period from 1965 to 1989, which goes beyond my assumption of an emeritus status in 1981. I have divided the time interval covered in each volume into subintervals preceded by an account of my personal history during this period, and a commentar...
+                        - generic [ref=e247]: "Source: Publisher"
+                      - generic [ref=e248]:
+                        - generic [ref=e249]: This collection contains all my published papers, both research and expository, that were published from 1934 to 1988. The research papers arranged in chronological order appear in Volume I and II and in the first part of Volume III. The expository papers, which are mainly reports presented at conferences, appear in chronological order in the last part of Volume III. Volume I covers the period 1910 to 1947, the year I moved to Yale, Volume II covers the period 1947 to 1965 when I became Chairman of the Department at Yale and Volume III covers the period from 1965 to 1989, which goes beyond my assumption of an emeritus status in 1981. I have divided the time interval covered in each volume into subintervals preceded by an account of my personal history during this period, and a commentary on the research papers published in the period. I have omitted commentaries on the expository papers and have sorted out the commentaries on the research papers according to the principal fields of my research. The personal history has been based on my recollections, checked against written documentation in my file of letters as well as diaries. One of these was a diary I kept of my trip to the USSR in 1961; the others were diaries Florie (Florence) kept during other major visits abroad. I have also consulted Professor A. W. Tucker on historical details on Princeton during the 1930's.
+                        - generic [ref=e250]: "Source: Publisher"
+                    - button [ref=e251] [cursor=pointer]:
+                      - generic [ref=e252]:
+                        - generic [ref=e254]: More about this edition
+                        - img [ref=e256]
+                - heading [level=2] [ref=e259]: Get book
+                - generic [ref=e260]:
+                  - generic [ref=e263]:
+                    - heading [level=3] [ref=e264]: Buy Digital
+                    - radiogroup [ref=e265]:
+                      - radio [checked] [ref=e266]:
+                        - generic [ref=e267]: This edition
+                      - radio [ref=e268]:
+                        - generic [ref=e269]: Any edition
+                    - link [ref=e276] [cursor=pointer]:
+                      - /url: https://play.google.com/store/books/details?pcampaignid=books_read_action&id=Py7rBwAAQBAJ
+                      - generic [ref=e277]:
+                        - generic [ref=e280]:
+                          - generic [ref=e281]: Google Play Books
+                          - generic [ref=e282]:
+                            - generic [ref=e284]: $16.75
+                            - text: * ebook
+                        - generic [ref=e288]:
+                          - img [ref=e290]
+                          - generic [ref=e292]: Get book
+                  - generic [ref=e294]:
+                    - heading [level=3] [ref=e295]: Borrow
+                    - generic [ref=e296]:
+                      - button [ref=e297] [cursor=pointer]:
+                        - generic [ref=e298]: Edit location
+                      - generic [ref=e299]:
+                        - generic [ref=e301]: Available near you
+                        - generic [ref=e304]:
+                          - generic [ref=e305]:
+                            - generic [ref=e306]:
+                              - generic [ref=e307]: UC Southern Systemwide Facility
+                              - generic [ref=e309]: hardcover
+                              - generic [ref=e310]: William Andrews Clark Memorial Library, Hugh & Hazel Darling Law Library, Music Library, Chicano Studies Research Center Library, College Library
+                            - button [ref=e311]:
+                              - generic [ref=e314]:
+                                - img [ref=e316]
+                                - generic [ref=e319]: Pin library
+                            - link [ref=e320] [cursor=pointer]:
+                              - /url: https://discovery.redirect.oclc.org/bibs/e78e8e2d27bc0cdd1ab68df2a6d98531/library207/19815432?url=https%3A%2F%2Fsearch.library.ucla.edu%2Fdiscovery%2Fsearch%3F%26tab%3DLibraryCatalog%26search_scope%3DMyInstitution%26vid%3D01UCS_LAL%3AUCLA%26query%3Dany%2Ccontains%2C19815432
+                              - generic [ref=e322]:
+                                - img [ref=e324]
+                                - generic [ref=e326]: Borrow
+                          - generic [ref=e327]:
+                            - generic [ref=e328]:
+                              - generic [ref=e329]: Life Pacific University Library
+                              - generic [ref=e331]: ebook
+                              - generic [ref=e332]: Life Pacific University Library
+                            - button [ref=e333]:
+                              - generic [ref=e336]:
+                                - img [ref=e338]
+                                - generic [ref=e341]: Pin library
+                            - link [ref=e342] [cursor=pointer]:
+                              - /url: https://discovery.redirect.oclc.org/bibs/739e8c48cd9c1087b1a6e2019fad106e/library297/1255238809?url=https%3A%2F%2Flifepacific.on.worldcat.org%2Fsearch%3FqueryString%3Dno%3A1255238809
+                              - generic [ref=e344]:
+                                - img [ref=e346]
+                                - generic [ref=e348]: Borrow
+                          - generic [ref=e349]:
+                            - generic [ref=e350]:
+                              - generic [ref=e351]: Claremont Colleges Library
+                              - generic [ref=e352]:
+                                - generic [ref=e353]: ebook
+                                - generic [ref=e354]: ", paperback"
+                              - generic [ref=e355]: Claremont University Consortium
+                            - button [ref=e356]:
+                              - generic [ref=e359]:
+                                - img [ref=e361]
+                                - generic [ref=e364]: Pin library
+                            - button [ref=e367] [cursor=pointer]:
+                              - generic [ref=e370]:
+                                - img [ref=e372]
+                                - generic [ref=e374]: Borrow
+                                - img [ref=e376]
+                          - button [ref=e378] [cursor=pointer]:
+                            - generic [ref=e379]: More options
+                - heading [level=2] [ref=e381]: Other editions
+                - generic [ref=e384]:
+                  - generic [ref=e385]:
+                    - link [ref=e387] [cursor=pointer]:
+                      - /url: /books/edition/_/Nc4_MFulAfQC?hl=en&sa=X&ved=2ahUKEwjanLvItbyTAxXQMTQIHf8bE7kQ7_IDegQICxAC
+                      - img [ref=e390]
+                    - link [ref=e392] [cursor=pointer]:
+                      - /url: /books/edition/_/xDUUswEACAAJ?hl=en&sa=X&ved=2ahUKEwjanLvItbyTAxXQMTQIHf8bE7kQ7_IDegQICxAE
+                      - img [ref=e395]
+                    - link [ref=e397] [cursor=pointer]:
+                      - /url: /books/edition/_/VSMMnwEACAAJ?hl=en&sa=X&ved=2ahUKEwjanLvItbyTAxXQMTQIHf8bE7kQ7_IDegQICxAG
+                      - img [ref=e400]
+                    - link [ref=e402] [cursor=pointer]:
+                      - /url: /books/edition/_/e32R0QEACAAJ?hl=en&sa=X&ved=2ahUKEwjanLvItbyTAxXQMTQIHf8bE7kQ7_IDegQICxAI
+                      - generic [ref=e404]: No image available
+                  - generic [ref=e405]:
+                    - generic [ref=e406]:
+                      - link [ref=e408] [cursor=pointer]:
+                        - /url: /books/edition/_/Nc4_MFulAfQC?hl=en&sa=X&ved=2ahUKEwjanLvItbyTAxXQMTQIHf8bE7kQre8FegQICxAJ
+                        - generic [ref=e409]: "Nathan Jacobson Collected Mathematical Papers: Volume 2 (1947-1965)"
+                      - link [ref=e411] [cursor=pointer]:
+                        - /url: /books/edition/_/xDUUswEACAAJ?hl=en&sa=X&ved=2ahUKEwjanLvItbyTAxXQMTQIHf8bE7kQre8FegQICxAK
+                        - generic [ref=e412]: Nathan Jacobson Collected Mathematical Papers
+                      - link [ref=e414] [cursor=pointer]:
+                        - /url: /books/edition/_/VSMMnwEACAAJ?hl=en&sa=X&ved=2ahUKEwjanLvItbyTAxXQMTQIHf8bE7kQre8FegQICxAL
+                        - generic [ref=e415]: "Nathan Jacobson Collected Mathematical Papers: Volume 2 (1947-1965)"
+                      - link [ref=e417] [cursor=pointer]:
+                        - /url: /books/edition/_/e32R0QEACAAJ?hl=en&sa=X&ved=2ahUKEwjanLvItbyTAxXQMTQIHf8bE7kQre8FegQICxAM
+                        - generic [ref=e418]: "Nathan Jacobson: Collected Works"
+                    - generic [ref=e419]:
+                      - generic [ref=e420]: "1989"
+                      - generic [ref=e421]: Jan 15, 2014
+                      - generic [ref=e422]: Nov 19, 2011
+                      - generic [ref=e423]: "1989"
+                    - generic [ref=e424]:
+                      - generic [ref=e425]: Birkhauser Boston
+                      - generic [ref=e426]: Springer
+                      - generic [ref=e427]: Birkhauser Boston
+                      - generic [ref=e428]: Birkhauser Verlag GmbH
+                    - generic [ref=e429]:
+                      - generic [ref=e430]: Hardcover
+                      - generic [ref=e431]: Paperback
+                      - generic [ref=e432]: Paperback
+                      - generic [ref=e433]: Hardcover
+                    - generic [ref=e434]:
+                      - generic [ref=e435]: 556 pages
+                      - generic [ref=e436]: 580 pages
+                      - generic [ref=e437]: 556 pages
+                      - generic [ref=e438]: --
+                  - generic [ref=e439]:
+                    - link [ref=e441] [cursor=pointer]:
+                      - /url: /books/edition/_/Nc4_MFulAfQC?hl=en&sa=X&ved=2ahUKEwjanLvItbyTAxXQMTQIHf8bE7kQ8fIDegQICxAN
+                      - generic [ref=e443]:
+                        - img [ref=e445]
+                        - generic [ref=e447]: More info
+                    - link [ref=e449] [cursor=pointer]:
+                      - /url: /books/edition/_/xDUUswEACAAJ?hl=en&sa=X&ved=2ahUKEwjanLvItbyTAxXQMTQIHf8bE7kQ8fIDegQICxAO
+                      - generic [ref=e451]:
+                        - img [ref=e453]
+                        - generic [ref=e455]: More info
+                    - link [ref=e457] [cursor=pointer]:
+                      - /url: /books/edition/_/VSMMnwEACAAJ?hl=en&sa=X&ved=2ahUKEwjanLvItbyTAxXQMTQIHf8bE7kQ8fIDegQICxAP
+                      - generic [ref=e459]:
+                        - img [ref=e461]
+                        - generic [ref=e463]: More info
+                    - link [ref=e465] [cursor=pointer]:
+                      - /url: /books/edition/_/e32R0QEACAAJ?hl=en&sa=X&ved=2ahUKEwjanLvItbyTAxXQMTQIHf8bE7kQ8fIDegQICxAQ
+                      - generic [ref=e467]:
+                        - img [ref=e469]
+                        - generic [ref=e471]: More info
+                  - button [ref=e472] [cursor=pointer]:
+                    - generic [ref=e473]: More editions
+                - heading [level=2] [ref=e475]: Common terms and phrases
+                - generic [ref=e480]:
+                  - button [ref=e482] [cursor=pointer]: A_1
+                  - button [ref=e484] [cursor=pointer]: algebra of characteristic
+                  - button [ref=e486] [cursor=pointer]: algebra of linear
+                  - button [ref=e488] [cursor=pointer]: algebraically closed
+                  - button [ref=e490] [cursor=pointer]: algebras of type
+                  - button [ref=e492] [cursor=pointer]: alternative algebra
+                  - button [ref=e494] [cursor=pointer]: Amer
+                  - button [ref=e496] [cursor=pointer]: anti-homomorphism
+                  - button [ref=e498] [cursor=pointer]: assume
+                  - button [ref=e500] [cursor=pointer]: B_1
+                  - button [ref=e502] [cursor=pointer]: base field
+                  - button [ref=e504] [cursor=pointer]: basis
+                  - button [ref=e506] [cursor=pointer]: bimodule
+                  - button [ref=e508] [cursor=pointer]: Cayley algebra
+                  - button [ref=e510] [cursor=pointer]: central simple
+                  - button [ref=e512] [cursor=pointer]: Clifford algebra
+                  - button [ref=e514] [cursor=pointer]: commutative
+                  - button [ref=e516] [cursor=pointer]: completely reducible
+                  - button [ref=e518] [cursor=pointer]: composition algebra
+                  - button [ref=e520] [cursor=pointer]: contains
+                  - button [ref=e522] [cursor=pointer]: defined
+                  - button [ref=e524] [cursor=pointer]: denote
+                  - button [ref=e526] [cursor=pointer]: derivation
+                  - button [ref=e528] [cursor=pointer]: determined
+                  - button [ref=e530] [cursor=pointer]: diag
+                  - button [ref=e532] [cursor=pointer]: direct sum
+                  - button [ref=e534] [cursor=pointer]: division algebra
+                  - button [ref=e536] [cursor=pointer]: e_1
+                  - button [ref=e538] [cursor=pointer]: exceptional simple Jordan
+                  - button [ref=e540] [cursor=pointer]: exists
+                  - button [ref=e542] [cursor=pointer]: extension
+                  - button [ref=e544] [cursor=pointer]: F
+                  - button [ref=e546] [cursor=pointer]:
+                    - generic [ref=e547]:
+                      - generic [ref=e549]: More terms and phrases
+                      - img [ref=e551]
+              - generic [ref=e553]:
+                - heading [level=2] [ref=e555]: About the work
+                - generic [ref=e557]:
+                  - generic [ref=e560]:
+                    - generic [ref=e561]: "Originally published:"
+                    - generic [ref=e562]: "1989"
+                  - generic [ref=e565]:
+                    - generic [ref=e566]: "Genre:"
+                    - link [ref=e569] [cursor=pointer]:
+                      - /url: /search?sca_esv=5c0b035e3551f679&hl=en&q=&si=AL3DRZHmwLjWhgnaPB3UTu10R6S5qNLXiQiKMeezfKyB1FMsRnU-kqXQXpLMvSJ6UH3IysSjna3Qpc2e_lzpgIHC4TkUDuoYRs0B2zeCf1xRBxfPD7Cg8IniMi-0elmJoDTGalPcyJV0y5Uw5bTECfFXv4z10_GuVJVTInnK1U7DAhAFcs9KYxcVeQ30YEuPw2jmA5-i2XUg&sa=X&ved=2ahUKEwjanLvItbyTAxXQMTQIHf8bE7kQmxN6BAgTEAI
+                      - text: Reference work
+                - heading [level=2] [ref=e571]: Author
+                - generic [ref=e575]:
+                  - generic [ref=e576]:
+                    - generic [ref=e577]:
+                      - generic [ref=e578]: N. Jacobson
+                      - generic [ref=e579]: American mathematician
+                    - link [ref=e581] [cursor=pointer]:
+                      - /url: /search?sca_esv=5c0b035e3551f679&hl=en&q=N.+Jacobson&stick=H4sIAAAAAAAAAONgVuLUz9U3MC8sKil7xGjCLfDyxz1hKe1Ja05eY1Tl4grOyC93zSvJLKkUEudig7J4pbi5ELp4FrFy--kpeCUm5ycV5-cBAFEUkEtSAAAA
+                  - generic [ref=e584]:
+                    - text: Nathan Jacobson was an American mathematician.
+                    - link [ref=e586] [cursor=pointer]:
+                      - /url: https://en.wikipedia.org/wiki/Nathan_Jacobson
+                      - text: Wikipedia
+                  - button [ref=e589]:
+                    - generic [ref=e592]:
+                      - generic [ref=e594]: Search N. Jacobson
+                      - img [ref=e596]
+                - heading [level=2] [ref=e599]: More by author
+                - generic [ref=e602]:
+                  - generic [ref=e604]:
+                    - generic [ref=e605]:
+                      - link [ref=e606] [cursor=pointer]:
+                        - /url: /books/edition/Structure_and_Representations_of_Jordan_/aAGWAwAAQBAJ?hl=en&sa=X&ved=2ahUKEwjanLvItbyTAxXQMTQIHf8bE7kQiqUDegQIERAC
+                        - generic [ref=e607]: Structure and Representations of Jordan Algebras
+                      - generic [ref=e608]: By Nathan Jacobson
+                      - generic [ref=e609]: The theory of Jordan algebras has played important roles behind the scenes of several areas of mathematics. Jacobson's book has long been the definitive treatment of the subject. It covers ...
+                    - link [ref=e610] [cursor=pointer]:
+                      - /url: /books/edition/Structure_and_Representations_of_Jordan_/aAGWAwAAQBAJ?hl=en&sa=X&ved=2ahUKEwjanLvItbyTAxXQMTQIHf8bE7kQiKUDegQIERAE
+                      - img [ref=e613]
+                  - generic [ref=e615]:
+                    - generic [ref=e616]:
+                      - link [ref=e617] [cursor=pointer]:
+                        - /url: /books/edition/Basic_Algebra_II/hn75exNZZ-EC?hl=en&sa=X&ved=2ahUKEwjanLvItbyTAxXQMTQIHf8bE7kQiqUDegQIERAI
+                        - generic [ref=e618]: Basic Algebra II
+                      - generic [ref=e619]: Second Edition
+                      - generic [ref=e620]: By Nathan Jacobson
+                      - generic [ref=e621]: A classic text and standard reference for a generation, this volume and its companion are the work of an expert algebraist who taught at Yale for more than three decades. Nathan Jacobson's books ...
+                    - link [ref=e622] [cursor=pointer]:
+                      - /url: /books/edition/Basic_Algebra_II/hn75exNZZ-EC?hl=en&sa=X&ved=2ahUKEwjanLvItbyTAxXQMTQIHf8bE7kQiKUDegQIERAK
+                      - img [ref=e625]
+                  - generic [ref=e627]:
+                    - generic [ref=e628]:
+                      - link [ref=e629] [cursor=pointer]:
+                        - /url: /books/edition/Basic_Algebra/qAg_AwAAQBAJ?hl=en&sa=X&ved=2ahUKEwjanLvItbyTAxXQMTQIHf8bE7kQiqUDegQIERAO
+                        - generic [ref=e630]: Basic Algebra
+                      - generic [ref=e631]: Volume 1
+                      - generic [ref=e632]: By Nathan Jacobson
+                      - generic [ref=e633]: Volume I explores all of the topics typically covered in undergraduate courses, including the rudiments of set theory, group theory, rings, modules, Galois theory, polynomials, linear algebra, and ...
+                    - link [ref=e634] [cursor=pointer]:
+                      - /url: /books/edition/Basic_Algebra/qAg_AwAAQBAJ?hl=en&sa=X&ved=2ahUKEwjanLvItbyTAxXQMTQIHf8bE7kQiKUDegQIERAQ
+                      - img [ref=e637]
+                  - button [ref=e638] [cursor=pointer]:
+                    - generic [ref=e639]: More books
+                - heading [level=2] [ref=e641]: Publisher
+                - generic [ref=e645]:
+                  - generic [ref=e648]: Birkhauser
+                  - button [ref=e651]:
+                    - generic [ref=e654]:
+                      - generic [ref=e656]: Search Birkhauser
+                      - img [ref=e658]
+                - heading [level=2] [ref=e661]: More from the publisher collection
+                - generic [ref=e664]:
+                  - generic [ref=e666]:
+                    - generic [ref=e667]:
+                      - link [ref=e668] [cursor=pointer]:
+                        - /url: /books/edition/Collected_mathematical_papers/Xnb6MAAACAAJ?hl=en&sa=X&ved=2ahUKEwjanLvItbyTAxXQMTQIHf8bE7kQiqUDegQIDBAC
+                        - generic [ref=e669]: Collected mathematical papers
+                      - generic [ref=e670]: 1. (1934-1946). - XVIII, 454 S. * Volume 1
+                      - generic [ref=e671]: By Nathan Jacobson
+                    - link [ref=e672] [cursor=pointer]:
+                      - /url: /books/edition/Collected_mathematical_papers/Xnb6MAAACAAJ?hl=en&sa=X&ved=2ahUKEwjanLvItbyTAxXQMTQIHf8bE7kQiKUDegQIDBAD
+                      - img [ref=e675]
+                  - generic [ref=e677]:
+                    - generic [ref=e678]:
+                      - link [ref=e679] [cursor=pointer]:
+                        - /url: /books/edition/Collected_mathematical_papers/BPnmnAAACAAJ?hl=en&sa=X&ved=2ahUKEwjanLvItbyTAxXQMTQIHf8bE7kQiqUDegQIDBAH
+                        - generic [ref=e680]: Collected mathematical papers
+                      - generic [ref=e681]: 2. (1947-1965). - XVIII, 556 S. * Volume 2
+                      - generic [ref=e682]: By Nathan Jacobson
+                    - link [ref=e683] [cursor=pointer]:
+                      - /url: /books/edition/Collected_mathematical_papers/BPnmnAAACAAJ?hl=en&sa=X&ved=2ahUKEwjanLvItbyTAxXQMTQIHf8bE7kQiKUDegQIDBAI
+                      - img [ref=e686]
+                  - generic [ref=e688]:
+                    - generic [ref=e689]:
+                      - link [ref=e690] [cursor=pointer]:
+                        - /url: /books/edition/Collected_papers/Fau3ZwEACAAJ?hl=en&sa=X&ved=2ahUKEwjanLvItbyTAxXQMTQIHf8bE7kQiqUDegQIDBAM
+                        - generic [ref=e691]: Collected papers
+                      - generic [ref=e692]: Ill., graph. Darst * Volume 1
+                      - generic [ref=e693]: By Lars Valerian Ahlfors, Rae M. Shortt
+                    - link [ref=e694] [cursor=pointer]:
+                      - /url: /books/edition/Collected_papers/Fau3ZwEACAAJ?hl=en&sa=X&ved=2ahUKEwjanLvItbyTAxXQMTQIHf8bE7kQiKUDegQIDBAN
+                      - img [ref=e697]
+                  - button [ref=e698] [cursor=pointer]:
+                    - generic [ref=e699]: More books
+          - listitem [ref=e700]
+    - generic [ref=e712]:
+      - link [ref=e713] [cursor=pointer]:
+        - /url: https://support.google.com/websearch/answer/9523832?hl=en&fg=1
+        - text: Help
+      - link [ref=e714] [cursor=pointer]:
+        - /url: "#"
+        - text: Send feedback
+      - link [ref=e715] [cursor=pointer]:
+        - /url: https://policies.google.com/privacy?hl=en&fg=1
+        - text: Privacy
+      - link [ref=e716] [cursor=pointer]:
+        - /url: https://policies.google.com/terms?hl=en&fg=1
+        - text: Terms

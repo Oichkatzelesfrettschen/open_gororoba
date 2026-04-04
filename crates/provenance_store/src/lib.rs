@@ -114,6 +114,12 @@ fn migrations() -> Migrations<'static> {
         M::up(include_str!(
             "../../../db/migrations/0012_literature_verification.sql"
         )),
+        M::up(include_str!(
+            "../../../db/migrations/0013_planning_compat_exports.sql"
+        )),
+        M::up(include_str!(
+            "../../../db/migrations/0014_requirements_compat_exports.sql"
+        )),
     ])
 }
 
@@ -190,6 +196,8 @@ pub struct RoadmapItem<'a> {
     pub primary_outputs_json: &'a str,
     pub evidence_refs_json: &'a str,
     pub lacunae_json: &'a str,
+    pub claims_json: &'a str,
+    pub insight: &'a str,
 }
 
 /// Row struct for todo / next-action item upserts.
@@ -203,6 +211,114 @@ pub struct ActionItem<'a> {
     pub status_token: &'a str,
     pub dependencies_json: &'a str,
     pub acceptance_criteria_json: &'a str,
+    pub evidence_refs_json: &'a str,
+}
+
+/// Singleton requirements registry metadata row.
+pub struct RequirementsMeta<'a> {
+    pub authoritative: bool,
+    pub status: &'a str,
+    pub status_token: &'a str,
+    pub updated: &'a str,
+    pub python_recommended: &'a str,
+    pub python_allowed: &'a str,
+    pub primary_markdown: &'a str,
+    pub status_allowlist_json: &'a str,
+    pub runtime_stack_allowlist_json: &'a str,
+    pub required_module_fields_json: &'a str,
+    pub required_gap_fields_json: &'a str,
+}
+
+/// Row struct for requirements module upserts.
+pub struct RequirementModuleItem<'a> {
+    pub id: &'a str,
+    pub name: &'a str,
+    pub markdown: &'a str,
+    pub status: &'a str,
+    pub status_token: &'a str,
+    pub runtime_stack: &'a str,
+    pub requires_modules_json: &'a str,
+    pub install_targets_json: &'a str,
+    pub verify_targets_json: &'a str,
+    pub acceptance_criteria_json: &'a str,
+}
+
+/// Row struct for requirements coverage-gap upserts.
+pub struct RequirementCoverageGapItem<'a> {
+    pub id: &'a str,
+    pub area: &'a str,
+    pub status: &'a str,
+    pub status_token: &'a str,
+    pub description: &'a str,
+    pub proposed_resolution: &'a str,
+    pub related_module_ids_json: &'a str,
+}
+
+pub struct RoadmapCompatRow {
+    pub id: String,
+    pub name: String,
+    pub priority: String,
+    pub status: String,
+    pub status_token: String,
+    pub description: String,
+    pub sprint: String,
+    pub dependencies_json: String,
+    pub acceptance_criteria_json: String,
+    pub primary_outputs_json: String,
+    pub evidence_refs_json: String,
+    pub lacunae_json: String,
+    pub claims_json: String,
+    pub insight: String,
+}
+
+pub struct ActionCompatRow {
+    pub id: String,
+    pub area: String,
+    pub title: String,
+    pub description: String,
+    pub priority: String,
+    pub status: String,
+    pub status_token: String,
+    pub dependencies_json: String,
+    pub acceptance_criteria_json: String,
+    pub evidence_refs_json: String,
+}
+
+pub struct RequirementsMetaCompatRow {
+    pub authoritative: bool,
+    pub status: String,
+    pub status_token: String,
+    pub updated: String,
+    pub python_recommended: String,
+    pub python_allowed: String,
+    pub primary_markdown: String,
+    pub status_allowlist_json: String,
+    pub runtime_stack_allowlist_json: String,
+    pub required_module_fields_json: String,
+    pub required_gap_fields_json: String,
+}
+
+pub struct RequirementModuleCompatRow {
+    pub id: String,
+    pub name: String,
+    pub markdown: String,
+    pub status: String,
+    pub status_token: String,
+    pub runtime_stack: String,
+    pub requires_modules_json: String,
+    pub install_targets_json: String,
+    pub verify_targets_json: String,
+    pub acceptance_criteria_json: String,
+}
+
+pub struct RequirementCoverageGapCompatRow {
+    pub id: String,
+    pub area: String,
+    pub status: String,
+    pub status_token: String,
+    pub description: String,
+    pub proposed_resolution: String,
+    pub related_module_ids_json: String,
 }
 
 /// Row struct for research narrative upserts.
@@ -1783,6 +1899,20 @@ impl ProvenanceStore {
             .map_err(Into::into)
     }
 
+    pub fn record_registry_snapshot(
+        &mut self,
+        repo_root: &Path,
+        kind: &str,
+        source_path: &Path,
+        raw: &str,
+    ) -> Result<()> {
+        let indexed_at = Utc::now().to_rfc3339();
+        let tx = self.conn.transaction()?;
+        write_registry_snapshot(&tx, repo_root, kind, source_path, raw, &indexed_at)?;
+        tx.commit()?;
+        Ok(())
+    }
+
     fn control_plane_meta_toml(&self, kind: &str) -> Result<Option<String>> {
         self.conn
             .query_row(
@@ -3097,8 +3227,8 @@ impl ProvenanceStore {
             "INSERT OR REPLACE INTO roadmap_items
              (id, name, priority, status, status_token, description, sprint,
               dependencies_json, acceptance_criteria_json, primary_outputs_json,
-              evidence_refs_json, lacunae_json, updated_at)
-             VALUES (?1,?2,?3,?4,?5,?6,?7,?8,?9,?10,?11,?12, datetime('now'))",
+              evidence_refs_json, lacunae_json, claims_json, insight, updated_at)
+             VALUES (?1,?2,?3,?4,?5,?6,?7,?8,?9,?10,?11,?12,?13,?14, datetime('now'))",
             params![
                 item.id,
                 item.name,
@@ -3112,6 +3242,8 @@ impl ProvenanceStore {
                 item.primary_outputs_json,
                 item.evidence_refs_json,
                 item.lacunae_json,
+                item.claims_json,
+                item.insight,
             ],
         )?;
         Ok(())
@@ -3122,8 +3254,8 @@ impl ProvenanceStore {
         self.conn.execute(
             "INSERT OR REPLACE INTO todo_items
              (id, area, title, description, priority, status, status_token,
-              dependencies_json, acceptance_criteria_json, updated_at)
-             VALUES (?1,?2,?3,?4,?5,?6,?7,?8,?9, datetime('now'))",
+              dependencies_json, acceptance_criteria_json, evidence_refs_json, updated_at)
+             VALUES (?1,?2,?3,?4,?5,?6,?7,?8,?9,?10, datetime('now'))",
             params![
                 item.id,
                 item.area,
@@ -3134,6 +3266,7 @@ impl ProvenanceStore {
                 item.status_token,
                 item.dependencies_json,
                 item.acceptance_criteria_json,
+                item.evidence_refs_json,
             ],
         )?;
         Ok(())
@@ -3144,8 +3277,8 @@ impl ProvenanceStore {
         self.conn.execute(
             "INSERT OR REPLACE INTO next_action_items
              (id, area, title, description, priority, status, status_token,
-              dependencies_json, acceptance_criteria_json, updated_at)
-             VALUES (?1,?2,?3,?4,?5,?6,?7,?8,?9, datetime('now'))",
+              dependencies_json, acceptance_criteria_json, evidence_refs_json, updated_at)
+             VALUES (?1,?2,?3,?4,?5,?6,?7,?8,?9,?10, datetime('now'))",
             params![
                 item.id,
                 item.area,
@@ -3156,6 +3289,90 @@ impl ProvenanceStore {
                 item.status_token,
                 item.dependencies_json,
                 item.acceptance_criteria_json,
+                item.evidence_refs_json,
+            ],
+        )?;
+        Ok(())
+    }
+
+    pub fn upsert_requirements_meta(&self, meta: &RequirementsMeta<'_>) -> Result<()> {
+        self.conn.execute(
+            "INSERT INTO requirements_registry_meta
+             (kind, authoritative, status, status_token, updated, python_recommended,
+              python_allowed, primary_markdown, status_allowlist_json,
+              runtime_stack_allowlist_json, required_module_fields_json,
+              required_gap_fields_json, updated_at)
+             VALUES ('requirements', ?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, datetime('now'))
+             ON CONFLICT(kind) DO UPDATE SET
+                 authoritative               = excluded.authoritative,
+                 status                      = excluded.status,
+                 status_token                = excluded.status_token,
+                 updated                     = excluded.updated,
+                 python_recommended          = excluded.python_recommended,
+                 python_allowed              = excluded.python_allowed,
+                 primary_markdown            = excluded.primary_markdown,
+                 status_allowlist_json       = excluded.status_allowlist_json,
+                 runtime_stack_allowlist_json = excluded.runtime_stack_allowlist_json,
+                 required_module_fields_json = excluded.required_module_fields_json,
+                 required_gap_fields_json    = excluded.required_gap_fields_json,
+                 updated_at                  = excluded.updated_at",
+            params![
+                if meta.authoritative { 1 } else { 0 },
+                meta.status,
+                meta.status_token,
+                meta.updated,
+                meta.python_recommended,
+                meta.python_allowed,
+                meta.primary_markdown,
+                meta.status_allowlist_json,
+                meta.runtime_stack_allowlist_json,
+                meta.required_module_fields_json,
+                meta.required_gap_fields_json,
+            ],
+        )?;
+        Ok(())
+    }
+
+    pub fn upsert_requirement_module(&self, item: &RequirementModuleItem<'_>) -> Result<()> {
+        self.conn.execute(
+            "INSERT OR REPLACE INTO requirements_modules
+             (id, name, markdown, status, status_token, runtime_stack,
+              requires_modules_json, install_targets_json, verify_targets_json,
+              acceptance_criteria_json, updated_at)
+             VALUES (?1,?2,?3,?4,?5,?6,?7,?8,?9,?10, datetime('now'))",
+            params![
+                item.id,
+                item.name,
+                item.markdown,
+                item.status,
+                item.status_token,
+                item.runtime_stack,
+                item.requires_modules_json,
+                item.install_targets_json,
+                item.verify_targets_json,
+                item.acceptance_criteria_json,
+            ],
+        )?;
+        Ok(())
+    }
+
+    pub fn upsert_requirement_coverage_gap(
+        &self,
+        item: &RequirementCoverageGapItem<'_>,
+    ) -> Result<()> {
+        self.conn.execute(
+            "INSERT OR REPLACE INTO requirements_coverage_gaps
+             (id, area, status, status_token, description, proposed_resolution,
+              related_module_ids_json, updated_at)
+             VALUES (?1,?2,?3,?4,?5,?6,?7, datetime('now'))",
+            params![
+                item.id,
+                item.area,
+                item.status,
+                item.status_token,
+                item.description,
+                item.proposed_resolution,
+                item.related_module_ids_json,
             ],
         )?;
         Ok(())
@@ -3283,6 +3500,164 @@ impl ProvenanceStore {
             "id, title, priority, status",
             status_filter,
         )
+    }
+
+    pub fn planning_roadmap_rows(&self) -> Result<Vec<RoadmapCompatRow>> {
+        let mut stmt = self.conn.prepare(
+            "SELECT id, name, priority, status, status_token, description, sprint,
+                    dependencies_json, acceptance_criteria_json, primary_outputs_json,
+                    evidence_refs_json, lacunae_json, claims_json, insight
+             FROM roadmap_items
+             ORDER BY id",
+        )?;
+        let rows = stmt.query_map([], |row| {
+            Ok(RoadmapCompatRow {
+                id: row.get(0)?,
+                name: row.get(1)?,
+                priority: row.get(2)?,
+                status: row.get(3)?,
+                status_token: row.get(4)?,
+                description: row.get(5)?,
+                sprint: row.get(6)?,
+                dependencies_json: row.get(7)?,
+                acceptance_criteria_json: row.get(8)?,
+                primary_outputs_json: row.get(9)?,
+                evidence_refs_json: row.get(10)?,
+                lacunae_json: row.get(11)?,
+                claims_json: row.get(12)?,
+                insight: row.get(13)?,
+            })
+        })?;
+        rows.collect::<std::result::Result<Vec<_>, _>>()
+            .map_err(Into::into)
+    }
+
+    pub fn planning_todo_rows(&self) -> Result<Vec<ActionCompatRow>> {
+        let mut stmt = self.conn.prepare(
+            "SELECT id, area, title, description, priority, status, status_token,
+                    dependencies_json, acceptance_criteria_json, evidence_refs_json
+             FROM todo_items
+             ORDER BY id",
+        )?;
+        let rows = stmt.query_map([], |row| {
+            Ok(ActionCompatRow {
+                id: row.get(0)?,
+                area: row.get(1)?,
+                title: row.get(2)?,
+                description: row.get(3)?,
+                priority: row.get(4)?,
+                status: row.get(5)?,
+                status_token: row.get(6)?,
+                dependencies_json: row.get(7)?,
+                acceptance_criteria_json: row.get(8)?,
+                evidence_refs_json: row.get(9)?,
+            })
+        })?;
+        rows.collect::<std::result::Result<Vec<_>, _>>()
+            .map_err(Into::into)
+    }
+
+    pub fn planning_next_action_rows(&self) -> Result<Vec<ActionCompatRow>> {
+        let mut stmt = self.conn.prepare(
+            "SELECT id, area, title, description, priority, status, status_token,
+                    dependencies_json, acceptance_criteria_json, evidence_refs_json
+             FROM next_action_items
+             ORDER BY id",
+        )?;
+        let rows = stmt.query_map([], |row| {
+            Ok(ActionCompatRow {
+                id: row.get(0)?,
+                area: row.get(1)?,
+                title: row.get(2)?,
+                description: row.get(3)?,
+                priority: row.get(4)?,
+                status: row.get(5)?,
+                status_token: row.get(6)?,
+                dependencies_json: row.get(7)?,
+                acceptance_criteria_json: row.get(8)?,
+                evidence_refs_json: row.get(9)?,
+            })
+        })?;
+        rows.collect::<std::result::Result<Vec<_>, _>>()
+            .map_err(Into::into)
+    }
+
+    pub fn requirements_meta_row(&self) -> Result<Option<RequirementsMetaCompatRow>> {
+        self.conn
+            .query_row(
+                "SELECT authoritative, status, status_token, updated, python_recommended,
+                        python_allowed, primary_markdown, status_allowlist_json,
+                        runtime_stack_allowlist_json, required_module_fields_json,
+                        required_gap_fields_json
+                 FROM requirements_registry_meta
+                 WHERE kind = 'requirements'",
+                [],
+                |row| {
+                    Ok(RequirementsMetaCompatRow {
+                        authoritative: row.get::<_, i64>(0)? != 0,
+                        status: row.get(1)?,
+                        status_token: row.get(2)?,
+                        updated: row.get(3)?,
+                        python_recommended: row.get(4)?,
+                        python_allowed: row.get(5)?,
+                        primary_markdown: row.get(6)?,
+                        status_allowlist_json: row.get(7)?,
+                        runtime_stack_allowlist_json: row.get(8)?,
+                        required_module_fields_json: row.get(9)?,
+                        required_gap_fields_json: row.get(10)?,
+                    })
+                },
+            )
+            .optional()
+            .map_err(Into::into)
+    }
+
+    pub fn requirements_module_rows(&self) -> Result<Vec<RequirementModuleCompatRow>> {
+        let mut stmt = self.conn.prepare(
+            "SELECT id, name, markdown, status, status_token, runtime_stack,
+                    requires_modules_json, install_targets_json, verify_targets_json,
+                    acceptance_criteria_json
+             FROM requirements_modules
+             ORDER BY id",
+        )?;
+        let rows = stmt.query_map([], |row| {
+            Ok(RequirementModuleCompatRow {
+                id: row.get(0)?,
+                name: row.get(1)?,
+                markdown: row.get(2)?,
+                status: row.get(3)?,
+                status_token: row.get(4)?,
+                runtime_stack: row.get(5)?,
+                requires_modules_json: row.get(6)?,
+                install_targets_json: row.get(7)?,
+                verify_targets_json: row.get(8)?,
+                acceptance_criteria_json: row.get(9)?,
+            })
+        })?;
+        rows.collect::<std::result::Result<Vec<_>, _>>()
+            .map_err(Into::into)
+    }
+
+    pub fn requirements_coverage_gap_rows(&self) -> Result<Vec<RequirementCoverageGapCompatRow>> {
+        let mut stmt = self.conn.prepare(
+            "SELECT id, area, status, status_token, description, proposed_resolution,
+                    related_module_ids_json
+             FROM requirements_coverage_gaps
+             ORDER BY id",
+        )?;
+        let rows = stmt.query_map([], |row| {
+            Ok(RequirementCoverageGapCompatRow {
+                id: row.get(0)?,
+                area: row.get(1)?,
+                status: row.get(2)?,
+                status_token: row.get(3)?,
+                description: row.get(4)?,
+                proposed_resolution: row.get(5)?,
+                related_module_ids_json: row.get(6)?,
+            })
+        })?;
+        rows.collect::<std::result::Result<Vec<_>, _>>()
+            .map_err(Into::into)
     }
 
     /// Insert or replace a notebook session.
@@ -4070,10 +4445,18 @@ fn load_artifacts(path: &Path) -> Result<Vec<ArtifactRecord>> {
 
 fn load_documents(path: &Path) -> Result<Vec<DocumentRecord>> {
     let value = load_toml_value(path)?;
-    let documents = value
-        .get("document")
-        .and_then(Value::as_array)
-        .context("document table missing")?;
+    let Some(documents) = value.get("document").and_then(Value::as_array) else {
+        if let Some(meta) = value.get("knowledge_documents").and_then(Value::as_table) {
+            let raw_capture_count = meta
+                .get("raw_capture_count")
+                .and_then(Value::as_integer)
+                .unwrap_or(0);
+            if raw_capture_count == 0 {
+                return Ok(Vec::new());
+            }
+        }
+        bail!("document table missing");
+    };
     let mut out = Vec::new();
     for document in documents {
         let table = document
@@ -4724,7 +5107,7 @@ fn load_workspace_binary_records_via_cargo_metadata(repo_root: &Path) -> Result<
                 name: bin_name.to_string(),
                 crate_name: package.name.clone(),
                 description: format!(
-                    "Workspace binary discovered from cargo metadata in crate {}; registry metadata pending.",
+                    "Workspace binary discovered from cargo metadata in crate {}; consult crate source for authoritative behavior.",
                     package.name
                 ),
                 experiment: None,
@@ -4780,7 +5163,7 @@ fn load_workspace_binary_records_from_manifests(repo_root: &Path) -> Result<Vec<
                 name: bin_name.to_string(),
                 crate_name: crate_name.clone(),
                 description: format!(
-                    "Workspace binary discovered from {}; registry metadata pending.",
+                    "Workspace binary discovered from {}; consult crate source for authoritative behavior.",
                     to_repo_rel(repo_root, &member_manifest_path)
                 ),
                 experiment: None,

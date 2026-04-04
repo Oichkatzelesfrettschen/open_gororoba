@@ -1,4 +1,4 @@
-# Next-actions narrative overlay (TOML-first).
+# Next-actions narrative overlay (TOML lane pending SQLite promotion).
 # WHY: Provides prose context for the structured registry/next_actions.toml.
 #      Describes priority rationale and sprint focus without hard-coding counts.
 # HOW: Edit body_markdown; run make registry-export-markdown to regenerate mirrors.

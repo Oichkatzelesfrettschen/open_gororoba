@@ -1,6 +1,0 @@
-{
-  "context": {
-    "discoveryMaxDirs": 100
-  },
-  "fileReadLineLimit": 500
-}

@@ -1,5 +1,5 @@
-# Bibliography registry (TOML-first).
-# Bootstrap source markdown is docs/BIBLIOGRAPHY.md.
+# Bibliography registry (TOML lane pending SQLite promotion).
+# Bootstrap/import source markdown is docs/BIBLIOGRAPHY.md.
 
 [bibliography]
 authoritative = true

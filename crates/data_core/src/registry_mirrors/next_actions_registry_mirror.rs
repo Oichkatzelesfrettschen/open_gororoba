@@ -215,7 +215,7 @@
 //! ### NA-034 (high): Rust Regression Lane Stabilization
 //!
 //! - Status: `in_progress`
-//! - Description: Finish the current Rust gate remediation as one bucketed stabilization pass: heavy-lane routing for research tests, integration-test binary discovery under nextest, the guarded attractor runtime budget, the repo-local scoped-routing policy that keeps local Rust verification off the full workspace path unless truly required, and the local-fast-path split that leaves heavy-package nextest authoritative in gate-ci-rust. Current refinement: local clippy now runs only --lib --tests and the light lane skips known heavy/GPU filters, but the workspace still expands many bin-test harnesses under nextest, so the next speed pass needs target-level nextest scope mapping instead of more generic concurrency tweaks.
+//! - Description: Finish the current Rust gate remediation as one bucketed stabilization pass: heavy-lane routing for research tests, integration-test binary discovery under nextest, the guarded attractor runtime budget, the repo-scoped scoped-routing policy that keeps local Rust verification off the full workspace path unless truly required, and the local-fast-path split that leaves heavy-package nextest authoritative in gate-ci-rust. Current refinement: local clippy now runs only --lib --tests and the light lane skips known heavy/GPU filters, but the workspace still expands many bin-test harnesses under nextest, so the next speed pass needs target-level nextest scope mapping instead of more generic concurrency tweaks.
 //! - References:
 //!
 //! ### NA-035 (medium): Gate Audit and Mirror Truth Refresh

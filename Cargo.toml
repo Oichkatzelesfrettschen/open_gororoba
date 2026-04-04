@@ -408,7 +408,7 @@ debug = 1                  # line tables only: file+line for stack traces, flame
 strip = "none"
 lto = "off"                # Cranelift does not support LTO (LLVM-only)
 codegen-units = 16         # saturates 12-thread CPU; 256 causes thrashing
-incremental = false        # [env] CARGO_INCREMENTAL=0 in .cargo/config.toml also enforces this
+incremental = false        # user-local Cargo config (~/.cargo/config.toml) may also enforce this
 overflow-checks = true
 debug-assertions = true
 panic = "unwind"
@@ -420,7 +420,7 @@ codegen-backend = "cranelift"
 opt-level = 1              # Cranelift: opt-level 1 inlines generics, enough for tests
 lto = "off"                # Cranelift does not support LTO
 codegen-units = 256        # max Cranelift parallelism within each crate (no LLVM opt tradeoff)
-incremental = false        # [env] CARGO_INCREMENTAL=0 in .cargo/config.toml also enforces this
+incremental = false        # user-local Cargo config (~/.cargo/config.toml) may also enforce this
 overflow-checks = true
 codegen-backend = "cranelift"
 debug = 1                  # line tables only (~60% smaller .o than full DWARF)

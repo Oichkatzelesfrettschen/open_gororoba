@@ -143,7 +143,7 @@
 //!
 //! ## Synthesis
 //!
-//! - The comparer now prefers repo-local inline frames over generic `core` iterator frames, which fixes the earlier DD misattribution.
+//! - The comparer now prefers repo-scoped inline frames over generic `core` iterator frames, which fixes the earlier DD misattribution.
 //! - `reference_f64` should show backend-core lines in `reference_jacobi.rs`, shared/support rows in the sweep/scaffold, dependency rows for `nalgebra`, and external libm trig work.
 //! - `x87` should surface the x87 Jacobi path plus shared `cd_kernel` Givens/ext80 helpers, with unresolved inline-asm pseudo-symbols remaining in the external bucket.
 //! - `double_double` should now show `dd_jacobi.rs` as backend-core even when smaller DD helpers remain inlined.

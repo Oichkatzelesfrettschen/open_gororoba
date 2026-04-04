@@ -1,4 +1,4 @@
-# Roadmap narrative overlay (TOML-first).
+# Roadmap narrative overlay (TOML lane pending SQLite promotion).
 # WHY: Provides prose context that annotates the structured registry/roadmap.toml.
 #      Describes architectural direction and policy, not test counts.
 # HOW: Edit body_markdown; run make registry-export-markdown to regenerate mirrors.

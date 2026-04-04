@@ -36,6 +36,37 @@ open_gororoba/
   Makefile             Build, test, governance, and CI targets
 ```
 
+## Root discipline
+
+The repository root is treated as a workspace entrypoint, not a scratchpad.
+
+- Canonical visible root files: `Cargo.toml`, `Cargo.lock`, `Makefile`,
+  `README.md`, `LICENSE`, `agents.toml`, formatter/lint config, `results.json`,
+  and the tracked root test fixtures.
+- Canonical visible root directories: `crates/`, `docs/`, `registry/`,
+  `data/`, `proofs/`, `db/`, `reports/`, `plans/`, `archive/`, `scripts/`,
+  `apps/`, `bin/`, `docker/`, `curated/`, and `xtask/`.
+- Canonical hidden support surfaces: `.githooks/` and `.github/`.
+- Local-only temporary directories may appear during development:
+  `.cache/`, `target/`, `target_codex_hve/`, `target_codex_hve2/`, `build/`,
+  `logs/`, `out/`, `.claude/`, `.playwright-mcp/`, and similar tool caches.
+- User-local config/cache surfaces such as `~/.cargo/config.toml`,
+  `~/.config/nextest.toml`, `~/.gemini/settings.json`, and
+  `~/.cache/gororoba-lit-cache/` must not be versioned inside the repository.
+- Use `make bootstrap-user-local-xdg` to install the supported user-local
+  config bundle; see `docs/engineering/user_local_bootstrap.txt`.
+- API keys and service tokens must live in user-local environment variables or
+  a secret manager, never in versioned workspace files. `lit_search` variables are
+  documented in `docs/engineering/lit_search_env_vars.txt`, and heliophysics
+  DONKI access uses optional `NASA_API_KEY` from the user environment. The
+  broader runtime env inventory lives in `docs/engineering/runtime_env_inventory.txt`.
+- Local-only temporary root files may appear during proof or profiling work:
+  `.codex`, `.gororoba.db`, `.lia.cache`, and `.nra.cache`.
+- Profiling payloads belong under `reports/profiling/` rather than in the root.
+- Loose screenshots, ad hoc Markdown notes, and ambiguous scratch directories do
+  not belong in the root. Promote them into `docs/`, `data/artifacts/`, or
+  `archive/` instead.
+
 ## Registry and claims system
 
 The project tracks every conjecture, measurement, and computation as a
@@ -112,7 +143,19 @@ The workspace is organized into domain-specific crates:
 | `provenance_core` | Provenance data model |
 | `provenance_ops` | Data ingest pipelines (ORIX, HEASARC, AMDA HAPI) |
 | `gororoba_db` | `gororoba-db` CLI for database operations |
-| `lit_search` | 17-source academic literature search and deduplication |
+| `lit_search` | Repo-owned Rust literature search, deduplication, citation verification, and PDF retrieval |
+
+`lit_search` reads optional keyed-source credentials from user-local
+environment variables only. See
+`docs/engineering/lit_search_env_vars.txt` for the supported variable names and
+installation guidance.
+
+Heliophysics DONKI ingestion also reads optional `NASA_API_KEY` from the user
+environment. If it is unset, the runtime falls back to public CCMC endpoints
+instead of using versioned workspace secret files or a bundled demo key.
+
+The full runtime environment inventory, including non-secret tuning variables,
+is documented in `docs/engineering/runtime_env_inventory.txt`.
 
 ### CLI binaries (377 registered)
 

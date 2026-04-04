@@ -1,0 +1,812 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e4]:
+      - generic [ref=e5]:
+        - banner [ref=e2874]:
+          - link [ref=e2875] [cursor=pointer]:
+            - /url: ""
+            - text: Skip To Main Menu
+          - link [ref=e2876] [cursor=pointer]:
+            - /url: ""
+            - text: Skip To Results
+          - link [ref=e2877] [cursor=pointer]:
+            - /url: https://library.ucsd.edu
+            - img [ref=e2878]
+          - navigation [ref=e2879]:
+            - group [ref=e18]:
+              - link [ref=e2880] [cursor=pointer]:
+                - /url: /discovery/search?vid=01UCS_SDI%3AUCSD&lang=en
+                - generic [ref=e21]: New Search
+              - link [ref=e2881] [cursor=pointer]:
+                - /url: /discovery/jsearch?vid=01UCS_SDI%3AUCSD&lang=en
+                - generic [ref=e24]: Find Journals
+              - button [ref=e2882] [cursor=pointer]:
+                - generic [ref=e27]:
+                  - img
+          - generic [ref=e28]:
+            - button [ref=e2883] [cursor=pointer]:
+              - generic [ref=e30]:
+                - img
+            - link [ref=e2884] [cursor=pointer]:
+              - /url: /discovery/favorites?vid=01UCS_SDI%3AUCSD&lang=en&section=items
+              - generic [ref=e33]:
+                - img
+          - generic [ref=e34]:
+            - button [ref=e2885] [cursor=pointer]: Sign in
+            - button [ref=e2886] [cursor=pointer]:
+              - generic [ref=e38]: Menu
+              - generic [ref=e39]: ▼
+        - heading [level=1] [ref=e312]
+      - generic [ref=e2392]:
+        - generic [ref=e2394]:
+          - button [ref=e2887] [cursor=pointer]:
+            - generic [ref=e2396]:
+              - img
+          - heading [level=2] [ref=e2888]: Showing chapters for
+        - generic [ref=e2403]:
+          - generic [ref=e2404]: Book
+          - heading [level=4] [ref=e2889]:
+            - text: ...
+            - link [ref=e2890] [cursor=pointer]:
+              - /url: https://search-library.ucsd.edu/discovery/fulldisplay?docid=cdi_springer_bookarchives_10_1007_978_1_4612_3694_8&context=PC&vid=01UCS_SDI:UCSD&lang=en&search_scope=ArticlesBooksEtc&adaptor=Primo Central&query=isbn%2Cexact%2C0817634118&offset=30
+              - text: "Nathan Jacobson Collected Mathematical Papers: Volume 2 (1947-1965)"
+          - paragraph [ref=e2407]: Rota, Gian-Carlo ; Jacobson, Nathan
+        - alert [ref=e2409]:
+          - generic [ref=e2410]:
+            - generic [ref=e2411]: Please note that this is not necessarily a complete list of chapters.
+            - button [ref=e2891] [cursor=pointer]:
+              - generic [ref=e2413]:
+                - img
+              - text: DISMISS
+        - document [ref=e2415]:
+          - main [ref=e2892]:
+            - generic [ref=e2419]:
+              - heading [level=2] [ref=e2893]: Results
+              - alert [ref=e2423]:
+                - button [ref=e2894]:
+                  - generic [ref=e2427]:
+                    - generic [ref=e2428]: 31-40 of 51 Results
+                    - generic [ref=e2429]: ▼
+              - generic [ref=e2430]:
+                - list [ref=e2431]:
+                  - listitem [ref=e2432]:
+                    - generic [ref=e2434]: Page 4
+                    - generic [ref=e2435]:
+                      - generic [ref=e2436]:
+                        - generic [ref=e2438]: "31"
+                        - link [ref=e2895] [cursor=pointer]:
+                          - /url: https://search-library.ucsd.edu/discovery/fulldisplay?docid=cdi_proquest_ebookcentralchapters_3076338_28_297&context=PC&vid=01UCS_SDI:UCSD&lang=en&search_scope=ArticlesBooksEtc&adaptor=Primo Central&query=isbn%2Cexact%2C0817634118&offset=30
+                        - generic [ref=e2445]:
+                          - generic [ref=e2446]: Book Chapter
+                          - generic [ref=e2447]:
+                            - heading [level=3] [ref=e2896] [cursor=pointer]:
+                              - link [ref=e2897]:
+                                - /url: https://search-library.ucsd.edu/discovery/fulldisplay?docid=cdi_proquest_ebookcentralchapters_3076338_28_297&context=PC&vid=01UCS_SDI:UCSD&lang=en&search_scope=ArticlesBooksEtc&adaptor=Primo Central&query=isbn%2Cexact%2C0817634118&offset=30
+                                - generic [ref=e2451]: A THEOREM ON THE STRUCTURE OF JORDAN ALGEBRAS
+                            - generic [ref=e2452]:
+                              - generic [ref=e2455]: Jacobson, Nathan
+                              - generic [ref=e2456]:
+                                - text: ;
+                                - generic [ref=e2458]: Rota, Gian-Carlo
+                            - generic [ref=e2462]: "United States: Birkhauser Boston"
+                            - generic [ref=e2466]: Nathan Jacobson Collected Mathematical Papers, 1989, p.290-297
+                          - generic [ref=e2470]:
+                            - generic [ref=e2471]:
+                              - img
+                            - button [ref=e2898] [cursor=pointer]:
+                              - generic [ref=e2473]: A THEOREM ON THE STRUCTURE OF JORDAN ALGEBRAS
+                              - generic [ref=e2474]: Available Online
+                              - img
+                      - region [ref=e2899]:
+                        - button [ref=e2900] [cursor=pointer]:
+                          - generic [ref=e2901]:
+                            - img
+                        - button [ref=e2902] [cursor=pointer]:
+                          - generic [ref=e2903]:
+                            - img
+                        - button [ref=e2906] [cursor=pointer]:
+                          - generic [ref=e2907]:
+                            - img
+                        - button [ref=e2909] [cursor=pointer]:
+                          - generic [ref=e2910]:
+                            - img
+                          - generic [ref=e2911]:
+                            - img
+                  - listitem [ref=e2475]:
+                    - generic [ref=e2476]:
+                      - generic [ref=e2477]:
+                        - generic [ref=e2479]: "32"
+                        - link [ref=e2912] [cursor=pointer]:
+                          - /url: https://search-library.ucsd.edu/discovery/fulldisplay?docid=cdi_proquest_ebookcentralchapters_3076338_23_190&context=PC&vid=01UCS_SDI:UCSD&lang=en&search_scope=ArticlesBooksEtc&adaptor=Primo Central&query=isbn%2Cexact%2C0817634118&offset=30
+                        - generic [ref=e2486]:
+                          - generic [ref=e2487]: Book Chapter
+                          - generic [ref=e2488]:
+                            - heading [level=3] [ref=e2913] [cursor=pointer]:
+                              - link [ref=e2914]:
+                                - /url: https://search-library.ucsd.edu/discovery/fulldisplay?docid=cdi_proquest_ebookcentralchapters_3076338_23_190&context=PC&vid=01UCS_SDI:UCSD&lang=en&search_scope=ArticlesBooksEtc&adaptor=Primo Central&query=isbn%2Cexact%2C0817634118&offset=30
+                                - generic [ref=e2492]: Structure of Alternative and Jordan Bimodules
+                            - generic [ref=e2493]:
+                              - generic [ref=e2496]: Jacobson, Nathan
+                              - generic [ref=e2497]:
+                                - text: ;
+                                - generic [ref=e2499]: Rota, Gian-Carlo
+                            - generic [ref=e2503]: "United States: Birkhauser Boston"
+                            - generic [ref=e2507]: Nathan Jacobson Collected Mathematical Papers, 1989, p.179-249
+                          - generic [ref=e2511]:
+                            - generic [ref=e2512]:
+                              - img
+                            - button [ref=e2915] [cursor=pointer]:
+                              - generic [ref=e2514]: Structure of Alternative and Jordan Bimodules
+                              - generic [ref=e2515]: Available Online
+                              - img
+                      - region [ref=e2916]:
+                        - button [ref=e2917] [cursor=pointer]:
+                          - generic [ref=e2918]:
+                            - img
+                        - button [ref=e2919] [cursor=pointer]:
+                          - generic [ref=e2920]:
+                            - img
+                        - button [ref=e2923] [cursor=pointer]:
+                          - generic [ref=e2924]:
+                            - img
+                        - button [ref=e2926] [cursor=pointer]:
+                          - generic [ref=e2927]:
+                            - img
+                          - generic [ref=e2928]:
+                            - img
+                  - listitem [ref=e2516]:
+                    - generic [ref=e2517]:
+                      - generic [ref=e2518]:
+                        - generic [ref=e2520]: "33"
+                        - link [ref=e2929] [cursor=pointer]:
+                          - /url: https://search-library.ucsd.edu/discovery/fulldisplay?docid=cdi_proquest_ebookcentralchapters_3076338_41_517&context=PC&vid=01UCS_SDI:UCSD&lang=en&search_scope=ArticlesBooksEtc&adaptor=Primo Central&query=isbn%2Cexact%2C0817634118&offset=30
+                        - generic [ref=e2527]:
+                          - generic [ref=e2528]: Book Chapter
+                          - generic [ref=e2529]:
+                            - heading [level=3] [ref=e2930] [cursor=pointer]:
+                              - link [ref=e2931]:
+                                - /url: https://search-library.ucsd.edu/discovery/fulldisplay?docid=cdi_proquest_ebookcentralchapters_3076338_41_517&context=PC&vid=01UCS_SDI:UCSD&lang=en&search_scope=ArticlesBooksEtc&adaptor=Primo Central&query=isbn%2Cexact%2C0817634118&offset=30
+                                - generic [ref=e2533]: Clifford Algebras for Algebras with Involution of Type D
+                            - generic [ref=e2534]:
+                              - generic [ref=e2537]: Jacobson, Nathan
+                              - generic [ref=e2538]:
+                                - text: ;
+                                - generic [ref=e2540]: Rota, Gian-Carlo
+                            - generic [ref=e2544]: "United States: Birkhauser Boston"
+                            - generic [ref=e2548]: Nathan Jacobson Collected Mathematical Papers, 1989, p.516-528
+                          - generic [ref=e2552]:
+                            - generic [ref=e2553]:
+                              - img
+                            - button [ref=e2932] [cursor=pointer]:
+                              - generic [ref=e2555]: Clifford Algebras for Algebras with Involution of Type D
+                              - generic [ref=e2556]: Available Online
+                              - img
+                      - region [ref=e2933]:
+                        - button [ref=e2934] [cursor=pointer]:
+                          - generic [ref=e2935]:
+                            - img
+                        - button [ref=e2936] [cursor=pointer]:
+                          - generic [ref=e2937]:
+                            - img
+                        - button [ref=e2940] [cursor=pointer]:
+                          - generic [ref=e2941]:
+                            - img
+                        - button [ref=e2943] [cursor=pointer]:
+                          - generic [ref=e2944]:
+                            - img
+                          - generic [ref=e2945]:
+                            - img
+                  - listitem [ref=e2557]:
+                    - generic [ref=e2558]:
+                      - generic [ref=e2559]:
+                        - generic [ref=e2561]: "34"
+                        - link [ref=e2946] [cursor=pointer]:
+                          - /url: https://search-library.ucsd.edu/discovery/fulldisplay?docid=cdi_springer_books_10_1007_978_1_4612_3694_8_9&context=PC&vid=01UCS_SDI:UCSD&lang=en&search_scope=ArticlesBooksEtc&adaptor=Primo Central&query=isbn%2Cexact%2C0817634118&offset=30
+                        - generic [ref=e2568]:
+                          - generic [ref=e2569]: Book Chapter
+                          - generic [ref=e2570]:
+                            - heading [level=3] [ref=e2947] [cursor=pointer]:
+                              - link [ref=e2948]:
+                                - /url: https://search-library.ucsd.edu/discovery/fulldisplay?docid=cdi_springer_books_10_1007_978_1_4612_3694_8_9&context=PC&vid=01UCS_SDI:UCSD&lang=en&search_scope=ArticlesBooksEtc&adaptor=Primo Central&query=isbn%2Cexact%2C0817634118&offset=30
+                                - generic [ref=e2574]: GENERAL REPRESENTATION THEORY OF JORDAN ALGEBRAS
+                            - generic [ref=e2575]:
+                              - generic [ref=e2578]: Jacobson, Nathan
+                              - generic [ref=e2579]:
+                                - text: ;
+                                - generic [ref=e2581]: Rota, Gian-Carlo
+                            - generic [ref=e2585]: "United States: Birkhauser Boston"
+                            - generic [ref=e2589]: Nathan Jacobson Collected Mathematical Papers, 1989, p.127-148
+                          - generic [ref=e2593]:
+                            - generic [ref=e2594]:
+                              - img
+                            - button [ref=e2949] [cursor=pointer]:
+                              - generic [ref=e2596]: GENERAL REPRESENTATION THEORY OF JORDAN ALGEBRAS
+                              - generic [ref=e2597]: Available Online
+                              - img
+                      - region [ref=e2950]:
+                        - button [ref=e2951] [cursor=pointer]:
+                          - generic [ref=e2952]:
+                            - img
+                        - button [ref=e2953] [cursor=pointer]:
+                          - generic [ref=e2954]:
+                            - img
+                        - button [ref=e2957] [cursor=pointer]:
+                          - generic [ref=e2958]:
+                            - img
+                        - button [ref=e2960] [cursor=pointer]:
+                          - generic [ref=e2961]:
+                            - img
+                          - generic [ref=e2962]:
+                            - img
+                  - listitem [ref=e2598]:
+                    - generic [ref=e2599]:
+                      - generic [ref=e2600]:
+                        - generic [ref=e2602]: "35"
+                        - link [ref=e2963] [cursor=pointer]:
+                          - /url: https://search-library.ucsd.edu/discovery/fulldisplay?docid=cdi_proquest_ebookcentralchapters_3076338_13_92&context=PC&vid=01UCS_SDI:UCSD&lang=en&search_scope=ArticlesBooksEtc&adaptor=Primo Central&query=isbn%2Cexact%2C0817634118&offset=30
+                        - generic [ref=e2609]:
+                          - generic [ref=e2610]: Book Chapter
+                          - generic [ref=e2611]:
+                            - heading [level=3] [ref=e2964] [cursor=pointer]:
+                              - link [ref=e2965]:
+                                - /url: https://search-library.ucsd.edu/discovery/fulldisplay?docid=cdi_proquest_ebookcentralchapters_3076338_13_92&context=PC&vid=01UCS_SDI:UCSD&lang=en&search_scope=ArticlesBooksEtc&adaptor=Primo Central&query=isbn%2Cexact%2C0817634118&offset=30
+                                - generic [ref=e2615]: ENVELOPING ALGEBRAS OF SEMI-SIMPLE LIE ALGEBRAS
+                            - generic [ref=e2616]:
+                              - generic [ref=e2619]: Jacobson, Nathan
+                              - generic [ref=e2620]:
+                                - text: ;
+                                - generic [ref=e2622]: Rota, Gian-Carlo
+                            - generic [ref=e2626]: "United States: Birkhauser Boston"
+                            - generic [ref=e2630]: Nathan Jacobson Collected Mathematical Papers, 1989, p.77-86
+                          - generic [ref=e2634]:
+                            - generic [ref=e2635]:
+                              - img
+                            - button [ref=e2966] [cursor=pointer]:
+                              - generic [ref=e2637]: ENVELOPING ALGEBRAS OF SEMI-SIMPLE LIE ALGEBRAS
+                              - generic [ref=e2638]: Available Online
+                              - img
+                      - region [ref=e2967]:
+                        - button [ref=e2968] [cursor=pointer]:
+                          - generic [ref=e2969]:
+                            - img
+                        - button [ref=e2970] [cursor=pointer]:
+                          - generic [ref=e2971]:
+                            - img
+                        - button [ref=e2974] [cursor=pointer]:
+                          - generic [ref=e2975]:
+                            - img
+                        - button [ref=e2977] [cursor=pointer]:
+                          - generic [ref=e2978]:
+                            - img
+                          - generic [ref=e2979]:
+                            - img
+                  - listitem [ref=e2639]:
+                    - generic [ref=e2640]:
+                      - generic [ref=e2641]:
+                        - generic [ref=e2643]: "36"
+                        - link [ref=e2980] [cursor=pointer]:
+                          - /url: https://search-library.ucsd.edu/discovery/fulldisplay?docid=cdi_proquest_ebookcentralchapters_3076338_32_346&context=PC&vid=01UCS_SDI:UCSD&lang=en&search_scope=ArticlesBooksEtc&adaptor=Primo Central&query=isbn%2Cexact%2C0817634118&offset=30
+                        - generic [ref=e2650]:
+                          - generic [ref=e2651]: Book Chapter
+                          - generic [ref=e2652]:
+                            - heading [level=3] [ref=e2981] [cursor=pointer]:
+                              - link [ref=e2982]:
+                                - /url: https://search-library.ucsd.edu/discovery/fulldisplay?docid=cdi_proquest_ebookcentralchapters_3076338_32_346&context=PC&vid=01UCS_SDI:UCSD&lang=en&search_scope=ArticlesBooksEtc&adaptor=Primo Central&query=isbn%2Cexact%2C0817634118&offset=30
+                                - generic [ref=e2656]: COMPOSITION ALGEBRAS AND THEIR AUTOMORPHISMS
+                            - generic [ref=e2657]:
+                              - generic [ref=e2660]: Jacobson, Nathan
+                              - generic [ref=e2661]:
+                                - text: ;
+                                - generic [ref=e2663]: Rota, Gian-Carlo
+                            - generic [ref=e2667]: "United States: Birkhauser Boston"
+                            - generic [ref=e2671]: Nathan Jacobson Collected Mathematical Papers, 1989, p.341-366
+                          - generic [ref=e2675]:
+                            - generic [ref=e2676]:
+                              - img
+                            - button [ref=e2983] [cursor=pointer]:
+                              - generic [ref=e2678]: COMPOSITION ALGEBRAS AND THEIR AUTOMORPHISMS
+                              - generic [ref=e2679]: Available Online
+                              - img
+                          - generic [ref=e2986]:
+                            - generic [ref=e2987]:
+                              - img
+                            - link [ref=e2988] [cursor=pointer]:
+                              - /url: /discovery/chapters?vid=01UCS_SDI%3AUCSD&query=isbn%2Cexact%2C0817634118&tab=Everything&type=chapters&docid=cdi_proquest_ebookcentralchapters_3076338_32_346&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_9_16%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_5_10%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_16_130%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_17_139%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_40_491%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_10%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_13%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_2_3%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_25_264%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_31_334%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_4_5%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_36_436%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_29_305%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_26_270%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_35_411%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_43_555%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_30_316%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_33_384%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_39_478%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_15_106%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_38_471%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_11_54%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_14_102%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_32_346%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_19_164%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_21_180%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_28%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_22_184%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_27%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_23_190%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_29%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_20_177%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_18_161%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_30%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_1_1%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_34%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_36%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_28_297%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_6_11%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_4%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_5%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_17%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_16%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_1%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_19%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_2%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_18%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_42_530%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_26%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_25%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_34_393%2C1&isRelatedItems=true&context=PC&offset=30
+                              - generic [ref=e2989]: Other chapters of the same book (51)
+                              - img
+                      - region [ref=e2990]:
+                        - button [ref=e2991] [cursor=pointer]:
+                          - generic [ref=e2992]:
+                            - img
+                        - button [ref=e2993] [cursor=pointer]:
+                          - generic [ref=e2994]:
+                            - img
+                        - button [ref=e2997] [cursor=pointer]:
+                          - generic [ref=e2998]:
+                            - img
+                        - button [ref=e3000] [cursor=pointer]:
+                          - generic [ref=e3001]:
+                            - img
+                          - generic [ref=e3002]:
+                            - img
+                  - listitem [ref=e2680]:
+                    - generic [ref=e2681]:
+                      - generic [ref=e2682]:
+                        - generic [ref=e2684]: "37"
+                        - link [ref=e3003] [cursor=pointer]:
+                          - /url: https://search-library.ucsd.edu/discovery/fulldisplay?docid=cdi_springer_books_10_1007_978_1_4612_3694_8_16&context=PC&vid=01UCS_SDI:UCSD&lang=en&search_scope=ArticlesBooksEtc&adaptor=Primo Central&query=isbn%2Cexact%2C0817634118&offset=30
+                        - generic [ref=e2691]:
+                          - generic [ref=e2692]: Book Chapter
+                          - generic [ref=e2693]:
+                            - heading [level=3] [ref=e3004] [cursor=pointer]:
+                              - link [ref=e3005]:
+                                - /url: https://search-library.ucsd.edu/discovery/fulldisplay?docid=cdi_springer_books_10_1007_978_1_4612_3694_8_16&context=PC&vid=01UCS_SDI:UCSD&lang=en&search_scope=ArticlesBooksEtc&adaptor=Primo Central&query=isbn%2Cexact%2C0817634118&offset=30
+                                - generic [ref=e2697]: A NOTE ON AUTOMORPHISMS AND DERIVATIONS OF LIE ALGEBRAS
+                            - generic [ref=e2698]:
+                              - generic [ref=e2701]: Jacobson, Nathan
+                              - generic [ref=e2702]:
+                                - text: ;
+                                - generic [ref=e2704]: Rota, Gian-Carlo
+                            - generic [ref=e2708]: "United States: Birkhauser Boston"
+                            - generic [ref=e2712]: Nathan Jacobson Collected Mathematical Papers, 1989, p.251-253
+                          - generic [ref=e2716]:
+                            - generic [ref=e2717]:
+                              - img
+                            - button [ref=e3006] [cursor=pointer]:
+                              - generic [ref=e2719]: A NOTE ON AUTOMORPHISMS AND DERIVATIONS OF LIE ALGEBRAS
+                              - generic [ref=e2720]: Available Online
+                              - img
+                      - region [ref=e3007]:
+                        - button [ref=e3008] [cursor=pointer]:
+                          - generic [ref=e3009]:
+                            - img
+                        - button [ref=e3010] [cursor=pointer]:
+                          - generic [ref=e3011]:
+                            - img
+                        - button [ref=e3014] [cursor=pointer]:
+                          - generic [ref=e3015]:
+                            - img
+                        - button [ref=e3017] [cursor=pointer]:
+                          - generic [ref=e3018]:
+                            - img
+                          - generic [ref=e3019]:
+                            - img
+                  - listitem [ref=e2721]:
+                    - generic [ref=e2722]:
+                      - generic [ref=e2723]:
+                        - generic [ref=e2725]: "38"
+                        - link [ref=e3020] [cursor=pointer]:
+                          - /url: https://search-library.ucsd.edu/discovery/fulldisplay?docid=cdi_proquest_ebookcentralchapters_3076338_42_530&context=PC&vid=01UCS_SDI:UCSD&lang=en&search_scope=ArticlesBooksEtc&adaptor=Primo Central&query=isbn%2Cexact%2C0817634118&offset=30
+                        - generic [ref=e2732]:
+                          - generic [ref=e2733]: Book Chapter
+                          - generic [ref=e2734]:
+                            - heading [level=3] [ref=e3021] [cursor=pointer]:
+                              - link [ref=e3022]:
+                                - /url: https://search-library.ucsd.edu/discovery/fulldisplay?docid=cdi_proquest_ebookcentralchapters_3076338_42_530&context=PC&vid=01UCS_SDI:UCSD&lang=en&search_scope=ArticlesBooksEtc&adaptor=Primo Central&query=isbn%2Cexact%2C0817634118&offset=30
+                                - generic [ref=e2738]: TRIALITY AND LIE ALGEBRAS OF TYPE D4
+                            - generic [ref=e2739]:
+                              - generic [ref=e2742]: Jacobson, Nathan
+                              - generic [ref=e2743]:
+                                - text: ;
+                                - generic [ref=e2745]: Rota, Gian-Carlo
+                            - generic [ref=e2749]: "United States: Birkhauser Boston"
+                            - generic [ref=e2753]: Nathan Jacobson Collected Mathematical Papers, 1989, p.529-553
+                          - generic [ref=e2757]:
+                            - generic [ref=e2758]:
+                              - img
+                            - button [ref=e3023] [cursor=pointer]:
+                              - generic [ref=e2760]: TRIALITY AND LIE ALGEBRAS OF TYPE D4
+                              - generic [ref=e2761]: Available Online
+                              - img
+                      - region [ref=e3024]:
+                        - button [ref=e3025] [cursor=pointer]:
+                          - generic [ref=e3026]:
+                            - img
+                        - button [ref=e3027] [cursor=pointer]:
+                          - generic [ref=e3028]:
+                            - img
+                        - button [ref=e3031] [cursor=pointer]:
+                          - generic [ref=e3032]:
+                            - img
+                        - button [ref=e3034] [cursor=pointer]:
+                          - generic [ref=e3035]:
+                            - img
+                          - generic [ref=e3036]:
+                            - img
+                  - listitem [ref=e2762]:
+                    - generic [ref=e2763]:
+                      - generic [ref=e2764]:
+                        - generic [ref=e2766]: "39"
+                        - link [ref=e3037] [cursor=pointer]:
+                          - /url: https://search-library.ucsd.edu/discovery/fulldisplay?docid=cdi_springer_books_10_1007_978_1_4612_3694_8_7&context=PC&vid=01UCS_SDI:UCSD&lang=en&search_scope=ArticlesBooksEtc&adaptor=Primo Central&query=isbn%2Cexact%2C0817634118&offset=30
+                        - generic [ref=e2773]:
+                          - generic [ref=e2774]: Book Chapter
+                          - generic [ref=e2775]:
+                            - heading [level=3] [ref=e3038] [cursor=pointer]:
+                              - link [ref=e3039]:
+                                - /url: https://search-library.ucsd.edu/discovery/fulldisplay?docid=cdi_springer_books_10_1007_978_1_4612_3694_8_7&context=PC&vid=01UCS_SDI:UCSD&lang=en&search_scope=ArticlesBooksEtc&adaptor=Primo Central&query=isbn%2Cexact%2C0817634118&offset=30
+                                - generic [ref=e2779]: JORDAN HOMOMORPHISMS OF RINGS
+                            - generic [ref=e2780]:
+                              - generic [ref=e2783]: Jacobson, Nathan
+                              - generic [ref=e2784]:
+                                - text: ;
+                                - generic [ref=e2786]: Rota, Gian-Carlo
+                            - generic [ref=e2790]: "United States: Birkhauser Boston"
+                            - generic [ref=e2794]: Nathan Jacobson Collected Mathematical Papers, 1989, p.93-116
+                          - generic [ref=e2798]:
+                            - generic [ref=e2799]:
+                              - img
+                            - button [ref=e3040] [cursor=pointer]:
+                              - generic [ref=e2801]: JORDAN HOMOMORPHISMS OF RINGS
+                              - generic [ref=e2802]: Available Online
+                              - img
+                      - region [ref=e3041]:
+                        - button [ref=e3042] [cursor=pointer]:
+                          - generic [ref=e3043]:
+                            - img
+                        - button [ref=e3044] [cursor=pointer]:
+                          - generic [ref=e3045]:
+                            - img
+                        - button [ref=e3048] [cursor=pointer]:
+                          - generic [ref=e3049]:
+                            - img
+                        - button [ref=e3051] [cursor=pointer]:
+                          - generic [ref=e3052]:
+                            - img
+                          - generic [ref=e3053]:
+                            - img
+                  - listitem [ref=e2803]:
+                    - generic [ref=e2804]:
+                      - generic [ref=e2805]:
+                        - generic [ref=e2807]: "40"
+                        - link [ref=e3054] [cursor=pointer]:
+                          - /url: https://search-library.ucsd.edu/discovery/fulldisplay?docid=cdi_proquest_ebookcentralchapters_3076338_19_164&context=PC&vid=01UCS_SDI:UCSD&lang=en&search_scope=ArticlesBooksEtc&adaptor=Primo Central&query=isbn%2Cexact%2C0817634118&offset=30
+                        - generic [ref=e2814]:
+                          - generic [ref=e2815]: Book Chapter
+                          - generic [ref=e2816]:
+                            - heading [level=3] [ref=e3055] [cursor=pointer]:
+                              - link [ref=e3056]:
+                                - /url: https://search-library.ucsd.edu/discovery/fulldisplay?docid=cdi_proquest_ebookcentralchapters_3076338_19_164&context=PC&vid=01UCS_SDI:UCSD&lang=en&search_scope=ArticlesBooksEtc&adaptor=Primo Central&query=isbn%2Cexact%2C0817634118&offset=30
+                                - generic [ref=e2820]: HOMOMORPHISMS OF JORDAN RINGS OF SELF-ADJOINT ELEMENTS
+                            - generic [ref=e2821]:
+                              - generic [ref=e2824]: Jacobson, Nathan
+                              - generic [ref=e2825]:
+                                - text: ;
+                                - generic [ref=e2827]: Rota, Gian-Carlo
+                            - generic [ref=e2831]: "United States: Birkhauser Boston"
+                            - generic [ref=e2835]: Nathan Jacobson Collected Mathematical Papers, 1989, p.152-164
+                          - generic [ref=e2839]:
+                            - generic [ref=e2840]:
+                              - img
+                            - button [ref=e3057] [cursor=pointer]:
+                              - generic [ref=e2842]: HOMOMORPHISMS OF JORDAN RINGS OF SELF-ADJOINT ELEMENTS
+                              - generic [ref=e2843]: Available Online
+                              - img
+                      - region [ref=e3058]:
+                        - button [ref=e3059] [cursor=pointer]:
+                          - generic [ref=e3060]:
+                            - img
+                        - button [ref=e3061] [cursor=pointer]:
+                          - generic [ref=e3062]:
+                            - img
+                        - button [ref=e3065] [cursor=pointer]:
+                          - generic [ref=e3066]:
+                            - img
+                        - button [ref=e3068] [cursor=pointer]:
+                          - generic [ref=e3069]:
+                            - img
+                          - generic [ref=e3070]:
+                            - img
+                - generic [ref=e2846]:
+                  - generic [ref=e2847]:
+                    - link [ref=e3071] [cursor=pointer]:
+                      - /url: /discovery/chapters?vid=01UCS_SDI%3AUCSD&query=isbn%2Cexact%2C0817634118&tab=Everything&type=chapters&docid=cdi_springer_bookarchives_10_1007_978_1_4612_3694_8&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_9_16%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_5_10%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_16_130%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_17_139%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_40_491%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_10%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_13%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_2_3%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_25_264%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_31_334%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_4_5%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_36_436%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_29_305%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_26_270%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_35_411%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_43_555%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_30_316%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_33_384%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_39_478%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_15_106%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_38_471%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_11_54%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_14_102%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_32_346%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_19_164%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_21_180%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_28%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_22_184%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_27%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_23_190%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_29%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_20_177%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_18_161%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_30%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_1_1%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_34%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_36%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_28_297%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_6_11%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_4%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_5%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_17%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_16%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_1%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_19%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_2%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_18%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_42_530%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_26%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_25%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_34_393%2C1&isRelatedItems=true&context=PC&offset=20
+                      - generic [ref=e2850]:
+                        - img
+                    - navigation [ref=e3072]:
+                      - link [ref=e3073] [cursor=pointer]:
+                        - /url: /discovery/chapters?vid=01UCS_SDI%3AUCSD&query=isbn%2Cexact%2C0817634118&tab=Everything&type=chapters&docid=cdi_springer_bookarchives_10_1007_978_1_4612_3694_8&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_9_16%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_5_10%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_16_130%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_17_139%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_40_491%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_10%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_13%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_2_3%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_25_264%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_31_334%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_4_5%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_36_436%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_29_305%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_26_270%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_35_411%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_43_555%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_30_316%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_33_384%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_39_478%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_15_106%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_38_471%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_11_54%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_14_102%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_32_346%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_19_164%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_21_180%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_28%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_22_184%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_27%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_23_190%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_29%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_20_177%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_18_161%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_30%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_1_1%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_34%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_36%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_28_297%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_6_11%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_4%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_5%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_17%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_16%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_1%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_19%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_2%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_18%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_42_530%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_26%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_25%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_34_393%2C1&isRelatedItems=true&context=PC&offset=10
+                        - text: "2"
+                      - link [ref=e3074] [cursor=pointer]:
+                        - /url: /discovery/chapters?vid=01UCS_SDI%3AUCSD&query=isbn%2Cexact%2C0817634118&tab=Everything&type=chapters&docid=cdi_springer_bookarchives_10_1007_978_1_4612_3694_8&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_9_16%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_5_10%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_16_130%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_17_139%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_40_491%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_10%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_13%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_2_3%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_25_264%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_31_334%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_4_5%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_36_436%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_29_305%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_26_270%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_35_411%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_43_555%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_30_316%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_33_384%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_39_478%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_15_106%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_38_471%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_11_54%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_14_102%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_32_346%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_19_164%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_21_180%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_28%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_22_184%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_27%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_23_190%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_29%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_20_177%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_18_161%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_30%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_1_1%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_34%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_36%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_28_297%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_6_11%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_4%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_5%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_17%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_16%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_1%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_19%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_2%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_18%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_42_530%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_26%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_25%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_34_393%2C1&isRelatedItems=true&context=PC&offset=20
+                        - text: "3"
+                      - link [ref=e3075]:
+                        - /url: /discovery/chapters?vid=01UCS_SDI%3AUCSD&query=isbn%2Cexact%2C0817634118&tab=Everything&type=chapters&docid=cdi_springer_bookarchives_10_1007_978_1_4612_3694_8&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_9_16%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_5_10%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_16_130%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_17_139%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_40_491%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_10%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_13%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_2_3%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_25_264%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_31_334%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_4_5%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_36_436%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_29_305%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_26_270%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_35_411%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_43_555%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_30_316%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_33_384%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_39_478%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_15_106%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_38_471%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_11_54%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_14_102%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_32_346%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_19_164%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_21_180%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_28%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_22_184%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_27%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_23_190%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_29%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_20_177%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_18_161%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_30%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_1_1%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_34%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_36%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_28_297%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_6_11%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_4%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_5%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_17%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_16%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_1%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_19%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_2%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_18%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_42_530%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_26%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_25%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_34_393%2C1&isRelatedItems=true&context=PC&offset=30
+                        - text: "4"
+                      - link [ref=e3076] [cursor=pointer]:
+                        - /url: /discovery/chapters?vid=01UCS_SDI%3AUCSD&query=isbn%2Cexact%2C0817634118&tab=Everything&type=chapters&docid=cdi_springer_bookarchives_10_1007_978_1_4612_3694_8&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_9_16%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_5_10%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_16_130%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_17_139%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_40_491%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_10%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_13%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_2_3%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_25_264%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_31_334%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_4_5%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_36_436%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_29_305%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_26_270%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_35_411%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_43_555%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_30_316%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_33_384%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_39_478%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_15_106%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_38_471%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_11_54%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_14_102%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_32_346%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_19_164%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_21_180%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_28%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_22_184%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_27%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_23_190%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_29%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_20_177%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_18_161%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_30%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_1_1%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_34%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_36%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_28_297%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_6_11%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_4%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_5%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_17%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_16%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_1%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_19%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_2%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_18%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_42_530%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_26%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_25%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_34_393%2C1&isRelatedItems=true&context=PC&offset=40
+                        - text: "5"
+                      - link [ref=e3077] [cursor=pointer]:
+                        - /url: /discovery/chapters?vid=01UCS_SDI%3AUCSD&query=isbn%2Cexact%2C0817634118&tab=Everything&type=chapters&docid=cdi_springer_bookarchives_10_1007_978_1_4612_3694_8&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_9_16%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_5_10%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_16_130%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_17_139%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_40_491%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_10%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_13%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_2_3%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_25_264%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_31_334%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_4_5%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_36_436%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_29_305%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_26_270%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_35_411%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_43_555%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_30_316%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_33_384%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_39_478%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_15_106%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_38_471%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_11_54%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_14_102%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_32_346%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_19_164%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_21_180%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_28%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_22_184%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_27%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_23_190%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_29%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_20_177%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_18_161%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_30%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_1_1%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_34%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_36%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_28_297%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_6_11%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_4%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_5%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_17%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_16%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_1%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_19%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_2%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_18%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_42_530%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_26%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_25%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_34_393%2C1&isRelatedItems=true&context=PC&offset=50
+                        - text: "6"
+                    - link [ref=e3078] [cursor=pointer]:
+                      - /url: /discovery/chapters?vid=01UCS_SDI%3AUCSD&query=isbn%2Cexact%2C0817634118&tab=Everything&type=chapters&docid=cdi_springer_bookarchives_10_1007_978_1_4612_3694_8&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_9_16%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_5_10%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_16_130%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_17_139%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_40_491%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_10%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_13%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_2_3%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_25_264%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_31_334%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_4_5%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_36_436%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_29_305%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_26_270%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_35_411%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_43_555%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_30_316%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_33_384%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_39_478%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_15_106%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_38_471%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_11_54%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_14_102%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_32_346%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_19_164%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_21_180%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_28%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_22_184%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_27%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_23_190%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_29%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_20_177%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_18_161%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_30%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_1_1%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_34%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_36%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_28_297%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_6_11%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_4%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_5%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_17%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_16%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_1%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_19%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_2%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_18%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_42_530%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_26%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_25%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_34_393%2C1&isRelatedItems=true&context=PC&offset=40
+                      - generic [ref=e2865]:
+                        - img
+                  - generic [ref=e2866]:
+                    - text: Results Per Page
+                    - generic [ref=e2867]:
+                      - button [ref=e3079]: "10"
+                      - button [ref=e3080] [cursor=pointer]: "25"
+                      - button [ref=e3081] [cursor=pointer]: "50"
+    - contentinfo [ref=e278]:
+      - generic [ref=e279]:
+        - generic [ref=e280]:
+          - paragraph [ref=e281]:
+            - text: UC San Diego 9500 Gilman Dr. La Jolla, CA 92093 (858) 534-2230
+            - generic [ref=e282]: Copyright © 2020 Regents of the University of California. All rights reserved.
+          - list [ref=e283]:
+            - listitem [ref=e284]:
+              - link [ref=e3082] [cursor=pointer]:
+                - /url: https://accessibility.ucsd.edu/report-a-concern/index.html
+                - text: Accessibility
+            - listitem [ref=e286]:
+              - link [ref=e3083] [cursor=pointer]:
+                - /url: https://ucsd.edu/about/privacy-policy.html
+                - text: Privacy Policy
+            - listitem [ref=e288]:
+              - link [ref=e3084] [cursor=pointer]:
+                - /url: https://ucsd.edu/about/terms-of-use.html
+                - text: Terms of Use
+            - listitem [ref=e290]:
+              - link [ref=e3085] [cursor=pointer]:
+                - /url: https://library.ucsd.edu/ask-us/library-suggestions.html
+                - text: Give Feedback
+        - img [ref=e3086] [cursor=pointer]
+    - dialog "Full Display" [ref=e3089]:
+      - generic [ref=e3090]:
+        - generic [ref=e3091]:
+          - button "Close Full Display" [ref=e3093] [cursor=pointer]:
+            - generic [ref=e3094]:
+              - img
+            - text: Back to results list
+          - generic [ref=e3095]:
+            - button "Go to Previous record" [ref=e3096] [cursor=pointer]:
+              - generic [ref=e3097]:
+                - img
+            - button "Go to next record" [ref=e3098] [cursor=pointer]:
+              - generic [ref=e3099]:
+                - img
+        - contentinfo "Full View Region" [ref=e3101]:
+          - document [ref=e3103]:
+            - heading "Full display result" [level=2] [ref=e3104]
+            - generic [ref=e3107]:
+              - navigation "Items Services" [ref=e3108]:
+                - generic [ref=e3109]:
+                  - button "Top" [ref=e3110] [cursor=pointer]
+                  - button "Send to" [ref=e3111] [cursor=pointer]
+                  - button "View Online" [ref=e3112] [cursor=pointer]
+                  - button "How to get it" [ref=e3113] [cursor=pointer]
+                  - button "Details" [ref=e3114] [cursor=pointer]
+                  - button "Links" [ref=e3115] [cursor=pointer]
+                  - button "Go to next record" [ref=e3116] [cursor=pointer]: Next record
+                  - button "Go to Previous record" [ref=e3117] [cursor=pointer]: Previous record
+                  - button "Close Full Display" [ref=e3118] [cursor=pointer]: Close
+              - generic [ref=e3122]:
+                - generic [ref=e3123]:
+                  - link "Image 36" [ref=e3127]:
+                    - /url: https://search-library.ucsd.edu/discovery/fulldisplay?docid=cdi_proquest_ebookcentralchapters_3076338_32_346&context=PC&vid=01UCS_SDI:UCSD&lang=en&search_scope=ArticlesBooksEtc&adaptor=Primo Central&query=isbn%2Cexact%2C0817634118&offset=30
+                  - generic [ref=e3130]:
+                    - generic [ref=e3131]: Book Chapter
+                    - generic [ref=e3132]:
+                      - heading "COMPOSITION ALGEBRAS AND THEIR AUTOMORPHISMS" [level=3] [ref=e3133] [cursor=pointer]:
+                        - link "COMPOSITION ALGEBRAS AND THEIR AUTOMORPHISMS" [ref=e3134]:
+                          - /url: https://search-library.ucsd.edu/discovery/fulldisplay?docid=cdi_proquest_ebookcentralchapters_3076338_32_346&context=PC&vid=01UCS_SDI:UCSD&lang=en&search_scope=ArticlesBooksEtc&adaptor=Primo Central&query=isbn%2Cexact%2C0817634118&offset=30
+                          - generic [ref=e3136]: COMPOSITION ALGEBRAS AND THEIR AUTOMORPHISMS
+                      - generic [ref=e3137]:
+                        - generic [ref=e3140]: Jacobson, Nathan
+                        - generic [ref=e3141]:
+                          - text: ;
+                          - generic [ref=e3143]: Rota, Gian-Carlo
+                      - generic [ref=e3147]: "United States: Birkhauser Boston"
+                      - generic [ref=e3151]: Nathan Jacobson Collected Mathematical Papers, 1989, p.341-366
+                    - generic [ref=e3155]:
+                      - generic [ref=e3156]:
+                        - img
+                      - button "COMPOSITION ALGEBRAS AND THEIR AUTOMORPHISMS Available Online" [ref=e3157] [cursor=pointer]:
+                        - generic [ref=e3158]: COMPOSITION ALGEBRAS AND THEIR AUTOMORPHISMS
+                        - generic [ref=e3159]: Available Online
+                        - generic:
+                          - img
+                    - generic [ref=e3162]:
+                      - generic [ref=e3163]:
+                        - img
+                      - link "Other chapters of the same book (51)" [ref=e3164] [cursor=pointer]:
+                        - /url: /discovery/chapters?vid=01UCS_SDI%3AUCSD&query=isbn%2Cexact%2C0817634118&tab=Everything&type=chapters&docid=cdi_proquest_ebookcentralchapters_3076338_32_346&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_9_16%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_5_10%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_16_130%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_17_139%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_40_491%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_10%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_13%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_2_3%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_25_264%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_31_334%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_4_5%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_36_436%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_29_305%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_26_270%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_35_411%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_43_555%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_30_316%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_33_384%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_39_478%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_15_106%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_38_471%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_11_54%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_14_102%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_32_346%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_19_164%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_21_180%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_28%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_22_184%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_27%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_23_190%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_29%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_20_177%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_18_161%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_30%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_1_1%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_34%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_36%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_28_297%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_6_11%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_4%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_5%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_17%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_16%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_1%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_19%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_2%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_18%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_42_530%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_26%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_springer_books_10_1007_978_1_4612_3694_8_25%2C1&mfacet=frbrgroupid%2Cinclude%2Ccdi_proquest_ebookcentralchapters_3076338_34_393%2C1&isRelatedItems=true&context=PC&offset=30
+                        - generic [ref=e3165]: Other chapters of the same book (51)
+                        - generic:
+                          - img
+                - region "Actions for COMPOSITION ALGEBRAS AND THEIR AUTOMORPHISMS" [ref=e3166]:
+                  - button "Add item COMPOSITION ALGEBRAS AND THEIR AUTOMORPHISMS to favorites" [ref=e3169] [cursor=pointer]:
+                    - generic [ref=e3170]:
+                      - img
+              - generic [ref=e3174]:
+                - heading "Send to" [level=4] [ref=e3178]
+                - navigation "Actions options" [ref=e3184]:
+                  - tablist "Use one of the following export options on the full view of the record" [ref=e3185]:
+                    - generic [ref=e3186]:
+                      - tab "QR" [ref=e3187]:
+                        - tab "QR" [ref=e3188] [cursor=pointer]:
+                          - generic [ref=e3190]:
+                            - generic [ref=e3191]:
+                              - img
+                            - generic [ref=e3192]: QR
+                      - tab "Citation" [ref=e3193]:
+                        - tab "Citation" [ref=e3194] [cursor=pointer]:
+                          - generic [ref=e3196]:
+                            - generic [ref=e3197]:
+                              - img
+                            - generic [ref=e3198]: Citation
+                      - tab "EasyBib" [ref=e3199]:
+                        - tab "EasyBib" [ref=e3200] [cursor=pointer]:
+                          - generic [ref=e3202]:
+                            - generic [ref=e3203]:
+                              - img
+                            - generic [ref=e3204]: EasyBib
+                      - tab "EndNote Desktop / Zotero" [ref=e3205]:
+                        - tab "EndNote Desktop / Zotero" [ref=e3206] [cursor=pointer]:
+                          - generic [ref=e3208]:
+                            - generic [ref=e3209]:
+                              - img
+                            - generic [ref=e3210]: EndNote Desktop / Zotero
+                      - tab "EndNote Basic" [ref=e3211]:
+                        - tab "EndNote Basic" [ref=e3212] [cursor=pointer]:
+                          - generic [ref=e3214]:
+                            - generic [ref=e3215]:
+                              - img
+                            - generic [ref=e3216]: EndNote Basic
+                      - tab "Bibtex" [ref=e3217]:
+                        - tab "Bibtex" [ref=e3218] [cursor=pointer]:
+                          - generic [ref=e3220]:
+                            - generic [ref=e3221]:
+                              - img
+                            - generic [ref=e3222]: Bibtex
+                      - tab "Print" [ref=e3223]:
+                        - tab "Print" [ref=e3224] [cursor=pointer]:
+                          - generic [ref=e3226]:
+                            - generic [ref=e3227]:
+                              - img
+                            - generic [ref=e3228]: Print
+                      - tab "Email" [ref=e3229]:
+                        - tab "Email" [ref=e3230] [cursor=pointer]:
+                          - generic [ref=e3232]:
+                            - generic [ref=e3233]:
+                              - img
+                            - generic [ref=e3234]: Email
+                      - tab "Permalink" [ref=e3235]:
+                        - tab "Permalink" [ref=e3236] [cursor=pointer]:
+                          - generic [ref=e3238]:
+                            - generic [ref=e3239]:
+                              - img
+                            - generic [ref=e3240]: Permalink
+                      - tab "Export to Excel" [ref=e3241]:
+                        - tab "Export to Excel" [ref=e3242] [cursor=pointer]:
+                          - generic [ref=e3244]:
+                            - generic [ref=e3245]:
+                              - img
+                            - generic [ref=e3246]: Export to Excel
+              - generic [ref=e3249]:
+                - heading "View Online" [level=4] [ref=e3253]
+                - generic [ref=e3258]:
+                  - heading "Full text availability" [level=2] [ref=e3262]
+                  - list [ref=e3263]:
+                    - listitem [ref=e3265] [cursor=pointer]:
+                      - generic [ref=e3266]:
+                        - generic [ref=e3268]:
+                          - link "SpringerLink online monographs (UCSD). Mathematics and statistics archive , opens in a new window" [ref=e3270]:
+                            - /url: /view/action/uresolver.do?operation=resolveService&package_service_id=21429238960006535&institutionId=6535&customerId=6530&VE=true
+                            - text: SpringerLink online monographs (UCSD). Mathematics and statistics archive
+                          - paragraph [ref=e3271]:
+                            - generic [ref=e3273]:
+                              - img
+                            - button "Restricted to UC San Diego" [ref=e3274]: Restricted to UC San Diego
+                        - generic [ref=e3276]:
+                          - img
+              - generic [ref=e3279]:
+                - heading "How to get it" [level=4] [ref=e3283]
+                - generic [ref=e3289]:
+                  - alert [ref=e3291]:
+                    - generic [ref=e3292]:
+                      - generic [ref=e3293]: Please sign in to check if there are any request options.
+                      - button "Sign in" [ref=e3295] [cursor=pointer]:
+                        - generic [ref=e3296]:
+                          - img
+                        - generic [ref=e3297]: Sign in
+                  - tabpanel "Requests List" [ref=e3300]:
+                    - generic [ref=e3303]:
+                      - list [ref=e3305]
+                      - list [ref=e3307]
+              - generic [ref=e3310]:
+                - heading "Details" [level=4] [ref=e3314]
+                - generic [ref=e3320]:
+                  - generic [ref=e3321]:
+                    - generic [ref=e3322]: Title
+                    - list [ref=e3324]:
+                      - listitem [ref=e3325]:
+                        - generic [ref=e3327]: COMPOSITION ALGEBRAS AND THEIR AUTOMORPHISMS
+                  - generic [ref=e3328]:
+                    - generic [ref=e3329]: Creator
+                    - generic [ref=e3330]:
+                      - list [ref=e3331]:
+                        - listitem [ref=e3332]:
+                          - link "Jacobson, Nathan" [ref=e3334] [cursor=pointer]:
+                            - /url: /discovery/search?query=creator%2Ccontains%2CJacobson%2C%20Nathan%2CAND&tab=Everything&vid=01UCS_SDI%3AUCSD&facet=creator%2Cexact%2CJacobson%2C%20Nathan&mode=advanced&offset=0
+                            - generic [ref=e3335]: Jacobson, Nathan
+                            - generic:
+                              - img
+                      - list [ref=e3336]:
+                        - listitem [ref=e3337]:
+                          - link "Rota, Gian-Carlo" [ref=e3339] [cursor=pointer]:
+                            - /url: /discovery/search?query=creator%2Ccontains%2CRota%2C%20Gian-Carlo%2CAND&tab=Everything&vid=01UCS_SDI%3AUCSD&facet=creator%2Cexact%2CRota%2C%20Gian-Carlo&mode=advanced&offset=0
+                            - generic [ref=e3340]: Rota, Gian-Carlo
+                            - generic:
+                              - img
+                  - generic [ref=e3341]:
+                    - generic [ref=e3342]: Is Part Of
+                    - list [ref=e3344]:
+                      - listitem [ref=e3345]:
+                        - generic [ref=e3347]: Nathan Jacobson Collected Mathematical Papers, 1989, p.341-366
+                  - generic [ref=e3348]:
+                    - generic [ref=e3349]: Description
+                    - list [ref=e3351]:
+                      - listitem [ref=e3352]:
+                        - generic [ref=e3354]: "The principal objective of the present paper is the study of the automorphisms and groups of automorphisms of composition algebras, that is, the algebras arising from quadratic forms which permit composition. These algebras are mainly quaternion algebras and Cayley algebras. The problem of determining the quadratic forms which permit composition (Huryitz's problem) has been treated by many authors (2). In spite of this, there does not appear in any one place a complete solution of this problem in its most general form -- which amounts to the determination of the algebras for an arbitrary field and not just to the determination of the possible dimensionalities. We give such a solution here for the case of characteristic not two. Aside from its intrinsic interest and applications to other fields (for example Jordan algebras, absolute valued algebras) we have still another reason for treating the Hurvitz problem again, namely: The analysis of the composition algebras is essential for our study of their automorphisms."
+                  - generic [ref=e3355]:
+                    - generic [ref=e3356]: Publisher
+                    - list [ref=e3358]:
+                      - listitem [ref=e3359]:
+                        - generic [ref=e3361]: "United States: Birkhauser Boston"
+                  - generic [ref=e3362]:
+                    - generic [ref=e3363]: Related titles
+                    - list [ref=e3365]:
+                      - listitem [ref=e3366]:
+                        - generic [ref=e3368]: Contemporary Mathematicians
+                  - generic [ref=e3369]:
+                    - generic [ref=e3370]: Identifier
+                    - list [ref=e3372]:
+                      - listitem [ref=e3373]:
+                        - generic [ref=e3375]: "ISBN: 1461282152"
+                      - listitem [ref=e3376]:
+                        - generic [ref=e3378]: "ISBN: 9781461282150"
+                      - listitem [ref=e3379]:
+                        - generic [ref=e3381]: "EISBN: 9781461236948"
+                      - listitem [ref=e3382]:
+                        - generic [ref=e3384]: "EISBN: 1461236940"
+                      - listitem [ref=e3385]:
+                        - generic [ref=e3387]: "DOI: 10.1007/978-1-4612-3694-8_24"
+                      - listitem [ref=e3388]:
+                        - generic [ref=e3390]: "OCLC: 958561665"
+                      - listitem [ref=e3391]:
+                        - generic [ref=e3393]: "LCCallNum: QA3.J33 1989"
+                  - generic [ref=e3394]:
+                    - generic [ref=e3395]: Source
+                    - list [ref=e3397]:
+                      - listitem [ref=e3398]:
+                        - generic [ref=e3400]: Alma/SFX Local Collection
+              - generic [ref=e3403]:
+                - heading "Links" [level=4] [ref=e3407]
+                - generic [ref=e3413]:
+                  - link "Request a Purchase" [ref=e3415] [cursor=pointer]:
+                    - /url: https://library.ucsd.edu/borrow-and-request/recommend-a-purchase/index.html
+                    - text: Request a Purchase
+                    - generic [ref=e3416]:
+                      - img
+                    - generic:
+                      - img
+                  - link "Search in HathiTrust" [ref=e3418] [cursor=pointer]:
+                    - /url: http://catalog.hathitrust.org/Search/Home?lookfor=Nathan+Jacobson+Collected+Mathematical+Papers+%3A+Volume+2+%281947-1965%29+%2F&lookfor=Nathan+Jacobson+Collected+Mathematical+Papers+%3A+Volume+2+%281947-1965%29+%2F
+                    - text: Search in HathiTrust
+                    - generic [ref=e3419]:
+                      - img
+                    - generic:
+                      - img
+                  - link "Search in Google Books" [ref=e3421] [cursor=pointer]:
+                    - /url: http://www.google.com/search?tbm=bks&q=Nathan+Jacobson+Collected+Mathematical+Papers+%3A+Volume+2+%281947-1965%29+%2F&q=Nathan+Jacobson+Collected+Mathematical+Papers+%3A+Volume+2+%281947-1965%29+%2F
+                    - text: Search in Google Books
+                    - generic [ref=e3422]:
+                      - img
+                    - generic:
+                      - img
+  - region:
+    - button [ref=e294] [cursor=pointer]:
+      - img [ref=e295]
