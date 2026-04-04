@@ -3,7 +3,7 @@
 //!
 //! # Warp Ring N^3: Physics, Numerics, And What The Data Means
 //!
-//! This document is the repo-local, implementation-aligned interpretation for the
+//! This document is the repo-scoped, implementation-aligned interpretation for the
 //! 3D "warp ring" lane that produces artifacts like:
 //!
 //! * `warp_ring_32_...`

@@ -1,0 +1,482 @@
+- generic [active] [ref=e1]:
+  - iframe [ref=e2]:
+    
+  - iframe [ref=e3]:
+    
+  - generic [ref=e5]:
+    - generic [ref=e7]:
+      - button "Google apps" [ref=e10] [cursor=pointer]
+      - link "Sign in" [ref=e13]:
+        - /url: https://www.google.com/accounts/Login?service=print&continue=https://books.google.com/books%3Fid%3DNc4_MFulAfQC%26q%3DComposition%2BAlgebras%2Band%2BTheir%2BAutomorphisms%26hl%3Den&hl=en&ec=GAZACg
+    - link "Books" [ref=e16] [cursor=pointer]:
+      - /url: https://books.google.com/?hl=en&tab=pp
+    - generic [ref=e22]:
+      - group [ref=e23]:
+        - combobox [ref=e27]: Composition Algebras and Their Automorphisms
+      - button "Google Search" [ref=e29]
+    - link "Try the new Your Library" [ref=e31] [cursor=pointer]:
+      - /url: https://www.google.com/books/library?hl=en
+      - generic [ref=e32]:
+        - img [ref=e33]
+        - generic [ref=e34]: Try the new Your Library
+        - img [ref=e35]
+  - alert [ref=e37]:
+    - 'link "Screen reader users: click this link for accessible mode. Accessible mode has the same essential features but works better with your reader." [ref=e38] [cursor=pointer]':
+      - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=Composition+Algebras+and+Their+Automorphisms&hl=en&output=html_text
+      - 'img "Screen reader users: click this link for accessible mode. Accessible mode has the same essential features but works better with your reader." [ref=e39]'
+  - generic [ref=e40]:
+    - heading "Books" [level=2] [ref=e41]:
+      - link "Books" [ref=e42] [cursor=pointer]:
+        - /url: /books
+    - generic [ref=e43]:
+      - link:
+        - /url: ""
+      - link:
+        - /url: ""
+      - link:
+        - /url: ""
+      - link:
+        - /url: ""
+      - link:
+        - /url: ""
+      - link:
+        - /url: ""
+      - toolbar [ref=e44]:
+        - button "Add to my library" [ref=e45]:
+          - text: Add to my library
+          - img [ref=e46]
+    - toolbar [ref=e48]:
+      - button [ref=e49]:
+        - img [ref=e51]
+  - generic [ref=e54]:
+    - generic [ref=e55]:
+      - generic [ref=e56]: Try the new Your Library
+      - generic [ref=e57]: Classic My Library will soon be turned off. Visit the new Your Library experience to import your bookshelves.
+      - generic [ref=e58]:
+        - link "Go to Your Library" [ref=e59] [cursor=pointer]:
+          - /url: https://www.google.com/books/library?hl=en
+          - generic [ref=e60]: Go to Your Library
+        - link "Dismiss" [ref=e61] [cursor=pointer]:
+          - /url: "javascript:"
+          - generic [ref=e62]: Dismiss
+    - img [ref=e64]
+  - generic [ref=e65]:
+    - navigation [ref=e68]:
+      - button "Get print book" [ref=e69]:
+        - link "Get print book" [ref=e70] [cursor=pointer]:
+          - /url: https://books.google.com/books?id=Nc4_MFulAfQC&sitesec=buy&source=gbs_atb
+      - paragraph [ref=e71]: No eBook available
+      - paragraph
+      - list [ref=e74]:
+        - listitem [ref=e75]:
+          - link "Amazon.com" [ref=e76] [cursor=pointer]:
+            - /url: http://www.amazon.com/gp/search?index=books&linkCode=qs&keywords=9780817634117
+        - listitem [ref=e77]:
+          - link "Barnes&Noble.com" [ref=e78] [cursor=pointer]:
+            - /url: https://www.barnesandnoble.com/w/_/_?ean=9780817634117
+        - listitem [ref=e79]:
+          - link "Books-A-Million" [ref=e80] [cursor=pointer]:
+            - /url: http://www.booksamillion.com/product/9780817634117
+        - listitem [ref=e81]:
+          - link "IndieBound" [ref=e82] [cursor=pointer]:
+            - /url: http://www.indiebound.org/book/9780817634117
+        - listitem [ref=e83]:
+          - separator [ref=e84]
+        - listitem [ref=e85]:
+          - link "Find in a library" [ref=e86] [cursor=pointer]:
+            - /url: https://books.google.com/url?id=Nc4_MFulAfQC&q=http://worldcat.org/oclc/1023975677&clientid=librarylink&usg=AOvVaw0xrRh4DGzevyrUo0y2hwmA&source=gbs_buy_r
+        - listitem [ref=e87]:
+          - link "All sellers »" [ref=e88] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&sitesec=buy&source=gbs_buy_r
+      - link "Get Textbooks on Google Play Rent and save from the world's largest eBookstore. Read, highlight, and take notes, across web, tablet, and phone. Go to Google Play Now »" [ref=e92] [cursor=pointer]:
+        - /url: https://play.google.com/store/books/category/coll_1673
+        - img [ref=e93]
+        - heading "Get Textbooks on Google Play" [level=3] [ref=e94]
+        - paragraph [ref=e95]: Rent and save from the world's largest eBookstore. Read, highlight, and take notes, across web, tablet, and phone.
+        - paragraph [ref=e96]: Go to Google Play Now »
+      - list [ref=e100]:
+        - link "My library" [ref=e102] [cursor=pointer]:
+          - /url: https://books.google.com/books?uid=114584440181414684107&source=gbs_lp_bookshelf_list
+        - generic [ref=e104]: My History
+    - main [ref=e105]:
+      - table [ref=e110]:
+        - rowgroup [ref=e111]:
+          - row [ref=e112]:
+            - cell [ref=e113]:
+              - 'heading "Nathan Jacobson Collected Mathematical Papers: Volume 2 (1947-1965)" [level=1] [ref=e114]':
+                - generic [ref=e115]: Nathan Jacobson Collected Mathematical Papers
+                - text: ":"
+                - generic [ref=e116]: Volume 2 (1947-1965)
+              - img "Front Cover" [ref=e118]
+              - generic [ref=e119]:
+                - link "N. Jacobson" [ref=e121] [cursor=pointer]:
+                  - /url: https://www.google.com/search?tbo=p&tbm=bks&q=inauthor:%22N.+Jacobson%22
+                - generic [ref=e122]:
+                  - text: Birkhauser Boston, 1989 -
+                  - link "Juvenile Nonfiction" [ref=e123] [cursor=pointer]:
+                    - /url: https://www.google.com/search?tbo=p&tbm=bks&q=subject:%22Juvenile+Nonfiction%22&source=gbs_ge_summary_r&cad=0
+                  - text: "- 556 pages"
+              - generic [ref=e124]:
+                - generic [ref=e126]: This collection contains all my published papers, both research and expository, that were published from 1934 to 1988. The research papers arranged in chronological order appear in Volume I and II and in the first part of Volume III. The expository papers, which are mainly reports presented at conferences, appear in chronological order in the last part of Volume III. Volume I covers the period 1910 to 1947, the year I moved to Yale, Volume II covers the period 1947 to 1965 when I became Chairman of the Department at Yale and Volume III covers the period from 1965 to 1989, which goes beyond my assumption of an emeritus status in 1981. I have divided the time interval covered in each volume into subintervals preceded by an account of my personal history during this period, and a commentary on the research papers published in the period. I have omitted commentaries on the expository papers and have sorted out the commentaries on the research papers according to the principal fields of my research. The personal history has been based on my recollections, checked against written documentation in my file of letters as well as diaries. One of these was a diary I kept of my trip to the USSR in 1961; the others were diaries Florie (Florence) kept during other major visits abroad. I have also consulted Professor A. W. Tucker on historical details on Princeton during the 1930's.
+                - text: More »
+      - generic [ref=e127]:
+        - heading "From inside the book" [level=3] [ref=e128]: From inside the book
+        - generic [ref=e129]:
+          - generic [ref=e130]:
+            - textbox "Search" [ref=e131]:
+              - /placeholder: ""
+              - text: Composition Algebras and Their Automorphisms
+            - button "Search" [ref=e132]
+          - generic [ref=e133]:
+            - paragraph [ref=e134]: 17 pages matching Composition Algebras and Their Automorphisms in this book
+            - generic [ref=e135]:
+              - heading "Page vii" [level=4] [ref=e136]
+              - img "Page vii" [ref=e137]
+            - generic [ref=e138]:
+              - heading "Page 341" [level=4] [ref=e139]
+              - img "Page 341" [ref=e140]
+            - generic [ref=e141]:
+              - heading "Page 345" [level=4] [ref=e142]
+              - img "Page 345" [ref=e143]
+            - paragraph [ref=e144]:
+              - link "Where's the rest of this book?" [ref=e145] [cursor=pointer]:
+                - /url: https://books.google.com/support/answer/43729?topic=9259&hl=en
+            - paragraph [ref=e147]: Results 1-3 of 17
+      - generic [ref=e148]:
+        - heading "Contents" [level=3] [ref=e149]: Contents
+        - generic [ref=e151]:
+          - table [ref=e154]:
+            - rowgroup [ref=e155]:
+              - row "Personal History and Commentary 19471955 1" [ref=e156]:
+                - cell "Personal History and Commentary 19471955":
+                  - generic [ref=e157]: Personal History and Commentary 19471955
+                - cell "1" [ref=e158]
+              - row [ref=e159]:
+                - cell
+                - cell [ref=e160]
+              - row "Research Papers 19471955 17" [ref=e161]:
+                - cell "Research Papers 19471955":
+                  - generic [ref=e162]: Research Papers 19471955
+                - cell "17" [ref=e163]
+              - row [ref=e164]:
+                - cell
+                - cell [ref=e165]
+          - table [ref=e168]:
+            - rowgroup [ref=e169]:
+              - row "40 Classification and representation of semisimple Jordan algebras with F D Jacobson 39" [ref=e170]:
+                - cell "40 Classification and representation of semisimple Jordan algebras with F D Jacobson":
+                  - generic [ref=e171]: 40 Classification and representation of semisimple Jordan algebras with F D Jacobson
+                - cell "39" [ref=e172]
+              - row [ref=e173]:
+                - cell
+                - cell [ref=e174]
+              - row "Copyright" [ref=e175]:
+                - cell "Copyright":
+                  - generic [ref=e176]: Copyright
+                - cell [ref=e177]
+              - row [ref=e178]:
+                - cell
+                - cell [ref=e179]
+          - text: 33 other sections not shown
+      - generic [ref=e181]:
+        - heading "Other editions - View all" [level=3] [ref=e182]:
+          - text: Other editions -
+          - link "View all" [ref=e183] [cursor=pointer]:
+            - /url: https://books.google.com/books?q=editions:ISBN0817634118&id=Nc4_MFulAfQC
+        - generic [ref=e184]:
+          - generic "Scroll left" [ref=e185] [cursor=pointer]: ‹
+          - generic [ref=e186]:
+            - generic [ref=e187]:
+              - link [ref=e188] [cursor=pointer]:
+                - /url: https://books.google.com/books?id=0ePuAAAAMAAJ&source=gbs_book_other_versions
+              - generic [ref=e190]:
+                - generic [ref=e191]: "1989"
+                - generic [ref=e192]: Snippet view
+            - generic [ref=e193]:
+              - link [ref=e194] [cursor=pointer]:
+                - /url: https://books.google.com/books?id=jlcrAAAAYAAJ&source=gbs_book_other_versions
+              - generic [ref=e196]:
+                - generic [ref=e197]: "1989"
+                - generic [ref=e198]: Snippet view
+          - generic "Scroll right" [ref=e199] [cursor=pointer]: ›
+      - generic [ref=e200]:
+        - heading "Common terms and phrases" [level=3] [ref=e201]: Common terms and phrases
+        - generic [ref=e204]:
+          - link "A_1" [ref=e205] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=A%E2%82%81&source=gbs_word_cloud_r&cad=4
+          - link "algebra of characteristic" [ref=e206] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=algebra+of+characteristic&source=gbs_word_cloud_r&cad=4
+          - link "algebra of linear" [ref=e207] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=algebra+of+linear&source=gbs_word_cloud_r&cad=4
+          - link "algebraically closed" [ref=e208] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=algebraically+closed&source=gbs_word_cloud_r&cad=4
+          - link "algebras of type" [ref=e209] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=algebras+of+type&source=gbs_word_cloud_r&cad=4
+          - link "alternative algebra" [ref=e210] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=alternative+algebra&source=gbs_word_cloud_r&cad=4
+          - link "Amer" [ref=e211] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=Amer&source=gbs_word_cloud_r&cad=4
+          - link "anti-homomorphism" [ref=e212] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=anti-homomorphism&source=gbs_word_cloud_r&cad=4
+          - link "assume" [ref=e213] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=assume&source=gbs_word_cloud_r&cad=4
+          - link "B_1" [ref=e214] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=B%E2%82%81&source=gbs_word_cloud_r&cad=4
+          - link "base field" [ref=e215] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=base+field&source=gbs_word_cloud_r&cad=4
+          - link "basis" [ref=e216] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=basis&source=gbs_word_cloud_r&cad=4
+          - link "bimodule" [ref=e217] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=bimodule&source=gbs_word_cloud_r&cad=4
+          - link "Cayley algebra" [ref=e218] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=Cayley+algebra&source=gbs_word_cloud_r&cad=4
+          - link "central simple" [ref=e219] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=central+simple&source=gbs_word_cloud_r&cad=4
+          - link "Clifford algebra" [ref=e220] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=Clifford+algebra&source=gbs_word_cloud_r&cad=4
+          - link "commutative" [ref=e221] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=commutative&source=gbs_word_cloud_r&cad=4
+          - link "completely reducible" [ref=e222] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=completely+reducible&source=gbs_word_cloud_r&cad=4
+          - link "composition algebra" [ref=e223] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=composition+algebra&source=gbs_word_cloud_r&cad=4
+          - link "contains" [ref=e224] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=contains&source=gbs_word_cloud_r&cad=4
+          - link "defined" [ref=e225] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=defined&source=gbs_word_cloud_r&cad=4
+          - link "denote" [ref=e226] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=denote&source=gbs_word_cloud_r&cad=4
+          - link "derivation" [ref=e227] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=derivation&source=gbs_word_cloud_r&cad=4
+          - link "diag" [ref=e228] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=diag&source=gbs_word_cloud_r&cad=4
+          - link "direct sum" [ref=e229] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=direct+sum&source=gbs_word_cloud_r&cad=4
+          - link "division algebra" [ref=e230] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=division+algebra&source=gbs_word_cloud_r&cad=4
+          - link "e_1" [ref=e231] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=e%E2%82%81&source=gbs_word_cloud_r&cad=4
+          - link "exceptional simple Jordan" [ref=e232] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=exceptional+simple+Jordan&source=gbs_word_cloud_r&cad=4
+          - link "exists" [ref=e233] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=exists&source=gbs_word_cloud_r&cad=4
+          - link "extension" [ref=e234] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=extension&source=gbs_word_cloud_r&cad=4
+          - link "field of characteristic" [ref=e235] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=field+of+characteristic&source=gbs_word_cloud_r&cad=4
+          - link "finite dimensional" [ref=e236] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=finite+dimensional&source=gbs_word_cloud_r&cad=4
+          - link "Galois" [ref=e237] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=Galois&source=gbs_word_cloud_r&cad=4
+          - link "group of automorphisms" [ref=e238] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=group+of+automorphisms&source=gbs_word_cloud_r&cad=4
+          - link "Hence" [ref=e239] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=Hence&source=gbs_word_cloud_r&cad=4
+          - link "homomorphism" [ref=e240] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=homomorphism&source=gbs_word_cloud_r&cad=4
+          - link "ideal" [ref=e241] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=ideal&source=gbs_word_cloud_r&cad=4
+          - link "idempotents" [ref=e242] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=idempotents&source=gbs_word_cloud_r&cad=4
+          - link "identity" [ref=e243] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=identity&source=gbs_word_cloud_r&cad=4
+          - link "imbedding" [ref=e244] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=imbedding&source=gbs_word_cloud_r&cad=4
+          - link "implies" [ref=e245] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=implies&source=gbs_word_cloud_r&cad=4
+          - link "involution" [ref=e246] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=involution&source=gbs_word_cloud_r&cad=4
+          - link "irreducible" [ref=e247] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=irreducible&source=gbs_word_cloud_r&cad=4
+          - link "isomorphic" [ref=e248] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=isomorphic&source=gbs_word_cloud_r&cad=4
+          - link "Jacobson" [ref=e249] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=Jacobson&source=gbs_word_cloud_r&cad=4
+          - link "Jordan homomorphism" [ref=e250] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=Jordan+homomorphism&source=gbs_word_cloud_r&cad=4
+          - link "Jordan ring" [ref=e251] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=Jordan+ring&source=gbs_word_cloud_r&cad=4
+          - link "L_1" [ref=e252] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=L%E2%82%81&source=gbs_word_cloud_r&cad=4
+          - link "Lemma" [ref=e253] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=Lemma&source=gbs_word_cloud_r&cad=4
+          - link "Lie algebra" [ref=e254] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=Lie+algebra&source=gbs_word_cloud_r&cad=4
+          - link "Lie triple system" [ref=e255] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=Lie+triple+system&source=gbs_word_cloud_r&cad=4
+          - link "linear transformations" [ref=e256] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=linear+transformations&source=gbs_word_cloud_r&cad=4
+          - link "M_1" [ref=e257] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=M%E2%82%81&source=gbs_word_cloud_r&cad=4
+          - link "Math" [ref=e258] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=Math&source=gbs_word_cloud_r&cad=4
+          - link "minimum polynomial" [ref=e259] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=minimum+polynomial&source=gbs_word_cloud_r&cad=4
+          - link "module" [ref=e260] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=module&source=gbs_word_cloud_r&cad=4
+          - link "morphism" [ref=e261] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=morphism&source=gbs_word_cloud_r&cad=4
+          - link "multiplication" [ref=e262] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=multiplication&source=gbs_word_cloud_r&cad=4
+          - link "nilpotent elements" [ref=e263] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=nilpotent+elements&source=gbs_word_cloud_r&cad=4
+          - link "non-degenerate" [ref=e264] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=non-degenerate&source=gbs_word_cloud_r&cad=4
+          - link "non-zero" [ref=e265] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=non-zero&source=gbs_word_cloud_r&cad=4
+          - link "norm" [ref=e266] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=norm&source=gbs_word_cloud_r&cad=4
+          - link "obtain" [ref=e267] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=obtain&source=gbs_word_cloud_r&cad=4
+          - link "orthogonal idempotents" [ref=e268] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=orthogonal+idempotents&source=gbs_word_cloud_r&cad=4
+          - link "Peirce decomposition" [ref=e269] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=Peirce+decomposition&source=gbs_word_cloud_r&cad=4
+          - link "Proof" [ref=e270] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=Proof&source=gbs_word_cloud_r&cad=4
+          - link "prove" [ref=e271] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=prove&source=gbs_word_cloud_r&cad=4
+          - link "quaternion algebra" [ref=e272] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=quaternion+algebra&source=gbs_word_cloud_r&cad=4
+          - link "relative" [ref=e273] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=relative&source=gbs_word_cloud_r&cad=4
+          - link "representation" [ref=e274] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=representation&source=gbs_word_cloud_r&cad=4
+          - link "result" [ref=e275] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=result&source=gbs_word_cloud_r&cad=4
+          - link "satisfies" [ref=e276] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=satisfies&source=gbs_word_cloud_r&cad=4
+          - link "scalar" [ref=e277] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=scalar&source=gbs_word_cloud_r&cad=4
+          - link "self-adjoint elements" [ref=e278] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=self-adjoint+elements&source=gbs_word_cloud_r&cad=4
+          - link "semi-simple" [ref=e279] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=semi-simple&source=gbs_word_cloud_r&cad=4
+          - link "shows" [ref=e280] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=shows&source=gbs_word_cloud_r&cad=4
+          - link "simple algebras" [ref=e281] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=simple+algebras&source=gbs_word_cloud_r&cad=4
+          - link "simple Jordan algebra" [ref=e282] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=simple+Jordan+algebra&source=gbs_word_cloud_r&cad=4
+          - link "simple Lie algebras" [ref=e283] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=simple+Lie+algebras&source=gbs_word_cloud_r&cad=4
+          - link "special Jordan algebra" [ref=e284] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=special+Jordan+algebra&source=gbs_word_cloud_r&cad=4
+          - link "split" [ref=e285] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=split&source=gbs_word_cloud_r&cad=4
+          - link "subalgebra" [ref=e286] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=subalgebra&source=gbs_word_cloud_r&cad=4
+          - link "subgroup" [ref=e287] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=subgroup&source=gbs_word_cloud_r&cad=4
+          - link "subspace" [ref=e288] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=subspace&source=gbs_word_cloud_r&cad=4
+          - link "theory" [ref=e289] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=theory&source=gbs_word_cloud_r&cad=4
+          - link "U_1" [ref=e290] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=U%E2%82%81&source=gbs_word_cloud_r&cad=4
+          - link "universal algebra" [ref=e291] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=universal+algebra&source=gbs_word_cloud_r&cad=4
+          - link "universal associative algebra" [ref=e292] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=universal+associative+algebra&source=gbs_word_cloud_r&cad=4
+          - link "vector space" [ref=e293] [cursor=pointer]:
+            - /url: https://books.google.com/books?id=Nc4_MFulAfQC&q=vector+space&source=gbs_word_cloud_r&cad=4
+      - generic [ref=e294]:
+        - heading "Bibliographic information" [level=3] [ref=e295]
+        - table [ref=e298]:
+          - rowgroup [ref=e299]:
+            - 'row "Title Nathan Jacobson Collected Mathematical Papers: Volume 2 (1947-1965) Volume 2 of Collected Mathematical Papers, Nathan Jacobson Contemporary Mathematicians, ISSN 0884-7037" [ref=e300]':
+              - cell "Title" [ref=e301]
+              - 'cell "Nathan Jacobson Collected Mathematical Papers: Volume 2 (1947-1965) Volume 2 of Collected Mathematical Papers, Nathan Jacobson Contemporary Mathematicians, ISSN 0884-7037" [ref=e302]':
+                - text: "Nathan Jacobson Collected Mathematical Papers: Volume 2 (1947-1965)"
+                - link "Volume 2 of Collected Mathematical Papers" [ref=e303] [cursor=pointer]:
+                  - /url: https://www.google.com/search?tbo=p&tbm=bks&q=bibliogroup:%22Collected+Mathematical+Papers%22&source=gbs_metadata_r&cad=5
+                  - generic [ref=e304]: Volume 2 of Collected Mathematical Papers
+                - text: ","
+                - link "Nathan Jacobson" [ref=e305] [cursor=pointer]:
+                  - /url: https://www.google.com/search?tbo=p&tbm=bks&q=inauthor:%22Nathan+Jacobson%22&source=gbs_metadata_r&cad=5
+                - link "Contemporary Mathematicians" [ref=e306] [cursor=pointer]:
+                  - /url: https://www.google.com/search?tbo=p&tbm=bks&q=bibliogroup:%22Contemporary+Mathematicians%22&source=gbs_metadata_r&cad=5
+                  - generic [ref=e307]: Contemporary Mathematicians
+                - text: ", ISSN 0884-7037"
+            - row "Author N. Jacobson" [ref=e308]:
+              - cell "Author" [ref=e309]
+              - cell "N. Jacobson" [ref=e310]:
+                - link "N. Jacobson" [ref=e311] [cursor=pointer]:
+                  - /url: https://www.google.com/search?tbo=p&tbm=bks&q=inauthor:%22N.+Jacobson%22&source=gbs_metadata_r&cad=5
+            - row "Edition illustrated" [ref=e312]:
+              - cell "Edition" [ref=e313]
+              - cell "illustrated" [ref=e314]
+            - row "Publisher Birkhauser Boston, 1989" [ref=e315]:
+              - cell "Publisher" [ref=e316]
+              - cell "Birkhauser Boston, 1989" [ref=e317]
+            - row "Original from University of California, Berkeley" [ref=e318]:
+              - cell "Original from" [ref=e319]
+              - cell "University of California, Berkeley" [ref=e320]
+            - row "Digitized Jan 17, 2019" [ref=e321]:
+              - cell "Digitized" [ref=e322]
+              - cell "Jan 17, 2019" [ref=e323]
+            - row "ISBN 0817634118, 9780817634117" [ref=e324]:
+              - cell "ISBN" [ref=e325]
+              - cell "0817634118, 9780817634117" [ref=e326]
+            - row "Length 556 pages" [ref=e327]:
+              - cell "Length" [ref=e328]
+              - cell "556 pages" [ref=e329]
+            - row "Subjects Juvenile Nonfiction › Science & Nature › General Juvenile Nonfiction / Science & Nature / General Mathematics / General Reference / General Science / General" [ref=e330]:
+              - cell "Subjects" [ref=e331]
+              - cell "Juvenile Nonfiction › Science & Nature › General Juvenile Nonfiction / Science & Nature / General Mathematics / General Reference / General Science / General" [ref=e332]:
+                - link "Juvenile Nonfiction" [ref=e334] [cursor=pointer]:
+                  - /url: https://www.google.com/search?tbo=p&tbm=bks&q=subject:%22Juvenile+Nonfiction%22
+                - text: ›
+                - link "Science & Nature" [ref=e336] [cursor=pointer]:
+                  - /url: https://www.google.com/search?tbo=p&tbm=bks&q=subject:%22Juvenile+Nonfiction+Science+%26+Nature%22
+                - text: ›
+                - link "General" [ref=e338] [cursor=pointer]:
+                  - /url: https://www.google.com/search?tbo=p&tbm=bks&q=subject:%22Juvenile+Nonfiction+Science+%26+Nature+General%22
+                - link "Juvenile Nonfiction / Science & Nature / General" [ref=e339] [cursor=pointer]:
+                  - /url: https://www.google.com/search?tbo=p&tbm=bks&q=subject:%22Juvenile+Nonfiction+/+Science+%26+Nature+/+General%22&source=gbs_metadata_r&cad=5
+                - link "Mathematics / General" [ref=e340] [cursor=pointer]:
+                  - /url: https://www.google.com/search?tbo=p&tbm=bks&q=subject:%22Mathematics+/+General%22&source=gbs_metadata_r&cad=5
+                - link "Reference / General" [ref=e341] [cursor=pointer]:
+                  - /url: https://www.google.com/search?tbo=p&tbm=bks&q=subject:%22Reference+/+General%22&source=gbs_metadata_r&cad=5
+                - link "Science / General" [ref=e342] [cursor=pointer]:
+                  - /url: https://www.google.com/search?tbo=p&tbm=bks&q=subject:%22Science+/+General%22&source=gbs_metadata_r&cad=5
+            - row [ref=e343]:
+              - cell [ref=e344]
+              - cell [ref=e345]
+            - row "Export Citation BiBTeX EndNote RefMan" [ref=e346]:
+              - cell "Export Citation" [ref=e347]
+              - cell "BiBTeX EndNote RefMan" [ref=e348]:
+                - link "BiBTeX" [ref=e349]:
+                  - /url: https://books.google.com/books/download/Nathan_Jacobson_Collected_Mathematical_P.bibtex?id=Nc4_MFulAfQC&output=bibtex
+                - link "EndNote" [ref=e350]:
+                  - /url: https://books.google.com/books/download/Nathan_Jacobson_Collected_Mathematical_P.enw?id=Nc4_MFulAfQC&output=enw
+                - link "RefMan" [ref=e351]:
+                  - /url: https://books.google.com/books/download/Nathan_Jacobson_Collected_Mathematical_P.ris?id=Nc4_MFulAfQC&output=ris
+      - generic [ref=e353]:
+        - link "About Google Books" [ref=e354] [cursor=pointer]:
+          - /url: /intl/en/googlebooks/about.html
+          - text: About Google Books
+        - text: "-"
+        - link "Privacy Policy" [ref=e355] [cursor=pointer]:
+          - /url: /intl/en/googlebooks/privacy.html
+          - text: Privacy Policy
+        - text: "-"
+        - link "Terms of Service" [ref=e356] [cursor=pointer]:
+          - /url: /intl/en/googlebooks/tos.html
+          - text: Terms of Service
+        - text: "-"
+        - link "Information for Publishers" [ref=e357] [cursor=pointer]:
+          - /url: http://books.google.com/support/partner/?hl=en
+          - text: Information for Publishers
+        - text: "-"
+        - link "Report an issue" [ref=e358] [cursor=pointer]:
+          - /url: http://books.google.com/support/answer/180577?hl=en&url=https://books.google.com/books?id=Nc4_MFulAfQC&q=Composition+Algebras+and+Their+Automorphisms&hl=en&v=Nc4_MFulAfQC&is=atb
+          - text: Report an issue
+        - text: "-"
+        - link "Help" [ref=e359] [cursor=pointer]:
+          - /url: http://books.google.com/support/topic/4359341?hl=en
+          - text: Help
+        - text: "-"
+        - link "Google Home" [ref=e360] [cursor=pointer]:
+          - /url: https://www.google.com/
+          - text: Google Home

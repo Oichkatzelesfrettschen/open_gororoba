@@ -38,5 +38,5 @@
 //! The user referenced local files `26568.pdf` / `26569.pdf` during review, but
 //! those artifacts are not present inside this repository. The governed source lane
 //! for this claim cluster is therefore the official vendor / doc URLs above plus
-//! the Ogita-Rump-Oishi paper and the repo-local verifier / benchmark artifacts.
+//! the Ogita-Rump-Oishi paper and the repo-scoped verifier / benchmark artifacts.
 //!

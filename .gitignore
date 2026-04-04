@@ -12,10 +12,14 @@ Thumbs.db
 *~
 .vscode/
 .idea/
+.cargo/
+.config/
 .claude/
 .gemini/
+.gororoba_lit_cache/
 .playwright-mcp/
 .horusec/
+.codex
 *.pdf
 
 # ------------------------------------------------------------------------------
@@ -213,6 +217,8 @@ credentials.*
 !docs/reports/POST_RC1_32D_EVIDENCE_NOTE.md
 !docs/reports/*_commit_audit_*.md
 !docs/reports/*_roadmap_*.md
+!docs/monograph/MERGED_MONOGRAPH.md
+!docs/reports/root_promoted/*.md
 
 # ------------------------------------------------------------------------------
 # 7. Root Directory Protection (Keep Root Clean)

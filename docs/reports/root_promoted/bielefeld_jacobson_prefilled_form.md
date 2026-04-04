@@ -1,0 +1,116 @@
+- generic [ref=e1]:
+  - banner:
+    - navigation [ref=e2]:
+      - generic [ref=e5]:
+        - link "Universitat Bielefeld" [ref=e6] [cursor=pointer]:
+          - /url: //www.ub.uni-bielefeld.de/
+          - img "Universitat Bielefeld" [ref=e7]
+        - generic:
+          - link "Universitat Bielefeld":
+            - /url: //www.uni-bielefeld.de
+          - link "Universitatsbibliothek Bielefeld":
+            - /url: //www.ub.uni-bielefeld.de/
+  - main [ref=e8]:
+    - generic [ref=e9]:
+      - heading "Digitalisierungsvorschlag" [level=1] [ref=e11]
+      - article [ref=e12]:
+        - generic [ref=e13]:
+          - paragraph [ref=e14]:
+            - text: Wir bieten Ihnen einen Digitalisierungsservice fur urheberrechtsfreie und vergriffene Literatur aus dem Bestand der Bibliothek. Vorschlagen konnen Sie Scans von ganzen Werken, die vor 1996 erschienen sind. Das Werk wird anschließend in unseren
+            - link "Digitalen Sammlungen" [ref=e15] [cursor=pointer]:
+              - /url: http://ds.ub.uni-bielefeld.de/
+            - text: veroffentlicht und kann dort genutzt und als PDF heruntergeladen werden. Der Service ist kostenlos.
+          - group "Ihr Digitalisierungsvorschlag" [ref=e17]:
+            - generic [ref=e18]: Ihr Digitalisierungsvorschlag
+            - group "Ihre Daten" [ref=e19]:
+              - generic [ref=e20]: Ihre Daten
+              - generic [ref=e22]:
+                - generic [ref=e24] [cursor=pointer]: Name*
+                - textbox "Name*" [ref=e25]:
+                  - /placeholder: Ihr Name
+              - generic [ref=e27]:
+                - generic [ref=e29] [cursor=pointer]: E-Mail-Adresse*
+                - textbox "E-Mail-Adresse*" [ref=e30]:
+                  - /placeholder: name@uni-bielefeld.de
+            - group "Bibliografische Daten" [ref=e31]:
+              - generic [ref=e32]: Bibliografische Daten
+              - generic [ref=e34]:
+                - generic [ref=e36] [cursor=pointer]: Autor/Herausgeber
+                - textbox "Autor/Herausgeber" [ref=e37]:
+                  - /placeholder: z.B. Nietzsche, Friedrich
+                  - text: Nathan Jacobson
+              - generic [ref=e39]:
+                - generic [ref=e41] [cursor=pointer]: Titel
+                - textbox "Titel" [ref=e42]:
+                  - /placeholder: z.B. Morgenrothe
+                  - text: Collected mathematical papers. Vol. 2 (1947 - 1965)
+              - generic [ref=e44]:
+                - generic [ref=e46] [cursor=pointer]: Jahr
+                - textbox "Jahr" [ref=e47]:
+                  - /placeholder: z.B. 1887
+                  - text: "1989"
+              - generic [ref=e49]:
+                - generic [ref=e51] [cursor=pointer]: Signatur
+                - textbox "Signatur" [ref=e52]:
+                  - /placeholder: z.B. PP447.01=M851 X87
+                  - text: QA060 J17[2
+              - generic [ref=e54]:
+                - generic [ref=e56] [cursor=pointer]: Mediennummer*
+                - textbox "Mediennummer*" [ref=e57]:
+                  - /placeholder: z.B. 150/4188669+01
+                  - text: 100/3290355+01
+            - group "Weitere Hinweise" [ref=e58]:
+              - generic [ref=e59]: Weitere Hinweise
+              - generic [ref=e61]:
+                - generic [ref=e63] [cursor=pointer]: Anmerkungen
+                - textbox "Anmerkungen" [active] [ref=e64]:
+                  - /placeholder: Ihre Anmerkung
+                  - text: Please digitize this volume or, if partial digitization is preferred, pp. 341-366 containing paper [60], "Composition algebras and their automorphisms." Existing catalog evidence confirms the target chapter begins on p. 341 in volume 2.
+              - generic [ref=e66]:
+                - generic [ref=e67]:
+                  - text: Datenschutzrechtliche
+                  - text: Einwilligung*
+                - generic [ref=e69] [cursor=pointer]:
+                  - checkbox "Hiermit stimme ich der in der Datenschutzerklarung beschriebenen Verarbeitung meiner personenbezogenen Daten zu" [ref=e70]
+                  - text: Hiermit stimme ich der in der
+                  - link "Datenschutzerklarung" [ref=e71]:
+                    - /url: https://www.uni-bielefeld.de/ub/datenschutz/#accordion-comp_0000619c5f41_0000003072_7c81
+                  - text: beschriebenen Verarbeitung meiner personenbezogenen Daten zu
+            - generic [ref=e72]:
+              - button "Digitalisierungsvorschlag abschicken" [ref=e73] [cursor=pointer]:
+                - generic [ref=e74]: 
+                - text: Digitalisierungsvorschlag abschicken
+              - button "Felder leeren" [ref=e75] [cursor=pointer]:
+                - generic [ref=e76]: 
+                - text: Felder leeren
+          - paragraph [ref=e77]: Felder mit * mussen ausgefullt werden.
+      - complementary [ref=e78]:
+        - generic [ref=e79]:
+          - heading "Support/Kontakt" [level=2] [ref=e80]
+          - link "Hilfe / FAQ" [ref=e81] [cursor=pointer]:
+            - /url: //www.ub.uni-bielefeld.de/ub/library/dod/
+            - generic [ref=e82]: 
+            - text: Hilfe / FAQ
+          - link "dod.ub@uni-bielefeld.de" [ref=e83] [cursor=pointer]:
+            - /url: mailto:dod.ub@uni-bielefeld.de
+            - generic [ref=e84]: 
+            - text: dod.ub@uni-bielefeld.de
+  - contentinfo [ref=e86]:
+    - generic [ref=e89]:
+      - list [ref=e90]:
+        - listitem [ref=e91]:
+          - link "Kontakt" [ref=e92] [cursor=pointer]:
+            - /url: //www.ub.uni-bielefeld.de/ub/contact/
+        - listitem [ref=e93]:
+          - link "Impressum" [ref=e94] [cursor=pointer]:
+            - /url: //www.uni-bielefeld.de/impressum/
+        - listitem [ref=e95]:
+          - link "Datenschutzhinweise" [ref=e96] [cursor=pointer]:
+            - /url: //www.uni-bielefeld.de/datenschutzhinweise/
+        - listitem [ref=e97]:
+          - link "Barrierefreiheit" [ref=e98] [cursor=pointer]:
+            - /url: //www.uni-bielefeld.de/barrierefreiheit/
+      - paragraph [ref=e99]:
+        - text: ©
+        - link "Universitatsbibliothek Bielefeld" [ref=e100] [cursor=pointer]:
+          - /url: //www.ub.uni-bielefeld.de/

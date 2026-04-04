@@ -1,28 +1,40 @@
 # Three-Layer Registry Architecture
 
-> Canonical reference for the TOML-source, SQLite-build, CLI-query architecture.
+> Canonical reference for the SQLite-first architecture with TOML compatibility artifacts.
 
 ## Overview
 
-The registry uses a three-layer architecture where **TOML files are the single
-source of truth**, SQLite is a derived build artifact, and the `gororoba-db` CLI
-provides fast querying and auditing.
+The registry uses a three-layer architecture where `.cache/registry.sqlite3`
+is the canonical source of truth, and files under `registry/` are maintained as
+compatibility and migration artifacts.
 
 ```
-LAYER 1: SOURCE (36 TOML files, human-edited, git-tracked)
+LAYER 1: CANONICAL (SQLite)
     |
     v  `make registry-build`
-LAYER 2: BUILD (.cache/registry.sqlite3, .gitignore'd, deterministic)
+LAYER 2: COMPATIBILITY (legacy TOML imports plus DB-backed compatibility exports)
     |
     v  `gororoba-db` CLI
 LAYER 3: QUERY (claims, insights, experiments, xref, audit, search)
 ```
 
-## Layer 1: Source TOML Files
+## Layer 1: Canonical Registry Database
 
-All 36 source files are listed in `registry/source_manifest.toml` with their
-roles and target tables. Edit these files directly; they are the authoritative
-record.
+All canonical values live in `.cache/registry.sqlite3`. The CLI and tooling
+interact with this database as the source of truth for queries, checks, and
+reproducible outputs.
+
+| Component | Why it matters |
+|-----------|----------------|
+| Canonical store | SQLite file with signed migrations and deterministic schema |
+| Verification target | `make governance-gate` verifies source integrity and references |
+| Query performance | FTS5 and indexed relational paths for fast interactive use |
+
+## Layer 2: Compatibility TOML Layer
+
+Compatibility TOML files in `registry/` are managed as a controlled migration
+surface and interoperability layer. `registry/source_manifest.toml` tracks those
+files for rebuild and export consistency.
 
 | Category | Files | Examples |
 |----------|-------|---------|
@@ -32,30 +44,24 @@ record.
 | Narrative content | 6 | research_narratives.toml, book_docs.toml |
 | Project config | 7 | roadmap.toml, terminology_standards.toml |
 | Infrastructure | 2 | agents_contract.toml, mcp_server_matrix.toml |
-| Governance lock | 1 | schema_signatures.toml (derived but committed) |
+| Governance lock | 1 | schema_signatures.toml |
 
-## Layer 2: Build
+The build step still ingests compatibility TOMLs where migration is incomplete,
+but DB-backed lanes now round-trip through SQLite before their compatibility
+exports are rewritten:
 
-The derived SQLite database is created deterministically from Layer 1 sources:
-
-```bash
-make registry-build          # Prerequisite-guarded (no-op if sources unchanged)
-make registry-build-verify   # Build + verify crossrefs
-```
-
-The build step:
-1. Reads `registry/source_manifest.toml` for the file list
+1. Reads `registry/source_manifest.toml` for compatible descriptors
 2. Deletes any existing `.cache/registry.sqlite3`
-3. Creates a fresh DB with all 11 migrations
+3. Creates a fresh DB with all 13 migrations
 4. Sets `PRAGMA journal_mode=WAL` for concurrent read safety
-5. Ingests all 36 source TOML files into normalized tables
-6. Builds FTS5 full-text indexes on claims, insights, bibliography
-7. Builds crossref join tables (claim-experiment, claim-insight)
-8. Records build metadata (timestamp, source count)
+5. Ingests compatibility TOML inputs into canonical tables
+6. Rewrites DB-backed planning compatibility exports (`roadmap.toml`, `todo.toml`, `next_actions.toml`)
+7. Builds FTS5 full-text indexes on claims, insights, bibliography
+8. Builds crossref join tables (claim-experiment, claim-insight)
+9. Records build metadata (timestamp, source count)
 
-The Makefile uses proper prerequisites so the DB only rebuilds when a source
-TOML file changes. Agents running queries hit the cached DB without triggering
-rebuilds.
+Makefile prerequisites keep the DB refresh tied to compatibility changes, while
+queries continue to run directly against SQLite.
 
 ## Layer 3: Query CLI
 
@@ -96,7 +102,7 @@ gororoba-db schema
 
 ## Database Schema
 
-11 migrations in `db/migrations/`:
+13 migrations in `db/migrations/`:
 
 | Layer | Tables | Migration |
 |-------|--------|-----------|
@@ -105,28 +111,30 @@ gororoba-db schema
 | Downloads | download_jobs, download_attempts, download_campaigns | 0005-0008 |
 | External Sources | external_source_contracts, external_source_dossiers | 0009 |
 | Knowledge | equation_atoms, proof_skeletons, derivation_steps | 0010 |
-| Planning | roadmap_items, todo_items, next_action_items | 0010 |
+| Planning | roadmap_items, todo_items, next_action_items | 0010, 0013 |
 | Narratives | research_narratives (+ FTS5 search) | 0010 |
 | FTS5 + Crossrefs | claims_fts, insights_fts, bibliography_fts, evidence_edges, crossref tables | 0011 |
+| Literature Verification | literature_verification_runs, literature_verification_results, literature_novelty_similar_papers | 0012 |
 
 ## Governance Gate
 
-The governance gate validates source TOML files directly (no SQLite required):
+The governance gate validates the canonical SQLite data plus TOML compatibility
+invariants.
 
 ```bash
 make governance-gate    # Schema signatures, crossrefs, labels, etc.
 ```
 
-The `schema_signatures.toml` file is the one derived file committed to git.
-It contains content and schema hashes for governance validation. Regenerate
-with `make integrity-resolution`.
+The `schema_signatures.toml` file remains the canonical governance snapshot committed
+to git. It contains content and schema hashes for governance validation.
+Regenerate with `make integrity-resolution`.
 
 ## Technology Stack
 
 | Component | Choice | Rationale |
 |-----------|--------|-----------|
-| Source format | TOML | Human-readable, git-mergeable, diffable |
-| Build artifact | SQLite 3 (WAL mode) | Fast queries, FTS5, concurrent reads |
+| Canonical source | SQLite 3 (WAL mode) | Fast queries, transactional consistency |
+| Compatibility export | TOML | Human-readable, review-friendly, git-mergeable |
 | Rust bindings | rusqlite 0.38 | Embedded SQLite, zero external deps |
 | Migrations | rusqlite_migration 2.4 | Sequential SQL files |
 | CLI | clap 4 (derive) | Subcommand dispatch |
@@ -138,13 +146,13 @@ with `make integrity-resolution`.
 To modify the registry:
 
 ```bash
-# 1. Edit source TOML files directly
+# 1. Update compatibility TOMLs as needed (migration path)
 vim registry/claims.toml
 
 # 2. Regenerate schema signatures (if governance gate requires it)
 make integrity-resolution
 
-# 3. Rebuild derived DB (automatic via Make prerequisites)
+# 3. Rebuild canonical DB and compatibility artifacts (automatic via Make prerequisites)
 make registry-build
 
 # 4. Query to verify

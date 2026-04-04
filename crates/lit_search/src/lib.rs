@@ -1,6 +1,6 @@
 //! Multi-source academic literature search with deduplication.
 //!
-//! Pure Rust port of AutoResearchClaw's Python literature search pipeline.
+//! Pure Rust implementation of the repository's legacy literature search baseline.
 //! Queries 17 academic APIs in parallel, deduplicates by DOI / arXiv ID /
 //! fuzzy title match, and returns merged results sorted by citation count.
 //!
@@ -11,6 +11,24 @@
 //!   SciELO, InspireHEP, DBLP, J-STAGE
 //! - **Tier 2** (requires API key or scraping): CORE, ADS, CiNii, Lens,
 //!   Unpaywall, Google Scholar
+//!
+//! # User-local credentials
+//!
+//! `lit_search` reads optional keyed-source credentials from environment
+//! variables only. Keep them in your user-local shell environment or secret
+//! manager, not in the repository.
+//!
+//! Supported variables:
+//!
+//! - `SEMANTIC_SCHOLAR_API_KEY` (alias: `S2_API_KEY`)
+//! - `CORE_API_KEY`
+//! - `CINII_APPID`
+//! - `UNPAYWALL_EMAIL`
+//! - `ADS_API_KEY` (alias: `NASA_ADS_TOKEN`)
+//! - `LENS_API_KEY`
+//!
+//! See `docs/engineering/lit_search_env_vars.txt` for installation guidance
+//! and placeholder export examples.
 
 pub mod cache;
 pub mod crawler;

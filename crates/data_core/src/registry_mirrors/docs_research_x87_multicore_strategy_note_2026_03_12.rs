@@ -3,7 +3,7 @@
 //!
 //! # x87 Multicore Strategy Note (2026-03-12)
 //!
-//! This note summarizes the refreshed repo-local worker sweep of the pinned-core
+//! This note summarizes the refreshed repo-scoped worker sweep of the pinned-core
 //! `x87-strategy-bench` lane.
 //!
 //! Artifacts:
@@ -47,7 +47,7 @@
 //! >  workload-specific observation, not a universal guarantee.
 //! 6. For the easy positive-sum workload, the fastest exact parallel lane was
 //! >  `avx2_per_chunk_x87_final` at 2 workers.
-//! 7. The repo-local worker sweep still showed scheduling noise at higher
+//! 7. The repo-scoped worker sweep still showed scheduling noise at higher
 //! >  worker counts on this machine state. In this run, `x87_per_chunk` at 6
 //! >  workers was unstable on `sum_positive` and `dot_random`, so the summary
 //! >  marks those rows explicitly instead of treating them as decision-grade

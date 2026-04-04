@@ -1,0 +1,58 @@
+lit_search user-local environment variables
+===========================================
+
+Policy
+------
+`lit_search` reads keyed-source credentials from environment variables only.
+Do not commit API keys, app IDs, contact emails, or token-bearing config files
+into this repository.
+
+Install location
+----------------
+Use one user-local mechanism:
+
+- your shell startup file, such as `~/.bashrc`, `~/.zshrc`, or `~/.profile`
+- a user-local env file loaded by your shell or session manager
+- a secret manager that injects environment variables at runtime
+
+For the repo-wide inventory that distinguishes secret-bearing variables from
+non-secret runtime tuning, see `docs/engineering/runtime_env_inventory.txt`.
+
+Recommended pattern
+-------------------
+Keep real secrets outside the repo and use descriptive placeholders in docs or
+local templates until you actually have issued credentials.
+
+Example exports:
+
+```bash
+export SEMANTIC_SCHOLAR_API_KEY="replace-with-issued-semantic-scholar-key"
+export CORE_API_KEY="replace-with-issued-core-key"
+export CINII_APPID="replace-with-issued-cinii-appid"
+export UNPAYWALL_EMAIL="replace-with-contact-email-for-unpaywall"
+export ADS_API_KEY="replace-with-issued-nasa-ads-token"
+export LENS_API_KEY="replace-with-issued-lens-key"
+```
+
+Supported variables
+-------------------
+- `SEMANTIC_SCHOLAR_API_KEY`
+- `S2_API_KEY`
+  Alias for Semantic Scholar.
+- `CORE_API_KEY`
+- `CINII_APPID`
+- `UNPAYWALL_EMAIL`
+  Contact email used for Unpaywall requests.
+- `ADS_API_KEY`
+- `NASA_ADS_TOKEN`
+  Alias for NASA ADS.
+- `LENS_API_KEY`
+
+Notes
+-----
+- OpenAlex and arXiv do not require keys for the current search path.
+- NASA ADS support is keyed through `ADS_API_KEY` or `NASA_ADS_TOKEN`.
+- If a variable is unset, `lit_search` skips or degrades that keyed source
+  instead of looking for versioned workspace secret files.
+- The supported non-secret config/bootstrap surfaces are documented in
+  `docs/engineering/user_local_bootstrap.txt`.

@@ -1,0 +1,345 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - link "Planetary Data System" [ref=e4] [cursor=pointer]:
+      - /url: https://pds.nasa.gov/
+    - generic [ref=e5]:
+      - img "PDS Information" [ref=e7]
+      - generic [ref=e9] [cursor=pointer]:
+        - text: Find a Node
+        - generic [ref=e10]: ‣
+  - generic:
+    - generic [ref=e11]:
+      - link [ref=e13] [cursor=pointer]:
+        - /url: /index.jsp
+      - generic [ref=e14]:
+        - img [ref=e15]
+        - list [ref=e17]:
+          - listitem [ref=e18]:
+            - link "Nasa Portal" [ref=e19] [cursor=pointer]:
+              - /url: http://www.nasa.gov/
+          - listitem [ref=e20]:
+            - link "Feedback" [ref=e21] [cursor=pointer]:
+              - /url: /feedback.jsp
+      - list [ref=e23]:
+        - listitem [ref=e24]:
+          - link "HOME" [ref=e25] [cursor=pointer]:
+            - /url: /index.jsp
+        - listitem [ref=e26]:
+          - link "ABOUT PPI " [ref=e27] [cursor=pointer]:
+            - /url: /overview.jsp
+            - text: ABOUT PPI
+            - generic [ref=e28]: 
+        - listitem [ref=e29]:
+          - link "DATA " [ref=e30] [cursor=pointer]:
+            - /url: /search/default.jsp
+            - text: DATA
+            - generic [ref=e31]: 
+        - listitem [ref=e32]:
+          - link "ANNEX" [ref=e33] [cursor=pointer]:
+            - /url: /search/annex
+        - listitem [ref=e34]:
+          - link "DOCUMENTS" [ref=e35] [cursor=pointer]:
+            - /url: /doc/index.jsp
+        - listitem [ref=e36]:
+          - link "SOFTWARE" [ref=e37] [cursor=pointer]:
+            - /url: /software/index.jsp
+        - listitem [ref=e38]:
+          - link "RELATED SITES " [ref=e39] [cursor=pointer]:
+            - /url: /related_sites.jsp
+            - text: RELATED SITES
+            - generic [ref=e40]: 
+        - listitem [ref=e41]:
+          - link "ABOUT PDS" [ref=e42] [cursor=pointer]:
+            - /url: https://pds.jpl.nasa.gov/home/about/
+        - listitem
+    - generic [ref=e44]:
+      - generic [ref=e45]:
+        - generic [ref=e46]:
+          - paragraph [ref=e47]: QUICK SEARCH
+          - table [ref=e49]:
+            - rowgroup [ref=e50]:
+              - row "Search By Missions" [ref=e51]:
+                - cell "Search By Missions" [ref=e52]:
+                  - link "Search By Missions" [ref=e53] [cursor=pointer]:
+                    - /url: /mission
+              - row [ref=e54]:
+                - cell [ref=e55]
+              - row "Mercury" [ref=e56]:
+                - cell "Mercury" [ref=e57]:
+                  - link "Mercury" [ref=e58] [cursor=pointer]:
+                    - /url: /search/target?t=Mercury
+              - row "Venus" [ref=e59]:
+                - cell "Venus" [ref=e60]:
+                  - link "Venus" [ref=e61] [cursor=pointer]:
+                    - /url: /search/target?t=Venus
+              - row "Earth" [ref=e62]:
+                - cell "Earth" [ref=e63]:
+                  - link "Earth" [ref=e64] [cursor=pointer]:
+                    - /url: /search/target?t=Earth
+              - row "Mars" [ref=e65]:
+                - cell "Mars" [ref=e66]:
+                  - link "Mars" [ref=e67] [cursor=pointer]:
+                    - /url: /search/target?t=Mars
+              - row "Jupiter" [ref=e68]:
+                - cell "Jupiter" [ref=e69]:
+                  - link "Jupiter" [ref=e70] [cursor=pointer]:
+                    - /url: /search/target?t=Jupiter
+              - row "Saturn" [ref=e71]:
+                - cell "Saturn" [ref=e72]:
+                  - link "Saturn" [ref=e73] [cursor=pointer]:
+                    - /url: /search/target?t=Saturn
+              - row "Uranus" [ref=e74]:
+                - cell "Uranus" [ref=e75]:
+                  - link "Uranus" [ref=e76] [cursor=pointer]:
+                    - /url: /search/target?t=Uranus
+              - row "Neptune" [ref=e77]:
+                - cell "Neptune" [ref=e78]:
+                  - link "Neptune" [ref=e79] [cursor=pointer]:
+                    - /url: /search/target?t=Neptune
+              - row "Pluto" [ref=e80]:
+                - cell "Pluto" [ref=e81]:
+                  - link "Pluto" [ref=e82] [cursor=pointer]:
+                    - /url: /search/target?t=Pluto
+              - row "Solar Wind" [ref=e83]:
+                - cell "Solar Wind" [ref=e84]:
+                  - link "Solar Wind" [ref=e85] [cursor=pointer]:
+                    - /url: /search/target?t=Solar Wind
+        - generic [ref=e86]:
+          - paragraph [ref=e87]: QUICK LINKS
+          - generic [ref=e88]:
+            - link "FAQ" [ref=e89] [cursor=pointer]:
+              - /url: /faq.jsp
+            - link "Citation Policy" [ref=e90] [cursor=pointer]:
+              - /url: /citation_policy.jsp
+            - link "Errata for all volumes" [ref=e91] [cursor=pointer]:
+              - /url: /search?e=
+            - link "Help for Data Users" [ref=e92] [cursor=pointer]:
+              - /url: /help_users.jsp
+            - link "Help for Data Reviewers" [ref=e93] [cursor=pointer]:
+              - /url: /help_reviewers.jsp
+            - link "Help for Data Providers" [ref=e94] [cursor=pointer]:
+              - /url: /help_providers.jsp
+        - generic [ref=e95]:
+          - paragraph [ref=e96]: PDS NODES
+          - generic [ref=e97]:
+            - link "PDS Home" [ref=e98] [cursor=pointer]:
+              - /url: http://pds.jpl.nasa.gov/
+            - link "Atmospheres" [ref=e99] [cursor=pointer]:
+              - /url: http://pds-atmospheres.nmsu.edu/
+            - link "Geosciences" [ref=e100] [cursor=pointer]:
+              - /url: http://pds-geosciences.wustl.edu/
+            - link "Cartography and Imaging Sciences" [ref=e101] [cursor=pointer]:
+              - /url: https://pds-imaging.jpl.nasa.gov/
+            - link "NAIF - SPICE" [ref=e102] [cursor=pointer]:
+              - /url: https://naif.jpl.nasa.gov/naif/index.html
+            - link "Ring-Moon Systems" [ref=e103] [cursor=pointer]:
+              - /url: https://pds-rings.seti.org/
+            - link "Small Bodies" [ref=e104] [cursor=pointer]:
+              - /url: https://pds-smallbodies.astro.umd.edu/
+      - generic [ref=e105]:
+        - generic [ref=e107]:
+          - generic [ref=e108]: Find Data
+          - generic [ref=e109]:
+            - textbox [ref=e110]
+            - button " Go" [ref=e111]:
+              - generic [ref=e112]: 
+              - text: Go
+          - button " Help" [ref=e113] [cursor=pointer]:
+            - generic [ref=e114]: 
+            - text: Help
+          - button " Useful Info" [ref=e115] [cursor=pointer]:
+            - generic [ref=e116]: 
+            - text: Useful Info
+          - button " Help Desk?" [ref=e117] [cursor=pointer]:
+            - generic [ref=e118]: 
+            - text: Help Desk?
+        - generic [ref=e119]:
+          - table [ref=e120]:
+            - rowgroup [ref=e121]:
+              - row [ref=e122]:
+                - cell [ref=e123]
+              - row [ref=e124]:
+                - cell [ref=e125]
+              - row "PPI EPN-TAP - PDS-PPI VO server" [ref=e126]:
+                - cell "PPI EPN-TAP - PDS-PPI VO server" [ref=e127]:
+                  - link "PPI EPN-TAP" [ref=e128] [cursor=pointer]:
+                    - /url: https://vo-pds-ppi.igpp.ucla.edu/
+                  - text: "- PDS-PPI VO server"
+              - row "Classic PPI Website - PDS-PPI classic site" [ref=e129]:
+                - cell "Classic PPI Website - PDS-PPI classic site" [ref=e130]:
+                  - link "Classic PPI Website" [ref=e131] [cursor=pointer]:
+                    - /url: https://search-pdsppi.igpp.ucla.edu/
+                  - text: "- PDS-PPI classic site"
+              - row "PPI Archive File System" [ref=e132]:
+                - cell "PPI Archive File System" [ref=e133]:
+                  - link "PPI Archive File System" [ref=e134] [cursor=pointer]:
+                    - /url: https://pds-ppi.igpp.ucla.edu/data
+              - row [ref=e135]:
+                - cell [ref=e136]
+              - row "The Planetary Plasma Interactions (PPI) Node of the Planetary Data System (PDS) archives and distributes digital data related to the study of the interaction between the solar wind and planetary winds with planetary magnetospheres, ionospheres and surfaces. The PPI Node is located at the Department of Earth, Planetary, and Space Sciences at the University of California, Los Angeles (UCLA)." [ref=e137]:
+                - cell [ref=e138]
+                - cell [ref=e139]
+                - cell "The Planetary Plasma Interactions (PPI) Node of the Planetary Data System (PDS) archives and distributes digital data related to the study of the interaction between the solar wind and planetary winds with planetary magnetospheres, ionospheres and surfaces. The PPI Node is located at the Department of Earth, Planetary, and Space Sciences at the University of California, Los Angeles (UCLA)." [ref=e140]:
+                  - text: The Planetary Plasma Interactions (PPI) Node of the Planetary Data System (
+                  - link "PDS" [ref=e141] [cursor=pointer]:
+                    - /url: http://pds.jpl.nasa.gov/
+                  - text: ) archives and distributes digital data related to the study of the interaction between the solar wind and planetary winds with planetary magnetospheres, ionospheres and surfaces. The PPI Node is located at the
+                  - link "Department of Earth, Planetary, and Space Sciences at the University of California" [ref=e142] [cursor=pointer]:
+                    - /url: https://epss.ucla.edu/
+                  - text: ", Los Angeles ("
+                  - link "UCLA" [ref=e143] [cursor=pointer]:
+                    - /url: http://www.ucla.edu
+                  - text: ).
+          - table [ref=e144]:
+            - rowgroup [ref=e145]:
+              - row [ref=e146]:
+                - cell [ref=e147]
+              - row "Looking for Fields and Particles Data Explore our data archives by planet or spacecraft Search by mission theme" [ref=e148]:
+                - cell [ref=e149]
+                - cell [ref=e150]:
+                  - img [ref=e151]
+                - cell "Looking for Fields and Particles Data Explore our data archives by planet or spacecraft Search by mission theme" [ref=e152]:
+                  - text: Looking for Fields and Particles Data
+                  - link "Explore" [ref=e153] [cursor=pointer]:
+                    - /url: /search/default.jsp
+                  - text: our data archives by planet or spacecraft
+                  - link "Search" [ref=e154] [cursor=pointer]:
+                    - /url: /mission
+                  - text: by mission theme
+              - row [ref=e155]:
+                - cell [ref=e156]
+              - 'row "Looking for Cool Images: Planetary Images" [ref=e157]':
+                - cell [ref=e158]
+                - cell [ref=e159]:
+                  - img [ref=e160]
+                - 'cell "Looking for Cool Images: Planetary Images" [ref=e161]':
+                  - text: "Looking for Cool Images:"
+                  - link "Planetary Images" [ref=e162] [cursor=pointer]:
+                    - /url: http://photojournal.jpl.nasa.gov/
+                - cell [ref=e163]
+              - row [ref=e164]:
+                - cell [ref=e165]
+              - row "Support for Research Opportunities NASA's Research Opportunities in Space and Earth Sciences (2024) NASA's Research Opportunities in Space and Earth Sciences (2023) Mission Proposer's Archive Guide (Version 5.0.0 April 20, 2019) Individual Proposer's Archive Guide (Last Revision April 20, 2019) Strategy for writing a good data management plan for a ROSES proposal" [ref=e166]:
+                - cell [ref=e167]
+                - cell [ref=e168]:
+                  - img [ref=e169]
+                - cell "Support for Research Opportunities NASA's Research Opportunities in Space and Earth Sciences (2024) NASA's Research Opportunities in Space and Earth Sciences (2023) Mission Proposer's Archive Guide (Version 5.0.0 April 20, 2019) Individual Proposer's Archive Guide (Last Revision April 20, 2019) Strategy for writing a good data management plan for a ROSES proposal" [ref=e170]:
+                  - text: Support for Research Opportunities
+                  - link "NASA's Research Opportunities in Space and Earth Sciences (2024)" [ref=e171] [cursor=pointer]:
+                    - /url: /roses/2024/
+                  - link "NASA's Research Opportunities in Space and Earth Sciences (2023)" [ref=e172] [cursor=pointer]:
+                    - /url: /roses/2023/
+                  - link "Mission Proposer's Archive Guide (Version 5.0.0 April 20, 2019)" [ref=e173] [cursor=pointer]:
+                    - /url: https://pds.nasa.gov/home/proposers/Mission-Proposers-Archive-Guide-v5_clean_20190424.pdf
+                  - link "Individual Proposer's Archive Guide (Last Revision April 20, 2019)" [ref=e174] [cursor=pointer]:
+                    - /url: " https://pds.jpl.nasa.gov/home/proposers/Individual-Proposers-Archive-Guide-v5_clean_20190424.pdf"
+                  - link "Strategy for writing a good data management plan for a ROSES proposal" [ref=e175] [cursor=pointer]:
+                    - /url: rose_proposal.pdf
+              - row [ref=e176]:
+                - cell [ref=e177]
+              - row "All data have been classified as TSPA by the U.S. State Department. We welcome user comments, feedback, and requests for support" [ref=e178]:
+                - cell [ref=e179]
+                - cell "All data have been classified as TSPA by the U.S. State Department. We welcome user comments, feedback, and requests for support" [ref=e180]:
+                  - text: All data have been classified as
+                  - link "TSPA" [ref=e181] [cursor=pointer]:
+                    - /url: /tspa.jsp
+                  - text: by the U.S. State Department.
+                  - text: We welcome
+                  - link "user comments, feedback, and requests for support" [ref=e182] [cursor=pointer]:
+                    - /url: feedback.jsp
+      - generic [ref=e183]:
+        - generic [ref=e184]:
+          - paragraph [ref=e185]: NEW RELEASES
+          - generic [ref=e186]:
+            - generic [ref=e245]:
+              - listitem [ref=e246]:
+                - link "Mars Science Laboratory Data Release 41 2026.03.17" [ref=e247] [cursor=pointer]:
+                  - /url: https://pds.nasa.gov/datasearch/subscription-service/SS-20260317.shtml
+              - listitem [ref=e248]:
+                - link "Lunar Reconnaissance Orbiter Data Release 65 2026.03.13" [ref=e249] [cursor=pointer]:
+                  - /url: https://pds.nasa.gov/datasearch/subscription-service/SS-20260313.shtml
+              - listitem [ref=e250]:
+                - link "aperiodic data, February 2026 2026.02.28" [ref=e251] [cursor=pointer]:
+                  - /url: https://pds.nasa.gov/datasearch/subscription-service/SS-20260228.shtml
+            - generic [ref=e187]:
+              - link "More....." [ref=e188] [cursor=pointer]:
+                - /url: https://pds.jpl.nasa.gov/datasearch/subscription-service/SS-Release.shtml
+              - link "PPI New Release" [ref=e189] [cursor=pointer]:
+                - /url: release.jsp
+        - generic [ref=e190]:
+          - paragraph [ref=e191]: PDS RESOURCES
+          - generic [ref=e192]:
+            - text: Archive Planning Guide
+            - link "Individuals" [ref=e193] [cursor=pointer]:
+              - /url: https://pds.nasa.gov/home/proposers/proposing-programs.shtml
+            - link "Missions" [ref=e194] [cursor=pointer]:
+              - /url: https://pds.nasa.gov/home/proposers/Mission-Proposers-Archive-Guide-v4-r5.pdf
+            - text: Data Dictionary Search
+            - link "Lookup Tool" [ref=e195] [cursor=pointer]:
+              - /url: https://pds.nasa.gov/tools/dd-search/
+            - link "Document" [ref=e196] [cursor=pointer]:
+              - /url: https://pds.jpl.nasa.gov/datastandards/documents/
+            - link "PDS4 Standards Documents" [ref=e197] [cursor=pointer]:
+              - /url: https://pds.nasa.gov/datastandards/about/
+            - link "PDS3 Standards" [ref=e198] [cursor=pointer]:
+              - /url: https://pds.nasa.gov/datastandards/pds3/
+        - generic [ref=e199]:
+          - paragraph [ref=e200]: OTHER RESOURCES
+          - generic [ref=e201]:
+            - link " Science Explorer (SciX)" [ref=e202] [cursor=pointer]:
+              - /url: https://scixplorer.org/
+              - generic [ref=e203]: 
+              - text: Science Explorer (SciX)
+            - link " Astrophysics Data System (ADS)" [ref=e204] [cursor=pointer]:
+              - /url: https://ui.adsabs.harvard.edu/
+              - generic [ref=e205]: 
+              - text: Astrophysics Data System (ADS)
+            - link " IPDA" [ref=e206] [cursor=pointer]:
+              - /url: https://ipda.jpl.nasa.gov/
+              - generic [ref=e207]: 
+              - text: IPDA
+    - generic [ref=e208]:
+      - generic [ref=e209]:
+        - text: "Other PDS Nodes:"
+        - generic [ref=e211]: 
+        - link "PDS Home" [ref=e212] [cursor=pointer]:
+          - /url: https://pds.jpl.nasa.gov/
+        - generic [ref=e214]: 
+        - link "Atmospheres" [ref=e215] [cursor=pointer]:
+          - /url: http://pds-atmospheres.nmsu.edu/
+        - generic [ref=e217]: 
+        - link "Geosciences" [ref=e218] [cursor=pointer]:
+          - /url: http://pds-geosciences.wustl.edu/
+        - generic [ref=e220]: 
+        - link "Cartography and Imaging Sciences" [ref=e221] [cursor=pointer]:
+          - /url: https://pds-imaging.jpl.nasa.gov/
+        - generic [ref=e223]: 
+        - link "NAIF - SPICE" [ref=e224] [cursor=pointer]:
+          - /url: https://naif.jpl.nasa.gov/naif/index.html
+        - generic [ref=e226]: 
+        - link "Ring-Moon Systems" [ref=e227] [cursor=pointer]:
+          - /url: https://pds-rings.seti.org/
+        - generic [ref=e229]: 
+        - link "Small Bodies" [ref=e230] [cursor=pointer]:
+          - /url: https://pds-smallbodies.astro.umd.edu/
+      - table [ref=e232]:
+        - rowgroup [ref=e233]:
+          - 'row "Privacy / Copyright Freedom of Information Act Web Master: PDS-PPI Operator NASA Official: Cerese Albers Last Updated: Feb. 2025" [ref=e234]':
+            - cell [ref=e235]:
+              - link [ref=e236] [cursor=pointer]:
+                - /url: http://www.nasa.gov/
+                - img [ref=e237]
+            - cell "Privacy / Copyright Freedom of Information Act" [ref=e238]:
+              - link "Privacy / Copyright" [ref=e239] [cursor=pointer]:
+                - /url: http://www.jpl.nasa.gov/imagepolicy/
+              - link "Freedom of Information Act" [ref=e240] [cursor=pointer]:
+                - /url: https://www.nasa.gov/foia/
+            - cell [ref=e241]:
+              - link [ref=e242] [cursor=pointer]:
+                - /url: http://www.nasa.gov/
+            - 'cell "Web Master: PDS-PPI Operator NASA Official: Cerese Albers Last Updated: Feb. 2025" [ref=e243]':
+              - text: "Web Master:"
+              - link "PDS-PPI Operator" [ref=e244] [cursor=pointer]:
+                - /url: mailto:pds_operator@igpp.ucla.edu
+              - text: "NASA Official: Cerese Albers"
+              - text: "Last Updated: Feb. 2025"

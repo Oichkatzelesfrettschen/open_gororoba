@@ -2,8 +2,8 @@
 //!
 //! This binary consolidates all database interaction into a single
 //! entrypoint: schema introspection, statistics, querying, import/export
-//! of knowledge-base and planning tables, full-text search, audit of
-//! legacy TOML files, and notebook-session management for evcxr/Jupyter
+//! of knowledge-base, planning, and requirements tables, full-text search, audit of
+//! legacy TOML compatibility layer, and notebook-session management for evcxr/Jupyter
 //! integration.
 
 use anyhow::{Context, Result};
@@ -21,10 +21,10 @@ use toml::Value;
 #[derive(Parser, Debug)]
 #[command(
     name = "gororoba-db",
-    about = "Three-layer registry CLI: TOML source -> SQLite build -> query",
+    about = "Three-layer registry CLI: SQLite source -> compatibility exports -> query",
     long_about = "Unified entrypoint for building, querying, and auditing the registry.\n\n\
-                  Layer 1 (Source): TOML files in registry/ (human-edited, git-tracked).\n\
-                  Layer 2 (Build):  .cache/registry.sqlite3 (derived, .gitignore'd).\n\
+                  Layer 1 (Canonical Source): .cache/registry.sqlite3.\n\
+                  Layer 2 (Compatibility): registry/*.toml (legacy, generated/validated).\n\
                   Layer 3 (Query):  This CLI."
 )]
 struct Cli {
@@ -42,7 +42,7 @@ struct Cli {
 
 #[derive(Subcommand, Debug)]
 enum Commands {
-    /// Build .cache/registry.sqlite3 from source TOML files (deterministic, idempotent).
+    /// Rebuild .cache/registry.sqlite3 from compatibility inputs and refresh compatibility artifacts.
     Build(BuildArgs),
 
     /// Show database statistics: table row counts, migration status, and source-of-truth manifest.
@@ -75,11 +75,17 @@ enum Commands {
     /// Import planning TOML files (roadmap, todo, next-actions) into SQLite.
     ImportPlanning(ImportPlanningArgs),
 
+    /// Import requirements TOML into SQLite.
+    ImportRequirements(ImportRequirementsArgs),
+
     /// Import research narrative TOML into SQLite.
     ImportNarratives(ImportNarrativesArgs),
 
     /// Export planning tables to TOML-compatible output (stdout or file).
     ExportPlanning(ExportPlanningArgs),
+
+    /// Export requirements tables to TOML-compatible output (stdout or file).
+    ExportRequirements(ExportRequirementsArgs),
 
     /// Query rows from any table by name with optional status filter.
     Query(QueryArgs),
@@ -227,6 +233,13 @@ struct ImportPlanningArgs {
 }
 
 #[derive(Parser, Debug)]
+struct ImportRequirementsArgs {
+    /// Path to requirements TOML.
+    #[arg(long, default_value = "registry/requirements.toml")]
+    requirements: PathBuf,
+}
+
+#[derive(Parser, Debug)]
 struct ImportNarrativesArgs {
     /// Path to research narratives TOML.
     #[arg(long, default_value = "registry/research_narratives.toml")]
@@ -246,6 +259,24 @@ struct ExportPlanningArgs {
     /// Which planning table to export.
     #[arg(long, default_value = "roadmap")]
     table: PlanningTable,
+}
+
+#[derive(Clone, Debug, ValueEnum)]
+enum RequirementsOutputFormat {
+    Toml,
+    Json,
+    Text,
+}
+
+#[derive(Parser, Debug)]
+struct ExportRequirementsArgs {
+    /// Output format.
+    #[arg(long, default_value = "toml")]
+    format: RequirementsOutputFormat,
+
+    /// Optional output file (defaults to stdout).
+    #[arg(long)]
+    out: Option<PathBuf>,
 }
 
 #[derive(Clone, Debug, ValueEnum)]
@@ -318,7 +349,7 @@ fn main() -> Result<()> {
         return cmd_build(&cli.repo_root, &db_path, args);
     }
 
-    let store = ProvenanceStore::open(&db_path)
+    let mut store = ProvenanceStore::open(&db_path)
         .with_context(|| format!("open database {}", db_path.display()))?;
 
     match cli.command {
@@ -332,9 +363,13 @@ fn main() -> Result<()> {
         Commands::Xref(args) => cmd_xref(&store, &args),
         Commands::AuditCmd(args) => cmd_audit_cmd(&store, &cli.repo_root, &args),
         Commands::ImportKnowledge(args) => cmd_import_knowledge(&store, &cli.repo_root, &args),
-        Commands::ImportPlanning(args) => cmd_import_planning(&store, &cli.repo_root, &args),
+        Commands::ImportPlanning(args) => cmd_import_planning(&mut store, &cli.repo_root, &args),
+        Commands::ImportRequirements(args) => {
+            cmd_import_requirements(&mut store, &cli.repo_root, &args)
+        }
         Commands::ImportNarratives(args) => cmd_import_narratives(&store, &cli.repo_root, &args),
         Commands::ExportPlanning(args) => cmd_export_planning(&store, &args),
+        Commands::ExportRequirements(args) => cmd_export_requirements(&store, &args),
         Commands::Query(args) => cmd_query(&store, &args),
         Commands::ArchiveLegacy => cmd_archive_legacy(&cli.repo_root),
         Commands::NotebookInfo => cmd_notebook_info(),
@@ -493,7 +528,10 @@ fn cmd_import_knowledge(
             eq_path.display()
         );
     } else {
-        println!("  <EMOJI+26A0> Equation atoms file not found: {}", eq_path.display());
+        println!(
+            "  <EMOJI+26A0> Equation atoms file not found: {}",
+            eq_path.display()
+        );
     }
 
     // Import proof skeletons
@@ -558,7 +596,10 @@ fn cmd_import_knowledge(
             ps_path.display()
         );
     } else {
-        println!("  <EMOJI+26A0> Proof skeletons file not found: {}", ps_path.display());
+        println!(
+            "  <EMOJI+26A0> Proof skeletons file not found: {}",
+            ps_path.display()
+        );
     }
 
     // Import derivation steps
@@ -655,7 +696,10 @@ fn cmd_import_knowledge(
             ds_path.display()
         );
     } else {
-        println!("  <EMOJI+26A0> Derivation steps file not found: {}", ds_path.display());
+        println!(
+            "  <EMOJI+26A0> Derivation steps file not found: {}",
+            ds_path.display()
+        );
     }
 
     println!("Knowledge import complete.");
@@ -665,7 +709,7 @@ fn cmd_import_knowledge(
 // ─── Import planning ───────────────────────────────────────────────
 
 fn cmd_import_planning(
-    store: &ProvenanceStore,
+    store: &mut ProvenanceStore,
     repo_root: &Path,
     args: &ImportPlanningArgs,
 ) -> Result<()> {
@@ -678,6 +722,7 @@ fn cmd_import_planning(
             fs::read_to_string(&rm_path).with_context(|| format!("read {}", rm_path.display()))?;
         let val: Value =
             toml::from_str(&text).with_context(|| format!("parse {}", rm_path.display()))?;
+        store.record_registry_snapshot(repo_root, "roadmap", &rm_path, &text)?;
         let mut count = 0u64;
         if let Some(items) = val.get("workstream").and_then(|v| v.as_array()) {
             for item in items {
@@ -688,6 +733,7 @@ fn cmd_import_planning(
                     let po = json_array_field(item, "primary_outputs");
                     let er = json_array_field(item, "evidence_refs");
                     let lac = json_array_field(item, "lacunae");
+                    let claims = json_array_field(item, "claims");
                     store.upsert_roadmap_item(&provenance_store::RoadmapItem {
                         id,
                         name: item.get("name").and_then(|v| v.as_str()).unwrap_or(""),
@@ -713,6 +759,8 @@ fn cmd_import_planning(
                         primary_outputs_json: &po,
                         evidence_refs_json: &er,
                         lacunae_json: &lac,
+                        claims_json: &claims,
+                        insight: item.get("insight").and_then(|v| v.as_str()).unwrap_or(""),
                     })?;
                     count += 1;
                 }
@@ -723,7 +771,10 @@ fn cmd_import_planning(
             rm_path.display()
         );
     } else {
-        println!("  <EMOJI+26A0> Roadmap file not found: {}", rm_path.display());
+        println!(
+            "  <EMOJI+26A0> Roadmap file not found: {}",
+            rm_path.display()
+        );
     }
 
     // Import todo
@@ -733,6 +784,7 @@ fn cmd_import_planning(
             fs::read_to_string(&td_path).with_context(|| format!("read {}", td_path.display()))?;
         let val: Value =
             toml::from_str(&text).with_context(|| format!("parse {}", td_path.display()))?;
+        store.record_registry_snapshot(repo_root, "todo", &td_path, &text)?;
         let mut count = 0u64;
         if let Some(items) = val.get("item").and_then(|v| v.as_array()) {
             for item in items {
@@ -740,6 +792,7 @@ fn cmd_import_planning(
                 if !id.is_empty() {
                     let deps = json_array_field(item, "dependencies");
                     let ac = json_array_field(item, "acceptance_criteria");
+                    let er = json_array_field(item, "evidence_refs");
                     store.upsert_todo_item(&provenance_store::ActionItem {
                         id,
                         area: item.get("area").and_then(|v| v.as_str()).unwrap_or(""),
@@ -762,12 +815,16 @@ fn cmd_import_planning(
                             .unwrap_or("OPEN"),
                         dependencies_json: &deps,
                         acceptance_criteria_json: &ac,
+                        evidence_refs_json: &er,
                     })?;
                     count += 1;
                 }
             }
         }
-        println!("  <EMOJI+2713> Imported {count} todo items from {}", td_path.display());
+        println!(
+            "  <EMOJI+2713> Imported {count} todo items from {}",
+            td_path.display()
+        );
     } else {
         println!("  <EMOJI+26A0> Todo file not found: {}", td_path.display());
     }
@@ -779,6 +836,7 @@ fn cmd_import_planning(
             fs::read_to_string(&na_path).with_context(|| format!("read {}", na_path.display()))?;
         let val: Value =
             toml::from_str(&text).with_context(|| format!("parse {}", na_path.display()))?;
+        store.record_registry_snapshot(repo_root, "next_actions", &na_path, &text)?;
         let mut count = 0u64;
         if let Some(items) = val.get("action").and_then(|v| v.as_array()) {
             for item in items {
@@ -786,6 +844,7 @@ fn cmd_import_planning(
                 if !id.is_empty() {
                     let deps = json_array_field(item, "dependencies");
                     let ac = json_array_field(item, "acceptance_criteria");
+                    let er = json_array_field(item, "evidence_refs");
                     store.upsert_next_action(&provenance_store::ActionItem {
                         id,
                         area: item.get("area").and_then(|v| v.as_str()).unwrap_or(""),
@@ -808,6 +867,7 @@ fn cmd_import_planning(
                             .unwrap_or("OPEN"),
                         dependencies_json: &deps,
                         acceptance_criteria_json: &ac,
+                        evidence_refs_json: &er,
                     })?;
                     count += 1;
                 }
@@ -818,10 +878,205 @@ fn cmd_import_planning(
             na_path.display()
         );
     } else {
-        println!("  <EMOJI+26A0> Next actions file not found: {}", na_path.display());
+        println!(
+            "  <EMOJI+26A0> Next actions file not found: {}",
+            na_path.display()
+        );
     }
 
     println!("Planning import complete.");
+    Ok(())
+}
+
+// ─── Import requirements ───────────────────────────────────────────
+
+fn cmd_import_requirements(
+    store: &mut ProvenanceStore,
+    repo_root: &Path,
+    args: &ImportRequirementsArgs,
+) -> Result<()> {
+    println!("Importing requirements data into SQLite...");
+
+    let requirements_path = repo_root.join(&args.requirements);
+    if !requirements_path.exists() {
+        println!(
+            "  <EMOJI+26A0> Requirements file not found: {}",
+            requirements_path.display()
+        );
+        return Ok(());
+    }
+
+    let text = fs::read_to_string(&requirements_path)
+        .with_context(|| format!("read {}", requirements_path.display()))?;
+    let value: Value =
+        toml::from_str(&text).with_context(|| format!("parse {}", requirements_path.display()))?;
+    store.record_registry_snapshot(repo_root, "requirements", &requirements_path, &text)?;
+
+    let requirements_table = root_table(&value, "requirements");
+    let schema_table = child_table(requirements_table, "schema");
+
+    let status_allowlist = serde_json::to_string(&table_array(
+        requirements_table,
+        "status_allowlist",
+        &["active", "deprecated", "planned", "blocked"],
+    ))?;
+    let runtime_stack_allowlist = serde_json::to_string(&table_array(
+        requirements_table,
+        "runtime_stack_allowlist",
+        &[
+            "mixed",
+            "rust",
+            "python",
+            "docker_python",
+            "rocq",
+            "latex",
+            "cpp",
+        ],
+    ))?;
+    let required_module_fields = serde_json::to_string(&table_array(
+        schema_table,
+        "required_module_fields",
+        &[
+            "id",
+            "name",
+            "status",
+            "status_token",
+            "runtime_stack",
+            "requires_modules",
+            "install_targets",
+            "verify_targets",
+            "acceptance_criteria",
+        ],
+    ))?;
+    let required_gap_fields = serde_json::to_string(&table_array(
+        schema_table,
+        "required_gap_fields",
+        &[
+            "id",
+            "area",
+            "status",
+            "status_token",
+            "description",
+            "proposed_resolution",
+            "related_module_ids",
+        ],
+    ))?;
+    let meta_status = table_string(requirements_table, "status", "active");
+    let meta_status_token = table_string(requirements_table, "status_token", "ACTIVE");
+    let meta_updated = table_string(requirements_table, "updated", "2026-02-10");
+    let python_recommended = table_string(
+        requirements_table,
+        "python_recommended",
+        "3.11-3.12",
+    );
+    let python_allowed = table_string(
+        requirements_table,
+        "python_allowed",
+        "3.13+ (with optional extras caveats)",
+    );
+    let primary_markdown = table_string(
+        requirements_table,
+        "primary_markdown",
+        "docs/REQUIREMENTS.md",
+    );
+
+    store.conn_exec(
+        "DELETE FROM requirements_modules",
+        std::iter::empty::<&str>(),
+    )?;
+    store.conn_exec(
+        "DELETE FROM requirements_coverage_gaps",
+        std::iter::empty::<&str>(),
+    )?;
+    store.conn_exec(
+        "DELETE FROM requirements_registry_meta",
+        std::iter::empty::<&str>(),
+    )?;
+
+    store.upsert_requirements_meta(&provenance_store::RequirementsMeta {
+        authoritative: table_bool(requirements_table, "authoritative", true),
+        status: &meta_status,
+        status_token: &meta_status_token,
+        updated: &meta_updated,
+        python_recommended: &python_recommended,
+        python_allowed: &python_allowed,
+        primary_markdown: &primary_markdown,
+        status_allowlist_json: &status_allowlist,
+        runtime_stack_allowlist_json: &runtime_stack_allowlist,
+        required_module_fields_json: &required_module_fields,
+        required_gap_fields_json: &required_gap_fields,
+    })?;
+
+    let mut module_count = 0u64;
+    if let Some(items) = value.get("module").and_then(Value::as_array) {
+        for item in items {
+            let id = item.get("id").and_then(Value::as_str).unwrap_or("");
+            if id.is_empty() {
+                continue;
+            }
+            let requires_modules = json_array_field(item, "requires_modules");
+            let install_targets = json_array_field(item, "install_targets");
+            let verify_targets = json_array_field(item, "verify_targets");
+            let acceptance_criteria = json_array_field(item, "acceptance_criteria");
+            store.upsert_requirement_module(&provenance_store::RequirementModuleItem {
+                id,
+                name: item.get("name").and_then(Value::as_str).unwrap_or(""),
+                markdown: item.get("markdown").and_then(Value::as_str).unwrap_or(""),
+                status: item.get("status").and_then(Value::as_str).unwrap_or("active"),
+                status_token: item
+                    .get("status_token")
+                    .and_then(Value::as_str)
+                    .unwrap_or("ACTIVE"),
+                runtime_stack: item
+                    .get("runtime_stack")
+                    .and_then(Value::as_str)
+                    .unwrap_or("mixed"),
+                requires_modules_json: &requires_modules,
+                install_targets_json: &install_targets,
+                verify_targets_json: &verify_targets,
+                acceptance_criteria_json: &acceptance_criteria,
+            })?;
+            module_count += 1;
+        }
+    }
+
+    let mut gap_count = 0u64;
+    if let Some(items) = value.get("coverage_gap").and_then(Value::as_array) {
+        for item in items {
+            let id = item.get("id").and_then(Value::as_str).unwrap_or("");
+            if id.is_empty() {
+                continue;
+            }
+            let related_module_ids = json_array_field(item, "related_module_ids");
+            store.upsert_requirement_coverage_gap(
+                &provenance_store::RequirementCoverageGapItem {
+                    id,
+                    area: item.get("area").and_then(Value::as_str).unwrap_or(""),
+                    status: item.get("status").and_then(Value::as_str).unwrap_or("open"),
+                    status_token: item
+                        .get("status_token")
+                        .and_then(Value::as_str)
+                        .unwrap_or("OPEN"),
+                    description: item
+                        .get("description")
+                        .and_then(Value::as_str)
+                        .unwrap_or(""),
+                    proposed_resolution: item
+                        .get("proposed_resolution")
+                        .and_then(Value::as_str)
+                        .unwrap_or(""),
+                    related_module_ids_json: &related_module_ids,
+                },
+            )?;
+            gap_count += 1;
+        }
+    }
+
+    println!(
+        "  <EMOJI+2713> Imported {module_count} requirement modules and {gap_count} coverage gaps from {}",
+        requirements_path.display()
+    );
+    println!("Requirements import complete.");
     Ok(())
 }
 
@@ -836,7 +1091,10 @@ fn cmd_import_narratives(
 
     let path = repo_root.join(&args.narratives);
     if !path.exists() {
-        println!("  <EMOJI+26A0> Narratives file not found: {}", path.display());
+        println!(
+            "  <EMOJI+26A0> Narratives file not found: {}",
+            path.display()
+        );
         return Ok(());
     }
 
@@ -900,53 +1158,88 @@ fn cmd_import_narratives(
 // ─── Export planning ───────────────────────────────────────────────
 
 fn cmd_export_planning(store: &ProvenanceStore, args: &ExportPlanningArgs) -> Result<()> {
-    let (label, items) = match args.table {
-        PlanningTable::Roadmap => {
-            let items = store.list_roadmap_items(None)?;
-            ("roadmap", items)
-        }
-        PlanningTable::Todo => {
-            let items = store.list_todo_items(None)?;
-            ("todo", items)
-        }
-        PlanningTable::NextActions => {
-            let items = store.list_next_actions(None)?;
-            ("next_actions", items)
-        }
+    let label = match args.table {
+        PlanningTable::Roadmap => "roadmap",
+        PlanningTable::Todo => "todo",
+        PlanningTable::NextActions => "next_actions",
     };
 
     let output = match args.format {
-        OutputFormat::Json => {
-            let entries: Vec<serde_json::Value> = items
-                .iter()
-                .map(|(id, name, priority, status)| {
-                    serde_json::json!({
-                        "id": id,
-                        "name": name,
-                        "priority": priority,
-                        "status": status,
+        OutputFormat::Json => match args.table {
+            PlanningTable::Roadmap => serde_json::to_string_pretty(
+                &store
+                    .planning_roadmap_rows()?
+                    .into_iter()
+                    .map(|row| {
+                        serde_json::json!({
+                            "id": row.id,
+                            "name": row.name,
+                            "priority": row.priority,
+                            "status": row.status,
+                            "status_token": row.status_token,
+                            "description": row.description,
+                            "sprint": row.sprint,
+                            "dependencies": serde_json::from_str::<Vec<String>>(&row.dependencies_json).unwrap_or_default(),
+                            "acceptance_criteria": serde_json::from_str::<Vec<String>>(&row.acceptance_criteria_json).unwrap_or_default(),
+                            "primary_outputs": serde_json::from_str::<Vec<String>>(&row.primary_outputs_json).unwrap_or_default(),
+                            "evidence_refs": serde_json::from_str::<Vec<String>>(&row.evidence_refs_json).unwrap_or_default(),
+                            "lacunae": serde_json::from_str::<Vec<String>>(&row.lacunae_json).unwrap_or_default(),
+                            "claims": serde_json::from_str::<Vec<String>>(&row.claims_json).unwrap_or_default(),
+                            "insight": row.insight,
+                        })
                     })
-                })
-                .collect();
-            serde_json::to_string_pretty(&entries)?
-        }
-        OutputFormat::Toml => {
-            let mut lines = vec![format!("# Exported from SQLite source-of-truth ({label})")];
-            lines.push(format!("# Item count: {}", items.len()));
-            lines.push(String::new());
-            for (id, name, priority, status) in &items {
-                lines.push("[[item]]".to_string());
-                lines.push(format!("id = {}", toml_quote(id)));
-                lines.push(format!("name = {}", toml_quote(name)));
-                lines.push(format!("priority = {}", toml_quote(priority)));
-                lines.push(format!("status = {}", toml_quote(status)));
-                lines.push(String::new());
-            }
-            lines.join("\n")
-        }
+                    .collect::<Vec<_>>(),
+            )?,
+            PlanningTable::Todo => serde_json::to_string_pretty(
+                &store
+                    .planning_todo_rows()?
+                    .into_iter()
+                    .map(|row| {
+                        serde_json::json!({
+                            "id": row.id,
+                            "area": row.area,
+                            "title": row.title,
+                            "description": row.description,
+                            "priority": row.priority,
+                            "status": row.status,
+                            "status_token": row.status_token,
+                            "dependencies": serde_json::from_str::<Vec<String>>(&row.dependencies_json).unwrap_or_default(),
+                            "acceptance_criteria": serde_json::from_str::<Vec<String>>(&row.acceptance_criteria_json).unwrap_or_default(),
+                            "evidence_refs": serde_json::from_str::<Vec<String>>(&row.evidence_refs_json).unwrap_or_default(),
+                        })
+                    })
+                    .collect::<Vec<_>>(),
+            )?,
+            PlanningTable::NextActions => serde_json::to_string_pretty(
+                &store
+                    .planning_next_action_rows()?
+                    .into_iter()
+                    .map(|row| {
+                        serde_json::json!({
+                            "id": row.id,
+                            "area": row.area,
+                            "title": row.title,
+                            "description": row.description,
+                            "priority": row.priority,
+                            "status": row.status,
+                            "status_token": row.status_token,
+                            "dependencies": serde_json::from_str::<Vec<String>>(&row.dependencies_json).unwrap_or_default(),
+                            "acceptance_criteria": serde_json::from_str::<Vec<String>>(&row.acceptance_criteria_json).unwrap_or_default(),
+                            "evidence_refs": serde_json::from_str::<Vec<String>>(&row.evidence_refs_json).unwrap_or_default(),
+                        })
+                    })
+                    .collect::<Vec<_>>(),
+            )?,
+        },
+        OutputFormat::Toml => render_planning_toml(store, &args.table)?,
         OutputFormat::Text => {
+            let items = match args.table {
+                PlanningTable::Roadmap => store.list_roadmap_items(None)?,
+                PlanningTable::Todo => store.list_todo_items(None)?,
+                PlanningTable::NextActions => store.list_next_actions(None)?,
+            };
             let mut lines = vec![format!("{label} ({} items):", items.len())];
-            for (id, name, priority, status) in &items {
+            for (id, name, priority, status) in items {
                 lines.push(format!("  {id:<30} {priority:<8} {status:<12} {name}"));
             }
             lines.join("\n")
@@ -1086,7 +1379,11 @@ fn cmd_archive_legacy(repo_root: &Path) -> Result<()> {
     ];
     for path in &archive_dirs {
         let full = repo_root.join(path);
-        let status = if full.exists() { "<EMOJI+2713>" } else { "<EMOJI+2717>" };
+        let status = if full.exists() {
+            "<EMOJI+2713>"
+        } else {
+            "<EMOJI+2717>"
+        };
         println!("    {status} {path}");
     }
 
@@ -1223,6 +1520,498 @@ fn toml_quote(s: &str) -> String {
     format!("\"{}\"", s.replace('\\', "\\\\").replace('"', "\\\""))
 }
 
+fn json_string_array(raw: &str) -> Result<Vec<String>> {
+    if raw.trim().is_empty() {
+        return Ok(Vec::new());
+    }
+    serde_json::from_str(raw).with_context(|| format!("parse JSON string array from {raw}"))
+}
+
+fn toml_string_array(values: &[String]) -> String {
+    format!(
+        "[{}]",
+        values
+            .iter()
+            .map(|value| toml_quote(value))
+            .collect::<Vec<_>>()
+            .join(", ")
+    )
+}
+
+fn root_table<'a>(value: &'a Value, key: &str) -> Option<&'a toml::value::Table> {
+    value.get(key).and_then(Value::as_table)
+}
+
+fn child_table<'a>(
+    table: Option<&'a toml::value::Table>,
+    key: &str,
+) -> Option<&'a toml::value::Table> {
+    table
+        .and_then(|table| table.get(key))
+        .and_then(Value::as_table)
+}
+
+fn table_string(table: Option<&toml::value::Table>, key: &str, default: &str) -> String {
+    table
+        .and_then(|table| table.get(key))
+        .and_then(Value::as_str)
+        .unwrap_or(default)
+        .to_string()
+}
+
+fn table_bool(table: Option<&toml::value::Table>, key: &str, default: bool) -> bool {
+    table
+        .and_then(|table| table.get(key))
+        .and_then(Value::as_bool)
+        .unwrap_or(default)
+}
+
+fn table_array(table: Option<&toml::value::Table>, key: &str, default: &[&str]) -> Vec<String> {
+    match table
+        .and_then(|table| table.get(key))
+        .and_then(Value::as_array)
+    {
+        Some(values) => values
+            .iter()
+            .filter_map(Value::as_str)
+            .map(ToOwned::to_owned)
+            .collect(),
+        None => default.iter().map(|value| (*value).to_string()).collect(),
+    }
+}
+
+fn parse_snapshot(store: &ProvenanceStore, kind: &str) -> Result<Option<Value>> {
+    store
+        .registry_snapshot(kind)?
+        .map(|raw| {
+            toml::from_str::<Value>(&raw).with_context(|| format!("parse {kind} registry snapshot"))
+        })
+        .transpose()
+}
+
+fn render_roadmap_toml(store: &ProvenanceStore) -> Result<String> {
+    let snapshot = parse_snapshot(store, "roadmap")?;
+    let roadmap_table = snapshot
+        .as_ref()
+        .and_then(|value| root_table(value, "roadmap"));
+    let schema_table = child_table(roadmap_table, "schema");
+    let sections_table = child_table(roadmap_table, "sections");
+    let rows = store.planning_roadmap_rows()?;
+
+    let status_allowlist = table_array(
+        roadmap_table,
+        "status_allowlist",
+        &[
+            "planned",
+            "active",
+            "in_progress",
+            "done",
+            "paused",
+            "blocked",
+        ],
+    );
+    let priority_allowlist = table_array(
+        roadmap_table,
+        "priority_allowlist",
+        &["high", "medium", "low"],
+    );
+    let required_fields = table_array(
+        schema_table,
+        "required_fields",
+        &[
+            "id",
+            "name",
+            "priority",
+            "status",
+            "status_token",
+            "description",
+            "dependencies",
+            "acceptance_criteria",
+        ],
+    );
+
+    let mut lines = vec![
+        "# Operational roadmap registry (SQLite compatibility export from canonical registry.sqlite3).".to_string(),
+        "# Generated by `gororoba-db build` / `gororoba-db export-planning --table roadmap`.".to_string(),
+        String::new(),
+        "[roadmap]".to_string(),
+        format!(
+            "source_markdown = {}",
+            toml_quote(&table_string(roadmap_table, "source_markdown", "docs/ROADMAP.md"))
+        ),
+        format!(
+            "consolidated_date = {}",
+            toml_quote(&table_string(roadmap_table, "consolidated_date", "2026-02-10"))
+        ),
+        format!(
+            "supersedes = {}",
+            toml_string_array(&table_array(roadmap_table, "supersedes", &[]))
+        ),
+        format!(
+            "companion_docs = {}",
+            toml_string_array(&table_array(roadmap_table, "companion_docs", &[]))
+        ),
+        format!(
+            "status = {}",
+            toml_quote(&table_string(roadmap_table, "status", "active"))
+        ),
+        format!(
+            "status_token = {}",
+            toml_quote(&table_string(roadmap_table, "status_token", "ACTIVE"))
+        ),
+        format!(
+            "authoritative = {}",
+            if table_bool(roadmap_table, "authoritative", true) {
+                "true"
+            } else {
+                "false"
+            }
+        ),
+        format!("workstream_count = {}", rows.len()),
+        format!("status_allowlist = {}", toml_string_array(&status_allowlist)),
+        format!("priority_allowlist = {}", toml_string_array(&priority_allowlist)),
+        String::new(),
+        "[roadmap.schema]".to_string(),
+        format!("required_fields = {}", toml_string_array(&required_fields)),
+        format!(
+            "dependency_id_pattern = {}",
+            toml_quote(&table_string(
+                schema_table,
+                "dependency_id_pattern",
+                "WS-*|T-*|NA-*|C-*|I-*|E-*|REQ-*",
+            ))
+        ),
+        String::new(),
+        "[roadmap.sections]".to_string(),
+        format!(
+            "architectural_evolution = {}",
+            toml_quote(&table_string(
+                sections_table,
+                "architectural_evolution",
+                "## 1. Architectural Evolution",
+            ))
+        ),
+        format!(
+            "crate_ecosystem = {}",
+            toml_quote(&table_string(
+                sections_table,
+                "crate_ecosystem",
+                "## 2. Crate Ecosystem",
+            ))
+        ),
+        format!(
+            "documentation_registry = {}",
+            toml_quote(&table_string(
+                sections_table,
+                "documentation_registry",
+                "### 1.5 Documentation Registry Evolution (Sprint 13)",
+            ))
+        ),
+        format!(
+            "long_term_vision = {}",
+            toml_quote(&table_string(
+                sections_table,
+                "long_term_vision",
+                "## 8. Long-Term Vision",
+            ))
+        ),
+        format!(
+            "remaining_workstreams = {}",
+            toml_quote(&table_string(
+                sections_table,
+                "remaining_workstreams",
+                "## 7. Remaining Workstreams from ULTRA_ROADMAP.md",
+            ))
+        ),
+        String::new(),
+    ];
+
+    for row in rows {
+        lines.push("[[workstream]]".to_string());
+        lines.push(format!("id = {}", toml_quote(&row.id)));
+        lines.push(format!("name = {}", toml_quote(&row.name)));
+        lines.push(format!("priority = {}", toml_quote(&row.priority)));
+        lines.push(format!("status = {}", toml_quote(&row.status)));
+        lines.push(format!("status_token = {}", toml_quote(&row.status_token)));
+        lines.push(format!("description = {}", toml_quote(&row.description)));
+        if !row.sprint.trim().is_empty() {
+            lines.push(format!("sprint = {}", toml_quote(&row.sprint)));
+        }
+        lines.push(format!(
+            "primary_outputs = {}",
+            toml_string_array(&json_string_array(&row.primary_outputs_json)?)
+        ));
+        let claims = json_string_array(&row.claims_json)?;
+        if !claims.is_empty() {
+            lines.push(format!("claims = {}", toml_string_array(&claims)));
+        }
+        if !row.insight.trim().is_empty() {
+            lines.push(format!("insight = {}", toml_quote(&row.insight)));
+        }
+        lines.push(format!(
+            "dependencies = {}",
+            toml_string_array(&json_string_array(&row.dependencies_json)?)
+        ));
+        lines.push(format!(
+            "acceptance_criteria = {}",
+            toml_string_array(&json_string_array(&row.acceptance_criteria_json)?)
+        ));
+        lines.push(format!(
+            "evidence_refs = {}",
+            toml_string_array(&json_string_array(&row.evidence_refs_json)?)
+        ));
+        let lacunae = json_string_array(&row.lacunae_json)?;
+        if !lacunae.is_empty() {
+            lines.push(format!("lacunae = {}", toml_string_array(&lacunae)));
+        }
+        lines.push(String::new());
+    }
+
+    while matches!(lines.last(), Some(line) if line.is_empty()) {
+        lines.pop();
+    }
+    Ok(lines.join("\n"))
+}
+
+fn render_todo_toml(store: &ProvenanceStore) -> Result<String> {
+    let snapshot = parse_snapshot(store, "todo")?;
+    let todo_table = snapshot
+        .as_ref()
+        .and_then(|value| root_table(value, "todo"));
+    let schema_table = child_table(todo_table, "schema");
+    let rows = store.planning_todo_rows()?;
+
+    let status_allowlist = table_array(
+        todo_table,
+        "status_allowlist",
+        &["open", "in_progress", "done", "blocked", "deferred"],
+    );
+    let priority_allowlist =
+        table_array(todo_table, "priority_allowlist", &["high", "medium", "low"]);
+    let required_fields = table_array(
+        schema_table,
+        "required_fields",
+        &[
+            "id",
+            "area",
+            "title",
+            "description",
+            "priority",
+            "status",
+            "status_token",
+            "dependencies",
+            "acceptance_criteria",
+        ],
+    );
+
+    let mut lines = vec![
+        "# To-Do Registry (SQLite compatibility export from canonical registry.sqlite3)."
+            .to_string(),
+        "# Generated by `gororoba-db build` / `gororoba-db export-planning --table todo`."
+            .to_string(),
+        String::new(),
+        "[todo]".to_string(),
+        format!(
+            "updated = {}",
+            toml_quote(&table_string(todo_table, "updated", "2026-02-10"))
+        ),
+        format!(
+            "status = {}",
+            toml_quote(&table_string(todo_table, "status", "active"))
+        ),
+        format!(
+            "status_token = {}",
+            toml_quote(&table_string(todo_table, "status_token", "ACTIVE"))
+        ),
+        format!("item_count = {}", rows.len()),
+        format!(
+            "status_allowlist = {}",
+            toml_string_array(&status_allowlist)
+        ),
+        format!(
+            "priority_allowlist = {}",
+            toml_string_array(&priority_allowlist)
+        ),
+        String::new(),
+        "[todo.schema]".to_string(),
+        format!("required_fields = {}", toml_string_array(&required_fields)),
+        format!(
+            "dependency_id_pattern = {}",
+            toml_quote(&table_string(
+                schema_table,
+                "dependency_id_pattern",
+                "WS-*|T-*|NA-*|C-*|I-*|E-*|REQ-*",
+            ))
+        ),
+        String::new(),
+    ];
+
+    for row in rows {
+        lines.push("[[item]]".to_string());
+        lines.push(format!("id = {}", toml_quote(&row.id)));
+        lines.push(format!("area = {}", toml_quote(&row.area)));
+        lines.push(format!("title = {}", toml_quote(&row.title)));
+        lines.push(format!("description = {}", toml_quote(&row.description)));
+        lines.push(format!("priority = {}", toml_quote(&row.priority)));
+        lines.push(format!("status = {}", toml_quote(&row.status)));
+        lines.push(format!("status_token = {}", toml_quote(&row.status_token)));
+        lines.push(format!(
+            "dependencies = {}",
+            toml_string_array(&json_string_array(&row.dependencies_json)?)
+        ));
+        lines.push(format!(
+            "acceptance_criteria = {}",
+            toml_string_array(&json_string_array(&row.acceptance_criteria_json)?)
+        ));
+        lines.push(format!(
+            "evidence_refs = {}",
+            toml_string_array(&json_string_array(&row.evidence_refs_json)?)
+        ));
+        lines.push(String::new());
+    }
+
+    while matches!(lines.last(), Some(line) if line.is_empty()) {
+        lines.pop();
+    }
+    Ok(lines.join("\n"))
+}
+
+fn render_next_actions_toml(store: &ProvenanceStore) -> Result<String> {
+    let snapshot = parse_snapshot(store, "next_actions")?;
+    let meta_table = snapshot
+        .as_ref()
+        .and_then(|value| root_table(value, "meta"));
+    let next_actions_table = snapshot
+        .as_ref()
+        .and_then(|value| root_table(value, "next_actions"));
+    let schema_table = child_table(next_actions_table, "schema");
+    let rows = store.planning_next_action_rows()?;
+
+    let status_allowlist = table_array(
+        meta_table,
+        "status_allowlist",
+        &["todo", "in_progress", "done", "blocked", "deferred"],
+    );
+    let priority_allowlist =
+        table_array(meta_table, "priority_allowlist", &["high", "medium", "low"]);
+    let required_fields = table_array(
+        schema_table,
+        "required_fields",
+        &[
+            "id",
+            "area",
+            "title",
+            "description",
+            "priority",
+            "status",
+            "status_token",
+            "dependencies",
+            "acceptance_criteria",
+        ],
+    );
+
+    let mut lines = vec![
+        "# Next Actions Registry (SQLite compatibility export from canonical registry.sqlite3)."
+            .to_string(),
+        "# Generated by `gororoba-db build` / `gororoba-db export-planning --table next-actions`."
+            .to_string(),
+        String::new(),
+        "[meta]".to_string(),
+        format!(
+            "updated = {}",
+            toml_quote(&table_string(meta_table, "updated", "2026-02-10"))
+        ),
+        format!(
+            "status = {}",
+            toml_quote(&table_string(meta_table, "status", "active"))
+        ),
+        format!(
+            "status_token = {}",
+            toml_quote(&table_string(meta_table, "status_token", "ACTIVE"))
+        ),
+        format!("action_count = {}", rows.len()),
+        format!(
+            "status_allowlist = {}",
+            toml_string_array(&status_allowlist)
+        ),
+        format!(
+            "priority_allowlist = {}",
+            toml_string_array(&priority_allowlist)
+        ),
+        String::new(),
+        "[next_actions.schema]".to_string(),
+        format!("required_fields = {}", toml_string_array(&required_fields)),
+        format!(
+            "dependency_id_pattern = {}",
+            toml_quote(&table_string(
+                schema_table,
+                "dependency_id_pattern",
+                "WS-*|T-*|NA-*|C-*|I-*|E-*|REQ-*",
+            ))
+        ),
+        String::new(),
+    ];
+
+    for row in rows {
+        lines.push("[[action]]".to_string());
+        lines.push(format!("id = {}", toml_quote(&row.id)));
+        lines.push(format!("area = {}", toml_quote(&row.area)));
+        lines.push(format!("title = {}", toml_quote(&row.title)));
+        lines.push(format!("description = {}", toml_quote(&row.description)));
+        lines.push(format!("priority = {}", toml_quote(&row.priority)));
+        lines.push(format!("status = {}", toml_quote(&row.status)));
+        lines.push(format!("status_token = {}", toml_quote(&row.status_token)));
+        lines.push(format!(
+            "dependencies = {}",
+            toml_string_array(&json_string_array(&row.dependencies_json)?)
+        ));
+        lines.push(format!(
+            "acceptance_criteria = {}",
+            toml_string_array(&json_string_array(&row.acceptance_criteria_json)?)
+        ));
+        lines.push(format!(
+            "evidence_refs = {}",
+            toml_string_array(&json_string_array(&row.evidence_refs_json)?)
+        ));
+        lines.push(String::new());
+    }
+
+    while matches!(lines.last(), Some(line) if line.is_empty()) {
+        lines.pop();
+    }
+    Ok(lines.join("\n"))
+}
+
+fn render_planning_toml(store: &ProvenanceStore, table: &PlanningTable) -> Result<String> {
+    match table {
+        PlanningTable::Roadmap => render_roadmap_toml(store),
+        PlanningTable::Todo => render_todo_toml(store),
+        PlanningTable::NextActions => render_next_actions_toml(store),
+    }
+}
+
+fn export_planning_compat_files(store: &ProvenanceStore, repo_root: &Path) -> Result<()> {
+    let roadmap_path = repo_root.join("registry/roadmap.toml");
+    let todo_path = repo_root.join("registry/todo.toml");
+    let next_actions_path = repo_root.join("registry/next_actions.toml");
+
+    fs::write(&roadmap_path, format!("{}\n", render_roadmap_toml(store)?))
+        .with_context(|| format!("write {}", roadmap_path.display()))?;
+    fs::write(&todo_path, format!("{}\n", render_todo_toml(store)?))
+        .with_context(|| format!("write {}", todo_path.display()))?;
+    fs::write(
+        &next_actions_path,
+        format!("{}\n", render_next_actions_toml(store)?),
+    )
+    .with_context(|| format!("write {}", next_actions_path.display()))?;
+
+    println!("  Planning compatibility exports refreshed:");
+    println!("    {}", roadmap_path.display());
+    println!("    {}", todo_path.display());
+    println!("    {}", next_actions_path.display());
+    Ok(())
+}
+
 // ── Build (Layer 2) ─────────────────────────────────────────────
 
 #[derive(Deserialize)]
@@ -1331,6 +2120,14 @@ fn cmd_build(repo_root: &Path, db_path: &Path, args: &BuildArgs) -> Result<()> {
         let count = store.ingest_lacunae(&text)?;
         println!("  Lacunae: {count}");
     }
+
+    let planning_args = ImportPlanningArgs {
+        roadmap: PathBuf::from("registry/roadmap.toml"),
+        todo: PathBuf::from("registry/todo.toml"),
+        next_actions: PathBuf::from("registry/next_actions.toml"),
+    };
+    cmd_import_planning(&mut store, repo_root, &planning_args)?;
+    export_planning_compat_files(&store, repo_root)?;
 
     // Build crossref join tables.
     let (ce, ci) = store.build_crossrefs()?;

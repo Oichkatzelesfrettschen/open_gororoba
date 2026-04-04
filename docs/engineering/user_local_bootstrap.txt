@@ -1,0 +1,73 @@
+open_gororoba user-local bootstrap
+==================================
+
+Policy
+------
+Repository-local dot config does not belong in the workspace root.
+
+These surfaces must stay user-local:
+
+- ~/.cargo/config.toml
+- ~/.config/nextest.toml
+- ~/.cache/gororoba-lit-cache/
+- ~/.gemini/settings.json
+
+Bootstrap helper
+----------------
+Run:
+
+- `make bootstrap-user-local-xdg`
+- `scripts/bootstrap_user_local_xdg.sh`
+
+Optional:
+
+- `scripts/bootstrap_user_local_xdg.sh --with-gemini`
+- `scripts/bootstrap_user_local_xdg.sh --force`
+
+What the helper writes
+----------------------
+- Cargo config under `~/.cargo/config.toml`
+  - points ambient Cargo target output at repo-scoped `.cache/`
+  - points heavy intermediate build output at `/srv/fast/tmp/...`
+  - disables incremental compilation
+  - enables cargo-home garbage collection
+- nextest config under `${XDG_CONFIG_HOME:-~/.config}/nextest.toml`
+  - recreates the heavy/default/ci/smoke profiles that used to live in the repo
+- literature cache root under `${XDG_CACHE_HOME:-~/.cache}/gororoba-lit-cache/`
+- optional Gemini settings under `~/.gemini/settings.json`
+
+Runtime environment variables
+-----------------------------
+Keep secrets out of the repository and install them through your shell rc,
+session environment, or secret manager.
+
+Example:
+
+```bash
+export NASA_API_KEY="replace-with-issued-nasa-api-key"
+```
+
+For `lit_search` provider keys, use the documented placeholders in
+`docs/engineering/lit_search_env_vars.txt`. For the repo-wide secret vs
+non-secret classification, see `docs/engineering/runtime_env_inventory.txt`.
+
+Why this exists
+---------------
+The repository root should remain a workspace entrypoint, not a mirror of any
+developer's home directory. If a local workflow needs custom Cargo, nextest,
+Gemini, or research cache state, the state belongs in XDG/home locations.
+
+Follow-up expectations
+----------------------
+- Do not reintroduce `.cargo/`, `.config/`, `.gemini/`, or ad hoc workspace
+  cache mirrors into the repository. The canonical user-local cache path is
+  `${XDG_CACHE_HOME:-~/.cache}/gororoba-lit-cache/`.
+- If a new tool needs persistent local state, document its user-local path in
+  this file or the root README instead of versioning another dot directory.
+- If a runtime needs API keys or service tokens, keep them in user-local
+  environment variables or a secret manager. Current documented examples are
+  `docs/engineering/lit_search_env_vars.txt` and `NASA_API_KEY` for heliophysics
+  DONKI access; the broader inventory lives in
+  `docs/engineering/runtime_env_inventory.txt`.
+- If you set `XDG_CONFIG_HOME` or `XDG_CACHE_HOME`, the bootstrap helper writes
+  there instead of hard-coding `~/.config` or `~/.cache`.

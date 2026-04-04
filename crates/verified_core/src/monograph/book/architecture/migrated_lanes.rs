@@ -37,15 +37,15 @@
 //! - `book_docs`
 //!   Authored mdBook prose remains outside the SQLite control plane.
 //! - roadmap / todo / requirements / module requirements
-//!   Planning lanes remain TOML-first today.
+//!   Planning lanes remain TOML-authored today; SQLite promotion has not landed.
 //! - external source governance and dataset alias lanes
-//!   These remain TOML-first pending a later migration tranche.
+//!   These remain TOML-authored compatibility lanes pending a later migration tranche.
 //!
 //! ## Why this matters
 //!
 //! When a lane is DB-first, compatibility files are required outputs but not
-//! authoring sources. When a lane is still TOML-first, editing the TOML is
-//! expected.
+//! authoring sources. When a lane is still outside the DB cutover, editing its
+//! TOML authoring file is expected until promotion lands.
 //!
 //! That distinction is the difference between:
 //!

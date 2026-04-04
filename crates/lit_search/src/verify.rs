@@ -1,6 +1,6 @@
 //! Citation verification helpers for BibTeX-backed literature checks.
 //!
-//! Ported in spirit from AutoResearchClaw's `verify.py`.
+//! Rust-native verification helpers derived from the repository's legacy literature baseline.
 
 use crate::{SearchEngine, models::Paper};
 use blake3::Hasher;
@@ -224,7 +224,7 @@ async fn verify_by_datacite(
 
 async fn verify_by_openalex(engine: &SearchEngine, title: &str) -> Option<CitationResult> {
     let url = format!(
-        "https://api.openalex.org/works?filter=title.search:{}&per_page=5&mailto=researchclaw@users.noreply.github.com",
+        "https://api.openalex.org/works?filter=title.search:{}&per_page=5&mailto=open-gororoba-lit-search@users.noreply.github.com",
         percent_encode(title)
     );
     let response = engine.client().get(&url).send().await.ok()?;
@@ -494,9 +494,16 @@ fn normalize_bibtex_field(value: &str) -> String {
 }
 
 fn verify_cache_dir() -> Option<PathBuf> {
+    if let Some(path) = std::env::var_os("XDG_CACHE_HOME") {
+        return Some(
+            PathBuf::from(path)
+                .join("gororoba-lit-cache")
+                .join("citation_verify"),
+        );
+    }
     std::env::var_os("HOME").map(PathBuf::from).map(|home| {
         home.join(".cache")
-            .join("lit_search")
+            .join("gororoba-lit-cache")
             .join("citation_verify")
     })
 }

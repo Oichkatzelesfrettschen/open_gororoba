@@ -37,7 +37,7 @@ checkpoint_push_policy = "Allowed via git push --no-verify for rapid iteration o
 milestone_gate_policy = "Required for production claims and major merges: make check plus make rust-regression, with algebra_analysis and gr_core routed through cargo nextest --cargo-profile test-heavy, and with Python lint enforced as a changed-file ratchet rather than a full-repo legacy sweep."
 local_push_fast_path = "make gate-local keeps the Rust lint surface intentionally narrow: rust-regression-scoped runs cargo clippy over --lib --tests for the affected packages, then runs light nextest for the scoped regression surface. Full-target clippy coverage remains authoritative in CI and the full rust-regression lane."
 execution_topology = "Detect logical threads at runtime, divide by two to set the worker budget, apply that same budget to Cargo build jobs, nextest test threads, libtest test threads, and Rayon worker pools unless a narrower lane override is required."
-cargo_state_isolation = "Required gates set repo-local CARGO_HOME=.cache/cargo-home and CARGO_TARGET_DIR=.cache/gate-target so multiple agents, MCP background checks, or neighboring repos do not contend on shared Cargo package/build locks."
+cargo_state_isolation = "Required gates set repo-scoped CARGO_HOME=.cache/cargo-home and CARGO_TARGET_DIR=.cache/gate-target so multiple agents, MCP background checks, or neighboring repos do not contend on shared Cargo package/build locks."
 rationale = "Balance high-velocity iteration with strict milestone integrity."
 
 [engineering_standards.gpu_run_cadence]

@@ -61,7 +61,7 @@ Classification labels:
 | `ff653036` Land Dickson reduction tranche and workspace fixes | `archive-only` | legacy roadmap only |
 | `42be1920` Land Dickson obstruction surface | `archive-only` | legacy roadmap only |
 | `bc44c34c` Sync Wedderburn handoff and workspace updates | `archive-only` | legacy roadmap only |
-| `16aa0535` feat(researchclaw): port AutoResearchClaw to Rust and enhance physics pipeline | `not-relevant` | no standard-model delta |
+| `16aa0535` feat(lit_search): replace the legacy literature-search baseline with a Rust implementation and enhance physics pipeline | `not-relevant` | no standard-model delta |
 | `dbe05ec5` Track .h5 and .cdf files with Git LFS | `not-relevant` | no standard-model delta |
 
 ## Required edits to the physics document

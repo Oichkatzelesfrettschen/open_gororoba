@@ -1,6 +1,6 @@
 //! Per-source query adaptation for academic search APIs.
 //!
-//! Ported in spirit from AutoResearchClaw's `query_adapter.py`.
+//! Rust-native query adapter derived from the repository's legacy literature baseline.
 
 /// Adapt a generic query for a specific source's syntax.
 pub fn adapt_query(query: &str, source: &str, year_min: u32) -> String {

@@ -1,5 +1,5 @@
 # ---- Phony targets ----
-.PHONY: help bootstrap-dev fmt fmt-check
+.PHONY: help bootstrap-dev bootstrap-user-local-xdg fmt fmt-check
 .PHONY: test lint check smoke integrity integrity-rust math-verify governance-gate governance-gate-readonly wave6-gate pre-push-gate pre-push-gate-strict hooks-install hooks-install-strict hooks-status synthesis-execution-contract
 .PHONY: verify verify-grand verify-c010-c011-theses ansi-check ansi-check-strict terminology-gate doctor doctor-blas provenance
 .PHONY: provenance-registry-index provenance-registry-export provenance-registry-verify provenance-registry-doctor provenance-registry-link-audit provenance-registry-recover
@@ -90,11 +90,12 @@ CARGO_CACHE_TMP_BUDGET_GIB ?= 16
 REPO_CARGO_TARGET_DIR ?= $(CURDIR)/.cache/gate-target
 # Build intermediates (.o/.d) go to /tmp via build-dir, keeping target-dir lean.
 # /tmp on this machine is the same nvme partition (not tmpfs), so benefit is
-# layout isolation only. See .cargo/config.toml [build] build-dir for details.
+# layout isolation only. See user-local Cargo config (~/.cargo/config.toml)
+# [build] build-dir for details.
 REPO_CARGO_BUILD_DIR ?= $(REPO_TMP_CARGO_ROOT)
 CARGO_ENV = CARGO_HOME=$(REPO_CARGO_HOME) CARGO_TARGET_DIR=$(REPO_CARGO_TARGET_DIR) CARGO_BUILD_BUILD_DIR=$(REPO_CARGO_BUILD_DIR) MAKEFLAGS= MFLAGS= CARGO_MAKEFLAGS= CARGO_BUILD_JOBS=$(CARGO_JOBS) RAYON_NUM_THREADS=$(RAYON_THREADS) RUST_TEST_THREADS=$(RUST_TEST_THREADS)
-# [env] CARGO_INCREMENTAL=0 in .cargo/config.toml now enforces this globally.
-# Kept here as belt-and-suspenders for CI environments where the config may be absent.
+# A user-local Cargo config may enforce CARGO_INCREMENTAL=0 globally.
+# Kept here as belt-and-suspenders for CI environments where that config is absent.
 CARGO_ENV_CI = $(CARGO_ENV) CARGO_INCREMENTAL=0
 
 HOOKS_DIR ?= .githooks
@@ -130,9 +131,9 @@ FREUDENTHAL_ROW_UPGRADE_WITNESS ?= $(CD_CACHE_ROOT)/tier1_core_cd_algebra/compos
 FREUDENTHAL_ROW_UPGRADE_STATUS ?= translation-rewriting
 FREUDENTHAL_ROW_UPGRADE_ROWS ?= --row-id F51-DEF-01 --row-id F51-THM-01 --row-id F51-LEM-01 --row-id F51-NUM-01 --row-id F51-DEP-01
 
-# ---- Three-layer registry build ----
-# Layer 1 (Source): TOML files in registry/ (human-edited, git-tracked).
-# Layer 2 (Build):  .cache/registry.sqlite3 (derived, .gitignore'd).
+# ---- Three-layer registry data plane ----
+# Layer 1 (Canonical): .cache/registry.sqlite3 (SQLite source-of-truth).
+# Layer 2 (Compatibility): registry/*.toml (legacy/export view; read-optimized for migration compatibility).
 # Layer 3 (Query):  gororoba-db CLI.
 
 REGISTRY_SOURCES := $(wildcard registry/claims.toml registry/insights.toml \
@@ -156,7 +157,10 @@ registry-build-verify: .cache/registry.sqlite3
 # ---- Environment setup ----
 
 bootstrap-dev:
-	@echo "OK: Rust-first dev bootstrap is current."
+	@echo "Rust-first dev bootstrap uses user-local config only."
+	@echo "Run 'make bootstrap-user-local-xdg' to install ~/.cargo/config.toml, ~/.config/nextest.toml, and ~/.cache/gororoba-lit-cache defaults."
+	@echo "See docs/engineering/runtime_env_inventory.txt and docs/engineering/lit_search_env_vars.txt for user-local runtime variables."
+	@echo "OK: Rust-first dev bootstrap guidance emitted."
 
 # ---- Quality gates ----
 
@@ -248,7 +252,7 @@ governance-gate-readonly:
 	@echo "=========================================="
 	@echo "READ-ONLY GOVERNANCE GATE: PASSED"
 	@echo "=========================================="
-	@echo "[done] Markdown inventory validated (TOML-first)"
+	@echo "[done] Markdown inventory validated (SQLite-first with TOML compatibility checks)"
 	@echo "[done] Markdown owner map verified"
 	@echo "[done] Registry schema signatures checked"
 	@echo "[done] Cross-reference integrity verified"
@@ -256,7 +260,7 @@ governance-gate-readonly:
 	@echo "[done] External-source operational contracts verified"
 	@echo "[done] Markdown governance removal policy checked"
 	@echo ""
-	@echo "TOML-first governance checks are operational."
+	@echo "SQLite-first governance checks are operational."
 	@echo "=========================================="
 
 governance-gate: governance-gate-readonly
@@ -539,6 +543,11 @@ studio-check:
 	$(CARGO_ENV) cargo test -p gororoba_cli --bin gororoba-studio
 	$(CARGO_ENV) cargo clippy -p gororoba_cli --bin gororoba-studio -- -D warnings
 	@echo "OK: gororoba-studio checks passed."
+
+bootstrap-user-local-xdg:
+	scripts/bootstrap_user_local_xdg.sh $(ARGS)
+	@echo "OK: user-local bootstrap completed."
+	@echo "See docs/engineering/user_local_bootstrap.txt and docs/engineering/runtime_env_inventory.txt for policy details."
 
 profile-tensor-avt:
 	CARGO_HOME=$(REPO_CARGO_HOME) scripts/profile_tensor_avt.sh
@@ -993,7 +1002,7 @@ registry-verify-markdown-owner:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- verify-owner-map
 
 registry-verify-markdown-toml-first: registry-verify-markdown-inventory registry-verify-markdown-owner
-	@echo "OK: markdown TOML-first owner/inventory gates verified."
+	@echo "OK: markdown SQLite compatibility owner/inventory gates verified."
 
 registry-verify-control-plane: registry-verify-markdown-origin registry-verify-markdown-owner registry-verify-knowledge-atoms registry-verify-artifact-scrolls
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- verify-corpus
@@ -1740,7 +1749,8 @@ help:
 	@echo "Targets:"
 	@echo ""
 	@echo "  Setup:"
-	@echo "    make bootstrap-dev        Ensure the dev environment is current"
+	@echo "    make bootstrap-dev        Show the supported user-local bootstrap flow"
+	@echo "    make bootstrap-user-local-xdg [ARGS='--with-gemini --force']"
 	@echo ""
 	@echo "  Quality:"
 	@echo "    make cpd-audit            Report cross/within-crate Rust duplication (CPD, 42 tokens)"

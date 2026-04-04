@@ -62,7 +62,8 @@ pub enum SourceError {
     Unavailable(String),
 }
 
-/// Configuration for API keys and credentials.
+/// Configuration for keyed-source credentials loaded from user-local
+/// environment variables.
 #[derive(Debug, Clone, Default)]
 pub struct ApiKeys {
     pub s2_api_key: String,

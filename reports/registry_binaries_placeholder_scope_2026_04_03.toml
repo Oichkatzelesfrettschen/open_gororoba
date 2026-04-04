@@ -1,0 +1,76 @@
+generated_on = "2026-04-03"
+scope = "registry/binaries.toml placeholder description backlog"
+historical_placeholder_pattern = "legacy cargo-metadata placeholder description"
+placeholder_count = 0
+status = "completed"
+
+[[crate]]
+name = "gororoba_cli_physics"
+placeholder_count = 0
+recommended_tranche = "first"
+reason = "largest concentration; high user-facing surface and many physics executables still read as anonymous cargo metadata discoveries"
+
+[[crate]]
+name = "gororoba_cli"
+placeholder_count = 0
+recommended_tranche = "second"
+reason = "small enough for one focused pass after the major physics/data buckets"
+
+[[crate]]
+name = "gororoba_cli_algebra"
+placeholder_count = 0
+recommended_tranche = "second"
+reason = "compact algebra-specific tranche with likely shared wording patterns"
+
+[[crate]]
+name = "gororoba_cli_governance"
+placeholder_count = 0
+recommended_tranche = "second"
+reason = "small governance cluster; can be cleared quickly once the main buckets are done"
+
+[[crate]]
+name = "gororoba_cli_quantum"
+placeholder_count = 0
+recommended_tranche = "third"
+reason = "tiny tranche"
+
+[[crate]]
+name = "gororoba_db"
+placeholder_count = 0
+recommended_tranche = "third"
+reason = "single entry"
+
+[[crate]]
+name = "lbm_vulkan"
+placeholder_count = 0
+recommended_tranche = "third"
+reason = "single entry"
+
+[[crate]]
+name = "docpipe"
+placeholder_count = 0
+recommended_tranche = "third"
+reason = "single entry"
+
+[[crate]]
+name = "gororoba_cli_provenance"
+placeholder_count = 0
+recommended_tranche = "third"
+reason = "single entry"
+
+[[crate]]
+name = "algebra_experimental"
+placeholder_count = 0
+recommended_tranche = "third"
+reason = "single entry"
+
+[[crate]]
+name = "xtask"
+placeholder_count = 0
+recommended_tranche = "third"
+reason = "single entry"
+
+[recommendation]
+next_batch = []
+batch_placeholder_count = 0
+strategy = "replace placeholder descriptions crate-by-crate, using binary names and clap about text where available, then backfill remaining edge cases manually"

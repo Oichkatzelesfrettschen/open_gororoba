@@ -1,0 +1,252 @@
+- generic [ref=e1]:
+  - banner [ref=e2]:
+    - navigation "Skip navigation links":
+      - link "Skip to search" [ref=e3] [cursor=pointer]:
+        - /url: "#searchForm_lookfor"
+      - link "Skip to content" [ref=e4] [cursor=pointer]:
+        - /url: "#content"
+    - generic [ref=e5]:
+      - generic [ref=e6]: Leipzig University Library (UBL)
+      - navigation [ref=e8]:
+        - list [ref=e9]:
+          - listitem [ref=e10]:
+            - link "Book Bag:" [ref=e11] [cursor=pointer]:
+              - /url: /Cart/Home
+              - img [ref=e13]
+              - generic [ref=e15]:
+                - generic [ref=e16]: "Book Bag:"
+                - status [ref=e17]:
+                  - strong [ref=e18]: "0"
+                  - text: items
+          - listitem [ref=e19]:
+            - link "My Account" [ref=e20] [cursor=pointer]:
+              - /url: /MyResearch/UserLogin
+              - img [ref=e22]
+              - generic [ref=e24]: My Account
+          - listitem [ref=e25]:
+            - button "Language" [ref=e26] [cursor=pointer]
+          - listitem [ref=e27]:
+            - link "Home" [ref=e28] [cursor=pointer]:
+              - /url: https://www.ub.uni-leipzig.de/index.php?id=11&L=1
+              - img [ref=e31]
+              - generic [ref=e33]: Home
+          - listitem [ref=e34]:
+            - 'button "Toggle color mode (current mode: light)" [ref=e35] [cursor=pointer]':
+              - img [ref=e36]
+    - search [ref=e39]:
+      - generic [ref=e41]:
+        - generic [ref=e42]:
+          - generic [ref=e43] [cursor=pointer]: Search terms
+          - combobox "Search terms" [ref=e44]
+          - generic: x
+        - generic [ref=e45]:
+          - generic [ref=e46] [cursor=pointer]: Suchtyp
+          - combobox "Suchtyp" [ref=e47]:
+            - option "All Fields" [selected]
+            - option "Title"
+            - option "Author / Corporation"
+            - option "ISBN/ISSN/ISMN"
+            - option "Call Number"
+            - option "Barcode"
+            - option "Index of German prints"
+        - button "Find" [ref=e48] [cursor=pointer]:
+          - img [ref=e50]
+          - text: Find
+        - link "Advanced" [ref=e52] [cursor=pointer]:
+          - /url: /Search/Advanced
+  - navigation "Breadcrumbs navigation:": /
+  - main [ref=e53]:
+    - generic [ref=e54]:
+      - navigation "Tools" [ref=e55]:
+        - list [ref=e56]:
+          - link "Cite this" [ref=e57] [cursor=pointer]:
+            - /url: /Record/0-1356848117/Cite
+            - img [ref=e59]
+            - generic [ref=e61]: Cite this
+          - link "E-mail this" [ref=e62] [cursor=pointer]:
+            - /url: /Record/0-1356848117/Email
+            - img [ref=e64]
+            - generic [ref=e66]: E-mail this
+          - listitem [ref=e67]:
+            - link "Print" [ref=e68] [cursor=pointer]:
+              - /url: /Record/0-1356848117?print=1
+              - img [ref=e70]
+              - generic [ref=e72]: Print
+          - link "Export Record" [ref=e73] [cursor=pointer]:
+            - /url: /Record/0-1356848117/Export
+            - img [ref=e75]
+            - generic [ref=e77]: Export Record
+          - link "Favorite" [ref=e78] [cursor=pointer]:
+            - /url: /Record/0-1356848117/Save
+            - img [ref=e80]
+            - generic [ref=e82]: Favorite
+          - listitem [ref=e83]:
+            - link "Add to Book Bag" [ref=e85] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e87]
+              - generic [ref=e89]: Add to Book Bag
+          - link "Permanent link" [ref=e90] [cursor=pointer]:
+            - /url: /Record/0-1356848117/Permalink
+            - img [ref=e92]
+            - generic [ref=e94]: Permanent link
+          - tab "Report Errors" [ref=e95] [cursor=pointer]:
+            - img [ref=e97]
+            - generic [ref=e99]: Report Errors
+      - generic [ref=e101]:
+        - generic [ref=e102]:
+          - img "Cover&#x20;Image of Oktaven, Ausnahmegruppen und Oktavengeometrie" [ref=e104]
+          - generic [ref=e105]:
+            - heading "Oktaven, Ausnahmegruppen und Oktavengeometrie" [level=1] [ref=e106]
+            - table "Bibliographic Details" [ref=e107]:
+              - caption [ref=e108]: Bibliographic Details
+              - rowgroup [ref=e109]:
+                - 'row "Authors and Corporations: Freudenthal, Hans (Author)" [ref=e110]':
+                  - rowheader "Authors and Corporations:" [ref=e111]
+                  - cell "Freudenthal, Hans (Author)" [ref=e112]:
+                    - generic [ref=e113]:
+                      - link "Freudenthal, Hans" [ref=e115] [cursor=pointer]:
+                        - /url: /Author/Home?author=Freudenthal,%20Hans
+                      - text: (Author)
+                - 'row "Title: Oktaven, Ausnahmegruppen und Oktavengeometrie/ von Hans Freudenthal" [ref=e116]':
+                  - rowheader "Title:" [ref=e117]
+                  - cell "Oktaven, Ausnahmegruppen und Oktavengeometrie/ von Hans Freudenthal" [ref=e118]
+                - 'row "published: Utrecht: Mathematisch Inst. der Rijksuniversiteit, 1951" [ref=e119]':
+                  - rowheader "published:" [ref=e120]
+                  - 'cell "Utrecht: Mathematisch Inst. der Rijksuniversiteit, 1951" [ref=e121]':
+                    - generic [ref=e122]:
+                      - text: "Utrecht:"
+                      - link "Mathematisch Inst. der Rijksuniversiteit," [ref=e123] [cursor=pointer]:
+                        - /url: /Search/Results?type=Publisher&lookfor=Mathematisch%20Inst.%20der%20Rijksuniversiteit,%20
+                    - text: "1951"
+                - 'row "Physical Description: 46 S.; graph. Darst" [ref=e124]':
+                  - rowheader "Physical Description:" [ref=e125]
+                  - cell "46 S.; graph. Darst" [ref=e126]
+                - 'row "Type of Resource: Book" [ref=e127]':
+                  - rowheader "Type of Resource:" [ref=e128]
+                  - cell "Book" [ref=e129]
+                - 'row "Language: German" [ref=e130]':
+                  - rowheader "Language:" [ref=e131]
+                  - cell "German" [ref=e132]:
+                    - generic [ref=e133]: German
+        - generic [ref=e134]:
+          - tablist [ref=e135]:
+            - tab "Access Click to load tab content." [selected] [ref=e136] [cursor=pointer]:
+              - text: Access
+              - generic [ref=e137]: Click to load tab content.
+            - tab "Details Click to load tab content." [ref=e138] [cursor=pointer]:
+              - text: Details
+              - generic [ref=e139]: Click to load tab content.
+          - tabpanel "Access Click to load tab content." [ref=e141]:
+            - heading "Campus Library" [level=2] [ref=e142]
+            - generic [ref=e144]:
+              - generic [ref=e145]:
+                - strong [ref=e146]: Campus-Bibliothek
+                - text: Universitatsstraße 3 (im Horsaalgebaude)
+                - text: 04109 Leipzig
+              - generic [ref=e147]:
+                - text: "Tel: +49 341 97-30811"
+                - text: "E-Mail: zbcb@ub.uni-leipzig.de"
+                - link "Location website" [ref=e148] [cursor=pointer]:
+                  - /url: https://www.ub.uni-leipzig.de/index.php?id=196
+            - generic [ref=e149]:
+              - generic [ref=e150]: Holdings details from Campus&#x20;Library
+              - table [ref=e151]:
+                - rowgroup [ref=e152]:
+                  - row "Available Request this item Magazin 02B-2023-189 bestellbar fur Nutzung in der Bibliothek" [ref=e153]:
+                    - cell "Available Request this item Magazin 02B-2023-189 bestellbar fur Nutzung in der Bibliothek" [ref=e154]:
+                      - generic [ref=e155]: Available
+                      - link "Request this item" [ref=e156] [cursor=pointer]:
+                        - /url: /Record/0-1356848117/StorageRetrievalRequest?id=0-1356848117&doc_id=DE-15%3Appn%3A286848112&item_id=DE-15%3Appn%3A286848112%3A0009693213&hashKey=6894dc56528513e00879ec3e9818ef4b#tabnav
+                        - img [ref=e158]
+                        - generic [ref=e160]: Request this item
+                      - generic [ref=e161]: Magazin
+                      - generic [ref=e162]: 02B-2023-189
+                      - generic [ref=e163]: bestellbar fur Nutzung in der Bibliothek
+  - contentinfo [ref=e164]:
+    - generic [ref=e165]:
+      - generic [ref=e166]:
+        - heading "Search Options" [level=2] [ref=e167]
+        - list [ref=e168]:
+          - listitem [ref=e169]:
+            - link "Search History" [ref=e170] [cursor=pointer]:
+              - /url: /Search/History
+          - listitem [ref=e171]:
+            - link "Advanced Search" [ref=e172] [cursor=pointer]:
+              - /url: /Search/Advanced
+        - heading "Weitere Informationen" [level=2] [ref=e173]
+        - list [ref=e174]:
+          - listitem [ref=e175]:
+            - link "Accessibility" [ref=e176] [cursor=pointer]:
+              - /url: https://www.ub.uni-leipzig.de/index.php?id=1836
+          - listitem [ref=e177]:
+            - link "Privacy" [ref=e178] [cursor=pointer]:
+              - /url: https://www.ub.uni-leipzig.de/index.php?id=1098
+          - listitem [ref=e179]:
+            - link "Legal" [ref=e180] [cursor=pointer]:
+              - /url: https://www.ub.uni-leipzig.de/index.php?id=824
+          - listitem [ref=e181]:
+            - link "Leipzig University" [ref=e182] [cursor=pointer]:
+              - /url: https://uni-leipzig.de/en
+      - generic [ref=e183]:
+        - heading "Feedback and Support" [level=2] [ref=e184]
+        - paragraph [ref=e185]: Please get in touch.
+        - link "Contact form" [ref=e186] [cursor=pointer]:
+          - /url: https://www.ub.uni-leipzig.de/index.php?id=1326
+      - generic [ref=e187]:
+        - heading "Need Help?" [level=2] [ref=e188]
+        - list [ref=e189]:
+          - listitem [ref=e190]:
+            - link "Get help in cases of sexualized violence and discrimination" [ref=e191] [cursor=pointer]:
+              - /url: https://www.ub.uni-leipzig.de/index.php?id=2400
+        - link "Button opens an e-mail form." [ref=e192] [cursor=pointer]:
+          - /url: https://www.ub.uni-leipzig.de/index.php?id=1326&L=1
+          - img [ref=e193]
+    - generic [ref=e194]:
+      - link "Universitat Leipzig" [ref=e196] [cursor=pointer]:
+        - /url: https://www.uni-leipzig.de/
+      - generic [ref=e198]:
+        - generic [ref=e200]: Powered by
+        - link "VuFind" [ref=e201] [cursor=pointer]:
+          - /url: https://vufind.org
+          - img [ref=e202]
+        - link "finc" [ref=e203] [cursor=pointer]:
+          - /url: https://finc.info
+          - img [ref=e204]
+    - button "scroll_to_top" [ref=e205] [cursor=pointer]:
+      - img [ref=e206]
+  - dialog "New here?" [ref=e208]:
+    - generic [ref=e209]:
+      - button "Close" [ref=e210] [cursor=pointer]:
+        - img [ref=e212]
+      - generic [ref=e214]: This is a dialog window which overlays the main content of the page. Pressing the Escape key or the Close Dialog Window button will close the modal and bring you back to where you were on the page.
+      - generic [ref=e215]:
+        - heading "Login" [level=1] [ref=e216]
+        - alert [ref=e217]: You must log in first.
+        - generic [ref=e218]:
+          - generic [ref=e219]:
+            - generic [ref=e220] [cursor=pointer]: "User ID:"
+            - textbox "User ID:" [active] [ref=e221]
+          - generic [ref=e222]:
+            - generic [ref=e223] [cursor=pointer]: "Password:"
+            - textbox "Password:" [ref=e224]
+          - generic [ref=e225]:
+            - button "My Account" [ref=e226] [cursor=pointer]
+            - button "Forgot password?" [ref=e227] [cursor=pointer]
+        - heading "New here?" [level=2] [ref=e228]
+        - paragraph [ref=e229]:
+          - text: "University members (students, doctoral candidates, staff):"
+          - text: Please use our
+          - link "online registration process" [ref=e230] [cursor=pointer]:
+            - /url: https://services.ub.uni-leipzig.de/onlinereg/?lng=en
+          - text: .
+        - paragraph [ref=e231]:
+          - text: "External users:"
+          - text: Please register via our
+          - link "registration form" [ref=e232] [cursor=pointer]:
+            - /url: https://www.ub.uni-leipzig.de/en/services/registration/library-card-for-external-borrowers/
+          - text: .
+        - paragraph [ref=e233]:
+          - text: Already registered but haven't set your password and PIN yet? You can activate your account
+          - link "here" [ref=e234] [cursor=pointer]:
+            - /url: https://services.ub.uni-leipzig.de/pwa/?lng=en
+          - text: .

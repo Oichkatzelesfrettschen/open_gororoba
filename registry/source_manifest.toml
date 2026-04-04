@@ -1,15 +1,14 @@
-# Source Manifest: Three-Layer Registry Architecture
+# Source Manifest: Registry Compatibility Layer
 #
-# This file declares which TOML files are SOURCE OF TRUTH (Layer 1).
-# Everything else in registry/ is either DERIVED (rebuilt by `make registry-build`)
-# or DEAD (pending deletion).
+# This file declares which TOML files are compatibility artifacts for SQLite-first
+# migration and verification flows.
 #
 # The `gororoba-db build` command reads this manifest to discover which files
-# to ingest into .cache/registry.sqlite3 (Layer 2).
+# feed compatibility ingest and export consistency checks against the canonical DB.
 
 [manifest]
 version = 1
-description = "Authoritative list of source-of-truth TOML files"
+description = "Compatibility manifest for TOML artifacts in SQLite-first workflows"
 
 # ── Core research registries ─────────────────────────────────────────
 

@@ -2453,7 +2453,7 @@ claims we should trust and which search lanes are worth burning time on.
   is gated. For Cullen 1965, the open Duke volume-32 contents item gave the
   article anchor first, and the direct Archive `/page/<printed-page>/mode/1up`
   routes then yielded the exact article pages for local reconstruction.
-- AutoResearchClaw's custom literature sources are not interchangeable.
+- The legacy custom literature sources are not interchangeable.
   CiNii and Google Scholar are best treated as exact-record and alternate-
   container finders, while CORE is better at surfacing OA support papers
   and repository residue than at producing exact legacy scans. Unpaywall is
@@ -2553,7 +2553,7 @@ claims we should trust and which search lanes are worth burning time on.
   the other to Archive's `503` error shell. For this archival lane, a typed
   catalog/holding graph is proving more trustworthy than improvised file
   endpoints.
-- Installing `scholarly` into AutoResearchClaw's `.venv` was worth it for
+- Installing `scholarly` into the legacy literature-search `.venv` was worth it for
   this archival tranche. It did not produce a new open Jacobson/Freudenthal/
   Cullen mirror, but it did verify the dominant live containers:
   Freudenthal routes to closed Springer 1985 plus open MathNet translation,

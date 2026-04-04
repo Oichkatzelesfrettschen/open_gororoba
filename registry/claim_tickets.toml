@@ -1,5 +1,5 @@
-# Claim-ticket registry (TOML-first).
-# Tracks claims audit batches and related planning tickets.
+# Claim-ticket registry (TOML lane pending SQLite promotion).
+# Tracks claims audit batches and related planning tickets while this lane remains outside SQLite promotion.
 
 [claim_tickets]
 authoritative = true

@@ -1,6 +1,6 @@
 //! Domain-specific query expansion.
 //!
-//! Ported in spirit from AutoResearchClaw's `domain_queries.py`.
+//! Rust-native domain query assembly derived from the repository's legacy literature baseline.
 
 /// Return high-value prebuilt queries for a topic and optional explicit domains.
 pub fn get_domain_queries(topic: &str, domains: &[String]) -> Vec<String> {
