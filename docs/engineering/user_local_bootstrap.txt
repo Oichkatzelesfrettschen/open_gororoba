@@ -31,7 +31,12 @@ What the helper writes
 ----------------------
 - Cargo config under `~/.cargo/config.toml`
   - points ambient Cargo target output at repo-scoped `.cache/`
-  - points heavy intermediate build output at `/srv/fast/tmp/...`
+  - points heavy intermediate build output at
+    `open_gororoba-cargo-build/ambient` under the first writable root in
+    this order: `${TMPDIR}` (if set), `/srv/fast/tmp`,
+    `${XDG_CACHE_HOME:-~/.cache}`
+  - prints the selected Cargo build-dir and fallback details when higher
+    priority roots are unavailable
   - disables incremental compilation
   - enables cargo-home garbage collection
 - nextest config under `${XDG_CONFIG_HOME:-~/.config}/nextest.toml`

@@ -9,6 +9,8 @@ XDG_CONFIG_HOME_DEFAULT="${XDG_CONFIG_HOME:-$HOME/.config}"
 XDG_CACHE_HOME_DEFAULT="${XDG_CACHE_HOME:-$HOME/.cache}"
 NEXTTEST_CONFIG_PATH="$XDG_CONFIG_HOME_DEFAULT/nextest.toml"
 GOROROBA_LIT_CACHE_PATH="$XDG_CACHE_HOME_DEFAULT/gororoba-lit-cache"
+CARGO_BUILD_DIR_SELECTED=""
+CARGO_BUILD_DIR_REASON=""
 
 usage() {
   cat <<'EOF'
@@ -58,7 +60,74 @@ backup_if_needed() {
   fi
 }
 
-mkdir -p "$HOME/.cargo" "$XDG_CONFIG_HOME_DEFAULT" "$GOROROBA_LIT_CACHE_PATH"
+require_writable_dir() {
+  local path="$1"
+  if [[ ! -d "$path" ]]; then
+    echo "ERROR: expected directory does not exist: $path" >&2
+    exit 1
+  fi
+  if [[ ! -w "$path" ]]; then
+    echo "ERROR: directory is not writable: $path" >&2
+    exit 1
+  fi
+}
+
+select_cargo_build_dir() {
+  local -a candidate_roots=()
+  local -a candidate_reasons=()
+  local -a fallback_details=()
+  local candidate_root=""
+  local candidate_dir=""
+  local idx=0
+
+  if [[ -n "${TMPDIR:-}" ]]; then
+    candidate_roots+=("$TMPDIR")
+    candidate_reasons+=("TMPDIR is set and writable")
+  else
+    fallback_details+=("TMPDIR is unset")
+  fi
+
+  candidate_roots+=("/srv/fast/tmp")
+  candidate_reasons+=("/srv/fast/tmp is writable")
+  candidate_roots+=("$XDG_CACHE_HOME_DEFAULT")
+  candidate_reasons+=("using XDG cache fallback")
+
+  for idx in "${!candidate_roots[@]}"; do
+    candidate_root="${candidate_roots[$idx]}"
+    candidate_dir="$candidate_root/open_gororoba-cargo-build/ambient"
+    if mkdir -p "$candidate_dir" 2>/dev/null && [[ -w "$candidate_dir" ]]; then
+      CARGO_BUILD_DIR_SELECTED="$candidate_dir"
+      CARGO_BUILD_DIR_REASON="${candidate_reasons[$idx]}"
+      break
+    fi
+    fallback_details+=("skipped '$candidate_root' (unable to create/write '$candidate_dir')")
+  done
+
+  if [[ -z "$CARGO_BUILD_DIR_SELECTED" ]]; then
+    echo "ERROR: unable to select a writable Cargo build-dir root." >&2
+    for detail in "${fallback_details[@]}"; do
+      echo "  - $detail" >&2
+    done
+    exit 1
+  fi
+
+  echo "Selected Cargo build-dir: $CARGO_BUILD_DIR_SELECTED"
+  echo "  reason: $CARGO_BUILD_DIR_REASON"
+  if [[ "${#fallback_details[@]}" -gt 0 ]]; then
+    echo "  fallback details:"
+    for detail in "${fallback_details[@]}"; do
+      echo "    - $detail"
+    done
+  fi
+}
+
+select_cargo_build_dir
+
+mkdir -p "$HOME/.cargo" "$XDG_CONFIG_HOME_DEFAULT" "$GOROROBA_LIT_CACHE_PATH" "$CARGO_BUILD_DIR_SELECTED"
+require_writable_dir "$HOME/.cargo"
+require_writable_dir "$XDG_CONFIG_HOME_DEFAULT"
+require_writable_dir "$GOROROBA_LIT_CACHE_PATH"
+require_writable_dir "$CARGO_BUILD_DIR_SELECTED"
 
 backup_if_needed "$HOME/.cargo/config.toml"
 cat >"$HOME/.cargo/config.toml" <<EOF
@@ -67,7 +136,7 @@ cat >"$HOME/.cargo/config.toml" <<EOF
 
 [build]
 target-dir = "$ROOT/.cache/cargo-default-target"
-build-dir = "/srv/fast/tmp/open_gororoba-cargo-build/ambient"
+build-dir = "$CARGO_BUILD_DIR_SELECTED"
 incremental = false
 
 [env]

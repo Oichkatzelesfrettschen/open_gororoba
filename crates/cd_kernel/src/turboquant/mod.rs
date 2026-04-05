@@ -101,6 +101,7 @@ pub mod cross_layer;
 pub mod cubecl_backend;
 #[cfg(feature = "cuda")]
 pub mod cuda;
+mod dequant_contract;
 pub mod dispatch;
 pub mod dot_product_bench;
 pub mod e8_rotation;
