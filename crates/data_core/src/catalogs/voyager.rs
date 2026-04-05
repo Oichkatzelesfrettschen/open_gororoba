@@ -400,7 +400,9 @@ pub struct VoyagerMag48Record {
 }
 
 /// Parse a Voyager 48-second MAG ASCII file.
-pub fn parse_voyager_mag48_file(path: &std::path::Path) -> Result<Vec<VoyagerMag48Record>, FetchError> {
+pub fn parse_voyager_mag48_file(
+    path: &std::path::Path,
+) -> Result<Vec<VoyagerMag48Record>, FetchError> {
     let content = std::fs::read_to_string(path)
         .map_err(|e| FetchError::Validation(format!("read error: {e}")))?;
     let mut records = Vec::new();
@@ -433,7 +435,18 @@ pub fn parse_voyager_mag48_file(path: &std::path::Path) -> Result<Vec<VoyagerMag
         let b_mag = if b_mag.abs() > 999.0 { f64::NAN } else { b_mag };
 
         records.push(VoyagerMag48Record {
-            year, doy, hour, minute, second, br, bt, bn, b_mag, r_au, lat_deg, lon_deg,
+            year,
+            doy,
+            hour,
+            minute,
+            second,
+            br,
+            bt,
+            bn,
+            b_mag,
+            r_au,
+            lat_deg,
+            lon_deg,
         });
     }
     Ok(records)

@@ -55,8 +55,8 @@ fn main() -> Result<()> {
     let cli = Cli::parse();
     println!("=== Liquid Metal Dynamo CD Analysis (synthetic VKS) ===");
 
-    use rand::Rng;
-    let mut rng = rand::thread_rng();
+    use rand::RngExt;
+    let mut rng = rand::rng();
     let n = cli.samples_per_phase;
     let dt = 0.001; // 1 kHz sampling
 
@@ -67,9 +67,9 @@ fn main() -> Result<()> {
             (0..n)
                 .map(|_| {
                     [
-                        0.01 * rng.gen_range(-1.0..1.0),
-                        0.01 * rng.gen_range(-1.0..1.0),
-                        0.01 * rng.gen_range(-1.0..1.0),
+                        0.01 * rng.random_range(-1.0..1.0),
+                        0.01 * rng.random_range(-1.0..1.0),
+                        0.01 * rng.random_range(-1.0..1.0),
                     ]
                 })
                 .collect()
@@ -81,11 +81,11 @@ fn main() -> Result<()> {
                     let t = i as f64 * dt;
                     let growth = (0.5 * t).exp().min(10.0);
                     [
-                        growth * (2.0 * PI * 1.5 * t).cos() + 0.1 * rng.gen_range(-1.0..1.0),
+                        growth * (2.0 * PI * 1.5 * t).cos() + 0.1 * rng.random_range(-1.0..1.0),
                         growth * (2.0 * PI * 1.5 * t + 0.5).sin()
-                            + 0.1 * rng.gen_range(-1.0..1.0),
+                            + 0.1 * rng.random_range(-1.0..1.0),
                         growth * 0.3 * (2.0 * PI * 0.8 * t).cos()
-                            + 0.05 * rng.gen_range(-1.0..1.0),
+                            + 0.05 * rng.random_range(-1.0..1.0),
                     ]
                 })
                 .collect()
@@ -97,10 +97,10 @@ fn main() -> Result<()> {
                     let t = i as f64 * dt;
                     // Steady dipole with small fluctuations
                     [
-                        5.0 * (2.0 * PI * 0.1 * t).cos() + 0.2 * rng.gen_range(-1.0..1.0),
+                        5.0 * (2.0 * PI * 0.1 * t).cos() + 0.2 * rng.random_range(-1.0..1.0),
                         5.0 * (2.0 * PI * 0.1 * t + PI / 4.0).sin()
-                            + 0.2 * rng.gen_range(-1.0..1.0),
-                        8.0 + 0.3 * rng.gen_range(-1.0..1.0), // strong axial component
+                            + 0.2 * rng.random_range(-1.0..1.0),
+                        8.0 + 0.3 * rng.random_range(-1.0..1.0), // strong axial component
                     ]
                 })
                 .collect()
@@ -115,10 +115,10 @@ fn main() -> Result<()> {
                     let polarity = -((t - t_mid) / 5.0).tanh();
                     [
                         polarity * 5.0 * (2.0 * PI * 0.1 * t).cos()
-                            + 1.0 * rng.gen_range(-1.0..1.0),
+                            + 1.0 * rng.random_range(-1.0..1.0),
                         polarity * 5.0 * (2.0 * PI * 0.1 * t + PI / 4.0).sin()
-                            + 1.0 * rng.gen_range(-1.0..1.0),
-                        polarity * 8.0 + 2.0 * rng.gen_range(-1.0..1.0),
+                            + 1.0 * rng.random_range(-1.0..1.0),
+                        polarity * 8.0 + 2.0 * rng.random_range(-1.0..1.0),
                     ]
                 })
                 .collect()
@@ -131,11 +131,11 @@ fn main() -> Result<()> {
                     // Intermittent bursts with random phase jumps
                     let burst = if (5.0 * t).sin() > 0.7 { 3.0 } else { 0.5 };
                     [
-                        burst * rng.gen_range(-1.0..1.0)
-                            + 2.0 * (2.0 * PI * 2.3 * t + rng.gen_range(0.0..0.5)).sin(),
-                        burst * rng.gen_range(-1.0..1.0)
-                            + 2.0 * (2.0 * PI * 1.7 * t + rng.gen_range(0.0..0.5)).cos(),
-                        burst * rng.gen_range(-1.0..1.0) + 1.0 * (2.0 * PI * 0.5 * t).sin(),
+                        burst * rng.random_range(-1.0..1.0)
+                            + 2.0 * (2.0 * PI * 2.3 * t + rng.random_range(0.0..0.5)).sin(),
+                        burst * rng.random_range(-1.0..1.0)
+                            + 2.0 * (2.0 * PI * 1.7 * t + rng.random_range(0.0..0.5)).cos(),
+                        burst * rng.random_range(-1.0..1.0) + 1.0 * (2.0 * PI * 0.5 * t).sin(),
                     ]
                 })
                 .collect()
@@ -190,8 +190,15 @@ fn main() -> Result<()> {
             continue;
         }
 
-        let norms =
-            cd_kernel::batch_sliding_associator_norms_dispatch(&embedded, cli.embedding_dim, if cli.embedding_dim >= 128 { "f32" } else { "f64" });
+        let norms = cd_kernel::batch_sliding_associator_norms_dispatch(
+            &embedded,
+            cli.embedding_dim,
+            if cli.embedding_dim >= 128 {
+                "f32"
+            } else {
+                "f64"
+            },
+        );
 
         let mean_a = norms.iter().sum::<f64>() / norms.len().max(1) as f64;
         let max_a = norms.iter().cloned().fold(0.0f64, f64::max);
@@ -218,8 +225,11 @@ fn main() -> Result<()> {
         results.get(3).map(|r| r.mean_a).unwrap_or(0.0),
         results.get(4).map(|r| r.mean_a).unwrap_or(0.0),
         if results.get(2).map(|r| r.mean_a).unwrap_or(0.0) > 1e-15 {
-            results.get(4).map(|r| r.mean_a).unwrap_or(0.0) / results.get(2).map(|r| r.mean_a).unwrap_or(1.0)
-        } else { 0.0 }
+            results.get(4).map(|r| r.mean_a).unwrap_or(0.0)
+                / results.get(2).map(|r| r.mean_a).unwrap_or(1.0)
+        } else {
+            0.0
+        }
     );
     println!("\n  {}", interp);
 

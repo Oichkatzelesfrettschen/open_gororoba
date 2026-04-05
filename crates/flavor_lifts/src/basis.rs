@@ -360,9 +360,9 @@ pub fn extract_vk_basis(
             let mut gx_frob_sq = 0.0_f64;
             for i in 0..n_assess {
                 for j in 0..n_assess {
-                    gbc.write(i, j, gram_bc_flat[i * n_assess + j] as f64);
+                    gbc[(i, j)] = gram_bc_flat[i * n_assess + j] as f64;
                     let v = gram_x_flat[i * n_assess + j] as f64;
-                    gx.write(i, j, v);
+                    gx[(i, j)] = v;
                     gx_frob_sq += v * v;
                 }
             }
@@ -379,13 +379,13 @@ pub fn extract_vk_basis(
         let mut frob_sq = 0.0_f64;
         for i in 0..n {
             for j in 0..n {
-                let v = m.read(i, j);
+                let v = m[(i, j)];
                 frob_sq += v * v;
                 if v.abs() > 1e-12 {
                     nnz_count += 1;
                 }
                 if j > i {
-                    let asym = (m.read(i, j) - m.read(j, i)).abs();
+                    let asym = (m[(i, j)] - m[(j, i)]).abs();
                     if asym > max_asym {
                         max_asym = asym;
                     }
@@ -405,13 +405,13 @@ pub fn extract_vk_basis(
         let mut max_asym = 0.0_f64;
         for i in 0..n {
             for j in (i + 1)..n {
-                let asym = (m.read(i, j) - m.read(j, i)).abs();
+                let asym = (m[(i, j)] - m[(j, i)]).abs();
                 if asym > max_asym {
                     max_asym = asym;
                 }
-                let avg = 0.5 * (m.read(i, j) + m.read(j, i));
-                m.write(i, j, avg);
-                m.write(j, i, avg);
+                let avg = 0.5 * (m[(i, j)] + m[(j, i)]);
+                m[(i, j)] = avg;
+                m[(j, i)] = avg;
             }
         }
         max_asym
@@ -425,15 +425,13 @@ pub fn extract_vk_basis(
         eprintln!("  [VK_PROFILE] gram_bc: max_asym_post symmetrize = {asym_bc:.3e}");
     }
     let eig_bc = profile_stage!(4, "eigendecomp gram_bc (faer)", {
-        gram_bc_sym.selfadjoint_eigendecomposition(faer::Side::Lower)
+        gram_bc_sym.self_adjoint_eigen(faer::Side::Lower).unwrap()
     });
 
     let abs_eps = 1e-6_f64;
     let rel_eps = 1e-4_f64;
 
-    let bc_eigenvalues: Vec<f64> = (0..n_assess)
-        .map(|k| eig_bc.s().column_vector().read(k))
-        .collect();
+    let bc_eigenvalues: Vec<f64> = eig_bc.S().column_vector().iter().copied().collect();
     let bc_sv: Vec<f64> = bc_eigenvalues.iter().map(|&e| e.max(0.0).sqrt()).collect();
     let bc_sv_max = bc_sv.iter().cloned().fold(0.0_f64, f64::max);
     let bc_threshold = abs_eps.max(rel_eps * bc_sv_max);
@@ -453,13 +451,13 @@ pub fn extract_vk_basis(
 
     // Stage 5: Projector P_BC = sum_k |v_k><v_k| for retained eigenvectors
     let p_bc = profile_stage!(5, "projector construction P_BC", {
-        let u_bc = eig_bc.u();
+        let u_bc = eig_bc.U();
         let mut p = DMatrix::zeros(n_assess, n_assess);
         for (k, &sv) in bc_sv.iter().enumerate() {
             if sv > bc_threshold {
                 let mut col = nalgebra::DVector::zeros(n_assess);
                 for i in 0..n_assess {
-                    col[i] = u_bc.read(i, k);
+                    col[i] = u_bc[(i, k)];
                 }
                 p += &col * col.transpose();
             }
@@ -483,7 +481,7 @@ pub fn extract_vk_basis(
         eprintln!("  [VK_PROFILE] gram_vk: max_asym_post symmetrize = {asym_vk:.3e}");
     }
     let eig_vk = profile_stage!(7, "eigendecomp gram_vk (faer)", {
-        gram_vk_sym.selfadjoint_eigendecomposition(faer::Side::Lower)
+        gram_vk_sym.self_adjoint_eigen(faer::Side::Lower).unwrap()
     });
 
     // Stage 8: Postprocessing -- threshold, canonical sort, basis extraction
@@ -491,9 +489,7 @@ pub fn extract_vk_basis(
         8,
         "postprocessing (sort, extract basis)",
         {
-            let vk_eigenvalues: Vec<f64> = (0..n_assess)
-                .map(|k| eig_vk.s().column_vector().read(k))
-                .collect();
+            let vk_eigenvalues: Vec<f64> = eig_vk.S().column_vector().iter().copied().collect();
             let vk_sv: Vec<f64> = vk_eigenvalues.iter().map(|&e| e.max(0.0).sqrt()).collect();
             let vk_sv_max = vk_sv.iter().cloned().fold(0.0_f64, f64::max);
 
@@ -540,13 +536,13 @@ pub fn extract_vk_basis(
             }
 
             let n_basis = retained_rank_vk.min(max_rank);
-            let u_vk = eig_vk.u();
+            let u_vk = eig_vk.U();
 
             // basis_matrix shape: (rank, n_assess) -- basis vectors are ROWS
             let mut basis = DMatrix::zeros(n_basis, n_assess);
             for (k, &(_, eig_idx)) in sv_pairs.iter().take(n_basis).enumerate() {
                 for col in 0..n_assess {
-                    basis[(k, col)] = u_vk.read(col, eig_idx);
+                    basis[(k, col)] = u_vk[(col, eig_idx)];
                 }
             }
 

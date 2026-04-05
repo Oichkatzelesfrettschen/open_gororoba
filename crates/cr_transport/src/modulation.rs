@@ -13,6 +13,7 @@
 //! Fisk (1971) extended this to non-spherical geometries.
 
 use gauss_quad::GaussLegendre;
+use std::num::NonZeroUsize;
 
 /// Force-field proxy for fast diagnostic modulation calculations.
 pub struct ForceFieldProxy {
@@ -44,7 +45,9 @@ impl ForceFieldProxy {
         v_sw_profile: &dyn Fn(f64) -> f64,
         kappa_rr_profile: &dyn Fn(f64) -> f64,
     ) -> f64 {
-        let gl = GaussLegendre::new(32).expect("GaussLegendre init failed");
+        let gl = GaussLegendre::new(
+            NonZeroUsize::new(32).expect("Gauss-Legendre degree must be non-zero"),
+        );
         // Integrate from r_au to r_boundary_au
         gl.integrate(r_au, self.r_boundary_au, |r| {
             let v = v_sw_profile(r);

@@ -75,7 +75,11 @@ fn run_transcribe(csv_path: &PathBuf) {
     let data = std::fs::read(csv_path).expect("Failed to read CSV");
     let mut hasher = Sha256::new();
     hasher.update(&data);
-    let hash = format!("{:x}", hasher.finalize());
+    let hash = hasher
+        .finalize()
+        .iter()
+        .map(|byte| format!("{byte:02x}"))
+        .collect::<String>();
     println!("File: {}", csv_path.display());
     println!("SHA-256: {}", hash);
     println!("Size: {} bytes", data.len());

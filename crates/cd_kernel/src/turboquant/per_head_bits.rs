@@ -61,8 +61,11 @@ pub fn score_head_sensitivity(
         .collect();
 
     // Sort by sensitivity (most sensitive first)
-    scores.sort_by(|a, b| b.mean_associator.partial_cmp(&a.mean_associator)
-        .unwrap_or(std::cmp::Ordering::Equal));
+    scores.sort_by(|a, b| {
+        b.mean_associator
+            .partial_cmp(&a.mean_associator)
+            .unwrap_or(std::cmp::Ordering::Equal)
+    });
     scores
 }
 
@@ -204,7 +207,11 @@ mod tests {
             .map(|h| {
                 let scale = if h == 3 { 10.0 } else { 0.1 };
                 (0..10)
-                    .map(|t| (0..dim).map(|i| ((t + i * h) as f64 * scale * 0.1).sin()).collect())
+                    .map(|t| {
+                        (0..dim)
+                            .map(|i| ((t + i * h) as f64 * scale * 0.1).sin())
+                            .collect()
+                    })
                     .collect()
             })
             .collect();
@@ -212,7 +219,10 @@ mod tests {
         let sensitivities = score_head_sensitivity(&residuals_per_head, dim);
 
         // Head 3 should be most sensitive (first in sorted list)
-        assert_eq!(sensitivities[0].head_idx, 3,
-            "Head 3 should be most sensitive, got head {}", sensitivities[0].head_idx);
+        assert_eq!(
+            sensitivities[0].head_idx, 3,
+            "Head 3 should be most sensitive, got head {}",
+            sensitivities[0].head_idx
+        );
     }
 }

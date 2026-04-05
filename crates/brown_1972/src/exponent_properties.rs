@@ -47,7 +47,8 @@ pub fn verify_exponent_addition(a: &[f64], m: i32, n: i32) -> f64 {
     let an = cd_power(a, n);
     let am_an = cd_multiply(&am, &an);
     let amn = cd_power(a, m + n);
-    am_an.iter()
+    am_an
+        .iter()
         .zip(amn.iter())
         .map(|(x, y)| (x - y).abs())
         .fold(0.0, f64::max)
@@ -205,7 +206,9 @@ mod tests {
         let mut x = vec![0.0; 16];
         let mut s = seed;
         for v in &mut x {
-            s = s.wrapping_mul(6364136223846793005).wrapping_add(1442695040888963407);
+            s = s
+                .wrapping_mul(6364136223846793005)
+                .wrapping_add(1442695040888963407);
             *v = ((s >> 33) as f64) / (1u64 << 31) as f64 - 1.0;
         }
         x
@@ -332,7 +335,10 @@ mod tests {
         let b = random_sedenion(2);
         let c = random_sedenion(3);
         let err = verify_associator_square(&a, &b, &c);
-        assert!(err < 1e-6, "sedenion associator^2 should be -N(assoc): err={err}");
+        assert!(
+            err < 1e-6,
+            "sedenion associator^2 should be -N(assoc): err={err}"
+        );
     }
 
     #[test]

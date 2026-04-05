@@ -17,8 +17,7 @@
 use anyhow::{Context, Result};
 use clap::Parser;
 use serde::Serialize;
-use std::collections::BTreeMap;
-use std::path::PathBuf;
+use std::{collections::BTreeMap, path::PathBuf};
 
 #[derive(Parser)]
 #[command(name = "solar-cycle-crosscorr")]
@@ -40,7 +39,10 @@ struct Cli {
     dim: usize,
 
     /// Output JSON
-    #[arg(long, default_value = "data/output/heliosphere/ablations/solar_cycle_crosscorr.json")]
+    #[arg(
+        long,
+        default_value = "data/output/heliosphere/ablations/solar_cycle_crosscorr.json"
+    )]
     out_json: PathBuf,
 }
 
@@ -103,10 +105,15 @@ fn compute_yearly_cd(records: &[[f64; 4]], dim: usize) -> YearlyCd {
         for s in 0..steps {
             let r = &records[i + s];
             for &val in r {
-                if !val.is_finite() { valid = false; break; }
+                if !val.is_finite() {
+                    valid = false;
+                    break;
+                }
                 v.push(val as f32);
             }
-            if !valid { break; }
+            if !valid {
+                break;
+            }
         }
         if valid && v.len() == dim {
             embeddings.push(v);
@@ -115,8 +122,13 @@ fn compute_yearly_cd(records: &[[f64; 4]], dim: usize) -> YearlyCd {
 
     if embeddings.len() < 3 {
         return YearlyCd {
-            year: 0, n_records: records.len(), n_windows: 0,
-            cd_median: 0.0, cd_mean: 0.0, cd_max: 0.0, cd_p90: 0.0,
+            year: 0,
+            n_records: records.len(),
+            n_windows: 0,
+            cd_median: 0.0,
+            cd_mean: 0.0,
+            cd_max: 0.0,
+            cd_p90: 0.0,
         };
     }
 
@@ -146,7 +158,9 @@ fn compute_yearly_cd(records: &[[f64; 4]], dim: usize) -> YearlyCd {
 #[allow(dead_code)]
 fn pearson_correlation(x: &[f64], y: &[f64]) -> f64 {
     let n = x.len().min(y.len());
-    if n < 3 { return 0.0; }
+    if n < 3 {
+        return 0.0;
+    }
     let x = &x[..n];
     let y = &y[..n];
     let mx = x.iter().sum::<f64>() / n as f64;
@@ -181,7 +195,8 @@ fn main() -> Result<()> {
         .map(|e| e.path())
         .filter(|p| {
             p.extension().and_then(|e| e.to_str()) == Some("csv")
-                && p.file_name().and_then(|n| n.to_str())
+                && p.file_name()
+                    .and_then(|n| n.to_str())
                     .map(|n| n.starts_with("ac_h0_mfi"))
                     .unwrap_or(false)
         })
@@ -193,23 +208,33 @@ fn main() -> Result<()> {
     for path in &ace_files {
         let fname = path.file_name().and_then(|n| n.to_str()).unwrap_or("");
         // Extract year from filename: ac_h0_mfi_YYYY.csv
-        let year: u16 = fname.chars()
+        let year: u16 = fname
+            .chars()
             .filter(|c| c.is_ascii_digit())
             .collect::<String>()
             .parse()
             .unwrap_or(0);
-        if year < 1997 || year > 2025 { continue; }
+        if !(1997..=2025).contains(&year) {
+            continue;
+        }
 
         let records = parse_ace_year(path)?;
         if records.len() < 100 {
-            println!("  {} {}: only {} records, skipping", year, fname, records.len());
+            println!(
+                "  {} {}: only {} records, skipping",
+                year,
+                fname,
+                records.len()
+            );
             continue;
         }
 
         let mut cd = compute_yearly_cd(&records, cli.dim);
         cd.year = year;
-        println!("  {}: {} records, {} windows, cd_median={:.3}, cd_p90={:.3}",
-            year, cd.n_records, cd.n_windows, cd.cd_median, cd.cd_p90);
+        println!(
+            "  {}: {} records, {} windows, cd_median={:.3}, cd_p90={:.3}",
+            year, cd.n_records, cd.n_windows, cd.cd_median, cd.cd_p90
+        );
         yearly_cds.insert(year, cd);
     }
 
@@ -227,7 +252,10 @@ fn main() -> Result<()> {
     };
 
     println!("\n  Solar cycle CD amplitude: {:.1}x", solar_amplitude);
-    notes.push(format!("ACE yearly CD amplitude: {:.1}x (max/min of median CD)", solar_amplitude));
+    notes.push(format!(
+        "ACE yearly CD amplitude: {:.1}x (max/min of median CD)",
+        solar_amplitude
+    ));
 
     // Step 3: Cross-correlate with Voyager lifetime profiles
     // The Voyager lifetime CSVs have radial bins with median CD.
@@ -237,9 +265,14 @@ fn main() -> Result<()> {
     let correlation_v1 = None;
     let correlation_v2 = None;
 
-    notes.push("Cross-correlation with Voyager requires mapping radial bins to years via V1/V2 trajectory".to_string());
+    notes.push(
+        "Cross-correlation with Voyager requires mapping radial bins to years via V1/V2 trajectory"
+            .to_string(),
+    );
     notes.push("V2 PLS (1977-2007) provides V_sw for propagation delay estimation".to_string());
-    notes.push("Expected: solar max years show higher CD at 1 AU, lagged at Voyager distance".to_string());
+    notes.push(
+        "Expected: solar max years show higher CD at 1 AU, lagged at Voyager distance".to_string(),
+    );
 
     // Identify solar cycle phases
     if yearly_cds.len() >= 5 {
@@ -250,23 +283,25 @@ fn main() -> Result<()> {
         let mut peaks = Vec::new();
         let mut troughs = Vec::new();
         for i in 1..cds.len().saturating_sub(1) {
-            if cds[i] > cds[i-1] && cds[i] > cds[i+1] {
+            if cds[i] > cds[i - 1] && cds[i] > cds[i + 1] {
                 peaks.push((years[i], cds[i]));
             }
-            if cds[i] < cds[i-1] && cds[i] < cds[i+1] {
+            if cds[i] < cds[i - 1] && cds[i] < cds[i + 1] {
                 troughs.push((years[i], cds[i]));
             }
         }
 
         if !peaks.is_empty() {
-            let peak_strs: Vec<String> = peaks.iter()
+            let peak_strs: Vec<String> = peaks
+                .iter()
                 .map(|(y, c)| format!("{}({:.1})", y, c))
                 .collect();
             println!("  CD peaks: {}", peak_strs.join(", "));
             notes.push(format!("CD peaks at 1 AU: {}", peak_strs.join(", ")));
         }
         if !troughs.is_empty() {
-            let trough_strs: Vec<String> = troughs.iter()
+            let trough_strs: Vec<String> = troughs
+                .iter()
                 .map(|(y, c)| format!("{}({:.1})", y, c))
                 .collect();
             println!("  CD troughs: {}", trough_strs.join(", "));

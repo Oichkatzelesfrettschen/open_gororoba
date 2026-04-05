@@ -28,6 +28,7 @@
 //! and then provides O(log N) bilinear interpolation at query time.
 
 use gauss_quad::GaussLegendre;
+use std::num::NonZeroUsize;
 
 /// Default BDMPS-inspired straggling width parameter kappa.
 pub const DEFAULT_KAPPA: f64 = 0.5;
@@ -80,7 +81,9 @@ pub fn straggling_sigma(epsilon_bar: f64, kappa: f64) -> f64 {
 /// * `sigma`       -- straggling width sigma (GeV); pass 0 for the sharp limit
 #[must_use]
 pub fn r_aa_straggling(pt: f64, epsilon_bar: f64, n: f64, sigma: f64) -> f64 {
-    let gl = GaussLegendre::new(N_GL).expect("GL quadrature init");
+    let gl = GaussLegendre::new(
+        NonZeroUsize::new(N_GL).expect("Gauss-Legendre degree must be non-zero"),
+    );
     r_aa_straggling_with_gl(pt, epsilon_bar, n, sigma, &gl)
 }
 
@@ -238,7 +241,9 @@ impl StragglingGrid {
             .collect();
 
         // Precompute the table, constructing the GL object once for all grid evaluations
-        let gl = GaussLegendre::new(N_GL).expect("GL quadrature init");
+        let gl = GaussLegendre::new(
+            NonZeroUsize::new(N_GL).expect("Gauss-Legendre degree must be non-zero"),
+        );
         let raa_values: Vec<Vec<f64>> = pt_grid
             .iter()
             .map(|&pt| {

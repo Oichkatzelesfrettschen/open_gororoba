@@ -40,7 +40,7 @@ impl SystematicErrorBudget {
     /// Simulates `n_trials` where each error source is sampled from a normal
     /// distribution with zero mean and the given magnitude as its standard deviation.
     pub fn monte_carlo_propagation(&self, n_trials: usize) -> (f64, f64) {
-        let mut rng = thread_rng();
+        let mut rng = rand::rng();
         let mut results = Vec::with_capacity(n_trials);
 
         // Pre-create distributions

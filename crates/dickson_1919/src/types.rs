@@ -16,16 +16,16 @@ use cd_kernel::cayley_dickson::{cd_conjugate, cd_multiply, cd_norm_sq};
 /// Mirrors: DicksonCDProcess.v property hierarchy (p.159).
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum CayleyDicksonLevel {
-    Real,            // dim 1
-    Complex,         // dim 2
-    Quaternion,      // dim 4
-    Octonion,        // dim 8
-    Sedenion,        // dim 16
-    Pathion,         // dim 32
-    Chingon,         // dim 64
-    Routon,          // dim 128
-    Voudon,          // dim 256
-    Higher(usize),   // dim = 2^n for n >= 9
+    Real,          // dim 1
+    Complex,       // dim 2
+    Quaternion,    // dim 4
+    Octonion,      // dim 8
+    Sedenion,      // dim 16
+    Pathion,       // dim 32
+    Chingon,       // dim 64
+    Routon,        // dim 128
+    Voudon,        // dim 256
+    Higher(usize), // dim = 2^n for n >= 9
 }
 
 impl CayleyDicksonLevel {
@@ -228,9 +228,18 @@ mod tests {
 
     #[test]
     fn test_level_from_dim() {
-        assert_eq!(CayleyDicksonLevel::from_dim(1), Some(CayleyDicksonLevel::Real));
-        assert_eq!(CayleyDicksonLevel::from_dim(8), Some(CayleyDicksonLevel::Octonion));
-        assert_eq!(CayleyDicksonLevel::from_dim(16), Some(CayleyDicksonLevel::Sedenion));
+        assert_eq!(
+            CayleyDicksonLevel::from_dim(1),
+            Some(CayleyDicksonLevel::Real)
+        );
+        assert_eq!(
+            CayleyDicksonLevel::from_dim(8),
+            Some(CayleyDicksonLevel::Octonion)
+        );
+        assert_eq!(
+            CayleyDicksonLevel::from_dim(16),
+            Some(CayleyDicksonLevel::Sedenion)
+        );
         assert_eq!(CayleyDicksonLevel::from_dim(3), None); // not power of 2
         assert_eq!(CayleyDicksonLevel::from_dim(0), None);
     }
@@ -244,7 +253,9 @@ mod tests {
         assert!(!h.is_commutative() && h.is_associative() && h.is_division());
 
         let o = CayleyDicksonLevel::Octonion;
-        assert!(!o.is_commutative() && !o.is_associative() && o.is_alternative() && o.is_division());
+        assert!(
+            !o.is_commutative() && !o.is_associative() && o.is_alternative() && o.is_division()
+        );
 
         let s = CayleyDicksonLevel::Sedenion;
         assert!(!s.is_alternative() && !s.is_division() && s.has_zero_divisors());

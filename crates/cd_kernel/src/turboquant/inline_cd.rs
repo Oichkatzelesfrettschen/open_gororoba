@@ -41,12 +41,12 @@ pub fn cd_multiply_inline(a: &[f64], b: &[f64]) -> SmallVec<[f64; 16]> {
     // Lower: a_l * c_l - conj(c_r) * a_r
     // Upper: c_r * a_l + a_r * conj(c_l)
     let conj_c_r = cd_conjugate_inline(c_r);
-    let term1 = cd_multiply_inline(a_l, c_l);         // a_l * c_l
-    let term2 = cd_multiply_inline(&conj_c_r, a_r);   // conj(c_r) * a_r
+    let term1 = cd_multiply_inline(a_l, c_l); // a_l * c_l
+    let term2 = cd_multiply_inline(&conj_c_r, a_r); // conj(c_r) * a_r
 
     let conj_c_l = cd_conjugate_inline(c_l);
-    let term3 = cd_multiply_inline(c_r, a_l);          // c_r * a_l
-    let term4 = cd_multiply_inline(a_r, &conj_c_l);    // a_r * conj(c_l)
+    let term3 = cd_multiply_inline(c_r, a_l); // c_r * a_l
+    let term4 = cd_multiply_inline(a_r, &conj_c_l); // a_r * conj(c_l)
 
     let mut result = SmallVec::with_capacity(dim);
     for i in 0..half {
@@ -93,7 +93,10 @@ mod tests {
         for (i, (&inl, &std)) in inline_result.iter().zip(standard_result.iter()).enumerate() {
             assert!(
                 (inl - std).abs() < 1e-10,
-                "Quaternion multiply mismatch at {}: inline={}, standard={}", i, inl, std
+                "Quaternion multiply mismatch at {}: inline={}, standard={}",
+                i,
+                inl,
+                std
             );
         }
     }
@@ -108,12 +111,18 @@ mod tests {
         let standard_result = crate::cayley_dickson::cd_multiply(&a, &b);
 
         assert_eq!(inline_result.len(), 16);
-        assert!(!inline_result.spilled(), "Sedenion should be inline (no heap)");
+        assert!(
+            !inline_result.spilled(),
+            "Sedenion should be inline (no heap)"
+        );
 
         for (i, (&inl, &std)) in inline_result.iter().zip(standard_result.iter()).enumerate() {
             assert!(
                 (inl - std).abs() < 1e-10,
-                "Sedenion multiply mismatch at {}: inline={}, standard={}", i, inl, std
+                "Sedenion multiply mismatch at {}: inline={}, standard={}",
+                i,
+                inl,
+                std
             );
         }
     }
@@ -130,7 +139,9 @@ mod tests {
 
         assert!(
             (inline_norm - standard_norm).abs() < 1e-10,
-            "Associator norm mismatch: inline={}, standard={}", inline_norm, standard_norm
+            "Associator norm mismatch: inline={}, standard={}",
+            inline_norm,
+            standard_norm
         );
         assert!(inline_norm > 0.0, "Sedenion associator should be nonzero");
     }
@@ -154,6 +165,10 @@ mod tests {
         let c = [9.0, 10.0, 11.0, 12.0];
 
         let norm = cd_associator_norm_inline(&a, &b, &c);
-        assert!(norm < 1e-10, "Quaternion should be associative, got norm={}", norm);
+        assert!(
+            norm < 1e-10,
+            "Quaternion should be associative, got norm={}",
+            norm
+        );
     }
 }

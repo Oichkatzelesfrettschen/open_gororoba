@@ -36,7 +36,7 @@ impl Packed2BitIndices {
     /// Pack u8 indices (each 0-3) into 2-bit packed format.
     pub fn pack(indices: &[u8]) -> Self {
         let n = indices.len();
-        let n_bytes = (n + 3) / 4;
+        let n_bytes = n.div_ceil(4);
         let mut data = vec![0u8; n_bytes];
         for (i, &idx) in indices.iter().enumerate() {
             debug_assert!(idx < 4, "2-bit index out of range: {}", idx);
@@ -82,7 +82,7 @@ pub struct Packed4BitIndices {
 impl Packed4BitIndices {
     pub fn pack(indices: &[u8]) -> Self {
         let n = indices.len();
-        let n_bytes = (n + 1) / 2;
+        let n_bytes = n.div_ceil(2);
         let mut data = vec![0u8; n_bytes];
         for (i, &idx) in indices.iter().enumerate() {
             debug_assert!(idx < 16, "4-bit index out of range: {}", idx);
@@ -167,8 +167,12 @@ pub fn f32_to_f16_bits(v: f32) -> u16 {
 
     // f16: 1 sign + 5 exponent + 10 mantissa, bias=15
     let f16_exp = exp - 127 + 15;
-    if f16_exp >= 31 { return sign << 15 | 0x7C00; } // inf
-    if f16_exp <= 0 { return sign << 15; } // zero/denorm
+    if f16_exp >= 31 {
+        return sign << 15 | 0x7C00;
+    } // inf
+    if f16_exp <= 0 {
+        return sign << 15;
+    } // zero/denorm
     let f16_mant = (mant >> 13) as u16; // top 10 bits
     sign << 15 | (f16_exp as u16) << 10 | f16_mant
 }
@@ -180,8 +184,20 @@ pub fn f16_bits_to_f32(bits: u16) -> f32 {
     let exp = ((bits >> 10) & 0x1F) as i32;
     let mant = (bits & 0x3FF) as u32;
 
-    if exp == 0 && mant == 0 { return if sign == 1 { -0.0 } else { 0.0 }; }
-    if exp == 31 { return if mant == 0 { if sign == 1 { f32::NEG_INFINITY } else { f32::INFINITY } } else { f32::NAN }; }
+    if exp == 0 && mant == 0 {
+        return if sign == 1 { -0.0 } else { 0.0 };
+    }
+    if exp == 31 {
+        return if mant == 0 {
+            if sign == 1 {
+                f32::NEG_INFINITY
+            } else {
+                f32::INFINITY
+            }
+        } else {
+            f32::NAN
+        };
+    }
 
     let f32_exp = (exp - 15 + 127) as u32;
     let f32_mant = mant << 13;
@@ -251,7 +267,12 @@ mod tests {
                 assert_eq!(back, 0.0);
             } else {
                 let rel_err = (v - back).abs() / v.abs();
-                assert!(rel_err < 0.001, "f16 roundtrip error for {}: {}", v, rel_err);
+                assert!(
+                    rel_err < 0.001,
+                    "f16 roundtrip error for {}: {}",
+                    v,
+                    rel_err
+                );
             }
         }
     }
@@ -267,12 +288,20 @@ mod tests {
         let packed_bits = d * 2 + 4 * 8 + 16 + 16; // packed indices + 4 groups * FP8 + mask + norm
 
         let savings = 1.0 - packed_bits as f64 / current_bits as f64;
-        println!("Storage: current={} bits ({:.2}/coord), packed={} bits ({:.2}/coord), savings={:.1}%",
-            current_bits, current_bits as f64 / d as f64,
-            packed_bits, packed_bits as f64 / d as f64,
-            savings * 100.0);
+        println!(
+            "Storage: current={} bits ({:.2}/coord), packed={} bits ({:.2}/coord), savings={:.1}%",
+            current_bits,
+            current_bits as f64 / d as f64,
+            packed_bits,
+            packed_bits as f64 / d as f64,
+            savings * 100.0
+        );
 
-        assert!(packed_bits < current_bits / 3,
-            "Packed should be <1/3 of current: {} vs {}", packed_bits, current_bits);
+        assert!(
+            packed_bits < current_bits / 3,
+            "Packed should be <1/3 of current: {} vs {}",
+            packed_bits,
+            current_bits
+        );
     }
 }

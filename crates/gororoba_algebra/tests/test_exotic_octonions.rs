@@ -254,7 +254,7 @@ fn test_generalized_hybrid_ladder() {
         let sig = CdSignature::from_gammas(gammas);
         let mut frustrated = 0;
         let mut total = 0;
-        let mut rng = rand::thread_rng();
+        let mut rng = rand::rng();
 
         let iter_limit = if dim <= 16 { dim * dim * dim } else { samples };
 
@@ -272,9 +272,9 @@ fn test_generalized_hybrid_ladder() {
             }
 
             // Random sampling for dim 32+
-            let i = rng.gen_range(1..dim);
-            let j = rng.gen_range(1..dim);
-            let k = rng.gen_range(1..dim);
+            let i = rng.random_range(1..dim);
+            let j = rng.random_range(1..dim);
+            let k = rng.random_range(1..dim);
             if i == j || j == k || i == k {
                 continue;
             }

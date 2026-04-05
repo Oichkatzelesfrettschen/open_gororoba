@@ -4716,6 +4716,5 @@ pub fn verify_brocade_consistency() -> bool {
 // Tests
 // ===========================================================================
 
-
 #[cfg(test)]
 mod tests;

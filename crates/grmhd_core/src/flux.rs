@@ -8,13 +8,14 @@
 //! The main entry point `compute_rhs_1d` performs a 1D flux sweep along
 //! a coordinate direction, computing the right-hand side dU/dt for each cell.
 
-use crate::cons::{self, NCONS};
-use crate::eos::GammaLaw;
-use crate::grid::Grid;
-use crate::metric::KerrMetric;
-use crate::prims::{self, PrimGrid, Prim, NPRIM};
-use crate::recon;
-use crate::riemann;
+use crate::{
+    cons::{self, NCONS},
+    eos::GammaLaw,
+    grid::Grid,
+    metric::KerrMetric,
+    prims::{self, NPRIM, Prim, PrimGrid},
+    recon, riemann,
+};
 use rayon::prelude::*;
 use wide::f64x4;
 
@@ -53,7 +54,12 @@ impl MetricCache {
             }
         }
 
-        Self { gcov, gcon, sqrt_neg_g, lapse }
+        Self {
+            gcov,
+            gcon,
+            sqrt_neg_g,
+            lapse,
+        }
     }
 
     /// Flat index into the metric cache for grid point (i, j).
@@ -126,7 +132,11 @@ pub fn compute_flux_cached(
     // 3-velocity squared and Lorentz factor
     let vsq = g_rr * v1 * v1 + g_thth * v2 * v2 + g_phph * v3 * v3;
     let alpha_sq = -(g_tt + 2.0 * g_tph * v3 + vsq);
-    let ut = if alpha_sq > 1e-20 { 1.0 / alpha_sq.sqrt() } else { 1.0 };
+    let ut = if alpha_sq > 1e-20 {
+        1.0 / alpha_sq.sqrt()
+    } else {
+        1.0
+    };
     let inv_ut = 1.0 / ut;
     let inv_ut_sq = inv_ut * inv_ut;
 
@@ -139,13 +149,18 @@ pub fn compute_flux_cached(
     // Magnetic 4-vector b^mu
     let bt = (b1 * u_cov_r + b2 * u_cov_th + b3 * u_cov_ph) * inv_ut;
     let bsq = ((b1 * b1 * g_rr + b2 * b2 * g_thth + b3 * b3 * g_phph) * inv_ut_sq
-        + bt * bt * (-inv_ut_sq + vsq)).max(0.0);
+        + bt * bt * (-inv_ut_sq + vsq))
+        .max(0.0);
 
     let w = rho + u + pressure + bsq; // total enthalpy
     let ptot = pressure + 0.5 * bsq;
 
     // u^dir (contravariant spatial velocity component)
-    let v_dir = match dir { 0 => v1, 1 => v2, _ => v3 };
+    let v_dir = match dir {
+        0 => v1,
+        1 => v2,
+        _ => v3,
+    };
     let u_up_dir = ut * v_dir;
 
     // b^dir
@@ -161,7 +176,12 @@ pub fn compute_flux_cached(
     f[0] = sqrt_neg_g * rho * u_up_dir;
 
     // Energy flux
-    let b_cov_t = g_tt * bt + g_tph * match dir { 2 => b_up_dir, _ => 0.0 };
+    let b_cov_t = g_tt * bt
+        + g_tph
+            * match dir {
+                2 => b_up_dir,
+                _ => 0.0,
+            };
     let t_dir_t = w * u_up_dir * u_cov_t - b_up_dir * b_cov_t;
     f[1] = sqrt_neg_g * (t_dir_t + rho * u_up_dir);
 
@@ -333,33 +353,61 @@ pub fn compute_rhs_1d(
 
         // Compute fluxes from L/R states using cached metric
         let mc_face = mc.idx(face, n2t, j_mid);
-        let gcov_face = if mc_face < mc.gcov.len() { mc.gcov_at(mc_face) } else { &[0.0; 5] };
+        let gcov_face = if mc_face < mc.gcov.len() {
+            mc.gcov_at(mc_face)
+        } else {
+            &[0.0; 5]
+        };
         let sg_1d = if mc_face < mc.sqrt_neg_g.len() {
             mc.sqrt_neg_g[mc_face]
-        } else { 1.0 };
+        } else {
+            1.0
+        };
         ws.flux_l = compute_flux_cached(&ws.prim_l, gcov_face, eos, sg_1d, dir);
         ws.flux_r = compute_flux_cached(&ws.prim_r, gcov_face, eos, sg_1d, dir);
 
         // Wave speed estimate
         let cs2_l = eos.cs2(ws.prim_l[prims::RHO], ws.prim_l[prims::UU]);
         let cs2_r = eos.cs2(ws.prim_r[prims::RHO], ws.prim_r[prims::UU]);
-        let alpha = if mc_face < mc.lapse.len() { mc.lapse[mc_face] } else { 1.0 };
+        let alpha = if mc_face < mc.lapse.len() {
+            mc.lapse[mc_face]
+        } else {
+            1.0
+        };
 
         let (sl, sr) = riemann::wave_speeds(
             ws.prim_l[prims::V1 + dir],
             ws.prim_r[prims::V1 + dir],
-            cs2_l, cs2_r,
-            0.0, 0.0, // va2 = 0 for pure hydro
+            cs2_l,
+            cs2_r,
+            0.0,
+            0.0, // va2 = 0 for pure hydro
             alpha,
         );
 
         // Compute conservative variables for HLL using cached metric
         let mc_l = mc.idx(i_m1, n2t, j_mid);
         let mc_r = mc.idx(i_p0, n2t, j_mid);
-        let gcov_l = if mc_l < mc.gcov.len() { mc.gcov_at(mc_l) } else { &[0.0; 5] };
-        let gcov_r = if mc_r < mc.gcov.len() { mc.gcov_at(mc_r) } else { &[0.0; 5] };
-        let sg_l = if mc_l < mc.sqrt_neg_g.len() { mc.sqrt_neg_g[mc_l] } else { 1.0 };
-        let sg_r = if mc_r < mc.sqrt_neg_g.len() { mc.sqrt_neg_g[mc_r] } else { 1.0 };
+        let gcov_l = if mc_l < mc.gcov.len() {
+            mc.gcov_at(mc_l)
+        } else {
+            &[0.0; 5]
+        };
+        let gcov_r = if mc_r < mc.gcov.len() {
+            mc.gcov_at(mc_r)
+        } else {
+            &[0.0; 5]
+        };
+        let sg_l = if mc_l < mc.sqrt_neg_g.len() {
+            mc.sqrt_neg_g[mc_l]
+        } else {
+            1.0
+        };
+        let sg_r = if mc_r < mc.sqrt_neg_g.len() {
+            mc.sqrt_neg_g[mc_r]
+        } else {
+            1.0
+        };
         ws.cons_l = cons::prim2con_cached(&ws.prim_l, gcov_l, eos, sg_l);
         ws.cons_r = cons::prim2con_cached(&ws.prim_r, gcov_r, eos, sg_r);
 
@@ -438,7 +486,8 @@ fn compute_rhs_3d_inner(
     let mut face_emfs = FaceEmfs {
         emf_r: vec![0.0; n1t * n2t],
         emf_th: vec![0.0; n1t * n2t],
-        n1t, n2t,
+        n1t,
+        n2t,
     };
 
     // Direction 0 (radial): sweep faces at fixed (j, k)
@@ -456,100 +505,134 @@ fn compute_rhs_3d_inner(
             .flat_map(|j| (ng..ng + grid.n3).map(move |k| (j, k)))
             .collect();
 
-        jk_pairs.par_iter().for_each_init(FluxWorkspace::new, |ws, &(j, k)| {
-            let rhs_p = rhs_addr as *mut f64;
-            let emf_p = emf_addr as *mut f64;
+        jk_pairs
+            .par_iter()
+            .for_each_init(FluxWorkspace::new, |ws, &(j, k)| {
+                let rhs_p = rhs_addr as *mut f64;
+                let emf_p = emf_addr as *mut f64;
 
-            for face_i in ng..ng + grid.n1 + 1 {
-                let im2 = face_i.saturating_sub(2);
-                let im1 = face_i.saturating_sub(1);
-                let ip0 = face_i.min(n1t - 1);
-                let ip1 = (face_i + 1).min(n1t - 1);
+                for face_i in ng..ng + grid.n1 + 1 {
+                    let im2 = face_i.saturating_sub(2);
+                    let im1 = face_i.saturating_sub(1);
+                    let ip0 = face_i.min(n1t - 1);
+                    let ip1 = (face_i + 1).min(n1t - 1);
 
-                // Reconstruct at face
-                for var in 0..NPRIM {
-                    let (ql, qr) = recon::plm_lr(
-                        prims.get(grid.idx(im2, j, k))[var],
-                        prims.get(grid.idx(im1, j, k))[var],
-                        prims.get(grid.idx(ip0, j, k))[var],
-                        prims.get(grid.idx(ip1, j, k))[var],
+                    // Reconstruct at face
+                    for var in 0..NPRIM {
+                        let (ql, qr) = recon::plm_lr(
+                            prims.get(grid.idx(im2, j, k))[var],
+                            prims.get(grid.idx(im1, j, k))[var],
+                            prims.get(grid.idx(ip0, j, k))[var],
+                            prims.get(grid.idx(ip1, j, k))[var],
+                        );
+                        ws.prim_l[var] = ql;
+                        ws.prim_r[var] = qr;
+                    }
+
+                    if zero_b_in_recon {
+                        for b in 5..8 {
+                            ws.prim_l[b] = 0.0;
+                            ws.prim_r[b] = 0.0;
+                        }
+                    }
+
+                    let mc_face = mc.idx(face_i, n2t, j);
+                    let gcov_face = if mc_face < mc.gcov.len() {
+                        mc.gcov_at(mc_face)
+                    } else {
+                        &[0.0; 5]
+                    };
+                    let sg_face = if mc_face < mc.sqrt_neg_g.len() {
+                        mc.sqrt_neg_g[mc_face]
+                    } else {
+                        1.0
+                    };
+                    ws.flux_l = compute_flux_cached(&ws.prim_l, gcov_face, eos, sg_face, 0);
+                    ws.flux_r = compute_flux_cached(&ws.prim_r, gcov_face, eos, sg_face, 0);
+
+                    let cs2_l = eos.cs2(ws.prim_l[prims::RHO], ws.prim_l[prims::UU]);
+                    let cs2_r = eos.cs2(ws.prim_r[prims::RHO], ws.prim_r[prims::UU]);
+                    let alpha = if mc_face < mc.lapse.len() {
+                        mc.lapse[mc_face]
+                    } else {
+                        1.0
+                    };
+
+                    let (sl, sr) = riemann::wave_speeds(
+                        ws.prim_l[prims::V1],
+                        ws.prim_r[prims::V1],
+                        cs2_l,
+                        cs2_r,
+                        0.0,
+                        0.0,
+                        alpha,
                     );
-                    ws.prim_l[var] = ql;
-                    ws.prim_r[var] = qr;
-                }
 
-                if zero_b_in_recon {
-                    for b in 5..8 {
-                        ws.prim_l[b] = 0.0;
-                        ws.prim_r[b] = 0.0;
+                    let mc_l = mc.idx(im1, n2t, j);
+                    let mc_r = mc.idx(ip0, n2t, j);
+                    let gcov_l = if mc_l < mc.gcov.len() {
+                        mc.gcov_at(mc_l)
+                    } else {
+                        &[0.0; 5]
+                    };
+                    let gcov_r = if mc_r < mc.gcov.len() {
+                        mc.gcov_at(mc_r)
+                    } else {
+                        &[0.0; 5]
+                    };
+                    let sg_l = if mc_l < mc.sqrt_neg_g.len() {
+                        mc.sqrt_neg_g[mc_l]
+                    } else {
+                        1.0
+                    };
+                    let sg_r = if mc_r < mc.sqrt_neg_g.len() {
+                        mc.sqrt_neg_g[mc_r]
+                    } else {
+                        1.0
+                    };
+                    ws.cons_l = cons::prim2con_cached(&ws.prim_l, gcov_l, eos, sg_l);
+                    ws.cons_r = cons::prim2con_cached(&ws.prim_r, gcov_r, eos, sg_r);
+
+                    let f_hll =
+                        riemann::hll_flux(&ws.flux_l, &ws.flux_r, &ws.cons_l, &ws.cons_r, sl, sr);
+
+                    // Store EMF from HLL induction flux at this radial face.
+                    // Only write from k == ng to avoid redundant writes across phi.
+                    if k == ng {
+                        // Safety: each (face_i, j) pair is unique within this sweep.
+                        unsafe {
+                            let ep = emf_p.add(face_i * n2t + j);
+                            *ep = -f_hll[6]; // negative of B^theta flux
+                        }
+                    }
+
+                    // Accumulate divergence
+                    // SAFETY: `v` indexes into a conserved-variable array of size
+                    // NCONS * n_total. The rayon partition ensures each thread
+                    // writes to a disjoint cell range (unique (j,k) per task).
+                    // `base` points to valid heap memory from the RHS Vec whose
+                    // lifetime spans this entire function. grid.idx is injective,
+                    // so different (j,k) pairs never alias the same rhs cell.
+                    if face_i > ng {
+                        let cell_l = grid.idx(face_i - 1, j, k);
+                        let base = unsafe { rhs_p.add(cell_l * NCONS) };
+                        for (v, &fv) in f_hll.iter().enumerate() {
+                            unsafe {
+                                *base.add(v) -= fv * inv_dx;
+                            }
+                        }
+                    }
+                    if face_i < ng + grid.n1 {
+                        let cell_r = grid.idx(face_i, j, k);
+                        let base = unsafe { rhs_p.add(cell_r * NCONS) };
+                        for (v, &fv) in f_hll.iter().enumerate() {
+                            unsafe {
+                                *base.add(v) += fv * inv_dx;
+                            }
+                        }
                     }
                 }
-
-                let mc_face = mc.idx(face_i, n2t, j);
-                let gcov_face = if mc_face < mc.gcov.len() { mc.gcov_at(mc_face) } else { &[0.0; 5] };
-                let sg_face = if mc_face < mc.sqrt_neg_g.len() {
-                    mc.sqrt_neg_g[mc_face]
-                } else { 1.0 };
-                ws.flux_l = compute_flux_cached(&ws.prim_l, gcov_face, eos, sg_face, 0);
-                ws.flux_r = compute_flux_cached(&ws.prim_r, gcov_face, eos, sg_face, 0);
-
-                let cs2_l = eos.cs2(ws.prim_l[prims::RHO], ws.prim_l[prims::UU]);
-                let cs2_r = eos.cs2(ws.prim_r[prims::RHO], ws.prim_r[prims::UU]);
-                let alpha = if mc_face < mc.lapse.len() { mc.lapse[mc_face] } else { 1.0 };
-
-                let (sl, sr) = riemann::wave_speeds(
-                    ws.prim_l[prims::V1], ws.prim_r[prims::V1],
-                    cs2_l, cs2_r, 0.0, 0.0, alpha,
-                );
-
-                let mc_l = mc.idx(im1, n2t, j);
-                let mc_r = mc.idx(ip0, n2t, j);
-                let gcov_l = if mc_l < mc.gcov.len() { mc.gcov_at(mc_l) } else { &[0.0; 5] };
-                let gcov_r = if mc_r < mc.gcov.len() { mc.gcov_at(mc_r) } else { &[0.0; 5] };
-                let sg_l = if mc_l < mc.sqrt_neg_g.len() {
-                    mc.sqrt_neg_g[mc_l]
-                } else { 1.0 };
-                let sg_r = if mc_r < mc.sqrt_neg_g.len() {
-                    mc.sqrt_neg_g[mc_r]
-                } else { 1.0 };
-                ws.cons_l = cons::prim2con_cached(&ws.prim_l, gcov_l, eos, sg_l);
-                ws.cons_r = cons::prim2con_cached(&ws.prim_r, gcov_r, eos, sg_r);
-
-                let f_hll = riemann::hll_flux(&ws.flux_l, &ws.flux_r, &ws.cons_l, &ws.cons_r, sl, sr);
-
-                // Store EMF from HLL induction flux at this radial face.
-                // Only write from k == ng to avoid redundant writes across phi.
-                if k == ng {
-                    // Safety: each (face_i, j) pair is unique within this sweep.
-                    unsafe {
-                        let ep = emf_p.add(face_i * n2t + j);
-                        *ep = -f_hll[6]; // negative of B^theta flux
-                    }
-                }
-
-                // Accumulate divergence
-                // SAFETY: `v` indexes into a conserved-variable array of size
-                // NCONS * n_total. The rayon partition ensures each thread
-                // writes to a disjoint cell range (unique (j,k) per task).
-                // `base` points to valid heap memory from the RHS Vec whose
-                // lifetime spans this entire function. grid.idx is injective,
-                // so different (j,k) pairs never alias the same rhs cell.
-                if face_i > ng {
-                    let cell_l = grid.idx(face_i - 1, j, k);
-                    let base = unsafe { rhs_p.add(cell_l * NCONS) };
-                    for (v, &fv) in f_hll.iter().enumerate() {
-                        unsafe { *base.add(v) -= fv * inv_dx; }
-                    }
-                }
-                if face_i < ng + grid.n1 {
-                    let cell_r = grid.idx(face_i, j, k);
-                    let base = unsafe { rhs_p.add(cell_r * NCONS) };
-                    for (v, &fv) in f_hll.iter().enumerate() {
-                        unsafe { *base.add(v) += fv * inv_dx; }
-                    }
-                }
-            }
-        });
+            });
     }
 
     // Direction 1 (theta): sweep faces at fixed (i, k)
@@ -560,7 +643,9 @@ fn compute_rhs_3d_inner(
         let ik_pairs: Vec<(usize, usize)> = (ng..ng + grid.n1)
             .flat_map(|i| (ng..ng + grid.n3).map(move |k| (i, k)))
             .collect();
-        ik_pairs.par_iter().for_each_init(FluxWorkspace::new, |ws, &(i, k)| {
+        ik_pairs
+            .par_iter()
+            .for_each_init(FluxWorkspace::new, |ws, &(i, k)| {
                 let rp = rhs_addr_th as *mut f64;
                 let ep = emf_th_addr as *mut f64;
                 let inv_dx = 1.0 / grid.dx2;
@@ -591,40 +676,70 @@ fn compute_rhs_3d_inner(
                     }
 
                     let mc_face = mc.idx(i, n2t, face_j.min(n2t - 1));
-                    let gcov_face = if mc_face < mc.gcov.len() { mc.gcov_at(mc_face) } else { &[0.0; 5] };
+                    let gcov_face = if mc_face < mc.gcov.len() {
+                        mc.gcov_at(mc_face)
+                    } else {
+                        &[0.0; 5]
+                    };
                     let sg_face_th = if mc_face < mc.sqrt_neg_g.len() {
                         mc.sqrt_neg_g[mc_face]
-                    } else { 1.0 };
+                    } else {
+                        1.0
+                    };
                     ws.flux_l = compute_flux_cached(&ws.prim_l, gcov_face, eos, sg_face_th, 1);
                     ws.flux_r = compute_flux_cached(&ws.prim_r, gcov_face, eos, sg_face_th, 1);
 
                     let cs2_l = eos.cs2(ws.prim_l[prims::RHO], ws.prim_l[prims::UU]);
                     let cs2_r = eos.cs2(ws.prim_r[prims::RHO], ws.prim_r[prims::UU]);
-                    let alpha = if mc_face < mc.lapse.len() { mc.lapse[mc_face] } else { 1.0 };
+                    let alpha = if mc_face < mc.lapse.len() {
+                        mc.lapse[mc_face]
+                    } else {
+                        1.0
+                    };
 
                     let (sl, sr) = riemann::wave_speeds(
-                        ws.prim_l[prims::V2], ws.prim_r[prims::V2],
-                        cs2_l, cs2_r, 0.0, 0.0, alpha,
+                        ws.prim_l[prims::V2],
+                        ws.prim_r[prims::V2],
+                        cs2_l,
+                        cs2_r,
+                        0.0,
+                        0.0,
+                        alpha,
                     );
 
                     let mc_l = mc.idx(i, n2t, jm1);
                     let mc_r = mc.idx(i, n2t, jp0);
-                    let gcov_l = if mc_l < mc.gcov.len() { mc.gcov_at(mc_l) } else { &[0.0; 5] };
-                    let gcov_r = if mc_r < mc.gcov.len() { mc.gcov_at(mc_r) } else { &[0.0; 5] };
+                    let gcov_l = if mc_l < mc.gcov.len() {
+                        mc.gcov_at(mc_l)
+                    } else {
+                        &[0.0; 5]
+                    };
+                    let gcov_r = if mc_r < mc.gcov.len() {
+                        mc.gcov_at(mc_r)
+                    } else {
+                        &[0.0; 5]
+                    };
                     let sg_l = if mc_l < mc.sqrt_neg_g.len() {
                         mc.sqrt_neg_g[mc_l]
-                    } else { 1.0 };
+                    } else {
+                        1.0
+                    };
                     let sg_r = if mc_r < mc.sqrt_neg_g.len() {
                         mc.sqrt_neg_g[mc_r]
-                    } else { 1.0 };
+                    } else {
+                        1.0
+                    };
                     ws.cons_l = cons::prim2con_cached(&ws.prim_l, gcov_l, eos, sg_l);
                     ws.cons_r = cons::prim2con_cached(&ws.prim_r, gcov_r, eos, sg_r);
 
-                    let f_hll = riemann::hll_flux(&ws.flux_l, &ws.flux_r, &ws.cons_l, &ws.cons_r, sl, sr);
+                    let f_hll =
+                        riemann::hll_flux(&ws.flux_l, &ws.flux_r, &ws.cons_l, &ws.cons_r, sl, sr);
 
                     // Store EMF (only first k writes to avoid races on 2D EMF)
                     if k == ng {
-                        unsafe { *ep.add(i * n2t + face_j) = f_hll[5]; }
+                        unsafe {
+                            *ep.add(i * n2t + face_j) = f_hll[5];
+                        }
                     }
 
                     // SAFETY: `v` indexes into NCONS * n_total RHS array.
@@ -634,18 +749,22 @@ fn compute_rhs_3d_inner(
                         let cell_l = grid.idx(i, face_j - 1, k);
                         let base = unsafe { rp.add(cell_l * NCONS) };
                         for (v, &fv) in f_hll.iter().enumerate() {
-                            unsafe { *base.add(v) -= fv * inv_dx; }
+                            unsafe {
+                                *base.add(v) -= fv * inv_dx;
+                            }
                         }
                     }
                     if face_j < ng + grid.n2 {
                         let cell_r = grid.idx(i, face_j, k);
                         let base = unsafe { rp.add(cell_r * NCONS) };
                         for (v, &fv) in f_hll.iter().enumerate() {
-                            unsafe { *base.add(v) += fv * inv_dx; }
+                            unsafe {
+                                *base.add(v) += fv * inv_dx;
+                            }
                         }
                     }
                 }
-        });
+            });
     }
 
     // Direction 2 (phi): sweep faces at fixed (i, j) with PERIODIC BC
@@ -655,16 +774,25 @@ fn compute_rhs_3d_inner(
         let ij_pairs_phi: Vec<(usize, usize)> = (ng..ng + grid.n1)
             .flat_map(|i| (ng..ng + grid.n2).map(move |j| (i, j)))
             .collect();
-        ij_pairs_phi.par_iter().for_each_init(FluxWorkspace::new, |ws, &(i, j)| {
+        ij_pairs_phi
+            .par_iter()
+            .for_each_init(FluxWorkspace::new, |ws, &(i, j)| {
                 let rp = rhs_addr_phi as *mut f64;
                 let inv_dx = 1.0 / (grid.dx3 * 2.0 * std::f64::consts::PI);
 
                 for face_k in ng..ng + grid.n3 + 1 {
                     // Periodic wrapping for phi direction
-                    let km2 = ng + ((face_k as isize - 2 - ng as isize).rem_euclid(grid.n3 as isize)) as usize;
-                    let km1 = ng + ((face_k as isize - 1 - ng as isize).rem_euclid(grid.n3 as isize)) as usize;
-                    let kp0 = ng + ((face_k as isize - ng as isize).rem_euclid(grid.n3 as isize)) as usize;
-                    let kp1 = ng + ((face_k as isize + 1 - ng as isize).rem_euclid(grid.n3 as isize)) as usize;
+                    let km2 = ng
+                        + ((face_k as isize - 2 - ng as isize).rem_euclid(grid.n3 as isize))
+                            as usize;
+                    let km1 = ng
+                        + ((face_k as isize - 1 - ng as isize).rem_euclid(grid.n3 as isize))
+                            as usize;
+                    let kp0 = ng
+                        + ((face_k as isize - ng as isize).rem_euclid(grid.n3 as isize)) as usize;
+                    let kp1 = ng
+                        + ((face_k as isize + 1 - ng as isize).rem_euclid(grid.n3 as isize))
+                            as usize;
 
                     for var in 0..NPRIM {
                         let (ql, qr) = recon::plm_lr(
@@ -678,13 +806,28 @@ fn compute_rhs_3d_inner(
                     }
 
                     if zero_b_in_recon {
-                        for b in 5..8 { ws.prim_l[b] = 0.0; ws.prim_r[b] = 0.0; }
+                        for b in 5..8 {
+                            ws.prim_l[b] = 0.0;
+                            ws.prim_r[b] = 0.0;
+                        }
                     }
 
                     let mc_idx = mc.idx(i, n2t, j);
-                    let gcov_ij = if mc_idx < mc.gcov.len() { mc.gcov_at(mc_idx) } else { &[0.0; 5] };
-                    let sg = if mc_idx < mc.sqrt_neg_g.len() { mc.sqrt_neg_g[mc_idx] } else { 1.0 };
-                    let alpha = if mc_idx < mc.lapse.len() { mc.lapse[mc_idx] } else { 1.0 };
+                    let gcov_ij = if mc_idx < mc.gcov.len() {
+                        mc.gcov_at(mc_idx)
+                    } else {
+                        &[0.0; 5]
+                    };
+                    let sg = if mc_idx < mc.sqrt_neg_g.len() {
+                        mc.sqrt_neg_g[mc_idx]
+                    } else {
+                        1.0
+                    };
+                    let alpha = if mc_idx < mc.lapse.len() {
+                        mc.lapse[mc_idx]
+                    } else {
+                        1.0
+                    };
 
                     ws.flux_l = compute_flux_cached(&ws.prim_l, gcov_ij, eos, sg, 2);
                     ws.flux_r = compute_flux_cached(&ws.prim_r, gcov_ij, eos, sg, 2);
@@ -692,14 +835,20 @@ fn compute_rhs_3d_inner(
                     let cs2_l = eos.cs2(ws.prim_l[prims::RHO], ws.prim_l[prims::UU]);
                     let cs2_r = eos.cs2(ws.prim_r[prims::RHO], ws.prim_r[prims::UU]);
                     let (sl, sr) = riemann::wave_speeds(
-                        ws.prim_l[prims::V3], ws.prim_r[prims::V3],
-                        cs2_l, cs2_r, 0.0, 0.0, alpha,
+                        ws.prim_l[prims::V3],
+                        ws.prim_r[prims::V3],
+                        cs2_l,
+                        cs2_r,
+                        0.0,
+                        0.0,
+                        alpha,
                     );
 
                     ws.cons_l = cons::prim2con_cached(&ws.prim_l, gcov_ij, eos, sg);
                     ws.cons_r = cons::prim2con_cached(&ws.prim_r, gcov_ij, eos, sg);
 
-                    let f_hll = riemann::hll_flux(&ws.flux_l, &ws.flux_r, &ws.cons_l, &ws.cons_r, sl, sr);
+                    let f_hll =
+                        riemann::hll_flux(&ws.flux_l, &ws.flux_r, &ws.cons_l, &ws.cons_r, sl, sr);
 
                     // Accumulate phi divergence (periodic: both cells always exist)
                     // SAFETY: `v` indexes into NCONS * n_total RHS array.
@@ -708,15 +857,19 @@ fn compute_rhs_3d_inner(
                     let cell_l = grid.idx(i, j, km1);
                     let base_l = unsafe { rp.add(cell_l * NCONS) };
                     for (v, &fv) in f_hll.iter().enumerate() {
-                        unsafe { *base_l.add(v) -= fv * inv_dx; }
+                        unsafe {
+                            *base_l.add(v) -= fv * inv_dx;
+                        }
                     }
                     let cell_r = grid.idx(i, j, kp0);
                     let base_r = unsafe { rp.add(cell_r * NCONS) };
                     for (v, &fv) in f_hll.iter().enumerate() {
-                        unsafe { *base_r.add(v) += fv * inv_dx; }
+                        unsafe {
+                            *base_r.add(v) += fv * inv_dx;
+                        }
                     }
                 }
-        });
+            });
     }
 
     // Add GR geometric source terms, parallelized over (i, j) pairs.
@@ -732,7 +885,11 @@ fn compute_rhs_3d_inner(
         ij_pairs.par_iter().for_each(|&(i, j)| {
             let rp = rhs_addr as *mut f64;
             let mc_idx = mc.idx(i, n2t, j);
-            let sg = if mc_idx < mc.sqrt_neg_g.len() { mc.sqrt_neg_g[mc_idx] } else { 1.0 };
+            let sg = if mc_idx < mc.sqrt_neg_g.len() {
+                mc.sqrt_neg_g[mc_idx]
+            } else {
+                1.0
+            };
 
             for k in ng..ng + grid.n3 {
                 let idx = grid.idx(i, j, k);
@@ -744,7 +901,13 @@ fn compute_rhs_3d_inner(
                 };
 
                 let src = crate::source::geometric_source(
-                    &p, &grid.metric, grid.r(i), grid.theta(j), eos, dr_phys, dth_phys,
+                    &p,
+                    &grid.metric,
+                    grid.r(i),
+                    grid.theta(j),
+                    eos,
+                    dr_phys,
+                    dth_phys,
                 );
 
                 // SAFETY: `v` indexes into NCONS * n_total RHS array.
@@ -753,7 +916,9 @@ fn compute_rhs_3d_inner(
                 // to valid heap memory from the RHS Vec.
                 let base = unsafe { rp.add(idx * NCONS) };
                 for (v, &sv) in src.iter().enumerate() {
-                    unsafe { *base.add(v) += sg * sv; }
+                    unsafe {
+                        *base.add(v) += sg * sv;
+                    }
                 }
             }
         });
@@ -797,18 +962,34 @@ pub fn euler_step_3d(
         ij_pairs.par_iter().for_each(|&(i, j)| {
             let cg_p = cg_addr as *mut [f64; NCONS];
             let mc_idx = mc.idx(i, n2t, j);
-            let gcov = if mc_idx < mc.gcov.len() { mc.gcov_at(mc_idx) } else { &[0.0; 5] };
-            let sg = if mc_idx < mc.sqrt_neg_g.len() { mc.sqrt_neg_g[mc_idx] } else { 1.0 };
+            let gcov = if mc_idx < mc.gcov.len() {
+                mc.gcov_at(mc_idx)
+            } else {
+                &[0.0; 5]
+            };
+            let sg = if mc_idx < mc.sqrt_neg_g.len() {
+                mc.sqrt_neg_g[mc_idx]
+            } else {
+                1.0
+            };
             for k in ng..ng + grid.n3 {
                 let idx = grid.idx(i, j, k);
                 let cons_val = cons::prim2con_cached(
-                    &{let mut p = [0.0; NPRIM]; p.copy_from_slice(prims.get(idx)); p},
-                    gcov, eos, sg,
+                    &{
+                        let mut p = [0.0; NPRIM];
+                        p.copy_from_slice(prims.get(idx));
+                        p
+                    },
+                    gcov,
+                    eos,
+                    sg,
                 );
                 // SAFETY: idx = grid.idx(i,j,k) is injective and bounded by
                 // n_total. cg_p points to cons_grid (length n_total). Rayon
                 // partitions (i,j) pairs so each thread writes disjoint cells.
-                unsafe { *cg_p.add(idx) = cons_val; }
+                unsafe {
+                    *cg_p.add(idx) = cons_val;
+                }
             }
         });
     }
@@ -862,7 +1043,11 @@ pub fn euler_step_3d(
                 for k in ng..ng + grid.n3 {
                     let idx = grid.idx(i, j, k);
                     let mc_idx = mc.idx(i, n2t, j);
-                    let sg = if mc_idx < mc.sqrt_neg_g.len() { mc.sqrt_neg_g[mc_idx] } else { 1.0 };
+                    let sg = if mc_idx < mc.sqrt_neg_g.len() {
+                        mc.sqrt_neg_g[mc_idx]
+                    } else {
+                        1.0
+                    };
                     let p_ct = prims.get(idx);
                     cons_grid[idx][5] = sg * p_ct[prims::B1];
                     cons_grid[idx][6] = sg * p_ct[prims::B2];
@@ -882,9 +1067,21 @@ pub fn euler_step_3d(
         ij_pairs_c2p.par_iter().for_each(|&(i, j)| {
             let pp = prim_addr as *mut f64;
             let mc_idx = mc.idx(i, n2t, j);
-            let sg = if mc_idx < mc.sqrt_neg_g.len() { mc.sqrt_neg_g[mc_idx] } else { 1.0 };
-            let gcov = if mc_idx < mc.gcov.len() { mc.gcov[mc_idx] } else { [0.0; 5] };
-            let gcon = if mc_idx < mc.gcon.len() { mc.gcon[mc_idx] } else { [0.0; 5] };
+            let sg = if mc_idx < mc.sqrt_neg_g.len() {
+                mc.sqrt_neg_g[mc_idx]
+            } else {
+                1.0
+            };
+            let gcov = if mc_idx < mc.gcov.len() {
+                mc.gcov[mc_idx]
+            } else {
+                [0.0; 5]
+            };
+            let gcon = if mc_idx < mc.gcon.len() {
+                mc.gcon[mc_idx]
+            } else {
+                [0.0; 5]
+            };
 
             for k in ng..ng + grid.n3 {
                 let idx = grid.idx(i, j, k);
@@ -894,7 +1091,13 @@ pub fn euler_step_3d(
                 }
 
                 let result = crate::con2prim::con2prim_kastaun(
-                    &cons_grid[idx], &gcov, &gcon, sg, eos, 1e-8, 1e-10,
+                    &cons_grid[idx],
+                    &gcov,
+                    &gcon,
+                    sg,
+                    eos,
+                    1e-8,
+                    1e-10,
                 );
                 let recovered = result.prims();
                 let base = idx * NPRIM;
@@ -934,14 +1137,24 @@ pub fn euler_step_3d(
             for g in 0..ng {
                 let src = grid.idx(ng, j, k);
                 let dst = grid.idx(g, j, k);
-                let src_p = { let s = prims.get(src); let mut a = [0.0; 8]; a.copy_from_slice(s); a };
+                let src_p = {
+                    let s = prims.get(src);
+                    let mut a = [0.0; 8];
+                    a.copy_from_slice(s);
+                    a
+                };
                 prims.set(dst, &src_p);
             }
             // Outer radial boundary: copy from last active cell
             for g in 0..ng {
                 let src = grid.idx(ng + grid.n1 - 1, j, k);
                 let dst = grid.idx(ng + grid.n1 + g, j, k);
-                let src_p = { let s = prims.get(src); let mut a = [0.0; 8]; a.copy_from_slice(s); a };
+                let src_p = {
+                    let s = prims.get(src);
+                    let mut a = [0.0; 8];
+                    a.copy_from_slice(s);
+                    a
+                };
                 prims.set(dst, &src_p);
             }
         }
@@ -952,13 +1165,23 @@ pub fn euler_step_3d(
             for g in 0..ng {
                 let src = grid.idx(i, ng, k);
                 let dst = grid.idx(i, g, k);
-                let src_p = { let s = prims.get(src); let mut a = [0.0; 8]; a.copy_from_slice(s); a };
+                let src_p = {
+                    let s = prims.get(src);
+                    let mut a = [0.0; 8];
+                    a.copy_from_slice(s);
+                    a
+                };
                 prims.set(dst, &src_p);
             }
             for g in 0..ng {
                 let src = grid.idx(i, ng + grid.n2 - 1, k);
                 let dst = grid.idx(i, ng + grid.n2 + g, k);
-                let src_p = { let s = prims.get(src); let mut a = [0.0; 8]; a.copy_from_slice(s); a };
+                let src_p = {
+                    let s = prims.get(src);
+                    let mut a = [0.0; 8];
+                    a.copy_from_slice(s);
+                    a
+                };
                 prims.set(dst, &src_p);
             }
         }
@@ -967,12 +1190,7 @@ pub fn euler_step_3d(
 
 /// Estimate the maximum signal speed across all interior cells.
 /// Used for CFL timestep computation.
-pub fn max_signal_speed(
-    prims: &PrimGrid,
-    grid: &Grid,
-    mc: &MetricCache,
-    eos: &GammaLaw,
-) -> f64 {
+pub fn max_signal_speed(prims: &PrimGrid, grid: &Grid, mc: &MetricCache, eos: &GammaLaw) -> f64 {
     let ng = grid.ng;
     let n2t = grid.n2_total();
     let mut max_speed = 0.0f64;
@@ -984,12 +1202,18 @@ pub fn max_signal_speed(
             let cs2 = eos.cs2(p[prims::RHO], p[prims::UU]);
             let cs = cs2.sqrt();
             let mc_idx = mc.idx(i, n2t, j);
-            let alpha = if mc_idx < mc.lapse.len() { mc.lapse[mc_idx] } else { 1.0 };
+            let alpha = if mc_idx < mc.lapse.len() {
+                mc.lapse[mc_idx]
+            } else {
+                1.0
+            };
 
             // Max velocity + sound speed
             let v = (p[prims::V1].abs() + p[prims::V2].abs() + p[prims::V3].abs()).min(0.99);
             let speed = alpha * (v + cs).min(1.0); // cap at speed of light
-            if speed > max_speed { max_speed = speed; }
+            if speed > max_speed {
+                max_speed = speed;
+            }
         }
     }
 
@@ -1049,8 +1273,15 @@ mod tests {
             for j in ng..ng + grid.n2 {
                 let idx = grid.idx(i, j, ng);
                 for v in 0..NCONS {
-                    assert!(rhs[idx * NCONS + v].is_finite(),
-                        "rhs[{},{},{}][{}] = {}", i, j, ng, v, rhs[idx * NCONS + v]);
+                    assert!(
+                        rhs[idx * NCONS + v].is_finite(),
+                        "rhs[{},{},{}][{}] = {}",
+                        i,
+                        j,
+                        ng,
+                        v,
+                        rhs[idx * NCONS + v]
+                    );
                 }
             }
         }
@@ -1095,7 +1326,11 @@ mod tests {
         let prims = torus.initialize(&grid);
 
         let max_v = max_signal_speed(&prims, &grid, &mc, &eos);
-        assert!(max_v > 0.0 && max_v < 10.0, "max_signal = {} should be reasonable", max_v);
+        assert!(
+            max_v > 0.0 && max_v < 10.0,
+            "max_signal = {} should be reasonable",
+            max_v
+        );
     }
 
     #[test]
@@ -1130,7 +1365,11 @@ mod tests {
             for v in 0..NCONS {
                 assert!(
                     (f_orig[v] - f_cached[v]).abs() < 1e-12,
-                    "dir={} var={}: orig={} cached={}", dir, v, f_orig[v], f_cached[v],
+                    "dir={} var={}: orig={} cached={}",
+                    dir,
+                    v,
+                    f_orig[v],
+                    f_cached[v],
                 );
             }
         }

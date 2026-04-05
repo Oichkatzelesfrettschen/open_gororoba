@@ -186,7 +186,7 @@ mod tests {
         let n = 100;
         let x = DMatrix::from_fn(n, 1, |i, _| i as f64);
         let y = DVector::from_fn(n, |i, _| {
-            let noise: f64 = rng.gen_range(-5.0..5.0);
+            let noise: f64 = rng.random_range(-5.0..5.0);
             (i as f64) + noise
         });
 

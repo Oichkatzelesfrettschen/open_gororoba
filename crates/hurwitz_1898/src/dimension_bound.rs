@@ -66,12 +66,12 @@ pub const fn skew_product_count(n: usize) -> usize {
 pub fn composition_possible(n: usize) -> bool {
     match n {
         0 => false,
-        1 => true, // trivial (R)
-        _ if !n.is_multiple_of(2) => false, // odd: eliminated (Part I.5)
+        1 => true,                           // trivial (R)
+        _ if !n.is_multiple_of(2) => false,  // odd: eliminated (Part I.5)
         _ if !basic_bound_holds(n) => false, // 2^{n-2} > n^2 (Part II)
-        6 => false, // refined counting eliminates n=6 (Part III)
-        2 | 4 | 8 => true, // positive: norm multiplicativity proved (Part I)
-        _ => false, // all remaining even n >= 10: basic bound fails
+        6 => false,                          // refined counting eliminates n=6 (Part III)
+        2 | 4 | 8 => true,                   // positive: norm multiplicativity proved (Part I)
+        _ => false,                          // all remaining even n >= 10: basic bound fails
     }
 }
 
@@ -83,11 +83,20 @@ pub fn classify_dimensions(max_dim: usize) -> Vec<(usize, bool, &'static str)> {
         .map(|n| {
             let (possible, reason) = match n {
                 1 => (true, "trivial (R)"),
-                2 => (true, "complex norm multiplicativity (Brahmagupta-Fibonacci)"),
+                2 => (
+                    true,
+                    "complex norm multiplicativity (Brahmagupta-Fibonacci)",
+                ),
                 4 => (true, "quaternion norm multiplicativity (Euler four-square)"),
-                8 => (true, "octonion norm multiplicativity (Degen-Graves eight-square)"),
+                8 => (
+                    true,
+                    "octonion norm multiplicativity (Degen-Graves eight-square)",
+                ),
                 _ if !n.is_multiple_of(2) => (false, "odd dimension: det(B_i)^2 = (-1)^n < 0"),
-                6 => (false, "refined bound: 2^4=16 > n*(n-1)/2=15 skew-sym matrices"),
+                6 => (
+                    false,
+                    "refined bound: 2^4=16 > n*(n-1)/2=15 skew-sym matrices",
+                ),
                 _ if !basic_bound_holds(n) => (false, "basic bound: 2^{n-2} > n^2"),
                 _ => (false, "eliminated by combined criteria"),
             };

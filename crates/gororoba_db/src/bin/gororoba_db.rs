@@ -964,11 +964,7 @@ fn cmd_import_requirements(
     let meta_status = table_string(requirements_table, "status", "active");
     let meta_status_token = table_string(requirements_table, "status_token", "ACTIVE");
     let meta_updated = table_string(requirements_table, "updated", "2026-02-10");
-    let python_recommended = table_string(
-        requirements_table,
-        "python_recommended",
-        "3.11-3.12",
-    );
+    let python_recommended = table_string(requirements_table, "python_recommended", "3.11-3.12");
     let python_allowed = table_string(
         requirements_table,
         "python_allowed",
@@ -1022,7 +1018,10 @@ fn cmd_import_requirements(
                 id,
                 name: item.get("name").and_then(Value::as_str).unwrap_or(""),
                 markdown: item.get("markdown").and_then(Value::as_str).unwrap_or(""),
-                status: item.get("status").and_then(Value::as_str).unwrap_or("active"),
+                status: item
+                    .get("status")
+                    .and_then(Value::as_str)
+                    .unwrap_or("active"),
                 status_token: item
                     .get("status_token")
                     .and_then(Value::as_str)
@@ -1241,6 +1240,99 @@ fn cmd_export_planning(store: &ProvenanceStore, args: &ExportPlanningArgs) -> Re
             let mut lines = vec![format!("{label} ({} items):", items.len())];
             for (id, name, priority, status) in items {
                 lines.push(format!("  {id:<30} {priority:<8} {status:<12} {name}"));
+            }
+            lines.join("\n")
+        }
+    };
+
+    if let Some(out_path) = &args.out {
+        fs::write(out_path, format!("{output}\n"))
+            .with_context(|| format!("write {}", out_path.display()))?;
+        println!("Exported to {}", out_path.display());
+    } else {
+        println!("{output}");
+    }
+    Ok(())
+}
+
+fn cmd_export_requirements(store: &ProvenanceStore, args: &ExportRequirementsArgs) -> Result<()> {
+    let output = match args.format {
+        RequirementsOutputFormat::Json => {
+            let meta = store.requirements_meta_row()?;
+            let modules = store.requirements_module_rows()?;
+            let gaps = store.requirements_coverage_gap_rows()?;
+
+            serde_json::to_string_pretty(&serde_json::json!({
+                "requirements": meta.as_ref().map(|row| {
+                    serde_json::json!({
+                        "authoritative": row.authoritative,
+                        "status": row.status,
+                        "status_token": row.status_token,
+                        "updated": row.updated,
+                        "python_recommended": row.python_recommended,
+                        "python_allowed": row.python_allowed,
+                        "primary_markdown": row.primary_markdown,
+                        "status_allowlist": serde_json::from_str::<Vec<String>>(&row.status_allowlist_json).unwrap_or_default(),
+                        "runtime_stack_allowlist": serde_json::from_str::<Vec<String>>(&row.runtime_stack_allowlist_json).unwrap_or_default(),
+                        "required_module_fields": serde_json::from_str::<Vec<String>>(&row.required_module_fields_json).unwrap_or_default(),
+                        "required_gap_fields": serde_json::from_str::<Vec<String>>(&row.required_gap_fields_json).unwrap_or_default(),
+                    })
+                }).unwrap_or(serde_json::Value::Null),
+                "module": modules.into_iter().map(|row| {
+                    serde_json::json!({
+                        "id": row.id,
+                        "name": row.name,
+                        "markdown": row.markdown,
+                        "status": row.status,
+                        "status_token": row.status_token,
+                        "runtime_stack": row.runtime_stack,
+                        "requires_modules": serde_json::from_str::<Vec<String>>(&row.requires_modules_json).unwrap_or_default(),
+                        "install_targets": serde_json::from_str::<Vec<String>>(&row.install_targets_json).unwrap_or_default(),
+                        "verify_targets": serde_json::from_str::<Vec<String>>(&row.verify_targets_json).unwrap_or_default(),
+                        "acceptance_criteria": serde_json::from_str::<Vec<String>>(&row.acceptance_criteria_json).unwrap_or_default(),
+                    })
+                }).collect::<Vec<_>>(),
+                "coverage_gap": gaps.into_iter().map(|row| {
+                    serde_json::json!({
+                        "id": row.id,
+                        "area": row.area,
+                        "status": row.status,
+                        "status_token": row.status_token,
+                        "description": row.description,
+                        "proposed_resolution": row.proposed_resolution,
+                        "related_module_ids": serde_json::from_str::<Vec<String>>(&row.related_module_ids_json).unwrap_or_default(),
+                    })
+                }).collect::<Vec<_>>(),
+            }))?
+        }
+        RequirementsOutputFormat::Toml => render_requirements_toml(store)?,
+        RequirementsOutputFormat::Text => {
+            let meta = store.requirements_meta_row()?;
+            let modules = store.requirements_module_rows()?;
+            let gaps = store.requirements_coverage_gap_rows()?;
+
+            let mut lines = vec![format!(
+                "requirements ({} modules, {} coverage gaps):",
+                modules.len(),
+                gaps.len()
+            )];
+            if let Some(meta_row) = meta {
+                lines.push(format!(
+                    "  status={} updated={} primary_markdown={}",
+                    meta_row.status, meta_row.updated, meta_row.primary_markdown
+                ));
+            }
+            for row in modules {
+                lines.push(format!(
+                    "  module {:<18} {:<10} {:<14} {}",
+                    row.id, row.status, row.runtime_stack, row.name
+                ));
+            }
+            for row in gaps {
+                lines.push(format!(
+                    "  gap {:<18} {:<10} {}",
+                    row.id, row.status, row.area
+                ));
             }
             lines.join("\n")
         }
@@ -1972,6 +2064,220 @@ fn render_next_actions_toml(store: &ProvenanceStore) -> Result<String> {
         lines.push(format!(
             "evidence_refs = {}",
             toml_string_array(&json_string_array(&row.evidence_refs_json)?)
+        ));
+        lines.push(String::new());
+    }
+
+    while matches!(lines.last(), Some(line) if line.is_empty()) {
+        lines.pop();
+    }
+    Ok(lines.join("\n"))
+}
+
+fn render_requirements_toml(store: &ProvenanceStore) -> Result<String> {
+    let snapshot = parse_snapshot(store, "requirements")?;
+    let requirements_table = snapshot
+        .as_ref()
+        .and_then(|value| root_table(value, "requirements"));
+    let schema_table = child_table(requirements_table, "schema");
+    let meta = store.requirements_meta_row()?;
+    let modules = store.requirements_module_rows()?;
+    let gaps = store.requirements_coverage_gap_rows()?;
+
+    let authoritative = meta
+        .as_ref()
+        .map(|row| row.authoritative)
+        .unwrap_or_else(|| table_bool(requirements_table, "authoritative", true));
+    let status = meta
+        .as_ref()
+        .map(|row| row.status.clone())
+        .unwrap_or_else(|| table_string(requirements_table, "status", "active"));
+    let status_token = meta
+        .as_ref()
+        .map(|row| row.status_token.clone())
+        .unwrap_or_else(|| table_string(requirements_table, "status_token", "ACTIVE"));
+    let updated = meta
+        .as_ref()
+        .map(|row| row.updated.clone())
+        .unwrap_or_else(|| table_string(requirements_table, "updated", "2026-02-10"));
+    let python_recommended = meta
+        .as_ref()
+        .map(|row| row.python_recommended.clone())
+        .unwrap_or_else(|| table_string(requirements_table, "python_recommended", "3.11-3.12"));
+    let python_allowed = meta
+        .as_ref()
+        .map(|row| row.python_allowed.clone())
+        .unwrap_or_else(|| {
+            table_string(
+                requirements_table,
+                "python_allowed",
+                "3.13+ (with optional extras caveats)",
+            )
+        });
+    let primary_markdown = meta
+        .as_ref()
+        .map(|row| row.primary_markdown.clone())
+        .unwrap_or_else(|| {
+            table_string(
+                requirements_table,
+                "primary_markdown",
+                "docs/REQUIREMENTS.md",
+            )
+        });
+    let status_allowlist = meta
+        .as_ref()
+        .map(|row| json_string_array(&row.status_allowlist_json))
+        .transpose()?
+        .unwrap_or_else(|| {
+            table_array(
+                requirements_table,
+                "status_allowlist",
+                &["active", "deprecated", "planned", "blocked"],
+            )
+        });
+    let runtime_stack_allowlist = meta
+        .as_ref()
+        .map(|row| json_string_array(&row.runtime_stack_allowlist_json))
+        .transpose()?
+        .unwrap_or_else(|| {
+            table_array(
+                requirements_table,
+                "runtime_stack_allowlist",
+                &[
+                    "mixed",
+                    "rust",
+                    "python",
+                    "docker_python",
+                    "rocq",
+                    "latex",
+                    "cpp",
+                ],
+            )
+        });
+    let required_module_fields = meta
+        .as_ref()
+        .map(|row| json_string_array(&row.required_module_fields_json))
+        .transpose()?
+        .unwrap_or_else(|| {
+            table_array(
+                schema_table,
+                "required_module_fields",
+                &[
+                    "id",
+                    "name",
+                    "status",
+                    "status_token",
+                    "runtime_stack",
+                    "requires_modules",
+                    "install_targets",
+                    "verify_targets",
+                    "acceptance_criteria",
+                ],
+            )
+        });
+    let required_gap_fields = meta
+        .as_ref()
+        .map(|row| json_string_array(&row.required_gap_fields_json))
+        .transpose()?
+        .unwrap_or_else(|| {
+            table_array(
+                schema_table,
+                "required_gap_fields",
+                &[
+                    "id",
+                    "area",
+                    "status",
+                    "status_token",
+                    "description",
+                    "proposed_resolution",
+                    "related_module_ids",
+                ],
+            )
+        });
+
+    let mut lines = vec![
+        "# Requirements registry (SQLite compatibility export from canonical registry.sqlite3)."
+            .to_string(),
+        "# Generated by `gororoba-db build` / `gororoba-db export-requirements`.".to_string(),
+        String::new(),
+        "[requirements]".to_string(),
+        format!(
+            "authoritative = {}",
+            if authoritative { "true" } else { "false" }
+        ),
+        format!("status = {}", toml_quote(&status)),
+        format!("status_token = {}", toml_quote(&status_token)),
+        format!("updated = {}", toml_quote(&updated)),
+        format!("python_recommended = {}", toml_quote(&python_recommended)),
+        format!("python_allowed = {}", toml_quote(&python_allowed)),
+        format!("primary_markdown = {}", toml_quote(&primary_markdown)),
+        format!("module_count = {}", modules.len()),
+        format!("coverage_gap_count = {}", gaps.len()),
+        format!(
+            "status_allowlist = {}",
+            toml_string_array(&status_allowlist)
+        ),
+        format!(
+            "runtime_stack_allowlist = {}",
+            toml_string_array(&runtime_stack_allowlist)
+        ),
+        String::new(),
+        "[requirements.schema]".to_string(),
+        format!(
+            "required_module_fields = {}",
+            toml_string_array(&required_module_fields)
+        ),
+        format!(
+            "required_gap_fields = {}",
+            toml_string_array(&required_gap_fields)
+        ),
+        String::new(),
+    ];
+
+    for row in modules {
+        lines.push("[[module]]".to_string());
+        lines.push(format!("id = {}", toml_quote(&row.id)));
+        lines.push(format!("name = {}", toml_quote(&row.name)));
+        lines.push(format!("markdown = {}", toml_quote(&row.markdown)));
+        lines.push(format!("status = {}", toml_quote(&row.status)));
+        lines.push(format!("status_token = {}", toml_quote(&row.status_token)));
+        lines.push(format!(
+            "runtime_stack = {}",
+            toml_quote(&row.runtime_stack)
+        ));
+        lines.push(format!(
+            "requires_modules = {}",
+            toml_string_array(&json_string_array(&row.requires_modules_json)?)
+        ));
+        lines.push(format!(
+            "install_targets = {}",
+            toml_string_array(&json_string_array(&row.install_targets_json)?)
+        ));
+        lines.push(format!(
+            "verify_targets = {}",
+            toml_string_array(&json_string_array(&row.verify_targets_json)?)
+        ));
+        lines.push(format!(
+            "acceptance_criteria = {}",
+            toml_string_array(&json_string_array(&row.acceptance_criteria_json)?)
+        ));
+        lines.push(String::new());
+    }
+
+    for row in gaps {
+        lines.push("[[coverage_gap]]".to_string());
+        lines.push(format!("id = {}", toml_quote(&row.id)));
+        lines.push(format!("area = {}", toml_quote(&row.area)));
+        lines.push(format!("status = {}", toml_quote(&row.status)));
+        lines.push(format!("status_token = {}", toml_quote(&row.status_token)));
+        lines.push(format!("description = {}", toml_quote(&row.description)));
+        lines.push(format!(
+            "proposed_resolution = {}",
+            toml_quote(&row.proposed_resolution)
+        ));
+        lines.push(format!(
+            "related_module_ids = {}",
+            toml_string_array(&json_string_array(&row.related_module_ids_json)?)
         ));
         lines.push(String::new());
     }

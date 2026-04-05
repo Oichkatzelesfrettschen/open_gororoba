@@ -60,7 +60,7 @@ fn generate_on_chunks(n: usize, snr: f64, rng: &mut ChaCha8Rng) -> Vec<Vec<f64>>
     for i in 0..n {
         let mut chunk = Vec::with_capacity(48);
         for j in 0..48 {
-            let noise: f64 = rng.r#gen::<f64>() * 2.0 - 1.0;
+            let noise: f64 = rand::RngExt::random::<f64>(rng) * 2.0 - 1.0;
             // Injected signal: harmonic structure at Leech lattice scale
             let signal = snr
                 * (2.0 * std::f64::consts::PI * j as f64 / 24.0).sin()
@@ -78,7 +78,7 @@ fn generate_off_chunks(n: usize, rng: &mut ChaCha8Rng) -> Vec<Vec<f64>> {
     for _ in 0..n {
         let mut chunk = Vec::with_capacity(48);
         for _ in 0..48 {
-            chunk.push(rng.r#gen::<f64>() * 2.0 - 1.0);
+            chunk.push(rand::RngExt::random::<f64>(rng) * 2.0 - 1.0);
         }
         chunks.push(chunk);
     }

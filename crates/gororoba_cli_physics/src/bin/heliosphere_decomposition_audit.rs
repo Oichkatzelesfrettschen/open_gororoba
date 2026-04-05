@@ -11,10 +11,9 @@
 use anyhow::{Context, Result};
 use chrono::{Datelike, NaiveDate};
 use clap::Parser;
-use data_core::{
-    catalogs::mms::parse_mms_fgm_hapi_csv_minutes,
-    catalogs::themis::parse_themis_fgm_hapi_csv_minutes,
-    catalogs::maven_mag::parse_maven_mag_hapi_csv_minutes,
+use data_core::catalogs::{
+    maven_mag::parse_maven_mag_hapi_csv_minutes, mms::parse_mms_fgm_hapi_csv_minutes,
+    themis::parse_themis_fgm_hapi_csv_minutes,
 };
 use rand::SeedableRng;
 use rand_chacha::ChaCha8Rng;
@@ -47,7 +46,10 @@ struct Cli {
     #[arg(long, default_value_t = 20)]
     n_surrogates: usize,
 
-    #[arg(long, default_value = "data/output/heliosphere/ablations/decomposition_audit.json")]
+    #[arg(
+        long,
+        default_value = "data/output/heliosphere/ablations/decomposition_audit.json"
+    )]
     out_json: PathBuf,
 
     #[arg(long, default_value = "data/external")]
@@ -101,7 +103,9 @@ fn main() -> Result<()> {
             })
             .sum();
         let mean_b = sum_b / steps as f64;
-        if mean_b <= 0.01 || !mean_b.is_finite() { continue; }
+        if mean_b <= 0.01 || !mean_b.is_finite() {
+            continue;
+        }
 
         let mut v = vec![0.0; cli.embedding_dim];
         for s in 0..steps {
@@ -115,14 +119,20 @@ fn main() -> Result<()> {
         embedded.push(v);
     }
 
-    println!("  Embedded {} vectors ({}D)", embedded.len(), cli.embedding_dim);
+    println!(
+        "  Embedded {} vectors ({}D)",
+        embedded.len(),
+        cli.embedding_dim
+    );
 
     // Real associator
-    let real_norms = cd_kernel::batch_sliding_associator_norms_parallel(
-        &embedded, cli.embedding_dim,
-    );
+    let real_norms =
+        cd_kernel::batch_sliding_associator_norms_parallel(&embedded, cli.embedding_dim);
     let real_mean = real_norms.iter().sum::<f64>() / real_norms.len() as f64;
-    let real_var = real_norms.iter().map(|&a| (a - real_mean).powi(2)).sum::<f64>()
+    let real_var = real_norms
+        .iter()
+        .map(|&a| (a - real_mean).powi(2))
+        .sum::<f64>()
         / real_norms.len() as f64;
     let real_std = real_var.sqrt();
 
@@ -159,7 +169,13 @@ fn main() -> Result<()> {
         indep_means.push(mean_i);
 
         if (i + 1) % 5 == 0 {
-            println!("  Surrogate {}/{}: shared={:.4}, indep={:.4}", i + 1, cli.n_surrogates, mean_s, mean_i);
+            println!(
+                "  Surrogate {}/{}: shared={:.4}, indep={:.4}",
+                i + 1,
+                cli.n_surrogates,
+                mean_s,
+                mean_i
+            );
         }
     }
 
@@ -182,7 +198,10 @@ fn main() -> Result<()> {
 
     println!("\n=== Results ===");
     println!("  Real:    {:.4}", real_mean);
-    println!("  Shared:  {:.4} (real/shared = {:.3})", shared_mean, r_to_s);
+    println!(
+        "  Shared:  {:.4} (real/shared = {:.3})",
+        shared_mean, r_to_s
+    );
     println!("  Indep:   {:.4} (real/indep  = {:.3})", indep_mean, r_to_i);
     println!("  Shared/Indep = {:.3}", s_to_i);
     println!("  -> {}", interpretation);
@@ -191,7 +210,8 @@ fn main() -> Result<()> {
         mission: cli.mission.clone(),
         n_vectors: embedded.len(),
         n_associator_norms: real_norms.len(),
-        real_mean, real_std,
+        real_mean,
+        real_std,
         shared_phase_mean: shared_mean,
         indep_phase_mean: indep_mean,
         ratio_real_to_shared: r_to_s,
@@ -200,7 +220,9 @@ fn main() -> Result<()> {
         interpretation: interpretation.to_string(),
     };
 
-    if let Some(parent) = cli.out_json.parent() { fs::create_dir_all(parent)?; }
+    if let Some(parent) = cli.out_json.parent() {
+        fs::create_dir_all(parent)?;
+    }
     fs::write(&cli.out_json, serde_json::to_string_pretty(&result)?)?;
     println!("\nWrote {}", cli.out_json.display());
 
@@ -223,40 +245,52 @@ fn load_components(
 
         if mission.starts_with("themis") {
             let probe = if mission.contains("a") { "tha" } else { "thb" };
-            let path = cli.data_dir.join("themis").join(
-                format!("{}_fgm_{:04}_{:03}.csv", probe, date.year(), date.ordinal()),
-            );
+            let path = cli.data_dir.join("themis").join(format!(
+                "{}_fgm_{:04}_{:03}.csv",
+                probe,
+                date.year(),
+                date.ordinal()
+            ));
             if path.exists() {
                 let content = fs::read_to_string(&path)?;
                 let p_upper = probe.to_uppercase();
                 for r in parse_themis_fgm_hapi_csv_minutes(&content, &p_upper) {
                     if r.b_magnitude <= cli.max_bmag {
-                        bx.push(r.bx_gse); by.push(r.by_gse); bz.push(r.bz_gse);
+                        bx.push(r.bx_gse);
+                        by.push(r.by_gse);
+                        bz.push(r.bz_gse);
                     }
                 }
             }
         } else if mission == "maven" {
-            let path = cli.data_dir.join("maven").join(
-                format!("maven_mag_{:04}_{:03}.csv", date.year(), date.ordinal()),
-            );
+            let path = cli.data_dir.join("maven").join(format!(
+                "maven_mag_{:04}_{:03}.csv",
+                date.year(),
+                date.ordinal()
+            ));
             if path.exists() {
                 let content = fs::read_to_string(&path)?;
                 for r in parse_maven_mag_hapi_csv_minutes(&content) {
                     if r.b_magnitude <= cli.max_bmag {
-                        bx.push(r.bx_ss); by.push(r.by_ss); bz.push(r.bz_ss);
+                        bx.push(r.bx_ss);
+                        by.push(r.by_ss);
+                        bz.push(r.bz_ss);
                     }
                 }
             }
         } else if mission == "mms" {
             let doy = date.ordinal() as u16;
-            let path = cli.data_dir.join("mms").join(
-                format!("mms1_fgm_srvy_l2_2024_{doy}_{doy}.csv"),
-            );
+            let path = cli
+                .data_dir
+                .join("mms")
+                .join(format!("mms1_fgm_srvy_l2_2024_{doy}_{doy}.csv"));
             if path.exists() {
                 let content = fs::read_to_string(&path)?;
                 for r in parse_mms_fgm_hapi_csv_minutes(&content) {
                     if r.b_magnitude <= cli.max_bmag {
-                        bx.push(r.bx_gse); by.push(r.by_gse); bz.push(r.bz_gse);
+                        bx.push(r.bx_gse);
+                        by.push(r.by_gse);
+                        bz.push(r.bz_gse);
                     }
                 }
             }

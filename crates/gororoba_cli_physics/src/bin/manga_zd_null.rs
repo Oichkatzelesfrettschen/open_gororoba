@@ -175,7 +175,7 @@ fn run_harmonic_stacking(data: &MangaDataBundle, n_boot: usize) -> FitResult {
     for b in 0..n_boot {
         let mut b_sum = Array1::<f64>::zeros(x_grid.len());
         for _ in 0..residuals.nrows() {
-            let idx = rng.gen_range(0..residuals.nrows());
+            let idx = rng.random_range(0..residuals.nrows());
             b_sum += &residuals.row(idx);
         }
         let b_mean = b_sum / residuals.nrows() as f64;
@@ -212,7 +212,7 @@ fn run_multi_algebra_dft(data: &MangaDataBundle, n_boot: usize) -> FitResult {
     for b in 0..n_boot {
         let mut b_sum = Array1::<f64>::zeros(n_bins);
         for _ in 0..residuals.nrows() {
-            let idx = rng.gen_range(0..residuals.nrows());
+            let idx = rng.random_range(0..residuals.nrows());
             b_sum += &residuals.row(idx);
         }
         let b_mean = b_sum / residuals.nrows() as f64;

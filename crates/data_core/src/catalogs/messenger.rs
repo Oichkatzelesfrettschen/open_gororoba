@@ -14,11 +14,7 @@ use crate::{
 };
 use chrono::{DateTime, Datelike, NaiveDate, Timelike, Utc};
 use csv::ReaderBuilder;
-use std::{
-    collections::BTreeMap,
-    fs,
-    path::PathBuf,
-};
+use std::{collections::BTreeMap, fs, path::PathBuf};
 
 const MESSENGER_MAG_HAPI_DATASET: &str = "MESSENGER_MAG_RTN@0";
 
@@ -43,13 +39,22 @@ pub fn parse_messenger_mag_hapi_csv_minutes(content: &str) -> Vec<MessengerMagMi
         .from_reader(content.as_bytes());
 
     #[derive(Default)]
-    struct MinuteAcc { br: f64, bt: f64, bn: f64, count: usize }
+    struct MinuteAcc {
+        br: f64,
+        bt: f64,
+        bn: f64,
+        count: usize,
+    }
 
     let mut buckets: BTreeMap<(u16, u16, u8, u8), MinuteAcc> = BTreeMap::new();
 
     for record in reader.records().flatten() {
-        let Some(time_str) = record.get(0) else { continue };
-        let Ok(dt) = DateTime::parse_from_rfc3339(time_str) else { continue };
+        let Some(time_str) = record.get(0) else {
+            continue;
+        };
+        let Ok(dt) = DateTime::parse_from_rfc3339(time_str) else {
+            continue;
+        };
         let utc = dt.with_timezone(&Utc);
 
         // Columns: Time, radialDistance, lat, az, B_radial_q, B_tangential_q, B_normal_q,
@@ -58,11 +63,21 @@ pub fn parse_messenger_mag_hapi_csv_minutes(content: &str) -> Vec<MessengerMagMi
         let br = parse_hapi_spacephysics_f64_or_nan(record.get(7).unwrap_or(""));
         let bt = parse_hapi_spacephysics_f64_or_nan(record.get(8).unwrap_or(""));
         let bn = parse_hapi_spacephysics_f64_or_nan(record.get(9).unwrap_or(""));
-        if !br.is_finite() || !bt.is_finite() || !bn.is_finite() { continue; }
+        if !br.is_finite() || !bt.is_finite() || !bn.is_finite() {
+            continue;
+        }
 
-        let key = (utc.year() as u16, utc.ordinal() as u16, utc.hour() as u8, utc.minute() as u8);
+        let key = (
+            utc.year() as u16,
+            utc.ordinal() as u16,
+            utc.hour() as u8,
+            utc.minute() as u8,
+        );
         let acc = buckets.entry(key).or_default();
-        acc.br += br; acc.bt += bt; acc.bn += bn; acc.count += 1;
+        acc.br += br;
+        acc.bt += bt;
+        acc.bn += bn;
+        acc.count += 1;
     }
 
     let keys: Vec<_> = buckets.keys().copied().collect();
@@ -71,7 +86,9 @@ pub fn parse_messenger_mag_hapi_csv_minutes(content: &str) -> Vec<MessengerMagMi
     keys.into_iter()
         .filter_map(|key| {
             let acc = &buckets[&key];
-            if acc.count == 0 { return None; }
+            if acc.count == 0 {
+                return None;
+            }
             let n = acc.count as f64;
             let (year, doy, hour, minute) = key;
             let br = acc.br / n;
@@ -89,8 +106,14 @@ pub fn parse_messenger_mag_hapi_csv_minutes(content: &str) -> Vec<MessengerMagMi
             };
 
             Some(MessengerMagMinuteRecord {
-                year, doy, hour, minute, elapsed_hours: elapsed,
-                br, bt, bn,
+                year,
+                doy,
+                hour,
+                minute,
+                elapsed_hours: elapsed,
+                br,
+                bt,
+                bn,
                 b_magnitude: (br * br + bt * bt + bn * bn).sqrt(),
             })
         })
@@ -119,7 +142,9 @@ impl DatasetProvider for MessengerMagProvider {
             let fname = format!("messenger_mag_{:04}_{:03}.csv", self.year, doy);
             let output = dir.join(&fname);
 
-            if config.skip_existing && output.exists() { continue; }
+            if config.skip_existing && output.exists() {
+                continue;
+            }
 
             let t_min = format!("{}T00:00:00Z", date);
             let t_max = format!("{}T23:59:59Z", date);
@@ -127,8 +152,12 @@ impl DatasetProvider for MessengerMagProvider {
             println!("Fetching MESSENGER MAG {} DOY {}...", self.year, doy);
 
             match download_hapi_csv(MESSENGER_MAG_HAPI_DATASET, &t_min, &t_max, None) {
-                Ok(body) => { fs::write(&output, body)?; }
-                Err(e) => { eprintln!("  Warning: MESSENGER DOY {}: {}", doy, e); }
+                Ok(body) => {
+                    fs::write(&output, body)?;
+                }
+                Err(e) => {
+                    eprintln!("  Warning: MESSENGER DOY {}: {}", doy, e);
+                }
             }
         }
 

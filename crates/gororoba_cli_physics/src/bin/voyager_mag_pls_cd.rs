@@ -14,8 +14,7 @@
 use anyhow::{Context, Result};
 use clap::Parser;
 use serde::Serialize;
-use std::collections::BTreeMap;
-use std::path::PathBuf;
+use std::{collections::BTreeMap, path::PathBuf};
 
 #[derive(Parser)]
 #[command(name = "voyager-mag-pls-cd")]
@@ -37,13 +36,20 @@ struct Cli {
     dim: usize,
 
     /// Output JSON
-    #[arg(long, default_value = "data/output/heliosphere/ablations/voyager_mag_pls_cd.json")]
+    #[arg(
+        long,
+        default_value = "data/output/heliosphere/ablations/voyager_mag_pls_cd.json"
+    )]
     out_json: PathBuf,
 }
 
-const MAG_CH: usize = 4;  // Bx, By, Bz, |B|
-const PLS_CH: usize = 3;  // V, n, V_th
+const MAG_CH: usize = 4; // Bx, By, Bz, |B|
+const PLS_CH: usize = 3; // V, n, V_th
 const TOTAL_CH: usize = MAG_CH + PLS_CH;
+
+type HourlyKey = (u16, u16, u8);
+type HourlyAccumulator = (Vec<f64>, Vec<f64>, Vec<f64>);
+type EmbeddingSet = (Vec<Vec<f32>>, Vec<Vec<f32>>, Vec<Vec<f32>>);
 
 #[derive(Debug, Serialize)]
 struct YearlyResult {
@@ -72,37 +78,53 @@ struct MagPlsResult {
 fn parse_pls_year(path: &std::path::Path) -> Result<BTreeMap<(u16, u16, u8), [f64; PLS_CH]>> {
     let content = std::fs::read_to_string(path)?;
     // Group by (year, doy, hour) and average
-    let mut hourly: BTreeMap<(u16, u16, u8), (Vec<f64>, Vec<f64>, Vec<f64>)> = BTreeMap::new();
+    let mut hourly: BTreeMap<HourlyKey, HourlyAccumulator> = BTreeMap::new();
 
     for line in content.lines() {
-        if line.starts_with('#') || line.contains("Time") { continue; }
+        if line.starts_with('#') || line.contains("Time") {
+            continue;
+        }
         let fields: Vec<&str> = line.split(',').collect();
-        if fields.len() < 4 { continue; }
+        if fields.len() < 4 {
+            continue;
+        }
 
         // Parse ISO timestamp: 2000-01-01T00:01:22.000Z
         let ts = fields[0];
-        if ts.len() < 13 { continue; }
+        if ts.len() < 13 {
+            continue;
+        }
         let year: u16 = ts[..4].parse().unwrap_or(0);
         // Convert month-day to DOY
         let month: u32 = ts[5..7].parse().unwrap_or(0);
         let day: u32 = ts[8..10].parse().unwrap_or(0);
         let hour: u8 = ts[11..13].parse().unwrap_or(0);
-        if year == 0 || month == 0 || day == 0 { continue; }
+        if year == 0 || month == 0 || day == 0 {
+            continue;
+        }
 
         // Approximate DOY from month/day
         let days_in_month = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
         let doy = if (month as usize) <= 12 {
             days_in_month[month as usize - 1] + day
-        } else { continue } as u16;
+        } else {
+            continue;
+        } as u16;
 
         let v: f64 = fields[1].trim().parse().unwrap_or(f64::NAN);
         let n: f64 = fields[2].trim().parse().unwrap_or(f64::NAN);
         let vt: f64 = fields[3].trim().parse().unwrap_or(f64::NAN);
 
-        if !v.is_finite() || !n.is_finite() || !vt.is_finite() { continue; }
-        if v <= 0.0 || n <= 0.0 || vt <= 0.0 { continue; }
+        if !v.is_finite() || !n.is_finite() || !vt.is_finite() {
+            continue;
+        }
+        if v <= 0.0 || n <= 0.0 || vt <= 0.0 {
+            continue;
+        }
 
-        let entry = hourly.entry((year, doy, hour)).or_insert_with(|| (Vec::new(), Vec::new(), Vec::new()));
+        let entry = hourly
+            .entry((year, doy, hour))
+            .or_insert_with(|| (Vec::new(), Vec::new(), Vec::new()));
         entry.0.push(v);
         entry.1.push(n);
         entry.2.push(vt);
@@ -120,9 +142,13 @@ fn parse_pls_year(path: &std::path::Path) -> Result<BTreeMap<(u16, u16, u8), [f6
 }
 
 fn compute_cd_from_embeddings(embeddings: &[Vec<f32>], dim: usize) -> (f64, f64, f64) {
-    if embeddings.len() < 3 { return (0.0, 0.0, 0.0); }
+    if embeddings.len() < 3 {
+        return (0.0, 0.0, 0.0);
+    }
     let norms = cd_kernel::batch_sliding_associator_norms_f32(embeddings, dim);
-    if norms.is_empty() { return (0.0, 0.0, 0.0); }
+    if norms.is_empty() {
+        return (0.0, 0.0, 0.0);
+    }
     let mut sorted: Vec<f64> = norms.iter().map(|&n| n as f64).collect();
     sorted.sort_by(|a, b| a.partial_cmp(b).unwrap_or(std::cmp::Ordering::Equal));
     let median = sorted[sorted.len() / 2];
@@ -131,10 +157,7 @@ fn compute_cd_from_embeddings(embeddings: &[Vec<f32>], dim: usize) -> (f64, f64,
     (median, mean, max)
 }
 
-fn build_embeddings_7ch(
-    records: &[(u16, u16, u8, [f64; TOTAL_CH])],
-    dim: usize,
-) -> (Vec<Vec<f32>>, Vec<Vec<f32>>, Vec<Vec<f32>>) {
+fn build_embeddings_7ch(records: &[(u16, u16, u8, [f64; TOTAL_CH])], dim: usize) -> EmbeddingSet {
     let steps = dim / TOTAL_CH;
     let padded_dim = (steps * TOTAL_CH).next_power_of_two();
 
@@ -148,12 +171,20 @@ fn build_embeddings_7ch(
         // Compute per-channel means for normalization
         let mut means = [0.0f64; TOTAL_CH];
         for (_, _, _, ch) in window {
-            for c in 0..MAG_CH { means[c] += ch[c].abs(); }
-            for c in MAG_CH..TOTAL_CH { means[c] += ch[c]; }
+            for c in 0..MAG_CH {
+                means[c] += ch[c].abs();
+            }
+            for c in MAG_CH..TOTAL_CH {
+                means[c] += ch[c];
+            }
         }
         let wl = steps as f64;
-        for m in means.iter_mut() { *m /= wl; }
-        if means.iter().any(|m| *m <= 1e-30) { continue; }
+        for m in means.iter_mut() {
+            *m /= wl;
+        }
+        if means.iter().any(|m| *m <= 1e-30) {
+            continue;
+        }
 
         // Build combined 7-ch vector
         let mut v_combined = vec![0.0f32; padded_dim];
@@ -182,23 +213,51 @@ fn build_embeddings_7ch(
 fn main() -> Result<()> {
     let cli = Cli::parse();
     println!("=== Voyager MAG+PLS 7-Channel CD ===");
-    println!("  Mission: {}, dim: {}D, channels: {}", cli.mission, cli.dim, TOTAL_CH);
+    println!(
+        "  Mission: {}, dim: {}D, channels: {}",
+        cli.mission, cli.dim, TOTAL_CH
+    );
 
     // V2 approximate distances by year
-    let v2_r_au: BTreeMap<u16, f64> = (1977..=2007).map(|y| {
-        let r = match y {
-            1977 => 2.0, 1978 => 3.5, 1979 => 5.2, 1980 => 7.0,
-            1981 => 9.0, 1982 => 11.0, 1983 => 13.0, 1984 => 15.0,
-            1985 => 17.5, 1986 => 20.0, 1987 => 22.5, 1988 => 25.0,
-            1989 => 28.0, 1990 => 31.0, 1991 => 34.0, 1992 => 37.0,
-            1993 => 40.0, 1994 => 43.0, 1995 => 46.0, 1996 => 49.0,
-            1997 => 52.0, 1998 => 55.0, 1999 => 58.0, 2000 => 61.0,
-            2001 => 64.0, 2002 => 67.0, 2003 => 70.0, 2004 => 73.0,
-            2005 => 76.0, 2006 => 79.0, 2007 => 82.0,
-            _ => 0.0,
-        };
-        (y, r)
-    }).collect();
+    let v2_r_au: BTreeMap<u16, f64> = (1977..=2007)
+        .map(|y| {
+            let r = match y {
+                1977 => 2.0,
+                1978 => 3.5,
+                1979 => 5.2,
+                1980 => 7.0,
+                1981 => 9.0,
+                1982 => 11.0,
+                1983 => 13.0,
+                1984 => 15.0,
+                1985 => 17.5,
+                1986 => 20.0,
+                1987 => 22.5,
+                1988 => 25.0,
+                1989 => 28.0,
+                1990 => 31.0,
+                1991 => 34.0,
+                1992 => 37.0,
+                1993 => 40.0,
+                1994 => 43.0,
+                1995 => 46.0,
+                1996 => 49.0,
+                1997 => 52.0,
+                1998 => 55.0,
+                1999 => 58.0,
+                2000 => 61.0,
+                2001 => 64.0,
+                2002 => 67.0,
+                2003 => 70.0,
+                2004 => 73.0,
+                2005 => 76.0,
+                2006 => 79.0,
+                2007 => 82.0,
+                _ => 0.0,
+            };
+            (y, r)
+        })
+        .collect();
 
     // Load PLS data by year
     let entries = std::fs::read_dir(&cli.pls_dir)
@@ -218,13 +277,21 @@ fn main() -> Result<()> {
     for pls_path in &pls_files {
         let fname = pls_path.file_name().and_then(|n| n.to_str()).unwrap_or("");
         // Extract the last 4-digit number from filename (the year)
-        let year: u16 = fname.split('_').rev()
+        let year: u16 = fname
+            .split('_')
+            .rev()
             .find_map(|part| {
                 let digits: String = part.chars().filter(|c| c.is_ascii_digit()).collect();
-                if digits.len() == 4 { digits.parse().ok() } else { None }
+                if digits.len() == 4 {
+                    digits.parse().ok()
+                } else {
+                    None
+                }
             })
             .unwrap_or(0);
-        if year < 1977 || year > 2007 { continue; }
+        if !(1977..=2007).contains(&year) {
+            continue;
+        }
 
         let pls_hourly = parse_pls_year(pls_path)?;
         if pls_hourly.len() < 100 {
@@ -258,11 +325,24 @@ fn main() -> Result<()> {
         let (mag_med, _, _) = compute_cd_from_embeddings(&mag_only, padded_dim);
         let (pls_med, _, _) = compute_cd_from_embeddings(&pls_only_emb, padded_dim);
 
-        let enrichment = if mag_med > 0.0 { comb_med / mag_med } else { 1.0 };
+        let enrichment = if mag_med > 0.0 {
+            comb_med / mag_med
+        } else {
+            1.0
+        };
         let r_au = v2_r_au.get(&year).copied().unwrap_or(0.0);
 
-        println!("  {}: {} PLS hours, {} windows, r={:.0} AU, combined={:.3}, mag={:.3}, pls={:.3}, enrichment={:.2}x",
-            year, pls_hourly.len(), combined.len(), r_au, comb_med, mag_med, pls_med, enrichment);
+        println!(
+            "  {}: {} PLS hours, {} windows, r={:.0} AU, combined={:.3}, mag={:.3}, pls={:.3}, enrichment={:.2}x",
+            year,
+            pls_hourly.len(),
+            combined.len(),
+            r_au,
+            comb_med,
+            mag_med,
+            pls_med,
+            enrichment
+        );
 
         all_enrichments.push(enrichment);
 
@@ -281,13 +361,18 @@ fn main() -> Result<()> {
         });
     }
 
-    let overall_enrichment = if all_enrichments.is_empty() { 1.0 } else {
+    let overall_enrichment = if all_enrichments.is_empty() {
+        1.0
+    } else {
         all_enrichments.iter().sum::<f64>() / all_enrichments.len() as f64
     };
 
     println!("\n=== Summary ===");
     println!("  {} years processed", yearly_results.len());
-    println!("  Overall plasma enrichment ratio: {:.2}x", overall_enrichment);
+    println!(
+        "  Overall plasma enrichment ratio: {:.2}x",
+        overall_enrichment
+    );
 
     let result = MagPlsResult {
         mission: cli.mission,

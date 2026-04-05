@@ -1,5 +1,5 @@
 // Pdg2024 used in chi_squared_pmns; imported directly to avoid super:: chains.
-use flavor_lifts::{extract_pmns_angles, Pdg2024};
+use flavor_lifts::{Pdg2024, extract_pmns_angles};
 
 pub struct PmnsResult {
     /// The 3x3 PMNS matrix.
@@ -37,11 +37,11 @@ pub fn construct_pmns_matrices(
     charged_pair: (usize, usize),
     neutrino_pair: (usize, usize),
 ) -> (faer::Mat<f64>, faer::Mat<f64>) {
-    use crate::lepton_mass_hierarchy::cd_braid_signed_friction;
-    use crate::majorana_braiding::MajoranaMode;
-    use crate::bell_inequality::SignTableCache;
-    use crate::three_fermion_generations::get_sedenion_subalgebras;
-    use crate::quark_sector::SubalgebraScheme;
+    use crate::{
+        bell_inequality::SignTableCache, lepton_mass_hierarchy::cd_braid_signed_friction,
+        majorana_braiding::MajoranaMode, quark_sector::SubalgebraScheme,
+        three_fermion_generations::get_sedenion_subalgebras,
+    };
 
     // Casimir baseline via neutral projections + lepton assembly
     let cb = construct_casimir_baseline(SubalgebraScheme::InterleavedStride);
@@ -55,15 +55,33 @@ pub fn construct_pmns_matrices(
     let w1: f64 = -0.656850;
     let w2: f64 = -0.741999;
 
-    let ch_a = MajoranaMode { gamma_index: charged_pair.0.saturating_sub(1), cd_basis_index: charged_pair.0, cd_dim: 16 };
-    let ch_b = MajoranaMode { gamma_index: charged_pair.1.saturating_sub(1), cd_basis_index: charged_pair.1, cd_dim: 16 };
-    let nu_a = MajoranaMode { gamma_index: neutrino_pair.0.saturating_sub(1), cd_basis_index: neutrino_pair.0, cd_dim: 16 };
-    let nu_b = MajoranaMode { gamma_index: neutrino_pair.1.saturating_sub(1), cd_basis_index: neutrino_pair.1, cd_dim: 16 };
+    let ch_a = MajoranaMode {
+        gamma_index: charged_pair.0.saturating_sub(1),
+        cd_basis_index: charged_pair.0,
+        cd_dim: 16,
+    };
+    let ch_b = MajoranaMode {
+        gamma_index: charged_pair.1.saturating_sub(1),
+        cd_basis_index: charged_pair.1,
+        cd_dim: 16,
+    };
+    let nu_a = MajoranaMode {
+        gamma_index: neutrino_pair.0.saturating_sub(1),
+        cd_basis_index: neutrino_pair.0,
+        cd_dim: 16,
+    };
+    let nu_b = MajoranaMode {
+        gamma_index: neutrino_pair.1.saturating_sub(1),
+        cd_basis_index: neutrino_pair.1,
+        cd_dim: 16,
+    };
 
-    let sel_ch: Vec<f64> = subs.iter()
+    let sel_ch: Vec<f64> = subs
+        .iter()
         .map(|s| cd_braid_signed_friction(&ch_a, &ch_b, s, &sign_table))
         .collect();
-    let sel_nu: Vec<f64> = subs.iter()
+    let sel_nu: Vec<f64> = subs
+        .iter()
         .map(|s| cd_braid_signed_friction(&nu_a, &nu_b, s, &sign_table))
         .collect();
 
@@ -73,8 +91,8 @@ pub fn construct_pmns_matrices(
     for i in 0..3 {
         let f_ch = w1 * sel_ch[i] + w2 * sel_nu[i];
         let f_nu = w1 * sel_nu[i] + w2 * sel_ch[i];
-        m_charged.write(i, i, m_charged.read(i, i) + f_ch.exp());
-        m_neutrino.write(i, i, m_neutrino.read(i, i) + f_nu.exp());
+        m_charged[(i, i)] += f_ch.exp();
+        m_neutrino[(i, i)] += f_nu.exp();
     }
 
     (m_charged, m_neutrino)
@@ -98,11 +116,11 @@ pub fn construct_pmns_matrices_offdiag(
     neutrino_pair: (usize, usize),
     alpha_cross: f64,
 ) -> (faer::Mat<f64>, faer::Mat<f64>) {
-    use crate::lepton_mass_hierarchy::cd_braid_signed_friction;
-    use crate::majorana_braiding::MajoranaMode;
-    use crate::bell_inequality::SignTableCache;
-    use crate::three_fermion_generations::get_sedenion_subalgebras;
-    use crate::quark_sector::SubalgebraScheme;
+    use crate::{
+        bell_inequality::SignTableCache, lepton_mass_hierarchy::cd_braid_signed_friction,
+        majorana_braiding::MajoranaMode, quark_sector::SubalgebraScheme,
+        three_fermion_generations::get_sedenion_subalgebras,
+    };
     use cd_kernel::gourlay_psi;
 
     // Casimir baseline via neutral projections + lepton assembly
@@ -116,15 +134,33 @@ pub fn construct_pmns_matrices_offdiag(
     let w1: f64 = -0.656850;
     let w2: f64 = -0.741999;
 
-    let ch_a = MajoranaMode { gamma_index: charged_pair.0 - 1, cd_basis_index: charged_pair.0, cd_dim: 16 };
-    let ch_b = MajoranaMode { gamma_index: charged_pair.1 - 1, cd_basis_index: charged_pair.1, cd_dim: 16 };
-    let nu_a = MajoranaMode { gamma_index: neutrino_pair.0 - 1, cd_basis_index: neutrino_pair.0, cd_dim: 16 };
-    let nu_b = MajoranaMode { gamma_index: neutrino_pair.1 - 1, cd_basis_index: neutrino_pair.1, cd_dim: 16 };
+    let ch_a = MajoranaMode {
+        gamma_index: charged_pair.0 - 1,
+        cd_basis_index: charged_pair.0,
+        cd_dim: 16,
+    };
+    let ch_b = MajoranaMode {
+        gamma_index: charged_pair.1 - 1,
+        cd_basis_index: charged_pair.1,
+        cd_dim: 16,
+    };
+    let nu_a = MajoranaMode {
+        gamma_index: neutrino_pair.0 - 1,
+        cd_basis_index: neutrino_pair.0,
+        cd_dim: 16,
+    };
+    let nu_b = MajoranaMode {
+        gamma_index: neutrino_pair.1 - 1,
+        cd_basis_index: neutrino_pair.1,
+        cd_dim: 16,
+    };
 
-    let sel_ch: Vec<f64> = subs.iter()
+    let sel_ch: Vec<f64> = subs
+        .iter()
         .map(|s| cd_braid_signed_friction(&ch_a, &ch_b, s, &sign_table))
         .collect();
-    let sel_nu: Vec<f64> = subs.iter()
+    let sel_nu: Vec<f64> = subs
+        .iter()
         .map(|s| cd_braid_signed_friction(&nu_a, &nu_b, s, &sign_table))
         .collect();
 
@@ -136,8 +172,8 @@ pub fn construct_pmns_matrices_offdiag(
     for i in 0..3 {
         let f_ch = w1 * sel_ch[i] + w2 * sel_nu[i];
         let f_nu = w1 * sel_nu[i] + w2 * sel_ch[i];
-        m_ch.write(i, i, m_ch.read(i, i) + f_ch.exp());
-        m_nu.write(i, i, m_nu.read(i, i) + f_nu.exp());
+        m_ch[(i, i)] += f_ch.exp();
+        m_nu[(i, i)] += f_nu.exp();
     }
 
     // Off-diagonal terms from psi automorphism CIRCULANT structure.
@@ -191,22 +227,24 @@ pub fn construct_pmns_matrices_offdiag(
 
         for i in 0..3 {
             for j in 0..3 {
-                if i == j { continue; }
+                if i == j {
+                    continue;
+                }
                 let shift = (j + 3 - i) % 3;
-                m_ch.write(i, j, m_ch.read(i, j) + alpha_cross * circulant_ch[shift]);
-                m_nu.write(i, j, m_nu.read(i, j) + alpha_cross * circulant_nu[shift]);
+                m_ch[(i, j)] += alpha_cross * circulant_ch[shift];
+                m_nu[(i, j)] += alpha_cross * circulant_nu[shift];
             }
         }
 
         // Symmetrize
         for i in 0..3 {
             for j in (i + 1)..3 {
-                let avg_ch = (m_ch.read(i, j) + m_ch.read(j, i)) / 2.0;
-                let avg_nu = (m_nu.read(i, j) + m_nu.read(j, i)) / 2.0;
-                m_ch.write(i, j, avg_ch);
-                m_ch.write(j, i, avg_ch);
-                m_nu.write(i, j, avg_nu);
-                m_nu.write(j, i, avg_nu);
+                let avg_ch = (m_ch[(i, j)] + m_ch[(j, i)]) / 2.0;
+                let avg_nu = (m_nu[(i, j)] + m_nu[(j, i)]) / 2.0;
+                m_ch[(i, j)] = avg_ch;
+                m_ch[(j, i)] = avg_ch;
+                m_nu[(i, j)] = avg_nu;
+                m_nu[(j, i)] = avg_nu;
             }
         }
     }
@@ -251,11 +289,10 @@ pub fn extract_cp_phase(angles_deg: (f64, f64, f64), j_invariant: f64) -> f64 {
 pub fn jarlskog_from_real_pmns(u: &faer::Mat<f64>) -> f64 {
     // J = Im(U_e2 * U_mu3 * conj(U_e3) * conj(U_mu2))
     // For real U: all products are real, so Im = 0.
-    let prod = u.read(0, 1) * u.read(1, 2) * u.read(0, 2) * u.read(1, 1);
+    let prod = u[(0, 1)] * u[(1, 2)] * u[(0, 2)] * u[(1, 1)];
     // For a real orthogonal matrix, the "imaginary part" is always zero.
     // We return the antisymmetric combination as a consistency check.
-    let j = u.read(0, 1) * u.read(1, 2) * u.read(2, 0)
-          - u.read(0, 2) * u.read(1, 1) * u.read(2, 0);
+    let j = u[(0, 1)] * u[(1, 2)] * u[(2, 0)] - u[(0, 2)] * u[(1, 1)] * u[(2, 0)];
     // This is actually Re(U_e2 * U_mu3 * U_tau1) - Re(U_e3 * U_mu2 * U_tau1),
     // which is an antisymmetric product, NOT the Jarlskog invariant.
     // For a truly real orthogonal matrix, J = 0 by definition.
@@ -287,22 +324,19 @@ pub fn pmns_pulls(result: &PmnsResult, pdg: &Pdg2024) -> Vec<(&'static str, f64)
 }
 
 /// Compute PMNS result for given selector pairs.
-pub fn compute_pmns(
-    charged_pair: (usize, usize),
-    neutrino_pair: (usize, usize),
-) -> PmnsResult {
+pub fn compute_pmns(charged_pair: (usize, usize), neutrino_pair: (usize, usize)) -> PmnsResult {
     use faer::Side;
 
     let (m_ch, m_nu) = construct_pmns_matrices(charged_pair, neutrino_pair);
 
-    let m_ch_sym = (&m_ch + m_ch.transpose()) * faer::scale(0.5);
-    let m_nu_sym = (&m_nu + m_nu.transpose()) * faer::scale(0.5);
+    let m_ch_sym = (&m_ch + m_ch.transpose()) * faer::Scale(0.5);
+    let m_nu_sym = (&m_nu + m_nu.transpose()) * faer::Scale(0.5);
 
-    let eig_ch = m_ch_sym.selfadjoint_eigendecomposition(Side::Lower);
-    let eig_nu = m_nu_sym.selfadjoint_eigendecomposition(Side::Lower);
+    let eig_ch = m_ch_sym.self_adjoint_eigen(Side::Lower).unwrap();
+    let eig_nu = m_nu_sym.self_adjoint_eigen(Side::Lower).unwrap();
 
     // U_PMNS = U_charged^T * U_neutrino
-    let u_pmns_raw = eig_ch.u().transpose() * eig_nu.u();
+    let u_pmns_raw = eig_ch.U().transpose() * eig_nu.U();
 
     // Permutation-aware alignment (reuse CKM infrastructure)
     let (u_pmns, _pu, _pd) = crate::quark_sector::extract_ckm_permutation_aware(&u_pmns_raw);
@@ -312,8 +346,8 @@ pub fn compute_pmns(
     let mut ch_masses = [0.0_f64; 3];
     let mut nu_masses = [0.0_f64; 3];
     for i in 0..3 {
-        ch_masses[i] = eig_ch.s().column_vector().read(i).abs();
-        nu_masses[i] = eig_nu.s().column_vector().read(i).abs();
+        ch_masses[i] = eig_ch.S().column_vector()[i].abs();
+        nu_masses[i] = eig_nu.S().column_vector()[i].abs();
     }
     ch_masses.sort_by(|a, b| a.partial_cmp(b).unwrap());
     nu_masses.sort_by(|a, b| a.partial_cmp(b).unwrap());
@@ -356,9 +390,7 @@ pub fn construct_casimir_baseline(
     }
     let complex_structure = basis[15];
 
-    crate::quark_sector::construct_casimir_projections(
-        &basis, &complex_structure, scheme,
-    )
+    crate::quark_sector::construct_casimir_projections(&basis, &complex_structure, scheme)
 }
 
 /// Assemble lepton baseline mass matrices from raw Casimir projections.
@@ -390,12 +422,19 @@ pub(crate) fn assemble_lepton_baseline(
 fn build_friction_matrices(
     charged_pair: (usize, usize),
     neutrino_pair: (usize, usize),
-) -> (faer::Mat<f64>, faer::Mat<f64>, Vec<[f64; 16]>, Vec<[f64; 16]>) {
-    use crate::lepton_mass_hierarchy::cd_braid_signed_friction;
-    use crate::majorana_braiding::MajoranaMode;
-    use crate::bell_inequality::{SignTableCache, rotate_sparse};
-    use crate::three_fermion_generations::get_sedenion_subalgebras;
-    use crate::quark_sector::SubalgebraScheme;
+) -> (
+    faer::Mat<f64>,
+    faer::Mat<f64>,
+    Vec<[f64; 16]>,
+    Vec<[f64; 16]>,
+) {
+    use crate::{
+        bell_inequality::{SignTableCache, rotate_sparse},
+        lepton_mass_hierarchy::cd_braid_signed_friction,
+        majorana_braiding::MajoranaMode,
+        quark_sector::SubalgebraScheme,
+        three_fermion_generations::get_sedenion_subalgebras,
+    };
 
     let cb = construct_casimir_baseline(SubalgebraScheme::InterleavedStride);
     let (m_base_ch, m_base_nu) = assemble_lepton_baseline(&cb);
@@ -407,39 +446,70 @@ fn build_friction_matrices(
     let w1: f64 = -0.656850;
     let w2: f64 = -0.741999;
 
-    let ch_a = MajoranaMode { gamma_index: charged_pair.0 - 1, cd_basis_index: charged_pair.0, cd_dim: 16 };
-    let ch_b = MajoranaMode { gamma_index: charged_pair.1 - 1, cd_basis_index: charged_pair.1, cd_dim: 16 };
-    let nu_a = MajoranaMode { gamma_index: neutrino_pair.0 - 1, cd_basis_index: neutrino_pair.0, cd_dim: 16 };
-    let nu_b = MajoranaMode { gamma_index: neutrino_pair.1 - 1, cd_basis_index: neutrino_pair.1, cd_dim: 16 };
-
-    let build_profile = |mode_i: &MajoranaMode, mode_j: &MajoranaMode, sub: &[usize]| -> [f64; 16] {
-        let i = mode_i.cd_basis_index;
-        let j = mode_j.cd_basis_index;
-        let a_sparse = vec![(i, 1.0)];
-        let a_rotated = rotate_sparse(&a_sparse, i, j, std::f64::consts::FRAC_PI_4);
-        let b_sparse = vec![(j, 1.0)];
-        let mut profile = [0.0_f64; 16];
-        for &k in sub {
-            if k == 0 || k == i || k == j { continue; }
-            let x_sparse = [(k, 1.0)];
-            profile[k] = sign_table.sparse_associator_sum(&a_rotated, &x_sparse, &b_sparse);
-        }
-        profile
+    let ch_a = MajoranaMode {
+        gamma_index: charged_pair.0 - 1,
+        cd_basis_index: charged_pair.0,
+        cd_dim: 16,
+    };
+    let ch_b = MajoranaMode {
+        gamma_index: charged_pair.1 - 1,
+        cd_basis_index: charged_pair.1,
+        cd_dim: 16,
+    };
+    let nu_a = MajoranaMode {
+        gamma_index: neutrino_pair.0 - 1,
+        cd_basis_index: neutrino_pair.0,
+        cd_dim: 16,
+    };
+    let nu_b = MajoranaMode {
+        gamma_index: neutrino_pair.1 - 1,
+        cd_basis_index: neutrino_pair.1,
+        cd_dim: 16,
     };
 
-    let ch_profiles: Vec<[f64; 16]> = subs.iter().map(|s| build_profile(&ch_a, &ch_b, s)).collect();
-    let nu_profiles: Vec<[f64; 16]> = subs.iter().map(|s| build_profile(&nu_a, &nu_b, s)).collect();
+    let build_profile =
+        |mode_i: &MajoranaMode, mode_j: &MajoranaMode, sub: &[usize]| -> [f64; 16] {
+            let i = mode_i.cd_basis_index;
+            let j = mode_j.cd_basis_index;
+            let a_sparse = vec![(i, 1.0)];
+            let a_rotated = rotate_sparse(&a_sparse, i, j, std::f64::consts::FRAC_PI_4);
+            let b_sparse = vec![(j, 1.0)];
+            let mut profile = [0.0_f64; 16];
+            for &k in sub {
+                if k == 0 || k == i || k == j {
+                    continue;
+                }
+                let x_sparse = [(k, 1.0)];
+                profile[k] = sign_table.sparse_associator_sum(&a_rotated, &x_sparse, &b_sparse);
+            }
+            profile
+        };
 
-    let sel_ch: Vec<f64> = subs.iter().map(|s| cd_braid_signed_friction(&ch_a, &ch_b, s, &sign_table)).collect();
-    let sel_nu: Vec<f64> = subs.iter().map(|s| cd_braid_signed_friction(&nu_a, &nu_b, s, &sign_table)).collect();
+    let ch_profiles: Vec<[f64; 16]> = subs
+        .iter()
+        .map(|s| build_profile(&ch_a, &ch_b, s))
+        .collect();
+    let nu_profiles: Vec<[f64; 16]> = subs
+        .iter()
+        .map(|s| build_profile(&nu_a, &nu_b, s))
+        .collect();
+
+    let sel_ch: Vec<f64> = subs
+        .iter()
+        .map(|s| cd_braid_signed_friction(&ch_a, &ch_b, s, &sign_table))
+        .collect();
+    let sel_nu: Vec<f64> = subs
+        .iter()
+        .map(|s| cd_braid_signed_friction(&nu_a, &nu_b, s, &sign_table))
+        .collect();
 
     let mut m_ch = m_base_ch;
     let mut m_nu = m_base_nu;
     for i in 0..3 {
         let f_ch = w1 * sel_ch[i] + w2 * sel_nu[i];
         let f_nu = w1 * sel_nu[i] + w2 * sel_ch[i];
-        m_ch.write(i, i, m_ch.read(i, i) + f_ch.exp());
-        m_nu.write(i, i, m_nu.read(i, i) + f_nu.exp());
+        m_ch[(i, i)] += f_ch.exp();
+        m_nu[(i, i)] += f_nu.exp();
     }
 
     (m_ch, m_nu, ch_profiles, nu_profiles)
@@ -461,35 +531,36 @@ pub fn construct_pmns_matrices_two_param(
     let (mut m_ch, mut m_nu, ch_profiles, nu_profiles) =
         build_friction_matrices(charged_pair, neutrino_pair);
 
-    let dot16 = |a: &[f64; 16], b: &[f64; 16]| -> f64 {
-        a.iter().zip(b.iter()).map(|(x, y)| x * y).sum()
-    };
+    let dot16 =
+        |a: &[f64; 16], b: &[f64; 16]| -> f64 { a.iter().zip(b.iter()).map(|(x, y)| x * y).sum() };
 
     // Off-diagonal psi circulant coupling
     for i in 0..3 {
         for j in 0..3 {
-            if i == j { continue; }
+            if i == j {
+                continue;
+            }
             let psi_nu_j = gourlay_psi(&nu_profiles[j]);
             let psi_ch_j = gourlay_psi(&ch_profiles[j]);
-            m_nu.write(i, j, m_nu.read(i, j) + alpha_nu * dot16(&nu_profiles[i], &psi_nu_j));
-            m_ch.write(i, j, m_ch.read(i, j) + alpha_ch * dot16(&ch_profiles[i], &psi_ch_j));
+            m_nu[(i, j)] += alpha_nu * dot16(&nu_profiles[i], &psi_nu_j);
+            m_ch[(i, j)] += alpha_ch * dot16(&ch_profiles[i], &psi_ch_j);
         }
     }
 
     // Step 4: Symmetrize
     for i in 0..3 {
         for j in (i + 1)..3 {
-            let avg_ch = (m_ch.read(i, j) + m_ch.read(j, i)) / 2.0;
-            let avg_nu = (m_nu.read(i, j) + m_nu.read(j, i)) / 2.0;
-            m_ch.write(i, j, avg_ch);
-            m_ch.write(j, i, avg_ch);
-            m_nu.write(i, j, avg_nu);
-            m_nu.write(j, i, avg_nu);
+            let avg_ch = (m_ch[(i, j)] + m_ch[(j, i)]) / 2.0;
+            let avg_nu = (m_nu[(i, j)] + m_nu[(j, i)]) / 2.0;
+            m_ch[(i, j)] = avg_ch;
+            m_ch[(j, i)] = avg_ch;
+            m_nu[(i, j)] = avg_nu;
+            m_nu[(j, i)] = avg_nu;
         }
     }
 
-    let m_ch_s = (&m_ch + m_ch.transpose()) * faer::scale(0.5);
-    let m_nu_s = (&m_nu + m_nu.transpose()) * faer::scale(0.5);
+    let m_ch_s = (&m_ch + m_ch.transpose()) * faer::Scale(0.5);
+    let m_nu_s = (&m_nu + m_nu.transpose()) * faer::Scale(0.5);
 
     (m_ch_s, m_nu_s)
 }
@@ -520,16 +591,17 @@ pub fn construct_pmns_matrices_v6_modulated(
     let (mut m_ch, mut m_nu, ch_profiles, nu_profiles) =
         build_friction_matrices(charged_pair, neutrino_pair);
 
-    let dot16 = |a: &[f64; 16], b: &[f64; 16]| -> f64 {
-        a.iter().zip(b.iter()).map(|(x, y)| x * y).sum()
-    };
+    let dot16 =
+        |a: &[f64; 16], b: &[f64; 16]| -> f64 { a.iter().zip(b.iter()).map(|(x, y)| x * y).sum() };
 
     // Compute V_6 modulation field: collapse beta into 3 generation factors
     let n_basis = v6_basis.nrows().min(6);
     let n_cols = v6_basis.ncols().min(42);
     let mut v_combined = vec![0.0_f64; n_cols];
     for k in 0..n_basis {
-        if beta[k].abs() < 1e-15 { continue; }
+        if beta[k].abs() < 1e-15 {
+            continue;
+        }
         for col in 0..n_cols {
             v_combined[col] += beta[k] * v6_basis[(k, col)];
         }
@@ -546,7 +618,9 @@ pub fn construct_pmns_matrices_v6_modulated(
     // Off-diagonal psi coupling with V_6-modulated alpha
     for i in 0..3 {
         for j in 0..3 {
-            if i == j { continue; }
+            if i == j {
+                continue;
+            }
             let psi_nu_j = gourlay_psi(&nu_profiles[j]);
             let psi_ch_j = gourlay_psi(&ch_profiles[j]);
 
@@ -554,25 +628,25 @@ pub fn construct_pmns_matrices_v6_modulated(
             let alpha_nu_ij = base_alpha_nu * (phi[i] + phi[j]).exp();
             let alpha_ch_ij = base_alpha_ch * (phi[i] + phi[j]).exp();
 
-            m_nu.write(i, j, m_nu.read(i, j) + alpha_nu_ij * dot16(&nu_profiles[i], &psi_nu_j));
-            m_ch.write(i, j, m_ch.read(i, j) + alpha_ch_ij * dot16(&ch_profiles[i], &psi_ch_j));
+            m_nu[(i, j)] += alpha_nu_ij * dot16(&nu_profiles[i], &psi_nu_j);
+            m_ch[(i, j)] += alpha_ch_ij * dot16(&ch_profiles[i], &psi_ch_j);
         }
     }
 
     // Symmetrize
     for i in 0..3 {
         for j in (i + 1)..3 {
-            let avg_ch = (m_ch.read(i, j) + m_ch.read(j, i)) / 2.0;
-            let avg_nu = (m_nu.read(i, j) + m_nu.read(j, i)) / 2.0;
-            m_ch.write(i, j, avg_ch);
-            m_ch.write(j, i, avg_ch);
-            m_nu.write(i, j, avg_nu);
-            m_nu.write(j, i, avg_nu);
+            let avg_ch = (m_ch[(i, j)] + m_ch[(j, i)]) / 2.0;
+            let avg_nu = (m_nu[(i, j)] + m_nu[(j, i)]) / 2.0;
+            m_ch[(i, j)] = avg_ch;
+            m_ch[(j, i)] = avg_ch;
+            m_nu[(i, j)] = avg_nu;
+            m_nu[(j, i)] = avg_nu;
         }
     }
 
-    let m_ch_s = (&m_ch + m_ch.transpose()) * faer::scale(0.5);
-    let m_nu_s = (&m_nu + m_nu.transpose()) * faer::scale(0.5);
+    let m_ch_s = (&m_ch + m_ch.transpose()) * faer::Scale(0.5);
+    let m_nu_s = (&m_nu + m_nu.transpose()) * faer::Scale(0.5);
 
     (m_ch_s, m_nu_s)
 }

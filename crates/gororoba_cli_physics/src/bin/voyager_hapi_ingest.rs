@@ -59,10 +59,27 @@ fn main() -> Result<()> {
         .with_context(|| format!("create {}", cli.out_csv.display()))?;
 
     writer.write_record([
-        "window_name", "mission", "product", "year", "doy", "hour",
-        "r_au", "lat_deg", "lon_deg", "density_cm3", "speed_kms",
-        "temperature_k", "bx", "by", "bz", "b_mag", "crs_flux",
-        "spectral_mean", "spectral_peak", "map_flux_mean", "map_flux_std",
+        "window_name",
+        "mission",
+        "product",
+        "year",
+        "doy",
+        "hour",
+        "r_au",
+        "lat_deg",
+        "lon_deg",
+        "density_cm3",
+        "speed_kms",
+        "temperature_k",
+        "bx",
+        "by",
+        "bz",
+        "b_mag",
+        "crs_flux",
+        "spectral_mean",
+        "spectral_peak",
+        "map_flux_mean",
+        "map_flux_std",
     ])?;
 
     let mut total = 0usize;
@@ -76,33 +93,77 @@ fn main() -> Result<()> {
         let day: u8 = time_str.get(8..10).unwrap_or("0").parse().unwrap_or(0);
         let hour: u8 = time_str.get(11..13).unwrap_or("0").parse().unwrap_or(0);
 
-        if year == 0 { continue; }
+        if year == 0 {
+            continue;
+        }
 
         // Compute day-of-year
         let doy = day_of_year(year, month, day);
 
         // Extract B-field components (1-indexed from HAPI, 0-indexed after Time column)
-        let bmag: f64 = record.get(1 + cli.col_bmag).unwrap_or("NaN").parse().unwrap_or(f64::NAN);
-        let br: f64 = record.get(1 + cli.col_br).unwrap_or("NaN").parse().unwrap_or(f64::NAN);
-        let bt: f64 = record.get(1 + cli.col_bt).unwrap_or("NaN").parse().unwrap_or(f64::NAN);
-        let bn: f64 = record.get(1 + cli.col_bn).unwrap_or("NaN").parse().unwrap_or(f64::NAN);
+        let bmag: f64 = record
+            .get(1 + cli.col_bmag)
+            .unwrap_or("NaN")
+            .parse()
+            .unwrap_or(f64::NAN);
+        let br: f64 = record
+            .get(1 + cli.col_br)
+            .unwrap_or("NaN")
+            .parse()
+            .unwrap_or(f64::NAN);
+        let bt: f64 = record
+            .get(1 + cli.col_bt)
+            .unwrap_or("NaN")
+            .parse()
+            .unwrap_or(f64::NAN);
+        let bn: f64 = record
+            .get(1 + cli.col_bn)
+            .unwrap_or("NaN")
+            .parse()
+            .unwrap_or(f64::NAN);
 
         let r_au = if cli.col_dist >= 0 {
-            record.get(1 + cli.col_dist as usize).unwrap_or("NaN").parse().unwrap_or(f64::NAN)
-        } else { f64::NAN };
+            record
+                .get(1 + cli.col_dist as usize)
+                .unwrap_or("NaN")
+                .parse()
+                .unwrap_or(f64::NAN)
+        } else {
+            f64::NAN
+        };
 
         // Skip fill values
-        if !bmag.is_finite() || bmag.abs() > 998.0 { continue; }
-        if !br.is_finite() || br.abs() > 998.0 { continue; }
+        if !bmag.is_finite() || bmag.abs() > 998.0 {
+            continue;
+        }
+        if !br.is_finite() || br.abs() > 998.0 {
+            continue;
+        }
 
         let wn = format!("{}_{:04}_{:03}_{:02}", cli.spacecraft, year, doy, hour);
 
-        writer.write_record(&[
-            &wn, &cli.spacecraft, "hapi_mag", &year.to_string(), &doy.to_string(),
-            &hour.to_string(), &format!("{:.3}", r_au), "0.0", "0.0",
-            "NaN", "NaN", "NaN",
-            &format!("{:.6}", br), &format!("{:.6}", bt), &format!("{:.6}", bn),
-            &format!("{:.6}", bmag), "NaN", "NaN", "NaN", "NaN", "NaN",
+        writer.write_record([
+            &wn,
+            &cli.spacecraft,
+            "hapi_mag",
+            &year.to_string(),
+            &doy.to_string(),
+            &hour.to_string(),
+            &format!("{:.3}", r_au),
+            "0.0",
+            "0.0",
+            "NaN",
+            "NaN",
+            "NaN",
+            &format!("{:.6}", br),
+            &format!("{:.6}", bt),
+            &format!("{:.6}", bn),
+            &format!("{:.6}", bmag),
+            "NaN",
+            "NaN",
+            "NaN",
+            "NaN",
+            "NaN",
         ])?;
         total += 1;
     }
@@ -113,8 +174,22 @@ fn main() -> Result<()> {
 }
 
 fn day_of_year(year: u16, month: u8, day: u8) -> u16 {
-    let leap = year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
-    let days_in_month = [0, 31, if leap { 29 } else { 28 }, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    let leap = year.is_multiple_of(4) && (!year.is_multiple_of(100) || year.is_multiple_of(400));
+    let days_in_month = [
+        0,
+        31,
+        if leap { 29 } else { 28 },
+        31,
+        30,
+        31,
+        30,
+        31,
+        31,
+        30,
+        31,
+        30,
+        31,
+    ];
     let mut doy: u16 = day as u16;
     for m in 1..month {
         doy += days_in_month[m as usize] as u16;

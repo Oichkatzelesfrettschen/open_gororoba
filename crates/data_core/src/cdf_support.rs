@@ -9,11 +9,10 @@ use cdf::{
     },
     types::CdfType,
 };
-use flate2::read::GzDecoder;
-use std::io::Read as _;
 use chrono::{Datelike, NaiveDate, TimeZone, Timelike, Utc};
+use flate2::read::GzDecoder;
 use hifitime::{Duration, Epoch};
-use std::path::Path;
+use std::{io::Read as _, path::Path};
 
 const TT2000_REF_TAI: (i32, u8, u8, u8, u8, u8, u32) = (2000, 1, 1, 11, 59, 27, 816_000_000);
 

@@ -13,8 +13,7 @@ use anyhow::{Context, Result};
 use clap::Parser;
 use data_core::{
     catalogs::rosetta::{
-        RosettaMagMinuteRecord, RosettaMagProvider,
-        parse_rosetta_amda_mag_csv_minutes,
+        RosettaMagMinuteRecord, RosettaMagProvider, parse_rosetta_amda_mag_csv_minutes,
     },
     fetcher::{DatasetProvider, FetchConfig},
 };
@@ -66,7 +65,10 @@ struct Cli {
     clip_floor: f64,
 
     /// Output JSON path.
-    #[arg(long, default_value = "data/output/heliosphere/ablations/rosetta_draping_analysis.json")]
+    #[arg(
+        long,
+        default_value = "data/output/heliosphere/ablations/rosetta_draping_analysis.json"
+    )]
     out_json: PathBuf,
 
     /// Data cache directory.
@@ -114,8 +116,7 @@ fn main() -> Result<()> {
          Window: {}-{:02} to {}-{:02}\n\
          Embedding: {}D\n\
          Cavity threshold: {:.1} nT\n",
-        cli.year, cli.month_start, cli.year, cli.month_end,
-        cli.embedding_dim, cli.cavity_threshold,
+        cli.year, cli.month_start, cli.year, cli.month_end, cli.embedding_dim, cli.cavity_threshold,
     );
 
     // --- Step 1: Fetch data from AMDA ---
@@ -144,8 +145,8 @@ fn main() -> Result<()> {
         let fname = format!("rosetta_rpcmag_{:04}_{:02}.csv", cli.year, month);
         let path = data_dir.join(&fname);
         if path.exists() {
-            let content = fs::read_to_string(&path)
-                .with_context(|| format!("read {}", path.display()))?;
+            let content =
+                fs::read_to_string(&path).with_context(|| format!("read {}", path.display()))?;
             let mut records = parse_rosetta_amda_mag_csv_minutes(&content);
             println!("  {}-{:02}: {} minutes", cli.year, month, records.len());
             all_minutes.append(&mut records);
@@ -160,7 +161,8 @@ fn main() -> Result<()> {
 
     // Sort and recompute elapsed hours
     all_minutes.sort_by(|a, b| {
-        a.year.cmp(&b.year)
+        a.year
+            .cmp(&b.year)
             .then(a.doy.cmp(&b.doy))
             .then(a.hour.cmp(&b.hour))
             .then(a.minute.cmp(&b.minute))
@@ -174,8 +176,9 @@ fn main() -> Result<()> {
     );
     for rec in &mut all_minutes {
         let day_diff = (rec.year as f64 - fy as f64) * 365.25 + (rec.doy as f64 - fd as f64);
-        rec.elapsed_hours =
-            day_diff * 24.0 + (rec.hour as f64 - fh as f64) + (rec.minute as f64 - fm as f64) / 60.0;
+        rec.elapsed_hours = day_diff * 24.0
+            + (rec.hour as f64 - fh as f64)
+            + (rec.minute as f64 - fm as f64) / 60.0;
     }
 
     let total = all_minutes.len();
@@ -252,7 +255,10 @@ fn main() -> Result<()> {
     for w_start in 0..=(all_minutes.len() - window_rows) {
         let sample_indices: Vec<usize> = (0..steps).map(|s| w_start + s).collect();
 
-        let sum_b: f64 = sample_indices.iter().map(|&i| all_minutes[i].b_magnitude).sum();
+        let sum_b: f64 = sample_indices
+            .iter()
+            .map(|&i| all_minutes[i].b_magnitude)
+            .sum();
         let local_mean_b = sum_b / steps as f64;
 
         // Skip zero-field windows for all modes except raw
@@ -280,7 +286,10 @@ fn main() -> Result<()> {
                 "direction" => {
                     // Unit vectors: Bx/|B|, By/|B|, Bz/|B|, 0.0
                     let bmag = rec.b_magnitude;
-                    if bmag < 1e-12 { skip = true; break; }
+                    if bmag < 1e-12 {
+                        skip = true;
+                        break;
+                    }
                     v[s * channels] = rec.bx_cseq / bmag;
                     v[s * channels + 1] = rec.by_cseq / bmag;
                     v[s * channels + 2] = rec.bz_cseq / bmag;
@@ -288,11 +297,15 @@ fn main() -> Result<()> {
                 }
                 "l2" => {
                     // L2 energy-preserving: Bx / sqrt(mean(|B|^2))
-                    let sum_b2: f64 = sample_indices.iter()
+                    let sum_b2: f64 = sample_indices
+                        .iter()
                         .map(|&i| all_minutes[i].b_magnitude.powi(2))
                         .sum();
                     let rms_b = (sum_b2 / steps as f64).sqrt();
-                    if rms_b < 1e-12 { skip = true; break; }
+                    if rms_b < 1e-12 {
+                        skip = true;
+                        break;
+                    }
                     v[s * channels] = rec.bx_cseq / rms_b;
                     v[s * channels + 1] = rec.by_cseq / rms_b;
                     v[s * channels + 2] = rec.bz_cseq / rms_b;
@@ -300,10 +313,14 @@ fn main() -> Result<()> {
                 }
                 "linf" => {
                     // L-inf scale-invariant: Bx / max(|B|)
-                    let max_b: f64 = sample_indices.iter()
+                    let max_b: f64 = sample_indices
+                        .iter()
                         .map(|&i| all_minutes[i].b_magnitude)
                         .fold(0.0f64, f64::max);
-                    if max_b < 1e-12 { skip = true; break; }
+                    if max_b < 1e-12 {
+                        skip = true;
+                        break;
+                    }
                     v[s * channels] = rec.bx_cseq / max_b;
                     v[s * channels + 1] = rec.by_cseq / max_b;
                     v[s * channels + 2] = rec.bz_cseq / max_b;
@@ -317,25 +334,32 @@ fn main() -> Result<()> {
                     v[s * channels + 3] = (rec.b_magnitude - denom) / denom;
                 }
                 _ => {
-                    anyhow::bail!("Unknown normalization: {}. Use current, raw, direction, clipped, l2, linf.", norm_mode);
+                    anyhow::bail!(
+                        "Unknown normalization: {}. Use current, raw, direction, clipped, l2, linf.",
+                        norm_mode
+                    );
                 }
             }
         }
-        if skip { continue; }
+        if skip {
+            continue;
+        }
         embedded.push(v);
         embed_meta.push(*sample_indices.last().unwrap());
     }
 
-    println!("  Embedded {} vectors ({}D)", embedded.len(), cli.embedding_dim);
+    println!(
+        "  Embedded {} vectors ({}D)",
+        embedded.len(),
+        cli.embedding_dim
+    );
 
-    let associators =
-        cd_kernel::batch_sliding_associator_norms_parallel(&embedded, effective_dim);
+    let associators = cd_kernel::batch_sliding_associator_norms_parallel(&embedded, effective_dim);
 
     println!("  Computed {} associator norms", associators.len());
 
-    let assoc_minute_indices: Vec<usize> = (0..associators.len())
-        .map(|k| embed_meta[k + 2])
-        .collect();
+    let assoc_minute_indices: Vec<usize> =
+        (0..associators.len()).map(|k| embed_meta[k + 2]).collect();
 
     // Detect associator transitions
     let trans_window = cli.boundary_window_minutes.max(5);
@@ -359,7 +383,9 @@ fn main() -> Result<()> {
         );
 
         for i in trans_window..associators.len().saturating_sub(trans_window) {
-            let pre: f64 = associators[i.saturating_sub(trans_window)..i].iter().sum::<f64>()
+            let pre: f64 = associators[i.saturating_sub(trans_window)..i]
+                .iter()
+                .sum::<f64>()
                 / trans_window as f64;
             let post: f64 = associators[i..(i + trans_window).min(associators.len())]
                 .iter()
@@ -410,9 +436,9 @@ fn main() -> Result<()> {
         .iter()
         .filter(|&&ti| {
             let t_hours = all_minutes[ti].elapsed_hours;
-            boundaries.iter().any(|&bi| {
-                (all_minutes[bi].elapsed_hours - t_hours).abs() < tol
-            })
+            boundaries
+                .iter()
+                .any(|&bi| (all_minutes[bi].elapsed_hours - t_hours).abs() < tol)
         })
         .count();
 

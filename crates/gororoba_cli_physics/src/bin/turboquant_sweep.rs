@@ -20,11 +20,13 @@ use clap::Parser;
 use serde::Serialize;
 use std::{fs, path::PathBuf, time::Instant};
 
-use cd_kernel::turboquant::baselines::{kivi, nsnquant};
-use cd_kernel::turboquant::grouping;
-use cd_kernel::turboquant::hybrid::HybridQuantizer;
-use cd_kernel::turboquant::pipeline::TurboQuantMSE;
-use cd_kernel::turboquant::synthesized::SynthesizedQuantizer;
+use cd_kernel::turboquant::{
+    baselines::{kivi, nsnquant},
+    grouping,
+    hybrid::HybridQuantizer,
+    pipeline::TurboQuantMSE,
+    synthesized::SynthesizedQuantizer,
+};
 
 #[derive(Parser)]
 #[command(name = "turboquant-sweep")]
@@ -39,7 +41,10 @@ struct Cli {
     #[arg(long, default_value_t = 2000)]
     n_vectors: usize,
 
-    #[arg(long, default_value = "data/output/heliosphere/ablations/turboquant_sweep.json")]
+    #[arg(
+        long,
+        default_value = "data/output/heliosphere/ablations/turboquant_sweep.json"
+    )]
     out_json: PathBuf,
 }
 
@@ -77,7 +82,11 @@ fn cosine_sim(a: &[f64], b: &[f64]) -> f64 {
     let dot: f64 = a.iter().zip(b.iter()).map(|(x, y)| x * y).sum();
     let na: f64 = a.iter().map(|x| x * x).sum::<f64>().sqrt();
     let nb: f64 = b.iter().map(|x| x * x).sum::<f64>().sqrt();
-    if na < 1e-15 || nb < 1e-15 { 0.0 } else { dot / (na * nb) }
+    if na < 1e-15 || nb < 1e-15 {
+        0.0
+    } else {
+        dot / (na * nb)
+    }
 }
 
 fn random_matrix(n: usize, d: usize, seed: u64) -> Vec<f64> {
@@ -116,11 +125,21 @@ fn main() -> Result<()> {
                     let comp = tq.quantize(x, &mut buf);
                     let mut recon = vec![0.0f64; d];
                     tq.dequantize(&comp, &mut buf, &mut recon);
-                    mse_sum += x.iter().zip(recon.iter()).map(|(a, b)| (a - b).powi(2)).sum::<f64>() / d as f64;
+                    mse_sum += x
+                        .iter()
+                        .zip(recon.iter())
+                        .map(|(a, b)| (a - b).powi(2))
+                        .sum::<f64>()
+                        / d as f64;
                     cos_sum += cosine_sim(x, &recon);
                 }
                 let ms = t0.elapsed().as_secs_f64() * 1000.0;
-                config_results.push(("TQ-WHT".into(), mse_sum / n as f64, cos_sum / n as f64, n as f64 / ms));
+                config_results.push((
+                    "TQ-WHT".into(),
+                    mse_sum / n as f64,
+                    cos_sum / n as f64,
+                    n as f64 / ms,
+                ));
             }
 
             // 2. TQ-E8 (d=128 only)
@@ -137,11 +156,21 @@ fn main() -> Result<()> {
                     let comp = tq.quantize(x, &mut buf);
                     let mut recon = vec![0.0f64; d];
                     tq.dequantize(&comp, &mut buf, &mut recon);
-                    mse_sum += x.iter().zip(recon.iter()).map(|(a, b)| (a - b).powi(2)).sum::<f64>() / d as f64;
+                    mse_sum += x
+                        .iter()
+                        .zip(recon.iter())
+                        .map(|(a, b)| (a - b).powi(2))
+                        .sum::<f64>()
+                        / d as f64;
                     cos_sum += cosine_sim(x, &recon);
                 }
                 let ms = t0.elapsed().as_secs_f64() * 1000.0;
-                config_results.push(("TQ-E8".into(), mse_sum / n as f64, cos_sum / n as f64, n as f64 / ms));
+                config_results.push((
+                    "TQ-E8".into(),
+                    mse_sum / n as f64,
+                    cos_sum / n as f64,
+                    n as f64 / ms,
+                ));
             }
 
             // 2b. TQ-E8+WHT (d=128 only)
@@ -158,11 +187,21 @@ fn main() -> Result<()> {
                     let comp = tq.quantize(x, &mut buf);
                     let mut recon = vec![0.0f64; d];
                     tq.dequantize(&comp, &mut buf, &mut recon);
-                    mse_sum += x.iter().zip(recon.iter()).map(|(a, b)| (a - b).powi(2)).sum::<f64>() / d as f64;
+                    mse_sum += x
+                        .iter()
+                        .zip(recon.iter())
+                        .map(|(a, b)| (a - b).powi(2))
+                        .sum::<f64>()
+                        / d as f64;
                     cos_sum += cosine_sim(x, &recon);
                 }
                 let ms = t0.elapsed().as_secs_f64() * 1000.0;
-                config_results.push(("TQ-E8+WHT".into(), mse_sum / n as f64, cos_sum / n as f64, n as f64 / ms));
+                config_results.push((
+                    "TQ-E8+WHT".into(),
+                    mse_sum / n as f64,
+                    cos_sum / n as f64,
+                    n as f64 / ms,
+                ));
             }
 
             // 3. KIVI
@@ -176,10 +215,20 @@ fn main() -> Result<()> {
                 for v in 0..n {
                     let x = &data[v * d..(v + 1) * d];
                     let r = &recon[v * d..(v + 1) * d];
-                    mse_sum += x.iter().zip(r.iter()).map(|(a, b)| (a - b).powi(2)).sum::<f64>() / d as f64;
+                    mse_sum += x
+                        .iter()
+                        .zip(r.iter())
+                        .map(|(a, b)| (a - b).powi(2))
+                        .sum::<f64>()
+                        / d as f64;
                     cos_sum += cosine_sim(x, r);
                 }
-                config_results.push(("KIVI".into(), mse_sum / n as f64, cos_sum / n as f64, n as f64 / ms));
+                config_results.push((
+                    "KIVI".into(),
+                    mse_sum / n as f64,
+                    cos_sum / n as f64,
+                    n as f64 / ms,
+                ));
             }
 
             // 4. NSNQuant (power-of-2 dims only)
@@ -195,10 +244,20 @@ fn main() -> Result<()> {
                 for v in 0..n {
                     let x = &data[v * d..(v + 1) * d];
                     let r = &recon[v * d..(v + 1) * d];
-                    mse_sum += x.iter().zip(r.iter()).map(|(a, b)| (a - b).powi(2)).sum::<f64>() / d as f64;
+                    mse_sum += x
+                        .iter()
+                        .zip(r.iter())
+                        .map(|(a, b)| (a - b).powi(2))
+                        .sum::<f64>()
+                        / d as f64;
                     cos_sum += cosine_sim(x, r);
                 }
-                config_results.push(("NSNQuant".into(), mse_sum / n as f64, cos_sum / n as f64, n as f64 / ms));
+                config_results.push((
+                    "NSNQuant".into(),
+                    mse_sum / n as f64,
+                    cos_sum / n as f64,
+                    n as f64 / ms,
+                ));
             }
 
             // 5. GroupQuant
@@ -212,11 +271,21 @@ fn main() -> Result<()> {
                     let params = grouping::compute_group_params(x, group_size, bits);
                     let indices = grouping::group_quantize(x, &params, bits);
                     let recon = grouping::group_dequantize(&indices, &params, bits);
-                    mse_sum += x.iter().zip(recon.iter()).map(|(a, b)| (a - b).powi(2)).sum::<f64>() / d as f64;
+                    mse_sum += x
+                        .iter()
+                        .zip(recon.iter())
+                        .map(|(a, b)| (a - b).powi(2))
+                        .sum::<f64>()
+                        / d as f64;
                     cos_sum += cosine_sim(x, &recon);
                 }
                 let ms = t0.elapsed().as_secs_f64() * 1000.0;
-                config_results.push(("Group-16".into(), mse_sum / n as f64, cos_sum / n as f64, n as f64 / ms));
+                config_results.push((
+                    "Group-16".into(),
+                    mse_sum / n as f64,
+                    cos_sum / n as f64,
+                    n as f64 / ms,
+                ));
             }
 
             // 6. Hybrid
@@ -231,11 +300,21 @@ fn main() -> Result<()> {
                     let comp = hq.quantize(x, &mut buf);
                     let mut recon = vec![0.0f64; d];
                     hq.dequantize(&comp, &mut buf, &mut recon);
-                    mse_sum += x.iter().zip(recon.iter()).map(|(a, b)| (a - b).powi(2)).sum::<f64>() / d as f64;
+                    mse_sum += x
+                        .iter()
+                        .zip(recon.iter())
+                        .map(|(a, b)| (a - b).powi(2))
+                        .sum::<f64>()
+                        / d as f64;
                     cos_sum += cosine_sim(x, &recon);
                 }
                 let ms = t0.elapsed().as_secs_f64() * 1000.0;
-                config_results.push(("Hybrid-16".into(), mse_sum / n as f64, cos_sum / n as f64, n as f64 / ms));
+                config_results.push((
+                    "Hybrid-16".into(),
+                    mse_sum / n as f64,
+                    cos_sum / n as f64,
+                    n as f64 / ms,
+                ));
             }
 
             // 7. Synthesized
@@ -250,19 +329,31 @@ fn main() -> Result<()> {
                     let comp = sq.quantize(x, &mut buf);
                     let mut recon = vec![0.0f64; d];
                     sq.dequantize(&comp, &mut buf, &mut recon);
-                    mse_sum += x.iter().zip(recon.iter()).map(|(a, b)| (a - b).powi(2)).sum::<f64>() / d as f64;
+                    mse_sum += x
+                        .iter()
+                        .zip(recon.iter())
+                        .map(|(a, b)| (a - b).powi(2))
+                        .sum::<f64>()
+                        / d as f64;
                     cos_sum += cosine_sim(x, &recon);
                 }
                 let ms = t0.elapsed().as_secs_f64() * 1000.0;
-                config_results.push(("Synthesized".into(), mse_sum / n as f64, cos_sum / n as f64, n as f64 / ms));
+                config_results.push((
+                    "Synthesized".into(),
+                    mse_sum / n as f64,
+                    cos_sum / n as f64,
+                    n as f64 / ms,
+                ));
             }
 
             // Sort by MSE and assign ranks
             config_results.sort_by(|a, b| a.1.partial_cmp(&b.1).unwrap());
             for (rank, (method, mse, cosine, throughput)) in config_results.iter().enumerate() {
                 let marker = if rank == 0 { " ***BEST***" } else { "" };
-                println!("    {:>12}: MSE={:.6}  cos={:.4}  {:.0} kvec/s{}",
-                    method, mse, cosine, throughput, marker);
+                println!(
+                    "    {:>12}: MSE={:.6}  cos={:.4}  {:.0} kvec/s{}",
+                    method, mse, cosine, throughput, marker
+                );
 
                 all_results.push(SweepResult {
                     method: method.clone(),

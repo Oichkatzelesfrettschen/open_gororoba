@@ -49,7 +49,10 @@ struct Cli {
     dim: usize,
 
     /// Output JSON
-    #[arg(long, default_value = "data/output/heliosphere/ablations/storm_propagation.json")]
+    #[arg(
+        long,
+        default_value = "data/output/heliosphere/ablations/storm_propagation.json"
+    )]
     out_json: PathBuf,
 }
 
@@ -85,8 +88,8 @@ struct PropagationResult {
 }
 
 fn parse_ace_csv(path: &std::path::Path) -> Result<Vec<AceRecord>> {
-    let content = std::fs::read_to_string(path)
-        .with_context(|| format!("Reading {}", path.display()))?;
+    let content =
+        std::fs::read_to_string(path).with_context(|| format!("Reading {}", path.display()))?;
     let mut records = Vec::new();
     for line in content.lines() {
         let fields: Vec<&str> = line.split(',').collect();
@@ -115,7 +118,7 @@ fn parse_ace_csv(path: &std::path::Path) -> Result<Vec<AceRecord>> {
                 _ => continue,
             }
         } else {
-            continue
+            continue;
         };
         records.push(AceRecord {
             timestamp: fields[0].to_string(),
@@ -131,8 +134,7 @@ fn ace_embedding(records: &[AceRecord], start: usize, steps: usize) -> Option<Ve
         return None;
     }
     let mut vec = Vec::with_capacity(ACE_CHANNELS * steps);
-    for i in start..(start + steps) {
-        let r = &records[i];
+    for r in records.iter().skip(start).take(steps) {
         if !r.magnitude.is_finite() {
             return None;
         }
@@ -144,22 +146,23 @@ fn ace_embedding(records: &[AceRecord], start: usize, steps: usize) -> Option<Ve
     Some(vec)
 }
 
-fn compute_cd_sliding(
-    embeddings: &[Vec<f64>],
-    dim: usize,
-) -> Vec<f64> {
+fn compute_cd_sliding(embeddings: &[Vec<f64>], dim: usize) -> Vec<f64> {
     if embeddings.is_empty() {
         return Vec::new();
     }
     // Pad to target dim
-    let padded: Vec<Vec<f64>> = embeddings.iter().map(|v| {
-        let mut p = v.clone();
-        p.resize(dim, 0.0);
-        p
-    }).collect();
+    let padded: Vec<Vec<f64>> = embeddings
+        .iter()
+        .map(|v| {
+            let mut p = v.clone();
+            p.resize(dim, 0.0);
+            p
+        })
+        .collect();
 
     // Use f32 fast path
-    let padded_f32: Vec<Vec<f32>> = padded.iter()
+    let padded_f32: Vec<Vec<f32>> = padded
+        .iter()
         .map(|v| v.iter().map(|&x| x as f32).collect())
         .collect();
 
@@ -196,7 +199,11 @@ fn main() -> Result<()> {
             ace_timestamps.push(ace_records[i + steps - 1].timestamp.clone());
         }
     }
-    println!("  {} embedding windows ({}D)", ace_embeddings.len(), cli.dim);
+    println!(
+        "  {} embedding windows ({}D)",
+        ace_embeddings.len(),
+        cli.dim
+    );
 
     let ace_cd = compute_cd_sliding(&ace_embeddings, cli.dim);
 
@@ -209,7 +216,8 @@ fn main() -> Result<()> {
         let max_val = sorted.last().copied().unwrap_or(0.0);
 
         // Find peak timestamp
-        let max_idx = ace_cd.iter()
+        let max_idx = ace_cd
+            .iter()
             .enumerate()
             .max_by(|a, b| a.1.partial_cmp(b.1).unwrap_or(std::cmp::Ordering::Equal))
             .map(|(i, _)| i)
@@ -222,11 +230,21 @@ fn main() -> Result<()> {
 
         // Quiet baseline: first quartile of data (pre-storm)
         let quiet_median = percentile(&sorted, 0.25);
-        let storm_ratio = if quiet_median > 0.0 { median / quiet_median } else { 0.0 };
+        let storm_ratio = if quiet_median > 0.0 {
+            median / quiet_median
+        } else {
+            0.0
+        };
 
-        println!("  CD: median={:.3}, mean={:.3}, p90={:.3}, max={:.3}", median, mean, p90, max_val);
+        println!(
+            "  CD: median={:.3}, mean={:.3}, p90={:.3}, max={:.3}",
+            median, mean, p90, max_val
+        );
         println!("  Peak at: {}", peak_ts);
-        println!("  Quiet baseline (Q1): {:.3}, storm ratio: {:.1}x", quiet_median, storm_ratio);
+        println!(
+            "  Quiet baseline (Q1): {:.3}, storm ratio: {:.1}x",
+            quiet_median, storm_ratio
+        );
 
         // Hourly CD profile for time-resolved output
         let records_per_hour = 3600 / 16; // 16-sec cadence -> 225 records/hour
@@ -271,12 +289,21 @@ fn main() -> Result<()> {
         println!("\n--- SDO SHARP (Source AR, HARPNUM {}) ---", cli.harpnum);
         let ts = data_core::catalogs::sdo_hmi::load_sharp_json(sharp_path, cli.harpnum)
             .map_err(|e| anyhow::anyhow!("{}", e))?;
-        println!("  {} SHARP records at {}-min cadence", ts.records.len(), ts.cadence_minutes);
+        println!(
+            "  {} SHARP records at {}-min cadence",
+            ts.records.len(),
+            ts.cadence_minutes
+        );
 
         let sharp_steps = 2; // 2-step Takens -> 30D, pad to 32
-        let (embedded, indices) = data_core::catalogs::sdo_hmi::sharp_takens_embed(&ts, sharp_steps, 1);
-        println!("  {} embedding windows ({}D padded to {}D)", embedded.len(),
-            data_core::catalogs::sdo_hmi::SHARP_CHANNELS * sharp_steps, cli.dim);
+        let (embedded, indices) =
+            data_core::catalogs::sdo_hmi::sharp_takens_embed(&ts, sharp_steps, 1);
+        println!(
+            "  {} embedding windows ({}D padded to {}D)",
+            embedded.len(),
+            data_core::catalogs::sdo_hmi::SHARP_CHANNELS * sharp_steps,
+            cli.dim
+        );
 
         let sharp_cd = compute_cd_sliding(&embedded, cli.dim);
         if !sharp_cd.is_empty() {
@@ -287,7 +314,8 @@ fn main() -> Result<()> {
             let max_val = sorted.last().copied().unwrap_or(0.0);
             let p90 = percentile(&sorted, 0.9);
 
-            let max_idx = sharp_cd.iter()
+            let max_idx = sharp_cd
+                .iter()
                 .enumerate()
                 .max_by(|a, b| a.1.partial_cmp(b.1).unwrap_or(std::cmp::Ordering::Equal))
                 .map(|(i, _)| i)
@@ -299,9 +327,16 @@ fn main() -> Result<()> {
             };
 
             let quiet_median = percentile(&sorted, 0.25);
-            let storm_ratio = if quiet_median > 0.0 { median / quiet_median } else { 0.0 };
+            let storm_ratio = if quiet_median > 0.0 {
+                median / quiet_median
+            } else {
+                0.0
+            };
 
-            println!("  CD: median={:.3}, mean={:.3}, p90={:.3}, max={:.3}", median, mean, p90, max_val);
+            println!(
+                "  CD: median={:.3}, mean={:.3}, p90={:.3}, max={:.3}",
+                median, mean, p90, max_val
+            );
             println!("  Peak at: {}", peak_ts);
 
             segments.push(StormSegment {
@@ -339,18 +374,22 @@ fn main() -> Result<()> {
                 _ => continue,
             };
             // Focus on 2018-2020 for ~1 year delayed response to 2017 CME
-            if year < 2018 || year > 2020 {
+            if !(2018..=2020).contains(&year) {
                 continue;
             }
             let label = format!("{}-{:03}-{:02}", fields[0], fields[1], fields[2]);
-            let channels: Vec<f64> = fields[3..19].iter()
+            let channels: Vec<f64> = fields[3..19]
+                .iter()
                 .map(|f| f.trim().parse::<f64>().unwrap_or(f64::NAN))
                 .collect();
             if channels.iter().all(|c| c.is_finite()) {
                 pws_values.push((label, channels));
             }
         }
-        println!("  {} valid PWS hourly records (2018-2020)", pws_values.len());
+        println!(
+            "  {} valid PWS hourly records (2018-2020)",
+            pws_values.len()
+        );
 
         if pws_values.len() >= 4 {
             // Build 16-channel embeddings with 2-step Takens -> 32D
@@ -370,15 +409,21 @@ fn main() -> Result<()> {
                         }
                         vec.push(v);
                     }
-                    if !valid { break; }
+                    if !valid {
+                        break;
+                    }
                 }
                 if valid && vec.len() == pws_ch * pws_steps {
                     embeddings.push(vec);
                     timestamps.push(pws_values[i + pws_steps - 1].0.clone());
                 }
             }
-            println!("  {} embedding windows ({}D padded to {}D)", embeddings.len(),
-                pws_ch * pws_steps, cli.dim);
+            println!(
+                "  {} embedding windows ({}D padded to {}D)",
+                embeddings.len(),
+                pws_ch * pws_steps,
+                cli.dim
+            );
 
             let pws_cd = compute_cd_sliding(&embeddings, cli.dim);
             if !pws_cd.is_empty() {
@@ -389,7 +434,8 @@ fn main() -> Result<()> {
                 let max_val = sorted.last().copied().unwrap_or(0.0);
                 let p90 = percentile(&sorted, 0.9);
 
-                let max_idx = pws_cd.iter()
+                let max_idx = pws_cd
+                    .iter()
                     .enumerate()
                     .max_by(|a, b| a.1.partial_cmp(b.1).unwrap_or(std::cmp::Ordering::Equal))
                     .map(|(i, _)| i)
@@ -401,9 +447,16 @@ fn main() -> Result<()> {
                 };
 
                 let quiet_median = percentile(&sorted, 0.25);
-                let storm_ratio = if quiet_median > 0.0 { median / quiet_median } else { 0.0 };
+                let storm_ratio = if quiet_median > 0.0 {
+                    median / quiet_median
+                } else {
+                    0.0
+                };
 
-                println!("  CD: median={:.3}, mean={:.3}, p90={:.3}, max={:.3}", median, mean, p90, max_val);
+                println!(
+                    "  CD: median={:.3}, mean={:.3}, p90={:.3}, max={:.3}",
+                    median, mean, p90, max_val
+                );
                 println!("  Peak at: {}", peak_ts);
 
                 segments.push(StormSegment {
@@ -426,8 +479,10 @@ fn main() -> Result<()> {
     // --- Summary ---
     println!("\n=== Propagation Summary: {} ===", cli.event_name);
     for seg in &segments {
-        println!("  {:20} ({:>6.1} AU): median={:.3}, max={:.3}, ratio={:.1}x",
-            seg.source, seg.distance_au, seg.cd_median, seg.cd_max, seg.storm_ratio);
+        println!(
+            "  {:20} ({:>6.1} AU): median={:.3}, max={:.3}, ratio={:.1}x",
+            seg.source, seg.distance_au, seg.cd_median, seg.cd_max, seg.storm_ratio
+        );
     }
 
     let result = PropagationResult {

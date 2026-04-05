@@ -21,8 +21,8 @@ fn main() {
     let mut antisymmetric_failures = 0;
     let iterations = 1000;
 
-    use rand::seq::SliceRandom;
-    let mut rng = rand::thread_rng();
+    use rand::prelude::IndexedRandom;
+    let mut rng = rand::rng();
 
     for _ in 0..iterations {
         let u_root = roots.choose(&mut rng).unwrap();

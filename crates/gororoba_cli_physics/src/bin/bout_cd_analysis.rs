@@ -5,7 +5,7 @@
 //! BOUT++ NetCDF4 files are HDF5 under the hood. Variables have shape
 //! (t, x, y, z) where y=1 for 2D slab geometry.
 
-use anyhow::{bail, Context, Result};
+use anyhow::{Context, Result, bail};
 use clap::Parser;
 use hdf5::File as H5File;
 use serde::Serialize;
@@ -40,7 +40,10 @@ struct Cli {
     normalization: String,
 
     /// Output JSON path.
-    #[arg(long, default_value = "data/output/heliosphere/ablations/bout_cd_analysis.json")]
+    #[arg(
+        long,
+        default_value = "data/output/heliosphere/ablations/bout_cd_analysis.json"
+    )]
     out_json: PathBuf,
 }
 
@@ -97,7 +100,8 @@ fn main() -> Result<()> {
     let n_times = times.len();
 
     // Read grid dimensions from first field
-    let first_ds = file.dataset(field_names[0])
+    let first_ds = file
+        .dataset(field_names[0])
         .with_context(|| format!("Field '{}' not found in file", field_names[0]))?;
     let shape = first_ds.shape();
     if shape.len() != 4 {
@@ -106,13 +110,16 @@ fn main() -> Result<()> {
     let (nt, nx, _ny, nz) = (shape[0], shape[1], shape[2], shape[3]);
     assert_eq!(nt, n_times, "Time dimension mismatch");
 
-    println!("  Grid: {}x{}x{}, {} timesteps, {} channels {:?}",
-        nx, shape[2], nz, n_times, n_channels, field_names);
+    println!(
+        "  Grid: {}x{}x{}, {} timesteps, {} channels {:?}",
+        nx, shape[2], nz, n_times, n_channels, field_names
+    );
 
     // Read all field data upfront (fits in memory for BOUT++ output)
     let mut field_data: Vec<Vec<f64>> = Vec::new();
     for &name in &field_names {
-        let ds = file.dataset(name)
+        let ds = file
+            .dataset(name)
             .with_context(|| format!("Field '{}' not found", name))?;
         let data: Vec<f64> = ds.read_raw()?;
         field_data.push(data);
@@ -134,10 +141,17 @@ fn main() -> Result<()> {
     let n_windows = if sweep_len > steps_per_window {
         sweep_len - steps_per_window
     } else {
-        bail!("Sweep axis length {} < steps_per_window {}", sweep_len, steps_per_window);
+        bail!(
+            "Sweep axis length {} < steps_per_window {}",
+            sweep_len,
+            steps_per_window
+        );
     };
 
-    println!("  Sweep: {} axis, fixed_idx={}, windows={}", cli.sweep_axis, fixed_idx, n_windows);
+    println!(
+        "  Sweep: {} axis, fixed_idx={}, windows={}",
+        cli.sweep_axis, fixed_idx, n_windows
+    );
 
     let mut results = Vec::with_capacity(n_times);
 
@@ -169,8 +183,7 @@ fn main() -> Result<()> {
                 0.0
             } else {
                 let mean = profile.iter().sum::<f64>() / profile.len() as f64;
-                (profile.iter().map(|v| (v - mean).powi(2)).sum::<f64>()
-                    / profile.len() as f64)
+                (profile.iter().map(|v| (v - mean).powi(2)).sum::<f64>() / profile.len() as f64)
                     .sqrt()
             };
             field_rms_vec.push(rms);
@@ -207,9 +220,15 @@ fn main() -> Result<()> {
         }
 
         // Compute CD associator norms (f32 dispatch for high dims)
-        let precision = if cli.embedding_dim >= 128 { "f32" } else { "f64" };
+        let precision = if cli.embedding_dim >= 128 {
+            "f32"
+        } else {
+            "f64"
+        };
         let norms = cd_kernel::batch_sliding_associator_norms_dispatch(
-            &embedded, cli.embedding_dim, precision,
+            &embedded,
+            cli.embedding_dim,
+            precision,
         );
 
         let (mean_a, max_a, std_a) = if norms.is_empty() {
@@ -225,7 +244,10 @@ fn main() -> Result<()> {
         if ti % 10 == 0 || ti == n_times - 1 {
             println!(
                 "  t={:8.1}: A_mean={:.6}, A_max={:.6}, A_std={:.6}, rms={:.4e}",
-                times[ti], mean_a, max_a, std_a,
+                times[ti],
+                mean_a,
+                max_a,
+                std_a,
                 field_rms_vec.first().copied().unwrap_or(0.0)
             );
         }
@@ -244,17 +266,30 @@ fn main() -> Result<()> {
     // Summarize
     let initial_a = results.first().map(|r| r.mean_associator).unwrap_or(0.0);
     let final_a = results.last().map(|r| r.mean_associator).unwrap_or(0.0);
-    let peak_a = results.iter().map(|r| r.mean_associator).fold(0.0f64, f64::max);
-    let peak_time = results.iter()
+    let peak_a = results
+        .iter()
+        .map(|r| r.mean_associator)
+        .fold(0.0f64, f64::max);
+    let peak_time = results
+        .iter()
         .max_by(|a, b| a.mean_associator.partial_cmp(&b.mean_associator).unwrap())
         .map(|r| r.time)
         .unwrap_or(0.0);
 
     let interp = format!(
         "BOUT++ {} channel(s) {:?}, {} timesteps. A(t=0)={:.6}, A(peak at t={:.1})={:.6}, A(final)={:.6}. Ratio peak/initial={:.1}x.",
-        n_channels, field_names, n_times,
-        initial_a, peak_time, peak_a, final_a,
-        if initial_a > 1e-15 { peak_a / initial_a } else { f64::INFINITY }
+        n_channels,
+        field_names,
+        n_times,
+        initial_a,
+        peak_time,
+        peak_a,
+        final_a,
+        if initial_a > 1e-15 {
+            peak_a / initial_a
+        } else {
+            f64::INFINITY
+        }
     );
     println!("\n  {}", interp);
 

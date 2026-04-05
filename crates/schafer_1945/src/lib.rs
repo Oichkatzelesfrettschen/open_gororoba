@@ -30,4 +30,4 @@ pub mod modified_cd;
 pub mod types;
 
 // Top-level re-exports
-pub use types::{test_division, DivisionTest, ModifiedCDAlgebra};
+pub use types::{DivisionTest, ModifiedCDAlgebra, test_division};

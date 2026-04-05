@@ -88,12 +88,12 @@ impl AssessorToFlavorMap {
         let f_23: f64 = self.gen_23_indices.iter().map(|&i| v[i]).sum();
 
         let mut m = faer::Mat::<f64>::zeros(3, 3);
-        m.write(0, 1, f_12);
-        m.write(1, 0, f_12);
-        m.write(0, 2, f_13);
-        m.write(2, 0, f_13);
-        m.write(1, 2, f_23);
-        m.write(2, 1, f_23);
+        m[(0, 1)] = f_12;
+        m[(1, 0)] = f_12;
+        m[(0, 2)] = f_13;
+        m[(2, 0)] = f_13;
+        m[(1, 2)] = f_23;
+        m[(2, 1)] = f_23;
         m
     }
 }
@@ -103,8 +103,8 @@ impl FlavorLift for AssessorToFlavorMap {
         let delta = self.to_generation_matrix(v);
         for i in 0..3 {
             for j in 0..3 {
-                let sym = (delta.read(i, j) + delta.read(j, i)) / 2.0;
-                m.write(i, j, m.read(i, j) + sym);
+                let sym = (delta[(i, j)] + delta[(j, i)]) / 2.0;
+                m[(i, j)] += sym;
             }
         }
     }
@@ -130,12 +130,12 @@ impl FlavorLift for DirectOffDiagonalLift {
         let torque_13: f64 = v[block_size..2 * block_size].iter().sum();
         let torque_23: f64 = v[2 * block_size..n].iter().sum();
 
-        m.write(0, 1, m.read(0, 1) + torque_12);
-        m.write(1, 0, m.read(1, 0) + torque_12);
-        m.write(0, 2, m.read(0, 2) + torque_13);
-        m.write(2, 0, m.read(2, 0) + torque_13);
-        m.write(1, 2, m.read(1, 2) + torque_23);
-        m.write(2, 1, m.read(2, 1) + torque_23);
+        m[(0, 1)] += torque_12;
+        m[(1, 0)] += torque_12;
+        m[(0, 2)] += torque_13;
+        m[(2, 0)] += torque_13;
+        m[(1, 2)] += torque_23;
+        m[(2, 1)] += torque_23;
     }
 }
 
@@ -201,12 +201,12 @@ impl FlavorLift for PsiEquivariantLift {
             f_23 += val * self.weights[idx][2];
         }
 
-        m.write(0, 1, m.read(0, 1) + f_12);
-        m.write(1, 0, m.read(1, 0) + f_12);
-        m.write(0, 2, m.read(0, 2) + f_13);
-        m.write(2, 0, m.read(2, 0) + f_13);
-        m.write(1, 2, m.read(1, 2) + f_23);
-        m.write(2, 1, m.read(2, 1) + f_23);
+        m[(0, 1)] += f_12;
+        m[(1, 0)] += f_12;
+        m[(0, 2)] += f_13;
+        m[(2, 0)] += f_13;
+        m[(1, 2)] += f_23;
+        m[(2, 1)] += f_23;
     }
 }
 
@@ -241,21 +241,21 @@ impl FlavorLift for TensorElementLift {
         };
 
         // Diagonal elements
-        m.write(0, 0, m.read(0, 0) + sum_block(0));
-        m.write(1, 1, m.read(1, 1) + sum_block(block));
-        m.write(2, 2, m.read(2, 2) + sum_block(2 * block));
+        m[(0, 0)] += sum_block(0);
+        m[(1, 1)] += sum_block(block);
+        m[(2, 2)] += sum_block(2 * block);
 
         // Off-diagonal elements (symmetric injection)
         let m12 = sum_block(3 * block);
         let m13 = sum_block(4 * block);
         let m23 = sum_block(5 * block);
 
-        m.write(0, 1, m.read(0, 1) + m12);
-        m.write(1, 0, m.read(1, 0) + m12);
-        m.write(0, 2, m.read(0, 2) + m13);
-        m.write(2, 0, m.read(2, 0) + m13);
-        m.write(1, 2, m.read(1, 2) + m23);
-        m.write(2, 1, m.read(2, 1) + m23);
+        m[(0, 1)] += m12;
+        m[(1, 0)] += m12;
+        m[(0, 2)] += m13;
+        m[(2, 0)] += m13;
+        m[(1, 2)] += m23;
+        m[(2, 1)] += m23;
     }
 }
 

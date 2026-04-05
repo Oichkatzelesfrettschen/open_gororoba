@@ -9,14 +9,14 @@
 //! Or with cargo-flamegraph:
 //!   cargo flamegraph --bin turboquant-profile -- --iterations 100
 
-use std::hint::black_box;
-use std::time::Instant;
+use std::{hint::black_box, time::Instant};
 
 use cd_kernel::turboquant::synthesized::SynthesizedQuantizer;
 
 fn main() {
     let args: Vec<String> = std::env::args().collect();
-    let iterations: usize = args.get(1)
+    let iterations: usize = args
+        .get(1)
         .and_then(|s| s.strip_prefix("--iterations=").or(Some(s)))
         .and_then(|s| s.parse().ok())
         .unwrap_or(50);
@@ -25,8 +25,10 @@ fn main() {
     let bits = 3;
     let n_vectors = 1000;
 
-    println!("TurboQuant profiling: d={}, bits={}, vectors={}, iterations={}",
-        d, bits, n_vectors, iterations);
+    println!(
+        "TurboQuant profiling: d={}, bits={}, vectors={}, iterations={}",
+        d, bits, n_vectors, iterations
+    );
 
     // Generate data once
     use rand::SeedableRng;
@@ -58,13 +60,21 @@ fn main() {
         if (iter + 1) % 10 == 0 {
             let elapsed = t0.elapsed().as_secs_f64();
             let total_vecs = (iter + 1) * n_vectors;
-            println!("  iter {}/{}: {:.0} kvec/s",
-                iter + 1, iterations, total_vecs as f64 / elapsed / 1000.0);
+            println!(
+                "  iter {}/{}: {:.0} kvec/s",
+                iter + 1,
+                iterations,
+                total_vecs as f64 / elapsed / 1000.0
+            );
         }
     }
 
     let total = t0.elapsed().as_secs_f64();
     let total_vecs = iterations * n_vectors;
-    println!("\nProfile complete: {} vectors in {:.1}s ({:.0} kvec/s)",
-        total_vecs, total, total_vecs as f64 / total / 1000.0);
+    println!(
+        "\nProfile complete: {} vectors in {:.1}s ({:.0} kvec/s)",
+        total_vecs,
+        total,
+        total_vecs as f64 / total / 1000.0
+    );
 }

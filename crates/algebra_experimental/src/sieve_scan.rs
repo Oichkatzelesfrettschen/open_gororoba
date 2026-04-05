@@ -8,10 +8,12 @@
 //! 1. All 15 imaginary basis elements as candidate complex structures (cheap)
 //! 2. Haar-distributed random orthogonal bases via Gram-Schmidt (expensive)
 
-use crate::cayley_dickson_structs::Sedenion;
-use crate::quantum_state::QuantumState;
-use crate::su_n_generators::construct_su5_generators_algebraic;
-use crate::neutrino_sector::{classify_generator, GeneratorType};
+use crate::{
+    cayley_dickson_structs::Sedenion,
+    neutrino_sector::{GeneratorType, classify_generator},
+    quantum_state::QuantumState,
+    su_n_generators::construct_su5_generators_algebraic,
+};
 use rand::SeedableRng;
 use rand_chacha::ChaCha8Rng;
 use rand_distr::{Distribution, StandardNormal};
@@ -231,8 +233,12 @@ mod tests {
                 let decomp = verify_sm_decomposition(r);
                 println!(
                     "    SIEVE FOUND! SU3={}, SU2={}, U1={}, Dark={}, LQ={}, matches_SM={}",
-                    decomp.su3_count, decomp.su2_count, decomp.u1_count,
-                    decomp.dark_count, decomp.leptoquark_count, decomp.matches_sm
+                    decomp.su3_count,
+                    decomp.su2_count,
+                    decomp.u1_count,
+                    decomp.dark_count,
+                    decomp.leptoquark_count,
+                    decomp.matches_sm
                 );
             }
         }
@@ -268,8 +274,11 @@ mod tests {
                     let decomp = verify_sm_decomposition(r);
                     println!(
                         "    SIEVE FOUND! SU3={}, SU2={}, U1={}, Dark={}, matches_SM={}",
-                        decomp.su3_count, decomp.su2_count, decomp.u1_count,
-                        decomp.dark_count, decomp.matches_sm
+                        decomp.su3_count,
+                        decomp.su2_count,
+                        decomp.u1_count,
+                        decomp.dark_count,
+                        decomp.matches_sm
                     );
                 }
             }

@@ -36,6 +36,4 @@ pub mod property_hierarchy;
 pub mod types;
 
 // Top-level re-exports
-pub use types::{
-    cd_inverse, verify_inverse, CayleyDicksonLevel, PropertyReport,
-};
+pub use types::{CayleyDicksonLevel, PropertyReport, cd_inverse, verify_inverse};

@@ -80,7 +80,8 @@ fn main() -> Result<()> {
             println!("=== HAPI Catalog Search: '{}' ===", search);
             let body = hapi_get(&format!("{}/catalog", HAPI_BASE))?;
             let parsed: serde_json::Value = serde_json::from_str(&body)?;
-            let catalog = parsed["catalog"].as_array()
+            let catalog = parsed["catalog"]
+                .as_array()
                 .ok_or_else(|| anyhow::anyhow!("No catalog array"))?;
 
             let search_lower = search.to_lowercase();
@@ -101,8 +102,11 @@ fn main() -> Result<()> {
             let parsed: serde_json::Value = serde_json::from_str(&body)?;
 
             if let Some(start) = parsed["startDate"].as_str() {
-                println!("  Time range: {} to {}", start,
-                    parsed["stopDate"].as_str().unwrap_or("?"));
+                println!(
+                    "  Time range: {} to {}",
+                    start,
+                    parsed["stopDate"].as_str().unwrap_or("?")
+                );
             }
 
             if let Some(params) = parsed["parameters"].as_array() {
@@ -117,7 +121,15 @@ fn main() -> Result<()> {
             }
         }
 
-        Cmd::Download { dataset, params, start, end, out, out_dir, yearly } => {
+        Cmd::Download {
+            dataset,
+            params,
+            start,
+            end,
+            out,
+            out_dir,
+            yearly,
+        } => {
             if yearly {
                 let dir = out_dir.unwrap_or_else(|| PathBuf::from("."));
                 std::fs::create_dir_all(&dir)?;
@@ -131,8 +143,10 @@ fn main() -> Result<()> {
                     let out_file = dir.join(format!("{}_{}.csv", dataset.to_lowercase(), year));
 
                     print!("  {} {}: ", dataset, year);
-                    let url = format!("{}/data?id={}&time.min={}&time.max={}&parameters={}&format=csv",
-                        HAPI_BASE, dataset, y_start, y_end, params);
+                    let url = format!(
+                        "{}/data?id={}&time.min={}&time.max={}&parameters={}&format=csv",
+                        HAPI_BASE, dataset, y_start, y_end, params
+                    );
 
                     match hapi_get(&url) {
                         Ok(body) => {
@@ -154,11 +168,22 @@ fn main() -> Result<()> {
                 println!("  Params: {}", params);
                 println!("  Range: {} to {}", start, end);
 
-                let url = format!("{}/data?id={}&time.min={}&time.max={}&parameters={}&format=csv",
-                    HAPI_BASE, dataset,
-                    if start.contains('T') { start.clone() } else { format!("{}T00:00:00Z", start) },
-                    if end.contains('T') { end.clone() } else { format!("{}T23:59:59Z", end) },
-                    params);
+                let url = format!(
+                    "{}/data?id={}&time.min={}&time.max={}&parameters={}&format=csv",
+                    HAPI_BASE,
+                    dataset,
+                    if start.contains('T') {
+                        start.clone()
+                    } else {
+                        format!("{}T00:00:00Z", start)
+                    },
+                    if end.contains('T') {
+                        end.clone()
+                    } else {
+                        format!("{}T23:59:59Z", end)
+                    },
+                    params
+                );
 
                 let body = hapi_get(&url)?;
                 let lines: Vec<&str> = body.lines().collect();

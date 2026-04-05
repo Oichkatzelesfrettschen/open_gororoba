@@ -87,8 +87,12 @@ impl PrimGrid {
             let start = idx * NPRIM;
             for b in [B1, B2, B3] {
                 let val = self.data[start + b];
-                if val > b_max { self.data[start + b] = b_max; }
-                if val < -b_max { self.data[start + b] = -b_max; }
+                if val > b_max {
+                    self.data[start + b] = b_max;
+                }
+                if val < -b_max {
+                    self.data[start + b] = -b_max;
+                }
             }
         }
     }

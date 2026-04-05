@@ -31,17 +31,17 @@
 ///   sin(theta_12) = |U_e2| / cos(theta_13)
 ///   sin(theta_23) = |U_mu3| / cos(theta_13)
 pub fn extract_pmns_angles(u: &faer::Mat<f64>) -> (f64, f64, f64) {
-    let u_e3 = u.read(0, 2).abs();
+    let u_e3 = u[(0, 2)].abs();
     let theta_13 = u_e3.min(1.0).asin();
     let cos_13 = theta_13.cos();
 
     let theta_12 = if cos_13 > 1e-15 {
-        (u.read(0, 1).abs() / cos_13).min(1.0).asin()
+        (u[(0, 1)].abs() / cos_13).min(1.0).asin()
     } else {
         0.0
     };
     let theta_23 = if cos_13 > 1e-15 {
-        (u.read(1, 2).abs() / cos_13).min(1.0).asin()
+        (u[(1, 2)].abs() / cos_13).min(1.0).asin()
     } else {
         0.0
     };

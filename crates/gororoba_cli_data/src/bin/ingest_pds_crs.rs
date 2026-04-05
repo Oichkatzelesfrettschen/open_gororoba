@@ -132,7 +132,11 @@ fn sha256_hex(path: &Path) -> Result<String> {
     let data = fs::read(path).with_context(|| format!("failed to read {}", path.display()))?;
     let mut hasher = Sha256::new();
     hasher.update(&data);
-    Ok(format!("{:x}", hasher.finalize()))
+    Ok(hasher
+        .finalize()
+        .iter()
+        .map(|byte| format!("{byte:02x}"))
+        .collect())
 }
 
 fn verify_manifest_files(manifest: &FetchManifest) -> Result<usize> {

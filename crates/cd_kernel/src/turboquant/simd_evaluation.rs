@@ -47,11 +47,27 @@
 /// Document the SIMD usage sites that would need migration.
 pub fn simd_usage_inventory() -> Vec<(&'static str, &'static str, &'static str)> {
     vec![
-        ("simd_codebook.rs", "f32x8 broadcast-compare-popcount", "wide::f32x8 + CmpGt"),
-        ("dispatch.rs", "runtime CPUID detection", "std::arch::is_x86_feature_detected!"),
-        ("rotation.rs", "WHT butterfly (scalar currently)", "could benefit from SIMD"),
+        (
+            "simd_codebook.rs",
+            "f32x8 broadcast-compare-popcount",
+            "wide::f32x8 + CmpGt",
+        ),
+        (
+            "dispatch.rs",
+            "runtime CPUID detection",
+            "std::arch::is_x86_feature_detected!",
+        ),
+        (
+            "rotation.rs",
+            "WHT butterfly (scalar currently)",
+            "could benefit from SIMD",
+        ),
         ("sign_pack.rs", "u64 popcount", "native u64::count_ones()"),
-        ("fixed_point.rs", "i32/i64 multiply-accumulate", "native integer ops"),
+        (
+            "fixed_point.rs",
+            "i32/i64 multiply-accumulate",
+            "native integer ops",
+        ),
     ]
 }
 
@@ -59,7 +75,11 @@ pub fn simd_usage_inventory() -> Vec<(&'static str, &'static str, &'static str)>
 pub fn migration_benefit_assessment() -> Vec<(&'static str, &'static str, bool)> {
     vec![
         ("simd_codebook", "Already 2.4x via wide f32x8", false),
-        ("WHT butterfly", "Would benefit from 4-wide f64x4 butterfly", true),
+        (
+            "WHT butterfly",
+            "Would benefit from 4-wide f64x4 butterfly",
+            true,
+        ),
         ("dot product", "Could parallelize S@query projection", true),
         ("sign inner product", "Already optimal via popcount", false),
         ("fixed-point MAC", "Integer MAC is already efficient", false),
@@ -86,9 +106,18 @@ mod tests {
         let beneficial: Vec<_> = assess.iter().filter(|(_, _, b)| *b).collect();
         println!("SIMD migration benefit:");
         for (site, note, benefit) in &assess {
-            println!("  {:>20}: {} [{}]", site, note, if *benefit { "BENEFIT" } else { "no change" });
+            println!(
+                "  {:>20}: {} [{}]",
+                site,
+                note,
+                if *benefit { "BENEFIT" } else { "no change" }
+            );
         }
-        println!("Sites that would benefit: {}/{}", beneficial.len(), assess.len());
+        println!(
+            "Sites that would benefit: {}/{}",
+            beneficial.len(),
+            assess.len()
+        );
         // At least some sites should benefit, but not all
         assert!(beneficial.len() >= 1 && beneficial.len() < assess.len());
     }

@@ -37,7 +37,7 @@
 //! - Rocq formal proof C-029 in `proofs/ThreeFermionGenerations.v`
 
 use cd_kernel::cayley_dickson::{cd_associator_norm, cd_multiply};
-use rand::Rng;
+use rand::RngExt;
 
 /// Verifies the "Three Fermion Generations" hypothesis by mapping them to
 /// the three canonical octonionic subalgebras of the Sedenions.
@@ -61,15 +61,15 @@ pub fn get_sedenion_subalgebras() -> (Vec<usize>, Vec<usize>, Vec<usize>) {
 /// An algebra is alternative if (x*x)*y = x*(x*y) and (y*x)*x = y*(x*x) for all x, y.
 /// We test this on random linear combinations of basis elements.
 pub fn is_alternative(subalgebra: &[usize], dim: usize, n_tests: usize) -> bool {
-    let mut rng = rand::thread_rng();
+    let mut rng = rand::rng();
 
     for _ in 0..n_tests {
         let mut x = vec![0.0; dim];
         let mut y = vec![0.0; dim];
 
         for &idx in subalgebra {
-            x[idx] = rng.gen_range(-1.0..1.0);
-            y[idx] = rng.gen_range(-1.0..1.0);
+            x[idx] = rng.random_range(-1.0..1.0);
+            y[idx] = rng.random_range(-1.0..1.0);
         }
 
         // Normalize

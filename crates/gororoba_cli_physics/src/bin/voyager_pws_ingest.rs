@@ -11,7 +11,9 @@
 
 use anyhow::{Context, Result};
 use clap::Parser;
-use data_core::cdf_support::{cdf_list_zvariables, cdf_type_to_f64, cdf_type_to_ydh, cdf_variable_rows, read_cdf_file};
+use data_core::cdf_support::{
+    cdf_list_zvariables, cdf_type_to_f64, cdf_type_to_ydh, cdf_variable_rows, read_cdf_file,
+};
 use std::path::PathBuf;
 
 #[derive(Parser)]
@@ -78,7 +80,8 @@ fn main() -> Result<()> {
 
             // Try to read frequency labels
             if let Ok(freq_rows) = cdf_variable_rows(&cdf, "frequency") {
-                let freqs: Vec<f64> = freq_rows.iter()
+                let freqs: Vec<f64> = freq_rows
+                    .iter()
                     .flat_map(|r| r.iter().filter_map(cdf_type_to_f64))
                     .collect();
                 println!("  Frequency channels ({}):", freqs.len());
@@ -90,16 +93,17 @@ fn main() -> Result<()> {
         return Ok(());
     }
 
-    println!("  years: {}-{}, hourly={}", cli.year_min, cli.year_max, cli.hourly);
+    println!(
+        "  years: {}-{}, hourly={}",
+        cli.year_min, cli.year_max, cli.hourly
+    );
 
     // Build CSV header
     let mut writer = csv::WriterBuilder::new()
         .from_path(&cli.out_csv)
         .with_context(|| format!("create {}", cli.out_csv.display()))?;
 
-    let mut header = vec![
-        "year".to_string(), "doy".to_string(), "hour".to_string(),
-    ];
+    let mut header = vec!["year".to_string(), "doy".to_string(), "hour".to_string()];
     for ch in 0..PWS_CHANNELS {
         header.push(format!("pws_ch{:02}", ch));
     }
@@ -111,16 +115,23 @@ fn main() -> Result<()> {
         let fname = path.file_name().unwrap().to_string_lossy();
         let cdf = match read_cdf_file(path) {
             Ok(c) => c,
-            Err(e) => { eprintln!("  SKIP {}: {}", fname, e); continue; }
+            Err(e) => {
+                eprintln!("  SKIP {}: {}", fname, e);
+                continue;
+            }
         };
 
         let epoch_rows = match cdf_variable_rows(&cdf, "epoch") {
             Ok(r) => r,
-            Err(_) => { continue; }
+            Err(_) => {
+                continue;
+            }
         };
         let ef_rows = match cdf_variable_rows(&cdf, "electric_field") {
             Ok(r) => r,
-            Err(_) => { continue; }
+            Err(_) => {
+                continue;
+            }
         };
 
         let n_epochs = epoch_rows.len();
@@ -130,71 +141,101 @@ fn main() -> Result<()> {
         let n_ef = ef_rows.len();
         let n_spectra = n_ef / PWS_CHANNELS;
 
-        if n_spectra == 0 || n_epochs == 0 { continue; }
+        if n_spectra == 0 || n_epochs == 0 {
+            continue;
+        }
 
         if cli.hourly {
             // Hourly averaging: group by (year, doy, hour), take mean of each channel
             use std::collections::BTreeMap;
             let mut hourly_acc: BTreeMap<(u16, u16, u8), (Vec<f64>, usize)> = BTreeMap::new();
 
-            for i in 0..n_spectra.min(n_epochs) {
-                let Some(epoch_val) = epoch_rows[i].first() else { continue };
-                let Some((year, doy, hour)) = cdf_type_to_ydh(epoch_val) else { continue };
-                if year < cli.year_min || year > cli.year_max { continue; }
+            for (i, epoch_row) in epoch_rows.iter().enumerate().take(n_spectra.min(n_epochs)) {
+                let Some(epoch_val) = epoch_row.first() else {
+                    continue;
+                };
+                let Some((year, doy, hour)) = cdf_type_to_ydh(epoch_val) else {
+                    continue;
+                };
+                if year < cli.year_min || year > cli.year_max {
+                    continue;
+                }
 
                 let base = i * PWS_CHANNELS;
                 let mut spectrum = [0.0f64; PWS_CHANNELS];
                 let mut valid = true;
-                for ch in 0..PWS_CHANNELS {
+                for (ch, value) in spectrum.iter_mut().enumerate() {
                     if base + ch < n_ef {
-                        let v = ef_rows[base + ch].first()
+                        let v = ef_rows[base + ch]
+                            .first()
                             .and_then(cdf_type_to_f64)
                             .unwrap_or(f64::NAN);
-                        if !v.is_finite() || v < 0.0 { valid = false; break; }
-                        spectrum[ch] = v;
-                    } else { valid = false; break; }
+                        if !v.is_finite() || v < 0.0 {
+                            valid = false;
+                            break;
+                        }
+                        *value = v;
+                    } else {
+                        valid = false;
+                        break;
+                    }
                 }
-                if !valid { continue; }
+                if !valid {
+                    continue;
+                }
 
-                let entry = hourly_acc.entry((year, doy, hour)).or_insert_with(|| (vec![0.0; PWS_CHANNELS], 0));
-                for ch in 0..PWS_CHANNELS {
-                    entry.0[ch] += spectrum[ch];
+                let entry = hourly_acc
+                    .entry((year, doy, hour))
+                    .or_insert_with(|| (vec![0.0; PWS_CHANNELS], 0));
+                for (sum, value) in entry.0.iter_mut().zip(spectrum.iter()) {
+                    *sum += *value;
                 }
                 entry.1 += 1;
             }
 
             for ((year, doy, hour), (sums, count)) in &hourly_acc {
-                let mut record = vec![
-                    year.to_string(), doy.to_string(), hour.to_string(),
-                ];
-                for ch in 0..PWS_CHANNELS {
-                    record.push(format!("{:.6e}", sums[ch] / *count as f64));
+                let mut record = vec![year.to_string(), doy.to_string(), hour.to_string()];
+                for sum in sums.iter().take(PWS_CHANNELS) {
+                    record.push(format!("{:.6e}", sum / *count as f64));
                 }
                 writer.write_record(&record)?;
                 total += 1;
             }
         } else {
             // Full cadence output
-            for i in 0..n_spectra.min(n_epochs) {
-                let Some(epoch_val) = epoch_rows[i].first() else { continue };
-                let Some((year, doy, hour)) = cdf_type_to_ydh(epoch_val) else { continue };
-                if year < cli.year_min || year > cli.year_max { continue; }
+            for (i, epoch_row) in epoch_rows.iter().enumerate().take(n_spectra.min(n_epochs)) {
+                let Some(epoch_val) = epoch_row.first() else {
+                    continue;
+                };
+                let Some((year, doy, hour)) = cdf_type_to_ydh(epoch_val) else {
+                    continue;
+                };
+                if year < cli.year_min || year > cli.year_max {
+                    continue;
+                }
 
                 let base = i * PWS_CHANNELS;
-                let mut record = vec![
-                    year.to_string(), doy.to_string(), hour.to_string(),
-                ];
+                let mut record = vec![year.to_string(), doy.to_string(), hour.to_string()];
                 let mut valid = true;
                 for ch in 0..PWS_CHANNELS {
                     if base + ch < n_ef {
-                        let v = ef_rows[base + ch].first()
+                        let v = ef_rows[base + ch]
+                            .first()
                             .and_then(cdf_type_to_f64)
                             .unwrap_or(f64::NAN);
-                        if !v.is_finite() { valid = false; break; }
+                        if !v.is_finite() {
+                            valid = false;
+                            break;
+                        }
                         record.push(format!("{:.6e}", v));
-                    } else { valid = false; break; }
+                    } else {
+                        valid = false;
+                        break;
+                    }
                 }
-                if !valid { continue; }
+                if !valid {
+                    continue;
+                }
                 writer.write_record(&record)?;
                 total += 1;
             }

@@ -105,8 +105,13 @@ pub fn hierarchical_reconstruct(all_angles: &[Vec<f64>], final_radius: f64) -> V
 
     for level in (0..n_levels).rev() {
         let angles = &all_angles[level];
-        let pairs: Vec<PolarPair> = current.iter().zip(angles.iter())
-            .map(|(&r, &a)| PolarPair { radius: r, angle: a })
+        let pairs: Vec<PolarPair> = current
+            .iter()
+            .zip(angles.iter())
+            .map(|(&r, &a)| PolarPair {
+                radius: r,
+                angle: a,
+            })
             .collect();
         current = polar_reconstruct_level(&pairs);
     }
@@ -171,8 +176,14 @@ pub fn polar_quantize(
     let (all_angles, final_radius) = hierarchical_decompose(&rotated);
 
     // Quantize angles uniformly
-    let angle_indices: Vec<Vec<u16>> = all_angles.iter()
-        .map(|angles| angles.iter().map(|&a| quantize_angle(a, angle_bits)).collect())
+    let angle_indices: Vec<Vec<u16>> = all_angles
+        .iter()
+        .map(|angles| {
+            angles
+                .iter()
+                .map(|&a| quantize_angle(a, angle_bits))
+                .collect()
+        })
         .collect();
 
     PolarCompressed {
@@ -193,7 +204,9 @@ pub fn polar_dequantize(
     let bits = compressed.angle_bits;
 
     // Reconstruct angles
-    let all_angles: Vec<Vec<f64>> = compressed.angle_indices.iter()
+    let all_angles: Vec<Vec<f64>> = compressed
+        .angle_indices
+        .iter()
         .map(|indices| indices.iter().map(|&i| dequantize_angle(i, bits)).collect())
         .collect();
 
@@ -226,10 +239,7 @@ pub fn polar_dequantize(
 /// where (q_a, q_b) is the corresponding query pair.
 ///
 /// This avoids the full dequantization + unrotation pipeline.
-pub fn polar_inner_product_estimate(
-    query_rotated: &[f64],
-    compressed: &PolarCompressed,
-) -> f64 {
+pub fn polar_inner_product_estimate(query_rotated: &[f64], compressed: &PolarCompressed) -> f64 {
     let d = query_rotated.len();
     let bits = compressed.angle_bits;
 
@@ -286,8 +296,11 @@ mod tests {
         let (angles, radius) = hierarchical_decompose(&coords);
         let recon = hierarchical_reconstruct(&angles, radius);
 
-        let max_err: f64 = coords.iter().zip(recon.iter())
-            .map(|(a, b)| (a - b).abs()).fold(0.0f64, f64::max);
+        let max_err: f64 = coords
+            .iter()
+            .zip(recon.iter())
+            .map(|(a, b)| (a - b).abs())
+            .fold(0.0f64, f64::max);
         assert!(max_err < 1e-10, "Hierarchical roundtrip error: {}", max_err);
     }
 
@@ -299,8 +312,14 @@ mod tests {
             let recon = dequantize_angle(idx, bits);
             let n_levels = 1u32 << bits;
             let resolution = 2.0 * std::f64::consts::PI / n_levels as f64;
-            assert!((angle - recon).abs() < resolution,
-                "Angle roundtrip at {}-bit: {} -> {} -> {}", bits, angle, idx, recon);
+            assert!(
+                (angle - recon).abs() < resolution,
+                "Angle roundtrip at {}-bit: {} -> {} -> {}",
+                bits,
+                angle,
+                idx,
+                recon
+            );
         }
     }
 
@@ -316,8 +335,12 @@ mod tests {
         let mut recon = vec![0.0f64; d];
         polar_dequantize(&compressed, &rotation, &mut buf, &mut recon);
 
-        let mse: f64 = x.iter().zip(recon.iter())
-            .map(|(a, b)| (a - b).powi(2)).sum::<f64>() / d as f64;
+        let mse: f64 = x
+            .iter()
+            .zip(recon.iter())
+            .map(|(a, b)| (a - b).powi(2))
+            .sum::<f64>()
+            / d as f64;
         println!("PolarQuant MSE at d={}, {}-bit: {:.6}", d, bits, mse);
 
         // Compare with TurboQuant MSE
@@ -325,8 +348,12 @@ mod tests {
         let tq_comp = tq.quantize(&x, &mut buf);
         let mut tq_recon = vec![0.0f64; d];
         tq.dequantize(&tq_comp, &mut buf, &mut tq_recon);
-        let tq_mse: f64 = x.iter().zip(tq_recon.iter())
-            .map(|(a, b)| (a - b).powi(2)).sum::<f64>() / d as f64;
+        let tq_mse: f64 = x
+            .iter()
+            .zip(tq_recon.iter())
+            .map(|(a, b)| (a - b).powi(2))
+            .sum::<f64>()
+            / d as f64;
 
         println!("TurboQuant MSE at d={}, {}-bit: {:.6}", d, bits, tq_mse);
         println!("Polar/TQ ratio: {:.3}", mse / tq_mse);
@@ -350,9 +377,9 @@ mod tests {
 
         // d=128 -> 7 levels
         assert_eq!(angles.len(), 7);
-        assert_eq!(angles[0].len(), 64);  // level 0: 128/2 = 64 angles
-        assert_eq!(angles[1].len(), 32);  // level 1: 64/2 = 32 angles
-        assert_eq!(angles[6].len(), 1);   // level 6: 2/2 = 1 angle
+        assert_eq!(angles[0].len(), 64); // level 0: 128/2 = 64 angles
+        assert_eq!(angles[1].len(), 32); // level 1: 64/2 = 32 angles
+        assert_eq!(angles[6].len(), 1); // level 6: 2/2 = 1 angle
         assert!(radius > 0.0);
 
         println!("Hierarchical decomposition of d=128:");

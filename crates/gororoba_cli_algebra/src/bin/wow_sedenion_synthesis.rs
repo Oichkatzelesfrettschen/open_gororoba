@@ -9,7 +9,7 @@
 
 use algebra_experimental::leech_lattice::{HoleStatistics, LeechBasis, project_signal_chunk};
 use clap::{Parser, Subcommand};
-use rand::prelude::*;
+use rand::{RngExt, SeedableRng};
 use rand_chacha::ChaCha8Rng;
 use spectral_core::ghost_spectral::{
     GHOST_FREQ, check_ghost, compute_power_spectrum, find_peaks, noise_floor, peak_fwhm, peak_snr,
@@ -171,7 +171,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             let mut rng = ChaCha8Rng::seed_from_u64(49);
             let mut signal = Vec::with_capacity(n_samples);
             for i in 0..n_samples {
-                let noise: f64 = rng.r#gen::<f64>() * 0.1 - 0.05;
+                let noise: f64 = rng.random::<f64>() * 0.1 - 0.05;
                 let base = 1.0 + noise;
                 let ghost_component = if inject_ghost {
                     0.01 * (2.0 * std::f64::consts::PI * GHOST_FREQ * i as f64).sin()

@@ -103,7 +103,11 @@ impl fmt::Display for CliffordVerification {
                 "FAIL"
             },
             if self.skew_symmetric_ok { "OK" } else { "FAIL" },
-            if self.all_ok { " [ALL PASS]" } else { " [FAIL]" }
+            if self.all_ok {
+                " [ALL PASS]"
+            } else {
+                " [FAIL]"
+            }
         )
     }
 }

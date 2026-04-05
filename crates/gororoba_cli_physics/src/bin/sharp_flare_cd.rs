@@ -31,7 +31,10 @@ struct Cli {
     lag: usize,
 
     /// Output JSON
-    #[arg(long, default_value = "data/output/heliosphere/ablations/sharp_flare_cd.json")]
+    #[arg(
+        long,
+        default_value = "data/output/heliosphere/ablations/sharp_flare_cd.json"
+    )]
     out_json: PathBuf,
 
     /// Precision
@@ -64,29 +67,43 @@ fn main() -> Result<()> {
     let cli = Cli::parse();
     println!("=== SHARP Flare CD: HARPNUM {} ===", cli.harpnum);
 
-    let ts = sdo_hmi::load_sharp_json(&cli.json, cli.harpnum)
-        .map_err(|e| anyhow::anyhow!("{}", e))?;
-    println!("  Records: {}, cadence: {} min", ts.records.len(), ts.cadence_minutes);
+    let ts =
+        sdo_hmi::load_sharp_json(&cli.json, cli.harpnum).map_err(|e| anyhow::anyhow!("{}", e))?;
+    println!(
+        "  Records: {}, cadence: {} min",
+        ts.records.len(),
+        ts.cadence_minutes
+    );
 
     let (embedded, indices) = sdo_hmi::sharp_takens_embed(&ts, cli.steps, cli.lag);
     let actual_dim = SHARP_CHANNELS * cli.steps;
     let padded_dim = actual_dim.next_power_of_two();
 
-    println!("  Embedded: {} windows of {}D ({}D padded, {} steps x {} channels)",
-        embedded.len(), padded_dim, actual_dim, cli.steps, SHARP_CHANNELS);
+    println!(
+        "  Embedded: {} windows of {}D ({}D padded, {} steps x {} channels)",
+        embedded.len(),
+        padded_dim,
+        actual_dim,
+        cli.steps,
+        SHARP_CHANNELS
+    );
 
     if embedded.is_empty() {
         anyhow::bail!("No embedded windows");
     }
 
     // Pad to power of 2
-    let padded: Vec<Vec<f64>> = embedded.iter().map(|v| {
-        let mut p = v.clone();
-        p.resize(padded_dim, 0.0);
-        p
-    }).collect();
+    let padded: Vec<Vec<f64>> = embedded
+        .iter()
+        .map(|v| {
+            let mut p = v.clone();
+            p.resize(padded_dim, 0.0);
+            p
+        })
+        .collect();
 
-    let norms = cd_kernel::batch_sliding_associator_norms_dispatch(&padded, padded_dim, &cli.precision);
+    let norms =
+        cd_kernel::batch_sliding_associator_norms_dispatch(&padded, padded_dim, &cli.precision);
 
     if norms.is_empty() {
         anyhow::bail!("No associator norms");
@@ -99,15 +116,26 @@ fn main() -> Result<()> {
     let max = sorted.last().copied().unwrap_or(0.0);
 
     // Build per-window timeseries
-    let timeseries: Vec<SharpCdPoint> = norms.iter().enumerate().map(|(i, &norm)| {
-        let record_idx = if i + 2 < indices.len() { indices[i + 2] } else { indices[indices.len() - 1] };
-        SharpCdPoint {
-            t_rec: ts.records[record_idx].t_rec.clone(),
-            associator_norm: norm,
-        }
-    }).collect();
+    let timeseries: Vec<SharpCdPoint> = norms
+        .iter()
+        .enumerate()
+        .map(|(i, &norm)| {
+            let record_idx = if i + 2 < indices.len() {
+                indices[i + 2]
+            } else {
+                indices[indices.len() - 1]
+            };
+            SharpCdPoint {
+                t_rec: ts.records[record_idx].t_rec.clone(),
+                associator_norm: norm,
+            }
+        })
+        .collect();
 
-    println!("  Associator: mean={:.4}, median={:.4}, max={:.4}", mean, median, max);
+    println!(
+        "  Associator: mean={:.4}, median={:.4}, max={:.4}",
+        mean, median, max
+    );
 
     // Print evolution
     let n = timeseries.len();

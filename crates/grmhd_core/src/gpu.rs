@@ -34,15 +34,15 @@ pub struct GrmhdGpu {
     flux_divergence: CudaFunction,
 
     // Device buffers
-    d_prims: CudaSlice<f64>,     // [NPRIM * N_total]
-    d_cons: CudaSlice<f64>,      // [NCONS * N_total]
-    d_cons_new: CudaSlice<f64>,  // [NCONS * N_total]
-    d_flux: CudaSlice<f64>,      // [NCONS * N_total] (reused per direction)
-    d_rhs: CudaSlice<f64>,       // [NCONS * N_total]
-    d_gcov: CudaSlice<f64>,      // [5 * N1 * N2]
-    d_gcon: CudaSlice<f64>,      // [5 * N1 * N2]
-    d_sqrt_g: CudaSlice<f64>,    // [N1 * N2]
-    d_lapse: CudaSlice<f64>,     // [N1 * N2]
+    d_prims: CudaSlice<f64>,    // [NPRIM * N_total]
+    d_cons: CudaSlice<f64>,     // [NCONS * N_total]
+    d_cons_new: CudaSlice<f64>, // [NCONS * N_total]
+    d_flux: CudaSlice<f64>,     // [NCONS * N_total] (reused per direction)
+    d_rhs: CudaSlice<f64>,      // [NCONS * N_total]
+    d_gcov: CudaSlice<f64>,     // [5 * N1 * N2]
+    d_gcon: CudaSlice<f64>,     // [5 * N1 * N2]
+    d_sqrt_g: CudaSlice<f64>,   // [N1 * N2]
+    d_lapse: CudaSlice<f64>,    // [N1 * N2]
 
     // Grid dimensions
     n1: usize,
@@ -51,7 +51,7 @@ pub struct GrmhdGpu {
     n_total: usize,
 
     // Physics parameters
-    gam_m1: f64,  // gamma - 1
+    gam_m1: f64, // gamma - 1
     kerr_a: f64,
     r_min: f64,
     r_max: f64,
@@ -179,7 +179,9 @@ impl GrmhdGpu {
     /// Upload primitive variables from host to device (SoA layout).
     pub fn upload_prims(&mut self, prims_soa: &[f64]) -> Result<()> {
         assert_eq!(prims_soa.len(), NPRIM * self.n_total);
-        self.d_prims = self.stream.clone_htod(prims_soa)
+        self.d_prims = self
+            .stream
+            .clone_htod(prims_soa)
             .context("Upload prims to GPU")?;
         Ok(())
     }
@@ -187,7 +189,9 @@ impl GrmhdGpu {
     /// Download primitive variables from device to host.
     pub fn download_prims(&self, prims_soa: &mut [f64]) -> Result<()> {
         assert_eq!(prims_soa.len(), NPRIM * self.n_total);
-        let host = self.stream.clone_dtoh(&self.d_prims)
+        let host = self
+            .stream
+            .clone_dtoh(&self.d_prims)
             .context("Download prims from GPU")?;
         prims_soa.copy_from_slice(&host);
         Ok(())
@@ -259,7 +263,9 @@ impl GrmhdGpu {
         let threads = 256u32;
 
         // Zero RHS by reallocating a zeroed buffer
-        self.d_rhs = self.stream.alloc_zeros::<f64>(NCONS * nt)
+        self.d_rhs = self
+            .stream
+            .alloc_zeros::<f64>(NCONS * nt)
             .context("Zero RHS")?;
 
         // Compute prim2con
@@ -319,9 +325,10 @@ impl GrmhdGpu {
 
     /// Report grid dimensions.
     pub fn grid_info(&self) -> String {
-        format!("GRMHD GPU: {}x{}x{} = {} cells, a={}, r=[{:.1},{:.1}]",
-            self.n1, self.n2, self.n3, self.n_total,
-            self.kerr_a, self.r_min, self.r_max)
+        format!(
+            "GRMHD GPU: {}x{}x{} = {} cells, a={}, r=[{:.1},{:.1}]",
+            self.n1, self.n2, self.n3, self.n_total, self.kerr_a, self.r_min, self.r_max
+        )
     }
 }
 

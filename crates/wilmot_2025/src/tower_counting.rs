@@ -83,53 +83,53 @@ mod tests {
 
     #[test]
     fn test_blade_count() {
-        assert_eq!(blade_count(0), 7);   // O: 7 imaginaries
-        assert_eq!(blade_count(1), 15);  // S: 15 imaginaries
-        assert_eq!(blade_count(2), 31);  // Pathion: 31
-        assert_eq!(blade_count(3), 63);  // Chingon: 63
+        assert_eq!(blade_count(0), 7); // O: 7 imaginaries
+        assert_eq!(blade_count(1), 15); // S: 15 imaginaries
+        assert_eq!(blade_count(2), 31); // Pathion: 31
+        assert_eq!(blade_count(3), 63); // Chingon: 63
     }
 
     #[test]
     fn test_dim() {
-        assert_eq!(dim(0), 8);   // O
-        assert_eq!(dim(1), 16);  // S
-        assert_eq!(dim(2), 32);  // Pathion
+        assert_eq!(dim(0), 8); // O
+        assert_eq!(dim(1), 16); // S
+        assert_eq!(dim(2), 32); // Pathion
     }
 
     #[test]
     fn test_generator_count() {
-        assert_eq!(generator_count(0), 3);  // O needs 3 generators
-        assert_eq!(generator_count(1), 4);  // S needs 4
-        assert_eq!(generator_count(2), 5);  // Pathion needs 5
+        assert_eq!(generator_count(0), 3); // O needs 3 generators
+        assert_eq!(generator_count(1), 4); // S needs 4
+        assert_eq!(generator_count(2), 5); // Pathion needs 5
     }
 
     #[test]
     fn test_quaternion_subalgebra_count() {
-        assert_eq!(quaternion_subalgebra_count(0), 7);   // O: 7 quaternions
-        assert_eq!(quaternion_subalgebra_count(1), 35);  // S: 35 quaternions
+        assert_eq!(quaternion_subalgebra_count(0), 7); // O: 7 quaternions
+        assert_eq!(quaternion_subalgebra_count(1), 35); // S: 35 quaternions
         assert_eq!(quaternion_subalgebra_count(2), 155); // Pathion: 155
     }
 
     #[test]
     fn test_triad_count() {
-        assert_eq!(triad_count(0), 35);    // O: C(7,3) = 35
-        assert_eq!(triad_count(1), 455);   // S: C(15,3) = 455
-        assert_eq!(triad_count(2), 4495);  // Pathion: C(31,3) = 4495
+        assert_eq!(triad_count(0), 35); // O: C(7,3) = 35
+        assert_eq!(triad_count(1), 455); // S: C(15,3) = 455
+        assert_eq!(triad_count(2), 4495); // Pathion: C(31,3) = 4495
     }
 
     #[test]
     fn test_triad_count_matches_table2() {
         // Table 2 in Wilmot paper
-        assert_eq!(triad_count(0), 35);    // O
-        assert_eq!(triad_count(1), 455);   // U_1
-        assert_eq!(triad_count(2), 4495);  // U_2
+        assert_eq!(triad_count(0), 35); // O
+        assert_eq!(triad_count(1), 455); // U_1
+        assert_eq!(triad_count(2), 4495); // U_2
         assert_eq!(triad_count(3), 39711); // U_3
     }
 
     #[test]
     fn test_associative_triads() {
-        assert_eq!(associative_triad_count(0), 7);   // O: 7
-        assert_eq!(associative_triad_count(1), 35);  // U_1: 35
+        assert_eq!(associative_triad_count(0), 7); // O: 7
+        assert_eq!(associative_triad_count(1), 35); // U_1: 35
         assert_eq!(associative_triad_count(2), 155); // U_2: 155
         assert_eq!(associative_triad_count(3), 651); // U_3: 651
     }

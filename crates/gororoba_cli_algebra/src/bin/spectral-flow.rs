@@ -2,7 +2,7 @@ use anyhow::Result;
 use cd_kernel::cayley_dickson::cd_multiply;
 use clap::Parser;
 use faer::Mat;
-use rand::prelude::*;
+use rand::{RngExt, SeedableRng};
 use rand_chacha::ChaCha8Rng;
 use std::{fs::File, io::Write};
 
@@ -34,7 +34,7 @@ fn main() -> Result<()> {
     let mut phi = vec![vec![0.0_f64; 16]; n_points];
     for p in &mut phi {
         for val in p.iter_mut() {
-            *val = rng.r#gen::<f64>() * 0.1;
+            *val = rng.random::<f64>() * 0.1;
         }
     }
 
@@ -61,18 +61,18 @@ fn main() -> Result<()> {
         let mut mat = Mat::<f64>::zeros(16, n_points);
         for (j, phi_j) in phi.iter().enumerate() {
             for (i, &val) in phi_j.iter().enumerate() {
-                mat.write(i, j, val);
+                mat[(i, j)] = val;
             }
         }
 
         // SVD
-        let svd = mat.svd();
-        let s = svd.s_diagonal();
+        let svd = mat.svd().unwrap();
+        let s = svd.S();
 
         // 3. Save
         let mut row = format!("{}", t);
         for i in 0..16 {
-            let val = s.read(i);
+            let val = s[i];
             row.push_str(&format!(",{}", val));
         }
         writeln!(csv_file, "{}", row)?;

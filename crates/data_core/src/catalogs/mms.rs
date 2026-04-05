@@ -13,11 +13,7 @@ use crate::{
 };
 use chrono::{DateTime, Datelike, NaiveDate, Timelike, Utc};
 use csv::ReaderBuilder;
-use std::{
-    collections::BTreeMap,
-    fs,
-    path::PathBuf,
-};
+use std::{collections::BTreeMap, fs, path::PathBuf};
 
 /// MMS FGM Survey Level 2 record.
 #[derive(Debug, Clone)]
@@ -74,11 +70,13 @@ impl DatasetProvider for MmsFgmProvider {
 
             if let Some((start_doy, end_doy)) = self.doy_range {
                 // Fine-window test: use exact DOY range without chunking
-                let start_date = NaiveDate::from_yo_opt(year as i32, start_doy as u32)
-                    .ok_or_else(|| FetchError::Validation(format!("invalid start doy {start_doy}")))?;
+                let start_date =
+                    NaiveDate::from_yo_opt(year as i32, start_doy as u32).ok_or_else(|| {
+                        FetchError::Validation(format!("invalid start doy {start_doy}"))
+                    })?;
                 let end_date = NaiveDate::from_yo_opt(year as i32, end_doy as u32)
                     .ok_or_else(|| FetchError::Validation(format!("invalid end doy {end_doy}")))?;
-                
+
                 let t_min = format!("{}T00:00:00Z", start_date.format("%Y-%m-%d"));
                 let t_max = format!("{}T23:59:59Z", end_date.format("%Y-%m-%d"));
                 let fname = format!("mms1_fgm_srvy_l2_{year}_{start_doy}_{end_doy}.csv");
@@ -88,7 +86,10 @@ impl DatasetProvider for MmsFgmProvider {
                     continue;
                 }
 
-                println!("Fetching MMS1 FGM Survey L2 for {} DOY {}-{} ({} to {})...", year, start_doy, end_doy, t_min, t_max);
+                println!(
+                    "Fetching MMS1 FGM Survey L2 for {} DOY {}-{} ({} to {})...",
+                    year, start_doy, end_doy, t_min, t_max
+                );
 
                 let body = download_hapi_csv(
                     MMS_FGM_HAPI_DATASET,
@@ -101,9 +102,13 @@ impl DatasetProvider for MmsFgmProvider {
                 // Monthly chunking to avoid 400 errors on large requests
                 for month in start_month..=12 {
                     let t_min = format!("{:04}-{:02}-{:02}T00:00:00Z", year, month, start_day);
-                    
+
                     // End of month or end of year
-                    let (end_year, end_month) = if month == 12 { (year + 1, 1) } else { (year, month + 1) };
+                    let (end_year, end_month) = if month == 12 {
+                        (year + 1, 1)
+                    } else {
+                        (year, month + 1)
+                    };
                     let t_max = format!("{:04}-{:02}-01T00:00:00Z", end_year, end_month);
 
                     // Stop if we exceed year_end
@@ -113,12 +118,15 @@ impl DatasetProvider for MmsFgmProvider {
 
                     let fname = format!("mms1_fgm_srvy_l2_{:04}_{:02}.csv", year, month);
                     let output = dir.join(&fname);
-                    
+
                     if config.skip_existing && output.exists() {
                         continue;
                     }
 
-                    println!("Fetching MMS1 FGM Survey L2 for {} month {} ({} to {})...", year, month, t_min, t_max);
+                    println!(
+                        "Fetching MMS1 FGM Survey L2 for {} month {} ({} to {})...",
+                        year, month, t_min, t_max
+                    );
 
                     let body = download_hapi_csv(
                         MMS_FGM_HAPI_DATASET,
@@ -144,11 +152,15 @@ pub fn parse_mms_fgm_hapi_csv(content: &str) -> Vec<MmsFgmRecord> {
         .has_headers(true)
         .from_reader(content.as_bytes());
     let mut rows = Vec::new();
-    
+
     for record in reader.records().flatten() {
-        let Some(time) = record.get(0) else { continue; };
-        let Some((year, doy, hour)) = parse_hapi_time_to_ydh(time) else { continue; };
-        
+        let Some(time) = record.get(0) else {
+            continue;
+        };
+        let Some((year, doy, hour)) = parse_hapi_time_to_ydh(time) else {
+            continue;
+        };
+
         rows.push(MmsFgmRecord {
             year,
             doy,
@@ -198,8 +210,12 @@ pub fn parse_mms_fgm_hapi_csv_minutes(content: &str) -> Vec<MmsFgmMinuteRecord> 
     let mut buckets: BTreeMap<(u16, u16, u8, u8), MinuteAcc> = BTreeMap::new();
 
     for record in reader.records().flatten() {
-        let Some(time_str) = record.get(0) else { continue };
-        let Ok(dt) = DateTime::parse_from_rfc3339(time_str) else { continue };
+        let Some(time_str) = record.get(0) else {
+            continue;
+        };
+        let Ok(dt) = DateTime::parse_from_rfc3339(time_str) else {
+            continue;
+        };
         let utc = dt.with_timezone(&Utc);
         let year = utc.year() as u16;
         let doy = utc.ordinal() as u16;
@@ -219,7 +235,11 @@ pub fn parse_mms_fgm_hapi_csv_minutes(content: &str) -> Vec<MmsFgmMinuteRecord> 
         acc.bx_sum += bx;
         acc.by_sum += by;
         acc.bz_sum += bz;
-        acc.bmag_sum += if bmag.is_finite() { bmag } else { (bx * bx + by * by + bz * bz).sqrt() };
+        acc.bmag_sum += if bmag.is_finite() {
+            bmag
+        } else {
+            (bx * bx + by * by + bz * bz).sqrt()
+        };
         acc.count += 1;
     }
 
@@ -238,8 +258,7 @@ pub fn parse_mms_fgm_hapi_csv_minutes(content: &str) -> Vec<MmsFgmMinuteRecord> 
 
             let elapsed = match first {
                 Some((fy, fd, fh, fm)) => {
-                    let day_diff = (year as f64 - fy as f64) * 365.25
-                        + (doy as f64 - fd as f64);
+                    let day_diff = (year as f64 - fy as f64) * 365.25 + (doy as f64 - fd as f64);
                     day_diff * 24.0 + (hour as f64 - fh as f64) + (minute as f64 - fm as f64) / 60.0
                 }
                 None => 0.0,
@@ -300,16 +319,10 @@ pub fn detect_magnetopause_crossings(
         let b_jump = (post_mean_b - pre_mean_b).abs();
 
         // Check for B_z sign change in the window (rotation across current sheet)
-        let pre_bz_mean: f64 = records[pre_start..i]
-            .iter()
-            .map(|r| r.bz_gse)
-            .sum::<f64>()
-            / (i - pre_start) as f64;
-        let post_bz_mean: f64 = records[i..post_end]
-            .iter()
-            .map(|r| r.bz_gse)
-            .sum::<f64>()
-            / (post_end - i) as f64;
+        let pre_bz_mean: f64 =
+            records[pre_start..i].iter().map(|r| r.bz_gse).sum::<f64>() / (i - pre_start) as f64;
+        let post_bz_mean: f64 =
+            records[i..post_end].iter().map(|r| r.bz_gse).sum::<f64>() / (post_end - i) as f64;
         let bz_sign_change = pre_bz_mean * post_bz_mean < 0.0;
 
         // Crossing criteria: large |B| jump OR (moderate jump + Bz sign change)
@@ -344,19 +357,24 @@ pub fn average_to_hourly(records: &[MmsFgmRecord]) -> Vec<MmsFgmRecord> {
         }
     }
 
-    hourly.into_iter().filter_map(|((year, doy, hour), acc)| {
-        if acc.count == 0 { return None; }
-        let n = acc.count as f64;
-        Some(MmsFgmRecord {
-            year,
-            doy,
-            hour,
-            bx_gse: acc.bx_sum / n,
-            by_gse: acc.by_sum / n,
-            bz_gse: acc.bz_sum / n,
-            b_magnitude: acc.bmag_sum / n,
+    hourly
+        .into_iter()
+        .filter_map(|((year, doy, hour), acc)| {
+            if acc.count == 0 {
+                return None;
+            }
+            let n = acc.count as f64;
+            Some(MmsFgmRecord {
+                year,
+                doy,
+                hour,
+                bx_gse: acc.bx_sum / n,
+                by_gse: acc.by_sum / n,
+                bz_gse: acc.bz_sum / n,
+                b_magnitude: acc.bmag_sum / n,
+            })
         })
-    }).collect()
+        .collect()
 }
 
 // ---------------------------------------------------------------------------
@@ -374,8 +392,8 @@ pub struct MmsFpiMinuteRecord {
     pub hour: u8,
     pub minute: u8,
     pub elapsed_hours: f64,
-    pub ion_density: f64,    // cm^-3
-    pub vx_gse: f64,        // km/s
+    pub ion_density: f64, // cm^-3
+    pub vx_gse: f64,      // km/s
     pub vy_gse: f64,
     pub vz_gse: f64,
 }
@@ -392,33 +410,73 @@ pub fn parse_mms_fpi_hapi_csv_minutes(content: &str) -> Vec<MmsFpiMinuteRecord> 
     };
 
     // Find density and velocity columns
-    let den_col = headers.iter().position(|h| h == "mms1_dis_numberdensity_fast");
-    let vx_col = headers.iter().position(|h| h == "mms1_dis_bulkv_gse_fast_0");
-    let vy_col = headers.iter().position(|h| h == "mms1_dis_bulkv_gse_fast_1");
-    let vz_col = headers.iter().position(|h| h == "mms1_dis_bulkv_gse_fast_2");
+    let den_col = headers
+        .iter()
+        .position(|h| h == "mms1_dis_numberdensity_fast");
+    let vx_col = headers
+        .iter()
+        .position(|h| h == "mms1_dis_bulkv_gse_fast_0");
+    let vy_col = headers
+        .iter()
+        .position(|h| h == "mms1_dis_bulkv_gse_fast_1");
+    let vz_col = headers
+        .iter()
+        .position(|h| h == "mms1_dis_bulkv_gse_fast_2");
 
-    let Some(den_col) = den_col else { return Vec::new() };
+    let Some(den_col) = den_col else {
+        return Vec::new();
+    };
 
     #[derive(Default)]
-    struct Acc { den: f64, vx: f64, vy: f64, vz: f64, count: usize }
+    struct Acc {
+        den: f64,
+        vx: f64,
+        vy: f64,
+        vz: f64,
+        count: usize,
+    }
 
     let mut buckets: BTreeMap<(u16, u16, u8, u8), Acc> = BTreeMap::new();
 
     for record in reader.records().flatten() {
-        let Some(time_str) = record.get(0) else { continue };
-        let Ok(dt) = DateTime::parse_from_rfc3339(time_str) else { continue };
+        let Some(time_str) = record.get(0) else {
+            continue;
+        };
+        let Ok(dt) = DateTime::parse_from_rfc3339(time_str) else {
+            continue;
+        };
         let utc = dt.with_timezone(&Utc);
 
         let den = parse_hapi_spacephysics_f64_or_nan(record.get(den_col).unwrap_or(""));
-        if !den.is_finite() || den <= 0.0 { continue; }
+        if !den.is_finite() || den <= 0.0 {
+            continue;
+        }
 
-        let vx = vx_col.and_then(|c| record.get(c)).map(parse_hapi_spacephysics_f64_or_nan).unwrap_or(0.0);
-        let vy = vy_col.and_then(|c| record.get(c)).map(parse_hapi_spacephysics_f64_or_nan).unwrap_or(0.0);
-        let vz = vz_col.and_then(|c| record.get(c)).map(parse_hapi_spacephysics_f64_or_nan).unwrap_or(0.0);
+        let vx = vx_col
+            .and_then(|c| record.get(c))
+            .map(parse_hapi_spacephysics_f64_or_nan)
+            .unwrap_or(0.0);
+        let vy = vy_col
+            .and_then(|c| record.get(c))
+            .map(parse_hapi_spacephysics_f64_or_nan)
+            .unwrap_or(0.0);
+        let vz = vz_col
+            .and_then(|c| record.get(c))
+            .map(parse_hapi_spacephysics_f64_or_nan)
+            .unwrap_or(0.0);
 
-        let key = (utc.year() as u16, utc.ordinal() as u16, utc.hour() as u8, utc.minute() as u8);
+        let key = (
+            utc.year() as u16,
+            utc.ordinal() as u16,
+            utc.hour() as u8,
+            utc.minute() as u8,
+        );
         let acc = buckets.entry(key).or_default();
-        acc.den += den; acc.vx += vx; acc.vy += vy; acc.vz += vz; acc.count += 1;
+        acc.den += den;
+        acc.vx += vx;
+        acc.vy += vy;
+        acc.vz += vz;
+        acc.count += 1;
     }
 
     let keys: Vec<_> = buckets.keys().copied().collect();
@@ -427,7 +485,9 @@ pub fn parse_mms_fpi_hapi_csv_minutes(content: &str) -> Vec<MmsFpiMinuteRecord> 
     keys.into_iter()
         .filter_map(|key| {
             let acc = &buckets[&key];
-            if acc.count == 0 { return None; }
+            if acc.count == 0 {
+                return None;
+            }
             let n = acc.count as f64;
             let (year, doy, hour, minute) = key;
 
@@ -442,9 +502,15 @@ pub fn parse_mms_fpi_hapi_csv_minutes(content: &str) -> Vec<MmsFpiMinuteRecord> 
             };
 
             Some(MmsFpiMinuteRecord {
-                year, doy, hour, minute, elapsed_hours: elapsed,
+                year,
+                doy,
+                hour,
+                minute,
+                elapsed_hours: elapsed,
                 ion_density: acc.den / n,
-                vx_gse: acc.vx / n, vy_gse: acc.vy / n, vz_gse: acc.vz / n,
+                vx_gse: acc.vx / n,
+                vy_gse: acc.vy / n,
+                vz_gse: acc.vz / n,
             })
         })
         .collect()
@@ -465,7 +531,9 @@ pub fn detect_composite_crossings(
     density_ratio_threshold: f64,
     rotation_threshold_deg: f64,
 ) -> Vec<usize> {
-    if mag.len() < window_minutes * 2 + 1 { return vec![]; }
+    if mag.len() < window_minutes * 2 + 1 {
+        return vec![];
+    }
 
     // Build density lookup by (year, doy, hour, minute)
     let mut density_map: BTreeMap<(u16, u16, u8, u8), f64> = BTreeMap::new();
@@ -478,9 +546,21 @@ pub fn detect_composite_crossings(
 
     for i in half..mag.len().saturating_sub(half) {
         // |B| rotation angle between pre and post windows
-        let pre_bx: f64 = mag[i.saturating_sub(half)..i].iter().map(|r| r.bx_gse).sum::<f64>() / half as f64;
-        let pre_by: f64 = mag[i.saturating_sub(half)..i].iter().map(|r| r.by_gse).sum::<f64>() / half as f64;
-        let pre_bz: f64 = mag[i.saturating_sub(half)..i].iter().map(|r| r.bz_gse).sum::<f64>() / half as f64;
+        let pre_bx: f64 = mag[i.saturating_sub(half)..i]
+            .iter()
+            .map(|r| r.bx_gse)
+            .sum::<f64>()
+            / half as f64;
+        let pre_by: f64 = mag[i.saturating_sub(half)..i]
+            .iter()
+            .map(|r| r.by_gse)
+            .sum::<f64>()
+            / half as f64;
+        let pre_bz: f64 = mag[i.saturating_sub(half)..i]
+            .iter()
+            .map(|r| r.bz_gse)
+            .sum::<f64>()
+            / half as f64;
 
         let post_end = (i + half).min(mag.len());
         let post_n = (post_end - i) as f64;
@@ -492,7 +572,8 @@ pub fn detect_composite_crossings(
         let post_mag = (post_bx * post_bx + post_by * post_by + post_bz * post_bz).sqrt();
 
         let cos_angle = if pre_mag > 1e-6 && post_mag > 1e-6 {
-            ((pre_bx * post_bx + pre_by * post_by + pre_bz * post_bz) / (pre_mag * post_mag)).clamp(-1.0, 1.0)
+            ((pre_bx * post_bx + pre_by * post_by + pre_bz * post_bz) / (pre_mag * post_mag))
+                .clamp(-1.0, 1.0)
         } else {
             1.0
         };
@@ -508,7 +589,9 @@ pub fn detect_composite_crossings(
             .filter_map(|r| density_map.get(&(r.year, r.doy, r.hour, r.minute)).copied())
             .collect();
 
-        if pre_densities.is_empty() || post_densities.is_empty() { continue; }
+        if pre_densities.is_empty() || post_densities.is_empty() {
+            continue;
+        }
 
         let pre_den = pre_densities.iter().sum::<f64>() / pre_densities.len() as f64;
         let post_den = post_densities.iter().sum::<f64>() / post_densities.len() as f64;
@@ -520,8 +603,12 @@ pub fn detect_composite_crossings(
 
         // Composite criterion: BOTH density jump AND field rotation
         if den_ratio >= density_ratio_threshold && rotation_deg >= rotation_threshold_deg {
-            let dominated = crossings.last().is_some_and(|&prev: &usize| i.saturating_sub(prev) < half);
-            if !dominated { crossings.push(i); }
+            let dominated = crossings
+                .last()
+                .is_some_and(|&prev: &usize| i.saturating_sub(prev) < half);
+            if !dominated {
+                crossings.push(i);
+            }
         }
     }
 

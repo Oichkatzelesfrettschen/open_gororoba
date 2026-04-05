@@ -93,8 +93,10 @@ pub fn generate_data_bundle(config: &ExperimentConfig, seed: u64) -> DataBundle 
         .map(|i| config.x_min + (config.x_max - config.x_min) * i as f64 / (b - 1) as f64)
         .collect();
 
-    let inc_dist = Uniform::new(config.inc_min_deg, config.inc_max_deg);
-    let rs_dist = Uniform::new(config.rs_min_kpc, config.rs_max_kpc);
+    let inc_dist = Uniform::new(config.inc_min_deg, config.inc_max_deg)
+        .expect("valid inclination sampling interval");
+    let rs_dist =
+        Uniform::new(config.rs_min_kpc, config.rs_max_kpc).expect("valid scale radius interval");
     let disk_dist = Normal::new(config.disk_amp_mean, config.disk_amp_std).unwrap();
     let bulge_dist = Normal::new(config.bulge_amp_mean, config.bulge_amp_std).unwrap();
     let noise_dist = Normal::new(0.0, 1.0).unwrap();

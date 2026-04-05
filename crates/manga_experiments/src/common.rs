@@ -103,7 +103,8 @@ pub fn predicted_wavenumbers_cd16() -> Vec<f64> {
 /// where k_n are the CD-predicted wavenumbers and phi_n are random phases.
 pub fn inject_zd_signal(x: &[f64], delta_v: &mut [f64], alpha: f64, seed: u64) {
     let mut rng = ChaCha20Rng::seed_from_u64(seed);
-    let phase_dist = rand_distr::Uniform::new(0.0, 2.0 * PI);
+    let phase_dist =
+        rand_distr::Uniform::new(0.0, 2.0 * PI).expect("valid phase sampling interval");
     let wavenumbers = predicted_wavenumbers_cd16();
     let phases: Vec<f64> = wavenumbers
         .iter()

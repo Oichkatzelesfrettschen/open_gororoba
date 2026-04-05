@@ -5,7 +5,7 @@
 //! Zarr store: level1/shots/{shot}.zarr/ama/ (Centre Column Toroidal Bv Mirnovs)
 //! Signals: n=2_signal, n=odd_signal, n=2_amplitude, n=2_frequency, time
 
-use anyhow::{bail, Context, Result};
+use anyhow::{Context, Result, bail};
 use clap::Parser;
 use serde::Serialize;
 use std::{fs, path::PathBuf, sync::Arc};
@@ -144,7 +144,10 @@ fn main() -> Result<()> {
     // Streaming mode: use ring buffer for O(3*dim) memory
     if cli.stream {
         use cd_kernel::cayley_dickson::soa_cache::RingEmbeddingCache;
-        println!("  Streaming mode (ring buffer, O(3*{}) memory)", cli.embedding_dim);
+        println!(
+            "  Streaming mode (ring buffer, O(3*{}) memory)",
+            cli.embedding_dim
+        );
 
         let mut ring = RingEmbeddingCache::new(cli.embedding_dim);
         let n_embed = if n > steps * cli.stride {
@@ -191,7 +194,9 @@ fn main() -> Result<()> {
 
         println!(
             "  Stream: {} norms, A_mean={:.6}, A_max={:.6}",
-            all_norms.len(), mean_a, max_a
+            all_norms.len(),
+            mean_a,
+            max_a
         );
 
         let output = serde_json::json!({
@@ -282,10 +287,8 @@ fn main() -> Result<()> {
             let mx = norms.iter().cloned().fold(0.0f32, f32::max);
             (m as f64, mx as f64)
         } else {
-            let norms = cd_kernel::batch_sliding_associator_norms_parallel(
-                &embedded,
-                cli.embedding_dim,
-            );
+            let norms =
+                cd_kernel::batch_sliding_associator_norms_parallel(&embedded, cli.embedding_dim);
             if norms.is_empty() {
                 continue;
             }
@@ -294,7 +297,11 @@ fn main() -> Result<()> {
             (m, mx)
         };
         let center_idx = start + local_n / 2;
-        let center_time = if center_idx < n { time[center_idx] } else { 0.0 };
+        let center_time = if center_idx < n {
+            time[center_idx]
+        } else {
+            0.0
+        };
 
         if mw % 5 == 0 || mw == n_mega - 1 {
             println!(
@@ -328,7 +335,13 @@ fn main() -> Result<()> {
 
     let interp = format!(
         "MAST shot 30420 ama Mirnov (n=2 + n=odd, {} channels). {} windows, overall A_mean={:.6}, A_max={:.6}. {}D embedding, stride={}, {}.",
-        channels, results.len(), overall_mean, overall_max, cli.embedding_dim, cli.stride, cli.normalization
+        channels,
+        results.len(),
+        overall_mean,
+        overall_max,
+        cli.embedding_dim,
+        cli.stride,
+        cli.normalization
     );
     println!("\n  {}", interp);
 

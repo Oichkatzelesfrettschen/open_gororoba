@@ -3,11 +3,10 @@ use chrono::Utc;
 use clap::Parser;
 use csv::ReaderBuilder;
 use data_core::{
-    compute_invariant_samples, magnetic_takens_embed, HeliosphereFeatureRow,
-    HeliosphereInvariantSample,
+    HeliosphereFeatureRow, HeliosphereInvariantSample, compute_invariant_samples,
+    magnetic_takens_embed,
 };
-use rand::seq::SliceRandom;
-use rand::{Rng, thread_rng};
+use rand::{RngExt, seq::SliceRandom};
 use rustfft::{FftPlanner, num_complex::Complex64};
 use serde::Serialize;
 use std::{collections::BTreeMap, f64::consts::PI, fs, path::PathBuf};
@@ -99,11 +98,7 @@ fn null_stats(means: &[f64]) -> (f64, f64, f64, f64, f64) {
     (avg, std, sorted[p05_idx], median, sorted[p95_idx])
 }
 
-fn build_null_summary(
-    mission: &str,
-    product: &str,
-    iteration_means: &[f64],
-) -> GroupNullSummary {
+fn build_null_summary(mission: &str, product: &str, iteration_means: &[f64]) -> GroupNullSummary {
     let (avg, std, p05, med, p95) = null_stats(iteration_means);
     GroupNullSummary {
         mission: mission.to_string(),
@@ -117,7 +112,11 @@ fn build_null_summary(
 }
 
 fn associator_mean(norms: &[f64]) -> f64 {
-    if norms.is_empty() { 0.0 } else { norms.iter().sum::<f64>() / norms.len() as f64 }
+    if norms.is_empty() {
+        0.0
+    } else {
+        norms.iter().sum::<f64>() / norms.len() as f64
+    }
 }
 
 fn main() -> Result<()> {
@@ -145,7 +144,12 @@ fn main() -> Result<()> {
         if include.is_empty() && exclude.contains(r.mission.as_str()) {
             continue;
         }
-        if r.bx.is_finite() && r.by.is_finite() && r.bz.is_finite() && r.b_mag.is_finite() && r.b_mag > 0.0 {
+        if r.bx.is_finite()
+            && r.by.is_finite()
+            && r.bz.is_finite()
+            && r.b_mag.is_finite()
+            && r.b_mag > 0.0
+        {
             all_rows.push(r);
         }
     }
@@ -159,7 +163,10 @@ fn main() -> Result<()> {
     }
     for rows in groups.values_mut() {
         rows.sort_by(|a, b| {
-            a.year.cmp(&b.year).then(a.doy.cmp(&b.doy)).then(a.hour.cmp(&b.hour))
+            a.year
+                .cmp(&b.year)
+                .then(a.doy.cmp(&b.doy))
+                .then(a.hour.cmp(&b.hour))
         });
     }
 
@@ -179,7 +186,11 @@ fn main() -> Result<()> {
     results.push(audit_generic(
         "dynamic-bias-free",
         &groups,
-        |rows| rows.iter().map(|r| r.algebra_vector_dynamic_bias_free().to_vec()).collect(),
+        |rows| {
+            rows.iter()
+                .map(|r| r.algebra_vector_dynamic_bias_free().to_vec())
+                .collect()
+        },
         16,
         cli.null_iterations,
         cli.block_size,
@@ -197,7 +208,10 @@ fn main() -> Result<()> {
     }
     for rows in inv_groups.values_mut() {
         rows.sort_by(|a, b| {
-            a.year.cmp(&b.year).then(a.doy.cmp(&b.doy)).then(a.hour.cmp(&b.hour))
+            a.year
+                .cmp(&b.year)
+                .then(a.doy.cmp(&b.doy))
+                .then(a.hour.cmp(&b.hour))
         });
     }
     results.push(audit_generic(
@@ -258,20 +272,17 @@ fn phase_randomize_surrogate(vectors: &[Vec<f64>], dim: usize) -> Vec<Vec<f64>> 
     let mut planner = FftPlanner::<f64>::new();
     let fft_fwd = planner.plan_fft_forward(n);
     let fft_inv = planner.plan_fft_inverse(n);
-    let mut rng = thread_rng();
+    let mut rng = rand::rng();
 
     // Generate one set of random phases (shared across channels for cross-channel
     // coherence preservation). Phases are conjugate-symmetric: phi[k] = -phi[n-k].
     let half = n / 2;
-    let random_phases: Vec<f64> = (0..=half).map(|_| rng.r#gen::<f64>() * 2.0 * PI).collect();
+    let random_phases: Vec<f64> = (0..=half).map(|_| rng.random::<f64>() * 2.0 * PI).collect();
 
     let mut result = vec![vec![0.0; dim]; n];
 
     for ch in 0..dim {
-        let mut buf: Vec<Complex64> = vectors
-            .iter()
-            .map(|v| Complex64::new(v[ch], 0.0))
-            .collect();
+        let mut buf: Vec<Complex64> = vectors.iter().map(|v| Complex64::new(v[ch], 0.0)).collect();
 
         fft_fwd.process(&mut buf);
 
@@ -310,19 +321,16 @@ fn phase_randomize_surrogate_multivariate(vectors: &[Vec<f64>], dim: usize) -> V
     let mut planner = FftPlanner::<f64>::new();
     let fft_fwd = planner.plan_fft_forward(n);
     let fft_inv = planner.plan_fft_inverse(n);
-    let mut rng = thread_rng();
+    let mut rng = rand::rng();
     let half = n / 2;
 
     let mut result = vec![vec![0.0; dim]; n];
 
     for ch in 0..dim {
         // Independent random phases PER CHANNEL (not shared)
-        let channel_phases: Vec<f64> = (0..=half).map(|_| rng.r#gen::<f64>() * 2.0 * PI).collect();
+        let channel_phases: Vec<f64> = (0..=half).map(|_| rng.random::<f64>() * 2.0 * PI).collect();
 
-        let mut buf: Vec<Complex64> = vectors
-            .iter()
-            .map(|v| Complex64::new(v[ch], 0.0))
-            .collect();
+        let mut buf: Vec<Complex64> = vectors.iter().map(|v| Complex64::new(v[ch], 0.0)).collect();
 
         fft_fwd.process(&mut buf);
 
@@ -370,15 +378,17 @@ where
 
     for ((mission, product), rows) in groups {
         let vectors = embed_fn(rows);
-        let associators =
-            cd_kernel::batch_sliding_associator_norms(&vectors, dim);
+        let associators = cd_kernel::batch_sliding_associator_norms(&vectors, dim);
 
         if associators.is_empty() {
             continue;
         }
 
         let mean = associators.iter().sum::<f64>() / associators.len() as f64;
-        let max = associators.iter().copied().fold(f64::NEG_INFINITY, f64::max);
+        let max = associators
+            .iter()
+            .copied()
+            .fold(f64::NEG_INFINITY, f64::max);
 
         base_summaries.push(GroupSummary {
             mission: mission.clone(),
@@ -395,7 +405,7 @@ where
         let mut iteration_means = Vec::new();
         for _ in 0..null_iters {
             let mut shuffled = vectors.clone();
-            shuffled.shuffle(&mut thread_rng());
+            shuffled.shuffle(&mut rand::rng());
             let norms = cd_kernel::batch_sliding_associator_norms(&shuffled, dim);
             iteration_means.push(associator_mean(&norms));
         }
@@ -408,7 +418,7 @@ where
         let mut iteration_means = Vec::new();
         for _ in 0..null_iters {
             let mut indices: Vec<usize> = (0..dim).collect();
-            indices.shuffle(&mut thread_rng());
+            indices.shuffle(&mut rand::rng());
 
             let permuted: Vec<Vec<f64>> = vectors
                 .iter()
@@ -427,7 +437,7 @@ where
         let mut iteration_means = Vec::new();
         for _ in 0..null_iters {
             let mut blocks: Vec<&[Vec<f64>]> = vectors.chunks(block_size).collect();
-            blocks.shuffle(&mut thread_rng());
+            blocks.shuffle(&mut rand::rng());
             let shuffled: Vec<Vec<f64>> = blocks.into_iter().flatten().cloned().collect();
             let norms = cd_kernel::batch_sliding_associator_norms(&shuffled, dim);
             iteration_means.push(associator_mean(&norms));

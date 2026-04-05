@@ -36,7 +36,9 @@ fn main() {
     let content = fs::read_to_string(&cli.norms_csv).expect("read norms");
     for line in content.lines().skip(1) {
         let parts: Vec<&str> = line.split(',').collect();
-        if parts.len() < 4 { continue; }
+        if parts.len() < 4 {
+            continue;
+        }
         let doy: u16 = parts[0].parse().unwrap_or(0);
         let hour: u8 = parts[1].parse().unwrap_or(0);
         let minute: u8 = parts[2].parse().unwrap_or(0);
@@ -48,27 +50,41 @@ fn main() {
     // Load FGM for |B|
     let mut bmag_map: BTreeMap<(u16, u8, u8), (f64, usize)> = BTreeMap::new();
     for doy in cli.doy_start..=cli.doy_end {
-        let path = format!("{}/themis/tha_fgm_{:04}_{:03}.csv", cli.data_dir, cli.year, doy);
-        let Ok(content) = fs::read_to_string(&path) else { continue };
+        let path = format!(
+            "{}/themis/tha_fgm_{:04}_{:03}.csv",
+            cli.data_dir, cli.year, doy
+        );
+        let Ok(content) = fs::read_to_string(&path) else {
+            continue;
+        };
         for line in content.lines().skip(1) {
             let parts: Vec<&str> = line.split(',').collect();
-            if parts.len() < 4 { continue; }
+            if parts.len() < 4 {
+                continue;
+            }
             let ts = parts[0];
-            if ts.len() < 19 { continue; }
+            if ts.len() < 19 {
+                continue;
+            }
             let hour: u8 = ts[11..13].parse().unwrap_or(0);
             let minute: u8 = ts[14..16].parse().unwrap_or(0);
             let bx: f64 = parts[1].parse().unwrap_or(f64::NAN);
             let by: f64 = parts[2].parse().unwrap_or(f64::NAN);
             let bz: f64 = parts[3].parse().unwrap_or(f64::NAN);
-            if !bx.is_finite() || bx.abs() > 1e10 { continue; }
+            if !bx.is_finite() || bx.abs() > 1e10 {
+                continue;
+            }
             let bmag = (bx * bx + by * by + bz * bz).sqrt();
-            if bmag > 200.0 { continue; }
+            if bmag > 200.0 {
+                continue;
+            }
             let entry = bmag_map.entry((doy, hour, minute)).or_insert((0.0, 0));
             entry.0 += bmag;
             entry.1 += 1;
         }
     }
-    let bmag_avg: BTreeMap<(u16, u8, u8), f64> = bmag_map.iter()
+    let bmag_avg: BTreeMap<(u16, u8, u8), f64> = bmag_map
+        .iter()
         .map(|(&k, &(sum, count))| (k, sum / count as f64))
         .collect();
     eprintln!("Loaded {} FGM minutes", bmag_avg.len());
@@ -76,19 +92,32 @@ fn main() {
     // Load ESA (density, temp)
     let mut esa_map: BTreeMap<(u16, u8, u8), (f64, f64)> = BTreeMap::new();
     for doy in cli.doy_start..=cli.doy_end {
-        let path = format!("{}/themis_esa/tha_esa_{:04}_{}.csv", cli.data_dir, cli.year, doy);
-        let Ok(content) = fs::read_to_string(&path) else { continue };
+        let path = format!(
+            "{}/themis_esa/tha_esa_{:04}_{}.csv",
+            cli.data_dir, cli.year, doy
+        );
+        let Ok(content) = fs::read_to_string(&path) else {
+            continue;
+        };
         for line in content.lines() {
             let parts: Vec<&str> = line.split(',').collect();
-            if parts.len() < 3 { continue; }
+            if parts.len() < 3 {
+                continue;
+            }
             let ts = parts[0];
-            if ts.len() < 19 || !ts.starts_with(|c: char| c.is_ascii_digit()) { continue; }
+            if ts.len() < 19 || !ts.starts_with(|c: char| c.is_ascii_digit()) {
+                continue;
+            }
             let hour: u8 = ts[11..13].parse().unwrap_or(255);
             let minute: u8 = ts[14..16].parse().unwrap_or(255);
-            if hour > 23 || minute > 59 { continue; }
+            if hour > 23 || minute > 59 {
+                continue;
+            }
             let den: f64 = parts[1].parse().unwrap_or(f64::NAN);
             let temp: f64 = parts[2].parse().unwrap_or(f64::NAN);
-            if !den.is_finite() || den <= 0.0 || !temp.is_finite() || temp <= 0.0 { continue; }
+            if !den.is_finite() || den <= 0.0 || !temp.is_finite() || temp <= 0.0 {
+                continue;
+            }
             // Extract DOY from timestamp
             let ts_doy = if ts.len() >= 10 {
                 let month: u32 = ts[5..7].parse().unwrap_or(1);
@@ -96,7 +125,9 @@ fn main() {
                 // Approximate DOY
                 let days_before = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
                 (days_before[month.saturating_sub(1) as usize] + day) as u16
-            } else { 0 };
+            } else {
+                0
+            };
             esa_map.insert((ts_doy, hour, minute), (den, temp));
         }
     }
@@ -107,17 +138,25 @@ fn main() {
     let mut beta_vals = Vec::new();
 
     for (&key, &norm) in &norms {
-        let Some(&bmag_nt) = bmag_avg.get(&key) else { continue };
-        let Some(&(den_cc, temp_ev)) = esa_map.get(&key) else { continue };
+        let Some(&bmag_nt) = bmag_avg.get(&key) else {
+            continue;
+        };
+        let Some(&(den_cc, temp_ev)) = esa_map.get(&key) else {
+            continue;
+        };
 
         let b_t = bmag_nt * 1e-9;
         let n_m3 = den_cc * 1e6;
         let t_k = temp_ev * EV_TO_K;
         let p_th = n_m3 * KB * t_k;
         let p_mag = b_t * b_t / (2.0 * MU0);
-        if p_mag < 1e-20 { continue; }
+        if p_mag < 1e-20 {
+            continue;
+        }
         let beta = p_th / p_mag;
-        if beta <= 0.0 || beta > 1000.0 { continue; }
+        if beta <= 0.0 || beta > 1000.0 {
+            continue;
+        }
 
         a_vals.push(norm);
         beta_vals.push(beta);
@@ -175,11 +214,17 @@ fn main() {
     println!("  \"spearman_r\": {:.4},", spearman);
     println!("  \"power_law_exponent\": {:.4},", alpha);
     println!("  \"current_exponent\": 0.775,");
-    println!("  \"interpretation\": \"Direction-only A(beta): Spearman r={:.3}, exponent={:.3}. {}\"",
-        spearman, alpha,
-        if spearman > 0.3 { "Power law SURVIVES direction-only embedding. The beta correlation is genuine physics, not normalization artifact." }
-        else if spearman > 0.1 { "Weak correlation survives. Partial normalization contribution." }
-        else { "Correlation VANISHES in direction-only. The A(beta) power law is primarily a normalization effect." }
+    println!(
+        "  \"interpretation\": \"Direction-only A(beta): Spearman r={:.3}, exponent={:.3}. {}\"",
+        spearman,
+        alpha,
+        if spearman > 0.3 {
+            "Power law SURVIVES direction-only embedding. The beta correlation is genuine physics, not normalization artifact."
+        } else if spearman > 0.1 {
+            "Weak correlation survives. Partial normalization contribution."
+        } else {
+            "Correlation VANISHES in direction-only. The A(beta) power law is primarily a normalization effect."
+        }
     );
     println!("}}");
 }

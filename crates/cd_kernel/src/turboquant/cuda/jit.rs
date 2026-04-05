@@ -64,7 +64,10 @@ mod tests {
 
     #[test]
     fn test_kernel_names() {
-        assert_eq!(kernel_names::QUANTIZE_BOUNDARY, "turboquant_quantize_boundary");
+        assert_eq!(
+            kernel_names::QUANTIZE_BOUNDARY,
+            "turboquant_quantize_boundary"
+        );
         assert_eq!(kernel_names::DEQUANT_DOT, "turboquant_dequant_dot");
     }
 

@@ -104,21 +104,27 @@ impl std::ops::Neg for F64x4 {
 impl std::ops::AddAssign for F64x4 {
     #[inline(always)]
     fn add_assign(&mut self, rhs: Self) {
-        for i in 0..4 { self.0[i] += rhs.0[i]; }
+        for i in 0..4 {
+            self.0[i] += rhs.0[i];
+        }
     }
 }
 
 impl std::ops::SubAssign for F64x4 {
     #[inline(always)]
     fn sub_assign(&mut self, rhs: Self) {
-        for i in 0..4 { self.0[i] -= rhs.0[i]; }
+        for i in 0..4 {
+            self.0[i] -= rhs.0[i];
+        }
     }
 }
 
 impl std::ops::MulAssign for F64x4 {
     #[inline(always)]
     fn mul_assign(&mut self, rhs: Self) {
-        for i in 0..4 { self.0[i] *= rhs.0[i]; }
+        for i in 0..4 {
+            self.0[i] *= rhs.0[i];
+        }
     }
 }
 

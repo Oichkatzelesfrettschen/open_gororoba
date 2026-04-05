@@ -1,5 +1,6 @@
 use algebra_analysis::{crystal_bands::dim_spectrum_summary, reggiani::partner_graph_degeneracies};
 use cosmology_core::sersic::sersic_profile_2d;
+use faer::c64;
 use materials_core::SyntheticCouplingModel;
 use optics_core::absorber_benchmark::{
     BenchmarkResult, ComparativeBenchmark, ProjectionGateResult,
@@ -194,19 +195,19 @@ fn graphene_valley_reference() -> (f64, f64) {
                 from: 0,
                 to: 1,
                 cell_offset: [0, 0],
-                amplitude: faer::complex_native::c64::new(-1.0, 0.0),
+                amplitude: c64::new(-1.0, 0.0),
             },
             Hopping {
                 from: 0,
                 to: 1,
                 cell_offset: [0, -1],
-                amplitude: faer::complex_native::c64::new(-1.0, 0.0),
+                amplitude: c64::new(-1.0, 0.0),
             },
             Hopping {
                 from: 0,
                 to: 1,
                 cell_offset: [1, -1],
-                amplitude: faer::complex_native::c64::new(-1.0, 0.0),
+                amplitude: c64::new(-1.0, 0.0),
             },
         ],
     };

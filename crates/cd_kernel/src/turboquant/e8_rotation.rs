@@ -128,7 +128,10 @@ pub fn e8_block_rotate(v: &[f64], roots: &[E8Root; 8], out: &mut [f64]) {
 
         // Left-multiply: block_out = rotation_element * block_in
         crate::cayley_dickson::cd_multiply_into(
-            &rotation_element, &block_in, &mut block_out, &mut workspace,
+            &rotation_element,
+            &block_in,
+            &mut block_out,
+            &mut workspace,
         );
 
         out[offset..offset + 16].copy_from_slice(&block_out[..16]);
@@ -161,7 +164,9 @@ pub fn select_diverse_roots(all_roots: &[E8Root], seed: u64) -> [E8Root; 8] {
             let min_dist = selected_indices
                 .iter()
                 .map(|&si| {
-                    let dot: f64 = root.coords.iter()
+                    let dot: f64 = root
+                        .coords
+                        .iter()
                         .zip(all_roots[si].coords.iter())
                         .map(|(a, b)| a * b)
                         .sum();
@@ -202,7 +207,8 @@ mod tests {
             assert!(
                 (norm_sq - 2.0).abs() < 1e-10,
                 "Root {} has ||r||^2 = {}, expected 2.0",
-                i, norm_sq
+                i,
+                norm_sq
             );
         }
     }
@@ -211,10 +217,13 @@ mod tests {
     fn test_e8_type1_count() {
         let roots = generate_e8_roots();
         // Type 1: exactly 2 nonzero coordinates, each +/-1
-        let type1_count = roots.iter().filter(|r| {
-            let nonzero = r.coords.iter().filter(|&&x| x.abs() > 0.5).count();
-            nonzero == 2
-        }).count();
+        let type1_count = roots
+            .iter()
+            .filter(|r| {
+                let nonzero = r.coords.iter().filter(|&&x| x.abs() > 0.5).count();
+                nonzero == 2
+            })
+            .count();
         assert_eq!(type1_count, 112);
     }
 
@@ -222,9 +231,10 @@ mod tests {
     fn test_e8_type2_count() {
         let roots = generate_e8_roots();
         // Type 2: all coordinates +/-0.5
-        let type2_count = roots.iter().filter(|r| {
-            r.coords.iter().all(|&x| (x.abs() - 0.5).abs() < 1e-10)
-        }).count();
+        let type2_count = roots
+            .iter()
+            .filter(|r| r.coords.iter().all(|&x| (x.abs() - 0.5).abs() < 1e-10))
+            .count();
         assert_eq!(type2_count, 128);
     }
 
@@ -246,7 +256,8 @@ mod tests {
         assert!(
             (norm_before - norm_after).abs() / norm_before < 1e-8,
             "Norm not preserved: before={}, after={}",
-            norm_before, norm_after
+            norm_before,
+            norm_after
         );
     }
 
@@ -264,7 +275,9 @@ mod tests {
         // Selected roots should be diverse (low pairwise inner products)
         for i in 0..8 {
             for j in (i + 1)..8 {
-                let dot: f64 = selected[i].coords.iter()
+                let dot: f64 = selected[i]
+                    .coords
+                    .iter()
                     .zip(selected[j].coords.iter())
                     .map(|(a, b)| a * b)
                     .sum();
@@ -272,7 +285,9 @@ mod tests {
                 assert!(
                     dot.abs() < 1.5,
                     "Roots {} and {} too similar: dot={}",
-                    i, j, dot
+                    i,
+                    j,
+                    dot
                 );
             }
         }

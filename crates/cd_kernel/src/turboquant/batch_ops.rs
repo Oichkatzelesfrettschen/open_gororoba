@@ -19,10 +19,7 @@ use super::rotation::Rotation;
 /// For E8/F4: apply block rotation to each vector.
 ///
 /// Returns flattened (N * d) rotated coordinates.
-pub fn batch_rotate(
-    vectors: &[Vec<f64>],
-    rotation: &Rotation,
-) -> Vec<Vec<f64>> {
+pub fn batch_rotate(vectors: &[Vec<f64>], rotation: &Rotation) -> Vec<Vec<f64>> {
     let d = rotation.dim();
     let n = vectors.len();
 
@@ -42,52 +39,53 @@ pub fn batch_rotate(
 /// Batch rotate with rayon parallelism.
 ///
 /// Each thread gets its own scratch buffer.
-pub fn batch_rotate_parallel(
-    vectors: &[Vec<f64>],
-    rotation: &Rotation,
-) -> Vec<Vec<f64>> {
+pub fn batch_rotate_parallel(vectors: &[Vec<f64>], rotation: &Rotation) -> Vec<Vec<f64>> {
     use rayon::prelude::*;
     let d = rotation.dim();
 
-    vectors.par_iter().map(|v| {
-        let mut buf = vec![0.0f64; d];
-        let mut out = vec![0.0f64; d];
-        rotation.forward(v, &mut buf, &mut out);
-        out
-    }).collect()
+    vectors
+        .par_iter()
+        .map(|v| {
+            let mut buf = vec![0.0f64; d];
+            let mut out = vec![0.0f64; d];
+            rotation.forward(v, &mut buf, &mut out);
+            out
+        })
+        .collect()
 }
 
 /// Batch quantize: boundary-search quantize N pre-rotated vectors.
 ///
 /// Uses the SIMD codebook for maximum throughput.
-pub fn batch_quantize(
-    rotated_vectors: &[Vec<f64>],
-    boundaries: &[f32],
-    bits: u32,
-) -> Vec<Vec<u8>> {
+pub fn batch_quantize(rotated_vectors: &[Vec<f64>], boundaries: &[f32], bits: u32) -> Vec<Vec<u8>> {
     use super::simd_codebook::SimdBoundaries;
     let simd = SimdBoundaries::from_boundaries(boundaries, bits);
 
-    rotated_vectors.iter().map(|v| {
-        let v_f32: Vec<f32> = v.iter().map(|&x| x as f32).collect();
-        let mut indices = vec![0u8; v.len()];
-        simd.quantize_batch(&v_f32, &mut indices);
-        indices
-    }).collect()
+    rotated_vectors
+        .iter()
+        .map(|v| {
+            let v_f32: Vec<f32> = v.iter().map(|&x| x as f32).collect();
+            let mut indices = vec![0u8; v.len()];
+            simd.quantize_batch(&v_f32, &mut indices);
+            indices
+        })
+        .collect()
 }
 
 /// Batch compute vector norms via simsimd.
 pub fn batch_norms(vectors: &[Vec<f64>]) -> Vec<f64> {
-    vectors.iter().map(|v| {
-        super::simsimd_bridge::dot_f64(v, v).sqrt()
-    }).collect()
+    vectors
+        .iter()
+        .map(|v| super::simsimd_bridge::dot_f64(v, v).sqrt())
+        .collect()
 }
 
 /// Batch normalize vectors to unit norm (in-place).
 pub fn batch_normalize(vectors: &mut [Vec<f64>]) -> Vec<f64> {
-    let norms: Vec<f64> = vectors.iter().map(|v| {
-        v.iter().map(|x| x * x).sum::<f64>().sqrt()
-    }).collect();
+    let norms: Vec<f64> = vectors
+        .iter()
+        .map(|v| v.iter().map(|x| x * x).sum::<f64>().sqrt())
+        .collect();
 
     for (v, &norm) in vectors.iter_mut().zip(norms.iter()) {
         if norm > 1e-15 {
@@ -133,7 +131,9 @@ mod tests {
     fn random_vectors(n: usize, d: usize, seed: u64) -> Vec<Vec<f64>> {
         let mut rng = ChaCha20Rng::seed_from_u64(seed);
         let normal = StandardNormal;
-        (0..n).map(|_| (0..d).map(|_| normal.sample(&mut rng)).collect()).collect()
+        (0..n)
+            .map(|_| (0..d).map(|_| normal.sample(&mut rng)).collect())
+            .collect()
     }
 
     #[test]
@@ -148,11 +148,14 @@ mod tests {
 
         // Individual
         let mut buf = vec![0.0f64; d];
-        let individual_result: Vec<Vec<f64>> = vectors.iter().map(|v| {
-            let mut out = vec![0.0f64; d];
-            rotation.forward(v, &mut buf, &mut out);
-            out
-        }).collect();
+        let individual_result: Vec<Vec<f64>> = vectors
+            .iter()
+            .map(|v| {
+                let mut out = vec![0.0f64; d];
+                rotation.forward(v, &mut buf, &mut out);
+                out
+            })
+            .collect();
 
         for (b, i) in batch_result.iter().zip(individual_result.iter()) {
             for (bv, iv) in b.iter().zip(i.iter()) {
@@ -201,8 +204,8 @@ mod tests {
     #[test]
     fn test_batch_norms() {
         let vectors = vec![
-            vec![3.0, 4.0],    // norm = 5
-            vec![1.0, 0.0],    // norm = 1
+            vec![3.0, 4.0],      // norm = 5
+            vec![1.0, 0.0],      // norm = 1
             vec![0.0, 0.0, 1.0], // norm = 1
         ];
         let norms = batch_norms(&vectors);
@@ -225,8 +228,12 @@ mod tests {
         let (indices, _norms) = batch_pipeline(&mut vectors, &rotation, &codebook.boundaries, bits);
         let ms = t0.elapsed().as_secs_f64() * 1000.0;
 
-        println!("Batch pipeline: {} vectors in {:.1} ms ({:.0} kvec/s)",
-            n, ms, n as f64 / ms);
+        println!(
+            "Batch pipeline: {} vectors in {:.1} ms ({:.0} kvec/s)",
+            n,
+            ms,
+            n as f64 / ms
+        );
         assert_eq!(indices.len(), n);
     }
 }

@@ -14,8 +14,7 @@ use chrono::{Datelike, NaiveDate};
 use clap::Parser;
 use data_core::{
     catalogs::mms::{
-        MmsFgmMinuteRecord, detect_magnetopause_crossings,
-        parse_mms_fgm_hapi_csv_minutes,
+        MmsFgmMinuteRecord, detect_magnetopause_crossings, parse_mms_fgm_hapi_csv_minutes,
     },
     fetcher::download_hapi_csv_to_file,
 };
@@ -62,7 +61,10 @@ struct Cli {
     max_bmag: f64,
 
     /// Output JSON path.
-    #[arg(long, default_value = "data/output/heliosphere/ablations/mms_multiday_crossing_analysis.json")]
+    #[arg(
+        long,
+        default_value = "data/output/heliosphere/ablations/mms_multiday_crossing_analysis.json"
+    )]
     out_json: PathBuf,
 
     /// Data cache directory.
@@ -148,8 +150,13 @@ fn main() -> Result<()> {
          Window: {} to {} ({} days)\n\
          Embedding: {}D, lag={}min\n\
          Crossing detector: window={}min, |B| threshold={:.1} nT\n",
-        start, end, cli.n_days, cli.embedding_dim, cli.takens_lag,
-        cli.crossing_window_minutes, cli.bmag_gradient_threshold,
+        start,
+        end,
+        cli.n_days,
+        cli.embedding_dim,
+        cli.takens_lag,
+        cli.crossing_window_minutes,
+        cli.bmag_gradient_threshold,
     );
 
     // --- Step 1: Fetch data via HAPI (daily chunks to avoid timeout) ---
@@ -177,13 +184,7 @@ fn main() -> Result<()> {
         let t_max = format!("{}T23:59:59Z", date.format("%Y-%m-%d"));
 
         println!("  DOY {doy}: downloading via file-based path (aria2c fallback)...");
-        match download_hapi_csv_to_file(
-            mms_dataset,
-            &t_min,
-            &t_max,
-            Some(mms_params),
-            &output,
-        ) {
+        match download_hapi_csv_to_file(mms_dataset, &t_min, &t_max, Some(mms_params), &output) {
             Ok(bytes) => println!("  DOY {doy}: {:.1} MB", bytes as f64 / 1_048_576.0),
             Err(e) => eprintln!("  Warning: DOY {doy} failed: {e}"),
         }
@@ -226,7 +227,8 @@ fn main() -> Result<()> {
 
     // Sort by elapsed time and recompute elapsed_hours from first record
     all_minutes.sort_by(|a, b| {
-        a.year.cmp(&b.year)
+        a.year
+            .cmp(&b.year)
             .then(a.doy.cmp(&b.doy))
             .then(a.hour.cmp(&b.hour))
             .then(a.minute.cmp(&b.minute))
@@ -241,12 +243,16 @@ fn main() -> Result<()> {
     );
     for rec in &mut all_minutes {
         let day_diff = (rec.year as f64 - fy as f64) * 365.25 + (rec.doy as f64 - fd as f64);
-        rec.elapsed_hours = day_diff * 24.0 + (rec.hour as f64 - fh as f64)
+        rec.elapsed_hours = day_diff * 24.0
+            + (rec.hour as f64 - fh as f64)
             + (rec.minute as f64 - fm as f64) / 60.0;
     }
 
-    println!("  Total: {} minutes across {:.1} hours", all_minutes.len(),
-        all_minutes.last().map(|r| r.elapsed_hours).unwrap_or(0.0));
+    println!(
+        "  Total: {} minutes across {:.1} hours",
+        all_minutes.len(),
+        all_minutes.last().map(|r| r.elapsed_hours).unwrap_or(0.0)
+    );
 
     // --- Step 3: Detect magnetopause crossings via |B| gradient ---
     println!("[3/5] Detecting magnetopause crossings via |B| gradient...");
@@ -273,10 +279,7 @@ fn main() -> Result<()> {
         })
         .collect();
 
-    println!(
-        "  Found {} magnetopause crossings",
-        crossings.len()
-    );
+    println!("  Found {} magnetopause crossings", crossings.len());
     for c in &crossings {
         println!(
             "    DOY {} {:02}:{:02} UT  |B|={:.1} nT  (t={:.1}h)",
@@ -285,7 +288,10 @@ fn main() -> Result<()> {
     }
 
     // --- Step 4: Run 32D CD associator on Takens-embedded data ---
-    println!("[4/5] Computing {}D Takens embedding + CD associator...", cli.embedding_dim);
+    println!(
+        "[4/5] Computing {}D Takens embedding + CD associator...",
+        cli.embedding_dim
+    );
 
     let channels: usize = 4; // Bx, By, Bz, (|B|-mean)/mean
     let steps = cli.embedding_dim / channels;
@@ -304,10 +310,12 @@ fn main() -> Result<()> {
     let mut embed_meta: Vec<usize> = Vec::new(); // index of last row in each embedding window
 
     for w_start in 0..=(all_minutes.len() - window_rows) {
-        let sample_indices: Vec<usize> =
-            (0..steps).map(|s| w_start + s * cli.takens_lag).collect();
+        let sample_indices: Vec<usize> = (0..steps).map(|s| w_start + s * cli.takens_lag).collect();
 
-        let sum_b: f64 = sample_indices.iter().map(|&i| all_minutes[i].b_magnitude).sum();
+        let sum_b: f64 = sample_indices
+            .iter()
+            .map(|&i| all_minutes[i].b_magnitude)
+            .sum();
         let local_mean_b = sum_b / steps as f64;
         if local_mean_b <= 0.0 || !local_mean_b.is_finite() {
             continue;
@@ -340,9 +348,8 @@ fn main() -> Result<()> {
     // Map each associator back to its minute index:
     // associator[k] = triple (emb[k], emb[k+1], emb[k+2])
     // spatial tag from embed_meta[k+2]
-    let assoc_minute_indices: Vec<usize> = (0..associators.len())
-        .map(|k| embed_meta[k + 2])
-        .collect();
+    let assoc_minute_indices: Vec<usize> =
+        (0..associators.len()).map(|k| embed_meta[k + 2]).collect();
 
     // --- Step 4b: Detect associator transitions ---
     // A transition is where the local associator mean changes significantly
@@ -353,7 +360,10 @@ fn main() -> Result<()> {
         // Compute global statistics for threshold calibration
         let global_mean: f64 = associators.iter().sum::<f64>() / associators.len() as f64;
         let global_std: f64 = {
-            let var = associators.iter().map(|&a| (a - global_mean).powi(2)).sum::<f64>()
+            let var = associators
+                .iter()
+                .map(|&a| (a - global_mean).powi(2))
+                .sum::<f64>()
                 / associators.len() as f64;
             var.sqrt()
         };
@@ -366,8 +376,8 @@ fn main() -> Result<()> {
 
         let half = trans_window;
         for i in half..associators.len().saturating_sub(half) {
-            let pre_mean: f64 = associators[i.saturating_sub(half)..i].iter().sum::<f64>()
-                / half as f64;
+            let pre_mean: f64 =
+                associators[i.saturating_sub(half)..i].iter().sum::<f64>() / half as f64;
             let post_mean: f64 = associators[i..(i + half).min(associators.len())]
                 .iter()
                 .sum::<f64>()
@@ -403,14 +413,22 @@ fn main() -> Result<()> {
     for t in &transitions {
         println!(
             "    DOY {} {:02}:{:02} UT  A={:.3}  jump={:.3} (pre={:.3}, post={:.3})",
-            t.doy, t.hour, t.minute, t.associator_norm,
-            t.transition_magnitude, t.pre_mean, t.post_mean
+            t.doy,
+            t.hour,
+            t.minute,
+            t.associator_norm,
+            t.transition_magnitude,
+            t.pre_mean,
+            t.post_mean
         );
     }
 
     // --- Step 5: Cross-compare crossings vs transitions ---
-    println!("[5/5] Cross-comparing {} crossings vs {} transitions...",
-        crossings.len(), transitions.len());
+    println!(
+        "[5/5] Cross-comparing {} crossings vs {} transitions...",
+        crossings.len(),
+        transitions.len()
+    );
 
     let tol_hours = cli.match_tolerance_minutes as f64 / 60.0;
     let mut comparisons: Vec<CrossingComparison> = Vec::new();
@@ -454,7 +472,9 @@ fn main() -> Result<()> {
     let matched_transitions: usize = transitions
         .iter()
         .filter(|t| {
-            crossings.iter().any(|c| (c.elapsed_hours - t.elapsed_hours).abs() < tol_hours)
+            crossings
+                .iter()
+                .any(|c| (c.elapsed_hours - t.elapsed_hours).abs() < tol_hours)
         })
         .count();
     let false_alarms = transitions.len().saturating_sub(matched_transitions);
@@ -485,7 +505,10 @@ fn main() -> Result<()> {
 
     println!("\n=== Results ===");
     println!("  Crossings detected (|B| gradient): {}", crossings.len());
-    println!("  Associator transitions:             {}", transitions.len());
+    println!(
+        "  Associator transitions:             {}",
+        transitions.len()
+    );
     println!(
         "  Detection rate:                     {}/{} = {:.1}%",
         matched_crossings,
@@ -498,8 +521,14 @@ fn main() -> Result<()> {
         transitions.len(),
         false_alarm_rate * 100.0
     );
-    println!("  Mean offset:                        {:.1} min", mean_offset);
-    println!("  Median offset:                      {:.1} min", median_offset);
+    println!(
+        "  Mean offset:                        {:.1} min",
+        mean_offset
+    );
+    println!(
+        "  Median offset:                      {:.1} min",
+        median_offset
+    );
 
     // --- Build hourly summary ---
     type HourlyAccum = (Vec<f64>, Vec<f64>);

@@ -52,8 +52,12 @@
 //! quantized tokens, but the precision windows mean many tokens are fp16.
 //! The aggregate compression depends on sequence length.
 
-use super::grouping::{compute_group_params, group_quantize, group_dequantize, GroupQuantParams, PrecisionWindows};
-use super::rotation::Rotation;
+use super::{
+    grouping::{
+        GroupQuantParams, PrecisionWindows, compute_group_params, group_dequantize, group_quantize,
+    },
+    rotation::Rotation,
+};
 
 /// Calibration data for E8 channel permutation.
 #[derive(Clone, Debug)]
@@ -97,9 +101,8 @@ impl ChannelCalibration {
         let mut perm = Vec::with_capacity(d);
         for &(octet_idx, _) in &octet_mags {
             let start = octet_idx * 8;
-            let mut channels: Vec<(usize, f64)> = (start..start + 8)
-                .map(|i| (i, channel_mags[i]))
-                .collect();
+            let mut channels: Vec<(usize, f64)> =
+                (start..start + 8).map(|i| (i, channel_mags[i])).collect();
             channels.sort_by(|a, b| b.1.partial_cmp(&a.1).unwrap_or(std::cmp::Ordering::Equal));
             perm.extend(channels.iter().map(|&(i, _)| i));
         }
@@ -249,13 +252,20 @@ impl CdaqQuantizer {
         let outliers = if self.outlier_keep_frac > 0.0 {
             let n_keep = (d as f64 * self.outlier_keep_frac).ceil().max(1.0) as usize;
             let dequantized = group_dequantize(&indices, &params, self.bits);
-            let mut errors: Vec<(usize, f64)> = rotated.iter().zip(dequantized.iter())
+            let mut errors: Vec<(usize, f64)> = rotated
+                .iter()
+                .zip(dequantized.iter())
                 .enumerate()
                 .map(|(i, (&orig, &recon))| (i, (orig - recon).abs()))
                 .collect();
-            errors.sort_unstable_by(|a, b| b.1.partial_cmp(&a.1).unwrap_or(std::cmp::Ordering::Equal));
+            errors.sort_unstable_by(|a, b| {
+                b.1.partial_cmp(&a.1).unwrap_or(std::cmp::Ordering::Equal)
+            });
             errors.truncate(n_keep);
-            errors.iter().map(|&(i, _)| (i as u16, rotated[i] as f32)).collect()
+            errors
+                .iter()
+                .map(|&(i, _)| (i as u16, rotated[i] as f32))
+                .collect()
         } else {
             Vec::new()
         };
@@ -274,7 +284,12 @@ impl CdaqQuantizer {
             CdaqCompressed::FullPrecision(v) => {
                 out[..self.d].copy_from_slice(v);
             }
-            CdaqCompressed::Quantized { indices, group_params, vec_norm, outliers } => {
+            CdaqCompressed::Quantized {
+                indices,
+                group_params,
+                vec_norm,
+                outliers,
+            } => {
                 let d = self.d;
 
                 // Group-wise dequantize (in rotated+permuted space)
@@ -328,7 +343,9 @@ mod tests {
     fn random_vectors(n: usize, d: usize, seed: u64) -> Vec<Vec<f64>> {
         let mut rng = ChaCha20Rng::seed_from_u64(seed);
         let normal = StandardNormal;
-        (0..n).map(|_| (0..d).map(|_| normal.sample(&mut rng)).collect()).collect()
+        (0..n)
+            .map(|_| (0..d).map(|_| normal.sample(&mut rng)).collect())
+            .collect()
     }
 
     #[test]
@@ -347,12 +364,20 @@ mod tests {
             let mut recon = vec![0.0f64; d];
             cdaq.dequantize(&comp, &mut buf, &mut recon);
 
-            let mse: f64 = v.iter().zip(recon.iter())
-                .map(|(a, b)| (a - b).powi(2)).sum::<f64>() / d as f64;
+            let mse: f64 = v
+                .iter()
+                .zip(recon.iter())
+                .map(|(a, b)| (a - b).powi(2))
+                .sum::<f64>()
+                / d as f64;
             let dot: f64 = v.iter().zip(recon.iter()).map(|(a, b)| a * b).sum();
             let na: f64 = v.iter().map(|x| x * x).sum::<f64>().sqrt();
             let nb: f64 = recon.iter().map(|x| x * x).sum::<f64>().sqrt();
-            let cos = if na > 1e-15 && nb > 1e-15 { dot / (na * nb) } else { 0.0 };
+            let cos = if na > 1e-15 && nb > 1e-15 {
+                dot / (na * nb)
+            } else {
+                0.0
+            };
 
             total_mse += mse;
             total_cos += cos;
@@ -360,8 +385,12 @@ mod tests {
 
         let mean_mse = total_mse / vecs.len() as f64;
         let mean_cos = total_cos / vecs.len() as f64;
-        println!("CDAQ 2-bit d=128: MSE={:.6}, cosine={:.4}, eff_bits={:.2}",
-            mean_mse, mean_cos, cdaq.effective_bits_per_coord());
+        println!(
+            "CDAQ 2-bit d=128: MSE={:.6}, cosine={:.4}, eff_bits={:.2}",
+            mean_mse,
+            mean_cos,
+            cdaq.effective_bits_per_coord()
+        );
         assert!(mean_cos > 0.93, "CDAQ cosine too low: {}", mean_cos);
     }
 
@@ -388,20 +417,32 @@ mod tests {
             let comp = cdaq.quantize(v, &mut buf);
             let mut recon = vec![0.0f64; d];
             cdaq.dequantize(&comp, &mut buf, &mut recon);
-            cdaq_mse += v.iter().zip(recon.iter())
-                .map(|(a, b)| (a - b).powi(2)).sum::<f64>() / d as f64;
+            cdaq_mse += v
+                .iter()
+                .zip(recon.iter())
+                .map(|(a, b)| (a - b).powi(2))
+                .sum::<f64>()
+                / d as f64;
 
             // TurboQuant baseline
             let comp_tq = tq.quantize(v, &mut buf);
             tq.dequantize(&comp_tq, &mut buf, &mut recon);
-            tq_mse += v.iter().zip(recon.iter())
-                .map(|(a, b)| (a - b).powi(2)).sum::<f64>() / d as f64;
+            tq_mse += v
+                .iter()
+                .zip(recon.iter())
+                .map(|(a, b)| (a - b).powi(2))
+                .sum::<f64>()
+                / d as f64;
 
             // Hybrid
             let comp_h = hybrid.quantize(v, &mut buf);
             hybrid.dequantize(&comp_h, &mut buf, &mut recon);
-            hybrid_mse += v.iter().zip(recon.iter())
-                .map(|(a, b)| (a - b).powi(2)).sum::<f64>() / d as f64;
+            hybrid_mse += v
+                .iter()
+                .zip(recon.iter())
+                .map(|(a, b)| (a - b).powi(2))
+                .sum::<f64>()
+                / d as f64;
         }
 
         let n = vecs.len() as f64;
@@ -414,17 +455,27 @@ mod tests {
 
         println!("2-bit d=128 comparison:");
         println!("  TurboQuant:  MSE={:.6} (baseline)", tq_mse);
-        println!("  Hybrid:      MSE={:.6} ({:+.1}% vs TQ)", hybrid_mse, (1.0 - hybrid_mse / tq_mse) * 100.0);
-        println!("  CDAQ:        MSE={:.6} ({:+.1}% vs TQ, {:+.1}% vs Hybrid)",
-            cdaq_mse, cdaq_vs_tq, cdaq_vs_hybrid);
+        println!(
+            "  Hybrid:      MSE={:.6} ({:+.1}% vs TQ)",
+            hybrid_mse,
+            (1.0 - hybrid_mse / tq_mse) * 100.0
+        );
+        println!(
+            "  CDAQ:        MSE={:.6} ({:+.1}% vs TQ, {:+.1}% vs Hybrid)",
+            cdaq_mse, cdaq_vs_tq, cdaq_vs_hybrid
+        );
         println!("  CDAQ eff bits: {:.2}", cdaq.effective_bits_per_coord());
 
         // On random Gaussian data, CDAQ may not beat pure TurboQuant because
         // per-group scaling adds overhead without benefit (uniform distribution).
         // The advantage shows on real LLM data with non-uniform channel magnitudes.
         // Here we just verify CDAQ produces reasonable quality (within 20% of TQ).
-        assert!(cdaq_mse < tq_mse * 1.2,
-            "CDAQ should be within 20% of TurboQuant: {:.6} vs {:.6}", cdaq_mse, tq_mse);
+        assert!(
+            cdaq_mse < tq_mse * 1.2,
+            "CDAQ should be within 20% of TurboQuant: {:.6} vs {:.6}",
+            cdaq_mse,
+            tq_mse
+        );
     }
 
     #[test]
@@ -445,9 +496,16 @@ mod tests {
         // because they have the highest magnitude
         let first_octet: Vec<usize> = cal.channel_perm[0..8].to_vec();
         let outlier_channels: Vec<usize> = (0..8).collect();
-        let overlap = first_octet.iter().filter(|c| outlier_channels.contains(c)).count();
+        let overlap = first_octet
+            .iter()
+            .filter(|c| outlier_channels.contains(c))
+            .count();
         println!("Outlier channels in first octet: {}/8", overlap);
-        assert!(overlap >= 6, "Calibration should group outlier channels: only {}/8 in first octet", overlap);
+        assert!(
+            overlap >= 6,
+            "Calibration should group outlier channels: only {}/8 in first octet",
+            overlap
+        );
 
         // Roundtrip permutation
         let v = &vecs[0];
@@ -455,7 +513,11 @@ mod tests {
         let mut recovered = vec![0.0f64; d];
         cal.permute(v, &mut permuted);
         cal.unpermute(&permuted, &mut recovered);
-        let err: f64 = v.iter().zip(recovered.iter()).map(|(a, b)| (a - b).abs()).sum();
+        let err: f64 = v
+            .iter()
+            .zip(recovered.iter())
+            .map(|(a, b)| (a - b).abs())
+            .sum();
         assert!(err < 1e-10, "Permute-unpermute roundtrip error: {}", err);
     }
 

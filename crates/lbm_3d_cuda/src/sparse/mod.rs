@@ -691,7 +691,9 @@ where
 {
     let location = sys::CUmemLocation {
         type_: sys::CUmemLocationType::CU_MEM_LOCATION_TYPE_DEVICE,
-        id: stream.context().ordinal() as i32,
+        __bindgen_anon_1: sys::CUmemLocation_st__bindgen_ty_1 {
+            id: stream.context().ordinal() as i32,
+        },
     };
     let (ptr, _sync) = view.device_ptr(stream.as_ref());
     unsafe {

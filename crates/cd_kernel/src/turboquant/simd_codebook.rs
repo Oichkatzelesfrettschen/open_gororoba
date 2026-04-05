@@ -82,9 +82,9 @@ impl SimdBoundaries {
             // Compare: x > boundary[j] for each lane
             // cmp_gt returns f32x8 with all-ones for true lanes
             // move_mask extracts the sign bit of each lane into an i32 bitmask
-            let mask = x_broadcast.cmp_gt(*word);
+            let mask = x_broadcast.simd_gt(*word);
             // Each set bit in move_mask = one boundary that x exceeds
-            count += (mask.move_mask() as u32).count_ones();
+            count += mask.to_bitmask().count_ones();
         }
         count as u8
     }
@@ -118,8 +118,8 @@ impl SimdBoundaries {
                 // Compare each of the 8 values against this boundary word
                 for j in 0..8 {
                     let x_broadcast = f32x8::splat(values[base + j]);
-                    let mask = x_broadcast.cmp_gt(*word);
-                    counts[j] += (mask.move_mask() as u32).count_ones() as u8;
+                    let mask = x_broadcast.simd_gt(*word);
+                    counts[j] += mask.to_bitmask().count_ones() as u8;
                 }
             }
 
@@ -291,6 +291,10 @@ mod tests {
         assert_eq!(simd.quantize_one(-100.0), 0);
         // Zero -> should be middle index (3 or 4 for symmetric codebook)
         let zero_idx = simd.quantize_one(0.0);
-        assert!(zero_idx == 3 || zero_idx == 4, "Zero maps to index {}", zero_idx);
+        assert!(
+            zero_idx == 3 || zero_idx == 4,
+            "Zero maps to index {}",
+            zero_idx
+        );
     }
 }

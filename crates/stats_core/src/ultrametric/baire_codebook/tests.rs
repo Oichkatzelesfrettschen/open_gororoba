@@ -1660,7 +1660,7 @@ fn test_recursive_simpsons_paradox_l2() {
 #[ignore = "heavy research lane: high-sample triple decomposition"]
 fn test_cross_stratum_triple_decomposition() {
     use gororoba_algebra::analysis::codebook::enumerate_lattice_by_predicate;
-    use rand::{SeedableRng, seq::SliceRandom};
+    use rand::{SeedableRng, prelude::IndexedRandom, seq::SliceRandom};
     use rand_chacha::ChaCha8Rng;
 
     let n_triples = 200_000;
@@ -2449,7 +2449,11 @@ fn test_nd_codebook_ultrametric_16d() {
     // Generate 50 random trinary 16D vectors and test
     let mut rng = ChaCha8Rng::seed_from_u64(42);
     let vectors: Vec<Vec<i8>> = (0..50)
-        .map(|_| (0..16).map(|_| [-1i8, 0, 1][rng.gen_range(0..3)]).collect())
+        .map(|_| {
+            (0..16)
+                .map(|_| [-1i8, 0, 1][rng.random_range(0..3)])
+                .collect()
+        })
         .collect();
 
     let result = codebook_baire_ultrametric_test_nd(&vectors, 5_000, 50, 42);

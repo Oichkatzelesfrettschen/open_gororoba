@@ -8,7 +8,7 @@
 
 use crate::traits::{ThesisEvidence, ThesisPipeline};
 use nalgebra::Vector3;
-use rand::Rng;
+use rand::RngExt;
 
 // ---------------------------------------------------------------------------
 // Thesis 1: Viscous Vacuum -- Imbalance-Topology Spatial Correlation
@@ -566,12 +566,12 @@ impl ThesisPipeline for Thesis5Pipeline {
             _ => Matrix3::<f64>::zeros(),
         };
 
-        let mut rng = rand::thread_rng();
+        let mut rng = rand::rng();
 
         // Simulate statistics across the gamma distribution
         for _ in 0..(self.events_per_bin * n_bins) {
             // Pick a random gamma from the field distribution
-            let idx = rng.gen_range(0..gamma_values.len());
+            let idx = rng.random_range(0..gamma_values.len());
             let gamma = gamma_values[idx];
 
             let bin_idx = ((gamma - min_gamma) / bin_width).floor() as usize;
@@ -661,9 +661,9 @@ impl ThesisPipeline for Thesis5Pipeline {
     }
 }
 
-fn random_direction<R: Rng>(rng: &mut R) -> Vector3<f64> {
-    let phi = rng.r#gen::<f64>() * 2.0 * std::f64::consts::PI;
-    let z = rng.r#gen::<f64>() * 2.0 - 1.0;
+fn random_direction<R: RngExt>(rng: &mut R) -> Vector3<f64> {
+    let phi = rng.random::<f64>() * 2.0 * std::f64::consts::PI;
+    let z = rng.random::<f64>() * 2.0 - 1.0;
     let theta = z.acos();
 
     Vector3::new(theta.sin() * phi.cos(), theta.sin() * phi.sin(), z)

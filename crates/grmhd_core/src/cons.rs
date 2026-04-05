@@ -11,9 +11,11 @@
 //!
 //! and b^mu is the magnetic 4-vector (field in fluid frame).
 
-use crate::eos::GammaLaw;
-use crate::metric::KerrMetric;
-use crate::prims::{self, Prim, NPRIM};
+use crate::{
+    eos::GammaLaw,
+    metric::KerrMetric,
+    prims::{self, NPRIM, Prim},
+};
 
 /// Number of conserved variables (same as primitives).
 pub const NCONS: usize = NPRIM;
@@ -37,12 +39,7 @@ pub fn prim2con(
 /// Cached variant: takes precomputed metric components to avoid repeated trig.
 /// This is the hot-path version called from the flux sweep inner loop.
 #[inline]
-pub fn prim2con_cached(
-    p: &Prim,
-    gcov: &[f64; 5],
-    eos: &GammaLaw,
-    sqrt_neg_g: f64,
-) -> [f64; NCONS] {
+pub fn prim2con_cached(p: &Prim, gcov: &[f64; 5], eos: &GammaLaw, sqrt_neg_g: f64) -> [f64; NCONS] {
     let rho = p[prims::RHO];
     let u = p[prims::UU];
     let v1 = p[prims::V1];
@@ -64,7 +61,16 @@ pub fn prim2con_cached(
     let alpha_sq = -(g_tt + 2.0 * g_tph * v3 + vsq);
     if alpha_sq <= 0.0 {
         // Superluminal -- return floor state
-        return [sqrt_neg_g * rho, 0.0, 0.0, 0.0, 0.0, sqrt_neg_g * b1, sqrt_neg_g * b2, sqrt_neg_g * b3];
+        return [
+            sqrt_neg_g * rho,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            sqrt_neg_g * b1,
+            sqrt_neg_g * b2,
+            sqrt_neg_g * b3,
+        ];
     }
     let ut = 1.0 / alpha_sq.sqrt();
 
@@ -139,7 +145,9 @@ mod tests {
         let d_expected = sqrt_g * 1.0 * ut_expected;
         assert!(
             (u[0] - d_expected).abs() / d_expected < 0.01,
-            "Mass D: got {}, expected {}", u[0], d_expected
+            "Mass D: got {}, expected {}",
+            u[0],
+            d_expected
         );
     }
 

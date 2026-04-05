@@ -5,9 +5,8 @@
 //!
 //! Ported from `turboquant.py:TurboQuantMSE` and `turboquant.py:TurboQuantProd`.
 
+use super::{qjl, rotation::Rotation};
 use crate::lloyd_max::{self, LloydMaxCodebook};
-use super::qjl;
-use super::rotation::Rotation;
 
 /// Compressed representation from TurboQuantMSE (Stage 1 only).
 #[derive(Clone, Debug)]
@@ -56,7 +55,13 @@ impl TurboQuantMSE {
             Rotation::new_haar(d, seed)
         };
         let codebook = lloyd_max::get_codebook(d, bits);
-        TurboQuantMSE { rotation, codebook, d, bits, outlier_keep_frac: 0.0 }
+        TurboQuantMSE {
+            rotation,
+            codebook,
+            d,
+            bits,
+            outlier_keep_frac: 0.0,
+        }
     }
 
     /// Create from a TurboQuantConfig, using the configured rotation method.
@@ -74,20 +79,38 @@ impl TurboQuantMSE {
             RotationMethod::Haar => Rotation::new_haar(d, seed),
         };
         let codebook = lloyd_max::get_codebook(d, bits);
-        TurboQuantMSE { rotation, codebook, d, bits, outlier_keep_frac: 0.0 }
+        TurboQuantMSE {
+            rotation,
+            codebook,
+            d,
+            bits,
+            outlier_keep_frac: 0.0,
+        }
     }
 
     /// Create with a specific distribution-aware codebook.
     ///
     /// For real LLM KV cache data (non-Gaussian, heavy-tailed), use
     /// `DistributionFamily::GeneralizedGaussian` with beta=0.9.
-    pub fn with_codebook(d: usize, bits: u32, seed: u64, use_wht: bool, codebook: LloydMaxCodebook) -> Self {
+    pub fn with_codebook(
+        d: usize,
+        bits: u32,
+        seed: u64,
+        use_wht: bool,
+        codebook: LloydMaxCodebook,
+    ) -> Self {
         let rotation = if use_wht {
             Rotation::new_fast_jl(d, seed)
         } else {
             Rotation::new_haar(d, seed)
         };
-        TurboQuantMSE { rotation, codebook, d, bits, outlier_keep_frac: 0.0 }
+        TurboQuantMSE {
+            rotation,
+            codebook,
+            d,
+            bits,
+            outlier_keep_frac: 0.0,
+        }
     }
 
     /// Enable dense-and-sparse outlier retention.
@@ -150,7 +173,9 @@ impl TurboQuantMSE {
         let outliers = if self.outlier_keep_frac > 0.0 {
             let n_keep = (d as f64 * self.outlier_keep_frac).ceil().max(1.0) as usize;
             // Compute per-coordinate quantization error
-            let mut errors: Vec<(usize, f64)> = indices.iter().enumerate()
+            let mut errors: Vec<(usize, f64)> = indices
+                .iter()
+                .enumerate()
                 .map(|(i, &idx)| {
                     let orig = rotated[i];
                     let quant = centroids[idx as usize] as f64;
@@ -158,9 +183,12 @@ impl TurboQuantMSE {
                 })
                 .collect();
             // Partial sort: find top-k by error magnitude
-            errors.sort_unstable_by(|a, b| b.1.partial_cmp(&a.1).unwrap_or(std::cmp::Ordering::Equal));
+            errors.sort_unstable_by(|a, b| {
+                b.1.partial_cmp(&a.1).unwrap_or(std::cmp::Ordering::Equal)
+            });
             errors.truncate(n_keep);
-            errors.iter()
+            errors
+                .iter()
                 .map(|&(i, _)| (i as u16, rotated[i] as f32))
                 .collect()
         } else {
@@ -213,10 +241,18 @@ impl TurboQuantMSE {
         }
     }
 
-    pub fn dim(&self) -> usize { self.d }
-    pub fn bits(&self) -> u32 { self.bits }
-    pub fn codebook(&self) -> &crate::lloyd_max::LloydMaxCodebook { &self.codebook }
-    pub fn rotation(&self) -> &super::rotation::Rotation { &self.rotation }
+    pub fn dim(&self) -> usize {
+        self.d
+    }
+    pub fn bits(&self) -> u32 {
+        self.bits
+    }
+    pub fn codebook(&self) -> &crate::lloyd_max::LloydMaxCodebook {
+        &self.codebook
+    }
+    pub fn rotation(&self) -> &super::rotation::Rotation {
+        &self.rotation
+    }
 }
 
 /// Stage 1 + 2: MSE quantization plus QJL sign-sketch residual correction.
@@ -242,7 +278,12 @@ impl TurboQuantProd {
         let mse = TurboQuantMSE::new(d, mse_bits, seed, use_wht);
         // QJL projection matrix uses seed + 1 (matching turboquant.py convention)
         let s_matrix = qjl::generate_projection_matrix(d, m, seed + 1);
-        TurboQuantProd { mse, s_matrix, d, m }
+        TurboQuantProd {
+            mse,
+            s_matrix,
+            d,
+            m,
+        }
     }
 
     /// Quantize a single vector with MSE + QJL.
@@ -265,7 +306,14 @@ impl TurboQuantProd {
         // Stage 2: QJL sign quantization of residual
         let mut qjl_signs = vec![0i8; self.m];
         let mut residual_norm = 0.0;
-        qjl::sign_quantize(&residual, &self.s_matrix, self.d, self.m, &mut qjl_signs, &mut residual_norm);
+        qjl::sign_quantize(
+            &residual,
+            &self.s_matrix,
+            self.d,
+            self.m,
+            &mut qjl_signs,
+            &mut residual_norm,
+        );
 
         ProdCompressed {
             mse_indices: mse_compressed.indices,
@@ -278,7 +326,12 @@ impl TurboQuantProd {
     /// Estimate inner product <query, original> using compressed representation.
     ///
     /// `buf` needs >= 2*d elements of scratch space.
-    pub fn inner_product(&self, query: &[f64], compressed: &ProdCompressed, buf: &mut [f64]) -> f64 {
+    pub fn inner_product(
+        &self,
+        query: &[f64],
+        compressed: &ProdCompressed,
+        buf: &mut [f64],
+    ) -> f64 {
         debug_assert_eq!(query.len(), self.d);
 
         // Reconstruct x_mse for the dot product
@@ -303,10 +356,10 @@ impl TurboQuantProd {
 
     /// Memory usage in bits for a single compressed vector.
     pub fn bits_per_vector(&self) -> usize {
-        let mse_bits = self.mse.bits() as usize * self.d;  // indices
-        let qjl_bits = self.m;                               // 1 bit per sign
-        let norm_bits = 16;                                   // fp16 for residual norm
-        let vec_norm_bits = 16;                               // fp16 for vec norm
+        let mse_bits = self.mse.bits() as usize * self.d; // indices
+        let qjl_bits = self.m; // 1 bit per sign
+        let norm_bits = 16; // fp16 for residual norm
+        let vec_norm_bits = 16; // fp16 for vec norm
         mse_bits + qjl_bits + norm_bits + vec_norm_bits
     }
 
@@ -316,11 +369,21 @@ impl TurboQuantProd {
         fp16_bits as f64 / self.bits_per_vector() as f64
     }
 
-    pub fn dim(&self) -> usize { self.d }
-    pub fn mse_bits(&self) -> u32 { self.mse.bits() }
-    pub fn qjl_dim(&self) -> usize { self.m }
-    pub fn s_matrix(&self) -> &[f64] { &self.s_matrix }
-    pub fn mse(&self) -> &TurboQuantMSE { &self.mse }
+    pub fn dim(&self) -> usize {
+        self.d
+    }
+    pub fn mse_bits(&self) -> u32 {
+        self.mse.bits()
+    }
+    pub fn qjl_dim(&self) -> usize {
+        self.m
+    }
+    pub fn s_matrix(&self) -> &[f64] {
+        &self.s_matrix
+    }
+    pub fn mse(&self) -> &TurboQuantMSE {
+        &self.mse
+    }
 }
 
 #[cfg(test)]
@@ -395,7 +458,8 @@ mod tests {
         assert!(
             mean_error.abs() < mean_abs_true * 0.3,
             "TurboQuantProd IP biased: mean_error={:.4}, mean_|true|={:.4}",
-            mean_error, mean_abs_true
+            mean_error,
+            mean_abs_true
         );
     }
 
@@ -411,7 +475,11 @@ mod tests {
         // Norms: 32 bits
         // Total: 416 bits vs fp16: 2048 bits
         // Ratio ~= 4.9x
-        assert!(ratio > 3.0 && ratio < 7.0, "Unexpected compression ratio: {}", ratio);
+        assert!(
+            ratio > 3.0 && ratio < 7.0,
+            "Unexpected compression ratio: {}",
+            ratio
+        );
     }
 
     #[test]
@@ -435,10 +503,18 @@ mod tests {
         tq_haar.dequantize(&comp_haar, &mut buf, &mut recon_haar);
         tq_wht.dequantize(&comp_wht, &mut buf, &mut recon_wht);
 
-        let mse_haar: f64 = x.iter().zip(recon_haar.iter())
-            .map(|(a, b)| (a - b).powi(2)).sum::<f64>() / d as f64;
-        let mse_wht: f64 = x.iter().zip(recon_wht.iter())
-            .map(|(a, b)| (a - b).powi(2)).sum::<f64>() / d as f64;
+        let mse_haar: f64 = x
+            .iter()
+            .zip(recon_haar.iter())
+            .map(|(a, b)| (a - b).powi(2))
+            .sum::<f64>()
+            / d as f64;
+        let mse_wht: f64 = x
+            .iter()
+            .zip(recon_wht.iter())
+            .map(|(a, b)| (a - b).powi(2))
+            .sum::<f64>()
+            / d as f64;
 
         // Both should be reasonable (< 0.01 for 3-bit at d=64)
         assert!(mse_haar < 0.05, "Haar MSE too high: {}", mse_haar);
@@ -480,10 +556,18 @@ mod tests {
             tq_base.dequantize(&comp_base, &mut buf, &mut recon_base);
             tq_outlier.dequantize(&comp_outlier, &mut buf, &mut recon_outlier);
 
-            let mse_base: f64 = x.iter().zip(recon_base.iter())
-                .map(|(a, b)| (a - b).powi(2)).sum::<f64>() / d as f64;
-            let mse_outlier: f64 = x.iter().zip(recon_outlier.iter())
-                .map(|(a, b)| (a - b).powi(2)).sum::<f64>() / d as f64;
+            let mse_base: f64 = x
+                .iter()
+                .zip(recon_base.iter())
+                .map(|(a, b)| (a - b).powi(2))
+                .sum::<f64>()
+                / d as f64;
+            let mse_outlier: f64 = x
+                .iter()
+                .zip(recon_outlier.iter())
+                .map(|(a, b)| (a - b).powi(2))
+                .sum::<f64>()
+                / d as f64;
 
             base_mse_sum += mse_base;
             outlier_mse_sum += mse_outlier;
@@ -493,12 +577,20 @@ mod tests {
         let outlier_mse = outlier_mse_sum / n as f64;
         let improvement = (1.0 - outlier_mse / base_mse) * 100.0;
 
-        println!("2-bit d=128: base MSE={:.6}, outlier(1%) MSE={:.6}, improvement={:.1}%",
-            base_mse, outlier_mse, improvement);
-        assert!(outlier_mse < base_mse,
+        println!(
+            "2-bit d=128: base MSE={:.6}, outlier(1%) MSE={:.6}, improvement={:.1}%",
+            base_mse, outlier_mse, improvement
+        );
+        assert!(
+            outlier_mse < base_mse,
             "Outlier retention should improve MSE: base={:.6} vs outlier={:.6}",
-            base_mse, outlier_mse);
-        assert!(improvement > 5.0,
-            "Expected >5% improvement from 1% outlier retention, got {:.1}%", improvement);
+            base_mse,
+            outlier_mse
+        );
+        assert!(
+            improvement > 5.0,
+            "Expected >5% improvement from 1% outlier retention, got {:.1}%",
+            improvement
+        );
     }
 }

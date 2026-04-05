@@ -102,10 +102,7 @@ pub fn fast_associator_norm_f32(a: &[f32], b: &[f32], c: &[f32], dim: usize) -> 
 ///
 /// Allocates ONE workspace (3 * dim f32) and reuses it for all triplets.
 /// For N vectors at 4096D: 48 KB workspace vs 160 MB with per-call allocation.
-pub fn batch_fast_associator_norms_f32(
-    embedded: &[Vec<f32>],
-    dim: usize,
-) -> Vec<f32> {
+pub fn batch_fast_associator_norms_f32(embedded: &[Vec<f32>], dim: usize) -> Vec<f32> {
     if embedded.len() < 3 {
         return vec![];
     }
@@ -163,7 +160,9 @@ mod tests {
         assert!(
             (fast - standard).abs() < 1e-5,
             "Fast {} != Standard {} (diff {})",
-            fast, standard, (fast - standard).abs()
+            fast,
+            standard,
+            (fast - standard).abs()
         );
     }
 
@@ -192,7 +191,9 @@ mod tests {
                 let mut v: Vec<f32> = (0..dim).map(|j| ((i * 13 + j * 5) as f32).sin()).collect();
                 let norm: f32 = v.iter().map(|x| x * x).sum::<f32>().sqrt();
                 if norm > 1e-10 {
-                    for x in v.iter_mut() { *x /= norm; }
+                    for x in v.iter_mut() {
+                        *x /= norm;
+                    }
                 }
                 v
             })
@@ -202,12 +203,18 @@ mod tests {
         for i in 0..vecs.len() - 2 {
             let ws_result = ws.associator_norm(&vecs[i], &vecs[i + 1], &vecs[i + 2]);
             let std_result = crate::cayley_dickson::simd::cd_associator_norm_f32(
-                &vecs[i], &vecs[i + 1], &vecs[i + 2], dim,
+                &vecs[i],
+                &vecs[i + 1],
+                &vecs[i + 2],
+                dim,
             );
             assert!(
                 (ws_result - std_result).abs() < 1e-5,
                 "Workspace[{}] {} != Standard {} (diff {})",
-                i, ws_result, std_result, (ws_result - std_result).abs()
+                i,
+                ws_result,
+                std_result,
+                (ws_result - std_result).abs()
             );
         }
     }
@@ -226,7 +233,9 @@ mod tests {
         assert!(
             (fast - standard).abs() < 1e-3,
             "256D: Fast {} != Standard {} (diff {})",
-            fast, standard, (fast - standard).abs()
+            fast,
+            standard,
+            (fast - standard).abs()
         );
     }
 
@@ -252,7 +261,10 @@ mod tests {
                 assert!(
                     (out_alloc[i] - out_fused[i]).abs() < 1e-6,
                     "dim={} component {}: alloc {} != fused {} (diff {})",
-                    dim, i, out_alloc[i], out_fused[i],
+                    dim,
+                    i,
+                    out_alloc[i],
+                    out_fused[i],
                     (out_alloc[i] - out_fused[i]).abs()
                 );
             }

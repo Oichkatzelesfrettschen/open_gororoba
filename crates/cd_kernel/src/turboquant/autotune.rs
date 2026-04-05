@@ -17,7 +17,7 @@
 //! 3. Enhancement: apply CD associator for adaptive bit allocation
 //! 4. Composition: combine results from different methods per-block
 
-use super::config::{TurboQuantConfig, RotationMethod, QjlCorrectionMode, AdaptiveBitsConfig};
+use super::config::{AdaptiveBitsConfig, QjlCorrectionMode, RotationMethod, TurboQuantConfig};
 
 /// Detected features of input data that guide method selection.
 #[derive(Clone, Debug)]
@@ -43,8 +43,13 @@ pub fn probe_features(data: &[f64], d: usize) -> DataFeatures {
     let n = data.len() / d;
     if n == 0 || d == 0 {
         return DataFeatures {
-            variance: 0.0, kurtosis: 3.0, outlier_fraction: 0.0,
-            skewness: 0.0, range: 0.0, is_symmetric: true, is_heteroscedastic: false,
+            variance: 0.0,
+            kurtosis: 3.0,
+            outlier_fraction: 0.0,
+            skewness: 0.0,
+            range: 0.0,
+            is_symmetric: true,
+            is_heteroscedastic: false,
         };
     }
 
@@ -54,12 +59,22 @@ pub fn probe_features(data: &[f64], d: usize) -> DataFeatures {
     let std = var.sqrt();
 
     let skewness = if std > 1e-15 {
-        data.iter().map(|&x| ((x - mean) / std).powi(3)).sum::<f64>() / total
-    } else { 0.0 };
+        data.iter()
+            .map(|&x| ((x - mean) / std).powi(3))
+            .sum::<f64>()
+            / total
+    } else {
+        0.0
+    };
 
     let kurtosis = if std > 1e-15 {
-        data.iter().map(|&x| ((x - mean) / std).powi(4)).sum::<f64>() / total
-    } else { 3.0 };
+        data.iter()
+            .map(|&x| ((x - mean) / std).powi(4))
+            .sum::<f64>()
+            / total
+    } else {
+        3.0
+    };
 
     let sigma3 = 3.0 * std;
     let outliers = data.iter().filter(|&&x| (x - mean).abs() > sigma3).count();
@@ -77,8 +92,16 @@ pub fn probe_features(data: &[f64], d: usize) -> DataFeatures {
             let row = &data[v * d..(v + 1) * d];
             let mean_lo: f64 = row[..mid].iter().sum::<f64>() / mid as f64;
             let mean_hi: f64 = row[mid..].iter().sum::<f64>() / (d - mid) as f64;
-            var_lo += row[..mid].iter().map(|&x| (x - mean_lo).powi(2)).sum::<f64>() / mid as f64;
-            var_hi += row[mid..].iter().map(|&x| (x - mean_hi).powi(2)).sum::<f64>() / (d - mid) as f64;
+            var_lo += row[..mid]
+                .iter()
+                .map(|&x| (x - mean_lo).powi(2))
+                .sum::<f64>()
+                / mid as f64;
+            var_hi += row[mid..]
+                .iter()
+                .map(|&x| (x - mean_hi).powi(2))
+                .sum::<f64>()
+                / (d - mid) as f64;
         }
         var_lo /= n as f64;
         var_hi /= n as f64;
@@ -168,27 +191,39 @@ pub fn autotune(data: &[f64], d: usize, bits: u32) -> AutoTuneResult {
 
     // Explain rotation choice
     rationale.push(match &config.rotation {
-        RotationMethod::F4Block =>
-            format!("d={}: F4 block rotation (18% better MSE via quaternion algebra)", d),
-        RotationMethod::FastJL =>
-            format!("d={}: WHT/FastJL rotation (5.6x faster, proven decorrelation)", d),
-        RotationMethod::Haar =>
-            format!("d={}: Haar rotation (small dimension, O(d^2) acceptable)", d),
-        RotationMethod::E8Block =>
-            format!("d={}: E8 block rotation (136x fewer params, KS validated)", d),
-        RotationMethod::E8Wht =>
-            format!("d={}: E8+WHT composition (algebraic + Gaussianization)", d),
+        RotationMethod::F4Block => format!(
+            "d={}: F4 block rotation (18% better MSE via quaternion algebra)",
+            d
+        ),
+        RotationMethod::FastJL => format!(
+            "d={}: WHT/FastJL rotation (5.6x faster, proven decorrelation)",
+            d
+        ),
+        RotationMethod::Haar => format!(
+            "d={}: Haar rotation (small dimension, O(d^2) acceptable)",
+            d
+        ),
+        RotationMethod::E8Block => format!(
+            "d={}: E8 block rotation (136x fewer params, KS validated)",
+            d
+        ),
+        RotationMethod::E8Wht => {
+            format!("d={}: E8+WHT composition (algebraic + Gaussianization)", d)
+        }
     });
 
     // Explain QJL choice
     rationale.push(match &config.qjl_correction {
-        QjlCorrectionMode::Always =>
-            format!("QJL ON: {}bit + outlier_frac={:.3} -> correction beneficial",
-                bits, features.outlier_fraction),
-        QjlCorrectionMode::Never =>
-            format!("QJL OFF: {}bit -> 1-bit sign noise exceeds residual", bits),
-        QjlCorrectionMode::Auto { max_bits } =>
-            format!("QJL AUTO: on for bits<={}, off above", max_bits),
+        QjlCorrectionMode::Always => format!(
+            "QJL ON: {}bit + outlier_frac={:.3} -> correction beneficial",
+            bits, features.outlier_fraction
+        ),
+        QjlCorrectionMode::Never => {
+            format!("QJL OFF: {}bit -> 1-bit sign noise exceeds residual", bits)
+        }
+        QjlCorrectionMode::Auto { max_bits } => {
+            format!("QJL AUTO: on for bits<={}, off above", max_bits)
+        }
     });
 
     // Explain adaptive choice
@@ -205,7 +240,11 @@ pub fn autotune(data: &[f64], d: usize, bits: u32) -> AutoTuneResult {
         features.outlier_fraction * 100.0, features.is_symmetric, features.is_heteroscedastic
     ));
 
-    AutoTuneResult { features, config, rationale }
+    AutoTuneResult {
+        features,
+        config,
+        rationale,
+    }
 }
 
 #[cfg(test)]
@@ -249,8 +288,10 @@ mod tests {
             }
         }
         let features = probe_features(&data, 128);
-        assert!(features.is_heteroscedastic,
-            "Inflated second half should be detected as heteroscedastic");
+        assert!(
+            features.is_heteroscedastic,
+            "Inflated second half should be detected as heteroscedastic"
+        );
     }
 
     #[test]
@@ -274,7 +315,10 @@ mod tests {
     fn test_autotune_2bit_enables_qjl() {
         let data = random_data(100, 128, 42);
         let result = autotune(&data, 128, 2);
-        assert!(matches!(result.config.qjl_correction, QjlCorrectionMode::Always));
+        assert!(matches!(
+            result.config.qjl_correction,
+            QjlCorrectionMode::Always
+        ));
     }
 
     #[test]
@@ -286,9 +330,11 @@ mod tests {
             }
         }
         let result = autotune(&data, 128, 3);
-        assert!((result.config.adaptive.promote_fraction - 0.35).abs() < 1e-10,
+        assert!(
+            (result.config.adaptive.promote_fraction - 0.35).abs() < 1e-10,
             "Heteroscedastic data should promote 35%, got {}",
-            result.config.adaptive.promote_fraction);
+            result.config.adaptive.promote_fraction
+        );
     }
 
     #[test]

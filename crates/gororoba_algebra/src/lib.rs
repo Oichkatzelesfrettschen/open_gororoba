@@ -21,26 +21,25 @@ pub use traits::Hypercomplex;
 
 // Re-export common functions from cd_kernel for convenience
 pub use cd_kernel::{
-    cd_multiply, cd_multiply_simd,
-    cd_norm_sq, cd_conjugate, cd_associator, cd_associator_norm,
-    batch_sedenion_associator_norms, batch_sedenion_associator_norms_parallel,
+    batch_sedenion_associator_norms, batch_sedenion_associator_norms_parallel, cd_associator,
+    cd_associator_norm, cd_conjugate, cd_multiply, cd_multiply_simd, cd_norm_sq,
 };
 
-pub use cd_kernel::cayley_dickson::{SignTable, cd_multiply_into, cd_basis_mul_sign};
+pub use cd_kernel::cayley_dickson::{SignTable, cd_basis_mul_sign, cd_multiply_into};
 
 // -- analysis ------------------------------------------------------------
 #[cfg(feature = "analysis")]
 pub mod analysis;
 
 #[cfg(feature = "analysis")]
-pub use analysis::fractal_analysis::{hurst_rs_analysis};
+pub use analysis::fractal_analysis::hurst_rs_analysis;
 
 // -- physics -------------------------------------------------------------
 #[cfg(feature = "physics")]
 pub mod physics;
 
 #[cfg(feature = "physics")]
-pub use physics::clifford::{pauli_matrices, kron, kron2};
+pub use physics::clifford::{kron, kron2, pauli_matrices};
 
 // -- lie -----------------------------------------------------------------
 #[cfg(feature = "lie")]

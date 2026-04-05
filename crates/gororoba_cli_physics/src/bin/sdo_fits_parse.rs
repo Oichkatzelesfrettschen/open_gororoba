@@ -35,7 +35,10 @@ struct Cli {
     harpnum: Option<u32>,
 
     /// Output JSON with per-image statistics
-    #[arg(long, default_value = "data/output/heliosphere/ablations/sdo_fits_stats.json")]
+    #[arg(
+        long,
+        default_value = "data/output/heliosphere/ablations/sdo_fits_stats.json"
+    )]
     out_json: PathBuf,
 }
 
@@ -81,30 +84,34 @@ struct ParseResult {
 fn parse_fits_image(path: &std::path::Path) -> Result<(Vec<f64>, usize, usize)> {
     use fitsio::FitsFile;
 
-    let mut fptr = FitsFile::open(path)
-        .with_context(|| format!("Opening FITS {}", path.display()))?;
+    let mut fptr =
+        FitsFile::open(path).with_context(|| format!("Opening FITS {}", path.display()))?;
 
     // Try primary HDU first, then HDU 1
-    let hdu = fptr.primary_hdu()
-        .with_context(|| "Reading primary HDU")?;
+    let hdu = fptr.primary_hdu().with_context(|| "Reading primary HDU")?;
 
-    let naxis1: usize = hdu.read_key::<i64>(&mut fptr, "NAXIS1")
-        .unwrap_or(0) as usize;
-    let naxis2: usize = hdu.read_key::<i64>(&mut fptr, "NAXIS2")
-        .unwrap_or(0) as usize;
+    let naxis1: usize = hdu.read_key::<i64>(&mut fptr, "NAXIS1").unwrap_or(0) as usize;
+    let naxis2: usize = hdu.read_key::<i64>(&mut fptr, "NAXIS2").unwrap_or(0) as usize;
 
     if naxis1 == 0 || naxis2 == 0 {
         anyhow::bail!("Image dimensions are 0x0");
     }
 
     // Read image data as f64
-    let data: Vec<f64> = hdu.read_image(&mut fptr)
+    let data: Vec<f64> = hdu
+        .read_image(&mut fptr)
         .with_context(|| "Reading image data")?;
 
     Ok((data, naxis1, naxis2))
 }
 
-fn compute_stats(data: &[f64], naxis1: usize, naxis2: usize, filename: &str, component: &str) -> FitsImageStats {
+fn compute_stats(
+    data: &[f64],
+    naxis1: usize,
+    naxis2: usize,
+    filename: &str,
+    component: &str,
+) -> FitsImageStats {
     let finite: Vec<f64> = data.iter().copied().filter(|v| v.is_finite()).collect();
     let n_finite = finite.len();
 
@@ -112,12 +119,19 @@ fn compute_stats(data: &[f64], naxis1: usize, naxis2: usize, filename: &str, com
         return FitsImageStats {
             filename: filename.to_string(),
             component: component.to_string(),
-            naxis1, naxis2,
+            naxis1,
+            naxis2,
             n_pixels: data.len(),
             n_finite: 0,
-            mean: 0.0, std_dev: 0.0, min_val: 0.0, max_val: 0.0,
-            abs_mean: 0.0, rms: 0.0, unsigned_flux_proxy: 0.0,
-            skewness: 0.0, kurtosis: 0.0,
+            mean: 0.0,
+            std_dev: 0.0,
+            min_val: 0.0,
+            max_val: 0.0,
+            abs_mean: 0.0,
+            rms: 0.0,
+            unsigned_flux_proxy: 0.0,
+            skewness: 0.0,
+            kurtosis: 0.0,
         };
     }
 
@@ -133,8 +147,16 @@ fn compute_stats(data: &[f64], naxis1: usize, naxis2: usize, filename: &str, com
 
     // Higher moments
     let (skewness, kurtosis) = if std_dev > 1e-12 {
-        let m3 = finite.iter().map(|v| ((v - mean) / std_dev).powi(3)).sum::<f64>() / n;
-        let m4 = finite.iter().map(|v| ((v - mean) / std_dev).powi(4)).sum::<f64>() / n;
+        let m3 = finite
+            .iter()
+            .map(|v| ((v - mean) / std_dev).powi(3))
+            .sum::<f64>()
+            / n;
+        let m4 = finite
+            .iter()
+            .map(|v| ((v - mean) / std_dev).powi(4))
+            .sum::<f64>()
+            / n;
         (m3, m4 - 3.0) // excess kurtosis
     } else {
         (0.0, 0.0)
@@ -143,12 +165,19 @@ fn compute_stats(data: &[f64], naxis1: usize, naxis2: usize, filename: &str, com
     FitsImageStats {
         filename: filename.to_string(),
         component: component.to_string(),
-        naxis1, naxis2,
+        naxis1,
+        naxis2,
         n_pixels: data.len(),
         n_finite,
-        mean, std_dev, min_val, max_val,
-        abs_mean, rms, unsigned_flux_proxy,
-        skewness, kurtosis,
+        mean,
+        std_dev,
+        min_val,
+        max_val,
+        abs_mean,
+        rms,
+        unsigned_flux_proxy,
+        skewness,
+        kurtosis,
     }
 }
 
@@ -187,7 +216,9 @@ fn main() -> Result<()> {
                 // Filter by HARPNUM if specified
                 if let Some(harp) = cli.harpnum {
                     let fname = path.file_name().and_then(|n| n.to_str()).unwrap_or("");
-                    if !fname.contains(&format!(".{}.", harp)) && !fname.contains(&format!("_{}_", harp)) {
+                    if !fname.contains(&format!(".{}.", harp))
+                        && !fname.contains(&format!("_{}_", harp))
+                    {
                         continue;
                     }
                 }
@@ -202,15 +233,20 @@ fn main() -> Result<()> {
     let mut all_stats = Vec::new();
 
     for path in &files {
-        let filename = path.file_name().and_then(|n| n.to_str()).unwrap_or("unknown");
+        let filename = path
+            .file_name()
+            .and_then(|n| n.to_str())
+            .unwrap_or("unknown");
         let component = detect_component(filename);
         print!("  {} ({})... ", filename, component);
 
         match parse_fits_image(path) {
             Ok((data, naxis1, naxis2)) => {
                 let stats = compute_stats(&data, naxis1, naxis2, filename, &component);
-                println!("{}x{}, mean={:.1} G, rms={:.1} G, unsigned_flux={:.2e}",
-                    naxis1, naxis2, stats.mean, stats.rms, stats.unsigned_flux_proxy);
+                println!(
+                    "{}x{}, mean={:.1} G, rms={:.1} G, unsigned_flux={:.2e}",
+                    naxis1, naxis2, stats.mean, stats.rms, stats.unsigned_flux_proxy
+                );
                 all_stats.push(stats);
             }
             Err(e) => {
@@ -227,14 +263,20 @@ fn main() -> Result<()> {
     if !all_stats.is_empty() {
         println!("\n  Per-component statistics:");
         for comp in ["Bp", "Br", "Bt", "B_total", "unknown"] {
-            let comp_stats: Vec<&FitsImageStats> = all_stats.iter()
-                .filter(|s| s.component == comp)
-                .collect();
+            let comp_stats: Vec<&FitsImageStats> =
+                all_stats.iter().filter(|s| s.component == comp).collect();
             if !comp_stats.is_empty() {
-                let mean_rms: f64 = comp_stats.iter().map(|s| s.rms).sum::<f64>() / comp_stats.len() as f64;
-                let mean_kurt: f64 = comp_stats.iter().map(|s| s.kurtosis).sum::<f64>() / comp_stats.len() as f64;
-                println!("    {}: {} images, mean_rms={:.1} G, mean_kurtosis={:.2}",
-                    comp, comp_stats.len(), mean_rms, mean_kurt);
+                let mean_rms: f64 =
+                    comp_stats.iter().map(|s| s.rms).sum::<f64>() / comp_stats.len() as f64;
+                let mean_kurt: f64 =
+                    comp_stats.iter().map(|s| s.kurtosis).sum::<f64>() / comp_stats.len() as f64;
+                println!(
+                    "    {}: {} images, mean_rms={:.1} G, mean_kurtosis={:.2}",
+                    comp,
+                    comp_stats.len(),
+                    mean_rms,
+                    mean_kurt
+                );
             }
         }
     }

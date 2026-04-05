@@ -10,10 +10,9 @@
 use anyhow::{Context, Result};
 use chrono::{Datelike, NaiveDate};
 use clap::Parser;
-use data_core::{
-    catalogs::mms::parse_mms_fgm_hapi_csv_minutes,
-    catalogs::themis::parse_themis_fgm_hapi_csv_minutes,
-    catalogs::maven_mag::parse_maven_mag_hapi_csv_minutes,
+use data_core::catalogs::{
+    maven_mag::parse_maven_mag_hapi_csv_minutes, mms::parse_mms_fgm_hapi_csv_minutes,
+    themis::parse_themis_fgm_hapi_csv_minutes,
 };
 use serde::Serialize;
 use spectral_core::coherence::field_aligned_spectral_fractions;
@@ -38,7 +37,10 @@ struct Cli {
     /// Window size (minutes) for spectral fraction calculation.
     #[arg(long, default_value_t = 60)]
     spectral_window: usize,
-    #[arg(long, default_value = "data/output/heliosphere/ablations/decomposition_q2.json")]
+    #[arg(
+        long,
+        default_value = "data/output/heliosphere/ablations/decomposition_q2.json"
+    )]
     out_json: PathBuf,
     #[arg(long, default_value = "data/external")]
     data_dir: PathBuf,
@@ -63,14 +65,21 @@ fn main() -> Result<()> {
     let end = NaiveDate::parse_from_str(&cli.end_date, "%Y-%m-%d")
         .with_context(|| format!("bad end: {}", cli.end_date))?;
 
-    println!("=== Q2: Transverse/Compressive Decomposition: {} ===", cli.mission);
+    println!(
+        "=== Q2: Transverse/Compressive Decomposition: {} ===",
+        cli.mission
+    );
 
     let (bx, by, bz) = load_components(&cli, start, end)?;
     let n = bx.len();
     println!("  Loaded {} minutes", n);
 
     if n < cli.spectral_window * 2 {
-        anyhow::bail!("Too few records ({}) for window size {}", n, cli.spectral_window);
+        anyhow::bail!(
+            "Too few records ({}) for window size {}",
+            n,
+            cli.spectral_window
+        );
     }
 
     // Compute associator in sliding windows matching the spectral window
@@ -90,7 +99,9 @@ fn main() -> Result<()> {
         let end_idx = (start_idx + sw).min(n);
         let wlen = end_idx - start_idx;
 
-        if wlen < steps + 2 { continue; }
+        if wlen < steps + 2 {
+            continue;
+        }
 
         // Associator for this window
         let mut embedded: Vec<Vec<f64>> = Vec::new();
@@ -98,17 +109,23 @@ fn main() -> Result<()> {
             let sum_b: f64 = (0..steps)
                 .map(|s| {
                     let i = w + s;
-                    if i >= n { return 0.0; }
+                    if i >= n {
+                        return 0.0;
+                    }
                     (bx[i].powi(2) + by[i].powi(2) + bz[i].powi(2)).sqrt()
                 })
                 .sum();
             let mean_b = sum_b / steps as f64;
-            if mean_b <= 0.01 || !mean_b.is_finite() { continue; }
+            if mean_b <= 0.01 || !mean_b.is_finite() {
+                continue;
+            }
 
             let mut v = vec![0.0; cli.embedding_dim];
             for s in 0..steps {
                 let i = w + s;
-                if i >= n { break; }
+                if i >= n {
+                    break;
+                }
                 let bmag = (bx[i].powi(2) + by[i].powi(2) + bz[i].powi(2)).sqrt();
                 v[s * channels] = bx[i] / mean_b;
                 v[s * channels + 1] = by[i] / mean_b;
@@ -118,12 +135,15 @@ fn main() -> Result<()> {
             embedded.push(v);
         }
 
-        if embedded.len() < 3 { continue; }
+        if embedded.len() < 3 {
+            continue;
+        }
 
-        let norms = cd_kernel::batch_sliding_associator_norms_parallel(
-            &embedded, cli.embedding_dim,
-        );
-        if norms.is_empty() { continue; }
+        let norms =
+            cd_kernel::batch_sliding_associator_norms_parallel(&embedded, cli.embedding_dim);
+        if norms.is_empty() {
+            continue;
+        }
         let assoc_mean = norms.iter().sum::<f64>() / norms.len() as f64;
 
         // Perpendicular spectral fraction for this window
@@ -137,9 +157,15 @@ fn main() -> Result<()> {
         let mean_bz: f64 = win_bz.iter().sum::<f64>() / wlen as f64;
         let mean_bmag = (mean_bx.powi(2) + mean_by.powi(2) + mean_bz.powi(2)).sqrt();
 
-        if mean_bmag < 0.01 { continue; }
+        if mean_bmag < 0.01 {
+            continue;
+        }
 
-        let b_hat = [mean_bx / mean_bmag, mean_by / mean_bmag, mean_bz / mean_bmag];
+        let b_hat = [
+            mean_bx / mean_bmag,
+            mean_by / mean_bmag,
+            mean_bz / mean_bmag,
+        ];
 
         let nperseg = (wlen / 4).max(8);
         let noverlap = nperseg / 2;
@@ -147,7 +173,9 @@ fn main() -> Result<()> {
         let (_freqs, _par_frac, perp_frac) =
             field_aligned_spectral_fractions(win_bx, win_by, win_bz, b_hat, nperseg, noverlap);
 
-        if perp_frac.is_empty() { continue; }
+        if perp_frac.is_empty() {
+            continue;
+        }
 
         // Band-average the perpendicular fraction
         let mean_perp: f64 = perp_frac.iter().sum::<f64>() / perp_frac.len() as f64;
@@ -170,27 +198,43 @@ fn main() -> Result<()> {
     sorted_assoc.sort_by(|a, b| a.partial_cmp(b).unwrap());
     let median_assoc = sorted_assoc[sorted_assoc.len() / 2];
 
-    let high_perp: Vec<f64> = window_assoc.iter().zip(window_perp.iter())
+    let high_perp: Vec<f64> = window_assoc
+        .iter()
+        .zip(window_perp.iter())
         .filter(|&(&a, _)| a > median_assoc)
         .map(|(&_, &p)| p)
         .collect();
-    let low_perp: Vec<f64> = window_assoc.iter().zip(window_perp.iter())
+    let low_perp: Vec<f64> = window_assoc
+        .iter()
+        .zip(window_perp.iter())
         .filter(|&(&a, _)| a <= median_assoc)
         .map(|(&_, &p)| p)
         .collect();
 
-    let high_mean = if high_perp.is_empty() { 0.0 }
-        else { high_perp.iter().sum::<f64>() / high_perp.len() as f64 };
-    let low_mean = if low_perp.is_empty() { 0.0 }
-        else { low_perp.iter().sum::<f64>() / low_perp.len() as f64 };
+    let high_mean = if high_perp.is_empty() {
+        0.0
+    } else {
+        high_perp.iter().sum::<f64>() / high_perp.len() as f64
+    };
+    let low_mean = if low_perp.is_empty() {
+        0.0
+    } else {
+        low_perp.iter().sum::<f64>() / low_perp.len() as f64
+    };
     let overall_mean = window_perp.iter().sum::<f64>() / window_perp.len() as f64;
 
     let interpretation = if corr > 0.2 {
-        format!("Positive correlation (r={corr:.3}): high associator correlates with transverse-dominant spectral content")
+        format!(
+            "Positive correlation (r={corr:.3}): high associator correlates with transverse-dominant spectral content"
+        )
     } else if corr < -0.2 {
-        format!("Negative correlation (r={corr:.3}): high associator correlates with compressive-dominant spectral content")
+        format!(
+            "Negative correlation (r={corr:.3}): high associator correlates with compressive-dominant spectral content"
+        )
     } else {
-        format!("Weak/no correlation (r={corr:.3}): associator is independent of transverse/compressive mode mix")
+        format!(
+            "Weak/no correlation (r={corr:.3}): associator is independent of transverse/compressive mode mix"
+        )
     };
 
     println!("\n=== Results ===");
@@ -210,7 +254,9 @@ fn main() -> Result<()> {
         interpretation,
     };
 
-    if let Some(parent) = cli.out_json.parent() { fs::create_dir_all(parent)?; }
+    if let Some(parent) = cli.out_json.parent() {
+        fs::create_dir_all(parent)?;
+    }
     fs::write(&cli.out_json, serde_json::to_string_pretty(&result)?)?;
     println!("\nWrote {}", cli.out_json.display());
 
@@ -219,7 +265,9 @@ fn main() -> Result<()> {
 
 fn spearman_rank_correlation(x: &[f64], y: &[f64]) -> f64 {
     let n = x.len();
-    if n < 3 { return 0.0; }
+    if n < 3 {
+        return 0.0;
+    }
 
     let rank = |vals: &[f64]| -> Vec<f64> {
         let mut indexed: Vec<(usize, f64)> = vals.iter().copied().enumerate().collect();
@@ -266,39 +314,51 @@ fn load_components(
         let date = start + chrono::Duration::days(offset);
         if mission.starts_with("themis") {
             let probe = if mission.contains("a") { "tha" } else { "thb" };
-            let path = cli.data_dir.join("themis").join(
-                format!("{}_fgm_{:04}_{:03}.csv", probe, date.year(), date.ordinal()),
-            );
+            let path = cli.data_dir.join("themis").join(format!(
+                "{}_fgm_{:04}_{:03}.csv",
+                probe,
+                date.year(),
+                date.ordinal()
+            ));
             if path.exists() {
                 let content = fs::read_to_string(&path)?;
                 for r in parse_themis_fgm_hapi_csv_minutes(&content, &probe.to_uppercase()) {
                     if r.b_magnitude <= cli.max_bmag {
-                        bx_all.push(r.bx_gse); by_all.push(r.by_gse); bz_all.push(r.bz_gse);
+                        bx_all.push(r.bx_gse);
+                        by_all.push(r.by_gse);
+                        bz_all.push(r.bz_gse);
                     }
                 }
             }
         } else if mission == "maven" {
-            let path = cli.data_dir.join("maven").join(
-                format!("maven_mag_{:04}_{:03}.csv", date.year(), date.ordinal()),
-            );
+            let path = cli.data_dir.join("maven").join(format!(
+                "maven_mag_{:04}_{:03}.csv",
+                date.year(),
+                date.ordinal()
+            ));
             if path.exists() {
                 let content = fs::read_to_string(&path)?;
                 for r in parse_maven_mag_hapi_csv_minutes(&content) {
                     if r.b_magnitude <= cli.max_bmag {
-                        bx_all.push(r.bx_ss); by_all.push(r.by_ss); bz_all.push(r.bz_ss);
+                        bx_all.push(r.bx_ss);
+                        by_all.push(r.by_ss);
+                        bz_all.push(r.bz_ss);
                     }
                 }
             }
         } else if mission == "mms" {
             let doy = date.ordinal() as u16;
-            let path = cli.data_dir.join("mms").join(
-                format!("mms1_fgm_srvy_l2_2024_{doy}_{doy}.csv"),
-            );
+            let path = cli
+                .data_dir
+                .join("mms")
+                .join(format!("mms1_fgm_srvy_l2_2024_{doy}_{doy}.csv"));
             if path.exists() {
                 let content = fs::read_to_string(&path)?;
                 for r in parse_mms_fgm_hapi_csv_minutes(&content) {
                     if r.b_magnitude <= cli.max_bmag {
-                        bx_all.push(r.bx_gse); by_all.push(r.by_gse); bz_all.push(r.bz_gse);
+                        bx_all.push(r.bx_gse);
+                        by_all.push(r.by_gse);
+                        bz_all.push(r.bz_gse);
                     }
                 }
             }

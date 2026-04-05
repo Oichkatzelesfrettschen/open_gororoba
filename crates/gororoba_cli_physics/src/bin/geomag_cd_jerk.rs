@@ -29,7 +29,10 @@ struct Cli {
     #[arg(long, default_value_t = 60)]
     downsample_minutes: usize,
 
-    #[arg(long, default_value = "data/output/heliosphere/ablations/geomag_jerk_analysis.json")]
+    #[arg(
+        long,
+        default_value = "data/output/heliosphere/ablations/geomag_jerk_analysis.json"
+    )]
     out_json: PathBuf,
 
     #[arg(long, default_value = "data/external/intermagnet")]
@@ -105,7 +108,9 @@ fn main() -> Result<()> {
             })
             .sum();
         let mean_f = sum_f / steps as f64;
-        if mean_f <= 0.01 || !mean_f.is_finite() { continue; }
+        if mean_f <= 0.01 || !mean_f.is_finite() {
+            continue;
+        }
 
         let mut v = vec![0.0; cli.embedding_dim];
         for s in 0..steps {
@@ -120,7 +125,11 @@ fn main() -> Result<()> {
         embed_months.push(bins_month[w + steps - 1]);
     }
 
-    println!("  Embedded {} vectors ({}D)", embedded.len(), cli.embedding_dim);
+    println!(
+        "  Embedded {} vectors ({}D)",
+        embedded.len(),
+        cli.embedding_dim
+    );
 
     if embedded.len() < 10 {
         anyhow::bail!("Too few embedded vectors");
@@ -152,16 +161,24 @@ fn main() -> Result<()> {
         .collect();
 
     println!("\n  Monthly mean associator:");
-    let month_names = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-                       "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    let month_names = [
+        "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+    ];
     for (m, &mean_a) in monthly_means.iter().enumerate() {
-        println!("    {} {}: {:.4} (n={})", month_names[m], cli.year, mean_a, monthly_counts[m]);
+        println!(
+            "    {} {}: {:.4} (n={})",
+            month_names[m], cli.year, mean_a, monthly_counts[m]
+        );
     }
 
     // Detect transitions
     let global_mean = norms.iter().sum::<f64>() / norms.len() as f64;
     let global_std = {
-        let var = norms.iter().map(|&a| (a - global_mean).powi(2)).sum::<f64>() / norms.len() as f64;
+        let var = norms
+            .iter()
+            .map(|&a| (a - global_mean).powi(2))
+            .sum::<f64>()
+            / norms.len() as f64;
         var.sqrt()
     };
     let threshold = global_std * 1.5;
@@ -175,25 +192,37 @@ fn main() -> Result<()> {
             let post: f64 = norms[i..(i + tw).min(norms.len())].iter().sum::<f64>()
                 / tw.min(norms.len() - i) as f64;
             if (post - pre).abs() > threshold {
-                if last.is_some_and(|prev| i.saturating_sub(prev) < tw) { continue; }
+                if last.is_some_and(|prev| i.saturating_sub(prev) < tw) {
+                    continue;
+                }
                 transitions.push(i);
                 last = Some(i);
             }
         }
     }
 
-    let transition_months: Vec<u8> = transitions.iter()
+    let transition_months: Vec<u8> = transitions
+        .iter()
         .map(|&t| embed_months.get(t + 2).copied().unwrap_or(0))
         .collect();
 
-    println!("\n  Transitions: {} (months: {:?})", transitions.len(), transition_months);
+    println!(
+        "\n  Transitions: {} (months: {:?})",
+        transitions.len(),
+        transition_months
+    );
 
     let interp = format!(
         "{} {} {}: {} hourly bins, {} transitions. {}",
-        cli.observatory, cli.year,
-        if transition_months.is_empty() { "No jerk detected" }
-        else { "Transitions detected" },
-        n_bins, transitions.len(),
+        cli.observatory,
+        cli.year,
+        if transition_months.is_empty() {
+            "No jerk detected"
+        } else {
+            "Transitions detected"
+        },
+        n_bins,
+        transitions.len(),
         if transition_months.iter().any(|&m| (3..=6).contains(&m)) {
             "Spring 2014 transition detected -- consistent with published 2014 geomagnetic jerk timing."
         } else if transition_months.is_empty() {
@@ -216,7 +245,9 @@ fn main() -> Result<()> {
         interpretation: interp,
     };
 
-    if let Some(parent) = cli.out_json.parent() { fs::create_dir_all(parent)?; }
+    if let Some(parent) = cli.out_json.parent() {
+        fs::create_dir_all(parent)?;
+    }
     fs::write(&cli.out_json, serde_json::to_string_pretty(&result)?)?;
     println!("  Wrote {}", cli.out_json.display());
 

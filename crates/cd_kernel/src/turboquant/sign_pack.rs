@@ -242,7 +242,9 @@ mod tests {
 
     #[test]
     fn test_inner_product_matches_naive() {
-        let signs: Vec<i8> = (0..128).map(|i| if (i * 7) % 5 < 3 { 1 } else { -1 }).collect();
+        let signs: Vec<i8> = (0..128)
+            .map(|i| if (i * 7) % 5 < 3 { 1 } else { -1 })
+            .collect();
         let values: Vec<f64> = (0..128).map(|i| (i as f64 * 0.1).sin()).collect();
 
         // Naive inner product

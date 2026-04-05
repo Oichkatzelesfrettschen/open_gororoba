@@ -29,11 +29,7 @@ pub const ALPHA_INV_MZ: (f64, f64, f64) = (59.0, 29.6, 8.5);
 /// Compute the two-loop RGE derivative for inverse coupling constants.
 ///
 /// d(alpha_inv_i)/dt = -b_i/(2*pi) - sum_j B_{ij}/(alpha_inv_j * 4*pi) / (4*pi)
-fn beta_deriv(
-    alpha_inv: &[f64; 3],
-    b: (f64, f64, f64),
-    b_ij: &[[f64; 3]; 3],
-) -> [f64; 3] {
+fn beta_deriv(alpha_inv: &[f64; 3], b: (f64, f64, f64), b_ij: &[[f64; 3]; 3]) -> [f64; 3] {
     let b_arr = [b.0, b.1, b.2];
     let mut deriv = [0.0; 3];
     for i in 0..3 {
@@ -178,11 +174,8 @@ mod tests {
         let gut_scale = 1.25e15;
         let (alpha1, alpha2, alpha3) = run_rges(gut_scale * 10.0, gut_scale);
 
-        let root = BitMapBackend::new(
-            "gauge_coupling_unification_with_thresholds.png",
-            (800, 600),
-        )
-        .into_drawing_area();
+        let root = BitMapBackend::new("gauge_coupling_unification_with_thresholds.png", (800, 600))
+            .into_drawing_area();
         root.fill(&WHITE)?;
         let mut chart = ChartBuilder::on(&root)
             .caption(
@@ -225,7 +218,10 @@ mod tests {
             "all inverse couplings must remain positive: {:?}",
             last_vals
         );
-        assert!(variance < 100.0, "variance={variance} too large, RGE may have diverged");
+        assert!(
+            variance < 100.0,
+            "variance={variance} too large, RGE may have diverged"
+        );
 
         let diag = find_unification_scale(&alpha1, &alpha2, &alpha3);
         println!(
@@ -280,7 +276,10 @@ mod tests {
             let diff = (rk4_final[i] - alpha_inv_euler[i]).abs();
             println!(
                 "alpha_inv_{}: RK4={:.6}, Euler-fine={:.6}, diff={:.2e}",
-                i + 1, rk4_final[i], alpha_inv_euler[i], diff
+                i + 1,
+                rk4_final[i],
+                alpha_inv_euler[i],
+                diff
             );
             assert!(
                 diff < 1e-1,

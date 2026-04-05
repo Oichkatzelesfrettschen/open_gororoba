@@ -16,7 +16,7 @@ use clap::Parser;
 use gr_core::constants::{E_PLANCK_CGS, M_PLANCK_CGS, g_to_planck_mass};
 use materials_core::tang_mass::{depth_based_mass_prediction, mass_ratio_null_test};
 use nalgebra::DMatrix;
-use rand::{Rng, SeedableRng};
+use rand::{RngExt, SeedableRng};
 use rand_chacha::ChaCha8Rng;
 use stats_core::pmns_matrix;
 use std::{fmt::Write as _, fs, path::PathBuf, process};
@@ -175,7 +175,7 @@ fn random_doubly_stochastic(seed: u64) -> DMatrix<f64> {
     let mut matrix = DMatrix::zeros(3, 3);
     for i in 0..3 {
         for j in 0..3 {
-            matrix[(i, j)] = 0.1 + rng.r#gen::<f64>();
+            matrix[(i, j)] = 0.1 + rng.random::<f64>();
         }
     }
     sinkhorn_normalize(matrix, 24)

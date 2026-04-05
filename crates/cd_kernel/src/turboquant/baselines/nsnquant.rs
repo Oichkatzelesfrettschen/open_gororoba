@@ -20,7 +20,7 @@
 /// Returns (preprocessed_data, channel_means, vector_norms_1, vector_norms_2)
 /// for reconstruction.
 pub fn nsn_preprocess(
-    data: &[f64],  // (n_vectors, d) flat row-major
+    data: &[f64], // (n_vectors, d) flat row-major
     n: usize,
     d: usize,
 ) -> NsnState {
@@ -132,7 +132,9 @@ pub fn nsn_dequantize(compressed: &NsnCompressed) -> Vec<f64> {
     let codebook = crate::lloyd_max::get_codebook(d, compressed.bits);
 
     // Step 1: codebook lookup
-    let mut buf: Vec<f64> = compressed.indices.iter()
+    let mut buf: Vec<f64> = compressed
+        .indices
+        .iter()
         .map(|&idx| codebook.centroids[idx as usize] as f64)
         .collect();
 
@@ -210,7 +212,8 @@ mod tests {
             assert!(
                 (norm - 1.0).abs() < 1e-10,
                 "Vector {} has norm {} after NSN",
-                t, norm
+                t,
+                norm
             );
         }
     }
@@ -226,8 +229,12 @@ mod tests {
         let compressed = nsn_quantize(&state, 3);
         let decompressed = nsn_dequantize(&compressed);
 
-        let mse: f64 = data.iter().zip(decompressed.iter())
-            .map(|(a, b)| (a - b).powi(2)).sum::<f64>() / (n * d) as f64;
+        let mse: f64 = data
+            .iter()
+            .zip(decompressed.iter())
+            .map(|(a, b)| (a - b).powi(2))
+            .sum::<f64>()
+            / (n * d) as f64;
         // NSNQuant at 3-bit should have reasonable MSE
         assert!(mse < 0.5, "NSNQuant roundtrip MSE too high: {}", mse);
     }
@@ -248,7 +255,8 @@ mod tests {
             assert!(
                 mean.abs() < 0.1,
                 "Channel {} has mean {} after NSN (expected near zero)",
-                c, mean
+                c,
+                mean
             );
         }
     }

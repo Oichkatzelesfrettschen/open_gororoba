@@ -16,11 +16,7 @@
 /// Returns (squares_ok, anticomm_ok, skew_ok).
 ///
 /// Mirrors: HurwitzTheorem.v eq.9 (B_i^2 = -I, B_i*B_k = -B_k*B_i).
-pub fn check_clifford_relations(
-    n: usize,
-    matrices: &[Vec<f64>],
-    atol: f64,
-) -> (bool, bool, bool) {
+pub fn check_clifford_relations(n: usize, matrices: &[Vec<f64>], atol: f64) -> (bool, bool, bool) {
     let num = matrices.len();
     assert!(matrices.iter().all(|m| m.len() == n * n));
 

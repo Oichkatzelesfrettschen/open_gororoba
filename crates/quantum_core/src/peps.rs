@@ -25,7 +25,7 @@
 //! - Jordan et al. (2008): Classical simulation of infinite-size quantum lattice systems
 //! - Orus (2014): A practical introduction to tensor networks
 
-use faer::complex_native::c64;
+use faer::c64;
 use rayon::prelude::*;
 
 /// A single PEPS tensor at site (row, col).
@@ -475,16 +475,16 @@ impl Peps {
         let mut mat = faer::Mat::<c64>::zeros(dim_a, dim_a);
         for i in 0..dim_a {
             for j in 0..dim_a {
-                mat.write(i, j, rho[i * dim_a + j]);
+                mat[(i, j)] = rho[i * dim_a + j];
             }
         }
 
-        let eig = mat.selfadjoint_eigendecomposition(faer::Side::Lower);
-        let eigenvalues = eig.s();
+        let eig = mat.self_adjoint_eigen(faer::Side::Lower).unwrap();
+        let eigenvalues = eig.S();
 
         let mut entropy = 0.0;
         for i in 0..dim_a {
-            let p = eigenvalues.column_vector().read(i).re;
+            let p = eigenvalues.column_vector()[i].re;
             if p > 1e-15 {
                 entropy -= p * p.ln();
             }
@@ -571,15 +571,15 @@ impl Peps {
         let mut mat = faer::Mat::<f64>::zeros(dim_upper, dim_upper);
         for i in 0..dim_upper {
             for j in 0..dim_upper {
-                mat.write(i, j, rho[i * dim_upper + j]);
+                mat[(i, j)] = rho[i * dim_upper + j];
             }
         }
-        let eig = mat.selfadjoint_eigendecomposition(faer::Side::Lower);
-        let eigenvalues = eig.s();
+        let eig = mat.self_adjoint_eigen(faer::Side::Lower).unwrap();
+        let eigenvalues = eig.S();
 
         let mut entropy = 0.0;
         for i in 0..dim_upper {
-            let p = eigenvalues.column_vector().read(i);
+            let p = eigenvalues.column_vector()[i];
             if p > 1e-15 {
                 entropy -= p * p.ln();
             }

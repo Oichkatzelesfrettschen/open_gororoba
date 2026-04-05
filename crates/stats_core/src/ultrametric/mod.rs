@@ -244,12 +244,12 @@ fn compute_ultrametric_fraction(values: &[f64], n_triples: usize, rng: &mut ChaC
     let mut count = 0usize;
 
     for _ in 0..n_triples {
-        let i = rng.gen_range(0..n);
-        let mut j = rng.gen_range(0..n - 1);
+        let i = rng.random_range(0..n);
+        let mut j = rng.random_range(0..n - 1);
         if j >= i {
             j += 1;
         }
-        let mut k = rng.gen_range(0..n - 2);
+        let mut k = rng.random_range(0..n - 2);
         if k >= i.min(j) {
             k += 1;
         }
@@ -309,12 +309,12 @@ pub fn ultrametric_fraction_from_matrix(
     };
 
     for _ in 0..n_triples {
-        let i = rng.gen_range(0..n_points);
-        let mut j = rng.gen_range(0..n_points - 1);
+        let i = rng.random_range(0..n_points);
+        let mut j = rng.random_range(0..n_points - 1);
         if j >= i {
             j += 1;
         }
-        let mut k = rng.gen_range(0..n_points - 2);
+        let mut k = rng.random_range(0..n_points - 2);
         if k >= i.min(j) {
             k += 1;
         }
@@ -364,12 +364,12 @@ pub fn ultrametric_fraction_from_matrix_eps(
     };
 
     for _ in 0..n_triples {
-        let i = rng.gen_range(0..n_points);
-        let mut j = rng.gen_range(0..n_points - 1);
+        let i = rng.random_range(0..n_points);
+        let mut j = rng.random_range(0..n_points - 1);
         if j >= i {
             j += 1;
         }
-        let mut k = rng.gen_range(0..n_points - 2);
+        let mut k = rng.random_range(0..n_points - 2);
         if k >= i.min(j) {
             k += 1;
         }
@@ -544,12 +544,12 @@ fn compute_defects(values: &[f64], n_triples: usize, rng: &mut ChaCha8Rng) -> Ve
     let mut defects = Vec::with_capacity(n_triples);
 
     for _ in 0..n_triples {
-        let i = rng.gen_range(0..n);
-        let mut j = rng.gen_range(0..n - 1);
+        let i = rng.random_range(0..n);
+        let mut j = rng.random_range(0..n - 1);
         if j >= i {
             j += 1;
         }
-        let mut k = rng.gen_range(0..n - 2);
+        let mut k = rng.random_range(0..n - 2);
         if k >= i.min(j) {
             k += 1;
         }
@@ -640,12 +640,12 @@ fn compute_padic_fraction(
     let mut dist_count = 0usize;
 
     for _ in 0..n_triples {
-        let i = rng.gen_range(0..n);
-        let mut j = rng.gen_range(0..n - 1);
+        let i = rng.random_range(0..n);
+        let mut j = rng.random_range(0..n - 1);
         if j >= i {
             j += 1;
         }
-        let mut k = rng.gen_range(0..n - 2);
+        let mut k = rng.random_range(0..n - 2);
         if k >= i.min(j) {
             k += 1;
         }
@@ -920,7 +920,7 @@ mod tests {
         // 1D uniform random data yields ~10% ultrametric fraction.
         // (The often-cited ~20% figure uses a looser absolute tolerance.)
         let mut rng = ChaCha8Rng::seed_from_u64(123);
-        let values: Vec<f64> = (0..200).map(|_| rng.gen_range(0.0..1000.0)).collect();
+        let values: Vec<f64> = (0..200).map(|_| rng.random_range(0.0..1000.0)).collect();
 
         let result = ultrametric_fraction_test(&values, 50_000, 100, 456);
 
@@ -955,7 +955,7 @@ mod tests {
     fn test_defect_positive_for_random() {
         // Random data should have positive defect
         let mut rng = ChaCha8Rng::seed_from_u64(789);
-        let values: Vec<f64> = (0..100).map(|_| rng.gen_range(0.0..1000.0)).collect();
+        let values: Vec<f64> = (0..100).map(|_| rng.random_range(0.0..1000.0)).collect();
 
         let result = ultrametric_defect_test(&values, 10_000, 100, 42);
 
@@ -989,7 +989,7 @@ mod tests {
     fn test_padic_clustering_basic() {
         // Basic smoke test for p-adic clustering
         let mut rng = ChaCha8Rng::seed_from_u64(42);
-        let values: Vec<f64> = (0..50).map(|_| rng.gen_range(1.0..500.0)).collect();
+        let values: Vec<f64> = (0..50).map(|_| rng.random_range(1.0..500.0)).collect();
 
         let result = padic_clustering_test(&values, 2, 5_000, 100, 42);
 
@@ -1009,7 +1009,7 @@ mod tests {
     fn test_run_analysis_smoke() {
         // End-to-end test with synthetic data (small for speed)
         let mut rng = ChaCha8Rng::seed_from_u64(42);
-        let values: Vec<f64> = (0..30).map(|_| rng.gen_range(100.0..1000.0)).collect();
+        let values: Vec<f64> = (0..30).map(|_| rng.random_range(100.0..1000.0)).collect();
 
         let config = UltrametricConfig {
             n_triples: 1_000,
@@ -1038,7 +1038,7 @@ mod tests {
     fn test_ultrametric_gate_integration() {
         // Test the gate function with synthetic analysis
         let mut rng = ChaCha8Rng::seed_from_u64(42);
-        let values: Vec<f64> = (0..30).map(|_| rng.gen_range(100.0..1000.0)).collect();
+        let values: Vec<f64> = (0..30).map(|_| rng.random_range(100.0..1000.0)).collect();
 
         let config = UltrametricConfig {
             n_triples: 1_000,

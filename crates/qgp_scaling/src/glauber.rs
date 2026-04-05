@@ -15,7 +15,7 @@
 
 use crate::nucleus::{NucleusParams, thickness_function};
 use gauss_quad::GaussLegendre;
-use std::f64::consts::PI;
+use std::{f64::consts::PI, num::NonZeroUsize};
 
 /// Inelastic nucleon-nucleon cross-sections (mb) at various sqrt(s).
 /// 1 mb = 0.1 fm^2.
@@ -113,7 +113,9 @@ pub struct CentralityBinGeometry {
 #[must_use]
 #[allow(clippy::needless_range_loop)] // 2D quadrature stencil: index used for paired (node, weight)
 pub fn overlap_function(b: f64, nuc_a: &NucleusParams, nuc_b: &NucleusParams, n_gl: usize) -> f64 {
-    let gl = GaussLegendre::new(n_gl).expect("Gauss-Legendre init");
+    let gl = GaussLegendre::new(
+        NonZeroUsize::new(n_gl).expect("Gauss-Legendre degree must be non-zero"),
+    );
     let pairs = gl.as_node_weight_pairs();
 
     let a_a = nuc_a.a as f64;
@@ -255,7 +257,9 @@ fn centrality_to_b(c: f64, b_vals: &[f64], cdf: &[f64], sigma_total: f64) -> f64
 /// Our T_A is normalized to 1, so we need to multiply by A.
 #[must_use]
 pub fn n_part_at_b(b: f64, sigma: &SigmaNN, nuc: &NucleusParams, n_gl: usize) -> f64 {
-    let gl = GaussLegendre::new(n_gl).expect("Gauss-Legendre init");
+    let gl = GaussLegendre::new(
+        NonZeroUsize::new(n_gl).expect("Gauss-Legendre degree must be non-zero"),
+    );
     let pairs = gl.as_node_weight_pairs();
 
     let r_max = nuc.r_a + b + 0.5;
@@ -318,7 +322,9 @@ pub fn overlap_area(b: f64, r_a: f64, r_b: f64) -> f64 {
 /// giving a measure of how far partons travel through the medium.
 #[must_use]
 pub fn avg_path_length(b: f64, nuc_a: &NucleusParams, nuc_b: &NucleusParams, n_gl: usize) -> f64 {
-    let gl = GaussLegendre::new(n_gl).expect("Gauss-Legendre init");
+    let gl = GaussLegendre::new(
+        NonZeroUsize::new(n_gl).expect("Gauss-Legendre degree must be non-zero"),
+    );
     let pairs = gl.as_node_weight_pairs();
 
     let r_max = nuc_a.r_a.max(nuc_b.r_a + b) + 0.5;
@@ -363,7 +369,9 @@ pub fn avg_path_length(b: f64, nuc_a: &NucleusParams, nuc_b: &NucleusParams, n_g
 #[must_use]
 #[allow(clippy::needless_range_loop)] // 2D quadrature stencil: index used for paired (node, weight)
 pub fn eccentricity(b: f64, nuc_a: &NucleusParams, nuc_b: &NucleusParams, n_gl: usize) -> f64 {
-    let gl = GaussLegendre::new(n_gl).expect("Gauss-Legendre init");
+    let gl = GaussLegendre::new(
+        NonZeroUsize::new(n_gl).expect("Gauss-Legendre degree must be non-zero"),
+    );
     let pairs = gl.as_node_weight_pairs();
 
     let r_max = nuc_a.r_a.max(nuc_b.r_a + b) + 0.5;

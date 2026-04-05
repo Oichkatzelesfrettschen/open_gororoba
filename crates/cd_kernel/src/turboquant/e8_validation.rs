@@ -6,8 +6,10 @@
 //! Falsification: KS test rejects equality (p < 0.01) with E8 having
 //! higher pairwise correlations.
 
-use super::e8_rotation::{generate_e8_roots, select_diverse_roots, e8_block_rotate};
-use super::rotation::{generate_haar_rotation, rotate};
+use super::{
+    e8_rotation::{e8_block_rotate, generate_e8_roots, select_diverse_roots},
+    rotation::{generate_haar_rotation, rotate},
+};
 
 /// Compute pairwise correlation matrix for rotated coordinates.
 ///
@@ -170,28 +172,40 @@ pub fn e8_vs_haar_ks_test(d: usize, n_vectors: usize, seed: u64) -> Decorrelatio
     // E8 rotation
     let all_roots = generate_e8_roots();
     let roots = select_diverse_roots(&all_roots, seed);
-    let e8_rotated: Vec<Vec<f64>> = vectors.iter().map(|v| {
-        let mut out = vec![0.0f64; d];
-        e8_block_rotate(v, &roots, &mut out);
-        out
-    }).collect();
+    let e8_rotated: Vec<Vec<f64>> = vectors
+        .iter()
+        .map(|v| {
+            let mut out = vec![0.0f64; d];
+            e8_block_rotate(v, &roots, &mut out);
+            out
+        })
+        .collect();
 
     // Haar rotation
     let pi = generate_haar_rotation(d, seed + 1000);
-    let haar_rotated: Vec<Vec<f64>> = vectors.iter().map(|v| {
-        let mut out = vec![0.0f64; d];
-        rotate(v, &pi, d, &mut out);
-        out
-    }).collect();
+    let haar_rotated: Vec<Vec<f64>> = vectors
+        .iter()
+        .map(|v| {
+            let mut out = vec![0.0f64; d];
+            rotate(v, &pi, d, &mut out);
+            out
+        })
+        .collect();
 
     // Compute correlation distributions
     let e8_corrs = pairwise_correlations(&e8_rotated, d);
     let haar_corrs = pairwise_correlations(&haar_rotated, d);
 
-    let e8_mean = if e8_corrs.is_empty() { 0.0 }
-        else { e8_corrs.iter().sum::<f64>() / e8_corrs.len() as f64 };
-    let haar_mean = if haar_corrs.is_empty() { 0.0 }
-        else { haar_corrs.iter().sum::<f64>() / haar_corrs.len() as f64 };
+    let e8_mean = if e8_corrs.is_empty() {
+        0.0
+    } else {
+        e8_corrs.iter().sum::<f64>() / e8_corrs.len() as f64
+    };
+    let haar_mean = if haar_corrs.is_empty() {
+        0.0
+    } else {
+        haar_corrs.iter().sum::<f64>() / haar_corrs.len() as f64
+    };
 
     // KS test
     let (ks_d, ks_p) = ks_test(&e8_corrs, &haar_corrs);
@@ -215,8 +229,16 @@ mod tests {
     fn test_ks_test_identical_samples() {
         let s: Vec<f64> = (0..100).map(|i| i as f64 / 100.0).collect();
         let (d, p) = ks_test(&s, &s);
-        assert!(d < 0.05, "Identical samples should have D near 0, got {}", d);
-        assert!(p > 0.5, "Identical samples should have high p-value, got {}", p);
+        assert!(
+            d < 0.05,
+            "Identical samples should have D near 0, got {}",
+            d
+        );
+        assert!(
+            p > 0.5,
+            "Identical samples should have high p-value, got {}",
+            p
+        );
     }
 
     #[test]
@@ -224,7 +246,11 @@ mod tests {
         let s1: Vec<f64> = (0..100).map(|i| i as f64 / 100.0).collect();
         let s2: Vec<f64> = (0..100).map(|i| (i as f64 / 100.0).powi(2)).collect();
         let (d, _p) = ks_test(&s1, &s2);
-        assert!(d > 0.1, "Different distributions should have D > 0.1, got {}", d);
+        assert!(
+            d > 0.1,
+            "Different distributions should have D > 0.1, got {}",
+            d
+        );
     }
 
     #[test]

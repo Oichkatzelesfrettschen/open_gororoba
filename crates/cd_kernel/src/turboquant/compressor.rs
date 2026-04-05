@@ -4,9 +4,11 @@
 //! matching `compressors.py:TurboQuantCompressorV2` (keys with QJL) and
 //! `compressors.py:TurboQuantCompressorMSE` (values, MSE-only).
 
-use super::config::TurboQuantConfig;
-use super::pipeline::{MseCompressed, TurboQuantMSE, TurboQuantProd};
-use super::sign_pack::BitPackedSigns;
+use super::{
+    config::TurboQuantConfig,
+    pipeline::{MseCompressed, TurboQuantMSE, TurboQuantProd},
+    sign_pack::BitPackedSigns,
+};
 
 /// Compressed key cache entry (one vector, Stage 1 + 2).
 #[derive(Clone, Debug)]
@@ -84,7 +86,11 @@ impl KeyCompressor {
     ///
     /// `states` is a flat slice of B*H*S*D f64 values in row-major order.
     /// `shape` is (B, H, S, D).
-    pub fn compress(&self, states: &[f64], shape: (usize, usize, usize, usize)) -> CompressedKeyBatch {
+    pub fn compress(
+        &self,
+        states: &[f64],
+        shape: (usize, usize, usize, usize),
+    ) -> CompressedKeyBatch {
         let (b, h, s, d) = shape;
         debug_assert_eq!(d, self.d);
         debug_assert_eq!(states.len(), b * h * s * d);
@@ -106,7 +112,9 @@ impl KeyCompressor {
                 outliers: Vec::new(),
             };
             let mut x_mse = vec![0.0f64; d];
-            self.quantizer.mse().dequantize(&mse_repr, &mut buf, &mut x_mse);
+            self.quantizer
+                .mse()
+                .dequantize(&mse_repr, &mut buf, &mut x_mse);
 
             let packed_signs = BitPackedSigns::pack(&compressed.qjl_signs);
 
@@ -135,7 +143,12 @@ impl KeyCompressor {
     ///
     /// `queries` is (n_queries, d) flat f64 array.
     /// Returns (n_queries, n_keys) attention scores.
-    pub fn attention_scores(&self, queries: &[f64], n_queries: usize, batch: &CompressedKeyBatch) -> Vec<f64> {
+    pub fn attention_scores(
+        &self,
+        queries: &[f64],
+        n_queries: usize,
+        batch: &CompressedKeyBatch,
+    ) -> Vec<f64> {
         let d = self.d;
         let m = self.quantizer.qjl_dim();
         let s_matrix = self.quantizer.s_matrix();
@@ -159,7 +172,8 @@ impl KeyCompressor {
 
             for (ki, key) in batch.keys.iter().enumerate() {
                 // Term 1: <q, k_mse>
-                let term1: f64 = q.iter()
+                let term1: f64 = q
+                    .iter()
                     .zip(key.k_mse.iter())
                     .map(|(&qv, &kv)| qv * kv as f64)
                     .sum();
@@ -200,7 +214,11 @@ impl ValueCompressor {
     }
 
     /// Compress a batch of value vectors.
-    pub fn compress(&self, states: &[f64], shape: (usize, usize, usize, usize)) -> CompressedValueBatch {
+    pub fn compress(
+        &self,
+        states: &[f64],
+        shape: (usize, usize, usize, usize),
+    ) -> CompressedValueBatch {
         let (b, h, s, d) = shape;
         debug_assert_eq!(d, self.d);
         debug_assert_eq!(states.len(), b * h * s * d);
@@ -237,7 +255,8 @@ impl ValueCompressor {
                 vec_norm: cv.vec_norm as f64,
                 outliers: Vec::new(),
             };
-            self.quantizer.dequantize(&mse_compressed, &mut buf, &mut result[v * d..(v + 1) * d]);
+            self.quantizer
+                .dequantize(&mse_compressed, &mut buf, &mut result[v * d..(v + 1) * d]);
         }
 
         result
@@ -300,7 +319,9 @@ mod tests {
     fn random_states(b: usize, h: usize, s: usize, d: usize, seed: u64) -> Vec<f64> {
         let mut rng = ChaCha20Rng::seed_from_u64(seed);
         let normal = StandardNormal;
-        (0..b * h * s * d).map(|_| normal.sample(&mut rng)).collect()
+        (0..b * h * s * d)
+            .map(|_| normal.sample(&mut rng))
+            .collect()
     }
 
     #[test]
@@ -327,11 +348,7 @@ mod tests {
 
         // MSE depends on vector magnitude and quantization bit-width.
         // For random N(0,1) vectors at d=64, 3-bit: MSE ~ 0.15-0.25.
-        assert!(
-            mse < 0.5,
-            "Value decompression MSE too high: {}",
-            mse
-        );
+        assert!(mse < 0.5, "Value decompression MSE too high: {}", mse);
     }
 
     #[test]

@@ -103,10 +103,7 @@ mod tests {
     #[test]
     fn test_zd_multiplicity_of_84() {
         for m in 0..=5 {
-            assert!(
-                zd_multiplicity_check(m),
-                "Z_{m} should be a multiple of 84"
-            );
+            assert!(zd_multiplicity_check(m), "Z_{m} should be a multiple of 84");
         }
     }
 

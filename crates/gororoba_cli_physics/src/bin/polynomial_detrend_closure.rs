@@ -23,7 +23,7 @@ use cosmology_core::{
     nfw_utils::{nfw_enclosed_mass_from_params, nfw_params_from_mass},
 };
 use data_core::catalogs::manga::{parse_manga_dapall_csv, parse_manga_rotcurves};
-use rand::SeedableRng;
+use rand::{RngExt, SeedableRng};
 use rand_chacha::ChaCha8Rng;
 use std::{f64::consts::PI, path::PathBuf};
 
@@ -443,7 +443,7 @@ fn main() -> anyhow::Result<()> {
         // Resample galaxy indices with replacement
         let resampled: Vec<NormalizedResiduals> = (0..normalized.len())
             .map(|_| {
-                let idx = rand::Rng::gen_range(&mut rng, 0..normalized.len());
+                let idx = rng.random_range(0..normalized.len());
                 normalized[idx].clone()
             })
             .collect();

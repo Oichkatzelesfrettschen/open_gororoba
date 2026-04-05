@@ -22,10 +22,12 @@ mod tests {
     #[test]
     fn test_collision_resolution() {
         let mut key = [0.0; 16];
-        key[1] = 1.0; key[10] = 1.0;
+        key[1] = 1.0;
+        key[10] = 1.0;
         let mut zd = [0.0; 16];
-        zd[15] = 1.0; zd[4] = -1.0;
-        
+        zd[15] = 1.0;
+        zd[4] = -1.0;
+
         let new_bucket = resolve_collision_zd(&key, &zd);
         assert!(cd_norm_sq(&new_bucket) < 1e-9); // Projects to exactly 0
     }

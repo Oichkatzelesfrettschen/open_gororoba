@@ -1844,7 +1844,11 @@ fn shape_summary(value: &Value) -> serde_json::Value {
 fn hex_hash(bytes: &[u8]) -> String {
     let mut hasher = Sha256::new();
     hasher.update(bytes);
-    format!("{:x}", hasher.finalize())
+    hasher
+        .finalize()
+        .iter()
+        .map(|byte| format!("{byte:02x}"))
+        .collect()
 }
 
 fn verify_dataset_label_aliases(args: &CommonArgs) -> Result<()> {

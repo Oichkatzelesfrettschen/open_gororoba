@@ -13,7 +13,6 @@
 //!
 //! Mirrors: BrownGeneralizedCD.v (brown_condition_c_fails).
 
-
 /// Check Brown's Theorem 3 conditions for A_4 = A_3{gamma} over R.
 ///
 /// Returns (cond_a, cond_b, cond_c, is_division).
@@ -29,10 +28,7 @@
 /// and any positive real is achievable as the norm of a scaled basis element.
 ///
 /// Mirrors: BrownGeneralizedCD.v brown_condition_c_fails.
-pub fn check_division_criterion_over_r(
-    base_dim: usize,
-    gamma: f64,
-) -> (bool, bool, bool, bool) {
+pub fn check_division_criterion_over_r(base_dim: usize, gamma: f64) -> (bool, bool, bool, bool) {
     // (a) A_3 is division: true iff base_dim <= 8
     let cond_a = base_dim <= 8;
 

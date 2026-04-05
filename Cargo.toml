@@ -125,13 +125,13 @@ gororoba_structurable = { path = "crates/gororoba_structurable" }
 # PINNED: statrs 0.18.0 requires nalgebra ^0.33 (<0.34). gauss-quad 0.2.4 pulls
 # nalgebra 0.34 transitively (dep duplication). Upgrade when statrs releases 0.19+.
 # (Original num-dual 0.13.2 pin reason is stale -- num-dual no longer in dep tree.)
-nalgebra = "0.33"
-ndarray = "0.16"
+nalgebra = "0.34"
+ndarray = "0.17"
 num-complex = "0.4"
 num-traits = "0.2"
 
 # Graph algorithms
-petgraph = "0.7"
+petgraph = "0.8"
 bitvec = "1.0"
 fixedbitset = "0.5"
 
@@ -141,9 +141,9 @@ tda = "0.1.0"
 # Statistics
 statrs = "0.18"
 adjustp = "0.1.6"              # BH/BY/Bonferroni p-value correction (MIT)
-rand = "0.8"
-rand_chacha = "0.3"
-rand_distr = "0.4"
+rand = "0.10"
+rand_chacha = "0.10"
+rand_distr = "0.6"
 
 # Algebra extensions
 wheel = "0.1.0"              # Wheel algebra (division-by-zero semantics)
@@ -157,11 +157,11 @@ kodama = "0.3.0"             # Agglomerative hierarchical clustering (dendrogram
 kiddo = "5.3.0"              # High-performance k-d trees (AVX2/SIMD)
 
 # Dense linear algebra (eigensolvers, SVD)
-faer = "0.20"
+faer = "0.24"
 
 # FFT and spectral analysis
 rustfft = "6.4.1"            # High-performance FFT (pure Rust, AVX/SSE)
-ndrustfft = "0.5.0"          # N-dimensional FFT on ndarray (C2C, R2C, DCT)
+ndrustfft = "0.6.2"          # N-dimensional FFT on ndarray (C2C, R2C, DCT)
 
 # Vulkan and Windowing
 ash = "0.38.0"
@@ -169,7 +169,7 @@ gpu-allocator = "0.28.0"
 # PINNED: naga 27.0.3 aligns with Bevy 0.18 (gororoba_app). The API surface
 # used by lbm_vulkan (wgsl::parse_str, valid::Validator, back::spv::Writer)
 # is identical between naga 27 and 28. Upgrade when Bevy ships naga 28+.
-naga = "27.0.3"
+naga = "29.0.1"
 winit = "0.30.13"
 raw-window-handle = "0.6.2"
 
@@ -179,7 +179,7 @@ periodic-table-on-an-enum = "0.3.2"  # Element enum with atomic data
 moyo = "0.7"                         # Crystal symmetry finder (pure Rust, spglib team)
 
 # Numerical quadrature
-gauss-quad = "0.2.4"         # Gauss-Legendre quadrature (replaces hand-rolled Simpson)
+gauss-quad = "0.3.1"         # Gauss-Legendre quadrature (replaces hand-rolled Simpson)
 
 # ODE solvers
 ode_solvers = "0.6.1"        # Dormand-Prince 5(4), Dop853, RK4 (nalgebra-based)
@@ -213,16 +213,16 @@ core_affinity = "0.8"
 fwht = { path = "../cratesgororobas/fwht" }
 
 # SIMD types + dispatch + distance
-wide = "0.7"                 # Named SIMD types (f64x4, f32x8) for explicit vectorization
+wide = "1.2"                 # Named SIMD types (f64x4, f32x8) for explicit vectorization
 pulp = "0.22"                # Runtime-dispatched SIMD autovectorization (powers faer)
-simsimd = "5"                # Hardware-accelerated distance functions (L2, cosine, dot)
+simsimd = "6"                # Hardware-accelerated distance functions (L2, cosine, dot)
 
 # Parallelism (rayon already in workspace) + concurrency hygiene
 crossbeam-utils = "0.8"      # CachePadded (false-sharing), Backoff, scoped threads
 
 # Buffer/alignment/zero-copy layer
 aligned-vec = "0.6"          # AVec/ABox: runtime-aligned allocation for SIMD + cache
-dyn-stack = "0.11"           # Reusable scratch workspace (dynamic temp arrays, no alloc churn)
+dyn-stack = "0.13"           # Reusable scratch workspace (dynamic temp arrays, no alloc churn)
 bytemuck = { version = "1.25", features = ["derive"] }  # POD/slice casting + derive macros
 smallvec = "1.15"            # Inline small buffers, heap spill only when needed
 
@@ -244,16 +244,16 @@ cudarc = { version = "0.19", default-features = false, features = [
 ] }
 
 # Dynamic library loading (OptiX FFI)
-libloading = "0.8"
+libloading = "0.9"
 
 # GPU telemetry (NVML). Used for Rust-native sampling without shelling out.
-nvml-wrapper = "0.10"
+nvml-wrapper = "0.12"
 
 # Machine learning / Neural synthesis (burn 0.16: pure Rust, backend-agnostic)
 # Note: burn backends are optional at crate level, not workspace level.
 # Native BLAS backends remain crate-local opt-ins so default workspace builds stay
 # offline-friendly and do not assume OpenBLAS/BLIS/Accelerate availability.
-burn = { version = "0.16", default-features = false, features = ["std", "autodiff"] }
+burn = { version = "0.20", default-features = false, features = ["std", "autodiff"] }
 
 # Error handling
 thiserror = "2.0"
@@ -265,7 +265,7 @@ serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 anstyle = "1.0"
 axum = "0.8"
-tokio = { version = "1.50", features = ["rt-multi-thread", "macros"] }
+tokio = { version = "1.51", features = ["rt-multi-thread", "macros"] }
 csv = "1.4"
 regex = "1.12"                # Claims matrix parsing, pattern matching
 walkdir = "2.5"               # Recursive directory traversal for evidence link checks
@@ -275,42 +275,42 @@ glob = "0.3"                  # Unix shell pattern matching for artifact paths
 pulldown-cmark = "0.13"       # Markdown parser for provenance extraction
 linkify = "0.10"              # URL extraction from prose without ad hoc regex-only parsing
 url = "2.5"                   # URL parsing for provenance and artifact reconciliation
-reqwest = { version = "0.12", default-features = false, features = ["blocking", "rustls-tls", "gzip", "brotli", "deflate"] } # Standardized blocking HTTP transfer stack for universal recovery routing
+reqwest = { version = "0.13", default-features = false, features = ["blocking", "rustls", "gzip", "brotli", "deflate", "form"] } # Standardized blocking HTTP transfer stack for universal recovery routing
 backon = "1.6"                # Exponential backoff helpers for resumable HTTP range downloads
-rusqlite = { version = "0.38", features = ["bundled"] } # SQLite-backed normalized provenance store after removing Burn train/sqlite coupling
-rusqlite_migration = "2.4"    # SQLite schema migrations for provenance_store
+rusqlite = { version = "0.39", features = ["bundled"] } # SQLite-backed normalized provenance store after removing Burn train/sqlite coupling
+rusqlite_migration = "2.5"    # SQLite schema migrations for provenance_store
 cdf = "0.1.4"                 # Pure-Rust NASA CDF reader for heliosphere mission products
-chardetng = "0.1"             # Charset detection for non-UTF8 intake text
+chardetng = "1.0"             # Charset detection for non-UTF8 intake text
 encoding_rs = "0.8"           # Decoding support for lossy/non-UTF8 source ingest
 blake3 = "1.8"                # Fast content hashing for ingest fingerprints
-sha2 = "0.10"                 # SHA-256 checksums for data provenance
-md5 = { package = "md-5", version = "0.10.6" } # Zenodo checksum verification (crate exports as md5)
+sha2 = "0.11"                 # SHA-256 checksums for data provenance
+md5 = { package = "md-5", version = "0.11.0" } # Zenodo checksum verification (crate exports as md5)
 ureq = "3"                    # Minimal sync HTTP client for data fetching
 fitsio = { version = "0.21", features = ["default"] } # cfitsio bindings for FITS astronomy file I/O
-quick-xml = "0.38"            # SAX-style XML parser for VOTable and VO Cone Search responses
+quick-xml = "0.39"            # SAX-style XML parser for VOTable and VO Cone Search responses
 # DSP / spectral analysis
-apodize = "0.3"               # Window functions (Hann, Hamming, Blackman) for FFT spectral analysis
+apodize = "1.0"               # Window functions (Hann, Hamming, Blackman) for FFT spectral analysis
 
 flate2 = "1.1"                # Gzip compression/decompression
-zip = "2.4"                   # ZIP archive extraction
+zip = "8.5"                   # ZIP archive extraction
 tar = "0.4"                   # Tar archive reading (WMAP/Planck chain extraction)
 
 # PDF extraction (pdfium-render is primary; lopdf/pdf-extract are pure-Rust fallback)
-pdfium-render = "0.8"            # High-level PDFium wrapper (text, images, rendering)
+pdfium-render = "0.9"            # High-level PDFium wrapper (text, images, rendering)
 image = "0.25"                   # Image encoding/decoding (used by pdfium-render for PNG output)
-lopdf = "0.39"                   # Pure Rust PDF parser (fallback, object-level access)
+lopdf = "0.40"                   # Pure Rust PDF parser (fallback, object-level access)
 pdf-extract = "0.10"             # Pure Rust PDF text extraction (fallback, wraps lopdf)
 unpdf = "0.2"                    # Scientific PDF extraction with math support
-chromiumoxide = "0.7"            # Pure Rust headless chrome client
-parquet = { version = "58.0.0", default-features = false, features = ["arrow", "snap"] }
-arrow-array = "58.0.0"
-arrow-ipc = "58.0.0"
-arrow-schema = "58.0.0"
-toml = "0.8"                     # TOML serialization/deserialization
-toml_edit = "0.23"               # Deterministic TOML emission/editing for compatibility exports
+chromiumoxide = "0.9"            # Pure Rust headless chrome client
+parquet = { version = "58.1.0", default-features = false, features = ["arrow", "snap"] }
+arrow-array = "58.1.0"
+arrow-ipc = "58.1.0"
+arrow-schema = "58.1.0"
+toml = "1.1"                     # TOML serialization/deserialization
+toml_edit = "0.25"               # Deterministic TOML emission/editing for compatibility exports
 camino = "1.2"                   # UTF-8 canonical repo-relative paths in provenance layers
 strsim = "0.11"                  # String similarity (Jaro-Winkler, Levenshtein)
-scraper = "0.22"                 # HTML scraping with CSS selectors (Google Scholar)
+scraper = "0.26"                 # HTML scraping with CSS selectors (Google Scholar)
 unicode-normalization = "0.1"    # Unicode normalization for ANSI-safe UTF-8 sanitation
 
 # HDF5 data export (requires system libhdf5)
@@ -324,7 +324,7 @@ hdf5 = { package = "hdf5-metno", version = "0.12" }
 # netcdf3: read/write NetCDF-3 classic format (BOUT++ grid files, legacy datasets)
 # netcdf-reader: unified read-only for both NC3 classic and NC4/HDF5 (BOUT++ output)
 netcdf3 = "0.6"
-netcdf-reader = "0.1"
+netcdf-reader = "0.2"
 
 # Zarr v2/v3 multidimensional array storage (pure Rust)
 # Used for FAIR-MAST tokamak data (S3 bucket, blosc/lz4 compressed)
@@ -337,7 +337,7 @@ pgfplots = "0.5.1"                   # PGFPlots (LaTeX-quality figures)
 
 # LaTeX generation
 chrono = { version = "0.4", features = ["serde"] }
-hifitime = "4.2.5"
+hifitime = "4.2.6"
 
 # Logging and Config
 log = "0.4"
@@ -347,13 +347,13 @@ tracing-subscriber = "0.3"
 tracing-tracy = "0.11.4"
 
 # Python bindings
-pyo3 = { version = "0.25", features = ["extension-module"] }
-numpy = "0.25"
+pyo3 = { version = "0.28", features = ["extension-module"] }
+numpy = "0.28"
 
 # Testing
 approx = "0.5"
 tempfile = "3.27"
-proptest = "1.10"
+proptest = "1.11"
 # Upgraded from 0.5 to 0.8 (2026-03-20, T-042). API surface unchanged:
 # criterion_group!, criterion_main!, Criterion, BenchmarkId, black_box.
 criterion = { version = "0.8.2", features = ["html_reports"] }

@@ -205,7 +205,7 @@ flate2 = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
 faer.workspace = true
-hdf5-metno = "0.12.3"
+hdf5-metno = "0.12.4"
 glob.workspace = true
 statrs.workspace = true
 

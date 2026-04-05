@@ -1,5 +1,6 @@
-use super::hermitian::{C2, cmul, cconj, hermitian_3x3_eig_hybrid};
+use super::hermitian::{C2, cconj, cmul, hermitian_3x3_eig_hybrid};
 use flavor_lifts::{FlavorLift, Pdg2024, apply_v6_perturbation};
+use nalgebra::ComplexField;
 
 // ---------------------------------------------------------------------------
 // Parameterized CP scan point evaluator
@@ -69,7 +70,9 @@ pub struct CpScanResult {
 pub fn extract_delta_cp_invariant(u_moduli: &[[f64; 3]; 3], j_cp: f64) -> f64 {
     let s13 = u_moduli[0][2];
     let c13 = (1.0 - s13 * s13).max(0.0).sqrt();
-    if c13 < 1e-15 { return 0.0; }
+    if c13 < 1e-15 {
+        return 0.0;
+    }
 
     let s12 = u_moduli[0][1] / c13;
     let c12 = u_moduli[0][0] / c13;
@@ -78,7 +81,11 @@ pub fn extract_delta_cp_invariant(u_moduli: &[[f64; 3]; 3], j_cp: f64) -> f64 {
 
     // sin(delta) = J / (s12*c12*s23*c23*s13*c13^2)
     let denom = s12 * c12 * s23 * c23 * s13 * c13 * c13;
-    let sin_delta = if denom.abs() > 1e-15 { j_cp / denom } else { 0.0 };
+    let sin_delta = if denom.abs() > 1e-15 {
+        j_cp / denom
+    } else {
+        0.0
+    };
 
     // cos(delta) from |U_mu1|^2 = s12^2*c23^2 + c12^2*s23^2*s13^2
     //                              + 2*s12*c12*s23*c23*s13*cos(delta)
@@ -190,23 +197,25 @@ pub struct CpScanContext<'a> {
 /// This is allocated ONCE per k-embedding, not per grid point.
 pub struct CpScanBuffers {
     /// Pre-allocated neutrino mass matrix (overwritten each point).
-    pub m_nu: faer::Mat<faer::complex_native::c64>,
+    pub m_nu: faer::Mat<faer::c64>,
     /// Pre-allocated charged lepton mass matrix (overwritten each point).
-    pub m_ch: faer::Mat<faer::complex_native::c64>,
+    pub m_ch: faer::Mat<faer::c64>,
 }
 
 impl Default for CpScanBuffers {
     fn default() -> Self {
         Self {
-            m_nu: faer::Mat::<faer::complex_native::c64>::zeros(3, 3),
-            m_ch: faer::Mat::<faer::complex_native::c64>::zeros(3, 3),
+            m_nu: faer::Mat::<faer::c64>::zeros(3, 3),
+            m_ch: faer::Mat::<faer::c64>::zeros(3, 3),
         }
     }
 }
 
 impl CpScanBuffers {
     /// Create a new buffer pair.  Equivalent to `Default::default()`.
-    pub fn new() -> Self { Self::default() }
+    pub fn new() -> Self {
+        Self::default()
+    }
 }
 
 /// Evaluate a single CP scan point in the 3D (alpha_CP, t_sol, t_atm) space.
@@ -273,37 +282,29 @@ pub fn evaluate_cp_scan_point(
     // Step 2: perturb real mass matrix
     let mut m_nu_pert = ctx.m_nu_real.clone();
     apply_v6_perturbation(&mut m_nu_pert, ctx.v6_basis, &beta, ctx.lift);
-    let m_nu_pert = (&m_nu_pert + m_nu_pert.transpose()) * faer::scale(0.5);
+    let m_nu_pert = (&m_nu_pert + m_nu_pert.transpose()) * faer::Scale(0.5);
 
     // Step 3: fill pre-allocated complex Hermitian matrices
     for i in 0..3 {
-        bufs.m_nu.write(i, i, faer::complex_native::c64::new(
-            m_nu_pert.read(i, i), 0.0));
-        bufs.m_ch.write(i, i, faer::complex_native::c64::new(
-            ctx.m_ch_real.read(i, i), 0.0));
+        bufs.m_nu[(i, i)] = faer::c64::new(m_nu_pert[(i, i)], 0.0);
+        bufs.m_ch[(i, i)] = faer::c64::new(ctx.m_ch_real[(i, i)], 0.0);
         for j in (i + 1)..3 {
             let phase = alpha_cp * phi[i][j];
-            let mag = m_nu_pert.read(i, j);
-            bufs.m_nu.write(i, j, faer::complex_native::c64::new(
-                mag * phase.cos(), mag * phase.sin()));
-            bufs.m_nu.write(j, i, faer::complex_native::c64::new(
-                mag * phase.cos(), -mag * phase.sin()));
-            bufs.m_ch.write(i, j, faer::complex_native::c64::new(
-                ctx.m_ch_real.read(i, j), 0.0));
-            bufs.m_ch.write(j, i, faer::complex_native::c64::new(
-                ctx.m_ch_real.read(j, i), 0.0));
+            let mag = m_nu_pert[(i, j)];
+            bufs.m_nu[(i, j)] = faer::c64::new(mag * phase.cos(), mag * phase.sin());
+            bufs.m_nu[(j, i)] = faer::c64::new(mag * phase.cos(), -mag * phase.sin());
+            bufs.m_ch[(i, j)] = faer::c64::new(ctx.m_ch_real[(i, j)], 0.0);
+            bufs.m_ch[(j, i)] = faer::c64::new(ctx.m_ch_real[(j, i)], 0.0);
         }
     }
 
     // Step 4: eigendecompose
-    let eig_ch = bufs.m_ch.selfadjoint_eigendecomposition(faer::Side::Lower);
-    let eig_nu = bufs.m_nu.selfadjoint_eigendecomposition(faer::Side::Lower);
-    let u_pmns = eig_ch.u().adjoint() * eig_nu.u();
+    let eig_ch = bufs.m_ch.self_adjoint_eigen(faer::Side::Lower).unwrap();
+    let eig_nu = bufs.m_nu.self_adjoint_eigen(faer::Side::Lower).unwrap();
+    let u_pmns = eig_ch.U().adjoint() * eig_nu.U();
 
     // Step 5: extract with permutation (no allocation)
-    let u_at = |i: usize, j: usize| -> faer::complex_native::c64 {
-        u_pmns.read(ctx.perm_u[i], ctx.perm_d[j])
-    };
+    let u_at = |i: usize, j: usize| -> faer::c64 { u_pmns[(ctx.perm_u[i], ctx.perm_d[j])] };
 
     let u_e3_abs = u_at(0, 2).abs();
     let theta_13 = u_e3_abs.min(1.0).asin().to_degrees();
@@ -311,14 +312,17 @@ pub fn evaluate_cp_scan_point(
 
     let theta_12 = if cos_13 > 1e-15 {
         (u_at(0, 1).abs() / cos_13).min(1.0).asin().to_degrees()
-    } else { 0.0 };
+    } else {
+        0.0
+    };
 
     let theta_23 = if cos_13 > 1e-15 {
         (u_at(1, 2).abs() / cos_13).min(1.0).asin().to_degrees()
-    } else { 0.0 };
+    } else {
+        0.0
+    };
 
-    let j_cp = (u_at(0, 0) * u_at(1, 1)
-        * u_at(0, 1).conj() * u_at(1, 0).conj()).im;
+    let j_cp = (u_at(0, 0) * u_at(1, 1) * u_at(0, 1).conj() * u_at(1, 0).conj()).im;
 
     let delta_cp = (-u_at(0, 2)).arg().to_degrees();
 
@@ -334,7 +338,14 @@ pub fn evaluate_cp_scan_point(
     };
     let delta_cp_invariant = extract_delta_cp_invariant(&u_moduli, j_cp);
 
-    CpScanResult { theta_12, theta_13, theta_23, j_cp, delta_cp, delta_cp_invariant }
+    CpScanResult {
+        theta_12,
+        theta_13,
+        theta_23,
+        j_cp,
+        delta_cp,
+        delta_cp_invariant,
+    }
 }
 
 // ---------------------------------------------------------------------------
@@ -363,21 +374,21 @@ pub fn evaluate_cp_scan_point_cardano(
     // Step 2: perturb real mass matrix
     let mut m_nu_pert = ctx.m_nu_real.clone();
     apply_v6_perturbation(&mut m_nu_pert, ctx.v6_basis, &beta, ctx.lift);
-    let m_nu_pert = (&m_nu_pert + m_nu_pert.transpose()) * faer::scale(0.5);
+    let m_nu_pert = (&m_nu_pert + m_nu_pert.transpose()) * faer::Scale(0.5);
 
     // Step 3: build stack-allocated 3x3 complex Hermitian matrices
     let mut h_nu: [[C2; 3]; 3] = [[(0.0, 0.0); 3]; 3];
     let mut h_ch: [[C2; 3]; 3] = [[(0.0, 0.0); 3]; 3];
     for i in 0..3 {
-        h_nu[i][i] = (m_nu_pert.read(i, i), 0.0);
-        h_ch[i][i] = (ctx.m_ch_real.read(i, i), 0.0);
+        h_nu[i][i] = (m_nu_pert[(i, i)], 0.0);
+        h_ch[i][i] = (ctx.m_ch_real[(i, i)], 0.0);
         for j in (i + 1)..3 {
             let phase = alpha_cp * phi[i][j];
-            let mag = m_nu_pert.read(i, j);
+            let mag = m_nu_pert[(i, j)];
             h_nu[i][j] = (mag * phase.cos(), mag * phase.sin());
             h_nu[j][i] = (mag * phase.cos(), -mag * phase.sin());
-            h_ch[i][j] = (ctx.m_ch_real.read(i, j), 0.0);
-            h_ch[j][i] = (ctx.m_ch_real.read(j, i), 0.0);
+            h_ch[i][j] = (ctx.m_ch_real[(i, j)], 0.0);
+            h_ch[j][i] = (ctx.m_ch_real[(j, i)], 0.0);
         }
     }
 
@@ -401,9 +412,7 @@ pub fn evaluate_cp_scan_point_cardano(
     }
 
     // Step 5: apply permutation and extract
-    let u_at = |i: usize, j: usize| -> C2 {
-        u_pmns[ctx.perm_u[i]][ctx.perm_d[j]]
-    };
+    let u_at = |i: usize, j: usize| -> C2 { u_pmns[ctx.perm_u[i]][ctx.perm_d[j]] };
 
     let u_e3 = u_at(0, 2);
     let u_e3_abs = (u_e3.0 * u_e3.0 + u_e3.1 * u_e3.1).sqrt();
@@ -414,16 +423,23 @@ pub fn evaluate_cp_scan_point_cardano(
         let u_e2 = u_at(0, 1);
         let u_e2_abs = (u_e2.0 * u_e2.0 + u_e2.1 * u_e2.1).sqrt();
         (u_e2_abs / cos_13).min(1.0).asin().to_degrees()
-    } else { 0.0 };
+    } else {
+        0.0
+    };
 
     let theta_23 = if cos_13 > 1e-15 {
         let u_mu3 = u_at(1, 2);
         let u_mu3_abs = (u_mu3.0 * u_mu3.0 + u_mu3.1 * u_mu3.1).sqrt();
         (u_mu3_abs / cos_13).min(1.0).asin().to_degrees()
-    } else { 0.0 };
+    } else {
+        0.0
+    };
 
-    let j_cp = cmul(cmul(u_at(0, 0), u_at(1, 1)),
-                    cmul(cconj(u_at(0, 1)), cconj(u_at(1, 0)))).1;
+    let j_cp = cmul(
+        cmul(u_at(0, 0), u_at(1, 1)),
+        cmul(cconj(u_at(0, 1)), cconj(u_at(1, 0))),
+    )
+    .1;
 
     let neg_ue3 = (-u_e3.0, -u_e3.1);
     let delta_cp = neg_ue3.1.atan2(neg_ue3.0).to_degrees();
@@ -440,7 +456,14 @@ pub fn evaluate_cp_scan_point_cardano(
     };
     let delta_cp_invariant = extract_delta_cp_invariant(&u_moduli, j_cp);
 
-    CpScanResult { theta_12, theta_13, theta_23, j_cp, delta_cp, delta_cp_invariant }
+    CpScanResult {
+        theta_12,
+        theta_13,
+        theta_23,
+        j_cp,
+        delta_cp,
+        delta_cp_invariant,
+    }
 }
 
 // Nelder-Mead refinement of CP scan (argmin)
@@ -494,13 +517,13 @@ impl<'a> argmin::core::CostFunction for CpNelderMeadCost<'a> {
             }
             let mut m_nu = self.ctx.m_nu_real.clone();
             apply_v6_perturbation(&mut m_nu, self.ctx.v6_basis, &beta, self.ctx.lift);
-            let m_nu = (&m_nu + m_nu.transpose()) * faer::scale(0.5);
+            let m_nu = (&m_nu + m_nu.transpose()) * faer::Scale(0.5);
             let mut h_nu: [[C2; 3]; 3] = [[(0.0, 0.0); 3]; 3];
             for i in 0..3 {
-                h_nu[i][i] = (m_nu.read(i, i), 0.0);
+                h_nu[i][i] = (m_nu[(i, i)], 0.0);
                 for j in (i + 1)..3 {
                     let phase = alpha_cp * self.phi[i][j];
-                    let mag = m_nu.read(i, j);
+                    let mag = m_nu[(i, j)];
                     h_nu[i][j] = (mag * phase.cos(), mag * phase.sin());
                     h_nu[j][i] = (mag * phase.cos(), -mag * phase.sin());
                 }
@@ -550,10 +573,16 @@ pub fn refine_cp_nelder_mead_r(
     prediction_mode: bool,
     r_penalty_weight: f64,
 ) -> (CpScanResult, [f64; 3]) {
-    use argmin::core::{Executor, State};
-    use argmin::solver::neldermead::NelderMead;
+    use argmin::{
+        core::{Executor, State},
+        solver::neldermead::NelderMead,
+    };
 
-    let bounds = [(0.01, 1.0), (t_sol0 - 2.0, t_sol0 + 4.0), (t_atm0 - 2.0, t_atm0 + 8.0)];
+    let bounds = [
+        (0.01, 1.0),
+        (t_sol0 - 2.0, t_sol0 + 4.0),
+        (t_atm0 - 2.0, t_atm0 + 8.0),
+    ];
 
     let build_simplex = |x0: &[f64; 3]| -> Vec<Vec<f64>> {
         let steps = [0.05, 0.2, 0.5];
@@ -615,8 +644,12 @@ pub fn refine_cp_nelder_mead_r(
 
     let mut bufs = CpScanBuffers::new();
     let result = evaluate_cp_scan_point(
-        best_params[0], best_params[1], best_params[2],
-        phi, ctx, &mut bufs,
+        best_params[0],
+        best_params[1],
+        best_params[2],
+        phi,
+        ctx,
+        &mut bufs,
     );
     (result, best_params)
 }

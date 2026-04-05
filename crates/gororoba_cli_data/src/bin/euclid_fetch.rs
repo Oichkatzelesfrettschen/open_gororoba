@@ -770,7 +770,11 @@ fn verify_md5(path: &Path, expected_md5: &str) -> Result<bool> {
         }
         md5::Digest::update(&mut digest, &buffer[..read]);
     }
-    Ok(format!("{:x}", md5::Digest::finalize(digest)) == expected_md5)
+    Ok(md5::Digest::finalize(digest)
+        .iter()
+        .map(|byte| format!("{byte:02x}"))
+        .collect::<String>()
+        == expected_md5)
 }
 
 fn write_json<T: Serialize>(path: &Path, value: &T) -> Result<()> {

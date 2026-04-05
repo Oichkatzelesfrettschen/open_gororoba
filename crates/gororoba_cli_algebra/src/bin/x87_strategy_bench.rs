@@ -10,7 +10,7 @@ use std::{
 use anyhow::Context;
 use clap::Parser;
 use csv::Writer;
-use rand::{Rng, SeedableRng};
+use rand::{RngExt, SeedableRng};
 use rand_chacha::ChaCha8Rng;
 
 use cd_kernel::{
@@ -219,8 +219,12 @@ fn build_workloads(len: usize, seed: u64) -> Vec<Workload> {
             }
         })
         .collect();
-    let random_left = (0..len).map(|_| rng.gen_range(-1.0_f64..1.0_f64)).collect();
-    let random_right = (0..len).map(|_| rng.gen_range(-1.0_f64..1.0_f64)).collect();
+    let random_left = (0..len)
+        .map(|_| rng.random_range(-1.0_f64..1.0_f64))
+        .collect();
+    let random_right = (0..len)
+        .map(|_| rng.random_range(-1.0_f64..1.0_f64))
+        .collect();
     let ill_left = vec![1.0e9; len_even];
     let half = len_even / 2;
     let correction = 1.0 / (half as f64 * 1.0e9);

@@ -23,28 +23,30 @@ pub struct RayState {
 pub fn non_associative_geodesic_step(
     ray: &mut RayState,
     local_metric: &[f64; 16],
-    dt: f64
+    dt: f64,
 ) -> Option<RayState> {
     // 1. Advance position: dx = p * dt
     for i in 0..16 {
         ray.position[i] += ray.momentum[i] * dt;
     }
-    
+
     // 2. Compute non-associative curvature: dp = (Metric * Momentum) * Momentum
     let p1: [f64; 16] = cd_multiply(local_metric, &ray.momentum).try_into().unwrap();
     let curvature_force: [f64; 16] = cd_multiply(&p1, &ray.momentum).try_into().unwrap();
-    
+
     // 3. Measure alternativity failure (Fracture condition)
     // If the space was associative/alternative, (M*P)*P == M*(P*P).
-    let pp: [f64; 16] = cd_multiply(&ray.momentum, &ray.momentum).try_into().unwrap();
+    let pp: [f64; 16] = cd_multiply(&ray.momentum, &ray.momentum)
+        .try_into()
+        .unwrap();
     let alt_curvature: [f64; 16] = cd_multiply(local_metric, &pp).try_into().unwrap();
-    
+
     let mut fracture_magnitude: f64 = 0.0;
     for i in 0..16 {
         fracture_magnitude += (curvature_force[i] - alt_curvature[i]).powi(2);
     }
     fracture_magnitude = fracture_magnitude.sqrt();
-    
+
     // 4. Update primary momentum
     for (m, &cf) in ray.momentum.iter_mut().zip(curvature_force.iter()) {
         *m += cf * dt;
@@ -59,7 +61,7 @@ pub fn non_associative_geodesic_step(
         }
         return Some(fractured_ray);
     }
-    
+
     None
 }
 
@@ -74,13 +76,15 @@ mod tests {
             momentum: [0.1; 16],
         };
         // Inject a ZD-inducing momentum
-        ray.momentum[15] = 1.0; ray.momentum[4] = -1.0;
-        
+        ray.momentum[15] = 1.0;
+        ray.momentum[4] = -1.0;
+
         let mut metric = [0.0; 16];
-        metric[1] = 1.0; metric[10] = 1.0;
-        
+        metric[1] = 1.0;
+        metric[10] = 1.0;
+
         let fractured = non_associative_geodesic_step(&mut ray, &metric, 0.01);
-        
+
         // The non-alternative metric should cause the ray to spawn a secondary path
         assert!(fractured.is_some());
     }

@@ -13,7 +13,9 @@ pub type SedenionGate = [f64; 16];
 /// the evaluation order (left vs. right bracketing) physically changes the compiled state,
 /// mirroring the topological non-commutativity of anyon braiding.
 pub fn compile_circuit_braid(gates: &[SedenionGate], left_associative: bool) -> SedenionGate {
-    if gates.is_empty() { return [0.0; 16]; }
+    if gates.is_empty() {
+        return [0.0; 16];
+    }
     let mut state = gates[0];
     for gate in gates.iter().skip(1) {
         if left_associative {

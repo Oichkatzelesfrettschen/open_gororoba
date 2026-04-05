@@ -40,7 +40,10 @@ struct Cli {
     wht: bool,
 
     /// Output JSON path.
-    #[arg(long, default_value = "data/output/heliosphere/ablations/turboquant_validate.json")]
+    #[arg(
+        long,
+        default_value = "data/output/heliosphere/ablations/turboquant_validate.json"
+    )]
     out_json: PathBuf,
 }
 
@@ -97,7 +100,11 @@ fn cosine_sim(a: &[f64], b: &[f64]) -> f64 {
     let dot: f64 = a.iter().zip(b.iter()).map(|(x, y)| x * y).sum();
     let na: f64 = a.iter().map(|x| x * x).sum::<f64>().sqrt();
     let nb: f64 = b.iter().map(|x| x * x).sum::<f64>().sqrt();
-    if na < 1e-15 || nb < 1e-15 { 0.0 } else { dot / (na * nb) }
+    if na < 1e-15 || nb < 1e-15 {
+        0.0
+    } else {
+        dot / (na * nb)
+    }
 }
 
 fn argmax(scores: &[f64]) -> usize {
@@ -217,10 +224,7 @@ fn main() -> Result<()> {
 
     for &seq_len in &cli.seq_lens {
         for &bits in &cli.bits {
-            print!(
-                "  seq={:<5} bits={} ... ",
-                seq_len, bits
-            );
+            print!("  seq={:<5} bits={} ... ", seq_len, bits);
 
             let result = validate_config(cli.dim, bits, seq_len, cli.n_heads, cli.wht);
 

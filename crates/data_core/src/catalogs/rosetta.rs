@@ -14,11 +14,7 @@ use crate::{
 };
 use chrono::{DateTime, Datelike, Timelike, Utc};
 use csv::ReaderBuilder;
-use std::{
-    collections::BTreeMap,
-    fs,
-    path::PathBuf,
-};
+use std::{collections::BTreeMap, fs, path::PathBuf};
 
 /// AMDA dataset ID for Rosetta RPC-MAG outboard sensor, 60s resampled.
 ///
@@ -147,22 +143,23 @@ pub fn parse_rosetta_amda_mag_csv_minutes(content: &str) -> Vec<RosettaMagMinute
     let mut buckets: BTreeMap<(u16, u16, u8, u8), MinuteAcc> = BTreeMap::new();
 
     for record in reader.records().flatten() {
-        let Some(time_str) = record.get(0) else { continue };
+        let Some(time_str) = record.get(0) else {
+            continue;
+        };
 
-        let (year, doy, hour, minute) =
-            if let Ok(dt) = DateTime::parse_from_rfc3339(time_str) {
-                let utc = dt.with_timezone(&Utc);
-                (
-                    utc.year() as u16,
-                    utc.ordinal() as u16,
-                    utc.hour() as u8,
-                    utc.minute() as u8,
-                )
-            } else if let Some((y, d, h, m)) = parse_amda_timestamp_full(time_str) {
-                (y, d, h, m)
-            } else {
-                continue;
-            };
+        let (year, doy, hour, minute) = if let Ok(dt) = DateTime::parse_from_rfc3339(time_str) {
+            let utc = dt.with_timezone(&Utc);
+            (
+                utc.year() as u16,
+                utc.ordinal() as u16,
+                utc.hour() as u8,
+                utc.minute() as u8,
+            )
+        } else if let Some((y, d, h, m)) = parse_amda_timestamp_full(time_str) {
+            (y, d, h, m)
+        } else {
+            continue;
+        };
 
         let bx = parse_amda_f64(record.get(1));
         let by = parse_amda_f64(record.get(2));
@@ -195,10 +192,8 @@ pub fn parse_rosetta_amda_mag_csv_minutes(content: &str) -> Vec<RosettaMagMinute
 
             let elapsed = match first {
                 Some((fy, fd, fh, fm)) => {
-                    let day_diff =
-                        (year as f64 - fy as f64) * 365.25 + (doy as f64 - fd as f64);
-                    day_diff * 24.0 + (hour as f64 - fh as f64)
-                        + (minute as f64 - fm as f64) / 60.0
+                    let day_diff = (year as f64 - fy as f64) * 365.25 + (doy as f64 - fd as f64);
+                    day_diff * 24.0 + (hour as f64 - fh as f64) + (minute as f64 - fm as f64) / 60.0
                 }
                 None => 0.0,
             };
@@ -294,8 +289,16 @@ impl DatasetProvider for RosettaMagProvider {
             let (start_month, end_month) = self.month_range.unwrap_or((1, 12));
 
             // Respect mission timeline
-            let start_month = if year == 2014 { start_month.max(8) } else { start_month };
-            let end_month = if year == 2016 { end_month.min(9) } else { end_month };
+            let start_month = if year == 2014 {
+                start_month.max(8)
+            } else {
+                start_month
+            };
+            let end_month = if year == 2016 {
+                end_month.min(9)
+            } else {
+                end_month
+            };
 
             for month in start_month..=end_month {
                 let t_min = format!("{year:04}-{month:02}-01T00:00:00Z");

@@ -36,8 +36,10 @@
 
 pub mod solver;
 
-use std::fmt;
-use std::ops::{Add, AddAssign, Sub, SubAssign, Neg};
+use std::{
+    fmt,
+    ops::{Add, AddAssign, Neg, Sub, SubAssign},
+};
 
 // ============================================================================
 // Q16.16: 32-bit fixed-point with 16 fractional bits
@@ -68,39 +70,53 @@ impl Q16_16 {
 
     /// Raw integer value (for inspection/serialization).
     #[inline]
-    pub fn raw(self) -> i32 { self.0 }
+    pub fn raw(self) -> i32 {
+        self.0
+    }
 
     /// Construct from raw integer.
     #[inline]
-    pub fn from_raw(v: i32) -> Self { Self(v) }
+    pub fn from_raw(v: i32) -> Self {
+        Self(v)
+    }
 }
 
 impl Add for Q16_16 {
     type Output = Self;
     #[inline]
-    fn add(self, rhs: Self) -> Self { Self(self.0.wrapping_add(rhs.0)) }
+    fn add(self, rhs: Self) -> Self {
+        Self(self.0.wrapping_add(rhs.0))
+    }
 }
 
 impl AddAssign for Q16_16 {
     #[inline]
-    fn add_assign(&mut self, rhs: Self) { self.0 = self.0.wrapping_add(rhs.0); }
+    fn add_assign(&mut self, rhs: Self) {
+        self.0 = self.0.wrapping_add(rhs.0);
+    }
 }
 
 impl Sub for Q16_16 {
     type Output = Self;
     #[inline]
-    fn sub(self, rhs: Self) -> Self { Self(self.0.wrapping_sub(rhs.0)) }
+    fn sub(self, rhs: Self) -> Self {
+        Self(self.0.wrapping_sub(rhs.0))
+    }
 }
 
 impl SubAssign for Q16_16 {
     #[inline]
-    fn sub_assign(&mut self, rhs: Self) { self.0 = self.0.wrapping_sub(rhs.0); }
+    fn sub_assign(&mut self, rhs: Self) {
+        self.0 = self.0.wrapping_sub(rhs.0);
+    }
 }
 
 impl Neg for Q16_16 {
     type Output = Self;
     #[inline]
-    fn neg(self) -> Self { Self(self.0.wrapping_neg()) }
+    fn neg(self) -> Self {
+        Self(self.0.wrapping_neg())
+    }
 }
 
 impl fmt::Debug for Q16_16 {
@@ -155,38 +171,52 @@ impl Q32_32 {
     }
 
     #[inline]
-    pub fn raw(self) -> i64 { self.0 }
+    pub fn raw(self) -> i64 {
+        self.0
+    }
 
     #[inline]
-    pub fn from_raw(v: i64) -> Self { Self(v) }
+    pub fn from_raw(v: i64) -> Self {
+        Self(v)
+    }
 }
 
 impl Add for Q32_32 {
     type Output = Self;
     #[inline]
-    fn add(self, rhs: Self) -> Self { Self(self.0.wrapping_add(rhs.0)) }
+    fn add(self, rhs: Self) -> Self {
+        Self(self.0.wrapping_add(rhs.0))
+    }
 }
 
 impl AddAssign for Q32_32 {
     #[inline]
-    fn add_assign(&mut self, rhs: Self) { self.0 = self.0.wrapping_add(rhs.0); }
+    fn add_assign(&mut self, rhs: Self) {
+        self.0 = self.0.wrapping_add(rhs.0);
+    }
 }
 
 impl Sub for Q32_32 {
     type Output = Self;
     #[inline]
-    fn sub(self, rhs: Self) -> Self { Self(self.0.wrapping_sub(rhs.0)) }
+    fn sub(self, rhs: Self) -> Self {
+        Self(self.0.wrapping_sub(rhs.0))
+    }
 }
 
 impl SubAssign for Q32_32 {
     #[inline]
-    fn sub_assign(&mut self, rhs: Self) { self.0 = self.0.wrapping_sub(rhs.0); }
+    fn sub_assign(&mut self, rhs: Self) {
+        self.0 = self.0.wrapping_sub(rhs.0);
+    }
 }
 
 impl Neg for Q32_32 {
     type Output = Self;
     #[inline]
-    fn neg(self) -> Self { Self(self.0.wrapping_neg()) }
+    fn neg(self) -> Self {
+        Self(self.0.wrapping_neg())
+    }
 }
 
 impl fmt::Debug for Q32_32 {
@@ -234,7 +264,9 @@ impl Q16Lm {
     }
 
     #[inline]
-    pub fn raw(self) -> u16 { self.0 }
+    pub fn raw(self) -> u16 {
+        self.0
+    }
 }
 
 // ============================================================================
@@ -245,19 +277,48 @@ impl Q16Lm {
 pub mod d3q19 {
     /// Lattice velocities: (cx, cy, cz) for each of 19 directions.
     pub const C: [[i32; 3]; 19] = [
-        [ 0, 0, 0],
-        [ 1, 0, 0], [-1, 0, 0], [ 0, 1, 0], [ 0,-1, 0], [ 0, 0, 1], [ 0, 0,-1],
-        [ 1, 1, 0], [-1,-1, 0], [ 1,-1, 0], [-1, 1, 0],
-        [ 1, 0, 1], [-1, 0,-1], [ 1, 0,-1], [-1, 0, 1],
-        [ 0, 1, 1], [ 0,-1,-1], [ 0, 1,-1], [ 0,-1, 1],
+        [0, 0, 0],
+        [1, 0, 0],
+        [-1, 0, 0],
+        [0, 1, 0],
+        [0, -1, 0],
+        [0, 0, 1],
+        [0, 0, -1],
+        [1, 1, 0],
+        [-1, -1, 0],
+        [1, -1, 0],
+        [-1, 1, 0],
+        [1, 0, 1],
+        [-1, 0, -1],
+        [1, 0, -1],
+        [-1, 0, 1],
+        [0, 1, 1],
+        [0, -1, -1],
+        [0, 1, -1],
+        [0, -1, 1],
     ];
 
     /// Lattice weights.
     pub const W: [f64; 19] = [
-        1.0/3.0,
-        1.0/18.0, 1.0/18.0, 1.0/18.0, 1.0/18.0, 1.0/18.0, 1.0/18.0,
-        1.0/36.0, 1.0/36.0, 1.0/36.0, 1.0/36.0, 1.0/36.0, 1.0/36.0,
-        1.0/36.0, 1.0/36.0, 1.0/36.0, 1.0/36.0, 1.0/36.0, 1.0/36.0,
+        1.0 / 3.0,
+        1.0 / 18.0,
+        1.0 / 18.0,
+        1.0 / 18.0,
+        1.0 / 18.0,
+        1.0 / 18.0,
+        1.0 / 18.0,
+        1.0 / 36.0,
+        1.0 / 36.0,
+        1.0 / 36.0,
+        1.0 / 36.0,
+        1.0 / 36.0,
+        1.0 / 36.0,
+        1.0 / 36.0,
+        1.0 / 36.0,
+        1.0 / 36.0,
+        1.0 / 36.0,
+        1.0 / 36.0,
+        1.0 / 36.0,
     ];
 
     /// Opposite direction index.
@@ -279,8 +340,13 @@ mod tests {
         for v in [0.0f32, 0.333333, 0.055556, 0.027778, -0.05, 0.45, 1.0] {
             let q = Q16_16::from_f32(v);
             let back = q.to_f32();
-            assert!((back - v).abs() < Q16_16::INV_SCALE * 1.5,
-                    "roundtrip failed: {} -> {} -> {}", v, q.raw(), back);
+            assert!(
+                (back - v).abs() < Q16_16::INV_SCALE * 1.5,
+                "roundtrip failed: {} -> {} -> {}",
+                v,
+                q.raw(),
+                back
+            );
         }
     }
 
@@ -294,17 +360,25 @@ mod tests {
             sum += Q16_16::from_f32((w[i] * rho as f64) as f32);
         }
         // Integer sum should be close to rho (within quantization error)
-        assert!((sum.to_f32() - rho).abs() < 0.001,
-                "sum = {}, expected {}", sum.to_f32(), rho);
+        assert!(
+            (sum.to_f32() - rho).abs() < 0.001,
+            "sum = {}, expected {}",
+            sum.to_f32(),
+            rho
+        );
     }
 
     #[test]
     fn q32_roundtrip() {
-        for v in [0.0f64, 1.0/3.0, 1.0/18.0, 1.0/36.0] {
+        for v in [0.0f64, 1.0 / 3.0, 1.0 / 18.0, 1.0 / 36.0] {
             let q = Q32_32::from_f64(v);
             let back = q.to_f64();
-            assert!((back - v).abs() < Q32_32::INV_SCALE * 1.5,
-                    "roundtrip: {} -> {}", v, back);
+            assert!(
+                (back - v).abs() < Q32_32::INV_SCALE * 1.5,
+                "roundtrip: {} -> {}",
+                v,
+                back
+            );
         }
     }
 

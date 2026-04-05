@@ -703,12 +703,12 @@ fn fetch_donki_json(
             url: nasa_url.clone().unwrap_or_else(|| ccmc_url.clone()),
             source: Box::new(source),
         })?;
-    if let Some(nasa_url) = nasa_url {
-        if let Ok(body) = fetch_donki_json_from_url(&client, &nasa_url) {
-            validate_not_html(body.as_bytes())?;
-            fs::write(&cache_path, &body)?;
-            return Ok(body);
-        }
+    if let Some(nasa_url) = nasa_url
+        && let Ok(body) = fetch_donki_json_from_url(&client, &nasa_url)
+    {
+        validate_not_html(body.as_bytes())?;
+        fs::write(&cache_path, &body)?;
+        return Ok(body);
     }
     let body = fetch_donki_json_from_url(&client, &ccmc_url)?;
     validate_not_html(body.as_bytes())?;

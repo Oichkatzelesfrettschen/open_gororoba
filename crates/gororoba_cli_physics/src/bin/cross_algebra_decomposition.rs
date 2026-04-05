@@ -503,7 +503,7 @@ fn main() -> anyhow::Result<()> {
         // Resample galaxies
         let sample: Vec<NormalizedResiduals> = (0..n_gal_boot)
             .map(|_| {
-                let idx = rng.gen_range(0..n_gal_boot);
+                let idx = rng.random_range(0..n_gal_boot);
                 all_galaxies[idx].clone()
             })
             .collect();

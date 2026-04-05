@@ -9,6 +9,7 @@
 
 use gauss_quad::GaussLegendre;
 use num_complex::Complex64;
+use std::num::NonZeroUsize;
 
 /// Configuration for numerical quadrature.
 #[derive(Debug, Clone, Copy)]
@@ -58,7 +59,8 @@ impl QuadratureConfig {
 
 /// Gauss-Legendre quadrature of a real function over [a, b].
 pub fn gl_integrate<F: Fn(f64) -> f64>(f: F, a: f64, b: f64, degree: usize) -> f64 {
-    let quad = GaussLegendre::new(degree).expect("valid quadrature degree");
+    let quad =
+        GaussLegendre::new(NonZeroUsize::new(degree).expect("quadrature degree must be non-zero"));
     quad.integrate(a, b, f)
 }
 
@@ -69,7 +71,8 @@ pub fn gl_integrate_complex<F: Fn(f64) -> Complex64>(
     b: f64,
     degree: usize,
 ) -> Complex64 {
-    let quad = GaussLegendre::new(degree).expect("valid quadrature degree");
+    let quad =
+        GaussLegendre::new(NonZeroUsize::new(degree).expect("quadrature degree must be non-zero"));
     // GaussLegendre only integrates f64, so we split into real and imaginary.
     let pairs = quad.as_node_weight_pairs();
     let half_len = 0.5 * (b - a);
@@ -112,7 +115,9 @@ pub fn double_integral<F: Fn(f64, f64) -> Complex64>(
     power: f64,
     config: &QuadratureConfig,
 ) -> Complex64 {
-    let quad_u = GaussLegendre::new(config.n_u).expect("valid u-quadrature degree");
+    let quad_u = GaussLegendre::new(
+        NonZeroUsize::new(config.n_u).expect("u-quadrature degree must be non-zero"),
+    );
     let u_pairs: Vec<(f64, f64)> = quad_u.as_node_weight_pairs().to_vec();
 
     // Outer integral over T

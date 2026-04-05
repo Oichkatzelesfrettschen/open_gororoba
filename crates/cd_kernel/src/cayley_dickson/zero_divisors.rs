@@ -117,7 +117,7 @@ pub fn find_zero_divisors_general_form(
     let mut results = Vec::new();
 
     for _ in 0..n_samples {
-        let n_components = rng.gen_range(1..=4);
+        let n_components = rng.random_range(1..=4);
 
         let mut a = vec![0.0; dim];
         let mut b = vec![0.0; dim];
@@ -125,14 +125,14 @@ pub fn find_zero_divisors_general_form(
         let mut a_indices: Vec<usize> = (0..dim).collect();
         a_indices.shuffle(&mut rng);
         for &idx in a_indices.iter().take(n_components) {
-            a[idx] = if rng.gen_bool(0.5) { 1.0 } else { -1.0 };
+            a[idx] = if rng.random_bool(0.5) { 1.0 } else { -1.0 };
         }
 
         let mut b_indices: Vec<usize> = (0..dim).collect();
         b_indices.shuffle(&mut rng);
-        let b_components = rng.gen_range(1..=4);
+        let b_components = rng.random_range(1..=4);
         for &idx in b_indices.iter().take(b_components) {
-            b[idx] = if rng.gen_bool(0.5) { 1.0 } else { -1.0 };
+            b[idx] = if rng.random_bool(0.5) { 1.0 } else { -1.0 };
         }
 
         let ab = cd_multiply(&a, &b);
@@ -176,8 +176,8 @@ pub fn zd_spectrum_analysis(
     let mut norms = Vec::with_capacity(n_samples);
 
     for _ in 0..n_samples {
-        let a: Vec<f64> = (0..dim).map(|_| rng.gen_range(-1.0..1.0)).collect();
-        let b: Vec<f64> = (0..dim).map(|_| rng.gen_range(-1.0..1.0)).collect();
+        let a: Vec<f64> = (0..dim).map(|_| rng.random_range(-1.0..1.0)).collect();
+        let b: Vec<f64> = (0..dim).map(|_| rng.random_range(-1.0..1.0)).collect();
         let ab = cd_multiply(&a, &b);
         norms.push(cd_norm_sq(&ab).sqrt());
     }

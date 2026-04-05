@@ -31,4 +31,4 @@ pub mod hurwitz_radon;
 pub mod types;
 
 // Top-level re-exports for convenience
-pub use types::{classify, CliffordSystem, CliffordVerification, HurwitzClassification};
+pub use types::{CliffordSystem, CliffordVerification, HurwitzClassification, classify};

@@ -245,7 +245,8 @@ mod tests {
 
     #[test]
     fn test_jsoc_url_construction() {
-        let url = jsoc_sharp_keywords_url(7115, "2017.09.06_00:00:00_TAI", "2017.09.06_23:59:59_TAI");
+        let url =
+            jsoc_sharp_keywords_url(7115, "2017.09.06_00:00:00_TAI", "2017.09.06_23:59:59_TAI");
         assert!(url.contains("hmi.sharp_cea_720s"));
         assert!(url.contains("[7115]"));
         assert!(url.contains("USFLUX"));
@@ -262,7 +263,11 @@ mod tests {
         let ts = load_sharp_json(path, 7115).unwrap();
         assert_eq!(ts.harpnum, 7115);
         assert!(ts.records.len() > 0, "Should have records");
-        assert_eq!(ts.records.len(), 27, "Expected 27 records for X9.3 flare window");
+        assert_eq!(
+            ts.records.len(),
+            27,
+            "Expected 27 records for X9.3 flare window"
+        );
 
         // Check first record has finite USFLUX
         let r0 = &ts.records[0];

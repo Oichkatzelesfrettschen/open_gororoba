@@ -49,7 +49,10 @@ struct Cli {
     n_coils: usize,
 
     /// Output JSON path.
-    #[arg(long, default_value = "data/output/heliosphere/ablations/mast_multidiag_cd.json")]
+    #[arg(
+        long,
+        default_value = "data/output/heliosphere/ablations/mast_multidiag_cd.json"
+    )]
     out_json: PathBuf,
 }
 
@@ -130,9 +133,7 @@ fn effective_rank(embedded: &[Vec<f64>], dim: usize) -> usize {
     svals.iter().filter(|&&s| s > threshold).count()
 }
 
-fn build_delay_embedding(
-    sig1: &[f32], sig2: &[f32], dim: usize, stride: usize,
-) -> Vec<Vec<f64>> {
+fn build_delay_embedding(sig1: &[f32], sig2: &[f32], dim: usize, stride: usize) -> Vec<Vec<f64>> {
     let channels = 2;
     let steps = dim / channels;
     let window = (steps - 1) * stride + 1;
@@ -159,9 +160,7 @@ fn build_delay_embedding(
     embedded
 }
 
-fn build_multidiag_embedding(
-    channels: &[Vec<f32>], dim: usize, stride: usize,
-) -> Vec<Vec<f64>> {
+fn build_multidiag_embedding(channels: &[Vec<f32>], dim: usize, stride: usize) -> Vec<Vec<f64>> {
     let n_ch = channels.len();
     if n_ch == 0 {
         return vec![];
@@ -184,11 +183,15 @@ fn build_multidiag_embedding(
             let idx = start + s * stride;
             for (ch_i, ch_data) in channels.iter().enumerate() {
                 let val = ch_data[idx] as f64;
-                if !val.is_finite() { has_nan = true; }
+                if !val.is_finite() {
+                    has_nan = true;
+                }
                 v[s * n_ch + ch_i] = if val.is_finite() { val } else { 0.0 };
             }
         }
-        if has_nan { continue; } // skip embeddings with any NaN
+        if has_nan {
+            continue;
+        } // skip embeddings with any NaN
         let norm: f64 = v.iter().map(|x| x * x).sum::<f64>().sqrt();
         if norm > 1e-15 {
             for x in v.iter_mut() {
@@ -201,14 +204,23 @@ fn build_multidiag_embedding(
 }
 
 fn associator_mean(norms: &[f64]) -> f64 {
-    if norms.is_empty() { 0.0 } else { norms.iter().sum::<f64>() / norms.len() as f64 }
+    if norms.is_empty() {
+        0.0
+    } else {
+        norms.iter().sum::<f64>() / norms.len() as f64
+    }
 }
 
 fn main() -> Result<()> {
     let cli = Cli::parse();
     let dim = cli.embedding_dim;
     println!("=== MAST Multi-Diagnostic CD Comparison ===");
-    println!("  dir={}, dim={}, precision={}", cli.zarr_dir.display(), dim, cli.precision);
+    println!(
+        "  dir={}, dim={}, precision={}",
+        cli.zarr_dir.display(),
+        dim,
+        cli.precision
+    );
 
     // Load ama (Mirnov A) for delay-padded baseline
     let ama_store = Arc::new(
@@ -217,7 +229,11 @@ fn main() -> Result<()> {
     );
     let sig_n2 = read_zarr_f32(&ama_store, "n=2_signal")?;
     let sig_nodd = read_zarr_f32(&ama_store, "n=odd_signal")?;
-    println!("  ama: n=2 {} samples, n=odd {} samples", sig_n2.len(), sig_nodd.len());
+    println!(
+        "  ama: n=2 {} samples, n=odd {} samples",
+        sig_n2.len(),
+        sig_nodd.len()
+    );
 
     // Collect multi-diagnostic channels
     let mut multi_channels: Vec<Vec<f32>> = Vec::new();
@@ -236,12 +252,12 @@ fn main() -> Result<()> {
             FilesystemStore::new(&cli.zarr_dir.join("amb"))
                 .map_err(|e| anyhow::anyhow!("amb store: {:?}", e))?,
         );
-        let all_coils: Vec<String> = (1..=36)
-            .map(|i| format!("ccbv{:02}", i))
-            .collect();
+        let all_coils: Vec<String> = (1..=36).map(|i| format!("ccbv{:02}", i)).collect();
         let mut loaded = 0;
         for coil in &all_coils {
-            if loaded >= cli.n_coils { break; }
+            if loaded >= cli.n_coils {
+                break;
+            }
             if let Some(data) = try_read_zarr_f32(&amb_store, coil) {
                 if data.len() > 1000 {
                     println!("  amb/{}: {} samples", coil, data.len());
@@ -286,7 +302,11 @@ fn main() -> Result<()> {
             for sig in &["te", "ne"] {
                 if let Some(data) = read_zarr_timeseries(&ayc_store, sig) {
                     if data.len() > 10 {
-                        println!("  ayc/{}: {} time points (spatial midpoint)", sig, data.len());
+                        println!(
+                            "  ayc/{}: {} time points (spatial midpoint)",
+                            sig,
+                            data.len()
+                        );
                         multi_channels.push(data);
                         channel_names.push(format!("ayc/{}", sig));
                     }
@@ -324,7 +344,12 @@ fn main() -> Result<()> {
             keep_channels.push(ch.clone());
             keep_names.push(name.clone());
         } else {
-            println!("  DROPPED {}: only {} samples (need {})", name, ch.len(), min_required);
+            println!(
+                "  DROPPED {}: only {} samples (need {})",
+                name,
+                ch.len(),
+                min_required
+            );
         }
     }
     let multi_channels = keep_channels;
@@ -354,37 +379,58 @@ fn main() -> Result<()> {
             // Per-channel standardization: (x - mean) / std
             let n = raw.len() as f64;
             let mean = raw.iter().map(|&x| x as f64).sum::<f64>() / n;
-            let var = raw.iter().map(|&x| {
-                let d = x as f64 - mean;
-                d * d
-            }).sum::<f64>() / n;
+            let var = raw
+                .iter()
+                .map(|&x| {
+                    let d = x as f64 - mean;
+                    d * d
+                })
+                .sum::<f64>()
+                / n;
             let std = var.sqrt().max(1e-15);
-            raw.iter().map(|&x| {
-                let v = ((x as f64 - mean) / std) as f32;
-                if v.is_finite() { v } else { 0.0 }
-            }).collect()
+            raw.iter()
+                .map(|&x| {
+                    let v = ((x as f64 - mean) / std) as f32;
+                    if v.is_finite() { v } else { 0.0 }
+                })
+                .collect()
         })
         .collect();
 
     let stride = 50;
 
     // Strategy A: Delay-padded (2 channels)
-    println!("\n[1/2] Delay-padded embedding ({} channels x {} delays = {}D)...", 2, dim / 2, dim);
+    println!(
+        "\n[1/2] Delay-padded embedding ({} channels x {} delays = {}D)...",
+        2,
+        dim / 2,
+        dim
+    );
     let delay_embedded = build_delay_embedding(&resampled[0], &resampled[1], dim, stride);
     let delay_eff = effective_rank(&delay_embedded, dim);
-    let delay_norms = cd_kernel::batch_sliding_associator_norms_dispatch(
-        &delay_embedded, dim, &cli.precision,
-    );
+    let delay_norms =
+        cd_kernel::batch_sliding_associator_norms_dispatch(&delay_embedded, dim, &cli.precision);
     let delay_mean = associator_mean(&delay_norms);
-    println!("  {} embeddings, eff_rank={}/{} ({:.3}), CD mean={:.6}",
-        delay_embedded.len(), delay_eff, dim, delay_eff as f64 / dim as f64, delay_mean);
+    println!(
+        "  {} embeddings, eff_rank={}/{} ({:.3}), CD mean={:.6}",
+        delay_embedded.len(),
+        delay_eff,
+        dim,
+        delay_eff as f64 / dim as f64,
+        delay_mean
+    );
 
     // Strategy B: Multi-diagnostic (N channels)
     // Compute raw dim, then zero-pad each embedding to the next power of 2
     let raw_dim_multi = (dim / n_multi_ch) * n_multi_ch;
     let padded_dim = raw_dim_multi.next_power_of_two();
-    println!("\n[2/2] Multi-diagnostic embedding ({} channels x {} delays = {}D, padded to {}D)...",
-        n_multi_ch, raw_dim_multi / n_multi_ch, raw_dim_multi, padded_dim);
+    println!(
+        "\n[2/2] Multi-diagnostic embedding ({} channels x {} delays = {}D, padded to {}D)...",
+        n_multi_ch,
+        raw_dim_multi / n_multi_ch,
+        raw_dim_multi,
+        padded_dim
+    );
     let multi_raw = build_multidiag_embedding(&resampled, raw_dim_multi, stride);
     // Zero-pad to power of 2 (CD kernel requires power-of-2 dimensions)
     let multi_embedded: Vec<Vec<f64>> = multi_raw
@@ -398,16 +444,27 @@ fn main() -> Result<()> {
     // matrices from heterogeneous diagnostics). Compute CD directly.
     let multi_eff = 0; // placeholder -- SVD skipped
     let multi_norms = cd_kernel::batch_sliding_associator_norms_dispatch(
-        &multi_embedded, padded_dim, &cli.precision,
+        &multi_embedded,
+        padded_dim,
+        &cli.precision,
     );
     let multi_mean = associator_mean(&multi_norms);
-    println!("  {} embeddings, eff_rank={}/{} ({:.3}), CD mean={:.6}",
-        multi_embedded.len(), multi_eff, padded_dim,
-        multi_eff as f64 / padded_dim as f64, multi_mean);
+    println!(
+        "  {} embeddings, eff_rank={}/{} ({:.3}), CD mean={:.6}",
+        multi_embedded.len(),
+        multi_eff,
+        padded_dim,
+        multi_eff as f64 / padded_dim as f64,
+        multi_mean
+    );
 
     // Comparison
     let rank_improvement = multi_eff as f64 / delay_eff.max(1) as f64;
-    let cd_ratio = if delay_mean > 1e-15 { multi_mean / delay_mean } else { 0.0 };
+    let cd_ratio = if delay_mean > 1e-15 {
+        multi_mean / delay_mean
+    } else {
+        0.0
+    };
 
     let interp = if rank_improvement > 1.5 && cd_ratio > 1.1 {
         "CONFIRMED: Multi-diagnostic has higher effective rank AND higher CD associator. \

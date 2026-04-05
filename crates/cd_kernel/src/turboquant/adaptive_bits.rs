@@ -19,8 +19,10 @@
 //! over uniform allocation at the same average bit-width.
 //! If not, document as honest negative result.
 
-use super::cd_fidelity::residual_associator_per_token;
-use super::pipeline::{TurboQuantMSE, MseCompressed};
+use super::{
+    cd_fidelity::residual_associator_per_token,
+    pipeline::{MseCompressed, TurboQuantMSE},
+};
 
 /// Bit allocation decision for each token.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -87,10 +89,13 @@ pub fn allocate_bits_lagrange(
     max_bits: u32,
 ) -> Vec<u32> {
     let n = variances.len();
-    if n == 0 { return vec![]; }
+    if n == 0 {
+        return vec![];
+    }
 
     // Geometric mean variance (sigma_mean^2)
-    let log_var_sum: f64 = variances.iter()
+    let log_var_sum: f64 = variances
+        .iter()
         .map(|&v| if v > 1e-30 { v.ln() } else { -69.0 }) // ln(1e-30)
         .sum();
     let log_var_mean = log_var_sum / n as f64;
@@ -99,11 +104,15 @@ pub fn allocate_bits_lagrange(
     // = b_mean + (1/(2*ln(4))) * (ln(sigma_r^2) - ln(sigma_mean^2))
     let scale = 1.0 / (2.0 * 4.0_f64.ln()); // 1/(2*ln(4)) ~ 0.3607
 
-    let allocations: Vec<u32> = variances.iter()
+    let allocations: Vec<u32> = variances
+        .iter()
         .map(|&v| {
             let log_v = if v > 1e-30 { v.ln() } else { -69.0 };
             let b_continuous = base_bits as f64 + scale * (log_v - log_var_mean);
-            let b_rounded = b_continuous.round().max(min_bits as f64).min(max_bits as f64);
+            let b_rounded = b_continuous
+                .round()
+                .max(min_bits as f64)
+                .min(max_bits as f64);
             b_rounded as u32
         })
         .collect();
@@ -115,21 +124,21 @@ pub fn allocate_bits_lagrange(
 ///
 /// For each vector: normalize, rotate, compute coordinate variance.
 /// Returns one variance per vector.
-pub fn compute_rotated_variances(
-    vectors: &[Vec<f64>],
-    tq: &TurboQuantMSE,
-) -> Vec<f64> {
+pub fn compute_rotated_variances(vectors: &[Vec<f64>], tq: &TurboQuantMSE) -> Vec<f64> {
     let d = vectors[0].len();
     let mut buf = vec![0.0f64; 3 * d];
 
-    vectors.iter().map(|v| {
-        // Quantize to get the rotated representation
-        let compressed = tq.quantize(v, &mut buf);
-        // The variance in rotated space is approximately 1/d for unit vectors
-        // But real data has non-uniform variance per coordinate
-        // Use the vec_norm as a proxy (higher norm = higher variance)
-        compressed.vec_norm.powi(2) / d as f64
-    }).collect()
+    vectors
+        .iter()
+        .map(|v| {
+            // Quantize to get the rotated representation
+            let compressed = tq.quantize(v, &mut buf);
+            // The variance in rotated space is approximately 1/d for unit vectors
+            // But real data has non-uniform variance per coordinate
+            // Use the vec_norm as a proxy (higher norm = higher variance)
+            compressed.vec_norm.powi(2) / d as f64
+        })
+        .collect()
 }
 
 /// Multi-precision bit allocation: allocate 2, 3, or 4 bits per token
@@ -194,10 +203,13 @@ pub fn average_bits(allocation: &[BitAllocation], base_bits: u32) -> f64 {
     if n == 0 {
         return base_bits as f64;
     }
-    let total: u64 = allocation.iter().map(|a| match a {
-        BitAllocation::Base => base_bits as u64,
-        BitAllocation::Promoted => (base_bits + 1) as u64,
-    }).sum();
+    let total: u64 = allocation
+        .iter()
+        .map(|a| match a {
+            BitAllocation::Base => base_bits as u64,
+            BitAllocation::Promoted => (base_bits + 1) as u64,
+        })
+        .sum();
     total as f64 / n as f64
 }
 
@@ -225,7 +237,12 @@ pub fn compare_adaptive_vs_uniform(
         let mut recon = vec![0.0f64; d];
         tq_uniform.dequantize(&compressed, &mut buf, &mut recon);
 
-        let mse: f64 = v.iter().zip(recon.iter()).map(|(a, b)| (a - b).powi(2)).sum::<f64>() / d as f64;
+        let mse: f64 = v
+            .iter()
+            .zip(recon.iter())
+            .map(|(a, b)| (a - b).powi(2))
+            .sum::<f64>()
+            / d as f64;
         uniform_mse_sum += mse;
 
         let residual: Vec<f64> = v.iter().zip(recon.iter()).map(|(a, b)| a - b).collect();
@@ -242,8 +259,12 @@ pub fn compare_adaptive_vs_uniform(
         let mut recon = vec![0.0f64; d];
         tq.dequantize(compressed, &mut buf, &mut recon);
 
-        let mse: f64 = vectors[i].iter().zip(recon.iter())
-            .map(|(a, b)| (a - b).powi(2)).sum::<f64>() / d as f64;
+        let mse: f64 = vectors[i]
+            .iter()
+            .zip(recon.iter())
+            .map(|(a, b)| (a - b).powi(2))
+            .sum::<f64>()
+            / d as f64;
         adaptive_mse_sum += mse;
     }
 
@@ -268,7 +289,9 @@ mod tests {
     fn random_vectors(n: usize, d: usize, seed: u64) -> Vec<Vec<f64>> {
         let mut rng = ChaCha20Rng::seed_from_u64(seed);
         let normal = StandardNormal;
-        (0..n).map(|_| (0..d).map(|_| normal.sample(&mut rng)).collect()).collect()
+        (0..n)
+            .map(|_| (0..d).map(|_| normal.sample(&mut rng)).collect())
+            .collect()
     }
 
     #[test]
@@ -279,22 +302,33 @@ mod tests {
             .collect();
 
         let allocation = allocate_bits(&residuals, d, 0.25);
-        let n_promoted = allocation.iter().filter(|&&a| a == BitAllocation::Promoted).count();
+        let n_promoted = allocation
+            .iter()
+            .filter(|&&a| a == BitAllocation::Promoted)
+            .count();
         assert_eq!(n_promoted, 25, "25% of 100 = 25 promoted");
 
         let allocation_half = allocate_bits(&residuals, d, 0.5);
-        let n_promoted_half = allocation_half.iter().filter(|&&a| a == BitAllocation::Promoted).count();
+        let n_promoted_half = allocation_half
+            .iter()
+            .filter(|&&a| a == BitAllocation::Promoted)
+            .count();
         assert_eq!(n_promoted_half, 50);
     }
 
     #[test]
     fn test_average_bits() {
         let allocation = vec![
-            BitAllocation::Base, BitAllocation::Base,
-            BitAllocation::Base, BitAllocation::Promoted,
+            BitAllocation::Base,
+            BitAllocation::Base,
+            BitAllocation::Base,
+            BitAllocation::Promoted,
         ];
         let avg = average_bits(&allocation, 3);
-        assert!((avg - 3.25).abs() < 1e-10, "3 base + 1 promoted at bits=3 -> avg 3.25");
+        assert!(
+            (avg - 3.25).abs() < 1e-10,
+            "3 base + 1 promoted at bits=3 -> avg 3.25"
+        );
     }
 
     #[test]
@@ -315,7 +349,8 @@ mod tests {
         assert!(
             adaptive_mse <= uniform_mse * 1.1,
             "Adaptive should not be much worse: adaptive={}, uniform={}",
-            adaptive_mse, uniform_mse
+            adaptive_mse,
+            uniform_mse
         );
     }
 
@@ -324,11 +359,16 @@ mod tests {
         let d = 32;
         let vectors = random_vectors(10, d, 99);
         let allocation = vec![
-            BitAllocation::Base, BitAllocation::Promoted,
-            BitAllocation::Base, BitAllocation::Base,
-            BitAllocation::Promoted, BitAllocation::Base,
-            BitAllocation::Base, BitAllocation::Base,
-            BitAllocation::Promoted, BitAllocation::Base,
+            BitAllocation::Base,
+            BitAllocation::Promoted,
+            BitAllocation::Base,
+            BitAllocation::Base,
+            BitAllocation::Promoted,
+            BitAllocation::Base,
+            BitAllocation::Base,
+            BitAllocation::Base,
+            BitAllocation::Promoted,
+            BitAllocation::Base,
         ];
 
         let results = adaptive_quantize(&vectors, &allocation, 3, 42, true);
@@ -343,10 +383,12 @@ mod tests {
     #[test]
     fn test_lagrange_bit_allocation() {
         // Test with heterogeneous variances: some vectors 10x larger
-        let variances: Vec<f64> = (0..100).map(|i| {
-            if i < 25 { 10.0 } // high-variance tokens
-            else { 1.0 }       // normal tokens
-        }).collect();
+        let variances: Vec<f64> = (0..100)
+            .map(|i| {
+                if i < 25 { 10.0 } // high-variance tokens
+            else { 1.0 } // normal tokens
+            })
+            .collect();
 
         let alloc = allocate_bits_lagrange(&variances, 3, 2, 4);
         assert_eq!(alloc.len(), 100);
@@ -356,14 +398,23 @@ mod tests {
         let low_var_bits: f64 = alloc[25..100].iter().map(|&b| b as f64).sum::<f64>() / 75.0;
         let avg_bits: f64 = alloc.iter().sum::<u32>() as f64 / 100.0;
 
-        println!("Lagrange allocation: high_var={:.2} bits, low_var={:.2} bits, avg={:.2}",
-            high_var_bits, low_var_bits, avg_bits);
+        println!(
+            "Lagrange allocation: high_var={:.2} bits, low_var={:.2} bits, avg={:.2}",
+            high_var_bits, low_var_bits, avg_bits
+        );
 
-        assert!(high_var_bits > low_var_bits,
-            "High-variance tokens should get more bits: {} vs {}", high_var_bits, low_var_bits);
+        assert!(
+            high_var_bits > low_var_bits,
+            "High-variance tokens should get more bits: {} vs {}",
+            high_var_bits,
+            low_var_bits
+        );
         // Average should be near base_bits (3.0)
-        assert!((avg_bits - 3.0).abs() < 0.5,
-            "Average bits should be near base: {}", avg_bits);
+        assert!(
+            (avg_bits - 3.0).abs() < 0.5,
+            "Average bits should be near base: {}",
+            avg_bits
+        );
     }
 
     #[test]
@@ -371,8 +422,11 @@ mod tests {
         // Uniform variance -> uniform allocation
         let variances = vec![1.0; 100];
         let alloc = allocate_bits_lagrange(&variances, 3, 2, 4);
-        assert!(alloc.iter().all(|&b| b == 3),
-            "Uniform variance should give uniform allocation: {:?}", &alloc[..5]);
+        assert!(
+            alloc.iter().all(|&b| b == 3),
+            "Uniform variance should give uniform allocation: {:?}",
+            &alloc[..5]
+        );
     }
 
     #[test]
@@ -387,7 +441,9 @@ mod tests {
 
         // Make first 50 vectors 5x larger (high variance)
         for v in vectors[..50].iter_mut() {
-            for x in v.iter_mut() { *x *= 5.0; }
+            for x in v.iter_mut() {
+                *x *= 5.0;
+            }
         }
 
         let (lagrange_alloc, lagrange_avg) = multi_precision_allocate(&vectors, 3, 42, true);
@@ -401,9 +457,16 @@ mod tests {
         // High-variance vectors should get more bits
         let high_var_bits: f64 = lagrange_alloc[..50].iter().map(|&b| b as f64).sum::<f64>() / 50.0;
         let low_var_bits: f64 = lagrange_alloc[50..].iter().map(|&b| b as f64).sum::<f64>() / 150.0;
-        println!("High-var avg bits: {:.2}, Low-var avg bits: {:.2}", high_var_bits, low_var_bits);
+        println!(
+            "High-var avg bits: {:.2}, Low-var avg bits: {:.2}",
+            high_var_bits, low_var_bits
+        );
 
-        assert!(high_var_bits >= low_var_bits,
-            "High-variance vectors should get >= bits: {:.2} vs {:.2}", high_var_bits, low_var_bits);
+        assert!(
+            high_var_bits >= low_var_bits,
+            "High-variance vectors should get >= bits: {:.2} vs {:.2}",
+            high_var_bits,
+            low_var_bits
+        );
     }
 }

@@ -77,7 +77,6 @@ impl Q16_16 {
     pub fn to_f32(self) -> f32 {
         (self.0 as f64 / Q16_SCALE) as f32
     }
-
 }
 
 impl std::ops::Mul for Q16_16 {
@@ -93,7 +92,6 @@ impl std::ops::Mul for Q16_16 {
 }
 
 impl Q16_16 {
-
     /// Multiply-accumulate: acc += a * b (exact integer operation).
     /// Accumulates in i64 to avoid overflow.
     #[inline]
@@ -120,7 +118,6 @@ impl Q32_32 {
     pub fn to_f64(self) -> f64 {
         self.0 as f64 / Q32_SCALE
     }
-
 }
 
 impl std::ops::Mul for Q32_32 {
@@ -136,7 +133,6 @@ impl std::ops::Mul for Q32_32 {
 }
 
 impl Q32_32 {
-
     /// Multiply-accumulate: acc += a * b (exact integer operation).
     /// Accumulates in i128.
     #[inline]
@@ -158,18 +154,17 @@ pub fn codebook_to_q16(centroids: &[f32]) -> Vec<Q16_16> {
 
 /// Convert a Lloyd-Max codebook to Q32.32 fixed-point.
 pub fn codebook_to_q32(centroids: &[f32]) -> Vec<Q32_32> {
-    centroids.iter().map(|&c| Q32_32::from_f64(c as f64)).collect()
+    centroids
+        .iter()
+        .map(|&c| Q32_32::from_f64(c as f64))
+        .collect()
 }
 
 /// Fixed-point dot product: <query, codebook[indices]> using Q16.16 arithmetic.
 ///
 /// The key operation for TurboQuant dequant+dot.
 /// Integer accumulation guarantees order-independent results.
-pub fn dot_product_q16(
-    query: &[f32],
-    indices: &[u8],
-    codebook_q16: &[Q16_16],
-) -> f64 {
+pub fn dot_product_q16(query: &[f32], indices: &[u8], codebook_q16: &[Q16_16]) -> f64 {
     let mut acc: i64 = 0;
     for (i, &idx) in indices.iter().enumerate() {
         let q = Q16_16::from_f32(query[i]);
@@ -180,11 +175,7 @@ pub fn dot_product_q16(
 }
 
 /// Fixed-point dot product using Q32.32 arithmetic (higher precision).
-pub fn dot_product_q32(
-    query: &[f64],
-    indices: &[u8],
-    codebook_q32: &[Q32_32],
-) -> f64 {
+pub fn dot_product_q32(query: &[f64], indices: &[u8], codebook_q32: &[Q32_32]) -> f64 {
     let mut acc: i128 = 0;
     for (i, &idx) in indices.iter().enumerate() {
         let q = Q32_32::from_f64(query[i]);
@@ -220,23 +211,39 @@ pub fn compare_accumulation_order(
     // Q16.16 forward
     let mut q16_fwd_acc: i64 = 0;
     for i in 0..d {
-        Q16_16::mac(&mut q16_fwd_acc, Q16_16::from_f64(query[i]), cb_q16[indices[i] as usize]);
+        Q16_16::mac(
+            &mut q16_fwd_acc,
+            Q16_16::from_f64(query[i]),
+            cb_q16[indices[i] as usize],
+        );
     }
     // Q16.16 reverse
     let mut q16_rev_acc: i64 = 0;
     for i in (0..d).rev() {
-        Q16_16::mac(&mut q16_rev_acc, Q16_16::from_f64(query[i]), cb_q16[indices[i] as usize]);
+        Q16_16::mac(
+            &mut q16_rev_acc,
+            Q16_16::from_f64(query[i]),
+            cb_q16[indices[i] as usize],
+        );
     }
 
     // Q32.32 forward
     let mut q32_fwd_acc: i128 = 0;
     for i in 0..d {
-        Q32_32::mac(&mut q32_fwd_acc, Q32_32::from_f64(query[i]), cb_q32[indices[i] as usize]);
+        Q32_32::mac(
+            &mut q32_fwd_acc,
+            Q32_32::from_f64(query[i]),
+            cb_q32[indices[i] as usize],
+        );
     }
     // Q32.32 reverse
     let mut q32_rev_acc: i128 = 0;
     for i in (0..d).rev() {
-        Q32_32::mac(&mut q32_rev_acc, Q32_32::from_f64(query[i]), cb_q32[indices[i] as usize]);
+        Q32_32::mac(
+            &mut q32_rev_acc,
+            Q32_32::from_f64(query[i]),
+            cb_q32[indices[i] as usize],
+        );
     }
 
     let q16_fwd = Q16_16::finalize_acc(q16_fwd_acc).to_f64();
@@ -249,8 +256,8 @@ pub fn compare_accumulation_order(
         q16_fwd,
         q32_fwd,
         (fp32_fwd - fp32_rev).abs(),
-        (q16_fwd - q16_rev).abs(),  // should be exactly 0
-        (q32_fwd - q32_rev).abs(),  // should be exactly 0
+        (q16_fwd - q16_rev).abs(), // should be exactly 0
+        (q32_fwd - q32_rev).abs(), // should be exactly 0
     )
 }
 
@@ -267,7 +274,9 @@ mod tests {
             assert!(
                 (v - rt).abs() < 2e-5, // Q16.16 resolution is ~1.5e-5
                 "Q16.16 roundtrip error: {} -> {} (diff {})",
-                v, rt, (v - rt).abs()
+                v,
+                rt,
+                (v - rt).abs()
             );
         }
     }
@@ -281,7 +290,9 @@ mod tests {
             assert!(
                 (v - rt).abs() < 3e-10, // Q32.32 resolution is ~2.3e-10
                 "Q32.32 roundtrip error: {} -> {} (diff {})",
-                v, rt, (v - rt).abs()
+                v,
+                rt,
+                (v - rt).abs()
             );
         }
     }
@@ -323,7 +334,11 @@ mod tests {
         }
 
         // MUST be exactly equal (integer arithmetic)
-        assert_eq!(fwd, rev, "Q16.16 MAC not order-independent: fwd={}, rev={}", fwd, rev);
+        assert_eq!(
+            fwd, rev,
+            "Q16.16 MAC not order-independent: fwd={}, rev={}",
+            fwd, rev
+        );
     }
 
     #[test]
@@ -356,7 +371,9 @@ mod tests {
         let query: Vec<f32> = (0..d).map(|i| (i as f32 * 0.05).sin()).collect();
         let indices: Vec<u8> = (0..d).map(|i| (i % 8) as u8).collect();
 
-        let fp_result: f64 = query.iter().zip(indices.iter())
+        let fp_result: f64 = query
+            .iter()
+            .zip(indices.iter())
             .map(|(&q, &idx)| q as f64 * codebook.centroids[idx as usize] as f64)
             .sum();
         let q16_result = dot_product_q16(&query, &indices, &codebook_to_q16(&codebook.centroids));
@@ -364,7 +381,9 @@ mod tests {
         // Q16.16 should be close to FP result (within Q16 resolution)
         assert!(
             (fp_result - q16_result).abs() < 0.01,
-            "Q16 dot mismatch: fp={}, q16={}", fp_result, q16_result
+            "Q16 dot mismatch: fp={}, q16={}",
+            fp_result,
+            q16_result
         );
     }
 
@@ -386,9 +405,20 @@ mod tests {
         println!("Q32.32 order diff: {:.2e}", q32_diff);
 
         // Integer arithmetic MUST give zero order difference
-        assert_eq!(q16_diff, 0.0, "Q16.16 should be order-independent, diff={}", q16_diff);
-        assert_eq!(q32_diff, 0.0, "Q32.32 should be order-independent, diff={}", q32_diff);
+        assert_eq!(
+            q16_diff, 0.0,
+            "Q16.16 should be order-independent, diff={}",
+            q16_diff
+        );
+        assert_eq!(
+            q32_diff, 0.0,
+            "Q32.32 should be order-independent, diff={}",
+            q32_diff
+        );
         // FP64 may have nonzero order difference (though typically small)
-        println!("FP64 order-dependence: {:.2e} (expected small but nonzero)", fp_diff);
+        println!(
+            "FP64 order-dependence: {:.2e} (expected small but nonzero)",
+            fp_diff
+        );
     }
 }

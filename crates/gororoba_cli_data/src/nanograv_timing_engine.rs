@@ -10,7 +10,7 @@ use anise::{
 use anyhow::{Context, Result, anyhow, bail};
 use faer::{
     Mat as FaerMat, Side,
-    prelude::{SpSolver, SpSolverLstsq},
+    prelude::{Solve, SolveLstsq},
 };
 use hifitime::{Epoch, TimeScale};
 use nalgebra::{DMatrix, DVector};
@@ -2646,7 +2646,7 @@ fn finalize_structured_covariance(
         middle[(index, index)] += 1.0;
     }
     let mut local_ridge = 1.0e-15;
-    while low_rank.ncols() > 0 && middle.clone().cholesky(Side::Lower).is_err() {
+    while low_rank.ncols() > 0 && middle.clone().llt(Side::Lower).is_err() {
         for index in 0..middle.nrows() {
             middle[(index, index)] += local_ridge;
         }
@@ -2877,7 +2877,7 @@ fn scale_faer_columns(matrix: &mut FaerMat<f64>, scales: &[f64], inverse: bool) 
 }
 
 fn solve_square_system_faer(system: &FaerMat<f64>, rhs: &FaerMat<f64>) -> Result<FaerMat<f64>> {
-    if let Ok(cholesky) = system.cholesky(Side::Lower) {
+    if let Ok(cholesky) = system.llt(Side::Lower) {
         return Ok(cholesky.solve(rhs));
     }
     let qr = system.col_piv_qr();

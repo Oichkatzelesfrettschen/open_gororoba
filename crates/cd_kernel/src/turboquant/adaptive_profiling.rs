@@ -4,10 +4,8 @@
 //! (4 kvec/s vs 1040 kvec/s).  This module identifies exactly which
 //! step dominates.
 
+use super::{adaptive_bits, cd_fidelity::residual_associator_per_token, pipeline::TurboQuantMSE};
 use std::time::Instant;
-use super::pipeline::TurboQuantMSE;
-use super::cd_fidelity::residual_associator_per_token;
-use super::adaptive_bits;
 
 /// Profile result for each step of the adaptive pipeline.
 #[derive(Clone, Debug)]
@@ -37,11 +35,7 @@ impl AdaptiveProfile {
 }
 
 /// Profile the adaptive pipeline step by step.
-pub fn profile_adaptive_steps(
-    vectors: &[Vec<f64>],
-    d: usize,
-    bits: u32,
-) -> AdaptiveProfile {
+pub fn profile_adaptive_steps(vectors: &[Vec<f64>], d: usize, bits: u32) -> AdaptiveProfile {
     let n = vectors.len();
     let tq = TurboQuantMSE::new(d, bits, 42, true);
     let tq_promoted = TurboQuantMSE::new(d, bits + 1, 42, true);
@@ -51,14 +45,13 @@ pub fn profile_adaptive_steps(
 
     // Step 1: Base quantize
     let t0 = Instant::now();
-    let base_compressed: Vec<_> = vectors.iter()
-        .map(|v| tq.quantize(v, &mut buf))
-        .collect();
+    let base_compressed: Vec<_> = vectors.iter().map(|v| tq.quantize(v, &mut buf)).collect();
     let base_ms = t0.elapsed().as_secs_f64() * 1000.0;
 
     // Step 2: Dequantize + residual
     let t0 = Instant::now();
-    let residuals: Vec<Vec<f64>> = vectors.iter()
+    let residuals: Vec<Vec<f64>> = vectors
+        .iter()
         .zip(base_compressed.iter())
         .map(|(orig, comp)| {
             let mut recon = vec![0.0f64; d];
@@ -80,7 +73,8 @@ pub fn profile_adaptive_steps(
 
     // Step 5: Re-quantize promoted tokens
     let t0 = Instant::now();
-    let _n_promoted = allocation.iter()
+    let _n_promoted = allocation
+        .iter()
         .filter(|&&a| a == adaptive_bits::BitAllocation::Promoted)
         .count();
     for (i, alloc) in allocation.iter().enumerate() {
@@ -123,12 +117,15 @@ pub fn adaptive_allocate_sampled(
         // Sample covers everything -- use full path
         let tq = TurboQuantMSE::new(d, bits, 42, true);
         let mut buf = vec![0.0f64; 3 * d];
-        let residuals: Vec<Vec<f64>> = vectors.iter().map(|v| {
-            let comp = tq.quantize(v, &mut buf);
-            let mut recon = vec![0.0f64; d];
-            tq.dequantize(&comp, &mut buf, &mut recon);
-            v.iter().zip(recon.iter()).map(|(a, b)| a - b).collect()
-        }).collect();
+        let residuals: Vec<Vec<f64>> = vectors
+            .iter()
+            .map(|v| {
+                let comp = tq.quantize(v, &mut buf);
+                let mut recon = vec![0.0f64; d];
+                tq.dequantize(&comp, &mut buf, &mut recon);
+                v.iter().zip(recon.iter()).map(|(a, b)| a - b).collect()
+            })
+            .collect();
         return adaptive_bits::allocate_bits(&residuals, d, promote_fraction);
     }
 
@@ -140,21 +137,32 @@ pub fn adaptive_allocate_sampled(
     let mut buf = vec![0.0f64; 3 * d];
 
     // Compute residuals only for sampled tokens (f32 fast path: 37x faster)
-    let sample_residuals_f32: Vec<Vec<f32>> = sample_indices.iter().map(|&i| {
-        let comp = tq.quantize(&vectors[i], &mut buf);
-        let mut recon = vec![0.0f64; d];
-        tq.dequantize(&comp, &mut buf, &mut recon);
-        vectors[i].iter().zip(recon.iter()).map(|(a, b)| (*a - *b) as f32).collect()
-    }).collect();
+    let sample_residuals_f32: Vec<Vec<f32>> = sample_indices
+        .iter()
+        .map(|&i| {
+            let comp = tq.quantize(&vectors[i], &mut buf);
+            let mut recon = vec![0.0f64; d];
+            tq.dequantize(&comp, &mut buf, &mut recon);
+            vectors[i]
+                .iter()
+                .zip(recon.iter())
+                .map(|(a, b)| (*a - *b) as f32)
+                .collect()
+        })
+        .collect();
 
     // Score using f32 fast associator (workspace-based, 3-buffer reuse)
-    let sample_scores: Vec<f64> = crate::batch_sliding_associator_norms_f32(
-        &sample_residuals_f32, d
-    ).into_iter().map(|s| s as f64).collect();
+    let sample_scores: Vec<f64> =
+        crate::batch_sliding_associator_norms_f32(&sample_residuals_f32, d)
+            .into_iter()
+            .map(|s| s as f64)
+            .collect();
     // Pad scores to match sample count (sliding window produces n-2 values)
     let mut padded_scores = vec![0.0f64; n_sample];
     for (i, &s) in sample_scores.iter().enumerate() {
-        if i + 1 < n_sample { padded_scores[i + 1] = s; }
+        if i + 1 < n_sample {
+            padded_scores[i + 1] = s;
+        }
     }
 
     // The sample scores inform the threshold, but we use norm-based
@@ -166,7 +174,9 @@ pub fn adaptive_allocate_sampled(
     let n_to_promote = ((n as f64 * promote_fraction).ceil() as usize).min(n);
 
     // Score all tokens by norm via simsimd (HW-accelerated, O(d) per token)
-    let mut all_norms: Vec<(usize, f64)> = vectors.iter().enumerate()
+    let mut all_norms: Vec<(usize, f64)> = vectors
+        .iter()
+        .enumerate()
         .map(|(i, v)| {
             // simsimd dot(v, v) = ||v||^2, then sqrt
             let norm_sq = super::simsimd_bridge::dot_f64(v, v);
@@ -192,7 +202,9 @@ mod tests {
     fn random_vectors(n: usize, d: usize, seed: u64) -> Vec<Vec<f64>> {
         let mut rng = ChaCha20Rng::seed_from_u64(seed);
         let normal = StandardNormal;
-        (0..n).map(|_| (0..d).map(|_| normal.sample(&mut rng)).collect()).collect()
+        (0..n)
+            .map(|_| (0..d).map(|_| normal.sample(&mut rng)).collect())
+            .collect()
     }
 
     #[test]
@@ -203,7 +215,11 @@ mod tests {
         let profile = profile_adaptive_steps(&vectors, d, 3);
 
         println!("\n=== Adaptive Pipeline Profile (d={}, n={}) ===", d, n);
-        println!("  Total: {:.2} ms ({:.0} kvec/s)", profile.total_ms, n as f64 / profile.total_ms);
+        println!(
+            "  Total: {:.2} ms ({:.0} kvec/s)",
+            profile.total_ms,
+            n as f64 / profile.total_ms
+        );
         for (name, frac) in profile.fractions() {
             println!("  {:>20}: {:.1}%", name, frac);
         }
@@ -220,12 +236,15 @@ mod tests {
         let full = {
             let tq = TurboQuantMSE::new(d, 3, 42, true);
             let mut buf = vec![0.0f64; 3 * d];
-            let residuals: Vec<Vec<f64>> = vectors.iter().map(|v| {
-                let comp = tq.quantize(v, &mut buf);
-                let mut recon = vec![0.0f64; d];
-                tq.dequantize(&comp, &mut buf, &mut recon);
-                v.iter().zip(recon.iter()).map(|(a, b)| a - b).collect()
-            }).collect();
+            let residuals: Vec<Vec<f64>> = vectors
+                .iter()
+                .map(|v| {
+                    let comp = tq.quantize(v, &mut buf);
+                    let mut recon = vec![0.0f64; d];
+                    tq.dequantize(&comp, &mut buf, &mut recon);
+                    v.iter().zip(recon.iter()).map(|(a, b)| a - b).collect()
+                })
+                .collect();
             adaptive_bits::allocate_bits(&residuals, d, 0.25)
         };
         let full_ms = t0.elapsed().as_secs_f64() * 1000.0;
@@ -235,13 +254,23 @@ mod tests {
         let sampled = adaptive_allocate_sampled(&vectors, d, 3, 0.25, 0.1);
         let sampled_ms = t0.elapsed().as_secs_f64() * 1000.0;
 
-        let n_promoted_full = full.iter()
-            .filter(|&&a| a == adaptive_bits::BitAllocation::Promoted).count();
-        let n_promoted_sampled = sampled.iter()
-            .filter(|&&a| a == adaptive_bits::BitAllocation::Promoted).count();
+        let n_promoted_full = full
+            .iter()
+            .filter(|&&a| a == adaptive_bits::BitAllocation::Promoted)
+            .count();
+        let n_promoted_sampled = sampled
+            .iter()
+            .filter(|&&a| a == adaptive_bits::BitAllocation::Promoted)
+            .count();
 
-        println!("\nFull adaptive: {:.1} ms, {} promoted", full_ms, n_promoted_full);
-        println!("Sampled (10%): {:.1} ms, {} promoted", sampled_ms, n_promoted_sampled);
+        println!(
+            "\nFull adaptive: {:.1} ms, {} promoted",
+            full_ms, n_promoted_full
+        );
+        println!(
+            "Sampled (10%): {:.1} ms, {} promoted",
+            sampled_ms, n_promoted_sampled
+        );
         println!("Speedup: {:.1}x", full_ms / sampled_ms);
 
         // Both should promote approximately the same fraction

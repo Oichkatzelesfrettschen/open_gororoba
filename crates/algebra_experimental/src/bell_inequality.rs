@@ -352,7 +352,7 @@ fn compute_chsh_correlator(
     let mut total = 0.0;
 
     for _ in 0..cfg.n_trials {
-        let ch = usable[rng.gen_range(0..usable.len())];
+        let ch = usable[rng.random_range(0..usable.len())];
 
         // Prefer optimal probes; fall back to union if optimal is empty
         let probes = if !ch.optimal_probes.is_empty() {
@@ -360,7 +360,7 @@ fn compute_chsh_correlator(
         } else {
             &ch.union_probes
         };
-        let probe = probes[rng.gen_range(0..probes.len())];
+        let probe = probes[rng.random_range(0..probes.len())];
 
         // Alice measures: sign([A'(theta_a), e_probe, B])
         let outcome_a = associator_measurement_fast(
@@ -497,7 +497,8 @@ fn sorted_slices_intersect(a: &[usize], b: &[usize]) -> bool {
 /// Uses sorted-Vec merge-join intersection (zero per-pair allocation).
 fn count_shared_zd_paths(channels: &[ZdChannel]) -> usize {
     // Pre-sort each channel's basis_indices once
-    let sorted: Vec<Vec<usize>> = channels.iter()
+    let sorted: Vec<Vec<usize>> = channels
+        .iter()
         .map(|ch| {
             let mut v = ch.basis_indices.clone();
             v.sort_unstable();
@@ -538,7 +539,8 @@ pub fn find_shared_zd_paths(dim: usize) -> Vec<Vec<usize>> {
     let mut adj: Vec<Vec<usize>> = vec![Vec::new(); n];
 
     // Pre-sort basis_indices for merge-join intersection (zero per-pair allocation)
-    let sorted: Vec<Vec<usize>> = channels.iter()
+    let sorted: Vec<Vec<usize>> = channels
+        .iter()
         .map(|ch| {
             let mut v = ch.basis_indices.clone();
             v.sort_unstable();

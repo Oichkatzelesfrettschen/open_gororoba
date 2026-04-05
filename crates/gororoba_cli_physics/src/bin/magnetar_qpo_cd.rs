@@ -9,6 +9,7 @@
 
 use anyhow::Result;
 use clap::Parser;
+use rand::RngExt;
 use serde::Serialize;
 use std::{f64::consts::PI, fs, path::PathBuf};
 
@@ -67,22 +68,24 @@ fn main() -> Result<()> {
     // (from Israel et al. 2005, Watts & Strohmayer 2006)
     let qpo_modes: Vec<(f64, f64, f64, f64)> = vec![
         // (frequency_hz, onset_s, decay_time_s, amplitude)
-        (18.0, 0.0, 200.0, 1.0),     // fundamental crustal mode, present throughout
-        (26.0, 10.0, 150.0, 0.6),    // l=2 overtone
-        (30.0, 10.0, 120.0, 0.5),    // l=2 overtone
-        (92.0, 20.0, 100.0, 0.8),    // l=7 or magnetic mode
-        (150.0, 30.0, 80.0, 0.4),    // higher overtone
-        (625.0, 50.0, 40.0, 0.3),    // high-frequency crustal mode
+        (18.0, 0.0, 200.0, 1.0), // fundamental crustal mode, present throughout
+        (26.0, 10.0, 150.0, 0.6), // l=2 overtone
+        (30.0, 10.0, 120.0, 0.5), // l=2 overtone
+        (92.0, 20.0, 100.0, 0.8), // l=7 or magnetic mode
+        (150.0, 30.0, 80.0, 0.4), // higher overtone
+        (625.0, 50.0, 40.0, 0.3), // high-frequency crustal mode
         (1840.0, 100.0, 20.0, 0.15), // highest observed, brief
     ];
 
     let freqs: Vec<f64> = qpo_modes.iter().map(|(f, _, _, _)| *f).collect();
     println!("  QPO frequencies: {:?} Hz", freqs);
-    println!("  Duration: {}s, sample rate: {} Hz, samples: {}", cli.duration, cli.sample_rate, n_samples);
+    println!(
+        "  Duration: {}s, sample rate: {} Hz, samples: {}",
+        cli.duration, cli.sample_rate, n_samples
+    );
 
     // Generate synthetic X-ray flux time series
-    use rand::Rng;
-    let mut rng = rand::thread_rng();
+    let mut rng = rand::rng();
     let mut flux = vec![0.0f64; n_samples];
 
     for (i, flux_val) in flux.iter_mut().enumerate() {
@@ -97,17 +100,20 @@ fn main() -> Result<()> {
             if t > onset {
                 let mode_amp = amp * (-(t - onset) / decay).exp();
                 // Add phase jitter for realism
-                let phase = 2.0 * PI * freq * t + rng.gen_range(0.0..1.0) * 0.1;
+                let phase = 2.0 * PI * freq * t + rng.random_range(0.0..1.0) * 0.1;
                 signal += mode_amp * phase.sin();
             }
         }
 
         // Add Poisson-like noise (proportional to sqrt of flux)
-        let noise = rng.gen_range(0.0..1.0) * 0.05 * base.sqrt();
+        let noise = rng.random_range(0.0..1.0) * 0.05 * base.sqrt();
         *flux_val = (signal + noise).max(0.0);
     }
 
-    println!("  Generated synthetic flare tail with {} QPO modes", qpo_modes.len());
+    println!(
+        "  Generated synthetic flare tail with {} QPO modes",
+        qpo_modes.len()
+    );
 
     // Analyze in phases: initial spike, QPO onset, multi-mode, decay, quiet
     let phases: Vec<(&str, f64, f64, usize)> = vec![
@@ -163,8 +169,15 @@ fn main() -> Result<()> {
             continue;
         }
 
-        let norms =
-            cd_kernel::batch_sliding_associator_norms_dispatch(&embedded, cli.embedding_dim, if cli.embedding_dim >= 128 { "f32" } else { "f64" });
+        let norms = cd_kernel::batch_sliding_associator_norms_dispatch(
+            &embedded,
+            cli.embedding_dim,
+            if cli.embedding_dim >= 128 {
+                "f32"
+            } else {
+                "f64"
+            },
+        );
 
         let mean_a = if norms.is_empty() {
             0.0
@@ -175,7 +188,13 @@ fn main() -> Result<()> {
 
         println!(
             "  {}: t={:.0}-{:.0}s, modes={}, A_mean={:.6}, A_max={:.6}, windows={}",
-            name, t_start, t_end, n_modes, mean_a, max_a, norms.len()
+            name,
+            t_start,
+            t_end,
+            n_modes,
+            mean_a,
+            max_a,
+            norms.len()
         );
 
         results.push(PhaseResult {
@@ -206,7 +225,9 @@ fn main() -> Result<()> {
         min_phase.map(|p| p.mean_a).unwrap_or(0.0),
         if min_phase.map(|p| p.mean_a).unwrap_or(0.0) > 1e-15 {
             max_phase.map(|p| p.mean_a).unwrap_or(0.0) / min_phase.map(|p| p.mean_a).unwrap_or(1.0)
-        } else { 0.0 }
+        } else {
+            0.0
+        }
     );
     println!("\n  {}", interp);
 

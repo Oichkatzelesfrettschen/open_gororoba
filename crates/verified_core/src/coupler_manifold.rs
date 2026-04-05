@@ -10,7 +10,7 @@
 //! 6. p-adic Bruhat-Tits Tree representations for hierarchical correlation lengths.
 
 use nalgebra::{DMatrix, DVector};
-use rand::{seq::SliceRandom, thread_rng};
+use rand::prelude::IndexedRandom;
 
 /// Represents an observation point in the coupler manifold coordinate chart.
 #[derive(Debug, Clone)]
@@ -151,7 +151,7 @@ impl BootstrapEstimator {
 
         let n = data.len();
         let dim = data[0].len();
-        let mut rng = thread_rng();
+        let mut rng = rand::rng();
 
         let mut b_means = Vec::with_capacity(num_bootstraps);
 

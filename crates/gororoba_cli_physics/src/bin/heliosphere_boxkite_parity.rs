@@ -27,7 +27,10 @@ struct Cli {
     #[arg(long)]
     cuda_csv: Option<PathBuf>,
 
-    #[arg(long, default_value = "data/output/heliosphere/ablations/boxkite_parity.json")]
+    #[arg(
+        long,
+        default_value = "data/output/heliosphere/ablations/boxkite_parity.json"
+    )]
     out: PathBuf,
 
     /// Absolute tolerance for max_alignment comparison.
@@ -93,15 +96,22 @@ struct CompareStats {
 
 fn compare(a: &[AlignmentRow], b: &[AlignmentRow], abs_tol: f64, rel_tol: f64) -> CompareStats {
     let n = a.len().min(b.len());
-    let mut s = CompareStats { pairs: n, ..Default::default() };
+    let mut s = CompareStats {
+        pairs: n,
+        ..Default::default()
+    };
 
     for i in 0..n {
         let abs_d = (a[i].max_alignment - b[i].max_alignment).abs();
         let denom = a[i].max_alignment.abs().max(b[i].max_alignment.abs());
         let rel_d = if denom > 0.0 { abs_d / denom } else { 0.0 };
 
-        if abs_d > s.max_abs { s.max_abs = abs_d; }
-        if rel_d > s.max_rel { s.max_rel = rel_d; }
+        if abs_d > s.max_abs {
+            s.max_abs = abs_d;
+        }
+        if rel_d > s.max_rel {
+            s.max_rel = rel_d;
+        }
 
         if a[i].best_orient_idx != b[i].best_orient_idx {
             s.orient_mismatches_total += 1;
@@ -122,10 +132,16 @@ fn compare(a: &[AlignmentRow], b: &[AlignmentRow], abs_tol: f64, rel_tol: f64) -
 fn main() -> Result<()> {
     let cli = Cli::parse();
 
-    println!("[1/3] Loading CPU results from {}...", cli.cpu_csv.display());
+    println!(
+        "[1/3] Loading CPU results from {}...",
+        cli.cpu_csv.display()
+    );
     let cpu = load_csv(&cli.cpu_csv)?;
 
-    println!("[2/3] Loading Vulkan results from {}...", cli.vulkan_csv.display());
+    println!(
+        "[2/3] Loading Vulkan results from {}...",
+        cli.vulkan_csv.display()
+    );
     let vulkan = load_csv(&cli.vulkan_csv)?;
 
     let cuda = if let Some(ref p) = cli.cuda_csv {
@@ -135,13 +151,20 @@ fn main() -> Result<()> {
         None
     };
 
-    println!("[3/3] Comparing {} CPU vs {} Vulkan rows...", cpu.len(), vulkan.len());
+    println!(
+        "[3/3] Comparing {} CPU vs {} Vulkan rows...",
+        cpu.len(),
+        vulkan.len()
+    );
     let sv = compare(&cpu, &vulkan, cli.abs_tol, cli.rel_tol);
 
     // If CUDA available, also compare CPU vs CUDA and merge stats
-    let sc = cuda.as_ref().map(|c| compare(&cpu, c, cli.abs_tol, cli.rel_tol));
+    let sc = cuda
+        .as_ref()
+        .map(|c| compare(&cpu, c, cli.abs_tol, cli.rel_tol));
 
-    let om_total = sv.orient_mismatches_total + sc.as_ref().map_or(0, |s| s.orient_mismatches_total);
+    let om_total =
+        sv.orient_mismatches_total + sc.as_ref().map_or(0, |s| s.orient_mismatches_total);
     let om_tied = sv.orient_mismatches_tied + sc.as_ref().map_or(0, |s| s.orient_mismatches_tied);
     let om_real = sv.orient_mismatches_real + sc.as_ref().map_or(0, |s| s.orient_mismatches_real);
     let af_total = sv.alignment_failures + sc.as_ref().map_or(0, |s| s.alignment_failures);
@@ -175,15 +198,25 @@ fn main() -> Result<()> {
     std::fs::write(&cli.out, &json)?;
 
     if pass {
-        println!("PASS: {} pairs checked, max_abs_diff={:.2e}, max_rel_diff={:.2e}",
-            pairs_total, ma_total, mr_total);
+        println!(
+            "PASS: {} pairs checked, max_abs_diff={:.2e}, max_rel_diff={:.2e}",
+            pairs_total, ma_total, mr_total
+        );
         if om_tied > 0 {
-            println!("      ({} orient indices differ due to FP tie-breaking, alignment values match)", om_tied);
+            println!(
+                "      ({} orient indices differ due to FP tie-breaking, alignment values match)",
+                om_tied
+            );
         }
     } else {
-        println!("FAIL: {} real orient mismatches, {} alignment failures out of {} pairs",
-            om_real, af_total, pairs_total);
-        println!("      max_abs_diff={:.2e}, max_rel_diff={:.2e}", ma_total, mr_total);
+        println!(
+            "FAIL: {} real orient mismatches, {} alignment failures out of {} pairs",
+            om_real, af_total, pairs_total
+        );
+        println!(
+            "      max_abs_diff={:.2e}, max_rel_diff={:.2e}",
+            ma_total, mr_total
+        );
     }
 
     Ok(())

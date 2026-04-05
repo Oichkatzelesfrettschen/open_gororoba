@@ -62,7 +62,7 @@ enum Command {
 fn sha256_file(path: &Path) -> Result<String, String> {
     let bytes = fs::read(path).map_err(|e| format!("read {}: {e}", path.display()))?;
     let hash = Sha256::digest(&bytes);
-    Ok(format!("{hash:x}"))
+    Ok(hash.iter().map(|byte| format!("{byte:02x}")).collect())
 }
 
 /// Get the git revision of HEAD.

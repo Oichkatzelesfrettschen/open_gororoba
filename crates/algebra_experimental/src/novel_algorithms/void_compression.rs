@@ -1,7 +1,7 @@
 //! Topological Void Compression
 //!
-//! A lossy/lossless data compression algorithm. It identifies 'voids' 
-//! (zero-divisor regions) in data representations and encodes massive blocks 
+//! A lossy/lossless data compression algorithm. It identifies 'voids'
+//! (zero-divisor regions) in data representations and encodes massive blocks
 //! of data as algebraic nulls.
 
 use cd_kernel::cayley_dickson::cd_norm_sq;

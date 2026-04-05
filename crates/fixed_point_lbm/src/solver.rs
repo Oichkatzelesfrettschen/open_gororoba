@@ -5,17 +5,17 @@
 //! integer accumulation for density gives perfect mass conservation,
 //! which is the primary advantage over floating-point storage.
 
-use crate::{Q16_16, Q32_32, d3q19};
+use crate::{d3q19, Q16_16, Q32_32};
 
 /// A minimal D3Q19 BGK lattice Boltzmann domain.
 pub struct LbmDomain<T> {
     pub nx: usize,
     pub ny: usize,
     pub nz: usize,
-    pub f: Vec<[T; 19]>,      // Distribution functions per cell
-    pub rho: Vec<f32>,         // Macroscopic density
-    pub u: Vec<[f32; 3]>,      // Macroscopic velocity
-    pub tau: f32,              // Relaxation time
+    pub f: Vec<[T; 19]>,  // Distribution functions per cell
+    pub rho: Vec<f32>,    // Macroscopic density
+    pub u: Vec<[f32; 3]>, // Macroscopic velocity
+    pub tau: f32,         // Relaxation time
 }
 
 /// Trait for types that can serve as LBM distribution storage.
@@ -26,21 +26,39 @@ pub trait LbmStorage: Copy + Default + std::ops::Add<Output = Self> {
 }
 
 impl LbmStorage for Q16_16 {
-    fn from_f32(v: f32) -> Self { Q16_16::from_f32(v) }
-    fn to_f32(self) -> f32 { self.to_f32() }
-    fn zero() -> Self { Q16_16::ZERO }
+    fn from_f32(v: f32) -> Self {
+        Q16_16::from_f32(v)
+    }
+    fn to_f32(self) -> f32 {
+        self.to_f32()
+    }
+    fn zero() -> Self {
+        Q16_16::ZERO
+    }
 }
 
 impl LbmStorage for Q32_32 {
-    fn from_f32(v: f32) -> Self { Q32_32::from_f32(v) }
-    fn to_f32(self) -> f32 { self.to_f32() }
-    fn zero() -> Self { Q32_32::ZERO }
+    fn from_f32(v: f32) -> Self {
+        Q32_32::from_f32(v)
+    }
+    fn to_f32(self) -> f32 {
+        self.to_f32()
+    }
+    fn zero() -> Self {
+        Q32_32::ZERO
+    }
 }
 
 impl LbmStorage for f32 {
-    fn from_f32(v: f32) -> Self { v }
-    fn to_f32(self) -> f32 { self }
-    fn zero() -> Self { 0.0 }
+    fn from_f32(v: f32) -> Self {
+        v
+    }
+    fn to_f32(self) -> f32 {
+        self
+    }
+    fn zero() -> Self {
+        0.0
+    }
 }
 
 impl<T: LbmStorage> LbmDomain<T> {
@@ -58,11 +76,21 @@ impl<T: LbmStorage> LbmDomain<T> {
             }
         }
 
-        Self { nx, ny, nz, f, rho, u, tau }
+        Self {
+            nx,
+            ny,
+            nz,
+            f,
+            rho,
+            u,
+            tau,
+        }
     }
 
     /// Total number of cells.
-    pub fn n_cells(&self) -> usize { self.nx * self.ny * self.nz }
+    pub fn n_cells(&self) -> usize {
+        self.nx * self.ny * self.nz
+    }
 
     /// Compute total mass (sum of all rho).
     pub fn total_mass(&self) -> f64 {

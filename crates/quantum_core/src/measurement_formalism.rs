@@ -2,7 +2,6 @@
 //! and Wiseman-Milburn stochastic master equation.
 
 use nalgebra::{Complex, SMatrix};
-use rand::thread_rng;
 use rand_distr::{Distribution, Normal};
 
 pub type DensityMatrix1Q = SMatrix<Complex<f64>, 2, 2>;
@@ -76,7 +75,7 @@ pub fn wiseman_milburn_step(
 
     let meas_drho = c_rho_rho_c_adj - rho.map(|x| x * expected_val);
 
-    let mut rng = thread_rng();
+    let mut rng = rand::rng();
     let normal = Normal::new(0.0, dt.sqrt()).unwrap();
     let dw = normal.sample(&mut rng);
 

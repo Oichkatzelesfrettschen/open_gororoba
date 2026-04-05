@@ -14,10 +14,12 @@ use clap::Parser;
 use serde::Serialize;
 use std::{fs, path::PathBuf, time::Instant};
 
-use cd_kernel::turboquant::dispatch::{DispatchedQuantizer, detect_simd_level};
-use cd_kernel::turboquant::pipeline::{TurboQuantMSE, TurboQuantProd};
-use cd_kernel::turboquant::sign_pack::BitPackedSigns;
-use cd_kernel::turboquant::simd_codebook::SimdBoundaries;
+use cd_kernel::turboquant::{
+    dispatch::{DispatchedQuantizer, detect_simd_level},
+    pipeline::{TurboQuantMSE, TurboQuantProd},
+    sign_pack::BitPackedSigns,
+    simd_codebook::SimdBoundaries,
+};
 
 #[derive(Parser)]
 #[command(name = "turboquant-bench")]
@@ -40,7 +42,10 @@ struct Cli {
     rotation: String,
 
     /// Output JSON path.
-    #[arg(long, default_value = "data/output/heliosphere/ablations/turboquant_bench.json")]
+    #[arg(
+        long,
+        default_value = "data/output/heliosphere/ablations/turboquant_bench.json"
+    )]
     out_json: PathBuf,
 }
 
@@ -305,7 +310,10 @@ fn main() -> Result<()> {
             let mut scalar_out = vec![0u8; total];
             let t0 = Instant::now();
             for (i, &v) in values.iter().enumerate() {
-                scalar_out[i] = cd_kernel::turboquant::simd_codebook::quantize_scalar_boundary(v, &cb.boundaries);
+                scalar_out[i] = cd_kernel::turboquant::simd_codebook::quantize_scalar_boundary(
+                    v,
+                    &cb.boundaries,
+                );
             }
             let scalar_ms = t0.elapsed().as_secs_f64() * 1000.0;
 
@@ -338,7 +346,8 @@ fn main() -> Result<()> {
             );
 
             codebook_bench.push(CodebookBenchResult {
-                dim: d, bits,
+                dim: d,
+                bits,
                 method: "scalar_boundary".into(),
                 n_values: total,
                 elapsed_ms: scalar_ms,
@@ -346,7 +355,8 @@ fn main() -> Result<()> {
                 correct: true,
             });
             codebook_bench.push(CodebookBenchResult {
-                dim: d, bits,
+                dim: d,
+                bits,
                 method: format!("simd_f32x8_{}", simd_level),
                 n_values: total,
                 elapsed_ms: simd_ms,
@@ -354,7 +364,8 @@ fn main() -> Result<()> {
                 correct,
             });
             codebook_bench.push(CodebookBenchResult {
-                dim: d, bits,
+                dim: d,
+                bits,
                 method: format!("dispatched_{}", simd_level),
                 n_values: total,
                 elapsed_ms: disp_ms,

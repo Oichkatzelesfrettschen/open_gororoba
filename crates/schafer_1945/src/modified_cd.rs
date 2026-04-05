@@ -21,13 +21,7 @@ use cd_kernel::cayley_dickson::{cd_conjugate, cd_multiply};
 /// Returns a 2n-dimensional result.
 ///
 /// Mirrors: SchaferDivAlg16.v eq.1.
-pub fn modified_cd_multiply(
-    a: &[f64],
-    b: &[f64],
-    x: &[f64],
-    y: &[f64],
-    g: &[f64],
-) -> Vec<f64> {
+pub fn modified_cd_multiply(a: &[f64], b: &[f64], x: &[f64], y: &[f64], g: &[f64]) -> Vec<f64> {
     let n = a.len();
     assert!(b.len() == n && x.len() == n && y.len() == n && g.len() == n);
 
@@ -36,7 +30,11 @@ pub fn modified_cd_multiply(
     let conj_b = cd_conjugate(b);
     let y_conj_b = cd_multiply(y, &conj_b);
     let g_y_conj_b = cd_multiply(g, &y_conj_b);
-    let lo: Vec<f64> = ax.iter().zip(g_y_conj_b.iter()).map(|(u, v)| u + v).collect();
+    let lo: Vec<f64> = ax
+        .iter()
+        .zip(g_y_conj_b.iter())
+        .map(|(u, v)| u + v)
+        .collect();
 
     // hi = conj(a)*y + x*b
     let conj_a = cd_conjugate(a);
@@ -75,7 +73,10 @@ mod tests {
 
         let result = modified_cd_multiply(&a, &b, &x, &y, &g);
         assert_eq!(result.len(), 8);
-        assert!(cd_norm_sq(&result) > 0.1, "modified product should be nonzero");
+        assert!(
+            cd_norm_sq(&result) > 0.1,
+            "modified product should be nonzero"
+        );
     }
 
     #[test]

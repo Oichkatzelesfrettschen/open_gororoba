@@ -16,11 +16,7 @@ use crate::{
 };
 use chrono::{DateTime, Datelike, NaiveDate, Timelike, Utc};
 use csv::ReaderBuilder;
-use std::{
-    collections::BTreeMap,
-    fs,
-    path::PathBuf,
-};
+use std::{collections::BTreeMap, fs, path::PathBuf};
 
 /// Minute-resolution THEMIS FGM record.
 #[derive(Debug, Clone)]
@@ -89,8 +85,12 @@ pub fn parse_themis_fgm_hapi_csv_minutes(content: &str, probe: &str) -> Vec<Them
     let mut buckets: BTreeMap<(u16, u16, u8, u8), MinuteAcc> = BTreeMap::new();
 
     for record in reader.records().flatten() {
-        let Some(time_str) = record.get(0) else { continue };
-        let Ok(dt) = DateTime::parse_from_rfc3339(time_str) else { continue };
+        let Some(time_str) = record.get(0) else {
+            continue;
+        };
+        let Ok(dt) = DateTime::parse_from_rfc3339(time_str) else {
+            continue;
+        };
         let utc = dt.with_timezone(&Utc);
 
         let bx = parse_hapi_spacephysics_f64_or_nan(record.get(bx_col).unwrap_or(""));
@@ -119,7 +119,9 @@ pub fn parse_themis_fgm_hapi_csv_minutes(content: &str, probe: &str) -> Vec<Them
     keys.into_iter()
         .filter_map(|key| {
             let acc = &buckets[&key];
-            if acc.count == 0 { return None; }
+            if acc.count == 0 {
+                return None;
+            }
             let n = acc.count as f64;
             let (year, doy, hour, minute) = key;
             let bx = acc.bx_sum / n;
@@ -137,8 +139,14 @@ pub fn parse_themis_fgm_hapi_csv_minutes(content: &str, probe: &str) -> Vec<Them
             };
 
             Some(ThemisFgmMinuteRecord {
-                year, doy, hour, minute, elapsed_hours: elapsed,
-                bx_gse: bx, by_gse: by, bz_gse: bz,
+                year,
+                doy,
+                hour,
+                minute,
+                elapsed_hours: elapsed,
+                bx_gse: bx,
+                by_gse: by,
+                bz_gse: bz,
                 b_magnitude: (bx * bx + by * by + bz * bz).sqrt(),
             })
         })
@@ -152,35 +160,57 @@ pub fn parse_themis_fgm_hapi_csv(content: &str) -> Vec<ThemisFgmRecord> {
         .from_reader(content.as_bytes());
 
     #[derive(Default)]
-    struct HourAcc { bx: f64, by: f64, bz: f64, count: usize }
+    struct HourAcc {
+        bx: f64,
+        by: f64,
+        bz: f64,
+        count: usize,
+    }
 
     let mut hourly: BTreeMap<(u16, u16, u8), HourAcc> = BTreeMap::new();
 
     for record in reader.records().flatten() {
         let Some(time) = record.get(0) else { continue };
-        let Some((year, doy, hour)) = parse_hapi_time_to_ydh(time) else { continue };
+        let Some((year, doy, hour)) = parse_hapi_time_to_ydh(time) else {
+            continue;
+        };
 
         // Columns 1,2,3 are the GSE vector for @0 dataset
         let bx = parse_hapi_spacephysics_f64_or_nan(record.get(1).unwrap_or(""));
         let by = parse_hapi_spacephysics_f64_or_nan(record.get(2).unwrap_or(""));
         let bz = parse_hapi_spacephysics_f64_or_nan(record.get(3).unwrap_or(""));
-        if !bx.is_finite() || !by.is_finite() || !bz.is_finite() { continue; }
+        if !bx.is_finite() || !by.is_finite() || !bz.is_finite() {
+            continue;
+        }
 
         let acc = hourly.entry((year, doy, hour)).or_default();
-        acc.bx += bx; acc.by += by; acc.bz += bz; acc.count += 1;
+        acc.bx += bx;
+        acc.by += by;
+        acc.bz += bz;
+        acc.count += 1;
     }
 
-    hourly.into_iter().filter_map(|((year, doy, hour), acc)| {
-        if acc.count == 0 { return None; }
-        let n = acc.count as f64;
-        let bx = acc.bx / n;
-        let by = acc.by / n;
-        let bz = acc.bz / n;
-        Some(ThemisFgmRecord {
-            year, doy, hour, bx_gse: bx, by_gse: by, bz_gse: bz,
-            b_magnitude: (bx * bx + by * by + bz * bz).sqrt(),
+    hourly
+        .into_iter()
+        .filter_map(|((year, doy, hour), acc)| {
+            if acc.count == 0 {
+                return None;
+            }
+            let n = acc.count as f64;
+            let bx = acc.bx / n;
+            let by = acc.by / n;
+            let bz = acc.bz / n;
+            Some(ThemisFgmRecord {
+                year,
+                doy,
+                hour,
+                bx_gse: bx,
+                by_gse: by,
+                bz_gse: bz,
+                b_magnitude: (bx * bx + by * by + bz * bz).sqrt(),
+            })
         })
-    }).collect()
+        .collect()
 }
 
 /// THEMIS/ARTEMIS FGM provider.
@@ -208,24 +238,30 @@ impl DatasetProvider for ThemisFgmProvider {
         for doy in self.doy_start..=self.doy_end {
             let date = NaiveDate::from_yo_opt(self.year as i32, doy as u32)
                 .ok_or_else(|| FetchError::Validation(format!("invalid DOY {doy}")))?;
-            let fname = format!("{}_fgm_{:04}_{:03}.csv", self.probe.to_lowercase(), self.year, doy);
+            let fname = format!(
+                "{}_fgm_{:04}_{:03}.csv",
+                self.probe.to_lowercase(),
+                self.year,
+                doy
+            );
             let output = dir.join(&fname);
 
-            if config.skip_existing && output.exists() { continue; }
+            if config.skip_existing && output.exists() {
+                continue;
+            }
 
             let t_min = format!("{}T00:00:00Z", date);
             let t_max = format!("{}T23:59:59Z", date);
 
             println!("Fetching {} FGM {} DOY {}...", self.probe, self.year, doy);
 
-            match download_hapi_csv(
-                &dataset,
-                &t_min,
-                &t_max,
-                Some(&["Time", &gse_param]),
-            ) {
-                Ok(body) => { fs::write(&output, body)?; }
-                Err(e) => { eprintln!("  Warning: {} DOY {}: {}", self.probe, doy, e); }
+            match download_hapi_csv(&dataset, &t_min, &t_max, Some(&["Time", &gse_param])) {
+                Ok(body) => {
+                    fs::write(&output, body)?;
+                }
+                Err(e) => {
+                    eprintln!("  Warning: {} DOY {}: {}", self.probe, doy, e);
+                }
             }
         }
 

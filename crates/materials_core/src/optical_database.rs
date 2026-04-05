@@ -22,7 +22,7 @@
 
 use gauss_quad::GaussLegendre;
 use num_complex::Complex64;
-use std::f64::consts::PI;
+use std::{f64::consts::PI, num::NonZeroUsize};
 
 /// Conversion factor: 1 eV in rad/s.
 pub const EV_TO_RADS: f64 = 1.519_267_447e15;
@@ -4742,7 +4742,9 @@ pub fn casimir_lifshitz_energy(
     let global_pref = k_b_t_si / (4.0 * PI * PI);
     let xi_unit = 2.0 * PI * K_B_EV * temperature_k * EV_TO_RADS; // xi_1 in rad/s
     let d = separation_m;
-    let quad = GaussLegendre::new(n_gauss).expect("GL degree must be >= 1");
+    let quad = GaussLegendre::new(
+        NonZeroUsize::new(n_gauss).expect("Gauss-Legendre degree must be non-zero"),
+    );
     let mut energy = 0.0_f64;
 
     // ------------------------------------------------------------------
@@ -4885,7 +4887,9 @@ pub fn casimir_drude_plasma_discrepancy(
     let d = separation_m;
     // x_p = omega_p * d / c (dimensionless plasma parameter)
     let x_p = omega_p_ev * EV_TO_RADS * d / C;
-    let quad = GaussLegendre::new(n_gauss).expect("GL degree must be >= 1");
+    let quad = GaussLegendre::new(
+        NonZeroUsize::new(n_gauss).expect("Gauss-Legendre degree must be non-zero"),
+    );
     // Plasma TE correction at n=0:
     // r_TE_plasma(u) = (u/2 - sqrt((u/2)^2 + x_p^2)) / (u/2 + sqrt((u/2)^2 + x_p^2))
     // which is negative (TE provides an attractive correction absent in Drude).

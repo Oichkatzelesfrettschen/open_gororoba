@@ -37,8 +37,12 @@ use crate::cd_associator_norm;
 /// Returns (fidelity_ratio, a_pre, a_post).
 /// If a_pre is near zero (phase-locked original), returns (1.0, a_pre, a_post).
 pub fn cd_fidelity_ratio(
-    a: &[f64], b: &[f64], c: &[f64],       // original vectors
-    a_q: &[f64], b_q: &[f64], c_q: &[f64], // quantized vectors
+    a: &[f64],
+    b: &[f64],
+    c: &[f64], // original vectors
+    a_q: &[f64],
+    b_q: &[f64],
+    c_q: &[f64], // quantized vectors
 ) -> (f64, f64, f64) {
     let d = a.len();
     debug_assert_eq!(b.len(), d);
@@ -71,10 +75,7 @@ pub fn cd_fidelity_ratio(
 /// fidelity ratio between original and quantized sequences.
 ///
 /// Returns Vec of (fidelity_ratio, a_pre, a_post) per triplet.
-pub fn sliding_cd_fidelity(
-    original: &[Vec<f64>],
-    quantized: &[Vec<f64>],
-) -> Vec<(f64, f64, f64)> {
+pub fn sliding_cd_fidelity(original: &[Vec<f64>], quantized: &[Vec<f64>]) -> Vec<(f64, f64, f64)> {
     debug_assert_eq!(original.len(), quantized.len());
     let n = original.len();
     if n < 3 {
@@ -84,8 +85,12 @@ pub fn sliding_cd_fidelity(
     (0..n - 2)
         .map(|i| {
             cd_fidelity_ratio(
-                &original[i], &original[i + 1], &original[i + 2],
-                &quantized[i], &quantized[i + 1], &quantized[i + 2],
+                &original[i],
+                &original[i + 1],
+                &original[i + 2],
+                &quantized[i],
+                &quantized[i + 1],
+                &quantized[i + 2],
             )
         })
         .collect()
@@ -115,8 +120,13 @@ pub fn fidelity_summary(fidelities: &[(f64, f64, f64)]) -> FidelitySummary {
     let n = fidelities.len();
     if n == 0 {
         return FidelitySummary {
-            mean_ratio: 1.0, min_ratio: 1.0, max_ratio: 1.0,
-            std_ratio: 0.0, mean_a_pre: 0.0, mean_a_post: 0.0, n_triplets: 0,
+            mean_ratio: 1.0,
+            min_ratio: 1.0,
+            max_ratio: 1.0,
+            std_ratio: 0.0,
+            mean_a_pre: 0.0,
+            mean_a_post: 0.0,
+            n_triplets: 0,
         };
     }
 
@@ -147,10 +157,7 @@ pub fn fidelity_summary(fidelities: &[(f64, f64, f64)]) -> FidelitySummary {
 /// have structure that sign projections capture poorly -> need more bits.
 ///
 /// Uses the Takens-style embedding: (r[t], r[t+1], r[t+2]) in CD algebra.
-pub fn residual_associator_per_token(
-    residuals: &[Vec<f64>],
-    dim: usize,
-) -> Vec<f64> {
+pub fn residual_associator_per_token(residuals: &[Vec<f64>], dim: usize) -> Vec<f64> {
     let n = residuals.len();
     if n < 3 {
         return vec![0.0; n];
@@ -168,9 +175,13 @@ pub fn residual_associator_per_token(
 
     // Normalize: each interior token participates in up to 3 triplets
     for (i, score) in scores.iter_mut().enumerate() {
-        let count = if i == 0 || i == n - 1 { 1.0 }
-            else if i == 1 || i == n - 2 { 2.0 }
-            else { 3.0 };
+        let count = if i == 0 || i == n - 1 {
+            1.0
+        } else if i == 1 || i == n - 2 {
+            2.0
+        } else {
+            3.0
+        };
         *score /= count;
     }
 
@@ -192,7 +203,11 @@ pub fn distortion_decomposition(original: &[f64], quantized: &[f64]) -> (f64, f6
 
     let norm_o: f64 = original.iter().map(|v| v * v).sum::<f64>().sqrt();
     let norm_q: f64 = quantized.iter().map(|v| v * v).sum::<f64>().sqrt();
-    let dot: f64 = original.iter().zip(quantized.iter()).map(|(a, b)| a * b).sum();
+    let dot: f64 = original
+        .iter()
+        .zip(quantized.iter())
+        .map(|(a, b)| a * b)
+        .sum();
 
     // Total distortion (1 - cosine similarity)
     let cos_sim = if norm_o > 1e-15 && norm_q > 1e-15 {
@@ -233,12 +248,22 @@ mod tests {
 
     #[test]
     fn test_fidelity_perfect_preservation() {
-        let a = vec![1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
-        let b = vec![0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
-        let c = vec![0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
+        let a = vec![
+            1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+        ];
+        let b = vec![
+            0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+        ];
+        let c = vec![
+            0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+        ];
         // Perfect preservation: quantized = original
         let (ratio, _, _) = cd_fidelity_ratio(&a, &b, &c, &a, &b, &c);
-        assert!((ratio - 1.0).abs() < 1e-10, "Perfect preservation should give ratio 1.0, got {}", ratio);
+        assert!(
+            (ratio - 1.0).abs() < 1e-10,
+            "Perfect preservation should give ratio 1.0, got {}",
+            ratio
+        );
     }
 
     #[test]
@@ -251,15 +276,31 @@ mod tests {
 
         // Add small noise (simulating quantization)
         let noise = 0.01;
-        let a_q: Vec<f64> = a.iter().enumerate().map(|(i, &v)| v + noise * (i as f64 * 0.1).sin()).collect();
-        let b_q: Vec<f64> = b.iter().enumerate().map(|(i, &v)| v + noise * (i as f64 * 0.2).cos()).collect();
-        let c_q: Vec<f64> = c.iter().enumerate().map(|(i, &v)| v + noise * (i as f64 * 0.3).sin()).collect();
+        let a_q: Vec<f64> = a
+            .iter()
+            .enumerate()
+            .map(|(i, &v)| v + noise * (i as f64 * 0.1).sin())
+            .collect();
+        let b_q: Vec<f64> = b
+            .iter()
+            .enumerate()
+            .map(|(i, &v)| v + noise * (i as f64 * 0.2).cos())
+            .collect();
+        let c_q: Vec<f64> = c
+            .iter()
+            .enumerate()
+            .map(|(i, &v)| v + noise * (i as f64 * 0.3).sin())
+            .collect();
 
         let (ratio, a_pre, a_post) = cd_fidelity_ratio(&a, &b, &c, &a_q, &b_q, &c_q);
         assert!(a_pre > 0.0, "Pre associator should be nonzero at 16D");
         assert!(a_post > 0.0, "Post associator should be nonzero");
         // Small noise -> ratio should be near 1.0
-        assert!((ratio - 1.0).abs() < 0.1, "Small noise should give ratio near 1.0, got {}", ratio);
+        assert!(
+            (ratio - 1.0).abs() < 0.1,
+            "Small noise should give ratio near 1.0, got {}",
+            ratio
+        );
     }
 
     #[test]
@@ -269,7 +310,8 @@ mod tests {
         let original: Vec<Vec<f64>> = (0..n)
             .map(|t| (0..d).map(|i| ((t * 7 + i) as f64 * 0.1).sin()).collect())
             .collect();
-        let quantized: Vec<Vec<f64>> = original.iter()
+        let quantized: Vec<Vec<f64>> = original
+            .iter()
             .map(|v| v.iter().map(|&x| x + 0.005).collect())
             .collect();
 
@@ -277,7 +319,11 @@ mod tests {
         assert_eq!(fids.len(), n - 2);
 
         let summary = fidelity_summary(&fids);
-        assert!(summary.mean_ratio > 0.5, "Mean ratio too low: {}", summary.mean_ratio);
+        assert!(
+            summary.mean_ratio > 0.5,
+            "Mean ratio too low: {}",
+            summary.mean_ratio
+        );
         assert_eq!(summary.n_triplets, n - 2);
     }
 
@@ -289,11 +335,17 @@ mod tests {
         // Add magnitude distortion only (scale the vector)
         let scaled: Vec<f64> = original.iter().map(|&v| v * 0.9).collect();
         let (_total, magnitude, phase) = distortion_decomposition(&original, &scaled);
-        assert!(magnitude > phase * 5.0,
-            "Scaling should cause mainly magnitude distortion: mag={}, phase={}", magnitude, phase);
+        assert!(
+            magnitude > phase * 5.0,
+            "Scaling should cause mainly magnitude distortion: mag={}, phase={}",
+            magnitude,
+            phase
+        );
 
         // Add direction distortion only (rotate slightly)
-        let rotated: Vec<f64> = original.iter().enumerate()
+        let rotated: Vec<f64> = original
+            .iter()
+            .enumerate()
             .map(|(i, &v)| if i == 0 { v + 0.5 } else { v })
             .collect();
         // Re-normalize to original magnitude
@@ -301,8 +353,12 @@ mod tests {
         let norm_r: f64 = rotated.iter().map(|v| v * v).sum::<f64>().sqrt();
         let rotated_normed: Vec<f64> = rotated.iter().map(|v| v * norm_o / norm_r).collect();
         let (_, mag2, phase2) = distortion_decomposition(&original, &rotated_normed);
-        assert!(phase2 > mag2 * 5.0,
-            "Rotation should cause mainly phase distortion: phase={}, mag={}", phase2, mag2);
+        assert!(
+            phase2 > mag2 * 5.0,
+            "Rotation should cause mainly phase distortion: phase={}, mag={}",
+            phase2,
+            mag2
+        );
     }
 
     #[test]
@@ -332,17 +388,24 @@ mod tests {
         // Generate sequence of vectors
         let n = 10;
         let original: Vec<Vec<f64>> = (0..n)
-            .map(|t| (0..d).map(|i| ((t * 5 + i * 3) as f64 * 0.1).sin()).collect())
+            .map(|t| {
+                (0..d)
+                    .map(|i| ((t * 5 + i * 3) as f64 * 0.1).sin())
+                    .collect()
+            })
             .collect();
 
         // Quantize each vector
         let mut buf = vec![0.0f64; 3 * d];
-        let quantized: Vec<Vec<f64>> = original.iter().map(|v| {
-            let compressed = tq.quantize(v, &mut buf);
-            let mut out = vec![0.0f64; d];
-            tq.dequantize(&compressed, &mut buf, &mut out);
-            out
-        }).collect();
+        let quantized: Vec<Vec<f64>> = original
+            .iter()
+            .map(|v| {
+                let compressed = tq.quantize(v, &mut buf);
+                let mut out = vec![0.0f64; d];
+                tq.dequantize(&compressed, &mut buf, &mut out);
+                out
+            })
+            .collect();
 
         // Compute CD fidelity
         let fids = sliding_cd_fidelity(&original, &quantized);
@@ -355,7 +418,10 @@ mod tests {
         println!("  A_post mean:{:.6}", summary.mean_a_post);
 
         // Fidelity should be reasonable (> 0.5 for 3-bit at d=32)
-        assert!(summary.mean_ratio > 0.3,
-            "CD fidelity too low: {}", summary.mean_ratio);
+        assert!(
+            summary.mean_ratio > 0.3,
+            "CD fidelity too low: {}",
+            summary.mean_ratio
+        );
     }
 }

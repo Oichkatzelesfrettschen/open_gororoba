@@ -11,7 +11,11 @@ pub type ZhilinaNode = [f64; 16];
 /// **Hexagonal Traversal Query**
 /// Traverses a Zhilina hexagon to retrieve a related node.
 /// Start -> edge_1 -> edge_2 -> yields the target node via multiplication.
-pub fn traverse_hexagon(start_node: &ZhilinaNode, edge_1: &ZhilinaNode, edge_2: &ZhilinaNode) -> ZhilinaNode {
+pub fn traverse_hexagon(
+    start_node: &ZhilinaNode,
+    edge_1: &ZhilinaNode,
+    edge_2: &ZhilinaNode,
+) -> ZhilinaNode {
     let intermediate: [f64; 16] = cd_multiply(start_node, edge_1).try_into().unwrap();
     cd_multiply(&intermediate, edge_2).try_into().unwrap()
 }

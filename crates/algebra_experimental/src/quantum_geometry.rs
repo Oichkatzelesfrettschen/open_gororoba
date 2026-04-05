@@ -6,7 +6,7 @@
 use crate::higher_cd::SparseApeironState;
 
 /// Metric tensor representation for Quantum Information Geometry.
-/// In the exceptional context, the distance between quantum states is 
+/// In the exceptional context, the distance between quantum states is
 /// modulated by the underlying Cayley-Dickson structure.
 pub struct QuantumInformationMetric {
     pub dimension: usize,
@@ -58,7 +58,7 @@ mod tests {
         let metric = QuantumInformationMetric::new(16);
         let psi = SparseApeironState::from_pairs(16, vec![(0, 1.0)]);
         let phi = SparseApeironState::from_pairs(16, vec![(1, 1.0)]);
-        
+
         let dist = metric.fubini_study_distance(&psi, &phi);
         // Orthogonal states should have distance PI/2
         assert!((dist - std::f64::consts::FRAC_PI_2).abs() < 1e-10);

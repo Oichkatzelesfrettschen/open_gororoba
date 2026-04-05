@@ -447,12 +447,12 @@ pub fn matrix_free_fraction(
     let epsilon_sq = 1.0 - (1.0 - epsilon).powi(2);
 
     for _ in 0..n_triples {
-        let i = rng.gen_range(0..n);
-        let mut j = rng.gen_range(0..n - 1);
+        let i = rng.random_range(0..n);
+        let mut j = rng.random_range(0..n - 1);
         if j >= i {
             j += 1;
         }
-        let mut k = rng.gen_range(0..n - 2);
+        let mut k = rng.random_range(0..n - 2);
         if k >= i.min(j) {
             k += 1;
         }
@@ -846,7 +846,7 @@ mod tests {
         let encoder = BaireEncoder::new(specs, 10, 4);
         let mut rng = ChaCha8Rng::seed_from_u64(999);
         let data: Vec<Vec<f64>> = (0..200)
-            .map(|_| vec![rng.gen_range(0.0..10.0), rng.gen_range(0.0..10.0)])
+            .map(|_| vec![rng.random_range(0.0..10.0), rng.random_range(0.0..10.0)])
             .collect();
 
         // Matrix-based
@@ -888,7 +888,7 @@ mod tests {
         let encoder = BaireEncoder::new(specs, 10, 4);
         let mut rng = ChaCha8Rng::seed_from_u64(77);
         let data: Vec<Vec<f64>> = (0..100)
-            .map(|_| vec![rng.gen_range(0.0..1.0), rng.gen_range(0.0..1.0)])
+            .map(|_| vec![rng.random_range(0.0..1.0), rng.random_range(0.0..1.0)])
             .collect();
 
         let result = matrix_free_ultrametric_test(&encoder, &data, 5_000, 50, 42);
@@ -916,7 +916,7 @@ mod tests {
         let encoder = BaireEncoder::new(specs, 10, 4);
         let mut rng = ChaCha8Rng::seed_from_u64(55);
         let data: Vec<Vec<f64>> = (0..50)
-            .map(|_| vec![rng.gen_range(0.0..1.0), rng.gen_range(0.0..1.0)])
+            .map(|_| vec![rng.random_range(0.0..1.0), rng.random_range(0.0..1.0)])
             .collect();
 
         let tc = matrix_free_tolerance_curve(&encoder, &data, 5_000, 20, 42);

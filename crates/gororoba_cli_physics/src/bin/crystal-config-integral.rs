@@ -106,7 +106,7 @@ fn main() -> Result<()> {
         for i in 0..n {
             sum_k += tt.cores[0].data[[0, i, j]] * w;
         }
-        res.write(0, j, sum_k);
+        res[(0, j)] = sum_k;
     }
 
     for k in 1..d {
@@ -123,13 +123,13 @@ fn main() -> Result<()> {
                 for idx_n in 0..n {
                     sum_i += core[[i, idx_n, j]] * w;
                 }
-                contract.write(i, j, sum_i);
+                contract[(i, j)] = sum_i;
             }
         }
         res = &res * contract;
     }
 
-    let z = res.read(0, 0);
+    let z = res[(0, 0)];
     println!("Configurational Integral Z_{} = {:.6e}", d, z);
     println!("Free Energy A = {:.6} (units of kT)", -z.ln());
 

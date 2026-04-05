@@ -224,7 +224,7 @@ mod tests {
     fn make_random_data(n: usize, d: usize, seed: u64) -> (Vec<Vec<f64>>, Vec<AttributeSpec>) {
         let mut rng = ChaCha8Rng::seed_from_u64(seed);
         let data: Vec<Vec<f64>> = (0..n)
-            .map(|_| (0..d).map(|_| rng.gen_range(0.0..1.0)).collect())
+            .map(|_| (0..d).map(|_| rng.random_range(0.0..1.0)).collect())
             .collect();
         let specs: Vec<AttributeSpec> = (0..d)
             .map(|i| AttributeSpec {

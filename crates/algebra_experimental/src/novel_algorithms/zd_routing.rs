@@ -49,7 +49,11 @@ pub fn get_zd_pair() -> (SedenionMsg, SedenionMsg) {
 /// Encrypts a message by routing it through a sequence of non-associative multiplications.
 /// Because (A * B) * C != A * (B * C), an attacker without the exact bracketing and ZD sequence
 /// cannot easily invert the product.
-pub fn trapdoor_encrypt(message: SedenionMsg, keys: &[SedenionMsg], bracketing: &[usize]) -> SedenionMsg {
+pub fn trapdoor_encrypt(
+    message: SedenionMsg,
+    keys: &[SedenionMsg],
+    bracketing: &[usize],
+) -> SedenionMsg {
     let mut state = message;
     for (i, &key) in keys.iter().enumerate() {
         // The bracketing array dictates left-vs-right multiplication at each step.
@@ -69,14 +73,18 @@ pub fn trapdoor_encrypt(message: SedenionMsg, keys: &[SedenionMsg], bracketing: 
 pub fn generate_null_codeword(payload: &[f64; 8]) -> (SedenionMsg, SedenionMsg) {
     // We start with a genuine ZD pair
     let (mut a, mut b) = get_zd_pair();
-    
+
     // Encode information via scaling - scaling preserves the ZD property (a*x)(y*b) = 0
     // We carefully scale non-zero elements
     for i in 0..16 {
-        if a[i] != 0.0 { a[i] *= payload[0]; }
-        if b[i] != 0.0 { b[i] *= payload[1]; }
+        if a[i] != 0.0 {
+            a[i] *= payload[0];
+        }
+        if b[i] != 0.0 {
+            b[i] *= payload[1];
+        }
     }
-    
+
     (a, b)
 }
 
@@ -95,14 +103,17 @@ mod tests {
     fn test_null_code_syndrome() {
         let payload = [1.0, 0.5, -0.2, 0.1, 0.0, 0.0, 0.0, 0.0];
         let (mut a, b) = generate_null_codeword(&payload);
-        
+
         let initial_syndrome = check_null_syndrome(&a, &b);
         // Ideally initial_syndrome == 0.0, though the mock might be non-zero.
-        
+
         // Inject noise
         a[3] += 0.05;
         let perturbed_syndrome = check_null_syndrome(&a, &b);
-        
-        assert!(perturbed_syndrome > initial_syndrome, "Syndrome should increase with noise");
+
+        assert!(
+            perturbed_syndrome > initial_syndrome,
+            "Syndrome should increase with noise"
+        );
     }
 }

@@ -122,7 +122,7 @@ fn main() {
     let n_frbs = objects.len();
     eprintln!("Loading GW events...");
     if let Ok(gw_events) = parse_gwtc3_csv(&cli.gws) {
-        use rand::{Rng, SeedableRng};
+        use rand::{RngExt, SeedableRng};
         use rand_chacha::ChaCha8Rng;
         use std::{
             collections::hash_map::DefaultHasher,
@@ -141,8 +141,8 @@ fn main() {
             event.common_name.hash(&mut hasher);
             let seed = hasher.finish();
             let mut rng = ChaCha8Rng::seed_from_u64(seed);
-            let ra_deg: f64 = rng.gen_range(0.0..360.0);
-            let dec_deg: f64 = rng.gen_range(-90.0..90.0);
+            let ra_deg: f64 = rng.random_range(0.0..360.0);
+            let dec_deg: f64 = rng.random_range(-90.0..90.0);
 
             let (x, y, z_c) = radec_to_cartesian(ra_deg, dec_deg, d_c);
 

@@ -33,7 +33,7 @@
 use crate::optical_database::{C, DrudeParams, E_CHARGE, EV_TO_RADS, K_B_EV};
 use gauss_quad::GaussLegendre;
 use rayon::prelude::*;
-use std::f64::consts::PI;
+use std::{f64::consts::PI, num::NonZeroUsize};
 use wide::f64x4;
 
 // n,k data arrays generated from data/nk/*.csv by materials_data/build.rs.
@@ -533,7 +533,9 @@ pub fn casimir_lifshitz_energy_tabulated(
     // xi_1 = 2*pi*kT/hbar in rad/s
     let xi_unit = 2.0 * PI * K_B_EV * temperature_k * EV_TO_RADS;
 
-    let gl = GaussLegendre::new(n_gauss).expect("GL degree must be >= 1");
+    let gl = GaussLegendre::new(
+        NonZeroUsize::new(n_gauss).expect("Gauss-Legendre degree must be non-zero"),
+    );
     let mut energy = 0.0_f64;
 
     // ------------------------------------------------------------------
@@ -598,7 +600,9 @@ pub fn casimir_lifshitz_energy_tabulated(
             let pref_n = (xi_n / C) * (xi_n / C);
             // GaussLegendre::new is cheap (node/weight computation for n_gauss points).
             // Constructing it per-thread avoids requiring GaussLegendre: Sync.
-            let gl_n = GaussLegendre::new(n_gauss).expect("GL degree must be >= 1");
+            let gl_n = GaussLegendre::new(
+                NonZeroUsize::new(n_gauss).expect("Gauss-Legendre degree must be non-zero"),
+            );
             let int_n = gl_n.integrate(1.0, p_max, |p| {
                 let r_te1 = tab_r_te(p, eps1);
                 let r_te2 = tab_r_te(p, eps2);

@@ -1,7 +1,7 @@
 //! Speculative Hyperdimensional Bridge and Lattice Theory.
 //!
-//! This module preserves the "Genesis-Exodus Framework" research for further 
-//! investigation. It is decoupled from the core mathematical kernels to 
+//! This module preserves the "Genesis-Exodus Framework" research for further
+//! investigation. It is decoupled from the core mathematical kernels to
 //! maintain technical integrity.
 
 use gororoba_algebra::physics::PHI;

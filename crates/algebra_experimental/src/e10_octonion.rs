@@ -1496,7 +1496,7 @@ mod tests {
         // With uniform random data, the optimal mapping should not beat null
         // sequences significantly (p > 0.01).
         let mut rng = rand_chacha::ChaCha8Rng::seed_from_u64(12345);
-        let sequence: Vec<usize> = (0..500).map(|_| rng.gen_range(0..8)).collect();
+        let sequence: Vec<usize> = (0..500).map(|_| rng.random_range(0..8)).collect();
 
         let result = verify_claim4(&sequence, &NullModel::Uniform, 200, 54321);
 

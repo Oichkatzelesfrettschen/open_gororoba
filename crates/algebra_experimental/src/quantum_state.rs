@@ -48,7 +48,9 @@ impl Add for QuantumState {
     type Output = Self;
     fn add(self, rhs: Self) -> Self {
         match (self, rhs) {
-            (QuantumState::Observable(a), QuantumState::Observable(b)) => QuantumState::Observable(a + b),
+            (QuantumState::Observable(a), QuantumState::Observable(b)) => {
+                QuantumState::Observable(a + b)
+            }
             _ => QuantumState::TopologicalNull,
         }
     }
@@ -58,7 +60,9 @@ impl Sub for QuantumState {
     type Output = Self;
     fn sub(self, rhs: Self) -> Self {
         match (self, rhs) {
-            (QuantumState::Observable(a), QuantumState::Observable(b)) => QuantumState::Observable(a - b),
+            (QuantumState::Observable(a), QuantumState::Observable(b)) => {
+                QuantumState::Observable(a - b)
+            }
             _ => QuantumState::TopologicalNull,
         }
     }

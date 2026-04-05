@@ -64,10 +64,17 @@ fn effective_rank(embedded: &[Vec<f64>], dim: usize) -> (usize, Vec<f64>) {
 
 fn main() -> Result<()> {
     let cli = Cli::parse();
-    let dims: Vec<usize> = cli.dims.split(',').map(|s| s.trim().parse().unwrap()).collect();
+    let dims: Vec<usize> = cli
+        .dims
+        .split(',')
+        .map(|s| s.trim().parse().unwrap())
+        .collect();
 
     println!("=== Effective Channel Independence ===");
-    println!("  dims: {:?}, channels={}, lag={}", dims, cli.channels, cli.takens_lag);
+    println!(
+        "  dims: {:?}, channels={}, lag={}",
+        dims, cli.channels, cli.takens_lag
+    );
 
     let mut reader = ReaderBuilder::new()
         .from_path(&cli.cube_csv)
@@ -76,7 +83,12 @@ fn main() -> Result<()> {
     let mut all_rows: Vec<HeliosphereFeatureRow> = Vec::new();
     for result in reader.deserialize::<HeliosphereFeatureRow>() {
         let r = result?;
-        if r.bx.is_finite() && r.by.is_finite() && r.bz.is_finite() && r.b_mag.is_finite() && r.b_mag > 0.0 {
+        if r.bx.is_finite()
+            && r.by.is_finite()
+            && r.bz.is_finite()
+            && r.b_mag.is_finite()
+            && r.b_mag > 0.0
+        {
             all_rows.push(r);
         }
     }
@@ -84,15 +96,25 @@ fn main() -> Result<()> {
     // Group by mission
     let mut mission_groups: BTreeMap<String, Vec<HeliosphereFeatureRow>> = BTreeMap::new();
     for row in all_rows {
-        mission_groups.entry(row.mission.clone()).or_default().push(row);
+        mission_groups
+            .entry(row.mission.clone())
+            .or_default()
+            .push(row);
     }
     for rows in mission_groups.values_mut() {
-        rows.sort_by(|a, b| a.year.cmp(&b.year).then(a.doy.cmp(&b.doy)).then(a.hour.cmp(&b.hour)));
+        rows.sort_by(|a, b| {
+            a.year
+                .cmp(&b.year)
+                .then(a.doy.cmp(&b.doy))
+                .then(a.hour.cmp(&b.hour))
+        });
         rows.truncate(cli.max_rows_per_mission);
     }
 
-    println!("\n{:>6}  {:>10}  {:>10}  {:>12}  {:>10}",
-        "dim", "eff_rank", "ratio", "window_hrs", "n_embed");
+    println!(
+        "\n{:>6}  {:>10}  {:>10}  {:>12}  {:>10}",
+        "dim", "eff_rank", "ratio", "window_hrs", "n_embed"
+    );
     println!("{}", "-".repeat(60));
 
     for &dim in &dims {
@@ -103,7 +125,8 @@ fn main() -> Result<()> {
         let mut all_embedded = Vec::new();
         for rows in mission_groups.values() {
             if cli.channels == 8 {
-                let (embedded, _, _) = data_core::plasma_takens_embed_dim(rows, dim, cli.takens_lag);
+                let (embedded, _, _) =
+                    data_core::plasma_takens_embed_dim(rows, dim, cli.takens_lag);
                 all_embedded.extend(embedded);
             } else {
                 let (embedded, _) = magnetic_takens_embed(rows, dim, cli.takens_lag);
@@ -112,7 +135,10 @@ fn main() -> Result<()> {
         }
 
         if all_embedded.is_empty() {
-            println!("{:>6}  {:>10}  {:>10}  {:>12}  {:>10}", dim, "N/A", "N/A", window_hours, 0);
+            println!(
+                "{:>6}  {:>10}  {:>10}  {:>12}  {:>10}",
+                dim, "N/A", "N/A", window_hours, 0
+            );
             continue;
         }
 
@@ -122,8 +148,15 @@ fn main() -> Result<()> {
         // Show top 5 singular values for context
         let top5: Vec<String> = svals.iter().take(5).map(|s| format!("{:.1}", s)).collect();
 
-        println!("{:>6}  {:>10}  {:>10.3}  {:>12}  {:>10}  sv=[{}]",
-            dim, eff_rank, ratio, window_hours, all_embedded.len(), top5.join(", "));
+        println!(
+            "{:>6}  {:>10}  {:>10.3}  {:>12}  {:>10}  sv=[{}]",
+            dim,
+            eff_rank,
+            ratio,
+            window_hours,
+            all_embedded.len(),
+            top5.join(", ")
+        );
     }
 
     // Prediction summary

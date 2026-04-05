@@ -8,8 +8,7 @@
 //!
 //! This establishes the baseline that simsimd (or pulp) would need to beat.
 
-use super::fixed_point::Q16_16;
-use super::sign_pack::BitPackedSigns;
+use super::{fixed_point::Q16_16, sign_pack::BitPackedSigns};
 
 /// Naive f64 dot product (baseline).
 pub fn dot_f64(a: &[f64], b: &[f64]) -> f64 {
@@ -18,7 +17,10 @@ pub fn dot_f64(a: &[f64], b: &[f64]) -> f64 {
 
 /// f32 dot product (lower precision, potentially faster).
 pub fn dot_f32(a: &[f32], b: &[f32]) -> f64 {
-    a.iter().zip(b.iter()).map(|(&x, &y)| x as f64 * y as f64).sum()
+    a.iter()
+        .zip(b.iter())
+        .map(|(&x, &y)| x as f64 * y as f64)
+        .sum()
 }
 
 /// Sign-vector dot product via BitPackedSigns POPCNT.
@@ -28,7 +30,11 @@ pub fn dot_signs_packed(signs: &BitPackedSigns, values: &[f64]) -> f64 {
 
 /// Sign-vector dot product via naive i8 loop (comparison baseline).
 pub fn dot_signs_naive(signs: &[i8], values: &[f64]) -> f64 {
-    signs.iter().zip(values.iter()).map(|(&s, &v)| s as f64 * v).sum()
+    signs
+        .iter()
+        .zip(values.iter())
+        .map(|(&s, &v)| s as f64 * v)
+        .sum()
 }
 
 /// Q16.16 exact dot product.
@@ -57,7 +63,9 @@ pub fn benchmark_dot_products(d: usize, n_iterations: usize) -> Vec<(&'static st
     let b: Vec<f64> = (0..d).map(|_| normal.sample(&mut rng)).collect();
     let a_f32: Vec<f32> = a.iter().map(|&v| v as f32).collect();
     let b_f32: Vec<f32> = b.iter().map(|&v| v as f32).collect();
-    let signs_i8: Vec<i8> = (0..d).map(|i| if (i * 7 % 3) < 2 { 1 } else { -1 }).collect();
+    let signs_i8: Vec<i8> = (0..d)
+        .map(|i| if (i * 7 % 3) < 2 { 1 } else { -1 })
+        .collect();
     let signs_packed = BitPackedSigns::pack(&signs_i8);
     let b_q16: Vec<Q16_16> = b.iter().map(|&v| Q16_16::from_f64(v)).collect();
 
@@ -135,8 +143,14 @@ mod tests {
         println!("f32 vs f64: {:.2e}", (f32_result - f64_result).abs());
         println!("Q16 vs f64: {:.2e}", (q16_result - f64_result).abs());
 
-        assert!((f32_result - f64_result).abs() < 1e-3, "f32 too far from f64");
-        assert!((q16_result - f64_result).abs() < 1e-2, "Q16 too far from f64");
+        assert!(
+            (f32_result - f64_result).abs() < 1e-3,
+            "f32 too far from f64"
+        );
+        assert!(
+            (q16_result - f64_result).abs() < 1e-2,
+            "Q16 too far from f64"
+        );
     }
 
     #[test]
@@ -149,8 +163,12 @@ mod tests {
         let naive = dot_signs_naive(&signs, &values);
         let popcnt = dot_signs_packed(&packed, &values);
 
-        assert!((naive - popcnt).abs() < 1e-10,
-            "Sign dot products disagree: naive={}, popcnt={}", naive, popcnt);
+        assert!(
+            (naive - popcnt).abs() < 1e-10,
+            "Sign dot products disagree: naive={}, popcnt={}",
+            naive,
+            popcnt
+        );
     }
 
     #[test]

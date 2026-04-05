@@ -8,8 +8,7 @@
 //! 2. Checking scalar (spin-0) behavior under SO(3) rotations
 //! 3. Computing slow-roll parameters from the norm-squared potential V(eta)
 
-use crate::cayley_dickson_structs::Sedenion;
-use crate::quantum_state::QuantumState;
+use crate::{cayley_dickson_structs::Sedenion, quantum_state::QuantumState};
 use rand::SeedableRng;
 use rand_chacha::ChaCha8Rng;
 use rand_distr::{Distribution, StandardNormal};
@@ -23,11 +22,7 @@ use rand_distr::{Distribution, StandardNormal};
 ///   t' = t*cosh(eta) + (n.r)*sinh(eta)
 ///   r'_parallel = r_parallel*cosh(eta) + t*n_hat*sinh(eta)
 ///   r'_perp = r_perp
-pub fn lorentz_boost(
-    state: &QuantumState,
-    rapidity: f64,
-    direction: [f64; 3],
-) -> QuantumState {
+pub fn lorentz_boost(state: &QuantumState, rapidity: f64, direction: [f64; 3]) -> QuantumState {
     match state {
         QuantumState::TopologicalNull => QuantumState::TopologicalNull,
         QuantumState::Observable(s) => {
@@ -129,7 +124,11 @@ pub fn is_scalar_field(state: &QuantumState, n_rotation_tests: usize, seed: u64)
         let mut rotated = original_components;
 
         // Apply SO(3) to spatial indices 1,2,3
-        let r = [original_components[1], original_components[2], original_components[3]];
+        let r = [
+            original_components[1],
+            original_components[2],
+            original_components[3],
+        ];
         for i in 0..3 {
             rotated[i + 1] = rot[i][0] * r[0] + rot[i][1] * r[1] + rot[i][2] * r[2];
         }
@@ -301,9 +300,7 @@ mod tests {
             // For pure timelike (only t nonzero), boosted norm equals:
             //   t'^2 + internal^2 = (t*cosh)^2 + (t*sinh)^2 + internal^2
             // which grows with rapidity. This is expected and physical.
-            println!(
-                "  rapidity={rapidity:.1}: norm {original_norm:.6} -> {boosted_norm:.6}"
-            );
+            println!("  rapidity={rapidity:.1}: norm {original_norm:.6} -> {boosted_norm:.6}");
         }
 
         // Zero boost must preserve exactly

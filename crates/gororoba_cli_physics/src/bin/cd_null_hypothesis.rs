@@ -69,20 +69,19 @@ fn read_zarr_f32(store: &Arc<FilesystemStore>, name: &str) -> Result<Vec<f32>> {
 /// Random trilinear form: T(a,b,c) = sum_ijk R_ijk * a_i * b_j * c_k
 /// Simplified: for each output dim, compute random weighted product of triplet
 fn random_trilinear_norms(embedded: &[Vec<f64>], dim: usize, seed: u64) -> Vec<f64> {
-    use rand::Rng;
-    use rand::SeedableRng;
+    use rand::{RngExt, SeedableRng};
     let mut rng = rand_chacha::ChaCha8Rng::seed_from_u64(seed);
 
     // Generate random coefficients (dim x dim x dim is too large, use rank-1 approx)
     // T(a,b,c)_k = sum_i (r1_ki * a_i) * sum_j (r2_kj * b_j) * sum_l (r3_kl * c_l)
     let r1: Vec<Vec<f64>> = (0..dim)
-        .map(|_| (0..dim).map(|_| rng.gen_range(-1.0..1.0)).collect())
+        .map(|_| (0..dim).map(|_| rng.random_range(-1.0..1.0)).collect())
         .collect();
     let r2: Vec<Vec<f64>> = (0..dim)
-        .map(|_| (0..dim).map(|_| rng.gen_range(-1.0..1.0)).collect())
+        .map(|_| (0..dim).map(|_| rng.random_range(-1.0..1.0)).collect())
         .collect();
     let r3: Vec<Vec<f64>> = (0..dim)
-        .map(|_| (0..dim).map(|_| rng.gen_range(-1.0..1.0)).collect())
+        .map(|_| (0..dim).map(|_| rng.random_range(-1.0..1.0)).collect())
         .collect();
 
     let mut norms = Vec::new();
@@ -153,8 +152,7 @@ fn main() -> Result<()> {
     println!("=== CD Null Hypothesis Test ===");
 
     let store = Arc::new(
-        FilesystemStore::new(&cli.zarr_dir)
-            .map_err(|e| anyhow::anyhow!("Store: {:?}", e))?,
+        FilesystemStore::new(&cli.zarr_dir).map_err(|e| anyhow::anyhow!("Store: {:?}", e))?,
     );
 
     let sig_n2_f32 = read_zarr_f32(&store, "n=2_signal")?;
@@ -170,7 +168,11 @@ fn main() -> Result<()> {
     let stride = 50;
     let channels = 2;
     let steps = cli.embedding_dim / channels;
-    let n_embed = if n > steps * stride { (n - steps * stride) / stride } else { 0 };
+    let n_embed = if n > steps * stride {
+        (n - steps * stride) / stride
+    } else {
+        0
+    };
 
     let mut embedded: Vec<Vec<f64>> = Vec::with_capacity(n_embed);
     for w in 0..n_embed {
@@ -199,8 +201,7 @@ fn main() -> Result<()> {
     println!("  Built {} embedding vectors", embedded.len());
 
     // Method 1: CD associator (the real deal)
-    let cd_norms =
-        cd_kernel::batch_sliding_associator_norms_parallel(&embedded, cli.embedding_dim);
+    let cd_norms = cd_kernel::batch_sliding_associator_norms_parallel(&embedded, cli.embedding_dim);
     let (cd_mean, cd_std, cd_early, cd_late, cd_contrast) =
         analyze_norms(&cd_norms, embedded.len());
 
@@ -242,10 +243,18 @@ fn main() -> Result<()> {
 
     let interp = format!(
         "CD contrast={:.4}, Random contrast={:.4}, L2 contrast={:.4}. CD/Random={:.2}x, CD/L2={:.2}x. {}",
-        cd_contrast, rand_contrast, l2_contrast, cd_vs_rand, cd_vs_l2,
-        if cd_vs_rand > 2.0 { "CD ALGEBRAIC STRUCTURE MATTERS: significantly higher temporal contrast than random trilinear." }
-        else if cd_vs_rand > 1.2 { "CD slightly better than random: algebra provides modest advantage." }
-        else { "CD ~ random: algebraic structure may be cosmetic. FURTHER INVESTIGATION NEEDED." }
+        cd_contrast,
+        rand_contrast,
+        l2_contrast,
+        cd_vs_rand,
+        cd_vs_l2,
+        if cd_vs_rand > 2.0 {
+            "CD ALGEBRAIC STRUCTURE MATTERS: significantly higher temporal contrast than random trilinear."
+        } else if cd_vs_rand > 1.2 {
+            "CD slightly better than random: algebra provides modest advantage."
+        } else {
+            "CD ~ random: algebraic structure may be cosmetic. FURTHER INVESTIGATION NEEDED."
+        }
     );
     println!("\n  {}", interp);
 

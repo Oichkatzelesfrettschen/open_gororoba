@@ -83,7 +83,11 @@ fn main() -> Result<()> {
         .collect();
     dump_paths.sort_by_key(|(id, _)| *id);
 
-    println!("  Found {} dumps in {}", dump_paths.len(), cli.dump_dir.display());
+    println!(
+        "  Found {} dumps in {}",
+        dump_paths.len(),
+        cli.dump_dir.display()
+    );
 
     let channels = 3usize; // B1, B2, B3
     let steps = cli.embedding_dim / channels; // windows per embedding
@@ -92,8 +96,8 @@ fn main() -> Result<()> {
     let mut results = Vec::new();
 
     for (dump_id, path) in &dump_paths {
-        let file = H5File::open(path)
-            .with_context(|| format!("Failed to open {}", path.display()))?;
+        let file =
+            H5File::open(path).with_context(|| format!("Failed to open {}", path.display()))?;
 
         // Read simulation time
         let t_ds = file.dataset("t")?;
@@ -154,10 +158,17 @@ fn main() -> Result<()> {
         // Build Takens embedding: sliding window over the midplane cells
         // Each window = [B1(i), B2(i), B3(i), B1(i+1), B2(i+1), B3(i+1), ...]
         // for `steps` consecutive cells, yielding `embedding_dim`-dimensional vectors
-        let n_windows = if midplane_cells > steps { midplane_cells - steps } else { 0 };
+        let n_windows = if midplane_cells > steps {
+            midplane_cells - steps
+        } else {
+            0
+        };
 
         if n_windows < 3 {
-            println!("  dump {:05}: t={:.1}, too few cells for embedding", dump_id, time);
+            println!(
+                "  dump {:05}: t={:.1}, too few cells for embedding",
+                dump_id, time
+            );
             continue;
         }
 
@@ -187,8 +198,15 @@ fn main() -> Result<()> {
             }
         }
 
-        let norms =
-            cd_kernel::batch_sliding_associator_norms_dispatch(&embedded, cli.embedding_dim, if cli.embedding_dim >= 128 { "f32" } else { "f64" });
+        let norms = cd_kernel::batch_sliding_associator_norms_dispatch(
+            &embedded,
+            cli.embedding_dim,
+            if cli.embedding_dim >= 128 {
+                "f32"
+            } else {
+                "f64"
+            },
+        );
 
         let (mean_a, max_a) = if norms.is_empty() {
             (0.0, 0.0)
@@ -200,7 +218,13 @@ fn main() -> Result<()> {
 
         println!(
             "  dump {:05}: t={:6.1}, |B|_mean={:.4e}, |B|_max={:.4e}, A_mean={:.6}, A_max={:.6}, windows={}",
-            dump_id, time, mean_bmag, max_bmag, mean_a, max_a, norms.len()
+            dump_id,
+            time,
+            mean_bmag,
+            max_bmag,
+            mean_a,
+            max_a,
+            norms.len()
         );
 
         results.push(DumpResult {
@@ -245,9 +269,16 @@ fn main() -> Result<()> {
         results.last().map(|r| r.time).unwrap_or(0.0),
         initial_a,
         saturation_mean_a,
-        if initial_a > 1e-15 { saturation_mean_a / initial_a } else { 0.0 },
+        if initial_a > 1e-15 {
+            saturation_mean_a / initial_a
+        } else {
+            0.0
+        },
         if let Some(t) = mri_onset_time {
-            format!("MRI onset detected at t={:.1} (A doubles from initial). B-field topology transition tracked by CD associator.", t)
+            format!(
+                "MRI onset detected at t={:.1} (A doubles from initial). B-field topology transition tracked by CD associator.",
+                t
+            )
         } else {
             "No clear MRI onset detected (A did not double from initial).".to_string()
         }

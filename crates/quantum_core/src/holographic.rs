@@ -193,13 +193,13 @@ impl RTLattice {
             if left_child < n_total {
                 adjacency[i].push(left_child);
                 adjacency[left_child].push(i);
-                let weight = 1.0 + 0.1 * rng.r#gen::<f64>();
+                let weight = 1.0 + 0.1 * rng.random::<f64>();
                 edge_weights.insert(Edge::new(i, left_child), weight);
             }
             if right_child < n_total {
                 adjacency[i].push(right_child);
                 adjacency[right_child].push(i);
-                let weight = 1.0 + 0.1 * rng.r#gen::<f64>();
+                let weight = 1.0 + 0.1 * rng.random::<f64>();
                 edge_weights.insert(Edge::new(i, right_child), weight);
             }
         }
@@ -244,7 +244,7 @@ impl RTLattice {
                 if child < n_total {
                     adjacency[i].push(child);
                     adjacency[child].push(i);
-                    let weight = 1.0 + 0.1 * rng.r#gen::<f64>();
+                    let weight = 1.0 + 0.1 * rng.random::<f64>();
                     edge_weights.insert(Edge::new(i, child), weight);
                 }
             }
@@ -463,7 +463,7 @@ pub fn analyze_entropy_scaling(lattice: &RTLattice, seed: u64) -> EntropyScaling
 
     for &size in &sizes {
         // Random contiguous region of given size
-        let start = rng.gen_range(0..(n_boundary - size + 1));
+        let start = rng.random_range(0..(n_boundary - size + 1));
         let region: Vec<usize> = lattice.boundary_sites[start..(start + size)].to_vec();
         let result = compute_min_cut(lattice, &region);
         entropies.push(result.entropy);
@@ -557,7 +557,7 @@ pub fn verify_area_law(lattice: &RTLattice, n_bootstrap: usize, seed: u64) -> Ar
     for _ in 0..n_bootstrap {
         // Resample with replacement
         let n = base_result.sizes.len();
-        let indices: Vec<usize> = (0..n).map(|_| rng.gen_range(0..n)).collect();
+        let indices: Vec<usize> = (0..n).map(|_| rng.random_range(0..n)).collect();
 
         let resampled_log_sizes: Vec<f64> = indices
             .iter()

@@ -10,12 +10,13 @@ use clap::Parser;
 use fitsio::{FitsFile, hdu::HduInfo};
 use gauss_quad::GaussLegendre;
 use num_complex::Complex64;
-use rand::{Rng, SeedableRng, rngs::StdRng};
+use rand::{RngExt, SeedableRng, rngs::StdRng};
 use rayon::prelude::*;
 use std::{
     collections::BTreeMap,
     fs,
     io::BufReader,
+    num::NonZeroUsize,
     path::{Path, PathBuf},
 };
 
@@ -183,7 +184,8 @@ fn e_inv(z: f64) -> f64 {
 }
 
 fn angular_diameter_distance_kpc(z: f64) -> f64 {
-    let gl = GaussLegendre::new(32).expect("Gauss-Legendre init");
+    let gl =
+        GaussLegendre::new(NonZeroUsize::new(32).expect("Gauss-Legendre degree must be non-zero"));
     let chi = gl.integrate(0.0, z, e_inv);
     let d_mpc = (C_KM_S / H0_KM_S_MPC) * chi / (1.0 + z);
     d_mpc * MPC_IN_KPC
@@ -588,7 +590,7 @@ fn bootstrap_mean_amplitude_sigma(coeffs: &[Complex64], n_resamples: usize, seed
     for _ in 0..n_resamples {
         let mut sum = Complex64::new(0.0, 0.0);
         for _ in 0..coeffs.len() {
-            let idx = rng.gen_range(0..coeffs.len());
+            let idx = rng.random_range(0..coeffs.len());
             sum += coeffs[idx];
         }
         amplitudes.push((sum / coeffs.len() as f64).norm());

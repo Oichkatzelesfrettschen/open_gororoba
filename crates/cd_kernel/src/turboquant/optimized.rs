@@ -10,9 +10,11 @@
 //! - E8 block rotation (KS validated, 136x fewer params)
 //! - Auto QJL toggle (on for bits<=3, off for bits>=4)
 
-use super::adaptive_bits::{self, BitAllocation};
-use super::config::TurboQuantConfig;
-use super::pipeline::{ProdCompressed, TurboQuantProd};
+use super::{
+    adaptive_bits::{self, BitAllocation},
+    config::TurboQuantConfig,
+    pipeline::{ProdCompressed, TurboQuantProd},
+};
 // TurboQuantMSE used in test_optimized_quality
 #[cfg(test)]
 use super::pipeline::TurboQuantMSE;
@@ -64,20 +66,30 @@ impl TurboQuantOptimized {
         // the Prod stage uses WHT as its rotation (compatible with any codebook).
         let prod_use_wht = !matches!(config.rotation, super::config::RotationMethod::Haar);
         let base_prod = TurboQuantProd::new(
-            config.dim, config.bits, config.seed,
-            prod_use_wht, config.qjl_dim,
+            config.dim,
+            config.bits,
+            config.seed,
+            prod_use_wht,
+            config.qjl_dim,
         );
 
         let promoted_prod = if config.adaptive.enabled {
             Some(TurboQuantProd::new(
-                config.dim, config.bits + 1, config.seed,
-                prod_use_wht, config.qjl_dim,
+                config.dim,
+                config.bits + 1,
+                config.seed,
+                prod_use_wht,
+                config.qjl_dim,
             ))
         } else {
             None
         };
 
-        TurboQuantOptimized { base_prod, promoted_prod, config }
+        TurboQuantOptimized {
+            base_prod,
+            promoted_prod,
+            config,
+        }
     }
 
     /// Quantize a batch of vectors with all optimizations applied.
@@ -102,7 +114,9 @@ impl TurboQuantOptimized {
         // Step 2-3: adaptive allocation
         let allocation = if self.config.adaptive.enabled {
             // Compute residuals for associator scoring
-            let residuals: Vec<Vec<f64>> = vectors.iter().zip(base_compressed.iter())
+            let residuals: Vec<Vec<f64>> = vectors
+                .iter()
+                .zip(base_compressed.iter())
                 .map(|(orig, comp)| {
                     let mse_repr = super::pipeline::MseCompressed {
                         indices: comp.mse_indices.clone(),
@@ -124,13 +138,13 @@ impl TurboQuantOptimized {
         // Step 4: re-quantize promoted tokens
         let apply_qjl = self.config.should_apply_qjl();
 
-        let tokens: Vec<TokenCompressed> = vectors.iter().zip(allocation.iter())
+        let tokens: Vec<TokenCompressed> = vectors
+            .iter()
+            .zip(allocation.iter())
             .enumerate()
             .map(|(i, (v, alloc))| {
                 let (compressed, bits) = match alloc {
-                    BitAllocation::Base => {
-                        (base_compressed[i].clone(), self.config.bits)
-                    }
+                    BitAllocation::Base => (base_compressed[i].clone(), self.config.bits),
                     BitAllocation::Promoted => {
                         if let Some(ref prod) = self.promoted_prod {
                             (prod.quantize(v, &mut buf), self.config.bits + 1)
@@ -180,7 +194,11 @@ impl TurboQuantOptimized {
             0.0
         };
         let avg_bits = base_bits + promote_frac;
-        let qjl_bits = if self.config.should_apply_qjl() { d } else { 0.0 };
+        let qjl_bits = if self.config.should_apply_qjl() {
+            d
+        } else {
+            0.0
+        };
         avg_bits * d + qjl_bits + 32.0 // indices + signs + norms
     }
 
@@ -201,7 +219,9 @@ mod tests {
     fn random_vectors(n: usize, d: usize, seed: u64) -> Vec<Vec<f64>> {
         let mut rng = ChaCha20Rng::seed_from_u64(seed);
         let normal = StandardNormal;
-        (0..n).map(|_| (0..d).map(|_| normal.sample(&mut rng)).collect()).collect()
+        (0..n)
+            .map(|_| (0..d).map(|_| normal.sample(&mut rng)).collect())
+            .collect()
     }
 
     #[test]
@@ -223,7 +243,10 @@ mod tests {
         assert_eq!(n_promoted, 5, "25% of 20 = 5 promoted"); // top 25%
 
         // QJL should be applied (bits=3 <= threshold=3)
-        assert!(compressed.tokens[0].signs.is_some(), "QJL should be on at 3-bit");
+        assert!(
+            compressed.tokens[0].signs.is_some(),
+            "QJL should be on at 3-bit"
+        );
     }
 
     #[test]
@@ -235,7 +258,10 @@ mod tests {
 
         // No adaptive, no QJL
         assert!((compressed.avg_bits_per_coord - 3.0).abs() < 1e-10);
-        assert!(compressed.tokens[0].signs.is_none(), "QJL should be off in fast mode");
+        assert!(
+            compressed.tokens[0].signs.is_none(),
+            "QJL should be off in fast mode"
+        );
     }
 
     #[test]
@@ -246,7 +272,10 @@ mod tests {
         let compressed = tq.quantize_batch(&vectors);
 
         // At 4-bit, QJL should be auto-off
-        assert!(compressed.tokens[0].signs.is_none(), "QJL should be off at 4-bit");
+        assert!(
+            compressed.tokens[0].signs.is_none(),
+            "QJL should be off at 4-bit"
+        );
     }
 
     #[test]
@@ -270,8 +299,12 @@ mod tests {
             let dq = TurboQuantMSE::new(64, token.bits, 42, true);
             let mut recon = vec![0.0f64; 64];
             dq.dequantize(&mse_repr, &mut buf, &mut recon);
-            let mse: f64 = vectors[i].iter().zip(recon.iter())
-                .map(|(a, b)| (a - b).powi(2)).sum::<f64>() / 64.0;
+            let mse: f64 = vectors[i]
+                .iter()
+                .zip(recon.iter())
+                .map(|(a, b)| (a - b).powi(2))
+                .sum::<f64>()
+                / 64.0;
             total_mse += mse;
         }
 

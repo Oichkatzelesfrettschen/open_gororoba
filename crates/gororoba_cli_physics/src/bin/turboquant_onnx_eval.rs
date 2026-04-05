@@ -52,7 +52,10 @@ struct Cli {
     n_heads: usize,
 
     /// Output JSON path.
-    #[arg(long, default_value = "data/output/heliosphere/ablations/turboquant_onnx_eval.json")]
+    #[arg(
+        long,
+        default_value = "data/output/heliosphere/ablations/turboquant_onnx_eval.json"
+    )]
     out_json: PathBuf,
 }
 
@@ -131,25 +134,41 @@ fn synthetic_eval(cli: &Cli) -> Vec<EvalResult> {
                 let comp = tq.quantize(k, &mut buf);
                 let mut k_recon = vec![0.0f64; d];
                 tq.dequantize(&comp, &mut buf, &mut k_recon);
-                quant_scores[head * s + tok] = q.iter().zip(k_recon.iter()).map(|(a, b)| a * b).sum();
+                quant_scores[head * s + tok] =
+                    q.iter().zip(k_recon.iter()).map(|(a, b)| a * b).sum();
             }
         }
 
         // Compute metrics
         let n = real_scores.len() as f64;
-        let rmse = (real_scores.iter().zip(quant_scores.iter())
-            .map(|(r, q)| (r - q).powi(2)).sum::<f64>() / n).sqrt();
+        let rmse = (real_scores
+            .iter()
+            .zip(quant_scores.iter())
+            .map(|(r, q)| (r - q).powi(2))
+            .sum::<f64>()
+            / n)
+            .sqrt();
 
         // Top-1 match rate (per head)
         let mut top1_matches = 0;
         for head in 0..h {
             let real_slice = &real_scores[head * s..(head + 1) * s];
             let quant_slice = &quant_scores[head * s..(head + 1) * s];
-            let real_top1 = real_slice.iter().enumerate()
-                .max_by(|(_, a), (_, b)| a.partial_cmp(b).unwrap()).map(|(i, _)| i).unwrap_or(0);
-            let quant_top1 = quant_slice.iter().enumerate()
-                .max_by(|(_, a), (_, b)| a.partial_cmp(b).unwrap()).map(|(i, _)| i).unwrap_or(0);
-            if real_top1 == quant_top1 { top1_matches += 1; }
+            let real_top1 = real_slice
+                .iter()
+                .enumerate()
+                .max_by(|(_, a), (_, b)| a.partial_cmp(b).unwrap())
+                .map(|(i, _)| i)
+                .unwrap_or(0);
+            let quant_top1 = quant_slice
+                .iter()
+                .enumerate()
+                .max_by(|(_, a), (_, b)| a.partial_cmp(b).unwrap())
+                .map(|(i, _)| i)
+                .unwrap_or(0);
+            if real_top1 == quant_top1 {
+                top1_matches += 1;
+            }
         }
 
         let kv_bytes_compressed = h * s * d * bits as usize / 8 + h * s * 2; // indices + norms
@@ -184,7 +203,10 @@ fn main() -> Result<()> {
     } else {
         #[cfg(feature = "onnx-eval")]
         {
-            println!("  Mode: ONNX model ({})", cli.model.as_ref().unwrap().display());
+            println!(
+                "  Mode: ONNX model ({})",
+                cli.model.as_ref().unwrap().display()
+            );
             // TODO: implement real ONNX model evaluation when ort API is wired
             println!("  ONNX evaluation not yet implemented -- running synthetic instead");
             ("synthetic-fallback".to_string(), synthetic_eval(&cli))

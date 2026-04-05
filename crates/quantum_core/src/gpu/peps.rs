@@ -38,7 +38,7 @@ use cudarc::{
 };
 use std::sync::Arc;
 
-use faer::complex_native::c64;
+use faer::c64;
 
 /// CUDA kernel: element-wise complex multiplication of two row arrays.
 ///

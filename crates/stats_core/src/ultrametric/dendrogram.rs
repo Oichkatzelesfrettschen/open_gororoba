@@ -408,9 +408,9 @@ mod tests {
         let coords: Vec<(f64, f64, f64)> = (0..n)
             .map(|_| {
                 (
-                    rng.gen_range(0.0..100.0),
-                    rng.gen_range(0.0..100.0),
-                    rng.gen_range(0.0..100.0),
+                    rng.random_range(0.0..100.0),
+                    rng.random_range(0.0..100.0),
+                    rng.random_range(0.0..100.0),
                 )
             })
             .collect();
@@ -444,9 +444,9 @@ mod tests {
         let coords: Vec<(f64, f64, f64)> = (0..n)
             .map(|_| {
                 (
-                    rng.gen_range(0.0..100.0),
-                    rng.gen_range(0.0..100.0),
-                    rng.gen_range(0.0..100.0),
+                    rng.random_range(0.0..100.0),
+                    rng.random_range(0.0..100.0),
+                    rng.random_range(0.0..100.0),
                 )
             })
             .collect();
@@ -490,9 +490,9 @@ mod tests {
         let coords: Vec<(f64, f64, f64)> = (0..n)
             .map(|_| {
                 (
-                    rng.gen_range(0.0..100.0),
-                    rng.gen_range(0.0..100.0),
-                    rng.gen_range(0.0..100.0),
+                    rng.random_range(0.0..100.0),
+                    rng.random_range(0.0..100.0),
+                    rng.random_range(0.0..100.0),
                 )
             })
             .collect();

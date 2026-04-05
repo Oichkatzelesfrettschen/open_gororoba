@@ -7,8 +7,10 @@
 //! approximated by N(0, 1/d). The Lloyd-Max algorithm iteratively refines
 //! centroids as conditional expectations under this distribution.
 
-use std::collections::HashMap;
-use std::sync::{LazyLock, Mutex};
+use std::{
+    collections::HashMap,
+    sync::{LazyLock, Mutex},
+};
 
 /// Distribution family for Lloyd-Max codebook optimization.
 ///
@@ -30,8 +32,9 @@ pub enum DistributionFamily {
 }
 
 /// Cached Lloyd-Max codebooks keyed by (dimension, bits, distribution)
-static CODEBOOK_CACHE: LazyLock<Mutex<HashMap<(usize, u32, DistributionFamilyKey), LloydMaxCodebook>>> =
-    LazyLock::new(|| Mutex::new(HashMap::new()));
+type CodebookCache = Mutex<HashMap<(usize, u32, DistributionFamilyKey), LloydMaxCodebook>>;
+
+static CODEBOOK_CACHE: LazyLock<CodebookCache> = LazyLock::new(|| Mutex::new(HashMap::new()));
 
 /// Hashable key for distribution family (includes beta parameter for GenGaussian).
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
@@ -47,7 +50,10 @@ impl DistributionFamilyKey {
             DistributionFamily::GeneralizedGaussian => (beta * 1000.0).round() as u32,
             _ => 0,
         };
-        DistributionFamilyKey { family, beta_millionths }
+        DistributionFamilyKey {
+            family,
+            beta_millionths,
+        }
     }
 }
 
@@ -169,11 +175,12 @@ fn family_pdf(x: f64, d: usize, family: DistributionFamily, beta: f64) -> f64 {
 ///
 /// Uses the gauss-quad crate for node/weight precomputation.
 fn integrate_gauss_legendre(f: impl Fn(f64) -> f64, a: f64, b: f64) -> f64 {
+    use core::num::NonZeroUsize;
     use gauss_quad::GaussLegendre;
     // 16-point GL: exact for polynomials up to degree 31.
     // Our integrand (x * Gaussian) is infinitely smooth, so 16 points
     // gives far better accuracy than 200-point Simpson's rule.
-    let gl = GaussLegendre::new(16).unwrap();
+    let gl = GaussLegendre::new(NonZeroUsize::new(16).unwrap());
     gl.integrate(a, b, &f)
 }
 
@@ -277,18 +284,37 @@ pub fn solve_lloyd_max(d: usize, bits: u32) -> LloydMaxCodebook {
 ///
 /// For real LLM KV cache data, use `DistributionFamily::GeneralizedGaussian`
 /// with beta=0.9 (fitted from SmolLM2-135M).
-pub fn solve_lloyd_max_family(d: usize, bits: u32, family: DistributionFamily, beta: f64) -> LloydMaxCodebook {
+pub fn solve_lloyd_max_family(
+    d: usize,
+    bits: u32,
+    family: DistributionFamily,
+    beta: f64,
+) -> LloydMaxCodebook {
     let n_levels = 1usize << bits;
     let sigma = 1.0 / (d as f64).sqrt();
     // Integration bounds depend on distribution (heavier tails need wider range)
     let tail_sigma = match family {
         DistributionFamily::Beta => 0.0, // unused, bounded [-1,1]
         DistributionFamily::Gaussian => 3.5,
-        DistributionFamily::Laplace => 5.0,  // heavier tails
-        DistributionFamily::GeneralizedGaussian => if beta < 1.0 { 6.0 } else { 4.0 },
+        DistributionFamily::Laplace => 5.0, // heavier tails
+        DistributionFamily::GeneralizedGaussian => {
+            if beta < 1.0 {
+                6.0
+            } else {
+                4.0
+            }
+        }
     };
-    let lo = if family == DistributionFamily::Beta { -0.999 } else { -tail_sigma * sigma };
-    let hi = if family == DistributionFamily::Beta { 0.999 } else { tail_sigma * sigma };
+    let lo = if family == DistributionFamily::Beta {
+        -0.999
+    } else {
+        -tail_sigma * sigma
+    };
+    let hi = if family == DistributionFamily::Beta {
+        0.999
+    } else {
+        tail_sigma * sigma
+    };
 
     let pdf = |x: f64| family_pdf(x, d, family, beta);
 
@@ -312,7 +338,7 @@ pub fn solve_lloyd_max_family(d: usize, bits: u32, family: DistributionFamily, b
             let a = edges[i];
             let b = edges[i + 1];
             let num = integrate_gauss_legendre(|x| x * pdf(x), a, b);
-            let den = integrate_gauss_legendre(|x| pdf(x), a, b);
+            let den = integrate_gauss_legendre(pdf, a, b);
             new_centroids.push(if den.abs() > 1e-15 {
                 num / den
             } else {
@@ -343,11 +369,7 @@ pub fn solve_lloyd_max_family(d: usize, bits: u32, family: DistributionFamily, b
     let distortion: f64 = (0..n_levels)
         .map(|i| {
             let c = centroids[i];
-            integrate_gauss_legendre(
-                |x| (x - c).powi(2) * pdf(x),
-                edges[i],
-                edges[i + 1],
-            )
+            integrate_gauss_legendre(|x| (x - c).powi(2) * pdf(x), edges[i], edges[i + 1])
         })
         .sum();
 
@@ -361,20 +383,29 @@ pub fn solve_lloyd_max_family(d: usize, bits: u32, family: DistributionFamily, b
 /// Get or compute a Lloyd-Max codebook (cached by dimension and bits).
 /// Uses the standard coordinate PDF (Beta for d<50, Gaussian for d>=50).
 pub fn get_codebook(d: usize, bits: u32) -> LloydMaxCodebook {
-    let family = if d < 50 { DistributionFamily::Beta } else { DistributionFamily::Gaussian };
+    let family = if d < 50 {
+        DistributionFamily::Beta
+    } else {
+        DistributionFamily::Gaussian
+    };
     get_codebook_family(d, bits, family, 2.0)
 }
 
 /// Get or compute a Lloyd-Max codebook for a specific distribution family.
-pub fn get_codebook_family(d: usize, bits: u32, family: DistributionFamily, beta: f64) -> LloydMaxCodebook {
+pub fn get_codebook_family(
+    d: usize,
+    bits: u32,
+    family: DistributionFamily,
+    beta: f64,
+) -> LloydMaxCodebook {
     let key = DistributionFamilyKey::new(family, beta);
     let mut cache = CODEBOOK_CACHE.lock().unwrap();
     cache
         .entry((d, bits, key))
         .or_insert_with(|| {
-            if family == DistributionFamily::Gaussian && d >= 50 {
-                solve_lloyd_max(d, bits)
-            } else if family == DistributionFamily::Beta && d < 50 {
+            let uses_standard_pdf = matches!(family, DistributionFamily::Gaussian) && d >= 50
+                || matches!(family, DistributionFamily::Beta) && d < 50;
+            if uses_standard_pdf {
                 solve_lloyd_max(d, bits)
             } else {
                 solve_lloyd_max_family(d, bits, family, beta)
@@ -421,13 +452,17 @@ mod tests {
             assert!(
                 (cb.centroids[i] + cb.centroids[7 - i]).abs() < 1e-3,
                 "Beta centroids not symmetric at d=16: {} + {} = {}",
-                cb.centroids[i], cb.centroids[7 - i],
+                cb.centroids[i],
+                cb.centroids[7 - i],
                 cb.centroids[i] + cb.centroids[7 - i]
             );
         }
         // All centroids should be within [-1, 1] (Beta support)
-        assert!(cb.centroids.iter().all(|&c| c.abs() <= 1.0),
-            "Beta centroids out of range: {:?}", cb.centroids);
+        assert!(
+            cb.centroids.iter().all(|&c| c.abs() <= 1.0),
+            "Beta centroids out of range: {:?}",
+            cb.centroids
+        );
         println!("d=16 Beta centroids: {:?}", cb.centroids);
     }
 
@@ -442,7 +477,10 @@ mod tests {
         let beta_range = cb_beta.centroids.last().unwrap() - cb_beta.centroids.first().unwrap();
         println!("d=32 Beta codebook range: {:.6}", beta_range);
         println!("d=32 Beta centroids: {:?}", cb_beta.centroids);
-        assert!(beta_range > 0.0 && beta_range < 2.0, "Beta range out of bounds");
+        assert!(
+            beta_range > 0.0 && beta_range < 2.0,
+            "Beta range out of bounds"
+        );
     }
 
     #[test]
@@ -465,7 +503,8 @@ mod tests {
             assert!(
                 (cb.centroids[i] + cb.centroids[7 - i]).abs() < 1e-4,
                 "Laplace centroids not symmetric: {} + {}",
-                cb.centroids[i], cb.centroids[7 - i]
+                cb.centroids[i],
+                cb.centroids[7 - i]
             );
         }
         // Laplace has heavier tails: outer centroids should be further out
@@ -473,9 +512,16 @@ mod tests {
         let gauss_cb = solve_lloyd_max(128, 3);
         let laplace_outer = cb.centroids[7].abs();
         let gauss_outer = gauss_cb.centroids[7].abs();
-        println!("Laplace outer: {:.6}, Gaussian outer: {:.6}", laplace_outer, gauss_outer);
-        assert!(laplace_outer > gauss_outer,
-            "Laplace outer centroid should be further: {} vs {}", laplace_outer, gauss_outer);
+        println!(
+            "Laplace outer: {:.6}, Gaussian outer: {:.6}",
+            laplace_outer, gauss_outer
+        );
+        assert!(
+            laplace_outer > gauss_outer,
+            "Laplace outer centroid should be further: {} vs {}",
+            laplace_outer,
+            gauss_outer
+        );
     }
 
     #[test]
@@ -488,7 +534,8 @@ mod tests {
             assert!(
                 (cb_gg.centroids[i] + cb_gg.centroids[7 - i]).abs() < 1e-3,
                 "GenGaussian(0.9) centroids not symmetric: {} + {}",
-                cb_gg.centroids[i], cb_gg.centroids[7 - i]
+                cb_gg.centroids[i],
+                cb_gg.centroids[7 - i]
             );
         }
 
@@ -496,13 +543,23 @@ mod tests {
         let cb_gg2 = solve_lloyd_max_family(128, 3, DistributionFamily::GeneralizedGaussian, 2.0);
         let cb_gauss = solve_lloyd_max(128, 3);
         for (a, b) in cb_gg2.centroids.iter().zip(cb_gauss.centroids.iter()) {
-            assert!((a - b).abs() < 1e-3,
-                "GenGaussian(2.0) should match Gaussian: {} vs {}", a, b);
+            assert!(
+                (a - b).abs() < 1e-3,
+                "GenGaussian(2.0) should match Gaussian: {} vs {}",
+                a,
+                b
+            );
         }
         println!("GenGaussian(0.9) centroids: {:?}", cb_gg.centroids);
-        println!("GenGaussian(2.0) vs Gaussian max diff: {:.6}",
-            cb_gg2.centroids.iter().zip(cb_gauss.centroids.iter())
-                .map(|(a, b)| (a - b).abs()).fold(0.0f32, f32::max));
+        println!(
+            "GenGaussian(2.0) vs Gaussian max diff: {:.6}",
+            cb_gg2
+                .centroids
+                .iter()
+                .zip(cb_gauss.centroids.iter())
+                .map(|(a, b)| (a - b).abs())
+                .fold(0.0f32, f32::max)
+        );
     }
 
     #[test]

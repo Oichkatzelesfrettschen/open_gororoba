@@ -22,7 +22,10 @@ pub struct ImbalanceResult {
 ///
 /// Exhaustively searches all 2^dim potentials. Only practical for dim <= 16.
 pub fn cd_graph_imbalance(dim: usize) -> ImbalanceResult {
-    assert!(dim.is_power_of_two() && dim >= 2, "dim must be a power of 2 >= 2");
+    assert!(
+        dim.is_power_of_two() && dim >= 2,
+        "dim must be a power of 2 >= 2"
+    );
     assert!(dim <= 16, "exhaustive search only practical for dim <= 16");
 
     let edges: Vec<(usize, usize, i32)> = (0..dim)

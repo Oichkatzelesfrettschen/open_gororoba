@@ -42,11 +42,7 @@ impl Assessor {
     /// Check that this is a valid assessor:
     ///   lo in 1..7, hi in 9..15, hi != lo XOR 8.
     pub const fn is_valid(&self) -> bool {
-        self.lo >= 1
-            && self.lo <= 7
-            && self.hi >= 9
-            && self.hi <= 15
-            && self.hi != (self.lo ^ 8)
+        self.lo >= 1 && self.lo <= 7 && self.hi >= 9 && self.hi <= 15 && self.hi != (self.lo ^ 8)
     }
 }
 
@@ -114,9 +110,7 @@ impl ThreeRingCircuit {
 
     /// All three pairs share the same G-index.
     pub fn is_valid(&self) -> bool {
-        self.p.g_index() == self.g
-            && self.q.g_index() == self.g
-            && self.r.g_index() == self.g
+        self.p.g_index() == self.g && self.q.g_index() == self.g && self.r.g_index() == self.g
     }
 }
 
@@ -157,7 +151,11 @@ mod tests {
     #[test]
     fn all_42_assessors() {
         let assessors = all_assessors();
-        assert_eq!(assessors.len(), 42, "should be exactly 42 primitive assessors");
+        assert_eq!(
+            assessors.len(),
+            42,
+            "should be exactly 42 primitive assessors"
+        );
     }
 
     #[test]
@@ -170,9 +168,18 @@ mod tests {
     #[test]
     fn seven_co_assessor_buckets() {
         let buckets = co_assessor_buckets();
-        assert_eq!(buckets.len(), 7, "should be exactly 7 G-index buckets (box-kites)");
+        assert_eq!(
+            buckets.len(),
+            7,
+            "should be exactly 7 G-index buckets (box-kites)"
+        );
         for (g, bucket) in &buckets {
-            assert_eq!(bucket.len(), 6, "G-index {} bucket should have 6 assessors", g);
+            assert_eq!(
+                bucket.len(),
+                6,
+                "G-index {} bucket should have 6 assessors",
+                g
+            );
         }
     }
 
@@ -188,7 +195,10 @@ mod tests {
     #[test]
     fn co_assessors_reflexive() {
         for a in all_assessors() {
-            assert!(co_assessors(a, a), "assessor should be co-assessor with itself");
+            assert!(
+                co_assessors(a, a),
+                "assessor should be co-assessor with itself"
+            );
         }
     }
 
@@ -245,7 +255,11 @@ mod tests {
             for &p in &bucket {
                 for &q in &bucket {
                     let (r, valid) = verify_production_rule_1(p, q);
-                    assert!(valid, "production rule failed for ({},{}) and ({},{})", p.lo, p.hi, q.lo, q.hi);
+                    assert!(
+                        valid,
+                        "production rule failed for ({},{}) and ({},{})",
+                        p.lo, p.hi, q.lo, q.hi
+                    );
                     assert_eq!(r.g_index(), g, "derived assessor wrong G-index");
                 }
             }

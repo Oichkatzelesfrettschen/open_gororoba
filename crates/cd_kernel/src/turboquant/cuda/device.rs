@@ -32,12 +32,12 @@ impl CudaDeviceProps {
     /// From `lbm_3d_cuda/lib.rs:compile_arch`.
     pub fn compile_arch(&self) -> &'static str {
         match (self.major, self.minor) {
-            (9, _) => "sm_90",      // Hopper
-            (8, 9) => "sm_89",      // Ada Lovelace
-            (8, 6..=8) => "sm_86",  // Ampere (GA10x)
-            (8, _) => "sm_80",      // Ampere (GA100)
-            (7, 5..) => "sm_75",    // Turing
-            _ => "sm_52",           // Maxwell fallback
+            (9, _) => "sm_90",     // Hopper
+            (8, 9) => "sm_89",     // Ada Lovelace
+            (8, 6..=8) => "sm_86", // Ampere (GA10x)
+            (8, _) => "sm_80",     // Ampere (GA100)
+            (7, 5..) => "sm_75",   // Turing
+            _ => "sm_52",          // Maxwell fallback
         }
     }
 
@@ -157,35 +157,59 @@ mod tests {
     #[test]
     fn test_compile_arch_mapping() {
         let hopper = CudaDeviceProps {
-            major: 9, minor: 0, l2_bytes: 0, shared_mem_per_block: 0,
-            total_global_mem: 0, bf16_native: true, fp8_native: true,
-            tma_available: true, name: "H100".into(),
+            major: 9,
+            minor: 0,
+            l2_bytes: 0,
+            shared_mem_per_block: 0,
+            total_global_mem: 0,
+            bf16_native: true,
+            fp8_native: true,
+            tma_available: true,
+            name: "H100".into(),
         };
         assert_eq!(hopper.compile_arch(), "sm_90");
         assert!(hopper.is_hopper());
         assert_eq!(hopper.recommended_tier(), KernelTier::HopperFused);
 
         let ada = CudaDeviceProps {
-            major: 8, minor: 9, l2_bytes: 0, shared_mem_per_block: 0,
-            total_global_mem: 0, bf16_native: true, fp8_native: true,
-            tma_available: false, name: "RTX 4070 Ti".into(),
+            major: 8,
+            minor: 9,
+            l2_bytes: 0,
+            shared_mem_per_block: 0,
+            total_global_mem: 0,
+            bf16_native: true,
+            fp8_native: true,
+            tma_available: false,
+            name: "RTX 4070 Ti".into(),
         };
         assert_eq!(ada.compile_arch(), "sm_89");
         assert!(ada.is_ada());
         assert_eq!(ada.recommended_tier(), KernelTier::AdaOptimized);
 
         let ampere = CudaDeviceProps {
-            major: 8, minor: 0, l2_bytes: 0, shared_mem_per_block: 0,
-            total_global_mem: 0, bf16_native: true, fp8_native: false,
-            tma_available: false, name: "A100".into(),
+            major: 8,
+            minor: 0,
+            l2_bytes: 0,
+            shared_mem_per_block: 0,
+            total_global_mem: 0,
+            bf16_native: true,
+            fp8_native: false,
+            tma_available: false,
+            name: "A100".into(),
         };
         assert_eq!(ampere.compile_arch(), "sm_80");
         assert_eq!(ampere.recommended_tier(), KernelTier::AmpereBf16);
 
         let turing = CudaDeviceProps {
-            major: 7, minor: 5, l2_bytes: 0, shared_mem_per_block: 0,
-            total_global_mem: 0, bf16_native: false, fp8_native: false,
-            tma_available: false, name: "RTX 2080".into(),
+            major: 7,
+            minor: 5,
+            l2_bytes: 0,
+            shared_mem_per_block: 0,
+            total_global_mem: 0,
+            bf16_native: false,
+            fp8_native: false,
+            tma_available: false,
+            name: "RTX 2080".into(),
         };
         assert_eq!(turing.compile_arch(), "sm_75");
         assert_eq!(turing.recommended_tier(), KernelTier::Generic);

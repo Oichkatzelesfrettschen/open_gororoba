@@ -31,7 +31,7 @@ impl TTTrain {
         let first_core = &self.cores[0].data;
         let mut res = Mat::<f64>::zeros(1, first_core.shape()[2]);
         for j in 0..first_core.shape()[2] {
-            res.write(0, j, first_core[[0, indices[0], j]]);
+            res[(0, j)] = first_core[[0, indices[0], j]];
         }
 
         for k in 1..d {
@@ -47,12 +47,12 @@ impl TTTrain {
             let mut slice = Mat::<f64>::zeros(r_prev, r_next);
             for i in 0..r_prev {
                 for j in 0..r_next {
-                    slice.write(i, j, core[[i, indices[k], j]]);
+                    slice[(i, j)] = core[[i, indices[k], j]];
                 }
             }
             res = &res * slice;
         }
 
-        res.read(0, 0)
+        res[(0, 0)]
     }
 }

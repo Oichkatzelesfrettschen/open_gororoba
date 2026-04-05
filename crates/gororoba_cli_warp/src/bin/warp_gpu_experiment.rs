@@ -15,6 +15,7 @@ use clap::Parser;
 use log::{info, warn};
 use ndarray::{Array3, Zip};
 use num_complex::Complex64;
+use rand::RngExt;
 use std::{error::Error, f64::consts::PI, fs::File, io::Write, path::Path};
 
 // Import core modules
@@ -111,14 +112,13 @@ fn run_lbm_stability_test(args: &Args, use_filter: bool) -> Result<usize, Box<dy
         if let Ok(mut solver) = LbmSolver3DCuda::new(nx, ny, nz, tau, Precision::FP32) {
             info!("Using GPU LBM Solver (D3Q19)");
             // Initialize with Kolmogorov-like forcing (random initial velocity)
-            let mut rng = rand::thread_rng();
-            use rand::Rng;
+            let mut rng = rand::rng();
             let u_init: Vec<[f64; 3]> = (0..nx * ny * nz)
                 .map(|_| {
                     [
-                        rng.gen_range(-0.1..0.1),
-                        rng.gen_range(-0.1..0.1),
-                        rng.gen_range(-0.1..0.1),
+                        rng.random_range(-0.1..0.1),
+                        rng.random_range(-0.1..0.1),
+                        rng.random_range(-0.1..0.1),
                     ]
                 })
                 .collect();
@@ -230,8 +230,7 @@ fn run_experiment_b(args: &Args) -> Result<(), Box<dyn Error>> {
     info!("Generating synthetic turbulence ({}x{}x{})...", nx, ny, nz);
     // Simple synthetic field: sum of random waves with k^-5/3 amplitude
     let mut field_hat = Array3::<Complex64>::zeros((nx, ny, nz));
-    let mut rng = rand::thread_rng();
-    use rand::Rng;
+    let mut rng = rand::rng();
 
     for x in 0..nx {
         for y in 0..ny {
@@ -255,7 +254,7 @@ fn run_experiment_b(args: &Args) -> Result<(), Box<dyn Error>> {
 
                 if k > 0.0 {
                     let amplitude = k.powf(-5.0 / 3.0 - 1.0); // -1.0 for 3D integration factor adjustment? roughly.
-                    let phase = rng.r#gen::<f64>() * 2.0 * PI;
+                    let phase = rng.random::<f64>() * 2.0 * PI;
                     field_hat[[x, y, z]] = Complex64::from_polar(amplitude, phase);
                 }
             }
@@ -421,14 +420,13 @@ fn run_experiment_c(args: &Args) -> Result<(), Box<dyn Error>> {
         solver.initialize_uniform(1.0_f32, [0.05_f32, 0.0_f32, 0.0_f32])?; // Shear init handled internally or via noise
 
         // Add random noise
-        let mut rng = rand::thread_rng();
-        use rand::Rng;
+        let mut rng = rand::rng();
         let mut u_init = vec![[0.0; 3]; nx * ny * nz];
         for v in &mut u_init {
             *v = [
-                0.05 + rng.gen_range(-0.01..0.01),
-                rng.gen_range(-0.01..0.01),
-                rng.gen_range(-0.01..0.01),
+                0.05 + rng.random_range(-0.01..0.01),
+                rng.random_range(-0.01..0.01),
+                rng.random_range(-0.01..0.01),
             ];
         }
         solver.initialize_custom(&vec![1.0; nx * ny * nz], &u_init)?;

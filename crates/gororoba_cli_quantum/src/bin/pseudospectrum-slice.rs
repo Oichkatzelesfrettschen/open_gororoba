@@ -1,6 +1,6 @@
 use anyhow::Result;
 use clap::Parser;
-use faer::{complex_native::c64, Mat, Side};
+use faer::{c64, Mat, Side};
 use image::{ImageBuffer, Rgb};
 use std::path::PathBuf;
 
@@ -44,22 +44,22 @@ fn main() -> Result<()> {
 
     // Build Dirichlet Laplacian
     for i in 0..n {
-        l_mat.write(i, i, 2.0 / (h * h));
+        l_mat[(i, i)] = 2.0 / (h * h);
         if i > 0 {
-            l_mat.write(i, i - 1, -1.0 / (h * h));
+            l_mat[(i, i - 1)] = -1.0 / (h * h);
         }
         if i < n - 1 {
-            l_mat.write(i, i + 1, -1.0 / (h * h));
+            l_mat[(i, i + 1)] = -1.0 / (h * h);
         }
     }
 
-    let evd = l_mat.selfadjoint_eigendecomposition(Side::Lower);
-    let s = evd.s();
-    let u = evd.u();
+    let evd = l_mat.self_adjoint_eigen(Side::Lower).unwrap();
+    let s = evd.S();
+    let u = evd.U();
 
     let mut w_vals = Vec::with_capacity(n);
     for i in 0..n {
-        w_vals.push(s.column_vector().read(i).max(0.0)); // Ensure non-negative
+        w_vals.push(s.column_vector()[i].max(0.0)); // Ensure non-negative
     }
 
     let lpow = |power: f64| -> Mat<f64> {
@@ -70,9 +70,9 @@ fn main() -> Result<()> {
                 #[allow(clippy::needless_range_loop)]
                 for k in 0..n {
                     // V * diag(w^s) * V^T
-                    sum += u.read(i, k) * w_vals[k].powf(power) * u.read(j, k);
+                    sum += u[(i, k)] * w_vals[k].powf(power) * u[(j, k)];
                 }
-                p_mat.write(i, j, sum);
+                p_mat[(i, j)] = sum;
             }
         }
         p_mat
@@ -93,9 +93,8 @@ fn main() -> Result<()> {
     let mut l_lam = Mat::<f64>::zeros(n, n);
     for i in 0..n {
         for j in 0..n {
-            let val =
-                c0 * lp0.read(i, j) + lam * c1 * lp1.read(i, j) + (lam * lam) * c2 * lp2.read(i, j);
-            l_lam.write(i, j, val);
+            let val = c0 * lp0[(i, j)] + lam * c1 * lp1[(i, j)] + (lam * lam) * c2 * lp2[(i, j)];
+            l_lam[(i, j)] = val;
         }
     }
 
@@ -122,19 +121,19 @@ fn main() -> Result<()> {
             for r in 0..n {
                 for c in 0..n {
                     if r == c {
-                        a.write(r, c, c64::new(re_z - l_lam.read(r, c), im_z));
+                        a[(r, c)] = c64::new(re_z - l_lam[(r, c)], im_z);
                     } else {
-                        a.write(r, c, c64::new(-l_lam.read(r, c), 0.0));
+                        a[(r, c)] = c64::new(-l_lam[(r, c)], 0.0);
                     }
                 }
             }
 
-            let svd = a.svd();
-            let sing_vals = svd.s_diagonal();
+            let svd = a.svd().unwrap();
+            let sing_vals = svd.S();
 
             let mut s_min_val = f64::INFINITY;
             for k in 0..n {
-                let sv = sing_vals.read(k).re; // SVD of c64 matrix yields real singular values
+                let sv = sing_vals[k].re; // SVD of c64 matrix yields real singular values
                 if sv < s_min_val {
                     s_min_val = sv;
                 }

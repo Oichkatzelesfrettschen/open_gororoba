@@ -321,12 +321,19 @@ pub fn batch_octonion_basis_associators() -> Vec<(usize, usize, usize, [f64; 8])
     let mut results = Vec::with_capacity(210);
     for i in 1..8 {
         for j in 1..8 {
-            if j == i { continue; }
+            if j == i {
+                continue;
+            }
             for k in 1..8 {
-                if k == i || k == j { continue; }
-                let mut ei = [0.0_f64; 8]; ei[i] = 1.0;
-                let mut ej = [0.0_f64; 8]; ej[j] = 1.0;
-                let mut ek = [0.0_f64; 8]; ek[k] = 1.0;
+                if k == i || k == j {
+                    continue;
+                }
+                let mut ei = [0.0_f64; 8];
+                ei[i] = 1.0;
+                let mut ej = [0.0_f64; 8];
+                ej[j] = 1.0;
+                let mut ek = [0.0_f64; 8];
+                ek[k] = 1.0;
                 let assoc = octonion_associator_simd(&ei, &ej, &ek);
                 results.push((i, j, k, assoc));
             }
@@ -342,9 +349,9 @@ pub fn measure_associator_density(dim: usize, trials: usize, seed: u64, atol: f6
     let mut failures = 0;
 
     for _ in 0..trials {
-        let a: Vec<f64> = (0..dim).map(|_| rng.gen_range(-1.0..1.0)).collect();
-        let b: Vec<f64> = (0..dim).map(|_| rng.gen_range(-1.0..1.0)).collect();
-        let c: Vec<f64> = (0..dim).map(|_| rng.gen_range(-1.0..1.0)).collect();
+        let a: Vec<f64> = (0..dim).map(|_| rng.random_range(-1.0..1.0)).collect();
+        let b: Vec<f64> = (0..dim).map(|_| rng.random_range(-1.0..1.0)).collect();
+        let c: Vec<f64> = (0..dim).map(|_| rng.random_range(-1.0..1.0)).collect();
 
         let ab = cd_multiply(&a, &b);
         let abc1 = cd_multiply(&ab, &c);
@@ -396,7 +403,13 @@ pub fn associator_independence_stats(dim: usize, n_trials: usize, seed: u64) -> 
         assoc_sq.push(cd_norm_sq(&assoc_vec));
         ab_c_sq.push(cd_norm_sq(&ab_c_vec));
         a_bc_sq.push(cd_norm_sq(&a_bc_vec));
-        cross.push(ab_c_vec.iter().zip(&a_bc_vec).map(|(l, r)| l * r).sum::<f64>());
+        cross.push(
+            ab_c_vec
+                .iter()
+                .zip(&a_bc_vec)
+                .map(|(l, r)| l * r)
+                .sum::<f64>(),
+        );
     }
 
     let n = n_trials as f64;
@@ -404,7 +417,11 @@ pub fn associator_independence_stats(dim: usize, n_trials: usize, seed: u64) -> 
     let mean_ab_c = ab_c_sq.iter().sum::<f64>() / n;
     let mean_a_bc = a_bc_sq.iter().sum::<f64>() / n;
     let mean_cross = cross.iter().sum::<f64>() / n;
-    let var_assoc = assoc_sq.iter().map(|x| (x - mean_assoc).powi(2)).sum::<f64>() / n;
+    let var_assoc = assoc_sq
+        .iter()
+        .map(|x| (x - mean_assoc).powi(2))
+        .sum::<f64>()
+        / n;
 
     let corr = if mean_ab_c > 0.0 && mean_a_bc > 0.0 {
         mean_cross / (mean_ab_c * mean_a_bc).sqrt()

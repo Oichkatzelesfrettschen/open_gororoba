@@ -45,22 +45,22 @@ pub fn dpss_tapers(n: usize, nw: f64, k: usize) -> Vec<Vec<f64>> {
 
     let mut mat = Mat::<f64>::zeros(n, n);
     for i in 0..n {
-        mat.write(i, i, diag[i]);
+        mat[(i, i)] = diag[i];
         if i < n - 1 {
-            mat.write(i, i + 1, off_diag[i]);
-            mat.write(i + 1, i, off_diag[i]);
+            mat[(i, i + 1)] = off_diag[i];
+            mat[(i + 1, i)] = off_diag[i];
         }
     }
 
-    let evd = mat.selfadjoint_eigendecomposition(Side::Upper);
-    let eigenvalues = evd.s();
-    let eigenvectors = evd.u();
+    let evd = mat.self_adjoint_eigen(Side::Upper).unwrap();
+    let eigenvalues = evd.S();
+    let eigenvectors = evd.U();
 
     // Sort eigenvalues descending
     let mut indices: Vec<usize> = (0..n).collect();
     indices.sort_by(|&a, &b| {
-        let val_a = eigenvalues.column_vector().read(a);
-        let val_b = eigenvalues.column_vector().read(b);
+        let val_a = eigenvalues.column_vector()[a];
+        let val_b = eigenvalues.column_vector()[b];
         val_b.partial_cmp(&val_a).unwrap()
     });
 
@@ -68,7 +68,7 @@ pub fn dpss_tapers(n: usize, nw: f64, k: usize) -> Vec<Vec<f64>> {
     for &idx in indices.iter().take(k) {
         let mut taper = Vec::with_capacity(n);
         for i in 0..n {
-            taper.push(eigenvectors.read(i, idx));
+            taper.push(eigenvectors[(i, idx)]);
         }
 
         // Ensure the first lobe is positive (convention)

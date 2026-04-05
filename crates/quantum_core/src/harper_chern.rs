@@ -48,7 +48,7 @@
 //! - Thouless, Kohmoto, Nightingale, den Nijs (TKNN) (1982): Quantized Hall
 //!   Conductance in a Two-Dimensional Periodic Potential, PRL 49, 405
 
-use faer::{Mat, Side, complex_native::c64};
+use faer::{Mat, Side, c64};
 use std::f64::consts::PI;
 
 /// Result of Chern number calculation for a single flux value.
@@ -95,14 +95,14 @@ pub fn fhs_chern_gap_polar(p: u32, q: u32, r: usize, n_grid: usize) -> i32 {
             for j in 0..r {
                 let mut sum = c64::new(0.0, 0.0);
                 for k in 0..q_usize {
-                    let a = v0.read(k, i); // conj inside loop
-                    let b = v1.read(k, j);
+                    let a = v0[(k, i)]; // conj inside loop
+                    let b = v1[(k, j)];
                     sum = c64::new(
                         sum.re + a.re * b.re + a.im * b.im,
                         sum.im + a.re * b.im - a.im * b.re,
                     );
                 }
-                w.write(i, j, sum);
+                w[(i, j)] = sum;
             }
         }
         w
@@ -110,17 +110,17 @@ pub fn fhs_chern_gap_polar(p: u32, q: u32, r: usize, n_grid: usize) -> i32 {
 
     // Helper: Polar unitary factor Q = U * V^dagger via SVD
     let unitary_polar = |w: &Mat<c64>| -> Mat<c64> {
-        let svd = w.svd();
-        let u = svd.u();
-        let v = svd.v();
+        let svd = w.svd().unwrap();
+        let u = svd.U();
+        let v = svd.V();
         // Q = U * V^dagger
         let mut q_mat = Mat::<c64>::zeros(r, r);
         for i in 0..r {
             for j in 0..r {
                 let mut sum = c64::new(0.0, 0.0);
                 for k in 0..r {
-                    let ui = u.read(i, k);
-                    let vj = v.read(j, k); // V is not adjungated yet
+                    let ui = u[(i, k)];
+                    let vj = v[(j, k)]; // V is not adjungated yet
                     // v^dagger is v_conj_transpose, so we want v[j,k]^* which is v^H[k,j]
                     let vj_conj = c64::new(vj.re, -vj.im);
                     sum = c64::new(
@@ -128,7 +128,7 @@ pub fn fhs_chern_gap_polar(p: u32, q: u32, r: usize, n_grid: usize) -> i32 {
                         sum.im + ui.re * vj_conj.im + ui.im * vj_conj.re,
                     );
                 }
-                q_mat.write(i, j, sum);
+                q_mat[(i, j)] = sum;
             }
         }
         q_mat
@@ -137,12 +137,12 @@ pub fn fhs_chern_gap_polar(p: u32, q: u32, r: usize, n_grid: usize) -> i32 {
     // Helper: determinant of r x r matrix (Gaussian elimination for small matrices)
     let determinant = |m: &Mat<c64>| -> c64 {
         if r == 1 {
-            return m.read(0, 0);
+            return m[(0, 0)];
         }
         let mut det = c64::new(1.0, 0.0);
         let mut temp = m.clone();
         for i in 0..r {
-            let pivot = temp.read(i, i);
+            let pivot = temp[(i, i)];
             det = c64::new(
                 det.re * pivot.re - det.im * pivot.im,
                 det.re * pivot.im + det.im * pivot.re,
@@ -155,28 +155,20 @@ pub fn fhs_chern_gap_polar(p: u32, q: u32, r: usize, n_grid: usize) -> i32 {
                 -pivot.im / (pivot.re * pivot.re + pivot.im * pivot.im),
             );
             for j in i..r {
-                let val = temp.read(i, j);
-                temp.write(
-                    i,
-                    j,
-                    c64::new(
-                        val.re * inv_pivot.re - val.im * inv_pivot.im,
-                        val.re * inv_pivot.im + val.im * inv_pivot.re,
-                    ),
+                let val = temp[(i, j)];
+                temp[(i, j)] = c64::new(
+                    val.re * inv_pivot.re - val.im * inv_pivot.im,
+                    val.re * inv_pivot.im + val.im * inv_pivot.re,
                 );
             }
             for k in (i + 1)..r {
-                let factor = temp.read(k, i);
+                let factor = temp[(k, i)];
                 for j in i..r {
-                    let val1 = temp.read(k, j);
-                    let val2 = temp.read(i, j);
-                    temp.write(
-                        k,
-                        j,
-                        c64::new(
-                            val1.re - (factor.re * val2.re - factor.im * val2.im),
-                            val1.im - (factor.re * val2.im + factor.im * val2.re),
-                        ),
+                    let val1 = temp[(k, j)];
+                    let val2 = temp[(i, j)];
+                    temp[(k, j)] = c64::new(
+                        val1.re - (factor.re * val2.re - factor.im * val2.im),
+                        val1.im - (factor.re * val2.im + factor.im * val2.re),
                     );
                 }
             }
@@ -279,13 +271,13 @@ pub fn harper_hamiltonian(kx: f64, ky: f64, p: u32, q: u32) -> Mat<c64> {
     // Diagonal: on-site energy from x-hopping Peierls phase
     for m in 0..q_usize {
         let diag = 2.0 * (kx + 2.0 * PI * alpha * m as f64).cos();
-        h.write(m, m, c64::new(diag, 0.0));
+        h[(m, m)] = c64::new(diag, 0.0);
     }
 
     // Off-diagonal: y-hopping (nearest neighbors within unit cell)
     for j in 0..(q_usize - 1) {
-        h.write(j, j + 1, c64::new(1.0, 0.0));
-        h.write(j + 1, j, c64::new(1.0, 0.0));
+        h[(j, j + 1)] = c64::new(1.0, 0.0);
+        h[(j + 1, j)] = c64::new(1.0, 0.0);
     }
 
     // Boundary condition wrapping with k_y phase (magnetic Bloch condition)
@@ -294,8 +286,8 @@ pub fn harper_hamiltonian(kx: f64, ky: f64, p: u32, q: u32) -> Mat<c64> {
     let phase_angle = ky;
     let phase = c64::new(phase_angle.cos(), phase_angle.sin());
     let phase_conj = c64::new(phase_angle.cos(), -phase_angle.sin());
-    h.write(0, q_usize - 1, phase_conj);
-    h.write(q_usize - 1, 0, phase);
+    h[(0, q_usize - 1)] = phase_conj;
+    h[(q_usize - 1, 0)] = phase;
 
     h
 }
@@ -307,11 +299,11 @@ fn diagonalize(h: &Mat<c64>) -> (Vec<f64>, Mat<c64>) {
     let n = h.nrows();
 
     // faer's self_adjoint_eigen for Hermitian matrices
-    let eig = h.selfadjoint_eigendecomposition(Side::Lower);
+    let eig = h.self_adjoint_eigen(Side::Lower).unwrap();
 
     // Extract eigenvalues (real for Hermitian matrices) - s() returns diagonal view
-    let s_diag = eig.s();
-    let eigenvalues_raw: Vec<f64> = (0..n).map(|i| s_diag.column_vector().read(i).re).collect();
+    let s_diag = eig.S();
+    let eigenvalues_raw: Vec<f64> = (0..n).map(|i| s_diag.column_vector()[i].re).collect();
 
     // Sort by eigenvalue and get permutation
     let mut indexed: Vec<(usize, f64)> = eigenvalues_raw
@@ -324,11 +316,11 @@ fn diagonalize(h: &Mat<c64>) -> (Vec<f64>, Mat<c64>) {
     let eigenvalues: Vec<f64> = indexed.iter().map(|(_, e)| *e).collect();
 
     // Reorder eigenvectors according to sorted eigenvalues
-    let u = eig.u();
+    let u = eig.U();
     let mut eigenvectors = Mat::<c64>::zeros(n, n);
     for (new_col, &(orig_col, _)) in indexed.iter().enumerate() {
         for row in 0..n {
-            eigenvectors.write(row, new_col, u.read(row, orig_col));
+            eigenvectors[(row, new_col)] = u[(row, orig_col)];
         }
     }
 
@@ -379,8 +371,8 @@ pub fn fhs_chern_numbers(p: u32, q: u32, n_grid: usize) -> ChernResult {
 
         let mut overlap = c64::new(0.0, 0.0);
         for k in 0..q_usize {
-            let a = v1.read(k, n);
-            let b = v2.read(k, n);
+            let a = v1[(k, n)];
+            let b = v2[(k, n)];
             overlap = c64::new(
                 overlap.re + a.re * b.re + a.im * b.im,
                 overlap.im + a.re * b.im - a.im * b.re,
@@ -519,8 +511,8 @@ mod tests {
         let h = harper_hamiltonian(0.5, 0.3, 1, 4);
         for i in 0..4 {
             for j in 0..4 {
-                let hij = h.read(i, j);
-                let hji = h.read(j, i);
+                let hij = h[(i, j)];
+                let hji = h[(j, i)];
                 let diff_re = (hij.re - hji.re).abs();
                 let diff_im = (hij.im + hji.im).abs();
                 assert!(
@@ -564,8 +556,8 @@ mod tests {
             let mut hv = [c64::new(0.0, 0.0); 3];
             for (i, hv_i) in hv.iter_mut().enumerate() {
                 for j in 0..3 {
-                    let h_ij = h.read(i, j);
-                    let v_j = evecs.read(j, band);
+                    let h_ij = h[(i, j)];
+                    let v_j = evecs[(j, band)];
                     *hv_i = c64::new(
                         hv_i.re + h_ij.re * v_j.re - h_ij.im * v_j.im,
                         hv_i.im + h_ij.re * v_j.im + h_ij.im * v_j.re,
@@ -574,7 +566,7 @@ mod tests {
             }
             // Compare with lambda*v
             for (i, hv_i) in hv.iter().enumerate() {
-                let v_i = evecs.read(i, band);
+                let v_i = evecs[(i, band)];
                 let lv = c64::new(eigenvalue * v_i.re, eigenvalue * v_i.im);
                 let err = ((hv_i.re - lv.re).powi(2) + (hv_i.im - lv.im).powi(2)).sqrt();
                 assert!(
@@ -594,10 +586,10 @@ mod tests {
         let h = harper_hamiltonian(0.4, 0.4, 1, 2);
         let (_, evecs) = diagonalize(&h);
 
-        let has_complex = evecs.read(0, 0).im.abs() > 1e-10
-            || evecs.read(1, 0).im.abs() > 1e-10
-            || evecs.read(0, 1).im.abs() > 1e-10
-            || evecs.read(1, 1).im.abs() > 1e-10;
+        let has_complex = evecs[(0, 0)].im.abs() > 1e-10
+            || evecs[(1, 0)].im.abs() > 1e-10
+            || evecs[(0, 1)].im.abs() > 1e-10
+            || evecs[(1, 1)].im.abs() > 1e-10;
         assert!(has_complex, "Eigenvectors should be complex at general k");
     }
 

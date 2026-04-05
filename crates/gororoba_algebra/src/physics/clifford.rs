@@ -175,10 +175,30 @@ pub struct FermionCharges {
 
 pub fn fermion_charges_cl6() -> Vec<FermionCharges> {
     vec![
-        FermionCharges { name: "u_quark".to_string(), em_charge: 2.0 / 3.0, weak_isospin: 0.5, color_rep: "triplet".to_string() },
-        FermionCharges { name: "d_quark".to_string(), em_charge: -1.0 / 3.0, weak_isospin: -0.5, color_rep: "triplet".to_string() },
-        FermionCharges { name: "neutrino".to_string(), em_charge: 0.0, weak_isospin: 0.5, color_rep: "singlet".to_string() },
-        FermionCharges { name: "electron".to_string(), em_charge: -1.0, weak_isospin: -0.5, color_rep: "singlet".to_string() },
+        FermionCharges {
+            name: "u_quark".to_string(),
+            em_charge: 2.0 / 3.0,
+            weak_isospin: 0.5,
+            color_rep: "triplet".to_string(),
+        },
+        FermionCharges {
+            name: "d_quark".to_string(),
+            em_charge: -1.0 / 3.0,
+            weak_isospin: -0.5,
+            color_rep: "triplet".to_string(),
+        },
+        FermionCharges {
+            name: "neutrino".to_string(),
+            em_charge: 0.0,
+            weak_isospin: 0.5,
+            color_rep: "singlet".to_string(),
+        },
+        FermionCharges {
+            name: "electron".to_string(),
+            em_charge: -1.0,
+            weak_isospin: -0.5,
+            color_rep: "singlet".to_string(),
+        },
     ]
 }
 
@@ -191,9 +211,15 @@ pub struct LeptonMasses {
 
 impl LeptonMasses {
     pub fn observed() -> Self {
-        LeptonMasses { electron: 0.511, muon: 105.66, tau: 1776.86 }
+        LeptonMasses {
+            electron: 0.511,
+            muon: 105.66,
+            tau: 1776.86,
+        }
     }
-    pub fn ratio_mu_e(&self) -> f64 { self.muon / self.electron }
+    pub fn ratio_mu_e(&self) -> f64 {
+        self.muon / self.electron
+    }
 }
 
 #[cfg(test)]

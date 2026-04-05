@@ -14,8 +14,10 @@
 //! The hybrid should give TurboQuant's 2-bit advantage AND GroupQuant's
 //! 3-4 bit advantage by applying rotation first then grouping.
 
-use super::grouping::{compute_group_params, group_quantize, group_dequantize, GroupQuantParams};
-use super::rotation::Rotation;
+use super::{
+    grouping::{GroupQuantParams, compute_group_params, group_dequantize, group_quantize},
+    rotation::Rotation,
+};
 
 /// Hybrid compressed representation: rotated + group-quantized.
 #[derive(Clone, Debug)]
@@ -49,7 +51,12 @@ impl HybridQuantizer {
         } else {
             Rotation::new_haar(d, seed)
         };
-        HybridQuantizer { rotation, d, bits, group_size }
+        HybridQuantizer {
+            rotation,
+            d,
+            bits,
+            group_size,
+        }
     }
 
     /// Quantize: normalize -> rotate -> group-quantize.
@@ -89,7 +96,11 @@ impl HybridQuantizer {
         let d = self.d;
 
         // Group-wise dequantize
-        let rotated_recon = group_dequantize(&compressed.indices, &compressed.group_params, compressed.bits);
+        let rotated_recon = group_dequantize(
+            &compressed.indices,
+            &compressed.group_params,
+            compressed.bits,
+        );
 
         // Unrotate
         buf[..d].copy_from_slice(&rotated_recon);
@@ -102,9 +113,15 @@ impl HybridQuantizer {
         }
     }
 
-    pub fn dim(&self) -> usize { self.d }
-    pub fn bits(&self) -> u32 { self.bits }
-    pub fn group_size(&self) -> usize { self.group_size }
+    pub fn dim(&self) -> usize {
+        self.d
+    }
+    pub fn bits(&self) -> u32 {
+        self.bits
+    }
+    pub fn group_size(&self) -> usize {
+        self.group_size
+    }
 
     /// Memory per vector: indices + per-group metadata.
     pub fn bits_per_vector(&self) -> usize {
@@ -137,8 +154,12 @@ pub fn compare_hybrid(
         let comp = hybrid.quantize(v, &mut buf);
         let mut recon = vec![0.0f64; d];
         hybrid.dequantize(&comp, &mut buf, &mut recon);
-        hybrid_mse += v.iter().zip(recon.iter())
-            .map(|(a, b)| (a - b).powi(2)).sum::<f64>() / d as f64;
+        hybrid_mse += v
+            .iter()
+            .zip(recon.iter())
+            .map(|(a, b)| (a - b).powi(2))
+            .sum::<f64>()
+            / d as f64;
     }
 
     // TurboQuant MSE (rotation + uniform codebook)
@@ -147,8 +168,12 @@ pub fn compare_hybrid(
         let comp = tq.quantize(v, &mut buf);
         let mut recon = vec![0.0f64; d];
         tq.dequantize(&comp, &mut buf, &mut recon);
-        tq_mse += v.iter().zip(recon.iter())
-            .map(|(a, b)| (a - b).powi(2)).sum::<f64>() / d as f64;
+        tq_mse += v
+            .iter()
+            .zip(recon.iter())
+            .map(|(a, b)| (a - b).powi(2))
+            .sum::<f64>()
+            / d as f64;
     }
 
     // GroupQuant MSE (no rotation, just grouping)
@@ -157,8 +182,12 @@ pub fn compare_hybrid(
         let params = compute_group_params(v, group_size, bits);
         let indices = group_quantize(v, &params, bits);
         let recon = group_dequantize(&indices, &params, bits);
-        gq_mse += v.iter().zip(recon.iter())
-            .map(|(a, b)| (a - b).powi(2)).sum::<f64>() / d as f64;
+        gq_mse += v
+            .iter()
+            .zip(recon.iter())
+            .map(|(a, b)| (a - b).powi(2))
+            .sum::<f64>()
+            / d as f64;
     }
 
     (hybrid_mse / n as f64, tq_mse / n as f64, gq_mse / n as f64)
@@ -174,7 +203,9 @@ mod tests {
     fn random_vectors(n: usize, d: usize, seed: u64) -> Vec<Vec<f64>> {
         let mut rng = ChaCha20Rng::seed_from_u64(seed);
         let normal = StandardNormal;
-        (0..n).map(|_| (0..d).map(|_| normal.sample(&mut rng)).collect()).collect()
+        (0..n)
+            .map(|_| (0..d).map(|_| normal.sample(&mut rng)).collect())
+            .collect()
     }
 
     #[test]
@@ -188,8 +219,12 @@ mod tests {
         let mut recon = vec![0.0f64; d];
         hq.dequantize(&comp, &mut buf, &mut recon);
 
-        let mse: f64 = x.iter().zip(recon.iter())
-            .map(|(a, b)| (a - b).powi(2)).sum::<f64>() / d as f64;
+        let mse: f64 = x
+            .iter()
+            .zip(recon.iter())
+            .map(|(a, b)| (a - b).powi(2))
+            .sum::<f64>()
+            / d as f64;
         assert!(mse < 0.1, "Hybrid MSE too high: {}", mse);
     }
 
@@ -203,7 +238,10 @@ mod tests {
             let (hybrid_mse, tq_mse, gq_mse) = compare_hybrid(&vectors, bits, 32, 42);
             println!(
                 "  {}-bit: hybrid={:.6}  turbo={:.6}  group={:.6}  hybrid_vs_best={:.1}%",
-                bits, hybrid_mse, tq_mse, gq_mse,
+                bits,
+                hybrid_mse,
+                tq_mse,
+                gq_mse,
                 (hybrid_mse - tq_mse.min(gq_mse)) / tq_mse.min(gq_mse) * 100.0
             );
 
@@ -215,7 +253,9 @@ mod tests {
                 assert!(
                     hybrid_mse < best_other * 1.5,
                     "{}-bit: hybrid MSE={:.6} should be within 50% of best={:.6}",
-                    bits, hybrid_mse, best_other
+                    bits,
+                    hybrid_mse,
+                    best_other
                 );
             }
         }

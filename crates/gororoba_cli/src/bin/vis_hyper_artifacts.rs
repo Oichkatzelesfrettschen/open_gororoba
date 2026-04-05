@@ -259,8 +259,8 @@ fn generate_mera_network() -> Result<()> {
 
     let mut rng = StdRng::seed_from_u64(1337);
     for _ in 0..40 {
-        let u_idx = rng.gen_range(0..leaves);
-        let v_idx = rng.gen_range(0..leaves);
+        let u_idx = rng.random_range(0..leaves);
+        let v_idx = rng.random_range(0..leaves);
         let u = positions[0][u_idx];
         let v = positions[0][v_idx];
         let dist = ((u.0 - v.0).powi(2) + (u.1 - v.1).powi(2)).sqrt();
@@ -620,8 +620,8 @@ fn generate_zd_projection() -> Result<()> {
         .build_cartesian_2d(-1.5..1.5, -1.5..1.5)?;
     chart.configure_mesh().draw()?;
     chart.draw_series((0..1000).map(|_| {
-        let x: f64 = rng.gen_range(-1.0..1.0);
-        let y: f64 = (1.0 - x * x).sqrt() * rng.gen_range(-1.0..1.0);
+        let x: f64 = rng.random_range(-1.0..1.0);
+        let y: f64 = (1.0 - x * x).sqrt() * rng.random_range(-1.0..1.0);
         Circle::new((x, y), 12, CYAN.mix(0.6).filled())
     }))?;
     root.present()?;

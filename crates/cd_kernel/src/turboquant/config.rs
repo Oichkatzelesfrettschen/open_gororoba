@@ -140,7 +140,11 @@ impl TurboQuantConfig {
             dim,
             bits,
             seed: 42,
-            rotation: if dim >= 64 { RotationMethod::FastJL } else { RotationMethod::Haar },
+            rotation: if dim >= 64 {
+                RotationMethod::FastJL
+            } else {
+                RotationMethod::Haar
+            },
             qjl_correction: QjlCorrectionMode::Never,
             adaptive: AdaptiveBitsConfig {
                 enabled: false,
@@ -161,12 +165,18 @@ impl TurboQuantConfig {
 
     /// Whether this rotation method uses WHT internally.
     pub fn use_wht(&self) -> bool {
-        matches!(self.rotation, RotationMethod::FastJL | RotationMethod::E8Block | RotationMethod::E8Wht)
+        matches!(
+            self.rotation,
+            RotationMethod::FastJL | RotationMethod::E8Block | RotationMethod::E8Wht
+        )
     }
 
     /// Whether to use E8 block rotation specifically.
     pub fn use_e8(&self) -> bool {
-        matches!(self.rotation, RotationMethod::E8Block | RotationMethod::E8Wht)
+        matches!(
+            self.rotation,
+            RotationMethod::E8Block | RotationMethod::E8Wht
+        )
     }
 
     /// Whether to use F4 block rotation specifically.

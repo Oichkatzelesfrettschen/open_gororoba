@@ -41,12 +41,12 @@ impl TwoQubitState {
             if b[j] != 0.0 {
                 let term = kron2(&eye2, &sigmas[j]) * Complex64::from(b[j]);
                 rho += term;
-                }
-                }
+            }
+        }
 
-                // Correlated part -> sum t_ij sigma_i x sigma_j
-                for i in 0..3 {
-                for j in 0..3 {
+        // Correlated part -> sum t_ij sigma_i x sigma_j
+        for i in 0..3 {
+            for j in 0..3 {
                 if t[(i, j)] != 0.0 {
                     let term = kron2(&sigmas[i], &sigmas[j]) * Complex64::from(t[(i, j)]);
                     rho += term;

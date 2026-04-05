@@ -2073,7 +2073,9 @@ fn ingest_all_voyager_years(
                 .strip_prefix(&format!("{prefix}_"))
                 .and_then(|s| s.strip_suffix(".asc"));
             let Some(year_str) = year_str else { continue };
-            let Ok(year) = year_str.parse::<u16>() else { continue };
+            let Ok(year) = year_str.parse::<u16>() else {
+                continue;
+            };
             if existing.contains(&(mission.to_string(), year)) {
                 continue;
             }
@@ -2119,7 +2121,10 @@ fn ingest_all_ulysses_years(
     for entry in WalkDir::new(&dir_path).min_depth(1).max_depth(1) {
         let entry = entry?;
         let name = entry.file_name().to_string_lossy();
-        let year = if let Some(s) = name.strip_prefix("uly_").and_then(|s| s.strip_suffix(".asc")) {
+        let year = if let Some(s) = name
+            .strip_prefix("uly_")
+            .and_then(|s| s.strip_suffix(".asc"))
+        {
             s.parse::<u16>().ok()
         } else if let Some(s) = name
             .strip_prefix("uy_coho1hr_merged_mag_plasma_")

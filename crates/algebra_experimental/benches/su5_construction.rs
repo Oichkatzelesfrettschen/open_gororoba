@@ -1,6 +1,7 @@
-use criterion::{criterion_group, criterion_main, Criterion};
-use algebra_experimental::cayley_dickson_structs::Sedenion;
-use algebra_experimental::su_n_generators::construct_su5_generators_algebraic;
+use algebra_experimental::{
+    cayley_dickson_structs::Sedenion, su_n_generators::construct_su5_generators_algebraic,
+};
+use criterion::{Criterion, criterion_group, criterion_main};
 
 fn su5_construction_benchmark(c: &mut Criterion) {
     let mut basis = [Sedenion::default(); 16];

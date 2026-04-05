@@ -347,7 +347,7 @@ pub fn generate_null_sequence(
     rng: &mut impl Rng,
 ) -> Vec<usize> {
     match model {
-        NullModel::Uniform => (0..length).map(|_| rng.gen_range(0..N_WALLS)).collect(),
+        NullModel::Uniform => (0..length).map(|_| rng.random_range(0..N_WALLS)).collect(),
         NullModel::IidEmpirical => {
             let freq = wall_frequencies(empirical);
             let dist = cumulative_distribution(&freq);
@@ -358,11 +358,11 @@ pub fn generate_null_sequence(
             // Truncate or extend to match desired length
             shuffled.truncate(length);
             while shuffled.len() < length {
-                shuffled.push(empirical[rng.gen_range(0..empirical.len())]);
+                shuffled.push(empirical[rng.random_range(0..empirical.len())]);
             }
             // Fisher-Yates shuffle
             for i in (1..shuffled.len()).rev() {
-                let j = rng.gen_range(0..=i);
+                let j = rng.random_range(0..=i);
                 shuffled.swap(i, j);
             }
             shuffled
@@ -411,7 +411,7 @@ fn cumulative_distribution(freq: &[f64; N_WALLS]) -> [f64; N_WALLS] {
 
 /// Sample from a CDF using inverse-transform sampling.
 fn sample_from_cdf(cdf: &[f64; N_WALLS], rng: &mut impl Rng) -> usize {
-    let u: f64 = rng.r#gen();
+    let u: f64 = rng.random();
     for (i, &c) in cdf.iter().enumerate() {
         if u <= c {
             return i;
@@ -464,7 +464,7 @@ fn generate_markov_sequence(empirical: &[usize], length: usize, rng: &mut impl R
     seq.push(state);
 
     for _ in 1..length {
-        let u: f64 = rng.r#gen();
+        let u: f64 = rng.random();
         let mut next = N_WALLS - 1;
         for (j, &c) in row_cdfs[state].iter().enumerate() {
             if u <= c {
@@ -495,7 +495,7 @@ fn generate_commutation_shuffle(
     let mut seq = empirical.to_vec();
     seq.truncate(length);
     while seq.len() < length {
-        seq.push(empirical[rng.gen_range(0..empirical.len())]);
+        seq.push(empirical[rng.random_range(0..empirical.len())]);
     }
 
     for _ in 0..passes {
@@ -503,7 +503,7 @@ fn generate_commutation_shuffle(
             let (a, b) = (seq[i], seq[i + 1]);
             if a < N_WALLS && b < N_WALLS && a != b && !E10_ADJACENCY[a][b] {
                 // Generators commute: randomly swap with 50% probability
-                if rng.gen_bool(0.5) {
+                if rng.random_bool(0.5) {
                     seq.swap(i, i + 1);
                 }
             }
@@ -1293,7 +1293,7 @@ mod tests {
     fn test_mutual_information_iid() {
         // For an iid sequence, MI should be near zero
         let mut rng = ChaCha8Rng::seed_from_u64(42);
-        let seq: Vec<usize> = (0..10000).map(|_| rng.gen_range(0..N_WALLS)).collect();
+        let seq: Vec<usize> = (0..10000).map(|_| rng.random_range(0..N_WALLS)).collect();
         let m = compute_locality_metrics(&seq);
         assert!(
             m.mutual_information < 0.05,
@@ -1396,7 +1396,7 @@ mod tests {
     fn test_permutation_test_iid_vs_iid() {
         // Random sequence tested against its own IidEmpirical null: should NOT be significant
         let mut rng = ChaCha8Rng::seed_from_u64(123);
-        let seq: Vec<usize> = (0..500).map(|_| rng.gen_range(0..N_WALLS)).collect();
+        let seq: Vec<usize> = (0..500).map(|_| rng.random_range(0..N_WALLS)).collect();
         let result = permutation_test_r_e8(&seq, &NullModel::IidEmpirical, 200, 456);
         // p-value should be moderate (not extremely low)
         assert!(
@@ -1717,7 +1717,7 @@ mod tests {
     fn test_chi_squared_uniform_sequence() {
         // Uniform random sequence should have low chi-squared
         let mut rng = ChaCha8Rng::seed_from_u64(42);
-        let seq: Vec<usize> = (0..10000).map(|_| rng.gen_range(0..N_E8)).collect();
+        let seq: Vec<usize> = (0..10000).map(|_| rng.random_range(0..N_E8)).collect();
         let result = chi_squared_e8_transitions(&seq);
 
         assert_eq!(result.df, 55);

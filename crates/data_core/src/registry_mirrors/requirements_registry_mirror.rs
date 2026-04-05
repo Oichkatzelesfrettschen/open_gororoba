@@ -5,7 +5,7 @@
 //!
 //! Authoritative source: `registry/requirements.toml`.
 //!
-//! - Updated: 2026-02-10
+//! - Updated: 2026-04-04
 //! - Python recommended: `3.11-3.12`
 //! - Python allowed: `3.13+ (with optional extras caveats)`
 //! - Primary markdown: `docs/REQUIREMENTS.md`

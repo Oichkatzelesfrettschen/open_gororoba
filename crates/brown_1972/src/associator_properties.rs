@@ -27,8 +27,7 @@ pub fn verify_alternativity_left(x: &[f64], y: &[f64]) -> f64 {
     let xx_y = cd_multiply(&xx, y);
 
     // Compare: x(xy) should equal (xx)y
-    x_xy
-        .iter()
+    x_xy.iter()
         .zip(xx_y.iter())
         .map(|(a, b)| (a - b).abs())
         .fold(0.0, f64::max)
@@ -47,8 +46,7 @@ pub fn verify_alternativity_right(x: &[f64], y: &[f64]) -> f64 {
     let y_xy = cd_multiply(y, &xy);
 
     // Compare: (yx)y should equal y(xy)
-    yx_y
-        .iter()
+    yx_y.iter()
         .zip(y_xy.iter())
         .map(|(a, b)| (a - b).abs())
         .fold(0.0, f64::max)
@@ -102,7 +100,9 @@ mod tests {
         let mut x = vec![0.0; 16];
         let mut s = seed;
         for v in &mut x {
-            s = s.wrapping_mul(6364136223846793005).wrapping_add(1442695040888963407);
+            s = s
+                .wrapping_mul(6364136223846793005)
+                .wrapping_add(1442695040888963407);
             *v = ((s >> 33) as f64) / (1u64 << 31) as f64 - 1.0;
         }
         x

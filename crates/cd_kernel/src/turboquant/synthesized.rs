@@ -20,9 +20,11 @@
 //! - Adaptive bit allocation via CD associator (23% MSE gain)
 //! - QJL correction at bits <= 3 only (hurts at 4-bit)
 
-use super::adaptive_bits::BitAllocation;
-use super::hybrid::HybridQuantizer;
-use super::pipeline::{TurboQuantMSE, TurboQuantProd};
+use super::{
+    adaptive_bits::BitAllocation,
+    hybrid::HybridQuantizer,
+    pipeline::{TurboQuantMSE, TurboQuantProd},
+};
 
 /// Synthesized quantizer that auto-selects the best method.
 pub struct SynthesizedQuantizer {
@@ -122,7 +124,9 @@ impl SynthesizedQuantizer {
     /// Dequantize back to f64.
     pub fn dequantize(&self, compressed: &SynthesizedCompressed, buf: &mut [f64], out: &mut [f64]) {
         match &compressed.data {
-            SynthesizedData::TurboQuant { indices, vec_norm, .. } => {
+            SynthesizedData::TurboQuant {
+                indices, vec_norm, ..
+            } => {
                 let mse_repr = super::pipeline::MseCompressed {
                     indices: indices.clone(),
                     vec_norm: *vec_norm,
@@ -145,23 +149,31 @@ impl SynthesizedQuantizer {
 
         if !self.adaptive {
             // Parallel quantize: each thread gets its own buffer
-            return vectors.par_iter().map(|v| {
-                let mut buf = vec![0.0f64; 3 * self.d];
-                self.quantize(v, &mut buf)
-            }).collect();
+            return vectors
+                .par_iter()
+                .map(|v| {
+                    let mut buf = vec![0.0f64; 3 * self.d];
+                    self.quantize(v, &mut buf)
+                })
+                .collect();
         }
 
         // OPTIMIZED: Use sampled allocation (10.6x faster than full adaptive)
         // Samples 10% of tokens for CD associator scoring, uses vector norm
         // as fast proxy for the remaining 90%.  Same promotion count.
         let allocation = super::adaptive_profiling::adaptive_allocate_sampled(
-            vectors, self.d, self.bits, self.promote_fraction, 0.1,
+            vectors,
+            self.d,
+            self.bits,
+            self.promote_fraction,
+            0.1,
         );
 
         // Step 4: re-quantize promoted tokens at (bits+1)
         let promoted_sq = SynthesizedQuantizer::new(self.d, self.bits + 1, 42);
 
-        vectors.par_iter()
+        vectors
+            .par_iter()
             .zip(allocation.par_iter())
             .map(|(v, alloc)| {
                 let mut buf = vec![0.0f64; 3 * self.d];
@@ -184,15 +196,26 @@ impl SynthesizedQuantizer {
         sq
     }
 
-    pub fn dim(&self) -> usize { self.d }
-    pub fn bits(&self) -> u32 { self.bits }
+    pub fn dim(&self) -> usize {
+        self.d
+    }
+    pub fn bits(&self) -> u32 {
+        self.bits
+    }
 }
 
 impl std::fmt::Display for SynthesizedQuantizer {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let method = if self.bits <= 2 { "turboquant" } else { "hybrid" };
-        write!(f, "Synthesized(d={}, {}bit, method={}, adaptive={})",
-            self.d, self.bits, method, self.adaptive)
+        let method = if self.bits <= 2 {
+            "turboquant"
+        } else {
+            "hybrid"
+        };
+        write!(
+            f,
+            "Synthesized(d={}, {}bit, method={}, adaptive={})",
+            self.d, self.bits, method, self.adaptive
+        )
     }
 }
 
@@ -206,7 +229,9 @@ mod tests {
     fn random_vectors(n: usize, d: usize, seed: u64) -> Vec<Vec<f64>> {
         let mut rng = ChaCha20Rng::seed_from_u64(seed);
         let normal = StandardNormal;
-        (0..n).map(|_| (0..d).map(|_| normal.sample(&mut rng)).collect()).collect()
+        (0..n)
+            .map(|_| (0..d).map(|_| normal.sample(&mut rng)).collect())
+            .collect()
     }
 
     fn measure_mse(vectors: &[Vec<f64>], sq: &SynthesizedQuantizer) -> f64 {
@@ -217,8 +242,12 @@ mod tests {
             let comp = sq.quantize(v, &mut buf);
             let mut recon = vec![0.0f64; d];
             sq.dequantize(&comp, &mut buf, &mut recon);
-            total_mse += v.iter().zip(recon.iter())
-                .map(|(a, b)| (a - b).powi(2)).sum::<f64>() / d as f64;
+            total_mse += v
+                .iter()
+                .zip(recon.iter())
+                .map(|(a, b)| (a - b).powi(2))
+                .sum::<f64>()
+                / d as f64;
         }
         total_mse / vectors.len() as f64
     }
@@ -254,16 +283,26 @@ mod tests {
             // Compare with pure TQ
             let tq = TurboQuantMSE::new(d, bits, 42, true);
             let mut buf = vec![0.0f64; 3 * d];
-            let tq_mse: f64 = vectors.iter().map(|v| {
-                let comp = tq.quantize(v, &mut buf);
-                let mut recon = vec![0.0f64; d];
-                tq.dequantize(&comp, &mut buf, &mut recon);
-                v.iter().zip(recon.iter()).map(|(a, b)| (a - b).powi(2)).sum::<f64>() / d as f64
-            }).sum::<f64>() / n as f64;
+            let tq_mse: f64 = vectors
+                .iter()
+                .map(|v| {
+                    let comp = tq.quantize(v, &mut buf);
+                    let mut recon = vec![0.0f64; d];
+                    tq.dequantize(&comp, &mut buf, &mut recon);
+                    v.iter()
+                        .zip(recon.iter())
+                        .map(|(a, b)| (a - b).powi(2))
+                        .sum::<f64>()
+                        / d as f64
+                })
+                .sum::<f64>()
+                / n as f64;
 
             let improvement = (tq_mse - mse) / tq_mse * 100.0;
-            println!("  {}-bit: synthesized={:.6}  tq={:.6}  improvement={:.1}%  method={}",
-                bits, mse, tq_mse, improvement, sq);
+            println!(
+                "  {}-bit: synthesized={:.6}  tq={:.6}  improvement={:.1}%  method={}",
+                bits, mse, tq_mse, improvement, sq
+            );
         }
     }
 

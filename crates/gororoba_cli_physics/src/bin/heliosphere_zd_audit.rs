@@ -10,7 +10,7 @@
 use anyhow::Result;
 use cd_kernel::cayley_dickson::simd::pathion_multiply_flat;
 use data_core::catalogs::rosetta::parse_rosetta_amda_mag_csv_minutes;
-use rand::SeedableRng;
+use rand::{RngExt, SeedableRng};
 use rand_chacha::ChaCha8Rng;
 use serde::Serialize;
 use std::{fs, path::PathBuf};
@@ -55,9 +55,7 @@ fn main() -> Result<()> {
     let mut outside_vecs: Vec<[f64; 32]> = Vec::new();
 
     for w in 0..=all_minutes.len().saturating_sub(steps) {
-        let sum_b: f64 = (0..steps)
-            .map(|s| all_minutes[w + s].b_magnitude)
-            .sum();
+        let sum_b: f64 = (0..steps).map(|s| all_minutes[w + s].b_magnitude).sum();
         let mean_b = sum_b / steps as f64;
         if mean_b <= 0.01 || !mean_b.is_finite() {
             continue;
@@ -98,7 +96,7 @@ fn main() -> Result<()> {
         .map(|_| {
             let mut b = [0.0f64; 32];
             for x in &mut b {
-                *x = rand::Rng::r#gen::<f64>(&mut rng) - 0.5;
+                *x = rng.random::<f64>() - 0.5;
             }
             let norm = b.iter().map(|x| x * x).sum::<f64>().sqrt();
             for x in &mut b {
@@ -108,7 +106,10 @@ fn main() -> Result<()> {
         })
         .collect();
 
-    println!("  Computing ZD proximity ({} probes per vector)...", n_probes);
+    println!(
+        "  Computing ZD proximity ({} probes per vector)...",
+        n_probes
+    );
 
     // Subsample for speed
     let max_sample = 500;
@@ -120,7 +121,11 @@ fn main() -> Result<()> {
     };
     let outside_sample: Vec<&[f64; 32]> = {
         let step = outside_vecs.len().max(1) / max_sample.min(outside_vecs.len()).max(1);
-        outside_vecs.iter().step_by(step.max(1)).take(max_sample).collect()
+        outside_vecs
+            .iter()
+            .step_by(step.max(1))
+            .take(max_sample)
+            .collect()
     };
 
     let zd_stats = |vecs: &[&[f64; 32]]| -> (f64, f64) {
@@ -172,8 +177,14 @@ fn main() -> Result<()> {
     let ratio = cav_min / out_min.max(1e-15);
 
     println!("\n=== Results ===");
-    println!("  Cavity:  min_product={:.6}, mean_product={:.6}", cav_min, cav_mean);
-    println!("  Outside: min_product={:.6}, mean_product={:.6}", out_min, out_mean);
+    println!(
+        "  Cavity:  min_product={:.6}, mean_product={:.6}",
+        cav_min, cav_mean
+    );
+    println!(
+        "  Outside: min_product={:.6}, mean_product={:.6}",
+        out_min, out_mean
+    );
     println!("  Ratio (cavity/outside): {:.4}", ratio);
 
     let interpretation = if ratio < 0.5 {
