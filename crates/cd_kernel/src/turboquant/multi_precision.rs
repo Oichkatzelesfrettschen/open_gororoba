@@ -16,7 +16,7 @@
 //! # Packed Index Format
 //!
 //! 2-bit: 4 indices per byte (u8), little-endian bit order
-//! 3-bit: 8 indices per 3 bytes (24 bits), requires bit-shifting
+//! 3-bit: 8 indices per 3 bytes (24 bits), tail bits zero-padded to full bytes
 //! 4-bit: 2 indices per byte (u8), simple nibble pack
 
 use super::fp8::CompactGroupMeta;
@@ -67,6 +67,57 @@ impl Packed2BitIndices {
     }
 
     /// Storage size in bits.
+    pub fn bits(&self) -> usize {
+        self.data.len() * 8
+    }
+}
+
+/// Packed 3-bit indices in a little-endian contiguous bitstream.
+#[derive(Clone, Debug)]
+pub struct Packed3BitIndices {
+    pub data: Vec<u8>,
+    pub len: usize,
+}
+
+impl Packed3BitIndices {
+    /// Pack u8 indices (each 0-7) into 3-bit packed format.
+    pub fn pack(indices: &[u8]) -> Self {
+        let n = indices.len();
+        let n_bytes = (n * 3).div_ceil(8);
+        let mut data = vec![0u8; n_bytes];
+        for (i, &idx) in indices.iter().enumerate() {
+            debug_assert!(idx < 8, "3-bit index out of range: {}", idx);
+            let bit_pos = i * 3;
+            let byte_idx = bit_pos / 8;
+            let bit_offset = bit_pos % 8;
+            let value = (idx & 0x7) as u16;
+            data[byte_idx] |= (value << bit_offset) as u8;
+            if bit_offset > 5 {
+                data[byte_idx + 1] |= (value >> (8 - bit_offset)) as u8;
+            }
+        }
+        Packed3BitIndices { data, len: n }
+    }
+
+    pub fn unpack(&self) -> Vec<u8> {
+        let mut indices = Vec::with_capacity(self.len);
+        for i in 0..self.len {
+            indices.push(self.get(i));
+        }
+        indices
+    }
+
+    #[inline]
+    pub fn get(&self, i: usize) -> u8 {
+        let bit_pos = i * 3;
+        let byte_idx = bit_pos / 8;
+        let bit_offset = bit_pos % 8;
+        let lo = self.data[byte_idx] as u16;
+        let hi = self.data.get(byte_idx + 1).copied().unwrap_or(0) as u16;
+        let word = lo | (hi << 8);
+        ((word >> bit_offset) & 0x7) as u8
+    }
+
     pub fn bits(&self) -> usize {
         self.data.len() * 8
     }
@@ -127,9 +178,9 @@ pub enum MultiPrecisionCompressed {
         meta: CompactGroupMeta,
         norm_bits: u16, // f16 stored as bits
     },
-    /// 3-bit: u8 indices (not packed yet) + FP8 group scales.
+    /// 3-bit: packed bitstream + FP8 group scales.
     Bits3 {
-        indices: Vec<u8>,
+        indices: Packed3BitIndices,
         meta: CompactGroupMeta,
         norm_bits: u16,
     },
@@ -142,13 +193,48 @@ pub enum MultiPrecisionCompressed {
 }
 
 impl MultiPrecisionCompressed {
-    /// Total storage in bits.
-    pub fn total_bits(&self) -> usize {
+    #[inline]
+    fn meta_and_norm_bits(&self) -> usize {
         match self {
-            Self::Bits2 { indices, meta, .. } => indices.bits() + meta.total_bits() + 16,
-            Self::Bits3 { indices, meta, .. } => indices.len() * 3 + meta.total_bits() + 16,
-            Self::Bits4 { indices, meta, .. } => indices.bits() + meta.total_bits() + 16,
+            Self::Bits2 { meta, .. } | Self::Bits3 { meta, .. } | Self::Bits4 { meta, .. } => {
+                meta.total_bits() + 16
+            }
         }
+    }
+
+    /// Logical code bits used by the index stream (without byte rounding).
+    pub fn logical_coding_bits(&self) -> usize {
+        match self {
+            Self::Bits2 { indices, .. } => indices.len * 2,
+            Self::Bits3 { indices, .. } => indices.len * 3,
+            Self::Bits4 { indices, .. } => indices.len * 4,
+        }
+    }
+
+    /// Allocated bits used by the index stream (byte-rounded physical storage).
+    pub fn allocated_coding_bits(&self) -> usize {
+        match self {
+            Self::Bits2 { indices, .. } => indices.bits(),
+            Self::Bits3 { indices, .. } => indices.bits(),
+            Self::Bits4 { indices, .. } => indices.bits(),
+        }
+    }
+
+    /// Logical total bits: logical index bits + metadata + norm.
+    pub fn logical_total_bits(&self) -> usize {
+        self.logical_coding_bits() + self.meta_and_norm_bits()
+    }
+
+    /// Allocated total bits: physical index bits + metadata + norm.
+    pub fn allocated_total_bits(&self) -> usize {
+        self.allocated_coding_bits() + self.meta_and_norm_bits()
+    }
+
+    /// Total storage in bits (allocated/physical, byte-rounded).
+    ///
+    /// Kept as allocated semantics for compatibility with existing callsites.
+    pub fn total_bits(&self) -> usize {
+        self.allocated_total_bits()
     }
 
     /// Effective bits per coordinate.
@@ -225,6 +311,32 @@ mod tests {
     }
 
     #[test]
+    fn test_packed_3bit_roundtrip_tail_cases() {
+        let lengths = [0usize, 1, 2, 7, 8, 9, 15, 16, 17, 31, 32, 33];
+        for &len in &lengths {
+            let indices: Vec<u8> = (0..len).map(|i| ((i * 5 + 3) % 8) as u8).collect();
+            let packed = Packed3BitIndices::pack(&indices);
+            assert_eq!(packed.data.len(), (len * 3).div_ceil(8), "len={}", len);
+            assert_eq!(packed.bits(), packed.data.len() * 8, "len={}", len);
+            assert_eq!(packed.unpack(), indices, "len={}", len);
+        }
+    }
+
+    #[test]
+    fn test_packed_3bit_random_access() {
+        let mut seed = 0x1234_5678_9ABC_DEF0u64;
+        let mut indices = Vec::with_capacity(257);
+        for _ in 0..257 {
+            seed = seed.wrapping_mul(6364136223846793005).wrapping_add(1);
+            indices.push(((seed >> 61) & 0x7) as u8);
+        }
+        let packed = Packed3BitIndices::pack(&indices);
+        for (i, &expected) in indices.iter().enumerate() {
+            assert_eq!(packed.get(i), expected, "i={}", i);
+        }
+    }
+
+    #[test]
     fn test_packed_4bit_roundtrip() {
         let indices: Vec<u8> = (0..128).map(|i| (i % 16) as u8).collect();
         let packed = Packed4BitIndices::pack(&indices);
@@ -255,6 +367,53 @@ mod tests {
         // 256 data + 4*8 scale + 16 mask + 16 norm = 320 / 128 = 2.50
         assert!(eff < 2.6, "Effective bits too high: {}", eff);
         assert!(eff > 2.0, "Effective bits too low: {}", eff);
+    }
+
+    #[test]
+    fn test_bits3_accounting_semantics() {
+        let meta = CompactGroupMeta {
+            scales: vec![Fp8E4M3(0x38); 2],
+            zero_points: vec![],
+            asymmetric_mask: 0,
+            group_size: 32,
+        };
+        let overhead_bits = meta.total_bits() + 16;
+
+        for &d in &[8usize, 9, 10, 15, 16] {
+            let compressed = MultiPrecisionCompressed::Bits3 {
+                indices: Packed3BitIndices::pack(&vec![0u8; d]),
+                meta: meta.clone(),
+                norm_bits: 0,
+            };
+            let logical_coding = d * 3;
+            let allocated_coding = logical_coding.div_ceil(8) * 8;
+
+            assert_eq!(compressed.logical_coding_bits(), logical_coding, "d={}", d);
+            assert_eq!(
+                compressed.allocated_coding_bits(),
+                allocated_coding,
+                "d={}",
+                d
+            );
+            assert_eq!(
+                compressed.logical_total_bits(),
+                logical_coding + overhead_bits,
+                "d={}",
+                d
+            );
+            assert_eq!(
+                compressed.allocated_total_bits(),
+                allocated_coding + overhead_bits,
+                "d={}",
+                d
+            );
+            assert_eq!(
+                compressed.total_bits(),
+                compressed.allocated_total_bits(),
+                "d={}",
+                d
+            );
+        }
     }
 
     #[test]

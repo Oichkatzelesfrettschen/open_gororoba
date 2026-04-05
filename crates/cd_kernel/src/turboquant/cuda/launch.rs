@@ -72,9 +72,19 @@ impl TurboQuantCudaKernels {
 
     fn launch_config_1d(n: u32) -> LaunchConfig {
         let block = 256u32;
-        let grid = (n + block - 1) / block;
+        let grid = n.div_ceil(block);
         LaunchConfig {
             grid_dim: (grid, 1, 1),
+            block_dim: (block, 1, 1),
+            shared_mem_bytes: 0,
+        }
+    }
+
+    fn launch_config_2d(n_x: u32, n_y: u32) -> LaunchConfig {
+        let block = 256u32;
+        let grid_x = n_x.div_ceil(block);
+        LaunchConfig {
+            grid_dim: (grid_x, n_y, 1),
             block_dim: (block, 1, 1),
             shared_mem_bytes: 0,
         }
@@ -88,7 +98,7 @@ impl TurboQuantCudaKernels {
         let n_boundaries = boundaries.len() as i32;
         let n_i32 = n as i32;
 
-        let mut d_values: CudaSlice<f32> = self
+        let d_values: CudaSlice<f32> = self
             .stream
             .memcpy_stod(values)
             .map_err(|e| format!("memcpy values: {}", e))?;
@@ -105,7 +115,7 @@ impl TurboQuantCudaKernels {
 
         let mut b = self.stream.launch_builder(&self.quantize_fn);
         b.arg(&d_boundaries)
-            .arg(&mut d_values)
+            .arg(&d_values)
             .arg(&mut d_indices)
             .arg(&n_boundaries)
             .arg(&n_i32);
@@ -123,18 +133,41 @@ impl TurboQuantCudaKernels {
     /// Returns attention scores for each key.
     pub fn dequant_dot_batch(
         &self,
-        query: &[f32],
+        queries: &[f32],
         key_indices: &[u8],
         centroids: &[f32],
-        n_keys: usize,
+        key_norms: &[f32],
         d: usize,
     ) -> Result<Vec<f32>, String> {
-        let d_i32 = d as i32;
-        let n_keys_i32 = n_keys as i32;
+        if d == 0 {
+            return Err("d must be > 0".to_string());
+        }
+        if !queries.len().is_multiple_of(d) {
+            return Err(format!(
+                "queries length mismatch: got {}, expected multiple of d={}",
+                queries.len(),
+                d
+            ));
+        }
+        let n_queries = queries.len() / d;
+        let n_keys = key_norms.len();
+        let validated = super::super::dequant_contract::validate_dequant_dot_contract(
+            queries.len(),
+            key_indices.len(),
+            centroids.len(),
+            key_norms.len(),
+            n_queries,
+            n_keys,
+            d,
+        )?;
+        if validated.expected_scores == 0 {
+            return Ok(vec![]);
+        }
+        let dims = validated.kernel_dims_i32()?;
 
         let d_query: CudaSlice<f32> = self
             .stream
-            .memcpy_stod(query)
+            .memcpy_stod(queries)
             .map_err(|e| format!("memcpy query: {}", e))?;
         let d_key_indices: CudaSlice<u8> = self
             .stream
@@ -144,23 +177,30 @@ impl TurboQuantCudaKernels {
             .stream
             .memcpy_stod(centroids)
             .map_err(|e| format!("memcpy centroids: {}", e))?;
+        let d_key_norms: CudaSlice<f32> = self
+            .stream
+            .memcpy_stod(key_norms)
+            .map_err(|e| format!("memcpy key_norms: {}", e))?;
         let mut d_scores: CudaSlice<f32> = self
             .stream
-            .alloc_zeros(n_keys)
+            .alloc_zeros(validated.expected_scores)
             .map_err(|e| format!("alloc scores: {}", e))?;
 
-        let config = Self::launch_config_1d(n_keys as u32);
+        let config = Self::launch_config_2d(dims.n_keys as u32, dims.n_queries as u32);
 
         let mut b = self.stream.launch_builder(&self.dequant_dot_fn);
         b.arg(&d_query)
             .arg(&d_key_indices)
             .arg(&d_centroids)
+            .arg(&d_key_norms)
             .arg(&mut d_scores)
-            .arg(&d_i32)
-            .arg(&n_keys_i32);
+            .arg(&dims.d)
+            .arg(&dims.n_queries)
+            .arg(&dims.n_keys)
+            .arg(&dims.n_levels);
         unsafe { b.launch(config) }.map_err(|e| format!("dequant_dot launch: {}", e))?;
 
-        let mut host_scores = vec![0.0f32; n_keys];
+        let mut host_scores = vec![0.0f32; validated.expected_scores];
         self.stream
             .memcpy_dtoh(&d_scores, &mut host_scores)
             .map_err(|e| format!("readback: {}", e))?;

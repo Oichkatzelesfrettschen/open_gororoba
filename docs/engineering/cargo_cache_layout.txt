@@ -9,7 +9,11 @@ into a fully hermetic Cargo setup.
 Current layout
 --------------
 - Final workspace-local artifacts live under `.cache/` inside the repo.
-- Heavy intermediate build state lives under `/srv/fast/tmp/open_gororoba-cargo-build/`.
+- Heavy intermediate build state for Make/scripts lives under
+  `${TMPDIR:-/srv/fast/tmp}/open_gororoba-cargo-build/`.
+- `scripts/bootstrap_user_local_xdg.sh` chooses the first writable build-dir
+  root in this order: `${TMPDIR}` (if set), `/srv/fast/tmp`,
+  `${XDG_CACHE_HOME:-~/.cache}`.
 - Docs still stage final rustdoc output through `target/docs-target/`, which is
   already gitignored and not the main source of ballooning.
 - Gate/docs targets use repo-scoped `CARGO_HOME=.cache/cargo-home`.
@@ -50,5 +54,6 @@ Decision guidance
 - Use `scripts/bootstrap_user_local_xdg.sh` if you want the open_gororoba
   ambient Cargo defaults recreated in `~/.cargo/config.toml`.
 - Do not move docs staging off `target/` until it is actually the bottleneck.
-  The urgent problem was the intermediate build churn, which already moved to
-  `/srv/fast/tmp`.
+  The urgent problem was the intermediate build churn, which already moved out
+  of the repo tree to `${TMPDIR:-/srv/fast/tmp}` by default, with XDG cache
+  fallback in the bootstrap helper when higher-priority roots are unavailable.
