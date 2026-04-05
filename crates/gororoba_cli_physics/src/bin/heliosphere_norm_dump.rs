@@ -75,7 +75,10 @@ fn main() {
             let i = w + s;
             let bmag = (bx[i].powi(2) + by[i].powi(2) + bz[i].powi(2)).sqrt();
             if cli.normalization == "direction" {
-                if bmag < 1e-12 { skip = true; break; }
+                if bmag < 1e-12 {
+                    skip = true;
+                    break;
+                }
                 v[s * channels] = bx[i] / bmag;
                 v[s * channels + 1] = by[i] / bmag;
                 v[s * channels + 2] = bz[i] / bmag;
@@ -87,15 +90,19 @@ fn main() {
                 v[s * channels + 3] = (bmag - mean_b) / mean_b;
             }
         }
-        if skip { continue; }
+        if skip {
+            continue;
+        }
         embedded.push(v);
         embed_keys.push(keys[w + steps - 1]);
     }
 
-    eprintln!("Embedded {} vectors, computing associator...", embedded.len());
+    eprintln!(
+        "Embedded {} vectors, computing associator...",
+        embedded.len()
+    );
 
-    let norms =
-        cd_kernel::batch_sliding_associator_norms_parallel(&embedded, cli.embedding_dim);
+    let norms = cd_kernel::batch_sliding_associator_norms_parallel(&embedded, cli.embedding_dim);
 
     eprintln!("Dumping {} norms", norms.len());
     println!("doy,hour,minute,associator_norm");

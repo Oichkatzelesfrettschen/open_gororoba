@@ -159,9 +159,14 @@ fn main() -> Result<()> {
 
     println!(
         "  Codebook: {} centroids ({}-bit), {} boundaries",
-        n_levels, cli.bits, boundaries.len()
+        n_levels,
+        cli.bits,
+        boundaries.len()
     );
-    println!("  Quantizing {} values ({} vectors x {} dim)", total_values, cli.n_vectors, cli.dim);
+    println!(
+        "  Quantizing {} values ({} vectors x {} dim)",
+        total_values, cli.n_vectors, cli.dim
+    );
 
     // Generate random rotated values (mimic post-rotation distribution)
     let sigma = 1.0 / (cli.dim as f32).sqrt();

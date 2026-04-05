@@ -16,8 +16,8 @@ use data_core::{
 };
 use serde::{Deserialize, Serialize};
 use spectral_core::boundary_detectors::{
-    bmag_gradient_crossings, magnetic_shear_crossings, pvi_crossings,
-    spectral_entropy_crossings, wavelet_variance_crossings,
+    bmag_gradient_crossings, magnetic_shear_crossings, pvi_crossings, spectral_entropy_crossings,
+    wavelet_variance_crossings,
 };
 use std::{fs, path::PathBuf};
 
@@ -40,7 +40,10 @@ struct Cli {
     probe: String,
 
     /// Curated crossing list file.
-    #[arg(long, default_value = "data/external/crossing_lists/themis_mp_crossings_v2.txt")]
+    #[arg(
+        long,
+        default_value = "data/external/crossing_lists/themis_mp_crossings_v2.txt"
+    )]
     crossing_list: PathBuf,
 
     #[arg(long, default_value_t = 32)]
@@ -148,11 +151,9 @@ fn main() -> Result<()> {
         let week_end = current + Duration::days(6);
         let week_num = current.iso_week().week();
 
-        let out_file = cli.out_dir.join(format!(
-            "week_{:04}_{:02}.json",
-            current.year(),
-            week_num
-        ));
+        let out_file = cli
+            .out_dir
+            .join(format!("week_{:04}_{:02}.json", current.year(), week_num));
 
         // Skip if already computed (restartable) unless --force-recompute
         if !cli.force_recompute
@@ -168,12 +169,7 @@ fn main() -> Result<()> {
         }
 
         // Parse curated crossings for this week
-        let events = parse_crossing_list(
-            &crossing_content,
-            Some(&cli.probe),
-            &current,
-            &week_end,
-        );
+        let events = parse_crossing_list(&crossing_content, Some(&cli.probe), &current, &week_end);
 
         if events.is_empty() {
             // No curated crossings this week -- skip
@@ -191,12 +187,16 @@ fn main() -> Result<()> {
 
         for offset in 0..7 {
             let date = current + Duration::days(offset);
-            if date > final_date { break; }
+            if date > final_date {
+                break;
+            }
 
             let doy = date.ordinal();
             let fname = format!(
                 "{}_fgm_{:04}_{:03}.csv",
-                probe_upper.to_lowercase(), date.year(), doy
+                probe_upper.to_lowercase(),
+                date.year(),
+                doy
             );
             let dir = cli.data_dir.join("themis");
             fs::create_dir_all(&dir)?;
@@ -246,7 +246,9 @@ fn main() -> Result<()> {
                 .map(|s| (bx[w + s].powi(2) + by[w + s].powi(2) + bz[w + s].powi(2)).sqrt())
                 .sum();
             let mean_b = sum_b / steps as f64;
-            if mean_b <= 0.01 || !mean_b.is_finite() { continue; }
+            if mean_b <= 0.01 || !mean_b.is_finite() {
+                continue;
+            }
 
             let mut v = vec![0.0; cli.embedding_dim];
             for s in 0..steps {
@@ -266,14 +268,16 @@ fn main() -> Result<()> {
             continue;
         }
 
-        let assoc_norms = cd_kernel::batch_sliding_associator_norms_parallel(
-            &embedded, cli.embedding_dim,
-        );
+        let assoc_norms =
+            cd_kernel::batch_sliding_associator_norms_parallel(&embedded, cli.embedding_dim);
         let assoc_idx: Vec<usize> = (0..assoc_norms.len()).map(|k| embed_meta[k + 2]).collect();
 
         let global_mean = assoc_norms.iter().sum::<f64>() / assoc_norms.len() as f64;
         let global_std = {
-            let var = assoc_norms.iter().map(|&a| (a - global_mean).powi(2)).sum::<f64>()
+            let var = assoc_norms
+                .iter()
+                .map(|&a| (a - global_mean).powi(2))
+                .sum::<f64>()
                 / assoc_norms.len() as f64;
             var.sqrt()
         };
@@ -286,9 +290,13 @@ fn main() -> Result<()> {
             for i in tw..assoc_norms.len().saturating_sub(tw) {
                 let pre: f64 = assoc_norms[i.saturating_sub(tw)..i].iter().sum::<f64>() / tw as f64;
                 let post: f64 = assoc_norms[i..(i + tw).min(assoc_norms.len())]
-                    .iter().sum::<f64>() / tw.min(assoc_norms.len() - i) as f64;
+                    .iter()
+                    .sum::<f64>()
+                    / tw.min(assoc_norms.len() - i) as f64;
                 if (post - pre).abs() > threshold {
-                    if last.is_some_and(|prev| i.saturating_sub(prev) < tw) { continue; }
+                    if last.is_some_and(|prev| i.saturating_sub(prev) < tw) {
+                        continue;
+                    }
                     let idx = assoc_idx[i];
                     if idx < elapsed.len() {
                         cd_trans_hours.push(elapsed[idx]);
@@ -320,49 +328,86 @@ fn main() -> Result<()> {
 
         // --- Match against curated ---
         let (cd_m, cd_off) = match_crossings(&curated_hours, &cd_trans_hours, tol_hours);
-        let cd_rev = cd_trans_hours.iter()
+        let cd_rev = cd_trans_hours
+            .iter()
             .filter(|&&th| curated_hours.iter().any(|&ch| (ch - th).abs() < tol_hours))
             .count();
 
         let (pvi_m, _) = match_crossings(&curated_hours, &pvi_hours, tol_hours);
-        let pvi_rev = pvi_hours.iter()
+        let pvi_rev = pvi_hours
+            .iter()
             .filter(|&&th| curated_hours.iter().any(|&ch| (ch - th).abs() < tol_hours))
             .count();
 
         let (bmag_m, _) = match_crossings(&curated_hours, &bmag_hours, tol_hours);
-        let bmag_rev = bmag_hours.iter()
+        let bmag_rev = bmag_hours
+            .iter()
             .filter(|&&th| curated_hours.iter().any(|&ch| (ch - th).abs() < tol_hours))
             .count();
 
         let nc = curated_hours.len();
         let cd_det = cd_m as f64 / nc as f64;
-        let cd_fa = if cd_trans_hours.is_empty() { 0.0 }
-            else { (cd_trans_hours.len() - cd_rev) as f64 / cd_trans_hours.len() as f64 };
+        let cd_fa = if cd_trans_hours.is_empty() {
+            0.0
+        } else {
+            (cd_trans_hours.len() - cd_rev) as f64 / cd_trans_hours.len() as f64
+        };
         let cd_extra = cd_trans_hours.len().saturating_sub(cd_rev);
-        let cd_med = if cd_off.is_empty() { 0.0 } else { cd_off[cd_off.len() / 2] };
+        let cd_med = if cd_off.is_empty() {
+            0.0
+        } else {
+            cd_off[cd_off.len() / 2]
+        };
 
         let pvi_det = pvi_m as f64 / nc as f64;
-        let pvi_fa = if pvi_hours.is_empty() { 0.0 }
-            else { (pvi_hours.len() - pvi_rev) as f64 / pvi_hours.len() as f64 };
+        let pvi_fa = if pvi_hours.is_empty() {
+            0.0
+        } else {
+            (pvi_hours.len() - pvi_rev) as f64 / pvi_hours.len() as f64
+        };
 
         let bmag_det = bmag_m as f64 / nc as f64;
-        let bmag_fa = if bmag_hours.is_empty() { 0.0 }
-            else { (bmag_hours.len() - bmag_rev) as f64 / bmag_hours.len() as f64 };
+        let bmag_fa = if bmag_hours.is_empty() {
+            0.0
+        } else {
+            (bmag_hours.len() - bmag_rev) as f64 / bmag_hours.len() as f64
+        };
 
         let (shear_m, _) = match_crossings(&curated_hours, &shear_hours, tol_hours);
-        let shear_rev = shear_hours.iter().filter(|&&th| curated_hours.iter().any(|&ch| (ch - th).abs() < tol_hours)).count();
+        let shear_rev = shear_hours
+            .iter()
+            .filter(|&&th| curated_hours.iter().any(|&ch| (ch - th).abs() < tol_hours))
+            .count();
         let shear_det = shear_m as f64 / nc as f64;
-        let shear_fa = if shear_hours.is_empty() { 0.0 } else { (shear_hours.len() - shear_rev) as f64 / shear_hours.len() as f64 };
+        let shear_fa = if shear_hours.is_empty() {
+            0.0
+        } else {
+            (shear_hours.len() - shear_rev) as f64 / shear_hours.len() as f64
+        };
 
         let (wav_m, _) = match_crossings(&curated_hours, &wavelet_hours, tol_hours);
-        let wav_rev = wavelet_hours.iter().filter(|&&th| curated_hours.iter().any(|&ch| (ch - th).abs() < tol_hours)).count();
+        let wav_rev = wavelet_hours
+            .iter()
+            .filter(|&&th| curated_hours.iter().any(|&ch| (ch - th).abs() < tol_hours))
+            .count();
         let wav_det = wav_m as f64 / nc as f64;
-        let wav_fa = if wavelet_hours.is_empty() { 0.0 } else { (wavelet_hours.len() - wav_rev) as f64 / wavelet_hours.len() as f64 };
+        let wav_fa = if wavelet_hours.is_empty() {
+            0.0
+        } else {
+            (wavelet_hours.len() - wav_rev) as f64 / wavelet_hours.len() as f64
+        };
 
         let (ent_m, _) = match_crossings(&curated_hours, &entropy_hours, tol_hours);
-        let ent_rev = entropy_hours.iter().filter(|&&th| curated_hours.iter().any(|&ch| (ch - th).abs() < tol_hours)).count();
+        let ent_rev = entropy_hours
+            .iter()
+            .filter(|&&th| curated_hours.iter().any(|&ch| (ch - th).abs() < tol_hours))
+            .count();
         let ent_det = ent_m as f64 / nc as f64;
-        let ent_fa = if entropy_hours.is_empty() { 0.0 } else { (entropy_hours.len() - ent_rev) as f64 / entropy_hours.len() as f64 };
+        let ent_fa = if entropy_hours.is_empty() {
+            0.0
+        } else {
+            (entropy_hours.len() - ent_rev) as f64 / entropy_hours.len() as f64
+        };
 
         let wr = WeekResult {
             year: current.year(),
@@ -390,10 +435,15 @@ fn main() -> Result<()> {
 
         println!(
             "  {:04}-W{:02}: {} curated, CD {:.0}%/{:.0}%FA, PVI {:.0}%/{:.0}%FA, |B| {:.0}%/{:.0}%FA, {} extra",
-            current.year(), week_num, nc,
-            cd_det * 100.0, cd_fa * 100.0,
-            pvi_det * 100.0, pvi_fa * 100.0,
-            bmag_det * 100.0, bmag_fa * 100.0,
+            current.year(),
+            week_num,
+            nc,
+            cd_det * 100.0,
+            cd_fa * 100.0,
+            pvi_det * 100.0,
+            pvi_fa * 100.0,
+            bmag_det * 100.0,
+            bmag_fa * 100.0,
             cd_extra,
         );
 
@@ -412,7 +462,11 @@ fn main() -> Result<()> {
     }
 
     // Aggregate summary
-    let agg_cd_det = if total_curated > 0 { total_cd_matched as f64 / total_curated as f64 } else { 0.0 };
+    let agg_cd_det = if total_curated > 0 {
+        total_cd_matched as f64 / total_curated as f64
+    } else {
+        0.0
+    };
     let total_cd_extra: usize = all_weeks.iter().map(|w| w.cd_n_extra).sum();
 
     println!("\n=== SWEEP COMPLETE ===");
@@ -429,19 +483,29 @@ fn main() -> Result<()> {
         aggregate_cd_detection: agg_cd_det,
         aggregate_cd_false_alarm: if total_cd_trans > 0 {
             (total_cd_trans - total_cd_matched) as f64 / total_cd_trans as f64
-        } else { 0.0 },
+        } else {
+            0.0
+        },
         aggregate_pvi_detection: if total_curated > 0 {
             total_pvi_matched as f64 / total_curated as f64
-        } else { 0.0 },
+        } else {
+            0.0
+        },
         aggregate_pvi_false_alarm: if total_pvi_trans > 0 {
             (total_pvi_trans - total_pvi_matched) as f64 / total_pvi_trans as f64
-        } else { 0.0 },
+        } else {
+            0.0
+        },
         aggregate_bmag_detection: if total_curated > 0 {
             total_bmag_matched as f64 / total_curated as f64
-        } else { 0.0 },
+        } else {
+            0.0
+        },
         aggregate_bmag_false_alarm: if total_bmag_trans > 0 {
             (total_bmag_trans - total_bmag_matched) as f64 / total_bmag_trans as f64
-        } else { 0.0 },
+        } else {
+            0.0
+        },
         weeks: all_weeks,
     };
 

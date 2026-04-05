@@ -134,7 +134,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     for &dim in &dimensions {
         println!("===================================================");
-        println!("<EMOJI+1F525> ADM-Warp Analysis for Manifold Dimension: {}", dim);
+        println!(
+            "<EMOJI+1F525> ADM-Warp Analysis for Manifold Dimension: {}",
+            dim
+        );
 
         for &t in &temperatures {
             let phi_t = thermodynamic_phi(dim, t);

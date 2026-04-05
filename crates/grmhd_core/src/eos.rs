@@ -13,18 +13,28 @@ pub struct GammaLaw {
 
 impl GammaLaw {
     pub fn new(gamma: f64) -> Self {
-        assert!(gamma > 1.0 && gamma <= 2.0, "gamma must be in (1, 2], got {}", gamma);
+        assert!(
+            gamma > 1.0 && gamma <= 2.0,
+            "gamma must be in (1, 2], got {}",
+            gamma
+        );
         Self { gamma }
     }
 
     /// Standard non-relativistic monatomic gas.
-    pub fn ideal_mono() -> Self { Self::new(5.0 / 3.0) }
+    pub fn ideal_mono() -> Self {
+        Self::new(5.0 / 3.0)
+    }
 
     /// Ultra-relativistic gas (radiation-dominated).
-    pub fn relativistic() -> Self { Self::new(4.0 / 3.0) }
+    pub fn relativistic() -> Self {
+        Self::new(4.0 / 3.0)
+    }
 
     /// Standard GRMHD choice (Gammie+ 2003 default).
-    pub fn harm_default() -> Self { Self::new(13.0 / 9.0) }
+    pub fn harm_default() -> Self {
+        Self::new(13.0 / 9.0)
+    }
 
     /// Pressure from internal energy density.
     #[inline]
@@ -73,6 +83,11 @@ mod tests {
         let cs2 = eos.cs2(rho, u);
         let p = eos.pressure(u);
         let cs2_nr = eos.gamma * p / rho;
-        assert!((cs2 - cs2_nr).abs() / cs2_nr < 0.02, "Non-relativistic cs2: {} vs {}", cs2, cs2_nr);
+        assert!(
+            (cs2 - cs2_nr).abs() / cs2_nr < 0.02,
+            "Non-relativistic cs2: {} vs {}",
+            cs2,
+            cs2_nr
+        );
     }
 }

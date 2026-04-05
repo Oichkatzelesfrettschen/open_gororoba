@@ -403,7 +403,13 @@ mod tests {
 
     #[test]
     fn artifact_status_roundtrip() {
-        let variants = ["downloaded", "downloadable", "blocked", "citation_only_no_link", "unverified"];
+        let variants = [
+            "downloaded",
+            "downloadable",
+            "blocked",
+            "citation_only_no_link",
+            "unverified",
+        ];
         for s in variants {
             let parsed = ArtifactStatus::parse(s).expect("parse should succeed");
             assert_eq!(parsed.as_str(), s);

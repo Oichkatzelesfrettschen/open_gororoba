@@ -17,9 +17,6 @@ pub fn classify_generator(gen_index: usize) -> GeneratorType {
     }
 }
 
-
-
-
 // ---------------------------------------------------------------------------
 // J_k complex structure -- full 16D sedenion action
 // ---------------------------------------------------------------------------

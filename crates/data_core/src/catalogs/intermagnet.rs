@@ -43,21 +43,29 @@ pub fn parse_iaga2002(content: &str) -> Vec<GeomagRecord> {
             in_data = true;
             continue;
         }
-        if !in_data { continue; }
+        if !in_data {
+            continue;
+        }
 
         let parts: Vec<&str> = line.split_whitespace().collect();
-        if parts.len() < 7 { continue; }
+        if parts.len() < 7 {
+            continue;
+        }
 
         // Format: YYYY-MM-DD HH:MM:SS.SSS DOY X Y Z F
         let date_parts: Vec<&str> = parts[0].split('-').collect();
-        if date_parts.len() != 3 { continue; }
+        if date_parts.len() != 3 {
+            continue;
+        }
 
         let year: u16 = date_parts[0].parse().unwrap_or(0);
         let month: u8 = date_parts[1].parse().unwrap_or(0);
         let day: u8 = date_parts[2].parse().unwrap_or(0);
 
         let time_parts: Vec<&str> = parts[1].split(':').collect();
-        if time_parts.len() < 2 { continue; }
+        if time_parts.len() < 2 {
+            continue;
+        }
         let hour: u8 = time_parts[0].parse().unwrap_or(0);
         let minute: u8 = time_parts[1].parse().unwrap_or(0);
 
@@ -73,9 +81,16 @@ pub fn parse_iaga2002(content: &str) -> Vec<GeomagRecord> {
         }
 
         records.push(GeomagRecord {
-            year, month, day, hour, minute,
+            year,
+            month,
+            day,
+            hour,
+            minute,
             elapsed_hours: 0.0, // computed after sorting
-            x, y, z, f,
+            x,
+            y,
+            z,
+            f,
         });
     }
 

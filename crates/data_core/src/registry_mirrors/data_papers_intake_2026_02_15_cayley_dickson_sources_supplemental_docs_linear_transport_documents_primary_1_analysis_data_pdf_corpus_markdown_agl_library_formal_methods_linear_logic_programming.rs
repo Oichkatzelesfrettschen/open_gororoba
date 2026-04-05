@@ -783,15 +783,15 @@
 //! √
 //! to the√two endpoints u ≈ ± 2k. For example, setting
 //! u = − 2k + √2kw1/6 with w = O(1)
-//! 
-//! 
+//!
+//!
 //! √
 //! w
 //! lim k 1/3 π fkedge − 2k + √
 //! = F(w) (13)
 //! k→∞
 //! 2k 1/6
-//! 
+//!
 //! where F(w) = [Ai0 (−w)]2 + wAi2 (−w) where Ai(z) denotes the Airy function. Interestingly, the same scaling
 //! function describes the tail of the density of eigenvalues
 //! (centered and scaled) in the Gaussian Unitary Ensemble
@@ -936,8 +936,8 @@
 //! --- PAGE BREAK ---
 //! 6
 //! In polar coordinates (r, θ), the Hamiltonian reads,
-//! 
-//! 
+//!
+//!
 //! 1
 //! γ
 //! 1
@@ -968,7 +968,7 @@
 //! "
 //!
 //! #
-//! 
+//!
 //! 2
 //! γ
 //! +
@@ -986,8 +986,8 @@
 //! which gives us,
 //! "
 //! #
-//! 
-//! 
+//!
+//!
 //! 2
 //! 1
 //! 1
@@ -1013,7 +1013,7 @@
 //! −
 //! 2
 //!
-//! 
+//!
 //!
 //! It is then easy to see that G(z) satisfies the differential
 //! equation
@@ -1087,9 +1087,9 @@
 //! √ 2
 //! 2
 //! ψ(r) = e−ωr /2 r γ+l ×
-//! 
+//!
 //! A1 (ω r2 )1−b M (a − b + 1, 2 − b, ω r2 )
-//! 
+//!
 //! + A2 M (a, b, ω r2 ) ,
 //! (A14)
 //! where a and b are given in Eq. A10.
@@ -1665,7 +1665,7 @@
 //! [see Fig. 6],
 //! 
 //! 2
-//! 
+//!
 //! 
 //! 1 M2
 //! 
@@ -1701,7 +1701,7 @@
 //! line c = c2 (M ) obtained by substituting µ = 4 + cM in
 //! Eq. B20 with k ∗ = 1, i.e.,
 //! q
-//! 
+//!
 //! q
 //! √
 //! √
@@ -1997,8 +1997,8 @@
 //! total density is obtained by summing over all the bands
 //! below the Fermi energy and is given by its large N scaling
 //! form,
-//! 
-//! 
+//!
+//!
 //! r
 //! ρ(r, θ, N ) ∼ f √
 //! ,
@@ -2264,7 +2264,7 @@
 //! 2λ− (k)
 //!
 //!  2
-//! 
+//!
 //! r
 //! − λ− (k) .
 //! N
@@ -2332,7 +2332,7 @@
 //! k −1/4 (k!)1/2 ×
 //! π
 //! (1 − X 2 )1/4
-//! 
+//!
 //!  
 //! 1
 //! gk (X) 1 + O
@@ -2344,7 +2344,7 @@
 //!
 //! with
 //!  p
-//! 
+//!
 //! gk (X) = cos kX 1 − X 2 + (k + 1/2) sin−1 X − kπ/2
 //! (E18)
 //!
@@ -2503,7 +2503,7 @@
 //! 
 //! 
 //! 
-//! 
+//!
 //! √
 //! 1 π
 //! edge
@@ -2661,7 +2661,7 @@
 //! 1
 //! [Ai0 (−w)]2
 //! π
-//! 
+//!
 //! + wAi2 (−w)
 //! (E23)
 //!
@@ -2720,8 +2720,8 @@
 //! 2k + √2kw1/6
 //!
 //! with w = O(1)
-//! 
-//! 
+//!
+//!
 //! √
 //! w
 //! 1
@@ -2748,7 +2748,7 @@
 //!
 //! We can rewrite Eq. F6 using Eq. F2 (to leading order in
 //! δ for small δ) as,
-//! 
+//!
 //! r
 //! √
 //! c1
@@ -2874,7 +2874,7 @@
 //! ρ1 (r = z N , θ, N ) ≈ √
 //! π 2πN
 //!
-//! 
+//!
 //!
 //! M
 //! c1
@@ -2899,7 +2899,7 @@
 //! N
 //! 2
 //!
-//! 
+//!
 //!
 //! M
 //! c1
@@ -2974,8 +2974,8 @@
 //! √
 //!
 //! where v1 = M2 (c1 M )1/4 and
-//! 
-//! 
+//!
+//!
 //! Z z
 //! 2
 //! 2
@@ -2998,7 +2998,7 @@
 //! first relation can be obtained by eliminating δ between
 //! Eqs. F3 and F16
 //! √
-//! 
+//!
 //! 1/4
 //! √
 //! M
@@ -3012,8 +3012,8 @@
 //! Similarlyp
 //! the second relation is obtained by substituting
 //!  = z 2 − c1 /M in Eq. F16. This gives
-//! 
-//! 1/4 
+//!
+//! 1/4
 //! M
 //! c1  √
 //! s=

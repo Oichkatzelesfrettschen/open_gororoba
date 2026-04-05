@@ -10,12 +10,12 @@
 mod arith;
 mod associator;
 pub mod cariow_factorization;
+pub mod fast_associator;
 pub mod predicates;
 pub mod sedenion;
 mod signature;
 mod signs;
 pub mod simd;
-pub mod fast_associator;
 pub mod soa_cache;
 mod symmetry;
 pub mod trigintaduonion;
@@ -32,22 +32,30 @@ pub use associator::{
     batch_sliding_associator_norms, batch_sliding_associator_norms_parallel, cd_associator,
     cd_associator_norm, measure_associator_density, octonion_associator_simd,
 };
+pub use fast_associator::{
+    AssociatorWorkspace, batch_fast_associator_norms_f32, fast_associator_norm_f32,
+};
 pub use signature::{
     CdSignature, SplitSignTable, cd_basis_mul_sign_split, cd_basis_mul_sign_split_iter,
     cd_mul_table_split, cd_multiply_split,
 };
 pub use signs::{SignTable, cd_basis_mul_sign, cd_basis_mul_sign_iter};
 pub use simd::{
-    cd_multiply_flat_into, cd_multiply_simd, cd_norm_sq_simd, octonion_multiply_flat,
-    octonion_multiply_scalar_flat, quaternion_multiply_flat, quaternion_multiply_scalar_flat,
-    sedenion_multiply_flat,
     // f32 quantized CD multiply for high-dimensional (256D+) performance
-    batch_sliding_associator_norms_f32, cd_associator_norm_f32, cd_multiply_f32_into,
+    batch_sliding_associator_norms_f32,
+    cd_associator_norm_f32,
     // Zero-alloc fused CD multiply (steinmarder Instant-NGP pattern)
-    cd_multiply_f32_fused, cd_multiply_f32_workspace_size,
-};
-pub use fast_associator::{
-    AssociatorWorkspace, batch_fast_associator_norms_f32, fast_associator_norm_f32,
+    cd_multiply_f32_fused,
+    cd_multiply_f32_into,
+    cd_multiply_f32_workspace_size,
+    cd_multiply_flat_into,
+    cd_multiply_simd,
+    cd_norm_sq_simd,
+    octonion_multiply_flat,
+    octonion_multiply_scalar_flat,
+    quaternion_multiply_flat,
+    quaternion_multiply_scalar_flat,
+    sedenion_multiply_flat,
 };
 pub use symmetry::{cross_generational_friction, gourlay_epsilon, gourlay_psi, gourlay_psi_n};
 pub use zero_divisors::{

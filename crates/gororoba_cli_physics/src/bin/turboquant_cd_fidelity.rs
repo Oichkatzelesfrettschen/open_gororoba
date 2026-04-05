@@ -5,7 +5,7 @@
 //! embeds both in 32D pathion space via Takens delay, computes the CD associator
 //! on each, and reports the fidelity ratio A_post/A_pre.
 
-use anyhow::{bail, Result};
+use anyhow::{Result, bail};
 use clap::Parser;
 use serde::Serialize;
 use std::{fs, path::PathBuf};
@@ -129,7 +129,7 @@ fn main() -> Result<()> {
 
     // Process in blocks of ~100 windows
     let block_size = 100.min(n_windows);
-    let n_blocks = (n_windows + block_size - 1) / block_size;
+    let n_blocks = n_windows.div_ceil(block_size);
 
     let mut results = Vec::new();
     let mut total_a_pre = 0.0;
@@ -193,14 +193,10 @@ fn main() -> Result<()> {
             continue;
         }
 
-        let norms_pre = cd_kernel::batch_sliding_associator_norms_parallel(
-            &embedded_pre,
-            cli.embedding_dim,
-        );
-        let norms_post = cd_kernel::batch_sliding_associator_norms_parallel(
-            &embedded_post,
-            cli.embedding_dim,
-        );
+        let norms_pre =
+            cd_kernel::batch_sliding_associator_norms_parallel(&embedded_pre, cli.embedding_dim);
+        let norms_post =
+            cd_kernel::batch_sliding_associator_norms_parallel(&embedded_post, cli.embedding_dim);
 
         let a_pre = if norms_pre.is_empty() {
             0.0
@@ -213,11 +209,7 @@ fn main() -> Result<()> {
             norms_post.iter().sum::<f64>() / norms_post.len() as f64
         };
 
-        let fidelity = if a_pre > 1e-15 {
-            a_post / a_pre
-        } else {
-            1.0
-        };
+        let fidelity = if a_pre > 1e-15 { a_post / a_pre } else { 1.0 };
 
         let block_cos = cos_sims[block_start..block_end.min(cos_sims.len())]
             .iter()
@@ -249,8 +241,16 @@ fn main() -> Result<()> {
         count += 1;
     }
 
-    let overall_a_pre = if count > 0 { total_a_pre / count as f64 } else { 0.0 };
-    let overall_a_post = if count > 0 { total_a_post / count as f64 } else { 0.0 };
+    let overall_a_pre = if count > 0 {
+        total_a_pre / count as f64
+    } else {
+        0.0
+    };
+    let overall_a_post = if count > 0 {
+        total_a_post / count as f64
+    } else {
+        0.0
+    };
     let overall_fidelity = if overall_a_pre > 1e-15 {
         overall_a_post / overall_a_pre
     } else {
@@ -259,7 +259,13 @@ fn main() -> Result<()> {
 
     let interp = format!(
         "TurboQuant {}D -> {}D CD fidelity: A_pre={:.6}, A_post={:.6}, ratio={:.4}. Cosine sim={:.4}. {} blocks analyzed.",
-        cli.dim, cli.embedding_dim, overall_a_pre, overall_a_post, overall_fidelity, cos_mean, count
+        cli.dim,
+        cli.embedding_dim,
+        overall_a_pre,
+        overall_a_post,
+        overall_fidelity,
+        cos_mean,
+        count
     );
     println!("\n  {}", interp);
 

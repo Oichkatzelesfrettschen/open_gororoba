@@ -10,10 +10,10 @@
 
 #[cfg(test)]
 mod tests {
-    use crate::turboquant::streaming::StreamingKVCache;
-    use crate::turboquant::attention_correction;
-    use crate::turboquant::synthesized::SynthesizedQuantizer;
-    use crate::turboquant::config::TurboQuantConfig;
+    use crate::turboquant::{
+        attention_correction, config::TurboQuantConfig, streaming::StreamingKVCache,
+        synthesized::SynthesizedQuantizer,
+    };
 
     use rand::SeedableRng;
     use rand_chacha::ChaCha20Rng;
@@ -36,8 +36,14 @@ mod tests {
         let mut rng = ChaCha20Rng::seed_from_u64(42);
 
         println!("\n=== Full LLM Simulation ===");
-        println!("  d={}, bits={}, layers={}, heads={}", d, bits, n_layers, n_heads);
-        println!("  prefill={} tokens, decode={} steps", prefill_len, decode_steps);
+        println!(
+            "  d={}, bits={}, layers={}, heads={}",
+            d, bits, n_layers, n_heads
+        );
+        println!(
+            "  prefill={} tokens, decode={} steps",
+            prefill_len, decode_steps
+        );
 
         // Create per-head streaming caches (layers x heads)
         let mut caches: Vec<Vec<StreamingKVCache>> = (0..n_layers)
@@ -96,12 +102,15 @@ mod tests {
         let layer0_keys = caches[0][0].all_importances();
         let layer1_keys = caches[1][0].all_importances();
         // Use importances as proxy for KV vectors (they're f64 scalars)
-        let merged_importances: Vec<f64> = layer0_keys.iter()
+        let merged_importances: Vec<f64> = layer0_keys
+            .iter()
             .zip(layer1_keys.iter())
             .map(|(&a, &b)| (a + b) / 2.0) // simple average for test
             .collect();
-        println!("    Merged {} token importances across layers 0-1",
-            merged_importances.len());
+        println!(
+            "    Merged {} token importances across layers 0-1",
+            merged_importances.len()
+        );
 
         // Phase 4: Attention correction
         println!("  Phase 4: Attention score correction...");
@@ -112,7 +121,10 @@ mod tests {
         // Apply correction to one set of scores
         let mut scores_to_correct = decode_scores[0][0].clone();
         attention_correction::correct_attention_scores(
-            &mut scores_to_correct, query_norm_sq, d, bits,
+            &mut scores_to_correct,
+            query_norm_sq,
+            d,
+            bits,
         );
 
         // Phase 5: Token importance for selective attention
@@ -130,11 +142,20 @@ mod tests {
         let total_fp16 = memory_fp16_per_head * n_layers * n_heads;
 
         println!("    Total tokens: {}", total_tokens);
-        println!("    Memory (compressed): {} bytes ({:.1} KB)",
-            total_memory, total_memory as f64 / 1024.0);
-        println!("    Memory (fp16):       {} bytes ({:.1} KB)",
-            total_fp16, total_fp16 as f64 / 1024.0);
-        println!("    Compression:         {:.1}x", total_fp16 as f64 / total_memory as f64);
+        println!(
+            "    Memory (compressed): {} bytes ({:.1} KB)",
+            total_memory,
+            total_memory as f64 / 1024.0
+        );
+        println!(
+            "    Memory (fp16):       {} bytes ({:.1} KB)",
+            total_fp16,
+            total_fp16 as f64 / 1024.0
+        );
+        println!(
+            "    Compression:         {:.1}x",
+            total_fp16 as f64 / total_memory as f64
+        );
 
         // Verify everything is consistent
         assert!(total_memory < total_fp16);
@@ -163,9 +184,17 @@ mod tests {
         // Count promoted tokens
         let n_promoted = compressed.iter().filter(|c| c.bits == 4).count();
         let promote_frac = n_promoted as f64 / n as f64;
-        println!("Synthesized batch: {}/{} promoted ({:.0}%)", n_promoted, n, promote_frac * 100.0);
-        assert!(promote_frac > 0.15 && promote_frac < 0.35,
-            "Promotion fraction {} outside expected range", promote_frac);
+        println!(
+            "Synthesized batch: {}/{} promoted ({:.0}%)",
+            n_promoted,
+            n,
+            promote_frac * 100.0
+        );
+        assert!(
+            promote_frac > 0.15 && promote_frac < 0.35,
+            "Promotion fraction {} outside expected range",
+            promote_frac
+        );
 
         // Verify MSE quality
         let mut buf = vec![0.0f64; 3 * d];
@@ -173,8 +202,12 @@ mod tests {
         for (i, c) in compressed.iter().enumerate() {
             let mut recon = vec![0.0f64; d];
             sq.dequantize(c, &mut buf, &mut recon);
-            total_mse += vectors[i].iter().zip(recon.iter())
-                .map(|(a, b)| (a - b).powi(2)).sum::<f64>() / d as f64;
+            total_mse += vectors[i]
+                .iter()
+                .zip(recon.iter())
+                .map(|(a, b)| (a - b).powi(2))
+                .sum::<f64>()
+                / d as f64;
         }
         let avg_mse = total_mse / n as f64;
         println!("Average MSE: {:.6}", avg_mse);

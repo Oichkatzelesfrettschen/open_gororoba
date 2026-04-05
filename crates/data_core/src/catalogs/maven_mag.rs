@@ -15,11 +15,7 @@ use crate::{
 };
 use chrono::{DateTime, Datelike, NaiveDate, Timelike, Utc};
 use csv::ReaderBuilder;
-use std::{
-    collections::BTreeMap,
-    fs,
-    path::PathBuf,
-};
+use std::{collections::BTreeMap, fs, path::PathBuf};
 
 const MAVEN_MAG_HAPI_DATASET: &str = "MVN_MAG_L2-SUNSTATE-1SEC";
 
@@ -45,26 +41,41 @@ pub fn parse_maven_mag_hapi_csv_minutes(content: &str) -> Vec<MavenMagMinuteReco
 
     #[derive(Default)]
     struct MinuteAcc {
-        bx: f64, by: f64, bz: f64,
+        bx: f64,
+        by: f64,
+        bz: f64,
         count: usize,
     }
 
     let mut buckets: BTreeMap<(u16, u16, u8, u8), MinuteAcc> = BTreeMap::new();
 
     for record in reader.records().flatten() {
-        let Some(time_str) = record.get(0) else { continue };
-        let Ok(dt) = DateTime::parse_from_rfc3339(time_str) else { continue };
+        let Some(time_str) = record.get(0) else {
+            continue;
+        };
+        let Ok(dt) = DateTime::parse_from_rfc3339(time_str) else {
+            continue;
+        };
         let utc = dt.with_timezone(&Utc);
 
         // OB_B columns: indices 1, 2, 3 (3-vector)
         let bx = parse_hapi_spacephysics_f64_or_nan(record.get(1).unwrap_or(""));
         let by = parse_hapi_spacephysics_f64_or_nan(record.get(2).unwrap_or(""));
         let bz = parse_hapi_spacephysics_f64_or_nan(record.get(3).unwrap_or(""));
-        if !bx.is_finite() || !by.is_finite() || !bz.is_finite() { continue; }
+        if !bx.is_finite() || !by.is_finite() || !bz.is_finite() {
+            continue;
+        }
 
-        let key = (utc.year() as u16, utc.ordinal() as u16, utc.hour() as u8, utc.minute() as u8);
+        let key = (
+            utc.year() as u16,
+            utc.ordinal() as u16,
+            utc.hour() as u8,
+            utc.minute() as u8,
+        );
         let acc = buckets.entry(key).or_default();
-        acc.bx += bx; acc.by += by; acc.bz += bz;
+        acc.bx += bx;
+        acc.by += by;
+        acc.bz += bz;
         acc.count += 1;
     }
 
@@ -74,7 +85,9 @@ pub fn parse_maven_mag_hapi_csv_minutes(content: &str) -> Vec<MavenMagMinuteReco
     keys.into_iter()
         .filter_map(|key| {
             let acc = &buckets[&key];
-            if acc.count == 0 { return None; }
+            if acc.count == 0 {
+                return None;
+            }
             let n = acc.count as f64;
             let (year, doy, hour, minute) = key;
             let bx = acc.bx / n;
@@ -92,8 +105,14 @@ pub fn parse_maven_mag_hapi_csv_minutes(content: &str) -> Vec<MavenMagMinuteReco
             };
 
             Some(MavenMagMinuteRecord {
-                year, doy, hour, minute, elapsed_hours: elapsed,
-                bx_ss: bx, by_ss: by, bz_ss: bz,
+                year,
+                doy,
+                hour,
+                minute,
+                elapsed_hours: elapsed,
+                bx_ss: bx,
+                by_ss: by,
+                bz_ss: bz,
                 b_magnitude: (bx * bx + by * by + bz * bz).sqrt(),
             })
         })
@@ -122,7 +141,9 @@ impl DatasetProvider for MavenMagProvider {
             let fname = format!("maven_mag_{:04}_{:03}.csv", self.year, doy);
             let output = dir.join(&fname);
 
-            if config.skip_existing && output.exists() { continue; }
+            if config.skip_existing && output.exists() {
+                continue;
+            }
 
             let t_min = format!("{}T00:00:00Z", date);
             let t_max = format!("{}T23:59:59Z", date);
@@ -135,8 +156,12 @@ impl DatasetProvider for MavenMagProvider {
                 &t_max,
                 Some(&["Time", "OB_B"]),
             ) {
-                Ok(body) => { fs::write(&output, body)?; }
-                Err(e) => { eprintln!("  Warning: MAVEN DOY {}: {}", doy, e); }
+                Ok(body) => {
+                    fs::write(&output, body)?;
+                }
+                Err(e) => {
+                    eprintln!("  Warning: MAVEN DOY {}: {}", doy, e);
+                }
             }
         }
 

@@ -15,7 +15,9 @@ pub fn cmul(a: C2, b: C2) -> C2 {
 
 /// Conjugate of a complex number.
 #[inline(always)]
-pub fn cconj(a: C2) -> C2 { (a.0, -a.1) }
+pub fn cconj(a: C2) -> C2 {
+    (a.0, -a.1)
+}
 
 /// Eigenvalues + PMNS-relevant quantities for two 3x3 Hermitian matrices.
 ///
@@ -109,9 +111,15 @@ pub fn hermitian_3x3_eig(h: &[[C2; 3]; 3]) -> ([f64; 3], [[C2; 3]; 3]) {
     }
 
     // Sort eigenvalues ascending
-    if evals[0] > evals[1] { evals.swap(0, 1); }
-    if evals[1] > evals[2] { evals.swap(1, 2); }
-    if evals[0] > evals[1] { evals.swap(0, 1); }
+    if evals[0] > evals[1] {
+        evals.swap(0, 1);
+    }
+    if evals[1] > evals[2] {
+        evals.swap(1, 2);
+    }
+    if evals[0] > evals[1] {
+        evals.swap(0, 1);
+    }
 
     // Eigenvectors via (H - lambda*I) null space:
     // For each eigenvalue, find the eigenvector by cross product of two
@@ -128,33 +136,57 @@ pub fn hermitian_3x3_eig(h: &[[C2; 3]; 3]) -> ([f64; 3], [[C2; 3]; 3]) {
         }
         // Cross product of rows 0 and 1: v = row0 x row1
         let v = [
-            (cmul(a[0][1], a[1][2]).0 - cmul(a[0][2], a[1][1]).0,
-             cmul(a[0][1], a[1][2]).1 - cmul(a[0][2], a[1][1]).1),
-            (cmul(a[0][2], a[1][0]).0 - cmul(a[0][0], a[1][2]).0,
-             cmul(a[0][2], a[1][0]).1 - cmul(a[0][0], a[1][2]).1),
-            (cmul(a[0][0], a[1][1]).0 - cmul(a[0][1], a[1][0]).0,
-             cmul(a[0][0], a[1][1]).1 - cmul(a[0][1], a[1][0]).1),
+            (
+                cmul(a[0][1], a[1][2]).0 - cmul(a[0][2], a[1][1]).0,
+                cmul(a[0][1], a[1][2]).1 - cmul(a[0][2], a[1][1]).1,
+            ),
+            (
+                cmul(a[0][2], a[1][0]).0 - cmul(a[0][0], a[1][2]).0,
+                cmul(a[0][2], a[1][0]).1 - cmul(a[0][0], a[1][2]).1,
+            ),
+            (
+                cmul(a[0][0], a[1][1]).0 - cmul(a[0][1], a[1][0]).0,
+                cmul(a[0][0], a[1][1]).1 - cmul(a[0][1], a[1][0]).1,
+            ),
         ];
-        let norm = (v[0].0 * v[0].0 + v[0].1 * v[0].1
-                  + v[1].0 * v[1].0 + v[1].1 * v[1].1
-                  + v[2].0 * v[2].0 + v[2].1 * v[2].1).sqrt();
+        let norm = (v[0].0 * v[0].0
+            + v[0].1 * v[0].1
+            + v[1].0 * v[1].0
+            + v[1].1 * v[1].1
+            + v[2].0 * v[2].0
+            + v[2].1 * v[2].1)
+            .sqrt();
         if norm > 1e-15 {
-            for i in 0..3 { evecs[i][col] = (v[i].0 / norm, v[i].1 / norm); }
+            for i in 0..3 {
+                evecs[i][col] = (v[i].0 / norm, v[i].1 / norm);
+            }
         } else {
             // Try rows 0 and 2
             let v2 = [
-                (cmul(a[0][1], a[2][2]).0 - cmul(a[0][2], a[2][1]).0,
-                 cmul(a[0][1], a[2][2]).1 - cmul(a[0][2], a[2][1]).1),
-                (cmul(a[0][2], a[2][0]).0 - cmul(a[0][0], a[2][2]).0,
-                 cmul(a[0][2], a[2][0]).1 - cmul(a[0][0], a[2][2]).1),
-                (cmul(a[0][0], a[2][1]).0 - cmul(a[0][1], a[2][0]).0,
-                 cmul(a[0][0], a[2][1]).1 - cmul(a[0][1], a[2][0]).1),
+                (
+                    cmul(a[0][1], a[2][2]).0 - cmul(a[0][2], a[2][1]).0,
+                    cmul(a[0][1], a[2][2]).1 - cmul(a[0][2], a[2][1]).1,
+                ),
+                (
+                    cmul(a[0][2], a[2][0]).0 - cmul(a[0][0], a[2][2]).0,
+                    cmul(a[0][2], a[2][0]).1 - cmul(a[0][0], a[2][2]).1,
+                ),
+                (
+                    cmul(a[0][0], a[2][1]).0 - cmul(a[0][1], a[2][0]).0,
+                    cmul(a[0][0], a[2][1]).1 - cmul(a[0][1], a[2][0]).1,
+                ),
             ];
-            let norm2 = (v2[0].0 * v2[0].0 + v2[0].1 * v2[0].1
-                       + v2[1].0 * v2[1].0 + v2[1].1 * v2[1].1
-                       + v2[2].0 * v2[2].0 + v2[2].1 * v2[2].1).sqrt();
+            let norm2 = (v2[0].0 * v2[0].0
+                + v2[0].1 * v2[0].1
+                + v2[1].0 * v2[1].0
+                + v2[1].1 * v2[1].1
+                + v2[2].0 * v2[2].0
+                + v2[2].1 * v2[2].1)
+                .sqrt();
             if norm2 > 1e-15 {
-                for i in 0..3 { evecs[i][col] = (v2[i].0 / norm2, v2[i].1 / norm2); }
+                for i in 0..3 {
+                    evecs[i][col] = (v2[i].0 / norm2, v2[i].1 / norm2);
+                }
             } else {
                 // Triple degeneracy -- use identity column
                 evecs[col][col] = (1.0, 0.0);
@@ -171,11 +203,11 @@ pub fn hermitian_3x3_eig(h: &[[C2; 3]; 3]) -> ([f64; 3], [[C2; 3]; 3]) {
         // phase convention.
         let max_idx = {
             let mut best = 0;
-            let mut best_mag_sq = evecs[0][col].0 * evecs[0][col].0
-                                + evecs[0][col].1 * evecs[0][col].1;
+            let mut best_mag_sq =
+                evecs[0][col].0 * evecs[0][col].0 + evecs[0][col].1 * evecs[0][col].1;
             for idx in 1..3 {
-                let mag_sq = evecs[idx][col].0 * evecs[idx][col].0
-                           + evecs[idx][col].1 * evecs[idx][col].1;
+                let mag_sq =
+                    evecs[idx][col].0 * evecs[idx][col].0 + evecs[idx][col].1 * evecs[idx][col].1;
                 if mag_sq > best_mag_sq {
                     best = idx;
                     best_mag_sq = mag_sq;
@@ -191,8 +223,7 @@ pub fn hermitian_3x3_eig(h: &[[C2; 3]; 3]) -> ([f64; 3], [[C2; 3]; 3]) {
             let sin_t = im / mag;
             for i in 0..3 {
                 let (r, m) = evecs[i][col];
-                evecs[i][col] = (r * cos_t + m * sin_t,
-                                 m * cos_t - r * sin_t);
+                evecs[i][col] = (r * cos_t + m * sin_t, m * cos_t - r * sin_t);
             }
             // Ensure the reference component is strictly nonneg real
             if evecs[max_idx][col].0 < 0.0 {
@@ -227,8 +258,11 @@ pub fn hermitian_3x3_eig_hybrid(h: &[[C2; 3]; 3]) -> ([f64; 3], [[C2; 3]; 3]) {
     let (evals, evecs) = hermitian_3x3_eig(h);
 
     // Check eigenvalue gap relative to matrix Frobenius norm
-    let h_frob_sq: f64 = h.iter().flat_map(|row| row.iter())
-        .map(|&(r, m)| r * r + m * m).sum();
+    let h_frob_sq: f64 = h
+        .iter()
+        .flat_map(|row| row.iter())
+        .map(|&(r, m)| r * r + m * m)
+        .sum();
     let h_norm = h_frob_sq.sqrt();
 
     let min_gap = (evals[1] - evals[0]).abs().min((evals[2] - evals[1]).abs());
@@ -237,15 +271,17 @@ pub fn hermitian_3x3_eig_hybrid(h: &[[C2; 3]; 3]) -> ([f64; 3], [[C2; 3]; 3]) {
         (evals, evecs)
     } else {
         // faer fallback for near-degenerate cases
-        let mut h_faer = faer::Mat::<faer::complex_native::c64>::zeros(3, 3);
+        let mut h_faer = faer::Mat::<faer::c64>::zeros(3, 3);
         for i in 0..3 {
             for j in 0..3 {
-                h_faer.write(i, j, faer::complex_native::c64::new(h[i][j].0, h[i][j].1));
+                h_faer[(i, j)] = faer::c64::new(h[i][j].0, h[i][j].1);
             }
         }
-        let eig = h_faer.selfadjoint_eigendecomposition(faer::Side::Lower);
+        let eig = h_faer.self_adjoint_eigen(faer::Side::Lower).unwrap();
         let mut fe = [0.0_f64; 3];
-        for i in 0..3 { fe[i] = eig.s().column_vector().read(i).re; }
+        for i in 0..3 {
+            fe[i] = eig.S().column_vector()[i].re;
+        }
 
         // Sort and build index map
         let mut idx = [0_usize, 1, 2];
@@ -256,17 +292,19 @@ pub fn hermitian_3x3_eig_hybrid(h: &[[C2; 3]; 3]) -> ([f64; 3], [[C2; 3]; 3]) {
         for col in 0..3 {
             let src = idx[col];
             for row in 0..3 {
-                let c = eig.u().read(row, src);
+                let c = eig.U()[(row, src)];
                 sorted_evecs[row][col] = (c.re, c.im);
             }
             // Apply same phase canonicalization as Cardano path
-            let max_idx = (0..3).max_by(|&a, &b| {
-                let na = sorted_evecs[a][col].0 * sorted_evecs[a][col].0
-                       + sorted_evecs[a][col].1 * sorted_evecs[a][col].1;
-                let nb = sorted_evecs[b][col].0 * sorted_evecs[b][col].0
-                       + sorted_evecs[b][col].1 * sorted_evecs[b][col].1;
-                na.partial_cmp(&nb).unwrap()
-            }).unwrap();
+            let max_idx = (0..3)
+                .max_by(|&a, &b| {
+                    let na = sorted_evecs[a][col].0 * sorted_evecs[a][col].0
+                        + sorted_evecs[a][col].1 * sorted_evecs[a][col].1;
+                    let nb = sorted_evecs[b][col].0 * sorted_evecs[b][col].0
+                        + sorted_evecs[b][col].1 * sorted_evecs[b][col].1;
+                    na.partial_cmp(&nb).unwrap()
+                })
+                .unwrap();
             let (re, im) = sorted_evecs[max_idx][col];
             let mag = (re * re + im * im).sqrt();
             if mag > 1e-15 {
@@ -274,8 +312,7 @@ pub fn hermitian_3x3_eig_hybrid(h: &[[C2; 3]; 3]) -> ([f64; 3], [[C2; 3]; 3]) {
                 let sin_t = im / mag;
                 for i in 0..3 {
                     let (r, m) = sorted_evecs[i][col];
-                    sorted_evecs[i][col] = (r * cos_t + m * sin_t,
-                                            m * cos_t - r * sin_t);
+                    sorted_evecs[i][col] = (r * cos_t + m * sin_t, m * cos_t - r * sin_t);
                 }
                 if sorted_evecs[max_idx][col].0 < 0.0 {
                     for i in 0..3 {
@@ -350,26 +387,29 @@ pub fn pmns_from_hermitian_pair(
     }
 
     // Extract angles
-    let u_e3_abs = (u_perm[0][2].0 * u_perm[0][2].0
-                  + u_perm[0][2].1 * u_perm[0][2].1).sqrt();
+    let u_e3_abs = (u_perm[0][2].0 * u_perm[0][2].0 + u_perm[0][2].1 * u_perm[0][2].1).sqrt();
     let theta_13 = u_e3_abs.min(1.0).asin().to_degrees();
     let cos_13 = theta_13.to_radians().cos();
 
     let theta_12 = if cos_13 > 1e-15 {
-        let u_e2_abs = (u_perm[0][1].0 * u_perm[0][1].0
-                      + u_perm[0][1].1 * u_perm[0][1].1).sqrt();
+        let u_e2_abs = (u_perm[0][1].0 * u_perm[0][1].0 + u_perm[0][1].1 * u_perm[0][1].1).sqrt();
         (u_e2_abs / cos_13).min(1.0).asin().to_degrees()
-    } else { 0.0 };
+    } else {
+        0.0
+    };
 
     let theta_23 = if cos_13 > 1e-15 {
-        let u_mu3_abs = (u_perm[1][2].0 * u_perm[1][2].0
-                       + u_perm[1][2].1 * u_perm[1][2].1).sqrt();
+        let u_mu3_abs = (u_perm[1][2].0 * u_perm[1][2].0 + u_perm[1][2].1 * u_perm[1][2].1).sqrt();
         (u_mu3_abs / cos_13).min(1.0).asin().to_degrees()
-    } else { 0.0 };
+    } else {
+        0.0
+    };
 
     // Jarlskog: J = Im(U_e1 * U_mu2 * conj(U_e2) * conj(U_mu1))
-    let prod = cmul(cmul(u_perm[0][0], u_perm[1][1]),
-                    cmul(cconj(u_perm[0][1]), cconj(u_perm[1][0])));
+    let prod = cmul(
+        cmul(u_perm[0][0], u_perm[1][1]),
+        cmul(cconj(u_perm[0][1]), cconj(u_perm[1][0])),
+    );
     let j_cp = prod.1;
 
     // delta_CP = arg(-U_e3)
@@ -381,14 +421,20 @@ pub fn pmns_from_hermitian_pair(
         let mut m = [[0.0_f64; 3]; 3];
         for i in 0..3 {
             for j in 0..3 {
-                m[i][j] = (u_perm[i][j].0 * u_perm[i][j].0
-                         + u_perm[i][j].1 * u_perm[i][j].1).sqrt();
+                m[i][j] =
+                    (u_perm[i][j].0 * u_perm[i][j].0 + u_perm[i][j].1 * u_perm[i][j].1).sqrt();
             }
         }
         m
     };
     let delta_cp_invariant = extract_delta_cp_invariant(&u_moduli, j_cp);
 
-    (theta_12, theta_13, theta_23, j_cp, delta_cp, delta_cp_invariant)
+    (
+        theta_12,
+        theta_13,
+        theta_23,
+        j_cp,
+        delta_cp,
+        delta_cp_invariant,
+    )
 }
-

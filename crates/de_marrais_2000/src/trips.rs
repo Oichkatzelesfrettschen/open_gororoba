@@ -61,26 +61,40 @@ pub const O_TRIPS: [AssocTriple; 7] = [
 /// Mirrors: DeMarraisAssessors.v s_trips.
 pub const S_TRIPS: [AssocTriple; 28] = [
     // Low index 1
-    AssocTriple::new(1,  8,  9), AssocTriple::new(1, 11, 10),
-    AssocTriple::new(1, 13, 12), AssocTriple::new(1, 14, 15),
+    AssocTriple::new(1, 8, 9),
+    AssocTriple::new(1, 11, 10),
+    AssocTriple::new(1, 13, 12),
+    AssocTriple::new(1, 14, 15),
     // Low index 2
-    AssocTriple::new(2,  8, 10), AssocTriple::new(2,  9, 11),
-    AssocTriple::new(2, 14, 12), AssocTriple::new(2, 15, 13),
+    AssocTriple::new(2, 8, 10),
+    AssocTriple::new(2, 9, 11),
+    AssocTriple::new(2, 14, 12),
+    AssocTriple::new(2, 15, 13),
     // Low index 3
-    AssocTriple::new(3,  8, 11), AssocTriple::new(3, 10,  9),
-    AssocTriple::new(3, 15, 12), AssocTriple::new(3, 13, 14),
+    AssocTriple::new(3, 8, 11),
+    AssocTriple::new(3, 10, 9),
+    AssocTriple::new(3, 15, 12),
+    AssocTriple::new(3, 13, 14),
     // Low index 4
-    AssocTriple::new(4,  8, 12), AssocTriple::new(4,  9, 13),
-    AssocTriple::new(4, 10, 14), AssocTriple::new(4, 11, 15),
+    AssocTriple::new(4, 8, 12),
+    AssocTriple::new(4, 9, 13),
+    AssocTriple::new(4, 10, 14),
+    AssocTriple::new(4, 11, 15),
     // Low index 5
-    AssocTriple::new(5,  8, 13), AssocTriple::new(5, 12,  9),
-    AssocTriple::new(5, 10, 15), AssocTriple::new(5, 14, 11),
+    AssocTriple::new(5, 8, 13),
+    AssocTriple::new(5, 12, 9),
+    AssocTriple::new(5, 10, 15),
+    AssocTriple::new(5, 14, 11),
     // Low index 6
-    AssocTriple::new(6,  8, 14), AssocTriple::new(6, 15,  9),
-    AssocTriple::new(6, 12, 10), AssocTriple::new(6, 11, 13),
+    AssocTriple::new(6, 8, 14),
+    AssocTriple::new(6, 15, 9),
+    AssocTriple::new(6, 12, 10),
+    AssocTriple::new(6, 11, 13),
     // Low index 7
-    AssocTriple::new(7,  8, 15), AssocTriple::new(7,  9, 14),
-    AssocTriple::new(7, 13, 10), AssocTriple::new(7, 12, 11),
+    AssocTriple::new(7, 8, 15),
+    AssocTriple::new(7, 9, 14),
+    AssocTriple::new(7, 13, 10),
+    AssocTriple::new(7, 12, 11),
 ];
 
 /// Total associative triples in sedenion space: 7 + 28 = 35.
@@ -111,7 +125,9 @@ mod tests {
             assert!(
                 t.is_xor_consistent(),
                 "O-trip ({},{},{}) fails XOR rule",
-                t.a, t.b, t.c
+                t.a,
+                t.b,
+                t.c
             );
         }
     }
@@ -122,7 +138,9 @@ mod tests {
             assert!(
                 t.is_xor_consistent(),
                 "S-trip ({},{},{}) fails XOR rule",
-                t.a, t.b, t.c
+                t.a,
+                t.b,
+                t.c
             );
         }
     }
@@ -140,10 +158,24 @@ mod tests {
     fn s_trips_boundary_condition() {
         // Each S-trip has exactly one index in 1..7 and two in 8..15
         for t in &S_TRIPS {
-            let low_count = [t.a, t.b, t.c].iter().filter(|&&x| (1..=7).contains(&x)).count();
-            let high_count = [t.a, t.b, t.c].iter().filter(|&&x| (8..=15).contains(&x)).count();
-            assert_eq!(low_count, 1, "S-trip ({},{},{}) should have 1 low index", t.a, t.b, t.c);
-            assert_eq!(high_count, 2, "S-trip ({},{},{}) should have 2 high indices", t.a, t.b, t.c);
+            let low_count = [t.a, t.b, t.c]
+                .iter()
+                .filter(|&&x| (1..=7).contains(&x))
+                .count();
+            let high_count = [t.a, t.b, t.c]
+                .iter()
+                .filter(|&&x| (8..=15).contains(&x))
+                .count();
+            assert_eq!(
+                low_count, 1,
+                "S-trip ({},{},{}) should have 1 low index",
+                t.a, t.b, t.c
+            );
+            assert_eq!(
+                high_count, 2,
+                "S-trip ({},{},{}) should have 2 high indices",
+                t.a, t.b, t.c
+            );
         }
     }
 }

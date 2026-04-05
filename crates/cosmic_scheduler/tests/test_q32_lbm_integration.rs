@@ -46,9 +46,9 @@ impl TwoPhaseSystem for Q32LbmSystem {
         let n = self.domain.n_cells() as f64;
         let drift = ((mass - n) / n).abs();
         if drift > 1e-6 {
-            Err(cosmic_scheduler::ScheduleError::StateInvalid(
-                format!("Mass drift {drift:.2e} exceeds tolerance"),
-            ))
+            Err(cosmic_scheduler::ScheduleError::StateInvalid(format!(
+                "Mass drift {drift:.2e} exceeds tolerance"
+            )))
         } else {
             Ok(())
         }
@@ -79,7 +79,10 @@ fn test_q32_lbm_cosmic_scheduler_50_cycles() {
 
     assert_eq!(system.collision_count, 50, "should have 50 collisions");
     assert_eq!(system.streaming_count, 50, "should have 50 streamings");
-    assert!(drift < 1e-6, "Q32.32 should have near-zero mass drift, got {drift}");
+    assert!(
+        drift < 1e-6,
+        "Q32.32 should have near-zero mass drift, got {drift}"
+    );
 }
 
 #[test]
@@ -89,5 +92,7 @@ fn test_q32_lbm_validate_state() {
 
     // Run 10 cycles then validate
     scheduler.execute_cycles(&mut system, 10).unwrap();
-    system.validate_state().expect("state should be valid after 10 cycles");
+    system
+        .validate_state()
+        .expect("state should be valid after 10 cycles");
 }

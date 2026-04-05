@@ -128,7 +128,10 @@ pub fn count_active_bricks_popcnt(bitset: &[u64], total_bricks: u64) -> Occupanc
         active += (bitset[full_words] & mask).count_ones() as u64;
     }
 
-    OccupancyBitsetStats { total_bricks, active_bricks: active }
+    OccupancyBitsetStats {
+        total_bricks,
+        active_bricks: active,
+    }
 }
 
 /// Count active bricks from a byte-packed bitset (8 bricks per byte).
@@ -143,8 +146,14 @@ pub fn count_active_bricks_bytes(bitset: &[u8], total_bricks: u64) -> OccupancyB
 
     for i in 0..chunks {
         let word = u64::from_le_bytes([
-            bitset[i * 8], bitset[i * 8 + 1], bitset[i * 8 + 2], bitset[i * 8 + 3],
-            bitset[i * 8 + 4], bitset[i * 8 + 5], bitset[i * 8 + 6], bitset[i * 8 + 7],
+            bitset[i * 8],
+            bitset[i * 8 + 1],
+            bitset[i * 8 + 2],
+            bitset[i * 8 + 3],
+            bitset[i * 8 + 4],
+            bitset[i * 8 + 5],
+            bitset[i * 8 + 6],
+            bitset[i * 8 + 7],
         ]);
         active += word.count_ones() as u64;
     }
@@ -170,7 +179,10 @@ pub fn count_active_bricks_bytes(bitset: &[u8], total_bricks: u64) -> OccupancyB
         }
     }
 
-    OccupancyBitsetStats { total_bricks, active_bricks: active }
+    OccupancyBitsetStats {
+        total_bricks,
+        active_bricks: active,
+    }
 }
 
 /// Shape of an indirect table that maps logical bricks to active storage.

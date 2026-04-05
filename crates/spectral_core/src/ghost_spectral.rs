@@ -880,8 +880,8 @@ pub fn is_monotonically_sorted(signal: &[f64]) -> bool {
 
 /// Random index in [0, n) using a pre-seeded RNG.
 fn rand_index(rng: &mut StdRng, n: usize) -> usize {
-    use rand::Rng;
-    rng.gen_range(0..n)
+    use rand::RngExt;
+    rng.random_range(0..n)
 }
 
 /// Standard normal CDF via statrs for accuracy.

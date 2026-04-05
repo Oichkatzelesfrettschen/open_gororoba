@@ -9,7 +9,7 @@
 //! - High imbalance = excited/unstable region
 //! - APT evolution explores algebraic phase space via imbalance gradient
 
-use rand::SeedableRng;
+use rand::{RngExt, SeedableRng};
 use rand_chacha::ChaCha8Rng;
 use std::f64::consts::PI;
 
@@ -57,8 +57,6 @@ impl AptSedenionField {
     /// 3. Accept/reject based on Metropolis-Hastings rule
     /// 4. Cool temperature exponentially
     pub fn evolve(&mut self, n_iterations: usize) {
-        use rand::Rng;
-
         for iter in 0..n_iterations {
             let temp = INITIAL_TEMP * (-0.01 * (iter as f64)).exp(); // Exponential cooling
 
@@ -66,7 +64,7 @@ impl AptSedenionField {
                 let current_imbalance = self.imbalance_cache[cell_idx];
 
                 // Candidate: random basis transformation
-                let candidate_basis = self.rng.r#gen::<usize>() % 16;
+                let candidate_basis = (self.rng.random::<u32>() as usize) % 16;
                 let candidate_imbalance = self.compute_imbalance(candidate_basis);
 
                 // Metropolis-Hastings acceptance criterion
@@ -75,7 +73,7 @@ impl AptSedenionField {
                     true // Always accept downhill moves toward attractor
                 } else {
                     let prob = (-delta_f / temp.max(0.01)).exp(); // Avoid division by zero
-                    self.rng.r#gen::<f64>() < prob
+                    self.rng.random::<f64>() < prob
                 };
 
                 if accept {

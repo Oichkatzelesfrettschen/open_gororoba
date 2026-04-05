@@ -38,7 +38,10 @@ struct Cli {
     crossing_probe: Option<String>,
     #[arg(long, default_value_t = 20)]
     match_tolerance_minutes: usize,
-    #[arg(long, default_value = "data/output/heliosphere/ablations/baseline_comparison.json")]
+    #[arg(
+        long,
+        default_value = "data/output/heliosphere/ablations/baseline_comparison.json"
+    )]
     out_json: PathBuf,
     #[arg(long, default_value = "data/external")]
     data_dir: PathBuf,
@@ -107,12 +110,7 @@ fn main() -> Result<()> {
 
     // Load curated crossings
     let content = fs::read_to_string(&cli.crossing_list)?;
-    let events = parse_crossing_list(
-        &content,
-        cli.crossing_probe.as_deref(),
-        &start,
-        &end,
-    );
+    let events = parse_crossing_list(&content, cli.crossing_probe.as_deref(), &start, &end);
     let curated_hours: Vec<f64> = events.iter().map(|e| e.elapsed_hours).collect();
     println!("  Curated crossings: {}", curated_hours.len());
 
@@ -126,32 +124,59 @@ fn main() -> Result<()> {
     // --- Detector 1: |B| gradient ---
     println!("\n[1/4] |B| gradient (10 nT, 10 min window)...");
     let bmag_idx = bmag_gradient_crossings(&bx, &by, &bz, 10, 10.0);
-    let bmag_hours: Vec<f64> = bmag_idx.iter().map(|&i| elapsed_hrs[i.min(n - 1)]).collect();
+    let bmag_hours: Vec<f64> = bmag_idx
+        .iter()
+        .map(|&i| elapsed_hrs[i.min(n - 1)])
+        .collect();
     let (bm_matched, bm_offsets) = match_crossings(&curated_hours, &bmag_hours, tol_hours);
-    let bm_rev_matched = bmag_hours.iter()
+    let bm_rev_matched = bmag_hours
+        .iter()
         .filter(|&&th| curated_hours.iter().any(|&ch| (ch - th).abs() < tol_hours))
         .count();
-    detectors.push(make_result("|B| gradient", &curated_hours, &bmag_hours, bm_matched, bm_rev_matched, &bm_offsets));
+    detectors.push(make_result(
+        "|B| gradient",
+        &curated_hours,
+        &bmag_hours,
+        bm_matched,
+        bm_rev_matched,
+        &bm_offsets,
+    ));
 
     // --- Detector 2: PVI ---
     println!("[2/4] PVI (lag=1, threshold=4.0)...");
     let pvi_idx = pvi_crossings(&bx, &by, &bz, 1, 4.0, 10);
     let pvi_hours: Vec<f64> = pvi_idx.iter().map(|&i| elapsed_hrs[i.min(n - 1)]).collect();
     let (pv_matched, pv_offsets) = match_crossings(&curated_hours, &pvi_hours, tol_hours);
-    let pv_rev = pvi_hours.iter()
+    let pv_rev = pvi_hours
+        .iter()
         .filter(|&&th| curated_hours.iter().any(|&ch| (ch - th).abs() < tol_hours))
         .count();
-    detectors.push(make_result("PVI", &curated_hours, &pvi_hours, pv_matched, pv_rev, &pv_offsets));
+    detectors.push(make_result(
+        "PVI",
+        &curated_hours,
+        &pvi_hours,
+        pv_matched,
+        pv_rev,
+        &pv_offsets,
+    ));
 
     // --- Detector 3: Spectral entropy ---
     println!("[3/4] Spectral entropy (window=30, threshold=0.1)...");
     let se_idx = spectral_entropy_crossings(&bx, &by, &bz, 30, 0.1);
     let se_hours: Vec<f64> = se_idx.iter().map(|&i| elapsed_hrs[i.min(n - 1)]).collect();
     let (se_matched, se_offsets) = match_crossings(&curated_hours, &se_hours, tol_hours);
-    let se_rev = se_hours.iter()
+    let se_rev = se_hours
+        .iter()
         .filter(|&&th| curated_hours.iter().any(|&ch| (ch - th).abs() < tol_hours))
         .count();
-    detectors.push(make_result("Spectral entropy", &curated_hours, &se_hours, se_matched, se_rev, &se_offsets));
+    detectors.push(make_result(
+        "Spectral entropy",
+        &curated_hours,
+        &se_hours,
+        se_matched,
+        se_rev,
+        &se_offsets,
+    ));
 
     // --- Detector 4: CD associator ---
     println!("[4/4] 32D CD associator...");
@@ -166,7 +191,9 @@ fn main() -> Result<()> {
             .map(|s| (bx[w + s].powi(2) + by[w + s].powi(2) + bz[w + s].powi(2)).sqrt())
             .sum();
         let mean_b = sum_b / steps as f64;
-        if mean_b <= 0.01 || !mean_b.is_finite() { continue; }
+        if mean_b <= 0.01 || !mean_b.is_finite() {
+            continue;
+        }
 
         let mut v = vec![0.0; cli.embedding_dim];
         for s in 0..steps {
@@ -181,13 +208,17 @@ fn main() -> Result<()> {
         embed_meta.push(w + steps - 1);
     }
 
-    let assoc_norms = cd_kernel::batch_sliding_associator_norms_parallel(&embedded, cli.embedding_dim);
+    let assoc_norms =
+        cd_kernel::batch_sliding_associator_norms_parallel(&embedded, cli.embedding_dim);
     let assoc_indices: Vec<usize> = (0..assoc_norms.len()).map(|k| embed_meta[k + 2]).collect();
 
     // Detect transitions
     let global_mean: f64 = assoc_norms.iter().sum::<f64>() / assoc_norms.len() as f64;
     let global_std: f64 = {
-        let var = assoc_norms.iter().map(|&a| (a - global_mean).powi(2)).sum::<f64>()
+        let var = assoc_norms
+            .iter()
+            .map(|&a| (a - global_mean).powi(2))
+            .sum::<f64>()
             / assoc_norms.len() as f64;
         var.sqrt()
     };
@@ -197,48 +228,88 @@ fn main() -> Result<()> {
     let mut cd_indices: Vec<usize> = Vec::new();
     if assoc_norms.len() > trans_window * 2 {
         for i in trans_window..assoc_norms.len().saturating_sub(trans_window) {
-            let pre: f64 = assoc_norms[i.saturating_sub(trans_window)..i].iter().sum::<f64>()
+            let pre: f64 = assoc_norms[i.saturating_sub(trans_window)..i]
+                .iter()
+                .sum::<f64>()
                 / trans_window as f64;
             let post: f64 = assoc_norms[i..(i + trans_window).min(assoc_norms.len())]
-                .iter().sum::<f64>() / trans_window.min(assoc_norms.len() - i) as f64;
+                .iter()
+                .sum::<f64>()
+                / trans_window.min(assoc_norms.len() - i) as f64;
             if (post - pre).abs() > threshold {
-                let dominated = cd_indices.last()
+                let dominated = cd_indices
+                    .last()
                     .is_some_and(|&prev| i.saturating_sub(prev) < trans_window);
-                if !dominated { cd_indices.push(assoc_indices[i]); }
+                if !dominated {
+                    cd_indices.push(assoc_indices[i]);
+                }
             }
         }
     }
 
-    let cd_hours: Vec<f64> = cd_indices.iter().map(|&i| elapsed_hrs[i.min(n - 1)]).collect();
+    let cd_hours: Vec<f64> = cd_indices
+        .iter()
+        .map(|&i| elapsed_hrs[i.min(n - 1)])
+        .collect();
     let (cd_matched, cd_offsets) = match_crossings(&curated_hours, &cd_hours, tol_hours);
-    let cd_rev = cd_hours.iter()
+    let cd_rev = cd_hours
+        .iter()
         .filter(|&&th| curated_hours.iter().any(|&ch| (ch - th).abs() < tol_hours))
         .count();
-    detectors.push(make_result("CD associator (32D)", &curated_hours, &cd_hours, cd_matched, cd_rev, &cd_offsets));
+    detectors.push(make_result(
+        "CD associator (32D)",
+        &curated_hours,
+        &cd_hours,
+        cd_matched,
+        cd_rev,
+        &cd_offsets,
+    ));
 
     // --- Hybrid union: CD OR PVI ---
     let mut union_hours: Vec<f64> = cd_hours.clone();
     for &ph in &pvi_hours {
-        if !union_hours.iter().any(|&uh| (uh - ph).abs() < tol_hours * 0.5) {
+        if !union_hours
+            .iter()
+            .any(|&uh| (uh - ph).abs() < tol_hours * 0.5)
+        {
             union_hours.push(ph);
         }
     }
     union_hours.sort_by(|a, b| a.partial_cmp(b).unwrap());
     let (union_matched, union_offsets) = match_crossings(&curated_hours, &union_hours, tol_hours);
-    let union_rev = union_hours.iter()
+    let union_rev = union_hours
+        .iter()
         .filter(|&&th| curated_hours.iter().any(|&ch| (ch - th).abs() < tol_hours))
         .count();
-    detectors.push(make_result("CD+PVI UNION", &curated_hours, &union_hours, union_matched, union_rev, &union_offsets));
+    detectors.push(make_result(
+        "CD+PVI UNION",
+        &curated_hours,
+        &union_hours,
+        union_matched,
+        union_rev,
+        &union_offsets,
+    ));
 
     // --- Print results ---
-    println!("\n=== Results against {} curated crossings ===\n", curated_hours.len());
-    println!("{:<25} {:>8} {:>10} {:>8} {:>8} {:>8}",
-        "Detector", "N det", "Detection", "FA", "Mean", "Median");
+    println!(
+        "\n=== Results against {} curated crossings ===\n",
+        curated_hours.len()
+    );
+    println!(
+        "{:<25} {:>8} {:>10} {:>8} {:>8} {:>8}",
+        "Detector", "N det", "Detection", "FA", "Mean", "Median"
+    );
     println!("{}", "-".repeat(70));
     for d in &detectors {
-        println!("{:<25} {:>8} {:>9.1}% {:>7.1}% {:>7.1}m {:>7.1}m",
-            d.name, d.n_detections, d.detection_rate * 100.0,
-            d.false_alarm_rate * 100.0, d.mean_offset_minutes, d.median_offset_minutes);
+        println!(
+            "{:<25} {:>8} {:>9.1}% {:>7.1}% {:>7.1}m {:>7.1}m",
+            d.name,
+            d.n_detections,
+            d.detection_rate * 100.0,
+            d.false_alarm_rate * 100.0,
+            d.mean_offset_minutes,
+            d.median_offset_minutes
+        );
     }
 
     let result = ComparisonResult {
@@ -248,7 +319,9 @@ fn main() -> Result<()> {
         detectors,
     };
 
-    if let Some(parent) = cli.out_json.parent() { fs::create_dir_all(parent)?; }
+    if let Some(parent) = cli.out_json.parent() {
+        fs::create_dir_all(parent)?;
+    }
     fs::write(&cli.out_json, serde_json::to_string_pretty(&result)?)?;
     println!("\nWrote {}", cli.out_json.display());
 
@@ -263,11 +336,26 @@ fn make_result(
     rev_matched: usize,
     offsets: &[f64],
 ) -> DetectorResult {
-    let det_rate = if curated.is_empty() { 0.0 } else { matched as f64 / curated.len() as f64 };
-    let fa_rate = if detected.is_empty() { 0.0 }
-        else { (detected.len() - rev_matched) as f64 / detected.len() as f64 };
-    let mean_off = if offsets.is_empty() { 0.0 } else { offsets.iter().sum::<f64>() / offsets.len() as f64 };
-    let med_off = if offsets.is_empty() { 0.0 } else { offsets[offsets.len() / 2] };
+    let det_rate = if curated.is_empty() {
+        0.0
+    } else {
+        matched as f64 / curated.len() as f64
+    };
+    let fa_rate = if detected.is_empty() {
+        0.0
+    } else {
+        (detected.len() - rev_matched) as f64 / detected.len() as f64
+    };
+    let mean_off = if offsets.is_empty() {
+        0.0
+    } else {
+        offsets.iter().sum::<f64>() / offsets.len() as f64
+    };
+    let med_off = if offsets.is_empty() {
+        0.0
+    } else {
+        offsets[offsets.len() / 2]
+    };
 
     DetectorResult {
         name: name.to_string(),

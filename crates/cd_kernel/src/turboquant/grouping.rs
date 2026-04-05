@@ -53,7 +53,8 @@ impl GroupQuantParams {
     /// Symmetric groups: 16 bits (f16 scale only)
     /// Asymmetric groups: 32 bits (f16 scale + f16 zero_point)
     pub fn metadata_bits(&self) -> usize {
-        self.symmetric.iter()
+        self.symmetric
+            .iter()
             .map(|&s| if s { 16 } else { 32 })
             .sum()
     }
@@ -75,11 +76,7 @@ pub struct GroupQuantized {
 ///   - If |min + max| < threshold * (max - min): use symmetric
 ///   - Otherwise: use asymmetric with zero_point = (min + max) / 2
 ///   - Scale = (max - min) / (2^bits - 1)
-pub fn compute_group_params(
-    values: &[f64],
-    group_size: usize,
-    bits: u32,
-) -> GroupQuantParams {
+pub fn compute_group_params(values: &[f64], group_size: usize, bits: u32) -> GroupQuantParams {
     let d = values.len();
     let n_groups = d.div_ceil(group_size);
     let n_levels = (1u32 << bits) as f64;
@@ -218,7 +215,9 @@ impl PrecisionWindows {
     /// Count how many tokens will be quantized vs full-precision.
     pub fn count_quantized(&self, seq_len: usize) -> (usize, usize) {
         let full_precision = self.sink_window.min(seq_len)
-            + self.recent_window.min(seq_len.saturating_sub(self.sink_window));
+            + self
+                .recent_window
+                .min(seq_len.saturating_sub(self.sink_window));
         let quantized = seq_len.saturating_sub(full_precision);
         (quantized, full_precision)
     }
@@ -256,8 +255,12 @@ mod tests {
         let reconstructed = group_dequantize(&indices, &params, bits);
         assert_eq!(reconstructed.len(), d);
 
-        let mse: f64 = values.iter().zip(reconstructed.iter())
-            .map(|(a, b)| (a - b).powi(2)).sum::<f64>() / d as f64;
+        let mse: f64 = values
+            .iter()
+            .zip(reconstructed.iter())
+            .map(|(a, b)| (a - b).powi(2))
+            .sum::<f64>()
+            / d as f64;
         assert!(mse < 0.01, "Group quantize MSE too high: {}", mse);
     }
 
@@ -272,14 +275,20 @@ mod tests {
         let params = compute_group_params(&values, group_size, bits);
         assert_eq!(params.n_groups, 4);
         // Should detect asymmetric distribution
-        assert!(params.symmetric.iter().any(|&s| !s),
-            "Expected some asymmetric groups for biased data");
+        assert!(
+            params.symmetric.iter().any(|&s| !s),
+            "Expected some asymmetric groups for biased data"
+        );
 
         let indices = group_quantize(&values, &params, bits);
         let reconstructed = group_dequantize(&indices, &params, bits);
 
-        let mse: f64 = values.iter().zip(reconstructed.iter())
-            .map(|(a, b)| (a - b).powi(2)).sum::<f64>() / d as f64;
+        let mse: f64 = values
+            .iter()
+            .zip(reconstructed.iter())
+            .map(|(a, b)| (a - b).powi(2))
+            .sum::<f64>()
+            / d as f64;
         assert!(mse < 0.01, "Asymmetric group MSE too high: {}", mse);
     }
 
@@ -307,8 +316,12 @@ mod tests {
         // Short sequence: everything is in a window
         let (quantized, full_prec) = pw.count_quantized(100);
         // With 4 sink + 96 remaining (all < 128 recent), most are full precision
-        assert!(full_prec >= quantized,
-            "Short seq should have more full-precision: q={}, fp={}", quantized, full_prec);
+        assert!(
+            full_prec >= quantized,
+            "Short seq should have more full-precision: q={}, fp={}",
+            quantized,
+            full_prec
+        );
     }
 
     #[test]
@@ -323,8 +336,11 @@ mod tests {
         // vs 128 bytes for per-element scales
         let metadata_bytes = params.n_groups * (4 + 4 + 1);
         let per_element_bytes = d * 4;
-        assert!(metadata_bytes < per_element_bytes / 3,
+        assert!(
+            metadata_bytes < per_element_bytes / 3,
             "Group metadata ({} bytes) should be much less than per-element ({} bytes)",
-            metadata_bytes, per_element_bytes);
+            metadata_bytes,
+            per_element_bytes
+        );
     }
 }

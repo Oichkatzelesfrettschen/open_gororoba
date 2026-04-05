@@ -172,7 +172,10 @@ mod tests {
         let counts = count_triad_types(8);
         assert_eq!(counts.total(), 35);
         assert_eq!(counts.associative, 7);
-        assert_eq!(counts.type_x + counts.type_a + counts.type_b + counts.type_c, 28);
+        assert_eq!(
+            counts.type_x + counts.type_a + counts.type_b + counts.type_c,
+            28
+        );
     }
 
     #[test]

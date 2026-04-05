@@ -10,12 +10,12 @@
 //! - Theiler et al. (1992): Testing for nonlinearity in time series
 //! - Schreiber & Schmitz (1996): Improved surrogate data for nonlinearity tests
 
-use rand::prelude::*;
+use rand::{RngExt, prelude::*};
 use rustfft::{FftPlanner, num_complex::Complex64};
 use std::f64::consts::PI;
 
 /// Phase-randomization surrogate: preserve power spectrum, randomize phases.
-pub fn phase_randomize<R: Rng>(signal: &[f64], rng: &mut R) -> Vec<f64> {
+pub fn phase_randomize<R: RngExt>(signal: &[f64], rng: &mut R) -> Vec<f64> {
     let n = signal.len();
     if n == 0 {
         return vec![];
@@ -30,7 +30,7 @@ pub fn phase_randomize<R: Rng>(signal: &[f64], rng: &mut R) -> Vec<f64> {
 
     let n_half = n / 2;
     for i in 1..n_half + 1 {
-        let phase = rng.r#gen::<f64>() * 2.0 * PI;
+        let phase = rng.random::<f64>() * 2.0 * PI;
         let mag = spectrum[i].norm();
         let new_val = Complex64::from_polar(mag, phase);
 
@@ -54,7 +54,12 @@ pub fn phase_randomize<R: Rng>(signal: &[f64], rng: &mut R) -> Vec<f64> {
 /// IAAFT surrogate: preserve both amplitude distribution and power spectrum.
 ///
 /// Algorithm (Schreiber & Schmitz 1996).
-pub fn iaaft_surrogate<R: Rng>(signal: &[f64], rng: &mut R, max_iter: usize, tol: f64) -> Vec<f64> {
+pub fn iaaft_surrogate<R: RngExt>(
+    signal: &[f64],
+    rng: &mut R,
+    max_iter: usize,
+    tol: f64,
+) -> Vec<f64> {
     let n = signal.len();
     if n == 0 {
         return vec![];
@@ -142,7 +147,7 @@ pub fn empirical_p_value(observed: f64, surrogates: &[f64]) -> f64 {
 /// Preserves within-block autocorrelation while destroying inter-block temporal
 /// order. `block_size` controls the trade-off: large blocks preserve more
 /// structure; `block_size=1` degenerates to a full shuffle.
-pub fn block_shuffle<R: Rng>(signal: &[f64], block_size: usize, rng: &mut R) -> Vec<f64> {
+pub fn block_shuffle<R: RngExt>(signal: &[f64], block_size: usize, rng: &mut R) -> Vec<f64> {
     if signal.is_empty() || block_size == 0 {
         return signal.to_vec();
     }
@@ -169,10 +174,7 @@ pub fn block_shuffle<R: Rng>(signal: &[f64], block_size: usize, rng: &mut R) -> 
 /// Preserves cross-channel coherence structure while randomizing absolute phases.
 /// Each channel's FFT magnitudes are preserved, but the same random phase offset
 /// is applied to all channels at each frequency bin.
-pub fn phase_randomize_mv_shared<R: Rng>(
-    channels: &[Vec<f64>],
-    rng: &mut R,
-) -> Vec<Vec<f64>> {
+pub fn phase_randomize_mv_shared<R: RngExt>(channels: &[Vec<f64>], rng: &mut R) -> Vec<Vec<f64>> {
     if channels.is_empty() {
         return vec![];
     }
@@ -183,7 +185,9 @@ pub fn phase_randomize_mv_shared<R: Rng>(
 
     // Generate shared random phases
     let n_half = n / 2;
-    let random_phases: Vec<f64> = (0..n_half + 1).map(|_| rng.r#gen::<f64>() * 2.0 * PI).collect();
+    let random_phases: Vec<f64> = (0..n_half + 1)
+        .map(|_| rng.random::<f64>() * 2.0 * PI)
+        .collect();
 
     let mut planner = FftPlanner::new();
     let fft = planner.plan_fft_forward(n);
@@ -192,8 +196,7 @@ pub fn phase_randomize_mv_shared<R: Rng>(
     channels
         .iter()
         .map(|ch| {
-            let mut spectrum: Vec<Complex64> =
-                ch.iter().map(|&x| Complex64::new(x, 0.0)).collect();
+            let mut spectrum: Vec<Complex64> = ch.iter().map(|&x| Complex64::new(x, 0.0)).collect();
             fft.process(&mut spectrum);
 
             for i in 1..n_half + 1 {
@@ -222,14 +225,11 @@ pub fn phase_randomize_mv_shared<R: Rng>(
 /// Destroys cross-channel phase coupling. Each channel gets its own independent
 /// random phase at each frequency. This is the strongest multivariate null:
 /// any surviving associator signal after this treatment is a spectral artifact.
-pub fn phase_randomize_mv_independent<R: Rng>(
+pub fn phase_randomize_mv_independent<R: RngExt>(
     channels: &[Vec<f64>],
     rng: &mut R,
 ) -> Vec<Vec<f64>> {
-    channels
-        .iter()
-        .map(|ch| phase_randomize(ch, rng))
-        .collect()
+    channels.iter().map(|ch| phase_randomize(ch, rng)).collect()
 }
 
 // ---------------------------------------------------------------------------
@@ -241,12 +241,12 @@ pub fn phase_randomize_mv_independent<R: Rng>(
 /// Preserves the spectral structure (autocorrelation, periodicity) of the
 /// original signal by treating it as circular. Returns a signal of the same
 /// length starting at a random offset.
-pub fn circular_bootstrap<R: Rng>(signal: &[f64], rng: &mut R) -> Vec<f64> {
+pub fn circular_bootstrap<R: RngExt>(signal: &[f64], rng: &mut R) -> Vec<f64> {
     let n = signal.len();
     if n == 0 {
         return vec![];
     }
-    let offset = rng.gen_range(0..n);
+    let offset = rng.random_range(0..n);
     let mut result = Vec::with_capacity(n);
     result.extend_from_slice(&signal[offset..]);
     result.extend_from_slice(&signal[..offset]);
@@ -258,7 +258,7 @@ pub fn circular_bootstrap<R: Rng>(signal: &[f64], rng: &mut R) -> Vec<f64> {
 /// Computes `n_boot` circular bootstrap replicates, applies `statistic_fn`
 /// to each, and returns (lower, upper) percentile CI at the given `alpha`
 /// level (e.g., alpha=0.05 for 95% CI).
-pub fn circular_bootstrap_ci<R: Rng, F>(
+pub fn circular_bootstrap_ci<R: RngExt, F>(
     signal: &[f64],
     statistic_fn: F,
     n_boot: usize,
@@ -279,7 +279,10 @@ where
     let lo_idx = ((alpha / 2.0) * stats.len() as f64).floor() as usize;
     let hi_idx = ((1.0 - alpha / 2.0) * stats.len() as f64).ceil() as usize;
     let lo = stats.get(lo_idx).copied().unwrap_or(f64::NAN);
-    let hi = stats.get(hi_idx.min(stats.len() - 1)).copied().unwrap_or(f64::NAN);
+    let hi = stats
+        .get(hi_idx.min(stats.len() - 1))
+        .copied()
+        .unwrap_or(f64::NAN);
     (lo, hi)
 }
 
@@ -294,17 +297,18 @@ where
 /// extra parameters. Returns `(change_index, pre_mean, post_mean, delta_bic)`.
 ///
 /// `min_segment` is the minimum number of points in each segment.
-pub fn detect_change_point(
-    signal: &[f64],
-    min_segment: usize,
-) -> Option<(usize, f64, f64, f64)> {
+pub fn detect_change_point(signal: &[f64], min_segment: usize) -> Option<(usize, f64, f64, f64)> {
     let n = signal.len();
     if n < 2 * min_segment {
         return None;
     }
 
     let global_mean = signal.iter().sum::<f64>() / n as f64;
-    let global_var = signal.iter().map(|&x| (x - global_mean).powi(2)).sum::<f64>() / n as f64;
+    let global_var = signal
+        .iter()
+        .map(|&x| (x - global_mean).powi(2))
+        .sum::<f64>()
+        / n as f64;
     if global_var < 1e-30 {
         return None;
     }
@@ -321,7 +325,8 @@ pub fn detect_change_point(
         let post_mean = post.iter().sum::<f64>() / post.len() as f64;
 
         let pre_var = pre.iter().map(|&x| (x - pre_mean).powi(2)).sum::<f64>() / pre.len() as f64;
-        let post_var = post.iter().map(|&x| (x - post_mean).powi(2)).sum::<f64>() / post.len() as f64;
+        let post_var =
+            post.iter().map(|&x| (x - post_mean).powi(2)).sum::<f64>() / post.len() as f64;
 
         // Avoid log(0)
         let pre_var = pre_var.max(1e-30);

@@ -27,7 +27,7 @@
 //!
 //! - Kaman, Lim, Liu, Hoffmann (2026): arXiv:2601.03210v2, Table I
 
-use faer::complex_native::c64;
+use faer::c64;
 
 use crate::tight_binding::{
     BravaisLattice2D, Hopping, OrbitalSite, TightBindingModel, Valley, Vec2, band_chern_number,
@@ -633,8 +633,8 @@ mod tests {
         let h = model.hamiltonian_at_k(0.5, 0.3);
         for i in 0..9 {
             for j in 0..9 {
-                let hij = h.read(i, j);
-                let hji = h.read(j, i);
+                let hij = h[(i, j)];
+                let hji = h[(j, i)];
                 let err_re = (hij.re - hji.re).abs();
                 let err_im = (hij.im + hji.im).abs();
                 assert!(

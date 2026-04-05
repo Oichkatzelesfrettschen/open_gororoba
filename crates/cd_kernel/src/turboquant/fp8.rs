@@ -39,7 +39,9 @@ unsafe impl bytemuck::Zeroable for Fp8E5M2 {}
 impl Fp8E4M3 {
     /// Convert f32 to FP8 E4M3 (truncation, no rounding).
     pub fn from_f32(value: f32) -> Self {
-        if value == 0.0 { return Fp8E4M3(0); }
+        if value == 0.0 {
+            return Fp8E4M3(0);
+        }
 
         let bits = value.to_bits();
         let sign = (bits >> 31) & 1;
@@ -92,7 +94,9 @@ impl Fp8E4M3 {
 impl Fp8E5M2 {
     /// Convert f32 to FP8 E5M2 (truncation).
     pub fn from_f32(value: f32) -> Self {
-        if value == 0.0 { return Fp8E5M2(0); }
+        if value == 0.0 {
+            return Fp8E5M2(0);
+        }
 
         let bits = value.to_bits();
         let sign = (bits >> 31) & 1;
@@ -123,8 +127,14 @@ impl Fp8E5M2 {
         }
         if exp == 31 {
             return if mant == 0 {
-                if sign == 1 { f32::NEG_INFINITY } else { f32::INFINITY }
-            } else { f32::NAN };
+                if sign == 1 {
+                    f32::NEG_INFINITY
+                } else {
+                    f32::INFINITY
+                }
+            } else {
+                f32::NAN
+            };
         }
         if exp == 0 {
             let val = (mant as f32) / 4.0 * (2.0_f32).powi(-14);
@@ -165,13 +175,20 @@ const SCALE_FACTOR: f32 = 16.0;
 impl CompactGroupMeta {
     /// Convert from full-precision GroupQuantParams.
     pub fn from_params(params: &super::grouping::GroupQuantParams) -> Self {
-        let scales: Vec<Fp8E4M3> = params.scales.iter()
+        let scales: Vec<Fp8E4M3> = params
+            .scales
+            .iter()
             .map(|&s| Fp8E4M3::from_f32(s * SCALE_FACTOR))
             .collect();
 
         let mut asymmetric_mask = 0u16;
         let mut zero_points = Vec::new();
-        for (i, (&sym, &zp)) in params.symmetric.iter().zip(params.zero_points.iter()).enumerate() {
+        for (i, (&sym, &zp)) in params
+            .symmetric
+            .iter()
+            .zip(params.zero_points.iter())
+            .enumerate()
+        {
             if !sym {
                 asymmetric_mask |= 1 << i;
                 zero_points.push(Fp8E5M2::from_f32(zp));
@@ -202,7 +219,9 @@ mod tests {
     #[test]
     fn test_fp8_e4m3_roundtrip() {
         // E4M3 range: ~2^-9 to 448. Skip values below minimum representable.
-        let test_values = [0.0, 1.0, -1.0, 0.5, 2.0, 0.125, 100.0, 0.015625, -42.0, 448.0];
+        let test_values = [
+            0.0, 1.0, -1.0, 0.5, 2.0, 0.125, 100.0, 0.015625, -42.0, 448.0,
+        ];
         for &v in &test_values {
             let fp8 = Fp8E4M3::from_f32(v);
             let back = fp8.to_f32();
@@ -211,9 +230,13 @@ mod tests {
             } else {
                 let rel_err = (v - back).abs() / v.abs();
                 // E4M3 has 3 mantissa bits -> ~12.5% relative error
-                assert!(rel_err < 0.2,
+                assert!(
+                    rel_err < 0.2,
                     "FP8 E4M3 roundtrip error too high for {}: got {}, rel_err={:.3}",
-                    v, back, rel_err);
+                    v,
+                    back,
+                    rel_err
+                );
             }
         }
     }
@@ -229,9 +252,13 @@ mod tests {
             } else {
                 let rel_err = (v - back).abs() / v.abs();
                 // E5M2 has 2 mantissa bits -> ~25% relative error
-                assert!(rel_err < 0.35,
+                assert!(
+                    rel_err < 0.35,
                     "FP8 E5M2 roundtrip error too high for {}: got {}, rel_err={:.3}",
-                    v, back, rel_err);
+                    v,
+                    back,
+                    rel_err
+                );
             }
         }
     }
@@ -245,9 +272,19 @@ mod tests {
             let fp8 = Fp8E4M3::from_f32(s * SCALE_FACTOR);
             let back = fp8.to_f32() / SCALE_FACTOR;
             let rel_err = (s - back).abs() / s;
-            println!("Scale {:.3} -> *16 -> FP8 {:02X} -> /16 -> {:.4} (err {:.1}%)",
-                s, fp8.0, back, rel_err * 100.0);
-            assert!(rel_err < 0.15, "Scale {:.3} FP8 error too high: {:.3}", s, rel_err);
+            println!(
+                "Scale {:.3} -> *16 -> FP8 {:02X} -> /16 -> {:.4} (err {:.1}%)",
+                s,
+                fp8.0,
+                back,
+                rel_err * 100.0
+            );
+            assert!(
+                rel_err < 0.15,
+                "Scale {:.3} FP8 error too high: {:.3}",
+                s,
+                rel_err
+            );
         }
     }
 
@@ -268,7 +305,11 @@ mod tests {
         };
         let compact = CompactGroupMeta::from_params(&params);
         assert_eq!(compact.total_bits(), 8 * 8 + 16); // 80 bits
-        println!("All symmetric: {} bits (vs f32: {} bits, {:.1}x savings)",
-            compact.total_bits(), 512, 512.0 / compact.total_bits() as f64);
+        println!(
+            "All symmetric: {} bits (vs f32: {} bits, {:.1}x savings)",
+            compact.total_bits(),
+            512,
+            512.0 / compact.total_bits() as f64
+        );
     }
 }

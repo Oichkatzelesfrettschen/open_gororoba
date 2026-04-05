@@ -63,7 +63,12 @@ fn main() -> Result<()> {
         if exclude.contains(r.mission.as_str()) {
             continue;
         }
-        if r.bx.is_finite() && r.by.is_finite() && r.bz.is_finite() && r.b_mag.is_finite() && r.b_mag > 0.0 {
+        if r.bx.is_finite()
+            && r.by.is_finite()
+            && r.bz.is_finite()
+            && r.b_mag.is_finite()
+            && r.b_mag > 0.0
+        {
             all_rows.push(r);
         }
     }
@@ -102,8 +107,7 @@ fn main() -> Result<()> {
         }
 
         let (embedded_vectors, meta_idx) = if is_mixed {
-            let (vecs, idx, eligible) =
-                magnetic_plasma_takens_embed(&rows, cli.takens_lag);
+            let (vecs, idx, eligible) = magnetic_plasma_takens_embed(&rows, cli.takens_lag);
             let eligible_frac =
                 eligible.iter().filter(|&&e| e).count() as f64 / eligible.len() as f64;
             println!(
@@ -117,10 +121,8 @@ fn main() -> Result<()> {
             magnetic_takens_embed(&rows, dim, cli.takens_lag)
         };
 
-        let associators = cd_kernel::batch_sliding_associator_norms_parallel(
-            &embedded_vectors,
-            dim,
-        );
+        let associators =
+            cd_kernel::batch_sliding_associator_norms_parallel(&embedded_vectors, dim);
 
         if associators.is_empty() {
             continue;
@@ -133,7 +135,10 @@ fn main() -> Result<()> {
             .collect();
 
         let mean = associators.iter().sum::<f64>() / associators.len() as f64;
-        let max = associators.iter().copied().fold(f64::NEG_INFINITY, f64::max);
+        let max = associators
+            .iter()
+            .copied()
+            .fold(f64::NEG_INFINITY, f64::max);
         let mean_r = tagged_r.iter().sum::<f64>() / tagged_r.len() as f64;
 
         results.push(TakensBin {

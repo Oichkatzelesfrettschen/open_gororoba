@@ -14,7 +14,9 @@ fn random_vectors_f32(n: usize, dim: usize, seed: u64) -> Vec<Vec<f32>> {
         .map(|_| {
             (0..dim)
                 .map(|_| {
-                    state = state.wrapping_mul(6364136223846793005).wrapping_add(1442695040888963407);
+                    state = state
+                        .wrapping_mul(6364136223846793005)
+                        .wrapping_add(1442695040888963407);
                     ((state >> 33) as f32) / (u32::MAX as f32) * 2.0 - 1.0
                 })
                 .collect()
@@ -28,7 +30,9 @@ fn random_vectors_f64(n: usize, dim: usize, seed: u64) -> Vec<Vec<f64>> {
         .map(|_| {
             (0..dim)
                 .map(|_| {
-                    state = state.wrapping_mul(6364136223846793005).wrapping_add(1442695040888963407);
+                    state = state
+                        .wrapping_mul(6364136223846793005)
+                        .wrapping_add(1442695040888963407);
                     ((state >> 33) as f64) / (u32::MAX as f64) * 2.0 - 1.0
                 })
                 .collect()
@@ -43,9 +47,14 @@ fn bench_multiplatform_f32() {
     let iters = 3;
 
     println!("\n=== CD Kernel Multi-Platform Benchmark (f32) ===");
-    println!("  Vectors per run: {}, Warmup: {}, Iterations: {}", n, warmup, iters);
-    println!("  {:>6} {:>12} {:>12} {:>12} {:>12}",
-        "Dim", "Mean (ms)", "Min (ms)", "kvec/s", "norms/run");
+    println!(
+        "  Vectors per run: {}, Warmup: {}, Iterations: {}",
+        n, warmup, iters
+    );
+    println!(
+        "  {:>6} {:>12} {:>12} {:>12} {:>12}",
+        "Dim", "Mean (ms)", "Min (ms)", "kvec/s", "norms/run"
+    );
 
     for &dim in &[8, 16, 32, 64, 128, 256] {
         let vectors = random_vectors_f32(n, dim, 42);
@@ -69,8 +78,10 @@ fn bench_multiplatform_f32() {
         let kvecs = n as f64 / mean_ms;
         let norms_count = n - 2;
 
-        println!("  {:>6} {:>12.3} {:>12.3} {:>12.1} {:>12}",
-            dim, mean_ms, min_ms, kvecs, norms_count);
+        println!(
+            "  {:>6} {:>12.3} {:>12.3} {:>12.1} {:>12}",
+            dim, mean_ms, min_ms, kvecs, norms_count
+        );
     }
 }
 
@@ -81,9 +92,14 @@ fn bench_multiplatform_f64() {
     let iters = 3;
 
     println!("\n=== CD Kernel Multi-Platform Benchmark (f64) ===");
-    println!("  Vectors per run: {}, Warmup: {}, Iterations: {}", n, warmup, iters);
-    println!("  {:>6} {:>12} {:>12} {:>12} {:>12}",
-        "Dim", "Mean (ms)", "Min (ms)", "kvec/s", "norms/run");
+    println!(
+        "  Vectors per run: {}, Warmup: {}, Iterations: {}",
+        n, warmup, iters
+    );
+    println!(
+        "  {:>6} {:>12} {:>12} {:>12} {:>12}",
+        "Dim", "Mean (ms)", "Min (ms)", "kvec/s", "norms/run"
+    );
 
     for &dim in &[8, 16, 32, 64, 128, 256] {
         let vectors = random_vectors_f64(n, dim, 42);
@@ -107,8 +123,10 @@ fn bench_multiplatform_f64() {
         let kvecs = n as f64 / mean_ms;
         let norms_count = n - 2;
 
-        println!("  {:>6} {:>12.3} {:>12.3} {:>12.1} {:>12}",
-            dim, mean_ms, min_ms, kvecs, norms_count);
+        println!(
+            "  {:>6} {:>12.3} {:>12.3} {:>12.1} {:>12}",
+            dim, mean_ms, min_ms, kvecs, norms_count
+        );
     }
 }
 

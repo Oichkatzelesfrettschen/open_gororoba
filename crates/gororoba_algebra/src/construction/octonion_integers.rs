@@ -93,8 +93,8 @@ pub fn verify_e8_unit_loop_closure() -> bool {
     
     // Test a subset for performance (or all if fast enough)
     // We will test 50 random pairs
-    use rand::{thread_rng, seq::SliceRandom};
-    let mut rng = thread_rng();
+    use rand::prelude::IndexedRandom;
+    let mut rng = rand::rng();
     
     for _ in 0..100 {
         let u = units.choose(&mut rng).unwrap();

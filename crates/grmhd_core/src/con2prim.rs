@@ -12,8 +12,7 @@
 //! For gamma-law EOS, the residual function f(mu) is a closed-form expression
 //! involving only arithmetic operations -- no EOS table lookups needed.
 
-use crate::eos::GammaLaw;
-use crate::prims::Prim;
+use crate::{eos::GammaLaw, prims::Prim};
 
 /// Result of a con2prim inversion attempt.
 #[derive(Debug, Clone)]
@@ -40,13 +39,7 @@ impl Con2PrimResult {
 /// Returns the root x such that |f(x)| < tol, or the best estimate after max_iter.
 /// Pure arithmetic, no allocations.
 #[allow(unused_assignments, unused_variables)]
-fn brent(
-    f: &dyn Fn(f64) -> f64,
-    mut a: f64,
-    mut b: f64,
-    tol: f64,
-    max_iter: usize,
-) -> f64 {
+fn brent(f: &dyn Fn(f64) -> f64, mut a: f64, mut b: f64, tol: f64, max_iter: usize) -> f64 {
     let mut fa = f(a);
     let mut fb = f(b);
 
@@ -188,19 +181,27 @@ pub fn con2prim_kastaun(
     //
     // We solve for W via the energy relation:
     let residual = |w: f64| -> f64 {
-        if w <= 0.0 { return 1e10; }
+        if w <= 0.0 {
+            return 1e10;
+        }
         let wb = w + b_sq;
 
         // Velocity squared from momentum constraint
         let v_sq_num = s_sq * w * w + s_dot_b * s_dot_b * (2.0 * w + b_sq);
         let v_sq_den = w * w * wb * wb;
-        let v_sq = if v_sq_den > 1e-30 { (v_sq_num / v_sq_den).min(1.0 - 1e-10) } else { 0.0 };
+        let v_sq = if v_sq_den > 1e-30 {
+            (v_sq_num / v_sq_den).min(1.0 - 1e-10)
+        } else {
+            0.0
+        };
 
         let gamma_sq = 1.0 / (1.0 - v_sq).max(1e-10);
         let gamma_val = gamma_sq.sqrt();
         let rho = d * alpha / gamma_val; // D = rho * Gamma / alpha
 
-        if rho <= 0.0 { return 1e10; }
+        if rho <= 0.0 {
+            return 1e10;
+        }
 
         // Pressure from gamma-law: W = (rho + gamma/(gamma-1)*p) * Gamma^2
         // => p = (gamma-1)/gamma * (W/Gamma^2 - rho)
@@ -213,8 +214,7 @@ pub fn con2prim_kastaun(
         // tau = W - p - D + b^2 - (S.B)^2 / (2 W) ... simplified
         //
         // Using the standard relation (Noble 2006 eq. 28):
-        w - p - d * gamma_val + 0.5 * b_sq * (1.0 + v_sq)
-            - 0.5 * s_dot_b * s_dot_b / (w * w) - tau
+        w - p - d * gamma_val + 0.5 * b_sq * (1.0 + v_sq) - 0.5 * s_dot_b * s_dot_b / (w * w) - tau
     };
 
     // Solve f(W) = 0 via Brent's method
@@ -226,7 +226,11 @@ pub fn con2prim_kastaun(
     let wb = w_sol + b_sq;
     let v_sq_num = s_sq * w_sol * w_sol + s_dot_b * s_dot_b * (2.0 * w_sol + b_sq);
     let v_sq_den = w_sol * w_sol * wb * wb;
-    let v_sq = if v_sq_den > 1e-30 { (v_sq_num / v_sq_den).min(1.0 - 1e-10) } else { 0.0 };
+    let v_sq = if v_sq_den > 1e-30 {
+        (v_sq_num / v_sq_den).min(1.0 - 1e-10)
+    } else {
+        0.0
+    };
 
     let gamma_sq = 1.0 / (1.0 - v_sq).max(1e-10);
     let gamma_val = gamma_sq.sqrt();
@@ -282,8 +286,7 @@ pub fn con2prim_kastaun(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::cons;
-    use crate::metric::KerrMetric;
+    use crate::{cons, metric::KerrMetric};
 
     #[test]
     fn test_roundtrip_static_fluid() {
@@ -301,9 +304,15 @@ mod tests {
 
         let p_rec = result.prims();
         assert!(
-            (p_rec[crate::prims::RHO] - p_orig[crate::prims::RHO]).abs() / p_orig[crate::prims::RHO] < 0.05,
-            "rho: {} vs {} ({}%)", p_rec[crate::prims::RHO], p_orig[crate::prims::RHO],
-            (p_rec[crate::prims::RHO] - p_orig[crate::prims::RHO]).abs() / p_orig[crate::prims::RHO] * 100.0
+            (p_rec[crate::prims::RHO] - p_orig[crate::prims::RHO]).abs()
+                / p_orig[crate::prims::RHO]
+                < 0.05,
+            "rho: {} vs {} ({}%)",
+            p_rec[crate::prims::RHO],
+            p_orig[crate::prims::RHO],
+            (p_rec[crate::prims::RHO] - p_orig[crate::prims::RHO]).abs()
+                / p_orig[crate::prims::RHO]
+                * 100.0
         );
     }
 
@@ -325,8 +334,12 @@ mod tests {
         // With nonzero velocity, the con2prim has ~10% error from the
         // simplified velocity recovery. The static and B-field cases are exact.
         assert!(
-            (p_rec[crate::prims::RHO] - p_orig[crate::prims::RHO]).abs() / p_orig[crate::prims::RHO] < 0.15,
-            "rho: {} vs {}", p_rec[crate::prims::RHO], p_orig[crate::prims::RHO]
+            (p_rec[crate::prims::RHO] - p_orig[crate::prims::RHO]).abs()
+                / p_orig[crate::prims::RHO]
+                < 0.15,
+            "rho: {} vs {}",
+            p_rec[crate::prims::RHO],
+            p_orig[crate::prims::RHO]
         );
     }
 
@@ -348,12 +361,18 @@ mod tests {
         // B-field should be exactly recovered
         assert!(
             (p_rec[crate::prims::B1] - p_orig[crate::prims::B1]).abs() < 1e-10,
-            "B1: {} vs {}", p_rec[crate::prims::B1], p_orig[crate::prims::B1]
+            "B1: {} vs {}",
+            p_rec[crate::prims::B1],
+            p_orig[crate::prims::B1]
         );
         // Density should be close
         assert!(
-            (p_rec[crate::prims::RHO] - p_orig[crate::prims::RHO]).abs() / p_orig[crate::prims::RHO] < 0.1,
-            "rho: {} vs {}", p_rec[crate::prims::RHO], p_orig[crate::prims::RHO]
+            (p_rec[crate::prims::RHO] - p_orig[crate::prims::RHO]).abs()
+                / p_orig[crate::prims::RHO]
+                < 0.1,
+            "rho: {} vs {}",
+            p_rec[crate::prims::RHO],
+            p_orig[crate::prims::RHO]
         );
     }
 

@@ -12,18 +12,13 @@
 //!   5. Convert back to primitives (con2prim)
 //!   6. Apply floors and boundary conditions
 
-use crate::eos::GammaLaw;
-use crate::grid::Grid;
+use crate::{eos::GammaLaw, grid::Grid};
 
 /// Compute the CFL-limited timestep.
 ///
 /// dt = CFL * min over all cells of (dx / (|v| + c_fast))
 /// where c_fast is the fast magnetosonic speed.
-pub fn cfl_dt(
-    grid: &Grid,
-    max_signal_speed: f64,
-    cfl: f64,
-) -> f64 {
+pub fn cfl_dt(grid: &Grid, max_signal_speed: f64, cfl: f64) -> f64 {
     if max_signal_speed <= 0.0 {
         return 1e-6; // fallback for zero velocity
     }
@@ -35,12 +30,7 @@ pub fn cfl_dt(
 ///
 /// U_new[k] = U_old[k] + dt * rhs[k]
 /// where rhs = -div(F) + source terms.
-pub fn euler_update(
-    u_old: &[f64],
-    rhs: &[f64],
-    dt: f64,
-    u_new: &mut [f64],
-) {
+pub fn euler_update(u_old: &[f64], rhs: &[f64], dt: f64, u_new: &mut [f64]) {
     for (i, (old, r)) in u_old.iter().zip(rhs.iter()).enumerate() {
         u_new[i] = old + dt * r;
     }
@@ -60,7 +50,9 @@ pub fn con2prim_simple(
     // For static fluid: D = sqrt_g * rho * u^t, where u^t = 1/sqrt(-g_tt)
     let ut = 1.0 / (-g_tt).sqrt();
     let rho = cons[0] / (sqrt_neg_g * ut);
-    if rho <= 0.0 { return None; }
+    if rho <= 0.0 {
+        return None;
+    }
 
     // Energy: cons[1] = sqrt_g * (T^t_t + rho * u^t)
     // For static fluid: T^t_t = -rho - u + p (with u^t u_t = -1)
@@ -115,12 +107,16 @@ mod tests {
         // Rho should roundtrip
         assert!(
             (p_recov[0] - p_orig[0]).abs() / p_orig[0] < 0.01,
-            "Rho roundtrip: {} vs {}", p_recov[0], p_orig[0]
+            "Rho roundtrip: {} vs {}",
+            p_recov[0],
+            p_orig[0]
         );
         // B1 should roundtrip exactly
         assert!(
             (p_recov[5] - p_orig[5]).abs() < 1e-10,
-            "B1 roundtrip: {} vs {}", p_recov[5], p_orig[5]
+            "B1 roundtrip: {} vs {}",
+            p_recov[5],
+            p_orig[5]
         );
     }
 }

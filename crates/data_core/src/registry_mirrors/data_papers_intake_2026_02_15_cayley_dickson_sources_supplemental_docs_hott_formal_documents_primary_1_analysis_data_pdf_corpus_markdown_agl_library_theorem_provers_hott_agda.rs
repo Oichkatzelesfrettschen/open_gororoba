@@ -220,7 +220,7 @@
 //! maximizes the posterior possibility:
 //!
 //! supervised node classification, obeys the following rule to aggregate neighboring features:
-//! 
+//!
 //! 1
 //! 1
 //! H k+1 = σ D̂− 2 ÂD̂− 2 H k W k ,
@@ -400,8 +400,8 @@
 //! (11)
 //!
 //! The continuous optimization problem 11 is solved by projected gradient descent (PGD):
-//! 
-//! 
+//!
+//!
 //! at+1 = P[0,1] at − ηt gt ,
 //! (12)
 //! where t is the iteration index of PGD, ηt is the learning rate,

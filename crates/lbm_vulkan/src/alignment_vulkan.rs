@@ -1,4 +1,7 @@
-use crate::{VulkanContext, compute::{compile_wgsl, BufferSet, VulkanEngineError}};
+use crate::{
+    VulkanContext,
+    compute::{BufferSet, VulkanEngineError, compile_wgsl},
+};
 use ash::{Device, vk};
 use gpu_allocator::{MemoryLocation, vulkan::*};
 use std::{
@@ -30,7 +33,7 @@ pub struct VulkanBoxKiteAlignmentEngine {
 impl VulkanBoxKiteAlignmentEngine {
     pub fn try_new(ctx: &VulkanContext) -> Result<Self> {
         let device = ctx.device.clone();
-        
+
         let shader_src = include_str!("shaders/box_kite_alignment.wgsl");
         let code = compile_wgsl(shader_src)?;
         let module = unsafe {
@@ -131,9 +134,12 @@ impl VulkanBoxKiteAlignmentEngine {
                 }],
                 None,
             )
-        }.map_err(|e| VulkanEngineError::Vulkan(e.1))?[0];
+        }
+        .map_err(|e| VulkanEngineError::Vulkan(e.1))?[0];
 
-        unsafe { device.destroy_shader_module(module, None); }
+        unsafe {
+            device.destroy_shader_module(module, None);
+        }
 
         let pool = unsafe {
             device.create_descriptor_pool(
@@ -166,8 +172,18 @@ impl VulkanBoxKiteAlignmentEngine {
             })
         }?[0];
 
-        let mut allocator = ctx.allocator.lock().map_err(|_| VulkanEngineError::LockError)?;
-        let uniform = Self::create_buf(&device, &mut allocator, 256, vk::BufferUsageFlags::UNIFORM_BUFFER, "align_u", MemoryLocation::CpuToGpu)?;
+        let mut allocator = ctx
+            .allocator
+            .lock()
+            .map_err(|_| VulkanEngineError::LockError)?;
+        let uniform = Self::create_buf(
+            &device,
+            &mut allocator,
+            256,
+            vk::BufferUsageFlags::UNIFORM_BUFFER,
+            "align_u",
+            MemoryLocation::CpuToGpu,
+        )?;
 
         Ok(Self {
             device,
@@ -221,14 +237,52 @@ impl VulkanBoxKiteAlignmentEngine {
         let n_vectors = (vectors.len() / 16) as u32;
         let n_orientations = (orientations.len() / 16) as u32;
 
-        let mut allocator = self.allocator.lock().map_err(|_| VulkanEngineError::LockError)?;
+        let mut allocator = self
+            .allocator
+            .lock()
+            .map_err(|_| VulkanEngineError::LockError)?;
 
         // 1. Create and upload buffers
-        let v_buf = Self::create_buf(&self.device, &mut allocator, (vectors.len() * 8) as u64, vk::BufferUsageFlags::STORAGE_BUFFER | vk::BufferUsageFlags::TRANSFER_DST, "v_buf", MemoryLocation::CpuToGpu)?;
-        let o_buf = Self::create_buf(&self.device, &mut allocator, (orientations.len() * 4) as u64, vk::BufferUsageFlags::STORAGE_BUFFER, "o_buf", MemoryLocation::CpuToGpu)?;
-        let bk_buf = Self::create_buf(&self.device, &mut allocator, (bk_indices.len() * 4) as u64, vk::BufferUsageFlags::STORAGE_BUFFER, "bk_buf", MemoryLocation::CpuToGpu)?;
-        let out_m_buf = Self::create_buf(&self.device, &mut allocator, (n_vectors * 8) as u64, vk::BufferUsageFlags::STORAGE_BUFFER | vk::BufferUsageFlags::TRANSFER_SRC, "out_m", MemoryLocation::GpuToCpu)?;
-        let out_b_buf = Self::create_buf(&self.device, &mut allocator, (n_vectors * 4) as u64, vk::BufferUsageFlags::STORAGE_BUFFER | vk::BufferUsageFlags::TRANSFER_SRC, "out_b", MemoryLocation::GpuToCpu)?;
+        let v_buf = Self::create_buf(
+            &self.device,
+            &mut allocator,
+            (vectors.len() * 8) as u64,
+            vk::BufferUsageFlags::STORAGE_BUFFER | vk::BufferUsageFlags::TRANSFER_DST,
+            "v_buf",
+            MemoryLocation::CpuToGpu,
+        )?;
+        let o_buf = Self::create_buf(
+            &self.device,
+            &mut allocator,
+            (orientations.len() * 4) as u64,
+            vk::BufferUsageFlags::STORAGE_BUFFER,
+            "o_buf",
+            MemoryLocation::CpuToGpu,
+        )?;
+        let bk_buf = Self::create_buf(
+            &self.device,
+            &mut allocator,
+            (bk_indices.len() * 4) as u64,
+            vk::BufferUsageFlags::STORAGE_BUFFER,
+            "bk_buf",
+            MemoryLocation::CpuToGpu,
+        )?;
+        let out_m_buf = Self::create_buf(
+            &self.device,
+            &mut allocator,
+            (n_vectors * 8) as u64,
+            vk::BufferUsageFlags::STORAGE_BUFFER | vk::BufferUsageFlags::TRANSFER_SRC,
+            "out_m",
+            MemoryLocation::GpuToCpu,
+        )?;
+        let out_b_buf = Self::create_buf(
+            &self.device,
+            &mut allocator,
+            (n_vectors * 4) as u64,
+            vk::BufferUsageFlags::STORAGE_BUFFER | vk::BufferUsageFlags::TRANSFER_SRC,
+            "out_b",
+            MemoryLocation::GpuToCpu,
+        )?;
 
         // Upload data
         unsafe {
@@ -238,60 +292,118 @@ impl VulkanBoxKiteAlignmentEngine {
             std::ptr::copy_nonoverlapping(orientations.as_ptr(), p, orientations.len());
             let p = bk_buf.allocation.mapped_ptr().unwrap().as_ptr() as *mut u32;
             std::ptr::copy_nonoverlapping(bk_indices.as_ptr(), p, bk_indices.len());
-            
+
             let u_buf = self.uniform_buffer.as_ref().unwrap();
             let p = u_buf.allocation.mapped_ptr().unwrap().as_ptr() as *mut AlignmentParams;
-            std::ptr::write(p, AlignmentParams { n_vectors, n_orientations });
+            std::ptr::write(
+                p,
+                AlignmentParams {
+                    n_vectors,
+                    n_orientations,
+                },
+            );
         }
 
         // 2. Update descriptor set
         let infos = [
-            vk::DescriptorBufferInfo { buffer: v_buf.buffer, offset: 0, range: vk::WHOLE_SIZE },
-            vk::DescriptorBufferInfo { buffer: o_buf.buffer, offset: 0, range: vk::WHOLE_SIZE },
-            vk::DescriptorBufferInfo { buffer: bk_buf.buffer, offset: 0, range: vk::WHOLE_SIZE },
-            vk::DescriptorBufferInfo { buffer: out_m_buf.buffer, offset: 0, range: vk::WHOLE_SIZE },
-            vk::DescriptorBufferInfo { buffer: out_b_buf.buffer, offset: 0, range: vk::WHOLE_SIZE },
-            vk::DescriptorBufferInfo { buffer: self.uniform_buffer.as_ref().unwrap().buffer, offset: 0, range: vk::WHOLE_SIZE },
+            vk::DescriptorBufferInfo {
+                buffer: v_buf.buffer,
+                offset: 0,
+                range: vk::WHOLE_SIZE,
+            },
+            vk::DescriptorBufferInfo {
+                buffer: o_buf.buffer,
+                offset: 0,
+                range: vk::WHOLE_SIZE,
+            },
+            vk::DescriptorBufferInfo {
+                buffer: bk_buf.buffer,
+                offset: 0,
+                range: vk::WHOLE_SIZE,
+            },
+            vk::DescriptorBufferInfo {
+                buffer: out_m_buf.buffer,
+                offset: 0,
+                range: vk::WHOLE_SIZE,
+            },
+            vk::DescriptorBufferInfo {
+                buffer: out_b_buf.buffer,
+                offset: 0,
+                range: vk::WHOLE_SIZE,
+            },
+            vk::DescriptorBufferInfo {
+                buffer: self.uniform_buffer.as_ref().unwrap().buffer,
+                offset: 0,
+                range: vk::WHOLE_SIZE,
+            },
         ];
-        let writes: Vec<_> = infos.iter().enumerate().map(|(i, info)| {
-            vk::WriteDescriptorSet {
+        let writes: Vec<_> = infos
+            .iter()
+            .enumerate()
+            .map(|(i, info)| vk::WriteDescriptorSet {
                 dst_set: self.descriptor_set,
                 dst_binding: i as u32,
                 descriptor_count: 1,
-                descriptor_type: if i == 5 { vk::DescriptorType::UNIFORM_BUFFER } else { vk::DescriptorType::STORAGE_BUFFER },
+                descriptor_type: if i == 5 {
+                    vk::DescriptorType::UNIFORM_BUFFER
+                } else {
+                    vk::DescriptorType::STORAGE_BUFFER
+                },
                 p_buffer_info: info,
                 ..Default::default()
-            }
-        }).collect();
-        unsafe { self.device.update_descriptor_sets(&writes, &[]); }
+            })
+            .collect();
+        unsafe {
+            self.device.update_descriptor_sets(&writes, &[]);
+        }
 
         // 3. Execute compute
         unsafe {
-            let pool = self.device.create_command_pool(&vk::CommandPoolCreateInfo {
-                flags: vk::CommandPoolCreateFlags::TRANSIENT,
-                ..Default::default()
-            }, None)?;
-            let cmd = self.device.allocate_command_buffers(&vk::CommandBufferAllocateInfo {
-                command_pool: pool,
-                level: vk::CommandBufferLevel::PRIMARY,
-                command_buffer_count: 1,
-                ..Default::default()
-            })?[0];
+            let pool = self.device.create_command_pool(
+                &vk::CommandPoolCreateInfo {
+                    flags: vk::CommandPoolCreateFlags::TRANSIENT,
+                    ..Default::default()
+                },
+                None,
+            )?;
+            let cmd = self
+                .device
+                .allocate_command_buffers(&vk::CommandBufferAllocateInfo {
+                    command_pool: pool,
+                    level: vk::CommandBufferLevel::PRIMARY,
+                    command_buffer_count: 1,
+                    ..Default::default()
+                })?[0];
 
-            self.device.begin_command_buffer(cmd, &vk::CommandBufferBeginInfo {
-                flags: vk::CommandBufferUsageFlags::ONE_TIME_SUBMIT,
-                ..Default::default()
-            })?;
-            self.device.cmd_bind_pipeline(cmd, vk::PipelineBindPoint::COMPUTE, self.pipeline);
-            self.device.cmd_bind_descriptor_sets(cmd, vk::PipelineBindPoint::COMPUTE, self.layout, 0, &[self.descriptor_set], &[]);
+            self.device.begin_command_buffer(
+                cmd,
+                &vk::CommandBufferBeginInfo {
+                    flags: vk::CommandBufferUsageFlags::ONE_TIME_SUBMIT,
+                    ..Default::default()
+                },
+            )?;
+            self.device
+                .cmd_bind_pipeline(cmd, vk::PipelineBindPoint::COMPUTE, self.pipeline);
+            self.device.cmd_bind_descriptor_sets(
+                cmd,
+                vk::PipelineBindPoint::COMPUTE,
+                self.layout,
+                0,
+                &[self.descriptor_set],
+                &[],
+            );
             self.device.cmd_dispatch(cmd, n_vectors.div_ceil(256), 1, 1);
             self.device.end_command_buffer(cmd)?;
 
-            self.device.queue_submit(ctx.queue, &[vk::SubmitInfo {
-                command_buffer_count: 1,
-                p_command_buffers: &cmd,
-                ..Default::default()
-            }], vk::Fence::null())?;
+            self.device.queue_submit(
+                ctx.queue,
+                &[vk::SubmitInfo {
+                    command_buffer_count: 1,
+                    p_command_buffers: &cmd,
+                    ..Default::default()
+                }],
+                vk::Fence::null(),
+            )?;
             self.device.queue_wait_idle(ctx.queue)?;
             self.device.destroy_command_pool(pool, None);
         }
@@ -329,8 +441,10 @@ impl Drop for VulkanBoxKiteAlignmentEngine {
         unsafe {
             self.device.destroy_pipeline(self.pipeline, None);
             self.device.destroy_pipeline_layout(self.layout, None);
-            self.device.destroy_descriptor_set_layout(self.descriptor_layout, None);
-            self.device.destroy_descriptor_pool(self.descriptor_pool, None);
+            self.device
+                .destroy_descriptor_set_layout(self.descriptor_layout, None);
+            self.device
+                .destroy_descriptor_pool(self.descriptor_pool, None);
             if let Some(ub) = self.uniform_buffer.take() {
                 self.device.destroy_buffer(ub.buffer, None);
                 if let Ok(mut allocator) = self.allocator.lock() {

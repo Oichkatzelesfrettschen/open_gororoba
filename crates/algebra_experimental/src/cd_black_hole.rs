@@ -12,8 +12,7 @@
 //! At kappa=0, this is the standard product. At kappa -> inf, the product
 //! is dominated by the associator, which has extensive zero structure.
 
-use crate::cayley_dickson_structs::Sedenion;
-use crate::quantum_state::QuantumState;
+use crate::{cayley_dickson_structs::Sedenion, quantum_state::QuantumState};
 use rand::SeedableRng;
 use rand_chacha::ChaCha8Rng;
 use rand_distr::{Distribution, StandardNormal};
@@ -192,11 +191,7 @@ pub fn find_critical_curvature(
 ///
 /// For Schwarzschild at r = 2M (horizon):
 ///   K_ij ~ 1/M, so |K|^2 ~ 1/M^2, kappa ~ 1/(M * rho_crit)
-pub fn adm_curvature_to_kappa(
-    lapse: f64,
-    extrinsic_k_trace: f64,
-    tracefree_norm: f64,
-) -> f64 {
+pub fn adm_curvature_to_kappa(lapse: f64, extrinsic_k_trace: f64, tracefree_norm: f64) -> f64 {
     let k_squared = extrinsic_k_trace.powi(2) / 3.0 + tracefree_norm.powi(2);
     let rho_crit = 1.0; // Planck units
     k_squared.sqrt() / (lapse * rho_crit)
@@ -208,10 +203,12 @@ mod tests {
 
     #[test]
     fn test_curvature_product_at_zero_matches_standard() {
-        let a = Sedenion::from_slice(&[1.0, 0.0, 0.5, 0.0, 0.3, 0.0, 0.0, 0.0,
-                                        0.0, 0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.2]);
-        let b = Sedenion::from_slice(&[0.0, 1.0, 0.0, 0.4, 0.0, 0.0, 0.6, 0.0,
-                                        0.0, 0.0, 0.0, 0.3, 0.0, 0.0, 0.0, 0.0]);
+        let a = Sedenion::from_slice(&[
+            1.0, 0.0, 0.5, 0.0, 0.3, 0.0, 0.0, 0.0, 0.0, 0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.2,
+        ]);
+        let b = Sedenion::from_slice(&[
+            0.0, 1.0, 0.0, 0.4, 0.0, 0.0, 0.6, 0.0, 0.0, 0.0, 0.0, 0.3, 0.0, 0.0, 0.0, 0.0,
+        ]);
 
         let standard = a * b;
         let curvature_result = curvature_product(&a, &b, 0.0);
@@ -245,9 +242,18 @@ mod tests {
 
         println!("--- CURVATURE-INDUCED PRODUCT DEGRADATION ---");
         println!("  kappa_half_power   = {:.4}", result.kappa_critical);
-        println!("  degradation_ratio  = {:.4}", result.null_fraction_at_critical);
-        println!("  asymptotic_ratio   = {:.6}", result.associator_norm_at_critical);
-        println!("  transition_sharpness = {:.4}", result.transition_sharpness);
+        println!(
+            "  degradation_ratio  = {:.4}",
+            result.null_fraction_at_critical
+        );
+        println!(
+            "  asymptotic_ratio   = {:.6}",
+            result.associator_norm_at_critical
+        );
+        println!(
+            "  transition_sharpness = {:.4}",
+            result.transition_sharpness
+        );
 
         assert!(
             result.kappa_critical.is_finite() && result.kappa_critical > 0.0,

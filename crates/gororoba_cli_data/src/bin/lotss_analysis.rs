@@ -10,7 +10,7 @@ use anyhow::{Context, Result, anyhow, bail};
 use clap::{Parser, Subcommand};
 use data_core::catalogs::lotss::{LoTSSRelease, load_from_fits};
 use rand::{
-    Rng, SeedableRng,
+    RngExt, SeedableRng,
     seq::{SliceRandom, index::sample},
 };
 use rand_chacha::ChaCha8Rng;
@@ -611,7 +611,7 @@ fn bootstrap_rms_ratio(
 fn bootstrap_sample(values: &[f64], rng: &mut ChaCha8Rng) -> Vec<f64> {
     (0..values.len())
         .map(|_| {
-            let idx = rng.gen_range(0..values.len());
+            let idx = rng.random_range(0..values.len());
             values[idx]
         })
         .collect()
@@ -802,12 +802,12 @@ fn p_ultra_vectorized(points: &[(f64, f64)], n_triples: usize, rng: &mut ChaCha8
     let mut ultra = 0usize;
     let mut valid = 0usize;
     for _ in 0..n_triples {
-        let i = rng.gen_range(0..points.len());
-        let mut j = rng.gen_range(0..points.len() - 1);
+        let i = rng.random_range(0..points.len());
+        let mut j = rng.random_range(0..points.len() - 1);
         if j >= i {
             j += 1;
         }
-        let mut k = rng.gen_range(0..points.len() - 2);
+        let mut k = rng.random_range(0..points.len() - 2);
         if k >= i.min(j) {
             k += 1;
         }

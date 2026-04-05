@@ -53,11 +53,27 @@
 /// Extracted functions that would form the crate's public API.
 pub fn proposed_api_surface() -> Vec<(&'static str, &'static str, usize)> {
     vec![
-        ("wht_inplace", "In-place normalized Walsh-Hadamard Transform", 20),
-        ("generate_rademacher_diagonals", "Random +/-1 sign vectors for fast JL", 15),
-        ("fast_jl_rotate", "D1 * WHT * D2 * x (Ailon-Chazelle 2006)", 12),
+        (
+            "wht_inplace",
+            "In-place normalized Walsh-Hadamard Transform",
+            20,
+        ),
+        (
+            "generate_rademacher_diagonals",
+            "Random +/-1 sign vectors for fast JL",
+            15,
+        ),
+        (
+            "fast_jl_rotate",
+            "D1 * WHT * D2 * x (Ailon-Chazelle 2006)",
+            12,
+        ),
         ("fast_jl_unrotate", "Inverse: D2 * WHT * D1 * y", 12),
-        ("Rotation enum", "Haar | FastJL | E8Block | F4Block dispatch", 50),
+        (
+            "Rotation enum",
+            "Haar | FastJL | E8Block | F4Block dispatch",
+            50,
+        ),
     ]
 }
 

@@ -1,0 +1,497 @@
+# Requirements narrative overlay (TOML-authored compatibility lane).
+# WHY: Restores the canonical prose source for emitted requirements markdown.
+# HOW: Edit body_markdown here; run `cargo run -q -p gororoba_cli_data --bin registry-emit -- requirements-legacy`
+#      to regenerate the legacy markdown files under docs/, apps/, and crate README targets.
+
+[requirements_narrative]
+updated = "2026-04-04"
+authoritative = true
+document_count = 13
+
+[[document]]
+path = "docs/REQUIREMENTS.md"
+title = "open_gororoba Requirements"
+body_markdown = '''
+# open_gororoba Requirements
+
+This repository is a Rust-first scientific workspace with optional Python,
+Docker, Rocq, LaTeX, C++, and web-app lanes layered on top. The canonical
+requirements inventory lives in `registry/requirements.toml` and
+`registry/module_requirements.toml`; this narrative file exists to emit the
+human-facing compatibility docs from the same source-of-truth.
+
+## Core policy
+
+- Treat warnings as errors.
+- Keep installs reproducible and offline-testable by default.
+- Keep generated docs emitted from TOML sources rather than hand-edited.
+- Keep external data and optional toolchains behind explicit, auditable lanes.
+
+## Toolchain baseline
+
+- Rust: `nightly-2026-04-05` via `rust-toolchain.toml`
+- Edition: `2024`
+- Python: `3.11` or `3.12` recommended; `3.13+` allowed with optional-extras caveats
+- Formal proofs: Rocq `9.1.1`
+- Formatting/linting: `cargo fmt --all`, `cargo clippy --workspace -- -D warnings`
+
+## Verification entrypoints
+
+```sh
+cargo build --workspace -j"$(nproc)"
+cargo test --workspace -j"$(nproc)"
+cargo clippy --workspace -j"$(nproc)" -- -D warnings
+make governance-gate
+```
+
+## Module docs
+
+For module-specific requirements, see:
+
+- `docs/requirements/algebra.md`
+- `docs/requirements/analysis.md`
+- `docs/requirements/astro.md`
+- `docs/requirements/cpp.md`
+- `docs/requirements/heliosphere.md`
+- `docs/requirements/latex.md`
+- `docs/requirements/materials.md`
+- `docs/requirements/particle.md`
+- `docs/requirements/quantum-docker.md`
+- `docs/requirements/rocq.md`
+- `crates/lbm_3d_cuda/README.md`
+- `apps/gororoba_studio/README.md`
+'''
+
+[[document]]
+path = "docs/requirements/algebra.md"
+title = "Requirements: Algebra Engine"
+body_markdown = '''
+# Requirements: Algebra Engine (Cayley-Dickson, de Marrais, Reggiani)
+
+These components primarily live in Rust crates under `crates/gororoba_algebra/`,
+`crates/cd_kernel/`, and related sibling algebra crates, and are exercised by
+Rust unit and integration tests.
+
+Install:
+
+```ignore
+make install
+make rust-smoke
+make rust-regression
+```
+
+Notes:
+
+- The core algebra replication/validation code depends only on the base install extras.
+- Keep `PYTHONWARNINGS=error` enabled in scripts and CI; warnings are errors here.
+- The workspace manifest requires nightly Cargo because the root `Cargo.toml`
+  uses the unstable `codegen-backend` feature.
+- Native BLAS backends for the Burn-based `neural_homotopy` path are explicit
+  Cargo feature opt-ins, not defaults.
+- Use `make doctor-blas` or `sh scripts/detect_native_blas.sh` to see which
+  native BLAS/LAPACK candidates are present on the host and how they map to the
+  repo's exposed feature surface.
+
+Artifact generation entrypoints:
+
+- `make artifacts-boxkites`
+- `make artifacts-reggiani`
+- `make artifacts-motifs`
+- `make artifacts-motifs-big`
+
+Recommended verification commands:
+
+```ignore
+cargo +nightly test -p cd_kernel --lib
+cargo +nightly test -p algebra_analysis --lib x87_jacobi
+cargo +nightly test -p algebra_analysis --lib reference_jacobi
+cargo +nightly test -p gororoba_cli_algebra --bin x87_strategy_bench
+cargo +nightly check -p gororoba_cli_algebra --bin jacobi-backend-sweep
+cargo +nightly clippy -p cd_kernel -p algebra_analysis -p gororoba_cli_algebra --all-targets -- -D warnings
+```
+'''
+
+[[document]]
+path = "docs/requirements/analysis.md"
+title = "Requirements: Analysis"
+body_markdown = '''
+# Requirements: Analysis (Topology + Embeddings)
+
+These scripts use optional dependencies such as `networkx`, `ripser`, and friends.
+
+```ignore
+make install-analysis
+```
+
+Notes:
+
+- Common entrypoints that require these extras:
+- `src/topology_analysis.py` (ripser/persim)
+- `src/vis_box_kites.py` (scikit-learn)
+- `src/vis_advanced_projections.py` (scikit-learn, networkx)
+- `src/holo_tensor_net.py`, `src/vis_hyper_mera*.py` (networkx)
+- Some scientific wheels may not exist for very new Python versions; if installs
+  fail, use a container or a Python 3.11/3.12 environment for this module.
+
+## Data governance and provenance
+
+Analysis outputs are treated as reproducible build artifacts and must pass
+Rust-native governance checks:
+
+```ignore
+cargo run -p gororoba_cli_data --bin fetch-datasets -- --all --skip-existing --output-dir data/external
+cargo run -p gororoba_cli_data --bin hepdata-refresh -- --dirs alice_pbpb_raa,cms_oo_raa
+cargo run -p gororoba_cli_data --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json
+cargo run -p gororoba_cli_data --bin external-redownload-audit -- --execute true --out reports/external_redownload_audit_YYYY-MM-DD.toml --backend-order wget,curl,fetch
+cargo run -p gororoba_cli_data --bin external-blocked-burndown -- --out reports/external_blocked_burndown_YYYY-MM-DD.toml
+cargo run -p gororoba_cli_data --bin external-blocked-retry-ledger -- --seed-missing true --status seeded --phase governance_contract --note "Seed blocked_action_plan ledger rows"
+cargo run -p gororoba_cli_data --bin data-origin-audit -- --fail-on-strict-unknown
+cargo run -p gororoba_cli_data --bin data-governance-gate --
+cargo run -p gororoba_cli_data --bin data-semantic-validate --
+cargo run -p gororoba_cli_data --bin data-semantic-validate -- --fail-on-unverifiable true
+cargo run -p gororoba_cli_data --bin data-clean -- --scope reproducible --apply
+```
+'''
+
+[[document]]
+path = "docs/requirements/astro.md"
+title = "Requirements: Astronomy Data Fetching"
+body_markdown = '''
+# Requirements: Astronomy Data Fetching
+
+Astro scripts depend on `astroquery` and, for some workflows, `gwpy`.
+
+```ignore
+make install-astro
+```
+
+Rust-based unified fetcher for cosmology, astro, and geophysical pillars:
+
+```ignore
+cargo run -p gororoba_cli_data --bin fetch-datasets -- --list
+cargo run -p gororoba_cli_data --bin fetch-datasets -- --all --skip-existing --output-dir data/external
+```
+
+If a dataset is missing, fetch it explicitly and record provenance in:
+
+- `data/external/PROVENANCE.local.json`
+- `docs/BIBLIOGRAPHY.md`
+- `docs/external_sources/DATASET_MANIFEST.md`
+
+## Provenance governance checklist
+
+```ignore
+cargo run -p gororoba_cli_data --bin fetch-datasets -- --all --skip-existing --output-dir data/external
+cargo run -p gororoba_cli_data --bin hepdata-refresh -- --dirs alice_pbpb_raa,cms_oo_raa
+cargo run -p gororoba_cli_data --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json
+cargo run -p gororoba_cli_data --bin external-redownload-audit -- --execute true --out reports/external_redownload_audit_YYYY-MM-DD.toml --backend-order wget,curl,fetch
+cargo run -p gororoba_cli_data --bin external-blocked-burndown -- --out reports/external_blocked_burndown_YYYY-MM-DD.toml
+cargo run -p gororoba_cli_data --bin external-blocked-retry-ledger -- --seed-missing true --status seeded --phase governance_contract --note "Seed blocked_action_plan ledger rows"
+cargo run -p gororoba_cli_data --bin data-origin-audit -- --fail-on-strict-unknown
+cargo run -p gororoba_cli_data --bin data-governance-gate --
+cargo run -p gororoba_cli_data --bin data-semantic-validate --
+cargo run -p gororoba_cli_data --bin data-semantic-validate -- --fail-on-unverifiable true
+```
+'''
+
+[[document]]
+path = "docs/requirements/cpp.md"
+title = "Requirements: C++ Kernels"
+body_markdown = '''
+# Requirements: C++ Kernels (Conan + CMake)
+
+This repo includes optional C++ kernels under `cpp/` with Makefile targets:
+
+- `make cpp-deps`
+- `make cpp-build`
+- `make cpp-test`
+- `make cpp-bench`
+- `make cpp-clean`
+
+## Toolchain
+
+Typical requirements:
+
+- CMake >= 3.25
+- Conan 2.x
+- A C++20 compiler (GCC or Clang)
+
+Notes:
+
+- Conan profiles are machine-specific. Prefer keeping profiles local and avoid
+  committing machine-specific paths.
+- This is an optional acceleration layer; core correctness should remain covered
+  by Rust and Python verification lanes.
+
+## Build
+
+```ignore
+make cpp-build
+make cpp-test
+```
+'''
+
+[[document]]
+path = "docs/requirements/heliosphere.md"
+title = "Requirements: Heliosphere Data"
+body_markdown = '''
+# Requirements: Heliosphere Data
+
+The heliosphere lane is a mixed Rust-plus-data workflow centered on the
+Rust-native external dataset fetchers in `gororoba_cli_data`.
+
+Primary datasets in this lane:
+
+- `Helios 1 Merged Hourly`
+- `Helios 2 Merged Hourly`
+- `Voyager 1 Merged Hourly (2016)`
+- `Voyager 1 CRS Daily Flux (2016)`
+- `NASA OMNI2 Solar Wind + IMF (2016)`
+
+Recommended fetch/verify sequence:
+
+```ignore
+cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset "Helios 1 Merged Hourly" --skip-existing
+cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset "Helios 2 Merged Hourly" --skip-existing
+cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset "Voyager 1 Merged Hourly (2016)" --skip-existing
+cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset "Voyager 1 CRS Daily Flux (2016)" --skip-existing
+cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset "NASA OMNI2 Solar Wind + IMF (2016)" --skip-existing
+cargo run -p gororoba_cli_data --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json
+cargo run -p gororoba_cli_data --bin data-origin-audit -- --fail-on-strict-unknown
+cargo run -p gororoba_cli_data --bin data-governance-gate --
+```
+
+Notes:
+
+- Prefer `--skip-existing` for repeatable refreshes.
+- Treat provenance and semantic validation as part of the install contract, not
+  as an afterthought.
+'''
+
+[[document]]
+path = "docs/requirements/latex.md"
+title = "Requirements: LaTeX"
+body_markdown = '''
+# Requirements: LaTeX (PDF Build)
+
+To compile the LaTeX sources under `docs/latex/`, install a TeX distribution
+such as TeX Live and ensure `latexmk` is available.
+
+```ignore
+make latex
+```
+
+Notes:
+
+- The Makefile checks for `latexmk` on `PATH`.
+- Output is written under `docs/latex/out/`.
+- Treat LaTeX as an opt-in toolchain: it is not part of `make smoke` or the
+  standard Rust check loop.
+'''
+
+[[document]]
+path = "docs/requirements/materials.md"
+title = "Requirements: Materials Datasets"
+body_markdown = '''
+# Requirements: Materials Datasets
+
+For reproducible, keyless materials-science property datasets, prefer sources
+with clear licensing.
+
+Recommended starting points:
+
+- JARVIS-DFT
+- OQMD
+- NOMAD
+
+This repo provides scripts to download and cache small, test-friendly subsets.
+
+```ignore
+make install
+make artifacts-materials
+```
+
+## Provenance governance checklist
+
+```ignore
+cargo run -p gororoba_cli_data --bin fetch-datasets -- --all --skip-existing --output-dir data/external
+cargo run -p gororoba_cli_data --bin hepdata-refresh -- --dirs alice_pbpb_raa,cms_oo_raa
+cargo run -p gororoba_cli_data --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json
+cargo run -p gororoba_cli_data --bin external-redownload-audit -- --execute true --out reports/external_redownload_audit_YYYY-MM-DD.toml --backend-order wget,curl,fetch
+cargo run -p gororoba_cli_data --bin external-blocked-burndown -- --out reports/external_blocked_burndown_YYYY-MM-DD.toml
+cargo run -p gororoba_cli_data --bin external-blocked-retry-ledger -- --seed-missing true --status seeded --phase governance_contract --note "Seed blocked_action_plan ledger rows"
+cargo run -p gororoba_cli_data --bin data-origin-audit -- --fail-on-strict-unknown
+cargo run -p gororoba_cli_data --bin data-governance-gate --
+cargo run -p gororoba_cli_data --bin data-semantic-validate --
+cargo run -p gororoba_cli_data --bin data-semantic-validate -- --fail-on-unverifiable true
+```
+'''
+
+[[document]]
+path = "docs/requirements/particle.md"
+title = "Requirements: Particle Data Workflows"
+body_markdown = '''
+# Requirements: Particle Data Workflows
+
+Particle workflows are optional and use Python extras:
+
+```ignore
+make install-particle
+```
+
+This installs support for:
+
+- `uproot`
+- `awkward`
+- `vector`
+
+Use this module only for offline analyses against cached or open data snapshots.
+Do not add network calls to tests. Record provenance for imported snapshots under
+`data/external/`.
+
+## Provenance governance checklist
+
+```ignore
+cargo run -p gororoba_cli_data --bin fetch-datasets -- --all --skip-existing --output-dir data/external
+cargo run -p gororoba_cli_data --bin hepdata-refresh -- --dirs alice_pbpb_raa,cms_oo_raa
+cargo run -p gororoba_cli_data --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json
+cargo run -p gororoba_cli_data --bin external-redownload-audit -- --execute true --out reports/external_redownload_audit_YYYY-MM-DD.toml --backend-order wget,curl,fetch
+cargo run -p gororoba_cli_data --bin external-blocked-burndown -- --out reports/external_blocked_burndown_YYYY-MM-DD.toml
+cargo run -p gororoba_cli_data --bin external-blocked-retry-ledger -- --seed-missing true --status seeded --phase governance_contract --note "Seed blocked_action_plan ledger rows"
+cargo run -p gororoba_cli_data --bin data-origin-audit -- --fail-on-strict-unknown
+cargo run -p gororoba_cli_data --bin data-governance-gate --
+cargo run -p gororoba_cli_data --bin data-semantic-validate --
+cargo run -p gororoba_cli_data --bin data-semantic-validate -- --fail-on-unverifiable true
+```
+'''
+
+[[document]]
+path = "docs/requirements/quantum-docker.md"
+title = "Requirements: Quantum Docker"
+body_markdown = '''
+# Requirements: Quantum (Qiskit via Docker)
+
+Host Python may be too new for Qiskit wheels. Use Docker.
+
+```ignore
+docker build -t qiskit-env -f docker/Dockerfile .
+./run_quantum_container.sh src/quantum/local_test.py
+```
+
+Makefile equivalents:
+
+```ignore
+make docker-quantum-build
+make docker-quantum-run ARGS="src/quantum/local_test.py"
+```
+
+Optional local install on Python 3.11/3.12 only:
+
+```ignore
+make install-quantum
+```
+'''
+
+[[document]]
+path = "docs/requirements/rocq.md"
+title = "Requirements: Rocq Proof Checking"
+body_markdown = '''
+# Requirements: Rocq Proof Checking
+
+This repo contains `.v` files under `proofs/` and companion curated theory
+surfaces.
+
+Install Rocq, for example with `opam`:
+
+```ignore
+opam install rocq
+```
+
+Then run:
+
+```ignore
+make rocq
+```
+
+Notes:
+
+- The Makefile checks for `coqc` on `PATH`.
+- Keep proof checking as an explicit toolchain lane with its own versioned
+  requirements.
+'''
+
+[[document]]
+path = "crates/lbm_3d_cuda/README.md"
+title = "Requirements: lbm_3d_cuda"
+body_markdown = '''
+# Requirements: lbm_3d_cuda
+
+`lbm_3d_cuda` is the CUDA-accelerated D3Q19 lattice Boltzmann lane. It is an
+optional GPU crate and should be treated as a crate-scoped capability rather
+than part of the mandatory host baseline.
+
+Primary verification commands:
+
+```ignore
+cargo check -p lbm_3d_cuda
+cargo clippy -p lbm_3d_cuda --all-targets -- -D warnings
+```
+
+Host assumptions:
+
+- NVIDIA GPU and driver stack visible to the process
+- CUDA runtime/NVRTC support compatible with `cudarc`
+- Rust nightly toolchain matching the workspace policy
+
+Notes:
+
+- Runtime kernel compilation is performed through `cudarc` NVRTC paths.
+- Production and benchmark precision tiers are intentionally separate surfaces.
+- Keep GPU validation as an explicit lane so CPU-only hosts can still validate
+  the rest of the workspace.
+'''
+
+[[document]]
+path = "apps/gororoba_studio/README.md"
+title = "Requirements: Gororoba Studio"
+body_markdown = '''
+# Requirements: Gororoba Studio (Rust Web App)
+
+`gororoba-studio` is a Rust-native web app lane that serves interactive UI
+assets and runs thesis pipelines through HTTP endpoints.
+
+Run:
+
+```ignore
+make studio-run
+```
+
+Verify:
+
+```ignore
+make studio-check
+```
+
+Primary API endpoints:
+
+- `GET /api/health`
+- `GET /api/pipelines`
+- `GET /api/history`
+- `POST /api/run/{experiment_id}`
+- `POST /api/run-suite`
+- `POST /api/benchmark/{experiment_id}`
+- `POST /api/reproducibility/{experiment_id}`
+
+Dependencies:
+
+- Rust toolchain matching workspace policy
+- Cargo workspace dependencies such as `axum` and `tokio`
+- Existing thesis pipeline crates such as `gororoba_engine`, `sign_imbalance`,
+  `lbm_core`, `neural_homotopy`, and `lattice_filtration`
+
+Notes:
+
+- Keep this app in warnings-as-errors mode.
+- Benchmark mode provides aggregate timing and metric stats for repeat runs.
+- Reproducibility mode validates metric drift tolerance and gate consistency.
+'''

@@ -104,6 +104,9 @@ mod tests {
     fn test_sedenion_zd_witness() {
         let (_, _, norm_ab, norm_a_norm_b) = sedenion_zd_witness();
         assert!(norm_ab.abs() < 1e-10, "||a*b||^2 should be 0");
-        assert!((norm_a_norm_b - 4.0).abs() < 1e-10, "||a||^2 * ||b||^2 should be 4");
+        assert!(
+            (norm_a_norm_b - 4.0).abs() < 1e-10,
+            "||a||^2 * ||b||^2 should be 4"
+        );
     }
 }

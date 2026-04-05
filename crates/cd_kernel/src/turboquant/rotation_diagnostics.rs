@@ -42,13 +42,21 @@ fn compute_stats(coords: &[f64], method: &str, d: usize) -> DistributionStats {
     let std = var.sqrt();
 
     let skewness = if std > 1e-15 {
-        coords.iter().map(|&x| ((x - mean) / std).powi(3)).sum::<f64>() / n
+        coords
+            .iter()
+            .map(|&x| ((x - mean) / std).powi(3))
+            .sum::<f64>()
+            / n
     } else {
         0.0
     };
 
     let kurtosis = if std > 1e-15 {
-        coords.iter().map(|&x| ((x - mean) / std).powi(4)).sum::<f64>() / n
+        coords
+            .iter()
+            .map(|&x| ((x - mean) / std).powi(4))
+            .sum::<f64>()
+            / n
     } else {
         0.0
     };
@@ -146,7 +154,7 @@ pub fn diagnose_e8_mismatch(n_vectors: usize) -> E8Diagnosis {
 
     // Check if E8 distribution is simply a scaled Gaussian
     let scale_fix_works = (e8.kurtosis - 3.0).abs() < 1.0 // near-Gaussian kurtosis
-        && e8.skewness.abs() < 0.5;    // near-symmetric
+        && e8.skewness.abs() < 0.5; // near-symmetric
 
     // Check if E8 std is just off by a constant factor
     let scale_factor = if haar.std > 1e-15 {
@@ -203,7 +211,10 @@ mod tests {
 
         println!("Haar distribution at d={}:", d);
         println!("  mean:     {:.6} (expected ~0)", stats.mean);
-        println!("  std:      {:.6} (expected {:.6})", stats.std, stats.expected_std);
+        println!(
+            "  std:      {:.6} (expected {:.6})",
+            stats.std, stats.expected_std
+        );
         println!("  std_ratio:{:.4} (expected ~1.0)", stats.std_ratio);
         println!("  skewness: {:.4} (expected ~0)", stats.skewness);
         println!("  kurtosis: {:.4} (expected ~3.0)", stats.kurtosis);
@@ -214,7 +225,10 @@ mod tests {
         // in the QR-based rotation. The distribution converges to Gaussian
         // as n_vectors increases.
         assert!(stats.mean.abs() < 0.01, "Haar mean should be ~0");
-        assert!((stats.std_ratio - 1.0).abs() < 0.2, "Haar std should match expected");
+        assert!(
+            (stats.std_ratio - 1.0).abs() < 0.2,
+            "Haar std should match expected"
+        );
     }
 
     #[test]
@@ -225,7 +239,10 @@ mod tests {
 
         println!("E8 distribution at d={}:", d);
         println!("  mean:     {:.6}", stats.mean);
-        println!("  std:      {:.6} (expected {:.6})", stats.std, stats.expected_std);
+        println!(
+            "  std:      {:.6} (expected {:.6})",
+            stats.std, stats.expected_std
+        );
         println!("  std_ratio:{:.4}", stats.std_ratio);
         println!("  skewness: {:.4}", stats.skewness);
         println!("  kurtosis: {:.4}", stats.kurtosis);
@@ -256,27 +273,39 @@ mod tests {
         let comp_wht = tq_wht.quantize(&x, &mut buf);
         let mut recon_wht = vec![0.0f64; d];
         tq_wht.dequantize(&comp_wht, &mut buf, &mut recon_wht);
-        let mse_wht: f64 = x.iter().zip(recon_wht.iter())
-            .map(|(a, b)| (a - b).powi(2)).sum::<f64>() / d as f64;
+        let mse_wht: f64 = x
+            .iter()
+            .zip(recon_wht.iter())
+            .map(|(a, b)| (a - b).powi(2))
+            .sum::<f64>()
+            / d as f64;
 
         // E8 pipeline
         let tq_e8 = TurboQuantMSE::from_config(
             &crate::turboquant::config::TurboQuantConfig {
-                dim: d, bits, seed: 42,
+                dim: d,
+                bits,
+                seed: 42,
                 rotation: crate::turboquant::config::RotationMethod::E8Block,
                 qjl_correction: crate::turboquant::config::QjlCorrectionMode::Never,
                 adaptive: crate::turboquant::config::AdaptiveBitsConfig {
-                    enabled: false, promote_fraction: 0.0,
+                    enabled: false,
+                    promote_fraction: 0.0,
                 },
                 qjl_dim: None,
             },
-            bits, 42,
+            bits,
+            42,
         );
         let comp_e8 = tq_e8.quantize(&x, &mut buf);
         let mut recon_e8 = vec![0.0f64; d];
         tq_e8.dequantize(&comp_e8, &mut buf, &mut recon_e8);
-        let mse_e8: f64 = x.iter().zip(recon_e8.iter())
-            .map(|(a, b)| (a - b).powi(2)).sum::<f64>() / d as f64;
+        let mse_e8: f64 = x
+            .iter()
+            .zip(recon_e8.iter())
+            .map(|(a, b)| (a - b).powi(2))
+            .sum::<f64>()
+            / d as f64;
 
         println!("\n=== E8 Pipeline Step-by-Step Debug ===");
         println!("Input ||x|| = {:.6}", x_norm);

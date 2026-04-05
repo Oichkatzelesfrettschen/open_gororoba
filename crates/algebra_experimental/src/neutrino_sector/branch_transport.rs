@@ -212,18 +212,18 @@ fn pmns_angles_at(
     beta: &[f64; 6],
 ) -> (f64, f64, f64) {
     let lift = TensorElementLift;
-    let eig_ch = m_ch_base.selfadjoint_eigendecomposition(faer::Side::Lower);
+    let eig_ch = m_ch_base.self_adjoint_eigen(faer::Side::Lower).unwrap();
 
     let mut m_nu = m_nu_base.clone();
     apply_v6_perturbation(&mut m_nu, v6_basis, beta, &lift);
-    let m_nu = (&m_nu + m_nu.transpose()) * faer::scale(0.5);
-    let eig_nu = m_nu.selfadjoint_eigendecomposition(faer::Side::Lower);
+    let m_nu = (&m_nu + m_nu.transpose()) * faer::Scale(0.5);
+    let eig_nu = m_nu.self_adjoint_eigen(faer::Side::Lower).unwrap();
 
-    let u_raw = eig_ch.u().transpose() * eig_nu.u();
+    let u_raw = eig_ch.U().transpose() * eig_nu.U();
     let mut u_pmns = faer::Mat::<f64>::zeros(3, 3);
     for (i, &row) in perm_u.iter().enumerate() {
         for (j, &col) in perm_d.iter().enumerate() {
-            u_pmns.write(i, j, u_raw.read(row, col));
+            u_pmns[(i, j)] = u_raw[(row, col)];
         }
     }
     extract_pmns_angles(&u_pmns)
@@ -241,12 +241,12 @@ pub fn compute_gradient_frame(
 
     let (m_ch_base_raw, m_nu_base_raw) =
         construct_pmns_matrices_two_param(charged_pair, neutrino_pair, alpha_ch, alpha_nu);
-    let m_ch_base = (&m_ch_base_raw + m_ch_base_raw.transpose()) * faer::scale(0.5);
-    let m_nu_base = (&m_nu_base_raw + m_nu_base_raw.transpose()) * faer::scale(0.5);
+    let m_ch_base = (&m_ch_base_raw + m_ch_base_raw.transpose()) * faer::Scale(0.5);
+    let m_nu_base = (&m_nu_base_raw + m_nu_base_raw.transpose()) * faer::Scale(0.5);
 
-    let eig_ch_0 = m_ch_base.selfadjoint_eigendecomposition(faer::Side::Lower);
-    let eig_nu_0 = m_nu_base.selfadjoint_eigendecomposition(faer::Side::Lower);
-    let u_raw_0 = eig_ch_0.u().transpose() * eig_nu_0.u();
+    let eig_ch_0 = m_ch_base.self_adjoint_eigen(faer::Side::Lower).unwrap();
+    let eig_nu_0 = m_nu_base.self_adjoint_eigen(faer::Side::Lower).unwrap();
+    let u_raw_0 = eig_ch_0.U().transpose() * eig_nu_0.U();
     let (u_pmns_0, perm_u, perm_d) = extract_ckm_permutation_aware(&u_raw_0);
     let base_angles = extract_pmns_angles(&u_pmns_0);
 

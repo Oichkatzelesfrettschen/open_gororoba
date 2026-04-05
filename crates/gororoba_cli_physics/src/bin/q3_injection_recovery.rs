@@ -138,7 +138,7 @@ fn bootstrap_sample(
     let n = galaxies.len();
     (0..n)
         .map(|_| {
-            let idx = rng.gen_range(0..n);
+            let idx = rng.random_range(0..n);
             galaxies[idx].clone()
         })
         .collect()

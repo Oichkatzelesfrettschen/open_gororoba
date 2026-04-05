@@ -5,8 +5,7 @@
 
 #[cfg(test)]
 mod tests {
-    use crate::turboquant::pipeline::TurboQuantMSE;
-    use crate::turboquant::synthesized::SynthesizedQuantizer;
+    use crate::turboquant::{pipeline::TurboQuantMSE, synthesized::SynthesizedQuantizer};
 
     fn deterministic_vectors(n: usize, d: usize) -> Vec<Vec<f64>> {
         use rand::SeedableRng;
@@ -14,7 +13,9 @@ mod tests {
         use rand_distr::{Distribution, StandardNormal};
         let mut rng = ChaCha20Rng::seed_from_u64(12345);
         let normal = StandardNormal;
-        (0..n).map(|_| (0..d).map(|_| normal.sample(&mut rng)).collect()).collect()
+        (0..n)
+            .map(|_| (0..d).map(|_| normal.sample(&mut rng)).collect())
+            .collect()
     }
 
     #[test]
@@ -25,18 +26,29 @@ mod tests {
         let vectors = deterministic_vectors(100, d);
         let mut buf = vec![0.0f64; 3 * d];
 
-        let total_mse: f64 = vectors.iter().map(|v| {
-            let comp = tq.quantize(v, &mut buf);
-            let mut recon = vec![0.0f64; d];
-            tq.dequantize(&comp, &mut buf, &mut recon);
-            v.iter().zip(recon.iter()).map(|(a, b)| (a - b).powi(2)).sum::<f64>() / d as f64
-        }).sum::<f64>() / 100.0;
+        let total_mse: f64 = vectors
+            .iter()
+            .map(|v| {
+                let comp = tq.quantize(v, &mut buf);
+                let mut recon = vec![0.0f64; d];
+                tq.dequantize(&comp, &mut buf, &mut recon);
+                v.iter()
+                    .zip(recon.iter())
+                    .map(|(a, b)| (a - b).powi(2))
+                    .sum::<f64>()
+                    / d as f64
+            })
+            .sum::<f64>()
+            / 100.0;
 
         // Golden reference: this value must not change with optimizations
         // If it changes, a regression has occurred in the quantization pipeline
         println!("Golden MSE (d=128, 3-bit, WHT): {:.10}", total_mse);
-        assert!(total_mse > 0.01 && total_mse < 0.1,
-            "MSE out of expected range: {}", total_mse);
+        assert!(
+            total_mse > 0.01 && total_mse < 0.1,
+            "MSE out of expected range: {}",
+            total_mse
+        );
     }
 
     #[test]
@@ -47,15 +59,19 @@ mod tests {
         let vectors = deterministic_vectors(100, d);
         let mut buf = vec![0.0f64; 3 * d];
 
-        let total_cos: f64 = vectors.iter().map(|v| {
-            let comp = tq.quantize(v, &mut buf);
-            let mut recon = vec![0.0f64; d];
-            tq.dequantize(&comp, &mut buf, &mut recon);
-            let dot: f64 = v.iter().zip(recon.iter()).map(|(a, b)| a * b).sum();
-            let na: f64 = v.iter().map(|x| x * x).sum::<f64>().sqrt();
-            let nb: f64 = recon.iter().map(|x| x * x).sum::<f64>().sqrt();
-            dot / (na * nb)
-        }).sum::<f64>() / 100.0;
+        let total_cos: f64 = vectors
+            .iter()
+            .map(|v| {
+                let comp = tq.quantize(v, &mut buf);
+                let mut recon = vec![0.0f64; d];
+                tq.dequantize(&comp, &mut buf, &mut recon);
+                let dot: f64 = v.iter().zip(recon.iter()).map(|(a, b)| a * b).sum();
+                let na: f64 = v.iter().map(|x| x * x).sum::<f64>().sqrt();
+                let nb: f64 = recon.iter().map(|x| x * x).sum::<f64>().sqrt();
+                dot / (na * nb)
+            })
+            .sum::<f64>()
+            / 100.0;
 
         println!("Golden cosine (d=128, 3-bit, WHT): {:.10}", total_cos);
         assert!(total_cos > 0.95, "Cosine too low: {}", total_cos);
@@ -71,9 +87,15 @@ mod tests {
 
         // Check promotion count (should be ~25%)
         let n_promoted = compressed.iter().filter(|c| c.bits == 4).count();
-        println!("Golden synthesized: {}/{} promoted at d={}", n_promoted, 40, d);
-        assert!(n_promoted >= 8 && n_promoted <= 12,
-            "Expected ~10 promoted (25%), got {}", n_promoted);
+        println!(
+            "Golden synthesized: {}/{} promoted at d={}",
+            n_promoted, 40, d
+        );
+        assert!(
+            n_promoted >= 8 && n_promoted <= 12,
+            "Expected ~10 promoted (25%), got {}",
+            n_promoted
+        );
 
         // Check all vectors compressed successfully
         assert_eq!(compressed.len(), 40);

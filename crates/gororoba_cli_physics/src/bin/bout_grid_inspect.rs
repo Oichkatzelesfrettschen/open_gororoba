@@ -26,7 +26,12 @@ fn main() -> Result<()> {
     // Dimensions
     println!("\n  Dimensions ({}):", ds.num_dims());
     for dim in ds.get_dims() {
-        println!("    {}: size={}, unlimited={}", dim.name(), dim.size(), dim.is_unlimited());
+        println!(
+            "    {}: size={}, unlimited={}",
+            dim.name(),
+            dim.size(),
+            dim.is_unlimited()
+        );
     }
 
     // Global attributes
@@ -63,7 +68,13 @@ fn main() -> Result<()> {
                 if !vals.is_empty() {
                     let min = vals.iter().cloned().fold(f64::INFINITY, f64::min);
                     let max = vals.iter().cloned().fold(f64::NEG_INFINITY, f64::max);
-                    println!("\n  {}: len={}, min={:.6}, max={:.6}", key, vals.len(), min, max);
+                    println!(
+                        "\n  {}: len={}, min={:.6}, max={:.6}",
+                        key,
+                        vals.len(),
+                        min,
+                        max
+                    );
                 }
             }
             Err(_) => {}

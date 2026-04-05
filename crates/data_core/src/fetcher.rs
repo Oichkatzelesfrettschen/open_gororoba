@@ -392,7 +392,7 @@ pub fn compute_sha256(path: &Path) -> Result<String, io::Error> {
         hasher.update(&buffer[..bytes]);
     }
     let hash = hasher.finalize();
-    Ok(format!("{:x}", hash))
+    Ok(hash.iter().map(|byte| format!("{byte:02x}")).collect())
 }
 
 /// Validate that data is not an HTML error page.

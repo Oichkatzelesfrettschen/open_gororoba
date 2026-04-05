@@ -1155,7 +1155,11 @@ fn fingerprint(text: &str) -> String {
     let normalized = collapse_ws(text);
     let mut hasher = Sha256::new();
     hasher.update(normalized.as_bytes());
-    format!("{:x}", hasher.finalize())
+    hasher
+        .finalize()
+        .iter()
+        .map(|byte| format!("{byte:02x}"))
+        .collect()
 }
 
 fn sorted_unique_regex(text: &str, regex: &Regex) -> Vec<String> {

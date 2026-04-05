@@ -60,7 +60,6 @@ pub fn verify_norm_symmetry(x: &[f64], y: &[f64]) -> f64 {
 /// The identity holds in any algebra with a non-degenerate quadratic form.
 /// Mirrors: Brown (1972) Lemma 3.10.
 pub fn verify_polarization_identity(x: &[f64], y: &[f64]) -> f64 {
-
     // Compute N(x) and N(y)
     let norm_x = cd_norm_sq(x);
     let norm_y = cd_norm_sq(y);
@@ -88,7 +87,9 @@ mod tests {
         let mut x = vec![0.0; 16];
         let mut s = seed;
         for v in &mut x {
-            s = s.wrapping_mul(6364136223846793005).wrapping_add(1442695040888963407);
+            s = s
+                .wrapping_mul(6364136223846793005)
+                .wrapping_add(1442695040888963407);
             *v = ((s >> 33) as f64) / (1u64 << 31) as f64 - 1.0;
         }
         x
@@ -169,10 +170,7 @@ mod tests {
         let err_conj_left = verify_norm_conjugate_left(&x, &y);
         let err_symm = verify_norm_symmetry(&x, &y);
 
-        assert!(
-            err_conj_right < 1e-10,
-            "Part i failed: N(xy~) != N(xy)"
-        );
+        assert!(err_conj_right < 1e-10, "Part i failed: N(xy~) != N(xy)");
         assert!(err_conj_left < 1e-10, "Part ii failed: N(x~y) != N(xy)");
         assert!(err_symm < 1e-10, "Part iii failed: N(xy) != N(yx)");
     }

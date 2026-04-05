@@ -212,7 +212,7 @@ compilation vs O(hours) for monolithic `ring`.
 
 ## Toolchain
 
-- **Rust**: nightly-2026-03-05 (pinned via `rust-toolchain.toml`)
+- **Rust**: nightly-2026-04-05 (pinned via `rust-toolchain.toml`)
 - **Edition**: 2024
 - **Build**: Cranelift backend for dev (opt-level 2), LLVM for release
 - **GPU**: CUDA via `cudarc 0.19.1`, Vulkan via `ash` (feature-gated)

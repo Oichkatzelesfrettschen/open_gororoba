@@ -5,7 +5,7 @@ struct SumLift;
 
 impl FlavorLift for SumLift {
     fn lift(&self, v: &[f64], m: &mut faer::Mat<f64>) {
-        m.write(0, 0, m.read(0, 0) + v.iter().sum::<f64>());
+        m[(0, 0)] += v.iter().sum::<f64>();
     }
 }
 

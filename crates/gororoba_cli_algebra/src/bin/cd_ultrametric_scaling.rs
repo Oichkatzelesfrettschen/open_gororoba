@@ -59,8 +59,8 @@ fn generate_cd_elements(dim: usize, n: usize, rng: &mut ChaCha8Rng) -> Vec<Vec<f
 
     for _ in 0..n {
         // Generate two random vectors
-        let a: Vec<f64> = (0..dim).map(|_| rng.gen_range(-1.0..1.0)).collect();
-        let b: Vec<f64> = (0..dim).map(|_| rng.gen_range(-1.0..1.0)).collect();
+        let a: Vec<f64> = (0..dim).map(|_| rng.random_range(-1.0..1.0)).collect();
+        let b: Vec<f64> = (0..dim).map(|_| rng.random_range(-1.0..1.0)).collect();
 
         // Multiply using CD algebra structure
         let product = cd_multiply(&a, &b);

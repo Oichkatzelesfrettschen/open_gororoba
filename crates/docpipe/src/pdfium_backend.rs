@@ -164,7 +164,7 @@ pub fn render_page_to_png(path: &Path, page_num: usize, width: u16) -> Result<Ve
 
     let page = doc
         .pages()
-        .get(page_num.saturating_sub(1) as u16)
+        .get(page_num.saturating_sub(1) as i32)
         .map_err(|e| DocpipeError::PdfParse(format!("page {page_num}: {e}")))?;
 
     let config = PdfRenderConfig::new()
@@ -175,7 +175,9 @@ pub fn render_page_to_png(path: &Path, page_num: usize, width: u16) -> Result<Ve
         .render_with_config(&config)
         .map_err(|e| DocpipeError::PdfParse(format!("render error: {e}")))?;
 
-    let dyn_image: ::image::DynamicImage = bitmap.as_image();
+    let dyn_image: ::image::DynamicImage = bitmap
+        .as_image()
+        .map_err(|e| DocpipeError::PdfParse(format!("bitmap conversion error: {e}")))?;
     let mut buf = Vec::new();
     let mut cursor = std::io::Cursor::new(&mut buf);
     dyn_image

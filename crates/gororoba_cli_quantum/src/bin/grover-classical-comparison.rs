@@ -33,7 +33,7 @@ fn classical_random_search(n_states: usize, marked_set: &HashSet<usize>, seed: u
     let mut visited = HashSet::new();
 
     while visited.len() < n_states {
-        let idx = rng.gen_range(0..n_states);
+        let idx = rng.random_range(0..n_states);
         if !visited.contains(&idx) {
             visited.insert(idx);
             calls += 1;

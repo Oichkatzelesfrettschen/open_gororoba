@@ -37,7 +37,7 @@
 //! - Vidal (2003): Efficient classical simulation of slightly entangled
 //!   quantum computations, PRL 91, 147902
 
-use faer::{Mat, Side, complex_native::c64};
+use faer::{Mat, Side, c64};
 use rayon::prelude::*;
 
 /// Maximum bond dimension before truncation.
@@ -154,7 +154,7 @@ impl MatrixProductState {
                     for r in 0..cols {
                         let idx = l * physical_dim * cols + p * cols + r;
                         if idx < remaining.len() {
-                            mat.write(l * physical_dim + p, r, remaining[idx]);
+                            mat[(l * physical_dim + p, r)] = remaining[idx];
                         }
                     }
                 }
@@ -166,21 +166,21 @@ impl MatrixProductState {
                 let mut tensor = MpsTensor::zeros(chi_left, physical_dim, chi_right);
                 for l in 0..chi_left {
                     for p in 0..physical_dim {
-                        tensor.set(l, p, 0, mat.read(l * physical_dim + p, 0));
+                        tensor.set(l, p, 0, mat[(l * physical_dim + p, 0)]);
                     }
                 }
                 tensors.push(tensor);
             } else {
                 // Perform SVD: mat = U * S * V^dag
-                let svd = mat.svd();
-                let u = svd.u();
-                let s = svd.s_diagonal();
-                let v = svd.v();
+                let svd = mat.svd().unwrap();
+                let u = svd.U();
+                let s = svd.S();
+                let v = svd.V();
 
                 // Determine new bond dimension (truncate small singular values)
                 let mut chi_new = 0;
-                for i in 0..s.nrows().min(s.ncols()) {
-                    if s.read(i).re.abs() > DEFAULT_SVD_THRESHOLD {
+                for i in 0..rows.min(cols) {
+                    if s[i].re.abs() > DEFAULT_SVD_THRESHOLD {
                         chi_new += 1;
                     }
                 }
@@ -191,7 +191,7 @@ impl MatrixProductState {
                 for l in 0..chi_left {
                     for p in 0..physical_dim {
                         for r in 0..chi_new {
-                            tensor.set(l, p, r, u.read(l * physical_dim + p, r));
+                            tensor.set(l, p, r, u[(l * physical_dim + p, r)]);
                         }
                     }
                 }
@@ -200,9 +200,9 @@ impl MatrixProductState {
                 // Prepare remaining = S * V^dag for next iteration
                 remaining = Vec::with_capacity(chi_new * cols);
                 for i in 0..chi_new {
-                    let s_i = s.read(i);
+                    let s_i = s[i];
                     for j in 0..cols {
-                        let v_ji = v.read(j, i); // V is stored as V, we need V^dag
+                        let v_ji = v[(j, i)]; // V is stored as V, we need V^dag
                         let v_dag = c64::new(v_ji.re, -v_ji.im);
                         let val = c64::new(
                             s_i.re * v_dag.re - s_i.im * v_dag.im,
@@ -420,23 +420,23 @@ impl MatrixProductState {
                         let idx = l * 4 * chi_r + p_combined * chi_r + r;
                         let row = l * 2 + p1;
                         let col = p2 * chi_r + r;
-                        mat.write(row, col, theta_prime[idx]);
+                        mat[(row, col)] = theta_prime[idx];
                     }
                 }
             }
         }
 
         // SVD decomposition
-        let svd = mat.svd();
-        let u = svd.u();
-        let s = svd.s_diagonal();
-        let v = svd.v();
+        let svd = mat.svd().unwrap();
+        let u = svd.U();
+        let s = svd.S();
+        let v = svd.V();
 
         // Determine new bond dimension
         let mut chi_new = 0;
         let max_rank = rows.min(cols);
         for i in 0..max_rank {
-            if s.read(i).re.abs() > self.svd_threshold {
+            if s[i].re.abs() > self.svd_threshold {
                 chi_new += 1;
             }
         }
@@ -448,8 +448,8 @@ impl MatrixProductState {
             for p in 0..2 {
                 for r in 0..chi_new {
                     let row = l * 2 + p;
-                    let u_val = u.read(row, r);
-                    let s_val = s.read(r).re.sqrt();
+                    let u_val = u[(row, r)];
+                    let s_val = s[r].re.sqrt();
                     new_a.set(l, p, r, c64::new(u_val.re * s_val, u_val.im * s_val));
                 }
             }
@@ -461,9 +461,9 @@ impl MatrixProductState {
             for p in 0..2 {
                 for r in 0..chi_r {
                     let col = p * chi_r + r;
-                    let v_val = v.read(col, l); // V^dag
+                    let v_val = v[(col, l)]; // V^dag
                     let v_dag = c64::new(v_val.re, -v_val.im);
-                    let s_val = s.read(l).re.sqrt();
+                    let s_val = s[l].re.sqrt();
                     new_b.set(l, p, r, c64::new(v_dag.re * s_val, v_dag.im * s_val));
                 }
             }
@@ -560,7 +560,7 @@ impl MatrixProductState {
         // For a properly normalized MPS, this should be 1.0
         // Contract from left: L = A^dag A
         let mut left = Mat::<c64>::zeros(1, 1);
-        left.write(0, 0, c64::new(1.0, 0.0));
+        left[(0, 0)] = c64::new(1.0, 0.0);
 
         for tensor in &self.tensors {
             let chi_l = tensor.chi_left;
@@ -573,7 +573,7 @@ impl MatrixProductState {
                     let mut sum = c64::new(0.0, 0.0);
                     for l1 in 0..chi_l {
                         for l2 in 0..chi_l {
-                            let left_val = left.read(l1, l2);
+                            let left_val = left[(l1, l2)];
                             for p in 0..2 {
                                 let a = tensor.get(l1, p, r1);
                                 let b = tensor.get(l2, p, r2);
@@ -590,13 +590,13 @@ impl MatrixProductState {
                             }
                         }
                     }
-                    new_left.write(r1, r2, sum);
+                    new_left[(r1, r2)] = sum;
                 }
             }
             left = new_left;
         }
 
-        left.read(0, 0).re
+        left[(0, 0)].re
     }
 
     /// Convert MPS back to dense state vector.
@@ -614,7 +614,7 @@ impl MatrixProductState {
 
             // Contract MPS for this basis state
             let mut result = Mat::<c64>::zeros(1, 1);
-            result.write(0, 0, c64::new(1.0, 0.0));
+            result[(0, 0)] = c64::new(1.0, 0.0);
 
             for (site, &p) in physical_indices.iter().enumerate() {
                 let tensor = &self.tensors[site];
@@ -627,18 +627,18 @@ impl MatrixProductState {
                     let mut sum = c64::new(0.0, 0.0);
                     for l in 0..chi_l {
                         let t = tensor.get(l, p, r);
-                        let left = result.read(0, l);
+                        let left = result[(0, l)];
                         sum = c64::new(
                             sum.re + left.re * t.re - left.im * t.im,
                             sum.im + left.re * t.im + left.im * t.re,
                         );
                     }
-                    new_result.write(0, r, sum);
+                    new_result[(0, r)] = sum;
                 }
                 result = new_result;
             }
 
-            *coeff = result.read(0, 0);
+            *coeff = result[(0, 0)];
         }
 
         coeffs
@@ -654,7 +654,7 @@ impl MatrixProductState {
 
         // Contract left part to get reduced density matrix
         let mut left = Mat::<c64>::zeros(1, 1);
-        left.write(0, 0, c64::new(1.0, 0.0));
+        left[(0, 0)] = c64::new(1.0, 0.0);
 
         for site in 0..k {
             let tensor = &self.tensors[site];
@@ -669,7 +669,7 @@ impl MatrixProductState {
                     let mut sum = c64::new(0.0, 0.0);
                     for a in 0..chi_l {
                         for b in 0..chi_l {
-                            let l_ab = left.read(a, b);
+                            let l_ab = left[(a, b)];
                             for p in 0..2 {
                                 let a_apc = tensor.get(a, p, c);
                                 let a_bpd = tensor.get(b, p, d);
@@ -686,7 +686,7 @@ impl MatrixProductState {
                             }
                         }
                     }
-                    new_left.write(c, d, sum);
+                    new_left[(c, d)] = sum;
                 }
             }
             left = new_left;
@@ -701,12 +701,12 @@ impl MatrixProductState {
         }
 
         // Use faer's eigendecomposition for the density matrix
-        let eig = left.selfadjoint_eigendecomposition(Side::Lower);
-        let eigenvalues = eig.s();
+        let eig = left.self_adjoint_eigen(Side::Lower).unwrap();
+        let eigenvalues = eig.S();
 
         let mut entropy = 0.0;
         for i in 0..chi {
-            let p = eigenvalues.column_vector().read(i).re;
+            let p = eigenvalues.column_vector()[i].re;
             if p > 1e-15 {
                 entropy -= p * p.ln();
             }

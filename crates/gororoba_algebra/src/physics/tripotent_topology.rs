@@ -47,8 +47,8 @@ pub fn stability_transition(x: &Sedenion, y: &Sedenion, samples: usize) -> f64 {
     let mut max_a = 0.0_f64;
 
     let sample_subspace = |rng: &mut StdRng| -> Sedenion {
-        let alpha: f64 = rng.gen_range(-1.0..1.0);
-        let beta: f64 = rng.gen_range(-1.0..1.0);
+        let alpha: f64 = rng.random_range(-1.0..1.0);
+        let beta: f64 = rng.random_range(-1.0..1.0);
         let mut v = [0.0; 16];
         for i in 0..16 {
             v[i] = alpha * x[i] + beta * y[i];

@@ -7,7 +7,7 @@
 //!
 //! This validates the API before integrating with E-027 LBM velocity fields.
 
-use nalgebra::DMatrix;
+use nalgebra033::DMatrix;
 use std::f64::consts::PI;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {

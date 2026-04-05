@@ -16,12 +16,12 @@ impl GpuBoxKiteAlignmentEngine {
     pub fn try_new() -> Option<Self> {
         let ctx = CudaContext::new(0).ok()?;
         let stream = ctx.default_stream();
-        
+
         // Load kernel source
         let ptx = compile_ptx(include_str!("kernels_alignment.cu")).ok()?;
         let module = ctx.load_module(ptx).ok()?;
         let kernel = module.load_function("box_kite_alignment_scan").ok()?;
-        
+
         Some(Self {
             _ctx: ctx,
             stream,
@@ -31,9 +31,9 @@ impl GpuBoxKiteAlignmentEngine {
 
     pub fn run_alignment_scan(
         &self,
-        vectors: &[f64], // [n * 16]
+        vectors: &[f64],     // [n * 16]
         orientations: &[u8], // [168 * 16]
-        bk_indices: &[u8], // [7 * 12]
+        bk_indices: &[u8],   // [7 * 12]
     ) -> Result<(Vec<f64>, Vec<u32>)> {
         let n_vectors = vectors.len() / 16;
         let n_orientations = orientations.len() / 16;
@@ -41,7 +41,7 @@ impl GpuBoxKiteAlignmentEngine {
         let v_dev = self.stream.clone_htod(vectors)?;
         let o_dev = self.stream.clone_htod(orientations)?;
         let bk_dev = self.stream.clone_htod(bk_indices)?;
-        
+
         let mut out_max_dev = self.stream.alloc_zeros::<f64>(n_vectors)?;
         let mut out_best_dev = self.stream.alloc_zeros::<u32>(n_vectors)?;
 

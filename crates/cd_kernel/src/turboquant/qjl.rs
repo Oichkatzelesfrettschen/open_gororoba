@@ -101,8 +101,7 @@ pub fn asymmetric_inner_product(
         s_query_dot_signs += proj * sign as f64;
     }
 
-    let correction_scale =
-        (std::f64::consts::FRAC_PI_2).sqrt() / m as f64;
+    let correction_scale = (std::f64::consts::FRAC_PI_2).sqrt() / m as f64;
     let term2 = residual_norm * correction_scale * s_query_dot_signs;
 
     term1 + term2
@@ -133,9 +132,9 @@ mod tests {
         sign_quantize(&residual, &s, d, m, &mut signs, &mut norm);
         assert!(norm > 0.0);
         // With identity projection, sign(projected) = sign(residual)
-        assert_eq!(signs[0], 1);  // 0.1 >= 0
+        assert_eq!(signs[0], 1); // 0.1 >= 0
         assert_eq!(signs[1], -1); // -0.2 < 0
-        assert_eq!(signs[2], 1);  // 0.3 >= 0
+        assert_eq!(signs[2], 1); // 0.3 >= 0
         assert_eq!(signs[3], -1); // -0.1 < 0
     }
 
@@ -163,16 +162,18 @@ mod tests {
             let true_ip: f64 = x.iter().zip(q.iter()).map(|(a, b)| a * b).sum();
 
             // Simulate MSE quantization (add small noise)
-            let x_mse: Vec<f64> = x.iter().map(|&v| v + 0.01 * (trial as f64 * 0.1).sin()).collect();
+            let x_mse: Vec<f64> = x
+                .iter()
+                .map(|&v| v + 0.01 * (trial as f64 * 0.1).sin())
+                .collect();
             let residual: Vec<f64> = x.iter().zip(x_mse.iter()).map(|(a, b)| a - b).collect();
 
             let mut signs = vec![0i8; m];
             let mut r_norm = 0.0;
             sign_quantize(&residual, &s_matrix, d, m, &mut signs, &mut r_norm);
 
-            let estimated_ip = asymmetric_inner_product(
-                &q, &x_mse, &s_matrix, &signs, r_norm, d, m,
-            );
+            let estimated_ip =
+                asymmetric_inner_product(&q, &x_mse, &s_matrix, &signs, r_norm, d, m);
 
             total_error += estimated_ip - true_ip;
         }
@@ -182,7 +183,8 @@ mod tests {
         assert!(
             mean_error.abs() < 0.5,
             "QJL estimator biased: mean error = {} over {} trials",
-            mean_error, n_trials
+            mean_error,
+            n_trials
         );
     }
 }

@@ -330,8 +330,7 @@ fn test_semiotic_square_sedenion_7_boxkites() {
 
         // Each square should have 4 distinct assessors
         for (j, sq) in squares.iter().enumerate() {
-            let set: HashSet<Assessor> =
-                [sq.a, sq.b, sq.not_a, sq.not_b].iter().copied().collect();
+            let set: HashSet<Assessor> = [sq.a, sq.b, sq.not_a, sq.not_b].iter().copied().collect();
             assert_eq!(
                 set.len(),
                 4,
@@ -1960,8 +1959,7 @@ fn test_oriented_trip_sync_shorthand_well_formed() {
         );
         let zig = result.available_trips[valid_idx.unwrap()];
 
-        let remaining: Vec<usize> =
-            l_set.iter().copied().filter(|x| !zig.contains(x)).collect();
+        let remaining: Vec<usize> = l_set.iter().copied().filter(|x| !zig.contains(x)).collect();
         assert_eq!(remaining.len(), 3);
 
         // Verify 3 remaining form trefoil triples that are all O-trips
@@ -2100,8 +2098,7 @@ fn test_sail_decomposition_4_distinct_otrips() {
     let bks = find_box_kites(16, 1e-10);
     for bk in &bks {
         let sd = sail_decomposition(bk);
-        let otrip_indices: HashSet<usize> =
-            sd.faces.iter().filter_map(|f| f.otrip_index).collect();
+        let otrip_indices: HashSet<usize> = sd.faces.iter().filter_map(|f| f.otrip_index).collect();
         assert_eq!(
             otrip_indices.len(),
             4,

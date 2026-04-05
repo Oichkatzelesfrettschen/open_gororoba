@@ -21,7 +21,7 @@
 //! - Fukui, Hatsugai, Suzuki (2005): JPSJ 74, 1674 (FHS algorithm)
 //! - Kaman, Lim, Liu, Hoffmann (2026): arXiv:2601.03210v2 (magnonic crystals)
 
-use faer::{Mat, Side, complex_native::c64};
+use faer::{Mat, Side, c64};
 use std::f64::consts::PI;
 
 // ---------------------------------------------------------------------------
@@ -204,10 +204,10 @@ fn cconj(a: c64) -> c64 {
 /// Diagonalize Hermitian matrix, returning sorted (eigenvalues, eigenvectors).
 fn diagonalize(h: &Mat<c64>) -> (Vec<f64>, Mat<c64>) {
     let n = h.nrows();
-    let eig = h.selfadjoint_eigendecomposition(Side::Lower);
+    let eig = h.self_adjoint_eigen(Side::Lower).unwrap();
 
-    let s_diag = eig.s();
-    let eigenvalues_raw: Vec<f64> = (0..n).map(|i| s_diag.column_vector().read(i).re).collect();
+    let s_diag = eig.S();
+    let eigenvalues_raw: Vec<f64> = (0..n).map(|i| s_diag.column_vector()[i].re).collect();
 
     let mut indexed: Vec<(usize, f64)> = eigenvalues_raw
         .iter()
@@ -218,11 +218,11 @@ fn diagonalize(h: &Mat<c64>) -> (Vec<f64>, Mat<c64>) {
 
     let eigenvalues: Vec<f64> = indexed.iter().map(|(_, e)| *e).collect();
 
-    let u = eig.u();
+    let u = eig.U();
     let mut eigenvectors = Mat::<c64>::zeros(n, n);
     for (new_col, &(orig_col, _)) in indexed.iter().enumerate() {
         for row in 0..n {
-            eigenvectors.write(row, new_col, u.read(row, orig_col));
+            eigenvectors[(row, new_col)] = u[(row, orig_col)];
         }
     }
 
@@ -246,7 +246,7 @@ impl TightBindingModel {
 
         // Diagonal: on-site energies
         for (i, orb) in self.orbitals.iter().enumerate() {
-            h.write(i, i, c64::new(orb.on_site_energy, 0.0));
+            h[(i, i)] = c64::new(orb.on_site_energy, 0.0);
         }
 
         // Off-diagonal: hoppings + automatic Hermitian conjugate
@@ -259,13 +259,13 @@ impl TightBindingModel {
 
             // Forward: H[from, to] += amplitude * exp(i k.R)
             let val = cmul(hop.amplitude, phase);
-            let prev = h.read(hop.from, hop.to);
-            h.write(hop.from, hop.to, cadd(prev, val));
+            let prev = h[(hop.from, hop.to)];
+            h[(hop.from, hop.to)] = cadd(prev, val);
 
             // Hermitian conjugate: H[to, from] += conj(val)
             let val_hc = cconj(val);
-            let prev_hc = h.read(hop.to, hop.from);
-            h.write(hop.to, hop.from, cadd(prev_hc, val_hc));
+            let prev_hc = h[(hop.to, hop.from)];
+            h[(hop.to, hop.from)] = cadd(prev_hc, val_hc);
         }
 
         h
@@ -389,8 +389,8 @@ pub fn fhs_berry_curvature(model: &TightBindingModel, band: usize, n_grid: usize
         let v2 = &evecs[i2][j2];
         let mut overlap = c64::new(0.0, 0.0);
         for orb in 0..n_orb {
-            let a = v1.read(orb, band);
-            let b = v2.read(orb, band);
+            let a = v1[(orb, band)];
+            let b = v2[(orb, band)];
             overlap = c64::new(
                 overlap.re + a.re * b.re + a.im * b.im,
                 overlap.im + a.re * b.im - a.im * b.re,
@@ -619,8 +619,8 @@ mod tests {
         let h = model.hamiltonian_at_k(0.5, 0.3);
         for i in 0..2 {
             for j in 0..2 {
-                let hij = h.read(i, j);
-                let hji = h.read(j, i);
+                let hij = h[(i, j)];
+                let hji = h[(j, i)];
                 assert!((hij.re - hji.re).abs() < TOL, "H not Hermitian (re)");
                 assert!((hij.im + hji.im).abs() < TOL, "H not Hermitian (im)");
             }

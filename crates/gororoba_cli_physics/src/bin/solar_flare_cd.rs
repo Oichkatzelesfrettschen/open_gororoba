@@ -24,7 +24,10 @@ struct Cli {
     #[arg(long, default_value_t = 32)]
     embedding_dim: usize,
 
-    #[arg(long, default_value = "data/output/heliosphere/ablations/solar_flare_cd.json")]
+    #[arg(
+        long,
+        default_value = "data/output/heliosphere/ablations/solar_flare_cd.json"
+    )]
     out_json: PathBuf,
 }
 
@@ -64,7 +67,11 @@ fn main() -> Result<()> {
         })
         .collect();
 
-    println!("  Found {} {}-class flare files", entries.len(), cli.flare_class);
+    println!(
+        "  Found {} {}-class flare files",
+        entries.len(),
+        cli.flare_class
+    );
 
     let channels = 4usize;
     let steps = cli.embedding_dim / channels;
@@ -112,10 +119,22 @@ fn main() -> Result<()> {
         let mut ch3 = Vec::new(); // R_VALUE
 
         for record in reader.records().flatten() {
-            let v0: f64 = record.get(c0).and_then(|s| s.parse().ok()).unwrap_or(f64::NAN);
-            let v1: f64 = record.get(c1).and_then(|s| s.parse().ok()).unwrap_or(f64::NAN);
-            let v2: f64 = record.get(c2).and_then(|s| s.parse().ok()).unwrap_or(f64::NAN);
-            let v3: f64 = record.get(c3).and_then(|s| s.parse().ok()).unwrap_or(f64::NAN);
+            let v0: f64 = record
+                .get(c0)
+                .and_then(|s| s.parse().ok())
+                .unwrap_or(f64::NAN);
+            let v1: f64 = record
+                .get(c1)
+                .and_then(|s| s.parse().ok())
+                .unwrap_or(f64::NAN);
+            let v2: f64 = record
+                .get(c2)
+                .and_then(|s| s.parse().ok())
+                .unwrap_or(f64::NAN);
+            let v3: f64 = record
+                .get(c3)
+                .and_then(|s| s.parse().ok())
+                .unwrap_or(f64::NAN);
 
             if v0.is_finite() && v1.is_finite() && v2.is_finite() && v3.is_finite() {
                 ch0.push(v0);
@@ -134,14 +153,10 @@ fn main() -> Result<()> {
         let mut embedded: Vec<Vec<f64>> = Vec::new();
         for w in 0..=n.saturating_sub(steps) {
             // Normalize each channel by its local mean
-            let mean0: f64 =
-                (0..steps).map(|s| ch0[w + s]).sum::<f64>() / steps as f64;
-            let mean1: f64 =
-                (0..steps).map(|s| ch1[w + s]).sum::<f64>() / steps as f64;
-            let mean2: f64 =
-                (0..steps).map(|s| ch2[w + s]).sum::<f64>() / steps as f64;
-            let mean3: f64 =
-                (0..steps).map(|s| ch3[w + s]).sum::<f64>() / steps as f64;
+            let mean0: f64 = (0..steps).map(|s| ch0[w + s]).sum::<f64>() / steps as f64;
+            let mean1: f64 = (0..steps).map(|s| ch1[w + s]).sum::<f64>() / steps as f64;
+            let mean2: f64 = (0..steps).map(|s| ch2[w + s]).sum::<f64>() / steps as f64;
+            let mean3: f64 = (0..steps).map(|s| ch3[w + s]).sum::<f64>() / steps as f64;
 
             if mean0.abs() < 1e-10 || mean1.abs() < 1e-10 {
                 continue;
@@ -187,11 +202,7 @@ fn main() -> Result<()> {
 
         // Detect transitions
         let global_std = {
-            let var = norms
-                .iter()
-                .map(|&a| (a - mean_a).powi(2))
-                .sum::<f64>()
-                / norms.len() as f64;
+            let var = norms.iter().map(|&a| (a - mean_a).powi(2)).sum::<f64>() / norms.len() as f64;
             var.sqrt()
         };
         let threshold = global_std * 1.5;
@@ -199,11 +210,8 @@ fn main() -> Result<()> {
         let mut n_trans = 0usize;
         let mut last: Option<usize> = None;
         for i in tw..norms.len().saturating_sub(tw) {
-            let pre: f64 =
-                norms[i.saturating_sub(tw)..i].iter().sum::<f64>() / tw as f64;
-            let post: f64 = norms[i..(i + tw).min(norms.len())]
-                .iter()
-                .sum::<f64>()
+            let pre: f64 = norms[i.saturating_sub(tw)..i].iter().sum::<f64>() / tw as f64;
+            let post: f64 = norms[i..(i + tw).min(norms.len())].iter().sum::<f64>()
                 / tw.min(norms.len() - i) as f64;
             if (post - pre).abs() > threshold
                 && last.is_none_or(|prev| i.saturating_sub(prev) >= tw)
@@ -258,10 +266,18 @@ fn main() -> Result<()> {
 
     let interp = format!(
         "Analyzed {} {}-class flares from SWAN-SF. Mean pre-flare A={:.4}, mean onset max A={:.4}, ratio={:.2}. {}",
-        results.len(), cli.flare_class, mean_pre, mean_onset, ratio,
-        if ratio > 1.5 { "Flare onset produces HIGHER associator than pre-flare phase -- consistent with boundary disruption phenotype." }
-        else if ratio > 1.0 { "Moderate elevation at onset." }
-        else { "No clear onset signature in SHARP keyword embedding." }
+        results.len(),
+        cli.flare_class,
+        mean_pre,
+        mean_onset,
+        ratio,
+        if ratio > 1.5 {
+            "Flare onset produces HIGHER associator than pre-flare phase -- consistent with boundary disruption phenotype."
+        } else if ratio > 1.0 {
+            "Moderate elevation at onset."
+        } else {
+            "No clear onset signature in SHARP keyword embedding."
+        }
     );
 
     let output = SolarOutput {

@@ -105,8 +105,7 @@ impl ModifiedCDAlgebra {
 ///
 /// Mirrors: SchaferDivAlg16.v schafer_not_division_over_R.
 pub fn test_division(dim: usize) -> DivisionTest {
-    let level = CayleyDicksonLevel::from_dim(dim)
-        .unwrap_or(CayleyDicksonLevel::Higher(dim));
+    let level = CayleyDicksonLevel::from_dim(dim).unwrap_or(CayleyDicksonLevel::Higher(dim));
     let hurwitz = hurwitz_1898::classify(dim);
 
     if dim <= 8 {

@@ -16,11 +16,7 @@ use crate::{
 };
 use chrono::{DateTime, Datelike, NaiveDate, Timelike, Utc};
 use csv::ReaderBuilder;
-use std::{
-    collections::BTreeMap,
-    fs,
-    path::PathBuf,
-};
+use std::{collections::BTreeMap, fs, path::PathBuf};
 
 /// Minute-resolution Cluster FGM record with spacecraft position.
 #[derive(Debug, Clone)]
@@ -79,22 +75,33 @@ pub fn parse_cluster_fgm_hapi_csv_minutes(
 
     #[derive(Default)]
     struct MinuteAcc {
-        bx: f64, by: f64, bz: f64, bmag: f64,
-        px: f64, py: f64, pz: f64,
+        bx: f64,
+        by: f64,
+        bz: f64,
+        bmag: f64,
+        px: f64,
+        py: f64,
+        pz: f64,
         count: usize,
     }
 
     let mut buckets: BTreeMap<(u16, u16, u8, u8), MinuteAcc> = BTreeMap::new();
 
     for record in reader.records().flatten() {
-        let Some(time_str) = record.get(0) else { continue };
-        let Ok(dt) = DateTime::parse_from_rfc3339(time_str) else { continue };
+        let Some(time_str) = record.get(0) else {
+            continue;
+        };
+        let Ok(dt) = DateTime::parse_from_rfc3339(time_str) else {
+            continue;
+        };
         let utc = dt.with_timezone(&Utc);
 
         let bx = parse_hapi_spacephysics_f64_or_nan(record.get(bx_col).unwrap_or(""));
         let by = parse_hapi_spacephysics_f64_or_nan(record.get(by_col).unwrap_or(""));
         let bz = parse_hapi_spacephysics_f64_or_nan(record.get(bz_col).unwrap_or(""));
-        if !bx.is_finite() || !by.is_finite() || !bz.is_finite() { continue; }
+        if !bx.is_finite() || !by.is_finite() || !bz.is_finite() {
+            continue;
+        }
 
         let bmag = bmag_col
             .and_then(|c| record.get(c))
@@ -102,14 +109,33 @@ pub fn parse_cluster_fgm_hapi_csv_minutes(
             .filter(|v| v.is_finite())
             .unwrap_or_else(|| (bx * bx + by * by + bz * bz).sqrt());
 
-        let px = px_col.and_then(|c| record.get(c)).map(parse_hapi_spacephysics_f64_or_nan).unwrap_or(f64::NAN);
-        let py = py_col.and_then(|c| record.get(c)).map(parse_hapi_spacephysics_f64_or_nan).unwrap_or(f64::NAN);
-        let pz = pz_col.and_then(|c| record.get(c)).map(parse_hapi_spacephysics_f64_or_nan).unwrap_or(f64::NAN);
+        let px = px_col
+            .and_then(|c| record.get(c))
+            .map(parse_hapi_spacephysics_f64_or_nan)
+            .unwrap_or(f64::NAN);
+        let py = py_col
+            .and_then(|c| record.get(c))
+            .map(parse_hapi_spacephysics_f64_or_nan)
+            .unwrap_or(f64::NAN);
+        let pz = pz_col
+            .and_then(|c| record.get(c))
+            .map(parse_hapi_spacephysics_f64_or_nan)
+            .unwrap_or(f64::NAN);
 
-        let key = (utc.year() as u16, utc.ordinal() as u16, utc.hour() as u8, utc.minute() as u8);
+        let key = (
+            utc.year() as u16,
+            utc.ordinal() as u16,
+            utc.hour() as u8,
+            utc.minute() as u8,
+        );
         let acc = buckets.entry(key).or_default();
-        acc.bx += bx; acc.by += by; acc.bz += bz; acc.bmag += bmag;
-        acc.px += px; acc.py += py; acc.pz += pz;
+        acc.bx += bx;
+        acc.by += by;
+        acc.bz += bz;
+        acc.bmag += bmag;
+        acc.px += px;
+        acc.py += py;
+        acc.pz += pz;
         acc.count += 1;
     }
 
@@ -119,7 +145,9 @@ pub fn parse_cluster_fgm_hapi_csv_minutes(
     keys.into_iter()
         .filter_map(|key| {
             let acc = &buckets[&key];
-            if acc.count == 0 { return None; }
+            if acc.count == 0 {
+                return None;
+            }
             let n = acc.count as f64;
             let (year, doy, hour, minute) = key;
 
@@ -135,10 +163,18 @@ pub fn parse_cluster_fgm_hapi_csv_minutes(
 
             Some(ClusterFgmMinuteRecord {
                 probe_id,
-                year, doy, hour, minute, elapsed_hours: elapsed,
-                bx_gse: acc.bx / n, by_gse: acc.by / n, bz_gse: acc.bz / n,
+                year,
+                doy,
+                hour,
+                minute,
+                elapsed_hours: elapsed,
+                bx_gse: acc.bx / n,
+                by_gse: acc.by / n,
+                bz_gse: acc.bz / n,
                 b_magnitude: acc.bmag / n,
-                x_gse_km: acc.px / n, y_gse_km: acc.py / n, z_gse_km: acc.pz / n,
+                x_gse_km: acc.px / n,
+                y_gse_km: acc.py / n,
+                z_gse_km: acc.pz / n,
             })
         })
         .collect()
@@ -166,19 +202,31 @@ impl DatasetProvider for ClusterFgmProvider {
         for doy in self.doy_start..=self.doy_end {
             let date = NaiveDate::from_yo_opt(self.year as i32, doy as u32)
                 .ok_or_else(|| FetchError::Validation(format!("invalid DOY {doy}")))?;
-            let fname = format!("c{}_fgm_spin_{:04}_{:03}.csv", self.probe_id, self.year, doy);
+            let fname = format!(
+                "c{}_fgm_spin_{:04}_{:03}.csv",
+                self.probe_id, self.year, doy
+            );
             let output = dir.join(&fname);
 
-            if config.skip_existing && output.exists() { continue; }
+            if config.skip_existing && output.exists() {
+                continue;
+            }
 
             let t_min = format!("{}T00:00:00Z", date);
             let t_max = format!("{}T23:59:59Z", date);
 
-            println!("Fetching C{} FGM SPIN {} DOY {}...", self.probe_id, self.year, doy);
+            println!(
+                "Fetching C{} FGM SPIN {} DOY {}...",
+                self.probe_id, self.year, doy
+            );
 
             match download_hapi_csv(&dataset, &t_min, &t_max, None) {
-                Ok(body) => { fs::write(&output, body)?; }
-                Err(e) => { eprintln!("  Warning: C{} DOY {}: {}", self.probe_id, doy, e); }
+                Ok(body) => {
+                    fs::write(&output, body)?;
+                }
+                Err(e) => {
+                    eprintln!("  Warning: C{} DOY {}: {}", self.probe_id, doy, e);
+                }
             }
         }
 

@@ -21,7 +21,7 @@
 //! - m_e / m_tau = 1/3477.3
 
 use gororoba_algebra::cd_associator_norm;
-use rand::{Rng, SeedableRng};
+use rand::{RngExt, SeedableRng};
 use rand_chacha::ChaCha8Rng;
 
 /// Physical lepton masses in MeV (PDG 2024).
@@ -393,15 +393,15 @@ pub fn find_best_assignment(dim: usize, n_samples: usize, seed: u64) -> MassRati
 
     // Random search
     for _ in 0..n_samples {
-        let i1 = rng.gen_range(1..dim);
-        let j1 = rng.gen_range(1..dim);
-        let k1 = rng.gen_range(1..dim);
-        let i2 = rng.gen_range(1..dim);
-        let j2 = rng.gen_range(1..dim);
-        let k2 = rng.gen_range(1..dim);
-        let i3 = rng.gen_range(1..dim);
-        let j3 = rng.gen_range(1..dim);
-        let k3 = rng.gen_range(1..dim);
+        let i1 = rng.random_range(1..dim);
+        let j1 = rng.random_range(1..dim);
+        let k1 = rng.random_range(1..dim);
+        let i2 = rng.random_range(1..dim);
+        let j2 = rng.random_range(1..dim);
+        let k2 = rng.random_range(1..dim);
+        let i3 = rng.random_range(1..dim);
+        let j3 = rng.random_range(1..dim);
+        let k3 = rng.random_range(1..dim);
 
         // Ensure distinct indices within each triple
         if i1 == j1 || j1 == k1 || i1 == k1 {
@@ -442,15 +442,15 @@ pub fn mass_ratio_null_test(dim: usize, n_permutations: usize, seed: u64) -> Mas
 
     for _ in 0..n_permutations {
         // Random assignment
-        let i1 = rng.gen_range(1..dim);
-        let j1 = rng.gen_range(1..dim);
-        let k1 = rng.gen_range(1..dim);
-        let i2 = rng.gen_range(1..dim);
-        let j2 = rng.gen_range(1..dim);
-        let k2 = rng.gen_range(1..dim);
-        let i3 = rng.gen_range(1..dim);
-        let j3 = rng.gen_range(1..dim);
-        let k3 = rng.gen_range(1..dim);
+        let i1 = rng.random_range(1..dim);
+        let j1 = rng.random_range(1..dim);
+        let k1 = rng.random_range(1..dim);
+        let i2 = rng.random_range(1..dim);
+        let j2 = rng.random_range(1..dim);
+        let k2 = rng.random_range(1..dim);
+        let i3 = rng.random_range(1..dim);
+        let j3 = rng.random_range(1..dim);
+        let k3 = rng.random_range(1..dim);
 
         if i1 == j1 || j1 == k1 || i1 == k1 {
             continue;

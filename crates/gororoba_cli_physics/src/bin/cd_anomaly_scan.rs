@@ -35,7 +35,10 @@ struct Cli {
     min_points: usize,
 
     /// Output JSON
-    #[arg(long, default_value = "data/output/heliosphere/ablations/anomaly_scan.json")]
+    #[arg(
+        long,
+        default_value = "data/output/heliosphere/ablations/anomaly_scan.json"
+    )]
     out_json: PathBuf,
 }
 
@@ -84,14 +87,20 @@ fn extract_cd_from_json(path: &std::path::Path) -> Result<Vec<f64>> {
 
     // Try multiple known field names
     let candidates = [
-        "associator_norms", "cd_values", "norms", "associator",
-        "values", "a_values", "cd_norms",
+        "associator_norms",
+        "cd_values",
+        "norms",
+        "associator",
+        "values",
+        "a_values",
+        "cd_norms",
     ];
 
     // Top-level array
     for key in &candidates {
         if let Some(arr) = parsed[key].as_array() {
-            let vals: Vec<f64> = arr.iter()
+            let vals: Vec<f64> = arr
+                .iter()
                 .filter_map(|v| v.as_f64())
                 .filter(|v| v.is_finite())
                 .collect();
@@ -106,13 +115,20 @@ fn extract_cd_from_json(path: &std::path::Path) -> Result<Vec<f64>> {
         if let Some(arr) = parsed[container].as_array() {
             let mut vals = Vec::new();
             for item in arr {
-                for key in ["cd_median", "cd_mean", "mean_associator", "median_associator",
-                            "a_median", "a_mean", "associator"] {
-                    if let Some(v) = item[key].as_f64() {
-                        if v.is_finite() {
-                            vals.push(v);
-                            break;
-                        }
+                for key in [
+                    "cd_median",
+                    "cd_mean",
+                    "mean_associator",
+                    "median_associator",
+                    "a_median",
+                    "a_mean",
+                    "associator",
+                ] {
+                    if let Some(v) = item[key].as_f64()
+                        && v.is_finite()
+                    {
+                        vals.push(v);
+                        break;
                     }
                 }
             }
@@ -128,12 +144,11 @@ fn extract_cd_from_json(path: &std::path::Path) -> Result<Vec<f64>> {
         for (key, val) in obj {
             if (key.contains("cd") || key.contains("associator") || key.contains("_a_"))
                 && val.is_number()
+                && let Some(v) = val.as_f64()
+                && v.is_finite()
+                && v > 0.0
             {
-                if let Some(v) = val.as_f64() {
-                    if v.is_finite() && v > 0.0 {
-                        vals.push(v);
-                    }
-                }
+                vals.push(v);
             }
         }
     }
@@ -157,20 +172,23 @@ fn extract_cd_from_csv(path: &std::path::Path) -> Result<Vec<f64>> {
     let cols: Vec<&str> = header.split(',').collect();
     let cd_col = cols.iter().position(|c| {
         let lower = c.to_lowercase();
-        lower.contains("associator") || lower.contains("cd_") || lower == "a"
-            || lower.contains("a_32d") || lower.contains("a_median")
+        lower.contains("associator")
+            || lower.contains("cd_")
+            || lower == "a"
+            || lower.contains("a_32d")
+            || lower.contains("a_median")
     });
 
     if let Some(col_idx) = cd_col {
         let mut vals = Vec::new();
         for line in &lines[1..] {
             let fields: Vec<&str> = line.split(',').collect();
-            if let Some(field) = fields.get(col_idx) {
-                if let Ok(v) = field.trim().parse::<f64>() {
-                    if v.is_finite() && v > 0.0 {
-                        vals.push(v);
-                    }
-                }
+            if let Some(field) = fields.get(col_idx)
+                && let Ok(v) = field.trim().parse::<f64>()
+                && v.is_finite()
+                && v > 0.0
+            {
+                vals.push(v);
             }
         }
         if !vals.is_empty() {
@@ -182,12 +200,12 @@ fn extract_cd_from_csv(path: &std::path::Path) -> Result<Vec<f64>> {
     let mut vals = Vec::new();
     for line in &lines[1..] {
         let fields: Vec<&str> = line.split(',').collect();
-        if let Some(field) = fields.last() {
-            if let Ok(v) = field.trim().parse::<f64>() {
-                if v.is_finite() && v > 0.0 {
-                    vals.push(v);
-                }
-            }
+        if let Some(field) = fields.last()
+            && let Ok(v) = field.trim().parse::<f64>()
+            && v.is_finite()
+            && v > 0.0
+        {
+            vals.push(v);
         }
     }
     if !vals.is_empty() {
@@ -197,11 +215,7 @@ fn extract_cd_from_csv(path: &std::path::Path) -> Result<Vec<f64>> {
     anyhow::bail!("No CD column found in {}", path.display())
 }
 
-fn analyze_dataset(
-    filename: &str,
-    values: &[f64],
-    k: f64,
-) -> DatasetSummary {
+fn analyze_dataset(filename: &str, values: &[f64], k: f64) -> DatasetSummary {
     let mut sorted = values.to_vec();
     sorted.sort_by(|a, b| a.partial_cmp(b).unwrap_or(std::cmp::Ordering::Equal));
 
@@ -231,7 +245,11 @@ fn analyze_dataset(
     }
 
     // Sort by value descending, keep top 10
-    anomalies.sort_by(|a, b| b.value.partial_cmp(&a.value).unwrap_or(std::cmp::Ordering::Equal));
+    anomalies.sort_by(|a, b| {
+        b.value
+            .partial_cmp(&a.value)
+            .unwrap_or(std::cmp::Ordering::Equal)
+    });
     let n_anomalies = anomalies.len();
     anomalies.truncate(10);
 
@@ -251,7 +269,10 @@ fn main() -> Result<()> {
     let cli = Cli::parse();
     println!("=== CD Anomaly Scanner ===");
     println!("  Data dir: {}", cli.data_dir.display());
-    println!("  Tukey k: {:.1} (upper fence = Q3 + {:.1} * IQR)", cli.k, cli.k);
+    println!(
+        "  Tukey k: {:.1} (upper fence = Q3 + {:.1} * IQR)",
+        cli.k, cli.k
+    );
     println!("  Min points: {}", cli.min_points);
 
     let mut datasets = Vec::new();
@@ -263,7 +284,8 @@ fn main() -> Result<()> {
         .filter_map(|e| e.ok())
         .collect();
 
-    let mut files: Vec<PathBuf> = entries.iter()
+    let mut files: Vec<PathBuf> = entries
+        .iter()
         .map(|e| e.path())
         .filter(|p| {
             let ext = p.extension().and_then(|e| e.to_str()).unwrap_or("");
@@ -275,7 +297,8 @@ fn main() -> Result<()> {
     println!("  Found {} data files\n", files.len());
 
     for path in &files {
-        let filename = path.file_name()
+        let filename = path
+            .file_name()
             .and_then(|n| n.to_str())
             .unwrap_or("unknown");
 
@@ -289,16 +312,30 @@ fn main() -> Result<()> {
             Ok(vals) if vals.len() >= cli.min_points => {
                 let summary = analyze_dataset(filename, &vals, cli.k);
                 if summary.n_anomalies > 0 {
-                    println!("  {:50} {:>6} pts, {:>4} anomalies ({:.1}%), median={:.3}, max_anomaly={:.3}",
-                        filename, summary.n_points, summary.n_anomalies,
-                        summary.anomaly_fraction * 100.0, summary.median,
-                        summary.top_anomalies.first().map(|a| a.value).unwrap_or(0.0));
+                    println!(
+                        "  {:50} {:>6} pts, {:>4} anomalies ({:.1}%), median={:.3}, max_anomaly={:.3}",
+                        filename,
+                        summary.n_points,
+                        summary.n_anomalies,
+                        summary.anomaly_fraction * 100.0,
+                        summary.median,
+                        summary
+                            .top_anomalies
+                            .first()
+                            .map(|a| a.value)
+                            .unwrap_or(0.0)
+                    );
                 }
                 total_anomalies += summary.n_anomalies;
                 datasets.push(summary);
             }
             Ok(vals) => {
-                println!("  {:50} {:>6} pts (below min_points={})", filename, vals.len(), cli.min_points);
+                println!(
+                    "  {:50} {:>6} pts (below min_points={})",
+                    filename,
+                    vals.len(),
+                    cli.min_points
+                );
             }
             Err(_) => {
                 // Silently skip files with no CD data
@@ -311,17 +348,27 @@ fn main() -> Result<()> {
     println!("  Total anomalies: {}", total_anomalies);
 
     // Top anomalies across all datasets
-    let mut all_anomalies: Vec<&Anomaly> = datasets.iter()
+    let mut all_anomalies: Vec<&Anomaly> = datasets
+        .iter()
         .flat_map(|d| d.top_anomalies.iter())
         .collect();
-    all_anomalies.sort_by(|a, b| b.sigma_above_median.partial_cmp(&a.sigma_above_median)
-        .unwrap_or(std::cmp::Ordering::Equal));
+    all_anomalies.sort_by(|a, b| {
+        b.sigma_above_median
+            .partial_cmp(&a.sigma_above_median)
+            .unwrap_or(std::cmp::Ordering::Equal)
+    });
 
     if !all_anomalies.is_empty() {
         println!("\n  Top 20 anomalies by sigma:");
         for (i, a) in all_anomalies.iter().take(20).enumerate() {
-            println!("    {:>2}. {:40} idx={:>5} val={:>10.3} ({:.1} sigma)",
-                i + 1, a.dataset, a.index, a.value, a.sigma_above_median);
+            println!(
+                "    {:>2}. {:40} idx={:>5} val={:>10.3} ({:.1} sigma)",
+                i + 1,
+                a.dataset,
+                a.index,
+                a.value,
+                a.sigma_above_median
+            );
         }
     }
 

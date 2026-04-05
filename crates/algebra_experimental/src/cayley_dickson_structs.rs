@@ -1,5 +1,5 @@
-use std::ops::{Add, Mul, Neg, Sub};
 use num_complex::Complex;
+use std::ops::{Add, Mul, Neg, Sub};
 
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct CdPairH {
@@ -71,21 +71,30 @@ impl Mul<f64> for CdPairH {
 impl Add for CdPairH {
     type Output = Self;
     fn add(self, rhs: Self) -> Self {
-        Self { c0: self.c0 + rhs.c0, c1: self.c1 + rhs.c1 }
+        Self {
+            c0: self.c0 + rhs.c0,
+            c1: self.c1 + rhs.c1,
+        }
     }
 }
 
 impl Sub for CdPairH {
     type Output = Self;
     fn sub(self, rhs: Self) -> Self {
-        Self { c0: self.c0 - rhs.c0, c1: self.c1 - rhs.c1 }
+        Self {
+            c0: self.c0 - rhs.c0,
+            c1: self.c1 - rhs.c1,
+        }
     }
 }
 
 impl Neg for CdPairH {
     type Output = Self;
     fn neg(self) -> Self {
-        Self { c0: -self.c0, c1: -self.c1 }
+        Self {
+            c0: -self.c0,
+            c1: -self.c1,
+        }
     }
 }
 
@@ -153,21 +162,30 @@ impl Mul<f64> for Octonion {
 impl Add for Octonion {
     type Output = Self;
     fn add(self, rhs: Self) -> Self {
-        Self { q0: self.q0 + rhs.q0, q1: self.q1 + rhs.q1 }
+        Self {
+            q0: self.q0 + rhs.q0,
+            q1: self.q1 + rhs.q1,
+        }
     }
 }
 
 impl Sub for Octonion {
     type Output = Self;
     fn sub(self, rhs: Self) -> Self {
-        Self { q0: self.q0 - rhs.q0, q1: self.q1 - rhs.q1 }
+        Self {
+            q0: self.q0 - rhs.q0,
+            q1: self.q1 - rhs.q1,
+        }
     }
 }
 
 impl Neg for Octonion {
     type Output = Self;
     fn neg(self) -> Self {
-        Self { q0: -self.q0, q1: -self.q1 }
+        Self {
+            q0: -self.q0,
+            q1: -self.q1,
+        }
     }
 }
 
@@ -245,20 +263,29 @@ impl Mul<f64> for Sedenion {
 impl Add for Sedenion {
     type Output = Self;
     fn add(self, rhs: Self) -> Self {
-        Self { o0: self.o0 + rhs.o0, o1: self.o1 + rhs.o1 }
+        Self {
+            o0: self.o0 + rhs.o0,
+            o1: self.o1 + rhs.o1,
+        }
     }
 }
 
 impl Sub for Sedenion {
     type Output = Self;
     fn sub(self, rhs: Self) -> Self {
-        Self { o0: self.o0 - rhs.o0, o1: self.o1 - rhs.o1 }
+        Self {
+            o0: self.o0 - rhs.o0,
+            o1: self.o1 - rhs.o1,
+        }
     }
 }
 
 impl Neg for Sedenion {
     type Output = Self;
     fn neg(self) -> Self {
-        Self { o0: -self.o0, o1: -self.o1 }
+        Self {
+            o0: -self.o0,
+            o1: -self.o1,
+        }
     }
 }

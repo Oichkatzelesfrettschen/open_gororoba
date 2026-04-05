@@ -42,6 +42,7 @@
 //!   control plane
 
 use gauss_quad::GaussLegendre;
+use std::num::NonZeroUsize;
 
 pub mod axiodilaton;
 pub mod bounce;
@@ -217,6 +218,7 @@ pub use orthoplex_diffusion::{
 /// which converges exponentially for smooth integrands. Degree 50 gives
 /// far better accuracy than 500-point Simpson at 1/10th the evaluations.
 pub(crate) fn gl_integrate<F: Fn(f64) -> f64>(f: F, a: f64, b: f64, degree: usize) -> f64 {
-    let quad = GaussLegendre::new(degree).expect("valid quadrature degree");
+    let quad =
+        GaussLegendre::new(NonZeroUsize::new(degree).expect("quadrature degree must be non-zero"));
     quad.integrate(a, b, f)
 }

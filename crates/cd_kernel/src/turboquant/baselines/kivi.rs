@@ -14,9 +14,9 @@
 /// For each channel c in [0, d), find min/max across all S tokens,
 /// then quantize that channel uniformly for all tokens.
 pub fn kivi_quantize_keys(
-    keys: &[f64],     // (S, d) flat row-major
-    s: usize,         // sequence length
-    d: usize,         // head dimension
+    keys: &[f64], // (S, d) flat row-major
+    s: usize,     // sequence length
+    d: usize,     // head dimension
     bits: u32,
 ) -> KiviCompressedKeys {
     let n_levels = (1u32 << bits) as f64;
@@ -41,12 +41,21 @@ pub fn kivi_quantize_keys(
         // Quantize all tokens for this channel
         for t in 0..s {
             let v = keys[t * d + c];
-            let idx = ((v - min) / scale.max(1e-15)).round().clamp(0.0, n_levels - 1.0) as u8;
+            let idx = ((v - min) / scale.max(1e-15))
+                .round()
+                .clamp(0.0, n_levels - 1.0) as u8;
             indices[t * d + c] = idx;
         }
     }
 
-    KiviCompressedKeys { indices, scales, zero_points, s, d, bits }
+    KiviCompressedKeys {
+        indices,
+        scales,
+        zero_points,
+        s,
+        d,
+        bits,
+    }
 }
 
 /// Per-token value quantization (KIVI pattern).
@@ -54,7 +63,7 @@ pub fn kivi_quantize_keys(
 /// For each token t in [0, S), find min/max across all d dimensions,
 /// then quantize that token uniformly for all dimensions.
 pub fn kivi_quantize_values(
-    values: &[f64],   // (S, d) flat row-major
+    values: &[f64], // (S, d) flat row-major
     s: usize,
     d: usize,
     bits: u32,
@@ -75,12 +84,21 @@ pub fn kivi_quantize_values(
         zero_points[t] = min as f32;
 
         for (c, &v) in row.iter().enumerate() {
-            let idx = ((v - min) / scale.max(1e-15)).round().clamp(0.0, n_levels - 1.0) as u8;
+            let idx = ((v - min) / scale.max(1e-15))
+                .round()
+                .clamp(0.0, n_levels - 1.0) as u8;
             indices[t * d + c] = idx;
         }
     }
 
-    KiviCompressedValues { indices, scales, zero_points, s, d, bits }
+    KiviCompressedValues {
+        indices,
+        scales,
+        zero_points,
+        s,
+        d,
+        bits,
+    }
 }
 
 #[derive(Clone, Debug)]
@@ -110,7 +128,8 @@ impl KiviCompressedKeys {
         for t in 0..self.s {
             for c in 0..self.d {
                 let idx = self.indices[t * self.d + c];
-                out[t * self.d + c] = idx as f64 * self.scales[c] as f64 + self.zero_points[c] as f64;
+                out[t * self.d + c] =
+                    idx as f64 * self.scales[c] as f64 + self.zero_points[c] as f64;
             }
         }
         out
@@ -120,7 +139,7 @@ impl KiviCompressedKeys {
     pub fn total_bits(&self) -> usize {
         self.s * self.d * self.bits as usize  // indices
         + self.d * 32                          // scales (f32 per channel)
-        + self.d * 32                          // zero_points (f32 per channel)
+        + self.d * 32 // zero_points (f32 per channel)
     }
 }
 
@@ -131,7 +150,8 @@ impl KiviCompressedValues {
         for t in 0..self.s {
             for c in 0..self.d {
                 let idx = self.indices[t * self.d + c];
-                out[t * self.d + c] = idx as f64 * self.scales[t] as f64 + self.zero_points[t] as f64;
+                out[t * self.d + c] =
+                    idx as f64 * self.scales[t] as f64 + self.zero_points[t] as f64;
             }
         }
         out
@@ -141,7 +161,7 @@ impl KiviCompressedValues {
     pub fn total_bits(&self) -> usize {
         self.s * self.d * self.bits as usize
         + self.s * 32                          // scales (f32 per token)
-        + self.s * 32                          // zero_points (f32 per token)
+        + self.s * 32 // zero_points (f32 per token)
     }
 }
 
@@ -160,8 +180,12 @@ mod tests {
         assert!(compressed.indices.iter().all(|&i| i <= 3)); // 2-bit: 0..3
 
         let decompressed = compressed.dequantize();
-        let mse: f64 = keys.iter().zip(decompressed.iter())
-            .map(|(a, b)| (a - b).powi(2)).sum::<f64>() / (s * d) as f64;
+        let mse: f64 = keys
+            .iter()
+            .zip(decompressed.iter())
+            .map(|(a, b)| (a - b).powi(2))
+            .sum::<f64>()
+            / (s * d) as f64;
         assert!(mse < 0.05, "KIVI keys MSE too high: {}", mse);
     }
 
@@ -173,8 +197,12 @@ mod tests {
 
         let compressed = kivi_quantize_values(&values, s, d, 2);
         let decompressed = compressed.dequantize();
-        let mse: f64 = values.iter().zip(decompressed.iter())
-            .map(|(a, b)| (a - b).powi(2)).sum::<f64>() / (s * d) as f64;
+        let mse: f64 = values
+            .iter()
+            .zip(decompressed.iter())
+            .map(|(a, b)| (a - b).powi(2))
+            .sum::<f64>()
+            / (s * d) as f64;
         assert!(mse < 0.05, "KIVI values MSE too high: {}", mse);
     }
 

@@ -13,8 +13,7 @@ use anyhow::{Context, Result};
 use clap::Parser;
 use csv::ReaderBuilder;
 use serde::Serialize;
-use std::collections::BTreeMap;
-use std::path::PathBuf;
+use std::{collections::BTreeMap, path::PathBuf};
 
 #[derive(Parser)]
 #[command(name = "voyager-ism-multichannel")]
@@ -28,7 +27,10 @@ struct Cli {
     pws_csv: PathBuf,
 
     /// Output JSON
-    #[arg(long, default_value = "data/output/heliosphere/ablations/ism_multichannel_cd.json")]
+    #[arg(
+        long,
+        default_value = "data/output/heliosphere/ablations/ism_multichannel_cd.json"
+    )]
     out_json: PathBuf,
 
     /// Embedding dimension (must be power of 2, multiple of 20 rounded up)
@@ -57,8 +59,8 @@ struct JoinedRecord {
     year: u16,
     doy: u16,
     hour: u8,
-    mag: [f64; MAG_CHANNELS],  // Br, Bt, Bn, |B|
-    pws: [f64; PWS_CHANNELS],  // 16 spectral channels
+    mag: [f64; MAG_CHANNELS], // Br, Bt, Bn, |B|
+    pws: [f64; PWS_CHANNELS], // 16 spectral channels
 }
 
 #[derive(Debug, Serialize)]
@@ -78,29 +80,38 @@ fn main() -> Result<()> {
     println!("=== Voyager ISM Multi-Channel CD ===");
     println!("  MAG: {}", cli.mag_csv.display());
     println!("  PWS: {}", cli.pws_csv.display());
-    println!("  dim={}, channels={}, precision={}", cli.embedding_dim, TOTAL_CHANNELS, cli.precision);
+    println!(
+        "  dim={}, channels={}, precision={}",
+        cli.embedding_dim, TOTAL_CHANNELS, cli.precision
+    );
 
     // Step 1: Load MAG data indexed by (year, doy, hour)
     println!("[1/4] Loading MAG data...");
     let mut mag_map: BTreeMap<(u16, u16, u8), Vec<[f64; MAG_CHANNELS]>> = BTreeMap::new();
     {
-        let mut rdr = ReaderBuilder::new().from_path(&cli.mag_csv)
+        let mut rdr = ReaderBuilder::new()
+            .from_path(&cli.mag_csv)
             .with_context(|| format!("open {}", cli.mag_csv.display()))?;
         for result in rdr.records() {
             let record = result?;
             let year: u16 = record.get(3).unwrap_or("0").parse().unwrap_or(0);
             let doy: u16 = record.get(4).unwrap_or("0").parse().unwrap_or(0);
             let hour: u8 = record.get(5).unwrap_or("0").parse().unwrap_or(0);
-            if year < cli.year_min || year > cli.year_max { continue; }
+            if year < cli.year_min || year > cli.year_max {
+                continue;
+            }
 
             let bx: f64 = record.get(12).unwrap_or("NaN").parse().unwrap_or(f64::NAN);
             let by: f64 = record.get(13).unwrap_or("NaN").parse().unwrap_or(f64::NAN);
             let bz: f64 = record.get(14).unwrap_or("NaN").parse().unwrap_or(f64::NAN);
             let bmag: f64 = record.get(15).unwrap_or("NaN").parse().unwrap_or(f64::NAN);
 
-            if !bx.is_finite() || !bmag.is_finite() || bmag.abs() > 999.0 { continue; }
+            if !bx.is_finite() || !bmag.is_finite() || bmag.abs() > 999.0 {
+                continue;
+            }
 
-            mag_map.entry((year, doy, hour))
+            mag_map
+                .entry((year, doy, hour))
                 .or_default()
                 .push([bx, by, bz, bmag]);
         }
@@ -111,23 +122,35 @@ fn main() -> Result<()> {
     println!("[2/4] Loading PWS data...");
     let mut pws_map: BTreeMap<(u16, u16, u8), [f64; PWS_CHANNELS]> = BTreeMap::new();
     {
-        let mut rdr = ReaderBuilder::new().from_path(&cli.pws_csv)
+        let mut rdr = ReaderBuilder::new()
+            .from_path(&cli.pws_csv)
             .with_context(|| format!("open {}", cli.pws_csv.display()))?;
         for result in rdr.records() {
             let record = result?;
             let year: u16 = record.get(0).unwrap_or("0").parse().unwrap_or(0);
             let doy: u16 = record.get(1).unwrap_or("0").parse().unwrap_or(0);
             let hour: u8 = record.get(2).unwrap_or("0").parse().unwrap_or(0);
-            if year < cli.year_min || year > cli.year_max { continue; }
+            if year < cli.year_min || year > cli.year_max {
+                continue;
+            }
 
             let mut pws = [0.0f64; PWS_CHANNELS];
             let mut valid = true;
-            for ch in 0..PWS_CHANNELS {
-                let v: f64 = record.get(3 + ch).unwrap_or("NaN").parse().unwrap_or(f64::NAN);
-                if !v.is_finite() || v <= 0.0 { valid = false; break; }
-                pws[ch] = v;
+            for (ch, value) in pws.iter_mut().enumerate() {
+                let v: f64 = record
+                    .get(3 + ch)
+                    .unwrap_or("NaN")
+                    .parse()
+                    .unwrap_or(f64::NAN);
+                if !v.is_finite() || v <= 0.0 {
+                    valid = false;
+                    break;
+                }
+                *value = v;
             }
-            if !valid { continue; }
+            if !valid {
+                continue;
+            }
             pws_map.insert((year, doy, hour), pws);
         }
     }
@@ -142,12 +165,12 @@ fn main() -> Result<()> {
             let n = mag_samples.len() as f64;
             let mut mag_avg = [0.0f64; MAG_CHANNELS];
             for s in mag_samples {
-                for ch in 0..MAG_CHANNELS {
-                    mag_avg[ch] += s[ch];
+                for (avg, sample) in mag_avg.iter_mut().zip(s.iter()) {
+                    *avg += *sample;
                 }
             }
-            for ch in 0..MAG_CHANNELS {
-                mag_avg[ch] /= n;
+            for avg in mag_avg.iter_mut().take(MAG_CHANNELS) {
+                *avg /= n;
             }
 
             joined.push(JoinedRecord {
@@ -167,16 +190,23 @@ fn main() -> Result<()> {
     }
 
     // Step 4: Build 20-channel Takens embedding and compute CD associator
-    println!("[4/4] Computing {}-channel {}D CD associator...", TOTAL_CHANNELS, cli.embedding_dim);
+    println!(
+        "[4/4] Computing {}-channel {}D CD associator...",
+        TOTAL_CHANNELS, cli.embedding_dim
+    );
     let dim = cli.embedding_dim;
     // Steps for Takens delay: dim / TOTAL_CHANNELS, rounded up
-    let steps = (dim + TOTAL_CHANNELS - 1) / TOTAL_CHANNELS;
+    let steps = dim.div_ceil(TOTAL_CHANNELS);
     let actual_dim = steps * TOTAL_CHANNELS;
 
     // Build normalized embedding vectors
     let window_len = steps;
     if joined.len() < window_len + 2 {
-        anyhow::bail!("Need at least {} records for embedding, have {}", window_len + 2, joined.len());
+        anyhow::bail!(
+            "Need at least {} records for embedding, have {}",
+            window_len + 2,
+            joined.len()
+        );
     }
 
     let mut embedded: Vec<Vec<f64>> = Vec::new();
@@ -188,27 +218,37 @@ fn main() -> Result<()> {
         let mut mag_means = [0.0f64; MAG_CHANNELS];
         let mut pws_means = [0.0f64; PWS_CHANNELS];
         for r in window {
-            for ch in 0..MAG_CHANNELS { mag_means[ch] += r.mag[ch].abs(); }
-            for ch in 0..PWS_CHANNELS { pws_means[ch] += r.pws[ch]; }
+            for (ch, mean) in mag_means.iter_mut().enumerate() {
+                *mean += r.mag[ch].abs();
+            }
+            for (ch, mean) in pws_means.iter_mut().enumerate() {
+                *mean += r.pws[ch];
+            }
         }
         let wl = window_len as f64;
-        for ch in 0..MAG_CHANNELS { mag_means[ch] /= wl; }
-        for ch in 0..PWS_CHANNELS { pws_means[ch] /= wl; }
+        for mean in mag_means.iter_mut().take(MAG_CHANNELS) {
+            *mean /= wl;
+        }
+        for mean in pws_means.iter_mut().take(PWS_CHANNELS) {
+            *mean /= wl;
+        }
 
         // Skip if any mean is zero
         let mag_ok = mag_means.iter().all(|&m| m > 1e-30);
         let pws_ok = pws_means.iter().all(|&m| m > 1e-30);
-        if !mag_ok || !pws_ok { continue; }
+        if !mag_ok || !pws_ok {
+            continue;
+        }
 
         // Build normalized vector
         let mut v = vec![0.0f64; actual_dim];
         for (s, r) in window.iter().enumerate() {
             let base = s * TOTAL_CHANNELS;
-            for ch in 0..MAG_CHANNELS {
-                v[base + ch] = r.mag[ch] / mag_means[ch];
+            for (ch, value) in r.mag.iter().enumerate() {
+                v[base + ch] = value / mag_means[ch];
             }
-            for ch in 0..PWS_CHANNELS {
-                v[base + MAG_CHANNELS + ch] = r.pws[ch] / pws_means[ch];
+            for (ch, value) in r.pws.iter().enumerate() {
+                v[base + MAG_CHANNELS + ch] = value / pws_means[ch];
             }
         }
 
@@ -220,11 +260,18 @@ fn main() -> Result<()> {
     }
 
     let padded_dim = actual_dim.next_power_of_two();
-    println!("  Embedded: {} windows of {}D ({}D padded to pow2, {} steps x {} channels)",
-        embedded.len(), padded_dim, actual_dim, steps, TOTAL_CHANNELS);
+    println!(
+        "  Embedded: {} windows of {}D ({}D padded to pow2, {} steps x {} channels)",
+        embedded.len(),
+        padded_dim,
+        actual_dim,
+        steps,
+        TOTAL_CHANNELS
+    );
 
     // Run CD associator at power-of-2 dimension
-    let norms = cd_kernel::batch_sliding_associator_norms_dispatch(&embedded, padded_dim, &cli.precision);
+    let norms =
+        cd_kernel::batch_sliding_associator_norms_dispatch(&embedded, padded_dim, &cli.precision);
 
     if norms.is_empty() {
         anyhow::bail!("No associator norms computed");
@@ -236,7 +283,10 @@ fn main() -> Result<()> {
     let median = sorted[sorted.len() / 2];
     let max = sorted.last().copied().unwrap_or(0.0);
 
-    println!("  Associator: mean={:.6}, median={:.6}, max={:.6}", mean, median, max);
+    println!(
+        "  Associator: mean={:.6}, median={:.6}, max={:.6}",
+        mean, median, max
+    );
 
     let result = MultiChannelResult {
         total_joined: joined.len(),

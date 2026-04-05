@@ -373,7 +373,7 @@ mod tests {
         let encoder = BaireEncoder::new(specs, 10, 4);
         let mut rng = ChaCha8Rng::seed_from_u64(999);
         let data: Vec<Vec<f64>> = (0..500)
-            .map(|_| vec![rng.gen_range(0.0..10.0), rng.gen_range(0.0..10.0)])
+            .map(|_| vec![rng.random_range(0.0..10.0), rng.random_range(0.0..10.0)])
             .collect();
 
         let (cols_f64, n, d) = normalize_data_column_major(&encoder, &data);
@@ -432,7 +432,7 @@ mod tests {
         let encoder = BaireEncoder::new(specs, 10, 4);
         let mut rng = ChaCha8Rng::seed_from_u64(77);
         let data: Vec<Vec<f64>> = (0..200)
-            .map(|_| vec![rng.gen_range(0.0..1.0), rng.gen_range(0.0..1.0)])
+            .map(|_| vec![rng.random_range(0.0..1.0), rng.random_range(0.0..1.0)])
             .collect();
 
         let (cols_f64, n, d) = normalize_data_column_major(&encoder, &data);
@@ -483,7 +483,7 @@ mod tests {
         let encoder = BaireEncoder::new(specs, 10, 4);
         let mut rng = ChaCha8Rng::seed_from_u64(55);
         let data: Vec<Vec<f64>> = (0..100)
-            .map(|_| vec![rng.gen_range(0.0..1.0), rng.gen_range(0.0..1.0)])
+            .map(|_| vec![rng.random_range(0.0..1.0), rng.random_range(0.0..1.0)])
             .collect();
 
         let (cols_f64, n, d) = normalize_data_column_major(&encoder, &data);

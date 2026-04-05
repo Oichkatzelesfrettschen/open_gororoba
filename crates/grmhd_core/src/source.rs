@@ -10,10 +10,12 @@
 //! Without these terms, the solver has a systematic mass/momentum error
 //! proportional to the spacetime curvature.
 
-use crate::cons::NCONS;
-use crate::eos::GammaLaw;
-use crate::metric::KerrMetric;
-use crate::prims::{self, Prim};
+use crate::{
+    cons::NCONS,
+    eos::GammaLaw,
+    metric::KerrMetric,
+    prims::{self, Prim},
+};
 
 /// Compute the GR geometric source terms S for a single cell.
 ///
@@ -43,7 +45,11 @@ pub fn geometric_source(
     // Lorentz factor
     let vsq = g_rr * v1 * v1 + g_thth * v2 * v2 + g_phph * v3 * v3;
     let alpha_sq = -(g_tt + 2.0 * g_tph * v3 + vsq);
-    let ut = if alpha_sq > 1e-20 { 1.0 / alpha_sq.sqrt() } else { 1.0 };
+    let ut = if alpha_sq > 1e-20 {
+        1.0 / alpha_sq.sqrt()
+    } else {
+        1.0
+    };
 
     // Simplified stress-energy components needed for source:
     // T^tt, T^tr, T^tth, T^rr, T^thth, T^phph, T^rth (upper indices)
@@ -80,8 +86,12 @@ pub fn geometric_source(
 
     // S_r = (1/2) * (T^tt dg_tt/dr + T^rr dg_rr/dr + T^thth dg_thth/dr
     //                + T^phph dg_phph/dr + 2 T^tph dg_tph/dr)
-    s[2] = 0.5 * (t_tt * dg_tt_dr + t_rr * dg_rr_dr + t_thth * dg_thth_dr
-        + t_phph * dg_phph_dr + 2.0 * t_tph * dg_tph_dr);
+    s[2] = 0.5
+        * (t_tt * dg_tt_dr
+            + t_rr * dg_rr_dr
+            + t_thth * dg_thth_dr
+            + t_phph * dg_phph_dr
+            + 2.0 * t_tph * dg_tph_dr);
 
     // S_theta (from dg/dtheta)
     if dtheta > 1e-10 {
@@ -133,7 +143,15 @@ mod tests {
         let metric = KerrMetric::schwarzschild();
         let eos = GammaLaw::harm_default();
         let p: Prim = [1.0, 0.01, 0.0, 0.0, 0.3, 0.0, 0.0, 0.0]; // v_phi = 0.3
-        let s = geometric_source(&p, &metric, 5.0, std::f64::consts::FRAC_PI_2, &eos, 0.1, 0.1);
+        let s = geometric_source(
+            &p,
+            &metric,
+            5.0,
+            std::f64::consts::FRAC_PI_2,
+            &eos,
+            0.1,
+            0.1,
+        );
         // Radial source should be nonzero (centrifugal + metric curvature)
         assert!(s[2].abs() > 0.01, "S_r = {} should be nonzero at r=5", s[2]);
     }

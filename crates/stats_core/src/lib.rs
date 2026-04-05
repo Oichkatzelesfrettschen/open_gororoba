@@ -240,7 +240,7 @@ pub fn normalize_spectrum(spectrum: &[f64]) -> Vec<f64> {
 /// Generate random monotonic spectrum for null test.
 pub fn random_monotonic_spectrum(n: usize, seed: u64) -> Vec<f64> {
     let mut rng = ChaCha8Rng::seed_from_u64(seed);
-    let mut spectrum: Vec<f64> = (0..n).map(|_| rng.r#gen::<f64>()).collect();
+    let mut spectrum: Vec<f64> = (0..n).map(|_| rng.random::<f64>()).collect();
     spectrum.sort_by(|a, b| a.partial_cmp(b).unwrap());
     spectrum
 }
@@ -336,7 +336,7 @@ where
 
     for _ in 0..n_bootstrap {
         // Resample with replacement
-        let resample: Vec<f64> = (0..n).map(|_| data[rng.gen_range(0..n)]).collect();
+        let resample: Vec<f64> = (0..n).map(|_| data[rng.random_range(0..n)]).collect();
         bootstrap_stats.push(statistic_fn(&resample));
     }
 
@@ -389,8 +389,8 @@ pub fn haar_random_unitary(dim: usize, seed: u64) -> DMatrix<Complex64> {
     let mut z = DMatrix::zeros(dim, dim);
     for i in 0..dim {
         for j in 0..dim {
-            let re = normal.inverse_cdf(rng.r#gen());
-            let im = normal.inverse_cdf(rng.r#gen());
+            let re = normal.inverse_cdf(rng.random());
+            let im = normal.inverse_cdf(rng.random());
             z[(i, j)] = Complex64::new(re, im);
         }
     }
@@ -1482,7 +1482,7 @@ mod tests {
         let x: Vec<f64> = (1..=20).map(|i| i as f64).collect();
         let y: Vec<f64> = x
             .iter()
-            .map(|xi| 3.0 * xi.powf(-1.5) * (1.0 + 0.1 * (rng.r#gen::<f64>() - 0.5)))
+            .map(|xi| 3.0 * xi.powf(-1.5) * (1.0 + 0.1 * (rng.random::<f64>() - 0.5)))
             .collect();
 
         let result = fit_power_law_with_ci(&x, &y, 200, 42);
@@ -1854,7 +1854,7 @@ mod tests {
 
     /// Generate a random unit vector of given dimension.
     fn random_unit_vector(dim: usize, rng: &mut impl Rng) -> Vec<f64> {
-        let mut v: Vec<f64> = (0..dim).map(|_| rng.gen_range(-1.0..1.0)).collect();
+        let mut v: Vec<f64> = (0..dim).map(|_| rng.random_range(-1.0..1.0)).collect();
         let norm: f64 = v.iter().map(|x| x * x).sum::<f64>().sqrt();
         for x in &mut v {
             *x /= norm;

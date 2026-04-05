@@ -40,12 +40,17 @@ impl FixedCodebook16 {
     pub fn from_lloyd_max(d: usize, bits: u32) -> Self {
         let cb = lloyd_max::get_codebook(d, bits);
         let centroids_q: Vec<Q16_16> = cb.centroids.iter().map(|&c| Q16_16::from_f32(c)).collect();
-        let boundaries_q: Vec<Q16_16> = cb.boundaries.iter().map(|&b| Q16_16::from_f32(b)).collect();
+        let boundaries_q: Vec<Q16_16> =
+            cb.boundaries.iter().map(|&b| Q16_16::from_f32(b)).collect();
 
         // Measure conversion error
-        let error: f64 = cb.centroids.iter().zip(centroids_q.iter())
+        let error: f64 = cb
+            .centroids
+            .iter()
+            .zip(centroids_q.iter())
             .map(|(&f, &q)| (f as f64 - q.to_f64()).powi(2))
-            .sum::<f64>() / cb.centroids.len() as f64;
+            .sum::<f64>()
+            / cb.centroids.len() as f64;
 
         FixedCodebook16 {
             centroids: centroids_q,
@@ -60,7 +65,8 @@ impl FixedCodebook16 {
         let v = Q16_16::from_f64(value);
         let mut idx = 0u8;
         for &b in &self.boundaries {
-            if v.0 > b.0 { // integer comparison -- exact, no floating-point issues
+            if v.0 > b.0 {
+                // integer comparison -- exact, no floating-point issues
                 idx += 1;
             } else {
                 break;
@@ -88,12 +94,24 @@ impl FixedCodebook32 {
     /// Convert a Lloyd-Max codebook to Q32.32.
     pub fn from_lloyd_max(d: usize, bits: u32) -> Self {
         let cb = lloyd_max::get_codebook(d, bits);
-        let centroids_q: Vec<Q32_32> = cb.centroids.iter().map(|&c| Q32_32::from_f64(c as f64)).collect();
-        let boundaries_q: Vec<Q32_32> = cb.boundaries.iter().map(|&b| Q32_32::from_f64(b as f64)).collect();
+        let centroids_q: Vec<Q32_32> = cb
+            .centroids
+            .iter()
+            .map(|&c| Q32_32::from_f64(c as f64))
+            .collect();
+        let boundaries_q: Vec<Q32_32> = cb
+            .boundaries
+            .iter()
+            .map(|&b| Q32_32::from_f64(b as f64))
+            .collect();
 
-        let error: f64 = cb.centroids.iter().zip(centroids_q.iter())
+        let error: f64 = cb
+            .centroids
+            .iter()
+            .zip(centroids_q.iter())
             .map(|(&f, &q)| (f as f64 - q.to_f64()).powi(2))
-            .sum::<f64>() / cb.centroids.len() as f64;
+            .sum::<f64>()
+            / cb.centroids.len() as f64;
 
         FixedCodebook32 {
             centroids: centroids_q,
@@ -144,13 +162,19 @@ pub fn compare_codebook_precision(d: usize, bits: u32, n_test: usize) -> (f64, f
     let mut q32_mse = 0.0f64;
 
     for _ in 0..n_test {
-        let v: f64 = <rand_distr::StandardNormal as rand_distr::Distribution<f64>>::sample(&normal, &mut rng) * sigma;
+        let v: f64 = <rand_distr::StandardNormal as rand_distr::Distribution<f64>>::sample(
+            &normal, &mut rng,
+        ) * sigma;
 
         // f32 quantize/dequantize
         let f32_idx = {
             let mut idx = 0u8;
             for &b in cb_f32.boundaries.iter() {
-                if v as f32 > b { idx += 1; } else { break; }
+                if v as f32 > b {
+                    idx += 1;
+                } else {
+                    break;
+                }
             }
             idx
         };
@@ -213,14 +237,28 @@ mod tests {
 
         println!("Q16.16 conversion error: {:.2e}", cb_q16.conversion_error);
         // Q16.16 resolution is 1/65536 = 1.53e-5
-        assert!(cb_q16.conversion_error < 1e-4,
-            "Q16.16 conversion error too high: {}", cb_q16.conversion_error);
+        assert!(
+            cb_q16.conversion_error < 1e-4,
+            "Q16.16 conversion error too high: {}",
+            cb_q16.conversion_error
+        );
 
         // Centroids should match to Q16.16 resolution
-        for (i, (&f, &q)) in cb_f32.centroids.iter().zip(cb_q16.centroids.iter()).enumerate() {
+        for (i, (&f, &q)) in cb_f32
+            .centroids
+            .iter()
+            .zip(cb_q16.centroids.iter())
+            .enumerate()
+        {
             let diff = (f as f64 - q.to_f64()).abs();
-            assert!(diff < 2e-5,
-                "Centroid {} mismatch: f32={}, q16={}, diff={:.2e}", i, f, q.to_f64(), diff);
+            assert!(
+                diff < 2e-5,
+                "Centroid {} mismatch: f32={}, q16={}, diff={:.2e}",
+                i,
+                f,
+                q.to_f64(),
+                diff
+            );
         }
     }
 
@@ -228,8 +266,11 @@ mod tests {
     fn test_q32_codebook_matches_f32() {
         let cb_q32 = FixedCodebook32::from_lloyd_max(128, 3);
         println!("Q32.32 conversion error: {:.2e}", cb_q32.conversion_error);
-        assert!(cb_q32.conversion_error < 1e-9,
-            "Q32.32 conversion error too high: {}", cb_q32.conversion_error);
+        assert!(
+            cb_q32.conversion_error < 1e-9,
+            "Q32.32 conversion error too high: {}",
+            cb_q32.conversion_error
+        );
     }
 
     #[test]
@@ -247,11 +288,15 @@ mod tests {
         println!("  Q32/f32:  {:.6}", q32_mse / f32_mse);
 
         // Q32.32 should match f32 very closely
-        assert!((q32_mse / f32_mse - 1.0).abs() < 0.01,
-            "Q32.32 should match f32 within 1%");
+        assert!(
+            (q32_mse / f32_mse - 1.0).abs() < 0.01,
+            "Q32.32 should match f32 within 1%"
+        );
         // Q16.16 may differ slightly due to resolution
-        assert!((q16_mse / f32_mse - 1.0).abs() < 0.1,
-            "Q16.16 should match f32 within 10%");
+        assert!(
+            (q16_mse / f32_mse - 1.0).abs() < 0.1,
+            "Q16.16 should match f32 within 10%"
+        );
     }
 
     #[test]

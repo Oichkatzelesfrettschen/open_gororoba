@@ -30,7 +30,7 @@ use cosmology_core::{
     nfw_utils::{nfw_enclosed_mass_from_params, nfw_params_from_mass},
 };
 use data_core::catalogs::manga::{parse_manga_dapall_csv, parse_manga_rotcurves};
-use rand::prelude::*;
+use rand::{RngExt, prelude::*};
 use rand_chacha::ChaCha8Rng;
 use std::{f64::consts::PI, path::PathBuf};
 
@@ -238,7 +238,7 @@ fn bootstrap_sample(
     let n = galaxies.len();
     (0..n)
         .map(|_| {
-            let idx = rng.gen_range(0..n);
+            let idx = rng.random_range(0..n);
             galaxies[idx].clone()
         })
         .collect()

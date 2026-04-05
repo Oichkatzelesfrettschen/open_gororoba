@@ -181,6 +181,11 @@ fn print_checksum(path: &Path) {
         let mut hasher = Sha256::new();
         hasher.update(&data);
         let hash = hasher.finalize();
-        eprintln!("  SHA256: {:x}", hash);
+        eprintln!(
+            "  SHA256: {}",
+            hash.iter()
+                .map(|byte| format!("{byte:02x}"))
+                .collect::<String>()
+        );
     }
 }

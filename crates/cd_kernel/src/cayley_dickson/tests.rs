@@ -89,166 +89,168 @@ fn test_batch_sedenion_associator_matches_recursive() {
         );
         assert!((parallel_results[i] - expected).abs() < 1e-10);
     }
+}
+
+#[test]
+fn test_batch_sliding_16d_matches_sedenion() {
+    let mut vectors_fixed = Vec::new();
+    let mut vectors_vec = Vec::new();
+    for i in 0..10 {
+        let mut v = [0.0_f64; 16];
+        for (j, item) in v.iter_mut().enumerate() {
+            *item = (i * 16 + j) as f64 * 0.1;
+        }
+        vectors_fixed.push(v);
+        vectors_vec.push(v.to_vec());
     }
 
-    #[test]
-    fn test_batch_sliding_16d_matches_sedenion() {
-        let mut vectors_fixed = Vec::new();
-        let mut vectors_vec = Vec::new();
-        for i in 0..10 {
-            let mut v = [0.0_f64; 16];
-            for (j, item) in v.iter_mut().enumerate() {
-                *item = (i * 16 + j) as f64 * 0.1;
-            }
-            vectors_fixed.push(v);
-            vectors_vec.push(v.to_vec());
+    let sedenion_results = batch_sedenion_associator_norms_parallel(&vectors_fixed);
+    let generic_results = batch_sliding_associator_norms_parallel(&vectors_vec, 16);
+
+    assert_eq!(sedenion_results.len(), generic_results.len());
+    for (i, (s, g)) in sedenion_results.iter().zip(&generic_results).enumerate() {
+        assert!(
+            (s - g).abs() < 1e-14,
+            "16D regression at index {i}: sedenion={s} vs generic={g}"
+        );
+    }
+}
+
+#[test]
+fn test_batch_sliding_32d() {
+    // Use basis-like vectors that are guaranteed non-associative in pathion space
+    let mut vectors = Vec::new();
+    for i in 0..8 {
+        let mut v = vec![0.0; 32];
+        // Spread values across multiple components to avoid accidental associativity
+        for j in 0..32 {
+            v[j] = ((i * 32 + j + 1) as f64 * 0.31).cos() * (j as f64 + 1.0);
         }
+        vectors.push(v);
+    }
 
-        let sedenion_results = batch_sedenion_associator_norms_parallel(&vectors_fixed);
-        let generic_results =
-            batch_sliding_associator_norms_parallel(&vectors_vec, 16);
+    let results = batch_sliding_associator_norms(&vectors, 32);
+    assert_eq!(results.len(), 6); // 8 - 2
 
-        assert_eq!(sedenion_results.len(), generic_results.len());
-        for (i, (s, g)) in sedenion_results.iter().zip(&generic_results).enumerate() {
+    // Self-consistency: serial and parallel must agree
+    let results_par = batch_sliding_associator_norms_parallel(&vectors, 32);
+    assert_eq!(results.len(), results_par.len());
+    for i in 0..6 {
+        assert!(
+            (results[i] - results_par[i]).abs() < 1e-10,
+            "32D serial/parallel mismatch at {i}: {} vs {}",
+            results[i],
+            results_par[i]
+        );
+    }
+    // Verify against generic cd_associator_norm (now that sedenion bug is fixed,
+    // the generic recursive path should agree with the SIMD pathion path)
+    for i in 0..6 {
+        let generic = cd_associator_norm(&vectors[i], &vectors[i + 1], &vectors[i + 2]);
+        assert!(
+            (results[i] - generic).abs() / results[i].max(generic).max(1e-15) < 1e-8,
+            "32D SIMD vs generic mismatch at {i}: SIMD={}, generic={generic}",
+            results[i]
+        );
+    }
+}
+
+#[test]
+fn test_randomized_associator_agreement_16d_32d_64d() {
+    // Randomized property test: for each dimension, generate random triples
+    // and verify the SIMD fast path agrees with the generic recursive path.
+    use std::{
+        collections::hash_map::DefaultHasher,
+        hash::{Hash, Hasher},
+    };
+
+    fn pseudo_random(seed: u64, idx: usize) -> f64 {
+        let mut h = DefaultHasher::new();
+        seed.hash(&mut h);
+        idx.hash(&mut h);
+        let bits = h.finish();
+        // Map to [-1, 1]
+        (bits as f64 / u64::MAX as f64) * 2.0 - 1.0
+    }
+
+    for &dim in &[16usize, 32, 64] {
+        for trial in 0..20 {
+            let seed = 42u64 + trial * 1000 + dim as u64;
+            let a: Vec<f64> = (0..dim).map(|j| pseudo_random(seed, j)).collect();
+            let b: Vec<f64> = (0..dim).map(|j| pseudo_random(seed + 1, j)).collect();
+            let c: Vec<f64> = (0..dim).map(|j| pseudo_random(seed + 2, j)).collect();
+
+            let generic = cd_associator_norm(&a, &b, &c);
+
+            // Test via batch_sliding (which uses SIMD fast path for 16/32)
+            let vecs = vec![a.clone(), b.clone(), c.clone()];
+            let batch = batch_sliding_associator_norms(&vecs, dim);
+            assert_eq!(batch.len(), 1);
+
+            let rel_err = if generic.abs().max(batch[0].abs()) > 1e-15 {
+                (generic - batch[0]).abs() / generic.abs().max(batch[0].abs())
+            } else {
+                (generic - batch[0]).abs()
+            };
             assert!(
-                (s - g).abs() < 1e-14,
-                "16D regression at index {i}: sedenion={s} vs generic={g}"
+                rel_err < 1e-6,
+                "dim={dim} trial={trial}: generic={generic:.8e}, batch={:.8e}, rel_err={rel_err:.2e}",
+                batch[0]
             );
         }
     }
+}
 
-    #[test]
-    fn test_batch_sliding_32d() {
-        // Use basis-like vectors that are guaranteed non-associative in pathion space
-        let mut vectors = Vec::new();
-        for i in 0..8 {
-            let mut v = vec![0.0; 32];
-            // Spread values across multiple components to avoid accidental associativity
-            for j in 0..32 {
-                v[j] = ((i * 32 + j + 1) as f64 * 0.31).cos() * (j as f64 + 1.0);
-            }
-            vectors.push(v);
-        }
+#[test]
+fn test_randomized_serial_parallel_agreement() {
+    use std::{
+        collections::hash_map::DefaultHasher,
+        hash::{Hash, Hasher},
+    };
 
-        let results = batch_sliding_associator_norms(&vectors, 32);
-        assert_eq!(results.len(), 6); // 8 - 2
+    fn pseudo_random(seed: u64, idx: usize) -> f64 {
+        let mut h = DefaultHasher::new();
+        seed.hash(&mut h);
+        idx.hash(&mut h);
+        (h.finish() as f64 / u64::MAX as f64) * 2.0 - 1.0
+    }
 
-        // Self-consistency: serial and parallel must agree
-        let results_par = batch_sliding_associator_norms_parallel(&vectors, 32);
-        assert_eq!(results.len(), results_par.len());
-        for i in 0..6 {
+    for &dim in &[16usize, 32] {
+        let seed = 99u64 + dim as u64;
+        let vecs: Vec<Vec<f64>> = (0..12)
+            .map(|i| (0..dim).map(|j| pseudo_random(seed + i, j)).collect())
+            .collect();
+
+        let serial = batch_sliding_associator_norms(&vecs, dim);
+        let parallel = batch_sliding_associator_norms_parallel(&vecs, dim);
+        assert_eq!(serial.len(), parallel.len());
+        for (i, (s, p)) in serial.iter().zip(&parallel).enumerate() {
             assert!(
-                (results[i] - results_par[i]).abs() < 1e-10,
-                "32D serial/parallel mismatch at {i}: {} vs {}",
-                results[i],
-                results_par[i]
-            );
-        }
-        // Verify against generic cd_associator_norm (now that sedenion bug is fixed,
-        // the generic recursive path should agree with the SIMD pathion path)
-        for i in 0..6 {
-            let generic = cd_associator_norm(&vectors[i], &vectors[i + 1], &vectors[i + 2]);
-            assert!(
-                (results[i] - generic).abs() / results[i].max(generic).max(1e-15) < 1e-8,
-                "32D SIMD vs generic mismatch at {i}: SIMD={}, generic={generic}",
-                results[i]
+                (s - p).abs() < 1e-12,
+                "dim={dim} idx={i}: serial={s}, parallel={p}"
             );
         }
     }
+}
 
-    #[test]
-    fn test_randomized_associator_agreement_16d_32d_64d() {
-        // Randomized property test: for each dimension, generate random triples
-        // and verify the SIMD fast path agrees with the generic recursive path.
-        use std::collections::hash_map::DefaultHasher;
-        use std::hash::{Hash, Hasher};
+#[test]
+fn test_batch_sliding_empty_and_short() {
+    let empty: Vec<Vec<f64>> = Vec::new();
+    assert!(batch_sliding_associator_norms(&empty, 16).is_empty());
 
-        fn pseudo_random(seed: u64, idx: usize) -> f64 {
-            let mut h = DefaultHasher::new();
-            seed.hash(&mut h);
-            idx.hash(&mut h);
-            let bits = h.finish();
-            // Map to [-1, 1]
-            (bits as f64 / u64::MAX as f64) * 2.0 - 1.0
-        }
+    let two = vec![vec![0.0; 16], vec![1.0; 16]];
+    assert!(batch_sliding_associator_norms(&two, 16).is_empty());
+}
 
-        for &dim in &[16usize, 32, 64] {
-            for trial in 0..20 {
-                let seed = 42u64 + trial * 1000 + dim as u64;
-                let a: Vec<f64> = (0..dim).map(|j| pseudo_random(seed, j)).collect();
-                let b: Vec<f64> = (0..dim).map(|j| pseudo_random(seed + 1, j)).collect();
-                let c: Vec<f64> = (0..dim).map(|j| pseudo_random(seed + 2, j)).collect();
+#[test]
+#[should_panic(expected = "power of 2")]
+fn test_batch_sliding_non_power_of_two_panics() {
+    let vecs = vec![vec![0.0; 12]; 5];
+    let _ = batch_sliding_associator_norms(&vecs, 12);
+}
 
-                let generic = cd_associator_norm(&a, &b, &c);
-
-                // Test via batch_sliding (which uses SIMD fast path for 16/32)
-                let vecs = vec![a.clone(), b.clone(), c.clone()];
-                let batch = batch_sliding_associator_norms(&vecs, dim);
-                assert_eq!(batch.len(), 1);
-
-                let rel_err = if generic.abs().max(batch[0].abs()) > 1e-15 {
-                    (generic - batch[0]).abs() / generic.abs().max(batch[0].abs())
-                } else {
-                    (generic - batch[0]).abs()
-                };
-                assert!(
-                    rel_err < 1e-6,
-                    "dim={dim} trial={trial}: generic={generic:.8e}, batch={:.8e}, rel_err={rel_err:.2e}",
-                    batch[0]
-                );
-            }
-        }
-    }
-
-    #[test]
-    fn test_randomized_serial_parallel_agreement() {
-        use std::collections::hash_map::DefaultHasher;
-        use std::hash::{Hash, Hasher};
-
-        fn pseudo_random(seed: u64, idx: usize) -> f64 {
-            let mut h = DefaultHasher::new();
-            seed.hash(&mut h);
-            idx.hash(&mut h);
-            (h.finish() as f64 / u64::MAX as f64) * 2.0 - 1.0
-        }
-
-        for &dim in &[16usize, 32] {
-            let seed = 99u64 + dim as u64;
-            let vecs: Vec<Vec<f64>> = (0..12)
-                .map(|i| (0..dim).map(|j| pseudo_random(seed + i, j)).collect())
-                .collect();
-
-            let serial = batch_sliding_associator_norms(&vecs, dim);
-            let parallel = batch_sliding_associator_norms_parallel(&vecs, dim);
-            assert_eq!(serial.len(), parallel.len());
-            for (i, (s, p)) in serial.iter().zip(&parallel).enumerate() {
-                assert!(
-                    (s - p).abs() < 1e-12,
-                    "dim={dim} idx={i}: serial={s}, parallel={p}"
-                );
-            }
-        }
-    }
-
-    #[test]
-    fn test_batch_sliding_empty_and_short() {
-        let empty: Vec<Vec<f64>> = Vec::new();
-        assert!(batch_sliding_associator_norms(&empty, 16).is_empty());
-
-        let two = vec![vec![0.0; 16], vec![1.0; 16]];
-        assert!(batch_sliding_associator_norms(&two, 16).is_empty());
-    }
-
-    #[test]
-    #[should_panic(expected = "power of 2")]
-    fn test_batch_sliding_non_power_of_two_panics() {
-        let vecs = vec![vec![0.0; 12]; 5];
-        let _ = batch_sliding_associator_norms(&vecs, 12);
-    }
-
-    #[test]
-    fn test_associator_density_quaternions() {
-
+#[test]
+fn test_associator_density_quaternions() {
     let (density, failures) = measure_associator_density(4, 200, 42, 1e-8);
     assert_eq!(failures, 0);
     assert!((density - 0.0).abs() < 1e-10);
@@ -680,10 +682,10 @@ fn test_koebisu_d2_on_all_standard_zds() {
 fn test_koebisu_d2_random_consistency() {
     // Random sedenions: D_2 = 0 iff the element is a ZD (verified by multiplication)
     use rand::Rng;
-    let mut rng = rand::thread_rng();
+    let mut rng = rand::rng();
 
     for _ in 0..100 {
-        let v: Vec<f64> = (0..16).map(|_| rng.r#gen::<f64>() * 2.0 - 1.0).collect();
+        let v: Vec<f64> = (0..16).map(|_| rng.random::<f64>() * 2.0 - 1.0).collect();
         let d2 = koebisu_d2(&v);
 
         // Random sedenions are almost never ZDs
@@ -1454,8 +1456,8 @@ fn test_cd_multiply_into_sweep() {
     let mut rng = StdRng::seed_from_u64(42);
     let mut dim = 1;
     while dim <= 256 {
-        let a: Vec<f64> = (0..dim).map(|_| rng.r#gen()).collect();
-        let b: Vec<f64> = (0..dim).map(|_| rng.r#gen()).collect();
+        let a: Vec<f64> = (0..dim).map(|_| rng.random()).collect();
+        let b: Vec<f64> = (0..dim).map(|_| rng.random()).collect();
         let reference = cd_multiply(&a, &b);
         let mut out = vec![0.0; dim];
         let mut workspace = vec![0.0; super::arith::cd_multiply_workspace_len(dim)];

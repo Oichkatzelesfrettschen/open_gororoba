@@ -74,6 +74,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         );
     }
 
-    println!("<EMOJI+2705> Sweep complete. Data written to {}", out_path.display());
+    println!(
+        "<EMOJI+2705> Sweep complete. Data written to {}",
+        out_path.display()
+    );
     Ok(())
 }

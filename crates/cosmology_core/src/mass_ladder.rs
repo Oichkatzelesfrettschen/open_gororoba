@@ -61,7 +61,7 @@ impl MassLadderMatch {
         // For now, generate the statistical distribution used in the Python script.
         use rand::prelude::*;
         use rand_distr::Normal;
-        let mut rng = thread_rng();
+        let mut rng = rand::rng();
         let dist = Normal::new(1.35, 0.15).unwrap();
         self.pulsar_masses = (0..500).map(|_| dist.sample(&mut rng)).collect();
     }

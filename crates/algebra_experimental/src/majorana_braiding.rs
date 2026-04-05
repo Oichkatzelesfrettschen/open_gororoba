@@ -593,13 +593,13 @@ pub fn chsh_braid_aligned(
         }
         let mut total = 0.0;
         for _ in 0..n_samples {
-            let ch = usable[rng.gen_range(0..usable.len())];
+            let ch = usable[rng.random_range(0..usable.len())];
             let probes = if !ch.optimal_probes.is_empty() {
                 &ch.optimal_probes
             } else {
                 &ch.union_probes
             };
-            let probe = probes[rng.gen_range(0..probes.len())];
+            let probe = probes[rng.random_range(0..probes.len())];
 
             let outcome_a = crate::bell_inequality::associator_measurement_fast(
                 &ch.a_sparse,

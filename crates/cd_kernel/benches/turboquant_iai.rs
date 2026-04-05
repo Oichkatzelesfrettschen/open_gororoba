@@ -7,9 +7,8 @@
 //! Run with: cargo bench --bench turboquant_iai
 //! Requires: valgrind installed (iai-callgrind runs under callgrind)
 
+use cd_kernel::{lloyd_max, turboquant::rotation::wht_inplace};
 use iai_callgrind::{library_benchmark, library_benchmark_group, main};
-use cd_kernel::turboquant::rotation::wht_inplace;
-use cd_kernel::lloyd_max;
 
 fn setup_wht_data() -> Vec<f64> {
     (0..128).map(|i| (i as f64 * 0.1).sin()).collect()
@@ -41,7 +40,11 @@ fn bench_boundary_quantize((centroids, boundaries): (Vec<f32>, Vec<f32>)) {
     for &v in &values {
         let mut idx = 0u8;
         for &b in boundaries.iter() {
-            if v > b { idx += 1; } else { break; }
+            if v > b {
+                idx += 1;
+            } else {
+                break;
+            }
         }
         std::hint::black_box(idx);
     }

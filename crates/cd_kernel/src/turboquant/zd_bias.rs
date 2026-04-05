@@ -135,7 +135,7 @@ mod tests {
         // Known sedenion zero-divisor: (e3 + e10) * (e6 - e15) = 0
         // Construct the ZD vector and verify low affinity
         let mut v = vec![0.0f64; 16];
-        v[3] = 1.0;  // e3 component
+        v[3] = 1.0; // e3 component
         v[10] = 1.0; // e10 component
         let affinity = sedenion_zd_affinity(&v, 1000);
         // Should be low (near-ZD direction)
@@ -150,7 +150,11 @@ mod tests {
         let mut v = vec![0.0f64; 16];
         v[0] = 1.0;
         let affinity = sedenion_zd_affinity(&v, 500);
-        assert!(affinity > 0.1, "Basis vector should have high affinity, got {}", affinity);
+        assert!(
+            affinity > 0.1,
+            "Basis vector should have high affinity, got {}",
+            affinity
+        );
     }
 
     #[test]
@@ -168,7 +172,11 @@ mod tests {
     fn test_quartile_analysis() {
         let n = 100;
         let residuals: Vec<Vec<f64>> = (0..n)
-            .map(|t| (0..16).map(|i| ((t * 3 + i * 7) as f64 * 0.05).sin()).collect())
+            .map(|t| {
+                (0..16)
+                    .map(|i| ((t * 3 + i * 7) as f64 * 0.05).sin())
+                    .collect()
+            })
             .collect();
         let errors: Vec<f64> = (0..n).map(|t| (t as f64 * 0.01).sin().abs()).collect();
 

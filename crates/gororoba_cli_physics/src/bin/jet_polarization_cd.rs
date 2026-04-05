@@ -53,56 +53,70 @@ fn main() -> Result<()> {
     let cli = Cli::parse();
     println!("=== Relativistic Jet Polarization CD Analysis ===");
 
-    use rand::Rng;
-    let mut rng = rand::thread_rng();
+    use rand::RngExt;
+    let mut rng = rand::rng();
 
     // Generate synthetic Stokes parameters for 4 jet phases
     // Using M87-like parameters (EVPA ~-20 deg, pol fraction ~1-15%)
     type StokesGen = Box<dyn Fn(usize, &mut rand::rngs::ThreadRng) -> (f64, f64, f64, f64)>;
     let phases: Vec<(&str, StokesGen)> = vec![
         // Phase 1: Quiescent helical field (ordered, low variability)
-        ("helical_quiescent", Box::new(|i, rng: &mut rand::rngs::ThreadRng| {
-            let t = i as f64 / 1000.0;
-            let evpa = -20.0_f64.to_radians() + 0.05 * (2.0 * PI * 0.1 * t).sin();
-            let pol_frac = 0.03 + 0.005 * rng.gen_range(0.0..1.0);
-            let i_flux = 1.0 + 0.02 * rng.gen_range(0.0..1.0);
-            let q = i_flux * pol_frac * (2.0 * evpa).cos();
-            let u = i_flux * pol_frac * (2.0 * evpa).sin();
-            (i_flux, q, u, 0.001 * rng.gen_range(-1.0..1.0))
-        })),
+        (
+            "helical_quiescent",
+            Box::new(|i, rng: &mut rand::rngs::ThreadRng| {
+                let t = i as f64 / 1000.0;
+                let evpa = -20.0_f64.to_radians() + 0.05 * (2.0 * PI * 0.1 * t).sin();
+                let pol_frac = 0.03 + 0.005 * rng.random_range(0.0..1.0);
+                let i_flux = 1.0 + 0.02 * rng.random_range(0.0..1.0);
+                let q = i_flux * pol_frac * (2.0 * evpa).cos();
+                let u = i_flux * pol_frac * (2.0 * evpa).sin();
+                (i_flux, q, u, 0.001 * rng.random_range(-1.0..1.0))
+            }),
+        ),
         // Phase 2: Knot ejection (shock, EVPA rotation, high variability)
-        ("shock_ejection", Box::new(|i, rng: &mut rand::rngs::ThreadRng| {
-            let t = i as f64 / 1000.0;
-            // EVPA rotates rapidly during shock passage
-            let evpa = -20.0_f64.to_radians() + PI * t / 5.0 + 0.3 * rng.gen_range(-1.0..1.0);
-            let pol_frac = 0.08 + 0.06 * rng.gen_range(0.0..1.0); // higher, variable
-            let i_flux = 2.0 + 0.5 * (2.0 * PI * 0.5 * t).sin() + 0.1 * rng.gen_range(0.0..1.0);
-            let q = i_flux * pol_frac * (2.0 * evpa).cos();
-            let u = i_flux * pol_frac * (2.0 * evpa).sin();
-            (i_flux, q, u, 0.01 * rng.gen_range(-1.0..1.0))
-        })),
+        (
+            "shock_ejection",
+            Box::new(|i, rng: &mut rand::rngs::ThreadRng| {
+                let t = i as f64 / 1000.0;
+                // EVPA rotates rapidly during shock passage
+                let evpa =
+                    -20.0_f64.to_radians() + PI * t / 5.0 + 0.3 * rng.random_range(-1.0..1.0);
+                let pol_frac = 0.08 + 0.06 * rng.random_range(0.0..1.0); // higher, variable
+                let i_flux =
+                    2.0 + 0.5 * (2.0 * PI * 0.5 * t).sin() + 0.1 * rng.random_range(0.0..1.0);
+                let q = i_flux * pol_frac * (2.0 * evpa).cos();
+                let u = i_flux * pol_frac * (2.0 * evpa).sin();
+                (i_flux, q, u, 0.01 * rng.random_range(-1.0..1.0))
+            }),
+        ),
         // Phase 3: Faraday rotation screen (systematic EVPA gradient)
-        ("faraday_screen", Box::new(|i, rng: &mut rand::rngs::ThreadRng| {
-            let t = i as f64 / 1000.0;
-            // Linear EVPA rotation from Faraday effect (RM ~ 10^5 rad/m^2 at mm wavelengths)
-            let evpa = -20.0_f64.to_radians() + 0.5 * t + 0.02 * rng.gen_range(-1.0..1.0);
-            let pol_frac = 0.05 + 0.01 * rng.gen_range(0.0..1.0);
-            let i_flux = 1.5 + 0.05 * rng.gen_range(0.0..1.0);
-            let q = i_flux * pol_frac * (2.0 * evpa).cos();
-            let u = i_flux * pol_frac * (2.0 * evpa).sin();
-            (i_flux, q, u, 0.005 * rng.gen_range(-1.0..1.0))
-        })),
+        (
+            "faraday_screen",
+            Box::new(|i, rng: &mut rand::rngs::ThreadRng| {
+                let t = i as f64 / 1000.0;
+                // Linear EVPA rotation from Faraday effect (RM ~ 10^5 rad/m^2 at mm wavelengths)
+                let evpa = -20.0_f64.to_radians() + 0.5 * t + 0.02 * rng.random_range(-1.0..1.0);
+                let pol_frac = 0.05 + 0.01 * rng.random_range(0.0..1.0);
+                let i_flux = 1.5 + 0.05 * rng.random_range(0.0..1.0);
+                let q = i_flux * pol_frac * (2.0 * evpa).cos();
+                let u = i_flux * pol_frac * (2.0 * evpa).sin();
+                (i_flux, q, u, 0.005 * rng.random_range(-1.0..1.0))
+            }),
+        ),
         // Phase 4: Turbulent wake (tangled field, depolarized)
-        ("turbulent_wake", Box::new(|i, rng: &mut rand::rngs::ThreadRng| {
-            let _t = i as f64 / 1000.0;
-            let evpa = rng.gen_range(0.0..PI); // random EVPA
-            let pol_frac = 0.01 + 0.005 * rng.gen_range(0.0..1.0); // very low
-            let i_flux = 0.8 + 0.3 * rng.gen_range(0.0..1.0);
-            let q = i_flux * pol_frac * (2.0 * evpa).cos();
-            let u = i_flux * pol_frac * (2.0 * evpa).sin();
-            let v = 0.02 * rng.gen_range(-1.0..1.0); // circular polarization from turbulence
-            (i_flux, q, u, v)
-        })),
+        (
+            "turbulent_wake",
+            Box::new(|i, rng: &mut rand::rngs::ThreadRng| {
+                let _t = i as f64 / 1000.0;
+                let evpa = rng.random_range(0.0..PI); // random EVPA
+                let pol_frac = 0.01 + 0.005 * rng.random_range(0.0..1.0); // very low
+                let i_flux = 0.8 + 0.3 * rng.random_range(0.0..1.0);
+                let q = i_flux * pol_frac * (2.0 * evpa).cos();
+                let u = i_flux * pol_frac * (2.0 * evpa).sin();
+                let v = 0.02 * rng.random_range(-1.0..1.0); // circular polarization from turbulence
+                (i_flux, q, u, v)
+            }),
+        ),
     ];
 
     let samples_per_phase = cli.n_samples / phases.len();
@@ -125,9 +139,13 @@ fn main() -> Result<()> {
             stokes_v.push(sv);
         }
 
-        let mean_pol = stokes_i.iter().zip(stokes_q.iter()).zip(stokes_u.iter())
+        let mean_pol = stokes_i
+            .iter()
+            .zip(stokes_q.iter())
+            .zip(stokes_u.iter())
             .map(|((&si, &sq), &su)| (sq * sq + su * su).sqrt() / si.max(1e-15))
-            .sum::<f64>() / samples_per_phase as f64;
+            .sum::<f64>()
+            / samples_per_phase as f64;
 
         // Build 32D Takens embedding (4 Stokes channels x 8 time steps)
         let n_windows = if samples_per_phase > steps * stride {
@@ -166,15 +184,26 @@ fn main() -> Result<()> {
             continue;
         }
 
-        let norms =
-            cd_kernel::batch_sliding_associator_norms_dispatch(&embedded, cli.embedding_dim, if cli.embedding_dim >= 128 { "f32" } else { "f64" });
+        let norms = cd_kernel::batch_sliding_associator_norms_dispatch(
+            &embedded,
+            cli.embedding_dim,
+            if cli.embedding_dim >= 128 {
+                "f32"
+            } else {
+                "f64"
+            },
+        );
 
         let mean_a = norms.iter().sum::<f64>() / norms.len().max(1) as f64;
         let max_a = norms.iter().cloned().fold(0.0f64, f64::max);
 
         println!(
             "  {}: A_mean={:.6}, A_max={:.6}, pol_frac={:.4}, windows={}",
-            name, mean_a, max_a, mean_pol, norms.len()
+            name,
+            mean_a,
+            max_a,
+            mean_pol,
+            norms.len()
         );
 
         results.push(PhaseResult {
@@ -192,8 +221,11 @@ fn main() -> Result<()> {
         results.get(2).map(|r| r.mean_a).unwrap_or(0.0),
         results.get(3).map(|r| r.mean_a).unwrap_or(0.0),
         if results.first().map(|r| r.mean_a).unwrap_or(0.0) > 1e-15 {
-            results.get(1).map(|r| r.mean_a).unwrap_or(0.0) / results.first().map(|r| r.mean_a).unwrap_or(1.0)
-        } else { 0.0 }
+            results.get(1).map(|r| r.mean_a).unwrap_or(0.0)
+                / results.first().map(|r| r.mean_a).unwrap_or(1.0)
+        } else {
+            0.0
+        }
     );
     println!("\n  {}", interp);
 

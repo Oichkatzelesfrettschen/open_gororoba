@@ -14,8 +14,7 @@
 //!   B^th  at (i, j+1/2)     -- theta faces
 //!   EMF   at (i+1/2, j+1/2) -- cell corners (only phi-component in 2D)
 
-use crate::grid::Grid;
-use crate::prims;
+use crate::{grid::Grid, prims};
 
 /// Face-centered (staggered) magnetic field storage.
 ///
@@ -58,11 +57,7 @@ impl StaggeredB {
     ///
     /// B^r at (i+1/2, j) = 0.5 * (B^r_center[i] + B^r_center[i+1])
     /// B^th at (i, j+1/2) = 0.5 * (B^th_center[j] + B^th_center[j+1])
-    pub fn init_from_cell_centered(
-        &mut self,
-        prims: &crate::prims::PrimGrid,
-        grid: &Grid,
-    ) {
+    pub fn init_from_cell_centered(&mut self, prims: &crate::prims::PrimGrid, grid: &Grid) {
         let ng = grid.ng;
         for i in 0..self.n1t - 1 {
             for j in 0..self.n2t {
@@ -70,7 +65,8 @@ impl StaggeredB {
                 let idx_l = grid.idx(i, j, k);
                 let idx_r = grid.idx(i + 1, j, k);
                 let face_idx = self.idx(i, j);
-                self.br[face_idx] = 0.5 * (prims.get(idx_l)[prims::B1] + prims.get(idx_r)[prims::B1]);
+                self.br[face_idx] =
+                    0.5 * (prims.get(idx_l)[prims::B1] + prims.get(idx_r)[prims::B1]);
             }
         }
         for i in 0..self.n1t {
@@ -79,7 +75,8 @@ impl StaggeredB {
                 let idx_l = grid.idx(i, j, k);
                 let idx_r = grid.idx(i, j + 1, k);
                 let face_idx = self.idx(i, j);
-                self.bth[face_idx] = 0.5 * (prims.get(idx_l)[prims::B2] + prims.get(idx_r)[prims::B2]);
+                self.bth[face_idx] =
+                    0.5 * (prims.get(idx_l)[prims::B2] + prims.get(idx_r)[prims::B2]);
             }
         }
     }
@@ -88,11 +85,7 @@ impl StaggeredB {
     ///
     /// B^r_center[i] = 0.5 * (B^r_{i-1/2} + B^r_{i+1/2})
     /// B^th_center[j] = 0.5 * (B^th_{j-1/2} + B^th_{j+1/2})
-    pub fn to_cell_centered(
-        &self,
-        prims: &mut crate::prims::PrimGrid,
-        grid: &Grid,
-    ) {
+    pub fn to_cell_centered(&self, prims: &mut crate::prims::PrimGrid, grid: &Grid) {
         let ng = grid.ng;
         for i in ng..ng + grid.n1 {
             for j in ng..ng + grid.n2 {
@@ -124,12 +117,7 @@ impl StaggeredB {
     ///       + 0.5 * (v_th_face[i] * B^r[i] + v_th_face[i+1] * B^r[i+1])
     ///
     /// This is the "flux-CT" approach (Toth 2000, simplified).
-    pub fn ct_update(
-        &mut self,
-        prims: &crate::prims::PrimGrid,
-        grid: &Grid,
-        dt: f64,
-    ) {
+    pub fn ct_update(&mut self, prims: &crate::prims::PrimGrid, grid: &Grid, dt: f64) {
         let ng = grid.ng;
         let n1t = self.n1t;
         let n2t = self.n2t;
@@ -231,11 +219,20 @@ impl StaggeredB {
             for j in ng..ng + grid.n2 {
                 // Average the radial face EMF (along theta) and theta face EMF (along r)
                 let emf_r_here = face_emfs.emf_r[i * n2t + j];
-                let emf_r_jp1 = if j + 1 < n2t { face_emfs.emf_r[i * n2t + j + 1] } else { emf_r_here };
+                let emf_r_jp1 = if j + 1 < n2t {
+                    face_emfs.emf_r[i * n2t + j + 1]
+                } else {
+                    emf_r_here
+                };
                 let emf_th_here = face_emfs.emf_th[i * n2t + j];
-                let emf_th_ip1 = if i + 1 < self.n1t { face_emfs.emf_th[(i + 1) * n2t + j] } else { emf_th_here };
+                let emf_th_ip1 = if i + 1 < self.n1t {
+                    face_emfs.emf_th[(i + 1) * n2t + j]
+                } else {
+                    emf_th_here
+                };
 
-                emf_corner[i * n2t + j] = 0.25 * (emf_r_here + emf_r_jp1 + emf_th_here + emf_th_ip1);
+                emf_corner[i * n2t + j] =
+                    0.25 * (emf_r_here + emf_r_jp1 + emf_th_here + emf_th_ip1);
             }
         }
 
@@ -275,7 +272,9 @@ impl StaggeredB {
                 let dbr_dr = (self.br[self.idx(i, j)] - self.br[self.idx(i - 1, j)]) / dr;
                 let dbth_dth = (self.bth[self.idx(i, j)] - self.bth[self.idx(i, j - 1)]) / dtheta;
                 let divb = (dbr_dr + dbth_dth).abs();
-                if divb > max_div { max_div = divb; }
+                if divb > max_div {
+                    max_div = divb;
+                }
             }
         }
         max_div
@@ -334,7 +333,9 @@ mod tests {
         // For a static torus with v=0, EMF=0, so div(B) should be unchanged
         assert!(
             divb_after <= divb_before * 1.01 + 1e-15,
-            "div(B) grew: {} -> {}", divb_before, divb_after
+            "div(B) grew: {} -> {}",
+            divb_before,
+            divb_after
         );
     }
 
@@ -353,8 +354,20 @@ mod tests {
             for j in ng..ng + grid.n2 {
                 let idx = grid.idx(i, j, ng);
                 let p = prims.get(idx);
-                assert!(p[crate::prims::B1].abs() < 1e-15, "Initial B1 nonzero at ({},{}): {}", i, j, p[crate::prims::B1]);
-                assert!(p[crate::prims::B2].abs() < 1e-15, "Initial B2 nonzero at ({},{}): {}", i, j, p[crate::prims::B2]);
+                assert!(
+                    p[crate::prims::B1].abs() < 1e-15,
+                    "Initial B1 nonzero at ({},{}): {}",
+                    i,
+                    j,
+                    p[crate::prims::B1]
+                );
+                assert!(
+                    p[crate::prims::B2].abs() < 1e-15,
+                    "Initial B2 nonzero at ({},{}): {}",
+                    i,
+                    j,
+                    p[crate::prims::B2]
+                );
             }
         }
 
@@ -369,8 +382,14 @@ mod tests {
                 let idx = grid.idx(i, j, ng);
                 let base = idx * crate::cons::NCONS;
                 for v in 5..8 {
-                    assert!(rhs[base + v].abs() < 1e-10,
-                        "B RHS[{}] nonzero at ({},{}): {}", v, i, j, rhs[base + v]);
+                    assert!(
+                        rhs[base + v].abs() < 1e-10,
+                        "B RHS[{}] nonzero at ({},{}): {}",
+                        v,
+                        i,
+                        j,
+                        rhs[base + v]
+                    );
                 }
             }
         }
@@ -379,10 +398,20 @@ mod tests {
         for i in ng..ng + grid.n1 {
             for j in ng..ng + grid.n2 {
                 let fidx = i * grid.n2_total() + j;
-                assert!(face_emfs.emf_r[fidx].abs() < 1e-10,
-                    "emf_r nonzero at ({},{}): {}", i, j, face_emfs.emf_r[fidx]);
-                assert!(face_emfs.emf_th[fidx].abs() < 1e-10,
-                    "emf_th nonzero at ({},{}): {}", i, j, face_emfs.emf_th[fidx]);
+                assert!(
+                    face_emfs.emf_r[fidx].abs() < 1e-10,
+                    "emf_r nonzero at ({},{}): {}",
+                    i,
+                    j,
+                    face_emfs.emf_r[fidx]
+                );
+                assert!(
+                    face_emfs.emf_th[fidx].abs() < 1e-10,
+                    "emf_th nonzero at ({},{}): {}",
+                    i,
+                    j,
+                    face_emfs.emf_th[fidx]
+                );
             }
         }
     }
@@ -408,7 +437,9 @@ mod tests {
                 let idx = grid.idx(i, j, ng);
                 let p = prims.get(idx);
                 let b = (p[crate::prims::B1].powi(2) + p[crate::prims::B2].powi(2)).sqrt();
-                if b > bmax { bmax = b; }
+                if b > bmax {
+                    bmax = b;
+                }
             }
             b_by_r_init[i - ng] = bmax;
         }
@@ -424,7 +455,9 @@ mod tests {
                 let idx = grid.idx(i, j, ng);
                 let base = idx * crate::cons::NCONS;
                 let b_rhs = (rhs[base + 5].powi(2) + rhs[base + 6].powi(2)).sqrt();
-                if b_rhs > rhs_max { rhs_max = b_rhs; }
+                if b_rhs > rhs_max {
+                    rhs_max = b_rhs;
+                }
             }
             brhs_by_r[i - ng] = rhs_max;
         }
@@ -442,8 +475,10 @@ mod tests {
                 0.0
             };
             if b_by_r_init[i] > 0.1 || brhs_by_r[i] > 0.1 {
-                println!("  {:3}    {:.1}    {:.4}    {:.4}    {:.1}",
-                    i, r, b_by_r_init[i], brhs_by_r[i], ratio);
+                println!(
+                    "  {:3}    {:.1}    {:.4}    {:.4}    {:.1}",
+                    i, r, b_by_r_init[i], brhs_by_r[i], ratio
+                );
             }
         }
     }
@@ -477,8 +512,14 @@ mod tests {
         println!("  U[6]/sg = {:.6} (expect B2={})", u[6] / sg, p[6]);
 
         // Verify B conservation through prim2con
-        assert!((u[5] / sg - p[5]).abs() < 1e-10, "B1 not preserved in prim2con");
-        assert!((u[6] / sg - p[6]).abs() < 1e-10, "B2 not preserved in prim2con");
+        assert!(
+            (u[5] / sg - p[5]).abs() < 1e-10,
+            "B1 not preserved in prim2con"
+        );
+        assert!(
+            (u[6] / sg - p[6]).abs() < 1e-10,
+            "B2 not preserved in prim2con"
+        );
 
         // Compute flux in r-direction
         let f = crate::flux::compute_flux_from_prim(&p, &metric, r, th, &eos, sg, 0);
@@ -497,8 +538,16 @@ mod tests {
             println!("\n  *** v_r = v_theta = 0, so induction flux MUST be zero ***");
             println!("  F[5] = {:.6e} (should be 0)", f[5]);
             println!("  F[6] = {:.6e} (should be 0)", f[6]);
-            assert!(f[5].abs() < 1e-8, "F[5] nonzero with v_r=v_theta=0: {}", f[5]);
-            assert!(f[6].abs() < 1e-8, "F[6] nonzero with v_r=v_theta=0: {}", f[6]);
+            assert!(
+                f[5].abs() < 1e-8,
+                "F[5] nonzero with v_r=v_theta=0: {}",
+                f[5]
+            );
+            assert!(
+                f[6].abs() < 1e-8,
+                "F[6] nonzero with v_r=v_theta=0: {}",
+                f[6]
+            );
         }
     }
 }

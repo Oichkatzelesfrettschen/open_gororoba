@@ -50,20 +50,45 @@ pub use x87_transcendentals::{
 };
 
 pub use cayley_dickson::{
-    batch_associator_norms, batch_associator_norms_parallel, batch_associator_norms_sq,
-    batch_octonion_basis_associators, batch_sedenion_associator_norms,
-    batch_sedenion_associator_norms_parallel, batch_sliding_associator_norms,
-    batch_sliding_associator_norms_parallel, cd_associator, cd_associator_norm, cd_basis_mul_sign,
-    cd_conjugate, cd_multiply, cd_multiply_simd, cd_norm_sq, cd_norm_sq_simd,
-    count_pathion_zero_divisors, cross_generational_friction, find_zero_divisors, gourlay_epsilon,
-    gourlay_psi, gourlay_psi_n, is_zero_divisor_koebisu, koebisu_d1, koebisu_d2,
-    left_mult_operator, measure_associator_density, zd_spectrum_analysis,
-    // f32 quantized CD (37x faster at 256D+, from TurboQuant precision insight)
-    batch_sliding_associator_norms_f32, cd_associator_norm_f32, cd_multiply_f32_into,
     // Workspace-based fast associator (3-buffer reuse, 3300x less allocation at 4096D)
-    AssociatorWorkspace, batch_fast_associator_norms_f32, fast_associator_norm_f32,
+    AssociatorWorkspace,
+    batch_associator_norms,
+    batch_associator_norms_parallel,
+    batch_associator_norms_sq,
+    batch_fast_associator_norms_f32,
+    batch_octonion_basis_associators,
+    batch_sedenion_associator_norms,
+    batch_sedenion_associator_norms_parallel,
+    batch_sliding_associator_norms,
+    // f32 quantized CD (37x faster at 256D+, from TurboQuant precision insight)
+    batch_sliding_associator_norms_f32,
+    batch_sliding_associator_norms_parallel,
+    cd_associator,
+    cd_associator_norm,
+    cd_associator_norm_f32,
+    cd_basis_mul_sign,
+    cd_conjugate,
+    cd_multiply,
     // Zero-alloc fused CD multiply (steinmarder Instant-NGP pattern)
-    cd_multiply_f32_fused, cd_multiply_f32_workspace_size,
+    cd_multiply_f32_fused,
+    cd_multiply_f32_into,
+    cd_multiply_f32_workspace_size,
+    cd_multiply_simd,
+    cd_norm_sq,
+    cd_norm_sq_simd,
+    count_pathion_zero_divisors,
+    cross_generational_friction,
+    fast_associator_norm_f32,
+    find_zero_divisors,
+    gourlay_epsilon,
+    gourlay_psi,
+    gourlay_psi_n,
+    is_zero_divisor_koebisu,
+    koebisu_d1,
+    koebisu_d2,
+    left_mult_operator,
+    measure_associator_density,
+    zd_spectrum_analysis,
 };
 
 /// Unified dispatch: compute sliding associator norms at the requested precision.

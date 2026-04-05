@@ -5,7 +5,7 @@
 authoritative = true
 status = "active"
 status_token = "ACTIVE"
-updated = "2026-02-10"
+updated = "2026-04-04"
 python_recommended = "3.11-3.12"
 python_allowed = "3.13+ (with optional extras caveats)"
 primary_markdown = "docs/REQUIREMENTS.md"

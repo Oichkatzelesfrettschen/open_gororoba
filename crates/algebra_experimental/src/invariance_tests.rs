@@ -5,10 +5,11 @@
 //! - S3 permutations of the three octonionic subalgebras
 //! - Combined G2 x S3 symmetry (the full structural symmetry group)
 
-use crate::cayley_dickson_structs::Sedenion;
-use crate::quantum_state::QuantumState;
-use crate::su_n_generators::construct_su5_generators_algebraic;
-use crate::sedenion_subalgebras::get_octonion_subalgebras;
+use crate::{
+    cayley_dickson_structs::Sedenion, quantum_state::QuantumState,
+    sedenion_subalgebras::get_octonion_subalgebras,
+    su_n_generators::construct_su5_generators_algebraic,
+};
 use gororoba_algebra::construction::g2_automorphisms::OctonionDerivation;
 
 /// Compute the generational mass from projecting the Casimir onto a subalgebra.
@@ -25,11 +26,10 @@ fn run_predictive_pipeline_on_basis(basis: &[Sedenion; 16], complex_structure: &
         .filter(|g| *g != QuantumState::TopologicalNull)
         .collect();
 
-    let casimir_op = surviving_gens
-        .into_iter()
-        .fold(QuantumState::Observable(Sedenion::default()), |acc, generator| {
-            acc + generator * generator
-        });
+    let casimir_op = surviving_gens.into_iter().fold(
+        QuantumState::Observable(Sedenion::default()),
+        |acc, generator| acc + generator * generator,
+    );
 
     let casimir = match casimir_op {
         QuantumState::Observable(s) => s,
@@ -48,10 +48,7 @@ fn run_predictive_pipeline_on_basis(basis: &[Sedenion; 16], complex_structure: &
 /// Returns ratios normalized to the largest mass (so the triple sums structure
 /// is scale-independent). G2 rotations change absolute Casimir magnitudes
 /// but preserve the ratio structure.
-fn mass_ratios_sorted(
-    casimir: &Sedenion,
-    subs: [&[usize]; 3],
-) -> [f64; 3] {
+fn mass_ratios_sorted(casimir: &Sedenion, subs: [&[usize]; 3]) -> [f64; 3] {
     let mut masses = [
         calculate_generational_mass(casimir, subs[0]),
         calculate_generational_mass(casimir, subs[1]),
@@ -76,7 +73,9 @@ fn compute_casimir(basis: &[Sedenion; 16], complex_structure: &Sedenion) -> Sede
 
     let casimir_op = surviving_gens
         .into_iter()
-        .fold(QuantumState::Observable(Sedenion::default()), |acc, g| acc + g * g);
+        .fold(QuantumState::Observable(Sedenion::default()), |acc, g| {
+            acc + g * g
+        });
 
     match casimir_op {
         QuantumState::Observable(s) => s,
@@ -250,9 +249,7 @@ mod tests {
             }
         }
 
-        println!(
-            "G2 invariance: {pass_count}/{total_checks} checks passed (tolerance 1e-9)"
-        );
+        println!("G2 invariance: {pass_count}/{total_checks} checks passed (tolerance 1e-9)");
         // All 70 checks (14 derivations x 5 t-values) should pass
         assert_eq!(
             pass_count, total_checks,
@@ -278,7 +275,8 @@ mod tests {
                 assert!(
                     (triple[j] - baseline_c[j]).abs() < 1e-12,
                     "Contiguous S3 perm {i}: mass[{j}] differs: {:.6e} vs {:.6e}",
-                    triple[j], baseline_c[j]
+                    triple[j],
+                    baseline_c[j]
                 );
             }
         }
@@ -296,7 +294,8 @@ mod tests {
                 assert!(
                     (triple[j] - baseline_i[j]).abs() < 1e-12,
                     "Interleaved S3 perm {i}: mass[{j}] differs: {:.6e} vs {:.6e}",
-                    triple[j], baseline_i[j]
+                    triple[j],
+                    baseline_i[j]
                 );
             }
         }
@@ -316,14 +315,10 @@ mod tests {
         let (o1_c, o2_c, o3_c) = get_octonion_subalgebras();
         let (o1_i, o2_i, o3_i) = get_sedenion_subalgebras();
 
-        let baseline_triple_c = mass_ratios_sorted(
-            &baseline_casimir,
-            [&o1_c[..], &o2_c[..], &o3_c[..]],
-        );
-        let baseline_triple_i = mass_ratios_sorted(
-            &baseline_casimir,
-            [&o1_i[..], &o2_i[..], &o3_i[..]],
-        );
+        let baseline_triple_c =
+            mass_ratios_sorted(&baseline_casimir, [&o1_c[..], &o2_c[..], &o3_c[..]]);
+        let baseline_triple_i =
+            mass_ratios_sorted(&baseline_casimir, [&o1_i[..], &o2_i[..], &o3_i[..]]);
 
         let mut pass_count = 0;
         let mut total_checks = 0;
@@ -360,9 +355,7 @@ mod tests {
             }
         }
 
-        println!(
-            "G2 x S3 full invariance: {pass_count}/{total_checks} checks passed"
-        );
+        println!("G2 x S3 full invariance: {pass_count}/{total_checks} checks passed");
         // 14 derivations x 5 t-values x 6 S3 perms x 2 subalgebra defs = 840
         assert_eq!(total_checks, 840, "expected 840 total checks");
         assert_eq!(

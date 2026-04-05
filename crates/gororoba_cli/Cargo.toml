@@ -162,6 +162,7 @@ lbm_vulkan = { version = "0.1.0", path = "../lbm_vulkan" }
 ash = { version = "0.38.0", features = ["debug"] }
 # External crates
 nalgebra = { workspace = true }
+nalgebra033 = { package = "nalgebra", version = "0.33" }
 ndarray = { workspace = true }
 anyhow = { workspace = true }
 rand = { workspace = true }

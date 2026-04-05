@@ -195,12 +195,12 @@ fn sampled_euclidean_ultrametric_fraction(
 
     for _ in 0..n_triples {
         // Sample three distinct indices
-        let i = rng.gen_range(0..n);
-        let mut j = rng.gen_range(0..n - 1);
+        let i = rng.random_range(0..n);
+        let mut j = rng.random_range(0..n - 1);
         if j >= i {
             j += 1;
         }
-        let mut k = rng.gen_range(0..n - 2);
+        let mut k = rng.random_range(0..n - 2);
         if k >= i.min(j) {
             k += 1;
         }
@@ -383,7 +383,7 @@ pub fn apply_null_column_major(
             // Random circular shift per column
             let mut buf = vec![0.0_f64; n];
             for col in 0..d {
-                let shift = rng.gen_range(0..n);
+                let shift = rng.random_range(0..n);
                 let start = col * n;
                 // Rotate: new[i] = old[(i + shift) % n]
                 for i in 0..n {
@@ -431,7 +431,7 @@ fn haar_random_so_d(d: usize, rng: &mut ChaCha8Rng) -> Vec<f64> {
     // Generate d x d Gaussian matrix (row-major)
     let mut z = vec![0.0_f64; d * d];
     for val in z.iter_mut() {
-        *val = normal.inverse_cdf(rng.r#gen());
+        *val = normal.inverse_cdf(rng.random());
     }
 
     // Modified Gram-Schmidt QR
@@ -606,7 +606,7 @@ impl NullModelStrategy for ToroidalShiftNull {
     fn apply(&self, cols: &mut [f64], n: usize, d: usize, rng: &mut ChaCha8Rng) {
         let mut buf = vec![0.0_f64; n];
         for col in 0..d {
-            let shift = rng.gen_range(0..n);
+            let shift = rng.random_range(0..n);
             let start = col * n;
             for i in 0..n {
                 buf[i] = cols[start + (i + shift) % n];
@@ -749,7 +749,7 @@ mod tests {
     /// Helper to create test data in column-major layout.
     fn make_test_data(n: usize, d: usize, seed: u64) -> Vec<f64> {
         let mut rng = ChaCha8Rng::seed_from_u64(seed);
-        (0..d * n).map(|_| rng.gen_range(0.0..1.0)).collect()
+        (0..d * n).map(|_| rng.random_range(0.0..1.0)).collect()
     }
 
     #[test]
@@ -997,12 +997,12 @@ mod tests {
         // Two clusters: first 25 points near origin, next 25 far away
         for i in 0..25 {
             for c in 0..d {
-                data[c * n + i] = rng.gen_range(-0.1..0.1);
+                data[c * n + i] = rng.random_range(-0.1..0.1);
             }
         }
         for i in 25..50 {
             for c in 0..d {
-                data[c * n + i] = 10.0 + rng.gen_range(-0.1..0.1);
+                data[c * n + i] = 10.0 + rng.random_range(-0.1..0.1);
             }
         }
 
@@ -1110,11 +1110,11 @@ mod tests {
         let mut rng = ChaCha8Rng::seed_from_u64(seed);
 
         for cluster in 0..n_clusters {
-            let center: Vec<f64> = (0..d).map(|_| rng.gen_range(-50.0..50.0)).collect();
+            let center: Vec<f64> = (0..d).map(|_| rng.random_range(-50.0..50.0)).collect();
             for p in 0..points_per_cluster {
                 let row = cluster * points_per_cluster + p;
                 for c in 0..d {
-                    cols[c * n + row] = center[c] + rng.gen_range(-0.1..0.1);
+                    cols[c * n + row] = center[c] + rng.random_range(-0.1..0.1);
                 }
             }
         }
@@ -1278,7 +1278,7 @@ mod tests {
                 for p in 0..pts_per {
                     let row = cluster * pts_per + p;
                     for c in 0..d {
-                        cols[c * n + row] = center[c] + rng.gen_range(-1.0..1.0);
+                        cols[c * n + row] = center[c] + rng.random_range(-1.0..1.0);
                     }
                 }
             }

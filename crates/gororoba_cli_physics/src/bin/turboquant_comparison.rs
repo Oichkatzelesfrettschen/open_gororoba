@@ -12,10 +12,12 @@ use clap::Parser;
 use serde::Serialize;
 use std::{fs, path::PathBuf, time::Instant};
 
-use cd_kernel::turboquant::baselines::{kivi, nsnquant};
-use cd_kernel::turboquant::config::TurboQuantConfig;
-use cd_kernel::turboquant::grouping;
-use cd_kernel::turboquant::pipeline::TurboQuantMSE;
+use cd_kernel::turboquant::{
+    baselines::{kivi, nsnquant},
+    config::TurboQuantConfig,
+    grouping,
+    pipeline::TurboQuantMSE,
+};
 
 #[derive(Parser)]
 #[command(name = "turboquant-comparison")]
@@ -30,7 +32,10 @@ struct Cli {
     #[arg(long, default_value_t = 2000)]
     n_vectors: usize,
 
-    #[arg(long, default_value = "data/output/heliosphere/ablations/turboquant_comparison.json")]
+    #[arg(
+        long,
+        default_value = "data/output/heliosphere/ablations/turboquant_comparison.json"
+    )]
     out_json: PathBuf,
 }
 
@@ -60,7 +65,11 @@ fn cosine_sim(a: &[f64], b: &[f64]) -> f64 {
     let dot: f64 = a.iter().zip(b.iter()).map(|(x, y)| x * y).sum();
     let na: f64 = a.iter().map(|x| x * x).sum::<f64>().sqrt();
     let nb: f64 = b.iter().map(|x| x * x).sum::<f64>().sqrt();
-    if na < 1e-15 || nb < 1e-15 { 0.0 } else { dot / (na * nb) }
+    if na < 1e-15 || nb < 1e-15 {
+        0.0
+    } else {
+        dot / (na * nb)
+    }
 }
 
 fn random_matrix(n: usize, d: usize, seed: u64) -> Vec<f64> {
@@ -88,7 +97,12 @@ fn bench_turboquant(data: &[f64], n: usize, d: usize, bits: u32) -> MethodResult
         let mut recon = vec![0.0f64; d];
         tq.dequantize(&compressed, &mut buf, &mut recon);
 
-        let mse: f64 = x.iter().zip(recon.iter()).map(|(a, b)| (a - b).powi(2)).sum::<f64>() / d as f64;
+        let mse: f64 = x
+            .iter()
+            .zip(recon.iter())
+            .map(|(a, b)| (a - b).powi(2))
+            .sum::<f64>()
+            / d as f64;
         total_mse += mse;
         total_cos += cosine_sim(x, &recon);
     }
@@ -98,13 +112,25 @@ fn bench_turboquant(data: &[f64], n: usize, d: usize, bits: u32) -> MethodResult
     let fp16_bits = n * d * 16;
 
     MethodResult {
-        method: format!("turboquant-{}", if cfg.use_e8() { "e8" } else if cfg.use_wht() { "wht" } else { "haar" }),
-        dim: d, bits, n_vectors: n,
+        method: format!(
+            "turboquant-{}",
+            if cfg.use_e8() {
+                "e8"
+            } else if cfg.use_wht() {
+                "wht"
+            } else {
+                "haar"
+            }
+        ),
+        dim: d,
+        bits,
+        n_vectors: n,
         mse_per_coord: total_mse / n as f64,
         cosine_mean: total_cos / n as f64,
         quantize_ms: elapsed,
         throughput_kvec_per_sec: n as f64 / elapsed,
-        total_bits, fp16_bits,
+        total_bits,
+        fp16_bits,
         compression_ratio: fp16_bits as f64 / total_bits as f64,
     }
 }
@@ -122,7 +148,12 @@ fn bench_kivi(data: &[f64], n: usize, d: usize, bits: u32) -> MethodResult {
         let offset = v * d;
         let orig = &data[offset..offset + d];
         let rec = &recon[offset..offset + d];
-        total_mse += orig.iter().zip(rec.iter()).map(|(a, b)| (a - b).powi(2)).sum::<f64>() / d as f64;
+        total_mse += orig
+            .iter()
+            .zip(rec.iter())
+            .map(|(a, b)| (a - b).powi(2))
+            .sum::<f64>()
+            / d as f64;
         total_cos += cosine_sim(orig, rec);
     }
 
@@ -131,12 +162,15 @@ fn bench_kivi(data: &[f64], n: usize, d: usize, bits: u32) -> MethodResult {
 
     MethodResult {
         method: "kivi".into(),
-        dim: d, bits, n_vectors: n,
+        dim: d,
+        bits,
+        n_vectors: n,
         mse_per_coord: total_mse / n as f64,
         cosine_mean: total_cos / n as f64,
         quantize_ms: elapsed,
         throughput_kvec_per_sec: n as f64 / elapsed,
-        total_bits, fp16_bits,
+        total_bits,
+        fp16_bits,
         compression_ratio: fp16_bits as f64 / total_bits as f64,
     }
 }
@@ -146,10 +180,16 @@ fn bench_nsnquant(data: &[f64], n: usize, d: usize, bits: u32) -> MethodResult {
     if !d.is_power_of_two() {
         return MethodResult {
             method: "nsnquant".into(),
-            dim: d, bits, n_vectors: n,
-            mse_per_coord: f64::NAN, cosine_mean: f64::NAN,
-            quantize_ms: 0.0, throughput_kvec_per_sec: 0.0,
-            total_bits: 0, fp16_bits: 0, compression_ratio: 0.0,
+            dim: d,
+            bits,
+            n_vectors: n,
+            mse_per_coord: f64::NAN,
+            cosine_mean: f64::NAN,
+            quantize_ms: 0.0,
+            throughput_kvec_per_sec: 0.0,
+            total_bits: 0,
+            fp16_bits: 0,
+            compression_ratio: 0.0,
         };
     }
 
@@ -167,7 +207,12 @@ fn bench_nsnquant(data: &[f64], n: usize, d: usize, bits: u32) -> MethodResult {
         let offset = v * d;
         let orig = &data[offset..offset + d];
         let rec = &recon[offset..offset + d];
-        total_mse += orig.iter().zip(rec.iter()).map(|(a, b)| (a - b).powi(2)).sum::<f64>() / d as f64;
+        total_mse += orig
+            .iter()
+            .zip(rec.iter())
+            .map(|(a, b)| (a - b).powi(2))
+            .sum::<f64>()
+            / d as f64;
         total_cos += cosine_sim(orig, rec);
     }
 
@@ -176,12 +221,15 @@ fn bench_nsnquant(data: &[f64], n: usize, d: usize, bits: u32) -> MethodResult {
 
     MethodResult {
         method: "nsnquant".into(),
-        dim: d, bits, n_vectors: n,
+        dim: d,
+        bits,
+        n_vectors: n,
         mse_per_coord: total_mse / n as f64,
         cosine_mean: total_cos / n as f64,
         quantize_ms: elapsed,
         throughput_kvec_per_sec: n as f64 / elapsed,
-        total_bits, fp16_bits,
+        total_bits,
+        fp16_bits,
         compression_ratio: fp16_bits as f64 / total_bits as f64,
     }
 }
@@ -201,7 +249,12 @@ fn bench_group_quant(data: &[f64], n: usize, d: usize, bits: u32) -> MethodResul
         let indices = grouping::group_quantize(x, &params, bits);
         let recon = grouping::group_dequantize(&indices, &params, bits);
 
-        total_mse += x.iter().zip(recon.iter()).map(|(a, b)| (a - b).powi(2)).sum::<f64>() / d as f64;
+        total_mse += x
+            .iter()
+            .zip(recon.iter())
+            .map(|(a, b)| (a - b).powi(2))
+            .sum::<f64>()
+            / d as f64;
         total_cos += cosine_sim(x, &recon);
         total_meta_bits += params.n_groups * (32 + 32 + 8); // scale + zp + flag per group
     }
@@ -213,12 +266,15 @@ fn bench_group_quant(data: &[f64], n: usize, d: usize, bits: u32) -> MethodResul
 
     MethodResult {
         method: format!("group-g{}", group_size),
-        dim: d, bits, n_vectors: n,
+        dim: d,
+        bits,
+        n_vectors: n,
         mse_per_coord: total_mse / n as f64,
         cosine_mean: total_cos / n as f64,
         quantize_ms: elapsed,
         throughput_kvec_per_sec: n as f64 / elapsed,
-        total_bits, fp16_bits,
+        total_bits,
+        fp16_bits,
         compression_ratio: fp16_bits as f64 / total_bits as f64,
     }
 }
@@ -239,25 +295,36 @@ fn main() -> Result<()> {
             println!("\n  d={}, bits={}:", d, bits);
 
             let tq = bench_turboquant(&data, cli.n_vectors, d, bits);
-            println!("    TurboQuant:  MSE={:.6}  cos={:.4}  {:.0} kvec/s  ratio={:.1}x",
-                tq.mse_per_coord, tq.cosine_mean, tq.throughput_kvec_per_sec, tq.compression_ratio);
+            println!(
+                "    TurboQuant:  MSE={:.6}  cos={:.4}  {:.0} kvec/s  ratio={:.1}x",
+                tq.mse_per_coord, tq.cosine_mean, tq.throughput_kvec_per_sec, tq.compression_ratio
+            );
             results.push(tq);
 
             let kv = bench_kivi(&data, cli.n_vectors, d, bits);
-            println!("    KIVI:        MSE={:.6}  cos={:.4}  {:.0} kvec/s  ratio={:.1}x",
-                kv.mse_per_coord, kv.cosine_mean, kv.throughput_kvec_per_sec, kv.compression_ratio);
+            println!(
+                "    KIVI:        MSE={:.6}  cos={:.4}  {:.0} kvec/s  ratio={:.1}x",
+                kv.mse_per_coord, kv.cosine_mean, kv.throughput_kvec_per_sec, kv.compression_ratio
+            );
             results.push(kv);
 
             let nsn = bench_nsnquant(&data, cli.n_vectors, d, bits);
             if !nsn.mse_per_coord.is_nan() {
-                println!("    NSNQuant:    MSE={:.6}  cos={:.4}  {:.0} kvec/s  ratio={:.1}x",
-                    nsn.mse_per_coord, nsn.cosine_mean, nsn.throughput_kvec_per_sec, nsn.compression_ratio);
+                println!(
+                    "    NSNQuant:    MSE={:.6}  cos={:.4}  {:.0} kvec/s  ratio={:.1}x",
+                    nsn.mse_per_coord,
+                    nsn.cosine_mean,
+                    nsn.throughput_kvec_per_sec,
+                    nsn.compression_ratio
+                );
             }
             results.push(nsn);
 
             let gq = bench_group_quant(&data, cli.n_vectors, d, bits);
-            println!("    GroupQuant:  MSE={:.6}  cos={:.4}  {:.0} kvec/s  ratio={:.1}x",
-                gq.mse_per_coord, gq.cosine_mean, gq.throughput_kvec_per_sec, gq.compression_ratio);
+            println!(
+                "    GroupQuant:  MSE={:.6}  cos={:.4}  {:.0} kvec/s  ratio={:.1}x",
+                gq.mse_per_coord, gq.cosine_mean, gq.throughput_kvec_per_sec, gq.compression_ratio
+            );
             results.push(gq);
         }
     }

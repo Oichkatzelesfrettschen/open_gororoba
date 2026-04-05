@@ -137,7 +137,18 @@ struct ParsedCsv {
 fn sha_text_ascii(blob: &str) -> String {
     let mut hasher = Sha256::new();
     hasher.update(blob.as_bytes());
-    format!("{:x}", hasher.finalize())
+    hasher
+        .finalize()
+        .iter()
+        .map(|byte| format!("{byte:02x}"))
+        .collect()
+}
+
+fn sha_bytes_ascii(blob: &[u8]) -> String {
+    Sha256::digest(blob)
+        .iter()
+        .map(|byte| format!("{byte:02x}"))
+        .collect()
 }
 
 fn escape_json_ascii(value: &str) -> String {
@@ -525,7 +536,7 @@ pub fn convert_csv_to_scroll(
 ) -> Result<ConversionOutput, ScrollError> {
     let raw = fs::read(path)?;
     let parsed = parse_csv(path)?;
-    let source_sha256 = format!("{:x}", Sha256::digest(&raw));
+    let source_sha256 = sha_bytes_ascii(&raw);
     let header_value_sha256 = sha_text_ascii(&json_ascii_header(&parsed.header));
     let row_value_sha256 = sha_text_ascii(&json_ascii_rows(&parsed.rows_semantic));
     let row_count = parsed.rows.len();

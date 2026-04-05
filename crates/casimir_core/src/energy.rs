@@ -17,7 +17,7 @@ use crate::{geometry::CasimirGeometry, vloop::generate_unit_loop};
 use rand::SeedableRng;
 use rand_chacha::ChaCha8Rng;
 use rayon::prelude::*;
-use std::f64::consts::PI;
+use std::{f64::consts::PI, num::NonZeroUsize};
 
 /// Configuration for worldline Casimir computation.
 #[derive(Debug, Clone)]
@@ -105,8 +105,9 @@ pub fn casimir_energy_at_point<G: CasimirGeometry>(
     let prefactor = -1.0 / (2.0 * (4.0 * PI).powf(1.5));
 
     // Gauss-Legendre quadrature nodes and weights on [0, 1]
-    let quad = gauss_quad::GaussLegendre::new(config.n_t_points)
-        .expect("failed to construct GL quadrature");
+    let quad = gauss_quad::GaussLegendre::new(
+        NonZeroUsize::new(config.n_t_points).expect("non-zero GL quadrature degree"),
+    );
     let pairs = quad.as_node_weight_pairs();
 
     // Map [0,1] -> [t_min, t_max] using log transform for better coverage
@@ -115,7 +116,7 @@ pub fn casimir_energy_at_point<G: CasimirGeometry>(
     let log_ratio = (config.t_max / config.t_min).ln();
 
     let mut integral = 0.0;
-    let mut error_sq = 0.0;
+    let mut error_sq = 0.0_f64;
     let mut total_loops = 0u64;
 
     for &(u, w) in pairs {

@@ -81,7 +81,7 @@ pub fn sample_structurable_bridge(
     let mut matrix = [[0.0; 3]; 3];
     for (row_idx, row) in matrix.iter_mut().enumerate() {
         for (col_idx, value) in row.iter_mut().enumerate() {
-            *value = mass_matrix.read(row_idx, col_idx);
+            *value = mass_matrix[(row_idx, col_idx)];
         }
     }
 
@@ -99,7 +99,7 @@ mod tests {
 
     impl FlavorLift for SumLift {
         fn lift(&self, v: &[f64], m: &mut faer::Mat<f64>) {
-            m.write(0, 0, m.read(0, 0) + v.iter().sum::<f64>());
+            m[(0, 0)] += v.iter().sum::<f64>();
         }
     }
 
@@ -114,7 +114,7 @@ mod tests {
         let mut mass_matrix = faer::Mat::<f64>::zeros(3, 3);
         apply_structurable_bridge(&mut mass_matrix, &x, &y, &z, &SumLift);
 
-        assert!((mass_matrix.read(0, 0) - expected_sum).abs() < 1e-12);
+        assert!((mass_matrix[(0, 0)] - expected_sum).abs() < 1e-12);
     }
 
     #[test]

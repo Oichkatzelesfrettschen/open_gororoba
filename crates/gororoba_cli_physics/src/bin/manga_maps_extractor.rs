@@ -35,6 +35,7 @@ use std::{
     collections::HashSet,
     fs,
     io::BufReader,
+    num::NonZeroUsize,
     path::{Path, PathBuf},
     sync::{Arc, Mutex},
 };
@@ -131,7 +132,8 @@ fn e_inv(z: f64) -> f64 {
 
 fn angular_diameter_distance_kpc(z: f64) -> f64 {
     // 32-point GL quadrature on [0, z]
-    let gl = GaussLegendre::new(32).expect("GL init");
+    let gl =
+        GaussLegendre::new(NonZeroUsize::new(32).expect("Gauss-Legendre degree must be non-zero"));
     let chi = gl.integrate(0.0, z, e_inv); // comoving distance in c/H0 units
     let d_mpc = (C_KM_S / H0_KM_S_MPC) * chi / (1.0 + z);
     d_mpc * MPC_IN_KPC

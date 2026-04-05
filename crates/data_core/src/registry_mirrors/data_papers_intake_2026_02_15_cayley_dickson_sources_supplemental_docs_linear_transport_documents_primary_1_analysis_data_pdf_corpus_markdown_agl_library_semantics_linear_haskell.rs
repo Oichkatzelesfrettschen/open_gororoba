@@ -207,8 +207,8 @@
 //! Pattern matching on a value of type Ur a yields a payload of multiplicity 𝜔, even when the scrutinee has multiplicity 1. In general, given a multiplicity set, the desired (sub)structural rules can be
 //! obtained by endowing multiplicities with the appropriate semiring structure [Abel and Bernardy 2020].
 //! In this paper, we use the same multiplicity structure as Linear Haskell:2,3
-//! 
-//! 
+//!
+//!
 //! 1·𝜋 = 𝜋
 //! 𝜋 +𝜌 = 𝜔
 //! 𝜔·𝜋 = 𝜔
@@ -511,7 +511,7 @@
 //!  ()
 //! ()
 //! = writeRef a𝑖 a 𝑗 _𝑣𝑎𝑙
-//! 
+//!
 //! in  ()) in  ())
 //! = join l r
 //!  (Ur )
@@ -565,7 +565,7 @@
 //! =
 //! join l r
 //! (Ur
-//! 
+//!
 //! in  ()
 //!
 //! partition :: RW n =◦ UArray Int n → Int R RW n
@@ -688,7 +688,7 @@
 //! simple constraints
 //!
 //! We can now straightforwardly deﬁne the operations we need on simple constraints:
-//! 
+//!
 //! 1·q = (∅, q)
 //! 𝜀 = (∅, ∅)
 //! (U1, L1 ) ⊗(U2, L2 ) = (U1 ∪ U2, L1 ⊎ L2 )
@@ -739,7 +739,7 @@
 //! (Γ1, x:𝜋 𝜎) + Γ2 = Γ1 + Γ2′, x: (𝜋+𝜌) 𝜎 where Γ2 = {x:𝜌 𝜎} ∪ Γ2′
 //! 
 //! 
-//! 
+//!
 //! 
 //! 
 //! 
@@ -791,7 +791,7 @@
 //! An important feature of simple constraints is that, while scaling syntactically happens at the
 //! level of atomic constraints, these properties of scaling extend to scaling of arbitrary constraints.
 //! Deﬁne 𝜋 ·Q as:
-//! 
+//!
 //! 1·(U , L) = (U , L)
 //! 𝜔·(U , L) = (U ∪ L, ∅)
 //! Then the following properties hold
@@ -1479,12 +1479,12 @@
 //! core calculus.
 //! 7.2.2 Translating types. Type schemes 𝜎 are translated by turning the implicit argument Q into
 //! an explicit one of type JQKev . Translating types 𝜏 and contexts Γ proceeds as expected.
-//! 
-//! 
+//!
+//!
 //! J∀a.Q =◦ 𝜏K = ∀a.JQKev →1 J𝜏K
 //! J•K
 //! = •
-//! 
+//!
 //! J𝜏1 →𝜋 𝜏2 K = J𝜏1 K →𝜋 J𝜏2 K
 //! JΓ, x:𝜋 𝜏K = JΓK, x:𝜋 J𝜏K
 //! J∃a.𝜏 R QK = ∃a.J𝜏K ⊗ JQKev
@@ -1505,7 +1505,7 @@
 //!
 //! are dictionaries, and because type classes were the original form of constraints in Haskell.
 //! 9 The attentive reader may note that the case for let extracts out Q and Q from the provided simple constraint. Given
-//! 
+//!
 //! 1
 //! 2
 //! that simple constraints Q have no internal ordering and allow duplicates (in the non-linear component), this splitting is
@@ -2039,7 +2039,7 @@
 //! Q1 , this is equivalent to 𝜔·Q1 1·q2 .
 //! This follows from the fact that Q1 Q2 implies 𝜔·Q1 Q2 (Deﬁnition 5.3) and the property,
 //! shown above, that 𝜔·Q1 Q2 ⊗ Q2′ if and only if 𝜔·Q1 Q2 and 𝜔·Q1 Q2′ .
-//! 
+//!
 //! Proof of Lemma 5.5. Let us prove separately the cases 𝜋 = 1 and 𝜋 = 𝜔.
 //! 1·Q2 implies that Q1 = 1·Q1 with
 //! • When 𝜋 = 1, then 𝜋 ·Q = Q for all Q, in particular Q1
@@ -2053,11 +2053,11 @@
 //! Q
 //! 𝜌·q2 (for all 𝜌).
 //! This result, in turns, holds by Deﬁnition 5.3.
-//! 
+//!
 //! Lemma B.1. The following equality holds 𝜋 ·(𝜌·Q) = (𝜋 ·𝜌)·Q
 //! Proof. Immediate by case analysis of 𝜋 and 𝜌.
 //!
-//! 
+//!
 //!
 //! B.6 Lemmas on constraint inference
 //! Lemma B.2 (D discarding). The two following, equivalent, properties hold
@@ -2070,7 +2070,7 @@
 //! Let 𝑄 D ∈ D, then for each 1·q ∈ 𝑄 D , 1·q
 //! 𝜀 (per Fig. 4), tensoring each of these entailments
 //! together and with the 𝜔·q ∈ 𝑄 D , we get 𝑄 D 𝜀.
-//! 
+//!
 //! Proc. ACM Program. Lang., Vol. 6, No. ICFP, Article 95. Publication date: August 2022.
 //!
 //!
@@ -2344,7 +2344,7 @@
 //! there exists Q1′ , 𝑄 ′D , Q2′ , such that
 //!
 //! Q2 ⊗ Q2′
-//! 
+//!
 //! Q1 ⊗ 𝑄 D ⊗ Q2 , then
 //!
 //! • Q1′ ⊗ 𝑄 ′D Q1
@@ -2404,7 +2404,7 @@
 //!
 //! This concludes the proof
 //!
-//! 
+//!
 //!
 //! Proof of Lemma 6.1. The cases Q ⊢ 𝐶 1 & 𝐶 2 and Q ⊢ 𝜋 ·(Q2 =◦ 𝐶) are straightforward by induction, so let us prove them ﬁrst
 //! • Suppose Q ⊢ 𝐶 1 & 𝐶 2 , then there are two cases
@@ -2446,7 +2446,7 @@
 //! – Q1 ⊗ 𝑄 D Q1′ ⊗ 𝑄 ′D
 //! – 𝑄 D ⊗ Q2 𝑄 ′D ⊗ Q2′
 //! Which concludes the proof, by the C-Dom rule
-//! 
+//!
 //! Proof of Lemma 6.2. By induction on the syntax of 𝐶
 //! • If 𝐶 = Q ′ , then the result follows from Lemma 5.4
 //! • If 𝐶 = 𝐶 1 ⊗ 𝐶 2 , then we can prove the result like we proved the corresponding case in
@@ -2459,7 +2459,7 @@
 //! • If 𝐶 = 𝜌·(Q1 =◦ 𝐶 ′ ), then by Lemma 6.1, there is a Q ′ such that Q = 𝜋 ·Q ′ and Q ′ ⊗ Q1 ⊢ 𝐶 ′ .
 //! Applying rule C-Impl with 𝜋 ·𝜌, we get (𝜋 ·𝜌)·Q ′ ⊢ (𝜋 ·𝜌)·(Q1 =◦ 𝐶 ′ ).
 //! In other words: 𝜋 ·Q ⊢ 𝜋 ·(𝜌·(Q =◦ 𝐶)) as expected.
-//! 
+//!
 //! Proof of Lemma 6.3. By induction on the syntax of 𝐶
 //! • If 𝐶 = Q ′ , then the result follows from Lemma 5.5
 //! • If 𝐶 = 𝐶 1 ⊗ 𝐶 2 , then we can prove the result like we proved the corresponding case in
@@ -2471,7 +2471,7 @@
 //! that 𝜔·Q1′ ⊗ 𝜔·Q2′ ⊢ 𝐶 1 and 𝜔·Q1′ ⊗ 𝜔·Q2′ ⊢ 𝐶 1 (by Lemma B.5) and, ﬁnally, Q = 𝜔·Q (by
 //! Lemma B.6) and Q ⊢ 𝐶 1 & 𝐶 2 .
 //! • If 𝐶 = 𝜌·(Q1 =◦ 𝐶 ′ ), then 𝜋 ·𝐶 = (𝜋 ·𝜌)·(Q1 =◦ 𝐶 ′ ). The result follows immediately by Lemma 6.1.
-//! 
+//!
 //! Proc. ACM Program. Lang., Vol. 6, No. ICFP, Article 95. Publication date: August 2022.
 //!
 //!
@@ -2596,7 +2596,7 @@
 //! • Q ⊗ 𝑄 D; Γ ⊢ e : T 𝜎
 //! • For each 𝑖, 𝑄 D ⊗ Q ′ ; Δ, xi : (𝜋 ·𝜋i ) 𝜐 i [𝜎/a] ⊢ ei : 𝜏
 //! Therefore Qg ; 𝜋 ·Γ + Δ ⊢ case𝜋 e of {K𝑖 x𝑖 → e𝑖 } : 𝜏.
-//! 
+//!
 //! Proof of Lemma 6.5. By induction on U ; D; Li ⊢s 𝐶 { Lo
 //! S-Atom We have
 //! • U ; D; Li ⊢s 𝜋 ·q { Lo
@@ -2654,16 +2654,16 @@
 //! • (U ∪ U0, L0 ) ⊢ 𝐶
 //! Then by C-Impl (U , ∅) ⊢ 𝜔·((U0, L0 ) =◦ 𝐶) and ﬁnally by rule C-Tensor we have (U , Li ) ⊢
 //! 𝜔·((U0, L0 ) =◦ 𝐶) ⊗(∅, Li ). Li ⊆ Li holds trivially.
-//! 
+//!
 //! Lemma B.5 (Weakening of wanteds). If Q ⊢ 𝐶, then 𝜔·Q ′ ⊗ Q ⊢ 𝐶
 //! Proof. This is proved by a straightforward induction on the derivation of Q ⊢ 𝐶, using the
 //! corresponding property on the simple-constraint entailment relation from Deﬁnition 5.3, for the
 //! C-Dom case.
-//! 
+//!
 //! Lemma B.6. The following equality holds: 𝜋 ·(𝜌·𝐶) = (𝜋 ·𝜌)·𝐶.
 //! Proof. This is proved by a straightforward induction on the structure of 𝐶, using Lemma B.1
 //! for the case 𝐶 = Q.
-//! 
+//!
 //!
 //! Proc. ACM Program. Lang., Vol. 6, No. ICFP, Article 95. Publication date: August 2022.
 //!

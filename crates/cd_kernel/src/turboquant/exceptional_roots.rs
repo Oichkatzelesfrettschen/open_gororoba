@@ -34,7 +34,11 @@ impl<const N: usize> Root<N> {
     }
 
     pub fn dot(&self, other: &Self) -> f64 {
-        self.coords.iter().zip(other.coords.iter()).map(|(a, b)| a * b).sum()
+        self.coords
+            .iter()
+            .zip(other.coords.iter())
+            .map(|(a, b)| a * b)
+            .sum()
     }
 }
 
@@ -214,10 +218,14 @@ pub fn summarize<const N: usize>(name: &str, roots: &[Root<N>]) -> RootSystemSum
     let norms: Vec<f64> = roots.iter().map(|r| r.norm_sq()).collect();
     let min_n = norms.iter().copied().fold(f64::MAX, f64::min);
     let max_n = norms.iter().copied().fold(f64::MIN, f64::max);
-    let n_positive = roots.iter()
+    let n_positive = roots
+        .iter()
         .filter(|r| {
             // A root is "positive" if the first nonzero coordinate is positive
-            r.coords.iter().find(|&&c| c.abs() > 1e-10).is_some_and(|&c| c > 0.0)
+            r.coords
+                .iter()
+                .find(|&&c| c.abs() > 1e-10)
+                .is_some_and(|&c| c > 0.0)
         })
         .count();
 
@@ -240,10 +248,20 @@ mod tests {
     fn test_f4_roots() {
         let roots = generate_f4_roots();
         let summary = summarize("F4", &roots);
-        println!("F4: {} roots, rank {}, norms [{:.2}, {:.2}], simply_laced={}",
-            summary.n_roots, summary.rank, summary.min_norm_sq, summary.max_norm_sq,
-            summary.simply_laced);
-        assert_eq!(roots.len(), 48, "F4 should have 48 roots, got {}", roots.len());
+        println!(
+            "F4: {} roots, rank {}, norms [{:.2}, {:.2}], simply_laced={}",
+            summary.n_roots,
+            summary.rank,
+            summary.min_norm_sq,
+            summary.max_norm_sq,
+            summary.simply_laced
+        );
+        assert_eq!(
+            roots.len(),
+            48,
+            "F4 should have 48 roots, got {}",
+            roots.len()
+        );
         // F4 is non-simply-laced (short and long roots)
         assert!(!summary.simply_laced, "F4 should be non-simply-laced");
     }
@@ -252,18 +270,32 @@ mod tests {
     fn test_e6_roots() {
         let roots = generate_e6_roots();
         let summary = summarize("E6", &roots);
-        println!("E6: {} roots, rank {}, norms [{:.2}, {:.2}]",
-            summary.n_roots, summary.rank, summary.min_norm_sq, summary.max_norm_sq);
-        assert_eq!(roots.len(), 72, "E6 should have 72 roots, got {}", roots.len());
+        println!(
+            "E6: {} roots, rank {}, norms [{:.2}, {:.2}]",
+            summary.n_roots, summary.rank, summary.min_norm_sq, summary.max_norm_sq
+        );
+        assert_eq!(
+            roots.len(),
+            72,
+            "E6 should have 72 roots, got {}",
+            roots.len()
+        );
     }
 
     #[test]
     fn test_e7_roots() {
         let roots = generate_e7_roots();
         let summary = summarize("E7", &roots);
-        println!("E7: {} roots, rank {}, norms [{:.2}, {:.2}]",
-            summary.n_roots, summary.rank, summary.min_norm_sq, summary.max_norm_sq);
-        assert_eq!(roots.len(), 126, "E7 should have 126 roots, got {}", roots.len());
+        println!(
+            "E7: {} roots, rank {}, norms [{:.2}, {:.2}]",
+            summary.n_roots, summary.rank, summary.min_norm_sq, summary.max_norm_sq
+        );
+        assert_eq!(
+            roots.len(),
+            126,
+            "E7 should have 126 roots, got {}",
+            roots.len()
+        );
     }
 
     #[test]
@@ -287,8 +319,14 @@ mod tests {
         let e8 = super::super::e8_rotation::generate_e8_roots();
 
         println!("\nExceptional algebra hierarchy:");
-        println!("  F4: {} roots in R^4 (Albert algebra automorphisms)", f4.len());
-        println!("  E6: {} roots in R^6 (octonionic projective plane)", e6.len());
+        println!(
+            "  F4: {} roots in R^4 (Albert algebra automorphisms)",
+            f4.len()
+        );
+        println!(
+            "  E6: {} roots in R^6 (octonionic projective plane)",
+            e6.len()
+        );
         println!("  E7: {} roots in R^7 (127-point, N=8 SUGRA)", e7.len());
         println!("  E8: {} roots in R^8 (optimal sphere packing)", e8.len());
 

@@ -48,7 +48,10 @@ struct Cli {
     embedding_dim: usize,
 
     /// Output JSON.
-    #[arg(long, default_value = "data/output/heliosphere/ablations/grmhd_torus_cd.json")]
+    #[arg(
+        long,
+        default_value = "data/output/heliosphere/ablations/grmhd_torus_cd.json"
+    )]
     out_json: PathBuf,
 }
 
@@ -100,7 +103,9 @@ fn cd_on_bfield(bfield: &[[f64; 3]], dim: usize) -> f64 {
         }
         let norm: f64 = v.iter().map(|x| x * x).sum::<f64>().sqrt();
         if norm > 1e-15 {
-            for x in v.iter_mut() { *x /= norm; }
+            for x in v.iter_mut() {
+                *x /= norm;
+            }
         }
         embedded.push(v);
     }
@@ -109,18 +114,28 @@ fn cd_on_bfield(bfield: &[[f64; 3]], dim: usize) -> f64 {
     }
     // Use nearest power-of-2 dim for CD kernel
     let cd_dim = dim.next_power_of_two();
-    let padded: Vec<Vec<f64>> = embedded.into_iter().map(|mut v| {
-        v.resize(cd_dim, 0.0);
-        v
-    }).collect();
+    let padded: Vec<Vec<f64>> = embedded
+        .into_iter()
+        .map(|mut v| {
+            v.resize(cd_dim, 0.0);
+            v
+        })
+        .collect();
     let norms = cd_kernel::batch_sliding_associator_norms_dispatch(&padded, cd_dim, "f64");
-    if norms.is_empty() { 0.0 } else { norms.iter().sum::<f64>() / norms.len() as f64 }
+    if norms.is_empty() {
+        0.0
+    } else {
+        norms.iter().sum::<f64>() / norms.len() as f64
+    }
 }
 
 fn main() -> Result<()> {
     let cli = Cli::parse();
     println!("=== GRMHD Torus -> CD Pipeline ===");
-    println!("  grid: {}x{}x{}, steps: {}, dim: {}", cli.n1, cli.n2, cli.n3, cli.n_steps, cli.embedding_dim);
+    println!(
+        "  grid: {}x{}x{}, steps: {}, dim: {}",
+        cli.n1, cli.n2, cli.n3, cli.n_steps, cli.embedding_dim
+    );
 
     let metric = KerrMetric::schwarzschild();
     let grid = Grid::new(cli.n1, cli.n2, cli.n3, 2.5, 40.0, metric);
@@ -140,11 +155,25 @@ fn main() -> Result<()> {
 
     // Step 0: initial state
     let bf = extract_midplane_bfield(&prim_grid, &grid);
-    let max_rho = (0..grid.n_total()).map(|i| prim_grid.get(i)[prims::RHO]).fold(0.0f64, f64::max);
-    let max_bmag = bf.iter().map(|b| (b[0]*b[0] + b[1]*b[1] + b[2]*b[2]).sqrt()).fold(0.0f64, f64::max);
+    let max_rho = (0..grid.n_total())
+        .map(|i| prim_grid.get(i)[prims::RHO])
+        .fold(0.0f64, f64::max);
+    let max_bmag = bf
+        .iter()
+        .map(|b| (b[0] * b[0] + b[1] * b[1] + b[2] * b[2]).sqrt())
+        .fold(0.0f64, f64::max);
     let cd_mean = cd_on_bfield(&bf, cli.embedding_dim);
-    println!("  step 0: rho_max={:.4}, B_max={:.6}, CD={:.6}", max_rho, max_bmag, cd_mean);
-    steps.push(StepResult { step: 0, dt: 0.0, max_rho, max_bmag, cd_mean });
+    println!(
+        "  step 0: rho_max={:.4}, B_max={:.6}, CD={:.6}",
+        max_rho, max_bmag, cd_mean
+    );
+    steps.push(StepResult {
+        step: 0,
+        dt: 0.0,
+        max_rho,
+        max_bmag,
+        cd_mean,
+    });
 
     // Evolution loop (full 3D Euler steps with B-field evolution)
     for step in 1..=cli.n_steps {
@@ -156,19 +185,34 @@ fn main() -> Result<()> {
 
         // CD analysis
         let bf = extract_midplane_bfield(&prim_grid, &grid);
-        let max_rho = (0..grid.n_total()).map(|i| prim_grid.get(i)[prims::RHO]).fold(0.0f64, f64::max);
-        let max_bmag = bf.iter().map(|b| (b[0]*b[0] + b[1]*b[1] + b[2]*b[2]).sqrt()).fold(0.0f64, f64::max);
+        let max_rho = (0..grid.n_total())
+            .map(|i| prim_grid.get(i)[prims::RHO])
+            .fold(0.0f64, f64::max);
+        let max_bmag = bf
+            .iter()
+            .map(|b| (b[0] * b[0] + b[1] * b[1] + b[2] * b[2]).sqrt())
+            .fold(0.0f64, f64::max);
         let cd_mean = cd_on_bfield(&bf, cli.embedding_dim);
 
         if step % 2 == 0 || step == cli.n_steps {
-            println!("  step {}: dt={:.2e}, rho_max={:.4}, B_max={:.6}, CD={:.6}",
-                step, dt, max_rho, max_bmag, cd_mean);
+            println!(
+                "  step {}: dt={:.2e}, rho_max={:.4}, B_max={:.6}, CD={:.6}",
+                step, dt, max_rho, max_bmag, cd_mean
+            );
         }
-        steps.push(StepResult { step, dt, max_rho, max_bmag, cd_mean });
+        steps.push(StepResult {
+            step,
+            dt,
+            max_rho,
+            max_bmag,
+            cd_mean,
+        });
     }
 
     let output = TorusCdOutput {
-        n1: cli.n1, n2: cli.n2, n_steps: cli.n_steps,
+        n1: cli.n1,
+        n2: cli.n2,
+        n_steps: cli.n_steps,
         embedding_dim: cli.embedding_dim,
         steps,
     };

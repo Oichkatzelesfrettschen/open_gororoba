@@ -32,8 +32,13 @@ struct Cli {
 const S3_BASE: &str = "https://s3.echo.stfc.ac.uk/mast/level1/shots";
 
 fn download_chunk(url: &str, path: &PathBuf) -> Result<usize> {
-    let resp = ureq::get(url).call().with_context(|| format!("GET {url}"))?;
-    let buf = resp.into_body().read_to_vec().with_context(|| format!("read body from {url}"))?;
+    let resp = ureq::get(url)
+        .call()
+        .with_context(|| format!("GET {url}"))?;
+    let buf = resp
+        .into_body()
+        .read_to_vec()
+        .with_context(|| format!("read body from {url}"))?;
     fs::write(path, &buf)?;
     Ok(buf.len())
 }
@@ -56,7 +61,9 @@ fn main() -> Result<()> {
 
     for &shot in &shots {
         let shot_base = format!("{S3_BASE}/{shot}.zarr/{}", cli.diagnostic);
-        let local_base = cli.out_dir.join(format!("shot{shot}.zarr/{}", cli.diagnostic));
+        let local_base = cli
+            .out_dir
+            .join(format!("shot{shot}.zarr/{}", cli.diagnostic));
         fs::create_dir_all(&local_base)?;
 
         // Download metadata

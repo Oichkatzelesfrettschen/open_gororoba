@@ -236,14 +236,17 @@ mod tests {
         let ring_norms = ring.stream_norms(vecs.clone().into_iter());
 
         // Batch path
-        let batch_norms = crate::cayley_dickson::simd::batch_sliding_associator_norms_f32(&vecs, dim);
+        let batch_norms =
+            crate::cayley_dickson::simd::batch_sliding_associator_norms_f32(&vecs, dim);
 
         assert_eq!(ring_norms.len(), batch_norms.len());
         for (r, b) in ring_norms.iter().zip(batch_norms.iter()) {
             assert!(
                 (r - b).abs() < 1e-5,
                 "Ring {} != Batch {} (diff {})",
-                r, b, (r - b).abs()
+                r,
+                b,
+                (r - b).abs()
             );
         }
     }

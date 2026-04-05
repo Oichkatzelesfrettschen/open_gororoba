@@ -392,7 +392,11 @@ fn decompose_all_roots(
         }
         let mut c = [0i32; 7];
         for (i, (c_i, inv_row)) in c.iter_mut().zip(cartan_inv.iter()).enumerate() {
-            let val: f64 = inv_row.iter().zip(b.iter()).map(|(&ci_j, &b_j)| ci_j * b_j).sum();
+            let val: f64 = inv_row
+                .iter()
+                .zip(b.iter())
+                .map(|(&ci_j, &b_j)| ci_j * b_j)
+                .sum();
             let rounded = val.round() as i32;
             assert!(
                 (val - f64::from(rounded)).abs() < 0.01,

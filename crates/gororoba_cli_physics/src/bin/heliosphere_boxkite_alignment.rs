@@ -6,8 +6,8 @@ use serde::Serialize;
 use std::{collections::BTreeMap, path::PathBuf};
 
 use algebra_analysis::{
-    boxkite_alignment::{generate_psl_2_7_permutations_16d, box_kite_alignment_scan_cpu},
-    boxkites::{cached_sedenion_boxkites},
+    boxkite_alignment::{box_kite_alignment_scan_cpu, generate_psl_2_7_permutations_16d},
+    boxkites::cached_sedenion_boxkites,
 };
 
 #[cfg(feature = "gpu")]
@@ -23,7 +23,10 @@ struct Args {
     input_csv: PathBuf,
 
     /// Output alignment results CSV.
-    #[arg(long, default_value = "data/output/heliosphere/boxkite_alignment_scan.csv")]
+    #[arg(
+        long,
+        default_value = "data/output/heliosphere/boxkite_alignment_scan.csv"
+    )]
     out_csv: PathBuf,
 
     /// Batch size for GPU processing.
@@ -51,15 +54,27 @@ struct AlignmentResultRow {
 fn main() -> Result<()> {
     let args = Args::parse();
 
-    println!("[1/4] Loading 16D Takens descriptors from {}...", args.input_csv.display());
+    println!(
+        "[1/4] Loading 16D Takens descriptors from {}...",
+        args.input_csv.display()
+    );
     let mut reader = ReaderBuilder::new().from_path(&args.input_csv)?;
-    
+
     // Group by mission + product to preserve temporal continuity for Takens
-    let mut mission_groups: BTreeMap<(String, String), Vec<HeliosphereFeatureRow>> = BTreeMap::new();
+    let mut mission_groups: BTreeMap<(String, String), Vec<HeliosphereFeatureRow>> =
+        BTreeMap::new();
     for result in reader.deserialize::<HeliosphereFeatureRow>() {
         let r = result?;
-        if r.bx.is_finite() && r.by.is_finite() && r.bz.is_finite() && r.b_mag.is_finite() && r.b_mag > 0.0 {
-            mission_groups.entry((r.mission.clone(), r.product.clone())).or_default().push(r);
+        if r.bx.is_finite()
+            && r.by.is_finite()
+            && r.bz.is_finite()
+            && r.b_mag.is_finite()
+            && r.b_mag > 0.0
+        {
+            mission_groups
+                .entry((r.mission.clone(), r.product.clone()))
+                .or_default()
+                .push(r);
         }
     }
 
@@ -78,13 +93,18 @@ fn main() -> Result<()> {
     let mut all_missions = Vec::new();
 
     for ((mission, _product), rows) in mission_groups {
-        if rows.len() < 4 { continue; }
-        
+        if rows.len() < 4 {
+            continue;
+        }
+
         // 16D reconstruction from 4-sample delay of (Bx, By, Bz, |B|)
         for window in rows.windows(4) {
             let mut v16 = [0.0; 16];
-            let local_mean_b = (window[0].b_mag + window[1].b_mag + window[2].b_mag + window[3].b_mag) / 4.0;
-            if local_mean_b <= 0.0 { continue; }
+            let local_mean_b =
+                (window[0].b_mag + window[1].b_mag + window[2].b_mag + window[3].b_mag) / 4.0;
+            if local_mean_b <= 0.0 {
+                continue;
+            }
 
             for i in 0..4 {
                 v16[i * 4] = window[i].bx / local_mean_b;
@@ -108,15 +128,22 @@ fn main() -> Result<()> {
     for vec in &all_vectors {
         for d in 0..16 {
             let v = vec[d];
-            if v < mins[d] { mins[d] = v; }
-            if v > maxs[d] { maxs[d] = v; }
+            if v < mins[d] {
+                mins[d] = v;
+            }
+            if v > maxs[d] {
+                maxs[d] = v;
+            }
         }
     }
 
     // Compute Morton codes and store with original indices
     let mut indexed_morton: Vec<(u64, usize)> = (0..n_vectors)
         .map(|i| {
-            (algebra_analysis::boxkite_alignment::morton_code_16d(&all_vectors[i], &mins, &maxs), i)
+            (
+                algebra_analysis::boxkite_alignment::morton_code_16d(&all_vectors[i], &mins, &maxs),
+                i,
+            )
         })
         .collect();
 
@@ -140,7 +167,11 @@ fn main() -> Result<()> {
 
     let target_backend = args.backend.as_ref().map(|s| s.to_lowercase());
 
-    if !args.cpu_only && (target_backend.is_none() || target_backend.as_deref() == Some("cuda") || target_backend.as_deref() == Some("vulkan")) {
+    if !args.cpu_only
+        && (target_backend.is_none()
+            || target_backend.as_deref() == Some("cuda")
+            || target_backend.as_deref() == Some("vulkan"))
+    {
         if target_backend.as_deref() == Some("cuda") || target_backend.is_none() {
             #[cfg(feature = "gpu")]
             {
@@ -148,7 +179,7 @@ fn main() -> Result<()> {
                 if let Some(gpu) = GpuBoxKiteAlignmentEngine::try_new() {
                     // Flatten sorted_vectors for CUDA
                     let flat_vectors: Vec<f64> = sorted_vectors.iter().flatten().copied().collect();
-                    
+
                     let mut bk_indices_u8 = Vec::with_capacity(7 * 12);
                     for bk in boxkites.iter() {
                         let mut indices = std::collections::BTreeSet::new();
@@ -181,17 +212,21 @@ fn main() -> Result<()> {
                         }
                     }
                 } else if target_backend.as_deref() == Some("cuda") {
-                    return Err(anyhow::anyhow!("CUDA backend requested but engine could not be initialized"));
+                    return Err(anyhow::anyhow!(
+                        "CUDA backend requested but engine could not be initialized"
+                    ));
                 }
             }
         }
 
-        if used_backend == "None" && (target_backend.as_deref() == Some("vulkan") || target_backend.is_none()) {
+        if used_backend == "None"
+            && (target_backend.as_deref() == Some("vulkan") || target_backend.is_none())
+        {
             println!("[3/4] Attempting Vulkan backend...");
             if let Ok(v_ctx) = VulkanContext::new(false) {
                 if let Ok(mut v_engine) = VulkanBoxKiteAlignmentEngine::try_new(&v_ctx) {
                     let flat_vectors: Vec<f64> = sorted_vectors.iter().flatten().copied().collect();
-                    
+
                     let mut bk_indices_u32 = Vec::with_capacity(7 * 12);
                     for bk in boxkites.iter() {
                         let mut indices = std::collections::BTreeSet::new();
@@ -210,7 +245,12 @@ fn main() -> Result<()> {
                         }
                     }
 
-                    match v_engine.run_alignment_scan(&v_ctx, &flat_vectors, &orient_u32, &bk_indices_u32) {
+                    match v_engine.run_alignment_scan(
+                        &v_ctx,
+                        &flat_vectors,
+                        &orient_u32,
+                        &bk_indices_u32,
+                    ) {
                         Ok((m, b)) => {
                             max_alignments_sorted = m;
                             best_orients_sorted = b;
@@ -224,17 +264,24 @@ fn main() -> Result<()> {
                         }
                     }
                 } else if target_backend.as_deref() == Some("vulkan") {
-                    return Err(anyhow::anyhow!("Vulkan backend requested but engine could not be initialized"));
+                    return Err(anyhow::anyhow!(
+                        "Vulkan backend requested but engine could not be initialized"
+                    ));
                 }
             } else if target_backend.as_deref() == Some("vulkan") {
-                return Err(anyhow::anyhow!("Vulkan backend requested but context could not be created"));
+                return Err(anyhow::anyhow!(
+                    "Vulkan backend requested but context could not be created"
+                ));
             }
         }
     }
 
     if used_backend == "None" {
         if let Some(ref b) = target_backend.as_ref().filter(|b| b.as_str() != "cpu") {
-            return Err(anyhow::anyhow!("Requested backend '{}' failed or unavailable, and fallback disabled", b));
+            return Err(anyhow::anyhow!(
+                "Requested backend '{}' failed or unavailable, and fallback disabled",
+                b
+            ));
         }
         println!("[3/4] Using CPU backend (Rayon)...");
         let (m, b) = box_kite_alignment_scan_cpu(&sorted_vectors, &orientations, boxkites);
@@ -243,7 +290,10 @@ fn main() -> Result<()> {
         used_backend = "CPU";
     }
 
-    println!("      Alignment scan completed using {} backend.", used_backend);
+    println!(
+        "      Alignment scan completed using {} backend.",
+        used_backend
+    );
 
     // Map results back to original order
     let mut max_alignments = vec![0.0; n_vectors];

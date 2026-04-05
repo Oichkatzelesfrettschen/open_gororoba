@@ -18,12 +18,7 @@
 ///
 /// High PVI (> 3-4) indicates a strong discontinuity / current sheet.
 /// Returns one PVI value per valid time step.
-pub fn pvi_3d(
-    bx: &[f64],
-    by: &[f64],
-    bz: &[f64],
-    lag: usize,
-) -> Vec<f64> {
+pub fn pvi_3d(bx: &[f64], by: &[f64], bz: &[f64], lag: usize) -> Vec<f64> {
     let n = bx.len().min(by.len()).min(bz.len());
     if n <= lag {
         return vec![];
@@ -102,8 +97,7 @@ pub fn bmag_gradient_crossings(
     let mut crossings = Vec::new();
     for i in window..n.saturating_sub(window) {
         let pre: f64 = bmag[i.saturating_sub(window)..i].iter().sum::<f64>() / window as f64;
-        let post: f64 = bmag[i..(i + window).min(n)].iter().sum::<f64>()
-            / window.min(n - i) as f64;
+        let post: f64 = bmag[i..(i + window).min(n)].iter().sum::<f64>() / window.min(n - i) as f64;
         if (post - pre).abs() > threshold {
             let dominated = crossings
                 .last()
@@ -162,7 +156,9 @@ pub fn spectral_entropy_crossings(
     let mut crossings = Vec::new();
     let trans_half = window.max(5);
     for i in trans_half..entropies.len().saturating_sub(trans_half) {
-        let pre: f64 = entropies[i.saturating_sub(trans_half)..i].iter().sum::<f64>()
+        let pre: f64 = entropies[i.saturating_sub(trans_half)..i]
+            .iter()
+            .sum::<f64>()
             / trans_half as f64;
         let post: f64 = entropies[i..(i + trans_half).min(entropies.len())]
             .iter()
@@ -282,7 +278,11 @@ pub fn wavelet_variance_crossings(
             let d = (seg[2 * k] - seg[2 * k + 1]) / std::f64::consts::SQRT_2;
             detail_energy += d * d;
         }
-        let var = if pairs > 0 { detail_energy / pairs as f64 } else { 0.0 };
+        let var = if pairs > 0 {
+            detail_energy / pairs as f64
+        } else {
+            0.0
+        };
         variances.push(var);
     }
 
@@ -296,7 +296,13 @@ pub fn wavelet_variance_crossings(
             .sum::<f64>()
             / tw.min(variances.len() - i) as f64;
 
-        let ratio = if pre > 1e-15 { post / pre } else if post > 1e-15 { 1e6 } else { 1.0 };
+        let ratio = if pre > 1e-15 {
+            post / pre
+        } else if post > 1e-15 {
+            1e6
+        } else {
+            1.0
+        };
         let log_ratio = ratio.ln().abs();
 
         if log_ratio > threshold {

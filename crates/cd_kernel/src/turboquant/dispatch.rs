@@ -44,8 +44,7 @@ pub fn detect_simd_level() -> SimdLevel {
         if std::arch::is_x86_feature_detected!("avx512f") {
             return SimdLevel::Avx512;
         }
-        if std::arch::is_x86_feature_detected!("avx2")
-            && std::arch::is_x86_feature_detected!("fma")
+        if std::arch::is_x86_feature_detected!("avx2") && std::arch::is_x86_feature_detected!("fma")
         {
             return SimdLevel::Avx2;
         }
@@ -174,7 +173,10 @@ mod tests {
         scalar_q.quantize(&values, &mut scalar_out);
         avx2_q.quantize(&values, &mut avx2_out);
 
-        assert_eq!(scalar_out, avx2_out, "Scalar and AVX2 paths produce different results");
+        assert_eq!(
+            scalar_out, avx2_out,
+            "Scalar and AVX2 paths produce different results"
+        );
     }
 
     #[test]

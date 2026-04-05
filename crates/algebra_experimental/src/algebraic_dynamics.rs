@@ -487,7 +487,7 @@ pub fn random_walk_on_graph<C: ConstraintSystem + ?Sized>(
     let mut seq = Vec::with_capacity(n_steps);
 
     // Start at a random generator
-    let mut current = rng.gen_range(0..n);
+    let mut current = rng.random_range(0..n);
     seq.push(current);
 
     // Precompute neighbor lists for efficiency
@@ -496,13 +496,13 @@ pub fn random_walk_on_graph<C: ConstraintSystem + ?Sized>(
         .collect();
 
     for _ in 1..n_steps {
-        if !neighbors[current].is_empty() && rng.gen_bool(p_adjacent.clamp(0.0, 1.0)) {
+        if !neighbors[current].is_empty() && rng.random_bool(p_adjacent.clamp(0.0, 1.0)) {
             // Move to a random neighbor
-            current = neighbors[current][rng.gen_range(0..neighbors[current].len())];
+            current = neighbors[current][rng.random_range(0..neighbors[current].len())];
         } else {
             // Jump to a random generator (excluding self)
             loop {
-                let next = rng.gen_range(0..n);
+                let next = rng.random_range(0..n);
                 if next != current {
                     current = next;
                     break;
@@ -746,9 +746,9 @@ pub fn simulate_et_billiard(n: usize, s: usize, n_steps: usize, seed: u64) -> Et
 
     // Pick a random starting position among valid cells
     let mut rng = ChaCha8Rng::seed_from_u64(seed);
-    let start_idx = rng.gen_range(0..n_valid);
+    let start_idx = rng.random_range(0..n_valid);
     let (mut row, mut col) = valid_cells[start_idx];
-    let mut dir = BilliardDirection::all()[rng.gen_range(0..4)];
+    let mut dir = BilliardDirection::all()[rng.random_range(0..4)];
 
     // Tracking
     let mut symbolic = Vec::with_capacity(n_steps);

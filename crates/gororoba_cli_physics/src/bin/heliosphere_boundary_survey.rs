@@ -62,7 +62,10 @@ struct Cli {
     crossing_probe: Option<String>,
 
     /// Output JSON path.
-    #[arg(long, default_value = "data/output/heliosphere/ablations/boundary_survey.json")]
+    #[arg(
+        long,
+        default_value = "data/output/heliosphere/ablations/boundary_survey.json"
+    )]
     out_json: PathBuf,
 
     /// Data cache directory.
@@ -129,9 +132,11 @@ fn main() -> Result<()> {
         anyhow::bail!("No data for {} in requested window.", cli.mission);
     }
 
-    println!("  Total: {} minutes across {:.1} hours",
+    println!(
+        "  Total: {} minutes across {:.1} hours",
         all_minutes.len(),
-        all_minutes.last().map(|r| r.elapsed_hours).unwrap_or(0.0));
+        all_minutes.last().map(|r| r.elapsed_hours).unwrap_or(0.0)
+    );
 
     // --- Step 2: Detect boundaries ---
     println!("[2/4] Detecting |B| gradient boundaries...");
@@ -142,15 +147,23 @@ fn main() -> Result<()> {
     if all_minutes.len() > half * 2 + 1 {
         for i in half..all_minutes.len().saturating_sub(half) {
             let pre: f64 = all_minutes[i.saturating_sub(half)..i]
-                .iter().map(|r| r.b_magnitude).sum::<f64>() / half as f64;
+                .iter()
+                .map(|r| r.b_magnitude)
+                .sum::<f64>()
+                / half as f64;
             let post: f64 = all_minutes[i..(i + half).min(all_minutes.len())]
-                .iter().map(|r| r.b_magnitude).sum::<f64>()
+                .iter()
+                .map(|r| r.b_magnitude)
+                .sum::<f64>()
                 / half.min(all_minutes.len() - i) as f64;
             let jump = (post - pre).abs();
             if jump > cli.bmag_gradient_threshold {
-                let dominated = boundaries.last()
+                let dominated = boundaries
+                    .last()
                     .is_some_and(|&prev| i.saturating_sub(prev) < cli.boundary_window_minutes);
-                if !dominated { boundaries.push(i); }
+                if !dominated {
+                    boundaries.push(i);
+                }
             }
         }
     }
@@ -158,7 +171,10 @@ fn main() -> Result<()> {
     println!("  Found {} boundaries", boundaries.len());
 
     // --- Step 3: 32D CD associator ---
-    println!("[3/4] Computing {}D Takens embedding + CD associator...", cli.embedding_dim);
+    println!(
+        "[3/4] Computing {}D Takens embedding + CD associator...",
+        cli.embedding_dim
+    );
 
     let channels: usize = 4;
     let steps = cli.embedding_dim / channels;
@@ -169,9 +185,14 @@ fn main() -> Result<()> {
 
     for w_start in 0..=all_minutes.len().saturating_sub(window_rows) {
         let sample_indices: Vec<usize> = (0..steps).map(|s| w_start + s).collect();
-        let sum_b: f64 = sample_indices.iter().map(|&i| all_minutes[i].b_magnitude).sum();
+        let sum_b: f64 = sample_indices
+            .iter()
+            .map(|&i| all_minutes[i].b_magnitude)
+            .sum();
         let mean_b = sum_b / steps as f64;
-        if mean_b <= 0.0 || !mean_b.is_finite() { continue; }
+        if mean_b <= 0.0 || !mean_b.is_finite() {
+            continue;
+        }
 
         let mut v = vec![0.0; cli.embedding_dim];
         for (s, &ri) in sample_indices.iter().enumerate() {
@@ -188,10 +209,14 @@ fn main() -> Result<()> {
     println!("  Embedded {} vectors", embedded.len());
 
     if embedded.len() < 3 {
-        anyhow::bail!("Too few embedded vectors ({}) for associator", embedded.len());
+        anyhow::bail!(
+            "Too few embedded vectors ({}) for associator",
+            embedded.len()
+        );
     }
 
-    let associators = cd_kernel::batch_sliding_associator_norms_parallel(&embedded, cli.embedding_dim);
+    let associators =
+        cd_kernel::batch_sliding_associator_norms_parallel(&embedded, cli.embedding_dim);
     println!("  Computed {} associator norms", associators.len());
 
     let assoc_indices: Vec<usize> = (0..associators.len()).map(|k| embed_meta[k + 2]).collect();
@@ -200,25 +225,38 @@ fn main() -> Result<()> {
     let trans_window = cli.boundary_window_minutes.max(5);
     let global_mean: f64 = associators.iter().sum::<f64>() / associators.len() as f64;
     let global_std: f64 = {
-        let var = associators.iter().map(|&a| (a - global_mean).powi(2)).sum::<f64>()
+        let var = associators
+            .iter()
+            .map(|&a| (a - global_mean).powi(2))
+            .sum::<f64>()
             / associators.len() as f64;
         var.sqrt()
     };
     let threshold = global_std * 1.5;
 
-    println!("  Stats: mean={:.4}, std={:.4}, threshold={:.4}", global_mean, global_std, threshold);
+    println!(
+        "  Stats: mean={:.4}, std={:.4}, threshold={:.4}",
+        global_mean, global_std, threshold
+    );
 
     let mut transitions: Vec<usize> = Vec::new();
     if associators.len() > trans_window * 2 {
         for i in trans_window..associators.len().saturating_sub(trans_window) {
-            let pre: f64 = associators[i.saturating_sub(trans_window)..i].iter().sum::<f64>()
+            let pre: f64 = associators[i.saturating_sub(trans_window)..i]
+                .iter()
+                .sum::<f64>()
                 / trans_window as f64;
             let post: f64 = associators[i..(i + trans_window).min(associators.len())]
-                .iter().sum::<f64>() / trans_window.min(associators.len() - i) as f64;
+                .iter()
+                .sum::<f64>()
+                / trans_window.min(associators.len() - i) as f64;
             if (post - pre).abs() > threshold {
-                let dominated = transitions.last()
+                let dominated = transitions
+                    .last()
                     .is_some_and(|&prev| i.saturating_sub(prev) < trans_window);
-                if !dominated { transitions.push(assoc_indices[i]); }
+                if !dominated {
+                    transitions.push(assoc_indices[i]);
+                }
             }
         }
     }
@@ -234,102 +272,153 @@ fn main() -> Result<()> {
 
     for &bi in &boundaries {
         let b_h = all_minutes[bi].elapsed_hours;
-        let hit = transitions.iter().any(|&ti| {
-            (all_minutes[ti].elapsed_hours - b_h).abs() < tol_hours
-        });
+        let hit = transitions
+            .iter()
+            .any(|&ti| (all_minutes[ti].elapsed_hours - b_h).abs() < tol_hours);
         if hit {
             matched += 1;
-            let best_offset = transitions.iter()
+            let best_offset = transitions
+                .iter()
                 .map(|&ti| (all_minutes[ti].elapsed_hours - b_h).abs() * 60.0)
                 .fold(f64::MAX, f64::min);
             offsets.push(best_offset);
         }
     }
 
-    let matched_trans = transitions.iter()
+    let matched_trans = transitions
+        .iter()
         .filter(|&&ti| {
             let t_h = all_minutes[ti].elapsed_hours;
-            boundaries.iter().any(|&bi| (all_minutes[bi].elapsed_hours - t_h).abs() < tol_hours)
+            boundaries
+                .iter()
+                .any(|&bi| (all_minutes[bi].elapsed_hours - t_h).abs() < tol_hours)
         })
         .count();
 
-    let det_rate = if boundaries.is_empty() { 0.0 } else { matched as f64 / boundaries.len() as f64 };
-    let fa_rate = if transitions.is_empty() { 0.0 }
-        else { (transitions.len() - matched_trans) as f64 / transitions.len() as f64 };
+    let det_rate = if boundaries.is_empty() {
+        0.0
+    } else {
+        matched as f64 / boundaries.len() as f64
+    };
+    let fa_rate = if transitions.is_empty() {
+        0.0
+    } else {
+        (transitions.len() - matched_trans) as f64 / transitions.len() as f64
+    };
 
     offsets.sort_by(|a, b| a.partial_cmp(b).unwrap());
-    let mean_off = if offsets.is_empty() { 0.0 } else { offsets.iter().sum::<f64>() / offsets.len() as f64 };
-    let med_off = if offsets.is_empty() { 0.0 } else { offsets[offsets.len() / 2] };
+    let mean_off = if offsets.is_empty() {
+        0.0
+    } else {
+        offsets.iter().sum::<f64>() / offsets.len() as f64
+    };
+    let med_off = if offsets.is_empty() {
+        0.0
+    } else {
+        offsets[offsets.len() / 2]
+    };
 
     println!("\n=== {} Results (|B|-gradient) ===", cli.mission);
-    println!("  Boundaries: {}, Transitions: {}", boundaries.len(), transitions.len());
-    println!("  Detection rate: {}/{} = {:.1}%", matched, boundaries.len(), det_rate * 100.0);
+    println!(
+        "  Boundaries: {}, Transitions: {}",
+        boundaries.len(),
+        transitions.len()
+    );
+    println!(
+        "  Detection rate: {}/{} = {:.1}%",
+        matched,
+        boundaries.len(),
+        det_rate * 100.0
+    );
     println!("  False alarm rate: {:.1}%", fa_rate * 100.0);
-    println!("  Mean offset: {:.1} min, Median: {:.1} min", mean_off, med_off);
+    println!(
+        "  Mean offset: {:.1} min, Median: {:.1} min",
+        mean_off, med_off
+    );
 
     // --- Curated crossing list comparison (if provided) ---
-    let (cur_n, cur_det, cur_fa, cur_mean, cur_med) =
-        if let Some(ref list_path) = cli.crossing_list {
-            println!("\n--- Curated crossing list comparison ---");
-            let curated_hours = parse_curated_crossings(
-                list_path,
-                cli.crossing_probe.as_deref(),
-                &start,
-                &end,
-            )?;
-            println!("  Curated crossings in window: {}", curated_hours.len());
+    let (cur_n, cur_det, cur_fa, cur_mean, cur_med) = if let Some(ref list_path) = cli.crossing_list
+    {
+        println!("\n--- Curated crossing list comparison ---");
+        let curated_hours =
+            parse_curated_crossings(list_path, cli.crossing_probe.as_deref(), &start, &end)?;
+        println!("  Curated crossings in window: {}", curated_hours.len());
 
-            if curated_hours.is_empty() {
-                (Some(0), Some(0.0), Some(0.0), Some(0.0), Some(0.0))
-            } else {
-                // Compare: for each curated crossing, is there a transition nearby?
-                let mut c_matched = 0usize;
-                let mut c_offsets: Vec<f64> = Vec::new();
-
-                // First record's elapsed_hours is 0 at start of data
-                let data_start_hours = all_minutes.first().map(|r| r.elapsed_hours).unwrap_or(0.0);
-                let _ = data_start_hours; // used below in curated_hours mapping
-
-                for &ch in &curated_hours {
-                    let hit = transitions.iter().any(|&ti| {
-                        (all_minutes[ti].elapsed_hours - ch).abs() < tol_hours
-                    });
-                    if hit {
-                        c_matched += 1;
-                        let best = transitions.iter()
-                            .map(|&ti| (all_minutes[ti].elapsed_hours - ch).abs() * 60.0)
-                            .fold(f64::MAX, f64::min);
-                        c_offsets.push(best);
-                    }
-                }
-
-                let c_matched_trans = transitions.iter()
-                    .filter(|&&ti| {
-                        let th = all_minutes[ti].elapsed_hours;
-                        curated_hours.iter().any(|&ch| (ch - th).abs() < tol_hours)
-                    })
-                    .count();
-
-                let c_det = c_matched as f64 / curated_hours.len() as f64;
-                let c_fa = if transitions.is_empty() { 0.0 }
-                    else { (transitions.len() - c_matched_trans) as f64 / transitions.len() as f64 };
-
-                c_offsets.sort_by(|a, b| a.partial_cmp(b).unwrap());
-                let c_mean = if c_offsets.is_empty() { 0.0 }
-                    else { c_offsets.iter().sum::<f64>() / c_offsets.len() as f64 };
-                let c_med = if c_offsets.is_empty() { 0.0 }
-                    else { c_offsets[c_offsets.len() / 2] };
-
-                println!("  Curated detection rate: {}/{} = {:.1}%",
-                    c_matched, curated_hours.len(), c_det * 100.0);
-                println!("  Curated false alarm rate: {:.1}%", c_fa * 100.0);
-                println!("  Curated mean offset: {:.1} min, median: {:.1} min", c_mean, c_med);
-
-                (Some(curated_hours.len()), Some(c_det), Some(c_fa), Some(c_mean), Some(c_med))
-            }
+        if curated_hours.is_empty() {
+            (Some(0), Some(0.0), Some(0.0), Some(0.0), Some(0.0))
         } else {
-            (None, None, None, None, None)
-        };
+            // Compare: for each curated crossing, is there a transition nearby?
+            let mut c_matched = 0usize;
+            let mut c_offsets: Vec<f64> = Vec::new();
+
+            // First record's elapsed_hours is 0 at start of data
+            let data_start_hours = all_minutes.first().map(|r| r.elapsed_hours).unwrap_or(0.0);
+            let _ = data_start_hours; // used below in curated_hours mapping
+
+            for &ch in &curated_hours {
+                let hit = transitions
+                    .iter()
+                    .any(|&ti| (all_minutes[ti].elapsed_hours - ch).abs() < tol_hours);
+                if hit {
+                    c_matched += 1;
+                    let best = transitions
+                        .iter()
+                        .map(|&ti| (all_minutes[ti].elapsed_hours - ch).abs() * 60.0)
+                        .fold(f64::MAX, f64::min);
+                    c_offsets.push(best);
+                }
+            }
+
+            let c_matched_trans = transitions
+                .iter()
+                .filter(|&&ti| {
+                    let th = all_minutes[ti].elapsed_hours;
+                    curated_hours.iter().any(|&ch| (ch - th).abs() < tol_hours)
+                })
+                .count();
+
+            let c_det = c_matched as f64 / curated_hours.len() as f64;
+            let c_fa = if transitions.is_empty() {
+                0.0
+            } else {
+                (transitions.len() - c_matched_trans) as f64 / transitions.len() as f64
+            };
+
+            c_offsets.sort_by(|a, b| a.partial_cmp(b).unwrap());
+            let c_mean = if c_offsets.is_empty() {
+                0.0
+            } else {
+                c_offsets.iter().sum::<f64>() / c_offsets.len() as f64
+            };
+            let c_med = if c_offsets.is_empty() {
+                0.0
+            } else {
+                c_offsets[c_offsets.len() / 2]
+            };
+
+            println!(
+                "  Curated detection rate: {}/{} = {:.1}%",
+                c_matched,
+                curated_hours.len(),
+                c_det * 100.0
+            );
+            println!("  Curated false alarm rate: {:.1}%", c_fa * 100.0);
+            println!(
+                "  Curated mean offset: {:.1} min, median: {:.1} min",
+                c_mean, c_med
+            );
+
+            (
+                Some(curated_hours.len()),
+                Some(c_det),
+                Some(c_fa),
+                Some(c_mean),
+                Some(c_med),
+            )
+        }
+    } else {
+        (None, None, None, None, None)
+    };
 
     let results = SurveyResults {
         mission: cli.mission.clone(),
@@ -353,7 +442,9 @@ fn main() -> Result<()> {
         transition_threshold: threshold,
     };
 
-    if let Some(parent) = cli.out_json.parent() { fs::create_dir_all(parent)?; }
+    if let Some(parent) = cli.out_json.parent() {
+        fs::create_dir_all(parent)?;
+    }
     fs::write(&cli.out_json, serde_json::to_string_pretty(&results)?)?;
     println!("\nWrote {}", cli.out_json.display());
 
@@ -375,13 +466,23 @@ fn fetch_and_parse(cli: &Cli, start: NaiveDate, end: NaiveDate) -> Result<Vec<Ma
     } else if mission == "messenger" {
         fetch_messenger(cli, start, end)
     } else {
-        anyhow::bail!("Unknown mission: {}. Use themis-a..e, cluster-1..4, swarm-a, maven, messenger", cli.mission);
+        anyhow::bail!(
+            "Unknown mission: {}. Use themis-a..e, cluster-1..4, swarm-a, maven, messenger",
+            cli.mission
+        );
     }
 }
 
-fn fetch_themis(cli: &Cli, mission: &str, start: NaiveDate, end: NaiveDate) -> Result<Vec<MagMinute>> {
-    use data_core::catalogs::themis::{ThemisFgmProvider, parse_themis_fgm_hapi_csv_minutes};
-    use data_core::fetcher::{DatasetProvider, FetchConfig};
+fn fetch_themis(
+    cli: &Cli,
+    mission: &str,
+    start: NaiveDate,
+    end: NaiveDate,
+) -> Result<Vec<MagMinute>> {
+    use data_core::{
+        catalogs::themis::{ThemisFgmProvider, parse_themis_fgm_hapi_csv_minutes},
+        fetcher::{DatasetProvider, FetchConfig},
+    };
 
     let probe = match mission {
         "themis-a" | "tha" => "THA",
@@ -392,7 +493,11 @@ fn fetch_themis(cli: &Cli, mission: &str, start: NaiveDate, end: NaiveDate) -> R
         other => anyhow::bail!("Unknown THEMIS probe: {other}"),
     };
 
-    let config = FetchConfig { output_dir: cli.data_dir.clone(), skip_existing: true, verify_checksums: false };
+    let config = FetchConfig {
+        output_dir: cli.data_dir.clone(),
+        skip_existing: true,
+        verify_checksums: false,
+    };
 
     for doy_offset in 0..=(end - start).num_days() {
         let date = start + chrono::Duration::days(doy_offset);
@@ -409,7 +514,12 @@ fn fetch_themis(cli: &Cli, mission: &str, start: NaiveDate, end: NaiveDate) -> R
     let mut all = Vec::new();
     for doy_offset in 0..=(end - start).num_days() {
         let date = start + chrono::Duration::days(doy_offset);
-        let fname = format!("{}_fgm_{:04}_{:03}.csv", probe.to_lowercase(), date.year(), date.ordinal());
+        let fname = format!(
+            "{}_fgm_{:04}_{:03}.csv",
+            probe.to_lowercase(),
+            date.year(),
+            date.ordinal()
+        );
         let path = data_dir.join(&fname);
         if path.exists() {
             let content = fs::read_to_string(&path)?;
@@ -418,9 +528,15 @@ fn fetch_themis(cli: &Cli, mission: &str, start: NaiveDate, end: NaiveDate) -> R
             for r in records {
                 if r.b_magnitude <= cli.max_bmag {
                     all.push(MagMinute {
-                        year: r.year, doy: r.doy, hour: r.hour, minute: r.minute,
+                        year: r.year,
+                        doy: r.doy,
+                        hour: r.hour,
+                        minute: r.minute,
                         elapsed_hours: r.elapsed_hours,
-                        bx: r.bx_gse, by: r.by_gse, bz: r.bz_gse, b_magnitude: r.b_magnitude,
+                        bx: r.bx_gse,
+                        by: r.by_gse,
+                        bz: r.bz_gse,
+                        b_magnitude: r.b_magnitude,
                     });
                 }
             }
@@ -430,15 +546,27 @@ fn fetch_themis(cli: &Cli, mission: &str, start: NaiveDate, end: NaiveDate) -> R
     Ok(all)
 }
 
-fn fetch_cluster(cli: &Cli, mission: &str, start: NaiveDate, end: NaiveDate) -> Result<Vec<MagMinute>> {
-    use data_core::catalogs::cluster::{ClusterFgmProvider, parse_cluster_fgm_hapi_csv_minutes};
-    use data_core::fetcher::{DatasetProvider, FetchConfig};
+fn fetch_cluster(
+    cli: &Cli,
+    mission: &str,
+    start: NaiveDate,
+    end: NaiveDate,
+) -> Result<Vec<MagMinute>> {
+    use data_core::{
+        catalogs::cluster::{ClusterFgmProvider, parse_cluster_fgm_hapi_csv_minutes},
+        fetcher::{DatasetProvider, FetchConfig},
+    };
 
-    let probe_id: u8 = mission.strip_prefix("cluster-")
+    let probe_id: u8 = mission
+        .strip_prefix("cluster-")
         .and_then(|s| s.parse().ok())
         .unwrap_or(1);
 
-    let config = FetchConfig { output_dir: cli.data_dir.clone(), skip_existing: true, verify_checksums: false };
+    let config = FetchConfig {
+        output_dir: cli.data_dir.clone(),
+        skip_existing: true,
+        verify_checksums: false,
+    };
 
     for doy_offset in 0..=(end - start).num_days() {
         let date = start + chrono::Duration::days(doy_offset);
@@ -455,18 +583,34 @@ fn fetch_cluster(cli: &Cli, mission: &str, start: NaiveDate, end: NaiveDate) -> 
     let mut all = Vec::new();
     for doy_offset in 0..=(end - start).num_days() {
         let date = start + chrono::Duration::days(doy_offset);
-        let fname = format!("c{}_fgm_spin_{:04}_{:03}.csv", probe_id, date.year(), date.ordinal());
+        let fname = format!(
+            "c{}_fgm_spin_{:04}_{:03}.csv",
+            probe_id,
+            date.year(),
+            date.ordinal()
+        );
         let path = data_dir.join(&fname);
         if path.exists() {
             let content = fs::read_to_string(&path)?;
             let records = parse_cluster_fgm_hapi_csv_minutes(&content, probe_id);
-            println!("  C{} DOY {}: {} min", probe_id, date.ordinal(), records.len());
+            println!(
+                "  C{} DOY {}: {} min",
+                probe_id,
+                date.ordinal(),
+                records.len()
+            );
             for r in records {
                 if r.b_magnitude <= cli.max_bmag {
                     all.push(MagMinute {
-                        year: r.year, doy: r.doy, hour: r.hour, minute: r.minute,
+                        year: r.year,
+                        doy: r.doy,
+                        hour: r.hour,
+                        minute: r.minute,
                         elapsed_hours: r.elapsed_hours,
-                        bx: r.bx_gse, by: r.by_gse, bz: r.bz_gse, b_magnitude: r.b_magnitude,
+                        bx: r.bx_gse,
+                        by: r.by_gse,
+                        bz: r.bz_gse,
+                        b_magnitude: r.b_magnitude,
                     });
                 }
             }
@@ -477,10 +621,16 @@ fn fetch_cluster(cli: &Cli, mission: &str, start: NaiveDate, end: NaiveDate) -> 
 }
 
 fn fetch_swarm(cli: &Cli, start: NaiveDate, end: NaiveDate) -> Result<Vec<MagMinute>> {
-    use data_core::catalogs::swarm_mag::{SwarmMagProvider, parse_swarm_amda_mag_csv_minutes};
-    use data_core::fetcher::{DatasetProvider, FetchConfig};
+    use data_core::{
+        catalogs::swarm_mag::{SwarmMagProvider, parse_swarm_amda_mag_csv_minutes},
+        fetcher::{DatasetProvider, FetchConfig},
+    };
 
-    let config = FetchConfig { output_dir: cli.data_dir.clone(), skip_existing: true, verify_checksums: false };
+    let config = FetchConfig {
+        output_dir: cli.data_dir.clone(),
+        skip_existing: true,
+        verify_checksums: false,
+    };
 
     // Fetch monthly
     let provider = SwarmMagProvider {
@@ -497,13 +647,24 @@ fn fetch_swarm(cli: &Cli, start: NaiveDate, end: NaiveDate) -> Result<Vec<MagMin
         if path.exists() {
             let content = fs::read_to_string(&path)?;
             let records = parse_swarm_amda_mag_csv_minutes(&content);
-            println!("  Swarm-A {:04}-{:02}: {} min", start.year(), month, records.len());
+            println!(
+                "  Swarm-A {:04}-{:02}: {} min",
+                start.year(),
+                month,
+                records.len()
+            );
             for r in records {
                 if r.b_magnitude <= cli.max_bmag {
                     all.push(MagMinute {
-                        year: r.year, doy: r.doy, hour: r.hour, minute: r.minute,
+                        year: r.year,
+                        doy: r.doy,
+                        hour: r.hour,
+                        minute: r.minute,
                         elapsed_hours: r.elapsed_hours,
-                        bx: r.b_north, by: r.b_east, bz: r.b_center, b_magnitude: r.b_magnitude,
+                        bx: r.b_north,
+                        by: r.b_east,
+                        bz: r.b_center,
+                        b_magnitude: r.b_magnitude,
                     });
                 }
             }
@@ -514,10 +675,16 @@ fn fetch_swarm(cli: &Cli, start: NaiveDate, end: NaiveDate) -> Result<Vec<MagMin
 }
 
 fn fetch_maven(cli: &Cli, start: NaiveDate, end: NaiveDate) -> Result<Vec<MagMinute>> {
-    use data_core::catalogs::maven_mag::{MavenMagProvider, parse_maven_mag_hapi_csv_minutes};
-    use data_core::fetcher::{DatasetProvider, FetchConfig};
+    use data_core::{
+        catalogs::maven_mag::{MavenMagProvider, parse_maven_mag_hapi_csv_minutes},
+        fetcher::{DatasetProvider, FetchConfig},
+    };
 
-    let config = FetchConfig { output_dir: cli.data_dir.clone(), skip_existing: true, verify_checksums: false };
+    let config = FetchConfig {
+        output_dir: cli.data_dir.clone(),
+        skip_existing: true,
+        verify_checksums: false,
+    };
 
     for doy_offset in 0..=(end - start).num_days() {
         let date = start + chrono::Duration::days(doy_offset);
@@ -542,9 +709,15 @@ fn fetch_maven(cli: &Cli, start: NaiveDate, end: NaiveDate) -> Result<Vec<MagMin
             for r in records {
                 if r.b_magnitude <= cli.max_bmag {
                     all.push(MagMinute {
-                        year: r.year, doy: r.doy, hour: r.hour, minute: r.minute,
+                        year: r.year,
+                        doy: r.doy,
+                        hour: r.hour,
+                        minute: r.minute,
                         elapsed_hours: r.elapsed_hours,
-                        bx: r.bx_ss, by: r.by_ss, bz: r.bz_ss, b_magnitude: r.b_magnitude,
+                        bx: r.bx_ss,
+                        by: r.by_ss,
+                        bz: r.bz_ss,
+                        b_magnitude: r.b_magnitude,
                     });
                 }
             }
@@ -555,10 +728,16 @@ fn fetch_maven(cli: &Cli, start: NaiveDate, end: NaiveDate) -> Result<Vec<MagMin
 }
 
 fn fetch_messenger(cli: &Cli, start: NaiveDate, end: NaiveDate) -> Result<Vec<MagMinute>> {
-    use data_core::catalogs::messenger::{MessengerMagProvider, parse_messenger_mag_hapi_csv_minutes};
-    use data_core::fetcher::{DatasetProvider, FetchConfig};
+    use data_core::{
+        catalogs::messenger::{MessengerMagProvider, parse_messenger_mag_hapi_csv_minutes},
+        fetcher::{DatasetProvider, FetchConfig},
+    };
 
-    let config = FetchConfig { output_dir: cli.data_dir.clone(), skip_existing: true, verify_checksums: false };
+    let config = FetchConfig {
+        output_dir: cli.data_dir.clone(),
+        skip_existing: true,
+        verify_checksums: false,
+    };
 
     for doy_offset in 0..=(end - start).num_days() {
         let date = start + chrono::Duration::days(doy_offset);
@@ -583,9 +762,15 @@ fn fetch_messenger(cli: &Cli, start: NaiveDate, end: NaiveDate) -> Result<Vec<Ma
             for r in records {
                 if r.b_magnitude <= cli.max_bmag {
                     all.push(MagMinute {
-                        year: r.year, doy: r.doy, hour: r.hour, minute: r.minute,
+                        year: r.year,
+                        doy: r.doy,
+                        hour: r.hour,
+                        minute: r.minute,
                         elapsed_hours: r.elapsed_hours,
-                        bx: r.br, by: r.bt, bz: r.bn, b_magnitude: r.b_magnitude,
+                        bx: r.br,
+                        by: r.bt,
+                        bz: r.bn,
+                        b_magnitude: r.b_magnitude,
                     });
                 }
             }
@@ -624,14 +809,18 @@ fn parse_curated_crossings(
         let fields: Vec<&str> = trimmed.split('\t').collect();
         if fields.len() >= 2 {
             if let Some(filter) = probe_filter
-                && fields.last().is_some_and(|pf| pf.trim().to_lowercase() != filter.to_lowercase())
+                && fields
+                    .last()
+                    .is_some_and(|pf| pf.trim().to_lowercase() != filter.to_lowercase())
             {
                 continue;
             }
             if let Ok(dt) = chrono::NaiveDateTime::parse_from_str(
                 fields[0].trim().trim_end_matches('Z'),
                 "%Y-%m-%dT%H:%M:%S",
-            ) && dt >= start_dt && dt <= end_dt {
+            ) && dt >= start_dt
+                && dt <= end_dt
+            {
                 let elapsed = (dt - start_dt).num_minutes() as f64 / 60.0;
                 hours.push(elapsed);
             }
@@ -643,7 +832,8 @@ fn parse_curated_crossings(
         if !parts.is_empty() {
             let ts = parts[0].trim_end_matches('Z');
             if let Ok(dt) = chrono::NaiveDateTime::parse_from_str(ts, "%Y-%m-%d/%H:%M:%S")
-                && dt >= start_dt && dt <= end_dt
+                && dt >= start_dt
+                && dt <= end_dt
             {
                 let elapsed = (dt - start_dt).num_minutes() as f64 / 60.0;
                 hours.push(elapsed);
@@ -675,10 +865,21 @@ fn parse_curated_crossings(
 
 fn recompute_elapsed(records: &mut [MagMinute]) {
     records.sort_by(|a, b| {
-        a.year.cmp(&b.year).then(a.doy.cmp(&b.doy)).then(a.hour.cmp(&b.hour)).then(a.minute.cmp(&b.minute))
+        a.year
+            .cmp(&b.year)
+            .then(a.doy.cmp(&b.doy))
+            .then(a.hour.cmp(&b.hour))
+            .then(a.minute.cmp(&b.minute))
     });
-    if records.is_empty() { return; }
-    let (fy, fd, fh, fm) = (records[0].year, records[0].doy, records[0].hour, records[0].minute);
+    if records.is_empty() {
+        return;
+    }
+    let (fy, fd, fh, fm) = (
+        records[0].year,
+        records[0].doy,
+        records[0].hour,
+        records[0].minute,
+    );
     for r in records.iter_mut() {
         r.elapsed_hours = (r.year as f64 - fy as f64) * 365.25 * 24.0
             + (r.doy as f64 - fd as f64) * 24.0

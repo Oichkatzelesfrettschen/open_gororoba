@@ -98,10 +98,27 @@ fn main() -> Result<()> {
 
     // Write header
     writer.write_record([
-        "window_name", "mission", "product", "year", "doy", "hour",
-        "r_au", "lat_deg", "lon_deg", "density_cm3", "speed_kms",
-        "temperature_k", "bx", "by", "bz", "b_mag", "crs_flux",
-        "spectral_mean", "spectral_peak", "map_flux_mean", "map_flux_std",
+        "window_name",
+        "mission",
+        "product",
+        "year",
+        "doy",
+        "hour",
+        "r_au",
+        "lat_deg",
+        "lon_deg",
+        "density_cm3",
+        "speed_kms",
+        "temperature_k",
+        "bx",
+        "by",
+        "bz",
+        "b_mag",
+        "crs_flux",
+        "spectral_mean",
+        "spectral_peak",
+        "map_flux_mean",
+        "map_flux_std",
     ])?;
 
     for cdf_path in &cdf_paths {
@@ -153,47 +170,55 @@ fn main() -> Result<()> {
         let r_au = radius_rows
             .first()
             .and_then(|r| r.first())
-            .and_then(|v| cdf_type_to_f64(v))
+            .and_then(cdf_type_to_f64)
             .unwrap_or(f64::NAN);
         let lat = lat_rows
             .first()
             .and_then(|r| r.first())
-            .and_then(|v| cdf_type_to_f64(v))
+            .and_then(cdf_type_to_f64)
             .unwrap_or(f64::NAN);
         let lon = lon_rows
             .first()
             .and_then(|r| r.first())
-            .and_then(|v| cdf_type_to_f64(v))
+            .and_then(cdf_type_to_f64)
             .unwrap_or(f64::NAN);
 
         let n = epoch_rows.len();
         let mut file_count = 0usize;
 
-        for i in 0..n {
+        for (i, epoch_row) in epoch_rows.iter().enumerate().take(n) {
             // Extract timestamp
-            let Some(epoch_val) = epoch_rows[i].first() else { continue };
-            let Some((year, doy, hour)) = cdf_type_to_ydh(epoch_val) else { continue };
+            let Some(epoch_val) = epoch_row.first() else {
+                continue;
+            };
+            let Some((year, doy, hour)) = cdf_type_to_ydh(epoch_val) else {
+                continue;
+            };
 
             if year < cli.year_min || year > cli.year_max {
                 continue;
             }
 
             // Extract B-field
-            let br = br_rows.get(i)
+            let br = br_rows
+                .get(i)
                 .and_then(|r| r.first())
-                .and_then(|v| cdf_type_to_f64(v))
+                .and_then(cdf_type_to_f64)
                 .unwrap_or(f64::NAN);
-            let bt = bt_rows.get(i)
+            let bt = bt_rows
+                .get(i)
                 .and_then(|r| r.first())
-                .and_then(|v| cdf_type_to_f64(v))
+                .and_then(cdf_type_to_f64)
                 .unwrap_or(f64::NAN);
-            let bn = bn_rows.get(i)
+            let bn = bn_rows
+                .get(i)
                 .and_then(|r| r.first())
-                .and_then(|v| cdf_type_to_f64(v))
+                .and_then(cdf_type_to_f64)
                 .unwrap_or(f64::NAN);
-            let b_mag = f1_rows.get(i)
+            let b_mag = f1_rows
+                .get(i)
                 .and_then(|r| r.first())
-                .and_then(|v| cdf_type_to_f64(v))
+                .and_then(cdf_type_to_f64)
                 .unwrap_or(f64::NAN);
 
             // Skip fill values (|B| > 999 or NaN)
@@ -205,23 +230,28 @@ fn main() -> Result<()> {
             }
 
             // Interpolate ephemeris by day-of-year index
-            let day_idx = (doy as usize).saturating_sub(1).min(radius_rows.len().saturating_sub(1));
-            let r_interp = radius_rows.get(day_idx)
+            let day_idx = (doy as usize)
+                .saturating_sub(1)
+                .min(radius_rows.len().saturating_sub(1));
+            let r_interp = radius_rows
+                .get(day_idx)
                 .and_then(|r| r.first())
-                .and_then(|v| cdf_type_to_f64(v))
+                .and_then(cdf_type_to_f64)
                 .unwrap_or(r_au);
-            let lat_interp = lat_rows.get(day_idx)
+            let lat_interp = lat_rows
+                .get(day_idx)
                 .and_then(|r| r.first())
-                .and_then(|v| cdf_type_to_f64(v))
+                .and_then(cdf_type_to_f64)
                 .unwrap_or(lat);
-            let lon_interp = lon_rows.get(day_idx)
+            let lon_interp = lon_rows
+                .get(day_idx)
                 .and_then(|r| r.first())
-                .and_then(|v| cdf_type_to_f64(v))
+                .and_then(cdf_type_to_f64)
                 .unwrap_or(lon);
 
             let window_name = format!("{}_{}_{:03}_{:02}", cli.spacecraft, year, doy, hour);
 
-            writer.write_record(&[
+            writer.write_record([
                 &window_name,
                 mission,
                 &product,
@@ -247,12 +277,19 @@ fn main() -> Result<()> {
             file_count += 1;
         }
 
-        println!("    {} records ({}-{})", file_count, cli.year_min, cli.year_max);
+        println!(
+            "    {} records ({}-{})",
+            file_count, cli.year_min, cli.year_max
+        );
         total_records += file_count;
     }
 
     writer.flush()?;
-    println!("  Total: {} records -> {}", total_records, cli.out_csv.display());
+    println!(
+        "  Total: {} records -> {}",
+        total_records,
+        cli.out_csv.display()
+    );
 
     Ok(())
 }

@@ -76,7 +76,12 @@ fn main() -> Result<()> {
             skipped += 1;
             continue;
         }
-        if r.bx.is_finite() && r.by.is_finite() && r.bz.is_finite() && r.b_mag.is_finite() && r.b_mag > 0.0 {
+        if r.bx.is_finite()
+            && r.by.is_finite()
+            && r.bz.is_finite()
+            && r.b_mag.is_finite()
+            && r.b_mag > 0.0
+        {
             all_rows.push(r);
         }
     }
@@ -84,9 +89,13 @@ fn main() -> Result<()> {
         println!("Filtered out {} rows by mission/window exclusion.", skipped);
     }
 
-    let mut mission_groups: BTreeMap<(String, String), Vec<HeliosphereFeatureRow>> = BTreeMap::new();
+    let mut mission_groups: BTreeMap<(String, String), Vec<HeliosphereFeatureRow>> =
+        BTreeMap::new();
     for row in all_rows {
-        mission_groups.entry((row.mission.clone(), row.product.clone())).or_default().push(row);
+        mission_groups
+            .entry((row.mission.clone(), row.product.clone()))
+            .or_default()
+            .push(row);
     }
 
     for rows in mission_groups.values_mut() {
@@ -132,12 +141,17 @@ fn main() -> Result<()> {
         }
     }
 
-    println!("[2/2] Aggregating {} samples into 3D bins (r, lat)...", associator_data.len());
+    println!(
+        "[2/2] Aggregating {} samples into 3D bins (r, lat)...",
+        associator_data.len()
+    );
     let mut bins: BTreeMap<(i32, i32), Vec<(f64, String)>> = BTreeMap::new();
     for (r, lat, norm, mission) in associator_data {
         let r_bin = (r / cli.bin_size_au).floor() as i32;
         let lat_bin = (lat / cli.lat_bin_size_deg).floor() as i32;
-        bins.entry((r_bin, lat_bin)).or_default().push((norm, mission));
+        bins.entry((r_bin, lat_bin))
+            .or_default()
+            .push((norm, mission));
     }
 
     let mut writer = WriterBuilder::new().from_path(&cli.out_csv)?;
@@ -151,7 +165,11 @@ fn main() -> Result<()> {
         let mean = values.iter().sum::<f64>() / values.len() as f64;
         let median = values[values.len() / 2];
         let max = *values.last().unwrap_or(&0.0);
-        let mission_count = samples.iter().map(|(_, m)| m).collect::<std::collections::HashSet<_>>().len();
+        let mission_count = samples
+            .iter()
+            .map(|(_, m)| m)
+            .collect::<std::collections::HashSet<_>>()
+            .len();
 
         writer.serialize(QuenchBin {
             r_center_au: r_center,

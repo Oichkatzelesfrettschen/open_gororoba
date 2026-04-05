@@ -184,14 +184,20 @@ pub fn field_aligned_spectral_fractions(
     let mut i = 0;
     while i + nperseg <= n {
         let mut fx: Vec<Complex64> = bx[i..i + nperseg]
-            .iter().zip(window.iter())
-            .map(|(&v, &w)| Complex64::new(v * w, 0.0)).collect();
+            .iter()
+            .zip(window.iter())
+            .map(|(&v, &w)| Complex64::new(v * w, 0.0))
+            .collect();
         let mut fy: Vec<Complex64> = by[i..i + nperseg]
-            .iter().zip(window.iter())
-            .map(|(&v, &w)| Complex64::new(v * w, 0.0)).collect();
+            .iter()
+            .zip(window.iter())
+            .map(|(&v, &w)| Complex64::new(v * w, 0.0))
+            .collect();
         let mut fz: Vec<Complex64> = bz[i..i + nperseg]
-            .iter().zip(window.iter())
-            .map(|(&v, &w)| Complex64::new(v * w, 0.0)).collect();
+            .iter()
+            .zip(window.iter())
+            .map(|(&v, &w)| Complex64::new(v * w, 0.0))
+            .collect();
 
         fft.process(&mut fx);
         fft.process(&mut fy);
@@ -249,7 +255,7 @@ mod tests {
     #[test]
     fn test_coherence_independent_noise() {
         let n = 1024;
-        let mut rng = rand::thread_rng();
+        let mut rng = rand::rng();
         let x: Vec<f64> = (0..n).map(|_| rng.r#gen()).collect();
         let y: Vec<f64> = (0..n).map(|_| rng.r#gen()).collect();
 

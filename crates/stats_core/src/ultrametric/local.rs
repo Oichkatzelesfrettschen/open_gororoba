@@ -74,12 +74,12 @@ fn neighborhood_ultrametric_index(
     let epsilon_sq = 1.0 - (1.0 - 0.05_f64).powi(2); // = 0.0975
 
     for _ in 0..n_samples {
-        let i = rng.gen_range(0..n);
-        let mut j = rng.gen_range(0..n - 1);
+        let i = rng.random_range(0..n);
+        let mut j = rng.random_range(0..n - 1);
         if j >= i {
             j += 1;
         }
-        let mut k = rng.gen_range(0..n - 2);
+        let mut k = rng.random_range(0..n - 2);
         if k >= i.min(j) {
             k += 1;
         }
@@ -304,12 +304,12 @@ fn neighborhood_ultrametric_index_nd(
     let epsilon_sq = 1.0 - (1.0 - 0.05_f64).powi(2); // = 0.0975
 
     for _ in 0..n_samples {
-        let i = rng.gen_range(0..n);
-        let mut j = rng.gen_range(0..n - 1);
+        let i = rng.random_range(0..n);
+        let mut j = rng.random_range(0..n - 1);
         if j >= i {
             j += 1;
         }
-        let mut k = rng.gen_range(0..n - 2);
+        let mut k = rng.random_range(0..n - 2);
         if k >= i.min(j) {
             k += 1;
         }
@@ -520,9 +520,9 @@ mod tests {
         let coords: Vec<(f64, f64, f64)> = (0..30)
             .map(|_| {
                 (
-                    rng.gen_range(0.0..10.0),
-                    rng.gen_range(0.0..10.0),
-                    rng.gen_range(0.0..10.0),
+                    rng.random_range(0.0..10.0),
+                    rng.random_range(0.0..10.0),
+                    rng.random_range(0.0..10.0),
                 )
             })
             .collect();
@@ -587,9 +587,9 @@ mod tests {
         let coords_3d: Vec<(f64, f64, f64)> = (0..30)
             .map(|_| {
                 (
-                    rng.gen_range(0.0..10.0),
-                    rng.gen_range(0.0..10.0),
-                    rng.gen_range(0.0..10.0),
+                    rng.random_range(0.0..10.0),
+                    rng.random_range(0.0..10.0),
+                    rng.random_range(0.0..10.0),
                 )
             })
             .collect();
@@ -615,7 +615,7 @@ mod tests {
         // 8D random point cloud (octonion-scale)
         let mut rng = ChaCha8Rng::seed_from_u64(42);
         let coords: Vec<Vec<f64>> = (0..40)
-            .map(|_| (0..8).map(|_| rng.gen_range(0.0..10.0)).collect())
+            .map(|_| (0..8).map(|_| rng.random_range(0.0..10.0)).collect())
             .collect();
 
         let result = local_ultrametricity_test_nd(
@@ -636,7 +636,7 @@ mod tests {
         // 16D random point cloud (sedenion-scale)
         let mut rng = ChaCha8Rng::seed_from_u64(42);
         let coords: Vec<Vec<f64>> = (0..50)
-            .map(|_| (0..16).map(|_| rng.gen_range(0.0..10.0)).collect())
+            .map(|_| (0..16).map(|_| rng.random_range(0.0..10.0)).collect())
             .collect();
 
         let result = local_ultrametricity_test_nd(

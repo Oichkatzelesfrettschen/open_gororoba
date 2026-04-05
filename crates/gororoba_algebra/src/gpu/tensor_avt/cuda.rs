@@ -48,7 +48,11 @@ fn tensor_ptx_cache_path(opts: &CompileOptions) -> PathBuf {
     let mut hasher = Sha256::new();
     hasher.update(TENSOR_AVT_KERNEL_SRC.as_bytes());
     hasher.update(format!("{opts:?}").as_bytes());
-    let digest = format!("{:x}", hasher.finalize());
+    let digest: String = hasher
+        .finalize()
+        .iter()
+        .map(|byte| format!("{byte:02x}"))
+        .collect();
     tensor_ptx_cache_dir().join(format!("tensor_avt_{digest}.ptx"))
 }
 

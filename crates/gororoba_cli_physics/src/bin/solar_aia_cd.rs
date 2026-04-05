@@ -27,7 +27,10 @@ struct Cli {
     precision: String,
 
     /// Output JSON path.
-    #[arg(long, default_value = "data/output/heliosphere/ablations/solar_aia_cd.json")]
+    #[arg(
+        long,
+        default_value = "data/output/heliosphere/ablations/solar_aia_cd.json"
+    )]
     out_json: PathBuf,
 }
 
@@ -73,7 +76,9 @@ struct SolarCdResult {
 
 fn effective_rank(embedded: &[Vec<f64>], dim: usize) -> usize {
     let n = embedded.len().min(5000);
-    if n < 3 || dim < 2 { return 0; }
+    if n < 3 || dim < 2 {
+        return 0;
+    }
     let mat = DMatrix::from_fn(n, dim, |i, j| embedded[i][j]);
     let svd = mat.svd(false, false);
     let svals: Vec<f64> = svd.singular_values.iter().copied().collect();
@@ -99,7 +104,11 @@ fn main() -> Result<()> {
             rows.push(r);
         }
     }
-    println!("  Loaded {} rows from {}", rows.len(), cli.aia_csv.display());
+    println!(
+        "  Loaded {} rows from {}",
+        rows.len(),
+        cli.aia_csv.display()
+    );
 
     // Standardize each channel to zero-mean unit-variance
     let n = rows.len();
@@ -131,9 +140,19 @@ fn main() -> Result<()> {
 
     // Build 12-channel embedding
     let steps = dim / n_ch;
-    let actual_dim = if steps > 0 { (n_ch * steps).next_power_of_two() } else { dim };
+    let actual_dim = if steps > 0 {
+        (n_ch * steps).next_power_of_two()
+    } else {
+        dim
+    };
     let raw_dim = n_ch * steps.max(1);
-    println!("  12-channel: {} steps x {} channels = {}D (padded to {}D)", steps.max(1), n_ch, raw_dim, actual_dim);
+    println!(
+        "  12-channel: {} steps x {} channels = {}D (padded to {}D)",
+        steps.max(1),
+        n_ch,
+        raw_dim,
+        actual_dim
+    );
 
     let _stride = 1; // 2-min cadence, stride=1 step
     let window = steps.max(1);
@@ -150,23 +169,39 @@ fn main() -> Result<()> {
             }
             let norm: f64 = v.iter().map(|x| x * x).sum::<f64>().sqrt();
             if norm > 1e-15 {
-                for x in v.iter_mut() { *x /= norm; }
+                for x in v.iter_mut() {
+                    *x /= norm;
+                }
             }
             multi_embedded.push(v);
         }
     }
 
-    let multi_eff = if multi_embedded.len() > 5 { effective_rank(&multi_embedded, actual_dim) } else { 0 };
+    let multi_eff = if multi_embedded.len() > 5 {
+        effective_rank(&multi_embedded, actual_dim)
+    } else {
+        0
+    };
     let multi_norms = cd_kernel::batch_sliding_associator_norms_dispatch(
-        &multi_embedded, actual_dim, &cli.precision,
+        &multi_embedded,
+        actual_dim,
+        &cli.precision,
     );
-    let multi_mean = if multi_norms.is_empty() { 0.0 } else {
+    let multi_mean = if multi_norms.is_empty() {
+        0.0
+    } else {
         multi_norms.iter().sum::<f64>() / multi_norms.len() as f64
     };
     let multi_max = multi_norms.iter().cloned().fold(0.0f64, f64::max);
 
-    println!("  12-ch: {} embeddings, eff_rank={}/{}, CD mean={:.6}, max={:.6}",
-        multi_embedded.len(), multi_eff, actual_dim, multi_mean, multi_max);
+    println!(
+        "  12-ch: {} embeddings, eff_rank={}/{}, CD mean={:.6}, max={:.6}",
+        multi_embedded.len(),
+        multi_eff,
+        actual_dim,
+        multi_mean,
+        multi_max
+    );
 
     // Build 2-channel delay embedding (171A mean + rms) for comparison
     let delay_ch = 2;
@@ -181,43 +216,82 @@ fn main() -> Result<()> {
             }
             let norm: f64 = v.iter().map(|x| x * x).sum::<f64>().sqrt();
             if norm > 1e-15 {
-                for x in v.iter_mut() { *x /= norm; }
+                for x in v.iter_mut() {
+                    *x /= norm;
+                }
             }
             delay_embedded.push(v);
         }
     }
-    let delay_norms = cd_kernel::batch_sliding_associator_norms_dispatch(
-        &delay_embedded, dim, &cli.precision,
-    );
-    let delay_mean = if delay_norms.is_empty() { 0.0 } else {
+    let delay_norms =
+        cd_kernel::batch_sliding_associator_norms_dispatch(&delay_embedded, dim, &cli.precision);
+    let delay_mean = if delay_norms.is_empty() {
+        0.0
+    } else {
         delay_norms.iter().sum::<f64>() / delay_norms.len() as f64
     };
     let delay_max = delay_norms.iter().cloned().fold(0.0f64, f64::max);
-    println!("  2-ch delay: {} embeddings, CD mean={:.6}, max={:.6}",
-        delay_embedded.len(), delay_mean, delay_max);
+    println!(
+        "  2-ch delay: {} embeddings, CD mean={:.6}, max={:.6}",
+        delay_embedded.len(),
+        delay_mean,
+        delay_max
+    );
 
     // Flare phase analysis (flare peak ~12:02 UT, roughly row 120 of 177)
     let flare_idx = multi_norms.len() * 2 / 3; // approximate flare peak
-    let pre = if flare_idx > 20 { &multi_norms[..flare_idx - 10] } else { &multi_norms[..] };
+    let pre = if flare_idx > 20 {
+        &multi_norms[..flare_idx - 10]
+    } else {
+        &multi_norms[..]
+    };
     let during = if flare_idx + 10 < multi_norms.len() {
         &multi_norms[flare_idx - 10..flare_idx + 10]
-    } else { &multi_norms[flare_idx..] };
+    } else {
+        &multi_norms[flare_idx..]
+    };
     let post = if flare_idx + 10 < multi_norms.len() {
         &multi_norms[flare_idx + 10..]
-    } else { &[] as &[f64] };
+    } else {
+        &[] as &[f64]
+    };
 
-    let pre_mean = if pre.is_empty() { 0.0 } else { pre.iter().sum::<f64>() / pre.len() as f64 };
-    let flare_mean = if during.is_empty() { 0.0 } else { during.iter().sum::<f64>() / during.len() as f64 };
-    let post_mean = if post.is_empty() { 0.0 } else { post.iter().sum::<f64>() / post.len() as f64 };
-    let enhancement = if pre_mean > 1e-15 { flare_mean / pre_mean } else { 0.0 };
+    let pre_mean = if pre.is_empty() {
+        0.0
+    } else {
+        pre.iter().sum::<f64>() / pre.len() as f64
+    };
+    let flare_mean = if during.is_empty() {
+        0.0
+    } else {
+        during.iter().sum::<f64>() / during.len() as f64
+    };
+    let post_mean = if post.is_empty() {
+        0.0
+    } else {
+        post.iter().sum::<f64>() / post.len() as f64
+    };
+    let enhancement = if pre_mean > 1e-15 {
+        flare_mean / pre_mean
+    } else {
+        0.0
+    };
 
-    println!("\n  Flare phases: pre={:.4}, during={:.4}, post={:.4}, enhancement={:.2}x",
-        pre_mean, flare_mean, post_mean, enhancement);
+    println!(
+        "\n  Flare phases: pre={:.4}, during={:.4}, post={:.4}, enhancement={:.2}x",
+        pre_mean, flare_mean, post_mean, enhancement
+    );
 
     let interp = if enhancement > 1.5 {
-        format!("FLARE DETECTED: {:.1}x CD enhancement during X9.3 with {} channels at {}D", enhancement, n_ch, actual_dim)
+        format!(
+            "FLARE DETECTED: {:.1}x CD enhancement during X9.3 with {} channels at {}D",
+            enhancement, n_ch, actual_dim
+        )
     } else {
-        format!("Weak flare signal ({:.2}x) with {} channels at {}D", enhancement, n_ch, actual_dim)
+        format!(
+            "Weak flare signal ({:.2}x) with {} channels at {}D",
+            enhancement, n_ch, actual_dim
+        )
     };
     println!("  {}", interp);
 

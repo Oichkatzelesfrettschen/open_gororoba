@@ -68,7 +68,10 @@ pub fn slerp(a: &[f64], b: &[f64], t: f64) -> Vec<f64> {
     let w_a = ((1.0 - t) * omega).sin() / sin_omega;
     let w_b = (t * omega).sin() / sin_omega;
 
-    a.iter().zip(b.iter()).map(|(&x, &y)| w_a * x + w_b * y).collect()
+    a.iter()
+        .zip(b.iter())
+        .map(|(&x, &y)| w_a * x + w_b * y)
+        .collect()
 }
 
 /// Merge two adjacent layers' KV states via SLERP.
@@ -96,14 +99,18 @@ pub fn merge_adjacent_layers(
 
 /// Reconstruct layer n from cross-layer compressed representation.
 pub fn reconstruct_layer_n(compressed: &CrossLayerCompressed) -> Vec<f64> {
-    compressed.merged_direction.iter()
+    compressed
+        .merged_direction
+        .iter()
         .map(|&d| d * compressed.magnitude_n)
         .collect()
 }
 
 /// Reconstruct layer n+1 from cross-layer compressed representation.
 pub fn reconstruct_layer_n1(compressed: &CrossLayerCompressed) -> Vec<f64> {
-    compressed.merged_direction.iter()
+    compressed
+        .merged_direction
+        .iter()
         .map(|&d| d * compressed.magnitude_n1)
         .collect()
 }
@@ -173,8 +180,10 @@ mod tests {
             dot / (na * nb)
         };
 
-        println!("Cross-layer merge (d={}): angle={:.4} rad, cos_n={:.6}",
-            d, compressed.inter_layer_angle, cos_n);
+        println!(
+            "Cross-layer merge (d={}): angle={:.4} rad, cos_n={:.6}",
+            d, compressed.inter_layer_angle, cos_n
+        );
 
         // For similar layers, reconstruction should be good
         assert!(cos_n > 0.9, "Reconstruction quality too low: cos={}", cos_n);
@@ -184,15 +193,22 @@ mod tests {
     fn test_compression_ratio() {
         assert!((compression_ratio(128) - 1.94).abs() < 0.01);
         assert!((compression_ratio(64) - 1.88).abs() < 0.01);
-        println!("Cross-layer compression ratio: d=128: {:.2}x, d=64: {:.2}x",
-            compression_ratio(128), compression_ratio(64));
+        println!(
+            "Cross-layer compression ratio: d=128: {:.2}x, d=64: {:.2}x",
+            compression_ratio(128),
+            compression_ratio(64)
+        );
     }
 
     #[test]
     fn test_total_savings() {
         let (orig, comp) = total_savings(128, 36);
-        println!("36 layers, d=128: {} -> {} values ({:.1}x)",
-            orig, comp, orig as f64 / comp as f64);
+        println!(
+            "36 layers, d=128: {} -> {} values ({:.1}x)",
+            orig,
+            comp,
+            orig as f64 / comp as f64
+        );
         assert!(comp < orig);
     }
 }

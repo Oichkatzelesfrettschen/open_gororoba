@@ -25,29 +25,30 @@ use crate::lloyd_max;
 /// `base_bits`: the original bit-width.
 ///
 /// Returns new indices at (base_bits + 1) resolution.
-pub fn lazy_promote_indices(
-    rotated_coords: &[f64],
-    base_bits: u32,
-) -> Vec<u8> {
+pub fn lazy_promote_indices(rotated_coords: &[f64], base_bits: u32) -> Vec<u8> {
     let d = rotated_coords.len();
     let promoted_bits = base_bits + 1;
     let codebook = lloyd_max::get_codebook(d, promoted_bits);
     let boundaries = &codebook.boundaries;
 
-    rotated_coords.iter().map(|&v| {
-        let mut idx = 0u8;
-        for &b in boundaries.iter() {
-            if v > b as f64 { idx += 1; } else { break; }
-        }
-        idx
-    }).collect()
+    rotated_coords
+        .iter()
+        .map(|&v| {
+            let mut idx = 0u8;
+            for &b in boundaries.iter() {
+                if v > b as f64 {
+                    idx += 1;
+                } else {
+                    break;
+                }
+            }
+            idx
+        })
+        .collect()
 }
 
 /// Lazy promote with SIMD codebook for maximum throughput.
-pub fn lazy_promote_indices_simd(
-    rotated_coords: &[f32],
-    base_bits: u32,
-) -> Vec<u8> {
+pub fn lazy_promote_indices_simd(rotated_coords: &[f32], base_bits: u32) -> Vec<u8> {
     use super::simd_codebook::SimdBoundaries;
 
     let d = rotated_coords.len();
@@ -61,31 +62,44 @@ pub fn lazy_promote_indices_simd(
 }
 
 /// Measure the MSE improvement from lazy promotion vs base.
-pub fn lazy_promote_mse_gain(
-    rotated_coords: &[f64],
-    base_bits: u32,
-) -> (f64, f64) {
+pub fn lazy_promote_mse_gain(rotated_coords: &[f64], base_bits: u32) -> (f64, f64) {
     let d = rotated_coords.len();
     let base_cb = lloyd_max::get_codebook(d, base_bits);
     let promoted_cb = lloyd_max::get_codebook(d, base_bits + 1);
 
-    let base_mse: f64 = rotated_coords.iter().map(|&v| {
-        let mut idx = 0u8;
-        for &b in base_cb.boundaries.iter() {
-            if v > b as f64 { idx += 1; } else { break; }
-        }
-        let recon = base_cb.centroids[idx as usize] as f64;
-        (v - recon).powi(2)
-    }).sum::<f64>() / d as f64;
+    let base_mse: f64 = rotated_coords
+        .iter()
+        .map(|&v| {
+            let mut idx = 0u8;
+            for &b in base_cb.boundaries.iter() {
+                if v > b as f64 {
+                    idx += 1;
+                } else {
+                    break;
+                }
+            }
+            let recon = base_cb.centroids[idx as usize] as f64;
+            (v - recon).powi(2)
+        })
+        .sum::<f64>()
+        / d as f64;
 
-    let promoted_mse: f64 = rotated_coords.iter().map(|&v| {
-        let mut idx = 0u8;
-        for &b in promoted_cb.boundaries.iter() {
-            if v > b as f64 { idx += 1; } else { break; }
-        }
-        let recon = promoted_cb.centroids[idx as usize] as f64;
-        (v - recon).powi(2)
-    }).sum::<f64>() / d as f64;
+    let promoted_mse: f64 = rotated_coords
+        .iter()
+        .map(|&v| {
+            let mut idx = 0u8;
+            for &b in promoted_cb.boundaries.iter() {
+                if v > b as f64 {
+                    idx += 1;
+                } else {
+                    break;
+                }
+            }
+            let recon = promoted_cb.centroids[idx as usize] as f64;
+            (v - recon).powi(2)
+        })
+        .sum::<f64>()
+        / d as f64;
 
     (base_mse, promoted_mse)
 }
@@ -107,8 +121,10 @@ mod tests {
         // More bits -> more possible indices
         let max_base: u8 = *base_3bit.iter().max().unwrap();
         let max_promoted: u8 = *promoted_3bit.iter().max().unwrap();
-        assert!(max_promoted >= max_base || max_base <= 7,
-            "Promoted should use more levels");
+        assert!(
+            max_promoted >= max_base || max_base <= 7,
+            "Promoted should use more levels"
+        );
     }
 
     #[test]
@@ -117,13 +133,20 @@ mod tests {
         let rotated: Vec<f64> = (0..d).map(|i| (i as f64 * 0.05).sin() * 0.08).collect();
 
         let (base_mse, promoted_mse) = lazy_promote_mse_gain(&rotated, 3);
-        println!("Lazy promote: base MSE={:.6e}, promoted MSE={:.6e}, improvement={:.1}%",
-            base_mse, promoted_mse,
-            (base_mse - promoted_mse) / base_mse * 100.0);
+        println!(
+            "Lazy promote: base MSE={:.6e}, promoted MSE={:.6e}, improvement={:.1}%",
+            base_mse,
+            promoted_mse,
+            (base_mse - promoted_mse) / base_mse * 100.0
+        );
 
         // Promoted should have lower or equal MSE
-        assert!(promoted_mse <= base_mse * 1.01, // allow tiny floating-point slack
-            "Promoted MSE should be <= base: {} vs {}", promoted_mse, base_mse);
+        assert!(
+            promoted_mse <= base_mse * 1.01, // allow tiny floating-point slack
+            "Promoted MSE should be <= base: {} vs {}",
+            promoted_mse,
+            base_mse
+        );
     }
 
     #[test]
@@ -144,7 +167,8 @@ mod tests {
         let mut rng = ChaCha20Rng::seed_from_u64(42);
         let normal = StandardNormal;
         let vectors: Vec<Vec<f64>> = (0..n)
-            .map(|_| (0..d).map(|_| normal.sample(&mut rng)).collect()).collect();
+            .map(|_| (0..d).map(|_| normal.sample(&mut rng)).collect())
+            .collect();
         let mut buf = vec![0.0f64; 3 * d];
 
         // Full re-quantize timing

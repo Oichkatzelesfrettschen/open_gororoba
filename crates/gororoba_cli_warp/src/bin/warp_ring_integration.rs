@@ -21,8 +21,10 @@ use gororoba_algebra::{
 // use gororoba_engine::simulation::AlgebraicField; // Unused import removed
 use gororoba_engine::{SimulationConfig, SimulationState};
 use gr_core::{kerr::Kerr, sedenion_geodesic::sedenion_homotopy_step};
-use lbm_core::turbulence::{extract_dominant_triads, power_spectrum};
-use lbm_core::{CX, W};
+use lbm_core::{
+    CX, W,
+    turbulence::{extract_dominant_triads, power_spectrum},
+};
 use log::info;
 use materials_core::{
     build_absorber_stack, canonical_sedenion_zd_pairs, tmm_reflection,
@@ -150,12 +152,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     for x in 0..nx {
         for y in 0..ny {
             // Mode (1,0): sin(2*pi*x/nx) excites wavevector (kx=1, ky=0) in u_x
-            let ux_mode_10 =
-                perturb_amp * (2.0 * PI * x as f64 / nx as f64).sin();
+            let ux_mode_10 = perturb_amp * (2.0 * PI * x as f64 / nx as f64).sin();
             // Mode (1,1): sin(2*pi*(x+y)/nx) excites wavevectors (1,1) and (-1,-1) in u_x
             // The (-1,-1) leg closes the triad with (0,1) and (1,0): 1+0+(-1)=0, 0+1+(-1)=0
-            let ux_mode_11 =
-                perturb_amp * (2.0 * PI * (x + y) as f64 / nx as f64).sin();
+            let ux_mode_11 = perturb_amp * (2.0 * PI * (x + y) as f64 / nx as f64).sin();
             let upx = ux_mode_10 + ux_mode_11;
             for i in 0..9 {
                 let cx = CX[i] as f64;
@@ -191,8 +191,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             let cx = CX[i] as f64;
             for x in 0..nx {
                 for y in 0..ny {
-                    let fy = force_amp
-                        * (2.0 * PI * force_mode as f64 * y as f64 / ny as f64).sin();
+                    let fy =
+                        force_amp * (2.0 * PI * force_mode as f64 * y as f64 / ny as f64).sin();
                     state.fluid.f[[i, x, y]] += 3.0 * W[i] * cx * fy * rho[[x, y]];
                 }
             }

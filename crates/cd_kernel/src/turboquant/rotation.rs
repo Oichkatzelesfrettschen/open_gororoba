@@ -199,7 +199,11 @@ pub enum Rotation {
     /// Dense Haar-random orthogonal matrix (d*d storage, O(d^2) apply).
     Haar { matrix: Vec<f64>, d: usize },
     /// Fast JL via WHT + Rademacher diagonals (2*d storage, O(d log d) apply).
-    FastJL { d1: Vec<f64>, d2: Vec<f64>, d: usize },
+    FastJL {
+        d1: Vec<f64>,
+        d2: Vec<f64>,
+        d: usize,
+    },
     /// E8 lattice block rotation (8 roots storage, O(d) via sedenion multiply).
     /// Validated: KS p=0.816 vs Haar at d=128.  136x fewer parameters.
     /// Only works for d=128 (8 blocks of 16D sedenion).
@@ -239,7 +243,12 @@ impl Rotation {
     ///
     /// Returns the FastJL rotation with the best D_2 score.
     /// If d < 16 or calibration is empty, falls back to standard FastJL.
-    pub fn new_fast_jl_zd_avoid(d: usize, seed: u64, calibration: &[&[f64]], n_candidates: usize) -> Self {
+    pub fn new_fast_jl_zd_avoid(
+        d: usize,
+        seed: u64,
+        calibration: &[&[f64]],
+        n_candidates: usize,
+    ) -> Self {
         if d < 16 || calibration.is_empty() || n_candidates <= 1 {
             return Self::new_fast_jl(d, seed);
         }
@@ -260,7 +269,9 @@ impl Rotation {
             for cal_vec in calibration.iter().take(50) {
                 // Normalize
                 let norm: f64 = cal_vec.iter().map(|x| x * x).sum::<f64>().sqrt();
-                if norm < 1e-15 { continue; }
+                if norm < 1e-15 {
+                    continue;
+                }
                 let normalized: Vec<f64> = cal_vec.iter().map(|x| x / norm).collect();
 
                 // Rotate
@@ -285,7 +296,11 @@ impl Rotation {
             }
         }
 
-        Rotation::FastJL { d1: best_d1, d2: best_d2, d }
+        Rotation::FastJL {
+            d1: best_d1,
+            d2: best_d2,
+            d,
+        }
     }
 
     /// Create E8 block rotation for d=128.
@@ -312,7 +327,11 @@ impl Rotation {
             }
         }
 
-        Rotation::E8Block(Box::new(E8BlockData { roots, conj_roots, d }))
+        Rotation::E8Block(Box::new(E8BlockData {
+            roots,
+            conj_roots,
+            d,
+        }))
     }
 
     /// Create E8 + WHT composition rotation for d=128.
@@ -331,7 +350,11 @@ impl Rotation {
                 *c = -*c;
             }
         }
-        let e8 = E8BlockData { roots, conj_roots, d };
+        let e8 = E8BlockData {
+            roots,
+            conj_roots,
+            d,
+        };
 
         // Build WHT Rademacher part (use different seed to avoid correlation)
         let (d1, d2) = generate_rademacher_diagonals(d, seed + 500);
@@ -348,8 +371,7 @@ impl Rotation {
 
     pub fn dim(&self) -> usize {
         match self {
-            Rotation::Haar { d, .. }
-            | Rotation::FastJL { d, .. } => *d,
+            Rotation::Haar { d, .. } | Rotation::FastJL { d, .. } => *d,
             Rotation::E8Block(data) => data.d,
             Rotation::E8Wht(data) => data.d,
             Rotation::F4Block(data) => data.d,
@@ -416,7 +438,10 @@ mod tests {
                 assert!(
                     (dot - expected).abs() < 1e-10,
                     "Pi*Pi^T[{},{}] = {}, expected {}",
-                    i, j, dot, expected
+                    i,
+                    j,
+                    dot,
+                    expected
                 );
             }
         }
@@ -435,7 +460,9 @@ mod tests {
             assert!(
                 (x[i] - x_rt[i]).abs() < 1e-10,
                 "Roundtrip error at {}: {} vs {}",
-                i, x[i], x_rt[i]
+                i,
+                x[i],
+                x_rt[i]
             );
         }
     }
@@ -452,7 +479,9 @@ mod tests {
             assert!(
                 (data[i] - original[i]).abs() < 1e-10,
                 "WHT not self-inverse at {}: {} vs {}",
-                i, data[i], original[i]
+                i,
+                data[i],
+                original[i]
             );
         }
     }
@@ -468,7 +497,8 @@ mod tests {
             assert!(
                 (v - 1.0).abs() < 1e-10,
                 "WHT(delta)[{}] = {}, expected 1.0",
-                i, v
+                i,
+                v
             );
         }
     }
@@ -487,7 +517,9 @@ mod tests {
             assert!(
                 (x[i] - x_rt[i]).abs() < 1e-10,
                 "Fast JL roundtrip error at {}: {} vs {}",
-                i, x[i], x_rt[i]
+                i,
+                x[i],
+                x_rt[i]
             );
         }
     }
@@ -505,7 +537,8 @@ mod tests {
         assert!(
             (norm_x - norm_y).abs() / norm_x < 1e-10,
             "Norm not preserved: {} vs {}",
-            norm_x, norm_y
+            norm_x,
+            norm_y
         );
     }
 
@@ -524,7 +557,9 @@ mod tests {
                 assert!(
                     (x[i] - x_rt[i]).abs() < 1e-9,
                     "{:?} roundtrip error at {}: {} vs {}",
-                    rotation, x[i], x_rt[i], // print rotation type
+                    rotation,
+                    x[i],
+                    x_rt[i], // print rotation type
                     i
                 );
             }
@@ -544,7 +579,9 @@ mod tests {
         rotation.inverse(&y, &mut buf, &mut x_rt);
 
         // E8 block rotation inverse via conjugate should reconstruct
-        let max_err: f64 = x.iter().zip(x_rt.iter())
+        let max_err: f64 = x
+            .iter()
+            .zip(x_rt.iter())
             .map(|(a, b)| (a - b).abs())
             .fold(0.0f64, f64::max);
         assert!(
@@ -566,7 +603,9 @@ mod tests {
         rotation.forward(&x, &mut buf, &mut y);
         rotation.inverse(&y, &mut buf, &mut x_rt);
 
-        let max_err: f64 = x.iter().zip(x_rt.iter())
+        let max_err: f64 = x
+            .iter()
+            .zip(x_rt.iter())
             .map(|(a, b)| (a - b).abs())
             .fold(0.0f64, f64::max);
         assert!(
@@ -591,7 +630,8 @@ mod tests {
         assert!(
             (norm_x - norm_y).abs() / norm_x < 1e-8,
             "E8+WHT norm not preserved: {} vs {}",
-            norm_x, norm_y
+            norm_x,
+            norm_y
         );
     }
 
@@ -647,8 +687,15 @@ mod tests {
             }
         }
 
-        println!("D_2 scores: standard min={:.6}, ZD-avoidance min={:.6}", min_d2_std, min_d2_zd);
-        assert!(min_d2_zd >= min_d2_std,
-            "ZD-avoidance should have higher or equal D_2: {} vs {}", min_d2_zd, min_d2_std);
+        println!(
+            "D_2 scores: standard min={:.6}, ZD-avoidance min={:.6}",
+            min_d2_std, min_d2_zd
+        );
+        assert!(
+            min_d2_zd >= min_d2_std,
+            "ZD-avoidance should have higher or equal D_2: {} vs {}",
+            min_d2_zd,
+            min_d2_std
+        );
     }
 }

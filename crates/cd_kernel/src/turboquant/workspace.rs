@@ -9,7 +9,7 @@
 //! With dyn-stack, these are allocated ONCE and reused across calls.
 //! With aligned-vec, the buffers are SIMD-aligned for f64x4/f32x8 ops.
 
-use dyn_stack::{GlobalPodBuffer, StackReq};
+use dyn_stack::{PodBuffer, StackReq};
 
 /// Pre-allocated workspace for TurboQuant operations.
 ///
@@ -48,9 +48,9 @@ impl TurboQuantWorkspace {
     /// Get a dyn-stack PodStack from a separate allocation.
     ///
     /// For operations that need dyn-stack's structured allocation.
-    pub fn pod_stack(d: usize) -> (GlobalPodBuffer, StackReq) {
+    pub fn pod_stack(d: usize) -> (PodBuffer, StackReq) {
         let req = StackReq::new::<f64>(4 * d);
-        (GlobalPodBuffer::new(req), req)
+        (PodBuffer::new(req), req)
     }
 }
 
@@ -95,7 +95,9 @@ impl AlignedWorkspace {
     pub fn alignment(&self) -> usize {
         let ptr = self.f64_buf.as_ptr() as usize;
         // Find the largest power of 2 that divides the address
-        if ptr == 0 { return 0; }
+        if ptr == 0 {
+            return 0;
+        }
         1 << ptr.trailing_zeros()
     }
 }

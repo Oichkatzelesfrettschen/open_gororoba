@@ -24,7 +24,8 @@ pub use flavor_lifts::basis::{extract_v6_basis, extract_vk_basis};
 /// agreement test is the single gate for removal.
 #[cfg(test)]
 pub(crate) fn extract_vk_basis_nalgebra(
-    dim: usize, max_rank: usize,
+    dim: usize,
+    max_rank: usize,
 ) -> (nalgebra::DMatrix<f64>, Vec<f64>, Vec<(usize, usize)>) {
     use cd_kernel::cayley_dickson::SignTable;
     use nalgebra::DMatrix;
@@ -36,7 +37,9 @@ pub(crate) fn extract_vk_basis_nalgebra(
     let mut assessors: Vec<(usize, usize)> = Vec::new();
     for low in 1..half {
         for high in (half + 1)..dim {
-            if high == low + half { continue; }
+            if high == low + half {
+                continue;
+            }
             assessors.push((low, high));
         }
     }
@@ -68,20 +71,34 @@ pub(crate) fn extract_vk_basis_nalgebra(
                         let t1 = assoc_nonzero(b, c, d);
                         let t2 = assoc_nonzero(b, d, c);
                         let t3 = assoc_nonzero(c, b, d);
-                        if !t1 && !t2 && !t3 { continue; }
+                        if !t1 && !t2 && !t3 {
+                            continue;
+                        }
                         nz_buf.clear();
                         for &prod_idx in &[b ^ c, b ^ d, c ^ d] {
                             if prod_idx > 0 && prod_idx < dim {
                                 for &a_idx in &assess_lookup[prod_idx] {
-                                    if !nz_buf.contains(&a_idx) { nz_buf.push(a_idx); }
+                                    if !nz_buf.contains(&a_idx) {
+                                        nz_buf.push(a_idx);
+                                    }
                                 }
                             }
                         }
                         let target = match (t1, t2, t3) {
-                            (false, true, false) | (false, false, true) => { cbc += 1; &mut gbc }
-                            _ => { cx += 1; &mut gx }
+                            (false, true, false) | (false, false, true) => {
+                                cbc += 1;
+                                &mut gbc
+                            }
+                            _ => {
+                                cx += 1;
+                                &mut gx
+                            }
                         };
-                        for &i in &nz_buf { for &j in &nz_buf { target[i * n_assess + j] += 1; } }
+                        for &i in &nz_buf {
+                            for &j in &nz_buf {
+                                target[i * n_assess + j] += 1;
+                            }
+                        }
                     }
                 }
                 (gbc, gx, cbc, cx)
@@ -90,8 +107,12 @@ pub(crate) fn extract_vk_basis_nalgebra(
         .reduce(
             || (vec![0i64; nn], vec![0i64; nn], 0, 0),
             |(mut a0, mut a1, a2, a3), (b0, b1, b2, b3)| {
-                for i in 0..nn { a0[i] += b0[i]; }
-                for i in 0..nn { a1[i] += b1[i]; }
+                for i in 0..nn {
+                    a0[i] += b0[i];
+                }
+                for i in 0..nn {
+                    a1[i] += b1[i];
+                }
                 (a0, a1, a2 + b2, a3 + b3)
             },
         );
@@ -144,7 +165,8 @@ pub(crate) fn extract_vk_basis_nalgebra(
         }
     }
 
-    let singular_values: Vec<f64> = sv_pairs.iter()
+    let singular_values: Vec<f64> = sv_pairs
+        .iter()
         .take(rank_vk.min(max_rank * 2))
         .map(|&(sv, _)| sv)
         .collect();

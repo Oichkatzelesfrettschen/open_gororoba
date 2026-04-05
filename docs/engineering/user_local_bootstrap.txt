@@ -23,6 +23,9 @@ Optional:
 
 - `scripts/bootstrap_user_local_xdg.sh --with-gemini`
 - `scripts/bootstrap_user_local_xdg.sh --force`
+- After any workspace toolchain pin change, rerun `rustup show active-toolchain`
+  and `cargo +nightly fmt --all` / `cargo +nightly clippy --workspace -- -D warnings`
+  from the repo root to confirm your local user config still matches the pinned lane.
 
 What the helper writes
 ----------------------

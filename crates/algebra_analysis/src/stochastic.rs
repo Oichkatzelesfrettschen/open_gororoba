@@ -157,7 +157,7 @@ pub fn generate_levy_flight(n: usize, params: LevyParams, seed: u64) -> Vec<f64>
     use rand_distr::{Distribution, Uniform};
 
     let mut rng = rand_chacha::ChaCha8Rng::seed_from_u64(seed);
-    let uniform = Uniform::new(0.0, 1.0);
+    let uniform = Uniform::new(0.0, 1.0).expect("valid uniform distribution");
 
     let mut path = Vec::with_capacity(n);
     let mut x = params.x0;

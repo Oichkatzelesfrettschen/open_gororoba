@@ -1,11 +1,11 @@
-mod pmns;
-mod lift;
-mod intertwiner;
-mod cp;
-mod scan;
-mod regression;
-mod spectrum;
 mod branch_transport;
+mod cp;
+mod intertwiner;
+mod lift;
+mod pmns;
+mod regression;
+mod scan;
+mod spectrum;
 
 // ---------------------------------------------------------------------------
 // Shared test helpers (accessed by submodules as `super::*`)
@@ -41,22 +41,23 @@ pub(super) fn pdg_score(t12: f64, t13: f64, t23: f64, pdg: &super::Pdg2024) -> f
 
 /// Print theta_12 / theta_13 / theta_23 vs supplied PDG central values with
 /// percentage errors.  Format matches the rest of the V_6 scan output.
-pub(super) fn print_best_angles(
-    angles: (f64, f64, f64),
-    pdg_t12: f64,
-    pdg_t13: f64,
-    pdg_t23: f64,
-) {
+pub(super) fn print_best_angles(angles: (f64, f64, f64), pdg_t12: f64, pdg_t13: f64, pdg_t23: f64) {
     println!(
         "  theta_12 = {:.4} deg (PDG: {:.2}, error: {:.2}%)",
-        angles.0, pdg_t12, ((angles.0 - pdg_t12) / pdg_t12 * 100.0).abs()
+        angles.0,
+        pdg_t12,
+        ((angles.0 - pdg_t12) / pdg_t12 * 100.0).abs()
     );
     println!(
         "  theta_13 = {:.4} deg (PDG: {:.2}, error: {:.2}%)",
-        angles.1, pdg_t13, ((angles.1 - pdg_t13) / pdg_t13 * 100.0).abs()
+        angles.1,
+        pdg_t13,
+        ((angles.1 - pdg_t13) / pdg_t13 * 100.0).abs()
     );
     println!(
         "  theta_23 = {:.4} deg (PDG: {:.2}, error: {:.2}%)",
-        angles.2, pdg_t23, ((angles.2 - pdg_t23) / pdg_t23 * 100.0).abs()
+        angles.2,
+        pdg_t23,
+        ((angles.2 - pdg_t23) / pdg_t23 * 100.0).abs()
     );
 }

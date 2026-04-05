@@ -94,7 +94,8 @@ impl StreamingKVCache {
                 // Dequantize key and dot with query
                 let mut buf = vec![0.0f64; 3 * self.d];
                 let mut key_recon = vec![0.0f64; self.d];
-                self.quantizer.dequantize(compressed, &mut buf, &mut key_recon);
+                self.quantizer
+                    .dequantize(compressed, &mut buf, &mut key_recon);
                 query.iter().zip(key_recon.iter()).map(|(q, k)| q * k).sum()
             })
             .collect()
@@ -107,7 +108,8 @@ impl StreamingKVCache {
             .map(|compressed| {
                 let mut buf = vec![0.0f64; 3 * self.d];
                 let mut val_recon = vec![0.0f64; self.d];
-                self.quantizer.dequantize(compressed, &mut buf, &mut val_recon);
+                self.quantizer
+                    .dequantize(compressed, &mut buf, &mut val_recon);
                 val_recon
             })
             .collect()
@@ -119,7 +121,9 @@ impl StreamingKVCache {
     /// This is the same proxy used by the sampled adaptive allocation
     /// (259x faster than full CD associator scoring).
     pub fn token_importance(&self, token_idx: usize) -> f64 {
-        if token_idx >= self.key_cache.len() { return 0.0; }
+        if token_idx >= self.key_cache.len() {
+            return 0.0;
+        }
         self.key_cache[token_idx].vec_norm
     }
 
@@ -133,7 +137,9 @@ impl StreamingKVCache {
     /// Useful for selective attention: only attend to the most
     /// important tokens during decode (MiniKV pattern).
     pub fn top_k_important(&self, k: usize) -> Vec<usize> {
-        let mut indexed: Vec<(usize, f64)> = self.key_cache.iter()
+        let mut indexed: Vec<(usize, f64)> = self
+            .key_cache
+            .iter()
             .enumerate()
             .map(|(i, c)| (i, c.vec_norm))
             .collect();
@@ -164,7 +170,9 @@ impl StreamingKVCache {
 
     /// Compression ratio.
     pub fn compression_ratio(&self) -> f64 {
-        if self.memory_bytes() == 0 { return 0.0; }
+        if self.memory_bytes() == 0 {
+            return 0.0;
+        }
         self.memory_fp16_bytes() as f64 / self.memory_bytes() as f64
     }
 }
@@ -245,7 +253,11 @@ mod tests {
         let scores = cache.attention_scores(&query);
         assert_eq!(scores.len(), 15);
 
-        println!("Streaming cache: {} tokens, {:.1}x compression, {} bytes",
-            cache.len(), cache.compression_ratio(), cache.memory_bytes());
+        println!(
+            "Streaming cache: {} tokens, {:.1}x compression, {} bytes",
+            cache.len(),
+            cache.compression_ratio(),
+            cache.memory_bytes()
+        );
     }
 }

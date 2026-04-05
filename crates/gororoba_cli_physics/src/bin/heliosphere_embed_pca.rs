@@ -20,7 +20,10 @@ struct Cli {
     embedding_dim: usize,
     #[arg(long, default_value_t = 200.0)]
     max_bmag: f64,
-    #[arg(long, default_value = "data/output/heliosphere/ablations/pca_projection.csv")]
+    #[arg(
+        long,
+        default_value = "data/output/heliosphere/ablations/pca_projection.csv"
+    )]
     out_csv: String,
     #[arg(long, default_value = "data/external")]
     data_dir: String,
@@ -41,7 +44,9 @@ fn main() {
         let date = start + chrono::Duration::days(offset);
         let path = format!(
             "{}/themis/tha_fgm_{:04}_{:03}.csv",
-            cli.data_dir, date.year(), date.ordinal()
+            cli.data_dir,
+            date.year(),
+            date.ordinal()
         );
         if let Ok(content) = fs::read_to_string(&path) {
             for r in parse_themis_fgm_hapi_csv_minutes(&content, "THA") {
@@ -72,7 +77,9 @@ fn main() {
             .map(|s| (bx[w + s].powi(2) + by[w + s].powi(2) + bz[w + s].powi(2)).sqrt())
             .sum();
         let mean_b = sum_b / steps as f64;
-        if mean_b <= 0.01 || !mean_b.is_finite() { continue; }
+        if mean_b <= 0.01 || !mean_b.is_finite() {
+            continue;
+        }
 
         let mut v = vec![0.0; dim];
         for s in 0..steps {
@@ -143,7 +150,12 @@ fn main() {
         ));
     }
 
-    fs::create_dir_all(std::path::Path::new(&cli.out_csv).parent().unwrap_or(std::path::Path::new("."))).ok();
+    fs::create_dir_all(
+        std::path::Path::new(&cli.out_csv)
+            .parent()
+            .unwrap_or(std::path::Path::new(".")),
+    )
+    .ok();
     fs::write(&cli.out_csv, out).unwrap();
     eprintln!("Wrote {}", cli.out_csv);
 }

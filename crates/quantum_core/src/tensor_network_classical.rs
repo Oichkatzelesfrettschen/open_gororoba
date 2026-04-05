@@ -14,10 +14,7 @@
 //! - Orus (2014): A practical introduction to tensor networks
 
 use nalgebra::DMatrix;
-use rand::{
-    SeedableRng,
-    distributions::{Distribution, Standard},
-};
+use rand::{RngExt, SeedableRng};
 use rand_chacha::ChaCha8Rng;
 
 /// Classical tensor network state.
@@ -62,7 +59,7 @@ impl TensorNetworkState {
             None => ChaCha8Rng::seed_from_u64(42),
         };
 
-        let mut data: Vec<f64> = (0..size).map(|_| Standard.sample(&mut rng)).collect();
+        let mut data: Vec<f64> = (0..size).map(|_| rng.random::<f64>()).collect();
 
         // Normalize
         let norm: f64 = data.iter().map(|x| x * x).sum::<f64>().sqrt();
@@ -264,7 +261,7 @@ pub fn simulate_random_circuit(
 
     for _ in 0..n_steps {
         // Random Hadamard on random qubit
-        let target: usize = rand::Rng::gen_range(&mut rng, 0..n_qubits);
+        let target: usize = rng.random_range(0..n_qubits);
         state.apply_hadamard(target);
 
         // CNOT on first two qubits (fixed for simplicity)

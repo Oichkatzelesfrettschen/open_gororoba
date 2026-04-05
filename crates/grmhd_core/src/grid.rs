@@ -50,21 +50,39 @@ impl Grid {
         let dx2 = (x2_max - x2_min) / n2 as f64;
         let dx3 = (x3_max - x3_min) / n3 as f64;
         Self {
-            n1, n2, n3, ng,
-            x1_min, x1_max, x2_min, x2_max, x3_min, x3_max,
-            dx1, dx2, dx3,
+            n1,
+            n2,
+            n3,
+            ng,
+            x1_min,
+            x1_max,
+            x2_min,
+            x2_max,
+            x3_min,
+            x3_max,
+            dx1,
+            dx2,
+            dx3,
             metric,
         }
     }
 
     /// Total number of zones including ghost zones in direction 1.
-    pub fn n1_total(&self) -> usize { self.n1 + 2 * self.ng }
+    pub fn n1_total(&self) -> usize {
+        self.n1 + 2 * self.ng
+    }
     /// Total number of zones including ghost zones in direction 2.
-    pub fn n2_total(&self) -> usize { self.n2 + 2 * self.ng }
+    pub fn n2_total(&self) -> usize {
+        self.n2 + 2 * self.ng
+    }
     /// Total number of zones including ghost zones in direction 3.
-    pub fn n3_total(&self) -> usize { self.n3 + 2 * self.ng }
+    pub fn n3_total(&self) -> usize {
+        self.n3 + 2 * self.ng
+    }
     /// Total number of cells (including ghosts).
-    pub fn n_total(&self) -> usize { self.n1_total() * self.n2_total() * self.n3_total() }
+    pub fn n_total(&self) -> usize {
+        self.n1_total() * self.n2_total() * self.n3_total()
+    }
 
     /// Internal coordinate x1 at cell center for index i (0-based including ghosts).
     pub fn x1(&self, i: usize) -> f64 {
@@ -80,11 +98,17 @@ impl Grid {
     }
 
     /// Physical radius at cell center.
-    pub fn r(&self, i: usize) -> f64 { self.x1(i).exp() }
+    pub fn r(&self, i: usize) -> f64 {
+        self.x1(i).exp()
+    }
     /// Physical theta at cell center.
-    pub fn theta(&self, j: usize) -> f64 { std::f64::consts::PI * self.x2(j) }
+    pub fn theta(&self, j: usize) -> f64 {
+        std::f64::consts::PI * self.x2(j)
+    }
     /// Physical phi at cell center.
-    pub fn phi(&self, k: usize) -> f64 { 2.0 * std::f64::consts::PI * self.x3(k) }
+    pub fn phi(&self, k: usize) -> f64 {
+        2.0 * std::f64::consts::PI * self.x3(k)
+    }
 
     /// Flat index for (i, j, k).
     #[inline]
@@ -125,14 +149,26 @@ mod tests {
         let g = Grid::new(64, 32, 1, 2.0, 100.0, KerrMetric::schwarzschild());
         // First active cell in r: i = ng = 2
         let r_first = g.r(g.ng);
-        assert!((r_first - 2.0).abs() < 0.1, "First active r ~ r_in, got {}", r_first);
+        assert!(
+            (r_first - 2.0).abs() < 0.1,
+            "First active r ~ r_in, got {}",
+            r_first
+        );
         // Last active cell: i = ng + n1 - 1
         let r_last = g.r(g.ng + g.n1 - 1);
-        assert!((r_last - 100.0).abs() < 5.0, "Last active r ~ r_out, got {}", r_last);
+        assert!(
+            (r_last - 100.0).abs() < 5.0,
+            "Last active r ~ r_out, got {}",
+            r_last
+        );
         // Theta at midplane
         let j_mid = g.ng + g.n2 / 2;
         let th = g.theta(j_mid);
-        assert!((th - std::f64::consts::FRAC_PI_2).abs() < 0.1, "Midplane theta ~ pi/2, got {}", th);
+        assert!(
+            (th - std::f64::consts::FRAC_PI_2).abs() < 0.1,
+            "Midplane theta ~ pi/2, got {}",
+            th
+        );
     }
 
     #[test]

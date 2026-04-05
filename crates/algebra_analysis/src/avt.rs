@@ -148,10 +148,10 @@ impl AlternativityViolationTensor {
         let mut hits = 0u64;
 
         for _ in 0..n_samples {
-            let i = rng.gen_range(0..dim);
-            let j_raw = rng.gen_range(0..dim - 1);
+            let i = rng.random_range(0..dim);
+            let j_raw = rng.random_range(0..dim - 1);
             let j = if j_raw >= i { j_raw + 1 } else { j_raw };
-            let k = rng.gen_range(0..dim);
+            let k = rng.random_range(0..dim);
 
             let (i_c, j_c) = if i < j { (i, j) } else { (j, i) };
             if !seen.insert((i_c, j_c, k)) {

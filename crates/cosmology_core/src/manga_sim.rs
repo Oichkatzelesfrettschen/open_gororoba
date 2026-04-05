@@ -97,7 +97,7 @@ pub fn generate_synthetic_manga(params: &MangaSimParams) -> MangaDataBundle {
     let mut inclinations = Array1::zeros(n);
     let mut log_mass = Array1::zeros(n);
 
-    let incl_dist = Uniform::new(30.0, 70.0);
+    let incl_dist = Uniform::new(30.0, 70.0).expect("valid inclination range");
     let mass_dist = Normal::new(10.5, 0.5).unwrap();
     let nfw_amp_dist = Normal::new(1.0, 0.15).unwrap();
     let bar_amp_dist = Normal::new(1.0, 0.2).unwrap();

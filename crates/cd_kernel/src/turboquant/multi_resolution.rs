@@ -65,14 +65,22 @@ impl MultiResCodebook {
     pub fn quantize_coarse(&self, value: f64) -> u8 {
         let mut idx = 0u8;
         for &b in &self.coarse_boundaries {
-            if value > b as f64 { idx += 1; } else { break; }
+            if value > b as f64 {
+                idx += 1;
+            } else {
+                break;
+            }
         }
         idx
     }
 
     /// Fine refine: given a coarse index, returns the 1-bit refinement.
     pub fn refine(&self, value: f64, coarse_idx: u8) -> u8 {
-        if value > self.fine_boundaries[coarse_idx as usize] as f64 { 1 } else { 0 }
+        if value > self.fine_boundaries[coarse_idx as usize] as f64 {
+            1
+        } else {
+            0
+        }
     }
 
     /// Full quantize: coarse + fine = (base_bits + 1) total.
@@ -133,9 +141,16 @@ mod tests {
         // Fine should be closer to original than coarse
         let err_coarse = (value - recon_coarse as f64).abs();
         let err_fine = (value - recon_fine as f64).abs();
-        println!("Coarse error: {:.6}, Fine error: {:.6}", err_coarse, err_fine);
-        assert!(err_fine <= err_coarse + 1e-6,
-            "Fine should be at least as good: {} vs {}", err_fine, err_coarse);
+        println!(
+            "Coarse error: {:.6}, Fine error: {:.6}",
+            err_coarse, err_fine
+        );
+        assert!(
+            err_fine <= err_coarse + 1e-6,
+            "Fine should be at least as good: {} vs {}",
+            err_fine,
+            err_coarse
+        );
     }
 
     #[test]
@@ -152,8 +167,12 @@ mod tests {
         // Standard: base for non-promoted + (base+1) for promoted
         let std_bits = (n_total - n_promoted) * d * 3 + n_promoted * d * 4;
 
-        println!("Multi-res: {} bits, Standard: {} bits, savings: {:.1}%",
-            mr_bits, std_bits, (1.0 - mr_bits as f64 / std_bits as f64) * 100.0);
+        println!(
+            "Multi-res: {} bits, Standard: {} bits, savings: {:.1}%",
+            mr_bits,
+            std_bits,
+            (1.0 - mr_bits as f64 / std_bits as f64) * 100.0
+        );
 
         // Multi-resolution uses fewer total bits
         assert!(mr_bits <= std_bits, "Multi-res should use <= standard bits");

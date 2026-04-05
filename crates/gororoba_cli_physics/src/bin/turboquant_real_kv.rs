@@ -11,14 +11,12 @@
 use anyhow::{Context, Result};
 use clap::Parser;
 use serde::{Deserialize, Serialize};
-use std::fs;
-use std::path::PathBuf;
-use std::time::Instant;
+use std::{fs, path::PathBuf, time::Instant};
 
-use cd_kernel::lloyd_max::{self, DistributionFamily};
-use cd_kernel::turboquant::cdaq::CdaqQuantizer;
-use cd_kernel::turboquant::pipeline::TurboQuantMSE;
-use cd_kernel::turboquant::streaming::StreamingKVCache;
+use cd_kernel::{
+    lloyd_max::{self, DistributionFamily},
+    turboquant::{cdaq::CdaqQuantizer, pipeline::TurboQuantMSE, streaming::StreamingKVCache},
+};
 
 #[derive(Parser)]
 #[command(name = "turboquant-real-kv")]
@@ -33,7 +31,10 @@ struct Cli {
     bits: Vec<u32>,
 
     /// Output JSON path.
-    #[arg(long, default_value = "data/output/heliosphere/ablations/real_kv_quality.json")]
+    #[arg(
+        long,
+        default_value = "data/output/heliosphere/ablations/real_kv_quality.json"
+    )]
     out_json: PathBuf,
 }
 
@@ -85,8 +86,7 @@ struct RealKvOutput {
 }
 
 fn read_f64_vectors(path: &std::path::Path, d: usize) -> Result<Vec<Vec<f64>>> {
-    let bytes = fs::read(path)
-        .with_context(|| format!("reading {}", path.display()))?;
+    let bytes = fs::read(path).with_context(|| format!("reading {}", path.display()))?;
     let n_f64 = bytes.len() / 8;
     let n_vectors = n_f64 / d;
     assert_eq!(n_f64 % d, 0, "file size not divisible by dim");
@@ -96,7 +96,10 @@ fn read_f64_vectors(path: &std::path::Path, d: usize) -> Result<Vec<Vec<f64>>> {
         .map(|chunk| f64::from_le_bytes(chunk.try_into().unwrap()))
         .collect();
 
-    Ok(floats.chunks_exact(d).map(|c| c.to_vec()).collect::<Vec<_>>()
+    Ok(floats
+        .chunks_exact(d)
+        .map(|c| c.to_vec())
+        .collect::<Vec<_>>()
         .into_iter()
         .take(n_vectors)
         .collect())
@@ -106,7 +109,9 @@ fn cosine_similarity(a: &[f64], b: &[f64]) -> f64 {
     let dot: f64 = a.iter().zip(b.iter()).map(|(x, y)| x * y).sum();
     let na: f64 = a.iter().map(|x| x * x).sum::<f64>().sqrt();
     let nb: f64 = b.iter().map(|x| x * x).sum::<f64>().sqrt();
-    if na < 1e-15 || nb < 1e-15 { return 0.0; }
+    if na < 1e-15 || nb < 1e-15 {
+        return 0.0;
+    }
     dot / (na * nb)
 }
 
@@ -120,10 +125,20 @@ fn main() -> Result<()> {
     let meta: KvMetadata = serde_json::from_str(&meta_str)?;
 
     println!("=== TurboQuant Real KV Cache Evaluation ===");
-    println!("Model: {} ({:.1}M params)", meta.model, meta.n_params as f64 / 1e6);
-    println!("Architecture: {} layers, {} KV heads, head_dim={}", meta.n_layers, meta.n_heads, meta.head_dim);
+    println!(
+        "Model: {} ({:.1}M params)",
+        meta.model,
+        meta.n_params as f64 / 1e6
+    );
+    println!(
+        "Architecture: {} layers, {} KV heads, head_dim={}",
+        meta.n_layers, meta.n_heads, meta.head_dim
+    );
     println!("Sequence: {} tokens", meta.seq_len);
-    println!("Total KV vectors: {}", meta.n_layers * meta.n_heads * meta.seq_len * 2);
+    println!(
+        "Total KV vectors: {}",
+        meta.n_layers * meta.n_heads * meta.seq_len * 2
+    );
     println!();
 
     // Analyze distribution of real KV cache values
@@ -133,14 +148,25 @@ fn main() -> Result<()> {
     let mean = all_vals.iter().sum::<f64>() / all_vals.len() as f64;
     let var = all_vals.iter().map(|x| (x - mean).powi(2)).sum::<f64>() / all_vals.len() as f64;
     let std = var.sqrt();
-    let kurt = all_vals.iter().map(|x| ((x - mean) / std).powi(4)).sum::<f64>() / all_vals.len() as f64;
+    let kurt = all_vals
+        .iter()
+        .map(|x| ((x - mean) / std).powi(4))
+        .sum::<f64>()
+        / all_vals.len() as f64;
     let min = all_vals.iter().cloned().fold(f64::INFINITY, f64::min);
     let max = all_vals.iter().cloned().fold(f64::NEG_INFINITY, f64::max);
     println!("Real KV Cache Distribution (layer 0 keys):");
     println!("  mean={:.6}, std={:.6}, kurtosis={:.2}", mean, std, kurt);
     println!("  min={:.4}, max={:.4}, range={:.4}", min, max, max - min);
-    println!("  Gaussian kurtosis=3.0; real={:.2} ({})", kurt,
-        if (kurt - 3.0).abs() < 1.0 { "near-Gaussian" } else { "NON-Gaussian" });
+    println!(
+        "  Gaussian kurtosis=3.0; real={:.2} ({})",
+        kurt,
+        if (kurt - 3.0).abs() < 1.0 {
+            "near-Gaussian"
+        } else {
+            "NON-Gaussian"
+        }
+    );
     println!();
 
     let mut all_layer_results = Vec::new();
@@ -160,7 +186,9 @@ fn main() -> Result<()> {
 
         for layer_idx in 0..meta.n_layers {
             let key_path = cli.data_dir.join(format!("keys_layer{:02}.f64", layer_idx));
-            let val_path = cli.data_dir.join(format!("values_layer{:02}.f64", layer_idx));
+            let val_path = cli
+                .data_dir
+                .join(format!("values_layer{:02}.f64", layer_idx));
 
             let keys = read_f64_vectors(&key_path, meta.head_dim)?;
             let values = read_f64_vectors(&val_path, meta.head_dim)?;
@@ -180,8 +208,12 @@ fn main() -> Result<()> {
                 let compressed_k = tq.quantize(k, &mut buf);
                 let mut recon_k = vec![0.0f64; meta.head_dim];
                 tq.dequantize(&compressed_k, &mut buf, &mut recon_k);
-                let mse_k: f64 = k.iter().zip(recon_k.iter())
-                    .map(|(a, b)| (a - b).powi(2)).sum::<f64>() / meta.head_dim as f64;
+                let mse_k: f64 = k
+                    .iter()
+                    .zip(recon_k.iter())
+                    .map(|(a, b)| (a - b).powi(2))
+                    .sum::<f64>()
+                    / meta.head_dim as f64;
                 key_mse_sum += mse_k;
                 key_cos_sum += cosine_similarity(k, &recon_k);
 
@@ -189,8 +221,12 @@ fn main() -> Result<()> {
                 let compressed_v = tq.quantize(v, &mut buf);
                 let mut recon_v = vec![0.0f64; meta.head_dim];
                 tq.dequantize(&compressed_v, &mut buf, &mut recon_v);
-                let mse_v: f64 = v.iter().zip(recon_v.iter())
-                    .map(|(a, b)| (a - b).powi(2)).sum::<f64>() / meta.head_dim as f64;
+                let mse_v: f64 = v
+                    .iter()
+                    .zip(recon_v.iter())
+                    .map(|(a, b)| (a - b).powi(2))
+                    .sum::<f64>()
+                    / meta.head_dim as f64;
                 val_mse_sum += mse_v;
                 val_cos_sum += cosine_similarity(v, &recon_v);
 
@@ -222,8 +258,10 @@ fn main() -> Result<()> {
             });
 
             if layer_idx < 3 || layer_idx == meta.n_layers - 1 {
-                println!("  Layer {:2}: key MSE={:.6} cos={:.4} | val MSE={:.6} cos={:.4}",
-                    layer_idx, key_mse, key_cos, val_mse, val_cos);
+                println!(
+                    "  Layer {:2}: key MSE={:.6} cos={:.4} | val MSE={:.6} cos={:.4}",
+                    layer_idx, key_mse, key_cos, val_mse, val_cos
+                );
             } else if layer_idx == 3 {
                 println!("  ...");
             }
@@ -242,12 +280,24 @@ fn main() -> Result<()> {
 
         println!();
         println!("  AGGREGATE ({}-bit):", bits);
-        println!("    Key  MSE={:.6}  cosine={:.4}", mean_key_mse, mean_key_cos);
-        println!("    Val  MSE={:.6}  cosine={:.4}", mean_val_mse, mean_val_cos);
+        println!(
+            "    Key  MSE={:.6}  cosine={:.4}",
+            mean_key_mse, mean_key_cos
+        );
+        println!(
+            "    Val  MSE={:.6}  cosine={:.4}",
+            mean_val_mse, mean_val_cos
+        );
         println!("    Compression: {:.1}x vs FP16", compression);
-        println!("    Throughput: {:.0} kvec/s ({:.1}ms total)", throughput, elapsed_ms);
-        println!("    Streaming cache: {} tokens, {:.1}x compression",
-            streaming_cache.len(), streaming_cache.compression_ratio());
+        println!(
+            "    Throughput: {:.0} kvec/s ({:.1}ms total)",
+            throughput, elapsed_ms
+        );
+        println!(
+            "    Streaming cache: {} tokens, {:.1}x compression",
+            streaming_cache.len(),
+            streaming_cache.compression_ratio()
+        );
         println!();
 
         all_aggregates.push(AggregateResult {
@@ -271,12 +321,21 @@ fn main() -> Result<()> {
     let families: Vec<(&str, DistributionFamily, f64)> = vec![
         ("Gaussian", DistributionFamily::Gaussian, 2.0),
         ("Laplace", DistributionFamily::Laplace, 1.0),
-        ("GenGauss(0.9)", DistributionFamily::GeneralizedGaussian, 0.9),
-        ("GenGauss(0.8)", DistributionFamily::GeneralizedGaussian, 0.8),
+        (
+            "GenGauss(0.9)",
+            DistributionFamily::GeneralizedGaussian,
+            0.9,
+        ),
+        (
+            "GenGauss(0.8)",
+            DistributionFamily::GeneralizedGaussian,
+            0.8,
+        ),
     ];
 
     for (name, family, beta) in &families {
-        let codebook = lloyd_max::get_codebook_family(meta.head_dim, comparison_bits, *family, *beta);
+        let codebook =
+            lloyd_max::get_codebook_family(meta.head_dim, comparison_bits, *family, *beta);
         let tq = TurboQuantMSE::with_codebook(meta.head_dim, comparison_bits, 42, true, codebook);
         let mut buf = vec![0.0f64; 3 * meta.head_dim];
 
@@ -288,7 +347,9 @@ fn main() -> Result<()> {
 
         for layer_idx in 0..meta.n_layers {
             let key_path = cli.data_dir.join(format!("keys_layer{:02}.f64", layer_idx));
-            let val_path = cli.data_dir.join(format!("values_layer{:02}.f64", layer_idx));
+            let val_path = cli
+                .data_dir
+                .join(format!("values_layer{:02}.f64", layer_idx));
             let keys = read_f64_vectors(&key_path, meta.head_dim)?;
             let values = read_f64_vectors(&val_path, meta.head_dim)?;
 
@@ -296,15 +357,23 @@ fn main() -> Result<()> {
                 let ck = tq.quantize(k, &mut buf);
                 let mut rk = vec![0.0f64; meta.head_dim];
                 tq.dequantize(&ck, &mut buf, &mut rk);
-                total_key_mse += k.iter().zip(rk.iter())
-                    .map(|(a, b)| (a - b).powi(2)).sum::<f64>() / meta.head_dim as f64;
+                total_key_mse += k
+                    .iter()
+                    .zip(rk.iter())
+                    .map(|(a, b)| (a - b).powi(2))
+                    .sum::<f64>()
+                    / meta.head_dim as f64;
                 total_key_cos += cosine_similarity(k, &rk);
 
                 let cv = tq.quantize(v, &mut buf);
                 let mut rv = vec![0.0f64; meta.head_dim];
                 tq.dequantize(&cv, &mut buf, &mut rv);
-                total_val_mse += v.iter().zip(rv.iter())
-                    .map(|(a, b)| (a - b).powi(2)).sum::<f64>() / meta.head_dim as f64;
+                total_val_mse += v
+                    .iter()
+                    .zip(rv.iter())
+                    .map(|(a, b)| (a - b).powi(2))
+                    .sum::<f64>()
+                    / meta.head_dim as f64;
                 total_val_cos += cosine_similarity(v, &rv);
 
                 count += 1;
@@ -312,15 +381,30 @@ fn main() -> Result<()> {
         }
 
         let n = count as f64;
-        println!("  {:15} | key MSE={:.6} cos={:.4} | val MSE={:.6} cos={:.4}",
-            name, total_key_mse / n, total_key_cos / n,
-            total_val_mse / n, total_val_cos / n);
+        println!(
+            "  {:15} | key MSE={:.6} cos={:.4} | val MSE={:.6} cos={:.4}",
+            name,
+            total_key_mse / n,
+            total_key_cos / n,
+            total_val_mse / n,
+            total_val_cos / n
+        );
     }
 
     // Compute improvement and verify post-rotation distribution
     {
-        let gauss_cb = lloyd_max::get_codebook_family(meta.head_dim, comparison_bits, DistributionFamily::Gaussian, 2.0);
-        let gg_cb = lloyd_max::get_codebook_family(meta.head_dim, comparison_bits, DistributionFamily::GeneralizedGaussian, 0.9);
+        let gauss_cb = lloyd_max::get_codebook_family(
+            meta.head_dim,
+            comparison_bits,
+            DistributionFamily::Gaussian,
+            2.0,
+        );
+        let gg_cb = lloyd_max::get_codebook_family(
+            meta.head_dim,
+            comparison_bits,
+            DistributionFamily::GeneralizedGaussian,
+            0.9,
+        );
         println!();
         println!("  Gaussian codebook centroids: {:?}", gauss_cb.centroids);
         println!("  GenGauss(0.9) centroids:     {:?}", gg_cb.centroids);
@@ -335,7 +419,9 @@ fn main() -> Result<()> {
         for k in keys_mid.iter().take(200) {
             // Normalize
             let norm: f64 = k.iter().map(|x| x * x).sum::<f64>().sqrt();
-            if norm < 1e-15 { continue; }
+            if norm < 1e-15 {
+                continue;
+            }
             let normalized: Vec<f64> = k.iter().map(|x| x / norm).collect();
             // Rotate (use split_at_mut to avoid aliasing)
             let (scratch, rest) = buf_rot.split_at_mut(meta.head_dim);
@@ -344,17 +430,35 @@ fn main() -> Result<()> {
             post_rot_vals.extend_from_slice(rotated);
         }
         let pr_mean = post_rot_vals.iter().sum::<f64>() / post_rot_vals.len() as f64;
-        let pr_var = post_rot_vals.iter().map(|x| (x - pr_mean).powi(2)).sum::<f64>() / post_rot_vals.len() as f64;
+        let pr_var = post_rot_vals
+            .iter()
+            .map(|x| (x - pr_mean).powi(2))
+            .sum::<f64>()
+            / post_rot_vals.len() as f64;
         let pr_std = pr_var.sqrt();
         let pr_kurt = if pr_std > 1e-15 {
-            post_rot_vals.iter().map(|x| ((x - pr_mean) / pr_std).powi(4)).sum::<f64>() / post_rot_vals.len() as f64
-        } else { 0.0 };
+            post_rot_vals
+                .iter()
+                .map(|x| ((x - pr_mean) / pr_std).powi(4))
+                .sum::<f64>()
+                / post_rot_vals.len() as f64
+        } else {
+            0.0
+        };
         println!();
         println!("  Post-rotation distribution (layer 15 keys, 200 vectors):");
-        println!("    mean={:.6}, std={:.6}, kurtosis={:.2}", pr_mean, pr_std, pr_kurt);
-        println!("    Gaussian kurtosis=3.0 -> rotation {}",
-            if (pr_kurt - 3.0).abs() < 1.5 { "GAUSSIANIZES the data (codebook is optimal)" }
-            else { "does NOT fully Gaussianize (fitted codebook may help)" });
+        println!(
+            "    mean={:.6}, std={:.6}, kurtosis={:.2}",
+            pr_mean, pr_std, pr_kurt
+        );
+        println!(
+            "    Gaussian kurtosis=3.0 -> rotation {}",
+            if (pr_kurt - 3.0).abs() < 1.5 {
+                "GAUSSIANIZES the data (codebook is optimal)"
+            } else {
+                "does NOT fully Gaussianize (fitted codebook may help)"
+            }
+        );
     }
     println!();
 
@@ -362,8 +466,8 @@ fn main() -> Result<()> {
     println!("=== Outlier Retention at 2-bit ===");
     println!();
     for keep_pct in [0.0, 0.5, 1.0, 2.0] {
-        let tq = TurboQuantMSE::new(meta.head_dim, 2, 42, true)
-            .with_outlier_retention(keep_pct / 100.0);
+        let tq =
+            TurboQuantMSE::new(meta.head_dim, 2, 42, true).with_outlier_retention(keep_pct / 100.0);
         let mut buf = vec![0.0f64; 3 * meta.head_dim];
         let mut total_mse = 0.0;
         let mut total_cos = 0.0;
@@ -378,8 +482,12 @@ fn main() -> Result<()> {
                 total_outlier_bytes += comp.outliers.len() * 4; // u16 + f32
                 let mut recon = vec![0.0f64; meta.head_dim];
                 tq.dequantize(&comp, &mut buf, &mut recon);
-                total_mse += k.iter().zip(recon.iter())
-                    .map(|(a, b)| (a - b).powi(2)).sum::<f64>() / meta.head_dim as f64;
+                total_mse += k
+                    .iter()
+                    .zip(recon.iter())
+                    .map(|(a, b)| (a - b).powi(2))
+                    .sum::<f64>()
+                    / meta.head_dim as f64;
                 total_cos += cosine_similarity(k, &recon);
                 count += 1;
             }
@@ -387,10 +495,15 @@ fn main() -> Result<()> {
         let mean_mse = total_mse / count as f64;
         let mean_cos = total_cos / count as f64;
         let eff_bits = if count > 0 {
-            (count * meta.head_dim * 2 / 8 + total_outlier_bytes) as f64 * 8.0 / (count * meta.head_dim) as f64
-        } else { 2.0 };
-        println!("  Keep {:4.1}%: key MSE={:.6} cos={:.4} eff_bits={:.2}",
-            keep_pct, mean_mse, mean_cos, eff_bits);
+            (count * meta.head_dim * 2 / 8 + total_outlier_bytes) as f64 * 8.0
+                / (count * meta.head_dim) as f64
+        } else {
+            2.0
+        };
+        println!(
+            "  Keep {:4.1}%: key MSE={:.6} cos={:.4} eff_bits={:.2}",
+            keep_pct, mean_mse, mean_cos, eff_bits
+        );
     }
     println!();
 
@@ -427,16 +540,24 @@ fn main() -> Result<()> {
                 let comp_c = cdaq.quantize(k, &mut buf);
                 let mut recon_c = vec![0.0f64; meta.head_dim];
                 cdaq.dequantize(&comp_c, &mut buf, &mut recon_c);
-                cdaq_mse += k.iter().zip(recon_c.iter())
-                    .map(|(a, b)| (a - b).powi(2)).sum::<f64>() / meta.head_dim as f64;
+                cdaq_mse += k
+                    .iter()
+                    .zip(recon_c.iter())
+                    .map(|(a, b)| (a - b).powi(2))
+                    .sum::<f64>()
+                    / meta.head_dim as f64;
                 cdaq_cos += cosine_similarity(k, &recon_c);
 
                 // Baseline
                 let comp_b = tq_base.quantize(k, &mut buf);
                 let mut recon_b = vec![0.0f64; meta.head_dim];
                 tq_base.dequantize(&comp_b, &mut buf, &mut recon_b);
-                base_mse += k.iter().zip(recon_b.iter())
-                    .map(|(a, b)| (a - b).powi(2)).sum::<f64>() / meta.head_dim as f64;
+                base_mse += k
+                    .iter()
+                    .zip(recon_b.iter())
+                    .map(|(a, b)| (a - b).powi(2))
+                    .sum::<f64>()
+                    / meta.head_dim as f64;
                 base_cos += cosine_similarity(k, &recon_b);
 
                 count += 1;
@@ -445,9 +566,17 @@ fn main() -> Result<()> {
 
         let n = count as f64;
         let improvement = (1.0 - cdaq_mse / base_mse) * 100.0;
-        println!("  TurboQuant baseline: key MSE={:.6} cos={:.4}", base_mse / n, base_cos / n);
-        println!("  CDAQ (calibrated):   key MSE={:.6} cos={:.4} ({:+.1}% MSE)",
-            cdaq_mse / n, cdaq_cos / n, improvement);
+        println!(
+            "  TurboQuant baseline: key MSE={:.6} cos={:.4}",
+            base_mse / n,
+            base_cos / n
+        );
+        println!(
+            "  CDAQ (calibrated):   key MSE={:.6} cos={:.4} ({:+.1}% MSE)",
+            cdaq_mse / n,
+            cdaq_cos / n,
+            improvement
+        );
         println!("  CDAQ eff bits: {:.2}", cdaq.effective_bits_per_coord());
     }
     println!();

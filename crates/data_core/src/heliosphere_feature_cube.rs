@@ -1684,9 +1684,8 @@ mod tests {
 
     #[test]
     fn test_magnetic_takens_embed_too_short() {
-        let rows: Vec<HeliosphereFeatureRow> = (1..=3)
-            .map(|h| b_row(h, h as f64, 0.0, 0.0))
-            .collect();
+        let rows: Vec<HeliosphereFeatureRow> =
+            (1..=3).map(|h| b_row(h, h as f64, 0.0, 0.0)).collect();
         let (vecs, _) = magnetic_takens_embed(&rows, 16, 1);
         assert!(vecs.is_empty()); // 3 rows < 4-step window
     }
@@ -1776,7 +1775,11 @@ pub fn magnetic_plasma_takens_embed(
     let eligible: Vec<bool> = rows
         .iter()
         .map(|r| {
-            let va = if r.density_cm3 > 0.0 { r.b_mag * 21.81 / r.density_cm3.sqrt() } else { f64::NAN };
+            let va = if r.density_cm3 > 0.0 {
+                r.b_mag * 21.81 / r.density_cm3.sqrt()
+            } else {
+                f64::NAN
+            };
             r.bx.is_finite()
                 && r.by.is_finite()
                 && r.bz.is_finite()
@@ -1806,9 +1809,21 @@ pub fn magnetic_plasma_takens_embed(
 
         // Compute local means for normalization
         let mean_b: f64 = sample_indices.iter().map(|&i| rows[i].b_mag).sum::<f64>() / steps as f64;
-        let mean_n: f64 = sample_indices.iter().map(|&i| rows[i].density_cm3).sum::<f64>() / steps as f64;
-        let mean_v: f64 = sample_indices.iter().map(|&i| rows[i].speed_kms).sum::<f64>() / steps as f64;
-        let mean_t: f64 = sample_indices.iter().map(|&i| rows[i].temperature_k).sum::<f64>() / steps as f64;
+        let mean_n: f64 = sample_indices
+            .iter()
+            .map(|&i| rows[i].density_cm3)
+            .sum::<f64>()
+            / steps as f64;
+        let mean_v: f64 = sample_indices
+            .iter()
+            .map(|&i| rows[i].speed_kms)
+            .sum::<f64>()
+            / steps as f64;
+        let mean_t: f64 = sample_indices
+            .iter()
+            .map(|&i| rows[i].temperature_k)
+            .sum::<f64>()
+            / steps as f64;
         let alfven_speeds: Vec<f64> = sample_indices
             .iter()
             .map(|&i| rows[i].b_mag * 21.81 / rows[i].density_cm3.sqrt())
@@ -1901,14 +1916,22 @@ pub fn plasma_takens_embed_dim(
             continue;
         }
 
-        let mean_b: f64 =
-            sample_indices.iter().map(|&i| rows[i].b_mag).sum::<f64>() / steps as f64;
-        let mean_n: f64 =
-            sample_indices.iter().map(|&i| rows[i].density_cm3).sum::<f64>() / steps as f64;
-        let mean_v: f64 =
-            sample_indices.iter().map(|&i| rows[i].speed_kms).sum::<f64>() / steps as f64;
-        let mean_t: f64 =
-            sample_indices.iter().map(|&i| rows[i].temperature_k).sum::<f64>() / steps as f64;
+        let mean_b: f64 = sample_indices.iter().map(|&i| rows[i].b_mag).sum::<f64>() / steps as f64;
+        let mean_n: f64 = sample_indices
+            .iter()
+            .map(|&i| rows[i].density_cm3)
+            .sum::<f64>()
+            / steps as f64;
+        let mean_v: f64 = sample_indices
+            .iter()
+            .map(|&i| rows[i].speed_kms)
+            .sum::<f64>()
+            / steps as f64;
+        let mean_t: f64 = sample_indices
+            .iter()
+            .map(|&i| rows[i].temperature_k)
+            .sum::<f64>()
+            / steps as f64;
         let alfven_speeds: Vec<f64> = sample_indices
             .iter()
             .map(|&i| rows[i].b_mag * 21.81 / rows[i].density_cm3.sqrt())

@@ -12,10 +12,12 @@
 //!
 //! Reference: Fishbone & Moncrief (1976) ApJ 207, 962.
 
-use crate::eos::GammaLaw;
-use crate::grid::Grid;
-use crate::metric::KerrMetric;
-use crate::prims::{B1, B2, B3, PrimGrid, RHO, UU, V1, V2, V3};
+use crate::{
+    eos::GammaLaw,
+    grid::Grid,
+    metric::KerrMetric,
+    prims::{B1, B2, B3, PrimGrid, RHO, UU, V1, V2, V3},
+};
 
 /// Fishbone-Moncrief torus parameters.
 pub struct FMTorus {
@@ -124,7 +126,10 @@ impl FMTorus {
         let hm1_max = (w_max - w_in).exp() - 1.0; // max enthalpy - 1
 
         if hm1_max <= 0.0 {
-            eprintln!("WARNING: FM torus hm1_max = {} <= 0, torus may be empty", hm1_max);
+            eprintln!(
+                "WARNING: FM torus hm1_max = {} <= 0, torus may be empty",
+                hm1_max
+            );
             return prims;
         }
 
@@ -154,7 +159,11 @@ impl FMTorus {
                         // Keplerian velocity: v^phi = l / (g_phph + l * g_tph)
                         let [_, _, _, g_phph, g_tph] = grid.metric.gcov(r, th);
                         let denom = g_phph + self.l * g_tph;
-                        p[V3] = if denom.abs() > 1e-20 { self.l / denom } else { 0.0 };
+                        p[V3] = if denom.abs() > 1e-20 {
+                            self.l / denom
+                        } else {
+                            0.0
+                        };
                         p[V1] = 0.0;
                         p[V2] = 0.0;
                     } else {
@@ -214,7 +223,8 @@ impl FMTorus {
         for i in 1..n1t - 1 {
             for j in 1..n2t - 1 {
                 let da_dx2 = (a_phi[i * n2t + j + 1] - a_phi[i * n2t + j - 1]) / (2.0 * grid.dx2);
-                let da_dx1 = (a_phi[(i + 1) * n2t + j] - a_phi[(i - 1) * n2t + j]) / (2.0 * grid.dx1);
+                let da_dx1 =
+                    (a_phi[(i + 1) * n2t + j] - a_phi[(i - 1) * n2t + j]) / (2.0 * grid.dx1);
 
                 for k in 0..n3t {
                     let idx = grid.idx(i, j, k);
@@ -237,7 +247,11 @@ mod tests {
         assert!(torus.l > 0.0, "Angular momentum should be positive");
         // l = -u_phi/u_t for circular Schwarzschild orbit at r=12
         // Numerically: l ~ 4.157
-        assert!(torus.l > 3.5 && torus.l < 5.0, "l ~ 4.16 for r_max=12, got {}", torus.l);
+        assert!(
+            torus.l > 3.5 && torus.l < 5.0,
+            "l ~ 4.16 for r_max=12, got {}",
+            torus.l
+        );
     }
 
     #[test]
@@ -254,10 +268,16 @@ mod tests {
             for j in grid.ng..grid.ng + grid.n2 {
                 let idx = grid.idx(i, j, grid.ng);
                 let rho = prims.get(idx)[RHO];
-                if rho > max_rho { max_rho = rho; }
+                if rho > max_rho {
+                    max_rho = rho;
+                }
             }
         }
-        assert!(max_rho > 0.1, "Should have dense torus material, max_rho = {}", max_rho);
+        assert!(
+            max_rho > 0.1,
+            "Should have dense torus material, max_rho = {}",
+            max_rho
+        );
     }
 
     #[test]
@@ -276,9 +296,15 @@ mod tests {
                 let b1 = prims.get(idx)[B1];
                 let b2 = prims.get(idx)[B2];
                 let bmag = (b1 * b1 + b2 * b2).sqrt();
-                if bmag > max_b { max_b = bmag; }
+                if bmag > max_b {
+                    max_b = bmag;
+                }
             }
         }
-        assert!(max_b > 1e-10, "Should have nonzero B-field, max_b = {}", max_b);
+        assert!(
+            max_b > 1e-10,
+            "Should have nonzero B-field, max_b = {}",
+            max_b
+        );
     }
 }

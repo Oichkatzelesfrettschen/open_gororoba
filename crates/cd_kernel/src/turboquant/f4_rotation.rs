@@ -17,7 +17,7 @@
 //! The F4 rotation preserves all properties that quaternion multiplication
 //! preserves: norm, associativity within the block.
 
-use super::exceptional_roots::{generate_f4_roots, Root};
+use super::exceptional_roots::{Root, generate_f4_roots};
 
 /// Select diverse F4 roots for d=64 (16 quaternion blocks).
 ///
@@ -38,7 +38,10 @@ pub fn select_diverse_f4_roots(seed: u64) -> [Root<4>; 16] {
             }
             let min_dist = selected_indices
                 .iter()
-                .map(|&si| 1.0 - root.dot(&all_roots[si]).abs() / (root.norm_sq().sqrt() * all_roots[si].norm_sq().sqrt()))
+                .map(|&si| {
+                    1.0 - root.dot(&all_roots[si]).abs()
+                        / (root.norm_sq().sqrt() * all_roots[si].norm_sq().sqrt())
+                })
                 .fold(f64::MAX, f64::min);
 
             if min_dist > best_min_dist {
@@ -83,17 +86,21 @@ pub fn f4_block_rotate(v: &[f64], roots: &[Root<4>; 16], out: &mut [f64]) {
         let norm = root.norm_sq().sqrt();
         let (a0, a1, a2, a3) = if norm > 1e-15 {
             let inv = 1.0 / norm;
-            (root.coords[0] * inv, root.coords[1] * inv,
-             root.coords[2] * inv, root.coords[3] * inv)
+            (
+                root.coords[0] * inv,
+                root.coords[1] * inv,
+                root.coords[2] * inv,
+                root.coords[3] * inv,
+            )
         } else {
             (1.0, 0.0, 0.0, 0.0) // identity quaternion
         };
 
         // Quaternion left-multiplication
-        out[offset]     = a0*b0 - a1*b1 - a2*b2 - a3*b3;
-        out[offset + 1] = a0*b1 + a1*b0 + a2*b3 - a3*b2;
-        out[offset + 2] = a0*b2 - a1*b3 + a2*b0 + a3*b1;
-        out[offset + 3] = a0*b3 + a1*b2 - a2*b1 + a3*b0;
+        out[offset] = a0 * b0 - a1 * b1 - a2 * b2 - a3 * b3;
+        out[offset + 1] = a0 * b1 + a1 * b0 + a2 * b3 - a3 * b2;
+        out[offset + 2] = a0 * b2 - a1 * b3 + a2 * b0 + a3 * b1;
+        out[offset + 3] = a0 * b3 + a1 * b2 - a2 * b1 + a3 * b0;
     }
 }
 
@@ -116,16 +123,20 @@ pub fn f4_block_unrotate(v: &[f64], roots: &[Root<4>; 16], out: &mut [f64]) {
         let norm = root.norm_sq().sqrt();
         let (a0, a1, a2, a3) = if norm > 1e-15 {
             let inv = 1.0 / norm;
-            (root.coords[0] * inv, -root.coords[1] * inv,
-             -root.coords[2] * inv, -root.coords[3] * inv)
+            (
+                root.coords[0] * inv,
+                -root.coords[1] * inv,
+                -root.coords[2] * inv,
+                -root.coords[3] * inv,
+            )
         } else {
             (1.0, 0.0, 0.0, 0.0)
         };
 
-        out[offset]     = a0*b0 - a1*b1 - a2*b2 - a3*b3;
-        out[offset + 1] = a0*b1 + a1*b0 + a2*b3 - a3*b2;
-        out[offset + 2] = a0*b2 - a1*b3 + a2*b0 + a3*b1;
-        out[offset + 3] = a0*b3 + a1*b2 - a2*b1 + a3*b0;
+        out[offset] = a0 * b0 - a1 * b1 - a2 * b2 - a3 * b3;
+        out[offset + 1] = a0 * b1 + a1 * b0 + a2 * b3 - a3 * b2;
+        out[offset + 2] = a0 * b2 - a1 * b3 + a2 * b0 + a3 * b1;
+        out[offset + 3] = a0 * b3 + a1 * b2 - a2 * b1 + a3 * b0;
     }
 }
 
@@ -143,8 +154,11 @@ mod tests {
         f4_block_rotate(&v, &roots, &mut rotated);
         f4_block_unrotate(&rotated, &roots, &mut recovered);
 
-        let max_err: f64 = v.iter().zip(recovered.iter())
-            .map(|(a, b)| (a - b).abs()).fold(0.0f64, f64::max);
+        let max_err: f64 = v
+            .iter()
+            .zip(recovered.iter())
+            .map(|(a, b)| (a - b).abs())
+            .fold(0.0f64, f64::max);
         assert!(max_err < 1e-10, "F4 roundtrip error: {}", max_err);
     }
 
@@ -160,7 +174,9 @@ mod tests {
 
         assert!(
             (norm_v - norm_r).abs() / norm_v < 1e-10,
-            "F4 norm not preserved: {} vs {}", norm_v, norm_r
+            "F4 norm not preserved: {} vs {}",
+            norm_v,
+            norm_r
         );
     }
 
@@ -171,7 +187,11 @@ mod tests {
         let mut rotated = vec![0.0f64; 64];
         f4_block_rotate(&v, &roots, &mut rotated);
 
-        let diff: f64 = v.iter().zip(rotated.iter()).map(|(a, b)| (a - b).abs()).sum();
+        let diff: f64 = v
+            .iter()
+            .zip(rotated.iter())
+            .map(|(a, b)| (a - b).abs())
+            .sum();
         assert!(diff > 1e-6, "F4 rotation should change the vector");
     }
 
@@ -191,8 +211,12 @@ mod tests {
         let mut recon = vec![0.0f64; d];
         tq.dequantize(&comp, &mut buf, &mut recon);
 
-        let mse_wht: f64 = v.iter().zip(recon.iter())
-            .map(|(a, b)| (a - b).powi(2)).sum::<f64>() / d as f64;
+        let mse_wht: f64 = v
+            .iter()
+            .zip(recon.iter())
+            .map(|(a, b)| (a - b).powi(2))
+            .sum::<f64>()
+            / d as f64;
 
         // Now test with F4 rotation manually
         let roots = select_diverse_f4_roots(42);
@@ -203,33 +227,56 @@ mod tests {
 
         // Quantize the rotated vector using the codebook
         let codebook = crate::lloyd_max::get_codebook(d, bits);
-        let indices: Vec<u8> = rotated.iter().map(|&val| {
-            let mut idx = 0u8;
-            for &b in codebook.boundaries.iter() {
-                if val > b as f64 { idx += 1; } else { break; }
-            }
-            idx
-        }).collect();
+        let indices: Vec<u8> = rotated
+            .iter()
+            .map(|&val| {
+                let mut idx = 0u8;
+                for &b in codebook.boundaries.iter() {
+                    if val > b as f64 {
+                        idx += 1;
+                    } else {
+                        break;
+                    }
+                }
+                idx
+            })
+            .collect();
 
         // Dequantize in rotated space
-        let recon_rotated: Vec<f64> = indices.iter()
-            .map(|&idx| codebook.centroids[idx as usize] as f64).collect();
+        let recon_rotated: Vec<f64> = indices
+            .iter()
+            .map(|&idx| codebook.centroids[idx as usize] as f64)
+            .collect();
 
         // Unrotate
         let mut recon_f4 = vec![0.0f64; d];
         f4_block_unrotate(&recon_rotated, &roots, &mut recon_f4);
 
         // Denormalize
-        for x in recon_f4.iter_mut() { *x *= norm; }
+        for x in recon_f4.iter_mut() {
+            *x *= norm;
+        }
 
-        let mse_f4: f64 = v.iter().zip(recon_f4.iter())
-            .map(|(a, b)| (a - b).powi(2)).sum::<f64>() / d as f64;
+        let mse_f4: f64 = v
+            .iter()
+            .zip(recon_f4.iter())
+            .map(|(a, b)| (a - b).powi(2))
+            .sum::<f64>()
+            / d as f64;
 
-        println!("d=64, 3-bit: WHT MSE={:.6}, F4 MSE={:.6}, ratio={:.3}",
-            mse_wht, mse_f4, mse_f4 / mse_wht);
+        println!(
+            "d=64, 3-bit: WHT MSE={:.6}, F4 MSE={:.6}, ratio={:.3}",
+            mse_wht,
+            mse_f4,
+            mse_f4 / mse_wht
+        );
 
         // F4 should be comparable to WHT (within 2x)
-        assert!(mse_f4 < mse_wht * 2.0,
-            "F4 MSE much worse than WHT: {} vs {}", mse_f4, mse_wht);
+        assert!(
+            mse_f4 < mse_wht * 2.0,
+            "F4 MSE much worse than WHT: {} vs {}",
+            mse_f4,
+            mse_wht
+        );
     }
 }

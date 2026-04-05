@@ -312,8 +312,8 @@
 //! ,
 //! dτ
 //! a(U )r̂ = γ 2 [a(n)r̂ + k(Lie) (n)r̂ ν 2 cos2 α]
-//! 
-//! 
+//!
+//!
 //! dν
 //! dα
 //! 2
@@ -325,8 +325,8 @@
 //! a(U )t̂ = γ 2 ν sin α a(n)r̂ + γ 3 ν
 //!
 //! a(U )ϕ̂ = −γ 2 ν 2 sin α cos αk(Lie) (n)r̂
-//! 
-//! 
+//!
+//!
 //! dα
 //! dν
 //! 2
@@ -392,8 +392,8 @@
 //! (16)
 //!
 //! or also X = X0 + εX1 , with X1 = (ν1 , α1 , r1 ). Linearizing the dynamical system, we obtain
-//! 
-//! 
+//!
+//!
 //! dX1
 //! ∂fi
 //! = A · X1 ,
@@ -413,8 +413,8 @@
 //! (21)
 //!
 //! where the radial epicyclic angular velocity Ωr is
-//! 
-//! 
+//!
+//!
 //! 3Φ0 (r0 )
 //! 2
 //! 2Φ(r0 ) b(r0 ) − r0
@@ -580,8 +580,8 @@
 //! and b(r) (see Refs. [48, 51], for more details).
 //! Before showing the method, we recall that the
 //! Schwarzschild metric can be defined by Eq. (1) through
-//! 
-//! 
+//!
+//!
 //! 1
 //! 2M
 //! Φ(r) = log 1 −
@@ -593,9 +593,9 @@
 //! In a Schwarzschild BH spacetime, the innermost stable
 //! circular orbit (ISCO) radius is rISCO = 6M , while the
 //! two epicyclic angular velocities are [53]
-//! s 
 //! s
-//! 
+//! s
+//!
 //! M
 //! 6M
 //! M
@@ -689,8 +689,8 @@
 //!
 //! Integrating both members of the above equation between
 //! [r1 , r] with r ∈ [r1 , r2 ], we obtain
-//! 
-//! 
+//!
+//!
 //! Z r
 //! 1
 //! 2Φ(r1 )
@@ -825,13 +825,13 @@
 //!
 //! rISCO
 //!
-//! 
+//!
 //!
 //! 2M
 //! 2M
 //! 
-//! q 
-//! 
+//! q
+//!
 //! ( √
 //!  1 log 1 − 1
 //! M ≤ r ≤ 3M r 3
@@ -842,8 +842,8 @@
 //! 3M
 //! 2
 //! 3
-//! 
-//! 
+//!
+//!
 //! √
 //! √
 //! M
@@ -861,7 +861,7 @@
 //! 3M ≤ r ≤ 4M
 //! 2 log 16
 //! 16 r
-//! 
+//!
 //! 3M
 //! 1
 //! 9M
@@ -893,7 +893,7 @@
 //! M
 //! r2
 //!
-//! 
+//!
 //! M 2.5
 //! r
 //!
@@ -955,7 +955,7 @@
 //!
 //! r
 //!
-//! 6M 
+//! 6M
 //!
 //! e− M − r
 //!
@@ -1042,7 +1042,7 @@
 //!
 //! 0
 //!
-//! 
+//!
 //! r
 //! e M −e M (r−6M )
 //!
@@ -1077,7 +1077,7 @@
 //! − 3M
 //! r
 //!  
-//! 
+//!
 //! q
 //! 2
 //! 1
@@ -1116,7 +1116,7 @@
 //! ΩK (r)
 //! q
 //!
-//! 
+//!
 //!
 //! 3≤r
 //! 
@@ -1183,17 +1183,17 @@
 //! 1
 //! Ω+ (r/M )
 //!
-//! 
+//!
 //! 1−
 //!
 //! 1+0.25G(r/M )
 //! √
 //! 0.5 Ω− (r/M )r/M
 //!
-//! 
+//!
 //! √
-//! 
-//! 
+//!
+//!
 //! , where Ω± (z) = 1 ± z −4 and G(z) = −0.57 + 0.5 z 4 − 1 f3/4 (z) + f7/4 (z)
 //!
 //! with fλ (z) = 2 F1 (1/2, λ, 3/2, 1 − z 4 ) being the hypergeometric function. We indicate with 0 = d/dr.
@@ -1899,7 +1899,7 @@
 //! ,
 //! (33)
 //! ∂r gϕϕ
-//! 
+//!
 //! 1  2 2 tt
 //! gtt ∂r g + (Ωϕ gϕϕ )2 ∂r2 g ϕϕ ,
 //! (34)

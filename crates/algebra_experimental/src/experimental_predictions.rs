@@ -120,33 +120,45 @@ impl NuFit60 {
         Self {
             theta_12: SigmaContour {
                 best: 33.41,
-                one_sigma_low: 32.66, one_sigma_high: 34.18,
-                three_sigma_low: 31.20, three_sigma_high: 35.79,
+                one_sigma_low: 32.66,
+                one_sigma_high: 34.18,
+                three_sigma_low: 31.20,
+                three_sigma_high: 35.79,
             },
             theta_13: SigmaContour {
                 best: 8.54,
-                one_sigma_low: 8.42, one_sigma_high: 8.66,
-                three_sigma_low: 8.13, three_sigma_high: 8.92,
+                one_sigma_low: 8.42,
+                one_sigma_high: 8.66,
+                three_sigma_low: 8.13,
+                three_sigma_high: 8.92,
             },
             theta_23: SigmaContour {
                 best: 49.0,
-                one_sigma_low: 47.9, one_sigma_high: 50.0,
-                three_sigma_low: 40.2, three_sigma_high: 51.5,
+                one_sigma_low: 47.9,
+                one_sigma_high: 50.0,
+                three_sigma_low: 40.2,
+                three_sigma_high: 51.5,
             },
             delta_cp: SigmaContour {
                 best: 195.0,
-                one_sigma_low: 138.0, one_sigma_high: 258.0,
-                three_sigma_low: 0.0, three_sigma_high: 360.0,
+                one_sigma_low: 138.0,
+                one_sigma_high: 258.0,
+                three_sigma_low: 0.0,
+                three_sigma_high: 360.0,
             },
             dm21_sq: SigmaContour {
                 best: 7.53e-5,
-                one_sigma_low: 7.35e-5, one_sigma_high: 7.71e-5,
-                three_sigma_low: 6.94e-5, three_sigma_high: 8.14e-5,
+                one_sigma_low: 7.35e-5,
+                one_sigma_high: 7.71e-5,
+                three_sigma_low: 6.94e-5,
+                three_sigma_high: 8.14e-5,
             },
             dm31_sq: SigmaContour {
                 best: 2.453e-3,
-                one_sigma_low: 2.420e-3, one_sigma_high: 2.486e-3,
-                three_sigma_low: 2.347e-3, three_sigma_high: 2.557e-3,
+                one_sigma_low: 2.420e-3,
+                one_sigma_high: 2.486e-3,
+                three_sigma_low: 2.347e-3,
+                three_sigma_high: 2.557e-3,
             },
         }
     }
@@ -232,18 +244,21 @@ pub fn compute_angle_overlay() -> Vec<OverlayResult> {
     let fit = NuFit60::normal_ordering();
     let entries: &[(&'static str, f64, SigmaContour)] = &[
         ("theta_12_PMNS", 33.36, fit.theta_12),
-        ("theta_13_PMNS",  8.54, fit.theta_13),
+        ("theta_13_PMNS", 8.54, fit.theta_13),
         ("theta_23_PMNS", 48.99, fit.theta_23),
     ];
-    entries.iter().map(|&(label, val, contour)| OverlayResult {
-        observable: label,
-        our_value: val,
-        nufit_best: contour.best,
-        pull: contour.pull(val),
-        in_one_sigma: contour.in_one_sigma(val),
-        in_three_sigma: contour.in_three_sigma(val),
-        evid: EvidClass::B,
-    }).collect()
+    entries
+        .iter()
+        .map(|&(label, val, contour)| OverlayResult {
+            observable: label,
+            our_value: val,
+            nufit_best: contour.best,
+            pull: contour.pull(val),
+            in_one_sigma: contour.in_one_sigma(val),
+            in_three_sigma: contour.in_three_sigma(val),
+            evid: EvidClass::B,
+        })
+        .collect()
 }
 
 /// Overlay for CP phase predictions relative to NuFit 6.0 delta_CP.
@@ -260,19 +275,19 @@ pub fn compute_angle_overlay() -> Vec<OverlayResult> {
 /// The scorecard notes no route to delta_CP=195 from this framework.
 pub fn compute_cp_overlay() -> Vec<OverlayResult> {
     let fit = NuFit60::normal_ordering();
-    let entries: &[(&'static str, f64)] = &[
-        ("delta_CP_CP-A", 165.0),
-        ("delta_CP_CP-B",  93.0),
-    ];
-    entries.iter().map(|&(label, val)| OverlayResult {
-        observable: label,
-        our_value: val,
-        nufit_best: fit.delta_cp.best,
-        pull: fit.delta_cp.pull(val),
-        in_one_sigma: fit.delta_cp.in_one_sigma(val),
-        in_three_sigma: fit.delta_cp.in_three_sigma(val),
-        evid: EvidClass::F,
-    }).collect()
+    let entries: &[(&'static str, f64)] = &[("delta_CP_CP-A", 165.0), ("delta_CP_CP-B", 93.0)];
+    entries
+        .iter()
+        .map(|&(label, val)| OverlayResult {
+            observable: label,
+            our_value: val,
+            nufit_best: fit.delta_cp.best,
+            pull: fit.delta_cp.pull(val),
+            in_one_sigma: fit.delta_cp.in_one_sigma(val),
+            in_three_sigma: fit.delta_cp.in_three_sigma(val),
+            evid: EvidClass::F,
+        })
+        .collect()
 }
 
 // ---- experiment sensitivity -----------------------------------------------
@@ -311,8 +326,8 @@ pub fn canonical_experiment_sensitivities() -> Vec<ExperimentSensitivity> {
             arxiv: "2002.03005",
             cp_discovery_fraction_3s: 0.75,
             cp_discovery_fraction_5s: 0.50,
-            sigma_at_cp_a: 3.5,  // sin(165 deg) ~ 0.26, moderate CP
-            sigma_at_cp_b: 5.0,  // sin(93 deg) ~ 1.0, near-maximal CP
+            sigma_at_cp_a: 3.5, // sin(165 deg) ~ 0.26, moderate CP
+            sigma_at_cp_b: 5.0, // sin(93 deg) ~ 1.0, near-maximal CP
             role: "CP violation discovery + delta_CP precision (long-baseline nu beam)",
         },
         ExperimentSensitivity {
@@ -385,46 +400,76 @@ pub fn print_overlay_table() {
     println!();
 
     println!("--- Mixing Angles (Bin 2, evid=B) ---");
-    println!("  {:<20} {:>9} {:>10} {:>10} {:>14}",
-        "Observable", "Our(deg)", "Best fit", "Pull(1s)", "Position");
+    println!(
+        "  {:<20} {:>9} {:>10} {:>10} {:>14}",
+        "Observable", "Our(deg)", "Best fit", "Pull(1s)", "Position"
+    );
     for r in &angles {
-        println!("  {:<20} {:>9.2} {:>10.2} {:>+10.3} {:>14}",
-            r.observable, r.our_value, r.nufit_best, r.pull, r.position_label());
+        println!(
+            "  {:<20} {:>9.2} {:>10.2} {:>+10.3} {:>14}",
+            r.observable,
+            r.our_value,
+            r.nufit_best,
+            r.pull,
+            r.position_label()
+        );
     }
     println!();
     println!("  NuFit 6.0 1-sigma ranges (NO):");
-    println!("    theta_12: [{:.2}, {:.2}] deg",
-        fit.theta_12.one_sigma_low, fit.theta_12.one_sigma_high);
-    println!("    theta_13: [{:.2}, {:.2}] deg",
-        fit.theta_13.one_sigma_low, fit.theta_13.one_sigma_high);
-    println!("    theta_23: [{:.1}, {:.1}] deg",
-        fit.theta_23.one_sigma_low, fit.theta_23.one_sigma_high);
+    println!(
+        "    theta_12: [{:.2}, {:.2}] deg",
+        fit.theta_12.one_sigma_low, fit.theta_12.one_sigma_high
+    );
+    println!(
+        "    theta_13: [{:.2}, {:.2}] deg",
+        fit.theta_13.one_sigma_low, fit.theta_13.one_sigma_high
+    );
+    println!(
+        "    theta_23: [{:.1}, {:.1}] deg",
+        fit.theta_23.one_sigma_low, fit.theta_23.one_sigma_high
+    );
     println!();
 
     println!("--- CP Phase (Bin 3, evid=F: falsification target) ---");
-    println!("  {:<20} {:>9} {:>10} {:>10} {:>14}",
-        "Prediction", "Our(deg)", "Best fit", "Pull(1s)", "Position");
+    println!(
+        "  {:<20} {:>9} {:>10} {:>10} {:>14}",
+        "Prediction", "Our(deg)", "Best fit", "Pull(1s)", "Position"
+    );
     let cp_claims = ["C-1494", "C-1498"];
     for (r, claim) in cp.iter().zip(cp_claims.iter()) {
-        println!("  {:<20} {:>9.1} {:>10.1} {:>+10.3} {:>14}  ({})",
-            r.observable, r.our_value, r.nufit_best, r.pull,
-            r.position_label(), claim);
+        println!(
+            "  {:<20} {:>9.1} {:>10.1} {:>+10.3} {:>14}  ({})",
+            r.observable,
+            r.our_value,
+            r.nufit_best,
+            r.pull,
+            r.position_label(),
+            claim
+        );
     }
     println!();
-    println!("  NuFit 6.0 delta_CP: best={:.0} deg, 1-sigma=[{:.0},{:.0}], 3-sigma=[0,360]",
-        fit.delta_cp.best, fit.delta_cp.one_sigma_low, fit.delta_cp.one_sigma_high);
+    println!(
+        "  NuFit 6.0 delta_CP: best={:.0} deg, 1-sigma=[{:.0},{:.0}], 3-sigma=[0,360]",
+        fit.delta_cp.best, fit.delta_cp.one_sigma_low, fit.delta_cp.one_sigma_high
+    );
     println!("  NOTE: CP conservation compatible within 1-sigma.");
     println!();
 
     println!("--- DUNE / HyperK Sensitivity at Our Predictions ---");
-    println!("  {:<8} {:>12} {:>16} {:>16} {:>12} {:>12}",
-        "Expt", "arXiv", "sigma@CP-A(165)", "sigma@CP-B(93)", "3s frac", "5s frac");
+    println!(
+        "  {:<8} {:>12} {:>16} {:>16} {:>12} {:>12}",
+        "Expt", "arXiv", "sigma@CP-A(165)", "sigma@CP-B(93)", "3s frac", "5s frac"
+    );
     for e in &experiments {
-        println!("  {:<8} {:>12} {:>16.1} {:>16.1} {:>11.0}% {:>11.0}%",
-            e.name, e.arxiv,
-            e.sigma_at_cp_a, e.sigma_at_cp_b,
+        println!(
+            "  {:<8} {:>12} {:>16.1} {:>16.1} {:>11.0}% {:>11.0}%",
+            e.name,
+            e.arxiv,
+            e.sigma_at_cp_a,
+            e.sigma_at_cp_b,
             e.cp_discovery_fraction_3s * 100.0,
-            e.cp_discovery_fraction_5s * 100.0);
+            e.cp_discovery_fraction_5s * 100.0
+        );
     }
     println!();
     println!("  CP-A (~165 deg): INSIDE NuFit 1-sigma. Both DUNE and HyperK");
@@ -436,14 +481,21 @@ pub fn print_overlay_table() {
 
     println!("--- JUNO (mass ordering + dm^2 precision, NOT delta_CP) ---");
     println!("  Source: arXiv:{}", juno.arxiv);
-    println!("  Mass ordering significance: ~{:.0} sigma (6-yr run)",
-        juno.mass_ordering_sigma);
-    println!("  dm21 precision: {:.1}%  |  dm31 precision: {:.1}%",
-        juno.dm21_precision_frac * 100.0, juno.dm31_precision_frac * 100.0);
+    println!(
+        "  Mass ordering significance: ~{:.0} sigma (6-yr run)",
+        juno.mass_ordering_sigma
+    );
+    println!(
+        "  dm21 precision: {:.1}%  |  dm31 precision: {:.1}%",
+        juno.dm21_precision_frac * 100.0,
+        juno.dm31_precision_frac * 100.0
+    );
     println!("  Our r_nu = {:.4}  (Bin 1, C-1459)", juno.our_r_nu);
     println!("  NuFit r_nu = {:.4}", juno.nufit_r_nu);
-    println!("  r_nu deviation: {:.2}%",
-        (juno.our_r_nu - juno.nufit_r_nu).abs() / juno.nufit_r_nu * 100.0);
+    println!(
+        "  r_nu deviation: {:.2}%",
+        (juno.our_r_nu - juno.nufit_r_nu).abs() / juno.nufit_r_nu * 100.0
+    );
     println!("  NOTE: JUNO does NOT constrain delta_CP. Data-taking began 2025-08-26.");
 }
 
@@ -457,8 +509,10 @@ mod tests {
     fn test_sigma_contour_membership() {
         let c = SigmaContour {
             best: 10.0,
-            one_sigma_low: 9.0, one_sigma_high: 11.0,
-            three_sigma_low: 7.0, three_sigma_high: 13.0,
+            one_sigma_low: 9.0,
+            one_sigma_high: 11.0,
+            three_sigma_low: 7.0,
+            three_sigma_high: 13.0,
         };
         assert!(c.in_one_sigma(10.0));
         assert!(c.in_one_sigma(9.5));
@@ -471,8 +525,10 @@ mod tests {
     fn test_asymmetric_pull() {
         let c = SigmaContour {
             best: 10.0,
-            one_sigma_low: 8.0, one_sigma_high: 12.0,
-            three_sigma_low: 4.0, three_sigma_high: 16.0,
+            one_sigma_low: 8.0,
+            one_sigma_high: 12.0,
+            three_sigma_low: 4.0,
+            three_sigma_high: 16.0,
         };
         // At best: pull = 0
         assert!((c.pull(10.0)).abs() < 1e-12);
@@ -499,7 +555,9 @@ mod tests {
             );
             assert!(
                 r.pull.abs() <= 1.0,
-                "{}: pull magnitude {:.3} should be <= 1.0", r.observable, r.pull
+                "{}: pull magnitude {:.3} should be <= 1.0",
+                r.observable,
+                r.pull
             );
         }
     }
@@ -511,7 +569,9 @@ mod tests {
     #[test]
     fn test_cp_a_in_nufit_one_sigma() {
         let results = compute_cp_overlay();
-        let cp_a = results.iter().find(|r| r.observable == "delta_CP_CP-A")
+        let cp_a = results
+            .iter()
+            .find(|r| r.observable == "delta_CP_CP-A")
             .expect("CP-A result missing");
         let fit = NuFit60::normal_ordering();
         assert!(
@@ -529,7 +589,9 @@ mod tests {
     #[test]
     fn test_cp_b_outside_one_sigma() {
         let results = compute_cp_overlay();
-        let cp_b = results.iter().find(|r| r.observable == "delta_CP_CP-B")
+        let cp_b = results
+            .iter()
+            .find(|r| r.observable == "delta_CP_CP-B")
             .expect("CP-B result missing");
         let fit = NuFit60::normal_ordering();
         assert!(
@@ -553,7 +615,8 @@ mod tests {
         let deviation_pct = (juno.our_r_nu - juno.nufit_r_nu).abs() / juno.nufit_r_nu * 100.0;
         assert!(
             deviation_pct < 3.0,
-            "r_nu deviation {:.2}% should be < 3%", deviation_pct,
+            "r_nu deviation {:.2}% should be < 3%",
+            deviation_pct,
         );
     }
 

@@ -169,7 +169,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         )?;
     }
 
-    println!("<EMOJI+2705> Theorem 9.3 Verified: Under TRS, VCN(K) = -VCN(K') and Total Chern = 0.");
+    println!(
+        "<EMOJI+2705> Theorem 9.3 Verified: Under TRS, VCN(K) = -VCN(K') and Total Chern = 0."
+    );
 
     // Now we break TRS using an effective magnetic field or imaginary hopping phase.
     // This simulates rotational kinetic angular momentum (e.g. Kerr effect) isolating the valleys.

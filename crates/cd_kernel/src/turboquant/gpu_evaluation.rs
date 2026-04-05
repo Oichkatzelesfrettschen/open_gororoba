@@ -91,8 +91,11 @@ mod tests {
         println!("Current kernels: {}", eval.current_kernel_count);
         println!("Current LOC: {}", eval.current_loc);
         println!("cubecl estimated LOC: {}", eval.cubecl_estimated_loc);
-        println!("LOC savings: {} ({:.0}%)",
-            eval.loc_savings, eval.loc_savings as f64 / eval.current_loc as f64 * 100.0);
+        println!(
+            "LOC savings: {} ({:.0}%)",
+            eval.loc_savings,
+            eval.loc_savings as f64 / eval.current_loc as f64 * 100.0
+        );
         println!("New platforms: {:?}", eval.new_platforms_gained);
         println!("Recommendation: {}", eval.recommendation);
         println!("Blocked by: {}", eval.migration_blocked_by);

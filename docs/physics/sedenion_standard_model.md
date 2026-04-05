@@ -1009,7 +1009,7 @@ All C(8,3) = 56 triples x 8 indices = 448 checks via single vm_compute.
 - 105 theory files in proofs/theories/
 - 155 verified files in proofs/verified/
 - 262 total .v files
-- All proofs compile with Rocq 9.1.1 (nightly-2026-03-05)
+- All proofs compile with Rocq 9.1.1 (nightly-2026-04-05)
 
 ### Formalization Status (2026-03-27)
 

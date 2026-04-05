@@ -7,7 +7,7 @@
 
 use anyhow::{Context, Result};
 use clap::Parser;
-use rustfft::{num_complex::Complex, FftPlanner};
+use rustfft::{FftPlanner, num_complex::Complex};
 use serde::Serialize;
 use std::{fs, path::PathBuf, sync::Arc};
 use zarrs::array::Array;
@@ -78,8 +78,7 @@ fn main() -> Result<()> {
     println!("=== MAST CD vs Spectrogram Comparison ===");
 
     let store = Arc::new(
-        FilesystemStore::new(&cli.zarr_dir)
-            .map_err(|e| anyhow::anyhow!("Store: {:?}", e))?,
+        FilesystemStore::new(&cli.zarr_dir).map_err(|e| anyhow::anyhow!("Store: {:?}", e))?,
     );
 
     let time_f32 = read_zarr_f32(&store, "time")?;
@@ -94,7 +93,10 @@ fn main() -> Result<()> {
     };
     let sample_rate = 1.0 / dt;
 
-    println!("  Loaded {} samples, dt={:.2e}s, fs={:.0} Hz", n, dt, sample_rate);
+    println!(
+        "  Loaded {} samples, dt={:.2e}s, fs={:.0} Hz",
+        n, dt, sample_rate
+    );
 
     let time: Vec<f64> = time_f32.iter().map(|&x| x as f64).collect();
     let sig_n2: Vec<f64> = sig_n2_f32.iter().map(|&x| x as f64).collect();
@@ -103,7 +105,11 @@ fn main() -> Result<()> {
     // Process in windows for both CD and FFT
     let window_size = 50000usize;
     let window_stride = 25000usize;
-    let n_windows = if n > window_size { (n - window_size) / window_stride + 1 } else { 1 };
+    let n_windows = if n > window_size {
+        (n - window_size) / window_stride + 1
+    } else {
+        1
+    };
 
     let mut planner = FftPlanner::new();
     let fft = planner.plan_fft_forward(cli.fft_size);
@@ -143,9 +149,8 @@ fn main() -> Result<()> {
         let mut embedded: Vec<Vec<f64>> = Vec::with_capacity(n_embed);
 
         // Pre-allocate embedding scratch space
-        let mut embed_scratch: Vec<Vec<f64>> = (0..n_embed)
-            .map(|_| vec![0.0; cli.embedding_dim])
-            .collect();
+        let mut embed_scratch: Vec<Vec<f64>> =
+            (0..n_embed).map(|_| vec![0.0; cli.embedding_dim]).collect();
 
         // Single scan over the window: each sample contributes to FFT and/or
         // CD embeddings that overlap it. This halves bandwidth vs two passes.
@@ -237,7 +242,13 @@ fn main() -> Result<()> {
         if w % 5 == 0 || w == n_windows - 1 {
             println!(
                 "  w{:2}/{}: t={:.3}s CD={:.4} FFT_peak={:.0}Hz pwr={:.2e} bw={:.0}Hz",
-                w + 1, n_windows, center_time, cd_mean, peak_freq, peak_power, bandwidth
+                w + 1,
+                n_windows,
+                center_time,
+                cd_mean,
+                peak_freq,
+                peak_power,
+                bandwidth
             );
         }
 

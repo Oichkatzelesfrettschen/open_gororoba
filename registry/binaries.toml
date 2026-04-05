@@ -61,7 +61,7 @@ experiment = "E-037"
 [[binary]]
 name = "analyze-field-h5"
 crate = "gororoba_cli_data"
-description = "HDF5 field analysis utility."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; registry metadata pending."
 
 [[binary]]
 name = "analyze-multiscale-ghost"
@@ -71,7 +71,7 @@ description = "Multiscale CWT Analysis for Ghost Detection in S-Band and ALICE d
 [[binary]]
 name = "analyze-warp-h5"
 crate = "gororoba_cli_data"
-description = "HDF5 warp simulation analysis utility."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; registry metadata pending."
 
 [[binary]]
 name = "arleo-falmagne-scaling"
@@ -81,27 +81,32 @@ description = "QGP path-length scaling reproduction (Arleo & Falmagne arXiv:2411
 [[binary]]
 name = "artifact-regen"
 crate = "gororoba_cli_physics"
-description = "Rust-native regeneration of deterministic artifact CSV and PNG outputs."
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
 
 [[binary]]
 name = "artifact-scrolls"
 crate = "gororoba_cli_data"
-description = "Build and verify canonical artifact scroll registries."
+description = "Workspace binary discovered from crates/gororoba_cli_data/Cargo.toml; registry metadata pending."
 
 [[binary]]
 name = "artifact-source-of-truth"
 crate = "gororoba_cli_data"
-description = "Build the canonical artifact source-of-truth registry in Rust."
+description = "Workspace binary discovered from crates/gororoba_cli_data/Cargo.toml; registry metadata pending."
 
 [[binary]]
 name = "attractor-sweep-runner"
 crate = "gororoba_cli"
-description = "Pure-Rust attractor-sweep orchestrator for C-590 artifact generation."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli; registry metadata pending."
+
+[[binary]]
+name = "audit-cd-cache"
+crate = "gororoba_cli_data"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; consult crate source for authoritative behavior."
 
 [[binary]]
 name = "avt-entropy-report"
 crate = "gororoba_cli_algebra"
-description = "Analyze the growth of alternativity-violation entropy across the Cayley-Dickson tower."
+description = "Workspace binary discovered from crates/gororoba_cli_algebra/Cargo.toml; registry metadata pending."
 
 [[binary]]
 name = "baire-compact"
@@ -111,7 +116,7 @@ description = "Baire metric compactness analysis"
 [[binary]]
 name = "baryonic-eigenspectrum"
 crate = "gororoba_cli_physics"
-description = "H1: ZD modes as baryonic feedback basis via singular-value decomposition analysis."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
 name = "bispectral-selection-rule"
@@ -132,12 +137,27 @@ experiment = "E-050"
 [[binary]]
 name = "block-jacobi-backend-sweep"
 crate = "gororoba_cli_algebra"
-description = "Benchmark block-Jacobi prototypes with block sizes 2 and 4 against current full-spectrum backends."
+description = "Workspace binary discovered from crates/gororoba_cli_algebra/Cargo.toml; registry metadata pending."
 
 [[binary]]
 name = "bounce-cosmology"
 crate = "gororoba_cli"
 description = "Bouncing cosmology model simulation"
+
+[[binary]]
+name = "bout-cd-analysis"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
+name = "bout-grid-cd"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
+name = "bout-grid-inspect"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
 
 [[binary]]
 name = "c053-pathion-metamaterial-mapping"
@@ -164,17 +184,32 @@ experiment = "E-043"
 [[binary]]
 name = "catalog-feature-algebra"
 crate = "gororoba_cli_physics"
-description = "Compute generic algebraic and manifold-shape summaries from a catalog feature cube."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
 name = "catalog-feature-cube"
 crate = "gororoba_cli_data"
-description = "Build a generic metadata-first catalog feature cube for bounded astronomy datasets."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; registry metadata pending."
 
 [[binary]]
 name = "catalog-feature-deconfound"
 crate = "gororoba_cli_data"
-description = "Residualize generic catalog feature cubes against dataset-specific nuisance metadata."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; registry metadata pending."
+
+[[binary]]
+name = "cd-anomaly-scan"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
+name = "cd-cache-adapter"
+crate = "gororoba_cli_data"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; consult crate source for authoritative behavior."
+
+[[binary]]
+name = "cd-cache-reconcile"
+crate = "gororoba_cli_data"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; consult crate source for authoritative behavior."
 
 [[binary]]
 name = "cd-external-audit"
@@ -183,9 +218,19 @@ description = "Deterministic audit for refuted external Cayley-Dickson CSV claim
 experiment = "E-204"
 
 [[binary]]
+name = "cd-gap-binders"
+crate = "gororoba_cli_data"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; consult crate source for authoritative behavior."
+
+[[binary]]
 name = "cd-ladder-chaos"
 crate = "gororoba_cli_physics"
-description = "Phase diagram of orbital chaos across Cayley-Dickson dimensions."
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+
+[[binary]]
+name = "cd-null-hypothesis"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
 
 [[binary]]
 name = "cd-pattern-baseline-audit"
@@ -194,24 +239,9 @@ description = "Deterministic audit for refuted Cayley-Dickson spectrum, shape-ma
 experiment = "E-207"
 
 [[binary]]
-name = "cd-gap-binders"
-crate = "gororoba_cli_data"
-description = "Pure-Rust generator for CayleyDickson exact-gap reconstruction binders with embedded provenance covers and deterministic PDF merge output."
-
-[[binary]]
-name = "cd-cache-reconcile"
-crate = "gororoba_cli_data"
-description = "Project-specific CayleyDickson cache/project-API reconciler: consumes append-only acquisition journal rows and regenerates derived cache-tracker ledgers."
-
-[[binary]]
-name = "cd-cache-adapter"
-crate = "gororoba_cli_data"
-description = "Project-specific CayleyDickson cache adapter that reads the thin cache contract and emits search, promote, and reconcile action plans for open_gororoba tooling."
-
-[[binary]]
 name = "cd-row-upgrade-batch"
 crate = "gororoba_cli_data"
-description = "Pure-Rust generator for CayleyDickson exact-witness row-upgrade batch reports, validating lane preconditions before any blocked inventory row is promoted."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; consult crate source for authoritative behavior."
 
 [[binary]]
 name = "cd-tower-report"
@@ -248,7 +278,7 @@ experiment = "E-042"
 [[binary]]
 name = "claim-route-recertify"
 crate = "gororoba_cli_data"
-description = "Map claims and insights onto routed dataset analyses and classify structural versus scientifically re-executed status."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; registry metadata pending."
 
 [[binary]]
 name = "claims-audit"
@@ -273,7 +303,7 @@ description = "Besag-Clifford permutation test for ZD-imbalance clustering at 25
 [[binary]]
 name = "cmb-axis-crucible"
 crate = "gororoba_cli_physics"
-description = "Test 256D Voudon global bias against the Planck 2018 Axis of Evil signal."
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
 
 [[binary]]
 name = "composition-algebra-taxonomy"
@@ -289,7 +319,7 @@ description = "Compute lambda coupling strength for all materials in registry, o
 [[binary]]
 name = "contrarian-template-sweep"
 crate = "gororoba_cli_physics"
-description = "Template sensitivity and baseline robustness sweep for contrarian halo templates."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
 name = "cosmic-dendrogram"
@@ -299,17 +329,22 @@ description = "Cosmic-scale dendrogram hierarchy analysis"
 [[binary]]
 name = "cosmology-dimension-ladder"
 crate = "gororoba_cli_data"
-description = "Project cached cosmology sources into a Cayley-Dickson dimension ladder with explicit measured-vs-derived bookkeeping."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; registry metadata pending."
 
 [[binary]]
 name = "cosmology-map-audit"
 crate = "gororoba_cli_data"
-description = "Audit weak-lensing and basin-of-attraction source caches and align them to Cayley-Dickson analysis lanes."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; registry metadata pending."
+
+[[binary]]
+name = "cpd-report"
+crate = "gororoba_cli_data"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; consult crate source for authoritative behavior."
 
 [[binary]]
 name = "cpu-lbm-bench"
 crate = "gororoba_cli_physics"
-description = "CPU lattice-Boltzmann benchmark for cross-backend parity baselines."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
 name = "cr-modulation-sweep"
@@ -324,17 +359,17 @@ description = "Validate registry/rust_crate_catalog.toml against cargo metadata 
 [[binary]]
 name = "cross-algebra-correlation"
 crate = "gororoba_cli_physics"
-description = "Cross-algebra template projection correlation audit using a VLBI-style analogy."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
 name = "cross-algebra-cusp-core"
 crate = "gororoba_cli_physics"
-description = "H3: test cross-algebra excess as a cusp-core discriminant."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
 name = "cross-algebra-decomposition"
 crate = "gororoba_cli_physics"
-description = "F3: three-component cross-algebra excess decomposition for E-203."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
 name = "cross-stack-locality"
@@ -350,12 +385,12 @@ description = "Multi-spacecraft cross-validation: computes Pearson correlation, 
 [[binary]]
 name = "crystal-config-integral"
 crate = "gororoba_cli_physics"
-description = "Symmetry-adapted configurational integral for crystals."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
 name = "csv-canonicalization"
 crate = "gororoba_cli_data"
-description = "Rust CSV inventory, canonicalization, parity verification, and project split policy."
+description = "Workspace binary discovered from crates/gororoba_cli_data/Cargo.toml; registry metadata pending."
 
 [[binary]]
 name = "cuda-precision-bench"
@@ -370,7 +405,7 @@ description = "Search for topological dark halos in ZD-mediated LBM simulations 
 [[binary]]
 name = "dark-halo-nfw-fit"
 crate = "gororoba_cli_physics"
-description = "Dark-matter halo NFW fitting pipeline."
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
 
 [[binary]]
 name = "data-clean"
@@ -400,17 +435,17 @@ description = "Bulk dataset download orchestrator: iterates all DatasetProvider 
 [[binary]]
 name = "dataset-routing-ledger"
 crate = "gororoba_cli_data"
-description = "Generate dataset-to-parser-to-analysis-to-report routing ledgers."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; registry metadata pending."
 
 [[binary]]
 name = "dc14-stacking"
 crate = "gororoba_cli_physics"
-description = "DC14 versus NFW stacking comparison for baryonic-feedback measurements."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
 name = "deep-space-survey"
 crate = "gororoba_cli_algebra"
-description = "Execute the high-resolution 128D and 256D algebra survey for Routon and Voudon diagnostics."
+description = "Workspace binary discovered from crates/gororoba_cli_algebra/Cargo.toml; registry metadata pending."
 
 [[binary]]
 name = "demo-optical-titanates"
@@ -425,7 +460,7 @@ description = "Demonstration of E-027 imbalance-viscosity experiment grounded in
 [[binary]]
 name = "detect-worker-budget"
 crate = "gororoba_cli"
-description = "Print a safe parallel worker budget derived from host resource limits."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli; registry metadata pending."
 
 [[binary]]
 name = "dimensional-census"
@@ -445,7 +480,7 @@ description = "Dispersion measure ultrametric analysis"
 [[binary]]
 name = "docs-redirect-check"
 crate = "gororoba_cli"
-description = "Pure-Rust stub for documentation redirect validation."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli; registry metadata pending."
 
 [[binary]]
 name = "download-recovery"
@@ -456,6 +491,11 @@ description = "Rust-native resilient download recovery and route inspection util
 name = "dump-assessors"
 crate = "gororoba_cli"
 description = "Dumps primitive box-kite assessor pairs from the sedenion zero-divisor analysis for inspection."
+
+[[binary]]
+name = "dynamo-cd"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
 
 [[binary]]
 name = "e027-equivalence-adapter"
@@ -475,7 +515,7 @@ description = "E-027 v2: Imbalance-topology spatial correlation with VR persiste
 [[binary]]
 name = "eht-pathion-separation"
 crate = "gororoba_cli_physics"
-description = "Compute Event Horizon Telescope angular separation of pathion sub-rings."
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
 
 [[binary]]
 name = "ema-calc"
@@ -496,7 +536,7 @@ experiment = "E-017"
 [[binary]]
 name = "entropy-trap-scan"
 crate = "gororoba_cli_physics"
-description = "Sedenion box-kite alignment scan over planetary ephemerides."
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
 
 [[binary]]
 name = "et-billiard"
@@ -536,12 +576,12 @@ experiment = "E-070"
 [[binary]]
 name = "evidence-provenance"
 crate = "gororoba_cli_data"
-description = "Build or verify canonical evidence-provenance lane registries."
+description = "Workspace binary discovered from crates/gororoba_cli_data/Cargo.toml; registry metadata pending."
 
 [[binary]]
 name = "execution-planning"
 crate = "gororoba_cli_data"
-description = "Build or verify canonical execution-planning lane registries."
+description = "Workspace binary discovered from crates/gororoba_cli_data/Cargo.toml; registry metadata pending."
 
 [[binary]]
 name = "experiment-c756"
@@ -570,6 +610,11 @@ crate = "gororoba_cli"
 description = "Exhaustive external origin audit and optional re-download verification with backend fallback order (wget -> curl -> fetch), checksum comparison, and blocked-source deadline policy reporting."
 
 [[binary]]
+name = "extract-nk-arrays"
+crate = "gororoba_cli_data"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; consult crate source for authoritative behavior."
+
+[[binary]]
 name = "extract-papers"
 crate = "gororoba_cli"
 description = "Batch PDF extraction to structured TOML via docpipe"
@@ -577,12 +622,12 @@ description = "Batch PDF extraction to structured TOML via docpipe"
 [[binary]]
 name = "face-on-red-noise-rayleigh"
 crate = "gororoba_cli_physics"
-description = "F1: face-on Rayleigh test with red-noise baseline subtraction for E-201."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
 name = "falsification-audit"
 crate = "gororoba_cli_data"
-description = "Aggregate heliosphere and catalog counter-tests into a single falsification-survival report."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; registry metadata pending."
 
 [[binary]]
 name = "fano-scattering"
@@ -664,7 +709,12 @@ description = "Generate synthetic datasets for ghost spectral audit (Normal, Par
 [[binary]]
 name = "generate-topological-voids"
 crate = "gororoba_cli_physics"
-description = "Generate macroscopic topological void configurations."
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
+
+[[binary]]
+name = "geomag-cd-jerk"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
 
 [[binary]]
 name = "ghost-spectral-audit"
@@ -680,7 +730,7 @@ description = "Main entry point (currently placeholder)"
 [[binary]]
 name = "gororoba-db"
 crate = "gororoba_db"
-description = "Unified Rust-native CLI for the canonical SQLite source-of-truth database."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_db; registry metadata pending."
 
 [[binary]]
 name = "gororoba-gate"
@@ -695,12 +745,12 @@ description = "Rust-native web app control plane for thesis pipelines, live gate
 [[binary]]
 name = "gororoba_cli_quantum"
 crate = "gororoba_cli_quantum"
-description = "Crate entrypoint that directs operators to the quantum binary suite such as `qec-boxkite-sweep`."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_quantum; registry metadata pending."
 
 [[binary]]
 name = "governance-verify"
 crate = "gororoba_cli_governance"
-description = "Rust-native governance and registry verification checks."
+description = "Workspace binary discovered from crates/gororoba_cli_data/Cargo.toml; registry metadata pending."
 
 [[binary]]
 name = "gravastar-bypass-compare"
@@ -710,7 +760,7 @@ description = "C-011 bypass model comparison: quaternion projection vs restricti
 [[binary]]
 name = "gravastar-orbit-crucible"
 crate = "gororoba_cli_physics"
-description = "Gravastar N-body orbit crucible."
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
 
 [[binary]]
 name = "gravastar-sweep"
@@ -723,6 +773,16 @@ crate = "gororoba_cli"
 description = "GRIN lens ray-tracing through gradient-index optics"
 
 [[binary]]
+name = "grmhd-mri-cd"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
+name = "grmhd-torus-cd"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
 name = "grover-classical-comparison"
 crate = "gororoba_cli_quantum"
 description = "Quantum vs Classical Search Benchmark verifying O(sqrt(N/M)) speedup"
@@ -733,14 +793,19 @@ crate = "gororoba_cli"
 description = "Gravitational wave merger tree dendrogram analysis"
 
 [[binary]]
+name = "hapi-fetch"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
 name = "harmonic-halo-galaxy-phase"
 crate = "gororoba_cli_physics"
-description = "Galaxy-ensemble Rayleigh phase coherence test at Cayley-Dickson zero-divisor wavenumbers."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
 name = "harmonic-halo-injection"
 crate = "gororoba_cli_physics"
-description = "Zero-divisor signal injection-recovery sweep for harmonic-halo pipeline validation."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
 name = "harmonic-halo-mw"
@@ -769,17 +834,17 @@ experiment = "E-180"
 [[binary]]
 name = "harmonic-halo-stacking-hi"
 crate = "gororoba_cli_physics"
-description = "Stack HI rotation-curve residuals for harmonic-halo detection with PCA eigenmode analysis."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
 name = "harmonic-halo-stacking-manga"
 crate = "gororoba_cli_physics"
-description = "Stack MaNGA rotation-curve residuals for harmonic-halo detection."
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
 
 [[binary]]
 name = "harmonic-halo-visualize"
 crate = "gororoba_cli_physics"
-description = "Generate PGFPlots panels for the E-183 and E-192 null-result manuscript."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
 name = "harper-chern"
@@ -803,6 +868,36 @@ description = "Compute descriptive algebraic summaries from heliosphere feature 
 experiment = "E-119"
 
 [[binary]]
+name = "heliosphere-associator-null-audit"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
+
+[[binary]]
+name = "heliosphere-baseline-comparison"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
+name = "heliosphere-beta-join"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
+name = "heliosphere-boundary-survey"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
+name = "heliosphere-boxkite-alignment"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
+name = "heliosphere-boxkite-parity"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
 name = "heliosphere-catalog-audit"
 crate = "gororoba_cli_data"
 description = "Audit staged heliosphere datasets, source families, and valid chronology-pack overlap windows"
@@ -810,12 +905,32 @@ description = "Audit staged heliosphere datasets, source families, and valid chr
 [[binary]]
 name = "heliosphere-cross-mission-invariance"
 crate = "gororoba_cli_physics"
-description = "Measure cross-mission stability of heliosphere invariant and algebraic descriptors."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
+
+[[binary]]
+name = "heliosphere-decomposition-audit"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
+name = "heliosphere-effective-rank"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
+name = "heliosphere-embed-pca"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
+name = "heliosphere-fa-attribution"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
 
 [[binary]]
 name = "heliosphere-falsification-audit"
 crate = "gororoba_cli_physics"
-description = "Challenge recent heliosphere falsifications with alternate normalization and sparse-policy counter-tests."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
 name = "heliosphere-feature-cube"
@@ -830,9 +945,19 @@ description = "Build normalized, differenced, and differenced-normalized heliosp
 experiment = "E-119"
 
 [[binary]]
+name = "heliosphere-full-sweep"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
+name = "heliosphere-hybrid-detector"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
 name = "heliosphere-instrument-coverage"
 crate = "gororoba_cli_data"
-description = "Mission-by-instrument heliosphere source and staging coverage report."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; registry metadata pending."
 
 [[binary]]
 name = "heliosphere-lbm-cube-run"
@@ -841,39 +966,54 @@ description = "Benchmark dense CPU/GPU heliosphere LBM runs from feature cubes a
 experiment = "E-119"
 
 [[binary]]
+name = "heliosphere-magnetic-takens"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
+
+[[binary]]
 name = "heliosphere-mms-multiday"
 crate = "gororoba_cli_physics"
-description = "Multi-day MMS magnetopause crossing analysis: fetch FGM SRVY L2 via HAPI, detect crossings via |B| gradient, run 32D CD associator, cross-compare detection methods."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
 
 [[binary]]
-name = "heliosphere-rosetta-draping"
+name = "heliosphere-norm-dump"
 crate = "gororoba_cli_physics"
-description = "Rosetta 67P cometary draping analysis: fetch RPC-MAG via AMDA HAPI, detect diamagnetic cavity boundaries, run 32D CD associator for draping validation."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
 
 [[binary]]
-name = "heliosphere-boundary-survey"
+name = "heliosphere-order-surplus"
 crate = "gororoba_cli_physics"
-description = "Unified multi-mission boundary survey: THEMIS, ARTEMIS, Cluster, Swarm, MAVEN. Fetches FGM data, detects |B| gradient boundaries, runs 32D CD associator, cross-compares."
-
-[[binary]]
-name = "heliosphere-switchback-omega"
-crate = "gororoba_cli_physics"
-description = "PSP switchback detection and fast-wind Omega_mv analysis: classify Br reversals, compute 32D CD associator separately for switchback vs quiet intervals."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
 
 [[binary]]
 name = "heliosphere-predictive-eval"
 crate = "gororoba_cli_physics"
-description = "Evaluate heliosphere invariant and algebraic predictors against official DONKI event windows."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
+
+[[binary]]
+name = "heliosphere-q2-transverse"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
+name = "heliosphere-quench-scan"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
+
+[[binary]]
+name = "heliosphere-rosetta-draping"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
 
 [[binary]]
 name = "heliosphere-sparse-policy-mainline"
 crate = "gororoba_cli_physics"
-description = "Promote and stress-test the mainline heliosphere sparse-policy candidate across seeds and cubes."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
 name = "heliosphere-sparse-preservation"
 crate = "gororoba_cli_physics"
-description = "Compare robust and algebra-derived sparse masks against 1024^3 sparse execution budgets."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
 name = "heliosphere-stage"
@@ -881,9 +1021,24 @@ crate = "gororoba_cli_data"
 description = "Parser-aware staging and audit pass for local Voyager merged, CRS rate, and calibrated CRS flux datasets. Emits CSV/TOML coverage reports plus a normalized observed-flux table, and fails if known fill sentinels survive as finite values."
 
 [[binary]]
+name = "heliosphere-switchback-omega"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
+name = "heliosphere-synthetic-mhd"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
 name = "heliosphere-temporal-overlay"
 crate = "gororoba_cli_physics"
 description = "Time-aligned 4D overlay report for OMNI, Voyager merged hourly, and Voyager CRS daily-flux datasets. Uses true observed epochs, reports simultaneous-day windows, and marks missing upstream products explicitly."
+
+[[binary]]
+name = "heliosphere-zd-audit"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
 
 [[binary]]
 name = "hepdata-refresh"
@@ -893,7 +1048,7 @@ description = "Re-download HEPData CSV tables for managed lanes by resolving per
 [[binary]]
 name = "hi-cube-rotcurve-extractor"
 crate = "gororoba_cli_physics"
-description = "Extract HI 21 cm rotation curves from FITS velocity cubes for E-193."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
 name = "homotopy-viscosity-equivalence"
@@ -901,9 +1056,14 @@ crate = "gororoba_cli"
 description = "Compare homotopy loss and viscosity dynamics via lagged correlation + DTW metrics"
 
 [[binary]]
+name = "human-acquire"
+crate = "gororoba_cli_data"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; consult crate source for authoritative behavior."
+
+[[binary]]
 name = "inclination-injection-calibration"
 crate = "gororoba_cli_physics"
-description = "Inclination-stratified injection recovery for PSF calibration."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
 name = "ingest-pds-crs"
@@ -911,9 +1071,24 @@ crate = "gororoba_cli_data"
 description = "Rust-side ingestion boundary for fetched Voyager PDS/PPI Jupiter encounter CRS bundles. Verifies manifest hashes and sizes, parses PDS3 labels plus indexed data tables, normalizes missing sentinels, and emits typed JSON artifacts for downstream analysis."
 
 [[binary]]
+name = "inspect-feature-cube"
+crate = "gororoba_cli_data"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; consult crate source for authoritative behavior."
+
+[[binary]]
 name = "integrity-resolution"
 crate = "gororoba_cli_data"
-description = "Build or verify canonical integrity-resolution lane registries."
+description = "Workspace binary discovered from crates/gororoba_cli_data/Cargo.toml; registry metadata pending."
+
+[[binary]]
+name = "ism-multichannel-null"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
+name = "ism-rotation-measure-cd"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
 
 [[binary]]
 name = "jacobi-backend-samply-compare"
@@ -926,19 +1101,24 @@ crate = "gororoba_cli_algebra"
 description = "Deterministic solver-shaped benchmark lane for reference f64, double-double, and x87 Jacobi eigensolvers across matrix sizes and matrix families."
 
 [[binary]]
+name = "jet-polarization-cd"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
 name = "kerr-chingon-sweep"
 crate = "gororoba_cli_physics"
-description = "Kerr-Newman Chingon frame-dragging sweep."
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
 
 [[binary]]
 name = "kerr-pathion-gpu"
 crate = "gororoba_cli_physics"
-description = "Extreme Kerr pathion sink GPU port."
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
 
 [[binary]]
 name = "kerr-pathion-sweep"
 crate = "gororoba_cli_physics"
-description = "Sweep near-extremal Kerr spin parameters for pathion sink comparisons."
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
 
 [[binary]]
 name = "kerr-shadow"
@@ -954,7 +1134,7 @@ description = "Multi-Anchor Kramers-Kronig (MSKK-2) comparison tool for optical 
 [[binary]]
 name = "knowledge-atoms"
 crate = "gororoba_cli_data"
-description = "Build and verify structured knowledge-atom registries."
+description = "Workspace binary discovered from crates/gororoba_cli_data/Cargo.toml; registry metadata pending."
 
 [[binary]]
 name = "kubo-coupling-analysis"
@@ -988,7 +1168,7 @@ description = "Reframed T1: Sweep grid resolutions to test whether D3Q19 lattice
 [[binary]]
 name = "lbm-live-viewer"
 crate = "gororoba_cli_physics"
-description = "Interactive lattice-Boltzmann viewer built on backend-neutral viewer contracts."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
 name = "lbm-poiseuille"
@@ -1004,12 +1184,12 @@ experiment = "E-069"
 [[binary]]
 name = "lbm-slice-viewer"
 crate = "gororoba_cli_physics"
-description = "Real-time lattice-Boltzmann slice viewer for large grids."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
 name = "lbm_vulkan"
 crate = "lbm_vulkan"
-description = "Adaptive Vulkan lattice-Boltzmann engine smoke test and throughput benchmark."
+description = "Workspace binary discovered from cargo metadata in crate lbm_vulkan; registry metadata pending."
 
 [[binary]]
 name = "legacy-crossval-audit"
@@ -1032,12 +1212,12 @@ experiment = "E-184"
 [[binary]]
 name = "lit-search"
 crate = "lit_search"
-description = "Repo-owned Rust CLI for multi-source literature search, deduplication, citation verification, and PDF retrieval."
+description = "Workspace binary discovered from cargo metadata in crate lit_search; registry metadata pending."
 
 [[binary]]
 name = "local-nextest-plan"
 crate = "gororoba_cli_data"
-description = "Run a package-aware grouped local nextest plan."
+description = "Workspace binary discovered from crates/gororoba_cli_data/Cargo.toml; registry metadata pending."
 
 [[binary]]
 name = "lotss-analysis"
@@ -1049,6 +1229,11 @@ name = "lotss-fetch"
 crate = "gororoba_cli_data"
 description = "LoTSS DR1/DR2/DR3 bulk FITS downloader, DR3 MaNGA-footprint tile cache fallback, and MaNGA crossmatch utility. Subcommands: download, cone-search, verify, summary, manga-footprint, manga-preflight, crossmatch-manga. Emits CSV/TOML reports for E-198 coverage ceilings and DR2/DR3 detection fractions."
 experiment = "E-198"
+
+[[binary]]
+name = "magnetar-qpo-cd"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
 
 [[binary]]
 name = "magnonic-band-structure"
@@ -1064,12 +1249,12 @@ description = "Majorana braiding operators mapped to the Cayley-Dickson tower. 6
 [[binary]]
 name = "makew"
 crate = "gororoba_cli"
-description = "Wrapper that clears GNU make environment leakage before executing `make`."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli; registry metadata pending."
 
 [[binary]]
 name = "manga-azimuthal-zd-search"
 crate = "gororoba_cli_physics"
-description = "Annular Fourier search for anisotropic structure in MaNGA two-dimensional IFU velocity maps."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
 name = "manga-maps-extractor"
@@ -1080,12 +1265,12 @@ experiment = "E-183"
 [[binary]]
 name = "markdown-registry"
 crate = "gororoba_cli_governance"
-description = "Manage and verify the markdown owner-map compatibility registry."
+description = "Workspace binary discovered from crates/gororoba_cli_data/Cargo.toml; registry metadata pending."
 
 [[binary]]
 name = "mass-binned-phase"
 crate = "gororoba_cli_physics"
-description = "Mass-binned phase coherence test for zero-divisor harmonic stacking."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
 name = "mass-clumping"
@@ -1096,17 +1281,37 @@ experiment = "E-008"
 [[binary]]
 name = "mass-gap-spectrum"
 crate = "gororoba_cli_physics"
-description = "Map the 32D pathion eigenvalue spectrum to physical mass gaps."
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
 
 [[binary]]
 name = "mass-quartile-fourier"
 crate = "gororoba_cli_physics"
-description = "D2: mass-quartile independent Fourier stacking."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
+
+[[binary]]
+name = "mast-cd-vs-spectrogram"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
+name = "mast-fetch"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
+name = "mast-mirnov-cd"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
+name = "mast-multidiag-cd"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
 
 [[binary]]
 name = "mast-program-clustering"
 crate = "gororoba_cli_data"
-description = "Cluster bounded JWST/HST metadata by program, release time, and instrument."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; registry metadata pending."
 
 [[binary]]
 name = "materials-baseline"
@@ -1143,7 +1348,7 @@ description = "Legacy/bootstrap import: migrate insights from markdown INSIGHTS.
 [[binary]]
 name = "ml-baryonic-denoise"
 crate = "gororoba_cli_physics"
-description = "Machine-learning baryonic denoising with Fourier anomaly detection."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
 name = "modular-chaos"
@@ -1153,7 +1358,7 @@ description = "Modular chaos simulation: discrete phase scrambling and Fourier r
 [[binary]]
 name = "monograph_synthesis"
 crate = "docpipe"
-description = "Flatten and synthesize the documentation corpus into a monograph-style treatise."
+description = "Workspace binary discovered from cargo metadata in crate docpipe; registry metadata pending."
 
 [[binary]]
 name = "moonshine-closure-test"
@@ -1187,7 +1392,7 @@ experiment = "E-002"
 [[binary]]
 name = "multifeature-shape-regression"
 crate = "gororoba_cli_physics"
-description = "Multi-feature baryonic shape regression with red-noise spectral-index estimation."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
 name = "mutual-information-phase"
@@ -1202,52 +1407,52 @@ description = "Sweep nacelle count (n=1..16) and compute warp bubble energy budg
 [[binary]]
 name = "nanograv-avt-filter"
 crate = "gororoba_cli_data"
-description = "Cross-validated AVT mean-shift audit over NANOGrav timing residuals."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; registry metadata pending."
 
 [[binary]]
 name = "nanograv-entropy-audit"
 crate = "gororoba_cli_data"
-description = "Correlate NANOGrav pulsar residuals with 1024D DekaVoudon entropy bounds."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; registry metadata pending."
 
 [[binary]]
 name = "nanograv-gauge-resonance"
 crate = "gororoba_cli_data"
-description = "Correlate NANOGrav pulsar variance with 1024D Standard Model gauge sector cross-coupling."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; registry metadata pending."
 
 [[binary]]
 name = "nanograv-propagation-audit"
 crate = "gororoba_cli_data"
-description = "Per-pulsar propagation diagnostics and first-pass Hellings-Downs pair audit over the NANOGrav 15-year timing release."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; registry metadata pending."
 
 [[binary]]
 name = "nanograv-synthetic-gen"
 crate = "gororoba_cli_data"
-description = "Generate a synthetic NANOGrav dataset with pure Hellings-Downs correlation and standard noise."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; registry metadata pending."
 
 [[binary]]
 name = "nanograv-timing-inventory"
 crate = "gororoba_cli_data"
-description = "Inventory the full NANOGrav 15-year timing release into per-pulsar coverage summaries."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; registry metadata pending."
 
 [[binary]]
 name = "nanograv-timing-phase1-independent"
 crate = "gororoba_cli_data"
-description = "Independent TOA-driven Phase 1 NANOGrav timing-engine pilot over all Phase 1 frontend/backend groups."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; registry metadata pending."
 
 [[binary]]
 name = "nanograv-timing-phase1-refit"
 crate = "gororoba_cli_data"
-description = "Linearized WLS/GLS pilot refit over the six Phase 1 NANOGrav timing-model scout pulsars."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; registry metadata pending."
 
 [[binary]]
 name = "nanograv-timing-refit-preflight"
 crate = "gororoba_cli_data"
-description = "Typed .par preflight inventory for the NANOGrav 15-year timing-refit lane."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; registry metadata pending."
 
 [[binary]]
 name = "nanograv-vacuum-symmetry"
 crate = "gororoba_cli_data"
-description = "Detect point-group symmetry in the 1024D DekaVoudon sign-imbalance field."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; registry metadata pending."
 
 [[binary]]
 name = "neg-dim-eigen"
@@ -1279,7 +1484,7 @@ description = "Fit orthoplex dark energy model (K_{2,2,...,2} heat kernel) to Pa
 [[binary]]
 name = "pantheon-physicsforge-verify"
 crate = "gororoba_cli_data"
-description = "Verify Pantheon/PhysicsForge migration governance and licensing contracts."
+description = "Workspace binary discovered from crates/gororoba_cli_data/Cargo.toml; registry metadata pending."
 
 [[binary]]
 name = "paper-build"
@@ -1289,17 +1494,17 @@ description = "Rust-native paper builder for arXiv submission. Wraps tectonic CL
 [[binary]]
 name = "paper-fetcher"
 crate = "gororoba_cli"
-description = "Pure-Rust fetcher for dark-matter bibliography PDFs."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli; registry metadata pending."
 
 [[binary]]
 name = "parity-report"
 crate = "gororoba_cli_physics"
-description = "Cross-backend compute parity report generator."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
 name = "partial-spectrum-bench"
 crate = "gororoba_cli_algebra"
-description = "Benchmark partial-spectrum prototypes for k = 1, 2, and 4."
+description = "Workspace binary discovered from crates/gororoba_cli_algebra/Cargo.toml; registry metadata pending."
 
 [[binary]]
 name = "particle-numerology-audit"
@@ -1310,7 +1515,7 @@ experiment = "E-206"
 [[binary]]
 name = "particle-trace"
 crate = "gororoba_cli_physics"
-description = "Particle trajectory tracer through a lattice-Boltzmann velocity field."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
 name = "pathion-shadow-cli"
@@ -1327,7 +1532,7 @@ experiment = "E-052"
 [[binary]]
 name = "pathion-solar-system-crucible"
 crate = "gororoba_cli_physics"
-description = "Pathion Solar System crucible."
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
 
 [[binary]]
 name = "pdg-nanograv-surface-audit"
@@ -1348,7 +1553,7 @@ description = "H3 hypothesis: 1D sublevel set persistence of stacked rotation cu
 [[binary]]
 name = "phase-transition-crucible"
 crate = "gororoba_cli_algebra"
-description = "Phase-transition landscape analysis for Cayley-Dickson defect density and friction structure."
+description = "Workspace binary discovered from crates/gororoba_cli_algebra/Cargo.toml; registry metadata pending."
 
 [[binary]]
 name = "pioneer-residual-audit"
@@ -1358,7 +1563,7 @@ description = "Sample governed Pioneer annual merged environment context against
 [[binary]]
 name = "polynomial-detrend-closure"
 crate = "gororoba_cli_physics"
-description = "Broadband Fourier scan after polynomial detrending."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
 name = "power-stratified-phase"
@@ -1373,7 +1578,7 @@ description = "Sweep Brans-Dicke omega parameter space and report PPN constraint
 [[binary]]
 name = "pre-push-hook"
 crate = "gororoba_cli"
-description = "Pure-Rust pre-push hook runner for `makew gate-local` and `git-lfs pre-push`."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli; registry metadata pending."
 
 [[binary]]
 name = "prefix-chain-theorem"
@@ -1393,22 +1598,22 @@ description = "Projector-FHS with polar link stabilization (SVD-based multiband 
 [[binary]]
 name = "proof-dep-graph"
 crate = "gororoba_cli"
-description = "Generate a Rocq proof dependency graph in DOT format from `.v` sources."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli; registry metadata pending."
 
 [[binary]]
 name = "proof-doc"
 crate = "gororoba_cli"
-description = "Produce browsable Rocq HTML documentation."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli; registry metadata pending."
 
 [[binary]]
 name = "proof-metrics"
 crate = "gororoba_cli"
-description = "Collect Rocq proof compilation metrics for PGFPlots and reporting."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli; registry metadata pending."
 
 [[binary]]
 name = "provenance"
 crate = "gororoba_cli_provenance"
-description = "SQLite-backed provenance operator CLI."
+description = "Workspace binary discovered from crates/gororoba_cli_provenance/Cargo.toml; registry metadata pending."
 
 [[binary]]
 name = "pseudospectrum-slice"
@@ -1418,17 +1623,17 @@ description = "Pseudospectrum slice of the Dirichlet Laplacian resolvent"
 [[binary]]
 name = "python-retention"
 crate = "gororoba_cli_data"
-description = "Classify remaining Python files under a machine-readable Rust-vs-Python retention policy."
+description = "Workspace binary discovered from crates/gororoba_cli_data/Cargo.toml; registry metadata pending."
 
 [[binary]]
 name = "q3-injection-recovery"
 crate = "gororoba_cli_physics"
-description = "F2: Q3 mass-quartile injection-recovery validation for E-202."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
 name = "qec-boxkite-sweep"
 crate = "gororoba_cli_quantum"
-description = "Monte Carlo sweep of sedenion QEC box-kite configurations."
+description = "Workspace binary discovered from crates/gororoba_cli_quantum/Cargo.toml; registry metadata pending."
 
 [[binary]]
 name = "qgp-parameter-optimizer"
@@ -1449,7 +1654,7 @@ experiment = "E-003"
 [[binary]]
 name = "record-artifact-hashes"
 crate = "gororoba_cli_data"
-description = "Record local hashes for manifest-tracked artifacts."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; registry metadata pending."
 
 [[binary]]
 name = "record-external-hashes"
@@ -1475,12 +1680,12 @@ experiment = "E-024"
 [[binary]]
 name = "repo-utilities"
 crate = "gororoba_cli_data"
-description = "Repo utility gates and helper transforms."
+description = "Workspace binary discovered from crates/gororoba_cli_data/Cargo.toml; registry metadata pending."
 
 [[binary]]
 name = "repo-visuals"
 crate = "gororoba_cli_data"
-description = "Build deterministic dark-mode repo overview visuals and guides."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; registry metadata pending."
 
 [[binary]]
 name = "rho-ghost-fft"
@@ -1501,12 +1706,12 @@ experiment = "E-093"
 [[binary]]
 name = "routon-chaos-crucible"
 crate = "gororoba_cli_physics"
-description = "Compute nearest-neighbor spacing distributions for Routon chaos crucible runs."
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
 
 [[binary]]
 name = "run_novel_algorithms"
 crate = "algebra_experimental"
-description = "Execute the experimental novel-algorithms prototype suite from `algebra_experimental`."
+description = "Workspace binary discovered from cargo metadata in crate algebra_experimental; registry metadata pending."
 
 [[binary]]
 name = "scrollify-csv"
@@ -1514,9 +1719,14 @@ crate = "gororoba_cli"
 description = "Convert CSV corpora to TOML scroll datasets and canonical index manifests"
 
 [[binary]]
+name = "sdo-fits-parse"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
 name = "semantic-atoms"
 crate = "gororoba_cli_data"
-description = "Build canonical semantic-atoms lane registries."
+description = "Workspace binary discovered from crates/gororoba_cli_data/Cargo.toml; registry metadata pending."
 
 [[binary]]
 name = "sfwm-figure-repro"
@@ -1525,9 +1735,14 @@ description = "Reproduce all 4 figures from Son & Chekhova (2026) arXiv:2601.231
 experiment = "E-074"
 
 [[binary]]
+name = "sharp-flare-cd"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
 name = "shmr-scatter-injection"
 crate = "gororoba_cli_physics"
-description = "D1: SHMR scatter phase-smearing test for injection recovery."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
 name = "simulation-trace-gate"
@@ -1543,7 +1758,7 @@ experiment = "E-013"
 [[binary]]
 name = "slit-deproject"
 crate = "gororoba_cli_physics"
-description = "De-project pseudo-slit rotation curves via Tikhonov-regularized PSF inversion."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
 name = "snia-ddt"
@@ -1554,6 +1769,26 @@ description = "SN Ia delayed-detonation scaffold runner with reproducible snapsh
 name = "soho-celias-stage"
 crate = "gororoba_cli_data"
 description = "Stage the SOHO CELIAS Proton Monitor mission-long bundle into both native cadence and hourly median-normalized CSV artifacts, then emit a JSON summary with row counts, byte sizes, and coverage so inner-boundary runs can preserve hypergranularity without losing cross-source alignment."
+
+[[binary]]
+name = "solar-aia-cd"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
+name = "solar-cycle-crosscorr"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
+name = "solar-flare-cd"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
+name = "solar-storm-propagation"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
 
 [[binary]]
 name = "solar-wind-dm-mhd"
@@ -1573,7 +1808,7 @@ description = "D3Q19 LBM + MHD simulation of magnetized solar wind. Parker spira
 [[binary]]
 name = "source-truth-infrastructure"
 crate = "gororoba_cli_data"
-description = "Project deterministic source-lane registries from the master artifact registry in Rust."
+description = "Workspace binary discovered from crates/gororoba_cli_data/Cargo.toml; registry metadata pending."
 
 [[binary]]
 name = "spectral-flow"
@@ -1595,12 +1830,12 @@ experiment = "E-079"
 [[binary]]
 name = "stft-phase-gradient"
 crate = "gororoba_cli_physics"
-description = "STFT phase-gradient chirp test for MaNGA harmonic stacking."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
 name = "structured-spectrum-bench"
 crate = "gororoba_cli_algebra"
-description = "Benchmark exact structured deflation on obstruction-like matrices."
+description = "Workspace binary discovered from crates/gororoba_cli_algebra/Cargo.toml; registry metadata pending."
 
 [[binary]]
 name = "su5-gut"
@@ -1620,7 +1855,7 @@ description = "Synthesis S1+S2: robust-estimator ZD bound comparison (mean vs tr
 [[binary]]
 name = "synthesis-execution-contract"
 crate = "gororoba_cli_data"
-description = "Run synthesis execution contract checks and emit a TOML rollup."
+description = "Workspace binary discovered from crates/gororoba_cli_data/Cargo.toml; registry metadata pending."
 
 [[binary]]
 name = "tcmt-sweep"
@@ -1647,12 +1882,12 @@ experiment = "E-021"
 [[binary]]
 name = "test-inventory"
 crate = "gororoba_cli_data"
-description = "Validate canonical test taxonomy and stale test-count docs policy."
+description = "Workspace binary discovered from crates/gororoba_cli_data/Cargo.toml; registry metadata pending."
 
 [[binary]]
 name = "test-spk"
 crate = "gororoba_cli_data"
-description = "Smoke-test SPK parsing against local DE440s and Galileo cruise kernels."
+description = "Workspace binary discovered from crates/gororoba_cli_data/Cargo.toml; registry metadata pending."
 
 [[binary]]
 name = "test-tda-api"
@@ -1723,9 +1958,69 @@ description = "Third-party source verification and ingestion infrastructure work
 experiment = "E-026"
 
 [[binary]]
+name = "tokamak-cd-proof"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
 name = "trimmed-stacking-robustness"
 crate = "gororoba_cli_physics"
 description = "D4 contrarian: trimmed mean and median DFT robustness test. Quantifies outlier domination of stacked DFT coefficients across 6 trimming levels and 4 algebraic frameworks."
+
+[[binary]]
+name = "turboquant-bench"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
+name = "turboquant-cd-fidelity"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
+name = "turboquant-comparison"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
+name = "turboquant-onnx-eval"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
+name = "turboquant-production"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
+name = "turboquant-profile"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
+name = "turboquant-real-kv"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
+name = "turboquant-sedenion-rotation"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
+name = "turboquant-simd-bench"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
+name = "turboquant-sweep"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
+name = "turboquant-validate"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
 
 [[binary]]
 name = "ultrametric-core-extract"
@@ -1736,7 +2031,7 @@ experiment = "E-002"
 [[binary]]
 name = "unified-action-sweep"
 crate = "gororoba_cli_physics"
-description = "Unified action sweep for computational tests of the sedenion vacuum attractor."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
 name = "validate-j1j2-kubo"
@@ -1752,7 +2047,7 @@ description = "H2 hypothesis: Hartigan dip test on per-galaxy Fourier power dist
 [[binary]]
 name = "verify-artifact-source-of-truth"
 crate = "gororoba_cli_data"
-description = "Verify the canonical artifact source-of-truth registry in Rust."
+description = "Workspace binary discovered from crates/gororoba_cli_data/Cargo.toml; registry metadata pending."
 
 [[binary]]
 name = "verify-project-csv-split"
@@ -1762,27 +2057,32 @@ description = "Verify project_csv split policy parity across inventory, manifest
 [[binary]]
 name = "verify-registry-mirror-freshness"
 crate = "gororoba_cli_data"
-description = "Verify TOML-driven markdown mirrors are fresh using Rust emitters."
+description = "Workspace binary discovered from crates/gororoba_cli_data/Cargo.toml; registry metadata pending."
 
 [[binary]]
 name = "verify-source-infrastructure"
 crate = "gororoba_cli_data"
-description = "Verify source-lane projections against the master artifact registry in Rust."
+description = "Workspace binary discovered from crates/gororoba_cli_data/Cargo.toml; registry metadata pending."
 
 [[binary]]
 name = "vis-hyper-artifacts"
 crate = "gororoba_cli"
-description = "Generate hyper-resolution visualization artifacts for the unified quantum-algebraic framework."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli; registry metadata pending."
 
 [[binary]]
 name = "voudon-friedmann-sweep"
 crate = "gororoba_cli_physics"
-description = "Simulate cosmological evolution with Voudon pressure."
+description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
 
 [[binary]]
 name = "voyager-arrow-probe"
 crate = "gororoba_cli_physics"
 description = "Consumer-side Arrow loader probe for Voyager encounter artifacts. Memory-maps Arrow IPC files, asserts the required schema, verifies monotonic time ordering, and reports O(log n) timestamp bounds plus validity flags for a requested telemetry column."
+
+[[binary]]
+name = "voyager-cdf-ingest"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
 
 [[binary]]
 name = "voyager-crs-compare"
@@ -1795,9 +2095,29 @@ crate = "gororoba_cli_physics"
 description = "Fused Voyager encounter tracker that joins promoted Arrow telemetry to merged Voyager spatial coordinates, interpolates r/lat/lon in time, and maps the resulting heliocentric position into lattice indices for solver-side validation loops."
 
 [[binary]]
+name = "voyager-hapi-ingest"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
+name = "voyager-ism-multichannel"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
+name = "voyager-mag-pls-cd"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
+name = "voyager-pws-ingest"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
 name = "vulkan-precision-bench"
 crate = "gororoba_cli_physics"
-description = "Vulkan WGSL precision-tier benchmark."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
 name = "warp-acceptance-gate"
@@ -1894,12 +2214,12 @@ description = "D3 contrarian: window function injection response at CD-ZD wavenu
 [[binary]]
 name = "workspace-routing"
 crate = "gororoba_cli_governance"
-description = "Map changed files to affected Rust crate scope and governance participation."
+description = "Workspace binary discovered from crates/gororoba_cli_data/Cargo.toml; registry metadata pending."
 
 [[binary]]
 name = "workspace-routing-proxy"
 crate = "gororoba_cli_governance"
-description = "Governance-facing proxy for workspace-routing classification."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_governance; registry metadata pending."
 
 [[binary]]
 name = "worldline-casimir"
@@ -1927,7 +2247,7 @@ experiment = "E-048"
 [[binary]]
 name = "x87-givens-microbench"
 crate = "gororoba_cli_algebra"
-description = "Benchmark the composed x87 Givens and transcendental micro-kernels."
+description = "Workspace binary discovered from crates/gororoba_cli_algebra/Cargo.toml; registry metadata pending."
 
 [[binary]]
 name = "x87-strategy-bench"
@@ -1942,7 +2262,7 @@ description = "Workspace execution target reserved for the E-188/E-189 x87 bench
 [[binary]]
 name = "xtask"
 crate = "xtask"
-description = "Workspace task runner for database docs, host profiling, routing, and local gate utilities."
+description = "Workspace binary discovered from cargo metadata in crate xtask; registry metadata pending."
 
 [[binary]]
 name = "zd-crystal-bands"
@@ -1988,265 +2308,3 @@ crate = "gororoba_cli_data"
 description = "Spectral-dimension census for Cayley-Dickson zero-divisor graphs via Laplacian heat-kernel plateaus and gaps."
 experiment = "E-084"
 
-[[binary]]
-name = "grmhd-mri-cd"
-crate = "gororoba_cli_physics"
-description = "Extract B-field from nubhlight GRMHD HDF5 dumps, compute 32D CD associator through MRI onset and saturation. Reads P[N1,N2,N3,8] primitives, takes midplane slice, builds Takens embedding with direction normalization."
-
-[[binary]]
-name = "bout-cd-analysis"
-crate = "gororoba_cli_physics"
-description = "Read BOUT++ NetCDF4 output (HDF5-based), extract evolved field variables (n, phi, vort), build 32D Takens embedding from spatial profiles along sweep axis, compute CD associator at each timestep. Supports multi-channel embedding, direction-only normalization, configurable sweep axis."
-
-[[binary]]
-name = "bout-grid-inspect"
-crate = "gororoba_cli_physics"
-description = "Inspect BOUT++ tokamak grid files (NetCDF-3 classic format) using pure-Rust netcdf3 crate. Lists dimensions, variables, attributes, and reads key magnetic geometry fields (Rxy, Zxy, Bpxy, Btxy, psixy)."
-
-[[binary]]
-name = "bout-grid-cd"
-crate = "gororoba_cli_physics"
-description = "CD analysis on BOUT++ tokamak equilibrium grid (NetCDF-3). Extracts multi-variable radial profiles, builds 16D/32D/64D embeddings, computes A(psi) profile. Validates that CD is a dynamics diagnostic (smooth equilibria give A=0)."
-
-[[binary]]
-name = "mast-fetch"
-crate = "gororoba_cli_physics"
-description = "Pure Rust MAST Zarr downloader using ureq HTTP + rayon parallel chunk fetching. Downloads Mirnov diagnostic data from FAIR-MAST public S3 bucket (s3://mast/ at s3.echo.stfc.ac.uk). Zero authentication, blosc/lz4 compressed Zarr v2."
-
-[[binary]]
-name = "mast-mirnov-cd"
-crate = "gororoba_cli_physics"
-description = "CD analysis on FAIR-MAST experimental Mirnov coil data (Zarr v2, blosc/lz4). Reads n=2 and n=odd toroidal mode signals, builds 32D Takens embedding, computes sliding-window CD associator. Pure Rust: zarrs + cd_kernel."
-
-[[binary]]
-name = "solar-storm-propagation"
-crate = "gororoba_cli_physics"
-description = "Solar storm propagation tracker: traces CME from SDO SHARP (0 AU) through ACE L1 (1 AU) to Voyager ISM (~125 AU). Computes CD at each segment with uniform embedding for cross-distance comparison. Supports hourly CD profile and storm ratio calculation."
-
-[[binary]]
-name = "cd-anomaly-scan"
-crate = "gororoba_cli_physics"
-description = "Systematic CD anomaly scanner using Tukey fence (IQR * k) outlier detection across all datasets. Scans JSON/CSV files in ablations directory, ranks anomalies by sigma above median, reports top events per dataset and globally."
-
-[[binary]]
-name = "sdo-fits-parse"
-crate = "gororoba_cli_physics"
-description = "SDO/HMI SHARP FITS IMAGE parser: reads 2D vector magnetogram cutouts (Bp, Br, Bt) via fitsio 0.21. Computes spatial statistics including RMS, unsigned flux proxy, skewness, kurtosis. Ready for per-pixel CD embedding."
-
-[[binary]]
-name = "ism-multichannel-null"
-crate = "gororoba_cli_physics"
-description = "Per-dimension multivariate null test for 20-channel MAG+PWS ISM embedding. Independently phase-randomizes each channel and recomputes CD to identify which channels contribute genuine cross-instrument phase coupling. Splits by epoch for temporal comparison."
-
-[[binary]]
-name = "audit-cd-cache"
-crate = "gororoba_cli_data"
-description = "Audit the off-site Cayley-Dickson document cache."
-[[binary]]
-name = "cd-null-hypothesis"
-crate = "gororoba_cli_physics"
-description = "Null-hypothesis test for whether Cayley-Dickson algebraic structure is essential."
-[[binary]]
-name = "cpd-report"
-crate = "gororoba_cli_data"
-description = "PMD CPD XML report formatter."
-[[binary]]
-name = "dynamo-cd"
-crate = "gororoba_cli_physics"
-description = "Liquid-metal dynamo Cayley-Dickson analysis for synthetic VKS-like configurations."
-[[binary]]
-name = "extract-nk-arrays"
-crate = "gororoba_cli_data"
-description = "Extract tabulated n-k arrays from materials_core into CSV files under materials_data."
-[[binary]]
-name = "geomag-cd-jerk"
-crate = "gororoba_cli_physics"
-description = "Geomagnetic jerk detection with 32D Cayley-Dickson associators."
-[[binary]]
-name = "grmhd-torus-cd"
-crate = "gororoba_cli_physics"
-description = "GRMHD torus to Cayley-Dickson associator pipeline."
-[[binary]]
-name = "hapi-fetch"
-crate = "gororoba_cli_physics"
-description = "Universal CDAWeb HAPI client."
-[[binary]]
-name = "heliosphere-associator-null-audit"
-crate = "gororoba_cli_physics"
-description = "Deconfounding audit for separation, nulls, and invariant embeddings."
-[[binary]]
-name = "heliosphere-baseline-comparison"
-crate = "gororoba_cli_physics"
-description = "Five-way heliosphere baseline comparison against curated labels."
-[[binary]]
-name = "heliosphere-beta-join"
-crate = "gororoba_cli_physics"
-description = "Join associator norms with ESA plasma beta for A(beta) scatter studies."
-[[binary]]
-name = "heliosphere-boxkite-alignment"
-crate = "gororoba_cli_physics"
-description = "High-throughput GPU scan of 16D Takens descriptors for box-kite alignment."
-[[binary]]
-name = "heliosphere-boxkite-parity"
-crate = "gororoba_cli_physics"
-description = "Verify box-kite alignment parity across CPU, Vulkan, and CUDA backends."
-[[binary]]
-name = "heliosphere-decomposition-audit"
-crate = "gororoba_cli_physics"
-description = "Audit phase-versus-spectral decomposition of Cayley-Dickson associator signals."
-[[binary]]
-name = "heliosphere-effective-rank"
-crate = "gororoba_cli_physics"
-description = "Compute SVD effective rank of heliosphere Cayley-Dickson embeddings across dimensions."
-[[binary]]
-name = "heliosphere-embed-pca"
-crate = "gororoba_cli_physics"
-description = "Project 32D Takens embeddings to their top three principal components."
-[[binary]]
-name = "heliosphere-fa-attribution"
-crate = "gororoba_cli_physics"
-description = "False-alarm attribution for Cayley-Dickson transitions by magnetic-field signature."
-[[binary]]
-name = "heliosphere-full-sweep"
-crate = "gororoba_cli_physics"
-description = "Full-dataset heliosphere weekly sweep with curated labels."
-[[binary]]
-name = "heliosphere-hybrid-detector"
-crate = "gororoba_cli_physics"
-description = "Test union, intersection, and weighted hybrid heliosphere detectors."
-[[binary]]
-name = "heliosphere-magnetic-takens"
-crate = "gororoba_cli_physics"
-description = "Takens time-delay embedding of magnetic-field series into Cayley-Dickson space."
-[[binary]]
-name = "heliosphere-norm-dump"
-crate = "gororoba_cli_physics"
-description = "Dump per-minute heliosphere associator norms as CSV for beta-scatter analysis."
-[[binary]]
-name = "heliosphere-order-surplus"
-crate = "gororoba_cli_physics"
-description = "Compute per-radial-bin Omega_mv and Omega_phase heliosphere order-surplus indices."
-[[binary]]
-name = "heliosphere-q2-transverse"
-crate = "gororoba_cli_physics"
-description = "Q2 test: correlate transverse versus compressive mode content with the Cayley-Dickson associator."
-[[binary]]
-name = "heliosphere-quench-scan"
-crate = "gororoba_cli_physics"
-description = "Map the algebraic quenching point across heliocentric distance using magnetic Takens embeddings."
-[[binary]]
-name = "heliosphere-synthetic-mhd"
-crate = "gororoba_cli_physics"
-description = "Synthetic plasma stress test combining one-dimensional MHD waves with Cayley-Dickson associators."
-[[binary]]
-name = "heliosphere-zd-audit"
-crate = "gororoba_cli_physics"
-description = "Audit zero-divisor proximity in weak-field heliosphere Cayley-Dickson embeddings."
-[[binary]]
-name = "human-acquire"
-crate = "gororoba_cli_data"
-description = "Thin operator-guided acquisition controller for stubborn external sources."
-[[binary]]
-name = "inspect-feature-cube"
-crate = "gororoba_cli_data"
-description = "Inspect the heliosphere feature cube."
-[[binary]]
-name = "ism-rotation-measure-cd"
-crate = "gororoba_cli_physics"
-description = "Synthetic Galactic Faraday rotation-measure analysis through different ISM phases using Cayley-Dickson embeddings."
-[[binary]]
-name = "jet-polarization-cd"
-crate = "gororoba_cli_physics"
-description = "Relativistic-jet polarization analysis on synthetic M87-like EVPA series using Cayley-Dickson embeddings."
-[[binary]]
-name = "magnetar-qpo-cd"
-crate = "gororoba_cli_physics"
-description = "Synthetic magnetar giant-flare QPO analysis through 32D Cayley-Dickson associators."
-[[binary]]
-name = "mast-cd-vs-spectrogram"
-crate = "gororoba_cli_physics"
-description = "Compare the 32D Cayley-Dickson associator against FFT spectrogram diagnostics on real MAST Mirnov data."
-[[binary]]
-name = "mast-multidiag-cd"
-crate = "gororoba_cli_physics"
-description = "MAST multi-diagnostic Cayley-Dickson analysis using genuinely independent channel embeddings."
-[[binary]]
-name = "sharp-flare-cd"
-crate = "gororoba_cli_physics"
-description = "Run Cayley-Dickson associator analysis on SDO/HMI SHARP keyword time series across flare sequences."
-[[binary]]
-name = "solar-aia-cd"
-crate = "gororoba_cli_physics"
-description = "Multi-channel SDO AIA plus HMI SHARP Cayley-Dickson analysis through the X9.3 flare sequence."
-[[binary]]
-name = "solar-cycle-crosscorr"
-crate = "gororoba_cli_physics"
-description = "Cross-correlate yearly one-AU solar-cycle Cayley-Dickson structure against Voyager outer-heliosphere structure."
-[[binary]]
-name = "solar-flare-cd"
-crate = "gororoba_cli_physics"
-description = "Detect magnetic-topology transitions in SHARP keyword time series with the Cayley-Dickson associator."
-[[binary]]
-name = "tokamak-cd-proof"
-crate = "gororoba_cli_physics"
-description = "Tokamak Cayley-Dickson associator proof of concept on synthetic magnetic-diagnostic signals."
-[[binary]]
-name = "turboquant-bench"
-crate = "gororoba_cli_physics"
-description = "Benchmark the full TurboQuant pipeline across rotation, quantization, and QJL stages."
-[[binary]]
-name = "turboquant-cd-fidelity"
-crate = "gororoba_cli_physics"
-description = "Measure phase-geometry distortion from KV-cache quantization using the 32D Cayley-Dickson associator."
-[[binary]]
-name = "turboquant-comparison"
-crate = "gororoba_cli_physics"
-description = "Head-to-head TurboQuant versus KIVI versus NSNQuant benchmark comparison."
-[[binary]]
-name = "turboquant-onnx-eval"
-crate = "gororoba_cli_physics"
-description = "Evaluate TurboQuant on real ONNX models through next-token and top-k fidelity metrics."
-[[binary]]
-name = "turboquant-production"
-crate = "gororoba_cli_physics"
-description = "Production-scale LLM benchmark for TurboQuant-compressed KV caches."
-[[binary]]
-name = "turboquant-profile"
-crate = "gororoba_cli_physics"
-description = "Profiling harness for perf and flamegraph analysis of the TurboQuant pipeline."
-[[binary]]
-name = "turboquant-real-kv"
-crate = "gororoba_cli_physics"
-description = "Evaluate TurboQuant on real LLM KV-cache tensors extracted from model forward passes."
-[[binary]]
-name = "turboquant-sedenion-rotation"
-crate = "gororoba_cli_physics"
-description = "Compare sedenion-structured rotation against Haar-random rotation for TurboQuant decorrelation quality."
-[[binary]]
-name = "turboquant-simd-bench"
-crate = "gororoba_cli_physics"
-description = "SIMD codebook benchmark comparing scalar versus vectorized Lloyd-Max quantization lookup for TurboQuant."
-[[binary]]
-name = "turboquant-sweep"
-crate = "gororoba_cli_physics"
-description = "Definitive all-methods TurboQuant sweep across bit-widths and dimensions."
-[[binary]]
-name = "turboquant-validate"
-crate = "gororoba_cli_physics"
-description = "Validate TurboQuant quality against uncompressed attention scores and compression metrics."
-[[binary]]
-name = "voyager-cdf-ingest"
-crate = "gororoba_cli_physics"
-description = "Ingest Voyager 48-second MAG CDF files into HeliosphereFeatureRow CSV format."
-[[binary]]
-name = "voyager-hapi-ingest"
-crate = "gororoba_cli_physics"
-description = "Ingest Voyager HAPI CSV data into HeliosphereFeatureRow format."
-[[binary]]
-name = "voyager-ism-multichannel"
-crate = "gororoba_cli_physics"
-description = "Join Voyager MAG and PWS channels into a multi-instrument ISM Cayley-Dickson embedding."
-[[binary]]
-name = "voyager-pws-ingest"
-crate = "gororoba_cli_physics"
-description = "Ingest Voyager PWS spectrum-analyzer CDF files into a multi-channel CSV for ISM embedding."

@@ -32,7 +32,10 @@ struct Cli {
     embedding_dim: usize,
 
     /// Output JSON.
-    #[arg(long, default_value = "data/output/heliosphere/ablations/synthetic_mhd_stress_test.json")]
+    #[arg(
+        long,
+        default_value = "data/output/heliosphere/ablations/synthetic_mhd_stress_test.json"
+    )]
     out_json: String,
 }
 
@@ -170,7 +173,10 @@ fn main() {
     let db = cli.db_over_b0 * cli.b0;
 
     println!("=== Synthetic Plasma Stress Test ===");
-    println!("  B0={} nT, dB/B0={}, dim={}", cli.b0, cli.db_over_b0, cli.embedding_dim);
+    println!(
+        "  B0={} nT, dB/B0={}, dim={}",
+        cli.b0, cli.db_over_b0, cli.embedding_dim
+    );
 
     // Test specific wave types
     let configs: Vec<(&str, f64)> = vec![
@@ -185,9 +191,22 @@ fn main() {
 
     let mut results = Vec::new();
     for (label, comp_frac) in &configs {
-        let (bx, by, bz) = generate_wave(cli.n_steps, cli.b0, db, *comp_frac, 42 + (*comp_frac * 100.0) as u64);
+        let (bx, by, bz) = generate_wave(
+            cli.n_steps,
+            cli.b0,
+            db,
+            *comp_frac,
+            42 + (*comp_frac * 100.0) as u64,
+        );
         let (mean, std, n) = compute_associator_mean(&bx, &by, &bz, cli.embedding_dim);
-        println!("  {:<25} comp={:.0}%  A_mean={:.6}  A_std={:.6}  n={}", label, comp_frac * 100.0, mean, std, n);
+        println!(
+            "  {:<25} comp={:.0}%  A_mean={:.6}  A_std={:.6}  n={}",
+            label,
+            comp_frac * 100.0,
+            mean,
+            std,
+            n
+        );
         results.push(SyntheticResult {
             label: label.to_string(),
             compressive_fraction: *comp_frac,
@@ -207,9 +226,20 @@ fn main() {
 
     for &beta in &beta_values {
         let comp_frac = beta / (1.0 + beta);
-        let (bx, by, bz) = generate_wave(cli.n_steps, cli.b0, db, comp_frac, 42 + (beta * 100.0) as u64);
+        let (bx, by, bz) = generate_wave(
+            cli.n_steps,
+            cli.b0,
+            db,
+            comp_frac,
+            42 + (beta * 100.0) as u64,
+        );
         let (mean, _, _) = compute_associator_mean(&bx, &by, &bz, cli.embedding_dim);
-        println!("    beta={:>6.2}  comp={:.1}%  A={:.6}", beta, comp_frac * 100.0, mean);
+        println!(
+            "    beta={:>6.2}  comp={:.1}%  A={:.6}",
+            beta,
+            comp_frac * 100.0,
+            mean
+        );
         beta_sweep.push(BetaSweepPoint {
             beta,
             compressive_fraction: comp_frac,
@@ -218,7 +248,10 @@ fn main() {
     }
 
     // Fit power law to A(beta) from synthetic data
-    let log_a: Vec<f64> = beta_sweep.iter().map(|p| (p.mean_associator + 1e-10).log10()).collect();
+    let log_a: Vec<f64> = beta_sweep
+        .iter()
+        .map(|p| (p.mean_associator + 1e-10).log10())
+        .collect();
     let log_b: Vec<f64> = beta_sweep.iter().map(|p| p.beta.log10()).collect();
 
     // Linear regression in log-log
@@ -263,6 +296,10 @@ fn main() {
     };
 
     fs::create_dir_all("data/output/heliosphere/ablations").ok();
-    fs::write(&cli.out_json, serde_json::to_string_pretty(&output).unwrap()).unwrap();
+    fs::write(
+        &cli.out_json,
+        serde_json::to_string_pretty(&output).unwrap(),
+    )
+    .unwrap();
     println!("\nWrote {}", cli.out_json);
 }

@@ -49,29 +49,25 @@
 /// Re-exports from all paper crates.
 pub mod prelude {
     pub use cd_kernel::cayley_dickson::{cd_conjugate, cd_multiply, cd_norm_sq};
-    pub use de_marrais_2000::{all_assessors, O_TRIPS, S_TRIPS, TOTAL_ASSESSORS, TOTAL_ZD_PAIRS};
-    pub use dickson_1919::{
-        cd_inverse, verify_inverse, CayleyDicksonLevel, PropertyReport,
-    };
-    pub use hurwitz_1898::{
-        classify, CliffordSystem, CliffordVerification, HurwitzClassification,
-    };
+    pub use de_marrais_2000::{O_TRIPS, S_TRIPS, TOTAL_ASSESSORS, TOTAL_ZD_PAIRS, all_assessors};
+    pub use dickson_1919::{CayleyDicksonLevel, PropertyReport, cd_inverse, verify_inverse};
+    pub use hurwitz_1898::{CliffordSystem, CliffordVerification, HurwitzClassification, classify};
     pub use moreno_1997::{
-        find_zd_witness_moreno, has_eigenvalue_minus_2, is_zd_moreno, moreno_decomposition,
-        verify_corollary_1_17, MorenoDecomposition,
+        MorenoDecomposition, find_zd_witness_moreno, has_eigenvalue_minus_2, is_zd_moreno,
+        moreno_decomposition, verify_corollary_1_17,
     };
-    pub use schafer_1945::{test_division, DivisionTest, ModifiedCDAlgebra};
+    pub use schafer_1945::{DivisionTest, ModifiedCDAlgebra, test_division};
 }
 
 // Full crate re-exports for qualified access
+pub use brown_1967;
+pub use brown_1972;
+pub use de_marrais_2000;
 pub use dickson_1919;
 pub use hurwitz_1898;
 pub use moreno_1997;
 pub use schafer_1945;
 pub use wilmot_2025;
-pub use brown_1967;
-pub use brown_1972;
-pub use de_marrais_2000;
 
 #[cfg(test)]
 mod tests {

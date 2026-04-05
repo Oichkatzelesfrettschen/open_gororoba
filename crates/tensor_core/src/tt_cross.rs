@@ -37,7 +37,7 @@ where
     let inv_f = 1.0 / f_pivot;
     for _ in 0..(d - 1) {
         let mut m = Mat::<f64>::zeros(1, 1);
-        m.write(0, 0, inv_f);
+        m[(0, 0)] = inv_f;
         intersection_matrices.push(m);
     }
 
@@ -87,10 +87,10 @@ where
         let v21 = f(&idx21);
         let v22 = f(&idx22);
 
-        s_k.write(0, 0, v11);
-        s_k.write(0, 1, v12);
-        s_k.write(1, 0, v21);
-        s_k.write(1, 1, v22);
+        s_k[(0, 0)] = v11;
+        s_k[(0, 1)] = v12;
+        s_k[(1, 0)] = v21;
+        s_k[(1, 1)] = v22;
 
         let det = v11 * v22 - v12 * v21;
         println!(
@@ -99,10 +99,10 @@ where
         );
         let mut inv = Mat::<f64>::zeros(2, 2);
         if det.abs() > 1e-15 {
-            inv.write(0, 0, v22 / det);
-            inv.write(0, 1, -v12 / det);
-            inv.write(1, 0, -v21 / det);
-            inv.write(1, 1, v11 / det);
+            inv[(0, 0)] = v22 / det;
+            inv[(0, 1)] = -v12 / det;
+            inv[(1, 0)] = -v21 / det;
+            inv[(1, 1)] = v11 / det;
         }
         intersection_matrices.push(inv);
     }

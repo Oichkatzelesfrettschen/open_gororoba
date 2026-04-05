@@ -30,7 +30,11 @@ impl ProvenanceRecorder {
             hasher.update(&buffer[..n]);
         }
 
-        let hash = format!("{:x}", hasher.finalize());
+        let hash: String = hasher
+            .finalize()
+            .iter()
+            .map(|byte| format!("{byte:02x}"))
+            .collect();
 
         // Append to the compatibility artifact hash ledger.
         // The canonical control plane ingests this downstream; this helper

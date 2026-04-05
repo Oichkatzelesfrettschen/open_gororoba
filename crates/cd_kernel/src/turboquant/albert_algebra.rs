@@ -89,8 +89,12 @@ impl AlbertElement {
     /// where Re(<u,v>) is the real part of the octonionic inner product.
     pub fn jordan_inner_product(&self, other: &AlbertElement) -> f64 {
         // Diagonal contribution
-        let diag_sum: f64 = self.diag.iter().zip(other.diag.iter())
-            .map(|(a, b)| a * b).sum();
+        let diag_sum: f64 = self
+            .diag
+            .iter()
+            .zip(other.diag.iter())
+            .map(|(a, b)| a * b)
+            .sum();
 
         // Octonionic inner products (real part = standard dot product)
         let x_ip: f64 = self.x.iter().zip(other.x.iter()).map(|(a, b)| a * b).sum();
@@ -179,7 +183,11 @@ mod tests {
         f.diag = [1.0, 0.0, 0.0];
         f.x = [1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
         let norm_sq_f = f.norm_sq();
-        assert_eq!(norm_sq_f, 1.0 + 2.0, "||diag(1,0,0) + x=(1,0,...)||^2 = 1 + 2*1 = 3");
+        assert_eq!(
+            norm_sq_f,
+            1.0 + 2.0,
+            "||diag(1,0,0) + x=(1,0,...)||^2 = 1 + 2*1 = 3"
+        );
     }
 
     #[test]
@@ -188,12 +196,27 @@ mod tests {
         let v: Vec<f64> = (0..64).map(|i| (i as f64 * 0.1).sin()).collect();
         let (albert_frac, residual_frac) = AlbertElement::albert_energy_fraction(&v);
 
-        println!("Albert energy fraction: {:.3} (expected ~{:.3})", albert_frac, 54.0/64.0);
-        println!("Residual energy fraction: {:.3} (expected ~{:.3})", residual_frac, 10.0/64.0);
+        println!(
+            "Albert energy fraction: {:.3} (expected ~{:.3})",
+            albert_frac,
+            54.0 / 64.0
+        );
+        println!(
+            "Residual energy fraction: {:.3} (expected ~{:.3})",
+            residual_frac,
+            10.0 / 64.0
+        );
 
         // For random vectors, energy should be approximately proportional to dimension
-        assert!(albert_frac > 0.7, "Albert should capture most energy, got {}", albert_frac);
-        assert!((albert_frac + residual_frac - 1.0).abs() < 1e-10, "Should sum to 1.0");
+        assert!(
+            albert_frac > 0.7,
+            "Albert should capture most energy, got {}",
+            albert_frac
+        );
+        assert!(
+            (albert_frac + residual_frac - 1.0).abs() < 1e-10,
+            "Should sum to 1.0"
+        );
     }
 
     #[test]

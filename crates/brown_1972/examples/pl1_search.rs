@@ -40,10 +40,16 @@ fn main() {
 
     println!("\n===== DETAILED STATISTICS =====");
     println!("Raw pairs found:        {}", sedenion.stats.pair_count);
-    println!("Unique (non-scalar):    {}", sedenion.stats.unique_pair_count);
+    println!(
+        "Unique (non-scalar):    {}",
+        sedenion.stats.unique_pair_count
+    );
     println!("Estimated elements:     {}", sedenion.stats.element_count);
     println!("Average norm:           {:.6}", sedenion.stats.avg_norm);
-    println!("Has zero divisors:      {}", sedenion.stats.has_zero_divisors);
+    println!(
+        "Has zero divisors:      {}",
+        sedenion.stats.has_zero_divisors
+    );
 
     // Calculate deduplication ratio
     if sedenion.stats.pair_count > 0 {

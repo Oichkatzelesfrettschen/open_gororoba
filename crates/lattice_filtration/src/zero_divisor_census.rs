@@ -174,8 +174,8 @@ pub fn simulate_collapse_manifold(
     steps: usize,
     threshold: f64,
 ) -> CollapseManifold {
-    use rand::Rng;
-    let mut rng = rand::thread_rng();
+    use rand::RngExt;
+    let mut rng = rand::rng();
 
     let mut walkers = Vec::with_capacity(n_particles);
     let size = vacuum.grid_size as f64;
@@ -183,18 +183,18 @@ pub fn simulate_collapse_manifold(
     // Initialize walkers with random positions and random Sedenion states
     for _ in 0..n_particles {
         let pos = [
-            rng.r#gen::<f64>() * size,
-            rng.r#gen::<f64>() * size,
-            rng.r#gen::<f64>() * size,
+            rng.random::<f64>() * size,
+            rng.random::<f64>() * size,
+            rng.random::<f64>() * size,
         ];
         let vel = [
-            (rng.r#gen::<f64>() - 0.5) * 0.1,
-            (rng.r#gen::<f64>() - 0.5) * 0.1,
-            (rng.r#gen::<f64>() - 0.5) * 0.1,
+            (rng.random::<f64>() - 0.5) * 0.1,
+            (rng.random::<f64>() - 0.5) * 0.1,
+            (rng.random::<f64>() - 0.5) * 0.1,
         ];
         let mut state = vec![0.0; 16];
         for x in &mut state {
-            *x = rng.r#gen::<f64>() - 0.5;
+            *x = rng.random::<f64>() - 0.5;
         }
         // Normalize state
         let norm = cd_norm_sq(&state).sqrt();
@@ -219,9 +219,9 @@ pub fn simulate_collapse_manifold(
                     collapse_points.push(walker.position);
                     // Respawn walker to continue sampling
                     walker.position = [
-                        rng.r#gen::<f64>() * size,
-                        rng.r#gen::<f64>() * size,
-                        rng.r#gen::<f64>() * size,
+                        rng.random::<f64>() * size,
+                        rng.random::<f64>() * size,
+                        rng.random::<f64>() * size,
                     ];
                 }
             }

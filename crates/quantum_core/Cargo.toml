@@ -9,6 +9,7 @@ license = "MIT"
 algebra_experimental = { version = "0.1.0", path = "../algebra_experimental" }
 nalgebra = { workspace = true }
 ndarray = { workspace = true }
+ndarray016 = { package = "ndarray", version = "0.16" }
 num-complex = { workspace = true }
 rand = { workspace = true }
 rand_distr = { workspace = true }

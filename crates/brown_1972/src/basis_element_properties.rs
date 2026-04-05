@@ -179,7 +179,9 @@ mod tests {
         let mut x = vec![0.0; 16];
         let mut s = seed;
         for v in &mut x {
-            s = s.wrapping_mul(6364136223846793005).wrapping_add(1442695040888963407);
+            s = s
+                .wrapping_mul(6364136223846793005)
+                .wrapping_add(1442695040888963407);
             *v = ((s >> 33) as f64) / (1u64 << 31) as f64 - 1.0;
         }
         x
@@ -188,19 +190,28 @@ mod tests {
     #[test]
     fn test_basis_commutativity_special_cases() {
         let err = verify_basis_commutativity_special_cases(16);
-        assert!(err < 1e-15, "e_0 should commute with all basis elements: err={err}");
+        assert!(
+            err < 1e-15,
+            "e_0 should commute with all basis elements: err={err}"
+        );
     }
 
     #[test]
     fn test_basis_anticommutativity() {
         let err = verify_basis_anticommutativity(16);
-        assert!(err < 1e-15, "imaginary basis elements should anticommute: err={err}");
+        assert!(
+            err < 1e-15,
+            "imaginary basis elements should anticommute: err={err}"
+        );
     }
 
     #[test]
     fn test_basis_alternativity() {
         let err = verify_basis_alternativity(16);
-        assert!(err < 1e-15, "basis elements should satisfy alternativity: err={err}");
+        assert!(
+            err < 1e-15,
+            "basis elements should satisfy alternativity: err={err}"
+        );
     }
 
     #[test]
@@ -208,10 +219,7 @@ mod tests {
         let a = random_sedenion(11);
         let b = random_sedenion(12);
         let err = verify_adjoined_associator_property(&a, &b);
-        assert!(
-            err < 1e-6,
-            "(e,A,B) + (A,e,B) should be 0: err={err}"
-        );
+        assert!(err < 1e-6, "(e,A,B) + (A,e,B) should be 0: err={err}");
     }
 
     #[test]

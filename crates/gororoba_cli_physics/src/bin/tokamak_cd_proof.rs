@@ -32,7 +32,10 @@ struct Cli {
     #[arg(long, default_value_t = 32)]
     embedding_dim: usize,
 
-    #[arg(long, default_value = "data/output/heliosphere/ablations/tokamak_cd_proof.json")]
+    #[arg(
+        long,
+        default_value = "data/output/heliosphere/ablations/tokamak_cd_proof.json"
+    )]
     out_json: String,
 }
 
@@ -63,7 +66,10 @@ fn main() {
     let dis_step = (cli.disruption_onset * n as f64) as usize;
 
     println!("=== Tokamak CD Proof of Concept ===");
-    println!("  {} steps, ELM at {}, disruption at {}", n, elm_step, dis_step);
+    println!(
+        "  {} steps, ELM at {}, disruption at {}",
+        n, elm_step, dis_step
+    );
 
     // Generate 4-channel synthetic Mirnov signals
     // Channel 0: Mirnov at theta=0 (outboard midplane)
@@ -88,9 +94,7 @@ fn main() {
 
     for t in 0..n {
         let tf = t as f64;
-        let phase = |theta: f64, freq: f64| -> f64 {
-            (2.0 * PI * freq * tf + theta).sin()
-        };
+        let phase = |theta: f64, freq: f64| -> f64 { (2.0 * PI * freq * tf + theta).sin() };
 
         // Base: quiet H-mode with organized rotating modes
         let mut b0 = 5.0 * phase(0.0, f_mode1) + 2.0 * phase(0.0, f_mode2);
@@ -101,7 +105,8 @@ fn main() {
         // ELM: sudden broadband burst at elm_step
         if t >= elm_step && t < elm_step + n / 20 {
             let elm_envelope = ((t - elm_step) as f64 / (n as f64 / 40.0)).min(1.0)
-                * (1.0 - ((t - elm_step) as f64 - n as f64 / 40.0).max(0.0) / (n as f64 / 40.0)).max(0.0);
+                * (1.0 - ((t - elm_step) as f64 - n as f64 / 40.0).max(0.0) / (n as f64 / 40.0))
+                    .max(0.0);
             let burst_amp = 20.0 * elm_envelope;
             b0 += burst_amp * noise(&mut rng_state);
             b1 += burst_amp * noise(&mut rng_state);
@@ -177,12 +182,16 @@ fn main() {
 
     let mut embedded: Vec<Vec<f64>> = Vec::new();
     for w in 0..=n_ds.saturating_sub(steps) {
-        let sum_b: f64 = (0..steps).map(|s| {
-            let i = w + s;
-            (ds0[i].powi(2) + ds1[i].powi(2) + ds2[i].powi(2) + ds3[i].powi(2)).sqrt()
-        }).sum();
+        let sum_b: f64 = (0..steps)
+            .map(|s| {
+                let i = w + s;
+                (ds0[i].powi(2) + ds1[i].powi(2) + ds2[i].powi(2) + ds3[i].powi(2)).sqrt()
+            })
+            .sum();
         let mean_b = sum_b / steps as f64;
-        if mean_b <= 0.01 || !mean_b.is_finite() { continue; }
+        if mean_b <= 0.01 || !mean_b.is_finite() {
+            continue;
+        }
 
         let mut v = vec![0.0; cli.embedding_dim];
         for s in 0..steps {
@@ -195,7 +204,11 @@ fn main() {
         embedded.push(v);
     }
 
-    println!("  Embedded {} vectors ({}D)", embedded.len(), cli.embedding_dim);
+    println!(
+        "  Embedded {} vectors ({}D)",
+        embedded.len(),
+        cli.embedding_dim
+    );
 
     if embedded.len() < 3 {
         println!("  Too few vectors");
@@ -211,11 +224,31 @@ fn main() {
 
     let phase_ranges = [
         ("Quiet H-mode", 0, elm_ds.saturating_sub(steps + 5)),
-        ("ELM crash", elm_ds.saturating_sub(2), (elm_ds + n_ds / 20).min(norms.len())),
-        ("Post-ELM recovery", elm_ds + n_ds / 20, dis_ds.saturating_sub(n_ds / 10)),
-        ("Pre-disruption (locked mode)", dis_ds.saturating_sub(n_ds / 10), dis_ds),
-        ("Disruption (thermal quench)", dis_ds, (dis_ds + n_ds / 30).min(norms.len())),
-        ("Post-disruption (current quench)", dis_ds + n_ds / 30, norms.len()),
+        (
+            "ELM crash",
+            elm_ds.saturating_sub(2),
+            (elm_ds + n_ds / 20).min(norms.len()),
+        ),
+        (
+            "Post-ELM recovery",
+            elm_ds + n_ds / 20,
+            dis_ds.saturating_sub(n_ds / 10),
+        ),
+        (
+            "Pre-disruption (locked mode)",
+            dis_ds.saturating_sub(n_ds / 10),
+            dis_ds,
+        ),
+        (
+            "Disruption (thermal quench)",
+            dis_ds,
+            (dis_ds + n_ds / 30).min(norms.len()),
+        ),
+        (
+            "Post-disruption (current quench)",
+            dis_ds + n_ds / 30,
+            norms.len(),
+        ),
     ];
 
     let mut phases = Vec::new();
@@ -223,11 +256,19 @@ fn main() {
     for &(name, start, end) in &phase_ranges {
         let start = start.min(norms.len());
         let end = end.min(norms.len());
-        if start >= end { continue; }
+        if start >= end {
+            continue;
+        }
         let seg = &norms[start..end];
         let mean = seg.iter().sum::<f64>() / seg.len() as f64;
         let max = seg.iter().cloned().fold(0.0f64, f64::max);
-        println!("    {:<35} mean={:.4}  max={:.4}  n={}", name, mean, max, seg.len());
+        println!(
+            "    {:<35} mean={:.4}  max={:.4}  n={}",
+            name,
+            mean,
+            max,
+            seg.len()
+        );
         phases.push(PhaseResult {
             name: name.to_string(),
             start_step: start * downsample,
@@ -240,7 +281,11 @@ fn main() {
     // Detect transitions (same as boundary survey)
     let global_mean = norms.iter().sum::<f64>() / norms.len() as f64;
     let global_std = {
-        let var = norms.iter().map(|&a| (a - global_mean).powi(2)).sum::<f64>() / norms.len() as f64;
+        let var = norms
+            .iter()
+            .map(|&a| (a - global_mean).powi(2))
+            .sum::<f64>()
+            / norms.len() as f64;
         var.sqrt()
     };
     let threshold = global_std * 1.5;
@@ -254,31 +299,52 @@ fn main() {
             let post: f64 = norms[i..(i + tw).min(norms.len())].iter().sum::<f64>()
                 / tw.min(norms.len() - i) as f64;
             if (post - pre).abs() > threshold {
-                if last.is_some_and(|prev| i.saturating_sub(prev) < tw) { continue; }
+                if last.is_some_and(|prev| i.saturating_sub(prev) < tw) {
+                    continue;
+                }
                 transitions.push(i);
                 last = Some(i);
             }
         }
     }
 
-    println!("\n  Transitions: {} (threshold={:.4})", transitions.len(), threshold);
+    println!(
+        "\n  Transitions: {} (threshold={:.4})",
+        transitions.len(),
+        threshold
+    );
     for &t in &transitions {
         let orig_step = t * downsample;
-        let phase_name = if orig_step < elm_step { "quiet" }
-            else if orig_step < elm_step + n / 20 { "ELM" }
-            else if orig_step < dis_step - n / 10 { "recovery" }
-            else if orig_step < dis_step { "pre-disruption" }
-            else if orig_step < dis_step + n / 30 { "disruption" }
-            else { "post-disruption" };
+        let phase_name = if orig_step < elm_step {
+            "quiet"
+        } else if orig_step < elm_step + n / 20 {
+            "ELM"
+        } else if orig_step < dis_step - n / 10 {
+            "recovery"
+        } else if orig_step < dis_step {
+            "pre-disruption"
+        } else if orig_step < dis_step + n / 30 {
+            "disruption"
+        } else {
+            "post-disruption"
+        };
         println!("    step {} ({}) A={:.4}", orig_step, phase_name, norms[t]);
     }
 
     // Compute lead times
-    let elm_transition = transitions.iter().find(|&&t| t * downsample >= elm_step.saturating_sub(n / 50) && t * downsample <= elm_step + n / 20);
-    let dis_transition = transitions.iter().find(|&&t| t * downsample >= dis_step.saturating_sub(n / 8) && t * downsample <= dis_step + n / 30);
+    let elm_transition = transitions.iter().find(|&&t| {
+        t * downsample >= elm_step.saturating_sub(n / 50) && t * downsample <= elm_step + n / 20
+    });
+    let dis_transition = transitions.iter().find(|&&t| {
+        t * downsample >= dis_step.saturating_sub(n / 8) && t * downsample <= dis_step + n / 30
+    });
 
-    let elm_lead = elm_transition.map(|&t| (elm_step as f64 - t as f64 * downsample as f64) / n as f64 * 100.0).unwrap_or(0.0);
-    let dis_lead = dis_transition.map(|&t| (dis_step as f64 - t as f64 * downsample as f64) / n as f64 * 100.0).unwrap_or(0.0);
+    let elm_lead = elm_transition
+        .map(|&t| (elm_step as f64 - t as f64 * downsample as f64) / n as f64 * 100.0)
+        .unwrap_or(0.0);
+    let dis_lead = dis_transition
+        .map(|&t| (dis_step as f64 - t as f64 * downsample as f64) / n as f64 * 100.0)
+        .unwrap_or(0.0);
 
     println!("\n  ELM detection lead: {:.1}% of discharge", elm_lead);
     println!("  Disruption detection lead: {:.1}% of discharge", dis_lead);
@@ -288,7 +354,10 @@ fn main() {
          Quiet H-mode has organized rotating modes (low A). ELM burst produces A spike. Pre-disruption locked mode growth produces A rise. \
          Thermal quench produces maximum A. {}",
         if elm_lead > 0.0 && dis_lead > 0.0 {
-            format!("ELM detected with {:.1}% lead, disruption with {:.1}% lead.", elm_lead, dis_lead)
+            format!(
+                "ELM detected with {:.1}% lead, disruption with {:.1}% lead.",
+                elm_lead, dis_lead
+            )
         } else {
             "Lead time detection requires tuning of transition threshold.".to_string()
         }
@@ -305,7 +374,16 @@ fn main() {
         interpretation: interp,
     };
 
-    fs::create_dir_all(std::path::Path::new(&cli.out_json).parent().unwrap_or(std::path::Path::new("."))).ok();
-    fs::write(&cli.out_json, serde_json::to_string_pretty(&result).unwrap()).unwrap();
+    fs::create_dir_all(
+        std::path::Path::new(&cli.out_json)
+            .parent()
+            .unwrap_or(std::path::Path::new(".")),
+    )
+    .ok();
+    fs::write(
+        &cli.out_json,
+        serde_json::to_string_pretty(&result).unwrap(),
+    )
+    .unwrap();
     println!("\n  Wrote {}", cli.out_json);
 }

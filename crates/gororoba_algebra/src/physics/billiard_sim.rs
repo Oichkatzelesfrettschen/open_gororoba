@@ -228,7 +228,7 @@ impl HyperbolicBilliard {
         let mut rng = ChaCha8Rng::seed_from_u64(seed);
         let mut vel = LorentzVec::zero();
         for c in vel.coords.iter_mut().take(9) {
-            *c = rng.gen_range(-1.0..1.0);
+            *c = rng.random_range(-1.0..1.0);
         }
         // Make tangent: vel <- vel - <pos,vel>/<pos,pos> * pos = vel + <pos,vel> * pos
         // (since <pos,pos> = -1)

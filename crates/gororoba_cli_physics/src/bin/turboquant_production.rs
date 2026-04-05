@@ -36,7 +36,10 @@ struct Cli {
     #[arg(long, default_value_t = 3)]
     bits: u32,
 
-    #[arg(long, default_value = "data/output/heliosphere/ablations/turboquant_production.json")]
+    #[arg(
+        long,
+        default_value = "data/output/heliosphere/ablations/turboquant_production.json"
+    )]
     out_json: PathBuf,
 }
 
@@ -60,13 +63,18 @@ fn main() -> Result<()> {
     let cli = Cli::parse();
 
     println!("=== TurboQuant Production LLM Benchmark ===");
-    println!("  {} layers, {} heads, d={}, seq={}, {}-bit",
-        cli.n_layers, cli.n_heads, cli.head_dim, cli.seq_len, cli.bits);
+    println!(
+        "  {} layers, {} heads, d={}, seq={}, {}-bit",
+        cli.n_layers, cli.n_heads, cli.head_dim, cli.seq_len, cli.bits
+    );
 
     let d = cli.head_dim;
     let total_vectors = cli.n_layers * cli.n_heads * cli.seq_len;
-    println!("  Total KV vectors: {} ({:.1}M)",
-        total_vectors, total_vectors as f64 / 1e6);
+    println!(
+        "  Total KV vectors: {} ({:.1}M)",
+        total_vectors,
+        total_vectors as f64 / 1e6
+    );
 
     // Generate random KV data
     use rand::SeedableRng;
@@ -117,11 +125,20 @@ fn main() -> Result<()> {
     };
 
     println!("\n  Results:");
-    println!("  Quantize time:  {:.1} ms ({:.0} kvec/s)", quantize_ms, quantize_throughput);
-    println!("  KV memory:      {:.1} MB compressed vs {:.1} MB fp16 ({:.1}x)",
-        compressed_mb, fp16_mb, fp16_mb / compressed_mb);
-    println!("  Tokens/sec:     {:.0} (quantization-only, excl. attention compute)",
-        tokens_per_sec);
+    println!(
+        "  Quantize time:  {:.1} ms ({:.0} kvec/s)",
+        quantize_ms, quantize_throughput
+    );
+    println!(
+        "  KV memory:      {:.1} MB compressed vs {:.1} MB fp16 ({:.1}x)",
+        compressed_mb,
+        fp16_mb,
+        fp16_mb / compressed_mb
+    );
+    println!(
+        "  Tokens/sec:     {:.0} (quantization-only, excl. attention compute)",
+        tokens_per_sec
+    );
 
     if let Some(parent) = cli.out_json.parent() {
         fs::create_dir_all(parent)?;

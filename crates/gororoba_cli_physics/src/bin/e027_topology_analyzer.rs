@@ -15,7 +15,7 @@
 //! 8. Output TOML + CSV results for E-027 Phase 2 validation
 
 use clap::Parser;
-use rand::{Rng, SeedableRng};
+use rand::{RngExt, SeedableRng};
 use rand_chacha::ChaCha8Rng;
 use sign_imbalance::{
     bridge::{ImbalanceViscosityBridge, SedenionField},
@@ -206,7 +206,7 @@ fn permutation_test(
     for _ in 0..n_permutations {
         // Fisher-Yates shuffle
         for i in (1..shuffled.len()).rev() {
-            let j = rng.gen_range(0..=i);
+            let j = rng.random_range(0..=i);
             shuffled.swap(i, j);
         }
         null_correlations.push(pearson_correlation(b0_values, &shuffled));
@@ -449,7 +449,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             for x in 0..nx {
                 let s = sedenion_field.get_mut(x, y, z);
                 for component in s.iter_mut().take(16) {
-                    *component += rng.gen_range(-0.3..0.3);
+                    *component += rng.random_range(-0.3..0.3);
                 }
             }
         }

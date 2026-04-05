@@ -13,7 +13,7 @@ use gororoba_algebra::{
     construction::cayley_dickson::{cd_multiply, cd_norm_sq},
     gpu::TensorAVT,
 };
-use rand::SeedableRng;
+use rand::{RngExt, SeedableRng};
 use rand_chacha::ChaCha8Rng;
 use std::{io::Write, path::PathBuf, time::Instant};
 
@@ -41,8 +41,7 @@ struct Cli {
 
 /// Generate a random CD element of given dimension using the RNG.
 fn random_cd_element(dim: usize, rng: &mut ChaCha8Rng) -> Vec<f64> {
-    use rand::Rng as _;
-    (0..dim).map(|_| rng.gen_range(-1.0..1.0)).collect()
+    (0..dim).map(|_| rng.random_range(-1.0..1.0)).collect()
 }
 
 /// Compute the associator [a,b,c] = (ab)c - a(bc).

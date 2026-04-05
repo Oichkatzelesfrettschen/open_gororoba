@@ -13,7 +13,7 @@
 //! Reference: STAR Nature 2026, Supplementary Methods.
 
 use nalgebra::{Matrix3, Vector3};
-use rand::Rng;
+use rand::{Rng, RngExt};
 
 use crate::spin_event::SpinEvent;
 
@@ -135,7 +135,7 @@ pub fn generate_events<R: Rng>(
         let u = sample_uniform_s2(rng);
         let v = sample_uniform_s2(rng);
         let pdf = joint_pdf(a, b, t, alpha1, alpha2, &u, &v);
-        let xi: f64 = rng.gen_range(0.0..M_BOUND);
+        let xi: f64 = rng.random_range(0.0..M_BOUND);
         if xi < pdf {
             events.push(SpinEvent::new(u, v, alpha1, alpha2));
         }

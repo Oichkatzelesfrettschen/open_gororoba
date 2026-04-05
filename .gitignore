@@ -193,6 +193,9 @@ credentials.*
 # real report artifacts that have ownership and removal policy.
 *.md
 !docs/THEOREMS.md
+!docs/REQUIREMENTS.md
+!docs/requirements/
+!docs/requirements/*.md
 !docs/generated/THEOREMS_REGISTRY_MIRROR.md
 !docs/book/src/proofs/index.md
 ![Aa][Gg][Ee][Nn][Tt][Ss].md

@@ -50,12 +50,14 @@ impl ZeroDivisorPair {
     pub fn display(&self) -> String {
         format!(
             "A: [{}...], B: [{}...] (dim {})",
-            self.a.iter()
+            self.a
+                .iter()
                 .take(3)
                 .map(|x| format!("{:.2}", x))
                 .collect::<Vec<_>>()
                 .join(", "),
-            self.b.iter()
+            self.b
+                .iter()
                 .take(3)
                 .map(|x| format!("{:.2}", x))
                 .collect::<Vec<_>>()
@@ -264,8 +266,7 @@ impl Pl1Emulator {
                             if n_a1.abs() > 1e-15 {
                                 let a1_b1 = cd_multiply(&a1, &b1);
                                 let a1_b1_a2 = cd_multiply(&a1_b1, &a2);
-                                let b2: Vec<f64> =
-                                    a1_b1_a2.iter().map(|x| x / n_a1).collect();
+                                let b2: Vec<f64> = a1_b1_a2.iter().map(|x| x / n_a1).collect();
 
                                 // Construct full sedenion pair
                                 let mut a = vec![0.0; 16];
@@ -411,7 +412,10 @@ impl Pl1Emulator {
     pub fn print_pair_analysis(&self) {
         let unique = self.deduplicate_pairs();
 
-        println!("\n===== UNIQUE PAIR ANALYSIS ({} unique pairs) =====\n", unique.len());
+        println!(
+            "\n===== UNIQUE PAIR ANALYSIS ({} unique pairs) =====\n",
+            unique.len()
+        );
 
         for (idx, pair) in unique.iter().enumerate() {
             let a_norm = cd_norm_sq(&pair.a);
@@ -430,7 +434,9 @@ impl Pl1Emulator {
             print!("  A = [");
             for (i, &val) in pair.a.iter().enumerate() {
                 if val.abs() > 1e-10 {
-                    if i > 0 { print!(", "); }
+                    if i > 0 {
+                        print!(", ");
+                    }
                     print!("{}={:.4}", i, val);
                 }
             }
@@ -440,7 +446,9 @@ impl Pl1Emulator {
             print!("  B = [");
             for (i, &val) in pair.b.iter().enumerate() {
                 if val.abs() > 1e-10 {
-                    if i > 0 { print!(", "); }
+                    if i > 0 {
+                        print!(", ");
+                    }
                     print!("{}={:.4}", i, val);
                 }
             }
@@ -449,7 +457,10 @@ impl Pl1Emulator {
             // Verify
             let product = cd_multiply(&pair.a, &pair.b);
             let product_norm = cd_norm_sq(&product).sqrt();
-            println!("  Verification: ||A*B|| = {:.2e} (should be ~0)", product_norm);
+            println!(
+                "  Verification: ||A*B|| = {:.2e} (should be ~0)",
+                product_norm
+            );
             println!();
         }
     }
@@ -460,13 +471,17 @@ impl Pl1Emulator {
             "===== ZERO DIVISOR SEARCH REPORT =====\n\
              Dimension: {}\n\
              {}:\n",
-            self.dim, self.stats.report()
+            self.dim,
+            self.stats.report()
         );
 
         if self.pairs.is_empty() {
             report.push_str("No zero divisor pairs found.\n");
         } else {
-            report.push_str(&format!("\nZero Divisor Pairs (showing first 50 of {}):\n", self.pairs.len()));
+            report.push_str(&format!(
+                "\nZero Divisor Pairs (showing first 50 of {}):\n",
+                self.pairs.len()
+            ));
             for (idx, pair) in self.pairs.iter().take(50).enumerate() {
                 report.push_str(&format!("{}: {}\n", idx + 1, pair.display()));
             }
@@ -518,14 +533,10 @@ mod tests {
         let mut b = vec![0.0; 16];
 
         // Using the CD table structure
-        a[8] = 1.0;  // e8
-        b[9] = 1.0;  // e9
+        a[8] = 1.0; // e8
+        b[9] = 1.0; // e9
 
-        let pair = ZeroDivisorPair {
-            a,
-            b,
-            dim: 16,
-        };
+        let pair = ZeroDivisorPair { a, b, dim: 16 };
 
         // Compute product to verify
         let product = cd_multiply(&pair.a, &pair.b);
@@ -562,8 +573,12 @@ mod tests {
         let emulator = Pl1Emulator::new(16);
 
         // Test with arbitrary elements
-        let a = vec![1.0, 0.5, 0.3, 0.2, 0.1, 0.0, 0.0, 0.0, 1.0, 0.5, 0.3, 0.2, 0.1, 0.0, 0.0, 0.0];
-        let b = vec![2.0, 1.0, 0.5, 0.3, 0.0, 0.1, 0.0, 0.0, 2.0, 1.0, 0.5, 0.3, 0.0, 0.1, 0.0, 0.0];
+        let a = vec![
+            1.0, 0.5, 0.3, 0.2, 0.1, 0.0, 0.0, 0.0, 1.0, 0.5, 0.3, 0.2, 0.1, 0.0, 0.0, 0.0,
+        ];
+        let b = vec![
+            2.0, 1.0, 0.5, 0.3, 0.0, 0.1, 0.0, 0.0, 2.0, 1.0, 0.5, 0.3, 0.0, 0.1, 0.0, 0.0,
+        ];
 
         let result = emulator.check_major_theorem(&a, &b);
         let _ = result.is_zero_divisor; // Just check it computes
@@ -581,7 +596,10 @@ mod tests {
         other[1] = 1.0;
 
         let result = emulator.check_major_theorem(&one, &other);
-        assert!(!result.is_zero_divisor, "Identity with non-zero should not be ZD");
+        assert!(
+            !result.is_zero_divisor,
+            "Identity with non-zero should not be ZD"
+        );
     }
 
     #[test]

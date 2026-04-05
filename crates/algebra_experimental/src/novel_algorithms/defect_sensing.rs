@@ -41,7 +41,7 @@ pub fn compute_associator(a: &[f64; 16], b: &[f64; 16], c: &[f64; 16]) -> [f64; 
 
     let ab_c: [f64; 16] = cd_multiply(&ab, c).try_into().unwrap();
     let a_bc: [f64; 16] = cd_multiply(a, &bc).try_into().unwrap();
-    
+
     let mut result = [0.0; 16];
     for i in 0..16 {
         result[i] = ab_c[i] - a_bc[i];
@@ -56,21 +56,21 @@ pub fn compute_associator(a: &[f64; 16], b: &[f64; 16], c: &[f64; 16]) -> [f64; 
 /// in the dataset's embedding.
 pub fn scan_anomalies_via_flux(dataset: &[[f64; 16]], threshold: f64) -> Vec<usize> {
     let mut anomalies = Vec::new();
-    
+
     // Use a sliding window of 3 to measure local non-associativity
     for i in 0..dataset.len().saturating_sub(2) {
         let a = &dataset[i];
-        let b = &dataset[i+1];
-        let c = &dataset[i+2];
-        
+        let b = &dataset[i + 1];
+        let c = &dataset[i + 2];
+
         let assoc = compute_associator(a, b, c);
         let flux = cd_norm_sq(&assoc).sqrt();
-        
+
         if flux > threshold {
             anomalies.push(i + 1); // Mark the center point as the anomaly locus
         }
     }
-    
+
     anomalies
 }
 
@@ -92,19 +92,24 @@ mod tests {
         let mut dataset = vec![[0.0; 16]; 5];
 
         // Normal collinear data (real axis only): associator = 0.
-        dataset[0][0] = 1.0;  // e_0
-        dataset[1][0] = 2.0;  // 2*e_0
+        dataset[0][0] = 1.0; // e_0
+        dataset[1][0] = 2.0; // 2*e_0
 
         // Anomalous window [2,3,4] = (e_1, e_2, e_4): A = 2*e_7, flux = 2.0.
-        dataset[2][1] = 1.0;  // e_1
-        dataset[3][2] = 1.0;  // e_2
-        dataset[4][4] = 1.0;  // e_4
+        dataset[2][1] = 1.0; // e_1
+        dataset[3][2] = 1.0; // e_2
+        dataset[4][4] = 1.0; // e_4
 
         let anomalies = scan_anomalies_via_flux(&dataset, 0.1);
         // Window [2,3,4] has flux 2.0 >> 0.1 -- should detect center point 3.
-        assert!(!anomalies.is_empty(),
-            "Expected non-zero associator A(e_1,e_2,e_4)=2*e_7 to be detected");
-        assert!(anomalies.contains(&3),
-            "Expected anomaly at center index 3 (window i=2), got {:?}", anomalies);
+        assert!(
+            !anomalies.is_empty(),
+            "Expected non-zero associator A(e_1,e_2,e_4)=2*e_7 to be detected"
+        );
+        assert!(
+            anomalies.contains(&3),
+            "Expected anomaly at center index 3 (window i=2), got {:?}",
+            anomalies
+        );
     }
 }

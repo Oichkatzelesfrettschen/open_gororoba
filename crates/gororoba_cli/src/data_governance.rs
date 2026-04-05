@@ -1014,7 +1014,7 @@ pub fn collect_files_under(root: &Path) -> Result<Vec<String>> {
 pub fn sha256_file(path: &Path) -> Result<String> {
     let bytes = std::fs::read(path).with_context(|| format!("read {}", path.display()))?;
     let digest = Sha256::digest(&bytes);
-    Ok(format!("{digest:x}"))
+    Ok(digest.iter().map(|byte| format!("{byte:02x}")).collect())
 }
 
 fn default_true() -> bool {

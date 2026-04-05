@@ -20,7 +20,7 @@
 //! - White et al. (2021): EPJ C 81, 677. DOI:10.1140/epjc/s10052-021-09484-z
 //! - Gies, Langfeld, Moyaerts (2003): JHEP 0306, 018
 
-use rand::Rng;
+use rand::RngExt;
 use rand_distr::StandardNormal;
 
 /// A closed worldline loop in 3D.
@@ -81,7 +81,7 @@ impl WorldlineLoop {
 /// # Arguments
 /// * `n_points` - Number of points on the loop (must be >= 3).
 /// * `rng` - Random number generator.
-pub fn generate_unit_loop<R: Rng>(n_points: usize, rng: &mut R) -> WorldlineLoop {
+pub fn generate_unit_loop<R: RngExt>(n_points: usize, rng: &mut R) -> WorldlineLoop {
     assert!(n_points >= 3, "v-loop requires at least 3 points");
 
     let n = n_points;
@@ -171,9 +171,7 @@ mod tests {
         // Equivalently, sum of displacements should be zero
         let mut disp_sum = wl.points[0];
         for pair in wl.points.windows(2).skip(0) {
-            for (ds, (&curr, &prev)) in disp_sum
-                .iter_mut()
-                .zip(pair[1].iter().zip(pair[0].iter()))
+            for (ds, (&curr, &prev)) in disp_sum.iter_mut().zip(pair[1].iter().zip(pair[0].iter()))
             {
                 *ds += curr - prev;
             }
@@ -194,9 +192,7 @@ mod tests {
         // Check that displacements sum to zero
         let mut disp_sum = wl.points[0];
         for pair in wl.points.windows(2).skip(0) {
-            for (ds, (&curr, &prev)) in disp_sum
-                .iter_mut()
-                .zip(pair[1].iter().zip(pair[0].iter()))
+            for (ds, (&curr, &prev)) in disp_sum.iter_mut().zip(pair[1].iter().zip(pair[0].iter()))
             {
                 *ds += curr - prev;
             }
@@ -234,10 +230,7 @@ mod tests {
         let scale = t.sqrt();
         for (sp, op) in scaled.iter().zip(wl.points.iter()) {
             for (&s, &o) in sp.iter().zip(op.iter()) {
-                assert!(
-                    (s - o * scale).abs() < 1e-14,
-                    "scaling failed"
-                );
+                assert!((s - o * scale).abs() < 1e-14, "scaling failed");
             }
         }
     }

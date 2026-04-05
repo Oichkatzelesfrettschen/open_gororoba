@@ -1779,13 +1779,13 @@
 //! (Xϕ(1) , . . . , Xϕ(n) )
 //! Assume that the monoidal category L is also symmetric. The corresponding
 //! b ϕ,τ from the
-//! additional structure allows one to define a natural isomorphism 
+//! additional structure allows one to define a natural isomorphism
 //! τ
 //! τ
 //! ϕ,τ
 //! b
 //! functor  to the functor  ◦ ϕ.
-//! b The correspondence ϕ 7→ 
+//! b The correspondence ϕ 7→
 //! is of course
 //! functorial. Moreover, given σ, τ ∈ Tn and ϕ ∈ Sn , the following diagram is
 //! commutative
@@ -1793,7 +1793,7 @@
 //! →
 //! −
 //! →
-//! − 
+//! −
 //! σ ϕ(
 //! b X)
 //! σ X
@@ -1807,7 +1807,7 @@
 //! σ
 //! τ
 //! b ϕ,τ
-//! 
+//!
 //!
 //! →
 //! −
@@ -2344,7 +2344,7 @@
 //!
 //! where the µi ’s and the νj ’s are elements of k. It follows that, P
 //! given a finite
-//! 
+//!
 //! family
 //! (s
 //! )
@@ -4120,9 +4120,9 @@
 //! ·N
 //! ∂x
 //!  ∂x
-//! 
-//! 
-//! 
+//!
+//!
+//!
 //! ∂M
 //! ∂N
 //! ∂DM · N
@@ -4132,11 +4132,11 @@
 //! ∂x
 //! ∂x
 //! ∂x
-//! 
-//! 
-//! 
-//! 
-//! 
+//!
+//!
+//!
+//!
+//!
 //! ∂ (M ) R
 //! ∂M
 //! ∂R
@@ -4161,8 +4161,8 @@
 //! ∂x · N is linear in both M
 //! and N . There are two reduction rules:
 //! (λx M ) R β M [R/x]
-//! 
-//! 
+//!
+//!
 //! ∂M
 //! ·N
 //! D(λx M ) · N βd λx
@@ -4216,8 +4216,8 @@
 //! In the finite resource calculus, it is natural to perform several βd -reductions
 //! in one step, and one gets
 //! (P
-//! 
-//! 
+//!
+//!
 //! if degs x = n
 //! f ∈Sn s sf (1) /x1 , . . . , sf (n) /xn
 //! hλx si S βd
@@ -4945,8 +4945,8 @@
 //!
 //! t∈∆x
 //!
-//! 
-//! 
+//!
+//!
 //! X
 //! ∂t
 //! 1
@@ -4957,9 +4957,9 @@
 //! (d)
 //! t∈∆x
 //!
-//! 
-//! 
-//! 
+//!
+//!
+//!
 //! X
 //! ∂t [h0 /h]
 //! 1
@@ -4973,8 +4973,8 @@
 //!
 //! t∈∆x
 //!
-//! 
-//! 
+//!
+//!
 //! X
 //! ∂t [h0 /h]
 //! 1
@@ -5676,7 +5676,7 @@
 //! L
 //! Thanks to ∗-autonomy, the coproduct of the Xi ’s is given by
 //! i∈I Xi =
-//! 
+//!
 //! ˘
 //! L
 //! Q
@@ -5779,7 +5779,7 @@
 //! transformation cX : !X → !X ⊗ !X and the weakening morphism wX : !X → 1.
 //! We check that (wX )m,∗ = δm,[] and that (cX )m,(p,q) = δm,p+q . We also get the
 //! cocontraction natural transformation cX : !X ⊗ !X → !X and the coweakening morphism wX : 1 → !X. And we check that (wX )∗,m = δm,[] , and that
-//! 
+//!
 //! (cX )(p,q),m = p+q
 //! p δm,p+q where
 //!  

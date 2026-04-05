@@ -5,7 +5,7 @@
 //!
 //! Authoritative source: `registry/book_docs.toml`.
 //!
-//! - Updated: 2026-03-25
+//! - Updated: 2026-04-04
 //! - Source markdown glob: `docs/book/src/**/*.md`
 //! - Document count: 29
 //!

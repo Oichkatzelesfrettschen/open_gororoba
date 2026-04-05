@@ -2088,7 +2088,8 @@ fn sha256_file(path: &Path) -> Result<String, TransferError> {
         }
         hasher.update(&buffer[..bytes]);
     }
-    Ok(format!("{:x}", hasher.finalize()))
+    let digest = hasher.finalize();
+    Ok(digest.iter().map(|byte| format!("{byte:02x}")).collect())
 }
 
 fn escape_tsv_field(value: &str) -> String {

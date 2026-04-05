@@ -120,9 +120,8 @@ pub fn allocate_bits_to_levels(
     }
 
     // Compute current total bits
-    let current_total = |levels: &[TowerLevel]| -> usize {
-        levels.iter().map(|l| l.dim * l.bits as usize).sum()
-    };
+    let current_total =
+        |levels: &[TowerLevel]| -> usize { levels.iter().map(|l| l.dim * l.bits as usize).sum() };
 
     // Greedy promotion: add 1 bit to the level with highest improvement potential
     // Higher tower levels (more fragile) get priority
@@ -219,15 +218,22 @@ pub fn compare_hierarchical_vs_uniform(
 
     for v in vectors {
         let (_, recon) = hierarchical_quantize(v, &levels, seed, use_wht);
-        let mse: f64 = v.iter().zip(recon.iter())
-            .map(|(a, b)| (a - b).powi(2)).sum::<f64>() / d as f64;
+        let mse: f64 = v
+            .iter()
+            .zip(recon.iter())
+            .map(|(a, b)| (a - b).powi(2))
+            .sum::<f64>()
+            / d as f64;
         hier_mse_sum += mse;
 
         // Per-level MSE
         for (li, level) in levels.iter().enumerate() {
-            let level_mse: f64 = v[level.start..level.end].iter()
+            let level_mse: f64 = v[level.start..level.end]
+                .iter()
                 .zip(recon[level.start..level.end].iter())
-                .map(|(a, b)| (a - b).powi(2)).sum::<f64>() / level.dim as f64;
+                .map(|(a, b)| (a - b).powi(2))
+                .sum::<f64>()
+                / level.dim as f64;
             per_level_mse[li] += level_mse;
         }
     }
@@ -241,8 +247,12 @@ pub fn compare_hierarchical_vs_uniform(
         let compressed = tq_uniform.quantize(v, &mut buf);
         let mut recon = vec![0.0f64; d];
         tq_uniform.dequantize(&compressed, &mut buf, &mut recon);
-        let mse: f64 = v.iter().zip(recon.iter())
-            .map(|(a, b)| (a - b).powi(2)).sum::<f64>() / d as f64;
+        let mse: f64 = v
+            .iter()
+            .zip(recon.iter())
+            .map(|(a, b)| (a - b).powi(2))
+            .sum::<f64>()
+            / d as f64;
         uniform_mse_sum += mse;
     }
 
@@ -263,7 +273,9 @@ mod tests {
     fn random_vectors(n: usize, d: usize, seed: u64) -> Vec<Vec<f64>> {
         let mut rng = ChaCha20Rng::seed_from_u64(seed);
         let normal = StandardNormal;
-        (0..n).map(|_| (0..d).map(|_| normal.sample(&mut rng)).collect()).collect()
+        (0..n)
+            .map(|_| (0..d).map(|_| normal.sample(&mut rng)).collect())
+            .collect()
     }
 
     #[test]
@@ -302,14 +314,21 @@ mod tests {
         assert!(levels.iter().all(|l| l.bits >= 2));
         // Total should not exceed budget
         let total_bits: usize = levels.iter().map(|l| l.dim * l.bits as usize).sum();
-        assert!(total_bits <= budget, "Total {} exceeds budget {}", total_bits, budget);
+        assert!(
+            total_bits <= budget,
+            "Total {} exceeds budget {}",
+            total_bits,
+            budget
+        );
 
         // Higher levels should generally have more bits (fragility heuristic)
         // (not strictly guaranteed but likely)
         println!("Bit allocation:");
         for (i, level) in levels.iter().enumerate() {
-            println!("  Level {} ({}D, [{},{})): {} bits",
-                i, level.dim, level.start, level.end, level.bits);
+            println!(
+                "  Level {} ({}D, [{},{})): {} bits",
+                i, level.dim, level.start, level.end, level.bits
+            );
         }
     }
 
@@ -326,8 +345,12 @@ mod tests {
         assert_eq!(indices.len(), levels.len());
         assert_eq!(recon.len(), d);
 
-        let mse: f64 = v.iter().zip(recon.iter())
-            .map(|(a, b)| (a - b).powi(2)).sum::<f64>() / d as f64;
+        let mse: f64 = v
+            .iter()
+            .zip(recon.iter())
+            .map(|(a, b)| (a - b).powi(2))
+            .sum::<f64>()
+            / d as f64;
         assert!(mse < 0.5, "Hierarchical MSE too high: {}", mse);
     }
 
@@ -342,8 +365,13 @@ mod tests {
 
         println!("Hierarchical MSE: {:.6}", hier_mse);
         println!("Uniform MSE:      {:.6}", uniform_mse);
-        println!("Per-level MSE: {:?}", per_level_mse.iter()
-            .map(|m| format!("{:.4}", m)).collect::<Vec<_>>());
+        println!(
+            "Per-level MSE: {:?}",
+            per_level_mse
+                .iter()
+                .map(|m| format!("{:.4}", m))
+                .collect::<Vec<_>>()
+        );
 
         // Both should be finite and positive
         assert!(hier_mse > 0.0 && hier_mse.is_finite());

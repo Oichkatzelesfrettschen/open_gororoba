@@ -54,8 +54,8 @@ fn main() -> Result<()> {
     let cli = Cli::parse();
     println!("=== ISM Rotation Measure CD Analysis ===");
 
-    use rand::Rng;
-    let mut rng = rand::thread_rng();
+    use rand::RngExt;
+    let mut rng = rand::rng();
     let n = cli.grid_size;
 
     // Generate RM grids for 4 ISM phases
@@ -69,7 +69,7 @@ fn main() -> Result<()> {
                     let b = (j as f64 / n as f64 - 0.5) * 180.0;
                     // Large-scale Galactic field: RM ~ 20 * cos(l) * cos(b)
                     rm[i * n + j] = 20.0 * (l.to_radians()).cos() * (b.to_radians()).cos()
-                        + 3.0 * rng.gen_range(-1.0..1.0);
+                        + 3.0 * rng.random_range(-1.0..1.0);
                 }
             }
             rm
@@ -84,7 +84,7 @@ fn main() -> Result<()> {
                     let r = (x * x + y * y).sqrt();
                     // Shell structure at r=0.2, enhanced RM
                     let shell = 150.0 * (-(r - 0.2).powi(2) / 0.01).exp();
-                    rm[i * n + j] = 30.0 + shell + 10.0 * rng.gen_range(-1.0..1.0);
+                    rm[i * n + j] = 30.0 + shell + 10.0 * rng.random_range(-1.0..1.0);
                 }
             }
             rm
@@ -102,9 +102,9 @@ fn main() -> Result<()> {
                         let dx = i as f64 / n as f64 - cx;
                         let dy = j as f64 / n as f64 - cy;
                         let dist = (dx * dx + dy * dy).sqrt();
-                        val += 200.0 * (-dist / 0.05).exp() * (1.0 + rng.gen_range(-0.5..0.5));
+                        val += 200.0 * (-dist / 0.05).exp() * (1.0 + rng.random_range(-0.5..0.5));
                     }
-                    rm[i * n + j] = val + 30.0 * rng.gen_range(-1.0..1.0);
+                    rm[i * n + j] = val + 30.0 * rng.random_range(-1.0..1.0);
                 }
             }
             rm
@@ -116,20 +116,21 @@ fn main() -> Result<()> {
             for mode in 1..20 {
                 let k = mode as f64;
                 let amp = 50.0 * k.powf(-5.0 / 6.0); // sqrt of P(k)
-                let phase_x = rng.gen_range(0.0..2.0 * PI);
-                let phase_y = rng.gen_range(0.0..2.0 * PI);
+                let phase_x = rng.random_range(0.0..2.0 * PI);
+                let phase_y = rng.random_range(0.0..2.0 * PI);
                 for i in 0..n {
                     for j in 0..n {
                         let x = i as f64 / n as f64;
                         let y = j as f64 / n as f64;
-                        rm[i * n + j] += amp * (2.0 * PI * k * x + phase_x).sin()
+                        rm[i * n + j] += amp
+                            * (2.0 * PI * k * x + phase_x).sin()
                             * (2.0 * PI * k * y + phase_y).cos();
                     }
                 }
             }
             // Add noise
             for v in rm.iter_mut() {
-                *v += 5.0 * rng.gen_range(-1.0..1.0);
+                *v += 5.0 * rng.random_range(-1.0..1.0);
             }
             rm
         }),
@@ -180,8 +181,15 @@ fn main() -> Result<()> {
             continue;
         }
 
-        let norms =
-            cd_kernel::batch_sliding_associator_norms_dispatch(&embedded, cli.embedding_dim, if cli.embedding_dim >= 128 { "f32" } else { "f64" });
+        let norms = cd_kernel::batch_sliding_associator_norms_dispatch(
+            &embedded,
+            cli.embedding_dim,
+            if cli.embedding_dim >= 128 {
+                "f32"
+            } else {
+                "f64"
+            },
+        );
 
         let mean_a = norms.iter().sum::<f64>() / norms.len().max(1) as f64;
         let max_a = norms.iter().cloned().fold(0.0f64, f64::max);
@@ -207,8 +215,11 @@ fn main() -> Result<()> {
         results.get(2).map(|r| r.mean_a).unwrap_or(0.0),
         results.get(3).map(|r| r.mean_a).unwrap_or(0.0),
         if results.first().map(|r| r.mean_a).unwrap_or(0.0) > 1e-15 {
-            results.get(3).map(|r| r.mean_a).unwrap_or(0.0) / results.first().map(|r| r.mean_a).unwrap_or(1.0)
-        } else { 0.0 }
+            results.get(3).map(|r| r.mean_a).unwrap_or(0.0)
+                / results.first().map(|r| r.mean_a).unwrap_or(1.0)
+        } else {
+            0.0
+        }
     );
     println!("\n  {}", interp);
 

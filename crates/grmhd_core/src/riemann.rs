@@ -50,7 +50,10 @@ pub fn hll_flux(
         let ur_lo = f64x4::from([u_r[0], u_r[1], u_r[2], u_r[3]]);
         let hll_lo = (sr4 * fl_lo - sl4 * fr_lo + slsr4 * (ur_lo - ul_lo)) * denom;
         let lo = hll_lo.to_array();
-        f_hll[0] = lo[0]; f_hll[1] = lo[1]; f_hll[2] = lo[2]; f_hll[3] = lo[3];
+        f_hll[0] = lo[0];
+        f_hll[1] = lo[1];
+        f_hll[2] = lo[2];
+        f_hll[3] = lo[3];
 
         // Last 4 components (1 momentum + 3 B-field)
         let fl_hi = f64x4::from([f_l[4], f_l[5], f_l[6], f_l[7]]);
@@ -59,7 +62,10 @@ pub fn hll_flux(
         let ur_hi = f64x4::from([u_r[4], u_r[5], u_r[6], u_r[7]]);
         let hll_hi = (sr4 * fl_hi - sl4 * fr_hi + slsr4 * (ur_hi - ul_hi)) * denom;
         let hi = hll_hi.to_array();
-        f_hll[4] = hi[0]; f_hll[5] = hi[1]; f_hll[6] = hi[2]; f_hll[7] = hi[3];
+        f_hll[4] = hi[0];
+        f_hll[5] = hi[1];
+        f_hll[6] = hi[2];
+        f_hll[7] = hi[3];
     }
 
     f_hll
@@ -129,8 +135,13 @@ mod tests {
         let u_common = [1.0; NCONS];
         let f = hll_flux(&f_common, &f_common, &u_common, &u_common, -0.5, 0.5);
         for k in 0..NCONS {
-            assert!((f[k] - f_common[k]).abs() < 1e-10,
-                "Component {}: {} != {}", k, f[k], f_common[k]);
+            assert!(
+                (f[k] - f_common[k]).abs() < 1e-10,
+                "Component {}: {} != {}",
+                k,
+                f[k],
+                f_common[k]
+            );
         }
     }
 

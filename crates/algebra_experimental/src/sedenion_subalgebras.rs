@@ -20,19 +20,19 @@ type QuaternionSubalgebras = (
 
 /// Returns the basis indices for the three canonical octonionic subalgebras.
 pub fn get_octonion_subalgebras() -> OctonionSubalgebras {
-    let o1 = vec![0, 1, 2, 3, 4, 5, 6, 7];    // Standard Octonions
-    let o2 = vec![0, 1, 2, 3, 8, 9, 10, 11];   // Second generation
-    let o3 = vec![0, 1, 2, 3, 12, 13, 14, 15];// Third generation
+    let o1 = vec![0, 1, 2, 3, 4, 5, 6, 7]; // Standard Octonions
+    let o2 = vec![0, 1, 2, 3, 8, 9, 10, 11]; // Second generation
+    let o3 = vec![0, 1, 2, 3, 12, 13, 14, 15]; // Third generation
     (o1, o2, o3)
 }
 
 /// Returns the basis indices for the five disjoint quaternion subalgebras.
 pub fn get_quaternion_subalgebras() -> QuaternionSubalgebras {
-    let q_gamma = vec![0, 1, 2, 3];        // Spacetime
-    let q_theta = vec![0, 4, 8, 12];       // Pseudo-time / Internal
-    let q_u = vec![0, 5, 10, 15];          // 1st Generation (U-type)
-    let q_v = vec![0, 6, 11, 13];          // 2nd Generation (V-type)
-    let q_w = vec![0, 7, 9, 14];           // 3rd Generation (W-type)
+    let q_gamma = vec![0, 1, 2, 3]; // Spacetime
+    let q_theta = vec![0, 4, 8, 12]; // Pseudo-time / Internal
+    let q_u = vec![0, 5, 10, 15]; // 1st Generation (U-type)
+    let q_v = vec![0, 6, 11, 13]; // 2nd Generation (V-type)
+    let q_w = vec![0, 7, 9, 14]; // 3rd Generation (W-type)
     (q_gamma, q_theta, q_u, q_v, q_w)
 }
 
@@ -40,14 +40,18 @@ pub fn get_quaternion_subalgebras() -> QuaternionSubalgebras {
 /// Returns the norm of the associator vector.
 pub fn assoc_strict(dim: usize, a: usize, b: usize, c: usize) -> f64 {
     use cd_kernel::cayley_dickson::cd_multiply;
-    let mut ea = vec![0.0; dim]; ea[a] = 1.0;
-    let mut eb = vec![0.0; dim]; eb[b] = 1.0;
-    let mut ec = vec![0.0; dim]; ec[c] = 1.0;
+    let mut ea = vec![0.0; dim];
+    ea[a] = 1.0;
+    let mut eb = vec![0.0; dim];
+    eb[b] = 1.0;
+    let mut ec = vec![0.0; dim];
+    ec[c] = 1.0;
     let ab = cd_multiply(&ea, &eb);
     let ab_c = cd_multiply(&ab, &ec);
     let bc = cd_multiply(&eb, &ec);
     let a_bc = cd_multiply(&ea, &bc);
-    ab_c.iter().zip(a_bc.iter())
+    ab_c.iter()
+        .zip(a_bc.iter())
         .map(|(x, y)| (x - y).powi(2))
         .sum::<f64>()
         .sqrt()
@@ -63,9 +67,12 @@ pub fn assoc_strict(dim: usize, a: usize, b: usize, c: usize) -> f64 {
 /// Returns the norm of the triple associator vector.
 pub fn assoc_wilmot(dim: usize, b: usize, c: usize, d: usize) -> f64 {
     use cd_kernel::cayley_dickson::cd_multiply;
-    let mut eb = vec![0.0; dim]; eb[b] = 1.0;
-    let mut ec = vec![0.0; dim]; ec[c] = 1.0;
-    let mut ed = vec![0.0; dim]; ed[d] = 1.0;
+    let mut eb = vec![0.0; dim];
+    eb[b] = 1.0;
+    let mut ec = vec![0.0; dim];
+    ec[c] = 1.0;
+    let mut ed = vec![0.0; dim];
+    ed[d] = 1.0;
 
     // [b,d,c] = (b*d)*c - b*(d*c)
     let bd = cd_multiply(&eb, &ed);
@@ -109,7 +116,13 @@ mod tests {
     /// Test whether (i, j, k) is a Fano line in the octonion imaginary units.
     fn is_fano_triple(i: usize, j: usize, k: usize) -> bool {
         const FANO: [(usize, usize, usize); 7] = [
-            (1,2,3), (1,4,5), (1,6,7), (2,4,6), (2,5,7), (3,4,7), (3,5,6),
+            (1, 2, 3),
+            (1, 4, 5),
+            (1, 6, 7),
+            (2, 4, 6),
+            (2, 5, 7),
+            (3, 4, 7),
+            (3, 5, 6),
         ];
         let mut s = [i, j, k];
         s.sort();
@@ -128,14 +141,19 @@ mod tests {
     /// Section i: O -> S,  i(x)[k] = x[k], i(x)[k+8] = x[k].
     fn ht_section(x: &[f64; 8]) -> [f64; 16] {
         let mut s = [0.0_f64; 16];
-        for k in 0..8 { s[k] = x[k]; s[k + 8] = x[k]; }
+        for k in 0..8 {
+            s[k] = x[k];
+            s[k + 8] = x[k];
+        }
         s
     }
 
     /// Projection p: S -> O,  p(u,v)[k] = (u[k] + v[k+8]) / 2.
     fn ht_project(s: &[f64]) -> [f64; 8] {
         let mut o = [0.0_f64; 8];
-        for k in 0..8 { o[k] = (s[k] + s[k + 8]) / 2.0; }
+        for k in 0..8 {
+            o[k] = (s[k] + s[k + 8]) / 2.0;
+        }
         o
     }
 
@@ -144,7 +162,9 @@ mod tests {
         let ps = ht_project(s);
         let ips = ht_section(&ps);
         let mut h = [0.0_f64; 16];
-        for k in 0..16 { h[k] = s[k] - ips[k]; }
+        for k in 0..16 {
+            h[k] = s[k] - ips[k];
+        }
         h
     }
 
@@ -153,7 +173,9 @@ mod tests {
         use cd_kernel::cd_multiply;
         let result = cd_multiply(a, b);
         let mut out = [0.0_f64; 16];
-        for k in 0..16 { out[k] = result[k]; }
+        for k in 0..16 {
+            out[k] = result[k];
+        }
         out
     }
 
@@ -167,23 +189,37 @@ mod tests {
         let h_iy_iz = ht_homotopy(&ht_sed_mul(&iy, &iz));
         let p_term2 = ht_project(&ht_sed_mul(&ix, &h_iy_iz));
         let mut m3 = [0.0_f64; 8];
-        for k in 0..8 { m3[k] = p_term1[k] - p_term2[k]; }
+        for k in 0..8 {
+            m3[k] = p_term1[k] - p_term2[k];
+        }
         m3
     }
 
     #[test]
     fn test_quaternion_subalgebras_are_disjoint() {
         let (qg, qt, qu, qv, qw) = get_quaternion_subalgebras();
-        let all_imaginary: Vec<usize> = qg.iter().skip(1).chain(qt.iter().skip(1))
+        let all_imaginary: Vec<usize> = qg
+            .iter()
+            .skip(1)
+            .chain(qt.iter().skip(1))
             .chain(qu.iter().skip(1))
             .chain(qv.iter().skip(1))
             .chain(qw.iter().skip(1))
-            .copied().collect();
+            .copied()
+            .collect();
 
-        assert_eq!(all_imaginary.len(), 15, "There should be 15 total imaginary units.");
+        assert_eq!(
+            all_imaginary.len(),
+            15,
+            "There should be 15 total imaginary units."
+        );
 
         let unique_units: HashSet<usize> = all_imaginary.into_iter().collect();
-        assert_eq!(unique_units.len(), 15, "All imaginary units must be unique, proving disjointness.");
+        assert_eq!(
+            unique_units.len(),
+            15,
+            "All imaginary units must be unique, proving disjointness."
+        );
 
         println!("The 5 quaternion subalgebras are disjoint.");
     }
@@ -197,9 +233,21 @@ mod tests {
 
         // The first 4 elements of each subalgebra must be {0, 1, 2, 3}
         let shared: Vec<usize> = vec![0, 1, 2, 3];
-        assert_eq!(&o1[..4], &shared[..], "O1 must start with quaternion subgroup");
-        assert_eq!(&o2[..4], &shared[..], "O2 must start with quaternion subgroup");
-        assert_eq!(&o3[..4], &shared[..], "O3 must start with quaternion subgroup");
+        assert_eq!(
+            &o1[..4],
+            &shared[..],
+            "O1 must start with quaternion subgroup"
+        );
+        assert_eq!(
+            &o2[..4],
+            &shared[..],
+            "O2 must start with quaternion subgroup"
+        );
+        assert_eq!(
+            &o3[..4],
+            &shared[..],
+            "O3 must start with quaternion subgroup"
+        );
 
         // The distinguishing indices are in separate CD-doubling blocks
         let o1_gen: Vec<usize> = o1[4..].to_vec(); // {4,5,6,7}
@@ -210,13 +258,25 @@ mod tests {
         let o1_set: HashSet<usize> = o1_gen.iter().copied().collect();
         let o2_set: HashSet<usize> = o2_gen.iter().copied().collect();
         let o3_set: HashSet<usize> = o3_gen.iter().copied().collect();
-        assert!(o1_set.is_disjoint(&o2_set), "O1 and O2 gen indices must be disjoint");
-        assert!(o2_set.is_disjoint(&o3_set), "O2 and O3 gen indices must be disjoint");
-        assert!(o1_set.is_disjoint(&o3_set), "O1 and O3 gen indices must be disjoint");
+        assert!(
+            o1_set.is_disjoint(&o2_set),
+            "O1 and O2 gen indices must be disjoint"
+        );
+        assert!(
+            o2_set.is_disjoint(&o3_set),
+            "O2 and O3 gen indices must be disjoint"
+        );
+        assert!(
+            o1_set.is_disjoint(&o3_set),
+            "O1 and O3 gen indices must be disjoint"
+        );
 
         // Union of all gen indices = {4..15}
-        let all_gen: HashSet<usize> = o1_set.union(&o2_set).copied()
-            .chain(o3_set.iter().copied()).collect();
+        let all_gen: HashSet<usize> = o1_set
+            .union(&o2_set)
+            .copied()
+            .chain(o3_set.iter().copied())
+            .collect();
         assert_eq!(all_gen.len(), 12, "12 generation-specific indices total");
 
         println!("Tang Axiom 1: shared quaternion {{0,1,2,3}}, gen indices disjoint");
@@ -249,7 +309,10 @@ mod tests {
                             assert!(
                                 sub_set.contains(&k),
                                 "{}: e_{} * e_{} has component at e_{} (outside subalgebra)",
-                                label, i, j, k
+                                label,
+                                i,
+                                j,
+                                k
                             );
                         }
                     }
@@ -297,9 +360,13 @@ mod tests {
                     anticomm[k] = ab[k] + ba[k];
                 }
                 let norm: f64 = anticomm.iter().map(|x| x * x).sum();
-                assert!(norm < 1e-20,
+                assert!(
+                    norm < 1e-20,
                     "Octonion e_{} * e_{} should anti-commute, got norm {:.2e}",
-                    i, j, norm.sqrt());
+                    i,
+                    j,
+                    norm.sqrt()
+                );
             }
         }
         println!("Tang Axiom 3: all 21 pairs of imaginary octonion basis elements anti-commute");
@@ -338,8 +405,10 @@ mod tests {
             }
         }
         // C(15,2) = 105 pairs, all should anti-commute
-        assert_eq!(violations, 0,
-            "All 105 pairs of imaginary sedenion basis elements must anti-commute");
+        assert_eq!(
+            violations, 0,
+            "All 105 pairs of imaginary sedenion basis elements must anti-commute"
+        );
         println!("Tang Axiom 4: all 105 imaginary sedenion basis pairs anti-commute");
         println!("  This provides the fermionic creation/annihilation algebra for SU(5)");
     }
@@ -360,11 +429,11 @@ mod tests {
 
         // Tang's 5 creation/annihilation operator index pairs
         let pairs = [
-            (5_usize, 6_usize, "O1"),   // alpha_1: from U-type
-            (1, 3, "shared"),  // alpha_2: from spacetime quaternion
-            (2, 7, "O1"),     // alpha_3: from U-type
-            (13, 14, "O3"),   // alpha_4: from W-type
-            (9, 11, "O2"),    // alpha_5: from V-type
+            (5_usize, 6_usize, "O1"), // alpha_1: from U-type
+            (1, 3, "shared"),         // alpha_2: from spacetime quaternion
+            (2, 7, "O1"),             // alpha_3: from U-type
+            (13, 14, "O3"),           // alpha_4: from W-type
+            (9, 11, "O2"),            // alpha_5: from V-type
         ];
 
         for (a, b, expected_sub) in &pairs {
@@ -373,15 +442,24 @@ mod tests {
             let in_o3 = o3.contains(a) && o3.contains(b);
             let in_shared = shared.contains(a) && shared.contains(b);
 
-            let actual = if in_shared { "shared" }
-                else if in_o1 { "O1" }
-                else if in_o2 { "O2" }
-                else if in_o3 { "O3" }
-                else { "cross-subalgebra" };
+            let actual = if in_shared {
+                "shared"
+            } else if in_o1 {
+                "O1"
+            } else if in_o2 {
+                "O2"
+            } else if in_o3 {
+                "O3"
+            } else {
+                "cross-subalgebra"
+            };
 
             println!("  alpha pair (e_{a}, e_{b}): expected={expected_sub}, actual={actual}");
-            assert_eq!(actual, *expected_sub,
-                "Pair (e_{}, e_{}) should be in {}", a, b, expected_sub);
+            assert_eq!(
+                actual, *expected_sub,
+                "Pair (e_{}, e_{}) should be in {}",
+                a, b, expected_sub
+            );
         }
         println!("Tang Axiom 5: creation operator pairs span O1+shared+O2+O3");
         println!("  3 pairs from SU(3) sector (O1+shared), 2 from leptoquark (O2,O3)");
@@ -398,7 +476,11 @@ mod tests {
         let (qg, qt, _qu, _qv, _qw) = get_quaternion_subalgebras();
 
         // Theta quaternion: {e_0, e_4, e_8, e_12}
-        assert_eq!(qt, vec![0, 4, 8, 12], "Theta quaternion must be {{0, 4, 8, 12}}");
+        assert_eq!(
+            qt,
+            vec![0, 4, 8, 12],
+            "Theta quaternion must be {{0, 4, 8, 12}}"
+        );
 
         // The Theta elements are exactly the "anchors" of each CD-doubling block
         println!("Tang Axiom 6: Theta = {{e_0, e_4, e_8, e_12}} = CD block anchors");
@@ -407,7 +489,11 @@ mod tests {
         println!("  e_12 = anchor of O3 gen block {{12,13,14,15}}");
 
         // Gamma quaternion: {e_0, e_1, e_2, e_3} = spacetime
-        assert_eq!(qg, vec![0, 1, 2, 3], "Gamma quaternion must be {{0, 1, 2, 3}}");
+        assert_eq!(
+            qg,
+            vec![0, 1, 2, 3],
+            "Gamma quaternion must be {{0, 1, 2, 3}}"
+        );
         println!("  Gamma = {{e_0, e_1, e_2, e_3}} = spacetime quaternion (shared)");
     }
 
@@ -468,7 +554,9 @@ mod tests {
                             _ => {
                                 // Wilmot Theorem 5: either all 3 or exactly 1
                                 // Two nonzero is impossible for basis elements
-                                println!("  UNEXPECTED: (e_{b}, e_{c}, e_{d}) has pattern ({t1_nz}, {t2_nz}, {t3_nz})");
+                                println!(
+                                    "  UNEXPECTED: (e_{b}, e_{c}, e_{d}) has pattern ({t1_nz}, {t2_nz}, {t3_nz})"
+                                );
                             }
                         }
                     }
@@ -496,8 +584,10 @@ mod tests {
         //   84 Type B + 84 Type C + 252 Type X = 420
         //   84 = the ZD pair count (Reggiani)
         //   252 = 3 * 84 = the fully non-associative sector
-        assert_eq!(associative_count, 35,
-            "35 = C(7,3) triads are fully associative in all orderings");
+        assert_eq!(
+            associative_count, 35,
+            "35 = C(7,3) triads are fully associative in all orderings"
+        );
         assert_eq!(type_b, 84, "Type B count should be 84 (= ZD pair count)");
         assert_eq!(type_c, 84, "Type C count should be 84 (= ZD pair count)");
         assert_eq!(type_x, 252, "Type X count should be 252 (= 3 * 84)");
@@ -542,14 +632,21 @@ mod tests {
         }
 
         println!("--- WILMOT TABLE 2 VERIFICATION (U_1 = sedenions) ---");
-        println!("  strict_assoc_all_orderings_u1 = {} (expected 35)", strict_assoc_all_orderings_u1);
+        println!(
+            "  strict_assoc_all_orderings_u1 = {} (expected 35)",
+            strict_assoc_all_orderings_u1
+        );
         println!("  wilmot_T_assoc_u1 = {} (expected 35)", wilmot_t_assoc_u1);
         println!("  Both agree: 35 = C(7,3) = H_15 quaternion subalgebra count");
 
-        assert_eq!(strict_assoc_all_orderings_u1, 35,
-            "Strict associativity: 35 = C(7,3) for U_1");
-        assert_eq!(wilmot_t_assoc_u1, 35,
-            "Wilmot T(b,c,d) = 0: 35 for U_1 (Table 2 row U_1)");
+        assert_eq!(
+            strict_assoc_all_orderings_u1, 35,
+            "Strict associativity: 35 = C(7,3) for U_1"
+        );
+        assert_eq!(
+            wilmot_t_assoc_u1, 35,
+            "Wilmot T(b,c,d) = 0: 35 for U_1 (Table 2 row U_1)"
+        );
 
         // Verify Wilmot's quaternion-count formula H_n = N_n(N_n-1)/6
         // where N_n = 2^n - 1 is the number of pure basis elements.
@@ -577,7 +674,9 @@ mod tests {
         let mut zd_index_pairs: Vec<(usize, usize)> = Vec::new();
         for low in 1..=7_usize {
             for high in 9..=15_usize {
-                if high == low + 8 { continue; }
+                if high == low + 8 {
+                    continue;
+                }
                 zd_index_pairs.push((low, high));
             }
         }
@@ -593,7 +692,9 @@ mod tests {
                     let t1 = assoc_strict(dim, b, c, d);
                     let t2 = assoc_strict(dim, b, d, c);
                     let t3 = assoc_strict(dim, c, b, d);
-                    if t1 < 1e-10 && t2 < 1e-10 && t3 < 1e-10 { continue; }
+                    if t1 < 1e-10 && t2 < 1e-10 && t3 < 1e-10 {
+                        continue;
+                    }
                     let na_type = match (t1 > 1e-10, t2 > 1e-10, t3 > 1e-10) {
                         (true, false, false) => 'A',
                         (false, true, false) => 'B',
@@ -608,17 +709,24 @@ mod tests {
 
         // For each triad, compute pairwise products bc, bd, cd
         // and check if any has support on a ZD assessor pair (low, high)
-        let mut zd_hits_by_type: std::collections::HashMap<char, Vec<usize>> =
-            [('A', vec![0; 42]), ('B', vec![0; 42]),
-             ('C', vec![0; 42]), ('X', vec![0; 42])].into();
+        let mut zd_hits_by_type: std::collections::HashMap<char, Vec<usize>> = [
+            ('A', vec![0; 42]),
+            ('B', vec![0; 42]),
+            ('C', vec![0; 42]),
+            ('X', vec![0; 42]),
+        ]
+        .into();
 
         let mut triads_hitting_zd: std::collections::HashMap<char, usize> =
             [('A', 0), ('B', 0), ('C', 0), ('X', 0)].into();
 
         for &(b, c, d, na_type) in &triads {
-            let mut eb = vec![0.0; dim]; eb[b] = 1.0;
-            let mut ec = vec![0.0; dim]; ec[c] = 1.0;
-            let mut ed = vec![0.0; dim]; ed[d] = 1.0;
+            let mut eb = vec![0.0; dim];
+            eb[b] = 1.0;
+            let mut ec = vec![0.0; dim];
+            ec[c] = 1.0;
+            let mut ed = vec![0.0; dim];
+            ed[d] = 1.0;
 
             let products = [
                 cd_multiply(&eb, &ec), // bc
@@ -629,7 +737,9 @@ mod tests {
             let mut any_hit = false;
             for prod in &products {
                 // Check if product is a 2-blade with support on a ZD pair
-                let nonzero: Vec<usize> = prod.iter().enumerate()
+                let nonzero: Vec<usize> = prod
+                    .iter()
+                    .enumerate()
                     .filter(|(_, v)| v.abs() > 1e-12)
                     .map(|(i, _)| i)
                     .collect();
@@ -667,7 +777,10 @@ mod tests {
 
             println!("\n  Type {}: {} triads, {} hit ZD pairs", typ, total, hits);
             println!("    ZD pair coverage: {} / 42 assessors", covered);
-            println!("    Hits per assessor: min={}, max={}, total={}", min_hits, max_hits, total_hits);
+            println!(
+                "    Hits per assessor: min={}, max={}, total={}",
+                min_hits, max_hits, total_hits
+            );
         }
 
         // The key structural question: does the mapping reveal
@@ -706,7 +819,9 @@ mod tests {
         let mut assessors: Vec<(usize, usize)> = Vec::new();
         for low in 1..=7_usize {
             for high in 9..=15_usize {
-                if high == low + 8 { continue; }
+                if high == low + 8 {
+                    continue;
+                }
                 assessors.push((low, high));
             }
         }
@@ -723,7 +838,9 @@ mod tests {
                     let t1 = assoc_strict(dim, b, c, d);
                     let t2 = assoc_strict(dim, b, d, c);
                     let t3 = assoc_strict(dim, c, b, d);
-                    if t1 < 1e-10 && t2 < 1e-10 && t3 < 1e-10 { continue; }
+                    if t1 < 1e-10 && t2 < 1e-10 && t3 < 1e-10 {
+                        continue;
+                    }
                     match (t1 > 1e-10, t2 > 1e-10, t3 > 1e-10) {
                         (false, true, false) => triads_b.push((b, c, d)),
                         (false, false, true) => triads_c.push((b, c, d)),
@@ -735,9 +852,12 @@ mod tests {
 
         // Build incidence row for a triad: which assessors does it hit?
         let build_row = |b: usize, c: usize, d: usize| -> Vec<f64> {
-            let mut eb = vec![0.0; dim]; eb[b] = 1.0;
-            let mut ec = vec![0.0; dim]; ec[c] = 1.0;
-            let mut ed = vec![0.0; dim]; ed[d] = 1.0;
+            let mut eb = vec![0.0; dim];
+            eb[b] = 1.0;
+            let mut ec = vec![0.0; dim];
+            ec[c] = 1.0;
+            let mut ed = vec![0.0; dim];
+            ed[d] = 1.0;
 
             let products = [
                 cd_multiply(&eb, &ec),
@@ -747,7 +867,9 @@ mod tests {
 
             let mut row = vec![0.0_f64; 42];
             for prod in &products {
-                let nonzero: Vec<usize> = prod.iter().enumerate()
+                let nonzero: Vec<usize> = prod
+                    .iter()
+                    .enumerate()
                     .filter(|(_, v)| v.abs() > 1e-12)
                     .map(|(i, _)| i)
                     .collect();
@@ -765,19 +887,22 @@ mod tests {
 
         // Build submatrices
         let mat_b = DMatrix::from_rows(
-            &triads_b.iter().map(|&(b, c, d)| {
-                nalgebra::RowDVector::from_vec(build_row(b, c, d))
-            }).collect::<Vec<_>>()
+            &triads_b
+                .iter()
+                .map(|&(b, c, d)| nalgebra::RowDVector::from_vec(build_row(b, c, d)))
+                .collect::<Vec<_>>(),
         );
         let mat_c = DMatrix::from_rows(
-            &triads_c.iter().map(|&(b, c, d)| {
-                nalgebra::RowDVector::from_vec(build_row(b, c, d))
-            }).collect::<Vec<_>>()
+            &triads_c
+                .iter()
+                .map(|&(b, c, d)| nalgebra::RowDVector::from_vec(build_row(b, c, d)))
+                .collect::<Vec<_>>(),
         );
         let mat_x = DMatrix::from_rows(
-            &triads_x.iter().map(|&(b, c, d)| {
-                nalgebra::RowDVector::from_vec(build_row(b, c, d))
-            }).collect::<Vec<_>>()
+            &triads_x
+                .iter()
+                .map(|&(b, c, d)| nalgebra::RowDVector::from_vec(build_row(b, c, d)))
+                .collect::<Vec<_>>(),
         );
 
         // SVD (clone first since SVD consumes the matrix)
@@ -795,15 +920,23 @@ mod tests {
         let rank_x = rank(&svd_x.singular_values);
 
         println!("--- INCIDENCE MATRIX SVD ANALYSIS ---");
-        println!("  Submatrix dimensions: B={}x42, C={}x42, X={}x42",
-            triads_b.len(), triads_c.len(), triads_x.len());
+        println!(
+            "  Submatrix dimensions: B={}x42, C={}x42, X={}x42",
+            triads_b.len(),
+            triads_c.len(),
+            triads_x.len()
+        );
         println!("  Rank(B) = {}", rank_b);
         println!("  Rank(C) = {}", rank_c);
         println!("  Rank(X) = {}", rank_x);
 
         // Print top singular values
         let top_sv = |sv: &nalgebra::OVector<f64, nalgebra::Dyn>, n: usize| -> String {
-            sv.iter().take(n).map(|s| format!("{:.3}", s)).collect::<Vec<_>>().join(", ")
+            sv.iter()
+                .take(n)
+                .map(|s| format!("{:.3}", s))
+                .collect::<Vec<_>>()
+                .join(", ")
         };
         println!("\n  Top-5 singular values:");
         println!("    B: [{}]", top_sv(&svd_b.singular_values, 5));
@@ -811,11 +944,16 @@ mod tests {
         println!("    X: [{}]", top_sv(&svd_x.singular_values, 5));
 
         // Key test: do B and C have the same singular value spectrum?
-        let sv_match_bc = svd_b.singular_values.iter()
+        let sv_match_bc = svd_b
+            .singular_values
+            .iter()
             .zip(svd_c.singular_values.iter())
             .all(|(a, b)| (a - b).abs() < 1e-8);
 
-        println!("\n  B and C have identical singular spectra: {}", sv_match_bc);
+        println!(
+            "\n  B and C have identical singular spectra: {}",
+            sv_match_bc
+        );
         if sv_match_bc {
             println!("  => B and C submatrices are isomorphic (related by permutation)");
             println!("  => Confirms Wilmot's dual mode B<->C swap");
@@ -829,9 +967,15 @@ mod tests {
             println!("  [CONFIRMED] All three types span the SAME column space");
             println!("  The incidence is assessor-regular: B/C/X are coverage classes");
         } else {
-            println!("  Column spaces DIFFER: rank B/C = {}, rank X = {}", rank_b, rank_x);
-            println!("  B/C live in a {}-dim subspace; X adds {} extra directions",
-                rank_b, rank_x - rank_b);
+            println!(
+                "  Column spaces DIFFER: rank B/C = {}, rank X = {}",
+                rank_b, rank_x
+            );
+            println!(
+                "  B/C live in a {}-dim subspace; X adds {} extra directions",
+                rank_b,
+                rank_x - rank_b
+            );
         }
 
         // --- Follow-up test 1: B/C Gram matrix comparison ---
@@ -843,7 +987,9 @@ mod tests {
         // Sort eigenvalues of both Gram matrices and compare
         let eig_gb = gram_b.symmetric_eigenvalues();
         let eig_gc = gram_c.symmetric_eigenvalues();
-        let gram_match = eig_gb.iter().zip(eig_gc.iter())
+        let gram_match = eig_gb
+            .iter()
+            .zip(eig_gc.iter())
             .all(|(a, b)| (a - b).abs() < 1e-8);
 
         println!("\n  Follow-up 1: Gram matrix eigenvalue comparison");
@@ -871,9 +1017,14 @@ mod tests {
         let intersection_dim = rank_b + rank_x - rank_union;
 
         println!("\n  Follow-up 2: Column space intersection");
-        println!("    rank(B) = {}, rank(X) = {}, rank([B;X]) = {}", rank_b, rank_x, rank_union);
-        println!("    dim(C_B intersect C_X) = {} + {} - {} = {}",
-            rank_b, rank_x, rank_union, intersection_dim);
+        println!(
+            "    rank(B) = {}, rank(X) = {}, rank([B;X]) = {}",
+            rank_b, rank_x, rank_union
+        );
+        println!(
+            "    dim(C_B intersect C_X) = {} + {} - {} = {}",
+            rank_b, rank_x, rank_union, intersection_dim
+        );
 
         if intersection_dim == rank_b {
             println!("    => C_B is ENTIRELY CONTAINED in C_X");
@@ -881,7 +1032,10 @@ mod tests {
         } else if intersection_dim == 0 {
             println!("    => B and X column spaces are ORTHOGONAL");
         } else {
-            println!("    => Partial intersection: {} shared dimensions", intersection_dim);
+            println!(
+                "    => Partial intersection: {} shared dimensions",
+                intersection_dim
+            );
         }
 
         // --- Follow-up test 3: Principal angles between B and X ---
@@ -904,22 +1058,44 @@ mod tests {
                 let svd_cross = cross.svd(false, false);
 
                 let cosines: Vec<f64> = svd_cross.singular_values.iter().copied().collect();
-                let angles_deg: Vec<f64> = cosines.iter()
+                let angles_deg: Vec<f64> = cosines
+                    .iter()
                     .map(|c| c.min(1.0).acos().to_degrees())
                     .collect();
 
                 println!("\n  Follow-up 3: Principal angles between B and X column spaces");
-                println!("    Cosines (top-10): [{}]",
-                    cosines.iter().take(10).map(|c| format!("{:.4}", c))
-                        .collect::<Vec<_>>().join(", "));
-                println!("    Angles (top-10): [{}]",
-                    angles_deg.iter().take(10).map(|a| format!("{:.1}", a))
-                        .collect::<Vec<_>>().join(", "));
+                println!(
+                    "    Cosines (top-10): [{}]",
+                    cosines
+                        .iter()
+                        .take(10)
+                        .map(|c| format!("{:.4}", c))
+                        .collect::<Vec<_>>()
+                        .join(", ")
+                );
+                println!(
+                    "    Angles (top-10): [{}]",
+                    angles_deg
+                        .iter()
+                        .take(10)
+                        .map(|a| format!("{:.1}", a))
+                        .collect::<Vec<_>>()
+                        .join(", ")
+                );
 
                 let n_zero_angle = angles_deg.iter().filter(|a| **a < 1.0).count();
-                let n_right_angle = angles_deg.iter().filter(|a| (**a - 90.0).abs() < 1.0).count();
-                println!("    Coincident directions (angle < 1 deg): {}", n_zero_angle);
-                println!("    Orthogonal directions (angle ~ 90 deg): {}", n_right_angle);
+                let n_right_angle = angles_deg
+                    .iter()
+                    .filter(|a| (**a - 90.0).abs() < 1.0)
+                    .count();
+                println!(
+                    "    Coincident directions (angle < 1 deg): {}",
+                    n_zero_angle
+                );
+                println!(
+                    "    Orthogonal directions (angle ~ 90 deg): {}",
+                    n_right_angle
+                );
             }
         }
     }
@@ -998,7 +1174,10 @@ mod tests {
 
         println!("--- TRIAD CROSS-TABULATION ---");
         println!("  Strict-associative: {}", strict_assoc);
-        println!("  Sigma-assoc ghost triads: {} (= 147 - 35 = 112)", total_sigma_ghost);
+        println!(
+            "  Sigma-assoc ghost triads: {} (= 147 - 35 = 112)",
+            total_sigma_ghost
+        );
         println!("    In Type B: {}", sigma_assoc_type_b);
         println!("    In Type C: {}", sigma_assoc_type_c);
         println!("    In Type X: {}", sigma_assoc_type_x);
@@ -1012,9 +1191,18 @@ mod tests {
         // ONLY the 35 strict-associative triads survive. The "112 ghost triads"
         // from C1467 were an artifact of checking a single ordering per triple.
         // Triads can be sign-associative in SOME orderings but not all.
-        assert_eq!(total_sigma_ghost, 0, "No ghost triads when all 6 perms checked");
-        assert_eq!(strict_assoc + total_sigma_ghost
-            + sigma_nonassoc_type_b + sigma_nonassoc_type_c + sigma_nonassoc_type_x, 455);
+        assert_eq!(
+            total_sigma_ghost, 0,
+            "No ghost triads when all 6 perms checked"
+        );
+        assert_eq!(
+            strict_assoc
+                + total_sigma_ghost
+                + sigma_nonassoc_type_b
+                + sigma_nonassoc_type_c
+                + sigma_nonassoc_type_x,
+            455
+        );
     }
 
     /// Gourlay & Gresnigt (arXiv:2407.01580) zero-divisor example verification.
@@ -1030,8 +1218,12 @@ mod tests {
         let dim = 16_usize;
 
         // Verify (s_1 + s_10) * (s_5 + s_14) = 0
-        let mut a = vec![0.0; dim]; a[1] = 1.0; a[10] = 1.0;
-        let mut b = vec![0.0; dim]; b[5] = 1.0; b[14] = 1.0;
+        let mut a = vec![0.0; dim];
+        a[1] = 1.0;
+        a[10] = 1.0;
+        let mut b = vec![0.0; dim];
+        b[5] = 1.0;
+        b[14] = 1.0;
         let ab = cd_multiply(&a, &b);
         let ab_norm = cd_norm_sq(&ab).sqrt();
 
@@ -1050,7 +1242,9 @@ mod tests {
         // For s_1 + s_10: A component at index 1 (octonion), B component at index 10-8=2
         // epsilon: s_1 + s_10 -> s_1 - s_10
         // Check that (s_1 - s_10) is also a ZD (with a different partner)
-        let mut a_eps = vec![0.0; dim]; a_eps[1] = 1.0; a_eps[10] = -1.0;
+        let mut a_eps = vec![0.0; dim];
+        a_eps[1] = 1.0;
+        a_eps[10] = -1.0;
         let ab_eps = cd_multiply(&a_eps, &b);
         let ab_eps_norm = cd_norm_sq(&ab_eps).sqrt();
         println!("  epsilon(s_1+s_10) = s_1-s_10");
@@ -1058,7 +1252,9 @@ mod tests {
 
         // The epsilon-image is still a ZD but with a DIFFERENT partner
         // Try (s_5 - s_14)
-        let mut b_eps = vec![0.0; dim]; b_eps[5] = 1.0; b_eps[14] = -1.0;
+        let mut b_eps = vec![0.0; dim];
+        b_eps[5] = 1.0;
+        b_eps[14] = -1.0;
         let ab_both_eps = cd_multiply(&a_eps, &b_eps);
         let both_eps_norm = cd_norm_sq(&ab_both_eps).sqrt();
         println!("  (s_1 - s_10) * (s_5 - s_14) norm = {:.2e}", both_eps_norm);
@@ -1070,7 +1266,9 @@ mod tests {
         // The S_3 generators psi (order 3) and epsilon (order 2) satisfy:
         //   epsilon * psi = psi^2 * epsilon
         // This is the defining relation of S_3 = <psi, epsilon | psi^3=1, epsilon^2=1, epsilon*psi=psi^2*epsilon>
-        println!("\n  S_3 structure: <psi, epsilon | psi^3=1, epsilon^2=1, epsilon*psi=psi^2*epsilon>");
+        println!(
+            "\n  S_3 structure: <psi, epsilon | psi^3=1, epsilon^2=1, epsilon*psi=psi^2*epsilon>"
+        );
         println!("  Verified computationally in test_gresnigt_full_complex_psi3_block");
     }
 
@@ -1099,25 +1297,43 @@ mod tests {
             let a_idx = j;
             let b_idx = j + 4;
 
-            let mut e_a = [0.0_f64; 16]; e_a[a_idx] = 1.0;
-            let mut e_b = [0.0_f64; 16]; e_b[b_idx] = 1.0;
+            let mut e_a = [0.0_f64; 16];
+            e_a[a_idx] = 1.0;
+            let mut e_b = [0.0_f64; 16];
+            e_b[b_idx] = 1.0;
 
             let eps_a = gourlay_epsilon(&e_a);
             let eps_b = gourlay_epsilon(&e_b);
 
             let a_preserved = eps_a == e_a;
-            let a_flipped = eps_a.iter().zip(e_a.iter()).all(|(x, y)| (x + y).abs() < 1e-15);
+            let a_flipped = eps_a
+                .iter()
+                .zip(e_a.iter())
+                .all(|(x, y)| (x + y).abs() < 1e-15);
             let b_preserved = eps_b == e_b;
-            let b_flipped = eps_b.iter().zip(e_b.iter()).all(|(x, y)| (x + y).abs() < 1e-15);
+            let b_flipped = eps_b
+                .iter()
+                .zip(e_b.iter())
+                .all(|(x, y)| (x + y).abs() < 1e-15);
 
-            let a_status = if a_preserved { "PRESERVED" }
-                else if a_flipped { "NEGATED" }
-                else { "MIXED" };
-            let b_status = if b_preserved { "PRESERVED" }
-                else if b_flipped { "NEGATED" }
-                else { "MIXED" };
+            let a_status = if a_preserved {
+                "PRESERVED"
+            } else if a_flipped {
+                "NEGATED"
+            } else {
+                "MIXED"
+            };
+            let b_status = if b_preserved {
+                "PRESERVED"
+            } else if b_flipped {
+                "NEGATED"
+            } else {
+                "MIXED"
+            };
 
-            println!("  a_{j} = (e_{a_idx}, e_{b_idx}): e_{a_idx} {a_status}, e_{b_idx} {b_status}");
+            println!(
+                "  a_{j} = (e_{a_idx}, e_{b_idx}): e_{a_idx} {a_status}, e_{b_idx} {b_status}"
+            );
 
             // For j=1..3: both indices < 8, so epsilon preserves both
             // For j=4: e_4 < 8 (preserved), e_8 >= 8 (negated)
@@ -1141,8 +1357,10 @@ mod tests {
             (14, 13, "alpha_4"),
             (11, 9, "alpha_5"),
         ] {
-            let mut e_a = [0.0_f64; 16]; e_a[a_idx] = 1.0;
-            let mut e_b = [0.0_f64; 16]; e_b[b_idx] = 1.0;
+            let mut e_a = [0.0_f64; 16];
+            e_a[a_idx] = 1.0;
+            let mut e_b = [0.0_f64; 16];
+            e_b[b_idx] = 1.0;
             let eps_a = gourlay_epsilon(&e_a);
             let eps_b = gourlay_epsilon(&e_b);
 
@@ -1153,12 +1371,24 @@ mod tests {
 
             // Epsilon negates upper-half indices
             if a_in_upper {
-                assert!(eps_a.iter().zip(e_a.iter()).all(|(x, y)| (x + y).abs() < 1e-15),
-                    "e_{} in upper half should be negated", a_idx);
+                assert!(
+                    eps_a
+                        .iter()
+                        .zip(e_a.iter())
+                        .all(|(x, y)| (x + y).abs() < 1e-15),
+                    "e_{} in upper half should be negated",
+                    a_idx
+                );
             }
             if b_in_upper {
-                assert!(eps_b.iter().zip(e_b.iter()).all(|(x, y)| (x + y).abs() < 1e-15),
-                    "e_{} in upper half should be negated", b_idx);
+                assert!(
+                    eps_b
+                        .iter()
+                        .zip(e_b.iter())
+                        .all(|(x, y)| (x + y).abs() < 1e-15),
+                    "e_{} in upper half should be negated",
+                    b_idx
+                );
             }
         }
 
@@ -1188,8 +1418,13 @@ mod tests {
         // 1-indexed: e_{123}, e_{145}, e_{167}, e_{246}, e_{257}, e_{347}, e_{356}
         // 0-indexed triples (imaginary basis e_1..e_7 -> indices 1..7):
         let fano_triples: [(usize, usize, usize); 7] = [
-            (1, 2, 3), (1, 4, 5), (1, 6, 7),
-            (2, 4, 6), (2, 5, 7), (3, 4, 7), (3, 5, 6),
+            (1, 2, 3),
+            (1, 4, 5),
+            (1, 6, 7),
+            (2, 4, 6),
+            (2, 5, 7),
+            (3, 4, 7),
+            (3, 5, 6),
         ];
 
         println!("--- WILMOT 2505.06011: Fano 3-form verification ---");
@@ -1212,30 +1447,57 @@ mod tests {
             }
         }
 
-        println!("  Octonion (dim=8) triads: {} associative, {} non-associative",
-            assoc_count, non_assoc_count);
-        assert_eq!(assoc_count, 7, "Octonions must have exactly 7 associative triples");
-        assert_eq!(non_assoc_count, 28, "Octonions must have exactly 28 non-associative triples");
+        println!(
+            "  Octonion (dim=8) triads: {} associative, {} non-associative",
+            assoc_count, non_assoc_count
+        );
+        assert_eq!(
+            assoc_count, 7,
+            "Octonions must have exactly 7 associative triples"
+        );
+        assert_eq!(
+            non_assoc_count, 28,
+            "Octonions must have exactly 28 non-associative triples"
+        );
 
         // Verify that the Fano triples are exactly the 7 associative ones
         for &(a, b, c) in &fano_triples {
             let val = assoc_strict(dim, a, b, c);
-            assert!(val.abs() < 1e-10,
-                "Fano triple ({},{},{}) should be associative, got {}", a, b, c, val);
+            assert!(
+                val.abs() < 1e-10,
+                "Fano triple ({},{},{}) should be associative, got {}",
+                a,
+                b,
+                c,
+                val
+            );
         }
 
         // Verify each Fano triple generates a quaternion-like product:
         // e_i * e_j = +/- e_k for the third element
         for &(i, j, k) in &fano_triples {
             let sign = cd_basis_mul_sign(dim, i, j);
-            assert!(sign == 1 || sign == -1,
-                "Fano product e_{}*e_{} should give +/-e_{}, sign={}", i, j, k, sign);
+            assert!(
+                sign == 1 || sign == -1,
+                "Fano product e_{}*e_{} should give +/-e_{}, sign={}",
+                i,
+                j,
+                k,
+                sign
+            );
             // The product index should be k
-            let mut ei = vec![0.0; dim]; ei[i] = 1.0;
-            let mut ej = vec![0.0; dim]; ej[j] = 1.0;
+            let mut ei = vec![0.0; dim];
+            ei[i] = 1.0;
+            let mut ej = vec![0.0; dim];
+            ej[j] = 1.0;
             let prod = cd_kernel::cayley_dickson::cd_multiply(&ei, &ej);
-            assert!((prod[k].abs() - 1.0).abs() < 1e-15,
-                "e_{}*e_{} should produce e_{}, got nonzero at wrong index", i, j, k);
+            assert!(
+                (prod[k].abs() - 1.0).abs() < 1e-15,
+                "e_{}*e_{} should produce e_{}, got nonzero at wrong index",
+                i,
+                j,
+                k
+            );
         }
 
         println!("  All 7 Fano triples verified: associative + quaternion products");
@@ -1261,22 +1523,54 @@ mod tests {
         // Full 35 terms (1-indexed):
         let phi_terms: [(usize, usize, usize); 35] = [
             // Row 1: e_1 triples (7 terms)
-            (1, 2, 3), (1, 4, 5), (1, 6, 7), (1, 8, 9), (1, 10, 11), (1, 12, 13), (1, 14, 15),
+            (1, 2, 3),
+            (1, 4, 5),
+            (1, 6, 7),
+            (1, 8, 9),
+            (1, 10, 11),
+            (1, 12, 13),
+            (1, 14, 15),
             // Row 2: e_2 triples not involving e_1 (6 terms)
-            (2, 4, 6), (2, 5, 7), (2, 8, 10), (2, 9, 11), (2, 12, 14), (2, 13, 15),
+            (2, 4, 6),
+            (2, 5, 7),
+            (2, 8, 10),
+            (2, 9, 11),
+            (2, 12, 14),
+            (2, 13, 15),
             // Row 3: e_3 triples not involving e_1,e_2 (5 terms)
-            (3, 4, 7), (3, 5, 6), (3, 8, 11), (3, 9, 10), (3, 12, 15), (3, 13, 14),
+            (3, 4, 7),
+            (3, 5, 6),
+            (3, 8, 11),
+            (3, 9, 10),
+            (3, 12, 15),
+            (3, 13, 14),
             // Row 4: e_4 triples not involving e_1..3 (4 terms)
-            (4, 8, 12), (4, 9, 13), (4, 10, 14), (4, 11, 15),
+            (4, 8, 12),
+            (4, 9, 13),
+            (4, 10, 14),
+            (4, 11, 15),
             // Row 5: e_5 triples not involving e_1..4 (3 terms)
-            (5, 8, 13), (5, 9, 12), (5, 10, 15), (5, 11, 14),
+            (5, 8, 13),
+            (5, 9, 12),
+            (5, 10, 15),
+            (5, 11, 14),
             // Row 6: e_6 triples not involving e_1..5 (2 terms)
-            (6, 8, 14), (6, 9, 15), (6, 10, 12), (6, 11, 13),
+            (6, 8, 14),
+            (6, 9, 15),
+            (6, 10, 12),
+            (6, 11, 13),
             // Row 7: e_7 triples not involving e_1..6 (1 term)
-            (7, 8, 15), (7, 9, 14), (7, 10, 13), (7, 11, 12),
+            (7, 8, 15),
+            (7, 9, 14),
+            (7, 10, 13),
+            (7, 11, 12),
         ];
 
-        assert_eq!(phi_terms.len(), 35, "14-simplex cross product must have 35 terms");
+        assert_eq!(
+            phi_terms.len(),
+            35,
+            "14-simplex cross product must have 35 terms"
+        );
 
         println!("--- WILMOT 2505.06011: Sedenion 14-simplex 3-form ---");
         println!("  35 terms covering 105 edges of the 14-simplex");
@@ -1289,7 +1583,11 @@ mod tests {
             edges.insert((b.min(c), b.max(c)));
         }
         // Each triple contributes 3 edges, 35*3 = 105. Are they all unique?
-        assert_eq!(edges.len(), 105, "35 triples must cover all 105 edges of 14-simplex");
+        assert_eq!(
+            edges.len(),
+            105,
+            "35 triples must cover all 105 edges of 14-simplex"
+        );
         println!("  Verified: 35 triples cover all 105 edges");
 
         // Now count non-associative triples for the standard sedenion product
@@ -1306,14 +1604,22 @@ mod tests {
             }
         }
 
-        println!("  Standard sedenion non-associative triples: {} (expected 252)", base_non_assoc);
-        assert_eq!(base_non_assoc, 252,
-            "Standard sedenions must have 252 non-associative triples (Wilmot Sec 4)");
+        println!(
+            "  Standard sedenion non-associative triples: {} (expected 252)",
+            base_non_assoc
+        );
+        assert_eq!(
+            base_non_assoc, 252,
+            "Standard sedenions must have 252 non-associative triples (Wilmot Sec 4)"
+        );
 
         // Verify that the standard sedenion also has 35 associative triples
         let total_triples = 15 * 14 * 13 / 6; // C(15,3) = 455
         let base_assoc = total_triples - base_non_assoc;
-        println!("  Associative triples: {} (of {} total)", base_assoc, total_triples);
+        println!(
+            "  Associative triples: {} (of {} total)",
+            base_assoc, total_triples
+        );
 
         // Wilmot: 35 fully-associative = C(7,3) = number of quaternion subalgebras
         // This is our existing result from test_wilmot_triad_classification
@@ -1377,8 +1683,10 @@ mod tests {
             *edge_count.entry((b, c)).or_insert(0) += 1;
         }
         assert_eq!(edge_count.len(), 21, "7 triples must cover all 21 edges");
-        assert!(edge_count.values().all(|&v| v == 1),
-            "Each edge must appear in exactly 1 triple");
+        assert!(
+            edge_count.values().all(|&v| v == 1),
+            "Each edge must appear in exactly 1 triple"
+        );
 
         println!("  7 associative triples cover all 21 edges (Fano plane structure)");
         println!("  30 primaries = 7!/|PSL(2,7)| = 5040/168 = 30");
@@ -1468,10 +1776,22 @@ mod tests {
             (d - 1) * (d - 2) / 6
         };
 
-        assert_eq!(h(2), 1, "H_2 = 1 (quaternions have 1 quaternion subalgebra)");
+        assert_eq!(
+            h(2),
+            1,
+            "H_2 = 1 (quaternions have 1 quaternion subalgebra)"
+        );
         assert_eq!(h(3), 7, "H_3 = 7 (octonions have 7 quaternion subalgebras)");
-        assert_eq!(h(4), 35, "H_4 = 35 (sedenions have 35 quaternion subalgebras)");
-        assert_eq!(h(5), 155, "H_5 = 155 (pathions have 155 quaternion subalgebras)");
+        assert_eq!(
+            h(4),
+            35,
+            "H_4 = 35 (sedenions have 35 quaternion subalgebras)"
+        );
+        assert_eq!(
+            h(5),
+            155,
+            "H_5 = 155 (pathions have 155 quaternion subalgebras)"
+        );
 
         println!("  H_2 = {} (quaternions)", h(2));
         println!("  H_3 = {} (octonions)", h(3));
@@ -1508,7 +1828,10 @@ mod tests {
         // Actually in the CD basis, e_i*e_j always produces +/-e_k for some k,
         // so every associative triple IS a quaternion subalgebra.
         // Let's verify: 203 vs 35.
-        println!("  Computational associative triples (dim=16): {}", assoc_count);
+        println!(
+            "  Computational associative triples (dim=16): {}",
+            assoc_count
+        );
         println!("  H_4 = 35 (Wilmot formula)");
 
         // T_n = octonion-like subalgebra count
@@ -1519,7 +1842,11 @@ mod tests {
         };
 
         // For n=4: T_4 = 15*14*12/168 = 2520/168 = 15
-        assert_eq!(t(4), 15, "T_4 = 15 (sedenions have 15 octonion-like subalgebras)");
+        assert_eq!(
+            t(4),
+            15,
+            "T_4 = 15 (sedenions have 15 octonion-like subalgebras)"
+        );
         println!("  T_4 = {} (octonion-like subalgebras in sedenions)", t(4));
 
         // Quaternions shared between each pair of octonion-like subalgebras
@@ -1562,7 +1889,11 @@ mod tests {
 
         let total = o_count * o_type_x + p4_count * p4_type_x;
         assert_eq!(total, 252, "252 = 8*28 + 7*4");
-        assert_eq!(o_count + p4_count, 15, "8 + 7 = 15 octonion-like subalgebras");
+        assert_eq!(
+            o_count + p4_count,
+            15,
+            "8 + 7 = 15 octonion-like subalgebras"
+        );
 
         println!("  8 octonions x 28 Type X = {}", o_count * o_type_x);
         println!("  7 P_4 x 4 Type X = {}", p4_count * p4_type_x);
@@ -1636,17 +1967,25 @@ mod tests {
         println!("--- WILMOT 2512.07210: Fano volume structure ---");
 
         // Combinatorial verification of the Fano volume
-        let h4 = 35_u32;  // quaternions
-        let t4 = 15_u32;  // Fano planes (octonion-like subalgebras)
-        let quat_per_plane = 7_u32;  // each Fano plane has 7 quaternions
+        let h4 = 35_u32; // quaternions
+        let t4 = 15_u32; // Fano planes (octonion-like subalgebras)
+        let quat_per_plane = 7_u32; // each Fano plane has 7 quaternions
         let planes_per_quat = 3_u32; // each quaternion in 3 planes
 
         // Double counting: h4 * planes_per_quat = t4 * quat_per_plane
-        assert_eq!(h4 * planes_per_quat, t4 * quat_per_plane,
-            "Double counting: 35*3 = 15*7 = 105");
-        println!("  Double counting: {}*{} = {}*{} = {}",
-            h4, planes_per_quat, t4, quat_per_plane,
-            h4 * planes_per_quat);
+        assert_eq!(
+            h4 * planes_per_quat,
+            t4 * quat_per_plane,
+            "Double counting: 35*3 = 15*7 = 105"
+        );
+        println!(
+            "  Double counting: {}*{} = {}*{} = {}",
+            h4,
+            planes_per_quat,
+            t4,
+            quat_per_plane,
+            h4 * planes_per_quat
+        );
 
         // The Fano volume is the 4D analogue of the Fano plane:
         // dim 2 (Cl(3)): 1 quaternion, 0 planes (trivial)
@@ -1693,10 +2032,10 @@ mod tests {
         // The 4 kernel basis vectors (Dou eq. 2.12):
         // e_4 + e_15, e_5 - e_14, e_6 + e_13, e_7 - e_12
         let kernel_vecs: [(usize, f64, usize, f64); 4] = [
-            (4, 1.0, 15, 1.0),   // e_4 + e_15
-            (5, 1.0, 14, -1.0),  // e_5 - e_14
-            (6, 1.0, 13, 1.0),   // e_6 + e_13
-            (7, 1.0, 12, -1.0),  // e_7 - e_12
+            (4, 1.0, 15, 1.0),  // e_4 + e_15
+            (5, 1.0, 14, -1.0), // e_5 - e_14
+            (6, 1.0, 13, 1.0),  // e_6 + e_13
+            (7, 1.0, 12, -1.0), // e_7 - e_12
         ];
 
         for &(i, si, j, sj) in &kernel_vecs {
@@ -1707,10 +2046,18 @@ mod tests {
             let prod = cd_multiply(&zd_left, &v);
             let norm_sq: f64 = prod.iter().map(|x| x * x).sum();
 
-            assert!(norm_sq < 1e-28,
+            assert!(
+                norm_sq < 1e-28,
                 "(e_1 - e_10) * ({}{:+}e_{}) should be zero, got norm^2 = {}",
-                if si > 0.0 { format!("e_{}", i) } else { format!("-e_{}", i) },
-                sj, j, norm_sq);
+                if si > 0.0 {
+                    format!("e_{}", i)
+                } else {
+                    format!("-e_{}", i)
+                },
+                sj,
+                j,
+                norm_sq
+            );
         }
 
         println!("  All 4 kernel vectors verified: (e_1 - e_10) * v = 0");
@@ -1728,7 +2075,10 @@ mod tests {
         // Cross-check with Koebisu: is (e_1 - e_10) a zero divisor?
         let d2 = cd_kernel::cayley_dickson::koebisu_d2(&zd_left);
         assert!(d2.abs() < 1e-28, "D_2(e_1 - e_10) should be 0 (it's a ZD)");
-        println!("  Koebisu D_2 cross-check: D_2(e_1 - e_10) = {:.2e} [OK]", d2);
+        println!(
+            "  Koebisu D_2 cross-check: D_2(e_1 - e_10) = {:.2e} [OK]",
+            d2
+        );
 
         // Key insight from Dou et al.: the kernel dimension = 4 is responsible
         // for the SECOND convergence radius R_a^{p,J} in star-power series.
@@ -1749,17 +2099,57 @@ mod tests {
 
         // Three standard ZD witnesses
         let cases: [([f64; 16], [f64; 16], &str); 3] = [
-            ({let mut x = [0.0; 16]; x[1]=1.0; x[10]=1.0;
-              let mut y = [0.0; 16]; y[5]=1.0; y[14]=1.0; (x, y, "(e1+e10)(e5+e14)")}.0,
-             {let mut y = [0.0; 16]; y[5]=1.0; y[14]=1.0; y}.into(),
-             "(e1+e10)(e5+e14)"),
-            ({let mut x = [0.0; 16]; x[3]=1.0; x[10]=1.0; x},
-             {let mut y = [0.0; 16]; y[6]=1.0; y[15]=-1.0; y},
-             "(e3+e10)(e6-e15)"),
+            (
+                {
+                    let mut x = [0.0; 16];
+                    x[1] = 1.0;
+                    x[10] = 1.0;
+                    let mut y = [0.0; 16];
+                    y[5] = 1.0;
+                    y[14] = 1.0;
+                    (x, y, "(e1+e10)(e5+e14)")
+                }
+                .0,
+                {
+                    let mut y = [0.0; 16];
+                    y[5] = 1.0;
+                    y[14] = 1.0;
+                    y
+                }
+                .into(),
+                "(e1+e10)(e5+e14)",
+            ),
+            (
+                {
+                    let mut x = [0.0; 16];
+                    x[3] = 1.0;
+                    x[10] = 1.0;
+                    x
+                },
+                {
+                    let mut y = [0.0; 16];
+                    y[6] = 1.0;
+                    y[15] = -1.0;
+                    y
+                },
+                "(e3+e10)(e6-e15)",
+            ),
             // Standard Reggiani ZD pair from the 84 assessors
-            ({let mut x = [0.0; 16]; x[1]=1.0; x[10]=1.0; x},
-             {let mut y = [0.0; 16]; y[4]=1.0; y[15]=-1.0; y},
-             "(e1+e10)(e4-e15)"),
+            (
+                {
+                    let mut x = [0.0; 16];
+                    x[1] = 1.0;
+                    x[10] = 1.0;
+                    x
+                },
+                {
+                    let mut y = [0.0; 16];
+                    y[4] = 1.0;
+                    y[15] = -1.0;
+                    y
+                },
+                "(e1+e10)(e4-e15)",
+            ),
         ];
 
         println!("  === Surreal CD: Scalar Extension ZD Verification ===\n");
@@ -1767,8 +2157,13 @@ mod tests {
         for (idx, (x, y, label)) in cases.iter().enumerate() {
             let product = cd_multiply(x, y);
             let norm: f64 = product.iter().map(|v| v * v).sum::<f64>().sqrt();
-            println!("  Witness {}: {} -> |product| = {:.2e}", idx+1, label, norm);
-            assert!(norm < 1e-14, "ZD witness {} failed", idx+1);
+            println!(
+                "  Witness {}: {} -> |product| = {:.2e}",
+                idx + 1,
+                label,
+                norm
+            );
+            assert!(norm < 1e-14, "ZD witness {} failed", idx + 1);
 
             // Scalar extension: alpha * x still gives zero
             for &alpha in &[0.001_f64, 1000.0, std::f64::consts::PI] {
@@ -1796,7 +2191,6 @@ mod tests {
     /// correction to the octonionic product.
     #[test]
     fn test_homotopy_transfer_m3() {
-
         // Octonion basis as 16D sedenion vectors (lower 8 components)
         let _oct_basis = |k: usize| -> [f64; 16] {
             assert!(k < 8);
@@ -1804,11 +2198,6 @@ mod tests {
             v[k] = 1.0;
             v
         };
-
-
-
-
-
 
         println!("  === Homotopy Transfer m3: Sedenion Retraction to Octonions ===\n");
 
@@ -1820,9 +2209,13 @@ mod tests {
         println!("  Sample m3 outputs:");
         for i in 1..8 {
             for j in 1..8 {
-                if j == i { continue; }
+                if j == i {
+                    continue;
+                }
                 for k in 1..8 {
-                    if k == i || k == j { continue; }
+                    if k == i || k == j {
+                        continue;
+                    }
 
                     let m3_ijk = ht_compute_m3(&oct8(i), &oct8(j), &oct8(k));
                     let norm: f64 = m3_ijk.iter().map(|v| v * v).sum::<f64>().sqrt();
@@ -1832,18 +2225,34 @@ mod tests {
                     } else if m3_ijk[0].abs() > 0.5 && m3_ijk[1..].iter().all(|v| v.abs() < 1e-10) {
                         scalar_count += 1;
                         if scalar_count <= 3 {
-                            println!("    m3(e{},e{},e{}) = {:.1} e0 [SCALAR, Fano={}]",
-                                i, j, k, m3_ijk[0], is_fano_triple(i, j, k));
+                            println!(
+                                "    m3(e{},e{},e{}) = {:.1} e0 [SCALAR, Fano={}]",
+                                i,
+                                j,
+                                k,
+                                m3_ijk[0],
+                                is_fano_triple(i, j, k)
+                            );
                         }
                     } else {
                         imaginary_count += 1;
                         // Find the dominant imaginary component
-                        let (max_idx, max_val) = m3_ijk[1..].iter().enumerate()
+                        let (max_idx, max_val) = m3_ijk[1..]
+                            .iter()
+                            .enumerate()
                             .max_by(|(_, a), (_, b)| a.abs().partial_cmp(&b.abs()).unwrap())
-                            .map(|(i, v)| (i+1, *v)).unwrap();
+                            .map(|(i, v)| (i + 1, *v))
+                            .unwrap();
                         if imaginary_count <= 3 {
-                            println!("    m3(e{},e{},e{}) = {:.1} e{} [IMAGINARY, Fano={}]",
-                                i, j, k, max_val, max_idx, is_fano_triple(i, j, k));
+                            println!(
+                                "    m3(e{},e{},e{}) = {:.1} e{} [IMAGINARY, Fano={}]",
+                                i,
+                                j,
+                                k,
+                                max_val,
+                                max_idx,
+                                is_fano_triple(i, j, k)
+                            );
                         }
                     }
                 }
@@ -1859,29 +2268,48 @@ mod tests {
 
         // Verify the audit's prediction: 42 scalar + 168 imaginary
         println!("\n  Audit prediction: 42 scalar + 168 imaginary");
-        println!("  Actual:           {} scalar + {} imaginary + {} zero", scalar_count, imaginary_count, zero_count);
+        println!(
+            "  Actual:           {} scalar + {} imaginary + {} zero",
+            scalar_count, imaginary_count, zero_count
+        );
 
         // Check Fano correlation
         let mut fano_scalar = 0;
         let mut nonfano_imag = 0;
         for i in 1..8 {
             for j in 1..8 {
-                if j == i { continue; }
+                if j == i {
+                    continue;
+                }
                 for k in 1..8 {
-                    if k == i || k == j { continue; }
-                    let mut xi = [0.0_f64; 8]; xi[i] = 1.0;
-                    let mut yj = [0.0_f64; 8]; yj[j] = 1.0;
-                    let mut zk = [0.0_f64; 8]; zk[k] = 1.0;
+                    if k == i || k == j {
+                        continue;
+                    }
+                    let mut xi = [0.0_f64; 8];
+                    xi[i] = 1.0;
+                    let mut yj = [0.0_f64; 8];
+                    yj[j] = 1.0;
+                    let mut zk = [0.0_f64; 8];
+                    zk[k] = 1.0;
                     let m3_ijk = ht_compute_m3(&xi, &yj, &zk);
-                    let is_scalar = m3_ijk[0].abs() > 0.5 && m3_ijk[1..].iter().all(|v| v.abs() < 1e-10);
-                    if is_fano_triple(i, j, k) && is_scalar { fano_scalar += 1; }
-                    if !is_fano_triple(i, j, k) && !is_scalar && m3_ijk.iter().map(|v| v*v).sum::<f64>().sqrt() > 1e-10 {
+                    let is_scalar =
+                        m3_ijk[0].abs() > 0.5 && m3_ijk[1..].iter().all(|v| v.abs() < 1e-10);
+                    if is_fano_triple(i, j, k) && is_scalar {
+                        fano_scalar += 1;
+                    }
+                    if !is_fano_triple(i, j, k)
+                        && !is_scalar
+                        && m3_ijk.iter().map(|v| v * v).sum::<f64>().sqrt() > 1e-10
+                    {
                         nonfano_imag += 1;
                     }
                 }
             }
         }
-        println!("\n  Fano-line triples with scalar m3: {} (expected: 42 = 7 lines * 6 orderings)", fano_scalar);
+        println!(
+            "\n  Fano-line triples with scalar m3: {} (expected: 42 = 7 lines * 6 orderings)",
+            fano_scalar
+        );
         println!("  Non-Fano triples with imaginary m3: {}", nonfano_imag);
     }
 
@@ -1893,8 +2321,6 @@ mod tests {
     /// on the octonions, not an infinite A-infinity tower.
     #[test]
     fn test_m4_vanishes() {
-
-
         // m4 has multiple terms from the A-infinity relations.
         // The simplest check: does the transferred product of m3 outputs vanish?
         //
@@ -1914,22 +2340,38 @@ mod tests {
         // Simplified test: compute the "naive" m4 (without m3 corrections)
         // and check if it's zero. If not, m4 is nonzero.
 
-        let compute_naive_m4 = |w: &[f64; 8], x: &[f64; 8], y: &[f64; 8], z: &[f64; 8]| -> [f64; 8] {
-            let iw = ht_section(w); let ix = ht_section(x);
-            let iy = ht_section(y); let iz = ht_section(z);
-            // Term 1: p( h(h(iw*ix)*iy) * iz )
-            let t1 = ht_project(&ht_sed_mul(&ht_homotopy(&ht_sed_mul(&ht_homotopy(&ht_sed_mul(&iw, &ix)), &iy)), &iz));
-            // Term 2: -p( h(iw * h(ix*iy)) * iz )
-            let t2 = ht_project(&ht_sed_mul(&ht_homotopy(&ht_sed_mul(&iw, &ht_homotopy(&ht_sed_mul(&ix, &iy)))), &iz));
-            // Term 3: p( iw * h(h(ix*iy)*iz) )
-            let t3 = ht_project(&ht_sed_mul(&iw, &ht_homotopy(&ht_sed_mul(&ht_homotopy(&ht_sed_mul(&ix, &iy)), &iz))));
-            // Term 4: -p( iw * h(ix * h(iy*iz)) )
-            let t4 = ht_project(&ht_sed_mul(&iw, &ht_homotopy(&ht_sed_mul(&ix, &ht_homotopy(&ht_sed_mul(&iy, &iz))))));
-            let mut m4 = [0.0_f64; 8];
-            for k in 0..8 { m4[k] = t1[k] - t2[k] + t3[k] - t4[k]; }
-            m4
-        };
-
+        let compute_naive_m4 =
+            |w: &[f64; 8], x: &[f64; 8], y: &[f64; 8], z: &[f64; 8]| -> [f64; 8] {
+                let iw = ht_section(w);
+                let ix = ht_section(x);
+                let iy = ht_section(y);
+                let iz = ht_section(z);
+                // Term 1: p( h(h(iw*ix)*iy) * iz )
+                let t1 = ht_project(&ht_sed_mul(
+                    &ht_homotopy(&ht_sed_mul(&ht_homotopy(&ht_sed_mul(&iw, &ix)), &iy)),
+                    &iz,
+                ));
+                // Term 2: -p( h(iw * h(ix*iy)) * iz )
+                let t2 = ht_project(&ht_sed_mul(
+                    &ht_homotopy(&ht_sed_mul(&iw, &ht_homotopy(&ht_sed_mul(&ix, &iy)))),
+                    &iz,
+                ));
+                // Term 3: p( iw * h(h(ix*iy)*iz) )
+                let t3 = ht_project(&ht_sed_mul(
+                    &iw,
+                    &ht_homotopy(&ht_sed_mul(&ht_homotopy(&ht_sed_mul(&ix, &iy)), &iz)),
+                ));
+                // Term 4: -p( iw * h(ix * h(iy*iz)) )
+                let t4 = ht_project(&ht_sed_mul(
+                    &iw,
+                    &ht_homotopy(&ht_sed_mul(&ix, &ht_homotopy(&ht_sed_mul(&iy, &iz)))),
+                ));
+                let mut m4 = [0.0_f64; 8];
+                for k in 0..8 {
+                    m4[k] = t1[k] - t2[k] + t3[k] - t4[k];
+                }
+                m4
+            };
 
         println!("  === Does m4 Vanish? (A-infinity Truncation Test) ===\n");
 
@@ -1941,16 +2383,26 @@ mod tests {
         // C(7,4) * 4! = 35 * 24 = 840 ordered quadruples
         for i in 1..8 {
             for j in 1..8 {
-                if j == i { continue; }
+                if j == i {
+                    continue;
+                }
                 for k in 1..8 {
-                    if k == i || k == j { continue; }
+                    if k == i || k == j {
+                        continue;
+                    }
                     for l in 1..8 {
-                        if l == i || l == j || l == k { continue; }
+                        if l == i || l == j || l == k {
+                            continue;
+                        }
                         total += 1;
-                        let mut wi = [0.0_f64; 8]; wi[i] = 1.0;
-                        let mut xj = [0.0_f64; 8]; xj[j] = 1.0;
-                        let mut yk = [0.0_f64; 8]; yk[k] = 1.0;
-                        let mut zl = [0.0_f64; 8]; zl[l] = 1.0;
+                        let mut wi = [0.0_f64; 8];
+                        wi[i] = 1.0;
+                        let mut xj = [0.0_f64; 8];
+                        xj[j] = 1.0;
+                        let mut yk = [0.0_f64; 8];
+                        yk[k] = 1.0;
+                        let mut zl = [0.0_f64; 8];
+                        zl[l] = 1.0;
 
                         let m4 = compute_naive_m4(&wi, &xj, &yk, &zl);
                         let norm: f64 = m4.iter().map(|v| v * v).sum::<f64>().sqrt();
@@ -1958,11 +2410,15 @@ mod tests {
                         if norm > 1e-10 {
                             nonzero_count += 1;
                             if nonzero_count <= 3 {
-                                let (max_idx, max_val) = m4.iter().enumerate()
+                                let (max_idx, max_val) = m4
+                                    .iter()
+                                    .enumerate()
                                     .max_by(|(_, a), (_, b)| a.abs().partial_cmp(&b.abs()).unwrap())
                                     .unwrap();
-                                println!("  m4(e{},e{},e{},e{}) = {:.1} e{} (|m4| = {:.2})",
-                                    i, j, k, l, max_val, max_idx, norm);
+                                println!(
+                                    "  m4(e{},e{},e{},e{}) = {:.1} e{} (|m4| = {:.2})",
+                                    i, j, k, l, max_val, max_idx, norm
+                                );
                             }
                         }
                         max_m4_norm = max_m4_norm.max(norm);
@@ -1971,7 +2427,10 @@ mod tests {
             }
         }
 
-        println!("\n  Total ordered quadruples: {} (expected: 7*6*5*4 = 840)", total);
+        println!(
+            "\n  Total ordered quadruples: {} (expected: 7*6*5*4 = 840)",
+            total
+        );
         println!("  Nonzero m4 outputs: {}", nonzero_count);
         println!("  Max |m4|: {:.4}", max_m4_norm);
 
@@ -1979,7 +2438,10 @@ mod tests {
             println!("\n  m4 VANISHES! A-infinity truncates at m3.");
             println!("  The sedenion retraction produces a STRICT A_3 algebra on O.");
         } else {
-            println!("\n  m4 is NONZERO for {}/{} quadruples.", nonzero_count, total);
+            println!(
+                "\n  m4 is NONZERO for {}/{} quadruples.",
+                nonzero_count, total
+            );
             println!("  The A-infinity structure does NOT truncate at m3.");
             println!("  Higher operations m_n (n >= 4) are needed for the full transfer.");
         }
@@ -1993,11 +2455,11 @@ mod tests {
     /// (c) quadruples related to the G2 coset geometry
     #[test]
     fn test_m4_zero_classification() {
-
-
         let compute_m4 = |w: &[f64; 8], x: &[f64; 8], y: &[f64; 8], z: &[f64; 8]| -> f64 {
-            let iw = ht_section(w); let ix = ht_section(x);
-            let iy = ht_section(y); let iz = ht_section(z);
+            let iw = ht_section(w);
+            let ix = ht_section(x);
+            let iy = ht_section(y);
+            let iz = ht_section(z);
             let wx = ht_sed_mul(&iw, &ix);
             let h_wx = ht_homotopy(&wx);
             let h_wx_y = ht_sed_mul(&h_wx, &iy);
@@ -2017,7 +2479,9 @@ mod tests {
             let h_xhyz = ht_homotopy(&x_hyz);
             let t4 = ht_project(&ht_sed_mul(&iw, &h_xhyz));
             let mut m4 = [0.0_f64; 8];
-            for k in 0..8 { m4[k] = t1[k] - t2[k] + t3[k] - t4[k]; }
+            for k in 0..8 {
+                m4[k] = t1[k] - t2[k] + t3[k] - t4[k];
+            }
             m4.iter().map(|v| v * v).sum::<f64>().sqrt()
         };
 
@@ -2026,15 +2490,25 @@ mod tests {
 
         for i in 1..8 {
             for j in 1..8 {
-                if j == i { continue; }
+                if j == i {
+                    continue;
+                }
                 for k in 1..8 {
-                    if k == i || k == j { continue; }
+                    if k == i || k == j {
+                        continue;
+                    }
                     for l in 1..8 {
-                        if l == i || l == j || l == k { continue; }
-                        let mut wi = [0.0_f64; 8]; wi[i] = 1.0;
-                        let mut xj = [0.0_f64; 8]; xj[j] = 1.0;
-                        let mut yk = [0.0_f64; 8]; yk[k] = 1.0;
-                        let mut zl = [0.0_f64; 8]; zl[l] = 1.0;
+                        if l == i || l == j || l == k {
+                            continue;
+                        }
+                        let mut wi = [0.0_f64; 8];
+                        wi[i] = 1.0;
+                        let mut xj = [0.0_f64; 8];
+                        xj[j] = 1.0;
+                        let mut yk = [0.0_f64; 8];
+                        yk[k] = 1.0;
+                        let mut zl = [0.0_f64; 8];
+                        zl[l] = 1.0;
                         let norm = compute_m4(&wi, &xj, &yk, &zl);
                         if norm < 1e-10 {
                             zeros.push((i, j, k, l));
@@ -2053,8 +2527,15 @@ mod tests {
         let mut contains_fano = 0;
         let mut no_fano = 0;
         for &(i, j, k, l) in &zeros {
-            let has_fano = is_fano_triple(i, j, k) || is_fano_triple(i, j, l) || is_fano_triple(i, k, l) || is_fano_triple(j, k, l);
-            if has_fano { contains_fano += 1; } else { no_fano += 1; }
+            let has_fano = is_fano_triple(i, j, k)
+                || is_fano_triple(i, j, l)
+                || is_fano_triple(i, k, l)
+                || is_fano_triple(j, k, l);
+            if has_fano {
+                contains_fano += 1;
+            } else {
+                no_fano += 1;
+            }
         }
         println!("  Zeros containing a Fano sub-triple: {}", contains_fano);
         println!("  Zeros with NO Fano sub-triple: {}", no_fano);
@@ -2063,7 +2544,11 @@ mod tests {
         let mut xor_zero = 0;
         let mut xor_nonzero = 0;
         for &(i, j, k, l) in &zeros {
-            if (i ^ j ^ k ^ l) == 0 { xor_zero += 1; } else { xor_nonzero += 1; }
+            if (i ^ j ^ k ^ l) == 0 {
+                xor_zero += 1;
+            } else {
+                xor_nonzero += 1;
+            }
         }
         println!("  Zeros with i XOR j XOR k XOR l = 0: {}", xor_zero);
         println!("  Zeros with i XOR j XOR k XOR l != 0: {}", xor_nonzero);
@@ -2071,37 +2556,54 @@ mod tests {
         // Check: which distinct 4-element SETS appear?
         let mut sets: std::collections::BTreeSet<[usize; 4]> = std::collections::BTreeSet::new();
         for &(i, j, k, l) in &zeros {
-            let mut s = [i, j, k, l]; s.sort();
+            let mut s = [i, j, k, l];
+            s.sort();
             sets.insert(s);
         }
-        println!("  Distinct 4-element sets among zeros: {} (out of C(7,4)=35)", sets.len());
+        println!(
+            "  Distinct 4-element sets among zeros: {} (out of C(7,4)=35)",
+            sets.len()
+        );
 
         // Print the sets
         println!("\n  Zero sets:");
         for s in &sets {
-            let n_orderings = zeros.iter().filter(|&&(i,j,k,l)| {
-                let mut t = [i,j,k,l]; t.sort(); t == *s
-            }).count();
+            let n_orderings = zeros
+                .iter()
+                .filter(|&&(i, j, k, l)| {
+                    let mut t = [i, j, k, l];
+                    t.sort();
+                    t == *s
+                })
+                .count();
             let xor = s[0] ^ s[1] ^ s[2] ^ s[3];
-            let fano_count = [(s[0],s[1],s[2]), (s[0],s[1],s[3]), (s[0],s[2],s[3]), (s[1],s[2],s[3])]
-                .iter().filter(|&&(a,b,c)| is_fano_triple(a,b,c)).count();
-            println!("    {:?}: {} orderings, XOR={}, Fano sub-triples={}", s, n_orderings, xor, fano_count);
+            let fano_count = [
+                (s[0], s[1], s[2]),
+                (s[0], s[1], s[3]),
+                (s[0], s[2], s[3]),
+                (s[1], s[2], s[3]),
+            ]
+            .iter()
+            .filter(|&&(a, b, c)| is_fano_triple(a, b, c))
+            .count();
+            println!(
+                "    {:?}: {} orderings, XOR={}, Fano sub-triples={}",
+                s, n_orderings, xor, fano_count
+            );
         }
     }
 
     /// Identify the 7 missing m4-nonzero sets and check m5 growth rate.
     #[test]
     fn test_m4_missing_sets_and_m5() {
-
-
         // Find the 7 missing 4-element sets (those with 2+ Fano sub-triples)
         println!("  === 7 Missing Sets (2+ Fano Sub-Triples) ===\n");
 
         let mut all_sets: Vec<[usize; 4]> = Vec::new();
         for a in 1..8 {
-            for b in (a+1)..8 {
-                for c in (b+1)..8 {
-                    for d in (c+1)..8 {
+            for b in (a + 1)..8 {
+                for c in (b + 1)..8 {
+                    for d in (c + 1)..8 {
                         all_sets.push([a, b, c, d]);
                     }
                 }
@@ -2110,12 +2612,23 @@ mod tests {
         assert_eq!(all_sets.len(), 35);
 
         for s in &all_sets {
-            let fano_count = [(s[0],s[1],s[2]), (s[0],s[1],s[3]), (s[0],s[2],s[3]), (s[1],s[2],s[3])]
-                .iter().filter(|&&(a,b,c)| is_fano_triple(a,b,c)).count();
+            let fano_count = [
+                (s[0], s[1], s[2]),
+                (s[0], s[1], s[3]),
+                (s[0], s[2], s[3]),
+                (s[1], s[2], s[3]),
+            ]
+            .iter()
+            .filter(|&&(a, b, c)| is_fano_triple(a, b, c))
+            .count();
             if fano_count >= 2 {
                 // This is a missing set -- all 24 orderings have nonzero m4
-                println!("  {:?}: {} Fano sub-triples, complement = e_{}",
-                    s, fano_count, (1..8).find(|x| !s.contains(x)).unwrap_or(0));
+                println!(
+                    "  {:?}: {} Fano sub-triples, complement = e_{}",
+                    s,
+                    fano_count,
+                    (1..8).find(|x| !s.contains(x)).unwrap_or(0)
+                );
             }
         }
 
@@ -2137,18 +2650,29 @@ mod tests {
         // Sample: fix w=e1, scan (x,y,z,u) over distinct {2..7}
         for x in 2..8 {
             for y in 2..8 {
-                if y == x { continue; }
+                if y == x {
+                    continue;
+                }
                 for z in 2..8 {
-                    if z == x || z == y { continue; }
+                    if z == x || z == y {
+                        continue;
+                    }
                     for u in 2..8 {
-                        if u == x || u == y || u == z { continue; }
+                        if u == x || u == y || u == z {
+                            continue;
+                        }
                         m5_count += 1;
 
-                        let mut w1 = [0.0_f64; 8]; w1[1] = 1.0;
-                        let mut xi = [0.0_f64; 8]; xi[x] = 1.0;
-                        let mut yj = [0.0_f64; 8]; yj[y] = 1.0;
-                        let mut zk = [0.0_f64; 8]; zk[z] = 1.0;
-                        let mut ul = [0.0_f64; 8]; ul[u] = 1.0;
+                        let mut w1 = [0.0_f64; 8];
+                        w1[1] = 1.0;
+                        let mut xi = [0.0_f64; 8];
+                        xi[x] = 1.0;
+                        let mut yj = [0.0_f64; 8];
+                        yj[y] = 1.0;
+                        let mut zk = [0.0_f64; 8];
+                        zk[z] = 1.0;
+                        let mut ul = [0.0_f64; 8];
+                        ul[u] = 1.0;
 
                         // Naive m5: nest h one more level
                         let iw = ht_section(&w1);
@@ -2169,16 +2693,24 @@ mod tests {
                         let t = ht_project(&h3u);
 
                         let norm: f64 = t.iter().map(|v| v * v).sum::<f64>().sqrt();
-                        if norm > 1e-10 { m5_nonzero += 1; }
+                        if norm > 1e-10 {
+                            m5_nonzero += 1;
+                        }
                         max_m5 = max_m5.max(norm);
                     }
                 }
             }
         }
 
-        println!("  w=e1 sample: {}/{} nonzero, max |m5 term| = {:.1}", m5_nonzero, m5_count, max_m5);
+        println!(
+            "  w=e1 sample: {}/{} nonzero, max |m5 term| = {:.1}",
+            m5_nonzero, m5_count, max_m5
+        );
         println!("  Growth: |m3|=2, |m4|=4, |m5 term|={:.1}", max_m5);
-        println!("  Ratio: {:.1}x per level", if max_m5 > 0.1 { max_m5 / 4.0 } else { 0.0 });
+        println!(
+            "  Ratio: {:.1}x per level",
+            if max_m5 > 0.1 { max_m5 / 4.0 } else { 0.0 }
+        );
     }
 
     /// Oscillation pattern: compute max|m_n| for n=3..7 via iterated homotopy nesting.
@@ -2191,8 +2723,6 @@ mod tests {
     /// converge, or diverge?
     #[test]
     fn test_oscillation_pattern() {
-
-
         println!("  === A-infinity Oscillation Pattern ===\n");
 
         // Use a fixed sequence of basis elements: e1, e2, e4, e7, e3, e5, e6
@@ -2203,8 +2733,10 @@ mod tests {
         //   t_n = p( h( h( ... h(i(e_{b1}) * i(e_{b2})) ... * i(e_{b_{n-1}})) * i(e_{bn}) )
         // This is one specific term of the full m_n.
 
-        println!("  {:>4} | {:>12} | {:>12} | {:>10}",
-            "n", "max|term|", "avg|term|", "nonzero%");
+        println!(
+            "  {:>4} | {:>12} | {:>12} | {:>10}",
+            "n", "max|term|", "avg|term|", "nonzero%"
+        );
         println!("  {:-<4}-+-{:-<12}-+-{:-<12}-+-{:-<10}", "", "", "", "");
 
         for n in 3..=7 {
@@ -2219,11 +2751,17 @@ mod tests {
 
             // Generate permutations of size n from {1..7}
             fn perm_iter(n: usize, pool: &[usize]) -> Vec<Vec<usize>> {
-                if n == 0 { return vec![vec![]]; }
+                if n == 0 {
+                    return vec![vec![]];
+                }
                 let mut result = Vec::new();
                 for (i, &v) in pool.iter().enumerate() {
-                    let rest: Vec<usize> = pool.iter().enumerate()
-                        .filter(|&(j, _)| j != i).map(|(_, &x)| x).collect();
+                    let rest: Vec<usize> = pool
+                        .iter()
+                        .enumerate()
+                        .filter(|&(j, _)| j != i)
+                        .map(|(_, &x)| x)
+                        .collect();
                     for mut sub in perm_iter(n - 1, &rest) {
                         sub.insert(0, v);
                         result.push(sub);
@@ -2269,16 +2807,28 @@ mod tests {
                 let result = ht_project(&final_prod);
 
                 let norm: f64 = result.iter().map(|v| v * v).sum::<f64>().sqrt();
-                if norm > 1e-10 { nonzero += 1; }
+                if norm > 1e-10 {
+                    nonzero += 1;
+                }
                 max_norm = max_norm.max(norm);
                 sum_norm += norm;
             }
 
-            let avg_norm = if count > 0 { sum_norm / count as f64 } else { 0.0 };
-            let pct_nonzero = if count > 0 { 100.0 * nonzero as f64 / count as f64 } else { 0.0 };
+            let avg_norm = if count > 0 {
+                sum_norm / count as f64
+            } else {
+                0.0
+            };
+            let pct_nonzero = if count > 0 {
+                100.0 * nonzero as f64 / count as f64
+            } else {
+                0.0
+            };
 
-            println!("  {:>4} | {:>12.4} | {:>12.4} | {:>9.1}%",
-                n, max_norm, avg_norm, pct_nonzero);
+            println!(
+                "  {:>4} | {:>12.4} | {:>12.4} | {:>9.1}%",
+                n, max_norm, avg_norm, pct_nonzero
+            );
         }
 
         println!("\n  Sequence of max|term|: this reveals the oscillation/convergence pattern.");
@@ -2299,12 +2849,17 @@ mod tests {
         // Pathion = 32D. Sedenion = lower 16D. Retraction: p(u,v) = (u+v)/2.
         let section_32 = |x: &[f64; 16]| -> Vec<f64> {
             let mut s = vec![0.0_f64; 32];
-            for k in 0..16 { s[k] = x[k]; s[k+16] = x[k]; }
+            for k in 0..16 {
+                s[k] = x[k];
+                s[k + 16] = x[k];
+            }
             s
         };
         let project_32 = |s: &[f64]| -> [f64; 16] {
             let mut o = [0.0_f64; 16];
-            for k in 0..16 { o[k] = (s[k] + s[k+16]) / 2.0; }
+            for k in 0..16 {
+                o[k] = (s[k] + s[k + 16]) / 2.0;
+            }
             o
         };
         let homotopy_32 = |s: &[f64]| -> Vec<f64> {
@@ -2327,21 +2882,28 @@ mod tests {
             let t2_full = cd_multiply(&ix, &h_iy_iz);
             let t2 = project_32(&t2_full);
             let mut m3 = [0.0_f64; 16];
-            for k in 0..16 { m3[k] = t1[k] - t2[k]; }
+            for k in 0..16 {
+                m3[k] = t1[k] - t2[k];
+            }
             m3
         };
 
         // Also compute the sedenion associator directly
         let sed_assoc = |x: &[f64; 16], y: &[f64; 16], z: &[f64; 16]| -> [f64; 16] {
-            let mut sx = vec![0.0_f64; 16]; sx.copy_from_slice(x);
-            let mut sy = vec![0.0_f64; 16]; sy.copy_from_slice(y);
-            let mut sz = vec![0.0_f64; 16]; sz.copy_from_slice(z);
+            let mut sx = vec![0.0_f64; 16];
+            sx.copy_from_slice(x);
+            let mut sy = vec![0.0_f64; 16];
+            sy.copy_from_slice(y);
+            let mut sz = vec![0.0_f64; 16];
+            sz.copy_from_slice(z);
             let xy = cd_multiply(&sx, &sy);
             let xy_z = cd_multiply(&xy, &sz);
             let yz = cd_multiply(&sy, &sz);
             let x_yz = cd_multiply(&sx, &yz);
             let mut assoc = [0.0_f64; 16];
-            for k in 0..16 { assoc[k] = xy_z[k] - x_yz[k]; }
+            for k in 0..16 {
+                assoc[k] = xy_z[k] - x_yz[k];
+            }
             assoc
         };
 
@@ -2358,18 +2920,21 @@ mod tests {
         // C(15,3) = 455 unordered, but 15*14*13 = 2730 ordered
         // For speed, just check unordered triples
         for i in 1..16_usize {
-            for j in (i+1)..16 {
-                for k in (j+1)..16 {
+            for j in (i + 1)..16 {
+                for k in (j + 1)..16 {
                     total += 1;
-                    let mut ei = [0.0_f64; 16]; ei[i] = 1.0;
-                    let mut ej = [0.0_f64; 16]; ej[j] = 1.0;
-                    let mut ek = [0.0_f64; 16]; ek[k] = 1.0;
+                    let mut ei = [0.0_f64; 16];
+                    ei[i] = 1.0;
+                    let mut ej = [0.0_f64; 16];
+                    ej[j] = 1.0;
+                    let mut ek = [0.0_f64; 16];
+                    ek[k] = 1.0;
 
                     let m3 = compute_sed_m3(&ei, &ej, &ek);
                     let assoc = sed_assoc(&ei, &ej, &ek);
 
-                    let m3_norm: f64 = m3.iter().map(|v| v*v).sum::<f64>().sqrt();
-                    let assoc_norm: f64 = assoc.iter().map(|v| v*v).sum::<f64>().sqrt();
+                    let m3_norm: f64 = m3.iter().map(|v| v * v).sum::<f64>().sqrt();
+                    let assoc_norm: f64 = assoc.iter().map(|v| v * v).sum::<f64>().sqrt();
 
                     // Check if m3 = 0
                     if m3_norm < 1e-10 {
@@ -2382,8 +2947,12 @@ mod tests {
 
                     // Check if m3 = assoc
                     if assoc_norm > 1e-10 && m3_norm > 1e-10 {
-                        let diff_norm: f64 = m3.iter().zip(assoc.iter())
-                            .map(|(a, b)| (a - b).powi(2)).sum::<f64>().sqrt();
+                        let diff_norm: f64 = m3
+                            .iter()
+                            .zip(assoc.iter())
+                            .map(|(a, b)| (a - b).powi(2))
+                            .sum::<f64>()
+                            .sqrt();
                         if diff_norm / m3_norm < 0.01 {
                             m3_equals_assoc += 1;
                         } else {
@@ -2396,7 +2965,10 @@ mod tests {
             }
         }
 
-        println!("  Total unordered triples: {} (expected: C(15,3) = 455)", total);
+        println!(
+            "  Total unordered triples: {} (expected: C(15,3) = 455)",
+            total
+        );
         println!("  Scalar m3: {}", scalar_count);
         println!("  Imaginary m3: {}", imaginary_count);
         println!("  Zero m3: {}", zero_count);
@@ -2416,26 +2988,38 @@ mod tests {
 
         // Octonion mul via sedenion embed
         let oct_mul = |a: &[f64; 8], b: &[f64; 8]| -> [f64; 8] {
-            let mut sa = [0.0_f64; 16]; let mut sb = [0.0_f64; 16];
-            for k in 0..8 { sa[k] = a[k]; sb[k] = b[k]; }
+            let mut sa = [0.0_f64; 16];
+            let mut sb = [0.0_f64; 16];
+            for k in 0..8 {
+                sa[k] = a[k];
+                sb[k] = b[k];
+            }
             let p = cd_multiply(&sa, &sb);
             let mut out = [0.0_f64; 8];
-            for k in 0..8 { out[k] = p[k]; }
+            for k in 0..8 {
+                out[k] = p[k];
+            }
             out
         };
-
 
         println!("  === m3 vs Octonionic Associator ===\n");
 
         let mut ratios = Vec::new();
         for i in 1..8 {
             for j in 1..8 {
-                if j == i { continue; }
+                if j == i {
+                    continue;
+                }
                 for k in 1..8 {
-                    if k == i || k == j { continue; }
-                    let mut ei = [0.0_f64; 8]; ei[i] = 1.0;
-                    let mut ej = [0.0_f64; 8]; ej[j] = 1.0;
-                    let mut ek = [0.0_f64; 8]; ek[k] = 1.0;
+                    if k == i || k == j {
+                        continue;
+                    }
+                    let mut ei = [0.0_f64; 8];
+                    ei[i] = 1.0;
+                    let mut ej = [0.0_f64; 8];
+                    ej[j] = 1.0;
+                    let mut ek = [0.0_f64; 8];
+                    ek[k] = 1.0;
 
                     let m3_v = ht_compute_m3(&ei, &ej, &ek);
                     let xy = oct_mul(&ei, &ej);
@@ -2443,7 +3027,9 @@ mod tests {
                     let yz = oct_mul(&ej, &ek);
                     let x_yz = oct_mul(&ei, &yz);
                     let mut assoc = [0.0_f64; 8];
-                    for c in 0..8 { assoc[c] = xy_z[c] - x_yz[c]; }
+                    for c in 0..8 {
+                        assoc[c] = xy_z[c] - x_yz[c];
+                    }
 
                     // Find ratio m3/assoc
                     for c in 0..8 {
@@ -2460,10 +3046,16 @@ mod tests {
         if !ratios.is_empty() {
             let r0 = ratios[0];
             let all_same = ratios.iter().all(|r| (r - r0).abs() < 1e-10);
-            println!("  Sample ratios: {:.4}, {:.4}, {:.4}", ratios[0], ratios[1], ratios[2]);
+            println!(
+                "  Sample ratios: {:.4}, {:.4}, {:.4}",
+                ratios[0], ratios[1], ratios[2]
+            );
             println!("  All {} ratios equal: {}", ratios.len(), all_same);
             if all_same {
-                println!("  m3(x,y,z) = {:.4} * Assoc(x,y,z) for ALL 210 triples!", r0);
+                println!(
+                    "  m3(x,y,z) = {:.4} * Assoc(x,y,z) for ALL 210 triples!",
+                    r0
+                );
                 println!("  The A-infinity cubic IS the octonionic associator (scaled).");
             }
         }

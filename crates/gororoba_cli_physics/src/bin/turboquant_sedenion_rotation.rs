@@ -12,6 +12,7 @@
 
 use anyhow::Result;
 use clap::Parser;
+use rand::RngExt;
 use serde::Serialize;
 use std::{fs, path::PathBuf};
 
@@ -69,7 +70,7 @@ fn random_unit_sedenion(rng: &mut impl rand::Rng) -> [f64; 16] {
     let mut a = [0.0f64; 16];
     let mut norm_sq = 0.0;
     for v in a.iter_mut() {
-        *v = rng.gen_range(-1.0..1.0);
+        *v = rng.random_range(-1.0..1.0);
         norm_sq += *v * *v;
     }
     let norm = norm_sq.sqrt();
@@ -126,15 +127,14 @@ fn main() -> Result<()> {
     println!("=== TurboQuant Sedenion vs Haar Rotation ===");
     println!("  dim={}, n_vectors={}", cli.dim, cli.n_vectors);
 
-    use rand::Rng;
-    let mut rng = rand::thread_rng();
+    let mut rng = rand::rng();
     let d = cli.dim;
     let n_blocks = d / 16;
 
     // Generate unit-norm test vectors
     let mut vectors: Vec<Vec<f64>> = Vec::with_capacity(cli.n_vectors);
     for _ in 0..cli.n_vectors {
-        let mut v: Vec<f64> = (0..d).map(|_| rng.gen_range(-1.0..1.0)).collect();
+        let mut v: Vec<f64> = (0..d).map(|_| rng.random_range(-1.0..1.0)).collect();
         let norm: f64 = v.iter().map(|x| x * x).sum::<f64>().sqrt();
         for x in v.iter_mut() {
             *x /= norm;
@@ -144,8 +144,14 @@ fn main() -> Result<()> {
 
     // Lloyd-Max centroids for d=128, 3-bit
     let centroids: Vec<f64> = vec![
-        -0.19020693, -0.11878592, -0.06682206, -0.02166347,
-        0.02166347, 0.06682206, 0.11878592, 0.19020693,
+        -0.19020693,
+        -0.11878592,
+        -0.06682206,
+        -0.02166347,
+        0.02166347,
+        0.06682206,
+        0.11878592,
+        0.19020693,
     ];
 
     // Method 1: Sedenion block rotation (8 independent sedenion multiplications)
@@ -247,9 +253,12 @@ fn main() -> Result<()> {
     let interp = format!(
         "Sedenion block rotation ({} params) vs identity: variance {:.6} vs {:.6}, cross_corr {:.6} vs {:.6}, quant_mse {:.8} vs {:.8}.",
         n_blocks * 15,
-        results[1].mean_coord_variance, results[0].mean_coord_variance,
-        results[1].mean_cross_correlation, results[0].mean_cross_correlation,
-        results[1].quantization_mse, results[0].quantization_mse,
+        results[1].mean_coord_variance,
+        results[0].mean_coord_variance,
+        results[1].mean_cross_correlation,
+        results[0].mean_cross_correlation,
+        results[1].quantization_mse,
+        results[0].quantization_mse,
     );
     println!("\n  {}", interp);
 

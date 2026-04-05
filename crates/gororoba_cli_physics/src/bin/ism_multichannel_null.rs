@@ -21,8 +21,7 @@ use csv::ReaderBuilder;
 use rand::SeedableRng;
 use rand_chacha::ChaCha20Rng;
 use serde::Serialize;
-use std::collections::BTreeMap;
-use std::path::PathBuf;
+use std::{collections::BTreeMap, path::PathBuf};
 
 #[derive(Parser)]
 #[command(name = "ism-multichannel-null")]
@@ -36,7 +35,10 @@ struct Cli {
     pws_csv: PathBuf,
 
     /// Output JSON
-    #[arg(long, default_value = "data/output/heliosphere/ablations/ism_multichannel_null.json")]
+    #[arg(
+        long,
+        default_value = "data/output/heliosphere/ablations/ism_multichannel_null.json"
+    )]
     out_json: PathBuf,
 
     /// Embedding dimension (power of 2)
@@ -99,11 +101,26 @@ struct NullTestResult {
 }
 
 const CHANNEL_NAMES: [&str; TOTAL_CHANNELS] = [
-    "Bx", "By", "Bz", "|B|",
-    "PWS_10Hz", "PWS_18Hz", "PWS_31Hz", "PWS_56Hz",
-    "PWS_100Hz", "PWS_178Hz", "PWS_311Hz", "PWS_562Hz",
-    "PWS_1kHz", "PWS_1.8kHz", "PWS_3.1kHz", "PWS_5.6kHz",
-    "PWS_10kHz", "PWS_17.8kHz", "PWS_31.1kHz", "PWS_56.2kHz",
+    "Bx",
+    "By",
+    "Bz",
+    "|B|",
+    "PWS_10Hz",
+    "PWS_18Hz",
+    "PWS_31Hz",
+    "PWS_56Hz",
+    "PWS_100Hz",
+    "PWS_178Hz",
+    "PWS_311Hz",
+    "PWS_562Hz",
+    "PWS_1kHz",
+    "PWS_1.8kHz",
+    "PWS_3.1kHz",
+    "PWS_5.6kHz",
+    "PWS_10kHz",
+    "PWS_17.8kHz",
+    "PWS_31.1kHz",
+    "PWS_56.2kHz",
 ];
 
 fn load_and_join(
@@ -114,40 +131,59 @@ fn load_and_join(
 ) -> Result<Vec<(u16, [f64; TOTAL_CHANNELS])>> {
     // Load MAG
     let mut mag_map: BTreeMap<(u16, u16, u8), [f64; MAG_CHANNELS]> = BTreeMap::new();
-    let mut rdr = ReaderBuilder::new().from_path(mag_path)
+    let mut rdr = ReaderBuilder::new()
+        .from_path(mag_path)
         .with_context(|| format!("open {}", mag_path.display()))?;
     for result in rdr.records() {
         let record = result?;
         let year: u16 = record.get(3).unwrap_or("0").parse().unwrap_or(0);
         let doy: u16 = record.get(4).unwrap_or("0").parse().unwrap_or(0);
         let hour: u8 = record.get(5).unwrap_or("0").parse().unwrap_or(0);
-        if year < year_min || year > year_max { continue; }
+        if year < year_min || year > year_max {
+            continue;
+        }
         let bx: f64 = record.get(12).unwrap_or("NaN").parse().unwrap_or(f64::NAN);
         let by: f64 = record.get(13).unwrap_or("NaN").parse().unwrap_or(f64::NAN);
         let bz: f64 = record.get(14).unwrap_or("NaN").parse().unwrap_or(f64::NAN);
         let bmag: f64 = record.get(15).unwrap_or("NaN").parse().unwrap_or(f64::NAN);
-        if !bx.is_finite() || !bmag.is_finite() || bmag.abs() > 999.0 { continue; }
-        mag_map.entry((year, doy, hour)).or_insert([bx, by, bz, bmag]);
+        if !bx.is_finite() || !bmag.is_finite() || bmag.abs() > 999.0 {
+            continue;
+        }
+        mag_map
+            .entry((year, doy, hour))
+            .or_insert([bx, by, bz, bmag]);
     }
 
     // Load PWS
     let mut pws_map: BTreeMap<(u16, u16, u8), [f64; PWS_CHANNELS]> = BTreeMap::new();
-    let mut rdr = ReaderBuilder::new().from_path(pws_path)
+    let mut rdr = ReaderBuilder::new()
+        .from_path(pws_path)
         .with_context(|| format!("open {}", pws_path.display()))?;
     for result in rdr.records() {
         let record = result?;
         let year: u16 = record.get(0).unwrap_or("0").parse().unwrap_or(0);
         let doy: u16 = record.get(1).unwrap_or("0").parse().unwrap_or(0);
         let hour: u8 = record.get(2).unwrap_or("0").parse().unwrap_or(0);
-        if year < year_min || year > year_max { continue; }
+        if year < year_min || year > year_max {
+            continue;
+        }
         let mut pws = [0.0f64; PWS_CHANNELS];
         let mut valid = true;
-        for ch in 0..PWS_CHANNELS {
-            let v: f64 = record.get(3 + ch).unwrap_or("NaN").parse().unwrap_or(f64::NAN);
-            if !v.is_finite() || v <= 0.0 { valid = false; break; }
-            pws[ch] = v;
+        for (ch, slot) in pws.iter_mut().enumerate() {
+            let v: f64 = record
+                .get(3 + ch)
+                .unwrap_or("NaN")
+                .parse()
+                .unwrap_or(f64::NAN);
+            if !v.is_finite() || v <= 0.0 {
+                valid = false;
+                break;
+            }
+            *slot = v;
         }
-        if !valid { continue; }
+        if !valid {
+            continue;
+        }
         pws_map.insert((year, doy, hour), pws);
     }
 
@@ -165,11 +201,8 @@ fn load_and_join(
     Ok(joined)
 }
 
-fn build_embeddings(
-    records: &[(u16, [f64; TOTAL_CHANNELS])],
-    dim: usize,
-) -> Vec<Vec<f64>> {
-    let steps = (dim + TOTAL_CHANNELS - 1) / TOTAL_CHANNELS;
+fn build_embeddings(records: &[(u16, [f64; TOTAL_CHANNELS])], dim: usize) -> Vec<Vec<f64>> {
+    let steps = dim.div_ceil(TOTAL_CHANNELS);
     let actual_dim = steps * TOTAL_CHANNELS;
     let padded_dim = actual_dim.next_power_of_two();
 
@@ -180,21 +213,30 @@ fn build_embeddings(
         // Per-channel means for normalization
         let mut means = [0.0f64; TOTAL_CHANNELS];
         for (_, r) in window {
-            for ch in 0..MAG_CHANNELS { means[ch] += r[ch].abs(); }
-            for ch in MAG_CHANNELS..TOTAL_CHANNELS { means[ch] += r[ch]; }
+            for (ch, mean) in means.iter_mut().enumerate() {
+                *mean += if ch < MAG_CHANNELS {
+                    r[ch].abs()
+                } else {
+                    r[ch]
+                };
+            }
         }
         let wl = steps as f64;
-        for m in means.iter_mut() { *m /= wl; }
-        if means.iter().any(|&m| m <= 1e-30) { continue; }
+        for m in means.iter_mut() {
+            *m /= wl;
+        }
+        if means.iter().any(|&m| m <= 1e-30) {
+            continue;
+        }
 
         let mut v = vec![0.0f64; padded_dim];
         for (s, (_, r)) in window.iter().enumerate() {
             let base = s * TOTAL_CHANNELS;
-            for ch in 0..TOTAL_CHANNELS {
-                let norm = if ch < MAG_CHANNELS { r[ch] / means[ch] } else { r[ch] / means[ch] };
-                if base + ch < actual_dim {
-                    v[base + ch] = norm;
-                }
+            for (ch, value) in v[base..(base + TOTAL_CHANNELS).min(actual_dim)]
+                .iter_mut()
+                .enumerate()
+            {
+                *value = r[ch] / means[ch];
             }
         }
         embedded.push(v);
@@ -203,12 +245,17 @@ fn build_embeddings(
 }
 
 fn compute_cd_median(embeddings: &[Vec<f64>], dim: usize) -> (f64, f64, f64) {
-    if embeddings.is_empty() { return (0.0, 0.0, 0.0); }
-    let padded_f32: Vec<Vec<f32>> = embeddings.iter()
+    if embeddings.is_empty() {
+        return (0.0, 0.0, 0.0);
+    }
+    let padded_f32: Vec<Vec<f32>> = embeddings
+        .iter()
         .map(|v| v.iter().map(|&x| x as f32).collect())
         .collect();
     let norms = cd_kernel::batch_sliding_associator_norms_f32(&padded_f32, dim);
-    if norms.is_empty() { return (0.0, 0.0, 0.0); }
+    if norms.is_empty() {
+        return (0.0, 0.0, 0.0);
+    }
     let mut sorted: Vec<f64> = norms.iter().map(|&n| n as f64).collect();
     sorted.sort_by(|a, b| a.partial_cmp(b).unwrap_or(std::cmp::Ordering::Equal));
     let median = sorted[sorted.len() / 2];
@@ -225,7 +272,7 @@ fn phase_randomize_channel(
 ) -> Vec<Vec<f64>> {
     use rand::seq::SliceRandom;
 
-    let steps = (dim + TOTAL_CHANNELS - 1) / TOTAL_CHANNELS;
+    let steps = dim.div_ceil(TOTAL_CHANNELS);
 
     // Extract all values for this channel across all windows and time steps
     let mut channel_values: Vec<f64> = Vec::new();
@@ -264,16 +311,22 @@ fn analyze_epoch(
     n_iter: usize,
     seed_base: u64,
 ) -> EpochResult {
-    let padded_dim = ((dim + TOTAL_CHANNELS - 1) / TOTAL_CHANNELS * TOTAL_CHANNELS).next_power_of_two();
+    let padded_dim = (dim.div_ceil(TOTAL_CHANNELS) * TOTAL_CHANNELS).next_power_of_two();
     let embeddings = build_embeddings(records, dim);
     let (base_median, base_mean, base_max) = compute_cd_median(&embeddings, padded_dim);
 
-    println!("    {} base: median={:.6}, mean={:.6}, max={:.6} ({} windows)",
-        epoch_name, base_median, base_mean, base_max, embeddings.len());
+    println!(
+        "    {} base: median={:.6}, mean={:.6}, max={:.6} ({} windows)",
+        epoch_name,
+        base_median,
+        base_mean,
+        base_max,
+        embeddings.len()
+    );
 
     let mut channel_nulls = Vec::new();
 
-    for ch in 0..TOTAL_CHANNELS {
+    for (ch, channel_name) in CHANNEL_NAMES.iter().enumerate() {
         let mut null_medians = Vec::new();
         for iter in 0..n_iter {
             let mut rng = ChaCha20Rng::seed_from_u64(seed_base + ch as u64 * 100 + iter as u64);
@@ -283,21 +336,31 @@ fn analyze_epoch(
         }
 
         let null_mean = null_medians.iter().sum::<f64>() / null_medians.len() as f64;
-        let null_var = null_medians.iter().map(|m| (m - null_mean).powi(2)).sum::<f64>() / null_medians.len() as f64;
+        let null_var = null_medians
+            .iter()
+            .map(|m| (m - null_mean).powi(2))
+            .sum::<f64>()
+            / null_medians.len() as f64;
         let null_std = null_var.sqrt();
-        let ratio = if base_median > 1e-15 { null_mean / base_median } else { 1.0 };
+        let ratio = if base_median > 1e-15 {
+            null_mean / base_median
+        } else {
+            1.0
+        };
 
         // Significant if null differs from base by more than 2 sigma
         let significant = (null_mean - base_median).abs() > 2.0 * null_std.max(base_median * 0.05);
 
         let ch_type = if ch < MAG_CHANNELS { "MAG" } else { "PWS" };
         let marker = if significant { " ***" } else { "" };
-        println!("      ch{:>2} {:>12} ({}): null={:.6} +/- {:.6}, ratio={:.3}{}",
-            ch, CHANNEL_NAMES[ch], ch_type, null_mean, null_std, ratio, marker);
+        println!(
+            "      ch{:>2} {:>12} ({}): null={:.6} +/- {:.6}, ratio={:.3}{}",
+            ch, channel_name, ch_type, null_mean, null_std, ratio, marker
+        );
 
         channel_nulls.push(ChannelNullResult {
             channel_idx: ch,
-            channel_name: CHANNEL_NAMES[ch].to_string(),
+            channel_name: (*channel_name).to_string(),
             channel_type: ch_type.to_string(),
             base_cd_median: base_median,
             null_cd_median: null_mean,
@@ -308,19 +371,25 @@ fn analyze_epoch(
     }
 
     // Summary: average ratio for MAG, PWS, and cross groups
-    let mag_ratios: Vec<f64> = channel_nulls.iter()
+    let mag_ratios: Vec<f64> = channel_nulls
+        .iter()
         .filter(|c| c.channel_type == "MAG")
         .map(|c| c.ratio)
         .collect();
-    let pws_ratios: Vec<f64> = channel_nulls.iter()
+    let pws_ratios: Vec<f64> = channel_nulls
+        .iter()
         .filter(|c| c.channel_type == "PWS")
         .map(|c| c.ratio)
         .collect();
 
-    let mag_ratio = if mag_ratios.is_empty() { 1.0 } else {
+    let mag_ratio = if mag_ratios.is_empty() {
+        1.0
+    } else {
         mag_ratios.iter().sum::<f64>() / mag_ratios.len() as f64
     };
-    let pws_ratio = if pws_ratios.is_empty() { 1.0 } else {
+    let pws_ratio = if pws_ratios.is_empty() {
+        1.0
+    } else {
         pws_ratios.iter().sum::<f64>() / pws_ratios.len() as f64
     };
     // Cross: shuffle ALL MAG together
@@ -343,18 +412,23 @@ fn analyze_epoch(
 fn main() -> Result<()> {
     let cli = Cli::parse();
     println!("=== ISM Multi-Channel Per-Dimension Null Test ===");
-    println!("  dim={}, n_iter={}, channels={}", cli.dim, cli.n_iter, TOTAL_CHANNELS);
+    println!(
+        "  dim={}, n_iter={}, channels={}",
+        cli.dim, cli.n_iter, TOTAL_CHANNELS
+    );
     println!("  Split year: {}", cli.split_year);
 
     let all_records = load_and_join(&cli.mag_csv, &cli.pws_csv, cli.year_min, cli.year_max)?;
     println!("  Total joined records: {}", all_records.len());
 
     // Split into pre and post epochs
-    let pre: Vec<_> = all_records.iter()
+    let pre: Vec<_> = all_records
+        .iter()
         .filter(|(y, _)| *y < cli.split_year)
         .cloned()
         .collect();
-    let post: Vec<_> = all_records.iter()
+    let post: Vec<_> = all_records
+        .iter()
         .filter(|(y, _)| *y >= cli.split_year)
         .cloned()
         .collect();
@@ -366,19 +440,27 @@ fn main() -> Result<()> {
 
     if pre.len() >= 10 {
         println!("\n  --- Pre-{} epoch ---", cli.split_year);
-        let epoch = analyze_epoch(&pre,
+        let epoch = analyze_epoch(
+            &pre,
             &format!("pre_{}", cli.split_year),
             &format!("{}-{}", cli.year_min, cli.split_year - 1),
-            cli.dim, cli.n_iter, 42);
+            cli.dim,
+            cli.n_iter,
+            42,
+        );
         epochs.push(epoch);
     }
 
     if post.len() >= 10 {
         println!("\n  --- Post-{} epoch ---", cli.split_year);
-        let epoch = analyze_epoch(&post,
+        let epoch = analyze_epoch(
+            &post,
             &format!("post_{}", cli.split_year),
             &format!("{}-{}", cli.split_year, cli.year_max),
-            cli.dim, cli.n_iter, 137);
+            cli.dim,
+            cli.n_iter,
+            137,
+        );
         epochs.push(epoch);
     }
 
@@ -386,17 +468,23 @@ fn main() -> Result<()> {
     println!("\n=== Summary ===");
     for epoch in &epochs {
         let n_sig = epoch.channel_nulls.iter().filter(|c| c.significant).count();
-        let sig_names: Vec<&str> = epoch.channel_nulls.iter()
+        let sig_names: Vec<&str> = epoch
+            .channel_nulls
+            .iter()
             .filter(|c| c.significant)
             .map(|c| c.channel_name.as_str())
             .collect();
-        println!("  {}: base_cd={:.6}, {}/{} channels significant",
-            epoch.epoch, epoch.base_cd_median, n_sig, TOTAL_CHANNELS);
+        println!(
+            "  {}: base_cd={:.6}, {}/{} channels significant",
+            epoch.epoch, epoch.base_cd_median, n_sig, TOTAL_CHANNELS
+        );
         if !sig_names.is_empty() {
             println!("    Significant: {}", sig_names.join(", "));
         }
-        println!("    MAG avg ratio: {:.3}, PWS avg ratio: {:.3}",
-            epoch.mag_only_null_ratio, epoch.pws_only_null_ratio);
+        println!(
+            "    MAG avg ratio: {:.3}, PWS avg ratio: {:.3}",
+            epoch.mag_only_null_ratio, epoch.pws_only_null_ratio
+        );
     }
 
     let result = NullTestResult {

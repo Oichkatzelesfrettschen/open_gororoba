@@ -27,12 +27,12 @@
 pub mod con2prim;
 pub mod cons;
 pub mod ct;
+pub mod eos;
 pub mod evolve;
 pub mod flux;
-pub mod eos;
-pub mod grid;
 #[cfg(feature = "gpu")]
 pub mod gpu;
+pub mod grid;
 pub mod metric;
 pub mod prims;
 pub mod recon;

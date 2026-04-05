@@ -4,7 +4,7 @@
 //!
 //! Uses pure-Rust netcdf3 crate -- no C dependencies.
 
-use anyhow::{bail, Result};
+use anyhow::{Result, bail};
 use clap::Parser;
 use serde::Serialize;
 use std::{fs, path::PathBuf};
@@ -29,7 +29,10 @@ struct Cli {
     y_idx: Option<usize>,
 
     /// Output JSON path.
-    #[arg(long, default_value = "data/output/heliosphere/ablations/bout_grid_cd.json")]
+    #[arg(
+        long,
+        default_value = "data/output/heliosphere/ablations/bout_grid_cd.json"
+    )]
     out_json: PathBuf,
 }
 
@@ -88,7 +91,9 @@ fn main() -> Result<()> {
     let default_vars = match cli.embedding_dim {
         d if d <= 16 => "Rxy,Zxy,Bpxy,Btxy,psixy,Bxy",
         d if d <= 32 => "Rxy,Zxy,Bpxy,Btxy,psixy,Bxy,pressure,Ni0,Te0,Ti0,bxcvx,bxcvy",
-        _ => "Rxy,Zxy,Bpxy,Btxy,psixy,Bxy,pressure,Ni0,Te0,Ti0,bxcvx,bxcvy,bxcvz,Jpar0,dx,dy,hthe,sinty,ShiftTorsion,pol_angle,zShift,d2x",
+        _ => {
+            "Rxy,Zxy,Bpxy,Btxy,psixy,Bxy,pressure,Ni0,Te0,Ti0,bxcvx,bxcvy,bxcvz,Jpar0,dx,dy,hthe,sinty,ShiftTorsion,pol_angle,zShift,d2x"
+        }
     };
     let var_str = cli.vars.as_deref().unwrap_or(default_vars);
     let var_names: Vec<&str> = var_str.split(',').collect();
@@ -114,7 +119,13 @@ fn main() -> Result<()> {
         } else if data.len() == 1 {
             vec![data[0]; nx_val]
         } else {
-            println!("  Warning: {} has {} elements, expected {}x{}", name, data.len(), nx_val, ny_val);
+            println!(
+                "  Warning: {} has {} elements, expected {}x{}",
+                name,
+                data.len(),
+                nx_val,
+                ny_val
+            );
             vec![0.0; nx_val]
         };
         profiles.push(profile);
@@ -124,11 +135,18 @@ fn main() -> Result<()> {
     let psi_data = read_var_f64(&mut reader, "psixy")?;
     let psi_profile: Vec<f64> = (0..nx_val).map(|x| psi_data[x * ny_val + y_idx]).collect();
     let psi_min = psi_profile.iter().cloned().fold(f64::INFINITY, f64::min);
-    let psi_max = psi_profile.iter().cloned().fold(f64::NEG_INFINITY, f64::max);
+    let psi_max = psi_profile
+        .iter()
+        .cloned()
+        .fold(f64::NEG_INFINITY, f64::max);
     let psi_range = (psi_max - psi_min).max(1e-15);
 
     // Build embeddings at each radial position (sliding window)
-    let n_windows = if nx_val > steps_per_window { nx_val - steps_per_window } else { 0 };
+    let n_windows = if nx_val > steps_per_window {
+        nx_val - steps_per_window
+    } else {
+        0
+    };
     println!("  Radial windows: {}", n_windows);
 
     let mut results = Vec::new();
@@ -173,8 +191,15 @@ fn main() -> Result<()> {
             continue;
         }
 
-        let norms =
-            cd_kernel::batch_sliding_associator_norms_dispatch(&embedded, cli.embedding_dim, if cli.embedding_dim >= 128 { "f32" } else { "f64" });
+        let norms = cd_kernel::batch_sliding_associator_norms_dispatch(
+            &embedded,
+            cli.embedding_dim,
+            if cli.embedding_dim >= 128 {
+                "f32"
+            } else {
+                "f64"
+            },
+        );
 
         let (mean_a, max_a) = if norms.is_empty() {
             (0.0, 0.0)
@@ -231,9 +256,18 @@ fn main() -> Result<()> {
 
     let interp = format!(
         "{}D grid CD: {} vars, {}x{} grid. Core(psi<0.3) A={:.6}, Pedestal(0.7-0.95) A={:.6}, Edge(>0.95) A={:.6}. Ratio pedestal/core={:.2}x.",
-        cli.embedding_dim, n_channels, nx_val, ny_val,
-        core_a, pedestal_a, edge_a,
-        if core_a > 1e-15 { pedestal_a / core_a } else { 0.0 }
+        cli.embedding_dim,
+        n_channels,
+        nx_val,
+        ny_val,
+        core_a,
+        pedestal_a,
+        edge_a,
+        if core_a > 1e-15 {
+            pedestal_a / core_a
+        } else {
+            0.0
+        }
     );
     println!("\n  {}", interp);
 

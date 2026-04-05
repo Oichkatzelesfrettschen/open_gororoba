@@ -25,8 +25,12 @@ pub fn dot_f64(a: &[f64], b: &[f64]) -> f64 {
 /// Compute dot product of two f32 slices via simsimd.
 pub fn dot_f32(a: &[f32], b: &[f32]) -> f64 {
     debug_assert_eq!(a.len(), b.len());
-    simsimd::SpatialSimilarity::dot(a, b)
-        .unwrap_or_else(|| a.iter().zip(b.iter()).map(|(&x, &y)| x as f64 * y as f64).sum())
+    simsimd::SpatialSimilarity::dot(a, b).unwrap_or_else(|| {
+        a.iter()
+            .zip(b.iter())
+            .map(|(&x, &y)| x as f64 * y as f64)
+            .sum()
+    })
 }
 
 /// Compute L2 squared distance via simsimd.
@@ -39,13 +43,16 @@ pub fn l2sq_f64(a: &[f64], b: &[f64]) -> f64 {
 /// Compute cosine distance via simsimd (1 - cosine_similarity).
 pub fn cosine_distance_f64(a: &[f64], b: &[f64]) -> f64 {
     debug_assert_eq!(a.len(), b.len());
-    simsimd::SpatialSimilarity::cosine(a, b)
-        .unwrap_or_else(|| {
-            let dot: f64 = a.iter().zip(b.iter()).map(|(x, y)| x * y).sum();
-            let na: f64 = a.iter().map(|x| x * x).sum::<f64>().sqrt();
-            let nb: f64 = b.iter().map(|x| x * x).sum::<f64>().sqrt();
-            if na < 1e-15 || nb < 1e-15 { 1.0 } else { 1.0 - dot / (na * nb) }
-        })
+    simsimd::SpatialSimilarity::cosine(a, b).unwrap_or_else(|| {
+        let dot: f64 = a.iter().zip(b.iter()).map(|(x, y)| x * y).sum();
+        let na: f64 = a.iter().map(|x| x * x).sum::<f64>().sqrt();
+        let nb: f64 = b.iter().map(|x| x * x).sum::<f64>().sqrt();
+        if na < 1e-15 || nb < 1e-15 {
+            1.0
+        } else {
+            1.0 - dot / (na * nb)
+        }
+    })
 }
 
 /// Cosine similarity (1 - cosine_distance).
@@ -73,7 +80,9 @@ mod tests {
         let expected: f64 = a.iter().zip(b.iter()).map(|(x, y)| x * y).sum();
         assert!(
             (result - expected).abs() < 1e-6,
-            "simsimd dot: {} vs scalar: {}", result, expected
+            "simsimd dot: {} vs scalar: {}",
+            result,
+            expected
         );
     }
 
@@ -85,7 +94,9 @@ mod tests {
         let expected: f64 = a.iter().zip(b.iter()).map(|(x, y)| (x - y).powi(2)).sum();
         assert!(
             (result - expected).abs() < 1e-6,
-            "simsimd L2sq: {} vs scalar: {}", result, expected
+            "simsimd L2sq: {} vs scalar: {}",
+            result,
+            expected
         );
     }
 
@@ -94,11 +105,19 @@ mod tests {
         let a = vec![1.0, 0.0, 0.0];
         let b = vec![0.0, 1.0, 0.0];
         let cos = cosine_similarity_f64(&a, &b);
-        assert!(cos.abs() < 0.01, "Orthogonal vectors should have cos~0, got {}", cos);
+        assert!(
+            cos.abs() < 0.01,
+            "Orthogonal vectors should have cos~0, got {}",
+            cos
+        );
 
         let c = vec![1.0, 0.0, 0.0];
         let cos_same = cosine_similarity_f64(&a, &c);
-        assert!((cos_same - 1.0).abs() < 0.01, "Same direction should have cos~1, got {}", cos_same);
+        assert!(
+            (cos_same - 1.0).abs() < 0.01,
+            "Same direction should have cos~1, got {}",
+            cos_same
+        );
     }
 
     #[test]
@@ -109,7 +128,9 @@ mod tests {
         let expected = 4.0 * 0.01 / 4.0; // 4 * 0.1^2 / 4
         assert!(
             (mse - expected).abs() < 1e-6,
-            "MSE: {} vs expected: {}", mse, expected
+            "MSE: {} vs expected: {}",
+            mse,
+            expected
         );
     }
 
@@ -130,7 +151,9 @@ mod tests {
         let scalar_result: f64 = a.iter().zip(b.iter()).map(|(x, y)| x * y).sum();
         assert!(
             (simsimd_result - scalar_result).abs() < 1e-4,
-            "d=128 dot mismatch: simsimd={}, scalar={}", simsimd_result, scalar_result
+            "d=128 dot mismatch: simsimd={}, scalar={}",
+            simsimd_result,
+            scalar_result
         );
     }
 }

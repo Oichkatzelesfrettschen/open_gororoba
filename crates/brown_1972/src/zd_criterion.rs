@@ -113,7 +113,11 @@ impl std::fmt::Display for MajorTheoremResult {
             if self.cond_ii { "PASS" } else { "FAIL" },
             self.antiassociator_norm,
             if self.cond_iii { "PASS" } else { "FAIL" },
-            if self.all_satisfied { "ZD PAIR" } else { "NOT ZD" },
+            if self.all_satisfied {
+                "ZD PAIR"
+            } else {
+                "NOT ZD"
+            },
         )
     }
 }
@@ -266,11 +270,13 @@ pub fn check_zd_symmetry(a: &[f64], b: &[f64]) -> [f64; 7] {
     let inv_a_b = cd_multiply(&inv_a, b);
 
     [
-        cd_norm_sq(&ab),        // i) AB = 0
-        cd_norm_sq(&ba),        // ii) BA = 0
-        cd_norm_sq(&conj_a_b),  // iii) conj(A)B = 0
-        cd_norm_sq(&inv_a_b),   // iv) A^{-1}B = 0
-        0.0, 0.0, 0.0,         // v-vii) require e computation
+        cd_norm_sq(&ab),       // i) AB = 0
+        cd_norm_sq(&ba),       // ii) BA = 0
+        cd_norm_sq(&conj_a_b), // iii) conj(A)B = 0
+        cd_norm_sq(&inv_a_b),  // iv) A^{-1}B = 0
+        0.0,
+        0.0,
+        0.0, // v-vii) require e computation
     ]
 }
 
@@ -283,7 +289,10 @@ mod tests {
         // The standard ZD pair: A = e3+e10, B = e6-e15
         let (a, b) = schafer_1945::division_test::zd_witness_16();
         let r = check_major_theorem(&a, &b, 1e-8);
-        assert!(r.all_satisfied, "ZD witness should satisfy Major Theorem: {r}");
+        assert!(
+            r.all_satisfied,
+            "ZD witness should satisfy Major Theorem: {r}"
+        );
     }
 
     #[test]
@@ -296,7 +305,10 @@ mod tests {
         b[1] = 1.0;
         b[2] = 1.0;
         let r = check_major_theorem(&a, &b, 1e-8);
-        assert!(!r.all_satisfied, "non-ZD pair should fail Major Theorem: {r}");
+        assert!(
+            !r.all_satisfied,
+            "non-ZD pair should fail Major Theorem: {r}"
+        );
     }
 
     #[test]
@@ -337,8 +349,14 @@ mod tests {
     fn test_jordan_subalgebra_property() {
         let (a, b) = schafer_1945::division_test::zd_witness_16();
         let (comm_err, alt_err, _) = verify_jordan_subalgebra_property(&a, &b);
-        assert!(comm_err < 1e-10, "mutual ZDs should be commutative: err={comm_err}");
-        assert!(alt_err > 0.01, "mutual ZD span should NOT be alternative: err={alt_err}");
+        assert!(
+            comm_err < 1e-10,
+            "mutual ZDs should be commutative: err={comm_err}"
+        );
+        assert!(
+            alt_err > 0.01,
+            "mutual ZD span should NOT be alternative: err={alt_err}"
+        );
     }
 
     #[test]

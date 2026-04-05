@@ -40,10 +40,10 @@ pub struct TensorBlock {
 /// to isolate structural zeroes (zero-divisors) and reduce hardware multipliers.
 pub fn heurstic_tensor_contraction(dimension: usize, threshold: f64) -> Vec<TensorBlock> {
     assert!(dimension >= 16 && dimension.is_power_of_two());
-    
+
     let mut blocks = Vec::new();
     let step = 8; // Analyze in 8x8 octonionic sub-blocks
-    
+
     for i in (0..dimension).step_by(step) {
         for j in (0..dimension).step_by(step) {
             let density = measure_block_density(i, j, step, dimension);
@@ -57,7 +57,7 @@ pub fn heurstic_tensor_contraction(dimension: usize, threshold: f64) -> Vec<Tens
             }
         }
     }
-    
+
     // Sort blocks to find the largest contiguous zero-regions for SIMD masking
     blocks.sort_by(|a, b| a.density.partial_cmp(&b.density).unwrap());
     blocks
@@ -70,10 +70,10 @@ fn measure_block_density(row: usize, col: usize, size: usize, _dim: usize) -> f6
     // of the Cayley-Dickson construction to count necessary real multiplications.
     // For this prototype, we simulate density based on distance from the diagonal
     // (as higher CD spaces push zero-divisors to specific off-diagonal sectors).
-    
+
     let mut non_zero_count = 0;
-    for r in row..(row+size) {
-        for c in col..(col+size) {
+    for r in row..(row + size) {
+        for c in col..(col + size) {
             // Mock structural rule: indices that share many high-bits tend to annihilate
             // or collapse via ZD paths in higher dimensions.
             let xor_val = r ^ c;
@@ -82,7 +82,7 @@ fn measure_block_density(row: usize, col: usize, size: usize, _dim: usize) -> f6
             }
         }
     }
-    
+
     non_zero_count as f64 / (size * size) as f64
 }
 

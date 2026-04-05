@@ -3,11 +3,11 @@ use rand::Rng;
 
 fn main() {
     let dim = 16;
-    let mut rng = rand::thread_rng();
+    let mut rng = rand::rng();
 
     for _ in 0..1000 {
-        let mut x: Vec<f64> = (0..dim).map(|_| rng.gen_range(-1.0..1.0)).collect();
-        let mut y: Vec<f64> = (0..dim).map(|_| rng.gen_range(-1.0..1.0)).collect();
+        let mut x: Vec<f64> = (0..dim).map(|_| rng.random_range(-1.0..1.0)).collect();
+        let mut y: Vec<f64> = (0..dim).map(|_| rng.random_range(-1.0..1.0)).collect();
 
         // Normalize
         let norm_x = x.iter().map(|v| v*v).sum::<f64>().sqrt();

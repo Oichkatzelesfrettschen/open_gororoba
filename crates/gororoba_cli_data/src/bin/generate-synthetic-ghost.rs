@@ -48,7 +48,7 @@ fn generate_all(output_dir: &Path, n: usize, seed: u64) -> Result<()> {
     let normal = Normal::new(0.0, 1.0).unwrap();
     let log_normal = LogNormal::new(0.0, 1.0).unwrap();
     let pareto = Pareto::new(1.0, 2.5).unwrap();
-    let uniform = Uniform::new(0.0, 100.0);
+    let uniform = Uniform::new(0.0, 100.0).expect("uniform bounds must be ordered");
 
     let noise_gauss: Vec<f64> = (0..n).map(|_| normal.sample(&mut rng)).collect();
     write_csv(&output_dir.join("null_gaussian.csv"), &noise_gauss, "value")?;

@@ -49,10 +49,10 @@
 //! | FP64 SoA      | 406   | 29.7%       | 608       |
 //! | DD FP128      | 58    | 8.4%        | 1215      |
 
+pub mod alignment_gpu;
 pub mod aot_cubins;
 pub mod bench_kernels;
 pub mod box_counting_gpu;
-pub mod alignment_gpu;
 pub mod chingon_gpu;
 pub mod kernel_selector;
 pub mod managed_memory;
@@ -2600,7 +2600,7 @@ impl DarkHaloCudaSolver {
                     // SIMD path: 8-wide comparison via wide crate
                     let rho_vec = f32x8::new(chunk.try_into().unwrap());
                     let threshold_vec = f32x8::splat(rho_threshold);
-                    let cmp_mask = rho_vec.cmp_gt(threshold_vec);
+                    let cmp_mask = rho_vec.simd_gt(threshold_vec);
                     let mask_bits = cmp_mask.to_array();
 
                     // Check velocity for each cell where rho > threshold

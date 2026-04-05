@@ -163,8 +163,7 @@ mod tests {
     fn test_quadratic_identity_random() {
         // Test with a non-basis sedenion element
         let x = vec![
-            0.5, 1.0, -0.3, 0.7, 0.0, -1.0, 0.4, 0.2, 0.1, -0.5, 0.8, 0.0, -0.6, 0.3, 0.9,
-            -0.1,
+            0.5, 1.0, -0.3, 0.7, 0.0, -1.0, 0.4, 0.2, 0.1, -0.5, 0.8, 0.0, -0.6, 0.3, 0.9, -0.1,
         ];
         assert!(
             quadratic_identity_error(&x) < 1e-10,

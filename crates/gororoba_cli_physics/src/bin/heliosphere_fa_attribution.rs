@@ -12,8 +12,7 @@ use anyhow::{Context, Result};
 use chrono::{Datelike, NaiveDate};
 use clap::Parser;
 use data_core::{
-    catalogs::themis::parse_themis_fgm_hapi_csv_minutes,
-    crossing_lists::parse_crossing_list,
+    catalogs::themis::parse_themis_fgm_hapi_csv_minutes, crossing_lists::parse_crossing_list,
 };
 use serde::Serialize;
 use std::{collections::BTreeMap, fs, path::PathBuf};
@@ -35,7 +34,10 @@ struct Cli {
     crossing_probe: Option<String>,
     #[arg(long, default_value_t = 20)]
     match_tolerance_minutes: usize,
-    #[arg(long, default_value = "data/output/heliosphere/ablations/fa_attribution.json")]
+    #[arg(
+        long,
+        default_value = "data/output/heliosphere/ablations/fa_attribution.json"
+    )]
     out_json: PathBuf,
     #[arg(long, default_value = "data/external")]
     data_dir: String,
@@ -75,7 +77,10 @@ fn main() -> Result<()> {
     let end = NaiveDate::parse_from_str(&cli.end_date, "%Y-%m-%d")
         .with_context(|| format!("bad end: {}", cli.end_date))?;
 
-    let probe_upper = format!("TH{}", cli.crossing_probe.as_deref().unwrap_or("A").to_uppercase());
+    let probe_upper = format!(
+        "TH{}",
+        cli.crossing_probe.as_deref().unwrap_or("A").to_uppercase()
+    );
 
     // Load FGM
     let mut bx = Vec::new();
@@ -88,7 +93,10 @@ fn main() -> Result<()> {
         let date = start + chrono::Duration::days(offset);
         let path = format!(
             "{}/themis/{}_fgm_{:04}_{:03}.csv",
-            cli.data_dir, probe_upper.to_lowercase(), date.year(), date.ordinal()
+            cli.data_dir,
+            probe_upper.to_lowercase(),
+            date.year(),
+            date.ordinal()
         );
         if let Ok(content) = fs::read_to_string(&path) {
             for r in parse_themis_fgm_hapi_csv_minutes(&content, &probe_upper) {
@@ -120,7 +128,9 @@ fn main() -> Result<()> {
             .map(|s| (bx[w + s].powi(2) + by[w + s].powi(2) + bz[w + s].powi(2)).sqrt())
             .sum();
         let mean_b = sum_b / steps as f64;
-        if mean_b <= 0.01 || !mean_b.is_finite() { continue; }
+        if mean_b <= 0.01 || !mean_b.is_finite() {
+            continue;
+        }
         let mut v = vec![0.0; cli.embedding_dim];
         for s in 0..steps {
             let i = w + s;
@@ -141,7 +151,11 @@ fn main() -> Result<()> {
     // Detect transitions
     let global_mean: f64 = norms.iter().sum::<f64>() / norms.len() as f64;
     let global_std: f64 = {
-        let var = norms.iter().map(|&a| (a - global_mean).powi(2)).sum::<f64>() / norms.len() as f64;
+        let var = norms
+            .iter()
+            .map(|&a| (a - global_mean).powi(2))
+            .sum::<f64>()
+            / norms.len() as f64;
         var.sqrt()
     };
     let threshold = global_std * 1.5;
@@ -155,7 +169,9 @@ fn main() -> Result<()> {
             let post: f64 = norms[i..(i + tw).min(norms.len())].iter().sum::<f64>()
                 / tw.min(norms.len() - i) as f64;
             if (post - pre).abs() > threshold {
-                if last.is_some_and(|prev| i.saturating_sub(prev) < tw) { continue; }
+                if last.is_some_and(|prev| i.saturating_sub(prev) < tw) {
+                    continue;
+                }
                 let mi = assoc_idx[i];
                 transitions.push((mi, norms[i]));
                 last = Some(i);
@@ -182,7 +198,9 @@ fn main() -> Result<()> {
 
     for &(mi, norm) in &transitions {
         let t_hours = elapsed[mi.min(n - 1)];
-        let is_matched = curated_hours.iter().any(|&ch| (ch - t_hours).abs() < tol_hours);
+        let is_matched = curated_hours
+            .iter()
+            .any(|&ch| (ch - t_hours).abs() < tol_hours);
         if is_matched {
             matched_count += 1;
         } else {
@@ -197,7 +215,9 @@ fn main() -> Result<()> {
     let mut type_counts: BTreeMap<String, usize> = BTreeMap::new();
 
     for &(mi, norm) in &extras {
-        if mi < w || mi + w >= n { continue; }
+        if mi < w || mi + w >= n {
+            continue;
+        }
 
         let pre_bx: f64 = bx[mi.saturating_sub(w)..mi].iter().sum::<f64>() / w as f64;
         let pre_by: f64 = by[mi.saturating_sub(w)..mi].iter().sum::<f64>() / w as f64;
@@ -229,9 +249,16 @@ fn main() -> Result<()> {
 
         let b_jump = (post_b - pre_b).abs();
         let mean_b = bmag_local.iter().sum::<f64>() / bmag_local.len() as f64;
-        let var_b = bmag_local.iter().map(|&b| (b - mean_b).powi(2)).sum::<f64>()
+        let var_b = bmag_local
+            .iter()
+            .map(|&b| (b - mean_b).powi(2))
+            .sum::<f64>()
             / bmag_local.len() as f64;
-        let cv = if mean_b > 0.1 { var_b.sqrt() / mean_b } else { 0.0 };
+        let cv = if mean_b > 0.1 {
+            var_b.sqrt() / mean_b
+        } else {
+            0.0
+        };
         let bn_change = (post_bz - pre_bz).abs();
 
         let event_type = if rotation > 30.0 && b_jump < 3.0 {
@@ -271,9 +298,19 @@ fn main() -> Result<()> {
     println!("\n=== Attribution Results ===");
     println!("  Total extras: {}", attributions.len());
     for (typ, count) in &type_counts {
-        println!("  {}: {} ({:.1}%)", typ, count, *count as f64 / attributions.len().max(1) as f64 * 100.0);
+        println!(
+            "  {}: {} ({:.1}%)",
+            typ,
+            count,
+            *count as f64 / attributions.len().max(1) as f64 * 100.0
+        );
     }
-    println!("  ATTRIBUTED: {}/{} = {:.1}%", n_attributed, attributions.len(), frac * 100.0);
+    println!(
+        "  ATTRIBUTED: {}/{} = {:.1}%",
+        n_attributed,
+        attributions.len(),
+        frac * 100.0
+    );
 
     let result = AttributionResult {
         start_date: cli.start_date.clone(),

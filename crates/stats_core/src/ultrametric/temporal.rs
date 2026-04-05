@@ -322,7 +322,7 @@ mod tests {
     fn test_hurst_exponent_range() {
         // Random walk should give H ~ 0.5
         let mut rng = ChaCha8Rng::seed_from_u64(42);
-        let series: Vec<f64> = (0..100).map(|_| rng.gen_range(0.0..1.0)).collect();
+        let series: Vec<f64> = (0..100).map(|_| rng.random_range(0.0..1.0)).collect();
 
         let h = estimate_hurst(&series);
         assert!(

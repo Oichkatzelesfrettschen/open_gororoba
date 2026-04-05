@@ -14,7 +14,7 @@ use anyhow::{Context, Result};
 use clap::Parser;
 use csv::{ReaderBuilder, WriterBuilder};
 use data_core::{HeliosphereFeatureRow, magnetic_takens_embed};
-use rand::{Rng, thread_rng};
+use rand::RngExt;
 use rustfft::{FftPlanner, num_complex::Complex64};
 use serde::Serialize;
 use std::{collections::BTreeMap, f64::consts::PI, path::PathBuf};
@@ -28,7 +28,10 @@ struct Cli {
     #[arg(long)]
     cube_csv: PathBuf,
 
-    #[arg(long, default_value = "data/output/heliosphere/ablations/order_surplus_by_rbin.csv")]
+    #[arg(
+        long,
+        default_value = "data/output/heliosphere/ablations/order_surplus_by_rbin.csv"
+    )]
     out_csv: PathBuf,
 
     #[arg(long, default_value_t = 5.0)]
@@ -82,16 +85,13 @@ fn phase_randomize_shared(vectors: &[Vec<f64>], dim: usize) -> Vec<Vec<f64>> {
     let mut planner = FftPlanner::<f64>::new();
     let fft_fwd = planner.plan_fft_forward(n);
     let fft_inv = planner.plan_fft_inverse(n);
-    let mut rng = thread_rng();
+    let mut rng = rand::rng();
     let half = n / 2;
-    let random_phases: Vec<f64> = (0..=half).map(|_| rng.r#gen::<f64>() * 2.0 * PI).collect();
+    let random_phases: Vec<f64> = (0..=half).map(|_| rng.random::<f64>() * 2.0 * PI).collect();
 
     let mut result = vec![vec![0.0; dim]; n];
     for ch in 0..dim {
-        let mut buf: Vec<Complex64> = vectors
-            .iter()
-            .map(|v| Complex64::new(v[ch], 0.0))
-            .collect();
+        let mut buf: Vec<Complex64> = vectors.iter().map(|v| Complex64::new(v[ch], 0.0)).collect();
         fft_fwd.process(&mut buf);
         for k in 1..half {
             let phase = Complex64::from_polar(1.0, random_phases[k]);
@@ -121,16 +121,13 @@ fn phase_randomize_multivariate(vectors: &[Vec<f64>], dim: usize) -> Vec<Vec<f64
     let mut planner = FftPlanner::<f64>::new();
     let fft_fwd = planner.plan_fft_forward(n);
     let fft_inv = planner.plan_fft_inverse(n);
-    let mut rng = thread_rng();
+    let mut rng = rand::rng();
     let half = n / 2;
 
     let mut result = vec![vec![0.0; dim]; n];
     for ch in 0..dim {
-        let channel_phases: Vec<f64> = (0..=half).map(|_| rng.r#gen::<f64>() * 2.0 * PI).collect();
-        let mut buf: Vec<Complex64> = vectors
-            .iter()
-            .map(|v| Complex64::new(v[ch], 0.0))
-            .collect();
+        let channel_phases: Vec<f64> = (0..=half).map(|_| rng.random::<f64>() * 2.0 * PI).collect();
+        let mut buf: Vec<Complex64> = vectors.iter().map(|v| Complex64::new(v[ch], 0.0)).collect();
         fft_fwd.process(&mut buf);
         for k in 1..half {
             let phase = Complex64::from_polar(1.0, channel_phases[k]);
@@ -161,9 +158,14 @@ fn associator_mean(norms: &[f64]) -> f64 {
 fn main() -> Result<()> {
     let cli = Cli::parse();
     println!("=== Heliosphere Order Surplus by Radial Bin ===");
-    println!("  dim={}, channels={}, lag={}, precision={}, null_iters={}",
-        cli.embedding_dim, cli.channels, cli.takens_lag, cli.precision, cli.null_iterations);
-    assert!(cli.channels == 4 || cli.channels == 8, "channels must be 4 or 8");
+    println!(
+        "  dim={}, channels={}, lag={}, precision={}, null_iters={}",
+        cli.embedding_dim, cli.channels, cli.takens_lag, cli.precision, cli.null_iterations
+    );
+    assert!(
+        cli.channels == 4 || cli.channels == 8,
+        "channels must be 4 or 8"
+    );
 
     let mut reader = ReaderBuilder::new()
         .from_path(&cli.cube_csv)
@@ -178,14 +180,24 @@ fn main() -> Result<()> {
         if exclude.contains(r.mission.as_str()) {
             continue;
         }
-        if r.bx.is_finite() && r.by.is_finite() && r.bz.is_finite() && r.b_mag.is_finite() && r.b_mag > 0.0 {
+        if r.bx.is_finite()
+            && r.by.is_finite()
+            && r.bz.is_finite()
+            && r.b_mag.is_finite()
+            && r.b_mag > 0.0
+        {
             all_rows.push(r);
         }
     }
-    println!("  Loaded {} rows from {}", all_rows.len(), cli.cube_csv.display());
+    println!(
+        "  Loaded {} rows from {}",
+        all_rows.len(),
+        cli.cube_csv.display()
+    );
 
     // Group by mission, sort chronologically
-    let mut mission_groups: BTreeMap<(String, String), Vec<HeliosphereFeatureRow>> = BTreeMap::new();
+    let mut mission_groups: BTreeMap<(String, String), Vec<HeliosphereFeatureRow>> =
+        BTreeMap::new();
     for row in all_rows {
         mission_groups
             .entry((row.mission.clone(), row.product.clone()))
@@ -193,14 +205,22 @@ fn main() -> Result<()> {
             .push(row);
     }
     for rows in mission_groups.values_mut() {
-        rows.sort_by(|a, b| a.year.cmp(&b.year).then(a.doy.cmp(&b.doy)).then(a.hour.cmp(&b.hour)));
+        rows.sort_by(|a, b| {
+            a.year
+                .cmp(&b.year)
+                .then(a.doy.cmp(&b.doy))
+                .then(a.hour.cmp(&b.hour))
+        });
     }
 
     let dim = cli.embedding_dim;
     let steps = dim / cli.channels;
 
     // Step 1: Compute base associator norms tagged with radial position and mission
-    println!("[1/3] Computing base {}D ({}-ch x {} steps) Takens associators...", dim, cli.channels, steps);
+    println!(
+        "[1/3] Computing base {}D ({}-ch x {} steps) Takens associators...",
+        dim, cli.channels, steps
+    );
     // (r_bin, norm, mission)
     let mut tagged_norms: Vec<(i32, f64, String)> = Vec::new();
     // (r_bin, embedded vectors) -- for null computation
@@ -216,7 +236,8 @@ fn main() -> Result<()> {
         } else {
             magnetic_takens_embed(rows, dim, cli.takens_lag)
         };
-        let norms = cd_kernel::batch_sliding_associator_norms_dispatch(&embedded, dim, &cli.precision);
+        let norms =
+            cd_kernel::batch_sliding_associator_norms_dispatch(&embedded, dim, &cli.precision);
 
         for (k, &norm) in norms.iter().enumerate() {
             let tag_row = meta_idx[k + 2];
@@ -239,7 +260,10 @@ fn main() -> Result<()> {
         let entry = bin_base.entry(*r_bin).or_insert((0.0, 0, 0));
         entry.0 += norm;
         entry.1 += 1;
-        bin_missions.entry(*r_bin).or_default().insert(mission.clone());
+        bin_missions
+            .entry(*r_bin)
+            .or_default()
+            .insert(mission.clone());
     }
     for (r_bin, missions) in &bin_missions {
         if let Some(entry) = bin_base.get_mut(r_bin) {
@@ -249,7 +273,10 @@ fn main() -> Result<()> {
 
     // Step 2: Compute null associators per radial bin
     let n_bins = bin_vectors.len();
-    println!("[2/3] Computing null surrogates for {} radial bins ({} iters each)...", n_bins, cli.null_iterations);
+    println!(
+        "[2/3] Computing null surrogates for {} radial bins ({} iters each)...",
+        n_bins, cli.null_iterations
+    );
 
     let mut bin_nulls: BTreeMap<i32, (f64, f64)> = BTreeMap::new(); // (phase_mean, mv_phase_mean)
 
@@ -264,11 +291,16 @@ fn main() -> Result<()> {
 
         for _ in 0..cli.null_iterations {
             let surr_phase = phase_randomize_shared(vectors, dim);
-            let norms_phase = cd_kernel::batch_sliding_associator_norms_dispatch(&surr_phase, dim, &cli.precision);
+            let norms_phase = cd_kernel::batch_sliding_associator_norms_dispatch(
+                &surr_phase,
+                dim,
+                &cli.precision,
+            );
             phase_means.push(associator_mean(&norms_phase));
 
             let surr_mv = phase_randomize_multivariate(vectors, dim);
-            let norms_mv = cd_kernel::batch_sliding_associator_norms_dispatch(&surr_mv, dim, &cli.precision);
+            let norms_mv =
+                cd_kernel::batch_sliding_associator_norms_dispatch(&surr_mv, dim, &cli.precision);
             mv_phase_means.push(associator_mean(&norms_mv));
         }
 
@@ -278,8 +310,14 @@ fn main() -> Result<()> {
 
         if (idx + 1) % 5 == 0 || idx + 1 == n_bins {
             let r_center = (*r_bin as f64 + 0.5) * cli.bin_size_au;
-            println!("    [{}/{}] r={:.0} AU: phase_null={:.4}, mv_null={:.4}",
-                idx + 1, n_bins, r_center, phase_avg, mv_avg);
+            println!(
+                "    [{}/{}] r={:.0} AU: phase_null={:.4}, mv_null={:.4}",
+                idx + 1,
+                n_bins,
+                r_center,
+                phase_avg,
+                mv_avg
+            );
         }
     }
 

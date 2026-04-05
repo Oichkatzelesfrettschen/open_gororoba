@@ -85,9 +85,9 @@ impl PhaseTransitionAnalyzer {
         let mut violations = 0;
 
         for _ in 0..n_samples {
-            let i = rng.gen_range(0..self.dimension);
-            let j = rng.gen_range(0..self.dimension);
-            let k = rng.gen_range(0..self.dimension);
+            let i = rng.random_range(0..self.dimension);
+            let j = rng.random_range(0..self.dimension);
+            let k = rng.random_range(0..self.dimension);
 
             if is_non_associative_triple(self.dimension, i, j, k) {
                 violations += 1;

@@ -471,7 +471,7 @@
 //! (2) The set Q(∆) is quasi-isometric to K(W1 ) × · · · × K(Wk ).
 //! Proof. (1) follows from the construction of hierarchy paths [MM], while (2) follows
 //! from [BM, Lemma 2.1].
-//! 
+//!
 //!
 //!
 //! --- PAGE BREAK ---
@@ -504,7 +504,7 @@
 //! The following is a corollary of the distance formula in [MM].
 //! Corollary 2.11. There exist A ≥ 1 and B ≥ 0 depending only on S such that
 //! for any subsurface Z ⊂ S, the projection of K(S) onto K(Z) is an (A, B)–quasiLipschitz map, that is for any two markings µ, ν ∈ K(S) the following holds:
-//! 
+//!
 //! distK(Z) πK(Z) (µ) , πK(Z) (ν) ≤ AdistK(S) (µ, ν) + B .
 //! Consequently the nearest point projection onto Q(∆) is a quasi-Lipschitz map.
 //! Let gi be an element in MCG(S) that is pseudo-Anosov when restricted to Wi
@@ -519,7 +519,7 @@
 //! (2) Φi restricted to pi × K(Wic ) is at uniformly bounded distance from the projection onto the first component.
 //! Proof. Follows immediately from the proofs of Theorems 3.1 and 3.5 in [BM].
 //!
-//! 
+//!
 //!
 //! The map Φ : K(S) → p1 × · · · × pk defined by Φ(µ) = (Φ1 (µ) , . . . , Φk (µ)) is
 //! also quasi-Lipschitz.
@@ -577,7 +577,7 @@
 //! pi × K(Wic ) is at uniformly bounded
 //! distance from the projection
 //! onto
-//! 
+//!
 //!  the first component. We can then define the map
 //! b : XS → Rk , Φ
 //! b= Φ
@@ -632,7 +632,7 @@
 //! The argument in [Wen3, pp. 263–264] with Tn = rn and Sn = dn implies that
 //! the sequence (dn ) yields a compact subset of dimension k + 1 in an asymptotic cone
 //! of XS , a contradiction.
-//! 
+//!
 //! For k ≥ ξ(S) we conjecture Isok (x)  xk . In a forthcoming paper [BD3] we prove
 //! that an asymptotic version of this holds. The sharp result holds in low genus:
 //! Theorem 3.2. Given a surface S of genus 0 or 1, or of genus 2 and without
@@ -654,7 +654,7 @@
 //! ξ(S), the result then follows from the fact that if a group has a cocompact classifying
 //! space for proper actions of dimension r, then Isok (x)  xk for all k ≥ r [AWP,
 //! Corollary 9].
-//! 
+//!
 //! 3.2. Divergence in mapping class groups. In the mapping class group, the
 //! value for rank analogous to that in a symmetric space is the quasi-flat rank, i.e. the
 //! maximal dimension of a quasi-flat in the Cayley graph of the group. As discussed
@@ -666,7 +666,7 @@
 //! Divk (x)  xk .
 //! Proof. The result follows from Proposition 2.7, and from Theorems 3.1 and 3.2.
 //!
-//! 
+//!
 //!
 //! Theorem 3.4. For any S and for any integer 0 ≤ k < ξ(S), the k-dimensional
 //! divergence in MCG(S) satisfies Divk  xk+2 .
@@ -921,7 +921,7 @@
 //! nk+1 and it is disjoint from the δ 00 n–ball around y0 , for an appropriate choice of δ 00
 //! and δ 0 . By applying Λ∆ we obtain a disk filling the given sphere, disjoint from the
 //! δn–ball around x0 and of area nk+1 .
-//! 
+//!
 //!
 //! 4. Higher dimensional divergence of CAT (0)–groups
 //! In this section, we show how the above technique for computing higher divergence in mapping class groups can be applied in the context of CAT (0)–groups to
@@ -1112,7 +1112,7 @@
 //! hj we can repeat
 //! above and
 //!  the argument
-//! 
+//!
 //! 0
 //! e
 //! e
@@ -1145,7 +1145,7 @@
 //! then one can apply the usual estimate
 //! of the
 //!  divergence in Nn and obtain that
-//! 
+//!
 //! e
 //! hm ∪ e
 //! h0 can be filled outside B π e (c), δx with a volume  xr+n  `er+n . For
@@ -1265,7 +1265,7 @@
 //! Pk
 //! fill h outside the required ball the necessary volume is B`r+n + i=1 D(`i )r+n+1 ,
 //! and thus, in particular, this volume is  `r+n+1 .
-//! 
+//!
 //! References
 //! [ABDDY] A. Abrams, N. Brady, P. Dani, M. Duchin, and R. Young, Pushing fillings in rightangled Artin groups, J. Lond. Math. Soc. 87 (2013), no. 3, 663–688.
 //! [ABDY] A. Abrams, N. Brady, P. Dani, and R. Young, Homological and homotopical Dehn

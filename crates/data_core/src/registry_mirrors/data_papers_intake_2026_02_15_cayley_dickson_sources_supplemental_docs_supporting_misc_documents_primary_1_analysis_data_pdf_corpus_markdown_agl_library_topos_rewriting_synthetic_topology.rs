@@ -213,10 +213,10 @@
 //! usually drawn from an unknown a priori distribution and chosen from a given input data. The PINN algorithm aims
 //! to learn a surrogate u ≈ uΘ̃ to compute the solution u for a given PDE. The loss function for the PINN is given as
 //!  
-//! 
-//! 
-//! 
-//! 
+//!
+//!
+//!
+//!
 //! Nu
 //! NF
 //! L Θ̃ = Wu MSEu Θ̃; {xu(i) }i=1
@@ -230,8 +230,8 @@
 //! where Wu and WF are the weights for the data and residual losses, respectively. The mean square error is given by
 //! Nu
 //!  2
-//! 
-//! 
+//!
+//!
 //! 1 X
 //! Nu
 //! ,
@@ -242,8 +242,8 @@
 //! Nu i=1
 //! NF
 //!  2
-//! 
-//! 
+//!
+//!
 //! 1 X
 //! NF
 //! ,

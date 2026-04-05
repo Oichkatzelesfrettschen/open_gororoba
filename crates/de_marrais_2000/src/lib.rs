@@ -21,11 +21,11 @@ pub mod trips;
 
 // Flatten the most-used types to crate root for ergonomic imports.
 pub use assessors::{
-    all_assessors, co_assessor_buckets, co_assessors, production_rule_1,
-    verify_production_rule_1, Assessor, ThreeRingCircuit,
+    Assessor, ThreeRingCircuit, all_assessors, co_assessor_buckets, co_assessors,
+    production_rule_1, verify_production_rule_1,
 };
 pub use count::{
-    ASSESSORS_PER_BOX_KITE, NUM_BOX_KITES, TOTAL_ASSESSORS, TOTAL_ZD_PAIRS,
-    ZD_PAIRS_PER_ASSESSOR, ZD_PAIRS_PER_BOX_KITE,
+    ASSESSORS_PER_BOX_KITE, NUM_BOX_KITES, TOTAL_ASSESSORS, TOTAL_ZD_PAIRS, ZD_PAIRS_PER_ASSESSOR,
+    ZD_PAIRS_PER_BOX_KITE,
 };
 pub use trips::{AssocTriple, O_TRIPS, S_TRIPS, TOTAL_TRIP_COUNT};

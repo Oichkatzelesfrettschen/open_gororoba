@@ -10,7 +10,8 @@
 //! - Gray & Kourtis (2021): Hyper-optimized tensor network contraction
 //! - Schollwoeck (2011): DMRG review with SVD-based truncation
 
-use ndarray::{Array2, ArrayD, s};
+use ndarray::{Array2, ArrayD, IxDyn};
+use ndarray016::{Array2 as Array2Compat, ArrayD as ArrayDCompat, IxDyn as IxDynCompat, s as s016};
 use qua_ten_net::{tencon::contract, tendot::tensor_dot, tensor::svd};
 
 /// Result of an SVD truncation operation.
@@ -26,6 +27,29 @@ pub struct TruncatedSVD {
     pub rank: usize,
     /// Truncation error (sum of discarded squared singular values).
     pub truncation_error: f64,
+}
+
+fn to_compat_array2(array: Array2<f64>) -> Result<Array2Compat<f64>, String> {
+    let (rows, cols) = array.dim();
+    let data: Vec<f64> = array.iter().copied().collect();
+    Array2Compat::from_shape_vec((rows, cols), data).map_err(|err| err.to_string())
+}
+
+fn from_compat_array2(array: Array2Compat<f64>) -> Result<Array2<f64>, String> {
+    let (rows, cols) = array.dim();
+    let data: Vec<f64> = array.iter().copied().collect();
+    Array2::from_shape_vec((rows, cols), data).map_err(|err| err.to_string())
+}
+
+fn to_compat_arrayd(array: &ArrayD<f64>) -> Result<ArrayDCompat<f64>, String> {
+    ArrayDCompat::from_shape_vec(IxDynCompat(array.shape()), array.iter().copied().collect())
+        .map_err(|err| err.to_string())
+}
+
+fn from_compat_arrayd(array: ArrayDCompat<f64>) -> Result<ArrayD<f64>, String> {
+    let shape = array.shape().to_vec();
+    let data: Vec<f64> = array.iter().copied().collect();
+    ArrayD::from_shape_vec(IxDyn(&shape), data).map_err(|err| err.to_string())
 }
 
 /// Perform truncated SVD on a 2D array.
@@ -46,6 +70,7 @@ pub fn truncated_svd(
     max_rank: Option<usize>,
     min_singular_value: f64,
 ) -> Result<TruncatedSVD, String> {
+    let matrix = to_compat_array2(matrix)?;
     let svd_result = svd(matrix)?;
 
     // Determine truncation rank
@@ -65,14 +90,14 @@ pub fn truncated_svd(
     let truncation_error: f64 = svd_result.sigma.iter().skip(rank).map(|sv| sv * sv).sum();
 
     // Truncate matrices
-    let u_trunc = svd_result.u.slice(s![.., ..rank]).to_owned();
+    let u_trunc = svd_result.u.slice(s016![.., ..rank]).to_owned();
     let s_trunc: Vec<f64> = svd_result.sigma.iter().take(rank).cloned().collect();
-    let vt_trunc = svd_result.vt.slice(s![..rank, ..]).to_owned();
+    let vt_trunc = svd_result.vt.slice(s016![..rank, ..]).to_owned();
 
     Ok(TruncatedSVD {
-        u: u_trunc,
+        u: from_compat_array2(u_trunc)?,
         s: s_trunc,
-        vt: vt_trunc,
+        vt: from_compat_array2(vt_trunc)?,
         rank,
         truncation_error,
     })
@@ -102,8 +127,13 @@ pub fn contract_network(
     }
 
     // Convert Vec<i32> to &[i32] for the qua_ten_net API
+    let compat_tensors: Vec<ArrayDCompat<f64>> = tensors
+        .iter()
+        .map(to_compat_arrayd)
+        .collect::<Result<_, _>>()?;
     let order_refs: Vec<&[i32]> = orders.iter().map(|v| v.as_slice()).collect();
-    contract(tensors, &order_refs)
+    let contracted = contract(&compat_tensors, &order_refs)?;
+    from_compat_arrayd(contracted)
 }
 
 /// Compute tensor dot product along specified axes.
@@ -127,7 +157,10 @@ pub fn tensor_contract(
         axis_vec.push(ax_a);
         axis_vec.push(ax_b);
     }
-    tensor_dot(a, b, axis_vec)
+    let a_compat = to_compat_arrayd(a)?;
+    let b_compat = to_compat_arrayd(b)?;
+    let contracted = tensor_dot(&a_compat, &b_compat, axis_vec)?;
+    from_compat_arrayd(contracted)
 }
 
 /// Estimate contraction cost for a given ordering.

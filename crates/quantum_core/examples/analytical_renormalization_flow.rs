@@ -92,7 +92,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     for &dim in &dimensions {
         println!("===================================================");
-        println!("<EMOJI+1F525> Analytical Sweep for Manifold Dimension: {}", dim);
+        println!(
+            "<EMOJI+1F525> Analytical Sweep for Manifold Dimension: {}",
+            dim
+        );
 
         let v_d = flux_volume(dim);
 

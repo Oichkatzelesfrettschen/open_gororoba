@@ -3,8 +3,8 @@
 //! This module provides functions to construct matrix representations of the
 //! Quaternions, Octonions, and Sedenions. This is a crucial step for
 
-use faer::Mat;
 use crate::cayley_dickson_structs::Sedenion;
+use faer::Mat;
 
 // ... (get_quaternion_matrices implementation)
 
@@ -15,7 +15,7 @@ pub fn get_sedenion_matrices() -> Vec<Mat<f64>> {
         components[i] = 1.0;
         basis[i] = Sedenion::from_slice(&components);
     }
-    
+
     let mut matrices = Vec::new();
     for i in 0..16 {
         let mut matrix = Mat::zeros(16, 16);
@@ -23,7 +23,7 @@ pub fn get_sedenion_matrices() -> Vec<Mat<f64>> {
             let res = basis[i] * basis[j];
             let components = res.to_slice();
             for (k, component) in components.iter().enumerate() {
-                matrix.write(k, j, *component);
+                matrix[(k, j)] = *component;
             }
         }
         matrices.push(matrix);

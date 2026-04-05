@@ -42,12 +42,7 @@ pub fn attention_score_variance(query_norm_sq: f64, d: usize, bits: u32) -> f64 
 /// `d`: head dimension
 /// `bits`: quantization bits
 /// `temperature`: attention temperature (typically 1/sqrt(d))
-pub fn correct_attention_scores(
-    scores: &mut [f64],
-    query_norm_sq: f64,
-    d: usize,
-    bits: u32,
-) {
+pub fn correct_attention_scores(scores: &mut [f64], query_norm_sq: f64, d: usize, bits: u32) {
     let var = attention_score_variance(query_norm_sq, d, bits);
     let temperature_sq = 1.0 / d as f64; // standard attention temperature^2
 
@@ -112,7 +107,10 @@ mod tests {
     #[test]
     fn test_attention_variance() {
         let var = attention_score_variance(1.0, 128, 3);
-        println!("Attention score variance (||q||=1, d=128, 3-bit): {:.6e}", var);
+        println!(
+            "Attention score variance (||q||=1, d=128, 3-bit): {:.6e}",
+            var
+        );
         assert!(var > 0.0 && var < 0.01, "Variance out of range: {}", var);
     }
 
@@ -128,14 +126,23 @@ mod tests {
 
         // Correction should scale scores toward zero (sharpen)
         for (s, &o) in scores.iter().zip(original.iter()) {
-            assert!(s.abs() <= o.abs() + 1e-10,
-                "Correction should not increase magnitude: {} -> {}", o, s);
+            assert!(
+                s.abs() <= o.abs() + 1e-10,
+                "Correction should not increase magnitude: {} -> {}",
+                o,
+                s
+            );
         }
 
         // Relative ordering should be preserved
         for i in 0..scores.len() - 1 {
-            assert!(scores[i] >= scores[i + 1],
-                "Ordering broken at {}: {} < {}", i, scores[i], scores[i + 1]);
+            assert!(
+                scores[i] >= scores[i + 1],
+                "Ordering broken at {}: {} < {}",
+                i,
+                scores[i],
+                scores[i + 1]
+            );
         }
     }
 

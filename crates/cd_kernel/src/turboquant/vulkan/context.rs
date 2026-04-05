@@ -163,33 +163,48 @@ mod tests {
     #[test]
     fn test_nvidia_tier() {
         let caps = mock_nvidia();
-        assert_eq!(caps.recommended_shader_tier(), VulkanShaderTier::SubgroupOptimized);
+        assert_eq!(
+            caps.recommended_shader_tier(),
+            VulkanShaderTier::SubgroupOptimized
+        );
         assert!(caps.is_compute_capable());
     }
 
     #[test]
     fn test_amd_tier() {
         let caps = mock_amd();
-        assert_eq!(caps.recommended_shader_tier(), VulkanShaderTier::SubgroupOptimized);
+        assert_eq!(
+            caps.recommended_shader_tier(),
+            VulkanShaderTier::SubgroupOptimized
+        );
     }
 
     #[test]
     fn test_integrated_tier() {
         let caps = mock_integrated();
         // No subgroup arithmetic -> baseline only
-        assert_eq!(caps.recommended_shader_tier(), VulkanShaderTier::SubgroupBaseline);
+        assert_eq!(
+            caps.recommended_shader_tier(),
+            VulkanShaderTier::SubgroupBaseline
+        );
     }
 
     #[test]
     fn test_cooperative_matrix_tier() {
         let mut caps = mock_nvidia();
         caps.cooperative_matrix = true;
-        assert_eq!(caps.recommended_shader_tier(), VulkanShaderTier::CooperativeMatrix);
+        assert_eq!(
+            caps.recommended_shader_tier(),
+            VulkanShaderTier::CooperativeMatrix
+        );
     }
 
     #[test]
     fn test_tier_display() {
         assert_eq!(format!("{}", VulkanShaderTier::Portable), "portable");
-        assert_eq!(format!("{}", VulkanShaderTier::CooperativeMatrix), "cooperative-matrix");
+        assert_eq!(
+            format!("{}", VulkanShaderTier::CooperativeMatrix),
+            "cooperative-matrix"
+        );
     }
 }

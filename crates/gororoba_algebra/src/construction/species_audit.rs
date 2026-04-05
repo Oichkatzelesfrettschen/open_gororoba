@@ -24,11 +24,11 @@ use cd_kernel::cayley_dickson::{SignTable, cd_multiply, cd_norm_sq, find_zero_di
 /// Verify T1: Quadratic identity
 /// For x in A_n, x^2 - t(x)x + n(x) = 0.
 pub fn verify_t1_quadratic_identity(dim: usize, samples: usize) -> bool {
-    let mut rng = rand::thread_rng();
-    use rand::Rng;
+    let mut rng = rand::rng();
+    use rand::RngExt;
 
     for _ in 0..samples {
-        let x: Vec<f64> = (0..dim).map(|_| rng.gen_range(-1.0..1.0)).collect();
+        let x: Vec<f64> = (0..dim).map(|_| rng.random_range(-1.0..1.0)).collect();
         let x2 = cd_multiply(&x, &x);
         let t_x = 2.0 * x[0];
         let n_x = cd_norm_sq(&x);
@@ -50,11 +50,11 @@ pub fn verify_t1_quadratic_identity(dim: usize, samples: usize) -> bool {
 
 /// Verify T2: Power-associativity
 pub fn verify_t2_power_associativity(dim: usize, samples: usize) -> bool {
-    let mut rng = rand::thread_rng();
-    use rand::Rng;
+    let mut rng = rand::rng();
+    use rand::RngExt;
 
     for _ in 0..samples {
-        let x: Vec<f64> = (0..dim).map(|_| rng.gen_range(-1.0..1.0)).collect();
+        let x: Vec<f64> = (0..dim).map(|_| rng.random_range(-1.0..1.0)).collect();
         let x2 = cd_multiply(&x, &x);
         let x3_a = cd_multiply(&x2, &x);
         let x3_b = cd_multiply(&x, &x2);
@@ -70,12 +70,12 @@ pub fn verify_t2_power_associativity(dim: usize, samples: usize) -> bool {
 
 /// Verify T3: Flexibility ((xy)x = x(yx))
 pub fn verify_t3_flexibility(dim: usize, samples: usize) -> bool {
-    let mut rng = rand::thread_rng();
-    use rand::Rng;
+    let mut rng = rand::rng();
+    use rand::RngExt;
 
     for _ in 0..samples {
-        let x: Vec<f64> = (0..dim).map(|_| rng.gen_range(-1.0..1.0)).collect();
-        let y: Vec<f64> = (0..dim).map(|_| rng.gen_range(-1.0..1.0)).collect();
+        let x: Vec<f64> = (0..dim).map(|_| rng.random_range(-1.0..1.0)).collect();
+        let y: Vec<f64> = (0..dim).map(|_| rng.random_range(-1.0..1.0)).collect();
 
         let xy = cd_multiply(&x, &y);
         let xy_x = cd_multiply(&xy, &x);

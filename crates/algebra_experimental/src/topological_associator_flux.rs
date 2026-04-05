@@ -15,7 +15,10 @@ use cd_kernel::cayley_dickson::{cd_basis_mul_sign_iter, cd_multiply, cd_norm_sq}
 /// continuous, but is strictly quantized into discrete "energy levels" corresponding to
 /// specific representations of the exceptional Lie groups or Clifford bundle structures.
 pub fn compute_basis_associator_flux(dim: usize) -> Vec<f64> {
-    assert!(dim >= 16, "Associator flux requires zero divisors, which exist only in dim >= 16");
+    assert!(
+        dim >= 16,
+        "Associator flux requires zero divisors, which exist only in dim >= 16"
+    );
 
     // 1. Obtain a zero-divisor pair (A, B) via canonical sedenion embedding.
     // The canonical embedding iota: A_4 -> A_n is an algebra monomorphism
@@ -23,13 +26,17 @@ pub fn compute_basis_associator_flux(dim: usize) -> Vec<f64> {
     // This replaces the former O(dim^4) brute-force search.  We only need
     // ONE witness pair for the flux computation.
     let (mut a, mut b) = zero_divisor_witness(dim);
-    
+
     // Normalize A and B
     let norm_a = cd_norm_sq(&a).sqrt();
     let norm_b = cd_norm_sq(&b).sqrt();
-    for x in &mut a { *x /= norm_a; }
-    for x in &mut b { *x /= norm_b; }
-    
+    for x in &mut a {
+        *x /= norm_a;
+    }
+    for x in &mut b {
+        *x /= norm_b;
+    }
+
     // Verify A * B = 0
     let ab = cd_multiply(&a, &b);
     let ab_norm = cd_norm_sq(&ab).sqrt();
@@ -46,10 +53,16 @@ pub fn compute_basis_associator_flux(dim: usize) -> Vec<f64> {
     //
     // Since A*B = 0, the associator simplifies to [A, B, e_k] = -A*(B*e_k).
     // The bilinear expansion is equivalent and avoids generic cd_multiply.
-    let a_terms: Vec<(usize, f64)> = a.iter().copied().enumerate()
+    let a_terms: Vec<(usize, f64)> = a
+        .iter()
+        .copied()
+        .enumerate()
         .filter(|(_, v)| v.abs() > 1e-15)
         .collect();
-    let b_terms: Vec<(usize, f64)> = b.iter().copied().enumerate()
+    let b_terms: Vec<(usize, f64)> = b
+        .iter()
+        .copied()
+        .enumerate()
         .filter(|(_, v)| v.abs() > 1e-15)
         .collect();
 
@@ -92,7 +105,7 @@ pub fn compute_basis_associator_flux(dim: usize) -> Vec<f64> {
 /// Helper to analyze the spectrum and extract discrete "levels"
 pub fn analyze_quantization(spectrum: &[f64], tolerance: f64) -> Vec<(f64, usize)> {
     let mut levels: Vec<(f64, usize)> = Vec::new();
-    
+
     for &val in spectrum {
         let mut found = false;
         for level in &mut levels {
@@ -106,7 +119,7 @@ pub fn analyze_quantization(spectrum: &[f64], tolerance: f64) -> Vec<(f64, usize
             levels.push((val, 1));
         }
     }
-    
+
     // Sort levels by value
     levels.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap());
     levels
@@ -137,13 +150,29 @@ pub fn compute_flux_permuted(dim: usize, perm: &[usize]) -> Vec<f64> {
 
     let norm_a = cd_norm_sq(&a).sqrt();
     let norm_b = cd_norm_sq(&b).sqrt();
-    if norm_a > 1e-15 { for x in &mut a { *x /= norm_a; } }
-    if norm_b > 1e-15 { for x in &mut b { *x /= norm_b; } }
+    if norm_a > 1e-15 {
+        for x in &mut a {
+            *x /= norm_a;
+        }
+    }
+    if norm_b > 1e-15 {
+        for x in &mut b {
+            *x /= norm_b;
+        }
+    }
 
-    let a_terms: Vec<(usize, f64)> = a.iter().copied().enumerate()
-        .filter(|(_, v)| v.abs() > 1e-15).collect();
-    let b_terms: Vec<(usize, f64)> = b.iter().copied().enumerate()
-        .filter(|(_, v)| v.abs() > 1e-15).collect();
+    let a_terms: Vec<(usize, f64)> = a
+        .iter()
+        .copied()
+        .enumerate()
+        .filter(|(_, v)| v.abs() > 1e-15)
+        .collect();
+    let b_terms: Vec<(usize, f64)> = b
+        .iter()
+        .copied()
+        .enumerate()
+        .filter(|(_, v)| v.abs() > 1e-15)
+        .collect();
 
     let mut spectrum = Vec::with_capacity(dim - 1);
     let mut accum = vec![0.0_f64; dim];
@@ -160,7 +189,9 @@ pub fn compute_flux_permuted(dim: usize, perm: &[usize]) -> Vec<f64> {
                 let s_jk = cd_basis_mul_sign_iter(dim, bj, k);
                 let s_ijk_right = s_jk * cd_basis_mul_sign_iter(dim, ai, jk);
                 let delta = s_ijk_left - s_ijk_right;
-                if delta != 0 { accum[ijk] += coeff * delta as f64; }
+                if delta != 0 {
+                    accum[ijk] += coeff * delta as f64;
+                }
             }
         }
         let norm_sq: f64 = accum.iter().map(|x| x * x).sum();
@@ -190,7 +221,11 @@ pub fn compute_flux_random_signs(dim: usize, seed: u64) -> Vec<f64> {
             .wrapping_add((lo as u64).wrapping_mul(6364136223846793005))
             .wrapping_add((hi as u64).wrapping_mul(2862933555777941757));
         let mixed = key.wrapping_mul(11400714819323198485);
-        if (mixed >> 63) & 1 == 1 { 1_i32 } else { -1_i32 }
+        if (mixed >> 63) & 1 == 1 {
+            1_i32
+        } else {
+            -1_i32
+        }
     };
 
     let norm_a = cd_norm_sq(&a_raw).sqrt();
@@ -200,13 +235,25 @@ pub fn compute_flux_random_signs(dim: usize, seed: u64) -> Vec<f64> {
     // Re-normalize after potential floating drift
     let na2 = cd_norm_sq(&a).sqrt();
     let nb2 = cd_norm_sq(&b).sqrt();
-    for x in &mut a { *x /= na2; }
-    for x in &mut b { *x /= nb2; }
+    for x in &mut a {
+        *x /= na2;
+    }
+    for x in &mut b {
+        *x /= nb2;
+    }
 
-    let a_terms: Vec<(usize, f64)> = a.iter().copied().enumerate()
-        .filter(|(_, v)| v.abs() > 1e-15).collect();
-    let b_terms: Vec<(usize, f64)> = b.iter().copied().enumerate()
-        .filter(|(_, v)| v.abs() > 1e-15).collect();
+    let a_terms: Vec<(usize, f64)> = a
+        .iter()
+        .copied()
+        .enumerate()
+        .filter(|(_, v)| v.abs() > 1e-15)
+        .collect();
+    let b_terms: Vec<(usize, f64)> = b
+        .iter()
+        .copied()
+        .enumerate()
+        .filter(|(_, v)| v.abs() > 1e-15)
+        .collect();
 
     let mut spectrum = Vec::with_capacity(dim - 1);
     let mut accum = vec![0.0_f64; dim];
@@ -223,7 +270,9 @@ pub fn compute_flux_random_signs(dim: usize, seed: u64) -> Vec<f64> {
                 let s_jk = random_sign(bj, k);
                 let s_ijk_right = s_jk * random_sign(ai, jk);
                 let delta = s_ijk_left - s_ijk_right;
-                if delta != 0 { accum[ijk] += coeff * delta as f64; }
+                if delta != 0 {
+                    accum[ijk] += coeff * delta as f64;
+                }
             }
         }
         let norm_sq: f64 = accum.iter().map(|x| x * x).sum();
@@ -250,10 +299,18 @@ pub fn compute_flux_commutative_xor(dim: usize) -> Vec<f64> {
     let a: Vec<f64> = a_raw.iter().map(|&x| x / norm_a).collect();
     let b: Vec<f64> = b_raw.iter().map(|&x| x / norm_b).collect();
 
-    let a_terms: Vec<(usize, f64)> = a.iter().copied().enumerate()
-        .filter(|(_, v)| v.abs() > 1e-15).collect();
-    let b_terms: Vec<(usize, f64)> = b.iter().copied().enumerate()
-        .filter(|(_, v)| v.abs() > 1e-15).collect();
+    let a_terms: Vec<(usize, f64)> = a
+        .iter()
+        .copied()
+        .enumerate()
+        .filter(|(_, v)| v.abs() > 1e-15)
+        .collect();
+    let b_terms: Vec<(usize, f64)> = b
+        .iter()
+        .copied()
+        .enumerate()
+        .filter(|(_, v)| v.abs() > 1e-15)
+        .collect();
 
     // All-positive XOR: sign(i, j) = +1 always.
     // Associator [A, B, e_k]:
@@ -268,13 +325,15 @@ pub fn compute_flux_commutative_xor(dim: usize) -> Vec<f64> {
             for &(bj, bv) in &b_terms {
                 let coeff = av * bv;
                 let ij = ai ^ bj;
-                let ijk_left  = ij ^ k;
+                let ijk_left = ij ^ k;
                 let jk = bj ^ k;
                 let ijk_right = ai ^ jk;
                 // delta = s_left - s_right = +1 - +1 = 0 always
                 // (since all signs are +1 and ijk_left == ijk_right by XOR associativity)
                 let delta = if ijk_left == ijk_right { 0_i32 } else { 2 };
-                if delta != 0 { accum[ijk_left] += coeff * delta as f64; }
+                if delta != 0 {
+                    accum[ijk_left] += coeff * delta as f64;
+                }
             }
         }
         let norm_sq: f64 = accum.iter().map(|x| x * x).sum();
@@ -408,26 +467,34 @@ pub fn exceptional_casimirs() -> Vec<ExceptionalCasimir> {
 /// This function implements the comparison and records the findings.
 /// Callers should treat all findings as class H (heuristic).
 pub fn compare_flux_to_exceptional(dim: usize) -> Vec<String> {
-    let n0   = dim/2 - dim/8 - 1;
-    let n1   = dim/2;
-    let nsq2 = dim/8;
+    let n0 = dim / 2 - dim / 8 - 1;
+    let n1 = dim / 2;
+    let nsq2 = dim / 8;
     let casimirs = exceptional_casimirs();
 
     let mut notes = Vec::new();
     notes.push(format!(
         "dim={}: n_0={}, n_1={}, n_sqrt2={}  (total={})",
-        dim, n0, n1, nsq2, n0 + n1 + nsq2
+        dim,
+        n0,
+        n1,
+        nsq2,
+        n0 + n1 + nsq2
     ));
     for c in &casimirs {
         // Check if any count matches the Lie algebra dimension or rep dimension.
-        let n0_matches_rep   = n0   == c.rep_dim;
-        let n1_matches_rep   = n1   == c.rep_dim;
+        let n0_matches_rep = n0 == c.rep_dim;
+        let n1_matches_rep = n1 == c.rep_dim;
         let nsq2_matches_rep = nsq2 == c.rep_dim;
-        let n0_matches_lie   = n0   == c.lie_dim;
-        let n1_matches_lie   = n1   == c.lie_dim;
+        let n0_matches_lie = n0 == c.lie_dim;
+        let n1_matches_lie = n1 == c.lie_dim;
         let nsq2_matches_lie = nsq2 == c.lie_dim;
-        if n0_matches_rep || n1_matches_rep || nsq2_matches_rep
-            || n0_matches_lie || n1_matches_lie || nsq2_matches_lie
+        if n0_matches_rep
+            || n1_matches_rep
+            || nsq2_matches_rep
+            || n0_matches_lie
+            || n1_matches_lie
+            || nsq2_matches_lie
         {
             notes.push(format!(
                 "  [H] {} (dim={}, rep={}): count match: n_0={} n_1={} n_sqrt2={}",
@@ -445,11 +512,15 @@ pub fn compare_flux_to_exceptional(dim: usize) -> Vec<String> {
     }
     if notes.len() == 1 {
         notes.push(format!(
-            "  [H] No exceptional group dimension or Casimir matches counts at dim={}", dim
+            "  [H] No exceptional group dimension or Casimir matches counts at dim={}",
+            dim
         ));
     }
-    notes.push("  [H] Level names {0,1,sqrt2} reflect sparse witness +/-{0,1,2} arithmetic,
-      not exceptional Lie structure.  Count formula is CD-sign-specific.".to_owned());
+    notes.push(
+        "  [H] Level names {0,1,sqrt2} reflect sparse witness +/-{0,1,2} arithmetic,
+      not exceptional Lie structure.  Count formula is CD-sign-specific."
+            .to_owned(),
+    );
     notes
 }
 
@@ -461,7 +532,7 @@ mod tests {
         println!("--- VERIFYING TOPOLOGICAL ASSOCIATOR FLUX IN {}D ---", dim);
         let spectrum = compute_basis_associator_flux(dim);
         let levels = analyze_quantization(&spectrum, 1e-4);
-        
+
         let expected_sqrt2 = dim / 8;
         let expected_1 = dim / 2;
         let expected_0 = dim / 2 - (dim / 8) - 1;
@@ -482,12 +553,27 @@ mod tests {
                 panic!("Unexpected quantization level: {}", val);
             }
         }
-        
-        assert_eq!(actual_0, expected_0, "Mismatch in level 0 count for {}D", dim);
-        assert_eq!(actual_1, expected_1, "Mismatch in level 1 count for {}D", dim);
-        assert_eq!(actual_sqrt2, expected_sqrt2, "Mismatch in level sqrt2 count for {}D", dim);
-        
-        println!("<EMOJI+2705> {}D Invariant verified: 0: {}, 1: {}, sqrt2: {}", dim, actual_0, actual_1, actual_sqrt2);
+
+        assert_eq!(
+            actual_0, expected_0,
+            "Mismatch in level 0 count for {}D",
+            dim
+        );
+        assert_eq!(
+            actual_1, expected_1,
+            "Mismatch in level 1 count for {}D",
+            dim
+        );
+        assert_eq!(
+            actual_sqrt2, expected_sqrt2,
+            "Mismatch in level sqrt2 count for {}D",
+            dim
+        );
+
+        println!(
+            "<EMOJI+2705> {}D Invariant verified: 0: {}, 1: {}, sqrt2: {}",
+            dim, actual_0, actual_1, actual_sqrt2
+        );
     }
 
     #[test]
@@ -499,7 +585,7 @@ mod tests {
     fn test_pathion_basis_quantization() {
         verify_associator_flux_invariant(32);
     }
-    
+
     #[test]
     fn test_chingon_basis_quantization() {
         // Previously O(dim^4) brute-force ZD search -- now O(1) via
@@ -548,23 +634,33 @@ mod tests {
         for &dim in &[16_usize, 32, 64, 128, 256, 512, 1024] {
             let spectrum = compute_basis_associator_flux(dim);
             let levels = analyze_quantization(&spectrum, 1e-4);
-            let n0: usize = levels.iter().filter(|(v, _)| v.abs() < 1e-4).map(|(_, c)| c).sum();
-            let n1: usize = levels.iter().filter(|(v, _)| (v - 1.0).abs() < 1e-4).map(|(_, c)| c).sum();
-            let nsq2: usize = levels.iter()
+            let n0: usize = levels
+                .iter()
+                .filter(|(v, _)| v.abs() < 1e-4)
+                .map(|(_, c)| c)
+                .sum();
+            let n1: usize = levels
+                .iter()
+                .filter(|(v, _)| (v - 1.0).abs() < 1e-4)
+                .map(|(_, c)| c)
+                .sum();
+            let nsq2: usize = levels
+                .iter()
                 .filter(|(v, _)| (v - std::f64::consts::SQRT_2).abs() < 1e-4)
-                .map(|(_, c)| c).sum();
+                .map(|(_, c)| c)
+                .sum();
             println!(
                 "  {:>4} | {:>11} | {:>7} | {:>7} | {:>5}",
                 dim,
-                format!("{} (exp {})", n0, dim/2 - dim/8 - 1),
-                format!("{} (exp {})", n1, dim/2),
-                format!("{} (exp {})", nsq2, dim/8),
+                format!("{} (exp {})", n0, dim / 2 - dim / 8 - 1),
+                format!("{} (exp {})", n1, dim / 2),
+                format!("{} (exp {})", nsq2, dim / 8),
                 n0 + n1 + nsq2,
             );
             // Strict check: formula holds exactly at every tested dimension
-            assert_eq!(n0,   dim/2 - dim/8 - 1, "dim={}: n_0 mismatch", dim);
-            assert_eq!(n1,   dim/2,              "dim={}: n_1 mismatch", dim);
-            assert_eq!(nsq2, dim/8,              "dim={}: n_sqrt2 mismatch", dim);
+            assert_eq!(n0, dim / 2 - dim / 8 - 1, "dim={}: n_0 mismatch", dim);
+            assert_eq!(n1, dim / 2, "dim={}: n_1 mismatch", dim);
+            assert_eq!(nsq2, dim / 8, "dim={}: n_sqrt2 mismatch", dim);
         }
     }
 
@@ -594,7 +690,9 @@ mod tests {
             // We simply check that the resulting spectrum is NOT identical to the
             // canonical one, confirming the sign table is not permutation-invariant.
             let canonical = compute_basis_associator_flux(dim);
-            let same = spectrum.iter().zip(canonical.iter())
+            let same = spectrum
+                .iter()
+                .zip(canonical.iter())
                 .all(|(a, b)| (a - b).abs() < 1e-10);
             println!("  dim={} permuted == canonical: {}", dim, same);
             // We do NOT require same==false as a hard assert because some permutations
@@ -625,36 +723,71 @@ mod tests {
         println!();
 
         for &dim in &[16_usize, 32, 64] {
-            let spectrum_cd  = compute_basis_associator_flux(dim);
+            let spectrum_cd = compute_basis_associator_flux(dim);
             let spectrum_rnd = compute_flux_random_signs(dim, 0xdeadbeef_cafebabe);
-            let levels_cd  = analyze_quantization(&spectrum_cd,  1e-4);
+            let levels_cd = analyze_quantization(&spectrum_cd, 1e-4);
             let levels_rnd = analyze_quantization(&spectrum_rnd, 1e-4);
 
-            let cd_n0   = levels_cd.iter().filter(|(v,_)| v.abs() < 1e-4).map(|(_,c)| c).sum::<usize>();
-            let cd_n1   = levels_cd.iter().filter(|(v,_)| (v-1.0).abs() < 1e-4).map(|(_,c)| c).sum::<usize>();
-            let cd_nsq2 = levels_cd.iter().filter(|(v,_)| (v-std::f64::consts::SQRT_2).abs() < 1e-4).map(|(_,c)| c).sum::<usize>();
+            let cd_n0 = levels_cd
+                .iter()
+                .filter(|(v, _)| v.abs() < 1e-4)
+                .map(|(_, c)| c)
+                .sum::<usize>();
+            let cd_n1 = levels_cd
+                .iter()
+                .filter(|(v, _)| (v - 1.0).abs() < 1e-4)
+                .map(|(_, c)| c)
+                .sum::<usize>();
+            let cd_nsq2 = levels_cd
+                .iter()
+                .filter(|(v, _)| (v - std::f64::consts::SQRT_2).abs() < 1e-4)
+                .map(|(_, c)| c)
+                .sum::<usize>();
 
-            let rnd_n0   = levels_rnd.iter().filter(|(v,_)| v.abs() < 1e-4).map(|(_,c)| c).sum::<usize>();
-            let rnd_n1   = levels_rnd.iter().filter(|(v,_)| (v-1.0).abs() < 1e-4).map(|(_,c)| c).sum::<usize>();
-            let rnd_nsq2 = levels_rnd.iter().filter(|(v,_)| (v-std::f64::consts::SQRT_2).abs() < 1e-4).map(|(_,c)| c).sum::<usize>();
+            let rnd_n0 = levels_rnd
+                .iter()
+                .filter(|(v, _)| v.abs() < 1e-4)
+                .map(|(_, c)| c)
+                .sum::<usize>();
+            let rnd_n1 = levels_rnd
+                .iter()
+                .filter(|(v, _)| (v - 1.0).abs() < 1e-4)
+                .map(|(_, c)| c)
+                .sum::<usize>();
+            let rnd_nsq2 = levels_rnd
+                .iter()
+                .filter(|(v, _)| (v - std::f64::consts::SQRT_2).abs() < 1e-4)
+                .map(|(_, c)| c)
+                .sum::<usize>();
 
-            println!("  dim={} CD:     n_0={:>4}  n_1={:>4}  n_sqrt2={:>4}  (formula: {},{},{})",
-                dim, cd_n0, cd_n1, cd_nsq2,
-                dim/2 - dim/8 - 1, dim/2, dim/8);
-            println!("  dim={} random: n_0={:>4}  n_1={:>4}  n_sqrt2={:>4}",
-                dim, rnd_n0, rnd_n1, rnd_nsq2);
+            println!(
+                "  dim={} CD:     n_0={:>4}  n_1={:>4}  n_sqrt2={:>4}  (formula: {},{},{})",
+                dim,
+                cd_n0,
+                cd_n1,
+                cd_nsq2,
+                dim / 2 - dim / 8 - 1,
+                dim / 2,
+                dim / 8
+            );
+            println!(
+                "  dim={} random: n_0={:>4}  n_1={:>4}  n_sqrt2={:>4}",
+                dim, rnd_n0, rnd_n1, rnd_nsq2
+            );
 
             // CD counts must match the formula exactly (regression check).
-            assert_eq!(cd_n0,   dim/2 - dim/8 - 1, "dim={} CD n_0 mismatch",   dim);
-            assert_eq!(cd_n1,   dim/2,              "dim={} CD n_1 mismatch",   dim);
-            assert_eq!(cd_nsq2, dim/8,              "dim={} CD n_sqrt2 mismatch", dim);
+            assert_eq!(cd_n0, dim / 2 - dim / 8 - 1, "dim={} CD n_0 mismatch", dim);
+            assert_eq!(cd_n1, dim / 2, "dim={} CD n_1 mismatch", dim);
+            assert_eq!(cd_nsq2, dim / 8, "dim={} CD n_sqrt2 mismatch", dim);
 
             // Random-sign counts must NOT match the CD formula for at least one level.
             let random_matches_cd = rnd_n0 == cd_n0 && rnd_n1 == cd_n1 && rnd_nsq2 == cd_nsq2;
-            assert!(!random_matches_cd,
+            assert!(
+                !random_matches_cd,
                 "dim={}: random-sign counts ({},{},{}) unexpectedly match CD formula ({},{},{}) -- \
                  sign structure is indistinguishable from random",
-                dim, rnd_n0, rnd_n1, rnd_nsq2, cd_n0, cd_n1, cd_nsq2);
+                dim, rnd_n0, rnd_n1, rnd_nsq2, cd_n0, cd_n1, cd_nsq2
+            );
             println!("  dim={} PASS: random counts differ from CD formula.", dim);
             println!();
         }
@@ -683,8 +816,10 @@ mod tests {
         println!("  Exceptional group Casimir data:");
         let casimirs = exceptional_casimirs();
         for c in &casimirs {
-            println!("    {} dim={:>4} rank={} rep_dim={:>4} C_2={:.3}",
-                c.group, c.lie_dim, c.rank, c.rep_dim, c.c2_fundamental);
+            println!(
+                "    {} dim={:>4} rank={} rep_dim={:>4} C_2={:.3}",
+                c.group, c.lie_dim, c.rank, c.rep_dim, c.c2_fundamental
+            );
         }
         println!();
 
@@ -721,8 +856,12 @@ mod tests {
             let spectrum = compute_flux_commutative_xor(dim);
             let max_flux = spectrum.iter().cloned().fold(0.0_f64, f64::max);
             println!("  dim={} commutative-XOR max flux = {:.2e}", dim, max_flux);
-            assert!(max_flux < 1e-10,
-                "dim={}: commutative-XOR spectrum should be all-zero, max={}", dim, max_flux);
+            assert!(
+                max_flux < 1e-10,
+                "dim={}: commutative-XOR spectrum should be all-zero, max={}",
+                dim,
+                max_flux
+            );
         }
         println!("  PASS: all associators vanish for commutative-XOR product.");
         println!("  -> Non-trivial flux requires the CD sign structure.");

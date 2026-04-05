@@ -24,7 +24,10 @@ pub struct KerrMetric {
 
 impl KerrMetric {
     pub fn schwarzschild() -> Self {
-        Self { mass: 1.0, spin: 0.0 }
+        Self {
+            mass: 1.0,
+            spin: 0.0,
+        }
     }
 
     pub fn kerr(spin: f64) -> Self {
@@ -117,7 +120,10 @@ mod tests {
     #[test]
     fn test_schwarzschild_horizon() {
         let m = KerrMetric::schwarzschild();
-        assert!((m.r_horizon() - 2.0).abs() < 1e-10, "Schwarzschild r_+ = 2M");
+        assert!(
+            (m.r_horizon() - 2.0).abs() < 1e-10,
+            "Schwarzschild r_+ = 2M"
+        );
     }
 
     #[test]
@@ -131,7 +137,11 @@ mod tests {
         let m = KerrMetric::kerr(0.9);
         let rh = m.r_horizon();
         // r_+ = 1 + sqrt(1 - 0.81) = 1 + sqrt(0.19) ~ 1.4359
-        assert!((rh - 1.4359).abs() < 0.001, "Kerr a=0.9 r_+ ~ 1.436, got {}", rh);
+        assert!(
+            (rh - 1.4359).abs() < 0.001,
+            "Kerr a=0.9 r_+ ~ 1.436, got {}",
+            rh
+        );
     }
 
     #[test]
@@ -160,6 +170,10 @@ mod tests {
         let m = KerrMetric::schwarzschild();
         let rh = m.r_horizon() + 0.001; // just outside horizon
         let alpha = m.lapse(rh, std::f64::consts::FRAC_PI_2);
-        assert!(alpha < 0.1 && alpha > 0.0, "Lapse should be small near horizon, got {}", alpha);
+        assert!(
+            alpha < 0.1 && alpha > 0.0,
+            "Lapse should be small near horizon, got {}",
+            alpha
+        );
     }
 }

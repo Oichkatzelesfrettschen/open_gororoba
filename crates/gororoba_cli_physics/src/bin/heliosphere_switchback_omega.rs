@@ -11,8 +11,10 @@
 
 use anyhow::{Context, Result};
 use clap::Parser;
-use data_core::catalogs::psp_fields::{PspFieldsMagRecord, parse_psp_fields_hapi_csv};
-use data_core::fetcher::{download_hapi_csv, FetchError};
+use data_core::{
+    catalogs::psp_fields::{PspFieldsMagRecord, parse_psp_fields_hapi_csv},
+    fetcher::{FetchError, download_hapi_csv},
+};
 use serde::Serialize;
 use std::{fs, path::PathBuf};
 
@@ -44,7 +46,10 @@ struct Cli {
     br_threshold: f64,
 
     /// Output JSON path.
-    #[arg(long, default_value = "data/output/heliosphere/ablations/psp_switchback_omega.json")]
+    #[arg(
+        long,
+        default_value = "data/output/heliosphere/ablations/psp_switchback_omega.json"
+    )]
     out_json: PathBuf,
 
     /// Data cache directory.
@@ -126,7 +131,12 @@ fn main() -> Result<()> {
         if output.exists() {
             let content = fs::read_to_string(&output)?;
             let records = parse_psp_fields_hapi_csv(&content);
-            println!("  {} to {}: {} hourly records (cached)", current, chunk_end, records.len());
+            println!(
+                "  {} to {}: {} hourly records (cached)",
+                current,
+                chunk_end,
+                records.len()
+            );
             all_records.extend(records);
         } else {
             println!("  Fetching {} to {}...", current, chunk_end);
@@ -134,11 +144,19 @@ fn main() -> Result<()> {
                 Ok(body) => {
                     fs::write(&output, &body)?;
                     let records = parse_psp_fields_hapi_csv(&body);
-                    println!("  {} to {}: {} hourly records", current, chunk_end, records.len());
+                    println!(
+                        "  {} to {}: {} hourly records",
+                        current,
+                        chunk_end,
+                        records.len()
+                    );
                     all_records.extend(records);
                 }
                 Err(FetchError::Validation(msg)) if msg.contains("no data") => {
-                    println!("  {} to {}: no data (PSP not in science mode)", current, chunk_end);
+                    println!(
+                        "  {} to {}: no data (PSP not in science mode)",
+                        current, chunk_end
+                    );
                 }
                 Err(e) => {
                     eprintln!("  Warning: {} to {}: {}", current, chunk_end, e);
@@ -154,13 +172,19 @@ fn main() -> Result<()> {
 
     // Sort by time
     all_records.sort_by(|a, b| {
-        a.year.cmp(&b.year).then(a.doy.cmp(&b.doy)).then(a.hour.cmp(&b.hour))
+        a.year
+            .cmp(&b.year)
+            .then(a.doy.cmp(&b.doy))
+            .then(a.hour.cmp(&b.hour))
     });
 
     println!("  Total: {} hourly records", all_records.len());
 
     // --- Step 2: Classify switchbacks ---
-    println!("[2/4] Classifying switchbacks (Br/|B| < {:.2})...", cli.br_threshold);
+    println!(
+        "[2/4] Classifying switchbacks (Br/|B| < {:.2})...",
+        cli.br_threshold
+    );
 
     let mut hourly_detail: Vec<HourlyDetail> = Vec::new();
     for rec in &all_records {
@@ -199,7 +223,10 @@ fn main() -> Result<()> {
     println!("  Quiet hours: {}", quiet_count);
 
     // --- Step 3: Compute 32D CD associator ---
-    println!("[3/4] Computing {}D Takens embedding + CD associator...", cli.embedding_dim);
+    println!(
+        "[3/4] Computing {}D Takens embedding + CD associator...",
+        cli.embedding_dim
+    );
 
     let channels: usize = 4;
     let steps = cli.embedding_dim / channels;
@@ -220,7 +247,10 @@ fn main() -> Result<()> {
     for w_start in 0..=(all_records.len() - window_rows) {
         let sample_indices: Vec<usize> = (0..steps).map(|s| w_start + s).collect();
 
-        let sum_b: f64 = sample_indices.iter().map(|&i| all_records[i].b_magnitude).sum();
+        let sum_b: f64 = sample_indices
+            .iter()
+            .map(|&i| all_records[i].b_magnitude)
+            .sum();
         let local_mean_b = sum_b / steps as f64;
         if local_mean_b <= 0.0 || !local_mean_b.is_finite() {
             continue;
@@ -238,7 +268,11 @@ fn main() -> Result<()> {
         embed_meta.push(*sample_indices.last().unwrap());
     }
 
-    println!("  Embedded {} vectors ({}D)", embedded.len(), cli.embedding_dim);
+    println!(
+        "  Embedded {} vectors ({}D)",
+        embedded.len(),
+        cli.embedding_dim
+    );
 
     let associators =
         cd_kernel::batch_sliding_associator_norms_parallel(&embedded, cli.embedding_dim);
@@ -292,13 +326,25 @@ fn main() -> Result<()> {
     } else {
         quiet_assocs[quiet_assocs.len() / 2]
     };
-    let ratio = if q_mean > 1e-15 { sb_mean / q_mean } else { 0.0 };
+    let ratio = if q_mean > 1e-15 {
+        sb_mean / q_mean
+    } else {
+        0.0
+    };
 
     println!("\n=== Results ===");
-    println!("  Switchback associator: mean={:.4}, median={:.4} (n={})",
-        sb_mean, sb_median, switchback_assocs.len());
-    println!("  Quiet associator:      mean={:.4}, median={:.4} (n={})",
-        q_mean, q_median, quiet_assocs.len());
+    println!(
+        "  Switchback associator: mean={:.4}, median={:.4} (n={})",
+        sb_mean,
+        sb_median,
+        switchback_assocs.len()
+    );
+    println!(
+        "  Quiet associator:      mean={:.4}, median={:.4} (n={})",
+        q_mean,
+        q_median,
+        quiet_assocs.len()
+    );
     println!("  Ratio (switchback/quiet): {:.3}", ratio);
 
     let results = SwitchbackResults {

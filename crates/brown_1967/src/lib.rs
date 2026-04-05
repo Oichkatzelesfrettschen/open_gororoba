@@ -13,5 +13,5 @@
 //! - Division criterion: gamma not a norm AND -gamma not a trace-zero norm (Thm 3)
 //! - Classification: A_t iso A_t' iff base algebras iso and gammas related by squares (Thm 2)
 
-pub mod generalized_cd;
 pub mod division_criterion;
+pub mod generalized_cd;

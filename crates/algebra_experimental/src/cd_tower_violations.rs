@@ -24,18 +24,18 @@ use rayon::prelude::*;
 /// CD tower dimensions and their algebraic properties.
 /// Covers 2^2 (Quaternion) through 2^14 (Tessareskaidekavoudon).
 pub const CD_TOWER: [(usize, &str); 13] = [
-    (4,     "Quaternion"),
-    (8,     "Octonion"),
-    (16,    "Sedenion"),
-    (32,    "Pathion"),
-    (64,    "Chingon"),
-    (128,   "Routon"),
-    (256,   "Voudon"),
-    (512,   "Eriston"),
-    (1024,  "DekaVoudon"),
-    (2048,  "Endekavoudon"),          // was "Icosikaivoudon" (deprecated)
-    (4096,  "Dodekvoudon"),           // was "CD-4096"
-    (8192,  "Dekatrisvoudon"),        // new
+    (4, "Quaternion"),
+    (8, "Octonion"),
+    (16, "Sedenion"),
+    (32, "Pathion"),
+    (64, "Chingon"),
+    (128, "Routon"),
+    (256, "Voudon"),
+    (512, "Eriston"),
+    (1024, "DekaVoudon"),
+    (2048, "Endekavoudon"),           // was "Icosikaivoudon" (deprecated)
+    (4096, "Dodekvoudon"),            // was "CD-4096"
+    (8192, "Dekatrisvoudon"),         // new
     (16384, "Tessareskaidekavoudon"), // 2^14 placeholder
 ];
 
@@ -624,19 +624,40 @@ mod tests {
     fn test_cd_tower_full_range() {
         let dims: Vec<usize> = CD_TOWER.iter().map(|&(d, _)| d).collect();
         // Lower tower
-        assert!(dims.contains(&4),     "Tower should include 4D (Quaternion)");
-        assert!(dims.contains(&8),     "Tower should include 8D (Octonion)");
-        assert!(dims.contains(&16),    "Tower should include 16D (Sedenion)");
+        assert!(dims.contains(&4), "Tower should include 4D (Quaternion)");
+        assert!(dims.contains(&8), "Tower should include 8D (Octonion)");
+        assert!(dims.contains(&16), "Tower should include 16D (Sedenion)");
         // Upper tower
-        assert!(dims.contains(&2048),  "Tower should include 2048D (Endekavoudon)");
-        assert!(dims.contains(&4096),  "Tower should include 4096D (Dodekvoudon)");
-        assert!(dims.contains(&8192),  "Tower should include 8192D (Dekatrisvoudon)");
-        assert!(dims.contains(&16384), "Tower should include 16384D (Tessareskaidekavoudon)");
+        assert!(
+            dims.contains(&2048),
+            "Tower should include 2048D (Endekavoudon)"
+        );
+        assert!(
+            dims.contains(&4096),
+            "Tower should include 4096D (Dodekvoudon)"
+        );
+        assert!(
+            dims.contains(&8192),
+            "Tower should include 8192D (Dekatrisvoudon)"
+        );
+        assert!(
+            dims.contains(&16384),
+            "Tower should include 16384D (Tessareskaidekavoudon)"
+        );
         // Verify deprecated/placeholder names are gone
         for &(_, name) in &CD_TOWER {
-            assert_ne!(name, "Icosikaivoudon", "Deprecated name must not appear in CD_TOWER");
-            assert_ne!(name, "CD-4096",        "Placeholder name must not appear in CD_TOWER");
-            assert_ne!(name, "CD-8192",        "Placeholder name must not appear in CD_TOWER");
+            assert_ne!(
+                name, "Icosikaivoudon",
+                "Deprecated name must not appear in CD_TOWER"
+            );
+            assert_ne!(
+                name, "CD-4096",
+                "Placeholder name must not appear in CD_TOWER"
+            );
+            assert_ne!(
+                name, "CD-8192",
+                "Placeholder name must not appear in CD_TOWER"
+            );
         }
     }
 
