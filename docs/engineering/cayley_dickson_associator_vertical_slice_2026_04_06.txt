@@ -1,0 +1,94 @@
+Cayley-Dickson associator vertical slice
+=======================================
+
+Purpose
+-------
+This note traces one concrete Cayley-Dickson lane end to end:
+
+theory -> kernel -> experiment -> claim -> narrative
+
+The chosen slice is the sedenion associator / zero-divisor boundary that feeds
+the heliosphere Takens descriptor lane.
+
+Theory
+------
+- `proofs/theories/CayleyDicksonAlgebra.v`
+  Formal base algebra and multiplication structure.
+- `proofs/theories/CDAssociator.v`
+  Associator-focused formal layer for the non-associative regime.
+- `proofs/theories/ZD_Criterion.v`
+  Zero-divisor criterion and antiassociator/associator-adjacent witness logic.
+- `crates/verified_core/src/cayley_dickson.rs`
+  Verified-core bridge for executable algebraic structure.
+
+Kernel
+------
+- `crates/cd_kernel/src/cayley_dickson/associator.rs`
+  Canonical scalar `cd_associator_norm`, plus sliding-window batch entrypoints.
+- `crates/cd_kernel/src/cayley_dickson/simd.rs`
+  SIMD and f32 acceleration paths.
+- `crates/cd_kernel/src/cayley_dickson/fast_associator.rs`
+  Workspace-reuse fast path for repeated associator evaluation.
+- `crates/cd_kernel/src/cayley_dickson/zero_divisors.rs`
+  Sedenion/pathion zero-divisor search and counting.
+- `crates/cd_kernel/src/cayley_dickson/tests.rs`
+  Scalar/SIMD/batch/parallel parity evidence for the kernels above.
+
+Experiment
+----------
+- `crates/gororoba_cli_physics/src/heliosphere_eval.rs`
+  `takens_descriptors()` builds 16D delay embeddings from 4-step magnetic-field
+  windows and calls `cd_kernel::cd_associator_norm` directly.
+
+The experiment computes:
+- sedenion associator over the full 16D delay embedding
+- octonion comparison over the first 8 coordinates
+- reversed-coordinate control
+- Euclidean baseline
+
+This means the heliosphere descriptor lane does not merely borrow Cayley-Dickson
+language; it consumes the canonical associator kernel directly.
+
+Claim / insight surfaces
+------------------------
+- `registry/insights.toml`
+  - `I-048`: A-infinity phase with `m_3 =` CD associator
+  - `I-129`: frustrated-cycle / zero-divisor bridge
+  - `I-130`: Reggiani partner-graph spectral structure
+- `registry/research_narratives.toml`
+  - the 2026 sedenion phase-transition / quantized-gap discussion
+  - the 2026 "42 structure audit" lane, which explicitly warns against extending
+    algebraic structure into unsupported heliosphere numerology
+- `registry/data_artifact_narratives.toml`
+  - associator anomaly and zero-divisor context
+  - box-kite / Reggiani / Koebisu provenance references
+
+Why this slice matters
+----------------------
+This slice is a good governance exemplar because it is both constructive and
+bounded:
+- the proof layer explains why non-associativity appears at and beyond 16D
+- the kernel layer computes the witness quantitatively
+- the heliosphere experiment consumes that witness directly
+- the registry insight/narrative layer already discusses the same mathematical
+  structure, with explicit warnings against overclaiming
+
+Current debt
+------------
+- The heliosphere lane uses the canonical scalar associator function, which is
+  good for semantic clarity, but its downstream narrative provenance was mostly
+  implicit before this note.
+- The box-kite / zero-divisor literature is richer than the currently wired
+  experiment lane; the experiment uses the associator witness, not a full
+  Reggiani/box-kite manifold model.
+- The repo has strong parity tests at kernel level, but fewer facade-level tests
+  that show a scientific descriptor still matches the intended algebraic witness.
+
+What this pass tightened
+------------------------
+- The scalar-parity contract is now documented explicitly in
+  `docs/engineering/simd_scalar_parity_contract_2026_04_06.txt`.
+- `heliosphere_eval.rs` now has a direct unit test asserting that the Takens
+  sedenion descriptor channel matches a hand-constructed scalar reference.
+- Facade crates were reduced so this lane depends more on semantic APIs and less
+  on direct low-level SIMD/linear-algebra types.

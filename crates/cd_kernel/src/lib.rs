@@ -120,3 +120,9 @@ pub fn batch_sliding_associator_norms_dispatch(
         _ => batch_sliding_associator_norms_parallel(embedded, dim),
     }
 }
+
+#[cfg(test)]
+#[test]
+fn batch_sedenion_associator_matches_recursive() {
+    crate::cayley_dickson::assert_batch_sedenion_associator_matches_recursive();
+}

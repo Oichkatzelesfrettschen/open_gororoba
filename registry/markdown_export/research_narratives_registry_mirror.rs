@@ -1,0 +1,185 @@
+//! # Research Narratives Registry Mirror
+//!
+//! <!-- AUTO-GENERATED: DO NOT EDIT -->
+//! <!-- Source of truth: see authoritative source line below -->
+//!
+//! Authoritative source: `registry/research_narratives.toml`.
+//!
+//! - Updated: 2026-03-15
+//! - Source markdown globs: `docs/theory/*.md`, `docs/engineering/*.md`, `docs/research/*.md`
+//! - Document count: `18`
+//!
+//! ## Documents
+//!
+//! ### RN-042: Exceptional Cosmology: E8, F4, G2 and the Limits of Algebraic Cosmological Frameworks
+//!
+//! - Source markdown: `docs/EXCEPTIONAL_COSMOLOGY.md`
+//! - Domain: `research`
+//! - Status token: `NARRATIVE`
+//! - Content kind: `synthesis`
+//! - Verification level: `multi_scale_synthesis`
+//! - Line count: 160
+//! - Claim refs (7): C-035, C-036, C-037, C-038, C-039, C-040, C-041
+//!
+//! ### RN-040: Grand Synthesis: From Cayley-Dickson Algebra to the Heliosphere and Beyond
+//!
+//! - Source markdown: `docs/GRAND_SYNTHESIS.md`
+//! - Domain: `research`
+//! - Status token: `NARRATIVE`
+//! - Content kind: `synthesis`
+//! - Verification level: `multi_scale_synthesis`
+//! - Line count: 220
+//! - Claim refs (23): C-001, C-002, C-003, C-004, C-010, C-011, C-012, C-014, C-031, C-035, C-039, C-052, C-053, C-1156, C-1159, C-1162, C-1171, C-1210, C-1137, C-1138, C-1140, C-1141, C-1142
+//!
+//! ### RN-044: Grand Synthesis Plan: Research Roadmap and Execution Priority
+//!
+//! - Source markdown: `docs/GRAND_SYNTHESIS_PLAN.md`
+//! - Domain: `research`
+//! - Status token: `NARRATIVE`
+//! - Content kind: `plan`
+//! - Verification level: `engineering_narrative`
+//! - Line count: 100
+//! - Claim refs (11): C-001, C-010, C-011, C-012, C-1156, C-1159, C-1162, C-1171, C-1137, C-1140, C-1141
+//!
+//! ### RN-041: Navigator: Conceptual Map of the open_gororoba Research Space
+//!
+//! - Source markdown: `docs/NAVIGATOR.md`
+//! - Domain: `research`
+//! - Status token: `NARRATIVE`
+//! - Content kind: `navigation`
+//! - Verification level: `engineering_narrative`
+//! - Line count: 120
+//! - Claim refs (22): C-001, C-010, C-011, C-012, C-035, C-039, C-052, C-053, C-931, C-932, C-952, C-953, C-1156, C-1159, C-1162, C-1171, C-1210, C-1137, C-1138, C-1140, C-1141, C-1142
+//!
+//! ### RN-043: Sedenion-Gravastar Equivalence: Phenomenological Bridge and Associator Obstruction
+//!
+//! - Source markdown: `docs/SEDENION_GRAVASTAR_EQUIVALENCE.md`
+//! - Domain: `research`
+//! - Status token: `NARRATIVE`
+//! - Content kind: `synthesis`
+//! - Verification level: `multi_scale_synthesis`
+//! - Line count: 140
+//! - Claim refs (3): C-010, C-011, C-012
+//!
+//! ### RN-028: Rust Engineering Standards & Style Guide
+//!
+//! - Source markdown: `docs/engineering/RUST_STYLE_GUIDE.md`
+//! - Domain: `engineering`
+//! - Status token: `NARRATIVE`
+//! - Content kind: `research_note`
+//! - Verification level: `engineering_narrative`
+//! - Line count: 66
+//!
+//! ### RN-029: Scope: Ultra-High-Throughput Warp Ring Simulation (128^3 @ 2500 Steps / 40s)
+//!
+//! - Source markdown: `docs/engineering/SCOPE_ULTRA_THROUGHPUT.md`
+//! - Domain: `engineering`
+//! - Status token: `NARRATIVE`
+//! - Content kind: `research_note`
+//! - Verification level: `engineering_narrative`
+//! - Line count: 72
+//!
+//! ### RN-030: Warp Ring Specification: Physical & Algebraic Definition
+//!
+//! - Source markdown: `docs/engineering/WARP_RING_SPECIFICATION.md`
+//! - Domain: `engineering`
+//! - Status token: `SPECIFICATION`
+//! - Content kind: `specification`
+//! - Verification level: `engineering_narrative`
+//! - Line count: 56
+//!
+//! ### RN-026: The Lost Hexagon and the Split-Octonion Attractor
+//!
+//! - Source markdown: `docs/research/SPLIT_OCTONION_ATTractor.md`
+//! - Domain: `research`
+//! - Status token: `NARRATIVE`
+//! - Content kind: `research_note`
+//! - Verification level: `engineering_narrative`
+//! - Line count: 30
+//! - Claim refs (2): C-590, C-591
+//!
+//! ### RN-031: Thesis 2-3-4 Narrative Pack: The Synthesis of Algebra and Fluid
+//!
+//! - Source markdown: `docs/research/THESIS_2_3_4_NARRATIVE_PACK.md`
+//! - Domain: `research`
+//! - Status token: `NARRATIVE`
+//! - Content kind: `research_note`
+//! - Verification level: `engineering_narrative`
+//! - Line count: 26
+//! - Claim refs (4): C-010, C-011, C-452, C-453
+//!
+//! ### RN-027: Research Summary: High-Dimensional Cayley-Dickson Physics (2024-2026)
+//!
+//! - Source markdown: `docs/research/high_dimensional_algebra_unification_2026.md`
+//! - Domain: `research`
+//! - Status token: `NARRATIVE`
+//! - Content kind: `research_note`
+//! - Verification level: `engineering_narrative`
+//! - Line count: 171
+//! - Claim refs (8): C-1020, C-1030, C-1134, C-1137, C-1138, C-1140, C-1141, C-1142
+//!
+//! ### RN-038: Sedenion 42-Structure: Algebraic Fact vs Physical Speculation
+//!
+//! - Source markdown: `docs/research/sedenion_42_structure_audit_2026.md`
+//! - Domain: `research`
+//! - Status token: `AUDIT`
+//! - Content kind: `audit_note`
+//! - Verification level: `engineering_narrative`
+//! - Line count: 166
+//! - Claim refs (15): C-003, C-010, C-1254, C-1255, C-1308, C-1309, C-1310, C-1311, C-1312, C-1313, C-1314, C-611, C-614, C-615, I-157
+//!
+//! ### RN-039: x87 Multicore Strategy Note (2026-03-12)
+//!
+//! - Source markdown: `docs/research/x87_multicore_strategy_note_2026_03_12.md`
+//! - Domain: `research`
+//! - Status token: `NARRATIVE`
+//! - Content kind: `research_note`
+//! - Verification level: `engineering_narrative`
+//! - Line count: 61
+//!
+//! ### RN-032: Breakthroughs: Hyper-Optimization for Lattice-Based Spacetime Analogue Simulations
+//!
+//! - Source markdown: `docs/theory/OPTIMIZATION_BREAKTHROUGHS.md`
+//! - Domain: `theory`
+//! - Status token: `NARRATIVE`
+//! - Content kind: `research_note`
+//! - Verification level: `theoretical`
+//! - Line count: 28
+//!
+//! ### RN-033: Phase III: The Holo-Algebraic Vacuum & The Genesis of Mass
+//!
+//! - Source markdown: `docs/theory/THEORY_PHASE_3_HOLO_ALGEBRAIC_VACUUM.md`
+//! - Domain: `theory`
+//! - Status token: `NARRATIVE`
+//! - Content kind: `theory_note`
+//! - Verification level: `theoretical`
+//! - Line count: 59
+//! - Claim refs (2): C-756, C-758
+//!
+//! ### RN-034: Physical Derivation: Compressing an Uncompressible Fluid via Spectral Forcing
+//!
+//! - Source markdown: `docs/theory/WARP_COMPRESSIBILITY_DERIVATION.md`
+//! - Domain: `theory`
+//! - Status token: `NARRATIVE`
+//! - Content kind: `research_note`
+//! - Verification level: `theoretical`
+//! - Line count: 58
+//!
+//! ### RN-035: Warp Ring Physics: Topological Viscosity & Reynolds Independence
+//!
+//! - Source markdown: `docs/theory/WARP_RING_PHYSICS.md`
+//! - Domain: `theory`
+//! - Status token: `NARRATIVE`
+//! - Content kind: `research_note`
+//! - Verification level: `theoretical`
+//! - Line count: 52
+//!
+//! ### RN-036: Cayley-Dickson Integrable Expanders
+//!
+//! - Source markdown: `docs/theory/cayley_dickson_integrable_expanders.md`
+//! - Domain: `theory`
+//! - Status token: `NARRATIVE`
+//! - Content kind: `research_note`
+//! - Verification level: `theoretical`
+//! - Line count: 447
+//! - Claim refs (11): C-922, C-923, C-924, C-925, C-926, C-927, C-928, C-929, C-930, C-931, C-932

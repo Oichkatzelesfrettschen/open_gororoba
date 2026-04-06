@@ -3,7 +3,7 @@ set -euo pipefail
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 repo_hash="$(printf "%s" "$repo_root" | sha256sum | cut -c1-16)"
-tmp_root="${TMPDIR:-/srv/fast/tmp}/open_gororoba-cargo-build"
+tmp_root="${TMPDIR:-/tmp}/open_gororoba-cargo-build"
 
 paths=(
     "$repo_root/.cache/cargo-default-target"

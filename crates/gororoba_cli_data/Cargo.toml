@@ -488,6 +488,7 @@ lit_search = { path = "../lit_search" }
 gororoba_cli = { path = "../gororoba_cli" }
 docpipe = { path = "../docpipe", features = ["fallback"] }
 data_core = { path = "../data_core", features = ["fits"] }
+data_artifacts_core = { path = "../data_artifacts_core" }
 cosmology_core = { path = "../cosmology_core", features = ["euclid-catalog"] }
 gr_core = { path = "../gr_core" }
 materials_core = { path = "../materials_core" }
@@ -534,12 +535,11 @@ faer = { workspace = true }
 plotters = { workspace = true }
 petgraph = { workspace = true }
 hdf5 = { workspace = true }
-wide = { workspace = true }
 ndarray = "0.17"
 lopdf = { workspace = true }
 
 [features]
-hdf5-export = ["data_core/hdf5-export"]
+hdf5-export = ["data_core/hdf5-export", "data_artifacts_core/hdf5-export"]
 
 [lints]
 workspace = true

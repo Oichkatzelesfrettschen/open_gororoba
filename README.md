@@ -31,7 +31,7 @@ open_gororoba/
   registry/canonical/  SQLite source-of-truth database (control_plane.sqlite3)
   proofs/              262 Rocq 9.1.1 formal proofs (105 verified theories)
   data/                External datasets and computed results (LFS-tracked)
-  db/migrations/       12 SQLite migration scripts
+  db/migrations/       14 SQLite migration scripts
   docs/                Synthesis documents, evidence notes, architecture references
   Makefile             Build, test, governance, and CI targets
 ```
@@ -87,14 +87,23 @@ The `registry/canonical/control_plane.sqlite3` database is the
 **authoritative source of truth** for all structured metadata. TOML
 files are read-only compatibility exports. The database provides:
 
-- 73 tables across 12 migrations
+- 73 tables across 14 migrations
 - FTS5 full-text search over research narratives
 - Provenance tracking for all artifacts
 - Planning tables (roadmap, todo, next-actions) with dependency graphs
 - Knowledge graph (equation atoms, proof skeletons, derivation steps)
 
 See [docs/db/ARCHITECTURE.md](docs/db/ARCHITECTURE.md) for the full
-schema and migration workflow.
+schema and migration workflow. For the current cg_clif SIMD containment
+policy that keeps the `wide` / `pulp` / `simsimd` / `faer` subtree on LLVM in
+dev/test, see `docs/engineering/cg_clif_simd_containment.txt`. For the
+claim-bearing parity contract and one traced Cayley-Dickson vertical slice,
+see `docs/engineering/simd_scalar_parity_contract_2026_04_06.txt` and
+`docs/engineering/cayley_dickson_associator_vertical_slice_2026_04_06.txt`.
+For the current `data_core` pure-vs-fetch seam map and the next non-network
+carve-out plan, see `docs/engineering/data_core_surface_audit_2026_04_06.txt`.
+The extracted non-network artifact helpers now live in
+`crates/data_artifacts_core`.
 
 ### CLI tools
 
@@ -214,7 +223,8 @@ compilation vs O(hours) for monolithic `ring`.
 
 - **Rust**: nightly-2026-04-05 (pinned via `rust-toolchain.toml`)
 - **Edition**: 2024
-- **Build**: Cranelift backend for dev (opt-level 2), LLVM for release
+- **Build**: Cranelift-oriented dev lane with LLVM containment overrides for the
+  SIMD-sensitive numerical stack; LLVM for release
 - **GPU**: CUDA via `cudarc 0.19.1`, Vulkan via `ash` (feature-gated)
 - **Formal proofs**: Rocq 9.1.1
 - **Allocator**: mimalloc (workspace default)

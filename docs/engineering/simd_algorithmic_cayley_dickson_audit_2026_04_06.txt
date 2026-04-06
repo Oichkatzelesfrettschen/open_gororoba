@@ -1,0 +1,235 @@
+SIMD / algorithmic / Cayley-Dickson aligned-debt audit
+======================================================
+
+Date
+----
+2026-04-06
+
+Scope
+-----
+This memo records the next-wave audit that follows the cg_clif SIMD containment
+work. It is not a full redesign plan. It is a bounded architecture/debt memo
+covering:
+
+- SIMD-sensitive crate topology
+- algorithmic-design debt exposed by that topology
+- Cayley-Dickson and adjacent algebra-design debt visible in the current repo
+
+External grounding
+------------------
+Current upstream/tooling references used to frame this audit:
+
+- rustc_codegen_cranelift: https://github.com/rust-lang/rustc_codegen_cranelift
+- Cranelift IR types: https://docs.rs/cranelift-codegen/latest/cranelift_codegen/ir/types/
+- Cranelift ABI params: https://docs.rs/cranelift-codegen/latest/cranelift_codegen/ir/struct.AbiParam.html
+- faer crate docs: https://docs.rs/faer/latest/faer/
+- wide crate docs: https://docs.rs/wide/latest/wide/
+- simsimd crate docs: https://docs.rs/simsimd/latest/simsimd/
+- pulp crate docs: https://docs.rs/pulp/latest/pulp/
+
+The main takeaway remains:
+
+- Cranelift IR itself models SIMD values.
+- The current failure boundary is cg_clif lowering of some Rust SIMD/vendor
+  intrinsic paths.
+- The workspace response is containment, not denial of SIMD use.
+
+SIMD-sensitive topology snapshot
+--------------------------------
+Direct low-level dependencies found in workspace manifests:
+
+- `crates/cd_kernel/Cargo.toml`
+  - `wide`
+  - `pulp`
+  - `simsimd`
+- `crates/materials_core/Cargo.toml`
+  - `wide`
+  - `pulp`
+  - `simsimd`
+- `crates/lbm_3d/Cargo.toml`
+  - `wide`
+  - `pulp`
+- `crates/lbm_3d_cuda/Cargo.toml`
+  - `wide`
+- `crates/gororoba_algebra/Cargo.toml`
+  - `wide`
+- `crates/grmhd_core/Cargo.toml`
+  - `wide`
+- `crates/algebra_experimental/Cargo.toml`
+  - `wide`
+- `crates/tensor_core/Cargo.toml`
+  - `faer`
+- `crates/flavor_lifts/Cargo.toml`
+  - `faer`
+- `crates/quantum_core/Cargo.toml`
+  - `faer`
+- `crates/gororoba_cli_data/Cargo.toml`
+  - `faer`
+  - `wide`
+- `crates/gororoba_cli_physics/Cargo.toml`
+  - `faer`
+  - `wide`
+
+Observed layering
+-----------------
+The workspace already exhibits a useful de facto layering:
+
+1. Low-level SIMD substrate
+   - `wide`
+   - `pulp`
+   - `simsimd`
+   - `faer`
+   - `gemm`
+
+2. Numerical/kernel carriers
+   - `cd_kernel`
+   - `materials_core`
+   - `tensor_core`
+   - `grmhd_core`
+   - `lbm_3d`
+   - `lbm_3d_cuda`
+
+3. Algebra/physics facades and experiments
+   - `gororoba_algebra`
+   - `algebra_experimental`
+   - `quantum_core`
+   - `flavor_lifts`
+
+4. CLI/operator surfaces
+   - `gororoba_cli_data`
+   - `gororoba_cli_physics`
+
+The structural weakness is that layer 4 still directly touches the low-level
+SIMD substrate in places. That is acceptable for now, but it is a debt marker.
+
+SIMD-aligned debt
+-----------------
+Debt 1: CLI crates know too much about SIMD substrate choices.
+
+- `gororoba_cli_data` and `gororoba_cli_physics` directly depend on `faer` or
+  `wide`.
+- This increases the surface area that must be protected when compiler/backend
+  policy changes.
+- Better posture: CLIs depend on stable facade/kernel crates, not directly on
+  vector or dispatch libraries unless they are themselves numerical kernels.
+
+Debt 2: backend policy is still expressed as a crate allowlist, not as a
+declarative numerical-layer contract.
+
+- The current LLVM containment set is correct and necessary.
+- But it is still maintained manually in `Cargo.toml`.
+- That is good enough for enforcement, not yet ideal for architecture clarity.
+
+Debt 3: scalar fallback policy is not visibly elevated to the same status as
+vectorized policy.
+
+- The repo contains many high-value SIMD and GPU paths.
+- The containment work made backend assumptions explicit.
+- The next maturity step is to make scalar fallback expectations and parity
+  expectations equally explicit in docs/tests for the affected kernels.
+
+Debt 4: runtime dispatch and mathematical semantics are still too close in some
+subsystems.
+
+- `pulp` is a runtime dispatch tool.
+- Cayley-Dickson multiplication, zero-divisor combinatorics, and many algebraic
+  invariants are mathematical semantics.
+- Where dispatch decisions and mathematical claims sit too close together, it
+  becomes harder to test theory independently from acceleration strategy.
+
+Algorithmic-design debt
+-----------------------
+The repo is not obviously short on ambitious algorithms. The recurring debt is
+not "too little sophistication"; it is "insufficiently separated concerns."
+
+Priority concerns:
+
+- acceleration policy vs mathematical semantics
+  - acceleration should be swappable without changing claim semantics
+- production-safe lanes vs benchmark/prototype lanes
+  - several repo surfaces already mention this distinction, but it needs more
+    consistent codification in crate APIs and operator docs
+- facade vs substrate boundaries
+  - high-level crates should not casually inherit direct substrate dependencies
+    unless that coupling is intentional and documented
+
+Recommended next algorithmic-design steps:
+
+1. For each direct low-level SIMD consumer, classify it as:
+   - kernel crate
+   - facade crate
+   - CLI/operator crate
+2. Reduce direct low-level SIMD deps in facade and CLI crates where practical.
+3. Add explicit scalar-parity expectations for the most claim-bearing kernels.
+
+Cayley-Dickson and adjacent algebra-design debt
+-----------------------------------------------
+The repo clearly has a rich Cayley-Dickson evidence and documentation base:
+
+- `cd_kernel`
+- `verified_core/src/cayley_dickson.rs`
+- numerous registry/report surfaces for zero divisors, box-kites, pathions,
+  sedenions, and related theory/application lanes
+
+That said, three debts stand out.
+
+Debt 1: theory-to-kernel-to-claim paths are still dispersed across many crates
+and registries.
+
+- This is powerful, but it makes it easier for conceptual drift to hide in the
+  gaps between:
+  - verified theory
+  - Rust implementation
+  - generated artifacts
+  - claim/narrative phrasing
+
+Debt 2: zero-divisor and box-kite language is strong and rich, but the repo
+needs clearer boundaries between:
+
+- mathematically established structure
+- benchmark-backed computational observations
+- speculative physics-facing interpretation
+
+Some registry narratives already make these distinctions well. The remaining
+debt is consistency, not absence.
+
+Debt 3: higher-dimensional algebra APIs likely need a stronger "core invariant
+surface" story.
+
+For example, the repo should keep making it obvious which APIs are responsible
+for:
+
+- multiplication law
+- involution/conjugation
+- norm behavior
+- zero-divisor detection
+- associator diagnostics
+- tower projection / contraction behavior
+
+These are not interchangeable concerns. When they blur, auditing claim validity
+gets harder.
+
+Immediate backlog
+-----------------
+1. Keep the current SIMD containment verifier active.
+2. Add one more narrow audit for direct SIMD deps in CLI/facade crates and
+   decide which ones can be pushed down a layer.
+3. Add a short scalar-parity expectations note for the highest-value
+   SIMD-sensitive kernels.
+4. Identify one Cayley-Dickson vertical slice and trace it end to end:
+   theory -> kernel -> experiment -> claim -> narrative.
+5. Use that trace to decide whether a dedicated "algebra invariant surface"
+   document or crate-level API cleanup is the next highest-leverage refactor.
+
+Non-goals for this memo
+-----------------------
+- It does not claim the workspace should stop using SIMD-heavy crates.
+- It does not claim the Cayley-Dickson program is overextended by definition.
+- It does not attempt a wholesale numerical-stack redesign.
+
+The intended conclusion is narrower:
+
+- the repo now has a safer backend policy
+- that policy exposed a real architectural map
+- the next leverage lies in reducing unnecessary substrate leakage and making
+  theory-to-evidence boundaries easier to audit

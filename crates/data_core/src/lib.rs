@@ -8,6 +8,15 @@
 //! - `fetcher`: Shared HTTP download, SHA-256 checksum, and disk caching.
 //! - `catalogs`: Dataset-specific parsers with typed record structs.
 //! - `formats`: Parsers for non-CSV data formats (GFC, SHC, Pantheon .dat).
+//! - `quality` / `hdf5_export`: Artifact helpers extracted into
+//!   `data_artifacts_core` and re-exported here for compatibility.
+//!
+//! # Feature Boundaries
+//!
+//! - `fetch` (default): enables the transfer-heavy surface such as
+//!   `download_stack` and network-coupled label fetchers.
+//! - `hdf5-export`: enables HDF5 artifact helpers through
+//!   `data_artifacts_core`.
 //!
 //! # Usage
 //!
@@ -29,17 +38,23 @@ pub mod catalogs;
 pub mod cdf_support;
 pub mod crossing_lists;
 pub mod doc_links;
+#[cfg(feature = "fetch")]
 pub mod download_stack;
 pub mod fetcher;
 pub mod formats;
 pub mod geophysical;
 #[cfg(feature = "hdf5-export")]
-pub mod hdf5_export;
+pub mod hdf5_export {
+    pub use data_artifacts_core::hdf5_export::*;
+}
+#[cfg(feature = "fetch")]
 pub mod heliosphere_event_labels;
 pub mod heliosphere_feature_cube;
 pub mod parse;
 pub mod provenance;
-pub mod quality;
+pub mod quality {
+    pub use data_artifacts_core::quality::*;
+}
 pub mod registry;
 pub mod registry_mirrors;
 pub mod seti;
@@ -54,6 +69,7 @@ pub use catalog_feature_cube::{
     CatalogNuisanceModel, NuisanceEffectReport, ResidualizedCatalogFeatureCube,
     encode_dictionary_value, parse_catalog_feature_cube_json, pipe_count, stable_dictionary,
 };
+#[cfg(feature = "fetch")]
 pub use download_stack::{
     DownloadBackend, DownloadLedgerRow, DownloadRoute, DownloadStack, EndpointCapabilities,
     EndpointSurface, HostPolicyRegistry, HostRoutingPolicy, RetryClass, TransferAttempt,
@@ -62,6 +78,7 @@ pub use download_stack::{
 pub use fetcher::{
     DatasetProvider, FetchConfig, FetchError, compute_sha256, download_to_file, download_to_string,
 };
+#[cfg(feature = "fetch")]
 pub use heliosphere_event_labels::{
     ForecastResidual, HeliosphereEventKind, HeliosphereEventLabel, HeliosphereEventSource,
     HeliosphereEventWindow, fetch_donki_event_labels, fetch_official_forecast_residuals,
@@ -79,7 +96,9 @@ pub use heliosphere_feature_cube::{
     plasma_takens_embed_dim, transform_feature_rows, transform_feature_rows_with_stats,
 };
 pub use quality::{
-    RhoQualityError, RhoQualityThresholds, RhoTraceQuality, assess_rho_trace, validate_rho_trace,
+    RhoQualityError, RhoQualityThresholds, RhoTraceQuality, ScalarTraceError, ScalarTraceQuality,
+    ScalarTraceThresholds, assess_rho_trace, assess_scalar_trace, validate_rho_trace,
+    validate_scalar_trace_signal,
 };
 pub use spatial::{
     CatalogModality, RadiusMatch, SkyGridIndex, SkyPoint, angular_separation_arcsec,
@@ -90,15 +109,22 @@ pub use tabular::{
     provider_inventory_frame,
 };
 
+#[cfg(feature = "fetch")]
+pub use catalogs::aflow_fetch::{AflowProvider, fetch_aflow_dataset};
+#[cfg(feature = "fetch")]
+pub use catalogs::jarvis_fetch::{JarvisProvider, fetch_jarvis_json, list_figshare_files};
 #[cfg(feature = "fits")]
 pub use catalogs::lotss::{
     LotssFitsBestMatch, LotssFitsBestMatchSummary, LotssFitsExecutionReport,
     crossmatch_points_against_fits_catalog,
 };
+#[cfg(feature = "fetch")]
+pub use catalogs::things_fetch::{
+    ThingsPreferredCubesProvider, ThingsTablesProvider, discover_things_cube_manifest,
+    parse_things_cube_manifest_html,
+};
 pub use catalogs::{
-    aflow::{
-        AflowMaterial, AflowProvider, fetch_aflow_dataset, parse_aflow_json, parse_aflow_records,
-    },
+    aflow::{AflowMaterial, parse_aflow_json, parse_aflow_records},
     atnf::{Pulsar, parse_atnf_csv},
     chime::{FrbEvent, extract_repeaters, parse_chime_csv},
     desi_bao::{BaoMeasurement, desi_dr1_bao},
@@ -106,10 +132,7 @@ pub use catalogs::{
     gaia::{GaiaSource, parse_gaia_csv},
     gwtc::{GwEvent, parse_gwtc3_csv},
     hipparcos::hipparcos_row_count,
-    jarvis::{
-        FigshareFile, JarvisMaterial, JarvisProvider, fetch_jarvis_json, list_figshare_files,
-        parse_jarvis_json, sample_materials,
-    },
+    jarvis::{FigshareFile, JarvisMaterial, parse_jarvis_json, sample_materials},
     landsat::looks_like_landsat_stac_json,
     mcgill::{Magnetar, parse_mcgill_csv},
     nanograv::{FreeSpectrumPoint, parse_nanograv_free_spectrum},
@@ -312,6 +335,7 @@ mod tests {
         );
     }
 
+    #[cfg(feature = "fetch")]
     #[test]
     fn test_all_providers_instantiable() {
         // Verify that key provider types exist and implement DatasetProvider
@@ -328,8 +352,8 @@ mod tests {
             Box::new(catalogs::landsat::LandsatStacProvider),
             Box::new(geophysical::swarm::SwarmMagAProvider),
             Box::new(geophysical::de_ephemeris::De440Provider),
-            Box::new(catalogs::jarvis::JarvisProvider),
-            Box::new(catalogs::aflow::AflowProvider),
+            Box::new(catalogs::jarvis_fetch::JarvisProvider),
+            Box::new(catalogs::aflow_fetch::AflowProvider),
             Box::new(catalogs::wow::WowPrintoutProvider),
             Box::new(catalogs::wow::Bl6equj5ManifestProvider),
         ];

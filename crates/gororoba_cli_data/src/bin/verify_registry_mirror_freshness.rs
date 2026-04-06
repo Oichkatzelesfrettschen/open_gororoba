@@ -558,7 +558,7 @@ fn main() -> Result<(), String> {
     }
 
     eprintln!(
-        "ERROR: generated registry/control-plane mirrors are stale. Regenerate with MARKDOWN_EXPORT=1 make registry-export-markdown."
+        "ERROR: generated registry/control-plane mirrors are stale. Regenerate with MARKDOWN_EXPORT=1 make registry-build registry-export-markdown."
     );
     for path in stale {
         eprintln!("{}", path.display());

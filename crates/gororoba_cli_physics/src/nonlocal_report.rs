@@ -1,12 +1,11 @@
 use algebra_analysis::{crystal_bands::dim_spectrum_summary, reggiani::partner_graph_degeneracies};
 use cosmology_core::sersic::sersic_profile_2d;
-use faer::c64;
 use materials_core::SyntheticCouplingModel;
 use optics_core::absorber_benchmark::{
     BenchmarkResult, ComparativeBenchmark, ProjectionGateResult,
 };
 use quantum_core::{
-    BravaisLattice2D, Hopping, InversionBreakingParams, MagnonicTBParams, OrbitalSite,
+    BravaisLattice2D, Complex64, Hopping, InversionBreakingParams, MagnonicTBParams, OrbitalSite,
     TightBindingModel, Valley, Vec2, compute_magnonic_bands, valley_chern_number,
 };
 use serde::{Deserialize, Serialize};
@@ -195,19 +194,19 @@ fn graphene_valley_reference() -> (f64, f64) {
                 from: 0,
                 to: 1,
                 cell_offset: [0, 0],
-                amplitude: c64::new(-1.0, 0.0),
+                amplitude: Complex64::new(-1.0, 0.0),
             },
             Hopping {
                 from: 0,
                 to: 1,
                 cell_offset: [0, -1],
-                amplitude: c64::new(-1.0, 0.0),
+                amplitude: Complex64::new(-1.0, 0.0),
             },
             Hopping {
                 from: 0,
                 to: 1,
                 cell_offset: [1, -1],
-                amplitude: c64::new(-1.0, 0.0),
+                amplitude: Complex64::new(-1.0, 0.0),
             },
         ],
     };

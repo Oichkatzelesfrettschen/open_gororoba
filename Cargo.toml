@@ -32,6 +32,7 @@ members = [
     "crates/gororoba_algebra",
     "crates/control_core",
     "crates/cosmology_core",
+    "crates/data_artifacts_core",
     "crates/data_core",
     "crates/docpipe",
     "crates/scrolls_core",
@@ -275,7 +276,7 @@ glob = "0.3"                  # Unix shell pattern matching for artifact paths
 pulldown-cmark = "0.13"       # Markdown parser for provenance extraction
 linkify = "0.10"              # URL extraction from prose without ad hoc regex-only parsing
 url = "2.5"                   # URL parsing for provenance and artifact reconciliation
-reqwest = { version = "0.13", default-features = false, features = ["blocking", "rustls", "gzip", "brotli", "deflate", "form"] } # Standardized blocking HTTP transfer stack for universal recovery routing
+reqwest = { version = "0.13", default-features = false, features = ["blocking", "rustls-no-provider", "gzip", "brotli", "deflate", "form"] } # Standardized blocking HTTP transfer stack for universal recovery routing without pinning unrelated test binaries to the aws-lc provider lane
 backon = "1.6"                # Exponential backoff helpers for resumable HTTP range downloads
 rusqlite = { version = "0.39", features = ["bundled"] } # SQLite-backed normalized provenance store after removing Burn train/sqlite coupling
 rusqlite_migration = "2.5"    # SQLite schema migrations for provenance_store
@@ -443,12 +444,237 @@ codegen-backend = "llvm"
 [profile.test.package.lbm_3d]
 codegen-backend = "llvm"
 
+[profile.dev.package.lbm_3d_cuda]
+codegen-backend = "llvm"
+
+[profile.test.package.lbm_3d_cuda]
+codegen-backend = "llvm"
+
 # algebra_analysis uses x87 inline asm for 80-bit extended precision Jacobi
 # eigenvalue solver. Cranelift does not support inline assembly.
 [profile.dev.package.algebra_analysis]
 codegen-backend = "llvm"
 
 [profile.test.package.algebra_analysis]
+codegen-backend = "llvm"
+
+# SIMD-heavy numerical stack: keep the low-level SIMD/runtime-dispatch layer plus
+# the workspace crates that directly instantiate it on LLVM in dev/test. Roles:
+# - wide: explicit fixed-width vector types (e.g. f32x8/f64x4)
+# - pulp: runtime SIMD dispatch and ISA-specialized kernels (used by faer/gemm)
+# - simsimd: external C/C++ SIMD distance kernels
+# - faer/gemm: linear algebra front-end built atop the dispatch/vector layer
+# These layers are complementary rather than redundant, but cg_clif currently
+# fails in their overlap region when downstream crates monomorphize AVX paths.
+[profile.dev.package.faer]
+codegen-backend = "llvm"
+
+[profile.test.package.faer]
+codegen-backend = "llvm"
+
+[profile.dev.package."faer-traits"]
+codegen-backend = "llvm"
+
+[profile.test.package."faer-traits"]
+codegen-backend = "llvm"
+
+[profile.dev.package.wide]
+codegen-backend = "llvm"
+
+[profile.test.package.wide]
+codegen-backend = "llvm"
+
+# pulp exposes x86 AVX load/store wrappers (for example x86::avx::ld_u32s)
+# that currently trip cg_clif with Unsupported("Unexpected SSA-value type:
+# f32x8") on nightly 2026-04-05. Keep this dependency on LLVM until vendor
+# intrinsics / SIMD lowering support lands upstream.
+[profile.dev.package.pulp]
+codegen-backend = "llvm"
+
+[profile.test.package.pulp]
+codegen-backend = "llvm"
+
+[profile.dev.package.simsimd]
+codegen-backend = "llvm"
+
+[profile.test.package.simsimd]
+codegen-backend = "llvm"
+
+[profile.dev.package.gemm]
+codegen-backend = "llvm"
+
+[profile.test.package.gemm]
+codegen-backend = "llvm"
+
+[profile.dev.package."gemm-common"]
+codegen-backend = "llvm"
+
+[profile.test.package."gemm-common"]
+codegen-backend = "llvm"
+
+[profile.dev.package."gemm-c32"]
+codegen-backend = "llvm"
+
+[profile.test.package."gemm-c32"]
+codegen-backend = "llvm"
+
+[profile.dev.package."gemm-c64"]
+codegen-backend = "llvm"
+
+[profile.test.package."gemm-c64"]
+codegen-backend = "llvm"
+
+[profile.dev.package."gemm-f32"]
+codegen-backend = "llvm"
+
+[profile.test.package."gemm-f32"]
+codegen-backend = "llvm"
+
+[profile.dev.package."gemm-f64"]
+codegen-backend = "llvm"
+
+[profile.test.package."gemm-f64"]
+codegen-backend = "llvm"
+
+[profile.dev.package."private-gemm-x86"]
+codegen-backend = "llvm"
+
+[profile.test.package."private-gemm-x86"]
+codegen-backend = "llvm"
+
+[profile.dev.package.cd_kernel]
+codegen-backend = "llvm"
+
+[profile.test.package.cd_kernel]
+codegen-backend = "llvm"
+
+[profile.dev.package.data_core]
+codegen-backend = "llvm"
+
+[profile.test.package.data_core]
+codegen-backend = "llvm"
+
+[profile.dev.package.algebra_experimental]
+codegen-backend = "llvm"
+
+[profile.test.package.algebra_experimental]
+codegen-backend = "llvm"
+
+[profile.dev.package.gororoba_algebra]
+codegen-backend = "llvm"
+
+[profile.test.package.gororoba_algebra]
+codegen-backend = "llvm"
+
+[profile.dev.package.materials_core]
+codegen-backend = "llvm"
+
+[profile.test.package.materials_core]
+codegen-backend = "llvm"
+
+[profile.dev.package.stats_core]
+codegen-backend = "llvm"
+
+[profile.test.package.stats_core]
+codegen-backend = "llvm"
+
+[profile.dev.package.gr_core]
+codegen-backend = "llvm"
+
+[profile.test.package.gr_core]
+codegen-backend = "llvm"
+
+[profile.dev.package.cosmology_core]
+codegen-backend = "llvm"
+
+[profile.test.package.cosmology_core]
+codegen-backend = "llvm"
+
+[profile.dev.package.quantum_core]
+codegen-backend = "llvm"
+
+[profile.test.package.quantum_core]
+codegen-backend = "llvm"
+
+[profile.dev.package.tensor_core]
+codegen-backend = "llvm"
+
+[profile.test.package.tensor_core]
+codegen-backend = "llvm"
+
+[profile.dev.package.flavor_lifts]
+codegen-backend = "llvm"
+
+[profile.test.package.flavor_lifts]
+codegen-backend = "llvm"
+
+[profile.dev.package.gororoba_cli_data]
+codegen-backend = "llvm"
+
+[profile.test.package.gororoba_cli_data]
+codegen-backend = "llvm"
+
+# Remaining workspace "host" crates that compile or re-export the faer/pulp
+# subtree in dev/test. Keeping these on LLVM prevents cg_clif from entering the
+# same AVX lowering path while compiling higher-level shells like spectral_core.
+[profile.dev.package.spectral_core]
+codegen-backend = "llvm"
+
+[profile.test.package.spectral_core]
+codegen-backend = "llvm"
+
+[profile.dev.package.sign_imbalance]
+codegen-backend = "llvm"
+
+[profile.test.package.sign_imbalance]
+codegen-backend = "llvm"
+
+[profile.dev.package.cd_spin_bridge]
+codegen-backend = "llvm"
+
+[profile.test.package.cd_spin_bridge]
+codegen-backend = "llvm"
+
+[profile.dev.package.grmhd_core]
+codegen-backend = "llvm"
+
+[profile.test.package.grmhd_core]
+codegen-backend = "llvm"
+
+[profile.dev.package.gororoba_cli]
+codegen-backend = "llvm"
+
+[profile.test.package.gororoba_cli]
+codegen-backend = "llvm"
+
+[profile.dev.package.gororoba_engine]
+codegen-backend = "llvm"
+
+[profile.test.package.gororoba_engine]
+codegen-backend = "llvm"
+
+[profile.dev.package.gororoba_cli_algebra]
+codegen-backend = "llvm"
+
+[profile.test.package.gororoba_cli_algebra]
+codegen-backend = "llvm"
+
+[profile.dev.package.gororoba_cli_quantum]
+codegen-backend = "llvm"
+
+[profile.test.package.gororoba_cli_quantum]
+codegen-backend = "llvm"
+
+[profile.dev.package.gororoba_cli_physics]
+codegen-backend = "llvm"
+
+[profile.test.package.gororoba_cli_physics]
+codegen-backend = "llvm"
+
+[profile.dev.package.gororoba_cli_warp]
+codegen-backend = "llvm"
+
+[profile.test.package.gororoba_cli_warp]
 codegen-backend = "llvm"
 
 # Release: maximum optimization, no debug data, stripped for distribution.

@@ -1,0 +1,122 @@
+# Authoritative source: `registry/navigator.toml`.
+# Regenerate mirrors with: `make registry-build registry-export-markdown`.
+[navigator]
+title = "Navigator"
+updated = "2026-02-09"
+epoch = "Era of Synthesis"
+mission = "Navigate algebra, physics, and computation with evidence-first discipline."
+source_markdown = ["NAVIGATOR.md"]
+authoritative_toml = ["registry/navigator.toml"]
+generated_mirror = [
+  "docs/generated/NAVIGATOR_REGISTRY_MIRROR.md",
+  "crates/data_core/src/registry_mirrors/navigator_registry_mirror.rs",
+]
+
+[navigator.disclaimer]
+text = "Many linked narratives are hypotheses. Use registry claims and reproducible verification before asserting physical validity."
+claims_source = "registry/claims.toml"
+legacy_claims_mirror = "docs/CLAIMS_EVIDENCE_MATRIX.md"
+
+[[section]]
+id = "NAV-001"
+title = "Cosmological Map"
+summary = "Theory-facing map of foundations, bridge hypotheses, and interpretation notes."
+
+[[section.link]]
+label = "Mathematical Formalism"
+path = "docs/latex/MASTER_SYNTHESIS.tex"
+hypothesis = false
+notes = "Axiomatic and derivational manuscript source."
+
+[[section.link]]
+label = "Sedenion-Gravastar Equivalence"
+path = "docs/SEDENION_GRAVASTAR_EQUIVALENCE.md"
+hypothesis = true
+notes = "Mechanistic bridge from algebraic structures to gravastar model assumptions."
+
+[[section.link]]
+label = "Physical Interpretation"
+path = "docs/PHYSICAL_INTERPRETATION.md"
+hypothesis = true
+notes = "Interpretive model linking negative-dimension diffusion narratives."
+
+[[section]]
+id = "NAV-002"
+title = "Observational Deck"
+summary = "Data-facing visual outputs and cross-domain correlation artifacts."
+
+[[section.link]]
+label = "LIGO O3 Mass Spectrum"
+path = "data/artifacts/images/LIGO_GWTC3_Mass_Spectrum.png"
+hypothesis = true
+notes = "Narrative hypothesis plot. Requires strict statistical null-model validation."
+
+[[section.link]]
+label = "Grand Spectrum"
+path = "data/artifacts/images/grand_cosmic_map.png"
+hypothesis = true
+notes = "Panoramic object-space map from pulsars to black holes."
+
+[[section.link]]
+label = "Multi-Messenger Correlation"
+path = "data/artifacts/images/real_physics_correlation_gwtc3.png"
+hypothesis = true
+notes = "Cross-dataset view for quasars, exoplanets, and black hole metrics."
+
+[[section]]
+id = "NAV-003"
+title = "Quantum Laboratory"
+summary = "Simulation-facing registry for vacuum, lattice, and fractal logic artifacts."
+
+[[section.link]]
+label = "Anti-Diffusion Soliton"
+path = "data/artifacts/images/neg_dim_evolution_alpha_-1.5.png"
+hypothesis = true
+notes = "Vacuum field simulation artifact."
+
+[[section.link]]
+label = "Vacuum Eigenmodes"
+path = "data/artifacts/images/neg_dim_spectrum_-1.5.png"
+hypothesis = true
+notes = "Spectral analysis output for negative-dimension model variants."
+
+[[section.link]]
+label = "Harper-Chern Map"
+path = "data/artifacts/images/harper_chern_map_highres.png"
+hypothesis = true
+notes = "Topological lattice artifact from quantum model sweep."
+
+[[section.link]]
+label = "Fractional Schrodinger Potential"
+path = "data/artifacts/images/fractional_schrodinger_potential_highres.png"
+hypothesis = true
+notes = "Fractional dynamics visualization under selected potential family."
+
+[[section.link]]
+label = "Fracton Stabilizer Mask"
+path = "data/artifacts/images/fracton_stabilizer_mask.png"
+hypothesis = true
+notes = "Fractal logic and error-correction themed artifact."
+
+[[section.link]]
+label = "Absorber Pareto"
+path = "data/artifacts/images/absorber_pareto_3160x2820.png"
+hypothesis = true
+notes = "Boundary-condition optimization artifact for materials workflow."
+
+[[section]]
+id = "NAV-004"
+title = "Trajectory: Genesis Run"
+summary = "Unified simulation trajectory connecting vacuum and matter generation narratives."
+
+[[section.link]]
+label = "Genesis Simulation Command"
+path = "src/genesis_simulation.py"
+hypothesis = true
+notes = "Run with PYTHONWARNINGS=error venv/crates/data_core/src/catalogs."
+
+[[section.link]]
+label = "Genesis Output Artifact"
+path = "data/artifacts/images/genesis_simulation_grand.png"
+hypothesis = true
+notes = "Primary generated output from prototype run."

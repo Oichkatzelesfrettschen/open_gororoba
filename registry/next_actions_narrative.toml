@@ -1,7 +1,7 @@
-# Next-actions narrative overlay (TOML lane pending SQLite promotion).
-# WHY: Provides prose context for the structured registry/next_actions.toml.
+# Next-actions narrative overlay for the DB-backed compatibility export.
+# WHY: Provides prose context for the structured registry/next_actions.toml export.
 #      Describes priority rationale and sprint focus without hard-coding counts.
-# HOW: Edit body_markdown; run make registry-export-markdown to regenerate mirrors.
+# HOW: Edit body_markdown; run `make registry-build registry-export-markdown` to regenerate mirrors.
 
 [next_actions_narrative]
 body_markdown = """

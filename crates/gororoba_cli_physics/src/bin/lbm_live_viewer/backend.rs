@@ -10,9 +10,9 @@ use gororoba_gpu_bridge::{
     BufferLayout, ComputeBackend, ExecutionProfile, FrameMode, MemoryResidency, StoragePrecision,
 };
 use gororoba_view_core::{
-    CoordinateSpace3d, FrameMetadata, GridShape3d, ParticleFrameMetadata, ParticleSemantic,
-    ReadbackBufferShape, ReadbackDescriptor, ReadbackElementType, ReadbackLayout,
-    ReadbackResidency, ScalarFieldKind, ViewerFramePacket, ViewerFrameSource, VolumeFrameF32,
+    FrameMetadata, GridShape3d, ReadbackBufferShape, ReadbackDescriptor, ReadbackElementType,
+    ReadbackLayout, ReadbackResidency, ScalarFieldKind, ViewerFramePacket, ViewerFrameSource,
+    VolumeFrameF32,
 };
 use std::{f64::consts::PI, time::Instant};
 

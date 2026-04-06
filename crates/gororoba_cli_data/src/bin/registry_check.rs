@@ -964,6 +964,10 @@ fn main() {
     let insights_path = args.dir.join("insights.toml");
     let experiments_path = args.dir.join("experiments.toml");
     let binaries_path = args.dir.join("binaries.toml");
+    let roadmap_path = args.dir.join("roadmap.toml");
+    let todo_path = args.dir.join("todo.toml");
+    let next_actions_path = args.dir.join("next_actions.toml");
+    let requirements_path = args.dir.join("requirements.toml");
     let project_path = args.dir.join("project.toml");
     let theorems_path = repo_root.join("docs/THEOREMS.md");
     let theorems_mirror_path = repo_root.join("docs/generated/THEOREMS_REGISTRY_MIRROR.md");
@@ -992,6 +996,19 @@ fn main() {
                         ) {
                             eprintln!(
                                 "ERROR: canonical control-plane compatibility exports failed for {}: {err}",
+                                args.canonical_db.display()
+                            );
+                            errors += 1;
+                        }
+                        if let Err(err) = store.verify_planning_requirements_compat_exports(
+                            &repo_root,
+                            &roadmap_path,
+                            &todo_path,
+                            &next_actions_path,
+                            &requirements_path,
+                        ) {
+                            eprintln!(
+                                "ERROR: canonical planning/requirements compatibility exports failed for {}: {err}",
                                 args.canonical_db.display()
                             );
                             errors += 1;

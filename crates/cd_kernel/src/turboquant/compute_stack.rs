@@ -117,11 +117,11 @@ mod tests {
 
     #[test]
     fn test_dyn_stack_scratch() {
-        use dyn_stack::{PodStack, StackReq};
+        use dyn_stack::{PodBuffer, PodStack, StackReq};
 
         // Allocate a reusable scratch buffer
         let req = StackReq::new::<f64>(128);
-        let mut buf = dyn_stack::GlobalPodBuffer::new(req);
+        let mut buf = PodBuffer::new(req);
         let stack = PodStack::new(&mut buf);
 
         // Use the scratch buffer -- make_with takes |index: usize| -> T

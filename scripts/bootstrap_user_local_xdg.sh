@@ -87,8 +87,8 @@ select_cargo_build_dir() {
     fallback_details+=("TMPDIR is unset")
   fi
 
-  candidate_roots+=("/srv/fast/tmp")
-  candidate_reasons+=("/srv/fast/tmp is writable")
+  candidate_roots+=("/tmp")
+  candidate_reasons+=("/tmp is writable")
   candidate_roots+=("$XDG_CACHE_HOME_DEFAULT")
   candidate_reasons+=("using XDG cache fallback")
 

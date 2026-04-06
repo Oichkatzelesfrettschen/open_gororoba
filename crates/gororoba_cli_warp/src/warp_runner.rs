@@ -1,13 +1,13 @@
 #[cfg(feature = "hdf5-export")]
-use data_core::hdf5_export::{
+use data_artifacts_core::hdf5_export::{
     NumericDatasetScanStatus, SimulationTraceBundle, SpectralSummarySeries,
     export_experiment_contract, export_rho_quality_metrics, export_simulation_spectral_summary,
     export_simulation_trace_bundle, read_simulation_spectral_component,
     read_simulation_trace_component, scan_hdf5_numeric_datasets,
 };
-use data_core::quality::{RhoQualityThresholds, RhoTraceQuality, validate_rho_trace};
+use data_artifacts_core::quality::{RhoQualityThresholds, RhoTraceQuality, validate_rho_trace};
 #[cfg(feature = "hdf5-export")]
-use data_core::quality::{ScalarTraceThresholds, validate_scalar_trace_signal};
+use data_artifacts_core::quality::{ScalarTraceThresholds, validate_scalar_trace_signal};
 use gororoba_algebra::physics::octonion_field::FieldParams;
 #[cfg(feature = "hdf5-export")]
 use gororoba_cli::warp_gate_policy::{

@@ -76,7 +76,7 @@ RAYON_THREADS ?= $(WORKER_BUDGET)
 RUST_SCOPED_CLIPPY_TARGETS ?= --lib --tests
 LOCAL_NEXTEST_TIMING_JSON ?=
 RUST_LOCAL_SKIP_FILTERSET ?= not ((package(stats_core) and test(/ultrametric::baire_codebook::tests::(test_euclidean_ultrametricity_across_filtration_levels|test_intermediate_filtration_gradient|test_random_removal_control|test_lambda512_to_256_intermediate_gradient|test_lambda512_to_256_random_removal_control|test_sbase_to_lambda2048_gradient|test_l0_subpopulation_ultrametricity|test_lambda2048_to_1024_intermediate_gradient|test_l1_filter_on_l0_neg1_subset|test_recursive_simpsons_paradox_l2|test_cross_stratum_triple_decomposition|test_l0_zero_simpsons_paradox|test_dimensional_universality_simpsons_paradox|test_lambda1024_stratum_paradox_and_summary)/)) or (package(algebra_experimental) and test(test_thesis_e_xor_involution_invariants_128d)) or (package(gororoba_algebra) and test(test_split_octonion_attractor_regression_dim_128_256_guarded)) or (package(gororoba_cli) and test(test_zero_divisor_scaling)) or (package(sign_imbalance) and test(test_kubo_j1j2_alpha_sweep)) or test(/gpu/))
-REPO_TMPDIR ?= $(or $(TMPDIR),/srv/fast/tmp)
+REPO_TMPDIR ?= $(or $(TMPDIR),/tmp)
 REPO_PATH_HASH ?= $(shell printf "%s" "$(CURDIR)" | sha256sum | cut -c1-16)
 REPO_TMP_CARGO_ROOT ?= $(REPO_TMPDIR)/open_gororoba-cargo-build/gate/$(REPO_PATH_HASH)
 REPO_CARGO_HOME ?= $(CURDIR)/.cache/cargo-home
@@ -132,7 +132,7 @@ FREUDENTHAL_ROW_UPGRADE_STATUS ?= translation-rewriting
 FREUDENTHAL_ROW_UPGRADE_ROWS ?= --row-id F51-DEF-01 --row-id F51-THM-01 --row-id F51-LEM-01 --row-id F51-NUM-01 --row-id F51-DEP-01
 
 # ---- Three-layer registry data plane ----
-# Layer 1 (Canonical): .cache/registry.sqlite3 (SQLite source-of-truth).
+# Layer 1 (Canonical): registry/canonical/control_plane.sqlite3 (SQLite source-of-truth).
 # Layer 2 (Compatibility): registry/*.toml (legacy/export view; read-optimized for migration compatibility).
 # Layer 3 (Query):  gororoba-db CLI.
 
@@ -145,13 +145,13 @@ REGISTRY_SOURCES := $(wildcard registry/claims.toml registry/insights.toml \
     registry/artifact_source_of_truth.toml registry/research_narratives.toml \
     registry/source_manifest.toml)
 
-.cache/registry.sqlite3: $(REGISTRY_SOURCES)
+registry/canonical/control_plane.sqlite3: $(REGISTRY_SOURCES)
 	$(CARGO_ENV) cargo run --release -p gororoba_db --bin gororoba-db -- build --repo-root .
 
 .PHONY: registry-build registry-build-verify
-registry-build: .cache/registry.sqlite3
+registry-build: registry/canonical/control_plane.sqlite3
 
-registry-build-verify: .cache/registry.sqlite3
+registry-build-verify: registry/canonical/control_plane.sqlite3
 	$(CARGO_ENV) cargo run --release -p gororoba_db --bin gororoba-db -- build --verify --repo-root .
 
 # ---- Environment setup ----
@@ -257,6 +257,7 @@ governance-gate-readonly:
 	@echo "[done] Registry schema signatures checked"
 	@echo "[done] Cross-reference integrity verified"
 	@echo "[done] Dataset label aliases verified"
+	@echo "[done] Canonical control-plane declarations verified"
 	@echo "[done] External-source operational contracts verified"
 	@echo "[done] Markdown governance removal policy checked"
 	@echo ""
@@ -351,8 +352,8 @@ cache-status:
 	@du -sh .cache/gate-target .cache/cargo-default-target 2>/dev/null || true
 	@printf '=== CARGO_HOME ===\n'
 	@du -sh .cache/cargo-home 2>/dev/null || true
-	@printf '=== /srv/fast/tmp build-dir intermediates ===\n'
-	@du -sh /srv/fast/tmp/open_gororoba-cargo-build 2>/dev/null || printf '(empty)\n'
+	@printf '=== temp-root build-dir intermediates (%s) ===\n' "$(REPO_TMPDIR)"
+	@du -sh "$(REPO_TMPDIR)/open_gororoba-cargo-build" 2>/dev/null || printf '(empty)\n'
 	@printf '=== Experimental dirs (.cache/exp-*-target) ===\n'
 	@du -sh .cache/exp-*-target 2>/dev/null || printf '(none)\n'
 
@@ -425,13 +426,13 @@ integrity:
 	@echo "OK: integrity lane passed."
 
 integrity-rust:
-	$(CARGO_ENV) cargo run -p gororoba_cli_data --bin claims-verify -- --check providers
+	$(CARGO_ENV) cargo run --profile release-gate -p gororoba_cli_data --bin claims-verify -- --check providers
 	$(MAKE) test-inventory
-	$(CARGO_ENV) cargo run -p gororoba_cli_data --bin registry-check -- --typed-policy error
+	$(CARGO_ENV) cargo run --profile release-gate -p gororoba_cli_data --bin registry-check -- --typed-policy error
 	@echo "OK: Rust integrity lane passed."
 
 test-inventory:
-	$(CARGO_ENV) cargo run -p gororoba_cli_data --bin test-inventory -- --check
+	$(CARGO_ENV) cargo run --profile release-gate -p gororoba_cli_data --bin test-inventory -- --check
 
 math-verify: rust-regression
 	@echo "OK: math validation suite complete. See docs/MATH_VALIDATION_REPORT.md"
@@ -834,17 +835,17 @@ e027-validate:
 	@echo "OK: E-027 validation passed (binary operational, TOML pipeline functional)."
 
 rust-parity:
-	CARGO_TARGET_DIR=/srv/fast/tmp/open_gororoba_parity_target $(CARGO_ENV) cargo test --workspace
-	CARGO_TARGET_DIR=/srv/fast/tmp/open_gororoba_parity_target $(CARGO_ENV) cargo clippy --workspace -- -D warnings
+	CARGO_TARGET_DIR=$(REPO_TMPDIR)/open_gororoba_parity_target $(CARGO_ENV) cargo test --workspace
+	CARGO_TARGET_DIR=$(REPO_TMPDIR)/open_gororoba_parity_target $(CARGO_ENV) cargo clippy --workspace -- -D warnings
 	@echo "OK: parity lane passed (workspace tests + clippy with release-class optimization semantics)."
 
 rust-release-fat-lto:
-	CARGO_TARGET_DIR=/srv/fast/tmp/open_gororoba_release_target $(CARGO_ENV) cargo build --release --workspace
+	CARGO_TARGET_DIR=$(REPO_TMPDIR)/open_gororoba_release_target $(CARGO_ENV) cargo build --release --workspace
 	@echo "OK: release fat-LTO workspace build completed."
 
 rust-pgo-instrument:
 	mkdir -p "$(PGO_DIR)"
-	CARGO_TARGET_DIR=/srv/fast/tmp/open_gororoba_pgo_target \
+	CARGO_TARGET_DIR=$(REPO_TMPDIR)/open_gororoba_pgo_target \
 	$(CARGO_ENV) \
 	RUSTFLAGS="-Cprofile-generate=$(PGO_DIR)" \
 	cargo build --release --workspace
@@ -855,7 +856,7 @@ rust-pgo-merge:
 	@echo "OK: merged profile written to $(PGO_DIR)/merged.profdata."
 
 rust-pgo-build:
-	CARGO_TARGET_DIR=/srv/fast/tmp/open_gororoba_pgo_use_target \
+	CARGO_TARGET_DIR=$(REPO_TMPDIR)/open_gororoba_pgo_use_target \
 	$(CARGO_ENV) \
 	RUSTFLAGS="-Cprofile-use=$(PGO_DIR)/merged.profdata" \
 	cargo build --release --workspace
@@ -907,7 +908,7 @@ registry-bootstrap-external-sources: registry-normalize-external-sources
 	@echo "External sources markdown->TOML bootstrap completed."
 
 registry-normalize-research-narratives:
-	cargo run -q -p gororoba_cli_data --bin markdown-registry -- promote-research-narratives
+	$(CARGO_ENV) cargo run --profile release-gate -p gororoba_cli_data --bin markdown-registry -- promote-research-narratives
 
 registry-bootstrap-research-narratives: registry-normalize-research-narratives
 	@echo "Research narratives markdown->TOML bootstrap completed."
@@ -919,7 +920,7 @@ registry-bootstrap-book-docs: registry-normalize-book-docs
 	@echo "mdBook markdown->TOML bootstrap completed."
 
 registry-normalize-docs-root-narratives:
-	cargo run -q -p gororoba_cli_data --bin markdown-registry -- promote-docs-root-narratives
+	$(CARGO_ENV) cargo run --profile release-gate -p gororoba_cli_data --bin markdown-registry -- promote-docs-root-narratives
 
 registry-bootstrap-docs-root-narratives: registry-normalize-docs-root-narratives
 	@echo "Root docs markdown->TOML bootstrap completed."
@@ -1288,72 +1289,79 @@ registry-csv-scope: registry-csv-inventory
 registry-data: registry-migrate-legacy-csv registry-migrate-curated-csv registry-csv-pipeline-gate registry-csv-inventory registry-verify-legacy-csv registry-verify-curated-csv registry-csv-scope registry-control-plane-gate
 	@echo "OK: CSV data registry lane complete."
 
-registry-export-markdown: registry-refresh
+# Use release-gate here instead of dev/cg_clif: gororoba_cli_data pulls faer/pulp
+# through several data tools, and cg_clif still ICEs on AVX f32x8 lowering in that
+# lane on nightly 2026-04-05.
+registry-export-markdown: registry-refresh registry-build
 	@legacy_claims_sync=1; \
 	if [ "$(MARKDOWN_EXPORT_LEGACY_CLAIMS_SYNC)" = "0" ]; then legacy_claims_sync=0; fi; \
-	cargo run -q -p gororoba_cli_data --bin registry-emit -- insights-mirror \
+	$(CARGO_ENV) cargo build --profile release-gate -p gororoba_cli_data --bin registry-emit --bin markdown-registry; \
+	$(REPO_CARGO_TARGET_DIR)/release-gate/registry-emit insights-mirror \
 		--output "crates/data_core/src/registry_mirrors/insights_registry_mirror.rs"; \
-	cargo run -q -p gororoba_cli_data --bin registry-emit -- claims-mirror \
+	$(REPO_CARGO_TARGET_DIR)/release-gate/registry-emit claims-mirror \
 		--output "crates/data_core/src/registry_mirrors/claims_registry_mirror.rs"; \
-	cargo run -q -p gororoba_cli_data --bin registry-emit -- bibliography-mirror \
+	$(REPO_CARGO_TARGET_DIR)/release-gate/registry-emit bibliography-mirror \
 		--output "crates/data_core/src/registry_mirrors/bibliography_registry_mirror.rs"; \
-	cargo run -q -p gororoba_cli_data --bin registry-emit -- experiments-mirror \
+	$(REPO_CARGO_TARGET_DIR)/release-gate/registry-emit experiments-mirror \
 		--output "crates/data_core/src/registry_mirrors/experiments_registry_mirror.rs"; \
-	cargo run -q -p gororoba_cli_data --bin registry-emit -- theorems-mirror \
+	$(REPO_CARGO_TARGET_DIR)/release-gate/registry-emit theorems-mirror \
 		--output "crates/data_core/src/registry_mirrors/theorems_registry_mirror.rs"; \
-	cargo run -q -p gororoba_cli_data --bin registry-emit -- roadmap-mirror \
+	$(REPO_CARGO_TARGET_DIR)/release-gate/registry-emit roadmap-mirror \
 		--output "crates/data_core/src/registry_mirrors/roadmap_registry_mirror.rs"; \
-	cargo run -q -p gororoba_cli_data --bin registry-emit -- todo-mirror \
+	$(REPO_CARGO_TARGET_DIR)/release-gate/registry-emit todo-mirror \
 		--output "crates/data_core/src/registry_mirrors/todo_registry_mirror.rs"; \
-	cargo run -q -p gororoba_cli_data --bin registry-emit -- next-actions-mirror \
+	$(REPO_CARGO_TARGET_DIR)/release-gate/registry-emit next-actions-mirror \
 		--output "crates/data_core/src/registry_mirrors/next_actions_registry_mirror.rs"; \
-	cargo run -q -p gororoba_cli_data --bin registry-emit -- navigator-mirror \
+	$(REPO_CARGO_TARGET_DIR)/release-gate/registry-emit navigator-mirror \
 		--output "crates/data_core/src/registry_mirrors/navigator_registry_mirror.rs"; \
-	cargo run -q -p gororoba_cli_data --bin registry-emit -- entrypoint-docs-mirror \
+	$(REPO_CARGO_TARGET_DIR)/release-gate/registry-emit entrypoint-docs-mirror \
 		--output "crates/data_core/src/registry_mirrors/entrypoint_docs_registry_mirror.rs"; \
-	cargo run -q -p gororoba_cli_data --bin registry-emit -- requirements-mirror \
+	$(REPO_CARGO_TARGET_DIR)/release-gate/registry-emit requirements-mirror \
 		--output "crates/data_core/src/registry_mirrors/requirements_registry_mirror.rs"; \
-	cargo run -q -p gororoba_cli_data --bin registry-emit -- knowledge-migration-plan-mirror \
+	$(REPO_CARGO_TARGET_DIR)/release-gate/registry-emit knowledge-migration-plan-mirror \
 		--output "crates/data_core/src/registry_mirrors/knowledge_migration_plan_registry_mirror.rs"; \
-	cargo run -q -p gororoba_cli_data --bin registry-emit -- markdown-governance-mirror \
+	$(REPO_CARGO_TARGET_DIR)/release-gate/registry-emit markdown-governance-mirror \
 		--output "crates/data_core/src/registry_mirrors/markdown_governance_registry_mirror.rs"; \
-	cargo run -q -p gororoba_cli_data --bin registry-emit -- claims-tasks-mirror \
+	$(REPO_CARGO_TARGET_DIR)/release-gate/registry-emit claims-tasks-mirror \
 		--output "crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs"; \
-	cargo run -q -p gororoba_cli_data --bin registry-emit -- claims-domains-mirror \
+	$(REPO_CARGO_TARGET_DIR)/release-gate/registry-emit claims-domains-mirror \
 		--output "crates/data_core/src/registry_mirrors/claims_domains_registry_mirror.rs"; \
-	cargo run -q -p gororoba_cli_data --bin registry-emit -- claim-tickets-mirror \
+	$(REPO_CARGO_TARGET_DIR)/release-gate/registry-emit claim-tickets-mirror \
 		--output "crates/data_core/src/registry_mirrors/claim_tickets_registry_mirror.rs"; \
-	cargo run -q -p gororoba_cli_data --bin registry-emit -- external-sources-mirror \
+	$(REPO_CARGO_TARGET_DIR)/release-gate/registry-emit external-sources-mirror \
 		--output "crates/data_core/src/registry_mirrors/external_sources_registry_mirror.rs"; \
-	cargo run -q -p gororoba_cli_data --bin registry-emit -- book-docs-mirror \
+	$(REPO_CARGO_TARGET_DIR)/release-gate/registry-emit book-docs-mirror \
 		--output "crates/data_core/src/registry_mirrors/book_docs_registry_mirror.rs"; \
-	cargo run -q -p gororoba_cli_data --bin registry-emit -- data-artifact-narratives-mirror \
+	$(REPO_CARGO_TARGET_DIR)/release-gate/registry-emit data-artifact-narratives-mirror \
 		--output "crates/data_core/src/registry_mirrors/data_artifact_narratives_registry_mirror.rs"; \
-	cargo run -q -p gororoba_cli_data --bin registry-emit -- reports-narratives-mirror \
+	$(REPO_CARGO_TARGET_DIR)/release-gate/registry-emit reports-narratives-mirror \
 		--output "crates/data_core/src/registry_mirrors/reports_narratives_registry_mirror.rs"; \
-	cargo run -q -p gororoba_cli_data --bin registry-emit -- docs-convos-mirror \
+	$(REPO_CARGO_TARGET_DIR)/release-gate/registry-emit docs-convos-mirror \
 		--output "crates/data_core/src/registry_mirrors/docs_convos_registry_mirror.rs"; \
-	cargo run -q -p gororoba_cli_data --bin registry-emit -- docs-root-narratives-mirror \
+	$(REPO_CARGO_TARGET_DIR)/release-gate/registry-emit docs-root-narratives-mirror \
 		--output "crates/data_core/src/registry_mirrors/docs_root_narratives_registry_mirror.rs"; \
-	cargo run -q -p gororoba_cli_data --bin registry-emit -- research-narratives-mirror \
+	$(REPO_CARGO_TARGET_DIR)/release-gate/registry-emit research-narratives-mirror \
 		--output "crates/data_core/src/registry_mirrors/research_narratives_registry_mirror.rs"; \
-	cargo run -q -p gororoba_cli_data --bin markdown-registry -- build-inventory; \
-	cargo run -q -p gororoba_cli_data --bin markdown-registry -- build-corpus; \
-	cargo run -q -p gororoba_cli_data --bin markdown-registry -- build-origin-audit; \
-	cargo run -q -p gororoba_cli_data --bin markdown-registry -- build-owner-map; \
-	cargo run -q -p gororoba_cli_data --bin markdown-registry -- build-payloads
+	$(REPO_CARGO_TARGET_DIR)/release-gate/markdown-registry build-inventory; \
+	$(REPO_CARGO_TARGET_DIR)/release-gate/markdown-registry build-corpus; \
+	$(REPO_CARGO_TARGET_DIR)/release-gate/markdown-registry build-origin-audit; \
+	$(REPO_CARGO_TARGET_DIR)/release-gate/markdown-registry build-owner-map; \
+	$(REPO_CARGO_TARGET_DIR)/release-gate/markdown-registry build-payloads
 
+# Keep mirror freshness and governance checks on the LLVM-backed gate lane for the
+# same reason as registry-export-markdown above.
 registry-verify-mirrors:
 	legacy_flag=""; \
 	claims_value="true"; \
 	if [ "$(MARKDOWN_EXPORT_LEGACY_CLAIMS_SYNC)" = "0" ]; then claims_value="false"; fi; \
-	cargo run -q -p gororoba_cli_data --bin verify-registry-mirror-freshness -- \
+	$(CARGO_ENV) cargo build --profile release-gate -p gororoba_cli_data --bin verify-registry-mirror-freshness --bin governance-verify; \
+	$(REPO_CARGO_TARGET_DIR)/release-gate/verify-registry-mirror-freshness -- \
 		--out-dir "$(MARKDOWN_EXPORT_OUT_DIR)" $$legacy_flag --legacy-claims-sync $$claims_value
 	$(MAKE) registry-verify-markdown-toml-first
-	cargo run -q -p gororoba_cli_data --bin governance-verify -- markdown-headers; \
-	cargo run -q -p gororoba_cli_data --bin governance-verify -- markdown-parity; \
-	cargo run -q -p gororoba_cli_data --bin governance-verify -- mirror-immutability; \
-	cargo run -q -p gororoba_cli_data --bin governance-verify -- claim-ticket-mirrors;
+	$(REPO_CARGO_TARGET_DIR)/release-gate/governance-verify markdown-headers; \
+	$(REPO_CARGO_TARGET_DIR)/release-gate/governance-verify markdown-parity; \
+	$(REPO_CARGO_TARGET_DIR)/release-gate/governance-verify mirror-immutability; \
+	$(REPO_CARGO_TARGET_DIR)/release-gate/governance-verify claim-ticket-mirrors;
 
 registry-sync-project-counters:
 	$(CARGO_ENV) cargo run --release --bin project-counter-sync
@@ -1667,9 +1675,9 @@ clean-builds:
 	rm -rf .cache/cargo-default-target/
 	rm -rf .cache/gate-target/
 	rm -rf $(REPO_TMP_CARGO_ROOT)
-	rm -rf /srv/fast/tmp/open_gororoba-cargo-build 2>/dev/null || true
-	rm -rf /srv/fast/tmp/open_gororoba_*_target 2>/dev/null || true
-	rm -rf /srv/fast/tmp/open_gororoba-cargo-build-* 2>/dev/null || true
+	rm -rf $(REPO_TMPDIR)/open_gororoba-cargo-build 2>/dev/null || true
+	rm -rf $(REPO_TMPDIR)/open_gororoba_*_target 2>/dev/null || true
+	rm -rf $(REPO_TMPDIR)/open_gororoba-cargo-build-* 2>/dev/null || true
 	@echo "Removed all Rust build artifacts. Run 'cargo build' to rebuild."
 
 

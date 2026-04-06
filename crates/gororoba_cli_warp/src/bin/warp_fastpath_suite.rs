@@ -1,7 +1,7 @@
 use gororoba_cli_warp::{warp_runner, warp_telemetry};
 
 #[cfg(feature = "hdf5-export")]
-use data_core::hdf5_export::read_simulation_trace_component;
+use data_artifacts_core::hdf5_export::read_simulation_trace_component;
 use gororoba_cli::warp_forcing_policy::{apply_warp_forcing_env, load_warp_forcing_profile};
 use lbm_3d_cuda::Precision;
 use stats_core::helpers::{mean as arithmetic_mean, std_dev};

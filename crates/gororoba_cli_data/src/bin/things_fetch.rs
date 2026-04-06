@@ -2,10 +2,14 @@ use anyhow::{Context, Result};
 use clap::{ArgAction, Parser, Subcommand};
 use data_core::{
     DatasetProvider, FetchConfig,
-    catalogs::things::{
-        ThingsPreferredCubesProvider, ThingsTablesProvider, build_things_hi_metadata,
-        discover_things_cube_manifest, parse_things_galaxies, parse_things_hi_spectra,
-        preferred_things_cube_entries, write_things_cube_manifest_csv,
+    catalogs::{
+        things::{
+            build_things_hi_metadata, parse_things_galaxies, parse_things_hi_spectra,
+            preferred_things_cube_entries, write_things_cube_manifest_csv,
+        },
+        things_fetch::{
+            ThingsPreferredCubesProvider, ThingsTablesProvider, discover_things_cube_manifest,
+        },
     },
 };
 use serde::Serialize;

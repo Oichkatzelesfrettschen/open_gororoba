@@ -1,0 +1,84 @@
+SIMD scalar-parity contract
+===========================
+
+Purpose
+-------
+This note records the repo's explicit parity contract for claim-bearing
+SIMD-enabled Cayley-Dickson kernels. The policy is stronger than "fast code
+exists": vectorized and batched paths must preserve the scalar algebraic result
+within a documented tolerance envelope, and the evidence for that contract must
+live in the repo.
+
+Scope
+-----
+The current claim-bearing kernels are:
+- `cd_kernel::cd_multiply_simd`
+- `cd_kernel::simd::cd_associator_norm_f32`
+- `cd_kernel::batch_sedenion_associator_norms[_parallel]`
+- `cd_kernel::batch_sliding_associator_norms[_parallel]`
+- `cd_kernel::fast_associator_norm_f32`
+- `cd_kernel::batch_fast_associator_norms_f32`
+
+These are "claim-bearing" because they feed:
+- zero-divisor and box-kite census work
+- A-infinity / `m_3` associator analysis
+- heliosphere Takens descriptor channels in
+  `crates/gororoba_cli_physics/src/heliosphere_eval.rs`
+
+Parity rules
+------------
+1. Scalar semantics are canonical.
+   The generic recursive `cd_multiply` / `cd_associator_norm` path defines the
+   mathematical reference result. SIMD, fused, batched, cache-aware, and
+   parallel paths are acceleration strategies, not independent semantics.
+
+2. Every optimized path needs a scalar witness.
+   A new SIMD/batched kernel is not accepted without at least one test that
+   compares it directly against the scalar path over representative dimensions.
+
+3. Tolerances must be explicit and dimension-aware.
+   - f64 SIMD-vs-scalar checks target near-machine precision.
+   - f32/fused/parallel checks may use wider tolerances, but the tolerance must
+     be justified by precision and accumulation order, not convenience.
+
+4. Batch and parallel paths must agree with serial semantics.
+   Sliding-window and rayon-backed routines must match the corresponding serial
+   scalar or serial batch result, not just "look plausible."
+
+5. Downstream descriptors inherit the parity contract.
+   Any feature extractor that uses these kernels, including the heliosphere
+   Takens descriptors, must either call the scalar canonical function directly
+   or be tested against a scalar reconstruction.
+
+Current evidence
+----------------
+The contract is currently evidenced by:
+- `crates/cd_kernel/src/cayley_dickson/tests.rs`
+  - `test_simd_matches_scalar`
+  - `test_batch_sedenion_associator_matches_recursive`
+  - `test_batch_sliding_16d_matches_sedenion`
+  - `test_batch_sliding_32d`
+  - `test_randomized_associator_agreement_16d_32d_64d`
+  - `test_randomized_serial_parallel_agreement`
+- `crates/cd_kernel/src/cayley_dickson/fast_associator.rs`
+  - `test_fast_matches_standard`
+  - `test_batch_fast_matches_standard`
+  - `test_workspace_reuse_correctness`
+  - `test_high_dim_workspace`
+  - `test_fused_multiply_matches_allocating`
+- `crates/gororoba_cli_physics/src/heliosphere_eval.rs`
+  - `takens_descriptor_sedenion_lane_matches_scalar_reference`
+- ergonomic crate-root aliases for exact test invocation:
+  - `cargo test -p cd_kernel --lib batch_sedenion_associator_matches_recursive -- --exact`
+  - `cargo test -p tensor_core --lib uniform_integration_matches_dense_sum_for_rank1 -- --exact`
+  - `cargo test -p gororoba_cli_physics --lib takens_descriptor_sedenion_lane_matches_scalar_reference -- --exact`
+
+Operational guidance
+--------------------
+- If a facade or CLI crate only needs a numerical result, keep direct SIMD types
+  and low-level linear algebra out of that facade. Push the implementation down
+  into the kernel crate and expose a semantic API upward.
+- If a parity test fails, treat it as a kernel regression, not a benchmark
+  fluctuation.
+- If a new experiment or narrative cites a SIMD-derived quantity, the cited
+  code path must be traceable back to one of the parity-guarded kernels above.

@@ -4,9 +4,9 @@
 
 ## Overview
 
-The registry uses a three-layer architecture where `.cache/registry.sqlite3`
-is the canonical source of truth, and files under `registry/` are maintained as
-compatibility and migration artifacts.
+The registry uses a three-layer architecture where
+`registry/canonical/control_plane.sqlite3` is the canonical source of truth, and
+files under `registry/` are maintained as compatibility and migration artifacts.
 
 ```
 LAYER 1: CANONICAL (SQLite)
@@ -20,9 +20,9 @@ LAYER 3: QUERY (claims, insights, experiments, xref, audit, search)
 
 ## Layer 1: Canonical Registry Database
 
-All canonical values live in `.cache/registry.sqlite3`. The CLI and tooling
-interact with this database as the source of truth for queries, checks, and
-reproducible outputs.
+All canonical values live in `registry/canonical/control_plane.sqlite3`. The
+CLI and tooling interact with this database as the source of truth for queries,
+checks, and reproducible outputs.
 
 | Component | Why it matters |
 |-----------|----------------|
@@ -51,11 +51,12 @@ but DB-backed lanes now round-trip through SQLite before their compatibility
 exports are rewritten:
 
 1. Reads `registry/source_manifest.toml` for compatible descriptors
-2. Deletes any existing `.cache/registry.sqlite3`
-3. Creates a fresh DB with all 13 migrations
+2. Rebuilds `registry/canonical/control_plane.sqlite3` from scratch
+3. Creates a fresh DB with all 14 migrations
 4. Sets `PRAGMA journal_mode=WAL` for concurrent read safety
 5. Ingests compatibility TOML inputs into canonical tables
-6. Rewrites DB-backed planning compatibility exports (`roadmap.toml`, `todo.toml`, `next_actions.toml`)
+6. Rewrites DB-backed planning and requirements compatibility exports
+   (`roadmap.toml`, `todo.toml`, `next_actions.toml`, `requirements.toml`)
 7. Builds FTS5 full-text indexes on claims, insights, bibliography
 8. Builds crossref join tables (claim-experiment, claim-insight)
 9. Records build metadata (timestamp, source count)
@@ -67,7 +68,7 @@ queries continue to run directly against SQLite.
 
 ```bash
 # Build
-gororoba-db build              # Create .cache/registry.sqlite3
+gororoba-db build              # Create registry/canonical/control_plane.sqlite3
 gororoba-db build --verify     # Build + verify integrity
 
 # Claims
@@ -102,7 +103,7 @@ gororoba-db schema
 
 ## Database Schema
 
-13 migrations in `db/migrations/`:
+14 migrations in `db/migrations/`:
 
 | Layer | Tables | Migration |
 |-------|--------|-----------|
@@ -112,6 +113,7 @@ gororoba-db schema
 | External Sources | external_source_contracts, external_source_dossiers | 0009 |
 | Knowledge | equation_atoms, proof_skeletons, derivation_steps | 0010 |
 | Planning | roadmap_items, todo_items, next_action_items | 0010, 0013 |
+| Requirements | requirements_registry_meta, requirements_modules, requirements_coverage_gaps | 0014 |
 | Narratives | research_narratives (+ FTS5 search) | 0010 |
 | FTS5 + Crossrefs | claims_fts, insights_fts, bibliography_fts, evidence_edges, crossref tables | 0011 |
 | Literature Verification | literature_verification_runs, literature_verification_results, literature_novelty_similar_papers | 0012 |
@@ -146,13 +148,13 @@ Regenerate with `make integrity-resolution`.
 To modify the registry:
 
 ```bash
-# 1. Update compatibility TOMLs as needed (migration path)
+# 1. Update compatibility TOMLs as needed for lanes that are still authored there
 vim registry/claims.toml
 
 # 2. Regenerate schema signatures (if governance gate requires it)
 make integrity-resolution
 
-# 3. Rebuild canonical DB and compatibility artifacts (automatic via Make prerequisites)
+# 3. Rebuild canonical DB and compatibility artifacts
 make registry-build
 
 # 4. Query to verify

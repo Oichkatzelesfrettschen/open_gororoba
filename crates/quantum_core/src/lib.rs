@@ -57,6 +57,8 @@ pub mod two_fluid;
 #[cfg(feature = "gpu")]
 pub mod gpu;
 
+pub use faer::c64 as Complex64;
+
 pub use mera::{
     MeraLayer, MeraScalingResult, bootstrap_slope_ci, build_mera_structure, fit_log_scaling,
     mera_entropy_estimate, mera_entropy_scaling_analysis, von_neumann_entropy,

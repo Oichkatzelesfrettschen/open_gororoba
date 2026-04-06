@@ -3,9 +3,10 @@
 //! Tests cross-crate workflows between gororoba_algebra (CD multiplication, ZD search)
 //! and stats_core (statistical validation of algebraic properties).
 
+use cd_kernel::cayley_dickson::find_zero_divisors;
 use gororoba_algebra::{
     cd_associator_norm, cd_conjugate, cd_multiply, cd_norm_sq,
-    construction::cayley_dickson::find_zero_divisors_general_form, find_zero_divisors,
+    construction::cayley_dickson::find_zero_divisors_general_form,
 };
 
 /// Test that quaternion multiplication is associative.

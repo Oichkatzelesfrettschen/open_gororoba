@@ -3077,3 +3077,58 @@ fn to_cd16(values: &[f64; HELIOSPHERE_INVARIANT_DIM]) -> [f64; 16] {
     out[..HELIOSPHERE_INVARIANT_DIM].copy_from_slice(values);
     out
 }
+
+#[cfg(test)]
+pub(crate) fn assert_takens_descriptor_sedenion_lane_matches_scalar_reference() {
+    use self::tests::sample;
+    use crate::heliosphere_eval::{HasBField, takens_descriptors};
+
+    let group = (0..6).map(sample).collect::<Vec<_>>();
+    let descriptor = takens_descriptors(&group, 5);
+
+    let get_v16 = |target_idx: usize| -> [f64; 16] {
+        let mut v16 = [0.0; 16];
+        for i in 0..4 {
+            let s = &group[target_idx - 3 + i];
+            v16[i * 4..i * 4 + 4].copy_from_slice(&s.b_field());
+        }
+        v16
+    };
+    let a = get_v16(3);
+    let b = get_v16(4);
+    let c = get_v16(5);
+    let expected = cd_kernel::cd_associator_norm(&a, &b, &c);
+
+    assert!((descriptor[0] - expected).abs() < 1.0e-12);
+    assert!(descriptor[3] > 0.0);
+}
+
+#[cfg(test)]
+mod tests {
+    use data_core::{HELIOSPHERE_INVARIANT_DIM, HeliosphereInvariantSample};
+
+    pub(super) fn sample(idx: usize) -> HeliosphereInvariantSample {
+        let base = idx as f64 + 1.0;
+        HeliosphereInvariantSample {
+            window_name: "unit".to_string(),
+            mission: "voyager1".to_string(),
+            product: "bfield".to_string(),
+            year: 2000,
+            doy: idx as u16,
+            hour: idx as u8,
+            timestamp_utc: format!("2000-01-{:02}T00:00:00Z", idx + 1),
+            channels: [0.0; HELIOSPHERE_INVARIANT_DIM],
+            uncertainty_scales: [1.0; HELIOSPHERE_INVARIANT_DIM],
+            weighted_channels: [0.0; HELIOSPHERE_INVARIANT_DIM],
+            b_field: [base, base + 0.1, base + 0.2, base + 0.3],
+            inherited_event_score: None,
+            inherited_event_mask: None,
+            inherited_event_segment_id: None,
+        }
+    }
+
+    #[test]
+    fn takens_descriptor_sedenion_lane_matches_scalar_reference() {
+        super::assert_takens_descriptor_sedenion_lane_matches_scalar_reference();
+    }
+}

@@ -1,7 +1,7 @@
 #[cfg(feature = "hdf5-export")]
-use data_core::hdf5_export::read_rho_mean_trace;
+use data_artifacts_core::hdf5_export::read_rho_mean_trace;
 #[cfg(feature = "hdf5-export")]
-use data_core::quality::{RhoQualityThresholds, validate_rho_trace};
+use data_artifacts_core::quality::{RhoQualityThresholds, validate_rho_trace};
 use std::{collections::BTreeSet, error::Error, path::PathBuf};
 
 fn expand_inputs(inputs: &[String]) -> Result<Vec<PathBuf>, Box<dyn Error>> {

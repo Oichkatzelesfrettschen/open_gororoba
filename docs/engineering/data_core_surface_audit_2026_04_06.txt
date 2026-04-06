@@ -1,0 +1,146 @@
+data_core surface audit
+date: 2026-04-06
+status: active architecture note
+
+summary
+
+`data_core` currently mixes two distinct responsibilities:
+
+1. pure data model / parsing / validation code
+2. network fetch / transfer / cache / provider code
+
+The compile-time boundary is still too wide. A large set of downstream crates
+inherits HTTP/TLS and transfer-stack baggage because `data_core` compiles the
+fetch lane unconditionally, even when a consumer only needs parse structs,
+quality checks, or HDF5 export helpers.
+
+what is already mostly pure
+
+- `quality`
+- `hdf5_export`
+- many parser-only catalog modules such as `atnf`, `gwtc`, `chime`, `mcgill`,
+  `pantheon`, `pdg`, and related helpers
+- non-network validation helpers such as `catalog_feature_cube`, `spatial`,
+  and parts of `formats`
+
+what is fetch-coupled today
+
+- `download_stack`
+- `fetcher`
+- `heliosphere_event_labels`
+- `formats/tap`
+- `geophysical/jpl_ephemeris`
+- many mixed catalog modules where typed structs, parse functions, and
+  `DatasetProvider` fetch implementations live in the same file
+
+examples of mixed modules
+
+- `catalogs/ace_mag`
+- `catalogs/aflow`
+- `catalogs/ibex`
+- `catalogs/jarvis`
+- `catalogs/juno`
+- `catalogs/mms`
+- `catalogs/omni`
+- `catalogs/psp_fields`
+- `catalogs/solar_orbiter_*`
+- `catalogs/things`
+- `catalogs/ulysses`
+- `catalogs/voyager`
+- `catalogs/wind_swe`
+
+downstream impact
+
+The following crates currently depend on `data_core` but do not inherently need
+the full fetch lane for their core package-wide build/test path:
+
+- `gororoba_cli`
+- `gororoba_cli_warp`
+- `cosmology_core`
+
+Concrete examples:
+
+- `gororoba_cli` uses `data_core` for `hdf5_export`
+- `gororoba_cli_warp` uses `data_core` for `hdf5_export` and `quality`
+- `cosmology_core` uses `data_core::catalogs::{atnf::Pulsar, gwtc::GwEvent}`
+  as parse/model types only
+
+That means the architectural debt is real: these crates are paying for a
+network/download stack they do not conceptually own.
+
+what landed in this wave
+
+- `data_artifacts_core` now carries the extracted non-network `quality` lane
+  plus the optional `hdf5_export` lane
+- `gororoba_cli` no longer depends on `data_core` for artifact helpers
+- `gororoba_cli_warp` no longer depends on `data_core` for artifact helpers
+- `data_core` now exposes an explicit `fetch` feature, with `download_stack`
+  and `heliosphere_event_labels` starting the gated fetch-side surface
+- `gororoba_cli` and `gororoba_cli_physics` no longer default to `gpu`
+- GPU-only bins now declare `required-features = ["gpu"]`
+
+`gororoba_cli_warp` is the current exception. Its shared library still routes a
+generic precision lane through `SimulationConfig3D` and related CUDA-backed
+types, so forcing `default = []` there today would be performative rather than
+real. It should be revisited after the warp precision/config surface is
+decoupled from CUDA-specific types.
+
+This does not solve the `data_core` monolith, but it reduces unrelated package
+drag while the deeper split is staged.
+
+next safe carve-out
+
+The first non-destructive extraction should be the non-network utility surface
+that is already consumed by top-level CLI crates:
+
+1. move `quality` into a small non-network crate
+2. move `hdf5_export` into a small non-network crate or companion crate with an
+   explicit `hdf5-export` feature
+3. update `gororoba_cli` and `gororoba_cli_warp` to depend on that smaller
+   crate instead of `data_core`
+
+That gives an immediate compile-surface win without forcing a risky
+catalog-by-catalog split first.
+
+second-stage split
+
+After the utility carve-out, split fetch responsibilities from mixed catalog
+files by introducing a pattern like:
+
+- `catalogs/foo.rs` for structs + parse helpers
+- `catalogs/foo_fetch.rs` for `DatasetProvider` and transfer logic
+
+Then gate the fetch modules and `download_stack` / `fetcher` behind an explicit
+`network-fetch` feature.
+
+exit criteria for a real non-network core
+
+We can say `data_core` has a real non-network core when all of the following
+are true:
+
+- `download_stack` and transfer helpers are feature-gated
+- parser/model consumers compile with `default-features = false`
+- `gororoba_cli` and `gororoba_cli_warp` no longer depend on `data_core`
+  directly for non-network helpers
+- `cosmology_core` can depend on parse/model code without pulling HTTP/TLS
+  libraries into its package-wide compile path
+
+recommended next implementation wave
+
+1. repoint additional direct HDF5/quality callers from `gororoba_cli_data` and
+   `gororoba_cli_physics` to `data_artifacts_core`
+2. move the shared source files from `data_core/src/` into
+   `data_artifacts_core/src/` so the transitional source-sharing include path
+   can be retired
+3. split the first mixed catalog/provider pair behind the explicit `fetch`
+   feature, starting with a low-risk module such as `jarvis` or `aflow`
+4. only then continue the broader catalog-by-catalog fetch split
+
+why this order is correct
+
+- it gives an immediate compile-surface win for top-level CLI crates without
+  forcing a risky catalog refactor first
+- it removes the most obvious non-network consumers from `data_core`
+- it creates a smaller target for later `network-fetch` feature gating
+- it lets `cosmology_core` and other parse/model consumers be addressed after
+  the low-risk utility extraction is complete

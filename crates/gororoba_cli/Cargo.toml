@@ -15,6 +15,7 @@ path = "src/main.rs"
 [[bin]]
 name = "thesis-synthesis"
 path = "src/bin/thesis_synthesis.rs"
+required-features = ["gpu"]
 
 [[bin]]
 name = "thesis-synthesis-engine"
@@ -55,14 +56,17 @@ path = "src/bin/zd_resonance_sweep.rs"
 [[bin]]
 name = "zd-resonance-bf16"
 path = "src/bin/zd_resonance_bf16.rs"
+required-features = ["gpu"]
 
 [[bin]]
 name = "zd-resonance-cuda"
 path = "src/bin/zd_resonance_cuda.rs"
+required-features = ["gpu"]
 
 [[bin]]
 name = "zd-resonance-4d"
 path = "src/bin/zd_resonance_4d.rs"
+required-features = ["gpu"]
 
 [[bin]]
 name = "gororoba-gate"
@@ -83,6 +87,7 @@ path = "src/bin/lattice_filtration_analyzer.rs"
 [[bin]]
 name = "percolation-experiment"
 path = "src/bin/percolation_experiment.rs"
+required-features = ["gpu"]
 
 [[bin]]
 name = "test-tda-api"
@@ -147,8 +152,8 @@ spectral_core = { path = "../spectral_core" }
 lbm_core = { path = "../lbm_core" }
 lbm_3d = { path = "../lbm_3d" }
 lbm_3d_cuda = { path = "../lbm_3d_cuda", optional = true }
-stats_core = { path = "../stats_core", features = ["gpu"] }
-data_core = { path = "../data_core" }
+stats_core = { path = "../stats_core" }
+data_artifacts_core = { path = "../data_artifacts_core" }
 sign_imbalance = { path = "../sign_imbalance" }
 neural_homotopy = { path = "../neural_homotopy" }
 lattice_filtration = { path = "../lattice_filtration" }
@@ -189,7 +194,7 @@ ureq.workspace = true
 tempfile = { workspace = true }
 
 [features]
-default = ["gpu"]
+default = []
 gpu = [
     "lbm_3d_cuda",
     "lbm_3d_cuda/cufft",
@@ -199,8 +204,9 @@ gpu = [
     "quantum_core/gpu",
     "sign_imbalance/gpu",
     "gororoba_engine/gpu",
+    "stats_core/gpu",
 ]
-hdf5-export = ["data_core/hdf5-export"]
+hdf5-export = ["data_artifacts_core/hdf5-export"]
 
 [lints]
 workspace = true

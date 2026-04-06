@@ -7,6 +7,8 @@
 
 pub mod ace_mag;
 pub mod aflow;
+#[cfg(feature = "fetch")]
+pub mod aflow_fetch;
 pub mod atnf;
 pub mod bepicolombo;
 pub mod bl_filterbank;
@@ -30,6 +32,8 @@ pub mod imap;
 pub mod imp8;
 pub mod intermagnet;
 pub mod jarvis;
+#[cfg(feature = "fetch")]
+pub mod jarvis_fetch;
 pub mod juno;
 pub mod jwst;
 pub mod landsat;
@@ -72,6 +76,8 @@ pub mod stereo_plastic;
 pub mod swarm_mag;
 pub mod themis;
 pub mod things;
+#[cfg(feature = "fetch")]
+pub mod things_fetch;
 pub mod tsi;
 pub mod ulysses;
 pub mod union3;

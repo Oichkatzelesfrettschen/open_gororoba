@@ -55,4 +55,44 @@ impl TTTrain {
 
         res[(0, 0)]
     }
+
+    /// Contract the train against uniform per-dimension quadrature weights.
+    ///
+    /// This keeps the Faer-backed contraction logic inside `tensor_core`,
+    /// so facade/CLI crates can consume TT integration without depending
+    /// directly on low-level linear algebra types.
+    pub fn integrate_uniform(&self, weight: f64) -> f64 {
+        let first_core = &self.cores[0].data;
+        let mut res = Mat::<f64>::zeros(1, first_core.shape()[2]);
+        for j in 0..first_core.shape()[2] {
+            let mut sum_k = 0.0;
+            for i in 0..first_core.shape()[1] {
+                sum_k += first_core[[0, i, j]] * weight;
+            }
+            res[(0, j)] = sum_k;
+        }
+
+        for k in 1..self.cores.len() {
+            if let Some(m) = self.intersection_matrices.get(k - 1) {
+                res = &res * m;
+            }
+
+            let core = &self.cores[k].data;
+            let r_prev = core.shape()[0];
+            let r_next = core.shape()[2];
+            let mut contract = Mat::<f64>::zeros(r_prev, r_next);
+            for i in 0..r_prev {
+                for j in 0..r_next {
+                    let mut sum_i = 0.0;
+                    for idx_n in 0..core.shape()[1] {
+                        sum_i += core[[i, idx_n, j]] * weight;
+                    }
+                    contract[(i, j)] = sum_i;
+                }
+            }
+            res = &res * contract;
+        }
+
+        res[(0, 0)]
+    }
 }

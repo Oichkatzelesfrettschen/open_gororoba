@@ -1,10 +1,10 @@
 #[cfg(feature = "hdf5-export")]
-use data_core::hdf5_export::{
+use data_artifacts_core::hdf5_export::{
     NumericDatasetScanStatus, read_simulation_spectral_component, read_simulation_trace_component,
     scan_hdf5_numeric_datasets,
 };
 #[cfg(feature = "hdf5-export")]
-use data_core::quality::{
+use data_artifacts_core::quality::{
     RhoQualityThresholds, ScalarTraceThresholds, validate_rho_trace, validate_scalar_trace_signal,
 };
 #[cfg(feature = "hdf5-export")]

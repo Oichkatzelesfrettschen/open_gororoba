@@ -1,0 +1,2811 @@
+# Authoritative source: `registry/claims_domains.toml`.
+# Source inputs: `docs/claims/CLAIMS_DOMAIN_MAP.csv` and `docs/claims/by_domain/*.md`.
+# Regenerate mirrors with: `make registry-build registry-export-markdown`.
+[claims_domains]
+updated = "2026-03-12"
+source_csv = "docs/claims/CLAIMS_DOMAIN_MAP.csv"
+source_markdown_glob = "docs/claims/by_domain/*.md"
+domain_file_count = 16
+claim_count = 443
+
+[[domain]]
+id = "algebra"
+source_markdown = "docs/claims/by_domain/algebra.md"
+declared_count = 67
+csv_claim_count = 67
+markdown_claim_count = 67
+count_match = true
+mapping_match = true
+
+[[domain]]
+id = "cosmology"
+source_markdown = "docs/claims/by_domain/cosmology.md"
+declared_count = 14
+csv_claim_count = 14
+markdown_claim_count = 14
+count_match = true
+mapping_match = true
+
+[[domain]]
+id = "cpp"
+source_markdown = "docs/claims/by_domain/cpp.md"
+declared_count = 2
+csv_claim_count = 2
+markdown_claim_count = 2
+count_match = true
+mapping_match = true
+
+[[domain]]
+id = "datasets"
+source_markdown = "docs/claims/by_domain/datasets.md"
+declared_count = 33
+csv_claim_count = 33
+markdown_claim_count = 33
+count_match = true
+mapping_match = true
+
+[[domain]]
+id = "engineering"
+source_markdown = "docs/claims/by_domain/engineering.md"
+declared_count = 2
+csv_claim_count = 2
+markdown_claim_count = 2
+count_match = true
+mapping_match = true
+
+[[domain]]
+id = "gravitational-waves"
+source_markdown = "docs/claims/by_domain/gravitational-waves.md"
+declared_count = 7
+csv_claim_count = 7
+markdown_claim_count = 7
+count_match = true
+mapping_match = true
+
+[[domain]]
+id = "holography"
+source_markdown = "docs/claims/by_domain/holography.md"
+declared_count = 135
+csv_claim_count = 135
+markdown_claim_count = 135
+count_match = true
+mapping_match = true
+
+[[domain]]
+id = "legacy"
+source_markdown = "docs/claims/by_domain/legacy.md"
+declared_count = 13
+csv_claim_count = 13
+markdown_claim_count = 13
+count_match = true
+mapping_match = true
+
+[[domain]]
+id = "materials"
+source_markdown = "docs/claims/by_domain/materials.md"
+declared_count = 12
+csv_claim_count = 12
+markdown_claim_count = 12
+count_match = true
+mapping_match = true
+
+[[domain]]
+id = "meta"
+source_markdown = "docs/claims/by_domain/meta.md"
+declared_count = 214
+csv_claim_count = 214
+markdown_claim_count = 214
+count_match = true
+mapping_match = true
+
+[[domain]]
+id = "open-systems"
+source_markdown = "docs/claims/by_domain/open-systems.md"
+declared_count = 1
+csv_claim_count = 1
+markdown_claim_count = 1
+count_match = true
+mapping_match = true
+
+[[domain]]
+id = "rocq"
+source_markdown = "docs/claims/by_domain/rocq.md"
+declared_count = 0
+csv_claim_count = 0
+markdown_claim_count = 0
+count_match = true
+mapping_match = true
+
+[[domain]]
+id = "spectral"
+source_markdown = "docs/claims/by_domain/spectral.md"
+declared_count = 14
+csv_claim_count = 14
+markdown_claim_count = 14
+count_match = true
+mapping_match = true
+
+[[domain]]
+id = "stellar-cartography"
+source_markdown = "docs/claims/by_domain/stellar-cartography.md"
+declared_count = 10
+csv_claim_count = 10
+markdown_claim_count = 10
+count_match = true
+mapping_match = true
+
+[[domain]]
+id = "tensor-networks"
+source_markdown = "docs/claims/by_domain/tensor-networks.md"
+declared_count = 3
+csv_claim_count = 3
+markdown_claim_count = 3
+count_match = true
+mapping_match = true
+
+[[domain]]
+id = "visualization"
+source_markdown = "docs/claims/by_domain/visualization.md"
+declared_count = 12
+csv_claim_count = 12
+markdown_claim_count = 12
+count_match = true
+mapping_match = true
+
+[[claim_domain]]
+claim_id = "C-001"
+domains_csv = ["algebra", "holography"]
+domains_markdown = ["algebra", "holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-002"
+domains_csv = ["algebra", "holography"]
+domains_markdown = ["algebra", "holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-003"
+domains_csv = ["algebra"]
+domains_markdown = ["algebra"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-004"
+domains_csv = ["algebra"]
+domains_markdown = ["algebra"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-005"
+domains_csv = ["algebra", "datasets"]
+domains_markdown = ["algebra", "datasets"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-006"
+domains_csv = ["datasets", "gravitational-waves", "legacy"]
+domains_markdown = ["datasets", "gravitational-waves", "legacy"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-007"
+domains_csv = ["cosmology", "gravitational-waves", "holography"]
+domains_markdown = ["cosmology", "gravitational-waves", "holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-008"
+domains_csv = ["legacy", "spectral"]
+domains_markdown = ["legacy", "spectral"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-009"
+domains_csv = ["legacy", "tensor-networks"]
+domains_markdown = ["legacy", "tensor-networks"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-010"
+domains_csv = ["holography", "materials", "spectral"]
+domains_markdown = ["holography", "materials", "spectral"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-011"
+domains_csv = ["algebra"]
+domains_markdown = ["algebra"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-012"
+domains_csv = ["cosmology", "datasets"]
+domains_markdown = ["cosmology", "datasets"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-013"
+domains_csv = ["algebra"]
+domains_markdown = ["algebra"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-014"
+domains_csv = ["algebra"]
+domains_markdown = ["algebra"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-015"
+domains_csv = ["algebra"]
+domains_markdown = ["algebra"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-016"
+domains_csv = ["algebra"]
+domains_markdown = ["algebra"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-017"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-018"
+domains_csv = ["algebra", "holography"]
+domains_markdown = ["algebra", "holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-019"
+domains_csv = ["algebra"]
+domains_markdown = ["algebra"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-020"
+domains_csv = ["legacy"]
+domains_markdown = ["legacy"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-021"
+domains_csv = ["legacy"]
+domains_markdown = ["legacy"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-022"
+domains_csv = ["algebra", "holography"]
+domains_markdown = ["algebra", "holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-023"
+domains_csv = ["algebra"]
+domains_markdown = ["algebra"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-024"
+domains_csv = ["cpp", "engineering"]
+domains_markdown = ["cpp", "engineering"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-025"
+domains_csv = ["gravitational-waves", "holography", "stellar-cartography"]
+domains_markdown = ["gravitational-waves", "holography", "stellar-cartography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-026"
+domains_csv = ["algebra", "gravitational-waves", "holography"]
+domains_markdown = ["algebra", "gravitational-waves", "holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-027"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-028"
+domains_csv = ["algebra"]
+domains_markdown = ["algebra"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-029"
+domains_csv = ["algebra"]
+domains_markdown = ["algebra"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-030"
+domains_csv = ["algebra"]
+domains_markdown = ["algebra"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-031"
+domains_csv = ["algebra", "holography"]
+domains_markdown = ["algebra", "holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-032"
+domains_csv = ["algebra"]
+domains_markdown = ["algebra"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-033"
+domains_csv = ["algebra", "datasets"]
+domains_markdown = ["algebra", "datasets"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-034"
+domains_csv = ["algebra", "datasets", "spectral"]
+domains_markdown = ["algebra", "datasets", "spectral"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-035"
+domains_csv = ["cosmology"]
+domains_markdown = ["cosmology"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-036"
+domains_csv = ["cosmology"]
+domains_markdown = ["cosmology"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-037"
+domains_csv = ["cosmology", "datasets"]
+domains_markdown = ["cosmology", "datasets"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-038"
+domains_csv = ["cosmology"]
+domains_markdown = ["cosmology"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-039"
+domains_csv = ["cosmology", "holography", "spectral"]
+domains_markdown = ["cosmology", "holography", "spectral"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-040"
+domains_csv = ["cosmology", "holography"]
+domains_markdown = ["cosmology", "holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-041"
+domains_csv = ["cosmology", "datasets"]
+domains_markdown = ["cosmology", "datasets"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-042"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-043"
+domains_csv = ["datasets", "holography"]
+domains_markdown = ["datasets", "holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-044"
+domains_csv = ["legacy"]
+domains_markdown = ["legacy"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-045"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-046"
+domains_csv = ["algebra", "legacy"]
+domains_markdown = ["algebra", "legacy"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-047"
+domains_csv = ["holography", "legacy"]
+domains_markdown = ["holography", "legacy"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-048"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-049"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-050"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-051"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-052"
+domains_csv = ["holography", "tensor-networks"]
+domains_markdown = ["holography", "tensor-networks"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-053"
+domains_csv = ["legacy", "materials"]
+domains_markdown = ["legacy", "materials"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-054"
+domains_csv = ["algebra"]
+domains_markdown = ["algebra"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-055"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-056"
+domains_csv = ["datasets", "holography"]
+domains_markdown = ["datasets", "holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-057"
+domains_csv = ["datasets"]
+domains_markdown = ["datasets"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-058"
+domains_csv = ["cosmology", "datasets", "stellar-cartography"]
+domains_markdown = ["cosmology", "datasets", "stellar-cartography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-059"
+domains_csv = ["datasets"]
+domains_markdown = ["datasets"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-060"
+domains_csv = ["datasets", "gravitational-waves", "stellar-cartography"]
+domains_markdown = ["datasets", "gravitational-waves", "stellar-cartography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-061"
+domains_csv = ["datasets", "gravitational-waves"]
+domains_markdown = ["datasets", "gravitational-waves"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-062"
+domains_csv = ["datasets"]
+domains_markdown = ["datasets"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-063"
+domains_csv = ["datasets"]
+domains_markdown = ["datasets"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-064"
+domains_csv = ["datasets"]
+domains_markdown = ["datasets"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-065"
+domains_csv = ["datasets"]
+domains_markdown = ["datasets"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-066"
+domains_csv = ["datasets"]
+domains_markdown = ["datasets"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-067"
+domains_csv = ["datasets", "materials"]
+domains_markdown = ["datasets", "materials"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-068"
+domains_csv = ["algebra", "holography"]
+domains_markdown = ["algebra", "holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-069"
+domains_csv = ["algebra"]
+domains_markdown = ["algebra"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-070"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-071"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-072"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-073"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-074"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-075"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-076"
+domains_csv = ["algebra"]
+domains_markdown = ["algebra"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-077"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-078"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-079"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-080"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-081"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-082"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-083"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-084"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-085"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-086"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-087"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-088"
+domains_csv = ["algebra"]
+domains_markdown = ["algebra"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-089"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-090"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-091"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-092"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-093"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-094"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-095"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-096"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-097"
+domains_csv = ["algebra", "holography"]
+domains_markdown = ["algebra", "holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-098"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-099"
+domains_csv = ["algebra"]
+domains_markdown = ["algebra"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-100"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-101"
+domains_csv = ["algebra"]
+domains_markdown = ["algebra"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-102"
+domains_csv = ["legacy"]
+domains_markdown = ["legacy"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-103"
+domains_csv = ["legacy"]
+domains_markdown = ["legacy"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-104"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-105"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-106"
+domains_csv = ["algebra"]
+domains_markdown = ["algebra"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-107"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-108"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-109"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-110"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-111"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-112"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-113"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-114"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-115"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-116"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-117"
+domains_csv = ["spectral"]
+domains_markdown = ["spectral"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-118"
+domains_csv = ["algebra"]
+domains_markdown = ["algebra"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-119"
+domains_csv = ["algebra"]
+domains_markdown = ["algebra"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-120"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-121"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-122"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-123"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-124"
+domains_csv = ["algebra"]
+domains_markdown = ["algebra"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-125"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-126"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-127"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-128"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-129"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-130"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-131"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-132"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-133"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-134"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-135"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-136"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-137"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-138"
+domains_csv = ["algebra", "holography"]
+domains_markdown = ["algebra", "holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-139"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-140"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-141"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-142"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-143"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-144"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-145"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-146"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-147"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-148"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-149"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-150"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-151"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-152"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-153"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-154"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-155"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-156"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-157"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-158"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-159"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-160"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-161"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-162"
+domains_csv = ["algebra"]
+domains_markdown = ["algebra"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-163"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-164"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-165"
+domains_csv = ["legacy"]
+domains_markdown = ["legacy"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-166"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-167"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-168"
+domains_csv = ["algebra", "holography"]
+domains_markdown = ["algebra", "holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-169"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-170"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-171"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-172"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-173"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-174"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-175"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-176"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-177"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-178"
+domains_csv = ["algebra"]
+domains_markdown = ["algebra"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-179"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-180"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-181"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-182"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-183"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-184"
+domains_csv = ["algebra"]
+domains_markdown = ["algebra"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-185"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-186"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-187"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-188"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-189"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-190"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-191"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-192"
+domains_csv = ["algebra", "holography"]
+domains_markdown = ["algebra", "holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-193"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-194"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-195"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-196"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-197"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-198"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-199"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-200"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-201"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-202"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-203"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-204"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-205"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-206"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-207"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-208"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-209"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-210"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-211"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-212"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-213"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-214"
+domains_csv = ["holography", "spectral"]
+domains_markdown = ["holography", "spectral"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-215"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-216"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-217"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-218"
+domains_csv = ["algebra", "holography"]
+domains_markdown = ["algebra", "holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-219"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-220"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-221"
+domains_csv = ["algebra"]
+domains_markdown = ["algebra"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-222"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-223"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-224"
+domains_csv = ["algebra"]
+domains_markdown = ["algebra"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-225"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-226"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-227"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-228"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-229"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-230"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-231"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-232"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-233"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-234"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-235"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-236"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-237"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-238"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-239"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-240"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-241"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-242"
+domains_csv = ["algebra"]
+domains_markdown = ["algebra"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-243"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-244"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-245"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-246"
+domains_csv = ["algebra"]
+domains_markdown = ["algebra"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-247"
+domains_csv = ["algebra"]
+domains_markdown = ["algebra"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-248"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-249"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-250"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-251"
+domains_csv = ["holography", "spectral"]
+domains_markdown = ["holography", "spectral"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-252"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-253"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-254"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-255"
+domains_csv = ["spectral"]
+domains_markdown = ["spectral"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-256"
+domains_csv = ["holography", "spectral"]
+domains_markdown = ["holography", "spectral"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-257"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-258"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-259"
+domains_csv = ["algebra"]
+domains_markdown = ["algebra"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-260"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-261"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-262"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-263"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-264"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-265"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-266"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-267"
+domains_csv = ["algebra", "holography"]
+domains_markdown = ["algebra", "holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-268"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-269"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-270"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-271"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-272"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-273"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-274"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-275"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-276"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-277"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-278"
+domains_csv = ["algebra"]
+domains_markdown = ["algebra"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-279"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-280"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-281"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-282"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-283"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-284"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-285"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-286"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-287"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-288"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-289"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-290"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-291"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-292"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-293"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-294"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-295"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-296"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-297"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-298"
+domains_csv = ["holography", "spectral"]
+domains_markdown = ["holography", "spectral"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-299"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-300"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-301"
+domains_csv = ["algebra"]
+domains_markdown = ["algebra"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-302"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-303"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-304"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-305"
+domains_csv = ["holography", "spectral"]
+domains_markdown = ["holography", "spectral"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-306"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-307"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-308"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-309"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-310"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-311"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-312"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-313"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-314"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-315"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-316"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-317"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-318"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-319"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-320"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-321"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-322"
+domains_csv = ["algebra"]
+domains_markdown = ["algebra"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-323"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-324"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-325"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-326"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-327"
+domains_csv = ["algebra"]
+domains_markdown = ["algebra"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-328"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-329"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-330"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-331"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-332"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-333"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-334"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-335"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-336"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-337"
+domains_csv = ["algebra"]
+domains_markdown = ["algebra"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-338"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-339"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-340"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-341"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-342"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-343"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-344"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-345"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-346"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-347"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-348"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-349"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-350"
+domains_csv = ["spectral"]
+domains_markdown = ["spectral"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-351"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-352"
+domains_csv = ["algebra"]
+domains_markdown = ["algebra"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-353"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-354"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-355"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-356"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-357"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-358"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-359"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-360"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-361"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-362"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-363"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-364"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-365"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-366"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-367"
+domains_csv = ["algebra"]
+domains_markdown = ["algebra"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-368"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-369"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-370"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-371"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-372"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-373"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-374"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-375"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-376"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-377"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-378"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-379"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-380"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-381"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-382"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-383"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-384"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-385"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-386"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-387"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-388"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-389"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-390"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-391"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-392"
+domains_csv = ["algebra", "holography"]
+domains_markdown = ["algebra", "holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-393"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-394"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-395"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-396"
+domains_csv = ["spectral"]
+domains_markdown = ["spectral"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-397"
+domains_csv = ["algebra"]
+domains_markdown = ["algebra"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-398"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-399"
+domains_csv = ["legacy"]
+domains_markdown = ["legacy"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-400"
+domains_csv = ["datasets", "holography", "materials"]
+domains_markdown = ["datasets", "holography", "materials"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-401"
+domains_csv = ["datasets", "holography", "materials"]
+domains_markdown = ["datasets", "holography", "materials"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-402"
+domains_csv = ["datasets", "holography", "materials"]
+domains_markdown = ["datasets", "holography", "materials"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-403"
+domains_csv = ["spectral"]
+domains_markdown = ["spectral"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-404"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-405"
+domains_csv = ["open-systems"]
+domains_markdown = ["open-systems"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-406"
+domains_csv = ["holography", "stellar-cartography", "tensor-networks"]
+domains_markdown = ["holography", "stellar-cartography", "tensor-networks"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-407"
+domains_csv = ["algebra", "holography", "stellar-cartography"]
+domains_markdown = ["algebra", "holography", "stellar-cartography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-408"
+domains_csv = ["meta", "stellar-cartography"]
+domains_markdown = ["meta", "stellar-cartography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-409"
+domains_csv = ["materials"]
+domains_markdown = ["materials"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-410"
+domains_csv = ["datasets"]
+domains_markdown = ["datasets"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-411"
+domains_csv = ["datasets"]
+domains_markdown = ["datasets"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-412"
+domains_csv = ["algebra", "holography", "visualization"]
+domains_markdown = ["algebra", "holography", "visualization"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-413"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-414"
+domains_csv = ["algebra"]
+domains_markdown = ["algebra"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-415"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-416"
+domains_csv = ["algebra"]
+domains_markdown = ["algebra"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-417"
+domains_csv = ["holography", "materials", "visualization"]
+domains_markdown = ["holography", "materials", "visualization"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-418"
+domains_csv = ["datasets"]
+domains_markdown = ["datasets"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-419"
+domains_csv = ["algebra", "holography"]
+domains_markdown = ["algebra", "holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-420"
+domains_csv = ["holography", "materials"]
+domains_markdown = ["holography", "materials"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-421"
+domains_csv = ["engineering", "holography", "materials"]
+domains_markdown = ["engineering", "holography", "materials"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-422"
+domains_csv = ["holography", "visualization"]
+domains_markdown = ["holography", "visualization"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-423"
+domains_csv = ["holography", "materials", "visualization"]
+domains_markdown = ["holography", "materials", "visualization"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-424"
+domains_csv = ["holography", "visualization"]
+domains_markdown = ["holography", "visualization"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-425"
+domains_csv = ["algebra", "holography"]
+domains_markdown = ["algebra", "holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-426"
+domains_csv = ["holography"]
+domains_markdown = ["holography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-427"
+domains_csv = ["algebra", "materials"]
+domains_markdown = ["algebra", "materials"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-428"
+domains_csv = ["cosmology", "holography", "visualization"]
+domains_markdown = ["cosmology", "holography", "visualization"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-429"
+domains_csv = ["holography", "visualization"]
+domains_markdown = ["holography", "visualization"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-430"
+domains_csv = ["cosmology", "holography", "visualization"]
+domains_markdown = ["cosmology", "holography", "visualization"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-431"
+domains_csv = ["algebra", "holography", "visualization"]
+domains_markdown = ["algebra", "holography", "visualization"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-432"
+domains_csv = ["cpp", "holography", "visualization"]
+domains_markdown = ["cpp", "holography", "visualization"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-433"
+domains_csv = ["meta"]
+domains_markdown = ["meta"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-434"
+domains_csv = ["holography", "visualization"]
+domains_markdown = ["holography", "visualization"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-435"
+domains_csv = ["holography", "visualization"]
+domains_markdown = ["holography", "visualization"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-436"
+domains_csv = ["datasets", "stellar-cartography"]
+domains_markdown = ["datasets", "stellar-cartography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-437"
+domains_csv = ["datasets", "stellar-cartography"]
+domains_markdown = ["datasets", "stellar-cartography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-438"
+domains_csv = ["datasets", "stellar-cartography"]
+domains_markdown = ["datasets", "stellar-cartography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-439"
+domains_csv = ["datasets", "gravitational-waves"]
+domains_markdown = ["datasets", "gravitational-waves"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-440"
+domains_csv = ["cosmology", "datasets"]
+domains_markdown = ["cosmology", "datasets"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-441"
+domains_csv = ["cosmology", "datasets"]
+domains_markdown = ["cosmology", "datasets"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-442"
+domains_csv = ["datasets", "stellar-cartography"]
+domains_markdown = ["datasets", "stellar-cartography"]
+domain_sets_match = true
+
+[[claim_domain]]
+claim_id = "C-443"
+domains_csv = ["algebra"]
+domains_markdown = ["algebra"]
+domain_sets_match = true

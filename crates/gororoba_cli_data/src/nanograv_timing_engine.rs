@@ -21,7 +21,6 @@ use std::{
     fs,
     path::{Path, PathBuf},
 };
-use wide::f64x4;
 
 const C_KM_PER_S: f64 = 299_792.458;
 // Standard TEMPO2 dispersion constant: K_DM = 4148.808 us MHz^2 (pc/cm^3)^-1
@@ -2905,30 +2904,9 @@ fn apply_inverse_covariance_to_matrix(
 }
 
 fn row_dot(matrix: &DMatrix<f64>, row: usize, coefficients: &DVector<f64>) -> f64 {
-    let mut sum = f64x4::splat(0.0);
-    let mut col = 0usize;
-    while col + 4 <= matrix.ncols() {
-        let lhs = f64x4::from([
-            matrix[(row, col)],
-            matrix[(row, col + 1)],
-            matrix[(row, col + 2)],
-            matrix[(row, col + 3)],
-        ]);
-        let rhs = f64x4::from([
-            coefficients[col],
-            coefficients[col + 1],
-            coefficients[col + 2],
-            coefficients[col + 3],
-        ]);
-        sum += lhs * rhs;
-        col += 4;
-    }
-    let mut scalar = sum.reduce_add();
-    while col < matrix.ncols() {
-        scalar += matrix[(row, col)] * coefficients[col];
-        col += 1;
-    }
-    scalar
+    (0..matrix.ncols())
+        .map(|col| matrix[(row, col)] * coefficients[col])
+        .sum()
 }
 
 fn closest_residual(candidate: f64, baseline: f64, period_s: f64) -> f64 {
