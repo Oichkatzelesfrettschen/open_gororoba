@@ -12,3 +12,9 @@ pub mod lbm_dispatch;
 pub mod nonlocal_report;
 pub mod voyager_arrow;
 pub mod voyager_encounter;
+
+#[cfg(test)]
+#[test]
+fn takens_descriptor_sedenion_lane_matches_scalar_reference() {
+    crate::heliosphere_eval::assert_takens_descriptor_sedenion_lane_matches_scalar_reference();
+}

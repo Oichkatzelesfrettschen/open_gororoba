@@ -1,7 +1,7 @@
-# Requirements narrative overlay (TOML-authored compatibility lane).
-# WHY: Restores the canonical prose source for emitted requirements markdown.
-# HOW: Edit body_markdown here; run `cargo run -q -p gororoba_cli_data --bin registry-emit -- requirements-legacy`
-#      to regenerate the legacy markdown files under docs/, apps/, and crate README targets.
+# Requirements narrative overlay (TOML-authored narrative compatibility lane).
+# WHY: Keeps the prose layer editable while structured requirements data lives in the canonical SQLite DB.
+# HOW: Edit body_markdown here; run `make registry-build registry-export-markdown`
+#      to regenerate the emitted markdown files under docs/, apps/, and crate README targets.
 
 [requirements_narrative]
 updated = "2026-04-04"
@@ -16,8 +16,10 @@ body_markdown = '''
 
 This repository is a Rust-first scientific workspace with optional Python,
 Docker, Rocq, LaTeX, C++, and web-app lanes layered on top. The canonical
-requirements inventory lives in `registry/requirements.toml` and
-`registry/module_requirements.toml`; this narrative file exists to emit the
+structured requirements inventory lives in
+`registry/canonical/control_plane.sqlite3`. The checked-in
+`registry/requirements.toml` and `registry/module_requirements.toml` files are
+DB-backed compatibility exports; this narrative file exists to emit the
 human-facing compatibility docs from the same source-of-truth.
 
 ## Core policy

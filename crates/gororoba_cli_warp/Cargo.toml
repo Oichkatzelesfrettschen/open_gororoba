@@ -17,10 +17,12 @@ path = "src/bin/warp_ring_3d.rs"
 [[bin]]
 name = "warp-gpu-experiment"
 path = "src/bin/warp_gpu_experiment.rs"
+required-features = ["gpu"]
 
 [[bin]]
 name = "warp-gpu-smoke"
 path = "src/bin/warp_gpu_smoke.rs"
+required-features = ["gpu"]
 
 [[bin]]
 name = "warp-bench-precision"
@@ -67,12 +69,12 @@ gororoba_cli = { path = "../gororoba_cli" }
 gororoba_algebra = { path = "../gororoba_algebra", features = ["lie"] }
 gororoba_engine = { path = "../gororoba_engine" }
 gororoba_contracts = { path = "../gororoba_contracts" }
-data_core = { path = "../data_core" }
+data_artifacts_core = { path = "../data_artifacts_core" }
 lbm_core = { path = "../lbm_core" }
 lbm_3d_cuda = { path = "../lbm_3d_cuda", optional = true }
 cudarc = { workspace = true, optional = true }
 nvml-wrapper = { workspace = true, optional = true }
-stats_core = { path = "../stats_core", features = ["gpu"] }
+stats_core = { path = "../stats_core" }
 spectral_core = { path = "../spectral_core" }
 gr_core = { path = "../gr_core" }
 materials_core = { path = "../materials_core" }
@@ -99,8 +101,9 @@ gpu = [
     "dep:nvml-wrapper",
     "gororoba_algebra/gpu",
     "gororoba_engine/gpu",
+    "stats_core/gpu",
 ]
-hdf5-export = ["data_core/hdf5-export"]
+hdf5-export = ["data_artifacts_core/hdf5-export"]
 
 [lints]
 workspace = true

@@ -33,7 +33,7 @@ What the helper writes
   - points ambient Cargo target output at repo-scoped `.cache/`
   - points heavy intermediate build output at
     `open_gororoba-cargo-build/ambient` under the first writable root in
-    this order: `${TMPDIR}` (if set), `/srv/fast/tmp`,
+    this order: `${TMPDIR}` (if set), `/tmp`,
     `${XDG_CACHE_HOME:-~/.cache}`
   - prints the selected Cargo build-dir and fallback details when higher
     priority roots are unavailable

@@ -1,8 +1,10 @@
 #![cfg_attr(not(feature = "hdf5-export"), allow(dead_code, unused_imports))]
 
 #[cfg(feature = "hdf5-export")]
-use data_core::hdf5_export::{read_simulation_spectral_component, read_simulation_trace_component};
-use data_core::quality::{RhoQualityThresholds, RhoTraceQuality, validate_rho_trace};
+use data_artifacts_core::hdf5_export::{
+    read_simulation_spectral_component, read_simulation_trace_component,
+};
+use data_artifacts_core::quality::{RhoQualityThresholds, RhoTraceQuality, validate_rho_trace};
 #[cfg(feature = "hdf5-export")]
 use gororoba_cli::warp_gate_policy::load_warp_gate_policy;
 use stats_core::helpers::{mean, std_dev};

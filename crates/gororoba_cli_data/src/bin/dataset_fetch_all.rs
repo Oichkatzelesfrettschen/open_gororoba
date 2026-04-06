@@ -75,8 +75,8 @@ fn all_providers() -> Vec<Box<dyn DatasetProvider>> {
         Box::new(wmm::Wmm2025Provider),
         Box::new(jpl_ephemeris::JplEphemerisProvider),
         // Materials
-        Box::new(jarvis::JarvisProvider),
-        Box::new(aflow::AflowProvider),
+        Box::new(jarvis_fetch::JarvisProvider),
+        Box::new(aflow_fetch::AflowProvider),
         // Wow! Signal
         Box::new(wow::WowPrintoutProvider),
         Box::new(wow::Bl6equj5ManifestProvider),

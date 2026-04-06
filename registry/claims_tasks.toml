@@ -1,0 +1,3764 @@
+# Authoritative source: `registry/claims_tasks.toml`.
+# Source input: `docs/CLAIMS_TASKS.md`.
+# Regenerate mirrors with: `make registry-build registry-export-markdown`.
+[claims_tasks]
+updated = "2026-03-18"
+source_markdown = "docs/CLAIMS_TASKS.md"
+task_count = 261
+section_count = 20
+canonical_status_task_count = 261
+noncanonical_status_task_count = 0
+
+[[section]]
+id = "CTS-001"
+name = "Phase 7 Sprint 6.1: Rust Infrastructure Buildouts (2026-02-06)"
+task_count = 0
+
+[[section]]
+id = "CTS-002"
+name = "Phase 7 R6 Triage Summary (2026-02-06)"
+task_count = 0
+
+[[section]]
+id = "CTS-003"
+name = "Active tasks (start here)"
+task_count = 33
+
+[[section]]
+id = "CTS-004"
+name = "Backfill (triage) tasks (auto-generated)"
+task_count = 208
+
+[[section]]
+id = "CTS-005"
+name = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
+task_count = 20
+
+[[section]]
+id = "CTS-006"
+name = "Phase 6 Batch Triage (2026-02-04)"
+task_count = 0
+
+[[section]]
+id = "CTS-007"
+name = "Upgraded by Phase 6 work (Sprints 1-4)"
+task_count = 0
+
+[[section]]
+id = "CTS-008"
+name = "Confirmed Refuted (matrix status: \"Not supported (rejected)\")"
+task_count = 0
+
+[[section]]
+id = "CTS-009"
+name = "Remaining unresolved claims by triage category"
+task_count = 0
+
+[[section]]
+id = "CTS-010"
+name = "Conversation mining (Phase 6 C1, 2026-02-04)"
+task_count = 0
+
+[[section]]
+id = "CTS-011"
+name = "B5: Not-supported claims final disposition (Phase 6, 2026-02-04)"
+task_count = 0
+
+[[section]]
+id = "CTS-012"
+name = "B2: Speculative claims deep analysis (Phase 6, 2026-02-04)"
+task_count = 0
+
+[[section]]
+id = "CTS-013"
+name = "B4: Modeled claims upgrade (Phase 6, 2026-02-04)"
+task_count = 0
+
+[[section]]
+id = "CTS-014"
+name = "Backlog triage items (C-100 through C-399)"
+task_count = 0
+
+[[section]]
+id = "CTS-015"
+name = "Phase 7 Sprint 4: R6 400-Series Triage Summary (2026-02-04)"
+task_count = 0
+
+[[section]]
+id = "CTS-016"
+name = "Phase 7 Rust Module Expansion (2026-02-04)"
+task_count = 0
+
+[[section]]
+id = "CTS-017"
+name = "Phase 7 Batch A Closures (2026-02-05)"
+task_count = 0
+
+[[section]]
+id = "CTS-018"
+name = "Phase 8 Rust Integration Summary (2026-02-05)"
+task_count = 0
+
+[[section]]
+id = "CTS-019"
+name = "Status Snapshot: 2026-02-07 (Sprint 8)"
+task_count = 0
+
+[[section]]
+id = "CTS-020"
+name = "Notes"
+task_count = 0
+
+[[task]]
+id = "CTASK-0001"
+claim_id = "C-006"
+status_token = "DONE"
+section = "Active tasks (start here)"
+source_line = 20
+status_raw = "DONE"
+status_canonical = true
+order_index = 1
+task = '''
+GWOSC snapshot fetcher + provenance (offline-testable).
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0002"
+claim_id = "C-006"
+status_token = "DONE"
+section = "Active tasks (start here)"
+source_line = 21
+status_raw = "DONE"
+status_canonical = true
+order_index = 2
+task = '''
+Offline test: JSON->CSV exact match + hash checks.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0003"
+claim_id = "C-025"
+status_token = "DONE"
+section = "Active tasks (start here)"
+source_line = 22
+status_raw = "DONE"
+status_canonical = true
+order_index = 3
+task = '''
+TSCP code migration into main package + CLI entrypoints + offline-by-default loader.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0004"
+claim_id = "C-025"
+status_token = "TODO"
+section = "Active tasks (start here)"
+source_line = 23
+status_raw = "TODO"
+status_canonical = true
+order_index = 4
+task = '''
+Generate Phase 5 artifacts once Zenodo sky maps are cached (no-network in tests; record provenance; keep artifacts small).
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0005"
+claim_id = "C-026"
+status_token = "PARTIAL"
+section = "Active tasks (start here)"
+source_line = 24
+status_raw = "PARTIAL"
+status_canonical = true
+order_index = 5
+task = '''
+Lower mass-gap baseline metrics + mechanism plan (no algebra->mass mapping yet).
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0006"
+claim_id = "C-027"
+status_token = "DONE"
+section = "Active tasks (start here)"
+source_line = 25
+status_raw = "DONE"
+status_canonical = true
+order_index = 6
+task = '''
+Define horizon density proxy + decision rule; generate deterministic mass-scaling artifacts; add invariant tests (toy model only).
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0007"
+claim_id = "C-047"
+status_token = "DONE"
+section = "Active tasks (start here)"
+source_line = 26
+status_raw = "DONE"
+status_canonical = true
+order_index = 7
+task = '''
+Correct legacy E9/E10/E11 statement; cache primary open-access Kac-Moody anchors.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0008"
+claim_id = "C-047"
+status_token = "DONE"
+section = "Active tasks (start here)"
+source_line = 27
+status_raw = "DONE"
+status_canonical = true
+order_index = 8
+task = '''
+Offline check: E8/E9/E10/E11 Cartan signature sanity.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0009"
+claim_id = "C-048"
+status_token = "DONE"
+section = "Active tasks (start here)"
+source_line = 28
+status_raw = "DONE"
+status_canonical = true
+order_index = 9
+task = '''
+Add motivic tower anchor sources (analogy only) and cache at least one open-access reference.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0010"
+claim_id = "C-050"
+status_token = "DONE"
+section = "Active tasks (start here)"
+source_line = 29
+status_raw = "DONE"
+status_canonical = true
+order_index = 10
+task = '''
+Make optimization isomorphism explicit as a toy LP equivalence; add deterministic artifact + test.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0011"
+claim_id = "C-007"
+status_token = "PARTIAL"
+section = "Active tasks (start here)"
+source_line = 30
+status_raw = "PARTIAL"
+status_canonical = true
+order_index = 11
+task = '''
+Falsifiable clumping metric + null-model comparison + bootstrap stability + decision rule.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0012"
+claim_id = "C-007"
+status_token = "PARTIAL"
+section = "Active tasks (start here)"
+source_line = 31
+status_raw = "PARTIAL"
+status_canonical = true
+order_index = 12
+task = '''
+Add selection-bias control (toy proxy + decision rule; still not injection-based).
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0013"
+claim_id = "C-007"
+status_token = "DONE"
+section = "Active tasks (start here)"
+source_line = 32
+status_raw = "DONE"
+status_canonical = true
+order_index = 13
+task = '''
+Injection-based selection function (offline cached) + refit decision rule.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0014"
+claim_id = "C-008"
+status_token = "DONE"
+section = "Active tasks (start here)"
+source_line = 33
+status_raw = "DONE"
+status_canonical = true
+order_index = 14
+task = '''
+CLOSED/TOY: alpha=-1.5 is a parameter choice yielding d_s=2 under Convention B; this is a dimensional-analysis coincidence, not a derivation. No physical mechanism connects fractional Laplacian alpha to d_s.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0015"
+claim_id = "C-009"
+status_token = "PARTIAL"
+section = "Active tasks (start here)"
+source_line = 34
+status_raw = "PARTIAL"
+status_canonical = true
+order_index = 15
+task = '''
+Add deterministic tensor-network measurement pipeline + scaling + decision artifacts.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0016"
+claim_id = "C-010"
+status_token = "DONE"
+section = "Active tasks (start here)"
+source_line = 35
+status_raw = "DONE"
+status_canonical = true
+order_index = 16
+task = '''
+CLOSED/NEGATIVE-RESULT: lock C-010 to reproducible topology evidence and an explicit non-local coupling requirement.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0017"
+claim_id = "C-011"
+status_token = "BLOCKED"
+section = "Active tasks (start here)"
+source_line = 36
+status_raw = "BLOCKED"
+status_canonical = true
+order_index = 17
+task = '''
+CLOSED/OBSTRUCTED: keep the phenomenological bridge and cached first-source citations, but mark simulator extension as stalled pending an associative bypass model.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0018"
+claim_id = "C-012"
+status_token = "REFUTED"
+section = "Active tasks (start here)"
+source_line = 37
+status_raw = "REFUTED"
+status_canonical = true
+order_index = 18
+task = '''
+Dark energy via "negative dimension diffusion": REFUTED BY DATA (Phase 2.2 complete). Model with eta=0 cannot vary w from -1, making it equivalent to Lambda-CDM but penalized. Extension to free eta required for genuine test (Task #94).
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0019"
+claim_id = "C-004"
+status_token = "DONE"
+section = "Active tasks (start here)"
+source_line = 38
+status_raw = "DONE"
+status_canonical = true
+order_index = 19
+task = '''
+PSL(2,7) action: construct explicit 168-element action and show it permutes the 7 box-kites as subgraphs.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0020"
+claim_id = "C-005"
+status_token = "PARTIAL"
+section = "Active tasks (start here)"
+source_line = 39
+status_raw = "PARTIAL"
+status_canonical = true
+order_index = 20
+task = '''
+Reggiani manifold identifications: extract paper-asserted statements + keep unreplicated unless a geometric check is added.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0021"
+claim_id = "C-019"
+status_token = "PARTIAL"
+section = "Active tasks (start here)"
+source_line = 40
+status_raw = "PARTIAL"
+status_canonical = true
+order_index = 21
+task = '''
+Wheels->Cayley-Dickson mapping: exploratory totalized-division interpretation created (Phase 3.1.1).
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0022"
+claim_id = "C-007"
+status_token = "DONE"
+section = "Active tasks (start here)"
+source_line = 41
+status_raw = "DONE"
+status_canonical = true
+order_index = 22
+task = '''
+Pre-registered Hartigan dip test for GWTC-3 mass modality (Phase 2.1) - TEST NOT EXECUTED: insufficient sample size (N=34 < 50 pre-registered minimum). Validation correctly prevented underpowered test. Mass clumping claims downgraded to exploratory status only.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0023"
+claim_id = "C-012"
+status_token = "DONE"
+section = "Active tasks (start here)"
+source_line = 42
+status_raw = "DONE"
+status_canonical = true
+order_index = 23
+task = '''
+Lambda-CDM baseline comparison for dark energy model (Phase 2.2) - MODEL REFUTED: Negative-dimension model (eta=0) is mathematically equivalent to Lambda-CDM (w=-1 always) but penalized for extra parameter. Delta-AIC=+11.6, Delta-BIC=+11.6 vs constant-w (best model) -> DECISIVELY REJECTED per pre-registered threshold (>=10). Constant-w finds w=-1.086 (phantom-like), improving chi2 by 11.6 over Lambda-CDM. Critical discovery: SDSS DR12 BAO observables use convention D_M*(rd,fid/rd) [Mpc], H*(rd/rd,fid) [km/s/Mpc], NOT dimensionless ratios (fixed in src/scripts/data/fix_bao_observables.py). Data: Pantheon+ (1701 SNe) + Moresco H(z) (33 points) + DR12 BAO (3 bins) = 1740 total points. Completion date: 2026-01-29.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0024"
+claim_id = "C-009"
+status_token = "IN_PROGRESS"
+section = "Active tasks (start here)"
+source_line = 43
+status_raw = "IN_PROGRESS"
+status_canonical = true
+order_index = 24
+task = '''
+Multi-system tensor entropy study with pre-registered protocol (Phase 2.3).
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0025"
+claim_id = "C-010"
+status_token = "DONE"
+section = "Active tasks (start here)"
+source_line = 44
+status_raw = "DONE"
+status_canonical = true
+order_index = 25
+task = '''
+Materials baseline v2 with k-fold cross-validation (Phase 3.2).
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0026"
+claim_id = "C-024"
+status_token = "DONE"
+section = "Active tasks (start here)"
+source_line = 45
+status_raw = "DONE"
+status_canonical = true
+order_index = 26
+task = '''
+C++ acceleration kernels scaffold: CMake + Conan + Catch2 + pybind11 (Phase 4).
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0027"
+claim_id = "C-018"
+status_token = "DONE"
+section = "Active tasks (start here)"
+source_line = 46
+status_raw = "DONE"
+status_canonical = true
+order_index = 27
+task = '''
+Wheel axioms validated on a concrete model.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0028"
+claim_id = "C-020"
+status_token = "DONE"
+section = "Active tasks (start here)"
+source_line = 47
+status_raw = "DONE"
+status_canonical = true
+order_index = 28
+task = '''
+Legacy 16D ZD adjacency matrix: refuted as noise/hallucination.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0029"
+claim_id = "C-021"
+status_token = "DONE"
+section = "Active tasks (start here)"
+source_line = 48
+status_raw = "DONE"
+status_canonical = true
+order_index = 29
+task = '''
+1024D basis-to-lattice mapping: refuted as inconsistent.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0030"
+claim_id = "C-022"
+status_token = "DONE"
+section = "Active tasks (start here)"
+source_line = 49
+status_raw = "DONE"
+status_canonical = true
+order_index = 30
+task = '''
+CLOSED/ANALOGY: Ordinal birthday mapping only; maps CD doubling level n to surreal birthday n and tests property-loss cascade. Does not implement full Conway/Gonshor surreal arithmetic.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0031"
+claim_id = "C-023"
+status_token = "DONE"
+section = "Active tasks (start here)"
+source_line = 50
+status_raw = "DONE"
+status_canonical = true
+order_index = 31
+task = '''
+CLOSED/TOY: Basis-vector holonomy model; compares associator norms across CD levels and finds statistical signal (p~9.4e-8) between ZD-adjacent vs generic triples. "Holonomy" label is metaphorical, not geometric.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0032"
+claim_id = "C-453"
+status_token = "TODO"
+section = "Active tasks (start here)"
+source_line = 51
+status_raw = "TODO"
+status_canonical = true
+order_index = 32
+task = '''
+Ingest hypercomplex species taxonomy and derived claim candidates into canonical claim/ticket lanes with verify-refute hooks.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0033"
+claim_id = "C-053"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 57
+status_raw = "DONE"
+status_canonical = true
+order_index = 33
+task = '''
+Add dedicated sources index + deterministic toy artifact + offline unit test (diagonal-only degeneracy made explicit).
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0034"
+claim_id = "C-068"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 58
+status_raw = "DONE"
+status_canonical = true
+order_index = 34
+task = '''
+DONE: add shared Rust Cayley-Dickson pattern-baseline audit; show the 84-ZD partner spectrum does not uniquely match PDG mass ladders under either log or linear transforms once random-subset nulls are enforced; emit data/output/claims_falsification/cd_pattern_baseline_audit.toml; sync campaign linkage.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0035"
+claim_id = "C-070"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 59
+status_raw = "DONE"
+status_canonical = true
+order_index = 35
+task = '''
+DONE: add shared Rust Cayley-Dickson pattern-baseline audit; replace the legacy rank-correlation lane with exact associator-curve vs NANOGrav Frechet nulls and simple-template baselines; emit data/output/claims_falsification/cd_pattern_baseline_audit.toml; sync campaign linkage.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0036"
+claim_id = "C-074"
+status_token = "PARTIAL"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 60
+status_raw = "PARTIAL"
+status_canonical = true
+order_index = 36
+task = '''
+Anchor associator growth fit (v3 exp2) with sources index + offline fit-sanity test; leave uncertainty estimation as follow-up.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0037"
+claim_id = "C-075"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 61
+status_raw = "DONE"
+status_canonical = true
+order_index = 37
+task = '''
+Reproduce legacy v3 exp3 pathion interaction spectrum (distinct eigenvalues + log-span) with deterministic artifacts + unit test.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0038"
+claim_id = "C-077"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 62
+status_raw = "DONE"
+status_canonical = true
+order_index = 38
+task = '''
+DONE: add shared Rust particle numerology verifier; confirm the democratic/S3 mixing surface remains far from PMNS probabilities (Frobenius 0.5888, mean diagonal 1/3, p=0.337 vs random doubly stochastic null); emit data/output/claims_falsification/particle_numerology_audit.toml; sync campaign linkage.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0039"
+claim_id = "C-078"
+status_token = "REFUTED"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 63
+status_raw = "REFUTED"
+status_canonical = true
+order_index = 39
+task = '''
+REFUTED: 32D/64D diagonal-form ZDs yield identical spectrum diversity to 16D (66 distinct eigenvalues, 2.83-decade span). General-form ZD search required.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0040"
+claim_id = "C-082"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 64
+status_raw = "DONE"
+status_canonical = true
+order_index = 40
+task = '''
+Extract cached v4 expE associator-saturation fit into deterministic CSV artifacts + offline unit test.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0041"
+claim_id = "C-087"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 65
+status_raw = "DONE"
+status_canonical = true
+order_index = 41
+task = '''
+Extract v5 cross-term/independence metrics into CSV artifacts and add a unit test that enforces vanishing correlation at high dimension.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0042"
+claim_id = "C-094"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 66
+status_raw = "DONE"
+status_canonical = true
+order_index = 42
+task = '''
+Extract cached v6 mixed-dimension fit degradation and record it as a guardrail against non-2^n extrapolation artifacts.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0043"
+claim_id = "C-129"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 67
+status_raw = "DONE"
+status_canonical = true
+order_index = 43
+task = '''
+Extract cached v13 associator-norm distribution stats into deterministic CSV artifacts + offline unit test.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0044"
+claim_id = "C-087"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 68
+status_raw = "DONE"
+status_canonical = true
+order_index = 44
+task = '''
+Associator norm independence: E[\\\\\\|\\\\\\|A\\\\\\|\\\\\\|^2] -> 2 as d -> inf, confirmed by Monte Carlo (cross-term correlation decays monotonically). Phase 6 B3.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0045"
+claim_id = "C-090"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 69
+status_raw = "DONE"
+status_canonical = true
+order_index = 45
+task = '''
+SO(7) rotation drift: ZD condition broken by all non-trivial SO(7) rotations, drift grows with angle. Phase 6 B3.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0046"
+claim_id = "C-092"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 70
+status_raw = "DONE"
+status_canonical = true
+order_index = 46
+task = '''
+DONE: add shared Rust Cayley-Dickson pattern-baseline audit; show generic SO(7) rotations leave the exact zero-divisor lane immediately and the surviving orbit structure is discrete/combinatorial; emit data/output/claims_falsification/cd_pattern_baseline_audit.toml; sync campaign linkage.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0047"
+claim_id = "C-096"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 71
+status_raw = "DONE"
+status_canonical = true
+order_index = 47
+task = '''
+Extract cached v8 associator-tensor symmetry diagnostics (dims 4/8/16) into deterministic CSV artifacts + offline unit test.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0048"
+claim_id = "C-097"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 72
+status_raw = "DONE"
+status_canonical = true
+order_index = 48
+task = '''
+Compute diagonal ZD interaction graph invariants (weights + components at threshold > 1) with deterministic artifacts and a unit test.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0049"
+claim_id = "C-099"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 73
+status_raw = "DONE"
+status_canonical = true
+order_index = 49
+task = '''
+Extract cached v8 non-diagonal ZD geometry summary (PCA dims, kernel, sparsity, angles) into a deterministic CSV artifact + offline unit test.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0050"
+claim_id = "C-100"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 74
+status_raw = "DONE"
+status_canonical = true
+order_index = 50
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0051"
+claim_id = "C-102"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 75
+status_raw = "DONE"
+status_canonical = true
+order_index = 51
+task = '''
+Reproduce legacy expZ alternativity-ratio convergence into deterministic CSV artifacts + offline unit test.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0052"
+claim_id = "C-103"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 76
+status_raw = "DONE"
+status_canonical = true
+order_index = 52
+task = '''
+Reproduce expAA percolation-style ZD connectivity transition into deterministic CSV artifacts + offline unit test.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0053"
+claim_id = "C-108"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 77
+status_raw = "DONE"
+status_canonical = true
+order_index = 53
+task = '''
+Extract cached v10 alternativity-ratio fit into deterministic CSV artifacts and add an offline unit test.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0054"
+claim_id = "C-109"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 78
+status_raw = "DONE"
+status_canonical = true
+order_index = 54
+task = '''
+Extract cached v10 probing + reproduce lifted-diagonal kernel doubling into deterministic CSV artifacts + offline unit test.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0055"
+claim_id = "C-113"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 79
+status_raw = "DONE"
+status_canonical = true
+order_index = 55
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0056"
+claim_id = "C-115"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 80
+status_raw = "DONE"
+status_canonical = true
+order_index = 56
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0057"
+claim_id = "C-120"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 81
+status_raw = "DONE"
+status_canonical = true
+order_index = 57
+task = '''
+Extract cached v12 ZD kernel scaling into deterministic CSV artifacts and add an offline unit test.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0058"
+claim_id = "C-123"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 82
+status_raw = "DONE"
+status_canonical = true
+order_index = 58
+task = '''
+Extract cached v12 associator Lie bracket metrics into deterministic CSV artifacts and add an offline unit test.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0059"
+claim_id = "C-126"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 83
+status_raw = "DONE"
+status_canonical = true
+order_index = 59
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0060"
+claim_id = "C-128"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 84
+status_raw = "DONE"
+status_canonical = true
+order_index = 60
+task = '''
+Extract cached v13 conjugate-inverse errors into deterministic CSV artifacts + offline unit test.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0061"
+claim_id = "C-130"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 85
+status_raw = "DONE"
+status_canonical = true
+order_index = 61
+task = '''
+Extract cached v14 associator norm sqrt(2) metrics into deterministic CSV artifacts and add an offline unit test.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0062"
+claim_id = "C-131"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 86
+status_raw = "DONE"
+status_canonical = true
+order_index = 62
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0063"
+claim_id = "C-132"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 87
+status_raw = "DONE"
+status_canonical = true
+order_index = 63
+task = '''
+Extract cached v14 commutator-norm convergence into deterministic CSV artifacts + offline unit test.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0064"
+claim_id = "C-135"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 88
+status_raw = "DONE"
+status_canonical = true
+order_index = 64
+task = '''
+Extract cached v14 power-norm scaling into deterministic CSV artifacts + offline unit test.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0065"
+claim_id = "C-136"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 89
+status_raw = "DONE"
+status_canonical = true
+order_index = 65
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0066"
+claim_id = "C-139"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 90
+status_raw = "DONE"
+status_canonical = true
+order_index = 66
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0067"
+claim_id = "C-141"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 91
+status_raw = "DONE"
+status_canonical = true
+order_index = 67
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0068"
+claim_id = "C-143"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 92
+status_raw = "DONE"
+status_canonical = true
+order_index = 68
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0069"
+claim_id = "C-149"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 93
+status_raw = "DONE"
+status_canonical = true
+order_index = 69
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0070"
+claim_id = "C-150"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 94
+status_raw = "DONE"
+status_canonical = true
+order_index = 70
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0071"
+claim_id = "C-163"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 95
+status_raw = "DONE"
+status_canonical = true
+order_index = 71
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0072"
+claim_id = "C-164"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 96
+status_raw = "DONE"
+status_canonical = true
+order_index = 72
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0073"
+claim_id = "C-165"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 97
+status_raw = "DONE"
+status_canonical = true
+order_index = 73
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0074"
+claim_id = "C-169"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 98
+status_raw = "DONE"
+status_canonical = true
+order_index = 74
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0075"
+claim_id = "C-170"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 99
+status_raw = "DONE"
+status_canonical = true
+order_index = 75
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0076"
+claim_id = "C-171"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 100
+status_raw = "DONE"
+status_canonical = true
+order_index = 76
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0077"
+claim_id = "C-173"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 101
+status_raw = "DONE"
+status_canonical = true
+order_index = 77
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0078"
+claim_id = "C-174"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 102
+status_raw = "DONE"
+status_canonical = true
+order_index = 78
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0079"
+claim_id = "C-176"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 103
+status_raw = "DONE"
+status_canonical = true
+order_index = 79
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0080"
+claim_id = "C-179"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 104
+status_raw = "DONE"
+status_canonical = true
+order_index = 80
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0081"
+claim_id = "C-180"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 105
+status_raw = "DONE"
+status_canonical = true
+order_index = 81
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0082"
+claim_id = "C-183"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 106
+status_raw = "DONE"
+status_canonical = true
+order_index = 82
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0083"
+claim_id = "C-185"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 107
+status_raw = "DONE"
+status_canonical = true
+order_index = 83
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0084"
+claim_id = "C-186"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 108
+status_raw = "DONE"
+status_canonical = true
+order_index = 84
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0085"
+claim_id = "C-187"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 109
+status_raw = "DONE"
+status_canonical = true
+order_index = 85
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0086"
+claim_id = "C-191"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 110
+status_raw = "DONE"
+status_canonical = true
+order_index = 86
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0087"
+claim_id = "C-195"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 111
+status_raw = "DONE"
+status_canonical = true
+order_index = 87
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0088"
+claim_id = "C-197"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 112
+status_raw = "DONE"
+status_canonical = true
+order_index = 88
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0089"
+claim_id = "C-201"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 113
+status_raw = "DONE"
+status_canonical = true
+order_index = 89
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0090"
+claim_id = "C-206"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 114
+status_raw = "DONE"
+status_canonical = true
+order_index = 90
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0091"
+claim_id = "C-207"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 115
+status_raw = "DONE"
+status_canonical = true
+order_index = 91
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0092"
+claim_id = "C-212"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 116
+status_raw = "DONE"
+status_canonical = true
+order_index = 92
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0093"
+claim_id = "C-217"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 117
+status_raw = "DONE"
+status_canonical = true
+order_index = 93
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0094"
+claim_id = "C-218"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 118
+status_raw = "DONE"
+status_canonical = true
+order_index = 94
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0095"
+claim_id = "C-219"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 119
+status_raw = "DONE"
+status_canonical = true
+order_index = 95
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0096"
+claim_id = "C-220"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 120
+status_raw = "DONE"
+status_canonical = true
+order_index = 96
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0097"
+claim_id = "C-221"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 121
+status_raw = "DONE"
+status_canonical = true
+order_index = 97
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0098"
+claim_id = "C-223"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 122
+status_raw = "DONE"
+status_canonical = true
+order_index = 98
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0099"
+claim_id = "C-228"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 123
+status_raw = "DONE"
+status_canonical = true
+order_index = 99
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0100"
+claim_id = "C-231"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 124
+status_raw = "DONE"
+status_canonical = true
+order_index = 100
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0101"
+claim_id = "C-234"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 125
+status_raw = "DONE"
+status_canonical = true
+order_index = 101
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0102"
+claim_id = "C-235"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 126
+status_raw = "DONE"
+status_canonical = true
+order_index = 102
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0103"
+claim_id = "C-239"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 127
+status_raw = "DONE"
+status_canonical = true
+order_index = 103
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0104"
+claim_id = "C-240"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 128
+status_raw = "DONE"
+status_canonical = true
+order_index = 104
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0105"
+claim_id = "C-241"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 129
+status_raw = "DONE"
+status_canonical = true
+order_index = 105
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0106"
+claim_id = "C-243"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 130
+status_raw = "DONE"
+status_canonical = true
+order_index = 106
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0107"
+claim_id = "C-244"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 131
+status_raw = "DONE"
+status_canonical = true
+order_index = 107
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0108"
+claim_id = "C-247"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 132
+status_raw = "DONE"
+status_canonical = true
+order_index = 108
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0109"
+claim_id = "C-248"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 133
+status_raw = "DONE"
+status_canonical = true
+order_index = 109
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0110"
+claim_id = "C-251"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 134
+status_raw = "DONE"
+status_canonical = true
+order_index = 110
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0111"
+claim_id = "C-253"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 135
+status_raw = "DONE"
+status_canonical = true
+order_index = 111
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0112"
+claim_id = "C-256"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 136
+status_raw = "DONE"
+status_canonical = true
+order_index = 112
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0113"
+claim_id = "C-257"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 137
+status_raw = "DONE"
+status_canonical = true
+order_index = 113
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0114"
+claim_id = "C-258"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 138
+status_raw = "DONE"
+status_canonical = true
+order_index = 114
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0115"
+claim_id = "C-259"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 139
+status_raw = "DONE"
+status_canonical = true
+order_index = 115
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0116"
+claim_id = "C-264"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 140
+status_raw = "DONE"
+status_canonical = true
+order_index = 116
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0117"
+claim_id = "C-268"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 141
+status_raw = "DONE"
+status_canonical = true
+order_index = 117
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0118"
+claim_id = "C-269"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 142
+status_raw = "DONE"
+status_canonical = true
+order_index = 118
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0119"
+claim_id = "C-271"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 143
+status_raw = "DONE"
+status_canonical = true
+order_index = 119
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0120"
+claim_id = "C-274"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 144
+status_raw = "DONE"
+status_canonical = true
+order_index = 120
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0121"
+claim_id = "C-278"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 145
+status_raw = "DONE"
+status_canonical = true
+order_index = 121
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0122"
+claim_id = "C-280"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 146
+status_raw = "DONE"
+status_canonical = true
+order_index = 122
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0123"
+claim_id = "C-281"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 147
+status_raw = "DONE"
+status_canonical = true
+order_index = 123
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0124"
+claim_id = "C-283"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 148
+status_raw = "DONE"
+status_canonical = true
+order_index = 124
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0125"
+claim_id = "C-284"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 149
+status_raw = "DONE"
+status_canonical = true
+order_index = 125
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0126"
+claim_id = "C-285"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 150
+status_raw = "DONE"
+status_canonical = true
+order_index = 126
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0127"
+claim_id = "C-286"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 151
+status_raw = "DONE"
+status_canonical = true
+order_index = 127
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0128"
+claim_id = "C-287"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 152
+status_raw = "DONE"
+status_canonical = true
+order_index = 128
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0129"
+claim_id = "C-288"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 153
+status_raw = "DONE"
+status_canonical = true
+order_index = 129
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0130"
+claim_id = "C-289"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 154
+status_raw = "DONE"
+status_canonical = true
+order_index = 130
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0131"
+claim_id = "C-290"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 155
+status_raw = "DONE"
+status_canonical = true
+order_index = 131
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0132"
+claim_id = "C-291"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 156
+status_raw = "DONE"
+status_canonical = true
+order_index = 132
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0133"
+claim_id = "C-300"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 157
+status_raw = "DONE"
+status_canonical = true
+order_index = 133
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0134"
+claim_id = "C-304"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 158
+status_raw = "DONE"
+status_canonical = true
+order_index = 134
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0135"
+claim_id = "C-306"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 159
+status_raw = "DONE"
+status_canonical = true
+order_index = 135
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0136"
+claim_id = "C-309"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 160
+status_raw = "DONE"
+status_canonical = true
+order_index = 136
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0137"
+claim_id = "C-314"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 161
+status_raw = "DONE"
+status_canonical = true
+order_index = 137
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0138"
+claim_id = "C-315"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 162
+status_raw = "DONE"
+status_canonical = true
+order_index = 138
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0139"
+claim_id = "C-316"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 163
+status_raw = "DONE"
+status_canonical = true
+order_index = 139
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0140"
+claim_id = "C-317"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 164
+status_raw = "DONE"
+status_canonical = true
+order_index = 140
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0141"
+claim_id = "C-318"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 165
+status_raw = "DONE"
+status_canonical = true
+order_index = 141
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0142"
+claim_id = "C-321"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 166
+status_raw = "DONE"
+status_canonical = true
+order_index = 142
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0143"
+claim_id = "C-324"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 167
+status_raw = "DONE"
+status_canonical = true
+order_index = 143
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0144"
+claim_id = "C-326"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 168
+status_raw = "DONE"
+status_canonical = true
+order_index = 144
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0145"
+claim_id = "C-329"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 169
+status_raw = "DONE"
+status_canonical = true
+order_index = 145
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0146"
+claim_id = "C-330"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 170
+status_raw = "DONE"
+status_canonical = true
+order_index = 146
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0147"
+claim_id = "C-333"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 171
+status_raw = "DONE"
+status_canonical = true
+order_index = 147
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0148"
+claim_id = "C-334"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 172
+status_raw = "DONE"
+status_canonical = true
+order_index = 148
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0149"
+claim_id = "C-335"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 173
+status_raw = "DONE"
+status_canonical = true
+order_index = 149
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0150"
+claim_id = "C-338"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 174
+status_raw = "DONE"
+status_canonical = true
+order_index = 150
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0151"
+claim_id = "C-339"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 175
+status_raw = "DONE"
+status_canonical = true
+order_index = 151
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0152"
+claim_id = "C-340"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 176
+status_raw = "DONE"
+status_canonical = true
+order_index = 152
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0153"
+claim_id = "C-341"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 177
+status_raw = "DONE"
+status_canonical = true
+order_index = 153
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0154"
+claim_id = "C-342"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 178
+status_raw = "DONE"
+status_canonical = true
+order_index = 154
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0155"
+claim_id = "C-343"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 179
+status_raw = "DONE"
+status_canonical = true
+order_index = 155
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0156"
+claim_id = "C-346"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 180
+status_raw = "DONE"
+status_canonical = true
+order_index = 156
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0157"
+claim_id = "C-349"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 181
+status_raw = "DONE"
+status_canonical = true
+order_index = 157
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0158"
+claim_id = "C-354"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 182
+status_raw = "DONE"
+status_canonical = true
+order_index = 158
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0159"
+claim_id = "C-355"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 183
+status_raw = "DONE"
+status_canonical = true
+order_index = 159
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0160"
+claim_id = "C-358"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 184
+status_raw = "DONE"
+status_canonical = true
+order_index = 160
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0161"
+claim_id = "C-362"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 185
+status_raw = "DONE"
+status_canonical = true
+order_index = 161
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0162"
+claim_id = "C-363"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 186
+status_raw = "DONE"
+status_canonical = true
+order_index = 162
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0163"
+claim_id = "C-366"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 187
+status_raw = "DONE"
+status_canonical = true
+order_index = 163
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0164"
+claim_id = "C-374"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 188
+status_raw = "DONE"
+status_canonical = true
+order_index = 164
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0165"
+claim_id = "C-375"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 189
+status_raw = "DONE"
+status_canonical = true
+order_index = 165
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0166"
+claim_id = "C-378"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 190
+status_raw = "DONE"
+status_canonical = true
+order_index = 166
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0167"
+claim_id = "C-379"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 191
+status_raw = "DONE"
+status_canonical = true
+order_index = 167
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0168"
+claim_id = "C-380"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 192
+status_raw = "DONE"
+status_canonical = true
+order_index = 168
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0169"
+claim_id = "C-381"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 193
+status_raw = "DONE"
+status_canonical = true
+order_index = 169
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0170"
+claim_id = "C-385"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 194
+status_raw = "DONE"
+status_canonical = true
+order_index = 170
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0171"
+claim_id = "C-386"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 195
+status_raw = "DONE"
+status_canonical = true
+order_index = 171
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0172"
+claim_id = "C-387"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 196
+status_raw = "DONE"
+status_canonical = true
+order_index = 172
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0173"
+claim_id = "C-390"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 197
+status_raw = "DONE"
+status_canonical = true
+order_index = 173
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0174"
+claim_id = "C-391"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 198
+status_raw = "DONE"
+status_canonical = true
+order_index = 174
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0175"
+claim_id = "C-394"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 199
+status_raw = "DONE"
+status_canonical = true
+order_index = 175
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0176"
+claim_id = "C-396"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 200
+status_raw = "DONE"
+status_canonical = true
+order_index = 176
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0177"
+claim_id = "C-399"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 201
+status_raw = "DONE"
+status_canonical = true
+order_index = 177
+task = '''
+Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0178"
+claim_id = "C-401"
+status_token = "PARTIAL"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 202
+status_raw = "PARTIAL"
+status_canonical = true
+order_index = 178
+task = '''
+Triage: primary sources cached; still needs a concrete, offline validation check (or keep as blueprint-only).
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0179"
+claim_id = "C-403"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 203
+status_raw = "DONE"
+status_canonical = true
+order_index = 179
+task = '''
+Source-index + define offline check for spectral-triple-strength "geometry from spectrum" program claims.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0180"
+claim_id = "C-404"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 204
+status_raw = "DONE"
+status_canonical = true
+order_index = 180
+task = '''
+Source-index + define offline check for modular-data/entanglement-wedge program claims.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0181"
+claim_id = "C-405"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 205
+status_raw = "DONE"
+status_canonical = true
+order_index = 181
+task = '''
+Source-index + define offline check for open-systems/QEC observer program claims.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0182"
+claim_id = "C-406"
+status_token = "PARTIAL"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 206
+status_raw = "PARTIAL"
+status_canonical = true
+order_index = 182
+task = '''
+Enumerate embedding choices (symmetry proxy) and quantify invariance/trial factors for TSCP alignment.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0183"
+claim_id = "C-407"
+status_token = "PARTIAL"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 207
+status_raw = "PARTIAL"
+status_canonical = true
+order_index = 183
+task = '''
+Maintain a look-elsewhere parameter ledger + global correction bounds (Bonferroni/Holm) for TSCP-style searches.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0184"
+claim_id = "C-408"
+status_token = "PARTIAL"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 208
+status_raw = "PARTIAL"
+status_canonical = true
+order_index = 184
+task = '''
+Add symmetric falsification thresholds (N_min + alpha/effect-size) for selected claims; enforce via tests/verifiers.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0185"
+claim_id = "C-410"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 209
+status_raw = "DONE"
+status_canonical = true
+order_index = 185
+task = '''
+Photon-graviton mixing scope: Schwinger B_cr=4.41e9 T verified; mixing amplitude negligible for lab fields; C-402 NOT overturned. Phase 6 task B6.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0186"
+claim_id = "C-411"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 210
+status_raw = "DONE"
+status_canonical = true
+order_index = 186
+task = '''
+SFWM thin-layer scaling: direct SFWM dominates 5.8x (phase-matching); coherence lengths match paper (33.3/3.1/3.4 um). Phase 6 task B6.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0187"
+claim_id = "C-417"
+status_token = "TODO"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 211
+status_raw = "TODO"
+status_canonical = true
+order_index = 187
+task = '''
+Turn "Holographic Entropy Trap" into a falsifiable metric + null; keep speculative until tied to optical-capture baselines and uncertainty.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0188"
+claim_id = "C-432"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 212
+status_raw = "DONE"
+status_canonical = true
+order_index = 188
+task = '''
+Kerr geodesic solver + Bardeen analytic shadow boundary validated: Schwarzschild a=0 shadow radius sqrt(27) within 0.1%, photon orbit radii exact, impact parameters xi^2+eta=27, high-spin D-shape asymmetry, null geodesic escape/capture. Phase 6 task A9.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0189"
+claim_id = "C-429"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 213
+status_raw = "DONE"
+status_canonical = true
+order_index = 189
+task = '''
+Kerr shadow asymmetry (a=0.99) validated: D-shape center offset > 0.1 from Schwarzschild symmetric limit. Phase 6 task A9.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0190"
+claim_id = "C-425"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 214
+status_raw = "DONE"
+status_canonical = true
+order_index = 190
+task = '''
+Octonionic (8D) field Hamiltonian formulation: Fano-plane multiplication, Stormer-Verlet symplectic integrator, 7 Noether charges, free-field dispersion omega^2=k^2+m^2. Restricts to octonionic subalgebra to bypass C-030 non-associativity obstruction. Phase 6 task A10.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0191"
+claim_id = "C-428"
+status_token = "PARTIAL"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 215
+status_raw = "PARTIAL"
+status_canonical = true
+order_index = 191
+task = '''
+Kerr geodesic infrastructure from A9 provides Boyer-Lindquist integrator + Mino-time second-order Hamiltonian form. NegDimCosmology coupling still needs validation.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0192"
+claim_id = "C-426"
+status_token = "TODO"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 216
+status_raw = "TODO"
+status_canonical = true
+order_index = 192
+task = '''
+Add a preregistered fit protocol (null + trial-factor ledger) for mapping ZD eigenvalues to particle masses; keep as toy until it passes robust controls.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0193"
+claim_id = "C-427"
+status_token = "TODO"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 217
+status_raw = "TODO"
+status_canonical = true
+order_index = 193
+task = '''
+Add unit tests for algebraic-media tensor construction invariants (symmetry/normalization bounds) and define a minimal physical decision rule for the mapping.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0194"
+claim_id = "C-028"
+status_token = "DONE"
+section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
+source_line = 223
+status_raw = "DONE"
+status_canonical = true
+order_index = 194
+task = '''
+Aut(S) = G2 x S3 verification (Phase 6A).
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0195"
+claim_id = "C-029"
+status_token = "DONE"
+section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
+source_line = 224
+status_raw = "DONE"
+status_canonical = true
+order_index = 195
+task = '''
+Three-generation literature review (Phase 6B).
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0196"
+claim_id = "C-030"
+status_token = "DONE"
+section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
+source_line = 225
+status_raw = "DONE"
+status_canonical = true
+order_index = 196
+task = '''
+Decision rule + offline bypass checks (associator + alternativity) for sedenion-valued actions.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0197"
+claim_id = "C-031"
+status_token = "DONE"
+section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
+source_line = 226
+status_raw = "DONE"
+status_canonical = true
+order_index = 197
+task = '''
+Hurwitz/norm-composition transition (1,2,4,8 vs 16) + zero-divisor example artifact + test.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0198"
+claim_id = "C-032"
+status_token = "DONE"
+section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
+source_line = 227
+status_raw = "DONE"
+status_canonical = true
+order_index = 198
+task = '''
+Tang (2025) non-associative QED: minimal offline reproduction (Table 2 extraction + subalgebra associator stats).
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0199"
+claim_id = "C-032"
+status_token = "BLOCKED"
+section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
+source_line = 228
+status_raw = "BLOCKED"
+status_canonical = true
+order_index = 199
+task = '''
+Tang (2025) non-associative QED: mechanize the associator->mass mapping (BLOCKED until the source provides a complete, convention-fixed mapping and scale choice).
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0200"
+claim_id = "C-033"
+status_token = "DONE"
+section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
+source_line = 229
+status_raw = "DONE"
+status_canonical = true
+order_index = 200
+task = '''
+SU(5) generator basis verification complete; source does not specify a unique coefficient mapping from sedenion basis to a normalized SU(5) basis (claim demoted accordingly).
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0201"
+claim_id = "C-034"
+status_token = "DONE"
+section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
+source_line = 230
+status_raw = "DONE"
+status_canonical = true
+order_index = 201
+task = '''
+Chanyal (2014) sedenion gravi-electromagnetism: minimal structural reproduction (two 8D sectors via CD doubling).
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0202"
+claim_id = "C-034"
+status_token = "BLOCKED"
+section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
+source_line = 231
+status_raw = "BLOCKED"
+status_canonical = true
+order_index = 202
+task = '''
+Chanyal (2014) sedenion gravi-electromagnetism: equation-level reproduction checks (BLOCKED until a legal full-text source is cached).
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0203"
+claim_id = "C-035"
+status_token = "DONE"
+section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
+source_line = 232
+status_raw = "DONE"
+status_canonical = true
+order_index = 203
+task = '''
+F4 Casimir epsilon = 1/4 (Phase 7A).
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0204"
+claim_id = "C-036"
+status_token = "DONE"
+section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
+source_line = 233
+status_raw = "DONE"
+status_canonical = true
+order_index = 204
+task = '''
+Bigraph cosmogenesis simulation (Phase 7B).
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0205"
+claim_id = "C-037"
+status_token = "DONE"
+section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
+source_line = 234
+status_raw = "DONE"
+status_canonical = true
+order_index = 205
+task = '''
+Demoted coincidence claim to Not supported; audit note defines mechanism gap and falsification requirements.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0206"
+claim_id = "C-038"
+status_token = "DONE"
+section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
+source_line = 235
+status_raw = "DONE"
+status_canonical = true
+order_index = 206
+task = '''
+w0=-5/6 observational test (Phase 7C). DISFAVORED.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0207"
+claim_id = "C-039"
+status_token = "DONE"
+section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
+source_line = 236
+status_raw = "DONE"
+status_canonical = true
+order_index = 207
+task = '''
+Spectral dimension running on bigraph (Phase 7D). Qualitative consistency with CDT.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0208"
+claim_id = "C-040"
+status_token = "DONE"
+section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
+source_line = 237
+status_raw = "DONE"
+status_canonical = true
+order_index = 208
+task = '''
+Primordial tilt n_s comparison (Phase 7E). Post-hoc; D_eff=2.8-3.0 inconsistent with Planck via Calcagni formula.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0209"
+claim_id = "C-041"
+status_token = "DONE"
+section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
+source_line = 238
+status_raw = "DONE"
+status_canonical = true
+order_index = 209
+task = '''
+Demote dimensional coincidence claim; record mechanism gap and decision rule.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0210"
+claim_id = "C-042"
+status_token = "DONE"
+section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
+source_line = 239
+status_raw = "DONE"
+status_canonical = true
+order_index = 210
+task = '''
+Kozyrev p-adic wavelets: implement eigenbasis for Vladimirov operator + offline tests.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0211"
+claim_id = "C-043"
+status_token = "DONE"
+section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
+source_line = 240
+status_raw = "DONE"
+status_canonical = true
+order_index = 211
+task = '''
+Compact object integration pipeline + unified catalog artifact + offline schema test.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0212"
+claim_id = "C-044"
+status_token = "REFUTED"
+section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
+source_line = 241
+status_raw = "REFUTED"
+status_canonical = true
+order_index = 212
+task = '''
+Legacy zero-divisor adjacency matrices refuted; keep reproduction script as guard.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0213"
+claim_id = "C-045"
+status_token = "DONE"
+section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
+source_line = 242
+status_raw = "DONE"
+status_canonical = true
+order_index = 213
+task = '''
+Strang splitting convergence demo + validation smoke check.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0214"
+claim_id = "C-1362"
+status_token = "IN_PROGRESS"
+section = "Active tasks (start here)"
+source_line = 243
+status_raw = "IN_PROGRESS"
+status_canonical = true
+order_index = 214
+task = '''
+Harden the x87/AVX accumulation design-rule lane: add primary-source dossier, deterministic crossover verifier, and follow-on AVX/FMA benchmark artifact before re-promoting C-1362.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0215"
+claim_id = "C-046"
+status_token = "TODO"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 244
+status_raw = "TODO"
+status_canonical = true
+order_index = 215
+task = '''
+add Rust exact-enumeration or consistency verifier; run exact enumeration plus external-CSV or representation consistency cross-check; emit data/output/claims_falsification/c_046_result.toml; sync campaign linkage.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0216"
+claim_id = "C-069"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 245
+status_raw = "DONE"
+status_canonical = true
+order_index = 216
+task = '''
+DONE: add shared Rust particle numerology verifier; show all octonion-subalgebra principal angles collapse to {0, 90} degrees and cannot reproduce PMNS mixing angles; emit data/output/claims_falsification/particle_numerology_audit.toml; sync campaign linkage.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0217"
+claim_id = "C-071"
+status_token = "TODO"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 246
+status_raw = "TODO"
+status_canonical = true
+order_index = 217
+task = '''
+Harden registered experiment replay for E-002; run alternate null family plus ablation or resolution guard; emit data/output/claims_falsification/c_071_result.toml; sync campaign linkage.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0218"
+claim_id = "C-081"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 247
+status_raw = "DONE"
+status_canonical = true
+order_index = 218
+task = '''
+DONE: add shared Rust particle numerology verifier; show three-angle Givens reconstruction achieves exact zero-residual fits for PMNS and arbitrary target triplets alike, so the fit is generic rather than evidentiary; emit data/output/claims_falsification/particle_numerology_audit.toml; sync campaign linkage.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0219"
+claim_id = "C-084"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 248
+status_raw = "DONE"
+status_canonical = true
+order_index = 219
+task = '''
+DONE: add shared Rust particle numerology verifier; sweep small Yukawa-like diagonal perturbations around the democratic mixing surface and show the best doubly stochastic fit remains non-significant against the PMNS null baseline; emit data/output/claims_falsification/particle_numerology_audit.toml; sync campaign linkage.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0220"
+claim_id = "C-402"
+status_token = "TODO"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 249
+status_raw = "TODO"
+status_canonical = true
+order_index = 220
+task = '''
+Harden registered experiment replay for E-006; run alternate baseline model plus parameter-termination audit; emit data/output/claims_falsification/c_402_result.toml; sync campaign linkage.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0221"
+claim_id = "C-430"
+status_token = "TODO"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 250
+status_raw = "TODO"
+status_canonical = true
+order_index = 221
+task = '''
+add Rust baseline-model comparison or parameter-termination verifier; run alternate baseline model plus parameter-termination audit; emit data/output/claims_falsification/c_430_result.toml; sync campaign linkage.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0222"
+claim_id = "C-436"
+status_token = "TODO"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 251
+status_raw = "TODO"
+status_canonical = true
+order_index = 222
+task = '''
+Harden registered experiment replay for E-002; run alternate null family plus ablation or resolution guard; emit data/output/claims_falsification/c_436_result.toml; sync campaign linkage.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0223"
+claim_id = "C-440"
+status_token = "TODO"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 252
+status_raw = "TODO"
+status_canonical = true
+order_index = 223
+task = '''
+Harden registered experiment replay for E-002; run alternate null family plus ablation or resolution guard; emit data/output/claims_falsification/c_440_result.toml; sync campaign linkage.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0224"
+claim_id = "C-442"
+status_token = "TODO"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 253
+status_raw = "TODO"
+status_canonical = true
+order_index = 224
+task = '''
+add Rust null-family and ablation experiment; run alternate null family plus ablation or resolution guard; emit data/output/claims_falsification/c_442_result.toml; sync campaign linkage.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0225"
+claim_id = "C-445"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 254
+status_raw = "DONE"
+status_canonical = true
+order_index = 225
+task = '''
+DONE: add shared Rust algebra refutation verifier; show dim=32 motif classes admit no linear or affine separator and require minimum GF(2) degree 3; emit data/output/claims_falsification/algebra_refutation_audit.toml; sync campaign linkage.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0226"
+claim_id = "C-450"
+status_token = "TODO"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 255
+status_raw = "TODO"
+status_canonical = true
+order_index = 226
+task = '''
+add Rust exact-enumeration or consistency verifier; run exact enumeration plus external-CSV or representation consistency cross-check; emit data/output/claims_falsification/c_450_result.toml; sync campaign linkage.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0227"
+claim_id = "C-455"
+status_token = "TODO"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 256
+status_raw = "TODO"
+status_canonical = true
+order_index = 227
+task = '''
+add Rust exact-enumeration or consistency verifier; run exact enumeration plus external-CSV or representation consistency cross-check; emit data/output/claims_falsification/c_455_result.toml; sync campaign linkage.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0228"
+claim_id = "C-456"
+status_token = "TODO"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 257
+status_raw = "TODO"
+status_canonical = true
+order_index = 228
+task = '''
+add Rust exact-enumeration or consistency verifier; run exact enumeration plus external-CSV or representation consistency cross-check; emit data/output/claims_falsification/c_456_result.toml; sync campaign linkage.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0229"
+claim_id = "C-463"
+status_token = "TODO"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 258
+status_raw = "TODO"
+status_canonical = true
+order_index = 229
+task = '''
+add Rust exact-enumeration or consistency verifier; run exact enumeration plus external-CSV or representation consistency cross-check; emit data/output/claims_falsification/c_463_result.toml; sync campaign linkage.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0230"
+claim_id = "C-466"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 259
+status_raw = "DONE"
+status_canonical = true
+order_index = 230
+task = '''
+DONE: add shared Rust algebra refutation verifier; show multiplication coupling is generic only for the identity basis in both dim=16 and dim=32 Lambda dictionaries; emit data/output/claims_falsification/algebra_refutation_audit.toml; sync campaign linkage.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0231"
+claim_id = "C-518"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 260
+status_raw = "DONE"
+status_canonical = true
+order_index = 231
+task = '''
+DONE: add shared Rust algebra refutation verifier; show candidate-B associator fibers fail to classify pure triangles across dim=16, dim=32, and dim=64; emit data/output/claims_falsification/algebra_refutation_audit.toml; sync campaign linkage.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0232"
+claim_id = "C-543"
+status_token = "TODO"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 261
+status_raw = "TODO"
+status_canonical = true
+order_index = 232
+task = '''
+add Rust exact-enumeration or consistency verifier; run exact enumeration plus external-CSV or representation consistency cross-check; emit data/output/claims_falsification/c_543_result.toml; sync campaign linkage.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0233"
+claim_id = "C-585"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 262
+status_raw = "DONE"
+status_canonical = true
+order_index = 233
+task = '''
+DONE: add shared Rust algebra refutation verifier; show real trace-free J_3(O) survey values stay far from delta^2 = 3/8 and never match it exactly; emit data/output/claims_falsification/algebra_refutation_audit.toml; sync campaign linkage.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0234"
+claim_id = "C-587"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 263
+status_raw = "DONE"
+status_canonical = true
+order_index = 234
+task = '''
+DONE: add shared Rust particle numerology verifier; confirm depth-based associator norms at dim=16 and dim=32 remain far too compressed for the observed lepton hierarchy and are not significant against the random-assignment null; emit data/output/claims_falsification/particle_numerology_audit.toml; sync campaign linkage.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0235"
+claim_id = "C-669"
+status_token = "TODO"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 264
+status_raw = "TODO"
+status_canonical = true
+order_index = 235
+task = '''
+Harden registered experiment replay for E-072; run alternate null family plus ablation or resolution guard; emit data/output/claims_falsification/c_669_result.toml; sync campaign linkage.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0236"
+claim_id = "C-773"
+status_token = "TODO"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 265
+status_raw = "TODO"
+status_canonical = true
+order_index = 236
+task = '''
+Harden registered experiment replay for E-049, E-050; run alternate null family plus ablation or resolution guard; emit data/output/claims_falsification/c_773_result.toml; sync campaign linkage.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0237"
+claim_id = "C-781"
+status_token = "TODO"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 266
+status_raw = "TODO"
+status_canonical = true
+order_index = 237
+task = '''
+Harden registered experiment replay for E-057; run exact enumeration plus external-CSV or representation consistency cross-check; emit data/output/claims_falsification/c_781_result.toml; sync campaign linkage.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0238"
+claim_id = "C-782"
+status_token = "TODO"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 267
+status_raw = "TODO"
+status_canonical = true
+order_index = 238
+task = '''
+Harden registered experiment replay for E-058; run alternate null family plus ablation or resolution guard; emit data/output/claims_falsification/c_782_result.toml; sync campaign linkage.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0239"
+claim_id = "C-783"
+status_token = "TODO"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 268
+status_raw = "TODO"
+status_canonical = true
+order_index = 239
+task = '''
+Harden registered experiment replay for E-059; run alternate null family plus ablation or resolution guard; emit data/output/claims_falsification/c_783_result.toml; sync campaign linkage.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0240"
+claim_id = "C-784"
+status_token = "TODO"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 269
+status_raw = "TODO"
+status_canonical = true
+order_index = 240
+task = '''
+Harden registered experiment replay for E-060, E-068; run alternate null family plus ablation or resolution guard; emit data/output/claims_falsification/c_784_result.toml; sync campaign linkage.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0241"
+claim_id = "C-785"
+status_token = "TODO"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 270
+status_raw = "TODO"
+status_canonical = true
+order_index = 241
+task = '''
+Harden registered experiment replay for E-060, E-068; run alternate null family plus ablation or resolution guard; emit data/output/claims_falsification/c_785_result.toml; sync campaign linkage.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0242"
+claim_id = "C-786"
+status_token = "TODO"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 271
+status_raw = "TODO"
+status_canonical = true
+order_index = 242
+task = '''
+Harden registered experiment replay for E-060, E-068; run alternate null family plus ablation or resolution guard; emit data/output/claims_falsification/c_786_result.toml; sync campaign linkage.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0243"
+claim_id = "C-789"
+status_token = "TODO"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 272
+status_raw = "TODO"
+status_canonical = true
+order_index = 243
+task = '''
+Harden registered experiment replay for E-060, E-064, E-068; run exact enumeration plus external-CSV or representation consistency cross-check; emit data/output/claims_falsification/c_789_result.toml; sync campaign linkage.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0244"
+claim_id = "C-791"
+status_token = "TODO"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 273
+status_raw = "TODO"
+status_canonical = true
+order_index = 244
+task = '''
+add Rust null-family and ablation experiment; run alternate null family plus ablation or resolution guard; emit data/output/claims_falsification/c_791_result.toml; sync campaign linkage.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0245"
+claim_id = "C-792"
+status_token = "TODO"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 274
+status_raw = "TODO"
+status_canonical = true
+order_index = 245
+task = '''
+Harden registered experiment replay for E-051, E-055, E-063, E-064, E-065, E-066, E-067; run alternate null family plus ablation or resolution guard; emit data/output/claims_falsification/c_792_result.toml; sync campaign linkage.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0246"
+claim_id = "C-793"
+status_token = "TODO"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 275
+status_raw = "TODO"
+status_canonical = true
+order_index = 246
+task = '''
+Harden registered experiment replay for E-063, E-064, E-066, E-067; run alternate null family plus ablation or resolution guard; emit data/output/claims_falsification/c_793_result.toml; sync campaign linkage.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0247"
+claim_id = "C-794"
+status_token = "TODO"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 276
+status_raw = "TODO"
+status_canonical = true
+order_index = 247
+task = '''
+Harden registered experiment replay for E-052; run alternate baseline model plus parameter-termination audit; emit data/output/claims_falsification/c_794_result.toml; sync campaign linkage.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0248"
+claim_id = "C-795"
+status_token = "TODO"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 277
+status_raw = "TODO"
+status_canonical = true
+order_index = 248
+task = '''
+Harden registered experiment replay for E-053; run alternate null family plus ablation or resolution guard; emit data/output/claims_falsification/c_795_result.toml; sync campaign linkage.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0249"
+claim_id = "C-796"
+status_token = "TODO"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 278
+status_raw = "TODO"
+status_canonical = true
+order_index = 249
+task = '''
+Harden registered experiment replay for E-054, E-055; run exact enumeration plus external-CSV or representation consistency cross-check; emit data/output/claims_falsification/c_796_result.toml; sync campaign linkage.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0250"
+claim_id = "C-842"
+status_token = "TODO"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 279
+status_raw = "TODO"
+status_canonical = true
+order_index = 250
+task = '''
+Harden registered experiment replay for E-075; run alternate null family plus ablation or resolution guard; emit data/output/claims_falsification/c_842_result.toml; sync campaign linkage.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0251"
+claim_id = "C-844"
+status_token = "TODO"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 280
+status_raw = "TODO"
+status_canonical = true
+order_index = 251
+task = '''
+Harden registered experiment replay for E-075; run exact enumeration plus external-CSV or representation consistency cross-check; emit data/output/claims_falsification/c_844_result.toml; sync campaign linkage.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0252"
+claim_id = "C-845"
+status_token = "TODO"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 281
+status_raw = "TODO"
+status_canonical = true
+order_index = 252
+task = '''
+Harden registered experiment replay for E-075; run exact enumeration plus external-CSV or representation consistency cross-check; emit data/output/claims_falsification/c_845_result.toml; sync campaign linkage.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0253"
+claim_id = "C-846"
+status_token = "TODO"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 282
+status_raw = "TODO"
+status_canonical = true
+order_index = 253
+task = '''
+Harden registered experiment replay for E-075; run alternate null family plus ablation or resolution guard; emit data/output/claims_falsification/c_846_result.toml; sync campaign linkage.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0254"
+claim_id = "C-923"
+status_token = "TODO"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 283
+status_raw = "TODO"
+status_canonical = true
+order_index = 254
+task = '''
+Harden registered experiment replay for E-084; run exact enumeration plus external-CSV or representation consistency cross-check; emit data/output/claims_falsification/c_923_result.toml; sync campaign linkage.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0255"
+claim_id = "C-932"
+status_token = "TODO"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 284
+status_raw = "TODO"
+status_canonical = true
+order_index = 255
+task = '''
+Harden registered experiment replay for E-087; run alternate baseline model plus parameter-termination audit; emit data/output/claims_falsification/c_932_result.toml; sync campaign linkage.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0256"
+claim_id = "C-1103"
+status_token = "TODO"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 285
+status_raw = "TODO"
+status_canonical = true
+order_index = 256
+task = '''
+Harden registered experiment replay for E-096; run alternate baseline model plus parameter-termination audit; emit data/output/claims_falsification/c_1103_result.toml; sync campaign linkage.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0257"
+claim_id = "C-1329"
+status_token = "TODO"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 286
+status_raw = "TODO"
+status_canonical = true
+order_index = 257
+task = '''
+Harden registered experiment replay for E-179; run blind matching baseline plus unit/base invariance; emit data/output/claims_falsification/c_1329_result.toml; sync campaign linkage.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0258"
+claim_id = "C-1353"
+status_token = "TODO"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 287
+status_raw = "TODO"
+status_canonical = true
+order_index = 258
+task = '''
+Harden registered experiment replay for E-185; run exact enumeration plus external-CSV or representation consistency cross-check; emit data/output/claims_falsification/c_1353_result.toml; sync campaign linkage.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0259"
+claim_id = "C-1355"
+status_token = "DONE"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 288
+status_raw = "DONE"
+status_canonical = true
+order_index = 259
+task = '''
+DONE: add shared Rust particle numerology verifier; show the Planck-mass '1764' coincidence survives metric prefix changes but disappears in natural and Planck units, while the BCS 1.764 factor remains the independent pi/e^gamma weak-coupling formula; emit data/output/claims_falsification/particle_numerology_audit.toml; sync campaign linkage.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0260"
+claim_id = "C-1357"
+status_token = "TODO"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 289
+status_raw = "TODO"
+status_canonical = true
+order_index = 260
+task = '''
+Harden registered experiment replay for E-186, E-187; run alternate baseline model plus parameter-termination audit; emit data/output/claims_falsification/c_1357_result.toml; sync campaign linkage.
+'''
+output_artifacts = []
+
+[[task]]
+id = "CTASK-0261"
+claim_id = "C-1358"
+status_token = "TODO"
+section = "Backfill (triage) tasks (auto-generated)"
+source_line = 290
+status_raw = "TODO"
+status_canonical = true
+order_index = 261
+task = '''
+add Rust baseline-model comparison or parameter-termination verifier; run alternate baseline model plus parameter-termination audit; emit data/output/claims_falsification/c_1358_result.toml; sync campaign linkage.
+'''
+output_artifacts = []

@@ -1,0 +1,18 @@
+[package]
+name = "data_artifacts_core"
+version = "0.1.0"
+edition = { workspace = true }
+description = "Non-network quality gates and HDF5 artifact helpers for gororoba"
+license = "MIT"
+
+[dependencies]
+thiserror = { workspace = true }
+gororoba_contracts = { path = "../gororoba_contracts" }
+hdf5 = { workspace = true, optional = true }
+
+[features]
+default = []
+hdf5-export = ["dep:hdf5"]
+
+[lints]
+workspace = true

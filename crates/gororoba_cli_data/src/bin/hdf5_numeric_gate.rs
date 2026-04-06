@@ -1,5 +1,5 @@
 #[cfg(feature = "hdf5-export")]
-use data_core::hdf5_export::{NumericDatasetScanStatus, scan_hdf5_numeric_datasets};
+use data_artifacts_core::hdf5_export::{NumericDatasetScanStatus, scan_hdf5_numeric_datasets};
 use std::{collections::BTreeSet, error::Error, path::PathBuf};
 
 fn expand_inputs(inputs: &[String]) -> Result<Vec<PathBuf>, Box<dyn Error>> {

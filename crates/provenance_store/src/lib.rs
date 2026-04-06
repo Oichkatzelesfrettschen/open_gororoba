@@ -182,6 +182,13 @@ pub enum ControlPlaneCompatKind {
     TheoremsMirror,
 }
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum PlanningCompatTable {
+    Roadmap,
+    Todo,
+    NextActions,
+}
+
 /// Row struct for roadmap item upserts.
 pub struct RoadmapItem<'a> {
     pub id: &'a str,
@@ -3249,6 +3256,12 @@ impl ProvenanceStore {
         Ok(())
     }
 
+    pub fn delete_roadmap_item(&self, id: &str) -> Result<()> {
+        self.conn
+            .execute("DELETE FROM roadmap_items WHERE id = ?1", params![id])?;
+        Ok(())
+    }
+
     /// Insert or replace a todo item.
     pub fn upsert_todo_item(&self, item: &ActionItem<'_>) -> Result<()> {
         self.conn.execute(
@@ -3272,6 +3285,12 @@ impl ProvenanceStore {
         Ok(())
     }
 
+    pub fn delete_todo_item(&self, id: &str) -> Result<()> {
+        self.conn
+            .execute("DELETE FROM todo_items WHERE id = ?1", params![id])?;
+        Ok(())
+    }
+
     /// Insert or replace a next-action item.
     pub fn upsert_next_action(&self, item: &ActionItem<'_>) -> Result<()> {
         self.conn.execute(
@@ -3292,6 +3311,12 @@ impl ProvenanceStore {
                 item.evidence_refs_json,
             ],
         )?;
+        Ok(())
+    }
+
+    pub fn delete_next_action(&self, id: &str) -> Result<()> {
+        self.conn
+            .execute("DELETE FROM next_action_items WHERE id = ?1", params![id])?;
         Ok(())
     }
 
@@ -3356,6 +3381,14 @@ impl ProvenanceStore {
         Ok(())
     }
 
+    pub fn delete_requirement_module(&self, id: &str) -> Result<()> {
+        self.conn.execute(
+            "DELETE FROM requirements_modules WHERE id = ?1",
+            params![id],
+        )?;
+        Ok(())
+    }
+
     pub fn upsert_requirement_coverage_gap(
         &self,
         item: &RequirementCoverageGapItem<'_>,
@@ -3374,6 +3407,14 @@ impl ProvenanceStore {
                 item.proposed_resolution,
                 item.related_module_ids_json,
             ],
+        )?;
+        Ok(())
+    }
+
+    pub fn delete_requirement_coverage_gap(&self, id: &str) -> Result<()> {
+        self.conn.execute(
+            "DELETE FROM requirements_coverage_gaps WHERE id = ?1",
+            params![id],
         )?;
         Ok(())
     }
@@ -3500,6 +3541,731 @@ impl ProvenanceStore {
             "id, title, priority, status",
             status_filter,
         )
+    }
+
+    pub fn render_planning_compat_toml(&self, table: PlanningCompatTable) -> Result<String> {
+        match table {
+            PlanningCompatTable::Roadmap => self.render_roadmap_compat_toml(),
+            PlanningCompatTable::Todo => self.render_todo_compat_toml(),
+            PlanningCompatTable::NextActions => self.render_next_actions_compat_toml(),
+        }
+    }
+
+    pub fn render_requirements_compat_toml(&self) -> Result<String> {
+        let snapshot = self.parse_registry_snapshot("requirements")?;
+        let requirements_table = snapshot
+            .as_ref()
+            .and_then(|value| compat_root_table(value, "requirements"));
+        let schema_table = compat_child_table(requirements_table, "schema");
+        let meta = self.requirements_meta_row()?;
+        let modules = self.requirements_module_rows()?;
+        let gaps = self.requirements_coverage_gap_rows()?;
+
+        let authoritative = meta
+            .as_ref()
+            .map(|row| row.authoritative)
+            .unwrap_or_else(|| compat_table_bool(requirements_table, "authoritative", true));
+        let status = meta
+            .as_ref()
+            .map(|row| row.status.clone())
+            .unwrap_or_else(|| compat_table_string(requirements_table, "status", "active"));
+        let status_token = meta
+            .as_ref()
+            .map(|row| row.status_token.clone())
+            .unwrap_or_else(|| compat_table_string(requirements_table, "status_token", "ACTIVE"));
+        let updated = meta
+            .as_ref()
+            .map(|row| row.updated.clone())
+            .unwrap_or_else(|| compat_table_string(requirements_table, "updated", "2026-02-10"));
+        let python_recommended = meta
+            .as_ref()
+            .map(|row| row.python_recommended.clone())
+            .unwrap_or_else(|| {
+                compat_table_string(requirements_table, "python_recommended", "3.11-3.12")
+            });
+        let python_allowed = meta
+            .as_ref()
+            .map(|row| row.python_allowed.clone())
+            .unwrap_or_else(|| {
+                compat_table_string(
+                    requirements_table,
+                    "python_allowed",
+                    "3.13+ (with optional extras caveats)",
+                )
+            });
+        let primary_markdown = meta
+            .as_ref()
+            .map(|row| row.primary_markdown.clone())
+            .unwrap_or_else(|| {
+                compat_table_string(
+                    requirements_table,
+                    "primary_markdown",
+                    "docs/REQUIREMENTS.md",
+                )
+            });
+        let status_allowlist = meta
+            .as_ref()
+            .map(|row| compat_json_string_array(&row.status_allowlist_json))
+            .transpose()?
+            .unwrap_or_else(|| {
+                compat_table_array(
+                    requirements_table,
+                    "status_allowlist",
+                    &["active", "deprecated", "planned", "blocked"],
+                )
+            });
+        let runtime_stack_allowlist = meta
+            .as_ref()
+            .map(|row| compat_json_string_array(&row.runtime_stack_allowlist_json))
+            .transpose()?
+            .unwrap_or_else(|| {
+                compat_table_array(
+                    requirements_table,
+                    "runtime_stack_allowlist",
+                    &[
+                        "mixed",
+                        "rust",
+                        "python",
+                        "docker_python",
+                        "rocq",
+                        "latex",
+                        "cpp",
+                    ],
+                )
+            });
+        let required_module_fields = meta
+            .as_ref()
+            .map(|row| compat_json_string_array(&row.required_module_fields_json))
+            .transpose()?
+            .unwrap_or_else(|| {
+                compat_table_array(
+                    schema_table,
+                    "required_module_fields",
+                    &[
+                        "id",
+                        "name",
+                        "status",
+                        "status_token",
+                        "runtime_stack",
+                        "requires_modules",
+                        "install_targets",
+                        "verify_targets",
+                        "acceptance_criteria",
+                    ],
+                )
+            });
+        let required_gap_fields = meta
+            .as_ref()
+            .map(|row| compat_json_string_array(&row.required_gap_fields_json))
+            .transpose()?
+            .unwrap_or_else(|| {
+                compat_table_array(
+                    schema_table,
+                    "required_gap_fields",
+                    &[
+                        "id",
+                        "area",
+                        "status",
+                        "status_token",
+                        "description",
+                        "proposed_resolution",
+                        "related_module_ids",
+                    ],
+                )
+            });
+
+        let mut lines = vec![
+            "# GENERATED VIEW: DO NOT EDIT.".to_string(),
+            "# Update via `gororoba-db requirements ...` against `registry/canonical/control_plane.sqlite3`.".to_string(),
+            "# Requirements registry (SQLite compatibility export from canonical control_plane.sqlite3).".to_string(),
+            "# Generated by `gororoba-db build` / `gororoba-db export-requirements`.".to_string(),
+            String::new(),
+            "[requirements]".to_string(),
+            format!(
+                "authoritative = {}",
+                if authoritative { "true" } else { "false" }
+            ),
+            format!("status = {}", compat_toml_quote(&status)),
+            format!("status_token = {}", compat_toml_quote(&status_token)),
+            format!("updated = {}", compat_toml_quote(&updated)),
+            format!(
+                "python_recommended = {}",
+                compat_toml_quote(&python_recommended)
+            ),
+            format!("python_allowed = {}", compat_toml_quote(&python_allowed)),
+            format!(
+                "primary_markdown = {}",
+                compat_toml_quote(&primary_markdown)
+            ),
+            format!("module_count = {}", modules.len()),
+            format!("coverage_gap_count = {}", gaps.len()),
+            format!(
+                "status_allowlist = {}",
+                compat_toml_string_array(&status_allowlist)
+            ),
+            format!(
+                "runtime_stack_allowlist = {}",
+                compat_toml_string_array(&runtime_stack_allowlist)
+            ),
+            String::new(),
+            "[requirements.schema]".to_string(),
+            format!(
+                "required_module_fields = {}",
+                compat_toml_string_array(&required_module_fields)
+            ),
+            format!(
+                "required_gap_fields = {}",
+                compat_toml_string_array(&required_gap_fields)
+            ),
+            String::new(),
+        ];
+
+        for row in modules {
+            lines.push("[[module]]".to_string());
+            lines.push(format!("id = {}", compat_toml_quote(&row.id)));
+            lines.push(format!("name = {}", compat_toml_quote(&row.name)));
+            lines.push(format!("markdown = {}", compat_toml_quote(&row.markdown)));
+            lines.push(format!("status = {}", compat_toml_quote(&row.status)));
+            lines.push(format!(
+                "status_token = {}",
+                compat_toml_quote(&row.status_token)
+            ));
+            lines.push(format!(
+                "runtime_stack = {}",
+                compat_toml_quote(&row.runtime_stack)
+            ));
+            lines.push(format!(
+                "requires_modules = {}",
+                compat_toml_string_array(&compat_json_string_array(&row.requires_modules_json)?)
+            ));
+            lines.push(format!(
+                "install_targets = {}",
+                compat_toml_string_array(&compat_json_string_array(&row.install_targets_json)?)
+            ));
+            lines.push(format!(
+                "verify_targets = {}",
+                compat_toml_string_array(&compat_json_string_array(&row.verify_targets_json)?)
+            ));
+            lines.push(format!(
+                "acceptance_criteria = {}",
+                compat_toml_string_array(&compat_json_string_array(&row.acceptance_criteria_json)?)
+            ));
+            lines.push(String::new());
+        }
+
+        for row in gaps {
+            lines.push("[[coverage_gap]]".to_string());
+            lines.push(format!("id = {}", compat_toml_quote(&row.id)));
+            lines.push(format!("area = {}", compat_toml_quote(&row.area)));
+            lines.push(format!("status = {}", compat_toml_quote(&row.status)));
+            lines.push(format!(
+                "status_token = {}",
+                compat_toml_quote(&row.status_token)
+            ));
+            lines.push(format!(
+                "description = {}",
+                compat_toml_quote(&row.description)
+            ));
+            lines.push(format!(
+                "proposed_resolution = {}",
+                compat_toml_quote(&row.proposed_resolution)
+            ));
+            lines.push(format!(
+                "related_module_ids = {}",
+                compat_toml_string_array(&compat_json_string_array(&row.related_module_ids_json)?)
+            ));
+            lines.push(String::new());
+        }
+
+        trim_trailing_blank_lines(&mut lines);
+        Ok(lines.join("\n"))
+    }
+
+    pub fn verify_planning_requirements_compat_exports(
+        &self,
+        repo_root: &Path,
+        roadmap_path: &Path,
+        todo_path: &Path,
+        next_actions_path: &Path,
+        requirements_path: &Path,
+    ) -> Result<()> {
+        let checks = [
+            (
+                roadmap_path,
+                self.render_planning_compat_toml(PlanningCompatTable::Roadmap)?,
+            ),
+            (
+                todo_path,
+                self.render_planning_compat_toml(PlanningCompatTable::Todo)?,
+            ),
+            (
+                next_actions_path,
+                self.render_planning_compat_toml(PlanningCompatTable::NextActions)?,
+            ),
+            (requirements_path, self.render_requirements_compat_toml()?),
+        ];
+        let mut failures = Vec::new();
+        for (path, expected) in checks {
+            if !path.exists() {
+                failures.push(format!("missing compatibility export {}", path.display()));
+                continue;
+            }
+            let actual =
+                fs::read_to_string(path).with_context(|| format!("read {}", path.display()))?;
+            let expected = format!("{expected}\n");
+            if actual != expected {
+                let rel = path
+                    .strip_prefix(repo_root)
+                    .unwrap_or(path)
+                    .display()
+                    .to_string();
+                failures.push(format!("{rel}: stale DB-backed compatibility export"));
+            }
+        }
+        if failures.is_empty() {
+            Ok(())
+        } else {
+            bail!(failures.join("\n"))
+        }
+    }
+
+    fn render_roadmap_compat_toml(&self) -> Result<String> {
+        let snapshot = self.parse_registry_snapshot("roadmap")?;
+        let roadmap_table = snapshot
+            .as_ref()
+            .and_then(|value| compat_root_table(value, "roadmap"));
+        let schema_table = compat_child_table(roadmap_table, "schema");
+        let sections_table = compat_child_table(roadmap_table, "sections");
+        let rows = self.planning_roadmap_rows()?;
+        let status_allowlist = compat_table_array(
+            roadmap_table,
+            "status_allowlist",
+            &[
+                "planned",
+                "active",
+                "in_progress",
+                "done",
+                "paused",
+                "blocked",
+            ],
+        );
+        let priority_allowlist = compat_table_array(
+            roadmap_table,
+            "priority_allowlist",
+            &["high", "medium", "low"],
+        );
+        let required_fields = compat_table_array(
+            schema_table,
+            "required_fields",
+            &[
+                "id",
+                "name",
+                "priority",
+                "status",
+                "status_token",
+                "description",
+                "dependencies",
+                "acceptance_criteria",
+            ],
+        );
+
+        let mut lines = vec![
+            "# GENERATED VIEW: DO NOT EDIT.".to_string(),
+            "# Update via `gororoba-db planning ...` against `registry/canonical/control_plane.sqlite3`.".to_string(),
+            "# Operational roadmap registry (SQLite compatibility export from canonical control_plane.sqlite3).".to_string(),
+            "# Generated by `gororoba-db build` / `gororoba-db export-planning --table roadmap`.".to_string(),
+            String::new(),
+            "[roadmap]".to_string(),
+            format!(
+                "source_markdown = {}",
+                compat_toml_quote(&compat_table_string(
+                    roadmap_table,
+                    "source_markdown",
+                    "docs/ROADMAP.md",
+                ))
+            ),
+            format!(
+                "consolidated_date = {}",
+                compat_toml_quote(&compat_table_string(
+                    roadmap_table,
+                    "consolidated_date",
+                    "2026-02-10",
+                ))
+            ),
+            format!(
+                "supersedes = {}",
+                compat_toml_string_array(&compat_table_array(roadmap_table, "supersedes", &[]))
+            ),
+            format!(
+                "companion_docs = {}",
+                compat_toml_string_array(&compat_table_array(
+                    roadmap_table,
+                    "companion_docs",
+                    &[]
+                ))
+            ),
+            format!(
+                "status = {}",
+                compat_toml_quote(&compat_table_string(roadmap_table, "status", "active"))
+            ),
+            format!(
+                "status_token = {}",
+                compat_toml_quote(&compat_table_string(
+                    roadmap_table,
+                    "status_token",
+                    "ACTIVE",
+                ))
+            ),
+            format!(
+                "authoritative = {}",
+                if compat_table_bool(roadmap_table, "authoritative", true) {
+                    "true"
+                } else {
+                    "false"
+                }
+            ),
+            format!("workstream_count = {}", rows.len()),
+            format!(
+                "status_allowlist = {}",
+                compat_toml_string_array(&status_allowlist)
+            ),
+            format!(
+                "priority_allowlist = {}",
+                compat_toml_string_array(&priority_allowlist)
+            ),
+            String::new(),
+            "[roadmap.schema]".to_string(),
+            format!(
+                "required_fields = {}",
+                compat_toml_string_array(&required_fields)
+            ),
+            format!(
+                "dependency_id_pattern = {}",
+                compat_toml_quote(&compat_table_string(
+                    schema_table,
+                    "dependency_id_pattern",
+                    "WS-*|T-*|NA-*|C-*|I-*|E-*|REQ-*",
+                ))
+            ),
+            String::new(),
+            "[roadmap.sections]".to_string(),
+            format!(
+                "architectural_evolution = {}",
+                compat_toml_quote(&compat_table_string(
+                    sections_table,
+                    "architectural_evolution",
+                    "## 1. Architectural Evolution",
+                ))
+            ),
+            format!(
+                "crate_ecosystem = {}",
+                compat_toml_quote(&compat_table_string(
+                    sections_table,
+                    "crate_ecosystem",
+                    "## 2. Crate Ecosystem",
+                ))
+            ),
+            format!(
+                "documentation_registry = {}",
+                compat_toml_quote(&compat_table_string(
+                    sections_table,
+                    "documentation_registry",
+                    "### 1.5 Documentation Registry Evolution (Sprint 13)",
+                ))
+            ),
+            format!(
+                "long_term_vision = {}",
+                compat_toml_quote(&compat_table_string(
+                    sections_table,
+                    "long_term_vision",
+                    "## 8. Long-Term Vision",
+                ))
+            ),
+            format!(
+                "remaining_workstreams = {}",
+                compat_toml_quote(&compat_table_string(
+                    sections_table,
+                    "remaining_workstreams",
+                    "## 7. Remaining Workstreams from ULTRA_ROADMAP.md",
+                ))
+            ),
+            String::new(),
+        ];
+
+        for row in rows {
+            lines.push("[[workstream]]".to_string());
+            lines.push(format!("id = {}", compat_toml_quote(&row.id)));
+            lines.push(format!("name = {}", compat_toml_quote(&row.name)));
+            lines.push(format!("priority = {}", compat_toml_quote(&row.priority)));
+            lines.push(format!("status = {}", compat_toml_quote(&row.status)));
+            lines.push(format!(
+                "status_token = {}",
+                compat_toml_quote(&row.status_token)
+            ));
+            lines.push(format!(
+                "description = {}",
+                compat_toml_quote(&row.description)
+            ));
+            if !row.sprint.trim().is_empty() {
+                lines.push(format!("sprint = {}", compat_toml_quote(&row.sprint)));
+            }
+            lines.push(format!(
+                "primary_outputs = {}",
+                compat_toml_string_array(&compat_json_string_array(&row.primary_outputs_json)?)
+            ));
+            let claims = compat_json_string_array(&row.claims_json)?;
+            if !claims.is_empty() {
+                lines.push(format!("claims = {}", compat_toml_string_array(&claims)));
+            }
+            if !row.insight.trim().is_empty() {
+                lines.push(format!("insight = {}", compat_toml_quote(&row.insight)));
+            }
+            lines.push(format!(
+                "dependencies = {}",
+                compat_toml_string_array(&compat_json_string_array(&row.dependencies_json)?)
+            ));
+            lines.push(format!(
+                "acceptance_criteria = {}",
+                compat_toml_string_array(&compat_json_string_array(&row.acceptance_criteria_json)?)
+            ));
+            lines.push(format!(
+                "evidence_refs = {}",
+                compat_toml_string_array(&compat_json_string_array(&row.evidence_refs_json)?)
+            ));
+            let lacunae = compat_json_string_array(&row.lacunae_json)?;
+            if !lacunae.is_empty() {
+                lines.push(format!("lacunae = {}", compat_toml_string_array(&lacunae)));
+            }
+            lines.push(String::new());
+        }
+
+        trim_trailing_blank_lines(&mut lines);
+        Ok(lines.join("\n"))
+    }
+
+    fn render_todo_compat_toml(&self) -> Result<String> {
+        let snapshot = self.parse_registry_snapshot("todo")?;
+        let todo_table = snapshot
+            .as_ref()
+            .and_then(|value| compat_root_table(value, "todo"));
+        let schema_table = compat_child_table(todo_table, "schema");
+        let rows = self.planning_todo_rows()?;
+        let status_allowlist = compat_table_array(
+            todo_table,
+            "status_allowlist",
+            &["open", "in_progress", "done", "blocked", "deferred"],
+        );
+        let priority_allowlist =
+            compat_table_array(todo_table, "priority_allowlist", &["high", "medium", "low"]);
+        let required_fields = compat_table_array(
+            schema_table,
+            "required_fields",
+            &[
+                "id",
+                "area",
+                "title",
+                "description",
+                "priority",
+                "status",
+                "status_token",
+                "dependencies",
+                "acceptance_criteria",
+            ],
+        );
+
+        let mut lines = vec![
+            "# GENERATED VIEW: DO NOT EDIT.".to_string(),
+            "# Update via `gororoba-db planning ...` against `registry/canonical/control_plane.sqlite3`.".to_string(),
+            "# To-Do Registry (SQLite compatibility export from canonical control_plane.sqlite3).".to_string(),
+            "# Generated by `gororoba-db build` / `gororoba-db export-planning --table todo`.".to_string(),
+            String::new(),
+            "[todo]".to_string(),
+            format!(
+                "updated = {}",
+                compat_toml_quote(&compat_table_string(todo_table, "updated", "2026-02-10"))
+            ),
+            format!(
+                "status = {}",
+                compat_toml_quote(&compat_table_string(todo_table, "status", "active"))
+            ),
+            format!(
+                "status_token = {}",
+                compat_toml_quote(&compat_table_string(todo_table, "status_token", "ACTIVE"))
+            ),
+            format!("item_count = {}", rows.len()),
+            format!(
+                "status_allowlist = {}",
+                compat_toml_string_array(&status_allowlist)
+            ),
+            format!(
+                "priority_allowlist = {}",
+                compat_toml_string_array(&priority_allowlist)
+            ),
+            String::new(),
+            "[todo.schema]".to_string(),
+            format!(
+                "required_fields = {}",
+                compat_toml_string_array(&required_fields)
+            ),
+            format!(
+                "dependency_id_pattern = {}",
+                compat_toml_quote(&compat_table_string(
+                    schema_table,
+                    "dependency_id_pattern",
+                    "WS-*|T-*|NA-*|C-*|I-*|E-*|REQ-*",
+                ))
+            ),
+            String::new(),
+        ];
+        for row in rows {
+            lines.push("[[item]]".to_string());
+            lines.push(format!("id = {}", compat_toml_quote(&row.id)));
+            lines.push(format!("area = {}", compat_toml_quote(&row.area)));
+            lines.push(format!("title = {}", compat_toml_quote(&row.title)));
+            lines.push(format!(
+                "description = {}",
+                compat_toml_quote(&row.description)
+            ));
+            lines.push(format!("priority = {}", compat_toml_quote(&row.priority)));
+            lines.push(format!("status = {}", compat_toml_quote(&row.status)));
+            lines.push(format!(
+                "status_token = {}",
+                compat_toml_quote(&row.status_token)
+            ));
+            lines.push(format!(
+                "dependencies = {}",
+                compat_toml_string_array(&compat_json_string_array(&row.dependencies_json)?)
+            ));
+            lines.push(format!(
+                "acceptance_criteria = {}",
+                compat_toml_string_array(&compat_json_string_array(&row.acceptance_criteria_json)?)
+            ));
+            lines.push(format!(
+                "evidence_refs = {}",
+                compat_toml_string_array(&compat_json_string_array(&row.evidence_refs_json)?)
+            ));
+            lines.push(String::new());
+        }
+        trim_trailing_blank_lines(&mut lines);
+        Ok(lines.join("\n"))
+    }
+
+    fn render_next_actions_compat_toml(&self) -> Result<String> {
+        let snapshot = self.parse_registry_snapshot("next_actions")?;
+        let meta_table = snapshot
+            .as_ref()
+            .and_then(|value| compat_root_table(value, "meta"));
+        let next_actions_table = snapshot
+            .as_ref()
+            .and_then(|value| compat_root_table(value, "next_actions"));
+        let schema_table = compat_child_table(next_actions_table, "schema");
+        let rows = self.planning_next_action_rows()?;
+        let status_allowlist = compat_table_array(
+            meta_table,
+            "status_allowlist",
+            &["todo", "in_progress", "done", "blocked", "deferred"],
+        );
+        let priority_allowlist =
+            compat_table_array(meta_table, "priority_allowlist", &["high", "medium", "low"]);
+        let required_fields = compat_table_array(
+            schema_table,
+            "required_fields",
+            &[
+                "id",
+                "area",
+                "title",
+                "description",
+                "priority",
+                "status",
+                "status_token",
+                "dependencies",
+                "acceptance_criteria",
+            ],
+        );
+        let mut lines = vec![
+            "# GENERATED VIEW: DO NOT EDIT.".to_string(),
+            "# Update via `gororoba-db planning ...` against `registry/canonical/control_plane.sqlite3`.".to_string(),
+            "# Next Actions Registry (SQLite compatibility export from canonical control_plane.sqlite3).".to_string(),
+            "# Generated by `gororoba-db build` / `gororoba-db export-planning --table next-actions`.".to_string(),
+            String::new(),
+            "[meta]".to_string(),
+            format!(
+                "updated = {}",
+                compat_toml_quote(&compat_table_string(meta_table, "updated", "2026-02-10"))
+            ),
+            format!(
+                "status = {}",
+                compat_toml_quote(&compat_table_string(meta_table, "status", "active"))
+            ),
+            format!(
+                "status_token = {}",
+                compat_toml_quote(&compat_table_string(meta_table, "status_token", "ACTIVE"))
+            ),
+            format!("action_count = {}", rows.len()),
+            format!(
+                "status_allowlist = {}",
+                compat_toml_string_array(&status_allowlist)
+            ),
+            format!(
+                "priority_allowlist = {}",
+                compat_toml_string_array(&priority_allowlist)
+            ),
+            String::new(),
+            "[next_actions.schema]".to_string(),
+            format!(
+                "required_fields = {}",
+                compat_toml_string_array(&required_fields)
+            ),
+            format!(
+                "dependency_id_pattern = {}",
+                compat_toml_quote(&compat_table_string(
+                    schema_table,
+                    "dependency_id_pattern",
+                    "WS-*|T-*|NA-*|C-*|I-*|E-*|REQ-*",
+                ))
+            ),
+            String::new(),
+        ];
+        for row in rows {
+            lines.push("[[action]]".to_string());
+            lines.push(format!("id = {}", compat_toml_quote(&row.id)));
+            lines.push(format!("area = {}", compat_toml_quote(&row.area)));
+            lines.push(format!("title = {}", compat_toml_quote(&row.title)));
+            lines.push(format!(
+                "description = {}",
+                compat_toml_quote(&row.description)
+            ));
+            lines.push(format!("priority = {}", compat_toml_quote(&row.priority)));
+            lines.push(format!("status = {}", compat_toml_quote(&row.status)));
+            lines.push(format!(
+                "status_token = {}",
+                compat_toml_quote(&row.status_token)
+            ));
+            lines.push(format!(
+                "dependencies = {}",
+                compat_toml_string_array(&compat_json_string_array(&row.dependencies_json)?)
+            ));
+            lines.push(format!(
+                "acceptance_criteria = {}",
+                compat_toml_string_array(&compat_json_string_array(&row.acceptance_criteria_json)?)
+            ));
+            lines.push(format!(
+                "evidence_refs = {}",
+                compat_toml_string_array(&compat_json_string_array(&row.evidence_refs_json)?)
+            ));
+            lines.push(String::new());
+        }
+        trim_trailing_blank_lines(&mut lines);
+        Ok(lines.join("\n"))
+    }
+
+    fn parse_registry_snapshot(&self, kind: &str) -> Result<Option<Value>> {
+        self.registry_snapshot(kind)?
+            .map(|raw| {
+                toml::from_str::<Value>(&raw)
+                    .with_context(|| format!("parse {kind} registry snapshot"))
+            })
+            .transpose()
     }
 
     pub fn planning_roadmap_rows(&self) -> Result<Vec<RoadmapCompatRow>> {
@@ -4562,6 +5328,80 @@ fn load_registry_table_toml(raw: &str, key: &str) -> Result<Option<String>> {
 
 fn render_toml_table(table: &toml::map::Map<String, Value>) -> Result<String> {
     toml::to_string(table).context("serialize TOML table")
+}
+
+fn compat_toml_quote(value: &str) -> String {
+    format!("\"{}\"", value.replace('\\', "\\\\").replace('"', "\\\""))
+}
+
+fn compat_json_string_array(raw: &str) -> Result<Vec<String>> {
+    if raw.trim().is_empty() {
+        return Ok(Vec::new());
+    }
+    serde_json::from_str(raw).with_context(|| format!("parse JSON string array from {raw}"))
+}
+
+fn compat_toml_string_array(values: &[String]) -> String {
+    format!(
+        "[{}]",
+        values
+            .iter()
+            .map(|value| compat_toml_quote(value))
+            .collect::<Vec<_>>()
+            .join(", ")
+    )
+}
+
+fn compat_root_table<'a>(value: &'a Value, key: &str) -> Option<&'a toml::value::Table> {
+    value.get(key).and_then(Value::as_table)
+}
+
+fn compat_child_table<'a>(
+    table: Option<&'a toml::value::Table>,
+    key: &str,
+) -> Option<&'a toml::value::Table> {
+    table
+        .and_then(|table| table.get(key))
+        .and_then(Value::as_table)
+}
+
+fn compat_table_string(table: Option<&toml::value::Table>, key: &str, default: &str) -> String {
+    table
+        .and_then(|table| table.get(key))
+        .and_then(Value::as_str)
+        .unwrap_or(default)
+        .to_string()
+}
+
+fn compat_table_bool(table: Option<&toml::value::Table>, key: &str, default: bool) -> bool {
+    table
+        .and_then(|table| table.get(key))
+        .and_then(Value::as_bool)
+        .unwrap_or(default)
+}
+
+fn compat_table_array(
+    table: Option<&toml::value::Table>,
+    key: &str,
+    default: &[&str],
+) -> Vec<String> {
+    match table
+        .and_then(|table| table.get(key))
+        .and_then(Value::as_array)
+    {
+        Some(values) => values
+            .iter()
+            .filter_map(Value::as_str)
+            .map(ToOwned::to_owned)
+            .collect(),
+        None => default.iter().map(|value| (*value).to_string()).collect(),
+    }
+}
+
+fn trim_trailing_blank_lines(lines: &mut Vec<String>) {
+    while lines.last().is_some_and(|line| line.is_empty()) {
+        lines.pop();
+    }
 }
 
 fn string_field(table: &toml::map::Map<String, Value>, key: &str) -> String {

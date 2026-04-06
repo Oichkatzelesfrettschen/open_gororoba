@@ -6,18 +6,18 @@
 //! - `/registry/insights` -- insights summary
 //!
 //! Lattice data export requires running motif-census first to generate CSVs.
-//! This binary is a thin CLI wrapper around data_core::hdf5_export.
+//! This binary is a thin CLI wrapper around data_artifacts_core::hdf5_export.
 //!
-//! Requires the `hdf5-export` feature on data_core (and libhdf5 at link time).
+//! Requires the `hdf5-export` feature on data_artifacts_core (and libhdf5 at link time).
 
 fn main() {
-    // Feature-gate check: if data_core was not compiled with hdf5-export,
+    // Feature-gate check: if data_artifacts_core was not compiled with hdf5-export,
     // this binary still compiles but prints an error.
     #[cfg(not(feature = "hdf5-export"))]
     {
         eprintln!("ERROR: export-hdf5 requires the hdf5-export feature.");
         eprintln!(
-            "Rebuild with: cargo run --release --features data_core/hdf5-export --bin export-hdf5"
+            "Rebuild with: cargo run --release --features data_artifacts_core/hdf5-export --bin export-hdf5"
         );
         std::process::exit(1);
     }
@@ -101,7 +101,8 @@ fn run_export() -> anyhow::Result<()> {
         let ids: Vec<String> = registry.claim.iter().map(|c| c.id.clone()).collect();
         let statuses: Vec<String> = registry.claim.iter().map(|c| c.status.clone()).collect();
 
-        data_core::hdf5_export::export_claims_summary(&args.output, &ids, &statuses).unwrap();
+        data_artifacts_core::hdf5_export::export_claims_summary(&args.output, &ids, &statuses)
+            .unwrap();
         println!("Exported {} claims to {}", ids.len(), args.output.display());
     } else {
         eprintln!(

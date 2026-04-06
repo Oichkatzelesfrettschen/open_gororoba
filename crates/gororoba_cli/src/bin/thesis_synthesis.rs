@@ -99,7 +99,7 @@ fn run_sweep() -> Result<(), Box<dyn Error>> {
         #[cfg(feature = "hdf5-export")]
         {
             let h5_name = format!("trace_alpha_{:.2}.h5", alpha);
-            let _ = data_core::hdf5_export::export_simulation_trace(
+            let _ = data_artifacts_core::hdf5_export::export_simulation_trace(
                 Path::new(&h5_name),
                 &times,
                 &rho_means,
@@ -182,7 +182,7 @@ fn run_single(grid: usize, alpha: f64, steps: usize) -> Result<(), Box<dyn Error
     #[cfg(feature = "hdf5-export")]
     {
         let h5_name = format!("trace_highres_grid{}_alpha{:.2}.h5", grid, alpha);
-        let _ = data_core::hdf5_export::export_simulation_trace(
+        let _ = data_artifacts_core::hdf5_export::export_simulation_trace(
             Path::new(&h5_name),
             &times,
             &rho_means,

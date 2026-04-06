@@ -19,6 +19,168 @@ const DB_BACKED_COMPAT_SIGNATURE_PATHS: &[&str] = &[
     "registry/binaries.toml",
 ];
 
+const FORBIDDEN_TEMP_ROOTS: &[&str] = &["/srv/fast/tmp"];
+
+const SIMD_SENSITIVE_LOW_LEVEL_CRATES: &[&str] = &[
+    "faer",
+    "faer-traits",
+    "wide",
+    "pulp",
+    "simsimd",
+    "gemm",
+    "gemm-common",
+    "gemm-c32",
+    "gemm-c64",
+    "gemm-f32",
+    "gemm-f64",
+    "private-gemm-x86",
+];
+
+const SIMD_SENSITIVE_HOST_CRATES: &[&str] = &[
+    "lbm_3d",
+    "lbm_3d_cuda",
+    "cd_kernel",
+    "data_core",
+    "algebra_experimental",
+    "gororoba_algebra",
+    "materials_core",
+    "stats_core",
+    "gr_core",
+    "cosmology_core",
+    "quantum_core",
+    "tensor_core",
+    "flavor_lifts",
+    "gororoba_cli_data",
+    "spectral_core",
+    "sign_imbalance",
+    "cd_spin_bridge",
+    "grmhd_core",
+    "gororoba_cli",
+    "gororoba_engine",
+    "gororoba_cli_algebra",
+    "gororoba_cli_quantum",
+    "gororoba_cli_physics",
+    "gororoba_cli_warp",
+];
+
+const RESTORED_REGISTRY_SOURCES: &[&str] = &[
+    "registry/knowledge_migration_plan.toml",
+    "registry/navigator.toml",
+    "registry/entrypoint_docs.toml",
+    "registry/markdown_governance.toml",
+    "registry/claims_domains.toml",
+    "registry/claims_tasks.toml",
+    "registry/insights_narrative.toml",
+    "registry/experiments_narrative.toml",
+];
+
+const PARITY_ALIAS_POLICIES: &[(&str, &str, &str)] = &[
+    (
+        "cargo test -p cd_kernel --lib batch_sedenion_associator_matches_recursive -- --exact",
+        "crates/cd_kernel/src/lib.rs",
+        "fn batch_sedenion_associator_matches_recursive()",
+    ),
+    (
+        "cargo test -p tensor_core --lib uniform_integration_matches_dense_sum_for_rank1 -- --exact",
+        "crates/tensor_core/src/lib.rs",
+        "fn uniform_integration_matches_dense_sum_for_rank1()",
+    ),
+    (
+        "cargo test -p gororoba_cli_physics --lib takens_descriptor_sedenion_lane_matches_scalar_reference -- --exact",
+        "crates/gororoba_cli_physics/src/lib.rs",
+        "fn takens_descriptor_sedenion_lane_matches_scalar_reference()",
+    ),
+];
+
+const CLI_GPU_DEFAULT_EMPTY_MANIFESTS: &[&str] = &[
+    "crates/gororoba_cli/Cargo.toml",
+    "crates/gororoba_cli_physics/Cargo.toml",
+];
+
+const GPU_REQUIRED_BINS: &[(&str, &str)] = &[
+    (
+        "crates/gororoba_cli/Cargo.toml",
+        "name = \"thesis-synthesis\"\npath = \"src/bin/thesis_synthesis.rs\"\nrequired-features = [\"gpu\"]",
+    ),
+    (
+        "crates/gororoba_cli/Cargo.toml",
+        "name = \"zd-resonance-bf16\"\npath = \"src/bin/zd_resonance_bf16.rs\"\nrequired-features = [\"gpu\"]",
+    ),
+    (
+        "crates/gororoba_cli/Cargo.toml",
+        "name = \"zd-resonance-cuda\"\npath = \"src/bin/zd_resonance_cuda.rs\"\nrequired-features = [\"gpu\"]",
+    ),
+    (
+        "crates/gororoba_cli/Cargo.toml",
+        "name = \"zd-resonance-4d\"\npath = \"src/bin/zd_resonance_4d.rs\"\nrequired-features = [\"gpu\"]",
+    ),
+    (
+        "crates/gororoba_cli/Cargo.toml",
+        "name = \"percolation-experiment\"\npath = \"src/bin/percolation_experiment.rs\"\nrequired-features = [\"gpu\"]",
+    ),
+    (
+        "crates/gororoba_cli_warp/Cargo.toml",
+        "name = \"warp-gpu-experiment\"\npath = \"src/bin/warp_gpu_experiment.rs\"\nrequired-features = [\"gpu\"]",
+    ),
+    (
+        "crates/gororoba_cli_warp/Cargo.toml",
+        "name = \"warp-gpu-smoke\"\npath = \"src/bin/warp_gpu_smoke.rs\"\nrequired-features = [\"gpu\"]",
+    ),
+    (
+        "crates/gororoba_cli_physics/Cargo.toml",
+        "name = \"kerr-pathion-gpu\"\npath = \"src/bin/kerr_pathion_gpu.rs\"\nrequired-features = [\"gpu\"]",
+    ),
+    (
+        "crates/gororoba_cli_physics/Cargo.toml",
+        "name = \"flyby-crucible\"\npath = \"src/bin/flyby_crucible.rs\"\nrequired-features = [\"gpu\"]",
+    ),
+    (
+        "crates/gororoba_cli_physics/Cargo.toml",
+        "name = \"lbm-precision-sampler\"\npath = \"src/bin/lbm_precision_sampler.rs\"\nrequired-features = [\"gpu\"]",
+    ),
+    (
+        "crates/gororoba_cli_physics/Cargo.toml",
+        "name = \"heliosphere-sparse-preservation\"\npath = \"src/bin/heliosphere_sparse_preservation.rs\"\nrequired-features = [\"gpu\"]",
+    ),
+    (
+        "crates/gororoba_cli_physics/Cargo.toml",
+        "name = \"heliosphere-lbm-cube-run\"\npath = \"src/bin/heliosphere_lbm_cube_run.rs\"\nrequired-features = [\"gpu\"]",
+    ),
+    (
+        "crates/gororoba_cli_physics/Cargo.toml",
+        "name = \"chsh-betti-sweep\"\npath = \"src/bin/chsh_betti_sweep.rs\"\nrequired-features = [\"gpu\"]",
+    ),
+    (
+        "crates/gororoba_cli_physics/Cargo.toml",
+        "name = \"e027-topology-v2\"\npath = \"src/bin/e027_topology_v2.rs\"\nrequired-features = [\"gpu\"]",
+    ),
+    (
+        "crates/gororoba_cli_physics/Cargo.toml",
+        "name = \"euclid-df-sweep\"\npath = \"src/bin/euclid_df_sweep.rs\"\nrequired-features = [\"gpu\"]",
+    ),
+    (
+        "crates/gororoba_cli_physics/Cargo.toml",
+        "name = \"dark-halo-hunt\"\npath = \"src/bin/dark_halo_hunt.rs\"\nrequired-features = [\"gpu\"]",
+    ),
+    (
+        "crates/gororoba_cli_physics/Cargo.toml",
+        "name = \"lbm-slice-viewer\"\npath = \"src/bin/lbm_slice_viewer.rs\"\nrequired-features = [\"gpu\"]",
+    ),
+    (
+        "crates/gororoba_cli_physics/Cargo.toml",
+        "name = \"particle-trace\"\npath = \"src/bin/particle_trace.rs\"\nrequired-features = [\"gpu\"]",
+    ),
+    (
+        "crates/gororoba_cli_physics/Cargo.toml",
+        "name = \"heliosphere-boxkite-alignment\"\npath = \"src/bin/heliosphere_boxkite_alignment.rs\"\nrequired-features = [\"gpu\"]",
+    ),
+];
+
+const DOCUMENTED_GPU_DEFAULT_EXCEPTIONS: &[(&str, &str)] = &[(
+    "crates/gororoba_cli_warp/Cargo.toml",
+    "gororoba_cli_warp` is the current exception",
+)];
+
 #[derive(Parser, Debug)]
 #[command(
     name = "governance-verify",
@@ -31,6 +193,13 @@ struct Cli {
 
 #[derive(Subcommand, Debug)]
 enum Command {
+    CanonicalControlPlane(CommonArgs),
+    PlanningRequirementsAuthority(CommonArgs),
+    TempRootsPolicy(CommonArgs),
+    SimdContainmentPolicy(CommonArgs),
+    HeavyFeaturePolicy(CommonArgs),
+    ParityAliasPolicy(CommonArgs),
+    RestoredRegistrySources(CommonArgs),
     NoReportsWrites(CommonArgs),
     MarkdownRemovalPolicy(CommonArgs),
     MarkdownHeaders(CommonArgs),
@@ -58,6 +227,15 @@ struct CommonArgs {
 fn main() -> Result<()> {
     let cli = Cli::parse();
     match cli.command {
+        Command::CanonicalControlPlane(args) => verify_canonical_control_plane(&args),
+        Command::PlanningRequirementsAuthority(args) => {
+            verify_planning_requirements_authority(&args)
+        }
+        Command::TempRootsPolicy(args) => verify_temp_roots_policy(&args),
+        Command::SimdContainmentPolicy(args) => verify_simd_containment_policy(&args),
+        Command::HeavyFeaturePolicy(args) => verify_heavy_feature_policy(&args),
+        Command::ParityAliasPolicy(args) => verify_parity_alias_policy(&args),
+        Command::RestoredRegistrySources(args) => verify_restored_registry_sources(&args),
         Command::NoReportsWrites(args) => verify_no_reports_writes(&args),
         Command::MarkdownRemovalPolicy(args) => verify_markdown_removal_policy(&args),
         Command::MarkdownHeaders(args) => verify_markdown_headers(&args),
@@ -92,6 +270,19 @@ fn run_gate_all(args: &CommonArgs) -> Result<()> {
     run_check!("schema-signatures", verify_schema_signatures);
     run_check!("crossrefs", verify_crossrefs);
     run_check!("dataset-label-aliases", verify_dataset_label_aliases);
+    run_check!("canonical-control-plane", verify_canonical_control_plane);
+    run_check!(
+        "planning-requirements-authority",
+        verify_planning_requirements_authority
+    );
+    run_check!("temp-roots-policy", verify_temp_roots_policy);
+    run_check!("simd-containment-policy", verify_simd_containment_policy);
+    run_check!("heavy-feature-policy", verify_heavy_feature_policy);
+    run_check!("parity-alias-policy", verify_parity_alias_policy);
+    run_check!(
+        "restored-registry-sources",
+        verify_restored_registry_sources
+    );
     run_check!(
         "external-source-operational-contracts",
         verify_external_source_operational_contracts
@@ -107,6 +298,499 @@ fn run_gate_all(args: &CommonArgs) -> Result<()> {
             failed.join(", ")
         )
     }
+}
+
+fn verify_canonical_control_plane(args: &CommonArgs) -> Result<()> {
+    let root = resolve_root(args)?;
+    let canonical_path = "registry/canonical/control_plane.sqlite3";
+    let legacy_path = ".cache/registry.sqlite3";
+    let required_files = [
+        "README.md",
+        "docs/db/ARCHITECTURE.md",
+        "Makefile",
+        "crates/gororoba_db/src/bin/gororoba_db.rs",
+    ];
+    let mut failures = Vec::new();
+
+    for rel in required_files {
+        let path = root.join(rel);
+        let text = fs::read_to_string(&path).with_context(|| format!("read {}", path.display()))?;
+        if !text.contains(canonical_path) {
+            failures.push(format!(
+                "{rel}: missing canonical control-plane path `{canonical_path}`"
+            ));
+        }
+        if text.contains(legacy_path) {
+            failures.push(format!(
+                "{rel}: still references legacy control-plane path `{legacy_path}`"
+            ));
+        }
+    }
+
+    if !failures.is_empty() {
+        bail!(failures.join("\n"));
+    }
+
+    println!("OK: canonical control-plane declarations are aligned");
+    Ok(())
+}
+
+fn verify_planning_requirements_authority(args: &CommonArgs) -> Result<()> {
+    let root = resolve_root(args)?;
+    let generated_views = [
+        "registry/roadmap.toml",
+        "registry/todo.toml",
+        "registry/next_actions.toml",
+        "registry/requirements.toml",
+    ];
+    let narrative_files = [
+        "registry/roadmap_narrative.toml",
+        "registry/todo_narrative.toml",
+        "registry/next_actions_narrative.toml",
+        "registry/requirements_narrative.toml",
+    ];
+    let mut failures = Vec::new();
+
+    for rel in generated_views {
+        let path = root.join(rel);
+        let text = read_ascii_text(&path).with_context(|| format!("read {}", path.display()))?;
+        if !text.starts_with("# GENERATED VIEW: DO NOT EDIT.\n") {
+            failures.push(format!(
+                "generated planning/requirements view missing generated-view header: {rel}"
+            ));
+        }
+    }
+
+    for rel in narrative_files {
+        let path = root.join(rel);
+        let text = read_ascii_text(&path).with_context(|| format!("read {}", path.display()))?;
+        if !text.contains("make registry-build registry-export-markdown") {
+            failures.push(format!(
+                "narrative compatibility file missing DB-backed regeneration guidance: {rel}"
+            ));
+        }
+        if text.contains("pending SQLite promotion") {
+            failures.push(format!(
+                "narrative compatibility file still references stale migration wording: {rel}"
+            ));
+        }
+    }
+
+    let requirements = load_toml(&root.join("registry/requirements.toml"))?;
+    let requirements_narrative = load_toml(&root.join("registry/requirements_narrative.toml"))?;
+
+    let primary_markdown = requirements
+        .get("requirements")
+        .and_then(Value::as_table)
+        .and_then(|table| table.get("primary_markdown"))
+        .and_then(Value::as_str)
+        .map(str::trim)
+        .unwrap_or("");
+    if primary_markdown.is_empty() {
+        failures.push(
+            "registry/requirements.toml is missing requirements.primary_markdown".to_string(),
+        );
+    }
+
+    let mut narrative_paths = BTreeSet::new();
+    let mut duplicate_narrative_paths = BTreeSet::new();
+    for row in table_array(&requirements_narrative, "document") {
+        let path = table_str(row, "path").trim();
+        if path.is_empty() {
+            failures.push(
+                "registry/requirements_narrative.toml contains a document with empty path"
+                    .to_string(),
+            );
+            continue;
+        }
+        if !narrative_paths.insert(path.to_string()) {
+            duplicate_narrative_paths.insert(path.to_string());
+        }
+    }
+    for path in duplicate_narrative_paths {
+        failures.push(format!(
+            "duplicate requirements_narrative document.path entry: {path}"
+        ));
+    }
+
+    if !primary_markdown.is_empty() && !narrative_paths.contains(primary_markdown) {
+        failures.push(format!(
+            "requirements.primary_markdown is missing matching narrative document.path: {primary_markdown}"
+        ));
+    }
+
+    let mut required_paths = BTreeSet::new();
+    if !primary_markdown.is_empty() {
+        required_paths.insert(primary_markdown.to_string());
+    }
+    for row in table_array(&requirements, "module") {
+        let module_id = table_str(row, "id").trim();
+        let markdown = table_str(row, "markdown").trim();
+        if markdown.is_empty() {
+            failures.push(format!(
+                "requirements module is missing markdown path: {}",
+                if module_id.is_empty() {
+                    "<unknown-module>"
+                } else {
+                    module_id
+                }
+            ));
+            continue;
+        }
+        required_paths.insert(markdown.to_string());
+        if !narrative_paths.contains(markdown) {
+            failures.push(format!(
+                "requirements module markdown has no matching narrative document.path: {} ({})",
+                markdown,
+                if module_id.is_empty() {
+                    "<unknown-module>"
+                } else {
+                    module_id
+                }
+            ));
+        }
+    }
+
+    for path in narrative_paths.difference(&required_paths) {
+        failures.push(format!(
+            "requirements narrative document.path is orphaned from primary_markdown/module.markdown: {path}"
+        ));
+    }
+
+    if !failures.is_empty() {
+        for failure in &failures {
+            eprintln!("ERROR: {failure}");
+        }
+        bail!(
+            "planning/requirements authority verification failed ({} issue(s))",
+            failures.len()
+        );
+    }
+
+    println!("OK: planning/requirements authority and narrative bindings verified");
+    Ok(())
+}
+
+fn verify_temp_roots_policy(args: &CommonArgs) -> Result<()> {
+    let root = resolve_root(args)?;
+    let targets = [
+        root.join("Makefile"),
+        root.join("Cargo.toml"),
+        root.join("README.md"),
+        root.join("scripts"),
+        root.join("docs"),
+    ];
+    let mut failures = Vec::new();
+
+    for target in targets {
+        if !target.exists() {
+            continue;
+        }
+        let walker = if target.is_dir() {
+            WalkDir::new(&target)
+        } else {
+            WalkDir::new(&target).max_depth(1)
+        };
+        for entry in walker.into_iter().flatten() {
+            if !entry.file_type().is_file() {
+                continue;
+            }
+            let path = entry.path();
+            if !looks_like_text_policy_surface(path) {
+                continue;
+            }
+            let Ok(text) = fs::read_to_string(path) else {
+                continue;
+            };
+            for forbidden in FORBIDDEN_TEMP_ROOTS {
+                if text.contains(forbidden) {
+                    let rel = path
+                        .strip_prefix(&root)
+                        .context("strip temp-root path prefix")?
+                        .to_string_lossy()
+                        .replace('\\', "/");
+                    failures.push(format!(
+                        "{rel}: forbidden machine-specific temp root `{forbidden}`"
+                    ));
+                }
+            }
+        }
+    }
+
+    if !failures.is_empty() {
+        bail!(failures.join("\n"));
+    }
+
+    println!("OK: temp-root policy verified");
+    Ok(())
+}
+
+fn verify_simd_containment_policy(args: &CommonArgs) -> Result<()> {
+    let root = resolve_root(args)?;
+    let cargo_toml = read_ascii_text(&root.join("Cargo.toml"))?;
+    let physics_cargo_toml = read_ascii_text(&root.join("crates/gororoba_cli_physics/Cargo.toml"))?;
+    let mut failures = Vec::new();
+
+    for crate_name in SIMD_SENSITIVE_LOW_LEVEL_CRATES
+        .iter()
+        .chain(SIMD_SENSITIVE_HOST_CRATES.iter())
+    {
+        for profile in ["dev", "test"] {
+            let header = profile_package_header(profile, crate_name);
+            let pattern = format!("{header}\ncodegen-backend = \"llvm\"");
+            if !cargo_toml.contains(&pattern) {
+                failures.push(format!(
+                    "Cargo.toml missing SIMD containment override for crate `{crate_name}` in profile `{profile}`"
+                ));
+            }
+        }
+    }
+
+    if !cargo_toml.contains("cg_clif currently")
+        || !cargo_toml.contains("wide: explicit fixed-width vector types")
+        || !cargo_toml.contains("pulp: runtime SIMD dispatch")
+        || !cargo_toml.contains("simsimd: external C/C++ SIMD distance kernels")
+    {
+        failures.push(
+            "Cargo.toml is missing the documented SIMD containment rationale block".to_string(),
+        );
+    }
+
+    let mut dependency_exposures = BTreeMap::<String, BTreeSet<String>>::new();
+    for manifest in workspace_manifests(&root)? {
+        let rel = manifest
+            .strip_prefix(&root)
+            .context("strip manifest prefix")?
+            .to_string_lossy()
+            .replace('\\', "/");
+        let raw = fs::read_to_string(&manifest)
+            .with_context(|| format!("read workspace manifest {}", manifest.display()))?;
+        let parsed: Value = toml::from_str(&raw)
+            .with_context(|| format!("parse workspace manifest {}", manifest.display()))?;
+        let package_name = parsed
+            .get("package")
+            .and_then(Value::as_table)
+            .and_then(|table| table.get("name"))
+            .and_then(Value::as_str)
+            .unwrap_or("")
+            .trim()
+            .to_string();
+        if package_name.is_empty() {
+            continue;
+        }
+        let deps = collect_manifest_dependencies(&parsed);
+        let sensitive_hits: BTreeSet<String> = deps
+            .into_iter()
+            .filter(|dep| SIMD_SENSITIVE_LOW_LEVEL_CRATES.contains(&dep.as_str()))
+            .collect();
+        if sensitive_hits.is_empty() {
+            continue;
+        }
+        dependency_exposures.insert(package_name.clone(), sensitive_hits.clone());
+        let protected = SIMD_SENSITIVE_LOW_LEVEL_CRATES.contains(&package_name.as_str())
+            || SIMD_SENSITIVE_HOST_CRATES.contains(&package_name.as_str());
+        if !protected {
+            failures.push(format!(
+                "{rel}: crate `{package_name}` depends on SIMD-sensitive subtree {} but is not listed in the containment override set",
+                sensitive_hits.into_iter().collect::<Vec<_>>().join(", ")
+            ));
+        }
+    }
+
+    let readme = read_ascii_text(&root.join("README.md"))?;
+    if readme.contains("Cranelift backend for dev (opt-level 2), LLVM for release") {
+        failures.push(
+            "README.md still claims a blanket Cranelift dev lane; document the SIMD containment carve-out explicitly".to_string(),
+        );
+    }
+    if !readme.contains("docs/engineering/cg_clif_simd_containment.txt") {
+        failures.push(
+            "README.md is missing a cross-reference to docs/engineering/cg_clif_simd_containment.txt".to_string(),
+        );
+    }
+
+    let reqwest_provider_agnostic = "reqwest = { version = \"0.13\", default-features = false, features = [\"blocking\", \"rustls-no-provider\", \"gzip\", \"brotli\", \"deflate\", \"form\"] }";
+    if !cargo_toml.contains(reqwest_provider_agnostic) {
+        failures.push(
+            "Cargo.toml must keep the workspace reqwest dependency on `rustls-no-provider` to avoid reintroducing the aws-lc native-link lane".to_string(),
+        );
+    }
+    if cargo_toml.contains(
+        "features = [\"blocking\", \"rustls\", \"gzip\", \"brotli\", \"deflate\", \"form\"]",
+    ) {
+        failures.push(
+            "Cargo.toml still contains a provider-pinned reqwest rustls feature set; use `rustls-no-provider` instead".to_string(),
+        );
+    }
+
+    if !physics_cargo_toml
+        .contains("gpu = [\"lbm_3d_cuda\", \"sign_imbalance/gpu\", \"gororoba_algebra/gpu\"]")
+    {
+        failures.push(
+            "crates/gororoba_cli_physics/Cargo.toml must wire the `gpu` feature through to `gororoba_algebra/gpu`".to_string(),
+        );
+    }
+
+    if !failures.is_empty() {
+        bail!(failures.join("\n"));
+    }
+
+    println!(
+        "OK: SIMD containment policy verified across {} workspace manifests",
+        dependency_exposures.len()
+    );
+    Ok(())
+}
+
+fn verify_restored_registry_sources(args: &CommonArgs) -> Result<()> {
+    let root = resolve_root(args)?;
+    let mut failures = Vec::new();
+
+    for rel in RESTORED_REGISTRY_SOURCES {
+        let path = root.join(rel);
+        let text = read_ascii_text(&path).with_context(|| format!("read {}", path.display()))?;
+        if !text.contains("Authoritative source")
+            && !text.contains("authoritative_toml")
+            && !text.contains("compatibility placeholder")
+        {
+            failures.push(format!(
+                "{rel}: missing authority/provenance guidance for restored source"
+            ));
+        }
+        if rel.ends_with("_narrative.toml") {
+            if !text.contains("make registry-build registry-export-markdown") {
+                failures.push(format!(
+                    "{rel}: placeholder narrative is missing regeneration guidance"
+                ));
+            }
+        } else if !text.contains("make registry-export-markdown")
+            && !text.contains("make registry-build registry-export-markdown")
+        {
+            failures.push(format!(
+                "{rel}: missing mirror regeneration guidance in restored source header"
+            ));
+        }
+    }
+
+    let entrypoint_docs = read_ascii_text(&root.join("registry/entrypoint_docs.toml"))?;
+    if entrypoint_docs
+        .contains("The TOML registry layer under `registry/` is the canonical control plane.")
+    {
+        failures.push(
+            "registry/entrypoint_docs.toml still embeds stale TOML-first control-plane language"
+                .to_string(),
+        );
+    }
+
+    if !failures.is_empty() {
+        bail!(failures.join("\n"));
+    }
+
+    println!("OK: restored registry source headers and guidance verified");
+    Ok(())
+}
+
+fn verify_parity_alias_policy(args: &CommonArgs) -> Result<()> {
+    let root = resolve_root(args)?;
+    let contract_note =
+        read_ascii_text(&root.join("docs/engineering/simd_scalar_parity_contract_2026_04_06.txt"))?;
+    let mut failures = Vec::new();
+
+    for (documented_command, source_rel, alias_signature) in PARITY_ALIAS_POLICIES {
+        if !contract_note.contains(documented_command) {
+            failures.push(format!(
+                "simd parity contract note is missing documented alias command `{documented_command}`"
+            ));
+        }
+
+        let source_path = root.join(source_rel);
+        let source_text = read_ascii_text(&source_path)
+            .with_context(|| format!("read parity alias source {}", source_path.display()))?;
+        if !source_text.contains(alias_signature) {
+            failures.push(format!(
+                "{source_rel}: missing documented crate-root parity alias `{alias_signature}`"
+            ));
+        }
+    }
+
+    if !failures.is_empty() {
+        bail!(failures.join("\n"));
+    }
+
+    println!("OK: parity alias policy verified");
+    Ok(())
+}
+
+fn verify_heavy_feature_policy(args: &CommonArgs) -> Result<()> {
+    let root = resolve_root(args)?;
+    let mut failures = Vec::new();
+
+    for rel in CLI_GPU_DEFAULT_EMPTY_MANIFESTS {
+        let text = read_ascii_text(&root.join(rel))
+            .with_context(|| format!("read heavy-feature policy manifest {}", rel))?;
+        if !text.contains("[features]\ndefault = []") {
+            failures.push(format!(
+                "{rel}: top-level CLI crate must keep heavy GPU features opt-in via `default = []`"
+            ));
+        }
+    }
+
+    let gororoba_cli = read_ascii_text(&root.join("crates/gororoba_cli/Cargo.toml"))?;
+    if !gororoba_cli.contains("stats_core = { path = \"../stats_core\" }") {
+        failures.push(
+            "crates/gororoba_cli/Cargo.toml: stats_core must not enable `gpu` unconditionally"
+                .to_string(),
+        );
+    }
+    if !gororoba_cli.contains("\"stats_core/gpu\"") {
+        failures.push(
+            "crates/gororoba_cli/Cargo.toml: `gpu` feature must forward to `stats_core/gpu`"
+                .to_string(),
+        );
+    }
+
+    let gororoba_cli_warp = read_ascii_text(&root.join("crates/gororoba_cli_warp/Cargo.toml"))?;
+    if !gororoba_cli_warp.contains("stats_core = { path = \"../stats_core\" }") {
+        failures.push(
+            "crates/gororoba_cli_warp/Cargo.toml: stats_core must not enable `gpu` unconditionally"
+                .to_string(),
+        );
+    }
+    if !gororoba_cli_warp.contains("\"stats_core/gpu\"") {
+        failures.push(
+            "crates/gororoba_cli_warp/Cargo.toml: `gpu` feature must forward to `stats_core/gpu`"
+                .to_string(),
+        );
+    }
+
+    for (rel, snippet) in GPU_REQUIRED_BINS {
+        let text = read_ascii_text(&root.join(rel))
+            .with_context(|| format!("read GPU required-features manifest {}", rel))?;
+        if !text.contains(snippet) {
+            failures.push(format!(
+                "{rel}: missing `required-features = [\"gpu\"]` for a GPU-only binary"
+            ));
+        }
+    }
+
+    let audit_note =
+        read_ascii_text(&root.join("docs/engineering/data_core_surface_audit_2026_04_06.txt"))?;
+    for (rel, note_snippet) in DOCUMENTED_GPU_DEFAULT_EXCEPTIONS {
+        let text = read_ascii_text(&root.join(rel))
+            .with_context(|| format!("read documented GPU default exception manifest {}", rel))?;
+        if text.contains("[features]\ndefault = [\"gpu\"]") && !audit_note.contains(note_snippet) {
+            failures.push(format!(
+                "{rel}: GPU-default exception must be documented in data_core_surface_audit_2026_04_06.txt"
+            ));
+        }
+    }
+
+    if !failures.is_empty() {
+        bail!(failures.join("\n"));
+    }
+
+    println!("OK: heavy feature policy verified");
+    Ok(())
 }
 
 fn resolve_root(args: &CommonArgs) -> Result<PathBuf> {
@@ -165,6 +849,67 @@ fn table_str<'a>(value: &'a Value, key: &str) -> &'a str {
 
 fn table_bool(value: &Value, key: &str) -> bool {
     value.get(key).and_then(Value::as_bool).unwrap_or(false)
+}
+
+fn looks_like_text_policy_surface(path: &Path) -> bool {
+    if matches!(
+        path.file_name().and_then(|name| name.to_str()),
+        Some("Makefile" | "Cargo.toml" | "README.md")
+    ) {
+        return true;
+    }
+    matches!(
+        path.extension().and_then(|ext| ext.to_str()),
+        Some("md" | "txt" | "toml" | "sh" | "rs" | "py" | "yml" | "yaml" | "json")
+    )
+}
+
+fn profile_package_header(profile: &str, crate_name: &str) -> String {
+    if crate_name.contains('-') {
+        format!("[profile.{profile}.package.\"{crate_name}\"]")
+    } else {
+        format!("[profile.{profile}.package.{crate_name}]")
+    }
+}
+
+fn workspace_manifests(root: &Path) -> Result<Vec<PathBuf>> {
+    let mut manifests = Vec::new();
+    for entry in WalkDir::new(root.join("crates")).into_iter().flatten() {
+        if !entry.file_type().is_file() {
+            continue;
+        }
+        if entry.path().file_name().and_then(|name| name.to_str()) == Some("Cargo.toml") {
+            manifests.push(entry.into_path());
+        }
+    }
+    manifests.sort();
+    Ok(manifests)
+}
+
+fn collect_manifest_dependencies(value: &Value) -> BTreeSet<String> {
+    let mut out = BTreeSet::new();
+    collect_dependency_table(value.get("dependencies"), &mut out);
+    collect_dependency_table(value.get("dev-dependencies"), &mut out);
+    collect_dependency_table(value.get("build-dependencies"), &mut out);
+    if let Some(targets) = value.get("target").and_then(Value::as_table) {
+        for section in targets.values() {
+            if let Some(table) = section.as_table() {
+                collect_dependency_table(table.get("dependencies"), &mut out);
+                collect_dependency_table(table.get("dev-dependencies"), &mut out);
+                collect_dependency_table(table.get("build-dependencies"), &mut out);
+            }
+        }
+    }
+    out
+}
+
+fn collect_dependency_table(value: Option<&Value>, out: &mut BTreeSet<String>) {
+    let Some(table) = value.and_then(Value::as_table) else {
+        return;
+    };
+    for key in table.keys() {
+        out.insert(key.trim().to_string());
+    }
 }
 
 fn string_list(value: &Value, key: &str) -> Vec<String> {

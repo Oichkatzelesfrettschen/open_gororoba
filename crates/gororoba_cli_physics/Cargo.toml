@@ -11,6 +11,7 @@ autobins = false
 [[bin]]
 name = "kerr-pathion-gpu"
 path = "src/bin/kerr_pathion_gpu.rs"
+required-features = ["gpu"]
 
 [[bin]]
 name = "generate-topological-voids"
@@ -27,6 +28,7 @@ path = "src/bin/pathion_solar_system_crucible.rs"
 [[bin]]
 name = "flyby-crucible"
 path = "src/bin/flyby_crucible.rs"
+required-features = ["gpu"]
 
 [[bin]]
 name = "flyby-residual-audit"
@@ -235,6 +237,7 @@ path = "src/bin/lbm_poiseuille.rs"
 [[bin]]
 name = "lbm-precision-sampler"
 path = "src/bin/lbm_precision_sampler.rs"
+required-features = ["gpu"]
 
 [[bin]]
 name = "mrt-stability-audit"
@@ -415,6 +418,7 @@ path = "src/bin/heliosphere_cross_mission_invariance.rs"
 [[bin]]
 name = "heliosphere-sparse-preservation"
 path = "src/bin/heliosphere_sparse_preservation.rs"
+required-features = ["gpu"]
 
 [[bin]]
 name = "heliosphere-sparse-policy-mainline"
@@ -423,6 +427,7 @@ path = "src/bin/heliosphere_sparse_policy_mainline.rs"
 [[bin]]
 name = "heliosphere-lbm-cube-run"
 path = "src/bin/heliosphere_lbm_cube_run.rs"
+required-features = ["gpu"]
 
 [[bin]]
 name = "chrono-flyby-probe"
@@ -492,6 +497,7 @@ path = "src/bin/e027_topology_analyzer.rs"
 [[bin]]
 name = "e027-topology-v2"
 path = "src/bin/e027_topology_v2.rs"
+required-features = ["gpu"]
 
 [[bin]]
 name = "e027-equivalence-adapter"
@@ -731,6 +737,7 @@ path = "src/bin/euclid_dm_coupling.rs"
 [[bin]]
 name = "euclid-df-sweep"
 path = "src/bin/euclid_df_sweep.rs"
+required-features = ["gpu"]
 
 # ---- Chaos / Spectral Crucibles (4) ----
 
@@ -761,6 +768,7 @@ path = "src/bin/clustering_256.rs"
 [[bin]]
 name = "dark-halo-hunt"
 path = "src/bin/dark_halo_hunt.rs"
+required-features = ["gpu"]
 
 [[bin]]
 name = "kerr-pathion-sweep"
@@ -826,6 +834,7 @@ lbm_vulkan = { path = "../lbm_vulkan" }
 lbm_3d_cuda = { path = "../lbm_3d_cuda", optional = true }
 stats_core = { path = "../stats_core" }
 data_core = { path = "../data_core", features = ["fits"] }
+data_artifacts_core = { path = "../data_artifacts_core" }
 snia_core = { path = "../snia_core" }
 sign_imbalance = { path = "../sign_imbalance" }
 neural_homotopy = { path = "../neural_homotopy" }
@@ -871,11 +880,9 @@ arrow-array = { workspace = true }
 arrow-ipc = { workspace = true }
 arrow-schema = { workspace = true }
 kiddo = { workspace = true }
-faer = { workspace = true }
 verified_core = { version = "0.1.0", path = "../verified_core" }
 cd_kernel = { workspace = true }
 grmhd_core = { version = "0.1.0", path = "../grmhd_core" }
-wide = { workspace = true }
 ort = { workspace = true, optional = true }
 rusqlite = { workspace = true }
 walkdir = { workspace = true }
@@ -888,10 +895,10 @@ zarrs = { workspace = true, optional = true }
 zarrs_filesystem = { workspace = true, optional = true }
 
 [features]
-default = ["gpu"]
-gpu = ["lbm_3d_cuda", "sign_imbalance/gpu"]
+default = []
+gpu = ["lbm_3d_cuda", "sign_imbalance/gpu", "gororoba_algebra/gpu"]
 cufft = ["lbm_3d_cuda/cufft"]
-hdf5-export = ["data_core/hdf5-export"]
+hdf5-export = ["data_core/hdf5-export", "data_artifacts_core/hdf5-export"]
 hdf5-read = ["dep:hdf5"]
 netcdf-read = ["dep:netcdf3", "dep:netcdf-reader"]
 zarr-read = ["dep:zarrs", "dep:zarrs_filesystem"]
@@ -908,6 +915,7 @@ path = "src/bin/unified_action_sweep.rs"
 [[bin]]
 name = "heliosphere-boxkite-alignment"
 path = "src/bin/heliosphere_boxkite_alignment.rs"
+required-features = ["gpu"]
 
 [[bin]]
 name = "heliosphere-boxkite-parity"

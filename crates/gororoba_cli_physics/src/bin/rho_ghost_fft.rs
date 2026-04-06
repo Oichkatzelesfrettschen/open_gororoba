@@ -507,7 +507,7 @@ fn read_csv_column(path: &std::path::Path, column: &str) -> Vec<f64> {
 
 #[cfg(feature = "hdf5-export")]
 fn run_analyze(hdf5_path: &std::path::Path, top_k: usize) {
-    use data_core::hdf5_export::read_rho_mean_trace;
+    use data_artifacts_core::hdf5_export::read_rho_mean_trace;
 
     let signal = match read_rho_mean_trace(hdf5_path) {
         Ok(s) => s,

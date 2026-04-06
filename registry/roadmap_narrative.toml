@@ -1,7 +1,7 @@
-# Roadmap narrative overlay (TOML lane pending SQLite promotion).
-# WHY: Provides prose context that annotates the structured registry/roadmap.toml.
+# Roadmap narrative overlay for the DB-backed compatibility export.
+# WHY: Provides prose context that annotates the structured registry/roadmap.toml export.
 #      Describes architectural direction and policy, not test counts.
-# HOW: Edit body_markdown; run make registry-export-markdown to regenerate mirrors.
+# HOW: Edit body_markdown; run `make registry-build registry-export-markdown` to regenerate mirrors.
 
 [roadmap_narrative]
 body_markdown = """

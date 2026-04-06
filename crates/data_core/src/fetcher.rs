@@ -3,6 +3,7 @@
 //! Generalizes the fetch pattern from fetch_chime_frb.rs into reusable functions
 //! that all catalog modules share.
 
+#[cfg(feature = "fetch")]
 use crate::download_stack::{DownloadStack, TransferRequest};
 use serde_json::Value;
 use sha2::{Digest, Sha256};
@@ -51,31 +52,53 @@ impl Default for FetchConfig {
     }
 }
 
+#[cfg(not(feature = "fetch"))]
+fn fetch_feature_disabled(url: &str) -> FetchError {
+    FetchError::Validation(format!(
+        "fetch feature disabled; rebuild data_core with `--features fetch` to transfer {url}"
+    ))
+}
+
 /// Download a URL to a file, returning the number of bytes written.
 ///
 /// Routes through the standardized universal download stack so existing
 /// dataset providers inherit the shared backend policy automatically.
 pub fn download_to_file(url: &str, path: &Path) -> Result<u64, FetchError> {
-    let stack = DownloadStack::default();
-    let request = TransferRequest::download(url.to_string(), path.to_path_buf());
-    let result = stack
-        .recover(&request)
-        .map_err(|source| FetchError::HttpError {
-            url: url.to_string(),
-            source: Box::new(source),
-        })?;
-    Ok(result.bytes)
+    #[cfg(not(feature = "fetch"))]
+    {
+        let _ = path;
+        return Err(fetch_feature_disabled(url));
+    }
+    #[cfg(feature = "fetch")]
+    {
+        let stack = DownloadStack::default();
+        let request = TransferRequest::download(url.to_string(), path.to_path_buf());
+        let result = stack
+            .recover(&request)
+            .map_err(|source| FetchError::HttpError {
+                url: url.to_string(),
+                source: Box::new(source),
+            })?;
+        Ok(result.bytes)
+    }
 }
 
 /// Download a URL as a string (for small text files).
 pub fn download_to_string(url: &str) -> Result<String, FetchError> {
-    let stack = DownloadStack::default();
-    stack
-        .fetch_text(&TransferRequest::probe(url.to_string()))
-        .map_err(|source| FetchError::HttpError {
-            url: url.to_string(),
-            source: Box::new(source),
-        })
+    #[cfg(not(feature = "fetch"))]
+    {
+        return Err(fetch_feature_disabled(url));
+    }
+    #[cfg(feature = "fetch")]
+    {
+        let stack = DownloadStack::default();
+        stack
+            .fetch_text(&TransferRequest::probe(url.to_string()))
+            .map_err(|source| FetchError::HttpError {
+                url: url.to_string(),
+                source: Box::new(source),
+            })
+    }
 }
 
 /// Download a URL as a string with a custom timeout.
@@ -83,13 +106,21 @@ pub fn download_to_string_with_timeout(
     url: &str,
     timeout: std::time::Duration,
 ) -> Result<String, FetchError> {
-    let stack = DownloadStack::default().with_timeout(timeout);
-    stack
-        .fetch_text(&TransferRequest::probe(url.to_string()))
-        .map_err(|source| FetchError::HttpError {
-            url: url.to_string(),
-            source: Box::new(source),
-        })
+    #[cfg(not(feature = "fetch"))]
+    {
+        let _ = timeout;
+        return Err(fetch_feature_disabled(url));
+    }
+    #[cfg(feature = "fetch")]
+    {
+        let stack = DownloadStack::default().with_timeout(timeout);
+        stack
+            .fetch_text(&TransferRequest::probe(url.to_string()))
+            .map_err(|source| FetchError::HttpError {
+                url: url.to_string(),
+                source: Box::new(source),
+            })
+    }
 }
 
 const HAPI_ROOT: &str = "https://cdaweb.gsfc.nasa.gov/hapi/data";

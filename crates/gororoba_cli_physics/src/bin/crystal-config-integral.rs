@@ -1,6 +1,5 @@
 use anyhow::Result;
 use clap::Parser;
-use faer::Mat;
 use tensor_core::{build_rank1_symmetry_adapted, build_rank2_symmetry_adapted};
 
 #[derive(Parser, Debug)]
@@ -95,41 +94,10 @@ fn main() -> Result<()> {
         build_rank2_symmetry_adapted(d, n, &pivot, &pivot2, boltzmann)
     };
 
-    // Contract Z = sum_i1 ... sum_id F(i1...id) * w1*...*wd
-    // Since uniform weights for now: w = width / (n-1)
+    // Contract Z = sum_i1 ... sum_id F(i1...id) * w1*...*wd.
+    // Since weights are uniform, the TT contraction can stay inside tensor_core.
     let w = args.width / (n as f64);
-
-    // Integration via TT contraction
-    let mut res = Mat::<f64>::zeros(1, tt.cores[0].data.shape()[2]);
-    for j in 0..tt.cores[0].data.shape()[2] {
-        let mut sum_k = 0.0;
-        for i in 0..n {
-            sum_k += tt.cores[0].data[[0, i, j]] * w;
-        }
-        res[(0, j)] = sum_k;
-    }
-
-    for k in 1..d {
-        if let Some(m) = tt.intersection_matrices.get(k - 1) {
-            res = &res * m;
-        }
-        let core = &tt.cores[k].data;
-        let r_prev = core.shape()[0];
-        let r_next = core.shape()[2];
-        let mut contract = Mat::<f64>::zeros(r_prev, r_next);
-        for i in 0..r_prev {
-            for j in 0..r_next {
-                let mut sum_i = 0.0;
-                for idx_n in 0..n {
-                    sum_i += core[[i, idx_n, j]] * w;
-                }
-                contract[(i, j)] = sum_i;
-            }
-        }
-        res = &res * contract;
-    }
-
-    let z = res[(0, 0)];
+    let z = tt.integrate_uniform(w);
     println!("Configurational Integral Z_{} = {:.6e}", d, z);
     println!("Free Energy A = {:.6} (units of kT)", -z.ln());
 

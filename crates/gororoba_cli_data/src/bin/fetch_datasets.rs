@@ -158,13 +158,13 @@ fn build_registry() -> Vec<DatasetEntry> {
             size_hint: "~35 MB",
         },
         DatasetEntry {
-            provider: Box::new(things::ThingsTablesProvider),
+            provider: Box::new(things_fetch::ThingsTablesProvider),
             category: "astro",
             pillar: "survey",
             size_hint: "~100 KB",
         },
         DatasetEntry {
-            provider: Box::new(things::ThingsPreferredCubesProvider),
+            provider: Box::new(things_fetch::ThingsPreferredCubesProvider),
             category: "astro",
             pillar: "survey",
             size_hint: "~20-30 GB",
@@ -939,13 +939,13 @@ fn build_registry() -> Vec<DatasetEntry> {
         },
         // -- Materials pillar: condensed-matter DFT databases --
         DatasetEntry {
-            provider: Box::new(jarvis::JarvisProvider),
+            provider: Box::new(jarvis_fetch::JarvisProvider),
             category: "materials",
             pillar: "materials",
             size_hint: "~50 MB",
         },
         DatasetEntry {
-            provider: Box::new(aflow::AflowProvider),
+            provider: Box::new(aflow_fetch::AflowProvider),
             category: "materials",
             pillar: "materials",
             size_hint: "~500 MB",

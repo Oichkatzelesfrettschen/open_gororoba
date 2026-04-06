@@ -1,7 +1,7 @@
-# Todo narrative overlay (TOML lane pending SQLite promotion).
-# WHY: Provides prose context that annotates the structured registry/todo.toml.
+# Todo narrative overlay for the DB-backed compatibility export.
+# WHY: Provides prose context that annotates the structured registry/todo.toml export.
 #      The body_markdown field is rendered alongside the machine-readable todo table.
-# HOW: Edit body_markdown; run make registry-export-markdown to regenerate mirrors.
+# HOW: Edit body_markdown; run `make registry-build registry-export-markdown` to regenerate mirrors.
 
 [todo_narrative]
 body_markdown = """

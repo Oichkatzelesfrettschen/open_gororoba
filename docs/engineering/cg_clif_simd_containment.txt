@@ -1,0 +1,130 @@
+cg_clif SIMD containment note
+=============================
+
+Status
+------
+Active policy as of 2026-04-06.
+
+Problem statement
+-----------------
+The workspace hit a `rustc_codegen_cranelift` ICE while compiling binaries that
+pull the SIMD-sensitive numerical stack through higher-level host crates.
+
+Observed local failure signature:
+
+- failing symbol family: `pulp::x86::avx::ld_u32s`
+- panic site: cg_clif lowering/codegen path
+- panic text: `Unsupported("Unexpected SSA-value type: f32x8")`
+
+Interpretation
+--------------
+This is not a Cranelift IR or ABI design deficiency, and it is not a
+workspace-specific business-logic bug.
+
+The boundary is:
+
+- Cranelift IR already models SIMD SSA values and ABI parameters.
+- `rustc_codegen_cranelift` still has incomplete support for some Rust
+  SIMD/vendor-intrinsic lowering paths.
+- The failure is triggered when downstream crates monomorphize AVX-specialized
+  `pulp` code through the wider numerical stack.
+
+Layer roles
+-----------
+These crates are complementary rather than redundant:
+
+- `wide`
+  - explicit fixed-width SIMD vector types
+- `pulp`
+  - runtime SIMD dispatch and ISA-specialized kernels
+- `simsimd`
+  - external SIMD kernels and distance primitives
+- `faer` / `gemm`
+  - linear algebra front-end and kernel orchestration above the dispatch/vector
+    substrate
+
+The current problem lives in the overlap between the Rust cg_clif backend and
+the AVX-specialized instantiations produced by that stack, not in the fact that
+these crates coexist.
+
+Repo policy
+-----------
+The short-term safe posture is LLVM containment for dev/test builds on the
+SIMD-sensitive subtree and the host crates that instantiate or re-export it.
+
+Why containment instead of a local patch:
+
+- the defect is upstream in cg_clif lowering
+- local workarounds at call sites would be brittle and incomplete
+- the workspace already has a safe backend available: LLVM
+- the repo needs reliable developer and governance lanes more than experimental
+  backend purity
+
+Protected crate classes
+-----------------------
+The containment policy currently covers:
+
+- low-level SIMD/numerics crates such as `wide`, `pulp`, `simsimd`, `faer`,
+  and `gemm`
+- host crates that compile or re-export that subtree in the current workspace
+
+Enforcement
+-----------
+The canonical override set lives in `Cargo.toml`, and governance verification
+must fail if:
+
+- a protected crate loses its dev/test LLVM override
+- a new machine-specific temp root is reintroduced into build/cache policy
+- workspace HTTP client policy regresses back to provider-pinned `reqwest`
+  rustls selection that drags unrelated test binaries into the `aws-lc`
+  native-link lane
+- `gororoba_cli_physics` advertises a default `gpu` lane without also wiring
+  that feature through to `gororoba_algebra/gpu`
+- restored registry/control-plane sources drift back to stale policy language
+
+Resolved follow-on debt
+-----------------------
+The original cg_clif containment bug exposed two adjacent build-graph debts that
+were real repo issues rather than upstream compiler defects.
+
+1. `private-gemm-x86` test-link lane
+
+- `private-gemm-x86` ships x86 microkernels via generated assembly and
+  `global_asm!`.
+- The archive members contained the expected symbols, but mixed-backend
+  dev/test builds still failed to resolve them consistently in larger test
+  binaries.
+- The workspace now keeps `private-gemm-x86` on LLVM in dev/test alongside the
+  rest of the SIMD-sensitive subtree.
+
+2. `reqwest` / `aws-lc` native-link spillover
+
+- The parity-test binary did not use the HTTP stack directly, but `data_core`
+  pulled in `reqwest` with the broad `rustls` feature.
+- In `reqwest 0.13`, `rustls` implies the `aws-lc` provider lane, which in turn
+  drags native `aws-lc` archives into unrelated test binaries.
+- The workspace now uses `reqwest` with `rustls-no-provider`, preserving the
+  rustls client stack while avoiding the unrelated `aws-lc` native-link
+  dependency for these binaries.
+
+3. `gororoba_cli_physics` GPU feature wiring
+
+- `gororoba_cli_physics` defaults to `gpu`, and some binaries import
+  `gororoba_algebra::gpu`.
+- The crate feature originally enabled `lbm_3d_cuda` and
+  `sign_imbalance/gpu`, but not `gororoba_algebra/gpu`, leaving package-wide
+  test compilation in an internally inconsistent state.
+- The `gpu` feature now explicitly includes `gororoba_algebra/gpu`.
+
+Exit criteria
+-------------
+The containment policy can be relaxed only when all of the following are true:
+
+1. cg_clif can compile the relevant AVX-specialized `pulp` paths without ICEing
+   in the default developer lane.
+2. The affected governance and mirror binaries pass under plain dev builds
+   without LLVM carve-outs for the protected host crates.
+3. Scalar fallback and vectorized-path tests both remain green after any
+   rollback of the carve-out set.
+4. The engineering note and the verifier policy are updated together so the repo
+   does not silently drift back into an unsupported hybrid state.

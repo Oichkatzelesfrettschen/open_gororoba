@@ -63,32 +63,7 @@ fn test_split_signature_matches_standard() {
 
 #[test]
 fn test_batch_sedenion_associator_matches_recursive() {
-    let mut vectors = Vec::new();
-    for i in 0..10 {
-        let mut v = [0.0_f64; 16];
-        for (j, item) in v.iter_mut().enumerate() {
-            *item = (i * 16 + j) as f64 * 0.1;
-        }
-        vectors.push(v);
-    }
-
-    let batch_results = batch_sedenion_associator_norms(&vectors);
-    let parallel_results = batch_sedenion_associator_norms_parallel(&vectors);
-
-    assert_eq!(batch_results.len(), 8);
-    assert_eq!(parallel_results.len(), 8);
-
-    for i in 0..8 {
-        let expected = cd_associator_norm(&vectors[i], &vectors[i + 1], &vectors[i + 2]);
-        assert!(
-            (batch_results[i] - expected).abs() < 1e-10,
-            "at index {}, got {}, expected {}",
-            i,
-            batch_results[i],
-            expected
-        );
-        assert!((parallel_results[i] - expected).abs() < 1e-10);
-    }
+    super::assert_batch_sedenion_associator_matches_recursive();
 }
 
 #[test]
@@ -681,7 +656,7 @@ fn test_koebisu_d2_on_all_standard_zds() {
 #[test]
 fn test_koebisu_d2_random_consistency() {
     // Random sedenions: D_2 = 0 iff the element is a ZD (verified by multiplication)
-    use rand::Rng;
+    use rand::RngExt;
     let mut rng = rand::rng();
 
     for _ in 0..100 {

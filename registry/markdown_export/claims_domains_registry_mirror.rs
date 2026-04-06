@@ -1,0 +1,604 @@
+//! # Claims Domains Registry Mirror
+//!
+//! <!-- AUTO-GENERATED: DO NOT EDIT -->
+//! <!-- Source of truth: see authoritative source line below -->
+//!
+//! Authoritative source: `registry/claims_domains.toml`.
+//!
+//! - Updated: 2026-03-12
+//! - Source CSV: `docs/claims/CLAIMS_DOMAIN_MAP.csv`
+//! - Source markdown glob: `docs/claims/by_domain/*.md`
+//! - Domain file count: 16
+//! - Claim count: 443
+//!
+//! ## Domain Files
+//!
+//! ### algebra
+//!
+//! - Source markdown: `docs/claims/by_domain/algebra.md`
+//! - Declared count: 67
+//! - CSV claim count: 67
+//! - Markdown claim count: 67
+//! - Count match: `true`
+//! - Mapping match: `true`
+//!
+//! ### cosmology
+//!
+//! - Source markdown: `docs/claims/by_domain/cosmology.md`
+//! - Declared count: 14
+//! - CSV claim count: 14
+//! - Markdown claim count: 14
+//! - Count match: `true`
+//! - Mapping match: `true`
+//!
+//! ### cpp
+//!
+//! - Source markdown: `docs/claims/by_domain/cpp.md`
+//! - Declared count: 2
+//! - CSV claim count: 2
+//! - Markdown claim count: 2
+//! - Count match: `true`
+//! - Mapping match: `true`
+//!
+//! ### datasets
+//!
+//! - Source markdown: `docs/claims/by_domain/datasets.md`
+//! - Declared count: 33
+//! - CSV claim count: 33
+//! - Markdown claim count: 33
+//! - Count match: `true`
+//! - Mapping match: `true`
+//!
+//! ### engineering
+//!
+//! - Source markdown: `docs/claims/by_domain/engineering.md`
+//! - Declared count: 2
+//! - CSV claim count: 2
+//! - Markdown claim count: 2
+//! - Count match: `true`
+//! - Mapping match: `true`
+//!
+//! ### gravitational-waves
+//!
+//! - Source markdown: `docs/claims/by_domain/gravitational-waves.md`
+//! - Declared count: 7
+//! - CSV claim count: 7
+//! - Markdown claim count: 7
+//! - Count match: `true`
+//! - Mapping match: `true`
+//!
+//! ### holography
+//!
+//! - Source markdown: `docs/claims/by_domain/holography.md`
+//! - Declared count: 135
+//! - CSV claim count: 135
+//! - Markdown claim count: 135
+//! - Count match: `true`
+//! - Mapping match: `true`
+//!
+//! ### legacy
+//!
+//! - Source markdown: `docs/claims/by_domain/legacy.md`
+//! - Declared count: 13
+//! - CSV claim count: 13
+//! - Markdown claim count: 13
+//! - Count match: `true`
+//! - Mapping match: `true`
+//!
+//! ### materials
+//!
+//! - Source markdown: `docs/claims/by_domain/materials.md`
+//! - Declared count: 12
+//! - CSV claim count: 12
+//! - Markdown claim count: 12
+//! - Count match: `true`
+//! - Mapping match: `true`
+//!
+//! ### meta
+//!
+//! - Source markdown: `docs/claims/by_domain/meta.md`
+//! - Declared count: 214
+//! - CSV claim count: 214
+//! - Markdown claim count: 214
+//! - Count match: `true`
+//! - Mapping match: `true`
+//!
+//! ### open-systems
+//!
+//! - Source markdown: `docs/claims/by_domain/open-systems.md`
+//! - Declared count: 1
+//! - CSV claim count: 1
+//! - Markdown claim count: 1
+//! - Count match: `true`
+//! - Mapping match: `true`
+//!
+//! ### rocq
+//!
+//! - Source markdown: `docs/claims/by_domain/rocq.md`
+//! - Declared count: 0
+//! - CSV claim count: 0
+//! - Markdown claim count: 0
+//! - Count match: `true`
+//! - Mapping match: `true`
+//!
+//! ### spectral
+//!
+//! - Source markdown: `docs/claims/by_domain/spectral.md`
+//! - Declared count: 14
+//! - CSV claim count: 14
+//! - Markdown claim count: 14
+//! - Count match: `true`
+//! - Mapping match: `true`
+//!
+//! ### stellar-cartography
+//!
+//! - Source markdown: `docs/claims/by_domain/stellar-cartography.md`
+//! - Declared count: 10
+//! - CSV claim count: 10
+//! - Markdown claim count: 10
+//! - Count match: `true`
+//! - Mapping match: `true`
+//!
+//! ### tensor-networks
+//!
+//! - Source markdown: `docs/claims/by_domain/tensor-networks.md`
+//! - Declared count: 3
+//! - CSV claim count: 3
+//! - Markdown claim count: 3
+//! - Count match: `true`
+//! - Mapping match: `true`
+//!
+//! ### visualization
+//!
+//! - Source markdown: `docs/claims/by_domain/visualization.md`
+//! - Declared count: 12
+//! - CSV claim count: 12
+//! - Markdown claim count: 12
+//! - Count match: `true`
+//! - Mapping match: `true`
+//!
+//! ## Claim Crosswalk
+//!
+//! - C-001: csv=["algebra", "holography"], markdown=["algebra", "holography"], match=true
+//! - C-002: csv=["algebra", "holography"], markdown=["algebra", "holography"], match=true
+//! - C-003: csv=["algebra"], markdown=["algebra"], match=true
+//! - C-004: csv=["algebra"], markdown=["algebra"], match=true
+//! - C-005: csv=["algebra", "datasets"], markdown=["algebra", "datasets"], match=true
+//! - C-006: csv=["datasets", "gravitational-waves", "legacy"], markdown=["datasets", "gravitational-waves", "legacy"], match=true
+//! - C-007: csv=["cosmology", "gravitational-waves", "holography"], markdown=["cosmology", "gravitational-waves", "holography"], match=true
+//! - C-008: csv=["legacy", "spectral"], markdown=["legacy", "spectral"], match=true
+//! - C-009: csv=["legacy", "tensor-networks"], markdown=["legacy", "tensor-networks"], match=true
+//! - C-010: csv=["holography", "materials", "spectral"], markdown=["holography", "materials", "spectral"], match=true
+//! - C-011: csv=["algebra"], markdown=["algebra"], match=true
+//! - C-012: csv=["cosmology", "datasets"], markdown=["cosmology", "datasets"], match=true
+//! - C-013: csv=["algebra"], markdown=["algebra"], match=true
+//! - C-014: csv=["algebra"], markdown=["algebra"], match=true
+//! - C-015: csv=["algebra"], markdown=["algebra"], match=true
+//! - C-016: csv=["algebra"], markdown=["algebra"], match=true
+//! - C-017: csv=["meta"], markdown=["meta"], match=true
+//! - C-018: csv=["algebra", "holography"], markdown=["algebra", "holography"], match=true
+//! - C-019: csv=["algebra"], markdown=["algebra"], match=true
+//! - C-020: csv=["legacy"], markdown=["legacy"], match=true
+//! - C-021: csv=["legacy"], markdown=["legacy"], match=true
+//! - C-022: csv=["algebra", "holography"], markdown=["algebra", "holography"], match=true
+//! - C-023: csv=["algebra"], markdown=["algebra"], match=true
+//! - C-024: csv=["cpp", "engineering"], markdown=["cpp", "engineering"], match=true
+//! - C-025: csv=["gravitational-waves", "holography", "stellar-cartography"], markdown=["gravitational-waves", "holography", "stellar-cartography"], match=true
+//! - C-026: csv=["algebra", "gravitational-waves", "holography"], markdown=["algebra", "gravitational-waves", "holography"], match=true
+//! - C-027: csv=["holography"], markdown=["holography"], match=true
+//! - C-028: csv=["algebra"], markdown=["algebra"], match=true
+//! - C-029: csv=["algebra"], markdown=["algebra"], match=true
+//! - C-030: csv=["algebra"], markdown=["algebra"], match=true
+//! - C-031: csv=["algebra", "holography"], markdown=["algebra", "holography"], match=true
+//! - C-032: csv=["algebra"], markdown=["algebra"], match=true
+//! - C-033: csv=["algebra", "datasets"], markdown=["algebra", "datasets"], match=true
+//! - C-034: csv=["algebra", "datasets", "spectral"], markdown=["algebra", "datasets", "spectral"], match=true
+//! - C-035: csv=["cosmology"], markdown=["cosmology"], match=true
+//! - C-036: csv=["cosmology"], markdown=["cosmology"], match=true
+//! - C-037: csv=["cosmology", "datasets"], markdown=["cosmology", "datasets"], match=true
+//! - C-038: csv=["cosmology"], markdown=["cosmology"], match=true
+//! - C-039: csv=["cosmology", "holography", "spectral"], markdown=["cosmology", "holography", "spectral"], match=true
+//! - C-040: csv=["cosmology", "holography"], markdown=["cosmology", "holography"], match=true
+//! - C-041: csv=["cosmology", "datasets"], markdown=["cosmology", "datasets"], match=true
+//! - C-042: csv=["meta"], markdown=["meta"], match=true
+//! - C-043: csv=["datasets", "holography"], markdown=["datasets", "holography"], match=true
+//! - C-044: csv=["legacy"], markdown=["legacy"], match=true
+//! - C-045: csv=["meta"], markdown=["meta"], match=true
+//! - C-046: csv=["algebra", "legacy"], markdown=["algebra", "legacy"], match=true
+//! - C-047: csv=["holography", "legacy"], markdown=["holography", "legacy"], match=true
+//! - C-048: csv=["meta"], markdown=["meta"], match=true
+//! - C-049: csv=["meta"], markdown=["meta"], match=true
+//! - C-050: csv=["meta"], markdown=["meta"], match=true
+//! - C-051: csv=["meta"], markdown=["meta"], match=true
+//! - C-052: csv=["holography", "tensor-networks"], markdown=["holography", "tensor-networks"], match=true
+//! - C-053: csv=["legacy", "materials"], markdown=["legacy", "materials"], match=true
+//! - C-054: csv=["algebra"], markdown=["algebra"], match=true
+//! - C-055: csv=["meta"], markdown=["meta"], match=true
+//! - C-056: csv=["datasets", "holography"], markdown=["datasets", "holography"], match=true
+//! - C-057: csv=["datasets"], markdown=["datasets"], match=true
+//! - C-058: csv=["cosmology", "datasets", "stellar-cartography"], markdown=["cosmology", "datasets", "stellar-cartography"], match=true
+//! - C-059: csv=["datasets"], markdown=["datasets"], match=true
+//! - C-060: csv=["datasets", "gravitational-waves", "stellar-cartography"], markdown=["datasets", "gravitational-waves", "stellar-cartography"], match=true
+//! - C-061: csv=["datasets", "gravitational-waves"], markdown=["datasets", "gravitational-waves"], match=true
+//! - C-062: csv=["datasets"], markdown=["datasets"], match=true
+//! - C-063: csv=["datasets"], markdown=["datasets"], match=true
+//! - C-064: csv=["datasets"], markdown=["datasets"], match=true
+//! - C-065: csv=["datasets"], markdown=["datasets"], match=true
+//! - C-066: csv=["datasets"], markdown=["datasets"], match=true
+//! - C-067: csv=["datasets", "materials"], markdown=["datasets", "materials"], match=true
+//! - C-068: csv=["algebra", "holography"], markdown=["algebra", "holography"], match=true
+//! - C-069: csv=["algebra"], markdown=["algebra"], match=true
+//! - C-070: csv=["meta"], markdown=["meta"], match=true
+//! - C-071: csv=["meta"], markdown=["meta"], match=true
+//! - C-072: csv=["meta"], markdown=["meta"], match=true
+//! - C-073: csv=["meta"], markdown=["meta"], match=true
+//! - C-074: csv=["meta"], markdown=["meta"], match=true
+//! - C-075: csv=["meta"], markdown=["meta"], match=true
+//! - C-076: csv=["algebra"], markdown=["algebra"], match=true
+//! - C-077: csv=["meta"], markdown=["meta"], match=true
+//! - C-078: csv=["meta"], markdown=["meta"], match=true
+//! - C-079: csv=["holography"], markdown=["holography"], match=true
+//! - C-080: csv=["meta"], markdown=["meta"], match=true
+//! - C-081: csv=["meta"], markdown=["meta"], match=true
+//! - C-082: csv=["meta"], markdown=["meta"], match=true
+//! - C-083: csv=["meta"], markdown=["meta"], match=true
+//! - C-084: csv=["meta"], markdown=["meta"], match=true
+//! - C-085: csv=["meta"], markdown=["meta"], match=true
+//! - C-086: csv=["meta"], markdown=["meta"], match=true
+//! - C-087: csv=["meta"], markdown=["meta"], match=true
+//! - C-088: csv=["algebra"], markdown=["algebra"], match=true
+//! - C-089: csv=["meta"], markdown=["meta"], match=true
+//! - C-090: csv=["meta"], markdown=["meta"], match=true
+//! - C-091: csv=["holography"], markdown=["holography"], match=true
+//! - C-092: csv=["meta"], markdown=["meta"], match=true
+//! - C-093: csv=["holography"], markdown=["holography"], match=true
+//! - C-094: csv=["meta"], markdown=["meta"], match=true
+//! - C-095: csv=["meta"], markdown=["meta"], match=true
+//! - C-096: csv=["meta"], markdown=["meta"], match=true
+//! - C-097: csv=["algebra", "holography"], markdown=["algebra", "holography"], match=true
+//! - C-098: csv=["holography"], markdown=["holography"], match=true
+//! - C-099: csv=["algebra"], markdown=["algebra"], match=true
+//! - C-100: csv=["meta"], markdown=["meta"], match=true
+//! - C-101: csv=["algebra"], markdown=["algebra"], match=true
+//! - C-102: csv=["legacy"], markdown=["legacy"], match=true
+//! - C-103: csv=["legacy"], markdown=["legacy"], match=true
+//! - C-104: csv=["meta"], markdown=["meta"], match=true
+//! - C-105: csv=["meta"], markdown=["meta"], match=true
+//! - C-106: csv=["algebra"], markdown=["algebra"], match=true
+//! - C-107: csv=["holography"], markdown=["holography"], match=true
+//! - C-108: csv=["meta"], markdown=["meta"], match=true
+//! - C-109: csv=["meta"], markdown=["meta"], match=true
+//! - C-110: csv=["meta"], markdown=["meta"], match=true
+//! - C-111: csv=["holography"], markdown=["holography"], match=true
+//! - C-112: csv=["meta"], markdown=["meta"], match=true
+//! - C-113: csv=["meta"], markdown=["meta"], match=true
+//! - C-114: csv=["meta"], markdown=["meta"], match=true
+//! - C-115: csv=["holography"], markdown=["holography"], match=true
+//! - C-116: csv=["meta"], markdown=["meta"], match=true
+//! - C-117: csv=["spectral"], markdown=["spectral"], match=true
+//! - C-118: csv=["algebra"], markdown=["algebra"], match=true
+//! - C-119: csv=["algebra"], markdown=["algebra"], match=true
+//! - C-120: csv=["meta"], markdown=["meta"], match=true
+//! - C-121: csv=["meta"], markdown=["meta"], match=true
+//! - C-122: csv=["meta"], markdown=["meta"], match=true
+//! - C-123: csv=["meta"], markdown=["meta"], match=true
+//! - C-124: csv=["algebra"], markdown=["algebra"], match=true
+//! - C-125: csv=["holography"], markdown=["holography"], match=true
+//! - C-126: csv=["meta"], markdown=["meta"], match=true
+//! - C-127: csv=["meta"], markdown=["meta"], match=true
+//! - C-128: csv=["meta"], markdown=["meta"], match=true
+//! - C-129: csv=["holography"], markdown=["holography"], match=true
+//! - C-130: csv=["holography"], markdown=["holography"], match=true
+//! - C-131: csv=["meta"], markdown=["meta"], match=true
+//! - C-132: csv=["holography"], markdown=["holography"], match=true
+//! - C-133: csv=["holography"], markdown=["holography"], match=true
+//! - C-134: csv=["meta"], markdown=["meta"], match=true
+//! - C-135: csv=["meta"], markdown=["meta"], match=true
+//! - C-136: csv=["meta"], markdown=["meta"], match=true
+//! - C-137: csv=["holography"], markdown=["holography"], match=true
+//! - C-138: csv=["algebra", "holography"], markdown=["algebra", "holography"], match=true
+//! - C-139: csv=["meta"], markdown=["meta"], match=true
+//! - C-140: csv=["meta"], markdown=["meta"], match=true
+//! - C-141: csv=["meta"], markdown=["meta"], match=true
+//! - C-142: csv=["meta"], markdown=["meta"], match=true
+//! - C-143: csv=["meta"], markdown=["meta"], match=true
+//! - C-144: csv=["meta"], markdown=["meta"], match=true
+//! - C-145: csv=["holography"], markdown=["holography"], match=true
+//! - C-146: csv=["meta"], markdown=["meta"], match=true
+//! - C-147: csv=["holography"], markdown=["holography"], match=true
+//! - C-148: csv=["meta"], markdown=["meta"], match=true
+//! - C-149: csv=["holography"], markdown=["holography"], match=true
+//! - C-150: csv=["holography"], markdown=["holography"], match=true
+//! - C-151: csv=["holography"], markdown=["holography"], match=true
+//! - C-152: csv=["meta"], markdown=["meta"], match=true
+//! - C-153: csv=["meta"], markdown=["meta"], match=true
+//! - C-154: csv=["holography"], markdown=["holography"], match=true
+//! - C-155: csv=["meta"], markdown=["meta"], match=true
+//! - C-156: csv=["meta"], markdown=["meta"], match=true
+//! - C-157: csv=["meta"], markdown=["meta"], match=true
+//! - C-158: csv=["holography"], markdown=["holography"], match=true
+//! - C-159: csv=["meta"], markdown=["meta"], match=true
+//! - C-160: csv=["meta"], markdown=["meta"], match=true
+//! - C-161: csv=["meta"], markdown=["meta"], match=true
+//! - C-162: csv=["algebra"], markdown=["algebra"], match=true
+//! - C-163: csv=["meta"], markdown=["meta"], match=true
+//! - C-164: csv=["meta"], markdown=["meta"], match=true
+//! - C-165: csv=["legacy"], markdown=["legacy"], match=true
+//! - C-166: csv=["meta"], markdown=["meta"], match=true
+//! - C-167: csv=["meta"], markdown=["meta"], match=true
+//! - C-168: csv=["algebra", "holography"], markdown=["algebra", "holography"], match=true
+//! - C-169: csv=["meta"], markdown=["meta"], match=true
+//! - C-170: csv=["holography"], markdown=["holography"], match=true
+//! - C-171: csv=["meta"], markdown=["meta"], match=true
+//! - C-172: csv=["meta"], markdown=["meta"], match=true
+//! - C-173: csv=["meta"], markdown=["meta"], match=true
+//! - C-174: csv=["meta"], markdown=["meta"], match=true
+//! - C-175: csv=["holography"], markdown=["holography"], match=true
+//! - C-176: csv=["meta"], markdown=["meta"], match=true
+//! - C-177: csv=["meta"], markdown=["meta"], match=true
+//! - C-178: csv=["algebra"], markdown=["algebra"], match=true
+//! - C-179: csv=["meta"], markdown=["meta"], match=true
+//! - C-180: csv=["holography"], markdown=["holography"], match=true
+//! - C-181: csv=["meta"], markdown=["meta"], match=true
+//! - C-182: csv=["meta"], markdown=["meta"], match=true
+//! - C-183: csv=["meta"], markdown=["meta"], match=true
+//! - C-184: csv=["algebra"], markdown=["algebra"], match=true
+//! - C-185: csv=["meta"], markdown=["meta"], match=true
+//! - C-186: csv=["holography"], markdown=["holography"], match=true
+//! - C-187: csv=["meta"], markdown=["meta"], match=true
+//! - C-188: csv=["meta"], markdown=["meta"], match=true
+//! - C-189: csv=["holography"], markdown=["holography"], match=true
+//! - C-190: csv=["meta"], markdown=["meta"], match=true
+//! - C-191: csv=["meta"], markdown=["meta"], match=true
+//! - C-192: csv=["algebra", "holography"], markdown=["algebra", "holography"], match=true
+//! - C-193: csv=["holography"], markdown=["holography"], match=true
+//! - C-194: csv=["meta"], markdown=["meta"], match=true
+//! - C-195: csv=["meta"], markdown=["meta"], match=true
+//! - C-196: csv=["holography"], markdown=["holography"], match=true
+//! - C-197: csv=["holography"], markdown=["holography"], match=true
+//! - C-198: csv=["meta"], markdown=["meta"], match=true
+//! - C-199: csv=["holography"], markdown=["holography"], match=true
+//! - C-200: csv=["meta"], markdown=["meta"], match=true
+//! - C-201: csv=["meta"], markdown=["meta"], match=true
+//! - C-202: csv=["meta"], markdown=["meta"], match=true
+//! - C-203: csv=["meta"], markdown=["meta"], match=true
+//! - C-204: csv=["meta"], markdown=["meta"], match=true
+//! - C-205: csv=["meta"], markdown=["meta"], match=true
+//! - C-206: csv=["holography"], markdown=["holography"], match=true
+//! - C-207: csv=["meta"], markdown=["meta"], match=true
+//! - C-208: csv=["meta"], markdown=["meta"], match=true
+//! - C-209: csv=["holography"], markdown=["holography"], match=true
+//! - C-210: csv=["meta"], markdown=["meta"], match=true
+//! - C-211: csv=["meta"], markdown=["meta"], match=true
+//! - C-212: csv=["holography"], markdown=["holography"], match=true
+//! - C-213: csv=["meta"], markdown=["meta"], match=true
+//! - C-214: csv=["holography", "spectral"], markdown=["holography", "spectral"], match=true
+//! - C-215: csv=["holography"], markdown=["holography"], match=true
+//! - C-216: csv=["meta"], markdown=["meta"], match=true
+//! - C-217: csv=["holography"], markdown=["holography"], match=true
+//! - C-218: csv=["algebra", "holography"], markdown=["algebra", "holography"], match=true
+//! - C-219: csv=["holography"], markdown=["holography"], match=true
+//! - C-220: csv=["holography"], markdown=["holography"], match=true
+//! - C-221: csv=["algebra"], markdown=["algebra"], match=true
+//! - C-222: csv=["meta"], markdown=["meta"], match=true
+//! - C-223: csv=["holography"], markdown=["holography"], match=true
+//! - C-224: csv=["algebra"], markdown=["algebra"], match=true
+//! - C-225: csv=["meta"], markdown=["meta"], match=true
+//! - C-226: csv=["meta"], markdown=["meta"], match=true
+//! - C-227: csv=["holography"], markdown=["holography"], match=true
+//! - C-228: csv=["meta"], markdown=["meta"], match=true
+//! - C-229: csv=["meta"], markdown=["meta"], match=true
+//! - C-230: csv=["holography"], markdown=["holography"], match=true
+//! - C-231: csv=["meta"], markdown=["meta"], match=true
+//! - C-232: csv=["holography"], markdown=["holography"], match=true
+//! - C-233: csv=["holography"], markdown=["holography"], match=true
+//! - C-234: csv=["holography"], markdown=["holography"], match=true
+//! - C-235: csv=["holography"], markdown=["holography"], match=true
+//! - C-236: csv=["meta"], markdown=["meta"], match=true
+//! - C-237: csv=["holography"], markdown=["holography"], match=true
+//! - C-238: csv=["holography"], markdown=["holography"], match=true
+//! - C-239: csv=["meta"], markdown=["meta"], match=true
+//! - C-240: csv=["holography"], markdown=["holography"], match=true
+//! - C-241: csv=["meta"], markdown=["meta"], match=true
+//! - C-242: csv=["algebra"], markdown=["algebra"], match=true
+//! - C-243: csv=["holography"], markdown=["holography"], match=true
+//! - C-244: csv=["holography"], markdown=["holography"], match=true
+//! - C-245: csv=["holography"], markdown=["holography"], match=true
+//! - C-246: csv=["algebra"], markdown=["algebra"], match=true
+//! - C-247: csv=["algebra"], markdown=["algebra"], match=true
+//! - C-248: csv=["meta"], markdown=["meta"], match=true
+//! - C-249: csv=["meta"], markdown=["meta"], match=true
+//! - C-250: csv=["meta"], markdown=["meta"], match=true
+//! - C-251: csv=["holography", "spectral"], markdown=["holography", "spectral"], match=true
+//! - C-252: csv=["meta"], markdown=["meta"], match=true
+//! - C-253: csv=["holography"], markdown=["holography"], match=true
+//! - C-254: csv=["meta"], markdown=["meta"], match=true
+//! - C-255: csv=["spectral"], markdown=["spectral"], match=true
+//! - C-256: csv=["holography", "spectral"], markdown=["holography", "spectral"], match=true
+//! - C-257: csv=["holography"], markdown=["holography"], match=true
+//! - C-258: csv=["holography"], markdown=["holography"], match=true
+//! - C-259: csv=["algebra"], markdown=["algebra"], match=true
+//! - C-260: csv=["meta"], markdown=["meta"], match=true
+//! - C-261: csv=["meta"], markdown=["meta"], match=true
+//! - C-262: csv=["meta"], markdown=["meta"], match=true
+//! - C-263: csv=["meta"], markdown=["meta"], match=true
+//! - C-264: csv=["holography"], markdown=["holography"], match=true
+//! - C-265: csv=["meta"], markdown=["meta"], match=true
+//! - C-266: csv=["holography"], markdown=["holography"], match=true
+//! - C-267: csv=["algebra", "holography"], markdown=["algebra", "holography"], match=true
+//! - C-268: csv=["meta"], markdown=["meta"], match=true
+//! - C-269: csv=["meta"], markdown=["meta"], match=true
+//! - C-270: csv=["holography"], markdown=["holography"], match=true
+//! - C-271: csv=["holography"], markdown=["holography"], match=true
+//! - C-272: csv=["meta"], markdown=["meta"], match=true
+//! - C-273: csv=["meta"], markdown=["meta"], match=true
+//! - C-274: csv=["meta"], markdown=["meta"], match=true
+//! - C-275: csv=["meta"], markdown=["meta"], match=true
+//! - C-276: csv=["meta"], markdown=["meta"], match=true
+//! - C-277: csv=["holography"], markdown=["holography"], match=true
+//! - C-278: csv=["algebra"], markdown=["algebra"], match=true
+//! - C-279: csv=["holography"], markdown=["holography"], match=true
+//! - C-280: csv=["meta"], markdown=["meta"], match=true
+//! - C-281: csv=["meta"], markdown=["meta"], match=true
+//! - C-282: csv=["holography"], markdown=["holography"], match=true
+//! - C-283: csv=["holography"], markdown=["holography"], match=true
+//! - C-284: csv=["holography"], markdown=["holography"], match=true
+//! - C-285: csv=["meta"], markdown=["meta"], match=true
+//! - C-286: csv=["meta"], markdown=["meta"], match=true
+//! - C-287: csv=["holography"], markdown=["holography"], match=true
+//! - C-288: csv=["holography"], markdown=["holography"], match=true
+//! - C-289: csv=["meta"], markdown=["meta"], match=true
+//! - C-290: csv=["meta"], markdown=["meta"], match=true
+//! - C-291: csv=["meta"], markdown=["meta"], match=true
+//! - C-292: csv=["holography"], markdown=["holography"], match=true
+//! - C-293: csv=["meta"], markdown=["meta"], match=true
+//! - C-294: csv=["meta"], markdown=["meta"], match=true
+//! - C-295: csv=["meta"], markdown=["meta"], match=true
+//! - C-296: csv=["holography"], markdown=["holography"], match=true
+//! - C-297: csv=["holography"], markdown=["holography"], match=true
+//! - C-298: csv=["holography", "spectral"], markdown=["holography", "spectral"], match=true
+//! - C-299: csv=["holography"], markdown=["holography"], match=true
+//! - C-300: csv=["holography"], markdown=["holography"], match=true
+//! - C-301: csv=["algebra"], markdown=["algebra"], match=true
+//! - C-302: csv=["meta"], markdown=["meta"], match=true
+//! - C-303: csv=["holography"], markdown=["holography"], match=true
+//! - C-304: csv=["holography"], markdown=["holography"], match=true
+//! - C-305: csv=["holography", "spectral"], markdown=["holography", "spectral"], match=true
+//! - C-306: csv=["meta"], markdown=["meta"], match=true
+//! - C-307: csv=["holography"], markdown=["holography"], match=true
+//! - C-308: csv=["meta"], markdown=["meta"], match=true
+//! - C-309: csv=["meta"], markdown=["meta"], match=true
+//! - C-310: csv=["meta"], markdown=["meta"], match=true
+//! - C-311: csv=["meta"], markdown=["meta"], match=true
+//! - C-312: csv=["meta"], markdown=["meta"], match=true
+//! - C-313: csv=["meta"], markdown=["meta"], match=true
+//! - C-314: csv=["meta"], markdown=["meta"], match=true
+//! - C-315: csv=["meta"], markdown=["meta"], match=true
+//! - C-316: csv=["meta"], markdown=["meta"], match=true
+//! - C-317: csv=["meta"], markdown=["meta"], match=true
+//! - C-318: csv=["meta"], markdown=["meta"], match=true
+//! - C-319: csv=["holography"], markdown=["holography"], match=true
+//! - C-320: csv=["meta"], markdown=["meta"], match=true
+//! - C-321: csv=["meta"], markdown=["meta"], match=true
+//! - C-322: csv=["algebra"], markdown=["algebra"], match=true
+//! - C-323: csv=["meta"], markdown=["meta"], match=true
+//! - C-324: csv=["holography"], markdown=["holography"], match=true
+//! - C-325: csv=["meta"], markdown=["meta"], match=true
+//! - C-326: csv=["meta"], markdown=["meta"], match=true
+//! - C-327: csv=["algebra"], markdown=["algebra"], match=true
+//! - C-328: csv=["meta"], markdown=["meta"], match=true
+//! - C-329: csv=["holography"], markdown=["holography"], match=true
+//! - C-330: csv=["holography"], markdown=["holography"], match=true
+//! - C-331: csv=["meta"], markdown=["meta"], match=true
+//! - C-332: csv=["holography"], markdown=["holography"], match=true
+//! - C-333: csv=["meta"], markdown=["meta"], match=true
+//! - C-334: csv=["meta"], markdown=["meta"], match=true
+//! - C-335: csv=["meta"], markdown=["meta"], match=true
+//! - C-336: csv=["meta"], markdown=["meta"], match=true
+//! - C-337: csv=["algebra"], markdown=["algebra"], match=true
+//! - C-338: csv=["meta"], markdown=["meta"], match=true
+//! - C-339: csv=["meta"], markdown=["meta"], match=true
+//! - C-340: csv=["meta"], markdown=["meta"], match=true
+//! - C-341: csv=["meta"], markdown=["meta"], match=true
+//! - C-342: csv=["holography"], markdown=["holography"], match=true
+//! - C-343: csv=["holography"], markdown=["holography"], match=true
+//! - C-344: csv=["meta"], markdown=["meta"], match=true
+//! - C-345: csv=["meta"], markdown=["meta"], match=true
+//! - C-346: csv=["meta"], markdown=["meta"], match=true
+//! - C-347: csv=["meta"], markdown=["meta"], match=true
+//! - C-348: csv=["meta"], markdown=["meta"], match=true
+//! - C-349: csv=["holography"], markdown=["holography"], match=true
+//! - C-350: csv=["spectral"], markdown=["spectral"], match=true
+//! - C-351: csv=["meta"], markdown=["meta"], match=true
+//! - C-352: csv=["algebra"], markdown=["algebra"], match=true
+//! - C-353: csv=["meta"], markdown=["meta"], match=true
+//! - C-354: csv=["meta"], markdown=["meta"], match=true
+//! - C-355: csv=["meta"], markdown=["meta"], match=true
+//! - C-356: csv=["holography"], markdown=["holography"], match=true
+//! - C-357: csv=["meta"], markdown=["meta"], match=true
+//! - C-358: csv=["meta"], markdown=["meta"], match=true
+//! - C-359: csv=["meta"], markdown=["meta"], match=true
+//! - C-360: csv=["meta"], markdown=["meta"], match=true
+//! - C-361: csv=["holography"], markdown=["holography"], match=true
+//! - C-362: csv=["meta"], markdown=["meta"], match=true
+//! - C-363: csv=["meta"], markdown=["meta"], match=true
+//! - C-364: csv=["meta"], markdown=["meta"], match=true
+//! - C-365: csv=["meta"], markdown=["meta"], match=true
+//! - C-366: csv=["meta"], markdown=["meta"], match=true
+//! - C-367: csv=["algebra"], markdown=["algebra"], match=true
+//! - C-368: csv=["meta"], markdown=["meta"], match=true
+//! - C-369: csv=["meta"], markdown=["meta"], match=true
+//! - C-370: csv=["meta"], markdown=["meta"], match=true
+//! - C-371: csv=["meta"], markdown=["meta"], match=true
+//! - C-372: csv=["meta"], markdown=["meta"], match=true
+//! - C-373: csv=["meta"], markdown=["meta"], match=true
+//! - C-374: csv=["meta"], markdown=["meta"], match=true
+//! - C-375: csv=["holography"], markdown=["holography"], match=true
+//! - C-376: csv=["meta"], markdown=["meta"], match=true
+//! - C-377: csv=["meta"], markdown=["meta"], match=true
+//! - C-378: csv=["meta"], markdown=["meta"], match=true
+//! - C-379: csv=["holography"], markdown=["holography"], match=true
+//! - C-380: csv=["meta"], markdown=["meta"], match=true
+//! - C-381: csv=["meta"], markdown=["meta"], match=true
+//! - C-382: csv=["meta"], markdown=["meta"], match=true
+//! - C-383: csv=["meta"], markdown=["meta"], match=true
+//! - C-384: csv=["meta"], markdown=["meta"], match=true
+//! - C-385: csv=["meta"], markdown=["meta"], match=true
+//! - C-386: csv=["meta"], markdown=["meta"], match=true
+//! - C-387: csv=["meta"], markdown=["meta"], match=true
+//! - C-388: csv=["meta"], markdown=["meta"], match=true
+//! - C-389: csv=["meta"], markdown=["meta"], match=true
+//! - C-390: csv=["meta"], markdown=["meta"], match=true
+//! - C-391: csv=["meta"], markdown=["meta"], match=true
+//! - C-392: csv=["algebra", "holography"], markdown=["algebra", "holography"], match=true
+//! - C-393: csv=["meta"], markdown=["meta"], match=true
+//! - C-394: csv=["meta"], markdown=["meta"], match=true
+//! - C-395: csv=["meta"], markdown=["meta"], match=true
+//! - C-396: csv=["spectral"], markdown=["spectral"], match=true
+//! - C-397: csv=["algebra"], markdown=["algebra"], match=true
+//! - C-398: csv=["meta"], markdown=["meta"], match=true
+//! - C-399: csv=["legacy"], markdown=["legacy"], match=true
+//! - C-400: csv=["datasets", "holography", "materials"], markdown=["datasets", "holography", "materials"], match=true
+//! - C-401: csv=["datasets", "holography", "materials"], markdown=["datasets", "holography", "materials"], match=true
+//! - C-402: csv=["datasets", "holography", "materials"], markdown=["datasets", "holography", "materials"], match=true
+//! - C-403: csv=["spectral"], markdown=["spectral"], match=true
+//! - C-404: csv=["holography"], markdown=["holography"], match=true
+//! - C-405: csv=["open-systems"], markdown=["open-systems"], match=true
+//! - C-406: csv=["holography", "stellar-cartography", "tensor-networks"], markdown=["holography", "stellar-cartography", "tensor-networks"], match=true
+//! - C-407: csv=["algebra", "holography", "stellar-cartography"], markdown=["algebra", "holography", "stellar-cartography"], match=true
+//! - C-408: csv=["meta", "stellar-cartography"], markdown=["meta", "stellar-cartography"], match=true
+//! - C-409: csv=["materials"], markdown=["materials"], match=true
+//! - C-410: csv=["datasets"], markdown=["datasets"], match=true
+//! - C-411: csv=["datasets"], markdown=["datasets"], match=true
+//! - C-412: csv=["algebra", "holography", "visualization"], markdown=["algebra", "holography", "visualization"], match=true
+//! - C-413: csv=["meta"], markdown=["meta"], match=true
+//! - C-414: csv=["algebra"], markdown=["algebra"], match=true
+//! - C-415: csv=["meta"], markdown=["meta"], match=true
+//! - C-416: csv=["algebra"], markdown=["algebra"], match=true
+//! - C-417: csv=["holography", "materials", "visualization"], markdown=["holography", "materials", "visualization"], match=true
+//! - C-418: csv=["datasets"], markdown=["datasets"], match=true
+//! - C-419: csv=["algebra", "holography"], markdown=["algebra", "holography"], match=true
+//! - C-420: csv=["holography", "materials"], markdown=["holography", "materials"], match=true
+//! - C-421: csv=["engineering", "holography", "materials"], markdown=["engineering", "holography", "materials"], match=true
+//! - C-422: csv=["holography", "visualization"], markdown=["holography", "visualization"], match=true
+//! - C-423: csv=["holography", "materials", "visualization"], markdown=["holography", "materials", "visualization"], match=true
+//! - C-424: csv=["holography", "visualization"], markdown=["holography", "visualization"], match=true
+//! - C-425: csv=["algebra", "holography"], markdown=["algebra", "holography"], match=true
+//! - C-426: csv=["holography"], markdown=["holography"], match=true
+//! - C-427: csv=["algebra", "materials"], markdown=["algebra", "materials"], match=true
+//! - C-428: csv=["cosmology", "holography", "visualization"], markdown=["cosmology", "holography", "visualization"], match=true
+//! - C-429: csv=["holography", "visualization"], markdown=["holography", "visualization"], match=true
+//! - C-430: csv=["cosmology", "holography", "visualization"], markdown=["cosmology", "holography", "visualization"], match=true
+//! - C-431: csv=["algebra", "holography", "visualization"], markdown=["algebra", "holography", "visualization"], match=true
+//! - C-432: csv=["cpp", "holography", "visualization"], markdown=["cpp", "holography", "visualization"], match=true
+//! - C-433: csv=["meta"], markdown=["meta"], match=true
+//! - C-434: csv=["holography", "visualization"], markdown=["holography", "visualization"], match=true
+//! - C-435: csv=["holography", "visualization"], markdown=["holography", "visualization"], match=true
+//! - C-436: csv=["datasets", "stellar-cartography"], markdown=["datasets", "stellar-cartography"], match=true
+//! - C-437: csv=["datasets", "stellar-cartography"], markdown=["datasets", "stellar-cartography"], match=true
+//! - C-438: csv=["datasets", "stellar-cartography"], markdown=["datasets", "stellar-cartography"], match=true
+//! - C-439: csv=["datasets", "gravitational-waves"], markdown=["datasets", "gravitational-waves"], match=true
+//! - C-440: csv=["cosmology", "datasets"], markdown=["cosmology", "datasets"], match=true
+//! - C-441: csv=["cosmology", "datasets"], markdown=["cosmology", "datasets"], match=true
+//! - C-442: csv=["datasets", "stellar-cartography"], markdown=["datasets", "stellar-cartography"], match=true
+//! - C-443: csv=["algebra"], markdown=["algebra"], match=true
