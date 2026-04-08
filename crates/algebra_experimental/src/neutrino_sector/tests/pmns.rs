@@ -440,8 +440,8 @@ fn test_pmns_theta23_alpha_scan() {
         for i in 0..3 {
             let f_ch = w1 * sel_ch[i] + w2 * sel_nu[i];
             let f_nu = alpha_nu * (w1 * sel_nu[i] + w2 * sel_ch[i]);
-            m_ch[(i, i)] = m_ch[(i, i)] + f_ch.exp();
-            m_nu[(i, i)] = m_nu[(i, i)] + f_nu.exp();
+            m_ch[(i, i)] += f_ch.exp();
+            m_nu[(i, i)] += f_nu.exp();
         }
 
         let m_ch_sym = (&m_ch + m_ch.transpose()) * faer::Scale(0.5);
@@ -571,8 +571,8 @@ fn test_pmns_theta23_composite_scan() {
             for i in 0..3 {
                 let f_ch = w1 * sel_ch[i] + w2 * sel_nu_composite[i];
                 let f_nu = w1 * sel_nu_composite[i] + w2 * sel_ch[i];
-                m_ch[(i, i)] = m_ch[(i, i)] + f_ch.exp();
-                m_nu[(i, i)] = m_nu[(i, i)] + f_nu.exp();
+                m_ch[(i, i)] += f_ch.exp();
+                m_nu[(i, i)] += f_nu.exp();
             }
 
             let m_ch_sym = (&m_ch + m_ch.transpose()) * faer::Scale(0.5);
@@ -821,8 +821,8 @@ fn test_pmns_offdiag_full_profile() {
         for i in 0..3 {
             let f_ch = w1 * sel_ch[i] + w2 * sel_nu[i];
             let f_nu = w1 * sel_nu[i] + w2 * sel_ch[i];
-            m_ch[(i, i)] = m_ch[(i, i)] + f_ch.exp();
-            m_nu[(i, i)] = m_nu[(i, i)] + f_nu.exp();
+            m_ch[(i, i)] += f_ch.exp();
+            m_nu[(i, i)] += f_nu.exp();
         }
 
         // Off-diagonal from psi overlap on FULL profiles
@@ -836,8 +836,8 @@ fn test_pmns_offdiag_full_profile() {
                 let psi_ch_j = gourlay_psi(&ch_profiles[j]);
                 let overlap_ch = dot16(&ch_profiles[i], &psi_ch_j);
 
-                m_nu[(i, j)] = m_nu[(i, j)] + alpha * overlap_nu;
-                m_ch[(i, j)] = m_ch[(i, j)] + alpha * overlap_ch;
+                m_nu[(i, j)] += alpha * overlap_nu;
+                m_ch[(i, j)] += alpha * overlap_ch;
             }
         }
 
@@ -1006,8 +1006,8 @@ fn test_pmns_offdiag_two_param() {
             for i in 0..3 {
                 let f_ch = w1 * sel_ch[i] + w2 * sel_nu[i];
                 let f_nu = w1 * sel_nu[i] + w2 * sel_ch[i];
-                m_ch[(i, i)] = m_ch[(i, i)] + f_ch.exp();
-                m_nu[(i, i)] = m_nu[(i, i)] + f_nu.exp();
+                m_ch[(i, i)] += f_ch.exp();
+                m_nu[(i, i)] += f_nu.exp();
             }
 
             for i in 0..3 {
@@ -1017,8 +1017,8 @@ fn test_pmns_offdiag_two_param() {
                     }
                     let psi_nu_j = gourlay_psi(&nu_profiles[j]);
                     let psi_ch_j = gourlay_psi(&ch_profiles[j]);
-                    m_nu[(i, j)] = m_nu[(i, j)] + a_nu * dot16(&nu_profiles[i], &psi_nu_j);
-                    m_ch[(i, j)] = m_ch[(i, j)] + a_ch * dot16(&ch_profiles[i], &psi_ch_j);
+                    m_nu[(i, j)] += a_nu * dot16(&nu_profiles[i], &psi_nu_j);
+                    m_ch[(i, j)] += a_ch * dot16(&ch_profiles[i], &psi_ch_j);
                 }
             }
 
@@ -1430,16 +1430,16 @@ fn test_v6_solar_angle_extraction() {
             // Add V_6 solar perturbation
             // This adds to the 1-2 off-diagonal coupling
             let solar_perturb = alpha_solar * f_12;
-            m_nu_combined[(0, 1)] = m_nu_combined[(0, 1)] + solar_perturb;
-            m_nu_combined[(1, 0)] = m_nu_combined[(1, 0)] + solar_perturb;
+            m_nu_combined[(0, 1)] += solar_perturb;
+            m_nu_combined[(1, 0)] += solar_perturb;
 
             // Small reactor/atmospheric leakage (keep for honesty)
             let reactor_leak = alpha_solar * f_13 * 0.1;
             let atmo_leak = alpha_solar * f_23 * 0.1;
-            m_nu_combined[(0, 2)] = m_nu_combined[(0, 2)] + reactor_leak;
-            m_nu_combined[(2, 0)] = m_nu_combined[(2, 0)] + reactor_leak;
-            m_nu_combined[(1, 2)] = m_nu_combined[(1, 2)] + atmo_leak;
-            m_nu_combined[(2, 1)] = m_nu_combined[(2, 1)] + atmo_leak;
+            m_nu_combined[(0, 2)] += reactor_leak;
+            m_nu_combined[(2, 0)] += reactor_leak;
+            m_nu_combined[(1, 2)] += atmo_leak;
+            m_nu_combined[(2, 1)] += atmo_leak;
 
             // Eigendecompose and extract PMNS angles
             let m_ch_sym = (&m_ch + m_ch.transpose()) * faer::Scale(0.5);

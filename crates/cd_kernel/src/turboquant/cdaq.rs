@@ -484,8 +484,8 @@ mod tests {
         // Create vectors with known outlier pattern: channels 0-7 are 10x larger
         let mut vecs = random_vectors(50, d, 42);
         for v in &mut vecs {
-            for i in 0..8 {
-                v[i] *= 10.0;
+            for slot in v[..8].iter_mut() {
+                *slot *= 10.0;
             }
         }
 

@@ -92,7 +92,7 @@ mod tests {
             n_promoted, 40, d
         );
         assert!(
-            n_promoted >= 8 && n_promoted <= 12,
+            (8..=12).contains(&n_promoted),
             "Expected ~10 promoted (25%), got {}",
             n_promoted
         );

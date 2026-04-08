@@ -97,8 +97,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     for i in 0..(manifold_points.len() - 1) {
         // Only compute Jacobians where the dimension strictly increases
-        if (manifold_points[i + 1].g[0] - manifold_points[i].g[0]).abs() > 0.5 {
-            if let Ok(jac) =
+        if (manifold_points[i + 1].g[0] - manifold_points[i].g[0]).abs() > 0.5
+            && let Ok(jac) =
                 CouplerJacobian::estimate_from_delta(&manifold_points[i], &manifold_points[i + 1])
             {
                 let j_val = jac.j_mat[(0, 0)];
@@ -115,7 +115,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 println!("  J: {:.4}\n", j_val);
                 cross_jacobians.push(j_val);
             }
-        }
     }
 
     if !cross_jacobians.is_empty() {

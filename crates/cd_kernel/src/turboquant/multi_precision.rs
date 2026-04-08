@@ -305,8 +305,8 @@ mod tests {
         assert_eq!(unpacked, indices);
 
         // Random access
-        for i in 0..128 {
-            assert_eq!(packed.get(i), indices[i]);
+        for (i, &expected) in indices.iter().enumerate() {
+            assert_eq!(packed.get(i), expected);
         }
     }
 

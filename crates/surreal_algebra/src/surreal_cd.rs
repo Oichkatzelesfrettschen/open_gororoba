@@ -794,9 +794,9 @@ mod tests {
 
         // Analyze: how many distinct inner product values exist?
         let mut values = std::collections::BTreeSet::new();
-        for i in 0..n {
-            for j in 0..n {
-                values.insert(gram[i][j]);
+        for row in &gram {
+            for &val in row {
+                values.insert(val);
             }
         }
         println!("  Distinct Gram matrix values: {:?}", values);
@@ -809,9 +809,8 @@ mod tests {
         // Cluster by row similarity: group assessors with identical Gram rows
         let mut clusters: std::collections::BTreeMap<Vec<i32>, Vec<usize>> =
             std::collections::BTreeMap::new();
-        for i in 0..n {
-            let row = gram[i].clone();
-            clusters.entry(row).or_default().push(i);
+        for (i, row) in gram.iter().enumerate() {
+            clusters.entry(row.clone()).or_default().push(i);
         }
 
         println!(
@@ -1012,7 +1011,7 @@ mod tests {
             .iter()
             .map(|(k, v)| (k.clone(), v.len()))
             .collect();
-        sizes.sort_by(|a, b| b.1.cmp(&a.1));
+        sizes.sort_by_key(|b| std::cmp::Reverse(b.1));
         for (key, size) in &sizes {
             println!("    {}: {} assessors", key, size);
         }
@@ -1984,11 +1983,11 @@ mod tests {
         println!("\n  ANALYSIS:");
         println!("    The mod-4 index pattern gives 3 equal groups at ALL dims.");
         println!("    This is a CORROBORATED outcome for index structure.");
-        println!("");
+        println!();
         println!("    HOWEVER: psi cycling is ACTIVE only on dim=16 (lower half).");
         println!("    Higher indices inherit labels from the doubling, not from psi.");
         println!("    The 'persistence' is by inheritance, not by active symmetry.");
-        println!("");
+        println!();
         println!("    PRECISE VERDICT: CORROBORATED with CAVEAT.");
         println!("    3 generations persist in index structure at all dims,");
         println!("    but the MECHANISM changes: active psi cycling at dim=16,");

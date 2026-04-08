@@ -98,8 +98,8 @@ fn test_batch_sliding_32d() {
     for i in 0..8 {
         let mut v = vec![0.0; 32];
         // Spread values across multiple components to avoid accidental associativity
-        for j in 0..32 {
-            v[j] = ((i * 32 + j + 1) as f64 * 0.31).cos() * (j as f64 + 1.0);
+        for (j, slot) in v.iter_mut().enumerate() {
+            *slot = ((i * 32 + j + 1) as f64 * 0.31).cos() * (j as f64 + 1.0);
         }
         vectors.push(v);
     }
@@ -1368,9 +1368,9 @@ fn test_zd_tangent_space() {
                 if factor.abs() < 1e-15 {
                     continue;
                 }
-                for j in pivot_col..cols {
-                    let val = mat[row][j];
-                    mat[r][j] -= factor * val;
+                let row_vals: Vec<f64> = mat[row][pivot_col..cols].to_vec();
+                for (dest, src) in mat[r][pivot_col..cols].iter_mut().zip(row_vals) {
+                    *dest -= factor * src;
                 }
             }
             rank += 1;

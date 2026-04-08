@@ -824,8 +824,8 @@ mod tests {
         // The Theorem 2.9 test uses the 16D a and checks L^2_{a+b} on the first 8D half.
         // For this test: just verify that has_eigenvalue_minus_2(a+b) is true for known ZD.
         let s = std::f64::consts::FRAC_1_SQRT_2;
-        let mut a = vec![0.0; DIM16];
-        let mut b = vec![0.0; DIM16];
+        let mut a = [0.0; DIM16];
+        let mut b = [0.0; DIM16];
         a[1] = s;
         a[10] = s;
         b[4] = s;

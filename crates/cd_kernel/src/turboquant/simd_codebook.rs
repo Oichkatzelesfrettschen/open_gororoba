@@ -219,7 +219,7 @@ mod tests {
         assert_eq!(simd.words.len(), 2);
 
         for i in 0..500 {
-            let x = ((i as f32 * 0.7071) % 1.0 - 0.5) * 0.5;
+            let x = ((i as f32 * std::f32::consts::FRAC_1_SQRT_2) % 1.0 - 0.5) * 0.5;
             let scalar_idx = quantize_scalar_boundary(x, boundaries);
             let simd_idx = simd.quantize_one(x);
             assert_eq!(scalar_idx, simd_idx);

@@ -44,7 +44,7 @@
 
 use std::{fs::File, io::Write, path::Path};
 
-use faer::complex_native::c64;
+use faer::c64;
 use quantum_core::tight_binding::{
     BravaisLattice2D, Hopping, OrbitalSite, TightBindingModel, Valley, Vec2, valley_chern_number,
 };

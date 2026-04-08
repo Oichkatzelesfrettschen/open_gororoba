@@ -55,7 +55,6 @@ pub fn modified_cd_multiply(a: &[f64], b: &[f64], x: &[f64], y: &[f64], g: &[f64
 /// The standard CD process corresponds to Schafer's "gamma" case with a
 /// specific arrangement of conjugates.  The modified product with non-scalar
 /// g is a GENUINE GENERALIZATION, not just a reparameterization.
-
 #[cfg(test)]
 mod tests {
     use super::*;

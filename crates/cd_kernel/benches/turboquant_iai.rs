@@ -32,7 +32,7 @@ fn bench_codebook_solve() {
 
 #[library_benchmark]
 #[bench::d128(setup_codebook())]
-fn bench_boundary_quantize((centroids, boundaries): (Vec<f32>, Vec<f32>)) {
+fn bench_boundary_quantize((_centroids, boundaries): (Vec<f32>, Vec<f32>)) {
     let sigma = 1.0 / (128.0f32).sqrt();
     let values: Vec<f32> = (0..128)
         .map(|i| ((i as f32 * 0.618) % 1.0 - 0.5) * 7.0 * sigma)

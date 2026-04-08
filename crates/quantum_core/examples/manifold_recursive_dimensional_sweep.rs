@@ -59,7 +59,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 optimal_phi = phi;
             }
 
-            if p <= 8 || (p > 8 && i % 100 == 0) {
+            if p <= 8 || i % 100 == 0 {
                 writeln!(file, "{},{},{},{},{}", dim, phi, l_grav, l_avt, action)?;
             }
         }

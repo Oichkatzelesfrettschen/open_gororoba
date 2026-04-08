@@ -348,7 +348,7 @@ mod tests {
         assert_eq!(result.profile, ProfileType::Nfw);
         assert!(!result.phase_scan);
         // Should have n_alpha surface points (only \deltax=0).
-        assert!(result.exclusion_surface.len() >= 1);
+        assert!(!result.exclusion_surface.is_empty());
     }
 
     #[test]

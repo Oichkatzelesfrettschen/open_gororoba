@@ -26,8 +26,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             continue;
         }
 
-        if let (Ok(angle), Ok(norm)) = (parts[0].parse::<f64>(), parts[2].parse::<f64>()) {
-            if angle > 0.0 && norm > 0.0 {
+        if let (Ok(angle), Ok(norm)) = (parts[0].parse::<f64>(), parts[2].parse::<f64>())
+            && angle > 0.0 && norm > 0.0 {
                 points.push(CouplerPoint {
                     g: DVector::from_vec(vec![angle]),
                     o: DVector::from_vec(vec![norm]),
@@ -37,7 +37,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     angle, norm
                 );
             }
-        }
     }
 
     if points.len() >= 2 {

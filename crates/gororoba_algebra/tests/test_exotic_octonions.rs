@@ -247,7 +247,7 @@ fn test_exotic_imbalance() {
 fn test_generalized_hybrid_ladder() {
     println!("--- Imbalance Hyper-Ladder (Associativity) ---");
     use gororoba_algebra::construction::cayley_dickson::cd_multiply_split;
-    use rand::Rng; // We need random sampling for dim 32
+    use rand::RngExt; // We need random sampling for dim 32
 
     // Helper to calculate imbalance (non-associative triples / total triples)
     let calc_associativity_imbalance = |dim: usize, gammas: &[i32], samples: usize| -> f64 {

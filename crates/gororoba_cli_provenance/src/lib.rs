@@ -8,6 +8,6 @@ mod tests {
     #[test]
     fn crate_compiles() {
         // Smoke test: the crate and its dependency graph compile.
-        assert!(true);
+        let _ = ();
     }
 }

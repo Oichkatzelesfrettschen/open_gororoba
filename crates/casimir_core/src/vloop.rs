@@ -170,7 +170,7 @@ mod tests {
         // Check return-to-start: last_point + disp_{0} should give points[0]
         // Equivalently, sum of displacements should be zero
         let mut disp_sum = wl.points[0];
-        for pair in wl.points.windows(2).skip(0) {
+        for pair in wl.points.windows(2) {
             for (ds, (&curr, &prev)) in disp_sum.iter_mut().zip(pair[1].iter().zip(pair[0].iter()))
             {
                 *ds += curr - prev;
@@ -191,7 +191,7 @@ mod tests {
 
         // Check that displacements sum to zero
         let mut disp_sum = wl.points[0];
-        for pair in wl.points.windows(2).skip(0) {
+        for pair in wl.points.windows(2) {
             for (ds, (&curr, &prev)) in disp_sum.iter_mut().zip(pair[1].iter().zip(pair[0].iter()))
             {
                 *ds += curr - prev;
