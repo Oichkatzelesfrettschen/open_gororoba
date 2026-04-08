@@ -194,7 +194,7 @@ mod tests {
             .map(|i| {
                 let mut v = vec![0.0f32; dim];
                 v[0] = 1.0;
-                v[(i % dim) as usize] = (i as f32 + 1.0) * 0.1;
+                v[i % dim] = (i as f32 + 1.0) * 0.1;
                 // Normalize
                 let norm: f32 = v.iter().map(|x| x * x).sum::<f32>().sqrt();
                 for x in v.iter_mut() {
@@ -220,8 +220,8 @@ mod tests {
         let vecs: Vec<Vec<f32>> = (0..10)
             .map(|i| {
                 let mut v = vec![0.0f32; dim];
-                for j in 0..dim {
-                    v[j] = ((i * 7 + j * 3) as f32).sin();
+                for (j, slot) in v.iter_mut().enumerate() {
+                    *slot = ((i * 7 + j * 3) as f32).sin();
                 }
                 let norm: f32 = v.iter().map(|x| x * x).sum::<f32>().sqrt();
                 for x in v.iter_mut() {

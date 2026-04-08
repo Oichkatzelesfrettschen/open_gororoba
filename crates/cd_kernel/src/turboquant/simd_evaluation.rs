@@ -119,6 +119,6 @@ mod tests {
             assess.len()
         );
         // At least some sites should benefit, but not all
-        assert!(beneficial.len() >= 1 && beneficial.len() < assess.len());
+        assert!(!beneficial.is_empty() && beneficial.len() < assess.len());
     }
 }

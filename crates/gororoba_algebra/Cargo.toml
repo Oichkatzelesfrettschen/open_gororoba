@@ -75,10 +75,16 @@ harness = false
 [[bench]]
 name = "tensor_avt_bench"
 harness = false
+required-features = ["gpu"]
 
 [[bench]]
 name = "tensor_avt_iai"
 harness = false
+required-features = ["gpu"]
+
+[[example]]
+name = "tensor_avt_profile"
+required-features = ["gpu"]
 
 [[example]]
 name = "m3_e8_bridge"

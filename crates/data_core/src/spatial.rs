@@ -252,91 +252,6 @@ fn wrap_ra_cell(cell: i32, ra_cells: i32) -> i32 {
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn normalize_ra_wraps_negative_and_large_values() {
-        assert!((normalize_ra_deg(-10.0) - 350.0).abs() < 1.0e-12);
-        assert!((normalize_ra_deg(725.0) - 5.0).abs() < 1.0e-12);
-    }
-
-    #[test]
-    fn nearest_match_finds_expected_candidate() {
-        let index = SkyGridIndex::from_points(
-            vec![
-                SkyPoint {
-                    id: "a".to_string(),
-                    ra_deg: 10.0,
-                    dec_deg: 10.0,
-                },
-                SkyPoint {
-                    id: "b".to_string(),
-                    ra_deg: 42.0,
-                    dec_deg: -2.0,
-                },
-            ],
-            0.1,
-        );
-        let matched = index.nearest_within(42.0001, -2.0001, 2.0).unwrap();
-        assert_eq!(matched.candidate_index, 1);
-        assert!(matched.separation_arcsec < 1.0);
-    }
-
-    #[test]
-    fn for_each_within_visits_all_candidates_in_radius() {
-        let index = SkyGridIndex::from_points(
-            vec![
-                SkyPoint {
-                    id: "a".to_string(),
-                    ra_deg: 10.0,
-                    dec_deg: 10.0,
-                },
-                SkyPoint {
-                    id: "b".to_string(),
-                    ra_deg: 10.0001,
-                    dec_deg: 10.0,
-                },
-                SkyPoint {
-                    id: "c".to_string(),
-                    ra_deg: 11.0,
-                    dec_deg: 10.0,
-                },
-            ],
-            0.1,
-        );
-        let mut seen = Vec::new();
-        index.for_each_within(10.00005, 10.0, 1.0, |matched| {
-            seen.push(matched.candidate_index);
-        });
-        seen.sort_unstable();
-        assert_eq!(seen, vec![0, 1]);
-    }
-
-    #[test]
-    fn search_candidate_window_visits_neighboring_cells() {
-        let index = SkyGridIndex::from_points(
-            vec![
-                SkyPoint {
-                    id: "a".to_string(),
-                    ra_deg: 10.0,
-                    dec_deg: 10.0,
-                },
-                SkyPoint {
-                    id: "b".to_string(),
-                    ra_deg: 10.08,
-                    dec_deg: 10.0,
-                },
-            ],
-            0.1,
-        );
-        let mut seen = Vec::new();
-        index.for_each_search_candidate(10.04, 10.0, 30.0, |idx| seen.push(idx));
-        seen.sort_unstable();
-        assert_eq!(seen, vec![0, 1]);
-    }
-}
 
 pub fn ecliptic_to_equatorial_vector(longitude_rad: f64, latitude_rad: f64) -> [f64; 3] {
     let epsilon = 23.4392911_f64.to_radians();
@@ -585,4 +500,90 @@ pub fn equatorial_to_galactic_lat(ra_deg: f64, dec_deg: f64) -> f64 {
 
     let sin_b = dec.sin() * dec_ngp.sin() + dec.cos() * dec_ngp.cos() * (ra - ra_ngp).cos();
     sin_b.clamp(-1.0, 1.0).asin().to_degrees()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn normalize_ra_wraps_negative_and_large_values() {
+        assert!((normalize_ra_deg(-10.0) - 350.0).abs() < 1.0e-12);
+        assert!((normalize_ra_deg(725.0) - 5.0).abs() < 1.0e-12);
+    }
+
+    #[test]
+    fn nearest_match_finds_expected_candidate() {
+        let index = SkyGridIndex::from_points(
+            vec![
+                SkyPoint {
+                    id: "a".to_string(),
+                    ra_deg: 10.0,
+                    dec_deg: 10.0,
+                },
+                SkyPoint {
+                    id: "b".to_string(),
+                    ra_deg: 42.0,
+                    dec_deg: -2.0,
+                },
+            ],
+            0.1,
+        );
+        let matched = index.nearest_within(42.0001, -2.0001, 2.0).unwrap();
+        assert_eq!(matched.candidate_index, 1);
+        assert!(matched.separation_arcsec < 1.0);
+    }
+
+    #[test]
+    fn for_each_within_visits_all_candidates_in_radius() {
+        let index = SkyGridIndex::from_points(
+            vec![
+                SkyPoint {
+                    id: "a".to_string(),
+                    ra_deg: 10.0,
+                    dec_deg: 10.0,
+                },
+                SkyPoint {
+                    id: "b".to_string(),
+                    ra_deg: 10.0001,
+                    dec_deg: 10.0,
+                },
+                SkyPoint {
+                    id: "c".to_string(),
+                    ra_deg: 11.0,
+                    dec_deg: 10.0,
+                },
+            ],
+            0.1,
+        );
+        let mut seen = Vec::new();
+        index.for_each_within(10.00005, 10.0, 1.0, |matched| {
+            seen.push(matched.candidate_index);
+        });
+        seen.sort_unstable();
+        assert_eq!(seen, vec![0, 1]);
+    }
+
+    #[test]
+    fn search_candidate_window_visits_neighboring_cells() {
+        let index = SkyGridIndex::from_points(
+            vec![
+                SkyPoint {
+                    id: "a".to_string(),
+                    ra_deg: 10.0,
+                    dec_deg: 10.0,
+                },
+                SkyPoint {
+                    id: "b".to_string(),
+                    ra_deg: 10.08,
+                    dec_deg: 10.0,
+                },
+            ],
+            0.1,
+        );
+        let mut seen = Vec::new();
+        index.for_each_search_candidate(10.04, 10.0, 30.0, |idx| seen.push(idx));
+        seen.sort_unstable();
+        assert_eq!(seen, vec![0, 1]);
+    }
 }

@@ -4,8 +4,7 @@
 //! for varying tensor sizes. Compiled with `cargo bench --bench gpu_peps_bench --features gpu`.
 
 use criterion::{BenchmarkId, Criterion, criterion_group, criterion_main};
-use faer::complex_native::c64;
-use std::hint::black_box;
+use faer::c64;
 
 /// Benchmark GPU vs CPU for varying tensor sizes (elements).
 fn benchmark_peps_row_contraction(c: &mut Criterion) {

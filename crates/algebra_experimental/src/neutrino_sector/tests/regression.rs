@@ -115,8 +115,8 @@ fn test_two_selector_gauss_newton() {
         for g in 0..3 {
             let f_ch = beta * (w1 * sel_ch_3[g] + w2 * sel_nu_3[g]);
             let f_nu = beta * (w1 * sel_nu_3[g] + w2 * sel_ch_3[g]);
-            m_ch[(g, g)] = m_ch[(g, g)] + f_ch.exp();
-            m_nu[(g, g)] = m_nu[(g, g)] + f_nu.exp();
+            m_ch[(g, g)] += f_ch.exp();
+            m_nu[(g, g)] += f_nu.exp();
         }
         for i in 0..3 {
             for j in 0..3 {
@@ -125,8 +125,8 @@ fn test_two_selector_gauss_newton() {
                 }
                 let psi_nu_j = gourlay_psi(&nu_prof[j]);
                 let psi_ch_j = gourlay_psi(&ch_prof[j]);
-                m_nu[(i, j)] = m_nu[(i, j)] + a_nu * dot16(&nu_prof[i], &psi_nu_j);
-                m_ch[(i, j)] = m_ch[(i, j)] + a_ch * dot16(&ch_prof[i], &psi_ch_j);
+                m_nu[(i, j)] += a_nu * dot16(&nu_prof[i], &psi_nu_j);
+                m_ch[(i, j)] += a_ch * dot16(&ch_prof[i], &psi_ch_j);
             }
         }
         let m_ch_s = (&m_ch + m_ch.transpose()) * faer::Scale(0.5);
@@ -1572,11 +1572,11 @@ fn test_cp_violation_phase_only() {
             }
 
             // Extract angles from |U_ij|
-            let u_e3_abs = u_perm_c[(0, 2)].abs();
+            let u_e3_abs = u_perm_c[(0, 2)].norm();
             let theta_13 = u_e3_abs.min(1.0).asin().to_degrees();
             let cos_13 = theta_13.to_radians().cos();
             let theta_12 = if cos_13 > 1e-15 {
-                (u_perm_c[(0, 1)].abs() / cos_13)
+                (u_perm_c[(0, 1)].norm() / cos_13)
                     .min(1.0)
                     .asin()
                     .to_degrees()
@@ -1584,7 +1584,7 @@ fn test_cp_violation_phase_only() {
                 0.0
             };
             let theta_23 = if cos_13 > 1e-15 {
-                (u_perm_c[(1, 2)].abs() / cos_13)
+                (u_perm_c[(1, 2)].norm() / cos_13)
                     .min(1.0)
                     .asin()
                     .to_degrees()
@@ -1926,11 +1926,11 @@ fn test_cp_violation_jk_dimension_comparison() {
                         }
                     }
 
-                    let u_e3_abs = u_perm_c[(0, 2)].abs();
+                    let u_e3_abs = u_perm_c[(0, 2)].norm();
                     let theta_13 = u_e3_abs.min(1.0).asin().to_degrees();
                     let cos_13 = theta_13.to_radians().cos();
                     let theta_12 = if cos_13 > 1e-15 {
-                        (u_perm_c[(0, 1)].abs() / cos_13)
+                        (u_perm_c[(0, 1)].norm() / cos_13)
                             .min(1.0)
                             .asin()
                             .to_degrees()
@@ -1938,7 +1938,7 @@ fn test_cp_violation_jk_dimension_comparison() {
                         0.0
                     };
                     let theta_23 = if cos_13 > 1e-15 {
-                        (u_perm_c[(1, 2)].abs() / cos_13)
+                        (u_perm_c[(1, 2)].norm() / cos_13)
                             .min(1.0)
                             .asin()
                             .to_degrees()

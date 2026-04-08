@@ -132,8 +132,8 @@ mod tests {
         // O(100) even at large r. This is correct physics (coordinate effect).
         // Just verify finiteness and that mass source is zero.
         assert_eq!(s[0], 0.0, "Mass source must be zero");
-        for v in 0..NCONS {
-            assert!(s[v].is_finite(), "S[{}] = {} must be finite", v, s[v]);
+        for (v, &val) in s.iter().enumerate() {
+            assert!(val.is_finite(), "S[{}] = {} must be finite", v, val);
         }
     }
 

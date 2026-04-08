@@ -1,6 +1,6 @@
 #[cfg(test)]
 use crate::construction::chingon::AlternativityViolationTensor;
-#[cfg(test)]
+#[cfg(all(test, feature = "gpu"))]
 use crate::gpu::avt_pack::GpuPackableAvt;
 
 #[cfg(test)]
@@ -30,7 +30,7 @@ fn test_alternativity_violation_tensor_64d() {
     );
 }
 
-#[cfg(test)]
+#[cfg(all(test, feature = "gpu"))]
 #[test]
 fn test_pack_roundtrip_16d() {
     let avt = AlternativityViolationTensor::new(16);
@@ -48,7 +48,7 @@ fn test_pack_roundtrip_16d() {
     }
 }
 
-#[cfg(test)]
+#[cfg(all(test, feature = "gpu"))]
 #[test]
 fn test_pack_roundtrip_64d() {
     let avt = AlternativityViolationTensor::new(64);
@@ -100,7 +100,7 @@ fn test_index_bits_dimensions() {
     assert_eq!(index_bits_for_dim(1024), 10);
 }
 
-#[cfg(test)]
+#[cfg(all(test, feature = "gpu"))]
 #[test]
 fn test_avt_128d() {
     let t = std::time::Instant::now();
@@ -127,7 +127,7 @@ fn test_avt_128d() {
     assert_eq!((ui, uj, um, usign), (i, j, m, sign));
 }
 
-#[cfg(test)]
+#[cfg(all(test, feature = "gpu"))]
 #[test]
 fn test_avt_256d_capped() {
     let cap = 10_000_000;

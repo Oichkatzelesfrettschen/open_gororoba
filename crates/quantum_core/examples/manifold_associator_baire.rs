@@ -111,8 +111,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         println!("\nInformation Scaling Jacobians (FRB):");
         for i in 0..(sorted_frb.len() - 1) {
-            if (sorted_frb[i + 1].g[0] - sorted_frb[i].g[0]).abs() > 0.5 {
-                if let Ok(jac) =
+            if (sorted_frb[i + 1].g[0] - sorted_frb[i].g[0]).abs() > 0.5
+                && let Ok(jac) =
                     CouplerJacobian::estimate_from_delta(&sorted_frb[i], &sorted_frb[i + 1])
                 {
                     println!(
@@ -122,7 +122,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                         jac.j_mat[(0, 0)]
                     );
                 }
-            }
         }
     }
 

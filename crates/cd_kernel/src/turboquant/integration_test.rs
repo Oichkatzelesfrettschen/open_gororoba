@@ -78,8 +78,8 @@ mod tests {
 
             // Append new KV to each head, compute attention
             let mut step_scores = Vec::new();
-            for (_l, layer) in caches.iter_mut().enumerate() {
-                for (_h, head_cache) in layer.iter_mut().enumerate() {
+            for layer in caches.iter_mut() {
+                for head_cache in layer.iter_mut() {
                     let key = random_vec(d, &mut rng);
                     let value = random_vec(d, &mut rng);
                     head_cache.append(&key, &value);

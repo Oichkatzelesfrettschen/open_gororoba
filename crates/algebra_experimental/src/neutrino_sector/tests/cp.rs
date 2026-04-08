@@ -1431,10 +1431,10 @@ fn test_complex_pmns_cp_violation() {
             let u_pmns_c = eig_ch_c.U().adjoint() * eig_nu_c.U();
 
             let u_e3 = u_pmns_c[(0, 2)];
-            let theta_13 = u_e3.abs().min(1.0).asin().to_degrees();
+            let theta_13 = u_e3.norm().min(1.0).asin().to_degrees();
             let cos_13 = (theta_13.to_radians()).cos();
             let theta_12 = if cos_13 > 1e-15 {
-                (u_pmns_c[(0, 1)].abs() / cos_13)
+                (u_pmns_c[(0, 1)].norm() / cos_13)
                     .min(1.0)
                     .asin()
                     .to_degrees()
@@ -1442,7 +1442,7 @@ fn test_complex_pmns_cp_violation() {
                 0.0
             };
             let theta_23 = if cos_13 > 1e-15 {
-                (u_pmns_c[(1, 2)].abs() / cos_13)
+                (u_pmns_c[(1, 2)].norm() / cos_13)
                     .min(1.0)
                     .asin()
                     .to_degrees()

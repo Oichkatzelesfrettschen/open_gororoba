@@ -46,10 +46,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             if parts.len() < 5 {
                 continue;
             }
-            if let Ok(imbalance) = parts[4].parse::<f64>() {
-                if imbalance > thr {
-                    count += 1;
-                }
+            if let Ok(imbalance) = parts[4].parse::<f64>() && imbalance > thr {
+                count += 1;
             }
         }
         println!("Imbalance > {:.2} (g): Count O = {}", thr, count);

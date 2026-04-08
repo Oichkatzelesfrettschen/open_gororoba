@@ -285,7 +285,7 @@ mod tests {
 
     #[test]
     fn test_memory_savings() {
-        let packed = BitPackedSigns::pack(&vec![1i8; 128]);
+        let packed = BitPackedSigns::pack(&[1i8; 128]);
         assert_eq!(packed.byte_size(), 16); // 128 bits = 16 bytes
         // vs 128 bytes for i8 storage = 8x reduction
     }
@@ -299,7 +299,7 @@ mod tests {
 
     #[test]
     fn test_all_positive() {
-        let packed = BitPackedSigns::pack(&vec![1i8; 128]);
+        let packed = BitPackedSigns::pack(&[1i8; 128]);
         let values: Vec<f64> = (0..128).map(|i| i as f64).collect();
         let ip = packed.inner_product(&values);
         let expected: f64 = values.iter().sum(); // all +1, so sum of values
@@ -308,7 +308,7 @@ mod tests {
 
     #[test]
     fn test_all_negative() {
-        let packed = BitPackedSigns::pack(&vec![-1i8; 128]);
+        let packed = BitPackedSigns::pack(&[-1i8; 128]);
         let values: Vec<f64> = (0..128).map(|i| i as f64).collect();
         let ip = packed.inner_product(&values);
         let expected: f64 = -values.iter().sum::<f64>(); // all -1

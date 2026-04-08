@@ -896,8 +896,8 @@ fn test_composite_selector_blend() {
         for i in 0..3 {
             let f_ch = w1 * sel_ch[i] + w2 * sel_nu[i];
             let f_nu = w1 * sel_nu[i] + w2 * sel_ch[i];
-            m_ch[(i, i)] = m_ch[(i, i)] + f_ch.exp();
-            m_nu[(i, i)] = m_nu[(i, i)] + f_nu.exp();
+            m_ch[(i, i)] += f_ch.exp();
+            m_nu[(i, i)] += f_nu.exp();
         }
 
         // Add psi off-diagonal with alpha = 3.75/1.30
@@ -908,8 +908,8 @@ fn test_composite_selector_blend() {
                 }
                 let psi_nu_j = gourlay_psi(&blended_nu[j]);
                 let psi_ch_j = gourlay_psi(&blended_ch[j]);
-                m_nu[(i, j)] = m_nu[(i, j)] + 1.30 * dot16(&blended_nu[i], &psi_nu_j);
-                m_ch[(i, j)] = m_ch[(i, j)] + 3.75 * dot16(&blended_ch[i], &psi_ch_j);
+                m_nu[(i, j)] += 1.30 * dot16(&blended_nu[i], &psi_nu_j);
+                m_ch[(i, j)] += 3.75 * dot16(&blended_ch[i], &psi_ch_j);
             }
         }
 
@@ -1461,8 +1461,8 @@ fn test_3blade_unified() {
                 for g in 0..3 {
                     let f_ch = w1 * sel_ch[g] + w2 * sel_nu[g];
                     let f_nu = w1 * sel_nu[g] + w2 * sel_ch[g];
-                    m_ch[(g, g)] = m_ch[(g, g)] + f_ch.exp();
-                    m_nu[(g, g)] = m_nu[(g, g)] + f_nu.exp();
+                    m_ch[(g, g)] += f_ch.exp();
+                    m_nu[(g, g)] += f_nu.exp();
                 }
 
                 // Off-diagonal: psi coupling with 3-blade profiles
@@ -1473,8 +1473,8 @@ fn test_3blade_unified() {
                         }
                         let psi_nu_j = gourlay_psi(&nu_profiles[j]);
                         let psi_ch_j = gourlay_psi(&ch_profiles[j]);
-                        m_nu[(i, j)] = m_nu[(i, j)] + a_nu * dot16(&nu_profiles[i], &psi_nu_j);
-                        m_ch[(i, j)] = m_ch[(i, j)] + a_ch * dot16(&ch_profiles[i], &psi_ch_j);
+                        m_nu[(i, j)] += a_nu * dot16(&nu_profiles[i], &psi_nu_j);
+                        m_ch[(i, j)] += a_ch * dot16(&ch_profiles[i], &psi_ch_j);
                     }
                 }
 
@@ -1673,8 +1673,8 @@ fn test_two_selector_type_model() {
             for g in 0..3 {
                 let f_ch = w1 * sel_ch_3blade[g] + w2 * sel_nu_3blade[g];
                 let f_nu = w1 * sel_nu_3blade[g] + w2 * sel_ch_3blade[g];
-                m_ch[(g, g)] = m_ch[(g, g)] + f_ch.exp();
-                m_nu[(g, g)] = m_nu[(g, g)] + f_nu.exp();
+                m_ch[(g, g)] += f_ch.exp();
+                m_nu[(g, g)] += f_nu.exp();
             }
 
             // Off-diagonal: 2-blade psi coupling
@@ -1685,8 +1685,8 @@ fn test_two_selector_type_model() {
                     }
                     let psi_nu_j = gourlay_psi(&nu_profiles_2blade[j]);
                     let psi_ch_j = gourlay_psi(&ch_profiles_2blade[j]);
-                    m_nu[(i, j)] = m_nu[(i, j)] + a_nu * dot16(&nu_profiles_2blade[i], &psi_nu_j);
-                    m_ch[(i, j)] = m_ch[(i, j)] + a_ch * dot16(&ch_profiles_2blade[i], &psi_ch_j);
+                    m_nu[(i, j)] += a_nu * dot16(&nu_profiles_2blade[i], &psi_nu_j);
+                    m_ch[(i, j)] += a_ch * dot16(&ch_profiles_2blade[i], &psi_ch_j);
                 }
             }
 
@@ -1745,8 +1745,8 @@ fn test_two_selector_type_model() {
                 for g in 0..3 {
                     let f_ch = beta * (w1 * sel_ch_3blade[g] + w2 * sel_nu_3blade[g]);
                     let f_nu = beta * (w1 * sel_nu_3blade[g] + w2 * sel_ch_3blade[g]);
-                    m_ch_s[(g, g)] = m_ch_s[(g, g)] + f_ch.exp();
-                    m_nu_s[(g, g)] = m_nu_s[(g, g)] + f_nu.exp();
+                    m_ch_s[(g, g)] += f_ch.exp();
+                    m_nu_s[(g, g)] += f_nu.exp();
                 }
 
                 // Off-diagonal: 2-blade psi coupling (unscaled)
@@ -1757,10 +1757,8 @@ fn test_two_selector_type_model() {
                         }
                         let psi_nu_j = gourlay_psi(&nu_profiles_2blade[j]);
                         let psi_ch_j = gourlay_psi(&ch_profiles_2blade[j]);
-                        m_nu_s[(i, j)] =
-                            m_nu_s[(i, j)] + a_nu_s * dot16(&nu_profiles_2blade[i], &psi_nu_j);
-                        m_ch_s[(i, j)] =
-                            m_ch_s[(i, j)] + a_ch_s * dot16(&ch_profiles_2blade[i], &psi_ch_j);
+                        m_nu_s[(i, j)] += a_nu_s * dot16(&nu_profiles_2blade[i], &psi_nu_j);
+                        m_ch_s[(i, j)] += a_ch_s * dot16(&ch_profiles_2blade[i], &psi_ch_j);
                     }
                 }
 

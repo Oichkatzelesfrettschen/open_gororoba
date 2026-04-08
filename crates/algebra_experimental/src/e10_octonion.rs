@@ -940,7 +940,7 @@ pub fn claim4_summary(result: &Claim4Result, alpha: f64) -> (bool, String) {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use rand::Rng;
+    use rand::RngExt;
 
     #[test]
     fn test_fano_complement_basic() {

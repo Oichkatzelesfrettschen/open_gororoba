@@ -10,7 +10,7 @@
 //! Reference: Connerney et al. (2015), Space Sci. Rev. 195, 257
 
 use crate::{
-    fetcher::{DatasetProvider, FetchConfig, FetchError, fetch_daily_hapi_csv_range},
+    fetcher::{DailyHapiFetchRequest, DatasetProvider, FetchConfig, FetchError, fetch_daily_hapi_csv_range},
     parse::parse_hapi_spacephysics_f64_or_nan,
 };
 use chrono::{DateTime, Datelike, Timelike, Utc};
@@ -134,14 +134,16 @@ impl DatasetProvider for MavenMagProvider {
     fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
         fetch_daily_hapi_csv_range(
             config,
-            "maven",
-            "maven_mag",
-            "MAVEN MAG",
-            MAVEN_MAG_HAPI_DATASET,
-            self.year,
-            self.doy_start,
-            self.doy_end,
-            Some(&["Time", "OB_B"]),
+            &DailyHapiFetchRequest {
+                subdir: "maven",
+                file_prefix: "maven_mag",
+                log_label: "MAVEN MAG",
+                dataset_id: MAVEN_MAG_HAPI_DATASET,
+                year: self.year,
+                doy_start: self.doy_start,
+                doy_end: self.doy_end,
+                parameters: Some(&["Time", "OB_B"]),
+            },
         )
     }
 

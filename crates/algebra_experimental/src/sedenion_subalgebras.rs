@@ -1047,8 +1047,8 @@ mod tests {
         let svd_b_full = mat_b.clone().svd(false, true);
         let svd_x_full = mat_x.clone().svd(false, true);
 
-        if let Some(ref vt_b) = svd_b_full.v_t {
-            if let Some(ref vt_x) = svd_x_full.v_t {
+        if let Some(ref vt_b) = svd_b_full.v_t
+            && let Some(ref vt_x) = svd_x_full.v_t {
                 // Extract the first rank_b/rank_x rows of V^T (= columns of V)
                 let q_b = vt_b.rows(0, rank_b).transpose();
                 let q_x = vt_x.rows(0, rank_x).transpose();
@@ -1097,7 +1097,6 @@ mod tests {
                     n_right_angle
                 );
             }
-        }
     }
 
     /// Cross-tabulate 455 triads: Wilmot non-assoc type vs sigma-associativity.
@@ -2115,8 +2114,7 @@ mod tests {
                     y[5] = 1.0;
                     y[14] = 1.0;
                     y
-                }
-                .into(),
+                },
                 "(e1+e10)(e5+e14)",
             ),
             (

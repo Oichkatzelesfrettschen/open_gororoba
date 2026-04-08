@@ -9,7 +9,7 @@
 //! Reference: Anderson et al. (2007), Space Sci. Rev. 131, 417
 
 use crate::{
-    fetcher::{DatasetProvider, FetchConfig, FetchError, fetch_daily_hapi_csv_range},
+    fetcher::{DailyHapiFetchRequest, DatasetProvider, FetchConfig, FetchError, fetch_daily_hapi_csv_range},
     parse::parse_hapi_spacephysics_f64_or_nan,
 };
 use chrono::{DateTime, Datelike, Timelike, Utc};
@@ -135,14 +135,16 @@ impl DatasetProvider for MessengerMagProvider {
     fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
         fetch_daily_hapi_csv_range(
             config,
-            "messenger",
-            "messenger_mag",
-            "MESSENGER MAG",
-            MESSENGER_MAG_HAPI_DATASET,
-            self.year,
-            self.doy_start,
-            self.doy_end,
-            None,
+            &DailyHapiFetchRequest {
+                subdir: "messenger",
+                file_prefix: "messenger_mag",
+                log_label: "MESSENGER MAG",
+                dataset_id: MESSENGER_MAG_HAPI_DATASET,
+                year: self.year,
+                doy_start: self.doy_start,
+                doy_end: self.doy_end,
+                parameters: None,
+            },
         )
     }
 

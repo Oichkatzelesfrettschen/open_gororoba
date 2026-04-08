@@ -21,8 +21,10 @@ pub use traits::Hypercomplex;
 
 // Re-export common functions from cd_kernel for convenience
 pub use cd_kernel::{
+    batch_associator_norms, batch_associator_norms_parallel,
     batch_sedenion_associator_norms, batch_sedenion_associator_norms_parallel, cd_associator,
     cd_associator_norm, cd_conjugate, cd_multiply, cd_multiply_simd, cd_norm_sq,
+    find_zero_divisors,
 };
 
 pub use cd_kernel::cayley_dickson::{SignTable, cd_basis_mul_sign, cd_multiply_into};
@@ -32,7 +34,7 @@ pub use cd_kernel::cayley_dickson::{SignTable, cd_basis_mul_sign, cd_multiply_in
 pub mod analysis;
 
 #[cfg(feature = "analysis")]
-pub use analysis::fractal_analysis::hurst_rs_analysis;
+pub use analysis::fractal_analysis::{calculate_hurst, generate_fbm, hurst_rs_analysis};
 
 // -- physics -------------------------------------------------------------
 #[cfg(feature = "physics")]
@@ -51,3 +53,22 @@ pub mod gpu;
 
 // -- types ---------------------------------------------------------------
 pub use construction::auxiliary::{Rational, padic_distance};
+
+// -- construction re-exports (core) -------------------------------------
+#[cfg(feature = "core")]
+pub use construction::exotic_octonions::{Bioctonion, DualOctonion, ParaOctonion};
+#[cfg(feature = "core")]
+pub use construction::signature_observables::{ObservableReading, ObservableSignatureRegime};
+#[cfg(feature = "core")]
+pub use construction::symmetric_composition::{OkuboElement, TrialityAction};
+
+// -- lie re-exports ------------------------------------------------------
+#[cfg(feature = "lie")]
+pub use lie::e8_lattice::{E8Root, generate_e8_roots};
+
+// -- physics re-exports --------------------------------------------------
+#[cfg(feature = "physics")]
+pub use physics::octonion_field::{
+    FieldParams, Octonion, gaussian_wave_packet, oct_conjugate, oct_multiply, oct_norm_sq,
+    stormer_verlet_step,
+};

@@ -234,7 +234,7 @@ pub fn field_aligned_spectral_fractions(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use rand::Rng;
+    use rand::RngExt;
 
     #[test]
     fn test_coherence_identical_signals() {
@@ -256,8 +256,8 @@ mod tests {
     fn test_coherence_independent_noise() {
         let n = 1024;
         let mut rng = rand::rng();
-        let x: Vec<f64> = (0..n).map(|_| rng.r#gen()).collect();
-        let y: Vec<f64> = (0..n).map(|_| rng.r#gen()).collect();
+        let x: Vec<f64> = (0..n).map(|_| rng.random()).collect();
+        let y: Vec<f64> = (0..n).map(|_| rng.random()).collect();
 
         let (_, msc) = magnitude_squared_coherence(&x, &y, 256, 128);
 

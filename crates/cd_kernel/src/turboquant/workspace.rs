@@ -114,8 +114,8 @@ mod tests {
         // Scratch should be usable and pre-allocated
         let scratch = ws.scratch();
         assert!(scratch.len() >= 128 * 4);
-        scratch[50] = 3.14;
-        assert!((scratch[50] - 3.14).abs() < 1e-10);
+        scratch[50] = std::f64::consts::PI;
+        assert!((scratch[50] - std::f64::consts::PI).abs() < 1e-10);
     }
 
     #[test]
@@ -140,8 +140,8 @@ mod tests {
         // First use
         {
             let scratch = ws.scratch();
-            for i in 0..64 {
-                scratch[i] = i as f64;
+            for (i, slot) in scratch.iter_mut().enumerate().take(64) {
+                *slot = i as f64;
             }
             assert_eq!(scratch[0], 0.0);
             assert_eq!(scratch[63], 63.0);
@@ -150,8 +150,8 @@ mod tests {
         // Second use (reuses same memory, no new allocation)
         {
             let scratch = ws.scratch();
-            for i in 0..64 {
-                scratch[i] = (i as f64) * 2.0;
+            for (i, slot) in scratch.iter_mut().enumerate().take(64) {
+                *slot = (i as f64) * 2.0;
             }
             assert_eq!(scratch[0], 0.0);
             assert_eq!(scratch[63], 126.0);

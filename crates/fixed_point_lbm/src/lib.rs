@@ -356,8 +356,8 @@ mod tests {
         let w = d3q19::W;
         let rho = 1.0f32;
         let mut sum = Q16_16::ZERO;
-        for i in 0..19 {
-            sum += Q16_16::from_f32((w[i] * rho as f64) as f32);
+        for &wi in &w {
+            sum += Q16_16::from_f32((wi * rho as f64) as f32);
         }
         // Integer sum should be close to rho (within quantization error)
         assert!(
@@ -388,8 +388,8 @@ mod tests {
         let w = d3q19::W;
         let rho = 1.0f64;
         let mut sum = Q32_32::ZERO;
-        for i in 0..19 {
-            sum += Q32_32::from_f64(w[i] * rho);
+        for &wi in &w {
+            sum += Q32_32::from_f64(wi * rho);
         }
         let drift = (sum.to_f64() - rho).abs();
         assert!(drift < 1e-8, "Q32.32 rho drift: {}", drift);

@@ -262,7 +262,7 @@ mod tests {
         }
         let ts = load_sharp_json(path, 7115).unwrap();
         assert_eq!(ts.harpnum, 7115);
-        assert!(ts.records.len() > 0, "Should have records");
+        assert!(!ts.records.is_empty(), "Should have records");
         assert_eq!(
             ts.records.len(),
             27,

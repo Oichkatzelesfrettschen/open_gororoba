@@ -185,7 +185,7 @@ fn standard_basis() -> [Sedenion; 16] {
 }
 
 /// Return all 6 permutations of 3 elements.
-fn all_s3_permutations<'a>(subs: [&'a [usize]; 3]) -> Vec<[&'a [usize]; 3]> {
+fn all_s3_permutations(subs: [&[usize]; 3]) -> Vec<[&[usize]; 3]> {
     vec![
         [subs[0], subs[1], subs[2]], // (0,1,2)
         [subs[0], subs[2], subs[1]], // (0,2,1)

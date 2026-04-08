@@ -410,6 +410,29 @@ pub fn download_amda_hapi_csv(
     Ok(body)
 }
 
+/// Request parameters for [`fetch_daily_hapi_csv_range`].
+///
+/// Groups the HAPI-specific fields that are orthogonal to the infrastructure
+/// concerns in [`FetchConfig`] (output root, skip-existing flag, checksum).
+pub struct DailyHapiFetchRequest<'a> {
+    /// Subdirectory under `FetchConfig::output_dir` to write daily CSV files.
+    pub subdir: &'a str,
+    /// Filename prefix; each file is named `{prefix}_{YYYY}_{DOY:03}.csv`.
+    pub file_prefix: &'a str,
+    /// Human-readable label used in progress messages.
+    pub log_label: &'a str,
+    /// HAPI dataset identifier passed to the CDAWeb endpoint.
+    pub dataset_id: &'a str,
+    /// Calendar year to download.
+    pub year: u16,
+    /// First day of year (1-based) in the download range, inclusive.
+    pub doy_start: u16,
+    /// Last day of year (1-based) in the download range, inclusive.
+    pub doy_end: u16,
+    /// HAPI parameters filter; `None` downloads all parameters.
+    pub parameters: Option<&'a [&'a str]>,
+}
+
 /// Materialize one HAPI dataset into per-day CSV files for a contiguous DOY range.
 ///
 /// This captures the common "daily chunk -> download -> write CSV" pattern used
@@ -417,22 +440,15 @@ pub fn download_amda_hapi_csv(
 /// leaving parser/model semantics in the catalog modules themselves.
 pub fn fetch_daily_hapi_csv_range(
     config: &FetchConfig,
-    subdir: &str,
-    file_prefix: &str,
-    log_label: &str,
-    dataset_id: &str,
-    year: u16,
-    doy_start: u16,
-    doy_end: u16,
-    parameters: Option<&[&str]>,
+    req: &DailyHapiFetchRequest<'_>,
 ) -> Result<PathBuf, FetchError> {
-    let dir = config.output_dir.join(subdir);
+    let dir = config.output_dir.join(req.subdir);
     fs::create_dir_all(&dir)?;
 
-    for doy in doy_start..=doy_end {
-        let date = chrono::NaiveDate::from_yo_opt(year as i32, doy as u32)
+    for doy in req.doy_start..=req.doy_end {
+        let date = chrono::NaiveDate::from_yo_opt(req.year as i32, doy as u32)
             .ok_or_else(|| FetchError::Validation(format!("invalid DOY {doy}")))?;
-        let fname = format!("{file_prefix}_{year:04}_{doy:03}.csv");
+        let fname = format!("{}_{:04}_{:03}.csv", req.file_prefix, req.year, doy);
         let output = dir.join(&fname);
 
         if config.skip_existing && output.exists() {
@@ -442,14 +458,14 @@ pub fn fetch_daily_hapi_csv_range(
         let t_min = format!("{date}T00:00:00Z");
         let t_max = format!("{date}T23:59:59Z");
 
-        println!("Fetching {log_label} {year} DOY {doy}...");
+        println!("Fetching {} {} DOY {doy}...", req.log_label, req.year);
 
-        match download_hapi_csv(dataset_id, &t_min, &t_max, parameters) {
+        match download_hapi_csv(req.dataset_id, &t_min, &t_max, req.parameters) {
             Ok(body) => {
                 fs::write(&output, body)?;
             }
             Err(e) => {
-                eprintln!("  Warning: {log_label} DOY {doy}: {e}");
+                eprintln!("  Warning: {} DOY {doy}: {e}", req.log_label);
             }
         }
     }

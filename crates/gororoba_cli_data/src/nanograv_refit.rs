@@ -946,7 +946,7 @@ mod tests {
                 flags: BTreeMap::new(),
             },
         ];
-        let sigma = vec![0.1, 0.2, 0.01, 0.02];
+        let sigma = [0.1, 0.2, 0.01, 0.02];
         let covariance = build_gls_toa_covariance(&observations, &sigma[..2], 30.0, 0.5);
         assert!(covariance[(0, 0)] > 0.01);
         assert!(covariance[(1, 1)] > 0.04);

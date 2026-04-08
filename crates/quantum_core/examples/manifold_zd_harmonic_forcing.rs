@@ -11,7 +11,6 @@ use std::{fs::File, io::Write, path::Path};
 /// inducing 7 fundamental spatial harmonics.
 /// For Pathions (D=32), the Flat Band Fraction jumps to 4/7 (The Pathion Anomaly),
 /// altering the harmonic density and coupling strength.
-
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("<EMOJI+1F30C> Initializing ZD Harmonic Forcing Profile Generator...");
     println!("   Computing Halo Velocity Modulations from Sedenion & Pathion ZD Spectra.");
