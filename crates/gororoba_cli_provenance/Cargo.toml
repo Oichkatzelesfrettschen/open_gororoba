@@ -19,7 +19,7 @@ anyhow = { workspace = true }
 chrono = { workspace = true }
 clap = { workspace = true }
 csv = { workspace = true }
-data_core = { path = "../data_core" }
+data_core = { path = "../data_core", default-features = false, features = ["fetch"] }
 lit_search = { path = "../lit_search" }
 provenance_core = { path = "../provenance_core" }
 provenance_ops = { path = "../provenance_ops" }

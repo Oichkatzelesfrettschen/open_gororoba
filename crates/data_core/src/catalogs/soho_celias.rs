@@ -84,6 +84,9 @@ pub struct SohoLascoSampleRecord {
     pub height: u16,
 }
 
+// CELIAS text sentinels are negative floats (e.g. -1, -1.00), not strings
+// like "N/A". parse_f64_or_nan from crate::parse checks string sentinels and
+// would pass through -1.0 as valid data, so we use local parsers instead.
 fn parse_nonnegative_or_nan(text: &str) -> f64 {
     match text.trim().parse::<f64>() {
         Ok(v) if v <= -0.5 => f64::NAN,
@@ -104,6 +107,8 @@ fn proton_temperature_from_vth(thermal_speed_kms: f64) -> f64 {
     PROTON_MASS_KG * speed_m_per_s * speed_m_per_s / (2.0 * BOLTZMANN_J_PER_K)
 }
 
+// SOHO CELIAS text tables use two-digit years. The mission launched in 1996,
+// so values >= 90 belong to 1990-1999 and values < 90 to 2000-2089.
 fn parse_two_digit_year(text: &str) -> Option<u16> {
     let year = text.parse::<u16>().ok()?;
     Some(if year >= 90 { 1900 + year } else { 2000 + year })
@@ -132,6 +137,13 @@ fn sanitize_signed(value: f64) -> f64 {
     }
 }
 
+// GSE position columns in CELIAS CDFs appear in three different unit systems
+// depending on the data version:
+//   > 1e5  km  (raw km from the Sun; divide by 1 AU in km = 149,597,870.7 km)
+//   > 10   Re  (Earth radii; multiply by Re_km = 6,371 then divide by AU_km)
+//   <= 10  AU  (already in AU; use directly)
+// SOHO orbits at roughly L1 (~0.01 AU from Earth ~= 1,500,000 km), so the
+// thresholds separate the regimes without overlap.
 fn infer_soho_r_au_from_gse(vector: Option<&[f64]>) -> f64 {
     let Some(vector) = vector else {
         return 1.0;
@@ -442,9 +454,10 @@ fn median(values: impl Iterator<Item = f64>) -> f64 {
 pub fn soho_to_hourly_omni(records: &[SohoCeliasRecord]) -> Vec<OmniRecord> {
     let mut bins: BTreeMap<(u16, u16, u8), Vec<&SohoCeliasRecord>> = BTreeMap::new();
     for record in records {
-        if !(record.bulk_speed.is_finite()
-            || record.proton_density.is_finite()
-            || record.proton_temperature.is_finite())
+        // Skip records where every plasma quantity is non-finite (all-fill rows).
+        if !record.bulk_speed.is_finite()
+            && !record.proton_density.is_finite()
+            && !record.proton_temperature.is_finite()
         {
             continue;
         }
@@ -517,12 +530,15 @@ pub fn soho_to_native_omni(records: &[SohoCeliasRecord]) -> Vec<OmniRecord> {
         .collect()
 }
 
+fn href_regex() -> &'static Regex {
+    static ONCE: std::sync::OnceLock<Regex> = std::sync::OnceLock::new();
+    ONCE.get_or_init(|| Regex::new(r#"href="([^"]+)""#).unwrap())
+}
+
 fn soho_directory_entries(url: &str) -> Result<Vec<String>, FetchError> {
     let html = download_to_string(url)?;
-    let regex = Regex::new(r#"href="([^"]+)""#)
-        .map_err(|err| FetchError::Validation(format!("invalid SOHO directory regex: {err}")))?;
     let mut entries = Vec::new();
-    for capture in regex.captures_iter(&html) {
+    for capture in href_regex().captures_iter(&html) {
         let Some(href) = capture.get(1).map(|value| value.as_str()) else {
             continue;
         };
@@ -567,9 +583,8 @@ fn dir_has_suffix(root: &Path, suffix: &str) -> bool {
         .flatten()
         .filter_map(|entry| entry.ok())
         .any(|entry| {
-            let file_type = match entry.file_type() {
-                Ok(file_type) => file_type,
-                Err(_) => return false,
+            let Ok(file_type) = entry.file_type() else {
+                return false;
             };
             if file_type.is_file() {
                 return entry.file_name().to_string_lossy().ends_with(suffix);
