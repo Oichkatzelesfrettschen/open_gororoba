@@ -27,6 +27,8 @@ pub mod hi_cube;
 pub mod hic_raa;
 pub mod hipparcos;
 pub mod hst;
+#[cfg(feature = "fetch")]
+pub mod hst_fetch;
 pub mod ibex;
 pub mod imap;
 pub mod imp8;
@@ -36,10 +38,13 @@ pub mod jarvis;
 pub mod jarvis_fetch;
 pub mod juno;
 pub mod jwst;
+#[cfg(feature = "fetch")]
+pub mod jwst_fetch;
 pub mod landsat;
 #[cfg(feature = "fits")]
 pub mod lotss;
 pub mod manga;
+pub(crate) mod mast_public_metadata;
 pub mod maven_mag;
 pub mod mcgill;
 pub mod messenger;

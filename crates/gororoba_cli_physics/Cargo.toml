@@ -833,7 +833,7 @@ lbm_3d = { path = "../lbm_3d" }
 lbm_vulkan = { path = "../lbm_vulkan" }
 lbm_3d_cuda = { path = "../lbm_3d_cuda", optional = true }
 stats_core = { path = "../stats_core" }
-data_core = { path = "../data_core", features = ["fits"] }
+data_core = { path = "../data_core", default-features = false, features = ["fetch", "fits"] }
 data_artifacts_core = { path = "../data_artifacts_core" }
 snia_core = { path = "../snia_core" }
 sign_imbalance = { path = "../sign_imbalance" }

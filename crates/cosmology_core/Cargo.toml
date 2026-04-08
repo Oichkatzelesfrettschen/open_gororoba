@@ -30,7 +30,7 @@ argmin-math = { workspace = true, optional = true }
 # Euclid catalog reader: Apache Arrow parquet (pure Rust, zero-copy columnar)
 parquet = { workspace = true, optional = true }
 arrow-array = { workspace = true, optional = true }
-data_core = { version = "0.1.0", path = "../data_core" }
+data_core = { version = "0.1.0", path = "../data_core", default-features = false }
 stats_core = { version = "0.1.0", path = "../stats_core" }
 ndarray = { workspace = true }
 serde = { workspace = true, features = ["derive"] }

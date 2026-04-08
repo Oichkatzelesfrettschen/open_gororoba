@@ -76,6 +76,13 @@ what landed in this wave
 - `gororoba_cli_warp` no longer depends on `data_core` for artifact helpers
 - `data_core` now exposes an explicit `fetch` feature, with `download_stack`
   and `heliosphere_event_labels` starting the gated fetch-side surface
+- `cosmology_core` now depends on `data_core` with `default-features = false`
+  because it only consumes parser/model types
+- `gororoba_cli_provenance` now depends on `data_core` with an explicit
+  `features = ["fetch"]` surface instead of inheriting defaults implicitly
+- `gororoba_cli_data` and `gororoba_cli_physics` now declare
+  `default-features = false, features = ["fetch", "fits"]` so their fetch need
+  stays explicit and future `data_core` defaults cannot leak into them silently
 - `gororoba_cli` and `gororoba_cli_physics` no longer default to `gpu`
 - GPU-only bins now declare `required-features = ["gpu"]`
 
@@ -132,9 +139,42 @@ recommended next implementation wave
 2. move the shared source files from `data_core/src/` into
    `data_artifacts_core/src/` so the transitional source-sharing include path
    can be retired
-3. split the first mixed catalog/provider pair behind the explicit `fetch`
-   feature, starting with a low-risk module such as `jarvis` or `aflow`
-4. only then continue the broader catalog-by-catalog fetch split
+3. continue splitting mixed catalog/provider pairs behind the explicit `fetch`
+   feature only where the parser/model and provider seams are already clear
+4. treat the HAPI family (`ace_mag`, `themis`, `mms`, `solar_orbiter_*`,
+   `psp_*`, `maven_mag`, `messenger`, `voyager_pws`, and related lanes) as the
+   next likely duplicated fetch pattern worth standardizing
+5. only extract shared helpers after at least two of those HAPI modules are
+   compared side by side and the overlap is concrete rather than anticipated
+
+what landed after the first comparison
+
+- `maven_mag` and `messenger` were compared side by side as low-risk HAPI
+  siblings
+- both shared the same daily DOY-window fetch/materialize loop:
+  - compute `NaiveDate` from `(year, doy)`
+  - build `t_min` / `t_max`
+  - skip existing output
+  - call `download_hapi_csv(...)`
+  - write one CSV per day
+  - warn and continue on per-day failures
+- that concrete overlap is now captured in a small shared helper in
+  `fetcher.rs`, while parser/model semantics remain in the catalog modules
+
+why this extraction is justified
+
+- it is transport/materialization duplication, not parser or science-model
+  duplication
+- the helper does not hide meaningful mission differences
+- it leaves room for other HAPI providers to stay bespoke when their chunking
+  or selection policies diverge
+
+what still does not justify extraction yet
+
+- `gaia` remains a standalone TAP-query lane with no equally concrete sibling
+- broader HAPI families such as `voyager_pws` or some `solar_orbiter_*` lanes
+  still differ enough in chunk shape or materialization policy that they should
+  be compared pairwise before any further helper extraction
 
 why this order is correct
 

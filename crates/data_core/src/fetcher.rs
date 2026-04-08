@@ -410,6 +410,53 @@ pub fn download_amda_hapi_csv(
     Ok(body)
 }
 
+/// Materialize one HAPI dataset into per-day CSV files for a contiguous DOY range.
+///
+/// This captures the common "daily chunk -> download -> write CSV" pattern used
+/// by several low-level heliophysics/planetary magnetic-field catalogs while
+/// leaving parser/model semantics in the catalog modules themselves.
+pub fn fetch_daily_hapi_csv_range(
+    config: &FetchConfig,
+    subdir: &str,
+    file_prefix: &str,
+    log_label: &str,
+    dataset_id: &str,
+    year: u16,
+    doy_start: u16,
+    doy_end: u16,
+    parameters: Option<&[&str]>,
+) -> Result<PathBuf, FetchError> {
+    let dir = config.output_dir.join(subdir);
+    fs::create_dir_all(&dir)?;
+
+    for doy in doy_start..=doy_end {
+        let date = chrono::NaiveDate::from_yo_opt(year as i32, doy as u32)
+            .ok_or_else(|| FetchError::Validation(format!("invalid DOY {doy}")))?;
+        let fname = format!("{file_prefix}_{year:04}_{doy:03}.csv");
+        let output = dir.join(&fname);
+
+        if config.skip_existing && output.exists() {
+            continue;
+        }
+
+        let t_min = format!("{date}T00:00:00Z");
+        let t_max = format!("{date}T23:59:59Z");
+
+        println!("Fetching {log_label} {year} DOY {doy}...");
+
+        match download_hapi_csv(dataset_id, &t_min, &t_max, parameters) {
+            Ok(body) => {
+                fs::write(&output, body)?;
+            }
+            Err(e) => {
+                eprintln!("  Warning: {log_label} DOY {doy}: {e}");
+            }
+        }
+    }
+
+    Ok(dir)
+}
+
 /// Compute SHA-256 hash of a file, returning hex string.
 pub fn compute_sha256(path: &Path) -> Result<String, io::Error> {
     let mut hasher = Sha256::new();

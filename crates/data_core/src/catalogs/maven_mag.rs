@@ -10,12 +10,12 @@
 //! Reference: Connerney et al. (2015), Space Sci. Rev. 195, 257
 
 use crate::{
-    fetcher::{DatasetProvider, FetchConfig, FetchError, download_hapi_csv},
+    fetcher::{DatasetProvider, FetchConfig, FetchError, fetch_daily_hapi_csv_range},
     parse::parse_hapi_spacephysics_f64_or_nan,
 };
-use chrono::{DateTime, Datelike, NaiveDate, Timelike, Utc};
+use chrono::{DateTime, Datelike, Timelike, Utc};
 use csv::ReaderBuilder;
-use std::{collections::BTreeMap, fs, path::PathBuf};
+use std::{collections::BTreeMap, path::PathBuf};
 
 const MAVEN_MAG_HAPI_DATASET: &str = "MVN_MAG_L2-SUNSTATE-1SEC";
 
@@ -132,40 +132,17 @@ impl DatasetProvider for MavenMagProvider {
     }
 
     fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
-        let dir = config.output_dir.join("maven");
-        fs::create_dir_all(&dir)?;
-
-        for doy in self.doy_start..=self.doy_end {
-            let date = NaiveDate::from_yo_opt(self.year as i32, doy as u32)
-                .ok_or_else(|| FetchError::Validation(format!("invalid DOY {doy}")))?;
-            let fname = format!("maven_mag_{:04}_{:03}.csv", self.year, doy);
-            let output = dir.join(&fname);
-
-            if config.skip_existing && output.exists() {
-                continue;
-            }
-
-            let t_min = format!("{}T00:00:00Z", date);
-            let t_max = format!("{}T23:59:59Z", date);
-
-            println!("Fetching MAVEN MAG {} DOY {}...", self.year, doy);
-
-            match download_hapi_csv(
-                MAVEN_MAG_HAPI_DATASET,
-                &t_min,
-                &t_max,
-                Some(&["Time", "OB_B"]),
-            ) {
-                Ok(body) => {
-                    fs::write(&output, body)?;
-                }
-                Err(e) => {
-                    eprintln!("  Warning: MAVEN DOY {}: {}", doy, e);
-                }
-            }
-        }
-
-        Ok(dir)
+        fetch_daily_hapi_csv_range(
+            config,
+            "maven",
+            "maven_mag",
+            "MAVEN MAG",
+            MAVEN_MAG_HAPI_DATASET,
+            self.year,
+            self.doy_start,
+            self.doy_end,
+            Some(&["Time", "OB_B"]),
+        )
     }
 
     fn is_cached(&self, config: &FetchConfig) -> bool {

@@ -112,7 +112,11 @@ pub use tabular::{
 #[cfg(feature = "fetch")]
 pub use catalogs::aflow_fetch::{AflowProvider, fetch_aflow_dataset};
 #[cfg(feature = "fetch")]
+pub use catalogs::hst_fetch::HstPublicMetadataProvider;
+#[cfg(feature = "fetch")]
 pub use catalogs::jarvis_fetch::{JarvisProvider, fetch_jarvis_json, list_figshare_files};
+#[cfg(feature = "fetch")]
+pub use catalogs::jwst_fetch::JwstPublicMetadataProvider;
 #[cfg(feature = "fits")]
 pub use catalogs::lotss::{
     LotssFitsBestMatch, LotssFitsBestMatchSummary, LotssFitsExecutionReport,

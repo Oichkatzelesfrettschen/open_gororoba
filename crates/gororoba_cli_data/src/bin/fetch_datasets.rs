@@ -140,13 +140,13 @@ fn build_registry() -> Vec<DatasetEntry> {
             size_hint: "~15 MB",
         },
         DatasetEntry {
-            provider: Box::new(jwst::JwstPublicMetadataProvider::default()),
+            provider: Box::new(jwst_fetch::JwstPublicMetadataProvider::default()),
             category: "astro",
             pillar: "survey",
             size_hint: "~10-50 MB metadata",
         },
         DatasetEntry {
-            provider: Box::new(hst::HstPublicMetadataProvider::default()),
+            provider: Box::new(hst_fetch::HstPublicMetadataProvider::default()),
             category: "astro",
             pillar: "survey",
             size_hint: "~10-50 MB metadata",

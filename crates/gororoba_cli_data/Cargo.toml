@@ -487,7 +487,7 @@ provenance_ops = { path = "../provenance_ops" }
 lit_search = { path = "../lit_search" }
 gororoba_cli = { path = "../gororoba_cli" }
 docpipe = { path = "../docpipe", features = ["fallback"] }
-data_core = { path = "../data_core", features = ["fits"] }
+data_core = { path = "../data_core", default-features = false, features = ["fetch", "fits"] }
 data_artifacts_core = { path = "../data_artifacts_core" }
 cosmology_core = { path = "../cosmology_core", features = ["euclid-catalog"] }
 gr_core = { path = "../gr_core" }
