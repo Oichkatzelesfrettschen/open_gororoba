@@ -126,11 +126,23 @@ We can say `data_core` has a real non-network core when all of the following
 are true:
 
 - `download_stack` and transfer helpers are feature-gated
+  STATUS: COMPLETE. `reqwest`, `ureq`, `backon`, `url` are now optional deps
+  activated only by the `fetch` feature. `download_stack` and
+  `heliosphere_event_labels` modules are source-gated. `mast_public_metadata`
+  reqwest import and `fetch_mast_public_observation_page` are gated.
 - parser/model consumers compile with `default-features = false`
+  STATUS: COMPLETE. `cosmology_core` uses `data_core = { default-features = false }`
+  and `cargo check -p cosmology_core` produces no reqwest/hyper/rustls entries
+  in the dep tree.
 - `gororoba_cli` and `gororoba_cli_warp` no longer depend on `data_core`
   directly for non-network helpers
+  STATUS: COMPLETE. Both depend on `data_artifacts_core` for quality/hdf5.
 - `cosmology_core` can depend on parse/model code without pulling HTTP/TLS
   libraries into its package-wide compile path
+  STATUS: COMPLETE. Verified via `cargo tree -p cosmology_core -e features`:
+  reqwest, hyper, rustls are absent from the dep tree.
+
+All four exit criteria are now met as of 2026-04-09.
 
 recommended next implementation wave
 
