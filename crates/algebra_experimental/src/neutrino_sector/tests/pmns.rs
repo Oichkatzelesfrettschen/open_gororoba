@@ -1515,8 +1515,9 @@ fn test_pmns_two_param_baseline_regression() {
     let (_, u_ch) = crate::quark_sector::sort_mass_eigenstates(&eig_ch.S(), &eig_ch.U());
     let (_, u_nu) = crate::quark_sector::sort_mass_eigenstates(&eig_nu.S(), &eig_nu.U());
     let u_pmns_raw = u_ch.as_ref().transpose() * u_nu.as_ref();
-    let (u_pmns, col_perm) = crate::quark_sector::align_pmns_columns(&u_pmns_raw);
-    let (theta_12, theta_13, theta_23) = extract_pmns_angles(&u_pmns);
+    let aligned = crate::quark_sector::align_pmns_columns(&u_pmns_raw);
+    let col_perm = aligned.col_perm();
+    let (theta_12, theta_13, theta_23) = extract_pmns_angles(aligned.matrix());
 
     println!("--- PMNS TWO-PARAM BASELINE REGRESSION ---");
     println!("  theta_12 = {:.4} deg (expected ~28.5)", theta_12);
@@ -1658,8 +1659,8 @@ fn test_pmns_casimir_isolation() {
     let (_, u_ch) = crate::quark_sector::sort_mass_eigenstates(&eig_ch.S(), &eig_ch.U());
     let (_, u_nu) = crate::quark_sector::sort_mass_eigenstates(&eig_nu.S(), &eig_nu.U());
     let u_raw = u_ch.as_ref().transpose() * u_nu.as_ref();
-    let (u_pmns, _) = crate::quark_sector::align_pmns_columns(&u_raw);
-    let (t12, t13, t23) = extract_pmns_angles(&u_pmns);
+    let aligned = crate::quark_sector::align_pmns_columns(&u_raw);
+    let (t12, t13, t23) = extract_pmns_angles(aligned.matrix());
 
     assert!((t12 - 28.54).abs() < 0.01, "theta_12 isolation: {:.4}", t12);
     assert!((t13 - 8.63).abs() < 0.01, "theta_13 isolation: {:.4}", t13);

@@ -347,19 +347,19 @@ pub fn compute_pmns(charged_pair: (usize, usize), neutrino_pair: (usize, usize))
     let u_pmns_raw = u_ch.transpose() * u_nu;
 
     // Align columns to PDG convention: descending |Ue| content.
-    let (u_pmns, _) = crate::quark_sector::align_pmns_columns(&u_pmns_raw);
+    let aligned = crate::quark_sector::align_pmns_columns(&u_pmns_raw);
 
-    let (theta_12, theta_13, theta_23) = extract_pmns_angles(&u_pmns);
+    let (theta_12, theta_13, theta_23) = extract_pmns_angles(aligned.matrix());
 
     // Mass-squared differences (in arbitrary units, ratios are meaningful)
     let delta_m21_sq = nu_masses[1].powi(2) - nu_masses[0].powi(2);
     let delta_m31_sq = nu_masses[2].powi(2) - nu_masses[0].powi(2);
 
-    let j = jarlskog_from_real_pmns(&u_pmns);
+    let j = jarlskog_from_real_pmns(aligned.matrix());
     let cp_phase = extract_cp_phase((theta_12, theta_13, theta_23), j);
 
     PmnsResult {
-        matrix: u_pmns,
+        matrix: aligned.into_matrix(),
         angles_deg: (theta_12, theta_13, theta_23),
         neutrino_masses: nu_masses,
         charged_masses: ch_masses,

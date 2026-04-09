@@ -158,81 +158,19 @@ EOF
 
 backup_if_needed "$NEXTTEST_CONFIG_PATH"
 cat >"$NEXTTEST_CONFIG_PATH" <<'EOF'
-[profile.default]
-failure-output = "final"
-fail-fast = false
-status-level = "slow"
-final-status-level = "slow"
-slow-timeout = { period = "60s", terminate-after = 2 }
-
-[profile.ci]
-failure-output = "immediate-final"
-fail-fast = false
-status-level = "slow"
-final-status-level = "all"
-slow-timeout = { period = "90s", terminate-after = 2 }
-
-[profile.smoke]
-failure-output = "immediate-final"
-fail-fast = true
-status-level = "all"
-final-status-level = "all"
-
-[profile.heavy]
-failure-output = "immediate-final"
-fail-fast = false
-status-level = "slow"
-final-status-level = "all"
-slow-timeout = { period = "180s", terminate-after = 2 }
-
-[test-groups]
-heavy-math = { max-threads = 1 }
-heavy-research = { max-threads = 1 }
-serial-gpu = { max-threads = 1 }
-
-[[profile.default.overrides]]
-filter = 'package(algebra_analysis) or package(gr_core)'
-test-group = "heavy-math"
-slow-timeout = { period = "180s", terminate-after = 2 }
-
-[[profile.ci.overrides]]
-filter = 'package(algebra_analysis) or package(gr_core)'
-test-group = "heavy-math"
-slow-timeout = { period = "240s", terminate-after = 2 }
-
-[[profile.heavy.overrides]]
-filter = 'package(algebra_analysis) or package(gr_core)'
-test-group = "heavy-math"
-slow-timeout = { period = "600s", terminate-after = 2 }
-
-[[profile.heavy.overrides]]
-filter = 'package(stats_core) and test(/ultrametric::baire_codebook::tests::(test_euclidean_ultrametricity_across_filtration_levels|test_intermediate_filtration_gradient|test_random_removal_control|test_lambda512_to_256_intermediate_gradient|test_lambda512_to_256_random_removal_control|test_sbase_to_lambda2048_gradient|test_l0_subpopulation_ultrametricity|test_lambda2048_to_1024_intermediate_gradient|test_l1_filter_on_l0_neg1_subset|test_recursive_simpsons_paradox_l2|test_cross_stratum_triple_decomposition|test_l0_zero_simpsons_paradox|test_dimensional_universality_simpsons_paradox|test_lambda1024_stratum_paradox_and_summary)/)'
-test-group = "heavy-research"
-slow-timeout = { period = "600s", terminate-after = 2 }
-
-[[profile.heavy.overrides]]
-filter = 'package(algebra_experimental) and test(test_thesis_e_xor_involution_invariants_128d)'
-test-group = "heavy-research"
-slow-timeout = { period = "600s", terminate-after = 2 }
-
-[[profile.heavy.overrides]]
-filter = 'package(gororoba_algebra) and test(test_split_octonion_attractor_regression_dim_128_256_guarded)'
-test-group = "heavy-research"
-slow-timeout = { period = "600s", terminate-after = 2 }
-
-[[profile.heavy.overrides]]
-filter = 'package(gororoba_cli) and test(test_zero_divisor_scaling)'
-test-group = "heavy-research"
-slow-timeout = { period = "600s", terminate-after = 2 }
-
-[[profile.heavy.overrides]]
-filter = 'package(sign_imbalance) and test(test_kubo_j1j2_alpha_sweep)'
-test-group = "heavy-research"
-slow-timeout = { period = "600s", terminate-after = 2 }
-
-[[profile.heavy.overrides]]
-filter = 'test(/gpu/)'
-test-group = "serial-gpu"
+# User-local nextest config for open_gororoba.
+#
+# WHY: The canonical profile definitions (default, ci, smoke, heavy, gpu) live
+# in the workspace at .config/nextest.toml. Nextest merges workspace config with
+# user config; workspace config takes precedence for any duplicate keys.
+#
+# This file is for MACHINE-SPECIFIC overrides only, such as local thread counts
+# or per-developer timing tweaks. Do not duplicate profile definitions here --
+# edit .config/nextest.toml in the workspace root instead.
+#
+# Example machine-specific override (uncomment and adjust as needed):
+# [profile.default]
+# test-threads = 4
 EOF
 
 if [[ "$WRITE_GEMINI" == "1" ]]; then

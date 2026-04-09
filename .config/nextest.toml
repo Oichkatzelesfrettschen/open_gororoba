@@ -1,0 +1,159 @@
+# Nextest workspace configuration for open_gororoba.
+#
+# WHY: Nextest reads this file automatically from the workspace root. Without it,
+# the `smoke`, `heavy`, and `gpu` profiles referenced in the Makefile do not
+# exist for fresh clones or CI environments that skip bootstrap.
+#
+# WHAT: Defines tiered test execution profiles:
+#   default  -- standard dev loop (60s slow-timeout)
+#   ci       -- CI gate (90s slow-timeout, immediate failure output)
+#   smoke    -- quick correctness check (fail-fast, no timeout override)
+#   heavy    -- long-running #[ignore]-gated tests (600s, single-threaded math)
+#   gpu      -- CUDA tests that require physical GPU hardware
+#
+# HOW: `cargo nextest run -P <profile>` selects a profile.
+# Makefile targets: `make test` (default), `make heavy` (heavy + --run-ignored only),
+#                   `make rust-smoke` (smoke).
+#
+# The user-local ~/.config/nextest.toml (installed by `make bootstrap-user-local-xdg`)
+# can add machine-specific overrides (e.g. thread counts, local timing JSON).
+
+[profile.default]
+failure-output = "final"
+fail-fast = false
+status-level = "slow"
+final-status-level = "slow"
+slow-timeout = { period = "60s", terminate-after = 2 }
+
+[profile.ci]
+failure-output = "immediate-final"
+fail-fast = false
+status-level = "slow"
+final-status-level = "all"
+slow-timeout = { period = "90s", terminate-after = 2 }
+
+[profile.smoke]
+failure-output = "immediate-final"
+fail-fast = true
+status-level = "all"
+final-status-level = "all"
+
+[profile.heavy]
+failure-output = "immediate-final"
+fail-fast = false
+status-level = "slow"
+final-status-level = "all"
+slow-timeout = { period = "180s", terminate-after = 2 }
+
+# GPU tests require physical CUDA hardware. Run with:
+#   cargo nextest run -P gpu --run-ignored only
+# or via `make gpu-test` (when that target is added).
+[profile.gpu]
+failure-output = "immediate-final"
+fail-fast = false
+status-level = "all"
+final-status-level = "all"
+slow-timeout = { period = "300s", terminate-after = 2 }
+
+# ---------------------------------------------------------------------------
+# Test groups -- control parallelism for expensive or hardware-bound suites.
+# ---------------------------------------------------------------------------
+
+[test-groups]
+# O(dim^4) or O(dim^3) math tests: only one at a time to avoid cache thrashing.
+heavy-math = { max-threads = 1 }
+# Research scans (MaNGA, neutrino sector, cd_tower enumerations): single-threaded.
+heavy-research = { max-threads = 1 }
+# GPU tests: only one concurrent CUDA context.
+serial-gpu = { max-threads = 1 }
+
+# ---------------------------------------------------------------------------
+# Per-profile test overrides
+# ---------------------------------------------------------------------------
+
+[[profile.default.overrides]]
+filter = 'package(algebra_analysis) or package(gr_core)'
+test-group = "heavy-math"
+slow-timeout = { period = "180s", terminate-after = 2 }
+
+[[profile.ci.overrides]]
+filter = 'package(algebra_analysis) or package(gr_core)'
+test-group = "heavy-math"
+slow-timeout = { period = "240s", terminate-after = 2 }
+
+# algebra_analysis and gr_core are O(dim^4) in several probes.
+[[profile.heavy.overrides]]
+filter = 'package(algebra_analysis) or package(gr_core)'
+test-group = "heavy-math"
+slow-timeout = { period = "600s", terminate-after = 2 }
+
+# Large ultrametric codebook tests in stats_core.
+[[profile.heavy.overrides]]
+filter = 'package(stats_core) and test(/ultrametric::baire_codebook::tests::(test_euclidean_ultrametricity_across_filtration_levels|test_intermediate_filtration_gradient|test_random_removal_control|test_lambda512_to_256_intermediate_gradient|test_lambda512_to_256_random_removal_control|test_sbase_to_lambda2048_gradient|test_l0_subpopulation_ultrametricity|test_lambda2048_to_1024_intermediate_gradient|test_l1_filter_on_l0_neg1_subset|test_recursive_simpsons_paradox_l2|test_cross_stratum_triple_decomposition|test_l0_zero_simpsons_paradox|test_dimensional_universality_simpsons_paradox|test_lambda1024_stratum_paradox_and_summary)/)'
+test-group = "heavy-research"
+slow-timeout = { period = "600s", terminate-after = 2 }
+
+# ~56s thesis/involution scan in algebra_experimental.
+[[profile.heavy.overrides]]
+filter = 'package(algebra_experimental) and test(test_thesis_e_xor_involution_invariants_128d)'
+test-group = "heavy-research"
+slow-timeout = { period = "600s", terminate-after = 2 }
+
+# Attractor regression at dim 128/256.
+[[profile.heavy.overrides]]
+filter = 'package(gororoba_algebra) and test(test_split_octonion_attractor_regression_dim_128_256_guarded)'
+test-group = "heavy-research"
+slow-timeout = { period = "600s", terminate-after = 2 }
+
+# Zero-divisor scaling (CLI integration, ~several minutes).
+[[profile.heavy.overrides]]
+filter = 'package(gororoba_cli) and test(test_zero_divisor_scaling)'
+test-group = "heavy-research"
+slow-timeout = { period = "600s", terminate-after = 2 }
+
+# Kubo J1-J2 alpha sweep (sign_imbalance).
+[[profile.heavy.overrides]]
+filter = 'package(sign_imbalance) and test(test_kubo_j1j2_alpha_sweep)'
+test-group = "heavy-research"
+slow-timeout = { period = "600s", terminate-after = 2 }
+
+# Neutrino sector constrained scans (~56s and ~160s).
+[[profile.heavy.overrides]]
+filter = 'package(algebra_experimental) and test(/test_v6_(2d_constrained_scan|joint_4d_optimization)/)'
+test-group = "heavy-research"
+slow-timeout = { period = "600s", terminate-after = 2 }
+
+# CD tower enumeration at high dimensions (~2-76s each).
+[[profile.heavy.overrides]]
+filter = 'package(algebra_experimental) and test(/test_(enumerate_tower|fast_enumerate|benchmark_fast_vs_scalar|compressed_memory|enumerate_8192d|fast_enumerate_16384d)/)'
+test-group = "heavy-research"
+slow-timeout = { period = "600s", terminate-after = 2 }
+
+# pathion VK spectrum (~4 min at dim=64).
+[[profile.heavy.overrides]]
+filter = 'package(algebra_experimental) and test(test_pathion_vk_spectrum)'
+test-group = "heavy-research"
+slow-timeout = { period = "600s", terminate-after = 2 }
+
+# Crystal band and flat-band localization scans (~30s in release).
+[[profile.heavy.overrides]]
+filter = 'package(algebra_analysis) and test(/test_(d64_flat_band|d16_d32_d64_scaling)/)'
+test-group = "heavy-research"
+slow-timeout = { period = "300s", terminate-after = 2 }
+
+# E8 crystal bridge at 256D (~2-5 min).
+[[profile.heavy.overrides]]
+filter = 'package(materials_core) and test(test_separating_degree_formula_universality)'
+test-group = "heavy-research"
+slow-timeout = { period = "600s", terminate-after = 2 }
+
+# All GPU tests must run serially on the one physical device.
+[[profile.heavy.overrides]]
+filter = 'test(/gpu/)'
+test-group = "serial-gpu"
+slow-timeout = { period = "300s", terminate-after = 2 }
+
+[[profile.gpu.overrides]]
+filter = 'test(/gpu/)'
+test-group = "serial-gpu"
+slow-timeout = { period = "300s", terminate-after = 2 }

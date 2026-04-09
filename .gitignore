@@ -13,7 +13,8 @@ Thumbs.db
 .vscode/
 .idea/
 .cargo/
-.config/
+.config/**
+!.config/nextest.toml
 .claude/
 .gemini/
 .gororoba_lit_cache/
