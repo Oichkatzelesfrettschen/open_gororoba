@@ -1,4 +1,4 @@
-//! MESSENGER MAG data provider for Mercury boundary analysis.
+//! MESSENGER MAG parse types for Mercury boundary analysis.
 //!
 //! MESSENGER orbited Mercury from 2011-2015, crossing the bow shock and
 //! magnetopause on every orbit (~8h period). Mercury has an intrinsic
@@ -7,16 +7,13 @@
 //!
 //! Data: RTN coordinates via CDAWeb HAPI (MESSENGER_MAG_RTN@0).
 //! Reference: Anderson et al. (2007), Space Sci. Rev. 131, 417
+//!
+//! Fetch/provider support is in `messenger_fetch` (feature-gated on `fetch`).
 
-use crate::{
-    fetcher::{DailyHapiFetchRequest, DatasetProvider, FetchConfig, FetchError, fetch_daily_hapi_csv_range},
-    parse::parse_hapi_spacephysics_f64_or_nan,
-};
+use crate::parse::parse_hapi_spacephysics_f64_or_nan;
 use chrono::{DateTime, Datelike, Timelike, Utc};
 use csv::ReaderBuilder;
-use std::{collections::BTreeMap, path::PathBuf};
-
-const MESSENGER_MAG_HAPI_DATASET: &str = "MESSENGER_MAG_RTN@0";
+use std::collections::BTreeMap;
 
 /// Minute-resolution MESSENGER MAG record in RTN coordinates.
 #[derive(Debug, Clone)]
@@ -118,37 +115,4 @@ pub fn parse_messenger_mag_hapi_csv_minutes(content: &str) -> Vec<MessengerMagMi
             })
         })
         .collect()
-}
-
-/// MESSENGER MAG provider. Daily HAPI chunks.
-pub struct MessengerMagProvider {
-    pub year: u16,
-    pub doy_start: u16,
-    pub doy_end: u16,
-}
-
-impl DatasetProvider for MessengerMagProvider {
-    fn name(&self) -> &str {
-        "MESSENGER MAG RTN"
-    }
-
-    fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
-        fetch_daily_hapi_csv_range(
-            config,
-            &DailyHapiFetchRequest {
-                subdir: "messenger",
-                file_prefix: "messenger_mag",
-                log_label: "MESSENGER MAG",
-                dataset_id: MESSENGER_MAG_HAPI_DATASET,
-                year: self.year,
-                doy_start: self.doy_start,
-                doy_end: self.doy_end,
-                parameters: None,
-            },
-        )
-    }
-
-    fn is_cached(&self, config: &FetchConfig) -> bool {
-        config.output_dir.join("messenger").exists()
-    }
 }

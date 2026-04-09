@@ -676,7 +676,8 @@ fn fetch_swarm(cli: &Cli, start: NaiveDate, end: NaiveDate) -> Result<Vec<MagMin
 
 fn fetch_maven(cli: &Cli, start: NaiveDate, end: NaiveDate) -> Result<Vec<MagMinute>> {
     use data_core::{
-        catalogs::maven_mag::{MavenMagProvider, parse_maven_mag_hapi_csv_minutes},
+        catalogs::maven_mag::parse_maven_mag_hapi_csv_minutes,
+        catalogs::maven_mag_fetch::MavenMagProvider,
         fetcher::{DatasetProvider, FetchConfig},
     };
 
@@ -729,7 +730,8 @@ fn fetch_maven(cli: &Cli, start: NaiveDate, end: NaiveDate) -> Result<Vec<MagMin
 
 fn fetch_messenger(cli: &Cli, start: NaiveDate, end: NaiveDate) -> Result<Vec<MagMinute>> {
     use data_core::{
-        catalogs::messenger::{MessengerMagProvider, parse_messenger_mag_hapi_csv_minutes},
+        catalogs::messenger::parse_messenger_mag_hapi_csv_minutes,
+        catalogs::messenger_fetch::MessengerMagProvider,
         fetcher::{DatasetProvider, FetchConfig},
     };
 

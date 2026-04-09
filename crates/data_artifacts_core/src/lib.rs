@@ -4,11 +4,9 @@
 //! HTTP transfer code so analysis/test crates can depend on artifact helpers
 //! without inheriting the full network surface.
 
-#[path = "../../data_core/src/quality.rs"]
 pub mod quality;
 
 #[cfg(feature = "hdf5-export")]
-#[path = "../../data_core/src/hdf5_export.rs"]
 pub mod hdf5_export;
 
 pub use quality::{

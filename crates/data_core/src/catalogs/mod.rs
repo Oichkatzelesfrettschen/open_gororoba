@@ -46,8 +46,12 @@ pub mod lotss;
 pub mod manga;
 pub(crate) mod mast_public_metadata;
 pub mod maven_mag;
+#[cfg(feature = "fetch")]
+pub mod maven_mag_fetch;
 pub mod mcgill;
 pub mod messenger;
+#[cfg(feature = "fetch")]
+pub mod messenger_fetch;
 pub mod mms;
 pub mod nanograv;
 pub mod new_horizons;
