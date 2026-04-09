@@ -1,4 +1,4 @@
-//! MAVEN MAG data provider for Mars induced magnetosphere boundary analysis.
+//! MAVEN MAG parse types for Mars induced magnetosphere boundary analysis.
 //!
 //! MAVEN (Mars Atmosphere and Volatile EvolutioN) orbits Mars measuring the
 //! magnetic field through the induced magnetosphere boundary (IMB) and
@@ -8,16 +8,13 @@
 //! Data: 1-second outboard MAG in Sun-State coordinates.
 //! Source: <https://cdaweb.gsfc.nasa.gov/hapi/info?id=MVN_MAG_L2-SUNSTATE-1SEC>
 //! Reference: Connerney et al. (2015), Space Sci. Rev. 195, 257
+//!
+//! Fetch/provider support is in `maven_mag_fetch` (feature-gated on `fetch`).
 
-use crate::{
-    fetcher::{DailyHapiFetchRequest, DatasetProvider, FetchConfig, FetchError, fetch_daily_hapi_csv_range},
-    parse::parse_hapi_spacephysics_f64_or_nan,
-};
+use crate::parse::parse_hapi_spacephysics_f64_or_nan;
 use chrono::{DateTime, Datelike, Timelike, Utc};
 use csv::ReaderBuilder;
-use std::{collections::BTreeMap, path::PathBuf};
-
-const MAVEN_MAG_HAPI_DATASET: &str = "MVN_MAG_L2-SUNSTATE-1SEC";
+use std::collections::BTreeMap;
 
 /// Minute-resolution MAVEN MAG record in Sun-State coordinates.
 #[derive(Debug, Clone)]
@@ -117,37 +114,4 @@ pub fn parse_maven_mag_hapi_csv_minutes(content: &str) -> Vec<MavenMagMinuteReco
             })
         })
         .collect()
-}
-
-/// MAVEN MAG provider. Fetches in daily chunks (1-sec data is large).
-pub struct MavenMagProvider {
-    pub year: u16,
-    pub doy_start: u16,
-    pub doy_end: u16,
-}
-
-impl DatasetProvider for MavenMagProvider {
-    fn name(&self) -> &str {
-        "MAVEN MAG L2 SunState 1-sec"
-    }
-
-    fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
-        fetch_daily_hapi_csv_range(
-            config,
-            &DailyHapiFetchRequest {
-                subdir: "maven",
-                file_prefix: "maven_mag",
-                log_label: "MAVEN MAG",
-                dataset_id: MAVEN_MAG_HAPI_DATASET,
-                year: self.year,
-                doy_start: self.doy_start,
-                doy_end: self.doy_end,
-                parameters: Some(&["Time", "OB_B"]),
-            },
-        )
-    }
-
-    fn is_cached(&self, config: &FetchConfig) -> bool {
-        config.output_dir.join("maven").exists()
-    }
 }
