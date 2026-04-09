@@ -540,6 +540,7 @@ lopdf = { workspace = true }
 
 [features]
 hdf5-export = ["data_core/hdf5-export", "data_artifacts_core/hdf5-export"]
+gpu = ["stats_core/gpu"]
 
 [lints]
 workspace = true
