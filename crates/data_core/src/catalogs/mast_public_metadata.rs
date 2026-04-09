@@ -1,11 +1,15 @@
 //! Shared helpers for MAST public-observation metadata lanes.
 
-use crate::fetcher::{FetchError, validate_not_html};
-use reqwest::blocking::Client;
-use serde_json::{Value, json};
-use std::time::Duration;
+use serde_json::Value;
+#[cfg(feature = "fetch")]
+use {
+    crate::fetcher::{FetchError, validate_not_html},
+    reqwest::blocking::Client,
+    serde_json::json,
+    std::time::Duration,
+};
 
-#[cfg_attr(not(feature = "fetch"), allow(dead_code))]
+#[cfg(feature = "fetch")]
 const MAST_API_ROOT: &str = "https://mast.stsci.edu/api/v0/invoke";
 
 pub(crate) fn json_string(value: &Value, key: &str) -> String {
@@ -26,7 +30,7 @@ pub(crate) fn json_f64(value: &Value, key: &str) -> f64 {
     value.get(key).and_then(Value::as_f64).unwrap_or(f64::NAN)
 }
 
-#[cfg_attr(not(feature = "fetch"), allow(dead_code))]
+#[cfg(feature = "fetch")]
 pub(crate) fn fetch_mast_public_observation_page(
     obs_collection: &str,
     page: usize,

@@ -12,11 +12,11 @@ serde = { workspace = true }
 serde_json = { workspace = true }
 toml = { workspace = true }
 sha2 = { workspace = true }
-reqwest = { workspace = true }
-backon = { workspace = true }
-ureq = { workspace = true }
+reqwest = { workspace = true, optional = true }
+backon = { workspace = true, optional = true }
+ureq = { workspace = true, optional = true }
 thiserror = { workspace = true }
-url = { workspace = true }
+url = { workspace = true, optional = true }
 flate2 = { workspace = true }
 zip = { workspace = true }
 tar = { workspace = true }
@@ -46,7 +46,7 @@ verified_core = { version = "0.1.0", path = "../verified_core" }
 
 [features]
 default = ["fetch"]
-fetch = []
+fetch = ["dep:reqwest", "dep:ureq", "dep:backon", "dep:url"]
 hdf5-export = ["dep:hdf5", "data_artifacts_core/hdf5-export"]
 netcdf = ["dep:netcdf3", "dep:netcdf-reader"]
 dataframe = ["dep:polars"]
