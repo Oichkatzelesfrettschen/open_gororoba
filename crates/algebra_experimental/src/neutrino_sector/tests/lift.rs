@@ -37,7 +37,7 @@ fn test_v6_jacobian_solar_selectivity() {
     let (_, u_ch_0) = crate::quark_sector::sort_mass_eigenstates(&eig_ch_0.S(), &eig_ch_0.U());
     let (_, u_nu_0) = crate::quark_sector::sort_mass_eigenstates(&eig_nu_0.S(), &eig_nu_0.U());
     let u_raw_0 = u_ch_0.as_ref().transpose() * u_nu_0.as_ref();
-    let (_, perm_d_0) = crate::quark_sector::align_pmns_columns(&u_raw_0);
+    let perm_d_0 = crate::quark_sector::align_pmns_columns(&u_raw_0).col_perm();
     let perm_u_0 = [0usize, 1, 2];
 
     // Helper: compute angles for given beta using FIXED permutation
@@ -292,7 +292,7 @@ fn test_v6_solar_1d_scan() {
     let (_, u_ch_0) = crate::quark_sector::sort_mass_eigenstates(&eig_ch_0.S(), &eig_ch_0.U());
     let (_, u_nu_0) = crate::quark_sector::sort_mass_eigenstates(&eig_nu_0.S(), &eig_nu_0.U());
     let u_raw_0 = u_ch_0.as_ref().transpose() * u_nu_0.as_ref();
-    let (_, perm_d_0) = crate::quark_sector::align_pmns_columns(&u_raw_0);
+    let perm_d_0 = crate::quark_sector::align_pmns_columns(&u_raw_0).col_perm();
     let perm_u_0 = [0usize, 1, 2];
 
     // Compute Jacobian at beta=0 (same as Jacobian test, eps=0.05)
@@ -543,7 +543,7 @@ fn test_v6_solar_1d_scan_direct_lift() {
     let (_, u_ch_0) = crate::quark_sector::sort_mass_eigenstates(&eig_ch_0.S(), &eig_ch_0.U());
     let (_, u_nu_0) = crate::quark_sector::sort_mass_eigenstates(&eig_nu_0.S(), &eig_nu_0.U());
     let u_raw_0 = u_ch_0.as_ref().transpose() * u_nu_0.as_ref();
-    let (_, perm_d) = crate::quark_sector::align_pmns_columns(&u_raw_0);
+    let perm_d = crate::quark_sector::align_pmns_columns(&u_raw_0).col_perm();
     let perm_u = [0usize, 1, 2];
 
     let compute_angles = |beta: &[f64; 6]| -> (f64, f64, f64) {
@@ -680,7 +680,7 @@ fn test_v6_constrained_solar_scan() {
     let (_, u_ch_0) = crate::quark_sector::sort_mass_eigenstates(&eig_ch_0.S(), &eig_ch_0.U());
     let (_, u_nu_0) = crate::quark_sector::sort_mass_eigenstates(&eig_nu_0.S(), &eig_nu_0.U());
     let u_raw_0 = u_ch_0.as_ref().transpose() * u_nu_0.as_ref();
-    let (_, perm_d) = crate::quark_sector::align_pmns_columns(&u_raw_0);
+    let perm_d = crate::quark_sector::align_pmns_columns(&u_raw_0).col_perm();
     let perm_u = [0usize, 1, 2];
 
     let compute_angles = |beta: &[f64; 6]| -> (f64, f64, f64) {
@@ -850,7 +850,7 @@ fn test_v6_jacobian_flavor_lift_comparison() {
     let (_, u_ch_0) = crate::quark_sector::sort_mass_eigenstates(&eig_ch_0.S(), &eig_ch_0.U());
     let (_, u_nu_0) = crate::quark_sector::sort_mass_eigenstates(&eig_nu_0.S(), &eig_nu_0.U());
     let u_raw_0 = u_ch_0.as_ref().transpose() * u_nu_0.as_ref();
-    let (_, perm_d) = crate::quark_sector::align_pmns_columns(&u_raw_0);
+    let perm_d = crate::quark_sector::align_pmns_columns(&u_raw_0).col_perm();
     let perm_u = [0usize, 1, 2];
 
     // Build the three lifts
@@ -1014,7 +1014,7 @@ fn test_v6_tensor_element_lift_jacobian() {
     let (_, u_ch_0) = crate::quark_sector::sort_mass_eigenstates(&eig_ch_0.S(), &eig_ch_0.U());
     let (_, u_nu_0) = crate::quark_sector::sort_mass_eigenstates(&eig_nu_0.S(), &eig_nu_0.U());
     let u_raw_0 = u_ch_0.as_ref().transpose() * u_nu_0.as_ref();
-    let (_, perm_d) = crate::quark_sector::align_pmns_columns(&u_raw_0);
+    let perm_d = crate::quark_sector::align_pmns_columns(&u_raw_0).col_perm();
     let perm_u = [0usize, 1, 2];
 
     let compute_angles = |beta: &[f64; 6]| -> (f64, f64, f64) {
@@ -1202,7 +1202,7 @@ fn test_v6_alpha_modulated_jacobian() {
     let (_, u_ch_0) = crate::quark_sector::sort_mass_eigenstates(&eig_ch_0.S(), &eig_ch_0.U());
     let (_, u_nu_0) = crate::quark_sector::sort_mass_eigenstates(&eig_nu_0.S(), &eig_nu_0.U());
     let u_raw_0 = u_ch_0.as_ref().transpose() * u_nu_0.as_ref();
-    let (_, perm_d) = crate::quark_sector::align_pmns_columns(&u_raw_0);
+    let perm_d = crate::quark_sector::align_pmns_columns(&u_raw_0).col_perm();
     let perm_u = [0usize, 1, 2];
 
     // Verify beta=0 recovery matches the two-param baseline
@@ -1414,7 +1414,7 @@ fn test_pmns_v6_corrected_regression() {
     let (_, u_ch_0) = crate::quark_sector::sort_mass_eigenstates(&eig_ch_0.S(), &eig_ch_0.U());
     let (_, u_nu_0) = crate::quark_sector::sort_mass_eigenstates(&eig_nu_0.S(), &eig_nu_0.U());
     let u_raw_0 = u_ch_0.as_ref().transpose() * u_nu_0.as_ref();
-    let (_, perm_d) = crate::quark_sector::align_pmns_columns(&u_raw_0);
+    let perm_d = crate::quark_sector::align_pmns_columns(&u_raw_0).col_perm();
     let perm_u = [0usize, 1, 2];
 
     let compute_angles = |beta: &[f64; 6]| -> (f64, f64, f64) {
@@ -1713,7 +1713,7 @@ fn test_tensor_element_lift_stability() {
     let (_, u_ch_0) = crate::quark_sector::sort_mass_eigenstates(&eig_ch_0.S(), &eig_ch_0.U());
     let (_, u_nu_0) = crate::quark_sector::sort_mass_eigenstates(&eig_nu_0.S(), &eig_nu_0.U());
     let u_raw_0 = u_ch_0.as_ref().transpose() * u_nu_0.as_ref();
-    let (_, perm_d) = crate::quark_sector::align_pmns_columns(&u_raw_0);
+    let perm_d = crate::quark_sector::align_pmns_columns(&u_raw_0).col_perm();
     let perm_u = [0usize, 1, 2];
 
     // Compute constrained direction first (at beta=0)

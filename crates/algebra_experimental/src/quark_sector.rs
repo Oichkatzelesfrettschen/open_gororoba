@@ -615,6 +615,60 @@ pub fn sort_mass_eigenstates(
     (sorted_masses, sorted_evecs)
 }
 
+/// A PMNS matrix that has been explicitly aligned to the PDG column convention.
+///
+/// The only two constructors are `align_pmns_columns` (automatic PDG sort) and
+/// `AlignedPmns::from_permuted_raw` (caller-supplied permutation, for finite-difference
+/// gradient contexts where column ordering must stay fixed across perturbations).
+///
+/// WHY a newtype instead of a bare `Mat<f64>`: the PDG angle extraction formula
+/// reads specific matrix elements by position (e.g. U_e3 = u[(0,2)]). If the
+/// columns are in the wrong order those positions mean different angles. The
+/// compiler can now reject any unaligned matrix from flowing into the PMNS pipeline.
+pub struct AlignedPmns {
+    matrix: Mat<f64>,
+    col_perm: [usize; 3],
+}
+
+impl AlignedPmns {
+    /// Apply explicit row and column permutations to `u_raw`.
+    ///
+    /// Use this when a reference-point alignment permutation (`perm_col`) has
+    /// already been computed via `align_pmns_columns` and must be applied
+    /// consistently to a perturbed matrix (e.g. for finite-difference gradients).
+    /// The caller is responsible for ensuring the supplied permutation produces
+    /// a physically meaningful ordering for their context.
+    pub fn from_permuted_raw(
+        u_raw: &Mat<f64>,
+        perm_row: &[usize; 3],
+        perm_col: &[usize; 3],
+    ) -> Self {
+        let mut matrix = Mat::<f64>::zeros(3, 3);
+        for (i, &row) in perm_row.iter().enumerate() {
+            for (j, &col) in perm_col.iter().enumerate() {
+                matrix[(i, j)] = u_raw[(row, col)];
+            }
+        }
+        Self { matrix, col_perm: *perm_col }
+    }
+
+    /// Borrow the underlying matrix.
+    pub fn matrix(&self) -> &Mat<f64> {
+        &self.matrix
+    }
+
+    /// Return the column permutation that was applied (index `j` holds the
+    /// original column that ended up in position `j` of the aligned matrix).
+    pub fn col_perm(&self) -> [usize; 3] {
+        self.col_perm
+    }
+
+    /// Consume the newtype, returning the inner matrix.
+    pub fn into_matrix(self) -> Mat<f64> {
+        self.matrix
+    }
+}
+
 /// Sort PMNS matrix columns to PDG convention: descending |first-row element|.
 ///
 /// The PDG PMNS convention assigns nu_1 as the state with the largest |Ue|^2
@@ -622,8 +676,9 @@ pub fn sort_mass_eigenstates(
 /// (reactor angle). Sorting columns by descending |U[0,j]| enforces this,
 /// ensuring theta_13 = asin(|U[0,2]|) is the smallest angle.
 ///
-/// Returns (aligned_matrix, column_permutation_applied).
-pub fn align_pmns_columns(u: &Mat<f64>) -> (Mat<f64>, [usize; 3]) {
+/// Returns an `AlignedPmns` whose `.col_perm()` records which original column
+/// ended up in each position.
+pub fn align_pmns_columns(u: &Mat<f64>) -> AlignedPmns {
     let mut cols: [(usize, f64); 3] = [
         (0, u[(0, 0)].abs()),
         (1, u[(0, 1)].abs()),
@@ -640,7 +695,7 @@ pub fn align_pmns_columns(u: &Mat<f64>) -> (Mat<f64>, [usize; 3]) {
             aligned[(i, new_j)] = u[(i, old_j)];
         }
     }
-    (aligned, perm)
+    AlignedPmns { matrix: aligned, col_perm: perm }
 }
 
 /// Derive CKM matrix: V_CKM = U_up^T * U_down.

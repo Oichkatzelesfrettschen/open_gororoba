@@ -1,5 +1,5 @@
 use super::{construct_pmns_matrices_two_param, extract_pmns_angles};
-use crate::quark_sector::align_pmns_columns;
+use crate::quark_sector::{AlignedPmns, align_pmns_columns};
 use flavor_lifts::{
     TensorElementLift, apply_v6_perturbation, compute_constrained_atmospheric_direction,
     compute_constrained_solar_direction, extract_v6_basis,
@@ -222,13 +222,10 @@ fn pmns_angles_at(
     let (_, u_ch) = crate::quark_sector::sort_mass_eigenstates(&eig_ch.S(), &eig_ch.U());
     let (_, u_nu) = crate::quark_sector::sort_mass_eigenstates(&eig_nu.S(), &eig_nu.U());
     let u_raw = u_ch.transpose() * u_nu;
-    let mut u_pmns = faer::Mat::<f64>::zeros(3, 3);
-    for (i, &row) in perm_u.iter().enumerate() {
-        for (j, &col) in perm_d.iter().enumerate() {
-            u_pmns[(i, j)] = u_raw[(row, col)];
-        }
-    }
-    extract_pmns_angles(&u_pmns)
+    // Apply the reference-point permutation consistently so finite-difference
+    // gradients use the same column ordering across all perturbation steps.
+    let aligned = AlignedPmns::from_permuted_raw(&u_raw, perm_u, perm_d);
+    extract_pmns_angles(aligned.matrix())
 }
 
 pub fn compute_gradient_frame(
@@ -251,9 +248,10 @@ pub fn compute_gradient_frame(
     let (_, u_ch_0) = crate::quark_sector::sort_mass_eigenstates(&eig_ch_0.S(), &eig_ch_0.U());
     let (_, u_nu_0) = crate::quark_sector::sort_mass_eigenstates(&eig_nu_0.S(), &eig_nu_0.U());
     let u_raw_0 = u_ch_0.transpose() * u_nu_0;
-    let (u_pmns_0, perm_d) = align_pmns_columns(&u_raw_0);
+    let aligned_0 = align_pmns_columns(&u_raw_0);
+    let perm_d = aligned_0.col_perm();
     let perm_u = [0, 1, 2];
-    let base_angles = extract_pmns_angles(&u_pmns_0);
+    let base_angles = extract_pmns_angles(aligned_0.matrix());
 
     let mut g_12 = [0.0_f64; 6];
     let mut g_13 = [0.0_f64; 6];
