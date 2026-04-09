@@ -1,5 +1,5 @@
 use super::{construct_pmns_matrices_two_param, extract_pmns_angles};
-use crate::quark_sector::extract_ckm_permutation_aware;
+use crate::quark_sector::align_pmns_columns;
 use flavor_lifts::{
     TensorElementLift, apply_v6_perturbation, compute_constrained_atmospheric_direction,
     compute_constrained_solar_direction, extract_v6_basis,
@@ -219,7 +219,9 @@ fn pmns_angles_at(
     let m_nu = (&m_nu + m_nu.transpose()) * faer::Scale(0.5);
     let eig_nu = m_nu.self_adjoint_eigen(faer::Side::Lower).unwrap();
 
-    let u_raw = eig_ch.U().transpose() * eig_nu.U();
+    let (_, u_ch) = crate::quark_sector::sort_mass_eigenstates(&eig_ch.S(), &eig_ch.U());
+    let (_, u_nu) = crate::quark_sector::sort_mass_eigenstates(&eig_nu.S(), &eig_nu.U());
+    let u_raw = u_ch.transpose() * u_nu;
     let mut u_pmns = faer::Mat::<f64>::zeros(3, 3);
     for (i, &row) in perm_u.iter().enumerate() {
         for (j, &col) in perm_d.iter().enumerate() {
@@ -246,8 +248,11 @@ pub fn compute_gradient_frame(
 
     let eig_ch_0 = m_ch_base.self_adjoint_eigen(faer::Side::Lower).unwrap();
     let eig_nu_0 = m_nu_base.self_adjoint_eigen(faer::Side::Lower).unwrap();
-    let u_raw_0 = eig_ch_0.U().transpose() * eig_nu_0.U();
-    let (u_pmns_0, perm_u, perm_d) = extract_ckm_permutation_aware(&u_raw_0);
+    let (_, u_ch_0) = crate::quark_sector::sort_mass_eigenstates(&eig_ch_0.S(), &eig_ch_0.U());
+    let (_, u_nu_0) = crate::quark_sector::sort_mass_eigenstates(&eig_nu_0.S(), &eig_nu_0.U());
+    let u_raw_0 = u_ch_0.transpose() * u_nu_0;
+    let (u_pmns_0, perm_d) = align_pmns_columns(&u_raw_0);
+    let perm_u = [0, 1, 2];
     let base_angles = extract_pmns_angles(&u_pmns_0);
 
     let mut g_12 = [0.0_f64; 6];

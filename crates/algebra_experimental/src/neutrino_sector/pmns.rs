@@ -335,22 +335,21 @@ pub fn compute_pmns(charged_pair: (usize, usize), neutrino_pair: (usize, usize))
     let eig_ch = m_ch_sym.self_adjoint_eigen(Side::Lower).unwrap();
     let eig_nu = m_nu_sym.self_adjoint_eigen(Side::Lower).unwrap();
 
-    // U_PMNS = U_charged^T * U_neutrino
-    let u_pmns_raw = eig_ch.U().transpose() * eig_nu.U();
+    // Sort eigenvectors by ascending absolute mass before constructing U_PMNS.
+    // Required because faer guarantees ascending signed-eigenvalue order, but
+    // generation ordering (nu_1 lightest, nu_3 heaviest) requires abs ordering.
+    let (ch_masses, u_ch) =
+        crate::quark_sector::sort_mass_eigenstates(&eig_ch.S(), &eig_ch.U());
+    let (nu_masses, u_nu) =
+        crate::quark_sector::sort_mass_eigenstates(&eig_nu.S(), &eig_nu.U());
 
-    // Permutation-aware alignment (reuse CKM infrastructure)
-    let (u_pmns, _pu, _pd) = crate::quark_sector::extract_ckm_permutation_aware(&u_pmns_raw);
+    // U_PMNS = U_charged^T * U_neutrino
+    let u_pmns_raw = u_ch.transpose() * u_nu;
+
+    // Align columns to PDG convention: descending |Ue| content.
+    let (u_pmns, _) = crate::quark_sector::align_pmns_columns(&u_pmns_raw);
 
     let (theta_12, theta_13, theta_23) = extract_pmns_angles(&u_pmns);
-
-    let mut ch_masses = [0.0_f64; 3];
-    let mut nu_masses = [0.0_f64; 3];
-    for i in 0..3 {
-        ch_masses[i] = eig_ch.S().column_vector()[i].abs();
-        nu_masses[i] = eig_nu.S().column_vector()[i].abs();
-    }
-    ch_masses.sort_by(|a, b| a.partial_cmp(b).unwrap());
-    nu_masses.sort_by(|a, b| a.partial_cmp(b).unwrap());
 
     // Mass-squared differences (in arbitrary units, ratios are meaningful)
     let delta_m21_sq = nu_masses[1].powi(2) - nu_masses[0].powi(2);

@@ -53,6 +53,7 @@ pub mod gpu;
 
 // -- types ---------------------------------------------------------------
 pub use construction::auxiliary::{Rational, padic_distance};
+pub use construction::padic::vp_int;
 
 // -- construction re-exports (core) -------------------------------------
 #[cfg(feature = "core")]
@@ -65,6 +66,10 @@ pub use construction::symmetric_composition::{OkuboElement, TrialityAction};
 // -- lie re-exports ------------------------------------------------------
 #[cfg(feature = "lie")]
 pub use lie::e8_lattice::{E8Root, generate_e8_roots};
+#[cfg(feature = "lie")]
+pub use lie::group_theory::order_psl2_q;
+#[cfg(feature = "lie")]
+pub use lie::nilpotent_orbits::{jordan_type_nilpotent, nilpotency_index};
 
 // -- physics re-exports --------------------------------------------------
 #[cfg(feature = "physics")]
