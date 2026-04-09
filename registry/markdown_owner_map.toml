@@ -8,11 +8,11 @@
 #   - owner_group=third_party or owner_group=external MUST have removal_status=locked.
 
 [markdown_owner_map]
-updated = "2026-03-29"
+updated = "2026-04-08"
 authoritative = true
 status = "active"
 status_token = "ACTIVE"
-document_count = 179
+document_count = 196
 
 [[owner]]
 path = "README.md"
@@ -776,17 +776,6 @@ owner_group = "project"
 removal_status = "active"
 removal_reason = ""
 
-[[owner]]
-path = "~/.gemini/plans/rc1-tightening.md"
-owner_group = "project"
-removal_status = "active"
-removal_reason = ""
-
-[[owner]]
-path = "~/.gemini/plans/migration_wide_to_pulp_simsimd.md"
-owner_group = "project"
-removal_status = "active"
-removal_reason = ""
 
 [[owner]]
 path = "docs/reports/RC1_EVIDENCE_NOTE.md"
@@ -1090,6 +1079,120 @@ removal_reason = ""
 
 [[owner]]
 path = "docs/reports/turboquant_architecture_2026-03-29.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "apps/gororoba_studio/README.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "crates/lbm_3d_cuda/README.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/REQUIREMENTS.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/requirements/algebra.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/requirements/analysis.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/requirements/astro.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/requirements/cpp.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/requirements/heliosphere.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/requirements/latex.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/requirements/materials.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/requirements/particle.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/requirements/quantum-docker.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/requirements/rocq.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "reports/profiling/root_legacy_perf_capture_triage_2026_04_04.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "archive/root_cleanup_2026-04-03/README.md"
+owner_group = "project"
+removal_status = "archived"
+removal_reason = "Historical archive of root cleanup session 2026-04-03"
+
+[[owner]]
+path = "archive/root_cleanup_2026-04-03/accidental_dirs/root-tilde-dir/.gemini/plans/migration_wide_to_pulp_simsimd.md"
+owner_group = "project"
+removal_status = "archived"
+removal_reason = "Archived from ~/.gemini/plans during root cleanup 2026-04-03"
+
+[[owner]]
+path = "archive/root_cleanup_2026-04-03/accidental_dirs/root-tilde-dir/.gemini/plans/rc1-tightening.md"
+owner_group = "project"
+removal_status = "archived"
+removal_reason = "Archived from ~/.gemini/plans during root cleanup 2026-04-03"
+
+[[owner]]
+path = ".github/copilot-instructions.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "REQUIREMENTS.md"
 owner_group = "project"
 removal_status = "active"
 removal_reason = ""
