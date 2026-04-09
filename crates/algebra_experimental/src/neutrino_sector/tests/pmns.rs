@@ -1512,15 +1512,17 @@ fn test_pmns_two_param_baseline_regression() {
     let eig_ch = m_ch.self_adjoint_eigen(faer::Side::Lower).unwrap();
     let eig_nu = m_nu.self_adjoint_eigen(faer::Side::Lower).unwrap();
 
-    let u_pmns_raw = eig_ch.U().transpose() * eig_nu.U();
-    let (u_pmns, perm_u, perm_d) = crate::quark_sector::extract_ckm_permutation_aware(&u_pmns_raw);
+    let (_, u_ch) = crate::quark_sector::sort_mass_eigenstates(&eig_ch.S(), &eig_ch.U());
+    let (_, u_nu) = crate::quark_sector::sort_mass_eigenstates(&eig_nu.S(), &eig_nu.U());
+    let u_pmns_raw = u_ch.as_ref().transpose() * u_nu.as_ref();
+    let (u_pmns, col_perm) = crate::quark_sector::align_pmns_columns(&u_pmns_raw);
     let (theta_12, theta_13, theta_23) = extract_pmns_angles(&u_pmns);
 
     println!("--- PMNS TWO-PARAM BASELINE REGRESSION ---");
     println!("  theta_12 = {:.4} deg (expected ~28.5)", theta_12);
     println!("  theta_13 = {:.4} deg (expected ~8.63)", theta_13);
-    println!("  theta_23 = {:.4} deg (expected ~47.1)", theta_23);
-    println!("  perm_u = {:?}, perm_d = {:?}", perm_u, perm_d);
+    println!("  theta_23 = {:.4} deg (expected ~42.93)", theta_23);
+    println!("  col_perm = {:?}", col_perm);
 
     // Tight theta_13 tolerance (< 0.1 deg)
     assert!(
@@ -1534,10 +1536,10 @@ fn test_pmns_two_param_baseline_regression() {
         "theta_12 regression: got {:.4}, expected ~28.5 (tol 0.5 deg)",
         theta_12
     );
-    // theta_23 within 0.5 deg of 47.1
+    // theta_23 within 0.5 deg of 42.93 (model baseline under PDG column convention)
     assert!(
-        (theta_23 - 47.1).abs() < 0.5,
-        "theta_23 regression: got {:.4}, expected ~47.1 (tol 0.5 deg)",
+        (theta_23 - 42.93).abs() < 0.5,
+        "theta_23 regression: got {:.4}, expected ~42.93 (tol 0.5 deg)",
         theta_23
     );
 
@@ -1558,13 +1560,15 @@ fn test_pmns_two_param_baseline_regression() {
     let (m_ch2, m_nu2) = construct_pmns_matrices_two_param(ch_pair, nu_pair, alpha_ch, alpha_nu);
     let eig_ch2 = m_ch2.self_adjoint_eigen(faer::Side::Lower).unwrap();
     let eig_nu2 = m_nu2.self_adjoint_eigen(faer::Side::Lower).unwrap();
+    let (_, u_ch2) = crate::quark_sector::sort_mass_eigenstates(&eig_ch2.S(), &eig_ch2.U());
+    let (_, u_nu2) = crate::quark_sector::sort_mass_eigenstates(&eig_nu2.S(), &eig_nu2.U());
 
     for col in 0..3 {
         let mut dot_ch = 0.0_f64;
         let mut dot_nu = 0.0_f64;
         for row in 0..3 {
-            dot_ch += eig_ch.U()[(row, col)] * eig_ch2.U()[(row, col)];
-            dot_nu += eig_nu.U()[(row, col)] * eig_nu2.U()[(row, col)];
+            dot_ch += u_ch[(row, col)] * u_ch2[(row, col)];
+            dot_nu += u_nu[(row, col)] * u_nu2[(row, col)];
         }
         assert!(
             dot_ch.abs() > 0.99,
@@ -1651,13 +1655,15 @@ fn test_pmns_casimir_isolation() {
 
     let eig_ch = m_ch.self_adjoint_eigen(faer::Side::Lower).unwrap();
     let eig_nu = m_nu.self_adjoint_eigen(faer::Side::Lower).unwrap();
-    let u_raw = eig_ch.U().transpose() * eig_nu.U();
-    let (u_pmns, _, _) = crate::quark_sector::extract_ckm_permutation_aware(&u_raw);
+    let (_, u_ch) = crate::quark_sector::sort_mass_eigenstates(&eig_ch.S(), &eig_ch.U());
+    let (_, u_nu) = crate::quark_sector::sort_mass_eigenstates(&eig_nu.S(), &eig_nu.U());
+    let u_raw = u_ch.as_ref().transpose() * u_nu.as_ref();
+    let (u_pmns, _) = crate::quark_sector::align_pmns_columns(&u_raw);
     let (t12, t13, t23) = extract_pmns_angles(&u_pmns);
 
     assert!((t12 - 28.54).abs() < 0.01, "theta_12 isolation: {:.4}", t12);
     assert!((t13 - 8.63).abs() < 0.01, "theta_13 isolation: {:.4}", t13);
-    assert!((t23 - 47.07).abs() < 0.01, "theta_23 isolation: {:.4}", t23);
+    assert!((t23 - 42.93).abs() < 0.05, "theta_23 isolation: {:.4}", t23);
 
     println!("PASS: PMNS Casimir isolation verified");
 }

@@ -1804,14 +1804,18 @@ mod tests {
 
     #[test]
     fn test_billiard_deterministic_with_seed() {
-        let traj1 = simulate_et_billiard(4, 3, 200, 42);
-        let traj2 = simulate_et_billiard(4, 3, 200, 42);
+        // N=5, S=10 gives a genuinely mixed Dmz/NonDmz grid (~50/50 fill),
+        // ensuring that different seeds start at different positions and
+        // produce distinct symbolic sequences. N=4 has no mixed-grid S values
+        // (all cells are either all-Dmz or all-NonDmz for N=4).
+        let traj1 = simulate_et_billiard(5, 10, 200, 42);
+        let traj2 = simulate_et_billiard(5, 10, 200, 42);
         assert_eq!(traj1.symbolic_dynamics, traj2.symbolic_dynamics);
         assert_eq!(traj1.n_reflections, traj2.n_reflections);
 
-        let traj3 = simulate_et_billiard(4, 3, 200, 99);
-        // Different seed should produce different trajectory (very likely)
-        assert_ne!(traj1.n_reflections, traj3.n_reflections);
+        let traj3 = simulate_et_billiard(5, 10, 200, 99);
+        // Different seed => different start position and direction => different sequence.
+        assert_ne!(traj1.symbolic_dynamics, traj3.symbolic_dynamics);
     }
 
     #[test]
@@ -1841,7 +1845,7 @@ mod tests {
         }
     }
 
-    #[test]
+#[test]
     fn test_bigram_entropy_constant_sequence() {
         // All-DMZ sequence: entropy should be 0 (only one bigram type)
         let seq: Vec<BilliardCellType> = vec![BilliardCellType::Dmz; 100];

@@ -6,7 +6,7 @@ struct InitPushConstants {
     nz: u32,
 }
 
-var<push_constant> pc: InitPushConstants;
+var<immediate> pc: InitPushConstants;
 
 @group(0) @binding(0) var<storage, read_write> f_out: array<f16>;
 @group(0) @binding(1) var<storage, read_write> rho_out: array<f32>;

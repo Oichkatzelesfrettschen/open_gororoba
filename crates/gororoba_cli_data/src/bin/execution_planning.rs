@@ -2726,8 +2726,9 @@ fn module_dependency_defaults(module_id: &str) -> Vec<String> {
 
 fn load_toml(path: &Path) -> Result<Table> {
     let text = fs::read_to_string(path).with_context(|| format!("read {}", path.display()))?;
-    let value = text
-        .parse::<Value>()
+    // Use toml::from_str rather than .parse::<Value>(): in toml 1.1 the FromStr
+    // implementation uses a stricter parser that rejects valid [table] headers.
+    let value = toml::from_str::<Value>(&text)
         .with_context(|| format!("parse TOML {}", path.display()))?;
     let table = value
         .as_table()
