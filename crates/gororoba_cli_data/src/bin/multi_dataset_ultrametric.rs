@@ -35,12 +35,24 @@ use stats_core::ultrametric::{
     baire::{
         AttributeSpec, BaireEncoder, BaireTestResult, euclidean_distance_matrix,
         euclidean_ultrametric_test, matrix_free_tolerance_curve, matrix_free_ultrametric_test,
-        normalize_data_column_major,
     },
     benjamini_hochberg,
     dendrogram::multi_linkage_test,
-    gpu::{GpuUltrametricEngine, to_f32_column_major},
 };
+// normalize_data_column_major and the GPU engine are only used in the GPU path.
+#[cfg(feature = "gpu")]
+use stats_core::ultrametric::baire::normalize_data_column_major;
+// GPU types are only available when the `gpu` feature (and therefore stats_core/gpu) is compiled in.
+#[cfg(feature = "gpu")]
+use stats_core::ultrametric::gpu::{GpuUltrametricEngine, to_f32_column_major};
+
+// Stub type used when the `gpu` feature is absent.
+// Every call to `try_new()` and `to_f32_column_major` is inside a
+// `#[cfg(feature = "gpu")]`-guarded block and is therefore never compiled
+// without the feature; only the struct's name is needed here (for type
+// annotations such as `Option<Arc<GpuUltrametricEngine>>`).
+#[cfg(not(feature = "gpu"))]
+struct GpuUltrametricEngine;
 
 #[derive(Parser)]
 #[command(name = "multi-dataset-ultrametric")]
@@ -236,11 +248,15 @@ fn explore_dataset(
     // Generate attribute subsets (min size 2)
     let subsets = attribute_subsets(specs.len(), 2);
 
+    // GPU path: available only when the `gpu` feature is compiled in.
+    // Early-return here when a GPU engine is present; fall through to the CPU
+    // path when gpu=None or when the feature is absent.
+    #[cfg(feature = "gpu")]
     if let Some(gpu_engine) = gpu {
-        // GPU path: sequential subset processing (GPU is the bottleneck, not CPU)
-        // Each subset gets the full GPU for its kernel launches.
+        // Sequential subset processing: GPU is the bottleneck, not CPU.
+        // Each subset gets the full device for its kernel launches.
         let gpu_engine = Arc::clone(gpu_engine);
-        subsets
+        return subsets
             .iter()
             .enumerate()
             .flat_map(|(subset_idx, subset_indices)| {
@@ -335,8 +351,15 @@ fn explore_dataset(
 
                 subset_rows
             })
-            .collect()
-    } else {
+            .collect();
+    }
+
+    // Suppress the parameter lint when the `gpu` feature is compiled out
+    // (the parameter is structurally required for the feature-enabled path).
+    #[cfg(not(feature = "gpu"))]
+    let _ = gpu;
+
+    {
         // CPU path: parallel subset processing with rayon
         subsets
             .par_iter()
@@ -1077,7 +1100,8 @@ fn main() {
             std::process::exit(2);
         });
 
-    // Auto-detect GPU
+    // Auto-detect GPU.  Only attempted when the `gpu` feature is compiled in.
+    #[cfg(feature = "gpu")]
     let gpu: Option<Arc<GpuUltrametricEngine>> = if args.no_gpu {
         eprintln!("GPU disabled by --no-gpu flag");
         None
@@ -1093,6 +1117,9 @@ fn main() {
             }
         }
     };
+    // Without the `gpu` feature there is no CUDA backend; always use CPU.
+    #[cfg(not(feature = "gpu"))]
+    let gpu: Option<Arc<GpuUltrametricEngine>> = None;
 
     // Set n_triples: GPU default 10M, CPU default 100K
     let n_triples = args
