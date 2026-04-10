@@ -575,19 +575,19 @@ fn build_registry() -> Vec<DatasetEntry> {
             size_hint: "~10-50 MB",
         },
         DatasetEntry {
-            provider: Box::new(imap::ImapHelio1hrProvider),
+            provider: Box::new(imap_fetch::ImapHelio1hrProvider),
             category: "geophysical",
             pillar: "geophysical",
             size_hint: "~250 KB",
         },
         DatasetEntry {
-            provider: Box::new(imap::ImapHiL2H90Provider::default()),
+            provider: Box::new(imap_fetch::ImapHiL2H90Provider::default()),
             category: "geophysical",
             pillar: "geophysical",
             size_hint: "~2 MB/year",
         },
         DatasetEntry {
-            provider: Box::new(imap::ImapIalirtRealtimeProvider::default()),
+            provider: Box::new(imap_fetch::ImapIalirtRealtimeProvider::default()),
             category: "geophysical",
             pillar: "geophysical",
             size_hint: "~1-20 MB/year",
@@ -605,25 +605,25 @@ fn build_registry() -> Vec<DatasetEntry> {
             size_hint: "~5-20 MB/year",
         },
         DatasetEntry {
-            provider: Box::new(psp_fields::PspFieldsProvider::default()),
+            provider: Box::new(psp_fields_fetch::PspFieldsProvider::default()),
             category: "geophysical",
             pillar: "geophysical",
             size_hint: "~100-500 MB/year",
         },
         DatasetEntry {
-            provider: Box::new(psp_sqtn::PspSqtnProvider::default()),
+            provider: Box::new(psp_sqtn_fetch::PspSqtnProvider::default()),
             category: "geophysical",
             pillar: "geophysical",
             size_hint: "~5-50 MB/month",
         },
         DatasetEntry {
-            provider: Box::new(psp_spi::PspSpiMomProvider::default()),
+            provider: Box::new(psp_spi_fetch::PspSpiMomProvider::default()),
             category: "geophysical",
             pillar: "geophysical",
             size_hint: "~50-400 MB/year",
         },
         DatasetEntry {
-            provider: Box::new(psp_spc::PspSpcL3iProvider::default()),
+            provider: Box::new(psp_spc_fetch::PspSpcL3iProvider::default()),
             category: "geophysical",
             pillar: "geophysical",
             size_hint: "~100 MB-2 GB/year",
@@ -685,7 +685,7 @@ fn build_registry() -> Vec<DatasetEntry> {
         },
         DatasetEntry {
             provider: Box::new(
-                data_core::catalogs::solar_orbiter_rpw::SolarOrbiterRpwProvider::default(),
+                data_core::catalogs::solar_orbiter_rpw_fetch::SolarOrbiterRpwProvider::default(),
             ),
             category: "geophysical",
             pillar: "geophysical",
@@ -701,7 +701,7 @@ fn build_registry() -> Vec<DatasetEntry> {
         },
         DatasetEntry {
             provider: Box::new(
-                data_core::catalogs::solar_orbiter_rpw_hfr::SolarOrbiterRpwHfrProvider::default(),
+                data_core::catalogs::solar_orbiter_rpw_hfr_fetch::SolarOrbiterRpwHfrProvider::default(),
             ),
             category: "geophysical",
             pillar: "geophysical",
@@ -709,7 +709,7 @@ fn build_registry() -> Vec<DatasetEntry> {
         },
         DatasetEntry {
             provider: Box::new(
-                data_core::catalogs::solar_orbiter_rpw_tnr::SolarOrbiterRpwTnrProvider::default(),
+                data_core::catalogs::solar_orbiter_rpw_tnr_fetch::SolarOrbiterRpwTnrProvider::default(),
             ),
             category: "geophysical",
             pillar: "geophysical",
@@ -750,7 +750,7 @@ fn build_registry() -> Vec<DatasetEntry> {
         DatasetEntry {
             provider: Box::new(NamedDatasetProvider::new(
                 "Solar Orbiter RPW BIA SCPOT 10-second (2020)",
-                data_core::catalogs::solar_orbiter_rpw::SolarOrbiterRpwProvider {
+                data_core::catalogs::solar_orbiter_rpw_fetch::SolarOrbiterRpwProvider {
                     year_start: 2020,
                     year_end: 2020,
                 },
@@ -774,7 +774,7 @@ fn build_registry() -> Vec<DatasetEntry> {
         DatasetEntry {
             provider: Box::new(NamedDatasetProvider::new(
                 "Solar Orbiter RPW HFR Survey Flux (2020)",
-                data_core::catalogs::solar_orbiter_rpw_hfr::SolarOrbiterRpwHfrProvider {
+                data_core::catalogs::solar_orbiter_rpw_hfr_fetch::SolarOrbiterRpwHfrProvider {
                     year_start: 2020,
                     year_end: 2020,
                 },
@@ -786,7 +786,7 @@ fn build_registry() -> Vec<DatasetEntry> {
         DatasetEntry {
             provider: Box::new(NamedDatasetProvider::new(
                 "Solar Orbiter RPW TNR Survey Flux (2020)",
-                data_core::catalogs::solar_orbiter_rpw_tnr::SolarOrbiterRpwTnrProvider {
+                data_core::catalogs::solar_orbiter_rpw_tnr_fetch::SolarOrbiterRpwTnrProvider {
                     year_start: 2020,
                     year_end: 2020,
                 },
