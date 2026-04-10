@@ -123,6 +123,8 @@ pub use catalogs::lotss::{
     crossmatch_points_against_fits_catalog,
 };
 #[cfg(feature = "fetch")]
+pub use catalogs::psp_fields_fetch::{PspFieldsProvider, parse_psp_fields_file};
+#[cfg(feature = "fetch")]
 pub use catalogs::solar_orbiter_swa_fetch::SolarOrbiterSwaProvider;
 #[cfg(feature = "fetch")]
 pub use catalogs::things_fetch::{
@@ -145,7 +147,7 @@ pub use catalogs::{
     pantheon::{PantheonCovProvider, Supernova, parse_pantheon_cov, parse_pantheon_dat},
     pdg::{PdgMassEntry, parse_pdg_mass_reference_csv},
     planck::bestfit as planck2018,
-    psp_fields::{PspFieldsMagRecord, PspFieldsProvider, parse_psp_fields_file},
+    psp_fields::PspFieldsMagRecord,
     sdss::{SdssQuasar, parse_sdss_quasar_csv},
     solar_orbiter_swa::{SolarOrbiterSwaRecord, parse_solar_orbiter_swa_file},
     sorce::{SorceMeasurement, parse_sorce_csv},

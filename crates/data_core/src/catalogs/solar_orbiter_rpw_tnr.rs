@@ -5,25 +5,12 @@
 //!     <https://cdaweb.gsfc.nasa.gov/pub/data/solar-orbiter/rpw/science/l3/tnr-surv-flux/>
 //!   - Compact HAPI subset:
 //!     <https://cdaweb.gsfc.nasa.gov/hapi/info?id=SOLO_L3_RPW-TNR-SURV-FLUX>
+//!
+//! Fetch logic lives in `solar_orbiter_rpw_tnr_fetch`.
 
-use crate::{
-    cdf_support::filename_date_yyyymmdd,
-    fetcher::{
-        DatasetProvider, FetchConfig, FetchError, download_hapi_csv, download_to_file,
-        download_to_string,
-    },
-    parse::{parse_hapi_spacephysics_f64_or_nan, parse_hapi_time_to_ydh},
-};
-use chrono::NaiveDate;
-use regex::Regex;
-use std::{
-    collections::BTreeMap,
-    path::{Path, PathBuf},
-};
+use crate::parse::{parse_hapi_spacephysics_f64_or_nan, parse_hapi_time_to_ydh};
+use std::collections::BTreeMap;
 
-const SOLO_RPW_TNR_SURV_FLUX_ROOT: &str =
-    "https://cdaweb.gsfc.nasa.gov/pub/data/solar-orbiter/rpw/science/l3/tnr-surv-flux/";
-const SOLO_RPW_TNR_SURV_FLUX_HAPI_DATASET: &str = "SOLO_L3_RPW-TNR-SURV-FLUX";
 const AU_KM: f64 = 149_597_870.7;
 
 #[derive(Debug, Clone)]
@@ -40,18 +27,18 @@ pub struct SolarOrbiterRpwTnrRecord {
 }
 
 #[derive(Default)]
-struct TnrAccumulator {
-    r_sum: f64,
-    lat_sum: f64,
-    lon_sum: f64,
-    pos_count: usize,
-    spectral_sum: f64,
-    spectral_count: usize,
-    spectral_peak: f64,
-    band_count: usize,
+pub(crate) struct TnrAccumulator {
+    pub r_sum: f64,
+    pub lat_sum: f64,
+    pub lon_sum: f64,
+    pub pos_count: usize,
+    pub spectral_sum: f64,
+    pub spectral_count: usize,
+    pub spectral_peak: f64,
+    pub band_count: usize,
 }
 
-fn km_xyz_to_spherical_au(x_km: f64, y_km: f64, z_km: f64) -> (f64, f64, f64) {
+pub(crate) fn km_xyz_to_spherical_au(x_km: f64, y_km: f64, z_km: f64) -> (f64, f64, f64) {
     if !x_km.is_finite() || !y_km.is_finite() || !z_km.is_finite() {
         return (f64::NAN, f64::NAN, f64::NAN);
     }
@@ -165,138 +152,6 @@ pub fn parse_solar_orbiter_rpw_tnr_csv(content: &str) -> Vec<SolarOrbiterRpwTnrR
             })
         })
         .collect()
-}
-
-pub fn parse_solar_orbiter_rpw_tnr_file(
-    path: &Path,
-) -> Result<Vec<SolarOrbiterRpwTnrRecord>, FetchError> {
-    let content = std::fs::read_to_string(path)
-        .map_err(|err| FetchError::Validation(format!("read error: {err}")))?;
-    let rows = parse_solar_orbiter_rpw_tnr_csv(&content);
-    if rows.is_empty() {
-        return Err(FetchError::Validation(format!(
-            "Solar Orbiter RPW TNR CSV {} had no finite hourly rows",
-            path.display()
-        )));
-    }
-    Ok(rows)
-}
-
-pub struct SolarOrbiterRpwTnrProvider {
-    pub year_start: u16,
-    pub year_end: u16,
-}
-
-impl Default for SolarOrbiterRpwTnrProvider {
-    fn default() -> Self {
-        Self {
-            year_start: 2020,
-            year_end: 2020,
-        }
-    }
-}
-
-impl DatasetProvider for SolarOrbiterRpwTnrProvider {
-    fn name(&self) -> &str {
-        "Solar Orbiter RPW TNR Survey Flux"
-    }
-
-    fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
-        let root = config
-            .output_dir
-            .join("solar_orbiter")
-            .join("rpw_tnr_surv_flux");
-        std::fs::create_dir_all(&root)?;
-        for year in self.year_start..=self.year_end {
-            let year_url = format!("{SOLO_RPW_TNR_SURV_FLUX_ROOT}{year}/");
-            let year_dir = root.join(year.to_string());
-            std::fs::create_dir_all(&year_dir)?;
-            for entry in directory_entries(&year_url)? {
-                if !entry.ends_with(".cdf") {
-                    continue;
-                }
-                let output = year_dir.join(&entry);
-                if !(config.skip_existing && output.exists()) {
-                    let url = format!("{year_url}{entry}");
-                    download_to_file(&url, &output)?;
-                    log::info!("saved {}", output.display());
-                }
-                let Some((entry_year, month, day)) = filename_date_yyyymmdd(Path::new(&entry))
-                else {
-                    continue;
-                };
-                let Some(day_start) = NaiveDate::from_ymd_opt(
-                    i32::from(entry_year),
-                    u32::from(month),
-                    u32::from(day),
-                ) else {
-                    continue;
-                };
-                let next_day = day_start
-                    .succ_opt()
-                    .ok_or_else(|| FetchError::Validation(format!("advance {day_start}")))?;
-                let csv_output = year_dir.join(format!(
-                    "solo_l3_rpw-tnr-surv-flux_{entry_year:04}{month:02}{day:02}.csv"
-                ));
-                if config.skip_existing && csv_output.exists() {
-                    continue;
-                }
-                match download_hapi_csv(
-                    SOLO_RPW_TNR_SURV_FLUX_HAPI_DATASET,
-                    &format!("{}T00:00:00Z", day_start.format("%Y-%m-%d")),
-                    &format!("{}T00:00:00Z", next_day.format("%Y-%m-%d")),
-                    Some(&["Time", "PSD_FLUX_DB", "SC_POS_HCI"]),
-                ) {
-                    Ok(body) => {
-                        std::fs::write(&csv_output, body)?;
-                        log::info!("saved {}", csv_output.display());
-                    }
-                    Err(err) => {
-                        log::warn!(
-                            "failed to download Solar Orbiter RPW TNR survey flux for {}-{:02}-{:02}: {}",
-                            entry_year,
-                            month,
-                            day,
-                            err
-                        );
-                    }
-                }
-            }
-        }
-        Ok(root)
-    }
-
-    fn is_cached(&self, config: &FetchConfig) -> bool {
-        let root = config
-            .output_dir
-            .join("solar_orbiter")
-            .join("rpw_tnr_surv_flux");
-        std::fs::read_dir(root)
-            .ok()
-            .into_iter()
-            .flatten()
-            .filter_map(|entry| entry.ok())
-            .any(|entry| entry.path().is_dir())
-    }
-}
-
-fn directory_entries(url: &str) -> Result<Vec<String>, FetchError> {
-    let html = download_to_string(url)?;
-    let regex = Regex::new(r#"href="([^"]+)""#).expect("valid directory regex");
-    let mut entries = Vec::new();
-    for capture in regex.captures_iter(&html) {
-        let href = capture
-            .get(1)
-            .map(|value| value.as_str())
-            .unwrap_or_default();
-        if href == "../" || href == "./" || href.starts_with('?') || href.starts_with('/') {
-            continue;
-        }
-        entries.push(href.to_string());
-    }
-    entries.sort();
-    entries.dedup();
-    Ok(entries)
 }
 
 #[cfg(test)]
