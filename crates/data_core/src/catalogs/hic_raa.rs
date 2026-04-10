@@ -15,11 +15,8 @@
 //! - PHENIX Au-Au 200 GeV pi0 R_AA (INSPIRE ins1127262)
 //! - ALICE dNch/deta Pb-Pb 5.02 TeV (INSPIRE ins1507090)
 
-use crate::{
-    fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks},
-    parse::parse_f64_or_nan,
-};
-use std::path::{Path, PathBuf};
+use crate::parse::parse_f64_or_nan;
+use std::path::Path;
 
 /// Parsed R_AA data point from HEPData CSV.
 #[derive(Debug, Clone)]
@@ -618,95 +615,6 @@ pub fn parse_v2_csv(path: &Path) -> Result<Vec<V2Point>, String> {
     }
 
     Ok(points)
-}
-
-// ============================================================================
-// DatasetProvider
-// ============================================================================
-
-/// Provider for downloading all HIC R_AA and v2 datasets.
-pub struct HicRaaProvider;
-
-impl DatasetProvider for HicRaaProvider {
-    fn name(&self) -> &str {
-        "HIC R_AA + v2 datasets"
-    }
-
-    fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
-        let base = config.output_dir.join("hic_raa");
-
-        // CMS PbPb 5.02 TeV R_AA
-        for table in cms_pbpb_5020_raa_tables() {
-            let path = base.join(table.filename);
-            download_with_fallbacks(
-                table.name,
-                &[table.url_primary, table.url_fallback],
-                &path,
-                config.skip_existing,
-            )?;
-        }
-
-        // CMS pp spectrum
-        let pp = cms_pp_5020_spectrum_table();
-        download_with_fallbacks(
-            pp.name,
-            &[pp.url_primary, pp.url_fallback],
-            &base.join(pp.filename),
-            config.skip_existing,
-        )?;
-
-        // CMS v2
-        for table in cms_pbpb_5020_v2_tables() {
-            let path = base.join(table.filename);
-            download_with_fallbacks(
-                table.name,
-                &[table.url_primary, table.url_fallback],
-                &path,
-                config.skip_existing,
-            )?;
-        }
-
-        // ATLAS jet R_AA
-        for table in atlas_jet_raa_tables() {
-            let path = base.join(table.filename);
-            download_with_fallbacks(
-                table.name,
-                &[table.url_primary, table.url_fallback],
-                &path,
-                config.skip_existing,
-            )?;
-        }
-
-        // ATLAS jet v2
-        for table in atlas_jet_v2_tables() {
-            let path = base.join(table.filename);
-            download_with_fallbacks(
-                table.name,
-                &[table.url_primary, table.url_fallback],
-                &path,
-                config.skip_existing,
-            )?;
-        }
-
-        // PHENIX R_AA
-        for table in phenix_auau_raa_tables() {
-            let path = base.join(table.filename);
-            download_with_fallbacks(
-                table.name,
-                &[table.url_primary, table.url_fallback],
-                &path,
-                config.skip_existing,
-            )?;
-        }
-
-        Ok(base)
-    }
-
-    fn is_cached(&self, config: &FetchConfig) -> bool {
-        let base = config.output_dir.join("hic_raa");
-        // Check if at least the first CMS table exists
-        base.join("cms_pbpb_5020_raa_table8.csv").exists()
-    }
 }
 
 #[cfg(test)]

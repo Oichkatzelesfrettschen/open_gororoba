@@ -153,12 +153,16 @@ pub use catalogs::{
     sorce::{SorceMeasurement, parse_sorce_csv},
     tsi::{TsiMeasurement, parse_tsi_csv},
     union3::parse_union3_chain,
-    voyager_pws::{VoyagerPwsProvider, VoyagerPwsRecord, parse_voyager_pws_file},
+    voyager_pws::{VoyagerPwsRecord, parse_voyager_pws_file},
     wow::{
-        Bl6equj5Bundle, Bl6equj5ManifestProvider, WowPrintoutProvider, WowPrintoutRow,
-        abacad_filter, parse_bl_manifest_csv, parse_wow_printout_csv, wow_char_to_intensity,
+        Bl6equj5Bundle, WowPrintoutRow, abacad_filter, parse_bl_manifest_csv,
+        parse_wow_printout_csv, wow_char_to_intensity,
     },
 };
+#[cfg(feature = "fetch")]
+pub use catalogs::voyager_pws_fetch::VoyagerPwsProvider;
+#[cfg(feature = "fetch")]
+pub use catalogs::wow_fetch::{Bl6equj5ManifestProvider, WowPrintoutProvider};
 #[cfg(feature = "fits")]
 pub use spatial::{
     PreparedPointGrid, for_each_point_grid_match, precise_angular_separation_arcsec,
@@ -360,8 +364,8 @@ mod tests {
             Box::new(geophysical::de_ephemeris::De440Provider),
             Box::new(catalogs::jarvis_fetch::JarvisProvider),
             Box::new(catalogs::aflow_fetch::AflowProvider),
-            Box::new(catalogs::wow::WowPrintoutProvider),
-            Box::new(catalogs::wow::Bl6equj5ManifestProvider),
+            Box::new(catalogs::wow_fetch::WowPrintoutProvider),
+            Box::new(catalogs::wow_fetch::Bl6equj5ManifestProvider),
         ];
 
         for p in &providers {

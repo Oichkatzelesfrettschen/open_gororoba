@@ -12,8 +12,9 @@
 use anyhow::{Context, Result};
 use clap::Parser;
 use data_core::{
-    catalogs::rosetta::{
-        RosettaMagMinuteRecord, RosettaMagProvider, parse_rosetta_amda_mag_csv_minutes,
+    catalogs::{
+        rosetta::{RosettaMagMinuteRecord, parse_rosetta_amda_mag_csv_minutes},
+        rosetta_fetch::RosettaMagProvider,
     },
     fetcher::{DatasetProvider, FetchConfig},
 };

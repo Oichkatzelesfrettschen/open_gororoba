@@ -624,7 +624,7 @@ fn fetch_cluster(
 
 fn fetch_swarm(cli: &Cli, start: NaiveDate, end: NaiveDate) -> Result<Vec<MagMinute>> {
     use data_core::{
-        catalogs::swarm_mag::{SwarmMagProvider, parse_swarm_amda_mag_csv_minutes},
+        catalogs::{swarm_mag::parse_swarm_amda_mag_csv_minutes, swarm_mag_fetch::SwarmMagProvider},
         fetcher::{DatasetProvider, FetchConfig},
     };
 
