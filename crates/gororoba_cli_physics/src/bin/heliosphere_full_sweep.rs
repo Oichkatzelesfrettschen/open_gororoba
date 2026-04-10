@@ -11,6 +11,7 @@ use chrono::{Datelike, Duration, NaiveDate};
 use clap::Parser;
 use data_core::{
     catalogs::themis::parse_themis_fgm_hapi_csv_minutes,
+    catalogs::themis_fetch::ThemisFgmProvider,
     crossing_lists::{match_crossings, parse_crossing_list},
     fetcher::{DatasetProvider, FetchConfig},
 };
@@ -203,7 +204,7 @@ fn main() -> Result<()> {
             let path = dir.join(&fname);
 
             if !path.exists() {
-                let provider = data_core::catalogs::themis::ThemisFgmProvider {
+                let provider = ThemisFgmProvider {
                     probe: probe_upper.clone(),
                     year: date.year() as u16,
                     doy_start: doy as u16,

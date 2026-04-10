@@ -123,6 +123,8 @@ pub use catalogs::lotss::{
     crossmatch_points_against_fits_catalog,
 };
 #[cfg(feature = "fetch")]
+pub use catalogs::solar_orbiter_swa_fetch::SolarOrbiterSwaProvider;
+#[cfg(feature = "fetch")]
 pub use catalogs::things_fetch::{
     ThingsPreferredCubesProvider, ThingsTablesProvider, discover_things_cube_manifest,
     parse_things_cube_manifest_html,
@@ -145,9 +147,7 @@ pub use catalogs::{
     planck::bestfit as planck2018,
     psp_fields::{PspFieldsMagRecord, PspFieldsProvider, parse_psp_fields_file},
     sdss::{SdssQuasar, parse_sdss_quasar_csv},
-    solar_orbiter_swa::{
-        SolarOrbiterSwaProvider, SolarOrbiterSwaRecord, parse_solar_orbiter_swa_file,
-    },
+    solar_orbiter_swa::{SolarOrbiterSwaRecord, parse_solar_orbiter_swa_file},
     sorce::{SorceMeasurement, parse_sorce_csv},
     tsi::{TsiMeasurement, parse_tsi_csv},
     union3::parse_union3_chain,

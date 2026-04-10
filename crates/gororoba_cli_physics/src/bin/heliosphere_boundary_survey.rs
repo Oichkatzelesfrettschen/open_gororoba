@@ -480,7 +480,8 @@ fn fetch_themis(
     end: NaiveDate,
 ) -> Result<Vec<MagMinute>> {
     use data_core::{
-        catalogs::themis::{ThemisFgmProvider, parse_themis_fgm_hapi_csv_minutes},
+        catalogs::themis::parse_themis_fgm_hapi_csv_minutes,
+        catalogs::themis_fetch::ThemisFgmProvider,
         fetcher::{DatasetProvider, FetchConfig},
     };
 
@@ -553,7 +554,8 @@ fn fetch_cluster(
     end: NaiveDate,
 ) -> Result<Vec<MagMinute>> {
     use data_core::{
-        catalogs::cluster::{ClusterFgmProvider, parse_cluster_fgm_hapi_csv_minutes},
+        catalogs::cluster::parse_cluster_fgm_hapi_csv_minutes,
+        catalogs::cluster_fetch::ClusterFgmProvider,
         fetcher::{DatasetProvider, FetchConfig},
     };
 

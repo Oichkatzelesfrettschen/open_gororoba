@@ -10,13 +10,10 @@
 //! Source: <https://cdaweb.gsfc.nasa.gov/hapi/info?id=THA_L2_FGM@0>
 //! Reference: Auster et al. (2008), Space Sci. Rev. 141, 235
 
-use crate::{
-    fetcher::{DatasetProvider, FetchConfig, FetchError, download_hapi_csv},
-    parse::{parse_hapi_spacephysics_f64_or_nan, parse_hapi_time_to_ydh},
-};
-use chrono::{DateTime, Datelike, NaiveDate, Timelike, Utc};
+use crate::parse::{parse_hapi_spacephysics_f64_or_nan, parse_hapi_time_to_ydh};
+use chrono::{DateTime, Datelike, Timelike, Utc};
 use csv::ReaderBuilder;
-use std::{collections::BTreeMap, fs, path::PathBuf};
+use std::collections::BTreeMap;
 
 /// Minute-resolution THEMIS FGM record.
 #[derive(Debug, Clone)]
@@ -42,15 +39,6 @@ pub struct ThemisFgmRecord {
     pub by_gse: f64,
     pub bz_gse: f64,
     pub b_magnitude: f64,
-}
-
-fn hapi_dataset_for_probe(probe: &str) -> String {
-    format!("{}_L2_FGM@0", probe.to_uppercase())
-}
-
-/// Parameter name for GSE vector (all quality flags).
-fn gse_param_for_probe(probe: &str) -> String {
-    format!("{}_fgs_gse", probe.to_lowercase())
 }
 
 /// Parse THEMIS FGM HAPI CSV into minute-averaged records.
@@ -213,62 +201,3 @@ pub fn parse_themis_fgm_hapi_csv(content: &str) -> Vec<ThemisFgmRecord> {
         .collect()
 }
 
-/// THEMIS/ARTEMIS FGM provider.
-pub struct ThemisFgmProvider {
-    /// Probe identifier: "THA", "THB", "THC", "THD", "THE".
-    pub probe: String,
-    pub year: u16,
-    pub doy_start: u16,
-    pub doy_end: u16,
-}
-
-impl DatasetProvider for ThemisFgmProvider {
-    fn name(&self) -> &str {
-        "THEMIS FGM L2"
-    }
-
-    fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
-        let dir = config.output_dir.join("themis");
-        fs::create_dir_all(&dir)?;
-
-        let dataset = hapi_dataset_for_probe(&self.probe);
-        let gse_param = gse_param_for_probe(&self.probe);
-
-        // Fetch in daily chunks to avoid timeout
-        for doy in self.doy_start..=self.doy_end {
-            let date = NaiveDate::from_yo_opt(self.year as i32, doy as u32)
-                .ok_or_else(|| FetchError::Validation(format!("invalid DOY {doy}")))?;
-            let fname = format!(
-                "{}_fgm_{:04}_{:03}.csv",
-                self.probe.to_lowercase(),
-                self.year,
-                doy
-            );
-            let output = dir.join(&fname);
-
-            if config.skip_existing && output.exists() {
-                continue;
-            }
-
-            let t_min = format!("{}T00:00:00Z", date);
-            let t_max = format!("{}T23:59:59Z", date);
-
-            println!("Fetching {} FGM {} DOY {}...", self.probe, self.year, doy);
-
-            match download_hapi_csv(&dataset, &t_min, &t_max, Some(&["Time", &gse_param])) {
-                Ok(body) => {
-                    fs::write(&output, body)?;
-                }
-                Err(e) => {
-                    eprintln!("  Warning: {} DOY {}: {}", self.probe, doy, e);
-                }
-            }
-        }
-
-        Ok(dir)
-    }
-
-    fn is_cached(&self, config: &FetchConfig) -> bool {
-        config.output_dir.join("themis").exists()
-    }
-}
