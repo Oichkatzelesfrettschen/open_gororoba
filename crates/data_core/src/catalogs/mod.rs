@@ -17,6 +17,8 @@ pub mod bepicolombo;
 pub mod bepicolombo_fetch;
 pub mod bl_filterbank;
 pub mod cassini;
+#[cfg(feature = "fetch")]
+pub mod cassini_fetch;
 pub mod chime;
 pub mod cluster;
 #[cfg(feature = "fetch")]
@@ -29,6 +31,8 @@ pub mod gaia;
 pub mod gaia_mw_rotation;
 pub mod gwtc;
 pub mod helios;
+#[cfg(feature = "fetch")]
+pub mod helios_fetch;
 pub mod hi_cube;
 pub mod hic_raa;
 pub mod hipparcos;
@@ -36,8 +40,12 @@ pub mod hst;
 #[cfg(feature = "fetch")]
 pub mod hst_fetch;
 pub mod ibex;
+#[cfg(feature = "fetch")]
+pub mod ibex_fetch;
 pub mod imap;
 pub mod imp8;
+#[cfg(feature = "fetch")]
+pub mod imp8_fetch;
 pub mod intermagnet;
 pub mod jarvis;
 #[cfg(feature = "fetch")]
@@ -66,9 +74,13 @@ pub mod new_horizons;
 #[cfg(feature = "fetch")]
 pub mod new_horizons_fetch;
 pub mod omni;
+#[cfg(feature = "fetch")]
+pub mod omni_fetch;
 pub mod pantheon;
 pub mod pdg;
 pub mod pioneer;
+#[cfg(feature = "fetch")]
+pub mod pioneer_fetch;
 pub mod planck;
 pub mod psp;
 #[cfg(feature = "fetch")]
@@ -111,12 +123,18 @@ pub mod things;
 pub mod things_fetch;
 pub mod tsi;
 pub mod ulysses;
+#[cfg(feature = "fetch")]
+pub mod ulysses_fetch;
 pub mod union3;
 pub mod voyager;
+#[cfg(feature = "fetch")]
+pub mod voyager_fetch;
 pub mod voyager_crs;
 pub mod voyager_crs_flux;
 pub mod voyager_pws;
 pub mod wind_swe;
+#[cfg(feature = "fetch")]
+pub mod wind_swe_fetch;
 pub mod wow;
 
 pub use eht::{list_tgz_members, tgz_member_count, validate_eht_archive};
