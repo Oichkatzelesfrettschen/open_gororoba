@@ -272,7 +272,7 @@ fn build_registry() -> Vec<DatasetEntry> {
             size_hint: "~3 MB",
         },
         DatasetEntry {
-            provider: Box::new(ace_mag::AceMagProvider::default()),
+            provider: Box::new(ace_mag_fetch::AceMagProvider::default()),
             category: "geophysical",
             pillar: "geophysical",
             size_hint: "~100 MB/year",
@@ -280,7 +280,7 @@ fn build_registry() -> Vec<DatasetEntry> {
         DatasetEntry {
             provider: Box::new(NamedDatasetProvider::new(
                 "ACE MAG L2 Browse 16-sec (2016)",
-                ace_mag::AceMagProvider {
+                ace_mag_fetch::AceMagProvider {
                     year_start: 2016,
                     year_end: 2016,
                     doy_range: None,
@@ -291,7 +291,7 @@ fn build_registry() -> Vec<DatasetEntry> {
             size_hint: "~100 MB",
         },
         DatasetEntry {
-            provider: Box::new(solar_wind::AceSwepamProvider::default()),
+            provider: Box::new(solar_wind_fetch::AceSwepamProvider::default()),
             category: "geophysical",
             pillar: "geophysical",
             size_hint: "~2 MB/year",
@@ -299,7 +299,7 @@ fn build_registry() -> Vec<DatasetEntry> {
         DatasetEntry {
             provider: Box::new(NamedDatasetProvider::new(
                 "ACE SWEPAM Solar Wind (2016)",
-                solar_wind::AceSwepamProvider {
+                solar_wind_fetch::AceSwepamProvider {
                     year_start: 2016,
                     year_end: 2016,
                 },
@@ -345,7 +345,7 @@ fn build_registry() -> Vec<DatasetEntry> {
             size_hint: "~20 MB",
         },
         DatasetEntry {
-            provider: Box::new(stereo_plastic::StereoPlasticProvider::default()),
+            provider: Box::new(stereo_plastic_fetch::StereoPlasticProvider::default()),
             category: "geophysical",
             pillar: "geophysical",
             size_hint: "~50-100 MB/year",
@@ -353,7 +353,7 @@ fn build_registry() -> Vec<DatasetEntry> {
         DatasetEntry {
             provider: Box::new(NamedDatasetProvider::new(
                 "STEREO-A PLASTIC 1-hour Plasma (2016)",
-                stereo_plastic::StereoPlasticProvider {
+                stereo_plastic_fetch::StereoPlasticProvider {
                     year_start: 2016,
                     year_end: 2016,
                 },
@@ -363,7 +363,7 @@ fn build_registry() -> Vec<DatasetEntry> {
             size_hint: "~50-100 MB",
         },
         DatasetEntry {
-            provider: Box::new(stereo_plastic::StereoMagProvider::default()),
+            provider: Box::new(stereo_plastic_fetch::StereoMagProvider::default()),
             category: "geophysical",
             pillar: "geophysical",
             size_hint: "~directory placeholder",
@@ -371,7 +371,7 @@ fn build_registry() -> Vec<DatasetEntry> {
         DatasetEntry {
             provider: Box::new(NamedDatasetProvider::new(
                 "STEREO-A IMPACT/MAG MAGPLASMA (2016)",
-                stereo_plastic::StereoMagProvider {
+                stereo_plastic_fetch::StereoMagProvider {
                     year_start: 2016,
                     year_end: 2016,
                 },
@@ -497,7 +497,7 @@ fn build_registry() -> Vec<DatasetEntry> {
             size_hint: "~5-10 MB",
         },
         DatasetEntry {
-            provider: Box::new(juno::JunoCruiseProvider::default()),
+            provider: Box::new(juno_fetch::JunoCruiseProvider::default()),
             category: "geophysical",
             pillar: "geophysical",
             size_hint: "~5-10 MB",
@@ -505,7 +505,7 @@ fn build_registry() -> Vec<DatasetEntry> {
         DatasetEntry {
             provider: Box::new(NamedDatasetProvider::new(
                 "Juno Cruise Merged Hourly (2016)",
-                juno::JunoCruiseProvider {
+                juno_fetch::JunoCruiseProvider {
                     year_start: 2016,
                     year_end: 2016,
                 },
@@ -515,7 +515,7 @@ fn build_registry() -> Vec<DatasetEntry> {
             size_hint: "~1 MB",
         },
         DatasetEntry {
-            provider: Box::new(new_horizons::NhSwapProvider::default()),
+            provider: Box::new(new_horizons_fetch::NhSwapProvider::default()),
             category: "geophysical",
             pillar: "geophysical",
             size_hint: "~5-10 MB",
@@ -523,7 +523,7 @@ fn build_registry() -> Vec<DatasetEntry> {
         DatasetEntry {
             provider: Box::new(NamedDatasetProvider::new(
                 "New Horizons SWAP Hourly (2016)",
-                new_horizons::NhSwapProvider {
+                new_horizons_fetch::NhSwapProvider {
                     year_start: 2016,
                     year_end: 2016,
                 },
@@ -599,7 +599,7 @@ fn build_registry() -> Vec<DatasetEntry> {
             size_hint: "~700-900 MB (1976-1980)",
         },
         DatasetEntry {
-            provider: Box::new(psp::PspProvider::default()),
+            provider: Box::new(psp_fetch::PspProvider::default()),
             category: "geophysical",
             pillar: "geophysical",
             size_hint: "~5-20 MB/year",
@@ -631,7 +631,7 @@ fn build_registry() -> Vec<DatasetEntry> {
         DatasetEntry {
             provider: Box::new(NamedDatasetProvider::new(
                 "Parker Solar Probe Merged Hourly (2020)",
-                psp::PspProvider {
+                psp_fetch::PspProvider {
                     year_start: 2020,
                     year_end: 2020,
                 },
@@ -643,7 +643,7 @@ fn build_registry() -> Vec<DatasetEntry> {
         DatasetEntry {
             provider: Box::new(NamedDatasetProvider::new(
                 "Parker Solar Probe Merged Hourly (2025)",
-                psp::PspProvider {
+                psp_fetch::PspProvider {
                     year_start: 2025,
                     year_end: 2025,
                 },
@@ -653,7 +653,7 @@ fn build_registry() -> Vec<DatasetEntry> {
             size_hint: "~5-20 MB",
         },
         DatasetEntry {
-            provider: Box::new(solar_orbiter::SolarOrbiterProvider::default()),
+            provider: Box::new(solar_orbiter_fetch::SolarOrbiterProvider::default()),
             category: "geophysical",
             pillar: "geophysical",
             size_hint: "~5-20 MB/year",
@@ -726,7 +726,7 @@ fn build_registry() -> Vec<DatasetEntry> {
         DatasetEntry {
             provider: Box::new(NamedDatasetProvider::new(
                 "Solar Orbiter Merged Hourly (2020)",
-                solar_orbiter::SolarOrbiterProvider {
+                solar_orbiter_fetch::SolarOrbiterProvider {
                     year_start: 2020,
                     year_end: 2020,
                 },
@@ -802,7 +802,7 @@ fn build_registry() -> Vec<DatasetEntry> {
             size_hint: "~20-200 MB/year",
         },
         DatasetEntry {
-            provider: Box::new(bepicolombo::BepicolomboProvider::default()),
+            provider: Box::new(bepicolombo_fetch::BepicolomboProvider::default()),
             category: "geophysical",
             pillar: "geophysical",
             size_hint: "~1-5 MB/year",
@@ -810,7 +810,7 @@ fn build_registry() -> Vec<DatasetEntry> {
         DatasetEntry {
             provider: Box::new(NamedDatasetProvider::new(
                 "BepiColombo Position Hourly (2020)",
-                bepicolombo::BepicolomboProvider {
+                bepicolombo_fetch::BepicolomboProvider {
                     year_start: 2020,
                     year_end: 2020,
                 },

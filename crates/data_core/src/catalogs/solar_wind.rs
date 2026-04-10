@@ -7,14 +7,16 @@
 //!
 //! Source: <https://izw1.caltech.edu/ACE/ASC/level2/>
 //! Reference: McComas et al. (1998), Space Sci. Rev. 86, 563
+//!
+//! Fetch/provider support is in `solar_wind_fetch` (feature-gated on `fetch`).
 
 use crate::{
     catalogs::omni::OmniRecord,
-    fetcher::{DatasetProvider, FetchConfig, FetchError, download_hapi_csv},
+    fetcher::FetchError,
     parse::{parse_hapi_spacephysics_f64_or_nan, parse_hapi_time_to_ydh},
 };
 use csv::ReaderBuilder;
-use std::path::{Path, PathBuf};
+use std::path::Path;
 
 /// A single hourly ACE SWEPAM solar wind measurement.
 #[derive(Debug, Clone)]
@@ -131,66 +133,6 @@ pub fn parse_swepam_hapi_csv(content: &str) -> Vec<SwepamRecord> {
         });
     }
     records
-}
-
-const ACE_SWEPAM_HAPI_DATASET: &str = "AC_H2_SWE";
-
-/// ACE SWEPAM dataset provider.
-///
-/// Fetches hourly solar wind data for a specified year range.
-pub struct AceSwepamProvider {
-    /// Start year (inclusive).
-    pub year_start: u16,
-    /// End year (inclusive).
-    pub year_end: u16,
-}
-
-impl Default for AceSwepamProvider {
-    fn default() -> Self {
-        Self {
-            year_start: 2024,
-            year_end: 2024,
-        }
-    }
-}
-
-impl DatasetProvider for AceSwepamProvider {
-    fn name(&self) -> &str {
-        "ACE SWEPAM Solar Wind"
-    }
-
-    fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
-        let dir = config.output_dir.join("ace_swepam");
-        std::fs::create_dir_all(&dir)?;
-
-        for year in self.year_start..=self.year_end {
-            let fname = format!("ac_h2_swe_{year}.csv");
-            let output = dir.join(&fname);
-            if config.skip_existing && output.exists() {
-                continue;
-            }
-            match download_hapi_csv(
-                ACE_SWEPAM_HAPI_DATASET,
-                &format!("{year}-01-01T00:00:00Z"),
-                &format!("{}-01-01T00:00:00Z", year + 1),
-                Some(&["Time", "Np", "Vp", "Tpr"]),
-            ) {
-                Ok(data) => {
-                    std::fs::write(&output, data)?;
-                    log::info!("Saved {}", fname);
-                }
-                Err(e) => {
-                    log::warn!("Failed to download ACE SWEPAM {}: {}", year, e);
-                }
-            }
-        }
-
-        Ok(dir)
-    }
-
-    fn is_cached(&self, config: &FetchConfig) -> bool {
-        config.output_dir.join("ace_swepam").exists()
-    }
 }
 
 /// Convert ACE SWEPAM records to OmniRecord format.

@@ -25,6 +25,8 @@
 //!              999.999 (distance)
 //!
 //! Source: <https://spdf.gsfc.nasa.gov/pub/data/new-horizons/swap/>
+//!
+//! Fetch/provider support is in `new_horizons_fetch` (feature-gated on `fetch`).
 
 use crate::{
     catalogs::{
@@ -32,11 +34,10 @@ use crate::{
         spdf_fleet::SpdfMission,
         spdf_merged::{SpdfColumnLayout, SpdfMergedRecord},
     },
-    fetcher::{DatasetProvider, FetchConfig, FetchError, download_hapi_csv},
+    fetcher::FetchError,
     parse::{parse_hapi_spacephysics_f64_or_nan, parse_hapi_time_to_ydh},
 };
 use csv::ReaderBuilder;
-use std::path::PathBuf;
 
 /// SPDF column layout for New Horizons SWAP hourly data.
 ///
@@ -130,61 +131,6 @@ pub fn parse_nh_position_hapi_csv(content: &str) -> Vec<SpdfMergedRecord> {
 /// populated from SWAP data.
 pub fn nh_swap_to_omni(records: &[SpdfMergedRecord]) -> Vec<OmniRecord> {
     NH_SWAP_MISSION.to_omni(records)
-}
-
-const NH_POSITION_HAPI_DATASET: &str = "NEW_HORIZONS_HELIO1HR_POSITION";
-
-/// NASA SPDF New Horizons SWAP dataset provider.
-pub struct NhSwapProvider {
-    pub year_start: u16,
-    pub year_end: u16,
-}
-
-impl Default for NhSwapProvider {
-    fn default() -> Self {
-        Self {
-            year_start: 2015,
-            year_end: 2023,
-        }
-    }
-}
-
-impl DatasetProvider for NhSwapProvider {
-    fn name(&self) -> &str {
-        "New Horizons SWAP Hourly"
-    }
-
-    fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
-        let dir = config.output_dir.join("new_horizons");
-        std::fs::create_dir_all(&dir)?;
-
-        for year in self.year_start..=self.year_end {
-            let fname = format!("new_horizons_helio1hr_position_{year}.csv");
-            let output = dir.join(&fname);
-            if config.skip_existing && output.exists() {
-                continue;
-            }
-            match download_hapi_csv(
-                NH_POSITION_HAPI_DATASET,
-                &format!("{year}-01-01T00:00:00Z"),
-                &format!("{}-01-01T00:00:00Z", year + 1),
-                Some(&["Time", "RAD_AU", "HG_LAT", "HG_LON"]),
-            ) {
-                Ok(data) => {
-                    std::fs::write(&output, data)?;
-                    log::info!("saved {}", fname);
-                }
-                Err(e) => {
-                    log::warn!("failed to download NH SWAP {}: {}", year, e);
-                }
-            }
-        }
-        Ok(dir)
-    }
-
-    fn is_cached(&self, config: &FetchConfig) -> bool {
-        config.output_dir.join("new_horizons").exists()
-    }
 }
 
 #[cfg(test)]
