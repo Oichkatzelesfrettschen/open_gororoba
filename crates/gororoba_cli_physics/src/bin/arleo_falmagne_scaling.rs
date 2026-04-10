@@ -12,7 +12,7 @@
 //!   arleo-falmagne-scaling alice             # ALICE-only fast path
 
 use clap::{Parser, Subcommand};
-use data_core::{catalogs::hic_raa, fetcher::FetchConfig};
+use data_core::{catalogs::{hic_raa, hic_raa_fetch}, fetcher::FetchConfig};
 use qgp_scaling::{
     competing_models::{self, MeasuredRaaPoint, arleo_falmagne_raa, compare_models},
     data_tables::{self, eccentricity_event_by_event},
@@ -1051,7 +1051,7 @@ fn run_full(
             skip_existing: true,
             verify_checksums: true,
         };
-        match data_core::fetcher::DatasetProvider::fetch(&hic_raa::HicRaaProvider, &config) {
+        match data_core::fetcher::DatasetProvider::fetch(&hic_raa_fetch::HicRaaProvider, &config) {
             Ok(p) => eprintln!("      Data directory: {}", p.display()),
             Err(e) => {
                 eprintln!("      WARNING: Some downloads failed: {}", e);

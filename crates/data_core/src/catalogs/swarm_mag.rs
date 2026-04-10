@@ -9,13 +9,9 @@
 //! Data: AMDA HAPI -- `swarma-mag-all` (NEC frame, 1 Hz).
 //! Reference: Friis-Christensen et al. (2006), Earth Planets Space 58, 351
 
-use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_amda_hapi_csv};
 use chrono::{DateTime, Datelike, Timelike, Utc};
 use csv::ReaderBuilder;
-use std::{collections::BTreeMap, fs, path::PathBuf};
-
-/// AMDA dataset ID for Swarm A vector magnetometer (NEC frame).
-const SWARM_A_AMDA_MAG: &str = "swarma-mag-all";
+use std::collections::BTreeMap;
 
 /// Minute-resolution Swarm MAG record in NEC (North-East-Center) frame.
 #[derive(Debug, Clone)]
@@ -31,7 +27,7 @@ pub struct SwarmMagMinuteRecord {
     pub b_magnitude: f64,
 }
 
-fn parse_amda_f64(s: Option<&str>) -> f64 {
+pub(crate) fn parse_amda_f64(s: Option<&str>) -> f64 {
     let s = s.unwrap_or("").trim();
     if s.is_empty() || s == "NaN" || s == "nan" {
         return f64::NAN;
@@ -42,7 +38,7 @@ fn parse_amda_f64(s: Option<&str>) -> f64 {
     }
 }
 
-fn parse_amda_timestamp_full(s: &str) -> Option<(u16, u16, u8, u8)> {
+pub(crate) fn parse_amda_timestamp_full(s: &str) -> Option<(u16, u16, u8, u8)> {
     let normalized = s.trim().replace(' ', "T");
     let with_tz = if normalized.ends_with('Z') || normalized.contains('+') {
         normalized
@@ -147,56 +143,4 @@ pub fn parse_swarm_amda_mag_csv_minutes(content: &str) -> Vec<SwarmMagMinuteReco
             })
         })
         .collect()
-}
-
-/// Swarm MAG provider via AMDA.
-pub struct SwarmMagProvider {
-    pub year: u16,
-    pub month_start: u8,
-    pub month_end: u8,
-}
-
-impl DatasetProvider for SwarmMagProvider {
-    fn name(&self) -> &str {
-        "Swarm A MAG (AMDA)"
-    }
-
-    fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
-        let dir = config.output_dir.join("swarm");
-        fs::create_dir_all(&dir)?;
-
-        for month in self.month_start..=self.month_end {
-            let t_min = format!("{:04}-{:02}-01T00:00:00Z", self.year, month);
-            let (ey, em) = if month == 12 {
-                (self.year + 1, 1)
-            } else {
-                (self.year, month + 1)
-            };
-            let t_max = format!("{ey:04}-{em:02}-01T00:00:00Z");
-
-            let fname = format!("swarma_mag_{:04}_{:02}.csv", self.year, month);
-            let output = dir.join(&fname);
-
-            if config.skip_existing && output.exists() {
-                continue;
-            }
-
-            println!("Fetching Swarm A MAG {:04}-{:02}...", self.year, month);
-
-            match download_amda_hapi_csv(SWARM_A_AMDA_MAG, &t_min, &t_max, None) {
-                Ok(body) => {
-                    fs::write(&output, body)?;
-                }
-                Err(e) => {
-                    eprintln!("  Warning: Swarm {:04}-{:02}: {}", self.year, month, e);
-                }
-            }
-        }
-
-        Ok(dir)
-    }
-
-    fn is_cached(&self, config: &FetchConfig) -> bool {
-        config.output_dir.join("swarm").exists()
-    }
 }

@@ -128,13 +128,13 @@ fn build_registry() -> Vec<DatasetEntry> {
             size_hint: "~50 KB",
         },
         DatasetEntry {
-            provider: Box::new(sdss::SdssQsoProvider),
+            provider: Box::new(sdss_fetch::SdssQsoProvider),
             category: "astro",
             pillar: "survey",
             size_hint: "~20 MB",
         },
         DatasetEntry {
-            provider: Box::new(gaia::GaiaDr3Provider),
+            provider: Box::new(gaia_fetch::GaiaDr3Provider),
             category: "astro",
             pillar: "survey",
             size_hint: "~15 MB",
@@ -183,56 +183,56 @@ fn build_registry() -> Vec<DatasetEntry> {
             size_hint: "~100 KB",
         },
         DatasetEntry {
-            provider: Box::new(nanograv::NanoGrav15yrProvider),
+            provider: Box::new(nanograv_fetch::NanoGrav15yrProvider),
             category: "astro",
             pillar: "gravitational",
             size_hint: "~10 KB",
         },
         DatasetEntry {
-            provider: Box::new(nanograv::NanoGrav15yrTimingProvider),
+            provider: Box::new(nanograv_fetch::NanoGrav15yrTimingProvider),
             category: "astro",
             pillar: "gravitational",
             size_hint: "~639 MB",
         },
         // -- Electromagnetic pillar: EM transients + imaging --
         DatasetEntry {
-            provider: Box::new(fermi_gbm::FermiGbmProvider),
+            provider: Box::new(fermi_gbm_fetch::FermiGbmProvider),
             category: "astro",
             pillar: "electromagnetic",
             size_hint: "~10 MB",
         },
         DatasetEntry {
-            provider: Box::new(eht::EhtM87_2017Provider),
+            provider: Box::new(eht_fetch::EhtM87_2017Provider),
             category: "astro",
             pillar: "electromagnetic",
             size_hint: "~5 MB (CSV+UVFITS+TXT)",
         },
         DatasetEntry {
-            provider: Box::new(eht::EhtM87Provider),
+            provider: Box::new(eht_fetch::EhtM87Provider),
             category: "astro",
             pillar: "electromagnetic",
             size_hint: "~8 MB (CSV+UVFITS+TXT)",
         },
         DatasetEntry {
-            provider: Box::new(eht::EhtSgrAProvider),
+            provider: Box::new(eht_fetch::EhtSgrAProvider),
             category: "astro",
             pillar: "electromagnetic",
             size_hint: "~21 MB (CSV+UVFITS+TXT)",
         },
         DatasetEntry {
-            provider: Box::new(eht::Eht3c279Provider),
+            provider: Box::new(eht_fetch::Eht3c279Provider),
             category: "astro",
             pillar: "electromagnetic",
             size_hint: "~5 MB (CSV+UVFITS+TXT)",
         },
         DatasetEntry {
-            provider: Box::new(eht::EhtCenAProvider),
+            provider: Box::new(eht_fetch::EhtCenAProvider),
             category: "astro",
             pillar: "electromagnetic",
             size_hint: "~3 MB (CSV+UVFITS+TXT)",
         },
         DatasetEntry {
-            provider: Box::new(eht::EhtM87LegacyProvider),
+            provider: Box::new(eht_fetch::EhtM87LegacyProvider),
             category: "astro",
             pillar: "electromagnetic",
             size_hint: "~24 KB",
@@ -420,7 +420,7 @@ fn build_registry() -> Vec<DatasetEntry> {
             size_hint: "~5 MB total (48 years)",
         },
         DatasetEntry {
-            provider: Box::new(voyager_crs_flux::VoyagerCrsFluxProvider {
+            provider: Box::new(voyager_crs_flux_fetch::VoyagerCrsFluxProvider {
                 spacecraft: 1,
                 year_start: 2020,
                 year_end: 2020,
@@ -432,7 +432,7 @@ fn build_registry() -> Vec<DatasetEntry> {
         DatasetEntry {
             provider: Box::new(NamedDatasetProvider::new(
                 "Voyager 1 CRS Daily Flux (2016)",
-                voyager_crs_flux::VoyagerCrsFluxProvider {
+                voyager_crs_flux_fetch::VoyagerCrsFluxProvider {
                     spacecraft: 1,
                     year_start: 2016,
                     year_end: 2016,
@@ -443,7 +443,7 @@ fn build_registry() -> Vec<DatasetEntry> {
             size_hint: "~1 MB",
         },
         DatasetEntry {
-            provider: Box::new(voyager_crs_flux::VoyagerCrsFluxProvider {
+            provider: Box::new(voyager_crs_flux_fetch::VoyagerCrsFluxProvider {
                 spacecraft: 2,
                 year_start: 2020,
                 year_end: 2020,
@@ -455,7 +455,7 @@ fn build_registry() -> Vec<DatasetEntry> {
         DatasetEntry {
             provider: Box::new(NamedDatasetProvider::new(
                 "Voyager 2 CRS Daily Flux (2016)",
-                voyager_crs_flux::VoyagerCrsFluxProvider {
+                voyager_crs_flux_fetch::VoyagerCrsFluxProvider {
                     spacecraft: 2,
                     year_start: 2016,
                     year_end: 2016,
@@ -545,13 +545,13 @@ fn build_registry() -> Vec<DatasetEntry> {
             size_hint: "~5-20 MB/year",
         },
         DatasetEntry {
-            provider: Box::new(soho_celias::SohoCeliasBundleProvider),
+            provider: Box::new(soho_celias_fetch::SohoCeliasBundleProvider),
             category: "geophysical",
             pillar: "geophysical",
             size_hint: "~250 MB",
         },
         DatasetEntry {
-            provider: Box::new(soho_celias::SohoCeliasPm5MinProvider::default()),
+            provider: Box::new(soho_celias_fetch::SohoCeliasPm5MinProvider::default()),
             category: "geophysical",
             pillar: "geophysical",
             size_hint: "~15 MB/year",
@@ -559,7 +559,7 @@ fn build_registry() -> Vec<DatasetEntry> {
         DatasetEntry {
             provider: Box::new(NamedDatasetProvider::new(
                 "SOHO CELIAS PM 5min CDF (2020)",
-                soho_celias::SohoCeliasPm5MinProvider {
+                soho_celias_fetch::SohoCeliasPm5MinProvider {
                     year_start: 2020,
                     year_end: 2020,
                 },
@@ -569,7 +569,7 @@ fn build_registry() -> Vec<DatasetEntry> {
             size_hint: "~15 MB",
         },
         DatasetEntry {
-            provider: Box::new(soho_celias::SohoLascoDaySampleProvider::default()),
+            provider: Box::new(soho_celias_fetch::SohoLascoDaySampleProvider::default()),
             category: "geophysical",
             pillar: "geophysical",
             size_hint: "~10-50 MB",
@@ -659,7 +659,7 @@ fn build_registry() -> Vec<DatasetEntry> {
             size_hint: "~5-20 MB/year",
         },
         DatasetEntry {
-            provider: Box::new(mms::MmsFgmProvider::default()),
+            provider: Box::new(mms_fetch::MmsFgmProvider::default()),
             category: "geophysical",
             pillar: "geophysical",
             size_hint: "~500 MB-2 GB/year",
@@ -667,7 +667,7 @@ fn build_registry() -> Vec<DatasetEntry> {
         DatasetEntry {
             provider: Box::new(NamedDatasetProvider::new(
                 "MMS1 FGM Survey L2 (1-day sample)",
-                mms::MmsFgmProvider {
+                mms_fetch::MmsFgmProvider {
                     year_start: 2024,
                     year_end: 2024,
                     doy_range: Some((1, 1)),
@@ -678,7 +678,7 @@ fn build_registry() -> Vec<DatasetEntry> {
             size_hint: "~5 MB",
         },
         DatasetEntry {
-            provider: Box::new(solar_orbiter_mag::SolarOrbiterMagProvider::default()),
+            provider: Box::new(solar_orbiter_mag_fetch::SolarOrbiterMagProvider::default()),
             category: "geophysical",
             pillar: "geophysical",
             size_hint: "~20-200 MB/year",
@@ -693,7 +693,7 @@ fn build_registry() -> Vec<DatasetEntry> {
         },
         DatasetEntry {
             provider: Box::new(
-                data_core::catalogs::solar_orbiter_rpw_density::SolarOrbiterRpwDensityProvider::default(),
+                data_core::catalogs::solar_orbiter_rpw_density_fetch::SolarOrbiterRpwDensityProvider::default(),
             ),
             category: "geophysical",
             pillar: "geophysical",
@@ -717,7 +717,7 @@ fn build_registry() -> Vec<DatasetEntry> {
         },
         DatasetEntry {
             provider: Box::new(
-                data_core::catalogs::solar_orbiter_mag::SolarOrbiterMagProvider::default(),
+                data_core::catalogs::solar_orbiter_mag_fetch::SolarOrbiterMagProvider::default(),
             ),
             category: "geophysical",
             pillar: "geophysical",
@@ -738,7 +738,7 @@ fn build_registry() -> Vec<DatasetEntry> {
         DatasetEntry {
             provider: Box::new(NamedDatasetProvider::new(
                 "Solar Orbiter MAG RTN 1-minute (2020)",
-                data_core::catalogs::solar_orbiter_mag::SolarOrbiterMagProvider {
+                data_core::catalogs::solar_orbiter_mag_fetch::SolarOrbiterMagProvider {
                     year_start: 2020,
                     year_end: 2020,
                 },
@@ -762,7 +762,7 @@ fn build_registry() -> Vec<DatasetEntry> {
         DatasetEntry {
             provider: Box::new(NamedDatasetProvider::new(
                 "Solar Orbiter RPW BIA Density (2020)",
-                data_core::catalogs::solar_orbiter_rpw_density::SolarOrbiterRpwDensityProvider {
+                data_core::catalogs::solar_orbiter_rpw_density_fetch::SolarOrbiterRpwDensityProvider {
                     year_start: 2020,
                     year_end: 2020,
                 },
@@ -796,7 +796,7 @@ fn build_registry() -> Vec<DatasetEntry> {
             size_hint: "~200-800 MB",
         },
         DatasetEntry {
-            provider: Box::new(voyager_pws::VoyagerPwsProvider::default()),
+            provider: Box::new(voyager_pws_fetch::VoyagerPwsProvider::default()),
             category: "geophysical",
             pillar: "geophysical",
             size_hint: "~20-200 MB/year",
@@ -821,7 +821,7 @@ fn build_registry() -> Vec<DatasetEntry> {
         },
         // -- Candle pillar: standard candles/rulers --
         DatasetEntry {
-            provider: Box::new(desi_bao::DesiBaoProvider),
+            provider: Box::new(desi_bao_fetch::DesiBaoProvider),
             category: "cosmology",
             pillar: "candle",
             size_hint: "~100 KB",
@@ -840,19 +840,19 @@ fn build_registry() -> Vec<DatasetEntry> {
         },
         // -- CMB pillar: CMB parameter chains --
         DatasetEntry {
-            provider: Box::new(planck::PlanckSummaryProvider),
+            provider: Box::new(planck_fetch::PlanckSummaryProvider),
             category: "cosmology",
             pillar: "cmb",
             size_hint: "~1 MB",
         },
         DatasetEntry {
-            provider: Box::new(planck::Wmap9ChainsProvider),
+            provider: Box::new(planck_fetch::Wmap9ChainsProvider),
             category: "cosmology",
             pillar: "cmb",
             size_hint: "~100 MB",
         },
         DatasetEntry {
-            provider: Box::new(planck::PlanckChainsProvider),
+            provider: Box::new(planck_fetch::PlanckChainsProvider),
             category: "cosmology",
             pillar: "cmb",
             size_hint: "~9 GB",
@@ -926,13 +926,13 @@ fn build_registry() -> Vec<DatasetEntry> {
         },
         // -- Electromagnetic pillar: technosignature research --
         DatasetEntry {
-            provider: Box::new(wow::WowPrintoutProvider),
+            provider: Box::new(wow_fetch::WowPrintoutProvider),
             category: "astro",
             pillar: "electromagnetic",
             size_hint: "~500 KB",
         },
         DatasetEntry {
-            provider: Box::new(wow::Bl6equj5ManifestProvider),
+            provider: Box::new(wow_fetch::Bl6equj5ManifestProvider),
             category: "astro",
             pillar: "electromagnetic",
             size_hint: "~5 KB",
