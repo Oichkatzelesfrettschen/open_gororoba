@@ -11,14 +11,15 @@
 
 use crate::{
     catalogs::omni::OmniRecord,
-    fetcher::{DatasetProvider, FetchConfig, FetchError, download_to_file},
+    fetcher::FetchError,
 };
 use std::{
     collections::BTreeMap,
-    path::{Path, PathBuf},
+    path::Path,
 };
 
-const IMP8_MERGED_ROOT: &str = "https://spdf.gsfc.nasa.gov/pub/data/imp/imp8/merged/";
+/// Base URL for SPDF IMP 8 merged minute data. Used by `imp8_fetch`.
+pub const IMP8_MERGED_ROOT: &str = "https://spdf.gsfc.nasa.gov/pub/data/imp/imp8/merged/";
 const EARTH_RADIUS_KM: f64 = 6378.137;
 const AU_KM: f64 = 149_597_870.7;
 
@@ -275,61 +276,6 @@ pub fn imp8_to_omni(records: &[Imp8HourlyRecord]) -> Vec<OmniRecord> {
             lon_deg: record.lon_deg,
         })
         .collect()
-}
-
-pub struct Imp8Provider {
-    pub year_start: u16,
-    pub year_end: u16,
-}
-
-impl Default for Imp8Provider {
-    fn default() -> Self {
-        Self {
-            year_start: 1976,
-            year_end: 1980,
-        }
-    }
-}
-
-impl DatasetProvider for Imp8Provider {
-    fn name(&self) -> &str {
-        "IMP 8 Merged 1-minute"
-    }
-
-    fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
-        let dir = config.output_dir.join("imp8");
-        std::fs::create_dir_all(&dir)?;
-        for year in self.year_start..=self.year_end {
-            for month in 1..=12 {
-                let file_name = format!("imp_min_merge{year}{month:02}.asc");
-                let output = dir.join(&file_name);
-                if config.skip_existing && output.exists() {
-                    continue;
-                }
-                let url = format!("{IMP8_MERGED_ROOT}{file_name}");
-                match download_to_file(&url, &output) {
-                    Ok(_) => log::info!("saved {}", output.display()),
-                    Err(err) => log::warn!("failed to download {}: {}", url, err),
-                }
-            }
-        }
-        Ok(dir)
-    }
-
-    fn is_cached(&self, config: &FetchConfig) -> bool {
-        let dir = config.output_dir.join("imp8");
-        std::fs::read_dir(&dir)
-            .ok()
-            .into_iter()
-            .flatten()
-            .filter_map(|entry| entry.ok())
-            .any(|entry| {
-                entry
-                    .file_name()
-                    .to_string_lossy()
-                    .starts_with("imp_min_merge")
-            })
-    }
 }
 
 #[cfg(test)]

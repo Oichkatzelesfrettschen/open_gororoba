@@ -41,9 +41,8 @@ use crate::{
         spdf_fleet::SpdfMission,
         spdf_merged::{SpdfColumnLayout, SpdfMergedRecord},
     },
-    fetcher::{DatasetProvider, FetchConfig, FetchError, download_to_string},
+    fetcher::FetchError,
 };
-use std::path::PathBuf;
 
 /// SPDF column layout for Pioneer 10 merged hourly data.
 pub const PIONEER10_LAYOUT: SpdfColumnLayout = SpdfColumnLayout {
@@ -168,88 +167,6 @@ pub fn pioneer_to_omni(records: &[SpdfMergedRecord]) -> Vec<OmniRecord> {
     PIONEER10_MISSION.to_omni(records)
 }
 
-/// Base URLs for Pioneer merged hourly data at SPDF.
-const PIONEER10_BASE: &str = "https://spdf.gsfc.nasa.gov/pub/data/pioneer/pioneer10/merged/";
-const PIONEER11_BASE: &str = "https://spdf.gsfc.nasa.gov/pub/data/pioneer/pioneer11/merged/";
-
-/// NASA SPDF Pioneer dataset provider.
-pub struct PioneerProvider {
-    /// Which spacecraft (P10 or P11).
-    pub spacecraft: PioneerSpacecraft,
-    /// Start year (inclusive).
-    pub year_start: u16,
-    /// End year (inclusive).
-    pub year_end: u16,
-}
-
-impl Default for PioneerProvider {
-    fn default() -> Self {
-        Self {
-            spacecraft: PioneerSpacecraft::P10,
-            year_start: 1980,
-            year_end: 1985,
-        }
-    }
-}
-
-impl DatasetProvider for PioneerProvider {
-    fn name(&self) -> &str {
-        match self.spacecraft {
-            PioneerSpacecraft::P10 => "Pioneer 10 Merged Hourly",
-            PioneerSpacecraft::P11 => "Pioneer 11 Merged Hourly",
-        }
-    }
-
-    fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
-        let subdir = match self.spacecraft {
-            PioneerSpacecraft::P10 => "pioneer10",
-            PioneerSpacecraft::P11 => "pioneer11",
-        };
-        let dir = config.output_dir.join(subdir);
-        std::fs::create_dir_all(&dir)?;
-
-        let base = match self.spacecraft {
-            PioneerSpacecraft::P10 => PIONEER10_BASE,
-            PioneerSpacecraft::P11 => PIONEER11_BASE,
-        };
-
-        for year in self.year_start..=self.year_end {
-            let fname = format!(
-                "p{}_{}_{}.asc",
-                match self.spacecraft {
-                    PioneerSpacecraft::P10 => "10",
-                    PioneerSpacecraft::P11 => "11",
-                },
-                year,
-                "merged_hourly",
-            );
-            let output = dir.join(&fname);
-            if config.skip_existing && output.exists() {
-                continue;
-            }
-            let url = format!("{}{}", base, fname);
-            match download_to_string(&url) {
-                Ok(data) => {
-                    std::fs::write(&output, data)?;
-                    log::info!("saved {}", fname);
-                }
-                Err(e) => {
-                    log::warn!("failed to download Pioneer {}: {}", year, e);
-                }
-            }
-        }
-
-        Ok(dir)
-    }
-
-    fn is_cached(&self, config: &FetchConfig) -> bool {
-        let subdir = match self.spacecraft {
-            PioneerSpacecraft::P10 => "pioneer10",
-            PioneerSpacecraft::P11 => "pioneer11",
-        };
-        config.output_dir.join(subdir).exists()
-    }
-}
 
 #[cfg(test)]
 mod tests {

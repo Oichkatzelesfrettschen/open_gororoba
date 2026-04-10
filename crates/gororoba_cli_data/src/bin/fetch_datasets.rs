@@ -251,7 +251,7 @@ fn build_registry() -> Vec<DatasetEntry> {
             size_hint: "~2 MB",
         },
         DatasetEntry {
-            provider: Box::new(omni::OmniProvider {
+            provider: Box::new(omni_fetch::OmniProvider {
                 year_start: 2020,
                 year_end: 2020,
             }),
@@ -262,7 +262,7 @@ fn build_registry() -> Vec<DatasetEntry> {
         DatasetEntry {
             provider: Box::new(NamedDatasetProvider::new(
                 "NASA OMNI2 Solar Wind + IMF (2016)",
-                omni::OmniProvider {
+                omni_fetch::OmniProvider {
                     year_start: 2016,
                     year_end: 2016,
                 },
@@ -309,7 +309,7 @@ fn build_registry() -> Vec<DatasetEntry> {
             size_hint: "~2 MB",
         },
         DatasetEntry {
-            provider: Box::new(wind_swe::WindMfiProvider::default()),
+            provider: Box::new(wind_swe_fetch::WindMfiProvider::default()),
             category: "geophysical",
             pillar: "geophysical",
             size_hint: "~3 MB/year",
@@ -317,7 +317,7 @@ fn build_registry() -> Vec<DatasetEntry> {
         DatasetEntry {
             provider: Box::new(NamedDatasetProvider::new(
                 "WIND MFI 1-hour Magnetic Field (2016)",
-                wind_swe::WindMfiProvider {
+                wind_swe_fetch::WindMfiProvider {
                     year_start: 2016,
                     year_end: 2016,
                 },
@@ -327,7 +327,7 @@ fn build_registry() -> Vec<DatasetEntry> {
             size_hint: "~3 MB",
         },
         DatasetEntry {
-            provider: Box::new(wind_swe::WindSweProvider::default()),
+            provider: Box::new(wind_swe_fetch::WindSweProvider::default()),
             category: "geophysical",
             pillar: "geophysical",
             size_hint: "~20 MB/year",
@@ -335,7 +335,7 @@ fn build_registry() -> Vec<DatasetEntry> {
         DatasetEntry {
             provider: Box::new(NamedDatasetProvider::new(
                 "WIND SWE KP Unspiked Plasma (2016)",
-                wind_swe::WindSweProvider {
+                wind_swe_fetch::WindSweProvider {
                     year_start: 2016,
                     year_end: 2016,
                 },
@@ -383,7 +383,7 @@ fn build_registry() -> Vec<DatasetEntry> {
         DatasetEntry {
             provider: Box::new(NamedDatasetProvider::new(
                 "Voyager 1 Merged Hourly (1977-2024, full traverse)",
-                voyager::VoyagerProvider {
+                voyager_fetch::VoyagerProvider {
                     spacecraft: voyager::VoyagerSpacecraft::V1,
                     year_start: 1977,
                     year_end: 2024,
@@ -396,7 +396,7 @@ fn build_registry() -> Vec<DatasetEntry> {
         DatasetEntry {
             provider: Box::new(NamedDatasetProvider::new(
                 "Voyager 2 Merged Hourly (1977-2024, full traverse)",
-                voyager::VoyagerProvider {
+                voyager_fetch::VoyagerProvider {
                     spacecraft: voyager::VoyagerSpacecraft::V2,
                     year_start: 1977,
                     year_end: 2024,
@@ -409,7 +409,7 @@ fn build_registry() -> Vec<DatasetEntry> {
         DatasetEntry {
             provider: Box::new(NamedDatasetProvider::new(
                 "Voyager 2 MAG 48-sec (2017-2019, heliopause pilot)",
-                voyager::VoyagerMag48Provider {
+                voyager_fetch::VoyagerMag48Provider {
                     spacecraft: voyager::VoyagerSpacecraft::V2,
                     year_start: 2017,
                     year_end: 2019,
@@ -466,13 +466,13 @@ fn build_registry() -> Vec<DatasetEntry> {
             size_hint: "~1 MB",
         },
         DatasetEntry {
-            provider: Box::new(ulysses::UlyssesProvider::default()),
+            provider: Box::new(ulysses_fetch::UlyssesProvider::default()),
             category: "geophysical",
             pillar: "geophysical",
             size_hint: "~1 MB/year",
         },
         DatasetEntry {
-            provider: Box::new(helios::HeliosProvider::default()),
+            provider: Box::new(helios_fetch::HeliosProvider::default()),
             category: "geophysical",
             pillar: "geophysical",
             size_hint: "~1 MB/year",
@@ -480,7 +480,7 @@ fn build_registry() -> Vec<DatasetEntry> {
         DatasetEntry {
             provider: Box::new(NamedDatasetProvider::new(
                 "Helios 2 Merged Hourly",
-                helios::HeliosProvider {
+                helios_fetch::HeliosProvider {
                     spacecraft: helios::HeliosSpacecraft::H2,
                     year_start: 1976,
                     year_end: 1980,
@@ -491,7 +491,7 @@ fn build_registry() -> Vec<DatasetEntry> {
             size_hint: "~1 MB/year",
         },
         DatasetEntry {
-            provider: Box::new(cassini::CassiniCruiseProvider::default()),
+            provider: Box::new(cassini_fetch::CassiniCruiseProvider::default()),
             category: "geophysical",
             pillar: "geophysical",
             size_hint: "~5-10 MB",
@@ -533,13 +533,13 @@ fn build_registry() -> Vec<DatasetEntry> {
             size_hint: "~1 MB",
         },
         DatasetEntry {
-            provider: Box::new(ibex::IbexProvider::default()),
+            provider: Box::new(ibex_fetch::IbexProvider::default()),
             category: "geophysical",
             pillar: "geophysical",
             size_hint: "~1-5 MB",
         },
         DatasetEntry {
-            provider: Box::new(ibex::IbexOrbitProvider::default()),
+            provider: Box::new(ibex_fetch::IbexOrbitProvider::default()),
             category: "geophysical",
             pillar: "geophysical",
             size_hint: "~5-20 MB/year",
@@ -593,7 +593,7 @@ fn build_registry() -> Vec<DatasetEntry> {
             size_hint: "~1-20 MB/year",
         },
         DatasetEntry {
-            provider: Box::new(imp8::Imp8Provider::default()),
+            provider: Box::new(imp8_fetch::Imp8Provider::default()),
             category: "geophysical",
             pillar: "geophysical",
             size_hint: "~700-900 MB (1976-1980)",
