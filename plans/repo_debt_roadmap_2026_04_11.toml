@@ -1,0 +1,396 @@
+# Repository debt roadmap seeded from the 2026-04-11 CPD and structure audit.
+
+[meta]
+id = "REPO-DEBT-ROADMAP-2026-04-11"
+updated = "2026-04-11"
+status = "active"
+scope = "open_gororoba repository structure, build gates, scientific evidence lanes, and modularization"
+authoritative = false
+source_mode = "repo_evidence_plus_primary_pmd_docs"
+
+[execution_contract]
+warnings_as_errors = true
+full_workspace_gate_default = false
+prefer_crate_scoped_validation = true
+network_in_tests = "forbidden"
+default_network_features = "forbidden_without_explicit_opt_in"
+generated_files = "do_not_hand_edit"
+documentation_updates = "update_source_registries_first_then_regenerate"
+hardcoded_demonstrations = "forbidden"
+
+[[external_source]]
+id = "PMD-CPD-USERDOCS-LATEST"
+kind = "primary_docs"
+url = "https://docs.pmd-code.org/latest/pmd_userdocs_cpd.html"
+notes = "CPD concepts, supported languages, CLI examples, ignore options, and lexical-error behavior."
+
+[[external_source]]
+id = "PMD-CLI-REFERENCE-LATEST"
+kind = "primary_docs"
+url = "https://docs.pmd-code.org/latest/pmd_userdocs_cli_reference.html"
+notes = "PMD command surface including check, cpd, ast-dump, cpd-gui, designer, and completion generation."
+
+[[external_source]]
+id = "PMD-CPD-REPORT-FORMATS-LATEST"
+kind = "primary_docs"
+url = "https://docs.pmd-code.org/latest/pmd_userdocs_cpd_report_formats.html"
+notes = "CPD output formats such as text, csv, xml, xmlold, vs, and csv_with_linecount_per_file."
+
+[[external_source]]
+id = "PMD-RUST-712"
+kind = "primary_docs"
+url = "https://docs.pmd-code.org/pmd-doc-7.12.0/pmd_languages_rust.html"
+notes = "PMD 7.12.0 Rust support surface; Rust is CPD-supported but not a local pmd check rule language."
+
+[[repo_evidence]]
+id = "CPD-MAKE-LANE"
+path = "Makefile"
+anchor = "cpd-audit and cpd-audit-strict"
+finding = "The repo already runs PMD CPD for Rust via file-list, XML output, and the cpd-report binary."
+
+[[repo_evidence]]
+id = "CPD-REPORT-BINARY"
+path = "crates/gororoba_cli_data/src/bin/cpd_report.rs"
+anchor = "cpd-report"
+finding = "The CPD XML stream has a repo-native summarizer and strict-mode reporter."
+
+[[repo_evidence]]
+id = "DATA-CORE-SURFACE-AUDIT"
+path = "docs/engineering/data_core_surface_audit_2026_04_06.txt"
+anchor = "data_core surface split"
+finding = "The documented carve-out separates pure parsing/model validation from fetch/cache/provider logic, but the split remains incomplete."
+
+[[repo_evidence]]
+id = "SIMD-LAYERING-AUDIT"
+path = "docs/engineering/simd_algorithmic_cayley_dickson_audit_2026_04_06.txt"
+anchor = "CLI faer and wide boundary"
+finding = "CLI crates depending directly on low-level numerical substrate are called out as layering debt."
+
+[[repo_evidence]]
+id = "CG-CLIF-CONTAINMENT"
+path = "docs/engineering/cg_clif_simd_containment.txt"
+anchor = "backend containment"
+finding = "Backend-specific tuning and containment are tracked as explicit build-graph and SIMD debt."
+
+[[repo_evidence]]
+id = "REQUIREMENTS-SOURCE"
+path = "registry/requirements_narrative.toml"
+anchor = "requirements narrative"
+finding = "Requirements documentation is registry-driven; edits should land in the TOML source before markdown regeneration."
+
+[[pmd_feature_lane]]
+id = "PMD-CPD-RUST-LOGIC"
+priority = "now"
+local_command = "make cpd-audit CPD_TOP=20"
+manual_flags = [
+  "pmd cpd --language rust",
+  "--minimum-tokens",
+  "--file-list",
+  "--format xml",
+  "--relativize-paths-with .",
+]
+value = "Finds repeated Rust token sequences across crate logic and feeds the repo-native CPD report renderer."
+acceptance_hooks = [
+  "make cpd-audit CPD_TOP=20",
+]
+
+[[pmd_feature_lane]]
+id = "PMD-CPD-RUST-STRICT"
+priority = "now_after_noise_triage"
+local_command = "make cpd-audit-strict"
+manual_flags = [
+  "--fail-on-violation",
+  "--no-fail-on-error only during exploratory lexical triage",
+]
+value = "Converts accepted duplication thresholds into a CI-style failure gate after generated and lexical-noise paths are quarantined."
+acceptance_hooks = [
+  "make cpd-audit-strict",
+]
+
+[[pmd_feature_lane]]
+id = "PMD-CPD-IGNORE-SWEEPS"
+priority = "short_term"
+local_command = "pmd cpd --language rust --minimum-tokens 42 --file-list /tmp/cpd_src_list.txt --ignore-identifiers --format text --no-fail-on-error"
+manual_flags = [
+  "--ignore-identifiers",
+  "--ignore-literals",
+  "--ignore-literal-sequences",
+  "--skip-duplicate-files",
+  "--skip-blocks-pattern",
+]
+value = "Separates real algorithm duplication from harmless naming, literal table, and generated block repetition."
+acceptance_hooks = [
+  "pmd cpd --help",
+]
+
+[[pmd_feature_lane]]
+id = "PMD-AST-AND-LEXICAL-TRIAGE"
+priority = "short_term"
+local_command = "pmd ast-dump --language rust --file <path>"
+manual_flags = [
+  "ast-dump",
+  "--no-fail-on-error for CPD census only",
+]
+value = "Investigates files that CPD skipped with Rust lexical errors before enforcing strict duplication gates."
+acceptance_hooks = [
+  "pmd ast-dump --help",
+]
+
+[[pmd_feature_lane]]
+id = "PMD-CHECK-NON-RUST"
+priority = "optional"
+local_command = "pmd check --dir <non_rust_path> --format sarif"
+manual_flags = [
+  "check",
+  "--format sarif",
+  "--cache",
+  "--threads",
+]
+value = "Useful only for PMD-supported non-Rust surfaces in this repo; local PMD 7.12.0 check does not expose Rust as a rule-analysis language."
+acceptance_hooks = [
+  "pmd check --help",
+]
+
+[[pmd_feature_lane]]
+id = "PMD-DEVELOPER-AIDS"
+priority = "as_needed"
+local_command = "pmd generate-completion bash"
+manual_flags = [
+  "designer",
+  "cpd-gui",
+  "generate-completion",
+]
+value = "Good for local exploration and shell ergonomics, not a repository gate."
+acceptance_hooks = [
+  "pmd --help",
+]
+
+[[debt_class]]
+id = "DEBT-NUMERICAL-ALGORITHM"
+label = "Numerical algorithm debt"
+risk = "Divergent optimizers, tolerances, and floating-point edge behavior can produce inconsistent scientific conclusions."
+confirmed_examples = [
+  "bounded_nelder_mead was duplicated between cosmology bounce and observational fitting modules.",
+]
+resolution_pattern = "Hoist solvers into shared domain-owned modules, parameterize with closures/configs, and preserve parity tests around fitted outputs."
+
+[[debt_class]]
+id = "DEBT-STRUCTURAL-ARCHITECTURE"
+label = "Structural architecture debt"
+risk = "Crate boundaries blur ownership, making feature isolation and review harder."
+confirmed_examples = [
+  "data_core mixes pure data model/parsing/validation with fetch/cache/provider surfaces.",
+  "CLI crates still depend directly on low-level faer or wide substrates in some lanes.",
+]
+resolution_pattern = "Split pure core from IO/network planes, move math behind domain facades, and make opt-in features explicit."
+
+[[debt_class]]
+id = "DEBT-DUPLICATION"
+label = "Duplication and dedupe debt"
+risk = "Repeated code causes drift, review fatigue, and inconsistent fixes."
+confirmed_examples = [
+  "CPD reported large repeated blocks in algebra_analysis boxkites, spectral_core neg_dim, heliosphere feature cube code, and algebra experimental tests.",
+]
+resolution_pattern = "Separate generated/table duplication from hand-written logic duplication, then extract shared helpers with parity checks."
+
+[[debt_class]]
+id = "DEBT-TEST-VERIFICATION"
+label = "Test and verification debt"
+risk = "High-value behavior lacks narrow reproducible hooks, forcing slow full-workspace validation or under-validated changes."
+confirmed_examples = [
+  "gate-audit is not a full deep-debt gate and omits CPD, semver, dependency, and docs freshness lanes.",
+]
+resolution_pattern = "Add crate-scoped smoke/parity hooks first, then compose them into deeper opt-in gates."
+
+[[debt_class]]
+id = "DEBT-BUILD-WORKSPACE"
+label = "Build, package-manager, root workspace, and delivery debt"
+risk = "Makefile sprawl, feature defaults, and toolchain drift can obscure the real release contract."
+confirmed_examples = [
+  "The Makefile owns many policy-heavy routines while xtask already exists.",
+  "docs/REQUIREMENTS.md under-describes several specialized audit lanes.",
+]
+resolution_pattern = "Keep make as the user entrypoint while migrating policy-heavy logic into typed xtask binaries and synchronizing requirements sources."
+
+[[debt_class]]
+id = "DEBT-DATA-PROVENANCE"
+label = "Data, provenance, and network-isolation debt"
+risk = "Network access, cache mutation, and source provenance can leak into pure scientific computation lanes."
+confirmed_examples = [
+  "data_core default feature still includes fetch as of the active audit evidence.",
+]
+resolution_pattern = "Empty default network features, route fetches through explicit provider crates/scripts, and record hashes/source indexes for external artifacts."
+
+[[debt_class]]
+id = "DEBT-GENERATED-ARTIFACT"
+label = "Generated artifact and source-of-truth debt"
+risk = "Large generated Rust or table-like source files drown language servers and CPD reports while inviting accidental manual edits."
+confirmed_examples = [
+  "registry_mirrors has hundreds of generated Rust files, including very large mirror outputs.",
+  "materials_core optical database is a large table-like Rust surface.",
+]
+resolution_pattern = "Quarantine generated surfaces, scan them separately, and prefer generated OUT_DIR/data artifacts when appropriate."
+
+[[debt_class]]
+id = "DEBT-DOCUMENTATION-REQUIREMENTS"
+label = "Documentation and requirements debt"
+risk = "Generated docs can drift from registry sources and omit operational install or verification commands."
+confirmed_examples = [
+  "Requirements docs need explicit PMD/CPD, semver, cargo-deny, dependency, and docs freshness lanes.",
+]
+resolution_pattern = "Edit registry narrative sources, regenerate markdown mirrors, and make each tool requirement testable with a command."
+
+[[debt_class]]
+id = "DEBT-SCIENTIFIC-EVIDENCE"
+label = "Scientific claims and evidence debt"
+risk = "Mathematical, materials, cosmology, algebra, and physics claims can outpace reproducible evidence links."
+confirmed_examples = [
+  "Existing plans and audits already use hypothesis matrices and evidence path patterns.",
+]
+resolution_pattern = "Convert claims into hypothesis records, attach data/source/code evidence, and require offline-checkable verifiers."
+
+[[debt_class]]
+id = "DEBT-SUPPLY-CHAIN"
+label = "Security, license, and supply-chain debt"
+risk = "Dependency advisories, duplicate versions, unused dependencies, and unsafe usage can enter through wide workspace growth."
+confirmed_examples = [
+  "Existing gates include cargo-deny, cargo tree duplicate audit, cargo-machete, and cargo-geiger lanes.",
+]
+resolution_pattern = "Keep deny policy as the hard gate, use duplicate/feature tree audits for planning, and avoid making noisy exploratory tools mandatory first."
+
+[[phase]]
+id = "PH-0"
+title = "Snapshot, scope, and evidence freeze"
+horizon = "immediate"
+goal = "Create a stable debt census without changing broad architecture."
+tasks = [
+  "Record pmd --version, pmd cpd --help, and pmd check --help in the audit notes.",
+  "Run make cpd-audit CPD_TOP=20 and save the top duplicate clusters.",
+  "Inventory CPD lexical-skip files and classify parser issue versus generated/noisy input.",
+  "Capture cargo tree -d and cargo tree -e features for the crates named in active audits.",
+  "Record current generated-file root residue and distinguish tracked files from local user state.",
+]
+acceptance_hooks = [
+  "make cpd-audit CPD_TOP=20",
+  "cargo tree -d",
+]
+conflict_controls = [
+  "Do not enforce strict CPD while lexical skip files and generated mirrors dominate the signal.",
+  "Do not edit generated markdown or generated Rust mirrors directly.",
+]
+
+[[phase]]
+id = "PH-1"
+title = "Low-risk dedupe and gate hygiene"
+horizon = "0_to_1_sprint"
+goal = "Remove confirmed hand-written duplicates and add report-only lenses for remaining debt."
+tasks = [
+  "Route cosmology fitting code through the shared optimizer module.",
+  "Add or document a CPD tooling lane for xtask, scripts, and root helper Rust files.",
+  "Add or document a generated-surface CPD lane with a higher threshold and report-only semantics.",
+  "Classify each top CPD cluster as algorithmic, generated, fixture/test, or literal-table duplication.",
+]
+acceptance_hooks = [
+  "cargo fmt --package cosmology_core",
+  "cargo check -p cosmology_core",
+  "make cpd-audit CPD_TOP=20",
+]
+conflict_controls = [
+  "Keep solver extraction behavior-preserving and avoid changing optimizer defaults beyond the preexisting call parameters.",
+]
+
+[[phase]]
+id = "PH-2"
+title = "data_core pure-core and network-plane split"
+horizon = "1_to_3_sprints"
+goal = "Make pure data model consumers independent from fetch/cache/provider transitive dependencies."
+tasks = [
+  "Empty data_core default features after consumer manifest audit.",
+  "Move fetch/cache/provider APIs behind explicit features or a sibling provider crate.",
+  "Add compile checks for default-features=false consumers.",
+  "Update requirements and migration notes with explicit network opt-in commands.",
+]
+acceptance_hooks = [
+  "cargo check -p data_core --no-default-features",
+  "cargo tree -p data_core --no-default-features",
+]
+conflict_controls = [
+  "Network fetch is permitted in explicit acquisition commands, not in pure library tests.",
+]
+
+[[phase]]
+id = "PH-3"
+title = "CLI thinning and domain facade extraction"
+horizon = "2_to_4_sprints"
+goal = "Make CLI crates parse, dispatch, and report while domain crates own math and substrate choices."
+tasks = [
+  "Identify each CLI direct faer or wide dependency and the domain API that should replace it.",
+  "Move reusable numerical/SIMD kernels into algebra_analysis, spectral_core, quantum_core, or a shared math crate as appropriate.",
+  "Add CLI facade tests that assert output compatibility without exposing low-level substrate types.",
+]
+acceptance_hooks = [
+  "cargo tree -p gororoba_cli_data --depth 1",
+  "cargo tree -p gororoba_cli_algebra --depth 1",
+  "cargo tree -p gororoba_cli_quantum --depth 1",
+]
+conflict_controls = [
+  "Do not remove direct low-level dependencies until replacement domain APIs have test coverage and call-site parity.",
+]
+
+[[phase]]
+id = "PH-4"
+title = "Generated and table-like artifact quarantine"
+horizon = "3_to_5_sprints"
+goal = "Reduce language-server and audit noise while preserving deterministic generated outputs."
+tasks = [
+  "Mark generated Rust mirrors with explicit source, generator, and regeneration command metadata.",
+  "Move large table-like sources into generated/data artifact lanes when runtime and reproducibility allow.",
+  "Keep separate CPD reports for generated surfaces and hand-written logic.",
+]
+acceptance_hooks = [
+  "make registry-verify-mirrors",
+  "make cpd-audit CPD_TOP=20",
+]
+conflict_controls = [
+  "Generated data movement requires parity hashes or fixture checks before deleting old source surfaces.",
+]
+
+[[phase]]
+id = "PH-5"
+title = "Typed governance gate consolidation"
+horizon = "4_to_6_sprints"
+goal = "Move policy-heavy shell routines toward xtask while preserving make as the familiar front door."
+tasks = [
+  "Define audit-deep as an opt-in composite lane that includes clippy, semver, cargo-deny, dependency audit, docs freshness, and CPD.",
+  "Promote repetitive shell parsing into xtask commands with structured JSON/TOML outputs.",
+  "Update docs/REQUIREMENTS.md through registry sources to list each audit tool and install command.",
+]
+acceptance_hooks = [
+  "make rust-clippy",
+  "make rust-semver-check",
+  "make cargo-deny-check",
+  "make dep-audit",
+  "make docs-freshness",
+]
+conflict_controls = [
+  "Keep exploratory or noisy tools report-only until false-positive inventories are documented.",
+]
+
+[[phase]]
+id = "PH-6"
+title = "Scientific evidence and validation expansion"
+horizon = "ongoing"
+goal = "Bind mathematical and scientific claims to reproducible artifacts, sources, and tests."
+tasks = [
+  "Convert high-level claims into hypothesis matrix records with evidence paths and validation status.",
+  "Cache external sources with hashes and provenance when online retrieval is needed.",
+  "Add offline verifiers for cosmology, materials, algebra, spectral, and provenance outputs.",
+  "Use crate-scoped tests and deterministic fixtures before adding full-workspace gates.",
+]
+acceptance_hooks = [
+  "make integrity",
+  "make docs-freshness",
+]
+conflict_controls = [
+  "Online research may seed provenance, but tests and gates must not depend on live network access.",
+]
