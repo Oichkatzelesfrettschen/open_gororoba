@@ -210,5 +210,78 @@ Proof.
   exact (moreno16_geometry_dim_mod4 G).
 Qed.
 
+(** ** Full paper-facing arbitrary-a bridge for Theorem 1.16.
+
+    The statements below are the paper-level formulations of Theorem 1.16:
+    if V_lambda carries a finite-dimensional H_a-module structure (captured
+    by the is_h_module_dim inductive predicate), then its R-dimension is
+    divisible by 4 and hence congruent to 0 mod 4.
+
+    Three equivalent presentations are provided:
+
+    1. A universal proposition over any (vl_dim, lambda) pair where
+       is_h_module_dim vl_dim holds -- the most directly paper-faithful form.
+
+    2. A Section-parameterized version, useful for downstream theories that
+       want to introduce vl_dim and the H-module predicate as section variables.
+
+    3. A Module functor version that instantiates the MorenoVlambdaDim
+       functor from C1542_MorVlambdaOrbit, giving a self-contained module
+       for any concrete M : MorenoVlambdaModule.
+
+    These complete the NA-038 bridge: the abstract H_a-orbit/module lane from
+    C1542_MorVlambdaOrbit is now exposed under the paper-facing Moreno1997
+    namespace. *)
+
+(** 1. Universal proposition form. *)
+Theorem Moreno1997_theorem_1_16_abstract :
+  forall (vl_dim : nat) (lambda : R),
+    is_h_module_dim vl_dim ->
+    (0 < lambda)%R ->
+    Nat.modulo vl_dim 4 = 0.
+Proof.
+  intros vl_dim lambda Hmod _Hlambda.
+  exact (moreno16_orbit_dim_mod4 vl_dim Hmod).
+Qed.
+
+Corollary Moreno1997_theorem_1_16_abstract_div4 :
+  forall (vl_dim : nat) (lambda : R),
+    is_h_module_dim vl_dim ->
+    (0 < lambda)%R ->
+    exists k : nat, vl_dim = 4 * k.
+Proof.
+  intros vl_dim lambda Hmod _Hlambda.
+  exact (moreno16_orbit_dim_div4 vl_dim Hmod).
+Qed.
+
+(** 2. Section form: introduces vl_dim and the H-module hypothesis as
+       section variables so downstream developments can use them without
+       carrying the universally-quantified form. *)
+Section Moreno1997Theorem116.
+  Variable vl_dim : nat.
+  Variable lambda  : R.
+  Hypothesis Hmod      : is_h_module_dim vl_dim.
+  Hypothesis Hlambda   : (0 < lambda)%R.
+
+  Theorem moreno1997_vlambda_dim_mod4 : Nat.modulo vl_dim 4 = 0.
+  Proof. exact (moreno16_orbit_dim_mod4 vl_dim Hmod). Qed.
+
+  Theorem moreno1997_vlambda_dim_div4 : exists k : nat, vl_dim = 4 * k.
+  Proof. exact (moreno16_orbit_dim_div4 vl_dim Hmod). Qed.
+End Moreno1997Theorem116.
+
+(** 3. Module functor form: for any M : MorenoVlambdaModule, the functor
+       derives dim mod 4 = 0 directly from M.v_dim_is_h_module_dim.
+       This is the closest formalization of Moreno's actual proof shape. *)
+Module Moreno1997Theorem116Functor (M : MorenoVlambdaModule).
+  Module Import Dim := MorenoVlambdaDim M.
+
+  Theorem moreno1997_theorem_1_16 : Nat.modulo M.v_dim 4 = 0.
+  Proof. exact moreno16_vlambda_dim_mod4. Qed.
+
+  Corollary moreno1997_theorem_1_16_div4 : exists k : nat, M.v_dim = 4 * k.
+  Proof. exact moreno16_vlambda_dim_div4. Qed.
+End Moreno1997Theorem116Functor.
+
 Theorem Moreno1997_lane_compiles : True.
 Proof. exact I. Qed.
