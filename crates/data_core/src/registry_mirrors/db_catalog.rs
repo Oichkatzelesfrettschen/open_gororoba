@@ -9,7 +9,7 @@
 //! - Source of truth: `db/schema.sql`
 //! - Canonical migrations: `db/migrations/*.sql`
 //! - Regenerate with: `cargo run -p xtask -- db-docs`
-//! - Objects: `30`
+//! - Objects: `56`
 //!
 //! ## `artifact_links` (table)
 //!
@@ -84,6 +84,29 @@
 //! | 0 | `sqlite_autoindex_artifacts_2` | `true` | `u` | `false` | `key, <expr>` |
 //! | 1 | `sqlite_autoindex_artifacts_1` | `true` | `pk` | `false` | `id, <expr>` |
 //!
+//! ## `bibliography` (table)
+//!
+//! - Strict: `false`
+//! - Without rowid: `false`
+//! - Declared columns: `8`
+//!
+//! | cid | name | type | not null | default | pk | hidden |
+//! | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | `id` | `TEXT` | `false` | `` | `1` | `0` |
+//! | 1 | `title` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 2 | `authors` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 3 | `year` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 4 | `doi` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 5 | `url` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 6 | `bibtex_type` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 7 | `tags_json` | `TEXT` | `true` | `'[]'` | `0` | `0` |
+//!
+//! Indexes:
+//!
+//! | seq | name | unique | origin | partial | columns |
+//! | --- | --- | --- | --- | --- | --- |
+//! | 0 | `sqlite_autoindex_bibliography_1` | `true` | `pk` | `false` | `id, <expr>` |
+//!
 //! ## `binaries_cp` (table)
 //!
 //! - Strict: `false`
@@ -104,6 +127,24 @@
 //! | --- | --- | --- | --- | --- | --- |
 //! | 0 | `sqlite_autoindex_binaries_cp_1` | `true` | `pk` | `false` | `name, <expr>` |
 //!
+//! ## `build_metadata` (table)
+//!
+//! - Strict: `false`
+//! - Without rowid: `false`
+//! - Declared columns: `3`
+//!
+//! | cid | name | type | not null | default | pk | hidden |
+//! | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | `key` | `TEXT` | `false` | `` | `1` | `0` |
+//! | 1 | `value` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 2 | `updated_at` | `TEXT` | `true` | `datetime('now')` | `0` | `0` |
+//!
+//! Indexes:
+//!
+//! | seq | name | unique | origin | partial | columns |
+//! | --- | --- | --- | --- | --- | --- |
+//! | 0 | `sqlite_autoindex_build_metadata_1` | `true` | `pk` | `false` | `key, <expr>` |
+//!
 //! ## `citations` (table)
 //!
 //! - Strict: `false`
@@ -123,6 +164,42 @@
 //! | id | seq | table | from | to | on update | on delete | match |
 //! | --- | --- | --- | --- | --- | --- | --- | --- |
 //! | 0 | 0 | `artifacts` | `artifact_id` | `id` | `NO ACTION` | `CASCADE` | `NONE` |
+//!
+//! ## `claim_experiment_refs` (table)
+//!
+//! - Strict: `false`
+//! - Without rowid: `false`
+//! - Declared columns: `2`
+//!
+//! | cid | name | type | not null | default | pk | hidden |
+//! | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | `claim_id` | `TEXT` | `true` | `` | `1` | `0` |
+//! | 1 | `experiment_id` | `TEXT` | `true` | `` | `2` | `0` |
+//!
+//! Indexes:
+//!
+//! | seq | name | unique | origin | partial | columns |
+//! | --- | --- | --- | --- | --- | --- |
+//! | 0 | `idx_cer_experiment` | `false` | `c` | `false` | `experiment_id, <expr>` |
+//! | 1 | `sqlite_autoindex_claim_experiment_refs_1` | `true` | `pk` | `false` | `claim_id, experiment_id, <expr>` |
+//!
+//! ## `claim_insight_refs` (table)
+//!
+//! - Strict: `false`
+//! - Without rowid: `false`
+//! - Declared columns: `2`
+//!
+//! | cid | name | type | not null | default | pk | hidden |
+//! | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | `claim_id` | `TEXT` | `true` | `` | `1` | `0` |
+//! | 1 | `insight_id` | `TEXT` | `true` | `` | `2` | `0` |
+//!
+//! Indexes:
+//!
+//! | seq | name | unique | origin | partial | columns |
+//! | --- | --- | --- | --- | --- | --- |
+//! | 0 | `idx_cir_insight` | `false` | `c` | `false` | `insight_id, <expr>` |
+//! | 1 | `sqlite_autoindex_claim_insight_refs_1` | `true` | `pk` | `false` | `claim_id, insight_id, <expr>` |
 //!
 //! ## `claims` (table)
 //!
@@ -176,6 +253,47 @@
 //! | 1 | `action` | `TEXT` | `true` | `` | `0` | `0` |
 //! | 2 | `created_at` | `TEXT` | `true` | `` | `0` | `0` |
 //! | 3 | `details_json` | `TEXT` | `true` | `` | `0` | `0` |
+//!
+//! ## `derivation_steps` (table)
+//!
+//! - Strict: `false`
+//! - Without rowid: `false`
+//! - Declared columns: `19`
+//!
+//! | cid | name | type | not null | default | pk | hidden |
+//! | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | `id` | `TEXT` | `false` | `` | `1` | `0` |
+//! | 1 | `skeleton_id` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 2 | `skeleton_kind` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 3 | `source_path` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 4 | `source_uid` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 5 | `claim_id` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 6 | `claim_refs_json` | `TEXT` | `true` | `'[]'` | `0` | `0` |
+//! | 7 | `step_index` | `INTEGER` | `true` | `0` | `0` | `0` |
+//! | 8 | `step_kind` | `TEXT` | `true` | `'derivation_step'` | `0` | `0` |
+//! | 9 | `text` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 10 | `text_sha256` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 11 | `equation_refs_json` | `TEXT` | `true` | `'[]'` | `0` | `0` |
+//! | 12 | `symbol_refs_json` | `TEXT` | `true` | `'[]'` | `0` | `0` |
+//! | 13 | `numeric_constants_json` | `TEXT` | `true` | `'[]'` | `0` | `0` |
+//! | 14 | `key_tokens_json` | `TEXT` | `true` | `'[]'` | `0` | `0` |
+//! | 15 | `depends_on_step_ids_json` | `TEXT` | `true` | `'[]'` | `0` | `0` |
+//! | 16 | `line_start` | `INTEGER` | `true` | `0` | `0` | `0` |
+//! | 17 | `line_end` | `INTEGER` | `true` | `0` | `0` | `0` |
+//! | 18 | `created_at` | `TEXT` | `true` | `datetime('now')` | `0` | `0` |
+//!
+//! Foreign keys:
+//!
+//! | id | seq | table | from | to | on update | on delete | match |
+//! | --- | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | 0 | `proof_skeletons` | `skeleton_id` | `id` | `NO ACTION` | `CASCADE` | `NONE` |
+//!
+//! Indexes:
+//!
+//! | seq | name | unique | origin | partial | columns |
+//! | --- | --- | --- | --- | --- | --- |
+//! | 0 | `idx_derivation_steps_skeleton` | `false` | `c` | `false` | `skeleton_id, <expr>` |
+//! | 1 | `sqlite_autoindex_derivation_steps_1` | `true` | `pk` | `false` | `id, <expr>` |
 //!
 //! ## `documents` (table)
 //!
@@ -301,6 +419,58 @@
 //! | 9 | `final_url` | `TEXT` | `false` | `` | `0` | `0` |
 //! | 10 | `output_path` | `TEXT` | `false` | `` | `0` | `0` |
 //! | 11 | `created_at` | `TEXT` | `true` | `` | `0` | `0` |
+//!
+//! ## `equation_atoms` (table)
+//!
+//! - Strict: `false`
+//! - Without rowid: `false`
+//! - Declared columns: `15`
+//!
+//! | cid | name | type | not null | default | pk | hidden |
+//! | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | `id` | `TEXT` | `false` | `` | `1` | `0` |
+//! | 1 | `expression` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 2 | `normalized_expression` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 3 | `relation_operator` | `TEXT` | `true` | `'implicit'` | `0` | `0` |
+//! | 4 | `equation_kind` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 5 | `extraction_confidence` | `TEXT` | `true` | `'medium'` | `0` | `0` |
+//! | 6 | `domain_applicability` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 7 | `source_uid` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 8 | `source_path` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 9 | `section_title` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 10 | `assumptions_json` | `TEXT` | `true` | `'[]'` | `0` | `0` |
+//! | 11 | `parameter_sweep_json` | `TEXT` | `true` | `'{}'` | `0` | `0` |
+//! | 12 | `derivation_links_json` | `TEXT` | `true` | `'[]'` | `0` | `0` |
+//! | 13 | `depends_on_json` | `TEXT` | `true` | `'[]'` | `0` | `0` |
+//! | 14 | `created_at` | `TEXT` | `true` | `datetime('now')` | `0` | `0` |
+//!
+//! Indexes:
+//!
+//! | seq | name | unique | origin | partial | columns |
+//! | --- | --- | --- | --- | --- | --- |
+//! | 0 | `sqlite_autoindex_equation_atoms_1` | `true` | `pk` | `false` | `id, <expr>` |
+//!
+//! ## `evidence_edges` (table)
+//!
+//! - Strict: `false`
+//! - Without rowid: `false`
+//! - Declared columns: `6`
+//!
+//! | cid | name | type | not null | default | pk | hidden |
+//! | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | `id` | `INTEGER` | `false` | `` | `1` | `0` |
+//! | 1 | `source_id` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 2 | `target_id` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 3 | `edge_type` | `TEXT` | `true` | `'supports'` | `0` | `0` |
+//! | 4 | `weight` | `REAL` | `true` | `1.0` | `0` | `0` |
+//! | 5 | `notes` | `TEXT` | `true` | `''` | `0` | `0` |
+//!
+//! Indexes:
+//!
+//! | seq | name | unique | origin | partial | columns |
+//! | --- | --- | --- | --- | --- | --- |
+//! | 0 | `idx_ee_target` | `false` | `c` | `false` | `target_id, <expr>` |
+//! | 1 | `idx_ee_source` | `false` | `c` | `false` | `source_id, <expr>` |
 //!
 //! ## `experiments_cp` (table)
 //!
@@ -519,6 +689,28 @@
 //! | --- | --- | --- | --- | --- | --- |
 //! | 0 | `sqlite_autoindex_insights_1` | `true` | `pk` | `false` | `id, <expr>` |
 //!
+//! ## `lacunae` (table)
+//!
+//! - Strict: `false`
+//! - Without rowid: `false`
+//! - Declared columns: `7`
+//!
+//! | cid | name | type | not null | default | pk | hidden |
+//! | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | `id` | `TEXT` | `false` | `` | `1` | `0` |
+//! | 1 | `title` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 2 | `status` | `TEXT` | `true` | `'open'` | `0` | `0` |
+//! | 3 | `domain` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 4 | `description` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 5 | `claim_refs_json` | `TEXT` | `true` | `'[]'` | `0` | `0` |
+//! | 6 | `created_at` | `TEXT` | `true` | `datetime('now')` | `0` | `0` |
+//!
+//! Indexes:
+//!
+//! | seq | name | unique | origin | partial | columns |
+//! | --- | --- | --- | --- | --- | --- |
+//! | 0 | `sqlite_autoindex_lacunae_1` | `true` | `pk` | `false` | `id, <expr>` |
+//!
 //! ## `lane_assignments` (table)
 //!
 //! - Strict: `false`
@@ -559,6 +751,101 @@
 //! | --- | --- | --- | --- | --- | --- |
 //! | 0 | `sqlite_autoindex_links_1` | `true` | `pk` | `false` | `url, <expr>` |
 //!
+//! ## `literature_novelty_similar_papers` (table)
+//!
+//! - Strict: `false`
+//! - Without rowid: `false`
+//! - Declared columns: `10`
+//!
+//! | cid | name | type | not null | default | pk | hidden |
+//! | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | `id` | `INTEGER` | `false` | `` | `1` | `0` |
+//! | 1 | `run_id` | `INTEGER` | `true` | `` | `0` | `0` |
+//! | 2 | `title` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 3 | `paper_id` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 4 | `year` | `INTEGER` | `true` | `` | `0` | `0` |
+//! | 5 | `venue` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 6 | `citation_count` | `INTEGER` | `true` | `` | `0` | `0` |
+//! | 7 | `similarity` | `REAL` | `true` | `` | `0` | `0` |
+//! | 8 | `url` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 9 | `cite_key` | `TEXT` | `true` | `` | `0` | `0` |
+//!
+//! Foreign keys:
+//!
+//! | id | seq | table | from | to | on update | on delete | match |
+//! | --- | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | 0 | `literature_verification_runs` | `run_id` | `id` | `NO ACTION` | `CASCADE` | `NONE` |
+//!
+//! Indexes:
+//!
+//! | seq | name | unique | origin | partial | columns |
+//! | --- | --- | --- | --- | --- | --- |
+//! | 0 | `idx_literature_novelty_similar_papers_run_id` | `false` | `c` | `false` | `run_id, <expr>` |
+//!
+//! ## `literature_verification_results` (table)
+//!
+//! - Strict: `false`
+//! - Without rowid: `false`
+//! - Declared columns: `15`
+//!
+//! | cid | name | type | not null | default | pk | hidden |
+//! | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | `id` | `INTEGER` | `false` | `` | `1` | `0` |
+//! | 1 | `run_id` | `INTEGER` | `true` | `` | `0` | `0` |
+//! | 2 | `cite_key` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 3 | `title` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 4 | `status` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 5 | `confidence` | `REAL` | `true` | `` | `0` | `0` |
+//! | 6 | `method` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 7 | `details` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 8 | `doi` | `TEXT` | `false` | `` | `0` | `0` |
+//! | 9 | `arxiv_id` | `TEXT` | `false` | `` | `0` | `0` |
+//! | 10 | `matched_paper_title` | `TEXT` | `false` | `` | `0` | `0` |
+//! | 11 | `matched_paper_source` | `TEXT` | `false` | `` | `0` | `0` |
+//! | 12 | `matched_paper_year` | `INTEGER` | `false` | `` | `0` | `0` |
+//! | 13 | `matched_paper_url` | `TEXT` | `false` | `` | `0` | `0` |
+//! | 14 | `relevance_score` | `REAL` | `false` | `` | `0` | `0` |
+//!
+//! Foreign keys:
+//!
+//! | id | seq | table | from | to | on update | on delete | match |
+//! | --- | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | 0 | `literature_verification_runs` | `run_id` | `id` | `NO ACTION` | `CASCADE` | `NONE` |
+//!
+//! Indexes:
+//!
+//! | seq | name | unique | origin | partial | columns |
+//! | --- | --- | --- | --- | --- | --- |
+//! | 0 | `idx_literature_verification_results_status` | `false` | `c` | `false` | `status, <expr>` |
+//! | 1 | `idx_literature_verification_results_run_id` | `false` | `c` | `false` | `run_id, <expr>` |
+//!
+//! ## `literature_verification_runs` (table)
+//!
+//! - Strict: `false`
+//! - Without rowid: `false`
+//! - Declared columns: `18`
+//!
+//! | cid | name | type | not null | default | pk | hidden |
+//! | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | `id` | `INTEGER` | `false` | `` | `1` | `0` |
+//! | 1 | `input_path` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 2 | `topic` | `TEXT` | `false` | `` | `0` | `0` |
+//! | 3 | `hypotheses_path` | `TEXT` | `false` | `` | `0` | `0` |
+//! | 4 | `domains_json` | `TEXT` | `true` | `'[]'` | `0` | `0` |
+//! | 5 | `search_queries_json` | `TEXT` | `true` | `'[]'` | `0` | `0` |
+//! | 6 | `total_entries` | `INTEGER` | `true` | `` | `0` | `0` |
+//! | 7 | `verified_count` | `INTEGER` | `true` | `` | `0` | `0` |
+//! | 8 | `suspicious_count` | `INTEGER` | `true` | `` | `0` | `0` |
+//! | 9 | `hallucinated_count` | `INTEGER` | `true` | `` | `0` | `0` |
+//! | 10 | `skipped_count` | `INTEGER` | `true` | `` | `0` | `0` |
+//! | 11 | `integrity_score` | `REAL` | `true` | `` | `0` | `0` |
+//! | 12 | `novelty_score` | `REAL` | `false` | `` | `0` | `0` |
+//! | 13 | `novelty_assessment` | `TEXT` | `false` | `` | `0` | `0` |
+//! | 14 | `recommendation` | `TEXT` | `false` | `` | `0` | `0` |
+//! | 15 | `search_coverage` | `TEXT` | `false` | `` | `0` | `0` |
+//! | 16 | `total_papers_retrieved` | `INTEGER` | `false` | `` | `0` | `0` |
+//! | 17 | `created_at` | `TEXT` | `true` | `` | `0` | `0` |
+//!
 //! ## `mirror_observations` (table)
 //!
 //! - Strict: `false`
@@ -583,6 +870,107 @@
 //! | seq | name | unique | origin | partial | columns |
 //! | --- | --- | --- | --- | --- | --- |
 //! | 0 | `sqlite_autoindex_mirror_observations_1` | `true` | `pk` | `false` | `artifact_id, url, mirror_kind, <expr>` |
+//!
+//! ## `next_action_items` (table)
+//!
+//! - Strict: `false`
+//! - Without rowid: `false`
+//! - Declared columns: `12`
+//!
+//! | cid | name | type | not null | default | pk | hidden |
+//! | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | `id` | `TEXT` | `false` | `` | `1` | `0` |
+//! | 1 | `area` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 2 | `title` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 3 | `description` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 4 | `priority` | `TEXT` | `true` | `'medium'` | `0` | `0` |
+//! | 5 | `status` | `TEXT` | `true` | `'open'` | `0` | `0` |
+//! | 6 | `status_token` | `TEXT` | `true` | `'OPEN'` | `0` | `0` |
+//! | 7 | `dependencies_json` | `TEXT` | `true` | `'[]'` | `0` | `0` |
+//! | 8 | `acceptance_criteria_json` | `TEXT` | `true` | `'[]'` | `0` | `0` |
+//! | 9 | `evidence_refs_json` | `TEXT` | `true` | `'[]'` | `0` | `0` |
+//! | 10 | `created_at` | `TEXT` | `true` | `datetime('now')` | `0` | `0` |
+//! | 11 | `updated_at` | `TEXT` | `true` | `datetime('now')` | `0` | `0` |
+//!
+//! Indexes:
+//!
+//! | seq | name | unique | origin | partial | columns |
+//! | --- | --- | --- | --- | --- | --- |
+//! | 0 | `sqlite_autoindex_next_action_items_1` | `true` | `pk` | `false` | `id, <expr>` |
+//!
+//! ## `notebook_sessions` (table)
+//!
+//! - Strict: `false`
+//! - Without rowid: `false`
+//! - Declared columns: `9`
+//!
+//! | cid | name | type | not null | default | pk | hidden |
+//! | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | `id` | `TEXT` | `false` | `` | `1` | `0` |
+//! | 1 | `title` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 2 | `description` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 3 | `kernel` | `TEXT` | `true` | `'evcxr'` | `0` | `0` |
+//! | 4 | `status` | `TEXT` | `true` | `'draft'` | `0` | `0` |
+//! | 5 | `cell_count` | `INTEGER` | `true` | `0` | `0` | `0` |
+//! | 6 | `cells_json` | `TEXT` | `true` | `'[]'` | `0` | `0` |
+//! | 7 | `created_at` | `TEXT` | `true` | `datetime('now')` | `0` | `0` |
+//! | 8 | `updated_at` | `TEXT` | `true` | `datetime('now')` | `0` | `0` |
+//!
+//! Indexes:
+//!
+//! | seq | name | unique | origin | partial | columns |
+//! | --- | --- | --- | --- | --- | --- |
+//! | 0 | `sqlite_autoindex_notebook_sessions_1` | `true` | `pk` | `false` | `id, <expr>` |
+//!
+//! ## `proof_atoms` (table)
+//!
+//! - Strict: `false`
+//! - Without rowid: `false`
+//! - Declared columns: `10`
+//!
+//! | cid | name | type | not null | default | pk | hidden |
+//! | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | `id` | `TEXT` | `false` | `` | `1` | `0` |
+//! | 1 | `claim_id` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 2 | `title` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 3 | `proof_kind` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 4 | `proof_path` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 5 | `status` | `TEXT` | `true` | `'draft'` | `0` | `0` |
+//! | 6 | `source_uid` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 7 | `source_path` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 8 | `body_text` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 9 | `created_at` | `TEXT` | `true` | `datetime('now')` | `0` | `0` |
+//!
+//! Indexes:
+//!
+//! | seq | name | unique | origin | partial | columns |
+//! | --- | --- | --- | --- | --- | --- |
+//! | 0 | `sqlite_autoindex_proof_atoms_1` | `true` | `pk` | `false` | `id, <expr>` |
+//!
+//! ## `proof_skeletons` (table)
+//!
+//! - Strict: `false`
+//! - Without rowid: `false`
+//! - Declared columns: `10`
+//!
+//! | cid | name | type | not null | default | pk | hidden |
+//! | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | `id` | `TEXT` | `false` | `` | `1` | `0` |
+//! | 1 | `skeleton_kind` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 2 | `source_path` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 3 | `source_uid` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 4 | `claim_id` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 5 | `claim_refs_json` | `TEXT` | `true` | `'[]'` | `0` | `0` |
+//! | 6 | `title` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 7 | `status` | `TEXT` | `true` | `'draft'` | `0` | `0` |
+//! | 8 | `step_count` | `INTEGER` | `true` | `0` | `0` | `0` |
+//! | 9 | `created_at` | `TEXT` | `true` | `datetime('now')` | `0` | `0` |
+//!
+//! Indexes:
+//!
+//! | seq | name | unique | origin | partial | columns |
+//! | --- | --- | --- | --- | --- | --- |
+//! | 0 | `sqlite_autoindex_proof_skeletons_1` | `true` | `pk` | `false` | `id, <expr>` |
 //!
 //! ## `record_sources` (table)
 //!
@@ -622,6 +1010,168 @@
 //! | --- | --- | --- | --- | --- | --- |
 //! | 0 | `sqlite_autoindex_registry_snapshots_1` | `true` | `pk` | `false` | `registry_kind, <expr>` |
 //!
+//! ## `requirements_coverage_gaps` (table)
+//!
+//! - Strict: `false`
+//! - Without rowid: `false`
+//! - Declared columns: `9`
+//!
+//! | cid | name | type | not null | default | pk | hidden |
+//! | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | `id` | `TEXT` | `false` | `` | `1` | `0` |
+//! | 1 | `area` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 2 | `status` | `TEXT` | `true` | `'open'` | `0` | `0` |
+//! | 3 | `status_token` | `TEXT` | `true` | `'OPEN'` | `0` | `0` |
+//! | 4 | `description` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 5 | `proposed_resolution` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 6 | `related_module_ids_json` | `TEXT` | `true` | `'[]'` | `0` | `0` |
+//! | 7 | `created_at` | `TEXT` | `true` | `datetime('now')` | `0` | `0` |
+//! | 8 | `updated_at` | `TEXT` | `true` | `datetime('now')` | `0` | `0` |
+//!
+//! Indexes:
+//!
+//! | seq | name | unique | origin | partial | columns |
+//! | --- | --- | --- | --- | --- | --- |
+//! | 0 | `sqlite_autoindex_requirements_coverage_gaps_1` | `true` | `pk` | `false` | `id, <expr>` |
+//!
+//! ## `requirements_modules` (table)
+//!
+//! - Strict: `false`
+//! - Without rowid: `false`
+//! - Declared columns: `12`
+//!
+//! | cid | name | type | not null | default | pk | hidden |
+//! | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | `id` | `TEXT` | `false` | `` | `1` | `0` |
+//! | 1 | `name` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 2 | `markdown` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 3 | `status` | `TEXT` | `true` | `'active'` | `0` | `0` |
+//! | 4 | `status_token` | `TEXT` | `true` | `'ACTIVE'` | `0` | `0` |
+//! | 5 | `runtime_stack` | `TEXT` | `true` | `'mixed'` | `0` | `0` |
+//! | 6 | `requires_modules_json` | `TEXT` | `true` | `'[]'` | `0` | `0` |
+//! | 7 | `install_targets_json` | `TEXT` | `true` | `'[]'` | `0` | `0` |
+//! | 8 | `verify_targets_json` | `TEXT` | `true` | `'[]'` | `0` | `0` |
+//! | 9 | `acceptance_criteria_json` | `TEXT` | `true` | `'[]'` | `0` | `0` |
+//! | 10 | `created_at` | `TEXT` | `true` | `datetime('now')` | `0` | `0` |
+//! | 11 | `updated_at` | `TEXT` | `true` | `datetime('now')` | `0` | `0` |
+//!
+//! Indexes:
+//!
+//! | seq | name | unique | origin | partial | columns |
+//! | --- | --- | --- | --- | --- | --- |
+//! | 0 | `sqlite_autoindex_requirements_modules_1` | `true` | `pk` | `false` | `id, <expr>` |
+//!
+//! ## `requirements_registry_meta` (table)
+//!
+//! - Strict: `false`
+//! - Without rowid: `false`
+//! - Declared columns: `14`
+//!
+//! | cid | name | type | not null | default | pk | hidden |
+//! | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | `kind` | `TEXT` | `false` | `` | `1` | `0` |
+//! | 1 | `authoritative` | `INTEGER` | `true` | `1` | `0` | `0` |
+//! | 2 | `status` | `TEXT` | `true` | `'active'` | `0` | `0` |
+//! | 3 | `status_token` | `TEXT` | `true` | `'ACTIVE'` | `0` | `0` |
+//! | 4 | `updated` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 5 | `python_recommended` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 6 | `python_allowed` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 7 | `primary_markdown` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 8 | `status_allowlist_json` | `TEXT` | `true` | `'[]'` | `0` | `0` |
+//! | 9 | `runtime_stack_allowlist_json` | `TEXT` | `true` | `'[]'` | `0` | `0` |
+//! | 10 | `required_module_fields_json` | `TEXT` | `true` | `'[]'` | `0` | `0` |
+//! | 11 | `required_gap_fields_json` | `TEXT` | `true` | `'[]'` | `0` | `0` |
+//! | 12 | `created_at` | `TEXT` | `true` | `datetime('now')` | `0` | `0` |
+//! | 13 | `updated_at` | `TEXT` | `true` | `datetime('now')` | `0` | `0` |
+//!
+//! Indexes:
+//!
+//! | seq | name | unique | origin | partial | columns |
+//! | --- | --- | --- | --- | --- | --- |
+//! | 0 | `sqlite_autoindex_requirements_registry_meta_1` | `true` | `pk` | `false` | `kind, <expr>` |
+//!
+//! ## `research_narratives` (table)
+//!
+//! - Strict: `false`
+//! - Without rowid: `false`
+//! - Declared columns: `14`
+//!
+//! | cid | name | type | not null | default | pk | hidden |
+//! | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | `id` | `TEXT` | `false` | `` | `1` | `0` |
+//! | 1 | `source_markdown` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 2 | `domain` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 3 | `slug` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 4 | `title` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 5 | `status_token` | `TEXT` | `true` | `'NARRATIVE'` | `0` | `0` |
+//! | 6 | `content_kind` | `TEXT` | `true` | `'research_note'` | `0` | `0` |
+//! | 7 | `verification_level` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 8 | `claim_refs_json` | `TEXT` | `true` | `'[]'` | `0` | `0` |
+//! | 9 | `url_refs_json` | `TEXT` | `true` | `'[]'` | `0` | `0` |
+//! | 10 | `path_refs_json` | `TEXT` | `true` | `'[]'` | `0` | `0` |
+//! | 11 | `body_markdown` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 12 | `line_count` | `INTEGER` | `true` | `0` | `0` | `0` |
+//! | 13 | `created_at` | `TEXT` | `true` | `datetime('now')` | `0` | `0` |
+//!
+//! Indexes:
+//!
+//! | seq | name | unique | origin | partial | columns |
+//! | --- | --- | --- | --- | --- | --- |
+//! | 0 | `sqlite_autoindex_research_narratives_1` | `true` | `pk` | `false` | `id, <expr>` |
+//!
+//! ## `roadmap_items` (table)
+//!
+//! - Strict: `false`
+//! - Without rowid: `false`
+//! - Declared columns: `16`
+//!
+//! | cid | name | type | not null | default | pk | hidden |
+//! | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | `id` | `TEXT` | `false` | `` | `1` | `0` |
+//! | 1 | `name` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 2 | `priority` | `TEXT` | `true` | `'medium'` | `0` | `0` |
+//! | 3 | `status` | `TEXT` | `true` | `'planned'` | `0` | `0` |
+//! | 4 | `status_token` | `TEXT` | `true` | `'PLANNED'` | `0` | `0` |
+//! | 5 | `description` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 6 | `sprint` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 7 | `dependencies_json` | `TEXT` | `true` | `'[]'` | `0` | `0` |
+//! | 8 | `acceptance_criteria_json` | `TEXT` | `true` | `'[]'` | `0` | `0` |
+//! | 9 | `primary_outputs_json` | `TEXT` | `true` | `'[]'` | `0` | `0` |
+//! | 10 | `evidence_refs_json` | `TEXT` | `true` | `'[]'` | `0` | `0` |
+//! | 11 | `lacunae_json` | `TEXT` | `true` | `'[]'` | `0` | `0` |
+//! | 12 | `created_at` | `TEXT` | `true` | `datetime('now')` | `0` | `0` |
+//! | 13 | `updated_at` | `TEXT` | `true` | `datetime('now')` | `0` | `0` |
+//! | 14 | `claims_json` | `TEXT` | `true` | `'[]'` | `0` | `0` |
+//! | 15 | `insight` | `TEXT` | `true` | `''` | `0` | `0` |
+//!
+//! Indexes:
+//!
+//! | seq | name | unique | origin | partial | columns |
+//! | --- | --- | --- | --- | --- | --- |
+//! | 0 | `sqlite_autoindex_roadmap_items_1` | `true` | `pk` | `false` | `id, <expr>` |
+//!
+//! ## `source_of_truth_manifest` (table)
+//!
+//! - Strict: `false`
+//! - Without rowid: `false`
+//! - Declared columns: `7`
+//!
+//! | cid | name | type | not null | default | pk | hidden |
+//! | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | `table_name` | `TEXT` | `false` | `` | `1` | `0` |
+//! | 1 | `category` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 2 | `authoritative` | `INTEGER` | `true` | `1` | `0` | `0` |
+//! | 3 | `legacy_toml_path` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 4 | `description` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 5 | `migration_status` | `TEXT` | `true` | `'pending'` | `0` | `0` |
+//! | 6 | `created_at` | `TEXT` | `true` | `datetime('now')` | `0` | `0` |
+//!
+//! Indexes:
+//!
+//! | seq | name | unique | origin | partial | columns |
+//! | --- | --- | --- | --- | --- | --- |
+//! | 0 | `sqlite_autoindex_source_of_truth_manifest_1` | `true` | `pk` | `false` | `table_name, <expr>` |
+//!
 //! ## `theorems` (table)
 //!
 //! - Strict: `false`
@@ -644,6 +1194,61 @@
 //! | 0 | `sqlite_autoindex_theorems_2` | `true` | `u` | `false` | `proof_path, <expr>` |
 //! | 1 | `sqlite_autoindex_theorems_1` | `true` | `pk` | `false` | `id, <expr>` |
 //!
+//! ## `todo_items` (table)
+//!
+//! - Strict: `false`
+//! - Without rowid: `false`
+//! - Declared columns: `12`
+//!
+//! | cid | name | type | not null | default | pk | hidden |
+//! | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | `id` | `TEXT` | `false` | `` | `1` | `0` |
+//! | 1 | `area` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 2 | `title` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 3 | `description` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 4 | `priority` | `TEXT` | `true` | `'medium'` | `0` | `0` |
+//! | 5 | `status` | `TEXT` | `true` | `'open'` | `0` | `0` |
+//! | 6 | `status_token` | `TEXT` | `true` | `'OPEN'` | `0` | `0` |
+//! | 7 | `dependencies_json` | `TEXT` | `true` | `'[]'` | `0` | `0` |
+//! | 8 | `acceptance_criteria_json` | `TEXT` | `true` | `'[]'` | `0` | `0` |
+//! | 9 | `evidence_refs_json` | `TEXT` | `true` | `'[]'` | `0` | `0` |
+//! | 10 | `created_at` | `TEXT` | `true` | `datetime('now')` | `0` | `0` |
+//! | 11 | `updated_at` | `TEXT` | `true` | `datetime('now')` | `0` | `0` |
+//!
+//! Indexes:
+//!
+//! | seq | name | unique | origin | partial | columns |
+//! | --- | --- | --- | --- | --- | --- |
+//! | 0 | `sqlite_autoindex_todo_items_1` | `true` | `pk` | `false` | `id, <expr>` |
+//!
+//! ## `bibliography_fts` (virtual)
+//!
+//! - Strict: `false`
+//! - Without rowid: `false`
+//! - Declared columns: `5`
+//!
+//! | cid | name | type | not null | default | pk | hidden |
+//! | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | `id` | `` | `false` | `` | `0` | `0` |
+//! | 1 | `title` | `` | `false` | `` | `0` | `0` |
+//! | 2 | `authors` | `` | `false` | `` | `0` | `0` |
+//! | 3 | `bibliography_fts` | `` | `false` | `` | `0` | `1` |
+//! | 4 | `rank` | `` | `false` | `` | `0` | `1` |
+//!
+//! ## `claims_fts` (virtual)
+//!
+//! - Strict: `false`
+//! - Without rowid: `false`
+//! - Declared columns: `5`
+//!
+//! | cid | name | type | not null | default | pk | hidden |
+//! | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | `id` | `` | `false` | `` | `0` | `0` |
+//! | 1 | `statement` | `` | `false` | `` | `0` | `0` |
+//! | 2 | `status` | `` | `false` | `` | `0` | `0` |
+//! | 3 | `claims_fts` | `` | `false` | `` | `0` | `1` |
+//! | 4 | `rank` | `` | `false` | `` | `0` | `1` |
+//!
 //! ## `document_search` (virtual)
 //!
 //! - Strict: `false`
@@ -658,4 +1263,32 @@
 //! | 3 | `kind` | `` | `false` | `` | `0` | `0` |
 //! | 4 | `document_search` | `` | `false` | `` | `0` | `1` |
 //! | 5 | `rank` | `` | `false` | `` | `0` | `1` |
+//!
+//! ## `insights_fts` (virtual)
+//!
+//! - Strict: `false`
+//! - Without rowid: `false`
+//! - Declared columns: `5`
+//!
+//! | cid | name | type | not null | default | pk | hidden |
+//! | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | `id` | `` | `false` | `` | `0` | `0` |
+//! | 1 | `title` | `` | `false` | `` | `0` | `0` |
+//! | 2 | `status` | `` | `false` | `` | `0` | `0` |
+//! | 3 | `insights_fts` | `` | `false` | `` | `0` | `1` |
+//! | 4 | `rank` | `` | `false` | `` | `0` | `1` |
+//!
+//! ## `research_narrative_search` (virtual)
+//!
+//! - Strict: `false`
+//! - Without rowid: `false`
+//! - Declared columns: `5`
+//!
+//! | cid | name | type | not null | default | pk | hidden |
+//! | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | `id` | `` | `false` | `` | `0` | `0` |
+//! | 1 | `title` | `` | `false` | `` | `0` | `0` |
+//! | 2 | `body_markdown` | `` | `false` | `` | `0` | `0` |
+//! | 3 | `research_narrative_search` | `` | `false` | `` | `0` | `1` |
+//! | 4 | `rank` | `` | `false` | `` | `0` | `1` |
 //!

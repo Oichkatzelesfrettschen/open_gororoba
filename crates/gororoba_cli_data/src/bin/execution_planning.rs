@@ -2754,8 +2754,9 @@ fn load_control_plane_registry(
                 db_path.display()
             )
         })?;
-        let value = text
-            .parse::<Value>()
+        // Use toml::from_str rather than .parse::<Value>(): in toml 1.1 the FromStr
+        // implementation uses a stricter parser that rejects valid [[table]] headers.
+        let value = toml::from_str::<Value>(&text)
             .with_context(|| format!("parse {:?} compatibility TOML", kind))?;
         let table = value.as_table().cloned().ok_or_else(|| {
             anyhow::anyhow!(

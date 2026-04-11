@@ -17,6 +17,8 @@
 //! - Peter & Pinto-Neto (2008), PRD 78, 063506 [Bohmian bounce]
 //! - Eisenstein & Hu (1998), ApJ 496, 605 [BAO fitting formulae]
 
+use crate::optimizer::{NelderMeadConfig, bounded_nelder_mead_single};
+
 /// Speed of light in km/s.
 pub const C_KM_S: f64 = 299792.458;
 
@@ -428,127 +430,6 @@ pub fn chi2_bao(omega_m: f64, h0: f64, q_corr: f64, bao: &SyntheticBaoData) -> f
 }
 
 // ---------------------------------------------------------------------------
-// Bounded Nelder-Mead Optimizer (2-3 params, domain-specific)
-// ---------------------------------------------------------------------------
-
-/// Bounded Nelder-Mead minimization for 2-3 parameter cosmology fits.
-///
-/// This is a simple, domain-specific optimizer sufficient for the smooth,
-/// well-behaved chi-square landscapes in cosmological parameter fitting.
-/// For 2-3 parameters, Nelder-Mead converges reliably without gradients.
-fn bounded_nelder_mead<F: Fn(&[f64]) -> f64>(
-    f: F,
-    x0: &[f64],
-    bounds: &[(f64, f64)],
-    max_iter: usize,
-    tol: f64,
-) -> (Vec<f64>, f64) {
-    let n = x0.len();
-
-    // Project point into bounds
-    let project = |x: &[f64]| -> Vec<f64> {
-        x.iter()
-            .zip(bounds.iter())
-            .map(|(&xi, &(lo, hi))| xi.clamp(lo, hi))
-            .collect()
-    };
-
-    // Initialize simplex: x0 + perturbations along each axis
-    let mut simplex: Vec<Vec<f64>> = Vec::with_capacity(n + 1);
-    simplex.push(project(x0));
-    for i in 0..n {
-        let mut v = x0.to_vec();
-        let range = bounds[i].1 - bounds[i].0;
-        v[i] += range * 0.05;
-        simplex.push(project(&v));
-    }
-
-    let mut fvals: Vec<f64> = simplex.iter().map(|v| f(v)).collect();
-
-    let alpha = 1.0; // reflection
-    let gamma = 2.0; // expansion
-    let rho = 0.5; // contraction
-    let sigma = 0.5; // shrink
-
-    for _ in 0..max_iter {
-        // Sort by function value
-        let mut order: Vec<usize> = (0..=n).collect();
-        order.sort_by(|&a, &b| fvals[a].partial_cmp(&fvals[b]).unwrap());
-        let sorted_simplex: Vec<Vec<f64>> = order.iter().map(|&i| simplex[i].clone()).collect();
-        let sorted_fvals: Vec<f64> = order.iter().map(|&i| fvals[i]).collect();
-        simplex = sorted_simplex;
-        fvals = sorted_fvals;
-
-        // Check convergence
-        let f_range = fvals[n] - fvals[0];
-        if f_range < tol {
-            break;
-        }
-
-        // Centroid of all points except worst
-        let centroid: Vec<f64> = (0..n)
-            .map(|j| simplex[..n].iter().map(|v| v[j]).sum::<f64>() / n as f64)
-            .collect();
-
-        // Reflection
-        let xr: Vec<f64> = (0..n)
-            .map(|j| centroid[j] + alpha * (centroid[j] - simplex[n][j]))
-            .collect();
-        let xr = project(&xr);
-        let fr = f(&xr);
-
-        if fr < fvals[0] {
-            // Expansion
-            let xe: Vec<f64> = (0..n)
-                .map(|j| centroid[j] + gamma * (xr[j] - centroid[j]))
-                .collect();
-            let xe = project(&xe);
-            let fe = f(&xe);
-            if fe < fr {
-                simplex[n] = xe;
-                fvals[n] = fe;
-            } else {
-                simplex[n] = xr;
-                fvals[n] = fr;
-            }
-        } else if fr < fvals[n - 1] {
-            simplex[n] = xr;
-            fvals[n] = fr;
-        } else {
-            // Contraction
-            let xc: Vec<f64> = (0..n)
-                .map(|j| centroid[j] + rho * (simplex[n][j] - centroid[j]))
-                .collect();
-            let xc = project(&xc);
-            let fc = f(&xc);
-            if fc < fvals[n] {
-                simplex[n] = xc;
-                fvals[n] = fc;
-            } else {
-                // Shrink: move all vertices toward the best vertex
-                let best = simplex[0].clone();
-                for i in 1..=n {
-                    for (sij, &bj) in simplex[i].iter_mut().zip(best.iter()) {
-                        *sij = bj + sigma * (*sij - bj);
-                    }
-                    simplex[i] = project(&simplex[i]);
-                    fvals[i] = f(&simplex[i]);
-                }
-            }
-        }
-    }
-
-    // Return best
-    let best_idx = fvals
-        .iter()
-        .enumerate()
-        .min_by(|(_, a), (_, b)| a.partial_cmp(b).unwrap())
-        .unwrap()
-        .0;
-    (simplex[best_idx].clone(), fvals[best_idx])
-}
-
-// ---------------------------------------------------------------------------
 // Model Fitting Pipeline
 // ---------------------------------------------------------------------------
 
@@ -562,13 +443,14 @@ pub fn fit_model(sn: &SyntheticSnData, bao: &SyntheticBaoData, is_bounce: bool) 
     let n_data = sn.z.len() + bao.z_eff.len();
 
     if is_bounce {
-        let (best, chi2_val) = bounded_nelder_mead(
-            |p| chi2_sn(p[0], p[1], p[2], sn) + chi2_bao(p[0], p[1], p[2], bao),
-            &[0.3, 70.0, 1e-6],
-            &[(0.1, 0.5), (60.0, 80.0), (0.0, 1e-2)],
-            2000,
-            1e-8,
-        );
+        let objective = |p: &[f64]| chi2_sn(p[0], p[1], p[2], sn) + chi2_bao(p[0], p[1], p[2], bao);
+        let config = NelderMeadConfig {
+            bounds: vec![(0.1, 0.5), (60.0, 80.0), (0.0, 1e-2)],
+            max_iter: 2000,
+            tol: 1e-8,
+            ..Default::default()
+        };
+        let (best, chi2_val) = bounded_nelder_mead_single(&objective, &[0.3, 70.0, 1e-6], &config);
         let n_params = 3;
         let aic = chi2_val + 2.0 * n_params as f64;
         let bic = chi2_val + n_params as f64 * (n_data as f64).ln();
@@ -582,13 +464,14 @@ pub fn fit_model(sn: &SyntheticSnData, bao: &SyntheticBaoData, is_bounce: bool) 
             bic,
         }
     } else {
-        let (best, chi2_val) = bounded_nelder_mead(
-            |p| chi2_sn(p[0], p[1], 0.0, sn) + chi2_bao(p[0], p[1], 0.0, bao),
-            &[0.3, 70.0],
-            &[(0.1, 0.5), (60.0, 80.0)],
-            2000,
-            1e-8,
-        );
+        let objective = |p: &[f64]| chi2_sn(p[0], p[1], 0.0, sn) + chi2_bao(p[0], p[1], 0.0, bao);
+        let config = NelderMeadConfig {
+            bounds: vec![(0.1, 0.5), (60.0, 80.0)],
+            max_iter: 2000,
+            tol: 1e-8,
+            ..Default::default()
+        };
+        let (best, chi2_val) = bounded_nelder_mead_single(&objective, &[0.3, 70.0], &config);
         let n_params = 2;
         let aic = chi2_val + 2.0 * n_params as f64;
         let bic = chi2_val + n_params as f64 * (n_data as f64).ln();

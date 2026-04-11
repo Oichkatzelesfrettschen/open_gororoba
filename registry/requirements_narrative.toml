@@ -4,7 +4,7 @@
 #      to regenerate the emitted markdown files under docs/, apps/, and crate README targets.
 
 [requirements_narrative]
-updated = "2026-04-04"
+updated = "2026-04-11"
 authoritative = true
 document_count = 13
 
@@ -44,7 +44,18 @@ cargo build --workspace -j"$(nproc)"
 cargo test --workspace -j"$(nproc)"
 cargo clippy --workspace -j"$(nproc)" -- -D warnings
 make governance-gate
+make rust-semver-check
+make cargo-deny-check
+make dep-audit
+make cpd-audit CPD_TOP=20
+make docs-freshness
 ```
+
+Optional audit tools for the deeper lanes include PMD/CPD, cargo-deny,
+cargo-semver-checks, cargo-machete, cargo-geiger, dprint, and typos. Keep CPD
+strict mode (`make cpd-audit-strict`) behind the current generated-surface and
+lexical-error triage so structural duplicates fail CI only after known noise is
+classified.
 
 ## Module docs
 

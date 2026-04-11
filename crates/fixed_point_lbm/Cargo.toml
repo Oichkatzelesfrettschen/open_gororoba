@@ -2,6 +2,7 @@
 name = "fixed_point_lbm"
 version = "0.1.0"
 edition = "2021"
+license.workspace = true
 description = "Fixed-point arithmetic for Lattice Boltzmann methods, inspired by SASS RE measurements"
 
 [dependencies]

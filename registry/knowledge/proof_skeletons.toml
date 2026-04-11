@@ -3539,18 +3539,18 @@ id = "PRS-00197"
 skeleton_kind = "claim_decision_rule"
 theorem_label = "C-1165"
 claim_id = "C-1165"
-assumptions = ["Pioneer-Voyager radial consistency: proton number density n(r) agrees within 30% at overlapping heliocentric distances (5-80 AU). Temporal variability (solar cycle) accounts for most disagreement."]
+assumptions = ["Sedenion zero-divisor (ZD) coupling in 128^3 CUDA BF16 LBM simulations acts as a dynamical stabilizer that suppresses non-physical lattice ghost resonances. In the coupling-strength sweep (tau=0.55), the f=0.2 ghost resonance present in the control (lambda=0.0) is eliminated for all coupling strengths lambda >= 0.1."]
 obligations = ["Establish evidence-backed status for C-1165."]
-derivation_steps = ["Legacy status token: Pending"]
-decision_rule = "Legacy status token: Pending"
-conclusion = "PROVISIONAL: Provisional"
+derivation_steps = ["Verified via CUDA coupling sweep at 128^3 resolution", "Sedenion frustration introduces discrete phase-scrambling that prevents the establishment of coherent lattice artifacts observed in the control baseline"]
+decision_rule = "Verified via CUDA coupling sweep at 128^3 resolution. Sedenion frustration introduces discrete phase-scrambling that prevents the establishment of coherent lattice artifacts observed in the control baseline."
+conclusion = "VERIFIED: Verified"
 source_uid = "C-1165"
 source_registry = "registry/canonical/control_plane.sqlite3"
 source_path = "registry/canonical/control_plane.sqlite3"
 line_start = 0
 line_end = 0
 claim_refs = ["C-1165"]
-evidence_refs = ["crates/data_core/src/catalogs/pioneer.rs", "crates/data_core/src/catalogs/voyager.rs", "pioneer.rs", "voyager.rs"]
+evidence_refs = ["crates/gororoba_cli_physics/src/bin/zd_resonance_cuda.rs", "zd_resonance_cuda.rs"]
 
 [[skeleton]]
 id = "PRS-00198"
@@ -10894,7 +10894,7 @@ source_path = "registry/canonical/control_plane.sqlite3"
 line_start = 0
 line_end = 0
 claim_refs = ["C-1538"]
-evidence_refs = ["crates/moreno_1997/src/lib.rs", "moreno.rs"]
+evidence_refs = ["crates/moreno_1997/src/lib.rs", "lib.rs"]
 
 [[skeleton]]
 id = "PRS-00606"
@@ -10912,7 +10912,7 @@ source_path = "registry/canonical/control_plane.sqlite3"
 line_start = 0
 line_end = 0
 claim_refs = ["C-1539"]
-evidence_refs = ["crates/moreno_1997/src/lib.rs", "moreno.rs"]
+evidence_refs = ["crates/moreno_1997/src/lib.rs", "lib.rs"]
 
 [[skeleton]]
 id = "PRS-00607"
@@ -10948,7 +10948,7 @@ source_path = "registry/canonical/control_plane.sqlite3"
 line_start = 0
 line_end = 0
 claim_refs = ["C-1540"]
-evidence_refs = ["crates/moreno_1997/src/lib.rs", "moreno.rs", "proofs/theories/C1540_MorHaQuaternion.v"]
+evidence_refs = ["crates/moreno_1997/src/lib.rs", "lib.rs", "proofs/theories/C1540_MorHaQuaternion.v"]
 
 [[skeleton]]
 id = "PRS-00609"
@@ -10966,7 +10966,7 @@ source_path = "registry/canonical/control_plane.sqlite3"
 line_start = 0
 line_end = 0
 claim_refs = ["C-1541"]
-evidence_refs = ["crates/moreno_1997/src/lib.rs", "moreno.rs", "proofs/theories/C1541_MorDirectSum.v"]
+evidence_refs = ["crates/moreno_1997/src/lib.rs", "lib.rs", "proofs/theories/C1541_MorDirectSum.v"]
 
 [[skeleton]]
 id = "PRS-00610"
@@ -10975,8 +10975,8 @@ theorem_label = "C-1542"
 claim_id = "C-1542"
 assumptions = ["Moreno Theorem 1.16 (mod-4 eigenspace constraint): dim_R(V_lambda) = 0 mod 4 for all lambda > 0, lambda != 1 in the T~_a spectrum (eigenvalue -lambda^2 of L_a^2 on H_a^perp). Source: Moreno (1997) arXiv:q-alg/9710013v1."]
 obligations = ["Establish evidence-backed status for C-1542."]
-derivation_steps = []
-decision_rule = ""
+derivation_steps = ["Canonical A_3 eigenspace profile and the abstract H-module orbit theorem are formalized in Rocq", "the concrete bridge from arbitrary Cayley-Dickson V_lambda subspaces to that module interface remains open"]
+decision_rule = "Canonical A_3 eigenspace profile and the abstract H-module orbit theorem are formalized in Rocq; the concrete bridge from arbitrary Cayley-Dickson V_lambda subspaces to that module interface remains open."
 conclusion = "THEORETICAL: Theoretical"
 source_uid = "C-1542"
 source_registry = "registry/canonical/control_plane.sqlite3"
@@ -10984,7 +10984,7 @@ source_path = "registry/canonical/control_plane.sqlite3"
 line_start = 0
 line_end = 0
 claim_refs = ["C-1542"]
-evidence_refs = ["crates/moreno_1997/src/lib.rs", "moreno.rs", "proofs/theories/C1542_MorVlambdaMod4.v", "proofs/theories/C1542_MorVlambdaOrbit.v"]
+evidence_refs = ["crates/moreno_1997/src/lib.rs", "lib.rs", "proofs/theories/C1542_MorVlambdaMod4.v", "proofs/theories/C1542_MorVlambdaOrbit.v"]
 
 [[skeleton]]
 id = "PRS-00611"
@@ -11002,7 +11002,7 @@ source_path = "registry/canonical/control_plane.sqlite3"
 line_start = 0
 line_end = 0
 claim_refs = ["C-1543"]
-evidence_refs = ["annihilators.rs", "crates/moreno_1997/src/lib.rs", "crates/gororoba_algebra/src/analysis/annihilators.rs", "moreno.rs"]
+evidence_refs = ["annihilators.rs", "crates/gororoba_algebra/src/analysis/annihilators.rs", "crates/moreno_1997/src/lib.rs", "lib.rs"]
 
 [[skeleton]]
 id = "PRS-00612"
@@ -11020,7 +11020,7 @@ source_path = "registry/canonical/control_plane.sqlite3"
 line_start = 0
 line_end = 0
 claim_refs = ["C-1544"]
-evidence_refs = ["crates/moreno_1997/src/lib.rs", "moreno.rs", "proofs/theories/C1544_MorKerSDecomp.v"]
+evidence_refs = ["crates/moreno_1997/src/lib.rs", "lib.rs", "proofs/theories/C1544_MorKerSDecomp.v"]
 
 [[skeleton]]
 id = "PRS-00613"
@@ -11038,7 +11038,7 @@ source_path = "registry/canonical/control_plane.sqlite3"
 line_start = 0
 line_end = 0
 claim_refs = ["C-1545"]
-evidence_refs = ["crates/moreno_1997/src/lib.rs", "moreno.rs", "proofs/theories/C1544_MorKerSDecomp.v"]
+evidence_refs = ["crates/moreno_1997/src/lib.rs", "lib.rs", "proofs/theories/C1544_MorKerSDecomp.v"]
 
 [[skeleton]]
 id = "PRS-00614"
@@ -11047,8 +11047,8 @@ theorem_label = "C-1546"
 claim_id = "C-1546"
 assumptions = ["Moreno Theorem 2.9 (ZD eigenvalue characterization): For alternative unit-norm trace-zero a, b in A_n, the pair (a,b) in A_{n+1} is a zero divisor iff -2 is an eigenvalue of L_{a+b}^2 on A_n. This is an O(dim^3) criterion replacing O(dim^4) brute-force search. In A_3 (alternative algebra), c=a+b with orthogonal unit a,b gives c^2=-2 so L_c^2=-2I; ALL such pairs lift to ZDs in A_4. Verified: known pair (e1+e10, e4-e15)/sqrt(2) in 16D satisfies the criterion. Source: Moreno (1997) arXiv:q-alg/9710013v1."]
 obligations = ["Establish evidence-backed status for C-1546."]
-derivation_steps = []
-decision_rule = ""
+derivation_steps = ["The canonical A_3 witness lane and the abstract iff core with explicit purity/anticommutation side conditions are formalized in Rocq", "the full arbitrary-alternative Cayley-Dickson discharge of those side conditions remains open"]
+decision_rule = "The canonical A_3 witness lane and the abstract iff core with explicit purity/anticommutation side conditions are formalized in Rocq; the full arbitrary-alternative Cayley-Dickson discharge of those side conditions remains open."
 conclusion = "THEORETICAL: Theoretical"
 source_uid = "C-1546"
 source_registry = "registry/canonical/control_plane.sqlite3"
@@ -11056,7 +11056,7 @@ source_path = "registry/canonical/control_plane.sqlite3"
 line_start = 0
 line_end = 0
 claim_refs = ["C-1546"]
-evidence_refs = ["crates/moreno_1997/src/lib.rs", "moreno.rs", "proofs/theories/C1546_MorEigenZD.v", "proofs/theories/C1546_MorEigenIFF.v"]
+evidence_refs = ["crates/moreno_1997/src/lib.rs", "lib.rs", "proofs/theories/C1546_MorEigenIFF.v", "proofs/theories/C1546_MorEigenZD.v", "purity/anticommutation"]
 
 [[skeleton]]
 id = "PRS-00615"
@@ -11074,7 +11074,7 @@ source_path = "registry/canonical/control_plane.sqlite3"
 line_start = 0
 line_end = 0
 claim_refs = ["C-1547"]
-evidence_refs = ["crates/moreno_1997/src/lib.rs", "moreno.rs", "proofs/theories/C1547_MorSpecialTripleOct.v"]
+evidence_refs = ["crates/moreno_1997/src/lib.rs", "lib.rs", "proofs/theories/C1547_MorSpecialTripleOct.v"]
 
 [[skeleton]]
 id = "PRS-00616"
