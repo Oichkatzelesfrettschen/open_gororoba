@@ -84,13 +84,13 @@ evidence_refs = ["crates/algebra_analysis/src/boxkites.rs"]
 id = "WS-GATES-001"
 name = "Required Gate Stabilization"
 priority = "high"
-status = "in_progress"
-status_token = "IN_PROGRESS"
-description = "Stabilize the scoped local gate, the authoritative Python gate, and the authoritative Rust gate without exploding backlog tracking into per-test busywork. Current tranche CP-GATES-2026-03 keeps the work bucketed into control-plane truthfulness, Rust regression routing, and final acceptance evidence."
-primary_outputs = ["Makefile", ".githooks/pre-push", ".github/workflows/ci.yml", "registry/control_plane_roadmap.toml", "registry/next_actions.toml", "registry/todo.toml", "reports/gates/"]
+status = "done"
+status_token = "DONE"
+description = "DONE (CP-GATES-2026-03): gate-local, gate-ci-registry, and gate-ci-rust all pass with exit code 0 as of 2026-04-11. Fixed toml 1.1 parse regressions, restored pyproject.toml, corrected binary_count and experiment counters, added missing license fields, updated deny.toml advisory list."
+primary_outputs = []
 dependencies = []
-acceptance_criteria = ["workstream status is constrained to declared enum values.", "workstream dependencies are explicit and machine-parseable.", "Evidence references point to maintained canonical paths."]
-evidence_refs = [".githooks/pre-push", ".github/workflows/ci.yml", "Makefile", "registry/control_plane_roadmap.toml", "registry/next_actions.toml", "registry/todo.toml", "reports/gates/"]
+acceptance_criteria = ["gate-local passes", "gate-ci-registry passes", "gate-ci-rust passes", "gate-audit reports all exit code 0"]
+evidence_refs = ["reports/gates/2026-04-11/102425/summary.md", "registry/next_actions.toml"]
 
 [[workstream]]
 id = "WS-GPU-001"
