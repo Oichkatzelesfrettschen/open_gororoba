@@ -1546,7 +1546,7 @@ fn test_pmns_two_param_baseline_regression() {
 
     // Verify permutation ordering is consistent: diagonal dominance
     for i in 0..3 {
-        let diag = u_pmns[(i, i)].abs();
+        let diag = aligned.matrix()[(i, i)].abs();
         assert!(
             diag > 0.3,
             "PMNS diagonal element ({},{}) = {:.4} too small",
