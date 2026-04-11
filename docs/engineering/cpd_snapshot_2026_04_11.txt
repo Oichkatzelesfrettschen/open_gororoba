@@ -1,0 +1,153 @@
+# CPD Snapshot 2026-04-11 (PH-0 repo debt audit)
+# Generated: 2026-04-11
+# Tool: PMD 7.12.0 (pmd-doc-7.12.0/pmd_languages_rust)
+# Command: pmd cpd --language rust --minimum-tokens 42 --file-list /tmp/cpd_src_list.txt --format xml
+# Source files scanned: 2072 .rs files under crates/ (excluding optical_database.rs, crystal_symmetry.rs)
+# Total clusters: 5843 / Total duplicate lines: 65077
+#
+# Lexical-skip configuration:
+#   Explicit excludes in CPD_EXCLUDE_FILES (Makefile):
+#     crates/materials_core/src/optical_database.rs  -- large generated lookup table (classification: GENERATED)
+#     crates/materials_core/src/crystal_symmetry.rs  -- large generated lookup table (classification: GENERATED)
+#   No .pmd-cpd-ignore files found in repo.
+#   No --skip-blocks-pattern used (flag available but not configured).
+#
+# Top-20 clusters by token count with classification:
+#
+# CLASSIFICATION KEY:
+#   ALGORITHMIC   -- repeated domain math/algorithm that would need shared abstraction
+#   GENERATED     -- table, fixture, or auto-generated surface; high threshold acceptable
+#   FIXTURE-TEST  -- test fixture / repetitive test structure; low harm
+#   LITERAL-TABLE -- large literal constant/lookup within source; candidate for data file
+#   CLI-BOILERPLATE -- main() + arg parse patterns; cosmetic, low harm
+
+#  1: 117L  879tok
+#     crates/algebra_analysis/src/boxkites.rs:7407
+#     crates/algebra_analysis/src/boxkites.rs:7871
+#  Classification: ALGORITHMIC -- CrossPair boxkite graph iteration repeated twice within
+#     same file. Candidate for a shared internal helper in boxkites.rs.
+
+#  2:  99L  771tok
+#     crates/spectral_core/src/neg_dim.rs:132
+#     crates/spectral_core/src/neg_dim.rs:319
+#  Classification: ALGORITHMIC -- repeated spectral analysis pass within neg_dim.rs.
+#     Different parameter sets but identical structure. Candidate for parameterized fn.
+
+#  3:  87L  699tok
+#     crates/data_core/src/heliosphere_feature_cube.rs:1380
+#     crates/data_core/src/heliosphere_feature_cube.rs:1491
+#  Classification: ALGORITHMIC -- heliosphere feature extraction loop repeated in same file.
+#     Identified in DEBT-STRUCTURAL-ARCHITECTURE as a data_core network/fetch plane issue.
+
+#  4:  84L  689tok
+#     crates/algebra_experimental/src/neutrino_sector/tests/regression.rs:1531
+#     crates/algebra_experimental/src/neutrino_sector/tests/regression.rs:1896
+#  Classification: FIXTURE-TEST -- regression test fixture repeated within the same test file.
+#     Expected pattern for exhaustive parameter sweeps.
+
+#  5:  55L  654tok
+#     crates/algebra_experimental/src/neutrino_sector/tests/lift.rs:673
+#     crates/algebra_experimental/src/neutrino_sector/tests/lift.rs:1407
+#  Classification: FIXTURE-TEST -- lift test fixture repeated. Same test file, different params.
+
+#  6: 132L  610tok
+#     crates/gororoba_cli_warp/src/bin/warp_acceptance_gate.rs:430
+#     crates/gororoba_cli_warp/src/warp_runner.rs:1505
+#  Classification: ALGORITHMIC -- warp acceptance gate logic duplicated between a bin and
+#     a library module in gororoba_cli_warp. Cross-file same-crate. Primary candidate for
+#     extraction into a shared warp_runner helper (PH-1 target).
+
+#  7:  55L  604tok
+#     crates/algebra_experimental/src/neutrino_sector/tests/lift.rs:1003
+#     crates/algebra_experimental/src/neutrino_sector/tests/lift.rs:1403
+#  Classification: FIXTURE-TEST -- lift test repeated within same file (different lambda).
+
+#  8:  80L  592tok
+#     crates/algebra_analysis/src/boxkites.rs:7612
+#     crates/algebra_analysis/src/boxkites.rs:7730
+#  Classification: ALGORITHMIC -- third duplicate cluster within boxkites.rs.
+#     Strongest candidate for a shared boxkite traversal helper (see cluster #1 above).
+
+#  9:  52L  581tok
+#     crates/algebra_experimental/src/neutrino_sector/tests/lift.rs:673
+#     crates/algebra_experimental/src/neutrino_sector/tests/lift.rs:1007
+#  Classification: FIXTURE-TEST -- same file, lift test overlap with clusters 5 and 7.
+
+# 10: 102L  578tok
+#     crates/gororoba_cli_physics/src/bin/flyby_crucible.rs:360
+#     crates/gororoba_cli_physics/src/flyby/geometry.rs:77
+#  Classification: ALGORITHMIC -- hyperbolic_initial_state duplicated between a bin and
+#     its domain module. Cross-file same-crate. Candidate for extraction into flyby/geometry.rs
+#     and calling it from flyby_crucible.rs.
+
+# 11:  58L  541tok
+#     crates/algebra_experimental/src/neutrino_sector/tests/regression.rs:1346
+#     crates/algebra_experimental/src/neutrino_sector/tests/regression.rs:1713
+#  Classification: FIXTURE-TEST -- regression test fixture repeated, same file.
+
+# 12:  82L  524tok
+#     crates/lattice_filtration/src/filtration.rs:361
+#     crates/lattice_filtration/src/filtration.rs:568
+#  Classification: ALGORITHMIC -- filtration iteration repeated within the same file.
+#     Candidate for a shared lattice_filtration internal helper.
+
+# 13:  57L  519tok
+#     crates/algebra_experimental/src/neutrino_sector/tests/regression.rs:1345
+#     crates/algebra_experimental/src/neutrino_sector/tests/spectrum.rs:91
+#  Classification: FIXTURE-TEST -- test overlap between regression.rs and spectrum.rs
+#     in the same test directory. Cross-file but same test module.
+
+# 14:  53L  513tok
+#     crates/algebra_experimental/src/neutrino_sector/tests/regression.rs:1713
+#     crates/algebra_experimental/src/neutrino_sector/tests/spectrum.rs:92
+#  Classification: FIXTURE-TEST -- continuation of cluster #13 overlap.
+
+# 15:  93L  497tok
+#     crates/lbm_vulkan/src/compute.rs:1447
+#     crates/lbm_vulkan/src/compute.rs:1646
+#  Classification: ALGORITHMIC -- Vulkan compute step repeated within same file.
+#     Different frame index/dispatch, but identical pipeline structure. Candidate for
+#     a step() helper with frame parameter.
+
+# 16:  48L  496tok
+#     crates/algebra_experimental/src/neutrino_sector/tests/lift.rs:1023
+#     crates/algebra_experimental/src/neutrino_sector/tests/lift.rs:1240
+#  Classification: FIXTURE-TEST -- lift test repeated, same file.
+
+# 17:  52L  491tok
+#     crates/algebra_experimental/src/neutrino_sector/tests/cp.rs:400
+#     crates/algebra_experimental/src/neutrino_sector/tests/cp.rs:738
+#  Classification: FIXTURE-TEST -- CP test repeated within same file.
+
+# 18:  66L  481tok
+#     crates/quantum_core/examples/manifold_extreme_sweep.rs:11
+#     crates/quantum_core/examples/manifold_final_lacunae.rs:9
+#     crates/quantum_core/examples/manifold_legacy_sweep.rs:8
+#  Classification: CLI-BOILERPLATE -- three example binaries share identical setup boilerplate
+#     (nalgebra import + BufReader pattern). Low harm; examples are not on the hot path.
+
+# 19:  84L  480tok
+#     crates/gororoba_cli_physics/src/bin/contrarian_template_sweep.rs:108
+#     crates/gororoba_cli_physics/src/bin/polynomial_detrend_closure.rs:169
+#  Classification: ALGORITHMIC -- sweep logic shared between two CLI bins. Cross-bin
+#     duplication in gororoba_cli_physics. Candidate for extraction into a shared
+#     sweep module in the crate.
+
+# 20:  72L  467tok
+#     crates/gororoba_cli_data/src/bin/evidence_provenance.rs:1699
+#     crates/gororoba_cli_data/src/bin/integrity_resolution.rs:1280
+#  Classification: ALGORITHMIC -- fs::write + format! pattern duplicated across two
+#     CLI governance bins. Both write registry artifacts; candidate for a shared
+#     write_registry_artifact() helper in gororoba_cli_data.
+
+#
+# PRIORITY EXTRACTION TARGETS (PH-1):
+#   1. boxkites.rs (clusters 1, 8): shared traversal helper (~50L savings)
+#   2. warp_acceptance_gate + warp_runner (cluster 6): extract to warp_runner helper
+#   3. flyby_crucible + flyby/geometry (cluster 10): move to domain module
+#   4. evidence_provenance + integrity_resolution (cluster 20): shared write helper
+#
+# KNOWN-NOISE (do not act on):
+#   - neutrino_sector test clusters (4,5,7,9,11,13,14,16,17): fixture-test repetition,
+#     expected for parameter sweep coverage
+#   - quantum_core examples (18): boilerplate in examples/, not production code
