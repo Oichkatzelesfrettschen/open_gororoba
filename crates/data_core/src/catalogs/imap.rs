@@ -13,10 +13,14 @@
 //!
 //! Fetch logic lives in `imap_fetch`.
 
+#[cfg(feature = "fetch")]
 use chrono::{DateTime, Datelike, TimeZone, Timelike, Utc};
+#[cfg(feature = "fetch")]
 use serde_json::Value;
+#[cfg(feature = "fetch")]
 use std::collections::BTreeMap;
 
+#[cfg(feature = "fetch")]
 pub const AU_KM: f64 = 149_597_870.7;
 
 #[derive(Debug, Clone)]
@@ -59,6 +63,7 @@ pub struct ImapIalirtRecord {
     pub spectral_peak: f64,
 }
 
+#[cfg(feature = "fetch")]
 #[derive(Default)]
 pub(crate) struct IalirtAccumulator {
     pub r_sum: f64,
@@ -82,6 +87,7 @@ pub(crate) struct IalirtAccumulator {
     pub spectral_peak_count: usize,
 }
 
+#[cfg(any(feature = "fetch", test))]
 pub(crate) fn sanitize_numeric(value: f64) -> f64 {
     if !value.is_finite() || value.abs() >= 1.0e30 {
         f64::NAN
@@ -90,6 +96,7 @@ pub(crate) fn sanitize_numeric(value: f64) -> f64 {
     }
 }
 
+#[cfg(any(feature = "fetch", test))]
 pub(crate) fn mean(values: &[f64]) -> f64 {
     let finite: Vec<f64> = values
         .iter()
@@ -102,6 +109,7 @@ pub(crate) fn mean(values: &[f64]) -> f64 {
     finite.iter().sum::<f64>() / finite.len() as f64
 }
 
+#[cfg(any(feature = "fetch", test))]
 pub(crate) fn stddev(values: &[f64], mean: f64) -> f64 {
     let finite: Vec<f64> = values
         .iter()
@@ -122,6 +130,7 @@ pub(crate) fn stddev(values: &[f64], mean: f64) -> f64 {
     var.sqrt()
 }
 
+#[cfg(feature = "fetch")]
 pub(crate) fn json_f64(value: &Value, key: &str) -> f64 {
     value
         .get(key)
@@ -129,6 +138,7 @@ pub(crate) fn json_f64(value: &Value, key: &str) -> f64 {
         .map_or(f64::NAN, sanitize_numeric)
 }
 
+#[cfg(feature = "fetch")]
 pub(crate) fn json_vec_f64(value: &Value, key: &str) -> Vec<f64> {
     value
         .get(key)
@@ -143,6 +153,7 @@ pub(crate) fn json_vec_f64(value: &Value, key: &str) -> Vec<f64> {
         .unwrap_or_default()
 }
 
+#[cfg(feature = "fetch")]
 pub(crate) fn iso_time_to_ydh(value: &str) -> Option<(u16, u16, u8)> {
     use chrono::NaiveDateTime;
     let dt = if let Ok(dt) = DateTime::parse_from_rfc3339(value) {
@@ -154,6 +165,7 @@ pub(crate) fn iso_time_to_ydh(value: &str) -> Option<(u16, u16, u8)> {
     Some((dt.year() as u16, dt.ordinal() as u16, dt.hour() as u8))
 }
 
+#[cfg(feature = "fetch")]
 pub(crate) fn km_xyz_to_spherical_au(x_km: f64, y_km: f64, z_km: f64) -> (f64, f64, f64) {
     if !x_km.is_finite() || !y_km.is_finite() || !z_km.is_finite() {
         return (f64::NAN, f64::NAN, f64::NAN);
@@ -168,6 +180,7 @@ pub(crate) fn km_xyz_to_spherical_au(x_km: f64, y_km: f64, z_km: f64) -> (f64, f
     (r_au, lat_deg, lon_deg)
 }
 
+#[cfg(feature = "fetch")]
 pub(crate) fn rows_from_accumulator(
     hourly: BTreeMap<(u16, u16, u8), IalirtAccumulator>,
 ) -> Vec<ImapIalirtRecord> {
