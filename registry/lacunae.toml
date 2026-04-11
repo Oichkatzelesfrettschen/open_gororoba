@@ -104,7 +104,7 @@ title = "Unresolved claim status for C-1273"
 description = "RESOLVED: C-1273 status THEORETICAL (legacy token: Conjecture) is the correct final disposition. ZD algebraic forcing adds topological confinement is a speculative physics extrapolation; Theoretical is the appropriate status for a conjecture without experimental validation."
 priority = "medium"
 status = "resolved"
-claim_refs = ["C-1273"]
+claim_refs = []
 source_refs = []
 related_marker_ids = []
 
@@ -116,8 +116,8 @@ title = "Unresolved claim status for C-1538"
 description = "RESOLVED: C-1538 promoted from Theoretical to Verified. proofs/theories/C1538_MorZDSymmetry.v compiles with exit 0, no Admitted (2026-04-11, Rocq 9.1.1). Moreno Corollary 1.6 ZD symmetry is kernel-checked."
 priority = "medium"
 status = "resolved"
-claim_refs = ["C-1538"]
-source_refs = ["proofs/theories/C1538_MorZDSymmetry.v"]
+claim_refs = []
+source_refs = []
 related_marker_ids = []
 
 [[lacuna]]
@@ -128,8 +128,8 @@ title = "Unresolved claim status for C-1539"
 description = "RESOLVED: C-1539 promoted from Theoretical to Verified. proofs/theories/C1539_MorSkewSymm.v compiles with exit 0, no Admitted (2026-04-11, Rocq 9.1.1). l_x_skew_symm fully proved. Moreno Proposition 1.7 skew-symmetry is kernel-checked."
 priority = "medium"
 status = "resolved"
-claim_refs = ["C-1539"]
-source_refs = ["proofs/theories/C1539_MorSkewSymm.v"]
+claim_refs = []
+source_refs = []
 related_marker_ids = []
 
 [[lacuna]]
@@ -140,8 +140,8 @@ title = "Unresolved claim status for C-1542"
 description = "PARTIAL PROGRESS (T-065 closed 2026-04-11): C-1542 remains Theoretical at full generality. Canonical A_3 profile (C1542_MorVlambdaMod4.v) and abstract H-module orbit theorem (C1542_MorVlambdaOrbit.v) are Rocq-verified. Nonempty H_a-block stepping bridge (C1548_MorVlambdaHBlock.v) now derives is_h_module_dim via hmd_step from block_count >= 1. Remaining open: concrete HModuleFinDim instance for V_lambda(a) with arbitrary doubly-pure unit-norm a (requires H_a-stability and inner-product adjoint lemmas for arbitrary a). Claim C-1542 stays Theoretical until full arbitrary-a bridge is formalized."
 priority = "medium"
 status = "open"
-claim_refs = ["C-1542"]
-source_refs = ["proofs/theories/C1542_MorVlambdaOrbit.v", "proofs/theories/C1548_MorVlambdaHBlock.v"]
+claim_refs = []
+source_refs = []
 related_marker_ids = []
 
 [[lacuna]]

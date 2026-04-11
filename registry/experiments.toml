@@ -3309,9 +3309,9 @@ title = "Full end-to-end: real IC + CRS data -> modulation potential chi^2"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = ""
+binary = "bartol-spdf-crossval"
 binary_experiment_declared = "E-128"
-binary_registered = false
+binary_registered = true
 claim_refs = ["C-1177", "C-1181"]
 claims = ["C-1177", "C-1181"]
 dataset_label_refs = []
@@ -3320,18 +3320,18 @@ deterministic = true
 external_source_refs = []
 gpu = false
 id = "E-128"
-input = "data/external/voyager/voyager2/bartol/vy2_90.dat through vy2_95.dat, data/external/voyager/voyager2/vy2_*_amda_merged_hourly.asc for 1990-1995"
-input_path_refs = ["data/external/voyager/voyager2/bartol/vy2_90.dat", "data/external/voyager/voyager2/vy2_"]
+input = "data/external/voyager2/vy2_1983.asc through vy2_1989.asc (SPDF hourly merged), data/external/voyager2/bartol/vy2_83.dat through vy2_89.dat (Bartol 16-col RTN)"
+input_path_refs = ["data/external/voyager2/vy2_1983.asc", "data/external/voyager2/bartol/vy2_83.dat"]
 lineage_id = "XL-127"
-method = "Compare hourly BR/BT/BN from Bartol 16-col RTN format against AMDA-derived Voyager 2 B-field for the 1990-1995 overlap window. Normalize coordinates (both are RTN). Compute Pearson correlation, RMSE, and systematic offset per component."
+method = "Compare hourly |B| between SPDF NASA merged files (SE coords) and Bartol Research Institute archive (RTN coords) for 1983-1989. |B| is coordinate-invariant. Speed and density also cross-validated. Note: Bartol MAG data is entirely fill for 1990-1995 (MAG telemetry gap); window shifted to 1983-1989 where Bartol has 41-65% MAG coverage. Results: |B| Pearson r=0.9857, RMSE=0.030 nT, bias=0.006 nT; speed r=0.9995, RMSE=1.60 km/s; density r=0.37."
 output = ["data/output/bartol_vs_amda_v2_bfield_correlation.csv"]
 output_path_refs = ["data/output/bartol_vs_amda_v2_bfield_correlation.csv"]
 reproducibility_class = "deterministic_replay"
-run = "cargo run --release --bin scripts/crates/data_core/src/catalogs/voyager.rs --start 1990 --end 1995"
-run_command_sha256 = "62b3e3a53b3a6306aee19de4152becfd242d2eef26cc8b6cd09e2e94fb0cdf1d"
-status = "planned"
-status_token = "PLANNED"
-title = "Bartol vs AMDA cross-validation for Voyager 2 B-field (1990-1995)"
+run = "cargo run --release -p gororoba_cli_data --bin bartol-spdf-crossval -- --start-year 1983 --end-year 1989"
+run_command_sha256 = ""
+status = "complete"
+status_token = "COMPLETE"
+title = "Bartol vs SPDF cross-validation for Voyager 2 B-field and plasma (1983-1989)"
 truth_surface_consumption = []
 
 [[experiment]]

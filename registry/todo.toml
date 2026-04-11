@@ -703,13 +703,13 @@ evidence_refs = []
 id = "T-058"
 area = "data"
 title = "Cross-validate Bartol vs AMDA B-field for Voyager 2 overlap"
-description = "E-128: Compare Bartol 16-col RTN B-field against AMDA-derived Voyager 2 for 1990-1995 overlap."
+description = "E-128: Compare Bartol 16-col RTN B-field against SPDF Voyager 2 for 1983-1989 window. RESULT: |B| Pearson r=0.9857, RMSE=0.030 nT, bias=0.006 nT; speed r=0.9995; density r=0.37. Bartol MAG is entirely fill for 1990-1995 (MAG telemetry gap). Window shifted to 1983-1989. bartol-spdf-crossval binary registered."
 priority = "medium"
-status = "open"
-status_token = "OPEN"
+status = "done"
+status_token = "DONE"
 dependencies = ["E-128"]
 acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
-evidence_refs = []
+evidence_refs = ["data/output/bartol_vs_amda_v2_bfield_correlation.csv", "crates/gororoba_cli_data/src/bin/bartol_spdf_crossval.rs"]
 
 [[item]]
 id = "T-059"
