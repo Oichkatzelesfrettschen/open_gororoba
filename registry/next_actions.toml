@@ -425,14 +425,14 @@ evidence_refs = []
 
 [[action]]
 id = "NA-035"
-area = "docs"
+area = "qa"
 title = "Gate Audit and Mirror Truth Refresh"
-description = "Refresh the generated markdown mirrors and produce a current keep-going gate audit so the repo reports today's gate frontier rather than stale March 7 summaries. Current checkpoint: mirrors have been refreshed, Python control-plane scans now use the new ripgrep-plus-bounded-worker fast path, the terminology gate now uses ripgrep candidate filtering, ambient Cargo tooling now builds under .cache/cargo-default-target, and the remaining step is the new gate-audit run after Rust revalidation."
+description = "DONE: mirrors refreshed, gate-audit completed 2026-04-11 with gate-ci-registry and gate-ci-rust both at exit 0. Gate frontier is current."
 priority = "medium"
-status = "in_progress"
-status_token = "IN_PROGRESS"
+status = "done"
+status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["next_action status is constrained to declared enum values.", "next_action dependencies are explicit and machine-parseable."]
+acceptance_criteria = ["gate-audit reports exit code 0 for gate-ci-registry and gate-ci-rust"]
 evidence_refs = []
 
 [[action]]
