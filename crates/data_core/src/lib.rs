@@ -8,15 +8,12 @@
 //! - `fetcher`: Shared HTTP download, SHA-256 checksum, and disk caching.
 //! - `catalogs`: Dataset-specific parsers with typed record structs.
 //! - `formats`: Parsers for non-CSV data formats (GFC, SHC, Pantheon .dat).
-//! - `quality` / `hdf5_export`: Artifact helpers extracted into
-//!   `data_artifacts_core` and re-exported here for compatibility.
 //!
 //! # Feature Boundaries
 //!
 //! - `fetch` (default): enables the transfer-heavy surface such as
 //!   `download_stack` and network-coupled label fetchers.
-//! - `hdf5-export`: enables HDF5 artifact helpers through
-//!   `data_artifacts_core`.
+//! - `hdf5-export`: enables HDF5 helpers in `bl_filterbank` (reads .fil files).
 //!
 //! # Usage
 //!
@@ -43,18 +40,11 @@ pub mod download_stack;
 pub mod fetcher;
 pub mod formats;
 pub mod geophysical;
-#[cfg(feature = "hdf5-export")]
-pub mod hdf5_export {
-    pub use data_artifacts_core::hdf5_export::*;
-}
 #[cfg(feature = "fetch")]
 pub mod heliosphere_event_labels;
 pub mod heliosphere_feature_cube;
 pub mod parse;
 pub mod provenance;
-pub mod quality {
-    pub use data_artifacts_core::quality::*;
-}
 pub mod registry;
 pub mod registry_mirrors;
 pub mod seti;
@@ -94,11 +84,6 @@ pub use heliosphere_feature_cube::{
     compute_invariant_samples, estimate_sparse_execution_plan, estimate_sparse_memory_plan,
     heliosphere_row_datetime, magnetic_plasma_takens_embed, magnetic_takens_embed,
     plasma_takens_embed_dim, transform_feature_rows, transform_feature_rows_with_stats,
-};
-pub use quality::{
-    RhoQualityError, RhoQualityThresholds, RhoTraceQuality, ScalarTraceError, ScalarTraceQuality,
-    ScalarTraceThresholds, assess_rho_trace, assess_scalar_trace, validate_rho_trace,
-    validate_scalar_trace_signal,
 };
 pub use spatial::{
     CatalogModality, RadiusMatch, SkyGridIndex, SkyPoint, angular_separation_arcsec,
