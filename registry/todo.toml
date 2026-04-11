@@ -621,11 +621,11 @@ area = "qa"
 title = "Run gate-audit and archive tranche acceptance evidence"
 description = "Execute the keep-going gate audit after the local, Python, and Rust gates are revalidated so the tranche closes with one current summary instead of a chain of stale partial reports. Include the post-fast-path gate state, including the ripgrep-backed terminology lane, the repo-scoped Rust routing, the local heavy-lane skip, and the ambient Cargo target separation, so any remaining slow lane is measured from current conditions rather than the pre-optimization baseline."
 priority = "medium"
-status = "open"
-status_token = "OPEN"
+status = "done"
+status_token = "DONE"
 dependencies = []
 acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
-evidence_refs = []
+evidence_refs = ["reports/gates/2026-04-11/132846/summary.md"]
 
 [[item]]
 id = "T-052"
