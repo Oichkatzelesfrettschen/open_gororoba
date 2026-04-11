@@ -59,7 +59,7 @@
 .PHONY: docker-quantum-build docker-quantum-run docker-quantum-shell
 .PHONY: clean clean-builds clean-artifacts clean-all host-profile
 .PHONY: run-e183
-.PHONY: cpd-audit cpd-audit-strict cargo-cache-status cargo-cache-prune cargo-cache-smoke
+.PHONY: cpd-audit cpd-audit-strict cpd-audit-tooling cargo-cache-status cargo-cache-prune cargo-cache-smoke
 .PHONY: cd-row-upgrade-batch cd-row-upgrade-jacobson cd-row-upgrade-freudenthal
 
 .NOTPARALLEL: bootstrap-dev check smoke integrity integrity-rust rust-smoke rust-regression rust-regression-scoped heavy cargo-deny-check gate-local gate-ci-registry gate-ci-rust gate-audit pre-push-gate pre-push-gate-scoped pre-push-gate-strict governance-gate governance-gate-readonly registry-control-plane-gate-readonly registry-acceptance-gate-readonly
@@ -1743,6 +1743,21 @@ cpd-audit-strict:
 	@$(_CPD_REGEN_LIST)
 	pmd cpd --language rust --minimum-tokens $(CPD_MIN_TOKENS) --file-list $(_CPD_FILE_LIST) --format xml 2>/dev/null \
 		| $(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin cpd-report -- --strict --top $(CPD_TOP)
+
+# Scan tooling and scripting surface (xtask/, root .rs helpers) with a higher
+# minimum-token threshold. This lane separates boilerplate noise in tooling from
+# algorithmic duplication in domain crates. Use CPD_TOOLING_TOKENS to tune.
+CPD_TOOLING_TOKENS ?= 80
+_CPD_TOOLING_FILE_LIST := /tmp/cpd_tooling_src_list.txt
+
+cpd-audit-tooling:
+	@command -v pmd >/dev/null 2>&1 || { echo "ERROR: pmd not found. Install PMD (e.g. paru -S pmd) to run cpd-audit-tooling."; exit 1; }
+	@find xtask/src -name '*.rs' 2>/dev/null > $(_CPD_TOOLING_FILE_LIST); \
+	 find scripts -name '*.rs' 2>/dev/null >> $(_CPD_TOOLING_FILE_LIST); \
+	 find crates/gororoba_cli_data/src/bin -name '*.rs' 2>/dev/null >> $(_CPD_TOOLING_FILE_LIST); \
+	 echo "Tooling surface: $$(wc -l < $(_CPD_TOOLING_FILE_LIST)) files"
+	pmd cpd --language rust --minimum-tokens $(CPD_TOOLING_TOKENS) --file-list $(_CPD_TOOLING_FILE_LIST) --format xml 2>/dev/null \
+		| $(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin cpd-report -- --top $(CPD_TOP)
 
 # ---- Heliosphere Quench Map ----
 .PHONY: quench-map

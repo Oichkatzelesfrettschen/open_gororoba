@@ -151,3 +151,14 @@
 #   - neutrino_sector test clusters (4,5,7,9,11,13,14,16,17): fixture-test repetition,
 #     expected for parameter sweep coverage
 #   - quantum_core examples (18): boilerplate in examples/, not production code
+#
+# PH-1 STATUS (2026-04-11):
+#   - Cluster classification complete (all 20 classified above).
+#   - cosmology_core optimizer review: optimizer.rs (primary Nelder-Mead) and
+#     optimizer_argmin.rs (argmin pilot adapter) are correctly separated concerns;
+#     no duplication to fix. optimizer_argmin.rs imports NelderMeadConfig from
+#     optimizer.rs via use crate::optimizer::NelderMeadConfig.
+#   - cpd-audit-tooling Makefile target added (CPD_TOOLING_TOKENS=80, scans
+#     xtask/src, scripts/*.rs, crates/gororoba_cli_data/src/bin).
+#   - Extraction targets (1-4 above) deferred to 1-3 sprint horizon per PH-1 plan.
+#     These require careful refactor with cargo check -p <crate> gate at each step.
