@@ -6,7 +6,6 @@ description = "Dataset acquisition, validation, and caching for cosmological cat
 license = "MIT"
 
 [dependencies]
-data_artifacts_core = { path = "../data_artifacts_core" }
 csv = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
@@ -47,7 +46,7 @@ verified_core = { version = "0.1.0", path = "../verified_core" }
 [features]
 default = ["fetch"]
 fetch = ["dep:reqwest", "dep:ureq", "dep:backon", "dep:url"]
-hdf5-export = ["dep:hdf5", "data_artifacts_core/hdf5-export"]
+hdf5-export = ["dep:hdf5"]
 netcdf = ["dep:netcdf3", "dep:netcdf-reader"]
 dataframe = ["dep:polars"]
 fits = ["dep:fitsio", "dep:quick-xml"]

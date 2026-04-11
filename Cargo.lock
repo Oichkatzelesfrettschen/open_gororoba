@@ -3258,7 +3258,6 @@ dependencies = [
  "chrono",
  "core_affinity",
  "csv",
- "data_artifacts_core",
  "fitsio",
  "flate2",
  "gororoba_contracts",
