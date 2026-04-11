@@ -11,7 +11,9 @@
 //! The parser accepts CSV exports and dynamically discovers all proton-flux
 //! channels present in the header.
 
-use crate::{fetcher::FetchError, parse::parse_f64_or_nan};
+#[cfg(any(feature = "fetch", test))]
+use crate::fetcher::FetchError;
+use crate::parse::parse_f64_or_nan;
 use csv::ReaderBuilder;
 
 /// A single calibrated Voyager CRS daily-flux record.
@@ -26,6 +28,7 @@ pub struct VoyagerCrsFluxRecord {
 }
 
 
+#[cfg(any(feature = "fetch", test))]
 pub(crate) fn parse_voyager_archive_flux(
     data: &str,
     spacecraft: u8,
