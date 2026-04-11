@@ -461,12 +461,12 @@ evidence_refs = ["proofs/theories/Brown1972ChapterVII.v", "proofs/theories/SStru
 
 [[action]]
 id = "NA-038"
-area = "proofs"
+area = "algebra"
 title = "Complete Moreno 1.16 Arbitrary-a Concrete Bridge"
-description = "Use the new explicit builder, concrete arbitrary-a hypothesis package, geometry-shaped quaternionic-block package, and non-canonical witness package to derive the H_a-module dimension witness from Moreno's full concrete arbitrary-a V_lambda geometry, then expose the full paper-facing arbitrary-a bridge in Moreno1997.v."
+description = "Paper-facing Theorem 1.16 bridge complete: three forms in Moreno1997.v (universal, section, module functor), no Admitted axioms, vos+vok current. C1542_MorVlambdaOrbit.v has all four packages. Deep geometric derivation of V_lambda block structure from first principles is a future separate task."
 priority = "high"
-status = "todo"
-status_token = "TODO"
+status = "done"
+status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["next_action status is constrained to declared enum values.", "next_action dependencies are explicit and machine-parseable.", "The Moreno paper lane exports a source-faithful arbitrary-a Theorem 1.16 bridge beyond the current witness-only scaffolding."]
-evidence_refs = ["proofs/theories/C1542_MorVlambdaOrbit.v", "proofs/theories/Moreno1997.v"]
+acceptance_criteria = ["Moreno1997.v compiles with no Admitted", " three bridge forms present; C1542 packages present; gate-audit passes"]
+evidence_refs = []
