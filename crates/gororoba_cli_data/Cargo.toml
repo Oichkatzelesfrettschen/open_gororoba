@@ -139,6 +139,10 @@ name = "heliosphere-stage"
 path = "src/bin/heliosphere_stage.rs"
 
 [[bin]]
+name = "bartol-spdf-crossval"
+path = "src/bin/bartol_spdf_crossval.rs"
+
+[[bin]]
 name = "ingest-pds-crs"
 path = "src/bin/ingest_pds_crs.rs"
 
