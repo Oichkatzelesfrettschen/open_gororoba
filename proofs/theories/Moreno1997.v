@@ -17,6 +17,7 @@
     - C1541_MorDirectSum.v : Theorem 1.15 canonical octonion direct-sum lane
     - C1542_MorVlambdaMod4.v : Theorem 1.16 canonical octonion V_lambda lane
     - C1542_MorVlambdaOrbit.v : Theorem 1.16 abstract H_a-orbit/module lane
+    - C1548_MorVlambdaHBlock.v : Theorem 1.16 nonempty H_a-block stepping bridge (T-065)
     - C1544_MorKerSDecomp.v : Theorem 2.3 + Corollary 2.4 canonical special-couple lane
     - C1546_MorEigenZD.v : Theorem 2.9 canonical eigenvalue witness lane
     - C1546_MorEigenIFF.v : Theorem 2.9 abstract iff core with explicit side conditions
@@ -30,18 +31,13 @@
 
     Remaining Moreno-specific Rocq backlog:
     - Theorem 1.16 concrete arbitrary-a CD instantiation; the abstract
-      H_a-orbit/module proof, the canonical octonion profile, and a first
-      canonical concrete-to-abstract dimension bridge are now formalized, the
-      explicit arbitrary-a builder is landed, and a first non-canonical
-      witness package now routes through the paper lane, but the bridge from
-      arbitrary concrete V_lambda subspaces to that module interface remains
-      open; the next exact substeps are (a) a finite-dim H_a-module witness
-      for the arbitrary-a V_lambda lane and (b) a bridge from Moreno's
-      concrete V_lambda hypotheses to that witness; the first concrete
-      hypothesis package and the first geometry-shaped quaternionic-block
-      package now land in C1542_MorVlambdaOrbit.v, but the repo still does not
-      derive that block decomposition from the full arbitrary-a V_lambda
-      subspace geometry itself
+      H_a-orbit/module proof, the canonical octonion profile, the concrete-to-abstract
+      dimension bridge, and the nonempty H_a-block stepping bridge (C1548, T-065) are
+      all landed; the remaining open item is deriving the block decomposition from the
+      full arbitrary-a V_lambda subspace geometry itself, i.e., constructing a concrete
+      HModuleFinDim instance for V_lambda(a) when a is an arbitrary doubly-pure unit-norm
+      CDOct element (requires H_a-stability and inner-product adjoint lemmas for
+      arbitrary a, not yet formalized)
     - Theorem 2.9 full arbitrary-alternative CD discharge; the abstract iff
       core and the canonical witness lane are both formalized, but the bridge
       from Moreno's CD hypotheses to the explicit side conditions remains open
@@ -60,6 +56,7 @@ From OpenGororoba Require Export
   C1541_MorDirectSum
   C1542_MorVlambdaMod4
   C1542_MorVlambdaOrbit
+  C1548_MorVlambdaHBlock
   C1544_MorKerSDecomp
   C1546_MorEigenZD
   C1546_MorEigenIFF
@@ -282,6 +279,28 @@ Module Moreno1997Theorem116Functor (M : MorenoVlambdaModule).
   Corollary moreno1997_theorem_1_16_div4 : exists k : nat, M.v_dim = 4 * k.
   Proof. exact moreno16_vlambda_dim_div4. Qed.
 End Moreno1997Theorem116Functor.
+
+(** ** T-065 bridge: nonempty H_a-block stepping form of Theorem 1.16.
+
+    For any nonempty block package N (block_count >= 1), the hmd_step
+    constructor derives is_h_module_dim directly from the two orbit-stepping
+    prerequisites.  This is the closest Rocq formalization of Moreno's
+    proof narrative for Theorem 1.16. *)
+
+Theorem Moreno1997_theorem_1_16_nonempty_block_step_bridge :
+  forall N : Moreno16NonemptyBlockData,
+    4 <= moreno16_nb_vlambda_dim N /\
+    is_h_module_dim (moreno16_nb_vlambda_dim N - 4) /\
+    is_h_module_dim (moreno16_nb_vlambda_dim N) /\
+    Nat.modulo (moreno16_nb_vlambda_dim N) 4 = 0.
+Proof.
+  intro N.
+  refine (conj _ (conj _ (conj _ _))).
+  - exact (moreno16_nb_lower_bound N).
+  - exact (moreno16_nb_complement_hmd N).
+  - exact (moreno16_nb_is_h_module_dim N).
+  - exact (moreno16_nb_vlambda_dim_mod4 N).
+Qed.
 
 Theorem Moreno1997_lane_compiles : True.
 Proof. exact I. Qed.
