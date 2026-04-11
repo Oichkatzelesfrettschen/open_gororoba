@@ -5,12 +5,14 @@
 ignore = [
     # burn-core transitively depends on bincode; upstream marked unmaintained.
     "RUSTSEC-2025-0141",
-    # gix-features advisory in burn-dataset transitive chain.
-    "RUSTSEC-2025-0021",
     # periodic-table-on-an-enum build dependency transitively uses json.
     "RUSTSEC-2022-0081",
     # paste appears in transitive macro stack with no maintained upstream.
     "RUSTSEC-2024-0436",
+    # instant crate (transitive dep of tokio-timer/wasm targets) unmaintained.
+    "RUSTSEC-2024-0384",
+    # rand 0.10.0 / 0.9.2 soundness issue with custom loggers; upgrade deferred.
+    "RUSTSEC-2026-0097",
 ]
 
 [licenses]
@@ -21,6 +23,7 @@ allow = [
     "BSD-2-Clause",
     "BSD-3-Clause",
     "BSL-1.0",
+    "bzip2-1.0.6",
     "CC0-1.0",
     "CDLA-Permissive-2.0",
     "GPL-2.0-or-later",

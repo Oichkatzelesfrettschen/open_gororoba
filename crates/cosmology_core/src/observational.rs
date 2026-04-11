@@ -23,6 +23,7 @@ use crate::{
         C_KM_S, Z_STAR, bao_sound_horizon, cmb_shift_parameter, hubble_e_bounce, hubble_e_lcdm,
     },
     gl_integrate,
+    optimizer::{NelderMeadConfig, bounded_nelder_mead_single},
 };
 use rayon::prelude::*;
 
@@ -713,113 +714,6 @@ pub fn chi2_fsig8(omega_m: f64, fsig: &[FsigMeasurement]) -> f64 {
 }
 
 // ---------------------------------------------------------------------------
-// Bounded Nelder-Mead (reused from bounce.rs pattern)
-// ---------------------------------------------------------------------------
-
-/// Bounded Nelder-Mead optimizer for cosmological parameter fitting.
-fn bounded_nelder_mead<F: Fn(&[f64]) -> f64>(
-    f: F,
-    x0: &[f64],
-    bounds: &[(f64, f64)],
-    max_iter: usize,
-    tol: f64,
-) -> (Vec<f64>, f64) {
-    let n = x0.len();
-
-    let project = |x: &[f64]| -> Vec<f64> {
-        x.iter()
-            .zip(bounds.iter())
-            .map(|(&xi, &(lo, hi))| xi.clamp(lo, hi))
-            .collect()
-    };
-
-    let mut simplex: Vec<Vec<f64>> = Vec::with_capacity(n + 1);
-    simplex.push(project(x0));
-    for i in 0..n {
-        let mut v = x0.to_vec();
-        let range = bounds[i].1 - bounds[i].0;
-        v[i] += range * 0.05;
-        simplex.push(project(&v));
-    }
-
-    let mut fvals: Vec<f64> = simplex.iter().map(|v| f(v)).collect();
-
-    let alpha = 1.0;
-    let gamma = 2.0;
-    let rho = 0.5;
-    let sigma = 0.5;
-
-    for _ in 0..max_iter {
-        let mut order: Vec<usize> = (0..=n).collect();
-        order.sort_by(|&a, &b| fvals[a].partial_cmp(&fvals[b]).unwrap());
-        let sorted_simplex: Vec<Vec<f64>> = order.iter().map(|&i| simplex[i].clone()).collect();
-        let sorted_fvals: Vec<f64> = order.iter().map(|&i| fvals[i]).collect();
-        simplex = sorted_simplex;
-        fvals = sorted_fvals;
-
-        let f_range = fvals[n] - fvals[0];
-        if f_range < tol {
-            break;
-        }
-
-        let centroid: Vec<f64> = (0..n)
-            .map(|j| simplex[..n].iter().map(|v| v[j]).sum::<f64>() / n as f64)
-            .collect();
-
-        let xr: Vec<f64> = (0..n)
-            .map(|j| centroid[j] + alpha * (centroid[j] - simplex[n][j]))
-            .collect();
-        let xr = project(&xr);
-        let fr = f(&xr);
-
-        if fr < fvals[0] {
-            let xe: Vec<f64> = (0..n)
-                .map(|j| centroid[j] + gamma * (xr[j] - centroid[j]))
-                .collect();
-            let xe = project(&xe);
-            let fe = f(&xe);
-            if fe < fr {
-                simplex[n] = xe;
-                fvals[n] = fe;
-            } else {
-                simplex[n] = xr;
-                fvals[n] = fr;
-            }
-        } else if fr < fvals[n - 1] {
-            simplex[n] = xr;
-            fvals[n] = fr;
-        } else {
-            let xc: Vec<f64> = (0..n)
-                .map(|j| centroid[j] + rho * (simplex[n][j] - centroid[j]))
-                .collect();
-            let xc = project(&xc);
-            let fc = f(&xc);
-            if fc < fvals[n] {
-                simplex[n] = xc;
-                fvals[n] = fc;
-            } else {
-                let best = simplex[0].clone();
-                for i in 1..=n {
-                    for (sij, &bj) in simplex[i].iter_mut().zip(best.iter()) {
-                        *sij = bj + sigma * (*sij - bj);
-                    }
-                    simplex[i] = project(&simplex[i]);
-                    fvals[i] = f(&simplex[i]);
-                }
-            }
-        }
-    }
-
-    let best_idx = fvals
-        .iter()
-        .enumerate()
-        .min_by(|(_, a), (_, b)| a.partial_cmp(b).unwrap())
-        .unwrap()
-        .0;
-    (simplex[best_idx].clone(), fvals[best_idx])
-}
-
-// ---------------------------------------------------------------------------
 // Model fitting with real data
 // ---------------------------------------------------------------------------
 
@@ -849,39 +743,42 @@ pub fn fit_real_data(
 
     let (best, n_params, model_name) = if is_bounce {
         // Bounce: keep sequential path (q_corr != 0, no grid optimization)
-        let (best, _chi2) = bounded_nelder_mead(
-            |p| {
-                chi2_sn_real(p[0], p[1], p[2], sn)
-                    + chi2_bao_real(p[0], p[1], p[2], bao)
-                    + chi2_cmb_shift(p[0], p[2])
-                    + chi2_cc(p[0], p[1], p[2], cc)
-            },
-            &[0.3, 70.0, 1e-6],
-            &[(0.1, 0.5), (60.0, 80.0), (0.0, 1e-2)],
-            5000,
-            1e-10,
-        );
+        let objective = |p: &[f64]| {
+            chi2_sn_real(p[0], p[1], p[2], sn)
+                + chi2_bao_real(p[0], p[1], p[2], bao)
+                + chi2_cmb_shift(p[0], p[2])
+                + chi2_cc(p[0], p[1], p[2], cc)
+        };
+        let config = NelderMeadConfig {
+            bounds: vec![(0.1, 0.5), (60.0, 80.0), (0.0, 1e-2)],
+            max_iter: 5000,
+            tol: 1e-10,
+            ..Default::default()
+        };
+        let (best, _chi2) = bounded_nelder_mead_single(&objective, &[0.3, 70.0, 1e-6], &config);
         (best, 3, "Bounce")
     } else {
         // LCDM: grid-accelerated + rayon parallel SN reduction
-        let (best, _chi2) = bounded_nelder_mead(
-            |p| {
-                let omega_m = p[0];
-                let h0 = p[1];
-                if !(0.01..=0.99).contains(&omega_m) || !(50.0..=90.0).contains(&h0) {
-                    return 1e10;
-                }
+        let objective = |p: &[f64]| {
+            let omega_m = p[0];
+            let h0 = p[1];
+            if !(0.01..=0.99).contains(&omega_m) || !(50.0..=90.0).contains(&h0) {
+                1e10
+            } else {
                 let grid = LcdmComovingGrid::build(z_max, 200, omega_m, h0);
                 chi2_sn_real_grid(&grid, sn)
                     + chi2_bao_real_grid(&grid, omega_m, h0, bao)
                     + chi2_cmb_shift(omega_m, 0.0)
                     + chi2_cc(omega_m, h0, 0.0, cc)
-            },
-            &[0.3, 70.0],
-            &[(0.1, 0.5), (60.0, 80.0)],
-            5000,
-            1e-10,
-        );
+            }
+        };
+        let config = NelderMeadConfig {
+            bounds: vec![(0.1, 0.5), (60.0, 80.0)],
+            max_iter: 5000,
+            tol: 1e-10,
+            ..Default::default()
+        };
+        let (best, _chi2) = bounded_nelder_mead_single(&objective, &[0.3, 70.0], &config);
         (best, 2, "Lambda-CDM")
     };
 

@@ -5,10 +5,12 @@
 
 [experiments]
 authoritative = true
-deterministic_count = 0
+deterministic_count = 153
 experiment_count = 210
-gpu_count = 0
-seeded_count = 0
+gpu_count = 28
+seeded_count = 46
+status_allowlist = ["active", "deprecated", "planned", "blocked"]
+updated = "2026-02-10"
 
 [[experiment]]
 binary = "motif-census"

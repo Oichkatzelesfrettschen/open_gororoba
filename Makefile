@@ -88,11 +88,12 @@ CARGO_CACHE_TMP_BUDGET_GIB ?= 16
 # Experimental target dirs MUST follow the naming convention .cache/exp-<name>-target/
 # Use `make cache-purge-exp` to remove all of them. Never create ad-hoc names.
 REPO_CARGO_TARGET_DIR ?= $(CURDIR)/.cache/gate-target
-# Build intermediates (.o/.d) go to /tmp via build-dir, keeping target-dir lean.
-# /tmp on this machine is the same nvme partition (not tmpfs), so benefit is
-# layout isolation only. See user-local Cargo config (~/.cargo/config.toml)
-# [build] build-dir for details.
-REPO_CARGO_BUILD_DIR ?= $(REPO_TMP_CARGO_ROOT)
+# Build intermediates (.o/.d) go to .cache/gate-cbuild/ on disk, keeping
+# target-dir lean and avoiding /tmp (16 GB tmpfs) overflow. The 46-crate
+# debug test compilation generates ~13 GB of split-debuginfo artifacts --
+# more than the tmpfs budget. REPO_TMP_CARGO_ROOT still routes to /tmp for
+# doc builds and parity tests where the artifact footprint is smaller.
+REPO_CARGO_BUILD_DIR ?= $(CURDIR)/.cache/gate-cbuild/$(REPO_PATH_HASH)
 CARGO_ENV = CARGO_HOME=$(REPO_CARGO_HOME) CARGO_TARGET_DIR=$(REPO_CARGO_TARGET_DIR) CARGO_BUILD_BUILD_DIR=$(REPO_CARGO_BUILD_DIR) MAKEFLAGS= MFLAGS= CARGO_MAKEFLAGS= CARGO_BUILD_JOBS=$(CARGO_JOBS) RAYON_NUM_THREADS=$(RAYON_THREADS) RUST_TEST_THREADS=$(RUST_TEST_THREADS)
 # A user-local Cargo config may enforce CARGO_INCREMENTAL=0 globally.
 # Kept here as belt-and-suspenders for CI environments where that config is absent.
@@ -372,7 +373,8 @@ cache-purge-exp:
 cache-check:
 	@GATE_MB=$$(du -sm .cache/gate-target 2>/dev/null | cut -f1 || printf '0'); \
 	AMBIENT_MB=$$(du -sm .cache/cargo-default-target 2>/dev/null | cut -f1 || printf '0'); \
-	TOTAL=$$((GATE_MB + AMBIENT_MB)); \
+	CBUILD_MB=$$(du -sm .cache/gate-cbuild 2>/dev/null | cut -f1 || printf '0'); \
+	TOTAL=$$((GATE_MB + AMBIENT_MB + CBUILD_MB)); \
 	if [ "$$TOTAL" -gt 102400 ]; then \
 		printf '[cache-check] WARNING: cargo target dirs total %dGB (>100GB). Run: make cache-sweep\n' "$$((TOTAL / 1024))"; \
 	else \
@@ -973,7 +975,7 @@ registry-verify-artifact-scrolls:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin artifact-scrolls -- verify
 
 registry-markdown-inventory:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- build-inventory
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- build-toml-inventory
 
 registry-markdown-corpus: registry-markdown-inventory
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- build-corpus
@@ -1342,7 +1344,7 @@ registry-export-markdown: registry-refresh registry-build
 		--output "crates/data_core/src/registry_mirrors/docs_root_narratives_registry_mirror.rs"; \
 	$(REPO_CARGO_TARGET_DIR)/release-gate/registry-emit research-narratives-mirror \
 		--output "crates/data_core/src/registry_mirrors/research_narratives_registry_mirror.rs"; \
-	$(REPO_CARGO_TARGET_DIR)/release-gate/markdown-registry build-inventory; \
+	$(REPO_CARGO_TARGET_DIR)/release-gate/markdown-registry build-toml-inventory; \
 	$(REPO_CARGO_TARGET_DIR)/release-gate/markdown-registry build-corpus; \
 	$(REPO_CARGO_TARGET_DIR)/release-gate/markdown-registry build-origin-audit; \
 	$(REPO_CARGO_TARGET_DIR)/release-gate/markdown-registry build-owner-map; \
@@ -1674,6 +1676,7 @@ clean-builds:
 	rm -rf target/
 	rm -rf .cache/cargo-default-target/
 	rm -rf .cache/gate-target/
+	rm -rf .cache/gate-cbuild/
 	rm -rf $(REPO_TMP_CARGO_ROOT)
 	rm -rf $(REPO_TMPDIR)/open_gororoba-cargo-build 2>/dev/null || true
 	rm -rf $(REPO_TMPDIR)/open_gororoba_*_target 2>/dev/null || true

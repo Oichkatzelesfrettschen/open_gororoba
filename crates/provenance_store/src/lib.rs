@@ -6444,9 +6444,9 @@ fn render_experiments_registry(header_toml: &str, experiments: &[ExperimentRecor
 }
 
 fn rebuild_experiments_header_toml(header_toml: &str, experiments: &[ExperimentRecord]) -> String {
-    let mut table = header_toml
-        .trim()
-        .parse::<Value>()
+    // Use toml::from_str rather than .parse::<Value>(): in toml 1.1 the FromStr
+    // implementation rejects multi-line key-value documents.
+    let mut table = toml::from_str::<Value>(header_toml.trim())
         .ok()
         .and_then(|value| value.as_table().cloned())
         .unwrap_or_default();
@@ -6482,6 +6482,17 @@ fn rebuild_experiments_header_toml(header_toml: &str, experiments: &[ExperimentR
                 .count() as i64,
         ),
     );
+    // status_allowlist is a constant policy field consumed by execution-planning --verify.
+    // It must be present in every compat export so the verify allowlist check has something to read.
+    table.insert(
+        "status_allowlist".to_string(),
+        Value::Array(vec![
+            Value::String("active".to_string()),
+            Value::String("deprecated".to_string()),
+            Value::String("planned".to_string()),
+            Value::String("blocked".to_string()),
+        ]),
+    );
     toml::to_string(&table)
         .unwrap_or_default()
         .trim()
@@ -6489,9 +6500,9 @@ fn rebuild_experiments_header_toml(header_toml: &str, experiments: &[ExperimentR
 }
 
 fn experiment_row_table(row: &ExperimentRecord) -> Option<toml::value::Table> {
-    row.compat_toml_text
-        .trim()
-        .parse::<Value>()
+    // Use toml::from_str rather than .parse::<Value>(): in toml 1.1 the FromStr
+    // implementation rejects multi-line key-value documents (e.g. compat_toml_text).
+    toml::from_str::<Value>(row.compat_toml_text.trim())
         .ok()
         .and_then(|value| value.as_table().cloned())
 }

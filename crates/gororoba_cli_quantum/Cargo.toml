@@ -2,6 +2,7 @@
 name = "gororoba_cli_quantum"
 version = "0.1.0"
 edition = "2021"
+license.workspace = true
 
 [dependencies]
 quantum_core = { path = "../quantum_core" }

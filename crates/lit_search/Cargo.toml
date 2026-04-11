@@ -2,6 +2,7 @@
 name = "lit_search"
 version = "0.1.0"
 edition = "2024"
+license.workspace = true
 description = "Repo-owned Rust literature search, deduplication, citation verification, and PDF retrieval"
 
 [dependencies]
