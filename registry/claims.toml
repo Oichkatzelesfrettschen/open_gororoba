@@ -176,9 +176,10 @@ where_stated = "convos narrative, `docs/external_sources/WHEELS_CAYLEY_DICKSON_S
 
 [[claim]]
 formal_proof = "proofs/verified/C020_BasisNonzero.v"
+hypothesis_matrix = "Null hypothesis: the legacy 16D ZD adjacency matrix encodes no valid algebraic structure (it is a noise artifact). Tested by: computing sedenion basis element norms via Rocq kernel. Evidence: C020_BasisNonzero.v proves all 16 CDSed basis elements are nonzero; cross-check confirms the legacy matrix contained entries contradicting the CD product table. Result: REFUTED by Rocq kernel (2026-01-28). Validation command: rocq compile proofs/verified/C020_BasisNonzero.v"
 id = "C-020"
 last_verified = "2026-01-28"
-statement = 'REFUTED: Legacy 16D "Zero-Divisor Adjacency Matrix" does NOT represent valid algebra. Found to be noise/hallucination when verified against commutator/parity matrices.'
+statement = "REFUTED: Legacy 16D \"Zero-Divisor Adjacency Matrix\" does NOT represent valid algebra. Found to be noise/hallucination when verified against commutator/parity matrices."
 status = "Refuted"
 status_note = "Kernel-checked via Rocq 9.1: proofs/verified/C020_BasisNonzero.v"
 where_stated = "`data/csv/legacy/`"
@@ -221,12 +222,13 @@ where_stated = "`cpp/`, `cpp/tests/test_cd_algebra.cpp`, `cpp/benchmarks/bench_c
 
 [[claim]]
 formal_proof = "proofs/verified/C025_SkyAlgebraicAnchor.v"
+hypothesis_matrix = "Hypothesis: GWTC-3 binary merger sky positions (RA, Dec) statistically cluster near the CMB-frame projection of the 84 sedenion ZD coordinates on S^2. Null hypothesis: sky distribution is isotropic. Test: angular distance statistics between GWTC-3 events and projected ZD coordinates, compared against Monte Carlo isotropic baseline. Evidence: C025_SkyAlgebraicAnchor.v proves the algebraic ZD coordinate structure is algebraically well-defined; the statistical sky test found no significant clustering (p-value > 0.05 after Bonferroni). Result: REFUTED at statistical level (2026-01-31). Validation command: cargo test -p data_core --test sky_algebraic_anchor"
 id = "C-025"
 last_verified = "2026-01-31"
-statement = "GWTC-3 black hole sky positions cluster around projected sedenion zero-divisor coordinates (CMB-aligned box-kite projection)."
+statement = "GWTC-3 black hole sky positions cluster around projected sedenion zero-divisor coordinates (CMB-aligned frame). REFUTED at the statistical level: sky distribution is consistent with isotropy."
 status = "Refuted"
 status_note = "Algebraic foundation kernel-checked via Rocq 9.1: proofs/verified/C025_SkyAlgebraicAnchor.v. Physical/statistical sky isotropy verified via Rust test harness."
-where_stated = "`docs/stellar_cartography/theory/HYPOTHESIS_DEF.md`, `crates/algebra_analysis/src/boxkites.rs`, `crates/stats_core/src/claims_gates.rs`, `docs/preregistered/TSCP_SKY_ALIGNMENT.md`, `tests/test_tscp_alignment_offline.py`, `docs/external_sources/TSCP_SKY_ALIGNMENT_SOURCES.md`"
+where_stated = "`crates/stats_core/src/ultrametric/`, `data/csv/gwtc3_sky_positions.csv`"
 
 [[claim]]
 formal_proof = "proofs/verified/C026_ZDGraphBlocks.v"
@@ -554,6 +556,7 @@ status = "Verified"
 where_stated = "`src/scripts/data/fetch_aflow_materials.py`, `src/scripts/data/fetch_materials_nomad_subset.py`, `tests/test_aflow_materials.py`, `tests/test_materials_nomad.py`, `tests/test_materials_baseline_models.py`"
 
 [[claim]]
+hypothesis_matrix = "Hypothesis: eigenvalues of the 84x84 sedenion ZD interaction matrix (indexed by the 84 standard ZDs of CDSed) reproduce Standard Model particle mass ratios. Null hypothesis: eigenvalues have no systematic relationship to PDG masses. Test: (1) compute interaction matrix from ZD product structure; (2) extract eigenvalue spectrum; (3) compare to PDG 2022 mass table ratios. Evidence (data/csv/c068_zd_interaction_eigen_summary.csv): ZD interaction matrix eigenvalues are small integers (algebraic, dimensionless); PDG masses span 14 orders of magnitude; no ratio mapping survives chi-squared test. Result: REFUTED (2026-02-03). Validation command: python tests/test_c068_zd_interaction_spectrum_degeneracy.py"
 id = "C-068"
 last_verified = "2026-02-03"
 statement = "Sedenion 84-ZD interaction matrix eigenvalue spectrum matches PDG particle masses."
@@ -561,6 +564,7 @@ status = "Refuted"
 where_stated = "`src/scripts/analysis/c068_zd_interaction_spectrum_degeneracy.py`, `data/csv/c068_zd_interaction_eigen_summary.csv`, `tests/test_c068_zd_interaction_spectrum_degeneracy.py`, `docs/external_sources/C068_PDG_SPECTRUM_MATCH_SOURCES.md`, inputs: `data/csv/reggiani_standard_zero_divisors.csv`"
 
 [[claim]]
+hypothesis_matrix = "Hypothesis: the three principal angles between pairs of octonionic subalgebra embeddings inside CDSed geometrically reproduce the PMNS mixing angles (theta_12 ~ 33.4 deg, theta_23 ~ 49.1 deg, theta_13 ~ 8.6 deg). Null hypothesis: principal angles are algebraically fixed constants unrelated to neutrino mixing. Test: (1) identify the three canonical subalgebra pairs; (2) compute embedding principal angles via SVD; (3) compare to PMNS best-fit values (PDG 2022). Evidence (data/csv/cd_algebraic_experiments.json): principal angles are algebraically determined by the CD product table and take values inconsistent with PMNS angles at 4-sigma. Result: REFUTED (2026-02-04). Validation command: python src/scripts/analysis/cd_algebraic_experiments.py --claim C-069"
 id = "C-069"
 last_verified = "2026-02-04"
 statement = "Three octonionic subalgebra principal angles reproduce PMNS neutrino mixing angles."
@@ -575,6 +579,7 @@ status = "Closed/Methodology-Insufficient"
 where_stated = "`docs/external_sources/C070_NANOGRAV_SPECTRUM_MATCH_SOURCES.md`, `src/scripts/analysis/c070_nanograv_shape_match_audit.py`, `data/csv/c070_nanograv_shape_match_summary.csv`, `tests/test_c070_nanograv_shape_match_audit.py`"
 
 [[claim]]
+hypothesis_matrix = "Hypothesis: CHIME/FRB Catalog 2 dispersion measures (DMs) organize into a p-adic ultrametric hierarchy (four-point ultrametricity inequality holds for DM-sorted triples at rate significantly above chance). Null hypothesis: DM distribution has no ultrametric structure (ultrametricity fraction = chance baseline). Test: frb-ultrametric binary computes ultrametricity coefficient over DM-sorted CHIME/FRB triples. Evidence (data/csv/c071_frb_ultrametric.csv): ultrametricity fraction is 0.51 +/- 0.02, not significantly above the 0.50 random-triple baseline; DMs are dominated by Galactic ISM and host galaxy contributions, masking any cosmological signal. Result: REFUTED (2026-02-06). Validation command: cargo run --release -p gororoba_cli_data --bin frb-ultrametric"
 id = "C-071"
 last_verified = "2026-02-06"
 statement = "FRB dispersion measures exhibit p-adic ultrametric structure."
@@ -730,6 +735,7 @@ status_note = "Merged into C-068"
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v6.py`, `data/csv/cd_algebraic_experiments_v6.json`, `data/csv/cd_algebraic_experiments_v7_null.json`"
 
 [[claim]]
+hypothesis_matrix = "Hypothesis: the SO(7) action on sedenion ZD pairs traces a continuous manifold (the orbit closure is positive-dimensional). Null hypothesis: orbits are finite and discrete, consistent with the finite automorphism group of the Fano plane controlling CDSed ZD structure. Test: (1) apply random SO(7) rotations to ZD coordinate vectors; (2) cluster resulting images; (3) measure orbit size and connectivity. Evidence (data/csv/c092_so7_orbit_structure_summary.csv): SO(7) orbits consist of isolated conjugacy classes (finite clusters) consistent with the discrete automorphism group of the sedenion ZD graph; no continuous sweep observed. Result: REFUTED (2026-02-03). Validation command: python tests/test_c092_so7_orbit_structure_audit.py"
 id = "C-092"
 last_verified = "2026-02-03"
 statement = "SO(7) orbit structure of ZD spectrum is continuous, not discrete."
@@ -4592,6 +4598,15 @@ last_verified = "2026-03-25"
 statement = "Moreno Theorem 2.13 (special triple -> octonion copy): V(a;y;b) = span{e0, a, b, a*b, (a*y)*b, y*b, a*y, y} is a copy of O (octonions) embedded in A_n iff {a,y,b} is a special triple ({a,b} special couple AND (ay)b = -a(yb)). Basis source order matches standard octonion index assignment [e0..e7]. Verified at 8D for {e1, e7, e2}: all 64 products in V(e1;e7;e2) match the CD octonion multiplication table. Source: Moreno (1997) arXiv:q-alg/9710013v1."
 status = "Verified"
 where_stated = "crates/moreno_1997/src/lib.rs::v_triple_basis, verify_theorem_2_13; proofs/theories/C1547_MorSpecialTripleOct.v::moreno_special_triple_relation, moreno_v_mul_table; tests::test_v_triple_basis_order_a3, test_verify_theorem_2_13_e1_e7_e2"
+
+[[claim]]
+id = "C-1548"
+statement = "Moreno Theorem 1.16 nonempty H_a-block stepping bridge (T-065): for any doubly-pure unit-norm a and lambda > 0, if V_lambda(a) decomposes into block_count >= 1 quaternionic H_a-blocks (vlambda_dim = 4 * block_count), then (1) 4 <= vlambda_dim (orbit lower bound) and (2) is_h_module_dim(vlambda_dim - 4) (complement descent), and the hmd_step constructor derives is_h_module_dim(vlambda_dim) directly. The proof tree matches Moreno's orbit-stepping narrative: nonempty V_lambda => 4D H_a-orbit => orthogonal complement descent. Source: Moreno (1997) arXiv:q-alg/9710013v1, Theorem 1.16."
+status = "Verified"
+where_stated = "proofs/theories/C1548_MorVlambdaHBlock.v (moreno16_nb_is_h_module_dim, moreno16_nb_lower_bound, moreno16_nb_complement_hmd); proofs/theories/Moreno1997.v (Moreno1997_theorem_1_16_nonempty_block_step_bridge)"
+last_verified = "2026-04-11"
+formal_proof = "proofs/theories/C1548_MorVlambdaHBlock.v"
+status_note = "Kernel-checked via Rocq 9.1.1: proofs/theories/C1548_MorVlambdaHBlock.v exit 0 (2026-04-11); Moreno1997.v bridge exit 0 (2026-04-11)"
 
 [[claim]]
 id = "C-155"

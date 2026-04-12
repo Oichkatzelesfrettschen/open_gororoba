@@ -9452,7 +9452,7 @@ source_entry_id = "BIB-0430"
 order_index = 430
 group = "Primary Research & Data Sources"
 section = "Quantum Information & Optics"
-authors = ["Dr\\u00E9au", "A", "et al"]
+authors = ["Dreau", "A", "et al"]
 author_count = 3
 publication_year = 2018
 title = "Quantum frequency conversion of single NV-center photons to the telecom C-band"
@@ -9464,7 +9464,7 @@ document_type = "doi_reference"
 evidence_relevance_score = 0
 claim_refs = []
 parse_warnings = []
-raw_citation = "**Dr\\u00E9au, A., et al.** (2018). *Quantum frequency conversion of single NV-center photons to the telecom C-band*. Physical Review Applied."
+raw_citation = "**Dreau, A., et al.** (2018). *Quantum frequency conversion of single NV-center photons to the telecom C-band*. Physical Review Applied."
 raw_notes = ["Canonical demonstration of DFG in PPLN to convert 637 nm NV photons to 1588 nm with 17% efficiency."]
 source_line = 0
 

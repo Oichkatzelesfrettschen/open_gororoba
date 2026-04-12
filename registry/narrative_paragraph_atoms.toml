@@ -5755,12 +5755,12 @@ line_start = 3
 line_end = 4
 paragraph_kind = "prose"
 text = "This document is the repo-scoped, implementation-aligned interpretation for the 3D \"warp ring\" lane that produces artifacts like:"
-text_sha256 = "47164376d9ad891dd68c48e69bb9091e0b72fe347af373e485377dccdb0d1bbd"
+text_sha256 = "3b7cb3f065d4f3d3668f43bcedadb3fc71eb3629cfe19d37e89610637b79c846"
 claim_refs = []
 equation_refs = []
 symbol_refs = []
 numeric_constants = []
-key_tokens = ["aligned", "artifacts", "document", "implementation", "interpretation", "lane", "like", "local", "produces", "repo", "ring", "warp"]
+key_tokens = ["aligned", "artifacts", "document", "implementation", "interpretation", "lane", "like", "produces", "repo", "ring", "scoped", "warp"]
 
 [[paragraph]]
 id = "NPA-000339"
@@ -9631,12 +9631,12 @@ line_start = 26
 line_end = 27
 paragraph_kind = "heading"
 text = "## Client configuration files These configs are the local home files the matrix polls to build the cross-client inventory (see `clients/{codex,claude,gemini}` in the file for the exact path list). They are user-local references only and must not be mirrored under the repository root."
-text_sha256 = "2af99a792ad537b0fa220edfaacbd8d157a103303fe52a87ca6c01e10a8d4603"
+text_sha256 = "2394cfca1109d278e15f499045480f7e4f52c4ea0de6f13d401b98ed08f8d97a"
 claim_refs = []
 equation_refs = []
 symbol_refs = []
 numeric_constants = []
-key_tokens = ["Client", "These", "are", "build", "claude", "client", "clients", "codex", "configs", "configuration", "cross", "exact", "file", "files", "gemini", "home", "inventory", "list", "local", "matrix", "path", "polls", "see"]
+key_tokens = ["Client", "These", "They", "are", "build", "claude", "client", "clients", "codex", "configs", "configuration", "cross", "exact", "file", "files", "gemini", "home", "inventory", "list", "local", "matrix", "mirrored", "must", "not"]
 
 [[paragraph]]
 id = "NPA-000567"
@@ -9648,12 +9648,12 @@ line_start = 29
 line_end = 32
 paragraph_kind = "table_block"
 text = "| Client | File(s) | Notes | | Codex | `~/.codex/config.toml`, `~/.codex/mcp-config.json` | Primary + secondary to keep Codex parity with the other clients. | | Claude | `~/.claude/.mcp.json` | Claude CLI/Desktop both read this; the `reports/claude_dotfiles_gap_audit_2026_02_14.toml` audit flagged drift between the home tree and repo-root mirrors. | | Gemini | `~/.gemini/settings.json` | The leaner Gemini runtime mirrors the same set of MCP names after the MCP skills audit. |"
-text_sha256 = "4afcf5cae5ae2f48d778ec66499f001dbde16eb6cc44c4ea5785b8b04c4eee94"
+text_sha256 = "c2ee3faf1e091037ed4d698df99ce0b15ff2b59b3e137c18f3513ab2734f9e02"
 claim_refs = []
 equation_refs = []
 symbol_refs = []
 numeric_constants = []
-key_tokens = ["CLI", "Claude", "Client", "Codex", "Desktop", "File", "Gemini", "MCP", "Notes", "Primary", "after", "audit", "between", "both", "claude", "claude_dotfiles_gap_audit_2026_02_14", "clients", "codex", "config", "copies", "drift", "flagged", "gemini", "home"]
+key_tokens = ["CLI", "Claude", "Client", "Codex", "Desktop", "File", "Gemini", "MCP", "Notes", "Primary", "after", "audit", "between", "both", "claude", "claude_dotfiles_gap_audit_2026_02_14", "clients", "codex", "config", "drift", "flagged", "gemini", "home", "json"]
 
 [[paragraph]]
 id = "NPA-000568"
@@ -9665,12 +9665,12 @@ line_start = 34
 line_end = 34
 paragraph_kind = "prose"
 text = "Treat these files as home-level references only; updates should happen via the matrix or the audit process, not by random manual edits. Use `make bootstrap-user-local-xdg` / `scripts/bootstrap_user_local_xdg.sh` when a supported local config bundle needs to be recreated, and keep repository state focused on the matrix plus audit docs. (The audit also copies servers to `~/.codex/mcp-config.json` when cross-client sync is required.)"
-text_sha256 = "e8523e79bf1f4f4b32a3f57f5ed41e8ec1096199660f0d15407495afff66955c"
+text_sha256 = "e4c313a0948cf82b31ebb64b21e1ad07853c8791ac14ff574e098a43e246825a"
 claim_refs = []
 equation_refs = []
 symbol_refs = []
 numeric_constants = []
-key_tokens = ["Treat", "also", "audit", "client", "codex", "config", "copies", "cross", "edits", "files", "happen", "home", "json", "level", "manual", "matrix", "mcp", "not", "only", "process", "random", "references", "required", "servers"]
+key_tokens = ["Treat", "Use", "also", "audit", "bootstrap", "bootstrap_user_local_xdg", "bundle", "client", "codex", "config", "copies", "cross", "docs", "edits", "files", "focused", "happen", "home", "json", "keep", "level", "local", "make", "manual"]
 
 [[paragraph]]
 id = "NPA-000569"
@@ -9699,12 +9699,12 @@ line_start = 40
 line_end = 43
 paragraph_kind = "heading"
 text = "## Related context - `registry/agents_contract.toml` reminds us to treat MCP as a model-agnostic control plane and prefer MCP Git/GitHub over shell fallbacks. - The MCP skills audit captured in `registry/knowledge/docs/DOC-0122.toml` (source markdown: `docs/engineering/MCP_SKILLS_AUDIT_2026-02-09.md`) explains how the MCP configs were harmonized across Codex, Gemini, Copilot, and Claude. - `reports/claude_dotfiles_gap_audit_2026_02_14.toml` suggested adding a registry-backed notes page; this page satisfies that suggestion in a lightweight way that points back to the canonical data."
-text_sha256 = "60e54c46910b39492116f3f150a0d9695cf86b890a875c44cb73558a70d7e9f1"
+text_sha256 = "2c5dc004c5be86dbc6de389d962ee7189fe906b2765923bff4a4f2b4c0b70845"
 claim_refs = []
 equation_refs = []
 symbol_refs = []
 numeric_constants = ["0122", "02", "09"]
-key_tokens = ["Claude", "Codex", "Copilot", "DOC", "Gemini", "Git", "GitHub", "MCP", "MCP_SKILLS_AUDIT_2026", "Related", "across", "adding", "agents_contract", "agnostic", "audit", "back", "canonical", "captured", "claude_dotfiles_gap_audit_2026_02_14", "configs", "context", "control", "data", "docs"]
+key_tokens = ["Claude", "Codex", "Copilot", "DOC", "Gemini", "Git", "GitHub", "MCP", "MCP_SKILLS_AUDIT_2026", "Related", "across", "adding", "agents_contract", "agnostic", "audit", "back", "backed", "canonical", "captured", "claude_dotfiles_gap_audit_2026_02_14", "configs", "context", "control", "data"]
 
 [[paragraph]]
 id = "NPA-000571"
@@ -23112,12 +23112,12 @@ line_start = 3
 line_end = 4
 paragraph_kind = "prose"
 text = "This note summarizes the refreshed repo-scoped worker sweep of the pinned-core `x87-strategy-bench` lane."
-text_sha256 = "6bb17a34de852aac733f545837aad66ae0528534e9261ec37a124f65db8451a4"
+text_sha256 = "da354196673bf2ee1500841a2ef0a3dba5e93cd5f42dafbd69d2765e22833229"
 claim_refs = []
 equation_refs = []
 symbol_refs = []
 numeric_constants = []
-key_tokens = ["bench", "core", "lane", "local", "note", "pinned", "refreshed", "repo", "strategy", "summarizes", "sweep", "worker", "x87"]
+key_tokens = ["bench", "core", "lane", "note", "pinned", "refreshed", "repo", "scoped", "strategy", "summarizes", "sweep", "worker", "x87"]
 
 [[paragraph]]
 id = "NPA-001360"
@@ -23265,7 +23265,7 @@ line_start = 33
 line_end = 51
 paragraph_kind = "prose"
 text = "1. Serial AVX2 is still the raw-throughput winner for the easy positive-sum case at this small size. 2. Chunking a cancellation-heavy sum across cores changes the answer even when each chunk uses x87. This confirms that \"multicore x87\" is not the same thing as preserving one global FP80 reduction order. 3. The hybrid lane (`avx2_per_chunk_x87_final`) is a useful system-level option, but it is still a different numerical contract from full-stream x87. 4. For the random-dot workload, the fastest exact parallel lane stayed `x87_per_chunk` at 2 workers. 5. For the synthetic ill-conditioned dot used here, the fastest exact parallel lane stayed `avx2_per_chunk` at 2 workers. Treat that as a workload-specific observation, not a universal guarantee. 6. For the easy positive-sum workload, the fastest exact parallel lane was `avx2_per_chunk_x87_final` at 2 workers. 7. The repo-scoped worker sweep still showed scheduling noise at higher worker counts on this machine state. In this run, `x87_per_chunk` at 6 workers was unstable on `sum_positive` and `dot_random`, so the summary marks those rows explicitly instead of treating them as decision-grade winners."
-text_sha256 = "7d314b1e13a74a801a55eed24f1d989d281c9a66ac39293e7602c4701757083c"
+text_sha256 = "bb6f9ba13d2747d283e3ad65d60fca7303929a466d4584ef6e285d6727496e33"
 claim_refs = []
 equation_refs = []
 symbol_refs = []
@@ -31901,7 +31901,7 @@ line_start = 32
 line_end = 35
 paragraph_kind = "prose"
 text = "The user referenced local files `26568.pdf` / `26569.pdf` during review, but those artifacts are not present inside this repository. The governed source lane for this claim cluster is therefore the official vendor / doc URLs above plus the Ogita-Rump-Oishi paper and the repo-scoped verifier / benchmark artifacts."
-text_sha256 = "3ad4c3f2ecc6a71ccbab8d8188a59a462ceea5a425dee663c9addc433c5ac084"
+text_sha256 = "3343801b9786bb4117bdd1fb87e16dc92b1a10ab7535b08252e9b10e55df7b72"
 claim_refs = []
 equation_refs = []
 symbol_refs = []
@@ -33601,12 +33601,12 @@ line_start = 11
 line_end = 12
 paragraph_kind = "prose"
 text = "**Script:** `crates/gororoba_cli_warp/src/bin/warp_ring_integration.rs` **Artifacts:** `data/artifacts/warp_ring_integration.png`"
-text_sha256 = "732b3f3bef21cb87b55378e3e07379e2d17fa9f4a75fda091ccee61aacc72b38"
+text_sha256 = "bbc3880443df485804944688f0d59e97de91542b644f1471ba18f5d144784e93"
 claim_refs = []
 equation_refs = []
 symbol_refs = []
 numeric_constants = []
-key_tokens = ["Artifacts", "Script", "bin", "crates", "gororoba_cli_warp", "png", "rs", "src", "warp_ring_integration"]
+key_tokens = ["Artifacts", "Script", "artifacts", "bin", "crates", "data", "gororoba_cli_warp", "png", "rs", "src", "warp_ring_integration"]
 
 [[paragraph]]
 id = "NPA-001977"

@@ -114,6 +114,12 @@ crate = "gororoba_cli"
 description = "Baire metric compactness analysis"
 
 [[binary]]
+name = "bartol-spdf-crossval"
+crate = "gororoba_cli_data"
+description = "Bartol vs SPDF Voyager 2 B-field and plasma cross-validation: hourly data comparison between Bartol Research Institute and NASA SPDF archives (E-128)"
+experiment = "E-128"
+
+[[binary]]
 name = "baryonic-eigenspectrum"
 crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
