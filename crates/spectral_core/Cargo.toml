@@ -13,6 +13,7 @@ ndrustfft = { workspace = true }
 statrs = { workspace = true }
 adjustp = { workspace = true }
 rand = { workspace = true }
+cd_kernel = { workspace = true }
 gororoba_algebra = { path = "../gororoba_algebra" }
 sign_imbalance = { path = "../sign_imbalance" }
 faer.workspace = true

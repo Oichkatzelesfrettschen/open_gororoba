@@ -12,7 +12,6 @@ num-complex.workspace = true
 image.workspace = true
 plotters.workspace = true
 rustfft.workspace = true
-faer.workspace = true
 rand.workspace = true
 
 [[bin]]

@@ -5,7 +5,16 @@
 //! field tensor.
 //!
 //! Migrated from src/spectral_flow_sim.py.
+//!
+//! # Flat-layout facade
+//!
+//! [`cd_evolve_step`] and [`sedenion_field_svd`] provide a thin facade for
+//! point-major `Vec<Vec<f64>>` layouts used by CLI binaries.  All numeric
+//! substrate (`faer`, `cd_kernel`) is encapsulated here so CLI crates only
+//! depend on this crate for sedenion-field spectral flow work.
 
+use cd_kernel::cayley_dickson::cd_multiply;
+use faer::Mat;
 use nalgebra::DMatrix;
 use ndarray::Array3;
 
@@ -88,6 +97,50 @@ impl SedenionField3D {
         }
         self.data = next_data;
     }
+}
+
+// -----------------------------------------------------------------------
+// Flat-layout facade (point-major Vec<Vec<f64>>)
+// -----------------------------------------------------------------------
+
+/// Advance a sedenion field one step using the Cayley-Dickson product.
+///
+/// Each element of `phi` is a 16-component sedenion.  The update rule is
+///   phi[p] += dt * (phi[p] * phi[p])
+/// where `*` is the full Cayley-Dickson product from `cd_kernel`.
+///
+/// This is the correct replacement for the component-wise stub in
+/// `SedenionField3D::drift_step`.
+pub fn cd_evolve_step(phi: &mut Vec<Vec<f64>>, dt: f64) {
+    for p in phi.iter_mut() {
+        let phi_sq = cd_multiply(p, p);
+        for (i, val) in p.iter_mut().enumerate() {
+            *val += dt * phi_sq[i];
+        }
+    }
+}
+
+/// Compute the 16 singular values of a sedenion field in point-major layout.
+///
+/// `phi` must have shape `[n_points][16]`.  The function unfolds it into a
+/// (16 x n_points) matrix and returns the singular values in descending order.
+///
+/// Uses `faer` for the SVD (same backend as the rest of spectral_core).
+pub fn sedenion_field_svd(phi: &[Vec<f64>]) -> Vec<f64> {
+    let n_points = phi.len();
+    assert!(n_points > 0, "sedenion_field_svd: empty field");
+    let n_comp = phi[0].len();
+    assert_eq!(n_comp, 16, "sedenion_field_svd: each point must have 16 components");
+
+    let mut mat = Mat::<f64>::zeros(n_comp, n_points);
+    for (j, site) in phi.iter().enumerate() {
+        for (i, &val) in site.iter().enumerate() {
+            mat[(i, j)] = val;
+        }
+    }
+    let svd = mat.svd().unwrap();
+    let s = svd.S();
+    (0..n_comp).map(|i| s[i]).collect()
 }
 
 #[cfg(test)]
