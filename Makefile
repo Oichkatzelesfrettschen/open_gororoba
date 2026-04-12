@@ -183,7 +183,7 @@ fmt-check:
 # gate-fast: Tier 1 only (<10s). Use for pre-push and rapid feedback.
 # gate-deep: Tier 1 + Tier 2 (minutes). Use for CI and thorough audits.
 
-.PHONY: gate-fast gate-warm gate-deep typos machete audit geiger
+.PHONY: gate-fast gate-warm gate-deep audit-deep typos machete audit geiger
 
 # Tier 1 targets (no cargo lock contention, run in parallel)
 typos:
@@ -232,6 +232,21 @@ gate-deep: gate-warm
 	cargo audit
 	$(MAKE) cargo-deny-check
 	@echo "=== gate-deep: PASSED ==="
+
+# audit-deep: opt-in composite audit. NOT required by default make or CI on every PR.
+# WHY: Aggregates all expensive one-off audit tools (semver, deny, dep-audit, CPD,
+#      docs-freshness) into a single reviewable target for pre-release or periodic runs.
+# HOW: make audit-deep  (standalone, no preconditions required)
+# NOTE: cpd-audit requires pmd; the target will self-report if pmd is absent.
+audit-deep:
+	@echo "=== audit-deep: full opt-in audit suite ==="
+	$(MAKE) rust-clippy
+	$(MAKE) rust-semver-check
+	$(MAKE) cargo-deny-check
+	$(MAKE) dep-audit
+	$(MAKE) docs-freshness
+	$(MAKE) cpd-audit
+	@echo "=== audit-deep: PASSED ==="
 
 test: rust-regression
 
