@@ -1,9 +1,8 @@
 use anyhow::Result;
-use cd_kernel::cayley_dickson::cd_multiply;
 use clap::Parser;
-use faer::Mat;
 use rand::{RngExt, SeedableRng};
 use rand_chacha::ChaCha8Rng;
+use spectral_core::spectral_flow::{cd_evolve_step, sedenion_field_svd};
 use std::{fs::File, io::Write};
 
 #[derive(Parser, Debug)]
@@ -29,8 +28,7 @@ fn main() -> Result<()> {
     let n_points = l * l * l;
     let mut rng = ChaCha8Rng::seed_from_u64(42);
 
-    // Sedenion field: [point_idx][component_idx]
-    // Point-major for easier iteration over points, then component-major for SVD.
+    // Sedenion field: [point_idx][component_idx], 16 components per site.
     let mut phi = vec![vec![0.0_f64; 16]; n_points];
     for p in &mut phi {
         for val in p.iter_mut() {
@@ -48,31 +46,14 @@ fn main() -> Result<()> {
     for t in 0..args.steps {
         println!("Step {}/{}...", t, args.steps);
 
-        // 1. Evolve: phi += dt * (phi * phi)
-        for p in &mut phi {
-            let phi_sq = cd_multiply(p, p);
-            for (i, val) in p.iter_mut().enumerate() {
-                *val += args.dt * phi_sq[i];
-            }
-        }
+        // Evolve via Cayley-Dickson product: phi += dt * (phi * phi)
+        cd_evolve_step(&mut phi, args.dt);
 
-        // 2. Compute Spectrum
-        // Construct (16, n_points) matrix for SVD
-        let mut mat = Mat::<f64>::zeros(16, n_points);
-        for (j, phi_j) in phi.iter().enumerate() {
-            for (i, &val) in phi_j.iter().enumerate() {
-                mat[(i, j)] = val;
-            }
-        }
+        // Singular values of the unfolded (16 x n_points) field matrix.
+        let s = sedenion_field_svd(&phi);
 
-        // SVD
-        let svd = mat.svd().unwrap();
-        let s = svd.S();
-
-        // 3. Save
         let mut row = format!("{}", t);
-        for i in 0..16 {
-            let val = s[i];
+        for val in &s {
             row.push_str(&format!(",{}", val));
         }
         writeln!(csv_file, "{}", row)?;

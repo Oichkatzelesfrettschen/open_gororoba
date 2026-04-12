@@ -44,6 +44,7 @@ pub mod mera;
 pub mod mps;
 pub mod orca_memory;
 pub mod peps;
+pub mod pseudospectrum;
 pub mod qua_ten_net_bridge;
 pub mod quantum_frequency_conversion;
 pub mod scaling_laws;
@@ -58,6 +59,8 @@ pub mod two_fluid;
 pub mod gpu;
 
 pub use faer::c64 as Complex64;
+
+pub use pseudospectrum::{PseudospectrumResult, fractional_laplacian_pseudospectrum};
 
 pub use mera::{
     MeraLayer, MeraScalingResult, bootstrap_slope_ci, build_mera_structure, fit_log_scaling,
