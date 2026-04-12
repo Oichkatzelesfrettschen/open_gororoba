@@ -111,7 +111,7 @@ impl SedenionField3D {
 ///
 /// This is the correct replacement for the component-wise stub in
 /// `SedenionField3D::drift_step`.
-pub fn cd_evolve_step(phi: &mut Vec<Vec<f64>>, dt: f64) {
+pub fn cd_evolve_step(phi: &mut [Vec<f64>], dt: f64) {
     for p in phi.iter_mut() {
         let phi_sq = cd_multiply(p, p);
         for (i, val) in p.iter_mut().enumerate() {

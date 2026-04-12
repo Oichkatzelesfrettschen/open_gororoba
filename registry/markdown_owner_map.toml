@@ -12,7 +12,7 @@ updated = "2026-04-08"
 authoritative = true
 status = "active"
 status_token = "ACTIVE"
-document_count = 196
+document_count = 197
 
 [[owner]]
 path = "README.md"
@@ -409,6 +409,12 @@ path = "docs/tickets/TICKET_X87_AVX_PRECISION_HARDENING.md"
 owner_group = "project"
 removal_status = "active"
 removal_reason = ""
+[[owner]]
+path = "docs/external_sources/X87_AVX_ACCUMULATION_SOURCES.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
 
 [[owner]]
 path = "docs/THEOREMS.md"

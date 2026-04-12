@@ -234,9 +234,11 @@ theories/C1542_MorVlambdaMod4.v
 theories/C1542_MorVlambdaOrbit.v
 theories/C1548_MorVlambdaHBlock.v
 theories/C1549_MorHaStabilitySed.v
+theories/C1542_MorHaStabilityArb.v
 theories/C1544_MorKerSDecomp.v
 theories/C1546_MorEigenZD.v
 theories/C1546_MorEigenIFF.v
+theories/C1546_MorArbitraryAlternative.v
 theories/C1547_MorSpecialTripleOct.v
 theories/C1543_MorMod4Bound.v
 theories/Moreno1997.v
