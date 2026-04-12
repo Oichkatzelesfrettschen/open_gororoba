@@ -50,6 +50,14 @@ hdf5-export = ["dep:hdf5"]
 netcdf = ["dep:netcdf3", "dep:netcdf-reader"]
 dataframe = ["dep:polars"]
 fits = ["dep:fitsio", "dep:quick-xml"]
+# Opt-in feature that compiles the 354 auto-generated registry-mirror modules.
+# These are pure doc-string (//!) files with zero compiled exports; they exist
+# only for rustdoc generation. Gating them here removes ~95K lines and 354
+# modules from the default cargo check / language-server index.
+# Enable with: cargo check -p data_core --features registry-mirrors
+# The make registry-export-markdown and registry-verify-mirrors targets pass
+# this flag when they need the modules compiled for freshness checks.
+registry-mirrors = []
 
 [dev-dependencies]
 approx = { workspace = true }

@@ -46,6 +46,7 @@ pub mod heliosphere_feature_cube;
 pub mod parse;
 pub mod provenance;
 pub mod registry;
+#[cfg(feature = "registry-mirrors")]
 pub mod registry_mirrors;
 pub mod seti;
 pub mod spatial;
