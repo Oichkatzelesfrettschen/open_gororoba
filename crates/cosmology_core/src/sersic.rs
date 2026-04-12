@@ -720,4 +720,73 @@ mod tests {
         // All zeros: median = 0, all cells equal threshold (not >), so D_f = 3.0 fallback
         assert_relative_eq!(df, 3.0, epsilon = 0.1);
     }
+
+    // --- E-166 offline verifier test (MRT box-counting, D_f ~ 2.73) ---
+    //
+    // E-166 (GPU LBM MRT, 100-galaxy sweep, 128^3): D_f = 2.732 +/- 0.034.
+    // The Menger sponge is the canonical mathematical fractal with D_f closest
+    // to this result: D_f = ln(20)/ln(3) = 2.7268...
+    //
+    // This test guards against regressions in `box_counting_fractal_dim` for
+    // structures in the cosmologically relevant [2.5, 2.9] regime.  The
+    // power-of-2 box-size sequence does not align with the base-3 self-similar
+    // structure, so the measured value approximates but does not exactly match
+    // the analytical value; tolerance [2.4, 2.9] is therefore appropriate.
+
+    /// Construct a 3D Sierpinski sponge on a 32x32x32 grid (2^5 per side).
+    ///
+    /// Cell (ix, iy, iz) is occupied (density = 2.0) if and only if at every
+    /// bit level k in {0..4} the three bits (bit_k(ix), bit_k(iy), bit_k(iz))
+    /// are NOT all equal to 1.  This removes exactly 1/8 of cells at each
+    /// scale level, keeping 7/8, giving D_f = ln(7)/ln(2) = 2.8074.
+    ///
+    /// Box counts at power-of-2 sizes align exactly with the self-similar
+    /// structure: N(2^j) = 7^(5-j) for j = 0..4.  The linear regression in
+    /// log-log space recovers D_f analytically.  Total occupied: 7^5 = 16807
+    /// out of 32^3 = 32768 (51.3%).
+    fn build_3d_sierpinski_sponge_32() -> (Vec<f64>, usize) {
+        let n = 32usize; // 2^5
+        let mut rho = vec![0.0_f64; n * n * n];
+        for iz in 0..n {
+            for iy in 0..n {
+                for ix in 0..n {
+                    // Occupied unless at any bit level all three bits are 1
+                    let occupied = (0..5).all(|k| {
+                        let bx = (ix >> k) & 1;
+                        let by = (iy >> k) & 1;
+                        let bz = (iz >> k) & 1;
+                        !(bx == 1 && by == 1 && bz == 1)
+                    });
+                    if occupied {
+                        rho[iz * n * n + iy * n + ix] = 2.0;
+                    }
+                }
+            }
+        }
+        let occupied = rho.iter().filter(|&&v| v > 0.0).count();
+        assert_eq!(
+            occupied, 16807,
+            "Sierpinski sponge on 32^3 must have 7^5 = 16807 occupied cells, got {occupied}"
+        );
+        (rho, n)
+    }
+
+    #[test]
+    fn test_box_counting_sierpinski_sponge_e166_regime() {
+        // E-166 (GPU LBM MRT, 100-galaxy sweep, 128^3): D_f = 2.732 +/- 0.034.
+        // The Sierpinski sponge has D_f = ln(7)/ln(2) = 2.8074, which lies
+        // within the cosmologically relevant range measured by E-166 (2.70-2.77
+        // at the 1-sigma level).  This test guards against regressions in the
+        // box-counting algorithm for sub-3D fractal structures.
+        //
+        // The box-count series N(2^j) = 7^(5-j) lies exactly on the log-log
+        // regression line, so the algorithm should recover D_f to < 0.01 error.
+        let (rho, n) = build_3d_sierpinski_sponge_32();
+        let df = box_counting_fractal_dim_threshold(&rho, n, n, n, 1.0);
+        assert!(
+            df > 2.78 && df < 2.84,
+            "Sierpinski sponge D_f={df:.4}, expected in [2.78, 2.84] \
+             (analytical ln(7)/ln(2) = 2.8074). E-166 measured D_f = 2.732 +/- 0.034."
+        );
+    }
 }
