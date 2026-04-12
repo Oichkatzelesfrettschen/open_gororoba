@@ -4952,7 +4952,6 @@ dependencies = [
  "clap",
  "csv",
  "env_logger",
- "faer",
  "flate2",
  "glob",
  "gororoba_algebra",
@@ -5166,7 +5165,6 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "clap",
- "faer",
  "image 0.25.10",
  "num-complex",
  "plotters",
@@ -11126,6 +11124,7 @@ version = "0.1.0"
 dependencies = [
  "adjustp",
  "approx",
+ "cd_kernel",
  "faer",
  "gororoba_algebra",
  "nalgebra 0.34.2",
