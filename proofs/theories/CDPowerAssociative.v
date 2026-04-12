@@ -101,6 +101,27 @@ Proof.
   f_equal; f_equal; ring.
 Qed.
 
+(** Flexible identity holds for sedenions (all CD algebras are flexible).
+    Degree-3 polynomial in 32 real variables (16 per sedenion).
+    Proof: cbv + component-wise f_equal4 mkQuat + ring (~22s, ~2.4 GB peak). *)
+Theorem sed_flexible : forall x y : CDSed,
+  sed_mul (sed_mul x y) x = sed_mul x (sed_mul y x).
+Proof.
+  intros [[[ a1  a2  a3  a4] [ a5  a6  a7  a8]]
+          [[ a9 a10 a11 a12] [a13 a14 a15 a16]]]
+         [[[ b1  b2  b3  b4] [ b5  b6  b7  b8]]
+          [[ b9 b10 b11 b12] [b13 b14 b15 b16]]].
+  cbv [sed_mul sed_neg sed_lo sed_hi
+       oct_mul oct_add oct_sub oct_neg oct_conj
+       oct_lo oct_hi oct_zero oct_e
+       quat_mul quat_add quat_neg quat_conj quat_zero quat_one
+       qa qb qc qd].
+  apply (f_equal2 mkSed);
+  apply (f_equal2 mkOct);
+  apply (f_equal4 mkQuat);
+  ring.
+Qed.
+
 (** ================================================================== *)
 (** * Summary.                                                         *)
 (** ================================================================== *)
@@ -111,10 +132,11 @@ Qed.
     - sed_conj_norm: x*conj(x) = n(x)*1 (dim 16, by cbv+ring)
     - quat_flexible: (xy)x = x(yx) (dim 4, by ring)
     - oct_flexible: (xy)x = x(yx) (dim 8, by cbv+ring)
+    - sed_flexible: (xy)x = x(yx) (dim 16, by cbv+ring, ~22s, ~2.4GB)
 
     The sed_conj_norm theorem at dim 16 is a degree-2 polynomial
     identity in 32 real variables (16 per sedenion), verified by ring
-    in approximately 6 seconds (same complexity class as
-    CDInnerProduct.sed_inner_adj_left).
+    in approximately 6 seconds.  sed_flexible is degree-3 in 32 variables
+    and takes approximately 22 seconds with a 2.4 GB peak.
 
     Zero Admitted. *)
