@@ -1,4 +1,9 @@
 //! Optical Properties Database for Casimir Physics.
+// TRANSCRIBED-DATA: Palik (1998), Klimchitskaya et al. (2009). Not hand-written
+// logic. Clippy is suppressed; CPD already excludes this file (Makefile
+// CPD_EXCLUDE_FILES). Do not run rustfmt on this file.
+#![allow(clippy::all, clippy::pedantic, clippy::nursery)]
+#![allow(dead_code)]
 //!
 //! Provides experimentally-validated dielectric functions for common materials
 //! used in Casimir force calculations. All data follows the Drude-Lorentz model

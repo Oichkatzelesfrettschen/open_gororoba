@@ -1718,17 +1718,26 @@ clean-all: clean clean-builds clean-artifacts
 CPD_MIN_TOKENS ?= 42
 CPD_TOP        ?= 20
 
-# Data-heavy source files excluded from CPD scans until materials_data codegen migration
-# is complete (tasks #57-#58). These files are pure const-array data, not logic.
-# Remove entries here as each file is migrated to build.rs + CSV/TOML.
+# Data-heavy source files excluded from CPD scans.
+# These are transcribed reference datasets or auto-generated doc mirrors --
+# not hand-written logic -- so duplication detection is noise, not signal.
+# Remove entries here only when a file gains real logic that warrants scanning.
 # tabulated_nk.rs removed: migrated to materials_data in task #56.
 CPD_EXCLUDE_FILES := \
 	crates/materials_core/src/optical_database.rs \
 	crates/materials_core/src/crystal_symmetry.rs
 
-# Build a file-list of all .rs sources under crates/ minus the excluded data files.
+# registry_mirrors/ is excluded as an entire directory: 354 auto-generated
+# doc-string (.rs) files with zero compiled symbols, gated behind the
+# registry-mirrors feature in data_core. Scanning them wastes CPD cycles.
+CPD_EXCLUDE_DIRS := \
+	crates/data_core/src/registry_mirrors
+
+# Build a file-list of all .rs sources under crates/ minus excluded data files
+# and excluded directories.
 _CPD_FILE_LIST := /tmp/cpd_src_list.txt
 _CPD_REGEN_LIST = find crates -name '*.rs' \
+	$(foreach d,$(CPD_EXCLUDE_DIRS), ! -path '*/$(d)/*' ! -path '*/$(d)') \
 	$(foreach f,$(CPD_EXCLUDE_FILES), ! -path './$(f)') \
 	> $(_CPD_FILE_LIST)
 

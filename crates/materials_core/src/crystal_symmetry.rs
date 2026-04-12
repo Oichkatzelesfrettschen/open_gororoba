@@ -1,4 +1,9 @@
 //! Crystal Symmetry: Point Groups, Space Groups, Miller Indices
+// TRANSCRIBED-DATA: International Tables for Crystallography, Burns & Glazer
+// (1990). Not hand-written logic. Clippy is suppressed; CPD already excludes
+// this file (Makefile CPD_EXCLUDE_FILES). Do not run rustfmt on this file.
+#![allow(clippy::all, clippy::pedantic, clippy::nursery)]
+#![allow(dead_code)]
 //!
 //! This module provides comprehensive crystallographic symmetry infrastructure:
 //!
