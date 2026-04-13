@@ -6,7 +6,7 @@
 [experiments]
 authoritative = true
 deterministic_count = 154
-experiment_count = 212
+experiment_count = 216
 gpu_count = 29
 seeded_count = 46
 status_allowlist = ["active", "deprecated", "planned", "blocked"]
@@ -5569,4 +5569,36 @@ status = "active"
 status_token = "ACTIVE"
 title = "inv_tau precomputation: MUFU.RCP elimination in D3Q19 LBM SoA kernels (RTX 4070 Ti, Ada SM 8.9)"
 truth_surface_consumption = []
+
+[[experiment]]
+id = "E-220"
+title = "TurboQuant WHT/E8 rotation benchmark and KIVI comparison (d=128, 3-bit)"
+status = "active"
+status_token = "ACTIVE"
+run = "cargo run --release -p gororoba_cli_physics --bin turboquant-bench -- --dims 128 --bits 3 --n-vectors 5000 --rotation both --out-json reports/e220_turboquant_bench.json"
+binary_name = "turboquant-bench"
+
+[[experiment]]
+id = "E-221"
+title = "TurboQuant adaptive bit allocation via CD associator (d=32, 3-bit)"
+status = "active"
+status_token = "ACTIVE"
+run = "cargo test -p cd_kernel --release -- test_adaptive_vs_uniform --nocapture"
+binary_name = "turboquant-cd-fidelity"
+
+[[experiment]]
+id = "E-222"
+title = "TurboQuant QJL correction crossover analysis (2-4 bit)"
+status = "active"
+status_token = "ACTIVE"
+run = "cargo run --release -p gororoba_cli_physics --bin turboquant-validate -- --dim 128 --bits 2,3,4 --seq-lens 512 --n-heads 4 --out-json reports/e222_turboquant_qjl.json"
+binary_name = "turboquant-validate"
+
+[[experiment]]
+id = "E-223"
+title = "TurboQuant E8 lattice root system and rotation roundtrip validation"
+status = "active"
+status_token = "ACTIVE"
+run = "cargo test -p cd_kernel --release -- test_e8_root_count test_e8_root_norms test_e8_rotation_roundtrip test_f4_as_pipeline_rotation"
+binary_name = "turboquant-sedenion-rotation"
 
