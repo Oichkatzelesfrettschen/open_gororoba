@@ -2510,10 +2510,10 @@ where_stated = "`src/scripts/analysis/c129_associator_distribution_concentration
 
 [[claim]]
 id = "C-1290"
-last_verified = "2026-03-11"
-statement = "MRT ghost-moment damping (s_ghost=1.0) extends the stable Mach number envelope from Ma~0.3 (BGK) to Ma~1.5 (MRT) at matched tau=0.7, confirmed via systematic density contrast sweep from 2x to 100x on 16^3 grid."
-status = "Provisional"
-status_note = "Legacy status token: Active"
+last_verified = "2026-04-12"
+statement = "MRT ghost-moment damping (s_ghost=1.0) provides a modest stability advantage over BGK at matched tau=0.7 on 16^3 grid (E-167): both modes survive to contrast~15.7 (Ma~1.1); MRT retains a grace period at contrast~29.1 (Ma~3.9) while BGK diverges catastrophically at contrast~23.7. The originally claimed Ma~0.3 BGK threshold and Ma~1.5 MRT ceiling are not reproduced; actual MRT advantage is ~1.5x at the divergence threshold."
+status = "Refuted"
+status_note = "E-167 run (2026-04-12) refutes the Ma~0.3 BGK and Ma~1.5 MRT quantitative claims. Both modes survive to Ma~1.1; MRT has a grace period at contrast~29 while BGK diverges at contrast~24. Advantage ~1.5x, not 3-5x. Crash detection gap: binary reports survived=true for finite-but-unphysical Mach values."
 where_stated = "E-167 MRT vs BGK stability envelope"
 
 [[claim]]
