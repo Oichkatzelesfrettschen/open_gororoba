@@ -4960,7 +4960,6 @@ dependencies = [
  "nalgebra 0.34.2",
  "rand 0.10.0",
  "rand_chacha 0.10.0",
- "rustfft",
  "serde",
  "serde_json",
  "spectral_core",

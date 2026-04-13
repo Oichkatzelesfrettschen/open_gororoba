@@ -198,7 +198,6 @@ tracing-subscriber = { workspace = true }
 tracing-tracy = { workspace = true, optional = true }
 rand.workspace = true
 rand_chacha.workspace = true
-rustfft = { workspace = true }
 anyhow.workspace = true
 nalgebra = { workspace = true }
 flate2 = { workspace = true }
