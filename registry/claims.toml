@@ -4655,6 +4655,30 @@ status = "Verified"
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v18.py`, `data/csv/cd_algebraic_experiments_v18.json`"
 
 [[claim]]
+id = "C-1597"
+last_verified = "2026-04-13"
+statement = "WHT rotation 3.2x faster than Haar at d=128: FastJL (D1*WHT*D2) achieves 77 kvec/s vs Haar 25 kvec/s = 3.08x speedup, with 0.5% lower MSE (1.444 vs 1.451 at 3-bit)."
+status = "Established"
+status_note = "Verified by turboquant-bench."
+where_stated = "TurboQuant CD bridge (2026-03-28)"
+
+[[claim]]
+id = "C-1598"
+last_verified = "2026-04-13"
+statement = "BitPackedSigns 8x memory reduction for QJL."
+status = "Established"
+status_note = "Verified by cargo test sign_pack."
+where_stated = "TurboQuant CD bridge (2026-03-28)"
+
+[[claim]]
+id = "C-1599"
+last_verified = "2026-04-13"
+statement = "SIMD codebook 2.4x faster than scalar at d=128."
+status = "Established"
+status_note = "Verified by turboquant-bench."
+where_stated = "TurboQuant CD bridge (2026-03-28)"
+
+[[claim]]
 id = "C-160"
 last_verified = "2026-02-01"
 statement = "All three Moufang identities (left, right, middle) hold exactly at dim <= 8 and fail together at dim >= 16. The defect is approximately equal for all three at each dim. Left/right defects grow from ~0.79 (dim=16) to ~1.67 (dim=256)."
@@ -4662,11 +4686,147 @@ status = "Verified"
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v19.py`, `data/csv/cd_algebraic_experiments_v19.json`"
 
 [[claim]]
+id = "C-1600"
+last_verified = "2026-04-13"
+statement = "Adaptive bit allocation via CD associator: 23% MSE improvement."
+status = "Established"
+status_note = "Verified by test_adaptive_vs_uniform."
+where_stated = "TurboQuant CD bridge (2026-03-28)"
+
+[[claim]]
+id = "C-1601"
+last_verified = "2026-04-13"
+statement = "E8 rotation KS validated (p=0.816)."
+status = "Established"
+status_note = "Verified by test_e8_vs_haar_decorrelation."
+where_stated = "TurboQuant CD bridge (2026-03-28)"
+
+[[claim]]
+id = "C-1602"
+last_verified = "2026-04-13"
+statement = "TurboQuant dominates KIVI 4x at 2-bit."
+status = "Established"
+status_note = "Verified by turboquant-comparison."
+where_stated = "TurboQuant CD bridge (2026-03-28)"
+
+[[claim]]
+id = "C-1603"
+last_verified = "2026-04-13"
+statement = "QJL correction helps at 2-bit, hurts at 4-bit."
+status = "Established"
+status_note = "Verified by turboquant-validate."
+where_stated = "TurboQuant CD bridge (2026-03-28)"
+
+[[claim]]
+id = "C-1604"
+last_verified = "2026-04-13"
+statement = "Hierarchical CD tower quantization: negative result."
+status = "Falsified"
+status_note = "Hierarchical MSE 0.052 > uniform MSE 0.039."
+where_stated = "TurboQuant CD bridge (2026-03-28)"
+
+[[claim]]
+id = "C-1605"
+last_verified = "2026-04-13"
+statement = "E8 rotation roundtrip error < 1e-8."
+status = "Established"
+status_note = "Verified by test_e8_rotation_roundtrip."
+where_stated = "TurboQuant CD bridge (2026-03-28)"
+
+[[claim]]
+id = "C-1606"
+last_verified = "2026-04-13"
+statement = "240 E8 roots verified."
+status = "Established"
+status_note = "Verified by e8 root tests."
+where_stated = "TurboQuant CD bridge (2026-03-28)"
+
+[[claim]]
+id = "C-1607"
+last_verified = "2026-04-13"
+statement = "F4 rotation 18% better MSE at d=64."
+status = "Established"
+status_note = "Verified by test_f4_as_pipeline_rotation."
+where_stated = "TurboQuant CD bridge (2026-03-29)"
+
+[[claim]]
+id = "C-1608"
+last_verified = "2026-04-13"
+statement = "E8+WHT = E8 = WHT quality."
+status = "Established"
+status_note = "Verified by turboquant-sweep."
+where_stated = "TurboQuant CD bridge (2026-03-29)"
+
+[[claim]]
+id = "C-1609"
+last_verified = "2026-04-13"
+statement = "Q16.16 codebook quality = f32 to 6 sig figs."
+status = "Established"
+status_note = "Verified by test_codebook_precision_comparison."
+where_stated = "TurboQuant CD bridge (2026-03-29)"
+
+[[claim]]
 id = "C-161"
 last_verified = "2026-02-01"
 statement = "The associator is multilinear (trilinear): A(alpha*a,b,c) = alpha*A(a,b,c) and A(a+a',b,c) = A(a,b,c) + A(a',b,c), in all three slots, at ALL CD dimensions. Max residual < 2e-15 everywhere. This is universal."
 status = "Verified"
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v19.py`, `data/csv/cd_algebraic_experiments_v19.json`"
+
+[[claim]]
+id = "C-1610"
+last_verified = "2026-04-13"
+statement = "Hybrid 38-60% better at 3-4 bit."
+status = "Established"
+status_note = "Verified by test_hybrid_vs_turbo_vs_group."
+where_stated = "TurboQuant CD bridge (2026-03-29)"
+
+[[claim]]
+id = "C-1611"
+last_verified = "2026-04-13"
+statement = "Cross-layer SLERP 1.94x compression at d=128."
+status = "Established"
+status_note = "Verified by test_compression_ratio."
+where_stated = "TurboQuant CD bridge (2026-03-29)"
+
+[[claim]]
+id = "C-1612"
+last_verified = "2026-04-13"
+statement = "SmallVec inline CD at d=16: zero heap."
+status = "Established"
+status_note = "Verified by test_inline_multiply_sedenion."
+where_stated = "TurboQuant CD bridge (2026-03-29)"
+
+[[claim]]
+id = "C-1613"
+last_verified = "2026-04-13"
+statement = "AlignedWorkspace 256-byte alignment."
+status = "Established"
+status_note = "Verified by test_aligned_workspace."
+where_stated = "TurboQuant CD bridge (2026-03-29)"
+
+[[claim]]
+id = "C-1614"
+last_verified = "2026-04-13"
+statement = "simsimd dot matches scalar to 1e-4 at d=128."
+status = "Established"
+status_note = "Verified by test_large_vector_dot."
+where_stated = "TurboQuant CD bridge (2026-03-29)"
+
+[[claim]]
+id = "C-1615"
+last_verified = "2026-04-13"
+statement = "Rayon parallel batch quantize."
+status = "Established"
+status_note = "Verified by test_synthesized_batch_adaptive."
+where_stated = "TurboQuant CD bridge (2026-03-29)"
+
+[[claim]]
+id = "C-1616"
+last_verified = "2026-04-13"
+statement = "fwht standalone crate extracted and wired."
+status = "Established"
+status_note = "Verified by fwht crate tests."
+where_stated = "TurboQuant CD bridge (2026-03-29)"
 
 [[claim]]
 id = "C-162"

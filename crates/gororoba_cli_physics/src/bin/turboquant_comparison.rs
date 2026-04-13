@@ -84,7 +84,7 @@ fn random_matrix(n: usize, d: usize, seed: u64) -> Vec<f64> {
 fn bench_turboquant(data: &[f64], n: usize, d: usize, bits: u32) -> MethodResult {
     let cfg = TurboQuantConfig::recommended(d, bits);
     let tq = TurboQuantMSE::new(d, bits, 42, cfg.use_wht());
-    let mut buf = vec![0.0f64; 2 * d];
+    let mut buf = vec![0.0f64; 3 * d];
 
     let t0 = Instant::now();
     let mut total_mse = 0.0f64;
