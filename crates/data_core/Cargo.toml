@@ -44,7 +44,12 @@ cd_kernel = { workspace = true }
 verified_core = { version = "0.1.0", path = "../verified_core" }
 
 [features]
-default = ["fetch"]
+# WHY: default is empty so that pure data-model consumers (structs, parsing,
+# formats) do not transitively depend on reqwest/ureq/backon/url.  All
+# workspace consumers already declare default-features = false and explicitly
+# opt in to the features they need.  Leaving fetch in default would silently
+# re-introduce the network plane for any future consumer added carelessly.
+default = []
 fetch = ["dep:reqwest", "dep:ureq", "dep:backon", "dep:url"]
 hdf5-export = ["dep:hdf5"]
 netcdf = ["dep:netcdf3", "dep:netcdf-reader"]

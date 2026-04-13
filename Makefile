@@ -7,7 +7,7 @@
 .PHONY: heavy test-inventory verify-no-reports-writes
 .PHONY: rust-test rust-clippy rust-semver-check rust-smoke rust-regression rust-regression-scoped dep-audit cargo-deny-check mcp-smoke e027-validate studio-run studio-check profile-tensor-avt x87-strategy-bench x87-strategy-perf x87-strategy-hyperfine x87-strategy-flamegraph x87-givens-microbench x87-givens-microbench-perf jacobi-backend-sweep jacobi-backend-perf jacobi-backend-flamegraph jacobi-backend-samply jacobi-backend-samply-compare gpu-bench gpu-bench-ncu gpu-bench-nsys
 .PHONY: cpu-bench cpu-bench-perf cpu-bench-cachegrind cpu-bench-flamegraph parity-bench parity-report
-.PHONY: pre-push-gate-scoped submodule-sync gate-local gate-ci-registry gate-ci-rust gate-audit gate-audit-fast
+.PHONY: pre-push-gate-scoped submodule-sync gate-local gate-ci-registry gate-ci-rust gate-audit gate-audit-fast data-core-pure-check
 .PHONY: cache-status cache-sweep cache-purge-exp cache-check
 .PHONY: v6-branch-transport-artifacts pathion-control-artifacts pathion-resonance-artifacts
 .PHONY: registry-control-plane-gate-readonly registry-acceptance-gate-readonly
@@ -360,6 +360,16 @@ gate-audit:
 gate-audit-fast:
 	$(CARGO_ENV) cargo run -p xtask -- gate-audit --fast
 	@echo "OK: gate-audit (fast/registry-only) completed."
+
+# WHY: PH-2 acceptance gate -- verify data_core pure-core (no network plane).
+# Must stay green after any data_core Cargo.toml or feature change.
+# Two checks: compile without fetch feature, then assert reqwest/ureq absent.
+data-core-pure-check:
+	$(CARGO_ENV) cargo check -p data_core --no-default-features
+	@$(CARGO_ENV) cargo tree -p data_core --no-default-features 2>&1 | \
+	  grep -E "reqwest|ureq|backon" && \
+	  (echo "FAIL: network dep found in data_core pure-core tree" && exit 1) || \
+	  echo "OK: data_core pure-core has no network deps"
 
 # ---- Cargo cache management -----------------------------------------------
 # WHY: Two independent target dirs (.cache/gate-target and
