@@ -97,8 +97,7 @@ extern "C" __global__ void lbm_step_soa_fused(
     u_out[2 * N + idx] = uz;   // uz block
 
     // Phase 2: BGK collision
-    float tau_local = tau[idx];
-    float inv_tau = 1.0f / tau_local;
+    float inv_tau = tau[idx];  // tau array stores precomputed 1/tau
     float u_sq = ux * ux + uy * uy + uz * uz;
 
     #pragma unroll
@@ -224,10 +223,11 @@ extern "C" __global__ void zd_viscosity_modulation(
 
     // Modulate: regions where noise < zd_fraction get viscosity spike
     float imbalance = (noise < zd_fraction) ? 1.0f : 0.0f;
-    tau[idx] = tau_base + tau_amp * imbalance * sinf(lambda * (float)idx / (float)N);
+    float tau_val = tau_base + tau_amp * imbalance * sinf(lambda * (float)idx / (float)N);
 
-    // Clamp tau to physical range [0.505, 5.0]
-    tau[idx] = fmaxf(0.505f, fminf(5.0f, tau[idx]));
+    // Clamp tau to physical range [0.505, 5.0], write precomputed 1/tau
+    tau_val = fmaxf(0.505f, fminf(5.0f, tau_val));
+    tau[idx] = 1.0f / tau_val;
 }
 
 // Convergence check kernel: compute sum of |rho - rho_prev|

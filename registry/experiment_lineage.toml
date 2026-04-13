@@ -5,8 +5,8 @@
 updated = "2026-02-10"
 authoritative = true
 source_registry = "registry/experiments.toml"
-lineage_count = 211
-edge_count = 1032
+lineage_count = 212
+edge_count = 1033
 
 [[lineage]]
 id = "XL-001"
@@ -13137,6 +13137,28 @@ id = "XLE-01032"
 lineage_id = "XL-218"
 from_id = "E-218"
 to_ref = "lbm-rca-probe"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[lineage]]
+id = "XL-219"
+experiment_id = "E-219"
+binary = "cuda-precision-bench"
+deterministic = false
+gpu = true
+run_command = "cargo run --release --bin cuda-precision-bench -- --workloads lbm --grids 64,128"
+run_command_sha256 = "3bc3c75b909356b30eb0eb2fa832eadde13879fab8a844927ceb56a2ce53dbbd"
+claim_refs = ["C-1550"]
+input_path_refs = ["crates/lbm_3d_cuda/src/kernels_soa.cu", "crates/lbm_3d_cuda/src/kernels_dark_halo.cu", "crates/lbm_3d_cuda/src/lib.rs"]
+output_path_refs = ["data/output/e219_inv_tau_bench.csv"]
+dataset_refs = []
+
+[[edge]]
+id = "XLE-01033"
+lineage_id = "XL-219"
+from_id = "E-219"
+to_ref = "cuda-precision-bench"
 to_kind = "binary"
 edge_kind = "implemented_by_binary"
 verified = true
