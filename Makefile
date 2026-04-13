@@ -7,7 +7,7 @@
 .PHONY: heavy test-inventory verify-no-reports-writes
 .PHONY: rust-test rust-clippy rust-semver-check rust-smoke rust-regression rust-regression-scoped dep-audit cargo-deny-check mcp-smoke e027-validate studio-run studio-check profile-tensor-avt x87-strategy-bench x87-strategy-perf x87-strategy-hyperfine x87-strategy-flamegraph x87-givens-microbench x87-givens-microbench-perf jacobi-backend-sweep jacobi-backend-perf jacobi-backend-flamegraph jacobi-backend-samply jacobi-backend-samply-compare gpu-bench gpu-bench-ncu gpu-bench-nsys
 .PHONY: cpu-bench cpu-bench-perf cpu-bench-cachegrind cpu-bench-flamegraph parity-bench parity-report
-.PHONY: pre-push-gate-scoped submodule-sync gate-local gate-ci-registry gate-ci-rust gate-audit
+.PHONY: pre-push-gate-scoped submodule-sync gate-local gate-ci-registry gate-ci-rust gate-audit gate-audit-fast
 .PHONY: cache-status cache-sweep cache-purge-exp cache-check
 .PHONY: v6-branch-transport-artifacts pathion-control-artifacts pathion-resonance-artifacts
 .PHONY: registry-control-plane-gate-readonly registry-acceptance-gate-readonly
@@ -62,7 +62,7 @@
 .PHONY: cpd-audit cpd-audit-strict cpd-audit-tooling cargo-cache-status cargo-cache-prune cargo-cache-smoke
 .PHONY: cd-row-upgrade-batch cd-row-upgrade-jacobson cd-row-upgrade-freudenthal
 
-.NOTPARALLEL: bootstrap-dev check smoke integrity integrity-rust rust-smoke rust-regression rust-regression-scoped heavy cargo-deny-check gate-local gate-ci-registry gate-ci-rust gate-audit pre-push-gate pre-push-gate-scoped pre-push-gate-strict governance-gate governance-gate-readonly registry-control-plane-gate-readonly registry-acceptance-gate-readonly
+.NOTPARALLEL: bootstrap-dev check smoke integrity integrity-rust rust-smoke rust-regression rust-regression-scoped heavy cargo-deny-check gate-local gate-ci-registry gate-ci-rust gate-audit gate-audit-fast pre-push-gate pre-push-gate-scoped pre-push-gate-strict governance-gate governance-gate-readonly registry-control-plane-gate-readonly registry-acceptance-gate-readonly
 
 # Non-cargo make fanout: 75% of logical CPUs, minimum 1.
 # Cargo and Rust test runners use a shared worker budget equal to logical threads / 2.
@@ -351,6 +351,15 @@ host-profile:
 gate-audit:
 	$(CARGO_ENV) cargo run -p xtask -- gate-audit
 	@echo "OK: gate-audit completed."
+
+# WHY: gate-ci-rust runs rust-regression (full workspace compile + nextest run,
+# ~9 min). For registry/governance-only edits -- TOML updates, schema changes,
+# claims.toml regeneration -- that compile overhead is pure waste. gate-audit-fast
+# skips Rust compilation entirely: only gate-ci-registry (governance + schema
+# checks, ~2 min) runs, and it fails fast on the first error.
+gate-audit-fast:
+	$(CARGO_ENV) cargo run -p xtask -- gate-audit --fast
+	@echo "OK: gate-audit (fast/registry-only) completed."
 
 # ---- Cargo cache management -----------------------------------------------
 # WHY: Two independent target dirs (.cache/gate-target and
