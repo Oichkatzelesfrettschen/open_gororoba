@@ -673,7 +673,7 @@ fn generate_white_noise(n_cells: usize, lo: f64, hi: f64, seed: u64) -> Vec<f64>
     use rand_distr::{Distribution, Uniform};
 
     let mut rng = rand_chacha::ChaCha8Rng::seed_from_u64(seed);
-    let dist = Uniform::new(lo, hi);
+    let dist = Uniform::new(lo, hi).expect("lo < hi for white-noise range");
     (0..n_cells).map(|_| dist.sample(&mut rng)).collect()
 }
 

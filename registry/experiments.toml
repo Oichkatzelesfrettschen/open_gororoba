@@ -4516,17 +4516,17 @@ deterministic = false
 external_source_refs = []
 gpu = true
 id = "E-177"
-input = "Euclid Q1 galaxy catalog (100 galaxies)"
-input_path_refs = []
+input = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
+input_path_refs = ["data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"]
 lineage_id = "XL-177"
-method = "4-item GPU optimization suite targeting compound 15-50% speedup at 128^3 on Ada Lovelace SM 8.9. Item 1: MRT forward/inverse transform ILP restructure (balanced fmaf trees). Item 2: Multi-stream galaxy pipeline (2-stream event-based overlap). Item 3: CUDA Graph 2-step capture fixing double-buffer bug + step_n() bulk stepping. Item 4: Shared-memory tiled pull-scheme kernels (8x8x4 tile, 45.6 KB shared, cooperative striped load). Verification: clippy clean, Taylor-Green 6/6 pass, GPU debug init 3/3 pass."
-output = ["CSV per-galaxy D_f", "stdout timing"]
-output_path_refs = []
+method = "4-item GPU optimization suite targeting compound 15-50% speedup at 128^3 on Ada Lovelace SM 8.9. Item 1: MRT forward/inverse transform ILP restructure (balanced fmaf trees). Item 2: Multi-stream galaxy pipeline (2-stream event-based overlap, graph_disabled flag prevents CUDA Graph/default-stream conflict). Item 3: CUDA Graph 2-step capture fixing double-buffer bug + step_n() bulk stepping. Item 4: Shared-memory tiled pull-scheme kernels (8x8x4 tile, 45.6 KB shared, cooperative striped load). Result: 100 galaxies at 128^3, D_f=2.741+-0.038, ~230 ms/galaxy."
+output = ["data/output/e177_ysu_tiled.csv", "stdout timing"]
+output_path_refs = ["data/output/e177_ysu_tiled.csv"]
 reproducibility_class = "non_deterministic"
-run = "cargo run --release --bin euclid-df-sweep -- --n-galaxies 100 --resolution 128 --gpu --tiling"
-run_command_sha256 = "f4b3741f03622049742a518e6f711358f2bce6809610da046059a1e57f445412"
-status = "planned"
-status_token = "PLANNED"
+run = "cargo run --release --bin euclid-df-sweep --features euclid-catalog,gpu -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 128 --steps 200 --max-galaxies 100 --mrt --tiling -o data/output/e177_ysu_tiled.csv"
+run_command_sha256 = "7f2626e782611de54071782a2d2246b4dced9034516100f95552a7d27b7f0ed0"
+status = "active"
+status_token = "ACTIVE"
 title = "YSU-Inspired CUDA Optimization Suite: MRT ILP + CUDA Graph + Tiled Pull-Scheme + Multi-Stream Pipeline"
 truth_surface_consumption = []
 
