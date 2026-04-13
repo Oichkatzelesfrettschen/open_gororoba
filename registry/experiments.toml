@@ -5,8 +5,8 @@
 
 [experiments]
 authoritative = true
-deterministic_count = 153
-experiment_count = 210
+deterministic_count = 154
+experiment_count = 211
 gpu_count = 28
 seeded_count = 46
 status_allowlist = ["active", "deprecated", "planned", "blocked"]
@@ -5516,5 +5516,31 @@ run_command_sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b78
 status = "active"
 status_token = "ACTIVE"
 title = "Materials data architecture decision: optical_database.rs + crystal_symmetry.rs migration path"
+truth_surface_consumption = []
+
+[[experiment]]
+binary = "lbm-rca-probe"
+binary_experiment_declared = "E-218"
+binary_registered = true
+claim_refs = ["C-1549"]
+claims = ["C-1549"]
+dataset_label_refs = []
+dataset_refs = []
+deterministic = true
+external_source_refs = []
+gpu = false
+id = "E-218"
+input = "synthetic (Gaussian density perturbation)"
+input_path_refs = []
+lineage_id = "XL-218"
+method = "Per-step LBM instrumentation: (1) positivity sentinel tracks min(f_i) and max(Ma) each step to detect first f_i<0 violation; (2) entropy neighborhood computes H_rel = sum_i f_i ln(f_i/f_i^eq) in a 3-cell radius around the violation cell to test spatial correlation (center vs boundary). Runs BGK at contrast=23 and MRT at contrast=29 to straddle the catastrophic divergence threshold observed in E-167."
+output = ["stdout (trajectory CSV + Phase 1/2 summaries)", "data/output/e167_rca_bgk_c23.csv", "data/output/e167_rca_bgk_c29.csv", "data/output/e167_rca_mrt_c29.csv"]
+output_path_refs = []
+reproducibility_class = "deterministic_replay"
+run = "cargo run --release --bin lbm-rca-probe -- --n 16 --tau 0.7 --contrast 23.0 --mode bgk --steps 400 --csv-out data/output/e167_rca_bgk_c23.csv"
+run_command_sha256 = "74b21c74790d42c727aa917dcaa0b9fe58cc4c3b7720c0093caa58804897aa01"
+status = "active"
+status_token = "ACTIVE"
+title = "LBM divergence RCA: per-step positivity sentinel and entropy analysis at BGK/MRT threshold contrasts"
 truth_surface_consumption = []
 

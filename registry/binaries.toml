@@ -1188,6 +1188,12 @@ description = "Multi-precision LBM comparison (BF16/FP32/FP64-GPU/FP64-CPU): run
 experiment = "E-069"
 
 [[binary]]
+name = "lbm-rca-probe"
+crate = "gororoba_cli_physics"
+description = "LBM Root Cause Analysis probe: per-step f_i positivity sentinel and relative entropy spatial analysis for diagnosing LBM divergence mechanisms (E-218)"
+experiment = "E-218"
+
+[[binary]]
 name = "lbm-slice-viewer"
 crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."

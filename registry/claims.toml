@@ -4609,6 +4609,14 @@ formal_proof = "proofs/theories/C1548_MorVlambdaHBlock.v"
 status_note = "Kernel-checked via Rocq 9.1.1: proofs/theories/C1548_MorVlambdaHBlock.v exit 0 (2026-04-11); Moreno1997.v bridge exit 0 (2026-04-11)"
 
 [[claim]]
+id = "C-1549"
+last_verified = "2026-04-12"
+statement = "The E-167 LBM divergence mechanism is confirmed as O(Ma^2) compressibility breakdown (Vector 2): Ma exceeds 0.3 at step 0 and 1.0 at step 3 before f_i<0 appears at step 4, establishing causal precedence. The first positivity violation occurs in the outer Gaussian gradient shell (r_norm~0.80-0.85), not at the domain boundary. BGK catastrophically diverges at contrast=29 (min_f reaches -10^8 by step 20) because its uniform relaxation amplifies non-physical modes; MRT recovers at contrast=29 because s_ghost=1.0 instant damping annihilates ghost moments each collision, breaking the positive feedback loop. Secondary periodic-wrap interference is present (peak H_rel at iz=0 domain face) but is not the primary divergence trigger."
+status = "Established"
+status_note = "Confirmed by E-218 lbm-rca-probe: causality chain Ma>0.3 before f_i<0, violation in gradient shell not boundary, BGK runaway vs MRT ghost-moment recovery at contrast=29."
+where_stated = "E-218 lbm-rca-probe RCA run (2026-04-12)"
+
+[[claim]]
 id = "C-155"
 last_verified = "2026-02-01"
 statement = "Jordan identity (xy)x^2 = x(yx^2) holds EXACTLY (machine epsilon) at ALL CD dimensions through 256. This is a universal identity for CD algebras, like power-associativity. All residuals < 4e-16."
