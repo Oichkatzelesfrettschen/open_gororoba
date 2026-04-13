@@ -147,13 +147,13 @@ REGISTRY_SOURCES := $(wildcard registry/claims.toml registry/insights.toml \
     registry/source_manifest.toml)
 
 registry/canonical/control_plane.sqlite3: $(REGISTRY_SOURCES)
-	$(CARGO_ENV) cargo run --release -p gororoba_db --bin gororoba-db -- build --repo-root .
+	$(CARGO_ENV) cargo run --release -p gororoba_db --bin gororoba-db -- build
 
 .PHONY: registry-build registry-build-verify
 registry-build: registry/canonical/control_plane.sqlite3
 
 registry-build-verify: registry/canonical/control_plane.sqlite3
-	$(CARGO_ENV) cargo run --release -p gororoba_db --bin gororoba-db -- build --verify --repo-root .
+	$(CARGO_ENV) cargo run --release -p gororoba_db --bin gororoba-db -- build --verify
 
 # ---- Environment setup ----
 
@@ -1390,9 +1390,9 @@ registry-verify-mirrors:
 	legacy_flag=""; \
 	claims_value="true"; \
 	if [ "$(MARKDOWN_EXPORT_LEGACY_CLAIMS_SYNC)" = "0" ]; then claims_value="false"; fi; \
-	$(CARGO_ENV) cargo build --profile release-gate -p gororoba_cli_data --bin verify-registry-mirror-freshness --bin governance-verify; \
-	$(REPO_CARGO_TARGET_DIR)/release-gate/verify-registry-mirror-freshness -- \
-		--out-dir "$(MARKDOWN_EXPORT_OUT_DIR)" $$legacy_flag --legacy-claims-sync $$claims_value
+	$(CARGO_ENV) cargo build --profile release-gate -p gororoba_cli_data --bin verify-registry-mirror-freshness --bin governance-verify --bin registry-emit; \
+	$(REPO_CARGO_TARGET_DIR)/release-gate/verify-registry-mirror-freshness \
+		--out-dir "crates/data_core/src/registry_mirrors" $$legacy_flag --legacy-claims-sync $$claims_value
 	$(MAKE) registry-verify-markdown-toml-first
 	$(REPO_CARGO_TARGET_DIR)/release-gate/governance-verify markdown-headers; \
 	$(REPO_CARGO_TARGET_DIR)/release-gate/governance-verify markdown-parity; \
