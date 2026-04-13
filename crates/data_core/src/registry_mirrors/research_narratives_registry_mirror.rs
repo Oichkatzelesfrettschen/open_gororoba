@@ -5,11 +5,61 @@
 //!
 //! Authoritative source: `registry/research_narratives.toml`.
 //!
-//! - Updated: 2026-03-14
+//! - Updated: 2026-03-15
 //! - Source markdown globs: `docs/theory/*.md`, `docs/engineering/*.md`, `docs/research/*.md`
-//! - Document count: `13`
+//! - Document count: `18`
 //!
 //! ## Documents
+//!
+//! ### RN-042: Exceptional Cosmology: E8, F4, G2 and the Limits of Algebraic Cosmological Frameworks
+//!
+//! - Source markdown: `docs/EXCEPTIONAL_COSMOLOGY.md`
+//! - Domain: `research`
+//! - Status token: `NARRATIVE`
+//! - Content kind: `synthesis`
+//! - Verification level: `multi_scale_synthesis`
+//! - Line count: 160
+//! - Claim refs (7): C-035, C-036, C-037, C-038, C-039, C-040, C-041
+//!
+//! ### RN-040: Grand Synthesis: From Cayley-Dickson Algebra to the Heliosphere and Beyond
+//!
+//! - Source markdown: `docs/GRAND_SYNTHESIS.md`
+//! - Domain: `research`
+//! - Status token: `NARRATIVE`
+//! - Content kind: `synthesis`
+//! - Verification level: `multi_scale_synthesis`
+//! - Line count: 220
+//! - Claim refs (23): C-001, C-002, C-003, C-004, C-010, C-011, C-012, C-014, C-031, C-035, C-039, C-052, C-053, C-1156, C-1159, C-1162, C-1171, C-1210, C-1137, C-1138, C-1140, C-1141, C-1142
+//!
+//! ### RN-044: Grand Synthesis Plan: Research Roadmap and Execution Priority
+//!
+//! - Source markdown: `docs/GRAND_SYNTHESIS_PLAN.md`
+//! - Domain: `research`
+//! - Status token: `NARRATIVE`
+//! - Content kind: `plan`
+//! - Verification level: `engineering_narrative`
+//! - Line count: 100
+//! - Claim refs (11): C-001, C-010, C-011, C-012, C-1156, C-1159, C-1162, C-1171, C-1137, C-1140, C-1141
+//!
+//! ### RN-041: Navigator: Conceptual Map of the open_gororoba Research Space
+//!
+//! - Source markdown: `docs/NAVIGATOR.md`
+//! - Domain: `research`
+//! - Status token: `NARRATIVE`
+//! - Content kind: `navigation`
+//! - Verification level: `engineering_narrative`
+//! - Line count: 120
+//! - Claim refs (22): C-001, C-010, C-011, C-012, C-035, C-039, C-052, C-053, C-931, C-932, C-952, C-953, C-1156, C-1159, C-1162, C-1171, C-1210, C-1137, C-1138, C-1140, C-1141, C-1142
+//!
+//! ### RN-043: Sedenion-Gravastar Equivalence: Phenomenological Bridge and Associator Obstruction
+//!
+//! - Source markdown: `docs/SEDENION_GRAVASTAR_EQUIVALENCE.md`
+//! - Domain: `research`
+//! - Status token: `NARRATIVE`
+//! - Content kind: `synthesis`
+//! - Verification level: `multi_scale_synthesis`
+//! - Line count: 140
+//! - Claim refs (3): C-010, C-011, C-012
 //!
 //! ### RN-028: Rust Engineering Standards & Style Guide
 //!

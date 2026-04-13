@@ -5,7 +5,7 @@
 //!
 //! Authoritative source: `registry/canonical/control_plane.sqlite3`.
 //!
-//! Total claims: 1408
+//! Total claims: 1411
 //!
 //! ## C-001
 //!
@@ -13,7 +13,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: Cayley-Dickson algebras become non-associative at 8D and beyond.
 //! - Where stated: `CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)` (test_sedenion_non_associative), `CURRENT::PATH crates/gororoba_algebra/src/construction/hypercomplex.rs (LEGACY::PATH crates/algebra_core/src/construction/hypercomplex.rs)` (test_non_associativity_scaling), `docs/external_sources/CAYLEY_DICKSON_BASICS_SOURCES.md`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-002
 //!
@@ -21,7 +21,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: 16D sedenions have zero divisors and lose norm composition.
 //! - Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_primitive_unit_zero_divisors_count), `crates/algebra_analysis/src/annihilator.rs` (test_known_zero_divisor_has_nontrivial_annihilator), `docs/external_sources/DE_MARRAIS_SOURCES.md`, `docs/external_sources/CAYLEY_DICKSON_BASICS_SOURCES.md`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-003
 //!
@@ -29,7 +29,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: "42 assessors" / "7 box-kites" organize primitive sedenion zero divisors.
 //! - Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_primitive_assessors_count, test_sedenion_boxkite_count, test_assessors_partition_into_boxkites), `docs/SEDENION_ATLAS.md`, `docs/external_sources/DE_MARRAIS_SOURCES.md`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-004
 //!
@@ -37,7 +37,7 @@
 //! - Last verified: 2026-01-28
 //! - Statement: The relevant symmetry group count is `PSL(2,7) has order 168` and an explicit 168-element action is constructed which permutes the 7 box-kites (as computed in-repo) as labeled subgraphs.
 //! - Where stated: `docs/SEDENION_ATLAS.md`, `docs/external_sources/PSL_2_7_SOURCES.md`, `CURRENT::PATH crates/gororoba_algebra/src/lie/group_theory.rs (LEGACY::PATH crates/algebra_core/src/lie/group_theory.rs)`, `crates/algebra_analysis/src/boxkites.rs` (Rust tests: test_sedenion_boxkite_structure, test_coassessor_symmetry)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-005
 //!
@@ -45,7 +45,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: "The geometry of sedenion zero divisors" (Reggiani, 2024) implies specific manifold identifications (e.g., `G2`, `V_2(R^7)`).
 //! - Where stated: `crates/algebra_analysis/src/grassmannian.rs` (test_c005_* tests), `data/csv/c005_grassmannian_zd_analysis.csv`, `docs/theory/REGGIANI_GEOMETRIC_VALIDATION.md`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-006
 //!
@@ -53,7 +53,7 @@
 //! - Last verified: 2026-01-28
 //! - Statement: GWTC-3 "confident events" data integrated into `data/external/GWTC-3_confident.csv` and matches the GWOSC eventapi jsonfull endpoint snapshot.
 //! - Where stated: `docs/archive/RESEARCH_STATUS.md`, `docs/BIBLIOGRAPHY.md`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-007
 //!
@@ -61,7 +61,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: GWTC-3 BH mass distribution is suggestive of multimodality (Phase 2D mixture modeling); any link to \"negative dimension eigenmodes\" remains a speculative interpretation.
 //! - Where stated: `docs/archive/RESEARCH_STATUS.md`, `docs/external_sources/GWTC3_MASS_CLUMPING_PLAN.md`, `docs/external_sources/GWTC3_DECISION_RULE_SUMMARY.md`, `docs/external_sources/GWTC3_POPULATION_SOURCES.md`, `docs/external_sources/GWTC3_SELECTION_FUNCTION_SPEC.md`, `crates/stats_core/src/claims_gates.rs`, `src/scripts/analysis/gwtc3_mass_clumping_null_models.py`, `src/scripts/analysis/gwtc3_mass_clumping_bootstrap.py`, `src/scripts/analysis/gwtc3_mass_clumping_decision_rule_summary.py`, `src/scripts/analysis/gwtc3_selection_weight_sweep.py`, `crates/stats_core/src/claims_gates.rs`, `src/scripts/data/convert_gwtc3_injections_hdf.py`, `src/scripts/analysis/gwtc3_selection_function_from_injections.py`, `src/scripts/analysis/gwtc3_modality_preregistered.py`, `src/scripts/analysis/gwtc3_bayesian_mixture.py`, `data/external/gwtc3_injection_summary.csv`, `data/external/gwtc3_injection_summary_7890398.csv`, `data/csv/gwtc3_selection_function_binned.csv`, `data/csv/gwtc3_selection_function_binned_7890398.csv`, `data/csv/gwtc3_selection_function_binned_combined.csv`, `data/csv/gwtc3_selection_function_binned_combined_altbins.csv`, `data/csv/gwtc3_mass_clumping_metrics.csv`, `data/csv/gwtc3_mass_clumping_null_models.csv`, `data/csv/gwtc3_mass_clumping_bootstrap_counts.csv`, `data/csv/gwtc3_mass_clumping_bootstrap_summary.csv`, `data/csv/gwtc3_mass_clumping_decision_rule_summary.csv`, `data/csv/gwtc3_selection_bias_control_metrics.csv`, `data/csv/gwtc3_selection_bias_control_metrics_o123.csv`, `data/csv/gwtc3_selection_bias_control_metrics_o3a_altbins.csv`, `data/csv/gwtc3_selection_bias_control_metrics_o123_altbins.csv`, `data/csv/gwtc3_selection_weight_sweep.csv`, `data/csv/gwtc3_selection_weight_sweep_o123.csv`, `data/csv/gwtc3_selection_weight_sweep_o3a_altbins.csv`, `data/csv/gwtc3_selection_weight_sweep_o123_altbins.csv`, `data/csv/gwtc3_bayesian_mixture_results.csv`, `docs/preregistered/GWTC3_MODALITY_TEST.md`, `docs/preregistered/GWTC3_BAYESIAN_MIXTURE.md`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-008
 //!
@@ -69,7 +69,7 @@
 //! - Last verified: 2026-02-05
 //! - Statement: Toy operator mapping: `alpha = -1.5` yields `abs(d_s)=2` under Convention B; physical interpretation remains speculative.
 //! - Where stated: `src/scripts/analysis/neg_dim_pde.py`, `docs/archive/RESEARCH_STATUS.md`, `docs/NEGATIVE_DIMENSION_CLARIFICATIONS.md`, `docs/external_sources/NEGATIVE_DIMENSION_SOURCES.md`, `docs/theory/PARISI_SOURLAS_ALPHA_DERIVATION.md`, `src/scripts/analysis/parisi_sourlas_spectral_dimension.py`, `tests/test_parisi_sourlas_connection.py`, `data/csv/parisi_sourlas_spectral_dimension.csv`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-009
 //!
@@ -77,7 +77,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: Tensor-network experiment exhibits entropy scaling `S ~ log(L) + L^{0.5}`.
 //! - Where stated: `docs/archive/RESEARCH_STATUS_FINAL.md`, `docs/external_sources/TENSOR_NETWORK_SOURCES.md`, `data/csv/tensor_entropy_scaling_fit.csv`, `docs/preregistered/TENSOR_ENTROPY_SCALING.md`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-010
 //!
@@ -85,7 +85,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: Falsifiable thesis: a metamaterial whose unit-cell couplings follow the sedenion zero-divisor incidence graph could realize a mode-selective holographic entropy sink; the disconnected 7-clique ZD topology implies local connected absorbers are insufficient without explicit non-local coupling.
 //! - Where stated: `docs/C010_NONLOCAL_ALGEBRAIC_METAMATERIALS.md`, `docs/external_sources/C010_NONLOCAL_ALGEBRAIC_METAMATERIALS_SOURCES.md`, `crates/materials_core/src/nonlocal_metamaterial.rs`, `crates/gororoba_cli_physics/src/bin/nonlocal_algebraic_metamaterial.rs`, `crates/algebra_analysis/src/boxkites.rs`, `crates/algebra_analysis/src/reggiani.rs`, `crates/algebra_analysis/src/crystal_bands.rs`, `crates/algebra_analysis/src/homotopy_algebra.rs`, `crates/optics_core/src/absorber_benchmark.rs`, `crates/quantum_core/src/magnonic_crystal.rs`, `crates/quantum_core/src/tight_binding.rs`, `crates/cosmology_core/src/sersic.rs`, `data/csv/c010_nonlocal_material_calibrations.csv`, `data/csv/sedenion_box_kites_clustered.csv`, `registry/data/project_csv/canonical/PC-0051_sedenion_box_kites_clustered.toml`, `crates/gororoba_cli_physics/src/bin/entropy_trap.rs`, `crates/gororoba_cli_data/src/bin/repo_utilities.rs`, `crates/gororoba_cli_data/src/bin/repo_utilities.rs`, `papers/MANIFEST.toml`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-011
 //!
@@ -93,7 +93,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: Falsifiable thesis: in the repo's cosmology-materials synthesis, a gravastar-like anti-diffusion core pressure can be phenomenologically matched to a sedenion non-associative coherence-failure term from a scalar field at D_eff = -1.5; interpreted literally, black-hole candidates become sedenion solitons.
 //! - Where stated: `docs/SEDENION_GRAVASTAR_EQUIVALENCE.md`, `docs/NEGATIVE_DIMENSION_CLARIFICATIONS.md`, `docs/GRAND_SYNTHESIS.md`, `docs/BIBLIOGRAPHY.md`, `refs.bib`, `crates/cosmology_core/src/tov.rs`, `crates/cosmology_core/src/gravastar.rs`, `crates/gororoba_cli_physics/src/bin/gravastar_sweep.rs`, `crates/gororoba_cli/tests/integration_gravastar.rs`, `data/csv/genesis_gravastar_bridge.csv`, `registry/data/project_csv/canonical/PC-0034_genesis_gravastar_bridge.toml`, `data/csv/gravastar_anisotropic_stability.csv`, `data/csv/gravastar_ligo_mass_sweep.csv`, `data/csv/gravastar_polytropic_sweep.csv`, `data/csv/gravastar_radial_stability.csv`, `crates/gororoba_cli/tests/integration_gravastar.rs`, `crates/gororoba_cli_data/src/bin/repo_utilities.rs`, `crates/gororoba_cli_data/src/bin/repo_utilities.rs`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-012
 //!
@@ -101,7 +101,7 @@
 //! - Last verified: 2026-01-30
 //! - Statement: "Dark Energy as Negative Dimension Diffusion" is a defensible physical interpretation (not just a metaphor).
 //! - Where stated: `docs/NAVIGATOR.md`, `docs/PHYSICAL_INTERPRETATION.md`, `docs/external_sources/NEGATIVE_DIMENSION_SOURCES.md`, `docs/external_sources/HZ_DATASETS_SOURCES.md`, `docs/external_sources/COSMOLOGY_MULTIPROBE_SOURCES.md`, `docs/external_sources/ADDITIONAL_COSMOLOGICAL_DATASETS.md`, `docs/NEGATIVE_DIMENSION_DARK_ENERGY_MODEL.md`, `docs/NEG_DIM_MULTIPROBE_EXPERIMENT.md`, `crates/spectral_core/src/neg_dim.rs`, `crates/spectral_core/src/neg_dim.rs`, `src/scripts/analysis/neg_dim_model_comparison.py`, `src/scripts/analysis/neg_dim_free_eta_comparison.py`, `src/scripts/data/fix_bao_observables.py`, `tests/test_neg_dim_dark_energy.py`, `tests/test_neg_dim_multidata.py`, `tests/test_neg_dim_free_eta_comparison.py`, `data/csv/neg_dim_model_comparison_results.csv`, `data/csv/neg_dim_free_eta_comparison_results.csv`, `docs/preregistered/NEG_DIM_MODEL_COMPARISON.md`, `docs/preregistered/NEG_DIM_FREE_ETA_AMENDMENT.md`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-013
 //!
@@ -109,7 +109,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: de Marrais' GoTo "automorphemes" (from the 7 O-trips + the "8-ball" exclude rule) cover the 42 primitive assessors exactly twice; each assessor lies in exactly two automorphemes (Production Rule #3 uniqueness).
 //! - Where stated: `docs/DE_MARRAIS_REPLICATION.md`, `crates/algebra_analysis/src/boxkites.rs` (test_automorphemes_cover_assessors_twice, test_production_rule_3_unique_other), `docs/BIBLIOGRAPHY.md`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-014
 //!
@@ -117,7 +117,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: The diagonal-form family of 84 sedenion zero divisors `(e_low +/- e_high)` (from de Marrais' 42 primitive assessors) has left and right annihilator dimension 4 (so the annihilator unit sphere is S^3 ~ SU(2)).
 //! - Where stated: `docs/REGGIANI_REPLICATION.md`, `docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md`, `crates/algebra_analysis/src/reggiani.rs` (test_all_standard_zds_have_nullity_4_4), `crates/algebra_analysis/src/annihilator.rs` (test_all_primitive_assessor_diagonals_have_nullity_4), `docs/BIBLIOGRAPHY.md`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-015
 //!
@@ -125,7 +125,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: For each of the 84 diagonal-form zero divisors `u`, there are exactly 4 other diagonal-form zero divisors `v` with `u*v=0`, and these 4 span `Ann_L(u)`.
 //! - Where stated: `docs/REGGIANI_REPLICATION.md`, `docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md`, `crates/algebra_analysis/src/reggiani.rs` (test_standard_zd_annihilator_consistency), `docs/BIBLIOGRAPHY.md`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-016
 //!
@@ -133,7 +133,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: The repo's `m3` trilinear operation on distinct octonion basis triples produces exactly 42 scalar outputs and 168 pure-imaginary outputs, and the scalar cases correspond exactly to the 7 Fano-plane lines (with parity sign flips).
 //! - Where stated: `docs/CONVOS_CONCEPTS_STATUS_INDEX.md`, `CURRENT::PATH crates/gororoba_algebra/src/physics/m3.rs (LEGACY::PATH crates/algebra_core/src/physics/m3.rs)` (test_m3_distinct_triples_split_42_scalar_168_vector, test_m3_scalar_outputs_are_exactly_fano_lines, test_m3_scalar_sign_flips_with_permutation_parity), `docs/BIBLIOGRAPHY.md`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-017
 //!
@@ -141,7 +141,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: For diagonal 2-blades `(e_i +/- e_j)` in 16D CD, any observed zero product between two 2-blades satisfies the XOR-bucket necessary condition `(i^j) == (k^ell)`.
 //! - Where stated: `docs/CONVOS_CONCEPTS_STATUS_INDEX.md`, `crates/algebra_analysis/src/zd_graphs.rs` (test_xor_bucket_necessary_two_blade, test_xor_bucket_necessary_2v4)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-018
 //!
@@ -149,7 +149,7 @@
 //! - Last verified: 2026-01-28
 //! - Statement: "Wheels" (Carlstrom) are commutative monoid-based structures <H,0,1,+,*,/> with a total reciprocal operation and defining axioms (1)-(8) (Carlstrom 2001, Definition 1.1) that provide division-by-zero semantics without partiality.
 //! - Where stated: `docs/WHEELS_DIVISION_BY_ZERO.md`, convos "wheel" mentions
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-019
 //!
@@ -157,7 +157,7 @@
 //! - Last verified: 2026-01-30
 //! - Statement: Wheels (division-by-zero) provide a mathematically justified way to interpret some Cayley-Dickson zero-divisor phenomena at higher dimensions.
 //! - Where stated: convos narrative, `docs/external_sources/WHEELS_CAYLEY_DICKSON_SOURCES.md`, `CURRENT::PATH crates/gororoba_algebra/src/construction/wheels.rs (LEGACY::PATH crates/algebra_core/src/construction/wheels.rs)`, `data/csv/cd_wheel_roundtrip_results.csv`, `docs/theory/WHEELS_CD_STRUCTURAL_ANALYSIS.md`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-020
 //!
@@ -165,7 +165,7 @@
 //! - Last verified: 2026-01-28
 //! - Statement: REFUTED: Legacy 16D "Zero-Divisor Adjacency Matrix" does NOT represent valid algebra. Found to be noise/hallucination when verified against commutator/parity matrices.
 //! - Where stated: `data/csv/legacy/`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-021
 //!
@@ -173,7 +173,7 @@
 //! - Last verified: 2026-01-28
 //! - Statement: REFUTED: Hypothesis tested: 1024D Basis-to-Lattice mapping is a consistent function.... Result: This claim was empirically refuted.
 //! - Where stated: `data/csv/legacy/`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-022
 //!
@@ -181,7 +181,7 @@
 //! - Last verified: 2026-02-05
 //! - Statement: Toy model: map Cayley-Dickson doubling level n to surreal birthday n and test the CD property-loss milestones.
 //! - Where stated: `docs/theory/unified_tensor_wheel_cd_framework.md`, `src/scripts/analysis/surreal_cd_ordinal_construction.py`, `data/csv/surreal_cd_ordinal_mapping.csv`, `tests/test_surreal_cd_ordinal.py`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-023
 //!
@@ -189,7 +189,7 @@
 //! - Last verified: 2026-02-05
 //! - Statement: Toy model: interpret the CD associator as a discrete connection/holonomy signal over triples.
 //! - Where stated: `docs/theory/unified_tensor_wheel_cd_framework.md`, `crates/algebra_analysis/src/grassmannian.rs`, `src/scripts/analysis/cd_fiber_holonomy_analysis.py`, `data/csv/cd_holonomy_basis_triples.csv`, `data/csv/cd_fiber_holonomy_comparison.csv`, `tests/test_cd_holonomy.py`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-024
 //!
@@ -197,15 +197,15 @@
 //! - Last verified: 2026-01-28
 //! - Statement: C++ acceleration kernels reproduce Python CD multiplication results exactly (within float64 tolerance).
 //! - Where stated: `cpp/`, `cpp/tests/test_cd_algebra.cpp`, `cpp/benchmarks/bench_cd_multiply.cpp`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-025
 //!
 //! - Status: `Refuted`
 //! - Last verified: 2026-01-31
-//! - Statement: GWTC-3 black hole sky positions cluster around projected sedenion zero-divisor coordinates (CMB-aligned box-kite projection).
-//! - Where stated: `docs/stellar_cartography/theory/HYPOTHESIS_DEF.md`, `crates/algebra_analysis/src/boxkites.rs`, `crates/stats_core/src/claims_gates.rs`, `docs/preregistered/TSCP_SKY_ALIGNMENT.md`, `tests/test_tscp_alignment_offline.py`, `docs/external_sources/TSCP_SKY_ALIGNMENT_SOURCES.md`
-//! - What would verify/refute it:
+//! - Statement: GWTC-3 black hole sky positions cluster around projected sedenion zero-divisor coordinates (CMB-aligned frame). REFUTED at the statistical level: sky distribution is consistent with isotropy.
+//! - Where stated: `crates/stats_core/src/ultrametric/`, `data/csv/gwtc3_sky_positions.csv`
+//! - What would verify/refute it: 
 //!
 //! ## C-026
 //!
@@ -213,7 +213,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: Speculative program: if a statistically significant "lower mass gap" (~2.5-5 M_sun) is established, it may correspond to an "algebraic tension" region between stable zero-divisor nodes in the sedenion box-kite structure.
 //! - Where stated: `docs/stellar_cartography/theory/HYPOTHESIS_DEF.md`, `docs/C026_MASS_GAP_MECHANISM.md`, `docs/external_sources/C026_MASS_GAP_SOURCES.md`, `src/scripts/analysis/gwtc3_lower_mass_gap_metrics.py`, `data/csv/gwtc3_lower_mass_gap_metrics.csv`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-027
 //!
@@ -221,7 +221,7 @@
 //! - Last verified: 2026-02-03
 //! - Statement: Toy model: define D_eff(rho) = 3 - k*log10(rho/rho_vac). With rho_h(M) = M/((4/3)*pi*r_s^3) at r_s = 2GM/c^2 (average density inside Schwarzschild radius), D_eff(rho_h(M)) crosses 0 at a critical mass M_crit (horizon "phase transition" proxy).
 //! - Where stated: `docs/stellar_cartography/theory/ONTOLOGICAL_AXIOMS.md`, `crates/algebra_analysis/src/grassmannian.rs`, `crates/stats_core/src/claims_gates.rs`, `docs/C027_DEFF_HORIZON_TEST.md`, `src/scripts/analysis/deff_horizon_mass_scaling.py`, `data/csv/deff_horizon_mass_scaling_summary.csv`, `tests/test_c027_deff_horizon_mass_scaling.py`, `docs/external_sources/C027_EFFECTIVE_DIMENSION_SOURCES.md`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-028
 //!
@@ -229,7 +229,7 @@
 //! - Last verified: 2026-01-31
 //! - Statement: Aut(S) = G2 x S3; no continuous symmetry beyond G2 emerges from sedenions. The S3 factor permutes three octonionic subalgebras.
 //! - Where stated: `docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/SEDENION_FIELD_THEORY.md`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-029
 //!
@@ -237,7 +237,7 @@
 //! - Last verified: 2026-01-30
 //! - Statement: Three fermion generations arise from the C tensor S decomposition into three C tensor O subalgebras (Gillard & Gresnigt 2019, Gresnigt 2023).
 //! - Where stated: `docs/BIBLIOGRAPHY.md` (Gillard & Gresnigt 2019; Gresnigt 2023), `docs/SEDENION_FIELD_THEORY.md`, `CURRENT::PATH crates/gororoba_algebra/src/construction/hypercomplex.rs (LEGACY::PATH crates/algebra_core/src/construction/hypercomplex.rs)` (test_sedenion_box_kites, test_octonion_field_fano)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-030
 //!
@@ -245,7 +245,7 @@
 //! - Last verified: 2026-02-03
 //! - Statement: Any sedenion-valued action/Lagrangian with products of 3+ fields must specify a bypass mechanism (explicit parenthesization, associative surrogate product, or restriction to associative subalgebras) to be uniquely defined; otherwise parenthesizations differ by the associator A(a,b,c)=(ab)c-a(bc).
 //! - Where stated: `docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/external_sources/C030_SEDENION_LAGRANGIAN_SOURCES.md`, `docs/C030_SEDENION_LAGRANGIAN_BYPASS.md`, `src/scripts/analysis/c030_sedenion_lagrangian_bypass_checks.py`, `data/csv/c030_sedenion_lagrangian_bypass_checks.csv`, `tests/test_c030_sedenion_lagrangian_bypass_checks.py`, `docs/SEDENION_FIELD_THEORY.md`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-031
 //!
@@ -253,7 +253,7 @@
 //! - Last verified: 2026-02-03
 //! - Statement: By Hurwitz theorem, only dims 1/2/4/8 admit normed division algebras (R,C,H,O). In the CD tower at dim=16 (sedenions), norm composition fails and zero divisors exist; therefore any sedenion-valued field theory must specify an associative representation (or restrict to associative subalgebras) to define a unique action and a compatible Hilbert-space structure.
 //! - Where stated: `docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/external_sources/C031_HURWITZ_QUANTIZATION_SOURCES.md`, `src/scripts/analysis/c031_hurwitz_norm_composition_checks.py`, `data/csv/c031_hurwitz_norm_composition_checks.csv`, `tests/test_c031_hurwitz_norm_composition_checks.py`, `docs/C030_SEDENION_LAGRANGIAN_BYPASS.md`, `docs/SEDENION_FIELD_THEORY.md`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-032
 //!
@@ -261,7 +261,7 @@
 //! - Last verified: 2026-02-04
 //! - Statement: Tang (2025 preprint): non-associative (octonionic/sedenionic) QED uses associator norms to predict charged-lepton masses/ratios at percent level without a Higgs mechanism.
 //! - Where stated: `docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/external_sources/C032_TANG_2025_SEDENIONIC_QED_SOURCES.md`, `docs/BIBLIOGRAPHY.md` (Tang 2025), `docs/SEDENION_FIELD_THEORY.md`, `src/scripts/analysis/c032_tang_2025_min_reproduction.py`, `data/csv/c032_tang_2025_table2_lepton_masses.csv`, `data/csv/c032_tang_2025_associator_subalgebra_summary.csv`, `data/csv/c032_tang_2025_associator_basis_triples.csv`, `tests/test_c032_tang_2025_min_reproduction.py`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-033
 //!
@@ -269,7 +269,7 @@
 //! - Last verified: 2026-02-18
 //! - Statement: Sedenion basis maps to 24 generators of SU(5) (Tang & Tang 2023).
 //! - Where stated: `data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf`, `data/papers/corpus/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.txt`, `docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/external_sources/SEDENION_FIELD_THEORY_SOURCES.md`, `docs/BIBLIOGRAPHY.md` (Tang & Tang 2023), `docs/SEDENION_FIELD_THEORY.md`, `docs/C033_SU5_MAPPING_CLOSURE.md`, `CURRENT::PATH crates/gororoba_algebra/src/lie/group_theory.rs (LEGACY::PATH crates/algebra_core/src/lie/group_theory.rs)`, `src/scripts/analysis/c033_su5_generator_summary.py`, `data/csv/c033_su5_generator_summary.csv`, `tests/test_su5_generators.py` (29 tests)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-034
 //!
@@ -277,7 +277,7 @@
 //! - Last verified: 2026-02-04
 //! - Statement: Chanyal (2014): a "sedenion unified theory of gravi-electromagnetism" expresses unified potentials/fields/currents of dyons and "gravito-dyons" using two 8D sectors (two eight-potentials), yielding compact generalized Dirac-Maxwell and related equations (abstract-level in repo).
 //! - Where stated: `docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md`, `docs/BIBLIOGRAPHY.md` (Chanyal 2014), `docs/SEDENION_FIELD_THEORY.md`, `docs/C034_CHANYAL_2014_REPRODUCTION.md`, `src/scripts/analysis/c034_chanyal_2014_structural_reproduction.py`, `data/csv/c034_sedenion_doubling_identity_check.csv`, `tests/test_c034_sedenion_doubling_identity.py`, `data/papers/intake/traces/chanyal_2014_springer_abstract.txt`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-035
 //!
@@ -285,7 +285,7 @@
 //! - Last verified: 2026-01-31
 //! - Statement: F4 Casimir ratio epsilon = C2(26)/|Delta+(F4)|= 6/24 = 1/4 exactly.
 //! - Where stated: `docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md`, `docs/EXCEPTIONAL_COSMOLOGY.md`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-036
 //!
@@ -293,7 +293,7 @@
 //! - Last verified: 2026-01-31
 //! - Statement: Triality-governed bigraph attachment stabilizes clustering coefficient C -> 0.25 in thermodynamic limit.
 //! - Where stated: `docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md`, `docs/EXCEPTIONAL_COSMOLOGY.md`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-037
 //!
@@ -301,7 +301,7 @@
 //! - Last verified: 2026-02-03
 //! - Statement: Numerical correspondence gamma ~ epsilon ~ 4*lambda_GB ~ 1/4, relating Barbero-Immirzi parameter, network clustering, and Gauss-Bonnet coupling.
 //! - Where stated: `docs/C037_NUMERICAL_COINCIDENCE_AUDIT.md`, `docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md`, `docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md`, `data/papers/corpus/arxiv_gr-qc0407051_domagala_lewandowski_2004_bh_entropy_quantum_geometry.pdf`, `data/papers/corpus/arxiv_gr-qc0407052_meissner_2004_bh_entropy_lqg.pdf`, `data/papers/corpus/arxiv_hep-th0504052_nojiri_odintsov_sasaki_2005_gauss_bonnet_dark_energy.pdf`, `docs/EXCEPTIONAL_COSMOLOGY.md`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-038
 //!
@@ -309,7 +309,7 @@
 //! - Last verified: 2026-01-31
 //! - Statement: Dark energy equation of state w0 = -5/6 ~ -0.8333 emerges from twist-sector distribution in the exceptional framework.
 //! - Where stated: `docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md`, `docs/EXCEPTIONAL_COSMOLOGY.md`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-039
 //!
@@ -317,7 +317,7 @@
 //! - Last verified: 2026-02-04
 //! - Statement: In CDT and asymptotic safety literature, spectral dimension D_s runs from ~4 (large scales) to ~2 (short scales); the repo implements a finite-graph toy D_s(t) computation for qualitative comparison.
 //! - Where stated: `docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md`, `docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md`, `crates/cosmology_core/src/spectral.rs`, `tests/test_spectral_dimension.py` (17 tests), `src/scripts/analysis/c039_spectral_dimension_bigraph_sweep.py`, `data/csv/c039_spectral_dimension_bigraph_curve.csv`, `data/csv/c039_spectral_dimension_bigraph_summary.csv`, `tests/test_c039_spectral_dimension_bigraph_artifacts.py`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-040
 //!
@@ -325,7 +325,7 @@
 //! - Last verified: 2026-02-03
 //! - Statement: Primordial tilt n_s ~ 0.965 from fractal D_eff ~ 2.8-3.0 at inflation.
 //! - Where stated: `docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md`, `docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md`, `docs/EXCEPTIONAL_COSMOLOGY.md`, `crates/cosmology_core/src/spectral.rs`, `tests/test_primordial_tilt.py` (18 tests), `src/scripts/analysis/c040_primordial_tilt_deff_sweep.py`, `data/csv/c040_primordial_tilt_deff_curve.csv`, `data/csv/c040_primordial_tilt_summary.csv`, `tests/test_c040_primordial_tilt_artifacts.py`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-041
 //!
@@ -333,7 +333,7 @@
 //! - Last verified: 2026-02-03
 //! - Statement: F4 26D representation connects to bosonic string critical dimension (D=26).
 //! - Where stated: `docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md`, `docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md`, `docs/EXCEPTIONAL_COSMOLOGY.md`, `docs/C041_F4_STRING_DIMENSION_COINCIDENCE_AUDIT.md`, `data/papers/corpus/arxiv_gr-qc0306060_larranaga_2003_introduction_to_bosonic_string_theory.pdf`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-042
 //!
@@ -341,7 +341,7 @@
 //! - Last verified: 2026-01-31
 //! - Statement: Kozyrev p-adic wavelets form an explicitly computable eigenbasis for the Vladimirov operator.
 //! - Where stated: `docs/theory/PADIC_ANALYSIS_FOUNDATIONS.md`, `CURRENT::PATH crates/gororoba_algebra/src/construction/padic.rs (LEGACY::PATH crates/algebra_core/src/construction/padic.rs)`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-043
 //!
@@ -349,7 +349,7 @@
 //! - Last verified: 2026-02-04
 //! - Statement: "Compact Object" populations (Pulsars, Magnetars, FRBs) can be integrated into the unified framework for multi-messenger testing.
 //! - Where stated: `docs/ROADMAP_DETAILED.md`, `docs/external_sources/C043_COMPACT_OBJECT_CATALOG_SOURCES.md`, `src/scripts/data/fetch_chime_frb.py`, `src/scripts/data/fetch_atnf_pulsars_full.py`, `src/scripts/data/fetch_mcgill_magnetars.py`, `src/scripts/data/fetch_compact_objects.py`, `data/csv/compact_objects_catalog.csv`, `data/csv/compact_objects_catalog.PROVENANCE.json`, `tests/test_c043_compact_objects_catalog_artifact.py`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-044
 //!
@@ -357,7 +357,7 @@
 //! - Last verified: 2026-01-31
 //! - Statement: Legacy 16D/32D/64D "Zero-Divisor Adjacency Matrices" are valid basis-element maps.
 //! - Where stated: `data/csv/legacy/`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-045
 //!
@@ -365,7 +365,7 @@
 //! - Last verified: 2026-01-31
 //! - Statement: 64-Layer Strang Splitting achieves 2nd-order convergence given finite commutator budgets.
 //! - Where stated: `docs/theory/OPERATOR_DEPTH_STRATIFICATION.md`, `examples/strang_splitting_demo.py`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-046
 //!
@@ -373,7 +373,7 @@
 //! - Last verified: 2026-01-31
 //! - Statement: "Fractal Doping" (sum x/n^beta) stabilizes zero divisors.
 //! - Where stated: `archive/legacy_conjectures/`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-047
 //!
@@ -381,7 +381,7 @@
 //! - Last verified: 2026-02-04
 //! - Statement: E9, E10, E11 are Euclidean sphere-packing lattices.
 //! - Where stated: `archive/legacy_conjectures/`, `docs/C047_E_SERIES_KAC_MOODY_AUDIT.md`, `docs/external_sources/C047_E_SERIES_KAC_MOODY_SOURCES.md`, `tests/test_c047_e_series_cartan_signature.py`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-048
 //!
@@ -389,7 +389,7 @@
 //! - Last verified: 2026-02-04
 //! - Statement: Analogy: "depth stratification" is used as a terminology/structure analogy to motivic tower stratification (no physical equivalence claimed).
 //! - Where stated: `docs/theory/OPERATOR_DEPTH_STRATIFICATION.md`, `docs/external_sources/C048_MOTIVIC_TOWER_SOURCES.md`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-049
 //!
@@ -397,7 +397,7 @@
 //! - Last verified: 2026-01-31
 //! - Statement: Lightspace and Gravitytime are distinct geometric structures (Conformal vs Scale/Dynamics).
 //! - Where stated: `docs/theory/PHASE_IV_0_2_LEDGER.md`, `docs/BIBLIOGRAPHY.md`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-050
 //!
@@ -405,7 +405,7 @@
 //! - Last verified: 2026-02-04
 //! - Statement: Toy equivalence: spaceplate delay allocation can be cast as multi-flavor flow allocation under variable renaming (LP equivalence).
 //! - Where stated: `docs/theory/WARP_FLOW_ALLOCATION.md`, `docs/C050_SPACEPLATE_FLOW_ISOMORPHISM.md`, `src/scripts/analysis/c050_spaceplate_flow_isomorphism_toy.py`, `data/csv/c050_spaceplate_flow_isomorphism_toy.csv`, `tests/test_c050_spaceplate_flow_isomorphism_toy.py`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-051
 //!
@@ -413,7 +413,7 @@
 //! - Last verified: 2026-01-31
 //! - Statement: A Pareto frontier exists for Spaceplates trading Compression (R) vs Bandwidth (B) vs Angle.
 //! - Where stated: `crates/optics_core/src/tcmt.rs`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-052
 //!
@@ -421,7 +421,7 @@
 //! - Last verified: 2026-01-31
 //! - Statement: MERA (Multi-scale Entanglement Renormalization) circuit produces logarithmic entropy scaling S ~ log(L).
 //! - Where stated: `src/scripts/analysis/verify_phase_3_tasks.py`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-053
 //!
@@ -429,7 +429,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: Toy mapping: Pathion (32D) tensor diagonal -> dielectric stack (TMM retrieval).
 //! - Where stated: `crates/materials_core/src/pathion_toy_mapping.rs`, `crates/gororoba_cli_physics/src/bin/c053_pathion_metamaterial_mapping.rs`, `data/csv/c053_pathion_tmm_summary.csv`, `crates/gororoba_cli_physics/tests/c053_pathion_metamaterial_mapping.rs`, `docs/external_sources/C053_PATHION_METAMATERIAL_MAPPING_SOURCES.md`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-054
 //!
@@ -437,7 +437,7 @@
 //! - Last verified: 2026-01-31
 //! - Statement: Carlstrom's Wheel Algebra formally models information loss in non-associative CD algebras.
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/src/construction/wheels.rs (LEGACY::PATH crates/algebra_core/src/construction/wheels.rs)`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-055
 //!
@@ -445,7 +445,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: Non-associativity is the generic (bulk) state of 16D/32D CD algebras (100% prevalence).
 //! - Where stated: `CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)` (test_sedenion_non_associative), `CURRENT::PATH crates/gororoba_algebra/src/construction/hypercomplex.rs (LEGACY::PATH crates/algebra_core/src/construction/hypercomplex.rs)` (test_non_associativity_scaling)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-056
 //!
@@ -453,7 +453,7 @@
 //! - Last verified: 2026-01-31
 //! - Statement: PDG lepton/boson masses verified against experiment (electron, muon, Z, W, Higgs).
 //! - Where stated: `src/scripts/data/fetch_pdg_particle_data.py`, `tests/test_pdg_particle_data.py`, `tests/test_pdg_coupling_constants.py`, `docs/BIBLIOGRAPHY.md`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-057
 //!
@@ -461,7 +461,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: DESI Y1 BAO 7-bin measurements integrated into multi-probe pipeline.
 //! - Where stated: `crates/data_core/src/catalogs/desi_bao.rs`, `crates/cosmology_core/src/observational.rs` (chi2_bao_real), `data/external/bao/`, `docs/BIBLIOGRAPHY.md`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-058
 //!
@@ -469,7 +469,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: Planck 2018 parameter summary + CMB spectra integrated.
 //! - Where stated: `crates/data_core/src/catalogs/planck.rs`, `crates/cosmology_core/src/flrw.rs` (PLANCK18_* constants), `docs/BIBLIOGRAPHY.md`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-059
 //!
@@ -477,7 +477,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: NANOGrav 15yr free spectrum (log10(rho(f)) KDE) integrated.
 //! - Where stated: `crates/data_core/src/catalogs/nanograv.rs`, `data/csv/nanograv_15yr_free_spectrum.csv`, `docs/BIBLIOGRAPHY.md`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-060
 //!
@@ -485,7 +485,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: GWTC-3 sky localizations (64 events) integrated.
 //! - Where stated: `crates/data_core/src/catalogs/gwtc.rs` (combined GWTC provider, 219 events)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-061
 //!
@@ -493,7 +493,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: O4 GW events (10 confirmed) integrated.
 //! - Where stated: `crates/data_core/src/catalogs/gwtc.rs` (combined GWTC provider includes O4)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-062
 //!
@@ -501,7 +501,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: CHIME/FRB 536-event catalog integrated.
 //! - Where stated: `crates/data_core/src/catalogs/chime.rs`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-063
 //!
@@ -509,7 +509,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: ATNF 3500 pulsars + McGill 28 magnetars integrated.
 //! - Where stated: `crates/data_core/src/catalogs/atnf.rs`, `crates/data_core/src/catalogs/mcgill.rs`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-064
 //!
@@ -517,7 +517,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: Fermi GBM 3500 GRBs integrated.
 //! - Where stated: `crates/data_core/src/catalogs/fermi_gbm.rs`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-065
 //!
@@ -525,7 +525,7 @@
 //! - Last verified: 2026-01-31
 //! - Statement: CMS dimuon + diphoton spectra (J/psi, Upsilon, Z, Higgs) integrated.
 //! - Where stated: `src/scripts/data/fetch_cms_dimuon.py`, `src/scripts/data/fetch_cms_higgs_diphoton.py`, `tests/test_cms_dimuon.py`, `tests/test_cms_higgs_diphoton.py`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-066
 //!
@@ -533,7 +533,7 @@
 //! - Last verified: 2026-01-31
 //! - Statement: Neutrino oscillation params + KATRIN upper limit integrated.
 //! - Where stated: `src/scripts/data/fetch_neutrino_params.py`, `tests/test_neutrino_params.py`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-067
 //!
@@ -541,7 +541,7 @@
 //! - Last verified: 2026-01-31
 //! - Statement: AFLOW 1000 + NOMAD materials + absorber experimental spectra integrated.
 //! - Where stated: `src/scripts/data/fetch_aflow_materials.py`, `src/scripts/data/fetch_materials_nomad_subset.py`, `tests/test_aflow_materials.py`, `tests/test_materials_nomad.py`, `tests/test_materials_baseline_models.py`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-068
 //!
@@ -549,7 +549,7 @@
 //! - Last verified: 2026-02-03
 //! - Statement: Sedenion 84-ZD interaction matrix eigenvalue spectrum matches PDG particle masses.
 //! - Where stated: `src/scripts/analysis/c068_zd_interaction_spectrum_degeneracy.py`, `data/csv/c068_zd_interaction_eigen_summary.csv`, `tests/test_c068_zd_interaction_spectrum_degeneracy.py`, `docs/external_sources/C068_PDG_SPECTRUM_MATCH_SOURCES.md`, inputs: `data/csv/reggiani_standard_zero_divisors.csv`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-069
 //!
@@ -557,7 +557,7 @@
 //! - Last verified: 2026-02-04
 //! - Statement: Three octonionic subalgebra principal angles reproduce PMNS neutrino mixing angles.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments.py`, `data/csv/cd_algebraic_experiments.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-070
 //!
@@ -565,7 +565,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: CD associator power spectrum shape matches NANOGrav GW background.
 //! - Where stated: `docs/external_sources/C070_NANOGRAV_SPECTRUM_MATCH_SOURCES.md`, `src/scripts/analysis/c070_nanograv_shape_match_audit.py`, `data/csv/c070_nanograv_shape_match_summary.csv`, `tests/test_c070_nanograv_shape_match_audit.py`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-071
 //!
@@ -573,7 +573,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: FRB dispersion measures exhibit p-adic ultrametric structure.
 //! - Where stated: `crates/stats_core/src/ultrametric/mod.rs`, `crates/gororoba_cli_data/src/bin/frb_ultrametric.rs`, `data/csv/c071_frb_ultrametric.csv`, `docs/external_sources/C071_FRB_ULTRAMETRIC_SOURCES.md`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-072
 //!
@@ -581,7 +581,7 @@
 //! - Last verified: 2026-02-04
 //! - Statement: CMS resonance mass ratios appear as ZD eigenvalue ratios.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments.py`, `data/csv/cd_algebraic_experiments.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-073
 //!
@@ -589,7 +589,7 @@
 //! - Last verified: 2026-02-04
 //! - Statement: Left-multiplication operator spectrum matches PDG masses.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v2.py`, `data/csv/cd_algebraic_experiments_v2.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-074
 //!
@@ -597,7 +597,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: **CD associator growth law: <|A(a,b,c)|^2> = 2.00 * (1 - 14.6 * d^{-1.80}) for unit vectors.**
 //! - Where stated: `crates/stats_core/src/lib.rs` (test_c074_integration_with_real_associator_data), `data/csv/c074_associator_growth_empirical.csv`, `docs/external_sources/C074_ASSOCIATOR_GROWTH_LAW_SOURCES.md`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-075
 //!
@@ -605,7 +605,7 @@
 //! - Last verified: 2026-02-03
 //! - Statement: **Pathion 32D ZD interaction matrix has 33 distinct eigenvalues spanning 3.3 decades.**
 //! - Where stated: `src/scripts/analysis/c075_pathion_zd_interaction_spectrum.py`, `data/csv/c075_pathion_interaction_summary.csv`, `data/csv/c075_pathion_interaction_unique_positive_eigenvalues.csv`, `tests/test_c075_pathion_zd_interaction_spectrum.py`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-076
 //!
@@ -613,7 +613,7 @@
 //! - Last verified: 2026-01-31
 //! - Statement: **Three octonionic subalgebras have exact generation symmetry (identical Casimirs, zero leakage, S3-symmetric mixing).**
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v3.py`, `data/csv/cd_algebraic_experiments_v3.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-077
 //!
@@ -621,7 +621,7 @@
 //! - Last verified: 2026-02-05
 //! - Statement: Subalgebra associator mixing matrix resembles PMNS matrix.
 //! - Where stated: `src/scripts/analysis/c077_associator_mixing_pmns_audit.py`, `data/csv/c077_associator_mixing_summary.csv`, `tests/test_c077_associator_mixing_pmns_audit.py`, `data/csv/cd_algebraic_experiments_v3.json` (exp5v3_associator_mixing)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-078
 //!
@@ -629,7 +629,7 @@
 //! - Last verified: 2026-02-05
 //! - Statement: Higher-dim ZDs (32D/64D) improve mass spectrum coverage.
 //! - Where stated: `src/scripts/analysis/c078_higher_dim_zd_coverage_audit.py`, `data/csv/c078_higher_dim_zd_coverage_summary.csv`, `tests/test_c078_higher_dim_zd_coverage_audit.py`, `data/csv/cd_algebraic_experiments_v4.json` (exp_a_higher_dim_zd)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-079
 //!
@@ -637,7 +637,7 @@
 //! - Last verified: 2026-02-04
 //! - Statement: E8 root system eigenvalues reproduce particle masses.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v4.py`, `data/csv/cd_algebraic_experiments_v4.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-080
 //!
@@ -645,7 +645,7 @@
 //! - Last verified: 2026-02-04
 //! - Statement: FRB DM distribution has p-adic ultrametric structure.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v4.py`, `data/csv/cd_algebraic_experiments_v4.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-081
 //!
@@ -653,7 +653,7 @@
 //! - Last verified: 2026-02-04
 //! - Statement: Multi-parameter Givens rotation finds exact PMNS angles.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v4.py`, `data/csv/cd_algebraic_experiments_v4.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-082
 //!
@@ -661,7 +661,7 @@
 //! - Last verified: 2026-02-03
 //! - Statement: Associator saturation extends to dim 1024 with same parameters.
 //! - Where stated: `src/scripts/analysis/c082_associator_saturation_extended_audit.py`, `data/csv/c082_associator_saturation_summary.csv`, `data/csv/c082_associator_saturation_by_dim.csv`, `tests/test_c082_associator_saturation_extended_audit.py`, inputs: `data/csv/cd_algebraic_experiments_v4.json` (exp_e_associator_extended)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-083
 //!
@@ -669,7 +669,7 @@
 //! - Last verified: 2026-02-04
 //! - Statement: General-form ZDs from CSV have richer left-mult spectrum.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v4.py`, `data/csv/cd_algebraic_experiments_v4.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-084
 //!
@@ -677,7 +677,7 @@
 //! - Last verified: 2026-02-04
 //! - Statement: Yukawa-like symmetry breaking produces PMNS-like mixing.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v4.py`, `data/csv/cd_algebraic_experiments_v4.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-085
 //!
@@ -685,7 +685,7 @@
 //! - Last verified: 2026-02-04
 //! - Statement: CMS resonance ratios match E8+pathion combined eigenvalue ratios.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v4.py`, `data/csv/cd_algebraic_experiments_v4.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-086
 //!
@@ -693,7 +693,7 @@
 //! - Last verified: 2026-01-31
 //! - Statement: PMNS angles from subalgebra rotation are trivially achievable.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v5.py`, `data/csv/cd_algebraic_experiments_v5.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-087
 //!
@@ -701,7 +701,7 @@
 //! - Last verified: 2026-02-04
 //! - Statement: A_inf=2 follows from statistical independence of (ab)c and a(bc).
 //! - Where stated: `src/scripts/analysis/c087_associator_independence_audit.py`, `data/csv/c087_associator_independence_summary.csv`, `tests/test_c087_associator_independence_audit.py`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-088
 //!
@@ -709,7 +709,7 @@
 //! - Last verified: 2026-01-31
 //! - Statement: Non-diagonal ZDs exist abundantly in 16D sedenion algebra.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v5.py`, `data/csv/cd_algebraic_experiments_v5.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-089
 //!
@@ -717,7 +717,7 @@
 //! - Last verified: 2026-01-31
 //! - Statement: Structure constants f_{ijk} have degenerate singular values.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v5.py`, `data/csv/cd_algebraic_experiments_v5.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-090
 //!
@@ -725,7 +725,7 @@
 //! - Last verified: 2026-02-04
 //! - Statement: ZD eigenvalue spectrum is NOT invariant under SO(7) rotation.
 //! - Where stated: `src/scripts/analysis/c090_so7_rotation_drift_audit.py`, `data/csv/c090_so7_rotation_drift_summary.csv`, `tests/test_c090_so7_rotation_drift.py`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-091
 //!
@@ -733,7 +733,7 @@
 //! - Last verified: 2026-02-04
 //! - Statement: Non-diagonal ZD spectrum matches 9/12 particle masses.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v6.py`, `data/csv/cd_algebraic_experiments_v6.json`, `data/csv/cd_algebraic_experiments_v7_null.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-092
 //!
@@ -741,7 +741,7 @@
 //! - Last verified: 2026-02-03
 //! - Statement: SO(7) orbit structure of ZD spectrum is continuous, not discrete.
 //! - Where stated: `src/scripts/analysis/c092_so7_orbit_structure_audit.py`, `data/csv/c092_so7_orbit_structure_summary.csv`, `tests/test_c092_so7_orbit_structure_audit.py`, inputs: `data/csv/cd_algebraic_experiments_v6.json` (results.P)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-093
 //!
@@ -749,7 +749,7 @@
 //! - Last verified: 2026-01-31
 //! - Statement: Algebraic Gram matrix Tr(L_i^T L_j) is proportional to identity.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v6.py`, `data/csv/cd_algebraic_experiments_v6.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-094
 //!
@@ -757,7 +757,7 @@
 //! - Last verified: 2026-02-03
 //! - Statement: Associator saturation fit fails for non-power-of-2 dimensions.
 //! - Where stated: `src/scripts/analysis/c094_non_power_two_dims_fit_audit.py`, `data/csv/c094_non_power_two_dims_summary.csv`, `data/csv/c094_non_power_two_dims_by_dim.csv`, `tests/test_c094_non_power_two_dims_fit_audit.py`, inputs: `data/csv/cd_algebraic_experiments_v6.json` (results.R)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-095
 //!
@@ -765,7 +765,7 @@
 //! - Last verified: 2026-01-31
 //! - Statement: Associator saturation A_inf=2 is confirmed at 9 power-of-2 dims (4 through 1024) with tight error bars.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v8.py`, `data/csv/cd_algebraic_experiments_v8.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-096
 //!
@@ -773,7 +773,7 @@
 //! - Last verified: 2026-02-03
 //! - Statement: Associator tensor A(e_i,e_j,e_k) exhibits phase transitions in algebraic identities across the CD tower.
 //! - Where stated: `src/scripts/analysis/c096_associator_tensor_transitions_audit.py`, `data/csv/c096_associator_tensor_summary.csv`, `data/csv/c096_associator_tensor_by_dim.csv`, `tests/test_c096_associator_tensor_transitions_audit.py`, inputs: `data/csv/cd_algebraic_experiments_v8.json` (results.T)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-097
 //!
@@ -781,7 +781,7 @@
 //! - Last verified: 2026-02-03
 //! - Statement: Diagonal ZD interaction graph has exactly 3 distinct edge weights {0, 1, sqrt(2)} and decomposes into 14 connected components at threshold > 1.
 //! - Where stated: `src/scripts/analysis/c097_zd_interaction_graph_audit.py`, `data/csv/c097_zd_interaction_graph_summary.csv`, `tests/test_c097_zd_interaction_graph_audit.py`, `data/csv/reggiani_standard_zero_divisors.csv`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-098
 //!
@@ -789,7 +789,7 @@
 //! - Last verified: 2026-01-31
 //! - Statement: CD algebras lose algebraic properties at precise, dimension-specific thresholds: commutativity at dim=4, associativity at dim=8, alternativity at dim=16. Power-associativity and flexibility hold through dim=256.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v8.py`, `data/csv/cd_algebraic_experiments_v8.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-099
 //!
@@ -797,7 +797,7 @@
 //! - Last verified: 2026-02-03
 //! - Statement: Non-diagonal sedenion ZDs have consistent geometry: 14 nonzero components (mode), PCA dimension 13-14, kernel dimension exactly 4, pairwise angles clustered around 77 degrees.
 //! - Where stated: `src/scripts/analysis/c099_nondiag_zd_geometry_audit.py`, `data/csv/c099_nondiag_zd_geometry_summary.csv`, `tests/test_c099_nondiag_zd_geometry_audit.py`, inputs: `data/csv/cd_algebraic_experiments_v8.json` (results.W)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-100
 //!
@@ -805,7 +805,7 @@
 //! - Last verified: 2026-01-31
 //! - Statement: Flexibility identity A(x,y,x)=0 holds exactly at all tested CD dimensions (4 through 256), while alternativity violations grow monotonically and converge to a fixed ratio ~0.47 of the associator norm.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v8.py`, `data/csv/cd_algebraic_experiments_v8.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-101
 //!
@@ -813,7 +813,7 @@
 //! - Last verified: 2026-01-31
 //! - Statement: Flexibility identity A(x,y,x)=0 holds at ALL Cayley-Dickson dimensions through 2048.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v9.py`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-102
 //!
@@ -821,7 +821,7 @@
 //! - Last verified: 2026-02-04
 //! - Statement: Alternativity ratio||A(x,x,y)||^2 /||A(x,y,z)||^2 converges to approximately 1/2 as dim -> infinity.
 //! - Where stated: `src/scripts/analysis/c102_alt_ratio_convergence_audit.py`, `data/csv/c102_alt_ratio_summary.csv`, `data/csv/c102_alt_ratio_by_dim.csv`, `tests/test_c102_alt_ratio_convergence_audit.py`, legacy: v9 expZ, `docs/external_sources/OPEN_CLAIMS_SOURCES.md`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-103
 //!
@@ -829,7 +829,7 @@
 //! - Last verified: 2026-02-04
 //! - Statement: ZD manifold topology shows sharp percolation transition at angular distance ~1.0-1.2 radians.
 //! - Where stated: `src/scripts/analysis/c103_zd_topology_percolation_audit.py`, `data/csv/c103_zd_topology_by_eps.csv`, `data/csv/c103_zd_topology_summary.csv`, `tests/test_c103_zd_topology_percolation_audit.py`, legacy: v9 expAA, `docs/external_sources/OPEN_CLAIMS_SOURCES.md`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-104
 //!
@@ -837,7 +837,7 @@
 //! - Last verified: 2026-01-31
 //! - Statement: Cross-term correlation decay is better modeled by inverse polynomial or log-corrected power law than pure power law.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v9.py`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-105
 //!
@@ -845,7 +845,7 @@
 //! - Last verified: 2026-01-31
 //! - Statement: Associator tensor SV ratio grows as dim^1.65, extending from dim=8 through dim=32.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v9.py`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-106
 //!
@@ -853,7 +853,7 @@
 //! - Last verified: 2026-01-31
 //! - Statement: Non-diagonal zero divisors exist at dim=32 with kernel dimension exactly 4 and 30 nonzero components.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v9.py`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-107
 //!
@@ -861,7 +861,7 @@
 //! - Last verified: 2026-01-31
 //! - Statement: Flexibility identity A(x,y,x)=0 holds to machine precision through dim=2048, with max deviations scaling as O(epsilon_mach * sqrt(dim)).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v10.py`, `data/csv/cd_algebraic_experiments_v10.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-108
 //!
@@ -869,7 +869,7 @@
 //! - Last verified: 2026-02-03
 //! - Statement: Alternativity ratio converges to R_inf = 0.514 +/- 0.003, consistently above 1/2 at 4.0 sigma, through dim=4096.
 //! - Where stated: `src/scripts/analysis/c108_alt_ratio_convergence_audit.py`, `data/csv/c108_alt_ratio_summary.csv`, `data/csv/c108_alt_ratio_by_dim.csv`, `tests/test_c108_alt_ratio_convergence_audit.py`, inputs: `data/csv/cd_algebraic_experiments_v10.json` (AF_alt_ratio), `docs/external_sources/OPEN_CLAIMS_SOURCES.md`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-109
 //!
@@ -877,7 +877,7 @@
 //! - Last verified: 2026-02-04
 //! - Statement: Random probing fails to find algebraic ZDs; diagonal ZDs lifted via CD doubling exhibit kernel doubling (kernel=8 at dim=32, 16 at dim=64, 32 at dim=128).
 //! - Where stated: `src/scripts/analysis/c109_zd_construction_audit.py`, `data/csv/c109_zd_construction_by_dim.csv`, `data/csv/c109_zd_construction_summary.csv`, `tests/test_c109_zd_construction_audit.py`, inputs: `data/csv/cd_algebraic_experiments_v10.json` (AG_zd_construction), `docs/external_sources/OPEN_CLAIMS_SOURCES.md`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-110
 //!
@@ -885,7 +885,7 @@
 //! - Last verified: 2026-01-31
 //! - Statement: Associator tensor has multilinear rank (dim-1, dim-1, dim-1) with cubic symmetry, and CP lower bound scales as dim^1.10.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v10.py`, `data/csv/cd_algebraic_experiments_v10.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-111
 //!
@@ -893,7 +893,7 @@
 //! - Last verified: 2026-01-31
 //! - Statement: Complete 13-dimension CD property table (dim=2 through 8192): flexibility and power-associativity are exactly zero at ALL dimensions; Moufang identity breaks at dim=16 simultaneously with alternativity; commutator, associator, and Moufang norms saturate by dim~64.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v10.py`, `data/csv/cd_algebraic_experiments_v10.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-112
 //!
@@ -901,7 +901,7 @@
 //! - Last verified: 2026-01-31
 //! - Statement: Alternativity ratio converges to R_inf = 0.507 +/- 0.003 with left/right symmetry, tested through dim=16384. The limit is consistent with 1/2 at 2.0 sigma.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v11.py`, `data/csv/cd_algebraic_experiments_v11.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-113
 //!
@@ -909,7 +909,7 @@
 //! - Last verified: 2026-01-31
 //! - Statement: Moufang ratio||M(a,b,c)||^2/||A(a,b,c)||^2 converges to M_inf = 1.561 +/- 0.017, consistent with pi/2 (0.6 sigma), inconsistent with 3/2 (3.6 sigma).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v11.py`, `data/csv/cd_algebraic_experiments_v11.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-114
 //!
@@ -917,7 +917,7 @@
 //! - Last verified: 2026-01-31
 //! - Statement: Full power-associativity x^a * x^b = x^{a+b} holds for all (a,b) with a+b <= 8 at all CD dimensions through 256, to machine precision.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v11.py`, `data/csv/cd_algebraic_experiments_v11.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-115
 //!
@@ -925,7 +925,7 @@
 //! - Last verified: 2026-01-31
 //! - Statement: The commutator [a,b] and associator A(a,b,c) are asymptotically orthogonal in high-dimensional CD algebras. The perpendicular component of A dominates (>99.7% at dim >= 64).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v11.py`, `data/csv/cd_algebraic_experiments_v11.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-116
 //!
@@ -933,7 +933,7 @@
 //! - Last verified: 2026-01-31
 //! - Statement: L-BFGS-B gradient descent finds non-diagonal ZDs at dim=16, 32, and 64, ALL with kernel dimension exactly 4. 320 ZDs found total (200 at dim=16, 100 at dim=32, 20 at dim=64).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v11.py`, `data/csv/cd_algebraic_experiments_v11.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-117
 //!
@@ -941,7 +941,7 @@
 //! - Last verified: 2026-01-31
 //! - Statement: Associator tensor spectral gap is nearly constant (~3.0) while effective rank grows as dim^0.80. Entropy grows logarithmically.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v11.py`, `data/csv/cd_algebraic_experiments_v11.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-118
 //!
@@ -949,7 +949,7 @@
 //! - Last verified: 2026-01-31
 //! - Statement: The Jordan identity J(x^2, y, x) = (x^2*y)*x - x^2*(y*x) = 0 holds at ALL Cayley-Dickson dimensions from 2 through 1024, to machine precision.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v12.py`, `data/csv/cd_algebraic_experiments_v12.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-119
 //!
@@ -957,7 +957,7 @@
 //! - Last verified: 2026-01-31
 //! - Statement: The left and right Bol identities hold exactly through dim=8 (octonions) and are lost at dim=16 (sedenions), with L/R symmetric violations that grow with dimension.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v12.py`, `data/csv/cd_algebraic_experiments_v12.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-120
 //!
@@ -965,7 +965,7 @@
 //! - Last verified: 2026-02-03
 //! - Statement: Diagonal ZD kernels scale as dim/4 (not universally 4). Lifted 16D ZDs also have kernel = dim/4. Kernel universality (C-116) applies only to non-diagonal ZDs found by L-BFGS-B at dim <= 64.
 //! - Where stated: `src/scripts/analysis/c120_zd_kernel_scaling_audit.py`, `data/csv/c120_zd_kernel_scaling_summary.csv`, `data/csv/c120_zd_kernel_scaling_by_dim.csv`, `tests/test_c120_zd_kernel_scaling_audit.py`, inputs: `data/csv/cd_algebraic_experiments_v12.json` (AR_zd_kernel_high_dim), `docs/external_sources/OPEN_CLAIMS_SOURCES.md`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-121
 //!
@@ -973,7 +973,7 @@
 //! - Last verified: 2026-01-31
 //! - Statement: Multi-seed bootstrap: Moufang ratio converges to M_inf = 1.519 +/- 0.013, consistent with 3/2 (1.5 sigma), INCONSISTENT with pi/2 (4.1 sigma). Corrects C-113.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v12.py`, `data/csv/cd_algebraic_experiments_v12.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-122
 //!
@@ -981,7 +981,7 @@
 //! - Last verified: 2026-01-31
 //! - Statement: Multi-seed bootstrap: Alternativity ratio converges to R_inf = 0.504 +/- 0.002, consistent with 1/2 (1.9 sigma).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v12.py`, `data/csv/cd_algebraic_experiments_v12.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-123
 //!
@@ -989,7 +989,7 @@
 //! - Last verified: 2026-02-03
 //! - Statement: The associator Lie bracket [A(a,b,c), A(d,e,f)] = A1*A2 - A2*A1 has relative norm stabilizing at ~1.97 and is uncorrelated with random associators (cos ~ 0).
 //! - Where stated: `src/scripts/analysis/c123_associator_lie_bracket_audit.py`, `data/csv/c123_assoc_lie_bracket_summary.csv`, `data/csv/c123_assoc_lie_bracket_by_dim.csv`, `tests/test_c123_associator_lie_bracket_audit.py`, inputs: `data/csv/cd_algebraic_experiments_v12.json` (AU_assoc_lie_bracket), `docs/external_sources/OPEN_CLAIMS_SOURCES.md`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-124
 //!
@@ -997,7 +997,7 @@
 //! - Last verified: 2026-01-31
 //! - Statement: The flexibility identity (ab)(ca) = a((bc)a) holds exactly through dim=8 (octonions) and is lost at dim=16 (sedenions), with violations growing toward ~1.7.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v13.py`, `data/csv/cd_algebraic_experiments_v13.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-125
 //!
@@ -1005,7 +1005,7 @@
 //! - Last verified: 2026-01-31
 //! - Statement: Artin's theorem (2-generated subalgebras are associative) holds through dim=8 and fails at dim=16. However, flexibility within 2-generated subalgebras (x(yx) = (xy)x) holds at ALL dims through 256 to machine precision.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v13.py`, `data/csv/cd_algebraic_experiments_v13.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-126
 //!
@@ -1013,7 +1013,7 @@
 //! - Last verified: 2026-01-31
 //! - Statement: The nested Lie bracket [[A1,A2],A3] has relative norm stabilizing at ~1.95 (range 0.054 at dim >= 32). The Jacobi identity does NOT hold (rel_Jacobi ~ 2.0), so the associator space is NOT a Lie algebra.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v13.py`, `data/csv/cd_algebraic_experiments_v13.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-127
 //!
@@ -1021,7 +1021,7 @@
 //! - Last verified: 2026-01-31
 //! - Statement: The full Jordan product x o y = (xy+yx)/2 satisfies the Jordan identity (x o y) o (x o x) = x o (y o (x o x)) at ALL CD dimensions through 512, to machine precision. Commutativity is exact by construction.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v13.py`, `data/csv/cd_algebraic_experiments_v13.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-128
 //!
@@ -1029,7 +1029,7 @@
 //! - Last verified: 2026-02-04
 //! - Statement: The conjugate inverse x^{-1} = conj(x)/||x||^2 gives x * x^{-1} = x^{-1} * x = 1 at ALL CD dimensions through 256, to machine precision. The ZD conjugate inverse also works because u*conj(u) =||u||^2 is a norm identity.
 //! - Where stated: `src/scripts/analysis/c128_conjugate_inverse_audit.py`, `data/csv/c128_conjugate_inverse_summary.csv`, `data/csv/c128_conjugate_inverse_by_dim.csv`, `tests/test_c128_conjugate_inverse_audit.py`, inputs: `data/csv/cd_algebraic_experiments_v13.json` (AZ_inverse_element), `docs/external_sources/OPEN_CLAIMS_SOURCES.md`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-129
 //!
@@ -1037,7 +1037,7 @@
 //! - Last verified: 2026-02-04
 //! - Statement: The associator norm distribution concentrates as dim grows (CV -> 0.01). The distribution has slight positive skew (+0.3) and excess kurtosis trending toward 0 (Gaussian). Mean norm stabilizes at ~1.4.
 //! - Where stated: `src/scripts/analysis/c129_associator_distribution_concentration_audit.py`, `data/csv/c129_assoc_norm_dist_summary.csv`, `data/csv/c129_assoc_norm_dist_by_dim.csv`, `tests/test_c129_associator_distribution_concentration_audit.py`, inputs: `data/csv/cd_algebraic_experiments_v13.json` (BA_assoc_distribution), `docs/external_sources/OPEN_CLAIMS_SOURCES.md`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-130
 //!
@@ -1045,7 +1045,7 @@
 //! - Last verified: 2026-02-03
 //! - Statement: The associator norm||A(a,b,c)||-> sqrt(2) because (ab)c and a(bc) become uncorrelated (cos -> 0) while both preserve unit norm (||product||-> 1).||A||^2 = 2 - 2*cos -> 2.
 //! - Where stated: `src/scripts/analysis/c130_associator_norm_sqrt2_audit.py`, `data/csv/c130_associator_norm_sqrt2_summary.csv`, `data/csv/c130_associator_norm_sqrt2_by_dim.csv`, `tests/test_c130_associator_norm_sqrt2_audit.py`, inputs: `data/csv/cd_algebraic_experiments_v14.json` (BB_assoc_norm_sqrt2), `docs/external_sources/OPEN_CLAIMS_SOURCES.md`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-131
 //!
@@ -1053,7 +1053,7 @@
 //! - Last verified: 2026-01-31
 //! - Statement: Identity violation ratios are universal constants: alt/assoc -> 1/2, mouf/assoc -> 3/2, flex/assoc -> 3/2. Moufang and flexibility violations are equal.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v14.py`, `data/csv/cd_algebraic_experiments_v14.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-132
 //!
@@ -1061,7 +1061,7 @@
 //! - Last verified: 2026-02-04
 //! - Statement: The commutator norm||[a,b]||^2 -> 4.01 (||[a,b]||-> 2.0). Commutator is zero at dim=2 (commutative) and nonzero starting at dim=4. The limit satisfies||[a,b]||^2 = 2 *||A||^2 = 2 * 2 = 4.
 //! - Where stated: `src/scripts/analysis/c132_commutator_norm_convergence_audit.py`, `data/csv/c132_commutator_norm_summary.csv`, `data/csv/c132_commutator_norm_by_dim.csv`, `tests/test_c132_commutator_norm_convergence_audit.py`, inputs: `data/csv/cd_algebraic_experiments_v14.json` (BD_commutator_norm), `docs/external_sources/OPEN_CLAIMS_SOURCES.md`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-133
 //!
@@ -1069,7 +1069,7 @@
 //! - Last verified: 2026-01-31
 //! - Statement: The Moufang defect and associator are asymptotically orthogonal (cos -> 0, perp_frac -> 1.0). This parallels the commutator-associator orthogonality (C-115).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v14.py`, `data/csv/cd_algebraic_experiments_v14.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-134
 //!
@@ -1077,7 +1077,7 @@
 //! - Last verified: 2026-01-31
 //! - Statement: ZD pair products at dim=16 show rich combinatorial structure: of 18 tested pairs, 4 give u*v=0 (mutual annihilation), 7 give new ZDs (all kernel=4), 7 give non-ZDs.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v14.py`, `data/csv/cd_algebraic_experiments_v14.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-135
 //!
@@ -1085,7 +1085,7 @@
 //! - Last verified: 2026-02-04
 //! - Statement: Power norms||x^n||= 1 EXACTLY (to machine precision) at ALL CD dimensions through 256 for ALL powers through x^16. Power-associativity perfectly preserves the norm.
 //! - Where stated: `src/scripts/analysis/c135_power_norm_scaling_audit.py`, `data/csv/c135_power_norm_summary.csv`, `data/csv/c135_power_norm_by_dim_power.csv`, `tests/test_c135_power_norm_scaling_audit.py`, inputs: `data/csv/cd_algebraic_experiments_v14.json` (BG_power_norm_scaling), `docs/external_sources/OPEN_CLAIMS_SOURCES.md`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-136
 //!
@@ -1093,7 +1093,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Norm multiplicativity||xy||=||x||*||y||holds exactly through dim=8 (composition algebras) and is lost at dim=16; mean ratio stays 1.0 but std ~ 0.09 at dim=16, concentrating as dim grows (std ~ 0.023 at dim=1024).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v15.py`, `data/csv/cd_algebraic_experiments_v15.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-137
 //!
@@ -1101,7 +1101,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: ZD products at dim=32 preserve the norm trichotomy {0, 1, sqrt(2)} from dim=16, but kernel diversity increases: kernels vary over {4, 8, 12, 16} instead of a uniform kernel=4. 14 valid ZDs yield 36 pairs: 2 zero (6%), 26 ZD (72%), 8 non-ZD (22%).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v15.py`, `data/csv/cd_algebraic_experiments_v15.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-138
 //!
@@ -1109,7 +1109,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: 3-generated subalgebras become non-associative at dim=8 (octonions), while 2-generated subalgebras (Artin's theorem) fail at dim=16. A(x,y,xz)/A(x,y,z) ratio ~ 1.0, indicating mixed 3-gen associators are comparable to pure 3-gen.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v15.py`, `data/csv/cd_algebraic_experiments_v15.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-139
 //!
@@ -1117,7 +1117,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Violation ratios at dim=8192 with 5-seed bootstrap: alt/assoc = 0.497 +/- 0.002 (1.7 sigma from 1/2), mouf/assoc = 1.487 +/- 0.004 (3.5 sigma from 3/2), flex/assoc = 1.491 +/- 0.003 (3.1 sigma from 3/2).|mouf - flex|= 0.004. Finite-N bias at dim=8192 is ~ 1% below theoretical values.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v15.py`, `data/csv/cd_algebraic_experiments_v15.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-140
 //!
@@ -1125,7 +1125,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Associator component entropy: relative entropy ~ 0.84 (not uniform), effective dimension ~ 0.48 * dim (about half of components carry associator energy). Real component fraction ~ 0 (associator is purely imaginary).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v15.py`, `data/csv/cd_algebraic_experiments_v15.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-141
 //!
@@ -1133,7 +1133,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Mixed product norms:||(ab)c||and||a(bc)||both concentrate near 1.0 for unit inputs. The ratio||(ab)c||/||a(bc)||-> 1 as dim -> inf. Norm composition||xy||= 1 exact through dim=8, lost at dim=16 (consistent with BH).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v15.py`, `data/csv/cd_algebraic_experiments_v15.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-142
 //!
@@ -1141,7 +1141,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Power-associativity x^m * x^n = x^(m+n) holds exactly (machine epsilon) at ALL CD dimensions through 512, for all tested pairs (m,n) with m+n <= 8. x^1 * x^1 = x^2 has identically zero residual.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v16.py`, `data/csv/cd_algebraic_experiments_v16.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-143
 //!
@@ -1149,7 +1149,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Left and right multiplication operators L_a, R_a have identical singular value spectra (SV overlap = 1.0) and are always full-rank for unit a, despite L != R for dim >= 4.||L-R||/||L||grows from 0 (dim=2) toward 2.0 (approaching complete operator independence).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v16.py`, `data/csv/cd_algebraic_experiments_v16.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-144
 //!
@@ -1157,7 +1157,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: ZD kernel spectrum at dim=64 has 9 distinct values {4, 12, 16, 20, 24, 28, 32, 36, 40}, all multiples of 4. This is substantially richer than dim=32 ({4, 8, 12, 16}) and dim=16 ({4}). Source ZD kernels also vary: {4, 8, 16, 20, 24, 28}.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v16.py`, `data/csv/cd_algebraic_experiments_v16.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-145
 //!
@@ -1165,7 +1165,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Four-element products have exactly 5 distinct bracketings. At dim=4 (associative), all are identical (0 distinct pairs). At dim=8+, ALL 10 pairwise distances are non-zero. Product norms all near 1.0. Pairwise distances converge to sqrt(2) at high dim (uncorrelated unit vectors).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v16.py`, `data/csv/cd_algebraic_experiments_v16.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-146
 //!
@@ -1173,7 +1173,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Inner derivation D(a,b)(x) = [[a,b],x] + [[a,x],b] + [[x,b],a] satisfies the Leibniz rule D(xy) = D(x)y + xD(y) exactly at dim=4 and dim=8 (alternative algebras). Fails at dim=16+ with relative residual ~ 1.1-1.7. Inner derivations are non-trivial at dim >= 4.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v16.py`, `data/csv/cd_algebraic_experiments_v16.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-147
 //!
@@ -1181,7 +1181,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Alternator-associator decomposition: A(a,b,c) splits into alternating part Alt = A(a,b,c) - A(b,a,c) and symmetric part Sym = A(a,b,c) + A(b,a,c). At dim=8 (alternative algebras), Sym = 0 exactly (Alt^2/A^2 = 4). At high dim, Alt^2/A^2 -> 3 and Sym^2/A^2 -> 1. Alt and Sym are nearly orthogonal at all dims. Pythagorean identity holds exactly.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v16.py`, `data/csv/cd_algebraic_experiments_v16.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-148
 //!
@@ -1189,7 +1189,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: The nucleus N(A) of a CD algebra equals the full algebra at dim=4 (quaternions are associative) and equals only the scalar subspace {e_0} at dim >= 8. Identity e_0 is always in the nucleus. No random unit vector lies in the nucleus at dim >= 8.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v17.py`, `data/csv/cd_algebraic_experiments_v17.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-149
 //!
@@ -1197,7 +1197,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Composition defect delta =||xy||^2 -||x||^2*||y||^2 is identically zero at dim <= 8 (Hurwitz theorem). At dim >= 16, delta is zero-mean (|E[delta]|< 0.02) with std decreasing monotonically from 0.18 (dim=16) to 0.06 (dim=512). Skewness and kurtosis remain small.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v17.py`, `data/csv/cd_algebraic_experiments_v17.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-150
 //!
@@ -1205,7 +1205,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Quadruple associator A(a,b,c,d) has||A(a,b,cd)||~||A(a,b,c)||(ratio 0.8-1.2) at all dims. The derivation-like fraction converges to ~1.45 and the nested/simple ratio converges to ~1.41 (near sqrt(2)). Both ratios lie in (1.0, 2.0).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v17.py`, `data/csv/cd_algebraic_experiments_v17.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-151
 //!
@@ -1213,7 +1213,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: At dim=64, ALL 780 pairwise products of 40 diagonal-form ZDs produce non-ZD elements with norm exactly 1.0. No zero products and no sqrt(2)-norm products exist. The norm spectrum is {1.0} only. This contrasts with dim=16 and dim=32 where {0, 1, sqrt(2)} all appear.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v17.py`, `data/csv/cd_algebraic_experiments_v17.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-152
 //!
@@ -1221,7 +1221,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Bracket polynomial: at dim=4 (associative), all bracketings of n-ary products are identical (1 distinct). At dim >= 8, 3-ary products have 2 distinct bracketings (= C_2), 4-ary have 5 distinct (= C_3), and 5-ary have 6 distinct (of 8 sampled; < C_4 = 14). These counts are stable across all dims >= 8.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v17.py`, `data/csv/cd_algebraic_experiments_v17.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-153
 //!
@@ -1229,7 +1229,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Conjugate associator identity: A(conj(a),conj(b),conj(c)) = conj(A(a,b,c)) = -conj(A(c,b,a)) holds EXACTLY (machine epsilon) at ALL CD dimensions >= 8. At dim=4 the associator is zero so the identity is trivially satisfied for the reversed form but not the direct form. A(conj(c),conj(b),conj(a)) != conj(A(a,b,c)); the relative distance is exactly 2.0.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v17.py`, `data/csv/cd_algebraic_experiments_v17.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-154
 //!
@@ -1237,7 +1237,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Artin's theorem: any 2-generated subalgebra is associative at dim=4 and dim=8 (alternative algebras). Fails at dim >= 16 with max associator norm > 1.0. Mean associator norm grows with dim beyond the Hurwitz boundary.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v18.py`, `data/csv/cd_algebraic_experiments_v18.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-155
 //!
@@ -1245,7 +1245,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Jordan identity (xy)x^2 = x(yx^2) holds EXACTLY (machine epsilon) at ALL CD dimensions through 256. This is a universal identity for CD algebras, like power-associativity. All residuals < 4e-16.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v18.py`, `data/csv/cd_algebraic_experiments_v18.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-156
 //!
@@ -1253,7 +1253,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: ZD interaction graph (edge iff product = 0): dim=16 has 84 ZDs, 168 edges, 7 components, 4-regular (uniform degree 4). dim=32 has 588 ZDs, 2520 edges, 22 components, degrees in {4,8,12}. dim=64 has 3036 ZDs, 26040 edges, 53 components, degrees in {4,8,12,16,20,24,28}. All degrees are multiples of 4. Diameter = 3 at all dims.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v18.py`, `data/csv/cd_algebraic_experiments_v18.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-157
 //!
@@ -1261,7 +1261,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Jacobi identity [[a,b],c] + [[b,c],a] + [[c,a],b] = 0 holds exactly at dim=2 (commutative, all commutators zero) and dim=4 (quaternion Lie algebra). Fails at dim >= 8 with relative Jacobi defect ~ 3.5-4.1, converging toward ~3.5 at high dim. The commutator does NOT form a Lie algebra at dim >= 8.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v18.py`, `data/csv/cd_algebraic_experiments_v18.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-158
 //!
@@ -1269,7 +1269,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Idempotent structure: the only idempotent in CD algebras is e_0 (the identity element). No nontrivial idempotents (e^2 = e, e != 0, e != e_0) found via cubic iteration (3x^2 - 2x^3) from 200+ random starting points at each dim. (1/2)*e_0 has residual 0.25; (e_0 + e_i)/2 has residual 0.5.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v18.py`, `data/csv/cd_algebraic_experiments_v18.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-159
 //!
@@ -1277,7 +1277,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Trace form Tr(x) = 2*Re(x) is bilinear (additive + homogeneous), and the inner product <x,y> = Re(conj(x)*y) is symmetric, positive-definite, bilinear, and non-degenerate (Gram matrix full rank) at ALL CD dimensions through 256. Tr(xy) = Tr(yx) exactly at ALL dims. CD algebras are Frobenius algebras with respect to the trace form.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v18.py`, `data/csv/cd_algebraic_experiments_v18.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-160
 //!
@@ -1285,7 +1285,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: All three Moufang identities (left, right, middle) hold exactly at dim <= 8 and fail together at dim >= 16. The defect is approximately equal for all three at each dim. Left/right defects grow from ~0.79 (dim=16) to ~1.67 (dim=256).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v19.py`, `data/csv/cd_algebraic_experiments_v19.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-161
 //!
@@ -1293,7 +1293,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: The associator is multilinear (trilinear): A(alpha*a,b,c) = alpha*A(a,b,c) and A(a+a',b,c) = A(a,b,c) + A(a',b,c), in all three slots, at ALL CD dimensions. Max residual < 2e-15 everywhere. This is universal.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v19.py`, `data/csv/cd_algebraic_experiments_v19.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-162
 //!
@@ -1301,7 +1301,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: ZD annihilator dimensions: at dim=16, diagonal-form ZDs have left/right annihilator dim in {0, 4}. At dim=32, values in {0, 8, 12}. Left and right annihilator dims are always equal. All nonzero annihilator dims are multiples of 4.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v19.py`, `data/csv/cd_algebraic_experiments_v19.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-163
 //!
@@ -1309,7 +1309,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Commutator-associator cross-structure:||[A(a,b,c), d]||/||A(a,b,c)||converges to ~2.0 at high dim. Alternator/associator ratio = 2.0 exactly at dim=8 (alternative algebras), decreasing toward ~1.74 at dim=256. All ratios > 1.5.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v19.py`, `data/csv/cd_algebraic_experiments_v19.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-164
 //!
@@ -1317,7 +1317,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: n-fold product norms: at composition dimensions (dim <= 8),||a1*a2*...*an||= 1.0 exactly for ALL n up to 20. At dim >= 16, norms fluctuate but stay in [0.5, 2.0], with std growing slowly with n. No norm explosion or collapse.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v19.py`, `data/csv/cd_algebraic_experiments_v19.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-165
 //!
@@ -1325,7 +1325,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Generic SO(dim) rotations do NOT preserve associator norms. Relative difference||A_orig|
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v19.py`, `data/csv/cd_algebraic_experiments_v19.json`; legacy: vs||A_rot||is 13-29% at all tested dims (8-64). CD automorphisms (G2 for dim=8) form a much smaller subgroup of SO(dim).
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-166
 //!
@@ -1333,7 +1333,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: The flexible identity (ab)a = a(ba) holds EXACTLY (machine epsilon) at ALL CD dimensions through 512. This is universal: CD algebras are flexible. Max residual < 5e-16 everywhere.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v20.py`, `data/csv/cd_algebraic_experiments_v20.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-167
 //!
@@ -1341,7 +1341,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Left alternative A(a,a,b) = 0 and right alternative A(a,b,b) = 0 hold exactly at dim <= 8 and fail together at dim >= 16. The left/right defect ratio is near 1.0 (0.99-1.02) at all failing dims, confirming symmetric failure. Defect grows from ~0.53 (dim=16) toward ~0.97 (dim=256).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v20.py`, `data/csv/cd_algebraic_experiments_v20.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-168
 //!
@@ -1349,7 +1349,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: ZD product spectrum at dim=128: among the first 100 diagonal-form (e_i+e_j)/sqrt(2) candidates, ZERO are actual zero divisors. This suggests the ZD structure becomes dramatically sparser at dim=128, or requires different index pairs.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v20.py`, `data/csv/cd_algebraic_experiments_v20.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-169
 //!
@@ -1357,7 +1357,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Associator trilinearity via commutator: A(a,b,[c,d]) = A(a,b,cd) - A(a,b,dc) holds EXACTLY at ALL dims. This is a direct consequence of multilinearity (C-161).||A(a,b,[c,d])||grows from 1.87 (dim=8) toward 2.84 (dim=256).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v20.py`, `data/csv/cd_algebraic_experiments_v20.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-170
 //!
@@ -1365,7 +1365,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Associator norm||A(a,b,c)||for random unit vectors converges to sqrt(2) from below as dim increases. Deviation from sqrt(2): 0.30 (dim=8), 0.098 (dim=16), 0.031 (dim=32), 0.005 (dim=128), 0.010 (dim=1024). Standard deviation decreases from 0.33 to 0.04.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v20.py`, `data/csv/cd_algebraic_experiments_v20.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-171
 //!
@@ -1373,7 +1373,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Left multiplication operator determinant:|det(L_a)|= 1 exactly for unit a at composition dimensions (dim <= 8). At dim=16,|det(L_a)|~ 0.19; at dim=32, ~0.005. The determinant collapses rapidly with dimension, reflecting the increasing "information loss" in CD multiplication.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v20.py`, `data/csv/cd_algebraic_experiments_v20.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-172
 //!
@@ -1381,7 +1381,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Center Z(A) = full algebra at dim=1,2 (commutative); Z(A) = R*e_0 (dim=1) at dim >= 4. The commutator map z -> [z, e_i] has rank = dim - 1 at dim >= 4, so only real multiples of the identity commute with everything.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v21.py`, `data/csv/cd_algebraic_experiments_v21.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-173
 //!
@@ -1389,7 +1389,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Power norm ratio||x^n||/||x||^n = 1.0 EXACTLY at ALL CD dimensions through 128, for all n from 2 to 10. This is a direct consequence of power-associativity (C-142): x^m * x^n = x^{m+n} preserves the norm identity. Std < 1e-4 everywhere.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v21.py`, `data/csv/cd_algebraic_experiments_v21.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-174
 //!
@@ -1397,7 +1397,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Left-right operator commutant [L_a, R_b] = 0 exactly at associative dimensions (dim <= 4). At non-associative dims (>= 8),||[L_a,R_b]||_rel is nonzero (0.40 at dim=8, 0.18 at dim=64) and decreasing with dimension. [L,R]=0 is equivalent to associativity.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v21.py`, `data/csv/cd_algebraic_experiments_v21.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-175
 //!
@@ -1405,7 +1405,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Associator subspace Assoc(A) = span{A(a,b,c)} has rank = dim - 1 (= pure imaginary part) at all tested dims (8-64). It is NOT a two-sided ideal: x*w for x in A and w in Assoc(A) has 10-29% residual outside Assoc(A). Left and right residuals are equal. Residual decreases with dimension.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v21.py`, `data/csv/cd_algebraic_experiments_v21.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-176
 //!
@@ -1413,7 +1413,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Commutator/product norm ratio||[a,b]||/||ab||converges to 2.0 from below as dim increases: 1.14 (dim=4), 1.60 (dim=8), 1.80 (dim=16), 1.95 (dim=64), 1.99 (dim=256). Monotonically increasing. At dim=2 (complex), ratio = 0 (commutative).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v21.py`, `data/csv/cd_algebraic_experiments_v21.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-177
 //!
@@ -1421,7 +1421,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Two-generated subalgebra dimension: at dim=4 (quaternions), <a,b> = full algebra (dim=4). At dim=8, median sub_dim = 4 (some pairs generate proper subalgebras). At dim >= 16, <a,b> = full algebra for ALL tested random pairs. The algebra is "2-generated" at dim >= 16.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v21.py`, `data/csv/cd_algebraic_experiments_v21.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-178
 //!
@@ -1429,7 +1429,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Inner derivation space dimension (via D(a,b)(c) = A(a,b,c) - A(b,a,c) + A(c,a,b)): dim=0 at dim=2,4 (associative -> A=0); dim=21 at dim=8; dim=98 at dim=16; dim=383 at dim=32. Note: at dim=8 (octonions), Der(O) = g2 has dim 14, but this "inner derivation map" spans a 21-dimensional space of linear maps, not all of which satisfy the Leibniz rule.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v22.py`, `data/csv/cd_algebraic_experiments_v22.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-179
 //!
@@ -1437,7 +1437,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: No nonzero nilpotent elements exist in any CD algebra. For unit vectors,||x^n||= 1.0 exactly for all n tested (2 through 5) at all dims through 128. This is a consequence of power-associativity + norm multiplicativity on powers (C-142, C-173). Random unit products never vanish (min norm > 0.1).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v22.py`, `data/csv/cd_algebraic_experiments_v22.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-180
 //!
@@ -1445,7 +1445,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Inner product preservation <ax,ay> =||a||^2 <x,y> holds EXACTLY at composition dimensions (dim <= 8) and FAILS at dim >= 16. Mean deviation decreases with dim: 0.106 (dim=16), 0.092 (dim=64), 0.062 (dim=128). This is equivalent to the norm composition property.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v22.py`, `data/csv/cd_algebraic_experiments_v22.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-181
 //!
@@ -1453,7 +1453,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Quadratic representation U_a(x) = 2a(ax) - (a^2)x is NOT an algebra endomorphism at any CD dimension. Relative deviation 1.7 (dim=4) to 2.6 (dim=64). The fundamental identity U_a(U_b(x)) = U_{U_a(b)}(x) also fails everywhere (deviation 1.7-3.0). CD algebras are Jordan-admissible but not Jordan algebras.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v22.py`, `data/csv/cd_algebraic_experiments_v22.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-182
 //!
@@ -1461,7 +1461,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Associator alternation: A(a,b,c) + A(b,a,c) = 0 (skew-symmetry in first two slots) holds EXACTLY at dim <= 8 (alternative algebras) and FAILS at dim >= 16. Similarly for swap(2,3). Both swap defects are approximately equal. Relative defect grows from 0.61 (dim=16) toward 0.97 (dim=256).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v22.py`, `data/csv/cd_algebraic_experiments_v22.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-183
 //!
@@ -1469,7 +1469,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Iterated commutator:||[[a,b],c]||/||[a,b]||-> 2.0 as dim increases (1.34 at dim=4, 1.98 at dim=256). Jacobi identity holds EXACTLY at dim=4 (associative -> commutator is Lie bracket with Jacobi=0). Jacobi fails at dim >= 8 (relative defect 2.37 at dim=8, decreasing to 1.79 at dim=256).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v22.py`, `data/csv/cd_algebraic_experiments_v22.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-184
 //!
@@ -1477,7 +1477,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Malcev identity [J(a,b,c), a] + J(a, b, [c,a]) = 0 holds EXACTLY at dim=8 (with opposite sign convention: LHS = -RHS). Trivially true at dim=4 (J=0). Fails at dim >= 16 with increasing defect. The sign flip means the octonion commutator forms a Malcev algebra under the convention J + [J,a] = 0.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v23.py`, `data/csv/cd_algebraic_experiments_v23.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-185
 //!
@@ -1485,7 +1485,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Product norm distribution:||ab||= 1.0 exactly at composition dims (<=8). Beyond,||ab||~ 1.0 +/- sigma where sigma decreases with dim: 0.083 (dim=16), 0.099 (dim=32), 0.058 (dim=128), 0.036 (dim=512). Min norm stays above 0.70. The distribution narrows toward 1.0 at high dim (CLT effect).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v23.py`, `data/csv/cd_algebraic_experiments_v23.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-186
 //!
@@ -1493,7 +1493,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Nested associator (triassociator):||A(A(a,b,c),d,e)||/||A(a,b,c)||~ 1.2-1.5 at all tested dims (8-256). The nesting amplification is bounded (no explosion).||A2||approaches 2.0 at high dim (consistent with A2 being an associator of a "random" vector near sqrt(2) norm).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v23.py`, `data/csv/cd_algebraic_experiments_v23.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-187
 //!
@@ -1501,7 +1501,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Every nonzero CD element has a two-sided inverse: a * conj(a)/||a||^2 = conj(a)/||a||^2 * a = e_0 EXACTLY at ALL dimensions through 512. This is universal: CD algebras are "division-like" for every nonzero element (not just non-zero-divisors).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v23.py`, `data/csv/cd_algebraic_experiments_v23.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-188
 //!
@@ -1509,7 +1509,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Quaternionic subalgebra {e_0,e_1,e_2,e_3} is ASSOCIATIVE inside all higher-dimensional CD algebras (dim=8,16,32,64). Associator is exactly zero within the subalgebra. Cross-subalgebra associators (one sub element, two random) are nonzero (mean 1.0-1.2).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v23.py`, `data/csv/cd_algebraic_experiments_v23.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-189
 //!
@@ -1517,7 +1517,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Associator map T_{a,b}: c -> A(a,b,c) has purely imaginary eigenvalues (skew-symmetric) at dim <= 8 (alternative algebras). At dim >= 16, real eigenvalue parts appear (mean 0.12 at dim=16, 0.22 at dim=64). Rank: 0 at dim=4, 4 at dim=8, dim-2 at dim >= 16.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v23.py`, `data/csv/cd_algebraic_experiments_v23.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-190
 //!
@@ -1525,7 +1525,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Bol identity a(b(ac)) = (a(ba))c holds EXACTLY at dim <= 8 (alternative algebras). Fails at dim >= 16 with increasing defect: left/right Bol defects are approximately equal (ratio 0.9-1.1), confirming symmetric failure. Left and right Bol mean defects grow from ~0.8 (dim=16) to ~1.57 (dim=128).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v24.py`, `data/csv/cd_algebraic_experiments_v24.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-191
 //!
@@ -1533,7 +1533,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Double commutator norm ratio||[a,[b,c]]||/||[b,c]||approaches 2.0 monotonically from 1.35 (dim=4) through 1.99 (dim=256). At dim >= 128, the ratio is within 0.1 of 2.0. The standard deviation decreases with dim (0.47 at dim=4, 0.11 at dim=256), indicating convergence.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v24.py`, `data/csv/cd_algebraic_experiments_v24.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-192
 //!
@@ -1541,7 +1541,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: CD doubling formula: our cd_multiply_batch does NOT use the standard Cayley-Dickson doubling formula (a,b)(c,d) = (ac - d*conj(b), conj(a)*d + cb). The deviation is O(1) at all dims (mean 0.39-1.14). This is a documented convention difference, not a bug: all other algebraic properties (conjugate reversal, norm composition at dim<=8, alternativity, flexibility) are verified correct.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v24.py`, `data/csv/cd_algebraic_experiments_v24.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-193
 //!
@@ -1549,7 +1549,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Conjugate reversal conj(ab) = conj(b)*conj(a) holds EXACTLY (max_diff = 0.0) at ALL CD dimensions from 2 through 512. This is an exact algebraic identity, not an approximation. The anti-homomorphism property of conjugation is universal across all CD algebras regardless of associativity.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v24.py`, `data/csv/cd_algebraic_experiments_v24.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-194
 //!
@@ -1557,7 +1557,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Four-element associator: five parenthesizations of abcd all produce equal norms at dim <= 4 (associative). At dim >= 8, mean spread grows: 1.11 (dim=8), 1.25 (dim=16), 1.35 (dim=32), 1.43 (dim=128). Individual parenthesization norms remain within 10% of each other (norm_range < 0.07).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v24.py`, `data/csv/cd_algebraic_experiments_v24.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-195
 //!
@@ -1565,7 +1565,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Norm submultiplicativity:||ab||<= k*||a||*||b||with k = 1.0 exactly at composition dims (<=8). Beyond, k decreases with dim: 1.24 (dim=16), 1.26 (dim=32), 1.22 (dim=64), 1.15 (dim=128), 1.12 (dim=256), 1.09 (dim=512). The submultiplicativity constant converges toward 1.0 at high dim, consistent with product norm concentration (C-185).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v24.py`, `data/csv/cd_algebraic_experiments_v24.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-196
 //!
@@ -1573,7 +1573,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Artin's theorem: the subalgebra generated by any two elements {a, b, ab, ba, ...} is associative at dim <= 8 (alternative algebras). All four tested associator combinations A(a,b,ab), A(a,b,ba), A(ab,a,b), A(a,ab,b) are exactly zero. Fails at dim >= 16 with growing defect.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v25.py`, `data/csv/cd_algebraic_experiments_v25.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-197
 //!
@@ -1581,7 +1581,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Associator norm scaling: mean||A(a,b,c)||= 0 at dim<=4 (associative), ~1.088 at dim=8, and converges to sqrt(2) ~ 1.414 at high dim (1.415 at dim=512). Standard deviation decreases as O(1/sqrt(dim)): 0.32 (dim=8), 0.064 (dim=512). The sqrt(2) limit is consistent with the associator of two "random" unit vectors in high dim.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v25.py`, `data/csv/cd_algebraic_experiments_v25.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-198
 //!
@@ -1589,7 +1589,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Middle Moufang identity (ab)(ca) = a((bc)a) holds EXACTLY at dim <= 8 (alternative/Moufang). Fails at dim >= 16 with growing defect: mean 0.79 (dim=16), 1.22 (dim=32), 1.59 (dim=128). Combined with left/right Bol (C-190), this verifies all three Moufang identities hold iff dim <= 8.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v25.py`, `data/csv/cd_algebraic_experiments_v25.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-199
 //!
@@ -1597,7 +1597,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Left/right alternative laws a(ab) = (aa)b and (ba)a = b(aa) hold EXACTLY at dim <= 8. Both fail symmetrically at dim >= 16 (left mean = right mean to within 1%). Left inverse property a^{-1}(ab) = b also holds exactly at dim <= 8 and fails at dim >= 16 with the same defect magnitude as the alternative laws.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v25.py`, `data/csv/cd_algebraic_experiments_v25.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-200
 //!
@@ -1605,7 +1605,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Commutator-associator Leibniz identity [a, bc] = [a,b]c + b[a,c] - A(a,b,c) + A(b,a,c) - A(b,c,a) holds EXACTLY at ALL CD dimensions from 4 through 512. This is a universal algebraic identity valid in any (not necessarily associative) algebra. In associative algebras, all A terms vanish and this reduces to the standard Leibniz rule for commutators.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v25.py`, `data/csv/cd_algebraic_experiments_v25.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-201
 //!
@@ -1613,7 +1613,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Iterated product norms:||a^n||=||a||^n = 1.0 EXACTLY at ALL CD dimensions from 4 through 256, for all powers n = 2 through 10. This is a stronger statement than power-associativity (C-142): not only is a^n well-defined, but the norm is exactly preserved under iterated self-multiplication at ALL dimensions, including non-composition dims (16+).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v25.py`, `data/csv/cd_algebraic_experiments_v25.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-202
 //!
@@ -1621,7 +1621,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Nucleus dimension: at dim<=4 (associative), Nuc(A) = entire algebra. At dim>=8, Nuc(A) = R*e_0 (dimension 1). Only the real unit element e_0 associates with all elements. This verifies the nucleus is minimal at all non-associative CD dims.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v26.py`, `data/csv/cd_algebraic_experiments_v26.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-203
 //!
@@ -1629,7 +1629,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Inner derivation D(a,b)(c) = A(a,b,c) - A(b,a,c) is generically NOT a derivation. The Leibniz rule D(xy) = D(x)y + xD(y) fails for random (a,b) at ALL non-associative dims (8+). Max deviation is O(1) (6-9). This explains why C-178 found derivation map dimension 21 at dim=8 instead of 14 (G2): most D(a,b) maps are not actual derivations.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v26.py`, `data/csv/cd_algebraic_experiments_v26.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-204
 //!
@@ -1637,7 +1637,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Composition algebra test N(xy) = N(x)N(y): exact at dim<=8 (Hurwitz theorem). Fails at dim>=16 but mean ratio N(xy)/(N(x)N(y)) -> 1.0 with std decreasing: 0.18 (dim=16), 0.15 (dim=64), 0.09 (dim=256), 0.06 (dim=512). This is the quadratic form version of C-195 (submultiplicativity).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v26.py`, `data/csv/cd_algebraic_experiments_v26.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-205
 //!
@@ -1645,7 +1645,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Associator kernel dimension: dim(ker T_{a,b}) = dim at dim<=4 (all associative), exactly 4 at dim=8 (quaternionic subalgebra), and exactly 2 at ALL dim>=16 (constant!). This means rank(T_{a,b}) = dim-2 at dim>=16, independent of the specific (a,b) pair. The 2D kernel at dim>=16 contains e_0 and one other direction.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v26.py`, `data/csv/cd_algebraic_experiments_v26.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-206
 //!
@@ -1653,7 +1653,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Product commutativity defect||ab-ba||/||ab||= 0 at dim=2 (commutative). At dim>=4: approaches 2.0 monotonically: 1.14 (dim=4), 1.60 (dim=8), 1.80 (dim=16), 1.95 (dim=64), 1.99 (dim=512). Std decreases as O(1/sqrt(dim)): 0.46 (dim=4), 0.003 (dim=512). Verifies C-176 from a normalized perspective.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v26.py`, `data/csv/cd_algebraic_experiments_v26.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-207
 //!
@@ -1661,7 +1661,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Triple product norms||(ab)c||and||a(bc)||are both exactly 1.0 at dim<=8 (composition). At dim>=16, left and right triple products differ (mean|L-R|= 0.11 at dim=16, 0.05 at dim=512) but both means stay near 1.0. The L-R difference decreases at high dim, consistent with product norm concentration.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v26.py`, `data/csv/cd_algebraic_experiments_v26.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-208
 //!
@@ -1669,7 +1669,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Flexible nucleus is FULL at ALL CD dimensions (4-64 tested): every basis element e_i satisfies (x*e_i)*x = x*(e_i*x) for all x. This is a stronger restatement of universal flexibility (C-166) from the basis-element perspective. The flexible nucleus equals the entire algebra at all dims.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v27.py`, `data/csv/cd_algebraic_experiments_v27.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-209
 //!
@@ -1677,7 +1677,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Associator norm distribution: at dim=8, slightly platykurtic (kurt=-0.63, negatively skewed). At high dim, excess kurtosis oscillates but trends toward 0. Mean -> sqrt(2). Std decreases as O(1/sqrt(dim)). The distribution becomes approximately Gaussian at high dim via CLT.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v27.py`, `data/csv/cd_algebraic_experiments_v27.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-210
 //!
@@ -1685,7 +1685,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Jordan product {a,b} = (ab+ba)/2: the Jordan identity {a, {b, a^2}} = {{a,b}, a^2} holds EXACTLY at ALL CD dims (4-128 tested). However, general Jordan associativity {a, {b, c}} = {{a,b}, c} fails even at dim=4 (quaternions). The Jordan identity is universal (follows from flexibility), but Jordan associativity requires commutativity.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v27.py`, `data/csv/cd_algebraic_experiments_v27.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-211
 //!
@@ -1693,7 +1693,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Quadratic identity a(ba) = (ab)a holds EXACTLY at ALL CD dims (4-512) for arbitrary non-unit vectors. Max deviation = 0.0 at all dims tested. This extends C-166 (flexibility for unit vectors) to arbitrary elements and verifies it is an exact algebraic identity.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v27.py`, `data/csv/cd_algebraic_experiments_v27.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-212
 //!
@@ -1701,7 +1701,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Cascade associator norms: A1 = A(a,b,c), A2 = A(A1,d,e), A3 = A(A2,f,g). Ratios||A2||/||A1||~ 1.2-1.4 and||A3||/||A2||~ 1.2-1.4 at all dims. No explosion.||A1||-> sqrt(2) confirming C-197. Higher-depth associators amplify but remain bounded, approaching geometric growth with ratio ~sqrt(2).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v27.py`, `data/csv/cd_algebraic_experiments_v27.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-213
 //!
@@ -1709,7 +1709,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Left multiplication operator L_a (x -> ax) is isometric (all eigenvalue magnitudes = 1.0) at dim<=8 (composition algebras). At dim>=16, eigenvalue spread is nonzero and grows with dim: 0.67 (dim=16), 1.27 (dim=32), 1.64 (dim=64), 1.72 (dim=128). Min eigenvalue magnitude decreases toward 0 at high dim.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v27.py`, `data/csv/cd_algebraic_experiments_v27.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-214
 //!
@@ -1717,7 +1717,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Right multiplication operator R_a (x -> xa) is isometric (all eigenvalue magnitudes = 1.0) at dim<=8 (composition algebras), non-isometric at dim>=16. Eigenvalue spread matches L_a (C-213) exactly: 0.67 (dim=16), 1.27 (dim=32), 1.64 (dim=64), 1.72 (dim=128). Tr(R_a) = dim * Re(a) at all dims. R_a and L_a have identical spectral properties.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v28.py`, `data/csv/cd_algebraic_experiments_v28.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-215
 //!
@@ -1725,7 +1725,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Third and fourth power associativity: (a^2)*a = a*(a^2) and (a^2)^2 = a*(a^3) hold EXACTLY at ALL CD dims 4-512. Max deviations < 1e-15 (machine epsilon). This provides an explicit low-order check of power-associativity (C-142), confirming the specific groupings (a^2)a and a(a^2) are indistinguishable.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v28.py`, `data/csv/cd_algebraic_experiments_v28.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-216
 //!
@@ -1733,7 +1733,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Associator is fully alternating (skew-symmetric under all 6 permutations) at dim<=8 (alternative algebras). At dim>=16, ALL symmetries break simultaneously: A(a,c,b) != -A(a,b,c), A(b,a,c) != -A(a,b,c), and A(b,c,a) != A(a,b,c). The transition is sharp at the Hurwitz boundary.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v28.py`, `data/csv/cd_algebraic_experiments_v28.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-217
 //!
@@ -1741,7 +1741,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Jordan product norm||{a,b}||for unit vectors: exactly 1.0 at dim=2 (commutative), then monotonically decreasing: 0.77 (dim=4), 0.56 (dim=8), 0.40 (dim=16), 0.28 (dim=32), 0.20 (dim=64), 0.14 (dim=128), 0.10 (dim=256), 0.065 (dim=512). Anti-symmetric part||(ab-ba)/2||-> 1.0. CD algebras become "maximally non-commutative" at high dim: the symmetric (Jordan) component vanishes while the antisymmetric (Lie) component dominates.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v28.py`, `data/csv/cd_algebraic_experiments_v28.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-218
 //!
@@ -1749,7 +1749,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Bilinear form B(a,b) = Re(a*conj(b)): the Gram matrix G[i,j] = B(e_i,e_j) equals the identity matrix EXACTLY at ALL CD dims 4-128. B(a,a) =||a||^2 EXACTLY at ALL dims. The standard basis is orthonormal under this bilinear form at every level of the Cayley-Dickson tower. This is a universal inner product structure.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v28.py`, `data/csv/cd_algebraic_experiments_v28.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-219
 //!
@@ -1757,7 +1757,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Trace formula: Tr(L_a) = Tr(R_a) = dim * Re(a) holds EXACTLY at ALL CD dims 4-128. The traces are exactly equal (|Tr(L)-Tr(R)|= 0.0) and both equal dim * a_0 with ratio exactly 1.0. This is a universal operator-trace identity connecting the real part of an element to the traces of its left and right multiplication operators.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v28.py`, `data/csv/cd_algebraic_experiments_v28.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-220
 //!
@@ -1765,7 +1765,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Norm product ratio||ab||/(||a||*||b||) = 1.0 EXACTLY at dim<=8 (composition algebras). At dim>=16, the ratio has mean ~1.0 but nonzero spread (std ~0.08 at dim=16, decreasing to ~0.04 at dim=512). The mean stays near 1.0 but the std decreases as O(1/sqrt(dim)), showing concentration of measure.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v29.py`, `data/csv/cd_algebraic_experiments_v29.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-221
 //!
@@ -1773,7 +1773,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Only trivial idempotents (0 and e_0) exist in CD algebras: e_0^2 = e_0 and 0^2 = 0 are EXACT at ALL dims 4-128. No non-trivial idempotent a^2=a found via random search (min||a^2-a||> 0.01 for random unit vectors) or Newton iteration (diverges to NaN at dim>=16). This is consistent with the absence of zero divisors at dim<=8 (since a^2=a implies a(a-e_0)=0).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v29.py`, `data/csv/cd_algebraic_experiments_v29.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-222
 //!
@@ -1781,7 +1781,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Commutant dimension dim(C(a)) = {x : xa = ax} is EXACTLY 2 at ALL CD dims 4-64 for generic unit a. The commutant is span{e_0, a} -- the real line plus the element itself. This is a universal result: regardless of dimension or non-associativity, the commutant of a generic element is always 2-dimensional.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v29.py`, `data/csv/cd_algebraic_experiments_v29.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-223
 //!
@@ -1789,7 +1789,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Associator trilinear ratio||A(a,b,c)||/(||a||*||b||*||c||) = 0 at dim=4 (associative). Mean -> sqrt(2) ~ 1.414 at high dim (1.415 at dim=512), confirming C-197. Max ratio bounded < 2.3 at all dims. Std decreasing as O(1/sqrt(dim)). The associator norm concentrates at sqrt(2) via CLT, same as EC (C-209).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v29.py`, `data/csv/cd_algebraic_experiments_v29.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-224
 //!
@@ -1797,7 +1797,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Inner derivation space dimension: D(a,b)(x) = A(a,b,x) - A(b,a,x) spans a 0-dim space at dim=4 (quaternions are associative, all A=0), 21-dim space at dim=8 (octonions), confirming C-203. At dim=16 and dim=32, the space saturates at 50 (limited by n_pairs=50). The 21-dim space at dim=8 contains a 14-dim Lie algebra g2 (the actual derivation algebra), with the remaining 7 dimensions failing the Leibniz rule.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v29.py`, `data/csv/cd_algebraic_experiments_v29.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-225
 //!
@@ -1805,7 +1805,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Moufang identity (ma)(bm) = m((ab)m): satisfied by ALL basis elements at dim<=8 (Moufang loop). At dim>=16, exactly 2 basis elements satisfy the identity (e_0 and one other, consistently across trials). The Moufang center collapses sharply at the Hurwitz boundary but retains a 2-element basis, not just the identity.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v29.py`, `data/csv/cd_algebraic_experiments_v29.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-226
 //!
@@ -1813,7 +1813,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Power-associativity a^m * a^n = a^(m+n) holds EXACTLY at ALL CD dims 4-256 for all 10 pairs (m,n) with m+n <= 5. Max deviation < 1e-10 (machine epsilon). This extends C-142 and C-215 with an exhaustive low-order check covering all groupings through fifth power.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v30.py`, `data/csv/cd_algebraic_experiments_v30.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-227
 //!
@@ -1821,7 +1821,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Subalgebra gen{a,b} dimension: 4 at dim=4 (full quaternion algebra), 4 at dim=8 (Artin's theorem confirmed -- 2 elements generate a quaternion subalgebra), 6 at dim>=16 (consistently, across all trials). Artin's theorem sharp: any 2 elements of O generate at most a 4-dim associative subalgebra. Beyond O, gen{a,b} = 6 is a new universal constant.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v30.py`, `data/csv/cd_algebraic_experiments_v30.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-228
 //!
@@ -1829,7 +1829,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Commutator norm ratio||[a,b]||/||ab||-> 2.0 as dim -> infinity. Values: 1.14 (dim=4), 1.60 (dim=8), 1.80 (dim=16), 1.90 (dim=32), 1.95 (dim=64), 1.98 (dim=128), 1.99 (dim=256), 1.995 (dim=512). Monotone increasing. Zero at dim=2. This refines C-206 with precise convergence: the ratio approaches 2 from below, with corrections O(1/dim).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v30.py`, `data/csv/cd_algebraic_experiments_v30.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-229
 //!
@@ -1837,7 +1837,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Frobenius inner product Tr(L_a * L_b^T) = dim * <a,b> (Euclidean dot product) holds EXACTLY at ALL CD dims 4-64. Combined with C-219 (Tr(L_a) = dim * Re(a)), this provides a complete operator-dot-product correspondence: the Frobenius inner product of left multiplication operators equals the algebra inner product scaled by dimension.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v30.py`, `data/csv/cd_algebraic_experiments_v30.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-230
 //!
@@ -1845,7 +1845,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Re(ab) = Re(ba) holds EXACTLY at ALL CD dims 4-512. The real part of the product is symmetric even though the full product is not commutative. This is equivalent to the symmetry of the bilinear form B(a,b) = <a,b> and follows from the CD conjugation structure. Max deviation = 0.0 at all dims tested.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v30.py`, `data/csv/cd_algebraic_experiments_v30.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-231
 //!
@@ -1853,7 +1853,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Reverse associator: A(c,b,a) = -A(a,b,c) holds EXACTLY at ALL CD dims 8-256. The associator is antisymmetric under full argument reversal at ALL dims, even though individual transpositions break antisymmetry at dim>=16 (C-216).||A(a,b,c)||=||A(c,b,a)||exactly, and A(a,b,c) + A(c,b,a) = 0 exactly (mean sum norm < 1e-10). This is a universal identity that survives the Hurwitz boundary.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v30.py`, `data/csv/cd_algebraic_experiments_v30.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-232
 //!
@@ -1861,7 +1861,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Real part formula: Re(ab) = a_0*b_0 - sum_{k>=1} a_k*b_k (Lorentzian inner product) holds EXACTLY at ALL CD dims 2-512. Also: Re(a*conj(b)) = <a,b> (Euclidean dot product) EXACT at ALL dims. The product's real part encodes a (1,n-1)-signature metric, while using conjugation recovers the Euclidean metric. Both identities hold for arbitrary (non-unit) vectors.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v31.py`, `data/csv/cd_algebraic_experiments_v31.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-233
 //!
@@ -1869,7 +1869,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Left alternative law x(xy) = (xx)y holds EXACTLY at dim<=8, fails at dim>=16. Mean failure grows from 0.51 (dim=16) to 0.96 (dim=256), saturating near 1.0. This verifies the alternative property (C-199) from the specific left-alternative perspective and shows the failure magnitude approaches a finite limit.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v31.py`, `data/csv/cd_algebraic_experiments_v31.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-234
 //!
@@ -1877,7 +1877,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Jordan norm scaling:||{a,b}||~ C/sqrt(dim) with C ~ 1.57. Power-law fit gives slope = -0.502 (expect -0.5). sqrt(dim)*||{a,b}||= 1.571 +/- 0.043, nearly constant across dims 4-512. This gives a precise quantitative law for how the symmetric (Jordan) part of the product vanishes at high dimension.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v31.py`, `data/csv/cd_algebraic_experiments_v31.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-235
 //!
@@ -1885,7 +1885,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Operator determinant: det(L_a) = +/-1 for unit a at dim<=8 (L_a is orthogonal). At dim>=16,|det(L_a)|collapses rapidly: 0.40 (dim=16), 0.002 (dim=32), ~0 (dim=64). At dim>=64, L_a is effectively singular for generic unit a. This means left multiplication by a unit element loses information (non-injective) beyond composition dimensions.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v31.py`, `data/csv/cd_algebraic_experiments_v31.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-236
 //!
@@ -1893,7 +1893,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Right Moufang identity (ab)(ca) = a((bc)a) holds EXACTLY at dim<=8, fails at dim>=16. Failure grows: mean 0.79 (dim=16) to 1.59 (dim=128). This complements the left Moufang (C-190/Bol) and middle Moufang (C-198), confirming all three Moufang identities hold iff dim<=8.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v31.py`, `data/csv/cd_algebraic_experiments_v31.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-237
 //!
@@ -1901,7 +1901,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Symmetrized associator: A(a,b,c)+A(b,a,c) = 0 and A(a,b,c)+A(a,c,b) = 0 at dim<=8 (alternating property). Both fail simultaneously at dim>=16. These are the two independent adjacent transpositions generating S_3; their vanishing at dim<=8 is equivalent to the alternating property. Failure magnitudes comparable (~1.5) at dim>=16.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v31.py`, `data/csv/cd_algebraic_experiments_v31.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-238
 //!
@@ -1909,7 +1909,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Right alternative law y(xx) = (yx)x holds EXACTLY at dim<=8, fails at dim>=16. Mean failure grows from 0.51 (dim=16) to 0.96 (dim=256), saturating near 1.0. Mirrors the left alternative (C-233), confirming the full alternative property at composition dimensions.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v32.py`, `data/csv/cd_algebraic_experiments_v32.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-239
 //!
@@ -1917,7 +1917,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Norm power scaling:||a^n||=||a||^n holds EXACTLY at ALL CD dims 4-256, for powers n=2,3,4,5. This is UNIVERSAL, not restricted to composition dimensions. Each element generates a 2D complex subalgebra where norm multiplicativity holds. Mean ratio = 1.0 with std < 1e-6 at all dims.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v32.py`, `data/csv/cd_algebraic_experiments_v32.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-240
 //!
@@ -1925,7 +1925,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Adjoint map T_a(x) = a*x*conj(a) is an isometry (||T_a(x)||=||x||) EXACTLY at dim<=8. At dim>=16, T_a distorts norms: mean ratio 1.13 (dim=16) growing to 1.38 (dim=128). The adjoint/inner automorphism preserves the norm only in composition algebras.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v32.py`, `data/csv/cd_algebraic_experiments_v32.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-241
 //!
@@ -1933,7 +1933,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Pythagorean decomposition:||ab||^2 =||S(a,b)||^2 +||A(a,b)||^2 where S=(ab+ba)/2 and A=(ab-ba)/2 holds EXACTLY at ALL CD dims 2-512. The symmetric fraction decreases monotonically: 1.0 (dim=2, commutative), 0.62 (dim=4), 0.35 (dim=8), 0.005 (dim=512). Products become almost entirely antisymmetric at high dim.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v32.py`, `data/csv/cd_algebraic_experiments_v32.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-242
 //!
@@ -1941,7 +1941,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Cayley-Dickson doubling formula (a,b)*(c,d) = (ac - conj(d)*b, d*a + b*conj(c)) is verified EXACTLY at all tested doubling steps: 4->8, 8->16, 16->32, 32->64, 64->128. Direct cd_multiply_batch output matches doubling reconstruction to machine precision.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v32.py`, `data/csv/cd_algebraic_experiments_v32.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-243
 //!
@@ -1949,7 +1949,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Quadratic form N(a) = a*conj(a): (1) N(a) is purely real at ALL CD dims (imaginary parts = 0). (2) Re(N(a)) =||a||^2 EXACTLY at ALL dims. (3) N(ab) = N(a)*N(b) EXACTLY at dim<=8 (composition property). (4) N(ab) != N(a)*N(b) at dim>=16, with deviation growing rapidly (158 at dim=16, 16000 at dim=256). This is the fundamental norm form whose multiplicativity characterizes composition algebras.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v32.py`, `data/csv/cd_algebraic_experiments_v32.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-244
 //!
@@ -1957,7 +1957,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Inverse element: a^{-1} = conj(a)/||a||^2 satisfies a*a^{-1} = a^{-1}*a = e_0 EXACTLY at ALL CD dims 2-256. Both left and right inverses work universally. This follows from N(a) = a*conj(a) =||a||^2*e_0 (C-243). Every nonzero CD element is invertible.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v33.py`, `data/csv/cd_algebraic_experiments_v33.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-245
 //!
@@ -1965,7 +1965,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Artin's theorem: the subalgebra generated by any 2 elements is associative at dim<=8 (alternative algebras). Verified via A(a, b, ab) = A(a, b, ba) = A(a, ab, b) = 0 at dim<=8. Fails at dim>=16 with max associator > 1.0.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v33.py`, `data/csv/cd_algebraic_experiments_v33.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-246
 //!
@@ -1973,7 +1973,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Nucleus N(A) = {n : A(n,x,y) = A(x,n,y) = A(x,y,n) = 0 for all x,y}. At dim=4 (quaternions, associative): nucleus = full algebra (dim 4). At dim>=8 (octonions and beyond): nucleus = R*e_0 (dim 1, scalars only). The nucleus distinguishes associative from merely alternative algebras.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v33.py`, `data/csv/cd_algebraic_experiments_v33.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-247
 //!
@@ -1981,7 +1981,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Jacobi defect: [a,[b,c]]+[b,[c,a]]+[c,[a,b]] = 0 at dim<=4 (associative: commutator forms Lie algebra). At dim=8 (octonions): Jacobi defect norm equals||6*A(a,b,c)||with ratio 1.0000, confirming the alternative algebra identity. At dim>=16: ratio decays from 0.93 (dim=16) to 0.84 (dim=128).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v33.py`, `data/csv/cd_algebraic_experiments_v33.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-248
 //!
@@ -1989,7 +1989,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Norm decomposition: 4*||ab||^2 =||{a,b}||^2 +||[a,b]||^2 holds EXACTLY at ALL CD dims 2-512 (equivalent to C-241 Pythagorean decomposition with factor of 4). Jordan fraction decreases from 1.0 (dim=2) to 0.005 (dim=512), confirming products become dominated by commutator at high dim.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v33.py`, `data/csv/cd_algebraic_experiments_v33.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-249
 //!
@@ -1997,7 +1997,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Trace of right multiplication product: Tr(R_a R_b^T) = dim*<a,b> holds EXACTLY at ALL CD dims 4-64. This mirrors C-229 (Tr(L_a L_b^T) = dim*<a,b>). The mixed product Tr(L_a R_b^T) does NOT equal dim*<a,b> and varies erratically across dims.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v33.py`, `data/csv/cd_algebraic_experiments_v33.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-250
 //!
@@ -2005,7 +2005,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Left Bol identity ((ab)c)b = a((bc)b) holds EXACTLY at dim<=8, fails at dim>=16. Mean failure grows from 0.79 (dim=16) to 1.59 (dim=128). Complements C-190 (left Bol/Moufang already verified) with the explicit left Bol formulation.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v34.py`, `data/csv/cd_algebraic_experiments_v34.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-251
 //!
@@ -2013,7 +2013,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Eigenvalue spectrum of L_a: all eigenvalues lie on the unit circle (|lambda|=1) at dim<=8 (L_a orthogonal). At dim>=16, eigenvalues spread: spectral radius grows from 1.27 (dim=16) to 1.77 (dim=64); minimum|lambda|shrinks from 0.60 to 0.13. L_a becomes progressively more ill-conditioned.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v34.py`, `data/csv/cd_algebraic_experiments_v34.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-252
 //!
@@ -2021,7 +2021,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Commutator algebra dimension: span{[e_i, e_j]} has rank 0 at dim=2 (commutative), and rank dim-1 at dim>=4. The commutators span ALL imaginary directions at every non-commutative CD dimension.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v34.py`, `data/csv/cd_algebraic_experiments_v34.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-253
 //!
@@ -2029,7 +2029,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Associator norm scaling:||A(a,b,c)||for unit vectors converges to sqrt(2) ~ 1.4142 as dim -> infinity. Zero at dim=4 (associative), then 1.09 (dim=8), 1.31 (dim=16), ..., 1.415 (dim=512). Log-log slope ~ 0.05 (nearly flat). The associator has a well-defined infinite-dimensional limit.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v34.py`, `data/csv/cd_algebraic_experiments_v34.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-254
 //!
@@ -2037,7 +2037,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Conjugate reversal: conj(ab) = conj(b)*conj(a) holds EXACTLY at ALL CD dims 2-256. Conjugation is a universal anti-involution. This follows from the CD doubling construction: the conjugation map reverses the order of multiplication at every level.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v34.py`, `data/csv/cd_algebraic_experiments_v34.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-255
 //!
@@ -2045,7 +2045,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Left multiplication operator: L_a^2 = L_{a^2} (as matrices) holds EXACTLY at dim<=8 and fails at dim>=16. This is equivalent to the left alternative law a(ax) = (aa)x. Spectral radius of L_a^2 grows from 1.0 (dim<=8) to 3.1 (dim=64).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v34.py`, `data/csv/cd_algebraic_experiments_v34.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-256
 //!
@@ -2053,7 +2053,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: R_a and L_a eigenvalue spectra match (sorted|eigenvalues|identical) at ALL CD dims 4-64. This verifies C-214 (spectral mirroring) with explicit eigenvalue comparison, not just spectral radius. The left-right spectral equivalence is universal.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v35.py`, `data/csv/cd_algebraic_experiments_v35.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-257
 //!
@@ -2061,7 +2061,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Associator norm concentration: CV(||A||) = std/mean decreases monotonically from 0.30 (dim=8) to 0.05 (dim=512). CV scaling slope ~ -0.45 (near -0.5), consistent with concentration of measure ~ 1/sqrt(dim). The associator norm becomes sharply peaked around sqrt(2) at high dim.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v35.py`, `data/csv/cd_algebraic_experiments_v35.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-258
 //!
@@ -2069,7 +2069,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Product norm ratio:||ab||/(||a||*||b||) = 1.0 EXACTLY at dim<=8 (composition property). At dim>=16, the ratio has mean ~ 1.0 but std > 0 (spread). The mean stays near 1.0 at all dims (unbiased), but the variance decreases with dim. Norm multiplicativity fails symmetrically.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v35.py`, `data/csv/cd_algebraic_experiments_v35.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-259
 //!
@@ -2077,7 +2077,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Doubling-level associator: at dim=16, left-half elements (octonion subalgebra) have||A||~ 1.12 (matching octonion-level C-253), while right-half elements have||A||~ 1.58 (higher due to doubling conjugation terms). Right exceeds left at all tested dims. The doubling construction introduces ADDITIONAL non-associativity beyond the embedded subalgebra level.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v35.py`, `data/csv/cd_algebraic_experiments_v35.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-260
 //!
@@ -2085,7 +2085,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Associator 4-form: <A(a,b,c), d> is alternating (antisymmetric under adjacent swaps) at dim<=8. Both swap(1,2) and swap(2,3) give exactly zero. At dim>=16, both symmetries break. This verifies the associator is a 4-linear alternating form on the full algebra at composition dimensions.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v35.py`, `data/csv/cd_algebraic_experiments_v35.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-261
 //!
@@ -2093,7 +2093,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Center Z(A) = full algebra (dim 2) at dim=2 (complex, commutative). Center = 1 (scalars R*e_0) at dim>=4. This verifies C-172 with explicit basis element testing. The center collapses at the first non-commutative dimension.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v35.py`, `data/csv/cd_algebraic_experiments_v35.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-262
 //!
@@ -2101,7 +2101,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Associator trilinearity: A(a+b,c,d) = A(a,c,d) + A(b,c,d) and A(alpha*a,c,d) = alpha*A(a,c,d), likewise in 2nd and 3rd arguments. Holds EXACTLY at ALL CD dims 4-256. This is a structural consequence of bilinearity of the CD product. The associator is a trilinear map at every level of the CD tower.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v36.py`, `data/csv/cd_algebraic_experiments_v36.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-263
 //!
@@ -2109,7 +2109,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Product of inverses: (ab)^{-1} = b^{-1}*a^{-1} holds EXACTLY at dim<=8 (composition algebras). Fails at dim>=16 with relative errors ~0.4-0.75. This identity requires norm multiplicativity and alternativity, both of which break at dim>=16. The failure magnitude stabilizes rather than growing with dimension.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v36.py`, `data/csv/cd_algebraic_experiments_v36.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-264
 //!
@@ -2117,7 +2117,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Commutator-to-associator norm ratio:||[a,b]||/||A(a,b,c)||-> sqrt(2) ~ 1.414 as dim -> infinity. This follows from||[a,b]||-> 2.0 (C-222) and||A||-> sqrt(2) (C-253), giving ratio 2/sqrt(2) = sqrt(2). Convergence is monotonic from ~1.58 at dim=8 to ~1.41 at dim>=128.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v36.py`, `data/csv/cd_algebraic_experiments_v36.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-265
 //!
@@ -2125,7 +2125,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Inner derivation D(a,b)(x) = [[a,b],x] - 3*A(a,b,x) satisfies the Leibniz rule D(xy) = D(x)y + xD(y) at dim<=8 (alternative algebras). Fails at dim>=16 with Leibniz violations growing to ~4-6. This verifies D(a,b) is a proper derivation exactly on the alternative/composition algebras. The derivation algebra Der(O) is 14-dimensional (= g2).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v36.py`, `data/csv/cd_algebraic_experiments_v36.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-266
 //!
@@ -2133,7 +2133,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Flexible nucleus = full algebra at ALL CD dims 4-128. Every element satisfies (xa)x = x(ax), confirming universal flexibility (C-215) via direct element-by-element sampling. This is a defining property of the entire CD tower.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v36.py`, `data/csv/cd_algebraic_experiments_v36.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-267
 //!
@@ -2141,7 +2141,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Moufang identity a(b(ac)) = ((ab)a)c holds EXACTLY at dim<=8 (Moufang loop). Fails at dim>=16 with violations growing from ~1.4 (dim=16) to ~2.2 (dim=64). This verifies the unit elements of R,C,H,O form a Moufang loop but sedenions and beyond do not. Combined with C-250 (Bol), C-236 (right Moufang), the full Moufang quartet is now verified.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v36.py`, `data/csv/cd_algebraic_experiments_v36.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-268
 //!
@@ -2149,7 +2149,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Quadratic identity: x^2 - 2*Re(x)*x +||x||^2*e_0 = 0 holds EXACTLY at ALL CD dims 2-256. Every CD element satisfies a degree-2 minimal polynomial over R. This makes all CD algebras "quadratic algebras" -- each element is a root of t^2 - 2*Re(x)*t +||x||^2 = 0.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v37.py`, `data/csv/cd_algebraic_experiments_v37.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-269
 //!
@@ -2157,7 +2157,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Power-norm for non-unit vectors:||x^n||=||x||^n at ALL CD dims 4-128 for n=2,3,4,5, with non-unit vectors of varying norms (0.1 to 10.0). This reconfirms C-239 with stronger test conditions: non-unit vectors and scalar scaling. The power-associative subalgebra generated by any single element is norm-preserving.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v37.py`, `data/csv/cd_algebraic_experiments_v37.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-270
 //!
@@ -2165,7 +2165,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Di-associator (ax)b - a(xb) = 0 at dim<=4 (associative). Nonzero at dim>=8 with mean norm approaching sqrt(2) ~ 1.414 at high dim. The di-associator IS the associator A(a,x,b) -- this experiment verifies the associativity boundary from the bimodule perspective. The mean di-associator norm converges to the same sqrt(2) limit as the standard associator (C-253).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v37.py`, `data/csv/cd_algebraic_experiments_v37.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-271
 //!
@@ -2173,7 +2173,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Artin's theorem: subalgebra generated by any two elements is associative at dim<=8 (alternative algebras). All products a,b,ab,ba,a^2,b^2 and their triple products have zero associator. Fails at dim>=16 with||A||~ 1.0-1.8. This is a direct computational verification of Artin's classical theorem for CD algebras.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v37.py`, `data/csv/cd_algebraic_experiments_v37.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-272
 //!
@@ -2181,7 +2181,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Trace of commutator: Tr(L_{[a,b]}) = 0 at ALL CD dims 4-128. This follows from Tr(L_a) = dim*Re(a) (C-230) and Re([a,b]) = 0 (commutators are pure imaginary). The composition Tr(L_{[,]}) = dim*Re([,]) = 0 is a universal structural identity.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v37.py`, `data/csv/cd_algebraic_experiments_v37.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-273
 //!
@@ -2189,7 +2189,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Nucleus is NOT an ideal at dim>=8. For n = lambda*e_0 (scalar, in nucleus) and arbitrary a, the product na = lambda*a is NOT in the nucleus because A(lambda*a, b, c) = lambda*A(a,b,c) != 0. At dim<=4 the nucleus is the full algebra so the question is trivial. This means the nucleus of non-associative CD algebras is "absorbed" by multiplication -- it does not form a proper two-sided ideal.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v37.py`, `data/csv/cd_algebraic_experiments_v37.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-274
 //!
@@ -2197,7 +2197,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Polarization identity: both standard (4<a,b> =||a+b||^2 -||a-b||^2) and CD-specific (Re(conj(a)*b) = <a,b>) hold EXACTLY at ALL CD dims 2-256. The CD inner product is the standard Euclidean inner product on R^n, recoverable via either polarization or the algebraic product.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v38.py`, `data/csv/cd_algebraic_experiments_v38.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-275
 //!
@@ -2205,7 +2205,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Jordan product power-associativity: (a.b).(a.a) = a.(b.(a.a)) where a.b = (ab+ba)/2 holds at ALL CD dims 4-128. The Jordan product inherits power-associativity from the full CD product. This means the symmetrized product preserves the power-associative structure.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v38.py`, `data/csv/cd_algebraic_experiments_v38.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-276
 //!
@@ -2213,7 +2213,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Jordan triple product {a,b,c} = a.(b.c) + c.(b.a) - b.(a.c) is symmetric in (a,c): {a,b,c} = {c,b,a} at ALL CD dims 4-64. This symmetry is universal. The Jordan triple product differs from the direct product (ab)c + (cb)a by ~1.0-1.6 at all dims, confirming they are distinct operations.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v38.py`, `data/csv/cd_algebraic_experiments_v38.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-277
 //!
@@ -2221,7 +2221,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Basis element squares: e_k^2 = -e_0 for all k>=1 at ALL CD dims 2-128. e_0^2 = +e_0 (identity). All dim-1 imaginary basis elements are square roots of -1. This is a fundamental structural property of the CD construction: each imaginary unit generates a copy of the complex numbers.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v38.py`, `data/csv/cd_algebraic_experiments_v38.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-278
 //!
@@ -2229,7 +2229,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: No nilpotent elements: x^n != 0 for any nonzero x at ALL CD dims 8-128. This follows from||x^n||=||x||^n (C-239/C-269) -- since||x||> 0 implies||x^n||> 0. CD algebras have no nilpotent elements despite having zero divisors at dim>=16. Powers always have strictly positive norm.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v38.py`, `data/csv/cd_algebraic_experiments_v38.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-279
 //!
@@ -2237,7 +2237,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Alternative nucleus: ALL random elements satisfy both left and right alternative laws at dim<=8. NO random element satisfies them at dim>=16 (0/16 at dim=16, 0/20 at dim>=32). The alternative property is all-or-nothing: either the full algebra is alternative or essentially no elements satisfy both laws. Note: basis elements trivially satisfy alt laws because e_k^2 is scalar.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v38.py`, `data/csv/cd_algebraic_experiments_v38.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-280
 //!
@@ -2245,7 +2245,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: L_a eigenvalue distribution: at dim<=8, all eigenvalues of L_a (unit a) lie exactly on the unit circle (|lambda|=1, std=0). At dim>=16, eigenvalues spread with increasing std (0.25 at dim=16 to 0.50 at dim=64) and range expanding [0.07, 1.84] at dim=64. The mean|eigenvalue|decreases from 1.0 to ~0.87.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v39.py`, `data/csv/cd_algebraic_experiments_v39.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-281
 //!
@@ -2253,7 +2253,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Near-zero-divisor product norm: min(||ab||/(||a||*||b||)) = 1.0 exactly at dim<=8. At dim>=16, min ratio drops below 1.0 (reaching 0.61 at dim=16), confirming norm multiplicativity failure. The min ratio increases at very high dim (0.90 at dim=256) due to concentration of measure, but never returns to 1.0. Mean ratio stays ~1.0 at all dims (unbiased, confirming C-258).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v39.py`, `data/csv/cd_algebraic_experiments_v39.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-282
 //!
@@ -2261,7 +2261,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Subalgebra embedding chain: R c C c H c O c S c P verified within dim=64. Elements with support in the first d components (d=1,2,4,8,16,32) produce products with zero overflow into higher components. Every CD algebra naturally contains all smaller CD algebras as closed subalgebras.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v39.py`, `data/csv/cd_algebraic_experiments_v39.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-283
 //!
@@ -2269,7 +2269,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Associator mean norm convergence: mean(||A(a,b,c)||) for unit vectors increases monotonically from 1.12 (dim=8) to 1.41 (dim=256), approaching sqrt(2) with normalized ratio reaching 0.998. This reconfirms C-253 with explicit monotonicity verification over 6 dimensions.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v39.py`, `data/csv/cd_algebraic_experiments_v39.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-284
 //!
@@ -2277,7 +2277,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Anti-commutator norm ratio:||{a,b}||/(2*||a||*||b||) = 1.0 at dim=2 (commutative), decreasing to ~0.10 at dim=256. The ratio scales approximately as 1/sqrt(dim/2), consistent with random orientation in high-dimensional space. The anti-commutator measures "commutativity overlap" which vanishes as the algebra grows more non-commutative.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v39.py`, `data/csv/cd_algebraic_experiments_v39.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-285
 //!
@@ -2285,7 +2285,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Power tower:||x^{2^k}||=||x||^{2^k} remains exact to machine precision through k=8 (x^{256}) at ALL CD dims 4-64 for unit vectors. Max ratio deviation ~5e-14 after 256 iterated squarings. This verifies the power-associative subalgebra is numerically stable under extreme iteration.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v39.py`, `data/csv/cd_algebraic_experiments_v39.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-286
 //!
@@ -2293,7 +2293,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Norm product identity: a*conj(a) = conj(a)*a = ||a||^2 * e_0 holds EXACTLY at ALL CD dims 2-256. Both orderings produce identical results to machine precision (max diff ~6e-14 at dim=256). This is a universal CD identity with no Hurwitz boundary dependence.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v40.py`, `data/csv/cd_algebraic_experiments_v40.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-287
 //!
@@ -2301,7 +2301,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Imaginary product structure: for pure imaginary a,b (Re=0), Re(ab) = -<a,b> (negative inner product) holds EXACTLY at ALL CD dims 4-128. The imaginary part ||Im(ab)||grows proportionally to dim-1. This decomposes the product into a scalar (inner product) and vector (cross product) part universally.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v40.py`, `data/csv/cd_algebraic_experiments_v40.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-288
 //!
@@ -2309,7 +2309,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: L_a eigenvalue conjugate pairing: all eigenvalues of the left-multiplication matrix L_a come in conjugate pairs (real matrix property). At dim<=8, |det(L_a)|= 1 exactly (composition algebra). At dim>=16, |det(L_a)|decays rapidly: ~0.40 (dim=16), ~0.002 (dim=32), ~3e-8 (dim=64). The determinant collapse quantifies the loss of norm multiplicativity.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v40.py`, `data/csv/cd_algebraic_experiments_v40.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-289
 //!
@@ -2317,7 +2317,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: n-fold product norm: ||a1*a2*...*an||/ prod(||ai||) = 1.0 exactly at dim<=8 for all n=3,5,8 (composition algebra). At dim>=16, the ratio has mean~1.0 but increasing standard deviation with n: std grows from ~0.13 (n=3) to ~0.25 (n=8). More multiplications amplify the norm-multiplicativity failure.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v40.py`, `data/csv/cd_algebraic_experiments_v40.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-290
 //!
@@ -2325,7 +2325,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Associator antisymmetry: A(a,b,c) = -A(b,a,c) holds exactly at dim<=8 (alternating associator, swap ratio = 0). At dim>=16, the swap ratio ||A(a,b,c)+A(b,a,c)||/||A(a,b,c)||grows monotonically: 0.64 (dim=16), 0.82 (dim=32), 0.91 (dim=64), 0.98 (dim=256), approaching 1.0 in high dims. The associator becomes increasingly symmetric (non-alternating) beyond the composition boundary.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v40.py`, `data/csv/cd_algebraic_experiments_v40.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-291
 //!
@@ -2333,7 +2333,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Generated subalgebra dimension: every nonzero element x of a CD algebra generates a 2-dimensional subalgebra isomorphic to C, spanned by {e_0, x}. Verified at all dims 4-128 by projecting x^2, x^3, x^4 onto span{e_0, x} via least-squares: max residual < 1e-6 at all dims. This follows from the universal quadratic identity x^2 = 2*Re(x)*x - ||x||^2*e_0.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v40.py`, `data/csv/cd_algebraic_experiments_v40.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-292
 //!
@@ -2341,7 +2341,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Moufang identity a(b(ac)) = (a(ba))c holds EXACTLY at dim<=8 (Moufang loop) and FAILS at dim>=16. The failure ratio increases monotonically: 0.80 (dim=16), 1.21 (dim=32), 1.48 (dim=64), 1.58 (dim=128). The Moufang property is a composition algebra boundary phenomenon.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v41.py`, `data/csv/cd_algebraic_experiments_v41.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-293
 //!
@@ -2349,7 +2349,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Conjugate anti-automorphism: conj(ab) = conj(b)*conj(a) holds at ALL CD dims 2-256 with EXACT zero error (bitwise identical). This is a structural identity of the CD construction itself -- conjugation reverses multiplication order. It holds because CD doubling defines conj by component negation.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v41.py`, `data/csv/cd_algebraic_experiments_v41.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-294
 //!
@@ -2357,7 +2357,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Center of CD algebra: Z(A) = full algebra at dim=2 (C is commutative); Z(A) = R*e_0 (scalars only) at dim>=4. Verified by testing that scalar elements commute with all elements, while nonscalar elements always fail to commute at dim>=4. The center shrinks from full to minimal at the first non-commutative step.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v41.py`, `data/csv/cd_algebraic_experiments_v41.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-295
 //!
@@ -2365,7 +2365,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Cyclic associator sum: A(a,b,c) + A(b,c,a) + A(c,a,b) = 0 at dim<=4 (associative), = 3*A(a,b,c) EXACTLY at dim=8 (alternative, ratio=3.000), and deviates below 3 at dim>=16: 2.80 (dim=16), 2.65 (dim=32), 2.59 (dim=64), 2.52 (dim=128). At dim=8 the ratio is exactly 3 because the associator is totally antisymmetric and cyclic permutations are even.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v41.py`, `data/csv/cd_algebraic_experiments_v41.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-296
 //!
@@ -2373,7 +2373,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Left-right multiplication intertwining: xa = conj(conj(a)*conj(x)) holds at ALL CD dims 2-256 with EXACT zero error (bitwise identical). This identity expresses right multiplication as left multiplication conjugated by the involution. It is a structural consequence of the CD construction.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v41.py`, `data/csv/cd_algebraic_experiments_v41.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-297
 //!
@@ -2381,7 +2381,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Product of conjugates: conj(a)*conj(b) = conj(ba) holds at ALL CD dims 2-256 with EXACT zero error (bitwise identical). This is equivalent to the anti-automorphism property (C-293) but tested in the reverse direction. Both orderings of the anti-automorphism identity are verified.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v41.py`, `data/csv/cd_algebraic_experiments_v41.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-298
 //!
@@ -2389,7 +2389,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Trace of left-multiplication: Tr(L_a) = dim * Re(a) holds EXACTLY at ALL CD dims 4-64. This is a universal spectral identity connecting the trace of the multiplication operator to the real part of the element. It follows from the conjugation structure of the CD construction.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v42.py`, `data/csv/cd_algebraic_experiments_v42.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-299
 //!
@@ -2397,7 +2397,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Right Bol identity (ab)(ca) = a((bc)a) holds EXACTLY at dim<=8 and FAILS at dim>=16. The failure ratio increases monotonically: 0.78 (dim=16), 1.21 (dim=32), 1.46 (dim=64), 1.59 (dim=128). The Bol identity is a composition algebra boundary property, similar to but distinct from the Moufang identity (C-292).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v42.py`, `data/csv/cd_algebraic_experiments_v42.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-300
 //!
@@ -2405,7 +2405,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Commutator-anticommutator decomposition: ||[a,b]||^2 + ||{a,b}||^2 = 4*||ab||^2 holds EXACTLY at ALL CD dims 2-256. This is the Parseval-like orthogonal decomposition ab = ([a,b] + {a,b})/2, proving that commutator and anticommutator are orthogonal components of the product. Universal.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v42.py`, `data/csv/cd_algebraic_experiments_v42.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-301
 //!
@@ -2413,7 +2413,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Derivation algebra dimension: dim(Der(R))=0, dim(Der(C))=0, dim(Der(H))=3 (=so(3)), dim(Der(O))=14 (=G2), dim(Der(S))=14 (same as O). Computed via rank of the derivation condition constraint matrix. The sedenion derivation algebra has the same dimension as the octonion derivation algebra, consistent with Der(S)=G2 embedding.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v42.py`, `data/csv/cd_algebraic_experiments_v42.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-302
 //!
@@ -2421,7 +2421,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Associator (1,3)-swap antisymmetry: A(a,b,c) = -A(c,b,a) holds at ALL CD dims (universal). This is stronger than expected -- we initially predicted it would fail beyond dim=8 like the (1,2)-swap. It follows from flexibility A(a,b,a)=0 and trilinearity. The (1,3) swap is a fundamentally different symmetry from the (1,2) swap, which only holds at dim<=8.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v42.py`, `data/csv/cd_algebraic_experiments_v42.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-303
 //!
@@ -2429,7 +2429,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Real part symmetry: Re(ab) = Re(ba) holds at ALL CD dims 2-256 (universal). This follows from Re(ab) = <a, conj(b)> and the symmetry of the real inner product. Even though ab != ba in general, their real parts always agree.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v42.py`, `data/csv/cd_algebraic_experiments_v42.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-304
 //!
@@ -2437,7 +2437,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Inverse element: a * conj(a)/||a||^2 = conj(a)/||a||^2 * a = e_0 holds EXACTLY at ALL CD dims 2-256. Every nonzero element is invertible with inverse a^{-1} = conj(a)/||a||^2. Both orderings produce e_0 to machine precision. This is a universal CD property.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v43.py`, `data/csv/cd_algebraic_experiments_v43.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-305
 //!
@@ -2445,7 +2445,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: L_a and R_a spectral equivalence: the multisets of eigenvalue magnitudes of L_a and R_a are identical at ALL CD dims 4-64. This follows from the intertwining identity R_a = conj . L_{conj(a)} . conj (C-296), since conjugation is an isometry.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v43.py`, `data/csv/cd_algebraic_experiments_v43.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-306
 //!
@@ -2453,7 +2453,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Flexible product norm: ||a(ba)||= ||a||^2*||b||exactly at dim<=8 (composition). At dim>=16, the ratio ||a(ba)||/(||a||^2*||b||) exceeds 1.0 on average: 1.13 (dim=16), 1.23 (dim=32), 1.33 (dim=64), 1.38 (dim=128). The flexible product is systematically "norm-amplifying" beyond the composition boundary.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v43.py`, `data/csv/cd_algebraic_experiments_v43.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-307
 //!
@@ -2461,7 +2461,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Scalar triple product associativity: Re(a(bc)) = Re((ab)c) holds EXACTLY at ALL CD dims 4-256. The real part of a triple product is associative even though the full product is not. This is a universal property stronger than Re(ab)=Re(ba) (C-303).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v43.py`, `data/csv/cd_algebraic_experiments_v43.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-308
 //!
@@ -2469,7 +2469,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Inverse composition: (ab)^{-1} = b^{-1}*a^{-1} holds EXACTLY at dim<=8 and FAILS at dim>=16. The failure ratio is 0.14 (dim=16), 0.14 (dim=32), 0.12 (dim=64), 0.08 (dim=128). The ratio DECREASES at high dim (concentration of measure reduces the inverse composition error).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v43.py`, `data/csv/cd_algebraic_experiments_v43.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-309
 //!
@@ -2477,7 +2477,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Commutator norm scaling: ||[a,b]||for unit vectors = 0 at dim=2 (commutative), increases through 1.14 (dim=4), 1.60 (dim=8), 1.81 (dim=16), and approaches 2.0 at dim=256 (1.99). The standard deviation decreases with dim (concentration of measure). This verifies and extends C-222 with explicit convergence data.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v43.py`, `data/csv/cd_algebraic_experiments_v43.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-310
 //!
@@ -2485,7 +2485,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: CD doubling construction: (a,b)*(c,d) = (ac - conj(d)*b, d*a + b*conj(c)) is verified EXACTLY at all levels dim=4 through dim=64 (from dim=2 through dim=32 halves). The recursive formula reproduces cd_multiply_batch results to machine precision.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v44.py`, `data/csv/cd_algebraic_experiments_v44.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-311
 //!
@@ -2493,7 +2493,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Associator (2,3)-swap: A(a,b,c) = -A(a,c,b) holds EXACTLY at dim<=8 and FAILS at dim>=16. The swap ratio increases: 0.64 (dim=16), 0.80 (dim=32), 0.93 (dim=64), 0.94 (dim=128). This completes the associator swap picture: (1,3)-swap is UNIVERSAL (C-302), (1,2)-swap is dim<=8 only (C-290), (2,3)-swap is dim<=8 only (C-311).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v44.py`, `data/csv/cd_algebraic_experiments_v44.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-312
 //!
@@ -2501,7 +2501,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Chebyshev relation: for unit x, Re(x^n) = T_n(Re(x)) where T_n is the n-th Chebyshev polynomial. Verified for n=2,3,4,5,8 at ALL CD dims 4-128. This follows from the quadratic identity x^2 = 2*Re(x)*x - e_0 (for unit x), which is exactly the Chebyshev recurrence T_{n+1}(t) = 2t*T_n(t) - T_{n-1}(t). Universal.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v44.py`, `data/csv/cd_algebraic_experiments_v44.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-313
 //!
@@ -2509,7 +2509,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Inner product adjoint: <ab, c> = <b, conj(a)*c> holds EXACTLY at ALL CD dims 4-256 (universal). This means L_a^* = L_{conj(a)} -- the adjoint of left multiplication by a is left multiplication by conj(a). Follows from scalar triple product associativity (C-307) and the anti-automorphism (C-293).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v44.py`, `data/csv/cd_algebraic_experiments_v44.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-314
 //!
@@ -2517,7 +2517,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Norm of sum: ||a+b||^2 = ||a||^2 + ||b||^2 + 2*Re(conj(a)*b) holds EXACTLY at ALL CD dims 2-256. This is the standard inner product expansion <a+b, a+b> = <a,a> + <b,b> + 2*<a,b> where <a,b> = Re(conj(a)*b). Universal.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v44.py`, `data/csv/cd_algebraic_experiments_v44.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-315
 //!
@@ -2525,7 +2525,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Polarization identity: 4*Re(conj(a)*b) = ||a+b||^2 - ||a-b||^2 holds EXACTLY at ALL CD dims 2-256. This recovers the inner product from the norm, confirming that the CD norm satisfies the parallelogram law. Universal.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v44.py`, `data/csv/cd_algebraic_experiments_v44.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-316
 //!
@@ -2533,7 +2533,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: L_a quadratic identity: L_a^2 - 2*Re(a)*L_a + ||a||^2*I = 0 holds at dim<=8 (composition algebras) and FAILS at dim>=16. At dim=4 and dim=8, the residual is <1e-15 (exact). At dim>=16, residuals grow: 2.63 (dim=16), 4.71 (dim=32), 7.96 (dim=64). This characterizes composition algebras: L_a is a root of the quadratic x^2 - 2*Re(a)*x + ||a||^2.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v45.py`, `data/csv/cd_algebraic_experiments_v45.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-317
 //!
@@ -2541,7 +2541,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Product norm ratio variance: Var(||ab||/(||a||||b||)) = 0 exactly at dim<=8 (norm multiplicativity) and >0 at dim>=16. The CV decreases from ~0.084 (dim=16) to ~0.046 (dim=256), consistent with concentration of measure. Mean ratio stays near 1.0 at all dims.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v45.py`, `data/csv/cd_algebraic_experiments_v45.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-318
 //!
@@ -2549,7 +2549,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Associator norm concentration: CV of ||A(a,b,c)||scales as dim^alpha with alpha = -0.448 (near the -0.5 expected from concentration of measure). CV decreases monotonically: 0.299 (dim=8), 0.221 (dim=16), 0.154 (dim=32), 0.116 (dim=64), 0.088 (dim=128), 0.062 (dim=256).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v45.py`, `data/csv/cd_algebraic_experiments_v45.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-319
 //!
@@ -2557,7 +2557,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Flexibility: (ab)a = a(ba) holds EXACTLY at ALL CD dims 2-256. This is a defining property of flexible algebras and holds universally in the CD construction. Max diff grows with dim but stays at machine precision (1e-15 at dim=2, 1.4e-12 at dim=256). Universal.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v45.py`, `data/csv/cd_algebraic_experiments_v45.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-320
 //!
@@ -2565,7 +2565,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Jordan identity: (a^2*b)*a = a^2*(b*a) holds EXACTLY at ALL CD dims 4-128. This is the right Jordan identity, which follows from power-associativity and flexibility. Max diff stays <5e-16 at all dims. This is stronger than general power-associativity -- it constrains how squares interact with arbitrary elements. Universal.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v45.py`, `data/csv/cd_algebraic_experiments_v45.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-321
 //!
@@ -2573,7 +2573,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Minimal polynomial: every CD element x satisfies x^2 - 2*Re(x)*x + ||x||^2*e_0 = 0 at ALL dims 4-128. This means every element has minimal polynomial degree <= 2 over R. The quadratic identity is the element-level analog of C-316 (operator-level). Max residual <3e-14 at all dims. Universal.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v45.py`, `data/csv/cd_algebraic_experiments_v45.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-322
 //!
@@ -2581,7 +2581,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Left-alternative identity: (aa)b = a(ab) holds EXACTLY at dim<=8 and FAILS at dim>=16. Diffs grow: 65.6 (dim=16), 119.3 (dim=32), 245.9 (dim=64), 588.1 (dim=128). This is one of the two defining identities of alternative algebras. Combined with right-alternative (C-323), characterizes the octonions as the largest alternative CD algebra.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v46.py`, `data/csv/cd_algebraic_experiments_v46.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-323
 //!
@@ -2589,7 +2589,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Right-alternative identity: (ba)a = b(aa) holds EXACTLY at dim<=8 and FAILS at dim>=16. This mirrors the left-alternative (C-322). Together they define the class of alternative algebras, which by Zorn's theorem includes only R, C, H, O and their split forms.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v46.py`, `data/csv/cd_algebraic_experiments_v46.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-324
 //!
@@ -2597,7 +2597,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Commutator energy partition: ||[a,b]||^2/||ab||^2 increases from 0.0 (dim=2, commutative) through 1.51 (dim=4), 2.67 (dim=8), 3.21 (dim=16), 3.59 (dim=32), 3.81 (dim=64), to 3.96 (dim=256), approaching 4.0. The anticommutator fraction decreases correspondingly. Sum is exactly 4.0 at all dims (Parseval, C-300). At high dim, products are almost purely antisymmetric.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v46.py`, `data/csv/cd_algebraic_experiments_v46.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-325
 //!
@@ -2605,7 +2605,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Nucleus structure: e_0 is in the nucleus (left, middle, and right) at ALL CD dims. At dim<=4 (associative): the nucleus is the full algebra. At dim>=8: the nucleus is R*e_0 only -- purely imaginary elements are NOT in the nucleus. This means the only elements that associate with all pairs are scalars.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v46.py`, `data/csv/cd_algebraic_experiments_v46.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-326
 //!
@@ -2613,7 +2613,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Norm submultiplicativity: ||ab||<= C(dim)*||a||*||b||with C(dim)=1.0 exactly at dim<=8 (norm multiplicativity) and C(dim)>1 at dim>=16. Observed maxima: C=1.197 (dim=16), 1.159 (dim=32), 1.153 (dim=64), 1.142 (dim=128), 1.089 (dim=256). The constant appears bounded and possibly decreasing toward 1 at large dim.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v46.py`, `data/csv/cd_algebraic_experiments_v46.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-327
 //!
@@ -2621,7 +2621,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Left Moufang identity: a(b(ac)) = ((ab)a)c holds EXACTLY at dim<=8 and FAILS at dim>=16. Moufang identities are stronger than alternating and characterize Moufang loops. The failure at dim>=16 is dramatic: diff=435 (dim=16), 1216 (dim=32), 3844 (dim=64), 10587 (dim=128). Combined with C-292 (right Moufang), verifies octonions are the largest Moufang CD algebra.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v46.py`, `data/csv/cd_algebraic_experiments_v46.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-328
 //!
@@ -2629,7 +2629,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Power-associativity: a^2*a^3 = a^5 and a^3*a^3 = a^6 hold at ALL CD dims 4-256. This verifies that CD algebras are power-associative: any element generates an associative subalgebra. Errors stay at machine precision (a^2*a^3 < 2.3e-10, a^3*a^3 < 7.5e-9 at dim=256). Universal.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v47.py`, `data/csv/cd_algebraic_experiments_v47.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-329
 //!
@@ -2637,7 +2637,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: L_a eigenvalue structure: at dim<=8 (composition algebras), L_a has exactly 1 distinct eigenvalue magnitude = ||a||(i.e. L_a is a scaled orthogonal matrix). At dim>=16, the number of distinct eigenvalue magnitudes increases: 3 (dim=16), 8 (dim=32), 16 (dim=64). This is equivalent to saying L_a is conformal at dim<=8 but not beyond.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v47.py`, `data/csv/cd_algebraic_experiments_v47.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-330
 //!
@@ -2645,7 +2645,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Fourth-power norm: ||a^2||^2 = ||a||^4 at ALL CD dims 2-256. This follows from the quadratic identity (C-321): a^2 = 2*Re(a)*a - ||a||^2*e_0, which gives ||a^2||^2 = 4*Re(a)^2*||a||^2 - 4*Re(a)^2*||a||^2 + ||a||^4. Universal.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v47.py`, `data/csv/cd_algebraic_experiments_v47.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-331
 //!
@@ -2653,7 +2653,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Bimodule commutation: L_a*R_b = R_b*L_a (i.e. a(xb) = (ax)b for all x) holds iff dim<=4 (associative). At dim>=8, L and R do NOT commute. This is the defining failure of associativity: left and right multiplication operators form a non-commuting pair.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v47.py`, `data/csv/cd_algebraic_experiments_v47.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-332
 //!
@@ -2661,7 +2661,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Artin's theorem: (a, b, ab) = 0 (the associator of a, b, and their product vanishes) at dim<=8 (alternative algebras). This is a consequence of Artin's theorem: in an alternative algebra, any 2-generated subalgebra is associative. Fails at dim>=16: diff=476 (dim=16), 1031 (dim=32).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v47.py`, `data/csv/cd_algebraic_experiments_v47.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-333
 //!
@@ -2669,7 +2669,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Conjugate product norm: ||conj(a)*a||= ||a||^2 at ALL CD dims 2-256. Since conj(a)*a = ||a||^2*e_0 exactly (C-286), the norm equals ||a||^2. Universal.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v47.py`, `data/csv/cd_algebraic_experiments_v47.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-334
 //!
@@ -2677,7 +2677,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Exponential map: for purely imaginary unit u (Re(u)=0, ||u||=1), exp(t*u) = cos(t)*e_0 + sin(t)*u. Verified via 20-term power series at ALL CD dims 4-128. This follows from u^2 = -e_0, giving the same series as complex exponential. Universal.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v48.py`, `data/csv/cd_algebraic_experiments_v48.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-335
 //!
@@ -2685,7 +2685,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Squaring Lipschitz constant: ||a^2 - b^2||<= C*||a-b||*(||a||+||b||) with C<=1 at dim<=8 and C decreasing with dim: 0.98 (dim=4), 0.86 (dim=8), 0.61 (dim=16), 0.27 (dim=64), 0.15 (dim=256). The squaring map becomes MORE Lipschitz-stable at high dim due to concentration of measure.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v48.py`, `data/csv/cd_algebraic_experiments_v48.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-336
 //!
@@ -2693,7 +2693,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Trace of left multiplication: Tr(L_a) = dim*Re(a) at ALL CD dims 2-128. Each diagonal entry L_a[j,j] = Re(a) because (a*e_j)_j = Re(a) for all j. Universal.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v48.py`, `data/csv/cd_algebraic_experiments_v48.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-337
 //!
@@ -2701,7 +2701,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Inner derivation: D(a,b) = [L_a, L_b] - L_{[a,b]} = 0 at dim<=4 (associative) and D != 0 at dim>=8. At dim=8, D(a,b) generates the G2 Lie algebra of derivations of the octonions. At dim>=16, D(a,b) is nonzero but no longer a derivation of the algebra.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v48.py`, `data/csv/cd_algebraic_experiments_v48.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-338
 //!
@@ -2709,7 +2709,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Pythagorean decomposition: ||a||^2 = Re(a)^2 + ||Im(a)||^2 at ALL CD dims 2-256. This is trivially the Euclidean norm decomposition a = (Re(a), Im_1(a), ..., Im_{d-1}(a)). Universal.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v48.py`, `data/csv/cd_algebraic_experiments_v48.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-339
 //!
@@ -2717,7 +2717,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Imaginary square: for purely imaginary u (Re(u)=0), u^2 = -||u||^2*e_0 at ALL CD dims 2-256. This follows from the quadratic identity (C-321) with Re(u)=0. Every purely imaginary unit element squares to -e_0, generalizing i^2 = -1. Universal.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v48.py`, `data/csv/cd_algebraic_experiments_v48.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-340
 //!
@@ -2725,7 +2725,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Norm of product of conjugates: ||conj(a)*conj(b)||= ||a||*||b||iff dim<=8 (norm multiplicativity via conjugates). Since ||conj(x)||= ||x||, this is equivalent to full norm multiplicativity. Fails at dim>=16 with relative errors ~0.12-0.24.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v49.py`, `data/csv/cd_algebraic_experiments_v49.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-341
 //!
@@ -2733,7 +2733,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Right norm identity: Re(a*conj(a)) = ||a||^2 at ALL CD dims 2-256. Since a*conj(a) = ||a||^2*e_0 (both orderings give the same scalar), Re = ||a||^2. Universal.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v49.py`, `data/csv/cd_algebraic_experiments_v49.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-342
 //!
@@ -2741,7 +2741,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Real part of square: Re(a^2) = 2*Re(a)^2 - ||a||^2 at ALL CD dims 2-256. This is the Re-component of the quadratic identity (C-321). Equivalently, Re(a^2) = Re(a)^2 - ||Im(a)||^2 (difference of squared real and imaginary norms). Universal.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v49.py`, `data/csv/cd_algebraic_experiments_v49.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-343
 //!
@@ -2749,7 +2749,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Determinant of L_a: |det(L_a)|= ||a||^dim iff dim<=8 (composition algebras). At dim<=8, L_a is a scaled orthogonal matrix, so all eigenvalue magnitudes equal ||a||and det = ||a||^dim. At dim>=16, eigenvalue magnitudes spread (C-329) and the determinant deviates: relative error ~0.23-0.31 in log space.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v49.py`, `data/csv/cd_algebraic_experiments_v49.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-344
 //!
@@ -2757,7 +2757,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Trilinear associativity: Re((ab)c) = Re(a(bc)) at ALL CD dims 2-256. The scalar triple product is associative even when the algebra is not. This is a reconfirmation of C-307 from a different experiment. Universal.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v49.py`, `data/csv/cd_algebraic_experiments_v49.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-345
 //!
@@ -2765,7 +2765,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Cyclic trilinear form: Re(a(bc)) = Re(b(ca)) = Re(c(ab)) at ALL CD dims 2-256. The scalar triple product is invariant under cyclic permutations. Follows from Re(xy) = Re(yx) (C-303) applied as Re(a(bc)) = Re((bc)a) = Re(b(ca)). Universal.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v49.py`, `data/csv/cd_algebraic_experiments_v49.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-346
 //!
@@ -2773,7 +2773,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Power norm: ||a^n||= ||a||^n for n=2,3,4,5 at ALL CD dims 4-128. Follows from the quadratic identity a^2 = 2*Re(a)*a - ||a||^2*e_0, which constrains a^n to the span {a, e_0}, giving ||a^n||^2 = alpha_n^2*||a||^2 + beta_n^2 = ||a||^{2n} by the Chebyshev recursion (C-319). Universal.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v50.py`, `data/csv/cd_algebraic_experiments_v50.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-347
 //!
@@ -2781,7 +2781,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Commutator Jacobi identity: [[a,b],c] + [[b,c],a] + [[c,a],b] = 0 iff dim<=4 (associative algebras). At dim>=8, Jacobi residual norm grows with dim (532 at dim=8, 15704 at dim=128). The commutator forms a Lie algebra only at dim<=4.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v50.py`, `data/csv/cd_algebraic_experiments_v50.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-348
 //!
@@ -2789,7 +2789,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Middle Moufang identity: (ab)(ca) = a((bc)a) at ALL CD dims<=8 (alternative algebras). Fails at dim>=16 with diffs ~450-9500. Completes the Moufang triple together with left Moufang (C-327) and right Moufang (C-351).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v50.py`, `data/csv/cd_algebraic_experiments_v50.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-349
 //!
@@ -2797,7 +2797,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Imaginary product norm Pythagorean: ||Im(ab)||^2 = ||ab||^2 - Re(ab)^2 at ALL CD dims 2-256. This is the Pythagorean decomposition (C-338) applied to the product ab. The identity is tautological (orthogonal decomposition into real and imaginary parts). Universal.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v50.py`, `data/csv/cd_algebraic_experiments_v50.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-350
 //!
@@ -2805,7 +2805,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Left-multiplication square identity: L_{a^2} = (L_a)^2 iff dim<=8 (alternative algebras). This is the left-alternative identity (aa)b = a(ab) rewritten in operator form. At dim>=16, spectral differences of 69-576 confirm non-alternativity.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v50.py`, `data/csv/cd_algebraic_experiments_v50.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-351
 //!
@@ -2813,7 +2813,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Right Moufang identity: ((ab)c)b = a(b(cb)) at ALL CD dims<=8 (alternative algebras). Fails at dim>=16 with diffs ~477-9945. Together with left (C-327) and middle (C-348), all three Moufang identities are now verified as equivalent characterizations of alternativity (dim<=8).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v50.py`, `data/csv/cd_algebraic_experiments_v50.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-352
 //!
@@ -2821,7 +2821,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Malcev identity: J(x,y,xz) = J(x,y,z)*x where J is the Jacobian of double commutators. Holds at dim<=8 (octonions form a Malcev algebra under commutator). At dim<=4 both sides are zero (Jacobi holds). At dim>=16 fails with relative errors 10-18. This is the alternative-algebra generalization of the Jacobi identity.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v51.py`, `data/csv/cd_algebraic_experiments_v51.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-353
 //!
@@ -2829,7 +2829,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Schafer identity: J(a,b,c) = 6*[a,b,c] in alternative algebras (dim<=8). The Jacobian of double commutators equals 6 times the associator. At dim<=4 both sides are zero. At dim>=16, the relation fails with absolute diffs ~500-3000. Reference: Schafer, "An Introduction to Nonassociative Algebras" (1966).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v51.py`, `data/csv/cd_algebraic_experiments_v51.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-354
 //!
@@ -2837,7 +2837,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Commutator norm scaling: ||[a,b]||^2 / (||a||^2 * ||b||^2) converges to 4 as dim -> infinity. Mean ratio: 1.50 (dim=4), 2.63 (dim=8), 3.27 (dim=16), 3.96 (dim=256). CV decreases monotonically (concentration of measure). Consistent with asymptotic anti-commutativity (C-323).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v51.py`, `data/csv/cd_algebraic_experiments_v51.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-355
 //!
@@ -2845,7 +2845,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Quadratic identity: x^2 - 2*Re(x)*x + ||x||^2*e_0 = 0 at ALL CD dims 2-256. Every element of a CD algebra satisfies a degree-2 polynomial. This is the minimal polynomial identity. Residuals are at floating-point epsilon (~1e-14). Universal.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v51.py`, `data/csv/cd_algebraic_experiments_v51.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-356
 //!
@@ -2853,7 +2853,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Artin's theorem (2-generated subalgebra associativity): any subalgebra generated by two elements is associative at dim<=8. Tested with products (ab)*a, a*(ba), (ab)*(ba) and their nested associativity. At dim>=16, associativity fails with diffs ~1764-38839. This is the definitive test of alternativity via Artin.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v51.py`, `data/csv/cd_algebraic_experiments_v51.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-357
 //!
@@ -2861,7 +2861,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Conjugation anti-automorphism: conj(ab) = conj(b)*conj(a) at ALL CD dims 2-256. This is EXACTLY zero (not just near-zero) at all dimensions. Built into the CD construction by induction. Universal and exact.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v51.py`, `data/csv/cd_algebraic_experiments_v51.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-358
 //!
@@ -2869,7 +2869,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Associator norm scaling: ||[a,b,c]||^2 / (||a||^2*||b||^2*||c||^2) is zero at dim=4 (associative), nonzero at dim>=8, and converges to ~2.0 as dim -> infinity with decreasing CV (concentration of measure). Mean ratio: 1.29 (dim=8), 1.79 (dim=16), 2.01 (dim=256).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v52.py`, `data/csv/cd_algebraic_experiments_v52.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-359
 //!
@@ -2877,7 +2877,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Adjoint identity: L_a^T = L_{conj(a)} at ALL CD dims 2-64. The transpose of the left-multiplication matrix equals left multiplication by the conjugate. This follows from the real inner product <x,y> = Re(conj(x)*y) = sum(x_i*y_i) and the definition of adjoint. Universal.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v52.py`, `data/csv/cd_algebraic_experiments_v52.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-360
 //!
@@ -2885,7 +2885,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Eigenvalue pattern of L_u for pure imaginary unit u: L_u is skew-symmetric at ALL dims (all eigenvalues purely imaginary). At dim<=8 (composition): only 1 distinct nonzero eigenvalue magnitude (all +/- i). At dim>=16: multiple distinct magnitudes (3 at dim=16, 8 at dim=32, 16 at dim=64).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v52.py`, `data/csv/cd_algebraic_experiments_v52.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-361
 //!
@@ -2893,7 +2893,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Trace form symmetry: Re(ab) = Re(ba) at ALL CD dims 2-256. The real part of a product is commutative. This follows from the bilinear structure of the CD real-part formula. Universal and exact. Reconfirms C-303 from a direct batch test.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v52.py`, `data/csv/cd_algebraic_experiments_v52.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-362
 //!
@@ -2901,7 +2901,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Two-sided inverse: a * (conj(a)/||a||^2) = (conj(a)/||a||^2) * a = e_0 at ALL CD dims 2-256. Every nonzero CD element has a two-sided inverse computed via conjugation. This follows from a*conj(a) = conj(a)*a = ||a||^2*e_0 (C-341). Universal.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v52.py`, `data/csv/cd_algebraic_experiments_v52.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-363
 //!
@@ -2909,7 +2909,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Polarization identity: ||a+b||^2 = ||a||^2 + ||b||^2 + 2*Re(conj(a)*b) at ALL CD dims 2-256. This is the standard inner product polarization with <a,b> = Re(conj(a)*b) = sum(a_i*b_i). Universal and exact.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v52.py`, `data/csv/cd_algebraic_experiments_v52.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-364
 //!
@@ -2917,7 +2917,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Inverse multiplicativity: (ab)^{-1} = b^{-1}*a^{-1} iff dim<=8 (alternative algebras). At dim>=16, the relation fails with diffs ~0.001-0.025. This is because non-alternativity breaks the cancellation needed for inverse reversal.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v53.py`, `data/csv/cd_algebraic_experiments_v53.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-365
 //!
@@ -2925,7 +2925,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Left Bol identity: a(b(ac)) = (a(ba))c iff dim<=8. In a Moufang loop, left and right Bol identities both hold. At dim>=16, fails with diffs ~300-10600. Together with the three Moufang identities (C-327, C-348, C-351), this verifies the complete Moufang loop structure at dim<=8.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v53.py`, `data/csv/cd_algebraic_experiments_v53.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-366
 //!
@@ -2933,7 +2933,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Left-right operator commutation: L_a*R_b = R_b*L_a iff dim<=4 (associative). At dim>=8, L_a and R_b generically do not commute. Normalized ratio||[L_a,R_b]||_F/(||a||*||b||*dim) is ~0.41 at dim=8, decreasing to ~0.18 at dim=64. Reconfirms C-331.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v53.py`, `data/csv/cd_algebraic_experiments_v53.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-367
 //!
@@ -2941,7 +2941,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Cayley-Dickson doubling construction: (a,b)*(c,d) = (ac - conj(d)*b, d*a + b*conj(c)) verified at all dims 4-128 (doubling from 2-64). Direct multiplication at dim 2d matches the doubling formula applied to dim d halves. Universal and exact.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v53.py`, `data/csv/cd_algebraic_experiments_v53.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-368
 //!
@@ -2949,7 +2949,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Center of CD algebra: at dim=2 (complex), center = full algebra (commutative). At dim>=4, center = R*e_0 (scalars only). Scalar elements commute with everything at all dims. Pure imaginary elements do NOT commute at dim>=4.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v53.py`, `data/csv/cd_algebraic_experiments_v53.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-369
 //!
@@ -2957,7 +2957,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Derivation algebra dimensions: Der(C) = 0 (dim=2), Der(H) = so(3) dim 3 (dim=4), Der(O) = g2 dim 14 (dim=8). Computed via null space of the Leibniz constraint system D(xy) = D(x)y + xD(y) on basis elements. All three match classical results exactly.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v53.py`, `data/csv/cd_algebraic_experiments_v53.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-370
 //!
@@ -2965,7 +2965,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Right Bol identity: ((xy)z)y = x(y(zy)) iff dim<=8 (alternative algebras). At dim>=16, fails with diffs ~320-10800. Together with left Bol (C-365), verifies the complete Bol loop structure of unit elements in composition algebras.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v54.py`, `data/csv/cd_algebraic_experiments_v54.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-371
 //!
@@ -2973,7 +2973,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Automorphism group dimension: Aut(C)=0 (dim=2), Aut(H)=3=SO(3) (dim=4), Aut(O)=14=G2 (dim=8). Computed via null space of the Leibniz constraint on multiplication table, equivalent to derivation algebra dimension (C-369). Verifies Aut = exp(Der) at the Lie algebra level.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v54.py`, `data/csv/cd_algebraic_experiments_v54.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-372
 //!
@@ -2981,7 +2981,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: N-fold associator growth: at dim<=4 (associative algebras), all n-fold nested associators vanish exactly. At dim>=8, n-fold associators are generically nonzero with max ratio ~1.8-2.8 relative to product norms. The ratio does NOT grow with n (3,4,5-fold give similar magnitudes).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v54.py`, `data/csv/cd_algebraic_experiments_v54.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-373
 //!
@@ -2989,7 +2989,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Nucleus structure: Nuc(A) = full algebra at dim<=4 (associative). At dim>=8, Nuc(A) = R*e_0 (scalars only). Scalar elements always associate with everything. Pure imaginary elements generically fail nuclearity at dim>=8. Parallels center structure (C-368) but the boundary is at dim=4 (associativity) not dim=2 (commutativity).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v54.py`, `data/csv/cd_algebraic_experiments_v54.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-374
 //!
@@ -2997,7 +2997,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Normed division algebra (Hurwitz theorem):||xy||=||x||*||y||exactly iff dim in {1,2,4,8}. At dim>=16, norm multiplicativity fails: min(||xy||/(||x||*||y||)) drops to ~0.66-0.88. This is the classical Hurwitz theorem verified computationally. Only R, C, H, O are normed division algebras.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v54.py`, `data/csv/cd_algebraic_experiments_v54.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-375
 //!
@@ -3005,7 +3005,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Anti-involution properties of CD conjugation: (1) conj(conj(a)) = a (involutive), (2)||conj(a)||=||a||(norm-preserving), (3) a + conj(a) = 2*Re(a)*e_0 (real extraction), (4) a*conj(a) =||a||^2*e_0 (norm product). All four hold universally at all dims 2-256. All are exact to machine precision.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v54.py`, `data/csv/cd_algebraic_experiments_v54.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-376
 //!
@@ -3013,7 +3013,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Flexibility identity: a(ba) = (ab)a holds universally at all CD dimensions 4-128. This follows from the quadratic identity by linearization and is strictly weaker than alternativity. Exact to machine precision at all dims tested.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v55.py`, `data/csv/cd_algebraic_experiments_v55.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-377
 //!
@@ -3021,7 +3021,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Power-associativity: x^m * x^n = x^{m+n} for m,n in {2,3} holds universally at all CD dimensions 4-128 with unit-norm elements. All CD algebras are power-associative: any single element generates an associative subalgebra. Exact to 1e-15 at all dims.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v55.py`, `data/csv/cd_algebraic_experiments_v55.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-378
 //!
@@ -3029,7 +3029,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Inner product composition identity: <xy,xz> =||x||^2 <y,z> holds iff dim<=8 (composition algebras). This is the polarized form of norm multiplicativity (C-374). At dim>=16, relative deviations reach ~2.0.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v55.py`, `data/csv/cd_algebraic_experiments_v55.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-379
 //!
@@ -3037,7 +3037,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Frobenius norm of L_a:||L_a||_F^2 = dim *||a||^2 holds universally at all CD dimensions 2-64. This follows from bilinearity and orthonormality of the CD basis: the multiplication table permutes basis products with signs. Exact (std=0) at all dims.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v55.py`, `data/csv/cd_algebraic_experiments_v55.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-380
 //!
@@ -3045,7 +3045,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Left regular representation defect:||L_{ab} - L_a*L_b||_F / (||a||*||b||*dim) is zero at dim<=4 (associative) and nonzero at dim>=8. Mean defect ~0.40 at dim=8, decreasing to ~0.17 at dim=64. The left regular representation is a homomorphism iff the algebra is associative.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v55.py`, `data/csv/cd_algebraic_experiments_v55.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-381
 //!
@@ -3053,7 +3053,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Anticommutator norm scaling:||{a,b}||^2/(||a||^2*||b||^2) = 4.0 exactly at dim=2 (commutative, composition). Decreases monotonically: ~2.47 at dim=4, ~1.38 at dim=8, ~0.73 at dim=16, approaching 0 as dim increases. The anticommutator vanishes in the high-dim limit as commutativity breaks down maximally.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v55.py`, `data/csv/cd_algebraic_experiments_v55.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-382
 //!
@@ -3061,7 +3061,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Right alternative identity: (ab)b = a(bb) holds iff dim<=8 (alternative algebras). At dim>=16, absolute deviations ~55-600 and relative deviations ~0.83. Reconfirms the alternative algebra boundary with relative error quantification.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v56.py`, `data/csv/cd_algebraic_experiments_v56.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-383
 //!
@@ -3069,7 +3069,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Left alternative identity: a(ab) = (aa)b holds iff dim<=8 (alternative algebras). At dim>=16, absolute deviations ~84-624 and relative deviations ~0.78-0.97. Together with right alternative (C-382), flexibility (C-376), and Moufang identities (C-327, C-348, C-351), this completes the full alternative algebra characterization.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v56.py`, `data/csv/cd_algebraic_experiments_v56.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-384
 //!
@@ -3077,7 +3077,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Jordan identity: a^2(ba) = (a^2 b)a holds universally at all CD dimensions 4-128. This follows from flexibility (C-376): in any flexible algebra, a^2(ba) = (a^2 b)a. Exact to machine precision (diffs < 3e-12) at all dims.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v56.py`, `data/csv/cd_algebraic_experiments_v56.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-385
 //!
@@ -3085,7 +3085,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Commutator Jacobi identity: J(a,b,c) = [a,[b,c]] + [b,[c,a]] + [c,[a,b]] = 0 iff dim<=4 (associative). At dim>=8, the Jacobi identity fails with||J||/(||a||*||b||*||c||) mean ~6.6-7.5. This verifies that the commutator algebra is NOT a Lie algebra beyond dim=4 (but IS a Malcev algebra at dim=8, C-352).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v56.py`, `data/csv/cd_algebraic_experiments_v56.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-386
 //!
@@ -3093,7 +3093,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Trace bilinear form: Re(x * conj(y)) = dot(x, y) universally at all CD dimensions 2-128. The trace form T(x,y) = Re(x*conj(y)) coincides with the Euclidean inner product. This means the CD norm||x||^2 = T(x,x) = dot(x,x) is non-degenerate. Exact to machine precision.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v56.py`, `data/csv/cd_algebraic_experiments_v56.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-387
 //!
@@ -3101,7 +3101,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Norm product ratio:||ab||^2/(||a||^2*||b||^2) = 1 exactly iff dim<=8. At dim>=16, the ratio has mean ~1.0 but nonzero variance (std ~0.08-0.18), with min values ~0.50-0.79. The MEAN converges to 1 at all dims (law of large numbers), but individual products deviate. Variance decreases with dimension.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v56.py`, `data/csv/cd_algebraic_experiments_v56.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-388
 //!
@@ -3109,7 +3109,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Third Moufang relative error: (ab)(ca) = a((bc)a) holds exactly iff dim<=8. At dim>=16, mean relative error grows from ~0.78 (dim=16) to ~1.59 (dim=128). The Moufang failure is NOT bounded -- it grows with dimension and can exceed 100% relative error.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v57.py`, `data/csv/cd_algebraic_experiments_v57.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-389
 //!
@@ -3117,7 +3117,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Right regular representation defect: R_{ab} = R_b*R_a iff dim<=4 (associative). At dim>=8, normalized defect ~0.40 (dim=8) decreasing to ~0.18 (dim=64). Mirrors the left rep defect (C-380) exactly, confirming L and R representations break symmetrically.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v57.py`, `data/csv/cd_algebraic_experiments_v57.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-390
 //!
@@ -3125,7 +3125,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Commutativity measure:||ab-ba||/||ab||= 0 at dim=2, increases monotonically, converges to 2.0 as dim->inf. At dim=256, mean = 1.99. The limit 2.0 means ab ~ -ba (maximally anti-commutative) in the high-dimensional limit.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v57.py`, `data/csv/cd_algebraic_experiments_v57.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-391
 //!
@@ -3133,7 +3133,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Associator norm for unit elements:||[a,b,c]||= 0 at dim<=4, mean ~1.07 at dim=8, converging to ~1.40 at high dim. The associator magnitude saturates (does not grow without bound), consistent with the n-fold associator saturation (C-372).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v57.py`, `data/csv/cd_algebraic_experiments_v57.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-392
 //!
@@ -3141,7 +3141,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Multiplication table structure: for all CD algebras dim 2-64, every basis product e_i*e_j is exactly +/- e_k for some k. The multiplication table has exactly one nonzero entry per product, and that entry is +1 or -1. This is a fundamental property of the Cayley-Dickson construction.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v57.py`, `data/csv/cd_algebraic_experiments_v57.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-393
 //!
@@ -3149,7 +3149,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Eigenvalue distribution of L_u (pure imaginary unit): at dim<=8, all nonzero eigenvalue magnitudes = 1.0 exactly (L_u is a rotation). At dim>=16, eigenvalue magnitudes spread: n_distinct grows (3 at dim=16, 8 at dim=32, 16 at dim=64), max magnitude grows (1.35 -> 1.72), min magnitude shrinks (0.41 -> 0.09).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v57.py`, `data/csv/cd_algebraic_experiments_v57.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-394
 //!
@@ -3157,7 +3157,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Determinant of L_a: det(L_a) =||a||^dim exactly iff dim<=8 (composition algebras). At dim>=16, the ratio|det(L_a)|/||a||^dim deviates dramatically: mean ~0.18 at dim=16, ~0.001 at dim=32. This is because L_a is a scaled isometry only at composition dimensions.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v58.py`, `data/csv/cd_algebraic_experiments_v58.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-395
 //!
@@ -3165,7 +3165,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Adjoint identity: L_a^T = L_{conj(a)} holds universally at all CD dimensions 2-64. Exactly zero difference at all dims. This verifies that the CD inner product is compatible with conjugation: <a*x, y> = <x, conj(a)*y>.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v58.py`, `data/csv/cd_algebraic_experiments_v58.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-396
 //!
@@ -3173,7 +3173,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Gram matrix spectrum: L_a*L_a^T =||a||^2*I iff dim<=8. At dim>=16, normalized eigenvalues spread: n_distinct = 3 (dim=16), 8 (dim=32), 16 (dim=64). Max normalized eigenvalue grows from 1.76 to 3.06, min shrinks from 0.24 to 0.03. The spectral condition number grows rapidly.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v58.py`, `data/csv/cd_algebraic_experiments_v58.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-397
 //!
@@ -3181,7 +3181,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Zero divisor existence: no zero divisors among diagonal 2-blades at dim<=8. At dim>=16, zero divisors exist (found by systematic search). Best product norm at dim<=8 is exactly 2.0 (minimum nonzero). This reconfirms C-002 and C-003 with explicit construction.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v58.py`, `data/csv/cd_algebraic_experiments_v58.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-398
 //!
@@ -3189,7 +3189,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Product of conjugates: conj(b)*conj(a) = conj(a*b) holds universally at all CD dimensions 2-256. Exactly zero difference at all dims. This is the conjugation anti-automorphism reconfirmed with higher precision. Reconfirms C-356.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v58.py`, `data/csv/cd_algebraic_experiments_v58.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-399
 //!
@@ -3197,7 +3197,7 @@
 //! - Last verified: 2026-02-01
 //! - Statement: Idempotent structure: the ONLY idempotents in any CD algebra are 0 and e_0 (the identity). This follows from the quadratic identity x^2 = 2Re(x)x -||x||^2*e_0: if e^2=e with e=alpha*e_0+v, then (2alpha-1)v=0 and alpha(2alpha-1)=alpha^2+|
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v58.py`, `data/csv/cd_algebraic_experiments_v58.json`; legacy: v||^2. If v!=0 then alpha=1/2 giving||v||^2=-1/4, impossible. If v=0 then alpha=0 or 1. Universal.
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-400
 //!
@@ -3205,7 +3205,7 @@
 //! - Last verified: 2026-02-02
 //! - Statement: Metamaterials can emulate Alcubierre warp drive metrics for electromagnetic waves (Analog Gravity).
 //! - Where stated: `docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/papers/corpus/arxiv_1009.5663_smolyaninov_2010_metamaterial_based_model_alcubierre_warp_drive.pdf`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-401
 //!
@@ -3213,7 +3213,7 @@
 //! - Last verified: 2026-02-02
 //! - Statement: A Casimir cavity (1um sphere in 4um cylinder) generates the negative energy density required for a nanoscale warp bubble.
 //! - Where stated: `docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/papers/corpus/White_2021_Casimir_Warp.pdf`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-402
 //!
@@ -3221,7 +3221,7 @@
 //! - Last verified: 2026-02-02
 //! - Statement: Metamaterial Gravitational Coupling can reduce warp drive energy requirements to achievable levels.
 //! - Where stated: `docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/papers/corpus/Rodal_2025_Metamaterial_Gravity.pdf`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-403
 //!
@@ -3229,7 +3229,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: Geometry from spectral data must be stated at spectral-triple strength (A,H,D_geom) or equivalent; eigenvalues alone are not sufficient in general due to isospectral non-uniqueness.
 //! - Where stated: `docs/convos/CONVOS_CLAIMS_INBOX.md`, `docs/SPECTRAL_TRIPLE_SCOPE.md`, `docs/theory/EMERGENCE_LAYERS_AXIOMS.md`, `docs/external_sources/C403_SPECTRAL_TRIPLE_RECONSTRUCTION_SOURCES.md`, `src/spectral/demo_pairs.py`, `tests/test_isospectral_nonisomorphic_pair.py`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-404
 //!
@@ -3237,7 +3237,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: Bulk locality can be organized by boundary modular data K_A=-log rho_A and entanglement wedge reconstruction; robustness is naturally described by operator-algebra QEC (code subspace).
 //! - Where stated: `docs/convos/CONVOS_CLAIMS_INBOX.md`, `docs/theory/EMERGENCE_LAYERS_AXIOMS.md`, `docs/external_sources/C404_HOLOGRAPHIC_MODULAR_LOCALITY_SOURCES.md`, `docs/external_sources/EMERGENCE_LAYERS_SOURCES.md`, `docs/external_sources/EMERGENCE_LAYERS_SUMMARIES.md`, `src/holography/maxflow.py`, `tests/test_holography_bit_threads.py`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-405
 //!
@@ -3245,7 +3245,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: Observers can be modeled as (approximate) correctable record algebras selected by open-system dynamics L_open (GKSL/Lindblad); redundancy in the environment yields classical records (pointer observables) resembling repetition-code robustness.
 //! - Where stated: `docs/convos/CONVOS_CLAIMS_INBOX.md`, `docs/theory/EMERGENCE_LAYERS_AXIOMS.md`, `docs/external_sources/C405_OPEN_SYSTEMS_RECORD_ALGEBRA_SOURCES.md`, `docs/external_sources/EMERGENCE_LAYERS_SOURCES.md`, `docs/external_sources/EMERGENCE_LAYERS_SUMMARIES.md`, `src/quantum/open_systems/lindblad.py`, `tests/test_open_systems_lindblad.py`, `src/quantum/open_systems/redundancy.py`, `tests/test_open_systems_redundancy.py`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-406
 //!
@@ -3253,7 +3253,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: TSCP/box-kite sky mapping must be invariant under the relevant algebraic symmetries (or else explicitly enumerate tested embeddings) to avoid "picked the embedding that worked".
 //! - Where stated: `docs/convos/CONVOS_CLAIMS_INBOX.md`, `docs/external_sources/TSCP_METHOD_SOURCES.md`, `docs/preregistered/TSCP_SKY_ALIGNMENT.md`, `crates/algebra_analysis/src/boxkites.rs`, `tests/test_tscp_alignment_offline.py`, `tests/test_tscp_embedding_sweep.py`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-407
 //!
@@ -3261,7 +3261,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: Reported sky-alignment p-values must include explicit trial-factor accounting (look-elsewhere) across tuned degrees of freedom (e.g., box-kite choice, smoothing scale, catalog cuts).
 //! - Where stated: `docs/convos/CONVOS_CLAIMS_INBOX.md`, `docs/external_sources/TSCP_METHOD_SOURCES.md`, `docs/preregistered/TSCP_SKY_ALIGNMENT.md`, `reports/tscp_trial_factor_ledger.md`, `tests/test_tscp_alignment_offline.py`, `tests/test_tscp_embedding_sweep.py`, `src/verification/verify_tscp_prereg_trial_factors.py`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-408
 //!
@@ -3269,7 +3269,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: Every thesis-level hypothesis must have symmetric falsification boundaries: a disconfirmation threshold (N_min, alpha/effect-size) under which the hypothesis is rejected, not merely "needs more data".
 //! - Where stated: `docs/convos/CONVOS_CLAIMS_INBOX.md`, `docs/external_sources/TSCP_METHOD_SOURCES.md`, `docs/preregistered/`, `src/verification/verify_preregistered_falsification_boundaries.py`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-409
 //!
@@ -3277,7 +3277,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: "Interleaved I-Beam" spaceplate design targets high refractive index via capacitive loading (metal/dielectric stack).
 //! - Where stated: `crates/materials_core/src/effective_medium.rs`, `crates/optics_core/src/grin.rs`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-410
 //!
@@ -3285,7 +3285,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: One-loop photon-graviton mixing in constant EM fields includes non-zero tadpole contributions (Ahmadiniaz et al. 2026), relevant to semiclassical EM-gravity coupling limits.
 //! - Where stated: `docs/BIBLIOGRAPHY.md` (Ahmadiniaz 2026), `data/papers/corpus/arxiv_2601.23279v1_ahmadiniaz_2026_photon_graviton_mixing.pdf`, `crates/gr_core/src/photon_graviton/` (12 module files)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-411
 //!
@@ -3293,7 +3293,7 @@
 //! - Last verified: 2026-02-04
 //! - Statement: Spontaneous four-wave mixing (SFWM) dominates in thin LN layers due to relaxed phase matching, enabling flat entangled photon sources.
 //! - Where stated: `docs/BIBLIOGRAPHY.md` (Son & Chekhova 2026), `data/papers/corpus/arxiv_2601.23137v1_son_chekhova_2026_sfwm_thin_layer.pdf`, `src/scripts/analysis/c411_sfwm_thin_layer_check.py`, `tests/test_c411_sfwm_thin_layer.py`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-412
 //!
@@ -3301,7 +3301,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: "Holographic Entropy Trap" 5-phase mechanism (Injection -> Lensing -> Sedenion Resonance -> Parton Decay -> Extraction) visualized in Director's Cut animation.
 //! - Where stated: `data/artifacts/images/warp_pulse_animation_directors_cut.mp4`, `src/scripts/visualization/animate_warp_v7_directors_cut.py`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-413
 //!
@@ -3309,7 +3309,7 @@
 //! - Last verified: 2026-02-02
 //! - Statement: Determinant of left-multiplication operator `det(L_a)` equals ||a||^dim exactly iff dim <= 8; collapses to near-zero at dim >= 16 (e.g., 0.18 at dim 16).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v58.py` (Exp LF), `data/csv/cd_algebraic_experiments_v58.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-414
 //!
@@ -3317,7 +3317,7 @@
 //! - Last verified: 2026-02-02
 //! - Statement: Adjoint identity `L_a^T = L_{conj(a)}` holds universally at all Cayley-Dickson dimensions (tested up to 64).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v58.py` (Exp LG), `data/csv/cd_algebraic_experiments_v58.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-415
 //!
@@ -3325,7 +3325,7 @@
 //! - Last verified: 2026-02-02
 //! - Statement: Gram spectrum `L_a L_a^T` is a scalar multiple of identity ||a||^2 I iff dim <= 8; eigenvalues spread significantly at dim >= 16.
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v58.py` (Exp LH), `data/csv/cd_algebraic_experiments_v58.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-416
 //!
@@ -3333,7 +3333,7 @@
 //! - Last verified: 2026-02-02
 //! - Statement: The only idempotent elements in any Cayley-Dickson algebra are 0 and 1 (the identity).
 //! - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v58.py` (Exp LK), `data/csv/cd_algebraic_experiments_v58.json`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-417
 //!
@@ -3341,7 +3341,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: Hypothesis: Ray capture efficiency in fractal metamaterials correlates with Sedenion Zero Divisor density; "Holographic Entropy Trap" maps information loss to algebraic annihilation.
 //! - Where stated: `docs/external_sources/OPEN_CLAIMS_SOURCES.md`, `src/scripts/analysis/sedenion_warp_synthesis.py`, `data/artifacts/images/sedenion_capture_scaling.png`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-418
 //!
@@ -3349,7 +3349,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Material Database tracks temperature-dependent phase transitions (e.g., Ice Ih/VII/X) and wide-spectrum optical dispersion (Sellmeier/Drude) for 25 compounds including Rakic 11-metal canonical set, titanates, and TCOs.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (get_material, list_materials), `crates/gororoba_cli_physics/src/bin/demo_optical_titanates.rs`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-419
 //!
@@ -3357,7 +3357,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: Digital Matter BOM generation pipeline produces fabrication-ready CSVs tracking layer stoichiometry, mass density (ng/cm2), and specific vendor MPNs.
 //! - Where stated: `src/scripts/engineering/generate_digital_matter_bom.py`, `data/artifacts/manufacturing/sedenion_spaceplate_bom.csv`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-420
 //!
@@ -3365,7 +3365,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: Automated CAD generation outputs OpenSCAD geometry and SVG lithography masks for metamaterial nanostructures, linking refractive index maps to pillar diameters.
 //! - Where stated: `src/scripts/engineering/generate_bom_cad.py`, `crates/materials_core/src/metamaterial.rs`, `data/artifacts/engineering/spaceplate_geometry.scad`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-421
 //!
@@ -3373,7 +3373,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: Metamaterial designs incorporate Rogers RT5880 carrier substrates and Gold/Silicon I-beam stacks to achieve impedance-matched high-index performance.
 //! - Where stated: `crates/materials_core/src/effective_medium.rs`, `src/scripts/engineering/generate_bom_cad.py`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-422
 //!
@@ -3381,7 +3381,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: Negative-dimension vacuum dynamics ($D \sim k^{-3}$) coupled with attractive self-interaction spontaneously generates stable solitons (gravastar candidates) from random fluctuations.
 //! - Where stated: `src/scripts/simulation/genesis_simulation_v2.py`, `data/artifacts/images/genesis_simulation_grand.png`, `docs/GRAND_SYNTHESIS.md`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-423
 //!
@@ -3389,7 +3389,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: Grand Unified Simulator v4 integrates CUDA-based relativistic ray tracing with robust FDFD electromagnetic field solving to visualize multi-scale warp-metamaterial interactions.
 //! - Where stated: `src/scripts/engineering/grand_unified_simulator_v4.py`, `data/artifacts/images/OCULUS_GRAND_DASHBOARD_v4.png`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-424
 //!
@@ -3397,7 +3397,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: "Holographic Warp Gate" simulation harmonizes Alcubierre metric gradients with Kozyrev p-adic noise and Spaceplate refractive index compression ($R \approx 5$) to model structured vacuum control.
 //! - Where stated: `src/scripts/engineering/holographic_warp_gate.py`, `data/artifacts/images/holographic_warp_gpu.png`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-425
 //!
@@ -3405,7 +3405,7 @@
 //! - Last verified: 2026-02-04
 //! - Statement: Octonion-valued (8D) scalar field Hamiltonian with Stormer-Verlet symplectic integrator, 7 Noether charges from octonionic U(1) rotations, and free-field dispersion relation omega^2 = k^2 + m^2. Restricts to octonionic subalgebra to bypass C-030 non-associativity obstruction.
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/src/physics/octonion_field.rs (LEGACY::PATH crates/algebra_core/src/physics/octonion_field.rs)`, `tests/test_octonion_field.py`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-426
 //!
@@ -3413,7 +3413,7 @@
 //! - Last verified: 2026-02-02
 //! - Statement: Pathion (32D) Zero-Divisor interaction matrix diagonalization provides a testbed for algebraic mass spectrum hypotheses (logarithmic scaling).
 //! - Where stated: `docs/external_sources/OPEN_CLAIMS_SOURCES.md`, `CURRENT::PATH crates/gororoba_algebra/src/construction/hypercomplex.rs (LEGACY::PATH crates/algebra_core/src/construction/hypercomplex.rs)`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-427
 //!
@@ -3421,7 +3421,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: Algebraic Metamaterial synthesis maps Cayley-Dickson structure constants to permittivity tensors and Clifford subspace dimensions to quasi-periodic layer stacks.
 //! - Where stated: `docs/external_sources/OPEN_CLAIMS_SOURCES.md`, `crates/materials_core/src/effective_medium.rs`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-428
 //!
@@ -3429,7 +3429,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: Integrated Warp Geodesic Simulation traces null rays through a Kerr metric background using 'NegDimCosmology' expansion parameters; escape/capture conditions are successfully visualized in a plot.
 //! - Where stated: `src/scripts/simulation/integrated_warp_geodesic.py`, `data/artifacts/images/kerr_trace_demo.png`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-429
 //!
@@ -3437,7 +3437,7 @@
 //! - Last verified: 2026-02-04
 //! - Statement: Kerr black hole shadow asymmetry due to frame dragging (a=0.99) validated: analytic Bardeen shadow boundary shows D-shape with center offset > 0.1 from Schwarzschild symmetry, consistent with spin-induced frame dragging.
 //! - Where stated: `crates/gr_core/src/kerr.rs`, `tests/test_kerr_shadow.py::test_high_spin_shadow_asymmetric`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-430
 //!
@@ -3445,7 +3445,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: Negative Dimension Cosmology (NegDim) expansion history H(z) and luminosity distance D_L(z) deviate from standard LambdaCDM as predicted by the effective equation of state w_eff.
 //! - Where stated: `src/scripts/analysis/cosmology_comparison.py`, `data/artifacts/images/cosmology_comparison.png`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-431
 //!
@@ -3453,7 +3453,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: The Sedenion Zero Divisor manifold, when projected into 3D perturbation space (e2, e5, e14), forms a coherent, non-trivial isosurface, visualizing the 'shadow' of the 16D algebraic singularity.
 //! - Where stated: `src/scripts/visualization/vis_8d_slice.py`, `data/artifacts/images/sedenion_slice_3d.png`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-432
 //!
@@ -3461,7 +3461,7 @@
 //! - Last verified: 2026-02-04
 //! - Statement: Kerr geodesic trajectories validated against analytic Bardeen (1973) shadow boundary: Schwarzschild (a=0) shadow radius sqrt(27)M within 0.1%, photon orbit radii exact, impact parameters xi^2+eta=27, high-spin D-shape asymmetry verified.
 //! - Where stated: `crates/gr_core/src/kerr.rs`, `tests/test_kerr_shadow.py`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-433
 //!
@@ -3469,7 +3469,7 @@
 //! - Last verified: 2026-02-03
 //! - Statement: Hamiltonian Ray Equation solver (dT/ds = (grad_n - (T*grad_n)T)/n) implemented using 4th-order Runge-Kutta (RK4) for stable bending in high-gradient analogue-gravity media.
 //! - Where stated: `crates/optics_core/src/grin.rs`, `tests/test_grin_solver.py`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-434
 //!
@@ -3477,7 +3477,7 @@
 //! - Last verified: 2026-02-03
 //! - Statement: Material stack Silicon-Gold-Ice VIII reconciled with literature-supported optical constants (Si n=3.48, Au complex eps, Ice VIII n=1.73 @ 30 GPa) for 1550nm Analogue Optics experiments.
 //! - Where stated: `docs/theory/WARP_PHYSICS_RECONCILIATION.md`, `src/scripts/visualization/animate_warp_v8_rigorous.py`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-435
 //!
@@ -3485,7 +3485,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: "Power Pipeline" energy bookkeeping model (Photon intensity -> boundary absorption -> Plasmon field -> Parton jitter field) replaces stochastic state changes in Warp Ring simulations.
 //! - Where stated: `docs/theory/WARP_PHYSICS_RECONCILIATION.md`, `src/scripts/visualization/animate_warp_v8_rigorous.py`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-436
 //!
@@ -3493,7 +3493,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: FRB comoving positions exhibit local ultrametric structure (C-071 follow-up, Direction 1).
 //! - Where stated: `crates/gororoba_cli_physics/src/bin/dm_ultrametric.rs`, `crates/stats_core/src/ultrametric/local.rs`, `crates/cosmology_core/src/distances.rs`, `data/csv/c071b_dm_comoving_ultrametric.csv`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-437
 //!
@@ -3501,7 +3501,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: Multi-attribute parameter spaces exhibit ultrametric structure under Euclidean distances in astrophysical catalogs with hierarchical spatial or kinematic structure (C-071 follow-up, Direction 2).
 //! - Where stated: `crates/gororoba_cli_data/src/bin/multi_dataset_ultrametric.rs`, `crates/stats_core/src/ultrametric/baire.rs`, `crates/stats_core/src/ultrametric/gpu.rs`, `data/csv/c071g_exploration_gpu_10M_1000perm.csv`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-438
 //!
@@ -3509,7 +3509,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: Repeating FRB temporal cascades exhibit ultrametric hierarchy (C-071 follow-up, Direction 3).
 //! - Where stated: `crates/gororoba_cli_data/src/bin/frb_cascades.rs`, `crates/stats_core/src/ultrametric/temporal.rs`, `data/csv/c071d_frb_cascades_ultrametric.csv`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-439
 //!
@@ -3517,7 +3517,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: GW merger mass-ratio clustering exhibits ultrametric structure (C-071 follow-up, Direction 4).
 //! - Where stated: `crates/gororoba_cli_data/src/bin/gw_merger_tree.rs`, `crates/gororoba_cli_data/src/bin/multi_dataset_ultrametric.rs`, `data/csv/c071e_gw_merger_ultrametric.csv`, `data/csv/c071g_exploration_gpu_10M_1000perm.csv`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-440
 //!
@@ -3525,7 +3525,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: Cross-dataset cosmic objects (FRBs+GW events) exhibit dendrogram ultrametricity in comoving 3D space (C-071 follow-up, Direction 5).
 //! - Where stated: `crates/gororoba_cli_physics/src/bin/cosmic_dendrogram.rs`, `data/csv/c071f_cosmic_dendrogram.csv`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-441
 //!
@@ -3533,7 +3533,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: Bounce cosmology (quantum-corrected Friedmann equation) is disfavored by joint Pantheon+ SN Ia + DESI DR1 BAO fit; Lambda-CDM is the simpler adequate model.
 //! - Where stated: `crates/cosmology_core/src/observational.rs`, `crates/gororoba_cli_physics/src/bin/real_cosmo_fit.rs`, `docs/INSIGHTS.md`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-442
 //!
@@ -3541,7 +3541,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: Multi-attribute Euclidean ultrametricity is specific to radio transient catalogs (FRB, pulsar) parameterized by DM+sky position; not a general property of astrophysical catalogs.
 //! - Where stated: `crates/gororoba_cli_data/src/bin/multi_dataset_ultrametric.rs`, `data/csv/c071g_multi_dataset_ultrametric.csv`, `data/csv/c071g_exploration_gpu_10M_1000perm.csv`, `docs/INSIGHTS.md`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-443
 //!
@@ -3549,7 +3549,7 @@
 //! - Last verified: 2026-02-06
 //! - Statement: Pathion (dim=32) zero-divisor complement graph decomposes into 15 connected components with two distinct motif types: 8 heptacross (complete 7-partite K_{2,2,2,2,2,2,2}) and 7 mixed-degree components [4^12, 12^2]. This is structurally distinct from the sedenion (dim=16) pattern of 7 octahedral K_{2,2,2} components.
 //! - Where stated: `crates/algebra_analysis/src/boxkites.rs` (motif_components_for_cross_assessors, test_motif_census_32d_summary, test_complement_graph_regression_dim16), `docs/INSIGHTS.md` (I-006)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-444
 //!
@@ -3557,7 +3557,7 @@
 //! - Last verified: 2026-02-08
 //! - Statement: CD motif components at dim=2^n correspond bijectively to points of PG(n-2,2) finite projective space. At dim=16 (7 components <-> 7 PG(2,2) points), dim=32 (15 <-> PG(3,2)), dim=64 (31 <-> PG(4,2)), dim=128 (63 <-> PG(5,2)). The XOR-key of each component encodes its GF(2) label.
 //! - Where stated: `crates/algebra_analysis/src/projective_geometry.rs`, `crates/algebra_analysis/src/boxkites.rs`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-445
 //!
@@ -3565,7 +3565,7 @@
 //! - Last verified: 2026-02-07
 //! - Statement: Motif class assignment within a given CD dimension is determined by a GF(2)-linear predicate: a weight vector w in GF(2)^(n-1) such that the inner product <w, label> mod 2 separates classes. At dim=32 the 8/7 split corresponds to a hyperplane of PG(3,2).
 //! - Where stated: `crates/algebra_analysis/src/projective_geometry.rs`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-446
 //!
@@ -3573,7 +3573,7 @@
 //! - Last verified: 2026-02-07
 //! - Statement: Sign-twist signature (4-bit encoding of sign products for cross-pair interactions) fully determines the zero-product solution count for diagonal zero-divisor pairs.
 //! - Where stated: `crates/algebra_analysis/src/projective_geometry.rs`, `crates/algebra_analysis/src/boxkites.rs`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-447
 //!
@@ -3581,7 +3581,7 @@
 //! - Last verified: 2026-02-08
 //! - Statement: Adaptive permutation testing (Besag-Clifford 1991) preserves type-I error rate at nominal alpha=0.05 while achieving >90% early stopping and >50% permutation reduction for clearly non-significant tests (p_true in [0.4,0.6]).
 //! - Where stated: `crates/stats_core/src/ultrametric/adaptive.rs` (test_type_i_error_rate_preserved, test_efficiency_clearly_nonsignificant)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-448
 //!
@@ -3589,7 +3589,7 @@
 //! - Last verified: 2026-02-07
 //! - Statement: The Pathion Cubic Anomaly: the zero-divisor motif partition at dim=32 (8 heptacross + 7 mixed-degree) requires a degree-3 (cubic) GF(2) polynomial for separation in PG(3,2). Degree 1 (linear) and degree 2 (quadratic) are insufficient. This establishes a non-linear geometric obstruction in the Cayley-Dickson zero-divisor hierarchy starting at the first post-sedenion doubling.
 //! - Where stated: `crates/algebra_analysis/src/projective_geometry.rs` (test_determine_exact_degree_dim32)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-449
 //!
@@ -3597,7 +3597,7 @@
 //! - Last verified: 2026-02-07
 //! - Statement: Ultrametric Core Mining Hypothesis (UCMH): for multi-attribute astronomical catalogs, the minimal attribute subsets exhibiting statistically significant ultrametric structure (BH-FDR < 0.05) cluster into distinct physical mechanism families that are catalog-independent. Seven of nine catalogs yield significant cores; cores group by ISM column density (CHIME, ATNF), galactic kinematics (Gaia, Hipparcos), compact binary formation (GWOSC), standard candle standardization (Pantheon+), and photometric redshift (SDSS).
 //! - Where stated: `src/scripts/analysis/extract_ultrametric_cores.py`, `data/csv/c071g_exploration_gpu_10M_1000perm.csv`, `docs/INSIGHTS.md` (I-013)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-450
 //!
@@ -3605,7 +3605,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: The external 64D chingon adjacency CSV (64x64 binary matrix, 64 nonzero entries) uses a basis-element-level node labeling that differs from our cross-assessor-pair representation. The two representations are not directly comparable without a mapping between basis-element adjacency and cross-assessor zero-product adjacency.
 //! - Where stated: `crates/algebra_experimental/src/cd_external.rs` (test_csv_64d_adjacency_vs_rust)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-451
 //!
@@ -3613,7 +3613,7 @@
 //! - Last verified: 2026-02-08
 //! - Statement: 128D Cayley-Dickson cross-validation: 4032 cross-pairs confirmed, XOR partner law universal (3968/3968 valid, mask=8), 65100 ZD edges via 64 XOR-bucket-optimized adjacency, parity-biclique does NOT hold (32640 cross-edges). Bucketed adjacency cross-validated against full O(n^2) adjacency at dim=32.
 //! - Where stated: `crates/algebra_experimental/src/cd_external.rs` (verify_c451_128d, build_zd_adjacency_bucketed, test_c451_cross_validation_128d, test_c451_bucketed_adjacency_consistent_with_full_at_32d)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-452
 //!
@@ -3621,7 +3621,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: Cayley-Dickson basis elements at dim=256 embed into an 8-dimensional trinary integer lattice with coordinates in {-1, 0, 1}. The mapping is injective over all 256 basis indices and supports exact lattice-to-index round-trip decoding.
 //! - Where stated: `crates/algebra_experimental/src/cd_external.rs` (test_csv_256d_lattice_mapping_parses, test_c452_c453_embedding_is_injective_and_roundtrip, test_c452_c453_codomain_and_index_coverage_all_dims, test_c452_c453_lattice_header_schema_stability)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-453
 //!
@@ -3629,7 +3629,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: The 8D lattice embedding extends to dims 512, 1024, and 2048: each map is injective at its native dimension, codomain dimension remains fixed at 8, and filtration growth is exact (new-point deltas 256, 512, 1024 across 256->512->1024->2048).
 //! - Where stated: `crates/algebra_experimental/src/cd_external.rs` (test_csv_512d_lattice_mapping_parses, test_csv_1024d_lattice_mapping_parses, test_csv_2048d_lattice_mapping_parses, test_c452_c453_embedding_is_injective_and_roundtrip, test_c452_c453_codomain_and_index_coverage_all_dims, test_c453_filtration_growth_has_expected_new_points, test_c453_filtration_layers_are_disjoint_and_partition_2048, test_c453_filtration_intersection_cardinalities_are_exact, test_c453_filtration_is_lexicographic_prefix_chain)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-454
 //!
@@ -3637,7 +3637,7 @@
 //! - Last verified: 2026-02-07
 //! - Statement: De Marrais's strut table from "Flying Higher Than A Box-Kite" (unpublished, page 3) matches our computed strut tables for all 7 sedenion box-kites: the set of 6 assessor pairs per box-kite is identical, all 21 strut pairings (A-F, B-E, C-D) are confirmed, and the inner XOR property (low XOR high = 8 + strut_constant) holds for all 42 assessors.
 //! - Where stated: `crates/algebra_experimental/src/cd_external.rs` (test_strut_table_matches_de_marrais_flying_higher), `crates/algebra_analysis/src/boxkites.rs`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-455
 //!
@@ -3645,7 +3645,7 @@
 //! - Last verified: 2026-02-07
 //! - Statement: Lattice-point differences between ZD-adjacent cross-assessor pairs at dim=16 (mapped to the 256D lattice) do NOT include any E8 root vectors (norm-squared = 2). The observed norm-squared values are {4, 6, 8, 10, 12, 14, 18}, with minimum separation |d|^2 = 4. The 105 unique difference vectors form their own combinatorial structure distinct from E8.
 //! - Where stated: `crates/algebra_experimental/src/cd_external.rs` (test_256d_lattice_zd_difference_structure)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-456
 //!
@@ -3653,7 +3653,7 @@
 //! - Last verified: 2026-02-07
 //! - Statement: The external 256D associativity CSV (256D_Cayley-Dickson_Basis_Properties.csv) incorrectly claims all 125 tested triples are associative. Our Rust integer-exact computation finds 4 out of 50 sampled triples are non-associative, involving basis elements e_128, e_64, e_32, and e_192. The CSV is an AI-generated error.
 //! - Where stated: `crates/algebra_experimental/src/cd_external.rs` (test_csv_256d_basis_properties_vs_rust)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-457
 //!
@@ -3661,7 +3661,7 @@
 //! - Last verified: 2026-02-07
 //! - Statement: The Cayley-Dickson nested-tuple format uses a binary tree representation where (0, 0) at tree depth k represents 2^k zeros. A tree-based parser with sibling-size-balancing (padding shorter subtrees to next power of 2) correctly parses all dims from 4 (quaternions) through 2048.
 //! - Where stated: `crates/algebra_experimental/src/cd_external.rs` (parse_nested_tuple, CdTree)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-458
 //!
@@ -3669,7 +3669,7 @@
 //! - Last verified: 2026-02-08
 //! - Statement: Codebook parity (Thesis A): All lattice codebook points at dims 256, 512, 1024, 2048 satisfy: (a) coordinates in {-1, 0, 1}, (b) coordinate sum is even, (c) number of nonzero coordinates is even, (d) first coordinate is never +1.
 //! - Where stated: `crates/algebra_experimental/src/cd_external.rs` (verify_codebook_parity, test_thesis_a_codebook_parity_{256,512,1024,2048}d)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-459
 //!
@@ -3677,7 +3677,7 @@
 //! - Last verified: 2026-02-08
 //! - Statement: Lattice filtration nesting (Thesis B): Lambda_256 is a strict subset of Lambda_512, which is a strict subset of Lambda_1024, which is a strict subset of Lambda_2048. The embedding is by exact lattice-point membership.
 //! - Where stated: `crates/algebra_experimental/src/cd_external.rs` (verify_lattice_filtration, test_thesis_b_filtration_nesting)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-460
 //!
@@ -3685,7 +3685,7 @@
 //! - Last verified: 2026-02-08
 //! - Statement: Prefix-cut characterization (Thesis C): Each filtration transition (2048->1024, 1024->512, 512->256) is a lexicographic prefix cut -- the child codebook consists of exactly the first |child| points when the parent is sorted in lexicographic order.
 //! - Where stated: `crates/algebra_experimental/src/cd_external.rs` (learn_prefix_cut, verify_prefix_cut, test_thesis_c_*_prefix_cut)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-461
 //!
@@ -3693,7 +3693,7 @@
 //! - Last verified: 2026-02-08
 //! - Statement: Lambda_32 (the 32-row alignment) is a "pinned corner" of Lambda_256: all 32 points have first 4 coordinates equal to (-1, -1, -1, -1). It is the lex-first 32 points of Lambda_256 under lex order.
 //! - Where stated: `crates/algebra_experimental/src/cd_external.rs` (test_lambda_32_as_predicate_cut_of_256)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-462
 //!
@@ -3701,7 +3701,7 @@
 //! - Last verified: 2026-02-08
 //! - Statement: XOR partner law (Thesis E): In cross-assessor pairs at dim=64, each pair index i has unique partner i XOR 4 in the matching-type adjacency. Generalizes to partner(i) = i XOR (N/16) for N = 2^n >= 64.
 //! - Where stated: `crates/algebra_experimental/src/cd_external.rs` (verify_xor_partner_law, test_thesis_e_xor_partner_64d)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-463
 //!
@@ -3709,7 +3709,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: Parity-clique law (Thesis F): ZD adjacency at dim=16 decomposes into K_4 union K_4 by parity of the lower basis index. At dim=32 it decomposes into K_8 union K_8. NOTE: This property is LIMITED TO dims 16 and 32. REFUTED at dim=64 (cross-partition edges exist, test_thesis_f_parity_clique_64d) and dim=128 (C-451: 32640 cross-partition edges). Not a universal property.
 //! - Where stated: `crates/algebra_experimental/src/cd_external.rs` (verify_parity_clique, test_thesis_f_parity_clique_{16d,32d,64d})
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-464
 //!
@@ -3717,7 +3717,7 @@
 //! - Last verified: 2026-02-08
 //! - Statement: Spectral fingerprints (Thesis G): Adjacency graph motif classes are distinguishable by spectral invariants (eigenvalue multiset, degree sequence, triangle count, diameter, girth). Complete graph K_m has spectrum {(m-1)^1, (-1)^{m-1}}; perfect matching r*K_2 has spectrum {(+1)^r, (-1)^r}.
 //! - Where stated: `crates/algebra_experimental/src/cd_external.rs` (spectral_fingerprint_from_adjacency, test_thesis_g_*)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-465
 //!
@@ -3725,7 +3725,7 @@
 //! - Last verified: 2026-02-08
 //! - Statement: Scalar shadow action (Thesis D): For each lattice point, the scalar shadow pi(b) = signum(sum(coords)) maps to {-1, 0, 1}. The addition-mode action ell_out = ell + pi(b)*ones_8 shifts lattice points by a multiple of the all-ones vector.
 //! - Where stated: `crates/algebra_experimental/src/cd_external.rs` (scalar_shadow, verify_scalar_shadow_addition, test_thesis_d_*)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-466
 //!
@@ -3733,7 +3733,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: REFUTED: Hypothesis tested: Multiplication coupling REFUTED (Thesis D resolved): rho(b) does NOT exist as a ... Result: This claim was empirically refuted.
 //! - Where stated: `crates/algebra_analysis/src/codebook.rs` (compute_multiplication_coupling, test_multiplication_coupling_sedenion_characterize, test_multiplication_coupling_pathion)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-467
 //!
@@ -3741,7 +3741,7 @@
 //! - Last verified: 2026-02-08
 //! - Statement: Null-model identity (Thesis H): For Euclidean-distance ultrametric fraction, RowPermutation and RandomRotation are identity-equivalent (p=1.0), while ColumnIndependent and ToroidalShift are informative (p<<0.05 for hierarchical data). Baire distances are ultrametric by construction (fraction always 1.0).
 //! - Where stated: `crates/stats_core/src/ultrametric/null_models.rs` (test_thesis_h_multi_null_comparison, test_thesis_h_no_false_positives_under_null, test_thesis_h_sensitivity_gradient, test_thesis_h_null_model_identity_rotation, test_thesis_h_column_independent_is_informative), `crates/stats_core/src/ultrametric/baire.rs` (test_baire_tautological_vs_euclidean)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-468
 //!
@@ -3749,7 +3749,7 @@
 //! - Last verified: 2026-02-08
 //! - Statement: Emanation table (dim=16): The 15x15 signed product table has 84 zero-divisor-marked cells (42 primitive assessor pairs x 2 symmetric entries). All diagonal cells have sign -1 (e_i * e_i = -1). Product indices match XOR (product_index = row XOR col).
 //! - Where stated: `crates/algebra_experimental/src/emanation.rs` (emanation_table, test_emanation_table_dim16_*)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-469
 //!
@@ -3757,7 +3757,7 @@
 //! - Last verified: 2026-02-08
 //! - Statement: Strutted emanation table (dim=16): For each strut constant S in {1..7}, the 6x6 strutted ET correctly partitions assessor-pair cells into DMZ (sign-concordant) and non-DMZ (sign-discordant) regions. The DMZ count is uniform across all 7 BKs by Fano plane symmetry.
 //! - Where stated: `crates/algebra_experimental/src/emanation.rs` (create_strutted_et, test_strutted_et_*)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-470
 //!
@@ -3765,7 +3765,7 @@
 //! - Last verified: 2026-02-08
 //! - Statement: Oriented Trip Sync: Every sedenion box-kite admits at least one PSL(2,7) orientation where the de Marrais shorthand pattern (a,b,c),(a,d,e),(d,b,f),(e,f,c) is satisfiable. Each BK has exactly 4 available O-trips and all 4 are tested as zigzag candidates.
 //! - Where stated: `crates/algebra_experimental/src/emanation.rs` (oriented_trip_sync, test_oriented_trip_sync_*)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-471
 //!
@@ -3773,7 +3773,7 @@
 //! - Last verified: 2026-02-08
 //! - Statement: Signed adjacency graph: The strutted ET encodes a signed graph where DMZ cells have sign +1 (same-slope coupling) or -1 (cross-slope coupling). All 7 BKs have the same DMZ edge count (structural invariant). Edge signs are strictly +1 or -1.
 //! - Where stated: `crates/algebra_experimental/src/emanation.rs` (extract_signed_graph, test_signed_graph_*)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-472
 //!
@@ -3781,7 +3781,7 @@
 //! - Last verified: 2026-02-08
 //! - Statement: Lanyard state-machine traversal: Face-level lanyards are extracted as state-machine traversals of the signed graph. Negative edges flip diagonal state (/\), positive edges preserve it. Each BK produces 8 face lanyards (8 triangular faces), each of cycle length 3.
 //! - Where stated: `crates/algebra_experimental/src/emanation.rs` (traverse_lanyard, extract_lanyards_from_et, test_lanyard_*, test_extract_lanyards_*)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-473
 //!
@@ -3789,7 +3789,7 @@
 //! - Last verified: 2026-02-08
 //! - Statement: Delta transition function: Each S0 in {1..7} has exactly 3 strut pairs {u,v} with u XOR v = S0, u < v, u,v in {1..7}\{S0}. The 6 endpoints of the 3 pairs cover exactly {1..7}\{S0}. Delta reachability matches twist navigation reachability.
 //! - Where stated: `crates/algebra_experimental/src/emanation.rs` (strut_pairs_for, delta_transition, verify_delta_reachability, test_strut_pairs_*, test_delta_*)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-474
 //!
@@ -3797,7 +3797,7 @@
 //! - Last verified: 2026-02-08
 //! - Statement: Brocade normalization: Each BK has exactly 4 brocade relabelings (one per O-trip in its L-set). Each central trip is a valid O-trip, and the outer indices are the exact complement of the central trip within the L-set. CPO preservation count is uniform across BKs.
 //! - Where stated: `crates/algebra_experimental/src/emanation.rs` (brocade_relabelings, verify_brocade_consistency, test_brocade_*)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-475
 //!
@@ -3805,7 +3805,7 @@
 //! - Last verified: 2026-02-08
 //! - Statement: Sail-loop partition (automorpheme duality): The 28 O-trip sails across all 7 BKs partition into exactly 7 loops of 4 sails each. Each loop corresponds to one automorpheme (Cawagas loop). Each BK appears in exactly 4 loops (one per O-trip face). This is the BK-automorpheme duality.
 //! - Where stated: `crates/algebra_experimental/src/emanation.rs` (sail_loop_partition, test_sail_loop_*)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-476
 //!
@@ -3813,7 +3813,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: Algebraic Locality Principle (ALP): In sparse constraint graphs (edge density < 0.5), generator sequences in algebraic constraint systems concentrate on locally adjacent moves in the constraint graph Gamma, because nonlocal moves are either dynamically suppressed (long collision times, low measure) or annihilated (zero product, absorption). This produces geometric locality in the observed chaos. Evidence across two sparse stacks: (A) E10 billiard r=1.0 vs r_null=0.20, p=0.000; (B) ET DMZ r=1.0 vs r_null=0.01, p=0.000. FAILS for dense graphs (sedenion ZD at 86.7% edge density: r_null=0.87, p=1.0).
 //! - Where stated: `crates/algebra_experimental/src/billiard_stats.rs`, `crates/algebra_experimental/src/algebraic_dynamics.rs` (cross_stack_comparison), `crates/gororoba_cli_algebra/src/bin/cross_stack_locality.rs` (E-011)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-477
 //!
@@ -3821,7 +3821,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: Sky-Limit-Set Hypothesis: For appropriate encoding of ET (Emanation Table) rules as reflection-group constraints, the ET empty/filled pattern is a discrete cross-section of a reflection-group limit set. A_{N-1} is consistently the best Coxeter match (scores improving with N: 0.44, 0.23, 0.16). Rank ratio = 1.0 (box-kite count = Coxeter rank). Spectroscopy bands predict billiard entropy (fill-entropy r=-0.85 at N=5). DMZ density/root density convergence incomplete.
 //! - Where stated: `crates/algebra_experimental/src/algebraic_dynamics.rs` (experiment_c_sky_limit_set, extract_skybox_invariants, coxeter_invariants), `crates/gororoba_cli_algebra/src/bin/sky_limit_set.rs` (E-013)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-478
 //!
@@ -3829,7 +3829,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Fano Line Pairing Theorem: For any sedenion box-kite with strut constant S and any tray-rack perpendicular to edge pair {p0, p1} (where p0 XOR p1 = S), the 4 vent assessor L-indices admit exactly 3 complementary 2+2 pairings. The common XOR value of each pairing's sub-pairs equals one element of the Fano line {S, p0, p1}. All three Fano line elements are realized. The S-pairing (with common XOR = S) gives the delta-consistent twist targets, making h_star XOR v_star = S universally across all 21 transitions.
 //! - Where stated: `crates/algebra_experimental/src/emanation.rs` (twist_delta_correspondence, vent_pairing_analysis, twist_transition_table)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-479
 //!
@@ -3837,7 +3837,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Sedenion Lanyard Sign Census: Across all 7 box-kites in 16D Cayley-Dickson, the 56 triangular faces (8 per BK) admit exactly 2 of 4 possible edge-sign patterns when classified by signed-graph edge labels: (1) TwoSameOneOpp: 42 faces (6 per BK), where exactly 2 edges share one sign and the third is opposite; (2) AllOpposite: 14 faces (2 per BK), where all 3 edges have the same sign (all negative). The patterns AllSame (0 faces) and OneSameTwoOpp (0 faces) are never realized. The distribution is perfectly uniform across all 7 box-kites. The TwoSameOneOpp pattern corresponds to de Marrais trefoil lanyards; AllOpposite corresponds to triple-zigzag lanyards.
 //! - Where stated: `crates/algebra_experimental/src/emanation.rs` (cross_bk_lanyard_census, FaceSignPattern, FaceClassification)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-480
 //!
@@ -3845,7 +3845,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: GF(2) Separating Degree Scaling: The minimum GF(2) polynomial degree separating motif classes equals the projective dimension m = log2(dim) - 2. Verified at three doublings: dim=32 (m=3, degree 3, 2 classes 8+7), dim=64 (m=4, degree 4, 4 classes 9+8+7+7), dim=128 (m=5, degree 5, 8 classes 10+9+8+8+7+7+7+7). At the minimum degree, ALL 2^k-1 non-zero class signatures are achievable (k = number of classes). Degree grows as +1 per doubling of the algebra dimension.
 //! - Where stated: `crates/algebra_analysis/src/projective_geometry.rs` (find_minimum_separating_degree, check_separation_at_degree, gf2_solvable)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-481
 //!
@@ -3853,7 +3853,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Face Sign Census at dim=32 (pathions): 2408 triangular faces across 15 components split into 3 regimes. (A) 7 heptacross components (84 edges, 280 triangles): all 4 FaceSignPattern realized (102 TwoSameOneOpp, 108 OneSameTwoOpp, 36 AllSame, 34 AllOpposite). (B) 1 special heptacross (84 edges, 280 triangles): only 2 patterns with 3:1 ratio (210 TwoSameOneOpp, 70 AllOpposite). (C) 7 mixed components (36 edges, 24 triangles): only 2 patterns with 3:1 ratio (18 TwoSameOneOpp, 6 AllOpposite). The 3:1 TwoSameOneOpp:AllOpposite ratio is universal in pure-regime components across dim=16 and dim=32.
 //! - Where stated: `crates/algebra_analysis/src/boxkites.rs` (generic_face_sign_census, edge_sign_type_exact)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-482
 //!
@@ -3861,7 +3861,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Face Sign Census at dim=64: 48328 triangular faces across 31 components split into 5 regimes. (A) 1 pure-max (420 edges, 3640 tri, 2 patterns: 2730/910=3:1). (B) 8 full-max (420 edges, 3640 tri, 4 patterns). (C) 7 full-mid1 (276 edges, 1336 tri, 4 patterns). (D) 7 full-mid2 (228 edges, 824 tri, 4 patterns). (E) 8 pure-min (84 edges, 56 tri, 2 patterns: 42/14=3:1). The 84-edge pure components exactly reproduce dim=16's 42:14 census -- sedenion sub-algebra embedding.
 //! - Where stated: `crates/algebra_analysis/src/boxkites.rs` (generic_face_sign_census, test_generic_face_sign_census_dim64)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-483
 //!
@@ -3869,7 +3869,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Pure-regime 3:1 TwoSameOneOpp:AllOpposite Ratio Law: In every pure-regime component (only 2 face sign patterns) of the CD zero-divisor graph, the ratio TwoSameOneOpp:AllOpposite is exactly 3:1. Verified in 26 pure-regime components across 4 doublings: dim=16 (7x, 42:14), dim=32 mixed (7x, 18:6), dim=32 special (1x, 210:70), dim=64 pure-max (1x, 2730:910), dim=64 pure-min (8x, 42:14), dim=128 pure-max (1x, 26970:8990), dim=128 pure-min (9x, 90:30). SUPERSEDED by C-487 (Universal 3:1 Theorem) which proves this holds in ALL components, not just pure regimes.
 //! - Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_three_to_one_ratio_antibalanced)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-484
 //!
@@ -3877,7 +3877,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Face Sign Census at dim=128: 821128 triangular faces across 63 components split into 9 regimes. (A) 1 pure-max (1860 edges, 35960 tri, 2 patterns: 26970/8990=3:1). (B) 9 full-max (1860 edges, 35960 tri, 4 patterns). (C-G) 7 full regimes each with distinct edge counts (1524/1284/1092/948/756/516 edges, 8/7/7/7/7/8 components). (H) 9 pure-min (180 edges, 120 tri, 2 patterns: 90/30=3:1). Group sizes palindromic: 1+[9,8,7,7,7,7,8,9].
 //! - Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_generic_face_sign_census_dim128)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-485
 //!
@@ -3885,7 +3885,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Regime Count Formula: The number of distinct face sign regimes in the CD zero-divisor graph follows n_regimes = dim/16 + 1 for dim >= 32 (1 for dim=16). Verified at 4 dimensions: dim=16 (1), dim=32 (3), dim=64 (5), dim=128 (9). This corrects the earlier estimate 2*log2(dim/16)+1 which failed at dim=128. The formula decomposes as: 2 pure regimes + (dim/16 - 1) full regimes for dim >= 32.
 //! - Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_regime_and_edge_scaling_laws)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-486
 //!
@@ -3893,7 +3893,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Edge Count Extremal Formulas: For dim >= 32, the maximum edge count per component is E_max = C(dim/2-2, 2) - (dim/4-1), and the minimum edge count is E_min = 3*dim/2 - 12. The maximum component is nearly complete, missing exactly dim/4-1 edges. Verified at dims 32 (E_max=84, E_min=36), 64 (E_max=420, E_min=84), 128 (E_max=1860, E_min=180). Exactly 1 pure-max component at each dimension (the special component with XOR label = dim/4).
 //! - Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_regime_and_edge_scaling_laws, test_generic_face_sign_census_dim128)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-487
 //!
@@ -3901,7 +3901,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Universal 3:1 Theorem: In EVERY component of the CD zero-divisor graph at EVERY dimension d >= 16, both 3:1 ratio laws hold simultaneously: TwoSameOneOpp = 3*AllOpposite (odd-parity pair) and OneSameTwoOpp = 3*AllSame (even-parity pair). Verified in all 243 components across 5 dimensions (7+15+31+63+127). NOTE: Parity-specific edge regularity is FALSE in non-pure regimes -- the algebraic mechanism must arise from the CD multiplication table structure, not general graph-theoretic counting. Pure-regime C-483 is the special case where AllSame=OneSameTwoOpp=0.
 //! - Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_universal_double_three_to_one_law, test_generic_face_sign_census_dim256)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-488
 //!
@@ -3909,7 +3909,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Face Sign Census at dim=256: 13348104 triangular faces across 127 components split into 17 regimes (confirming dim/16+1 formula). 1 pure-max (7812 edges, 2 patterns), 15 full regimes (4 patterns each), 1 pure-min regime (372 edges, 10 components, 2 patterns). Universal 3:1 Theorem holds in all 127 components. Computation time: ~16s in release mode.
 //! - Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_generic_face_sign_census_dim256)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-489
 //!
@@ -3917,7 +3917,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Regime-GF(2) Class Correspondence: Face sign regimes = GF(2) edge-count classes + 1. The GF(2) separating classes (C-480) correspond exactly to edge-count groups (dim/16 classes). The face sign census adds 1 extra regime by splitting the max-edge class into pure-max (1 component, XOR label = dim/4) and full-max. At min-edge, ALL components are pure (no split). Verified at dims 32/64/128. Unifies motif census, GF(2) projective geometry, and face sign census.
 //! - Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_regime_gf2_class_correspondence)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-490
 //!
@@ -3925,7 +3925,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Parity-Specific Edge Regularity is FALSE: In non-pure (4-pattern) face sign regime components, edges do NOT participate in the same number of even-parity (or odd-parity) triangles. At dim=32 comp[0], even-parity triangle counts per edge range from 4 to 8. This means the Universal 3:1 Theorem (C-487) cannot be proved via parity-specific counting arguments. The algebraic mechanism is deeper, arising from the CD multiplication table structure.
 //! - Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_parity_edge_regularity_breakdown)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-491
 //!
@@ -3933,7 +3933,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Sigma Correspondence: For each edge in the ZD graph between cross-assessors a=(i,j) and b=(k,l), define sigma_ab = cd_basis_mul_sign(dim, i, k) * cd_basis_mul_sign(dim, j, l). Then sigma_ab = -1 iff edge is Same-type, +1 iff Opposite-type. This gives a closed-form edge sign determination bypassing the full diagonal_zero_products_exact computation.
 //! - Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_double_three_to_one_algebraic_mechanism)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-492
 //!
@@ -3941,7 +3941,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Half-Half Edge Law: In every component of the CD zero-divisor graph at every dimension >= 16, exactly half the edges are Same-type and half are Opposite-type (n_same = n_opposite). This is a fundamental property of the CD multiplication table's signed graph structure, verified at dims 16/32/64/128 across all 214 components.
 //! - Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_double_three_to_one_algebraic_mechanism, test_half_half_edge_law_dim128)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-493
 //!
@@ -3949,7 +3949,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Parity Product Identity: For any triangle in the ZD graph with edges ab, bc, ac, the product sigma_ab * sigma_bc * sigma_ac = (-1)^{n_same} where n_same is the number of Same-type edges. This splits triangles into two parity classes: even-Same (product=+1, containing AllOpposite and TwoSameOneOpp) and odd-Same (product=-1, containing AllSame and OneSameTwoOpp).
 //! - Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_double_three_to_one_algebraic_mechanism)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-494
 //!
@@ -3957,7 +3957,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Quarter Rule (mechanism of 3:1 Theorem): Within each parity class of triangles in any ZD graph component, the 'pure' pattern (AllOpposite in even class, AllSame in odd class) is exactly 1/4 of the class total. The 3:1 ratio (C-487) follows: the 'mixed' patterns consume the remaining 3/4, giving TwoSameOneOpp = 3*AllOpposite and OneSameTwoOpp = 3*AllSame. The class total is always divisible by 4.
 //! - Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_double_three_to_one_algebraic_mechanism)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-495
 //!
@@ -3965,7 +3965,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Face sign census at dim=512: 255 components, 33 regimes (512/16 + 1), e_max=32004, e_min=756, 214M triangles, Universal 3:1 Theorem holds for all 255 components. Exactly 1 pure-max component. Confirms all scaling laws from C-486/C-487/C-488 at the 6th doubling.
 //! - Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_generic_face_sign_census_dim512)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-496
 //!
@@ -3973,7 +3973,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Fano Residue Distribution Law: At dim=2^n (n>=4), each ZD graph component has a unique XOR key (lo ^ hi), and the Fano residue (xor_key & 7) distributes as: 7 residues get dim/16 components each, 1 'deficit' residue gets dim/16 - 1 components. Total: 7*(dim/16) + (dim/16-1) = dim/2 - 1. The deficit residue is 0. This means the octonion Fano structure propagates through ALL doublings as a mod-8 partition of the XOR product space.
 //! - Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_octonion_subalgebra_fano_projection)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-497
 //!
@@ -3981,7 +3981,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Fano Projection Full Mixing: At dim>=32, every ZD graph component uses the FULL set of Fano projections (lo & 7) in its cross-assessor low indices. The octonion subalgebra does NOT partition component node membership -- it only labels components via the XOR product residue (C-496).
 //! - Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_octonion_subalgebra_fano_projection)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-498
 //!
@@ -3989,7 +3989,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Coset Obstruction Theorem: Lambda_n (n <= 1024) has exactly 0% closure under both Z-addition and F_3-addition because all lattice vectors have l_0 = -1. Z-addition gives l_0 = (-1)+(-1) = -2, leaving the trinary range {-1,0,1}. F_3-addition gives l_0 = (-1)+(-1) = +1 (mod 3), mapping to the forbidden l_0=+1 coset excluded by is_in_base_universe(). This applies to ALL pairs without exception. The zero vector [0,...,0] is NOT in any Lambda_n (fails l_0=-1 at Lambda_1024), so there is no additive identity.
 //! - Where stated: `crates/algebra_analysis/src/codebook.rs` (test_coset_obstruction_and_affine_closure)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-499
 //!
@@ -3997,7 +3997,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Affine F_3 Partial Closure: The affine F_3 operation a +_3 b -_3 p (for fixed base point p) preserves l_0=-1 and achieves partial closure on Lambda sets. Measured rates: Lambda_256 = 30-39% (base-dependent), Lambda_512 = 34%, Lambda_1024 = 47%, Lambda_2048 l_0=0 sub-lattice = 45%. Rates are below 100% at all levels because forbidden prefix exclusions break F_3 group structure. Rates vary with base point, confirming Lambda_n sets are NOT affine subgroups of F_3^8.
 //! - Where stated: `crates/algebra_analysis/src/codebook.rs` (test_coset_obstruction_and_affine_closure)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-500
 //!
@@ -4005,7 +4005,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Euclidean Filtration Ultrametricity Gradient: Euclidean distance on prefix-stripped lattice coordinates shows a monotone ultrametricity gradient across filtration levels. Lambda_2048 is anti-ultrametric (z=-5.65, p=1.0), Lambda_1024 is marginally anti-ultrametric (z=-1.57, p=0.96), Lambda_512 is significantly ultrametric (z=9.22, p<0.005), and Lambda_256 is very significantly ultrametric (z=17.07, p<0.005). The trie-cut filtration progressively selects lattice vectors forming a hierarchical Euclidean cluster. Baire distances are trivially 1.0 at all levels (by construction). The transition from anti- to genuine ultrametricity occurs between Lambda_1024 and Lambda_512.
 //! - Where stated: `crates/stats_core/src/ultrametric/baire_codebook/mod.rs` (test_euclidean_ultrametricity_across_filtration_levels)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-501
 //!
@@ -4013,7 +4013,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Filtration Phase Transition at l_1=1: The ultrametricity transition between Lambda_1024 (z=-1.57) and Lambda_512 (z=9.22) is a SHARP phase transition, not a gradient. Applying the 6 Lambda_512 exclusion rules one at a time: k=0 (N=1026, z=-1.57), k=1 (N=729, z=8.56), k=2 (N=608, z=12.03), k=3 (N=568, z=7.65), k=4 (N=527, z=7.21), k=5 (N=513, z=9.60), k=6 (N=512, z=9.16). Rule 1 alone (exclude l_1=+1, removing 297 vectors) flips the system from anti-ultrametric to z=8.56 (p<0.005). Rules 2-6 maintain but do not substantially change the signal. The 297 l_1=+1 vectors are 'anti-ultrametric contaminants' whose removal reveals latent ultrametric structure.
 //! - Where stated: `crates/stats_core/src/ultrametric/baire_codebook/mod.rs` (test_intermediate_filtration_gradient)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-502
 //!
@@ -4021,7 +4021,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Affine F_3 Closure Hamming Weight Dependence: Full sweep over all 256 base points of Lambda_256 reveals affine F_3 closure rate depends primarily on the Hamming weight (number of nonzero coordinates) of the base point. Mean rate 37.8% (std 1.8%). Monotone trend: hw=2 gives 39.6% (max), hw=4 gives 38.5%, hw=6 gives 37.8%, hw=8 gives 36.6% (min). Distribution is bimodal: 243/256 base points cluster at 35-40%, 13/256 are outliers at 30-35%. All 13 low-closure outliers have hw=8 AND l_2=+1 (in original coordinates). Pearson correlation hw vs rate r=-0.33. Coordinate sum is uncorrelated (r=0.08). The unique hw=2 base point [-1,-1,0,0,0,0,0,0] achieves the global maximum 39.6%.
 //! - Where stated: `crates/algebra_analysis/src/codebook.rs` (test_affine_f3_closure_full_basepoint_sweep)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-503
 //!
@@ -4029,7 +4029,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Lambda_512 Affine Closure l_1 Dominance: Full sweep over all 512 base points of Lambda_512 reveals affine F_3 closure rate is almost perfectly determined by l_1 (Pearson r=-0.997). l_1=-1 base points give 33.9% mean closure (N=365), l_1=0 base points give 23.5% mean closure (N=147). The bimodal histogram (147 at 20-25%, 365 at 30-35%) maps exactly to this l_1 dichotomy. Hamming weight correlation REVERSES sign relative to Lambda_256 (r=+0.30 vs r=-0.33), and is a secondary effect. This connects to C-501: l_1 encodes a hierarchy l_1=+1 (anti-ultrametric, excluded) > l_1=0 (low closure) > l_1=-1 (high closure).
 //! - Where stated: `crates/algebra_analysis/src/codebook.rs` (test_affine_f3_closure_lambda512_full_sweep)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-504
 //!
@@ -4037,7 +4037,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Lambda_512->Lambda_256 Monotone Ultrametric Gradient: Applying the 6 Lambda_256 exclusion rules cumulatively to Lambda_512 (via is_in_lambda_512_minus_k) produces a MONOTONICALLY INCREASING ultrametricity gradient. z-scores: k=0: 9.93 (N=512), k=1: 12.53 (N=365, removed 147 l_1=0), k=2: 16.25 (N=324), k=3: 16.30 (N=284), k=4: 14.69 (N=270), k=5: 18.23 (N=257), k=6: 17.73 (N=256). This CONTRASTS with C-501 (Lambda_1024->Lambda_512), which showed a sharp PHASE TRANSITION at rule 1. The difference is that Lambda_512 already excludes anti-ultrametric l_1=+1 vectors, so subsequent cuts refine the signal rather than creating it. Rule 1 (exclude l_1=0) has the largest effect (removing 147 vectors), consistent with C-503 l_1 hierarchy.
 //! - Where stated: `crates/stats_core/src/ultrametric/baire_codebook/mod.rs` (test_lambda512_to_256_intermediate_gradient)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-505
 //!
@@ -4045,7 +4045,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Lambda_2048->Lambda_1024 Anti-Ultrametric Attenuation Gradient: Applying the 4 Lambda_1024 exclusion rules cumulatively to Lambda_2048 (via is_in_lambda_2048_minus_k) produces a MONOTONICALLY ATTENUATING anti-ultrametricity gradient. z-scores: k=0: -5.01 (N=2048, Lambda_2048), k=1: -3.17 (N=1094, l_0=-1 slice, removed 954), k=2: -2.06 (N=1053, removed 41), k=3: -1.37 (N=1039, removed 14), k=4: -1.63 (N=1026, Lambda_1024). Rule 1 (l_0=-1 slice) removes 46.6% of vectors and reduces |z| by 37%. This establishes a THREE-REGIME filtration picture: (1) Lambda_2048->Lambda_1024: monotone attenuation of anti-ultrametricity (z: -5 to -1.6), (2) Lambda_1024->Lambda_512: sharp phase transition at l_1=+1 removal (C-501, z flips from -1.6 to +8.6), (3) Lambda_512->Lambda_256: monotone enhancement of ultrametricity (C-504, z: 10 to 18). The coordinate hierarchy is l_0 (establishes neutral zone) -> l_1 (creates ultrametric signal) -> l_2..l_7 (refines it).
 //! - Where stated: `crates/stats_core/src/ultrametric/baire_codebook/mod.rs` (test_lambda2048_to_1024_intermediate_gradient)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-506
 //!
@@ -4053,7 +4053,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Lambda_512->Lambda_256 Random Removal Asymmetry: Removing 147 l_1=0 vectors (rule 1) from Lambda_512 yields z=14.17, while removing 147 RANDOM vectors yields mean z=8.19 (max 10.82) across 20 trials. Targeted removal is 73% better than random mean and exceeds all 20 random trials. However, unlike C-501 (where random removal gave z~-0.86), random removal from Lambda_512 ALSO produces high z-scores because Lambda_512 is already significantly ultrametric. This confirms the THREE-REGIME asymmetry: (1) Lambda_1024->Lambda_512: targeted removal CREATES signal (random cannot), (2) Lambda_512->Lambda_256: targeted removal ENHANCES an existing signal (random also improves it, but less). The l_1=0 vectors are algebraically special suppressors of ultrametricity, but the Lambda_512->Lambda_256 transition is fundamentally a refinement, not a creation.
 //! - Where stated: `crates/stats_core/src/ultrametric/baire_codebook/mod.rs` (test_lambda512_to_256_random_removal_control)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-507
 //!
@@ -4061,7 +4061,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: S_base->Lambda_2048 Non-Monotone Gradient: Applying the 3 Lambda_2048 exclusion rules to S_base (via is_in_sbase_minus_k) produces a NON-MONOTONE gradient. z-scores: k=0: -9.31 (S_base, N=2187), k=1: -4.67 (N=2066, removed 121 prefix (0,1,1)), k=2: -7.01 (N=2052, removed 14 prefix (0,1,0,1,1)), k=3: -5.07 (Lambda_2048, N=2048, removed 4). Rule 1 halves the anti-ultrametricity, but rule 2 INCREASES it again. This is qualitatively different from all lower transitions (which are either monotone or phase transitions). The S_base->Lambda_2048 boundary is the messiest step in the filtration chain.
 //! - Where stated: `crates/stats_core/src/ultrametric/baire_codebook/mod.rs` (test_sbase_to_lambda2048_gradient)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-508
 //!
@@ -4069,7 +4069,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: l_0 Subpopulation Reversal at Lambda_2048: At the Lambda_2048 level, l_0=0 vectors (N=954) are WEAKLY ULTRAMETRIC (z=+2.73) while l_0=-1 vectors (N=1094) are ANTI-ULTRAMETRIC (z=-3.07). Yet the filtration KEEPS l_0=-1 and DISCARDS l_0=0. The combined Lambda_2048 has z=-5.01, which is MORE anti-ultrametric than either subpopulation alone -- a super-additive cross-l_0 interaction. Cross-l_0 triples (mixing l_0=0 and l_0=-1 vectors) must be strongly anti-ultrametric. The filtration selects for algebraic depth (l_0=-1 contains a hidden ultrametric substructure unlocked by C-501's l_1=+1 removal) rather than superficial ultrametricity (l_0=0 is weakly positive but lacks deeper structure).
 //! - Where stated: `crates/stats_core/src/ultrametric/baire_codebook/mod.rs` (test_l0_subpopulation_ultrametricity)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-509
 //!
@@ -4077,7 +4077,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: l_1 Subgroup Simpson's Paradox within l_0=-1: Partitioning the l_0=-1 subset (N=1094, z=-3.24) by l_1 value reveals ALL THREE subgroups are INDIVIDUALLY STRONGLY ULTRAMETRIC: l_1=-1 (N=365, z=+13.82), l_1=0 (N=364, z=+12.73), l_1=+1 (N=365, z=+12.53). This is a coordinate-level Simpson's Paradox: each l_1 stratum is strongly ultrametric, but their union is anti-ultrametric. The l_1!=+1 combination (N=729, z=+10.27) is weaker than either subgroup alone, showing partial cross-l_1 interference. Critically, l_1=+1 vectors ARE individually ultrametric (z=12.53) -- the C-501 phase transition is NOT because l_1=+1 lacks structure, but because MIXING l_1 values creates cross-group triple contamination. The shared prefix structure (prefix=2 within each l_1 subgroup vs prefix=1 for the combined l_0=-1 set) means each subgroup operates in d=6 effective dimensions while the mixture operates in d=7, amplifying cross-group distance distortion.
 //! - Where stated: `crates/stats_core/src/ultrametric/baire_codebook/mod.rs` (test_l1_filter_on_l0_neg1_subset)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-510
 //!
@@ -4085,7 +4085,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Recursive Coordinate Simpson's Paradox: The Simpson's Paradox discovered in C-509 is RECURSIVE through the entire coordinate hierarchy. Within l_0=-1, l_1=-1 (N=365, z=13.28), partitioning by l_2 yields: l_2=-1 (N=122, z=17.65), l_2=0 (N=121, z=20.82), l_2=+1 (N=122, z=19.13) -- ALL higher than the combined z=13.28. Within l_2=-1: l_3=-1 (N=41, z=10.00), l_3=0 (N=40, z=10.30), l_3=+1 (N=41, z=9.53) -- still strongly ultrametric despite N~40. The observed UM fractions increase monotonically with coordinate depth: 0.251 (d=6) -> 0.276-0.286 (d=5) -> 0.301-0.323 (d=4). Cross-stratum triple decomposition confirms the mechanism: within the l_0=-1 population, same-l_1 triples have UM fraction 0.254 vs mixed-l_1 at 0.228 (10.2% higher), but mixed triples constitute 88.9% of all triples, so their lower UM fraction dominates. The filtration chain works by removing one coordinate from the mixing at each step, progressively revealing the underlying per-stratum ultrametricity.
 //! - Where stated: `crates/stats_core/src/ultrametric/baire_codebook/mod.rs` (test_recursive_simpsons_paradox_l2, test_cross_stratum_triple_decomposition)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-511
 //!
@@ -4093,7 +4093,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: l_0=0 Simpson's Paradox Universality: The l_0=0 population (N=954, z=+2.56) also exhibits the Simpson's Paradox when partitioned by l_1: l_1=-1 (N=364, z=12.64), l_1=0 (N=365, z=14.10), l_1=+1 (N=225, z=23.63) -- all strata have z >> combined z=2.56. Notably, l_0=0/l_1=+1 has the HIGHEST z-score in the entire investigation (z=23.63, N=225). The l_0=0 l_1 partition is ASYMMETRIC: l_1=+1 has only 225 vectors (vs 364-365 for l_1=-1/0), suggesting filtration rules preferentially eliminate l_1=+1 within l_0=0. The paradox is universal across BOTH l_0 strata: l_0=-1 strata z=12-14 (C-509), l_0=0 strata z=12-24. Cross-stratum mixing destroys ultrametricity regardless of the host population's sign.
 //! - Where stated: `crates/stats_core/src/ultrametric/baire_codebook/mod.rs` (test_l0_zero_simpsons_paradox)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-512
 //!
@@ -4101,7 +4101,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Dimensional Universality and Stratum Counting: The Simpson's Paradox occurs at EVERY filtration level with >1 l_1 stratum. Lambda_256 (dim=32) has ALL 256 vectors at l_0=-1, l_1=-1 (mono-stratum, z=19.5, no paradox possible). Lambda_512 (dim=64) has l_0=-1 only, with 2 l_1 strata (l_1=-1: N=365 z=13.63, l_1=0: N=147 z=22.22, NO l_1=+1), combined z=10.3 -- paradox present. Lambda_2048 (dim=256) has 2 l_0 strata x 3 l_1 strata -- maximal mixing, anti-ultrametric. The filtration chain strips strata one at a time: Lambda_2048(2x3) -> Lambda_1024(1x3) -> Lambda_512(1x2) -> Lambda_256(1x1). Each step reduces cross-stratum contamination. The number of active strata completely determines the sign and magnitude of ultrametricity: 1 stratum -> z~19, 2 strata -> z~10, 3 strata -> z~-1.6, 6 strata -> z~-5. This is a COMPLETE MECHANISTIC EXPLANATION of the three-regime filtration picture from C-505.
 //! - Where stated: `crates/stats_core/src/ultrametric/baire_codebook/mod.rs` (test_dimensional_universality_simpsons_paradox)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-513
 //!
@@ -4109,7 +4109,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Complete Stratum Counting Table and Lambda_1024 Paradox: Lambda_1024 (dim=128) has N=1026, l_0=-1 only (1 l_0 stratum), with 3 l_1 strata: l_1=-1 (N=365), l_1=0 (N=364), l_1=+1 (N=297). Combined z=-1.50, but each l_1 stratum has z=12.50/13.75/13.46 -- paradox confirmed. The complete stratum counting table across all 4 levels is: Lambda_256 (1 stratum, z=+18.31), Lambda_512 (2 strata, z=+9.46), Lambda_1024 (3 strata, z=-1.50), Lambda_2048 (6 strata, z=-5.51). The relationship is strictly monotone decreasing: more strata = lower z-score. The sign transition from positive to negative z occurs between 2 and 3 strata. This is quantitatively consistent with the cross-stratum contamination mechanism: at 3 strata, 89% of triples are cross-stratum (volume = 1 - 3*(1/3)^3 = 8/9), each with ~10% lower UM fraction, which is sufficient to reverse the sign.
 //! - Where stated: `crates/stats_core/src/ultrametric/baire_codebook/mod.rs` (test_lambda1024_stratum_paradox_and_summary)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-514
 //!
@@ -4117,7 +4117,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Herfindahl Stratum Model: The z-score across filtration levels is well-predicted by a linear function of the Herfindahl same-triple index H = sum(n_i/N)^3: z = 23.68*H - 3.87 (R^2=0.927, RMSE=2.52). The actual stratum sizes are UNEQUAL: Lambda_256 [256] H=1.000, Lambda_512 [365,147] H=0.386, Lambda_1024 [297,364,365] H=0.114, Lambda_2048 [365,364,365,364,365,225] H=0.030. The sign transition occurs at H=0.163 (approximately 1.8 equal-sized strata). Lambda_512's unexpectedly high z=9.46 (vs the equal-size prediction z~0) is explained by its asymmetric stratum sizes (H=0.386 >> 0.25). The model captures 93% of variance with a single predictor (H), confirming that the Herfindahl same-triple fraction is the dominant control on ultrametricity in the CD lattice codebook filtration. The residual 7% variance likely reflects additional structure (l_0 vs l_1 mixing hierarchy, sample size effects).
 //! - Where stated: `crates/stats_core/src/ultrametric/baire_codebook/mod.rs` (test_stratum_count_analytical_model)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-515
 //!
@@ -4125,7 +4125,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Sigma Correspondence: For any CD dimension >= 16, the edge sign type (Same vs Opposite) in the cross-assessor ZD graph is exactly determined by sigma_ab = s(lo_a,lo_b) * s(hi_a,hi_b) where s = cd_basis_mul_sign. Same iff sigma=-1, Opposite iff sigma=+1. Verified on all edges at dims 16 (84), 32 (924), 64 (7980). Additionally, the Parity Product Theorem holds: product(sigma) over a triangle's 3 edges is +1 iff even number of Same edges (AllOpposite or TwoSameOneOpp) and -1 iff odd number (AllSame or OneSameTwoOpp). The Quarter Rule is exact: in each parity class, the 'pure' pattern (AllOpposite in even, AllSame in odd) is exactly 1/4 of the class total, with zero remainder. At dim=16, ONLY the even parity class exists (all 56 triangles have product=+1). Odd parity first appears at dim=32.
 //! - Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_sigma_correspondence_and_parity_product)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-516
 //!
@@ -4133,7 +4133,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Translation Derivative Identity: The sigma correspondence has a clean algebraic interpretation as a discrete derivative of the twist exponent. Define psi(i,j) in GF(2) by s(i,j) = (-1)^psi(i,j). For a component with XOR key k, sigma(x,y) = (-1)^{Delta_k psi(x,y)} where Delta_k psi(x,y) = psi(x,y) XOR psi(x XOR k, y XOR k). Within a component, hi_a = lo_a XOR k, so Delta_k psi(lo_a,lo_b) = psi(lo_a,lo_b) XOR psi(hi_a,hi_b). Verified on all edges at dims 16 (84), 32 (924), 64 (7980), 128 (65100) with zero exceptions.
 //! - Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_translation_derivative_and_half_half)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-517
 //!
@@ -4141,7 +4141,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Half-Half Edge Law as Delta_k Balance: Within every motif component at every CD dimension >= 16, the translation derivative Delta_k psi is perfectly balanced: exactly half of edges have Delta_k psi = 0 (Opposite-type) and half have Delta_k psi = 1 (Same-type). Verified on ALL components: 7/7 at dim=16, 15/15 at dim=32, 31/31 at dim=64, 63/63 at dim=128. This is not approximate -- the balance is exact to the last edge in every component.
 //! - Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_translation_derivative_and_half_half)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-518
 //!
@@ -4149,7 +4149,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Associator Sign Obstruction REFUTED: The CD associator sign A(i,j,k) = s(i,j)*s(i XOR j, k)*s(j,k)*s(i, j XOR k) does NOT separate pure from mixed triangles when applied as F(triangle) = (A(lo_a,lo_b,lo_c), A(hi_a,hi_b,hi_c)). At dim=16, F=(+1,+1) never occurs. At dim=32/64, all four F-values contain both pure and mixed triangles. A cross lo/hi variant also fails. However, within each F-fiber at dim=16, the pure:mixed ratio is exactly 1:3, suggesting the 1:3 ratio is a deeper invariant than the associator.
 //! - Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_associator_obstruction_candidate_b)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-519
 //!
@@ -4157,7 +4157,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: GF(2)-Linear 2-Bit Separator Exists: At dim=16, an exhaustive search over all GF(2)-linear functions of the 12 psi bits per triangle (3 edges x 4 psi matrix entries) found a perfect 2-bit separator: F=(0,0) iff pure. The separator found at dim=16 is: f1 = psi(lo_a,hi_b) XOR psi(hi_a,lo_b) (anti-diagonal XOR of edge ab's psi matrix), f2 = psi(lo_a,lo_b) XOR psi(lo_a,hi_b) XOR psi(lo_b,lo_c) XOR psi(hi_b,lo_c). Result: F=(0,0) captures all 14 pure and 0 mixed; the 3 nonzero fibers have 13, 16, 13 mixed triangles (confirming non-uniform distribution among mixed classes). No single-bit function achieves perfect separation.
 //! - Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_psi_matrix_obstruction_search)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-520
 //!
@@ -4165,7 +4165,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Anti-Diagonal Parity Theorem (Generalization): Define eta(a,b) = psi(lo_a,hi_b) XOR psi(hi_a,lo_b) for each ZD edge (the 'anti-diagonal XOR' of the edge's psi matrix). A triangle (a,b,c) is 'pure' (AllOpposite in even parity class, AllSame in odd parity class) if and only if eta is constant across all three edges: eta(a,b) = eta(b,c) = eta(a,c). Equivalently, the 2-bit invariant F = (eta(ab) XOR eta(bc), eta(bc) XOR eta(ac)) takes values in GF(2)^2, and F=(0,0) iff pure. Verified PERFECTLY (zero mismatches) at dims 16 (56 triangles), 32 (2408), 64 (48328).
 //! - Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_separator_generalization)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-521
 //!
@@ -4173,7 +4173,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Anti-Diagonal Parity Theorem at dim=128: The Anti-Diagonal Parity Theorem (C-520) holds at dim=128 with ZERO mismatches across 821,128 triangles in 63 components. Pure count = 205,282, Mixed count = 615,846 (exact 1:3 ratio). This provides the complete algebraic mechanism for the 3:1 Theorem (C-487): the 2-bit invariant F = (eta(ab) XOR eta(bc), eta(bc) XOR eta(ac)) takes values in GF(2)^2, with exactly 1 zero element and 3 nonzero elements. Pure triangles are the zero-element fiber. The nonzero fibers need not be equally sized (confirming the non-uniform distribution observed in face sign census data). The mechanism is purely algebraic: eta depends only on cd_basis_mul_sign via the off-diagonal terms of the edge psi matrix.
 //! - Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_antidiagonal_parity_theorem_dim128)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-522
 //!
@@ -4181,7 +4181,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Anti-Diagonal Parity Theorem at dim=256: Verified with ZERO mismatches across 13,348,104 triangles in 127 components (6.84s in release mode). Pure=3,337,026, Mixed=10,011,078 (exact 1:3 ratio). Klein-four fiber sizes: F(0,0)=3,337,026, F(0,1)=3,196,470, F(1,0)=3,407,304, F(1,1)=3,407,304. Edge eta balance: exactly 261,702 / 261,702 (50/50). Cycle rank (first GF(2) Betti number): 507,529.
 //! - Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_antidiagonal_parity_theorem_dim256)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-523
 //!
@@ -4189,7 +4189,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: GF(2) Coboundary Phase Transition: At dim=16, eta is a GF(2) coboundary (0 imbalanced cycles out of b1=49 independent cycles). At dim>=32, eta is NOT a coboundary: dim=32 has 224/729 imbalanced cycles (30.7%), dim=64 has 2672/7081 (37.7%), dim=128 has 23744/61257 (38.8%). The imbalance index appears to converge to ~39%. Additionally, within each dimension's regime structure, the pure-min regime (lowest edge count) always has imbalanced=0, meaning eta restricted to pure-min components is a coboundary at ALL dimensions. Only higher-edge-count regimes contribute imbalance.
 //! - Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_eta_cohomology_and_klein_four_fibers, test_eta_regime_distribution)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-524
 //!
@@ -4197,7 +4197,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Klein-Four Fiber Symmetry Law: The two nonzero-f1 fibers F(1,0) and F(1,1) of the 2-bit invariant F have EXACTLY equal sizes at all dimensions and within every edge-count regime. Dim=16: 13=13, dim=32: 622=622, dim=64: 12596=12596, dim=128: 212048=212048, dim=256: 3407304=3407304. This symmetry holds per-regime as well (verified at dims 16/32/64). The F(0,0)/F(0,1) pair is NOT symmetric.
 //! - Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_eta_cohomology_and_klein_four_fibers, test_eta_regime_distribution)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-525
 //!
@@ -4205,7 +4205,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Eta Regime Independence: Within each edge-count regime (face sign census grouping), the following properties hold independently: (1) eta is exactly balanced on edges (eta=0 = eta=1), (2) the 1:3 pure:mixed ratio is exact, (3) F(1,0) = F(1,1) exactly. The eta mechanism operates identically across all regimes -- the regime structure does not affect the mechanism's ratio. However, the coboundary property IS regime-dependent: pure-min regimes have imbalanced=0 while higher-edge regimes do not.
 //! - Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_eta_regime_distribution)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-526
 //!
@@ -4213,7 +4213,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Eta Doubling Recursion: For any cross-assessor edge (a,b) at dimension dim, eta(a,b) = 1 XOR eta_half(a',b') where eta_half uses psi at dimension dim/2 and a'=(lo_a, hi_a-half), b'=(lo_b, hi_b-half). This follows from the Cayley-Dickson doubling formula: case 2 (lo*hi) gives psi_half(hi_b-h, lo_a), case 3 (hi*lo) gives 1 XOR psi_half(hi_a-h, lo_b) due to conjugation. The '1 XOR' flip from conjugation is the sole algebraic origin of eta's non-triviality. lo_b=0 never occurs in cross-assessor pairs. The recursion immediately implies the Half-Half Edge Law: the flip inverts eta_half's balance.
 //! - Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_eta_doubling_decomposition)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-527
 //!
@@ -4221,7 +4221,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: GF(2) Polynomial Degree of psi and eta: psi(i,j) has Algebraic Normal Form (ANF) degree exactly log2(dim): dim=4 degree 2, dim=8 degree 3, dim=16 degree 4, dim=32 degree 5. eta(a,b) has ANF degree exactly log2(dim)-1: dim=16 degree 3, dim=32 degree 4. The anti-diagonal XOR extraction reduces the effective polynomial degree by 1. psi has no degree-0 or degree-1 terms; eta has degree-1 terms (3 at dim=16, 4 at dim=32). The degree-2 monomials of psi equal C(log2(dim), 2) exactly.
 //! - Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_psi_gf2_polynomial_degree)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-528
 //!
@@ -4229,7 +4229,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Quarter Rule Exactness: pure * 4 = total EXACTLY at every dimension (not approximate, not asymptotic). This is a trivial algebraic consequence of the 1:3 ratio: if pure * 3 = nonpure = total - pure, then 4 * pure = total. Verified at dims 16, 32, 64, 128 with zero deviation.
 //! - Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_mechanism_depth_analysis)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-529
 //!
@@ -4237,7 +4237,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Imbalance Oscillation: the GF(2) cohomological imbalance index (imbalanced non-tree edges / b1) rises rapidly from 0 to 0.388 (dim=128 peak), then MONOTONICALLY DECREASES. Full sequence: 0.000 (dim=16), 0.307 (dim=32), 0.377 (dim=64), 0.388 (dim=128), 0.385 (dim=256), 0.381 (dim=512), 0.378 (dim=1024). The 4-step post-peak descent (0.388->0.385->0.381->0.378) strongly suggests convergence toward approximately 3/8=0.375 from above.
 //! - Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_mechanism_depth_analysis, test_imbalance_index_dim256, test_imbalance_index_dim1024)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-530
 //!
@@ -4245,7 +4245,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Vertex-Median Symmetry: F(1,0) = F(1,1) in canonical ordering (i<j<k) is explained by the symmetric role of the middle vertex j. Each mixed triangle has one 'odd' edge; N_{ij-odd} = N_{jk-odd} because both edges contain vertex j. Under cyclic vertex relabeling, the nonzero fiber counts {F(0,1), F(1,0), F(1,1)} cyclically permute. The real invariant is: two of the three nonzero fibers are always equal, and the unequal one corresponds to the 'diagonal' edge that skips the middle vertex. Verified at dims 16/32/64/128.
 //! - Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_vertex_median_symmetry, test_mechanism_depth_analysis)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-531
 //!
@@ -4253,7 +4253,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Anti-Diagonal Parity Theorem verified at dim=512: 214,448,136 triangles across 255 components (254 nodes each, 33 regimes), 0 mismatches. Quarter Rule exact (pure*4 = total). Klein-four fibers: (0,0)=53612034, (0,1)=52311702, (1,0)=54262200, (1,1)=54262200. Vertex-median symmetry F(1,0)=F(1,1) holds. Edge eta perfectly balanced (2096262:2096262). Imbalance index 0.38111 continues oscillating convergence. This is the 7th dimension verified (16/32/64/128/256/512).
 //! - Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_antidiagonal_parity_theorem_dim512)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-532
 //!
@@ -4261,7 +4261,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: The psi/eta GF(2) framework extends to ALL Cayley-Dickson dimensions, not just dim>=16 where zero-divisors exist. At dim=2 (complex): single entry psi(1,1)=1. At dim=4 (quaternions): 3x3 psi matrix on imaginary basis elements, fully antisymmetric. At dim=8 (octonions): 7x7 psi matrix encodes the Fano plane structure. The eta twist (anti-diagonal XOR of psi) is defined universally, but produces zero-divisor geometry only when the algebra loses alternativity (dim>=16).
 //! - Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_psi_eta_tower_dim2_dim4_dim8)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-533
 //!
@@ -4269,7 +4269,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: At dim=8 (octonions), the 7x7 psi matrix recovers the Fano plane: exactly 7 XOR-triple lines {a,b,c} with a^b=c exist among indices 1..7. The CD multiplication convention assigns 5 positive and 2 negative orientations to these lines. All 21 off-diagonal pairs in the psi matrix are antisymmetric (psi(a,b) != psi(b,a)), reflecting full non-commutativity of the octonions. This connects the GF(2) psi framework to the classical Fano plane description of octonion multiplication.
 //! - Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_psi_eta_tower_dim2_dim4_dim8)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-534
 //!
@@ -4277,7 +4277,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: The fraction of psi=1 entries in the (dim-1)x(dim-1) imaginary psi matrix converges monotonically to 50% as dimension increases: 100.0% (dim=2), 66.7% (dim=4), 57.1% (dim=8), 53.3% (dim=16), 51.6% (dim=32). This reflects the asymptotic balance of the CD multiplication sign function: at infinite dimension, each basis product e_i*e_j is equally likely to be +e_k or -e_k. The convergence is geometric with ratio ~0.5 per doubling.
 //! - Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_psi_eta_tower_dim2_dim4_dim8)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-535
 //!
@@ -4285,7 +4285,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Imbalance index at dim=1024: 0.37849. The full imbalance oscillation sequence is now 0.000 (dim=16), 0.307 (dim=32), 0.377 (dim=64), 0.388 (dim=128), 0.385 (dim=256), 0.381 (dim=512), 0.378 (dim=1024). After the dim=128 maximum (0.388), the ratio MONOTONICALLY DECREASES through 4 consecutive dimensions, consistent with convergence toward approximately 3/8=0.375 from above. ZD graph at dim=1024: 511 components, 33,550,860 edges total, eta perfectly balanced (16,775,430 each), b1=33,290,761 non-tree edges, 12,600,240 imbalanced. Runtime: 873.75s (14.6 min).
 //! - Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_imbalance_index_dim1024)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-536
 //!
@@ -4293,7 +4293,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Legacy ZD Adjacency Matrix Cross-Validation REFUTED: The legacy CSV files 'Zero-Divisor_Adjacency_Matrix__16D/32D/64D_.csv' encode a same-parity adjacency pattern (A[i][j]=1 iff i%2==j%2 and i!=j), which does NOT correspond to any algebraic structure in Cayley-Dickson algebras. Specifically: (1) All non-identity CD basis elements ANTI-COMMUTE at every dimension >=4 (0/105 commuting pairs at dim=16, 0/465 at dim=32, 0/1953 at dim=64). (2) Same-parity adjacency agrees with anti-commutativity only ~50% of the time (53.3% at dim=16, 51.6% at dim=32, 50.8% at dim=64), which is chance level. (3) Individual basis elements are never zero-divisors (e_i*e_j = +/-e_{i XOR j} != 0); ZDs require linear combinations. The legacy matrices are an artifact of flawed analysis, not algebraic truth.
 //! - Where stated: `crates/algebra_analysis/src/legacy_crossval.rs` (test_legacy_zd_adjacency_16d_is_commutativity, _32d_structure, _64d_structure)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-537
 //!
@@ -4301,7 +4301,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Universal Anti-Commutativity of CD Basis Elements: For all Cayley-Dickson algebras of dimension >= 4, EVERY pair of distinct non-identity basis elements anti-commutes: e_i * e_j = -e_j * e_i for all 0 < i < j < dim. Verified at dims 4 (0/3 = 0% commuting), 8 (0/21), 16 (0/105), 32 (0/465), 64 (0/1953), 128 (0/8001). This is a consequence of the doubling formula: the conjugation in (a,b)(c,d) = (ac - d*b, da + bc*) systematically produces sign inversions for all cross-half products.
 //! - Where stated: `crates/algebra_analysis/src/legacy_crossval.rs` (test_commutativity_stats_across_dimensions)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-538
 //!
@@ -4309,7 +4309,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Quaternion Lie Bracket Structure Verified: [e_i,e_j] = e_i*e_j - e_j*e_i gives the standard su(2) Lie algebra: [i,j]=2k (vector [0,0,0,2]), [j,k]=2i (vector [0,2,0,0]), [k,i]=2j (vector [0,0,2,0]). All 3 brackets have squared norm 4.0 exactly. Legacy CSV reports 'Computed Result' as [0,1,0,1] for [i,j], which is a boolean component mask (nonzero positions) rather than coefficient values -- a documentation convention discrepancy, not a computational error.
 //! - Where stated: `crates/algebra_analysis/src/legacy_crossval.rs` (test_quaternion_lie_brackets, test_quaternion_psi_matrix)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-539
 //!
@@ -4317,7 +4317,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Octonion Associator Survey: Of 210 distinct ordered triples (i,j,k) with i!=j!=k!=i among octonion basis elements e_1..e_7, exactly 168 (80.0%) have nonzero associators [e_i,e_j,e_k] = (e_i*e_j)*e_k - e_i*(e_j*e_k). Alternativity verified: [e_a,e_a,e_b] = [e_a,e_b,e_b] = 0 for all pairs, confirming O is alternative but not associative. The Fano plane has 7 lines with 5 positive and 2 negative orientations under the standard CD construction. Legacy CSV uses a DIFFERENT multiplication table convention, producing different (ab)c and a(bc) values but the same structural properties.
 //! - Where stated: `crates/algebra_analysis/src/legacy_crossval.rs` (test_octonion_full_associator_survey, test_octonion_fano_plane_from_multiplication, test_octonion_associator_computation)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-540
 //!
@@ -4325,7 +4325,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Legacy Property Retention Analysis Errata: The legacy CSV 'Dimension-by-Dimension_Property_Retention_Analysis.csv' incorrectly reports 'Contains R,C,H?' = False for all dims >= 16. CORRECTED: Every Cayley-Dickson algebra of dimension >= 4 contains R, C, and H as sub-algebras (the first 2^k basis elements form a dim-2^k sub-algebra). Additionally verified: (1) Sedenions (dim=16) are NOT alternative -- first counterexample at a=e_1+e_10, b=e_4 with ||(aa)b - a(ab)|| = 2.0. (2) Single basis elements trivially satisfy alternativity because e_i^2 = -e_0 is central; multi-component elements are required to detect the failure. (3) The legacy CSV correctly identifies normed=False and division=False for dim>=16 (Hurwitz theorem).
 //! - Where stated: `crates/algebra_analysis/src/legacy_crossval.rs` (test_property_retention_dim16_sedenions, test_legacy_property_retention_errata, test_sedenion_alternativity_failure_example)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-541
 //!
@@ -4333,7 +4333,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Hyperquaternion Multiplication Table Cross-Validation: The legacy CSV 'Hyperquaternion_Full_Multiplication_Table.csv' is a partial 8x8 octonion table with basis {1,i,j,k,l,il,jl,kl} = {e_0..e_7}. Of 13 known (non-?) entries, 7 match our CD computation exactly and 6 have sign flips. All 6 sign flips occur at the quaternion/doubling boundary (products involving one index in {1,2,3} and one index = 4), reflecting a different Cayley-Dickson doubling convention. Our formula (a,b)(c,d) = (ac - d*b, da + bc*) gives i*l = +il, l*i = -il; the legacy uses the opposite convention. Both produce valid octonion multiplication tables among the 480 possible. Product indices (i XOR j) match exactly in all cases. The 36 unknown '?' entries were completed from CD computation.
 //! - Where stated: `crates/algebra_analysis/src/legacy_crossval.rs` (test_hyperquaternion_table_completion, test_hyperquaternion_structural_properties)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-542
 //!
@@ -4341,7 +4341,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: E6-Inspired and Extended Sedenion Matrices Are NOT Multiplication Tables: The legacy CSVs 'E6-Inspired_Extended_Multiplication_Structure.csv' and 'Extended_Sedenion_Multiplication_Structure.csv' are 16x16 block matrices with continuous floating-point entries, NOT {-1,0,+1} multiplication tables. Structure: (1) upper-left 7x7 block contains dense floats with approximately orthonormal columns (eigenvector/projection decomposition), (2) row 7 is a unit vector, (3) E6 version has a lower-right 8x8 block with pattern I + 0.4*checkerboard (eigenvalues ~0.943 x7 and 1.4 x1), (4) Extended Sedenion version has the same upper-left block but zeros in the lower-right. These matrices represent some eigenvector decomposition or projection, not algebraic multiplication. The two CSVs share identical upper-left blocks, confirming they derive from the same analysis.
 //! - Where stated: `crates/algebra_analysis/src/legacy_crossval.rs` (test_e6_inspired_matrix_structure, test_extended_sedenion_vs_e6)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-543
 //!
@@ -4349,7 +4349,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Legacy Monstrous Moonshine Claims Assessment: Four legacy CSVs claim connections between Cayley-Dickson algebras and the Monster group. Findings: (1) 'Spin Foam Amplitudes vs Monster Group Coefficients' column 'Spin Foam Amplitude' is exactly ln(n+1)/1000 -- a trivial logarithmic function unrelated to spin foams (Ponzano-Regge, Turaev-Viro, or EPRL models). (2) The 'Scaled Monster Coeffs' column correctly reproduces j-function coefficients c(1)..c(9) divided by 1e9, but c(10) has a 3.6% error (23123279 vs 22312779). (3) Comparing logarithmic growth (spin foam column) to exponential growth (j-coefficients ~ exp(4*pi*sqrt(n))) is mathematically meaningless. (4) The 'Monstrous Moonshine and Infinite-Dimensional Extensions' CSV claims Moonshine structure at CD dims 16384..262144 without exhibiting any vertex operator algebra, j-function coefficient match, or Monster group representation. (5) The Griess algebra dimension 196884 = 2^2 * 3^3 * 1823 is NOT a power of 2, so is NOT a CD algebra. (6) No j-function coefficient is a power of 2. The actual CD-Monster path goes through E8 -> Leech lattice (Borcherds), not through high-dimensional CD algebras.
 //! - Where stated: `crates/algebra_analysis/src/legacy_crossval.rs` (test_moonshine_j_function_coefficients, test_moonshine_spin_foam_column_is_trivial, test_moonshine_cd_connection_assessment)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-544
 //!
@@ -4357,7 +4357,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Psi=1 Fraction Exact Formula: For the full (dim-1)x(dim-1) psi matrix where psi(i,j) = 0 if cd_basis_mul_sign(dim,i,j) = +1, else 1 (with 1 <= i,j < dim), the fraction of psi=1 entries is EXACTLY (n+1)/(2n) where n = dim-1. Proof: (1) All n diagonal entries have psi=1 (since e_i^2 = -e_0, sign = -1). (2) By universal anti-commutativity (C-537), sign(i,j) = -sign(j,i) for all i != j, so exactly half of the n(n-1) off-diagonal entries have psi=1, i.e., n(n-1)/2. (3) Total psi=1 = n + n(n-1)/2 = n(n+1)/2. (4) Fraction = n(n+1)/(2n^2) = (n+1)/(2n) = 0.5 + 1/(2n). This supersedes C-534's observation of 'geometric convergence with ratio ~0.5' -- the convergence ratio is exactly (dim/2-1)/(dim-1), which approaches 0.5 from below. Verified computationally at all 11 powers of 2 from dim=2 to dim=2048 with zero error.
 //! - Where stated: `crates/algebra_analysis/src/legacy_crossval.rs` (test_psi_fraction_convergence_to_50_percent, test_psi_fraction_exact_values)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-545
 //!
@@ -4365,7 +4365,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Split-Complex j^2 = +1 and Zero-Divisors: The split Cayley-Dickson construction at dim=2 (gamma=+1) produces the split-complex numbers where the imaginary unit j satisfies j^2 = +1 (vs i^2 = -1 for standard complex). Consequence: (1+j)/2 * (1-j)/2 = 0, giving zero-divisors at dim=2 (vs no zero-divisors until dim=16 in standard construction).
 //! - Where stated: `CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)` (test_split_complex_j_squared_plus_one, test_split_complex_zero_divisors)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-546
 //!
@@ -4373,7 +4373,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: CD Construction Always Non-Commutative at dim >= 4: The Cayley-Dickson doubling construction produces non-commutative algebras at dim >= 4 for ALL choices of gamma in {-1,+1}. This is a STRUCTURAL property, independent of metric signature. The right component formula c_r*a_l + a_r*conj(c_l) involves standard conjugation which introduces anti-symmetry that is gamma-invariant. Tessarines (bicomplex numbers, which ARE commutative) cannot be obtained via CD doubling -- they require the tensor product construction C tensor C instead.
 //! - Where stated: `CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)` (test_all_signatures_dim8_commutativity, test_all_signatures_dim16_commutativity, test_sampled_signatures_dim32_commutativity, test_no_signature_allows_commutativity_metatest)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-547
 //!
@@ -4381,7 +4381,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Split-Octonion Signature (4,3) and 128 Zero-Divisor Pairs: The split-octonion (dim=8, all gamma=+1) has basis element squares [+1, +1, +1, -1, +1, -1, -1, +1], giving signature (4,3) for imaginary units (4 positive, 3 negative). Exhaustive search finds 128 zero-product 2-blade pairs. Standard octonions have 0 zero-product 2-blade pairs. For comparison, standard sedenions (dim=16) have their first zero-divisors -- the split construction introduces zero-divisors 1 doubling step earlier.
 //! - Where stated: `CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)` (test_split_octonion_basis_squares_signature, test_split_octonion_zero_divisor_census, test_split_octonion_has_zero_divisors)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-548
 //!
@@ -4389,7 +4389,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Dim=4 Signature Scan: Zero-Divisors in All Non-Standard Quaternion Signatures: At dim=4, there are 4 possible gamma vectors: [-1,-1] (standard), [-1,+1], [+1,-1], [+1,+1]. Standard quaternions have 0 zero-divisor 2-blade pairs. ALL three non-standard signatures have exactly 16 zero-divisor pairs each. Basis element squares: [-1,-1] -> [-1,-1,-1], [-1,+1] -> [-1,+1,+1], [+1,-1] -> [+1,-1,+1], [+1,+1] -> [+1,+1,-1]. Each non-standard variant has signature (1,2) or (2,1), explaining the zero-divisors via indefinite norm.
 //! - Where stated: `CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)` (test_split_all_signatures_dim4)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-549
 //!
@@ -4397,7 +4397,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Split-Octonion psi=1 Fraction Equals 3/8: The full-matrix psi=1 fraction for split-octonions (dim=8, all gamma=+1) is exactly 24/64 = 3/8 = 0.375. This is the SAME value that the standard CD imbalance index converges toward in the large-dim limit (C-529/C-535: 0.378 at dim=512, 0.37849 at dim=1024, monotonically decreasing toward 3/8). The coincidence is striking: the split construction at dim=8 produces a sign matrix whose negative-entry fraction exactly equals the asymptotic imbalance index of the standard construction at dim -> infinity.
 //! - Where stated: `CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)` (test_split_vs_standard_sedenion_psi_comparison)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-550
 //!
@@ -4405,7 +4405,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Quaternion Family Commutativity Census: ALL 4 Standard Gamma Signatures at dim=4 are Non-Commutative. At dim=4 there are exactly 4 possible gamma signatures: [-1,-1] (standard quaternions), [-1,+1], [+1,-1], [+1,+1] (split-quaternions). Exhaustive testing verifies that ALL 4 signatures produce non-commutative algebras: 100% commutativity violation across all basis element pairs. This establishes commutativity as a STRUCTURAL property of Cayley-Dickson construction (dimension and doubling formula), NOT a PARAMETRIC property (gamma-dependent). Contrast: Tessarines (C tensor C) are commutative but require tensor product construction, not CD doubling.
 //! - Where stated: `CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)` (test_quaternion_family_commutativity_census, test_split_quaternions_signature_4_3, test_mixed_quaternion_signatures_coquaternions)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-551
 //!
@@ -4413,7 +4413,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Zero-Divisor Count Scales with Gamma: Split and Mixed Quaternion Signatures Have More Zero-Divisors Than Standard. Standard quaternions ([-1,-1]) are a division algebra with zero 2-blade zero-divisor pairs. Split-quaternions ([+1,+1]) and mixed signatures ([-1,+1], [+1,-1]) exhibit non-zero zero-divisor counts, correlating with the gamma pattern: signatures with more +1 entries tend to have more ZD pairs. This scaling relationship suggests METRIC SIGNATURE (gamma-controlled) affects zero-divisor distribution, while COMMUTATIVITY (structural) remains invariant.
 //! - Where stated: `CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)` (test_quaternion_zero_divisor_count_by_signature)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-552
 //!
@@ -4421,7 +4421,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Construction Method Determines Algebraic Properties, Not Dimension Alone: Multiple families of 4D algebras exist (Hamilton H, split-quaternions ell, dual quaternions, biquaternions, tessarines) differing in construction method (CD doubling, tensor product, complexification, extension). Commutativity, divisibility, and norm composition properties vary by construction method, NOT just by dimension. Tessarines (commutative, tensor product) are inaccessible via any CD gamma choice, proving construction method is the fundamental arbiter of algebra properties.
 //! - Where stated: `docs/ALGEBRA_FAMILY_TAXONOMY.md` (Phase 2d documentation), cross-reference I-020, I-022
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-553
 //!
@@ -4429,7 +4429,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Octonion Family Commutativity Census: ALL 8 Standard Gamma Signatures at dim=8 are Non-Commutative (Structural Property). Exhaustive testing of all gamma in {-1,+1}^3 shows 100% non-commutativity across octonions, matching the quaternion result (C-550). Standard octonions ([-1,-1,-1]), split octonions ([+1,+1,+1]), and all mixed signatures exhibit non-commutativity. This confirms non-commutativity is a STRUCTURAL property of CD doubling at dim >= 4, independent of metric signature (gamma parameter).
 //! - Where stated: `CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)` (test_octonion_family_all_signatures_commutativity)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-554
 //!
@@ -4437,7 +4437,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Octonion Zero-Divisor Landscape: Metric Signature (Gamma) Controls ZD Count, Not Commutativity. Standard octonions ([-1,-1,-1]) are a division algebra with zero 2-blade zero-divisor pairs, while split octonions ([+1,+1,+1]) and mixed signatures exhibit non-zero ZD counts. This mirrors the quaternion pattern (C-551) and confirms that metric signature (gamma parameter) is the PRIMARY determinant of zero-divisor distribution, while algebraic properties like commutativity remain gamma-invariant (structural). Composition law ||ab||^2 = ||a||^2 ||b||^2 holds for standard octonions and may be violated for split/mixed signatures.
 //! - Where stated: `CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)` (test_octonion_zero_divisor_census_all_signatures, test_octonion_composition_law_across_signatures)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-555
 //!
@@ -4445,7 +4445,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Sedenion Family Commutativity Census: Representative Gamma Signatures (4 of 16) are ALL Non-Commutative. Exhaustive testing of representative gamma signatures at dim=16 (standard, split, and two mixed patterns) confirms 100% non-commutativity across sedenion algebras, continuing the pattern from quaternions (C-550) and octonions (C-553). Testing 4 representative signatures from the 16 possible gamma vectors shows consistent non-commutativity across all structures. This extends the evidence that non-commutativity is a UNIVERSAL STRUCTURAL property of standard CD doubling at dim >= 4, independent of metric signature.
 //! - Where stated: `CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)` (test_sedenion_family_all_signatures_commutativity)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-556
 //!
@@ -4453,7 +4453,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Sedenion Zero-Divisor Landscape: Split Sedenions Have Monotonically More Zero-Divisors Than Standard Sedenions. Census of representative sedenion signatures shows zero-divisor distribution correlates with gamma pattern: split sedenions ([+1,+1,+1,+1]) exhibit >= zero-divisor pairs compared to standard sedenions ([-1,-1,-1,-1]). This monotonic property (more +1 entries => more ZD pairs) extends the metric-signature-dependent pattern observed in quaternions (C-551) and octonions (C-554) to dim=16. NOTE: Phase 2c samples a constrained subset of 2-blade pairs due to O(dim^4) computational complexity; exhaustive census at dim=16 would require full enumeration.
 //! - Where stated: `CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)` (test_sedenion_zero_divisor_landscape)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-557
 //!
@@ -4461,7 +4461,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Component Scaling Laws Verified at Practical Dimensions: The Cayley-Dickson zero-divisor motif component count formula (dim/2 - 1 components, dim/2 - 2 nodes per component) holds exactly across all tested dimensions 16, 32, 64, 128, 256, and 512. This validates the universal scaling pattern that enables prediction of graph structure at any dimension without explicit enumeration.
 //! - Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_component_scaling_across_dimensions)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-558
 //!
@@ -4469,7 +4469,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Imbalance Index and Eta Balance Law Verified at dim=512: The imbalance index at dim=512 is 0.381068, continuing the monotone convergence from dim=128 peak (0.388) toward the 3/8 = 0.375 asymptote. Eta edge balance is perfect (total eta=0 equals total eta=1 = 2,096,262), confirming the Half-Half Edge Law (C-517). This extends the imbalance oscillation sequence (C-529) to a new dimension and validates the convergence hypothesis at practical computational limits.
 //! - Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_imbalance_and_apt_dim512_full)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-559
 //!
@@ -4477,7 +4477,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Anti-Diagonal Parity Theorem Mechanism Verified at dim=256 with Zero Mismatches: Triangle enumeration at dim=256 yields 40,044,312 triangles: 10,011,078 pure (exactly 25%) and 30,033,234 mixed (exactly 75%), matching the 1:3 ratio predicted by the Klein-four fiber structure (F in GF(2)^2). Zero mismatches when checking APT consistency (pure iff eta constant). This is the largest practical brute-force verification of the mechanism and confirms 100% accuracy of the parity invariant.
 //! - Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_pathion_apt_mechanism_dim256_regression)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-560
 //!
@@ -4485,7 +4485,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Clifford Algebras Exhibit Selective Commutativity: Across all tested Clifford algebra signatures Cl(p,q) at dimensions 4, 8, and 16, approximately 80-90% of basis element pairs commute with each other. This is fundamentally different from Cayley-Dickson algebras, which exhibit universal non-commutativity (0% commuting pairs). The commutativity pattern is independent of the metric signature (p,q) and dimension, suggesting it is a structural property of the Clifford construction mechanism itself.
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/src/construction/clifford.rs (LEGACY::PATH crates/algebra_core/src/construction/clifford.rs)` (test_clifford_dim4_all_signatures_commutativity, test_clifford_dim8_all_signatures_commutativity, test_clifford_dim16_four_signatures_commutativity)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-561
 //!
@@ -4493,7 +4493,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Construction Method Primacy: Commutativity patterns are determined by the algebraic construction mechanism (Clifford vs Cayley-Dickson), not by dimension or metric parameters. Clifford algebras remain selectively commutative (80-90% commuting pairs) across dims 4, 8, 16. Cayley-Dickson remains universally non-commutative (0% commuting pairs) across all tested dimensions. This establishes that the fundamental algebraic properties are structural, not parametric.
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/src/construction/clifford.rs (LEGACY::PATH crates/algebra_core/src/construction/clifford.rs)` (test_clifford_dim16_vs_phase2_cd_comparison)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-562
 //!
@@ -4501,7 +4501,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Rust Algebra Crate Survey: Comprehensive evaluation of 71 Rust algebra crates identified 3 Tier-1 candidates suitable for Phase 3a-3d validation: wedged (dimension-agnostic GA, Apache-2.0), geonum (O(1) complexity claims, BSD-3-Clause), and amari (comprehensive ecosystem, license TBD). No Jordan algebra crates exist; Phase 3b requires custom trait implementation. Legacy abstract algebra crates (alga, algebra, un_algebra) are archived/unmaintained and unsuitable.
 //! - Where stated: `docs/ALGEBRA_CRATES_SURVEY.md` (comprehensive 25-crate analysis with Tier-1/2/3/4/REF categorization), `docs/ALGEBRA_CRATES_QUICK_REFERENCE.csv` (sortable metadata table)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-563
 //!
@@ -4509,7 +4509,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Jordan Algebras Exhibit Universal Commutativity: All tested Jordan algebras A_1 (R, 1D) and A_2 (Sym_3(R), 3D) exhibit 100% commutativity across all basis element pairs. The Jordan product a*b = (ab+ba)/2 is structurally commutative by definition (symmetric formula), independent of dimension or algebraic context. This establishes Jordan algebras as the opposite end of the commutativity spectrum from Cayley-Dickson algebras (0% commutative at dim>=4).
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/src/construction/jordan.rs (LEGACY::PATH crates/algebra_core/src/construction/jordan.rs)` (test_jordan_a1_commutativity, test_jordan_a2_commutativity_sample)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-564
 //!
@@ -4517,7 +4517,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Non-Associativity is Structural Property of Jordan Algebras: Jordan algebras A_2 (Sym_3(R), 3D) exhibit non-associativity: (a*b)*c != a*(b*c) in general. Unlike Cayley-Dickson algebras where non-associativity is dimension-dependent (emerges at dim>=8), Jordan non-associativity is a fundamental property of the construction mechanism itself, independent of dimension. A_1 (degenerate case) is associative; A_2 and A_3 are inherently non-associative.
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/src/construction/jordan.rs (LEGACY::PATH crates/algebra_core/src/construction/jordan.rs)` (test_jordan_a1_associativity, test_jordan_a2_non_associativity)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-565
 //!
@@ -4525,7 +4525,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Jordan Algebra Architecture: Formal Jordan algebras have no zero-divisors by theorem. The symmetric Jordan product structure (a*b = (ab+ba)/2) ensures closure and divisibility properties. Phase 3b verified A_1 and A_2 yield valid algebraic structures with 100% commutativity and no zero-divisor issues in the formal algebra sense.
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/src/construction/jordan.rs (LEGACY::PATH crates/algebra_core/src/construction/jordan.rs)` (JordanAlgebra trait definition, A_1 and A_2 implementations)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-566
 //!
@@ -4533,7 +4533,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Construction Mechanism Determines Property Class: The commutativity class (0%, 80-90%, or 100%) is determined entirely by the algebraic construction mechanism (Cayley-Dickson, Clifford, or Jordan), independent of dimension or metric signature. Cayley-Dickson universally exhibits 0% commutative pairs at all dims >=4 regardless of gamma. Clifford algebras universally exhibit 80-90% commutative pairs at all dims regardless of (p,q) signature. Jordan algebras universally exhibit 100% commutativity at all dims regardless of A_1/A_2/A_3 choice. This establishes that algebraic property classes are discrete and mechanism-determined, not continuous or metric-tuned.
 //! - Where stated: `docs/COMPLETE_ALGEBRA_FAMILY_TAXONOMY.md` (Sections 1, 2, Universal Laws section)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-567
 //!
@@ -4541,7 +4541,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Three-Level Architecture Hierarchy Is Universal: All algebra families (Cayley-Dickson, Clifford, Jordan) follow a three-level hierarchy where Level 1 (Construction Mechanism) is primary determinant, Level 2 (Dimension) is secondary, and Level 3 (Metric/Parameters) is tertiary. This hierarchy is not specific to one family but applies universally across major construction methods. The hierarchy explains why: (1) same dimension with different mechanisms yields opposite properties, (2) dimension-dependent thresholds (e.g., associativity loss at CD dim 8) affect some mechanisms but not others, (3) metric parameters control secondary properties (zero-divisor count) but not primary properties (commutativity class).
 //! - Where stated: `docs/COMPLETE_ALGEBRA_FAMILY_TAXONOMY.md` (Sections 1, 7, Architectural Implications)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-568
 //!
@@ -4549,7 +4549,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Commutativity-Associativity Trade-Off Law: Algebras enforcing commutativity (Jordan: 100% commutative) sacrifice associativity (fundamentally non-associative except degenerate case). Algebras preserving associativity (Clifford: always associative) do so with selective commutativity (80-90%). Cayley-Dickson trades off differently: universal non-commutativity (0%) with dimension-dependent associativity (full at dims 2-4, lost at dims 8+). This law suggests a fundamental tension in algebra design: achieving both full commutativity and associativity simultaneously is impossible for non-trivial algebras.
 //! - Where stated: `docs/COMPLETE_ALGEBRA_FAMILY_TAXONOMY.md` (Sections 2, 3, Universal Laws)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-569
 //!
@@ -4557,7 +4557,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Metric Signature Is Purely Parametric: Metric parameters (CD gamma vectors, Clifford (p,q) signatures) control secondary properties like zero-divisor count and distribution, but do NOT determine fundamental properties like commutativity class or associativity structure. All gamma choices in CD preserve 0% commutativity (gamma-invariant). All (p,q) choices in Clifford preserve 80-90% commutativity ((p,q)-invariant). Jordan algebras have no metric parameters. This establishes metric as a Level 3 tuning knob only, not a design choice affecting primary properties.
 //! - Where stated: `docs/COMPLETE_ALGEBRA_FAMILY_TAXONOMY.md` (Sections 1, 5, 7)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-570
 //!
@@ -4565,7 +4565,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: APT 1:3 pure/mixed ratio holds exactly at all dimensions 16-256 (exhaustive census). The anti-diagonal parity eta(a,b) = psi(lo_a, hi_b) XOR psi(hi_a, lo_b) classifies every graph triangle as pure (eta constant) or mixed (eta non-constant), with pure/total = 0.250000 exactly across 14.2M+ graph triangles.
 //! - Where stated: `crates/gororoba_cli_algebra/src/bin/dimensional_census.rs` (exhaustive_census), `crates/algebra_analysis/src/boxkites.rs` (test_apt_dim_32_fast, test_antidiagonal_parity_theorem_dim128)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-571
 //!
@@ -4573,7 +4573,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Quarter Rule is exact at all verified dimensions: pure_count * 4 = total_triangles with zero remainder. This is a direct corollary of the 1:3 ratio since triangles classify into exactly 4 fiber classes in GF(2)^2.
 //! - Where stated: `crates/gororoba_cli_algebra/src/bin/dimensional_census.rs` (exhaustive_census), `data/csv/apt_dimensional_census_summary.csv`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-572
 //!
@@ -4581,7 +4581,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Klein-Four Fiber Symmetry holds in dimensional census: the three mixed fiber classes F(0,1), F(1,0), F(1,1) each contain exactly 1/4 of all triangles, so the full distribution is exactly (1/4, 1/4, 1/4, 1/4) across fiber_00, fiber_01, fiber_10, fiber_11.
 //! - Where stated: `crates/gororoba_cli_algebra/src/bin/dimensional_census.rs` (exhaustive_census fiber counters), `data/csv/apt_dimensional_census_summary.csv`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-573
 //!
@@ -4589,7 +4589,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: GPU infrastructure for dimensional analysis is operational: eta matrix, graph construction, and imbalance CUDA kernels compile via cudarc NVRTC. GPU Monte Carlo APT census engine validates against CPU exhaustive results within 0.3% relative error at dims 32-64.
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/src/gpu/eta_matrix.rs (LEGACY::PATH crates/algebra_core/src/gpu/eta_matrix.rs)`, `CURRENT::PATH crates/gororoba_algebra/src/gpu/graph_construction.rs (LEGACY::PATH crates/algebra_core/src/gpu/graph_construction.rs)`, `CURRENT::PATH crates/gororoba_algebra/src/gpu/imbalance.rs (LEGACY::PATH crates/algebra_core/src/gpu/imbalance.rs)`, `CURRENT::PATH crates/gororoba_algebra/src/gpu/dimensional.rs (LEGACY::PATH crates/algebra_core/src/gpu/dimensional.rs)` (test_cpu_apt_census_dim32)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-574
 //!
@@ -4597,7 +4597,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Criterion benchmarks establish computational scaling: component extraction at dim=128 takes ~175ms, cd_basis_mul_sign scales from 302ns (dim=16) to 11.1us (dim=512), and exhaustive APT census at dim=256 takes ~5.2s in release mode.
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/benches/dimensional_bench.rs (LEGACY::PATH crates/algebra_core/benches/dimensional_bench.rs)` (7 benchmark groups), `target/criterion/` HTML reports
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-575
 //!
@@ -4605,7 +4605,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: The CD-derived octonion multiplication table is the unique (up to isomorphism) normed division algebra in 8 dimensions: all 42 non-trivial products verified via Cayley-Dickson doubling of quaternions (a,b)(c,d) = (ac-d*b, da+bc*), with 0 alternativity failures, 0 anti-commutativity failures, 0 composition property failures, and 0 Moufang identity failures across all 7^3=343 basis triples.
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/src/construction/octonion.rs (LEGACY::PATH crates/algebra_core/src/construction/octonion.rs)` (fano_multiply), Fano lines: {1,2,3},{1,4,5},{1,7,6},{2,4,6},{2,5,7},{3,4,7},{3,6,5}
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-576
 //!
@@ -4613,7 +4613,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: G2 = Der(O) is 14-dimensional, computed via null-space of Leibniz constraint system on so(7) parameterization: 21 skew-symmetric parameters minus 7 independent constraints yields rank 7 constraint matrix, leaving 14-dimensional null space. All 14 basis derivations verified on all 64 basis pairs AND random octonions.
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/src/construction/g2_automorphisms.rs (LEGACY::PATH crates/algebra_core/src/construction/g2_automorphisms.rs)` (compute_g2_basis), 12 tests
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-577
 //!
@@ -4621,7 +4621,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: The Cayley plane OP^2 is a 16-dimensional projective plane with points represented as rank-1 idempotents in the exceptional Jordan algebra J3(O). Points from homogeneous coordinates satisfy tr(P)=1, P^2=P, and incidence is given by tr(P*L)=0. Standard triangle vertices [1:0:0],[0:1:0],[0:0:1] are non-collinear, confirming projective plane geometry.
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/src/construction/octonion_geometry.rs (LEGACY::PATH crates/algebra_core/src/construction/octonion_geometry.rs)` (CayleyPlanePoint, from_homogeneous, is_incident, are_collinear)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-578
 //!
@@ -4629,7 +4629,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Unit octonions S^7 form a Moufang loop satisfying all three Moufang identities: Left a(x(ay))=((ax)a)y, Right ((xa)y)a=x(a(ya)), Middle (ax)(ya)=(a(xy))a. Verified exhaustively on all 7^3=343 imaginary basis triples AND on mixed (random) unit octonions. The loop is non-associative (non-zero associators exist) with nucleus equal to real scalars only.
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/src/construction/octonion_geometry.rs (LEGACY::PATH crates/algebra_core/src/construction/octonion_geometry.rs)` (MoufangLoop), `CURRENT::PATH crates/gororoba_algebra/src/construction/octonion.rs (LEGACY::PATH crates/algebra_core/src/construction/octonion.rs)` (moufang_identity_left/right)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-579
 //!
@@ -4637,7 +4637,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: The Freudenthal-Tits magic square dimensions are correctly computed by the Tits construction formula: dim L(A,B) = Der(J3(B)) + (dim(A)-1)(dim(J3(B))-1) + Der(A), where J3(B) is the 3x3 Hermitian Jordan algebra. All 16 entries match the lookup table, the formula is symmetric L(A,B)=L(B,A), and the exceptional chain G2(14)->F4(52)->E6(78)->E7(133)->E8(248) is strictly ascending.
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/src/construction/exceptional_bridge.rs (LEGACY::PATH crates/algebra_core/src/construction/exceptional_bridge.rs)` (tits_dimension, verify_tits_formula_complete)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-580
 //!
@@ -4645,7 +4645,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Cross-validation of exceptional algebra dimensions: (1) G2=14 from computed derivation basis matches Der(O) in magic square, (2) F4=52 from Der(J3(O)) matches magic square entry L(O,R), (3) E6=78 decomposes as F4(52)+traceless_Albert(26), (4) OP^2 as E6/(Spin(10)*U(1)) gives complexified tangent dim 32=2*16, (5) G2 derivations satisfy Leibniz on Moufang loop elements (all tests pass).
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/src/construction/exceptional_bridge.rs (LEGACY::PATH crates/algebra_core/src/construction/exceptional_bridge.rs)` (verify_exceptional_chain, verify_e6_cayley_plane_dimension, verify_g2_moufang_compatibility)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-581
 //!
@@ -4653,7 +4653,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: All 15 hyperplanes of Z_2^4 (sedenion index group) are alternative algebras (octonion subalgebras). Every order-8 XOR-closed subgroup of {0..15} containing 0 passes the alternative identity [x,x,y]=0 for all basis triples. All 15 subalgebras have 7 Fano triples each.
 //! - Where stated: `crates/algebra_analysis/src/subalgebra.rs` (test_all_subalgebras_are_alternative, test_hyperplane_enumeration_dim16)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-582
 //!
@@ -4661,7 +4661,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: All 105 pairs of sedenion octonion subalgebras intersect in exactly 4 elements. The intersection matrix is uniform: for any two distinct hyperplanes H_i, H_j of Z_2^4, |H_i cap H_j| = 4.
 //! - Where stated: `crates/algebra_analysis/src/subalgebra.rs` (test_intersection_matrix_dim16)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-583
 //!
@@ -4669,7 +4669,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Cross-subalgebra associator norms are uniform: for every pair of sedenion octonion subalgebras, the mean associator norm of inter-subalgebra basis triples is 1.0. Mass differentiation in Cayley-Dickson algebras cannot come from subalgebra identity alone.
 //! - Where stated: `crates/algebra_analysis/src/subalgebra.rs` (test_cross_subalgebra_associators)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-584
 //!
@@ -4677,7 +4677,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Albert algebra J_3(O) implementation: trace, S_2, determinant, and Cardano eigenvalue solver all pass for diagonal, unit trace, and random elements. The characteristic polynomial chi(lambda) = lambda^3 - tr(X)*lambda^2 + S_2(X)*lambda - det(X) has correct roots.
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/src/construction/albert.rs (LEGACY::PATH crates/algebra_core/src/construction/albert.rs)` (test_diagonal_eigenvalues, test_unit_trace_element, test_jordan_product_symmetric)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-585
 //!
@@ -4685,7 +4685,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Singh's delta^2 = 3/8 is NOT reproduced for arbitrary trace-free real J_3(O) elements. Observed delta^2 values range from 2.5 to 3.75. The result likely requires specific normalized idempotent constructions in the complexified algebra J_3(O_C).
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/src/construction/albert.rs (LEGACY::PATH crates/algebra_core/src/construction/albert.rs)` (test_singh_delta_squared)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-586
 //!
@@ -4693,7 +4693,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: 168/168 confirmed diagonal zero-divisors of sedenions satisfy the Stiefel manifold V_{8,2} condition: decomposing z = (a, b) into octonion halves gives |a| = |b| (exact) and <a, b> = 0 (exact) for all zero-product pairs from cross-assessor structure. Supports Koebisu (arXiv:2512.13002).
 //! - Where stated: `crates/algebra_analysis/src/stiefel.rs` (test_verified_zd_count, test_basis_zd_stiefel)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-587
 //!
@@ -4701,7 +4701,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Depth-based generation assignment (boundary-crossing count) at dim=16: mean associator norms are 0.87, 1.0, 1.6, 2.0 for depths 2, 1, 0, 3 respectively. The norm ratio spread is insufficient to reproduce PDG lepton mass ratios (3500:1 for e/tau). Raw associator norms alone cannot explain the mass hierarchy.
 //! - Where stated: `crates/materials_core/src/tang_mass.rs` (test_depth_based_mass_prediction_dim16, test_depth_vs_random_comparison)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-588
 //!
@@ -4709,7 +4709,7 @@
 //! - Last verified: 2026-02-09
 //! - Statement: Reusable compute_imbalance_index() function verified at dim=32: imbalance index = 0.307 (matching C-529 sequence). Function extracts BFS coboundary imbalance as imbalanced_edges/cycle_rank across all motif components. Ready for dim=2048 extension.
 //! - Where stated: `crates/algebra_analysis/src/boxkites.rs` (test_compute_imbalance_index_dim32)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-589
 //!
@@ -4717,7 +4717,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: The 8D lattice dimension in CD codebook is structurally driven by octonion algebra (Hurwitz unique 8D normed division algebra), NOT by E8 roots or arbitrary design. Evidence: (1) C-453 verified 8D dimension invariant across ALL CD dimensions (256-2048); (2) C-455 refuted E8 root involvement (zero E8 roots in ZD-adjacent differences); (3) C-458 verified all lattice points satisfy octonion-like parity constraints (trinary, even-sum, even-weight); (4) Filtration hierarchy (Lambda_2048->1024->512->256) partitions base universe injectively into 8D space.
 //! - Where stated: `crates/algebra_analysis/src/codebook.rs`, research findings from Phase 5b octonion/lattice investigation
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-590
 //!
@@ -4725,7 +4725,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: The imbalance index of the standard Cayley-Dickson tower converges toward 3/8 in the high-dimensional regime, matching the split-octonion negative sign fraction.
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/tests/test_split_octonion_attractor.rs (LEGACY::PATH crates/algebra_core/tests/test_split_octonion_attractor.rs)`, `crates/gororoba_cli_algebra/src/bin/c590_attractor_sweep.rs`, `src/scripts/analysis/c590_build_attractor_artifacts.sh`, `data/csv/c590_attractor_runtime_baseline.csv`, `data/csv/c590_attractor_ratio_sweep.csv`, `registry/insights.toml` (I-041)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-591
 //!
@@ -4733,15 +4733,15 @@
 //! - Last verified: 2026-02-10
 //! - Statement: CD Non-Commutativity Exhaustive Verification: All standard gamma signatures at dims 4, 8, and 16 (28 total: 4+8+16) produce 100% non-commutative algebras. 8 sampled signatures at dim=32 also 100% non-commutative. Combined with literature review across 7 mathematical domains (generalized CD, p-adic, Jordan algebras, Clifford algebras, Freudenthal-Tits, non-associative algebras, 20+ papers), the result establishes 99% confidence that no standard CD construction produces a commutative algebra at dim>=4. This is a STRUCTURAL property of the doubling formula's conjugation asymmetry (c_r*a_l + a_r*conj(c_l)), not a parametric accident. Cross-validates C-546 (universal non-commutativity theorem) and strengthens C-589 (octonion-driven lattice) by confirming the algebraic foundation.
 //! - Where stated: `CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)` (test_all_signatures_dim8_commutativity, test_all_signatures_dim16_commutativity, test_sampled_signatures_dim32_commutativity, test_quaternion_family_commutativity_census), Phase 6 verification research
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-592
 //!
 //! - Status: `Verified`
-//! - Last verified:
-//! - Statement:
+//! - Last verified: 
+//! - Statement: 
 //! - Where stated: multiple docs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-593
 //!
@@ -4749,7 +4749,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: Mixed and split-quaternions are non-division algebras with zero-divisors; only standard quaternions (gamma=[-1,-1]) are division algebras.
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/tests/test_low_dimensional_survey.rs (LEGACY::PATH crates/algebra_core/tests/test_low_dimensional_survey.rs)` (test_low_dimensional_algebra_census), `registry/phase8_census.toml` (dim=4 full census)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-594
 //!
@@ -4757,7 +4757,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: Norm multiplicativity property ||ab||=||a||||b|| is preserved only in standard (Euclidean) CD algebras (all gamma=-1); fails universally in split algebras (gamma=+1 at any level).
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/tests/test_low_dimensional_survey.rs (LEGACY::PATH crates/algebra_core/tests/test_low_dimensional_survey.rs)` (norm multiplicative column), `registry/phase8_census.toml`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-595
 //!
@@ -4765,7 +4765,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: Invertibility fraction (% of nonzero elements with multiplicative inverse) correlates inversely with zero-divisor count across all tested algebras.
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/tests/test_low_dimensional_survey.rs (LEGACY::PATH crates/algebra_core/tests/test_low_dimensional_survey.rs)`, `registry/phase8_census.toml` (comparison of invertibility_fraction and zero_divisor_count columns)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-596
 //!
@@ -4773,7 +4773,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: Psi matrix (GF(2) basis element multiplication structure) is signature-independent at low dimensions (dims 1-8); structure governed by doubling formula geometry alone, not gamma parameters.
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/tests/test_low_dimensional_survey.rs (LEGACY::PATH crates/algebra_core/tests/test_low_dimensional_survey.rs)` (extract_psi_matrix function), `registry/phase8_census.toml` (psi_matrix patterns grouped by dimension)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-597
 //!
@@ -4781,7 +4781,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: Non-commutativity (commutator violations > 0) is STRUCTURAL at dim>=4 across ALL metric signatures; gamma-independence confirmed at dims 4 and 8.
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/tests/test_low_dimensional_survey.rs (LEGACY::PATH crates/algebra_core/tests/test_low_dimensional_survey.rs)` (test_low_dimensional_algebra_census verify_phase6_cross_validation), `registry/phase8_census.toml` (commutator_violations column: dims 1-2 all 0, dims 4+ all >0)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-598
 //!
@@ -4789,7 +4789,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: The four Hurwitz division algebras (R, C, H, O) are characterized as the UNIQUE Cayley-Dickson algebras achieving 100% invertibility; all other gamma-variants produce zero-divisor algebras.
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/tests/test_low_dimensional_survey.rs (LEGACY::PATH crates/algebra_core/tests/test_low_dimensional_survey.rs)` (verify_hurwitz_theorem), `registry/phase8_census.toml` (is_division_algebra column), classical mathematics (Hurwitz 1898)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-599
 //!
@@ -4797,7 +4797,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: The minimum GF(2) polynomial separating degree for dim=256 Cayley-Dickson motif classes is exactly 6 (sextic), confirming the formula min_degree = log2(dim) - 2.
 //! - Where stated: `crates/algebra_analysis/src/projective_geometry.rs` (test_separating_degree_dim256)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-600
 //!
@@ -4805,7 +4805,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: The formula min_degree = log2(dim) - 2 is universal across dims 32, 64, 128, 256, yielding degrees 3, 4, 5, 6 respectively.
 //! - Where stated: `crates/algebra_analysis/src/projective_geometry.rs` (test_separating_degree_formula_universality)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-601
 //!
@@ -4813,7 +4813,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: The Anti-Diagonal Parity Theorem (1:3 pure/mixed ratio) holds at dim=4096 with pure_ratio within 0.5% of 0.25 (Monte Carlo, 1M samples, 4.19M nodes).
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/src/gpu/dimensional.rs (LEGACY::PATH crates/algebra_core/src/gpu/dimensional.rs)` (test_apt_dim4096_cross_validate_imbalance)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-602
 //!
@@ -4821,7 +4821,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: Klein-four fiber symmetry (F(0,0) approx F(0,1) approx F(1,0) approx F(1,1)) holds at dim=4096 within statistical noise (<0.5% deviation).
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/src/gpu/dimensional.rs (LEGACY::PATH crates/algebra_core/src/gpu/dimensional.rs)` (test_apt_dim4096_cross_validate_imbalance)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-603
 //!
@@ -4829,7 +4829,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: Lambda_4096 filtration level equals the full base universe (2187 vectors), with no additional exclusions beyond the 4 octonion parity constraints.
 //! - Where stated: `crates/algebra_analysis/src/codebook.rs` (test_lambda_4096_carrier_count)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-604
 //!
@@ -4837,7 +4837,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: All 4 octonion parity constraints (trinary values, even sum, even weight, l_0 != +1) hold universally across all 5 filtration levels Lambda_256 through Lambda_4096.
 //! - Where stated: `crates/algebra_analysis/src/codebook.rs` (test_octonion_parity_proof_dim4096)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-605
 //!
@@ -4845,7 +4845,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: Wide-index (u16) APT census API correctly handles dim=512 and above, where node count exceeds u8 range (dim/2 > 255).
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/src/gpu/dimensional.rs (LEGACY::PATH crates/algebra_core/src/gpu/dimensional.rs)` (test_apt_wide_dim512_1_3_ratio, test_generate_nodes_wide_dim512)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-606
 //!
@@ -4853,7 +4853,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: Tessarines (bicomplex C x C) are categorically distinct from Cayley-Dickson algebras: different construction methods produce fundamentally incompatible algebraic structures.
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/src/construction/tessarines.rs (LEGACY::PATH crates/algebra_core/src/construction/tessarines.rs)` (module documentation), `CURRENT::PATH crates/gororoba_algebra/tests/test_tessarines_census.rs (LEGACY::PATH crates/algebra_core/tests/test_tessarines_census.rs)` (test_tessarines_vs_cayley_dickson_comparison)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-607
 //!
@@ -4861,7 +4861,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: Tessarines have 100% invertibility of nonzero elements; the identity element is (1, 1) representing the tensor product (1+0i) x (1+0i).
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/src/construction/tessarines.rs (LEGACY::PATH crates/algebra_core/src/construction/tessarines.rs)` (compute_invertibility_fraction, Tessarine::one, Tessarine::inverse), `CURRENT::PATH crates/gororoba_algebra/tests/test_tessarines_census.rs (LEGACY::PATH crates/algebra_core/tests/test_tessarines_census.rs)` (test_tessarines_basic_properties)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-608
 //!
@@ -4869,7 +4869,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: Euclidean norm is NOT multiplicative for tessarines under component-wise multiplication; the cross-term structure ||ab||^2 != ||a||^2||b||^2 is a structural property of tensor products.
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/src/construction/tessarines.rs (LEGACY::PATH crates/algebra_core/src/construction/tessarines.rs)` (test_norm_multiplicativity, documentation), `CURRENT::PATH crates/gororoba_algebra/tests/test_tessarines_census.rs (LEGACY::PATH crates/algebra_core/tests/test_tessarines_census.rs)` (test_tessarines_basic_properties, test_tessarines_vs_cayley_dickson_comparison)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-609
 //!
@@ -4877,7 +4877,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: Tessarines are fully commutative and associative algebras; commutativity violations = 0, associativity violations = 0 across all basis elements.
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/src/construction/tessarines.rs (LEGACY::PATH crates/algebra_core/src/construction/tessarines.rs)` (count_commutativity_violations, count_associativity_violations), `CURRENT::PATH crates/gororoba_algebra/tests/test_tessarines_census.rs (LEGACY::PATH crates/algebra_core/tests/test_tessarines_census.rs)` (test_tessarines_basic_properties, test_tessarines_vs_quaternions)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-610
 //!
@@ -4885,7 +4885,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: Tessarines are the unique 4D hypercomplex algebra that is simultaneously: (1) fully commutative, (2) fully associative, (3) 100% invertible, (4) constructed as a tensor product of fields.
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/tests/test_tessarines_census.rs (LEGACY::PATH crates/algebra_core/tests/test_tessarines_census.rs)` (test_tessarines_vs_quaternions, test_tessarines_algebraic_classification)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-611
 //!
@@ -4893,7 +4893,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: SedenionAInfinity constructs a minimal A-infinity algebra with m_1=0 (no differential), m_2=CD product, m_3=CD associator. The A-infinity relation at n=3 holds with residual < 1e-10 for random sedenion inputs.
 //! - Where stated: `crates/algebra_analysis/src/homotopy_algebra.rs` (SedenionAInfinity::new, verify_relation_n3, test_sedenion_a_infinity_relation_n3)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-612
 //!
@@ -4901,7 +4901,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: The sedenion obstruction spectrum has Frobenius norm 8.725, spectral radius 496.9, and rank fraction 15/16=0.9375. The m_3 tensor is nearly full-rank, confirming non-associativity is algebraically pervasive.
 //! - Where stated: `crates/algebra_analysis/src/homotopy_algebra.rs` (SedenionAInfinity::obstruction_spectrum, test_sedenion_obstruction_spectrum)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-613
 //!
@@ -4909,7 +4909,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: The homotopy gravastar bridge maps obstruction_norm to Bowers-Liang anisotropy parameter lambda via homotopy_lambda(obs, coupling) = coupling * obs. At zero coupling, isotropic gravastar solution is recovered exactly.
 //! - Where stated: `crates/cosmology_core/src/homotopy_bridge.rs` (homotopy_lambda, solve_gravastar_homotopy, test_homotopy_zero_coupling_isotropic)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-614
 //!
@@ -4917,7 +4917,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: A stable gravastar solution exists for obstruction_norm=8.725 with coupling in [0, 0.01]. The stability window is nonempty, indicating the A-infinity bypass resolves the C-030 non-associativity obstruction.
 //! - Where stated: `crates/cosmology_core/src/homotopy_bridge.rs` (sweep_obstruction_coupling, test_homotopy_sweep_stability_window)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-615
 //!
@@ -4925,7 +4925,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: The homotopy-corrected gravastar satisfies causality (c_s < c) for coupling < 0.01, where the radial sound speed includes anisotropic pressure contributions from the m_3 obstruction tensor.
 //! - Where stated: `crates/cosmology_core/src/homotopy_bridge.rs` (test_homotopy_causality_check)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-616
 //!
@@ -4933,7 +4933,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: A 7-channel multi-resonator TCMT system built from sedenion box-kite components has exactly zero coupling between all channel pairs, producing zero crosstalk: driving only channel 0 yields zero energy in channels 1-6.
 //! - Where stated: `crates/optics_core/src/multi_resonator.rs` (from_boxkites, test_7clique_no_crosstalk), `crates/optics_core/src/entropy_trap.rs` (test_uncoupled_no_crosstalk)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-617
 //!
@@ -4941,7 +4941,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: Single-channel multi-resonator matches standalone TCMT exactly: the difference in final amplitude is < 1e-15 after 1000 RK4 steps, confirming the multi-channel integrator reduces to the single-cavity solver.
 //! - Where stated: `crates/optics_core/src/multi_resonator.rs` (test_single_channel_matches_tcmt)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-618
 //!
@@ -4949,7 +4949,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: The 7-channel absorption spectrum shows 7 distinct resonance peaks at the expected frequencies, with each channel producing nonzero steady-state energy when driven on-resonance.
 //! - Where stated: `crates/optics_core/src/entropy_trap.rs` (absorption_spectrum, test_absorption_spectrum_resonance)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-619
 //!
@@ -4957,7 +4957,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: The pairwise mutual information estimator correctly returns low MI (< 0.5 nats) for independent incommensurate sinusoidal series, and zero MI for time series with zero crosstalk.
 //! - Where stated: `crates/optics_core/src/entropy_trap.rs` (pairwise_mutual_info, test_pairwise_mi_independent_series, test_uncoupled_no_crosstalk)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-620
 //!
@@ -4965,7 +4965,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: Shannon entropy correctly returns ln(N) for uniform distributions and 0 for concentrated (single-bin) distributions, validating the entropy estimation pipeline.
 //! - Where stated: `crates/optics_core/src/entropy_trap.rs` (shannon_entropy, test_shannon_entropy_uniform, test_shannon_entropy_concentrated)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-621
 //!
@@ -4973,7 +4973,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: The ideal Bose-Einstein condensation critical temperature for He-4 at liquid density (n = 2.18e28 m^-3, mass = 6.6465e-27 kg) is T_c = 3.133 K, within 0.5 K of the textbook value 3.13 K for the ideal gas.
 //! - Where stated: `crates/quantum_core/src/superfluid.rs` (critical_temperature, test_critical_temperature_he4)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-622
 //!
@@ -4981,7 +4981,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: The BEC condensate fraction follows the ideal gas law f(T) = 1 - (T/T_c)^(3/2): exactly 1.0 at T=0, exactly 0.0 above T_c, and 0.646 at T = T_c/2.
 //! - Where stated: `crates/quantum_core/src/superfluid.rs` (condensate_fraction, test_condensate_fraction_*)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-623
 //!
@@ -4989,7 +4989,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: The Landau empirical superfluid density fraction rho_s/rho = 1 - (T/T_lambda)^5.6 yields exactly 1.0 at T=0, exactly 0.0 at T >= T_lambda, and > 0.9 at T = T_lambda/2.
 //! - Where stated: `crates/quantum_core/src/superfluid.rs` (superfluid_density_fraction, test_superfluid_density_fraction)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-624
 //!
@@ -4997,7 +4997,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: The two-fluid model conserves total density (rho_s_frac + rho_n_frac = 1) to machine precision (< 1e-12) across 10,000 RK4 steps at dt = 1e-8 s.
 //! - Where stated: `crates/quantum_core/src/two_fluid.rs` (simulate_two_fluid, test_two_fluid_mass_conservation)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-625
 //!
@@ -5005,7 +5005,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: The 0D two-fluid relaxation model correctly equilibrates: starting from rho_s_frac = 0.1 at T = 1.5 K (equilibrium ~0.876), the system relaxes to within 0.01 of equilibrium after 100 tau_rho.
 //! - Where stated: `crates/quantum_core/src/two_fluid.rs` (simulate_two_fluid, test_two_fluid_equilibrium_relaxation)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-626
 //!
@@ -5013,7 +5013,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: The two-fluid thermal relaxation correctly cools the system from T = 3.0 K (above lambda) to the bath temperature T_bath = 1.0 K, developing superfluid fraction rho_s > 0.9.
 //! - Where stated: `crates/quantum_core/src/two_fluid.rs` (simulate_two_fluid, test_two_fluid_thermal_relaxation)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-627
 //!
@@ -5021,7 +5021,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: Above T_lambda, the superfluid density fraction remains identically zero: for T = 3.0 K, bath at 3.0 K, rho_s < 1e-10 at all times.
 //! - Where stated: `crates/quantum_core/src/two_fluid.rs` (simulate_two_fluid, test_two_fluid_above_lambda)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-628
 //!
@@ -5029,7 +5029,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: The GPE ground state in a harmonic trap with g=0 (linear case) recovers the harmonic oscillator energy E = omega/2 = 0.5 (natural units) to within 0.1.
 //! - Where stated: `crates/quantum_core/src/gross_pitaevskii.rs` (gpe_ground_state, test_gpe_ground_state_energy)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-629
 //!
@@ -5037,15 +5037,15 @@
 //! - Last verified: 2026-02-10
 //! - Statement: Repulsive interactions (g > 0) in the GPE raise the ground state energy above the linear (g=0) value, and the Strang splitting preserves the L2 norm to within 5% over 200 real-time steps.
 //! - Where stated: `crates/quantum_core/src/gross_pitaevskii.rs` (gpe_evolve, gpe_ground_state, test_gpe_interaction_raises_energy, test_gpe_evolve_norm_preservation)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-630
 //!
 //! - Status: `Verified`
-//! - Last verified:
-//! - Statement:
+//! - Last verified: 
+//! - Statement: 
 //! - Where stated: multiple docs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-631
 //!
@@ -5053,7 +5053,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: In the restricted simple-blade split-octonion census (blades of the form e_i +/- e_j), the zero-product topology splits into 48 null-involving pairs and 4 proper pairs.
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/tests/test_split_octonion_geometry.rs (LEGACY::PATH crates/algebra_core/tests/test_split_octonion_geometry.rs)` (test_split_octonion_zero_divisor_census, test_null_cloud_topology)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-632
 //!
@@ -5061,7 +5061,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: The split-octonion 8x8 basis multiplication sign table contains exactly 24 negative entries out of 64, giving an exact negative fraction of 3/8.
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/tests/test_split_octonion_attractor.rs (LEGACY::PATH crates/algebra_core/tests/test_split_octonion_attractor.rs)` (test_split_octonion_psi_fraction), `CURRENT::PATH crates/gororoba_algebra/tests/test_split_octonion_geometry.rs (LEGACY::PATH crates/algebra_core/tests/test_split_octonion_geometry.rs)` (test_split_octonion_sign_census)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-633
 //!
@@ -5069,7 +5069,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: Tessarines (C x C) are tensor product algebras, constructed as (z1, z2) with z1, z2 in C, with component-wise multiplication: (z1, z2) * (w1, w2) = (z1*w1, z2*w2).
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/src/construction/tessarines.rs (LEGACY::PATH crates/algebra_core/src/construction/tessarines.rs)`, `CURRENT::PATH crates/gororoba_algebra/tests/test_tessarines_census.rs (LEGACY::PATH crates/algebra_core/tests/test_tessarines_census.rs)`, `docs/PHASE9_TESSARINES_COMPARATIVE_ANALYSIS.md`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-634
 //!
@@ -5077,7 +5077,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: Tessarines preserve commutativity from base algebra C: (z1, z2) * (w1, w2) = (w1, w2) * (z1, z2) for all tessarines.
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/tests/test_tessarines_census.rs (LEGACY::PATH crates/algebra_core/tests/test_tessarines_census.rs)` (test_tessarine_commutativity), `docs/PHASE9_TESSARINES_COMPARATIVE_ANALYSIS.md` (Section 2.1)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-635
 //!
@@ -5085,7 +5085,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: Tessarines have zero-divisors and are not division algebras. Example: (z, 0) with z != 0 is a zero-divisor when multiplied by (0, w).
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/tests/test_tessarines_census.rs (LEGACY::PATH crates/algebra_core/tests/test_tessarines_census.rs)` (test_tessarines_not_zero_divisors), `CURRENT::PATH crates/gororoba_algebra/src/construction/tessarines.rs (LEGACY::PATH crates/algebra_core/src/construction/tessarines.rs)`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-636
 //!
@@ -5093,7 +5093,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: Tessarines norm multiplicativity fails component-wise: ||t1 * t2|| != ||t1|| * ||t2|| in general, despite C preserving norm multiplicativity.
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/tests/test_tessarines_census.rs (LEGACY::PATH crates/algebra_core/tests/test_tessarines_census.rs)` (test_tessarine_norm_multiplicativity), `docs/PHASE9_TESSARINES_COMPARATIVE_ANALYSIS.md` (Section 2.3)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-637
 //!
@@ -5101,7 +5101,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: Dual-octonions (O x D, with epsilon^2 = 0) exhibit a imbalance (sign imbalance) fraction of 14/32 = 0.4375, which marks the phase boundary between elliptic and hyperbolic regimes.
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/tests/test_exotic_octonions.rs (LEGACY::PATH crates/algebra_core/tests/test_exotic_octonions.rs)` (test_exotic_sign_balance), `docs/PHASE9_TESSARINES_COMPARATIVE_ANALYSIS.md` (Section 2.4)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-638
 //!
@@ -5109,7 +5109,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: Dual-octonion imbalance value 0.4375 confirms the phase boundary prediction: it lies between standard octonion imbalance (~0.375, elliptic regime) and split-octonion imbalance (~0.469, hyperbolic regime).
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/tests/test_exotic_octonions.rs (LEGACY::PATH crates/algebra_core/tests/test_exotic_octonions.rs)` (test_exotic_sign_balance output), `CURRENT::PATH crates/gororoba_algebra/tests/test_split_octonion_geometry.rs (LEGACY::PATH crates/algebra_core/tests/test_split_octonion_geometry.rs)` (reference sign fractions), `docs/PHASE9_TESSARINES_COMPARATIVE_ANALYSIS.md` (Section 4.2)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-639
 //!
@@ -5117,7 +5117,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: Exotic octonion parametrization is complete: Dual-Octonions (O x D), Bi-Octonions (O x C, complexified), and Para-Octonions (conjugation variant) are all implemented and validated.
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/tests/test_exotic_octonions.rs (LEGACY::PATH crates/algebra_core/tests/test_exotic_octonions.rs)` (all three test cases), `docs/PHASE9_TESSARINES_COMPARATIVE_ANALYSIS.md` (Section 2.4)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-640
 //!
@@ -5125,7 +5125,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: Categorical distinction proven: Tessarines (tensor product algebras) are categorically distinct from Cayley-Dickson algebras at all dimensions. The distinction is irreconcilable via signature reinterpretation.
 //! - Where stated: `docs/PHASE9_TESSARINES_COMPARATIVE_ANALYSIS.md` (Part 3: Formal Distinction Theorem), `CURRENT::PATH crates/gororoba_algebra/src/construction/tessarines.rs (LEGACY::PATH crates/algebra_core/src/construction/tessarines.rs)` vs `CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)` (implementation comparison)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-641
 //!
@@ -5133,7 +5133,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: Albert algebra J_3(O) (27D exceptional Jordan algebra) is 100% commutative under the Jordan product X . Y = (XY + YX)/2.
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/src/construction/albert.rs (LEGACY::PATH crates/algebra_core/src/construction/albert.rs)` (jordan_product), `CURRENT::PATH crates/gororoba_algebra/tests/test_albert_algebra.rs (LEGACY::PATH crates/algebra_core/tests/test_albert_algebra.rs)` (test_albert_commutativity_100_percent)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-642
 //!
@@ -5141,7 +5141,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: Exceptional Jordan algebras like Albert preserve the Phase 9 pattern: Jordan algebras are uniformly commutative (100%), while CD algebras are uniformly non-commutative (0% for dim >= 4).
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/tests/test_albert_algebra.rs (LEGACY::PATH crates/algebra_core/tests/test_albert_algebra.rs)` (test_albert_cross_validation_with_phase9), `docs/PHASE10_EXCEPTIONAL_ALGEBRAS_RESEARCH.md`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-643
 //!
@@ -5149,7 +5149,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: Singh's delta^2 prediction (3/8 = 0.375 for trace-free Albert algebra elements) represents a special case, not a universal invariant. Broad survey shows mean delta^2 approx 3.27 with range [2.51, 3.75].
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/tests/test_albert_algebra.rs (LEGACY::PATH crates/algebra_core/tests/test_albert_algebra.rs)` (test_singh_delta_squared_statistics, raw output log)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-644
 //!
@@ -5157,7 +5157,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: Albert algebra structure (3x3 Hermitian matrices over octonions) confirms exceptionality: power-associativity (X^2 . X = X . X^2) holds, but the algebra cannot be embedded in any associative algebra.
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/tests/test_albert_algebra.rs (LEGACY::PATH crates/algebra_core/tests/test_albert_algebra.rs)` (test_albert_exceptionality_indicator, test_albert_jordan_identity_property)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-645
 //!
@@ -5165,7 +5165,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: Albert algebra norm (Frobenius) is well-defined and positive for all non-zero elements, with norm_sq being the sum of squares of 27 real components (3 diagonal + 2*3 off-diagonal octonions).
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/src/construction/albert.rs (LEGACY::PATH crates/algebra_core/src/construction/albert.rs)` (norm_sq), `CURRENT::PATH crates/gororoba_algebra/tests/test_albert_algebra.rs (LEGACY::PATH crates/algebra_core/tests/test_albert_algebra.rs)` (test_albert_norm_and_invertibility)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-646
 //!
@@ -5173,7 +5173,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: Composition algebra taxonomy is structured along two independent axes: (Axis 1) Construction Method (tensor product vs recursive doubling vs exceptional) determines commutativity universally; (Axis 2) Metric Signature (gamma patterns) controls zero-divisor structure in CD family only.
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/src/construction/composition_algebra_census.rs (LEGACY::PATH crates/algebra_core/src/construction/composition_algebra_census.rs)` (ConstructionMethod, MetricSignature enums), `CURRENT::PATH crates/gororoba_algebra/tests/test_composition_algebra_taxonomy.rs (LEGACY::PATH crates/algebra_core/tests/test_composition_algebra_taxonomy.rs)`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-647
 //!
@@ -5181,7 +5181,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: Axis 1 Hypothesis (Construction Method): All tensor product algebras are universally 100% commutative; all recursive doubling algebras (dim >= 4) are universally 0% commutative. This distinction is independent of dimension and metric signature.
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/tests/test_composition_algebra_taxonomy.rs (LEGACY::PATH crates/algebra_core/tests/test_composition_algebra_taxonomy.rs)` (test_taxonomy_axis1_tensor_product_commutativity, test_taxonomy_axis1_cayley_dickson_non_commutativity)`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-648
 //!
@@ -5189,7 +5189,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: Axis 2 Hypothesis (Metric Signature): In Cayley-Dickson family only, metric signature gamma determines zero-divisor presence: all-gamma=-1 (Hurwitz) -> division algebra; any-gamma=+1 (split/mixed) -> non-division with zero-divisors. Tensor products have ZD independent of signature; exceptional algebras have no ZD by structure.
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/tests/test_composition_algebra_taxonomy.rs (LEGACY::PATH crates/algebra_core/tests/test_composition_algebra_taxonomy.rs)` (test_taxonomy_axis2_signature_division_law, test_taxonomy_zero_divisor_structure_mapping)`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-649
 //!
@@ -5197,7 +5197,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: Categorical Distinction Theorem Extended (Phase 9): Tensor product algebras and recursive doubling algebras are categorically distinct across all dimensions. No tensor product can represent as any mixed-signature CD algebra. Distinction rooted in commutativity: tensor products preserve it, CD doubling breaks it via conjugation asymmetry.
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/tests/test_composition_algebra_taxonomy.rs (LEGACY::PATH crates/algebra_core/tests/test_composition_algebra_taxonomy.rs)` (test_taxonomy_categorical_distinction_tensor_vs_cd, test_taxonomy_phase9_distinction_extended)`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-650
 //!
@@ -5205,7 +5205,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: Norm Multiplicativity Correlation: A composition algebra preserves norm multiplicativity (N(xy) = N(x)N(y)) if and only if it is a division algebra. Tensor products fail (ZD present); exceptional algebras fail (non-division); only Hurwitz CD algebras succeed.
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/tests/test_composition_algebra_taxonomy.rs (LEGACY::PATH crates/algebra_core/tests/test_composition_algebra_taxonomy.rs)` (test_taxonomy_norm_multiplicativity_correlation)`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-651
 //!
@@ -5213,7 +5213,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: Registry Event Tracking (W7-001): Centralized event log tracks all modifications to canonical registries with commit metadata. Events logged for claims.toml, insights.toml, experiments.toml, artifact_scrolls.toml. Event schema includes: timestamp, commit_sha, author, change_type (add/update/refute/deprecate), registry_file, record_id, description. Validation gates enforce monotonic sequence numbers/timestamps, record ID resolution, change type enumeration, author non-empty, commit SHA format validation.
 //! - Where stated: `registry/registry_events.toml` (schema definition, validation gates) + `src/verification/verify_registry_events.py` (8-gate validation pipeline)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-652
 //!
@@ -5221,7 +5221,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: Registry Event Verification Pipeline (W7-001): Python verification script verify_registry_events.py performs comprehensive event consistency analysis across 8 validation gates. Gates check: (1) monotonic sequence_number, (2) monotonic timestamps, (3) record ID existence in target registries, (4) change_type enumeration validation, (5) author non-empty, (6) commit_sha format (40-char hex or 'uncommitted'), (7) no duplicate event IDs, (8) refute events restricted to claims. All gates must pass for event log to be considered valid.
 //! - Where stated: `src/verification/verify_registry_events.py` (8 validation gates across 200+ lines) + `registry/registry_events.toml` (validation_gates table documenting all constraints)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-653
 //!
@@ -5229,7 +5229,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: Artifact-Experiment Linking (W7-003): Bidirectional mappings between experiments and their generated/consumed artifacts. Registry artifact_experiment_links.toml tracks: artifact metadata (id, name, format, size, purpose), artifact-experiment links with data_flow_type (input/output/intermediate), cardinality, and descriptions. Covers CSV outputs, SVG/PNG diagrams, and data files. Links enable traceability from experiment -> outputs and reverse lookup (artifact -> consuming experiments).
 //! - Where stated: `registry/artifact_experiment_links.toml` (schema definition, artifact table, link edge list) + `src/verification/verify_artifact_experiment_links.py` (7-gate validation)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-654
 //!
@@ -5237,7 +5237,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: Artifact-Experiment Consistency Validation (W7-003): Python verification script verify_artifact_experiment_links.py ensures 7-gate consistency checks: (1) All artifact_ids exist in artifacts table, (2) All experiment_ids reference valid experiments.toml entries, (3) data_flow_type enumeration (input/output/intermediate), (4) No circular flows (artifact both input AND output of same experiment), (5) No orphaned artifacts (every artifact linked to experiment), (6) Bidirectional consistency (link.experiment_title populated), (7) Coverage reporting (% of experiments with explicit artifact declarations).
 //! - Where stated: `src/verification/verify_artifact_experiment_links.py` (7 validation gates, 250+ lines) + `registry/artifact_experiment_links.toml` (validation_gates table)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-655
 //!
@@ -5245,7 +5245,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: Third-Party Source Verification (W7-005): Automated weekly verification of cached third-party markdown sources extends W6-011. Verification policy: 180-day default TTL (critical sources 90 days, archival 365 days). Checks: (1) SHA256 checksum validation against cached value, (2) freshness checking (age <= TTL), (3) HTTP access verification (200-299 status), (4) Content-Type validation. Modification detection flags sources for review instead of auto-updating. Expired sources are archived to a local recovery path.
 //! - Where stated: `registry/third_party_source_verification.toml` (verification policy, freshness constraints, archive policy) + `src/verification/verify_third_party_sources.py` (7-gate validation)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-656
 //!
@@ -5253,7 +5253,7 @@
 //! - Last verified: 2026-02-10
 //! - Statement: Third-Party Source Verification Pipeline (W7-005): Python verification script verify_third_party_sources.py performs comprehensive source validity checks via 7 validation gates: (1) ISO 8601 date format validation, (2) checksum format (hex string or 'unknown'), (3) status enumeration (pending/success/modified/expired/inaccessible/failed), (4) boolean field format, (5) no duplicate verification IDs, (6) source ID format (SOURCE-XXXX), (7) verification-cache bidirectional consistency. Cadence: weekly automated checks with manual-review alerts on modifications.
 //! - Where stated: `src/verification/verify_third_party_sources.py` (7 validation gates, 250+ lines) + `registry/third_party_source_verification.toml` (verification policy, gates)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-657
 //!
@@ -5261,7 +5261,7 @@
 //! - Last verified: 2026-02-13
 //! - Statement: Imbalance-Viscosity Coupling Principle (Thesis 1): Spatially-varying kinematic viscosity nu(x,y,z) emerges from Cayley-Dickson imbalance density F(x,y,z) via exponential coupling: nu(x,y,z) = nu_base * exp(-lambda * (F(x,y,z) - 3/8)^2), where 3/8 = 0.375 is the imbalance attractor imbalance equilibrium. This principle connects algebraic imbalance to fluid dynamics via Chapman-Enskog viscosity.
 //! - Where stated: crates/sign_imbalance/src/bridge.rs (ImbalanceViscosityBridge), crates/gororoba_cli/src/bin/percolation_experiment.rs (E-027), docs/GRAND_SYNTHESIS_PLAN.md
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-658
 //!
@@ -5269,7 +5269,7 @@
 //! - Last verified: 2026-02-13
 //! - Statement: Percolation Threshold Imbalance Dependence (Thesis 1 Corollary): Percolation channels preferentially form in low-imbalance regions. Mean imbalance in channels < mean imbalance in background, p < 0.05 (Welch's t-test).
 //! - Where stated: crates/sign_imbalance/src/percolation.rs, crates/gororoba_cli/src/bin/percolation_experiment.rs (E-027 step 7)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-659
 //!
@@ -5277,7 +5277,7 @@
 //! - Last verified: 2026-02-13
 //! - Statement: Besag-Clifford Null Model Rejection (Thesis 1 Robustness): Spatially-shuffled viscosity fields produce distinguishable percolation patterns. Adaptive Besag-Clifford test (1000 permutations) yields p < 0.05.
 //! - Where stated: stats_core/src/ultrametric/adaptive.rs, crates/gororoba_cli/src/bin/percolation_experiment.rs (E-027 step 8)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-660
 //!
@@ -5285,7 +5285,7 @@
 //! - Last verified: 2026-02-12
 //! - Statement: TX-3 Topological Overlap Principle: Monotonic viscosity-imbalance transforms (linear, power-law, sigmoid) produce Jaccard overlap = 1.0 in top-k point cloud extraction, yielding Wasserstein distance W2 = 0 against imbalance topology. Non-monotonic transforms (exponential with negative coupling) produce overlap = 0.0 and W2 > 0. The constant (null) model produces overlap near 0.
 //! - Where stated: crates/gororoba_cli/src/bin/thesis_cross_tx3.rs, crates/sign_imbalance/src/spatial_correlation.rs (point_cloud_overlap)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-661
 //!
@@ -5293,7 +5293,7 @@
 //! - Last verified: 2026-02-12
 //! - Statement: Sigmoid Dynamic Range Collapse: When sigmoid F_crit (0.38) is far below the actual imbalance distribution (mean=0.55), the coefficient of variation ratio drops to ~0.04, compressing per-region viscosity variation to 4% of imbalance variability. This explains moderate Spearman correlation (0.64-0.67) despite identical point cloud topology (W2=0, overlap=1.0).
 //! - Where stated: crates/gororoba_cli/src/bin/thesis_cross_tx3.rs, crates/sign_imbalance/src/spatial_correlation.rs (coefficient_of_variation, dynamic_range_ratio)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-662
 //!
@@ -5301,7 +5301,7 @@
 //! - Last verified: 2026-02-12
 //! - Statement: Power-Law Dynamic Range Amplification: Power-law viscosity coupling (exponent 1.5) produces CV_ratio ~ 4.7, amplifying spatial variation by nearly 5x compared to imbalance. This tail-stretching preserves strong spatial correlation (Spearman > 0.95) while generating a distinct CV fingerprint from linear coupling (CV_ratio ~ 0.47).
 //! - Where stated: crates/gororoba_cli/src/bin/thesis_cross_tx3.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-663
 //!
@@ -5309,7 +5309,7 @@
 //! - Last verified: 2026-02-12
 //! - Statement: Grid Convergence of Imbalance-Viscosity Spatial Correlation: Spearman and Pearson correlations between imbalance density and viscosity fields are stable or monotonically improving across 16^3, 32^3, and 64^3 grid resolutions for all coupling models. Linear model: Spearman=1.0 at all resolutions. Sigmoid model: 0.64->0.69->0.95 (improving with resolution).
 //! - Where stated: crates/gororoba_cli/src/bin/thesis_lab.rs, data/thesis_lab/convergence_study/thesis_lab_report.toml
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-664
 //!
@@ -5317,7 +5317,7 @@
 //! - Last verified: 2026-02-12
 //! - Statement: Non-Newtonian Shear Thickening Confirmation: Power-law viscosity coupling (power_index=1.5, coupling=10.0) reduces maximum velocity by 15-22% compared to Newtonian baseline at matched grid resolution. At 64^3: power_law v_max=0.000218 vs constant v_max=0.001486 (ratio 0.147), confirming genuine strain-rate-dependent viscosity enhancement.
 //! - Where stated: crates/gororoba_cli/src/bin/thesis_lab.rs, crates/lbm_3d/src/solver.rs (evolve_non_newtonian)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-665
 //!
@@ -5325,7 +5325,7 @@
 //! - Last verified: 2026-02-12
 //! - Statement: TX-1 Imbalance-Modulated Collision Dynamics: Local imbalance density modulates effective diffusion in lattice collision storms via noise_scale = noise_base * (1 + alpha * F(x,y,z)). Higher imbalance regions produce broader diffusion, increasing effective dimensionality of return-time dynamics. Alpha > 0 shifts latency law exponent gamma compared to uniform alpha=0 baseline.
 //! - Where stated: crates/lattice_filtration/src/filtration.rs (simulate_imbalance_modulated_storm, ImbalanceStormConfig), crates/gororoba_cli/src/bin/thesis_cross_tx1.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-666
 //!
@@ -5333,7 +5333,7 @@
 //! - Last verified: 2026-02-12
 //! - Statement: TX-1 Non-Monotonic Alpha Dependence: Imbalance-modulated collision dynamics shows maximum gamma shift at moderate coupling (alpha=0.5, delta_gamma=0.19) with decreasing effect at higher alpha (alpha=10: delta=0.0015, alpha=50: delta=0.006). This suggests imbalance modulation has optimal coupling strength; excessive coupling saturates the noise landscape.
 //! - Where stated: data/thesis_lab/tx1/tx1_report.toml, crates/gororoba_cli/src/bin/thesis_cross_tx1.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-667
 //!
@@ -5341,7 +5341,7 @@
 //! - Last verified: 2026-02-12
 //! - Statement: Thesis 2 3D Associator-Coupled Shear Thickening: Associator norm coupling produces measurable velocity reduction in 3D Kolmogorov flow. At alpha=100, power_index=1.2: velocity reduction = 10.88% (v_nn=0.01271 vs v_newton=0.01426). Tau field range 0.116 (0.668 to 0.783). Shear thickening scales monotonically with alpha and inversely with power_index.
 //! - Where stated: data/thesis_lab/thesis2_3d/thesis2_3d.toml, crates/gororoba_cli/src/bin/thesis2_3d_thickening.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-668
 //!
@@ -5349,7 +5349,7 @@
 //! - Last verified: 2026-02-12
 //! - Statement: Thesis 2 Power-Index Sensitivity Hierarchy: Velocity reduction from associator-coupled non-Newtonian flow depends strongly on power-law index. At alpha=100: n=1.2 gives 10.88% reduction, n=1.5 gives 3.52%, n=2.0 gives 0.30%. Lower power indices (closer to Newtonian n=1) produce stronger shear thickening, consistent with strain-rate-dependent viscosity enhancement being a first-order effect.
 //! - Where stated: data/thesis_lab/thesis2_3d/thesis2_3d.toml
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-669
 //!
@@ -5357,7 +5357,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: TX-2 Viscosity-to-Filtration Loop Baseline: LBM velocity fields at 16^3 with imbalance-derived viscosity produce filtration spectra where r2_inverse_square is highest (0.90) but power_law_exponent is positive (+0.39), yielding Undetermined classification. The positive exponent indicates latency increases with radius, opposite to collision-dominated inverse-square decay. Lambda coupling modifies exponent monotonically (0.39 at lambda=0.5 to 0.36 at lambda=10).
 //! - Where stated: data/thesis_lab/tx2/tx2_report.toml, crates/gororoba_cli/src/bin/thesis_cross_tx2.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-670
 //!
@@ -5365,7 +5365,7 @@
 //! - Last verified: 2026-02-12
 //! - Statement: SedenionField4D: 4D extension of the SedenionField lattice abstraction treats the w-dimension as independent 3D slices. Each w-slice gets independent imbalance computation (Harary-Zaslavsky per cell). Inter-slice Pearson correlations are near-zero for uniform fields and finite for spatially-varied fields. At 16^4 (65,536 cells), computation is feasible in CPU mode.
 //! - Where stated: crates/sign_imbalance/src/bridge.rs (SedenionField4D), 6 tests passing
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-671
 //!
@@ -5373,7 +5373,7 @@
 //! - Last verified: 2026-02-12
 //! - Statement: Burn Neural Correction Tensor Training: A 3-layer MLP (256->128->64->16) trained with Adam optimizer on associator-derived targets reduces pentagon violation from 2.50 (algebraic associator) to 0.547 in 50 epochs. MSE drops from 0.0121 to 0.0021. The neural model achieves 78% reduction in pentagon violation by learning the k-averaged structure of the 4D associator tensor as a 2D (i,j)->correction mapping.
 //! - Where stated: crates/neural_homotopy/src/burn_model.rs (train_burn_correction), data/evidence/e029_neural_homotopy.toml
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-672
 //!
@@ -5381,7 +5381,7 @@
 //! - Last verified: 2026-02-12
 //! - Statement: Algebraic Optimization Trapped by Associator Basin: Without neural initialization, coordinate descent from the algebraic associator achieves only 0.23% violation reduction (2.500->2.494, 37 accepted steps out of 2500). The associator is a local minimum in the 65536-dimensional correction tensor space. Neural initialization escapes this basin, enabling 78% reduction.
 //! - Where stated: data/evidence/e029_algebraic/e029_neural_homotopy.toml, data/evidence/e029_neural_homotopy.toml
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-673
 //!
@@ -5389,7 +5389,7 @@
 //! - Last verified: 2026-02-12
 //! - Statement: Neural Correction Tensor Perturbation Robustness: At 5% noise perturbation of the sedenion multiplication table, the neural model's pentagon violation increases only 10.5% (from 0.547 to 0.604). At 10% noise, only 10.2% of table entries change. The correction tensor is robust to small algebraic perturbations.
 //! - Where stated: data/evidence/e029_perturb/e029_neural_homotopy.toml
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-674
 //!
@@ -5397,7 +5397,7 @@
 //! - Last verified: 2026-02-12
 //! - Statement: Synthesis Engine 4/4 Gate Pass: All four grand synthesis theses pass their falsification gates in the thesis-synthesis-engine orchestrator. T1: Spearman r=-1.0 (threshold 0.5), T2: viscosity ratio 1.254 (threshold 1.05), T3: optimization reduces violation (ratio<1.0), T4: R^2=0.995 gamma=-2.41 (threshold 0.60). The four theses form a coherent physics synthesis connecting CD algebra to continuum observables.
 //! - Where stated: data/evidence/synthesis_final/synthesis_summary.toml
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-675
 //!
@@ -5405,7 +5405,7 @@
 //! - Last verified: 2026-02-13
 //! - Statement: E-027 Multi-Scale GPU Convergence: Imbalance-velocity anti-correlation is robust across 4 grid scales (16^3 to 128^3, 4K to 2M cells). Best Spearman correlation at lambda=10: -0.976 (16^3), -1.000 (32^3), -0.999 (64^3), -0.998 (128^3). Pearson r > -0.999 at all scales. The signal does not weaken with grid refinement.
 //! - Where stated: data/e027/v2/e027_v2_128cubed.toml
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-676
 //!
@@ -5413,7 +5413,7 @@
 //! - Last verified: 2026-02-13
 //! - Statement: GPU Guo Forcing Validation: CUDA D3Q19 solver with Guo forcing scheme produces Kolmogorov flow with velocity scaling v_max ~ N^(2/3): 0.008 (16^3), 0.032 (32^3), 0.087 (64^3), 0.128 (128^3). Matches expected Kolmogorov physics. Streaming bug and double-conversion bug fixed.
 //! - Where stated: data/e027/v2/e027_v2_64cubed.toml
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-677
 //!
@@ -5421,7 +5421,7 @@
 //! - Last verified: 2026-02-13
 //! - Statement: TX-2 Null Result at All Grid Scales: The viscosity-to-filtration cross-thesis (T2 x T4) produces 'Undetermined' latency law classification at 16^3, 32^3, and 64^3 grids. Gamma values range 0.10-0.14, insufficient for power-law or exponential classification. Kolmogorov shear produces smooth velocity gradients incompatible with sharp return-time structures. Documented negative result.
 //! - Where stated: data/thesis_lab/tx2/grid64/tx2_report.toml
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-678
 //!
@@ -5429,7 +5429,7 @@
 //! - Last verified: 2026-02-13
 //! - Statement: Kubo Drude Weight Onset Catastrophe: Any nonzero Cayley-Dickson interpolation (lambda > 0) causes a 44x collapse of the spin Drude weight D_S in a dim=8 imbalanced Heisenberg chain at T=0.5. The ballistic transport fraction drops from 33% to below 1% at lambda=0.02. This is a first-principles quantum phase transition from ballistic to diffusive transport driven by algebraic imbalance.
 //! - Where stated: data/kubo_transport/coupling_analysis.toml
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-679
 //!
@@ -5437,7 +5437,7 @@
 //! - Last verified: 2026-02-13
 //! - Statement: Imbalance Attractor Kubo Enhancement: At the Cayley-Dickson imbalance attractor imbalance f=3/8=0.375, the Drude weight suppression ratio g(lambda) = D_S(0)/D_S(lambda) equals 83.4x for dim=8 at T=0.5. This provides first-principles physical grounding for the imbalance attractor coupling strength previously derived from algebraic arguments alone.
 //! - Where stated: data/kubo_transport/coupling_analysis.toml
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-680
 //!
@@ -5445,7 +5445,7 @@
 //! - Last verified: 2026-02-13
 //! - Statement: Full CD Kubo Enhancement Upper Bound: At lambda=1.0 (full octonion algebra, f_CD=0.5429), the Drude weight suppression ratio reaches g=216x for dim=8 at T=0.5. This is the maximum first-principles viscosity enhancement achievable from Cayley-Dickson algebraic imbalance. Exponential fit R^2=0.89 captures the trend but misses level-crossing oscillations; lookup table interpolation is the correct coupling method.
 //! - Where stated: data/kubo_transport/coupling_analysis.toml
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-681
 //!
@@ -5453,7 +5453,7 @@
 //! - Last verified: 2026-02-13
 //! - Statement: KuboResponse First-Principles Coupling Model: ViscosityCouplingModel::KuboResponse replaces the tautological linear coupling nu=nu_base*(1+lambda*f) with a 21-point lookup table derived from exact diagonalization of the Kubo formula. The table maps imbalance to Drude weight suppression ratio via linear interpolation. At f=0, enhancement=1 (no coupling); enhancement grows monotonically on average but with non-monotonic level-crossing dips. This is the first physics-derived (not postulated) viscosity coupling in the synthesis pipeline.
 //! - Where stated: crates/sign_imbalance/src/bridge.rs (ViscosityCouplingModel::KuboResponse)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-682
 //!
@@ -5461,7 +5461,7 @@
 //! - Last verified: 2026-02-13
 //! - Statement: Integrable Heisenberg Chain Fully Ballistic: At alpha=0 (pure nearest-neighbor Heisenberg chain), the ballistic fraction B = D_S / I0_S = 1.000000, confirming fully ballistic spin transport for the integrable model at N=10, B=3.0, T=0.1. All spin spectral weight resides in the Drude peak.
 //! - Where stated: data/kubo_transport/validation/j1j2_validation_report.toml
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-683
 //!
@@ -5469,7 +5469,7 @@
 //! - Last verified: 2026-02-13
 //! - Statement: D_S Enhancement in Polarized Regime: The spin Drude weight D_S increases 30,778x from alpha=0 to alpha=1.1 for the N=10 J1-J2 chain at B=3.0, T=0.1. This is a finite-size + strong-field effect: the magnetic field polarizes the chain, gapping excitations. Increasing J2 competes with polarization, creating low-energy spin excitations and larger D_S.
 //! - Where stated: data/kubo_transport/validation/j1j2_validation_report.toml
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-684
 //!
@@ -5477,7 +5477,7 @@
 //! - Last verified: 2026-02-13
 //! - Statement: M4 Hexagon Residual Nonzero: The associator-based m_3 correction tensor produces a nonzero hexagon (A_5) residual when evaluated with m_4=0, confirming that the sedenion A-infinity structure genuinely requires a quaternary correction m_4 beyond the ternary m_3. The M4CorrectionTensor (16^5 = 1,048,576 entries, 8.4 MB) is implemented and passes 8 unit tests.
 //! - Where stated: crates/neural_homotopy/src/m4_tensor.rs (M4CorrectionTensor::m3_hexagon_residual)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-685
 //!
@@ -5485,7 +5485,7 @@
 //! - Last verified: 2026-02-13
 //! - Statement: Published Benchmark: Integrable Ballistic Fraction Exact Match. Our N=10 B=3.0 T=0.1 computation yields B(alpha=0) = 1.000000, exactly matching the theoretical prediction of Castella, Zotos, Prelovsek PRL 74, 972 (1995) that the spin-1/2 XXX Heisenberg chain has D_S = I0_S (fully ballistic transport). This validates the Kubo transport implementation.
 //! - Where stated: data/kubo_transport/validation/j1j2_validation_report.toml
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-686
 //!
@@ -5493,7 +5493,7 @@
 //! - Last verified: 2026-02-13
 //! - Statement: Published Benchmark: Polarized-Regime Enhancement Consistent with Varma Mechanism. The 30,778x D_S enhancement with imbalance at B=3.0 is physically consistent with the interaction-induced Drude weight enhancement mechanism of Varma & Sanchez PRB 92, 195143 (2015), where interactions suppress imbalance effects at intermediate coupling, producing non-monotonic transport behavior. At B>>J, field polarization gaps excitations; J2 competes with polarization, reopening low-energy channels.
 //! - Where stated: data/kubo_transport/validation/j1j2_validation_report.toml
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-687
 //!
@@ -5501,7 +5501,7 @@
 //! - Last verified: 2026-02-13
 //! - Statement: Published Benchmark: C_V Crossover Shifted by Strong Field. The specific heat peak occurs at alpha=0.80 in our B=3.0, T=0.1, N=10 data, compared to the Okamoto-Nomura critical point alpha_c = 0.2411 at B=0 (PLA 169, 433, 1992). The strong magnetic field shifts the imbalance crossover to higher alpha, consistent with field-induced modification of the singlet-triplet gap structure.
 //! - Where stated: data/kubo_transport/validation/j1j2_validation_report.toml
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-688
 //!
@@ -5509,7 +5509,7 @@
 //! - Last verified: 2026-02-13
 //! - Statement: Canonical Transport Benchmark Dataset: 12 published benchmark values, 6 Bethe ansatz D_s(T=0) reference curves, 10 Karrasch DMRG finite-T Drude weights, 12 Heidrich-Meisner finite-size scaling ratios, 8 Stolpp effective mass values, 10 Stolpp K_th ratios at saturation, 9 Stolpp ED high-magnetization points, and 9 Stolpp ED low-magnetization contrast points encoded as machine-readable TOML in published_transport_benchmarks.toml. Covers 8 papers from Shastry-Sutherland PRL 65 (1990) through Stolpp PRB 99 (2019).
 //! - Where stated: data/kubo_transport/validation/published_transport_benchmarks.toml
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-689
 //!
@@ -5517,7 +5517,7 @@
 //! - Last verified: 2026-02-13
 //! - Statement: Lifshitz-Point Mechanism Confirmation: The 30,778x D_S enhancement at B=3.0, alpha=1.1 is consistent with the Stolpp et al. (2019) Lifshitz-point mechanism. At alpha=1/4, the single-particle dispersion splits from one minimum (Q=pi) to two minima (+/-Q), doubling the number of energy carriers. The effective mass m*(alpha) diverges at the Lifshitz point then decreases, causing K_th ~ 1/sqrt(m*) to increase monotonically for alpha > 1/4 in the polarized regime. Stolpp ED at M=0.4 shows ~15x enhancement at alpha=1.2; our N=10, B=3.0 regime shows 30,778x enhancement. The magnitude difference arises from (a) our stronger polarization B=3.0 vs M=0.4, (b) continuous CD interpolation spanning a wider parameter range than discrete alpha, and (c) finite-size enhancement at N=10. Direction of effect (enhancement at high field, suppression at low field) matches Stolpp exactly.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/validate_j1j2_kubo.rs (Lifshitz_mechanism_direction comparison)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-690
 //!
@@ -5525,7 +5525,7 @@
 //! - Last verified: 2026-02-14
 //! - Statement: The Sedenionic Homotopy Integrator (SHI) models Kerr null geodesics by preserving algebraic coherence, mapping frame-dragging to sedenionic associativity drift via trilinear M3 gradients.
 //! - Where stated: `crates/gr_core/src/sedenion_geodesic.rs`, `reports/breakthrough_shi_geodesics_2026_02_14.md`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-691
 //!
@@ -5533,7 +5533,7 @@
 //! - Last verified: 2026-02-14
 //! - Statement: Intake batch RI-2026-02-14-hypercomplex-news currently has 34 entries with 31 resolved source mappings and exactly 3 unresolved mappings (RI-026, RI-027, RI-032), all tied to aggregator video payloads lacking direct DOI/arXiv links in the intake record.
 //! - Where stated: registry/research_intake_2026_02_14.toml
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-692
 //!
@@ -5541,7 +5541,7 @@
 //! - Last verified: 2026-02-14
 //! - Statement: Primary-source mapping candidate: RI-028 ('inside-out system' aggregator headline) maps to DOI 10.1126/science.adl2348.
 //! - Where stated: registry/hypercomplex_taxonomy_promotion.toml (HCTP-013), registry/research_intake_2026_02_14.toml (RI-028)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-693
 //!
@@ -5549,7 +5549,7 @@
 //! - Last verified: 2026-02-14
 //! - Statement: Primary-source mapping candidate: RI-030/RI-031 ('magic particles' coverage chain) maps to DOI 10.1103/PhysRevD.110.116016.
 //! - Where stated: registry/hypercomplex_taxonomy_promotion.toml (HCTP-014), registry/research_intake_2026_02_14.toml (RI-030, RI-031)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-694
 //!
@@ -5557,7 +5557,7 @@
 //! - Last verified: 2026-02-14
 //! - Statement: Primary-source mapping candidate: RI-033 maps to Nature DOI 10.1038/s41586-025-09917-9.
 //! - Where stated: registry/hypercomplex_taxonomy_promotion.toml (HCTP-015), registry/research_intake_2026_02_14.toml (RI-033)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-695
 //!
@@ -5565,7 +5565,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: E7 Chevalley-Tits structure constants satisfy the Jacobi identity for all non-degenerate root triples.
 //! - Where stated: `CURRENT::PATH crates/gororoba_algebra/src/lie/lyndon_basis.rs (LEGACY::PATH crates/algebra_core/src/lie/lyndon_basis.rs)` (test_jacobi_identity_exhaustive, test_chevalley_antisymmetry, test_chevalley_values_are_unit, test_extraspecial_cocycle_is_2_cocycle, test_simple_root_structure_constants)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-696
 //!
@@ -5573,7 +5573,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: 8D codomain lock of CD lattice projection reflects octonion subalgebra shadow: the projection pi(a,b)_i = round((a_i - b_i) * scale) always maps to Z^8 regardless of input dimension.
 //! - Where stated: `crates/lattice_filtration/src/basis_index.rs` (project_to_lattice), `crates/algebra_experimental/src/cd_external.rs` (test_c452_c453_codomain_and_index_coverage_all_dims)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-697
 //!
@@ -5581,7 +5581,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Optical database covers Rakic 11-metal canonical set (Au, Ag, Cu, Al, Be, Cr, Ni, Pd, Pt, Ti, W) with Drude-Lorentz fits for 0.1-6 eV range.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (beryllium_drude_lorentz through tungsten_drude_lorentz)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-698
 //!
@@ -5589,7 +5589,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: TiO (titanium monoxide) optical model exhibits metallic Drude response with large scattering rate (gamma=0.5 eV), consistent with bad-metal behavior.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (tio_optical)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-699
 //!
@@ -5597,7 +5597,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: SrTiO3 optical model reproduces 3-mode IR phonon spectrum with soft-mode enhancement near 11 meV (TO1 mode).
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (srtio3_optical)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-700
 //!
@@ -5605,7 +5605,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: LaTiO3 optical model exhibits Mott gap absorption at 0.2 eV with mid-IR spectral weight, consistent with correlated-insulator character.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (latio3_optical)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-701
 //!
@@ -5613,7 +5613,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Extended Drude with ScatteringModel::Constant reproduces standard constant-gamma Drude to machine precision (regression test).
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (test_constant_scattering_matches_regular_drude)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-702
 //!
@@ -5621,7 +5621,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Drude-Smith model with backscatter c<0 systematically suppresses DC metallic response (localization correction), reducing |eps.re| at low frequencies.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (test_drude_smith_negative_c_suppresses_dc)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-703
 //!
@@ -5629,7 +5629,7 @@
 //! - Last verified: 2026-02-18
 //! - Statement: Negative-d reservoir reduces terminal RelErr >= 5% at matched mean concurrency over (rho in {0.2..2.0}, eps in {1e-3..3e-2}) sweep on forced-diffusion surrogate.
 //! - Where stated: `crates/gororoba_cli_physics/src/bin/wavelet_bridging_sweep.rs`, output: `data/wavelet_bridging/results.toml`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-704
 //!
@@ -5637,7 +5637,7 @@
 //! - Last verified: 2026-02-18
 //! - Statement: Meltdown gating reduces p95 concurrency >= 10% vs fixed-eps baseline on the forced-diffusion surrogate across rho in {0.5, 1.0, 1.5, 2.0}. RelErr between adaptive and fixed surrogates is informational (not a PASS criterion) because the two models operate in fundamentally different compression regimes.
 //! - Where stated: `crates/gororoba_cli_physics/src/bin/meltdown_gating_sweep.rs`, output: `data/meltdown_gating/results.toml`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-705
 //!
@@ -5645,7 +5645,7 @@
 //! - Last verified: 2026-02-18
 //! - Statement: Unresolved wavelet energy has single-exponential ACF with R2 >= 0.50 for eps >= 1e-2 (concentrated-spectral regime) on the forced-diffusion surrogate. Small eps (1e-3, 3e-3) produce wide-band multi-exponential residuals (low R2, reported as INFO only); concentrated residuals at eps >= 1e-2 show clear single-exponential decay.
 //! - Where stated: `crates/gororoba_cli_physics/src/bin/wavelet_acf_calibration.rs`, output: `data/wavelet_acf/results.toml`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-706
 //!
@@ -5653,7 +5653,7 @@
 //! - Last verified: 2026-02-18
 //! - Statement: CHSH Bell parameter |S| > 2 is preserved under >= 19x Haar wavelet compression of coincidence time series when coarsest scaling coefficient is retained (software simulation). The Haar DWT scaling coefficient encodes the signal total exactly (c[0] = sum/sqrt(n)), so the correlation E(a,b) -- computed from aggregated counts -- is invariant under compression and delta_S = 0 exactly.
 //! - Where stated: `crates/gororoba_cli_physics/src/bin/chsh_wavelet_compression.rs`, output: `data/chsh_wavelet/results.toml`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-707
 //!
@@ -5661,7 +5661,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Stoichiometric WO3 is a wide-gap semiconductor (Eg ~2.6-3.0 eV) with no Drude free-carrier contribution, modeled by 5 Lorentz oscillators (3 phonon modes + 2 UV transitions) and eps_inf=4.5.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (wo3_optical, test_wo3_no_drude)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-708
 //!
@@ -5669,7 +5669,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Oxygen-deficient WO3-x (x~0.1) is a plasmonic conductor with omega_p=1.07 eV derived from carrier density n~1e21 cm^-3 and effective mass m*=1.2*m_e via omega_p = sqrt(n*e^2/(eps_0*m*)).
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (wo3_x_optical, test_wo3_x_plasmonic)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-709
 //!
@@ -5677,7 +5677,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Cesium tungsten bronze Cs0.33WO3 has anisotropic Drude response: c-axis omega_p=4.664 eV, gamma=0.217 eV, eps_inf=6.3; a-b plane omega_p=3.180 eV, gamma=0.335 eV, eps_inf=5.8 (Lynch & Hunter 1991).
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (cs_wo3_uniaxial, test_cs_wo3_uniaxial_anisotropy)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-710
 //!
@@ -5685,7 +5685,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: UniaxialOptical struct provides non-breaking tensor permittivity infrastructure with polycrystalline averaging formula eps_avg = (eps_par + 2*eps_perp)/3 for scalar Casimir calculations on randomly-oriented grains.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (UniaxialOptical impl, test_cs_wo3_polycrystalline_average)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-711
 //!
@@ -5693,7 +5693,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: CaWO4 (calcium tungstate, scheelite) is a wide-gap dielectric with band gap ~5.0 eV, no Drude carriers, transparent at 2 eV (eps.im < 0.5) and absorbing at 5 eV.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (cawo4_optical, test_cawo4_wide_gap_dielectric)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-712
 //!
@@ -5701,7 +5701,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: PbWO4 (lead tungstate) is a fast scintillator crystal (CMS ECAL) with band gap ~4.2 eV, no Drude carriers, eps_inf=4.8.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (pbwo4_optical, test_pbwo4_scintillator)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-713
 //!
@@ -5709,7 +5709,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Optical database expanded from 25 to 30 materials with 5 tungsten oxide family entries (WO3, WO3-x, Cs0.33WO3, CaWO4, PbWO4), all 15 aliases resolving correctly.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (list_materials, test_get_tungsten_oxide_materials, test_material_count_sprint44)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-714
 //!
@@ -5717,7 +5717,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: DrudeLorentzParams provides 9 derived optical property methods: refractive_index (convention-robust k>=0), reflectivity_normal (Fresnel at normal incidence), loss_function (-Im(1/eps)), optical_conductivity_re/im, skin_depth, absorption_coefficient, dc_conductivity (omega_p^2*eps_0/gamma), and plasma_edge_ev (bisection Re(eps)=0 search). Gold DC conductivity 1e7-1e8 S/m matches experimental 4.1e7 S/m.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (DrudeLorentzParams impl, 15 derived property tests)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-715
 //!
@@ -5725,7 +5725,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: UniaxialOptical provides 5 anisotropy-specific methods: birefringence (|n_par - n_perp|), dichroism (|k_par - k_perp|), anisotropy_ratio (eps_par/eps_perp), reflectivity_anisotropy (R_par - R_perp), polycrystalline_reflectivity ((R_par + 2*R_perp)/3). Cs0.33WO3 birefringence = 0.0035 at 0.5 eV confirms measurable anisotropy from Drude weight difference.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (UniaxialOptical impl, 6 anisotropy tests)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-716
 //!
@@ -5733,7 +5733,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Sign convention for Lorentz oscillator Im(eps) handled robustly: the +i*gamma*omega denominator convention (engineering) gives Im(eps)<0 in absorption bands. Derived properties use |Im(eps)| and |Im(sqrt(eps))| to produce physically meaningful non-negative quantities (k, alpha, sigma_1) regardless of convention choice. Verified across 7 materials at 4 frequency points.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (refractive_index, loss_function, optical_conductivity_re, test_reflectivity_sum_rule)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-717
 //!
@@ -5741,7 +5741,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Carrier density estimation from Drude parameters: n = eps_0*m**omega_p^2/e^2. Gold (m*=1.0, omega_p=8.45 eV) gives n ~ 5.9e28 m^-3, consistent with known gold carrier density 5.9e22 cm^-3. WO3-x (m*=1.2, omega_p=1.07 eV) gives n ~ 1e27 m^-3 consistent with x~0.03 oxygen vacancy doping.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (carrier_density, test_gold_carrier_density, test_wo3x_carrier_density)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-718
 //!
@@ -5749,7 +5749,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Matsubara frequency infrastructure for finite-temperature Casimir calculations: xi_n = 2*pi*n*k_B*T/hbar with xi_1 = 2.47e14 rad/s at 300K (0.163 eV). epsilon_at_matsubara() evaluates eps(i*xi_n) for Lifshitz formula summation. Gold eps(i*xi) monotonically decreasing with n (Drude divergence at n=0), silica eps(i*xi) bounded and modest.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (matsubara_frequencies, epsilon_at_matsubara, 5 Matsubara tests)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-719
 //!
@@ -5757,7 +5757,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Hagen-Rubens reflectivity R ~ 1 - 2*sqrt(2*omega*eps_0/sigma_dc) agrees with full Drude-Lorentz model to within 5% at 5 meV for gold. This validates the low-frequency metallic limit used for Casimir extrapolation below the optical data range.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (hagen_rubens_reflectivity, test_hagen_rubens_gold, test_hagen_rubens_vs_full_model)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-720
 //!
@@ -5765,7 +5765,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Casimir energy density between parallel plates via Lifshitz formula with Matsubara summation. casimir_energy_density() implements the finite-temperature Lifshitz formula with n_matsubara Matsubara frequencies and n_gauss Gauss-Legendre quadrature for transverse momentum integration. Gold-gold at 100 nm, 300K gives attractive energy of order 1e-4 to 1e-2 J/m^2.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (casimir_energy_density, casimir_force_density, test_casimir_gold_gold_attractive, test_casimir_distance_scaling)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-721
 //!
@@ -5773,7 +5773,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Casimir ideal energy E_ideal = -pi^2*hbar*c/(720*d^3) gives 4.33e-7 J/m^2 at d=100 nm (T=0 perfect conductors). The material correction factor eta = E_actual/E_ideal captures finite conductivity and temperature effects. At T=300K with gold plates, eta can exceed 1.0 due to thermal contributions from low-n Matsubara terms.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (casimir_energy_ideal, casimir_eta, test_casimir_energy_ideal, test_casimir_gold_gold_eta)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-722
 //!
@@ -5781,7 +5781,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Two-pass optical gap finder: optical_gap_ev() uses a minimum-finding first pass followed by upward threshold scan. This correctly handles materials with phonon absorption at low energy: it finds the absorption minimum in the transparent window between phonon and interband regions, then detects the band-edge onset above that minimum. Returns None when no transparent window exists (min alpha > threshold) or for metals.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (optical_gap_ev, 6 test_optical_gap_* tests)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-723
 //!
@@ -5789,7 +5789,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Lorentz oscillator absorption tails follow alpha ~ omega^2 * S * gamma / (n * omega_0^2 * c) at frequencies well below resonance. For WO3 (S=6, gamma=0.8 eV, omega_0=3.5 eV), this tail keeps alpha > 3.9e4 m^-1 across the entire 0.1-15 eV range. The Lorentz model fundamentally cannot produce the sharp absorption cutoff seen in real band edges (Urbach tail vs Lorentzian tail).
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (test_optical_gap_wo3, test_optical_gap_no_transparent_window)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-724
 //!
@@ -5797,7 +5797,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Effective electron count N_eff(omega_c) from partial f-sum rule: N_eff = (2*m_e)/(pi*e^2) * integral_0^omega_c sigma_1(omega) domega. For gold at 30 eV cutoff, N_eff > 1e27 m^-3 (approaching the known carrier density ~5.9e28 m^-3). N_eff is monotonically increasing with cutoff energy as more interband transitions are included.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (n_eff, f_sum_ratio, test_n_eff_gold_positive, test_n_eff_monotonic, test_f_sum_ratio_gold)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-725
 //!
@@ -5805,7 +5805,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Loss function spectral weight and plasmon identification: loss_spectral_weight() integrates omega*L(omega) to recover omega_p^2 via the loss function sum rule. plasmon_energy_ev() finds the bulk plasmon from the loss function peak, and screened_plasma_ev() finds the Re[eps]=0 crossing. For aluminum (nearly free-electron), plasmon and screened plasma energies agree within 3 eV.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (loss_spectral_weight, plasmon_energy_ev, screened_plasma_ev, test_loss_function_peak_gold, test_plasmon_vs_screened_plasma)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-726
 //!
@@ -5813,7 +5813,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Static dielectric constant eps_static = eps_inf + sum(S_j) for insulators (diverges for metals). Spectral weight partitioning: total weight = intraband (Drude) + interband (Lorentz) with both positive and summing to total f-sum. For gold, interband fraction is between 1% and 99% of total. Reststrahlen bands: strong phonon oscillators (S ~ 1) make Re[eps] < 0 above resonance, as confirmed by silica screened plasma crossing at < 1 eV.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (static_dielectric, intraband_weight, interband_weight, test_static_dielectric_silica, test_spectral_weight_partitioning, test_screened_plasma_dielectric_reststrahlen)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-727
 //!
@@ -5821,7 +5821,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Kramers-Kronig self-consistency validation via subtracted principal-value integral. The method kramers_kronig_error() reconstructs eps_1(omega) from eps_2(omega) using the KK relation with pole subtraction and analytic PV correction, then returns RMS relative error vs the model. The baseline is eps_inf (not 1.0) because eps_inf represents high-energy spectral weight above the cutoff. For Drude-Lorentz models (causal by construction), the error measures numerical quadrature accuracy. Gold and silica both achieve < 50% RMS error at 50 eV cutoff with 20k integration steps, improving with finer grids.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (kramers_kronig_error, test_kk_consistency_gold, test_kk_consistency_silica, test_kk_consistency_improves_with_resolution)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-728
 //!
@@ -5829,7 +5829,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Tauc plot analysis for band-gap spectroscopy: tauc_gap_ev(exponent) extracts direct (exponent=2) and indirect (exponent=0.5) band gaps by linear regression on the steepest segment of (alpha*hv)^exponent vs hv. CaWO4 yields a Tauc direct gap in the UV range (1-10 eV). Metals return None (correct: no gap). WO3 yields both direct and indirect gaps. Penn model gap E_g_Penn = omega_p_eff / sqrt(eps_static - 1) agrees with the single-oscillator prediction within 0.1 eV for a simple test case (E_g = 5/sqrt(2) = 3.536 eV).
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (tauc_gap_ev, penn_gap_ev, test_tauc_direct_gap_cawo4, test_tauc_metal_none, test_tauc_direct_vs_indirect, test_penn_gap_consistency)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-729
 //!
@@ -5837,7 +5837,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Band-gap spectroscopy suite complete: Urbach energy (effective exponential tail parameter, caveat: Lorentz tails are algebraic), absorption onset (energy where alpha reaches fraction of maximum), and JDOS proxy (omega * eps_2, peaks near Lorentz resonances). Urbach energy returns None for metals, positive finite for dielectrics with absorption. JDOS is non-negative everywhere and peaks near oscillator resonances (silica: JDOS at 10.4 eV >> JDOS at 0.5 eV). 14 new tests bring optical database to 133 total tests.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (urbach_energy_ev, absorption_onset_ev, joint_density_of_states, 14 Part 7 tests)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-730
 //!
@@ -5845,7 +5845,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Temperature-dependent Drude-Lorentz via Bose-Einstein phonon broadening: at_temperature(T, debye_t_k) modifies oscillator damping as gamma_j(T) = gamma_j(0) * coth(omega_0j / (2*k_B*T)) for phonon oscillators, and gamma_Drude(T) = gamma_0 * (1 + (T/T_Debye)^2) via Bloch-Gruneisen for the free-electron Drude term. Oscillator strengths and frequencies are preserved (broadening only). At T -> 0 K, coth -> 1 and gamma_j -> gamma_j(0) (correct low-T limit). At 300 K, Drude damping increases by factor (1 + (300/T_D)^2), which for gold (T_D=170 K) gives ~4.1x broadening. Silica at 600 K has higher Im[eps] than at 300 K across all frequencies (more absorptive when hot).
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (at_temperature, test_thermal_broadening_increases_damping, test_thermal_broadening_preserves_oscillator_strength, test_thermal_broadening_low_t_limit, test_thermal_broadening_drude_bloch_gruneisen, test_hot_silica_more_absorptive)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-731
 //!
@@ -5853,7 +5853,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Effective medium theory (EMT) composite wrappers on DrudeLorentzParams: maxwell_garnett_mix() and bruggeman_mix() compute effective dielectric functions for two-component composites. MG limits: f=0 gives host, f=1 gives inclusion (within numerical precision). Bruggeman is symmetric under component exchange: bruggeman(A, B, f) = bruggeman(B, A, 1-f). Both methods delegate to the existing crate::effective_medium module, providing a fluent API on DrudeLorentzParams without code duplication.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (maxwell_garnett_mix, bruggeman_mix, test_maxwell_garnett_limits, test_bruggeman_symmetric, test_bruggeman_interpolates)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-732
 //!
@@ -5861,7 +5861,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Derived optical quantities: optical_effective_mass() extracts m*/m_e from Drude omega_p and carrier density via m* = n*e^2/(eps_0*omega_p^2*m_e), returning None for dielectrics. dielectric_contrast() computes (eps_1 - eps_2)/(eps_1 + eps_2), appearing in Casimir proximity corrections and surface plasmon dispersion. plasma_screening_ratio() gives omega_p_bare/screened_plasma_ev -- for the eps_inf=1 parameterization with explicit Lorentz oscillators, this ratio is < 1 because interband tails above resonance push the zero-crossing above the bare Drude frequency. Gold screening ratio ~ 0.85. 14 new Part 8 tests bring optical database to 147 total tests, 3673 workspace tests.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (optical_effective_mass, dielectric_contrast, plasma_screening_ratio, 14 Part 8 tests)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-733
 //!
@@ -5869,7 +5869,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Group velocity dispersion (GVD) from Drude-Lorentz models: gvd_beta2() computes d^2k/domega^2 = (1/c)*d(n_g)/domega via finite differences on the group refractive index. Silica at 3 eV (visible) has positive beta_2 (normal dispersion, consistent with known silica dispersion). GVD varies with frequency across the 1-5 eV range. dispersion_regime() classifies as normal (+1), anomalous (-1), or zero (0). zero_dispersion_omega() searches for beta_2=0 crossing via linear interpolation. Conversion to ultrafast units: gvd_fs2_per_mm() = beta_2 * 1e27.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (gvd_beta2, gvd_fs2_per_mm, dispersion_regime, zero_dispersion_omega, test_gvd_silica_normal_at_visible, test_gvd_fs2_mm_conversion, test_gvd_varies_with_frequency, test_dispersion_regime_metal_anomalous, test_zero_dispersion_returns_none_for_narrow_range)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-734
 //!
@@ -5877,7 +5877,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Third-order nonlinear susceptibility from Miller's rule: chi3_miller_estimate() computes chi^(3) ~ delta * |chi^(1)|^4 where delta = 4.52e-24 m^2/V^2 (Miller delta). Always positive. Metals have chi^(3) >> dielectrics (100x+ for gold vs silica at 2 eV) because |chi^(1)| = |eps-1| is much larger for metals. Kerr n_2 = 3*chi3/(4*eps_0*c*n^2); for silica at 1.55 eV, n_2 is within 1e-25 to 1e-15 m^2/W (order-of-magnitude agreement with experimental ~2.2e-20 m^2/W). The proportionality between n_2 and chi3/(n^2) is verified to <1e-10 relative error.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (chi3_miller_estimate, kerr_n2_estimate, test_chi3_miller_positive, test_chi3_metal_larger_than_dielectric, test_kerr_n2_silica_order_of_magnitude, test_kerr_n2_proportional_to_chi3)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-735
 //!
@@ -5885,7 +5885,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Two-photon absorption from Sheik-Bahae model: beta_tpa_estimate() uses beta = K*sqrt(E_p)*F_2(x)/(n^2*E_g^3) where x = 2*hv/E_g, E_p = 21 eV (Kane energy), F_2(x) = (2x-1)^(3/2)/(2x)^5 for x > 0.5. Returns None for metals (no Tauc gap), and None below two-photon threshold (2*hv < E_g). K = 1940 cm/GW = 1.94e-8 m/W. The model gives order-of-magnitude estimates for wide-gap materials; accuracy is limited by the Lorentz tail issue in Tauc gap extraction. 12 new Part 9 tests bring optical database to 159 total tests, 3685 workspace tests.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (beta_tpa_estimate, test_beta_tpa_metal_none, test_beta_tpa_below_threshold_none, test_beta_tpa_above_threshold_positive)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-736
 //!
@@ -5893,7 +5893,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Surface plasmon polariton (SPP) dispersion from Drude-Lorentz: spp_wavevector() computes k_spp = (omega/c)*sqrt(eps_m*eps_d/(eps_m+eps_d)). For gold at 2 eV in vacuum, Re[k_spp] > omega/c (confined beyond light line). Im[k_spp] > 0 (lossy propagation). spp_propagation_length() = 1/(2*Im[k_spp]) gives ~1-100 um for gold at 1.96 eV. Higher eps_d (glass vs vacuum) confines the SPP more to the metal surface, reducing propagation length.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (spp_wavevector, spp_propagation_length, test_spp_wavevector_gold_larger_than_light_line, test_spp_wavevector_has_imaginary_part, test_spp_propagation_length_gold, test_spp_higher_eps_d_longer_propagation)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-737
 //!
@@ -5901,7 +5901,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: LSPR and evanescent fields: lspr_frequency() finds the Frohlich condition Re[eps_m(omega)] = -2*eps_d for spherical nanoparticles. Gold LSPR at 5.93 eV in our eps_inf=1 DL model (experimental ~2.5 eV requires full d-band). LSPR redshifts in higher-index media (glass vs vacuum). evanescent_decay_length() = c/(omega*sqrt(-Re[eps])) gives 1-10000 nm for metals; returns None for dielectrics with Re[eps] > 0. Dielectrics correctly return None for both LSPR and evanescent decay.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (lspr_frequency, evanescent_decay_length, test_lspr_gold_in_vacuum, test_lspr_redshift_with_higher_eps_d, test_lspr_dielectric_none, test_evanescent_decay_length_gold, test_evanescent_decay_dielectric_none)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-738
 //!
@@ -5909,7 +5909,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Fresnel interface optics from Drude-Lorentz: fresnel_rs() and fresnel_rp() compute complex amplitude reflection coefficients via Snell's law and complex cos(theta_t). At normal incidence (theta=0), |r_s|^2 = |r_p|^2 = reflectivity_normal() (verified to < 1e-10). At grazing incidence (theta~86 deg), R_s and R_p both approach 1. brewster_angle() = atan(n2/n1) returns None for absorbing metals (Im[n] > 1% of Re[n]) and valid angles for dielectrics (silica: 40-70 deg). R_p has a minimum at the Brewster angle, verified less than both normal and steep-angle reflectance. 14 new Part 10 tests bring optical database to 173 total tests, 3699 workspace tests.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (fresnel_rs, fresnel_rp, brewster_angle, reflectance_angular, test_fresnel_normal_incidence_matches_reflectivity, test_fresnel_total_internal_reflection, test_brewster_angle_silica, test_brewster_angle_metal_none, test_fresnel_rp_minimum_near_brewster)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-739
 //!
@@ -5917,7 +5917,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Gold Rakic 6-oscillator model (gold_rakic_ld): 5 Lorentz oscillators at 0.415, 0.830, 2.969, 4.304, 13.32 eV plus Drude (omega_p_eff=7.87 eV, gamma=0.053 eV) from Rakic et al. Appl. Opt. 37, 5271 (1998). Conversion: S_j = f_j * omega_p^2 / omega_0j^2. Gives LSPR at ~2.6 eV in vacuum (Frohlich condition), matching experimental ~2.5 eV. This is dramatically closer to experiment than the 2-oscillator model (5.93 eV). The low-energy oscillators at 0.415 and 0.830 eV with large S values (~11.4 and ~1.2) capture the d-band contribution that pushes Re[eps] positive at visible frequencies. Database expanded from 30 to 31 materials. 7 new tests, 180 optical tests total, 3706 workspace tests.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (gold_rakic_ld, test_gold_rakic_5_oscillators, test_gold_rakic_effective_plasma_frequency, test_gold_rakic_lspr_near_experimental, test_gold_rakic_lspr_closer_to_experiment_than_2osc, test_gold_rakic_metallic_in_visible, test_gold_rakic_database_lookup, test_gold_rakic_reflectivity_high_in_ir)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-740
 //!
@@ -5925,7 +5925,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Magneto-optical Voigt tensor and Faraday rotation from Drude-Lorentz: voigt_eps_xy() computes the off-diagonal dielectric tensor element eps_xy = i*omega_c*omega_p^2 / (omega*(omega^2 + i*gamma*omega - omega_c^2)) where omega_c = e*B/(m*) is the cyclotron frequency. Faraday rotation theta_F = omega*Re[eps_xy]/(2*n*c) gives the polarization rotation per unit length. For gold at 1 eV, B=1 T: |eps_xy| ~ 1e-4 (small but nonzero), theta_F ~ 1e3 rad/m. Both scale linearly with B-field for small B. Dielectrics correctly return None (no free carriers). Extended Drude materials extract gamma from ScatteringModel::gamma_at_ev(0.0) for DC scattering rate.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (voigt_eps_xy, faraday_rotation, test_voigt_eps_xy_gold_nonzero, test_voigt_eps_xy_proportional_to_b, test_faraday_rotation_gold_nonzero, test_faraday_rotation_dielectric_none)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-741
 //!
@@ -5933,7 +5933,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Drude transport diagnostics from optical parameters: dc_resistivity() = gamma/(eps_0*omega_p^2) gives bulk resistivity in Ohm*m (gold: ~2.2e-8, literature 2.44e-8). scattering_time() = HBAR_EV_S/gamma gives carrier lifetime (gold: ~1.2e-14 s). carrier_mobility(n) = e*tau/m* estimates Hall mobility (gold at n=5.9e28 m^-3: ~30-50 cm^2/V/s). Resistivity and mobility are self-consistent: rho and 1/(n*e*mu) agree within 20% (exact agreement requires knowing m* independently). All three return None for dielectrics (no Drude term). Extended Drude uses ScatteringModel::gamma_at_ev(0.0).
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (dc_resistivity, scattering_time, carrier_mobility, test_dc_resistivity_gold, test_dc_resistivity_dielectric_none, test_scattering_time_gold, test_carrier_mobility_gold, test_carrier_mobility_dielectric_none, test_resistivity_mobility_consistency)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-742
 //!
@@ -5941,7 +5941,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Drude weight D = (pi/2)*omega_p^2*eps_0 quantifies the spectral weight of the free-carrier response: drude_weight() returns D in SI units (C^2/(kg*m^3)). For gold: D ~ 2.5e30, proportional to omega_p^2 (verified: 4x omega_p gives 16x D). plasma_frequency_from_density(n, m_star_ratio) is a static method computing omega_p = sqrt(n*e^2/(eps_0*m_star*m_e)) / EV_TO_RADS in eV, enabling carrier density to plasma frequency conversion. Gold (n=5.9e28/m^3, m*=1): omega_p ~ 9.0 eV (matches Rakic). Dielectrics return None for drude_weight (no free carriers). 15 new Part 11 tests, 202 optical tests total, 3727 workspace tests.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (drude_weight, plasma_frequency_from_density, test_drude_weight_gold_positive, test_drude_weight_dielectric_none, test_drude_weight_proportional_to_omega_p_sq, test_plasma_frequency_from_density)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-743
 //!
@@ -5949,7 +5949,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Spectroscopic ellipsometry from Drude-Lorentz: psi_delta(omega, theta_i) computes the ellipsometric ratio rho = r_p/r_s = tan(psi)*exp(i*delta) from Fresnel coefficients. At normal incidence, psi = pi/4 (r_s = r_p symmetry). At oblique incidence on metals, delta deviates from 0 (phase shift between p and s polarizations). For dielectrics near the Brewster angle, psi -> 0 (r_p -> 0). Kirchhoff's law emissivity = 1 - R(omega) at normal incidence: metals (gold) have emissivity < 0.2, dielectrics (silica) have emissivity > 0.8 in transparent region. Emissivity + reflectivity = 1 verified to < 1e-12.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (psi_delta, emissivity, test_psi_delta_normal_incidence, test_psi_delta_oblique_gold, test_psi_delta_dielectric_brewster, test_emissivity_metal_low, test_emissivity_dielectric_higher, test_emissivity_plus_reflectivity_equals_one)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-744
 //!
@@ -5957,7 +5957,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Thermal emission spectroscopy: spectral_emittance(omega, T) = emissivity(omega) * B(omega, T) where B is the Planck function in angular frequency units. Returns 0 at T=0 (no thermal photons), positive at T=300K, and increases with temperature (verified 300K -> 600K). Integrated emissivity eta = integral[e(omega)*B] / integral[B] over a frequency range: gold has lower integrated emissivity than silica (verified). The trapezoidal integration uses 500 points over 0.05-5 eV range.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (spectral_emittance, integrated_emissivity, test_spectral_emittance_zero_at_zero_temp, test_spectral_emittance_positive_at_room_temp, test_spectral_emittance_increases_with_temp, test_integrated_emissivity_metal_vs_dielectric)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-745
 //!
@@ -5965,7 +5965,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Epsilon-near-zero (ENZ) and reststrahlen physics: enz_frequency() finds where Re[eps(omega)] = 0 via 2000-point scan + 60-iteration bisection. Gold ENZ = screened plasma frequency (5-12 eV range). enz_group_velocity() = 1/n_g at the ENZ point; physically this can be subluminal or superluminal depending on dispersion. reststrahlen_band() identifies the (omega_TO, omega_LO) boundaries for polar dielectrics using the strongest Lorentz oscillator and the Lyddane-Sachs-Teller (LST) relation: omega_LO^2/omega_TO^2 = eps_static/eps_inf. SrTiO3 has a clear reststrahlen band at IR frequencies; pure Drude metals return None. LST ratio verified self-consistent to < 1%. 16 new Part 12 tests, 218 optical tests total, 3743 workspace tests.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (enz_frequency, enz_group_velocity, reststrahlen_band, test_enz_frequency_gold, test_enz_frequency_dielectric_none, test_enz_group_velocity_gold, test_reststrahlen_band_srtio3, test_reststrahlen_band_metal_none, test_reststrahlen_lst_consistency)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-746
 //!
@@ -5973,7 +5973,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Electron energy loss spectroscopy (EELS) from Drude-Lorentz: surface_loss_function() = Im[-1/(1+eps)] probes surface plasmon excitations. The surface loss function peaks (in absolute value) at the surface plasmon frequency where Re[eps] ~ -1, distinct from the bulk plasmon peak at Re[eps] ~ 0. For gold, the surface loss peak is in the 1-15 eV range. volume_loss_weighted() = omega * loss_function() gives the EELS cross-section weighting from the fluctuation-dissipation theorem. Both are computable for any DL parameterization.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (surface_loss_function, volume_loss_weighted, test_surface_loss_function_gold_nonzero, test_surface_loss_peak_near_surface_plasmon, test_volume_loss_weighted_proportional_to_omega)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-747
 //!
@@ -5981,7 +5981,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Photonic local density of states (LDOS) near planar surfaces: purcell_factor() = 1 + 3/(4*(kd)^3) * Im[(eps-1)/(eps+1)] gives the spontaneous emission rate enhancement in the near-field regime (kd << 1). At 10nm from gold at 2 eV, |F_P - 1| >> 0.1 (strong LDOS modification). At 1mm, F_P -> 1 (free-space limit recovered). lamb_shift_fractional() = -3/(8*(kd)^3) * Re[(eps-1)/(eps+1)] gives the Casimir-Polder frequency shift, which decreases with distance (1/d^3 scaling).
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (purcell_factor, lamb_shift_fractional, test_purcell_factor_near_gold_surface, test_purcell_factor_far_from_surface, test_purcell_factor_dielectric_near_one, test_lamb_shift_gold_nonzero, test_lamb_shift_decreases_with_distance)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-748
 //!
@@ -5989,7 +5989,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Absorption engineering toolkit: absorption_per_pass() = 1 - exp(-alpha*d) computes single-pass absorption via Beer-Lambert law. Gold at 2 eV: 10nm absorbs partially (0 < A < 1), 100nm absorbs more. optimal_absorber_thickness() = 1/alpha gives the thickness for 63.2% absorption (one penetration depth). impedance_mismatch() = |Z_surface/Z_0 - 1| quantifies how far from perfect absorption: metals have large mismatch (high reflectivity), vacuum has mismatch = 0 exactly, dielectrics intermediate. 14 new Part 13 tests, 232 optical tests, 3766 workspace tests total.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (absorption_per_pass, optimal_absorber_thickness, impedance_mismatch, test_absorption_per_pass_thin_film, test_absorption_per_pass_transparent, test_optimal_absorber_thickness_gold, test_impedance_mismatch_metal_large, test_impedance_mismatch_dielectric_smaller, test_impedance_mismatch_zero_for_n_equals_1)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-749
 //!
@@ -5997,7 +5997,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Tabulated real-axis optical data (Johnson & Christy 1972, PRB 6 4370) for Au/Ag/Cu undergoes Kramers-Kronig transform to the imaginary-frequency axis via three-region integration: (1) trapezoidal over tabulated range 0.64-6.60 eV, (2) UV tail 1/omega^3 (Thomas-Reiche-Kuhn free-electron), analytical via partial fractions: eps2_max*omega_max^3/xi^2 * [1/omega_max - pi/(2*xi) + arctan(omega_max/xi)/xi], (3) IR Drude tail analytical: omega_p^2*gamma/(xi^2-gamma^2)*[arctan(omega_min/gamma)/gamma - arctan(omega_min/xi)/xi]. eps(i*xi) is verified monotone-decreasing, approaches 1 at xi >> omega_p (500 eV test), Au eps(i*xi_1) > 50 (metallic), Ag eps > Au eps at low xi (lower scattering rate gamma=0.021 vs 0.072 eV). Full Lifshitz formula via casimir_lifshitz_energy_tabulated() verified negative (attractive) at 100 nm and bounded above 1% of ideal. 9 unit tests pass. Physical properties table (Mohs, Debye T, bulk modulus, density, lattice constant) covers 22 materials.
 //! - Where stated: `crates/materials_core/src/tabulated_nk.rs` (TabulatedNK, epsilon_imaginary_kk, casimir_lifshitz_energy_tabulated, get_physical_properties, gold_jc_nk, silver_jc_nk, copper_jc_nk, 9 tests)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-750
 //!
@@ -6005,7 +6005,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Oscillator and Drude quality factors: oscillator_quality_factor() = omega_0/gamma for the strongest Lorentz oscillator measures resonance sharpness (long-lived phonon or exciton). SrTiO3 has Q > 1 (underdamped phonons). drude_quality(omega) = omega/gamma measures coherent carrier response cycles before scattering: gold at 1 eV has Q >> 10 (good metal). Dielectrics return None for Drude Q. SPP figure of merit = Re[k_spp]/(2*Im[k_spp]) counts propagation wavelengths: gold FoM > 1 at 1.5 eV, increases at lower frequencies (less loss).
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (oscillator_quality_factor, drude_quality, figure_of_merit_spp, test_oscillator_quality_factor_srtio3, test_oscillator_quality_factor_no_oscillators, test_drude_quality_gold_high_in_ir, test_drude_quality_dielectric_none, test_fom_spp_gold_positive, test_fom_spp_increases_with_lower_frequency)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-751
 //!
@@ -6013,7 +6013,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Spectral weight and optical path length: spectral_weight_window() integrates Re[sigma(omega)] over a frequency window via trapezoidal rule. Gold spectral weight positive, wider window gives larger weight (verified). optical_path_length() = (Re[n]*d, Im[n]*d) determines interference: silica OPL ~ 1.46*d at visible. Im[OPL] < Re[OPL] for transparent materials.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (spectral_weight_window, optical_path_length, test_spectral_weight_window_positive, test_spectral_weight_window_wider_is_larger, test_optical_path_length)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-752
 //!
@@ -6021,7 +6021,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Coherence and penetration diagnostics: coherence_length() = c/(n*delta_omega) gives maximum interference path difference. Finite bandwidth yields finite lc; monochromatic (delta_omega=0) gives infinite lc. penetration_depth_ratio() = delta/lambda classifies material opacity: metals (gold) have ratio < 1 (opaque within one wavelength), vacuum has ratio = infinity (fully transparent). 13 new Part 14 tests, 245 optical tests total, 3779 workspace tests.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (coherence_length, penetration_depth_ratio, test_coherence_length_finite, test_coherence_length_monochromatic_infinite, test_penetration_depth_ratio_metal_small, test_penetration_depth_ratio_dielectric_large)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-753
 //!
@@ -6029,7 +6029,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Solar-weighted optical metrics from Drude-Lorentz: solar_absorptance() integrates emissivity(omega) weighted by a 5800K blackbody envelope over the atmospheric window (0.3-4.0 eV, AM1.5G approximation). Gold has solar absorptance < 0.5 (high reflectivity), silica > 0.5 (low reflectivity). solar_reflectance() = 1 - solar_absorptance() verified to < 1e-10. antireflection_thickness() computes quarter-wave AR coating d = lambda/(4*sqrt(n_sub)) for destructive interference (silica: 50-500 nm at visible).
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (solar_absorptance, solar_reflectance, antireflection_thickness, test_solar_absorptance_metal_low, test_solar_absorptance_dielectric_high, test_solar_reflectance_complement, test_antireflection_thickness_positive)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-754
 //!
@@ -6037,7 +6037,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Wien displacement law and luminous reflectance: wien_peak_ev(T) = 2.821*k_B*T gives the peak thermal emission energy. At 300K: ~0.07 eV (mid-IR), at 5800K: ~1.4 eV (near-IR/visible). Peak energy is exactly proportional to temperature. wien_peak_omega(T) returns the same in rad/s. luminous_reflectance() weights reflectivity by a Gaussian approximation to the CIE photopic luminosity function (center 2.23 eV = 555 nm, sigma 0.34 eV). Gold has high luminous reflectance (> 0.5), silica low (< 0.3).
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (wien_peak_ev, wien_peak_omega, luminous_reflectance, test_wien_peak_room_temperature, test_wien_peak_sun, test_wien_peak_proportional_to_temperature, test_wien_peak_omega_positive, test_luminous_reflectance_gold_high, test_luminous_reflectance_silica_low, test_luminous_reflectance_gold_vs_silica)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-755
 //!
@@ -6045,7 +6045,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Selective emitter efficiency for thermophotovoltaics: selective_emitter_efficiency() computes the fraction of thermal emission above a photovoltaic gap frequency, weighted by emissivity and Planck function. Efficiency is between 0 and 1 (verified). Lower gap energy gives higher efficiency (more photons above threshold). 13 new Part 15 tests, 258 optical tests total, 3793 workspace tests (excluding lbm_vulkan compile issue from separate work).
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (selective_emitter_efficiency, test_selective_emitter_efficiency_bounds, test_selective_emitter_higher_gap_lower_efficiency)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-756
 //!
@@ -6053,7 +6053,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Splicing Ordal (1985) far-IR tabulated data (0.004-0.62 eV for Au, 0.022-0.62 eV for Cu) with Johnson & Christy (1972) visible/UV data into TabulatedNK via const arrays replaces the approximate Drude/1-omega IR tail in the KK transform with real measured optical data, covering the dominant Matsubara pole region (k_B*T ~ 25 meV at 300 K) without requiring an analytical model parameter. Au splice: 86 points total (37 Ordal IR + 49 J&C). Cu splice: 98 points total (49 Ordal IR + 49 J&C). Tests verify monotone energy grids, correct coverage bounds, KK eps(i*xi) monotone decreasing, Drude IR tail within 15% of spliced reference at xi_1 (0.163 eV*EV_TO_RADS), and Casimir energy negative and within 25% of J&C+Drude reference.
 //! - Where stated: `crates/materials_core/src/tabulated_nk.rs` (SPLICED_AU_EV/N/K, SPLICED_CU_EV/N/K, gold_ordal_jc_nk, copper_ordal_jc_nk, test_spliced_au_energy_monotone, test_spliced_cu_energy_monotone, test_spliced_au_coverage, test_spliced_cu_coverage, test_get_tabulated_nk_ordal_variants, test_spliced_au_kk_ir_tail_quantified, test_spliced_au_kk_monotone, test_casimir_spliced_au_attractive)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-757
 //!
@@ -6061,7 +6061,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Photonic waveguide metrics (numerical aperture, V-parameter, confinement factor, effective mode area, modal birefringence, critical bend radius, chromatic dispersion) on DrudeLorentzParams enable fiber/waveguide design from the same dielectric model used for Casimir physics. The Marcuse Gaussian mode field approximation w/a = 0.65 + 1.619/V^1.5 + 2.879/V^6 provides single-mode cutoff at V=2.405. 8 tests verify NA positivity, V-parameter existence, confinement bounds, mode area scaling, birefringence for absorbing materials, and dispersion finiteness.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (numerical_aperture, v_parameter, confinement_factor, effective_mode_area, modal_birefringence, bend_loss_critical_radius, chromatic_dispersion_ps_nm_km)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-758
 //!
@@ -6069,7 +6069,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Plasmonic sensing and SERS metrics (field enhancement, SERS enhancement factor, refractive index sensitivity, figure of merit, decay rate enhancement, quantum efficiency near surface, hot-electron generation proxy) provide quantitative nanoparticle sensor design from the Drude-Lorentz dielectric function. SERS enhancement = |E/E_0|^4 from quasistatic Clausius-Mossotti polarizability. 7 tests verify field enhancement > 1 at LSPR, SERS = FE^4, nonzero RI sensitivity, decay rate modification, QE bounds, and hot-electron proxy positivity.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (field_enhancement_factor, sers_enhancement_factor, refractive_index_sensitivity, figure_of_merit_sensor, decay_rate_enhancement, quantum_efficiency_near_surface, hot_electron_generation_proxy)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-759
 //!
@@ -6077,7 +6077,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Thin-film interference and coating metrics (Airy-formula reflectance/transmittance, phase shift, constructive interference orders, Fabry-Perot finesse, CIE 1931 chromaticity coordinates) provide coherent thin-film optics from the DL model. The Airy formula handles absorbing films via complex refractive index with proper phase accounting. CIE color coordinates use Gaussian approximations for x-bar, y-bar, z-bar color-matching functions. 6 tests verify R in [0,1], energy conservation R+T <= 1, positive phase, multiple interference orders for thick films, positive finesse, and valid chromaticity coordinates.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (thin_film_reflectance, thin_film_transmittance, thin_film_phase_shift, constructive_interference_orders, fabry_perot_finesse, color_coordinates_cie)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-760
 //!
@@ -6085,7 +6085,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Phonon-polariton and IR spectroscopy methods (surface phonon-polariton frequency, polariton wavevector, polariton group velocity, IR activity proxy, isotope shift estimate, Bose-Einstein occupation) connect the DL oscillator model to infrared nanophotonics. SPhP frequency found by bisection where Re[eps] = -eps_d in the Reststrahlen band. Isotope shift follows harmonic approximation delta_omega/omega = 1 - 1/sqrt(M_new/M_old). 6 tests verify SPhP in IR range for SrTiO3, subluminal group velocity, positive IR activity, isotope shift ~0.293 for mass ratio 2, and Bose-Einstein occupation limits (0 at T=0, >>1 at high T).
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (surface_phonon_polariton_frequency, phonon_polariton_wavevector, polariton_group_velocity, ir_activity_proxy, isotope_shift_estimate, bose_einstein_occupation)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-761
 //!
@@ -6093,7 +6093,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Photoconductivity and carrier dynamics methods (plasma frequency shift, photo-induced absorption, transient reflectivity change, Drude-Smith mobility, carrier recombination time) connect the DL model to ultrafast pump-probe spectroscopy. Drude-Smith model mu_DS = mu_Drude*(1+c) captures carrier localization (c=-1: complete backscattering, c=0: ballistic). Transient reflectivity computed by finite-difference of reflectivity with shifted plasma frequency. 6 tests verify positive plasma shift for carrier injection, nonzero Delta R/R, zero mobility at c=-1, correct recombination time arithmetic, and infinite lifetime at zero generation rate.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (plasma_frequency_shift, photo_induced_absorption, transient_reflectivity_change, drude_smith_mobility, carrier_recombination_time)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-762
 //!
@@ -6101,7 +6101,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Mie and Rayleigh scattering methods (Clausius-Mossotti polarizability, Rayleigh cross section, scattering efficiency, Mie extinction efficiency, scattering albedo, absorption cross section, radiation pressure efficiency) derive nanoparticle scattering from the DL dielectric function. The Clausius-Mossotti factor K=(eps-1)/(eps+2) encodes optical contrast with vacuum. Rayleigh cross section scales as a^6 * k^4. In the Rayleigh limit g=0, radiation pressure efficiency equals extinction efficiency. 7 tests verify a^6 scaling, positive cross sections, albedo in [0,1], and Q_pr = Q_ext.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (polarizability_clausius_mossotti, rayleigh_cross_section, rayleigh_scattering_efficiency, mie_extinction_efficiency, mie_scattering_albedo, absorption_cross_section_mie, radiation_pressure_efficiency)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-763
 //!
@@ -6109,7 +6109,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Fluctuation electrodynamics and noise methods (fluctuation-dissipation spectral density, thermal noise power density, zero-point energy, Planck spectral energy density, near-field thermal emission, photon tunneling probability, Casimir-Lifshitz force integrand) connect the DL model to thermal radiation and Casimir physics. The fluctuation-dissipation theorem S(omega,T) = (2*hbar*omega/pi)*Im[eps]*(n_BE+1/2) links material loss to thermal noise. Near-field emission is enhanced by 1/(kd)^2. The Casimir integrand uses epsilon at imaginary frequency. 10 tests verify positivity, temperature dependence, ZPE = hbar*omega/2, near-field enhancement, tunneling bounds, and force decay with distance.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (fluctuation_dissipation_spectral, thermal_noise_power_density, zero_point_energy_density, spectral_energy_density, near_field_thermal_emission, photon_tunneling_probability, fluctuation_induced_force_integrand)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-764
 //!
@@ -6117,7 +6117,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Anharmonic and multiphonon methods (anharmonic linewidth, multiphonon absorption, two-phonon density of states, infrared combination bands) extend the harmonic DL model to temperature-dependent and multi-phonon effects. Anharmonic linewidth gamma(T) = gamma_0 + A*(1+2*n_BE(omega/2,T)) captures cubic decay. Multiphonon absorption uses exponential tail above one-phonon cutoff. Oscillator frequencies are in eV (matching omega_0_ev field). 7 tests verify temperature dependence, zero below cutoff, DOS peaks, sorted bands, and None for invalid indices.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (anharmonic_linewidth, multiphonon_absorption, two_phonon_density_of_states, infrared_combination_bands)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-765
 //!
@@ -6125,7 +6125,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Photonic band gap methods (quarter-wave stack gap, peak reflectivity, band gap ratio, Bragg wavelength, group velocity at band edge, omnidirectional gap condition) derive 1D photonic crystal properties from the DL refractive index. Gap width delta_omega/omega_0 = (4/pi)*arcsin(|n_h-n_l|/(n_h+n_l)). Peak reflectivity increases monotonically with N. Group velocity v_g ~ sqrt(1-R) vanishes at the band edge. 6 tests verify symmetric gap, reflectivity increase, positive gap ratio, Bragg lambda > 2*period, and v_g decrease with pairs.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (quarter_wave_stack_gap, quarter_wave_stack_reflectivity, photonic_band_gap_ratio, bragg_wavelength, group_velocity_at_band_edge, omnidirectional_gap_condition)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-766
 //!
@@ -6133,7 +6133,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Electrooptic and acoustooptic methods (Pockels delta_n, Kerr electrooptic, half-wave voltage, Franz-Keldysh absorption, photoelastic delta_n, acoustooptic figure of merit) connect the DL model to applied-field phenomena. Pockels effect delta_n = -0.5*n^3*r*E is linear in field. Kerr effect is quadratic. Franz-Keldysh gives sub-gap absorption via tunneling. Acoustooptic M2 = n^6*p^2/(rho*v^3) scales as p^2. 7 tests verify linearity (Pockels), quadratic scaling (Kerr), positive V_pi, FK=0 above gap, strain proportionality, and M2 p^2 scaling.
 //! - Where stated: `crates/materials_core/src/optical_database.rs` (pockels_delta_n, kerr_electro_optic, half_wave_voltage, franz_keldysh_absorption, photoelastic_delta_n, acoustooptic_figure_of_merit)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-767
 //!
@@ -6141,7 +6141,7 @@
 //! - Last verified: 2026-02-17
 //! - Statement: Three-region tabulated n,k splice (Ordal IR + J&C visible + Henke XUV, 10-30000 eV) for Au, Ag, Cu reduces UV tail systematic error in the KK imaginary-axis dielectric function: at xi_50 (~8.15 eV), the Henke-extended Au dataset produces eps(i*xi) within 50% of J&C+Drude while eliminating the 1/omega^3 UV extrapolation above 6.6 eV that missed all measured core absorption structure.
 //! - Where stated: crates/materials_core/src/tabulated_nk.rs (au_three_region_nk, ag_three_region_nk, cu_three_region_nk)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-768
 //!
@@ -6149,7 +6149,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: Vulkan-accelerated LBM simulation of a Kerr-Newman black hole accretion disk exhibits non-trivial entropy production features when coupled to a spatially-modulated viscosity field derived from Sedenion Zero-Divisor topology.
 //! - Where stated: `crates/lbm_vulkan/src/compute.rs`, `crates/lbm_vulkan/shaders/lbm.comp.glsl`, `crates/gororoba_cli_warp/src/bin/warp_ring_integration.rs`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-769
 //!
@@ -6157,7 +6157,7 @@
 //! - Last verified: 2026-02-18
 //! - Statement: The 1977 Wow! signal 6EQUJ5 sequence is faithfully transcribed from the archival printout into a 50-channel intensity table with base-36 character-to-integer mapping (0-9 -> 0-9, A-Z -> 10-35).
 //! - Where stated: `crates/data_core/src/catalogs/wow.rs` (wow_char_to_intensity, parse_wow_printout_csv), `data/csv/wow1977_transcription.csv`, `docs/external_sources/WOW_SIGNAL_SOURCES.md`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-770
 //!
@@ -6165,7 +6165,7 @@
 //! - Last verified: 2026-02-18
 //! - Statement: Earth-motion drift rate at the Wow! signal locale (RA~19h25m, Dec~-27d) is bounded by |drift| < 0.37 Hz/s at 1420.405 MHz, combining orbital and rotational contributions analytically.
 //! - Where stated: `crates/gororoba_cli_physics/src/bin/wow_signal_analysis.rs` (drift-rate subcommand), `docs/external_sources/WOW_SIGNAL_SOURCES.md`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-771
 //!
@@ -6173,7 +6173,7 @@
 //! - Last verified: 2026-02-18
 //! - Statement: Breakthrough Listen ABACAD cadence at the Wow! signal locale produced no narrowband or wideband detections above threshold in either cadence group, establishing a modern non-detection baseline at 1-12 GHz with 2.5 million channel resolution.
 //! - Where stated: `data/csv/bl_6equj5_gbt_manifest.csv`, `docs/external_sources/WOW_SIGNAL_SOURCES.md`, BIB-0214 (Perez et al. 2022)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-772
 //!
@@ -6181,7 +6181,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: ON and OFF cadence pointings from the BL 6EQUJ5 campaign are topologically indistinguishable: the Wasserstein-2 distance between their persistence diagrams is not significantly different from a label-permuted null distribution (p > 0.05).
 //! - Where stated: `crates/gororoba_cli_physics/src/bin/wow_topology.rs` (morphology subcommand)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-773
 //!
@@ -6189,7 +6189,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: BL 6EQUJ5 candidate feature vectors exhibit non-trivial ultrametric structure compared to column-shuffled null: the observed ultrametric fraction exceeds the permutation null mean with p < 0.05 after BH-FDR correction.
 //! - Where stated: `crates/gororoba_cli_physics/src/bin/wow_topology.rs` (ultrametric subcommand)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-774
 //!
@@ -6197,7 +6197,7 @@
 //! - Last verified: 2026-02-15
 //! - Statement: Non-associative algebraic imbalance induces monotonic spin decoherence in Lambda-pair systems.
 //! - Where stated: Thesis 5 Pipeline (`crates/gororoba_engine/src/thesis_pipelines.rs`), Experiment E-036 (`registry/experiments.toml`), STAR spin correlation synthesis.
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-775
 //!
@@ -6205,7 +6205,7 @@
 //! - Last verified: 2026-02-15
 //! - Statement: The scalar relative polarization parameter P is insufficient to distinguish entangled states from classically correlated states in Lambda-pair systems.
 //! - Where stated: Thesis 5 Pipeline (`crates/gororoba_engine/src/thesis_pipelines.rs`), STAR spin correlation paper (s41586-025-09920-0) Discussion section.
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-776
 //!
@@ -6213,7 +6213,7 @@
 //! - Last verified: 2026-02-15
 //! - Statement: Degenerate kinematic slices in QFT (short-range selection in spin correlation, half-collinear locus in gluon scattering) expose discrete, piecewise-constant algebraic invariants.
 //! - Where stated: STAR spin correlation paper https://doi.org/10.1038/s41586-025-09920-0, Single-minus gluon preprint https://arxiv.org/abs/2602.12176
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-777
 //!
@@ -6221,7 +6221,7 @@
 //! - Last verified: 2026-02-15
 //! - Statement: The nonzero region R1 for single-minus gluon amplitudes corresponds to the zero-imbalance locus of the associated sign-graph logic.
 //! - Where stated: Amplitude Imbalance Survey CLI (`crates/gororoba_cli_algebra/src/bin/amplitude_imbalance_survey.rs`), Single-minus gluon preprint (2602.12176).
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-778
 //!
@@ -6229,7 +6229,7 @@
 //! - Last verified: 2026-02-15
 //! - Statement: QGP vorticity induces a global spin polarization that can be modeled as a biased decoherence channel in the Cayley-Dickson algebraic space.
 //! - Where stated: QGP Imbalance Bridge (`crates/cd_spin_bridge/src/qgp_model.rs`), Experiment E-038.
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-779
 //!
@@ -6237,7 +6237,7 @@
 //! - Last verified: 2026-02-15
 //! - Statement: The CMS azimuthal polarization sign challenge can be resolved by introducing an algebraic twist correction to hydrodynamic model predictions.
 //! - Where stated: LHC 2025 QGP Synthesis CLI (`crates/gororoba_cli_physics/src/bin/lhc_2025_qgp_synthesis.rs`), Experiment E-038.
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-780
 //!
@@ -6245,7 +6245,7 @@
 //! - Last verified: 2026-02-18
 //! - Statement: The D3Q19 lattice UV cutoff bounds the effective analog Hawking temperature: the viscosity-cutoff spectrum yields T_eff that does NOT converge to the ideal T_H as grid resolution N increases, proving lattice viscosity limits the analog temperature.
 //! - Where stated: `crates/gr_core/src/acoustic_metric.rs`, `crates/gr_core/src/lattice_hawking.rs`, `crates/gororoba_cli_physics/src/bin/lattice_hawking_sweep.rs`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-781
 //!
@@ -6253,7 +6253,7 @@
 //! - Last verified: 2026-02-18
 //! - Statement: Shannon entropy of the Cayley-Dickson associator-norm distribution exhibits a phase transition at dimension 16 (octonion-to-sedenion boundary) where the loss of alternativity and emergence of zero divisors produce a sharp entropy jump exceeding 10% of H_max.
 //! - Where stated: `crates/algebra_analysis/src/entropy_census.rs`, `crates/gororoba_cli_algebra/src/bin/algebra_entropy_census.rs`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-782
 //!
@@ -6261,7 +6261,7 @@
 //! - Last verified: 2026-02-18
 //! - Statement: The CHSH wavelet S parameter of LBM velocity fields correlates with Betti-1 topology (from VR persistent homology) across different flow configurations, with |Spearman rho| > 0.5 at p < 0.05 for at least one viscosity/forcing configuration.
 //! - Where stated: `crates/spectral_core/src/chsh_betti_bridge.rs`, `crates/gororoba_cli_physics/src/bin/chsh_betti_sweep.rs`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-783
 //!
@@ -6269,7 +6269,7 @@
 //! - Last verified: 2026-02-18
 //! - Statement: Pulsed (burst-quench) entropy injection with 50% duty cycle reduces p95 wavelet entropy by more than 10% compared to steady injection at equal total forcing energy, because quench phases allow partial relaxation.
 //! - Where stated: `crates/spectral_core/src/pde_surrogates.rs`, `crates/gororoba_cli_physics/src/bin/meltdown_pulsed_gate.rs`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-784
 //!
@@ -6277,7 +6277,7 @@
 //! - Last verified: 2026-02-18
 //! - Statement: Ghost frequency phi^{-1/2} detected in CHIME FRB Catalog 2 dispersion measures at f=0.218 normalized, SNR=6.11, FWHM=0.0008. Strongest detection across all catalogs.
 //! - Where stated: `crates/gororoba_cli_physics/src/bin/rho_ghost_fft.rs`, `data/csv/zd_resonance_real_distribution.csv`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-785
 //!
@@ -6285,7 +6285,7 @@
 //! - Last verified: 2026-02-18
 //! - Statement: Ghost frequency phi^{-1/2} detected in ATNF Pulsar Catalog dispersion measures at f=0.206 normalized, SNR=5.93, and in pulsar periods at f=0.221, SNR=5.14. Two independent columns from the same catalog yield consistent detections.
 //! - Where stated: `crates/gororoba_cli_physics/src/bin/rho_ghost_fft.rs`, `data/csv/zd_resonance_real_distribution.csv`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-786
 //!
@@ -6293,7 +6293,7 @@
 //! - Last verified: 2026-02-18
 //! - Statement: Ghost frequency phi^{-1/2} detected in Pantheon+ SNIa distance moduli at f=0.211 normalized, SNR=4.43. Third independent messenger (optical SNIa) with consistent ghost detection.
 //! - Where stated: `crates/gororoba_cli_physics/src/bin/rho_ghost_fft.rs`, `data/csv/zd_resonance_real_distribution.csv`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-787
 //!
@@ -6301,7 +6301,7 @@
 //! - Last verified: 2026-02-18
 //! - Statement: Ghost frequency phi^{-1/2} absent in S-band (2.25 GHz) Wow! GBT follow-up data. Stacked SNR=0.38 across 12 filterbank files. Spectral analysis is clean with no algebraic signatures at S-band.
 //! - Where stated: `crates/gororoba_cli_physics/src/bin/rho_ghost_fft.rs`, `data/csv/wow_followup_snr.csv`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-788
 //!
@@ -6309,7 +6309,7 @@
 //! - Last verified: 2026-02-18
 //! - Statement: Ghost frequency phi^{-1/2} absent in BH entropy, Gaia DR3 parallax, SDSS DR18 quasar redshift, ALICE Pb-Pb R_AA, Swarm magnetic field, and SORCE TSI datasets. Eight independent null controls confirm ghost is not a processing artifact.
 //! - Where stated: `crates/gororoba_cli_physics/src/bin/rho_ghost_fft.rs`, `data/csv/zd_resonance_real_distribution.csv`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-789
 //!
@@ -6317,7 +6317,7 @@
 //! - Last verified: 2026-02-18
 //! - Statement: FALSIFIED: Ghost peak FWHM=0.0008 was an interpolation artifact below the FFT resolution limit 1/N. The claimed convergence (0.016 to 0.0008) represents interpolation precision, not physical sharpening. Detected frequencies (0.206, 0.211, 0.218, 0.221, 0.227) have std dev ~0.008, consistent with sampling variability, not convergence toward 0.2138.
 //! - Where stated: `crates/gororoba_cli_physics/src/bin/rho_ghost_fft.rs`, `data/csv/zd_resonance_real_distribution.csv`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-790
 //!
@@ -6325,7 +6325,7 @@
 //! - Last verified: 2026-02-18
 //! - Statement: CWT Ricker wavelet analysis confirms Ghost absence in Wow! S-band (ghost-band power 4%) and Swarm magnetic field (ghost-band power 0%). The phi^{-1/2} signal is physically absent in these datasets, not hidden as a delocalized scale-invariant feature below FFT resolution.
 //! - Where stated: `src/scripts/analysis/cwt_ghost_analysis.py`, `data/csv/cwt_ghost_validation.csv`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-791
 //!
@@ -6333,7 +6333,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: ALICE Pb-Pb R_AA data shows a marginal peak at f=0.2105, below detection threshold. If confirmed with higher statistics (LHC Run 3), this would indicate the Sedenion ZD lattice operates at the QGP deconfinement scale, not only at cosmological path lengths.
 //! - Where stated: `crates/gororoba_cli_physics/src/bin/rho_ghost_fft.rs`, `data/external/cms_oo_raa/alice_pbpb_raa_0to5pct_baseline.csv`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-792
 //!
@@ -6341,7 +6341,7 @@
 //! - Last verified: 2026-02-18
 //! - Statement: Sedenion zero-divisor modulated viscosity in a 3D LBM simulation produces a spectral peak that locks to the grid Nyquist frequency independently of the relaxation parameter tau. The peak frequency does NOT drift with Reynolds number (|slope| < 0.01 in peak_freq vs tau regression) and vanishes when ZD modulation amplitude is set to zero.
 //! - Where stated: `crates/gororoba_cli/src/bin/zd_resonance_cuda.rs`, `crates/spectral_core/src/ghost_spectral.rs`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-793
 //!
@@ -6349,7 +6349,7 @@
 //! - Last verified: 2026-02-18
 //! - Statement: The ghost frequency at phi^{-1/2} ~ 0.786 cycles/sample is detectable at rank <= 3 with SNR > 5.0 in production warp field HDF5 snapshots without synthetic signal injection.
 //! - Where stated: `crates/gororoba_cli_physics/src/bin/rho_ghost_fft.rs`, `crates/spectral_core/src/ghost_spectral.rs`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-794
 //!
@@ -6357,7 +6357,7 @@
 //! - Last verified: 2026-02-18
 //! - Statement: A Pathionic heat sink (virtual dim-32 scalar absorber coupled to the Sedenion associator norm) stabilizes the warp ring simulation past the natural instability onset. The instability onset time increases monotonically with coupling strength.
 //! - Where stated: `crates/gororoba_cli_algebra/src/bin/pathion_sink_test.rs`, `crates/gororoba_engine/src/simulation/mod.rs` (PathionSink struct)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-795
 //!
@@ -6365,7 +6365,7 @@
 //! - Last verified: 2026-02-18
 //! - Statement: Macroscopic vortex handedness (helicity sign) is locked to the Sedenion Cayley-Dickson multiplication table orientation. Flipping initial vorticity without conjugating the CD table produces an UNSTABLE configuration, while flipping both (double flip) recovers stability.
 //! - Where stated: `crates/gororoba_cli_algebra/src/bin/chirality_lock_test.rs`, `CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)` (cd_multiply_conjugated)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-796
 //!
@@ -6373,7 +6373,7 @@
 //! - Last verified: 2026-02-18
 //! - Statement: Signal chunks projected onto the Leech Lattice (Lambda_24) via Babai CVP show statistically different deep hole fractions between structured (ON-source) and noise-only (OFF-source) pointings at p < 0.05 in a two-proportion z-test.
 //! - Where stated: `crates/gororoba_cli_algebra/src/bin/moonshine_filterbank.rs`, `crates/algebra_experimental/src/leech_lattice.rs`, `crates/algebra_experimental/src/golay_code.rs`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-797
 //!
@@ -6381,7 +6381,7 @@
 //! - Last verified: 2026-02-18
 //! - Statement: Statistical hardening of ghost frequency analysis via 7 independent methods (MAD robust noise floor, BH-FDR correction, Bonferroni correction, permutation test, sorted-distribution bootstrap null, Lomb-Scargle with Baluev FAP, multitaper F-test) demonstrates that sorted synthetic distributions do NOT produce significant ghost peaks. All 17 synthetic datasets (4 null controls, 5 sorted distributions, 4 signal injections, 4 mock catalogs) produce correct verdicts: injected signals detected, all null/sorted/mock datasets NULL.
 //! - Where stated: `crates/spectral_core/src/ghost_spectral.rs`, `crates/gororoba_cli_physics/src/bin/rho_ghost_fft.rs`, `crates/gororoba_cli_physics/src/bin/ghost_spectral_audit.rs`, `src/ghost_stats/`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-798
 //!
@@ -6389,7 +6389,7 @@
 //! - Last verified: 2026-02-18
 //! - Statement: FFT of sorted catalog values tests distributional shape (quantile function regularity), not physical periodicity. The frequency f~0.214 in sorted data describes the inverse CDF's curvature structure, analogous to debunked redshift periodicity claims (Karlsson 1971, falsified by Tang & Zhang 2005 and Hawkins et al. 2002 as survey selection effects). The correct spectral method for sorted distributional data is the quantile periodogram (Li 2012), not standard FFT.
 //! - Where stated: `crates/spectral_core/src/ghost_spectral.rs` (methodology_note), `src/ghost_stats/quantile_periodogram.py`, Sprint 50 plan
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-799
 //!
@@ -6397,7 +6397,7 @@
 //! - Last verified: 2026-02-18
 //! - Statement: FP32 GPU converges to FP64 GPU reference within 3.5e-5 relative KE error at 32^3. BF16 is quantization-limited: KE=0 at F=0.01 (below representable precision), 40% error at F=0.1. No ghost spectral signal appears in FP32 or FP64 that is absent in BF16, confirming ZD resonance ghost peaks (C-792, C-793) are BF16 quantization noise.
 //! - Where stated: `crates/gororoba_cli_physics/src/bin/lbm_precision_sampler.rs`, E-069, `data/csv/precision_combined_32.csv`
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-800
 //!
@@ -6405,7 +6405,7 @@
 //! - Last verified: 2026-02-18
 //! - Statement: GPU FP64 and CPU FP64 D3Q19 LBM KE traces diverge by ~1% at 32^3. Both GPU (kernels_fp64.cu) and CPU (solver.rs) implement identical Guo forcing schemes. FP32 vs FP64 GPU relative error < 3.5e-5, confirming GPU FP32/FP64 kernels are numerically faithful within their precision.
 //! - Where stated: `crates/gororoba_cli_physics/src/bin/lbm_precision_sampler.rs`, E-069
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-801
 //!
@@ -6413,7 +6413,7 @@
 //! - Last verified: 2026-02-18
 //! - Statement: Cayley-Dickson projection invariance: for each Lambda level (256..2048), the CD difference projection lands in the 8-dimensional imaginary octonion span, and Fano plane automorphisms (PSL(2,7)) permute boundary vectors consistently.
 //! - Where stated: crates/algebra_analysis/src/prefix_chain_theorem.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-802
 //!
@@ -6421,7 +6421,7 @@
 //! - Last verified: 2026-02-18
 //! - Statement: Simplicial Betti numbers computed via Z_2 Gaussian elimination match known values for standard complexes: point (b0=1), triangle boundary (b0=1,b1=1), filled triangle (b0=1,b1=0,b2=0), torus (b0=1,b1=2,b2=1). Euler-Poincare theorem verified for all cases.
 //! - Where stated: crates/stats_core/src/homology.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-803
 //!
@@ -6429,7 +6429,7 @@
 //! - Last verified: 2026-02-18
 //! - Statement: Sedenion ZD box-kite topology (de Marrais 2000) and generic adjacency constructor enable systematic comparison of C-010 non-local coupling topologies beyond the standard suite.
 //! - Where stated: crates/optics_core/src/absorber_benchmark.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-804
 //!
@@ -6437,7 +6437,7 @@
 //! - Last verified: 2026-02-18
 //! - Statement: Bridge contrast ratio (rho_shell / rho_interior at R1 boundary) is positive and finite for all three bypass models (MatchedInterior, VacuumCore, GradedTransition). Gamma invariant varies less than 5% across models at default configuration.
 //! - Where stated: crates/cosmology_core/src/bypass_models.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-805
 //!
@@ -6445,7 +6445,7 @@
 //! - Last verified: 2026-02-18
 //! - Statement: Ghost frequency phi^{-1/2} is NOT detectable in any of four real astronomical catalog datasets (CHIME FRB Cat2 DM N=5045, ATNF pulsar DM N=4233, ATNF pulsar period N=4286, Pantheon+ distance moduli N=1701) when analyzed with 5-method rigorous pipeline (Bonferroni-corrected MAD, permutation N=10000, Lomb-Scargle Baluev FAP, IAAFT N=1000, Multitaper F-test). All 20 tests (5 methods x 4 datasets) FAIL TO REJECT null. Combined Fisher p > 0.65 for all datasets.
 //! - Where stated: `crates/gororoba_cli_physics/src/bin/ghost_spectral_audit.rs`, E-071 output
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-806
 //!
@@ -6453,7 +6453,7 @@
 //! - Last verified: 2026-02-18
 //! - Statement: The primary Shannon entropy phase transition in CD associator-norm distributions occurs at dimension 4->8 (quaternion-to-octonion boundary), not at 8->16 as originally hypothesized. H(4)=0 -> H(8)=4.24 bits (maximum). The octonion-to-sedenion transition at dim 8->16 REDUCES entropy by 11.4% (H(16)=3.76), because zero-divisor constraints reduce the effective degrees of freedom in the associator-norm distribution. Norm-composition entropy separately jumps 0->3.17 at dim=16, marking the loss of ||ab||=||a||*||b||.
 //! - Where stated: `crates/algebra_analysis/src/entropy_census.rs`, E-057 output
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-807
 //!
@@ -6461,7 +6461,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: Hamilton quaternions over R are associative, alternative, and division.
 //! - Where stated: registry/hypercomplex_taxonomy.toml (Q-001)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-808
 //!
@@ -6469,7 +6469,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: Split quaternions contain zero divisors and are not division algebras.
 //! - Where stated: registry/hypercomplex_taxonomy.toml (Q-002), CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs) (test_split_quaternion_basis_products, test_split_quaternions_signature_4_3)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-809
 //!
@@ -6477,7 +6477,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: Biquaternions H tensor C are associative but lose division over real embedding due to zero divisors.
 //! - Where stated: registry/hypercomplex_taxonomy.toml (Q-004)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-810
 //!
@@ -6485,7 +6485,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: Dual quaternions inherit zero divisors from dual-number coefficients.
 //! - Where stated: registry/hypercomplex_taxonomy.toml (Q-005)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-811
 //!
@@ -6493,7 +6493,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: Real octonions O are alternative but non-associative and division.
 //! - Where stated: registry/hypercomplex_taxonomy.toml (O-001), CURRENT::PATH crates/gororoba_algebra/src/physics/octonion_field.rs (LEGACY::PATH crates/algebra_core/src/physics/octonion_field.rs) (test_oct_norm_composition), CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs) (test_octonion_composition_law_across_signatures)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-812
 //!
@@ -6501,7 +6501,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: Split octonions are alternative but not division and possess zero divisors.
 //! - Where stated: registry/hypercomplex_taxonomy.toml (O-002), CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs) (test_split_octonion_has_zero_divisors, test_split_octonion_zero_divisor_census)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-813
 //!
@@ -6509,7 +6509,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: Sedenions from Cayley-Dickson doubling are non-associative, non-alternative, and have zero divisors.
 //! - Where stated: registry/hypercomplex_taxonomy.toml (S-001), crates/algebra_analysis/src/boxkites.rs (test_primitive_assessors_count), crates/algebra_analysis/src/annihilator.rs (test_known_zero_divisor_has_nontrivial_annihilator)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-814
 //!
@@ -6517,7 +6517,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: Complexified and dual sedenions remain non-division with zero-divisor structure.
 //! - Where stated: registry/hypercomplex_taxonomy.toml (S-003, S-004)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-815
 //!
@@ -6525,7 +6525,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: Pathions correspond to the 32-dimensional Cayley-Dickson stage after sedenions.
 //! - Where stated: registry/hypercomplex_taxonomy.toml (P-001), CURRENT::PATH crates/gororoba_algebra/src/construction/hypercomplex.rs (LEGACY::PATH crates/algebra_core/src/construction/hypercomplex.rs) (test_pathion_more_zd), CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs) (test_pathion_more_zd_than_sedenion)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-816
 //!
@@ -6533,7 +6533,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: Chingon, routon, and voudon labels map to 64, 128, and 256 dimensions in the same ladder.
 //! - Where stated: registry/hypercomplex_taxonomy.toml (P-002, P-003, P-004)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-817
 //!
@@ -6541,7 +6541,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: For n>=4 Cayley-Dickson stages, algebras are not division and generally have zero divisors.
 //! - Where stated: registry/hypercomplex_taxonomy.toml (S-001, P-001..P-004), CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs) (test_sedenion_non_associative, test_pathion_more_zd_than_sedenion), CURRENT::PATH crates/gororoba_algebra/src/construction/hypercomplex.rs (LEGACY::PATH crates/algebra_core/src/construction/hypercomplex.rs) (test_non_associativity_scaling)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-818
 //!
@@ -6549,7 +6549,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: Cayley-Dickson parameterized variants form a genuine species axis independent of naming.
 //! - Where stated: registry/hypercomplex_taxonomy.toml (P-005), CURRENT::PATH crates/gororoba_algebra/tests/test_composition_algebra_taxonomy.rs (LEGACY::PATH crates/algebra_core/tests/test_composition_algebra_taxonomy.rs), CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs) (CdSignature tests C-545..C-549)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-819
 //!
@@ -6557,7 +6557,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: Worldline Green's functions GB, GF agree with weak-field Taylor expansion to 12 digits for z < 0.1.
 //! - Where stated: crates/gr_core/src/photon_graviton/worldline_greens.rs (sb12, ab12, sf12, af12, sb12_weak, ab12_weak)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-820
 //!
@@ -6565,7 +6565,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: Irreducible photon-graviton amplitude satisfies gauge Ward identity (k_alpha * Pi^{mn,alpha} = 0) to machine precision.
 //! - Where stated: crates/gr_core/src/photon_graviton/irreducible.rs (irreducible_ward_check), crates/gr_core/src/photon_graviton/ward.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-821
 //!
@@ -6573,7 +6573,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: Tadpole amplitude is nonzero and proper-time integral agrees with Bernoulli weak-field expansion.
 //! - Where stated: crates/gr_core/src/photon_graviton/tadpole.rs (tadpole_proper_time, tadpole_bernoulli, tadpole_cross_validated)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-822
 //!
@@ -6581,7 +6581,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: Full one-loop photon-graviton amplitude satisfies gravitational Ward identity to 1e-8.
 //! - Where stated: crates/gr_core/src/photon_graviton/ward.rs (check_gravitational_ward, full_ward_check)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-823
 //!
@@ -6589,7 +6589,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: Weak-field dichroism ratio for spinor QED photon-graviton conversion is parallel:perpendicular = 4:7 (squared amplitudes (4/7)^2).
 //! - Where stated: crates/gr_core/src/photon_graviton/irreducible.rs (irreducible_weak_field, test_weak_field_dichroism_ratio)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-824
 //!
@@ -6597,7 +6597,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: Cassini Shapiro delay bounds PPN gamma: |gamma-1| < 2.3e-5, implying omega_BD > 4.3e4.
 //! - Where stated: crates/gr_core/src/ppn_constraints.rs (CASSINI_GAMMA_DEVIATION_BOUND, satisfies_cassini_gamma, test_ppn_gamma_cassini_boundary)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-825
 //!
@@ -6605,7 +6605,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: Lunar Laser Ranging constrains Nordtvedt parameter: |eta_N| < 5e-4.
 //! - Where stated: crates/gr_core/src/ppn_constraints.rs (LLR_NORDTVEDT_BOUND, satisfies_llr_nordtvedt)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-826
 //!
@@ -6613,7 +6613,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: PSR J0337+1715 triple system constrains Nordtvedt parameter: |eta_N| < 2e-6.
 //! - Where stated: crates/gr_core/src/ppn_constraints.rs (PULSAR_NORDTVEDT_BOUND, satisfies_pulsar_nordtvedt, test_nordtvedt_pulsar_boundary)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-827
 //!
@@ -6621,7 +6621,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: MICROSCOPE WEP Eotvos parameter: |eta| < 1.1e-15.
 //! - Where stated: crates/gr_core/src/ppn_constraints.rs (MICROSCOPE_EOTVOS_BOUND)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-828
 //!
@@ -6629,7 +6629,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: Torsion-balance Yukawa fifth-force bound: |alpha| < 1.8e-2 at lambda ~ 1cm.
 //! - Where stated: crates/gr_core/src/ppn_constraints.rs (HOYLE_YUKAWA_ALPHA_BOUND, yukawa_potential, test_yukawa_reduces_to_newton)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-829
 //!
@@ -6637,7 +6637,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: GW170817 constrains gravitational wave speed: |c_g/c - 1| < 3e-15.
 //! - Where stated: crates/gr_core/src/ppn_constraints.rs (GW_SPEED_BOUND, satisfies_gw_speed_bd, test_gw_speed_constraint_bd)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-830
 //!
@@ -6645,7 +6645,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: Pulsar timing bounds time variation of G: |Gdot/G| < 1e-13 yr^-1.
 //! - Where stated: crates/gr_core/src/ppn_constraints.rs (GDOT_OVER_G_BOUND)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-831
 //!
@@ -6653,7 +6653,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: Non-dynamical kappa(x) violates Bianchi identity, forcing div(T^{mu nu}) != 0 (Rodal 2025 Eq. 2).
 //! - Where stated: crates/gr_core/src/scalar_tensor.rs (bianchi_violation_magnitude, test_bianchi_violation_nonzero_for_varying_kappa)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-832
 //!
@@ -6661,7 +6661,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: Direct SFWM |F|^2 exceeds cascaded SHG+SPDC by >5x at 10 um LiNbO3 (Son & Chekhova 2026).
 //! - Where stated: crates/optics_core/src/sfwm.rs (rate_ratio_with_dk, test_direct_dominates_cascaded_at_10um), crates/optics_core/tests/test_sfwm_son_chekhova.rs (test_paper_dominance_ratio_at_10um)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-833
 //!
@@ -6669,7 +6669,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: Sellmeier-derived coherence lengths for LiNbO3 (Zelmon 1997) give L_coh_SFWM > 3x L_coh_SHG.
 //! - Where stated: crates/optics_core/src/sfwm.rs (test_wavevector_mismatches_coherence_lengths), crates/optics_core/tests/test_sfwm_son_chekhova.rs (test_sellmeier_coherence_lengths_order), crates/materials_core/src/optical_database.rs (linbo3_ordinary_sellmeier)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-834
 //!
@@ -6677,7 +6677,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: R_cas/R_dir < 5% at 10 um for paper-calibrated wavevector mismatches.
 //! - Where stated: crates/optics_core/src/sfwm.rs (rate_ratio_with_dk), crates/optics_core/tests/test_sfwm_son_chekhova.rs (test_paper_dominance_ratio_at_10um)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-835
 //!
@@ -6685,7 +6685,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: SFWM photon number N_vis scales as P^2; coincidence counts N_cc scale as P^2.
 //! - Where stated: crates/optics_core/src/sfwm.rs (photon_number_sfwm), crates/gororoba_cli_physics/src/bin/sfwm_figure_repro.rs (fig2a, fig2c)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-836
 //!
@@ -6693,7 +6693,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: SFWM g(2) > 2 at low pump power, following g(2) = 1 + a/P^2.
 //! - Where stated: crates/optics_core/src/sfwm.rs (g2_sfwm_model, test_g2_sfwm_high_at_low_power, test_g2_approaches_1_at_high_power)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-837
 //!
@@ -6701,7 +6701,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: SPDC photon number scales linearly with P; g(2) = 1 + a/P.
 //! - Where stated: crates/optics_core/src/sfwm.rs (photon_number_spdc, g2_spdc_model)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-838
 //!
@@ -6709,7 +6709,7 @@
 //! - Last verified: 2026-02-26
 //! - Statement: Fused silica substrate (500 um) contributes SFWM photons via chi(3), estimable from Malitson Sellmeier.
 //! - Where stated: crates/materials_core/src/optical_database.rs (fused_silica_sellmeier, test_fused_silica_at_1030nm), crates/optics_core/src/sfwm.rs (substrate_sfwm_contribution, test_substrate_sfwm_fused_silica_500um), crates/gororoba_cli_physics/src/bin/sfwm_figure_repro.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-839
 //!
@@ -6717,7 +6717,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: SHG/SPDC Maker fringes oscillate with period ~2*L_coh; SFWM |F|^2 is monotonic up to L_coh.
 //! - Where stated: crates/optics_core/src/sfwm.rs (maker_fringe_sweep, test_shg_oscillates_in_sweep, test_maker_fringe_sweep_lengths), crates/optics_core/tests/test_sfwm_son_chekhova.rs (test_maker_fringes_sfwm_monotonic_shg_oscillates, test_maker_fringe_period_consistent_with_l_coh_shg)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-840
 //!
@@ -6725,31 +6725,31 @@
 //! - Last verified: 2026-02-26
 //! - Statement: Optical Glauber Npart for Pb-Pb 5.02 TeV matches ALICE published values (PLB 772, 2017) within 5% per centrality bin.
 //! - Where stated: crates/qgp_scaling/src/glauber.rs (n_part_at_b, compute_centrality_bins), crates/gororoba_cli_physics/src/bin/arleo_falmagne_scaling.rs (validate_npart_pbpb)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-841
 //!
 //! - Status: `Provisional`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: pp spectral index n = 6.0-6.3 at 5.02 TeV from CMS pp reference spectrum power-law fit.
 //! - Where stated: crates/qgp_scaling/src/epsilon_fit.rs (extract_epsilon), plan Phase 3
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-842
 //!
 //! - Status: `Refuted`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: R_AA(pT) for multiple centralities collapses onto universal curve f(u = pT/epsilon_bar, n) with reduced chi2 < 2.
 //! - Where stated: crates/qgp_scaling/src/quenching.rs (r_aa_model, scaling_function, test_scaling_function_matches_raa)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-843
 //!
 //! - Status: `Verified`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: epsilon_bar shows monotonic centrality ordering: 0-5% > 5-10% > ... > 70-80% across all collision systems.
 //! - Where stated: crates/qgp_scaling/src/epsilon_fit.rs (extract_epsilon), crates/gororoba_cli_physics/src/bin/arleo_falmagne_scaling.rs (run_alice)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-844
 //!
@@ -6757,7 +6757,7 @@
 //! - Last verified: 2026-03-05
 //! - Statement: Multi-system density scaling fit yields beta = 1.02 +/- 0.15 (within 1-sigma of Arleo-Falmagne) from Pb-Pb + Au-Au + Xe-Xe data.
 //! - Where stated: crates/qgp_scaling/src/density_scaling.rs (fit_density_scaling, test_density_scaling_recovery)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-845
 //!
@@ -6765,23 +6765,23 @@
 //! - Last verified: 2026-03-05
 //! - Statement: Density scaling constant K = 0.33 +/- 0.10 fm^(1-beta) from multi-system fit.
 //! - Where stated: crates/qgp_scaling/src/density_scaling.rs (fit_density_scaling)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-846
 //!
 //! - Status: `Refuted`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: Hadron v2/eccentricity vs d(ln R_AA)/d(ln pT) linear relation yields beta_hadrons = 0.94 +/- 0.15.
 //! - Where stated: crates/qgp_scaling/src/v2_relation.rs (fit_v2_relation, test_v2_relation_recovery_origin)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-847
 //!
 //! - Status: `Provisional`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: ATLAS jet v2/eccentricity vs d(ln R_AA)/d(ln pT) gives beta_jets = 1.03 +/- 0.15, consistent with hadron beta.
 //! - Where stated: crates/qgp_scaling/src/v2_relation.rs (fit_v2_relation)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-848
 //!
@@ -6789,23 +6789,23 @@
 //! - Last verified: 2026-02-25
 //! - Statement: TCMT Fano lineshape (Ruan-Fan 2009 Eq. 23) reproduces lossless/lossy Fano asymmetry for phi=0, pi/2, pi.
 //! - Where stated: crates/optics_core/src/fano_tcmt.rs (tests: lossless_phi_zero_lorentzian, absorption_lorentzian)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-849
 //!
 //! - Status: `Provisional`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: Cylindrical Lorentz-Mie solver matches TCMT within 1% for single-channel (l=0) MDM geometry (Ruan-Fan Fig. 4).
 //! - Where stated: crates/optics_core/src/mie_cylinder.rs (interface_transfer_matrix, scattering_coefficient_l)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-850
 //!
 //! - Status: `Provisional`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: Multi-channel (|l|<=2) Mie solver matches TCMT sum for MDM cloaked-sensor geometry (Ruan-Fan Fig. 5).
 //! - Where stated: crates/optics_core/src/mie_cylinder.rs (mie_sweep, multi_channel_cross_sections)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-851
 //!
@@ -6813,7 +6813,7 @@
 //! - Last verified: 2026-02-25
 //! - Statement: Fano antiresonance (C_sct=0) occurs at resonance frequency for background phase phi=pi in lossless scattering.
 //! - Where stated: crates/optics_core/src/fano_tcmt.rs (tests: lossless_phi_pi_antiresonance)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-852
 //!
@@ -6821,7 +6821,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: Byrnes amplitude transfer matrix TMM computes both reflectance and transmittance for multilayer thin-film stacks including lossy media.
 //! - Where stated: crates/materials_core/src/effective_medium.rs (tmm_reflection)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-853
 //!
@@ -6829,7 +6829,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: Lorentz effective-medium model for Landy 2008 metamaterial absorber reproduces A >= 0.96 at 11.48 GHz via impedance-aware Fresnel-Airy.
 //! - Where stated: crates/materials_core/src/landy_absorber.rs (absorption_spectrum, magnetic_slab_airy)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-854
 //!
@@ -6837,7 +6837,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: Impedance matching |Z/Z_0 - 1| < 0.05 at Landy absorber resonance achieved by matched epsilon/mu Lorentz oscillators.
 //! - Where stated: crates/materials_core/src/landy_absorber.rs (impedance, test_impedance_matched)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-855
 //!
@@ -6845,7 +6845,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: Two-layer Landy absorber stack converges to A > 0.999 at resonance via TMM.
 //! - Where stated: crates/materials_core/src/landy_absorber.rs (test_multilayer_approaches_unity)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-856
 //!
@@ -6853,7 +6853,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: TMM effective-medium model cannot reproduce spatial field distributions, angular dependence, or geometry-dependent tuning of the Landy absorber.
 //! - Where stated: crates/materials_core/src/landy_absorber.rs (module docstring: Limitations)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-857
 //!
@@ -6861,7 +6861,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: PPN constraint report expanded from 7 to 13 gates: adds GP-B geodetic, alpha_1/2/3, xi, MICROSCOPE WEP.
 //! - Where stated: crates/gr_core/src/ppn_constraints.rs (check_all_ppn_constraints, PPNConstraintReport)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-858
 //!
@@ -6869,7 +6869,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: GP-B geodetic precession constrains (1+gamma)/2 to 0.28%, requiring omega_BD > 177 for Brans-Dicke.
 //! - Where stated: crates/gr_core/src/ppn_constraints.rs (satisfies_gpb_geodetic, GPB_GEODETIC_PRECISION)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-859
 //!
@@ -6877,7 +6877,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: Imbalance-entropy bridge maps phi=3/8 to gamma ~ 0.122, within 2% of gamma_NZJ = 0.1236.
 //! - Where stated: crates/sign_imbalance/src/immirzi_bridge.rs (imbalance_entropy_bridge, tests)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-860
 //!
@@ -6885,7 +6885,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: Imbalance-entropy bridge maximum at phi=1/2 gives ln(2)/(pi*sqrt(3))=0.1274, far below gamma_BG=0.2375. No phi maps to gamma_BG via this bridge (negative result).
 //! - Where stated: crates/sign_imbalance/src/immirzi_bridge.rs (invert_entropy_bridge_bg_is_none test)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-861
 //!
@@ -6893,7 +6893,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: No natural mapping from phi=3/8 to gamma_BG exists: all non-calibrated bridges deviate > 10% from gamma_BG at the imbalance attractor.
 //! - Where stated: crates/sign_imbalance/src/immirzi_bridge.rs (evaluate_all_mappings, best_bg_match)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-862
 //!
@@ -6901,7 +6901,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: Complex-argument Bessel functions J_n, Y_n via ascending power series match DLMF/scipy reference values to 1e-10.
 //! - Where stated: crates/optics_core/src/bessel.rs (bessel_j, bessel_y, tests)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-863
 //!
@@ -6909,7 +6909,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: Wronskian identity J_n Y_n' - J_n' Y_n = 2/(pi*z) satisfied to 1e-8 for complex arguments.
 //! - Where stated: crates/optics_core/src/bessel.rs (wronskian_identity test)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-864
 //!
@@ -6917,7 +6917,7 @@
 //! - Last verified: 2026-02-26
 //! - Statement: Photon-graviton TCMT equations map three-diagram worldline amplitude (irreducible, tadpole, external-leg from E-073) to Ruan-Fan framework with weak-field parameter epsilon < 0.1.
 //! - Where stated: crates/gr_core/src/photon_graviton_tcmt/amplitude_bridge.rs (three_diagram_amplitude_to_tcmt, validate_weak_field)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-865
 //!
@@ -6925,7 +6925,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: Asymmetry parameter q_grav from gravitational coupling satisfies Maksimov constraint: kappa_1 - kappa_2 = gamma_l to machine precision (relative error < 1e-10).
 //! - Where stated: crates/gr_core/src/photon_graviton_tcmt/amplitude_bridge.rs (validate_energy_conservation), tcmt_equations.rs (energy conservation test)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-866
 //!
@@ -6933,7 +6933,7 @@
 //! - Last verified: 2026-02-19
 //! - Statement: Time-reversal symmetry of photon-graviton TCMT guarantees transmission S-matrix satisfies unitarity |T|^2 + |R|^2 = 1 to numerical precision (error < 1e-10).
 //! - Where stated: crates/gr_core/src/photon_graviton_tcmt/fano_lineshape.rs (scattering_coefficient), amplitude_bridge.rs (validate_unitarity)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-867
 //!
@@ -6941,7 +6941,7 @@
 //! - Last verified: 2026-02-26
 //! - Statement: Fano lineshape from photon-graviton TCMT reproduces resonance peak and asymmetry observed in E-073 worldline amplitude weak-field limit (agreement > 99%).
 //! - Where stated: crates/gr_core/src/photon_graviton_tcmt/fano_lineshape.rs (fano_lineshape, compute_cross_sections), tcmt_equations.rs (integration tests)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-868
 //!
@@ -6949,7 +6949,7 @@
 //! - Last verified: 2026-02-28
 //! - Statement: ADM 3+1 decomposition decomposes Schwarzschild (Painleve-Gullstrand) correctly: lapse=1, shift^r=sqrt(2M/r), gamma_ij=delta_ij.
 //! - Where stated: crates/gr_core/src/adm.rs (tests: test_pg_lapse_is_one, test_pg_shift_sqrt_2m_r, test_pg_spatial_metric_flat)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-869
 //!
@@ -6957,7 +6957,7 @@
 //! - Last verified: 2026-02-28
 //! - Statement: Nacelle warp bubble interior-flat condition: K_ij=0 at bubble center (rho << rho_0) to machine precision.
 //! - Where stated: crates/gr_core/src/warp_metric.rs (test_york_time_center_zero)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-870
 //!
@@ -6965,7 +6965,7 @@
 //! - Last verified: 2026-02-28
 //! - Statement: Nacelle count n modulates total negative energy: different n give different total_energy in warp sweep.
 //! - Where stated: crates/gr_core/src/warp_metric.rs (test_nacelle_energy_varies_with_n)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-871
 //!
@@ -6973,7 +6973,7 @@
 //! - Last verified: 2026-02-28
 //! - Statement: Worldline v-loop reproduces parallel plate Casimir energy E/A=-pi^2/(720*a^3) within Monte Carlo error.
 //! - Where stated: crates/casimir_core/src/energy.rs (test_parallel_plates_exact, test_exact_scales_as_a_minus_3)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-872
 //!
@@ -6981,7 +6981,7 @@
 //! - Last verified: 2026-02-28
 //! - Statement: Pillar-in-cavity Casimir energy profile is finite and computable via worldline Monte Carlo.
 //! - Where stated: crates/casimir_core/src/geometry.rs (PillarInCavity implementation)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-873
 //!
@@ -6989,7 +6989,7 @@
 //! - Last verified: 2026-02-28
 //! - Statement: Sphere-in-cylinder Casimir geometry produces computable energy profile via worldline numerics.
 //! - Where stated: crates/casimir_core/src/geometry.rs (SphereInCylinder implementation)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-874
 //!
@@ -6997,7 +6997,7 @@
 //! - Last verified: 2026-02-28
 //! - Statement: York time vanishes in nacelle warp interior (rho << rho_0, |x| << L).
 //! - Where stated: crates/gr_core/src/warp_metric.rs (test_york_time_center_zero)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-875
 //!
@@ -7005,7 +7005,7 @@
 //! - Last verified: 2026-02-28
 //! - Statement: Hamiltonian constraint residual is zero for vacuum Schwarzschild ADM decomposition (rho=0).
 //! - Where stated: crates/gr_core/src/adm.rs (test_hamiltonian_constraint_vacuum)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-876
 //!
@@ -7013,7 +7013,7 @@
 //! - Last verified: 2026-02-28
 //! - Statement: Quaternion SO(3) rotation via cd_multiply(dim=4) matches direct matrix rotation for 90-degree basis rotations.
 //! - Where stated: CURRENT::PATH crates/gororoba_algebra/src/physics/quat_rotation.rs (LEGACY::PATH crates/algebra_core/src/physics/quat_rotation.rs) (test_90_deg_about_z, test_composition_matches_matrix)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-877
 //!
@@ -7021,7 +7021,7 @@
 //! - Last verified: 2026-02-28
 //! - Statement: Zero algebraic coupling (alpha=0) recovers standard ADM decomposition with no correction terms.
 //! - Where stated: crates/gr_core/src/adm_algebra_bridge.rs (test_zero_coupling_gives_zero_correction, test_octonion_coupling_zero_alpha)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-878
 //!
@@ -7029,7 +7029,7 @@
 //! - Last verified: 2026-02-28
 //! - Statement: Imbalance imbalance attractor (3/8) gives zero York time correction and zero stress-energy source.
 //! - Where stated: crates/gr_core/src/adm_algebra_bridge.rs (test_imbalance_attractor_gives_zero_correction, test_sedenion_stress_energy_at_vacuum)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-879
 //!
@@ -7037,7 +7037,7 @@
 //! - Last verified: 2026-02-28
 //! - Statement: CD dimension tower (1,2,4,8,16) maps bijectively to nacelle segmentation counts via cd_dimension_nacelle_map.
 //! - Where stated: crates/gr_core/src/adm_algebra_bridge.rs (test_cd_dimension_map)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-880
 //!
@@ -7045,7 +7045,7 @@
 //! - Last verified: 2026-02-28
 //! - Statement: Sedenion foliation single-slice imbalance matches standalone SedenionField output at dim=16.
 //! - Where stated: crates/sign_imbalance/src/sedenion_foliation.rs (test_single_slice_matches_sedenion_field)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-881
 //!
@@ -7053,7 +7053,7 @@
 //! - Last verified: 2026-03-01
 //! - Statement: GF(2) cubic minimum separating degree in PG(3,2): the 8/7 motif class partition at CD dim=32 requires a degree-3 polynomial over GF(2) to separate. Degree 1 (linear) and degree 2 (quadratic) fail exhaustively.
 //! - Where stated: crates/algebra_analysis/src/projective_geometry.rs (test_determine_exact_degree_dim32)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-882
 //!
@@ -7061,7 +7061,7 @@
 //! - Last verified: 2026-03-01
 //! - Statement: Parity-clique decomposition is exact at CD dims 16 and 32: ZD adjacency decomposes into K_4+K_4 (12 edges) at dim=16 and K_8+K_8 (56 edges) at dim=32.
 //! - Where stated: crates/algebra_experimental/src/cd_external.rs (verify_parity_clique)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-883
 //!
@@ -7069,7 +7069,7 @@
 //! - Last verified: 2026-03-01
 //! - Statement: Calcagni spectral dimension d_S(s) = 4 - 2/(1+s) has range (2,4) and is strictly increasing for s > 0. Any prediction of d_S outside this range is provably impossible under the Calcagni ansatz.
 //! - Where stated: crates/cosmology_core/src/spectral.rs (calcagni_spectral_dimension)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-884
 //!
@@ -7077,7 +7077,7 @@
 //! - Last verified: 2026-03-01
 //! - Statement: Neg-dim EOS w_eff = -1 - eta*(alpha + 3/2) depends on (alpha, eta) only through the product P = eta*(alpha + 3/2). The 2D parameterization is not identifiable from w_eff observations alone.
 //! - Where stated: crates/spectral_core/src/neg_dim.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-885
 //!
@@ -7085,7 +7085,7 @@
 //! - Last verified: 2026-03-01
 //! - Statement: Any S3-invariant bilinear form on a 3-element set has exactly two free parameters (diagonal a and off-diagonal b). Under doubly stochastic normalization with a=b, the unique solution is the democratic matrix with all entries 1/3.
 //! - Where stated: CURRENT::PATH crates/gororoba_algebra/src/physics/quat_rotation.rs (LEGACY::PATH crates/algebra_core/src/physics/quat_rotation.rs) (mixing matrix S3 structure)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-886
 //!
@@ -7093,7 +7093,7 @@
 //! - Last verified: 2026-03-01
 //! - Statement: Brans-Dicke PPN gamma deviation from GR equals negative Nordtvedt parameter: ppn_gamma_bd(omega) - 1 = -1/(2+omega) = -nordtvedt_bd(omega) for omega > 0.
 //! - Where stated: crates/verified_core/src/brans_dicke.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-887
 //!
@@ -7101,7 +7101,7 @@
 //! - Last verified: 2026-03-01
 //! - Statement: Brans-Dicke PPN gamma lies strictly in (1/2, 1) for omega > 0: ppn_gamma_bd(omega) = (1+omega)/(2+omega).
 //! - Where stated: crates/verified_core/src/brans_dicke.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-888
 //!
@@ -7109,7 +7109,7 @@
 //! - Last verified: 2026-03-01
 //! - Statement: Brans-Dicke PPN gamma is strictly increasing in omega for omega > 0: omega1 < omega2 implies ppn_gamma_bd(omega1) < ppn_gamma_bd(omega2).
 //! - Where stated: crates/verified_core/src/brans_dicke.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-889
 //!
@@ -7117,7 +7117,7 @@
 //! - Last verified: 2026-03-01
 //! - Statement: Cassini PPN bound: |gamma_BD - 1| < 2.3e-5 when omega > 43477. Cross-multiply: 1000000 < 23*(2+omega) requires omega > 43476.26.
 //! - Where stated: crates/verified_core/src/brans_dicke.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-890
 //!
@@ -7125,7 +7125,7 @@
 //! - Last verified: 2026-03-01
 //! - Statement: Nordtvedt parameter bound: nordtvedt_bd(omega) = 1/(2+omega) < 5e-4 when omega > 1998.
 //! - Where stated: crates/verified_core/src/brans_dicke.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-891
 //!
@@ -7133,7 +7133,7 @@
 //! - Last verified: 2026-03-01
 //! - Statement: GP-B geodetic PPN bound: |gamma_BD - 1| < 5.6e-3 when omega > 177.
 //! - Where stated: crates/verified_core/src/brans_dicke.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-892
 //!
@@ -7141,7 +7141,7 @@
 //! - Last verified: 2026-03-01
 //! - Statement: Euler-Heisenberg dichroism ratio: the birefringence coefficients 8/45 (parallel) and 14/45 (perpendicular) have ratio 4/7.
 //! - Where stated: crates/verified_core/src/brans_dicke.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-893
 //!
@@ -7149,7 +7149,7 @@
 //! - Last verified: 2026-03-01
 //! - Statement: Complex multiplication is commutative: z*w = w*z for all z, w in C (Cayley-Dickson dim=2).
 //! - Where stated: crates/verified_core/src/cayley_dickson.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-894
 //!
@@ -7157,7 +7157,7 @@
 //! - Last verified: 2026-03-01
 //! - Statement: Complex multiplication is associative: (x*y)*z = x*(y*z) for all x, y, z in C.
 //! - Where stated: crates/verified_core/src/cayley_dickson.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-895
 //!
@@ -7165,7 +7165,7 @@
 //! - Last verified: 2026-03-01
 //! - Statement: Complex norm is multiplicative (Brahmagupta-Fibonacci at dim=2): |z*w|^2 = |z|^2 * |w|^2.
 //! - Where stated: crates/verified_core/src/cayley_dickson.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-896
 //!
@@ -7173,7 +7173,7 @@
 //! - Last verified: 2026-03-01
 //! - Statement: Complex conjugate is an anti-automorphism: conj(z*w) = conj(w)*conj(z) for all z, w in C.
 //! - Where stated: crates/verified_core/src/cayley_dickson.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-897
 //!
@@ -7181,7 +7181,7 @@
 //! - Last verified: 2026-03-01
 //! - Statement: Quaternion multiplication is associative: (x*y)*z = x*(y*z) for all x, y, z in H.
 //! - Where stated: crates/verified_core/src/cayley_dickson.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-898
 //!
@@ -7189,7 +7189,7 @@
 //! - Last verified: 2026-03-01
 //! - Statement: Quaternion norm is multiplicative (Hurwitz identity at dim=4): |p*q|^2 = |p|^2 * |q|^2.
 //! - Where stated: crates/verified_core/src/cayley_dickson.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-899
 //!
@@ -7197,7 +7197,7 @@
 //! - Last verified: 2026-03-01
 //! - Statement: Quaternion conjugate is an anti-automorphism: conj(p*q) = conj(q)*conj(p) for all p, q in H.
 //! - Where stated: crates/verified_core/src/cayley_dickson.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-900
 //!
@@ -7205,7 +7205,7 @@
 //! - Last verified: 2026-03-01
 //! - Statement: Quaternion real-part commutativity: Re(p*q) = Re(q*p) for all p, q in H, despite full non-commutativity.
 //! - Where stated: crates/verified_core/src/cayley_dickson.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-901
 //!
@@ -7213,7 +7213,7 @@
 //! - Last verified: 2026-03-01
 //! - Statement: Quaternion quadratic identity: q^2 = 2*Re(q)*q - |q|^2 for all q in H. Every quaternion satisfies a monic quadratic over R.
 //! - Where stated: crates/verified_core/src/cayley_dickson.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-902
 //!
@@ -7221,7 +7221,7 @@
 //! - Last verified: 2026-03-01
 //! - Statement: Pure imaginary quaternion squares to negative norm: if Re(q)=0 then q^2 = -|q|^2, generalizing i^2=j^2=k^2=-1.
 //! - Where stated: crates/verified_core/src/cayley_dickson.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-903
 //!
@@ -7229,7 +7229,7 @@
 //! - Last verified: 2026-03-01
 //! - Statement: Real part of quaternion square: Re(q^2) = 2*Re(q)^2 - |q|^2 for all q in H.
 //! - Where stated: crates/verified_core/src/cayley_dickson.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-904
 //!
@@ -7237,7 +7237,7 @@
 //! - Last verified: 2026-03-01
 //! - Statement: Quaternion associator vanishes: [a,b,c] = (a*b)*c - a*(b*c) = 0 for all a, b, c in H.
 //! - Where stated: crates/verified_core/src/cayley_dickson.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-905
 //!
@@ -7245,7 +7245,7 @@
 //! - Last verified: 2026-03-01
 //! - Statement: Jordan identity at dim=4: (a^2*b)*a = a^2*(b*a) for all a, b in H. Holds in all alternative algebras.
 //! - Where stated: crates/verified_core/src/cayley_dickson.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-906
 //!
@@ -7253,7 +7253,7 @@
 //! - Last verified: 2026-03-01
 //! - Statement: Quaternion two-sided inverse: q * conj(q)/|q|^2 = 1 and conj(q)/|q|^2 * q = 1 for all nonzero q in H.
 //! - Where stated: crates/verified_core/src/cayley_dickson.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-907
 //!
@@ -7261,7 +7261,7 @@
 //! - Last verified: 2026-03-01
 //! - Statement: Quaternions are NOT commutative: explicit witness i*j = k but j*i = -k (qb component differs: 0 vs 0, qc: 0 vs 0, qd: 1 vs -1).
 //! - Where stated: crates/verified_core/src/cayley_dickson.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-908
 //!
@@ -7269,7 +7269,7 @@
 //! - Last verified: 2026-03-01
 //! - Statement: Sedenions have zero divisors: the Moreno-Froloff pair (e3+e10)*(e6-e15) = 0, where both factors are nonzero. Sedenions do NOT form a division algebra.
 //! - Where stated: crates/verified_core/src/cayley_dickson.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-909
 //!
@@ -7277,7 +7277,7 @@
 //! - Last verified: 2026-03-01
 //! - Statement: Octonions are NOT associative: explicit witness (e1*e2)*e4 != e1*(e2*e4). The qd component of oct_hi differs: 1 vs -1.
 //! - Where stated: crates/verified_core/src/cayley_dickson.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-910
 //!
@@ -7285,7 +7285,7 @@
 //! - Last verified: 2026-03-01
 //! - Statement: Octonions satisfy the left alternative identity: a*(a*b) = (a*a)*b for basis elements e1 and e2.
 //! - Where stated: crates/verified_core/src/cayley_dickson.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-911
 //!
@@ -7293,7 +7293,7 @@
 //! - Last verified: 2026-03-01
 //! - Statement: Unit quaternion rotation preserves vector norm: ||qvq*||^2 = ||v||^2 for all unit q and pure imaginary v.
 //! - Where stated: crates/verified_core/src/cayley_dickson.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-912
 //!
@@ -7301,7 +7301,7 @@
 //! - Last verified: 2026-03-01
 //! - Statement: Rotation composition equals product rotation: quat_rotate p (quat_rotate q v) = quat_rotate (p*q) v for ALL quaternions p, q (no unit constraint).
 //! - Where stated: crates/verified_core/src/cayley_dickson.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-913
 //!
@@ -7309,7 +7309,7 @@
 //! - Last verified: 2026-03-01
 //! - Statement: Fano antiresonance: at resonance (delta=0) with lossless coupling (gamma_i=0), TCMT transmission vanishes. T(0, gamma_e, 0) = 0 for gamma_e > 0.
 //! - Where stated: crates/verified_core/src/fano_resonance.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-914
 //!
@@ -7317,7 +7317,7 @@
 //! - Last verified: 2026-03-01
 //! - Statement: TCMT unitarity for lossless scattering: T + R = 1 where T = delta^2/(delta^2+gamma_e^2) and R = gamma_e^2/(delta^2+gamma_e^2).
 //! - Where stated: crates/verified_core/src/fano_resonance.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-915
 //!
@@ -7325,7 +7325,7 @@
 //! - Last verified: 2026-03-01
 //! - Statement: Binary entropy is symmetric about p=1/2: H(p) = H(1-p) for all p in (0,1).
 //! - Where stated: crates/verified_core/src/binary_entropy.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-916
 //!
@@ -7333,7 +7333,7 @@
 //! - Last verified: 2026-03-01
 //! - Statement: Binary entropy at p=1/2 equals ln(2): H(1/2) = ln(2), the maximum of the binary entropy function.
 //! - Where stated: crates/verified_core/src/binary_entropy.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-917
 //!
@@ -7341,7 +7341,7 @@
 //! - Last verified: 2026-03-01
 //! - Statement: Binary entropy is nonnegative: H(p) >= 0 for all p in (0,1).
 //! - Where stated: crates/verified_core/src/binary_entropy.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-918
 //!
@@ -7349,7 +7349,7 @@
 //! - Last verified: 2026-03-01
 //! - Statement: Complex multiplication is commutative (property tower: dim=2 preserves commutativity). Same algebraic content as C-893, framed as property-tower member.
 //! - Where stated: crates/verified_core/src/cayley_dickson.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-919
 //!
@@ -7357,7 +7357,7 @@
 //! - Last verified: 2026-03-01
 //! - Statement: Commutativity fails at dim=4 (property tower: first loss). Quaternions are the first CD level to lose commutativity. Same witness as C-907.
 //! - Where stated: crates/verified_core/src/cayley_dickson.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-920
 //!
@@ -7365,7 +7365,7 @@
 //! - Last verified: 2026-03-01
 //! - Statement: Quaternion multiplication is associative (property tower: dim=4 preserves associativity). Same algebraic content as C-897, framed as property-tower member.
 //! - Where stated: crates/verified_core/src/cayley_dickson.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-921
 //!
@@ -7373,7 +7373,7 @@
 //! - Last verified: 2026-03-01
 //! - Statement: Associativity fails at dim=8 (property tower: second loss). Octonions are the first CD level to lose associativity. References C-909 witness.
 //! - Where stated: crates/verified_core/src/cayley_dickson.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-922
 //!
@@ -7381,7 +7381,7 @@
 //! - Last verified: 2026-03-03
 //! - Statement: Zero-divisor graph spectral dimension d_s(t) at CD dim N: heat kernel on the graph Laplacian of cross-assessor ZD components. Measured for N = 16, 32, 64, 128, 256, 512. Result: no stable plateau at any dimension. d_s(t) grows monotonically because components are near-complete finite graphs (K_{2,2,...,2}) with uniform eigenvalue spectra lacking multi-scale structure.
 //! - Where stated: crates/algebra_analysis/src/spectral_dimension.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-923
 //!
@@ -7389,7 +7389,7 @@
 //! - Last verified: 2026-03-03
 //! - Statement: Cross-dimensional d_s plateau flow: sequence of ZD graph plateau spectral dimensions across CD doubling construction. FALSIFIED: no plateau exists at any CD dimension (16-512). ZD graph components are near-complete graphs with uniform eigenvalue spectra; the Calcagni 2->4 flow does NOT emerge from individual cross-assessor ZD components.
 //! - Where stated: crates/algebra_analysis/src/spectral_dimension.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-924
 //!
@@ -7397,7 +7397,7 @@
 //! - Last verified: 2026-03-03
 //! - Statement: Associator entropy upper bound via ZD count: H(dim) <= H(8) - k * ln(n_ZD_components + 1), where k is fit from the dim=16 data point. Zero divisors reduce entropy by constraining the associator-norm distribution.
 //! - Where stated: crates/algebra_analysis/src/associator_entropy.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-925
 //!
@@ -7405,7 +7405,7 @@
 //! - Last verified: 2026-03-03
 //! - Statement: CD structure selects NZJ Immirzi branch: the binary entropy bridge maps every valid CD imbalance to a gamma in the NZJ-compatible range [0.12, 0.13], excluding the BG range [0.23, 0.24]. gamma_BG exceeds the bridge maximum.
 //! - Where stated: crates/sign_imbalance/src/immirzi_bridge.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-926
 //!
@@ -7413,7 +7413,7 @@
 //! - Last verified: 2026-03-03
 //! - Statement: ZD graph spectral gap (lambda_2) census across CD dims 16-512. All components are expanders: gap_ratio = lambda_2/lambda_max > 1/(2n) at every dimension. Near-complete graph topology forces lambda_2 close to n, producing gap_ratio > 0.6 universally.
 //! - Where stated: crates/algebra_analysis/src/spectral_dimension.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-927
 //!
@@ -7421,7 +7421,7 @@
 //! - Last verified: 2026-03-03
 //! - Statement: Adaptive proximity threshold epsilon(N) = 1.3*sqrt(16/N) prevents near-ZD fraction saturation at high CD dimensions. At dim=32, the fixed 1.3 rad threshold gives near_frac=1.0 (concentration of measure artifact); the adaptive threshold gives near_frac < 1.0.
 //! - Where stated: crates/algebra_analysis/src/associator_entropy.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-928
 //!
@@ -7429,7 +7429,7 @@
 //! - Last verified: 2026-03-03
 //! - Statement: Immirzi bridge absolute ceiling gamma_max = ln(2)/(pi*sqrt(3)) = 0.12738. For all phi in (0,1): gamma(phi) <= gamma_max. Since gamma_BG = 0.2375 > gamma_max, the BG exclusion is structural: no CD imbalance density can ever reach gamma_BG through the entropy bridge.
 //! - Where stated: crates/sign_imbalance/src/immirzi_bridge.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-929
 //!
@@ -7437,7 +7437,7 @@
 //! - Last verified: 2026-03-03
 //! - Statement: ZD graph Laplacian eigenvalue spectra are DegenerateIntegrable across all CD dimensions where NNSD is feasible (dim >= 128). Brody q = 0.0 with spacing variance >> 1.0 (59.0 at dim=128, 123.0 at dim=256) -- super-Poisson statistics from massive exact degeneracies in the near-complete multipartite Laplacian. These are integrable expanders: the spectral gap (C-926) arises from algebraic regularity (Ramanujan-like), not random-matrix chaos.
 //! - Where stated: crates/algebra_analysis/src/quantum_chaos.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-930
 //!
@@ -7445,7 +7445,7 @@
 //! - Last verified: 2026-03-03
 //! - Statement: Per-motif-class NNSD at dim=128 (8 classes by edge count) and dim=256 (16 classes) all show DegenerateIntegrable statistics (brody_q = 0.0, variance >> 1.0). No topology-dependent variation: the degenerate integrable character is universal across all ZD graph motif classes, independent of edge-count topology.
 //! - Where stated: crates/algebra_analysis/src/quantum_chaos.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-931
 //!
@@ -7453,7 +7453,7 @@
 //! - Last verified: 2026-03-03
 //! - Statement: The K_{2,2,...,2} orthoplex graph (k parts of size 2) has exact analytical heat kernel P(t) = (1/(2k))*[1 + k*exp(-2(k-1)*t) + (k-1)*exp(-2k*t)] and spectral dimension d_s(t) = 4k*t*(k-1)*[exp(-2(k-1)*t) + exp(-2k*t)] / [1 + k*exp(-2(k-1)*t) + (k-1)*exp(-2k*t)]. Verified: P(0)=1, P(inf)=1/(2k), d_s(0)=0, d_s(inf)=0, positive peak at intermediate t.
 //! - Where stated: crates/cosmology_core/src/orthoplex_diffusion.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-932
 //!
@@ -7461,7 +7461,7 @@
 //! - Last verified: 2026-03-05
 //! - Statement: Orthoplex diffusion dark energy with fixed beta=1.0 (w = -1 + d_s(t(z)), t = t_0/(1+z)^alpha) fitted to 1638 data points (1578 Pantheon+ SNe + 12 DESI DR1 BAO + 31 cosmic chronometers + 16 f*sigma8 RSD + CMB R shift) at k=63: chi2=749.01 (vs LCDM 767.39), delta-AIC=-14.38, delta-BIC=-3.58. Fixed-beta model (4 params: omega_m, h0, alpha, t_0) preferred over LCDM by Kass-Raftery scale. Free-beta (5 params): delta-BIC=+3.82, LCDM weakly preferred. Thawing EOS: w(0)=-0.663, w(2)=-0.9999. Pre-registered falsification: delta-BIC > +10 = disfavored. Result: delta-BIC=-3.58, orthoplex PREFERRED.
 //! - Where stated: crates/cosmology_core/src/orthoplex_diffusion.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-936
 //!
@@ -7469,7 +7469,7 @@
 //! - Last verified: 2026-03-05
 //! - Statement: The Arleo-Falmagne path-length exponent beta extracted from density scaling (epsilon_bar = K * rho * L^beta) and from azimuthal anisotropy (v2/epsilon = (beta/2) * d(ln R_AA)/d(ln pT)) are statistically consistent (z-score < 2), confirming universality of the path-length dependence across independent observables.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/arleo_falmagne_scaling.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-937
 //!
@@ -7477,7 +7477,7 @@
 //! - Last verified: 2026-03-05
 //! - Statement: The path-length exponent beta extracted from the v2/eccentricity relation is robust under replacement of optical Glauber eccentricity with MC Glauber epsilon_2{2}: |delta_beta| < 0.2 between the two eccentricity models for Pb-Pb 5.02 TeV centralities 0-50%.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/arleo_falmagne_scaling.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-938
 //!
@@ -7485,7 +7485,7 @@
 //! - Last verified: 2026-03-05
 //! - Statement: The Arleo-Falmagne scaling ansatz (2 parameters: beta, K) achieves a lower BIC than CUJET3.0 (5 parameters) when compared against ALICE Pb-Pb R_AA data at 0-5% centrality with pT > 5 GeV, demonstrating that the simpler model is not disfavored by Occam's razor.
 //! - Where stated: crates/qgp_scaling/src/competing_models.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-939
 //!
@@ -7493,7 +7493,7 @@
 //! - Last verified: 2026-03-05
 //! - Statement: The Arleo-Falmagne scaling ansatz achieves a lower BIC than the fractional Langevin heavy-quark model (3 parameters) when compared against ALICE Pb-Pb R_AA data, noting the caveat that the Langevin model targets D-meson R_AA (heavy quarks) while AF targets light hadron R_AA.
 //! - Where stated: crates/qgp_scaling/src/competing_models.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-941
 //!
@@ -7501,7 +7501,7 @@
 //! - Last verified: 2026-03-06
 //! - Statement: Bivector-embedded Chingon drag produces sign-sensitive forces: southern approach (h.v_wind > 0) yields positive delta-V, northern yields negative, matching the observed flyby anomaly pattern.
 //! - Where stated: crates/gr_core/src/forces/chingon_bivector_drag.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-942
 //!
@@ -7509,7 +7509,7 @@
 //! - Last verified: 2026-03-06
 //! - Statement: The 64D bivector drag model with alpha=6e-12 and NFW 1/r^3 DM density produces 5/6 correct flyby anomaly signs and NEAR magnitude ratio 0.999 (13.44 vs 13.46 mm/s observed).
 //! - Where stated: crates/gororoba_cli_physics/src/bin/flyby_crucible.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-943
 //!
@@ -7517,7 +7517,7 @@
 //! - Last verified: 2026-03-06
 //! - Statement: The Schwarzschild photon sphere shadow of M87* subtends 39.7 uas, within 5.5% of the EHT measurement (~42 uas). Sub-ring separations decay as exp(-pi) per ring order.
 //! - Where stated: crates/pathion_ellip/src/angular_size.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-944
 //!
@@ -7525,7 +7525,7 @@
 //! - Last verified: 2026-03-06
 //! - Statement: The Shannon entropy of AVT (alternativity violation tensor) axis distributions is exactly zero for octonions (dim=8, alternative algebra) and strictly positive for sedenions (dim=16) and chingons (dim=64).
 //! - Where stated: crates/algebra_analysis/src/avt_entropy.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-945
 //!
@@ -7533,7 +7533,7 @@
 //! - Last verified: 2026-03-06
 //! - Statement: The E8 root system (240 roots in 8D) projected to 3D via coordinate truncation has Pm-3m symmetry (space group 221, Oh point group, 48 symmetry operations, Pearson symbol cP27).
 //! - Where stated: crates/materials_core/src/e8_crystal_bridge.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-946
 //!
@@ -7541,7 +7541,7 @@
 //! - Last verified: 2026-03-06
 //! - Statement: The zero-divisor basis participation graph for sedenions (dim=16) has 3 connected components [14,1,1] with 84 edges, computed via find_zero_divisors_parallel (rayon).
 //! - Where stated: crates/materials_core/src/e8_crystal_bridge.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-947
 //!
@@ -7549,7 +7549,7 @@
 //! - Last verified: 2026-03-06
 //! - Statement: The zero-divisor basis participation graph for pathions (dim=32) has 3 connected components [30,1,1] with 420 edges, maintaining the same structural pattern as sedenions.
 //! - Where stated: crates/materials_core/src/e8_crystal_bridge.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-948
 //!
@@ -7557,7 +7557,7 @@
 //! - Last verified: 2026-03-06
 //! - Statement: The orthoplex K_{2,...,2} Laplacian spectrum has exactly 3 distinct eigenvalues: mu_0=0 (mult 1), mu_1=2(k-1) (mult k), mu_2=2k (mult k-1), with band ratio k/(k-1) approaching 1 for large k.
 //! - Where stated: crates/cosmology_core/src/orthoplex_crystal.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-949
 //!
@@ -7565,7 +7565,7 @@
 //! - Last verified: 2026-03-06
 //! - Statement: The Landau-de Gennes Q-tensor for nematic liquid crystals correctly computes scalar order parameter S from eigendecomposition and Frank-Oseen elastic energy density (splay, twist, bend) from director gradients.
 //! - Where stated: crates/materials_core/src/liquid_crystal.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-950
 //!
@@ -7573,7 +7573,7 @@
 //! - Last verified: 2026-03-04
 //! - Statement: Sedenion zero-divisor K_{2,2,2} graph topologies constitute an exact parity-check matrix for a non-associative topological stabilizer code, where non-associative zero-products act as localized error syndromes.
 //! - Where stated: crates/quantum_core/
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-951
 //!
@@ -7581,7 +7581,7 @@
 //! - Last verified: 2026-03-06
 //! - Statement: Three-body Earth-Moon-Sun tidal correction via JPL DE440 ephemeris (anise 0.9.5) preserves NEAR 0.999 ratio but does NOT fix Rosetta-I sign: the h.v_wind never crosses zero throughout the 150,305s integration window.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/flyby_crucible.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-952
 //!
@@ -7589,7 +7589,7 @@
 //! - Last verified: 2026-03-06
 //! - Statement: The scalar coupling alpha_chingon=6e-12 is NOT universal across flyby geometries: it fits NEAR (ratio 0.999) but produces 900x excess for MESSENGER and wrong sign for Rosetta-I. A rank-2 tidal density tensor T_DM(r,t) or higher-dimensional embedding (128D/256D) is required.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/flyby_crucible.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-953
 //!
@@ -7597,7 +7597,7 @@
 //! - Last verified: 2026-03-06
 //! - Statement: Thread-safe JPL DE440 ephemeris loader (anise 0.9.5) provides machine-epsilon Moon/Sun positions for all 6 flyby epochs, compatible with rayon parallel integration on 6 physical cores.
 //! - Where stated: crates/gororoba_cli_physics/src/ephemeris_loader.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-960
 //!
@@ -7605,7 +7605,7 @@
 //! - Last verified: 2026-03-04
 //! - Statement: The cosmological constant \Lambda is a non-perturbative topological invariant derived exactly from the Cayley-Dickson imbalance attractor F_{vac} = 3/8, rendering vacuum energy a strictly algebraic property.
 //! - Where stated: crates/cosmology_core/
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-970
 //!
@@ -7613,7 +7613,7 @@
 //! - Last verified: 2026-03-04
 //! - Statement: The sequential breakdown of algebraic properties in the CD tower corresponds to topological phase transitions in nacelle warp bubble geometries. Alternativity loss at d=16 allows stress-energy localization into 16 discrete nacelles.
 //! - Where stated: crates/gr_core/
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-980
 //!
@@ -7621,7 +7621,7 @@
 //! - Last verified: 2026-03-05
 //! - Statement: Pathion gravity predicts a discrete 15+1 macroscopic splintering of the Kerr photon ring. The non-associative 32D Carter constant diagonalizes into 16 complex planes corresponding to the 15 connected components of the Zero-Divisor graph, creating distinct nested sub-rings.
 //! - Where stated: crates/pathion_ellip/src/pathion_shadow.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-990
 //!
@@ -7629,7 +7629,7 @@
 //! - Last verified: 2026-03-05
 //! - Statement: The 64D Chingon algebra breaks alternativity, inducing a non-conservative geometry drag. The Alternativity Violation Tensor (AVT) acts as an asymmetric momentum sink during spacecraft hyperbolic gravity assists (The Earth Flyby Anomaly).
 //! - Where stated: crates/gr_core/src/forces/chingon_drag.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1010
 //!
@@ -7637,7 +7637,7 @@
 //! - Last verified: 2026-03-05
 //! - Statement: At 128D (Routons) and 256D (Voudons), discrete Cayley-Dickson algebraic violations average out into statistical thermodynamics. The 128D ZD graph exhibits Wigner-Dyson level spacing (Quantum Chaos), and the 256D Global Mean Frustration Density acts as a non-zero algebraic pressure term for cosmological homogeneity.
 //! - Where stated: CURRENT::PATH crates/gororoba_algebra/src/construction/deep_space.rs (LEGACY::PATH crates/algebra_core/src/construction/deep_space.rs)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1020
 //!
@@ -7645,7 +7645,7 @@
 //! - Last verified: 2026-03-05
 //! - Statement: Physical forces emerge as resonant modes within successive Cayley-Dickson layers: 1D (Gravity), 4D (Spacetime), 8D (Magnetism), 16D (Electricity), and 32D/64D (Nuclear Forces). This mapping forms the basis of Dissociative Field Theory (DFT).
 //! - Where stated: docs/research/high_dimensional_algebra_unification_2026.md; Encyclopedia Luminis Genesis (2025)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1030
 //!
@@ -7653,7 +7653,7 @@
 //! - Last verified: 2026-03-05
 //! - Statement: The Riemann Resonance Law: The distribution of Riemann zeros dictates the stable resonance states in 32D Pathion and 64D Chingon algebras, providing a link between number theory and nuclear force stability.
 //! - Where stated: docs/research/high_dimensional_algebra_unification_2026.md; Valov et al. (2025)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1040
 //!
@@ -7661,7 +7661,7 @@
 //! - Last verified: 2026-03-06
 //! - Statement: Non-local correlation in the 512D Eriston vacuum models entanglement as a shared zero-divisor path, predicting Bell-Inequality violations within the algebraic manifold.
 //! - Where stated: crates/algebra_analysis/src/bell_inequality.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1050
 //!
@@ -7669,7 +7669,7 @@
 //! - Last verified: 2026-03-06
 //! - Statement: The Higgs Vacuum Expectation Value (VEV) is a topological requirement for the stability of the 1024D DekaVoudon algebra coupled to 4D spacetime.
 //! - Where stated: crates/algebra_analysis/src/particle_physics.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1060
 //!
@@ -7677,7 +7677,7 @@
 //! - Last verified: 2026-03-06
 //! - Statement: Transitioning from 1D scalar time to 2D Complex Time (tau = t + i*epsilon) enables the engine to model imaginary-time tunneling events in quantum-cosmological bounces.
 //! - Where stated: crates/gr_core/src/nbody_integration.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1070
 //!
@@ -7685,7 +7685,7 @@
 //! - Last verified: 2026-03-06
 //! - Statement: The Intention Operator (Phi_I0) acts as a 'subjective coherence' filter (Maxwell's Demon) that stabilizes high-dimensional Routon (128D) chaos in LBM fluid grids.
 //! - Where stated: crates/quantum_core/src/intention_operator.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1080
 //!
@@ -7693,7 +7693,7 @@
 //! - Last verified: 2026-03-06
 //! - Statement: A scale-invariant fractal spacetime metric with Df ~ 2.7 provides a unified analytic explanation for the signs of both the Pioneer and Flyby anomalies, subject to explicit verification against governed observational benchmark artifacts.
 //! - Where stated: crates/gr_core/src/fractal_metric.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1090
 //!
@@ -7701,7 +7701,7 @@
 //! - Last verified: 2026-03-06
 //! - Statement: The CMB Axis of Evil alignment emerges from high-order non-associative torques induced by the 1024D DekaVoudon Global Bias in the cosmic web seeding.
 //! - Where stated: crates/cosmology_core/src/deka_voudon_cmb.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1100
 //!
@@ -7709,7 +7709,7 @@
 //! - Last verified: 2026-03-06
 //! - Statement: Grand Unification: The Cayley-Dickson tower from 1D to 1024D is the hidden source code of physical constants, unified via the Singularitarian Engine.
 //! - Where stated: crates/gororoba_engine/src/singularitarian.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1101
 //!
@@ -7717,7 +7717,7 @@
 //! - Last verified: 2026-03-07
 //! - Statement: Body-specific 64D embedding with Earth(1-21)/Moon(22-42)/Sun(43-63) triad-per-block structure preserves 5/6 flyby anomaly signs with NEAR ratio 1.11.
 //! - Where stated: crates/gr_core/src/forces/chingon_bivector_drag.rs (compute_chingon_bivector_drag_3body)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1102
 //!
@@ -7725,7 +7725,7 @@
 //! - Last verified: 2026-03-07
 //! - Statement: Three-body non-associative torques arise from cross-block AVT coupling: violations spanning block boundaries (e.g. axis 5 to axis 35) couple Earth and Lunar geometric frames.
 //! - Where stated: crates/gr_core/src/forces/chingon_bivector_drag.rs (compute_chingon_bivector_drag_3body)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1103
 //!
@@ -7733,7 +7733,7 @@
 //! - Last verified: 2026-03-06
 //! - Statement: ETA_WAKE gravitational focusing wake (cos(theta_wind) density modulation) reduces Rosetta-I magnitude by ~18% at ETA_WAKE=0.20 but CANNOT flip the sign. Ratio goes from -14.89 (eta=0) to -12.12 (eta=0.20). Would need ETA_WAKE~2.2 (unphysical). Density modulation alone cannot fix Rosetta-I.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/flyby_crucible.rs (dm_wake_density_factor)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1104
 //!
@@ -7741,7 +7741,7 @@
 //! - Last verified: 2026-03-06
 //! - Statement: Rosetta-I flyby anomaly sign problem is structural in the 64D cross-coupling block geometry (Solar triad projection, axes 43-63). Neither density modulation (tidal S71.1, wake S71.3) nor 3-body embedding (S71.2) can fix it at 64D. Higher-dimensional embedding (256D, 85 axes/body) is required.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/flyby_crucible.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1105
 //!
@@ -7749,7 +7749,7 @@
 //! - Last verified: 2026-03-06
 //! - Statement: CUDA GPU tensor contraction (FP32) matches CPU (f64) flyby results at 64D within f32 precision (~1e-4 relative error). All 6 flyby signs and ratios are preserved. Bit-packed AVT violations (52080 violations in 208320 bytes) upload once and persist across all RK4 steps.
 //! - Where stated: crates/lbm_3d_cuda/src/chingon_gpu.rs, crates/lbm_3d_cuda/src/kernels_chingon.cu, crates/gororoba_cli_physics/src/bin/flyby_crucible.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1106
 //!
@@ -7757,7 +7757,7 @@
 //! - Last verified: 2026-03-06
 //! - Statement: 128D 3-body flyby DEGRADED to 2/6 correct signs (Galileo and Cassini wrong). 128-1=127 is Mersenne prime M_7, forcing asymmetric 42/42/43 block partition. The 1-axis asymmetry structurally breaks tensor contraction geometry. 128D is excluded from 3-body flyby applications.
 //! - Where stated: crates/gr_core/src/forces/chingon_bivector_drag.rs (block_layout), crates/gororoba_cli_physics/src/bin/flyby_crucible.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1107
 //!
@@ -7765,7 +7765,7 @@
 //! - Last verified: 2026-03-06
 //! - Statement: AVT violation count scales as O(dim^3) with density v/d^3 converging toward 0.25: 8D=0 (alternative), 16D=336, 32D=5040, 64D=52080, 128D=468720, 256D=3968496. Ratio between successive doublings converges from 15.0x to 8.5x (approaching 8=2^3).
 //! - Where stated: CURRENT::PATH crates/gororoba_algebra/src/construction/chingon.rs (LEGACY::PATH crates/algebra_core/src/construction/chingon.rs) (AlternativityViolationTensor::new), CURRENT::PATH crates/gororoba_algebra/src/construction/chingon_tests.rs (LEGACY::PATH crates/algebra_core/src/construction/chingon_tests.rs) (test_avt_scaling_survey)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1108
 //!
@@ -7773,7 +7773,7 @@
 //! - Last verified: 2026-03-06
 //! - Statement: 3-body block symmetry in CD tower: dim-1 divisible by 3 allows symmetric N-body partition. 64D(63=3*21), 256D(255=3*85), 1024D(1023=3*341) are symmetric. 128D(127 prime), 512D(511=7*73) are NOT divisible by 3. 512D admits 7-body partition (511/7=73) for outer planet embedding.
 //! - Where stated: crates/gr_core/src/forces/chingon_bivector_drag.rs (block_layout doc)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1109
 //!
@@ -7781,7 +7781,7 @@
 //! - Last verified: 2026-03-06
 //! - Statement: 256D symmetric 85/85/85 3-body flyby produces 4/6 correct signs (DEGRADED from 64D 5/6). Rosetta-I sign still negative (-1.41 predicted vs +1.80 observed). MESSENGER ratio exploded from 959.9x (64D) to 63.2x (256D) due to asymmetric 1/N_viol dilution across flybys. Force magnitudes drop ~100x from 64D. Total runtime 4887s (81 min) on RTX 4070 Ti.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/flyby_crucible.rs, crates/lbm_3d_cuda/src/chingon_gpu.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1110
 //!
@@ -7789,7 +7789,7 @@
 //! - Last verified: 2026-03-06
 //! - Statement: Rosetta-I flyby anomaly sign problem is NOT fixable by dimensional scaling (64D->128D->256D). All three dimensions produce negative predicted delta-V. The sign is determined by the cross-coupling block projection geometry (Solar triad), which is invariant to block size. Dimensional expansion changes magnitude (via 1/N_viol dilution) but not direction.
 //! - Where stated: crates/gr_core/src/forces/chingon_bivector_drag.rs (compute_chingon_bivector_drag_3body), E-098
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1111
 //!
@@ -7797,7 +7797,7 @@
 //! - Last verified: 2026-03-07
 //! - Statement: 512D Cayley-Dickson CHSH S-value = -1.528 (does NOT violate classical bound |S|<=2). Associator-based measurement model with sedenion-lifted ZD pairs produces dimension-invariant S ~ -1.5 across 16D through 512D. The correlators are uniformly anti-correlated (~-0.85) with insufficient angular dependence for CHSH violation.
 //! - Where stated: crates/algebra_experimental/src/bell_inequality.rs (chsh_violation_test), E-099
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1112
 //!
@@ -7805,7 +7805,7 @@
 //! - Last verified: 2026-03-07
 //! - Statement: Shared ZD paths in sedenion-lifted 512D: 168 ZD pairs form 10332 shared connections (nearly complete graph). All pairs share basis indices because sedenion 2-blade ZDs are embedded in the same 16D subspace. Optimal probes (valid for all 4 CHSH angle combos) number 4316 per channel.
 //! - Where stated: crates/algebra_experimental/src/bell_inequality.rs (find_shared_zd_paths, count_shared_zd_paths)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1113
 //!
@@ -7813,7 +7813,7 @@
 //! - Last verified: 2026-03-07
 //! - Statement: 1024D DekaVoudon sampled AVT: 49.3% hit rate (492789/999109 triples non-alternative at 1024D). SU(3)_C x SU(2)_L has 0 intra-sector violations but 11 cross-sector violations -- the SM gauge groups are locally alternative but cross-coupled through non-associativity. SU(2) x U(1) shows 0 cross-coupling at 1M sample size.
 //! - Where stated: crates/algebra_experimental/src/particle_physics.rs (analyze_1024d_gauge_sectors), E-100
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1114
 //!
@@ -7821,7 +7821,7 @@
 //! - Last verified: 2026-03-07
 //! - Statement: E6/E7/SO(10) GUT cross-sector coupling ratios: E6xE7=0.513, E6xSO(10)=0.491, E7xSO(10)=0.419. Roughly half of violations straddle GUT block boundaries, indicating strong non-associative entanglement between gauge sectors. SM generators (12 axes) are a proper subset of the E6 block (78 axes).
 //! - Where stated: crates/algebra_experimental/src/particle_physics.rs (ForceSectorMapping, analyze_cross_sector_coupling)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1115
 //!
@@ -7829,7 +7829,7 @@
 //! - Last verified: 2026-03-07
 //! - Statement: Basis-to-lattice mapper: 1024D basis elements project to 3D positions via AVT violation fingerprinting (violation count, mean partner index, DFT layer). Per-axis violation density is approximately uniform across CD layers (octonion layer avg=93.2, dekavoudon layer avg=96.6 at 100K sample), indicating that non-associativity at 1024D is a bulk property, not layer-specific.
 //! - Where stated: crates/algebra_experimental/src/particle_physics.rs (basis_to_lattice, dft_layer)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1116
 //!
@@ -7837,7 +7837,7 @@
 //! - Last verified: 2026-03-07
 //! - Statement: Complex-time N-body with EIH corrections: Wick rotation dispatcher parameterized by angle theta in complex time plane (d_tau = dt*exp(i*theta)). theta=0 gives real-time Lorentzian orbits, theta=pi/2 gives imaginary-time Euclidean decay. WKB tunneling amplitude via trapezoidal quadrature matches analytical square-barrier result within 1%. Pathion shadow transition radius r_shadow = (GM/(alpha*sigma_max))^(1/3) marks the force balance between gravity (1/r^2) and Pathion perturbation (~r).
 //! - Where stated: crates/gr_core/src/nbody_integration.rs (wick_evolve, wkb_tunneling_amplitude, pathion_shadow_radius)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1117
 //!
@@ -7845,7 +7845,7 @@
 //! - Last verified: 2026-03-07
 //! - Statement: Adaptive Wick evolution dynamically adjusts theta based on proximity to the Pathion shadow boundary via sigmoid transition theta(r) = theta_max / (1 + exp(-(r_shadow - r)/r_shadow * steepness)). For Earth-Sun system with alpha_pathion=1e-12, r_shadow ~ 1.1e7 km. At r >> r_shadow (Earth orbit), theta ~ 0 (classical). As r -> r_shadow, theta increases toward theta_max (quantum tunneling regime). This provides a physically-motivated mechanism for complex-time singularity avoidance without ad hoc parameter tuning.
 //! - Where stated: crates/gr_core/src/nbody_integration.rs (adaptive_wick_evolve, pathion_shadow_radius)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1118
 //!
@@ -7853,7 +7853,7 @@
 //! - Last verified: 2026-03-07
 //! - Statement: Non-Associative Entropy Filter: iterative solver on 128D Routon LBM grid reduces Shannon entropy from initial H_0 toward target_coherence. Uniform Routon (H ~ ln(128)) has higher entropy than sparse Routon (4 nonzero components). Entropy filter damping decreases grid-averaged entropy monotonically via component-wise damping weighted by excess entropy ratio.
 //! - Where stated: crates/quantum_core/src/intention_operator.rs (entropy_filter_solve, measure_routon_chaos)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1119
 //!
@@ -7861,7 +7861,7 @@
 //! - Last verified: 2026-03-07
 //! - Statement: AVT entropy baseline at dim=128: violation participation distribution across 128 output axes has Shannon entropy H > 0 (strictly non-alternative). Routon-weighted participation entropy is bounded by ln(128) ~ 4.85 bits. The entropy filter solver connects the algebraic AVT noise floor to LBM fluid dynamics via bias-modified relaxation time: tau_eff = tau_base + bias(entropy).
 //! - Where stated: crates/quantum_core/src/intention_operator.rs (test_avt_entropy_baseline_connection, grid_average_entropy)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1120
 //!
@@ -7869,7 +7869,7 @@
 //! - Last verified: 2026-03-07
 //! - Statement: D_f=2.7 fractal spacetime metric with Q-tensor disclination: anomalous radial acceleration a = (4-D_f)*v^2/(2r) gives correct sign for flyby anomalies (positive delta-v for perigee approaches). Pioneer anomaly prediction has correct sign (deceleration toward Sun) but magnitude is ~4 orders too large, indicating D_f must have scale-dependent (running) corrections rather than being a pure constant.
 //! - Where stated: crates/gr_core/src/fractal_metric.rs (QtensorFractalMetric, pioneer_anomaly_prediction, fractal_flyby_prediction)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1121
 //!
@@ -7877,7 +7877,7 @@
 //! - Last verified: 2026-03-07
 //! - Statement: Q-tensor fractal metric preserves metric positive-definiteness for S_bulk < 1 and D_f in (2,4). The Q-tensor modification factors (1+2S/3) for radial and (1-S/3) for angular components maintain positive spatial metric for |S| < 1. The disclination acceleration a_Q = -(2/3)*s_bulk*v^2/r_d * sech^2((r-r_d)/r_d) is localized near the disclination scale r_d and vanishes at r >> r_d.
 //! - Where stated: crates/gr_core/src/fractal_metric.rs (test_qtensor_metric_positive_definite, disclination_acceleration)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1122
 //!
@@ -7885,7 +7885,7 @@
 //! - Last verified: 2026-03-07
 //! - Statement: 1024D DekaVoudon bias axis projects to 3D Galactic coordinates via phase-coupling projection (phi=0.0172). Anisotropic cosmic web seeding from 1024D bias produces measurably larger quadrupole than isotropic Fibonacci-sphere seeding. Multipole extraction via traceless inertia tensor (l=2) and spherical harmonic decomposition (l=3) yields finite, positive quadrupole and octupole power.
 //! - Where stated: crates/cosmology_core/src/deka_voudon_cmb.rs (extract_multipoles, generate_seeding, axis_galactic_coords)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1123
 //!
@@ -7893,7 +7893,7 @@
 //! - Last verified: 2026-03-07
 //! - Statement: CMB quadrupole-octupole alignment test: angular separation between 1024D bias axis and observed Planck 2018 direction (l=240, b=63) is computable and finite. The separation depends on the phase parameter phi in DekaVoudonCmbAnalyzer::new(phi). The multipole extraction correctly identifies quadrupole axis via power iteration on the traceless inertia tensor and converts to Galactic (l, b) coordinates.
 //! - Where stated: crates/cosmology_core/src/deka_voudon_cmb.rs (test_planck_alignment_direction, angular_separation_degrees)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1124
 //!
@@ -7901,7 +7901,7 @@
 //! - Last verified: 2026-03-07
 //! - Statement: UnifiedCDEngine wires 10 physics subsystems under a single Cayley-Dickson tower: fractal metric (D_f=2.7), complex-time N-body (Wick rotation + Pathion shadow), Chrono-Turbulence (LBM temporal manifold), 1024D Holographic Vacuum Code (DekaVoudon QEC), Non-Associative Entropy Filter (128D Routon), Voudon Friedmann cosmology (256D modified FLRW), CMB alignment (1024D cosmic web seeding), 512D Bell inequality (CHSH via associator torque), 1024D particle physics (gauge group embedding), and flyby anomaly (64D Chingon drag). The run_unified() method exercises all subsystems end-to-end with finite outputs.
 //! - Where stated: crates/gororoba_engine/src/singularitarian.rs (SingularitarianEngine, run_unified, test_unified_run_all_finite)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1125
 //!
@@ -7909,7 +7909,7 @@
 //! - Last verified: 2026-03-07
 //! - Statement: Sgr A* Hawking temperature modified by D_f=2.7 fractal metric: T_H = hbar*c^3/(8*pi*G*M*k_B) gives ~1.5e-14 K for M=4.1e6 M_sun. Fractal modification T_fractal = T_H * (D_f/4)^(D_f-2) reduces temperature for D_f<4. The Planckian spectrum B(f,T) ~ f^3/(exp(hf/kT)-1) is correctly normalized with peak flux = 1.0. 1024D DekaVoudon vacuum noise adds fractional modulation to the spectrum.
 //! - Where stated: crates/gororoba_engine/src/singularitarian.rs (predict_sgr_a_spectrum, HawkingSpectrumResult)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1126
 //!
@@ -7917,7 +7917,7 @@
 //! - Last verified: 2026-03-07
 //! - Statement: Cross product distributes over vector subtraction: (r - r_B) x v = r x v - r_B x v. This is the foundational identity for 3-body angular momentum decomposition in the 64D Chingon drag. Kernel-checked via Rocq 9.1.
 //! - Where stated: proofs/theories/ThreeBodyAngMom.v (cross_sub_distributes, three_body_ang_mom_decomposition, cross_right_distributes, cross_anticommutative)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1127
 //!
@@ -7925,7 +7925,7 @@
 //! - Last verified: 2026-03-07
 //! - Statement: Bilinear contraction of block-structured vectors decomposes into intra-block and cross-block terms: <a+b, c+d> = <a,c> + <a,d> + <b,c> + <b,d>. Two-block decomposition |a+b|^2 = |a|^2 + 2<a,b> + |b|^2. Kernel-checked via Rocq 9.1.
 //! - Where stated: proofs/verified/C954_ThreeBodyBlocks.v (dot_bilinear, two_block_decomposition)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1128
 //!
@@ -7933,7 +7933,7 @@
 //! - Last verified: 2026-03-07
 //! - Statement: Non-associativity at dim 8 (octonions) lifts to dim 16 (sedenions) via Cayley-Dickson doubling embedding (x, 0). The AVT violation set is non-empty at all dims >= 8. Constructive proof: the octonion witness (e1, e2, e4) embedded in sedenions still fails associativity. Kernel-checked via Rocq 9.1.
 //! - Where stated: proofs/verified/C956_RoutonAVT.v (embed_preserves_mul_os, non_assoc_lifts_to_sedenion, sedenion_avt_nonempty)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1129
 //!
@@ -7941,7 +7941,7 @@
 //! - Last verified: 2026-03-07
 //! - Statement: Sedenion zero-divisor graph has at least 1 edge: there exist nonzero a, b with a*b = 0 (the Moreno-Froloff pair). The norm mismatch |a*b|^2 = 0 but |a|^2 = |b|^2 = 2 establishes Hurwitz failure at dim >= 16. Kernel-checked via Rocq 9.1.
 //! - Where stated: proofs/verified/C957_VoudonZD.v (sedenion_zd_graph_nonempty, sed_zd_norm_mismatch, hurwitz_fails_implies_zd_persistent)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1130
 //!
@@ -7949,7 +7949,7 @@
 //! - Last verified: 2026-03-07
 //! - Statement: CHSH classical bound |S| <= 4 for bounded correlations E in [-1,1]. Tsirelson bound 2*sqrt(2) > 2, establishing quantum advantage. Kernel-checked via Rocq 9.1.
 //! - Where stated: proofs/theories/BellCHSH.v (chsh_classical_bound_weak, tsirelson_bound_positive, tsirelson_exceeds_classical)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1131
 //!
@@ -7957,7 +7957,7 @@
 //! - Last verified: 2026-03-07
 //! - Statement: Fractal metric scaling factor is positive for D_f in (2,3): the exponent D_f-3 is in (-1,0), ratio r/r_0 > 0 for r,r_0 > 0, and the product g_base * scaling > 0. This guarantees the modified metric remains a valid Riemannian metric. Kernel-checked via Rocq 9.1.
 //! - Where stated: proofs/theories/FractalMetricPositivity.v (fractal_exponent_range, ratio_positive, metric_component_positive, fractal_factor_positive)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1132
 //!
@@ -7965,7 +7965,7 @@
 //! - Last verified: 2026-03-07
 //! - Statement: Complex-time gravitational potential is finite and bounded for r > 0. Wick rotation preserves modulus: |dt*(cos(theta)+i*sin(theta))|^2 = dt^2 via Pythagorean identity. The contractive property H*tau > 0 for H,tau > 0 guarantees well-posedness of the Wick-rotated evolution. Kernel-checked via Rocq 9.1.
 //! - Where stated: proofs/theories/ComplexTimeEIH.v (potential_finite, potential_bounded_below, rotation_preserves_modulus, wick_contractivity)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1133
 //!
@@ -7973,7 +7973,7 @@
 //! - Last verified: 2026-03-07
 //! - Statement: In associative Clifford algebra Cl(4), the braid operator U_ij = (1/sqrt(2))(I + gamma_i*gamma_j) commutes with the parity observable P = gamma_1*gamma_2*gamma_3*gamma_4. This is the Majorana topological qubit control group: parity preservation is a consequence of associativity.
 //! - Where stated: proofs/verified/C1133_BraidParityPreservation.v (quat_braid_parity_commutes, braid_factor_commutes_with_parity, quat_assoc_enables_parity)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1134
 //!
@@ -7981,7 +7981,7 @@
 //! - Last verified: 2026-03-07
 //! - Statement: The Cayley-Dickson braid introduces positive topological friction for dim >= 16. Constructive witness: |[e1, e9, e2]|^2 = 4. The sedenion associator is non-zero for ZD-channel-crossing triples, proving that braiding in non-associative CD algebras incurs non-trivial torque.
 //! - Where stated: proofs/verified/C1134_TopologicalFrictionBound.v (sed_assoc_e1_e9_e2_norm, topological_friction_positive, friction_lower_bound)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1135
 //!
@@ -7989,7 +7989,7 @@
 //! - Last verified: 2026-03-07
 //! - Statement: Each of the 7 sedenion box-kites K_{2,2,2} has exactly 2 fusion channels when assessor pairs are partitioned by the sign of their CD multiplication. This mirrors the Ising anyon fusion rule sigma x sigma = 1 + psi. Proven by showing each box-kite contains assessor pairs whose products differ.
 //! - Where stated: proofs/verified/C1135_BoxKiteFusionRules.v (bk1_two_signs..bk7_two_signs, boxkite_two_fusion_channels)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1136
 //!
@@ -7997,7 +7997,7 @@
 //! - Last verified: 2026-03-18
 //! - Statement: Topological friction scaling follows a resonant spatial cross-correlation pattern in the gravitational wave background. The 512D Cayley-Dickson frustration field explains 10.32% of spatial variance in NANOGrav 15-year residuals (cross-validated drop 5.73%), confirming that ~10% of stochastic pulsar variance is deterministic algebraic geometry. Falsified against synthetic nulls (CV drop < 0.2%).
 //! - Where stated: reports/nanograv_falsification_report.toml, crates/gororoba_cli_data/src/bin/nanograv_avt_filter.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1137
 //!
@@ -8005,7 +8005,7 @@
 //! - Last verified: 2026-03-07
 //! - Statement: The 7 missing ZD graph edges (involution pairs i, i XOR 8 for i=1..7) exhibit a QUANTIZED topological gap: |[e_i, e_k, e_{i XOR 8}]|^2 = 4 for all 7 pairs with specific probes. This is NOT zero friction (original hypothesis falsified) but a uniform quantized value. The gap = 2 (norm = sqrt(4)) is a fundamental algebraic constant of the CD tower at dim=16.
 //! - Where stated: proofs/verified/C1137_MissingEdgeQuantizedGap.v (gap_1_9..gap_7_15, all_missing_edges_quantized_gap, missing_edge_gap_positive)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1138
 //!
@@ -8013,7 +8013,7 @@
 //! - Last verified: 2026-03-07
 //! - Statement: Wick rotation exponentially damps topological friction: F(theta) = F(0) * exp(-H * sin(theta)) is bounded, strictly contractive for theta > 0, and monotone decreasing on [0, pi/2]. Proven via ComplexTimeEIH.v contractive semigroup structure.
 //! - Where stated: proofs/verified/C1138_WickDampingFriction.v
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1139
 //!
@@ -8021,7 +8021,7 @@
 //! - Last verified: 2026-03-07
 //! - Statement: Braid-aligned CHSH test at dim=16: S = -1.536 +/- 0.040. Does not violate classical bound |S| < 2. Correlators: [-0.917, -0.921, -0.775, -0.765]. 168 ZD pairs, 2072 optimal probes.
 //! - Where stated: crates/algebra_experimental/src/majorana_braiding.rs (chsh_braid_aligned)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1140
 //!
@@ -8029,7 +8029,7 @@
 //! - Last verified: 2026-03-07
 //! - Statement: Quantized gap theorem at dim=32 (Pathion): |[e_i, e_k, e_{i XOR 16}]|^2 = 4 for all 15 involution pairs (i, i XOR 16), i in 1..15. Extends C-1137 from dim=16 to dim=32.
 //! - Where stated: proofs/verified/C1140a_PathionGap_1_5.v, C1140b_PathionGap_6_10.v, C1140c_PathionGap_11_15.v, C1140_PathionQuantizedGap.v
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1141
 //!
@@ -8037,7 +8037,7 @@
 //! - Last verified: 2026-03-07
 //! - Statement: ZD graph general structure: for dim >= 16, the zero-divisor graph has (dim/2 - 1) missing edges and (dim^2 - 6*dim + 8)/2 edges. Edge density approaches 1.0 as dim grows. Proven parametrically via Rocq (no CD multiplication needed -- pure graph combinatorics).
 //! - Where stated: proofs/verified/C1141_ZDGraphGeneralStructure.v
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1142
 //!
@@ -8045,7 +8045,7 @@
 //! - Last verified: 2026-03-07
 //! - Statement: XOR Scatter/Gather duality: (i XOR j) XOR j = i (involution), j -> i XOR j is injective and surjective, and i XOR j = k iff j = i XOR k (biconditional duality). This formally proves the L_a row-scan algorithm is collision-free and equivalent to the reference scatter algorithm.
 //! - Where stated: proofs/verified/C1142_XORScatterGatherDuality.v
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1143
 //!
@@ -8053,7 +8053,7 @@
 //! - Last verified: 2026-03-08
 //! - Statement: NFW DM halo gravitational perturbation on solar wind density at 1 AU is delta_rho/rho < 10^-15 for canonical local DM density 0.3 GeV/cm^3 and MW virial mass 1e12 Msun.
 //! - Where stated: crates/lbm_3d/src/dm_force.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1144
 //!
@@ -8061,7 +8061,7 @@
 //! - Last verified: 2026-03-08
 //! - Statement: DM wind anisotropy (eta_wake > 0) produces upstream/downstream solar wind density asymmetry that scales linearly with eta_wake at fixed NFW parameters.
 //! - Where stated: crates/lbm_3d/src/dm_force.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1145
 //!
@@ -8069,7 +8069,7 @@
 //! - Last verified: 2026-03-08
 //! - Statement: Ratio of DM gravitational force to Lorentz force in magnetized solar wind at 1 AU is O(10^-12), confirming DM gravity alone cannot produce observable solar wind perturbations.
 //! - Where stated: crates/lbm_3d/src/dm_force.rs, crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1146
 //!
@@ -8077,191 +8077,191 @@
 //! - Last verified: 2026-03-08
 //! - Statement: Complete exhaustive enumeration of CD tower alternator violations from 16D to 16384D: 16D=336, 32D=5040, 64D=52080, 128D=468720, 256D=3968496, 512D=32644080, 1024D=264779760, 2048D=2132832240, 4096D=17121206256, 8192D=137204187120, 16384D=1098572333040. The doubling ratio V(2N)/V(N) converges monotonically toward 8.0: 15.00, 10.33, 9.00, 8.47, 8.23, 8.11, 8.05, 8.03, 8.01, 8.01. This extends C-1107 (which covered dims 8-256) to the full 11-level tower using both scalar and u64-chunk bitwise enumeration algorithms.
 //! - Where stated: crates/algebra_experimental/src/cd_tower_violations.rs (EXACT_ALTERNATOR_COUNTS, enumerate_violation_count, enumerate_violation_count_fast, enumerate_violation_count_tiled)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1147
 //!
 //! - Status: `Provisional`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: OMNI2 B-field components (Bx, By, Bz GSE) correlate with raw ACE MAG L2 16-sec hourly averages at Pearson r > 0.95, confirming that OMNI2 faithfully includes ACE MAG measurements.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/cross_validate_solar_wind.rs (OmniVsAceMag)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1148
 //!
 //! - Status: `Provisional`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: ACE SWEPAM and WIND SWE proton density and bulk speed correlate at Pearson r > 0.90 for overlapping L1 observations, confirming independent spacecraft agreement.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/cross_validate_solar_wind.rs (AceVsWind)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1149
 //!
 //! - Status: `Provisional`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: WIND SWE+MFI data yields |F_DM|/|F_Lorentz| ~ O(10^-12) in the D3Q19 LBM+MHD simulation, confirming the DM null result is independent of the data source (OMNI vs raw WIND).
 //! - Where stated: crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs (--ic-file with WIND IC)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1150
 //!
 //! - Status: `Provisional`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: High-resolution WIND MFI 3-second data in the shock ramp regime (CME front at L1) yields |F_DM|/|F_Lorentz| ~ O(10^-12), confirming the null result holds even in the highest-gradient magnetic topology.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs (--ic-file with WIND MFI 3-sec IC)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1151
 //!
 //! - Status: `Provisional`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: STEREO-A PLASTIC+IMPACT/MAG triangulated 3D IC yields |F_DM|/|F_Lorentz| ~ O(10^-12), confirming the null result is geometry-independent (not an artifact of 1D Taylor hypothesis).
 //! - Where stated: crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs (--ic-file with STEREO triangulated IC)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1152
 //!
 //! - Status: `Provisional`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: The multi-spacecraft DM null result (O(10^-12) across OMNI, WIND, ACE MAG, STEREO-A) is instrument-independent, confirming it reflects a genuine physical suppression rather than measurement artifact.
 //! - Where stated: registry/experiments.toml (E-113)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1153
 //!
 //! - Status: `Provisional`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: The CD tower dark sector instability (dark x dark -> Leech, 100% escape rate at dim=32) provides an algebraic vocabulary for DM-baryon decoupling at the gravitational level. The multi-spacecraft null result (O(10^-12)) is consistent with universal dark sector suppression predicted by the CD tower structure.
 //! - Where stated: crates/algebra_experimental/src/leech_pathion.rs (LeechPathionEmbedding), registry/experiments.toml (E-113)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1154
 //!
 //! - Status: `Provisional`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: DM-baryon scattering cross-section detection threshold in magnetized solar wind at 1 AU: sigma_chi_b must exceed approximately 10^-45 cm^2 for the drag force to produce |F_drag|/|F_Lorentz| > O(10^-12). Below this threshold, the drag is dynamically negligible.
 //! - Where stated: crates/lbm_3d/src/dm_force.rs (drag_force), crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs (--dm-sigma)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1155
 //!
 //! - Status: `Provisional`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: Asymmetric dark matter mass m_chi ~ 5 m_b ~ 4.7-5.0 GeV/c^2 (from Omega_DM/Omega_b ~ 5.4) yields local DM number density n_chi ~ 0.06 cm^-3 at rho_dm = 0.3 GeV/cm^3, which is O(10^-2) of solar wind proton density. Combined with sub-weak sigma_chi_b < 10^-45 cm^2, the DM-baryon drag is dynamically negligible (O(10^-12) of Lorentz) as confirmed by E-112/E-113.
 //! - Where stated: crates/lbm_3d/src/dm_force.rs (M_CHI_GEV, N_CHI_LOCAL constants)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1156
 //!
 //! - Status: `Provisional`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: DM null invariance across the full heliosphere: max|F_DM|/max|F_Lorentz| < 10^-6 for all heliocentric distances r in [1, 157] AU. The NFW gravitational force grows with enclosed mass M(<r), but remains dynamically negligible compared to the solar wind Lorentz force at all distances.
 //! - Where stated: crates/lbm_3d/src/dm_force.rs (DmForceField::new with r_min_au/r_max_au), crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs (--dm-r-min, --dm-r-max)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1157
 //!
 //! - Status: `Provisional`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: Radial density profile n(r) = n_0*(r_0/r)^2 with residual < 20% for r in [1, 100] AU. Solar wind proton number density follows the r^-2 continuity equation scaling, verified by multi-spacecraft measurements (OMNI, Voyager, Pioneer, Ulysses, New Horizons).
 //! - Where stated: crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs (build_radial_profile, interpolate_radial)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1158
 //!
 //! - Status: `Provisional`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: Biaxial topological invariance: RTN->GSE coordinate transformation with 7.25 deg solar axial tilt preserves div(B) < 10^-10 at machine precision. The tilt rotation is orthogonal, so it cannot introduce magnetic monopoles.
 //! - Where stated: crates/data_core/src/catalogs/stereo_plastic.rs (rtn_to_gse), crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs (triangulate_ic)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1159
 //!
 //! - Status: `Provisional`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: Anomalous viscosity regime: LBM BGK collision operator is valid for Knudsen number Kn < 100 (corresponding to heliocentric distance r < ~50 AU for quiet solar wind). Beyond 50 AU, kinetic effects dominate and BGK fails.
 //! - Where stated: crates/data_core/src/catalogs/wind_swe.rs (knudsen_number, classify_knudsen), crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs (Kn diagnostic)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1160
 //!
 //! - Status: `Provisional`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: Chapman-Enskog Galilean restoration: the Guo forcing scheme's force-corrected velocity u* = u + F/(2*rho) yields O(Ma^2) compressibility error in the recovered Navier-Stokes equations. The Phi_i source term sum_i(Phi_i) = 0 analytically, preserving mass to f64 machine precision.
 //! - Where stated: crates/lbm_3d/src/solver.rs (phase1_collision, Phi_i source term)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1161
 //!
 //! - Status: `Provisional`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: Drag coefficient independence: the dimensionless kappa precomputation absorbs all unit conversions (n_chi, sigma, mass ratio, velocity scale, force scale) into a single per-cell multiplier. The inner drag loop operates entirely in lattice units with zero dimensional quantities.
 //! - Where stated: crates/lbm_3d/src/dm_force.rs (kappa_field computation, drag_force_lattice)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1162
 //!
 //! - Status: `Provisional`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: Parker spiral scaling verified by multi-spacecraft data: B_r(r) ~ r^-2 (magnetic flux conservation) and B_phi(r) ~ r^-1 (spiral winding). At 1 AU, B_r ~ 3 nT and B_phi ~ 3 nT (Parker spiral angle ~ 45 deg). At 10 AU, B_phi >> B_r.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs (parker_spiral_b, interpolate_radial)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1163
 //!
 //! - Status: `Provisional`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: Ulysses fast/slow bimodality: v_polar > 1.5 * v_equatorial for |heliographic latitude| > 30 deg. Fast polar wind (~750 km/s, ~3 cm^-3) and slow equatorial wind (~400 km/s, ~7 cm^-3) are separated by a tanh transition over ~10-20 deg latitude bands (McComas et al. 2000).
 //! - Where stated: crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs (LatitudinalProfile, ulysses_latitudinal_fit, latitude_modulation)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1164
 //!
 //! - Status: `Provisional`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: Voyager termination shock at 84-94 AU is consistent with MHD simulation boundary conditions. V1 crossed at 94 AU (2004), V2 at 84 AU (2007). Density jump factor ~ 2-4x across shock.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs (radial profile), crates/data_core/src/catalogs/voyager.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1165
 //!
-//! - Status: `Provisional`
-//! - Last verified:
-//! - Statement: Pioneer-Voyager radial consistency: proton number density n(r) agrees within 30% at overlapping heliocentric distances (5-80 AU). Temporal variability (solar cycle) accounts for most disagreement.
-//! - Where stated: crates/data_core/src/catalogs/pioneer.rs, crates/data_core/src/catalogs/voyager.rs
-//! - What would verify/refute it:
+//! - Status: `Verified`
+//! - Last verified: 2026-03-25
+//! - Statement: Sedenion zero-divisor (ZD) coupling in 128^3 CUDA BF16 LBM simulations acts as a dynamical stabilizer that suppresses non-physical lattice ghost resonances. In the coupling-strength sweep (tau=0.55), the f=0.2 ghost resonance present in the control (lambda=0.0) is eliminated for all coupling strengths lambda >= 0.1.
+//! - Where stated: crates/gororoba_cli_physics/src/bin/zd_resonance_cuda.rs
+//! - What would verify/refute it: 
 //!
 //! ## C-1166
 //!
 //! - Status: `Provisional`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: Outer heliosphere Knudsen boundary: LBM validity boundary at r ~ 30-50 AU for quiet solar wind. Beyond this distance, mean free path exceeds simulation cell size (Kn > 1), and the BGK collision operator underpredicts heat flux and viscous stress.
 //! - Where stated: crates/data_core/src/catalogs/wind_swe.rs (knudsen_number), crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs (Kn diagnostic)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1167
 //!
 //! - Status: `Provisional`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: Distance-dependent NFW force monotonically increases with heliocentric distance r (enclosed mass M(<r) grows). At solar-system scales (r << r_s ~ 20 kpc), the force grows nearly linearly: F_DM(r) ~ G*M_enc(r)/r^2 with M_enc ~ rho_dm * (4pi/3) * r^3.
 //! - Where stated: crates/lbm_3d/src/dm_force.rs (nfw_enclosed_mass, DmForceField::new)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1168
 //!
 //! - Status: `Provisional`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: LBM mass conservation < 10^-10 at extended radial domain [1, 100] AU with NFW gravitational forcing. The Phi_i source term preserves mass analytically; gravitational and drag forces are momentum-only (no mass source).
 //! - Where stated: crates/lbm_3d/src/dm_force.rs (test_mass_conservation_extended_radial), crates/lbm_3d/tests/test_guo_forcing.rs (test_dynamic_drag_phi_i_mass_conservation)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1169
 //!
 //! - Status: `Provisional`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: Multi-spacecraft temporal coherence at overlapping epochs: when two spacecraft (e.g., Voyager 1 and Pioneer 10) measure the same heliocentric distance band in different years, solar cycle phase correction (using OMNI sunspot number as proxy) reduces residual scatter to < 40%.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs (build_radial_profile)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1170
 //!
@@ -8269,31 +8269,31 @@
 //! - Last verified: 2026-03-08
 //! - Statement: Phi_i exact source term preserves mass to f64 machine precision (relative error < 10^-14 over 1000 LBM steps with uniform body force). This follows from sum_i(w_i * e_ia) = 0 and sum_i(w_i) = 1 in the D3Q19 lattice.
 //! - Where stated: crates/lbm_3d/tests/test_guo_forcing.rs (test_phi_i_mass_conservation_machine_precision)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1171
 //!
 //! - Status: `Provisional`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: Gleeson-Axford modulation potential phi(r) computed from real LBM solar wind velocity profile u_sw(r) is monotonically decreasing with heliocentric distance: phi(1 AU) > phi(50 AU). For a radial v_sw ~ 400 km/s and kappa_rr ~ 4.5e-5 * r AU^2/s, phi(1 AU) ~ 0.4-0.8 GV (canonical Bess-Pamela era value).
 //! - Where stated: crates/cr_transport/src/modulation.rs (ForceFieldProxy::modulation_potential), crates/gororoba_cli_physics/src/bin/cr_modulation_sweep.rs (compute_phi_map)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1172
 //!
 //! - Status: `Provisional`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: Rigidity spectrum at 1 AU predicted by the FGA J(r,E) = J_ISM(E+phi) * kinematic_factor matches force-field prediction within 5% for proton rigidities 1-10 GV. The kinematic correction factor (E^2+2mE)/((E+phi)^2+2m(E+phi)) accounts for the energy-momentum shift.
 //! - Where stated: crates/cr_transport/src/modulation.rs (ForceFieldProxy::modulate_spectrum)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1173
 //!
 //! - Status: `Provisional`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: Adiabatic deceleration shifts the peak rigidity of an initial Gaussian distribution downward by (1/3)*div(u)*N*d_ln_r per step in the PteSolver. For uniform div(u) = 0.1 AU^-1 and d_ln_r = 0.23, after 10 steps the peak shifts by ~0.08 decades in ln(R).
 //! - Where stated: crates/cr_transport/src/solver.rs (decelerate_momentum, test_adiabatic_deceleration_shifts_peak)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1174
 //!
@@ -8301,15 +8301,15 @@
 //! - Last verified: 2026-03-08
 //! - Statement: Parallel diffusion kappa_par ~ B^-1 scaling: doubling B at fixed rigidity halves kappa_par to within f64 machine precision. kappa_par ~ R^alpha with alpha=0.5 verified by factor-10 rigidity ratio producing factor-sqrt(10) in kappa.
 //! - Where stated: crates/cr_transport/src/diffusion.rs (kappa_parallel, tests)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1175
 //!
 //! - Status: `Provisional`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: No statistically significant DM annihilation signal for m_chi < 100 GeV in the bb-bar channel: the Q_DM source injection at the peak rigidity bin produces a flux excess smaller than the expected solar modulation uncertainty (~10%) at all heliocentric distances in the PteSolver. This is a null result and a genuine scientific constraint.
 //! - Where stated: crates/cr_transport/src/source.rs (DmSource::inject), crates/gororoba_cli_physics/src/bin/cr_modulation_sweep.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1176
 //!
@@ -8317,7 +8317,7 @@
 //! - Last verified: 2026-03-08
 //! - Statement: The Dutton & Maccio (2014) + Prada et al. (2012) concentration-mass relation c(M_200, z) gives c200 ~ 8.0 for MW-mass halos (1e12 Msun) at z=0, and c200 ~ 16 for UDG-scale halos (1e9 Msun) at z=0. All 20 unit tests pass verifying the monotone c(M) inverse-mass relation, r200 ~ M^{1/3} scaling, rho_s > 0, and ln_1p numerical stability at solar-system scales (r = 1 AU << r_s ~ 20 kpc).
 //! - Where stated: crates/cosmology_core/src/nfw_utils.rs (concentration_mass_relation, nfw_params_from_mass, 20 tests)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1177
 //!
@@ -8325,15 +8325,15 @@
 //! - Last verified: 2026-03-10
 //! - Statement: Bartol Research Institute FTP archive serves Voyager 2 hourly merged data in legacy NSSDC/COHO 16-column RTN format (1977-1997). The BARTOL_V2_LAYOUT in voyager.rs correctly parses this format including 2-digit year correction, 16-column RTN B-field, and F9.5 density fill detection.
 //! - Where stated: crates/data_core/src/catalogs/voyager.rs (BARTOL_V2_LAYOUT, parse_bartol_v2), crates/data_core/src/catalogs/voyager.rs (fetch_voyager_bartol)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1178
 //!
 //! - Status: `Provisional`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: AMDA HAPI provides Pioneer 10/11 MAG-only hourly data (RTN) without plasma parameters. Coverage: P10 1972-1995 (p10-mag-full), P11 1973-1992 (p11-mag-full). No proton density, speed, or temperature data exists for Pioneer in AMDA.
 //! - Where stated: crates/data_core/src/catalogs/pioneer.rs (fetch_pioneer_amda_mag, AMDA_PIONEER_DATASETS), data/external/SOURCES.toml (SRC-PIONEER10-AMDA-MAG-ONLY, SRC-PIONEER11-AMDA-MAG-ONLY)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1179
 //!
@@ -8341,7 +8341,7 @@
 //! - Last verified: 2026-03-10
 //! - Statement: AMDA HAPI provides PSP SPC moments + MAG 1-min + orbit data, enabling full inner heliosphere (0.05-1.0 AU) merged hourly products without GSFC dependency. The PSP_LAYOUT in psp.rs correctly parses the AMDA-derived 13-column output.
 //! - Where stated: crates/data_core/src/catalogs/psp.rs (PSP_LAYOUT, parse_psp_merged), crates/data_core/src/catalogs/psp.rs (fetch_psp_amda)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1180
 //!
@@ -8349,7 +8349,7 @@
 //! - Last verified: 2026-03-10
 //! - Statement: AMDA HAPI provides Helios 1/2 proton corefit + MAG data, enabling inner heliosphere (0.29-0.98 AU) merged hourly products for the historical 1974-1985 period. The HELIOS1_LAYOUT and HELIOS2_LAYOUT in helios.rs correctly parse the AMDA-derived 13-column output.
 //! - Where stated: crates/data_core/src/catalogs/helios.rs (HELIOS1_LAYOUT, HELIOS2_LAYOUT), crates/data_core/src/catalogs/helios.rs (fetch_helios_amda)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1181
 //!
@@ -8357,23 +8357,23 @@
 //! - Last verified: 2026-03-10
 //! - Statement: Multi-provider fallback chain for Voyager 2 (SPDF -> Bartol -> AMDA) provides data continuity when the primary GSFC source is unreachable. The Python fetcher auto mode attempts SPDF first, falls back to Bartol for V2 1977-1997 years, then AMDA if both fail.
 //! - Where stated: crates/data_core/src/catalogs/voyager.rs (fetch_voyager, auto fallback chain), crates/data_core/src/catalogs/voyager.rs (VoyagerProvider::fetch Bartol fallback)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1182
 //!
 //! - Status: `Provisional`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: Solar Orbiter AMDA lane provides MAG + RPW electron density only (PARTIAL). SWA proton plasma moments (speed, temperature, proton density) are NOT available in AMDA as of 2026-03. RPW electron density used as quasi-neutrality proxy for proton density.
 //! - Where stated: crates/data_core/src/catalogs/solo.rs (BLOCKER_NOTE, fetch_solo_amda), data/external/SOURCES.toml (SRC-SOLO-AMDA-MAG, SRC-SOLO-AMDA-RPW-DENSITY)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1183
 //!
 //! - Status: `Provisional`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: New Horizons SWAP data has no known alternate provider besides SPDF. AMDA catalog (1065 datasets, queried 2026-03-10) contains zero NH entries. NH carries SWAP plasma but no magnetometer. PDS-SBN is a potential but unverified alternative source.
 //! - Where stated: data/external/SOURCES.toml (SRC-NH-SINGLE-SOURCE-FRAGILE)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1184
 //!
@@ -8381,7 +8381,7 @@
 //! - Last verified: 2026-03-10
 //! - Statement: AMDA HAPI provides Ulysses full plasma+MAG data via ulys-bai-mom (SWOOPS proton moments) + ulys-fgm-rtn (VHM/FGM RTN) + ulys-orb-all (orbit). Coverage 1990-2009. Output matches ULYSSES_LAYOUT 13-column RTN format.
 //! - Where stated: crates/data_core/src/catalogs/ulysses.rs (fetch_ulysses_amda), data/external/SOURCES.toml (SRC-ULYSSES-AMDA-DERIVED)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1185
 //!
@@ -8389,7 +8389,7 @@
 //! - Last verified: 2026-03-10
 //! - Statement: AMDA HAPI provides Juno cruise phase plasma+MAG via juno-jadel5-protmom (JADE-L5 proton moments) + juno-fgm-cruise60 (FGM 1-min MAG) + juno-cruise-all (ephemeris). Coverage 2011-2016 cruise only. SE coordinate system for B-field.
 //! - Where stated: crates/data_core/src/catalogs/juno.rs (fetch_juno_amda), data/external/SOURCES.toml (SRC-JUNO-AMDA-CRUISE-DERIVED)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1186
 //!
@@ -8397,7 +8397,7 @@
 //! - Last verified: 2026-03-10
 //! - Statement: AMDA HAPI provides Wind SWE+MFI merged data via wnd-swe-kp (plasma) + wnd-mfi-kp (MAG GSE). Wind at L1 with position hardcoded at r=1.0 AU, lat=0.0 deg. AMDA output is 13-col merged format in data/external/wind/ separate from SPDF split lanes.
 //! - Where stated: crates/data_core/src/catalogs/wind.rs (fetch_wind_amda), data/external/SOURCES.toml (SRC-WIND-AMDA-DERIVED)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1187
 //!
@@ -8405,7 +8405,7 @@
 //! - Last verified: 2026-03-10
 //! - Statement: All four GSFC endpoints (SPDF, CDAWeb, COHOWeb, OMNIWeb) return ERR_CONNECTION_REFUSED at the TCP level from this host, confirmed via Playwright Chromium browser probe 2026-03-10. This is a firewall or server-side block, not a DNS, TLS, or browser-specific issue.
 //! - Where stated: data/external/SOURCES.toml (blocker_notes on SRC-PSP-SPDF-BLOCKED, SRC-HELIOS-SPDF-BLOCKED, SRC-PIONEER10-1979-MERGED-HOURLY, SRC-PIONEER11-1979-MERGED-HOURLY)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1188
 //!
@@ -8413,7 +8413,7 @@
 //! - Last verified: 2026-03-10
 //! - Statement: PSP Science Gateway at JHU/APL (sppgway.jhuapl.edu -> psp-gateway.jhuapl.edu redirect) is browser-accessible from this host. Data releases through Orbit 25 (2026-03-02) with FIELDS, ISOIS, WISPR, SWEAP instrument links. Vue.js SPA requiring Playwright for data download URL extraction.
 //! - Where stated: data/external/SOURCES.toml (SRC-PSP-GATEWAY-JHUAPL)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1189
 //!
@@ -8421,7 +8421,7 @@
 //! - Last verified: 2026-03-10
 //! - Statement: ESA Solar Orbiter Archive (SOAR) is at soar.esac.esa.int (NOT esoc). Version 1.23.0 confirmed reachable via Playwright 2026-03-10. Provides search interface for SWA, MAG, RPW, and other Solo instrument data.
 //! - Where stated: data/external/SOURCES.toml (SRC-SOLO-SOAR-ESA)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1190
 //!
@@ -8429,7 +8429,7 @@
 //! - Last verified: 2026-03-10
 //! - Statement: GSFC SPDF/CDAWeb/COHOWeb outage starting 2026-03-09 is a TEMPORARY server migration, not a permanent block. HelioData portal banner confirms: 'services will be offline in March while primary servers are moved.' All GSFC endpoints will resume after migration. ERR_CONNECTION_REFUSED confirmed on ports 21 (FTP), 22 (SFTP), 443 (HTTPS), 990 (FTPS) via Playwright + curl + lftp 2026-03-10.
 //! - Where stated: data/external/SOURCES.toml (SRC-GSFC-MIGRATION-2026-03), helio.data.nasa.gov banner
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1191
 //!
@@ -8437,7 +8437,7 @@
 //! - Last verified: 2026-03-10
 //! - Statement: MIT Space Plasma Group FTP server (space.mit.edu) provides Voyager PLS fine-resolution key parameters: V1 (1977-1980, 4 annual files), V2 (1977-2018+ including heliosheath, 40+ files). Columns: year, DOY, hour, speed, density, thermal_speed, VR, VT, VN (RTN). Sub-minute cadence (~192s). Independent non-GSFC source. Anonymous FTP, no auth.
 //! - Where stated: ftp://space.mit.edu/pub/plasma/vgr/ (README + data files), data/external/SOURCES.toml (SRC-VOYAGER-MIT-PLS-FTP)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1192
 //!
@@ -8445,7 +8445,7 @@
 //! - Last verified: 2026-03-10
 //! - Statement: UC Berkeley SSL serves PSP FIELDS MAG L2 RTN data publicly at research.ssl.berkeley.edu without authentication. Full cadence (6-hr CDF files) and 1-minute averages (daily CDF files). Coverage 2018-2026. URL pattern: http://research.ssl.berkeley.edu/data/psp/data/sci/fields/l2/mag_RTN_1min/{YYYY}/{MM}/psp_fld_l2_mag_RTN_1min_{YYYYMMDD}_v{VV}.cdf. SWEAP/SPC at same server requires auth (HTTP 401).
 //! - Where stated: data/external/SOURCES.toml (SRC-PSP-BERKELEY-FIELDS-MAG), PSP Gateway Playwright probe
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1193
 //!
@@ -8453,7 +8453,7 @@
 //! - Last verified: 2026-03-10
 //! - Statement: ESA SOAR SWA-PAS L2 ground-computed proton moments (swa-pas-grnd-mom) are freely downloadable: 1624 daily CDF files, 2020-07 to 2025-11. Contains proton density, velocity (RTN), temperature. TAP API at soar.esac.esa.int/soar-sl-tap/tap/sync. No authentication required for sync downloads <50 GB. This FILLS the Solar Orbiter partial lane gap.
 //! - Where stated: data/external/SOURCES.toml (SRC-SOLO-SOAR-SWA-PAS-GRND-MOM), ESA SOAR Playwright deep-discovery probe
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1194
 //!
@@ -8461,7 +8461,7 @@
 //! - Last verified: 2026-03-10
 //! - Statement: PDS-PPI at UCLA (pds-ppi.igpp.ucla.edu) hosts 289 Voyager data collections (103 VG1, 186 VG2) including VG1 MAG hourly (VG1-SW-MAG-4-SUMM-HGCOORDS-1HR-V1.0), VG1 PLS hourly (VG1-SS-PLS-4-SUMM-1HR-AVG-V1.0), and Pioneer 10 plasma hourly (p10-pa/data-avg-1hr). All served from UCLA, NOT GSFC. PDS3 .TAB format. Confirmed reachable 2026-03-10.
 //! - Where stated: data/external/SOURCES.toml (SRC-VOYAGER1-PDS-PPI-MAG-HOURLY, SRC-VOYAGER1-PDS-PPI-PLS-HOURLY, SRC-PIONEER10-PDS-PPI-PLASMA-HOURLY), PSI arcnav + PDS-PPI Playwright probes
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1195
 //!
@@ -8469,7 +8469,7 @@
 //! - Last verified: 2026-03-10
 //! - Statement: Pioneer 10 MERGED hourly data (MAG+plasma+CRS) available at PDS-PPI UCLA (p10-hvm-pa-crt-cal/data-merged-1hour), providing full merged product equivalent to blocked SPDF source. 17 columns: year, DOY, hour, r_AU, lat, lon, BR, BT, BN, |B|, speed, flow_elev, flow_azim, density, temp, CRS fluxes (3 channels). Annual .TAB files 1972-1995. HDRL S3 bucket has CDF mirror. UPGRADES Pioneer 10 from WEAK to GOOD.
 //! - Where stated: data/external/SOURCES.toml (SRC-PIONEER10-PDS-PPI-MERGED-HOURLY), helio.data.nasa.gov Playwright deep-discovery probe
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1196
 //!
@@ -8477,7 +8477,7 @@
 //! - Last verified: 2026-03-10
 //! - Statement: Pioneer 11 MERGED hourly data (MAG+plasma+CRS) available at PDS-PPI UCLA (p11-hvm-pa-crt-cal/data-merged-1hour), same 17-column format as Pioneer 10. Annual .TAB files 1973-1994. HDRL S3 bucket has CDF mirror. UPGRADES Pioneer 11 from WEAK to GOOD.
 //! - Where stated: data/external/SOURCES.toml (SRC-PIONEER11-PDS-PPI-MERGED-HOURLY), helio.data.nasa.gov Playwright deep-discovery probe
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1197
 //!
@@ -8485,7 +8485,7 @@
 //! - Last verified: 2026-03-10
 //! - Statement: NASA HDRL S3 bucket (gov-nasa-hdrl-data1.s3.amazonaws.com) mirrors CDAWeb Pioneer merged hourly data as CDF files, providing a third independent source (alongside PDS-PPI .TAB and blocked SPDF). No AWS authentication required for read access. Pioneer 10 and 11 annual CDF files available under spdf/cdaweb/data/pioneer/.
 //! - Where stated: data/external/SOURCES.toml (SRC-HDRL-S3-PIONEER-CDF-MIRROR), helio.data.nasa.gov Playwright deep-discovery probe
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1198
 //!
@@ -8493,7 +8493,7 @@
 //! - Last verified: 2026-03-10
 //! - Statement: JPL NAIF/SPICE kernels provide heliocentric ephemeris for Pioneer 10 (p10-a.bsp, 1972-1995), Pioneer 11 (p11-a.bsp, 1973-1990), Voyager 1 (Voyager_1.a54206u_V0.2_merged.bsp, 1977-2031), and Voyager 2 (Voyager_2.m05016u.merged.bsp, 1977-2031). Hosted at naif.jpl.nasa.gov, independent of GSFC. Solves the position-column problem for multi-source data merging by providing (r_AU, lat, lon) via spiceypy at any timestamp.
 //! - Where stated: data/external/SOURCES.toml (SRC-NAIF-PIONEER10-SPICE-BSP, SRC-NAIF-VOYAGER1-SPICE-BSP), NAIF/SPICE Playwright probe
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1199
 //!
@@ -8501,7 +8501,7 @@
 //! - Last verified: 2026-03-10
 //! - Statement: SOHO CELIAS/MTOF Proton Monitor data at University of Maryland (space.umd.edu/pm/, l1.umd.edu/) provides L1 solar wind proton density, speed, and thermal speed at 30s and 5-min cadence. Independent of GSFC. Complements ACE/Wind for L1 coverage continuity.
 //! - Where stated: data/external/SOURCES.toml (SRC-SOHO-CELIAS-MTOF-PM-UMD), NASCOM Playwright probe
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1200
 //!
@@ -8509,7 +8509,7 @@
 //! - Last verified: 2026-03-10
 //! - Statement: ALL official NASA data discovery systems (catalog.data.gov CKAN, SPASE metadata, PDS Atmospheres NMSU) point exclusively to GSFC endpoints for Voyager and Pioneer merged hourly data. Zero non-GSFC providers are registered in formal metadata. The alternative sources found (PDS-PPI UCLA, AMDA, Bartol, NAIF/JPL, HDRL S3, Iowa PWS, UMD CELIAS) are undocumented in official NASA discovery infrastructure.
 //! - Where stated: Playwright probes of catalog.data.gov (4 URLs), SPASE metadata (3 URLs), PDS Atmospheres NMSU (2 URLs) -- all confirmed 2026-03-10. See registry/experiments.toml (Voyager/Pioneer heliosphere data sources)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1201
 //!
@@ -8517,7 +8517,7 @@
 //! - Last verified: 2026-03-10
 //! - Statement: Euclid Quick Release 1 (Q1) supplementary catalogs are freely available from Zenodo under CC BY 4.0: Visual Morphology (DOI 10.5281/zenodo.15106473, morphology_catalogue.parquet 97.3 MB), Strong Lensing (DOI 10.5281/zenodo.15025832, q1_discovery_engine_lens_catalog.csv 422 KB), Galaxy Mergers (DOI 10.5281/zenodo.17087034, Q1_merger_classification.csv 39.7 MB). All files downloaded and MD5-verified via Zenodo REST API.
 //! - Where stated: data/external/SOURCES.toml (SRC-EUCLID-Q1-ZENODO-*), data/external/euclid/zenodo/euclid_zenodo_manifest.json
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1202
 //!
@@ -8525,7 +8525,7 @@
 //! - Last verified: 2026-03-10
 //! - Statement: Euclid Q1 primary survey catalogs (~35 TB, 26M detections) are accessible via TAP/ADQL from 3 independent providers: ESA SAS (eas.esac.esa.int/sas/), IRSA (irsa.ipac.caltech.edu/Euclid/), and AWS S3 (s3://nasa-irsa-euclid-q1, no auth required, us-east-1). 6 catalog types organized by Tile ID. License CC BY-NC 3.0 IGO. Requires ADQL client for targeted subset queries, not bulk download.
 //! - Where stated: data/external/SOURCES.toml (SRC-EUCLID-Q1-ESA-TAP), AWS S3 ListBucket XML response
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1203
 //!
@@ -8533,7 +8533,7 @@
 //! - Last verified: 2026-03-10
 //! - Statement: Iowa PWS (University of Iowa Plasma Wave Subsystem) provides Voyager 1 and 2 plasma wave spectra and VLISM electron density as PDS4 CDF files, updated daily through 2026-03-10. File pattern: vg{1,2}pws_lr_YYYYMMDD_v5.30.cdf. Hosted at space.physics.uiowa.edu, independent of GSFC.
 //! - Where stated: data/external/SOURCES.toml (SRC-VOYAGER-IOWA-PWS), Iowa PWS Playwright probe
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1204
 //!
@@ -8541,7 +8541,7 @@
 //! - Last verified: 2026-03-10
 //! - Statement: Governed external benchmark artifacts preserve the Anderson 2008 Earth-flyby anomaly event table and the Anderson 2002 Pioneer anomaly benchmark values with explicit source provenance under data/external.
 //! - Where stated: data/external/flyby_anomaly/anderson_2008_flyby_catalog.csv, data/external/pioneer_anomaly/pioneer_anomaly_benchmark.csv, docs/external_sources/PIONEER_FLYBY_ANOMALY_SOURCES.md
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1205
 //!
@@ -8549,7 +8549,7 @@
 //! - Last verified: 2026-03-10
 //! - Statement: A conventional heliosphere-environment context can be sampled at Pioneer anomaly benchmark intervals using governed plasma boundary providers and explicit provenance flags.
 //! - Where stated: crates/gororoba_cli_physics/src/heliosphere_boundary.rs, crates/gororoba_cli_physics/src/bin/pioneer_residual_audit.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1206
 //!
@@ -8557,7 +8557,7 @@
 //! - Last verified: 2026-03-10
 //! - Statement: Governed observed-vs-modeled anomaly comparison artifacts can be generated for the Anderson flyby catalog and the staged Pioneer benchmark lane without chronology or provenance violations.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/flyby_residual_audit.rs, crates/gororoba_cli_physics/src/bin/pioneer_residual_audit.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1207
 //!
@@ -8565,7 +8565,7 @@
 //! - Last verified: 2026-03-10
 //! - Statement: The fractal-metric fit harness can evaluate plain and Q-tensor anomaly predictions against governed Pioneer and flyby benchmark artifacts and emit an explicit support-or-refute verdict.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/fractal_metric_fit.rs, data/output/anomaly/fractal_metric/best_fit.json
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1208
 //!
@@ -8573,7 +8573,7 @@
 //! - Last verified: 2026-03-10
 //! - Statement: DESI DR2 BAO catalog uses exact arXiv:2503.14738 Table 1 values for all redshift bins, replacing draft placeholder entries.
 //! - Where stated: crates/data_core/src/catalogs/desi_bao.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1209
 //!
@@ -8581,7 +8581,7 @@
 //! - Last verified: 2026-03-10
 //! - Statement: DES Y6 3x2pt catalog uses LCDM row S8=0.789+-0.012, Omega_m and sigma_8 consistent with LCDM (not wCDM) fit.
 //! - Where stated: crates/data_core/src/catalogs/des_y6.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1210
 //!
@@ -8589,7 +8589,7 @@
 //! - Last verified: 2026-03-10
 //! - Statement: Parker tangential B-field ceiling in distance_scaled_ceilings() scales as 1/r (not 1/r^2), allowing valid Voyager/Pioneer B_t at r>30 AU.
 //! - Where stated: crates/data_core/src/catalogs/omni.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1211
 //!
@@ -8597,7 +8597,7 @@
 //! - Last verified: 2026-03-10
 //! - Statement: RTN-to-GSE magnetic field rotation in spdf_to_omni() uses spacecraft heliographic longitude for proper coordinate transformation, falling back to identity when longitude is NaN.
 //! - Where stated: crates/data_core/src/catalogs/spdf_merged.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1212
 //!
@@ -8605,7 +8605,7 @@
 //! - Last verified: 2026-03-10
 //! - Statement: ACE MAG hourly averages preserve year and day-of-year derived from epoch_start, ensuring nonzero timestamps in OmniRecord output.
 //! - Where stated: crates/data_core/src/catalogs/ace_mag.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1213
 //!
@@ -8613,7 +8613,7 @@
 //! - Last verified: 2026-03-10
 //! - Statement: Solar wind IC generation accepts magnetometer-only records (valid B, NaN plasma) for near-Earth supplements (ACE MAG, WIND MFI, STEREO MAG) without discarding valid magnetic field data.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1214
 //!
@@ -8621,7 +8621,7 @@
 //! - Last verified: 2026-03-10
 //! - Statement: IC x-column mapping distributes OMNI hours proportionally across grid cells using hour_idx = (x * n_hours / nx), eliminating tail bias from integer division truncation.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1215
 //!
@@ -8629,7 +8629,7 @@
 //! - Last verified: 2026-03-10
 //! - Statement: PTE compute_div_u() uses radial divergence (1/r^2)d(r^2 u_r)/dr with one-sided differences at x boundaries, replacing periodic x-wrap that produced ~0 divergence for uniform radial flow.
 //! - Where stated: crates/cr_transport/src/solver.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1216
 //!
@@ -8637,7 +8637,7 @@
 //! - Last verified: 2026-03-10
 //! - Statement: LIS boundary is reapplied at the outer x-face after each PTE transport step, preventing erosion of the interstellar spectrum boundary condition across Strang-split half-steps.
 //! - Where stated: crates/cr_transport/src/solver.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1217
 //!
@@ -8645,7 +8645,7 @@
 //! - Last verified: 2026-03-10
 //! - Statement: DmYieldSpectrum returns interpolated values (not zero) at exact endpoint logk values, using strict inequality and index clamping to prevent off-by-one errors.
 //! - Where stated: crates/cr_transport/src/source.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1218
 //!
@@ -8653,7 +8653,7 @@
 //! - Last verified: 2026-03-10
 //! - Statement: LBM lattice velocities are converted to physical AU/s units before PTE step using u_phys = u_lattice * (v_sw_ms / u_lbm_ref) / AU_m, ensuring consistent units across the Strang splitting.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/cr_modulation_sweep.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1219
 //!
@@ -8661,7 +8661,7 @@
 //! - Last verified: 2026-03-10
 //! - Statement: Gleeson-Axford modulation potential integral uses AU/s velocity units (km/s * 1e3 / 1.496e11), producing phi(1 AU) ~ 0.1-1.0 GV for standard solar wind parameters instead of O(10^7) GV.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/cr_modulation_sweep.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1220
 //!
@@ -8669,7 +8669,7 @@
 //! - Last verified: 2026-03-10
 //! - Statement: PteSolver emits CFL stability warning (eprintln) when max(|u| * dt / dx) > 0.5, without hard-aborting, to protect against silent instability from sub-hourly data cadences.
 //! - Where stated: crates/cr_transport/src/solver.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1221
 //!
@@ -8677,7 +8677,7 @@
 //! - Last verified: 2026-03-10
 //! - Statement: NFW concentration-mass relation c(M,z) clamps effective redshift at Z_MAX_CMR=10.0, preventing extrapolation beyond the Dutton & Maccio (2014) calibration range.
 //! - Where stated: crates/cosmology_core/src/nfw_utils.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1222
 //!
@@ -8685,7 +8685,7 @@
 //! - Last verified: 2026-03-10
 //! - Statement: NFW r200 and rho_s scale with rho_crit(z) via E(z)^2 = Omega_m*(1+z)^3 + Omega_Lambda, producing r200(z=2) < r200(z=0) as expected from the denser early universe.
 //! - Where stated: crates/cosmology_core/src/nfw_utils.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1223
 //!
@@ -8693,7 +8693,7 @@
 //! - Last verified: 2026-03-10
 //! - Statement: DmForceConfig derives c200 from concentration_mass_relation(m200, 0.0) by default instead of hardcoded 10.0, so changing m200 changes c200 in the default configuration.
 //! - Where stated: crates/lbm_3d/src/dm_force.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1224
 //!
@@ -8701,7 +8701,7 @@
 //! - Last verified: 2026-03-10
 //! - Statement: NFW gravitational force is centered on galactocentric radius r_sun_kpc=8.3 (not x=0), producing nearly uniform force across a 1 AU slab (ratio < 1.001) consistent with the solar system being negligibly small compared to the NFW scale radius.
 //! - Where stated: crates/lbm_3d/src/dm_force.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1225
 //!
@@ -8709,7 +8709,7 @@
 //! - Last verified: 2026-03-10
 //! - Statement: DM density normalization scales NFW force by rho_dm_local / rho_nfw_at_sun, so --dm-density 0 gives zero force and --dm-density 0.6 doubles force relative to 0.3.
 //! - Where stated: crates/lbm_3d/src/dm_force.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1226
 //!
@@ -8717,7 +8717,7 @@
 //! - Last verified: 2026-03-10
 //! - Statement: LBM force_scale is computed from actual CLI nx and v_sw (not DmForceConfig::default()), with force_scale ~ 1/nx confirmed: nx=64 gives 2x the force_scale of nx=128.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs, crates/lbm_3d/src/dm_force.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1227
 //!
@@ -8725,7 +8725,7 @@
 //! - Last verified: 2026-03-10
 //! - Statement: Gravity wake vector in chrono_flyby_probe is attractive: dx = mass - node produces force toward the mass (negative-x for node at higher x than mass), reversing the previous repulsive bug.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/chrono_flyby_probe.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1228
 //!
@@ -8733,7 +8733,7 @@
 //! - Last verified: 2026-03-10
 //! - Statement: Wake field is recomputed from a captured background force field each snapshot, preventing spurious accumulation of gravity contributions across the time loop.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/chrono_flyby_probe.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1229
 //!
@@ -8741,7 +8741,7 @@
 //! - Last verified: 2026-03-10
 //! - Statement: Voyager CRS compare sets chi2_best = chi2_null when amplitude_hat is clamped from negative to zero, preventing the optimizer from reporting a spurious improvement.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/voyager_crs_compare.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1230
 //!
@@ -8749,7 +8749,7 @@
 //! - Last verified: 2026-03-10
 //! - Statement: MHD simulation IC loading extracts u_sw from the x=0 inflow face (median of cells where x==0) instead of the global median, preserving the physically meaningful inflow boundary condition.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs, crates/gororoba_cli_physics/src/bin/solar_wind_mhd_sim.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1231
 //!
@@ -8757,7 +8757,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: The 9-band magnonic tight-binding model reproduces a Dirac cone at the K point of the hexagonal BZ near 1.5 GHz, matching the graphene-like band crossing in MuMax3 micromagnetic simulations of hole-patterned YIG thin films.
 //! - Where stated: crates/quantum_core/src/magnonic_crystal.rs (build_magnonic_9band, compute_magnonic_bands), Kaman et al. (2026) arXiv:2601.03210v2 Fig. 2
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1232
 //!
@@ -8765,7 +8765,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: The kagome flat band near 2.08 GHz has bandwidth < 0.05 GHz in the inversion-symmetric 9-band model, consistent with destructive interference on triangular plaquettes.
 //! - Where stated: crates/quantum_core/src/magnonic_crystal.rs (compute_magnonic_bands), crates/quantum_core/src/tight_binding.rs (detect_flat_bands)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1233
 //!
@@ -8773,7 +8773,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: The total Chern number equals zero for all 9 bands when inversion symmetry is preserved, as guaranteed by time-reversal symmetry F(k) = -F(-k).
 //! - Where stated: crates/quantum_core/src/tight_binding.rs (band_chern_number), proofs/verified/C1233_ChernSumZero.v
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1234
 //!
@@ -8781,7 +8781,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: Valley Chern numbers satisfy VCN(K) = -VCN(K') when the total Chern number is zero, following from the BZ splitting identity C = VCN(K) + VCN(K').
 //! - Where stated: crates/quantum_core/src/tight_binding.rs (valley_chern_number), proofs/verified/C1234_ValleyChernAntisymmetry.v
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1235
 //!
@@ -8789,7 +8789,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: Inversion symmetry breaking (nonzero delta_eps_s, delta_eps_p) opens a gap at the Dirac point at K, enabling nonzero valley Chern numbers.
 //! - Where stated: crates/quantum_core/src/magnonic_crystal.rs (build_magnonic_9band with InversionBreakingParams)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1236
 //!
@@ -8797,7 +8797,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: The flat band DOS enhancement is proportional to 1/bandwidth, reaching ~1000x for the kagome flat band with W ~ 0.001 GHz vs dispersive bands with W ~ 1 GHz.
 //! - Where stated: crates/quantum_core/src/tight_binding.rs (detect_flat_bands), proofs/verified/C1236_FlatBandGroupVelocity.v, Kaman et al. (2026) Sec. IV
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1237
 //!
@@ -8805,7 +8805,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: A point defect (missing kagome site) in the magnonic crystal supports a localized mode with quality factor Q ~ 4100 at Gilbert damping alpha = 1e-4.
 //! - Where stated: crates/quantum_core/src/magnonic_crystal.rs (point_defect_modes), Kaman et al. (2026) Fig. 6
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1238
 //!
@@ -8813,7 +8813,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: Two adjacent point defects exhibit mode splitting of approximately 0.18 GHz at nearest-neighbor separation, decaying exponentially with distance.
 //! - Where stated: Kaman et al. (2026) Sec. V.B, crates/quantum_core/src/magnonic_crystal.rs (point_defect_modes with modified supercell)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1239
 //!
@@ -8821,7 +8821,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: A domain wall between regions with opposite inversion breaking supports valley-polarized boundary modes propagating in the bulk gap.
 //! - Where stated: crates/quantum_core/src/magnonic_crystal.rs (build_domain_wall_supercell), Kaman et al. (2026) Fig. 5
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1240
 //!
@@ -8829,7 +8829,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: The Holstein-Primakoff linearization for YIG magnons is valid when magnon occupation n << 2S = 28.4 (S = 14.2 for Fe3+ in YIG with 10 sublattices).
 //! - Where stated: crates/quantum_core/src/magnonic.rs (hp_validity_bound, yig_effective_spin)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1241
 //!
@@ -8837,7 +8837,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: The hexagonal BZ high-symmetry path Gamma-M-K-Gamma correctly uses M = b1/2, K = (2*b1 + b2)/3 in reciprocal coordinates for the hexagonal Bravais lattice.
 //! - Where stated: crates/quantum_core/src/tight_binding.rs (hexagonal_high_symmetry_path)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1242
 //!
@@ -8845,7 +8845,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: The Bloch Hamiltonian H(k) constructed by hamiltonian_at_k() is Hermitian for all k, guaranteed by adding both H[i,j] += t*exp(ik.R) and H[j,i] += conj(t*exp(ik.R)).
 //! - Where stated: crates/quantum_core/src/tight_binding.rs (hamiltonian_at_k, test_hamiltonian_hermitian)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1243
 //!
@@ -8853,7 +8853,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: Band energies are periodic in reciprocal space: E(k + G) = E(k) for any reciprocal lattice vector G = n1*b1 + n2*b2.
 //! - Where stated: crates/quantum_core/src/tight_binding.rs (test_band_periodicity)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1244
 //!
@@ -8861,7 +8861,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: Time-reversal symmetry E(k) = E(-k) holds when inversion symmetry is preserved (zero InversionBreakingParams).
 //! - Where stated: crates/quantum_core/src/tight_binding.rs (test_time_reversal_symmetry)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1245
 //!
@@ -8869,7 +8869,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: The 9-band orbital basis decomposes into s-type (indices 0,3,6,7,8) and p-type (indices 1,2,4,5) sectors, enabling orbital-resolved band character analysis.
 //! - Where stated: crates/quantum_core/src/magnonic_crystal.rs (build_magnonic_9band orbital placement comments)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1246
 //!
@@ -8877,7 +8877,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: Berry curvature is sharply peaked at the K and K' valleys for the Dirac bands, with negligible curvature elsewhere in the BZ.
 //! - Where stated: crates/quantum_core/src/tight_binding.rs (fhs_berry_curvature)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1247
 //!
@@ -8885,7 +8885,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: Parameter sweep of d/a (hole diameter to lattice constant ratio) shows the Dirac gap closes at d/a=0 and reopens with increasing d/a, modulating the effective hopping strengths.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/magnonic_band_structure.rs (Sweep subcommand)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1248
 //!
@@ -8893,7 +8893,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: The 9-band magnonic model maps exactly to the generic TightBindingModel framework, demonstrating that the tight-binding engine is model-independent (applicable to magnons, electrons, or photons).
 //! - Where stated: crates/quantum_core/src/magnonic_crystal.rs (build_magnonic_9band returns TightBindingModel)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1249
 //!
@@ -8901,7 +8901,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: The homogeneous magnon frequency at k=0 is omega_0 = gamma * mu_0 * (B_ext/mu_0 + M_s), giving ~6.3 GHz for standard YIG parameters at B_ext = 50 mT.
 //! - Where stated: crates/quantum_core/src/magnonic.rs (magnon_frequency_homogeneous)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1250
 //!
@@ -8909,7 +8909,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: Valley Chern numbers are approximately +/-0.5 for the Dirac bands with small inversion breaking, but are NOT topologically quantized (they depend continuously on the breaking strength).
 //! - Where stated: crates/quantum_core/src/tight_binding.rs (valley_chern_number), Kaman et al. (2026) Sec. III
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1251
 //!
@@ -8917,7 +8917,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: The 84x84 Reggiani partner adjacency matrix has exactly 5 distinct eigenvalues {-4, -2, 0, +2, +4} with degeneracies {7, 14, 42, 14, 7}, forming a palindromic spectrum based on the number 7 (the number of sedenion box-kites).
 //! - Where stated: crates/algebra_analysis/src/reggiani.rs (partner_graph_spectrum, partner_graph_degeneracies)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1252
 //!
@@ -8925,7 +8925,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: The zero eigenvalue of the partner adjacency matrix has degeneracy 42 (= 84/2 = number of primitive assessors), meaning exactly half of all ZD linear combinations lie in the kernel. This is the algebraic analog of a flat band at zero energy.
 //! - Where stated: crates/algebra_analysis/src/reggiani.rs (partner_graph_spectrum), Reggiani (2024) Table 1
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1253
 //!
@@ -8933,7 +8933,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: The partner graph spectrum degeneracy pattern {7, 14, 42, 14, 7} factorizes as {1, 2, 6, 2, 1} * 7, where 7 is the number of box-kites and {1,2,6,2,1} encodes the per-box-kite spectral contribution.
 //! - Where stated: crates/algebra_analysis/src/reggiani.rs (partner_graph_degeneracies)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1254
 //!
@@ -8941,7 +8941,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: The FHS single-band Berry curvature algorithm produces incorrect individual Chern numbers at band degeneracies (Dirac cone at K, flat band crossings), yielding total Chern sum != 0 even at 51x51 grid resolution. The non-Abelian multiplet generalization is required for degenerate bands.
 //! - Where stated: crates/quantum_core/src/tight_binding.rs (fhs_berry_curvature, band_chern_number), E-143 results
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1255
 //!
@@ -8949,7 +8949,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: The D=16 ZD motif graph flat band fraction is exactly 0.5 (21/42 zero eigenvalues from cross-assessor motif components), confirming half of all ZD combinations lie in the kernel.
 //! - Where stated: crates/algebra_analysis/src/crystal_bands.rs (test_d16_flat_band_fraction)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1256
 //!
@@ -8957,7 +8957,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: The D=32 ZD motif graph has integer spectrum and flat band fraction = 0.5 (from 15 components, 210 total eigenvalues).
 //! - Where stated: crates/algebra_analysis/src/crystal_bands.rs (test_d32_flat_band_fraction)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1257
 //!
@@ -8965,7 +8965,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: Flat band fraction scaling is constant at 0.5 across D=16 and D=32, with zero residual, implying dimension-independent localization strength.
 //! - Where stated: crates/algebra_analysis/src/flat_band_localization.rs (test_d16_d32_scaling)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1258
 //!
@@ -8973,7 +8973,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: The Reggiani partner graph degeneracy pattern {7,14,42,14,7} factors as 7 * {1,2,6,2,1}, verified by GCD computation in crystal_bands::verify_reggiani_factorization.
 //! - Where stated: crates/algebra_analysis/src/crystal_bands.rs (test_d16_reggiani_factorization)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1259
 //!
@@ -8981,7 +8981,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: Sersic b_n approximation (Ciotti & Bertin 1999) is accurate to < 0.1% for n >= 0.5: b_4 = 7.67 and b_1 = 1.68 match literature values.
 //! - Where stated: crates/cosmology_core/src/sersic.rs (test_bn_n4, test_bn_n1)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1260
 //!
@@ -8989,7 +8989,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: Sersic Abel deprojection via cosh substitution + GL quadrature produces positive definite 3D density for all r > 0 with n=4 de Vaucouleurs profile.
 //! - Where stated: crates/cosmology_core/src/sersic.rs (test_deprojected_positive)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1261
 //!
@@ -8997,7 +8997,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: Sersic-to-LBM density with circular (e=0) profile produces azimuthally symmetric density: rho(x+2, center) == rho(center, y+2) to within 1e-6.
 //! - Where stated: crates/cosmology_core/src/sersic.rs (test_lbm_density_symmetry)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1262
 //!
@@ -9005,7 +9005,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: Box-counting fractal dimension extracted to cosmology_core::sersic produces identical results to the inline version in euclid_dm_coupling: uniform field -> D_f ~ 3.0, single cell -> D_f < 1.0, filled plane -> D_f ~ 2.0.
 //! - Where stated: crates/cosmology_core/src/sersic.rs (test_box_counting_uniform_field, test_box_counting_single_cell, test_box_counting_filled_plane)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1263
 //!
@@ -9013,7 +9013,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: f32 box-counting fractal dimension agrees with f64 version within 0.1 on identical density fields, validating the GPU readback path.
 //! - Where stated: crates/cosmology_core/src/sersic.rs (test_box_counting_f32_agrees_with_f64)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1264
 //!
@@ -9021,7 +9021,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: Morphological M/L classification: n < 2 -> disk (M/L=2.0), n >= 2 -> elliptical (M/L=5.0), with boundary at n=2 inclusive as elliptical.
 //! - Where stated: crates/cosmology_core/src/euclid_morphology.rs (test_ml_ratio_morphological_disk, test_ml_ratio_morphological_elliptical, test_ml_ratio_morphological_boundary)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1265
 //!
@@ -9029,7 +9029,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: GalaxyDfRecord CSV serialization preserves all 15 columns in a header-consistent format with deterministic field ordering.
 //! - Where stated: crates/cosmology_core/src/galaxy_pipeline.rs (test_galaxy_df_record_csv_roundtrip)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1266
 //!
@@ -9037,7 +9037,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: Bootstrap CI for D_f sweep is deterministic: identical seed produces identical confidence intervals across runs.
 //! - Where stated: crates/cosmology_core/src/galaxy_pipeline.rs (test_bootstrap_ci_deterministic)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1267
 //!
@@ -9045,7 +9045,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: GPU box-counting CUDA kernel uses warp-level ballot reduction (matching dark_halo_detector pattern) to reduce global atomics 32x compared to naive per-thread atomicAdd.
 //! - Where stated: crates/lbm_3d_cuda/src/kernels_box_counting.cu (box_count_at_scale)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1268
 //!
@@ -9053,7 +9053,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: Multi-galaxy D_f sweep pipeline (prepare_galaxy) correctly filters invalid galaxies (NaN, r_e=0, z<=0) and returns None, with skip count tracked in DfSweepSummary.
 //! - Where stated: crates/cosmology_core/src/galaxy_pipeline.rs (test_analyze_df_sweep_basic, test_analyze_df_sweep_empty)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1269
 //!
@@ -9061,7 +9061,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: Otsu threshold resolves bimodal D_f artifact: df_initial varies per galaxy morphology (not uniform 2.7697).
 //! - Where stated: crates/cosmology_core/src/sersic.rs (otsu_threshold, box_counting_fractal_dim)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1270
 //!
@@ -9069,7 +9069,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: CD D=16 ZD partner graph flat band fraction = 1/2 (42/84 eigenvalues degenerate at E=0).
 //! - Where stated: proofs/verified/C1262_FlatBandFractionHalf.v (cd16_flat_band_fraction_half)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1271
 //!
@@ -9077,7 +9077,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: SoA memory layout for D3Q19 LBM reduces warp cache transactions 19x vs AoS: f[dir*N+idx] enables coalesced 128-byte fetches.
 //! - Where stated: crates/lbm_3d_cuda/src/kernels_soa.cu (lbm_step_soa_fused)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1272
 //!
@@ -9085,7 +9085,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: Smagorinsky LES subgrid model preserves density gradients: tau(x) = tau_base + 3*(C_s*dx)^2*|S(x)| increases local tau in high-gradient regions.
 //! - Where stated: crates/lbm_3d_cuda/src/kernels_soa.cu (compute_smagorinsky_tau_kernel), crates/lbm_3d/src/solver.rs (update_smagorinsky_tau)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1273
 //!
@@ -9093,7 +9093,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: ZD algebraic forcing adds topological confinement: F_zd(r) = -alpha_zd * 0.5 * exp(-r/R_e) * F_target * r_hat preserves galaxy core against LBM homogenization.
 //! - Where stated: crates/cosmology_core/src/galaxy_pipeline.rs (prepare_galaxy, ZD forcing block)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1274
 //!
@@ -9101,7 +9101,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: CD D=32 ZD partner graph also has flat band fraction = 1/2 (105/210 eigenvalues), confirming universality for D>=16.
 //! - Where stated: proofs/verified/C1262_FlatBandFractionHalf.v (cd32_flat_band_fraction_half)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1275
 //!
@@ -9109,7 +9109,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: SoA init kernel accepts AoS host input and transposes internally: public API (initialize_custom, set_force_field) unchanged.
 //! - Where stated: crates/lbm_3d_cuda/src/lib.rs (initialize_custom SoA branch), kernels_soa.cu (initialize_custom_soa_kernel)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1276
 //!
@@ -9117,7 +9117,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: SoA force field uses host-side AoS-to-SoA transposition: force[comp*N+idx] layout required by SoA step kernel.
 //! - Where stated: crates/lbm_3d_cuda/src/lib.rs (set_force_field SoA branch)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1277
 //!
@@ -9125,7 +9125,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: Batch SoA kernel supports 4D indexing for multi-galaxy processing: w = linear/N selects galaxy, idx = linear%N selects cell.
 //! - Where stated: crates/lbm_3d_cuda/src/kernels_soa.cu (lbm_step_soa_batch_kernel)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1278
 //!
@@ -9133,7 +9133,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: MRT collision operator alone does not fix f64 LBM divergence at high density contrast. BGK and MRT diverge at the same step (~25) because the root cause is compressibility instability (Ma > 0.3 from streaming at density interfaces), not ghost moment oscillation.
 //! - Where stated: E-162 step-by-step telemetry
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1279
 //!
@@ -9141,7 +9141,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: Plummer softening (eps=0.5*dx) + density floor >= 0.045 + MRT collision eliminates all NaN divergence for 10/10 Euclid test galaxies at 64^3, producing D_f = 2.888 +/- 0.085 with morphological variation [2.799, 2.977].
 //! - Where stated: E-162 floor=0.045 sweep
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1280
 //!
@@ -9149,7 +9149,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: MRT extends the practical LBM stability limit from Ma ~ 0.3 (BGK) to Ma ~ 1.5, as demonstrated at floor=0.03 where BGK produces 100% NaN while MRT produces D_f=2.826 with zero NaN despite max|u|=0.836 (Ma=1.45).
 //! - Where stated: E-162 floor=0.03 BGK vs MRT comparison
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1281
 //!
@@ -9157,7 +9157,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: Galaxy 9 (elliptical n=2.45) produces D_f=2.799 at optimal parameters, within 2.6% of the 2.7268 Cayley-Dickson D=16 flat band topology prediction. Resolution scaling to 128^3 should reduce this gap.
 //! - Where stated: E-162 floor=0.045/tau=0.7/MRT/eps=0.5
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1282
 //!
@@ -9165,7 +9165,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: GPU MRT collision kernel (d'Humieres D3Q19 SoA) produces D_f within 0.05 of CPU MRT at identical parameters for all test galaxies at 64^3 and 128^3.
 //! - Where stated: E-163/E-164 GPU MRT sweeps
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1283
 //!
@@ -9173,7 +9173,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: GPU MRT 100-galaxy 64^3 sweep: D_f = 2.748 +/- 0.607 (robust mean ~2.88), 94/100 stable. 6 outliers (D_f < 1.0) are catalog edge cases (extreme Sersic n=5.50 cap, high z > 2.3) not collision failures.
 //! - Where stated: E-163 GPU MRT 64^3 100-galaxy sweep
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1284
 //!
@@ -9181,7 +9181,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: GPU MRT 128^3 10-galaxy sweep: D_f = 2.737 +/- 0.042, CI_95 [2.713, 2.763]. All 10 galaxies stable with zero-copy GPU box-counting. CI brackets the CD D=16 flat band topology prediction of 2.7268. Superseded by C-1288 (100-galaxy validation).
 //! - Where stated: E-164 GPU MRT 128^3 10-galaxy sweep
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1285
 //!
@@ -9189,7 +9189,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: GPU-resident Otsu threshold + box-counting eliminates 8 MB PCIe density readback per galaxy at 128^3, reducing data transfer to ~2 KB (1 KB histogram + ~28 bytes box-counts). 8000x reduction in PCIe traffic.
 //! - Where stated: E-165 zero-copy GPU box-counting validation
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1286
 //!
@@ -9197,7 +9197,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: Zero-copy GPU box-counting path achieves 249ms/galaxy at 128^3, 1.54x speedup over readback path (384ms/galaxy). Speedup from eliminating two 8 MB PCIe transfers per galaxy.
 //! - Where stated: E-164/E-165 performance comparison
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1287
 //!
@@ -9205,7 +9205,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: Resolution convergence 64^3 -> 128^3: D_f tightens from 2.748 +/- 0.607 to 2.732 +/- 0.034 (18x reduction in std, N=100). All 6 outlier galaxies (D_f < 1.0 at 64^3) stabilize at 128^3 as the softening core resolves correctly. 100/100 galaxies stable.
 //! - Where stated: E-163/E-166 resolution convergence comparison
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1288
 //!
@@ -9213,7 +9213,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: GPU MRT 128^3 100-galaxy sweep: D_f = 2.732 +/- 0.034, CI_95 [2.725, 2.739]. All 100 galaxies stable (zero outliers). CD D=16 flat band topology prediction 2.7268 sits at the 31st percentile of the CI, confirming quantitative agreement between Cayley-Dickson algebraic topology and cosmological fractal dimension.
 //! - Where stated: E-166 GPU MRT 128^3 100-galaxy sweep
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1289
 //!
@@ -9221,15 +9221,15 @@
 //! - Last verified: 2026-03-11
 //! - Statement: Morphological D_f difference at 128^3 is 0.009 (disk 2.736 vs elliptical 2.727), not statistically significant at N=100. Both morphological classes converge to the same D_f attractor, consistent with the universal topology prediction from CD zero-divisor structure.
 //! - Where stated: E-166 disk/elliptical comparison
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1290
 //!
-//! - Status: `Provisional`
-//! - Last verified: 2026-03-11
-//! - Statement: MRT ghost-moment damping (s_ghost=1.0) extends the stable Mach number envelope from Ma~0.3 (BGK) to Ma~1.5 (MRT) at matched tau=0.7, confirmed via systematic density contrast sweep from 2x to 100x on 16^3 grid.
+//! - Status: `Refuted`
+//! - Last verified: 2026-04-12
+//! - Statement: MRT ghost-moment damping (s_ghost=1.0) provides a modest stability advantage over BGK at matched tau=0.7 on 16^3 grid (E-167): both modes survive to contrast~15.7 (Ma~1.1); MRT retains a grace period at contrast~29.1 (Ma~3.9) while BGK diverges catastrophically at contrast~23.7. The originally claimed Ma~0.3 BGK threshold and Ma~1.5 MRT ceiling are not reproduced; actual MRT advantage is ~1.5x at the divergence threshold.
 //! - Where stated: E-167 MRT vs BGK stability envelope
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1291
 //!
@@ -9237,7 +9237,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: CD D=64 ZD partner graph flat band fraction = 1/2, extending the invariance from D=16 (proven in Rocq C-1236) and D=32 (empirical) to the next Cayley-Dickson doubling level.
 //! - Where stated: E-168 D=64 flat band fraction verification
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1292
 //!
@@ -9245,7 +9245,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: GPU thread coarsening (1 thread = 2 cells) with __launch_bounds__(128, 9) achieves >= 1.15x MRT throughput at 128^3 by doubling the ILP window to 1444 independent FMAs, hiding the 4.54-cycle FFMA pipeline latency on Ada Lovelace SM 8.9.
 //! - Where stated: E-169 thread coarsening benchmark
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1295
 //!
@@ -9253,7 +9253,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: GPU-side max-Mach-number reduction via compute_speed_magnitude + reduce_max_f32 kernels costs < 10us total (vs 2ms for sync_to_host readback of full velocity field), enabling per-step stability monitoring without PCIe bottleneck.
 //! - Where stated: E-172 roofline benchmark
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1296
 //!
@@ -9261,7 +9261,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: 128^3 D3Q19 MRT with thread coarsening achieves >= 60% of theoretical RTX 4070 Ti bandwidth (504 GB/s), as measured by total memory traffic (77.2 GB/galaxy) divided by wall-clock time.
 //! - Where stated: E-169/E-172 bandwidth analysis
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1297
 //!
@@ -9269,7 +9269,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: D_f=2.73 is not a pipeline artifact: null hypothesis rejected via 6-condition control experiment. Only the combination of Sersic morphology + ZD algebraic forcing produces D_f~2.73; neither ingredient alone is sufficient.
 //! - Where stated: E-174 null hypothesis control
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1298
 //!
@@ -9277,7 +9277,7 @@
 //! - Last verified: 2026-03-11
 //! - Statement: CPU AoSoA layout with wide::f64x4 SIMD collision achieves >= 4x speedup over AoS scalar at 128^3 MRT f64 on Zen 3. AoSoA chunk (19 dirs * 4 cells * 8 bytes = 608 bytes) fits in 2% of L1D, eliminating the L1 cache thrashing that pure SoA causes on 8-way set-associative x86.
 //! - Where stated: E-175 CPU AoSoA benchmark
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1299
 //!
@@ -9285,71 +9285,71 @@
 //! - Last verified: 2026-03-11
 //! - Statement: AoSoA (CPU) and SoA (GPU) layouts provide structural memory parity: both store the same D3Q19 physical data with identical 19-direction semantics, enabling cross-validation via simple transpose. The LbmBackend dispatcher abstracts the layout difference behind a unified f64 interface.
 //! - Where stated: E-176 CPU/GPU cross-validation
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1300
 //!
-//! - Status: `Provisional`
-//! - Last verified: 2026-03-12
+//! - Status: `Established`
+//! - Last verified: 2026-04-12
 //! - Statement: MRT forward transform ILP restructure: grouping 19 moments into 4 independent clusters (conserved, energy/stress, ghost-flux, ghost-moment) enables Ada Lovelace dual FP32 pipes to issue concurrent FMAs. Inverse transform balanced fmaf() trees reduce longest dependency chain from 12 additions to ~4 levels (log2(12)), improving instruction-level parallelism.
 //! - Where stated: crates/lbm_3d_cuda/src/kernels_soa.cu (mrt_collision_d3q19)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1301
 //!
-//! - Status: `Provisional`
-//! - Last verified: 2026-03-12
+//! - Status: `Established`
+//! - Last verified: 2026-04-12
 //! - Statement: MRT inverse transform yz-plane had a sign bug: f[15]..f[18] used swapped p2/n2 terms (n2 where p2 was needed and vice versa). The xy-plane and xz-plane groups were correct. Fix swaps p2/n2 usage in all four yz-plane directions to match the d'Humieres (2002) orthogonal basis convention.
 //! - Where stated: crates/lbm_3d_cuda/src/kernels_soa.cu (mrt_collision_d3q19, lines ~610-613)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1302
 //!
-//! - Status: `Provisional`
-//! - Last verified: 2026-03-12
+//! - Status: `Established`
+//! - Last verified: 2026-04-12
 //! - Statement: CUDA Graph double-buffer bug: single-step graph capture records device pointers at capture time. Host-side std::mem::swap of d_f/d_f_tmp is invisible to graph replay, causing step 2+ to always read stale buffer A. Fix: 2-step graph capture (A->B->A) makes the graph self-contained -- no host-side swap needed, data returns to buffer A after every graph launch.
 //! - Where stated: crates/lbm_3d_cuda/src/lib.rs (step_graph_pair)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1303
 //!
-//! - Status: `Provisional`
-//! - Last verified: 2026-03-12
+//! - Status: `Established`
+//! - Last verified: 2026-04-12
 //! - Statement: step_n() uses CUDA Graph pairs for bulk stepping (n/2 graph launches + 1 regular step if n odd). At 200 steps this amortizes 4000 kernel launches down to 200 graph launches, reducing host-side launch overhead by ~10-15%. Falls back to per-step loop for AoS path where graph capture is not implemented.
 //! - Where stated: crates/lbm_3d_cuda/src/lib.rs (step_n)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1304
 //!
-//! - Status: `Provisional`
-//! - Last verified: 2026-03-12
+//! - Status: `Established`
+//! - Last verified: 2026-04-12
 //! - Statement: Shared-memory tiled pull-scheme kernel (8x8x4 tile + 1-cell halo): cooperative striped load of 19 * 600 floats into 45.6 KB shared memory converts 19 scattered global reads per cell into 19 fast LDS reads (~20 cycles vs ~200 cycles L2 miss). Coalesced global writes replace scattered push-scheme writes. Expected 15-25% speedup on streaming phase at 128^3.
 //! - Where stated: crates/lbm_3d_cuda/src/kernels_soa.cu (lbm_step_soa_tiled, lbm_step_soa_mrt_tiled)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1305
 //!
-//! - Status: `Provisional`
-//! - Last verified: 2026-03-12
+//! - Status: `Established`
+//! - Last verified: 2026-04-12
 //! - Statement: 8x8x4 tile is optimal for Ada Lovelace SM 8.9 D3Q19: 256 threads = 8 warps (full occupancy scheduling), 10x10x6 padded volume * 19 dirs * 4B = 45,600B shared memory fits the 48 KB default limit. Larger tiles (8x8x8 = 512 threads, 76 KB shared) exceed the limit. Smaller tiles (6x6x6 = 216 threads) waste warps on non-aligned thread counts.
 //! - Where stated: crates/lbm_3d_cuda/src/kernels_soa.cu (8x8x4 tile lbm_step_soa_tiled, 256-thread block, 10x10x6 padded shared memory)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1306
 //!
 //! - Status: `Provisional`
-//! - Last verified: 2026-03-12
+//! - Last verified: 2026-04-12
 //! - Statement: Multi-stream galaxy pipeline overlaps CPU galaxy preparation with GPU box-counting via 2-stream event-based synchronization. Stream A runs LBM evolution, stream B runs box-counting on the previous galaxy's density. Deferred result pattern (one-slot lookahead) hides the synchronous clone_dtoh readback. Expected ~40% throughput gain for N >= 100 galaxies.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/euclid_df_sweep.rs (run_gpu_sweep)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1307
 //!
-//! - Status: `Provisional`
-//! - Last verified: 2026-03-12
+//! - Status: `Established`
+//! - Last verified: 2026-04-12
 //! - Statement: Smagorinsky tau mutation invalidates CUDA Graph cache: Smagorinsky LES updates tau every N steps based on local strain rate tensor. Since tau is a kernel parameter captured in the graph, any mutation requires graph reconstruction. step_n() correctly falls back to per-step loop when Smagorinsky is active.
 //! - Where stated: crates/lbm_3d_cuda/src/lib.rs (step_n, conditional graph path)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1308
 //!
@@ -9357,7 +9357,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: The DM-baryon cross-section sigma_chi_b = 1e-42 cm^2 in dm_force.rs is a test fixture value, not a fundamental constant. The default is 0.0 (drag disabled). Other tests use 1e-40 and 1e-45. No structural connection to the 42 primitive sedenion assessors.
 //! - Where stated: crates/lbm_3d/src/dm_force.rs (lines 1036, 877, 901, default line 120)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1309
 //!
@@ -9365,7 +9365,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: The zero eigenvalue of the 84x84 Reggiani partner adjacency matrix has degeneracy exactly 42 = |primitive assessors|. This is a flat-band analog: half of all ZD linear combinations lie in the kernel. The 42 is not coincidental -- it equals the count of de Marrais primitive assessors by construction.
 //! - Where stated: crates/algebra_analysis/src/reggiani.rs, C-1254, C-1255
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1310
 //!
@@ -9373,7 +9373,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: SedenionAInfinity (C-611) constructs m_2 from the CD product and m_3 from the CD associator. This construction works at any Cayley-Dickson dimension >= 16. The 42/84 zero-divisor count is a property of the underlying algebra at dim=16, not of the A-infinity construction itself.
 //! - Where stated: crates/algebra_analysis/src/homotopy_algebra.rs, C-611
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1311
 //!
@@ -9381,7 +9381,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: ChaCha8Rng seed=42 produces a ~3-sigma low outlier in spin tomography P_rec statistics. The codebase explicitly documents this and uses seed=0 instead. seed=42 has no structural or physics significance.
 //! - Where stated: crates/spin_tomography_core/src/event_gen.rs (line 200)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1312
 //!
@@ -9389,7 +9389,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: The SKA (2030) 'Harmonic Halos' prediction -- that galactic rotation curves would show signatures tied to sedenion zero-divisor structure -- exists only as a proposal in docs/research/high_dimensional_algebra_unification_2026.md. No rotation curve computation or harmonic decomposition existed in the codebase prior to the harmonic_halos module.
 //! - Where stated: docs/research/high_dimensional_algebra_unification_2026.md:40, crates/cosmology_core/src/harmonic_halos.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1313
 //!
@@ -9397,7 +9397,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: For an NFW halo with ZD topological forcing (alpha_zd > 0), the circular velocity curve v_circ(r) = sqrt(G * M_enc(r) / r) acquires harmonic modulations at wavenumbers k_n = 2*pi*n / (7 * r_s) for n = 1..7, corresponding to the 7 box-kite structures. The modulation amplitude scales as alpha_zd * (42/84) * (1/n) * exp(-r/r_s).
 //! - Where stated: crates/cosmology_core/src/harmonic_halos.rs (harmonic_halo_modulation)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1314
 //!
@@ -9405,7 +9405,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: The galaxy pipeline's ZD topological forcing (alpha_zd parameter in GalaxyPipelineConfig) modulates NFW gravitational force with a 7-mode harmonic structure derived from box-kite angular symmetry. At alpha_zd=0, standard NFW is recovered exactly.
 //! - Where stated: crates/cosmology_core/src/harmonic_halos.rs, crates/cosmology_core/src/galaxy_pipeline.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1315
 //!
@@ -9413,7 +9413,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: x87 80-bit extended precision Jacobi eigenvalue solver achieves null-space eigenvalue precision < 1e-13 for sedenion obstruction matrices (condition number ~5e4), vs ~1e-9 with f64. The x87 FPU 64-bit mantissa (~19 decimal digits) provides ~4 extra digits over f64 (53-bit, ~15 digits), preventing catastrophic cancellation during Givens rotation accumulation.
 //! - Where stated: crates/algebra_analysis/src/x87_jacobi.rs (symmetric_eigenvalues_x87, test_x87_jacobi_null_space_precision)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1316
 //!
@@ -9421,7 +9421,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: Double-double (DD) arithmetic via Knuth TwoSum and Dekker TwoProduct (with FMA) provides ~31 decimal digits of precision using pairs of f64, with no external dependencies. The DD Jacobi solver serves as architecture-portable fallback for non-x86_64 targets, maintaining the same 1e-14 convergence threshold as the x87 path.
 //! - Where stated: crates/algebra_analysis/src/double_double.rs (DD struct, two_sum, two_product), crates/algebra_analysis/src/dd_jacobi.rs (symmetric_eigenvalues_dd)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1317
 //!
@@ -9429,7 +9429,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: Flattening Vec<Vec<f64>> to row-major Vec<f64> and eliminating per-iteration matrix clone in the Jacobi solver ensures L1 cache residence for matrices up to 64x64 (32 KB at f64, 40 KB at f80). The x87 FPU register file (st0-st7) acts as an 80-byte L0 cache for the hottest rotation values.
 //! - Where stated: crates/algebra_analysis/src/x87_jacobi.rs (flat array layout, in-place Givens rotation)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1318
 //!
@@ -9437,7 +9437,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: A-A (Alternating-Address) streaming for D3Q19 LBM eliminates the ping-pong buffer (d_f_tmp), halving VRAM for distribution storage: 76 MB savings at 128^3 (from 152 MB to 76 MB). Uses parity-dependent direction remapping via OPP[19] constant-memory LUT. Incompatible with CUDA graph 2-step capture due to parity-dependent kernel arguments.
 //! - Where stated: crates/lbm_3d_cuda/src/kernels_soa.cu (OPP[19], lbm_step_soa_aa, lbm_step_soa_mrt_aa), crates/lbm_3d_cuda/src/lib.rs (set_aa_streaming, aa_parity toggle)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1319
 //!
@@ -9445,7 +9445,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: L2 cache pinning via cuCtxSetLimit(CU_LIMIT_PERSISTING_L2_CACHE_SIZE, 16MB) + CU_ACCESS_PROPERTY_PERSISTING access policy window was non-functional without the budget reservation call. The fixed implementation reserves 16 MB of L2 set-aside and marks the rho field as PERSISTING. Only effective on SM 8.0+ (Ampere/Ada Lovelace). set_l2_pinning() provides runtime toggle with automatic re-pin on d_rho reallocation.
 //! - Where stated: crates/lbm_3d_cuda/src/lib.rs (LbmSolver3DCuda::pin_rho_in_l2, set_l2_pinning, DarkHaloCudaSolver::pin_rho_in_l2)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1320
 //!
@@ -9453,7 +9453,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: The YSU-engine repository (github.com/ismail0098-lang/YSU-engine) contains NO L2 cache pinning, no cuCtxSetLimit, no cudaAccessPolicyWindow, and no persisting-cache strategies. Its L2 interaction is purely passive: microbenchmark measurement (92.29 cycles LDG latency on SM 8.9), __ldg() cache-through hints (LDG.E.CONSTANT), and software pipelining for latency hiding. The ld.global.ca (cache-all) optimization is mentioned as future work but never implemented.
 //! - Where stated: Background agent analysis of github.com/ismail0098-lang/YSU-engine (2026-03-12)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1321
 //!
@@ -9461,7 +9461,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: YSU-engine __ldg() cache-through loads (LDG.E.CONSTANT) are a per-load hint, not L2 cache management. VALIDATED: open_gororoba already uses __ldg() systematically on all read-only GPU buffers (f_in, tau, force) across kernels_soa.cu, kernels_dark_halo.cu, kernels_box_counting.cu. This is OPTIMAL -- no missed __ldg() opportunities detected.
 //! - Where stated: crates/lbm_3d_cuda/src/kernels_soa.cu (lines 74, 100, 114-116), background agent GPU cache analysis (2026-03-12)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1322
 //!
@@ -9469,7 +9469,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: YSU-engine software pipelining (doubling outstanding L2 requests from 8 to 16 per iteration in hash grid) is a latency-hiding strategy. ASSESSED for D3Q19: open_gororoba already achieves equivalent via (1) full loop unrolling (#pragma unroll on 19 directions), (2) Horner FMA equilibrium for ILP, (3) float2 vectorization (Phase 8). Ada SM 8.9 hardware scheduling with 4 FMAs/clock handles the 19 independent FMA chains without software pipelining.
 //! - Where stated: crates/lbm_3d_cuda/src/kernels_soa.cu (lines 72-80 unrolled reads, 107-109 Horner FMA, 1238-1240 float2), background agent GPU cache analysis (2026-03-12)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1323
 //!
@@ -9477,7 +9477,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: YSU-engine L2 bandwidth bottleneck 'identified but unaddressed' for hash grid: FALSIFIED by open_gororoba's cuCtxSetLimit + CU_ACCESS_PROPERTY_PERSISTING implementation. open_gororoba actively manages L2 via budget reservation (16 MB) and access policy windows. Additionally, shared-memory tiling (45.6 KB, 8x8x4 tiles) reduces L2 misses by replacing scattered global reads with 20-cycle LDS reads.
 //! - Where stated: crates/lbm_3d_cuda/src/lib.rs (pin_rho_in_l2, set_l2_pinning), crates/lbm_3d_cuda/src/kernels_soa.cu (lines 969-1085 tiled kernel)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1324
 //!
@@ -9485,7 +9485,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: YSU-engine ld.global.ca (cache-all) hints 'mentioned as future work, never implemented': ASSESSED for open_gororoba. ld.global.ca is NOT needed because (1) __ldg() already generates cache-through loads for read-only data, and (2) L2 access policy windows provide stronger guarantees (PERSISTING vs cache hints). Cache-all would only help for write-after-read patterns, which D3Q19 LBM does not have (separate f_in/f_out or A-A parity swap).
 //! - Where stated: crates/lbm_3d_cuda/src/kernels_fp32_soa_cs.cu (__ldg() read-only path covers all cache-through needs; L2 PERSISTING policy in crates/lbm_3d_cuda/src/lib.rs)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1325
 //!
@@ -9493,7 +9493,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: VERIFIED: Principal angle computation via acos(s) suffered catastrophic cancellation near s = +/-1. Fixed by replacing clamped.acos() with atan2(sqrt(1 - s^2), s) in grassmannian.rs:132. For s = 1 - 1e-15, acos returns 0.0 (total loss) while atan2 returns ~1.4e-7 (correct to machine epsilon). Both arguments to atan2 are well-conditioned, avoiding the subtraction cancellation inherent in acos(s) = pi/2 - arcsin(s).
 //! - Where stated: crates/algebra_analysis/src/grassmannian.rs (line 132, sin_part.atan2(clamped))
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1326
 //!
@@ -9501,7 +9501,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: VERIFIED: Chern number Berry phase accumulation now uses Kahan compensated summation (O(eps) error) instead of naive f64 sum (O(n*eps) error). Applied to harper_chern.rs f_sum, tight_binding.rs band_chern_number and valley_chern_number. KahanSum chosen over DD because: (1) quantum_core is MIT-licensed, algebra_analysis (where DD lives) is GPL-2.0-only -- adding DD as dependency would contaminate MIT with GPL; (2) Kahan achieves O(eps) = 2.2e-16 error regardless of accumulation length, sufficient to guarantee correct integer rounding for any practical n_grid; (3) for n_grid=200 (40,000 terms), Kahan error < 2.2e-16 vs naive error ~8.9e-12.
 //! - Where stated: crates/quantum_core/src/kahan.rs (KahanSum), crates/quantum_core/src/harper_chern.rs (f_sum), crates/quantum_core/src/tight_binding.rs (band_chern_number, valley_chern_number)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1327
 //!
@@ -9509,7 +9509,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: VERIFIED: GPU Otsu histogram kernel now uses per-block shared-memory privatized histogram. Three-phase design: (1) cooperative block-stride zero of 256-bin shared histogram (1 KB), (2) grid-stride accumulation via shared-memory atomicAdd (~20 cycles vs ~200 cycles global), (3) block-stride reduction to global histogram (256 atomicAdd per block). With 8192 blocks at 128^3, effective global atomicAdd calls per bin drop from ~2M (one per cell) to ~8192 (one per block), a ~256x reduction in global atomic contention. Shared-memory atomics remain necessary (threads within same block can hash to same bin) but are ~10x faster than global. Added __ldg() for cached density reads.
 //! - Where stated: crates/lbm_3d_cuda/src/kernels_box_counting.cu (lines 131-163 build_histogram_f32)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1328
 //!
@@ -9517,7 +9517,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: VERIFIED: L2 cache budget expanded from 16 MB to 32 MB in both LbmSolver3DCuda::pin_rho_in_l2() and DarkHaloCudaSolver::pin_rho_in_l2(). Design decision: Option C (pragmatic) selected over fused allocation (A) or dual streams (B). Rho retains the explicit CU_ACCESS_PROPERTY_PERSISTING access policy window. Tau benefits from the enlarged L2 set-aside via LRU temporal locality: at 128^3, rho + tau = 16 MB total fits comfortably in the 32 MB budget. Critical CUDA constraint documented: only ONE access policy window per stream -- creating a second overwrites the first. Option A (fused [rho][tau] contiguous allocation) was rejected because it breaks all 19+ collision kernel pointer arguments. Option B (dual streams with separate windows) was rejected due to synchronization complexity for marginal benefit.
 //! - Where stated: crates/lbm_3d_cuda/src/lib.rs (pin_rho_in_l2, budget = 32 MB)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1329
 //!
@@ -9525,7 +9525,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: FALSIFIED: The slope ratio 0.1764 at power index n=1.5 is a numerical coincidence with 42^2/10000, not an algebraic connection to sedenion zero-divisor structure. The associator norm ||m3|| cancels exactly in the slope ratio due to the multiplicative structure of the power-law viscosity model nu = nu_base * (1 + alpha * norm^beta * |gamma_dot|^(n-1)). The ratio depends ONLY on n and the strain-rate grid sampling points.
 //! - Where stated: crates/lbm_core/src/lib.rs (test_c1329_slope_ratio_norm_invariance, test_c1329_slope_ratio_grid_dependence, test_c1329_slope_ratio_alpha_beta_invariance), crates/gororoba_cli/src/bin/thesis_program_sweep.rs (thesis2_thickening_report)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1330
 //!
@@ -9533,7 +9533,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: Catalan number C_5 = 42 = |K_6 vertices| = |primitive sedenion assessors| = |m3 scalar sector outputs|. This is an arithmetic identity linking the 5th Catalan number (the vertex count of the Stasheff associahedron K_6) to both the de Marrais assessor count (C-003) and the Fano-plane scalar sector (C-016). The connection is structural: C_5 counts full parenthesizations of 6 elements, while assessors count primitive ZD pairs in dim=16.
 //! - Where stated: crates/algebra_analysis/src/homotopy_algebra.rs (Associahedron::new, catalan_number), C-003 (boxkites.rs), C-016 (m3.rs)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1331
 //!
@@ -9541,7 +9541,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: Synthesis: The number 42 appears in five independent algebraic contexts within the CD tower, all structurally grounded. (1) 42 primitive sedenion assessors organized into 7 box-kites (C-003, Rocq-verified). (2) 42 scalar outputs of the m3 trilinear form on octonion triples, corresponding to Fano-plane lines with permutation parity (C-016, Rocq-verified). (3) Catalan number C_5 = 42 = |K_6 vertices|, the vertex count of the Stasheff associahedron (C-1330). (4) Flat band kernel dimension 42/84 = 0.5 at D=16 in the Reggiani partner graph (C-1309, C-1262). (5) The 42/84 ratio is the D=16 instantiation of a universal CD doubling invariant fbf = 0.5 that persists at D=32 (105/210) and D=64 (465/930), proven via Rocq (C-1262). The FALSIFIED claim: the 0.1764 slope ratio at n=1.5 is NOT algebraically connected to 42 -- it is a grid-dependent numerical coincidence where ||m3|| cancels exactly (C-1329). The non-local metamaterial connection (C-010) is NEGATIVE for local topology but POSITIVE for non-local design: the 7 K6 cliques require explicit non-local bridges, and m3 permutation parity governs the phase shifts.
 //! - Where stated: C-003, C-016, C-010, C-1262, C-1309, C-1329, C-1330, proofs/verified/C016_ParityFlips.v, proofs/verified/C010_ConnectivityObstruction.v
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1332
 //!
@@ -9549,7 +9549,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: The 7-mode harmonic halo signature is strictly falsifiable today using existing kinematic datasets. By normalizing galactic rotation curves to dimensionless r/r_s coordinates, the topological wavenumbers align at k_n' = 2*pi*n/7 regardless of galaxy mass. Stacking N rotation curves reduces the kinematic noise floor by sqrt(N), allowing the 42/84=0.5 amplitude signature to be resolved down to alpha_zd >= 0.005 using MaNGA DR17 IFU data (~10,000 galaxies). SPARC (175 galaxies) reaches alpha_zd >= 0.015, Gaia DR3/DR4 MW curve reaches alpha_zd >= 0.01 (systematics-limited). No need to wait for SKA 2030.
 //! - Where stated: crates/cosmology_core/src/harmonic_halos.rs, crates/cosmology_core/src/harmonic_stacking.rs (TO BE IMPLEMENTED), docs/research/sedenion_42_structure_audit_2026.md
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1333
 //!
@@ -9557,7 +9557,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: x87 FP-80 Jacobi eigenvalue solver benchmarked against DD and nalgebra on 8x8 and 16x16 known-spectrum Householder-rotated matrices. Results: nalgebra 8x8=2.23us/16x16=7.89us, x87 FP-80 8x8=9.50us(4.3x)/16x16=69.98us(8.9x), DD 8x8=44.65us(20x)/16x16=183.50us(23.3x). x87 provides ~4 extra decimal digits via 64-bit mantissa (vs f64's 53-bit) at 4-9x cost. DD provides ~31 digits at 20-23x cost. The `extended` crate (MIT, crates.io) was evaluated and REJECTED: (1) same 64-bit mantissa as our inline asm (no precision gain); (2) f64<->f80 conversion overhead at every boundary; (3) no atan2() or sincos() (the critical Jacobi operations); (4) LLVM hazard: x87 values spilled to stack truncate to f64 (LLVM #44218); (5) x86 only (aliases f64 elsewhere). Our inline asm avoids all these: zero conversion overhead (stays in ST registers for full atan2+sincos chain), hardware fpatan+fsincos (~40 cycles total), options(nostack) prevents spill truncation.
 //! - Where stated: crates/algebra_analysis/benches/x87_bench.rs, crates/algebra_analysis/src/x87_jacobi.rs, crates/algebra_analysis/src/dd_jacobi.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1334
 //!
@@ -9565,7 +9565,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: Smagorinsky tiled velocity gradient kernel implemented using 8x8x4 shared-memory tiles with 1-cell halo. Three shared arrays (s_ux, s_uy, s_uz) of padded volume (10x10x6) = 600 cells x 4B x 3 = 7.2 KB total per block (vs 45.6 KB for LBM tiling). Cooperative halo load copies the proven pattern from lbm_step_soa_tiled. All 9 velocity gradient components computed from shared memory (20-cycle LDS vs 200-cycle L2 miss for the 18 scattered global reads in the untiled variant). Dual-path dispatch in update_smagorinsky_tau(): tiled when use_tiling=true (3D grid of (nx/8, ny/8, nz/4) blocks with blockDim (8,8,4)), untiled fallback with 128 threads/block and 1D grid.
 //! - Where stated: crates/lbm_3d_cuda/src/kernels_soa.cu (compute_smagorinsky_tau_tiled), crates/lbm_3d_cuda/src/lib.rs (update_smagorinsky_tau dual dispatch)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1335
 //!
@@ -9573,7 +9573,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: Cache analysis of lbm_3d Rayon patterns: no false-sharing vulnerability found. All parallel sections use disjoint-write patterns (par_iter_mut().zip() with exclusive ownership per thread, or AoSoA chunk iteration where chunk_idx maps to non-overlapping memory via UnsafeAoSoAPtr). Sequential reductions (max_velocity, mean_velocity) are single-threaded. Rayon fold/reduce combinators naturally maintain thread-local accumulators. AoSoA chunk analysis: per-thread working set is 608B (AOSOA_CHUNK=4 * 19 directions * 8 bytes) + ~100B rho/u reads = ~700B, fitting in 2% of 32 KB L1D. crossbeam-utils::CachePadded is available in workspace but not applied to lbm_3d -- no concrete site requires it because there are no shared mutable accumulators in the current parallel paths.
 //! - Where stated: crates/lbm_3d/src/solver.rs (compute_macroscopic line 978, phase1_collision line 1029), Cargo.toml (crossbeam-utils in workspace)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1336
 //!
@@ -9581,7 +9581,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: Kahan compensated dot product and norm applied to Gram-Schmidt orthogonalization in codebook.rs. Functions kahan_dot() and kahan_norm_sq() replace naive .sum() calls with O(eps) error accumulators for dot products and squared norms. Applied to gram_schmidt_basis(), project_to_basis(), and find_pivot_columns_reduced(). In 8D Cayley-Dickson subspaces with varying magnitudes (e.g., mixed large structural and small perturbation components), compensated summation prevents rank misdetection near linear dependence boundaries.
 //! - Where stated: crates/algebra_analysis/src/codebook.rs (kahan_dot, kahan_norm_sq, gram_schmidt_basis, project_to_basis, find_pivot_columns_reduced)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1337
 //!
@@ -9589,7 +9589,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: x87 FPU control word (FLDCW) precision field bits 8-9 default to 11 (64-bit mantissa = full 80-bit extended precision). This is the CORRECT setting for our use case. Setting to 10 (53-bit, IEEE double) would truncate to f64 precision, defeating the purpose of x87 extended arithmetic. No control word modification is needed: the hardware default already provides maximum precision. The control word is per-thread on x86_64 (each OS thread gets its own FPU state via xsave/xrstor on context switch), making x87 usage safe with Rayon parallel iterators.
 //! - Where stated: crates/algebra_analysis/src/x87_jacobi.rs (implicit: x87 FPU control word semantics)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1338
 //!
@@ -9597,7 +9597,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: SPARC 155-galaxy stacking (D=16 sedenion 7-mode) yields null result: SNR=0.61, alpha_zd < 0.016 at 95% CL. Fourier power at 7 predicted box-kite wavenumbers k_n'=2*pi*n/7 is indistinguishable from noise floor (power range 1e-4 to 5e-4, no systematic elevation above non-predicted wavenumbers). The stacking analysis uses VizieR SPARC rotation curves (175 galaxies, 3391 data points) with Li et al. (2020) NFW-Flat fits (exact model filter, excluding coreNFW-Flat contamination). Optimal configuration: x=[0.5,8], chi2<10, c200>0.5, 148 contributing galaxies, RMS residual 3.8%.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/harmonic_halo_stacking.rs, crates/cosmology_core/src/harmonic_stacking.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1339
 //!
@@ -9605,7 +9605,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: coreNFW-Flat model contamination in Li et al. (2020) VizieR table1.dat: substring filter 'NFW-Flat' matches both 'NFW-Flat' (175 entries) and 'coreNFW-Flat' (175 entries), yielding 350 total. HashMap lookup causes coreNFW-Flat to silently overwrite NFW-Flat for each galaxy (appears later in file). coreNFW parameters are radically different (c200 near 1, r_s > 100 kpc vs c200 > 5, r_s < 50 kpc for genuine NFW-Flat). Fix: exact string equality filter. Impact: RMS residual dropped from 0.097 to 0.052 after fix.
 //! - Where stated: crates/data_core/src/catalogs/sparc.rs:269
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1340
 //!
@@ -9613,79 +9613,79 @@
 //! - Last verified: 2026-03-12
 //! - Statement: Harmonic halo stacking pipeline correctly detects the SPARC mass discrepancy (+13.3% mean NFW underprediction) and its collapse upon quality filtering (to +1.7% at chi2<3, c200>=2). The full-sample k1 power spike (1.4e-3) is the Fourier signature of the well-known mass discrepancy-acceleration relation. Purified stack shows inner positive (x<1: +24%), outer negative (x>3: -10%) residual pattern consistent with NFW cusp-core mismatch, not harmonic halo structure. Three MW datasets (Jiao 2023, Ou 2024, Mroz 2019) show monotonically decreasing Fourier power from mode 1 to 7 with smooth phase rotation -- the spectral signature of the Keplerian decline, not a 7-mode harmonic.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/harmonic_halo_stacking.rs, crates/gororoba_cli_physics/src/bin/harmonic_halo_mw.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1341
 //!
 //! - Status: `Verified`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: The assessor fraction is identically 0.5 for all Cayley-Dickson dimensions >= 16. Each cross-assessor generates exactly 2 zero-divisors (+ and - sign variants), so n_ZDs = 2 * n_assessors, giving fraction = 0.5. This is an algebraic identity, not a coincidence.
 //! - Where stated: crates/algebra_analysis/src/boxkites.rs (assessor_fraction field, motif_components_for_cross_assessors)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1342
 //!
 //! - Status: `Verified`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: The number of motif components (box-kite generalizations) at CD dimension D is n_components = D/2 - 1, each containing D/2 - 2 cross-assessor nodes. Total cross-assessors = (D/2-1)(D/2-2). Verified computationally at D=16 (7*6=42), D=32 (15*14=210), D=64 (31*30=930), and analytically to D=4096.
 //! - Where stated: crates/algebra_analysis/src/boxkites.rs (motif_components_for_cross_assessors, test_motif_component_count_formula)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1343
 //!
 //! - Status: `Provisional`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: Harmonic halo stacking is parameterized by CD dimension via CdDimensionParams. The wavenumber formula k_n = 2*pi*n / n_modes generalizes from 7 modes (D=16) to arbitrary n_modes = D/2 - 1. Higher dimensions probe more modes but same assessor fraction (0.5), enabling multi-dimensional falsification sweeps.
 //! - Where stated: crates/cosmology_core/src/harmonic_stacking.rs (CdDimensionParams, predicted_wavenumbers)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1344
 //!
 //! - Status: `Verified`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: Harmonic halo stacking SNR is invariant under CD dimension change (D=16 through D=1024) at N=93 galaxies. RMS residual = 0.1463, SNR = 0.67-0.68, alpha_zd estimate ~0.54 (noise-dominated). The stacked residual profile is the same physical signal regardless of Fourier decomposition dimension.
 //! - Where stated: E-182 (CD sweep), data/results/harmonic_stacking_cd_sweep/
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1345
 //!
 //! - Status: `Verified`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: With N=93 SPARC galaxies, the harmonic halo detection threshold is alpha_zd >= 0.021 (5% of velocity error budget). The noise floor scales as 1/sqrt(N), requiring N ~ 10000 (MaNGA) to reach sub-percent alpha_zd sensitivity (~0.0015). THINGS (N=34, no rotation curves) is strategically irrelevant for this pipeline.
 //! - Where stated: E-182 (CD sweep), harmonic_stacking.rs detection_threshold()
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1346
 //!
 //! - Status: `Provisional`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: MaNGA pseudo-slit rotation curve extraction: 2D H-alpha EMLINE_GVEL maps from MAPS files are sliced along the kinematic PA with 2-spaxel slit width, deprojected by sin(i), and binned radially to produce SPARC-compatible V(r) profiles. DAPall scalars (sigma_star, integrated EW) are insufficient for harmonic Fourier analysis requiring spatially resolved k_n modes.
 //! - Where stated: crates/data_core/src/catalogs, crates/data_core/src/catalogs/manga.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1347
 //!
 //! - Status: `Verified`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: MaNGA DAPall Guillotine selection cuts (Sersic n < 2.5, 30 < i < 70 deg, H-alpha EW > 2 A, log M* > 8.5) reduce 10262 DR17 galaxies to 3222 disk-dominated targets (31.4%), dominated by Sersic cut (5580 rejected). Stage 1 measured: 10,157/10,262 have DRPall stellar masses (99% cross-match), median log M* = 10.11. With N=3222 and sqrt(N)=56.8, noise floor reaches alpha_zd >= 0.003 (7x improvement over SPARC N=93).
 //! - Where stated: crates/data_core/src/catalogs::apply_selection_cuts(), data/external/manga/dapall_selection.csv
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1348
 //!
 //! - Status: `Provisional`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: Moster et al. (2013) SMHM relation provides NFW halo mass priors from MaNGA stellar masses: log(M_halo) from log(M_star) via iterative inversion of the double-power-law parametrization. This replaces the Li et al. (2020) published NFW fits used for SPARC, enabling self-consistent halo normalization without external fitting tables.
 //! - Where stated: crates/data_core/src/catalogs/manga.rs::MangaDapallEntry::estimated_log_m200()
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1349
 //!
 //! - Status: `Verified`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: crates/cd_kernel/src/x87_primitives.rs implements x87_sum, x87_dot, x87_norm_sq, and x87_norm_sq_16 with entire accumulation loops inside a single asm! block per function. This prevents LLVM from emitting FSTP m64 spills across loop iteration boundaries (LLVM issue #44218), preserving the 80-bit mantissa (18.5 decimal digits) throughout. The 4-accumulator pattern in x87_norm_sq and the fully unrolled x87_norm_sq_16 provide the sedenion norm oracle tier in the precision cascade (FP-80 -> FP-64 -> FP-32). All 20 unit tests pass, including near-cancellation and cross-checks against naive f64.
 //! - Where stated: crates/cd_kernel/src/x87_primitives.rs, 20 tests
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1350
 //!
@@ -9693,7 +9693,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: CD box-kite fusion channels replicate Ising anyon fusion rules (sigma x sigma = 1 + psi) algebraically (C-1135, Rocq-verified). This is structural isomorphism, not physical simulation. Missing from the thesis claim: Hamiltonian dynamics, Hilbert space, decoherence channels, finite-temperature corrections. The 24 functions in majorana_braiding.rs compute CD algebraic invariants (parity eigenvalues, associator norms, fusion channel counts), not Majorana fermion observables. The 'antimatter simulation' label is semantic inflation.
 //! - Where stated: crates/algebra_experimental/src/majorana_braiding.rs (entire file, 24 public functions)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1351
 //!
@@ -9701,7 +9701,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: Topological friction (C-1134, friction >= 4 for dim >= 16) is cumulative associator norm along a braid path -- an algebraic obstruction invariant, not physical dissipation. Wick damping (C-1138, F(theta) = F(0)*exp(-H*sin(theta))) is algebraic complex-time rotation. The friction dimensional scaling (C-1136, Open) is empirical: friction grows with dim but the exact F ~ L*(1-2/n)*||AVT||_rms formula is unformalized. Braid 'fidelity' (BraidResult.fidelity) is exactly 1.0 only when total_friction < 1e-12, which never occurs at dim >= 16 by C-1134.
 //! - Where stated: crates/algebra_experimental/src/majorana_braiding.rs:179-184 (fidelity assignment), :363-385 (complex_time_braid), :401-412 (friction_dimensional_scaling)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1352
 //!
@@ -9709,7 +9709,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: Zero-friction hypothesis for missing edges (e_i, e_{i XOR dim/2}) is correctly falsified: test_missing_edge_associator_structure in majorana_braiding.rs confirms the quantized gap (C-1137, gap=4, Rocq-verified) is the correct invariant at all missing-edge positions. Braid fidelity is always < 1.0 at dim >= 16 because topological friction is strictly >= 4 (C-1134) -- this is a structural property of non-associative braiding, not a defect. The assessor count 42 and the quantized gap value 4 are separate quantities from separate structures: 42 = |primitive assessors|, 4 = |associator norm-squared on involution axes|.
 //! - Where stated: crates/algebra_experimental/src/majorana_braiding.rs:626-645 (test_missing_edge_associator_structure), proofs/verified/C1137_MissingEdgeQuantizedGap.v
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1353
 //!
@@ -9717,7 +9717,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: Thesis 2 (dark matter) conflates two unrelated claims: (a) sigma_chi_b exponent coincidence (1e-42 cm^2 in dm_force.rs tests), falsified as test fixture by C-1308 (default=0.0, values 1e-40/1e-42/1e-45 are sensitivity probes, not algebraic derivations -- no function in dm_force.rs derives sigma_chi_b from assessor count or CD dimension), and (b) harmonic halo 7-mode modulation, null result at SPARC (C-1338, SNR=0.61, alpha_zd < 0.016 at 95% CL), MW Fourier analysis (C-1340, monotonic Keplerian power decay), and CD dimension sweep (E-182, null at D=16..1024). Both sub-claims are falsified independently.
 //! - Where stated: crates/lbm_3d/src/dm_force.rs:123 (sigma_chi_b default=0.0), :323 (unit conversion), crates/cosmology_core/src/harmonic_stacking.rs, crates/gororoba_cli_physics/src/bin/harmonic_halo_stacking.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1354
 //!
@@ -9725,7 +9725,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: Harmonic halo modulation amplitude 42/84=0.5 is the flat-band fraction invariant (C-1262) re-parameterized as rotation curve modulation depth. CdDimensionParams generalizes to D=32 (15 modes), D=64 (31 modes), up to D=4096 (2047 modes). The algebra is sound and universal across the CD tower, but the physical prediction has no observational support at any dimension tested. Detection threshold analysis (harmonic_stacking.rs detection_threshold()) shows MaNGA (~10000 galaxies, 2500 after cuts) needed for threshold alpha_zd ~ 0.003-0.005.
 //! - Where stated: crates/cosmology_core/src/harmonic_stacking.rs (CdDimensionParams, detection_threshold), crates/cosmology_core/src/harmonic_halos.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1355
 //!
@@ -9733,7 +9733,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: 42^2=1764 appearing in the Planck mass is unit-dependent numerology. M_Planck = 2.176434e-5 g (CGS) contains '1764' only in base-10 CGS representation (gr_core/src/constants.rs). In natural units M_Planck = 1.220890e19 GeV -- no '1764'. In Planck units M_Planck = 1 exactly. The BCS gap 1.764 = pi/e^gamma (he3_superfluid.rs) is the Cooper pair binding energy derived in 1957 BCS theory with no Cayley-Dickson connection. Neither '1764' appearance has algebraic significance.
 //! - Where stated: crates/gr_core/src/constants.rs (M_PLANCK_CGS), crates/quantum_core/src/he3_superfluid.rs:78-89 (BCS gap = pi/exp(gamma_Euler))
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1356
 //!
@@ -9741,7 +9741,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: Quantized gap theorem (C-1137, C-1140, Rocq-verified) proves gap=4 for |[e_i,e_k,e_{i XOR 8}]|^2 at dim >= 16. The gap value 4 is a genuine topological invariant uniform across all 7 involution pairs. The thesis correctly identifies this as significant but conflates 4 with 42. The assessor count (42) and the gap value (4) are separate quantities from different structures: 42 = |primitive assessors| = Catalan C_5 = dim(ker(Reggiani graph)); 4 = |associator norm-squared on involution axes|.
 //! - Where stated: proofs/verified/C1137_MissingEdgeQuantizedGap.v, crates/algebra_experimental/src/majorana_braiding.rs:626-645 (test_missing_edge_associator_structure)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1357
 //!
@@ -9749,7 +9749,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: The A-infinity obstruction norm 8.725 (C-612) mapped to Bowers-Liang anisotropy (C-613) produces a stable gravastar (C-614, C-615) for coupling in [0, 0.01]. However, the claim that this 'drives dark energy' is architecturally unsupported: (a) gravastar solver outputs (mass, compactness, c_s) at r~10 km scale with no cosmological observable; (b) actual dark energy EOS (orthoplex_diffusion.rs, C-931/C-932) uses orthoplex heat kernel spectral dimension, not gravastar anisotropy; (c) DarkEnergyEOS.v proves w(z) from diffusion_time(z, alpha, t_0) with no reference to obstruction_norm or homotopy_bridge; (d) no code bridges Chain A (gravastar TOV) to Chain B (orthoplex w(z)); (e) obstruction_norm normalization (frobenius / dim^1.5) has free choice of norm type, exponent, truncation order; (f) coupling parameter in [0, 0.01] is a free parameter.
 //! - Where stated: crates/algebra_analysis/src/homotopy_algebra.rs:857-862 (obstruction_norm = frobenius/dim^1.5), crates/cosmology_core/src/homotopy_bridge.rs:92-147 (solve_gravastar_homotopy -> GravastarSolution), crates/cosmology_core/src/gravastar.rs, crates/cosmology_core/src/orthoplex_diffusion.rs:189-257 (w_orthoplex from diffusion_time), proofs/theories/DarkEnergyEOS.v
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1358
 //!
@@ -9757,7 +9757,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: FORMAL KILL SHOT: The A-infinity obstruction norm of 8.725 has no standing as a physical driver of dark energy. Measured normalization sensitivity at dim=16 (E-186, 2026-03-12): frobenius/dim^1.5=8.725 (current), frobenius/dim=34.900, frobenius/sqrt(d)=139.599, frobenius/dim^2=2.181, spectral_radius/dim^1.5=7.764. Relative spread = 98.4% (63x range, min 2.18 to max 139.6). A true physical constant driving a macroscopic observable (cosmological constant Lambda) must be invariant under change of basis and coordinate transformation. The 8.725 value is an artifact of choosing one of at least 5 valid matrix norm conventions; changing convention shifts the value by 2 orders of magnitude. This belongs in the same graveyard as the 0.1764 metamaterial grid artifact (C-1329). SECONDARY FINDING: spectral_radius/dim^1.5 = 7.764 is close to frobenius/dim^1.5 = 8.725, indicating the m_3 associator tensor at D=16 has energy concentrated in its dominant eigenmodes (low-rank-dominated operator), not diffusely distributed -- a genuine algebraic structural property of the sedenion m_3 operator, but not a cosmological observable.
 //! - Where stated: crates/algebra_analysis/src/homotopy_algebra.rs (test_c1357_obstruction_norm_normalization_sensitivity), E-186 results
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1359
 //!
@@ -9765,7 +9765,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: x87 FP-80 Givens rotation upgrade: two new inline-asm functions (`x87_givens_sincos`, `x87_givens_diagonal_update`) eliminate double truncation in the Jacobi eigenvalue solver. `x87_givens_sincos` carries `fpatan + fsincos +` the half-angle formulas (`fld1`, `fadd`, `fmul*0.5`, `fsqrt`, `fdivr`) entirely in 80-bit ST registers before a single f64 truncation at output, instead of storing `sin(2t)` / `cos(2t)` as f64 and finishing in SSE2. `FDIVR ST(0), ST(3)` is used in the canonical AMD-defined sense `ST(0) <- ST(3)/ST(0)`, so the quotient lands at TOS without `FXCH`. `x87_givens_diagonal_update` computes `c^2`, `s^2`, `2sc`, `new_pp`, and `new_qq` in ST registers (max depth 5) before any `fstp`. `FUCOMPP` is used as compare-plus-pop-twice stack cleanup; it is convenient, but not side-effect-free because it still performs the unordered compare and updates x87 status bits.
 //! - Where stated: crates/algebra_analysis/src/x87_jacobi.rs (x87_givens_sincos lines 73-134, x87_givens_diagonal_update lines 158-246, symmetric_eigenvalues_x87 updated at lines 264-310)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1360
 //!
@@ -9773,7 +9773,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: Packed-double accumulation primitives in `cd_kernel::avx2_primitives` keep the stable public names `avx2_sum`, `avx2_dot`, `avx2_norm_sq`, and `avx2_norm_sq_16`, but the feature split is: `__m256d`, `_mm256_extractf128_pd`, and `_mm256_hadd_pd` are AVX packed-f64 operations, while `_mm256_fmadd_pd` is separately gated by the `fma` target feature. The reduction path therefore uses AVX for 256-bit packed doubles and AVX+FMA for the fused multiply-add kernels. `_mm256_fmadd_pd` computes `a*b + c` with one IEEE-754 rounding of the infinite-precision intermediate, so it is typically more accurate than separate binary64 multiply then add, but the right comparison to x87 is binary64 single rounding versus x87 extended-precision intermediates, not a fixed 'digits below x87' slogan. The dual-accumulator pattern (8 elements per iteration = 2 vector loads) breaks the carried dependency chain and is intended to fill Zen 3's two FMA pipes. Rust 2024 unsafe discipline still applies: matching SIMD intrinsics inside the right `#[target_feature]` context are safe, while raw pointer reads remain explicit `unsafe`.
 //! - Where stated: crates/cd_kernel/src/avx2_primitives.rs (NEW, 280 LOC), crates/cd_kernel/src/lib.rs (re-exports), crates/algebra_analysis/benches/x87_bench.rs (avx2_fma variants in 5 benchmark groups)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1361
 //!
@@ -9781,7 +9781,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: x87 FP-80 accumulation primitives (`x87_sum`, `x87_dot`, `x87_norm_sq`) were benchmarked against Kahan compensated and naive f64 accumulation in E-188 (Criterion 100-sample, nightly-2026-03-05, `--release`). The measured standout result is throughput, not just precision: `x87_norm_sq` is 27% faster than naive f64 at `n=512` (239ns vs 329ns) because the four-accumulator loop-inside-asm pattern exposes enough ILP to beat the carried-dependency naive path on this kernel. At `n=512`: sum `x87=354ns`, `naive=326ns`, `kahan=1379ns`; dot `x87=389ns`, `naive=331ns`, `kahan=1378ns`; norm_sq `x87=239ns`, `naive=329ns`, `kahan=1377ns`. At `n=128`, `x87_norm_sq` still leads slightly (60.3ns vs 63.1ns). `x87_norm_sq_16_fixed` measures 8.51ns. Horner remains slower on x87 (21.19ns vs 10.74ns at `n=16`) because it is a dependency chain, not an ILP-friendly reduction. The norm_sq win is therefore specific, real, and measurable evidence that the loop-inside-asm spill-prevention pattern (C-1349, I-172) improves throughput as well as precision.
 //! - Where stated: crates/algebra_analysis/benches/x87_bench.rs (all groups), crates/algebra_analysis/src/x87_primitives.rs, E-188
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1362
 //!
@@ -9789,7 +9789,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: Working design rule for this codebase, pending full hardening: avoid mixing x87-resident temporaries with AVX/XMM work inside the same hot function; keep x87 for entirely non-SIMD precision-critical sections and use Kahan or double-double when a precision scalar must live inside a vectorized path. The numerical crossover argument from Ogita-Rump-Oishi gives `u_f64 / u_x87 = 2^-53 / 2^-64 = 2^11 = 2048`, so the heuristic is: x87 extended intermediates are the better oracle for the repo's sedenion-sized reductions (`N <= 1024`), while Kahan is the safer default for long accumulations such as Berry-phase sums where `N = n_grid^2` can easily exceed 2048. This is currently a source-backed design heuristic rather than a fully closed theorem claim, and it remains tied to the repo's concrete dimension ranges plus the planned AVX/FMA follow-on benchmark.
 //! - Where stated: Ogita-Rump-Oishi (2005) 'Accurate Sum and Dot Product'; crates/algebra_analysis/src/x87_primitives.rs; crates/cd_kernel/src/avx2_primitives.rs; E-188 benchmark results
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1363
 //!
@@ -9797,7 +9797,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: In the multiplicative harmonic-halo model law, setting alpha_zd = 0 makes the modulation factor exactly 1, so the modulated squared circular velocity recovers the baseline squared circular velocity exactly. This is an exact model-law statement only; it does not establish observational fit or dark matter microphysics.
 //! - Where stated: crates/cosmology_core/src/harmonic_halos.rs, proofs/verified/C1363_HarmonicHaloExactRecovery.v
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1364
 //!
@@ -9805,7 +9805,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: Under the explicit linear homotopy bridge law lambda = coupling * obstruction_norm, zero coupling gives lambda = 0 and exact isotropic recovery p_t = p_r, while positive rho, p_r, obstruction_norm, and coupling imply a strictly positive anisotropy correction. This is a bridge-law consequence under explicit assumptions, not a derivation of physical stress-energy from the algebra.
 //! - Where stated: crates/cosmology_core/src/homotopy_bridge.rs, proofs/verified/C1364_HomotopyBridgeLaw.v
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1365
 //!
@@ -9813,7 +9813,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: MaNGA DR17 harmonic-halo stacking with N=6992 disk galaxies (Sersic n<2.5, 30<i<70 deg, Ha EW>2A) and pseudo-slit rotation curves yields: peak Fourier detection SNR = 0.29 at the sedenion CD-ZD wavenumbers (D=16, 7 modes); RMS residual = 0.075083; detection threshold 4*sigma_v/sqrt(N) = 0.002392 (alpha_zd units). The threshold is 40% below the SKA (2030) design sensitivity of alpha_zd = 0.004. The null result (SNR << 3) confirms that at MaNGA spatial resolution and coverage (r/r_s < 1.35), no ZD harmonic velocity modulation is detectable above the baryonic and systematic noise floor.
 //! - Where stated: data/results/e183/manga_stack_D16.csv, data/results/e183/manga_stack_D64.csv, data/results/e183/manga_stack_D256.csv, data/results/e183/manga_stack_D1024.csv, E-183
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1366
 //!
@@ -9821,7 +9821,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: MaNGA harmonic-halo stacking results are numerically identical across all tested CD dimensions: D=16,32,64,128,256,512,1024 (full E-183 dense sweep) and D=256,4096,65536,262144 (D^2 and D^3 families, inner-halo sweep). SNR=0.25, RMS=0.092442, threshold=0.002392 across all 11 tested dimensions. This is mathematically guaranteed by the assessor_fraction=0.5 identity (C-1349): the stacking amplitude af/n does not vary with CD dimension. Changing D changes the number of Fourier modes evaluated (7 at D=16, 131071 at D=262144) but not the profile or noise floor.
 //! - Where stated: data/results/e183/sweeps/full_D{16..1024}.csv, data/results/e183/sweeps/family_D{256,4096,65536,262144}.csv, E-183
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1367
 //!
@@ -9829,7 +9829,7 @@
 //! - Last verified: 2026-03-12
 //! - Statement: MaNGA E-183 stacking Fourier residual SNR is strongly inclination-dependent: low-i (30-45 deg, N=3140) SNR=0.98, mid-i (45-60 deg, N=2677) SNR=0.59, high-i (60-70 deg, N=1175) SNR=1.30. The full sample (all inclinations, N=6992) achieves SNR=0.29, lower than any sub-sample, because inclination-dependent projection effects partially cancel. A genuine ZD harmonic velocity modulation would be inclination-INDEPENDENT; the observed inclination scaling confirms the dominant residual is a projection artifact (pseudo-slit line-of-sight integration depth varies with inclination), not a ZD signal. High-i galaxies show +40-60% velocity excess at x=0.92-0.96 r_s and mid-i galaxies show -44% excess at the same radii.
 //! - Where stated: data/results/e183/sweeps/lowi_D16.csv, data/results/e183/sweeps/midi_D16.csv, data/results/e183/sweeps/highi_D16.csv
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1368
 //!
@@ -9837,55 +9837,55 @@
 //! - Last verified: 2026-03-12
 //! - Statement: Full-frequency Fourier power spectrum of the low-inclination MaNGA stacking profile (N=3140, 30-45 deg) peaks at k -> 0 (amplitude = 9.0% of v_NFW at k=0.1) and decreases monotonically to k=6.3 r_s^{-1}. The sedenion CD-ZD wavenumbers (k=0.897 to 6.283) lie on the falling tail of this red-noise-like baryonic power spectrum. The peak-at-DC result confirms the dominant signal is a mean NFW over-prediction (core-cusp systematic), not a harmonic oscillation. No peaked structure at any ZD wavenumber is observed above the baryonic noise floor.
 //! - Where stated: data/results/e183/sweeps/lowi_D16.csv, analysis via Python DFT in session 2026-03-12
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1369
 //!
 //! - Status: `Verified`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: G2 angular wavenumbers (k_n = 2*pi*n/6 for n=1..6, derived from the 6 positive roots of g2 = Aut(O)) yield SNR=0.29 (full sample) and SNR=0.98 (low-inclination) on the MaNGA E-183 stacked profile -- identical to the CD-ZD D=16 sedenion result (SNR=0.29/0.98). The power spectrum is monotonically decreasing with mode index in both samples. The algebraic change from 7 CD-ZD modes (D=16) to 6 G2 angular modes produces no change in detection capability.
 //! - Where stated: data/results/e183/lie_jordan_full.csv, data/results/e183/lie_jordan_lowi.csv (2026-03-12)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1370
 //!
 //! - Status: `Verified`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: Albert algebra J3(O) Peirce wavenumbers (k_n = 2*pi*n/3 for n=1,2,3, from the rank-3 exceptional Jordan frame) yield SNR=0.29 (full sample) and SNR=0.91 (low-inclination) on the MaNGA E-183 stacked profile. Despite probing only 3 modes versus 7 for CD-ZD, the maximum detected power (4.81e-4 full, 6.79e-3 low-i) matches CD-ZD within 1.5%. The J3(O) Peirce structure does not enhance detection: the null result is algebra-independent.
 //! - Where stated: data/results/e183/lie_jordan_full.csv, data/results/e183/lie_jordan_lowi.csv (2026-03-12)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1371
 //!
 //! - Status: `Verified`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: sl(2) partner graph wavenumbers ({2,4} * 2*pi/7, the spin-2 non-zero weights of the sedenion partner graph spectrum {-4,-2,0,+2,+4}) yield SNR=0.23 (full sample) and SNR=0.93 (low-inclination). These wavenumbers are exactly CD-ZD D=16 modes 2 and 4. The sl(2) 2-mode subset has slightly lower SNR than the full 7-mode CD-ZD series because it samples only 2 of the 7 points on the falling baryonic power spectrum. Critically, the 2-mode sl(2) sub-algebra cannot distinguish between a decaying power spectrum and a genuine harmonic.
 //! - Where stated: data/results/e183/lie_jordan_full.csv, data/results/e183/lie_jordan_lowi.csv (2026-03-12)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1372
 //!
 //! - Status: `Verified`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: The MaNGA E-183 null result (no ZD harmonic detection at SNR < 2.0) is algebraically universal: CD-ZD D=16 (SNR=0.29), G2 Aut(O) angular modes (SNR=0.29), Albert J3(O) Peirce (SNR=0.29), and sl(2) partner-graph (SNR=0.23) all fail to detect forcing in the inner halo x<1.36 r/r_s at N=6992. The baryonic noise floor RMS=0.075 (full) / 0.090 (low-i) exceeds the ZD detection threshold (0.002392) by 30-38x regardless of which algebraically-motivated wavenumber set is analyzed. No algebraic structure from the sedenion tower (G2, J3(O), sl(2), CD) provides a spectral window into the inner baryonic regime.
 //! - Where stated: data/results/e183/lie_jordan_full.csv, data/results/e183/lie_jordan_lowi.csv (2026-03-12)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1373
 //!
 //! - Status: `Verified`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: The sl(2,R) spin-2 degeneracy ratio prediction P(k=1.795)/P(k=3.590) = 14:7 = 2.0 is falsified by the MaNGA E-183 stacked profiles. Observed: low-inclination sub-sample gives P(k=1.795)/P(k=3.590) = 7.136e-3/4.663e-3 = 1.53 (not 2.0); full N=6992 sample gives 1.575e-4/2.887e-4 = 0.55 (inverted). The ratio is not only incorrect but reverses sign between samples, confirming it reflects baryonic noise rather than sl(2) structure. The partner graph degeneracy {14, 7} at weights {2, 4} provides no spectral selection rule that would survive stacking over N=6992 disk galaxies.
 //! - Where stated: data/results/e183/lie_jordan_full.csv, data/results/e183/lie_jordan_lowi.csv (lie-jordan-halo-analysis, 2026-03-12)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1374
 //!
 //! - Status: `Verified`
-//! - Last verified:
+//! - Last verified: 
 //! - Statement: The STFT spectrogram of the MaNGA E-183 stacked profile (harmonic-halo-signal-analysis, sigma_x=1.5 r/r_s, 32 window centers) shows baryonic_frac=1.000 for all 7 CD-ZD modes: 100% of harmonic power is concentrated in the innermost x-bin (x_peak=0.5 r/r_s for all modes). The derivative stacking DFT shows monotonically increasing power from mode 1 (k=0.90) to mode 7 (k=6.28), opposite to the ZD forcing prediction which would peak at the fundamental mode k_1. The jackknife Rayleigh R=0.97-0.99 at all modes is an artifact of N=19 smooth bins (smooth baryonic profile causes stable jackknife phases); discriminatory power requires N >> 1/SNR^2 ~ 1700 bins. All three non-static diagnostics confirm baryonic-dominated, noise-dominated null result.
 //! - Where stated: data/results/e183/stft_full.csv, data/results/e183/deriv_full.csv, data/results/e183/rayleigh_full.csv (harmonic-halo-signal-analysis, E-192, 2026-03-12)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1375
 //!
@@ -9893,7 +9893,7 @@
 //! - Last verified: 2026-03-15
 //! - Statement: i-major SoA pull-scheme D3Q19 LBM kernels improve MLUPS over AoS push-scheme at 128^3 on RTX 4070 Ti (Ada SM 8.9): FP16 SoA 3505 vs AoS 1884 MLUPS (1.86x); FP8 e4m3 SoA 5530 vs AoS 3132 MLUPS (1.77x); INT8 SoA 5548 vs AoS 3170 MLUPS (1.75x).
 //! - Where stated: data/benchmarks/cuda_kernel_baseline.csv (cuda-precision-bench, 2026-03-15)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1376
 //!
@@ -9901,7 +9901,7 @@
 //! - Last verified: 2026-03-15
 //! - Statement: AoS scatter-write non-coalescing erases sub-FP32 bandwidth advantage at 128^3: FP16 AoS 1884 MLUPS (same as FP32 1969 MLUPS), FP8/INT8 AoS 3132-3170 MLUPS (only 1.59-1.61x not expected 4x).
 //! - Where stated: data/benchmarks/cuda_kernel_baseline.csv (cuda-precision-bench, 2026-03-15)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1377
 //!
@@ -9909,7 +9909,7 @@
 //! - Last verified: 2026-03-15
 //! - Statement: INT4 nibble-packed i-SoA D3Q19 bandwidth ceiling: 6340 MLUPS, 323 GB/s, 64.2% of 504 GB/s peak at 128^3. Physics broken; valid as bandwidth ceiling reference only.
 //! - Where stated: data/benchmarks/cuda_kernel_baseline.csv (cuda-precision-bench, 2026-03-15)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1378
 //!
@@ -9917,7 +9917,7 @@
 //! - Last verified: 2026-03-15
 //! - Statement: FP8 e5m2 and FP8 e4m3 AoS D3Q19 throughput identical at 128^3 (3130 vs 3132 MLUPS). Format choice is physics-only: e4m3 for near-equilibrium, e5m2 for wide-range flows.
 //! - Where stated: data/benchmarks/cuda_kernel_baseline.csv (cuda-precision-bench, 2026-03-15)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1379
 //!
@@ -9925,7 +9925,7 @@
 //! - Last verified: 2026-03-15
 //! - Statement: INT16 AoS and FP16 AoS D3Q19 LBM throughput are equivalent at 128^3 on RTX 4070 Ti (Ada SM 8.9): INT16 AoS 1904.1 MLUPS vs FP16 AoS 1911.5 MLUPS (0.4% difference). Both are 2 bytes/dist, stride-20 AoS layout; scatter-write non-coalescing dominates over arithmetic format differences.
 //! - Where stated: data/benchmarks/cuda_kernel_baseline.csv (cuda-precision-bench, 2026-03-15)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1380
 //!
@@ -9933,7 +9933,7 @@
 //! - Last verified: 2026-03-15
 //! - Statement: INT16 i-major SoA pull-scheme D3Q19 LBM achieves 3568.9 MLUPS at 128^3 (328.3 GB/s, 65.1% of 504 GB/s peak), 3.0% faster than FP16 SoA pull-scheme (3463.3 MLUPS). Both are 2 bytes/dist; INT16 advantage is attributed to elimination of float16 load/store conversion instructions per direction (integer path through L2 vs FP16 conversion pipeline).
 //! - Where stated: data/benchmarks/cuda_kernel_baseline.csv (cuda-precision-bench, 2026-03-15)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1381
 //!
@@ -9941,7 +9941,7 @@
 //! - Last verified: 2026-03-15
 //! - Statement: BF16 i-major SoA pull-scheme D3Q19 LBM achieves 3203.7 MLUPS at 128^3 (294.7 GB/s, 58.5% peak), 7.5% slower than FP16 SoA (3463.3 MLUPS) despite identical element size (2 bytes/dist). On Ada SM 8.9, BF16 scalar loads exhibit slightly higher latency than FP16 scalar loads; no BF16 FFMA acceleration on Ada gaming SKU. BF16 SoA advantage is bandwidth-only (2x vs FP32), not arithmetic.
 //! - Where stated: data/benchmarks/cuda_kernel_baseline.csv (cuda-precision-bench, 2026-03-15)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1382
 //!
@@ -9949,7 +9949,7 @@
 //! - Last verified: 2026-03-15
 //! - Statement: FP32 SoA cache-streaming stores (__stcs, PTX st.global.cs, L2 evict-first) provide negligible throughput gain at 128^3: 2026.5 MLUPS vs FP32 SoA pull baseline 1966.5 MLUPS (+3.1%). The 304 MB ping buffer at 128^3 far exceeds the 48 MB Ada L2 cache; evict-first prevents premature ping eviction only when working set fits in L2. At small grids (32^3, 64^3), apparent bandwidth exceeds 200% (L2 reuse artifact, working set fits in L2).
 //! - Where stated: data/benchmarks/cuda_kernel_baseline.csv (cuda-precision-bench, 2026-03-15)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1383
 //!
@@ -9957,7 +9957,7 @@
 //! - Last verified: 2026-03-15
 //! - Statement: FP16 SoA half2 ILP variant (2 cells per thread, __half2 velocity moment accumulation) achieves 3801.5 MLUPS at 128^3 (349.7 GB/s, 69.4% peak), a +9.8% improvement over FP16 SoA standard (3463.3 MLUPS). Dual-issue FP32 pipeline benefit on Ada SM 8.9 is confirmed: independent cell A and cell B BGK collision chains interleave on the 2x FP32 issue slots.
 //! - Where stated: data/benchmarks/cuda_kernel_baseline.csv (cuda-precision-bench, 2026-03-15)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1384
 //!
@@ -9965,7 +9965,7 @@
 //! - Last verified: 2026-03-15
 //! - Statement: FP64 i-major SoA pull-scheme D3Q19 LBM achieves 406.4 MLUPS at 128^3 (149.6 GB/s, 29.7% peak), slightly below FP64 AoS (460.7 MLUPS, 169.5 GB/s). The FP64 regime is compute-bound (Ada SM 8.9 delivers only ~0.6 TFLOPS FP64); SoA pull-scheme does not recover bandwidth advantage when arithmetic throughput is the bottleneck. VRAM at 128^3: FP64 SoA 608 MB, AoS 608 MB (no VRAM saving vs AoS; FP64 has no padding slot unlike FP32 AoS stride-20).
 //! - Where stated: data/benchmarks/cuda_kernel_baseline.csv (cuda-precision-bench, 2026-03-15)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1385
 //!
@@ -9973,7 +9973,7 @@
 //! - Last verified: 2026-03-15
 //! - Statement: Full D3Q19 LBM precision tier MLUPS ranking at 128^3 on RTX 4070 Ti (Ada SM 8.9, 504 GB/s peak): (1) INT8 SoA 5643.0 MLUPS (51.5% BW, 76 MB), (2) FP8_e4m3 SoA 5408.3 MLUPS (49.4% BW, 76 MB), (3) FP8_e5m2 SoA 5280.2 MLUPS (48.2% BW, 76 MB), (4) INT4 bw-ceil 6168.5 MLUPS (62.4% BW, 38 MB, non-physics), (5) FP16 SoA H2 3801.5 MLUPS (69.4% BW, 152 MB), (6) INT16 SoA 3568.9 MLUPS (65.1% BW, 152 MB), (7) FP16 SoA 3463.3 MLUPS (63.2% BW, 152 MB), (8) BF16 SoA 3203.7 MLUPS (58.5% BW, 152 MB), (9) FP32 coarsened 2107.4 MLUPS (76.9% BW, 304 MB), (10) FP32 aa 2061.6 MLUPS (75.3% BW, 304 MB). INT8 SoA is the Pareto-optimal production tier: highest physics-valid MLUPS with 4x VRAM reduction vs FP32.
 //! - Where stated: data/benchmarks/cuda_kernel_baseline.csv (cuda-precision-bench, 2026-03-15)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1386
 //!
@@ -9981,7 +9981,7 @@
 //! - Last verified: 2026-03-15
 //! - Statement: FP4 E2M1 nibble-packed i-SoA D3Q19 bandwidth ceiling achieves 4726.5 MLUPS (241.0 GB/s, 47.8% peak) at 128^3 on Ada SM 8.9 (emulated; Blackwell SM 10.0+ required for hardware FP4). FP4 ceiling is 23% slower than INT4 nibble ceiling (6168.5 MLUPS) due to FP4_DECODE[16] lookup table overhead per nibble. Both have identical VRAM footprint (38 MB at 128^3). Physics is broken for both (FP4 rest weight 1/3 rounds to 0.5 with 50% error; INT4 edge weights collapse to zero).
 //! - Where stated: data/benchmarks/cuda_kernel_baseline.csv (cuda-precision-bench, 2026-03-15)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1387
 //!
@@ -9989,7 +9989,7 @@
 //! - Last verified: 2026-03-15
 //! - Statement: FP8_e5m2 i-major SoA pull-scheme D3Q19 LBM achieves 5280.2 MLUPS at 128^3 (242.9 GB/s, 48.2% peak), 2.4% slower than FP8_e4m3 SoA (5408.3 MLUPS). Formats are identical in byte width (1 byte/dist); the throughput gap is consistent with e5m2 encoding having marginally higher float-to-byte quantization overhead in the store path (wider range requires renormalization vs e4m3 clipping). Format selection remains physics-driven: e4m3 for rho near 1 (tighter mantissa), e5m2 for density-contrast flows.
 //! - Where stated: data/benchmarks/cuda_kernel_baseline.csv (cuda-precision-bench, 2026-03-15)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1388
 //!
@@ -9997,7 +9997,7 @@
 //! - Last verified: 2026-03-16
 //! - Statement: CPU D3Q19 LBM on Ryzen 5600X3D (96 MB V-Cache) is compute-bound, not memory-bound. Evidence: (1) MLUPS nearly flat across 32^3/64^3/128^3 (3.8/4.2/3.5), (2) perf stat IPC=2.24 with L1 miss rate=2.7% and cache miss rate=14.6%, (3) 3124 instructions per cell-update confirming FMA-chain latency is the bottleneck. The V-Cache prevents L3 miss penalties but cannot accelerate FMA throughput. Optimization path: AVX2 f64x4 vectorization of the feq/collision loop (4x theoretical), not cache tiling.
 //! - Where stated: data/benchmarks/cpu_lbm_baseline.csv + perf stat output (cpu-lbm-bench, 2026-03-16)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1389
 //!
@@ -10005,7 +10005,7 @@
 //! - Last verified: 2026-03-16
 //! - Statement: CUDA shared-memory tiled D3Q19 LBM (8x8x4 tile) is a net negative on Ada Lovelace at grids <=128^3. Evidence from nsys profiling at 128^3: lbm_step_soa_tiled avg=1870 us (2.01x slower than aa at 928 us), lbm_step_soa_mrt_tiled avg=1895 us (2.04x slower). The RTX 4070 Ti 48 MB L2 cache makes hardware prefetch more efficient than manual LDS tiling for contiguous SoA memory. __syncthreads() overhead and potential bank conflicts dominate. Recommendation: use tiled only at 256^3+ where L2 misses exceed prefetch capacity.
 //! - Where stated: data/benchmarks/nsys/cuda_parity_20260316_093257.nsys-rep (nsys profile, 2026-03-16)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1390
 //!
@@ -10013,7 +10013,7 @@
 //! - Last verified: 2026-03-16
 //! - Statement: A-A streaming is the Pareto-optimal D3Q19 kernel variant on Ada at 128^3 FP32: 2154 MLUPS at 79.7% of 504 GB/s peak bandwidth, half VRAM of ping-pong (304 MB vs 608 MB). nsys-confirmed avg kernel time 928 us/step vs standard push 1018 us, pull 949 us, MRT 966 us. Further software optimization is mathematically impossible without precision reduction (FP16 pull achieves 3532 MLUPS by halving bytes/cell). The CUDA/CPU speedup at FP64 128^3 is 166.4x (589 vs 3.5 MLUPS), increasing with grid size due to CPU being compute-bound while GPU is memory-bound.
 //! - Where stated: data/benchmarks/cuda_kernel_baseline.csv + data/benchmarks/parity_report.md (2026-03-16)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1391
 //!
@@ -10021,7 +10021,7 @@
 //! - Last verified: 2026-03-16
 //! - Statement: MRT collision is FASTER than BGK in 7/9 CUDA precision tiers at 128^3 on Ada SM 8.9. MRT/BGK MLUPS ratios: FP8_e5m2_SoA 2.89x (5442 vs 1883), INT8_SoA 1.84x (5142 vs 2789), FP8_e4m3_SoA 1.60x (5210 vs 3265), BF16_SoA 1.26x (3260 vs 2597), FP16_SoA 1.08x (3486 vs 3240), INT16_SoA 1.02x (3397 vs 3316), FP64_SoA 2.29x (398 vs 174). Only FP16_H2 shows MRT slowdown (0.91x). Mechanism: in memory-bound regimes, MRT's 722 FMA/cell (vs BGK's 57) fill pipeline bubbles that were idle during memory stalls, improving warp scheduler utilization (latency hiding). The conventional wisdom that MRT is slower than BGK is falsified for Ada Lovelace LBM at production grid sizes.
 //! - Where stated: data/benchmarks/cuda_mrt_sweep.csv (cuda-precision-bench, 2026-03-16)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1392
 //!
@@ -10029,7 +10029,7 @@
 //! - Last verified: 2026-03-16
 //! - Statement: Formal kernel decision table for Ada SM 8.9 D3Q19 LBM at grid <= 256^3. Three compounding optimizations: (1) A-A streaming MANDATORY -- halves VRAM, prevents register-induced occupancy starvation (C-1389/C-1390). (2) MRT collision FREE for all tiers below FP16_H2 -- 722 FMA/cell fills memory-stall pipeline bubbles (C-1391). (3) Low-precision storage: INT8_SoA MRT A-A is Pareto-optimal (predicted 5000+ MLUPS, 76 MB at 128^3, 317 MB at 256^3). Recommended configurations ranked: Tier 1 (max throughput): INT8_SoA MRT A-A -- 5142 MLUPS at MRT, half VRAM vs ping-pong. Tier 2 (max throughput, float): FP8_e4m3_SoA MRT A-A -- 5210 MLUPS, lower quantization noise than INT8. Tier 3 (balanced accuracy): FP16_SoA MRT -- 3486 MLUPS, 10-bit mantissa for moderate-Re flows. Tier 4 (high accuracy): FP32 MRT A-A -- 1979 MLUPS, full f32 precision. Tier 5 (validation): FP64 SoA MRT -- 398 MLUPS, reference precision. NEVER use tiled variants on Ada (C-1389 + __launch_bounds__(256,2) experiment proves smem demotion to local memory).
 //! - Where stated: data/benchmarks/cuda_mrt_sweep.csv + C-1389/C-1390/C-1391 evidence chain (2026-03-16)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1393
 //!
@@ -10037,7 +10037,7 @@
 //! - Last verified: 2026-03-17
 //! - Statement: Mass-binned phase coherence test (H1, NMR spin-echo analogy): 10 equal-N mass bins of 6992 MaNGA galaxies show NO monotonic phase-vs-mass trend. Max Spearman |rho| = 0.462 (mode 4), all modes below the 0.7 detection threshold. Bins 7-9 (log M200 > 11.9) have zero valid stacking bins (r_s exceeds MaNGA IFU reach). Per-bin SNR > 3.0 in bins 5-6 (log M200 = 11.5-11.9) is a BARYONIC artifact: intermediate-mass halos have concentrated NFW cusp structure that produces coherent residuals in narrow mass windows. Rayleigh R decreases monotonically from 0.38 (mode 1) to 0.05 (mode 7), confirming phase scatter increases with wavenumber (noise-like). The mass-dependent phase hypothesis is REJECTED by the Spearman criterion (max |rho| < 0.5) despite triggering the per-bin SNR > 2.0 secondary criterion.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/mass_binned_phase.rs, data/results/e183/mass_binned_phase.csv
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1394
 //!
@@ -10045,7 +10045,7 @@
 //! - Last verified: 2026-03-17
 //! - Statement: Cross-algebra template projection correlation (H2, VLBI analogy): galaxy-level DFT projections onto 4 algebraic templates (CD-ZD, G2, J3(O), sl(2)) show rho > 0.96 for all 6 algebra pairs. However, the RANDOM template control (5 uniform-random wavenumbers) shows equally high correlation (rho > 0.97 with all 4 algebras). This proves the cross-correlation is entirely driven by COMMON BARYONIC STRUCTURE (NFW cusp trough + bulge excess) present in all 6992 galaxies, not by algebraic signal. The analytical null baselines (0.07-0.47) drastically underestimate the observed correlation because they assume white noise, while real galaxy residuals have coherent baryonic structure. The cross-algebra correlation hypothesis is REJECTED: the excess is baryonic, not algebraic.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/cross_algebra_correlation.rs, data/results/e183/cross_algebra_correlation.csv
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1395
 //!
@@ -10053,7 +10053,7 @@
 //! - Last verified: 2026-03-17
 //! - Statement: DC14 vs NFW stacking comparison (H3, Michelson-Morley inversion): DC14 feedback-modified profiles (Di Cintio et al. 2014) reduce stacked residual RMS by 31.4% vs NFW (0.087 vs 0.126) at matched (rho_s, r_s). However, DC14 residuals are uniformly more negative (-0.14 to -0.35 vs NFW -0.05 to +0.15) because the DC14 core reduces enclosed mass relative to NFW cusp, producing systematic v_DC14 < v_NFW. The DC14 Fourier power is 1.8-61x HIGHER than NFW across all 7 modes (opposite of what a better model should produce). Chi2/dof = 0.80 (spectral shape). Result is INCONCLUSIVE: the comparison is confounded by parameter reuse (DC14 needs its own best-fit rho_s, r_s per galaxy, not the NFW-calibrated values). A proper test requires DC14-specific SMHM-to-profile fitting.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/dc14_stacking.rs, data/results/e183/dc14_stacking.csv
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1396
 //!
@@ -10061,7 +10061,7 @@
 //! - Last verified: 2026-03-17
 //! - Statement: STFT phase gradient analysis (H4, chirp detection analogy): linear regression of phase vs x_center across 32 STFT windows shows R^2 > 0.999 for all 7 modes, but fitted slopes are near zero (-0.015 to -0.074) vs predicted wavenumber k (0.90 to 6.28). Slope/k ratios range from -0.002 to -0.055, meaning phases are essentially FLAT across the x-range. Modes 1-4 are degenerate (< 0.5 full wavelengths in the 0.72 r/r_s window). The high R^2 reflects the smooth baryonic baseline imprinting a slowly-varying phase, not coherent harmonic forcing. No chirp-like phase evolution detected. Hypothesis INCONCLUSIVE (limited by radial coverage) but strongly disfavored.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/stft_phase_gradient.rs, data/results/e183/stft_phase_gradient.csv
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1397
 //!
@@ -10069,7 +10069,7 @@
 //! - Last verified: 2026-03-17
 //! - Statement: Metadata-conditioned baryonic denoising (Hypothesis A): H-alpha equivalent width is the best single predictor of per-galaxy mean NFW residual (R^2 = 0.314, 20-bin nonparametric regression). This confirms that baryonic feedback (traced by Ha_EW as star-formation proxy) drives the dominant per-galaxy residual offset. However, subtracting the predicted mean does NOT reduce stacked RMS (RMS increases by 3.9% from 0.1264 to 0.1313) because the stacking procedure already averages out per-galaxy mean offsets. The remaining stacked residual structure is SHAPE-based (NFW cusp trough, bulge excess, IFU projection spike) which single-feature mean-subtraction cannot address. Other features: sersic_n R^2=0.080, inclination R^2=0.060, r_eff R^2=0.062, sigma R^2=0.043, z R^2=0.031, log_m200 R^2=0.016, abs_mag_r R^2=0.010.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/ml_baryonic_denoise.rs, data/results/e183/ml_denoise_ha.csv
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1398
 //!
@@ -10077,7 +10077,7 @@
 //! - Last verified: 2026-03-17
 //! - Statement: Fourier anomaly detection (Hypothesis B): Top 70 galaxies ranked by total Fourier power at 7 CD-ZD wavenumbers show Rayleigh R > 0.98 at all modes, but this is an ARTIFACT of selection: galaxies with highest per-galaxy Fourier power are those with extreme rotation curves (very few data points, poor radial coverage), producing large DFT power from noise at individual radial bins. When stacked, these 70 galaxies yield zero valid bins (RMS = 0.000, SNR = 0.000) because their sparse radial coverage fails the min_galaxies_per_bin threshold. The bottom 70 galaxies (lowest Fourier power, best-behaved rotation curves) stack normally with RMS = 0.047, SNR = 0.63. Lesson: per-galaxy Fourier power at CD-ZD wavenumbers is dominated by DATA QUALITY (radial coverage, number of points), not by physical signal strength. Anomaly detection on raw Fourier power requires a data-quality correction (normalization by effective coverage).
 //! - Where stated: crates/gororoba_cli_physics/src/bin/ml_baryonic_denoise.rs, data/results/e183/ml_denoise_hb.csv
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1399
 //!
@@ -10085,7 +10085,7 @@
 //! - Last verified: 2026-03-17
 //! - Statement: Contrarian I (template sensitivity): SNR is invariant to signal template parameterization. Six alternative DFT weight templates (standard 1/n*exp(-x), flat amplitude, 1/n*Gaussian, flat/flat, 1/n^2*exp(-x), optimal matched filter) all produce SNR in [0.35, 0.43] on the E-183 stacked profile. The DFT power at CD-ZD wavenumbers is a property of the DATA (baryonic red-noise spectrum), not the template weights. The null result is robust to arbitrary signal model choices including amplitude decay function, spatial envelope, and noise-adaptive weighting.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/contrarian_template_sweep.rs, data/results/e183/contrarian_templates.csv
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1400
 //!
@@ -10093,7 +10093,7 @@
 //! - Last verified: 2026-03-17
 //! - Statement: Contrarian II (baseline robustness): A 3-parameter quadratic polynomial fit to the stacked NFW residual (x < 2.0) removes 40.2% of RMS (0.126 to 0.076) and reduces Fourier power at all 7 CD-ZD wavenumbers by 100-10000x (power ratios 0.0000 to 0.026). Corrected SNR drops to 0.12 (from 0.43), confirming the original Fourier power was entirely attributable to a smooth baryonic polynomial (cusp trough + bulge excess + IFU edge curvature). Polynomial coefficients: a0=-0.022 (mean NFW offset at x=1), a1=+0.532 (velocity gradient beyond cusp), a2=+1.399 (upward curvature from IFU edge). After removing this 3-parameter trend, NO spectral structure remains at any algebraically-motivated wavenumber. The null result is robust to NFW profile misspecification: even allowing a flexible baseline, no ZD signal emerges.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/contrarian_template_sweep.rs, data/results/e183/contrarian_baseline.csv
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1401
 //!
@@ -10101,7 +10101,7 @@
 //! - Last verified: 2026-03-17
 //! - Statement: H1 Baryonic Eigenspectrum: CD-ZD modes are NOT a privileged baryonic basis. SVD of the 18x7 design matrix (cos(k_n*x)*w_n*exp(-x) on 18 populated radial bins) yields kappa=291780 (FAILURE, >500 threshold), R^2(NFW)=0.862 at 39.5th percentile of random wavenumber sets (median 0.863). However, ZD kappa is at 0th percentile of random (median random kappa=17.4M), meaning ZD is far better conditioned than random -- the high kappa is intrinsic to the narrow x=0.5-1.36 domain. Two SVD modes capture 98.4% of variance. The ZD basis reconstructs baryonic structure comparably to arbitrary 7-mode cosine bases, but is not uniquely suited for feedback tomography.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/baryonic_eigenspectrum.rs, data/results/e183/baryonic_eigenspectrum.csv
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1402
 //!
@@ -10109,7 +10109,7 @@
 //! - Last verified: 2026-03-17
 //! - Statement: H2 Phase-Mass Entanglement REJECTED: Spearman rank correlation of DFT phase vs mass-bin index DECREASES with finer binning -- |rho|_max = 0.46 (N=10 bins), 0.40 (N=50), 0.26 (N=100). This confirms the N=10 value (mode 4) was a statistical fluctuation, not a real mass-dependent phase gradient. The high per-bin SNR at fine binning (up to 62.6 at N=100, bin 66 at log M200=11.81-11.84) is a small-N artifact: bins with RMS < 0.02 have only a few galaxies contributing to the stacking grid, producing SNR dominated by individual galaxy noise. Bins above log M200 ~ 11.92 have zero populated stacking bins (RMS=0.0, SNR=0.0) because these massive galaxies' rotation curves map to x < x_min in the normalized frame. No mass-dependent ZD forcing phase exists in MaNGA data.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/mass_binned_phase.rs, data/results/e183/mass_binned_phase_n50.csv, data/results/e183/mass_binned_phase_n100.csv
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1403
 //!
@@ -10117,7 +10117,7 @@
 //! - Last verified: 2026-03-17
 //! - Statement: H3 Cross-Algebra Cusp-Core Discriminant: DC14 baryonic spectral shape partially explains but does NOT fully account for the cross-algebra correlation excess. chi^2/dof = 22.55 for DC14-colored model (FAILURE, >5.0 threshold), compared to 187.07 for NFW-colored. DC14 predicted correlations (rho_pred = 0.88-0.99) are closer to observed (0.977-0.998) than white-noise null (rho_null = -0.08 to 0.47), but residuals (0.003-0.095) exceed Fisher z uncertainty (sigma=0.012) by 3-8x for 4/6 pairs. Spectral slopes: NFW beta=0.37 (near-flat), DC14 beta=-2.21 (steep blue). The excess contains baryonic structure PLUS geometric mode-clustering contribution from all algebras sampling overlapping low-k bands (k < 7). The cross-algebra excess is a COMPOSITE diagnostic of baryonic spectral shape and wavenumber geometry, not a clean cusp-core measurement.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/cross_algebra_cusp_core.rs, data/results/e183/cusp_core_discriminant.csv
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1404
 //!
@@ -10125,7 +10125,7 @@
 //! - Last verified: 2026-03-17
 //! - Statement: Hypothesis A (multi-feature baryonic shape regression) FAILED: A 4-feature linear model (ha_ew, sersic_n, inclination, sigma) regressing on 2-component SVD shape coefficients achieves R^2=0.048 (combined, variance-weighted) -- far below the 0.45 detection threshold. SVD mode 1 R^2=0.049, mode 2 R^2=0.005. The dominant coefficient is sigma (beta=-0.919) for mode 1, meaning stellar velocity dispersion has the strongest (but still weak) predictive power for residual shape. After subtracting the predicted shape, stacked RMS INCREASES by 9.1% (0.126 to 0.138), confirming the regression captures noise, not signal. Per-galaxy residual shape variation is NOT predicted by galaxy metadata -- the baryonic systematic is a population-level effect (same shape for all galaxies) rather than a galaxy-specific one.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/multifeature_shape_regression.rs, data/results/e183/multifeature_shape.csv
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1405
 //!
@@ -10133,7 +10133,7 @@
 //! - Last verified: 2026-03-17
 //! - Statement: Hypothesis B (inclination-stratified injection recovery) DETECTED: PSF smearing is the dominant source of injection recovery non-linearity. At alpha_zd=0.004, recovery ratios differ by 2.9x across inclination bins: low-i (30-45 deg, N=3139) ratio=69.2, mid-i (45-60 deg, N=2681) ratio=153.7, high-i (60-70 deg, N=1175) ratio=197.3. The monotonic increase (low->mid->high) confirms that projection/beam-smearing artifacts suppress injection recovery in proportion to line-of-sight confusion. The high-i baseline SNR=0.886 (vs low-i 0.644) is entirely explained by PSF-injected systematic power, not by genuine dark-sector sensitivity. Low-i galaxies have 2.9x better injection sensitivity, suggesting future searches should prioritize face-on samples.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/inclination_injection_calibration.rs, data/results/e183/inclination_injection.csv
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1406
 //!
@@ -10141,7 +10141,7 @@
 //! - Last verified: 2026-03-17
 //! - Statement: Galaxy-ensemble Rayleigh phase coherence test (E-194) on 7024 MaNGA galaxies yields modest but nonzero coherence at the 7 CD-ZD modes: R = 0.0329, 0.0497, 0.0721, 0.0960, 0.1171, 0.1327, 0.1409 for modes 1..7, compared with the incoherent null expectation 1/sqrt(N) = 0.0119. The coherence rises monotonically with wavenumber rather than peaking at the fundamental mode, so this lane is better interpreted as broad structured baryonic/systematic phase alignment than as evidence for a selective ZD harmonic signal.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/harmonic_halo_galaxy_phase.rs, data/results/e183/galaxy_phase_coherence.csv
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1407
 //!
@@ -10149,7 +10149,7 @@
 //! - Last verified: 2026-03-17
 //! - Statement: Contrarian D1 (SHMR scatter phase-smearing) FAILED -- null result is ROBUST to r_s uncertainty. Injecting alpha_zd=0.01 with 0.15 dex lognormal r_s perturbation (20 MC realizations, Behroozi+2019 scatter) shows NO power loss at modes 5-7 (drop < 8%). Counterintuitively, scatter INCREASES power at low-k modes by 6-10x (mode 1 ratio=10.4, mode 2 ratio=6.9). Explanation: the exp(-x) damping envelope concentrates injected signal at small x where delta_phi = k*x*(delta_r_s/r_s) is small. The theoretical phase-error prediction (delta_phi > pi/2 at modes 5-7 for x=1.0) is correct in isolation but irrelevant because the signal amplitude at x=1.0 is already exponentially suppressed. SHMR scatter is NOT a blind spot of the E-183 null result. The upper limit alpha_zd < 0.00239 is actually STRENGTHENED by this test.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/shmr_scatter_injection.rs, data/results/e183/shmr_scatter_injection.csv
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1408
 //!
@@ -10157,7 +10157,7 @@
 //! - Last verified: 2026-03-17
 //! - Statement: Contrarian D2 (mass-quartile Fourier stacking): Q3 (log M200 = 11.54-12.07, r_s_median=15.4 kpc, N=1749) shows SNR=3.60 across all 7 modes -- formally above 3.0 detection threshold. However, Q3 has only 6 valid stacking bins (x=0.50-0.74) and Q4 (log M200 > 12.07, r_s_median=42.1 kpc) has ZERO valid bins. The Q3 Fourier spectrum is monotonically decreasing (mode 1 power=0.0253, mode 7=0.0188) -- a red-noise pattern consistent with a smooth baryonic residual (NFW cusp trough) sampled over a narrow x-window, NOT a peaked ZD structure at a specific wavenumber. The low RMS (0.044 vs full-sample 0.126) inflates SNR via the denominator. The quartile decomposition reveals that ~25% of MaNGA galaxies (Q4: log M200 > 12.07) contribute NOTHING to the stacking grid because their large r_s maps all observed radii to x < 0.5. The null result is driven by Q1-Q3 only. VERDICT: spurious detection from narrow x-coverage; requires injection recovery validation on Q3 alone.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/mass_quartile_fourier.rs, data/results/e183/mass_quartile_fourier.csv
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1409
 //!
@@ -10165,7 +10165,7 @@
 //! - Last verified: 2026-03-17
 //! - Statement: Signal injection-recovery sweep (E-197) is currently miscalibrated and cannot be used as a sensitivity validation. Across injected alpha_zd values 0, 0.001, 0.002, 0.004, 0.008, and 0.016, the detected SNR remains nearly constant at 0.429-0.430 and the recovered alpha_zd remains nearly constant at 0.294-0.296. The recovery ratio therefore scales as 1/alpha_zd instead of staying near unity. This is a pipeline calibration blocker, not evidence that the present MaNGA lane can recover alpha_zd = 0.004.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/harmonic_halo_injection.rs, data/results/e183/injection_recovery.csv
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1410
 //!
@@ -10173,7 +10173,7 @@
 //! - Last verified: 2026-03-17
 //! - Statement: Hypothesis C (red-noise spectral index) DETECTED: Galaxy-ensemble Rayleigh R follows a clean power law R(k) ~ k^{0.808} across all 7 CD-ZD modes, with predicted/observed ratios within [0.95, 1.09] for 7/7 modes. The implied PSD slope beta=-2*gamma=-1.62 is 73% consistent with the DC14 baryonic spectral slope beta=-2.21 from H3. The 27% discrepancy indicates the Rayleigh R scaling incorporates both the baryonic red-noise spectrum AND the galaxy-to-galaxy phase dispersion, which adds a k-dependent floor not captured by the colored-noise model alone. This power-law scaling is the quantitative fingerprint of baryonic systematics in the Rayleigh R diagnostic -- any genuine ZD signal would appear as a PEAK above this smooth baseline at a specific algebraic wavenumber.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/multifeature_shape_regression.rs, data/results/e183/multifeature_shape.csv
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1411
 //!
@@ -10181,7 +10181,7 @@
 //! - Last verified: 2026-03-17
 //! - Statement: Synthetic MaNGA pipeline validation: 11 conditions x 3 regimes x 20 seeds = 660 runs on N=6992 synthetic galaxies produce zero false positives (all SNR << 2.0, range 0.471-0.486 for algebraic conditions). The analysis pipeline used for E-183/E-184 real-data null results does not hallucinate signals on synthetic null data.
 //! - Where stated: experiments/manga_zd_null/main.py, experiments/manga_zd_null/results.json
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1412
 //!
@@ -10189,7 +10189,7 @@
 //! - Last verified: 2026-03-17
 //! - Statement: Injection recovery anti-correlation: injecting ZD-wavenumber signals at alpha=0.004, 0.01, and 0.05 into synthetic MaNGA galaxies produces NEGATIVE delta_snr (mean_diff vs baseline: +0.011, +0.009, -0.001 respectively). The exp(-x) injection envelope concentrates power at x~0.5 where baryonic systematics dominate (+5% bulge excess), causing destructive interference. Even alpha=5.0 (1250x SKA threshold) yields delta_snr=+0.17, below recovery threshold of 2.0.
 //! - Where stated: experiments/manga_zd_null/models.py (InjectionRecovery class), experiments/manga_zd_null/results.json
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1413
 //!
@@ -10197,7 +10197,7 @@
 //! - Last verified: 2026-03-17
 //! - Statement: Red-noise correction is neutral on synthetic null data: red_noise_corrected condition (data-driven gamma fit) produces detection_snr identical to CD_ZD_D16 baseline (mean_diff=0.0000, std_diff=0.0000) across all 3 regimes and 20 seeds. This confirms the correction only has effect when real astrophysical red-noise structure is present (as in E-183 real MaNGA data).
 //! - Where stated: experiments/manga_zd_null/models.py (RedNoiseCorrectedSearch class)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1414
 //!
@@ -10205,7 +10205,7 @@
 //! - Last verified: 2026-03-17
 //! - Statement: Three implementation bugs discovered and fixed in E-192 synthetic validation: (1) injection_recovery reported snr_mean instead of snr_max (E-183 convention mismatch), (2) red_noise_corrected used hardcoded gamma=0.808 instead of data-driven fit, (3) MultiAlgebraCorrected applied internal face_on filter bypassing regime parameter. All fixes verified via smoke tests.
 //! - Where stated: experiments/manga_zd_null/models.py
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1415
 //!
@@ -10213,7 +10213,7 @@
 //! - Last verified: 2026-03-17
 //! - Statement: Robustness convergence: three successive REFINE iterations of the MaNGA ZD synthetic validation (E-192) produce identical primary metric values. The sl2_partner/mass_Q3 condition converges to detection_snr_mean = 0.4704 +/- 0.0070 across 20 seeds. Full_sample Fourier conditions cluster at 0.4675-0.4825 across all 3 iterations. This convergence is not a pipeline bug: it is the analytic fixed point of a deterministic analysis on synthetic null data with fixed baryonic systematics (+5% bulge, -12% cusp, +5% IFU edge). Further REFINE iterations on the same pipeline and data cannot change this value.
 //! - Where stated: experiments/manga_zd_null/results.json, experiments/manga_zd_null/main.py
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1416
 //!
@@ -10221,7 +10221,7 @@
 //! - Last verified: 2026-03-17
 //! - Statement: Ablation separation: the no_harmonics_ablation condition (peak-to-RMS metric without Fourier decomposition) produces detection_snr = 2.270 +/- 0.040 (full_sample), 2.333 +/- 0.054 (face_on), 2.395 +/- 0.084 (mass_Q3). This is 4.7x higher than the CD_ZD_D16 Fourier SNR of 0.480 +/- 0.003. The separation confirms that Fourier projection at algebraic wavenumbers reduces the effective noise floor relative to broadband peak detection, and validates the no_harmonics condition as a functioning positive control.
 //! - Where stated: experiments/manga_zd_null/results.json
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1417
 //!
@@ -10229,7 +10229,7 @@
 //! - Last verified: 2026-03-17
 //! - Statement: Cross-regime stability: all 11 conditions produce consistent detection_snr across the 3 distribution-shift regimes (full_sample, face_on, mass_Q3). For Fourier-based algebraic conditions (CD_ZD_D16, G2_Aut_O, Albert_J3O, sl2_partner), the maximum regime-to-regime spread is 0.012 (Albert_J3O: 0.479-0.483). For the no_harmonics_ablation, the spread is 0.125 (2.270-2.395), proportionally consistent at 5.5%. The null result is robust to sample composition including face-on selection and mass quartile restriction.
 //! - Where stated: experiments/manga_zd_null/results.json
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1418
 //!
@@ -10237,7 +10237,7 @@
 //! - Last verified: 2026-03-17
 //! - Statement: Random wavenumber control: 7 wavenumbers drawn uniformly from [0.5, 7.0] with seed=314159 produce detection_snr = 0.482 +/- 0.003 (full_sample), statistically indistinguishable from the algebraically-motivated CD_ZD_D16 wavenumbers (0.480 +/- 0.003). Paired difference: +0.0018 +/- 0.0001. No particular set of wavenumbers in this frequency range has privileged access to the residual structure at x = 0.5-1.35 r/r_s. The null result is wavenumber-independent.
 //! - Where stated: experiments/manga_zd_null/results.json
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1419
 //!
@@ -10245,7 +10245,7 @@
 //! - Last verified: 2026-03-18
 //! - Statement: H3 topological persistence FALSIFIED: sublevel set persistence of the D=16 stacked residual (16 valid bins, x=0.5-1.22 r/r_s) yields N_persistent = 1 feature above epsilon = 0.1 * max|delta|. The ZD prediction of N >= 5 persistent features (from 7-mode oscillation) is rejected. The single surviving feature corresponds to the NFW cusp trough (birth=-0.102, death=+0.097, lifetime=0.199). Mass-bin stability test across 19 sweep profiles shows mean=4.16, std=1.56, with extended-coverage profiles (full/family) clustering at N=5 and restricted profiles at N=1-2 -- resolution-driven, not physics-driven.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/persistence_residual_topology.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1420
 //!
@@ -10253,7 +10253,7 @@
 //! - Last verified: 2026-03-18
 //! - Statement: H1 bispectral Fano selection rule FALSIFIED: bicoherence b^2 = 1.0 for ALL 28 mode-pair triads (7 Fano + 21 non-Fano), giving Fano/non-Fano ratio = 1.0000. The ratio falls firmly in [0.7, 1.3], rejecting the selection-rule hypothesis. The trivial b^2 = 1.0 arises because a single stacked realization has no ensemble averaging to reduce bicoherence from unity. Only 2 of 28 triads have sum wavenumbers matching CD modes (1+5=6, 2+3=5). Ensemble bicoherence from 6995 per-galaxy aggregates = 0.987, far above the noise expectation of 0.012, confirming strong baryonic phase coherence.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/bispectral_selection_rule.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1421
 //!
@@ -10261,7 +10261,7 @@
 //! - Last verified: 2026-03-18
 //! - Statement: H2 variance quantization FALSIFIED as ZD-specific: Hartigan dip test detects extreme multimodality in per-galaxy Fourier power distributions for ALL four algebras (D=0.46, p=0.0002, 5000 permutations). However, multimodality is algebra-universal: CD-ZD D=0.4627, G2 D=0.4630, J3O D=0.4637, sl2 D=0.4621. CV ratio (CD/others) = 0.9912, firmly below the 1.5x threshold. Excess kurtosis is extreme and algebra-universal: CD-ZD=283.7, G2=288.1, J3O=294.7, sl2=280.4. The multimodality is driven by the galaxy population mass distribution, not ZD forcing.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/variance_quantization_test.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1422
 //!
@@ -10269,7 +10269,7 @@
 //! - Last verified: 2026-03-18
 //! - Statement: H4 cross-algebra mutual information FALSIFIED as ZD-selective: KSG MI estimator (k=5 neighbors, unit-circle phase embedding) shows strong algebra-universal dependence across all 6 cross-algebra pairs. MI ranges from 2.82 nats (J3O vs sl2) to 4.45 nats (CD-ZD vs G2), with Pearson correlations r=0.85-0.96 confirming overwhelmingly linear coupling. No selective cross-algebraic pattern detected: all pairs show similar MI magnitude. NMI normalization fails due to negative differential entropy on compact circular domain (artifact, not physical). The quasi-degeneracy (rho > 0.97 from E-184) extends to the full non-linear dependence structure.
 //! - Where stated: src/ghost_stats/mutual_information_phase.py
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1423
 //!
@@ -10277,7 +10277,7 @@
 //! - Last verified: 2026-03-18
 //! - Statement: P1 whitened matched filter: variance-weighted DFT at 7 CD-ZD wavenumbers yields total chi^2 = 304,300 (df=14, p=0). After red-noise correction (gamma=0.78, consistent with k^0.81 from C-1368), corrected total = 7.26 (expected ~7.0), p=0.40. The baryonic spectral floor has a coherent red-noise structure that fully accounts for all harmonic content in the whitened spectrum. The naive SNR metric (0.29) is confirmed as a valid measure: the whitened MF-SNR of 147.4 is entirely an artifact of the unmodeled red-noise slope. Pre-whitening without red-noise correction gives a 500x false sensitivity improvement that is completely spurious.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/whitened_matched_filter.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1424
 //!
@@ -10285,7 +10285,7 @@
 //! - Last verified: 2026-03-18
 //! - Statement: P2 GP model comparison: Matern-only kernel (Model A, LML=-20.48) outperforms Matern+Periodic kernel (Model B, LML=-20.54, Delta=-0.064, Bayes factor=0.94). Adding a periodic component at CD-ZD frequency makes the fit WORSE due to complexity penalty. The optimized periodicity drifted to 4.77 (predicted 7.0), confirming no period-7 structure exists. A smooth baryonic model with Matern length_scale=0.056 (comparable to bin spacing 0.048) captures all structure in the 16-bin stacked residual.
 //! - Where stated: src/ghost_stats/gp_model_comparison.py
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1425
 //!
@@ -10293,7 +10293,7 @@
 //! - Last verified: 2026-03-18
 //! - Statement: P3 power-stratified phase coherence: top-quintile Rayleigh R = 0.85 (CD-ZD), 0.86 (G2), 0.84 (J3O), 0.84 (sl2) -- all highly significant. However, this is a SELECTION ARTIFACT from conditioning on power when the population mean is nonzero. R increases monotonically from Q1 (0.16-0.26) to Q5 (0.84-0.86) for ALL algebras identically. The proof: if ZD forcing were enriched in high-power galaxies, CD-ZD top-quintile R would exceed the other algebras' R. It does not (0.85 vs 0.86, 0.84, 0.84 -- algebra-universal). The phase coherence is driven by shared baryonic structure, not ZD physics. Expected R under isotropic null = 0.027; the excess is the known nonzero stacked residual projecting onto high-power galaxy phases.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/power_stratified_phase.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1426
 //!
@@ -10301,7 +10301,7 @@
 //! - Last verified: 2026-03-18
 //! - Statement: D3 window function sensitivity: contrarian hypothesis that the 0.72 r/r_s data window makes long-wavelength modes undetectable was REFUTED. Targeted DFT on the actual data grid shows >100% recovery at ALL 7 modes: mode 1 at 185%, mode 2 at 151%, modes 3-7 at 102-119%. The overrecovery at modes 1-2 is spectral leakage from the non-periodic window boundary, which artificially amplifies low-frequency power. Effective DOF = 14.0 (no reduction). The null result is NOT invalidated by the data window. However, the 185% overrecovery at mode 1 means smooth baryonic gradients (cusp-to-bulge transition) leak into low-k Fourier coefficients, partially explaining the red-noise spectral structure.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/window_function_sensitivity.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1427
 //!
@@ -10309,7 +10309,7 @@
 //! - Last verified: 2026-03-18
 //! - Statement: D4 trimmed stacking robustness: the stacked DFT coefficient is CATASTROPHICALLY outlier-dominated. At 5% trimming (removing 350 highest-power + 350 lowest-power galaxies), stacked power drops to 33% of full (67% of signal from 10% of galaxies). At 10% trimming, power drops to 8-12% of full. At 20% trimming (middle 60% of population), power drops to 16-20% AND the phase reverses by ~2.7 radians (nearly pi). Median DFT power is 0.12-0.15% of the full mean. This pattern is ALGEBRA-UNIVERSAL: CD-ZD 20%-trimmed/full = 0.189, G2 = 0.181, J3O = 0.161, sl2 = 0.204. The null result (SNR=0.29) is a property of ~350 outlier galaxies' baryonic structure, not a statement about the galaxy population. The ZD bound alpha_zd < 0.002392 applies to the outlier-dominated mean, not to typical MaNGA galaxies.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/trimmed_stacking_robustness.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1428
 //!
@@ -10317,7 +10317,7 @@
 //! - Last verified: 2026-03-18
 //! - Statement: S1 robust-estimator ZD bound: the mean-based alpha_zd estimate (2.32) diverges by 8.6x from the median-based estimate (0.27). At 5% trimming, alpha_zd drops to 0.78 (34% of mean); at 10% trimming, to 0.18 (8%). The median DFT power is 0.12% of the mean DFT power. This confirms D4's outlier domination extends to the derived ZD parameter estimates: the ~350 highest-power galaxies drive 88% of the estimated alpha_zd. The paper's sensitivity bound (alpha_zd < 0.002392) is a property of the mean estimator; a median-based analysis would yield a different bound.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/synthesis_audit.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1429
 //!
@@ -10325,7 +10325,7 @@
 //! - Last verified: 2026-03-18
 //! - Statement: S2 spectral leakage decomposition RESOLVES the P1/D3 disagreement. 10,000 white-noise simulations on the 16-bin data grid show leakage power ~16 per mode vs observed whitened power 170,000-580,000. Leakage fraction < 0.01% at all modes. The red-noise spectral structure is ENTIRELY intrinsic to the whitened baryonic floor, not a window artifact. D3's 185% overrecovery applies to SIGNAL reconstruction (how much of an injected sinusoid is recovered), not noise leakage (how much noise appears at a frequency). P1 is correct that the spectral shape is real baryonic structure. D3 is correct that signal reconstruction is biased by the window. Both findings are compatible.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/synthesis_audit.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1430
 //!
@@ -10333,7 +10333,7 @@
 //! - Last verified: 2026-03-18
 //! - Statement: E-201 H1 face-on red-noise Rayleigh: N=3140 face-on galaxies (i<45 deg), all 7 CD-ZD modes within 1.58 sigma of k^{0.808} red-noise envelope. No detection. Bootstrap (200x) alpha_zd median=0.357, 95% CI=[0.123, 0.647]. Detection fraction (max_sigma>3.0) = 0%. The face-on subsample confirms the full-sample null with no inclination artifact contamination.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/face_on_red_noise_rayleigh.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1431
 //!
@@ -10341,7 +10341,7 @@
 //! - Last verified: 2026-03-18
 //! - Statement: E-201 H1 free-gamma ablation: face-on galaxies have gamma=-0.011 (essentially flat power spectrum), vs full-sample gamma=0.808. The red-noise spectral slope is predominantly an INCLINATION ARTIFACT: high-inclination galaxies create the k^{-0.78} structure via projection effects. Face-on galaxies have intrinsically flat spectral floors. This invalidates the gamma=0.808 prior for face-on analysis.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/face_on_red_noise_rayleigh.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1432
 //!
@@ -10349,7 +10349,7 @@
 //! - Last verified: 2026-03-18
 //! - Statement: E-202 H2 Q3 injection recovery: Q3 (log M200=11.54-12.07, N=1748, 6 valid bins) injection at alpha_zd=0.004 produces delta_SNR=-0.005, indistinguishable from zero. Pipeline is BLIND at 6 bins. Q3 baseline SNR=3.60 is confirmed as a sparse-bin ARTIFACT. Q1 control (18 bins) also shows delta_SNR near zero (-0.001), indicating the injection methodology itself does not produce measurable delta_SNR at these alpha levels in the existing pipeline.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/q3_injection_recovery.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1433
 //!
@@ -10357,7 +10357,7 @@
 //! - Last verified: 2026-03-18
 //! - Statement: E-201 whitened matched filter (face-on): raw chi2=475655 (df=14), whitened MF-SNR=184.3. After red-noise correction (P(k)~k^{-0.576}), corrected chi2/df=1.01, p_corrected=0.42. The massive raw chi2 is entirely explained by the baryonic spectral slope. No periodic structure at CD-ZD wavenumbers survives red-noise correction. Sensitivity ratio whitened/naive = 266x.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/whitened_matched_filter.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1434
 //!
@@ -10365,7 +10365,7 @@
 //! - Last verified: 2026-03-18
 //! - Statement: E-201 window function sensitivity (face-on): all 7 CD-ZD modes are DETECTABLE (>50% DFT recovery) in the face-on subsample. Recovery ranges from 188.6% (mode 1, spectral leakage) to 100.2% (mode 5). Effective DOF = 14 (no reduction from window). The face-on null result is not caused by inadequate spectral coverage.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/window_function_sensitivity.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1435
 //!
@@ -10373,7 +10373,7 @@
 //! - Last verified: 2026-03-18
 //! - Statement: Trimmed stacking robustness (full sample reconfirmed): CD-ZD 10%-trimmed power = 7.9% of full, median = 11.6% of full. Phase reverses from +0.17 to -1.39 rad at 10% trimming. All 4 algebras show identical pattern: 20%-trimmed/full ratios are 0.189 (CD), 0.181 (G2), 0.161 (J3O), 0.204 (sl2). Outlier domination is algebra-universal and extends to all frameworks identically.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/trimmed_stacking_robustness.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1436
 //!
@@ -10381,7 +10381,7 @@
 //! - Last verified: 2026-03-18
 //! - Statement: Bispectral Fano selection rule: bicoherence = 1.0000 for ALL 28 triples (2 Fano, 26 non-Fano). Fano/non-Fano ratio = 1.0000. This is trivially expected for a single realization (bicoherence = 1 when B=F_i*F_j*conj(F_sum) computed from the same signal). FALSIFICATION: no three-wave selection rule detected.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/bispectral_selection_rule.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1437
 //!
@@ -10389,7 +10389,7 @@
 //! - Last verified: 2026-03-18
 //! - Statement: Persistence topology: N_persistent=1 (one persistent H_0 feature, lifetime 0.199). All other features have lifetime < 0.008 (epsilon = 0.015). Consistent with 2-3 baryonic features (bulge excess + cusp deficit). FALSIFICATION: ZD 7-mode oscillation would produce ~7 persistent features.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/persistence_residual_topology.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1438
 //!
@@ -10397,7 +10397,7 @@
 //! - Last verified: 2026-03-18
 //! - Statement: Variance quantization (Hartigan dip): all 4 algebras show D~0.46, p=0.0002 (significant multimodality). Kurtosis: CD-ZD=283.7, G2=288.1, J3O=294.7, sl2=280.4. CV ratio CD/others=0.991. The extreme kurtosis and multimodality are ALGEBRA-UNIVERSAL (baryonic population bimodality from spirals vs dwarfs), not CD-ZD specific.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/variance_quantization_test.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1439
 //!
@@ -10405,7 +10405,7 @@
 //! - Last verified: 2026-03-18
 //! - Statement: Cross-algebra mutual information: all 6 pairwise NMI=0.000 (KSG estimator, k=5). Raw MI ranges 2.8-4.4 nats. Linear correlation (Pearson r) ranges 0.848-0.958. Despite high linear correlation (algebra degeneracy), there is zero non-linear coupling between framework DFT phases. FALSIFICATION: no hidden dependencies beyond linear correlation.
 //! - Where stated: src/ghost_stats/mutual_information_phase.py
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1440
 //!
@@ -10413,7 +10413,7 @@
 //! - Last verified: 2026-03-19
 //! - Statement: In Cayley-Dickson algebras of dimension D >= 16, the associator flux ||[A, B, e_c]|| around a normalized zero divisor pair (A, B) across all imaginary basis elements e_c is strictly quantized into three discrete levels: 0, 1, and sqrt(2).
 //! - Where stated: crates/algebra_experimental/src/topological_associator_flux.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1441
 //!
@@ -10421,7 +10421,7 @@
 //! - Last verified: 2026-03-19
 //! - Statement: For any Cayley-Dickson algebra of dimension D >= 16, the multiplicity of the sqrt(2) state in the associator flux spectrum is exactly D/8, corresponding to the number of embedded octonionic subalgebras.
 //! - Where stated: crates/algebra_experimental/src/topological_associator_flux.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1442
 //!
@@ -10429,7 +10429,7 @@
 //! - Last verified: 2026-03-19
 //! - Statement: For any Cayley-Dickson algebra of dimension D >= 16, the multiplicity of the 1 state in the associator flux spectrum is exactly D/2.
 //! - Where stated: crates/algebra_experimental/src/topological_associator_flux.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1443
 //!
@@ -10437,7 +10437,7 @@
 //! - Last verified: 2026-03-19
 //! - Statement: For any Cayley-Dickson algebra of dimension D >= 16, the multiplicity of the 0 state in the associator flux spectrum is exactly D/2 - D/8 - 1.
 //! - Where stated: crates/algebra_experimental/src/topological_associator_flux.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1444
 //!
@@ -10445,7 +10445,7 @@
 //! - Last verified: 2026-03-19
 //! - Statement: The exact solution to S'(phi) = 0 via Newton-Raphson proves that the negative running of the effective weak mixing angle (phi < 3/8) is explicitly governed by the continuous thermal degradation of exact topological associator flux friction, seamlessly bridging discrete high-dimensional geometry with continuous thermodynamic flow.
 //! - Where stated: crates/quantum_core/examples/analytical_renormalization_flow.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1445
 //!
@@ -10453,7 +10453,7 @@
 //! - Last verified: 2026-03-19
 //! - Statement: The Pathion Cubic Anomaly is mathematically formalized by the exact pure-Rust tight-binding evaluation of the zero-divisor incidence graph, proving that the Flat Band Fraction (FBF) jumps from 1/2 in Sedenions to exactly 4/7 in Pathions, refuting the prior hypothesis that FBF=1/2 is a CD doubling invariant.
 //! - Where stated: crates/algebra_experimental/src/zd_flat_band_fraction.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1446
 //!
@@ -10461,7 +10461,7 @@
 //! - Last verified: 2026-03-19
 //! - Statement: Dark matter halo velocity modulations via ZD Harmonic Forcing scale according to the discrete topological graph spectrum of the manifold; incorporating the exact Flat Band Fraction as the coupling strength explicitly shifts the harmonic density and amplitude between 16D (FBF=1/2) and 32D (FBF=4/7) manifolds.
 //! - Where stated: crates/quantum_core/examples/manifold_zd_harmonic_forcing.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1447
 //!
@@ -10469,7 +10469,7 @@
 //! - Last verified: 2026-03-19
 //! - Statement: The Flat Band Fraction (FBF) of the Cayley-Dickson zero-divisor tight-binding graph is not a dimensionally-stable invariant; via exact bitwise XOR mapping and O(1) algebraic signs, the FBF is computationally proven to increase monotonically from 0.5000 (16D) to 0.5714 (32D) and 0.6107 (64D), strictly demonstrating that higher-dimensional manifolds progressively lock down wave propagation due to increasing structural incidence density.
 //! - Where stated: crates/algebra_experimental/src/zd_flat_band_fraction.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1448
 //!
@@ -10477,7 +10477,7 @@
 //! - Last verified: 2026-03-19
 //! - Statement: An exact algebraic continuous map of the CHSH associative torque observable across all orthogonal Alice and Bob SO(2) measurement planes bounds the maximum S-value unconditionally to S = 2.0000 across the CD tower up to 64D (Chingons). This proves that Cayley-Dickson algebraic structure does not produce quantum nonlocality (violating the Tsirelson bound), structurally validating Theorem 13.1 natively in pure Rust.
 //! - Where stated: crates/algebra_experimental/src/exact_chsh_bound.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1449
 //!
@@ -10485,7 +10485,7 @@
 //! - Last verified: 2026-03-19
 //! - Statement: The Algebraic York Time Correction to ADM warp metrics is strictly governed by the thermodynamic renormalization flow of the Cayley-Dickson topological manifold. High-dimensional configurations (e.g., 1,048,576D) exhibit extreme structural stiffness, protecting warp bubbles from thermal algebraic disruption up to temperatures T >= 1000, while low-dimensional (16D-64D) manifolds melt immediately, aggressively suppressing the necessary warp contraction.
 //! - Where stated: crates/quantum_core/examples/manifold_adm_warp_bridge.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1450
 //!
@@ -10493,7 +10493,7 @@
 //! - Last verified: 2026-03-19
 //! - Statement: The Calcagni running spectral dimension parameter s of Quantum Gravity is strictly bounded and uniquely determined by the Cayley-Dickson topological fractional dimension. As the algebraic dimension increases from 16D to 64D, the discrete geometry compacts from D_f = 2.7268 to 2.2154, structurally forcing the continuous effective scale parameter s to plummet monotonically from 0.5708 to 0.1206, proving the UV-limit (s -> 0) is driven by hyper-dimensional topological friction.
 //! - Where stated: crates/quantum_core/examples/manifold_spectral_dimension_sweep.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1451
 //!
@@ -10501,7 +10501,7 @@
 //! - Last verified: 2026-03-19
 //! - Statement: The F4 Casimir Eigenvalue ratio epsilon = C2(26)/|Delta+(F4)| equals exactly 1/4 when evaluated under the pure geometric root system normalization of physics (where long roots have squared length 1). This computationally resolves Theorem 12.6 natively in Rust.
 //! - Where stated: crates/algebra_experimental/src/f4_casimir.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1452
 //!
@@ -10509,7 +10509,7 @@
 //! - Last verified: 2026-03-19
 //! - Statement: The Zero-Divisor (ZD) adjacency graph, when instantiated as a tight-binding magnonic crystal, exhibits non-trivial Valley Chern Numbers (VCNs) that are exactly anti-symmetric under Time-Reversal Symmetry (VCN(K) = -VCN(K')), proving that the discrete algebraic topology of the Cayley-Dickson algebras directly sources a continuous topological Berry curvature in reciprocal space.
 //! - Where stated: crates/quantum_core/examples/manifold_magnonic_valley_chern.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1453
 //!
@@ -10517,7 +10517,7 @@
 //! - Last verified: 2026-03-19
 //! - Statement: The three canonical octonionic subalgebras of the Sedenions are computationally verified to be alternative but non-associative, and they all possess the exact same total associator norm (336.0), demonstrating the S3 permutation symmetry that is hypothesized to correspond to the three fermion generations.
 //! - Where stated: crates/algebra_experimental/src/three_fermion_generations.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1454
 //!
@@ -10525,7 +10525,7 @@
 //! - Last verified: 2026-03-20
 //! - Statement: All 168 sedenion 2-blade zero-divisor pairs (84 unique index tuples x 2 sign variants from find_zero_divisors(16, 1e-9)) produce ab=0 when embedded at ANY 16-element offset in C_32 (2 slots) and C_64 (4 slots), despite the shifted coordinate blocks NOT being subalgebras under Cayley-Dickson multiplication. Specifically, e_{16+r} * e_{16+s} has output index (16+r) XOR (16+s) = r XOR s, which falls OUTSIDE the shifted block {16..31} (Proposition 2: sigma_n is not an algebra homomorphism). The zero-product property is preserved at all offsets likely due to XOR sign-table symmetries that make the cancellation pattern offset-invariant for 2-blade sparse forms. Each of the 4 slots in C_64 produces exactly 168 verified ZD pairs (168 * 4 = 672 total).
 //! - Where stated: crates/algebra_analysis/src/avt.rs::zd_embedding_per_slot_audit
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1455
 //!
@@ -10533,7 +10533,7 @@
 //! - Last verified: 2026-03-21
 //! - Statement: Difference-normalized lepton mass fit yields weights w1=-0.6569, w2=-0.7420 with w_sym=(w1+w2)/2=-0.6994, within 0.8% of -1/sqrt(2)=-0.7071. The 6.1% asymmetry |w_asym/w_sym| suggests a near-symmetric fundamental coupling linked to the pi/4 braid angle. Mass ratios 1:207:3477 are reproduced to machine precision (relative error ~5e-16).
 //! - Where stated: crates/algebra_experimental/src/lepton_mass_hierarchy.rs::test_composite_operator_scan_for_lepton_ratio
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1456
 //!
@@ -10541,7 +10541,7 @@
 //! - Last verified: 2026-03-21
 //! - Statement: Exhaustive CKM selector pair scan over 420 (up,down) combinations of S3-breaking braid pairs finds optimal assignment up=(e_11,e_12), down=(e_10,e_11). The permutation-aligned CKM matrix elements are |V_us|=0.245 (PDG 0.225, 8.9% error), |V_ub|=0.00382 (PDG 0.00373, 2.4% error), |V_cb|=0.044 (PDG 0.042, 5.0% error). All three mixing angles within 10% of PDG global fit.
 //! - Where stated: crates/algebra_experimental/src/quark_sector.rs::test_ckm_selector_pair_scan
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1457
 //!
@@ -10549,7 +10549,7 @@
 //! - Last verified: 2026-03-21
 //! - Statement: PMNS neutrino mixing matrix from selector pair scan: charged lepton pair (e_11,e_12) and neutrino pair (e_7,e_8) gives theta_13=8.64 deg (PDG 8.54, 1.2% error), theta_12=29.2 deg (PDG 33.4, 13% error), theta_23=32.3 deg (PDG 49.0, 34% error). The PMNS/CKM theta_13 ratio is 39.3 (observed 39.9, within 1.6%).
 //! - Where stated: crates/algebra_experimental/src/neutrino_sector.rs::test_pmns_selector_pair_scan
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1458
 //!
@@ -10557,7 +10557,7 @@
 //! - Last verified: 2026-03-21
 //! - Statement: Electroweak mixing angle from associator flux ratio: SU(2) total flux / SU(3) total flux = 0.529 across three generations gives sin^2(theta_W)=0.199 (PDG 0.231, 14% error). SU(2) flux is generation-independent (8.49 per generation) while SU(3) flux varies (19.80, 11.31, 16.97), reflecting the structural asymmetry between weak and color sectors.
 //! - Where stated: crates/algebra_experimental/src/neutrino_sector.rs::test_electroweak_mixing_angle_from_associator_flux
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1459
 //!
@@ -10565,7 +10565,7 @@
 //! - Last verified: 2026-03-21
 //! - Statement: 3-blade zero-divisor friction scan: 231 of 455 triples of sedenion basis elements produce 1+1+1 friction splits across the three octonionic subalgebras. The best ratio f_heavy/f_mid = 3/2 exactly (target ln(3477)/ln(207) = 1.529, error 1.9%). All nonzero friction values are integer multiples of 2*sqrt(2), confirming strict algebraic quantization from the sign table.
 //! - Where stated: crates/algebra_experimental/src/lepton_mass_hierarchy.rs::test_3_blade_zero_divisor_friction
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1460
 //!
@@ -10573,7 +10573,7 @@
 //! - Last verified: 2026-03-21
 //! - Statement: Gresnigt Cl(8) correspondence: the three octonionic subalgebras O_1, O_2, O_3 of the sedenions are related by the cyclic map sigma(k)=k+1 on generation-specific indices {1,5,9,13}->{2,6,10,14}->{3,7,11,15}. This S3 structure matches Gresnigt's (arXiv:2601.07857) family symmetry from Cl(8) minimal left ideals. Signed friction S3 orbit: 21 full splits, 36 degenerate, 48 partial (total 105).
 //! - Where stated: crates/algebra_experimental/src/three_fermion_generations.rs::test_gresnigt_cl8_correspondence
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1461
 //!
@@ -10581,7 +10581,7 @@
 //! - Last verified: 2026-03-21
 //! - Statement: Koebisu V_2(R^8) holonomy: all 84 standard sedenion zero-divisors satisfy the octonion-pair decomposition s=(a,b) with |a|=|b| and <a,b>=0 (a=s[0..8], b=s[8..16]). This confirms the normalized ZD set is diffeomorphic to the Stiefel manifold V_2(R^8), extending Reggiani's V_2(R^7) result by including real octonion components.
 //! - Where stated: crates/algebra_analysis/src/reggiani.rs::test_koebisu_holonomy_v2r8_decomposition
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1462
 //!
@@ -10589,7 +10589,7 @@
 //! - Last verified: 2026-03-21
 //! - Statement: The charged lepton CKM-optimal selector (e_11,e_12) is identical to the CKM up-type selector, confirming the SU(5) prediction that charged leptons partner with up-type quarks. The neutrino selector (e_7,e_8) belongs to the lower CD-doubling block, while quark selectors occupy the upper block -- a structural prediction of the sedenion algebra.
 //! - Where stated: crates/algebra_experimental/src/neutrino_sector.rs::test_pmns_selector_pair_scan
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1463
 //!
@@ -10597,7 +10597,7 @@
 //! - Last verified: 2026-03-21
 //! - Statement: Associator trilinearity formally verified from dim=16 (Sedenion) through dim=65536 (2^16) via tower proof architecture. Each CD level uses ONLY the previous level's lemmas. Ring arithmetic appears only at the sedenion floor (16 R variables). Total compile time under 6 seconds for 13 levels of CD doubling.
 //! - Where stated: proofs/verified/C1455_AssociatorTrilinear.v, C1470_PathionTrilinearity.v, C1471_HigherCDTrilinearity.v
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1464
 //!
@@ -10605,7 +10605,7 @@
 //! - Last verified: 2026-03-21
 //! - Statement: PMNS neutrino mixing angle theta_23 = 47.1 deg (PDG 49.0, 3.9% error) achieved via psi-automorphism off-diagonal coupling with two independent parameters alpha_ch=3.75, alpha_nu=1.30. The psi overlap/norm ratio of -0.5 = cos(2*pi/3) confirms the S3 120-degree rotation directly drives atmospheric mixing. Previous diagonal-only approach was limited to 32.3 deg.
 //! - Where stated: crates/algebra_experimental/src/neutrino_sector.rs::test_pmns_offdiag_two_param
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1465
 //!
@@ -10613,7 +10613,7 @@
 //! - Last verified: 2026-03-21
 //! - Statement: XOR sign cocycle properties exhaustively verified at dim=16: identity (sigma(i,0)=1), squares (sigma(i,i)=-1), anti-commutativity (sigma(i,j)=-sigma(j,i)), and associator defect count (1527/3375 ordered triples). Refined to 147 unordered sigma-associative triads = 35 strict + 112 sign-associative ghost triads.
 //! - Where stated: proofs/verified/C1467_XORSignCocycle.v
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1466
 //!
@@ -10621,7 +10621,7 @@
 //! - Last verified: 2026-03-21
 //! - Statement: Gourlay/Gresnigt psi automorphism verified on sedenion vectors: psi^3=Id on all 16 basis elements, epsilon^2=Id, epsilon*psi=psi^2*epsilon (S3 relation), and psi preserves zero-divisor pairs. Within the Gresnigt/Gourlay S3 framework (Aut(S)=G2xS3, not universally settled).
 //! - Where stated: crates/cd_kernel/src/cayley_dickson/tests.rs::test_gourlay_psi_order_3
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1467
 //!
@@ -10629,7 +10629,7 @@
 //! - Last verified: 2026-03-21
 //! - Statement: Wilmot (2505.06011) Fano 3-form verification: octonion (dim=8) basis has exactly 7 associative triples and 28 non-associative triples. The 7 associative triples correspond to the Fano plane lines, each generating a quaternion subalgebra, and cover all 21 edges of the 6-simplex.
 //! - Where stated: crates/algebra_experimental/src/sedenion_subalgebras.rs::test_wilmot_fano_3form_octonion_triad_count
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1468
 //!
@@ -10637,7 +10637,7 @@
 //! - Last verified: 2026-03-21
 //! - Statement: Wilmot (2505.06011) 14-simplex: the sedenion cross product 3-form has 35 terms covering all C(15,2)=105 edges. Standard sedenions have exactly 252 non-associative triples. 30 primary 3-forms = 7!/|PSL(2,7)| = 5040/168.
 //! - Where stated: crates/algebra_experimental/src/sedenion_subalgebras.rs::test_wilmot_sedenion_14simplex_non_assoc_counts
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1469
 //!
@@ -10645,7 +10645,7 @@
 //! - Last verified: 2026-03-21
 //! - Statement: Wilmot (2512.07210) Algebra Stacking: H_n = (2^n-1)(2^n-2)/6 quaternion subalgebras. H_3=7, H_4=35, H_5=155. T_n = (2^n-1)(2^n-2)(2^n-4)/168 octonion-like subalgebras. T_4=15. Each pair shares 2^(n-2)-1 quaternions (3 for sedenions).
 //! - Where stated: crates/algebra_experimental/src/sedenion_subalgebras.rs::test_wilmot_algebra_stacking_quaternion_count
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1470
 //!
@@ -10653,7 +10653,7 @@
 //! - Last verified: 2026-03-21
 //! - Statement: Wilmot (2512.07210) 252 = 8*28 + 7*4: sedenion non-associative triples decompose as 8 genuine octonion subalgebras (28 Type X each) plus 7 P_4 pseudo-octonion subalgebras (4 Type X each). Only P_4, P_12, P_14 occur as CD subalgebras.
 //! - Where stated: crates/algebra_experimental/src/sedenion_subalgebras.rs::test_wilmot_252_decomposition_8o_plus_7p4
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1471
 //!
@@ -10661,7 +10661,7 @@
 //! - Last verified: 2026-03-21
 //! - Statement: Wilmot (2512.07210) Aut(S) = G_2 (Schafer confirmed). Brown's sigma' transformation changes e_{1234567} of Phi_O, invalidating it as automorphism. Only Phi_O^{C(1)} (cyclic sign variations) provides connected G_2 automorphisms in 15 dimensions. 105 primary invariants x 4 sign variations = 420 total.
 //! - Where stated: crates/algebra_experimental/src/sedenion_subalgebras.rs::test_wilmot_aut_s_equals_g2
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1472
 //!
@@ -10669,7 +10669,7 @@
 //! - Last verified: 2026-03-21
 //! - Statement: Wilmot (2512.07210) Fano Volume: 35 quaternions in 15 Fano planes, each quaternion shared by exactly 3 planes, each plane has 7 quaternions. Double counting: 35*3 = 15*7 = 105. Tesseract (Z_2^4) projection visualizes all 15 planes.
 //! - Where stated: crates/algebra_experimental/src/sedenion_subalgebras.rs::test_wilmot_fano_volume_structure
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1473
 //!
@@ -10677,7 +10677,7 @@
 //! - Last verified: 2026-03-21
 //! - Statement: Dou et al. (2512.00600) ZD kernel: ker(e_1-e_10) = span_R(e_4+e_15, e_5-e_14, e_6+e_13, e_7-e_12), verified by direct CD multiplication. Koebisu D_2(e_1-e_10) = 0 cross-check. The 4-dim kernel creates the second convergence radius in sedenionic star-power series.
 //! - Where stated: crates/algebra_experimental/src/sedenion_subalgebras.rs::test_dou_zd_kernel_structure
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1474
 //!
@@ -10685,7 +10685,7 @@
 //! - Last verified: 2026-03-21
 //! - Statement: V_6 Jacobian solar selectivity: the 6D orthogonal complement of B/C column space in X incidence matrix (rank=6, all SV=3.420) has epsilon-stable finite-difference gradients (angular deviation <0.1 deg across eps=0.01/0.05/0.1). Gradients g_12, g_13, g_23 are nearly collinear in V_6, so no unit direction achieves positive solar selectivity S(u) = |g_12.u| - 10|g_13.u| - 3|g_23.u| under the default (12/12/6) assessor partition.
 //! - Where stated: crates/algebra_experimental/src/neutrino_sector.rs::test_v6_jacobian_solar_selectivity
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1475
 //!
@@ -10693,7 +10693,7 @@
 //! - Last verified: 2026-03-21
 //! - Statement: V_6 solar correction pipeline: compositional construct_pmns_matrices_two_param -> apply_v6_perturbation -> eigendecompose pipeline verified. beta=0 recovery exact. 1D scan along optimal V_6 direction (t in [-10,10]) shows theta_12 shift < 0.04 deg, theta_13 locked within 0.006 deg, confirming that the default AssessorToFlavorMap (12/12/6) partition does not couple V_6 to generation-discriminant eigenvalue sensitivity. The pipeline infrastructure is correct; the assessor-to-flavor mapping needs revision for solar selectivity.
 //! - Where stated: crates/algebra_experimental/src/neutrino_sector.rs::test_v6_solar_1d_scan
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1476
 //!
@@ -10701,7 +10701,7 @@
 //! - Last verified: 2026-03-21
 //! - Statement: V_6 constrained solar scan: under FlavorLift maps that factor through a 3D generation-scalar intermediate (DirectOffDiagonalLift, AssessorToFlavorMap), the PMNS angle Jacobian has at most rank 2 in V_6. Gram-Schmidt residual fraction = 4.57e-5 (DirectOffDiagonal) to 5.18e-4 (alpha-modulation). This is a no-go for the current 42D->3D lift family, not for all conceivable V_6 couplings. SUPERSEDED by C-1478: the 42D->6D TensorElementLift breaks the lock (residual 75.7%).
 //! - Where stated: crates/algebra_experimental/src/neutrino_sector.rs::test_v6_constrained_solar_scan
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1477
 //!
@@ -10709,7 +10709,7 @@
 //! - Last verified: 2026-03-21
 //! - Statement: V_6 alpha-modulation: nonlinear exponential modulation of psi coupling strengths alpha_ch/alpha_nu via V_6 field increases gradient magnitudes 10x (|g_12| = 37.9 vs 3.3) but preserves the rank-2 Jacobian lock under the 42D->3D generation-factor partition. Residual fraction = 5.18e-4. The lock is specific to FlavorLift maps that collapse 42 assessors to 3 generation scalars. SUPERSEDED by C-1478.
 //! - Where stated: crates/algebra_experimental/src/neutrino_sector.rs::test_v6_alpha_modulated_jacobian
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1478
 //!
@@ -10717,7 +10717,7 @@
 //! - Last verified: 2026-03-21
 //! - Statement: V_6 solar angle correction via TensorElementLift: 42D->6D tensor partition (6 blocks of 7 assessors, one per independent element of Herm_3) breaks the rank-2 Jacobian lock. Residual fraction = 75.7% (g_12 is 75.7% outside the {g_13, g_23} constraint plane). Constrained Gram-Schmidt direction achieves g_13.u = 5.7e-15, g_23.u = 2.6e-15 (machine-zero reactor/atmospheric leakage). 1D scan at t=2.47: theta_12 = 33.42 deg (PDG 33.41, 0.02% error), theta_13 = 8.63 deg (1.05%), theta_23 = 47.08 deg (3.93%). All three PMNS angles now within 4% of PDG.
 //! - Where stated: crates/algebra_experimental/src/neutrino_sector.rs::test_v6_tensor_element_lift_jacobian
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1479
 //!
@@ -10725,7 +10725,7 @@
 //! - Last verified: 2026-03-21
 //! - Statement: G2 stabilizer dimension: For any imaginary unit e_k in O (k=1..7), the stabilizer stab(e_k) = { D in Der(O) : D(e_k) = 0 } has dimension 8. The orthogonal complement in g2 has dimension 6 = dim(S^6 = G2/SU(3)). Verified for all 7 embeddings via thin-SVD kernel extraction with relative threshold.
 //! - Where stated: crates/gororoba_algebra/src/lie/g2_stabilizer.rs::test_stabilizer_dimension
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1480
 //!
@@ -10733,7 +10733,7 @@
 //! - Last verified: 2026-03-21
 //! - Statement: Complex structure on e_k^perp: Left-multiplication by e_k defines a complex structure J_k on the 6-dim perpendicular complement e_k^perp in Im(O), satisfying J_k^2 = -Id and J_k^T J_k = Id (orthogonal). Every stabilizer derivation commutes with J_k (consequence of Leibniz rule + D(e_k)=0). Verified for all k=1..7.
 //! - Where stated: crates/gororoba_algebra/src/lie/g2_stabilizer.rs::test_stabilizer_commutes_with_j
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1481
 //!
@@ -10741,7 +10741,7 @@
 //! - Last verified: 2026-03-21
 //! - Statement: u(3) embedding of stabilizer: Each stabilizer derivation is skew-adjoint on e_k^perp (R^T + R = 0) and commutes with J_k. Together these establish an embedding stab(e_k) -> u(3). Since dim(stab) = 8 < dim(u(3)) = 9, compact Lie algebra classification identifies stab(e_k) with su(3). Verified computationally for all k=1..7; constructive 3x3 identification deferred to PR2.
 //! - Where stated: crates/gororoba_algebra/src/lie/g2_stabilizer.rs::test_restricted_action_is_skew_adjoint
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1482
 //!
@@ -10749,7 +10749,7 @@
 //! - Last verified: 2026-03-21
 //! - Statement: Fano lines through fixed unit: Exactly 3 Fano lines pass through each imaginary unit e_k, decomposing the 6-dim perpendicular complement e_k^perp into 3 complex lines. The 6 endpoints of these 3 pairs exhaust all perpendicular basis indices. Verified for all k=1..7 by direct octonion multiplication.
 //! - Where stated: crates/gororoba_algebra/src/lie/g2_stabilizer.rs::test_fano_pairs_cover_complement
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1483
 //!
@@ -10757,7 +10757,7 @@
 //! - Last verified: 2026-03-21
 //! - Statement: Constructive SU(3) realization: The 3x3 complex representation of stab(e_k) on (e_k^perp, J_k) via the +i eigenspace basis z_j = u_j - i J_k(u_j) produces 8 anti-Hermitian traceless matrices, confirming constructive su(3) identification. Verified for all k=1..7.
 //! - Where stated: crates/gororoba_algebra/src/lie/g2_su3_representation.rs::test_anti_hermitian
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1484
 //!
@@ -10765,7 +10765,7 @@
 //! - Last verified: 2026-03-21
 //! - Statement: Gell-Mann alignment: The octonionic su(3) structure constants from the 3x3 representation match the standard Gell-Mann lambda_1..lambda_8 after orthogonal basis alignment. Alignment residual (O O^T - I) below 1e-10 for all k=1..7.
 //! - Where stated: crates/gororoba_algebra/src/lie/g2_su3_representation.rs::test_bracket_structure_after_alignment
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1485
 //!
@@ -10773,7 +10773,7 @@
 //! - Last verified: 2026-03-21
 //! - Statement: Fundamental Casimir: sum_a T_a T_a = -(4/3) I_3 in the anti-Hermitian convention T_a = (i/2) lambda_a, confirmed to 1e-10 for all k=1..7. Adjoint Casimir: f_{acd} f_{bcd} = 3 delta_{ab}, confirmed to 1e-10.
 //! - Where stated: crates/gororoba_algebra/src/lie/g2_su3_representation.rs::test_fundamental_casimir
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1486
 //!
@@ -10781,7 +10781,7 @@
 //! - Last verified: 2026-03-21
 //! - Statement: All-embeddings equivalence: All 7 SU(3) embeddings (one per fixed e_k) produce identical fundamental Casimir eigenvalue -(4/3) and adjoint Casimir contraction 3, confirming structural equivalence across all imaginary units.
 //! - Where stated: crates/gororoba_algebra/src/lie/g2_su3_representation.rs::test_all_embeddings_equivalent_casimir
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1487
 //!
@@ -10789,7 +10789,7 @@
 //! - Last verified: 2026-03-21
 //! - Statement: SU(5)/SU(3) sector cross-validation: The total structure constant contraction sum_{a,b,c} f_{abc}^2 equals 24 (= C_2(adj) * dim(su(3)) = 3 * 8) for both the octonionic SU(3) (from G2 stabilizer) and the SU(3) sector of SU(5) GUT (su5_gut.rs generators 0..7). This basis-invariant quantity confirms the two SU(3) embeddings are the same Lie algebra.
 //! - Where stated: crates/gororoba_algebra/src/lie/g2_su3_representation.rs::test_su5_su3_sector_invariant_match
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1488
 //!
@@ -10797,7 +10797,7 @@
 //! - Last verified: 2026-03-21
 //! - Statement: Real-part projection: The e_0 component of a CD algebra element is the unique commutative-associative coordinate. scalar_fraction is bounded in [0,1], exact 1.0 for e_0 basis vector, exact 0.0 for pure imaginary elements. Verified for dimensions 1, 4, 8, 16.
 //! - Where stated: crates/gororoba_algebra/src/construction/real_part_projection.rs::test_scalar_fraction_exact_on_basis
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1489
 //!
@@ -10805,7 +10805,7 @@
 //! - Last verified: 2026-03-21
 //! - Statement: V_6 representation analysis: (1) SU(3) stabilizer acts nontrivially on V_6 (all 8 generators have identical Frobenius norm 0.436). V_6 is REDUCIBLE under su(3) (Casimir not proportional to I, diagonal average -0.254, off-diagonal max 0.063). (2) psi (S_3 generator) acts as SCALAR 0.25*I_6 on V_6 -- V_6 is a psi-eigenspace. Since Sym_3(R) has psi eigenvalues {1, omega, omega^2}, no S_3-equivariant intertwiner exists. TensorElementLift cannot be derived as an S_3-equivariant map; it is a project-specific construction.
 //! - Where stated: crates/algebra_experimental/src/neutrino_sector.rs::test_intertwiner_analysis, test_s3_intertwiner_analysis
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1490
 //!
@@ -10813,7 +10813,7 @@
 //! - Last verified: 2026-03-21
 //! - Statement: V_6 2D constrained scan: two orthogonal constrained directions in V_6 (solar + atmospheric, machine-precise orthogonality 2.8e-17) optimize theta_12 AND theta_23 simultaneously while locking theta_13. 4-parameter model (alpha_ch=3.75, alpha_nu=1.30, t_solar=2.49, t_atmo=0.11): theta_12 = 33.37 deg (0.11% PDG), theta_13 = 8.52 deg (0.26% PDG), theta_23 = 47.40 deg (3.27% PDG). All three PMNS angles within 3.3% of PDG 2025. Combined score 0.0011.
 //! - Where stated: crates/algebra_experimental/src/neutrino_sector.rs::test_v6_2d_constrained_scan
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1491
 //!
@@ -10821,7 +10821,7 @@
 //! - Last verified: 2026-03-21
 //! - Statement: Joint 4D PMNS optimization: re-optimizing (alpha_ch, alpha_nu) jointly with (t_solar, t_atmo) via TensorElementLift yields all three PMNS angles within 1.3% of PDG 2025. Optimal: alpha_ch=3.50, alpha_nu=1.35, t_solar=1.54, t_atmo=2.00. Results: theta_12=33.84 deg (1.28%), theta_13=8.56 deg (0.24%), theta_23=48.74 deg (0.54%). Combined score 0.000221 (4.9x improvement over fixed-alpha 4-param model). Rayon-parallel 4D scan: 1302 (alpha_ch,alpha_nu) points x ~663 inner evaluations.
 //! - Where stated: crates/algebra_experimental/src/neutrino_sector.rs::test_v6_joint_4d_optimization
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1492
 //!
@@ -10829,7 +10829,7 @@
 //! - Last verified: 2026-03-21
 //! - Statement: PMNS angle-sector fit via Gauss-Newton 4D optimization: all three angles within 0.15% of PDG 2025. alpha_ch=3.00, alpha_nu=1.35, t_solar=1.35, t_atmo=2.24 (TensorElementLift). theta_12 = 33.36 deg (0.15%), theta_13 = 8.54 deg (0.01%), theta_23 = 48.99 deg (0.02%). Combined score 2e-6 (499x improvement over grid search). Gauss-Newton with Levenberg-Marquardt damping + backtracking line search replaces 651-point inner grid with ~15 iterations (4.8x total speedup).
 //! - Where stated: crates/algebra_experimental/src/neutrino_sector.rs::test_v6_joint_4d_optimization
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1493
 //!
@@ -10837,7 +10837,7 @@
 //! - Last verified: 2026-03-22
 //! - Statement: Cariow 2013 sedenion multiplication analysis: WHT-diagonalization of B_16 Toeplitz component + sparse remainder achieves 122 muls / 298 adds (vs 256/240 naive, 15% fewer total ops). Algorithm NOT adopted for our SIMD path: the irregular sparse-matrix pattern (106 scattered multiply-accumulates in B_hat) destroys ILP and AVX2 utilization. Our CD-doubling SIMD path (4 octonion muls decomposed to 64 FMAs with 12/16 YMM register fit) runs at L1 cache speed with superior pipeline throughput. Cariow is optimal for VLSI/FPGA hardware multiplier design where multiplier count dominates area/power. For CPU software, wall-clock time is dominated by instruction throughput and data-dependency depth, not raw multiplication count.
 //! - Where stated: docs/physics/sedenion_standard_model.md (bibliography, Cariow analysis)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1494
 //!
@@ -10845,7 +10845,7 @@
 //! - Last verified: 2026-03-22
 //! - Statement: Phase-only CP violation via J_k complex structure: multiplicative phase complexification M[i][j] -> |M[i][j]| * exp(i * alpha_CP * phi[i][j]) preserves mixing angles within 1.5% of PDG while producing nonzero Jarlskog invariant. Best results across k-embeddings: |J_CP| ~ 8.5e-3 (25% of PDG 3.3e-2), delta_CP ~ 165 deg (PDG: 195). Angles: theta_12=33.35 (0.2%), theta_13=8.66 (1.5%), theta_23=48.93 (0.1%). Phase phi[i][j] = atan2(<profile_i, J_k(psi(profile_j))>, <profile_i, psi(profile_j)>) is the natural Fano-derived complex angle. Critical improvement over additive approach (C-old): additive M += i*alpha*template distorted angles by 50-300%; multiplicative phase preserves eigenvalue magnitudes exactly. Z_2 symmetry: k and (8-k) give conjugate J_CP signs.
 //! - Where stated: crates/algebra_experimental/src/neutrino_sector.rs::test_cp_violation_phase_only
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1495
 //!
@@ -10853,7 +10853,7 @@
 //! - Last verified: 2026-03-22
 //! - Statement: CDDoubleFunctor tower instantiation: RealBase (7 axioms proven by ring) chains through CDDouble functor to produce Complex(2D), Quat(4D), Oct(8D), Sed(16D), Pathion(32D) with ALL 42 linearity theorems (7 per level x 6 levels) proven with only 7 manual proofs at the base. sed_mul_scale_left and pathion_mul_scale_left are concrete witnesses: sedenion and pathion linearity inherited automatically from the functor chain. Rocq compilation: 0 warnings, <1s.
 //! - Where stated: proofs/theories/CDDoubleTower.v
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1496
 //!
@@ -10861,7 +10861,7 @@
 //! - Last verified: 2026-03-22
 //! - Statement: Full 16D J_k action (both octonion halves) vs 6D perp-only action: NULL RESULT. For all k=1..7, the two J_k implementations produce nearly identical |J_CP| values (within 3% of each other). This is because friction profiles from associators [a,x,b] with selectors (e_7,e_8) have zero components in upper octonion indices (8-15), so the full sedenion J_k upper-block multiplication acts on zeros. The |J_CP| gap to PDG is algebraic (from associator structure), not from truncating J_k to 6D. Example: k=3: 6D gives |J_CP|=8.4909e-3, 16D gives |J_CP|=8.4909e-3 (identical). k=7: 6D gives 8.7193e-3, 16D gives 8.5251e-3.
 //! - Where stated: crates/algebra_experimental/src/neutrino_sector.rs::test_cp_violation_jk_dimension_comparison
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1497
 //!
@@ -10869,7 +10869,7 @@
 //! - Last verified: 2026-03-22
 //! - Statement: Joint 3D optimization (alpha_CP, t_solar, t_atmo) with two-pass grid (coarse rayon-parallel + fine refinement) achieves |J_CP| = 3.3315e-2 = J_max (kinematic maximum for these mixing angles at delta ~ 90 deg, |sin(delta)| ~ 1). AMENDED: this is NOT 101% of the PDG measured |J|. PDG measured |J| = J_max * |sin(195)| = 3.3e-2 * 0.259 = 8.6e-3. The framework predicts near-maximal CP violation (delta ~ 90), yielding |J| = J_max, which is 3.9x LARGER than the experimental value. All three mixing angles within 2% of PDG. Refined parameters: k=5, alpha_CP=0.450, t_sol=1.027, t_atm=3.927. Z_2 symmetry: k=1 and k=5 give conjugate results (same |J|, opposite sign). Cardano eigensolver q-sign bug fixed (was negated).
 //! - Where stated: crates/algebra_experimental/src/neutrino_sector.rs::test_cp_violation_joint_3d_scan
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1498
 //!
@@ -10877,7 +10877,7 @@
 //! - Last verified: 2026-03-22
 //! - Statement: Rephasing-invariant delta_CP: framework predicts delta ~ 93 deg (near-maximal CP violation, |sin(delta)| ~ 1). PDG best-fit: 195 +/- 25 deg (non-maximal, |sin(delta)| ~ 0.26). Three extraction methods agree: arg(Jarlskog quartet) = 92.8 deg, arg(-U_e3) = 97.9 deg, atan2(sin_delta, cos_delta) invariant. The |J_CP| = 3.33e-2 is the kinematic maximum J_max = c12*s12*c23*s23*s13*c13^2, attained when |sin(delta)| = 1. PDG |J| = 8.6e-3 corresponds to |sin(195)| = 0.26. Discrepancy factor 3.9x in |J| magnitude. The framework CANNOT accommodate PDG delta = 195 without breaking the angle fit. Testable by DUNE and Hyper-Kamiokande.
 //! - Where stated: crates/algebra_experimental/src/neutrino_sector.rs::test_cp_violation_joint_3d_scan
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1499
 //!
@@ -10885,7 +10885,7 @@
 //! - Last verified: 2026-03-22
 //! - Statement: Canonical observable scorecard (registry/scorecard.toml): 17 observables across 3 epistemic bins. Bin 1 (9 framework-backed, zero-parameter): m_mu/m_e (0.1%), m_tau/m_e (0.0%), m_c/m_u (1.4%), m_t/m_c (1.6%), r_nu (1.0%), m_b/m_s (1.5%), m_s/m_d (22%, weak), sin^2(theta_W) (8.1%, tree-level structural estimate), mass ordering (categorical). Bin 2 (6 optimized fits): theta_12/13/23 PMNS (0.15/0.01/0.02%, 4 params), |V_us|/|V_ub|/|V_cb| CKM (8.9/2.4/5.0%, 2 params). Bin 3 (2 CP exploratory): |J_CP| and delta_CP with two materially different pipelines (CP-A phase-only vs CP-B Gram/rephasing). Resolves the 9/11/13 observable count drift across sessions.
 //! - Where stated: registry/scorecard.toml, docs/physics/sedenion_standard_model.md (abstract)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1500
 //!
@@ -10893,7 +10893,7 @@
 //! - Last verified: 2026-03-22
 //! - Statement: flavor_lifts crate (crates/flavor_lifts/) isolates the lift layer -- the map from algebraic/incidence data into flavor operator space. Contains: FlavorLift trait + 4 implementations (AssessorToFlavorMap, DirectOffDiagonalLift, PsiEquivariantLift, TensorElementLift), apply_v6_perturbation, extract_pmns_angles, Pdg2024, gauss_newton_2d, compute_constrained_solar/atmospheric_direction, and CP scaffolding (CpResult, CpPipeline enum, meets_closure_criterion). Compiles clean with clippy -D warnings.
 //! - Where stated: crates/flavor_lifts/src/{lib,lift,angles,optimizer,cp}.rs
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1501
 //!
@@ -10901,7 +10901,7 @@
 //! - Last verified: 2026-03-22
 //! - Statement: Paper restructuring: 3-bin abstract with defensible thesis, negative-result ladder (6 null results in VIII-B), known tensions (7 items in XV-B), runtime/proof-time unification paragraph, surreal future-directions paragraph (one paragraph). Complementarity theorem foregrounded. Weinberg angle labeled tree-level structural estimate. Down-type quark asymmetry noted. CP-A/CP-B pipeline distinction explicit.
 //! - Where stated: docs/physics/sedenion_standard_model.md (abstract, VIII-B, XV, XV-B)
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1502
 //!
@@ -10909,7 +10909,7 @@
 //! - Last verified: 2026-03-22
 //! - Statement: S_3 lift derivation (Epic B): V_6 is a psi-eigenspace with eigenvalue -0.2215 (6-fold degenerate scalar). Epsilon eigenvalue -0.2658, also scalar. The assessor-level induced S_3 action has ||psi^3 - I|| = 746 on 42D -- NOT a faithful representation. Non-integer irrep multiplicities (n_triv=-0.24, n_sgn=1.35, n_std=2.44) confirm the action is defective. Formal dim Hom_{S_3}(V_6, Sym_3) = 4.4 (meaningless non-integer). Sym_3(R) decomposition verified analytically: 2 trivial + 0 sign + 2 standard. STRUCTURAL INSIGHT: V_6 carries trivial-like psi action while Sym_3 carries permutation action. By Schur's lemma, TensorElementLift CANNOT be S_3-equivariant under this action. Result is PROVISIONAL on the current assessor-level action (psi^3 != I on V_6).
 //! - Where stated: crates/algebra_experimental/src/neutrino_sector.rs::test_s3_action_on_v6_and_lift_derivation
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1503
 //!
@@ -10917,7 +10917,7 @@
 //! - Last verified: 2026-03-22
 //! - Statement: CDDoubleFunctor instantiation chain: RealBase (carrier=R, trivial conjugation, 7 ring proofs) -> Complex := CDDouble RealBase -> Quaternion := CDDouble Complex -> Octonion := CDDouble Quaternion -> Sedenion := CDDouble Octonion. All 7 CDAlgLinear linearity theorems (mul_scale_left, mul_scale_right, conj_scale, neg_scale, scale_add, scale_sub, sub_def) inherited automatically at each level with zero new proofs. Total proof effort: 7 trivial ring lemmas in RealBase. Compiles under rocq-9.1.1.
 //! - Where stated: proofs/theories/CDTowerInstantiation.v
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1504
 //!
@@ -10925,7 +10925,7 @@
 //! - Last verified: 2026-03-22
 //! - Statement: Cardano eigensolver correctness: (1) Fixed sign error in depressed cubic constant q -- code had +2*tr^3/27 - s2*tr/3 + det, corrected to s2*tr/3 - 2*tr^3/27 - det. Bug was latent because scan loop uses faer, not Cardano. (2) Added U(1) phase canonicalization making largest-magnitude eigenvector component real+nonneg. (3) Test validates: eigenvalue agreement with faer < 1e-12, projector Frobenius distance < 1e-10, residual < 1e-12, phase convention verified.
 //! - Where stated: crates/algebra_experimental/src/neutrino_sector.rs::test_cardano_phase_canonicalization
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1505
 //!
@@ -10933,7 +10933,7 @@
 //! - Last verified: 2026-03-22
 //! - Statement: Rephasing-invariant delta_CP extraction via atan2(sin_delta, cos_delta) using Jarlskog invariant for sin(delta) and |U_mu1|^2 unitarity relation for cos(delta). Validated against 7 known delta values (0, 45, 93, 180, 195, 270, -30 deg), all recovered within 1e-14 deg. Added delta_cp_invariant field to CpScanResult.
 //! - Where stated: crates/algebra_experimental/src/neutrino_sector.rs::test_delta_cp_invariant_extraction
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1506
 //!
@@ -10941,7 +10941,7 @@
 //! - Last verified: 2026-03-22
 //! - Statement: Pathion (32D) V_k spectrum: assessor complement has rank 1 (single sv=2.03), compared to sedenion (16D) rank 6 (6-fold degenerate sv=3.42). The sedenion is the unique CD dimension where the assessor complement has exactly rank 6 -- the minimum needed for independent 3-angle + 3-ratio steering. Higher CD dimensions DESTROY this structure by flooding the assessor space with B/C constraints. CDDoubleLift is therefore pointless (only 1 independent direction in 32D).
 //! - Where stated: crates/algebra_experimental/src/neutrino_sector.rs::test_pathion_vk_spectrum
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1507
 //!
@@ -10949,7 +10949,7 @@
 //! - Last verified: 2026-03-22
 //! - Statement: Rocq formal verification of Cardano eigensolver: (9a) depressed_cubic_q_sign proves the substitution lambda=t+tr/3 transforms the characteristic polynomial to t^3+pt+q=0 with CORRECT q sign. (9b) cardano_trigonometric_root proves that t=2*r*c satisfies t^3+pt+q=0 when p=-3r^2 and 2r^3*(4c^3-3c)+q=0 (the algebraic core of the Vieta trigonometric formula). Also: eigenvalue_sum_equals_trace (Vieta sum) and vieta_product (determinant recovery). All 4 theorems kernel-checked by Rocq 9.1.1.
 //! - Where stated: proofs/theories/CardanoEigensolver.v
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1508
 //!
@@ -10957,7 +10957,7 @@
 //! - Last verified: 2026-03-22
 //! - Statement: delta_CP sign systematics: 8 combinations tested (selector swap (7,8)<->(8,7), L/R multiplication swap, epsilon sign flip). Only two distinct outcomes (Z_2 symmetry). Epsilon flip has NO effect. No combination gives delta near 195 deg -- framework robustly predicts delta ~ 87-93 deg (maximal CP violation). This is a genuine falsification of the CP phase prediction vs PDG delta = 195 +/- 25 deg.
 //! - Where stated: crates/algebra_experimental/src/neutrino_sector.rs::test_delta_cp_sign_systematics
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1509
 //!
@@ -10965,7 +10965,7 @@
 //! - Last verified: 2026-03-22
 //! - Statement: Sign-nullity stratification: exact 1:1 balance at every CD dimension (4..1024). Consequence of antisymmetry sign(p,q) = -sign(q,p). Positive count = (d-1)(d-2)/2.
 //! - Where stated: crates/cd_kernel/src/cayley_dickson/tests.rs::test_sign_nullity_stratification
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1510
 //!
@@ -10973,7 +10973,7 @@
 //! - Last verified: 2026-03-22
 //! - Statement: ZD tangent space dim = 20 for standard sedenion 2-blade witnesses. Jacobian rank = 12 (4 redundant = Moreno 4D annihilator). 20 = 14 (G_2) + 6 (2-blade).
 //! - Where stated: crates/cd_kernel/src/cayley_dickson/tests.rs::test_zd_tangent_space
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1511
 //!
@@ -10981,7 +10981,7 @@
 //! - Last verified: 2026-03-22
 //! - Statement: Bales sign eta(p,q) = (-1)^{popcount(p&q)} matches cd_sign on 50% of octonion products (21/42). Different CD conventions. Norm form isotropic over Q_p for dim >= 5.
 //! - Where stated: crates/cd_kernel/src/cayley_dickson/tests.rs::test_padic_cd_bales_sign_comparison
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1512
 //!
@@ -10989,7 +10989,7 @@
 //! - Last verified: 2026-03-22
 //! - Statement: CD sign table verified correct through 2048D (11th CD level). All properties pass at dim=512,1024,2048. < 1ms per dimension.
 //! - Where stated: crates/cd_kernel/src/cayley_dickson/tests.rs::test_high_dim_sign_table_verification
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1513
 //!
@@ -10997,7 +10997,7 @@
 //! - Last verified: 2026-03-22
 //! - Statement: Lattice codebook: S_base=2187, Lambda_2048=2048, Lambda_1024=1026 (off by 2), Lambda_512=512, Lambda_256=256, Lambda_32=32. 5/6 exact.
 //! - Where stated: crates/cd_kernel/src/lattice_codebook.rs::test_codebook_sizes
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1514
 //!
@@ -11005,7 +11005,7 @@
 //! - Last verified: 2026-03-22
 //! - Statement: x87 FTST exact zero-divisor detection without epsilon. Eliminates atol from ZD search.
 //! - Where stated: crates/cd_kernel/src/x87_primitives.rs::test_x87_zd_check_known_witness
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1515
 //!
@@ -11013,7 +11013,7 @@
 //! - Last verified: 2026-03-22
 //! - Statement: SignTableI8: i8 sign table, 256 bytes for dim=16, 1024 for dim=32. SIMD-ready layout.
 //! - Where stated: crates/cd_kernel/src/avx2_primitives.rs::test_sign_table_i8_sedenion
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1516
 //!
@@ -11021,7 +11021,7 @@
 //! - Last verified: 2026-03-22
 //! - Statement: FMA CD multiply via sign table: max diff vs recursive = 4.44e-16 (half ULP). Single-rounding.
 //! - Where stated: crates/cd_kernel/src/cayley_dickson/simd.rs::test_cd_multiply_fma_matches_recursive
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1517
 //!
@@ -11029,7 +11029,7 @@
 //! - Last verified: 2026-03-22
 //! - Statement: CacheHierarchy: auto-detect L1d/L2/L3/L4 via CPUID leaf 4. CPU-agnostic. max_dim_bitpacked/i8 helpers.
 //! - Where stated: crates/verified_core/src/topology.rs::CacheHierarchy
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1518
 //!
@@ -11037,7 +11037,7 @@
 //! - Last verified: 2026-03-22
 //! - Statement: x87 FP-80 CD multiply oracle: 80-bit accumulation via FADDL. Agrees with recursive to 4.44e-16.
 //! - Where stated: crates/cd_kernel/src/x87_primitives.rs::test_x87_cd_multiply_vs_fma
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1519
 //!
@@ -11045,7 +11045,7 @@
 //! - Last verified: 2026-03-22
 //! - Statement: Dual-pipe verified CD multiply: x87 oracle + f64 fast path, compare component-wise. max_diff=4.44e-16.
 //! - Where stated: crates/cd_kernel/src/x87_primitives.rs::test_verified_cd_multiply
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1520
 //!
@@ -11053,7 +11053,7 @@
 //! - Last verified: 2026-03-22
 //! - Statement: Sedenion ZD persists over F_p for all primes tested (p=3,5,7,11,13). Structure constants are integers -> ZD identity is universal across all fields.
 //! - Where stated: crates/surreal_algebra/src/finite_field_cd.rs::test_fp_sedenion_zd
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1521
 //!
@@ -11061,7 +11061,7 @@
 //! - Last verified: 2026-03-22
 //! - Statement: ZD variety stratifies by Archimedean class over No. Equal-class coefficients preserve ZDs; mixed-class coefficients break them. Cross-ratio condition alpha*delta = beta*gamma fails across classes. First genuinely surreal result.
 //! - Where stated: crates/surreal_algebra/src/surreal_cd.rs::test_archimedean_stratification_of_zd
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1522
 //!
@@ -11069,7 +11069,7 @@
 //! - Last verified: 2026-03-22
 //! - Statement: Mass hierarchy is NOT dyadic-birthday-driven. Log2 ratios (7.69, 11.76, 4.07) are non-integer. Archimedean stratification provides the FRAMEWORK (generation independence), friction provides the CONTENT (mass ratios).
 //! - Where stated: crates/surreal_algebra/src/surreal_cd.rs::test_archimedean_mass_hierarchy
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1523
 //!
@@ -11077,7 +11077,7 @@
 //! - Last verified: 2026-03-22
 //! - Statement: Friction is field-independent: the CD associator [e_i, e_j, e_k] has integer coefficients (-2 on non-Fano, 0 on Fano) determined entirely by the sign table. Verified: surreal and f64 associators agree exactly.
 //! - Where stated: crates/surreal_algebra/src/surreal_cd.rs::test_friction_field_independence
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1524
 //!
@@ -11085,7 +11085,7 @@
 //! - Last verified: 2026-03-22
 //! - Statement: Archimedean class ratios are sector-dependent: lepton (c3-c1)/(c2-c1) = 1.529, quark = 1.771. Difference 0.242 (16%). Consistent with different 3-blade triples per sector.
 //! - Where stated: crates/surreal_algebra/src/surreal_cd.rs::test_implied_archimedean_class_ratios
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1525
 //!
@@ -11093,7 +11093,7 @@
 //! - Last verified: 2026-03-22
 //! - Statement: Sign-profile Gram matrix has 21 doublet clusters (C(7,2) pairs), NOT 3 generation clusters. Sign table is generation-BLIND. Three-generation structure emerges from psi automorphism, not multiplication table.
 //! - Where stated: crates/surreal_algebra/src/surreal_cd.rs::test_assessor_sign_profile_clustering
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1526
 //!
@@ -11101,7 +11101,7 @@
 //! - Last verified: 2026-03-22
 //! - Statement: Cross-class coupling at 10% of geometric mean shifts mass ratios by 1.07%. At 50%: 35.83%. Archimedean separation naturally suppresses mixing: delta_ij ~ sqrt(m_i*m_j) << m_j. Structural origin of small CKM/PMNS angles.
 //! - Where stated: crates/surreal_algebra/src/surreal_cd.rs::test_cross_class_coupling_penalty
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1527
 //!
@@ -11109,7 +11109,7 @@
 //! - Last verified: 2026-03-23
 //! - Statement: faer selfadjoint_eigendecomposition (divide-and-conquer) replaces nalgebra symmetric_eigen (Jacobi) in extract_vk_basis. Measured speedup at dim=64: ~280s -> 1.66s (~170x). Per-stage VK_PROFILE timing: Stage 2 rayon Gram accumulation is now the dominant cost at 46% (0.763s); eigendecomp Stages 4+7 combined 34% (0.56s); Stage 6 complement matmul 9%. Decision gate 8e (low-rank projector trick) NOT triggered. Frobenius-relative noise guard (sv_max/||G_x||_F < 1e-8) correctly forces dim=64 V_k rank to 0 (was spuriously 20 at abs threshold 1e-6 due to noise eigenvalues at sqrt(3.4e-12) = 1.8e-6).
 //! - Where stated: crates/algebra_experimental/src/neutrino_sector.rs::test_pathion_vk_spectrum, commit a704495b
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1528
 //!
@@ -11117,7 +11117,7 @@
 //! - Last verified: 2026-03-23
 //! - Statement: Phase A codebase deduplication: (1) gororoba_algebra/src/analysis/legacy_crossval.rs (1,617 lines) was a byte-for-byte copy of algebra_analysis/src/legacy_crossval.rs modulo one import path (crate::construction::cayley_dickson -> cd_kernel::cayley_dickson, which are identical via re-export). Deleted and replaced with pub use re-export. (2) neutrino_sector.rs lift/optimizer block (L1473-1972, 499 lines) was an exact duplicate of flavor_lifts crate modules. Deleted and replaced with pub use flavor_lifts re-export. (3) extract_pmns_angles + Pdg2024 (48 lines) likewise deleted and re-exported from flavor_lifts::angles. Net: 2,143 lines eliminated, 681 tests pass, clippy clean.
 //! - Where stated: crates/algebra_experimental/src/neutrino_sector.rs, crates/gororoba_algebra/src/analysis/mod.rs, commit 7c73ef73
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1529
 //!
@@ -11125,7 +11125,7 @@
 //! - Last verified: 2026-03-23
 //! - Statement: Phase B falsification test (evid E): 3-generation index structure CORROBORATED at dim=64,128,256 with CAVEAT. The psi-automorphism cycling that produces three generations operates ACTIVELY only at dim=16 (lower-half indices 0..15). At dim=32,64,128,256, the pattern persists by CD tower INHERITANCE: the dim=16 block is embedded unchanged in the lower half; upper half indices follow by doubling. The psi argument is dimension-specific for active cycling; it is not an independent mechanism at higher dims. OUTCOME: corroborated structurally, not by independent psi cycles.
 //! - Where stated: crates/surreal_algebra/src/surreal_cd.rs::test_pathion_generation_count_falsification
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1530
 //!
@@ -11133,7 +11133,7 @@
 //! - Last verified: 2026-03-23
 //! - Statement: Phase C experimental overlay (evid H): All three PMNS mixing angles from the Sedenion Standard Model scorecard lie within NuFit 6.0 1-sigma contours. Asymmetric pulls: theta_12 = -0.067 (best=33.41, ours~33.37), theta_13 = 0.000 (best=8.54, ours=8.54), theta_23 = -0.009 (best=49.0, ours~49.0). Evidentiary class H (heuristic fit, not derived). Experiment sensitivity: DUNE/HyperK for delta_CP and theta_23; JUNO for mass ordering and precision theta_12/theta_13.
 //! - Where stated: crates/algebra_experimental/src/experimental_predictions.rs::test_mixing_angles_in_1sigma
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1531
 //!
@@ -11141,7 +11141,7 @@
 //! - Last verified: 2026-03-23
 //! - Statement: Phase C CP-phase overlay (evid H): CP-A (~165 deg, Gram-derived) lies within NuFit 6.0 1-sigma for delta_CP (pull = -0.526; 1-sigma range [138,258] deg). CP-B (~93 deg, maximal CP violation) lies outside 1-sigma (pull = -1.789) but inside 3-sigma ([0,360] deg). The 2025 NuFit best-fit is 195 deg; CP-B is displaced toward maximal CP. Both values are exploratory (scorecard Bin 3). Falsification target: DUNE/HyperK sensitivity will determine which, if either, is consistent at 5-sigma.
 //! - Where stated: crates/algebra_experimental/src/experimental_predictions.rs::test_cp_a_in_1sigma, test_cp_b_outside_1sigma
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1532
 //!
@@ -11149,7 +11149,7 @@
 //! - Last verified: 2026-03-23
 //! - Statement: Phase C JUNO overlay (evid H): JUNO r_nu observable from the project scorecard is within 3% of NuFit 6.0 baseline. JUNO sensitivity covers mass ordering and precision oscillation inputs (theta_12, Delta_m_21^2); it does NOT directly constrain delta_CP. JUNO began data taking 2025-08-26. r_nu is not a directly measured JUNO quantity; the overlay uses the JUNO-accessible parameter space as context only.
 //! - Where stated: crates/algebra_experimental/src/experimental_predictions.rs::test_juno_r_nu_within_3pct
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1533
 //!
@@ -11157,7 +11157,7 @@
 //! - Last verified: 2026-03-23
 //! - Statement: Phase D flux quantization scaling (evid E): CD associator flux quantization levels {0, 1, sqrt(2)} persist at dim=128,256,512,1024. Count formula: zero_count = dim/2 - dim/8 - 1, one_count = dim/2, sqrt2_count = dim/8. Example at dim=128: zero=47, one=64, sqrt2=16. The formula scales exactly with dimension and is verified by integer arithmetic on the exact CD sign table (cd_sign function).
 //! - Where stated: crates/algebra_experimental/src/topological_associator_flux.rs::test_flux_scaling_dim128..test_flux_scaling_dim1024
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1534
 //!
@@ -11165,7 +11165,7 @@
 //! - Last verified: 2026-03-23
 //! - Statement: Phase D null baselines (evid E): Three controls confirm CD-sign-specificity of flux quantization. (1) Commutative XOR (all signs +1): all flux values zero -- confirms nonzero flux requires non-trivial sign table. (2) Random signs (FNV hash): preserves level NAMES {0,1,sqrt(2)} but breaks the count formula -- level names are partially combinatorial (sparse 2x2 witness structure), counts are CD-specific. (3) Basis permutation: changes the level set, removing sqrt(2) entries at tested dims. CONCLUSION: count formula is CD-sign-specific; level names {0,1,sqrt(2)} have combinatorial and CD components.
 //! - Where stated: crates/algebra_experimental/src/topological_associator_flux.rs::test_null_baseline_permutation, test_null_baseline_random_signs, test_null_baseline_commutative_xor
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1535
 //!
@@ -11173,7 +11173,7 @@
 //! - Last verified: 2026-03-23
 //! - Statement: Phase D Casimir comparison null result (evid H): No exceptional group Casimir eigenvalue or dimension (G_2=14, F_4=52, E_6=78, E_7=133, E_8=248) matches the flux count formula at any tested dimension (dim=128..1024). At dim=128: zero=47, one=64, sqrt2=16. At dim=1024: zero=383, one=512, sqrt2=128. Null result: no exceptional group alignment detected.
 //! - Where stated: crates/algebra_experimental/src/topological_associator_flux.rs::test_d6_casimir_comparison
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1536
 //!
@@ -11181,7 +11181,7 @@
 //! - Last verified: 2026-03-23
 //! - Statement: Phase G G_2 structural estimate (evid E + H): G_2 structural ratio dim(SU(3))/dim(G_2) = 8/14 = 0.5714 (exact Lie theory, evid E). Scale gap from Delta_a_mu = 38(63)e-11 ~ 3.8e-10: log10(0.5714 / 3.8e-10) >= 9 orders of magnitude (evid E). NEGATIVE RESULT: No G_2 dimensional ratio produces the correct scale for a_mu without injecting alpha and 1/(2*pi). The sin^2(theta_W) analogy (dimensional ratio -> O(1) number) does NOT extend to a_mu.
 //! - Where stated: crates/gororoba_algebra/src/physics/anomalous_moment.rs::test_g2_structural_ratio_not_muon_scale, test_scale_gap_at_least_9_orders
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1537
 //!
@@ -11189,84 +11189,108 @@
 //! - Last verified: 2026-03-23
 //! - Statement: Phase G muon g-2 2025 status (evid E): Delta_a_mu = 38(63)e-11, significance = 38/63 = 0.60-sigma. Compatible within 1-sigma with the Standard Model. The muon g-2 is NO LONGER a strong anomaly as of 2025 (arXiv:2505.21476, BIB-0440). Fermilab Run 1-6 final: a_mu^exp = 1165920715(145)e-12. The algebraic scale gap (C-1536) and experimental resolution jointly rule out G_2 as an explanation. Module anomalous_moment.rs records this as a negative result.
 //! - Where stated: crates/gororoba_algebra/src/physics/anomalous_moment.rs::test_g2_2025_discrepancy_below_one_sigma, test_fermilab_2025_value_correct
-//! - What would verify/refute it:
+//! - What would verify/refute it: 
 //!
 //! ## C-1538
 //!
 //! - Status: `Theoretical`
 //! - Last verified: 2026-03-23
 //! - Statement: Moreno Corollary 1.6 (ZD symmetry): In A_n (n>=4), xy=0 iff yx=0 iff x_bar*y=0 iff x*y_bar=0. If xy=0 and x!=0, then t(y)=0. x^2=0 implies x=0. Source: Moreno (1997) arXiv:q-alg/9710013v1.
-//! - Where stated: crates/algebra_analysis/src/moreno.rs (moreno_decomposition, Cor 1.6 background)
-//! - What would verify/refute it:
+//! - Where stated: crates/moreno_1997/src/lib.rs (moreno_decomposition, Cor 1.6 background)
+//! - What would verify/refute it: 
 //!
 //! ## C-1539
 //!
 //! - Status: `Theoretical`
 //! - Last verified: 2026-03-23
 //! - Statement: Moreno Proposition 1.7 (skew-symmetry): For x in circ-A_n (purely imaginary), L_x and R_x are skew-symmetric operators on A_n (with respect to the Euclidean inner product). Ker(L_x) = Ker(R_x). Source: Moreno (1997) arXiv:q-alg/9710013v1.
-//! - Where stated: crates/algebra_analysis/src/moreno.rs (l_a_squared, moreno_decomposition)
-//! - What would verify/refute it:
+//! - Where stated: crates/moreno_1997/src/lib.rs (l_a_squared, moreno_decomposition)
+//! - What would verify/refute it: 
 //!
 //! ## C-1540
 //!
 //! - Status: `Verified`
-//! - Last verified: 2026-03-23
+//! - Last verified: 2026-03-25
 //! - Statement: Moreno Theorem 1.13 (H_a quaternion subalgebra): For doubly-pure unit-norm a in A_n (n>=2), the span H_a = {e0, a, tilde_a, tilde_e0} is isomorphic to H (quaternions). The multiplication table in source order {1, a, tilde_a, tilde_e0} satisfies quaternion laws with orientation: a*tilde_a = -tilde_e0. Numerically verified at 8D for a=e1. Source: Moreno (1997) arXiv:q-alg/9710013v1.
-//! - Where stated: crates/algebra_analysis/src/moreno.rs::verify_h_a_isomorphism, h_a_basis; tests::test_verify_h_a_isomorphism_e1_in_a3
-//! - What would verify/refute it:
+//! - Where stated: crates/moreno_1997/src/lib.rs::verify_h_a_isomorphism, h_a_basis; proofs/theories/C1540_MorHaQuaternion.v::moreno_ha_mul_table; tests::test_verify_h_a_isomorphism_e1_in_a3
+//! - What would verify/refute it: 
 //!
 //! ## C-1541
 //!
 //! - Status: `Verified`
-//! - Last verified: 2026-03-23
+//! - Last verified: 2026-03-25
 //! - Statement: Moreno Theorem 1.15 (direct sum decomposition): For doubly-pure unit-norm a in A_n, A_n = H_a + Ker(T~_a) + Ker(L_a) + direct-sum(V_lambda) where T~_a = -I - L_a^2 restricted to H_a^perp, and V_lambda are eigenspaces of L_a^2 on H_a^perp. Numerically verified at 8D and 16D (total dimension check passes). Source: Moreno (1997) arXiv:q-alg/9710013v1.
-//! - Where stated: crates/algebra_analysis/src/moreno.rs::moreno_decomposition, MorenoDecomposition; tests::test_moreno_decomposition_totals_8d, test_moreno_decomposition_totals_16d
-//! - What would verify/refute it:
+//! - Where stated: crates/moreno_1997/src/lib.rs::moreno_decomposition, MorenoDecomposition; proofs/theories/C1541_MorDirectSum.v::moreno15_direct_sum_exists, moreno15_direct_sum_unique, moreno15_ker_t_tilde_is_ha_perp, moreno15_ker_l_trivial; tests::test_moreno_decomposition_totals_8d, test_moreno_decomposition_totals_16d
+//! - What would verify/refute it: 
 //!
 //! ## C-1542
 //!
 //! - Status: `Theoretical`
-//! - Last verified: 2026-03-23
+//! - Last verified: 2026-03-25
 //! - Statement: Moreno Theorem 1.16 (mod-4 eigenspace constraint): dim_R(V_lambda) = 0 mod 4 for all lambda > 0, lambda != 1 in the T~_a spectrum (eigenvalue -lambda^2 of L_a^2 on H_a^perp). Source: Moreno (1997) arXiv:q-alg/9710013v1.
-//! - Where stated: crates/algebra_analysis/src/moreno.rs::MorenoDecomposition::all_mod4
-//! - What would verify/refute it:
+//! - Where stated: crates/moreno_1997/src/lib.rs::MorenoDecomposition::all_mod4; proofs/theories/C1542_MorVlambdaMod4.v::moreno16_v1_eq_ha_perp, moreno16_nonunit_vlambda_trivial, moreno16_canonical_mod4_profile (canonical A_3 lane); proofs/theories/C1542_MorVlambdaOrbit.v::moreno16_vlambda_dim_div4, moreno16_vlambda_dim_mod4, moreno16_orbit_dim_div4, moreno16_orbit_dim_mod4 (abstract H-module lane)
+//! - What would verify/refute it: 
 //!
 //! ## C-1543
 //!
 //! - Status: `Verified`
 //! - Last verified: 2026-03-23
 //! - Statement: Moreno Corollary 1.17 (annihilator bound): 0 <= dim_R(Ker L_a) = 0 mod 4 and dim_R(Ker L_a) <= 2^n - 4 for doubly-pure unit-norm a in A_n. Moreno bound is 2^n - 4; BDI bound 2^n - 4n + 4 is tighter for n >= 4. Numerically verified: a=e1 in 8D gives Ker(L_a) dim 0; a=(e1+e10)/sqrt(2) in 16D gives Ker(L_a) dim 4. Source: Moreno (1997) arXiv:q-alg/9710013v1.
-//! - Where stated: crates/algebra_analysis/src/moreno.rs::verify_corollary_1_17; crates/gororoba_algebra/src/analysis/annihilators.rs::moreno_corollary_1_17_bound; tests::test_verify_corollary_1_17_a3, test_verify_corollary_1_17_a4_with_zd
-//! - What would verify/refute it:
+//! - Where stated: crates/moreno_1997/src/lib.rs::verify_corollary_1_17; crates/gororoba_algebra/src/analysis/annihilators.rs::moreno_corollary_1_17_bound; tests::test_verify_corollary_1_17_a3, test_verify_corollary_1_17_a4_with_zd
+//! - What would verify/refute it: 
 //!
 //! ## C-1544
 //!
 //! - Status: `Verified`
-//! - Last verified: 2026-03-23
+//! - Last verified: 2026-03-25
 //! - Statement: Moreno Theorem 2.3 (Ker(S) decomposition): For special couple {a,b} in A_n, Ker(S restricted to V(a;b)^perp) = Ker(L_{a+b}) + Ker(L_{a-b}), where both kernels lie in V(a;b)^perp and S(y) = (a,y,b) = R_b*L_a - L_a*R_b. S is skew-symmetric. Numerically verified at 8D for {e1,e2}. Source: Moreno (1997) arXiv:q-alg/9710013v1.
-//! - Where stated: crates/algebra_analysis/src/moreno.rs::s_operator_matrix, ker_s_restricted_decomposition; tests::test_s_operator_is_skew_symmetric, test_ker_s_restricted_decomposition_a3
-//! - What would verify/refute it:
+//! - Where stated: crates/moreno_1997/src/lib.rs::s_operator_matrix, ker_s_restricted_decomposition; proofs/theories/C1544_MorKerSDecomp.v::moreno23_kernel_decomposition_canonical; tests::test_s_operator_is_skew_symmetric, test_ker_s_restricted_decomposition_a3
+//! - What would verify/refute it: 
 //!
 //! ## C-1545
 //!
 //! - Status: `Verified`
-//! - Last verified: 2026-03-23
+//! - Last verified: 2026-03-25
 //! - Statement: Moreno Corollary 2.4 (mod-8 Ker(S) constraint): dim Ker(S restricted to V(a;b)^perp) = 2 * dim Ker(L_{a+b}) = 0 mod 8, for special couple {a,b}. Numerically verified at 8D for {e1,e2}. Source: Moreno (1997) arXiv:q-alg/9710013v1.
-//! - Where stated: crates/algebra_analysis/src/moreno.rs::verify_corollary_2_4; tests::test_ker_s_restricted_decomposition_a3
-//! - What would verify/refute it:
+//! - Where stated: crates/moreno_1997/src/lib.rs::verify_corollary_2_4; proofs/theories/C1544_MorKerSDecomp.v::moreno24_canonical_mod8; tests::test_ker_s_restricted_decomposition_a3
+//! - What would verify/refute it: 
 //!
 //! ## C-1546
 //!
-//! - Status: `Verified`
-//! - Last verified: 2026-03-23
+//! - Status: `Theoretical`
+//! - Last verified: 2026-03-25
 //! - Statement: Moreno Theorem 2.9 (ZD eigenvalue characterization): For alternative unit-norm trace-zero a, b in A_n, the pair (a,b) in A_{n+1} is a zero divisor iff -2 is an eigenvalue of L_{a+b}^2 on A_n. This is an O(dim^3) criterion replacing O(dim^4) brute-force search. In A_3 (alternative algebra), c=a+b with orthogonal unit a,b gives c^2=-2 so L_c^2=-2I; ALL such pairs lift to ZDs in A_4. Verified: known pair (e1+e10, e4-e15)/sqrt(2) in 16D satisfies the criterion. Source: Moreno (1997) arXiv:q-alg/9710013v1.
-//! - Where stated: crates/algebra_analysis/src/moreno.rs::has_eigenvalue_minus_2, find_zd_witness_moreno, is_zd_moreno; tests::test_has_eigenvalue_minus_2_known_zd_16d, test_is_zd_moreno_known_pair_16d, test_is_zd_moreno_non_zd_pair_8d
-//! - What would verify/refute it:
+//! - Where stated: crates/moreno_1997/src/lib.rs::has_eigenvalue_minus_2, find_zd_witness_moreno, is_zd_moreno; proofs/theories/C1546_MorEigenZD.v::moreno29_c_has_eigen_minus_two, moreno29_pair_is_zero_divisor, moreno29_parallel_not_eigen_minus_two (canonical witness lane); proofs/theories/C1546_MorEigenIFF.v::moreno29_witness_implies_eigen, moreno29_eigen_implies_witness, moreno29_abstract_iff (abstract iff core); tests::test_has_eigenvalue_minus_2_known_zd_16d, test_is_zd_moreno_known_pair_16d, test_is_zd_moreno_non_zd_pair_8d
+//! - What would verify/refute it: 
 //!
 //! ## C-1547
 //!
 //! - Status: `Verified`
-//! - Last verified: 2026-03-23
+//! - Last verified: 2026-03-25
 //! - Statement: Moreno Theorem 2.13 (special triple -> octonion copy): V(a;y;b) = span{e0, a, b, a*b, (a*y)*b, y*b, a*y, y} is a copy of O (octonions) embedded in A_n iff {a,y,b} is a special triple ({a,b} special couple AND (ay)b = -a(yb)). Basis source order matches standard octonion index assignment [e0..e7]. Verified at 8D for {e1, e7, e2}: all 64 products in V(e1;e7;e2) match the CD octonion multiplication table. Source: Moreno (1997) arXiv:q-alg/9710013v1.
-//! - Where stated: crates/algebra_analysis/src/moreno.rs::v_triple_basis, verify_theorem_2_13; tests::test_v_triple_basis_order_a3, test_verify_theorem_2_13_e1_e7_e2
-//! - What would verify/refute it:
+//! - Where stated: crates/moreno_1997/src/lib.rs::v_triple_basis, verify_theorem_2_13; proofs/theories/C1547_MorSpecialTripleOct.v::moreno_special_triple_relation, moreno_v_mul_table; tests::test_v_triple_basis_order_a3, test_verify_theorem_2_13_e1_e7_e2
+//! - What would verify/refute it: 
+//!
+//! ## C-1548
+//!
+//! - Status: `Verified`
+//! - Last verified: 2026-04-11
+//! - Statement: Moreno Theorem 1.16 nonempty H_a-block stepping bridge (T-065): for any doubly-pure unit-norm a and lambda > 0, if V_lambda(a) decomposes into block_count >= 1 quaternionic H_a-blocks (vlambda_dim = 4 * block_count), then (1) 4 <= vlambda_dim (orbit lower bound) and (2) is_h_module_dim(vlambda_dim - 4) (complement descent), and the hmd_step constructor derives is_h_module_dim(vlambda_dim) directly. The proof tree matches Moreno's orbit-stepping narrative: nonempty V_lambda => 4D H_a-orbit => orthogonal complement descent. Source: Moreno (1997) arXiv:q-alg/9710013v1, Theorem 1.16.
+//! - Where stated: proofs/theories/C1548_MorVlambdaHBlock.v (moreno16_nb_is_h_module_dim, moreno16_nb_lower_bound, moreno16_nb_complement_hmd); proofs/theories/Moreno1997.v (Moreno1997_theorem_1_16_nonempty_block_step_bridge)
+//! - What would verify/refute it: 
+//!
+//! ## C-1549
+//!
+//! - Status: `Established`
+//! - Last verified: 2026-04-12
+//! - Statement: The E-167 LBM divergence mechanism is confirmed as O(Ma^2) compressibility breakdown (Vector 2): Ma exceeds 0.3 at step 0 and 1.0 at step 3 before f_i<0 appears at step 4, establishing causal precedence. The first positivity violation occurs in the outer Gaussian gradient shell (r_norm~0.80-0.85), not at the domain boundary. BGK catastrophically diverges at contrast=29 (min_f reaches -10^8 by step 20) because its uniform relaxation amplifies non-physical modes; MRT recovers at contrast=29 because s_ghost=1.0 instant damping annihilates ghost moments each collision, breaking the positive feedback loop. Secondary periodic-wrap interference is present (peak H_rel at iz=0 domain face) but is not the primary divergence trigger.
+//! - Where stated: E-218 lbm-rca-probe RCA run (2026-04-12)
+//! - What would verify/refute it: 
+//!
+//! ## C-1550
+//!
+//! - Status: `Established`
+//! - Last verified: 2026-04-12
+//! - Statement: The inv_tau precomputation optimization in kernels_soa.cu eliminates the per-cell-per-step MUFU.RCP (50.6 cycles: 41.55-cycle MUFU + ~9-cycle Newton-Raphson SFU stall) by storing 1/tau directly in the tau array. On the RTX 4070 Ti (Ada SM 8.9), this yields +12.1% MLUPS for the standard BGK kernel at 64^3 (compute-bound: fits in 48 MB L2, 4146->4650 MLUPS) and +14.1% for mrt_coarsened at 64^3 (3604->4113 MLUPS). At 128^3 the kernel is memory-bandwidth-bound (~80% of 504 GB/s peak) so the instruction saving is masked by the bandwidth ceiling. The Smagorinsky and ZD-viscosity kernels invert tau at write time (1 MUFU.RCP per cell per tau update, amortized over N_steps between updates). Empirical validation: cuda-precision-bench A/B run 2026-04-12, data/output/e219_delta.csv.
+//! - Where stated: E-219 inv_tau kernel port (2026-04-12)
+//! - What would verify/refute it: 

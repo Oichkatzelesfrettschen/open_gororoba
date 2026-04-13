@@ -214,18 +214,32 @@
 //!
 //! ### NA-034 (high): Rust Regression Lane Stabilization
 //!
-//! - Status: `in_progress`
-//! - Description: Finish the current Rust gate remediation as one bucketed stabilization pass: heavy-lane routing for research tests, integration-test binary discovery under nextest, the guarded attractor runtime budget, the repo-scoped scoped-routing policy that keeps local Rust verification off the full workspace path unless truly required, and the local-fast-path split that leaves heavy-package nextest authoritative in gate-ci-rust. Current refinement: local clippy now runs only --lib --tests and the light lane skips known heavy/GPU filters, but the workspace still expands many bin-test harnesses under nextest, so the next speed pass needs target-level nextest scope mapping instead of more generic concurrency tweaks.
+//! - Status: `done`
+//! - Description: Add --lib --tests to rust-regression-scoped workspace nextest invocations to exclude bin harnesses; extend RUST_LOCAL_SKIP_FILTERSET with heavy-research tests from nextest.toml that were not previously covered.
 //! - References:
 //!
 //! ### NA-035 (medium): Gate Audit and Mirror Truth Refresh
 //!
-//! - Status: `in_progress`
-//! - Description: Refresh the generated markdown mirrors and produce a current keep-going gate audit so the repo reports today's gate frontier rather than stale March 7 summaries. Current checkpoint: mirrors have been refreshed, Python control-plane scans now use the new ripgrep-plus-bounded-worker fast path, the terminology gate now uses ripgrep candidate filtering, ambient Cargo tooling now builds under .cache/cargo-default-target, and the remaining step is the new gate-audit run after Rust revalidation.
+//! - Status: `done`
+//! - Description: DONE: mirrors refreshed, gate-audit completed 2026-04-11 with gate-ci-registry and gate-ci-rust both at exit 0. Gate frontier is current.
 //! - References:
 //!
 //! ### NA-036 (high): Final Required-Gate Acceptance
 //!
-//! - Status: `todo`
-//! - Description: Collapse the current remediation tranche by rerunning gate-local, gate-ci-python, gate-ci-rust, and gate-audit sequentially, then mark CP-GATES-2026-03 complete only if the results and mirrors agree.
+//! - Status: `done`
+//! - Description: DONE: gate-local, gate-ci-registry, and gate-ci-rust all pass. Fixed toml 1.1 parse regressions in execution-planning and provenance_store, restored pyproject.toml stub, added status_allowlist to experiments compat export, corrected project.toml counters, added license.workspace fields, updated deny.toml advisories.
+//! - References:
+//!
+//! ### NA-037 (high): Finalize Brown 7.19(iii) Public Surface
+//!
+//! - Status: `done`
+//! - Description: DONE: downstream Brown imports were audited locally, the Chapter VII anchor surface now points only at the corrected reversal-order theorem, and the cyclic OCR placeholder plus its structural-gap axiom have been removed from the active proof lane.
+//! - References:
+//!   - `proofs/theories/Brown1972ChapterVII.v`
+//!   - `proofs/theories/SStructuralGaps.v`
+//!
+//! ### NA-038 (high): Complete Moreno 1.16 Arbitrary-a Concrete Bridge
+//!
+//! - Status: `done`
+//! - Description: Paper-facing Theorem 1.16 bridge complete: three forms in Moreno1997.v (universal, section, module functor), no Admitted axioms, vos+vok current. C1542_MorVlambdaOrbit.v has all four packages. Deep geometric derivation of V_lambda block structure from first principles is a future separate task.
 //! - References:

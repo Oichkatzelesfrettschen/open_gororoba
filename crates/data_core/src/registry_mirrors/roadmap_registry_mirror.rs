@@ -60,16 +60,9 @@
 //! ### WS-GATES-001: Required Gate Stabilization
 //!
 //! - Priority: `high`
-//! - Status: `in_progress`
-//! - Description: Stabilize the scoped local gate, the authoritative Python gate, and the authoritative Rust gate without exploding backlog tracking into per-test busywork. Current tranche CP-GATES-2026-03 keeps the work bucketed into control-plane truthfulness, Rust regression routing, and final acceptance evidence.
+//! - Status: `done`
+//! - Description: DONE (CP-GATES-2026-03): gate-local, gate-ci-registry, and gate-ci-rust all pass with exit code 0 as of 2026-04-11. Fixed toml 1.1 parse regressions, restored pyproject.toml, corrected binary_count and experiment counters, added missing license fields, updated deny.toml advisory list.
 //! - Primary outputs:
-//!   - `Makefile`
-//!   - `.githooks/pre-push`
-//!   - `.github/workflows/ci.yml`
-//!   - `registry/control_plane_roadmap.toml`
-//!   - `registry/next_actions.toml`
-//!   - `registry/todo.toml`
-//!   - `reports/gates/`
 //!
 //! ### WS-GPU-001: Phase 5: GPU Tensor Networks + Octonion Connection
 //!
@@ -133,7 +126,7 @@
 //!
 //! - Priority: `high`
 //! - Status: `done`
-//! - Description: Move markdown operational docs to TOML-first authoritative registries with generated markdown mirrors.
+//! - Description: Move markdown operational docs into structured registries with generated markdown mirrors.
 //! - Primary outputs:
 //!   - `registry/knowledge_sources.toml`
 //!   - `registry/knowledge/documents.toml`
