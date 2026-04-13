@@ -1,4 +1,4 @@
-use crate::nanograv_timing::canonical_pulsar_name;
+use super::timing::canonical_pulsar_name;
 use anyhow::{Context, Result};
 use regex::Regex;
 use std::{

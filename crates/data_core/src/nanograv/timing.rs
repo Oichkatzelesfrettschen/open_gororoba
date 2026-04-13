@@ -1,5 +1,5 @@
 use anyhow::{Context, Result};
-use data_core::spatial::{ecliptic_to_equatorial_vector, parse_dms_radians, parse_hms_radians};
+use crate::spatial::{ecliptic_to_equatorial_vector, parse_dms_radians, parse_hms_radians};
 use serde::{Deserialize, Serialize};
 use std::{
     collections::BTreeMap,

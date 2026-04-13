@@ -1,6 +1,6 @@
-use crate::{
-    nanograv_refit::load_phase1_models_from_report,
-    nanograv_timing_model::{BinaryFamily, ReleaseBand, TimingModel},
+use super::{
+    refit::load_phase1_models_from_report,
+    timing_model::{BinaryFamily, ReleaseBand, TimingModel},
 };
 use anise::{
     constants::frames::{EARTH_ITRF93, EARTH_J2000, SSB_J2000, SUN_J2000},
@@ -309,7 +309,7 @@ trait TimingModelExt {
     fn parameter_term_local(
         &self,
         name: &str,
-    ) -> Option<&crate::nanograv_timing_model::ParameterTerm>;
+    ) -> Option<&super::timing_model::ParameterTerm>;
     fn parameter_value_local(&self, name: &str) -> Option<f64>;
     fn parameter_bool_local(&self, name: &str) -> Option<bool>;
 }
@@ -318,7 +318,7 @@ impl TimingModelExt for TimingModel {
     fn parameter_term_local(
         &self,
         name: &str,
-    ) -> Option<&crate::nanograv_timing_model::ParameterTerm> {
+    ) -> Option<&super::timing_model::ParameterTerm> {
         let astrometry = [
             self.astrometry.raj.as_ref(),
             self.astrometry.decj.as_ref(),
@@ -2241,7 +2241,7 @@ fn solar_system_shapiro_seconds(sun_from_earth_km: [f64; 3], sky_unit: [f64; 3])
 }
 
 fn selector_matches_observation(
-    selectors: &[crate::nanograv_timing_model::SelectorTerm],
+    selectors: &[super::timing_model::SelectorTerm],
     observation: &IndependentObservation,
 ) -> bool {
     selectors.iter().all(|selector| {
@@ -2257,7 +2257,7 @@ fn selector_matches_observation(
 }
 
 fn tagged_term_matches_observation(
-    term: &crate::nanograv_timing_model::TaggedTerm,
+    term: &super::timing_model::TaggedTerm,
     observation: &IndependentObservation,
 ) -> bool {
     selector_matches_observation(&term.selectors, observation)

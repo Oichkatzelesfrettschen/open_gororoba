@@ -446,11 +446,10 @@ fn escape_tsv_field(value: &str) -> String {
 
 #[cfg(test)]
 mod tests {
-    use super::AcquisitionJournalRow;
+    use super::*;
 
-    #[test]
-    fn acquisition_journal_round_trip_preserves_fields() {
-        let row = AcquisitionJournalRow {
+    fn sample_journal_row() -> AcquisitionJournalRow {
+        AcquisitionJournalRow {
             at_utc: "2026-03-26T12:00:00Z".to_string(),
             action: "record".to_string(),
             session_id: "session-a".to_string(),
@@ -482,11 +481,153 @@ mod tests {
             era_ids: "century_1900_1999".to_string(),
             nomenclature_ids: "tower_name_normalization".to_string(),
             note: "ok".to_string(),
-        };
+        }
+    }
 
+    #[test]
+    fn acquisition_journal_round_trip_preserves_fields() {
+        let row = sample_journal_row();
         let parsed = AcquisitionJournalRow::from_tsv_line(&row.to_tsv_line()).unwrap();
         assert_eq!(parsed.session_id, row.session_id);
         assert_eq!(parsed.project_artifact_rel, row.project_artifact_rel);
         assert_eq!(parsed.row_ledger_refs, row.row_ledger_refs);
+    }
+
+    #[test]
+    fn tsv_escaping_strips_tabs_and_newlines() {
+        let mut row = sample_journal_row();
+        row.note = "has\ttab\nand\rnewline".to_string();
+        let line = row.to_tsv_line();
+        assert!(!line.contains('\t') || line.matches('\t').count() == 30);
+        let parsed = AcquisitionJournalRow::from_tsv_line(&line).unwrap();
+        assert_eq!(parsed.note, "has tab and newline");
+    }
+
+    #[test]
+    fn from_tsv_line_rejects_wrong_field_count() {
+        let bad = "a\tb\tc";
+        let result = AcquisitionJournalRow::from_tsv_line(bad);
+        assert!(result.is_err());
+        let msg = result.unwrap_err().to_string();
+        assert!(msg.contains("31"), "error should mention expected 31 fields: {msg}");
+    }
+
+    #[test]
+    fn header_has_31_columns() {
+        let header = AcquisitionJournalRow::header();
+        let count = header.split('\t').count();
+        assert_eq!(count, 31, "header must have exactly 31 tab-separated columns");
+    }
+
+    #[test]
+    fn contract_toml_round_trip() {
+        let contract = ProjectApiContract {
+            schema_version: Some(2),
+            project_id: Some("test-project".to_string()),
+            entrypoints: ProjectApiEntrypoints {
+                inventory: "data/inventory.toml".to_string(),
+                eras: "data/eras.toml".to_string(),
+                gaps: "data/gaps.toml".to_string(),
+                nomenclature: "data/nomenclature.toml".to_string(),
+                candidate_expansion: "data/candidates.toml".to_string(),
+                crosswalk: "data/crosswalk.toml".to_string(),
+                acquisition_journal: "data/journal.tsv".to_string(),
+                availability_summary: "data/availability.toml".to_string(),
+                row_availability_ledger: "data/row_ledger.toml".to_string(),
+                century_bucket_summary: "data/centuries.toml".to_string(),
+                search_queue: "data/search_queue.toml".to_string(),
+                acquisition_stack: "data/stack.toml".to_string(),
+            },
+        };
+        let serialized = toml::to_string_pretty(&contract).expect("serialize");
+        let parsed: ProjectApiContract = toml::from_str(&serialized).expect("deserialize");
+        assert_eq!(parsed.schema_version, Some(2));
+        assert_eq!(parsed.project_id.as_deref(), Some("test-project"));
+        assert_eq!(parsed.entrypoints.inventory, "data/inventory.toml");
+        assert_eq!(parsed.entrypoints.acquisition_stack, "data/stack.toml");
+    }
+
+    #[test]
+    fn crosswalk_resolution_by_search_target_id() {
+        let crosswalk = ProjectApiCrosswalkFile {
+            binding: vec![ProjectApiCrosswalkBinding {
+                id: "binding-1".to_string(),
+                search_target_id: "tgt-alpha".to_string(),
+                ..ProjectApiCrosswalkBinding::default()
+            }],
+            ..ProjectApiCrosswalkFile::default()
+        };
+        let found = resolve_crosswalk_binding(&crosswalk, Some("tgt-alpha"), None);
+        assert!(found.is_some());
+        assert_eq!(found.unwrap().id, "binding-1");
+    }
+
+    #[test]
+    fn crosswalk_resolution_by_source_id_fallback() {
+        let crosswalk = ProjectApiCrosswalkFile {
+            binding: vec![ProjectApiCrosswalkBinding {
+                id: "binding-2".to_string(),
+                search_target_id: "tgt-beta".to_string(),
+                candidate_id: Some("candidate-x".to_string()),
+                ..ProjectApiCrosswalkBinding::default()
+            }],
+            ..ProjectApiCrosswalkFile::default()
+        };
+        let found = resolve_crosswalk_binding(&crosswalk, None, Some("candidate-x"));
+        assert!(found.is_some());
+        assert_eq!(found.unwrap().id, "binding-2");
+    }
+
+    #[test]
+    fn crosswalk_resolution_returns_none_on_miss() {
+        let crosswalk = ProjectApiCrosswalkFile::default();
+        assert!(resolve_crosswalk_binding(&crosswalk, Some("missing"), None).is_none());
+    }
+
+    #[test]
+    fn journal_multi_value_round_trip() {
+        let values = vec!["a".to_string(), "b".to_string(), "c".to_string()];
+        let encoded = journal_multi_value(&values);
+        assert_eq!(encoded, "a;b;c");
+        let decoded = split_journal_multi_value(&encoded);
+        assert_eq!(decoded, values);
+    }
+
+    #[test]
+    fn split_journal_multi_value_handles_empty_segments() {
+        let decoded = split_journal_multi_value("a;;b; ;c");
+        assert_eq!(decoded, vec!["a", "b", "c"]);
+    }
+
+    #[test]
+    fn repo_path_absolute_passthrough() {
+        let root = Path::new("/repo");
+        let abs = Path::new("/other/file.txt");
+        assert_eq!(repo_path(root, abs), PathBuf::from("/other/file.txt"));
+    }
+
+    #[test]
+    fn repo_path_relative_joined() {
+        let root = Path::new("/repo");
+        let rel = Path::new("data/file.txt");
+        assert_eq!(repo_path(root, rel), PathBuf::from("/repo/data/file.txt"));
+    }
+
+    #[test]
+    fn journal_file_round_trip_via_tempfile() {
+        let tmp = tempfile::NamedTempFile::new().expect("create temp file");
+        let path = tmp.path();
+
+        let rows = vec![sample_journal_row()];
+        append_acquisition_journal_rows(path, &rows).expect("append");
+
+        let loaded = load_acquisition_journal_rows(path).expect("load");
+        assert_eq!(loaded.len(), 1);
+        assert_eq!(loaded[0].session_id, "session-a");
+
+        // Appending again should yield 2 rows total.
+        append_acquisition_journal_rows(path, &rows).expect("append again");
+        let loaded2 = load_acquisition_journal_rows(path).expect("load2");
+        assert_eq!(loaded2.len(), 2);
     }
 }

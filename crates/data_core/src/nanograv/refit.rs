@@ -1,6 +1,4 @@
-use crate::nanograv_timing_model::{
-    ReleaseBand, TaggedTerm, TimingModel, load_release_timing_models,
-};
+use super::timing_model::{ReleaseBand, TaggedTerm, TimingModel, load_release_timing_models};
 use anyhow::{Context, Result, bail};
 use nalgebra::{DMatrix, DVector};
 use std::{
