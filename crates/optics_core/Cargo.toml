@@ -8,6 +8,7 @@ autobins = false
 
 [dependencies]
 num-complex = { workspace = true }
+rustfft = { workspace = true }
 thiserror = { workspace = true }
 
 [dev-dependencies]
