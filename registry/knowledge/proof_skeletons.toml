@@ -11135,18 +11135,18 @@ id = "PRS-00619"
 skeleton_kind = "claim_decision_rule"
 theorem_label = "C-1550"
 claim_id = "C-1550"
-assumptions = ["The inv_tau precomputation optimization in kernels_soa.cu eliminates the per-cell-per-step MUFU.RCP (50.6 cycles: 41.55-cycle MUFU + ~9-cycle Newton-Raphson SFU stall) by storing 1/tau directly in the tau array. On the RTX 4070 Ti (Ada SM 8.9), this eliminates ~16% of the ALU budget per D3Q19 LBM step across all SoA kernels (BGK, MRT, tiled, coarsened, dark-halo). The Smagorinsky and ZD-viscosity kernels invert tau at write time (1 MUFU.RCP per cell per tau update, amortized over N_steps between updates). Verified by SASS RE on steinmarder reference implementation: MUFU.RCP = 41.55 cycles, Newton-Raphson correction = ~9 cycles."]
+assumptions = ["The inv_tau precomputation optimization in kernels_soa.cu eliminates the per-cell-per-step MUFU.RCP (50.6 cycles: 41.55-cycle MUFU + ~9-cycle Newton-Raphson SFU stall) by storing 1/tau directly in the tau array. On the RTX 4070 Ti (Ada SM 8.9), this yields +12.1% MLUPS for the standard BGK kernel at 64^3 (compute-bound: fits in 48 MB L2, 4146->4650 MLUPS) and +14.1% for mrt_coarsened at 64^3 (3604->4113 MLUPS). At 128^3 the kernel is memory-bandwidth-bound (~80% of 504 GB/s peak) so the instruction saving is masked by the bandwidth ceiling. The Smagorinsky and ZD-viscosity kernels invert tau at write time (1 MUFU.RCP per cell per tau update, amortized over N_steps between updates). Empirical validation: cuda-precision-bench A/B run 2026-04-12, data/output/e219_delta.csv."]
 obligations = ["Establish evidence-backed status for C-1550."]
-derivation_steps = ["Provisional pending benchmark run with cuda_precision_bench to confirm MLUPS improvement"]
-decision_rule = "Provisional pending benchmark run with cuda_precision_bench to confirm MLUPS improvement"
-conclusion = "PROVISIONAL: Provisional"
+derivation_steps = ["Confirmed by cuda-precision-bench A/B: +12", "1% standard BGK 64^3, +14", "1% mrt_coarsened 64^3 (compute-bound)", "128^3 flat (bandwidth-bound)", "See data/output/e219_delta", "csv"]
+decision_rule = "Confirmed by cuda-precision-bench A/B: +12.1% standard BGK 64^3, +14.1% mrt_coarsened 64^3 (compute-bound). 128^3 flat (bandwidth-bound). See data/output/e219_delta.csv."
+conclusion = "ESTABLISHED: Established"
 source_uid = "C-1550"
 source_registry = "registry/canonical/control_plane.sqlite3"
 source_path = "registry/canonical/control_plane.sqlite3"
 line_start = 0
 line_end = 0
 claim_refs = ["C-1550", "E-219"]
-evidence_refs = ["E-219"]
+evidence_refs = ["A/B", "E-219", "data/output/e219_delta.csv", "e219_delta.csv"]
 
 [[skeleton]]
 id = "PRS-00620"
