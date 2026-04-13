@@ -333,6 +333,10 @@ struct RequirementsLegacyArgs {
     input: PathBuf,
     #[arg(long, default_value = "registry/requirements_narrative.toml")]
     narrative: PathBuf,
+    /// Optional audit tools TOML; when provided, appends an "Audit Tools" section
+    /// to the primary requirements markdown.
+    #[arg(long)]
+    audit_tools: Option<PathBuf>,
     #[arg(long, default_value_t = false)]
     allow_unicode: bool,
 }
@@ -1827,7 +1831,7 @@ fn emit_requirements_legacy(args: RequirementsLegacyArgs) -> Result<(), String> 
     let narrative_data = read_toml_value(&args.narrative)?;
     let req_meta = table(&req_data, "requirements")?;
     let primary_markdown = str_field(req_meta, "primary_markdown");
-    let mut targets = vec!["REQUIREMENTS.md".to_string(), primary_markdown];
+    let mut targets = vec!["REQUIREMENTS.md".to_string(), primary_markdown.clone()];
     for module in rows(&req_data, "module") {
         let markdown = str_field(module, "markdown");
         if !markdown.is_empty() {
@@ -1851,6 +1855,14 @@ fn emit_requirements_legacy(args: RequirementsLegacyArgs) -> Result<(), String> 
         title_by_path.insert(path, str_field(doc, "title"));
     }
     let module_rows = rows(&req_data, "module");
+
+    // Load audit tools TOML once if provided. Keep the Value alive so rows()
+    // can borrow from it.
+    let audit_tools_data = args
+        .audit_tools
+        .as_ref()
+        .map(|path| read_toml_value(path))
+        .transpose()?;
 
     for rel_path in targets {
         let title = title_by_path
@@ -1889,6 +1901,56 @@ fn emit_requirements_legacy(args: RequirementsLegacyArgs) -> Result<(), String> 
                 }
             }
         }
+
+        // Append "Audit Tools" section to the primary requirements markdown only.
+        if rel_path == primary_markdown || rel_path == "REQUIREMENTS.md" {
+            if let Some(ref data) = audit_tools_data {
+                let tool_rows = rows(data, "tool");
+                if !tool_rows.is_empty() {
+                    lines.push(String::new());
+                    lines.push("## Audit Tools".to_string());
+                    lines.push(String::new());
+                    lines.push(
+                        "Each tool listed below is available via a dedicated `make` target. \
+                         Tools marked **audit-deep** are included in `make audit-deep`."
+                            .to_string(),
+                    );
+                    lines.push(String::new());
+                    lines.push(
+                        "| Tool | Make Target | Install | audit-deep | Status |".to_string(),
+                    );
+                    lines.push(
+                        "| --- | --- | --- | ---: | --- |".to_string(),
+                    );
+                    for tool in &tool_rows {
+                        let name = str_field(tool, "name");
+                        let make_target = str_field(tool, "make_target");
+                        let install = str_field(tool, "install");
+                        let in_audit_deep = bool_field(tool, "audit_deep");
+                        let status = str_field(tool, "status");
+                        let blocked = str_field(tool, "blocked_reason");
+                        let status_cell = if blocked.is_empty() {
+                            status
+                        } else {
+                            format!("{} -- {}", status, blocked)
+                        };
+                        lines.push(format!(
+                            "| {} | `make {}` | {} | {} | {} |",
+                            name,
+                            make_target,
+                            if install.is_empty() {
+                                "(built-in)".to_string()
+                            } else {
+                                format!("`{}`", install)
+                            },
+                            if in_audit_deep { "yes" } else { "no" },
+                            status_cell,
+                        ));
+                    }
+                }
+            }
+        }
+
         lines.push(String::new());
         write_output(
             &args.repo_root.join(&rel_path),

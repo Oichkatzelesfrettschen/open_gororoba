@@ -1,0 +1,63 @@
+# Audit tools registry.
+# Source of truth for the "Audit Tools" section in docs/REQUIREMENTS.md.
+# Emitted by `registry-emit requirements-legacy --audit-tools registry/audit_tools.toml`.
+
+[meta]
+updated = "2026-04-13"
+description = "Tools invoked by `make audit-deep` and related quality targets."
+
+[[tool]]
+id = "rust-clippy"
+name = "Clippy"
+make_target = "rust-clippy"
+install = "rustup component add clippy"
+description = "Workspace-wide Rust lint pass with warnings-as-errors (-D warnings)."
+audit_deep = true
+status = "active"
+
+[[tool]]
+id = "cargo-deny"
+name = "cargo-deny"
+make_target = "cargo-deny-check"
+install = "cargo install cargo-deny"
+description = "License, advisory, ban, and source policy checks (deny.toml)."
+audit_deep = true
+status = "active"
+
+[[tool]]
+id = "dep-audit"
+name = "Dependency Audit"
+make_target = "dep-audit"
+install = ""
+description = "Duplicate dependency version report via `cargo tree -d`."
+audit_deep = true
+status = "active"
+
+[[tool]]
+id = "cpd-audit"
+name = "PMD CPD"
+make_target = "cpd-audit"
+install = "paru -S pmd"
+description = "Cross/within-crate Rust copy-paste detection (42-token minimum)."
+audit_deep = true
+status = "active"
+
+[[tool]]
+id = "rust-semver-check"
+name = "cargo-semver-checks"
+make_target = "rust-semver-check"
+install = "cargo install cargo-semver-checks"
+description = "Public API SemVer compliance against baseline tag."
+audit_deep = false
+status = "blocked"
+blocked_reason = "fwht external path dep cannot resolve from git temp checkout."
+
+[[tool]]
+id = "docs-freshness"
+name = "Docs Freshness"
+make_target = "docs-freshness"
+install = ""
+description = "Validates docs site builds and redirect checks pass."
+audit_deep = false
+status = "blocked"
+blocked_reason = "Mathematical bracket notation [a,b,c] triggers broken-intra-doc-links."
