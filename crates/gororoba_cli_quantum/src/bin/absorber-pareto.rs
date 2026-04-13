@@ -1,176 +1,51 @@
 use anyhow::Result;
-use num_complex::Complex64;
+use optics_core::absorber_pareto::{
+    FractionalSchrodingerConfig, ParetoPoint, WavePacketConfig, pareto_sweep,
+};
 use plotters::prelude::*;
-use rustfft::FftPlanner;
-use std::{f64::consts::PI, path::PathBuf};
-
-fn integrate_trapezoidal(y: &[f64], dx: f64) -> f64 {
-    let mut sum = 0.0;
-    for i in 0..(y.len() - 1) {
-        sum += (y[i] + y[i + 1]) * 0.5 * dx;
-    }
-    sum
-}
+use std::path::PathBuf;
 
 fn main() -> Result<()> {
     println!("--- Running Absorber Pareto Sweep (Robust) ---");
 
-    let n = 1024;
-    let l_domain = 200.0;
-    let dx = (2.0 * l_domain) / n as f64;
+    let cfg = FractionalSchrodingerConfig {
+        n: 1024,
+        l_domain: 200.0,
+        alpha: 1.5,
+        d_alpha: 0.5,
+        dt: 0.25,
+        steps: 640, // t_total = 160.0 / dt = 0.25
+    };
 
-    let x: Vec<f64> = (0..n).map(|i| -l_domain + i as f64 * dx).collect();
-
-    let k: Vec<f64> = (0..n)
-        .map(|i| {
-            let freq = if i <= n / 2 {
-                i as f64
-            } else {
-                i as f64 - n as f64
-            };
-            2.0 * PI * freq / (n as f64 * dx)
-        })
-        .collect();
-
-    let alpha = 1.5_f64;
-    let d = 0.5_f64;
-    let t_total = 160.0_f64;
-    let dt = 0.25_f64;
-    let steps = (t_total / dt).round() as usize;
-    let delta = 5.0;
-
-    // Aggressive IC: right-moving packet
-    let x0 = -120.0;
-    let k0 = 1.2;
-    let sig = 8.0;
-
-    let mut psi0: Vec<Complex64> = x
-        .iter()
-        .map(|&xi| {
-            let amp = (-0.5 * ((xi - x0) / sig).powi(2)).exp();
-            let phase = k0 * xi;
-            Complex64::new(amp * phase.cos(), amp * phase.sin())
-        })
-        .collect();
-
-    let density0: Vec<f64> = psi0.iter().map(|p| p.norm_sqr()).collect();
-    let norm = integrate_trapezoidal(&density0, dx).sqrt();
-    for p in &mut psi0 {
-        *p /= norm;
-    }
-
-    let phase_k: Vec<Complex64> = k
-        .iter()
-        .map(|&ki| {
-            let phase = -d * ki.abs().powf(alpha) * dt;
-            Complex64::new(phase.cos(), phase.sin())
-        })
-        .collect();
-
-    let mut planner = FftPlanner::new();
-    let fft = planner.plan_fft_forward(n);
-    let ifft = planner.plan_fft_inverse(n);
-    let scale = 1.0 / n as f64;
-
-    println!("Computing free evolution baseline...");
-    let mut psi_free = psi0.clone();
-    for _ in 0..steps {
-        fft.process(&mut psi_free);
-        for (p, pk) in psi_free.iter_mut().zip(phase_k.iter()) {
-            *p *= pk;
-        }
-        ifft.process(&mut psi_free);
-        for p in &mut psi_free {
-            *p *= scale;
-        }
-    }
-
-    let run_abs = |eta: f64, m_order: i32, xc: f64| -> Vec<Complex64> {
-        let absorb: Vec<f64> = x
-            .iter()
-            .map(|&xi| {
-                if xi.abs() > xc {
-                    (-eta * (xi.abs() - xc).powi(m_order)).exp()
-                } else {
-                    1.0
-                }
-            })
-            .collect();
-
-        let mut psi = psi0.clone();
-        let mut local_planner = FftPlanner::new();
-        let local_fft = local_planner.plan_fft_forward(n);
-        let local_ifft = local_planner.plan_fft_inverse(n);
-
-        for _ in 0..steps {
-            local_fft.process(&mut psi);
-            for (p, pk) in psi.iter_mut().zip(phase_k.iter()) {
-                *p *= pk;
-            }
-            local_ifft.process(&mut psi);
-            for (p, &ab) in psi.iter_mut().zip(absorb.iter()) {
-                *p *= scale * ab;
-            }
-        }
-        psi
+    let wp = WavePacketConfig {
+        x0: -120.0,
+        k0: 1.2,
+        sigma: 8.0,
     };
 
     let orders = vec![4, 6, 8];
     let etas = vec![2e-4, 5e-4, 1e-3];
     let xcs = vec![110.0, 120.0, 130.0];
+    let delta = 5.0;
 
     let total_runs = orders.len() * etas.len() * xcs.len();
     println!("Starting parameter sweep ({} combinations)...", total_runs);
 
-    struct Point {
-        m_edge: f64,
-        e_int: f64,
-        m: i32,
-        eta: f64,
-        xc: f64,
-    }
-    let mut points = Vec::new();
-    let mut count = 0;
+    let points = pareto_sweep(&cfg, &wp, &orders, &etas, &xcs, delta);
 
-    for &m in &orders {
-        for &eta in &etas {
-            for &xc in &xcs {
-                let psi_abs = run_abs(eta, m, xc);
-
-                // Edge mass
-                let mut edge_density = Vec::new();
-                for i in 0..n {
-                    if x[i].abs() > xc + delta {
-                        edge_density.push(psi_abs[i].norm_sqr());
-                    }
-                }
-                let m_edge = integrate_trapezoidal(&edge_density, dx);
-
-                // Interior distortion
-                let mut int_diff_sq = Vec::new();
-                for i in 0..n {
-                    if x[i].abs() < xc - delta {
-                        int_diff_sq.push((psi_abs[i] - psi_free[i]).norm_sqr());
-                    }
-                }
-                let e_int = integrate_trapezoidal(&int_diff_sq, dx).sqrt();
-
-                points.push(Point {
-                    m_edge,
-                    e_int,
-                    m,
-                    eta,
-                    xc,
-                });
-                count += 1;
-                if count % 5 == 0 {
-                    println!("Progress: {}/{}", count, total_runs);
-                }
-            }
-        }
+    println!("Sweep complete: {} points", points.len());
+    for pt in &points {
+        println!(
+            "  m={} eta={:.0e} xc={}: edge={:.4e} int={:.4e}",
+            pt.m, pt.eta, pt.xc, pt.m_edge, pt.e_int
+        );
     }
 
-    // Plotting
+    plot_pareto(&points)?;
+    Ok(())
+}
+
+fn plot_pareto(points: &[ParetoPoint]) -> Result<()> {
     let out_path = PathBuf::from("data/artifacts/images/absorber_pareto_3160x2820.png");
     if let Some(parent) = out_path.parent() {
         std::fs::create_dir_all(parent)?;
@@ -185,7 +60,11 @@ fn main() -> Result<()> {
         .fold(f64::INFINITY, f64::min)
         * 0.5;
     let max_x = points.iter().map(|p| p.m_edge).fold(0.0, f64::max) * 2.0;
-    let min_y = points.iter().map(|p| p.e_int).fold(f64::INFINITY, f64::min) * 0.5;
+    let min_y = points
+        .iter()
+        .map(|p| p.e_int)
+        .fold(f64::INFINITY, f64::min)
+        * 0.5;
     let max_y = points.iter().map(|p| p.e_int).fold(0.0, f64::max) * 2.0;
 
     let mut chart = ChartBuilder::on(&root)
@@ -206,7 +85,7 @@ fn main() -> Result<()> {
         .label_style(("sans-serif", 30).into_font().color(&WHITE))
         .draw()?;
 
-    for pt in &points {
+    for pt in points {
         chart.draw_series(std::iter::once(Circle::new(
             (pt.m_edge, pt.e_int),
             15,
@@ -223,6 +102,5 @@ fn main() -> Result<()> {
 
     root.present()?;
     println!("Saved: {}", out_path.display());
-
     Ok(())
 }

@@ -6,12 +6,12 @@ license.workspace = true
 
 [dependencies]
 quantum_core = { path = "../quantum_core" }
+optics_core = { path = "../optics_core" }
 anyhow = "1.0"
 clap = { workspace = true }
 num-complex.workspace = true
 image.workspace = true
 plotters.workspace = true
-rustfft.workspace = true
 rand.workspace = true
 
 [[bin]]

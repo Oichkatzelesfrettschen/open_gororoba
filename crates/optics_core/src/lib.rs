@@ -19,6 +19,7 @@
 //! - Manetsch et al., arXiv:2403.12021 (2025): Large-scale tweezer arrays
 
 pub mod absorber_benchmark;
+pub mod absorber_pareto;
 pub mod bessel;
 pub mod entropy_trap;
 pub mod fano_tcmt;
