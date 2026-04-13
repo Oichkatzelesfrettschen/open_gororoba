@@ -239,6 +239,7 @@ theories/C1544_MorKerSDecomp.v
 theories/C1546_MorEigenZD.v
 theories/C1546_MorEigenIFF.v
 theories/C1546_MorArbitraryAlternative.v
+theories/C1546_MorZDAnticomm.v
 theories/C1547_MorSpecialTripleOct.v
 theories/C1543_MorMod4Bound.v
 theories/Moreno1997.v
