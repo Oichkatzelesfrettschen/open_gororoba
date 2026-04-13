@@ -6023,11 +6023,11 @@ id = "PRS-00335"
 skeleton_kind = "claim_decision_rule"
 theorem_label = "C-1290"
 claim_id = "C-1290"
-assumptions = ["MRT ghost-moment damping (s_ghost=1.0) extends the stable Mach number envelope from Ma~0.3 (BGK) to Ma~1.5 (MRT) at matched tau=0.7, confirmed via systematic density contrast sweep from 2x to 100x on 16^3 grid."]
+assumptions = ["MRT ghost-moment damping (s_ghost=1.0) provides a modest stability advantage over BGK at matched tau=0.7 on 16^3 grid (E-167): both modes survive to contrast~15.7 (Ma~1.1); MRT retains a grace period at contrast~29.1 (Ma~3.9) while BGK diverges catastrophically at contrast~23.7. The originally claimed Ma~0.3 BGK threshold and Ma~1.5 MRT ceiling are not reproduced; actual MRT advantage is ~1.5x at the divergence threshold."]
 obligations = ["Establish evidence-backed status for C-1290."]
-derivation_steps = ["Legacy status token: Active"]
-decision_rule = "Legacy status token: Active"
-conclusion = "PROVISIONAL: Provisional"
+derivation_steps = ["E-167 run (2026-04-12, n=16, tau=0", "7, 20 contrast levels 2x-100x) refutes the Ma~0", "3 BGK and Ma~1", "5 MRT quantitative claims", "Both modes survive to contrast~15", "7 (Ma~1", "1)", "BGK diverges catastrophically at contrast~23"]
+decision_rule = "E-167 run (2026-04-12, n=16, tau=0.7, 20 contrast levels 2x-100x) refutes the Ma~0.3 BGK and Ma~1.5 MRT quantitative claims. Both modes survive to contrast~15.7 (Ma~1.1). BGK diverges catastrophically at contrast~23.7; MRT retains a grace period at contrast~29.1 (Ma~3.9, mass_err~1e-14). MRT advantage is ~1.5x at the divergence threshold, not the claimed 3-5x. Crash detection gap: binary reports survived=true for finite-but-unphysical Mach values."
+conclusion = "REFUTED: Refuted"
 source_uid = "C-1290"
 source_registry = "registry/canonical/control_plane.sqlite3"
 source_path = "registry/canonical/control_plane.sqlite3"

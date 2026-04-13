@@ -4343,8 +4343,8 @@ output_path_refs = []
 reproducibility_class = "deterministic_replay"
 run = "cargo run --release --bin mrt-stability-audit -- --n 16 --tau 0.7 --steps 200 --contrast-min 2.0 --contrast-max 100.0 --n-levels 20 --csv"
 run_command_sha256 = "3e39d8ed58eb2edf2e49641943bc21a7eae58475937c62bc1ae9361676f685d6"
-status = "planned"
-status_token = "PLANNED"
+status = "active"
+status_token = "ACTIVE"
 title = "MRT vs BGK stability envelope: density contrast sweep at tau=0.7"
 truth_surface_consumption = []
 

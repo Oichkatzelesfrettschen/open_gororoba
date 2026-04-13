@@ -1,23 +1,23 @@
 {
   "failure_count": 0,
-  "generated_at": "2026-04-12T16:39:34-07:00",
-  "output_dir": "reports/gates/2026-04-12/163632",
+  "generated_at": "2026-04-12T17:18:26-07:00",
+  "output_dir": "reports/gates/2026-04-12/171605",
   "steps": [
     {
       "exit_code": 0,
-      "log": "reports/gates/2026-04-12/163632/gate-ci-registry.log",
+      "log": "reports/gates/2026-04-12/171605/gate-ci-registry.log",
       "name": "gate-ci-registry"
     },
     {
       "exit_code": 0,
-      "log": "reports/gates/2026-04-12/163632/gate-ci-rust.log",
+      "log": "reports/gates/2026-04-12/171605/gate-ci-rust.log",
       "name": "gate-ci-rust"
     },
     {
       "exit_code": 0,
-      "log": "reports/gates/2026-04-12/163632/nextest-list.log",
+      "log": "reports/gates/2026-04-12/171605/nextest-list.log",
       "name": "nextest-list"
     }
   ],
-  "summary": "reports/gates/2026-04-12/163632/summary.md"
+  "summary": "reports/gates/2026-04-12/171605/summary.md"
 }
