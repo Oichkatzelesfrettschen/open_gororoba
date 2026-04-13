@@ -5166,10 +5166,10 @@ dependencies = [
  "clap",
  "image 0.25.10",
  "num-complex",
+ "optics_core",
  "plotters",
  "quantum_core",
  "rand 0.10.0",
- "rustfft",
 ]
 
 [[package]]
@@ -8232,6 +8232,7 @@ version = "0.1.0"
 dependencies = [
  "approx",
  "num-complex",
+ "rustfft",
  "thiserror 2.0.18",
 ]
 
