@@ -5,7 +5,7 @@
 //!
 //! Authoritative source: `registry/canonical/control_plane.sqlite3`.
 //!
-//! Total experiments: 210
+//! Total experiments: 212
 //!
 //! ## E-001: Cayley-Dickson Motif Census
 //!
@@ -339,7 +339,7 @@
 //! ## E-021: Tessarines vs. Mixed-Quaternions Categorical Distinction Census
 //!
 //! - Binary: `tessarines-mixed-quaternions-census`
-//! - Input:
+//! - Input: 
 //! - Output: (none)
 //! - Deterministic: `false`
 //! - GPU: `false`
@@ -356,7 +356,7 @@
 //! ## E-022: Albert Algebra Commutativity and Exceptional Structure Census
 //!
 //! - Binary: `albert-algebra-structure-census`
-//! - Input:
+//! - Input: 
 //! - Output: (none)
 //! - Deterministic: `false`
 //! - GPU: `false`
@@ -373,7 +373,7 @@
 //! ## E-023: Composition Algebra Taxonomy: Two-Axis Classification Framework
 //!
 //! - Binary: `composition-algebra-taxonomy`
-//! - Input:
+//! - Input: 
 //! - Output: (none)
 //! - Deterministic: `false`
 //! - GPU: `false`
@@ -390,7 +390,7 @@
 //! ## E-024: Registry Event Tracking Infrastructure
 //!
 //! - Binary: `registry-event-tracker`
-//! - Input:
+//! - Input: 
 //! - Output: (none)
 //! - Deterministic: `false`
 //! - GPU: `false`
@@ -407,7 +407,7 @@
 //! ## E-026: Third-Party Source Verification Infrastructure
 //!
 //! - Binary: `third-party-source-verifier`
-//! - Input:
+//! - Input: 
 //! - Output: (none)
 //! - Deterministic: `false`
 //! - GPU: `false`
@@ -2963,18 +2963,18 @@
 //! ## E-177: YSU-Inspired CUDA Optimization Suite: MRT ILP + CUDA Graph + Tiled Pull-Scheme + Multi-Stream Pipeline
 //!
 //! - Binary: `euclid-df-sweep`
-//! - Input: Euclid Q1 galaxy catalog (100 galaxies)
-//! - Output: CSV per-galaxy D_f, stdout timing
+//! - Input: data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet
+//! - Output: data/output/e177_ysu_tiled.csv, stdout timing
 //! - Deterministic: `false`
 //! - GPU: `true`
 //! - Claims: C-1300, C-1301, C-1302, C-1303, C-1304, C-1305, C-1306, C-1307
 //!
 //! Method:
-//! 4-item GPU optimization suite targeting compound 15-50% speedup at 128^3 on Ada Lovelace SM 8.9. Item 1: MRT forward/inverse transform ILP restructure (balanced fmaf trees). Item 2: Multi-stream galaxy pipeline (2-stream event-based overlap). Item 3: CUDA Graph 2-step capture fixing double-buffer bug + step_n() bulk stepping. Item 4: Shared-memory tiled pull-scheme kernels (8x8x4 tile, 45.6 KB shared, cooperative striped load). Verification: clippy clean, Taylor-Green 6/6 pass, GPU debug init 3/3 pass.
+//! 4-item GPU optimization suite targeting compound 15-50% speedup at 128^3 on Ada Lovelace SM 8.9. Item 1: MRT forward/inverse transform ILP restructure (balanced fmaf trees). Item 2: Multi-stream galaxy pipeline (2-stream event-based overlap, graph_disabled flag prevents CUDA Graph/default-stream conflict). Item 3: CUDA Graph 2-step capture fixing double-buffer bug + step_n() bulk stepping. Item 4: Shared-memory tiled pull-scheme kernels (8x8x4 tile, 45.6 KB shared, cooperative striped load). Result: 100 galaxies at 128^3, D_f=2.741+-0.038, ~230 ms/galaxy.
 //!
 //! Run command:
 //! ```bash
-//! cargo run --release --bin euclid-df-sweep -- --n-galaxies 100 --resolution 128 --gpu --tiling
+//! cargo run --release --bin euclid-df-sweep --features euclid-catalog,gpu -- --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --grid 128 --steps 200 --max-galaxies 100 --mrt --tiling -o data/output/e177_ysu_tiled.csv
 //! ```
 //!
 //! ## E-178: Harmonic Halo Rotation Curve: 7-mode box-kite modulation sweep
@@ -3426,7 +3426,7 @@
 //! - Output: data/output/claims_falsification/particle_numerology_audit.toml
 //! - Deterministic: `true`
 //! - GPU: `false`
-//! - Claims: C-069, C-077, C-081, C-084, C-587, C-1355
+//! - Claims: C-069, C-077, C-081, C-084, C-1355, C-587
 //!
 //! Method:
 //! Shared Rust audit for six particle-numerology negative claims: octonion-subalgebra principal angles collapse to {0,90} rather than PMNS values (C-069); democratic associator mixing remains far from PMNS probabilities and is not better than a random doubly-stochastic null (C-077); three-angle Givens fits are exact for arbitrary targets and therefore non-evidentiary (C-081); small Yukawa-like diagonal perturbations improve the democratic matrix only modestly and remain null-like (C-084); depth-based associator norms fail to reproduce the lepton hierarchy and are not significant against a random-assignment null (C-587); and the Planck/BCS 1764 coincidence disappears outside chosen unit systems while the BCS factor remains pi/e^gamma numerics (C-1355).
@@ -3456,7 +3456,7 @@
 //! ## E-208: Associator Flux Measurement Around Zero Divisors in 16D, 32D, and 64D
 //!
 //! - Binary: ``
-//! - Input:
+//! - Input: 
 //! - Output: (none)
 //! - Deterministic: `false`
 //! - GPU: `false`
@@ -3473,7 +3473,7 @@
 //! ## E-209: CKM selector pair scan: 420 combos, Rayon-parallel
 //!
 //! - Binary: ``
-//! - Input:
+//! - Input: 
 //! - Output: (none)
 //! - Deterministic: `false`
 //! - GPU: `false`
@@ -3490,7 +3490,7 @@
 //! ## E-210: PMNS neutrino mixing selector pair scan
 //!
 //! - Binary: ``
-//! - Input:
+//! - Input: 
 //! - Output: (none)
 //! - Deterministic: `false`
 //! - GPU: `false`
@@ -3507,7 +3507,7 @@
 //! ## E-211: 3-blade zero-divisor friction scan (455 triples)
 //!
 //! - Binary: ``
-//! - Input:
+//! - Input: 
 //! - Output: (none)
 //! - Deterministic: `false`
 //! - GPU: `false`
@@ -3524,7 +3524,7 @@
 //! ## E-212: Electroweak mixing angle from associator flux ratio
 //!
 //! - Binary: ``
-//! - Input:
+//! - Input: 
 //! - Output: (none)
 //! - Deterministic: `false`
 //! - GPU: `false`
@@ -3541,7 +3541,7 @@
 //! ## E-213: G2 stabilizer extraction via thin-SVD with u(3) embedding verification
 //!
 //! - Binary: ``
-//! - Input:
+//! - Input: 
 //! - Output: (none)
 //! - Deterministic: `false`
 //! - GPU: `false`
@@ -3558,7 +3558,7 @@
 //! ## E-214: Constructive SU(3) realization and standard Gell-Mann alignment from octonionic stabilizer
 //!
 //! - Binary: ``
-//! - Input:
+//! - Input: 
 //! - Output: (none)
 //! - Deterministic: `false`
 //! - GPU: `false`
@@ -3575,7 +3575,7 @@
 //! ## E-215: Physics bridge: SU(5) SU(3)-sector cross-validation and real-part projection
 //!
 //! - Binary: ``
-//! - Input:
+//! - Input: 
 //! - Output: (none)
 //! - Deterministic: `false`
 //! - GPU: `false`
@@ -3592,7 +3592,7 @@
 //! ## E-216: PMD CPD 7.12.0 codebase duplication baseline scan
 //!
 //! - Binary: ``
-//! - Input:
+//! - Input: 
 //! - Output: (none)
 //! - Deterministic: `false`
 //! - GPU: `false`
@@ -3609,7 +3609,7 @@
 //! ## E-217: Materials data architecture decision: optical_database.rs + crystal_symmetry.rs migration path
 //!
 //! - Binary: ``
-//! - Input:
+//! - Input: 
 //! - Output: (none)
 //! - Deterministic: `false`
 //! - GPU: `false`
@@ -3621,4 +3621,38 @@
 //! Run command:
 //! ```bash
 //!
+//! ```
+//!
+//! ## E-218: LBM divergence RCA: per-step positivity sentinel and entropy analysis at BGK/MRT threshold contrasts
+//!
+//! - Binary: `lbm-rca-probe`
+//! - Input: synthetic (Gaussian density perturbation)
+//! - Output: stdout (trajectory CSV + Phase 1/2 summaries), data/output/e167_rca_bgk_c23.csv, data/output/e167_rca_bgk_c29.csv, data/output/e167_rca_mrt_c29.csv
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: C-1549
+//!
+//! Method:
+//! Per-step LBM instrumentation: (1) positivity sentinel tracks min(f_i) and max(Ma) each step to detect first f_i<0 violation; (2) entropy neighborhood computes H_rel = sum_i f_i ln(f_i/f_i^eq) in a 3-cell radius around the violation cell to test spatial correlation (center vs boundary). Runs BGK at contrast=23 and MRT at contrast=29 to straddle the catastrophic divergence threshold observed in E-167.
+//!
+//! Run command:
+//! ```bash
+//! cargo run --release --bin lbm-rca-probe -- --n 16 --tau 0.7 --contrast 23.0 --mode bgk --steps 400 --csv-out data/output/e167_rca_bgk_c23.csv
+//! ```
+//!
+//! ## E-219: inv_tau precomputation: MUFU.RCP elimination in D3Q19 LBM SoA kernels (RTX 4070 Ti, Ada SM 8.9)
+//!
+//! - Binary: `cuda-precision-bench`
+//! - Input: RTX 4070 Ti GPU (Ada Lovelace SM 8.9), kernels_soa.cu FP32 SoA D3Q19 LBM
+//! - Output: stdout (MLUPS before/after), data/output/e219_inv_tau_bench.csv
+//! - Deterministic: `false`
+//! - GPU: `true`
+//! - Claims: C-1550
+//!
+//! Method:
+//! Host-side inv_tau precomputation: tau array stores 1/tau instead of tau. Kernels read inv_tau = __ldg(&tau[idx]) directly, eliminating MUFU.RCP + Newton-Raphson SFU stall (50.6 cycles per cell per step). Smagorinsky and ZD-viscosity kernels invert at write time. Validated by SASS RE on steinmarder reference (MUFU.RCP = 41.55 cycles, Newton-Raphson = ~9 cycles). MLUPS measured before/after via cuda_precision_bench --workloads lbm --grids 64,128.
+//!
+//! Run command:
+//! ```bash
+//! cargo run --release --bin cuda-precision-bench -- --workloads lbm --grids 64,128
 //! ```

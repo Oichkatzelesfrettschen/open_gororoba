@@ -7,7 +7,7 @@
 //!
 //! - Updated: 2026-02-10
 //! - Status: `active`
-//! - Item count: `63`
+//! - Item count: `65`
 //!
 //! ## Items
 //!
@@ -746,8 +746,9 @@
 //! - Acceptance criteria:
 //!   - todo_item status is constrained to declared enum values.
 //!   - todo_item dependencies are explicit and machine-parseable.
+//!   - Evidence references point to maintained canonical paths.
 //! - Evidence refs:
-//!   - (none)
+//!   - `crates/data_core/src/catalogs/solo.rs`
 //!
 //! ### T-057: Register all new spacecraft sources in SOURCES.toml
 //!
@@ -785,8 +786,9 @@
 //! - Acceptance criteria:
 //!   - todo_item status is constrained to declared enum values.
 //!   - todo_item dependencies are explicit and machine-parseable.
+//!   - Evidence references point to maintained canonical paths.
 //! - Evidence refs:
-//!   - (none)
+//!   - `crates/data_core/src/catalogs/ulysses.rs`
 //!
 //! ### T-060: Add AMDA fallback to crates/data_core/src/catalogs/juno.rs (cruise phase)
 //!
@@ -798,8 +800,9 @@
 //! - Acceptance criteria:
 //!   - todo_item status is constrained to declared enum values.
 //!   - todo_item dependencies are explicit and machine-parseable.
+//!   - Evidence references point to maintained canonical paths.
 //! - Evidence refs:
-//!   - (none)
+//!   - `crates/data_core/src/catalogs/juno.rs`
 //!
 //! ### T-061: Add AMDA fallback to crates/data_core/src/catalogs/wind.rs
 //!
@@ -811,8 +814,9 @@
 //! - Acceptance criteria:
 //!   - todo_item status is constrained to declared enum values.
 //!   - todo_item dependencies are explicit and machine-parseable.
+//!   - Evidence references point to maintained canonical paths.
 //! - Evidence refs:
-//!   - (none)
+//!   - `crates/data_core/src/catalogs/wind.rs`
 //!
 //! ### T-062: Investigate PDS-SBN for New Horizons SWAP data
 //!
@@ -839,3 +843,33 @@
 //!   - todo_item dependencies are explicit and machine-parseable.
 //! - Evidence refs:
 //!   - (none)
+//!
+//! ### T-064: Retire the Brown 7.19(iii) OCR placeholder lane
+//!
+//! - Area: `proofs`
+//! - Priority: `high`
+//! - Status: `done`
+//! - Description: DONE: the Brown Chapter VII public surface now exports only the source-faithful reversal-order 7.19(iii) theorem with explicit pairwise-distinct side conditions, and the stale cyclic OCR placeholder plus its structural-gap axiom have been removed.
+//! - Dependencies: (none)
+//! - Acceptance criteria:
+//!   - todo_item status is constrained to declared enum values.
+//!   - todo_item dependencies are explicit and machine-parseable.
+//!   - The Brown Chapter VII public surface exports only the corrected theorem shape.
+//! - Evidence refs:
+//!   - `proofs/theories/Brown1972ChapterVII.v`
+//!   - `proofs/theories/SStructuralGaps.v`
+//!
+//! ### T-065: Bridge Moreno arbitrary-a concrete V_lambda hypotheses into the H_a witness lane
+//!
+//! - Area: `proofs`
+//! - Priority: `high`
+//! - Status: `open`
+//! - Description: Finish the remaining Theorem 1.16 gap by deriving Moreno's quaternionic-block decomposition, and therefore Moreno16ArbitraryAVlambdaWitness, from the full concrete arbitrary-a V_lambda geometry instead of stopping at the current explicit-builder, concrete-hypothesis package, geometry-shaped block package, and non-canonical witness scaffolding.
+//! - Dependencies: (none)
+//! - Acceptance criteria:
+//!   - todo_item status is constrained to declared enum values.
+//!   - todo_item dependencies are explicit and machine-parseable.
+//!   - The Moreno paper lane exposes a source-faithful arbitrary-a bridge from concrete V_lambda data to the mod-4 theorem.
+//! - Evidence refs:
+//!   - `proofs/theories/C1542_MorVlambdaOrbit.v`
+//!   - `proofs/theories/Moreno1997.v`
