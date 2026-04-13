@@ -404,6 +404,18 @@ pub struct LbmSolver3DCuda {
     /// first `step_graph_pair()` call. Amortizes launch overhead for bulk
     /// stepping via `step_n()`.
     step_graph_cache: Option<SendSyncGraph>,
+    /// Disables CUDA Graph capture in step_n() / step_graph_pair().
+    ///
+    /// WHY: CUDA Graph capture (cuStreamBeginCapture) is incompatible with
+    /// the legacy default stream. In a multi-stream pipeline (e.g. the Euclid
+    /// galaxy sweep) box_counter uses ctx.default_stream(), which implicitly
+    /// synchronizes with all non-default streams. Attempting to begin capture
+    /// on the solver stream while the default stream has outstanding work
+    /// triggers CUDA_ERROR_STREAM_CAPTURE_UNSUPPORTED. fork_stream() sets
+    /// this flag because that is the API that activates the multi-stream
+    /// pipeline; in that context, per-step loop overhead is negligible vs
+    /// the kernel execution time (~100 ms/galaxy at 128^3).
+    graph_disabled: bool,
     /// Whether L2 cache pinning is active for the rho field.
     /// When true, re-pin after d_rho reallocation (e.g. initialize_custom).
     l2_pinned: bool,
@@ -853,6 +865,7 @@ impl LbmSolver3DCuda {
             rho: vec![1.0; n_cells],
             u: vec![[0.0; 3]; n_cells],
             step_graph_cache: None,
+            graph_disabled: false,
             l2_pinned: false,
         })
     }
@@ -1553,8 +1566,16 @@ impl LbmSolver3DCuda {
         );
 
         if self.step_graph_cache.is_none() {
+            // WHY THREAD_LOCAL, not GLOBAL: GLOBAL blocks all streams in the
+            // context during capture. In the multi-stream galaxy pipeline, stream B
+            // runs concurrent box-counting with non-capturable ops (host callbacks,
+            // memcpy). GLOBAL capture tries to include stream B and fails with
+            // CUDA_ERROR_STREAM_CAPTURE_UNSUPPORTED. THREAD_LOCAL captures only
+            // this stream; stream B is unaffected. The graph still correctly bakes
+            // in both kernel launches (step1: d_f->d_f_tmp, step2: d_f_tmp->d_f)
+            // with their device pointer values at capture time.
             self.stream
-                .begin_capture(sys::CUstreamCaptureMode::CU_STREAM_CAPTURE_MODE_GLOBAL)?;
+                .begin_capture(sys::CUstreamCaptureMode::CU_STREAM_CAPTURE_MODE_THREAD_LOCAL)?;
 
             // Step 1: A -> B
             self.launch_step_kernel()?;
@@ -1584,7 +1605,8 @@ impl LbmSolver3DCuda {
     /// Run `n` LBM timesteps, using graph-pair acceleration when available.
     ///
     /// SoA: uses `step_graph_pair()` for pairs (amortizing launch overhead),
-    /// plus one regular `step()` for odd remainders.
+    /// plus one regular `step()` for odd remainders -- UNLESS `graph_disabled`
+    /// is true (set by `fork_stream()`), in which case the per-step loop is used.
     /// AoS: falls back to `n` individual `step()` calls.
     pub fn step_n(&mut self, n: usize) -> Result<()> {
         if self.use_aa {
@@ -1593,7 +1615,7 @@ impl LbmSolver3DCuda {
             for _ in 0..n {
                 self.step()?;
             }
-        } else if self.use_soa {
+        } else if self.use_soa && !self.graph_disabled {
             let pairs = n / 2;
             let remainder = n % 2;
             for _ in 0..pairs {
@@ -2141,7 +2163,13 @@ impl LbmSolver3DCuda {
     ///
     /// The returned stream runs concurrently with the solver's default stream.
     /// Use event synchronization to order dependencies between streams.
-    pub fn fork_stream(&self) -> Result<Arc<CudaStream>> {
+    ///
+    /// Disables CUDA Graph capture in step_n() because the multi-stream
+    /// pipeline activates the legacy default stream (via GpuBoxCounter::new),
+    /// which is incompatible with cuStreamBeginCapture. Launch overhead is
+    /// negligible at ~100 ms/galaxy; per-step loop is the correct mode here.
+    pub fn fork_stream(&mut self) -> Result<Arc<CudaStream>> {
+        self.graph_disabled = true;
         Ok(self._ctx.new_stream()?)
     }
 
