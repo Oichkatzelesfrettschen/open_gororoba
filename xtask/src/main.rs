@@ -324,7 +324,10 @@ fn main() -> Result<()> {
         "local-nextest-plan" => run_local_nextest_plan(LocalNextestCli::try_parse_from(
             std::iter::once("local-nextest-plan".to_string()).chain(args),
         )?),
-        "gate-audit" => run_gate_audit(parse_gate_audit_args(args)?),
+        "gate-audit" => {
+            let cfg = parse_gate_audit_args(args)?;
+            run_gate_audit(cfg)
+        }
         "sparse-profile" => run_sparse_profile(SparseProfileCli::try_parse_from(
             std::iter::once("sparse-profile".to_string()).chain(args),
         )?),
@@ -1132,8 +1135,17 @@ fn mode_label(mode: &str) -> &'static str {
     }
 }
 
-fn parse_gate_audit_args(args: impl Iterator<Item = String>) -> Result<Option<PathBuf>> {
+struct GateAuditConfig {
+    output_dir: Option<PathBuf>,
+    // When true: only gate-ci-registry runs (no Rust compilation). Fails fast on
+    // the first failing step. Useful for registry/governance-only validation
+    // where the 9-minute rust-regression compile is unnecessary overhead.
+    fast: bool,
+}
+
+fn parse_gate_audit_args(args: impl Iterator<Item = String>) -> Result<GateAuditConfig> {
     let mut output_dir = None;
+    let mut fast = false;
     let mut iter = args.peekable();
     while let Some(arg) = iter.next() {
         match arg.as_str() {
@@ -1143,10 +1155,13 @@ fn parse_gate_audit_args(args: impl Iterator<Item = String>) -> Result<Option<Pa
                 };
                 output_dir = Some(PathBuf::from(value));
             }
+            "--fast" => {
+                fast = true;
+            }
             other => bail!("unknown gate-audit argument: {other}"),
         }
     }
-    Ok(output_dir)
+    Ok(GateAuditConfig { output_dir, fast })
 }
 
 fn run_host_profile(format: &str) -> Result<()> {
@@ -1209,11 +1224,11 @@ fn run_db_docs(check_only: bool) -> Result<()> {
     Ok(())
 }
 
-fn run_gate_audit(output_dir_override: Option<PathBuf>) -> Result<()> {
+fn run_gate_audit(cfg: GateAuditConfig) -> Result<()> {
     let repo_root = repo_root()?;
     let generated_at = Local::now();
     let timestamp = generated_at.format("%Y-%m-%d/%H%M%S").to_string();
-    let output_dir = match output_dir_override {
+    let output_dir = match cfg.output_dir {
         Some(path) if path.is_absolute() => path,
         Some(path) => repo_root.join(path),
         None => repo_root.join("reports").join("gates").join(timestamp),
@@ -1225,26 +1240,47 @@ fn run_gate_audit(output_dir_override: Option<PathBuf>) -> Result<()> {
         )
     })?;
 
-    let commands: Vec<(&str, Vec<String>)> = vec![
-        (
+    // Fast mode: registry-only, fails on first step failure.
+    // WHY: gate-ci-rust runs rust-regression (full workspace compile + test run,
+    // ~9 min). For governance/registry-only changes, that compile overhead is
+    // pure waste. --fast lets developers iterate on TOML edits in ~2 min instead
+    // of ~12 min, without sacrificing correctness guarantees for registry changes.
+    //
+    // Full mode: all three steps. Uses cargo check --workspace --tests instead of
+    // cargo nextest list for the workspace-compile-check step. cargo check skips
+    // LLVM codegen (~3-5x faster than nextest list on a cold cache) while still
+    // verifying that every test-gated compilation unit typechecks. Since
+    // rust-regression already ran all tests in gate-ci-rust, the nextest list
+    // was redundant for correctness; cargo check preserves the compile-check
+    // intent at lower cost.
+    let commands: Vec<(&str, Vec<String>)> = if cfg.fast {
+        vec![(
             "gate-ci-registry",
             vec!["make".to_string(), "gate-ci-registry".to_string()],
-        ),
-        (
-            "gate-ci-rust",
-            vec!["make".to_string(), "gate-ci-rust".to_string()],
-        ),
-        (
-            "nextest-list",
-            vec![
-                "cargo".to_string(),
-                "nextest".to_string(),
-                "list".to_string(),
-                "--workspace".to_string(),
-                "--tests".to_string(),
-            ],
-        ),
-    ];
+        )]
+    } else {
+        vec![
+            (
+                "gate-ci-registry",
+                vec!["make".to_string(), "gate-ci-registry".to_string()],
+            ),
+            (
+                "gate-ci-rust",
+                vec!["make".to_string(), "gate-ci-rust".to_string()],
+            ),
+            (
+                // cargo check skips LLVM codegen; verifies test-gated code compiles
+                // without paying the nextest list compilation + linking tax.
+                "workspace-check",
+                vec![
+                    "cargo".to_string(),
+                    "check".to_string(),
+                    "--workspace".to_string(),
+                    "--tests".to_string(),
+                ],
+            ),
+        ]
+    };
 
     let cargo_home = repo_root.join(".cache").join("cargo-home");
     let cargo_target_dir = repo_root.join(".cache").join("gate-target");
@@ -1310,6 +1346,11 @@ fn run_gate_audit(output_dir_override: Option<PathBuf>) -> Result<()> {
 
         if exit_code != 0 {
             failures += 1;
+            // Fail fast: no point waiting for Rust compilation if registry checks
+            // already failed. The developer needs to fix the registry first.
+            if cfg.fast || name == "gate-ci-registry" {
+                break;
+            }
         }
     }
 
