@@ -5,8 +5,10 @@
 
 This repository is a Rust-first scientific workspace with optional Python,
 Docker, Rocq, LaTeX, C++, and web-app lanes layered on top. The canonical
-requirements inventory lives in `registry/requirements.toml` and
-`registry/module_requirements.toml`; this narrative file exists to emit the
+structured requirements inventory lives in
+`registry/canonical/control_plane.sqlite3`. The checked-in
+`registry/requirements.toml` and `registry/module_requirements.toml` files are
+DB-backed compatibility exports; this narrative file exists to emit the
 human-facing compatibility docs from the same source-of-truth.
 
 ## Core policy
@@ -31,7 +33,18 @@ cargo build --workspace -j"$(nproc)"
 cargo test --workspace -j"$(nproc)"
 cargo clippy --workspace -j"$(nproc)" -- -D warnings
 make governance-gate
+make rust-semver-check
+make cargo-deny-check
+make dep-audit
+make cpd-audit CPD_TOP=20
+make docs-freshness
 ```
+
+Optional audit tools for the deeper lanes include PMD/CPD, cargo-deny,
+cargo-semver-checks, cargo-machete, cargo-geiger, dprint, and typos. Keep CPD
+strict mode (`make cpd-audit-strict`) behind the current generated-surface and
+lexical-error triage so structural duplicates fail CI only after known noise is
+classified.
 
 ## Module docs
 
@@ -49,3 +62,16 @@ For module-specific requirements, see:
 - `docs/requirements/rocq.md`
 - `crates/lbm_3d_cuda/README.md`
 - `apps/gororoba_studio/README.md`
+
+## Audit Tools
+
+Each tool listed below is available via a dedicated `make` target. Tools marked **audit-deep** are included in `make audit-deep`.
+
+| Tool | Make Target | Install | audit-deep | Status |
+| --- | --- | --- | ---: | --- |
+| Clippy | `make rust-clippy` | `rustup component add clippy` | yes | active |
+| cargo-deny | `make cargo-deny-check` | `cargo install cargo-deny` | yes | active |
+| Dependency Audit | `make dep-audit` | (built-in) | yes | active |
+| PMD CPD | `make cpd-audit` | `paru -S pmd` | yes | active |
+| cargo-semver-checks | `make rust-semver-check` | `cargo install cargo-semver-checks` | no | blocked -- fwht external path dep cannot resolve from git temp checkout. |
+| Docs Freshness | `make docs-freshness` | (built-in) | no | blocked -- Mathematical bracket notation [a,b,c] triggers broken-intra-doc-links. |

@@ -364,7 +364,12 @@ fn base_legacy_jobs(stage_root: &Path) -> Vec<Job> {
         },
         Job {
             command: "requirements-legacy",
-            args: vec!["--repo-root".into(), stage_root.display().to_string()],
+            args: vec![
+                "--repo-root".into(),
+                stage_root.display().to_string(),
+                "--audit-tools".into(),
+                "registry/audit_tools.toml".into(),
+            ],
         },
         Job {
             command: "navigator-legacy",

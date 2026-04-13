@@ -299,7 +299,7 @@ fn main() -> Result<()> {
     let mut args = env::args().skip(1);
     let Some(command) = args.next() else {
         println!(
-            "{HEADER_STYLE}usage: cargo run -p xtask -- <db-docs|host-profile|local-nextest-plan|gate-audit|sparse-profile|gpu-profile|ci-route|ascii-check|ascii-cleanup|coq-stub|convos-chunk|terminology-gate> [args]{RESET}"
+            "{HEADER_STYLE}usage: cargo run -p xtask -- <db-docs|host-profile|local-nextest-plan|gate-audit|sparse-profile|gpu-profile|ci-route|ascii-check|ascii-cleanup|coq-stub|convos-chunk|terminology-gate|cpd-file-list|worker-budget> [args]{RESET}"
         );
         return Ok(());
     };
@@ -351,6 +351,23 @@ fn main() -> Result<()> {
             run_convos_chunk(Path::new(&path), lines, &prefix)
         }
         "terminology-gate" => run_terminology_gate(args.any(|arg| arg == "--quiet")),
+        "cpd-file-list" => {
+            let mut output = PathBuf::from("/tmp/cpd_src_list.txt");
+            let mut iter = args.peekable();
+            while let Some(arg) = iter.next() {
+                match arg.as_str() {
+                    "--output" => {
+                        let Some(value) = iter.next() else {
+                            bail!("cpd-file-list --output requires a value");
+                        };
+                        output = PathBuf::from(value);
+                    }
+                    other => bail!("unknown cpd-file-list argument: {other}"),
+                }
+            }
+            run_cpd_file_list(&output)
+        }
+        "worker-budget" => run_worker_budget(),
         other => bail!("unknown xtask command: {other}"),
     }
 }
@@ -2050,6 +2067,127 @@ fn write_or_check(path: &Path, content: &str, check_only: bool) -> Result<()> {
             .with_context(|| format!("create output directory {}", parent.display()))?;
     }
     fs::write(path, content).with_context(|| format!("write generated file {}", path.display()))?;
+    Ok(())
+}
+
+// ---- CPD file list generator ----
+//
+// WHY: The Makefile `_CPD_REGEN_LIST` variable used `find crates -name '*.rs'`
+//      combined with Make `foreach` expansions to build per-file and per-dir
+//      exclusion flags.  That approach is fragile (ordering-sensitive, temp-file
+//      race condition under parallel Make, opaque exclusion logic).  This
+//      implementation owns the exclusion policy in Rust with deterministic
+//      output and explicit error handling.
+//
+// WHAT: Walks `crates/` from the repo root, filters *.rs files, applies the
+//       same exclusion list that the Makefile maintained, and writes one
+//       absolute path per line to the output file.
+//
+// HOW: `cargo run -p xtask -- cpd-file-list [--output <path>]`
+//      Default output: /tmp/cpd_src_list.txt (same default as the old Makefile var).
+
+// Directories excluded from CPD scans.  These are auto-generated mirrors
+// with zero hand-written logic; scanning them is noise, not signal.
+const CPD_EXCLUDE_DIRS: &[&str] = &["crates/data_core/src/registry_mirrors"];
+
+// Individual files excluded from CPD scans.  Transcribed reference datasets
+// or auto-generated code that happens not to live under an excluded directory.
+const CPD_EXCLUDE_FILES: &[&str] = &[
+    "crates/materials_core/src/optical_database.rs",
+    "crates/materials_core/src/crystal_symmetry.rs",
+];
+
+fn run_cpd_file_list(output: &Path) -> Result<()> {
+    let repo_root = repo_root()?;
+    let crates_dir = repo_root.join("crates");
+
+    let mut paths: Vec<String> = Vec::new();
+
+    for entry in WalkDir::new(&crates_dir)
+        .follow_links(false)
+        .into_iter()
+        .filter_map(|e| e.ok())
+    {
+        let path = entry.path();
+        if !path.is_file() {
+            continue;
+        }
+        if path.extension().and_then(|s| s.to_str()) != Some("rs") {
+            continue;
+        }
+
+        // Compute the path relative to repo root for exclusion checks.
+        let rel = path
+            .strip_prefix(&repo_root)
+            .unwrap_or(path)
+            .to_str()
+            .unwrap_or("")
+            .replace('\\', "/");
+
+        // Check excluded directories.
+        let in_excluded_dir = CPD_EXCLUDE_DIRS
+            .iter()
+            .any(|excl| rel.starts_with(excl));
+        if in_excluded_dir {
+            continue;
+        }
+
+        // Check excluded individual files.
+        let is_excluded_file = CPD_EXCLUDE_FILES.iter().any(|excl| rel == *excl);
+        if is_excluded_file {
+            continue;
+        }
+
+        // Store the absolute path string (PMD cpd --file-list expects absolute paths).
+        paths.push(
+            path.canonicalize()
+                .unwrap_or_else(|_| path.to_path_buf())
+                .to_string_lossy()
+                .into_owned(),
+        );
+    }
+
+    paths.sort();
+
+    if let Some(parent) = output.parent() {
+        if !parent.as_os_str().is_empty() {
+            fs::create_dir_all(parent)
+                .with_context(|| format!("create output directory {}", parent.display()))?;
+        }
+    }
+    fs::write(output, paths.join("\n") + "\n")
+        .with_context(|| format!("write CPD file list to {}", output.display()))?;
+
+    eprintln!(
+        "cpd-file-list: wrote {} paths to {}",
+        paths.len(),
+        output.display()
+    );
+    Ok(())
+}
+
+// ---- Worker budget ----
+//
+// WHY: scripts/detect_worker_budget.sh used a 60-line chain of nproc /
+//      getconf / sysctl / lscpu / /proc/cpuinfo fallbacks plus awk to compute
+//      nproc/2.  std::thread::available_parallelism() covers all platforms in
+//      one call.  This subcommand is the preferred non-Makefile consumer.
+//
+// NOTE: The Makefile still uses `$(shell sh scripts/detect_worker_budget.sh)`
+//       for the WORKER_BUDGET variable because that variable is evaluated at
+//       Make parse time, before any cargo compilation step runs.  The shell
+//       script is therefore retained as a zero-overhead fallback for that
+//       specific context.  All other callers should use this subcommand.
+//
+// HOW: `cargo run -p xtask -- worker-budget`
+//      Prints a single integer: available_parallelism / 2, minimum 1.
+
+fn run_worker_budget() -> Result<()> {
+    let threads = std::thread::available_parallelism()
+        .map(|n| n.get())
+        .unwrap_or(1);
+    let budget = (threads / 2).max(1);
+    println!("{budget}");
     Ok(())
 }
 
