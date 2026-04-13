@@ -3251,6 +3251,8 @@ dependencies = [
 name = "data_core"
 version = "0.1.0"
 dependencies = [
+ "anise",
+ "anyhow",
  "approx",
  "backon",
  "cd_kernel",
@@ -3258,6 +3260,7 @@ dependencies = [
  "chrono",
  "core_affinity",
  "csv",
+ "faer",
  "fitsio",
  "flate2",
  "gororoba_contracts",
@@ -4976,7 +4979,6 @@ version = "0.1.0"
 dependencies = [
  "algebra_analysis",
  "algebra_experimental",
- "anise",
  "anstyle",
  "anyhow",
  "arrow-array",
@@ -4992,7 +4994,6 @@ dependencies = [
  "data_core",
  "docpipe",
  "env_logger",
- "faer",
  "fitsio",
  "glob",
  "gororoba_algebra",

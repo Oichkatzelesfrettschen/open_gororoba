@@ -40,6 +40,7 @@ pub mod download_stack;
 pub mod fetcher;
 pub mod formats;
 pub mod geophysical;
+pub mod nanograv;
 #[cfg(feature = "fetch")]
 pub mod heliosphere_event_labels;
 pub mod heliosphere_feature_cube;

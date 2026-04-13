@@ -143,3 +143,104 @@ pub fn resolve_manifest_entry_path(manifest_path: &Path, relative_or_absolute: &
             .join(candidate)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn research_dossier_json_round_trip() {
+        let dossier = ResearchDossier {
+            schema_version: 3,
+            project_id: "test-project".to_string(),
+            search_target_id: "tgt-alpha".to_string(),
+            title: "Test Dossier".to_string(),
+            limit_per_query: 10,
+            year_min: 2020,
+            min_relevance: 50,
+            top_hits: vec![DossierHit {
+                rank: 1,
+                canonical_id: "hit-1".to_string(),
+                relevance_score: 95,
+                title: "A Paper".to_string(),
+                year: 2024,
+                ..DossierHit::default()
+            }],
+            ..ResearchDossier::default()
+        };
+        let json = serde_json::to_string_pretty(&dossier).expect("serialize");
+        let parsed: ResearchDossier = serde_json::from_str(&json).expect("deserialize");
+        assert_eq!(parsed.schema_version, 3);
+        assert_eq!(parsed.project_id, "test-project");
+        assert_eq!(parsed.top_hits.len(), 1);
+        assert_eq!(parsed.top_hits[0].relevance_score, 95);
+    }
+
+    #[test]
+    fn dossier_batch_manifest_toml_round_trip() {
+        let manifest = DossierBatchManifest {
+            schema_version: 1,
+            project_id: "batch-test".to_string(),
+            year_min: 2015,
+            limit_per_query: 5,
+            min_relevance: 30,
+            entries: vec![DossierBatchEntry {
+                search_target_id: "tgt-a".to_string(),
+                title: "Entry A".to_string(),
+                suggestion_count: 3,
+                ..DossierBatchEntry::default()
+            }],
+            ..DossierBatchManifest::default()
+        };
+        let toml_str = toml::to_string_pretty(&manifest).expect("serialize");
+        let parsed: DossierBatchManifest = toml::from_str(&toml_str).expect("deserialize");
+        assert_eq!(parsed.project_id, "batch-test");
+        assert_eq!(parsed.entries.len(), 1);
+        assert_eq!(parsed.entries[0].suggestion_count, 3);
+    }
+
+    #[test]
+    fn dossier_file_round_trip_via_tempfile() {
+        let tmp = tempfile::NamedTempFile::new().expect("create temp file");
+        let path = tmp.path();
+
+        let dossier = ResearchDossier {
+            schema_version: 2,
+            title: "Round-trip".to_string(),
+            ..ResearchDossier::default()
+        };
+        write_research_dossier(path, &dossier).expect("write");
+        let loaded = load_research_dossier(path).expect("load");
+        assert_eq!(loaded.schema_version, 2);
+        assert_eq!(loaded.title, "Round-trip");
+    }
+
+    #[test]
+    fn batch_manifest_file_round_trip_via_tempfile() {
+        let tmp = tempfile::NamedTempFile::new().expect("create temp file");
+        let path = tmp.path();
+
+        let manifest = DossierBatchManifest {
+            schema_version: 1,
+            project_id: "file-test".to_string(),
+            ..DossierBatchManifest::default()
+        };
+        write_dossier_batch_manifest(path, &manifest).expect("write");
+        let loaded = load_dossier_batch_manifest(path).expect("load");
+        assert_eq!(loaded.project_id, "file-test");
+    }
+
+    #[test]
+    fn resolve_manifest_entry_path_absolute() {
+        let manifest = Path::new("/data/manifests/batch.toml");
+        let result = resolve_manifest_entry_path(manifest, "/absolute/path.json");
+        assert_eq!(result, PathBuf::from("/absolute/path.json"));
+    }
+
+    #[test]
+    fn resolve_manifest_entry_path_relative() {
+        let manifest = Path::new("/data/manifests/batch.toml");
+        let result = resolve_manifest_entry_path(manifest, "entries/dossier.json");
+        assert_eq!(result, PathBuf::from("/data/manifests/entries/dossier.json"));
+    }
+}
