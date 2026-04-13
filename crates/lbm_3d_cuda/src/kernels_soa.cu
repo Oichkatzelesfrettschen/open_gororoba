@@ -97,8 +97,7 @@ extern "C" __global__ void lbm_step_soa_fused(
     u_out[2 * N + idx] = uz;
 
     // 2. BGK collision with Horner FMA equilibrium
-    float tau_local = __ldg(&tau[idx]);
-    float inv_tau = 1.0f / tau_local;
+    float inv_tau = __ldg(&tau[idx]);  // tau array stores precomputed 1/tau (host fills with inv_tau)
     float u_sq = ux * ux + uy * uy + uz * uz;
     float base = fmaf(-1.5f, u_sq, 1.0f);
 
@@ -269,8 +268,9 @@ extern "C" __global__ void compute_smagorinsky_tau_kernel(
     // nu_turb = (C_s * dx)^2 * |S|, tau = tau_base + 3 * nu_turb
     float tau_new = tau_base + 3.0f * cs_sq_dx_sq * s_mag;
 
-    // Clamp to stability range [0.505, 5.0]
-    tau[idx] = fmaxf(0.505f, fminf(5.0f, tau_new));
+    // Clamp to stability range [0.505, 5.0], then write precomputed 1/tau
+    float clamped_tau = fmaxf(0.505f, fminf(5.0f, tau_new));
+    tau[idx] = 1.0f / clamped_tau;
 }
 
 // ---------------------------------------------------------------------------
@@ -334,8 +334,7 @@ extern "C" __global__ void lbm_step_soa_batch_kernel(
     u_out[2 * total + offset + local_idx] = uz;
 
     // 2. BGK collision
-    float tau_local = __ldg(&tau[offset + local_idx]);
-    float inv_tau = 1.0f / tau_local;
+    float inv_tau = __ldg(&tau[offset + local_idx]);  // stores precomputed 1/tau
     float u_sq = ux * ux + uy * uy + uz * uz;
     float base_val = fmaf(-1.5f, u_sq, 1.0f);
 
@@ -437,7 +436,7 @@ __device__ __forceinline__ void mrt_collision_d3q19(
     float f[19], float rho, float ux, float uy, float uz, float tau_local
 ) {
     // Relaxation rates (diagonal S matrix)
-    float s_nu    = 1.0f / tau_local;
+    float s_nu    = tau_local;  // tau_local slot contains precomputed inv_tau (host-side 1/tau)
     float s_e     = 1.19f;
     float s_eps   = 1.4f;
     float s_q     = 1.2f;
@@ -670,8 +669,8 @@ extern "C" __global__ void lbm_step_soa_mrt_fused(
     u_out[2 * N + idx] = uz;
 
     // 2. MRT collision (replaces BGK)
-    float tau_local = __ldg(&tau[idx]);
-    mrt_collision_d3q19(f_local, rho_local, ux, uy, uz, tau_local);
+    float inv_tau = __ldg(&tau[idx]);  // stores precomputed 1/tau
+    mrt_collision_d3q19(f_local, rho_local, ux, uy, uz, inv_tau);
 
     // 3. Guo forcing (SoA force layout, identical to BGK path)
     float fx = __ldg(&force[idx]);
@@ -680,7 +679,6 @@ extern "C" __global__ void lbm_step_soa_mrt_fused(
     float force_mag_sq = fx * fx + fy * fy + fz * fz;
 
     if (force_mag_sq >= 1e-40f) {
-        float inv_tau = 1.0f / tau_local;
         float prefactor = 1.0f - 0.5f * inv_tau;
 
         #pragma unroll
@@ -764,8 +762,7 @@ __device__ __forceinline__ void process_cell_bgk(
     u_out[N + idx]     = uy;
     u_out[2 * N + idx] = uz;
 
-    float tau_local = __ldg(&tau[idx]);
-    float inv_tau = 1.0f / tau_local;
+    float inv_tau = __ldg(&tau[idx]);  // tau array stores precomputed 1/tau (host fills with inv_tau)
     float u_sq = ux * ux + uy * uy + uz * uz;
     float base = fmaf(-1.5f, u_sq, 1.0f);
 
@@ -865,8 +862,8 @@ __device__ __forceinline__ void process_cell_mrt(
     u_out[N + idx]     = uy;
     u_out[2 * N + idx] = uz;
 
-    float tau_local = __ldg(&tau[idx]);
-    mrt_collision_d3q19(f_local, rho_local, ux, uy, uz, tau_local);
+    float inv_tau = __ldg(&tau[idx]);  // stores precomputed 1/tau
+    mrt_collision_d3q19(f_local, rho_local, ux, uy, uz, inv_tau);
 
     float fx = __ldg(&force[idx]);
     float fy = __ldg(&force[N + idx]);
@@ -874,8 +871,7 @@ __device__ __forceinline__ void process_cell_mrt(
     float force_mag_sq = fx * fx + fy * fy + fz * fz;
 
     if (force_mag_sq >= 1e-40f) {
-        float inv_tau_f = 1.0f / tau_local;
-        float prefactor = 1.0f - 0.5f * inv_tau_f;
+        float prefactor = 1.0f - 0.5f * inv_tau;
         #pragma unroll
         for (int i = 0; i < 19; i++) {
             float eix = (float)CX[i], eiy = (float)CY[i], eiz = (float)CZ[i];
@@ -1046,8 +1042,7 @@ lbm_step_soa_tiled(
     u_out[2 * N + idx] = uz;
 
     // Phase 4: BGK collision
-    float tau_local = __ldg(&tau[idx]);
-    float inv_tau   = 1.0f / tau_local;
+    float inv_tau = __ldg(&tau[idx]);  // stores precomputed 1/tau
     float u_sq      = ux * ux + uy * uy + uz * uz;
     float base      = fmaf(-1.5f, u_sq, 1.0f);
 
@@ -1164,8 +1159,8 @@ lbm_step_soa_mrt_tiled(
     u_out[2 * N + idx] = uz;
 
     // Phase 4: MRT collision
-    float tau_local = __ldg(&tau[idx]);
-    mrt_collision_d3q19(f_local, rho_local, ux, uy, uz, tau_local);
+    float inv_tau = __ldg(&tau[idx]);  // stores precomputed 1/tau
+    mrt_collision_d3q19(f_local, rho_local, ux, uy, uz, inv_tau);
 
     // Phase 5: Guo forcing
     float fx = __ldg(&force[idx]);
@@ -1174,8 +1169,7 @@ lbm_step_soa_mrt_tiled(
     float force_mag_sq = fx * fx + fy * fy + fz * fz;
 
     if (force_mag_sq >= 1e-40f) {
-        float inv_tau_f = 1.0f / tau_local;
-        float prefactor = 1.0f - 0.5f * inv_tau_f;
+        float prefactor = 1.0f - 0.5f * inv_tau;
         #pragma unroll
         for (int i = 0; i < 19; i++) {
             float eix = (float)CX[i], eiy = (float)CY[i], eiz = (float)CZ[i];
@@ -1271,8 +1265,7 @@ lbm_step_soa_coarsened(
         u_out[N + idx]     = uy;
         u_out[2 * N + idx] = uz;
 
-        float tau_local = __ldg(&tau[idx]);
-        float inv_tau = 1.0f / tau_local;
+        float inv_tau = __ldg(&tau[idx]);  // stores precomputed 1/tau
         float u_sq = ux * ux + uy * uy + uz * uz;
         float base_eq = fmaf(-1.5f, u_sq, 1.0f);
 
@@ -1342,8 +1335,7 @@ lbm_step_soa_coarsened(
         u_out[N + idx]     = uy;
         u_out[2 * N + idx] = uz;
 
-        float tau_local = __ldg(&tau[idx]);
-        float inv_tau = 1.0f / tau_local;
+        float inv_tau = __ldg(&tau[idx]);  // stores precomputed 1/tau
         float u_sq = ux * ux + uy * uy + uz * uz;
         float base_eq = fmaf(-1.5f, u_sq, 1.0f);
 
@@ -1448,8 +1440,8 @@ lbm_step_soa_mrt_coarsened(
         u_out[N + idx]     = uy;
         u_out[2 * N + idx] = uz;
 
-        float tau_local = __ldg(&tau[idx]);
-        mrt_collision_d3q19(f0, rho_local, ux, uy, uz, tau_local);
+        float inv_tau = __ldg(&tau[idx]);  // stores precomputed 1/tau
+        mrt_collision_d3q19(f0, rho_local, ux, uy, uz, inv_tau);
 
         float fx = __ldg(&force[idx]);
         float fy = __ldg(&force[N + idx]);
@@ -1457,8 +1449,7 @@ lbm_step_soa_mrt_coarsened(
         float force_mag_sq = fx * fx + fy * fy + fz * fz;
 
         if (force_mag_sq >= 1e-40f) {
-            float inv_tau_f = 1.0f / tau_local;
-            float prefactor = 1.0f - 0.5f * inv_tau_f;
+            float prefactor = 1.0f - 0.5f * inv_tau;
             #pragma unroll
             for (int i = 0; i < 19; i++) {
                 float eix = (float)CX[i], eiy = (float)CY[i], eiz = (float)CZ[i];
@@ -1510,8 +1501,8 @@ lbm_step_soa_mrt_coarsened(
         u_out[N + idx]     = uy;
         u_out[2 * N + idx] = uz;
 
-        float tau_local = __ldg(&tau[idx]);
-        mrt_collision_d3q19(f1, rho_local, ux, uy, uz, tau_local);
+        float inv_tau = __ldg(&tau[idx]);  // stores precomputed 1/tau
+        mrt_collision_d3q19(f1, rho_local, ux, uy, uz, inv_tau);
 
         float fx = __ldg(&force[idx]);
         float fy = __ldg(&force[N + idx]);
@@ -1519,8 +1510,7 @@ lbm_step_soa_mrt_coarsened(
         float force_mag_sq = fx * fx + fy * fy + fz * fz;
 
         if (force_mag_sq >= 1e-40f) {
-            float inv_tau_f = 1.0f / tau_local;
-            float prefactor = 1.0f - 0.5f * inv_tau_f;
+            float prefactor = 1.0f - 0.5f * inv_tau;
             #pragma unroll
             for (int i = 0; i < 19; i++) {
                 float eix = (float)CX[i], eiy = (float)CY[i], eiz = (float)CZ[i];
@@ -1640,8 +1630,7 @@ extern "C" __global__ void lbm_step_soa_aa(
     u_out[2 * N + idx] = uz;
 
     // 3. BGK collision
-    float tau_local = __ldg(&tau[idx]);
-    float inv_tau = 1.0f / tau_local;
+    float inv_tau = __ldg(&tau[idx]);  // tau array stores precomputed 1/tau (host fills with inv_tau)
     float u_sq = ux * ux + uy * uy + uz * uz;
     float base = fmaf(-1.5f, u_sq, 1.0f);
 
@@ -1747,8 +1736,8 @@ extern "C" __global__ void lbm_step_soa_mrt_aa(
     u_out[N + idx]     = uy;
     u_out[2 * N + idx] = uz;
 
-    float tau_local = __ldg(&tau[idx]);
-    mrt_collision_d3q19(f_local, rho_local, ux, uy, uz, tau_local);
+    float inv_tau = __ldg(&tau[idx]);  // stores precomputed 1/tau
+    mrt_collision_d3q19(f_local, rho_local, ux, uy, uz, inv_tau);
 
     float fx = __ldg(&force[idx]);
     float fy = __ldg(&force[N + idx]);
@@ -1756,8 +1745,7 @@ extern "C" __global__ void lbm_step_soa_mrt_aa(
     float force_mag_sq = fx * fx + fy * fy + fz * fz;
 
     if (force_mag_sq >= 1e-40f) {
-        float inv_tau_f = 1.0f / tau_local;
-        float prefactor = 1.0f - 0.5f * inv_tau_f;
+        float prefactor = 1.0f - 0.5f * inv_tau;
         #pragma unroll
         for (int i = 0; i < 19; i++) {
             float eix = (float)CX[i], eiy = (float)CY[i], eiz = (float)CZ[i];
@@ -1855,8 +1843,8 @@ extern "C" __global__ void lbm_step_soa_mrt_aa_ephemeral(
         u_out[2 * N + idx] = uz;
     }
 
-    float tau_local = __ldg(&tau[idx]);
-    mrt_collision_d3q19(f_local, rho_local, ux, uy, uz, tau_local);
+    float inv_tau = __ldg(&tau[idx]);  // stores precomputed 1/tau
+    mrt_collision_d3q19(f_local, rho_local, ux, uy, uz, inv_tau);
 
     // Guo forcing: skip entirely when force pointer is NULL (free-decay flows).
     // Saves 12.9 GB VRAM at 1024^3 (3 * f32 * 1.07B cells).
@@ -1867,8 +1855,7 @@ extern "C" __global__ void lbm_step_soa_mrt_aa_ephemeral(
         float force_mag_sq = fx * fx + fy * fy + fz * fz;
 
         if (force_mag_sq >= 1e-40f) {
-            float inv_tau_f = 1.0f / tau_local;
-            float prefactor = 1.0f - 0.5f * inv_tau_f;
+            float prefactor = 1.0f - 0.5f * inv_tau;
             #pragma unroll
             for (int i = 0; i < 19; i++) {
                 float eix = (float)CX[i], eiy = (float)CY[i], eiz = (float)CZ[i];
@@ -2102,8 +2089,9 @@ compute_smagorinsky_tau_tiled(
     // nu_turb = (C_s * dx)^2 * |S|, tau = tau_base + 3 * nu_turb
     float tau_new = tau_base + 3.0f * cs_sq_dx_sq * s_mag;
 
-    // Phase 4: coalesced write to tau_out, clamped to stability range
-    tau_out[idx] = fmaxf(0.505f, fminf(5.0f, tau_new));
+    // Phase 4: coalesced write to tau_out, clamped to stability range, then 1/tau
+    float clamped_tau = fmaxf(0.505f, fminf(5.0f, tau_new));
+    tau_out[idx] = 1.0f / clamped_tau;
 }
 
 // ---------------------------------------------------------------------------
@@ -2171,8 +2159,7 @@ lbm_step_soa_coarsened_float4(
         u_out[N + idx]     = uy;
         u_out[2 * N + idx] = uz;
 
-        float tau_local = __ldg(&tau[idx]);
-        float inv_tau = 1.0f / tau_local;
+        float inv_tau = __ldg(&tau[idx]);  // stores precomputed 1/tau
         float u_sq = ux * ux + uy * uy + uz * uz;
         float base_eq = fmaf(-1.5f, u_sq, 1.0f);
 

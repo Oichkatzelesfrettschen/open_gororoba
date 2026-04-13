@@ -694,17 +694,18 @@ impl LbmSolver3DCuda {
         let d_force = stream.alloc_zeros::<u8>(3 * n_cells * es)?;
         let d_tau = match precision {
             Precision::FP32 => {
-                let v = vec![tau as f32; n_cells];
+                let v = vec![1.0_f32 / tau as f32; n_cells];
                 let b: Vec<u8> = v.iter().flat_map(|x| x.to_le_bytes()).collect();
                 stream.clone_htod(&b)?
             }
             Precision::BF16 => {
-                let v = vec![half::bf16::from_f32(tau as f32).to_bits(); n_cells];
+                let inv_tau = 1.0_f32 / tau as f32;
+                let v = vec![half::bf16::from_f32(inv_tau).to_bits(); n_cells];
                 let b: Vec<u8> = v.iter().flat_map(|x| x.to_le_bytes()).collect();
                 stream.clone_htod(&b)?
             }
             Precision::FP64 => {
-                let v = vec![tau; n_cells];
+                let v = vec![1.0_f64 / tau; n_cells];
                 let b: Vec<u8> = v.iter().flat_map(|x| x.to_le_bytes()).collect();
                 stream.clone_htod(&b)?
             }
@@ -1193,18 +1194,23 @@ impl LbmSolver3DCuda {
         );
 
         // LBM lattice units (D3Q19 BGK): nu = (tau - 0.5) / 3  =>  tau = 0.5 + 3*nu
+        // tau array stores precomputed 1/tau for the inv_tau optimization.
         if self.precision == Precision::FP64 {
-            let tau_flat: Vec<f64> = viscosity_field.iter().map(|&nu| 0.5 + 3.0 * nu).collect();
-            let bytes = Self::encode_f64_to_bytes(&tau_flat);
+            let inv_tau_flat: Vec<f64> = viscosity_field
+                .iter()
+                .map(|&nu| 1.0 / (0.5 + 3.0 * nu))
+                .collect();
+            let bytes = Self::encode_f64_to_bytes(&inv_tau_flat);
             self.d_tau = self.stream.clone_htod(&bytes)?;
         } else {
-            let mut tau_flat = Vec::with_capacity(self.n_cells);
+            let mut inv_tau_flat = Vec::with_capacity(self.n_cells);
             for &nu in viscosity_field {
-                tau_flat.push((0.5 + 3.0 * nu) as f32);
+                let tau = 0.5 + 3.0 * nu;
+                inv_tau_flat.push(1.0_f32 / tau as f32);
             }
             let bytes = match self.precision {
-                Precision::FP32 => Self::encode_f32_to_bytes(&tau_flat),
-                Precision::BF16 => Self::encode_bf16_to_bytes(&tau_flat),
+                Precision::FP32 => Self::encode_f32_to_bytes(&inv_tau_flat),
+                Precision::BF16 => Self::encode_bf16_to_bytes(&inv_tau_flat),
                 Precision::FP64 => unreachable!("FP64 handled in outer branch"),
             };
             self.d_tau = self.stream.clone_htod(&bytes)?;

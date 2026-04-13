@@ -6,8 +6,8 @@
 [experiments]
 authoritative = true
 deterministic_count = 154
-experiment_count = 211
-gpu_count = 28
+experiment_count = 212
+gpu_count = 29
 seeded_count = 46
 status_allowlist = ["active", "deprecated", "planned", "blocked"]
 updated = "2026-02-10"
@@ -5542,5 +5542,31 @@ run_command_sha256 = "74b21c74790d42c727aa917dcaa0b9fe58cc4c3b7720c0093caa588048
 status = "active"
 status_token = "ACTIVE"
 title = "LBM divergence RCA: per-step positivity sentinel and entropy analysis at BGK/MRT threshold contrasts"
+truth_surface_consumption = []
+
+[[experiment]]
+binary = "cuda-precision-bench"
+binary_experiment_declared = "E-219"
+binary_registered = true
+claim_refs = ["C-1550"]
+claims = ["C-1550"]
+dataset_label_refs = []
+dataset_refs = []
+deterministic = false
+external_source_refs = []
+gpu = true
+id = "E-219"
+input = "RTX 4070 Ti GPU (Ada Lovelace SM 8.9), kernels_soa.cu FP32 SoA D3Q19 LBM"
+input_path_refs = []
+lineage_id = "XL-219"
+method = "Host-side inv_tau precomputation: tau array stores 1/tau instead of tau. Kernels read inv_tau = __ldg(&tau[idx]) directly, eliminating MUFU.RCP + Newton-Raphson SFU stall (50.6 cycles per cell per step). Smagorinsky and ZD-viscosity kernels invert at write time. Validated by SASS RE on steinmarder reference (MUFU.RCP = 41.55 cycles, Newton-Raphson = ~9 cycles). MLUPS measured before/after via cuda_precision_bench --workloads lbm --grids 64,128."
+output = ["stdout (MLUPS before/after)", "data/output/e219_inv_tau_bench.csv"]
+output_path_refs = []
+reproducibility_class = "gpu_stochastic"
+run = "cargo run --release --bin cuda-precision-bench -- --workloads lbm --grids 64,128"
+run_command_sha256 = "3bc3c75b909356b30eb0eb2fa832eadde13879fab8a844927ceb56a2ce53dbbd"
+status = "active"
+status_token = "ACTIVE"
+title = "inv_tau precomputation: MUFU.RCP elimination in D3Q19 LBM SoA kernels (RTX 4070 Ti, Ada SM 8.9)"
 truth_surface_consumption = []
 
