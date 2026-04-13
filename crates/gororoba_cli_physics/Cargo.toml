@@ -244,6 +244,10 @@ name = "mrt-stability-audit"
 path = "src/bin/mrt_stability_audit.rs"
 
 [[bin]]
+name = "lbm-rca-probe"
+path = "src/bin/lbm_rca_probe.rs"
+
+[[bin]]
 name = "solar-wind-mhd-sim"
 path = "src/bin/solar_wind_mhd_sim.rs"
 

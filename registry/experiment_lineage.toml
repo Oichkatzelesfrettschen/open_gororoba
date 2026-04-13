@@ -5,8 +5,8 @@
 updated = "2026-02-10"
 authoritative = true
 source_registry = "registry/experiments.toml"
-lineage_count = 210
-edge_count = 1028
+lineage_count = 211
+edge_count = 1032
 
 [[lineage]]
 id = "XL-001"
@@ -13086,3 +13086,57 @@ to_kind = "dataset"
 edge_kind = "touches_dataset"
 verified = false
 
+
+[[lineage]]
+id = "XL-218"
+experiment_id = "E-218"
+binary = "lbm-rca-probe"
+deterministic = true
+gpu = false
+run_command = "cargo run --release --bin lbm-rca-probe -- --n 16 --tau 0.7 --contrast 23.0 --mode bgk --steps 400 --csv-out data/output/e167_rca_bgk_c23.csv"
+run_command_sha256 = "74b21c74790d42c727aa917dcaa0b9fe58cc4c3b7720c0093caa58804897aa01"
+claim_refs = ["C-1549"]
+input_path_refs = ["crates/lbm_3d/src/solver.rs", "crates/lbm_3d/src/lattice.rs", "crates/gororoba_cli_physics/src/bin/lbm_rca_probe.rs"]
+output_path_refs = ["data/output/e167_rca_bgk_c23.csv", "data/output/e167_rca_bgk_c29.csv", "data/output/e167_rca_mrt_c29.csv"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin lbm-rca-probe -- --n 16 --tau 0.7 --contrast 23.0 --mode bgk --steps 400 --csv-out data/output/e167_rca_bgk_c23.csv", "Verify trajectory CSV and Phase 1/2 summary outputs are produced."]
+acceptance_criteria = ["Positivity violation detected at expected step (~4-5).", "Ma > 0.3 causally precedes f_i < 0.", "Spatial analysis confirms gradient-shell violation location."]
+
+[[edge]]
+id = "XLE-01029"
+lineage_id = "XL-218"
+from_id = "E-218"
+to_ref = "data/output/e167_rca_bgk_c23.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01030"
+lineage_id = "XL-218"
+from_id = "E-218"
+to_ref = "data/output/e167_rca_bgk_c29.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01031"
+lineage_id = "XL-218"
+from_id = "E-218"
+to_ref = "data/output/e167_rca_mrt_c29.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01032"
+lineage_id = "XL-218"
+from_id = "E-218"
+to_ref = "lbm-rca-probe"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
