@@ -4966,7 +4966,6 @@ dependencies = [
  "serde",
  "serde_json",
  "spectral_core",
- "statrs",
  "stats_core",
  "tracing",
  "tracing-subscriber",
