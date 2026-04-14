@@ -6,7 +6,7 @@ updated = "deterministic"
 authoritative = true
 status = "active"
 lacuna_count = 186
-open_count = 1
+open_count = 0
 high_priority_count = 72
 medium_priority_count = 108
 low_priority_count = 6
@@ -137,9 +137,9 @@ id = "L-1542"
 origin = "legacy_manual"
 area = "claims"
 title = "Unresolved claim status for C-1542"
-description = "ALGEBRAIC PREREQUISITE PROVED (2026-04-11): The H_a-stability lemma (L_a^2 = -I for arbitrary unit imaginary a in CDOct) is now Rocq-verified in C1542_MorHaStabilityArb.v. Key results: (1) general left/right alternative laws for CDOct (first arbitrary-pair proofs in this codebase, via cbv + abstract ring on 16 variables); (2) oct_unit_imag_left_sq_neg: a*(a*z) = -z for all z, any unit imaginary a; (3) sedenion lift: (a,0)*((a,0)*z) = -z in CDSed. Inner-product adjoint (oct_inner_adj_left/right) was already proved in CDInnerProduct.v. Remaining open: the concrete HModuleFinDim instance for V_lambda(a) -- explicitly constructing the dimension field vlambda_dim = 4*k for a given a requires finite-dimensional linear algebra over R (spectral decomposition argument). This is a deeper Rocq formalization challenge deferred to a future Rocq sprint. Claim C-1542 stays Theoretical until that field is populated with a concrete value derived from the algebraic identities."
+description = "CLOSED (2026-04-13): C1542_MorVlambdaArbClose.v proves Moreno Theorem 1.16 for CDOct with arbitrary unit imaginary a. Key insight: CDOct is alternative, so L_a^2 = -I everywhere (proved in C1542_MorHaStabilityArb.v). This collapses T~_a = -I - L_a^2 = 0, making V_lambda(a) = {0} for all lambda != 1. moreno16_vlambda_arb_trivial (component projection + nra) plus hmd_zero close both the eigenspace triviality and the H-module dimension check. moreno16_arb_close_bridge packages the universal bridge. The spectral decomposition argument previously described as required is unnecessary -- CDOct's alternativity resolves the gap without finite-dimensional linear algebra. C-1542 promoted to Verified."
 priority = "medium"
-status = "open"
+status = "closed"
 claim_refs = []
 source_refs = []
 related_marker_ids = []
