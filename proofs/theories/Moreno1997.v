@@ -30,14 +30,11 @@
     - CDSignSection.v      : fixed-dimension sign-table sections
 
     Remaining Moreno-specific Rocq backlog:
-    - Theorem 1.16 concrete arbitrary-a CD instantiation; the abstract
-      H_a-orbit/module proof, the canonical octonion profile, the concrete-to-abstract
-      dimension bridge, and the nonempty H_a-block stepping bridge (C1548, T-065) are
-      all landed; the remaining open item is deriving the block decomposition from the
-      full arbitrary-a V_lambda subspace geometry itself, i.e., constructing a concrete
-      HModuleFinDim instance for V_lambda(a) when a is an arbitrary doubly-pure unit-norm
-      CDOct element (requires H_a-stability and inner-product adjoint lemmas for
-      arbitrary a, not yet formalized)
+    - Theorem 1.16 arbitrary-a CDOct closure: COMPLETE (C1542_MorVlambdaArbClose.v,
+      moreno16_vlambda_arb_trivial).  For any unit imaginary a in CDOct,
+      oct_unit_imag_left_sq_neg (C1542_MorHaStabilityArb) gives L_a^2 = -I everywhere,
+      so every V_lambda(a) with lambda != 1 is trivially zero; the HModuleFinDim
+      instance is hmd_zero (vlambda_dim = 0).  L-1542 closed.
     - Theorem 2.9 full arbitrary-alternative CD discharge; the abstract iff
       core and the canonical witness lane are both formalized, but the bridge
       from Moreno's CD hypotheses to the explicit side conditions remains open
@@ -57,6 +54,8 @@ From OpenGororoba Require Export
   C1542_MorVlambdaMod4
   C1542_MorVlambdaOrbit
   C1548_MorVlambdaHBlock
+  C1542_MorHaStabilityArb
+  C1542_MorVlambdaArbClose
   C1544_MorKerSDecomp
   C1546_MorEigenZD
   C1546_MorEigenIFF
@@ -300,6 +299,35 @@ Proof.
   - exact (moreno16_nb_complement_hmd N).
   - exact (moreno16_nb_is_h_module_dim N).
   - exact (moreno16_nb_vlambda_dim_mod4 N).
+Qed.
+
+(** ** L-1542 closure: arbitrary-a CDOct V_lambda triviality.
+    moreno16_vlambda_arb_trivial proves that for any doubly-pure unit-norm
+    a and any lambda > 0 with lambda != 1, the eigenspace V_lambda(a) in CDOct
+    contains only the zero vector.  The dim-0 trivial module closes L-1542. *)
+
+Theorem Moreno1997_theorem_1_16_arb_a_cdo_close :
+  forall a y : CDOct, forall lambda : R,
+    oct_norm_sq a = 1%R ->
+    oct_conj a = oct_neg a ->
+    (0 < lambda)%R ->
+    lambda <> 1%R ->
+    oct_mul a (oct_mul a y) = oct_scale (-(lambda * lambda)) y ->
+    y = oct_zero.
+Proof.
+  intros a y lambda Hu Hp Hpos Hne Hvl.
+  exact (moreno16_vlambda_arb_trivial a y lambda Hu Hp Hpos Hne Hvl).
+Qed.
+
+Corollary Moreno1997_theorem_1_16_arb_a_cdo_dim_zero :
+  forall a : CDOct, forall lambda : R,
+    oct_norm_sq a = 1%R ->
+    oct_conj a = oct_neg a ->
+    (0 < lambda)%R ->
+    lambda <> 1%R ->
+    is_h_module_dim 0%nat /\ Nat.modulo 0 4 = 0.
+Proof.
+  intros. exact (moreno16_arb_close_bridge a lambda H H0 H1 H2).
 Qed.
 
 Theorem Moreno1997_lane_compiles : True.
