@@ -170,11 +170,9 @@ fn main() -> Result<()> {
             .map(|&p| p.max(1e-300).ln())
             .sum::<f64>();
 
-    // Chi-squared p-value (df = 2 * n_quantiles)
-    // We can use statrs for this
-    use statrs::distribution::{ChiSquared, ContinuousCDF};
-    let chi = ChiSquared::new(2.0 * quantiles.len() as f64).unwrap();
-    let combined_p = 1.0 - chi.cdf(combined_chi2);
+    // Chi-squared p-value (df = 2 * n_quantiles) via Fisher's combined method.
+    let combined_p =
+        stats_core::helpers::chi_squared_survival(2.0 * quantiles.len() as f64, combined_chi2);
 
     println!("\nSummary:");
     println!("  Combined Fisher chi2: {:.4}", combined_chi2);

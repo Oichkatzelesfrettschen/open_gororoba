@@ -47,6 +47,20 @@ pub fn median(values: &mut [f64]) -> f64 {
     }
 }
 
+/// Chi-squared survival probability (upper tail p-value).
+///
+/// WHY: Fisher's combined test and other hypothesis tests need `P(X > x)` where
+/// `X ~ chi-squared(df)`. This wraps the statrs CDF so callers never need a
+/// direct statrs dep -- they just call this helper.
+///
+/// Returns `NaN` if `df <= 0`. For `statistic < 0` the result is 1.0 (full
+/// probability mass lies above a negative value for a non-negative r.v.).
+pub fn chi_squared_survival(df: f64, statistic: f64) -> f64 {
+    use statrs::distribution::{ChiSquared, ContinuousCDF};
+    let chi = ChiSquared::new(df).expect("chi_squared_survival: df must be positive");
+    1.0 - chi.cdf(statistic)
+}
+
 /// Compute a histogram of values.
 ///
 /// Returns (bin_centers, counts).
@@ -133,5 +147,27 @@ mod tests {
     fn test_median_single() {
         let mut vals = vec![42.0];
         assert!((median(&mut vals) - 42.0).abs() < 1e-12);
+    }
+
+    #[test]
+    fn test_chi_squared_survival_midpoint() {
+        // chi2(df=2) median is 2*ln(2) ~= 1.386. Survival at 0 should be 1.0.
+        let p = chi_squared_survival(2.0, 0.0);
+        assert!((p - 1.0).abs() < 1e-12, "p={}", p);
+    }
+
+    #[test]
+    fn test_chi_squared_survival_large_value() {
+        // Very large statistic -> very small tail probability.
+        let p = chi_squared_survival(2.0, 100.0);
+        assert!(p < 1e-20, "p={}", p);
+    }
+
+    #[test]
+    fn test_chi_squared_survival_known_point() {
+        // chi2(df=2) is an Exponential(1/2). CDF = 1 - exp(-x/2).
+        // At x=2.0: survival = exp(-1.0) ~= 0.36787944117.
+        let p = chi_squared_survival(2.0, 2.0);
+        assert!((p - (-1.0_f64).exp()).abs() < 1e-9, "p={}", p);
     }
 }
