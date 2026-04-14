@@ -15,7 +15,7 @@ use rand::{
 };
 use rand_chacha::ChaCha8Rng;
 use serde::Serialize;
-use statrs::distribution::{ContinuousCDF, Normal, StudentsT};
+use stats_core::helpers::{normal_two_tailed_p_value, students_t_two_tailed_p_value};
 use std::{
     collections::HashMap,
     fs,
@@ -662,7 +662,6 @@ fn mann_whitney_u_test(sample_a: &[f64], sample_b: &[f64]) -> Result<(f64, f64)>
     let variance =
         (n1 * n2) as f64 / 12.0 * ((total + 1) as f64 - tie_term / (total_f * (total_f - 1.0)));
     let sigma = variance.sqrt();
-    let normal = Normal::new(0.0, 1.0)?;
     let continuity = if u1 > mean_u {
         0.5
     } else if u1 < mean_u {
@@ -675,7 +674,7 @@ fn mann_whitney_u_test(sample_a: &[f64], sample_b: &[f64]) -> Result<(f64, f64)>
     } else {
         0.0
     };
-    let p_value = 2.0 * (1.0 - normal.cdf(z.abs()));
+    let p_value = normal_two_tailed_p_value(z);
     Ok((u1, p_value.clamp(0.0, 1.0)))
 }
 
@@ -703,8 +702,7 @@ fn pearson_p_value(r: f64, n: usize) -> Result<f64> {
     }
     let dof = (n - 2) as f64;
     let t = r.abs() * (dof / (1.0 - r * r)).sqrt();
-    let student = StudentsT::new(0.0, 1.0, dof)?;
-    Ok(2.0 * (1.0 - student.cdf(t)))
+    Ok(students_t_two_tailed_p_value(t, dof))
 }
 
 fn cmd_ultrametric(

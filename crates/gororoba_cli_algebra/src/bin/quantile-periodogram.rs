@@ -172,7 +172,7 @@ fn main() -> Result<()> {
 
     // Chi-squared p-value (df = 2 * n_quantiles) via Fisher's combined method.
     let combined_p =
-        stats_core::helpers::chi_squared_survival(2.0 * quantiles.len() as f64, combined_chi2);
+        stats_core::helpers::chi_squared_p_value(2.0 * quantiles.len() as f64, combined_chi2);
 
     println!("\nSummary:");
     println!("  Combined Fisher chi2: {:.4}", combined_chi2);
