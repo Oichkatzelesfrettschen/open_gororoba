@@ -531,7 +531,6 @@ parquet = { workspace = true }
 arrow-array = { workspace = true }
 arrow-ipc = { workspace = true }
 arrow-schema = { workspace = true }
-statrs = { workspace = true }
 tempfile = { workspace = true }
 nalgebra = { workspace = true }
 plotters = { workspace = true }
