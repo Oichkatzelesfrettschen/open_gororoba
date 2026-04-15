@@ -7,7 +7,7 @@
 use anyhow::{Context, Result};
 use clap::Parser;
 use csv::ReaderBuilder;
-use nalgebra::DMatrix;
+use stats_core::helpers::singular_values;
 use serde::{Deserialize, Serialize};
 use std::{fs, path::PathBuf};
 
@@ -79,9 +79,7 @@ fn effective_rank(embedded: &[Vec<f64>], dim: usize) -> usize {
     if n < 3 || dim < 2 {
         return 0;
     }
-    let mat = DMatrix::from_fn(n, dim, |i, j| embedded[i][j]);
-    let svd = mat.svd(false, false);
-    let svals: Vec<f64> = svd.singular_values.iter().copied().collect();
+    let svals = singular_values(&embedded.iter().map(|r| r[..dim].to_vec()).collect::<Vec<_>>());
     let max_sv = svals.first().copied().unwrap_or(0.0);
     let threshold = max_sv * 0.10;
     svals.iter().filter(|&&s| s > threshold).count()

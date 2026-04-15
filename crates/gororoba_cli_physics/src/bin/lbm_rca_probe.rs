@@ -23,6 +23,7 @@
 //! - Violation summary to stdout
 //! - Spatial analysis to stdout
 
+use cd_kernel::batch_sliding_associator_norms_parallel;
 use clap::{Parser, ValueEnum};
 use lbm_3d::{
     lattice::D3Q19Lattice,
@@ -83,6 +84,14 @@ struct Args {
     /// Neighborhood half-width for entropy analysis (cells)
     #[arg(long, default_value = "3")]
     entropy_radius: usize,
+
+    /// Enable spatial CD associator probe at violation site (C-1591 test)
+    #[arg(long)]
+    cd_probe: bool,
+
+    /// Embedding dimension for CD probe (must be power of 2, >= 32)
+    #[arg(long, default_value_t = 32)]
+    cd_dim: usize,
 }
 
 /// Per-step snapshot of global diagnostics.
@@ -415,6 +424,152 @@ fn main() {
                 "PEAK ENTROPY AT BOUNDARY -> consistent with periodic wrap reflection"
             };
             eprintln!("  Entropy diagnosis: {entropy_diagnosis}");
+        }
+    }
+
+    // ---- Phase 3 (optional): CD spatial associator probe (C-1591) ----
+    if args.cd_probe {
+        if let Some(ref v) = violation {
+            let cd_dim = args.cd_dim;
+            assert!(
+                cd_dim.is_power_of_two() && cd_dim >= 19,
+                "--cd-dim must be a power of 2 and >= 19 (got {cd_dim})"
+            );
+
+            eprintln!(
+                "\n--- Phase 3: CD Spatial Associator Probe (C-1591) ---"
+            );
+            eprintln!(
+                "cd_dim={cd_dim}, violation_step={}, site=({},{},{})",
+                v.step, v.ix, v.iy, v.iz
+            );
+
+            // 6 face neighbors + center cell in D3Q19 cardinal directions.
+            // Periodic wrapping via rem_euclid matches LBM boundary conditions.
+            let face_offsets: [[i32; 3]; 7] = [
+                [0, 0, 0],
+                [1, 0, 0],
+                [-1, 0, 0],
+                [0, 1, 0],
+                [0, -1, 0],
+                [0, 0, 1],
+                [0, 0, -1],
+            ];
+
+            let mut solver3 = fresh_solver(n, tau, coll, contrast);
+
+            // temporal_viol[step] = cd_dim-vector from violation cell at that step.
+            let mut temporal_viol: Vec<Vec<f64>> = Vec::with_capacity(v.step + 1);
+            // per_step_spatial_means[step] = mean associator norm across 5 spatial triples.
+            let mut per_step_spatial_means: Vec<(usize, f64)> = Vec::with_capacity(v.step + 1);
+
+            /// Pad 19 f_i values into a cd_dim-length unit-norm vector.
+            /// Entries 19..cd_dim are zero (padding).
+            fn pad_normalize(f: &[f64; 19], cd_dim: usize) -> Vec<f64> {
+                let mut vec = vec![0.0f64; cd_dim];
+                for (i, &fi) in f.iter().enumerate() {
+                    vec[i] = fi;
+                }
+                let norm: f64 = vec.iter().map(|x| x * x).sum::<f64>().sqrt();
+                if norm > 1e-15 {
+                    for x in vec.iter_mut() {
+                        *x /= norm;
+                    }
+                }
+                vec
+            }
+
+            // Collect initial state (step 0) before any stepping.
+            {
+                let viol_cell = v.iz * n * n + v.iy * n + v.ix;
+                temporal_viol.push(pad_normalize(&get_f_cell(&solver3, viol_cell), cd_dim));
+
+                let spatial_vecs: Vec<Vec<f64>> = face_offsets
+                    .iter()
+                    .map(|off| {
+                        let ix2 = ((v.ix as i32 + off[0]).rem_euclid(n as i32)) as usize;
+                        let iy2 = ((v.iy as i32 + off[1]).rem_euclid(n as i32)) as usize;
+                        let iz2 = ((v.iz as i32 + off[2]).rem_euclid(n as i32)) as usize;
+                        pad_normalize(
+                            &get_f_cell(&solver3, iz2 * n * n + iy2 * n + ix2),
+                            cd_dim,
+                        )
+                    })
+                    .collect();
+                let sn = batch_sliding_associator_norms_parallel(&spatial_vecs, cd_dim);
+                let mean = sn.iter().sum::<f64>() / sn.len().max(1) as f64;
+                per_step_spatial_means.push((0, mean));
+            }
+
+            // Step forward collecting state after each collision+streaming.
+            for step in 1..=v.step {
+                let _ = solver3.phase1_collision();
+                let _ = solver3.phase2_streaming();
+
+                let viol_cell = v.iz * n * n + v.iy * n + v.ix;
+                temporal_viol.push(pad_normalize(&get_f_cell(&solver3, viol_cell), cd_dim));
+
+                let spatial_vecs: Vec<Vec<f64>> = face_offsets
+                    .iter()
+                    .map(|off| {
+                        let ix2 = ((v.ix as i32 + off[0]).rem_euclid(n as i32)) as usize;
+                        let iy2 = ((v.iy as i32 + off[1]).rem_euclid(n as i32)) as usize;
+                        let iz2 = ((v.iz as i32 + off[2]).rem_euclid(n as i32)) as usize;
+                        pad_normalize(
+                            &get_f_cell(&solver3, iz2 * n * n + iy2 * n + ix2),
+                            cd_dim,
+                        )
+                    })
+                    .collect();
+                let sn = batch_sliding_associator_norms_parallel(&spatial_vecs, cd_dim);
+                let mean = sn.iter().sum::<f64>() / sn.len().max(1) as f64;
+                per_step_spatial_means.push((step, mean));
+            }
+
+            // Print per-step spatial means.
+            eprintln!("  step  cd_spatial_mean_assoc");
+            for (step, mean) in &per_step_spatial_means {
+                eprintln!("  {step:4}  {mean:.6e}");
+            }
+
+            // Compute temporal norms from violation-cell sequence.
+            let temporal_norms =
+                batch_sliding_associator_norms_parallel(&temporal_viol, cd_dim);
+            eprintln!(
+                "\n  Temporal CD norms at violation cell ({} norms from {} steps):",
+                temporal_norms.len(),
+                temporal_viol.len()
+            );
+            for (i, &tn) in temporal_norms.iter().enumerate() {
+                eprintln!("  triple [{}-{}]: {:.6e}", i, i + 2, tn);
+            }
+
+            // C-1591 verdict: does temporal associator increase toward violation?
+            if temporal_norms.len() >= 2 {
+                let half = temporal_norms.len() / 2;
+                let early: f64 =
+                    temporal_norms[..half].iter().sum::<f64>() / half as f64;
+                let late: f64 = temporal_norms[half..].iter().sum::<f64>()
+                    / (temporal_norms.len() - half) as f64;
+                eprintln!("\n  C-1591 VERDICT:");
+                eprintln!(
+                    "  Early-half mean={:.4e}  Late-half mean={:.4e}",
+                    early, late
+                );
+                if late > early * 1.1 {
+                    eprintln!(
+                        "  SUPPORTED: temporal CD norm grows toward violation ({:.2}x increase)",
+                        late / early.max(1e-20)
+                    );
+                } else {
+                    eprintln!(
+                        "  NOT SUPPORTED: no monotonic increase (ratio={:.3})",
+                        late / early.max(1e-20)
+                    );
+                }
+            }
+        } else {
+            eprintln!("\n--- Phase 3: CD probe skipped (no violation found) ---");
         }
     }
 }

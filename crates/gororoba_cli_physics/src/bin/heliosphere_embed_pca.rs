@@ -1,12 +1,12 @@
 //! Project 32D Takens embeddings to top 3 principal components.
 //!
 //! Outputs CSV: PC1, PC2, PC3, associator_norm, bmag, doy, hour, minute
-//! for downstream visualization. Pure Rust, uses nalgebra for SVD.
+//! for downstream visualization.
 
 use chrono::{Datelike, NaiveDate};
 use clap::Parser;
 use data_core::catalogs::themis::parse_themis_fgm_hapi_csv_minutes;
-use nalgebra::DMatrix;
+use stats_core::helpers::svd_right_singular_vectors;
 use std::fs;
 
 #[derive(Parser)]
@@ -107,24 +107,26 @@ fn main() {
     let norms = cd_kernel::batch_sliding_associator_norms_parallel(&embedded, dim);
     eprintln!("Computed {} norms", norms.len());
 
-    // Build nalgebra matrix for SVD (center the data first)
+    // Build centered matrix as plain Vec<Vec<f64>> for SVD
     let mean_vec: Vec<f64> = (0..dim)
         .map(|d| embedded.iter().map(|v| v[d]).sum::<f64>() / n_emb as f64)
         .collect();
 
-    let mat = DMatrix::from_fn(n_emb, dim, |i, j| embedded[i][j] - mean_vec[j]);
+    let centered: Vec<Vec<f64>> = embedded[..n_emb]
+        .iter()
+        .map(|row| (0..dim).map(|j| row[j] - mean_vec[j]).collect())
+        .collect();
 
     eprintln!("Computing SVD...");
-    let svd = mat.clone().svd(false, true);
-    let v_t = svd.v_t.unwrap();
+    let (svals, v_t_rows) = svd_right_singular_vectors(&centered);
 
     // Project to top 3 PCs
     eprintln!("Projecting to 3 PCs...");
 
     // Explained variance
-    let total_var: f64 = svd.singular_values.iter().map(|s| s * s).sum();
-    for k in 0..3.min(svd.singular_values.len()) {
-        let var = svd.singular_values[k].powi(2) / total_var * 100.0;
+    let total_var: f64 = svals.iter().map(|s| s * s).sum();
+    for k in 0..3.min(svals.len()) {
+        let var = svals[k].powi(2) / total_var * 100.0;
         eprintln!("  PC{}: {:.1}% variance", k + 1, var);
     }
 
@@ -133,11 +135,9 @@ fn main() {
 
     for i in 0..n_emb {
         // Project: row_i * V[:, 0:3]
-        let row = mat.row(i);
         let mut pcs = [0.0f64; 3];
-        for (k, pc) in pcs.iter_mut().enumerate() {
-            let v_col = v_t.row(k);
-            *pc = row.iter().zip(v_col.iter()).map(|(a, b)| a * b).sum();
+        for (k, pc) in pcs.iter_mut().enumerate().take(3.min(v_t_rows.len())) {
+            *pc = centered[i].iter().zip(v_t_rows[k].iter()).map(|(a, b)| a * b).sum();
         }
 
         // Associator norm (offset by 2 for triple)
