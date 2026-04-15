@@ -12,7 +12,6 @@ use anise::{
     almanac::Almanac,
     prelude::{Epoch, Frame},
 };
-use nalgebra::Vector3;
 use std::path::Path;
 
 /// NAIF body IDs.
@@ -32,12 +31,12 @@ const MOON_EARTH_MASS_RATIO: f64 = 0.012_300_034;
 #[derive(Debug, Clone, Copy)]
 pub struct ThreeBodyState {
     /// Moon geocentric position in J2000 ECI (km).
-    pub moon_pos_km: Vector3<f64>,
+    pub moon_pos_km: [f64; 3],
     /// Sun geocentric position in J2000 ECI (km).
-    pub sun_pos_km: Vector3<f64>,
+    pub sun_pos_km: [f64; 3],
     /// Earth-Moon barycenter geocentric offset in J2000 ECI (km).
     /// EMB = M_moon / (M_earth + M_moon) * r_moon
-    pub emb_offset_km: Vector3<f64>,
+    pub emb_offset_km: [f64; 3],
 }
 
 /// Thread-safe JPL ephemeris loader.
@@ -90,7 +89,8 @@ impl EphemerisLoader {
         let epoch = Epoch::from_jde_tdb(jed);
         let moon_pos_km = self.query_body(NAIF_MOON, epoch);
         let sun_pos_km = self.query_body(NAIF_SUN, epoch);
-        let emb_offset_km = moon_pos_km * (MOON_EARTH_MASS_RATIO / (1.0 + MOON_EARTH_MASS_RATIO));
+        let s = MOON_EARTH_MASS_RATIO / (1.0 + MOON_EARTH_MASS_RATIO);
+        let emb_offset_km = [moon_pos_km[0] * s, moon_pos_km[1] * s, moon_pos_km[2] * s];
         ThreeBodyState {
             moon_pos_km,
             sun_pos_km,
@@ -99,12 +99,12 @@ impl EphemerisLoader {
     }
 
     /// Moon geocentric position in J2000 ECI (km).
-    pub fn moon_geocentric_j2000(&self, jed: f64) -> Vector3<f64> {
+    pub fn moon_geocentric_j2000(&self, jed: f64) -> [f64; 3] {
         self.query_body(NAIF_MOON, Epoch::from_jde_tdb(jed))
     }
 
     /// Sun geocentric position in J2000 ECI (km).
-    pub fn sun_geocentric_j2000(&self, jed: f64) -> Vector3<f64> {
+    pub fn sun_geocentric_j2000(&self, jed: f64) -> [f64; 3] {
         self.query_body(NAIF_SUN, Epoch::from_jde_tdb(jed))
     }
 
@@ -112,16 +112,17 @@ impl EphemerisLoader {
     ///
     /// EMB = M_moon / (M_earth + M_moon) * r_moon
     /// This is the TRUE focal point of the local dark matter gravitational well.
-    pub fn earth_moon_barycenter(&self, jed: f64) -> Vector3<f64> {
+    pub fn earth_moon_barycenter(&self, jed: f64) -> [f64; 3] {
         let r_moon = self.moon_geocentric_j2000(jed);
-        r_moon * (MOON_EARTH_MASS_RATIO / (1.0 + MOON_EARTH_MASS_RATIO))
+        let s = MOON_EARTH_MASS_RATIO / (1.0 + MOON_EARTH_MASS_RATIO);
+        [r_moon[0] * s, r_moon[1] * s, r_moon[2] * s]
     }
 
     /// Query a body's geocentric J2000 position via anise.
     ///
     /// anise uses nalgebra 0.34 internally, but our workspace pins nalgebra 0.33
     /// (statrs 0.18 constraint). Extract x/y/z components to bridge the version gap.
-    fn query_body(&self, naif_id: i32, epoch: Epoch) -> Vector3<f64> {
+    fn query_body(&self, naif_id: i32, epoch: Epoch) -> [f64; 3] {
         match self
             .almanac
             .state_of(naif_id, self.earth_j2000, epoch, None)
@@ -129,7 +130,7 @@ impl EphemerisLoader {
             Ok(state) => {
                 // Bridge nalgebra 0.34 (anise) -> 0.33 (workspace) via component extraction.
                 let r = state.radius_km;
-                Vector3::new(r[0], r[1], r[2])
+                [r[0], r[1], r[2]]
             }
             Err(e) => {
                 // This should not happen with a valid DE440 .bsp covering 1550-2650.
@@ -138,7 +139,7 @@ impl EphemerisLoader {
                     "WARNING: anise query for NAIF {} at {:?} failed: {}",
                     naif_id, epoch, e
                 );
-                Vector3::zeros()
+                [0.0; 3]
             }
         }
     }
