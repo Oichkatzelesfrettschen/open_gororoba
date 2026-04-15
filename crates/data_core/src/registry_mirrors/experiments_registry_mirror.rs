@@ -5,7 +5,7 @@
 //!
 //! Authoritative source: `registry/canonical/control_plane.sqlite3`.
 //!
-//! Total experiments: 212
+//! Total experiments: 220
 //!
 //! ## E-001: Cayley-Dickson Motif Census
 //!
@@ -3655,4 +3655,140 @@
 //! Run command:
 //! ```bash
 //! cargo run --release --bin cuda-precision-bench -- --workloads lbm --grids 64,128
+//! ```
+//!
+//! ## E-220: TurboQuant WHT/E8 rotation benchmark and KIVI comparison (d=128, 3-bit)
+//!
+//! - Binary: ``
+//! - Input: 
+//! - Output: (none)
+//! - Deterministic: `false`
+//! - GPU: `false`
+//! - Claims: (none)
+//!
+//! Method:
+//!
+//!
+//! Run command:
+//! ```bash
+//! cargo run --release -p gororoba_cli_physics --bin turboquant-bench -- --dims 128 --bits 3 --n-vectors 5000 --rotation both --out-json reports/e220_turboquant_bench.json
+//! ```
+//!
+//! ## E-221: TurboQuant adaptive bit allocation via CD associator (d=32, 3-bit)
+//!
+//! - Binary: ``
+//! - Input: 
+//! - Output: (none)
+//! - Deterministic: `false`
+//! - GPU: `false`
+//! - Claims: (none)
+//!
+//! Method:
+//!
+//!
+//! Run command:
+//! ```bash
+//! cargo test -p cd_kernel --release -- test_adaptive_vs_uniform --nocapture
+//! ```
+//!
+//! ## E-222: TurboQuant QJL correction crossover analysis (2-4 bit)
+//!
+//! - Binary: ``
+//! - Input: 
+//! - Output: (none)
+//! - Deterministic: `false`
+//! - GPU: `false`
+//! - Claims: (none)
+//!
+//! Method:
+//!
+//!
+//! Run command:
+//! ```bash
+//! cargo run --release -p gororoba_cli_physics --bin turboquant-validate -- --dim 128 --bits 2,3,4 --seq-lens 512 --n-heads 4 --out-json reports/e222_turboquant_qjl.json
+//! ```
+//!
+//! ## E-223: TurboQuant E8 lattice root system and rotation roundtrip validation
+//!
+//! - Binary: ``
+//! - Input: 
+//! - Output: (none)
+//! - Deterministic: `false`
+//! - GPU: `false`
+//! - Claims: (none)
+//!
+//! Method:
+//!
+//!
+//! Run command:
+//! ```bash
+//! cargo test -p cd_kernel --release -- test_e8_root_count test_e8_root_norms test_e8_rotation_roundtrip test_f4_as_pipeline_rotation
+//! ```
+//!
+//! ## E-224: LBM BGK divergence RCA: per-step positivity sentinel and entropy neighborhood (contrast 23, 16^3, tau=0.7)
+//!
+//! - Binary: `lbm-rca-probe`
+//! - Input: Gaussian density (contrast=23, rho_peak/rho_bg=23, sigma=n/6) on 16^3 D3Q19 LBM grid, tau=0.7, BGK collision
+//! - Output: stdout (step trajectory CSV + violation summary + entropy neighborhood)
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: C-1617
+//!
+//! Method:
+//! Phase 1: per-step min(f_i) and max(Ma) sentinel; halt on first f_i<0. Phase 2: re-run to violation step, compute relative entropy H_rel in radius-3 neighborhood. Result: violation at step 5, r_norm=0.800 (boundary region), Ma causally precedes f_i<0.
+//!
+//! Run command:
+//! ```bash
+//! cargo run --release --bin lbm-rca-probe -- --n 16 --contrast 23
+//! ```
+//!
+//! ## E-225: LBM CD spatial associator probe: precursor signal sweep across contrasts 21-25 (C-1617)
+//!
+//! - Binary: `lbm-rca-probe`
+//! - Input: Gaussian density (contrasts 21,22,23,24,25) on 16^3 D3Q19 LBM grid, tau=0.7, BGK collision, cd_dim=32
+//! - Output: stdout (per-step cd_spatial_mean_assoc + temporal norms + C-1617 verdict)
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: C-1617
+//!
+//! Method:
+//! Phase 3 CD probe: collect f_i from violation cell + 6 face neighbors at each step 0..violation_step; pad 19->32, unit-normalize; compute batch_sliding_associator_norms_parallel per step (7 spatial vectors -> 5 norms); also collect temporal violation-cell sequence -> temporal associator norms. C-1617 verdict: temporal early-half vs late-half ratio.
+//!
+//! Run command:
+//! ```bash
+//! cargo run --release --bin lbm-rca-probe -- --n 16 --contrast 23 --cd-probe --cd-dim 32
+//! ```
+//!
+//! ## E-226: Cross-domain CD associator survey: LBM/heliosphere/GPU regime boundary (C-1617, C-1618)
+//!
+//! - Binary: `cd-domain-survey`
+//! - Input: ACE 2004 Halloween storm B-field CSV (334502 rows, bx/by/bz/bmag); TeraScale-2 wg-sweep probe results (wg032-256, 30 reps each); LBM C-1617 reference (1.92x)
+//! - Output: data/output/heliosphere/ablations/cd_domain_survey.json
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: C-1617, C-1618
+//!
+//! Method:
+//! 32D Takens embeddings (8-step x 4-channel, unit-normalized); batch_sliding_associator_norms_parallel; p95 local-maxima peak detection; 12-step early/late (6+6) ratio per peak. GPU: hard-coded wg032/064/128/256 ns values, step-function analysis. Three-domain comparison table.
+//!
+//! Run command:
+//! ```bash
+//! cargo run --release --bin cd-domain-survey -- --embed-dim 32 --steps 8 --peak-percentile 95 --precursor-window 12
+//! ```
+//!
+//! ## E-227: THEMIS supervised CD crossing survey: ground-truth early/late ratio at magnetopause (C-1619)
+//!
+//! - Binary: `themis-cd-crossing-survey`
+//! - Input: Staples et al. 2020 THEMIS crossing catalog v2 (9490 probe-a entries); 1783 THEMIS FGM CSV files at 3-second cadence (2007-2016)
+//! - Output: data/output/heliosphere/ablations/themis_cd_crossing_survey.json
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: C-1619
+//!
+//! Method:
+//! Group crossings by (year, doy); for each group load FGM CSV; binary search for crossing time; extract 120 pre-crossing rows; build 32D Takens embeddings (8-step x 4-ch, unit-norm); batch_sliding_associator_norms_parallel; last 12 norms = precursor window (6 early + 6 late); ratio = late_mean / early_mean.
+//!
+//! Run command:
+//! ```bash
+//! cargo run --release --bin themis-cd-crossing-survey -- --embed-dim 32 --steps 8 --precursor-window 12 --back-rows 120
 //! ```
