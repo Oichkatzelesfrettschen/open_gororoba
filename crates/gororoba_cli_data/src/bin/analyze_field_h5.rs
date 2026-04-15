@@ -7,7 +7,6 @@
 
 use anyhow::{Context, Result};
 use hdf5::File;
-use ndarray::Array1;
 
 fn main() -> Result<()> {
     let args: Vec<String> = std::env::args().skip(1).collect();
@@ -22,7 +21,7 @@ fn main() -> Result<()> {
     println!("=== Field Snapshot Analysis: {} ===", file_path);
 
     if let Ok(dataset) = file.dataset("velocity") {
-        let u_flat: Array1<f64> = dataset.read_1d()?;
+        let u_flat: Vec<f64> = dataset.read_1d::<f64>()?.into_raw_vec_and_offset().0;
         println!("  Raw data size: {}", u_flat.len());
 
         let mut nan_count = 0;
