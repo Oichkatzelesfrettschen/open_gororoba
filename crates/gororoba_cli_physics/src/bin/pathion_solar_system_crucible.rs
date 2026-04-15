@@ -4,8 +4,7 @@
 //! gravity compared to JPL DE440 gold-standard ephemerides.
 
 use data_core::spice::{daf::DafReader, spk::SpkReader};
-use gr_core::{BodyState, NBodySystem};
-use nalgebra::Vector3;
+use gr_core::NBodySystem;
 use num_complex::Complex;
 use std::{collections::HashMap, time::Instant};
 
@@ -45,14 +44,7 @@ fn main() -> anyhow::Result<()> {
 
     for (&id, &gm) in &gm_map {
         if let Some(state) = spk.compute_state(0, id, t0) {
-            let p = Vector3::from(state.position);
-            let v = Vector3::from(state.velocity);
-            system.bodies.push(BodyState {
-                id,
-                mass: gm,
-                pos: p.map(Complex::from),
-                vel: v.map(Complex::from),
-            });
+            system.push_body_real(id, gm, state.position, state.velocity);
         }
     }
 
@@ -97,12 +89,19 @@ fn main() -> anyhow::Result<()> {
             // Check drift for Earth relative to Sun
             let jpl_sun = spk.compute_state(0, 10, t).unwrap();
             let jpl_emb = spk.compute_state(0, 3, t).unwrap();
-            let p_jpl_helio = Vector3::from(jpl_emb.position) - Vector3::from(jpl_sun.position);
-
-            let p_sim_helio = system.bodies[earth_idx].pos - system.bodies[sun_idx].pos;
+            let p_jpl_helio = [
+                jpl_emb.position[0] - jpl_sun.position[0],
+                jpl_emb.position[1] - jpl_sun.position[1],
+                jpl_emb.position[2] - jpl_sun.position[2],
+            ];
             // Extract real part for comparison with JPL (imaginary time component is zero for real-time evolution)
-            let p_sim_real = p_sim_helio.map(|c| c.re);
-            let drift = (p_sim_real - p_jpl_helio).norm();
+            let p_sim_helio = system.body_helio_pos_re(earth_idx, sun_idx);
+            let diff = [
+                p_sim_helio[0] - p_jpl_helio[0],
+                p_sim_helio[1] - p_jpl_helio[1],
+                p_sim_helio[2] - p_jpl_helio[2],
+            ];
+            let drift = (diff[0] * diff[0] + diff[1] * diff[1] + diff[2] * diff[2]).sqrt();
             println!(
                 "  T + {:>8.1} days: Helio Earth Drift = {:>10.4} km",
                 t / 86400.0,
@@ -118,11 +117,19 @@ fn main() -> anyhow::Result<()> {
     let t_final = t0 + (steps as f64 * dt);
     let jpl_sun_final = spk.compute_state(0, 10, t_final).unwrap();
     let jpl_emb_final = spk.compute_state(0, 3, t_final).unwrap();
-    let p_jpl_helio_final =
-        Vector3::from(jpl_emb_final.position) - Vector3::from(jpl_sun_final.position);
-    let p_sim_helio_final = system.bodies[earth_idx].pos - system.bodies[sun_idx].pos;
-    let p_sim_real_final = p_sim_helio_final.map(|c| c.re);
-    let drift_final = (p_sim_real_final - p_jpl_helio_final).norm();
+    let p_jpl_helio_final = [
+        jpl_emb_final.position[0] - jpl_sun_final.position[0],
+        jpl_emb_final.position[1] - jpl_sun_final.position[1],
+        jpl_emb_final.position[2] - jpl_sun_final.position[2],
+    ];
+    let p_sim_helio_final = system.body_helio_pos_re(earth_idx, sun_idx);
+    let diff_final = [
+        p_sim_helio_final[0] - p_jpl_helio_final[0],
+        p_sim_helio_final[1] - p_jpl_helio_final[1],
+        p_sim_helio_final[2] - p_jpl_helio_final[2],
+    ];
+    let drift_final =
+        (diff_final[0] * diff_final[0] + diff_final[1] * diff_final[1] + diff_final[2] * diff_final[2]).sqrt();
 
     println!("\n=== Final Results ===");
     println!(

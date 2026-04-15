@@ -1,6 +1,5 @@
 use gororoba_engine::singularitarian::SingularitarianEngine;
-use gr_core::{BodyState, NBodySystem};
-use nalgebra::Vector3;
+use gr_core::NBodySystem;
 use num_complex::Complex;
 
 fn main() {
@@ -36,30 +35,22 @@ fn main() {
     );
 
     // Add a test body near the event horizon
-    system.bodies.push(BodyState {
-        id: 1,
-        mass: 1.0,
-        pos: Vector3::new(
-            Complex::new(10.0, 0.1),
-            Complex::new(0.0, 0.0),
-            Complex::new(0.0, 0.0),
-        ),
-        vel: Vector3::new(
-            Complex::new(0.0, 0.0),
-            Complex::new(0.5, 0.01),
-            Complex::new(0.0, 0.0),
-        ),
-    });
+    system.push_body_complex(
+        1,
+        1.0,
+        [Complex::new(10.0, 0.1), Complex::new(0.0, 0.0), Complex::new(0.0, 0.0)],
+        [Complex::new(0.0, 0.0), Complex::new(0.5, 0.01), Complex::new(0.0, 0.0)],
+    );
 
     let d_tau = Complex::new(0.01, 0.001); // Real step + Imaginary tunneling
     engine.unified_step(&mut system, d_tau);
 
-    let new_pos = system.bodies[0].pos;
+    let new_pos = system.body_pos_complex(0);
     println!(
         "Body 1 moved to position: ({:.4}, {:.4}, {:.4})",
-        new_pos.x, new_pos.y, new_pos.z
+        new_pos[0], new_pos[1], new_pos[2]
     );
-    println!("Complex phase component (tunneling): {:.4}", new_pos.x.im);
+    println!("Complex phase component (tunneling): {:.4}", new_pos[0].im);
 
     // 4. Evidence Matrix
     let matrix = SingularitarianEngine::evidence_matrix();
