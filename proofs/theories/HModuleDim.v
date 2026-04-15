@@ -127,6 +127,23 @@ Proof.
   - exact Hh0.
 Qed.
 
+(** Corollary: module-interface form of act_free for the H_a^perp concrete module.
+
+    In the H_a^perp right H-module (V = CDQuat, act = quat_mul, v_zero = quat_zero),
+    the HModuleFinDim act_free axiom "act v h = v_zero => v = v_zero \/ h = quat_zero"
+    reduces to exactly this statement.  Bridges the abstract module interface to the
+    concrete quaternion division algebra property proved above.
+
+    Closes the act_free obligation for L-1542 (Moreno Theorem 1.16 H_a^perp lane). *)
+Corollary h_a_perp_act_free : forall v h : CDQuat,
+  quat_mul v h = quat_zero -> v = quat_zero \/ h = quat_zero.
+Proof.
+  intros v h Hvh.
+  destruct (quat_no_zero_divisors v h Hvh) as [Hv | Hh].
+  - left; exact Hv.
+  - right; exact Hh.
+Qed.
+
 (** ================================================================== *)
 (** * PART II: Abstract H-module structure.                            *)
 (** ================================================================== *)
