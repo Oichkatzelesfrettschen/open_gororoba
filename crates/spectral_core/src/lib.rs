@@ -512,6 +512,65 @@ pub fn dirichlet_laplacian_eigenvalues_1d(n: usize, length: f64) -> Vec<f64> {
         .collect()
 }
 
+/// Flat-slice wrapper: 2D periodic fractional Laplacian.
+///
+/// `u` is row-major with shape `(nx, ny)`: element `(i,j)` is at `u[i*ny + j]`.
+/// Returns result in the same row-major layout as a `Vec<f64>`.
+pub fn fractional_laplacian_periodic_2d_flat(
+    u: &[f64],
+    nx: usize,
+    ny: usize,
+    s: f64,
+    lx: f64,
+    ly: f64,
+) -> Vec<f64> {
+    let grid = Array2::from_shape_vec((nx, ny), u.to_vec())
+        .expect("flat slice length must equal nx * ny");
+    fractional_laplacian_periodic_2d(&grid, s, lx, ly)
+        .into_raw_vec_and_offset()
+        .0
+}
+
+/// Flat-slice wrapper: 2D Dirichlet fractional Laplacian.
+///
+/// `u` is row-major with shape `(nx, ny)`: element `(i,j)` is at `u[i*ny + j]`.
+/// Returns result in the same row-major layout as a `Vec<f64>`.
+pub fn fractional_laplacian_dirichlet_2d_flat(
+    u: &[f64],
+    nx: usize,
+    ny: usize,
+    s: f64,
+    lx: f64,
+    ly: f64,
+) -> Vec<f64> {
+    let grid = Array2::from_shape_vec((nx, ny), u.to_vec())
+        .expect("flat slice length must equal nx * ny");
+    fractional_laplacian_dirichlet_2d(&grid, s, lx, ly)
+        .into_raw_vec_and_offset()
+        .0
+}
+
+/// Flat-slice wrapper: 3D periodic fractional Laplacian.
+///
+/// `u` is row-major with shape `(nx, ny, nz)`: element `(i,j,k)` is at `u[(i*ny + j)*nz + k]`.
+/// Returns result in the same row-major layout as a `Vec<f64>`.
+pub fn fractional_laplacian_periodic_3d_flat(
+    u: &[f64],
+    nx: usize,
+    ny: usize,
+    nz: usize,
+    s: f64,
+    lx: f64,
+    ly: f64,
+    lz: f64,
+) -> Vec<f64> {
+    let grid = Array3::from_shape_vec((nx, ny, nz), u.to_vec())
+        .expect("flat slice length must equal nx * ny * nz");
+    fractional_laplacian_periodic_3d(&grid, s, lx, ly, lz)
+        .into_raw_vec_and_offset()
+        .0
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
