@@ -17,7 +17,6 @@ use quantum_core::{
     intention_operator::IntentionOperator,
 };
 
-use nalgebra::Matrix3;
 use num_complex::Complex;
 use std::collections::HashSet;
 
@@ -462,7 +461,10 @@ impl SingularitarianEngine {
         let pioneer_a = Some(self.pioneer_anomaly(6.0e9, 12.0));
 
         // 7. Adaptive Wick evolution
-        let mut system = NBodySystem::new(1e-5, Matrix3::identity());
+        let mut system = NBodySystem::new(
+            1e-5,
+            [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]],
+        );
         let adaptive_wick = Some(self.adaptive_wick_evolve(
             &mut system,
             4.1e6,

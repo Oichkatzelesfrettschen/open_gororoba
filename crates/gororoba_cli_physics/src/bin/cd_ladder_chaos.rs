@@ -10,43 +10,62 @@ use gr_core::{
     cd_ladder_force::CdLadderForce,
     lyapunov::{LyapunovState, classify_regime, kaplan_yorke_dimension},
 };
-use nalgebra::Vector3;
+
+#[inline(always)]
+fn add3(a: [f64; 3], b: [f64; 3]) -> [f64; 3] {
+    [a[0] + b[0], a[1] + b[1], a[2] + b[2]]
+}
+
+#[inline(always)]
+fn scale3(a: [f64; 3], s: f64) -> [f64; 3] {
+    [a[0] * s, a[1] * s, a[2] * s]
+}
+
+#[inline(always)]
+fn norm_sq3(a: [f64; 3]) -> f64 {
+    a[0] * a[0] + a[1] * a[1] + a[2] * a[2]
+}
 
 /// Simple RK4 step for position + velocity under Kepler + CD drag.
 fn rk4_step(
-    pos: &mut Vector3<f64>,
-    vel: &mut Vector3<f64>,
+    pos: &mut [f64; 3],
+    vel: &mut [f64; 3],
     gm: f64,
     force: &CdLadderForce,
     dt: f64,
 ) {
-    let accel = |p: &Vector3<f64>, v: &Vector3<f64>| -> Vector3<f64> {
-        let r2 = p.norm_squared();
+    let accel = |p: [f64; 3], v: [f64; 3]| -> [f64; 3] {
+        let r2 = norm_sq3(p);
         let r = r2.sqrt();
-        let a_kepler = -p * (gm / (r2 * r));
-        a_kepler + force.drag_acceleration(v)
+        let a_kepler = scale3(p, -gm / (r2 * r));
+        add3(a_kepler, force.drag_acceleration(&v))
     };
 
-    let k1v = accel(pos, vel);
+    let k1v = accel(*pos, *vel);
     let k1x = *vel;
 
-    let p2 = *pos + k1x * (dt / 2.0);
-    let v2 = *vel + k1v * (dt / 2.0);
-    let k2v = accel(&p2, &v2);
+    let p2 = add3(*pos, scale3(k1x, dt / 2.0));
+    let v2 = add3(*vel, scale3(k1v, dt / 2.0));
+    let k2v = accel(p2, v2);
     let k2x = v2;
 
-    let p3 = *pos + k2x * (dt / 2.0);
-    let v3 = *vel + k2v * (dt / 2.0);
-    let k3v = accel(&p3, &v3);
+    let p3 = add3(*pos, scale3(k2x, dt / 2.0));
+    let v3 = add3(*vel, scale3(k2v, dt / 2.0));
+    let k3v = accel(p3, v3);
     let k3x = v3;
 
-    let p4 = *pos + k3x * dt;
-    let v4 = *vel + k3v * dt;
-    let k4v = accel(&p4, &v4);
+    let p4 = add3(*pos, scale3(k3x, dt));
+    let v4 = add3(*vel, scale3(k3v, dt));
+    let k4v = accel(p4, v4);
     let k4x = v4;
 
-    *pos += (k1x + k2x * 2.0 + k3x * 2.0 + k4x) * (dt / 6.0);
-    *vel += (k1v + k2v * 2.0 + k3v * 2.0 + k4v) * (dt / 6.0);
+    // Weighted sum: (k1 + 2*k2 + 2*k3 + k4) * dt/6
+    let sum_x = add3(add3(k1x, scale3(k2x, 2.0)), add3(scale3(k3x, 2.0), k4x));
+    let sum_v = add3(add3(k1v, scale3(k2v, 2.0)), add3(scale3(k3v, 2.0), k4v));
+    let dx = scale3(sum_x, dt / 6.0);
+    let dv = scale3(sum_v, dt / 6.0);
+    pos[0] += dx[0]; pos[1] += dx[1]; pos[2] += dx[2];
+    vel[0] += dv[0]; vel[1] += dv[1]; vel[2] += dv[2];
 }
 
 fn main() {
@@ -86,14 +105,14 @@ fn main() {
             let force = CdLadderForce::new(dim, alpha);
             let violations = force.violation_count();
 
-            // Reference trajectory
-            let mut pos = Vector3::new(1.0, 0.0, 0.0);
-            let mut vel = Vector3::new(0.0, 1.0, 0.0);
+            // Reference trajectory: circular orbit at r=1
+            let mut pos: [f64; 3] = [1.0, 0.0, 0.0];
+            let mut vel: [f64; 3] = [0.0, 1.0, 0.0];
 
-            // Shadow trajectory (tiny perturbation)
+            // Shadow trajectory (tiny perturbation along x)
             let delta0 = 1e-9;
-            let mut pos_s = pos + Vector3::new(delta0, 0.0, 0.0);
-            let mut vel_s = vel;
+            let mut pos_s: [f64; 3] = [1.0 + delta0, 0.0, 0.0];
+            let mut vel_s: [f64; 3] = vel;
 
             let mut lyap = LyapunovState::new();
 
@@ -102,18 +121,18 @@ fn main() {
                 rk4_step(&mut pos_s, &mut vel_s, gm, &force, dt);
 
                 if (step + 1) % renorm_interval == 0 {
-                    let dx = pos_s - pos;
-                    let dv = vel_s - vel;
-                    let separation = (dx.norm_squared() + dv.norm_squared()).sqrt();
+                    let dx = [pos_s[0] - pos[0], pos_s[1] - pos[1], pos_s[2] - pos[2]];
+                    let dv = [vel_s[0] - vel[0], vel_s[1] - vel[1], vel_s[2] - vel[2]];
+                    let separation = (norm_sq3(dx) + norm_sq3(dv)).sqrt();
 
                     if separation > 0.0 {
                         let stretch = separation / delta0;
                         lyap.record(stretch, dt_renorm);
 
-                        // Renormalize shadow trajectory
+                        // Renormalize shadow trajectory back to delta0 distance
                         let scale = delta0 / separation;
-                        pos_s = pos + dx * scale;
-                        vel_s = vel + dv * scale;
+                        pos_s = add3(pos, scale3(dx, scale));
+                        vel_s = add3(vel, scale3(dv, scale));
                     }
                 }
             }

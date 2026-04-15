@@ -5,7 +5,7 @@
 
 use data_core::spice::{daf::DafReader, spk::SpkReader};
 use gr_core::{BodyState, NBodySystem};
-use nalgebra::{Matrix3, Vector3};
+use nalgebra::Vector3;
 use num_complex::Complex;
 use std::{collections::HashMap, time::Instant};
 
@@ -35,10 +35,13 @@ fn main() -> anyhow::Result<()> {
     .collect();
 
     // 2. Initialize N-Body System
-    let pathion_variance = Matrix3::identity() * 0.589;
+    // pathion_variance = 0.589 * I (scalar multiple of identity)
     let alpha_pathion = 1e-25;
 
-    let mut system = NBodySystem::new(alpha_pathion, pathion_variance);
+    let mut system = NBodySystem::new(
+        alpha_pathion,
+        [[0.589, 0.0, 0.0], [0.0, 0.589, 0.0], [0.0, 0.0, 0.589]],
+    );
 
     for (&id, &gm) in &gm_map {
         if let Some(state) = spk.compute_state(0, id, t0) {
