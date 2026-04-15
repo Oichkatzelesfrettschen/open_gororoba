@@ -99,6 +99,38 @@ pub fn students_t_two_tailed_p_value(t: f64, dof: f64) -> f64 {
     2.0 * (1.0 - dist.cdf(t.abs()))
 }
 
+/// Compute predicted values from ridge regression: beta = (X^T X + lambda*I)^{-1} X^T y.
+///
+/// WHY: Ridge regression (Tikhonov regularization) is used by several CLI binaries to
+/// residualize covariates from feature vectors.  Centralising the solve here removes the
+/// direct nalgebra dep from those binaries; all nalgebra types are hidden behind this API.
+///
+/// `design_rows` is the design matrix in row-major order: each inner Vec is one sample's
+/// covariate vector.  `y` must have the same length as `design_rows`.  `lambda` is the
+/// L2 regularization coefficient (ridge penalty).
+///
+/// Returns `None` if the system is singular (LU decomposition fails) or inputs are empty.
+/// Returns `Some(predictions)` where each element is the model-predicted value for that row.
+pub fn ridge_predictions(design_rows: &[Vec<f64>], y: &[f64], lambda: f64) -> Option<Vec<f64>> {
+    use nalgebra::{DMatrix, DVector};
+    let n = design_rows.len();
+    if n == 0 || n != y.len() {
+        return None;
+    }
+    let k = design_rows.first()?.len();
+    if k == 0 {
+        return None;
+    }
+    let flat: Vec<f64> = design_rows.iter().flat_map(|row| row.iter().copied()).collect();
+    let x = DMatrix::from_row_slice(n, k, &flat);
+    let y_vec = DVector::from_column_slice(y);
+    let xt = x.transpose();
+    let solve_matrix = &xt * &x + DMatrix::<f64>::identity(k, k) * lambda;
+    let beta = solve_matrix.lu().solve(&(&xt * &y_vec))?;
+    let predictions = &x * &beta;
+    Some(predictions.iter().copied().collect())
+}
+
 /// Compute a histogram of values.
 ///
 /// Returns (bin_centers, counts).

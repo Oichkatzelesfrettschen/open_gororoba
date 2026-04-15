@@ -21,6 +21,7 @@ flate2 = { workspace = true }
 zip = { workspace = true }
 tar = { workspace = true }
 rand = { workspace = true }
+rand_distr = { workspace = true }
 nalgebra = { workspace = true }
 log = { workspace = true }
 chrono = { workspace = true }
@@ -71,7 +72,6 @@ registry-mirrors = []
 [dev-dependencies]
 approx = { workspace = true }
 tempfile = { workspace = true }
-rand_distr = { workspace = true }
 
 [lints]
 workspace = true

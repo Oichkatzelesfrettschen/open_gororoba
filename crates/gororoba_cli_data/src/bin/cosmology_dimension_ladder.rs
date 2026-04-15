@@ -2,7 +2,8 @@ use algebra_analysis::{
     associator_entropy::decompose_entropy_adaptive,
     boxkite_alignment::compute_alignment,
     graph_projections::{
-        compute_budgeted_invariants, generate_pathion_matching, generate_zd_parity_cliques,
+        BudgetedInvariants, knn_budgeted_invariants, pathion_matching_invariants,
+        zd_parity_invariants,
     },
     phase_transition::PhaseTransitionAnalyzer,
 };
@@ -16,7 +17,6 @@ use cosmology_core::euclid_morphology::{
 use csv::{ReaderBuilder, Writer};
 use data_core::catalogs::jwst::{JwstPublicObservation, parse_jwst_public_metadata_csv};
 use fitsio::{FitsFile, hdu::HduInfo};
-use petgraph::graph::UnGraph;
 use serde::{Deserialize, Serialize};
 use stats_core::ultrametric::local::local_ultrametricity_test_nd;
 use std::{
@@ -231,11 +231,11 @@ fn build_rows(datasets: &[DatasetCloud], algebra_refs: &[AlgebraReference]) -> V
                 0x5EED_1000 + reference.cd_dim as u64,
             );
             let associators = sampled_associator_norms(&window_points);
-            let graph = knn_graph(&window_points, KNN_K);
-            let observed_graph_metrics = graph_metrics(&graph);
-            let parity_ref = graph_metrics(&generate_zd_parity_cliques(window_points.len()));
+            let observed_graph_metrics =
+                graph_metrics(knn_budgeted_invariants(&window_points, KNN_K));
+            let parity_ref = graph_metrics(zd_parity_invariants(window_points.len()));
             let pathion_ref = (window_points.len() >= 64)
-                .then(|| graph_metrics(&generate_pathion_matching(window_points.len())));
+                .then(|| graph_metrics(pathion_matching_invariants(window_points.len())));
             let (mean_boxkite_capture, dominant_boxkite_share) =
                 boxkite_summary(&window_points, reference.cd_dim);
 
@@ -916,39 +916,7 @@ fn harmonic_lift(point: &[f64], cd_dim: usize) -> Vec<f64> {
     lifted
 }
 
-fn knn_graph(points: &[Vec<f64>], k: usize) -> UnGraph<(), ()> {
-    let mut graph = UnGraph::<(), ()>::new_undirected();
-    let nodes: Vec<_> = (0..points.len()).map(|_| graph.add_node(())).collect();
-    let mut edges = std::collections::BTreeSet::new();
-
-    for i in 0..points.len() {
-        let mut distances = Vec::with_capacity(points.len().saturating_sub(1));
-        for j in 0..points.len() {
-            if i == j {
-                continue;
-            }
-            distances.push((j, euclidean_distance(&points[i], &points[j])));
-        }
-        distances.sort_by(|a, b| cmp_f64_asc(a.1, b.1));
-        for &(neighbor, _) in distances.iter().take(k.min(distances.len())) {
-            let edge = if i < neighbor {
-                (i, neighbor)
-            } else {
-                (neighbor, i)
-            };
-            edges.insert(edge);
-        }
-    }
-
-    for (source, target) in edges {
-        graph.add_edge(nodes[source], nodes[target], ());
-    }
-
-    graph
-}
-
-fn graph_metrics(graph: &UnGraph<(), ()>) -> GraphMetrics {
-    let invariants = compute_budgeted_invariants(graph);
+fn graph_metrics(invariants: BudgetedInvariants) -> GraphMetrics {
     let node_count = invariants.n_nodes().max(1);
     let edge_density = if invariants.n_nodes() > 1 {
         2.0 * invariants.n_edges() as f64

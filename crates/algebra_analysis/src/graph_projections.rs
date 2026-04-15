@@ -724,6 +724,66 @@ pub fn compute_budgeted_invariants(graph: &UnGraph<(), ()>) -> BudgetedInvariant
     }
 }
 
+/// Build a k-nearest-neighbour graph from a point cloud and return its budgeted invariants.
+///
+/// WHY: CLI binaries that only need graph invariants (edge density, triangle count, etc.)
+/// should not require a direct petgraph Cargo dep.  This facade constructs the UnGraph
+/// internally and returns the opaque BudgetedInvariants, hiding petgraph types from callers.
+///
+/// Points are treated as equal-length f64 vectors.  Euclidean distance is used.
+/// Edges are symmetric: if j is in the k-NN of i, (i,j) is added regardless of whether
+/// i is in the k-NN of j (mutual k-NN would require a different API).
+pub fn knn_budgeted_invariants(points: &[Vec<f64>], k: usize) -> BudgetedInvariants {
+    let mut graph = UnGraph::<(), ()>::new_undirected();
+    let nodes: Vec<_> = (0..points.len()).map(|_| graph.add_node(())).collect();
+    let mut edges = std::collections::BTreeSet::new();
+
+    for i in 0..points.len() {
+        let mut distances: Vec<(usize, f64)> = (0..points.len())
+            .filter(|&j| j != i)
+            .map(|j| (j, euclidean_dist(&points[i], &points[j])))
+            .collect();
+        distances.sort_by(|a, b| a.1.partial_cmp(&b.1).unwrap_or(std::cmp::Ordering::Equal));
+        for &(neighbor, _) in distances.iter().take(k.min(distances.len())) {
+            let edge = if i < neighbor { (i, neighbor) } else { (neighbor, i) };
+            edges.insert(edge);
+        }
+    }
+
+    for (src, dst) in edges {
+        graph.add_edge(nodes[src], nodes[dst], ());
+    }
+
+    compute_budgeted_invariants(&graph)
+}
+
+fn euclidean_dist(a: &[f64], b: &[f64]) -> f64 {
+    a.iter()
+        .zip(b.iter())
+        .map(|(x, y)| {
+            let diff = x - y;
+            diff * diff
+        })
+        .sum::<f64>()
+        .sqrt()
+}
+
+/// ZD parity-clique graph invariants for n basis elements.
+///
+/// Wraps `generate_zd_parity_cliques` + `compute_budgeted_invariants` so callers
+/// do not need a direct petgraph dep to use this reference graph.
+pub fn zd_parity_invariants(n: usize) -> BudgetedInvariants {
+    compute_budgeted_invariants(&generate_zd_parity_cliques(n))
+}
+
+/// Pathion matching graph invariants for n basis elements.
+///
+/// Wraps `generate_pathion_matching` + `compute_budgeted_invariants` so callers
+/// do not need a direct petgraph dep to use this reference graph.
+pub fn pathion_matching_invariants(n: usize) -> BudgetedInvariants {
+    compute_budgeted_invariants(&generate_pathion_matching(n))
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

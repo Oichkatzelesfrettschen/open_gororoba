@@ -532,9 +532,7 @@ arrow-array = { workspace = true }
 arrow-ipc = { workspace = true }
 arrow-schema = { workspace = true }
 tempfile = { workspace = true }
-nalgebra = { workspace = true }
 plotters = { workspace = true }
-petgraph = { workspace = true }
 hdf5 = { workspace = true }
 ndarray = "0.17"
 lopdf = { workspace = true }
