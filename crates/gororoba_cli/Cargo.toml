@@ -92,6 +92,7 @@ required-features = ["gpu"]
 [[bin]]
 name = "test-tda-api"
 path = "src/bin/test_tda_api.rs"
+required-features = ["tda-validation"]
 
 [[bin]]
 name = "thesis-42-support"
@@ -162,12 +163,11 @@ gororoba_view_raster = { path = "../gororoba_view_raster" }
 gororoba_cli_physics = { path = "../gororoba_cli_physics" }
 provenance_ops = { path = "../provenance_ops" }
 provenance_store = { path = "../provenance_store" }
-tda = { workspace = true }
+tda = { workspace = true, optional = true }
 lbm_vulkan = { version = "0.1.0", path = "../lbm_vulkan" }
 ash = { version = "0.38.0", features = ["debug"] }
 # External crates
-nalgebra = { workspace = true }
-nalgebra033 = { package = "nalgebra", version = "0.33" }
+nalgebra033 = { package = "nalgebra", version = "0.33", optional = true }
 ndarray = { workspace = true }
 anyhow = { workspace = true }
 rand = { workspace = true }
@@ -207,6 +207,7 @@ gpu = [
     "stats_core/gpu",
 ]
 hdf5-export = ["data_artifacts_core/hdf5-export"]
+tda-validation = ["dep:tda", "dep:nalgebra033"]
 
 [lints]
 workspace = true
