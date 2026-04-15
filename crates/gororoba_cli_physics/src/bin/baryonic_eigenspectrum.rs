@@ -18,7 +18,7 @@
 use std::{f64::consts::PI, path::PathBuf};
 
 use clap::Parser;
-use nalgebra::{DMatrix, DVector};
+use stats_core::helpers::{singular_values, svd_projection_r_squared};
 
 #[derive(Parser)]
 #[command(name = "baryonic-eigenspectrum")]
@@ -88,74 +88,23 @@ fn parse_dc14_csv(path: &std::path::Path) -> anyhow::Result<Vec<Dc14Bin>> {
 }
 
 /// Build design matrix A for given wavenumbers and mode weights.
-/// A[j][n] = w_n * cos(k_n * x_j) * envelope(x_j)
+/// A[i][j] = w_j * cos(k_j * x_i) * envelope(x_i)
 fn build_design_matrix(
     x_values: &[f64],
     wavenumbers: &[f64],
     mode_weights: &[f64],
-) -> DMatrix<f64> {
-    let n_rows = x_values.len();
+) -> Vec<Vec<f64>> {
     let n_cols = wavenumbers.len();
-    DMatrix::from_fn(n_rows, n_cols, |i, j| {
-        let x = x_values[i];
-        let k = wavenumbers[j];
-        let w = mode_weights[j];
-        w * (k * x).cos() * (-x).exp()
-    })
+    x_values
+        .iter()
+        .map(|&x| {
+            (0..n_cols)
+                .map(|j| mode_weights[j] * (wavenumbers[j] * x).cos() * (-x).exp())
+                .collect()
+        })
+        .collect()
 }
 
-/// Compute R^2 of least-squares projection of y onto column space of A.
-fn projection_r_squared(a: &DMatrix<f64>, y: &DVector<f64>) -> f64 {
-    // y_hat = A * (A^T A)^{-1} A^T y  via SVD pseudoinverse
-    let svd = a.clone().svd(true, true);
-
-    // Reconstruct pseudoinverse: pinv(A) = V * S^{-1} * U^T
-    let u = match &svd.u {
-        Some(u) => u,
-        None => return 0.0,
-    };
-    let vt = match &svd.v_t {
-        Some(vt) => vt,
-        None => return 0.0,
-    };
-
-    let sigma = &svd.singular_values;
-    let threshold = 1e-12 * sigma[0];
-
-    // y_hat = U * U^T * y (for the columns with non-negligible singular values)
-    let mut y_hat = DVector::zeros(y.len());
-    for k in 0..sigma.len() {
-        if sigma[k] < threshold {
-            continue;
-        }
-        let u_k = u.column(k);
-        let v_k = vt.row(k).transpose();
-        let coeff = u_k.dot(y) / sigma[k];
-        y_hat += coeff * sigma[k] * u_k;
-        let _ = v_k; // used implicitly through SVD
-    }
-
-    // Actually, simpler: y_hat = A * pinv(A) * y
-    // pinv(A) * y = V * S^{-1} * U^T * y
-    let mut coeffs = DVector::zeros(sigma.len());
-    for k in 0..sigma.len() {
-        if sigma[k] < threshold {
-            continue;
-        }
-        coeffs[k] = u.column(k).dot(y) / sigma[k];
-    }
-    let y_hat2 = vt.transpose() * &coeffs;
-    let y_hat_final = a * &y_hat2;
-
-    let y_mean = y.mean();
-    let ss_tot: f64 = y.iter().map(|&yi| (yi - y_mean).powi(2)).sum();
-    let ss_res: f64 = (y - &y_hat_final).iter().map(|r| r.powi(2)).sum();
-
-    if ss_tot < 1e-30 {
-        return 0.0;
-    }
-    1.0 - ss_res / ss_tot
-}
 
 fn main() -> anyhow::Result<()> {
     let cli = Cli::parse();
@@ -215,10 +164,9 @@ fn main() -> anyhow::Result<()> {
     let a = build_design_matrix(&x_values, &wavenumbers, &mode_weights);
 
     // SVD
-    let svd = a.clone().svd(true, true);
-    let sigma = &svd.singular_values;
-    let kappa = if sigma[sigma.len() - 1] > 1e-15 {
-        sigma[0] / sigma[sigma.len() - 1]
+    let svals = singular_values(&a);
+    let kappa = if svals[svals.len() - 1] > 1e-15 {
+        svals[0] / svals[svals.len() - 1]
     } else {
         f64::INFINITY
     };
@@ -227,8 +175,8 @@ fn main() -> anyhow::Result<()> {
     eprintln!("Design matrix: {} x {}", n_valid, n_modes);
     eprintln!("Singular values:");
     let mut cumulative_var = 0.0_f64;
-    let total_var: f64 = sigma.iter().map(|s| s * s).sum();
-    for (i, &s) in sigma.iter().enumerate() {
+    let total_var: f64 = svals.iter().map(|s| s * s).sum();
+    for (i, &s) in svals.iter().enumerate() {
         cumulative_var += s * s;
         let frac = if total_var > 0.0 {
             cumulative_var / total_var
@@ -245,13 +193,11 @@ fn main() -> anyhow::Result<()> {
     eprintln!("Condition number kappa: {:.2}", kappa);
 
     // Project delta_nfw onto ZD mode basis
-    let y_nfw = DVector::from_column_slice(&delta_nfw);
-    let r2_nfw = projection_r_squared(&a, &y_nfw);
+    let r2_nfw = svd_projection_r_squared(&a, &delta_nfw);
     eprintln!("\nR^2 (NFW residual -> ZD modes): {:.6}", r2_nfw);
 
     // Project delta_dc14 onto ZD mode basis
-    let y_dc14 = DVector::from_column_slice(&delta_dc14);
-    let r2_dc14 = projection_r_squared(&a, &y_dc14);
+    let r2_dc14 = svd_projection_r_squared(&a, &delta_dc14);
     eprintln!("R^2 (DC14 residual -> ZD modes): {:.6}", r2_dc14);
 
     // Random wavenumber control: how does the ZD basis compare to random k-sets?
@@ -278,8 +224,7 @@ fn main() -> anyhow::Result<()> {
             .collect();
 
         let a_rand = build_design_matrix(&x_values, &rand_k, &mode_weights);
-        let svd_rand = a_rand.clone().svd(false, false);
-        let sig_rand = &svd_rand.singular_values;
+        let sig_rand = singular_values(&a_rand);
         let k_rand = if sig_rand[sig_rand.len() - 1] > 1e-15 {
             sig_rand[0] / sig_rand[sig_rand.len() - 1]
         } else {
@@ -287,8 +232,8 @@ fn main() -> anyhow::Result<()> {
         };
 
         random_kappas.push(k_rand);
-        random_r2_nfw.push(projection_r_squared(&a_rand, &y_nfw));
-        random_r2_dc14.push(projection_r_squared(&a_rand, &y_dc14));
+        random_r2_nfw.push(svd_projection_r_squared(&a_rand, &delta_nfw));
+        random_r2_dc14.push(svd_projection_r_squared(&a_rand, &delta_dc14));
     }
 
     // Sort for percentile computation
@@ -394,7 +339,7 @@ fn main() -> anyhow::Result<()> {
         "".to_string(),
         "".to_string(),
     ])?;
-    for (i, &s) in sigma.iter().enumerate() {
+    for (i, &s) in svals.iter().enumerate() {
         wtr.write_record(&[
             format!("sigma_{}", i + 1),
             format!("{:.8e}", s),

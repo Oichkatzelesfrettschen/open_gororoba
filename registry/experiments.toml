@@ -5,8 +5,8 @@
 
 [experiments]
 authoritative = true
-deterministic_count = 154
-experiment_count = 216
+deterministic_count = 156
+experiment_count = 218
 gpu_count = 29
 seeded_count = 46
 status_allowlist = ["active", "deprecated", "planned", "blocked"]
@@ -5601,4 +5601,56 @@ status = "active"
 status_token = "ACTIVE"
 run = "cargo test -p cd_kernel --release -- test_e8_root_count test_e8_root_norms test_e8_rotation_roundtrip test_f4_as_pipeline_rotation"
 binary_name = "turboquant-sedenion-rotation"
+
+[[experiment]]
+binary = "lbm-rca-probe"
+binary_experiment_declared = "E-224"
+binary_registered = true
+claim_refs = ["C-1617"]
+claims = ["C-1617"]
+dataset_label_refs = []
+dataset_refs = []
+deterministic = true
+external_source_refs = []
+gpu = false
+id = "E-224"
+input = "Gaussian density (contrast=23, rho_peak/rho_bg=23, sigma=n/6) on 16^3 D3Q19 LBM grid, tau=0.7, BGK collision"
+input_path_refs = []
+lineage_id = "XL-224"
+method = "Phase 1: per-step min(f_i) and max(Ma) sentinel; halt on first f_i<0. Phase 2: re-run to violation step, compute relative entropy H_rel in radius-3 neighborhood. Result: violation at step 5, r_norm=0.800 (boundary region), Ma causally precedes f_i<0."
+output = ["stdout (step trajectory CSV + violation summary + entropy neighborhood)"]
+output_path_refs = []
+reproducibility_class = "deterministic"
+run = "cargo run --release --bin lbm-rca-probe -- --n 16 --contrast 23"
+run_command_sha256 = ""
+status = "active"
+status_token = "ACTIVE"
+title = "LBM BGK divergence RCA: per-step positivity sentinel and entropy neighborhood (contrast 23, 16^3, tau=0.7)"
+truth_surface_consumption = []
+
+[[experiment]]
+binary = "lbm-rca-probe"
+binary_experiment_declared = "E-225"
+binary_registered = true
+claim_refs = ["C-1617"]
+claims = ["C-1617"]
+dataset_label_refs = []
+dataset_refs = []
+deterministic = true
+external_source_refs = []
+gpu = false
+id = "E-225"
+input = "Gaussian density (contrasts 21,22,23,24,25) on 16^3 D3Q19 LBM grid, tau=0.7, BGK collision, cd_dim=32"
+input_path_refs = []
+lineage_id = "XL-225"
+method = "Phase 3 CD probe: collect f_i from violation cell + 6 face neighbors at each step 0..violation_step; pad 19->32, unit-normalize; compute batch_sliding_associator_norms_parallel per step (7 spatial vectors -> 5 norms); also collect temporal violation-cell sequence -> temporal associator norms. C-1617 verdict: temporal early-half vs late-half ratio."
+output = ["stdout (per-step cd_spatial_mean_assoc + temporal norms + C-1617 verdict)"]
+output_path_refs = []
+reproducibility_class = "deterministic"
+run = "cargo run --release --bin lbm-rca-probe -- --n 16 --contrast 23 --cd-probe --cd-dim 32"
+run_command_sha256 = ""
+status = "active"
+status_token = "ACTIVE"
+title = "LBM CD spatial associator probe: precursor signal sweep across contrasts 21-25 (C-1617)"
+truth_surface_consumption = []
 
