@@ -59,7 +59,7 @@
 .PHONY: docker-quantum-build docker-quantum-run docker-quantum-shell
 .PHONY: clean clean-builds clean-artifacts clean-all host-profile
 .PHONY: run-e183
-.PHONY: cpd-audit cpd-audit-strict cpd-audit-tooling cargo-cache-status cargo-cache-prune cargo-cache-smoke
+.PHONY: cpd-audit cpd-audit-strict cpd-audit-tooling cpd-audit-generated patch-static-mirror-headers cargo-cache-status cargo-cache-prune cargo-cache-smoke
 .PHONY: cd-row-upgrade-batch cd-row-upgrade-jacobson cd-row-upgrade-freudenthal
 
 .NOTPARALLEL: bootstrap-dev check smoke integrity integrity-rust rust-smoke rust-regression rust-regression-scoped heavy cargo-deny-check gate-local gate-ci-registry gate-ci-rust gate-audit gate-audit-fast pre-push-gate pre-push-gate-scoped pre-push-gate-strict governance-gate governance-gate-readonly registry-control-plane-gate-readonly registry-acceptance-gate-readonly
@@ -1834,6 +1834,31 @@ cpd-audit-tooling:
 	pmd cpd --language rust --minimum-tokens $(CPD_TOOLING_TOKENS) --file-list $(_CPD_TOOLING_FILE_LIST) --format xml 2>/dev/null \
 		| $(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin cpd-report -- --top $(CPD_TOP)
 
+# ---- PH-4: Generated artifact header patching ----
+# Back-fills the standard AUTO-GENERATED header on all static registry_mirrors .rs
+# files that predate the generated_doc_header() convention (commit 20d93a12 mass-
+# conversion via markdown_to_rust did not emit headers).  Safe to run repeatedly.
+.PHONY: patch-static-mirror-headers
+
+patch-static-mirror-headers:
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin registry-emit -- \
+		patch-static-mirror-headers
+
+# ---- PH-4: Generated surface CPD audit lane ----
+# Scans registry_mirrors/ and other purely-generated Rust surfaces separately from
+# hand-written logic.  Uses a much higher token threshold (200) because generated
+# code has structural repetition by design.  Never gates CI -- report-only semantics.
+CPD_GENERATED_TOKENS ?= 200
+_CPD_GENERATED_FILE_LIST := /tmp/cpd_generated_src_list.txt
+
+cpd-audit-generated:
+	@command -v pmd >/dev/null 2>&1 || { echo "ERROR: pmd not found. Install PMD (e.g. paru -S pmd) to run cpd-audit-generated."; exit 1; }
+	@find crates/data_core/src/registry_mirrors -name '*.rs' ! -name 'mod.rs' 2>/dev/null \
+		> $(_CPD_GENERATED_FILE_LIST); \
+	 echo "Generated surface: $$(wc -l < $(_CPD_GENERATED_FILE_LIST)) files"
+	pmd cpd --language rust --minimum-tokens $(CPD_GENERATED_TOKENS) --file-list $(_CPD_GENERATED_FILE_LIST) --format xml 2>/dev/null \
+		| $(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin cpd-report -- --top $(CPD_TOP)
+
 # ---- Heliosphere Quench Map ----
 .PHONY: quench-map
 
@@ -1856,6 +1881,8 @@ help:
 	@echo "  Quality:"
 	@echo "    make cpd-audit            Report cross/within-crate Rust duplication (CPD, 42 tokens)"
 	@echo "    make cpd-audit-strict     Same, exits 1 if any clusters found"
+	@echo "    make cpd-audit-generated  Scan generated registry_mirrors surface (200 tokens, report-only)"
+	@echo "    make patch-static-mirror-headers  Backfill AUTO-GENERATED headers on static mirror .rs files"
 	@echo "    make lint                 Run workspace-wide clippy -- -D warnings"
 	@echo "    make test                 Run workspace-wide nextest"
 	@echo "    make smoke                Composite fast smoke lane (check + rust-smoke)"

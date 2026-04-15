@@ -5,7 +5,7 @@
 //!
 //! Authoritative source: `registry/canonical/control_plane.sqlite3`.
 //!
-//! Total claims: 1411
+//! Total claims: 1434
 //!
 //! ## C-001
 //!
@@ -11293,4 +11293,188 @@
 //! - Last verified: 2026-04-12
 //! - Statement: The inv_tau precomputation optimization in kernels_soa.cu eliminates the per-cell-per-step MUFU.RCP (50.6 cycles: 41.55-cycle MUFU + ~9-cycle Newton-Raphson SFU stall) by storing 1/tau directly in the tau array. On the RTX 4070 Ti (Ada SM 8.9), this yields +12.1% MLUPS for the standard BGK kernel at 64^3 (compute-bound: fits in 48 MB L2, 4146->4650 MLUPS) and +14.1% for mrt_coarsened at 64^3 (3604->4113 MLUPS). At 128^3 the kernel is memory-bandwidth-bound (~80% of 504 GB/s peak) so the instruction saving is masked by the bandwidth ceiling. The Smagorinsky and ZD-viscosity kernels invert tau at write time (1 MUFU.RCP per cell per tau update, amortized over N_steps between updates). Empirical validation: cuda-precision-bench A/B run 2026-04-12, data/output/e219_delta.csv.
 //! - Where stated: E-219 inv_tau kernel port (2026-04-12)
+//! - What would verify/refute it: 
+//!
+//! ## C-1597
+//!
+//! - Status: `Established`
+//! - Last verified: 2026-04-13
+//! - Statement: WHT rotation 3.2x faster than Haar at d=128: FastJL (D1*WHT*D2) achieves 77 kvec/s vs Haar 25 kvec/s = 3.08x speedup, with 0.5% lower MSE (1.444 vs 1.451 at 3-bit).
+//! - Where stated: TurboQuant CD bridge (2026-03-28)
+//! - What would verify/refute it: 
+//!
+//! ## C-1598
+//!
+//! - Status: `Established`
+//! - Last verified: 2026-04-13
+//! - Statement: BitPackedSigns 8x memory reduction for QJL.
+//! - Where stated: TurboQuant CD bridge (2026-03-28)
+//! - What would verify/refute it: 
+//!
+//! ## C-1599
+//!
+//! - Status: `Established`
+//! - Last verified: 2026-04-13
+//! - Statement: SIMD codebook 2.4x faster than scalar at d=128.
+//! - Where stated: TurboQuant CD bridge (2026-03-28)
+//! - What would verify/refute it: 
+//!
+//! ## C-1600
+//!
+//! - Status: `Established`
+//! - Last verified: 2026-04-13
+//! - Statement: Adaptive bit allocation via CD associator: 23% MSE improvement.
+//! - Where stated: TurboQuant CD bridge (2026-03-28)
+//! - What would verify/refute it: 
+//!
+//! ## C-1601
+//!
+//! - Status: `Established`
+//! - Last verified: 2026-04-13
+//! - Statement: E8 rotation KS validated (p=0.816).
+//! - Where stated: TurboQuant CD bridge (2026-03-28)
+//! - What would verify/refute it: 
+//!
+//! ## C-1602
+//!
+//! - Status: `Established`
+//! - Last verified: 2026-04-13
+//! - Statement: TurboQuant dominates KIVI 4x at 2-bit.
+//! - Where stated: TurboQuant CD bridge (2026-03-28)
+//! - What would verify/refute it: 
+//!
+//! ## C-1603
+//!
+//! - Status: `Established`
+//! - Last verified: 2026-04-13
+//! - Statement: QJL correction helps at 2-bit, hurts at 4-bit.
+//! - Where stated: TurboQuant CD bridge (2026-03-28)
+//! - What would verify/refute it: 
+//!
+//! ## C-1604
+//!
+//! - Status: `Falsified`
+//! - Last verified: 2026-04-13
+//! - Statement: Hierarchical CD tower quantization: negative result.
+//! - Where stated: TurboQuant CD bridge (2026-03-28)
+//! - What would verify/refute it: 
+//!
+//! ## C-1605
+//!
+//! - Status: `Established`
+//! - Last verified: 2026-04-13
+//! - Statement: E8 rotation roundtrip error < 1e-8.
+//! - Where stated: TurboQuant CD bridge (2026-03-28)
+//! - What would verify/refute it: 
+//!
+//! ## C-1606
+//!
+//! - Status: `Established`
+//! - Last verified: 2026-04-13
+//! - Statement: 240 E8 roots verified.
+//! - Where stated: TurboQuant CD bridge (2026-03-28)
+//! - What would verify/refute it: 
+//!
+//! ## C-1607
+//!
+//! - Status: `Established`
+//! - Last verified: 2026-04-13
+//! - Statement: F4 rotation 18% better MSE at d=64.
+//! - Where stated: TurboQuant CD bridge (2026-03-29)
+//! - What would verify/refute it: 
+//!
+//! ## C-1608
+//!
+//! - Status: `Established`
+//! - Last verified: 2026-04-13
+//! - Statement: E8+WHT = E8 = WHT quality.
+//! - Where stated: TurboQuant CD bridge (2026-03-29)
+//! - What would verify/refute it: 
+//!
+//! ## C-1609
+//!
+//! - Status: `Established`
+//! - Last verified: 2026-04-13
+//! - Statement: Q16.16 codebook quality = f32 to 6 sig figs.
+//! - Where stated: TurboQuant CD bridge (2026-03-29)
+//! - What would verify/refute it: 
+//!
+//! ## C-1610
+//!
+//! - Status: `Established`
+//! - Last verified: 2026-04-13
+//! - Statement: Hybrid 38-60% better at 3-4 bit.
+//! - Where stated: TurboQuant CD bridge (2026-03-29)
+//! - What would verify/refute it: 
+//!
+//! ## C-1611
+//!
+//! - Status: `Established`
+//! - Last verified: 2026-04-13
+//! - Statement: Cross-layer SLERP 1.94x compression at d=128.
+//! - Where stated: TurboQuant CD bridge (2026-03-29)
+//! - What would verify/refute it: 
+//!
+//! ## C-1612
+//!
+//! - Status: `Established`
+//! - Last verified: 2026-04-13
+//! - Statement: SmallVec inline CD at d=16: zero heap.
+//! - Where stated: TurboQuant CD bridge (2026-03-29)
+//! - What would verify/refute it: 
+//!
+//! ## C-1613
+//!
+//! - Status: `Established`
+//! - Last verified: 2026-04-13
+//! - Statement: AlignedWorkspace 256-byte alignment.
+//! - Where stated: TurboQuant CD bridge (2026-03-29)
+//! - What would verify/refute it: 
+//!
+//! ## C-1614
+//!
+//! - Status: `Established`
+//! - Last verified: 2026-04-13
+//! - Statement: simsimd dot matches scalar to 1e-4 at d=128.
+//! - Where stated: TurboQuant CD bridge (2026-03-29)
+//! - What would verify/refute it: 
+//!
+//! ## C-1615
+//!
+//! - Status: `Established`
+//! - Last verified: 2026-04-13
+//! - Statement: Rayon parallel batch quantize.
+//! - Where stated: TurboQuant CD bridge (2026-03-29)
+//! - What would verify/refute it: 
+//!
+//! ## C-1616
+//!
+//! - Status: `Established`
+//! - Last verified: 2026-04-13
+//! - Statement: fwht standalone crate extracted and wired.
+//! - Where stated: TurboQuant CD bridge (2026-03-29)
+//! - What would verify/refute it: 
+//!
+//! ## C-1617
+//!
+//! - Status: `Established`
+//! - Last verified: 2026-04-14
+//! - Statement: The CD spatial associator norm (7 face-neighbor f_i vectors, 32D padded, unit-norm) grows monotonically from ~0 at LBM equilibrium initialization to a detectable non-zero value at least 2 steps before the first f_i < 0 positivity violation in BGK D3Q19 with Gaussian initial conditions. Temporal early-to-late ratio is ~1.92-1.94x across contrasts 21-25 (16^3 grid, tau=0.7). The associator signal is a precursor indicator of O(Ma^3) truncation error accumulation.
+//! - Where stated: E-225 LBM CD spatial associator probe (2026-04-14)
+//! - What would verify/refute it: 
+//!
+//! ## C-1618
+//!
+//! - Status: `Established`
+//! - Last verified: 2026-04-14
+//! - Statement: The CD associator early-to-late norm ratio (12-step precursor window, split 6/6) before high-norm events (local maxima above p95) in the ACE 2004 Halloween storm solar wind B-field data (334502 valid rows, 32D Takens embeddings, 8-step x 4-channel) is 4.30x mean / 2.40x median across 4471 detected events. This exceeds the LBM BGK C-1617 baseline of 1.92x and confirms that the CD associator precursor buildup is a general property of continuous dynamical systems, not a BGK lattice artifact. The TeraScale-2 VLIW5 LDS barrier wg-sweep shows no monotonic precursor, confirming the regime boundary.
+//! - Where stated: E-226 cross-domain CD associator survey (2026-04-14)
+//! - What would verify/refute it: 
+//!
+//! ## C-1619
+//!
+//! - Status: `Established`
+//! - Last verified: 2026-04-14
+//! - Statement: In the supervised THEMIS magnetopause crossing catalog (Staples et al. 2020 v2, 9455 probe-a crossings, 3-second FGM cadence), the CD associator early/late norm ratio over the 36-second precursor window (12 steps at 32D, 8-step x 4-channel Takens) is 4.48x mean / 1.44x median, IQR [0.75, 3.12]. 64.0% of crossings show ratio > 1.0 (null expectation 50%), confirming statistically significant precursor buildup.
+//! - Where stated: E-227 THEMIS supervised CD crossing survey (2026-04-14)
 //! - What would verify/refute it: 
