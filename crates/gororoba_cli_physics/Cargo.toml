@@ -1057,6 +1057,14 @@ path = "src/bin/solar_cycle_crosscorr.rs"
 name = "voyager-mag-pls-cd"
 path = "src/bin/voyager_mag_pls_cd.rs"
 
+[[bin]]
+name = "cd-domain-survey"
+path = "src/bin/cd_domain_survey.rs"
+
+[[bin]]
+name = "themis-cd-crossing-survey"
+path = "src/bin/themis_cd_crossing_survey.rs"
+
 # ---- GUT (1) ----
 
 [[bin]]

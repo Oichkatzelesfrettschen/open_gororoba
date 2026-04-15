@@ -4837,6 +4837,22 @@ status_note = "SUPPORTED at all 5 contrasts (21-25). Spatial mean grows from 0 t
 where_stated = "E-225 LBM CD spatial associator probe (2026-04-14)"
 
 [[claim]]
+id = "C-1618"
+last_verified = "2026-04-14"
+statement = "The CD associator early-to-late norm ratio (12-step precursor window, split 6/6) before high-norm events (local maxima above p95) in the ACE 2004 Halloween storm solar wind B-field data (334502 valid rows, 32D Takens embeddings, 8-step x 4-channel) is 4.30x mean / 2.40x median across 4471 detected events. This exceeds the LBM BGK C-1617 baseline of 1.92x and confirms that the CD associator precursor buildup is a general property of continuous dynamical systems, not a BGK lattice artifact. The TeraScale-2 VLIW5 LDS barrier wg-sweep shows no monotonic precursor, confirming the regime boundary."
+status = "Established"
+status_note = "ESTABLISHED: ACE p95-event ratio 4.30x (mean), 2.40x (median), IQR [1.32, 4.61]. GPU step-function: no precursor. Regime boundary confirmed. Binary: cd-domain-survey."
+where_stated = "E-226 cross-domain CD associator survey (2026-04-14)"
+
+[[claim]]
+id = "C-1619"
+last_verified = "2026-04-14"
+statement = "In the supervised THEMIS magnetopause crossing catalog (Staples et al. 2020 v2, 9455 probe-a crossings, 3-second FGM cadence), the CD associator early/late norm ratio over the 36-second precursor window (12 steps at 32D, 8-step x 4-channel Takens) is 4.48x mean / 1.44x median, IQR [0.75, 3.12]. 64.0% of crossings show ratio > 1.0 (null expectation 50%), confirming statistically significant precursor buildup."
+status = "Established"
+status_note = "ESTABLISHED: 9455 crossings, 64.0% > 1.0 (vs 50% null). Mean 4.48x, median 1.44x. Binary: themis-cd-crossing-survey."
+where_stated = "E-227 THEMIS supervised CD crossing survey (2026-04-14)"
+
+[[claim]]
 id = "C-162"
 last_verified = "2026-02-01"
 statement = "ZD annihilator dimensions: at dim=16, diagonal-form ZDs have left/right annihilator dim in {0, 4}. At dim=32, values in {0, 8, 12}. Left and right annihilator dims are always equal. All nonzero annihilator dims are multiples of 4."

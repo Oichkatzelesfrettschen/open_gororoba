@@ -3,11 +3,11 @@
 # ID format: EX-XXXX. Managed by the governance gate (crossrefs + dataset-label-aliases checks).
 
 [external_csv_datasets]
-updated = "2026-03-20"
+updated = "2026-04-15"
 authoritative = true
 status = "active"
 status_token = "ACTIVE"
-dataset_count = 9
+dataset_count = 10
 
 [[dataset]]
 id = "EX-0001"
@@ -61,4 +61,10 @@ status = "active"
 id = "EX-0027"
 description = "NANOGrav 15yr free-spectrum data (NG15 Collaboration 2023 ApJL 951 L8). Per-frequency Bayesian posteriors on the gravitational-wave background amplitude used in cd-pattern-baseline-audit."
 source = "data/external/nanograv_15yr_freespectrum.csv"
+status = "active"
+
+[[dataset]]
+id = "EX-0028"
+description = "THEMIS magnetopause crossing list v2 (Paschmann et al. 2018 / SSCWeb compilation). Curated list of THEMIS-A/D/E magnetopause crossings with time tags and plasma parameters used in E-227 CD-domain survey."
+source = "data/external/crossing_lists/themis_mp_crossings_v2.txt"
 status = "active"

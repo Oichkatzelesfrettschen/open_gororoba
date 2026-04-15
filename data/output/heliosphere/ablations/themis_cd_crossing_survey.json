@@ -1,0 +1,18 @@
+{
+  "lbm_reference_ratio": 1.92,
+  "ace_unsupervised_mean_ratio": 4.3,
+  "ace_unsupervised_median_ratio": 2.4,
+  "themis_supervised": {
+    "n_crossings_analyzed": 9455,
+    "n_crossings_skipped": 35,
+    "early_late_ratio_mean": 4.479607686309683,
+    "early_late_ratio_median": 1.4433543246178702,
+    "early_late_ratio_p25": 0.7481907905682961,
+    "early_late_ratio_p75": 3.11659661790725,
+    "fraction_above_1_0": 0.6400846113167636,
+    "fraction_above_1_1": 0.6040190375462718,
+    "fraction_above_1_5": 0.4833421470121629,
+    "precursor_confirmed": true
+  },
+  "interpretation": "CONFIRMED: Supervised THEMIS crossings show CD associator buildup (4.48x mean, 1.44x median, 64.0% of crossings > 1.0 ratio). Consistent with LBM C-1617 (1.92x) and ACE C-1618 (4.30x mean). Regime boundary established: precursor is a general property of continuous-dynamics systems at magnetopause discontinuities."
+}

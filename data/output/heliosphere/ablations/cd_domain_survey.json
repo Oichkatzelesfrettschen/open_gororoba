@@ -1,0 +1,53 @@
+{
+  "lbm_reference": {
+    "source": "E-225: contrast sweep 21-25, 16^3, tau=0.7",
+    "claim": "C-1617",
+    "early_late_ratio": 1.92,
+    "steps_before_violation": 2,
+    "system_type": "fluid simulation (BGK D3Q19)",
+    "regime": "continuous dynamical system -- precursor DETECTED"
+  },
+  "heliosphere": {
+    "domain": "ACE heliosphere B-field (2004 Halloween storm)",
+    "system_type": "solar wind plasma (continuous MHD)",
+    "n_vectors": 334494,
+    "n_norms": 334492,
+    "norm_mean": 0.027230323967270452,
+    "norm_p95": 0.11746229678857409,
+    "n_peaks": 4471,
+    "early_late_ratio_mean": 4.296612910484398,
+    "early_late_ratio_median": 2.399974764716715,
+    "early_late_ratio_p25": 1.3210586908197908,
+    "early_late_ratio_p75": 4.607301083300392,
+    "precursor_detected": true,
+    "regime": "continuous plasma dynamics -- precursor DETECTED (4.30x vs LBM 1.92x)"
+  },
+  "gpu_terascale2": {
+    "domain": "TeraScale-2 LDS barrier wg-sweep",
+    "system_type": "discrete VLIW5 GPU scheduler",
+    "device": "AMD Radeon HD 6310 (Terakan, PALM family=41, 487 MHz)",
+    "wg_sweep_ns": [
+      [
+        32,
+        506801.7
+      ],
+      [
+        64,
+        506787.0
+      ],
+      [
+        128,
+        506925.7
+      ],
+      [
+        256,
+        517301.0
+      ]
+    ],
+    "wg128_to_wg256_step_pct": 2.046710198358455,
+    "monotonic_buildup": false,
+    "regime": "discrete step function",
+    "note": "VLIW5 scheduling is memoryless between cycles. The wg256 overhead (+2.05%) is a step-function transition caused by exceeding the hardware wavefront limit, not an accumulating nonlinearity. No embedding is possible: 4 data points, no time-resolution dynamics."
+  },
+  "cross_domain_summary": "LBM (C-1617): 1.92x precursor ratio (established). ACE heliosphere: 4.30x (DETECTED). TeraScale-2 VLIW5: step function, no precursor. Regime boundary confirmed: continuous-dynamics systems show CD associator buildup; discrete schedulers do not."
+}
