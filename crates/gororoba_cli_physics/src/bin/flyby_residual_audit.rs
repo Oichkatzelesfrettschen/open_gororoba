@@ -56,8 +56,8 @@ fn run_generic_flyby<E: EnvironmentModel>(cfg: &FlybyConfig, env: &E, dt: f64, a
     let steps = (total_time / dt) as usize;
 
     let mut state = State {
-        position: [pos_init.x, pos_init.y, pos_init.z],
-        velocity: [vel_init.x, vel_init.y, vel_init.z],
+        position: pos_init,
+        velocity: vel_init,
     };
 
     // Acceleration callback: Earth gravity + optional anomalous density-coupled force.
@@ -110,13 +110,13 @@ fn main() -> Result<()> {
     let dt = args.dt;
 
     let v_wind = dm_wind_j2000(&V_WIND_GALACTIC);
-    let v_wind_norm = (v_wind.x * v_wind.x + v_wind.y * v_wind.y + v_wind.z * v_wind.z).sqrt();
+    let v_wind_norm = (v_wind[0] * v_wind[0] + v_wind[1] * v_wind[1] + v_wind[2] * v_wind[2]).sqrt();
 
     println!("=== Flyby Residual Audit ===");
     println!("  Using flyby/ library (EnvironmentModel trait dispatch)");
     println!(
         "  v_wind (J2000) = ({:.2}, {:.2}, {:.2}) km/s  |v|={:.1}",
-        v_wind.x, v_wind.y, v_wind.z, v_wind_norm
+        v_wind[0], v_wind[1], v_wind[2], v_wind_norm
     );
     println!("  dt = {:.1} s", dt);
     println!();
@@ -138,12 +138,12 @@ fn main() -> Result<()> {
     let nfw_env = EarthOnlyNfwLike::default();
 
     // Model 3: NFW + gravitational focusing wake
-    let w_mag = (v_wind.x * v_wind.x + v_wind.y * v_wind.y + v_wind.z * v_wind.z).sqrt();
+    let w_mag = (v_wind[0] * v_wind[0] + v_wind[1] * v_wind[1] + v_wind[2] * v_wind[2]).sqrt();
     let wake_env = EarthWakeModel {
         base_density: 1.0,
         earth_radius_km: R_EARTH,
         wind_direction: if w_mag > 1e-10 {
-            [v_wind.x / w_mag, v_wind.y / w_mag, v_wind.z / w_mag]
+            [v_wind[0] / w_mag, v_wind[1] / w_mag, v_wind[2] / w_mag]
         } else {
             [1.0, 0.0, 0.0]
         },
