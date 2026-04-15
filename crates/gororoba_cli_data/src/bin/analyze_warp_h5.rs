@@ -7,7 +7,6 @@
 
 use anyhow::{Context, Result};
 use hdf5::File;
-use ndarray::Array1;
 
 fn main() -> Result<()> {
     let args: Vec<String> = std::env::args().skip(1).collect();
@@ -28,11 +27,11 @@ fn main() -> Result<()> {
         println!("\nTime-Series Summary:");
 
         if let Ok(time_ds) = trace_group.dataset("time") {
-            let time: Array1<f64> = time_ds.read_1d()?;
+            let time: Vec<f64> = time_ds.read_1d::<f64>()?.into_raw_vec_and_offset().0;
             println!("  Steps recorded: {}", time.len());
 
             if let Ok(rho_ds) = trace_group.dataset("rho_mean") {
-                let rho: Array1<f64> = rho_ds.read_1d()?;
+                let rho: Vec<f64> = rho_ds.read_1d::<f64>()?.into_raw_vec_and_offset().0;
                 if !rho.is_empty() {
                     let initial = rho[0];
                     let final_rho = rho[rho.len() - 1];
@@ -55,7 +54,7 @@ fn main() -> Result<()> {
             }
 
             if let Ok(ens_ds) = trace_group.dataset("enstrophy") {
-                let ens: Array1<f64> = ens_ds.read_1d()?;
+                let ens: Vec<f64> = ens_ds.read_1d::<f64>()?.into_raw_vec_and_offset().0;
                 if !ens.is_empty() {
                     println!("  Final Enstrophy: {:.6e}", ens[ens.len() - 1]);
                 }

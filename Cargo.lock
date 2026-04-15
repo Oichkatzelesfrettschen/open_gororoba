@@ -5002,7 +5002,6 @@ dependencies = [
  "lopdf 0.40.0",
  "materials_core",
  "md-5 0.11.0",
- "ndarray 0.17.2",
  "parquet",
  "plotters",
  "polars",

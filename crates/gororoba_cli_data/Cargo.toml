@@ -534,7 +534,6 @@ arrow-schema = { workspace = true }
 tempfile = { workspace = true }
 plotters = { workspace = true }
 hdf5 = { workspace = true }
-ndarray = "0.17"
 lopdf = { workspace = true }
 
 [features]
