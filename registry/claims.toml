@@ -4548,11 +4548,11 @@ where_stated = "crates/moreno_1997/src/lib.rs::moreno_decomposition, MorenoDecom
 
 [[claim]]
 id = "C-1542"
-last_verified = "2026-03-25"
+last_verified = "2026-04-15"
 statement = "Moreno Theorem 1.16 (mod-4 eigenspace constraint): dim_R(V_lambda) = 0 mod 4 for all lambda > 0, lambda != 1 in the T~_a spectrum (eigenvalue -lambda^2 of L_a^2 on H_a^perp). Source: Moreno (1997) arXiv:q-alg/9710013v1."
-status = "Theoretical"
-status_note = "Canonical A_3 eigenspace profile and the abstract H-module orbit theorem are formalized in Rocq; the concrete bridge from arbitrary Cayley-Dickson V_lambda subspaces to that module interface remains open."
-where_stated = "crates/moreno_1997/src/lib.rs::MorenoDecomposition::all_mod4; proofs/theories/C1542_MorVlambdaMod4.v::moreno16_v1_eq_ha_perp, moreno16_nonunit_vlambda_trivial, moreno16_canonical_mod4_profile (canonical A_3 lane); proofs/theories/C1542_MorVlambdaOrbit.v::moreno16_vlambda_dim_div4, moreno16_vlambda_dim_mod4, moreno16_orbit_dim_div4, moreno16_orbit_dim_mod4 (abstract H-module lane)"
+status = "Verified"
+status_note = "Fully closed 2026-04-15. Canonical A_3 lane: C1542_MorVlambdaMod4 (dim 4 = 4*1). Arbitrary-a CDOct lane: C1542_MorVlambdaArbClose (moreno16_vlambda_arb_trivial; oct_unit_imag_left_sq_neg gives L_a^2 = -I everywhere, so V_lambda = {0} for lambda != 1; hmd_zero closes dim 0). act_free obligation: HModuleDim::h_a_perp_act_free (corollary of quat_no_zero_divisors). Abstract H-module bridge: C1542_MorVlambdaOrbit, C1548_MorVlambdaHBlock."
+where_stated = "crates/moreno_1997/src/lib.rs::MorenoDecomposition::all_mod4; proofs/theories/C1542_MorVlambdaMod4.v::moreno16_v1_eq_ha_perp, moreno16_nonunit_vlambda_trivial, moreno16_canonical_mod4_profile (canonical A_3 lane); proofs/theories/C1542_MorVlambdaOrbit.v::moreno16_vlambda_dim_div4, moreno16_vlambda_dim_mod4, moreno16_orbit_dim_div4, moreno16_orbit_dim_mod4 (abstract H-module lane); proofs/theories/C1542_MorVlambdaArbClose.v::moreno16_vlambda_arb_trivial, moreno16_arb_close_bridge (arbitrary-a CDOct closure); proofs/theories/HModuleDim.v::h_a_perp_act_free (act_free obligation via quat_no_zero_divisors)"
 
 [[claim]]
 id = "C-1543"
