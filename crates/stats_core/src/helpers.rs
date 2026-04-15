@@ -247,6 +247,122 @@ pub fn svd_projection_r_squared(design_rows: &[Vec<f64>], y: &[f64]) -> f64 {
     1.0 - ss_res / ss_tot
 }
 
+/// Center a matrix column-wise (subtract each column's mean).
+///
+/// WHY: PCA requires zero-mean columns. Centralising the centering step here
+/// eliminates the direct nalgebra dependency from callers that only need to
+/// prepare data before calling `svd_right_singular_vectors`.
+///
+/// Returns a new matrix with the same shape. Empty input returns empty output.
+pub fn center_columns_flat(data: &[Vec<f64>]) -> Vec<Vec<f64>> {
+    let n_rows = data.len();
+    if n_rows == 0 {
+        return vec![];
+    }
+    let n_cols = data[0].len();
+    if n_cols == 0 {
+        return data.to_vec();
+    }
+    let col_means: Vec<f64> = (0..n_cols)
+        .map(|j| data.iter().map(|row| row[j]).sum::<f64>() / n_rows as f64)
+        .collect();
+    data.iter()
+        .map(|row| {
+            row.iter()
+                .enumerate()
+                .map(|(j, &v)| v - col_means[j])
+                .collect()
+        })
+        .collect()
+}
+
+/// Project rows of `data` onto the first `k` right singular vectors.
+///
+/// WHY: PCA projection is the workhorse of dimensionality reduction. Taking
+/// `v_t_rows` from `svd_right_singular_vectors` and data from
+/// `center_columns_flat` gives a fully nalgebra-free projection pipeline.
+///
+/// `data` is the row-major data matrix. `v_t_rows[i]` is the i-th right
+/// singular vector (i-th row of V^T). Each output row has `k` elements:
+/// `result[i][j] = sum_col(data[i][col] * v_t_rows[j][col])`.
+///
+/// Clamps `k` to the number of available singular vectors.
+pub fn project_rows_onto_components(
+    data: &[Vec<f64>],
+    v_t_rows: &[Vec<f64>],
+    k: usize,
+) -> Vec<Vec<f64>> {
+    let use_k = k.min(v_t_rows.len());
+    data.iter()
+        .map(|row| {
+            (0..use_k)
+                .map(|comp| {
+                    row.iter()
+                        .zip(v_t_rows[comp].iter())
+                        .map(|(a, b)| a * b)
+                        .sum::<f64>()
+                })
+                .collect()
+        })
+        .collect()
+}
+
+/// Ordinary least squares via SVD on normal equations.
+///
+/// WHY: OLS solved through the normal equations `(X^T X) beta = X^T y` is
+/// numerically stabler with SVD than LU when columns are nearly collinear.
+/// Centralising this eliminates the DMatrix/DVector dependency from CLI bins
+/// that perform regression.
+///
+/// `design_rows` is the design matrix in row-major order; `y` must have the
+/// same length. Returns `None` for degenerate input (empty, size mismatch,
+/// or zero-width design matrix). The SVD tolerance is 1e-12 of the largest
+/// singular value.
+pub fn ols_svd_solve(design_rows: &[Vec<f64>], y: &[f64]) -> Option<Vec<f64>> {
+    use nalgebra::{DMatrix, DVector};
+    let n = design_rows.len();
+    if n == 0 || n != y.len() {
+        return None;
+    }
+    let k = design_rows.first()?.len();
+    if k == 0 {
+        return None;
+    }
+    let flat: Vec<f64> = design_rows.iter().flat_map(|row| row.iter().copied()).collect();
+    let x = DMatrix::from_row_slice(n, k, &flat);
+    let y_vec = DVector::from_column_slice(y);
+    let xt = x.transpose();
+    let xtx = &xt * &x;
+    let xty = &xt * &y_vec;
+    xtx.svd(true, true)
+        .solve(&xty, 1e-12)
+        .ok()
+        .map(|beta| beta.iter().copied().collect())
+}
+
+/// Coefficient of determination (R^2) from pre-computed predictions.
+///
+/// WHY: When predictions are already available (from OLS beta applied to rows),
+/// R^2 is a simple O(n) calculation. This avoids re-running SVD just to get the
+/// quality metric. Returns 0.0 for empty input, length mismatch, or zero
+/// total variance.
+pub fn r_squared_from_predictions(y_true: &[f64], y_pred: &[f64]) -> f64 {
+    if y_true.len() != y_pred.len() || y_true.is_empty() {
+        return 0.0;
+    }
+    let mean = y_true.iter().sum::<f64>() / y_true.len() as f64;
+    let ss_tot: f64 = y_true.iter().map(|yi| (yi - mean).powi(2)).sum();
+    let ss_res: f64 = y_true
+        .iter()
+        .zip(y_pred.iter())
+        .map(|(yt, yp)| (yt - yp).powi(2))
+        .sum();
+    if ss_tot < 1e-30 {
+        return 0.0;
+    }
+    1.0 - ss_res / ss_tot
+}
+
 /// Compute a histogram of values.
 ///
 /// Returns (bin_centers, counts).

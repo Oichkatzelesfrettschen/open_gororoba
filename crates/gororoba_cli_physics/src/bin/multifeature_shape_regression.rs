@@ -23,7 +23,9 @@ use cosmology_core::{
     nfw_utils::{nfw_enclosed_mass_from_params, nfw_params_from_mass},
 };
 use data_core::catalogs::manga::{parse_manga_dapall_csv, parse_manga_rotcurves};
-use nalgebra::{DMatrix, DVector};
+use stats_core::helpers::{
+    ols_svd_solve, r_squared_from_predictions, svd_right_singular_vectors,
+};
 use std::{f64::consts::PI, path::PathBuf};
 
 const G_KPC_KMS2: f64 = 4.302e-6;
@@ -226,39 +228,53 @@ fn main() -> anyhow::Result<()> {
         galaxy_profiles.push(profile);
     }
 
-    // Build data matrix (n_gal x n_valid) and compute SVD
+    // Compute mean profile and center: mean[j] = avg over galaxies of profile[i][j]
     eprintln!(
         "Computing SVD of {} x {} galaxy profile matrix...",
         n_gal, n_valid
     );
-    let data_matrix = DMatrix::from_fn(n_gal, n_valid, |i, j| galaxy_profiles[i][j]);
-
-    // Compute mean profile and center
     let mean_profile: Vec<f64> = (0..n_valid)
-        .map(|j| data_matrix.column(j).iter().sum::<f64>() / n_gal as f64)
+        .map(|j| galaxy_profiles.iter().map(|row| row[j]).sum::<f64>() / n_gal as f64)
         .collect();
 
-    let centered = DMatrix::from_fn(n_gal, n_valid, |i, j| data_matrix[(i, j)] - mean_profile[j]);
+    let centered: Vec<Vec<f64>> = galaxy_profiles
+        .iter()
+        .map(|row| {
+            row.iter()
+                .enumerate()
+                .map(|(j, &v)| v - mean_profile[j])
+                .collect()
+        })
+        .collect();
 
-    // SVD on the centered matrix (truncated to first 2 components)
-    let svd = centered.clone().svd(true, true);
-    let u = svd.u.as_ref().unwrap();
-    let sigma = &svd.singular_values;
-    let vt = svd.v_t.as_ref().unwrap();
+    // SVD on the centered matrix (truncated to first 2 components).
+    // svd_right_singular_vectors returns V^T rows; per-galaxy coefficients are
+    // c_k = dot(centered_row, v_k)  (equivalent to u_k * sigma_k from full SVD).
+    let (sigma, vt_rows) = svd_right_singular_vectors(&centered);
 
     let total_var: f64 = sigma.iter().map(|s| s * s).sum();
-    let var_2modes = sigma[0] * sigma[0] + sigma[1] * sigma[1];
-    eprintln!("SVD: sigma_1={:.4e}, sigma_2={:.4e}", sigma[0], sigma[1]);
+    let var_2modes = sigma
+        .get(0)
+        .map(|s| s * s)
+        .unwrap_or(0.0)
+        + sigma.get(1).map(|s| s * s).unwrap_or(0.0);
+    eprintln!(
+        "SVD: sigma_1={:.4e}, sigma_2={:.4e}",
+        sigma.get(0).copied().unwrap_or(0.0),
+        sigma.get(1).copied().unwrap_or(0.0)
+    );
     eprintln!(
         "2-mode variance explained: {:.1}%",
         var_2modes / total_var * 100.0
     );
 
-    // Extract per-galaxy 2-component SVD coefficients
-    // c_i = U[i, :2] * diag(sigma[:2])
+    // Extract per-galaxy 2-component SVD coefficients via dot product with V^T rows
+    let empty_vt: Vec<f64> = vec![0.0; n_valid];
+    let vt0 = vt_rows.get(0).unwrap_or(&empty_vt);
+    let vt1 = vt_rows.get(1).unwrap_or(&empty_vt);
     for (i, g) in galaxies.iter_mut().enumerate() {
-        g.svd_coeffs[0] = u[(i, 0)] * sigma[0];
-        g.svd_coeffs[1] = u[(i, 1)] * sigma[1];
+        g.svd_coeffs[0] = dot_slice(&centered[i], vt0);
+        g.svd_coeffs[1] = dot_slice(&centered[i], vt1);
     }
 
     // Step 3: Standardize features
@@ -284,59 +300,50 @@ fn main() -> anyhow::Result<()> {
     }
 
     // Step 4: Multi-feature least-squares regression
-    // For each SVD coefficient (2 targets), regress on 4 standardized features + intercept
-    // Design matrix X: (n_gal x 5) = [1, f1, f2, f3, f4]
+    // Design matrix X: (valid_count x 5) = [1, f1, f2, f3, f4]
     let n_features = 5; // intercept + 4 features
-    let mut x_mat = DMatrix::zeros(n_gal, n_features);
-    let mut y_svd0 = DVector::zeros(n_gal);
-    let mut y_svd1 = DVector::zeros(n_gal);
+    let mut x_rows: Vec<Vec<f64>> = Vec::new();
+    let mut y_svd0: Vec<f64> = Vec::new();
+    let mut y_svd1: Vec<f64> = Vec::new();
     let mut valid_count = 0usize;
 
     for g in &galaxies {
-        let all_finite = g.features.iter().all(|f| f.is_finite());
-        if !all_finite {
+        if !g.features.iter().all(|f| f.is_finite()) {
             continue;
         }
-
-        x_mat[(valid_count, 0)] = 1.0; // intercept
+        let mut row = Vec::with_capacity(n_features);
+        row.push(1.0); // intercept
         for f in 0..4 {
-            x_mat[(valid_count, f + 1)] = (g.features[f] - feat_means[f]) / feat_stds[f];
+            row.push((g.features[f] - feat_means[f]) / feat_stds[f]);
         }
-        y_svd0[valid_count] = g.svd_coeffs[0];
-        y_svd1[valid_count] = g.svd_coeffs[1];
+        x_rows.push(row);
+        y_svd0.push(g.svd_coeffs[0]);
+        y_svd1.push(g.svd_coeffs[1]);
         valid_count += 1;
     }
 
-    // Truncate to valid rows
-    let x_valid = x_mat.rows(0, valid_count).clone_owned();
-    let y0_valid = y_svd0.rows(0, valid_count).clone_owned();
-    let y1_valid = y_svd1.rows(0, valid_count).clone_owned();
-
     eprintln!("Valid galaxies with all features: {}", valid_count);
 
-    // Solve X^T X beta = X^T y via normal equations
-    let xtx = x_valid.transpose() * &x_valid;
-    let xty0 = x_valid.transpose() * &y0_valid;
-    let xty1 = x_valid.transpose() * &y1_valid;
+    // Solve via SVD-stabilized normal equations
+    let beta0 = ols_svd_solve(&x_rows, &y_svd0)
+        .unwrap_or_else(|| vec![0.0_f64; n_features]);
+    let beta1 = ols_svd_solve(&x_rows, &y_svd1)
+        .unwrap_or_else(|| vec![0.0_f64; n_features]);
 
-    let xtx_svd = xtx.clone().svd(true, true);
-    let beta0 = xtx_svd
-        .solve(&xty0, 1e-12)
-        .unwrap_or_else(|_| DVector::zeros(n_features));
-    let beta1 = xtx_svd
-        .solve(&xty1, 1e-12)
-        .unwrap_or_else(|_| DVector::zeros(n_features));
+    // Compute predictions and R^2 for each SVD coefficient
+    let y0_pred: Vec<f64> = x_rows.iter().map(|row| dot_slice(row, &beta0)).collect();
+    let y1_pred: Vec<f64> = x_rows.iter().map(|row| dot_slice(row, &beta1)).collect();
 
-    // Compute R^2 for each SVD coefficient
-    let y0_pred = &x_valid * &beta0;
-    let y1_pred = &x_valid * &beta1;
-
-    let r2_svd0 = r_squared(&y0_valid, &y0_pred);
-    let r2_svd1 = r_squared(&y1_valid, &y1_pred);
+    let r2_svd0 = r_squared_from_predictions(&y_svd0, &y0_pred);
+    let r2_svd1 = r_squared_from_predictions(&y_svd1, &y1_pred);
 
     // Combined R^2: weighted by variance explained
-    let w0 = sigma[0] * sigma[0] / var_2modes;
-    let w1 = sigma[1] * sigma[1] / var_2modes;
+    let w0 = if var_2modes > 0.0 {
+        sigma.get(0).map(|s| s * s).unwrap_or(0.0) / var_2modes
+    } else {
+        0.5
+    };
+    let w1 = 1.0 - w0;
     let r2_combined = w0 * r2_svd0 + w1 * r2_svd1;
 
     eprintln!("\n--- Multi-Feature Shape Regression ---");
@@ -358,25 +365,23 @@ fn main() -> anyhow::Result<()> {
     // Step 5: Subtract predicted shape from each galaxy and restack
     eprintln!("\nSubtracting predicted baryonic shape from each galaxy...");
 
-    // Reconstruct predicted profile for each galaxy:
-    // predicted_profile[i] = mean + c0_pred * v0 + c1_pred * v1
-    // where v0, v1 are the first 2 right singular vectors
-    let v0: Vec<f64> = (0..n_valid).map(|j| vt[(0, j)]).collect();
-    let v1: Vec<f64> = (0..n_valid).map(|j| vt[(1, j)]).collect();
+    // V^T rows for shape reconstruction
+    let v0: Vec<f64> = vt_rows.get(0).cloned().unwrap_or_else(|| vec![0.0; n_valid]);
+    let v1: Vec<f64> = vt_rows.get(1).cloned().unwrap_or_else(|| vec![0.0; n_valid]);
 
     let mut corrected_galaxies: Vec<NormalizedResiduals> = Vec::new();
 
-    for (i, g) in galaxies.iter().enumerate() {
+    for g in galaxies.iter() {
         let all_finite = g.features.iter().all(|f| f.is_finite());
 
         // Predict SVD coefficients from metadata
         let (c0_pred, c1_pred) = if all_finite {
-            let mut x_row = DVector::zeros(n_features);
+            let mut x_row = vec![0.0_f64; n_features];
             x_row[0] = 1.0;
             for f in 0..4 {
                 x_row[f + 1] = (g.features[f] - feat_means[f]) / feat_stds[f];
             }
-            (x_row.dot(&beta0), x_row.dot(&beta1))
+            (dot_slice(&x_row, &beta0), dot_slice(&x_row, &beta1))
         } else {
             (0.0, 0.0) // No correction for galaxies with missing features
         };
@@ -410,8 +415,6 @@ fn main() -> anyhow::Result<()> {
             r_s_kpc: g.residuals.r_s_kpc,
             points: corrected_points,
         });
-
-        let _ = i;
     }
 
     // Restack corrected galaxies
@@ -637,14 +640,9 @@ fn main() -> anyhow::Result<()> {
     Ok(())
 }
 
-fn r_squared(y_true: &DVector<f64>, y_pred: &DVector<f64>) -> f64 {
-    let mean = y_true.mean();
-    let ss_tot: f64 = y_true.iter().map(|yi| (yi - mean).powi(2)).sum();
-    let ss_res: f64 = (y_true - y_pred).iter().map(|r| r.powi(2)).sum();
-    if ss_tot < 1e-30 {
-        return 0.0;
-    }
-    1.0 - ss_res / ss_tot
+/// Dot product of two equal-length slices.
+fn dot_slice(a: &[f64], b: &[f64]) -> f64 {
+    a.iter().zip(b.iter()).map(|(x, y)| x * y).sum()
 }
 
 fn interpolate_correction(
