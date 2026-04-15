@@ -38,6 +38,48 @@ impl NBodySystem {
         }
     }
 
+    /// Add a body with real-valued initial conditions (no imaginary components).
+    ///
+    /// Allows callers without a nalgebra dependency to push bodies into the system.
+    pub fn push_body_real(&mut self, id: i32, mass: f64, pos: [f64; 3], vel: [f64; 3]) {
+        self.bodies.push(BodyState {
+            id,
+            mass,
+            pos: Vector3::new(Complex::from(pos[0]), Complex::from(pos[1]), Complex::from(pos[2])),
+            vel: Vector3::new(Complex::from(vel[0]), Complex::from(vel[1]), Complex::from(vel[2])),
+        });
+    }
+
+    /// Add a body with complex-valued initial conditions.
+    ///
+    /// Allows callers without a nalgebra dependency to push bodies with
+    /// imaginary initial components (e.g. complex-time tunneling states).
+    pub fn push_body_complex(&mut self, id: i32, mass: f64, pos: [Complex<f64>; 3], vel: [Complex<f64>; 3]) {
+        self.bodies.push(BodyState {
+            id,
+            mass,
+            pos: Vector3::new(pos[0], pos[1], pos[2]),
+            vel: Vector3::new(vel[0], vel[1], vel[2]),
+        });
+    }
+
+    /// Return the real part of (body `body_idx` position minus body `ref_idx` position).
+    ///
+    /// Used by CLI callers to compute heliocentric drift without importing nalgebra.
+    pub fn body_helio_pos_re(&self, body_idx: usize, ref_idx: usize) -> [f64; 3] {
+        let b = &self.bodies[body_idx].pos;
+        let r = &self.bodies[ref_idx].pos;
+        [b.x.re - r.x.re, b.y.re - r.y.re, b.z.re - r.z.re]
+    }
+
+    /// Return body `idx` position as `[Complex<f64>; 3]`.
+    ///
+    /// Allows nalgebra-free callers to read back complex position values.
+    pub fn body_pos_complex(&self, idx: usize) -> [Complex<f64>; 3] {
+        let p = &self.bodies[idx].pos;
+        [p.x, p.y, p.z]
+    }
+
     /// Computes acceleration for all bodies including EIH and Pathion terms in complex time.
     pub fn compute_accelerations(&self) -> Vec<Vector3<Complex<f64>>> {
         let n = self.bodies.len();
