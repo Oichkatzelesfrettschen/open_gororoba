@@ -704,3 +704,27 @@ mod tests {
         assert!(adapted.centered_cross_cell_fro_ratio <= 1.0);
     }
 }
+
+/// Compute sorted eigenvalues of a symmetric matrix using nalgebra's dense QR solver.
+///
+/// WHY: Several benchmark/test binaries use nalgebra as a ground-truth reference for
+/// verifying Jacobi solvers.  Centralising the call here removes the direct nalgebra
+/// dep from those binaries; all nalgebra types are hidden behind this API.
+///
+/// The returned vector is ordered abs-descending (largest |eigenvalue| first); ties
+/// are broken by value descending.  Empty input returns an empty vec.
+pub fn symmetric_eigenvalues_sorted(matrix: &[Vec<f64>]) -> Vec<f64> {
+    use nalgebra::DMatrix;
+    let n = matrix.len();
+    if n == 0 {
+        return vec![];
+    }
+    let dense = DMatrix::from_fn(n, n, |i, j| matrix[i][j]);
+    let mut eigs: Vec<f64> = dense.symmetric_eigenvalues().iter().copied().collect();
+    eigs.sort_by(|lhs, rhs| {
+        rhs.abs()
+            .total_cmp(&lhs.abs())
+            .then_with(|| rhs.total_cmp(lhs))
+    });
+    eigs
+}

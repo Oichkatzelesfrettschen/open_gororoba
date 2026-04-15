@@ -199,7 +199,6 @@ tracing-tracy = { workspace = true, optional = true }
 rand.workspace = true
 rand_chacha.workspace = true
 anyhow.workspace = true
-nalgebra = { workspace = true }
 flate2 = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }

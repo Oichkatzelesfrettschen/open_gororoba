@@ -1,11 +1,10 @@
 use algebra_analysis::{
     homotopy_algebra::SedenionAInfinity,
     precision_policy::{MatrixStructureHints, MatrixWorkloadClass},
-    spectrum_solvers::classify_symmetric_matrix,
+    spectrum_solvers::{classify_symmetric_matrix, symmetric_eigenvalues_sorted},
 };
 use anyhow::{Context, Result, ensure};
 use clap::ValueEnum;
-use nalgebra::DMatrix;
 use std::fmt;
 
 #[derive(Debug, Clone)]
@@ -105,7 +104,7 @@ pub fn build_case(family: MatrixFamily, size: usize) -> Result<MatrixCase> {
         }
         _ => householder_known_spectrum(&build_proxy_diagonal(family, size)),
     };
-    let expected_spectrum = nalgebra_expected_spectrum(&matrix);
+    let expected_spectrum = symmetric_eigenvalues_sorted(&matrix);
     let structure_hints = classify_symmetric_matrix(&matrix, 1.0e-12)
         .with_context(|| format!("classifying {}", family.as_str()))?;
 
@@ -280,14 +279,6 @@ fn quantized_shell_weight(i: usize, j: usize, size: usize) -> f64 {
         2 => 80.0,
         _ => 112.0,
     }
-}
-
-fn nalgebra_expected_spectrum(matrix: &[Vec<f64>]) -> Vec<f64> {
-    let n = matrix.len();
-    let dense = DMatrix::from_fn(n, n, |i, j| matrix[i][j]);
-    let mut eigs: Vec<f64> = dense.symmetric_eigenvalues().iter().copied().collect();
-    sort_by_abs_desc(&mut eigs);
-    eigs
 }
 
 fn sort_by_abs_desc(values: &mut [f64]) {
