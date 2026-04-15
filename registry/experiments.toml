@@ -5,8 +5,8 @@
 
 [experiments]
 authoritative = true
-deterministic_count = 156
-experiment_count = 218
+deterministic_count = 158
+experiment_count = 220
 gpu_count = 29
 seeded_count = 46
 status_allowlist = ["active", "deprecated", "planned", "blocked"]
@@ -5653,4 +5653,56 @@ status = "active"
 status_token = "ACTIVE"
 title = "LBM CD spatial associator probe: precursor signal sweep across contrasts 21-25 (C-1617)"
 truth_surface_consumption = []
+
+[[experiment]]
+binary = "cd-domain-survey"
+binary_experiment_declared = "E-226"
+binary_registered = true
+claim_refs = ["C-1617", "C-1618"]
+claims = ["C-1617", "C-1618"]
+dataset_label_refs = []
+dataset_refs = ["ace_dec2004_jan2005.csv"]
+deterministic = true
+external_source_refs = []
+gpu = false
+id = "E-226"
+input = "ACE 2004 Halloween storm B-field CSV (334502 rows, bx/by/bz/bmag); TeraScale-2 wg-sweep probe results (wg032-256, 30 reps each); LBM C-1617 reference (1.92x)"
+input_path_refs = ["data/output/heliosphere/ablations/ace_dec2004_jan2005.csv"]
+lineage_id = "XL-226"
+method = "32D Takens embeddings (8-step x 4-channel, unit-normalized); batch_sliding_associator_norms_parallel; p95 local-maxima peak detection; 12-step early/late (6+6) ratio per peak. GPU: hard-coded wg032/064/128/256 ns values, step-function analysis. Three-domain comparison table."
+output = ["data/output/heliosphere/ablations/cd_domain_survey.json"]
+output_path_refs = ["data/output/heliosphere/ablations/cd_domain_survey.json"]
+reproducibility_class = "deterministic"
+run = "cargo run --release --bin cd-domain-survey -- --embed-dim 32 --steps 8 --peak-percentile 95 --precursor-window 12"
+run_command_sha256 = ""
+status = "active"
+status_token = "ACTIVE"
+title = "Cross-domain CD associator survey: LBM/heliosphere/GPU regime boundary (C-1617, C-1618)"
+truth_surface_consumption = []
+
+[[experiment]]
+binary = "themis-cd-crossing-survey"
+binary_experiment_declared = "E-227"
+binary_registered = true
+claim_refs = ["C-1617", "C-1618", "C-1619"]
+claims = ["C-1619"]
+dataset_label_refs = ["themis_mp_crossings_v2.txt"]
+dataset_refs = ["data/external/themis/tha_fgm_*.csv"]
+deterministic = true
+external_source_refs = []
+gpu = false
+id = "E-227"
+input = "Staples et al. 2020 THEMIS crossing catalog v2 (9490 probe-a entries); 1783 THEMIS FGM CSV files at 3-second cadence (2007-2016)"
+input_path_refs = ["data/external/crossing_lists/themis_mp_crossings_v2.txt", "data/external/themis/"]
+lineage_id = "XL-227"
+method = "Group crossings by (year, doy); for each group load FGM CSV; binary search for crossing time; extract 120 pre-crossing rows; build 32D Takens embeddings (8-step x 4-ch, unit-norm); batch_sliding_associator_norms_parallel; last 12 norms = precursor window (6 early + 6 late); ratio = late_mean / early_mean."
+output = ["data/output/heliosphere/ablations/themis_cd_crossing_survey.json"]
+output_path_refs = ["data/output/heliosphere/ablations/themis_cd_crossing_survey.json"]
+reproducibility_class = "deterministic"
+run = "cargo run --release --bin themis-cd-crossing-survey -- --embed-dim 32 --steps 8 --precursor-window 12 --back-rows 120"
+run_command_sha256 = ""
+status = "active"
+status_token = "ACTIVE"
+title = "THEMIS supervised CD crossing survey: ground-truth early/late ratio at magnetopause (C-1619)"
+truth_surface_consumption = ["themis_mp_crossings_v2.txt"]
 

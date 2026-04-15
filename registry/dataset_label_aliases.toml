@@ -1,11 +1,11 @@
 # Dataset label alias registry (execution-planning and governance support).
 
 [dataset_label_aliases]
-updated = "2026-03-12"
+updated = "2026-04-15"
 authoritative = true
 status = "active"
 status_token = "ACTIVE"
-alias_count = 11
+alias_count = 12
 
 [dataset_label_aliases.schema]
 required_alias_fields = ["id", "label", "label_normalized", "canonical_dataset_id", "status", "status_token", "notes"]
@@ -108,3 +108,12 @@ canonical_dataset_id = "EX-0003"
 status = "active"
 status_token = "ACTIVE"
 notes = "Hyphenated short alias for MaNGA DR17 IFU kinematic maps (DLA-005). Used in E-183 and XL-183 dataset_label_refs."
+
+[[alias]]
+id = "DLA-012"
+label = "themis_mp_crossings_v2.txt"
+label_normalized = "themis_mp_crossings_v2.txt"
+canonical_dataset_id = "EX-0028"
+status = "active"
+status_token = "ACTIVE"
+notes = "Filename alias for THEMIS magnetopause crossing list v2 (EX-0028). Used in E-227 dataset_label_refs and truth_surface_consumption."
