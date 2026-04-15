@@ -1,7 +1,6 @@
 use cd_spin_bridge::{QGPImbalanceBridge, QGPState};
 use clap::Parser;
 use csv::ReaderBuilder;
-use nalgebra::{Matrix3, Vector3};
 use spin_tomography_core::TwoQubitState;
 use std::{error::Error, fs};
 
@@ -27,18 +26,14 @@ fn main() -> Result<(), Box<dyn Error>> {
     let alice_records = load_alice_data(&args.alice_data)?;
     let cms_records = load_cms_data(&args.cms_data)?;
     let bridge = QGPImbalanceBridge::default();
-    let initial_rho = TwoQubitState::from_ab_t(
-        &Vector3::zeros(),
-        &Vector3::zeros(),
-        &Matrix3::<f64>::zeros(),
-    );
+    let initial_rho = TwoQubitState::from_ab_t_arr([0.0; 3], [0.0; 3], [[0.0; 3]; 3]);
     let mut alice_predictions = Vec::new();
     for rec in &alice_records {
         let centrality_mid = (rec.centrality_min + rec.centrality_max) as f64 / 2.0;
         let omega_mag = 0.05 + 0.002 * centrality_mid;
         let qgp = QGPState {
             temperature: 0.15,
-            vorticity: Vector3::new(0.0, omega_mag, 0.0),
+            vorticity: [0.0, omega_mag, 0.0],
             energy_density: 1.0,
         };
         let _state_final = bridge.apply_qgp_decoherence(&initial_rho, &qgp);

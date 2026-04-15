@@ -1,5 +1,5 @@
 use gororoba_algebra::kron2;
-use nalgebra::{Matrix4, Vector3};
+use nalgebra::Matrix4;
 use num_complex::Complex64;
 use spin_tomography_core::TwoQubitState;
 
@@ -8,8 +8,8 @@ use spin_tomography_core::TwoQubitState;
 pub struct QGPState {
     /// Temperature in GeV
     pub temperature: f64,
-    /// Fluid vorticity (angular velocity)
-    pub vorticity: Vector3<f64>,
+    /// Fluid vorticity (angular velocity) as plain array.
+    pub vorticity: [f64; 3],
     /// Energy density
     pub energy_density: f64,
 }
@@ -59,8 +59,12 @@ impl QGPImbalanceBridge {
 
         // Biased part (vorticity alignment)
         // Alignment polarization P ~ (h_bar * omega) / (2 k_B T)
+        let vort_norm = (qgp.vorticity[0].powi(2)
+            + qgp.vorticity[1].powi(2)
+            + qgp.vorticity[2].powi(2))
+        .sqrt();
         let p_vort = if qgp.temperature > 0.0 {
-            (qgp.vorticity.norm() * 0.5) / qgp.temperature
+            (vort_norm * 0.5) / qgp.temperature
         } else {
             0.0
         };
@@ -81,10 +85,14 @@ impl QGPImbalanceBridge {
         let sigmas = [d1, d2, d3];
         let eye2 = nalgebra::Matrix2::<Complex64>::identity();
 
-        let omega_hat = if qgp.vorticity.norm() > 1e-12 {
-            qgp.vorticity.normalize()
+        let omega_hat: [f64; 3] = if vort_norm > 1e-12 {
+            [
+                qgp.vorticity[0] / vort_norm,
+                qgp.vorticity[1] / vort_norm,
+                qgp.vorticity[2] / vort_norm,
+            ]
         } else {
-            Vector3::zeros()
+            [0.0; 3]
         };
 
         let mut bias_term = Matrix4::<Complex64>::zeros();
@@ -110,12 +118,12 @@ impl QGPImbalanceBridge {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use nalgebra::Matrix3;
+    use nalgebra::{Matrix3, Vector3};
 
     fn default_qgp_state() -> QGPState {
         QGPState {
             temperature: 0.2, // 200 MeV in GeV
-            vorticity: Vector3::new(0.0, 0.0, 0.01),
+            vorticity: [0.0, 0.0, 0.01],
             energy_density: 1.0,
         }
     }
@@ -141,7 +149,7 @@ mod tests {
         // High temperature should drive imbalance towards 3/8
         let hot = QGPState {
             temperature: 100.0,
-            vorticity: Vector3::zeros(),
+            vorticity: [0.0; 3],
             energy_density: 1.0,
         };
         let (f, _a) = bridge.predict_imbalance(&hot);
@@ -156,7 +164,7 @@ mod tests {
         let bridge = QGPImbalanceBridge::default();
         let cold = QGPState {
             temperature: 0.01,
-            vorticity: Vector3::zeros(),
+            vorticity: [0.0; 3],
             energy_density: 0.5,
         };
         let (f, a) = bridge.predict_imbalance(&cold);
@@ -189,7 +197,7 @@ mod tests {
         let bridge = QGPImbalanceBridge::default();
         let qgp = QGPState {
             temperature: 0.2,
-            vorticity: Vector3::zeros(),
+            vorticity: [0.0; 3],
             energy_density: 1.0,
         };
         let state = identity_state();
