@@ -1,10 +1,9 @@
 use anyhow::{Context, Result, bail};
 use clap::Parser;
 use csv::Writer;
+use data_core::nanograv::generate_hd_synthetic_draws;
 use gororoba_cli_data::nanograv_timing::load_release;
-use nalgebra::{Cholesky, DMatrix, DVector};
 use rand::prelude::*;
-use rand_distr::{Distribution, StandardNormal};
 use stats_core::astrophysics::{angular_separation, hellings_downs};
 use std::path::PathBuf;
 
@@ -50,31 +49,20 @@ fn main() -> Result<()> {
     }
 
     // 1. Construct HD Correlation Matrix
-    let mut gamma = DMatrix::zeros(n, n);
+    let mut gamma_rows: Vec<Vec<f64>> = vec![vec![0.0; n]; n];
     for i in 0..n {
         for j in 0..n {
-            if i == j {
-                gamma[(i, j)] = 1.0;
+            gamma_rows[i][j] = if i == j {
+                1.0
             } else {
-                let sep = angular_separation(pulsars[i].1, pulsars[j].1);
-                gamma[(i, j)] = hellings_downs(sep);
-            }
+                hellings_downs(angular_separation(pulsars[i].1, pulsars[j].1))
+            };
         }
     }
 
-    // 2. Cholesky Decomposition for spatial mixing
-    for i in 0..n {
-        gamma[(i, i)] += 1e-9;
-    }
-    let chol = Cholesky::new(gamma).context("HD matrix is not positive definite")?;
-    let lower = chol.l();
-
-    let mut draws = Vec::with_capacity(args.draws);
-    for _ in 0..args.draws {
-        let z = DVector::from_iterator(n, (0..n).map(|_| StandardNormal.sample(&mut rng)));
-        let sample = &lower * z;
-        draws.push(sample.iter().copied().collect::<Vec<_>>());
-    }
+    // 2. Cholesky decomposition and sampling via data_core (no nalgebra dep in CLI)
+    let draws = generate_hd_synthetic_draws(&gamma_rows, args.draws, &mut rng)
+        .context("HD matrix is not positive definite")?;
 
     // 3. Generate Synthetic Pairwise Audit CSV
     println!("Generating synthetic pairwise cross-correlations...");

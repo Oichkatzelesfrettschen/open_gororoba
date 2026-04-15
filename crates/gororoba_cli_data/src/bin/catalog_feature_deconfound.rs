@@ -5,8 +5,8 @@ use data_core::{
     CatalogFeatureCube, CatalogNuisanceModel, NuisanceEffectReport, ResidualizedCatalogFeatureCube,
     parse_catalog_feature_cube_json,
 };
-use nalgebra::{DMatrix, DVector};
 use serde::Serialize;
+use stats_core::helpers::ridge_predictions;
 use std::{
     collections::{BTreeMap, BTreeSet},
     fs,
@@ -154,25 +154,14 @@ fn residualize_cube(
                 continue;
             }
 
-            let x_valid = DMatrix::from_row_slice(
-                valid_positions.len(),
-                k,
-                &valid_positions
-                    .iter()
-                    .flat_map(|(local_idx, _)| design_rows[*local_idx].iter().copied())
-                    .collect::<Vec<_>>(),
-            );
-            let y_valid = DVector::from_iterator(
-                valid_positions.len(),
-                valid_positions.iter().map(|(_, value)| *value),
-            );
-            let xt_valid = x_valid.transpose();
-            let solve_matrix = &xt_valid * &x_valid + DMatrix::<f64>::identity(k, k) * ridge_lambda;
-            let Some(beta) = solve_matrix.lu().solve(&(xt_valid * &y_valid)) else {
+            let design_valid: Vec<Vec<f64>> = valid_positions
+                .iter()
+                .map(|(local_idx, _)| design_rows[*local_idx].clone())
+                .collect();
+            let y_valid: Vec<f64> = valid_positions.iter().map(|(_, value)| *value).collect();
+            let Some(predictions) = ridge_predictions(&design_valid, &y_valid, ridge_lambda) else {
                 bail!("ridge solve failed for {dataset} feature {feature_idx}");
             };
-
-            let predictions = &x_valid * &beta;
             let mean_y = y_valid.iter().sum::<f64>() / y_valid.len() as f64;
             let mut sse = 0.0;
             let mut sst = 0.0;

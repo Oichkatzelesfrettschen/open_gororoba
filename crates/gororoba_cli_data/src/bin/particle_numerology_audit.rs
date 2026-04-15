@@ -15,7 +15,6 @@ use algebra_analysis::{
 use clap::Parser;
 use gr_core::constants::{E_PLANCK_CGS, M_PLANCK_CGS, g_to_planck_mass};
 use materials_core::tang_mass::{depth_based_mass_prediction, mass_ratio_null_test};
-use nalgebra::DMatrix;
 use rand::{RngExt, SeedableRng};
 use rand_chacha::ChaCha8Rng;
 use stats_core::pmns_matrix;
@@ -26,6 +25,44 @@ const PERMUTATIONS: usize = 1024;
 const RNG_SEED: u64 = 0x0C0D_E206;
 const ERG_PER_GEV: f64 = 1.602_176_634e-3;
 const EULER_GAMMA: f64 = 0.577_215_664_901_532_9;
+
+/// Row-major 3x3 matrix: m[row][col].
+type Mat3 = [[f64; 3]; 3];
+const ZERO3: Mat3 = [[0.0; 3]; 3];
+
+/// Build a Mat3 from a row-major flat 9-element array.
+fn m3_from_rows(data: &[f64; 9]) -> Mat3 {
+    [
+        [data[0], data[1], data[2]],
+        [data[3], data[4], data[5]],
+        [data[6], data[7], data[8]],
+    ]
+}
+
+/// Standard matrix product a * b.
+fn m3_mul(a: &Mat3, b: &Mat3) -> Mat3 {
+    let mut out = ZERO3;
+    for i in 0..3 {
+        for j in 0..3 {
+            for k in 0..3 {
+                out[i][j] += a[i][k] * b[k][j];
+            }
+        }
+    }
+    out
+}
+
+/// Frobenius norm of the element-wise difference (a - b).
+fn m3_frobenius_dist(a: &Mat3, b: &Mat3) -> f64 {
+    let mut sum = 0.0;
+    for i in 0..3 {
+        for j in 0..3 {
+            let diff = a[i][j] - b[i][j];
+            sum += diff * diff;
+        }
+    }
+    sum.sqrt()
+}
 
 #[derive(Parser, Debug)]
 #[command(name = "particle-numerology-audit")]
@@ -129,40 +166,36 @@ fn basis_vector(dim: usize, index: usize) -> Vec<f64> {
     v
 }
 
-fn pmns_probability_matrix() -> DMatrix<f64> {
+fn pmns_probability_matrix() -> Mat3 {
     let pmns = pmns_matrix();
-    let mut out = DMatrix::zeros(3, 3);
+    let mut out = ZERO3;
     for i in 0..3 {
         for j in 0..3 {
-            out[(i, j)] = pmns[(i, j)].norm_sqr();
+            out[i][j] = pmns[(i, j)].norm_sqr();
         }
     }
     out
 }
 
-fn frobenius_distance_real(a: &DMatrix<f64>, b: &DMatrix<f64>) -> f64 {
-    (a - b).norm()
+fn mean_diagonal(matrix: &Mat3) -> f64 {
+    (matrix[0][0] + matrix[1][1] + matrix[2][2]) / 3.0
 }
 
-fn mean_diagonal(matrix: &DMatrix<f64>) -> f64 {
-    (0..matrix.nrows()).map(|i| matrix[(i, i)]).sum::<f64>() / matrix.nrows() as f64
-}
-
-fn sinkhorn_normalize(mut matrix: DMatrix<f64>, iterations: usize) -> DMatrix<f64> {
+fn sinkhorn_normalize(mut matrix: Mat3, iterations: usize) -> Mat3 {
     for _ in 0..iterations {
-        for i in 0..matrix.nrows() {
-            let row_sum: f64 = (0..matrix.ncols()).map(|j| matrix[(i, j)]).sum();
+        for i in 0..3 {
+            let row_sum: f64 = matrix[i].iter().sum();
             if row_sum > 1e-15 {
-                for j in 0..matrix.ncols() {
-                    matrix[(i, j)] /= row_sum;
+                for j in 0..3 {
+                    matrix[i][j] /= row_sum;
                 }
             }
         }
-        for j in 0..matrix.ncols() {
-            let col_sum: f64 = (0..matrix.nrows()).map(|i| matrix[(i, j)]).sum();
+        for j in 0..3 {
+            let col_sum: f64 = (0..3).map(|i| matrix[i][j]).sum();
             if col_sum > 1e-15 {
-                for i in 0..matrix.nrows() {
-                    matrix[(i, j)] /= col_sum;
+                for i in 0..3 {
+                    matrix[i][j] /= col_sum;
                 }
             }
         }
@@ -170,28 +203,28 @@ fn sinkhorn_normalize(mut matrix: DMatrix<f64>, iterations: usize) -> DMatrix<f6
     matrix
 }
 
-fn random_doubly_stochastic(seed: u64) -> DMatrix<f64> {
+fn random_doubly_stochastic(seed: u64) -> Mat3 {
     let mut rng = ChaCha8Rng::seed_from_u64(seed);
-    let mut matrix = DMatrix::zeros(3, 3);
+    let mut matrix = ZERO3;
     for i in 0..3 {
         for j in 0..3 {
-            matrix[(i, j)] = 0.1 + rng.random::<f64>();
+            matrix[i][j] = 0.1 + rng.random::<f64>();
         }
     }
     sinkhorn_normalize(matrix, 24)
 }
 
 fn stochastic_null_test(
-    observed: &DMatrix<f64>,
-    reference: &DMatrix<f64>,
+    observed: &Mat3,
+    reference: &Mat3,
     permutations: usize,
     seed: u64,
 ) -> NullSummary {
-    let observed_distance = frobenius_distance_real(observed, reference);
+    let observed_distance = m3_frobenius_dist(observed, reference);
     let mut distances = Vec::with_capacity(permutations);
     for i in 0..permutations {
         let candidate = random_doubly_stochastic(seed + i as u64);
-        distances.push(frobenius_distance_real(&candidate, reference));
+        distances.push(m3_frobenius_dist(&candidate, reference));
     }
     let mean_null = distances.iter().sum::<f64>() / distances.len() as f64;
     let std_null = (distances
@@ -214,16 +247,13 @@ fn stochastic_null_test(
     }
 }
 
-fn democratic_probability_matrix() -> DMatrix<f64> {
-    DMatrix::from_element(3, 3, 1.0 / 3.0)
+fn democratic_probability_matrix() -> Mat3 {
+    [[1.0 / 3.0; 3]; 3]
 }
 
-fn summarize_probability_matrix(
-    matrix: &DMatrix<f64>,
-    pmns_probs: &DMatrix<f64>,
-) -> ProbabilitySummary {
+fn summarize_probability_matrix(matrix: &Mat3, pmns_probs: &Mat3) -> ProbabilitySummary {
     ProbabilitySummary {
-        frobenius_distance: frobenius_distance_real(matrix, pmns_probs),
+        frobenius_distance: m3_frobenius_dist(matrix, pmns_probs),
         mean_diagonal: mean_diagonal(matrix),
         null: stochastic_null_test(matrix, pmns_probs, PERMUTATIONS, RNG_SEED),
     }
@@ -308,11 +338,11 @@ fn rms_angle_error(candidate: [f64; 3], target: [f64; 3]) -> f64 {
         .sqrt()
 }
 
-fn summarize_c077(pmns_probs: &DMatrix<f64>) -> ProbabilitySummary {
+fn summarize_c077(pmns_probs: &Mat3) -> ProbabilitySummary {
     summarize_probability_matrix(&democratic_probability_matrix(), pmns_probs)
 }
 
-fn summarize_c084(pmns_probs: &DMatrix<f64>) -> C084Summary {
+fn summarize_c084(pmns_probs: &Mat3) -> C084Summary {
     let democratic = summarize_c077(pmns_probs);
     let mut best_distance = f64::INFINITY;
     let mut best_mean_diagonal = 0.0;
@@ -325,15 +355,15 @@ fn summarize_c084(pmns_probs: &DMatrix<f64>) -> C084Summary {
                 let a = ia as f64 / 20.0;
                 let b = ib as f64 / 20.0;
                 let c = ic as f64 / 20.0;
-                let mut trial = DMatrix::from_element(3, 3, 1.0);
-                trial[(0, 0)] += a;
-                trial[(1, 1)] += b;
-                trial[(2, 2)] += c;
-                if trial.iter().any(|value| *value <= 0.0) {
+                let mut trial = [[1.0_f64; 3]; 3];
+                trial[0][0] += a;
+                trial[1][1] += b;
+                trial[2][2] += c;
+                if trial.iter().flat_map(|row| row.iter()).any(|&value| value <= 0.0) {
                     continue;
                 }
                 let normalized = sinkhorn_normalize(trial, 24);
-                let distance = frobenius_distance_real(&normalized, pmns_probs);
+                let distance = m3_frobenius_dist(&normalized, pmns_probs);
                 if distance < best_distance {
                     best_distance = distance;
                     best_mean_diagonal = mean_diagonal(&normalized);
@@ -350,82 +380,46 @@ fn summarize_c084(pmns_probs: &DMatrix<f64>) -> C084Summary {
         best_distance,
         best_mean_diagonal,
         best_params,
-        improvement: C084Summary::improvement_from(&best_distance, pmns_probs),
+        improvement: m3_frobenius_dist(&democratic_probability_matrix(), pmns_probs) - best_distance,
         null,
     }
 }
 
-impl C084Summary {
-    fn improvement_from(best_distance: &f64, pmns_probs: &DMatrix<f64>) -> f64 {
-        frobenius_distance_real(&democratic_probability_matrix(), pmns_probs) - *best_distance
-    }
+fn rotation_x(theta: f64) -> Mat3 {
+    m3_from_rows(&[
+        1.0, 0.0, 0.0,
+        0.0, theta.cos(), theta.sin(),
+        0.0, -theta.sin(), theta.cos(),
+    ])
 }
 
-fn rotation_x(theta: f64) -> DMatrix<f64> {
-    DMatrix::from_row_slice(
-        3,
-        3,
-        &[
-            1.0,
-            0.0,
-            0.0,
-            0.0,
-            theta.cos(),
-            theta.sin(),
-            0.0,
-            -theta.sin(),
-            theta.cos(),
-        ],
-    )
+fn rotation_y(theta: f64) -> Mat3 {
+    m3_from_rows(&[
+        theta.cos(), 0.0, theta.sin(),
+        0.0, 1.0, 0.0,
+        -theta.sin(), 0.0, theta.cos(),
+    ])
 }
 
-fn rotation_y(theta: f64) -> DMatrix<f64> {
-    DMatrix::from_row_slice(
-        3,
-        3,
-        &[
-            theta.cos(),
-            0.0,
-            theta.sin(),
-            0.0,
-            1.0,
-            0.0,
-            -theta.sin(),
-            0.0,
-            theta.cos(),
-        ],
-    )
+fn rotation_z(theta: f64) -> Mat3 {
+    m3_from_rows(&[
+        theta.cos(), theta.sin(), 0.0,
+        -theta.sin(), theta.cos(), 0.0,
+        0.0, 0.0, 1.0,
+    ])
 }
 
-fn rotation_z(theta: f64) -> DMatrix<f64> {
-    DMatrix::from_row_slice(
-        3,
-        3,
-        &[
-            theta.cos(),
-            theta.sin(),
-            0.0,
-            -theta.sin(),
-            theta.cos(),
-            0.0,
-            0.0,
-            0.0,
-            1.0,
-        ],
-    )
-}
-
-fn givens_rotation_matrix(theta12_deg: f64, theta13_deg: f64, theta23_deg: f64) -> DMatrix<f64> {
+fn givens_rotation_matrix(theta12_deg: f64, theta13_deg: f64, theta23_deg: f64) -> Mat3 {
     let theta12 = theta12_deg.to_radians();
     let theta13 = theta13_deg.to_radians();
     let theta23 = theta23_deg.to_radians();
-    rotation_x(theta23) * rotation_y(theta13) * rotation_z(theta12)
+    m3_mul(&m3_mul(&rotation_x(theta23), &rotation_y(theta13)), &rotation_z(theta12))
 }
 
-fn recover_givens_angles_deg(matrix: &DMatrix<f64>) -> [f64; 3] {
-    let theta13 = matrix[(0, 2)].asin().to_degrees();
-    let theta12 = matrix[(0, 1)].atan2(matrix[(0, 0)]).to_degrees();
-    let theta23 = matrix[(1, 2)].atan2(matrix[(2, 2)]).to_degrees();
+fn recover_givens_angles_deg(matrix: &Mat3) -> [f64; 3] {
+    let theta13 = matrix[0][2].asin().to_degrees();
+    let theta12 = matrix[0][1].atan2(matrix[0][0]).to_degrees();
+    let theta23 = matrix[1][2].atan2(matrix[2][2]).to_degrees();
     [theta12.abs(), theta13.abs(), theta23.abs()]
 }
 
@@ -700,11 +694,11 @@ mod tests {
 
     #[test]
     fn sinkhorn_preserves_double_stochasticity() {
-        let matrix = DMatrix::from_row_slice(3, 3, &[1.2, 0.8, 0.6, 0.9, 1.1, 0.7, 0.5, 0.6, 1.4]);
+        let matrix = m3_from_rows(&[1.2, 0.8, 0.6, 0.9, 1.1, 0.7, 0.5, 0.6, 1.4]);
         let normalized = sinkhorn_normalize(matrix, 24);
         for i in 0..3 {
-            let row_sum: f64 = (0..3).map(|j| normalized[(i, j)]).sum();
-            let col_sum: f64 = (0..3).map(|j| normalized[(j, i)]).sum();
+            let row_sum: f64 = normalized[i].iter().sum();
+            let col_sum: f64 = (0..3).map(|j| normalized[j][i]).sum();
             assert!((row_sum - 1.0).abs() < 1e-9);
             assert!((col_sum - 1.0).abs() < 1e-9);
         }
