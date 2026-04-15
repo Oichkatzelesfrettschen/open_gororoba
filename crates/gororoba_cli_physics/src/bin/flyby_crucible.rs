@@ -11,13 +11,25 @@ use clap::Parser;
 use gororoba_algebra::construction::chingon::AlternativityViolationTensor;
 #[cfg(feature = "gpu")]
 use gororoba_algebra::gpu::GpuPackableAvt;
-use gororoba_cli_physics::ephemeris_loader::{EphemerisLoader, GM_MOON, GM_SUN};
+use gororoba_cli_physics::{
+    ephemeris_loader::{EphemerisLoader, GM_MOON, GM_SUN},
+    flyby::{
+        config::{
+            ALPHA_CHINGON, ETA_WAKE, FlybyConfig, GM_EARTH, R_EARTH, SOI_R_EARTH,
+            V_WIND_GALACTIC, all_flybys,
+        },
+        geometry::{
+            compute_soi_window, dm_wake_density_factor, dm_wind_j2000,
+            hyperbolic_initial_state, radec_to_unit,
+        },
+    },
+};
 #[cfg(feature = "gpu")]
 use gr_core::forces::chingon_bivector_drag::ThreeBodyOrbitalParams;
 use gr_core::forces::chingon_bivector_drag::compute_chingon_bivector_drag_3body;
 #[cfg(feature = "gpu")]
 use lbm_3d_cuda::chingon_gpu::ChingonGpuPipeline;
-use nalgebra::{Matrix3, Vector3};
+use nalgebra::Vector3;
 use rayon::prelude::*;
 use std::sync::{Arc, Mutex};
 
@@ -28,437 +40,6 @@ use std::sync::{Arc, Mutex};
 type GpuPipeline = ChingonGpuPipeline;
 #[cfg(not(feature = "gpu"))]
 type GpuPipeline = ();
-
-/// Coupling constant with NFW-like 1/r^3 density scaling.
-///
-/// With uniform density (no scaling), alpha = 8e-14 reproduced sign patterns
-/// but magnitudes were ~5x too large. With 1/r^3 gravitational focusing,
-/// the effective integration path is weighted toward perigee, requiring a
-/// larger alpha_0 to produce the same integrated delta-V. Calibrated to
-/// NEAR's observed +13.46 mm/s.
-const ALPHA_CHINGON: f64 = 6.0e-12;
-
-/// Earth GM in km^3/s^2.
-const GM_EARTH: f64 = 398600.4418;
-
-/// Earth radius in km.
-const R_EARTH: f64 = 6371.0;
-
-/// Dark matter wind velocity in Galactic coordinates (km/s).
-/// Sun moves at ~220 km/s toward Galactic l=90, b=0 (Cygnus direction).
-/// Components: (U_toward_center, V_rotation, W_north) in Galactic frame.
-const V_WIND_GALACTIC: [f64; 3] = [-11.1, 232.24, 7.25];
-
-/// SOI radius for integration window: 50 Earth radii.
-/// Beyond this, Earth's gravity is negligible and Chingon drag has no
-/// geometric coupling to the flyby trajectory.
-const SOI_R_EARTH: f64 = 50.0;
-
-/// Gravitational focusing wake amplitude.
-///
-/// EXPLOREME(Sprint 71.3): ETA_WAKE PARTIALLY EFFECTIVE, CANNOT FIX ROSETTA-I.
-///
-/// Earth's gravity deflects DM particles passing nearby, creating a
-/// density enhancement (caustic) downstream in the DM wind flow.
-/// The wake has a cos(theta) profile along the wind axis:
-///   rho_wake(r, theta) = rho_0 * (1 + ETA_WAKE * cos(theta))
-///
-/// Physical motivation:
-/// - Lundberg & Edsjo (2004): gravitational focusing ~10-20% enhancement
-/// - arXiv:2112.05718 (Lee et al. 2021): angular dependence from lensing
-/// - arXiv:2502.04456 (2025): directional DM wind enhancement near Earth
-///
-/// Sprint 71.3 sweep results (ETA_WAKE = 0.0 / 0.05 / 0.10 / 0.15 / 0.20):
-///   Rosetta-I ratio: -14.89 / -14.19 / -13.50 / -12.81 / -12.12
-///   NEAR ratio:       1.11  /  1.16  /  1.21  /  1.26  /  1.31
-///   Galileo ratio:    0.496 /  0.495 /  0.494 /  0.494 /  0.493
-///   Cassini ratio:    0.226 /  0.231 /  0.236 /  0.241 /  0.245
-///
-/// The wake correctly breaks inbound/outbound symmetry (cos is odd),
-/// reducing |Rosetta-I| by ~18% at ETA_WAKE=0.20. But the baseline
-/// is -26.8 mm/s; would need ETA_WAKE ~ 2.2 (220% modulation) to flip
-/// sign. This is unphysical.
-///
-/// CONCLUSION: density modulation (both tidal and wake) CANNOT fix
-/// Rosetta-I. The sign problem is structural in the 64D cross-coupling
-/// block geometry. Fix must come from higher-dimensional embedding
-/// (Sprint 73: 256D with 85 axes/body vs 21 at 64D).
-const ETA_WAKE: f64 = 0.10;
-
-/// Altitude-dependent DM density enhancement factor.
-///
-/// Models Earth's gravitational focusing of galactic DM as a power-law
-/// density profile: rho(r) = (R_earth / r)^3.
-///
-/// Physical motivation: Earth's gravity focuses collisionless dark matter
-/// particles via Liouville's theorem, producing a power-law density
-/// enhancement near the surface. Unlike atmospheric gas (which has pressure
-/// support and exponential scale heights), DM is collisionless and clusters
-/// purely gravitationally. The NFW profile's inner slope goes as r^{-1} to
-/// r^{-3} depending on the capture mechanism:
-/// - Gravitational focusing of unbound particles: ~ 1/r (Lundberg & Edsjo 2004)
-/// - Bound captured component: ~ 1/r^2 to 1/r^3 (Peter 2009)
-///
-/// We use n=3 (NFW-like inner cusp), consistent with the NS-NFW coupling
-/// used for galactic halos in Sprint 68. The profile gives:
-///   rho(539 km alt) / rho(2347 km alt) = (6910/8718)^3 = 0.498
-///   rho(perigee) / rho(SOI=318550 km) = (6371/318550)^3 = 8e-6
-///
-/// The 1/r^3 provides physically correct weighting: force concentrates
-/// around perigee where gravitational capture is strongest, with graceful
-/// falloff that still allows meaningful RK4 integration through the SOI.
-///
-/// Normalized so density_factor(R_earth) = 1.0.
-fn dm_density_factor(r_km: f64) -> f64 {
-    if r_km <= R_EARTH {
-        return 1.0;
-    }
-    (R_EARTH / r_km).powi(3)
-}
-
-/// DM density with gravitational focusing wake along the wind axis.
-///
-/// Combines the 1/r^3 NFW radial profile with the cos^2(theta) wake
-/// enhancement. The wake is strongest when the spacecraft is directly
-/// downstream of Earth in the DM wind flow (cos_wind = +1), and
-/// weakest when upstream (cos_wind = -1, where cos^2 still gives +1,
-/// but note the asymmetry below).
-///
-/// The SIGNED wake uses cos_wind (not cos^2) to break the up/downstream
-/// symmetry: downstream (cos > 0) gets enhancement, upstream (cos < 0)
-/// gets depletion. This is physically correct because the gravitational
-/// focusing wake is asymmetric -- particles are focused INTO the wake
-/// downstream and DEPLETED upstream where the mass absorbs/deflects them.
-fn dm_wake_density_factor(
-    r_km: f64,
-    r_pos: &Vector3<f64>,
-    v_wind: &Vector3<f64>,
-    eta_wake: f64,
-) -> f64 {
-    let base = dm_density_factor(r_km);
-    if eta_wake == 0.0 {
-        return base;
-    }
-    let r_n = r_pos.norm();
-    let v_n = v_wind.norm();
-    if r_n < 1.0 || v_n < 1.0 {
-        return base;
-    }
-    // cos(theta) between position and wind direction
-    // Positive when spacecraft is downstream (wind blows toward it from Earth)
-    let cos_wind = r_pos.dot(v_wind) / (r_n * v_n);
-    // Asymmetric wake: enhance downstream, deplete upstream
-    base * (1.0 + eta_wake * cos_wind)
-}
-
-// EXPLOREME(Sprint 71.1): tidal_dm_density FALSIFIED.
-// cos^2(theta) modifiers along Moon/Sun axes only change force MAGNITUDE,
-// not direction. Cannot rotate the 64D tensor contraction force vector.
-// NEAR preserved (1.009) but Rosetta-I sign unchanged.
-// Reverted to scalar dm_density_factor (1/r^3 NFW profile).
-// Sprint 71.2 replaces this with body-specific 3-body 64D embedding
-// where Earth/Moon/Sun each occupy their own 21-axis block with
-// body-relative angular momenta, changing the GEOMETRY of the contraction.
-
-/// Galactic-to-J2000 ECI rotation matrix.
-///
-/// IAU definition (Hipparcos-based, Murray 1989 / Liu+ 2011):
-///   Galactic North Pole (J2000): RA = 192.85948 deg, Dec = +27.12825 deg
-///   Galactic Center   (J2000): RA = 266.40510 deg, Dec = -28.93617 deg
-///
-/// The matrix R transforms Galactic (l, b) Cartesian to J2000 ECI Cartesian:
-///   v_J2000 = R * v_Galactic
-///
-/// Columns of R are the Galactic basis vectors expressed in J2000:
-///   col0 = unit vector toward Galactic center (l=0, b=0)
-///   col1 = unit vector toward l=90, b=0
-///   col2 = unit vector toward Galactic North Pole (b=90)
-fn galactic_to_j2000() -> Matrix3<f64> {
-    // Galactic North Pole in J2000
-    let ra_ngp = 192.85948_f64.to_radians();
-    let dec_ngp = 27.12825_f64.to_radians();
-
-    // Galactic Center in J2000
-    let ra_gc = 266.40510_f64.to_radians();
-    let dec_gc = (-28.93617_f64).to_radians();
-
-    // z_gal = NGP direction in J2000
-    let z_gal = Vector3::new(
-        dec_ngp.cos() * ra_ngp.cos(),
-        dec_ngp.cos() * ra_ngp.sin(),
-        dec_ngp.sin(),
-    );
-
-    // x_gal = Galactic Center direction in J2000
-    let x_gal_raw = Vector3::new(
-        dec_gc.cos() * ra_gc.cos(),
-        dec_gc.cos() * ra_gc.sin(),
-        dec_gc.sin(),
-    );
-
-    // Orthogonalize: x_gal must be perpendicular to z_gal
-    let x_gal = (x_gal_raw - z_gal * z_gal.dot(&x_gal_raw)).normalize();
-
-    // y_gal = z_gal x x_gal (right-handed)
-    let y_gal = z_gal.cross(&x_gal);
-
-    // Columns: x_gal, y_gal, z_gal
-    Matrix3::from_columns(&[x_gal, y_gal, z_gal])
-}
-
-/// Compute the DM wind vector in J2000 ECI coordinates (km/s).
-fn dm_wind_j2000() -> Vector3<f64> {
-    let v_gal = Vector3::new(V_WIND_GALACTIC[0], V_WIND_GALACTIC[1], V_WIND_GALACTIC[2]);
-    galactic_to_j2000() * v_gal
-}
-
-/// Configuration for a single flyby event.
-#[derive(Debug, Clone)]
-struct FlybyConfig {
-    name: &'static str,
-    /// Perigee altitude above Earth surface (km).
-    perigee_alt_km: f64,
-    /// Hyperbolic excess velocity v_inf (km/s).
-    v_inf: f64,
-    /// Inbound asymptotic declination (degrees, positive = North).
-    inbound_dec_deg: f64,
-    /// Inbound asymptotic right ascension (degrees).
-    inbound_ra_deg: f64,
-    /// Outbound asymptotic declination (degrees).
-    /// From Anderson et al. (2008) Table I. Required to determine the
-    /// orbital plane normal h = (-v_in) x v_out correctly.
-    outbound_dec_deg: f64,
-    /// Outbound asymptotic right ascension (degrees).
-    outbound_ra_deg: f64,
-    /// Observed anomalous delta-V (mm/s). Positive = speed gain.
-    observed_dv_mm_s: f64,
-    /// Perigee epoch as Julian Ephemeris Date (JED/TDB).
-    /// Required for three-body Moon/Sun position queries.
-    perigee_jed: f64,
-}
-
-fn all_flybys() -> Vec<FlybyConfig> {
-    // Inbound/outbound asymptotic directions from Anderson et al. (2008)
-    // PRL 100, 091102, Table I.
-    use gororoba_cli_physics::ephemeris_loader::flyby_epochs;
-    vec![
-        FlybyConfig {
-            name: "Galileo-I (1990-12-08)",
-            perigee_alt_km: 960.0,
-            v_inf: 8.949,
-            inbound_dec_deg: -12.5,
-            inbound_ra_deg: 263.0,
-            outbound_dec_deg: -4.9,
-            outbound_ra_deg: 223.0,
-            observed_dv_mm_s: 3.92,
-            perigee_jed: flyby_epochs::GALILEO,
-        },
-        FlybyConfig {
-            name: "NEAR (1998-01-23)",
-            perigee_alt_km: 539.0,
-            v_inf: 6.851,
-            inbound_dec_deg: -20.8,
-            inbound_ra_deg: 280.0,
-            outbound_dec_deg: 72.0,
-            outbound_ra_deg: 89.0,
-            observed_dv_mm_s: 13.46,
-            perigee_jed: flyby_epochs::NEAR,
-        },
-        FlybyConfig {
-            name: "Cassini (1999-08-18)",
-            perigee_alt_km: 1175.0,
-            v_inf: 16.01,
-            inbound_dec_deg: -12.9,
-            inbound_ra_deg: 257.0,
-            outbound_dec_deg: -5.0,
-            outbound_ra_deg: 344.0,
-            observed_dv_mm_s: -2.0,
-            perigee_jed: flyby_epochs::CASSINI,
-        },
-        FlybyConfig {
-            name: "Rosetta-I (2005-03-04)",
-            perigee_alt_km: 1956.0,
-            v_inf: 3.863,
-            inbound_dec_deg: -34.3,
-            inbound_ra_deg: 247.0,
-            outbound_dec_deg: -20.6,
-            outbound_ra_deg: 116.0,
-            observed_dv_mm_s: 1.80,
-            perigee_jed: flyby_epochs::ROSETTA_I,
-        },
-        FlybyConfig {
-            name: "MESSENGER (2005-08-02)",
-            perigee_alt_km: 2347.0,
-            v_inf: 4.056,
-            inbound_dec_deg: 31.4,
-            inbound_ra_deg: 232.0,
-            outbound_dec_deg: 75.4,
-            outbound_ra_deg: 174.0,
-            observed_dv_mm_s: 0.02,
-            perigee_jed: flyby_epochs::MESSENGER,
-        },
-        FlybyConfig {
-            name: "Juno (2013-10-09)",
-            perigee_alt_km: 559.0,
-            v_inf: 9.897,
-            inbound_dec_deg: -13.6,
-            inbound_ra_deg: 0.0,
-            outbound_dec_deg: -5.3,
-            outbound_ra_deg: 345.0,
-            observed_dv_mm_s: 0.0,
-            perigee_jed: flyby_epochs::JUNO,
-        },
-    ]
-}
-
-/// Compute a physically motivated integration window (seconds before/after perigee).
-///
-/// The window spans the time for the spacecraft to travel from SOI_R_EARTH * R_EARTH
-/// to perigee and back out. This ensures the Kepler solver operates in a numerically
-/// stable regime (|M| < ~100) while capturing all gravitationally significant dynamics.
-fn compute_soi_window(cfg: &FlybyConfig) -> f64 {
-    let r_soi = SOI_R_EARTH * R_EARTH;
-    let r_perigee = R_EARTH + cfg.perigee_alt_km;
-
-    // Hyperbolic orbit parameters
-    let a = -GM_EARTH / (cfg.v_inf * cfg.v_inf);
-    let e = 1.0 - r_perigee / a;
-
-    // True anomaly at SOI radius
-    let cos_nu_soi = ((a * (1.0 - e * e) / r_soi) - 1.0) / e;
-    // Clamp for numerical safety (SOI might be beyond the hyperbola's asymptote)
-    let cos_nu_soi = cos_nu_soi.clamp(-1.0, 1.0);
-    let nu_soi = cos_nu_soi.acos();
-
-    // Hyperbolic anomaly at SOI
-    let tan_half_nu = (nu_soi / 2.0).tan();
-    let tan_half_h = tan_half_nu / ((e + 1.0) / (e - 1.0)).sqrt();
-    let h_soi = 2.0 * tan_half_h.atanh();
-
-    // Mean anomaly at SOI
-    let m_soi = e * h_soi.sinh() - h_soi;
-
-    // Mean motion
-    let n = (-GM_EARTH / (a * a * a)).sqrt();
-
-    // Time from perigee to SOI
-    let t_soi = m_soi.abs() / n;
-
-    // Add 10% margin
-    t_soi * 1.1
-}
-
-/// Convert asymptotic direction (RA, Dec in degrees) to a unit vector.
-fn radec_to_unit(ra_deg: f64, dec_deg: f64) -> Vector3<f64> {
-    let ra = ra_deg.to_radians();
-    let dec = dec_deg.to_radians();
-    Vector3::new(dec.cos() * ra.cos(), dec.cos() * ra.sin(), dec.sin())
-}
-
-/// Compute initial position and velocity at T seconds before perigee
-/// for a hyperbolic flyby in the orbital plane.
-fn hyperbolic_initial_state(
-    cfg: &FlybyConfig,
-    t_before_perigee: f64,
-) -> (Vector3<f64>, Vector3<f64>) {
-    let r_perigee = R_EARTH + cfg.perigee_alt_km;
-    let v_inf = cfg.v_inf;
-
-    // Semi-major axis (negative for hyperbola)
-    let a = -GM_EARTH / (v_inf * v_inf);
-    // Eccentricity
-    let e = 1.0 - r_perigee / a;
-    // Semi-latus rectum
-    let p = a * (1.0 - e * e);
-
-    // Mean motion
-    let n = (-GM_EARTH / (a * a * a)).sqrt();
-
-    // Mean anomaly at T before perigee
-    let m_target = -n * t_before_perigee;
-
-    // Solve Kepler's equation for hyperbolic anomaly H via Newton-Raphson.
-    // Clamp initial guess to prevent sinh overflow.
-    let mut h = (m_target / e).clamp(-20.0, 20.0);
-    for _ in 0..100 {
-        let sh = h.sinh();
-        let ch = h.cosh();
-        let f_h = e * sh - h - m_target;
-        let fp_h = e * ch - 1.0;
-        if fp_h.abs() < 1e-30 {
-            break;
-        }
-        let dh = f_h / fp_h;
-        // Damped step to prevent overshooting
-        h -= dh.clamp(-2.0, 2.0);
-        if dh.abs() < 1e-12 {
-            break;
-        }
-    }
-
-    // True anomaly from hyperbolic anomaly
-    let cos_nu = (e - h.cosh()) / (1.0 - e * h.cosh());
-    let sin_nu = (e * e - 1.0).sqrt() * h.sinh() / (1.0 - e * h.cosh());
-    let nu = sin_nu.atan2(cos_nu);
-
-    // Radius at this point
-    let r = p / (1.0 + e * nu.cos());
-
-    // Position in perifocal frame
-    let x_pf = r * nu.cos();
-    let y_pf = r * nu.sin();
-
-    // Velocity in perifocal frame
-    let h_ang = (GM_EARTH * p).sqrt();
-    let vx_pf = -GM_EARTH / h_ang * nu.sin();
-    let vy_pf = GM_EARTH / h_ang * (e + nu.cos());
-
-    // Rotate perifocal frame to ECI using inbound AND outbound asymptotic directions.
-    //
-    // The perifocal frame has x_hat pointing from the focus toward perigee (nu=0),
-    // y_hat perpendicular in the orbital plane (toward nu=pi/2), and z_hat = h_hat
-    // perpendicular to the orbital plane.
-    //
-    // The perigee direction bisects the angle between the two asymptotic velocity
-    // vectors (-v_in and v_out). This is geometrically exact: the hyperbola is
-    // symmetric about the apse line, and both asymptotes make equal angles with it.
-    let inbound_dir = radec_to_unit(cfg.inbound_ra_deg, cfg.inbound_dec_deg);
-    let outbound_dir = radec_to_unit(cfg.outbound_ra_deg, cfg.outbound_dec_deg);
-
-    // Perigee direction = bisector of -inbound and outbound
-    let bisector = -inbound_dir + outbound_dir;
-    let x_hat = if bisector.norm() > 1e-10 {
-        bisector.normalize()
-    } else {
-        // Degenerate: 180-degree turning (head-on collision). Use -inbound.
-        (-inbound_dir).normalize()
-    };
-
-    // Orbital angular momentum direction: h = (-v_in) x v_out
-    let h_orbital = (-inbound_dir).cross(&outbound_dir);
-    let h_norm_orb = h_orbital.norm();
-
-    // y_hat completes the right-handed perifocal frame: y = h x x
-    let y_hat = if h_norm_orb > 1e-10 {
-        let h_hat = h_orbital / h_norm_orb;
-        h_hat.cross(&x_hat).normalize()
-    } else {
-        // Degenerate: inbound ~ outbound (no turning). Fall back to z_ref.
-        let z_ref = Vector3::new(0.0, 0.0, 1.0);
-        let y_raw = z_ref.cross(&x_hat);
-        if y_raw.norm() > 1e-10 {
-            y_raw.normalize()
-        } else {
-            let x_ref = Vector3::new(1.0, 0.0, 0.0);
-            x_ref.cross(&x_hat).normalize()
-        }
-    };
-
-    let pos = x_hat * x_pf + y_hat * y_pf;
-    let vel = x_hat * vx_pf + y_hat * vy_pf;
-
-    (pos, vel)
-}
 
 /// Run a single flyby simulation with RK4 integration.
 /// Returns (v_out_control, v_out_chingon, trajectory_points, h_trace).
@@ -482,7 +63,9 @@ fn run_flyby(
         &Mutex<GpuPipeline>,
     >,
 ) -> (f64, f64, Vec<[f64; 7]>, Vec<[f64; 12]>) {
-    let (pos_init, vel_init) = hyperbolic_initial_state(cfg, t_before);
+    let (pos_arr, vel_arr) = hyperbolic_initial_state(cfg, t_before);
+    let pos_init = Vector3::from(pos_arr);
+    let vel_init = Vector3::from(vel_arr);
     let total_time = t_before + t_after;
     let steps = (total_time / dt) as usize;
 
@@ -546,8 +129,10 @@ fn run_flyby(
                     }
 
                     if use_chingon {
+                        let p_arr = [p_in[0], p_in[1], p_in[2]];
+                        let v_arr = [v_wind[0], v_wind[1], v_wind[2]];
                         let alpha_eff = ALPHA_CHINGON
-                            * dm_wake_density_factor(p_in.norm(), &p_in, v_wind, eta_wake);
+                            * dm_wake_density_factor(p_in.norm(), &p_arr, &v_arr, eta_wake);
 
                         #[cfg(feature = "gpu")]
                         let gpu_force = gpu_pipeline.and_then(|mtx| {
@@ -599,7 +184,9 @@ fn run_flyby(
                     let h = p.cross(&v);
                     let h_dot_vw = h.dot(v_wind);
                     let cross_sign = if h_dot_vw > 0.0 { 1.0 } else { -1.0 };
-                    let dm_fac = dm_wake_density_factor(p.norm(), &p, v_wind, eta_wake);
+                    let p_arr = [p[0], p[1], p[2]];
+                    let v_arr = [v_wind[0], v_wind[1], v_wind[2]];
+                    let dm_fac = dm_wake_density_factor(p.norm(), &p_arr, &v_arr, eta_wake);
                     let h_lunar = (p - r_moon).cross(&v);
                     let h_solar = (p - r_sun).cross(&v);
                     let a_chingon_mag = if use_chingon {
@@ -798,7 +385,7 @@ fn main() -> anyhow::Result<()> {
     // Pin to physical cores for V-Cache locality
     pin_physical_cores();
 
-    let v_wind = dm_wind_j2000();
+    let v_wind = Vector3::from(dm_wind_j2000(&V_WIND_GALACTIC));
 
     // Load three-body ephemeris (Moon + Sun positions from JPL DE440)
     let ephem: Option<EphemerisLoader> = if cli.no_threebody {
@@ -934,8 +521,8 @@ fn main() -> anyhow::Result<()> {
         "Spacecraft", "h.vw_s", "turn_d", "h_dec", "obs_s", "pred_s"
     );
     for cfg in &configs {
-        let inb = radec_to_unit(cfg.inbound_ra_deg, cfg.inbound_dec_deg);
-        let outb = radec_to_unit(cfg.outbound_ra_deg, cfg.outbound_dec_deg);
+        let inb = Vector3::from(radec_to_unit(cfg.inbound_ra_deg, cfg.inbound_dec_deg));
+        let outb = Vector3::from(radec_to_unit(cfg.outbound_ra_deg, cfg.outbound_dec_deg));
         let h_orb = (-inb).cross(&outb);
         let h_n = h_orb.norm();
         let h_hat = if h_n > 1e-10 {
@@ -1102,12 +689,15 @@ fn main() -> anyhow::Result<()> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use gororoba_cli_physics::flyby::geometry::galactic_to_j2000;
 
     #[test]
     fn test_hyperbolic_initial_state_sanity() {
         let cfg = &all_flybys()[0]; // Galileo
         let t_window = compute_soi_window(cfg);
-        let (pos, vel) = hyperbolic_initial_state(cfg, t_window);
+        let (pos_arr, vel_arr) = hyperbolic_initial_state(cfg, t_window);
+        let pos = Vector3::from(pos_arr);
+        let vel = Vector3::from(vel_arr);
 
         let r = pos.norm();
         let r_perigee = R_EARTH + cfg.perigee_alt_km;
@@ -1144,16 +734,18 @@ mod tests {
     #[test]
     fn test_galactic_to_j2000_orthogonal() {
         let r = galactic_to_j2000();
-        let rtr = r.transpose() * r;
+        // R^T * R must be the identity matrix (rotation matrix is orthogonal).
+        // For column-major layout m[row][col]: (R^T R)[i][j] = sum_k R[k][i] * R[k][j].
         for i in 0..3 {
             for j in 0..3 {
+                let dot: f64 = (0..3).map(|k| r[k][i] * r[k][j]).sum();
                 let expected = if i == j { 1.0 } else { 0.0 };
                 assert!(
-                    (rtr[(i, j)] - expected).abs() < 1e-10,
+                    (dot - expected).abs() < 1e-10,
                     "R^T R[{},{}] = {}, expected {}",
                     i,
                     j,
-                    rtr[(i, j)],
+                    dot,
                     expected
                 );
             }
@@ -1163,12 +755,13 @@ mod tests {
     #[test]
     fn test_dm_wind_magnitude_preserved() {
         let v_gal = Vector3::new(V_WIND_GALACTIC[0], V_WIND_GALACTIC[1], V_WIND_GALACTIC[2]);
-        let v_j2000 = dm_wind_j2000();
+        let v_j2000_arr = dm_wind_j2000(&V_WIND_GALACTIC);
+        let v_j2000_n: f64 = v_j2000_arr.iter().map(|x| x * x).sum::<f64>().sqrt();
         assert!(
-            (v_gal.norm() - v_j2000.norm()).abs() < 1e-6,
+            (v_gal.norm() - v_j2000_n).abs() < 1e-6,
             "Rotation should preserve magnitude: |v_gal|={:.3}, |v_j2000|={:.3}",
             v_gal.norm(),
-            v_j2000.norm()
+            v_j2000_n
         );
     }
 
@@ -1190,10 +783,11 @@ mod tests {
         for ra in [0.0, 90.0, 180.0, 270.0] {
             for dec in [-90.0, -45.0, 0.0, 45.0, 90.0] {
                 let u = radec_to_unit(ra, dec);
+                let norm: f64 = u.iter().map(|x| x * x).sum::<f64>().sqrt();
                 assert!(
-                    (u.norm() - 1.0).abs() < 1e-12,
+                    (norm - 1.0).abs() < 1e-12,
                     "Unit vector norm = {} at RA={}, Dec={}",
-                    u.norm(),
+                    norm,
                     ra,
                     dec
                 );
