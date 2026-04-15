@@ -422,21 +422,27 @@ pub fn block_layout(dim: usize) -> (usize, usize, usize, usize, usize, usize) {
 /// For 128D (127 prime): asymmetric partition 42/42/43.
 /// For 256D (255 = 3*85): symmetric partition 85/85/85.
 pub fn compute_chingon_bivector_drag_3body(
-    r: Vector3<f64>,
-    v: Vector3<f64>,
-    v_wind: Vector3<f64>,
+    r: [f64; 3],
+    v: [f64; 3],
+    v_wind: [f64; 3],
     alpha: f64,
     avt: &AlternativityViolationTensor,
-    r_moon: Vector3<f64>,
-    r_sun: Vector3<f64>,
-) -> Vector3<f64> {
+    r_moon: [f64; 3],
+    r_sun: [f64; 3],
+) -> [f64; 3] {
     if alpha == 0.0 {
-        return Vector3::zeros();
+        return [0.0; 3];
     }
+
+    let r = Vector3::from(r);
+    let v = Vector3::from(v);
+    let v_wind = Vector3::from(v_wind);
+    let r_moon = Vector3::from(r_moon);
+    let r_sun = Vector3::from(r_sun);
 
     let params = match ThreeBodyOrbitalParams::compute(r, v, v_wind, r_moon, r_sun) {
         Some(p) => p,
-        None => return Vector3::zeros(),
+        None => return [0.0; 3],
     };
 
     let dim = avt.dim;
@@ -537,7 +543,8 @@ pub fn compute_chingon_bivector_drag_3body(
     // Rotate from Solar triad back to ECI
     let res = e_v_solar * res_triad[0] + e_h_solar * res_triad[1] + e_n_solar * res_triad[2];
 
-    res / (dim as f64)
+    let out = res / (dim as f64);
+    [out.x, out.y, out.z]
 }
 
 #[cfg(test)]
@@ -684,37 +691,40 @@ mod tests {
     #[test]
     fn test_3body_zero_alpha() {
         let avt = test_avt();
-        let r = Vector3::new(7000.0, 0.0, 0.0);
-        let v = Vector3::new(0.0, 7.0, -3.0);
-        let v_wind = Vector3::new(0.0, 200.0, 50.0);
-        let r_moon = Vector3::new(384400.0, 0.0, 0.0);
-        let r_sun = Vector3::new(1.496e8, 0.0, 0.0);
+        let r = [7000.0, 0.0, 0.0];
+        let v = [0.0, 7.0, -3.0];
+        let v_wind = [0.0, 200.0, 50.0];
+        let r_moon = [384400.0, 0.0, 0.0];
+        let r_sun = [1.496e8, 0.0, 0.0];
 
         let f = compute_chingon_bivector_drag_3body(r, v, v_wind, 0.0, &avt, r_moon, r_sun);
-        assert_eq!(f, Vector3::zeros());
+        assert_eq!(f, [0.0; 3]);
     }
 
     #[test]
     fn test_3body_moon_perturbation_changes_force() {
         let avt = test_avt();
         // Use off-axis geometry so Moon position rotates the Lunar triad
-        let r = Vector3::new(7000.0, 0.0, 0.0);
-        let v = Vector3::new(0.0, 7.0, -3.0);
-        let v_wind = Vector3::new(0.0, 200.0, 50.0);
-        let r_sun = Vector3::new(1.496e8, 0.0, 0.0);
+        let r = [7000.0, 0.0, 0.0];
+        let v = [0.0, 7.0, -3.0];
+        let v_wind = [0.0, 200.0, 50.0];
+        let r_sun = [1.496e8, 0.0, 0.0];
         let alpha = 1e-10;
 
         // Moon along +x (aligned with r)
-        let r_moon_x = Vector3::new(384400.0, 0.0, 0.0);
+        let r_moon_x = [384400.0, 0.0, 0.0];
         let f_x = compute_chingon_bivector_drag_3body(r, v, v_wind, alpha, &avt, r_moon_x, r_sun);
 
         // Moon along +y (perpendicular to r, different triad rotation)
-        let r_moon_y = Vector3::new(0.0, 384400.0, 0.0);
+        let r_moon_y = [0.0, 384400.0, 0.0];
         let f_y = compute_chingon_bivector_drag_3body(r, v, v_wind, alpha, &avt, r_moon_y, r_sun);
 
         // Different Moon positions should produce different forces
         // because the Lunar triad (Block 2) rotates, changing AVT couplings
-        let diff = (f_x - f_y).norm();
+        let diff = {
+            let d = [f_x[0]-f_y[0], f_x[1]-f_y[1], f_x[2]-f_y[2]];
+            (d[0]*d[0]+d[1]*d[1]+d[2]*d[2]).sqrt()
+        };
         assert!(
             diff > 0.0,
             "Moon at different positions should change force via triad rotation: \
@@ -727,26 +737,30 @@ mod tests {
     #[test]
     fn test_3body_sign_sensitivity() {
         let avt = test_avt();
-        let r = Vector3::new(7000.0, 0.0, 0.0);
-        let v_wind = Vector3::new(0.0, 200.0, 50.0);
-        let r_moon = Vector3::new(384400.0, 0.0, 0.0);
-        let r_sun = Vector3::new(1.496e8, 0.0, 0.0);
+        let r = [7000.0, 0.0, 0.0];
+        let v_wind = [0.0, 200.0, 50.0];
+        let r_moon = [384400.0, 0.0, 0.0];
+        let r_sun = [1.496e8, 0.0, 0.0];
         let alpha = 1e-10;
 
         // Southward approach
-        let v_south = Vector3::new(0.0, 7.0, -3.0);
+        let v_south = [0.0, 7.0, -3.0];
         let f_south =
             compute_chingon_bivector_drag_3body(r, v_south, v_wind, alpha, &avt, r_moon, r_sun);
 
         // Northward approach (flip v_z)
-        let v_north = Vector3::new(0.0, 7.0, 3.0);
+        let v_north = [0.0, 7.0, 3.0];
         let f_north =
             compute_chingon_bivector_drag_3body(r, v_north, v_wind, alpha, &avt, r_moon, r_sun);
 
         // Forces should differ in sign for at least one component
-        let dot = f_south.dot(&f_north);
+        let dot = f_south[0]*f_north[0] + f_south[1]*f_north[1] + f_south[2]*f_north[2];
+        let diff_norm = {
+            let d = [f_south[0]-f_north[0], f_south[1]-f_north[1], f_south[2]-f_north[2]];
+            (d[0]*d[0]+d[1]*d[1]+d[2]*d[2]).sqrt()
+        };
         assert!(
-            dot < 0.0 || (f_south - f_north).norm() > 1e-20,
+            dot < 0.0 || diff_norm > 1e-20,
             "North vs south should produce different force directions: \
              f_south={:?}, f_north={:?}",
             f_south,
@@ -757,18 +771,18 @@ mod tests {
     #[test]
     fn test_3body_finite_output() {
         let avt = test_avt();
-        let r = Vector3::new(7331.0, 0.0, 0.0);
-        let v = Vector3::new(0.0, 8.949, -1.9);
-        let v_wind = Vector3::new(-10.0, 200.0, 50.0);
-        let r_moon = Vector3::new(300000.0, 200000.0, 50000.0);
-        let r_sun = Vector3::new(1.0e8, 0.5e8, 0.0);
+        let r = [7331.0, 0.0, 0.0];
+        let v = [0.0, 8.949, -1.9];
+        let v_wind = [-10.0, 200.0, 50.0];
+        let r_moon = [300000.0, 200000.0, 50000.0];
+        let r_sun = [1.0e8, 0.5e8, 0.0];
 
         let f = compute_chingon_bivector_drag_3body(r, v, v_wind, 8e-14, &avt, r_moon, r_sun);
-        assert!(f.x.is_finite(), "Force x not finite");
-        assert!(f.y.is_finite(), "Force y not finite");
-        assert!(f.z.is_finite(), "Force z not finite");
+        assert!(f[0].is_finite(), "Force x not finite");
+        assert!(f[1].is_finite(), "Force y not finite");
+        assert!(f[2].is_finite(), "Force z not finite");
         assert!(
-            f.norm() > 0.0,
+            f[0]*f[0]+f[1]*f[1]+f[2]*f[2] > 0.0,
             "Force should be nonzero for non-degenerate geometry"
         );
     }

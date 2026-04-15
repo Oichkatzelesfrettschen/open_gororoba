@@ -10,7 +10,6 @@
 //! - Moreno (1998): The zero divisors of the Cayley-Dickson algebras over the real numbers
 
 use gororoba_algebra::construction::chingon::AlternativityViolationTensor;
-use nalgebra::Vector3;
 
 /// Configuration for a CD-ladder drag force at a specific algebra dimension.
 pub struct CdLadderForce {
@@ -49,12 +48,13 @@ impl CdLadderForce {
     /// For dim <= 8 (quaternions, octonions) the AVT is empty and this
     /// returns zero exactly, matching the physical expectation that
     /// alternative algebras produce no anomalous drag.
-    pub fn drag_acceleration(&self, v: &Vector3<f64>) -> Vector3<f64> {
+    pub fn drag_acceleration(&self, v: &[f64; 3]) -> [f64; 3] {
         if self.avt.violations.is_empty() {
-            return Vector3::zeros();
+            return [0.0; 3];
         }
 
         let dim = self.dim;
+        let (vx, vy, vz) = (v[0], v[1], v[2]);
 
         // Embed 3D velocity into dim-D space.
         // Same deterministic projection as chingon_drag.rs for consistency.
@@ -64,7 +64,7 @@ impl CdLadderForce {
             let px = (t * 17.0).cos().abs();
             let py = (t * 31.0).sin().abs();
             let pz = (t * 43.0).cos().abs();
-            *slot = v.x * px + v.y * py + v.z * pz;
+            *slot = vx * px + vy * py + vz * pz;
         }
 
         // Apply AVT as bilinear form on embedded velocity.
@@ -74,18 +74,16 @@ impl CdLadderForce {
         }
 
         // Project back to 3D.
-        let mut res = Vector3::zeros();
+        let mut res = [0.0f64; 3];
         for (i, &f) in force_nd.iter().enumerate() {
             let t = i as f64;
-            let px = (t * 17.0).cos().abs();
-            let py = (t * 31.0).sin().abs();
-            let pz = (t * 43.0).cos().abs();
-            res.x += f * px;
-            res.y += f * py;
-            res.z += f * pz;
+            res[0] += f * (t * 17.0).cos().abs();
+            res[1] += f * (t * 31.0).sin().abs();
+            res[2] += f * (t * 43.0).cos().abs();
         }
 
-        res / (dim as f64)
+        let s = dim as f64;
+        [res[0] / s, res[1] / s, res[2] / s]
     }
 }
 
@@ -94,49 +92,50 @@ mod tests {
     use super::*;
     use approx::assert_abs_diff_eq;
 
+    fn norm3(a: [f64; 3]) -> f64 {
+        (a[0] * a[0] + a[1] * a[1] + a[2] * a[2]).sqrt()
+    }
+
     #[test]
     fn quaternion_no_drag() {
         let force = CdLadderForce::new(4, 1.0);
         assert_eq!(force.violation_count(), 0);
-        let v = Vector3::new(1.0, 2.0, 3.0);
-        let a = force.drag_acceleration(&v);
-        assert_abs_diff_eq!(a.norm(), 0.0, epsilon = 1e-15);
+        let a = force.drag_acceleration(&[1.0, 2.0, 3.0]);
+        assert_abs_diff_eq!(norm3(a), 0.0, epsilon = 1e-15);
     }
 
     #[test]
     fn octonion_no_drag() {
         let force = CdLadderForce::new(8, 1.0);
         assert_eq!(force.violation_count(), 0);
-        let v = Vector3::new(5.0, -3.0, 7.0);
-        let a = force.drag_acceleration(&v);
-        assert_abs_diff_eq!(a.norm(), 0.0, epsilon = 1e-15);
+        let a = force.drag_acceleration(&[5.0, -3.0, 7.0]);
+        assert_abs_diff_eq!(norm3(a), 0.0, epsilon = 1e-15);
     }
 
     #[test]
     fn sedenion_has_drag() {
         let force = CdLadderForce::new(16, 1e-3);
         assert!(force.violation_count() > 0);
-        let v = Vector3::new(1.0, 0.0, 0.0);
-        let a = force.drag_acceleration(&v);
+        let a = force.drag_acceleration(&[1.0, 0.0, 0.0]);
         // Non-zero drag from sedenion AVT violations
-        assert!(a.norm() > 0.0);
+        assert!(norm3(a) > 0.0);
     }
 
     #[test]
     fn zero_velocity_zero_drag() {
         let force = CdLadderForce::new(32, 1.0);
-        let a = force.drag_acceleration(&Vector3::zeros());
-        assert_abs_diff_eq!(a.norm(), 0.0, epsilon = 1e-15);
+        let a = force.drag_acceleration(&[0.0; 3]);
+        assert_abs_diff_eq!(norm3(a), 0.0, epsilon = 1e-15);
     }
 
     #[test]
     fn drag_scales_with_alpha() {
-        let v = Vector3::new(1.0, 1.0, 1.0);
+        let v = [1.0, 1.0, 1.0];
         let f1 = CdLadderForce::new(16, 1e-4);
         let f2 = CdLadderForce::new(16, 1e-3);
         let a1 = f1.drag_acceleration(&v);
         let a2 = f2.drag_acceleration(&v);
         // a2 should be 10x a1
-        assert_abs_diff_eq!(a2.norm() / a1.norm(), 10.0, epsilon = 1e-10);
+        assert_abs_diff_eq!(norm3(a2) / norm3(a1), 10.0, epsilon = 1e-10);
     }
 }

@@ -19,11 +19,32 @@ use cosmology_core::{
     gravastar_potential::GravastarPotential,
 };
 use gr_core::forces::abm8_integrator::{Abm8BodyState, Abm8Integrator};
-use nalgebra::Vector3;
 use pathion_ellip::{
     pathion_eigenvalues::PathionEigenvalueSpectrum,
     pathion_resonance::{ResonanceConfig, total_resonance_coupling},
 };
+
+#[inline(always)]
+fn sub3(a: [f64; 3], b: [f64; 3]) -> [f64; 3] {
+    [a[0] - b[0], a[1] - b[1], a[2] - b[2]]
+}
+
+#[inline(always)]
+fn scale3(a: [f64; 3], s: f64) -> [f64; 3] {
+    [a[0] * s, a[1] * s, a[2] * s]
+}
+
+#[inline(always)]
+fn norm3(a: [f64; 3]) -> f64 {
+    (a[0] * a[0] + a[1] * a[1] + a[2] * a[2]).sqrt()
+}
+
+#[inline(always)]
+fn add_assign3(dst: &mut [f64; 3], src: [f64; 3]) {
+    dst[0] += src[0];
+    dst[1] += src[1];
+    dst[2] += src[2];
+}
 
 /// Solar GM in km^3/s^2.
 const GM_SUN: f64 = 1.327_124_400_18e11;
@@ -121,42 +142,42 @@ fn main() {
 
     // Sun at origin
     states_grav.push(Abm8BodyState {
-        pos: Vector3::zeros(),
-        vel: Vector3::zeros(),
+        pos: [0.0; 3],
+        vel: [0.0; 3],
     });
     states_ctrl.push(Abm8BodyState {
-        pos: Vector3::zeros(),
-        vel: Vector3::zeros(),
+        pos: [0.0; 3],
+        vel: [0.0; 3],
     });
 
     // Planets in circular orbits (x-y plane)
     for (i, &(_name, a_km, v_km_s)) in PLANETS.iter().enumerate() {
         let angle = (i as f64) * PI / 2.0; // Spread 90 degrees apart
-        let pos = Vector3::new(a_km * angle.cos(), a_km * angle.sin(), 0.0);
-        let vel = Vector3::new(-v_km_s * angle.sin(), v_km_s * angle.cos(), 0.0);
+        let pos = [a_km * angle.cos(), a_km * angle.sin(), 0.0];
+        let vel = [-v_km_s * angle.sin(), v_km_s * angle.cos(), 0.0];
         states_grav.push(Abm8BodyState { pos, vel });
         states_ctrl.push(Abm8BodyState { pos, vel });
     }
 
     // Acceleration function: Schwarzschild control (point mass)
-    let accel_schwarzschild = |s: &[Abm8BodyState]| -> Vec<Vector3<f64>> {
-        let mut accels = vec![Vector3::zeros(); s.len()];
+    let accel_schwarzschild = |s: &[Abm8BodyState]| -> Vec<[f64; 3]> {
+        let mut accels = vec![[0.0; 3]; s.len()];
         for i in 1..s.len() {
-            let r_vec = s[i].pos - s[0].pos; // heliocentric
-            let r = r_vec.norm();
+            let r_vec = sub3(s[i].pos, s[0].pos); // heliocentric
+            let r = norm3(r_vec);
             if r > 1e-6 {
-                accels[i] = -r_vec * (GM_SUN / (r * r * r));
+                accels[i] = scale3(r_vec, -GM_SUN / (r * r * r));
             }
         }
         accels
     };
 
     // Acceleration function: Gravastar + Pathion resonance
-    let accel_gravastar = |s: &[Abm8BodyState]| -> Vec<Vector3<f64>> {
-        let mut accels = vec![Vector3::zeros(); s.len()];
+    let accel_gravastar = |s: &[Abm8BodyState]| -> Vec<[f64; 3]> {
+        let mut accels = vec![[0.0; 3]; s.len()];
         for i in 1..s.len() {
-            let r_vec = s[i].pos - s[0].pos;
-            let r = r_vec.norm();
+            let r_vec = sub3(s[i].pos, s[0].pos);
+            let r = norm3(r_vec);
             if r < 1e-6 {
                 continue;
             }
@@ -182,23 +203,23 @@ fn main() {
             // At planetary distances (>> gravastar radius), the potential
             // is effectively Schwarzschild. The correction is negligible.
             // The interesting physics comes from the Pathion resonance.
-            let r_hat = r_vec / r;
-            accels[i] = r_hat * a_radial;
+            let r_hat = scale3(r_vec, 1.0 / r);
+            accels[i] = scale3(r_hat, a_radial);
 
             // Pathion resonance perturbation
             if alpha_pathion > 0.0 {
-                let v = s[i].vel.norm();
+                let v = norm3(s[i].vel);
                 let orbital_freq = if r > 0.0 { v / (2.0 * PI * r) } else { 0.0 };
                 let coupling =
                     total_resonance_coupling(&pathion_spectrum, orbital_freq, &resonance_config);
 
                 // Perturbation: tangential kick proportional to coupling
                 let v_hat = if v > 1e-10 {
-                    s[i].vel / v
+                    scale3(s[i].vel, 1.0 / v)
                 } else {
-                    Vector3::zeros()
+                    [0.0; 3]
                 };
-                accels[i] += v_hat * (alpha_pathion * coupling * GM_SUN / (r * r));
+                add_assign3(&mut accels[i], scale3(v_hat, alpha_pathion * coupling * GM_SUN / (r * r)));
             }
         }
         accels
@@ -249,11 +270,11 @@ fn main() {
 
             for (pi, &(name, _, _)) in PLANETS.iter().enumerate() {
                 let body_idx = pi + 1;
-                let r_ctrl = states_ctrl[body_idx].pos.norm();
-                let r_grav = states_grav[body_idx].pos.norm();
+                let r_ctrl = norm3(states_ctrl[body_idx].pos);
+                let r_grav = norm3(states_grav[body_idx].pos);
                 let delta_r = (r_grav - r_ctrl).abs();
 
-                let v = states_grav[body_idx].vel.norm();
+                let v = norm3(states_grav[body_idx].vel);
                 let orbital_freq = v / (2.0 * PI * r_grav);
                 let coupling =
                     total_resonance_coupling(&pathion_spectrum, orbital_freq, &resonance_config);
@@ -317,8 +338,8 @@ fn main() {
 
     for (pi, &(name, a_km, _)) in PLANETS.iter().enumerate() {
         let body_idx = pi + 1;
-        let r_ctrl = states_ctrl[body_idx].pos.norm();
-        let r_grav = states_grav[body_idx].pos.norm();
+        let r_ctrl = norm3(states_ctrl[body_idx].pos);
+        let r_grav = norm3(states_grav[body_idx].pos);
         let delta_r = (r_grav - r_ctrl).abs();
         eprintln!(
             "  {}: r_ctrl={:.3} AU, r_grav={:.3} AU, delta_r={:.3e} km ({:.3e} of a)",
@@ -335,8 +356,8 @@ fn main() {
 fn compute_total_energy(states: &[Abm8BodyState]) -> f64 {
     let mut energy = 0.0;
     for i in 1..states.len() {
-        let r = (states[i].pos - states[0].pos).norm();
-        let v = states[i].vel.norm();
+        let r = norm3(sub3(states[i].pos, states[0].pos));
+        let v = norm3(states[i].vel);
         // Specific orbital energy per planet
         energy += 0.5 * v * v - GM_SUN / r;
     }

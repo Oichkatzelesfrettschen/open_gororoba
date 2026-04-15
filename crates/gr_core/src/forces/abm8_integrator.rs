@@ -11,8 +11,6 @@
 //! - Press et al. (2007): Numerical Recipes, Ch. 17
 //! - Montenbruck & Gill (2000): Satellite Orbits, Ch. 4
 
-use nalgebra::Vector3;
-
 /// Adams-Bashforth 8-step predictor coefficients.
 /// These are the coefficients for the 8th-order AB formula:
 /// y_{n+1} = y_n + h * sum(b_i * f_{n-i}, i=0..7)
@@ -40,11 +38,31 @@ const AM8_COEFFS: [f64; 8] = [
     1375.0 / 120960.0,
 ];
 
+#[inline(always)]
+fn add3(a: [f64; 3], b: [f64; 3]) -> [f64; 3] {
+    [a[0] + b[0], a[1] + b[1], a[2] + b[2]]
+}
+
+#[inline(always)]
+fn scale3(a: [f64; 3], s: f64) -> [f64; 3] {
+    [a[0] * s, a[1] * s, a[2] * s]
+}
+
+#[inline(always)]
+fn sub3(a: [f64; 3], b: [f64; 3]) -> [f64; 3] {
+    [a[0] - b[0], a[1] - b[1], a[2] - b[2]]
+}
+
+#[inline(always)]
+fn norm_sq3(a: [f64; 3]) -> f64 {
+    a[0] * a[0] + a[1] * a[1] + a[2] * a[2]
+}
+
 /// State of a single body for ABM integration.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy)]
 pub struct Abm8BodyState {
-    pub pos: Vector3<f64>,
-    pub vel: Vector3<f64>,
+    pub pos: [f64; 3],
+    pub vel: [f64; 3],
 }
 
 /// 8th-order Adams-Bashforth-Moulton integrator with ring buffer history.
@@ -54,9 +72,9 @@ pub struct Abm8Integrator {
     /// Number of steps taken (used to detect startup phase).
     step_count: usize,
     /// Ring buffer of velocity history (for position prediction).
-    vel_history: Vec<Vec<Vector3<f64>>>,
+    vel_history: Vec<Vec<[f64; 3]>>,
     /// Ring buffer of acceleration history (for velocity prediction).
-    acc_history: Vec<Vec<Vector3<f64>>>,
+    acc_history: Vec<Vec<[f64; 3]>>,
     /// Current ring buffer index.
     ring_idx: usize,
 }
@@ -67,8 +85,8 @@ impl Abm8Integrator {
         Self {
             dt,
             step_count: 0,
-            vel_history: vec![vec![Vector3::zeros(); n_bodies]; 8],
-            acc_history: vec![vec![Vector3::zeros(); n_bodies]; 8],
+            vel_history: vec![vec![[0.0; 3]; n_bodies]; 8],
+            acc_history: vec![vec![[0.0; 3]; n_bodies]; 8],
             ring_idx: 0,
         }
     }
@@ -87,7 +105,7 @@ impl Abm8Integrator {
     /// After that, uses the ABM-8 predictor-corrector.
     pub fn step<F>(&mut self, states: &mut [Abm8BodyState], accel_fn: &F)
     where
-        F: Fn(&[Abm8BodyState]) -> Vec<Vector3<f64>>,
+        F: Fn(&[Abm8BodyState]) -> Vec<[f64; 3]>,
     {
         if self.step_count < 8 {
             // RK4 startup
@@ -103,7 +121,7 @@ impl Abm8Integrator {
     /// RK4 startup step. Also records history for the ABM phase.
     fn rk4_step<F>(&mut self, states: &mut [Abm8BodyState], accel_fn: &F)
     where
-        F: Fn(&[Abm8BodyState]) -> Vec<Vector3<f64>>,
+        F: Fn(&[Abm8BodyState]) -> Vec<[f64; 3]>,
     {
         let n = states.len();
         let dt = self.dt;
@@ -113,38 +131,44 @@ impl Abm8Integrator {
 
         // k1
         let k1_a = accel_fn(states);
-        let k1_v: Vec<_> = states.iter().map(|s| s.vel).collect();
+        let k1_v: Vec<[f64; 3]> = states.iter().map(|s| s.vel).collect();
 
         // k2
         for i in 0..n {
-            states[i].pos = initial[i].pos + k1_v[i] * (dt / 2.0);
-            states[i].vel = initial[i].vel + k1_a[i] * (dt / 2.0);
+            states[i].pos = add3(initial[i].pos, scale3(k1_v[i], dt / 2.0));
+            states[i].vel = add3(initial[i].vel, scale3(k1_a[i], dt / 2.0));
         }
         let k2_a = accel_fn(states);
-        let k2_v: Vec<_> = states.iter().map(|s| s.vel).collect();
+        let k2_v: Vec<[f64; 3]> = states.iter().map(|s| s.vel).collect();
 
         // k3
         for i in 0..n {
-            states[i].pos = initial[i].pos + k2_v[i] * (dt / 2.0);
-            states[i].vel = initial[i].vel + k2_a[i] * (dt / 2.0);
+            states[i].pos = add3(initial[i].pos, scale3(k2_v[i], dt / 2.0));
+            states[i].vel = add3(initial[i].vel, scale3(k2_a[i], dt / 2.0));
         }
         let k3_a = accel_fn(states);
-        let k3_v: Vec<_> = states.iter().map(|s| s.vel).collect();
+        let k3_v: Vec<[f64; 3]> = states.iter().map(|s| s.vel).collect();
 
         // k4
         for i in 0..n {
-            states[i].pos = initial[i].pos + k3_v[i] * dt;
-            states[i].vel = initial[i].vel + k3_a[i] * dt;
+            states[i].pos = add3(initial[i].pos, scale3(k3_v[i], dt));
+            states[i].vel = add3(initial[i].vel, scale3(k3_a[i], dt));
         }
         let k4_a = accel_fn(states);
-        let k4_v: Vec<_> = states.iter().map(|s| s.vel).collect();
+        let k4_v: Vec<[f64; 3]> = states.iter().map(|s| s.vel).collect();
 
-        // Combine
+        // Combine: (k1 + 2*k2 + 2*k3 + k4) * dt/6
         for i in 0..n {
-            states[i].pos =
-                initial[i].pos + (k1_v[i] + k2_v[i] * 2.0 + k3_v[i] * 2.0 + k4_v[i]) * (dt / 6.0);
-            states[i].vel =
-                initial[i].vel + (k1_a[i] + k2_a[i] * 2.0 + k3_a[i] * 2.0 + k4_a[i]) * (dt / 6.0);
+            let sum_v = add3(
+                add3(k1_v[i], scale3(k2_v[i], 2.0)),
+                add3(scale3(k3_v[i], 2.0), k4_v[i]),
+            );
+            let sum_a = add3(
+                add3(k1_a[i], scale3(k2_a[i], 2.0)),
+                add3(scale3(k3_a[i], 2.0), k4_a[i]),
+            );
+            states[i].pos = add3(initial[i].pos, scale3(sum_v, dt / 6.0));
+            states[i].vel = add3(initial[i].vel, scale3(sum_a, dt / 6.0));
         }
 
         // Record the acceleration at the START of this step into history
@@ -159,14 +183,14 @@ impl Abm8Integrator {
     /// ABM-8 predictor-corrector step.
     fn abm8_step<F>(&mut self, states: &mut [Abm8BodyState], accel_fn: &F)
     where
-        F: Fn(&[Abm8BodyState]) -> Vec<Vector3<f64>>,
+        F: Fn(&[Abm8BodyState]) -> Vec<[f64; 3]>,
     {
         let n = states.len();
         let dt = self.dt;
 
         // Record current velocity and acceleration before predicting
         let current_acc = accel_fn(states);
-        let current_vel: Vec<_> = states.iter().map(|s| s.vel).collect();
+        let current_vel: Vec<[f64; 3]> = states.iter().map(|s| s.vel).collect();
 
         // Store into ring buffer at current index
         let idx = self.ring_idx;
@@ -187,28 +211,28 @@ impl Abm8Integrator {
                 let hist_idx = (idx + 8 - k) % 8;
                 let v = self.vel_history[hist_idx][i];
                 let a = self.acc_history[hist_idx][i];
-                v_hist_x[k] = v.x;
-                v_hist_y[k] = v.y;
-                v_hist_z[k] = v.z;
-                a_hist_x[k] = a.x;
-                a_hist_y[k] = a.y;
-                a_hist_z[k] = a.z;
+                v_hist_x[k] = v[0];
+                v_hist_y[k] = v[1];
+                v_hist_z[k] = v[2];
+                a_hist_x[k] = a[0];
+                a_hist_y[k] = a[1];
+                a_hist_z[k] = a[2];
             }
 
-            let vel_sum = Vector3::new(
+            let vel_sum = [
                 verified_core::x87_math::x87_abm8_dot_product(&v_hist_x, &AB8_COEFFS),
                 verified_core::x87_math::x87_abm8_dot_product(&v_hist_y, &AB8_COEFFS),
                 verified_core::x87_math::x87_abm8_dot_product(&v_hist_z, &AB8_COEFFS),
-            );
+            ];
 
-            let acc_sum = Vector3::new(
+            let acc_sum = [
                 verified_core::x87_math::x87_abm8_dot_product(&a_hist_x, &AB8_COEFFS),
                 verified_core::x87_math::x87_abm8_dot_product(&a_hist_y, &AB8_COEFFS),
                 verified_core::x87_math::x87_abm8_dot_product(&a_hist_z, &AB8_COEFFS),
-            );
+            ];
 
-            predicted[i].pos = states[i].pos + vel_sum * dt;
-            predicted[i].vel = states[i].vel + acc_sum * dt;
+            predicted[i].pos = add3(states[i].pos, scale3(vel_sum, dt));
+            predicted[i].vel = add3(states[i].vel, scale3(acc_sum, dt));
         }
 
         // Evaluate acceleration at predicted state
@@ -226,39 +250,45 @@ impl Abm8Integrator {
             let mut a_hist_z = [0.0; 8];
 
             // AM8 uses the newly predicted f_{n+1} at index 0
-            v_hist_x[0] = predicted[i].vel.x;
-            v_hist_y[0] = predicted[i].vel.y;
-            v_hist_z[0] = predicted[i].vel.z;
-            a_hist_x[0] = predicted_acc[i].x;
-            a_hist_y[0] = predicted_acc[i].y;
-            a_hist_z[0] = predicted_acc[i].z;
+            v_hist_x[0] = predicted[i].vel[0];
+            v_hist_y[0] = predicted[i].vel[1];
+            v_hist_z[0] = predicted[i].vel[2];
+            a_hist_x[0] = predicted_acc[i][0];
+            a_hist_y[0] = predicted_acc[i][1];
+            a_hist_z[0] = predicted_acc[i][2];
 
             for k in 1..8 {
                 let hist_idx = (idx + 8 + 1 - k) % 8;
                 let v = self.vel_history[hist_idx][i];
                 let a = self.acc_history[hist_idx][i];
-                v_hist_x[k] = v.x;
-                v_hist_y[k] = v.y;
-                v_hist_z[k] = v.z;
-                a_hist_x[k] = a.x;
-                a_hist_y[k] = a.y;
-                a_hist_z[k] = a.z;
+                v_hist_x[k] = v[0];
+                v_hist_y[k] = v[1];
+                v_hist_z[k] = v[2];
+                a_hist_x[k] = a[0];
+                a_hist_y[k] = a[1];
+                a_hist_z[k] = a[2];
             }
 
-            let vel_corr = Vector3::new(
+            let vel_corr = [
                 verified_core::x87_math::x87_abm8_dot_product(&v_hist_x, &AM8_COEFFS),
                 verified_core::x87_math::x87_abm8_dot_product(&v_hist_y, &AM8_COEFFS),
                 verified_core::x87_math::x87_abm8_dot_product(&v_hist_z, &AM8_COEFFS),
-            );
+            ];
 
-            let acc_corr = Vector3::new(
+            let acc_corr = [
                 verified_core::x87_math::x87_abm8_dot_product(&a_hist_x, &AM8_COEFFS),
                 verified_core::x87_math::x87_abm8_dot_product(&a_hist_y, &AM8_COEFFS),
                 verified_core::x87_math::x87_abm8_dot_product(&a_hist_z, &AM8_COEFFS),
-            );
+            ];
 
-            states[i].pos += vel_corr * dt;
-            states[i].vel += acc_corr * dt;
+            let dp = scale3(vel_corr, dt);
+            let dv = scale3(acc_corr, dt);
+            states[i].pos[0] += dp[0];
+            states[i].pos[1] += dp[1];
+            states[i].pos[2] += dp[2];
+            states[i].vel[0] += dv[0];
+            states[i].vel[1] += dv[1];
+            states[i].vel[2] += dv[2];
         }
 
         // Advance ring buffer
@@ -271,8 +301,10 @@ impl Abm8Integrator {
         if states.len() < 2 {
             return 0.0;
         }
-        let r = (states[1].pos - states[0].pos).norm();
-        let v = (states[1].vel - states[0].vel).norm();
+        let dr = sub3(states[1].pos, states[0].pos);
+        let dv = sub3(states[1].vel, states[0].vel);
+        let r = norm_sq3(dr).sqrt();
+        let v = norm_sq3(dv).sqrt();
         // Specific orbital energy: E = v^2/2 - GM/r
         0.5 * v * v - gm_central / r
     }
@@ -293,20 +325,20 @@ mod tests {
 
         let mut states = vec![
             Abm8BodyState {
-                pos: Vector3::zeros(),
-                vel: Vector3::zeros(),
+                pos: [0.0; 3],
+                vel: [0.0; 3],
             },
             Abm8BodyState {
-                pos: Vector3::new(r0, 0.0, 0.0),
-                vel: Vector3::new(0.0, v_circ, 0.0),
+                pos: [r0, 0.0, 0.0],
+                vel: [0.0, v_circ, 0.0],
             },
         ];
 
-        let accel_fn = |s: &[Abm8BodyState]| -> Vec<Vector3<f64>> {
-            let r_vec = s[1].pos - s[0].pos;
-            let r = r_vec.norm();
-            let acc = -r_vec * (gm / (r * r * r));
-            vec![Vector3::zeros(), acc]
+        let accel_fn = |s: &[Abm8BodyState]| -> Vec<[f64; 3]> {
+            let r_vec = sub3(s[1].pos, s[0].pos);
+            let r = norm_sq3(r_vec).sqrt();
+            let acc = scale3(r_vec, -gm / (r * r * r));
+            vec![[0.0; 3], acc]
         };
 
         let period = 2.0 * PI;
@@ -338,20 +370,20 @@ mod tests {
 
         let mut states = vec![
             Abm8BodyState {
-                pos: Vector3::zeros(),
-                vel: Vector3::zeros(),
+                pos: [0.0; 3],
+                vel: [0.0; 3],
             },
             Abm8BodyState {
-                pos: Vector3::new(r0, 0.0, 0.0),
-                vel: Vector3::new(0.0, v_circ, 0.0),
+                pos: [r0, 0.0, 0.0],
+                vel: [0.0, v_circ, 0.0],
             },
         ];
 
-        let accel_fn = |s: &[Abm8BodyState]| -> Vec<Vector3<f64>> {
-            let r_vec = s[1].pos - s[0].pos;
-            let r = r_vec.norm();
-            let a = -r_vec * (gm / (r * r * r));
-            vec![Vector3::zeros(), a]
+        let accel_fn = |s: &[Abm8BodyState]| -> Vec<[f64; 3]> {
+            let r_vec = sub3(s[1].pos, s[0].pos);
+            let r = norm_sq3(r_vec).sqrt();
+            let a = scale3(r_vec, -gm / (r * r * r));
+            vec![[0.0; 3], a]
         };
 
         let period = 2.0 * PI;
@@ -366,7 +398,7 @@ mod tests {
 
         // After 1 orbit, should return near (1, 0, 0)
         let pos = states[1].pos;
-        let dist_from_start = ((pos.x - r0).powi(2) + pos.y.powi(2) + pos.z.powi(2)).sqrt();
+        let dist_from_start = ((pos[0] - r0).powi(2) + pos[1].powi(2) + pos[2].powi(2)).sqrt();
 
         assert!(
             dist_from_start < 1e-6,
@@ -383,20 +415,20 @@ mod tests {
 
         let mut states = vec![
             Abm8BodyState {
-                pos: Vector3::zeros(),
-                vel: Vector3::zeros(),
+                pos: [0.0; 3],
+                vel: [0.0; 3],
             },
             Abm8BodyState {
-                pos: Vector3::new(r0, 0.0, 0.0),
-                vel: Vector3::new(0.0, v_circ, 0.0),
+                pos: [r0, 0.0, 0.0],
+                vel: [0.0, v_circ, 0.0],
             },
         ];
 
-        let accel_fn = |s: &[Abm8BodyState]| -> Vec<Vector3<f64>> {
-            let r_vec = s[1].pos - s[0].pos;
-            let r = r_vec.norm();
-            let a = -r_vec * (gm / (r.powi(3)));
-            vec![Vector3::zeros(), a]
+        let accel_fn = |s: &[Abm8BodyState]| -> Vec<[f64; 3]> {
+            let r_vec = sub3(s[1].pos, s[0].pos);
+            let r = norm_sq3(r_vec).sqrt();
+            let a = scale3(r_vec, -gm / r.powi(3));
+            vec![[0.0; 3], a]
         };
 
         let initial_energy = Abm8Integrator::total_energy_2body(&states, gm);
@@ -429,11 +461,11 @@ mod tests {
     fn startup_uses_rk4() {
         let mut integrator = Abm8Integrator::new(0.01, 1);
         let mut states = vec![Abm8BodyState {
-            pos: Vector3::new(1.0, 0.0, 0.0),
-            vel: Vector3::new(0.0, 1.0, 0.0),
+            pos: [1.0, 0.0, 0.0],
+            vel: [0.0, 1.0, 0.0],
         }];
 
-        let accel_fn = |_: &[Abm8BodyState]| -> Vec<Vector3<f64>> { vec![Vector3::zeros()] };
+        let accel_fn = |_: &[Abm8BodyState]| -> Vec<[f64; 3]> { vec![[0.0; 3]] };
 
         // First 8 steps should be RK4 startup
         for i in 0..8 {
@@ -458,20 +490,20 @@ mod tests {
 
         let mut states = vec![
             Abm8BodyState {
-                pos: Vector3::zeros(),
-                vel: Vector3::zeros(),
+                pos: [0.0; 3],
+                vel: [0.0; 3],
             },
             Abm8BodyState {
-                pos: Vector3::new(r0, 0.0, 0.0),
-                vel: Vector3::new(0.0, v0, 0.0),
+                pos: [r0, 0.0, 0.0],
+                vel: [0.0, v0, 0.0],
             },
         ];
 
-        let accel_fn = |s: &[Abm8BodyState]| -> Vec<Vector3<f64>> {
-            let r_vec = s[1].pos - s[0].pos;
-            let r = r_vec.norm();
-            let a = -r_vec * (gm / (r * r * r));
-            vec![Vector3::zeros(), a]
+        let accel_fn = |s: &[Abm8BodyState]| -> Vec<[f64; 3]> {
+            let r_vec = sub3(s[1].pos, s[0].pos);
+            let r = norm_sq3(r_vec).sqrt();
+            let a = scale3(r_vec, -gm / (r * r * r));
+            vec![[0.0; 3], a]
         };
 
         let period = 2.0 * PI * a.powf(1.5) / gm.sqrt();

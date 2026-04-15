@@ -163,16 +163,28 @@ fn run_flyby(
                             if let Some(f) = gpu_force {
                                 a += f;
                             } else {
-                                a += compute_chingon_bivector_drag_3body(
-                                    p_in, v_in, *v_wind, alpha_eff, avt, r_moon, r_sun,
+                                let f = compute_chingon_bivector_drag_3body(
+                                    [p_in.x, p_in.y, p_in.z],
+                                    [v_in.x, v_in.y, v_in.z],
+                                    [v_wind.x, v_wind.y, v_wind.z],
+                                    alpha_eff, avt,
+                                    [r_moon.x, r_moon.y, r_moon.z],
+                                    [r_sun.x, r_sun.y, r_sun.z],
                                 );
+                                a += Vector3::from(f);
                             }
                         }
                         #[cfg(not(feature = "gpu"))]
                         {
-                            a += compute_chingon_bivector_drag_3body(
-                                p_in, v_in, *v_wind, alpha_eff, avt, r_moon, r_sun,
+                            let f = compute_chingon_bivector_drag_3body(
+                                [p_in.x, p_in.y, p_in.z],
+                                [v_in.x, v_in.y, v_in.z],
+                                [v_wind.x, v_wind.y, v_wind.z],
+                                alpha_eff, avt,
+                                [r_moon.x, r_moon.y, r_moon.z],
+                                [r_sun.x, r_sun.y, r_sun.z],
                             );
+                            a += Vector3::from(f);
                         }
                     }
 
@@ -191,10 +203,14 @@ fn run_flyby(
                     let h_solar = (p - r_sun).cross(&v);
                     let a_chingon_mag = if use_chingon {
                         let alpha_eff = ALPHA_CHINGON * dm_fac;
-                        compute_chingon_bivector_drag_3body(
-                            p, v, *v_wind, alpha_eff, avt, r_moon, r_sun,
-                        )
-                        .norm()
+                        let f = compute_chingon_bivector_drag_3body(
+                            [p.x, p.y, p.z], [v.x, v.y, v.z],
+                            [v_wind.x, v_wind.y, v_wind.z],
+                            alpha_eff, avt,
+                            [r_moon.x, r_moon.y, r_moon.z],
+                            [r_sun.x, r_sun.y, r_sun.z],
+                        );
+                        (f[0] * f[0] + f[1] * f[1] + f[2] * f[2]).sqrt()
                     } else {
                         0.0
                     };

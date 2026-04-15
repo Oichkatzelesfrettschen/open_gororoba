@@ -1,6 +1,6 @@
 use gororoba_engine::singularitarian::SingularitarianEngine;
 use gr_core::{BodyState, NBodySystem};
-use nalgebra::{Matrix3, Vector3};
+use nalgebra::Vector3;
 use num_complex::Complex;
 
 fn main() {
@@ -30,7 +30,10 @@ fn main() {
 
     // 3. Demonstrate Unified Step in Complex Time
     println!("\nExecuting unified N-Body step in 2D Complex Time...");
-    let mut system = NBodySystem::new(1e-5, Matrix3::identity());
+    let mut system = NBodySystem::new(
+        1e-5,
+        [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]],
+    );
 
     // Add a test body near the event horizon
     system.bodies.push(BodyState {

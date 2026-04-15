@@ -18,7 +18,19 @@ pub struct NBodySystem {
 }
 
 impl NBodySystem {
-    pub fn new(alpha_pathion: f64, pathion_variance: Matrix3<f64>) -> Self {
+    pub fn new(alpha_pathion: f64, pathion_variance: [[f64; 3]; 3]) -> Self {
+        // Convert row-indexed plain array to column-major Matrix3 at the boundary.
+        let pathion_variance = Matrix3::new(
+            pathion_variance[0][0],
+            pathion_variance[0][1],
+            pathion_variance[0][2],
+            pathion_variance[1][0],
+            pathion_variance[1][1],
+            pathion_variance[1][2],
+            pathion_variance[2][0],
+            pathion_variance[2][1],
+            pathion_variance[2][2],
+        );
         Self {
             bodies: Vec::new(),
             alpha_pathion,
@@ -209,8 +221,10 @@ impl NBodySystem {
         dt: f64,
         n_steps: usize,
     ) -> SingularityAvoidanceResult {
-        let pathion_var = Matrix3::from_diagonal(&Vector3::new(1.0, 1.0, 1.0));
-        let mut system = NBodySystem::new(alpha_pathion, pathion_var);
+        let mut system = NBodySystem::new(
+            alpha_pathion,
+            [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]],
+        );
 
         // Central mass at origin
         system.bodies.push(BodyState {
@@ -597,8 +611,10 @@ mod tests {
     use std::f64::consts::PI;
 
     fn two_body_system(alpha: f64) -> NBodySystem {
-        let pathion_var = Matrix3::from_diagonal(&Vector3::new(1.0, 1.0, 1.0));
-        let mut system = NBodySystem::new(alpha, pathion_var);
+        let mut system = NBodySystem::new(
+            alpha,
+            [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]],
+        );
         // Sun-like central mass
         system.bodies.push(BodyState {
             id: 0,
@@ -721,8 +737,10 @@ mod tests {
 
     #[test]
     fn test_pathion_shadow_radius_nonzero() {
-        let pathion_var = Matrix3::from_diagonal(&Vector3::new(1.0, 0.5, 0.3));
-        let system = NBodySystem::new(1e-10, pathion_var);
+        let system = NBodySystem::new(
+            1e-10,
+            [[1.0, 0.0, 0.0], [0.0, 0.5, 0.0], [0.0, 0.0, 0.3]],
+        );
         let r_shadow = system.pathion_shadow_radius(1.327e11);
         assert!(r_shadow.is_some());
         let rs = r_shadow.unwrap();
@@ -733,8 +751,10 @@ mod tests {
 
     #[test]
     fn test_adaptive_wick_evolve() {
-        let pathion_var = Matrix3::from_diagonal(&Vector3::new(1.0, 1.0, 1.0));
-        let mut system = NBodySystem::new(1e-12, pathion_var);
+        let mut system = NBodySystem::new(
+            1e-12,
+            [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]],
+        );
         system.bodies.push(BodyState {
             id: 0,
             mass: 1.327e11,
