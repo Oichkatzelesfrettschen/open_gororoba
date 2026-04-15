@@ -3,11 +3,10 @@
 //! Usage: frac-laplacian --mode periodic --dim 1 --s 0.5 --n 64 --output result.csv
 
 use clap::{Parser, ValueEnum};
-use ndarray::{Array2, Array3};
 use spectral_core::{
-    fractional_laplacian_dirichlet_1d, fractional_laplacian_dirichlet_2d,
-    fractional_laplacian_periodic_1d, fractional_laplacian_periodic_2d,
-    fractional_laplacian_periodic_3d,
+    fractional_laplacian_dirichlet_1d, fractional_laplacian_dirichlet_2d_flat,
+    fractional_laplacian_periodic_1d, fractional_laplacian_periodic_2d_flat,
+    fractional_laplacian_periodic_3d_flat,
 };
 use std::f64::consts::PI;
 
@@ -164,38 +163,46 @@ fn run_2d(args: &Args) {
 
     let (u, result) = match args.mode {
         BoundaryCondition::Periodic => {
-            let u = Array2::from_shape_fn((n, n), |(i, j)| {
-                let x = i as f64 * l / n as f64;
-                let y = j as f64 * l / n as f64;
-                match args.function {
-                    TestFunction::Sine => (2.0 * PI * x / l).sin() * (2.0 * PI * y / l).sin(),
-                    TestFunction::Gaussian => {
-                        let dx = x - 0.5 * l;
-                        let dy = y - 0.5 * l;
-                        (-((dx * dx + dy * dy) / (2.0 * 0.1 * 0.1))).exp()
+            let u: Vec<f64> = (0..n * n)
+                .map(|idx| {
+                    let i = idx / n;
+                    let j = idx % n;
+                    let x = i as f64 * l / n as f64;
+                    let y = j as f64 * l / n as f64;
+                    match args.function {
+                        TestFunction::Sine => (2.0 * PI * x / l).sin() * (2.0 * PI * y / l).sin(),
+                        TestFunction::Gaussian => {
+                            let dx = x - 0.5 * l;
+                            let dy = y - 0.5 * l;
+                            (-((dx * dx + dy * dy) / (2.0 * 0.1 * 0.1))).exp()
+                        }
+                        TestFunction::Polynomial => x * x * y * y,
                     }
-                    TestFunction::Polynomial => x * x * y * y,
-                }
-            });
-            let r = fractional_laplacian_periodic_2d(&u, args.s, l, l);
+                })
+                .collect();
+            let r = fractional_laplacian_periodic_2d_flat(&u, n, n, args.s, l, l);
             (u, r)
         }
         BoundaryCondition::Dirichlet => {
             let h = l / (n + 1) as f64;
-            let u = Array2::from_shape_fn((n, n), |(i, j)| {
-                let x = (i + 1) as f64 * h;
-                let y = (j + 1) as f64 * h;
-                match args.function {
-                    TestFunction::Sine => (PI * x / l).sin() * (PI * y / l).sin(),
-                    TestFunction::Gaussian => {
-                        let dx = x - 0.5 * l;
-                        let dy = y - 0.5 * l;
-                        (-((dx * dx + dy * dy) / (2.0 * 0.1 * 0.1))).exp()
+            let u: Vec<f64> = (0..n * n)
+                .map(|idx| {
+                    let i = idx / n;
+                    let j = idx % n;
+                    let x = (i + 1) as f64 * h;
+                    let y = (j + 1) as f64 * h;
+                    match args.function {
+                        TestFunction::Sine => (PI * x / l).sin() * (PI * y / l).sin(),
+                        TestFunction::Gaussian => {
+                            let dx = x - 0.5 * l;
+                            let dy = y - 0.5 * l;
+                            (-((dx * dx + dy * dy) / (2.0 * 0.1 * 0.1))).exp()
+                        }
+                        TestFunction::Polynomial => x * (l - x) * y * (l - y),
                     }
-                    TestFunction::Polynomial => x * (l - x) * y * (l - y),
-                }
-            });
-            let r = fractional_laplacian_dirichlet_2d(&u, args.s, l, l);
+                })
+                .collect();
+            let r = fractional_laplacian_dirichlet_2d_flat(&u, n, n, args.s, l, l);
             (u, r)
         }
     };
@@ -231,25 +238,30 @@ fn run_3d(args: &Args) {
     let n = args.n;
     let l = args.length;
 
-    let u = Array3::from_shape_fn((n, n, n), |(i, j, k)| {
-        let x = i as f64 * l / n as f64;
-        let y = j as f64 * l / n as f64;
-        let z = k as f64 * l / n as f64;
-        match args.function {
-            TestFunction::Sine => {
-                (2.0 * PI * x / l).sin() * (2.0 * PI * y / l).sin() * (2.0 * PI * z / l).sin()
+    let u: Vec<f64> = (0..n * n * n)
+        .map(|idx| {
+            let i = idx / (n * n);
+            let j = (idx / n) % n;
+            let k = idx % n;
+            let x = i as f64 * l / n as f64;
+            let y = j as f64 * l / n as f64;
+            let z = k as f64 * l / n as f64;
+            match args.function {
+                TestFunction::Sine => {
+                    (2.0 * PI * x / l).sin() * (2.0 * PI * y / l).sin() * (2.0 * PI * z / l).sin()
+                }
+                TestFunction::Gaussian => {
+                    let dx = x - 0.5 * l;
+                    let dy = y - 0.5 * l;
+                    let dz = z - 0.5 * l;
+                    (-((dx * dx + dy * dy + dz * dz) / (2.0 * 0.1 * 0.1))).exp()
+                }
+                TestFunction::Polynomial => x * x * y * y * z * z,
             }
-            TestFunction::Gaussian => {
-                let dx = x - 0.5 * l;
-                let dy = y - 0.5 * l;
-                let dz = z - 0.5 * l;
-                (-((dx * dx + dy * dy + dz * dz) / (2.0 * 0.1 * 0.1))).exp()
-            }
-            TestFunction::Polynomial => x * x * y * y * z * z,
-        }
-    });
+        })
+        .collect();
 
-    let result = fractional_laplacian_periodic_3d(&u, args.s, l, l, l);
+    let result = fractional_laplacian_periodic_3d_flat(&u, n, n, n, args.s, l, l, l);
 
     let max_u: f64 = u.iter().cloned().fold(f64::NEG_INFINITY, f64::max);
     let max_result: f64 = result.iter().cloned().fold(f64::NEG_INFINITY, f64::max);
