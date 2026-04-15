@@ -849,8 +849,6 @@ gororoba_gpu_bridge = { path = "../gororoba_gpu_bridge" }
 gororoba_view_core = { workspace = true }
 gororoba_view_raster = { workspace = true }
 ash = { version = "0.38.0", features = ["debug"] }
-nalgebra = { workspace = true }
-ndarray = { workspace = true }
 rayon = { workspace = true }
 core_affinity = { workspace = true }
 clap = { workspace = true }

@@ -8,8 +8,8 @@ use anyhow::{Context, Result, bail};
 use clap::{Parser, Subcommand};
 use csv::{ReaderBuilder, WriterBuilder};
 use data_core::catalogs::jarvis;
-use nalgebra::{DMatrix, SVD};
 use plotters::{coord::types::RangedCoordf64, prelude::*};
+use stats_core::helpers::{center_columns_flat, project_rows_onto_components, svd_right_singular_vectors};
 use statrs::function::gamma::gamma;
 use std::{
     collections::BTreeMap,
@@ -309,10 +309,8 @@ fn generate_materials_embedding(args: &MaterialsEmbeddingArgs) -> Result<()> {
     }
 
     let data = build_composition_matrix(&rows);
-    let centered = center_columns(&data);
-    let svd = SVD::new(centered.clone(), false, true);
-    let v_t = svd.v_t.context("materials PCA missing V^T")?;
-    let singular = svd.singular_values;
+    let centered = center_columns_flat(&data);
+    let (singular, vt_rows) = svd_right_singular_vectors(&centered);
     let total_var: f64 = singular
         .iter()
         .map(|value| value * value)
@@ -333,12 +331,9 @@ fn generate_materials_embedding(args: &MaterialsEmbeddingArgs) -> Result<()> {
     ])?;
 
     for &k in &[4usize, 8, 16, 32] {
-        let use_k = k.min(v_t.nrows()).max(2);
-        let basis = v_t.rows(0, use_k).transpose().into_owned();
-        let scores = &centered * basis;
-        let hi = matrix_rows(&centered);
-        let lo = matrix_rows(&scores);
-        let rho = spearman_distance_preservation(&hi, &lo, 5000);
+        let use_k = k.min(vt_rows.len()).max(2);
+        let scores = project_rows_onto_components(&centered, &vt_rows, use_k);
+        let rho = spearman_distance_preservation(&centered, &scores, 5000);
         let explained = singular
             .iter()
             .take(use_k)
@@ -387,12 +382,10 @@ fn parse_f64(value: Option<&String>) -> f64 {
         .unwrap_or(0.0)
 }
 
-fn build_composition_matrix(rows: &[MaterialRow]) -> DMatrix<f64> {
-    let mut data = Vec::with_capacity(rows.len() * 118);
-    for row in rows {
-        data.extend(composition_vector(&row.formula));
-    }
-    DMatrix::from_row_slice(rows.len(), 118, &data)
+fn build_composition_matrix(rows: &[MaterialRow]) -> Vec<Vec<f64>> {
+    rows.iter()
+        .map(|row| composition_vector(&row.formula).to_vec())
+        .collect()
 }
 
 fn composition_vector(formula: &str) -> [f64; 118] {
@@ -443,22 +436,6 @@ fn composition_vector(formula: &str) -> [f64; 118] {
     vector
 }
 
-fn center_columns(matrix: &DMatrix<f64>) -> DMatrix<f64> {
-    let mut centered = matrix.clone();
-    for col in 0..centered.ncols() {
-        let mean = centered.column(col).iter().sum::<f64>() / centered.nrows() as f64;
-        for row in 0..centered.nrows() {
-            centered[(row, col)] -= mean;
-        }
-    }
-    centered
-}
-
-fn matrix_rows(matrix: &DMatrix<f64>) -> Vec<Vec<f64>> {
-    (0..matrix.nrows())
-        .map(|row| matrix.row(row).iter().copied().collect::<Vec<_>>())
-        .collect()
-}
 
 fn spearman_distance_preservation(hi: &[Vec<f64>], lo: &[Vec<f64>], n_pairs: usize) -> f64 {
     let n = hi.len();
@@ -515,14 +492,14 @@ fn pearson(a: &[f64], b: &[f64]) -> f64 {
 
 fn render_material_scatter(
     path: &Path,
-    scores: &DMatrix<f64>,
+    scores: &[Vec<f64>],
     formation: &[f64],
     band_gap: &[f64],
     title: &str,
 ) -> Result<()> {
     ensure_parent(path)?;
-    let x_values: Vec<f64> = scores.column(0).iter().copied().collect();
-    let y_values: Vec<f64> = scores.column(1).iter().copied().collect();
+    let x_values: Vec<f64> = scores.iter().map(|row| row[0]).collect();
+    let y_values: Vec<f64> = scores.iter().map(|row| row[1]).collect();
     let (x_min, x_max) = bounds(&x_values);
     let (y_min, y_max) = bounds(&y_values);
     let root = BitMapBackend::new(path, (WIDTH, HEIGHT)).into_drawing_area();
@@ -539,9 +516,9 @@ fn render_material_scatter(
     let (c_min, c_max) = bounds(formation);
     let (s_min, s_max) = bounds(band_gap);
     chart
-        .draw_series((0..scores.nrows()).map(|idx| {
-            let x = scores[(idx, 0)];
-            let y = scores[(idx, 1)];
+        .draw_series(scores.iter().enumerate().map(|(idx, row)| {
+            let x = row[0];
+            let y = row[1];
             let color = gradient_color(formation[idx], c_min, c_max);
             let radius = scale_radius(band_gap[idx], s_min, s_max);
             Circle::new((x, y), radius, ShapeStyle::from(&color).filled())

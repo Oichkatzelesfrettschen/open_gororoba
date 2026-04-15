@@ -33,6 +33,7 @@ arrow-array = { workspace = true, optional = true }
 data_core = { version = "0.1.0", path = "../data_core", default-features = false }
 stats_core = { version = "0.1.0", path = "../stats_core" }
 ndarray = { workspace = true }
+rustfft = { workspace = true }
 serde = { workspace = true, features = ["derive"] }
 csv = { workspace = true }
 gr_core = { version = "0.1.0", path = "../gr_core" }
