@@ -3,7 +3,7 @@ use cd_kernel::{cd_associator_norm, cd_norm_sq};
 use chrono::{DateTime, Datelike, Utc};
 use clap::Parser;
 use data_core::{CatalogFeatureChannel, CatalogFeatureCube, parse_catalog_feature_cube_json};
-use nalgebra::{SMatrix, SymmetricEigen};
+use algebra_analysis::spectrum_solvers::symmetric_eigenvalues_sorted;
 use serde::Serialize;
 use std::{
     collections::BTreeMap,
@@ -283,10 +283,12 @@ fn summarize_dataset(
     let observed_associator = mean(&associators);
     let null_p_value = empirical_upper_tail_p_value(observed_associator, &null_distribution);
     let covariance = covariance_matrix(&centered_vectors);
-    let covariance_trace = covariance.trace();
-    let eigen = SymmetricEigen::new(covariance);
-    let effective_rank = effective_rank(eigen.eigenvalues.as_slice());
-    let participation_ratio = participation_ratio(eigen.eigenvalues.as_slice());
+    let covariance_trace: f64 = (0..ALGEBRA_DIM).map(|i| covariance[i][i]).sum();
+    let eigenvalues = symmetric_eigenvalues_sorted(
+        &covariance.iter().map(|row| row.to_vec()).collect::<Vec<_>>(),
+    );
+    let effective_rank = effective_rank(&eigenvalues);
+    let participation_ratio = participation_ratio(&eigenvalues);
     let modality_count = rows
         .iter()
         .map(|row| row.modality.clone())
@@ -496,8 +498,8 @@ fn center_vectors(vectors: &[[f64; ALGEBRA_DIM]]) -> Vec<[f64; ALGEBRA_DIM]> {
         .collect()
 }
 
-fn covariance_matrix(vectors: &[[f64; ALGEBRA_DIM]]) -> SMatrix<f64, ALGEBRA_DIM, ALGEBRA_DIM> {
-    let mut covariance = SMatrix::<f64, ALGEBRA_DIM, ALGEBRA_DIM>::zeros();
+fn covariance_matrix(vectors: &[[f64; ALGEBRA_DIM]]) -> [[f64; ALGEBRA_DIM]; ALGEBRA_DIM] {
+    let mut covariance = [[0.0_f64; ALGEBRA_DIM]; ALGEBRA_DIM];
     if vectors.is_empty() {
         return covariance;
     }
@@ -505,14 +507,21 @@ fn covariance_matrix(vectors: &[[f64; ALGEBRA_DIM]]) -> SMatrix<f64, ALGEBRA_DIM
         for row in 0..ALGEBRA_DIM {
             for col in row..ALGEBRA_DIM {
                 let product = vector[row] * vector[col];
-                covariance[(row, col)] += product;
+                covariance[row][col] += product;
                 if row != col {
-                    covariance[(col, row)] += product;
+                    covariance[col][row] += product;
                 }
             }
         }
     }
-    covariance / vectors.len() as f64
+    let n = vectors.len() as f64;
+    let mut out = [[0.0_f64; ALGEBRA_DIM]; ALGEBRA_DIM];
+    for row in 0..ALGEBRA_DIM {
+        for col in 0..ALGEBRA_DIM {
+            out[row][col] = covariance[row][col] / n;
+        }
+    }
+    out
 }
 
 fn effective_rank(eigenvalues: &[f64]) -> f64 {
