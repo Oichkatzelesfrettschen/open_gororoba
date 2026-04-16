@@ -1,10 +1,10 @@
 [package]
 name = "gororoba_cli_physics"
 version = "0.1.0"
-edition = { workspace = true }
-description = "Physics domain CLI binaries for gororoba"
-license = "MIT"
 autobins = false
+edition = { workspace = true }
+license = "MIT"
+description = "Physics domain CLI binaries for gororoba"
 
 # ---- GR (6) ----
 
@@ -356,6 +356,10 @@ name = "heliosphere-psp-encounter-summary"
 path = "src/bin/heliosphere_psp_encounter_summary.rs"
 
 [[bin]]
+name = "heliosphere-fa-cross-mission-table"
+path = "src/bin/heliosphere_fa_cross_mission_table.rs"
+
+[[bin]]
 name = "heliosphere-maven-crossing-gen"
 path = "src/bin/heliosphere_maven_crossing_gen.rs"
 
@@ -701,7 +705,6 @@ path = "src/bin/kk-mskk2.rs"
 name = "crystal-config-integral"
 path = "src/bin/crystal-config-integral.rs"
 
-
 [[bin]]
 name = "mass-quartile-fourier"
 path = "src/bin/mass_quartile_fourier.rs"
@@ -834,77 +837,77 @@ name = "parity-report"
 path = "src/bin/parity_report.rs"
 
 [dependencies]
-gororoba_algebra = { path = "../gororoba_algebra" }
 algebra_analysis = { path = "../algebra_analysis" }
-casimir_core = { path = "../casimir_core" }
-cosmology_core = { path = "../cosmology_core" }
-gr_core = { path = "../gr_core" }
-materials_core = { path = "../materials_core" }
-optics_core = { path = "../optics_core" }
-quantum_core = { path = "../quantum_core" }
 algebra_experimental = { workspace = true }
-spectral_core = { path = "../spectral_core" }
-lbm_core = { path = "../lbm_core" }
-lbm_3d = { path = "../lbm_3d" }
-lbm_vulkan = { path = "../lbm_vulkan" }
-lbm_3d_cuda = { path = "../lbm_3d_cuda", optional = true }
-stats_core = { path = "../stats_core" }
-data_core = { path = "../data_core", default-features = false, features = ["fetch", "fits"] }
-data_artifacts_core = { path = "../data_artifacts_core" }
-snia_core = { path = "../snia_core" }
-sign_imbalance = { path = "../sign_imbalance" }
-neural_homotopy = { path = "../neural_homotopy" }
-spin_tomography_core = { path = "../spin_tomography_core" }
-cd_spin_bridge = { path = "../cd_spin_bridge" }
-qgp_scaling = { path = "../qgp_scaling" }
-gororoba_gpu_bridge = { path = "../gororoba_gpu_bridge" }
-gororoba_view_core = { workspace = true }
-gororoba_view_raster = { workspace = true }
-ash = { version = "0.38.0", features = ["debug"] }
-rayon = { workspace = true }
-core_affinity = { workspace = true }
-clap = { workspace = true }
-csv = { workspace = true }
-num-complex = { workspace = true }
-rand = { workspace = true }
-rand_chacha = { workspace = true }
-rand_distr = { workspace = true }
-rustfft = { workspace = true }
-anyhow = { workspace = true }
-env_logger = { workspace = true }
-serde = { workspace = true }
-serde_json = { workspace = true }
-toml = { workspace = true }
-sha2 = { workspace = true }
-glob = { workspace = true }
-mimalloc = { workspace = true }
-zip = { workspace = true }
-chrono = { workspace = true }
-hifitime = { workspace = true }
-plotters = { workspace = true }
-statrs = { workspace = true }
-pathion_ellip = { version = "0.1.0", path = "../pathion_ellip" }
 anise = { workspace = true }
-cr_transport = { path = "../cr_transport" }
-memmap2 = "0.9.10"
-fitsio = { workspace = true }
-ureq = { workspace = true }
-gauss-quad = { workspace = true }
+anyhow = { workspace = true }
 arrow-array = { workspace = true }
 arrow-ipc = { workspace = true }
 arrow-schema = { workspace = true }
-kiddo = { workspace = true }
-verified_core = { version = "0.1.0", path = "../verified_core" }
+ash = { version = "0.38.0", features = ["debug"] }
+casimir_core = { path = "../casimir_core" }
 cd_kernel = { workspace = true }
+cd_spin_bridge = { path = "../cd_spin_bridge" }
+chrono = { workspace = true }
+clap = { workspace = true }
+core_affinity = { workspace = true }
+cosmology_core = { path = "../cosmology_core" }
+cr_transport = { path = "../cr_transport" }
+csv = { workspace = true }
+data_artifacts_core = { path = "../data_artifacts_core" }
+data_core = { path = "../data_core", default-features = false, features = ["fetch", "fits"] }
+env_logger = { workspace = true }
+fitsio = { workspace = true }
+gauss-quad = { workspace = true }
+glob = { workspace = true }
+gororoba_algebra = { path = "../gororoba_algebra" }
+gororoba_gpu_bridge = { path = "../gororoba_gpu_bridge" }
+gororoba_view_core = { workspace = true }
+gororoba_view_raster = { workspace = true }
+gr_core = { path = "../gr_core" }
 grmhd_core = { version = "0.1.0", path = "../grmhd_core" }
-rusqlite = { workspace = true }
-walkdir = { workspace = true }
-minifb = { workspace = true }
-tensor_core = { version = "0.1.0", path = "../tensor_core" }
 hdf5 = { workspace = true, optional = true }
+hifitime = { workspace = true }
+kiddo = { workspace = true }
+lbm_3d = { path = "../lbm_3d" }
+lbm_3d_cuda = { path = "../lbm_3d_cuda", optional = true }
+lbm_core = { path = "../lbm_core" }
+lbm_vulkan = { path = "../lbm_vulkan" }
+materials_core = { path = "../materials_core" }
+memmap2 = "0.9.10"
+mimalloc = { workspace = true }
+minifb = { workspace = true }
 netcdf3 = { workspace = true, optional = true }
+neural_homotopy = { path = "../neural_homotopy" }
+num-complex = { workspace = true }
+optics_core = { path = "../optics_core" }
+pathion_ellip = { version = "0.1.0", path = "../pathion_ellip" }
+plotters = { workspace = true }
+qgp_scaling = { path = "../qgp_scaling" }
+quantum_core = { path = "../quantum_core" }
+rand = { workspace = true }
+rand_chacha = { workspace = true }
+rand_distr = { workspace = true }
+rayon = { workspace = true }
+rusqlite = { workspace = true }
+rustfft = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+sha2 = { workspace = true }
+sign_imbalance = { path = "../sign_imbalance" }
+snia_core = { path = "../snia_core" }
+spectral_core = { path = "../spectral_core" }
+spin_tomography_core = { path = "../spin_tomography_core" }
+statrs = { workspace = true }
+stats_core = { path = "../stats_core" }
+tensor_core = { version = "0.1.0", path = "../tensor_core" }
+toml = { workspace = true }
+ureq = { workspace = true }
+verified_core = { version = "0.1.0", path = "../verified_core" }
+walkdir = { workspace = true }
 zarrs = { workspace = true, optional = true }
 zarrs_filesystem = { workspace = true, optional = true }
+zip = { workspace = true }
 
 [features]
 default = []
