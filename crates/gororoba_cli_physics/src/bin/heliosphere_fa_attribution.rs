@@ -12,7 +12,11 @@ use anyhow::{Context, Result};
 use chrono::{Datelike, NaiveDate};
 use clap::Parser;
 use data_core::{
-    catalogs::themis::parse_themis_fgm_hapi_csv_minutes, crossing_lists::parse_crossing_list,
+    catalogs::{
+        cluster::parse_cluster_fgm_hapi_csv_minutes,
+        themis::parse_themis_fgm_hapi_csv_minutes,
+    },
+    crossing_lists::parse_crossing_list,
 };
 use serde::Serialize;
 use std::{collections::BTreeMap, fs, path::PathBuf};
@@ -24,14 +28,18 @@ struct Cli {
     start_date: String,
     #[arg(long)]
     end_date: String,
+    /// Mission to analyze: "themis" (default) or "cluster".
+    #[arg(long, default_value = "themis")]
+    mission: String,
+    /// THEMIS probe letter (a-e) or Cluster probe number (1-4).
+    #[arg(long)]
+    crossing_probe: Option<String>,
     #[arg(long, default_value_t = 32)]
     embedding_dim: usize,
     #[arg(long, default_value_t = 200.0)]
     max_bmag: f64,
     #[arg(long)]
     crossing_list: PathBuf,
-    #[arg(long)]
-    crossing_probe: Option<String>,
     #[arg(long, default_value_t = 20)]
     match_tolerance_minutes: usize,
     #[arg(
@@ -88,6 +96,7 @@ struct PrPoint {
 struct AttributionResult {
     start_date: String,
     end_date: String,
+    mission: String,
     n_cd_transitions: usize,
     n_curated_matched: usize,
     n_curated_crossings: usize,
@@ -110,38 +119,75 @@ fn main() -> Result<()> {
     let end = NaiveDate::parse_from_str(&cli.end_date, "%Y-%m-%d")
         .with_context(|| format!("bad end: {}", cli.end_date))?;
 
-    let probe_upper = format!(
-        "TH{}",
-        cli.crossing_probe.as_deref().unwrap_or("A").to_uppercase()
-    );
-
-    // Load FGM
+    // Load FGM for the selected mission.
     let mut bx = Vec::new();
     let mut by = Vec::new();
     let mut bz = Vec::new();
     let mut keys: Vec<(u16, u8, u8)> = Vec::new();
     let mut elapsed: Vec<f64> = Vec::new();
 
-    for offset in 0..=(end - start).num_days() {
-        let date = start + chrono::Duration::days(offset);
-        let path = format!(
-            "{}/themis/{}_fgm_{:04}_{:03}.csv",
-            cli.data_dir,
-            probe_upper.to_lowercase(),
-            date.year(),
-            date.ordinal()
-        );
-        if let Ok(content) = fs::read_to_string(&path) {
-            for r in parse_themis_fgm_hapi_csv_minutes(&content, &probe_upper) {
-                if r.b_magnitude <= cli.max_bmag {
-                    let day_diff = (r.doy as f64 - start.ordinal() as f64)
-                        + (r.year as f64 - start.year() as f64) * 365.25;
-                    let eh = day_diff * 24.0 + r.hour as f64 + r.minute as f64 / 60.0;
-                    bx.push(r.bx_gse);
-                    by.push(r.by_gse);
-                    bz.push(r.bz_gse);
-                    keys.push((r.doy, r.hour, r.minute));
-                    elapsed.push(eh);
+    match cli.mission.to_lowercase().as_str() {
+        "cluster" => {
+            let probe_id: u8 = cli
+                .crossing_probe
+                .as_deref()
+                .unwrap_or("1")
+                .parse()
+                .unwrap_or(1)
+                .clamp(1, 4);
+            for offset in 0..=(end - start).num_days() {
+                let date = start + chrono::Duration::days(offset);
+                let path = format!(
+                    "{}/cluster/c{}_fgm_spin_{:04}_{:03}.csv",
+                    cli.data_dir,
+                    probe_id,
+                    date.year(),
+                    date.ordinal()
+                );
+                if let Ok(content) = fs::read_to_string(&path) {
+                    for r in parse_cluster_fgm_hapi_csv_minutes(&content, probe_id) {
+                        if r.b_magnitude <= cli.max_bmag {
+                            let day_diff = (r.doy as f64 - start.ordinal() as f64)
+                                + (r.year as f64 - start.year() as f64) * 365.25;
+                            let eh = day_diff * 24.0 + r.hour as f64 + r.minute as f64 / 60.0;
+                            bx.push(r.bx_gse);
+                            by.push(r.by_gse);
+                            bz.push(r.bz_gse);
+                            keys.push((r.doy, r.hour, r.minute));
+                            elapsed.push(eh);
+                        }
+                    }
+                }
+            }
+        }
+        _ => {
+            // Default: THEMIS
+            let probe_upper = format!(
+                "TH{}",
+                cli.crossing_probe.as_deref().unwrap_or("A").to_uppercase()
+            );
+            for offset in 0..=(end - start).num_days() {
+                let date = start + chrono::Duration::days(offset);
+                let path = format!(
+                    "{}/themis/{}_fgm_{:04}_{:03}.csv",
+                    cli.data_dir,
+                    probe_upper.to_lowercase(),
+                    date.year(),
+                    date.ordinal()
+                );
+                if let Ok(content) = fs::read_to_string(&path) {
+                    for r in parse_themis_fgm_hapi_csv_minutes(&content, &probe_upper) {
+                        if r.b_magnitude <= cli.max_bmag {
+                            let day_diff = (r.doy as f64 - start.ordinal() as f64)
+                                + (r.year as f64 - start.year() as f64) * 365.25;
+                            let eh = day_diff * 24.0 + r.hour as f64 + r.minute as f64 / 60.0;
+                            bx.push(r.bx_gse);
+                            by.push(r.by_gse);
+                            bz.push(r.bz_gse);
+                            keys.push((r.doy, r.hour, r.minute));
+                            elapsed.push(eh);
+                        }
+                    }
                 }
             }
         }
@@ -425,6 +471,7 @@ fn main() -> Result<()> {
     let result = AttributionResult {
         start_date: cli.start_date.clone(),
         end_date: cli.end_date.clone(),
+        mission: cli.mission.clone(),
         n_cd_transitions: transitions.len(),
         n_curated_matched: matched_count,
         n_curated_crossings: n_curated,

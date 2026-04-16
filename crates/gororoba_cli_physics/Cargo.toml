@@ -356,6 +356,10 @@ name = "heliosphere-psp-encounter-summary"
 path = "src/bin/heliosphere_psp_encounter_summary.rs"
 
 [[bin]]
+name = "heliosphere-maven-crossing-gen"
+path = "src/bin/heliosphere_maven_crossing_gen.rs"
+
+[[bin]]
 name = "heliosphere-mms-multiday"
 path = "src/bin/heliosphere_mms_multiday.rs"
 
