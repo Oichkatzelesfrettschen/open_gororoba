@@ -708,6 +708,191 @@ pub fn timestamp_in_sitl_event(
     events.iter().any(|e| e.start <= t && t < e.end)
 }
 
+// ============================================================================
+// FPI-based crossing event derivation (locally cached headerless CSV)
+// ============================================================================
+
+/// Parse a headerless MMS FPI DIS CSV file cached in DOY format.
+///
+/// The locally-cached files lack a HAPI header row and use Windows CRLF line
+/// endings.  Column layout per line:
+///   `<ISO-8601-timestamp>,<density_cm3>,<Vx_km_s>,<Vy_km_s>,<Vz_km_s>`
+///
+/// Returns `(NaiveDateTime, density_cm3)` pairs, filtering fill values
+/// (density <= 0 or > 5 000 cm^-3).
+pub fn parse_mms_fpi_csv_headerless(content: &str) -> Vec<(NaiveDateTime, f64)> {
+    content
+        .lines()
+        .filter_map(|raw| {
+            let line = raw.trim();
+            if line.is_empty() {
+                return None;
+            }
+            let mut cols = line.splitn(5, ',');
+            let ts = cols.next()?;
+            let den_str = cols.next()?;
+            let dt = parse_sitl_time(ts)?;
+            let den: f64 = den_str.trim().parse().ok()?;
+            if !den.is_finite() || den <= 0.0 || den > 5_000.0 {
+                return None;
+            }
+            Some((dt, den))
+        })
+        .collect()
+}
+
+/// Derive magnetopause crossing event intervals from an FPI ion density series.
+///
+/// # Algorithm
+/// 1. Minute-average the raw density series.
+/// 2. Classify each minute: MSP (n < `lo_threshold`), MSH (n > `hi_threshold`),
+///    or ambiguous (in between).
+/// 3. Debounced state machine: confirmed state changes only when
+///    `min_regime_minutes` consecutive non-ambiguous samples agree on the
+///    new state.  Ambiguous samples neither reset nor count toward the run.
+/// 4. Each confirmed transition yields one `MmsEventInterval` spanning
+///    `[last_minute_of_old_state - pad_minutes, first_confirmed_new_state + pad_minutes]`.
+/// 5. Crossings whose window exceeds `max_crossing_minutes` are skipped.
+///    Long windows arise when FPI data is sparse or MMS lingers in an ambiguous
+///    flux-transfer / boundary layer region for many hours.  Such intervals
+///    would match any detector by sheer duration and inflate recall estimates.
+/// 6. Crossings within `min_gap_minutes` of each other are suppressed
+///    (grazing / oscillating boundary -- counts as one event).
+///
+/// # WHY
+/// FPI ion density is the most physically rigorous magnetopause marker:
+/// * Magnetosheath: n_i > 10 cm^-3 (compressed solar wind)
+/// * Magnetosphere: n_i < 3 cm^-3 (hot, tenuous plasma sheet)
+/// * Compressive events (pressure pulses, dipolarizations) do NOT change the
+///   density ratio -- they cannot trigger this detector, eliminating the FAR
+///   paradox that inflates false-alarm counts in |B|-gradient pseudo-labels.
+pub fn derive_fpi_crossing_events(
+    density_series: &[(NaiveDateTime, f64)],
+    lo_threshold: f64,
+    hi_threshold: f64,
+    min_regime_minutes: usize,
+    pad_minutes: i64,
+    min_gap_minutes: i64,
+    max_crossing_minutes: i64,
+) -> Vec<MmsEventInterval> {
+    if density_series.is_empty() {
+        return Vec::new();
+    }
+
+    // -- Minute average (truncate to minute boundary) --
+    let mut minute_map: BTreeMap<NaiveDateTime, (f64, usize)> = BTreeMap::new();
+    for (dt, den) in density_series {
+        let trunc = dt
+            .with_second(0)
+            .and_then(|d| d.with_nanosecond(0))
+            .unwrap_or(*dt);
+        let e = minute_map.entry(trunc).or_insert((0.0, 0));
+        e.0 += den;
+        e.1 += 1;
+    }
+
+    let series: Vec<(NaiveDateTime, f64)> = minute_map
+        .into_iter()
+        .map(|(dt, (s, n))| (dt, s / n as f64))
+        .collect();
+
+    let n = series.len();
+    if n < min_regime_minutes + 1 {
+        return Vec::new();
+    }
+
+    // -- Classify: -1=MSP, +1=MSH, 0=ambiguous --
+    let class: Vec<i8> = series
+        .iter()
+        .map(|(_, d)| {
+            if *d < lo_threshold {
+                -1_i8
+            } else if *d > hi_threshold {
+                1_i8
+            } else {
+                0_i8
+            }
+        })
+        .collect();
+
+    // -- Bootstrap: find initial confirmed state --
+    let mut confirmed_state: i8 = 0;
+    'bootstrap: for i in 0..n.saturating_sub(min_regime_minutes) {
+        let window = &class[i..i + min_regime_minutes];
+        if window.iter().all(|&c| c == 1) {
+            confirmed_state = 1;
+            break 'bootstrap;
+        }
+        if window.iter().all(|&c| c == -1) {
+            confirmed_state = -1;
+            break 'bootstrap;
+        }
+    }
+    if confirmed_state == 0 {
+        return Vec::new();
+    }
+
+    // -- Debounced transition detection --
+    let pad = chrono::Duration::minutes(pad_minutes);
+    let min_gap = chrono::Duration::minutes(min_gap_minutes);
+
+    let mut crossings: Vec<MmsEventInterval> = Vec::new();
+    let mut last_old_idx: usize = 0;
+    let mut candidate_val: i8 = 0;
+    let mut candidate_count: usize = 0;
+
+    for i in 0..n {
+        let c = class[i];
+        if c == confirmed_state {
+            last_old_idx = i;
+            candidate_val = 0;
+            candidate_count = 0;
+            continue;
+        }
+        if c == 0 {
+            // Ambiguous: neutral -- neither resets nor counts.
+            continue;
+        }
+        // c is the opposite non-ambiguous state.
+        if c != candidate_val {
+            candidate_val = c;
+            candidate_count = 1;
+        } else {
+            candidate_count += 1;
+        }
+        if candidate_count >= min_regime_minutes {
+            let transition_start = series[last_old_idx].0;
+            let transition_end = series[i].0;
+            let duration = transition_end.signed_duration_since(transition_start);
+            let max_dur = chrono::Duration::minutes(max_crossing_minutes);
+            let too_long = duration > max_dur;
+            let too_close = crossings.last().is_some_and(|prev: &MmsEventInterval| {
+                transition_start.signed_duration_since(prev.start) < min_gap
+            });
+            if !too_close && !too_long {
+                crossings.push(MmsEventInterval {
+                    start: transition_start - pad,
+                    end: transition_end + pad,
+                    fom: 100.0,
+                    discussion: format!(
+                        "FPI: {}->{} near {}",
+                        if confirmed_state == -1 { "MSP" } else { "MSH" },
+                        if c == -1 { "MSP" } else { "MSH" },
+                        transition_start.format("%Y-%m-%dT%H:%M")
+                    ),
+                });
+            }
+            confirmed_state = c;
+            last_old_idx = i;
+            candidate_val = 0;
+            candidate_count = 0;
+        }
+    }
+
+    crossings.sort_by_key(|e| e.start);
+    crossings
+}
+
 #[cfg(test)]
 mod sitl_tests {
     use super::*;
