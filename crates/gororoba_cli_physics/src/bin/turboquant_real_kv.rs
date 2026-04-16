@@ -15,7 +15,10 @@ use std::{fs, path::PathBuf, time::Instant};
 
 use cd_kernel::{
     lloyd_max::{self, DistributionFamily},
-    turboquant::{cdaq::CdaqQuantizer, pipeline::TurboQuantMSE, streaming::StreamingKVCache},
+    turboquant::{
+        cdaq::CdaqQuantizer, pipeline::TurboQuantMSE, simsimd_bridge::cosine_similarity_f64,
+        streaming::StreamingKVCache,
+    },
 };
 
 #[derive(Parser)]
@@ -103,16 +106,6 @@ fn read_f64_vectors(path: &std::path::Path, d: usize) -> Result<Vec<Vec<f64>>> {
         .into_iter()
         .take(n_vectors)
         .collect())
-}
-
-fn cosine_similarity(a: &[f64], b: &[f64]) -> f64 {
-    let dot: f64 = a.iter().zip(b.iter()).map(|(x, y)| x * y).sum();
-    let na: f64 = a.iter().map(|x| x * x).sum::<f64>().sqrt();
-    let nb: f64 = b.iter().map(|x| x * x).sum::<f64>().sqrt();
-    if na < 1e-15 || nb < 1e-15 {
-        return 0.0;
-    }
-    dot / (na * nb)
 }
 
 fn main() -> Result<()> {
@@ -215,7 +208,7 @@ fn main() -> Result<()> {
                     .sum::<f64>()
                     / meta.head_dim as f64;
                 key_mse_sum += mse_k;
-                key_cos_sum += cosine_similarity(k, &recon_k);
+                key_cos_sum += cosine_similarity_f64(k, &recon_k);
 
                 // Value
                 let compressed_v = tq.quantize(v, &mut buf);
@@ -228,7 +221,7 @@ fn main() -> Result<()> {
                     .sum::<f64>()
                     / meta.head_dim as f64;
                 val_mse_sum += mse_v;
-                val_cos_sum += cosine_similarity(v, &recon_v);
+                val_cos_sum += cosine_similarity_f64(v, &recon_v);
 
                 // Feed to streaming cache (layer 0 only)
                 if layer_idx == 0 {
@@ -363,7 +356,7 @@ fn main() -> Result<()> {
                     .map(|(a, b)| (a - b).powi(2))
                     .sum::<f64>()
                     / meta.head_dim as f64;
-                total_key_cos += cosine_similarity(k, &rk);
+                total_key_cos += cosine_similarity_f64(k, &rk);
 
                 let cv = tq.quantize(v, &mut buf);
                 let mut rv = vec![0.0f64; meta.head_dim];
@@ -374,7 +367,7 @@ fn main() -> Result<()> {
                     .map(|(a, b)| (a - b).powi(2))
                     .sum::<f64>()
                     / meta.head_dim as f64;
-                total_val_cos += cosine_similarity(v, &rv);
+                total_val_cos += cosine_similarity_f64(v, &rv);
 
                 count += 1;
             }
@@ -488,7 +481,7 @@ fn main() -> Result<()> {
                     .map(|(a, b)| (a - b).powi(2))
                     .sum::<f64>()
                     / meta.head_dim as f64;
-                total_cos += cosine_similarity(k, &recon);
+                total_cos += cosine_similarity_f64(k, &recon);
                 count += 1;
             }
         }
@@ -546,7 +539,7 @@ fn main() -> Result<()> {
                     .map(|(a, b)| (a - b).powi(2))
                     .sum::<f64>()
                     / meta.head_dim as f64;
-                cdaq_cos += cosine_similarity(k, &recon_c);
+                cdaq_cos += cosine_similarity_f64(k, &recon_c);
 
                 // Baseline
                 let comp_b = tq_base.quantize(k, &mut buf);
@@ -558,7 +551,7 @@ fn main() -> Result<()> {
                     .map(|(a, b)| (a - b).powi(2))
                     .sum::<f64>()
                     / meta.head_dim as f64;
-                base_cos += cosine_similarity(k, &recon_b);
+                base_cos += cosine_similarity_f64(k, &recon_b);
 
                 count += 1;
             }

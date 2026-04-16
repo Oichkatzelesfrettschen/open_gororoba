@@ -13,7 +13,7 @@ use clap::Parser;
 use serde::Serialize;
 use std::{fs, path::PathBuf};
 
-use cd_kernel::turboquant::compressor::KeyCompressor;
+use cd_kernel::turboquant::{compressor::KeyCompressor, simsimd_bridge::cosine_similarity_f64};
 
 #[derive(Parser)]
 #[command(name = "turboquant-validate")]
@@ -96,17 +96,6 @@ fn generate_kv_data(
     (keys, values, queries)
 }
 
-fn cosine_sim(a: &[f64], b: &[f64]) -> f64 {
-    let dot: f64 = a.iter().zip(b.iter()).map(|(x, y)| x * y).sum();
-    let na: f64 = a.iter().map(|x| x * x).sum::<f64>().sqrt();
-    let nb: f64 = b.iter().map(|x| x * x).sum::<f64>().sqrt();
-    if na < 1e-15 || nb < 1e-15 {
-        0.0
-    } else {
-        dot / (na * nb)
-    }
-}
-
 fn argmax(scores: &[f64]) -> usize {
     scores
         .iter()
@@ -163,7 +152,7 @@ fn validate_config(
         let comp_scores = key_comp.attention_scores(q, 1, &head_batch);
 
         // Cosine similarity between real and compressed score vectors
-        let cos = cosine_sim(&real_scores, &comp_scores);
+        let cos = cosine_similarity_f64(&real_scores, &comp_scores);
         cosines.push(cos);
 
         // Top-1 match
