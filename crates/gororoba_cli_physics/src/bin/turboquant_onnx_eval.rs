@@ -14,7 +14,9 @@
 //!   turboquant-onnx-eval --model distilgpt2.onnx --bits 3 --seq-len 512
 //!   turboquant-onnx-eval --synthetic --bits 2,3,4  # no model needed
 //!
-//! Requires: `--features onnx-eval` (pulls in ort/onnxruntime dependency)
+//! Note: real ONNX inference is not yet wired; all paths currently run the
+//! synthetic evaluation. Re-add the ort dep and onnx-eval feature when the
+//! ML inference path is implemented.
 
 use anyhow::Result;
 use clap::Parser;
@@ -201,21 +203,10 @@ fn main() -> Result<()> {
         println!("  Mode: synthetic (no ONNX model)");
         ("synthetic".to_string(), synthetic_eval(&cli))
     } else {
-        #[cfg(feature = "onnx-eval")]
-        {
-            println!(
-                "  Mode: ONNX model ({})",
-                cli.model.as_ref().unwrap().display()
-            );
-            // TODO: implement real ONNX model evaluation when ort API is wired
-            println!("  ONNX evaluation not yet implemented -- running synthetic instead");
-            ("synthetic-fallback".to_string(), synthetic_eval(&cli))
-        }
-        #[cfg(not(feature = "onnx-eval"))]
-        {
-            println!("  ONNX feature not enabled. Running synthetic evaluation.");
-            ("synthetic-no-onnx".to_string(), synthetic_eval(&cli))
-        }
+        // TODO: re-add ort dep (ort = { workspace = true, optional = true } + onnx-eval feature)
+        // and wire real ONNX inference when the ML inference path is implemented.
+        println!("  ONNX inference not yet wired. Running synthetic evaluation.");
+        ("synthetic-no-onnx".to_string(), synthetic_eval(&cli))
     };
 
     for r in &results {
