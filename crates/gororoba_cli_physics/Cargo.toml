@@ -897,14 +897,12 @@ kiddo = { workspace = true }
 verified_core = { version = "0.1.0", path = "../verified_core" }
 cd_kernel = { workspace = true }
 grmhd_core = { version = "0.1.0", path = "../grmhd_core" }
-ort = { workspace = true, optional = true }
 rusqlite = { workspace = true }
 walkdir = { workspace = true }
 minifb = { workspace = true }
 tensor_core = { version = "0.1.0", path = "../tensor_core" }
 hdf5 = { workspace = true, optional = true }
 netcdf3 = { workspace = true, optional = true }
-netcdf-reader = { workspace = true, optional = true }
 zarrs = { workspace = true, optional = true }
 zarrs_filesystem = { workspace = true, optional = true }
 
@@ -914,10 +912,9 @@ gpu = ["lbm_3d_cuda", "sign_imbalance/gpu", "gororoba_algebra/gpu"]
 cufft = ["lbm_3d_cuda/cufft"]
 hdf5-export = ["data_core/hdf5-export", "data_artifacts_core/hdf5-export"]
 hdf5-read = ["dep:hdf5"]
-netcdf-read = ["dep:netcdf3", "dep:netcdf-reader"]
+netcdf-read = ["dep:netcdf3"]
 zarr-read = ["dep:zarrs", "dep:zarrs_filesystem"]
 euclid-catalog = ["cosmology_core/euclid-catalog"]
-onnx-eval = ["dep:ort"]
 
 [lints]
 workspace = true

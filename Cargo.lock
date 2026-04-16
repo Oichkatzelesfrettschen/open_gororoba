@@ -1048,9 +1048,6 @@ name = "brown_1967"
 version = "0.1.0"
 dependencies = [
  "cd_kernel",
- "dickson_1919",
- "hurwitz_1898",
- "schafer_1945",
 ]
 
 [[package]]
@@ -1058,8 +1055,6 @@ name = "brown_1972"
 version = "0.1.0"
 dependencies = [
  "cd_kernel",
- "dickson_1919",
- "hurwitz_1898",
  "schafer_1945",
 ]
 
@@ -3264,7 +3259,6 @@ dependencies = [
  "faer",
  "fitsio",
  "flate2",
- "gororoba_contracts",
  "gororoba_sparse_grid",
  "hdf5-metno",
  "hifitime",
@@ -3274,7 +3268,6 @@ dependencies = [
  "netcdf-reader",
  "netcdf3",
  "polars",
- "pulp",
  "quick-xml",
  "rand 0.10.0",
  "rand_distr 0.6.0",
@@ -3284,7 +3277,6 @@ dependencies = [
  "serde",
  "serde_json",
  "sha2 0.11.0",
- "simsimd",
  "tar",
  "tempfile",
  "thiserror 2.0.18",
@@ -3299,9 +3291,6 @@ dependencies = [
 [[package]]
 name = "de_marrais_2000"
 version = "0.1.0"
-dependencies = [
- "cd_kernel",
-]
 
 [[package]]
 name = "debug_unsafe"
@@ -4885,7 +4874,6 @@ dependencies = [
  "serde_json",
  "sha2 0.11.0",
  "verified_core",
- "wheel",
  "wide 1.2.0",
 ]
 
@@ -5095,12 +5083,10 @@ dependencies = [
  "memmap2",
  "mimalloc",
  "minifb",
- "netcdf-reader",
  "netcdf3",
  "neural_homotopy",
  "num-complex",
  "optics_core",
- "ort",
  "pathion_ellip",
  "plotters",
  "qgp_scaling",
@@ -6366,17 +6352,11 @@ checksum = "bbd2bcb4c963f2ddae06a2efc7e9f3591312473c50c6685e1f298068316e66fe"
 name = "lbm_3d"
 version = "0.1.0"
 dependencies = [
- "aligned-vec",
  "approx",
- "bytemuck",
  "cosmic_scheduler",
  "cosmology_core",
  "criterion",
- "crossbeam-utils",
- "dyn-stack",
- "pulp",
  "rayon",
- "smallvec",
  "thiserror 2.0.18",
  "verified_core",
  "wide 1.2.0",
@@ -6929,14 +6909,12 @@ dependencies = [
  "num-complex",
  "optics_core",
  "periodic-table-on-an-enum",
- "pulp",
  "rand 0.10.0",
  "rand_chacha 0.10.0",
  "rayon",
  "regex",
  "rustfft",
  "serde",
- "simsimd",
  "toml 1.1.2+spec-1.1.0",
  "wide 1.2.0",
 ]
@@ -8274,22 +8252,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "ort"
-version = "2.0.0-rc.12"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d7de3af33d24a745ffb8fab904b13478438d1cd52868e6f17735ef6e1f8bf133"
-dependencies = [
- "ort-sys",
- "smallvec",
-]
-
-[[package]]
-name = "ort-sys"
-version = "2.0.0-rc.12"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d7b497d21a8b6fbb4b5a544f8fadb77e801a09ae0add9e411d31c6f89e3c1e90"
-
-[[package]]
 name = "owned_ttf_parser"
 version = "0.25.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -8426,8 +8388,6 @@ dependencies = [
  "algebra_experimental",
  "anyhow",
  "approx",
- "cd_kernel",
- "nalgebra 0.34.2",
  "num-complex",
  "rayon",
 ]
@@ -13051,12 +13011,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "wheel"
-version = "0.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2fb7ccae7d01d16dca5a39f58376ae6277467a8e3bea3fe45c20f72b4ee2c58b"
-
-[[package]]
 name = "which"
 version = "8.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -13090,8 +13044,6 @@ name = "wilmot_2025"
 version = "0.1.0"
 dependencies = [
  "cd_kernel",
- "dickson_1919",
- "hurwitz_1898",
 ]
 
 [[package]]

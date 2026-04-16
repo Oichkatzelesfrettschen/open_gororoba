@@ -21,7 +21,6 @@ license = "GPL-2.0-or-later"
 # - The 168 = 42 * 4 zero-divisor count decomposition
 
 [dependencies]
-cd_kernel = { workspace = true }
 
 [lints]
 workspace = true

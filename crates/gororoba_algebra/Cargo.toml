@@ -23,7 +23,6 @@ serde_json = { workspace = true }
 csv = { workspace = true }
 
 # External algebra crates (workspace)
-wheel = { workspace = true }
 padic = { workspace = true }
 atlas-embeddings = { workspace = true }
 

@@ -17,8 +17,6 @@ license = "GPL-2.0-or-later"
 
 [dependencies]
 cd_kernel.workspace = true
-hurwitz_1898 = { path = "../hurwitz_1898" }
-dickson_1919 = { path = "../dickson_1919" }
 
 [lints]
 workspace = true
