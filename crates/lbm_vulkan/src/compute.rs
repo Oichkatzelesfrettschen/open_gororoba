@@ -2223,11 +2223,70 @@ impl GororobaEngine {
     }
 }
 
+// Safety: caller must hold the device lock (device_wait_idle) and the allocator
+// lock before calling any of these helpers.  All three functions are called only
+// from GororobaEngine::drop, which satisfies both preconditions.
+
+// Destroy all Vulkan objects owned by one ComputePipeline and free its uniform
+// buffer allocation.  The zeroed placeholder for the freed allocation is
+// immediately discarded; see the Drop impl comment for the rationale.
+#[allow(clippy::mem_replace_with_uninit)]
+unsafe fn drop_compute_pipeline(
+    device: &Device,
+    allocator: &mut Allocator,
+    pipeline: &mut ComputePipeline,
+    label: &str,
+) {
+    unsafe {
+        device.destroy_pipeline(pipeline.pipeline, None);
+        device.destroy_pipeline_layout(pipeline.layout, None);
+        device.destroy_descriptor_set_layout(pipeline.descriptor_layout, None);
+        device.destroy_descriptor_pool(pipeline.descriptor_pool, None);
+        device.destroy_buffer(pipeline.uniform_buffer.buffer, None);
+        if let Err(e) = allocator.free(std::mem::replace(
+            &mut pipeline.uniform_buffer.allocation,
+            std::mem::zeroed(),
+        )) {
+            log::error!("Failed to free {label} uniform buffer: {e}");
+        }
+    }
+}
+
+// Destroy a single VkBuffer and free its gpu_allocator allocation.
+#[allow(clippy::mem_replace_with_uninit)]
+unsafe fn drop_buffer_set(
+    device: &Device,
+    allocator: &mut Allocator,
+    buf: &mut BufferSet,
+    label: &str,
+) {
+    unsafe {
+        device.destroy_buffer(buf.buffer, None);
+        if let Err(e) = allocator.free(std::mem::replace(&mut buf.allocation, std::mem::zeroed())) {
+            log::error!("Failed to free {label}: {e}");
+        }
+    }
+}
+
+// Destroy the image view, the image, and both allocations (image + readback)
+// owned by an ImageSet.
+#[allow(clippy::mem_replace_with_uninit)]
+unsafe fn drop_render_image(device: &Device, allocator: &mut Allocator, image: &mut ImageSet) {
+    unsafe {
+        device.destroy_image_view(image.view, None);
+        device.destroy_image(image.image, None);
+        if let Err(e) = allocator.free(std::mem::replace(&mut image.allocation, std::mem::zeroed()))
+        {
+            log::error!("Failed to free render image: {e}");
+        }
+        drop_buffer_set(device, allocator, &mut image.readback, "readback buffer");
+    }
+}
+
 impl Drop for GororobaEngine {
     // Vulkan allocations must be extracted for gpu_allocator::free(). Wrapping
     // every allocation in Option<Allocation> would change all access sites for
     // no runtime benefit. The zeroed placeholder is immediately dropped.
-    #[allow(clippy::mem_replace_with_uninit)]
     fn drop(&mut self) {
         unsafe {
             let _ = self.device.device_wait_idle();
@@ -2239,166 +2298,67 @@ impl Drop for GororobaEngine {
                 }
             };
 
-            // Shared destroy logic
-            self.device
-                .destroy_pipeline(self.lbm_pipeline.pipeline, None);
-            self.device
-                .destroy_pipeline_layout(self.lbm_pipeline.layout, None);
-            self.device
-                .destroy_descriptor_set_layout(self.lbm_pipeline.descriptor_layout, None);
-            self.device
-                .destroy_descriptor_pool(self.lbm_pipeline.descriptor_pool, None);
-            self.device
-                .destroy_buffer(self.lbm_pipeline.uniform_buffer.buffer, None);
-            if let Err(e) = allocator.free(std::mem::replace(
-                &mut self.lbm_pipeline.uniform_buffer.allocation,
-                std::mem::zeroed(),
-            )) {
-                log::error!("Failed to free lbm uniform buffer: {e}");
-            }
+            drop_compute_pipeline(&self.device, &mut allocator, &mut self.lbm_pipeline, "lbm");
+            drop_compute_pipeline(&self.device, &mut allocator, &mut self.mrt_pipeline, "mrt");
+            drop_compute_pipeline(&self.device, &mut allocator, &mut self.zd_pipeline, "zd");
+            drop_compute_pipeline(
+                &self.device,
+                &mut allocator,
+                &mut self.pathion_sink_pipeline,
+                "pathion_sink",
+            );
+            drop_compute_pipeline(
+                &self.device,
+                &mut allocator,
+                &mut self.render_pipeline,
+                "render",
+            );
 
-            // MRT pipeline cleanup
-            self.device
-                .destroy_pipeline(self.mrt_pipeline.pipeline, None);
-            self.device
-                .destroy_pipeline_layout(self.mrt_pipeline.layout, None);
-            self.device
-                .destroy_descriptor_set_layout(self.mrt_pipeline.descriptor_layout, None);
-            self.device
-                .destroy_descriptor_pool(self.mrt_pipeline.descriptor_pool, None);
-            self.device
-                .destroy_buffer(self.mrt_pipeline.uniform_buffer.buffer, None);
-            if let Err(e) = allocator.free(std::mem::replace(
-                &mut self.mrt_pipeline.uniform_buffer.allocation,
-                std::mem::zeroed(),
-            )) {
-                log::error!("Failed to free mrt uniform buffer: {e}");
-            }
+            drop_render_image(&self.device, &mut allocator, &mut self.render_image);
 
-            self.device
-                .destroy_pipeline(self.zd_pipeline.pipeline, None);
-            self.device
-                .destroy_pipeline_layout(self.zd_pipeline.layout, None);
-            self.device
-                .destroy_descriptor_set_layout(self.zd_pipeline.descriptor_layout, None);
-            self.device
-                .destroy_descriptor_pool(self.zd_pipeline.descriptor_pool, None);
-            self.device
-                .destroy_buffer(self.zd_pipeline.uniform_buffer.buffer, None);
-            if let Err(e) = allocator.free(std::mem::replace(
-                &mut self.zd_pipeline.uniform_buffer.allocation,
-                std::mem::zeroed(),
-            )) {
-                log::error!("Failed to free zd uniform buffer: {e}");
-            }
-
-            self.device
-                .destroy_pipeline(self.pathion_sink_pipeline.pipeline, None);
-            self.device
-                .destroy_pipeline_layout(self.pathion_sink_pipeline.layout, None);
-            self.device
-                .destroy_descriptor_set_layout(self.pathion_sink_pipeline.descriptor_layout, None);
-            self.device
-                .destroy_descriptor_pool(self.pathion_sink_pipeline.descriptor_pool, None);
-            self.device
-                .destroy_buffer(self.pathion_sink_pipeline.uniform_buffer.buffer, None);
-            if let Err(e) = allocator.free(std::mem::replace(
-                &mut self.pathion_sink_pipeline.uniform_buffer.allocation,
-                std::mem::zeroed(),
-            )) {
-                log::error!("Failed to free pathion_sink uniform buffer: {e}");
-            }
-
-            self.device
-                .destroy_pipeline(self.render_pipeline.pipeline, None);
-            self.device
-                .destroy_pipeline_layout(self.render_pipeline.layout, None);
-            self.device
-                .destroy_descriptor_set_layout(self.render_pipeline.descriptor_layout, None);
-            self.device
-                .destroy_descriptor_pool(self.render_pipeline.descriptor_pool, None);
-            self.device
-                .destroy_buffer(self.render_pipeline.uniform_buffer.buffer, None);
-            if let Err(e) = allocator.free(std::mem::replace(
-                &mut self.render_pipeline.uniform_buffer.allocation,
-                std::mem::zeroed(),
-            )) {
-                log::error!("Failed to free render uniform buffer: {e}");
-            }
-
-            self.device.destroy_image_view(self.render_image.view, None);
-            self.device.destroy_image(self.render_image.image, None);
-            if let Err(e) = allocator.free(std::mem::replace(
-                &mut self.render_image.allocation,
-                std::mem::zeroed(),
-            )) {
-                log::error!("Failed to free render image: {e}");
-            }
-            self.device
-                .destroy_buffer(self.render_image.readback.buffer, None);
-            if let Err(e) = allocator.free(std::mem::replace(
-                &mut self.render_image.readback.allocation,
-                std::mem::zeroed(),
-            )) {
-                log::error!("Failed to free readback buffer: {e}");
-            }
-
-            self.device.destroy_buffer(self.f_buffers[0].buffer, None);
-            if let Err(e) = allocator.free(std::mem::replace(
-                &mut self.f_buffers[0].allocation,
-                std::mem::zeroed(),
-            )) {
-                log::error!("Failed to free f_buffers[0]: {e}");
-            }
-            self.device.destroy_buffer(self.f_buffers[1].buffer, None);
-            if let Err(e) = allocator.free(std::mem::replace(
-                &mut self.f_buffers[1].allocation,
-                std::mem::zeroed(),
-            )) {
-                log::error!("Failed to free f_buffers[1]: {e}");
-            }
-            self.device.destroy_buffer(self.rho_buffer.buffer, None);
-            if let Err(e) = allocator.free(std::mem::replace(
-                &mut self.rho_buffer.allocation,
-                std::mem::zeroed(),
-            )) {
-                log::error!("Failed to free rho buffer: {e}");
-            }
-            self.device.destroy_buffer(self.u_buffer.buffer, None);
-            if let Err(e) = allocator.free(std::mem::replace(
-                &mut self.u_buffer.allocation,
-                std::mem::zeroed(),
-            )) {
-                log::error!("Failed to free u buffer: {e}");
-            }
-            self.device.destroy_buffer(self.tau_buffer.buffer, None);
-            if let Err(e) = allocator.free(std::mem::replace(
-                &mut self.tau_buffer.allocation,
-                std::mem::zeroed(),
-            )) {
-                log::error!("Failed to free tau buffer: {e}");
-            }
-            self.device.destroy_buffer(self.force_buffer.buffer, None);
-            if let Err(e) = allocator.free(std::mem::replace(
-                &mut self.force_buffer.allocation,
-                std::mem::zeroed(),
-            )) {
-                log::error!("Failed to free force buffer: {e}");
-            }
-            self.device.destroy_buffer(self.entropy_buffer.buffer, None);
-            if let Err(e) = allocator.free(std::mem::replace(
-                &mut self.entropy_buffer.allocation,
-                std::mem::zeroed(),
-            )) {
-                log::error!("Failed to free entropy buffer: {e}");
-            }
-            self.device.destroy_buffer(self.accum_buffer.buffer, None);
-            if let Err(e) = allocator.free(std::mem::replace(
-                &mut self.accum_buffer.allocation,
-                std::mem::zeroed(),
-            )) {
-                log::error!("Failed to free accum buffer: {e}");
-            }
+            drop_buffer_set(
+                &self.device,
+                &mut allocator,
+                &mut self.f_buffers[0],
+                "f_buffers[0]",
+            );
+            drop_buffer_set(
+                &self.device,
+                &mut allocator,
+                &mut self.f_buffers[1],
+                "f_buffers[1]",
+            );
+            drop_buffer_set(
+                &self.device,
+                &mut allocator,
+                &mut self.rho_buffer,
+                "rho buffer",
+            );
+            drop_buffer_set(&self.device, &mut allocator, &mut self.u_buffer, "u buffer");
+            drop_buffer_set(
+                &self.device,
+                &mut allocator,
+                &mut self.tau_buffer,
+                "tau buffer",
+            );
+            drop_buffer_set(
+                &self.device,
+                &mut allocator,
+                &mut self.force_buffer,
+                "force buffer",
+            );
+            drop_buffer_set(
+                &self.device,
+                &mut allocator,
+                &mut self.entropy_buffer,
+                "entropy buffer",
+            );
+            drop_buffer_set(
+                &self.device,
+                &mut allocator,
+                &mut self.accum_buffer,
+                "accum buffer",
+            );
         }
     }
 }

@@ -341,17 +341,7 @@ fn normalize_identity_hint(hint: &str) -> String {
     trimmed.to_string()
 }
 
-fn normalize_url(url: &str) -> String {
-    let mut value = url.trim().trim_matches('`').to_string();
-    if value.contains('|') {
-        for part in value.split('|') {
-            let normalized = normalize_url(part);
-            if !normalized.is_empty() {
-                return normalized;
-            }
-        }
-        return String::new();
-    }
+fn strip_url_wrappers(value: &mut String) {
     while let Some(ch) = value.chars().next() {
         if "(<[{\"'".contains(ch) {
             value.remove(0);
@@ -366,43 +356,28 @@ fn normalize_url(url: &str) -> String {
             break;
         }
     }
-    let trimmed = value.trim();
+}
+
+fn rewrite_arxiv_typo_prefix(trimmed: &str) -> Option<String> {
     if let Some(suffix) = trimmed
         .strip_prefix("http://arxiv.org.abs/")
         .or_else(|| trimmed.strip_prefix("https://arxiv.org.abs/"))
     {
-        return normalize_url(&format!("https://arxiv.org/abs/{suffix}"));
+        return Some(normalize_url(&format!("https://arxiv.org/abs/{suffix}")));
     }
     if let Some(suffix) = trimmed
         .strip_prefix("http://arxiv.org/abs.")
         .or_else(|| trimmed.strip_prefix("https://arxiv.org/abs."))
     {
-        return normalize_url(&format!("https://arxiv.org/abs/{suffix}"));
+        return Some(normalize_url(&format!("https://arxiv.org/abs/{suffix}")));
     }
-    let Ok(parsed) = Url::parse(trimmed) else {
-        return trimmed.to_string();
-    };
-    let host = parsed.host_str().unwrap_or_default().to_ascii_lowercase();
-    if host == "archivep75mbjunhxc6x4j5mwjmomyxb573v42baldlqu56ruil2oiad.onion"
-        && parsed.path().starts_with("/download/")
-    {
-        return normalize_url(&format!("https://archive.org{}", parsed.path()));
-    }
-    if host == "idp.springer.com" {
-        for (key, val) in parsed.query_pairs() {
-            if key == "redirect_uri" {
-                let redirected = val.trim();
-                if !redirected.is_empty() {
-                    return normalize_url(redirected);
-                }
-            }
-        }
-        return String::new();
-    }
-    let mut parsed = parsed;
+    None
+}
+
+fn apply_host_specific_rewrites(parsed: &mut Url, host: &str) {
     if parsed.scheme() == "http"
         && matches!(
-            host.as_str(),
+            host,
             "arxiv.org"
                 | "export.arxiv.org"
                 | "www.mdpi.com"
@@ -427,9 +402,6 @@ fn normalize_url(url: &str) -> String {
         let _ = parsed.set_scheme("http");
     }
     parsed.set_fragment(None);
-    if is_non_reference_service_url(&parsed) {
-        return String::new();
-    }
     if host == "arxiv.org" {
         if parsed.path().starts_with("/pdf/") && !parsed.path().ends_with(".pdf") {
             parsed.set_path(&format!("{}.pdf", parsed.path()));
@@ -440,17 +412,10 @@ fn normalize_url(url: &str) -> String {
             }
         }
     }
-    if host == "core.ac.uk" && parsed.path().starts_with("/download/") {
-        let path = parsed.path();
-        if let Some(suffix) = path.strip_prefix("/download/")
-            && suffix.ends_with(".pdf")
-            && !suffix.starts_with("pdf/")
-        {
-            parsed.set_path(&format!("/download/pdf/{suffix}"));
-        }
-    }
-    if host == "files01.core.ac.uk" && parsed.path().starts_with("/download/") {
-        let path = parsed.path();
+    if (host == "core.ac.uk" || host == "files01.core.ac.uk")
+        && parsed.path().starts_with("/download/")
+    {
+        let path = parsed.path().to_string();
         if let Some(suffix) = path.strip_prefix("/download/")
             && suffix.ends_with(".pdf")
             && !suffix.starts_with("pdf/")
@@ -461,6 +426,9 @@ fn normalize_url(url: &str) -> String {
     if host == "www.sciencedirect.com" && parsed.path().contains("/pdfft") {
         parsed.set_path(&parsed.path().replace("/pdfft", "/pdf"));
     }
+}
+
+fn filter_tracking_query_params(parsed: &mut Url) {
     let filtered = parsed
         .query_pairs()
         .filter(|(key, _)| {
@@ -483,6 +451,50 @@ fn normalize_url(url: &str) -> String {
         }
         drop(qp);
     }
+}
+
+fn normalize_url(url: &str) -> String {
+    let mut value = url.trim().trim_matches('`').to_string();
+    if value.contains('|') {
+        for part in value.split('|') {
+            let normalized = normalize_url(part);
+            if !normalized.is_empty() {
+                return normalized;
+            }
+        }
+        return String::new();
+    }
+    strip_url_wrappers(&mut value);
+    let trimmed = value.trim();
+    if let Some(rewritten) = rewrite_arxiv_typo_prefix(trimmed) {
+        return rewritten;
+    }
+    let Ok(parsed) = Url::parse(trimmed) else {
+        return trimmed.to_string();
+    };
+    let host = parsed.host_str().unwrap_or_default().to_ascii_lowercase();
+    if host == "archivep75mbjunhxc6x4j5mwjmomyxb573v42baldlqu56ruil2oiad.onion"
+        && parsed.path().starts_with("/download/")
+    {
+        return normalize_url(&format!("https://archive.org{}", parsed.path()));
+    }
+    if host == "idp.springer.com" {
+        for (key, val) in parsed.query_pairs() {
+            if key == "redirect_uri" {
+                let redirected = val.trim();
+                if !redirected.is_empty() {
+                    return normalize_url(redirected);
+                }
+            }
+        }
+        return String::new();
+    }
+    let mut parsed = parsed;
+    apply_host_specific_rewrites(&mut parsed, &host);
+    if is_non_reference_service_url(&parsed) {
+        return String::new();
+    }
+    filter_tracking_query_params(&mut parsed);
     parsed.to_string()
 }
 
@@ -1785,232 +1797,253 @@ fn extract_candidates_from_source_file(
     }
 }
 
-fn build_candidates(repo_root: &Path) -> Result<(Vec<CandidateRecord>, Vec<String>)> {
+fn candidates_from_bibliography(repo_root: &Path) -> Result<Vec<CandidateRecord>> {
     let mut candidates = Vec::new();
-
     let bibliography_path = repo_root.join("registry/bibliography.toml");
-    if bibliography_path.exists() {
-        let value = load_toml_value(&bibliography_path)?;
-        if let Some(entries) = value.get("entry").and_then(Value::as_array) {
-            for entry in entries {
-                let Some(table) = entry.as_table() else {
-                    continue;
-                };
-                let entry_id = table.get("id").and_then(Value::as_str).unwrap_or("").trim();
-                let citation = table
-                    .get("citation_markdown")
-                    .and_then(Value::as_str)
-                    .unwrap_or("")
-                    .trim()
-                    .to_string();
-                let title = citation.clone();
-                let mut links = Vec::new();
-                if let Some(urls) = table.get("urls").and_then(Value::as_array) {
-                    for value in urls.iter().filter_map(Value::as_str) {
-                        let normalized = normalize_url(value);
-                        if !normalized.is_empty() {
-                            links.push(normalized);
-                        }
-                    }
+    if !bibliography_path.exists() {
+        return Ok(candidates);
+    }
+    let value = load_toml_value(&bibliography_path)?;
+    let Some(entries) = value.get("entry").and_then(Value::as_array) else {
+        return Ok(candidates);
+    };
+    for entry in entries {
+        let Some(table) = entry.as_table() else {
+            continue;
+        };
+        let entry_id = table.get("id").and_then(Value::as_str).unwrap_or("").trim();
+        let citation = table
+            .get("citation_markdown")
+            .and_then(Value::as_str)
+            .unwrap_or("")
+            .trim()
+            .to_string();
+        let title = citation.clone();
+        let mut links = Vec::new();
+        if let Some(urls) = table.get("urls").and_then(Value::as_array) {
+            for value in urls.iter().filter_map(Value::as_str) {
+                let normalized = normalize_url(value);
+                if !normalized.is_empty() {
+                    links.push(normalized);
                 }
-                let mut dois = Vec::new();
-                if let Some(values) = table.get("dois").and_then(Value::as_array) {
-                    for value in values.iter().filter_map(Value::as_str) {
-                        let normalized = normalize_doi(value);
-                        if !normalized.is_empty() {
-                            dois.push(normalized);
-                        }
-                    }
-                }
-                links.extend(dois.iter().map(|doi| doi_to_url(doi)));
-                let notes = table
-                    .get("notes")
-                    .and_then(Value::as_array)
-                    .map(|items| {
-                        items
-                            .iter()
-                            .filter_map(Value::as_str)
-                            .map(|note| note.trim().to_string())
-                            .filter(|note| !note.is_empty())
-                            .collect::<Vec<_>>()
-                    })
-                    .unwrap_or_default();
-                candidates.push(CandidateRecord {
-                    source_kind: "bibliography_entry".to_string(),
-                    source_ref: if entry_id.is_empty() {
-                        "BIB-UNKNOWN".to_string()
-                    } else {
-                        entry_id.to_string()
-                    },
-                    identity_override: None,
-                    title: title.clone(),
-                    citation,
-                    dois: dedupe(dois),
-                    links: dedupe(links),
-                    local_paths: Vec::new(),
-                    notes,
-                });
             }
         }
-    }
-
-    let external_sources_path = repo_root.join("registry/external_sources.toml");
-    if external_sources_path.exists() {
-        let value = load_toml_value(&external_sources_path)?;
-        if let Some(documents) = value.get("document").and_then(Value::as_array) {
-            for document in documents {
-                let Some(table) = document.as_table() else {
-                    continue;
-                };
-                let doc_id = table.get("id").and_then(Value::as_str).unwrap_or("").trim();
-                let title = table
-                    .get("title")
-                    .and_then(Value::as_str)
-                    .unwrap_or("")
-                    .trim()
-                    .to_string();
-                let mut links = Vec::new();
-                if let Some(url_refs) = table.get("url_refs").and_then(Value::as_array) {
-                    for value in url_refs.iter().filter_map(Value::as_str) {
-                        let normalized = normalize_url(value);
-                        if !normalized.is_empty() {
-                            links.push(normalized);
-                        }
-                    }
+        let mut dois = Vec::new();
+        if let Some(values) = table.get("dois").and_then(Value::as_array) {
+            for value in values.iter().filter_map(Value::as_str) {
+                let normalized = normalize_doi(value);
+                if !normalized.is_empty() {
+                    dois.push(normalized);
                 }
-                let mut existing_paths = Vec::new();
-                if let Some(path_refs) = table.get("path_refs").and_then(Value::as_array) {
-                    for path_ref in path_refs.iter().filter_map(Value::as_str) {
-                        let trimmed = path_ref.trim();
-                        if !trimmed.is_empty()
-                            && is_artifact_local_path(trimmed)
-                            && repo_root.join(trimmed).exists()
-                        {
-                            existing_paths.push(trimmed.to_string());
-                        }
-                    }
-                }
-                let notes = table
-                    .get("notes")
-                    .and_then(Value::as_str)
+            }
+        }
+        links.extend(dois.iter().map(|doi| doi_to_url(doi)));
+        let notes = table
+            .get("notes")
+            .and_then(Value::as_array)
+            .map(|items| {
+                items
+                    .iter()
+                    .filter_map(Value::as_str)
                     .map(|note| note.trim().to_string())
                     .filter(|note| !note.is_empty())
-                    .into_iter()
-                    .collect::<Vec<_>>();
-                candidates.push(CandidateRecord {
-                    source_kind: "external_source_document".to_string(),
-                    source_ref: if doc_id.is_empty() {
-                        "XS-UNKNOWN".to_string()
-                    } else {
-                        doc_id.to_string()
-                    },
-                    identity_override: None,
-                    title: title.clone(),
-                    citation: title,
-                    dois: Vec::new(),
-                    links: dedupe(links),
-                    local_paths: dedupe(existing_paths),
-                    notes,
-                });
+                    .collect::<Vec<_>>()
+            })
+            .unwrap_or_default();
+        candidates.push(CandidateRecord {
+            source_kind: "bibliography_entry".to_string(),
+            source_ref: if entry_id.is_empty() {
+                "BIB-UNKNOWN".to_string()
+            } else {
+                entry_id.to_string()
+            },
+            identity_override: None,
+            title: title.clone(),
+            citation,
+            dois: dedupe(dois),
+            links: dedupe(links),
+            local_paths: Vec::new(),
+            notes,
+        });
+    }
+    Ok(candidates)
+}
+
+fn candidates_from_external_sources(repo_root: &Path) -> Result<Vec<CandidateRecord>> {
+    let mut candidates = Vec::new();
+    let external_sources_path = repo_root.join("registry/external_sources.toml");
+    if !external_sources_path.exists() {
+        return Ok(candidates);
+    }
+    let value = load_toml_value(&external_sources_path)?;
+    let Some(documents) = value.get("document").and_then(Value::as_array) else {
+        return Ok(candidates);
+    };
+    for document in documents {
+        let Some(table) = document.as_table() else {
+            continue;
+        };
+        let doc_id = table.get("id").and_then(Value::as_str).unwrap_or("").trim();
+        let title = table
+            .get("title")
+            .and_then(Value::as_str)
+            .unwrap_or("")
+            .trim()
+            .to_string();
+        let mut links = Vec::new();
+        if let Some(url_refs) = table.get("url_refs").and_then(Value::as_array) {
+            for value in url_refs.iter().filter_map(Value::as_str) {
+                let normalized = normalize_url(value);
+                if !normalized.is_empty() {
+                    links.push(normalized);
+                }
             }
         }
+        let mut existing_paths = Vec::new();
+        if let Some(path_refs) = table.get("path_refs").and_then(Value::as_array) {
+            for path_ref in path_refs.iter().filter_map(Value::as_str) {
+                let trimmed = path_ref.trim();
+                if !trimmed.is_empty()
+                    && is_artifact_local_path(trimmed)
+                    && repo_root.join(trimmed).exists()
+                {
+                    existing_paths.push(trimmed.to_string());
+                }
+            }
+        }
+        let notes = table
+            .get("notes")
+            .and_then(Value::as_str)
+            .map(|note| note.trim().to_string())
+            .filter(|note| !note.is_empty())
+            .into_iter()
+            .collect::<Vec<_>>();
+        candidates.push(CandidateRecord {
+            source_kind: "external_source_document".to_string(),
+            source_ref: if doc_id.is_empty() {
+                "XS-UNKNOWN".to_string()
+            } else {
+                doc_id.to_string()
+            },
+            identity_override: None,
+            title: title.clone(),
+            citation: title,
+            dois: Vec::new(),
+            links: dedupe(links),
+            local_paths: dedupe(existing_paths),
+            notes,
+        });
     }
+    Ok(candidates)
+}
 
+fn candidates_from_cdcs(repo_root: &Path) -> Result<Vec<CandidateRecord>> {
+    let mut candidates = Vec::new();
     let cdcs_path = repo_root.join("registry/cayley_dickson_canonical_sources.toml");
-    if cdcs_path.exists() {
-        let value = load_toml_value(&cdcs_path)?;
-        if let Some(papers) = value.get("paper").and_then(Value::as_array) {
-            for paper in papers {
-                let Some(table) = paper.as_table() else {
-                    continue;
-                };
-                let key = table
-                    .get("key")
-                    .and_then(Value::as_str)
-                    .unwrap_or("CDCS-UNKNOWN")
-                    .trim();
-                let title = table
-                    .get("title")
-                    .and_then(Value::as_str)
-                    .unwrap_or("")
-                    .trim()
-                    .to_string();
-                let doi = normalize_doi(table.get("doi").and_then(Value::as_str).unwrap_or(""));
-                let mut links = Vec::new();
-                for field in [
-                    "working_mirrors",
-                    "working_pdf_mirrors",
-                    "nonworking_mirrors",
-                    "manual_intervention_urls",
-                ] {
-                    if let Some(values) = table.get(field).and_then(Value::as_array) {
-                        for value in values.iter().filter_map(Value::as_str) {
-                            let normalized = normalize_url(value);
-                            if !normalized.is_empty() {
-                                links.push(normalized);
-                            }
-                        }
+    if !cdcs_path.exists() {
+        return Ok(candidates);
+    }
+    let value = load_toml_value(&cdcs_path)?;
+    let Some(papers) = value.get("paper").and_then(Value::as_array) else {
+        return Ok(candidates);
+    };
+    for paper in papers {
+        let Some(table) = paper.as_table() else {
+            continue;
+        };
+        let key = table
+            .get("key")
+            .and_then(Value::as_str)
+            .unwrap_or("CDCS-UNKNOWN")
+            .trim();
+        let title = table
+            .get("title")
+            .and_then(Value::as_str)
+            .unwrap_or("")
+            .trim()
+            .to_string();
+        let doi = normalize_doi(table.get("doi").and_then(Value::as_str).unwrap_or(""));
+        let mut links = Vec::new();
+        for field in [
+            "working_mirrors",
+            "working_pdf_mirrors",
+            "nonworking_mirrors",
+            "manual_intervention_urls",
+        ] {
+            if let Some(values) = table.get(field).and_then(Value::as_array) {
+                for value in values.iter().filter_map(Value::as_str) {
+                    let normalized = normalize_url(value);
+                    if !normalized.is_empty() {
+                        links.push(normalized);
                     }
                 }
-                let canonical_url = normalize_url(
-                    table
-                        .get("canonical_functional_url")
-                        .and_then(Value::as_str)
-                        .unwrap_or(""),
-                );
-                if !canonical_url.is_empty() {
-                    links.push(canonical_url);
-                }
-                if !doi.is_empty() {
-                    links.push(doi_to_url(&doi));
-                }
-                let mut local_paths = Vec::new();
-                let canonical_pdf_path = table
-                    .get("canonical_pdf_path")
-                    .and_then(Value::as_str)
-                    .unwrap_or("")
-                    .trim();
-                if !canonical_pdf_path.is_empty()
-                    && is_artifact_local_path(canonical_pdf_path)
-                    && repo_root.join(canonical_pdf_path).exists()
-                {
-                    local_paths.push(canonical_pdf_path.to_string());
-                }
-                let mut notes = Vec::new();
-                let status = table
-                    .get("status")
-                    .and_then(Value::as_str)
-                    .unwrap_or("")
-                    .trim();
-                if !status.is_empty() {
-                    notes.push(format!("status={status}"));
-                }
-                let reason = table
-                    .get("manual_intervention_reason")
-                    .and_then(Value::as_str)
-                    .unwrap_or("")
-                    .trim();
-                if !reason.is_empty() {
-                    notes.push(reason.to_string());
-                }
-                candidates.push(CandidateRecord {
-                    source_kind: "canonical_cayley_dickson".to_string(),
-                    source_ref: key.to_string(),
-                    identity_override: None,
-                    title: title.clone(),
-                    citation: title,
-                    dois: if doi.is_empty() {
-                        Vec::new()
-                    } else {
-                        vec![doi]
-                    },
-                    links: dedupe(links),
-                    local_paths: dedupe(local_paths),
-                    notes: dedupe(notes),
-                });
             }
         }
+        let canonical_url = normalize_url(
+            table
+                .get("canonical_functional_url")
+                .and_then(Value::as_str)
+                .unwrap_or(""),
+        );
+        if !canonical_url.is_empty() {
+            links.push(canonical_url);
+        }
+        if !doi.is_empty() {
+            links.push(doi_to_url(&doi));
+        }
+        let mut local_paths = Vec::new();
+        let canonical_pdf_path = table
+            .get("canonical_pdf_path")
+            .and_then(Value::as_str)
+            .unwrap_or("")
+            .trim();
+        if !canonical_pdf_path.is_empty()
+            && is_artifact_local_path(canonical_pdf_path)
+            && repo_root.join(canonical_pdf_path).exists()
+        {
+            local_paths.push(canonical_pdf_path.to_string());
+        }
+        let mut notes = Vec::new();
+        let status = table
+            .get("status")
+            .and_then(Value::as_str)
+            .unwrap_or("")
+            .trim();
+        if !status.is_empty() {
+            notes.push(format!("status={status}"));
+        }
+        let reason = table
+            .get("manual_intervention_reason")
+            .and_then(Value::as_str)
+            .unwrap_or("")
+            .trim();
+        if !reason.is_empty() {
+            notes.push(reason.to_string());
+        }
+        candidates.push(CandidateRecord {
+            source_kind: "canonical_cayley_dickson".to_string(),
+            source_ref: key.to_string(),
+            identity_override: None,
+            title: title.clone(),
+            citation: title,
+            dois: if doi.is_empty() {
+                Vec::new()
+            } else {
+                vec![doi]
+            },
+            links: dedupe(links),
+            local_paths: dedupe(local_paths),
+            notes: dedupe(notes),
+        });
     }
+    Ok(candidates)
+}
+
+fn build_candidates(repo_root: &Path) -> Result<(Vec<CandidateRecord>, Vec<String>)> {
+    let mut candidates = Vec::new();
+    candidates.extend(candidates_from_bibliography(repo_root)?);
+    candidates.extend(candidates_from_external_sources(repo_root)?);
+    candidates.extend(candidates_from_cdcs(repo_root)?);
 
     let discovered_files = discover_candidate_source_files(repo_root);
     for file in &discovered_files {
@@ -2862,37 +2895,66 @@ pub fn build_source_truth_infrastructure(
     })
 }
 
-pub fn verify_artifact_source_of_truth(
+#[derive(Default)]
+struct ArtifactCounts {
+    downloaded: usize,
+    downloadable: usize,
+    blocked: usize,
+    citation_only: usize,
+    unverified: usize,
+    missing_minimum: usize,
+    manual: usize,
+}
+
+#[derive(Default)]
+struct ValidationState {
+    ids: HashSet<String>,
+    keys: HashSet<String>,
+    counts: ArtifactCounts,
+    failures: Vec<String>,
+}
+
+fn validate_artifact_entry(
+    index: usize,
+    artifact: &Value,
     repo_root: &Path,
-    registry_path: &Path,
-) -> Result<VerifySummary> {
-    let value = load_toml_value(registry_path)?;
-    let Some(head) = value
-        .get("artifact_source_of_truth")
-        .and_then(Value::as_table)
-    else {
-        bail!("artifact_source_of_truth header missing");
+    coverage_missing_keys: &[String],
+    state: &mut ValidationState,
+) {
+    let Some(table) = artifact.as_table() else {
+        state
+            .failures
+            .push(format!("artifact[{index}] is not a table"));
+        return;
     };
-    let Some(coverage) = value.get("coverage").and_then(Value::as_table) else {
-        bail!("coverage table missing");
-    };
-    let artifacts = value
-        .get("artifact")
-        .and_then(Value::as_array)
-        .cloned()
-        .unwrap_or_default();
-    let mut failures = Vec::new();
-    let mut ids = HashSet::new();
-    let mut keys = HashSet::new();
-    let mut downloaded_count = 0usize;
-    let mut downloadable_count = 0usize;
-    let mut blocked_count = 0usize;
-    let mut citation_only_count = 0usize;
-    let mut unverified_count = 0usize;
-    let mut missing_minimum_count = 0usize;
-    let mut manual_count = 0usize;
-    let coverage_missing_keys = coverage
-        .get("artifacts_without_working_mirror")
+    let art_id = table
+        .get("id")
+        .and_then(Value::as_str)
+        .unwrap_or("")
+        .trim()
+        .to_string();
+    let key = table
+        .get("key")
+        .and_then(Value::as_str)
+        .unwrap_or("")
+        .trim()
+        .to_string();
+    let status = table
+        .get("status")
+        .and_then(Value::as_str)
+        .unwrap_or("")
+        .trim()
+        .to_string();
+    let minimum_met = table
+        .get("minimum_requirement_met")
+        .and_then(Value::as_bool)
+        .unwrap_or(false);
+    let manual = table
+        .get("manual_intervention_required")
+        .and_then(Value::as_bool)
+        .unwrap_or(false);
+    let all_links = table
+        .get("all_links")
         .and_then(Value::as_array)
         .map(|items| {
             items
@@ -2903,225 +2965,198 @@ pub fn verify_artifact_source_of_truth(
                 .collect::<Vec<_>>()
         })
         .unwrap_or_default();
+    let working = table
+        .get("working_mirrors")
+        .and_then(Value::as_array)
+        .map(|items| {
+            items
+                .iter()
+                .filter_map(Value::as_str)
+                .map(str::to_string)
+                .collect::<Vec<_>>()
+        })
+        .unwrap_or_default();
+    let working_pdf = table
+        .get("working_pdf_mirrors")
+        .and_then(Value::as_array)
+        .map(|items| {
+            items
+                .iter()
+                .filter_map(Value::as_str)
+                .map(str::to_string)
+                .collect::<Vec<_>>()
+        })
+        .unwrap_or_default();
+    let nonworking = table
+        .get("nonworking_mirrors")
+        .and_then(Value::as_array)
+        .map(|items| {
+            items
+                .iter()
+                .filter_map(Value::as_str)
+                .map(str::to_string)
+                .collect::<Vec<_>>()
+        })
+        .unwrap_or_default();
+    let unverified_mirrors = table
+        .get("unverified_mirrors")
+        .and_then(Value::as_array)
+        .map(|items| {
+            items
+                .iter()
+                .filter_map(Value::as_str)
+                .map(str::to_string)
+                .collect::<Vec<_>>()
+        })
+        .unwrap_or_default();
+    let downloaded_paths = table
+        .get("downloaded_paths")
+        .and_then(Value::as_array)
+        .map(|items| {
+            items
+                .iter()
+                .filter_map(Value::as_str)
+                .map(str::to_string)
+                .collect::<Vec<_>>()
+        })
+        .unwrap_or_default();
+    let canonical_url = table
+        .get("canonical_functional_url")
+        .and_then(Value::as_str)
+        .unwrap_or("")
+        .trim()
+        .to_string();
+    let canonical_path = table
+        .get("canonical_download_path")
+        .and_then(Value::as_str)
+        .unwrap_or("")
+        .trim()
+        .to_string();
 
-    for (index, artifact) in artifacts.iter().enumerate() {
-        let Some(table) = artifact.as_table() else {
-            failures.push(format!("artifact[{index}] is not a table"));
-            continue;
-        };
-        let art_id = table
-            .get("id")
-            .and_then(Value::as_str)
-            .unwrap_or("")
-            .trim()
-            .to_string();
-        let key = table
-            .get("key")
-            .and_then(Value::as_str)
-            .unwrap_or("")
-            .trim()
-            .to_string();
-        let status = table
-            .get("status")
-            .and_then(Value::as_str)
-            .unwrap_or("")
-            .trim()
-            .to_string();
-        let minimum_met = table
-            .get("minimum_requirement_met")
-            .and_then(Value::as_bool)
-            .unwrap_or(false);
-        let manual = table
-            .get("manual_intervention_required")
-            .and_then(Value::as_bool)
-            .unwrap_or(false);
-        let all_links = table
-            .get("all_links")
-            .and_then(Value::as_array)
-            .map(|items| {
-                items
-                    .iter()
-                    .filter_map(Value::as_str)
-                    .map(|value| value.trim().to_string())
-                    .filter(|value| !value.is_empty())
-                    .collect::<Vec<_>>()
-            })
-            .unwrap_or_default();
-        let working = table
-            .get("working_mirrors")
-            .and_then(Value::as_array)
-            .map(|items| {
-                items
-                    .iter()
-                    .filter_map(Value::as_str)
-                    .map(str::to_string)
-                    .collect::<Vec<_>>()
-            })
-            .unwrap_or_default();
-        let working_pdf = table
-            .get("working_pdf_mirrors")
-            .and_then(Value::as_array)
-            .map(|items| {
-                items
-                    .iter()
-                    .filter_map(Value::as_str)
-                    .map(str::to_string)
-                    .collect::<Vec<_>>()
-            })
-            .unwrap_or_default();
-        let nonworking = table
-            .get("nonworking_mirrors")
-            .and_then(Value::as_array)
-            .map(|items| {
-                items
-                    .iter()
-                    .filter_map(Value::as_str)
-                    .map(str::to_string)
-                    .collect::<Vec<_>>()
-            })
-            .unwrap_or_default();
-        let unverified = table
-            .get("unverified_mirrors")
-            .and_then(Value::as_array)
-            .map(|items| {
-                items
-                    .iter()
-                    .filter_map(Value::as_str)
-                    .map(str::to_string)
-                    .collect::<Vec<_>>()
-            })
-            .unwrap_or_default();
-        let downloaded_paths = table
-            .get("downloaded_paths")
-            .and_then(Value::as_array)
-            .map(|items| {
-                items
-                    .iter()
-                    .filter_map(Value::as_str)
-                    .map(str::to_string)
-                    .collect::<Vec<_>>()
-            })
-            .unwrap_or_default();
-        let canonical_url = table
-            .get("canonical_functional_url")
-            .and_then(Value::as_str)
-            .unwrap_or("")
-            .trim()
-            .to_string();
-        let canonical_path = table
-            .get("canonical_download_path")
-            .and_then(Value::as_str)
-            .unwrap_or("")
-            .trim()
-            .to_string();
-
-        if art_id.is_empty() {
-            failures.push(format!("artifact[{index}] missing id"));
-        } else if !ids.insert(art_id.clone()) {
-            failures.push(format!("duplicate artifact id: {art_id}"));
-        }
-        if key.is_empty() {
-            failures.push(format!(
-                "{} missing key",
-                if art_id.is_empty() {
-                    format!("index {index}")
-                } else {
-                    art_id.clone()
-                }
-            ));
-        } else if !keys.insert(key.clone()) {
-            failures.push(format!("duplicate artifact key: {key}"));
-        }
-        if !VALID_STATUSES.contains(&status.as_str()) {
-            failures.push(format!("{art_id}: invalid status {status:?}"));
-        }
-        if !canonical_url.is_empty() && !all_links.contains(&canonical_url) {
-            failures.push(format!(
-                "{art_id}: canonical_functional_url not in all_links"
-            ));
-        }
-        match status.as_str() {
-            "downloaded" => {
-                downloaded_count += 1;
-                if downloaded_paths.is_empty() {
-                    failures.push(format!(
-                        "{art_id}: downloaded status requires downloaded_paths"
-                    ));
-                }
+    if art_id.is_empty() {
+        state.failures.push(format!("artifact[{index}] missing id"));
+    } else if !state.ids.insert(art_id.clone()) {
+        state
+            .failures
+            .push(format!("duplicate artifact id: {art_id}"));
+    }
+    if key.is_empty() {
+        state.failures.push(format!(
+            "{} missing key",
+            if art_id.is_empty() {
+                format!("index {index}")
+            } else {
+                art_id.clone()
             }
-            "downloadable" => downloadable_count += 1,
-            "blocked" => {
-                blocked_count += 1;
-                if !working.is_empty() {
-                    failures.push(format!("{art_id}: blocked status but has working_mirrors"));
-                }
-            }
-            "citation_only_no_link" => {
-                citation_only_count += 1;
-                if !all_links.is_empty()
-                    && !key_is_citation_locator(&key)
-                    && !all_links.iter().all(|url| is_citation_locator_url(url))
-                {
-                    failures.push(format!(
-                        "{art_id}: citation_only_no_link but all_links is not empty"
-                    ));
-                }
-            }
-            "unverified" => unverified_count += 1,
-            _ => {}
-        }
-
-        if minimum_met != (!working.is_empty() || !downloaded_paths.is_empty()) {
-            failures.push(format!(
-                "{art_id}: minimum_requirement_met mismatch with working/downloaded mirrors"
-            ));
-        }
-        if !minimum_met {
-            missing_minimum_count += 1;
-            if !coverage_missing_keys.contains(&key) {
-                failures.push(format!(
-                    "{art_id}: missing minimum requirement but key absent from coverage.artifacts_without_working_mirror"
+        ));
+    } else if !state.keys.insert(key.clone()) {
+        state
+            .failures
+            .push(format!("duplicate artifact key: {key}"));
+    }
+    if !VALID_STATUSES.contains(&status.as_str()) {
+        state
+            .failures
+            .push(format!("{art_id}: invalid status {status:?}"));
+    }
+    if !canonical_url.is_empty() && !all_links.contains(&canonical_url) {
+        state.failures.push(format!(
+            "{art_id}: canonical_functional_url not in all_links"
+        ));
+    }
+    match status.as_str() {
+        "downloaded" => {
+            state.counts.downloaded += 1;
+            if downloaded_paths.is_empty() {
+                state.failures.push(format!(
+                    "{art_id}: downloaded status requires downloaded_paths"
                 ));
             }
         }
-        if manual {
-            manual_count += 1;
-        }
-        if working_pdf.len() > working.len() {
-            failures.push(format!(
-                "{art_id}: working_pdf_mirrors cannot exceed working_mirrors"
-            ));
-        }
-        if !canonical_path.is_empty() && !repo_root.join(&canonical_path).exists() {
-            failures.push(format!(
-                "{art_id}: canonical_download_path does not exist: {canonical_path}"
-            ));
-        }
-        for path in &downloaded_paths {
-            if !repo_root.join(path).exists() {
-                failures.push(format!("{art_id}: downloaded path missing on disk: {path}"));
+        "downloadable" => state.counts.downloadable += 1,
+        "blocked" => {
+            state.counts.blocked += 1;
+            if !working.is_empty() {
+                state
+                    .failures
+                    .push(format!("{art_id}: blocked status but has working_mirrors"));
             }
         }
-        if !minimum_met
-            && status != "citation_only_no_link"
-            && nonworking.is_empty()
-            && unverified.is_empty()
-        {
-            failures.push(format!(
-                "{art_id}: neither nonworking nor unverified mirrors recorded despite missing minimum"
+        "citation_only_no_link" => {
+            state.counts.citation_only += 1;
+            if !all_links.is_empty()
+                && !key_is_citation_locator(&key)
+                && !all_links.iter().all(|url| is_citation_locator_url(url))
+            {
+                state.failures.push(format!(
+                    "{art_id}: citation_only_no_link but all_links is not empty"
+                ));
+            }
+        }
+        "unverified" => state.counts.unverified += 1,
+        _ => {}
+    }
+    if minimum_met != (!working.is_empty() || !downloaded_paths.is_empty()) {
+        state.failures.push(format!(
+            "{art_id}: minimum_requirement_met mismatch with working/downloaded mirrors"
+        ));
+    }
+    if !minimum_met {
+        state.counts.missing_minimum += 1;
+        if !coverage_missing_keys.contains(&key) {
+            state.failures.push(format!(
+                "{art_id}: missing minimum requirement but key absent from coverage.artifacts_without_working_mirror"
             ));
         }
     }
+    if manual {
+        state.counts.manual += 1;
+    }
+    if working_pdf.len() > working.len() {
+        state.failures.push(format!(
+            "{art_id}: working_pdf_mirrors cannot exceed working_mirrors"
+        ));
+    }
+    if !canonical_path.is_empty() && !repo_root.join(&canonical_path).exists() {
+        state.failures.push(format!(
+            "{art_id}: canonical_download_path does not exist: {canonical_path}"
+        ));
+    }
+    for path in &downloaded_paths {
+        if !repo_root.join(path).exists() {
+            state
+                .failures
+                .push(format!("{art_id}: downloaded path missing on disk: {path}"));
+        }
+    }
+    if !minimum_met
+        && status != "citation_only_no_link"
+        && nonworking.is_empty()
+        && unverified_mirrors.is_empty()
+    {
+        state.failures.push(format!(
+            "{art_id}: neither nonworking nor unverified mirrors recorded despite missing minimum"
+        ));
+    }
+}
 
+fn verify_header_counts(
+    head: &toml::map::Map<String, Value>,
+    coverage: &toml::map::Map<String, Value>,
+    counts: &ArtifactCounts,
+    artifact_count: usize,
+    coverage_missing_keys: &[String],
+    failures: &mut Vec<String>,
+) {
     let expected_counts = [
-        ("artifact_count", artifacts.len()),
-        ("downloaded_count", downloaded_count),
-        ("downloadable_count", downloadable_count),
-        ("blocked_count", blocked_count),
-        ("citation_only_no_link_count", citation_only_count),
-        ("unverified_count", unverified_count),
-        ("missing_minimum_requirement_count", missing_minimum_count),
-        ("manual_intervention_required_count", manual_count),
+        ("artifact_count", artifact_count),
+        ("downloaded_count", counts.downloaded),
+        ("downloadable_count", counts.downloadable),
+        ("blocked_count", counts.blocked),
+        ("citation_only_no_link_count", counts.citation_only),
+        ("unverified_count", counts.unverified),
+        ("missing_minimum_requirement_count", counts.missing_minimum),
+        ("manual_intervention_required_count", counts.manual),
     ];
     for (key, expected) in expected_counts {
         let observed = head.get(key).and_then(Value::as_integer).unwrap_or(-1);
@@ -3166,25 +3201,78 @@ pub fn verify_artifact_source_of_truth(
             "coverage artifacts_without_working_mirror_count mismatch with list length".to_string(),
         );
     }
-    if coverage_count != missing_minimum_count as i64 {
+    if coverage_count != counts.missing_minimum as i64 {
         failures.push(
             "coverage artifacts_without_working_mirror_count mismatch with computed missing minimum count".to_string(),
         );
     }
-    if !failures.is_empty() {
+}
+
+pub fn verify_artifact_source_of_truth(
+    repo_root: &Path,
+    registry_path: &Path,
+) -> Result<VerifySummary> {
+    let value = load_toml_value(registry_path)?;
+    let Some(head) = value
+        .get("artifact_source_of_truth")
+        .and_then(Value::as_table)
+    else {
+        bail!("artifact_source_of_truth header missing");
+    };
+    let Some(coverage) = value.get("coverage").and_then(Value::as_table) else {
+        bail!("coverage table missing");
+    };
+    let artifacts = value
+        .get("artifact")
+        .and_then(Value::as_array)
+        .cloned()
+        .unwrap_or_default();
+    let coverage_missing_keys = coverage
+        .get("artifacts_without_working_mirror")
+        .and_then(Value::as_array)
+        .map(|items| {
+            items
+                .iter()
+                .filter_map(Value::as_str)
+                .map(|value| value.trim().to_string())
+                .filter(|value| !value.is_empty())
+                .collect::<Vec<_>>()
+        })
+        .unwrap_or_default();
+
+    let mut state = ValidationState::default();
+    for (index, artifact) in artifacts.iter().enumerate() {
+        validate_artifact_entry(
+            index,
+            artifact,
+            repo_root,
+            &coverage_missing_keys,
+            &mut state,
+        );
+    }
+    verify_header_counts(
+        head,
+        coverage,
+        &state.counts,
+        artifacts.len(),
+        &coverage_missing_keys,
+        &mut state.failures,
+    );
+
+    if !state.failures.is_empty() {
         bail!(
             "artifact source-of-truth verification failed:\n- {}",
-            failures.join("\n- ")
+            state.failures.join("\n- ")
         );
     }
     Ok(VerifySummary {
         artifact_count: artifacts.len(),
-        downloaded_count,
-        downloadable_count,
-        blocked_count,
-        citation_only_count,
-        unverified_count,
-        missing_minimum_count,
+        downloaded_count: state.counts.downloaded,
+        downloadable_count: state.counts.downloadable,
+        blocked_count: state.counts.blocked,
+        citation_only_count: state.counts.citation_only,
+        unverified_count: state.counts.unverified,
+        missing_minimum_count: state.counts.missing_minimum,
     })
 }
 

@@ -171,6 +171,243 @@ pub fn extract_v6_basis() -> (DMatrix<f64>, Vec<f64>, Vec<(usize, usize)>) {
     (basis_matrix, singular_values, assessors)
 }
 
+// ---------------------------------------------------------------------------
+// Private helpers for extract_vk_basis
+// ---------------------------------------------------------------------------
+
+/// O(1) associator nonzero check via sign table.
+///
+/// [a,b,c] = (a*b)*c - a*(b*c) is nonzero iff the left and right sign
+/// paths through the CD construction disagree.
+fn assoc_nonzero_via_stab(stab: &SignTable, a: usize, b: usize, c: usize) -> bool {
+    let sab = stab.sign(a, b);
+    let sabc_l = sab * stab.sign(a ^ b, c);
+    let sbc = stab.sign(b, c);
+    let sabc_r = sbc * stab.sign(a, b ^ c);
+    sabc_l != sabc_r
+}
+
+/// Symmetrize a faer matrix in-place by averaging each (i,j) and (j,i) pair.
+///
+/// Returns the maximum asymmetry observed before averaging, which is useful
+/// for profiling diagnostics.
+fn symmetrize_faer_inplace(m: &mut faer::Mat<f64>) -> f64 {
+    let n = m.nrows();
+    let mut max_asym = 0.0_f64;
+    for i in 0..n {
+        for j in (i + 1)..n {
+            let asym = (m[(i, j)] - m[(j, i)]).abs();
+            if asym > max_asym {
+                max_asym = asym;
+            }
+            let avg = 0.5 * (m[(i, j)] + m[(j, i)]);
+            m[(i, j)] = avg;
+            m[(j, i)] = avg;
+        }
+    }
+    max_asym
+}
+
+/// Emit structural diagnostics for a faer Gram matrix to stderr.
+///
+/// Caller is responsible for checking `profiling` before calling; this
+/// function always writes to stderr.  Separating the guard from the body
+/// keeps the outer function's cognitive complexity budget free for
+/// structurally important logic.
+fn log_gram_diagnostics_to_stderr(name: &str, m: &faer::Mat<f64>) {
+    let n = m.nrows();
+    let mut max_asym = 0.0_f64;
+    let mut nnz_count = 0_usize;
+    let mut frob_sq = 0.0_f64;
+    for i in 0..n {
+        for j in 0..n {
+            let v = m[(i, j)];
+            frob_sq += v * v;
+            if v.abs() > 1e-12 {
+                nnz_count += 1;
+            }
+            if j > i {
+                let asym = (m[(i, j)] - m[(j, i)]).abs();
+                if asym > max_asym {
+                    max_asym = asym;
+                }
+            }
+        }
+    }
+    let total = n * n;
+    eprintln!(
+        "  [VK_PROFILE] {name}: max_asym_pre={max_asym:.3e}, nnz_fraction={:.4}, frobenius={:.6e}",
+        nnz_count as f64 / total as f64,
+        frob_sq.sqrt()
+    );
+}
+
+/// Gram accumulation for a single leading index `b` over all `(c, d)` pairs.
+///
+/// Each triad `(b, c, d)` with `b < c < d` is classified by which permutations
+/// of the associator are nonzero (using the sign-table shortcut), then its
+/// XOR-product assessor indices are scattered into `gbc` (B/C-type) or `gx`
+/// (X-type).  Counts are accumulated in `count_bc` and `count_x`.
+///
+/// This is the inner body of the rayon fold; factoring it out eliminates the
+/// deep nesting that drives the cognitive-complexity score.
+/// Log Gram rayon accumulation counts after Stage 2 parallel fold.
+///
+/// Called unconditionally; guards on `profiling` internally so the call site
+/// avoids an `if profiling` block that would charge the caller's complexity score.
+fn log_rayon_gram_counts(
+    profiling: bool,
+    dim: usize,
+    n_assess: usize,
+    count_bc: usize,
+    count_x: usize,
+) {
+    if !profiling {
+        return;
+    }
+    eprintln!(
+        "  [VK_PROFILE] dim={dim}, n_assess={n_assess}, count_bc={count_bc}, count_x={count_x}"
+    );
+    eprintln!(
+        "  [VK_PROFILE] RAYON_NUM_THREADS={}",
+        rayon::current_num_threads()
+    );
+}
+
+fn accumulate_triad_gram(
+    b: usize,
+    dim: usize,
+    n_assess: usize,
+    assess_lookup: &[Vec<usize>],
+    stab: &SignTable,
+    gram_bufs: (&mut [i64], &mut [i64]),
+    counts: (&mut usize, &mut usize),
+) {
+    let (gbc, gx) = gram_bufs;
+    let (count_bc, count_x) = counts;
+    let mut nz_buf: Vec<usize> = Vec::with_capacity(8);
+    for c in (b + 1)..dim {
+        for d in (c + 1)..dim {
+            let t1 = assoc_nonzero_via_stab(stab, b, c, d);
+            let t2 = assoc_nonzero_via_stab(stab, b, d, c);
+            let t3 = assoc_nonzero_via_stab(stab, c, b, d);
+            if !t1 && !t2 && !t3 {
+                continue;
+            }
+
+            nz_buf.clear();
+            for &prod_idx in &[b ^ c, b ^ d, c ^ d] {
+                if prod_idx > 0 && prod_idx < dim {
+                    for &a_idx in &assess_lookup[prod_idx] {
+                        if !nz_buf.contains(&a_idx) {
+                            nz_buf.push(a_idx);
+                        }
+                    }
+                }
+            }
+
+            let is_bc_type = matches!((t1, t2, t3), (false, true, false) | (false, false, true));
+            let target: &mut [i64] = if is_bc_type {
+                *count_bc += 1;
+                &mut *gbc
+            } else {
+                *count_x += 1;
+                &mut *gx
+            };
+            for &i in &nz_buf {
+                for &j in &nz_buf {
+                    target[i * n_assess + j] += 1;
+                }
+            }
+        }
+    }
+}
+
+/// Postprocess the V_k eigendecomposition into a ranked basis matrix.
+///
+/// Applies a two-level threshold (absolute + relative, with a Frobenius-relative
+/// noise guard), sorts retained eigenvectors by descending singular value, and
+/// fills the output `(n_basis x n_assess)` basis matrix whose rows are the
+/// V_k basis vectors.  Returns `(basis_matrix, singular_values)`.
+///
+/// # Noise guard rationale
+///
+/// At dim=64 the complement Gram `G_vk` has `||G_vk||_F = 3.8e-11` but
+/// `sv_max = 1.8e-6`.  The ratio `1.8e-6 / 2.75e5 = 6.5e-12` correctly
+/// identifies this as pure numerical noise, forcing `rank = 0`.
+fn postprocess_vk_eigendecomp(
+    vk_eigenvalues: &[f64],
+    u_vk: faer::MatRef<'_, f64>,
+    gram_x_frob: f64,
+    rank_params: (usize, usize),
+    thresholds: (f64, f64),
+    profiling: bool,
+) -> (DMatrix<f64>, Vec<f64>) {
+    let (n_assess, max_rank) = rank_params;
+    let (abs_eps, rel_eps) = thresholds;
+    let vk_sv: Vec<f64> = vk_eigenvalues.iter().map(|&e| e.max(0.0).sqrt()).collect();
+    let vk_sv_max = vk_sv.iter().cloned().fold(0.0_f64, f64::max);
+
+    let frob_rel_eps = 1e-8_f64;
+    let complement_is_noise = gram_x_frob > 0.0 && vk_sv_max / gram_x_frob < frob_rel_eps;
+
+    let vk_threshold = if complement_is_noise {
+        vk_sv_max + 1.0
+    } else {
+        abs_eps.max(rel_eps * vk_sv_max)
+    };
+
+    let mut sv_pairs: Vec<(f64, usize)> = Vec::new();
+    for (k, &sv) in vk_sv.iter().enumerate() {
+        if sv > vk_threshold {
+            sv_pairs.push((sv, k));
+        }
+    }
+    sv_pairs.sort_by(|a, b| b.0.partial_cmp(&a.0).unwrap());
+
+    let retained_rank_vk = sv_pairs.len();
+
+    if profiling {
+        let leading: Vec<f64> = {
+            let mut sorted: Vec<f64> = vk_eigenvalues.to_vec();
+            sorted.sort_by(|a, b| b.partial_cmp(a).unwrap());
+            sorted.into_iter().take(5).collect()
+        };
+        let frob_ratio = if gram_x_frob > 0.0 {
+            vk_sv_max / gram_x_frob
+        } else {
+            0.0
+        };
+        eprintln!(
+            "  [VK_PROFILE] gram_vk: sv_max/||G_x||_F = {frob_ratio:.3e} (noise guard: complement_is_noise={complement_is_noise})"
+        );
+        eprintln!(
+            "  [VK_PROFILE] gram_vk: retained_rank={retained_rank_vk}, threshold={vk_threshold:.3e}"
+        );
+        eprintln!("  [VK_PROFILE] gram_vk: leading 5 eigenvalues = {leading:?}");
+    }
+
+    let n_basis = retained_rank_vk.min(max_rank);
+
+    // basis_matrix shape: (rank, n_assess) -- basis vectors are ROWS
+    let mut basis = DMatrix::zeros(n_basis, n_assess);
+    for (k, &(_, eig_idx)) in sv_pairs.iter().take(n_basis).enumerate() {
+        for col in 0..n_assess {
+            basis[(k, col)] = u_vk[(col, eig_idx)];
+        }
+    }
+
+    let svs: Vec<f64> = sv_pairs
+        .iter()
+        .take(retained_rank_vk.min(max_rank * 2))
+        .map(|&(sv, _)| sv)
+        .collect();
+
+    (basis, svs)
+}
+
+// ---------------------------------------------------------------------------
+
 /// Generalized V_k basis extraction for any Cayley-Dickson algebra dimension.
 ///
 /// Given a CD algebra of dimension `dim` (must be a power of 2, >= 16), this
@@ -205,7 +442,7 @@ pub fn extract_v6_basis() -> (DMatrix<f64>, Vec<f64>, Vec<(usize, usize)>) {
 /// # Rank threshold
 ///
 /// Two-level: absolute+relative with a Frobenius-relative noise guard.
-/// See the function body comments for full rationale.
+/// See `postprocess_vk_eigendecomp` for full rationale.
 ///
 /// # Profiling
 ///
@@ -261,19 +498,9 @@ pub fn extract_vk_basis(
         assess_lookup[high].push(a_idx);
     }
 
-    // O(1) associator check via sign table:
-    // [a,b,c] = (a*b)*c - a*(b*c)
-    // nonzero iff s(a,b)*s(a^b,c) != s(b,c)*s(a,b^c)
-    let assoc_nonzero = |a: usize, b: usize, c: usize| -> bool {
-        let sab = stab.sign(a, b);
-        let sabc_l = sab * stab.sign(a ^ b, c);
-        let sbc = stab.sign(b, c);
-        let sabc_r = sbc * stab.sign(a, b ^ c);
-        sabc_l != sabc_r
-    };
-
     // Stage 2: Rayon parallel Gram accumulation (triple loop).
     // Integer accumulation gives bit-identical results regardless of thread scheduling.
+    // The inner body is factored into accumulate_triad_gram to reduce nesting depth.
     use rayon::prelude::*;
     let nn = n_assess * n_assess;
     let (gram_bc_flat, gram_x_flat, count_bc, count_x) =
@@ -283,44 +510,15 @@ pub fn extract_vk_basis(
                 .fold(
                     || (vec![0i64; nn], vec![0i64; nn], 0usize, 0usize),
                     |(mut gbc, mut gx, mut cbc, mut cx), b| {
-                        let mut nz_buf: Vec<usize> = Vec::with_capacity(8);
-                        for c in (b + 1)..dim {
-                            for d in (c + 1)..dim {
-                                let t1 = assoc_nonzero(b, c, d);
-                                let t2 = assoc_nonzero(b, d, c);
-                                let t3 = assoc_nonzero(c, b, d);
-                                if !t1 && !t2 && !t3 {
-                                    continue;
-                                }
-
-                                nz_buf.clear();
-                                for &prod_idx in &[b ^ c, b ^ d, c ^ d] {
-                                    if prod_idx > 0 && prod_idx < dim {
-                                        for &a_idx in &assess_lookup[prod_idx] {
-                                            if !nz_buf.contains(&a_idx) {
-                                                nz_buf.push(a_idx);
-                                            }
-                                        }
-                                    }
-                                }
-
-                                let target = match (t1, t2, t3) {
-                                    (false, true, false) | (false, false, true) => {
-                                        cbc += 1;
-                                        &mut gbc
-                                    }
-                                    _ => {
-                                        cx += 1;
-                                        &mut gx
-                                    }
-                                };
-                                for &i in &nz_buf {
-                                    for &j in &nz_buf {
-                                        target[i * n_assess + j] += 1;
-                                    }
-                                }
-                            }
-                        }
+                        accumulate_triad_gram(
+                            b,
+                            dim,
+                            n_assess,
+                            &assess_lookup,
+                            &stab,
+                            (&mut gbc, &mut gx),
+                            (&mut cbc, &mut cx),
+                        );
                         (gbc, gx, cbc, cx)
                     },
                 )
@@ -338,15 +536,7 @@ pub fn extract_vk_basis(
                 )
         });
 
-    if profiling {
-        eprintln!(
-            "  [VK_PROFILE] dim={dim}, n_assess={n_assess}, count_bc={count_bc}, count_x={count_x}"
-        );
-        eprintln!(
-            "  [VK_PROFILE] RAYON_NUM_THREADS={}",
-            rayon::current_num_threads()
-        );
-    }
+    log_rayon_gram_counts(profiling, dim, n_assess, count_bc, count_x);
 
     if count_bc == 0 || count_x == 0 {
         return (DMatrix::zeros(0, n_assess), vec![], assessors);
@@ -369,58 +559,12 @@ pub fn extract_vk_basis(
             (gbc, gx, gx_frob_sq.sqrt())
         });
 
-    let log_gram_diagnostics = |name: &str, m: &faer::Mat<f64>| {
-        if !profiling {
-            return;
-        }
-        let n = m.nrows();
-        let mut max_asym = 0.0_f64;
-        let mut nnz_count = 0_usize;
-        let mut frob_sq = 0.0_f64;
-        for i in 0..n {
-            for j in 0..n {
-                let v = m[(i, j)];
-                frob_sq += v * v;
-                if v.abs() > 1e-12 {
-                    nnz_count += 1;
-                }
-                if j > i {
-                    let asym = (m[(i, j)] - m[(j, i)]).abs();
-                    if asym > max_asym {
-                        max_asym = asym;
-                    }
-                }
-            }
-        }
-        let total = n * n;
-        eprintln!(
-            "  [VK_PROFILE] {name}: max_asym_pre={max_asym:.3e}, nnz_fraction={:.4}, frobenius={:.6e}",
-            nnz_count as f64 / total as f64,
-            frob_sq.sqrt()
-        );
-    };
-
-    let symmetrize = |m: &mut faer::Mat<f64>| -> f64 {
-        let n = m.nrows();
-        let mut max_asym = 0.0_f64;
-        for i in 0..n {
-            for j in (i + 1)..n {
-                let asym = (m[(i, j)] - m[(j, i)]).abs();
-                if asym > max_asym {
-                    max_asym = asym;
-                }
-                let avg = 0.5 * (m[(i, j)] + m[(j, i)]);
-                m[(i, j)] = avg;
-                m[(j, i)] = avg;
-            }
-        }
-        max_asym
-    };
-
     // Stage 4: First eigendecomposition (gram_bc) -- identifies B/C column space
-    log_gram_diagnostics("gram_bc", &gram_bc_faer);
+    if profiling {
+        log_gram_diagnostics_to_stderr("gram_bc", &gram_bc_faer);
+    }
     let mut gram_bc_sym = gram_bc_faer;
-    let asym_bc = symmetrize(&mut gram_bc_sym);
+    let asym_bc = symmetrize_faer_inplace(&mut gram_bc_sym);
     if profiling {
         eprintln!("  [VK_PROFILE] gram_bc: max_asym_post symmetrize = {asym_bc:.3e}");
     }
@@ -474,9 +618,11 @@ pub fn extract_vk_basis(
     });
 
     // Stage 7: Second eigendecomposition (gram_vk) -- extracts V_k basis
-    log_gram_diagnostics("gram_vk", &gram_vk_faer);
+    if profiling {
+        log_gram_diagnostics_to_stderr("gram_vk", &gram_vk_faer);
+    }
     let mut gram_vk_sym = gram_vk_faer;
-    let asym_vk = symmetrize(&mut gram_vk_sym);
+    let asym_vk = symmetrize_faer_inplace(&mut gram_vk_sym);
     if profiling {
         eprintln!("  [VK_PROFILE] gram_vk: max_asym_post symmetrize = {asym_vk:.3e}");
     }
@@ -484,77 +630,21 @@ pub fn extract_vk_basis(
         gram_vk_sym.self_adjoint_eigen(faer::Side::Lower).unwrap()
     });
 
-    // Stage 8: Postprocessing -- threshold, canonical sort, basis extraction
-    let (basis_matrix, singular_values) = profile_stage!(
-        8,
-        "postprocessing (sort, extract basis)",
-        {
-            let vk_eigenvalues: Vec<f64> = eig_vk.S().column_vector().iter().copied().collect();
-            let vk_sv: Vec<f64> = vk_eigenvalues.iter().map(|&e| e.max(0.0).sqrt()).collect();
-            let vk_sv_max = vk_sv.iter().cloned().fold(0.0_f64, f64::max);
-
-            // Frobenius-relative noise guard: at dim=64, gram_vk has ||G_vk||_F = 3.8e-11
-            // but sv_max = 1.8e-6.  The ratio 1.8e-6 / 2.75e5 = 6.5e-12 correctly
-            // identifies this as pure numerical noise, forcing rank=0.
-            let frob_rel_eps = 1e-8_f64;
-            let complement_is_noise = gram_x_frob > 0.0 && vk_sv_max / gram_x_frob < frob_rel_eps;
-
-            let vk_threshold = if complement_is_noise {
-                vk_sv_max + 1.0
-            } else {
-                abs_eps.max(rel_eps * vk_sv_max)
-            };
-
-            let mut sv_pairs: Vec<(f64, usize)> = Vec::new();
-            for (k, &sv) in vk_sv.iter().enumerate() {
-                if sv > vk_threshold {
-                    sv_pairs.push((sv, k));
-                }
-            }
-            sv_pairs.sort_by(|a, b| b.0.partial_cmp(&a.0).unwrap());
-
-            let retained_rank_vk = sv_pairs.len();
-
-            if profiling {
-                let leading: Vec<f64> = {
-                    let mut sorted = vk_eigenvalues.clone();
-                    sorted.sort_by(|a, b| b.partial_cmp(a).unwrap());
-                    sorted.into_iter().take(5).collect()
-                };
-                let frob_ratio = if gram_x_frob > 0.0 {
-                    vk_sv_max / gram_x_frob
-                } else {
-                    0.0
-                };
-                eprintln!(
-                    "  [VK_PROFILE] gram_vk: sv_max/||G_x||_F = {frob_ratio:.3e} (noise guard: complement_is_noise={complement_is_noise})"
-                );
-                eprintln!(
-                    "  [VK_PROFILE] gram_vk: retained_rank={retained_rank_vk}, threshold={vk_threshold:.3e}"
-                );
-                eprintln!("  [VK_PROFILE] gram_vk: leading 5 eigenvalues = {leading:?}");
-            }
-
-            let n_basis = retained_rank_vk.min(max_rank);
+    // Stage 8: Postprocessing -- threshold, canonical sort, basis extraction.
+    // Factored into postprocess_vk_eigendecomp to keep nesting depth flat here.
+    let (basis_matrix, singular_values) =
+        profile_stage!(8, "postprocessing (sort, extract basis)", {
+            let vk_evals: Vec<f64> = eig_vk.S().column_vector().iter().copied().collect();
             let u_vk = eig_vk.U();
-
-            // basis_matrix shape: (rank, n_assess) -- basis vectors are ROWS
-            let mut basis = DMatrix::zeros(n_basis, n_assess);
-            for (k, &(_, eig_idx)) in sv_pairs.iter().take(n_basis).enumerate() {
-                for col in 0..n_assess {
-                    basis[(k, col)] = u_vk[(col, eig_idx)];
-                }
-            }
-
-            let svs: Vec<f64> = sv_pairs
-                .iter()
-                .take(retained_rank_vk.min(max_rank * 2))
-                .map(|&(sv, _)| sv)
-                .collect();
-
-            (basis, svs)
-        }
-    );
+            postprocess_vk_eigendecomp(
+                &vk_evals,
+                u_vk,
+                gram_x_frob,
+                (n_assess, max_rank),
+                (abs_eps, rel_eps),
+                profiling,
+            )
+        });
 
     (basis_matrix, singular_values, assessors)
 }

@@ -10,7 +10,7 @@ use anyhow::{Context, Result, bail};
 use clap::{Parser, Subcommand};
 use lit_search::{
     ALL_SOURCE_NAMES, DatasetDiff, DatasetManifest, DatasetRelease, MultiQueryExecutionReport,
-    SOURCE_FAMILY_NAMES, SearchEngine, SearchExecutionReport, SemanticScholarDatasetsClient,
+    Paper, SOURCE_FAMILY_NAMES, SearchEngine, SearchExecutionReport, SemanticScholarDatasetsClient,
     crawler::WebCrawler, critique::build_critique_prompt, download, evolution::EvolutionStore,
     normalize_source_name, pdf::PdfExtractor, search::SourceTier, source_names_for_family,
     sources::ApiKeys,
@@ -363,104 +363,30 @@ async fn run_search(args: RunSearchArgs) -> Result<()> {
 
     let keys = ApiKeys::from_env();
     let engine = SearchEngine::new(keys, tier);
-    let mut sources = args
-        .sources
-        .iter()
-        .map(|source| normalize_source_name(source))
-        .collect::<Vec<_>>();
-    for family in &args.source_families {
-        let Some(family_sources) = source_names_for_family(family) else {
-            bail!(
-                "unknown source family '{}'; valid families: {}",
-                family,
-                SOURCE_FAMILY_NAMES.join(", ")
-            );
-        };
-        for source in family_sources {
-            let normalized = normalize_source_name(source);
-            if !sources.iter().any(|existing| existing == &normalized) {
-                sources.push(normalized);
-            }
-        }
-    }
+    let sources = resolve_search_sources(args.sources, &args.source_families)?;
     let queries = if let Some(query_file) = &args.query_file {
         load_query_file(query_file)?
     } else {
         vec![args.query.clone()]
     };
 
-    let (results, report) = if let Some(doi) = args.doi {
-        let outcome = engine
-            .search_with_sources(&format!("DOI:{doi}"), 5, 0, &sources)
-            .await;
-        (
-            outcome.papers,
-            SearchReportEnvelope::Single {
-                report: outcome.report,
-            },
-        )
-    } else if args.expand_domains || !args.domains.is_empty() {
-        let outcome = engine
-            .search_topic_with_sources(
-                &args.query,
-                &args.domains,
-                args.limit,
-                args.year_min,
-                &sources,
-            )
-            .await;
-        (
-            outcome.papers,
-            SearchReportEnvelope::Multi {
-                report: outcome.report,
-            },
-        )
-    } else if queries.len() > 1 {
-        let outcome = if args.parallel_queries {
-            engine
-                .search_queries_parallel_with_sources(&queries, args.limit, args.year_min, &sources)
-                .await
-        } else {
-            engine
-                .search_queries_with_sources(&queries, args.limit, args.year_min, &sources)
-                .await
-        };
-        (
-            outcome.papers,
-            SearchReportEnvelope::Multi {
-                report: outcome.report,
-            },
-        )
-    } else {
-        let outcome = engine
-            .search_with_sources(&args.query, args.limit, args.year_min, &sources)
-            .await;
-        (
-            outcome.papers,
-            SearchReportEnvelope::Single {
-                report: outcome.report,
-            },
-        )
-    };
+    let (results, report) = dispatch_search(
+        &engine,
+        SearchParams {
+            doi: args.doi,
+            query: &args.query,
+            domains: &args.domains,
+            expand_domains: args.expand_domains,
+            limit: args.limit,
+            year_min: args.year_min,
+            parallel_queries: args.parallel_queries,
+            queries: &queries,
+            sources: &sources,
+        },
+    )
+    .await;
 
-    println!("Found {} results:\n", results.len());
-    for (idx, paper) in results.iter().enumerate() {
-        println!("{}. {} ({})", idx + 1, paper.title, paper.year);
-        if !paper.doi.is_empty() {
-            println!("   DOI: {}", paper.doi);
-        }
-        if !paper.arxiv_id.is_empty() {
-            println!("   arXiv: {}", paper.arxiv_id);
-        }
-        if !paper.pdf_url.is_empty() {
-            println!("   PDF: {}", paper.pdf_url);
-        }
-        println!(
-            "   Citations: {} | Source: {}",
-            paper.citation_count, paper.source
-        );
-        println!();
-    }
+    print_paper_list(&results);
 
     if args.show_source_stats {
         print_execution_report(&report);
@@ -496,6 +422,138 @@ async fn run_search(args: RunSearchArgs) -> Result<()> {
     }
 
     Ok(())
+}
+
+// Build the final source list from explicit names and family expansions.
+// Families expand to their member source names; duplicates are suppressed.
+fn resolve_search_sources(explicit: Vec<String>, families: &[String]) -> Result<Vec<String>> {
+    let mut sources = explicit
+        .iter()
+        .map(|s| normalize_source_name(s))
+        .collect::<Vec<_>>();
+    for family in families {
+        let Some(family_sources) = source_names_for_family(family) else {
+            bail!(
+                "unknown source family '{}'; valid families: {}",
+                family,
+                SOURCE_FAMILY_NAMES.join(", ")
+            );
+        };
+        for source in family_sources {
+            let normalized = normalize_source_name(source);
+            if !sources.iter().any(|existing| existing == &normalized) {
+                sources.push(normalized);
+            }
+        }
+    }
+    Ok(sources)
+}
+
+// Parameters bundle for dispatch_search, grouping the search knobs
+// so the function stays within the argument-count lint limit.
+struct SearchParams<'a> {
+    doi: Option<String>,
+    query: &'a str,
+    domains: &'a [String],
+    expand_domains: bool,
+    limit: usize,
+    year_min: u32,
+    parallel_queries: bool,
+    queries: &'a [String],
+    sources: &'a [String],
+}
+
+// Route the search to the appropriate engine method based on the supplied params.
+// Returns the combined paper list and a report envelope for optional display.
+async fn dispatch_search(
+    engine: &SearchEngine,
+    params: SearchParams<'_>,
+) -> (Vec<Paper>, SearchReportEnvelope) {
+    if let Some(doi) = params.doi {
+        let outcome = engine
+            .search_with_sources(&format!("DOI:{doi}"), 5, 0, params.sources)
+            .await;
+        (
+            outcome.papers,
+            SearchReportEnvelope::Single {
+                report: outcome.report,
+            },
+        )
+    } else if params.expand_domains || !params.domains.is_empty() {
+        let outcome = engine
+            .search_topic_with_sources(
+                params.query,
+                params.domains,
+                params.limit,
+                params.year_min,
+                params.sources,
+            )
+            .await;
+        (
+            outcome.papers,
+            SearchReportEnvelope::Multi {
+                report: outcome.report,
+            },
+        )
+    } else if params.queries.len() > 1 {
+        let outcome = if params.parallel_queries {
+            engine
+                .search_queries_parallel_with_sources(
+                    params.queries,
+                    params.limit,
+                    params.year_min,
+                    params.sources,
+                )
+                .await
+        } else {
+            engine
+                .search_queries_with_sources(
+                    params.queries,
+                    params.limit,
+                    params.year_min,
+                    params.sources,
+                )
+                .await
+        };
+        (
+            outcome.papers,
+            SearchReportEnvelope::Multi {
+                report: outcome.report,
+            },
+        )
+    } else {
+        let outcome = engine
+            .search_with_sources(params.query, params.limit, params.year_min, params.sources)
+            .await;
+        (
+            outcome.papers,
+            SearchReportEnvelope::Single {
+                report: outcome.report,
+            },
+        )
+    }
+}
+
+// Print the numbered result list, including available identifiers per paper.
+fn print_paper_list(papers: &[Paper]) {
+    println!("Found {} results:\n", papers.len());
+    for (idx, paper) in papers.iter().enumerate() {
+        println!("{}. {} ({})", idx + 1, paper.title, paper.year);
+        if !paper.doi.is_empty() {
+            println!("   DOI: {}", paper.doi);
+        }
+        if !paper.arxiv_id.is_empty() {
+            println!("   arXiv: {}", paper.arxiv_id);
+        }
+        if !paper.pdf_url.is_empty() {
+            println!("   PDF: {}", paper.pdf_url);
+        }
+        println!(
+            "   Citations: {} | Source: {}",
+            paper.citation_count, paper.source
+        );
+        println!();
+    }
 }
 
 fn print_available_sources() {

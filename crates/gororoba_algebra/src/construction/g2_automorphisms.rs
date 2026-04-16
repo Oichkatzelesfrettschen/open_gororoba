@@ -22,6 +22,192 @@
 
 use super::octonion::Octonion;
 
+/// Build the 21 upper-triangle index pairs (i, j) with i < j for a 7x7
+/// skew-symmetric matrix parameterizing so(7).
+///
+/// Each pair (i, j) corresponds to one free parameter in Im(O) coordinates
+/// (0-indexed, i.e., 0..6). The ordering is row-by-row.
+fn build_skew_param_pairs() -> Vec<(usize, usize)> {
+    let mut pairs = Vec::new();
+    for i in 0..7 {
+        for j in (i + 1)..7 {
+            pairs.push((i, j));
+        }
+    }
+    pairs
+}
+
+/// Construct the 8x8 matrix basis element for the k-th so(7) parameter.
+///
+/// The matrix has +1 at (a+1, b+1) and -1 at (b+1, a+1) where (a, b) is the
+/// k-th pair from `param_pairs`. The +1 offset accounts for the scalar slot
+/// in the full octonion 8-vector.
+fn build_param_matrix(a: usize, b: usize) -> [[f64; 8]; 8] {
+    let mut m = [[0.0f64; 8]; 8];
+    m[a + 1][b + 1] = 1.0;
+    m[b + 1][a + 1] = -1.0;
+    m
+}
+
+/// Compute the contribution of one parameter matrix `pm` to the Leibniz
+/// constraint row for output component `c` on basis pair (ei, ej).
+///
+/// Returns `lhs_c - rhs_c` where:
+///   lhs_c = (pm * (ei*ej))[c]
+///   rhs_c = ((pm*ei)*ej)[c] + (ei*(pm*ej))[c]
+fn leibniz_row_entry(
+    pm: &[[f64; 8]; 8],
+    ei: &Octonion,
+    ej: &Octonion,
+    ei_ej: &Octonion,
+    octonion_i_idx: usize,
+    octonion_j_idx: usize,
+    c: usize,
+) -> f64 {
+    // LHS: D(ei * ej) component c, where D is the matrix pm.
+    let lhs_c: f64 = pm[c]
+        .iter()
+        .zip(ei_ej.components.iter())
+        .map(|(&pm_cs, &comp_s)| pm_cs * comp_s)
+        .sum();
+
+    // D(ei) = column octonion_i_idx of pm (pm acts on the left).
+    let mut d_ei_arr = [0.0f64; 8];
+    for (s, slot) in d_ei_arr.iter_mut().enumerate() {
+        *slot = pm[s][octonion_i_idx];
+    }
+    let d_ei_oct = Octonion::new(d_ei_arr);
+    let d_ei_ej = d_ei_oct.multiply(ej);
+
+    // D(ej) = column octonion_j_idx of pm.
+    let mut d_ej_arr = [0.0f64; 8];
+    for (s, slot) in d_ej_arr.iter_mut().enumerate() {
+        *slot = pm[s][octonion_j_idx];
+    }
+    let d_ej_oct = Octonion::new(d_ej_arr);
+    let ei_d_ej = ei.multiply(&d_ej_oct);
+
+    let rhs_c = d_ei_ej.components[c] + ei_d_ej.components[c];
+    lhs_c - rhs_c
+}
+
+/// Build all non-trivial Leibniz constraint rows for the 21-parameter so(7) basis.
+///
+/// For each basis pair (ei, ej) with i <= j in {1..7} and each output component
+/// c in {0..7}, the Leibniz condition D(ei*ej) = D(ei)*ej + ei*D(ej) yields one
+/// linear equation in the 21 parameters. Rows whose Euclidean norm is below 1e-14
+/// are discarded as numerically trivial.
+fn build_leibniz_constraint_rows(param_matrices: &[[[f64; 8]; 8]]) -> Vec<[f64; 21]> {
+    let mut constraint_rows: Vec<[f64; 21]> = Vec::new();
+
+    for i in 1..8usize {
+        for j in i..8usize {
+            let ei = Octonion::basis(i);
+            let ej = Octonion::basis(j);
+            let ei_ej = ei.multiply(&ej);
+
+            for c in 0..8usize {
+                let mut row = [0.0f64; 21];
+                for (k, pm) in param_matrices.iter().enumerate() {
+                    row[k] = leibniz_row_entry(pm, &ei, &ej, &ei_ej, i, j, c);
+                }
+                let norm: f64 = row.iter().map(|x| x * x).sum::<f64>().sqrt();
+                if norm > 1e-14 {
+                    constraint_rows.push(row);
+                }
+            }
+        }
+    }
+
+    constraint_rows
+}
+
+/// Perform Gaussian elimination with partial pivoting on a constraint matrix
+/// (n_constraints rows, n_params=21 columns).
+///
+/// Returns `(pivot_cols, reduced_matrix)` where `pivot_cols` is the ordered
+/// list of pivot column indices and `reduced_matrix` is the fully reduced
+/// (reduced row echelon) form.
+fn gaussian_eliminate_partial_pivot(
+    constraint_rows: &[[f64; 21]],
+    n_params: usize,
+) -> (Vec<usize>, Vec<Vec<f64>>) {
+    let n_constraints = constraint_rows.len();
+    let mut matrix: Vec<Vec<f64>> = constraint_rows.iter().map(|row| row.to_vec()).collect();
+
+    let mut pivot_cols: Vec<usize> = Vec::new();
+    let mut current_row = 0usize;
+
+    for col in 0..n_params {
+        // Find the row with maximum absolute value in this column.
+        let mut max_val = 0.0f64;
+        let mut max_row = current_row;
+        for (row, mat_row) in matrix.iter().enumerate().skip(current_row) {
+            if mat_row[col].abs() > max_val {
+                max_val = mat_row[col].abs();
+                max_row = row;
+            }
+        }
+        if max_val < 1e-12 {
+            continue; // Column is a free variable; skip.
+        }
+
+        matrix.swap(current_row, max_row);
+        pivot_cols.push(col);
+
+        let pivot = matrix[current_row][col];
+        for row in 0..n_constraints {
+            if row == current_row {
+                continue;
+            }
+            let factor = matrix[row][col] / pivot;
+            #[allow(clippy::needless_range_loop)]
+            for c in 0..n_params {
+                matrix[row][c] -= factor * matrix[current_row][c];
+            }
+        }
+        current_row += 1;
+    }
+
+    (pivot_cols, matrix)
+}
+
+/// Extract a basis for the null space of the reduced constraint matrix.
+///
+/// For each free column (not in `pivot_cols`), set that parameter to 1.0,
+/// back-substitute to resolve the pivot variables, and collect the resulting
+/// 21-element vector.
+fn extract_null_basis(
+    reduced_matrix: &[Vec<f64>],
+    pivot_cols: &[usize],
+    n_params: usize,
+) -> Vec<[f64; 21]> {
+    let free_cols: Vec<usize> = (0..n_params).filter(|c| !pivot_cols.contains(c)).collect();
+
+    let mut null_basis: Vec<[f64; 21]> = Vec::new();
+    for &free_col in &free_cols {
+        let mut vec = [0.0f64; 21];
+        vec[free_col] = 1.0;
+
+        for (pivot_idx, &pivot_col) in pivot_cols.iter().enumerate().rev() {
+            let pivot_val = reduced_matrix[pivot_idx][pivot_col];
+            if pivot_val.abs() < 1e-14 {
+                continue;
+            }
+            let mut sum = 0.0f64;
+            for c in 0..n_params {
+                if c != pivot_col {
+                    sum += reduced_matrix[pivot_idx][c] * vec[c];
+                }
+            }
+            vec[pivot_col] = -sum / pivot_val;
+        }
+        null_basis.push(vec);
+    }
+
+    null_basis
+}
+
 /// A derivation of the octonion algebra: a linear map D: O -> O
 /// satisfying the Leibniz rule D(xy) = D(x)y + xD(y).
 ///
@@ -103,184 +289,53 @@ impl OctonionDerivation {
 ///
 /// Returns a basis of OctonionDerivation objects spanning g2.
 pub fn compute_g2_basis() -> Vec<OctonionDerivation> {
-    // Step 1: Parameterize a general element of so(7) acting on Im(O).
-    // A 7x7 skew-symmetric matrix has 21 independent entries: M_{ij} for 1 <= i < j <= 7.
-    // We index them as parameters p_0, p_1, ..., p_20.
-    // Parameter k corresponds to entry (i,j) where i < j, enumerated row-by-row.
+    const N_PARAMS: usize = 21;
 
-    // Map parameter index to (i,j) pair (0-indexed within Im(O), so 0..6)
-    let mut param_pairs: Vec<(usize, usize)> = Vec::new();
-    for i in 0..7 {
-        for j in (i + 1)..7 {
-            param_pairs.push((i, j));
-        }
-    }
-    assert_eq!(param_pairs.len(), 21);
+    // Step 1: Enumerate the 21 free parameters of so(7) as (i,j) pairs.
+    let param_pairs = build_skew_param_pairs();
+    assert_eq!(param_pairs.len(), N_PARAMS);
 
-    // Step 2: Build the Leibniz constraint matrix.
-    // For each pair (i,j) with 1 <= i <= j <= 7 (basis indices in O, so i,j in 1..=7):
-    //   D(e_i * e_j) = D(e_i) * e_j + e_i * D(e_j)
-    // This gives 8 equations per pair. We collect constraints as rows of A*p = 0.
+    // Step 2: One 8x8 basis matrix per free parameter.
+    let param_matrices: Vec<[[f64; 8]; 8]> = param_pairs
+        .iter()
+        .map(|&(a, b)| build_param_matrix(a, b))
+        .collect();
 
-    // For each of the 21 parameters, construct the 8x8 matrix with that parameter = 1.
-    let mut param_matrices: Vec<[[f64; 8]; 8]> = Vec::new();
-    for &(a, b) in &param_pairs {
-        let mut m = [[0.0f64; 8]; 8];
-        // Indices in O-space are a+1, b+1 (offset by 1 for scalar slot)
-        m[a + 1][b + 1] = 1.0;
-        m[b + 1][a + 1] = -1.0; // skew-symmetric
-        param_matrices.push(m);
-    }
+    // Step 3: Collect linear Leibniz constraints A*p = 0 (one row per
+    // non-trivial component equation over all basis pairs (ei, ej)).
+    let constraint_rows = build_leibniz_constraint_rows(&param_matrices);
 
-    // Collect constraint equations
-    let mut constraint_rows: Vec<[f64; 21]> = Vec::new();
-
-    for i in 1..8 {
-        for j in i..8 {
-            let ei = Octonion::basis(i);
-            let ej = Octonion::basis(j);
-            let ei_ej = ei.multiply(&ej);
-
-            // For each output component c (0..8):
-            // sum_k p_k * [ M_k applied to (e_i*e_j) ]_c
-            //   = sum_k p_k * [ (M_k e_i)*e_j + e_i*(M_k e_j) ]_c
-            for c in 0..8 {
-                let mut row = [0.0; 21];
-                for (k, pm) in param_matrices.iter().enumerate() {
-                    // LHS: D(e_i * e_j) component c
-                    let mut lhs_c = 0.0;
-                    for (&pm_cs, &comp_s) in pm[c].iter().zip(ei_ej.components.iter()) {
-                        lhs_c += pm_cs * comp_s;
-                    }
-
-                    // RHS: D(e_i)*e_j + e_i*D(e_j) component c
-                    // D(e_i) = M_k * e_i
-                    let mut d_ei = [0.0; 8];
-                    for (s, d_ei_s) in d_ei.iter_mut().enumerate() {
-                        *d_ei_s = pm[s][i];
-                    }
-                    let d_ei_oct = Octonion::new(d_ei);
-                    let d_ei_ej = d_ei_oct.multiply(&ej);
-
-                    let mut d_ej = [0.0; 8];
-                    for s in 0..8 {
-                        d_ej[s] = pm[s][j];
-                    }
-                    let d_ej_oct = Octonion::new(d_ej);
-                    let ei_d_ej = ei.multiply(&d_ej_oct);
-
-                    let rhs_c = d_ei_ej.components[c] + ei_d_ej.components[c];
-
-                    row[k] = lhs_c - rhs_c;
-                }
-
-                // Only add non-trivial constraints
-                let norm: f64 = row.iter().map(|x| x * x).sum::<f64>().sqrt();
-                if norm > 1e-14 {
-                    constraint_rows.push(row);
-                }
-            }
-        }
-    }
-
-    // Step 3: Find the null space of the constraint matrix via Gram-Schmidt.
-    // First, find a basis for the row space, then the null space is the complement.
-
-    // Reduce the constraint matrix to row echelon form via Gaussian elimination.
-    let n_params = 21;
-    let n_constraints = constraint_rows.len();
-    let mut matrix = vec![vec![0.0f64; n_params]; n_constraints];
-    for (i, row) in constraint_rows.iter().enumerate() {
-        for (j, &val) in row.iter().enumerate() {
-            matrix[i][j] = val;
-        }
-    }
-
-    // Gaussian elimination with partial pivoting
-    let mut pivot_cols: Vec<usize> = Vec::new();
-    let mut current_row = 0;
-    for col in 0..n_params {
-        // Find pivot
-        let mut max_val = 0.0;
-        let mut max_row = current_row;
-        for (row, mat_row) in matrix.iter().enumerate().skip(current_row) {
-            if mat_row[col].abs() > max_val {
-                max_val = mat_row[col].abs();
-                max_row = row;
-            }
-        }
-        if max_val < 1e-12 {
-            continue; // Free variable
-        }
-
-        // Swap rows
-        matrix.swap(current_row, max_row);
-        pivot_cols.push(col);
-
-        // Eliminate below
-        let pivot = matrix[current_row][col];
-        for row in 0..n_constraints {
-            if row == current_row {
-                continue;
-            }
-            let factor = matrix[row][col] / pivot;
-            #[allow(clippy::needless_range_loop)]
-            for c in 0..n_params {
-                matrix[row][c] -= factor * matrix[current_row][c];
-            }
-        }
-        current_row += 1;
-    }
-
+    // Step 4: Reduce to row echelon form; pivot columns identify the rank.
+    let (pivot_cols, reduced_matrix) = gaussian_eliminate_partial_pivot(&constraint_rows, N_PARAMS);
     let rank = pivot_cols.len();
-    let null_dim = n_params - rank;
+    let null_dim = N_PARAMS - rank;
 
-    // Step 4: Extract null space vectors (free variable approach).
-    // For each free variable, set it to 1 and solve for pivot variables.
-    let free_cols: Vec<usize> = (0..n_params).filter(|c| !pivot_cols.contains(c)).collect();
+    // Step 5: Extract one null-space vector per free variable.
+    let null_basis = extract_null_basis(&reduced_matrix, &pivot_cols, N_PARAMS);
 
-    let mut null_basis: Vec<[f64; 21]> = Vec::new();
-    for &free_col in &free_cols {
-        let mut vec = [0.0; 21];
-        vec[free_col] = 1.0;
-
-        // Back-substitute to find pivot variable values
-        for (pivot_idx, &pivot_col) in pivot_cols.iter().enumerate().rev() {
-            let pivot_val = matrix[pivot_idx][pivot_col];
-            if pivot_val.abs() < 1e-14 {
-                continue;
-            }
-            let mut sum = 0.0;
-            for c in 0..n_params {
-                if c != pivot_col {
-                    sum += matrix[pivot_idx][c] * vec[c];
-                }
-            }
-            vec[pivot_col] = -sum / pivot_val;
-        }
-        null_basis.push(vec);
-    }
-
-    // Step 5: Convert null space vectors to OctonionDerivation objects.
-    let mut derivations: Vec<OctonionDerivation> = Vec::new();
-    for null_vec in &null_basis {
-        let mut m = [[0.0f64; 8]; 8];
-        for (k, &coeff) in null_vec.iter().enumerate() {
-            let (a, b) = param_pairs[k];
-            m[a + 1][b + 1] += coeff;
-            m[b + 1][a + 1] -= coeff;
-        }
-        derivations.push(OctonionDerivation { matrix: m });
-    }
-
-    // Verify we got the expected dimension
+    // Verify we got the expected dimension before converting.
     assert_eq!(
-        null_dim, 14,
+        null_dim,
+        14,
         "Der(O) should have dimension 14, got {} (rank={}, constraints={})",
-        null_dim, rank, n_constraints
+        null_dim,
+        rank,
+        constraint_rows.len()
     );
 
-    derivations
+    // Step 6: Convert null-space vectors to OctonionDerivation objects.
+    null_basis
+        .iter()
+        .map(|null_vec| {
+            let mut m = [[0.0f64; 8]; 8];
+            for (k, &coeff) in null_vec.iter().enumerate() {
+                let (a, b) = param_pairs[k];
+                m[a + 1][b + 1] += coeff;
+                m[b + 1][a + 1] -= coeff;
+            }
+            OctonionDerivation { matrix: m }
+        })
+        .collect()
 }
 
 /// G2 structure computations on the imaginary octonions Im(O) = R^7.
