@@ -3,7 +3,7 @@
 # Emitted by `registry-emit requirements-legacy --audit-tools registry/audit_tools.toml`.
 
 [meta]
-updated = "2026-04-13"
+updated = "2026-04-15"
 description = "Tools invoked by `make audit-deep` and related quality targets."
 
 [[tool]]
@@ -40,6 +40,24 @@ make_target = "cpd-audit"
 install = "paru -S pmd"
 description = "Cross/within-crate Rust copy-paste detection (42-token minimum)."
 audit_deep = true
+status = "active"
+
+[[tool]]
+id = "cpd-audit-tooling"
+name = "PMD CPD (Tooling)"
+make_target = "cpd-audit-tooling"
+install = "paru -S pmd"
+description = "CPD scan of xtask, scripts, and CLI bin surfaces (80-token minimum, report-only)."
+audit_deep = false
+status = "active"
+
+[[tool]]
+id = "cpd-audit-generated"
+name = "PMD CPD (Generated)"
+make_target = "cpd-audit-generated"
+install = "paru -S pmd"
+description = "CPD scan of registry_mirrors/ generated Rust surfaces (200-token minimum, report-only, never gates CI)."
+audit_deep = false
 status = "active"
 
 [[tool]]
