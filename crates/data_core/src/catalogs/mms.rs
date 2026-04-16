@@ -179,6 +179,25 @@ pub fn detect_magnetopause_crossings(
     window_minutes: usize,
     bmag_gradient_threshold: f64,
 ) -> Vec<usize> {
+    detect_magnetopause_crossings_filtered(records, window_minutes, bmag_gradient_threshold, None)
+}
+
+/// Detect magnetopause crossings with an optional rotation filter.
+///
+/// If `rotation_threshold_deg` is `Some(thresh)`, a candidate must satisfy BOTH
+/// the |B| gradient criterion AND a vector rotation of at least `thresh` degrees
+/// between the pre- and post-window mean B vectors.  This filters out compressive
+/// events (which change |B| without rotating it) that are not boundary crossings.
+///
+/// WHY: Pure |B| gradient labels include solar wind pressure pulses and flares.
+/// Adding a rotation criterion (>=30 deg) selects events that are directional
+/// discontinuities -- the hallmark of a current-sheet or boundary crossing.
+pub fn detect_magnetopause_crossings_filtered(
+    records: &[MmsFgmMinuteRecord],
+    window_minutes: usize,
+    bmag_gradient_threshold: f64,
+    rotation_threshold_deg: Option<f64>,
+) -> Vec<usize> {
     if records.len() < window_minutes * 2 + 1 {
         return vec![];
     }
@@ -187,43 +206,62 @@ pub fn detect_magnetopause_crossings(
     let mut crossings = Vec::new();
 
     for i in half..records.len().saturating_sub(half) {
-        // Sliding window |B| statistics: compare pre-window mean to post-window mean
         let pre_start = i.saturating_sub(half);
         let post_end = (i + half).min(records.len());
+        let n_pre = (i - pre_start) as f64;
+        let n_post = (post_end - i) as f64;
 
         let pre_mean_b: f64 = records[pre_start..i]
             .iter()
             .map(|r| r.b_magnitude)
             .sum::<f64>()
-            / (i - pre_start) as f64;
-
+            / n_pre;
         let post_mean_b: f64 = records[i..post_end]
             .iter()
             .map(|r| r.b_magnitude)
             .sum::<f64>()
-            / (post_end - i) as f64;
-
+            / n_post;
         let b_jump = (post_mean_b - pre_mean_b).abs();
 
-        // Check for B_z sign change in the window (rotation across current sheet)
         let pre_bz_mean: f64 =
-            records[pre_start..i].iter().map(|r| r.bz_gse).sum::<f64>() / (i - pre_start) as f64;
+            records[pre_start..i].iter().map(|r| r.bz_gse).sum::<f64>() / n_pre;
         let post_bz_mean: f64 =
-            records[i..post_end].iter().map(|r| r.bz_gse).sum::<f64>() / (post_end - i) as f64;
+            records[i..post_end].iter().map(|r| r.bz_gse).sum::<f64>() / n_post;
         let bz_sign_change = pre_bz_mean * post_bz_mean < 0.0;
 
-        // Crossing criteria: large |B| jump OR (moderate jump + Bz sign change)
-        let is_crossing = b_jump > bmag_gradient_threshold
+        // Gradient criterion (unchanged from original).
+        let gradient_ok = b_jump > bmag_gradient_threshold
             || (b_jump > bmag_gradient_threshold * 0.5 && bz_sign_change);
+        if !gradient_ok {
+            continue;
+        }
 
-        if is_crossing {
-            // Suppress duplicates: only keep if no crossing within window_minutes
-            let dominated = crossings
-                .last()
-                .is_some_and(|&prev: &usize| i.saturating_sub(prev) < window_minutes);
-            if !dominated {
-                crossings.push(i);
+        // Optional rotation criterion.
+        if let Some(rot_thresh) = rotation_threshold_deg {
+            let pre_bx = records[pre_start..i].iter().map(|r| r.bx_gse).sum::<f64>() / n_pre;
+            let pre_by = records[pre_start..i].iter().map(|r| r.by_gse).sum::<f64>() / n_pre;
+            let pre_bz = pre_bz_mean;
+            let post_bx = records[i..post_end].iter().map(|r| r.bx_gse).sum::<f64>() / n_post;
+            let post_by = records[i..post_end].iter().map(|r| r.by_gse).sum::<f64>() / n_post;
+            let post_bz = post_bz_mean;
+            let pre_mag = (pre_bx.powi(2) + pre_by.powi(2) + pre_bz.powi(2)).sqrt();
+            let post_mag = (post_bx.powi(2) + post_by.powi(2) + post_bz.powi(2)).sqrt();
+            if pre_mag > 0.1 && post_mag > 0.1 {
+                let cos_a = ((pre_bx * post_bx + pre_by * post_by + pre_bz * post_bz)
+                    / (pre_mag * post_mag))
+                    .clamp(-1.0, 1.0);
+                let rotation_deg = cos_a.acos().to_degrees();
+                if rotation_deg < rot_thresh {
+                    continue; // Insufficient rotation -- compressive, not boundary crossing.
+                }
             }
+        }
+
+        let dominated = crossings
+            .last()
+            .is_some_and(|&prev: &usize| i.saturating_sub(prev) < window_minutes);
+        if !dominated {
+            crossings.push(i);
         }
     }
 

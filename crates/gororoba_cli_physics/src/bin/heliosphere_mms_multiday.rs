@@ -14,7 +14,8 @@ use chrono::{Datelike, NaiveDate};
 use clap::Parser;
 use data_core::{
     catalogs::mms::{
-        MmsFgmMinuteRecord, detect_magnetopause_crossings, parse_mms_fgm_hapi_csv_minutes,
+        MmsFgmMinuteRecord, detect_magnetopause_crossings_filtered,
+        parse_mms_fgm_hapi_csv_minutes,
     },
     fetcher::download_hapi_csv_to_file,
 };
@@ -50,6 +51,13 @@ struct Cli {
     /// |B| gradient threshold (nT) for crossing detection.
     #[arg(long, default_value_t = 5.0)]
     bmag_gradient_threshold: f64,
+
+    /// Minimum vector rotation (degrees) required between pre- and post-window
+    /// mean B vectors to accept a crossing candidate.  Filters compressive
+    /// events (pressure pulses, flares) that change |B| without rotating the
+    /// field direction.  Recommended: 30.0.  Omit to use gradient-only criterion.
+    #[arg(long)]
+    rotation_threshold_deg: Option<f64>,
 
     /// Tolerance (minutes) for matching associator transitions to crossings.
     #[arg(long, default_value_t = 15)]
@@ -112,6 +120,8 @@ struct MultiDayResults {
     n_days: u32,
     embedding_dim: usize,
     takens_lag: usize,
+    bmag_gradient_threshold: f64,
+    rotation_threshold_deg: Option<f64>,
     total_minutes: usize,
     n_crossings_detected: usize,
     n_associator_transitions: usize,
@@ -254,13 +264,20 @@ fn main() -> Result<()> {
         all_minutes.last().map(|r| r.elapsed_hours).unwrap_or(0.0)
     );
 
-    // --- Step 3: Detect magnetopause crossings via |B| gradient ---
-    println!("[3/5] Detecting magnetopause crossings via |B| gradient...");
+    // --- Step 3: Detect magnetopause crossings via |B| gradient (+optional rotation) ---
+    {
+        let rot_note = match cli.rotation_threshold_deg {
+            Some(r) => format!(", rotation>={:.0} deg", r),
+            None => String::new(),
+        };
+        println!("[3/5] Detecting magnetopause crossings (|B| gradient{})...", rot_note);
+    }
 
-    let crossing_indices = detect_magnetopause_crossings(
+    let crossing_indices = detect_magnetopause_crossings_filtered(
         &all_minutes,
         cli.crossing_window_minutes,
         cli.bmag_gradient_threshold,
+        cli.rotation_threshold_deg,
     );
 
     let crossings: Vec<CrossingEvent> = crossing_indices
@@ -576,6 +593,8 @@ fn main() -> Result<()> {
         n_days: cli.n_days,
         embedding_dim: cli.embedding_dim,
         takens_lag: cli.takens_lag,
+        bmag_gradient_threshold: cli.bmag_gradient_threshold,
+        rotation_threshold_deg: cli.rotation_threshold_deg,
         total_minutes: all_minutes.len(),
         n_crossings_detected: crossings.len(),
         n_associator_transitions: transitions.len(),

@@ -5706,3 +5706,78 @@ status_token = "ACTIVE"
 title = "THEMIS supervised CD crossing survey: ground-truth early/late ratio at magnetopause (C-1619)"
 truth_surface_consumption = ["themis_mp_crossings_v2.txt"]
 
+[[experiment]]
+id = "E-228"
+input = "Cluster C1 FGM spin-resolution CSV (DOY 001-007 2002); OMNI Cluster bow shock crossing list omni_bowshock_cluster_2002.txt (37 curated crossings)"
+input_path_refs = ["data/external/cluster/", "data/external/crossing_lists/omni_bowshock_cluster_2002.txt"]
+lineage_id = "XL-228"
+method = "Load per-day Cluster C1 FGM CSV (HAPI spin-res); minute-level averaging; 32D Takens (8-step x 4-ch, unit-norm); batch_sliding_associator_norms_parallel; threshold-sweep for PR curve; per-transition type classification (rotation/b_jump/cv_bmag); false-negative analysis vs curated crossing list."
+output = ["data/output/heliosphere/ablations/fa_attribution_cluster_2002w01.json"]
+output_path_refs = ["data/output/heliosphere/ablations/fa_attribution_cluster_2002w01.json"]
+reproducibility_class = "deterministic"
+run = "cargo run --release --bin heliosphere-fa-attribution -- --mission cluster --start-date 2002-01-01 --end-date 2002-01-07 --out-json data/output/heliosphere/ablations/fa_attribution_cluster_2002w01.json --out-pr-curve data/output/heliosphere/ablations/fa_attribution_cluster_pr_curve.json"
+run_command_sha256 = ""
+status = "active"
+status_token = "ACTIVE"
+title = "Cluster FA attribution: bow shock crossing detection P/R/F1 and per-type analysis (C-1620)"
+
+[[experiment]]
+id = "E-229"
+input = "Rosetta 67P AMDA ros-magob-rsmp FGM data (July-September 2015, 126949 minutes); AMDA diamagnetic cavity boundary annotations (9298 cavity boundary events)"
+input_path_refs = ["data/external/rosetta/", "data/external/crossing_lists/rosetta_cavity_boundaries.txt"]
+lineage_id = "XL-229"
+method = "Four normalization variants (raw/direction/clipped/current) of 32D Takens embedding; batch_sliding_associator_norms_parallel; detection_rate/FAR/selectivity/F1 for each variant; rank by F1_boundary; winner: direction."
+output = ["data/output/heliosphere/ablations/rosetta_normalization_ablation.json"]
+output_path_refs = ["data/output/heliosphere/ablations/rosetta_normalization_ablation.json"]
+reproducibility_class = "deterministic"
+run = "cargo run --release --bin heliosphere-rosetta-ablation-summary -- --input-dir data/output/heliosphere/ablations"
+run_command_sha256 = ""
+status = "active"
+status_token = "ACTIVE"
+title = "Rosetta 67P normalization ablation: direction vs raw/clipped/current in weak-field cavity (C-1621)"
+
+[[experiment]]
+id = "E-230"
+input = "Four pre-computed PSP switchback omega JSON files: E1/E4/E6/E10 (heliosphere-switchback-omega outputs)"
+input_path_refs = ["data/output/heliosphere/ablations/psp_switchback_omega_e1.json", "data/output/heliosphere/ablations/psp_switchback_omega.json", "data/output/heliosphere/ablations/psp_switchback_omega_e6.json", "data/output/heliosphere/ablations/psp_switchback_omega_e10.json"]
+lineage_id = "XL-230"
+method = "Read per-encounter JSON; extract ratio_switchback_to_quiet; Spearman rho vs encounter number (perihelion depth proxy); monotonicity check; mean/std across 4 encounters."
+output = ["data/output/heliosphere/ablations/psp_multiencounter_stability.json"]
+output_path_refs = ["data/output/heliosphere/ablations/psp_multiencounter_stability.json"]
+reproducibility_class = "deterministic"
+run = "cargo run --release --bin heliosphere-psp-encounter-summary -- --input-dir data/output/heliosphere/ablations"
+run_command_sha256 = ""
+status = "active"
+status_token = "ACTIVE"
+title = "PSP multi-encounter stability: switchback/quiet CD associator ratio vs perihelion depth (C-1622)"
+
+[[experiment]]
+id = "E-231"
+input = "THEMIS FA attribution JSON (fa_attribution_themis.json) containing false-negative candidate list with rotation_deg, b_jump_nT, cv_bmag per event"
+input_path_refs = ["data/output/heliosphere/ablations/fa_attribution_themis.json"]
+lineage_id = "XL-231"
+method = "Extract false-negative candidates from FA attribution output; classify by rotation_deg threshold (low-rotation < 15 deg, partial-grazing criteria); compare mean rotation of FN vs detected events."
+output = ["data/output/heliosphere/ablations/fa_attribution_themis.json"]
+output_path_refs = ["data/output/heliosphere/ablations/fa_attribution_themis.json"]
+reproducibility_class = "deterministic"
+run = "cargo run --release --bin heliosphere-fa-attribution -- --mission themis --out-json data/output/heliosphere/ablations/fa_attribution_themis.json"
+run_command_sha256 = ""
+status = "active"
+status_token = "ACTIVE"
+title = "THEMIS FA false-negative classification: low-rotation crossings missed by CD associator (C-1623)"
+
+[[experiment]]
+id = "E-232"
+input = "MMS1 FGM Survey L2 data (2024-01-01 to 2024-01-07, 9460 minutes after inner-magnetosphere filter); cached daily CSVs in data/external/mms/"
+input_path_refs = ["data/external/mms/"]
+lineage_id = "XL-232"
+method = "Two runs of heliosphere-mms-multiday: (1) baseline gradient-only (5 nT threshold), (2) rotation-hardened (5 nT + rotation>=30 deg). Compare n_crossings_detected, detection_rate, false_alarm_rate, mean_offset_minutes."
+output = ["data/output/heliosphere/ablations/mms_multiday_crossing_analysis.json", "data/output/heliosphere/ablations/mms_multiday_rot30.json"]
+output_path_refs = ["data/output/heliosphere/ablations/mms_multiday_rot30.json"]
+reproducibility_class = "deterministic"
+run = "cargo run --release --bin heliosphere-mms-multiday -- --start-date 2024-01-01 --n-days 7 --rotation-threshold-deg 30 --out-json data/output/heliosphere/ablations/mms_multiday_rot30.json"
+run_command_sha256 = ""
+status = "active"
+status_token = "ACTIVE"
+title = "MMS rotation-threshold label hardening: gradient-only vs rotation>=30 deg comparison (C-1624)"
+
