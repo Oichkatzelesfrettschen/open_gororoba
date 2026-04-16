@@ -122,6 +122,7 @@ pub fn batch_sliding_associator_norms_dispatch(
 }
 
 #[cfg(test)]
+#[cfg_attr(miri, ignore)] // rayon -> crossbeam-epoch stacked borrows; not a cd_kernel UB
 #[test]
 fn batch_sedenion_associator_matches_recursive() {
     crate::cayley_dickson::assert_batch_sedenion_associator_matches_recursive();
