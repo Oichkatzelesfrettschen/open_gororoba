@@ -1919,50 +1919,48 @@ fn emit_requirements_legacy(args: RequirementsLegacyArgs) -> Result<(), String> 
         }
 
         // Append "Audit Tools" section to the primary requirements markdown only.
-        if rel_path == primary_markdown || rel_path == "REQUIREMENTS.md" {
-            if let Some(ref data) = audit_tools_data {
-                let tool_rows = rows(data, "tool");
-                if !tool_rows.is_empty() {
-                    lines.push(String::new());
-                    lines.push("## Audit Tools".to_string());
-                    lines.push(String::new());
-                    lines.push(
-                        "Each tool listed below is available via a dedicated `make` target. \
-                         Tools marked **audit-deep** are included in `make audit-deep`."
-                            .to_string(),
-                    );
-                    lines.push(String::new());
-                    lines.push(
-                        "| Tool | Make Target | Install | audit-deep | Status |".to_string(),
-                    );
-                    lines.push(
-                        "| --- | --- | --- | ---: | --- |".to_string(),
-                    );
-                    for tool in &tool_rows {
-                        let name = str_field(tool, "name");
-                        let make_target = str_field(tool, "make_target");
-                        let install = str_field(tool, "install");
-                        let in_audit_deep = bool_field(tool, "audit_deep");
-                        let status = str_field(tool, "status");
-                        let blocked = str_field(tool, "blocked_reason");
-                        let status_cell = if blocked.is_empty() {
-                            status
+        if (rel_path == primary_markdown || rel_path == "REQUIREMENTS.md")
+            && let Some(ref data) = audit_tools_data
+        {
+            let tool_rows = rows(data, "tool");
+            if !tool_rows.is_empty() {
+                lines.push(String::new());
+                lines.push("## Audit Tools".to_string());
+                lines.push(String::new());
+                lines.push(
+                    "Each tool listed below is available via a dedicated `make` target. \
+                     Tools marked **audit-deep** are included in `make audit-deep`."
+                        .to_string(),
+                );
+                lines.push(String::new());
+                lines.push(
+                    "| Tool | Make Target | Install | audit-deep | Status |".to_string(),
+                );
+                lines.push("| --- | --- | --- | ---: | --- |".to_string());
+                for tool in &tool_rows {
+                    let name = str_field(tool, "name");
+                    let make_target = str_field(tool, "make_target");
+                    let install = str_field(tool, "install");
+                    let in_audit_deep = bool_field(tool, "audit_deep");
+                    let status = str_field(tool, "status");
+                    let blocked = str_field(tool, "blocked_reason");
+                    let status_cell = if blocked.is_empty() {
+                        status
+                    } else {
+                        format!("{} -- {}", status, blocked)
+                    };
+                    lines.push(format!(
+                        "| {} | `make {}` | {} | {} | {} |",
+                        name,
+                        make_target,
+                        if install.is_empty() {
+                            "(built-in)".to_string()
                         } else {
-                            format!("{} -- {}", status, blocked)
-                        };
-                        lines.push(format!(
-                            "| {} | `make {}` | {} | {} | {} |",
-                            name,
-                            make_target,
-                            if install.is_empty() {
-                                "(built-in)".to_string()
-                            } else {
-                                format!("`{}`", install)
-                            },
-                            if in_audit_deep { "yes" } else { "no" },
-                            status_cell,
-                        ));
-                    }
+                            format!("`{}`", install)
+                        },
+                        if in_audit_deep { "yes" } else { "no" },
+                        status_cell,
+                    ));
                 }
             }
         }

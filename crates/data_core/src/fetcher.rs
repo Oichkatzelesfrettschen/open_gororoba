@@ -67,7 +67,7 @@ pub fn download_to_file(url: &str, path: &Path) -> Result<u64, FetchError> {
     #[cfg(not(feature = "fetch"))]
     {
         let _ = path;
-        return Err(fetch_feature_disabled(url));
+        Err(fetch_feature_disabled(url))
     }
     #[cfg(feature = "fetch")]
     {
@@ -87,7 +87,7 @@ pub fn download_to_file(url: &str, path: &Path) -> Result<u64, FetchError> {
 pub fn download_to_string(url: &str) -> Result<String, FetchError> {
     #[cfg(not(feature = "fetch"))]
     {
-        return Err(fetch_feature_disabled(url));
+        Err(fetch_feature_disabled(url))
     }
     #[cfg(feature = "fetch")]
     {
@@ -109,7 +109,7 @@ pub fn download_to_string_with_timeout(
     #[cfg(not(feature = "fetch"))]
     {
         let _ = timeout;
-        return Err(fetch_feature_disabled(url));
+        Err(fetch_feature_disabled(url))
     }
     #[cfg(feature = "fetch")]
     {

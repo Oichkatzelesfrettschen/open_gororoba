@@ -125,8 +125,8 @@ fn main() {
 
     // Explained variance
     let total_var: f64 = svals.iter().map(|s| s * s).sum();
-    for k in 0..3.min(svals.len()) {
-        let var = svals[k].powi(2) / total_var * 100.0;
+    for (k, sv) in svals.iter().take(3).enumerate() {
+        let var = sv.powi(2) / total_var * 100.0;
         eprintln!("  PC{}: {:.1}% variance", k + 1, var);
     }
 

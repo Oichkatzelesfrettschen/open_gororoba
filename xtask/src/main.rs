@@ -2149,11 +2149,11 @@ fn run_cpd_file_list(output: &Path) -> Result<()> {
 
     paths.sort();
 
-    if let Some(parent) = output.parent() {
-        if !parent.as_os_str().is_empty() {
-            fs::create_dir_all(parent)
-                .with_context(|| format!("create output directory {}", parent.display()))?;
-        }
+    if let Some(parent) = output.parent()
+        && !parent.as_os_str().is_empty()
+    {
+        fs::create_dir_all(parent)
+            .with_context(|| format!("create output directory {}", parent.display()))?;
     }
     fs::write(output, paths.join("\n") + "\n")
         .with_context(|| format!("write CPD file list to {}", output.display()))?;

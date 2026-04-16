@@ -554,6 +554,9 @@ pub fn fractional_laplacian_dirichlet_2d_flat(
 ///
 /// `u` is row-major with shape `(nx, ny, nz)`: element `(i,j,k)` is at `u[(i*ny + j)*nz + k]`.
 /// Returns result in the same row-major layout as a `Vec<f64>`.
+// The 8 arguments are the irreducible minimum for a 3D spectral operator:
+// (slice, nx, ny, nz) encode the grid; (s) is the fractional order; (lx, ly, lz) are domain lengths.
+#[allow(clippy::too_many_arguments)]
 pub fn fractional_laplacian_periodic_3d_flat(
     u: &[f64],
     nx: usize,

@@ -183,19 +183,22 @@ fn mean_diagonal(matrix: &Mat3) -> f64 {
 
 fn sinkhorn_normalize(mut matrix: Mat3, iterations: usize) -> Mat3 {
     for _ in 0..iterations {
-        for i in 0..3 {
-            let row_sum: f64 = matrix[i].iter().sum();
+        // Row normalization: iterate directly over mutable row slices.
+        for row in &mut matrix {
+            let row_sum: f64 = row.iter().sum();
             if row_sum > 1e-15 {
-                for j in 0..3 {
-                    matrix[i][j] /= row_sum;
+                for val in row.iter_mut() {
+                    *val /= row_sum;
                 }
             }
         }
+        // Column normalization: column index j is needed to address across rows.
+        // Use row iterators for inner loops while keeping the column index explicit.
         for j in 0..3 {
-            let col_sum: f64 = (0..3).map(|i| matrix[i][j]).sum();
+            let col_sum: f64 = matrix.iter().map(|row| row[j]).sum();
             if col_sum > 1e-15 {
-                for i in 0..3 {
-                    matrix[i][j] /= col_sum;
+                for row in &mut matrix {
+                    row[j] /= col_sum;
                 }
             }
         }
@@ -206,9 +209,9 @@ fn sinkhorn_normalize(mut matrix: Mat3, iterations: usize) -> Mat3 {
 fn random_doubly_stochastic(seed: u64) -> Mat3 {
     let mut rng = ChaCha8Rng::seed_from_u64(seed);
     let mut matrix = ZERO3;
-    for i in 0..3 {
-        for j in 0..3 {
-            matrix[i][j] = 0.1 + rng.random::<f64>();
+    for row in &mut matrix {
+        for val in row.iter_mut() {
+            *val = 0.1 + rng.random::<f64>();
         }
     }
     sinkhorn_normalize(matrix, 24)

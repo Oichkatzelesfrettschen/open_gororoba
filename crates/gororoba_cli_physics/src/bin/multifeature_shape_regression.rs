@@ -254,13 +254,13 @@ fn main() -> anyhow::Result<()> {
 
     let total_var: f64 = sigma.iter().map(|s| s * s).sum();
     let var_2modes = sigma
-        .get(0)
+        .first()
         .map(|s| s * s)
         .unwrap_or(0.0)
         + sigma.get(1).map(|s| s * s).unwrap_or(0.0);
     eprintln!(
         "SVD: sigma_1={:.4e}, sigma_2={:.4e}",
-        sigma.get(0).copied().unwrap_or(0.0),
+        sigma.first().copied().unwrap_or(0.0),
         sigma.get(1).copied().unwrap_or(0.0)
     );
     eprintln!(
@@ -270,7 +270,7 @@ fn main() -> anyhow::Result<()> {
 
     // Extract per-galaxy 2-component SVD coefficients via dot product with V^T rows
     let empty_vt: Vec<f64> = vec![0.0; n_valid];
-    let vt0 = vt_rows.get(0).unwrap_or(&empty_vt);
+    let vt0 = vt_rows.first().unwrap_or(&empty_vt);
     let vt1 = vt_rows.get(1).unwrap_or(&empty_vt);
     for (i, g) in galaxies.iter_mut().enumerate() {
         g.svd_coeffs[0] = dot_slice(&centered[i], vt0);
@@ -339,7 +339,7 @@ fn main() -> anyhow::Result<()> {
 
     // Combined R^2: weighted by variance explained
     let w0 = if var_2modes > 0.0 {
-        sigma.get(0).map(|s| s * s).unwrap_or(0.0) / var_2modes
+        sigma.first().map(|s| s * s).unwrap_or(0.0) / var_2modes
     } else {
         0.5
     };
@@ -366,7 +366,7 @@ fn main() -> anyhow::Result<()> {
     eprintln!("\nSubtracting predicted baryonic shape from each galaxy...");
 
     // V^T rows for shape reconstruction
-    let v0: Vec<f64> = vt_rows.get(0).cloned().unwrap_or_else(|| vec![0.0; n_valid]);
+    let v0: Vec<f64> = vt_rows.first().cloned().unwrap_or_else(|| vec![0.0; n_valid]);
     let v1: Vec<f64> = vt_rows.get(1).cloned().unwrap_or_else(|| vec![0.0; n_valid]);
 
     let mut corrected_galaxies: Vec<NormalizedResiduals> = Vec::new();
