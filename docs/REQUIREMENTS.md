@@ -73,5 +73,7 @@ Each tool listed below is available via a dedicated `make` target. Tools marked 
 | cargo-deny | `make cargo-deny-check` | `cargo install cargo-deny` | yes | active |
 | Dependency Audit | `make dep-audit` | (built-in) | yes | active |
 | PMD CPD | `make cpd-audit` | `paru -S pmd` | yes | active |
+| PMD CPD (Tooling) | `make cpd-audit-tooling` | `paru -S pmd` | no | active |
+| PMD CPD (Generated) | `make cpd-audit-generated` | `paru -S pmd` | no | active |
 | cargo-semver-checks | `make rust-semver-check` | `cargo install cargo-semver-checks` | no | blocked -- fwht external path dep cannot resolve from git temp checkout. |
 | Docs Freshness | `make docs-freshness` | (built-in) | no | blocked -- Mathematical bracket notation [a,b,c] triggers broken-intra-doc-links. |
