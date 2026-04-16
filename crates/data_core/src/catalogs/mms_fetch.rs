@@ -1,6 +1,8 @@
 //! Fetch implementation for mms. See mms.rs for record types and parsers.
 
-use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_hapi_csv};
+use crate::fetcher::{
+    DatasetProvider, FetchConfig, FetchError, download_hapi_csv, download_to_string,
+};
 use chrono::NaiveDate;
 use std::{fs, path::PathBuf};
 
@@ -112,5 +114,74 @@ impl DatasetProvider for MmsFgmProvider {
 
     fn is_cached(&self, config: &FetchConfig) -> bool {
         config.output_dir.join("mms").exists()
+    }
+}
+
+/// MMS SITL / GLS event catalog provider.
+///
+/// Downloads the scientist-in-the-loop (SITL) and ground-loop-segment (GLS)
+/// burst-mode selection catalog from the MMS Science Data Center public REST
+/// API.
+///
+/// Endpoint:
+/// `https://lasp.colorado.edu/mms/sdc/public/files/api/v1/sitl/gls/csv
+///  ?start_date=YYYY-MM-DDTHH:MM:SS&stop_date=YYYY-MM-DDTHH:MM:SS`
+///
+/// WHY: SITL selections are expert-curated boundary annotations used to
+/// harden MMS ground truth beyond |B|-gradient pseudo-labels.  Caching them
+/// locally avoids repeated SDC queries during ablation sweeps.
+pub struct MmsSitlProvider {
+    pub start_date: NaiveDate,
+    pub end_date: NaiveDate,
+}
+
+const MMS_SDC_SITL_BASE: &str =
+    "https://lasp.colorado.edu/mms/sdc/public/files/api/v1/sitl/gls/csv";
+
+impl DatasetProvider for MmsSitlProvider {
+    fn name(&self) -> &str {
+        "MMS SITL/GLS Event Catalog"
+    }
+
+    fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
+        let dir = config.output_dir.join("mms");
+        fs::create_dir_all(&dir)?;
+
+        let fname = format!(
+            "mms_sitl_{}_{}.csv",
+            self.start_date.format("%Y%m%d"),
+            self.end_date.format("%Y%m%d")
+        );
+        let output = dir.join(&fname);
+
+        if config.skip_existing && output.exists() {
+            return Ok(output);
+        }
+
+        let url = format!(
+            "{}?start_date={}T00:00:00&stop_date={}T23:59:59",
+            MMS_SDC_SITL_BASE,
+            self.start_date.format("%Y-%m-%d"),
+            self.end_date.format("%Y-%m-%d"),
+        );
+
+        println!(
+            "Fetching MMS SITL catalog {} to {} from SDC...",
+            self.start_date, self.end_date
+        );
+
+        let body = download_to_string(&url)?;
+        fs::write(&output, &body)?;
+        Ok(output)
+    }
+
+    fn is_cached(&self, config: &FetchConfig) -> bool {
+        let dir = config.output_dir.join("mms");
+        let fname = format!(
+            "mms_sitl_{}_{}.csv",
+            self.start_date.format("%Y%m%d"),
+            self.end_date.format("%Y%m%d")
+        );
+        dir.join(fname).exists()
     }
 }

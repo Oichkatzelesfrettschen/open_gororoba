@@ -8,7 +8,7 @@
 //! Reference: Russell et al. (2016), Space Sci. Rev. 199, 189
 
 use crate::parse::{parse_hapi_spacephysics_f64_or_nan, parse_hapi_time_to_ydh};
-use chrono::{DateTime, Datelike, Timelike, Utc};
+use chrono::{DateTime, Datelike, NaiveDateTime, Timelike, Utc};
 use csv::ReaderBuilder;
 use std::collections::BTreeMap;
 
@@ -32,7 +32,6 @@ struct FgmHourAccumulator {
     bmag_sum: f64,
     count: usize,
 }
-
 
 pub fn parse_mms_fgm_hapi_csv(content: &str) -> Vec<MmsFgmRecord> {
     let mut reader = ReaderBuilder::new()
@@ -223,10 +222,8 @@ pub fn detect_magnetopause_crossings_filtered(
             / n_post;
         let b_jump = (post_mean_b - pre_mean_b).abs();
 
-        let pre_bz_mean: f64 =
-            records[pre_start..i].iter().map(|r| r.bz_gse).sum::<f64>() / n_pre;
-        let post_bz_mean: f64 =
-            records[i..post_end].iter().map(|r| r.bz_gse).sum::<f64>() / n_post;
+        let pre_bz_mean: f64 = records[pre_start..i].iter().map(|r| r.bz_gse).sum::<f64>() / n_pre;
+        let post_bz_mean: f64 = records[i..post_end].iter().map(|r| r.bz_gse).sum::<f64>() / n_post;
         let bz_sign_change = pre_bz_mean * post_bz_mean < 0.0;
 
         // Gradient criterion (unchanged from original).
@@ -538,4 +535,235 @@ pub fn detect_composite_crossings(
     }
 
     crossings
+}
+
+// ============================================================================
+// MMS SITL / GLS event catalog
+// ============================================================================
+
+/// One SITL-selected or GLS-automated event interval from the MMS SDC catalog.
+///
+/// The MMS Science Data Center publishes scientist-in-the-loop (SITL) and
+/// ground-loop-segment (GLS) selections as CSV files.  Each row captures an
+/// interval a scientist (or automated algorithm) flagged for burst-mode
+/// downlink, typically because it contains a scientifically interesting
+/// boundary.  `fom` (figure of merit) encodes scientist confidence; 100 is
+/// maximum priority.  `discussion` is a free-text note that often names the
+/// boundary type ("magnetopause", "reconnection", "current sheet", etc.).
+///
+/// WHY: Using SITL intervals as ground truth replaces |B|-gradient
+/// pseudo-labels with expert-curated boundary annotations, stripping
+/// compressive false positives (pressure pulses, dipolarizations) that change
+/// |B| without rotating the field.
+#[derive(Debug, Clone)]
+pub struct MmsEventInterval {
+    pub start: NaiveDateTime,
+    pub end: NaiveDateTime,
+    /// Figure of merit (0-100).  Higher means higher scientist priority.
+    pub fom: f64,
+    /// Free-text annotation from the scientist or GLS algorithm.
+    pub discussion: String,
+}
+
+/// Parse the MMS SDC SITL/GLS CSV format into event intervals.
+///
+/// Expected header line (present or absent):
+/// ```text
+/// tstart,tstop,fom,sourceid,createtime,discussion
+/// ```
+/// Times are ISO 8601 with optional trailing `Z`.  Lines starting with `#`
+/// or the literal header are skipped.  Rows with unparseable times are
+/// silently skipped -- a missing or corrupt row does not abort the parse.
+///
+/// Also accepts a simplified two-column format `start_time,stop_time` (no
+/// header required) used by some published MMS crossing catalogs.
+pub fn parse_mms_sitl_csv(content: &str) -> Vec<MmsEventInterval> {
+    let mut events = Vec::new();
+
+    for line in content.lines() {
+        let trimmed = line.trim();
+        if trimmed.is_empty() || trimmed.starts_with('#') {
+            continue;
+        }
+        // Skip header rows.
+        if trimmed.starts_with("tstart")
+            || trimmed.starts_with("start_time")
+            || trimmed.starts_with("StartTime")
+        {
+            continue;
+        }
+
+        let cols: Vec<&str> = trimmed.splitn(6, ',').collect();
+        if cols.len() < 2 {
+            continue;
+        }
+
+        let start = parse_sitl_time(cols[0].trim());
+        let end = parse_sitl_time(cols[1].trim());
+        let (start, end) = match (start, end) {
+            (Some(s), Some(e)) => (s, e),
+            _ => continue,
+        };
+
+        let fom = if cols.len() >= 3 {
+            cols[2].trim().parse::<f64>().unwrap_or(0.0)
+        } else {
+            0.0
+        };
+
+        // Column 5 (index 4 = createtime) may be absent; discussion is last.
+        let discussion = if cols.len() >= 6 {
+            cols[5].trim().trim_matches('"').to_string()
+        } else if cols.len() == 5 {
+            cols[4].trim().trim_matches('"').to_string()
+        } else {
+            String::new()
+        };
+
+        events.push(MmsEventInterval {
+            start,
+            end,
+            fom,
+            discussion,
+        });
+    }
+
+    events.sort_by_key(|e| e.start);
+    events
+}
+
+/// Parse ISO 8601 datetime strings emitted by the MMS SDC API.
+///
+/// Tries several common variants:
+/// - `2024-01-01T00:00:00.000Z`  (milliseconds + Z)
+/// - `2024-01-01T00:00:00Z`      (no subseconds)
+/// - `2024-01-01T00:00:00.000`   (milliseconds, no Z)
+/// - `2024-01-01T00:00:00`       (bare)
+fn parse_sitl_time(s: &str) -> Option<NaiveDateTime> {
+    let s = s.trim_end_matches('Z');
+    // Try with milliseconds first.
+    if let Ok(dt) = NaiveDateTime::parse_from_str(s, "%Y-%m-%dT%H:%M:%S%.f") {
+        return Some(dt);
+    }
+    // Fallback to whole-second.
+    NaiveDateTime::parse_from_str(s, "%Y-%m-%dT%H:%M:%S").ok()
+}
+
+/// Filter a SITL event list to intervals likely corresponding to magnetopause
+/// crossings.
+///
+/// Retains events whose `discussion` field contains at least one of:
+/// "magnetopause", "mag pause", " mp ", " mp,", " mp.", "current sheet",
+/// "reconnect", "dayside".  The match is case-insensitive.
+///
+/// WHY: SITL selections cover all burst-priority events (flux ropes, jets,
+/// reconnection, etc.).  Restricting to magnetopause keywords gives a clean
+/// ground-truth set comparable to the THEMIS/Cluster/MAVEN curated crossing
+/// lists used for the cross-mission table.
+///
+/// If the filtered list is empty (e.g., the catalog covers no magnetopause
+/// events in the window) the full unfiltered list is returned so the binary
+/// can still produce output rather than silently failing.
+pub fn filter_magnetopause_events(events: &[MmsEventInterval]) -> Vec<MmsEventInterval> {
+    const KEYWORDS: &[&str] = &[
+        "magnetopause",
+        "mag pause",
+        " mp ",
+        " mp,",
+        " mp.",
+        "(mp)",
+        "current sheet",
+        "reconnect",
+        "dayside",
+        "boundary layer",
+    ];
+
+    let filtered: Vec<MmsEventInterval> = events
+        .iter()
+        .filter(|e| {
+            let lower = e.discussion.to_lowercase();
+            KEYWORDS.iter().any(|kw| lower.contains(kw))
+        })
+        .cloned()
+        .collect();
+
+    if filtered.is_empty() {
+        events.to_vec()
+    } else {
+        filtered
+    }
+}
+
+/// Return true if `elapsed_hours` from `reference_midnight` falls within any
+/// SITL event interval.
+///
+/// An overlap is defined as `event.start <= t < event.end`.
+pub fn timestamp_in_sitl_event(
+    elapsed_hours: f64,
+    reference_midnight: &NaiveDateTime,
+    events: &[MmsEventInterval],
+) -> bool {
+    use chrono::Duration;
+    let t = *reference_midnight + Duration::seconds((elapsed_hours * 3600.0) as i64);
+    events.iter().any(|e| e.start <= t && t < e.end)
+}
+
+#[cfg(test)]
+mod sitl_tests {
+    use super::*;
+
+    #[test]
+    fn test_parse_sitl_csv_full_format() {
+        let csv = "tstart,tstop,fom,sourceid,createtime,discussion\n\
+                   2024-01-01T06:00:00.000Z,2024-01-01T06:05:00.000Z,100,1,\
+                   2024-01-01T12:00:00Z,\"Magnetopause crossing\"\n\
+                   2024-01-01T08:00:00Z,2024-01-01T08:02:00Z,50,2,\
+                   2024-01-01T12:00:00Z,\"flux rope in magnetosheath\"\n";
+        let events = parse_mms_sitl_csv(csv);
+        assert_eq!(events.len(), 2);
+        assert!((events[0].fom - 100.0).abs() < 1e-9);
+        assert!(events[0].discussion.contains("Magnetopause"));
+    }
+
+    #[test]
+    fn test_parse_sitl_csv_simple_format() {
+        let csv = "2024-01-02T10:00:00,2024-01-02T10:10:00\n\
+                   2024-01-02T14:00:00Z,2024-01-02T14:05:00Z\n";
+        let events = parse_mms_sitl_csv(csv);
+        assert_eq!(events.len(), 2);
+    }
+
+    #[test]
+    fn test_filter_magnetopause_events_retains_mp_keywords() {
+        let make = |disc: &str| MmsEventInterval {
+            start: NaiveDateTime::parse_from_str("2024-01-01T00:00:00", "%Y-%m-%dT%H:%M:%S")
+                .unwrap(),
+            end: NaiveDateTime::parse_from_str("2024-01-01T00:05:00", "%Y-%m-%dT%H:%M:%S").unwrap(),
+            fom: 50.0,
+            discussion: disc.to_string(),
+        };
+        let events = vec![
+            make("Magnetopause current sheet"),
+            make("Flux rope"),
+            make("reconnection site"),
+            make("plasma jet"),
+        ];
+        let filtered = filter_magnetopause_events(&events);
+        // "Magnetopause" and "reconnect" match; "Flux rope" and "plasma jet" do not.
+        assert_eq!(filtered.len(), 2);
+    }
+
+    #[test]
+    fn test_filter_falls_back_to_full_when_empty() {
+        let make = |disc: &str| MmsEventInterval {
+            start: NaiveDateTime::parse_from_str("2024-01-01T00:00:00", "%Y-%m-%dT%H:%M:%S")
+                .unwrap(),
+            end: NaiveDateTime::parse_from_str("2024-01-01T00:05:00", "%Y-%m-%dT%H:%M:%S").unwrap(),
+            fom: 50.0,
+            discussion: disc.to_string(),
+        };
+        let events = vec![make("plasma jet"), make("flux rope")];
+        let filtered = filter_magnetopause_events(&events);
+        assert_eq!(filtered.len(), 2); // fallback: return all
+    }
 }

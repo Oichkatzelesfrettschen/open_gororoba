@@ -5826,3 +5826,18 @@ run_command_sha256 = ""
 status = "active"
 status_token = "ACTIVE"
 title = "Cross-mission FA attribution table: THEMIS/Cluster/MAVEN P/R/F1 comparison (C-1627)"
+
+[[experiment]]
+id = "E-236"
+input = "MMS1 FGM Survey L2 HAPI CSV (2024-01-01..2024-07-31, monthly files); MMS SDC SITL/GLS event catalog (REST API lasp.colorado.edu/mms/sdc/public/files/api/v1/sitl/gls/csv)"
+input_path_refs = ["data/external/mms/mms1_fgm_srvy_l2_2024_*.csv", "data/external/mms/mms_sitl_*.csv"]
+lineage_id = "XL-236"
+method = "heliosphere-mms-sitl-labeled: parse SITL CSV, filter by magnetopause keywords (FOM>=10), run 32D Takens embedding + CD associator, run |B|-gradient+rotation baseline, evaluate both against SITL intervals using interval-based P/R/F1 (C-1628)."
+output = ["data/output/heliosphere/ablations/mms_sitl_labeled_eval.json"]
+output_path_refs = ["data/output/heliosphere/ablations/mms_sitl_labeled_eval.json"]
+reproducibility_class = "deterministic"
+run = "cargo run --release --bin heliosphere-mms-sitl-labeled"
+run_command_sha256 = ""
+status = "active"
+status_token = "ACTIVE"
+title = "MMS CD associator evaluation against SITL-curated magnetopause ground truth (C-1628)"
