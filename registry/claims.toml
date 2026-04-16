@@ -4578,12 +4578,13 @@ status = "Verified"
 where_stated = "crates/moreno_1997/src/lib.rs::verify_corollary_2_4; proofs/theories/C1544_MorKerSDecomp.v::moreno24_canonical_mod8; tests::test_ker_s_restricted_decomposition_a3"
 
 [[claim]]
+formal_proof = "proofs/theories/C1546_MorZDAnticomm.v"
 id = "C-1546"
-last_verified = "2026-03-25"
+last_verified = "2026-04-13"
 statement = "Moreno Theorem 2.9 (ZD eigenvalue characterization): For alternative unit-norm trace-zero a, b in A_n, the pair (a,b) in A_{n+1} is a zero divisor iff -2 is an eigenvalue of L_{a+b}^2 on A_n. This is an O(dim^3) criterion replacing O(dim^4) brute-force search. In A_3 (alternative algebra), c=a+b with orthogonal unit a,b gives c^2=-2 so L_c^2=-2I; ALL such pairs lift to ZDs in A_4. Verified: known pair (e1+e10, e4-e15)/sqrt(2) in 16D satisfies the criterion. Source: Moreno (1997) arXiv:q-alg/9710013v1."
-status = "Theoretical"
-status_note = "The canonical A_3 witness lane and the abstract iff core with explicit purity/anticommutation side conditions are formalized in Rocq; the full arbitrary-alternative Cayley-Dickson discharge of those side conditions remains open."
-where_stated = "crates/moreno_1997/src/lib.rs::has_eigenvalue_minus_2, find_zd_witness_moreno, is_zd_moreno; proofs/theories/C1546_MorEigenZD.v::moreno29_c_has_eigen_minus_two, moreno29_pair_is_zero_divisor, moreno29_parallel_not_eigen_minus_two (canonical witness lane); proofs/theories/C1546_MorEigenIFF.v::moreno29_witness_implies_eigen, moreno29_eigen_implies_witness, moreno29_abstract_iff (abstract iff core); tests::test_has_eigenvalue_minus_2_known_zd_16d, test_is_zd_moreno_known_pair_16d, test_is_zd_moreno_non_zd_pair_8d"
+status = "Verified"
+status_note = "Closed 2026-04-13 (commit 439187bd). Zero Admitted. Anti-commutation bridge from inner-product orthogonality (oct_free path): oct_anticomm_of_pure_orthogonal discharges all four anti-commutation hypotheses from three inner-product conditions. Definitive form is moreno29_orthogonal_iff in C1546_MorZDAnticomm.v."
+where_stated = "crates/moreno_1997/src/lib.rs::has_eigenvalue_minus_2, find_zd_witness_moreno, is_zd_moreno; proofs/theories/C1546_MorEigenZD.v::moreno29_c_has_eigen_minus_two, moreno29_pair_is_zero_divisor, moreno29_parallel_not_eigen_minus_two (canonical witness lane); proofs/theories/C1546_MorEigenIFF.v::moreno29_witness_implies_eigen, moreno29_eigen_implies_witness, moreno29_abstract_iff (abstract iff core); proofs/theories/C1546_MorArbitraryAlternative.v::moreno29_a_square_all, moreno29_b_square_all, moreno29_arbitrary_iff (discharged hypotheses); proofs/theories/C1546_MorZDAnticomm.v::oct_anticomm_of_pure_orthogonal, moreno29_anticomm_from_orthogonality, moreno29_orthogonal_iff (definitive inner-product form); tests::test_has_eigenvalue_minus_2_known_zd_16d, test_is_zd_moreno_known_pair_16d, test_is_zd_moreno_non_zd_pair_8d"
 
 [[claim]]
 formal_proof = "proofs/theories/C1547_MorSpecialTripleOct.v"
