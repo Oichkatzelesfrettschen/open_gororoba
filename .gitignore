@@ -104,6 +104,8 @@ data/artifacts/c756_frames/
 data/artifacts/*.json
 data/artifacts/*.txt
 !data/artifacts/PROVENANCE.local.json
+data/output/**/*.json
+data/output/**/*.csv
 data/artifacts/frames_*/
 data/e027/
 data/test-e027/
