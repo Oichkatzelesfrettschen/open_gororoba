@@ -14,6 +14,7 @@ use clap::Parser;
 use data_core::{
     catalogs::{
         cluster::parse_cluster_fgm_hapi_csv_minutes,
+        maven_mag::parse_maven_mag_hapi_csv_minutes,
         themis::parse_themis_fgm_hapi_csv_minutes,
     },
     crossing_lists::parse_crossing_list,
@@ -28,7 +29,7 @@ struct Cli {
     start_date: String,
     #[arg(long)]
     end_date: String,
-    /// Mission to analyze: "themis" (default) or "cluster".
+    /// Mission to analyze: "themis" (default), "cluster", or "maven".
     #[arg(long, default_value = "themis")]
     mission: String,
     /// THEMIS probe letter (a-e) or Cluster probe number (1-4).
@@ -153,6 +154,33 @@ fn main() -> Result<()> {
                             bx.push(r.bx_gse);
                             by.push(r.by_gse);
                             bz.push(r.bz_gse);
+                            keys.push((r.doy, r.hour, r.minute));
+                            elapsed.push(eh);
+                        }
+                    }
+                }
+            }
+        }
+        "maven" => {
+            // MAVEN MAG (SS frame). Files: maven/maven_mag_{year}_{doy}.csv
+            for offset in 0..=(end - start).num_days() {
+                let date = start + chrono::Duration::days(offset);
+                let path = format!(
+                    "{}/maven/maven_mag_{:04}_{:03}.csv",
+                    cli.data_dir,
+                    date.year(),
+                    date.ordinal()
+                );
+                if let Ok(content) = fs::read_to_string(&path) {
+                    for r in parse_maven_mag_hapi_csv_minutes(&content) {
+                        if r.b_magnitude <= cli.max_bmag {
+                            let day_diff = (r.doy as f64 - start.ordinal() as f64)
+                                + (r.year as f64 - start.year() as f64) * 365.25;
+                            let eh = day_diff * 24.0 + r.hour as f64 + r.minute as f64 / 60.0;
+                            // MAVEN MAG reports in SS (Sun-State) frame (bx_ss = toward Sun).
+                            bx.push(r.bx_ss);
+                            by.push(r.by_ss);
+                            bz.push(r.bz_ss);
                             keys.push((r.doy, r.hour, r.minute));
                             elapsed.push(eh);
                         }
