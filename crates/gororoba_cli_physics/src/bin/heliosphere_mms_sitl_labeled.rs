@@ -34,8 +34,9 @@ use clap::Parser;
 use data_core::{
     catalogs::{
         mms::{
-            MmsEventInterval, MmsFgmMinuteRecord, detect_magnetopause_crossings_filtered,
-            filter_magnetopause_events, parse_mms_fgm_hapi_csv_minutes, parse_mms_sitl_csv,
+            MmsEventInterval, MmsFgmMinuteRecord, derive_fpi_crossing_events,
+            detect_magnetopause_crossings_filtered, filter_magnetopause_events,
+            parse_mms_fgm_hapi_csv_minutes, parse_mms_fpi_csv_headerless, parse_mms_sitl_csv,
             timestamp_in_sitl_event,
         },
         mms_fetch::MmsSitlProvider,
@@ -59,10 +60,20 @@ struct Cli {
     #[arg(long, default_value_t = 7)]
     n_days: u32,
 
-    /// Path to a locally cached SITL/GLS CSV file.  If omitted, the catalog
-    /// is downloaded from the MMS SDC public API and cached automatically.
+    /// Path to a locally cached SITL/GLS CSV file.  If omitted and --fpi-dir
+    /// is also omitted, the catalog is downloaded from the MMS SDC public API.
     #[arg(long)]
     sitl_csv: Option<PathBuf>,
+
+    /// Directory containing locally cached MMS FPI DIS files in the format
+    /// `mms1_fpi_dis_{year}_{doy:03}.csv` (headerless, 5-column CSV).
+    /// When provided, crossing ground truth is derived from FPI ion density
+    /// regime changes (n<3 cm^-3 = MSP, n>10 cm^-3 = MSH) instead of the
+    /// SITL/GLS catalog.  This is the preferred mode when the SITL API is
+    /// unavailable -- FPI density is physically immune to compressive false
+    /// positives that inflate |B|-gradient pseudo-label error rates.
+    #[arg(long)]
+    fpi_dir: Option<PathBuf>,
 
     /// Only include SITL events with FOM at or above this threshold.
     /// Range 0-100; default 10 keeps most scientist selections.
@@ -352,60 +363,112 @@ fn main() -> Result<()> {
     );
 
     // -----------------------------------------------------------------------
-    // Step 3: Load SITL catalog
+    // Step 3: Build ground truth crossing intervals
     // -----------------------------------------------------------------------
-    println!("[3/5] Loading SITL event catalog...");
 
-    let sitl_content = if let Some(ref path) = cli.sitl_csv {
-        println!("  Reading from {}", path.display());
-        fs::read_to_string(path).with_context(|| format!("reading SITL CSV: {}", path.display()))?
-    } else {
-        let provider = MmsSitlProvider {
-            start_date: start,
-            end_date: end,
-        };
-        let config = FetchConfig {
-            output_dir: cli.data_dir.clone(),
-            skip_existing: true,
-            verify_checksums: false,
-        };
-        if !provider.is_cached(&config) {
-            provider.fetch(&config)?;
+    let mp_sitl: Vec<MmsEventInterval>;
+
+    if let Some(ref fpi_dir) = cli.fpi_dir {
+        println!("[3/5] Deriving crossing ground truth from FPI ion density...");
+        println!("  Source directory: {}", fpi_dir.display());
+
+        let mut all_density: Vec<(chrono::NaiveDateTime, f64)> = Vec::new();
+        for day_offset in 0..cli.n_days {
+            let date = start + chrono::Duration::days(day_offset as i64);
+            let doy = date.ordinal() as u16;
+            let y = date.year() as u16;
+            let fname = format!("mms1_fpi_dis_{y}_{doy:03}.csv");
+            let path = fpi_dir.join(&fname);
+            if !path.exists() {
+                eprintln!("  Warning: FPI file not found: {}", path.display());
+                continue;
+            }
+            let content = fs::read_to_string(&path)
+                .with_context(|| format!("reading FPI CSV: {}", path.display()))?;
+            let mut samples = parse_mms_fpi_csv_headerless(&content);
+            println!("  DOY {doy}: {} density samples", samples.len());
+            all_density.append(&mut samples);
         }
-        let fname = format!(
-            "mms_sitl_{}_{}.csv",
-            start.format("%Y%m%d"),
-            end.format("%Y%m%d")
+
+        println!(
+            "  Total: {} FPI density samples across {} days",
+            all_density.len(),
+            cli.n_days
         );
-        let path = cli.data_dir.join("mms").join(&fname);
-        fs::read_to_string(&path)
-            .with_context(|| format!("reading cached SITL CSV: {}", path.display()))?
-    };
 
-    let all_sitl = parse_mms_sitl_csv(&sitl_content);
-    println!("  Parsed {} SITL events total", all_sitl.len());
+        // Derive crossing intervals: MSP<3 cm^-3, MSH>10 cm^-3,
+        // 5 consecutive minutes to confirm regime, 5 min padding,
+        // 20 min minimum gap, 120 min max crossing window (rejects long
+        // ambiguous-zone traversals that would match any detector by luck).
+        mp_sitl = derive_fpi_crossing_events(&all_density, 3.0, 10.0, 5, 5, 20, 120);
 
-    // Apply FOM filter then magnetopause keyword filter.
-    let fom_filtered: Vec<MmsEventInterval> = all_sitl
-        .iter()
-        .filter(|e| e.fom >= cli.min_fom)
-        .cloned()
-        .collect();
-    let mp_sitl = filter_magnetopause_events(&fom_filtered);
+        println!("  Derived {} FPI crossing events", mp_sitl.len());
+        for ev in &mp_sitl {
+            println!("    {} -- {}  {}", ev.start, ev.end, ev.discussion);
+        }
 
-    println!(
-        "  After FOM>={} filter: {} events; after MP keyword filter: {} events",
-        cli.min_fom,
-        fom_filtered.len(),
-        mp_sitl.len()
-    );
+        if mp_sitl.is_empty() {
+            eprintln!(
+                "  WARNING: no FPI crossing events found.\n\
+                 Check density thresholds or whether FPI data covers the window."
+            );
+        }
+    } else {
+        println!("[3/5] Loading SITL event catalog...");
 
-    if mp_sitl.is_empty() {
-        eprintln!(
-            "  WARNING: no SITL magnetopause events found in window {} to {}.\n\
-             Recall will be 0 for all methods.  Check --sitl-csv or network access.",
-            start, end
+        let sitl_content = if let Some(ref path) = cli.sitl_csv {
+            println!("  Reading from {}", path.display());
+            fs::read_to_string(path)
+                .with_context(|| format!("reading SITL CSV: {}", path.display()))?
+        } else {
+            let provider = MmsSitlProvider {
+                start_date: start,
+                end_date: end,
+            };
+            let config = FetchConfig {
+                output_dir: cli.data_dir.clone(),
+                skip_existing: true,
+                verify_checksums: false,
+            };
+            if !provider.is_cached(&config) {
+                provider.fetch(&config)?;
+            }
+            let fname = format!(
+                "mms_sitl_{}_{}.csv",
+                start.format("%Y%m%d"),
+                end.format("%Y%m%d")
+            );
+            let path = cli.data_dir.join("mms").join(&fname);
+            fs::read_to_string(&path)
+                .with_context(|| format!("reading cached SITL CSV: {}", path.display()))?
+        };
+
+        let all_sitl = parse_mms_sitl_csv(&sitl_content);
+        println!("  Parsed {} SITL events total", all_sitl.len());
+
+        let fom_filtered: Vec<MmsEventInterval> = all_sitl
+            .iter()
+            .filter(|e| e.fom >= cli.min_fom)
+            .cloned()
+            .collect();
+        let filtered = filter_magnetopause_events(&fom_filtered);
+
+        println!(
+            "  After FOM>={} filter: {} events; after MP keyword filter: {} events",
+            cli.min_fom,
+            fom_filtered.len(),
+            filtered.len()
         );
+
+        if filtered.is_empty() {
+            eprintln!(
+                "  WARNING: no SITL magnetopause events in window {} to {}.\n\
+                 Consider --fpi-dir for FPI-derived ground truth.",
+                start, end
+            );
+        }
+
+        mp_sitl = filtered;
     }
 
     // -----------------------------------------------------------------------
@@ -576,7 +639,7 @@ fn main() -> Result<()> {
         start_date: cli.start_date.clone(),
         n_days: cli.n_days,
         embedding_dim: cli.embedding_dim,
-        n_sitl_events_raw: all_sitl.len(),
+        n_sitl_events_raw: n_sitl,
         n_sitl_events_filtered: n_sitl,
         n_fgm_minutes: all_minutes.len(),
         gradient_eval: grad_eval,

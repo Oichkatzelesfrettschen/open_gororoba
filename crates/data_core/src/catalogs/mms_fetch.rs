@@ -1,7 +1,8 @@
 //! Fetch implementation for mms. See mms.rs for record types and parsers.
 
-use crate::fetcher::{
-    DatasetProvider, FetchConfig, FetchError, download_hapi_csv, download_to_string,
+use crate::{
+    download_stack::{DownloadBackend, DownloadStack, TransferRequest},
+    fetcher::{DatasetProvider, FetchConfig, FetchError, download_hapi_csv},
 };
 use chrono::NaiveDate;
 use std::{fs, path::PathBuf};
@@ -170,8 +171,18 @@ impl DatasetProvider for MmsSitlProvider {
             self.start_date, self.end_date
         );
 
-        let body = download_to_string(&url)?;
-        fs::write(&output, &body)?;
+        // Use CurlCli backend explicitly to bypass the reqwest capability-probe
+        // path, which panics when no rustls crypto provider is installed.
+        // CurlCli is available on all development machines and does not require
+        // a Rust-side TLS provider.
+        let mut request = TransferRequest::download(&url, &output);
+        request.backend = DownloadBackend::CurlCli;
+        DownloadStack::default()
+            .recover(&request)
+            .map_err(|source| FetchError::HttpError {
+                url: url.clone(),
+                source: Box::new(source),
+            })?;
         Ok(output)
     }
 
