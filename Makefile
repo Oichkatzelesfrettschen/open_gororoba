@@ -5,7 +5,7 @@
 .PHONY: provenance-registry-index provenance-registry-export provenance-registry-verify provenance-registry-doctor provenance-registry-link-audit provenance-registry-recover
 .PHONY: rocq-proofs rocq-proofs-check lva-paper
 .PHONY: heavy test-inventory verify-no-reports-writes
-.PHONY: rust-test rust-clippy rust-semver-check rust-smoke rust-regression rust-regression-scoped dep-audit cargo-deny-check mcp-smoke e027-validate studio-run studio-check profile-tensor-avt x87-strategy-bench x87-strategy-perf x87-strategy-hyperfine x87-strategy-flamegraph x87-givens-microbench x87-givens-microbench-perf jacobi-backend-sweep jacobi-backend-perf jacobi-backend-flamegraph jacobi-backend-samply jacobi-backend-samply-compare gpu-bench gpu-bench-ncu gpu-bench-nsys
+.PHONY: rust-test rust-clippy rust-semver-check rust-smoke rust-regression rust-regression-scoped miri-cd-kernel dep-audit cargo-deny-check mcp-smoke e027-validate studio-run studio-check profile-tensor-avt x87-strategy-bench x87-strategy-perf x87-strategy-hyperfine x87-strategy-flamegraph x87-givens-microbench x87-givens-microbench-perf jacobi-backend-sweep jacobi-backend-perf jacobi-backend-flamegraph jacobi-backend-samply jacobi-backend-samply-compare gpu-bench gpu-bench-ncu gpu-bench-nsys
 .PHONY: cpu-bench cpu-bench-perf cpu-bench-cachegrind cpu-bench-flamegraph parity-bench parity-report
 .PHONY: pre-push-gate-scoped submodule-sync gate-local gate-ci-registry gate-ci-rust gate-audit gate-audit-fast data-core-pure-check
 .PHONY: cache-status cache-sweep cache-purge-exp cache-check
@@ -594,6 +594,19 @@ rust-regression-scoped:
 	    fi; \
 	    echo "OK: Rust regression gate passed (scoped: clippy + nextest)."; \
 	fi
+
+# WHY: Miri catches UB in unsafe Cayley-Dickson arithmetic (pointer provenance,
+# integer-to-pointer casts, uninit reads) that sanitizers miss at runtime.
+# Rayon-parallel tests are suppressed via #[cfg_attr(miri, ignore)] because
+# crossbeam-epoch 0.9.18 has a known Stacked Borrows false-positive under Miri.
+# WHAT: Runs the cd_kernel lib tests only (no rayon paths).
+# HOW: CARGO_TARGET_DIR isolates the Miri build artifacts; -Zmiri-permissive-provenance
+# silences provenance-stripping from raw integer casts that are correct but
+# non-standard (e.g. SIMD sign-table tricks with integer-indexed pointers).
+miri-cd-kernel:
+	CARGO_TARGET_DIR=.cache/miri-gate-target MIRIFLAGS="-Zmiri-permissive-provenance" \
+	    cargo miri test -p cd_kernel
+	@echo "OK: miri-cd-kernel passed."
 
 heavy:
 	$(CARGO_ENV) cargo nextest run --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) --workspace --exclude algebra_analysis --exclude gr_core --run-ignored only -P heavy

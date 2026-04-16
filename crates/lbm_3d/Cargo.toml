@@ -12,12 +12,6 @@ verified_core = { version = "0.1.0", path = "../verified_core" }
 rayon = { workspace = true }
 thiserror.workspace = true
 wide = { workspace = true }
-pulp = { workspace = true }
-crossbeam-utils = { workspace = true }
-aligned-vec = { workspace = true }
-dyn-stack = { workspace = true }
-bytemuck = { workspace = true }
-smallvec = { workspace = true }
 
 [dev-dependencies]
 approx = { workspace = true }

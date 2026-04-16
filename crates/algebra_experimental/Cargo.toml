@@ -39,6 +39,12 @@ plotters = "0.3"
 [lints]
 workspace = true
 
+[package.metadata.cargo-machete]
+# argmin-math provides blanket ArgminAdd/ArgminSub/ArgminMul impls for Vec<f64>
+# that argmin's NelderMead solver requires at compile time.  It is not directly
+# imported in source but removing it causes E0277 trait-bound errors.
+ignored = ["argmin-math"]
+
 [[bench]]
 name = "su5_construction"
 harness = false

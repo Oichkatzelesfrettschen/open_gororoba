@@ -18,8 +18,6 @@ optics_core = { path = "../optics_core" }
 fixedbitset = { workspace = true }
 rayon = { workspace = true }
 wide = { workspace = true }
-pulp = { workspace = true }
-simsimd = { workspace = true }
 num-complex = { workspace = true }
 rand = { workspace = true }
 rand_chacha = { workspace = true }
