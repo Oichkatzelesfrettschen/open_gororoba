@@ -5811,3 +5811,18 @@ status = "active"
 status_token = "ACTIVE"
 title = "MAVEN bow shock FA attribution with regime-filter crossing list (C-1625)"
 
+
+[[experiment]]
+id = "E-235"
+input = "Per-mission FA attribution JSONs (THEMIS 2008w44/2009w40/2009w44, Cluster 2002w01, MAVEN 2015); produced by heliosphere-fa-attribution with embedding_dim=32, match_tolerance=20min"
+input_path_refs = ["data/output/heliosphere/ablations/fa_attribution_themis_2008w44.json", "data/output/heliosphere/ablations/fa_attribution_cluster_2002w01.json", "data/output/heliosphere/ablations/fa_attribution_maven_2015.json"]
+lineage_id = "XL-235"
+method = "heliosphere-fa-cross-mission-table: read per-mission JSONs; compute per-period P/R/F1; flag multi-match rows (recall>1); micro-average per mission; pool false-alarm type fractions; emit ASCII table + JSON (C-1627)."
+output = ["data/output/heliosphere/ablations/fa_cross_mission_table.json"]
+output_path_refs = ["data/output/heliosphere/ablations/fa_cross_mission_table.json"]
+reproducibility_class = "deterministic"
+run = "cargo run --release --bin heliosphere-fa-cross-mission-table"
+run_command_sha256 = ""
+status = "active"
+status_token = "ACTIVE"
+title = "Cross-mission FA attribution table: THEMIS/Cluster/MAVEN P/R/F1 comparison (C-1627)"

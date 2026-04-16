@@ -934,6 +934,12 @@ crate = "gororoba_cli_physics"
 description = "Classify CD false-alarm transitions by B-field signature (TD/FTE_candidate/Mirror_mode/Partial_crossing/Compressive/Unclassified). Outputs attribution JSON with per-type statistics (mean rotation, |B| jump, CV, associator norm), overall precision/recall/F1 at default threshold, FN count, and optional PR curve (--out-pr-curve, 50 log-spaced threshold steps)."
 
 [[binary]]
+name = "heliosphere-fa-cross-mission-table"
+crate = "gororoba_cli_physics"
+description = "Consolidate per-mission FA attribution JSONs (THEMIS/Cluster/MAVEN) into a cross-mission comparison table with per-period P/R/F1, dominant false-alarm type, micro-averaged mission aggregates, and ASCII summary for the methods paper. Multi-match rows (recall>1 from magnetopause oscillation bunching) are flagged and excluded from aggregates."
+experiment = "E-235"
+
+[[binary]]
 name = "heliosphere-falsification-audit"
 crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
