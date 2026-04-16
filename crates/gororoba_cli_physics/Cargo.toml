@@ -348,6 +348,14 @@ name = "heliosphere-rosetta-draping"
 path = "src/bin/heliosphere_rosetta_draping.rs"
 
 [[bin]]
+name = "heliosphere-rosetta-ablation-summary"
+path = "src/bin/heliosphere_rosetta_ablation_summary.rs"
+
+[[bin]]
+name = "heliosphere-psp-encounter-summary"
+path = "src/bin/heliosphere_psp_encounter_summary.rs"
+
+[[bin]]
 name = "heliosphere-mms-multiday"
 path = "src/bin/heliosphere_mms_multiday.rs"
 

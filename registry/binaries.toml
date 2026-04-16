@@ -931,7 +931,7 @@ description = "Workspace binary discovered from cargo metadata in crate gororoba
 [[binary]]
 name = "heliosphere-fa-attribution"
 crate = "gororoba_cli_physics"
-description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+description = "Classify CD false-alarm transitions by B-field signature (TD/FTE_candidate/Mirror_mode/Partial_crossing/Compressive/Unclassified). Outputs attribution JSON with per-type statistics (mean rotation, |B| jump, CV, associator norm), overall precision/recall/F1 at default threshold, FN count, and optional PR curve (--out-pr-curve, 50 log-spaced threshold steps)."
 
 [[binary]]
 name = "heliosphere-falsification-audit"
@@ -1005,6 +1005,16 @@ description = "Workspace binary discovered from cargo metadata in crate gororoba
 name = "heliosphere-quench-scan"
 crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
+
+[[binary]]
+name = "heliosphere-rosetta-ablation-summary"
+crate = "gororoba_cli_physics"
+description = "Consolidate four Rosetta 67P normalization ablation variants (raw/clipped/direction/current) into a ranked comparison table. Reads per-variant JSON from rosetta_draping_norm_*.json, ranks by boundary-detection F1, writes rosetta_normalization_ablation.json. Winner: direction (unit-vector normalization, F1=0.43) for the weak-field cavity regime."
+
+[[binary]]
+name = "heliosphere-psp-encounter-summary"
+crate = "gororoba_cli_physics"
+description = "Consolidate PSP switchback omega results across E1/E4/E6/E10 perihelion encounters. Computes trend statistics on ratio_switchback_to_quiet vs encounter number. Result: monotonically decreasing with Spearman rho=-1.0 (switchbacks more Alfvenic at closer perihelia)."
 
 [[binary]]
 name = "heliosphere-rosetta-draping"
