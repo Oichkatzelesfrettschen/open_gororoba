@@ -988,6 +988,12 @@ crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
 
 [[binary]]
+name = "heliosphere-mms-sitl-labeled"
+crate = "gororoba_cli_physics"
+description = "Evaluate CD associator P/R/F1 against MMS SITL/GLS expert-curated magnetopause ground truth; downloads SITL catalog from MMS SDC public API; strips compressive pseudo-labels; compares CD vs gradient detector using interval-based recall."
+experiment = "E-236"
+
+[[binary]]
 name = "heliosphere-norm-dump"
 crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."

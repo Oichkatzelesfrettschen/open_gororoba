@@ -368,6 +368,10 @@ name = "heliosphere-mms-multiday"
 path = "src/bin/heliosphere_mms_multiday.rs"
 
 [[bin]]
+name = "heliosphere-mms-sitl-labeled"
+path = "src/bin/heliosphere_mms_sitl_labeled.rs"
+
+[[bin]]
 name = "heliosphere-switchback-omega"
 path = "src/bin/heliosphere_switchback_omega.rs"
 

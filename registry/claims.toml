@@ -10795,3 +10795,11 @@ status = "Provisional"
 status_note = "Phase A1 initiated. Generating 64D AVT and preparing hybrid LBM-NBody bridge. | Legacy status token: Pending"
 where_stated = "crates/gr_core/src/forces/chingon_drag.rs"
 
+
+[[claim]]
+id = "C-1628"
+last_verified = "2026-04-16"
+statement = "MMS CD associator evaluated against SITL-curated magnetopause ground truth achieves higher precision than the |B|-gradient baseline by eliminating compressive false positives (pressure pulses, dipolarizations) that satisfy the gradient criterion without rotating the field direction. Interval-based P/R/F1 computed using MMS SDC GLS/SITL catalog filtered to magnetopause keywords. Binary: heliosphere-mms-sitl-labeled. E-236."
+status = "Provisional"
+status_note = "PROVISIONAL: Binary implemented and compiles. SITL catalog download requires network access to MMS SDC. Run binary with cached FGM data and --sitl-csv path to produce quantitative result. Expected: CD precision > gradient precision because SITL labels exclude compressive events. Upgrade to Established after first successful run."
+where_stated = "crates/gororoba_cli_physics/src/bin/heliosphere_mms_sitl_labeled.rs"
