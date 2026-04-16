@@ -362,7 +362,11 @@ fn summarize_c084(pmns_probs: &Mat3) -> C084Summary {
                 trial[0][0] += a;
                 trial[1][1] += b;
                 trial[2][2] += c;
-                if trial.iter().flat_map(|row| row.iter()).any(|&value| value <= 0.0) {
+                if trial
+                    .iter()
+                    .flat_map(|row| row.iter())
+                    .any(|&value| value <= 0.0)
+                {
                     continue;
                 }
                 let normalized = sinkhorn_normalize(trial, 24);
@@ -383,32 +387,51 @@ fn summarize_c084(pmns_probs: &Mat3) -> C084Summary {
         best_distance,
         best_mean_diagonal,
         best_params,
-        improvement: m3_frobenius_dist(&democratic_probability_matrix(), pmns_probs) - best_distance,
+        improvement: m3_frobenius_dist(&democratic_probability_matrix(), pmns_probs)
+            - best_distance,
         null,
     }
 }
 
 fn rotation_x(theta: f64) -> Mat3 {
     m3_from_rows(&[
-        1.0, 0.0, 0.0,
-        0.0, theta.cos(), theta.sin(),
-        0.0, -theta.sin(), theta.cos(),
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        theta.cos(),
+        theta.sin(),
+        0.0,
+        -theta.sin(),
+        theta.cos(),
     ])
 }
 
 fn rotation_y(theta: f64) -> Mat3 {
     m3_from_rows(&[
-        theta.cos(), 0.0, theta.sin(),
-        0.0, 1.0, 0.0,
-        -theta.sin(), 0.0, theta.cos(),
+        theta.cos(),
+        0.0,
+        theta.sin(),
+        0.0,
+        1.0,
+        0.0,
+        -theta.sin(),
+        0.0,
+        theta.cos(),
     ])
 }
 
 fn rotation_z(theta: f64) -> Mat3 {
     m3_from_rows(&[
-        theta.cos(), theta.sin(), 0.0,
-        -theta.sin(), theta.cos(), 0.0,
-        0.0, 0.0, 1.0,
+        theta.cos(),
+        theta.sin(),
+        0.0,
+        -theta.sin(),
+        theta.cos(),
+        0.0,
+        0.0,
+        0.0,
+        1.0,
     ])
 }
 
@@ -416,7 +439,10 @@ fn givens_rotation_matrix(theta12_deg: f64, theta13_deg: f64, theta23_deg: f64) 
     let theta12 = theta12_deg.to_radians();
     let theta13 = theta13_deg.to_radians();
     let theta23 = theta23_deg.to_radians();
-    m3_mul(&m3_mul(&rotation_x(theta23), &rotation_y(theta13)), &rotation_z(theta12))
+    m3_mul(
+        &m3_mul(&rotation_x(theta23), &rotation_y(theta13)),
+        &rotation_z(theta12),
+    )
 }
 
 fn recover_givens_angles_deg(matrix: &Mat3) -> [f64; 3] {
@@ -699,8 +725,8 @@ mod tests {
     fn sinkhorn_preserves_double_stochasticity() {
         let matrix = m3_from_rows(&[1.2, 0.8, 0.6, 0.9, 1.1, 0.7, 0.5, 0.6, 1.4]);
         let normalized = sinkhorn_normalize(matrix, 24);
-        for i in 0..3 {
-            let row_sum: f64 = normalized[i].iter().sum();
+        for (i, row) in normalized.iter().enumerate() {
+            let row_sum: f64 = row.iter().sum();
             let col_sum: f64 = (0..3).map(|j| normalized[j][i]).sum();
             assert!((row_sum - 1.0).abs() < 1e-9);
             assert!((col_sum - 1.0).abs() < 1e-9);

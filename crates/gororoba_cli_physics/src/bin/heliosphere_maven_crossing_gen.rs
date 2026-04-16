@@ -82,8 +82,8 @@ fn main() -> Result<()> {
         let fname = format!("maven_mag_{:04}_{:03}.csv", date.year(), date.ordinal());
         let path = cli.data_dir.join(&fname);
         if path.exists() {
-            let content = fs::read_to_string(&path)
-                .with_context(|| format!("reading {}", path.display()))?;
+            let content =
+                fs::read_to_string(&path).with_context(|| format!("reading {}", path.display()))?;
             let records = parse_maven_mag_hapi_csv_minutes(&content);
             println!("  DOY {:03}: {} minutes", date.ordinal(), records.len());
             for r in records {
@@ -161,9 +161,7 @@ fn main() -> Result<()> {
         fs::create_dir_all(parent)?;
     }
     let mut lines: Vec<String> = Vec::new();
-    lines.push(format!(
-        "# MAVEN bow shock regime crossings generated from FGM minute data"
-    ));
+    lines.push("# MAVEN bow shock regime crossings generated from FGM minute data".to_string());
     lines.push(format!(
         "# SW threshold: {:.1} nT, Sheath threshold: {:.1} nT, Gap: {} min",
         cli.sw_threshold, cli.sheath_threshold, cli.min_gap_minutes
@@ -175,14 +173,14 @@ fn main() -> Result<()> {
     for &(year, doy, hour, minute) in &crossings {
         let date = NaiveDate::from_yo_opt(year, doy).unwrap();
         // MESSENGER format: start_time end_time (use 1-min window for crossing duration).
-        let start_str = format!(
-            "{}/{:02}:{:02}:00",
-            date.format("%Y-%m-%d"),
-            hour,
-            minute
-        );
+        let start_str = format!("{}/{:02}:{:02}:00", date.format("%Y-%m-%d"), hour, minute);
         let end_str = if minute < 59 {
-            format!("{}/{:02}:{:02}:00", date.format("%Y-%m-%d"), hour, minute + 1)
+            format!(
+                "{}/{:02}:{:02}:00",
+                date.format("%Y-%m-%d"),
+                hour,
+                minute + 1
+            )
         } else {
             format!("{}/{:02}:00:00", date.format("%Y-%m-%d"), hour + 1)
         };
@@ -191,7 +189,11 @@ fn main() -> Result<()> {
 
     let content = lines.join("\n") + "\n";
     fs::write(&cli.out_crossing_list, &content)?;
-    println!("Wrote {} to {}", crossings.len(), cli.out_crossing_list.display());
+    println!(
+        "Wrote {} to {}",
+        crossings.len(),
+        cli.out_crossing_list.display()
+    );
 
     // Optional JSON summary.
     if let Some(ref json_path) = cli.out_json {
