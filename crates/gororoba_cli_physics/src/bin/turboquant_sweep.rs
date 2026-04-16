@@ -25,6 +25,7 @@ use cd_kernel::turboquant::{
     grouping,
     hybrid::HybridQuantizer,
     pipeline::TurboQuantMSE,
+    simsimd_bridge::cosine_similarity_f64,
     synthesized::SynthesizedQuantizer,
 };
 
@@ -78,17 +79,6 @@ struct SweepSummary {
     improvement_pct: f64, // best vs worst
 }
 
-fn cosine_sim(a: &[f64], b: &[f64]) -> f64 {
-    let dot: f64 = a.iter().zip(b.iter()).map(|(x, y)| x * y).sum();
-    let na: f64 = a.iter().map(|x| x * x).sum::<f64>().sqrt();
-    let nb: f64 = b.iter().map(|x| x * x).sum::<f64>().sqrt();
-    if na < 1e-15 || nb < 1e-15 {
-        0.0
-    } else {
-        dot / (na * nb)
-    }
-}
-
 fn random_matrix(n: usize, d: usize, seed: u64) -> Vec<f64> {
     use rand::SeedableRng;
     use rand_chacha::ChaCha20Rng;
@@ -131,7 +121,7 @@ fn main() -> Result<()> {
                         .map(|(a, b)| (a - b).powi(2))
                         .sum::<f64>()
                         / d as f64;
-                    cos_sum += cosine_sim(x, &recon);
+                    cos_sum += cosine_similarity_f64(x, &recon);
                 }
                 let ms = t0.elapsed().as_secs_f64() * 1000.0;
                 config_results.push((
@@ -162,7 +152,7 @@ fn main() -> Result<()> {
                         .map(|(a, b)| (a - b).powi(2))
                         .sum::<f64>()
                         / d as f64;
-                    cos_sum += cosine_sim(x, &recon);
+                    cos_sum += cosine_similarity_f64(x, &recon);
                 }
                 let ms = t0.elapsed().as_secs_f64() * 1000.0;
                 config_results.push((
@@ -193,7 +183,7 @@ fn main() -> Result<()> {
                         .map(|(a, b)| (a - b).powi(2))
                         .sum::<f64>()
                         / d as f64;
-                    cos_sum += cosine_sim(x, &recon);
+                    cos_sum += cosine_similarity_f64(x, &recon);
                 }
                 let ms = t0.elapsed().as_secs_f64() * 1000.0;
                 config_results.push((
@@ -221,7 +211,7 @@ fn main() -> Result<()> {
                         .map(|(a, b)| (a - b).powi(2))
                         .sum::<f64>()
                         / d as f64;
-                    cos_sum += cosine_sim(x, r);
+                    cos_sum += cosine_similarity_f64(x, r);
                 }
                 config_results.push((
                     "KIVI".into(),
@@ -250,7 +240,7 @@ fn main() -> Result<()> {
                         .map(|(a, b)| (a - b).powi(2))
                         .sum::<f64>()
                         / d as f64;
-                    cos_sum += cosine_sim(x, r);
+                    cos_sum += cosine_similarity_f64(x, r);
                 }
                 config_results.push((
                     "NSNQuant".into(),
@@ -277,7 +267,7 @@ fn main() -> Result<()> {
                         .map(|(a, b)| (a - b).powi(2))
                         .sum::<f64>()
                         / d as f64;
-                    cos_sum += cosine_sim(x, &recon);
+                    cos_sum += cosine_similarity_f64(x, &recon);
                 }
                 let ms = t0.elapsed().as_secs_f64() * 1000.0;
                 config_results.push((
@@ -306,7 +296,7 @@ fn main() -> Result<()> {
                         .map(|(a, b)| (a - b).powi(2))
                         .sum::<f64>()
                         / d as f64;
-                    cos_sum += cosine_sim(x, &recon);
+                    cos_sum += cosine_similarity_f64(x, &recon);
                 }
                 let ms = t0.elapsed().as_secs_f64() * 1000.0;
                 config_results.push((
@@ -335,7 +325,7 @@ fn main() -> Result<()> {
                         .map(|(a, b)| (a - b).powi(2))
                         .sum::<f64>()
                         / d as f64;
-                    cos_sum += cosine_sim(x, &recon);
+                    cos_sum += cosine_similarity_f64(x, &recon);
                 }
                 let ms = t0.elapsed().as_secs_f64() * 1000.0;
                 config_results.push((

@@ -19,6 +19,7 @@ use cd_kernel::turboquant::{
     pipeline::{TurboQuantMSE, TurboQuantProd},
     sign_pack::BitPackedSigns,
     simd_codebook::SimdBoundaries,
+    simsimd_bridge::cosine_similarity_f64,
 };
 
 #[derive(Parser)]
@@ -94,16 +95,6 @@ struct BenchOutput {
     simd_level: String,
     results: Vec<PipelineResult>,
     codebook_bench: Vec<CodebookBenchResult>,
-}
-
-fn cosine_similarity(a: &[f64], b: &[f64]) -> f64 {
-    let dot: f64 = a.iter().zip(b.iter()).map(|(x, y)| x * y).sum();
-    let na: f64 = a.iter().map(|x| x * x).sum::<f64>().sqrt();
-    let nb: f64 = b.iter().map(|x| x * x).sum::<f64>().sqrt();
-    if na < 1e-15 || nb < 1e-15 {
-        return 0.0;
-    }
-    dot / (na * nb)
 }
 
 fn generate_random_vectors(n: usize, d: usize, seed: u64) -> Vec<Vec<f64>> {
@@ -196,7 +187,7 @@ fn bench_mse_pipeline(
     let cosine_mean: f64 = vectors
         .iter()
         .zip(reconstructed.iter())
-        .map(|(a, b)| cosine_similarity(a, b))
+        .map(|(a, b)| cosine_similarity_f64(a, b))
         .sum::<f64>()
         / n as f64;
 

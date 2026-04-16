@@ -17,6 +17,7 @@ use cd_kernel::turboquant::{
     config::TurboQuantConfig,
     grouping,
     pipeline::TurboQuantMSE,
+    simsimd_bridge::cosine_similarity_f64,
 };
 
 #[derive(Parser)]
@@ -61,17 +62,6 @@ struct ComparisonOutput {
     results: Vec<MethodResult>,
 }
 
-fn cosine_sim(a: &[f64], b: &[f64]) -> f64 {
-    let dot: f64 = a.iter().zip(b.iter()).map(|(x, y)| x * y).sum();
-    let na: f64 = a.iter().map(|x| x * x).sum::<f64>().sqrt();
-    let nb: f64 = b.iter().map(|x| x * x).sum::<f64>().sqrt();
-    if na < 1e-15 || nb < 1e-15 {
-        0.0
-    } else {
-        dot / (na * nb)
-    }
-}
-
 fn random_matrix(n: usize, d: usize, seed: u64) -> Vec<f64> {
     use rand::SeedableRng;
     use rand_chacha::ChaCha20Rng;
@@ -104,7 +94,7 @@ fn bench_turboquant(data: &[f64], n: usize, d: usize, bits: u32) -> MethodResult
             .sum::<f64>()
             / d as f64;
         total_mse += mse;
-        total_cos += cosine_sim(x, &recon);
+        total_cos += cosine_similarity_f64(x, &recon);
     }
     let elapsed = t0.elapsed().as_secs_f64() * 1000.0;
 
@@ -154,7 +144,7 @@ fn bench_kivi(data: &[f64], n: usize, d: usize, bits: u32) -> MethodResult {
             .map(|(a, b)| (a - b).powi(2))
             .sum::<f64>()
             / d as f64;
-        total_cos += cosine_sim(orig, rec);
+        total_cos += cosine_similarity_f64(orig, rec);
     }
 
     let total_bits = compressed.total_bits();
@@ -213,7 +203,7 @@ fn bench_nsnquant(data: &[f64], n: usize, d: usize, bits: u32) -> MethodResult {
             .map(|(a, b)| (a - b).powi(2))
             .sum::<f64>()
             / d as f64;
-        total_cos += cosine_sim(orig, rec);
+        total_cos += cosine_similarity_f64(orig, rec);
     }
 
     let total_bits = compressed.total_bits();
@@ -255,7 +245,7 @@ fn bench_group_quant(data: &[f64], n: usize, d: usize, bits: u32) -> MethodResul
             .map(|(a, b)| (a - b).powi(2))
             .sum::<f64>()
             / d as f64;
-        total_cos += cosine_sim(x, &recon);
+        total_cos += cosine_similarity_f64(x, &recon);
         total_meta_bits += params.n_groups * (32 + 32 + 8); // scale + zp + flag per group
     }
     let elapsed = t0.elapsed().as_secs_f64() * 1000.0;
