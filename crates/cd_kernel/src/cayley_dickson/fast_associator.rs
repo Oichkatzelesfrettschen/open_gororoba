@@ -219,6 +219,14 @@ mod tests {
         }
     }
 
+    // WHY: At dim=256 the SIMD path falls through to a rayon::join-based recursive
+    // CD multiply (see simd.rs).  rayon spins up crossbeam-epoch threads whose
+    // Stacked Borrows aliasing patterns are not modelled by Miri, causing a false
+    // UB report in crossbeam-epoch 0.9.18 internals (internal.rs:549).  This is a
+    // known upstream issue with rayon + Miri, not a bug in this crate.  The test
+    // is covered by the non-miri regression suite and the 64D workspace test above
+    // (which stays below the rayon threshold) remains enabled under Miri.
+    #[cfg_attr(miri, ignore)]
     #[test]
     fn test_high_dim_workspace() {
         // Verify workspace correctness at 256D (where rayon kicks in for CD multiply)

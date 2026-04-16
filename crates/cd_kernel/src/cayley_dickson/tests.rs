@@ -61,11 +61,13 @@ fn test_split_signature_matches_standard() {
     }
 }
 
+#[cfg_attr(miri, ignore)] // rayon -> crossbeam-epoch stacked borrows; not a cd_kernel UB
 #[test]
 fn test_batch_sedenion_associator_matches_recursive() {
     super::assert_batch_sedenion_associator_matches_recursive();
 }
 
+#[cfg_attr(miri, ignore)] // calls batch_sedenion_associator_norms_parallel -> rayon
 #[test]
 fn test_batch_sliding_16d_matches_sedenion() {
     let mut vectors_fixed = Vec::new();
@@ -91,6 +93,7 @@ fn test_batch_sliding_16d_matches_sedenion() {
     }
 }
 
+#[cfg_attr(miri, ignore)] // calls batch_sliding_associator_norms_parallel -> rayon
 #[test]
 fn test_batch_sliding_32d() {
     // Use basis-like vectors that are guaranteed non-associative in pathion space
@@ -176,6 +179,7 @@ fn test_randomized_associator_agreement_16d_32d_64d() {
     }
 }
 
+#[cfg_attr(miri, ignore)] // calls batch_sliding_associator_norms_parallel -> rayon
 #[test]
 fn test_randomized_serial_parallel_agreement() {
     use std::{
