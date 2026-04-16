@@ -5781,3 +5781,33 @@ status = "active"
 status_token = "ACTIVE"
 title = "MMS rotation-threshold label hardening: gradient-only vs rotation>=30 deg comparison (C-1624)"
 
+[[experiment]]
+id = "E-234"
+input = "41-crate open_gororoba workspace; toolchain nightly-2026-04-05; cargo-machete 0.9.1; pmd cpd 7.x (--language rust --minimum-tokens 80); clippy cognitive_complexity (threshold 25); cargo miri nightly-2026-04-05"
+input_path_refs = ["crates/"]
+lineage_id = "XL-234"
+method = "(1) cargo machete: scan all crate Cargo.toml for unused dependencies. (2) pmd cpd --language rust --minimum-tokens 80: cross-crate duplicate code detection. (3) CARGO_TARGET_DIR=.cache/rca-target RUSTFLAGS='' cargo clippy --workspace -- -W clippy::cognitive_complexity: function-level complexity. (4) CARGO_TARGET_DIR=.cache/miri-target MIRIFLAGS='-Zmiri-permissive-provenance' cargo miri test -p cd_kernel: UB detection in highest-unsafe crate."
+output = ["data/output/static_analysis/pmd_gap_audit_2026_04_15.txt"]
+output_path_refs = []
+reproducibility_class = "deterministic"
+run = "cargo machete && pmd cpd --language rust --minimum-tokens 80 -d crates/ --no-fail-on-error -f text && RUSTFLAGS='' cargo clippy --workspace -- -W clippy::cognitive_complexity && cargo miri test -p cd_kernel"
+run_command_sha256 = ""
+status = "active"
+status_token = "ACTIVE"
+title = "PMD-equivalent static analysis gap audit: machete + cpd + cognitive-complexity + miri (C-1626)"
+
+[[experiment]]
+id = "E-233"
+input = "MAVEN MAG HAPI CSV (2015-03-01 to 2015-03-13, 16851 minutes, DOY 060-073 except 069); regime-filter crossing list maven_bs_2015_regime.txt (136 crossings)"
+input_path_refs = ["data/external/maven/", "data/external/crossing_lists/maven_bs_2015_regime.txt"]
+lineage_id = "XL-233"
+method = "Load MAVEN MAG minute-averaged FGM (SS frame); 32D Takens (8-step x 4-ch, unit-norm); batch_sliding_associator_norms_parallel; compare CD transitions against regime-filter-derived crossing list (heliosphere-maven-crossing-gen SW<4.5nT -> sheath>8nT, 30-min gap); per-transition type classification; PR curve sweep."
+output = ["data/output/heliosphere/ablations/fa_attribution_maven_2015.json", "data/output/heliosphere/ablations/fa_attribution_maven_pr_curve.json"]
+output_path_refs = ["data/output/heliosphere/ablations/fa_attribution_maven_2015.json"]
+reproducibility_class = "deterministic"
+run = "cargo run --release --bin heliosphere-fa-attribution -- --mission maven --start-date 2015-03-01 --end-date 2015-03-13 --crossing-list data/external/crossing_lists/maven_bs_2015_regime.txt --out-json data/output/heliosphere/ablations/fa_attribution_maven_2015.json --out-pr-curve data/output/heliosphere/ablations/fa_attribution_maven_pr_curve.json"
+run_command_sha256 = ""
+status = "active"
+status_token = "ACTIVE"
+title = "MAVEN bow shock FA attribution with regime-filter crossing list (C-1625)"
+

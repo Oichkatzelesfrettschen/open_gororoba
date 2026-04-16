@@ -4894,6 +4894,22 @@ status_note = "ESTABLISHED: 5nT+rot30 gives 44 crossings DR=75% FAR=55.7% offset
 where_stated = "E-232 MMS rotation-threshold comparative run (2026-04-15)"
 
 [[claim]]
+id = "C-1625"
+last_verified = "2026-04-15"
+statement = "For MAVEN bow shock crossings in 2015-03-01 to 2015-03-13 (16851 minutes, 12 of 13 days cached, DOY 069 missing), using a regime-filter-derived crossing list (136 crossings at |B|<4.5nT->|B|>8.0nT transitions, 30-min suppression), the 32D CD associator achieves precision=0.364, recall=0.632, F1=0.462. Extra-transition breakdown: Partial_crossing 39 (26%), Unclassified 51 (34%), TD 30 (20%), FTE_candidate 13 (9%), Mirror_mode 8 (5%), Compressive 9 (6%). Per-type associator norms: Compressive 36.57, Mirror_mode 30.26, Partial_crossing 24.89, TD 19.65, FTE_candidate 12.56. This F1=0.462 is within 0.003 of the Cluster C1 result (F1=0.465), providing cross-planet validation at Mars vs. Earth of the CD associator's bow shock detection capability."
+status = "Established"
+status_note = "ESTABLISHED: MAVEN 2015 regime-filter list, 136 crossings, P=0.364 R=0.632 F1=0.462. Matches Cluster F1=0.465 within 0.003. Binary: heliosphere-fa-attribution --mission maven."
+where_stated = "E-233 MAVEN bow shock FA attribution (2026-04-15)"
+
+[[claim]]
+id = "C-1626"
+last_verified = "2026-04-15"
+statement = "PMD-equivalent static analysis gap audit of the 41-crate open_gororoba workspace (2026-04-15) reveals: (1) cargo-machete finds unused dependencies in 13 crates including ort (ONNX Runtime) in gororoba_cli_physics, ash+cubecl-core (GPU stubs) in cd_kernel, and pulp appearing unused in 4 crates (cd_kernel, data_core, materials_core, lbm_3d); (2) pmd-cpd with 80-token minimum detects 1596 total duplicate blocks, but only 3 cross-crate duplicates at 100+ tokens (LoTSS parsing in data_core/gororoba_cli_data/gororoba_cli_physics, turboquant cosine boilerplate in 7 binaries); (3) clippy cognitive_complexity lint (threshold 25) finds 7 violations across the workspace -- worst is source_provenance.rs:1788 at 37/25, followed by lbm_vulkan/compute.rs:2231 at 33/25 and flavor_lifts/basis.rs:214 at 31/25; (4) cargo miri on cd_kernel: 15 AVX2 tests pass clean, 12 predicates tests pass clean, test_high_dim_workspace fails due to rayon/crossbeam-epoch stacked borrows incompatibility with miri (not a cd_kernel UB). rust-code-analysis-cli cannot be installed due to tree-sitter ABI break in nightly-2026-04-05."
+status = "Established"
+status_note = "ESTABLISHED: cargo-machete 13 crates, cpd 1596 blocks (3 cross-crate at 100+), cognitive-complexity 7 violations (max 37/25), miri 27 pass 1 rayon-skip. E-234."
+where_stated = "E-234 PMD static analysis gap audit (2026-04-15)"
+
+[[claim]]
 id = "C-162"
 last_verified = "2026-02-01"
 statement = "ZD annihilator dimensions: at dim=16, diagonal-form ZDs have left/right annihilator dim in {0, 4}. At dim=32, values in {0, 8, 12}. Left and right annihilator dims are always equal. All nonzero annihilator dims are multiples of 4."

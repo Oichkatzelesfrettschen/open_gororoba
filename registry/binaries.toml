@@ -1017,6 +1017,11 @@ crate = "gororoba_cli_physics"
 description = "Consolidate PSP switchback omega results across E1/E4/E6/E10 perihelion encounters. Computes trend statistics on ratio_switchback_to_quiet vs encounter number. Result: monotonically decreasing with Spearman rho=-1.0 (switchbacks more Alfvenic at closer perihelia)."
 
 [[binary]]
+name = "heliosphere-maven-crossing-gen"
+crate = "gororoba_cli_physics"
+description = "Generate a surrogate MAVEN Mars bow shock crossing list from FGM minute-averaged data using a |B| regime filter (solar wind <sw_threshold nT -> magnetosheath >sheath_threshold nT). Applies minimum gap suppression (default 30 min) and writes MESSENGER-compatible crossing list for use with heliosphere-fa-attribution --mission maven."
+
+[[binary]]
 name = "heliosphere-rosetta-draping"
 crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
