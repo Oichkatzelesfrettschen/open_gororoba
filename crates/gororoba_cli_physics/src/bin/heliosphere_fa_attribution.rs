@@ -41,6 +41,9 @@ struct Cli {
     out_json: PathBuf,
     #[arg(long, default_value = "data/external")]
     data_dir: String,
+    /// If set, write a precision/recall/F1 curve by sweeping the detection threshold.
+    #[arg(long)]
+    out_pr_curve: Option<PathBuf>,
 }
 
 #[derive(Debug, Serialize)]
@@ -58,15 +61,45 @@ struct Attribution {
 }
 
 #[derive(Debug, Serialize)]
+struct TypeStats {
+    count: usize,
+    fraction: f64,
+    mean_rotation_deg: f64,
+    mean_b_jump_nt: f64,
+    mean_cv_bmag: f64,
+    mean_associator_norm: f64,
+    std_rotation_deg: f64,
+    std_b_jump_nt: f64,
+}
+
+#[derive(Debug, Serialize)]
+struct PrPoint {
+    threshold_factor: f64,
+    n_detected: usize,
+    tp: usize,
+    fp: usize,
+    fn_count: usize,
+    precision: f64,
+    recall: f64,
+    f1: f64,
+}
+
+#[derive(Debug, Serialize)]
 struct AttributionResult {
     start_date: String,
     end_date: String,
     n_cd_transitions: usize,
     n_curated_matched: usize,
+    n_curated_crossings: usize,
+    n_fn: usize,
     n_extras: usize,
     n_attributed: usize,
     attribution_fraction: f64,
+    precision: f64,
+    recall: f64,
+    f1: f64,
     type_counts: BTreeMap<String, usize>,
+    type_stats: BTreeMap<String, TypeStats>,
     events: Vec<Attribution>,
 }
 
@@ -158,26 +191,41 @@ fn main() -> Result<()> {
             / norms.len() as f64;
         var.sqrt()
     };
-    let threshold = global_std * 1.5;
     let tw = 10usize;
 
-    let mut transitions: Vec<(usize, f64)> = Vec::new(); // (minute_index, norm)
+    // Pre-compute (assoc_index, |post_mean - pre_mean|) for every position.
+    // Used both for the main detection run (threshold=1.5) and the PR curve sweep.
+    let mut all_changes: Vec<(usize, f64)> = Vec::new(); // (assoc_idx, change_magnitude)
     if norms.len() > tw * 2 {
-        let mut last: Option<usize> = None;
         for i in tw..norms.len().saturating_sub(tw) {
             let pre: f64 = norms[i.saturating_sub(tw)..i].iter().sum::<f64>() / tw as f64;
-            let post: f64 = norms[i..(i + tw).min(norms.len())].iter().sum::<f64>()
-                / tw.min(norms.len() - i) as f64;
-            if (post - pre).abs() > threshold {
-                if last.is_some_and(|prev| i.saturating_sub(prev) < tw) {
-                    continue;
-                }
-                let mi = assoc_idx[i];
-                transitions.push((mi, norms[i]));
-                last = Some(i);
-            }
+            let n_post = tw.min(norms.len() - i);
+            let post: f64 = norms[i..(i + n_post)].iter().sum::<f64>() / n_post as f64;
+            let change = (post - pre).abs();
+            all_changes.push((assoc_idx[i], change));
         }
     }
+
+    // Helper: apply a threshold multiplier and collect (minute_index, norm) pairs.
+    let detect_at = |factor: f64| -> Vec<(usize, f64)> {
+        let thresh = global_std * factor;
+        let mut out: Vec<(usize, f64)> = Vec::new();
+        let mut last: Option<usize> = None;
+        for (pos, &(mi, change)) in all_changes.iter().enumerate() {
+            if change > thresh {
+                let norm_pos = pos + tw; // position in norms array (offset by tw)
+                if last.is_some_and(|prev| pos.saturating_sub(prev) < tw) {
+                    continue;
+                }
+                let ni = norm_pos.min(norms.len() - 1);
+                out.push((mi, norms[ni]));
+                last = Some(pos);
+            }
+        }
+        out
+    };
+
+    let transitions = detect_at(1.5);
     println!("CD transitions: {}", transitions.len());
 
     // Load curated crossings
@@ -189,25 +237,38 @@ fn main() -> Result<()> {
         &end,
     );
     let curated_hours: Vec<f64> = events.iter().map(|e| e.elapsed_hours).collect();
-    println!("Curated crossings: {}", curated_hours.len());
+    let n_curated = curated_hours.len();
+    println!("Curated crossings: {}", n_curated);
 
-    // Classify transitions as matched or extra
+    // Helper: match transitions against curated crossings.
+    // Returns (matched_count, extras, fn_count).
     let tol_hours = cli.match_tolerance_minutes as f64 / 60.0;
-    let mut matched_count = 0usize;
-    let mut extras: Vec<(usize, f64)> = Vec::new();
-
-    for &(mi, norm) in &transitions {
-        let t_hours = elapsed[mi.min(n - 1)];
-        let is_matched = curated_hours
-            .iter()
-            .any(|&ch| (ch - t_hours).abs() < tol_hours);
-        if is_matched {
-            matched_count += 1;
-        } else {
-            extras.push((mi, norm));
+    let match_transitions = |trans: &[(usize, f64)]| -> (usize, Vec<(usize, f64)>, usize) {
+        let mut matched = 0usize;
+        let mut extra_out: Vec<(usize, f64)> = Vec::new();
+        for &(mi, norm) in trans {
+            let t_h = elapsed[mi.min(n - 1)];
+            if curated_hours.iter().any(|&ch| (ch - t_h).abs() < tol_hours) {
+                matched += 1;
+            } else {
+                extra_out.push((mi, norm));
+            }
         }
-    }
-    println!("Matched: {}, Extras: {}", matched_count, extras.len());
+        // FN: curated crossings not within tolerance of any detected transition.
+        let fn_count = curated_hours
+            .iter()
+            .filter(|&&ch| {
+                !trans.iter().any(|&(mi, _)| {
+                    let t_h = elapsed[mi.min(n - 1)];
+                    (ch - t_h).abs() < tol_hours
+                })
+            })
+            .count();
+        (matched, extra_out, fn_count)
+    };
+
+    let (matched_count, extras, fn_count) = match_transitions(&transitions);
+    println!("Matched: {}, Extras: {}, FN: {}", matched_count, extras.len(), fn_count);
 
     // Classify each extra by local B-field signature
     let w = 10usize;
@@ -295,6 +356,51 @@ fn main() -> Result<()> {
     let n_attributed = attributions.len() - type_counts.get("Unclassified").copied().unwrap_or(0);
     let frac = n_attributed as f64 / attributions.len().max(1) as f64;
 
+    // Per-type statistics (mean + std of key observables).
+    let mut type_stats: BTreeMap<String, TypeStats> = BTreeMap::new();
+    for (typ, &cnt) in &type_counts {
+        let events_of_type: Vec<&Attribution> =
+            attributions.iter().filter(|a| &a.event_type == typ).collect();
+        let n = events_of_type.len().max(1) as f64;
+        let mean_rot = events_of_type.iter().map(|a| a.rotation_deg).sum::<f64>() / n;
+        let mean_bj = events_of_type.iter().map(|a| a.b_jump_nt).sum::<f64>() / n;
+        let mean_cv = events_of_type.iter().map(|a| a.cv_bmag).sum::<f64>() / n;
+        let mean_an = events_of_type.iter().map(|a| a.associator_norm).sum::<f64>() / n;
+        let std_rot = (events_of_type
+            .iter()
+            .map(|a| (a.rotation_deg - mean_rot).powi(2))
+            .sum::<f64>()
+            / n)
+            .sqrt();
+        let std_bj = (events_of_type
+            .iter()
+            .map(|a| (a.b_jump_nt - mean_bj).powi(2))
+            .sum::<f64>()
+            / n)
+            .sqrt();
+        let total = attributions.len().max(1);
+        type_stats.insert(
+            typ.clone(),
+            TypeStats {
+                count: cnt,
+                fraction: cnt as f64 / total as f64,
+                mean_rotation_deg: (mean_rot * 10.0).round() / 10.0,
+                mean_b_jump_nt: (mean_bj * 10.0).round() / 10.0,
+                mean_cv_bmag: (mean_cv * 1000.0).round() / 1000.0,
+                mean_associator_norm: (mean_an * 100.0).round() / 100.0,
+                std_rotation_deg: (std_rot * 10.0).round() / 10.0,
+                std_b_jump_nt: (std_bj * 10.0).round() / 10.0,
+            },
+        );
+    }
+
+    // Overall precision / recall / F1 at the default threshold.
+    let tp = matched_count;
+    let fp = extras.len();
+    let prec = if tp + fp > 0 { tp as f64 / (tp + fp) as f64 } else { 0.0 };
+    let rec = if n_curated > 0 { tp as f64 / n_curated as f64 } else { 0.0 };
+    let f1 = if prec + rec > 0.0 { 2.0 * prec * rec / (prec + rec) } else { 0.0 };
+
     println!("\n=== Attribution Results ===");
     println!("  Total extras: {}", attributions.len());
     for (typ, count) in &type_counts {
@@ -311,16 +417,26 @@ fn main() -> Result<()> {
         attributions.len(),
         frac * 100.0
     );
+    println!(
+        "  Precision={:.3}  Recall={:.3}  F1={:.3}",
+        prec, rec, f1
+    );
 
     let result = AttributionResult {
         start_date: cli.start_date.clone(),
         end_date: cli.end_date.clone(),
         n_cd_transitions: transitions.len(),
         n_curated_matched: matched_count,
+        n_curated_crossings: n_curated,
+        n_fn: fn_count,
         n_extras: extras.len(),
         n_attributed,
         attribution_fraction: frac,
+        precision: (prec * 1000.0).round() / 1000.0,
+        recall: (rec * 1000.0).round() / 1000.0,
+        f1: (f1 * 1000.0).round() / 1000.0,
         type_counts,
+        type_stats,
         events: attributions,
     };
 
@@ -329,6 +445,43 @@ fn main() -> Result<()> {
     }
     fs::write(&cli.out_json, serde_json::to_string_pretty(&result)?)?;
     println!("\nWrote {}", cli.out_json.display());
+
+    // Optional PR curve: sweep threshold_factor from 4.0 down to 0.1 (50 steps, log-spaced).
+    if let Some(pr_path) = cli.out_pr_curve {
+        let factors: Vec<f64> = (0..=50)
+            .map(|k| 4.0_f64 * (0.1_f64 / 4.0_f64).powf(k as f64 / 50.0))
+            .collect();
+
+        let mut pr_curve: Vec<PrPoint> = Vec::with_capacity(factors.len());
+        for factor in &factors {
+            let trans = detect_at(*factor);
+            let (tp, extra_pr, fn_pr) = match_transitions(&trans);
+            let fp = extra_pr.len();
+            let prec_pr = if tp + fp > 0 { tp as f64 / (tp + fp) as f64 } else { 1.0 };
+            let rec_pr = if n_curated > 0 { tp as f64 / n_curated as f64 } else { 0.0 };
+            let f1_pr = if prec_pr + rec_pr > 0.0 {
+                2.0 * prec_pr * rec_pr / (prec_pr + rec_pr)
+            } else {
+                0.0
+            };
+            pr_curve.push(PrPoint {
+                threshold_factor: (factor * 1000.0).round() / 1000.0,
+                n_detected: trans.len(),
+                tp,
+                fp,
+                fn_count: fn_pr,
+                precision: (prec_pr * 1000.0).round() / 1000.0,
+                recall: (rec_pr * 1000.0).round() / 1000.0,
+                f1: (f1_pr * 1000.0).round() / 1000.0,
+            });
+        }
+
+        if let Some(parent) = pr_path.parent() {
+            fs::create_dir_all(parent)?;
+        }
+        fs::write(&pr_path, serde_json::to_string_pretty(&pr_curve)?)?;
+        println!("Wrote PR curve ({} points) to {}", pr_curve.len(), pr_path.display());
+    }
 
     Ok(())
 }

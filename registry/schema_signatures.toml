@@ -24,11 +24,11 @@ id = "SIG-0002"
 path = "registry/binaries.toml"
 top_level_keys = ["binary"]
 schema_version = "v1"
-schema_sha256 = "94a504349eba685a06add3cce62692771985a567e729c208b1f428e72abeebee"
-content_sha256 = "f0f7da1fdbbe0251e76419308bf2fa3bc3f7adf8041e9a3a7cec09aed848e7fd"
+schema_sha256 = "bbd0b2891a2b70aa34e57d46bedc7186f0f3d9da2f0cb427ba4f1297daf2f01c"
+content_sha256 = "e402a592d0ce41273c32d41e0e648b42c9714a3f8c4151d04635fb7cfd31ab0f"
 array_table_count = 1
 table_count = 0
-shape_json = "{\"path\":\"registry/binaries.toml\",\"shapes\":{\"binary\":{\"entry_kind\":\"table\",\"required_keys\":[\"crate\",\"description\",\"name\"],\"row_count\":447,\"type\":\"array\",\"union_keys\":[\"crate\",\"description\",\"experiment\",\"name\"]}},\"top_level_keys\":[\"binary\"]}"
+shape_json = "{\"path\":\"registry/binaries.toml\",\"shapes\":{\"binary\":{\"entry_kind\":\"table\",\"required_keys\":[\"crate\",\"description\",\"name\"],\"row_count\":449,\"type\":\"array\",\"union_keys\":[\"crate\",\"description\",\"experiment\",\"name\"]}},\"top_level_keys\":[\"binary\"]}"
 
 [[signature]]
 id = "SIG-0003"

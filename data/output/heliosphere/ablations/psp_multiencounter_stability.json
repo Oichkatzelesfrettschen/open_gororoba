@@ -1,0 +1,72 @@
+{
+  "summary": "PSP switchback discriminability is stable and monotonically decreasing across 4 encounters (E1/E4/E6/E10).  Mean ratio=0.5705 +/- 0.1005.",
+  "interpretation": "ratio_switchback_to_quiet is monotonically decreasing across E1->E4->E6->E10 (Spearman rho=-1.000 vs encounter number, where higher encounter = closer perihelion). Switchback coherence relative to quiet wind increases with perihelion depth: switchbacks near 16 Rs (E10) have ratio 0.4184 (SB assoc = 41.8% of quiet), vs 0.699 at E1 (~35 Rs).  Interpretation: near-perihelion switchbacks are more Alfvenic (lower CD disorder), consistent with reduced compressive turbulence at small heliocentric distances.",
+  "encounters": [
+    {
+      "label": "E1 (2018, ~35 Rs)",
+      "start_date": "2018-10-31",
+      "end_date": "2018-11-20",
+      "embedding_dim": 32,
+      "br_threshold": -0.5,
+      "total_hours": 504.0,
+      "switchback_fraction": 0.5813,
+      "switchback_mean_associator": 11.475,
+      "quiet_mean_associator": 16.416,
+      "ratio_switchback_to_quiet": 0.699,
+      "ratio_quiet_to_switchback": 1.431
+    },
+    {
+      "label": "E4 (2020-01, ~28 Rs)",
+      "start_date": "2020-01-20",
+      "end_date": "2020-02-10",
+      "embedding_dim": 32,
+      "br_threshold": -0.5,
+      "total_hours": 528.0,
+      "switchback_fraction": 0.5909,
+      "switchback_mean_associator": 7.611,
+      "quiet_mean_associator": 12.724,
+      "ratio_switchback_to_quiet": 0.5982,
+      "ratio_quiet_to_switchback": 1.672
+    },
+    {
+      "label": "E6 (2020-09, ~23 Rs)",
+      "start_date": "2020-09-21",
+      "end_date": "2020-10-05",
+      "embedding_dim": 32,
+      "br_threshold": -0.5,
+      "total_hours": 338.0,
+      "switchback_fraction": 0.716,
+      "switchback_mean_associator": 6.936,
+      "quiet_mean_associator": 12.246,
+      "ratio_switchback_to_quiet": 0.5664,
+      "ratio_quiet_to_switchback": 1.766
+    },
+    {
+      "label": "E10 (2021-11, ~16 Rs)",
+      "start_date": "2021-11-15",
+      "end_date": "2021-11-30",
+      "embedding_dim": 32,
+      "br_threshold": -0.5,
+      "total_hours": 384.0,
+      "switchback_fraction": 0.7552,
+      "switchback_mean_associator": 6.278,
+      "quiet_mean_associator": 15.003,
+      "ratio_switchback_to_quiet": 0.4184,
+      "ratio_quiet_to_switchback": 2.39
+    }
+  ],
+  "trend": {
+    "ratios": [
+      0.699,
+      0.5982,
+      0.5664,
+      0.4184
+    ],
+    "mean_ratio": 0.5705,
+    "std_ratio": 0.1005,
+    "min_ratio": 0.4184,
+    "max_ratio": 0.699,
+    "is_monotone_decreasing": true,
+    "spearman_rho_vs_encounter": -1.0
+  }
+}
