@@ -65,7 +65,24 @@ catalog_enumeration = "full"
 terms_of_use_url = "https://cdaweb.gsfc.nasa.gov/misc/NotesA.html"
 admin_contact = "gsfc-spdf-support@lists.nasa.gov"
 retry_class = "DefaultHttp"
-notes = "Primary heliophysics HAPI endpoint; LARGE_HAPI_DATASETS routes to aria2c fallback for >50 MB/day datasets (MMS FGM SRVY, MESSENGER MAG RTN, Cluster 4x FGM 5 VPS)."
+# Large-dataset list (>50 MB/day) that must route through aria2c
+# file-based download instead of streaming HAPI CSV. This list is
+# the canonical source; fetcher.rs has a matching `LARGE_HAPI_DATASETS`
+# const kept in sync for hot-path performance. The consistency is
+# checked by the data_servers_xref gate (plan P6A.S5.T4 follow-up).
+large_datasets = [
+    "MMS1_FGM_SRVY_L2",
+    "MMS2_FGM_SRVY_L2",
+    "MMS3_FGM_SRVY_L2",
+    "MMS4_FGM_SRVY_L2",
+    "MESSENGER_MAG_RTN",
+    "MVN_MAG_L2-SUNSTATE-1SEC",
+    "C1_CP_FGM_5VPS",
+    "C2_CP_FGM_5VPS",
+    "C3_CP_FGM_5VPS",
+    "C4_CP_FGM_5VPS",
+]
+notes = "Primary heliophysics HAPI endpoint; large_datasets routes to aria2c fallback for >50 MB/day datasets."
 
 [[server]]
 id = "spdf_merged"

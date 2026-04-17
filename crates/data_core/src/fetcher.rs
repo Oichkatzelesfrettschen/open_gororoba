@@ -308,6 +308,12 @@ pub fn download_hapi_csv_to_file(
 
 /// Datasets known to produce large per-day downloads (>50 MB) that should
 /// route through the file-based path with aria2c fallback.
+///
+/// Canonical source: registry/data_servers.toml, server id=cdaweb_hapi,
+/// field `large_datasets`. This hot-path const is a performance cache;
+/// the data_servers_xref gate (plan P6A.S5.T4 follow-up) enforces that
+/// this array matches the registry entry. Edit BOTH when the list
+/// changes; the gate will catch drift.
 const LARGE_HAPI_DATASETS: &[&str] = &[
     "MMS1_FGM_SRVY_L2",
     "MMS2_FGM_SRVY_L2",
