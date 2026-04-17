@@ -10907,3 +10907,19 @@ statement = "L2-delay change-point F1 on THEMIS-A Staples+2020 SC catalog (2016-
 status = "Pending"
 status_note = "PENDING 2026-04-17: E-253 registered (heliosphere-l2-delay-baseline). Run to populate."
 where_stated = "crates/gororoba_cli_physics/src/bin/heliosphere_l2_delay_baseline.rs"
+
+[[claim]]
+id = "C-1644"
+last_verified = ""
+statement = "Distribution of F1 values from 100 dense-random trilinear draws (T_ijk ~ N(0, 1/sqrt(32)), dim=32) on THEMIS-A Staples+2020 SC catalog (2016-08-29..2016-09-04, E-251). Reports mean, std, min, max. Used for P2 two-sigma comparison against CD R32 F1=0.601."
+status = "Pending"
+status_note = "PENDING 2026-04-17: E-251 registered (heliosphere-random-trilinear --n-draws 100). Run to populate."
+where_stated = "crates/gororoba_cli_physics/src/bin/heliosphere_random_trilinear.rs"
+
+[[claim]]
+id = "C-1645"
+last_verified = ""
+statement = "P2 pre-registered test: CD R32 F1=0.601 exceeds the mean+2sigma of the dense-random trilinear distribution (C-1644). If true: CD-specific coefficient structure contributes beyond embedding dimension alone. Pending E-251 execution and comparison."
+status = "Pending"
+status_note = "PENDING 2026-04-17: awaits E-251 execution to determine if 0.601 > mean+2sigma."
+where_stated = "docs/ablation_preregistration.md"
