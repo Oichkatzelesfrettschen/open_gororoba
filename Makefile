@@ -55,7 +55,7 @@
 .PHONY: registry-refresh registry-export-markdown registry-verify-mirrors docs-publish docs-freshness docs-gate docs-site docs-rustdoc docs-book docs-redirect-check
 .PHONY: artifacts artifacts-dimensional artifacts-materials artifacts-boxkites
 .PHONY: artifacts-reggiani artifacts-m3 artifacts-motifs artifacts-motifs-big artifacts-repo-visuals
-.PHONY: fetch-data fetch-data-redownload provenance-audit external-redownload-audit semantic-data-validate semantic-data-validate-strict run rocq latex latex-heliosphere latex-heliosphere-review
+.PHONY: fetch-data fetch-data-redownload provenance-audit external-redownload-audit semantic-data-validate semantic-data-validate-strict run rocq latex latex-heliosphere latex-heliosphere-figs latex-heliosphere-clean latex-heliosphere-review
 .PHONY: docker-quantum-build docker-quantum-run docker-quantum-shell
 .PHONY: clean clean-builds clean-artifacts clean-all host-profile
 .PHONY: run-e183
@@ -1758,7 +1758,19 @@ latex-heliosphere:
 	@command -v latexmk >/dev/null 2>&1 || { echo "ERROR: latexmk not found"; exit 1; }
 	@mkdir -p docs/latex/heliosphere/out
 	cd docs/latex/heliosphere && latexmk -xelatex -interaction=nonstopmode -halt-on-error -output-directory=out jgr_cd_magnetopause.tex
-	cd docs/latex/heliosphere && pdflatex -interaction=nonstopmode -output-directory=out cover_letter.tex
+	cd docs/latex/heliosphere && latexmk -pdf -interaction=nonstopmode -halt-on-error -output-directory=out cover_letter.tex
+
+latex-heliosphere-figs:
+	@command -v latexmk >/dev/null 2>&1 || { echo "ERROR: latexmk not found"; exit 1; }
+	@mkdir -p docs/latex/heliosphere/figures/out
+	cd docs/latex/heliosphere/figures && latexmk -pdf -interaction=nonstopmode -halt-on-error -output-directory=out fig_tau_sweep.tex
+	cd docs/latex/heliosphere/figures && latexmk -pdf -interaction=nonstopmode -halt-on-error -output-directory=out fig_alfven_control.tex
+	cd docs/latex/heliosphere/figures && latexmk -pdf -interaction=nonstopmode -halt-on-error -output-directory=out fig_enrichment.tex
+	cd docs/latex/heliosphere/figures && latexmk -pdf -interaction=nonstopmode -halt-on-error -output-directory=out fig_fte_scatter.tex
+
+latex-heliosphere-clean:
+	rm -rf docs/latex/heliosphere/out
+	rm -rf docs/latex/heliosphere/figures/out
 
 latex-heliosphere-review:
 	@command -v latexmk >/dev/null 2>&1 || { echo "ERROR: latexmk not found"; exit 1; }
