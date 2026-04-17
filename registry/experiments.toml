@@ -5,12 +5,12 @@
 
 [experiments]
 authoritative = true
-deterministic_count = 158
-experiment_count = 220
+deterministic_count = 164
+experiment_count = 226
 gpu_count = 29
 seeded_count = 46
 status_allowlist = ["active", "deprecated", "planned", "blocked"]
-updated = "2026-02-10"
+updated = "2026-04-17"
 
 [[experiment]]
 binary = "motif-census"
@@ -6449,3 +6449,121 @@ run_command_sha256 = ""
 status = "active"
 status_token = "ACTIVE"
 title = "PSP E3 micro-switchback enrichment: quiet CD fires 1.72x enriched near micro-rotation events; 32.5% occur with no nearby rotation signature (C-1634)"
+
+[[experiment]]
+binary = "heliosphere-bootstrap-f1"
+binary_experiment_declared = "E-242"
+binary_registered = true
+claim_refs = ["C-1635"]
+id = "E-242"
+input = "heliosphere-themis-staples-labeled JSON (E-237 run): cd_fire_hours, catalog_events, n_days=7"
+input_path_refs = ["data/output/heliosphere/ablations/themis_staples_labeled_eval.json"]
+lineage_id = "XL-242"
+method = "boundary_metrics::bootstrap_f1_ci_seeded: 1800s blocks, N=10000, seed=42, coverage=0.95; reports F1 mean and 95% CI for THEMIS 7-day CD associator result. Plan P6A.S1 task 1.4."
+output = ["data/output/heliosphere/ablations/themis_bootstrap_f1_ci.json"]
+output_path_refs = ["data/output/heliosphere/ablations/themis_bootstrap_f1_ci.json"]
+reproducibility_class = "deterministic"
+run = "cargo run --release --bin heliosphere-bootstrap-f1 -- --n-bootstrap 10000 --seed 42"
+run_command_sha256 = ""
+status = "planned"
+status_token = "PLANNED"
+title = "Block-bootstrap 95% CI for THEMIS CD F1=0.601 (plan P6A.S1 task 1.4)"
+
+[[experiment]]
+binary = "heliosphere-psp-alfven-control"
+binary_experiment_declared = "E-243"
+binary_registered = true
+claim_refs = ["C-1636"]
+id = "E-243"
+input = "PSP E4 FIELDS L2 MAG RTN 1-min data (same as E-239). Discrimination ratio computed inline: cd_compressive_fires/cd_alfvenic_fires."
+input_path_refs = [
+    "data/external/psp_fields/psp_fields_mag_20200120_20200127.csv",
+    "data/external/psp_fields/psp_fields_mag_20200128_20200204.csv",
+    "data/external/psp_fields/psp_fields_mag_20200205_20200210.csv",
+]
+lineage_id = "XL-243"
+method = "boundary_metrics::permutation_ratio_test_seeded: N=10000 shuffles of Alfvenic/CompressiveBoundary labels (Quiet excluded), seed=42. Statistic: fires_in_compressive/fires_in_alfvenic (count ratio). Plan P6A.S1 task 1.5."
+output = ["data/output/heliosphere/ablations/psp_alfven_control.json"]
+output_path_refs = ["data/output/heliosphere/ablations/psp_alfven_control.json"]
+reproducibility_class = "deterministic"
+run = "cargo run --release --bin heliosphere-psp-alfven-control -- --start-date 2020-01-20 --end-date 2020-02-10"
+run_command_sha256 = ""
+status = "planned"
+status_token = "PLANNED"
+title = "Permutation test for PSP E4 discrimination ratio (2.83x compressive/Alfvenic CD fire rate; plan P6A.S1 task 1.5)"
+
+[[experiment]]
+binary = "heliosphere-themis-staples-labeled"
+binary_experiment_declared = "E-244"
+binary_registered = true
+claim_refs = ["C-1637"]
+id = "E-244"
+input = "THEMIS-A FGM 7-day window (E-237 data). F1 null distribution computed inline."
+input_path_refs = ["data/external/themis/"]
+lineage_id = "XL-244"
+method = "boundary_metrics::f1_null_distribution_seeded: N=10000 shuffles of Staples event times within 7-day window, seed=42. Reports P(F1_shuffled >= 0.601). Plan P6A.S1 task 1.6."
+output = ["data/output/heliosphere/ablations/themis_staples_labeled_eval.json"]
+output_path_refs = ["data/output/heliosphere/ablations/themis_staples_labeled_eval.json"]
+reproducibility_class = "deterministic"
+run = "cargo run --release --bin heliosphere-themis-staples-labeled -- --start-date 2016-08-29 --n-days 7"
+run_command_sha256 = ""
+status = "planned"
+status_token = "PLANNED"
+title = "F1 null distribution: P(F1_shuffled >= 0.601) for THEMIS CD associator (plan P6A.S1 task 1.6)"
+
+[[experiment]]
+binary = "heliosphere-themis-general-benchmark"
+binary_experiment_declared = "E-247"
+binary_registered = true
+claim_refs = ["C-1640"]
+id = "E-247"
+input = "THEMIS-A FGM 30-day general window (2016-08-01 to 2016-08-30); all Staples+2020 catalog entries for THA in that window."
+input_path_refs = ["data/external/themis/", "data/external/crossing_lists/themis_mp_crossings_v2.txt"]
+lineage_id = "XL-247"
+method = "Same CD associator pipeline as E-237 but without SC-event window selection bias. Evaluates F1 over all Staples entries in the 30-day window. Reports fire rate per hour for negative-control comparison. Plan P6A.S1 task 1.10."
+output = ["data/output/heliosphere/ablations/themis_general_benchmark.json"]
+output_path_refs = ["data/output/heliosphere/ablations/themis_general_benchmark.json"]
+reproducibility_class = "deterministic"
+run = "cargo run --release --bin heliosphere-themis-general-benchmark -- --start-date 2016-08-01 --n-days 30"
+run_command_sha256 = ""
+status = "planned"
+status_token = "PLANNED"
+title = "General-interval THEMIS benchmark (30-day, no SC-event selection; plan P6A.S1 task 1.10, Section 3.2)"
+
+[[experiment]]
+binary = "heliosphere-themis-general-benchmark"
+binary_experiment_declared = "E-248"
+binary_registered = true
+claim_refs = ["C-1641"]
+id = "E-248"
+input = "THEMIS-A FGM 30-day negative control window (2015-11-01 to 2015-11-30); zero Staples+2020 SC entries for THA in that month."
+input_path_refs = ["data/external/themis/", "data/external/crossing_lists/themis_mp_crossings_v2.txt"]
+lineage_id = "XL-248"
+method = "Same as E-247 on a quiet month with zero Staples SC entries. Reports CD fire rate per hour as negative control; expected to match background rate from E-239 quiet-interval estimate (0.311/hr). Plan P6A.S1 task 1.9."
+output = ["data/output/heliosphere/ablations/themis_general_benchmark_control.json"]
+output_path_refs = ["data/output/heliosphere/ablations/themis_general_benchmark_control.json"]
+reproducibility_class = "deterministic"
+run = "cargo run --release --bin heliosphere-themis-general-benchmark -- --start-date 2015-11-01 --n-days 30 --out-json data/output/heliosphere/ablations/themis_general_benchmark_control.json"
+run_command_sha256 = ""
+status = "planned"
+status_token = "PLANNED"
+title = "Negative control: THEMIS general benchmark on quiet month (0 SC events, 2015-11; plan P6A.S1 task 1.9)"
+
+[[experiment]]
+binary = "heliosphere-bootstrap-f1"
+binary_experiment_declared = "E-249"
+binary_registered = true
+claim_refs = ["C-1642"]
+id = "E-249"
+input = "heliosphere-themis-general-benchmark JSON (E-247 run): cd_fire_hours, catalog_events."
+input_path_refs = ["data/output/heliosphere/ablations/themis_general_benchmark.json"]
+lineage_id = "XL-249"
+method = "Block-bootstrap 95% CI for general-benchmark F1 (E-247). 1800s blocks, N=10000, seed=42. Enables comparison of CI widths between SC-selected (E-242) and general-interval (E-249) windows. Plan P6A.S1 task 1.10 supplemental."
+output = ["data/output/heliosphere/ablations/themis_general_benchmark_bootstrap_ci.json"]
+output_path_refs = ["data/output/heliosphere/ablations/themis_general_benchmark_bootstrap_ci.json"]
+reproducibility_class = "deterministic"
+run = "cargo run --release --bin heliosphere-bootstrap-f1 -- --eval-json data/output/heliosphere/ablations/themis_general_benchmark.json --out-json data/output/heliosphere/ablations/themis_general_benchmark_bootstrap_ci.json --seed 42"
+run_command_sha256 = ""
+status = "planned"
+status_token = "PLANNED"
+title = "Block-bootstrap CI for general-benchmark F1 (E-247 supplemental)"

@@ -34,7 +34,8 @@ use data_core::{
     download_stack::{DownloadBackend, DownloadStack, TransferRequest},
 };
 use serde::Serialize;
-use std::{fs, path::PathBuf};
+use spectral_core::boundary_metrics;
+use std::{collections::HashSet, fs, path::PathBuf};
 
 // ============================================================================
 // CLI
@@ -251,6 +252,9 @@ struct AlfvenControlResults {
     /// Distinguishes post-hoc catalog enrichment (current use case) from
     /// unsupervised flight triage (not the paper's claim).
     cd_fires_per_year_at_quiet_fraction: f64,
+    /// Permutation p-value for the compressive/Alfvenic fire-rate ratio.
+    /// P(shuffled_ratio >= observed) under null (N=10000, seed=42).
+    permutation_p_value: f64,
     ascii_summary: String,
 }
 
@@ -663,6 +667,42 @@ fn main() -> Result<()> {
         f64::INFINITY
     };
 
+    // Permutation test for the discrimination ratio (plan P6A.S1 task 1.5).
+    // Build per-minute bool arrays restricted to {Alfvenic, CompressiveBoundary}.
+    // Null: fires equally likely in any minute regardless of class label.
+    // Statistic: fires_in_compressive / fires_in_alfvenic (count ratio).
+    // Under permutation with fixed class sizes, the count ratio p-value equals
+    // the rate ratio p-value (class sizes cancel from both sides).
+    let cd_fire_set: HashSet<usize> = cd_minute_indices.iter().copied().collect();
+    let mut perm_labels: Vec<bool> = Vec::with_capacity(n_alfvenic + n_compressive);
+    let mut perm_fire_mask: Vec<bool> = Vec::with_capacity(n_alfvenic + n_compressive);
+    for (i, &cls) in labels.iter().enumerate() {
+        if cls == WindowClass::Alfvenic || cls == WindowClass::CompressiveBoundary {
+            perm_labels.push(cls == WindowClass::CompressiveBoundary);
+            perm_fire_mask.push(cd_fire_set.contains(&i));
+        }
+    }
+    let observed_count_ratio = if cd_af > 0 {
+        cd_co as f64 / cd_af as f64
+    } else {
+        f64::INFINITY
+    };
+    let permutation_p_value = if observed_count_ratio.is_finite() {
+        boundary_metrics::permutation_ratio_test_seeded(
+            &perm_labels,
+            &perm_fire_mask,
+            10_000,
+            observed_count_ratio,
+            42,
+        )
+    } else {
+        0.0
+    };
+    println!(
+        "  Permutation test: discrimination count ratio = {:.3}, p = {:.4}  (N=10000, seed=42)",
+        observed_count_ratio, permutation_p_value
+    );
+
     // Absolute FAR context: how many CD fires per year at the observed
     // quiet-interval rate.  This is NOT the paper's use case (post-hoc
     // catalog enrichment, not unsupervised flight triage), but is reported
@@ -694,6 +734,7 @@ fn main() -> Result<()> {
         quiet_stats: qu_stats,
         discrimination_ratio,
         cd_fires_per_year_at_quiet_fraction,
+        permutation_p_value,
         ascii_summary: ascii,
     };
 
