@@ -6,7 +6,7 @@
 [experiments]
 authoritative = true
 deterministic_count = 164
-experiment_count = 234
+experiment_count = 235
 gpu_count = 29
 seeded_count = 46
 status_allowlist = ["active", "deprecated", "planned", "blocked"]
@@ -6719,3 +6719,22 @@ run_command_sha256 = ""
 status = "planned"
 status_token = "PLANNED"
 title = "PCA leading-PC variance ratio baseline (plan P6A.S2.T2.8)"
+
+[[experiment]]
+binary = "heliosphere-window-sensitivity"
+binary_experiment_declared = "E-259"
+binary_registered = true
+claim_refs = ["C-1653"]
+id = "E-259"
+input = "THEMIS-A FGM HAPI CSV (2016-08-29..2016-09-04, DOY 242-248)."
+input_path_refs = ["data/external/themis/"]
+lineage_id = "XL-259"
+method = "Window function sensitivity (M-5/Phase 4.9). Three runs: boxcar (paper baseline), Hamming (alpha=0.54), Hann (alpha=0.5) applied per lag-sample to the 32D Takens delay vector before CD product. Reports F1 and CI for each. Boxcar must reproduce paper F1 within 0.001."
+output = ["data/output/heliosphere/ablations/window_sensitivity_eval.json"]
+output_path_refs = ["data/output/heliosphere/ablations/window_sensitivity_eval.json"]
+reproducibility_class = "deterministic"
+run = "cargo run --release --bin heliosphere-window-sensitivity -- --start-date 2016-08-29 --n-days 7"
+run_command_sha256 = ""
+status = "planned"
+status_token = "PLANNED"
+title = "Window function sensitivity boxcar/Hamming/Hann (M-5, plan P6A.S4.T4.9)"

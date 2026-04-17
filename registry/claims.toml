@@ -10979,3 +10979,19 @@ statement = "PCA leading-PC variance ratio baseline F1 on THEMIS DOY 242-248 (E-
 status = "Pending"
 status_note = "PENDING 2026-04-17: E-258 registered. Run heliosphere-pca-variance-baseline to populate."
 where_stated = "crates/gororoba_cli_physics/src/bin/heliosphere_pca_variance_baseline.rs"
+
+[[claim]]
+id = "C-1653"
+last_verified = ""
+statement = "Window function sensitivity: F1 for boxcar (paper baseline), Hamming, and Hann windows applied to Takens delay vectors (E-259, dim=32, THEMIS DOY 242-248). Board mandate M-5. Expected: boxcar F1 within 0.001 of 0.601. Report max delta across window variants. Pending E-259 execution."
+status = "Pending"
+status_note = "PENDING 2026-04-17: E-259 registered. Run heliosphere-window-sensitivity to populate."
+where_stated = "crates/gororoba_cli_physics/src/bin/heliosphere_window_sensitivity.rs"
+
+[[claim]]
+id = "C-1654"
+last_verified = ""
+statement = "MAD window decorrelation sensitivity (Phase 4.10): F1 change when threshold estimation uses preceding disjoint 15-minute window vs global std. Implemented as --decorrelated-mad flag in heliosphere-themis-staples-labeled. Report F1 difference. Pending execution of both variants."
+status = "Pending"
+status_note = "PENDING 2026-04-17: --decorrelated-mad flag added to heliosphere-themis-staples-labeled. Run both variants to populate."
+where_stated = "crates/gororoba_cli_physics/src/bin/heliosphere_themis_staples_labeled.rs"
