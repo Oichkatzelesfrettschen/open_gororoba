@@ -1,16 +1,11 @@
-% agujournal2019.cls is NOT included in this repository.
+% agujournal2019.cls -- OBSOLETE STUB
 %
-% Obtain it from:
-%   https://www.agu.org/Publish-with-AGU/Publish/Author-Resources/Manuscript-Templates-and-Software
-%   or unzip the AGU LaTeX template package and place agujournal2019.cls in this directory.
+% This file previously held instructions for obtaining the 2019 AGU LaTeX class.
+% As of the April 2025 JGR resubmission, this repository uses agujournal2025.cls,
+% which is included in this directory (obtained from the official AGU Publications
+% GitHub repository: AGU-Publications/agujournal2025-latex-template, October 2024).
 %
-% For local compilation of the draft, jgr_cd_magnetopause.tex uses
-% \documentclass{article} by default.  Before submission, change line 1 to:
-%   \documentclass[jgrspacephysics,manuscript]{agujournal2019}
-% and copy agujournal2019.cls + trackchanges.sty into this directory.
-%
-% This placeholder file prevents "File not found" errors if the class is
-% accidentally referenced before the real file is obtained.
-\NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{agujournal2019}[2019/01/01 placeholder -- replace with real AGU class]
-\LoadClass{article}
+% There is no need to obtain agujournal2019.cls.  Compile with:
+%   latexmk -xelatex -interaction=nonstopmode -output-directory=out jgr_cd_magnetopause.tex
+% or via the project Makefile:
+%   make latex-heliosphere

@@ -20,6 +20,12 @@
 \pgfplotsset{compat=1.18}
 \usepackage{standalone}
 \usepackage{booktabs}
+\usepackage{xurl}
+
+%% Paragraph breaking tolerance for narrow AGU text column (32.25pc)
+\tolerance=2000
+\emergencystretch=2em
+\setlength\overfullrule{0pt}
 
 %% Okabe-Ito colorblind-safe palette (shared by all figures)
 %% xcolor is already loaded by agujournal2025 with [x11names]
@@ -59,7 +65,7 @@
 \keypoints
   {CD associator achieves F1$=0.601$ on THEMIS magnetopause, $+59\%$ over gradient baseline}
   {Compressive/Alfvenic fire-rate ratio $2.83\times$ confirms topological selectivity over Alfvenic amplitude}
-  {32.5\% of quiet PSP fires lack nearby rotation events: $\mathbb{R}^{32}$ sensitivity exceeds $\mathbb{R}^3$}
+  {32.5\% of quiet PSP fires lack adjacent rotation events, revealing topology invisible in $\mathbb{R}^3$}
 
 \maketitle
 
@@ -626,10 +632,11 @@ THEMIS FGM data were obtained from the HAPI server
 MMS FGM SRVY L2 data were obtained from the MMS SDC
 (\url{https://lasp.colorado.edu/mms/sdc/}).
 Parker Solar Probe FIELDS 1-min data were obtained from SPDF
-(\url{https://spdf.gsfc.nasa.gov/}) as product \texttt{PSP\_FLD\_L2\_MAG\_RTN\_1MIN}.
+(\url{https://spdf.gsfc.nasa.gov/}) as product
+\path{PSP_FLD_L2_MAG_RTN_1MIN}.
 All analysis code is available in the open\_gororoba repository
 under the experiments E-237, E-239, E-240, and E-241;
-see \texttt{registry/experiments.toml} for detailed provenance.
+see \path{registry/experiments.toml} for detailed provenance.
 
 %% ===================================================================
 %% ACKNOWLEDGMENTS
