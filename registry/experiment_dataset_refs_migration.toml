@@ -1,0 +1,28 @@
+# Experiment dataset_refs migration mapping (plan P6A.S4.T4).
+#
+# Each [[migration]] row says "for experiment E-NNN, attach these
+# dataset IDs (PC-/EX-/XS-) to its dataset_refs field". Consumed by
+# the `experiment-dataset-refs-migrate` binary which patches
+# `registry/canonical/control_plane.sqlite3#experiments_cp.
+# compat_toml_text`.
+#
+# This file is append-only: once applied, entries stay here as a
+# permanent record. Re-running the migration is idempotent (the
+# binary skips rows whose dataset_refs is already populated).
+
+# --- Batch 1 (2026-04-17 seed) ----------------------------------
+
+[[migration]]
+experiment_id = "E-003"
+dataset_refs = ["EX-0029", "EX-0031"]
+rationale = "Pantheon+SH0ES primary + DESI BAO secondary (real-cosmo-fit)."
+
+[[migration]]
+experiment_id = "E-008"
+dataset_refs = ["EX-0030"]
+rationale = "GWOSC GWTC-3-confident all-events CSV."
+
+[[migration]]
+experiment_id = "E-087"
+dataset_refs = ["EX-0031"]
+rationale = "DESI BAO (shared with E-003)."

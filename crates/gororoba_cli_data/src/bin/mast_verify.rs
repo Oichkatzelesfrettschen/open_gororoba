@@ -171,12 +171,20 @@ fn parse_mission_names(html: &str) -> BTreeSet<String> {
         }
         let raw = &tail[..end];
         // Filter obvious non-mission segments the docs sometimes include.
+        // `_images` is an MKDocs asset directory; `index` / `search` /
+        // `help` / `archive` are navigation pages, not missions.
         let raw_lower = raw.to_ascii_lowercase();
-        if !raw_lower.is_empty()
-            && raw_lower != "index"
-            && raw_lower != "search"
-            && raw_lower != "help"
-        {
+        let blocked = [
+            "index",
+            "search",
+            "help",
+            "archive",
+            "_images",
+            "data",
+            "api",
+            "about",
+        ];
+        if !raw_lower.is_empty() && !blocked.contains(&raw_lower.as_str()) {
             names.insert(normalize(&raw_lower));
         }
         remaining = &tail[end..];
@@ -185,7 +193,13 @@ fn parse_mission_names(html: &str) -> BTreeSet<String> {
 }
 
 fn normalize(s: &str) -> String {
-    s.replace('-', "_").replace('.', "_")
+    // Replace hyphens and dots with underscores, then collapse
+    // consecutive underscores so "dss__gsc" normalizes to "dss_gsc".
+    let mut out = s.replace('-', "_").replace('.', "_");
+    while out.contains("__") {
+        out = out.replace("__", "_");
+    }
+    out
 }
 
 fn load_registered_missions(path: &Path) -> Result<BTreeSet<String>, String> {
@@ -196,8 +210,20 @@ fn load_registered_missions(path: &Path) -> Result<BTreeSet<String>, String> {
         .get("mission")
         .and_then(Value::as_array)
         .unwrap_or(&empty);
+    // Shuttle-era sub-missions (BEFS, IMAPS, TUES under ORFEUS; HUT,
+    // UIT, WUPPE, HPOL under ASTRO) are not directly linked from the
+    // top-level missions-and-data page; they are only reachable via
+    // the parent "orfeus" or "astro" pages. Treating them as drift
+    // would be a false positive. We keep them in the registry
+    // (provenance + queryability) but exclude them from the drift set.
     Ok(missions
         .iter()
+        .filter(|m| {
+            m.get("status")
+                .and_then(Value::as_str)
+                .map(|s| s != "shuttle_legacy")
+                .unwrap_or(true)
+        })
         .filter_map(|m| {
             m.get("mission")
                 .and_then(Value::as_str)

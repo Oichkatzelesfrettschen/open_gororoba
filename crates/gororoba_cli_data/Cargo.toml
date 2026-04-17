@@ -47,6 +47,14 @@ name = "lotss-enumerate"
 path = "src/bin/lotss_enumerate.rs"
 
 [[bin]]
+name = "extract-real-kv-cache"
+path = "src/bin/extract_real_kv_cache.rs"
+
+[[bin]]
+name = "experiment-dataset-refs-migrate"
+path = "src/bin/experiment_dataset_refs_migrate.rs"
+
+[[bin]]
 name = "registry-emit"
 path = "src/bin/registry_emit.rs"
 
