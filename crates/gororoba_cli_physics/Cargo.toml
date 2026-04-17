@@ -372,6 +372,10 @@ name = "heliosphere-mms-sitl-labeled"
 path = "src/bin/heliosphere_mms_sitl_labeled.rs"
 
 [[bin]]
+name = "heliosphere-themis-staples-labeled"
+path = "src/bin/heliosphere_themis_staples_labeled.rs"
+
+[[bin]]
 name = "heliosphere-switchback-omega"
 path = "src/bin/heliosphere_switchback_omega.rs"
 
