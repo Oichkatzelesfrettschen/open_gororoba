@@ -91,6 +91,12 @@ struct Cli {
     #[arg(long, default_value_t = 30.0)]
     rotation_threshold_deg: f64,
 
+    /// Instrument noise floor (nT) used as denominator floor in the
+    /// local-|B|-normalized Takens embedding.  PSP FIELDS fluxgate published
+    /// noise floor: ~0.01 nT.
+    #[arg(long, default_value_t = 0.01)]
+    bmag_noise_floor: f64,
+
     /// Data cache root directory.
     #[arg(long, default_value = "data/external")]
     data_dir: PathBuf,
@@ -236,6 +242,12 @@ struct AlfvenControlResults {
     /// Values >> 1 confirm the CD associator is selective for topological
     /// boundaries and not contaminated by Alfvenic wave noise.
     discrimination_ratio: f64,
+    /// Absolute false-alarm context: estimated CD fires per year assuming
+    /// the quiet-interval fraction holds over a full-year mission.
+    /// Computed as quiet_cd_fire_rate_per_hour * 8760 * quiet_fraction.
+    /// Distinguishes post-hoc catalog enrichment (current use case) from
+    /// unsupervised flight triage (not the paper's claim).
+    cd_fires_per_year_at_quiet_fraction: f64,
     ascii_summary: String,
 }
 
@@ -268,6 +280,8 @@ fn build_ascii_summary(
     co: &ClassFireStats,
     qu: &ClassFireStats,
     ratio: f64,
+    quiet_cd_rate: f64,
+    cd_fires_per_year: f64,
 ) -> String {
     let mut s = String::new();
     s.push_str(
@@ -293,6 +307,14 @@ fn build_ascii_summary(
         "Discrimination ratio (Compressive CD / Alfvenic CD): {:.2}x\n",
         ratio
     ));
+    s.push_str(&format!(
+        "Absolute FAR (quiet intervals only): {:.3} fires/hr = ~{:.0} fires/year\n",
+        quiet_cd_rate, cd_fires_per_year
+    ));
+    s.push_str(
+        "NOTE: This experiment targets post-hoc catalog enrichment.\n\
+         Unsupervised flight triage would require a secondary sigma_c gate.\n",
+    );
     s
 }
 
@@ -532,14 +554,18 @@ fn main() -> Result<()> {
         if local_mean_b <= 0.0 || !local_mean_b.is_finite() {
             continue;
         }
+        // Noise-floor regularization: clamp denominator to PSP FIELDS noise
+        // floor (~0.01 nT) so near-zero |B| at magnetic null points cannot
+        // amplify instrument noise into spurious associator spikes.
+        let denom = local_mean_b.max(cli.bmag_noise_floor);
 
         let mut v = vec![0.0; cli.embedding_dim];
         for (s, &ri) in sample_indices.iter().enumerate() {
             let rec = &all_minutes[ri];
-            v[s * channels] = rec.br / local_mean_b;
-            v[s * channels + 1] = rec.bt / local_mean_b;
-            v[s * channels + 2] = rec.bn / local_mean_b;
-            v[s * channels + 3] = (rec.b_magnitude - local_mean_b) / local_mean_b;
+            v[s * channels] = rec.br / denom;
+            v[s * channels + 1] = rec.bt / denom;
+            v[s * channels + 2] = rec.bn / denom;
+            v[s * channels + 3] = (rec.b_magnitude - local_mean_b) / denom;
         }
         embedded_vectors.push(v);
         embed_meta.push(*sample_indices.last().unwrap());
@@ -629,7 +655,22 @@ fn main() -> Result<()> {
         f64::INFINITY
     };
 
-    let ascii = build_ascii_summary(&af_stats, &co_stats, &qu_stats, discrimination_ratio);
+    // Absolute FAR context: how many CD fires per year at the observed
+    // quiet-interval rate.  This is NOT the paper's use case (post-hoc
+    // catalog enrichment, not unsupervised flight triage), but is reported
+    // explicitly so readers can evaluate the operational trade-off.
+    let quiet_fraction = n_quiet as f64 / all_minutes.len() as f64;
+    let cd_fires_per_year_at_quiet_fraction =
+        qu_stats.cd_fire_rate_per_hour * 8760.0 * quiet_fraction;
+
+    let ascii = build_ascii_summary(
+        &af_stats,
+        &co_stats,
+        &qu_stats,
+        discrimination_ratio,
+        qu_stats.cd_fire_rate_per_hour,
+        cd_fires_per_year_at_quiet_fraction,
+    );
     println!("\n{}", ascii);
 
     let results = AlfvenControlResults {
@@ -644,6 +685,7 @@ fn main() -> Result<()> {
         compressive_stats: co_stats,
         quiet_stats: qu_stats,
         discrimination_ratio,
+        cd_fires_per_year_at_quiet_fraction,
         ascii_summary: ascii,
     };
 

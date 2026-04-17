@@ -10835,3 +10835,11 @@ statement = "In PSP encounter E3, the CD associator discrimination ratio (Compre
 status = "Established"
 status_note = "ESTABLISHED 2026-04-16: E3 perihelion. CD: Compressive 2.711/hr, Alfvenic 0.958/hr, Quiet 0.311/hr. Discrimination ratio 2.83x. Gradient: Compressive 3.360/hr, Alfvenic 1.155/hr, Quiet 0.168/hr. Ratio 2.91x. Full JSON: data/output/heliosphere/ablations/psp_alfven_control.json."
 where_stated = "crates/gororoba_cli_physics/src/bin/heliosphere_psp_alfven_control.rs"
+
+[[claim]]
+id = "C-1633"
+last_verified = "2026-04-16"
+statement = "On the THEMIS E-237 7-day window (THA, 2016 DOY 242-248, 7968 minutes, 224 Staples+2020 catalog intervals), the 32D CD associator F1 degrades monotonically with Takens lag tau: F1=0.601 at tau=1 min (window 8 min, 104 detections), F1=0.431 at tau=2 min (window 15 min, 59 detections), F1=0.037 at tau=5 min (window 36 min, 9 detections), F1=0.000 at tau=10 min (window 71 min, 0 detections). The gradient baseline (tau-independent) achieves F1=0.378 (164 detections). tau=1 min is empirically optimal for Earth-proximal magnetopause crossings; the collapse at tau>=5 min reflects both the dominance of sub-5-minute boundary dynamics and conservative gap rejection (crossings span 5-20 min; a 36-min embedding window integrates across pre/post-boundary plasma). Binary: heliosphere-takens-tau-sweep. E-240."
+status = "Established"
+status_note = "ESTABLISHED 2026-04-16: tau=1: P=0.567 R=0.638 F1=0.601 (104 det). tau=2: P=0.492 R=0.384 F1=0.431 (59 det). tau=5: P=0.111 R=0.022 F1=0.037 (9 det). tau=10: F1=0.000. Gradient: P=0.317 R=0.469 F1=0.378 (164 det). Full JSON: data/output/heliosphere/ablations/takens_tau_sweep.json."
+where_stated = "crates/gororoba_cli_physics/src/bin/heliosphere_takens_tau_sweep.rs"
