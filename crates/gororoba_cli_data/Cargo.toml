@@ -35,6 +35,10 @@ name = "dataset-hash-sweep"
 path = "src/bin/dataset_hash_sweep.rs"
 
 [[bin]]
+name = "heasarc-enumerate"
+path = "src/bin/heasarc_enumerate.rs"
+
+[[bin]]
 name = "registry-emit"
 path = "src/bin/registry_emit.rs"
 

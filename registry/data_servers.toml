@@ -138,10 +138,12 @@ auth = "anonymous"
 rate_limit_ms = 250
 daily_budget_bytes = 0
 owner_module = "crates/data_core/src/catalogs/fermi_gbm_fetch.rs"
-catalog_enumeration = "none"
+catalog_enumeration = "full"
+catalog_snapshot = "registry/heasarc_catalogs.toml"
+catalog_enumerator = "crates/gororoba_cli_data/src/bin/heasarc_enumerate.rs"
 terms_of_use_url = "https://heasarc.gsfc.nasa.gov/docs/software/heasoft/authorship.html"
 retry_class = "DefaultHttp"
-notes = "Pipe-delimited output; needs convert_pipe_to_csv(); plan P6A.S5.T1 adds a Browse All Catalogs walker."
+notes = "Pipe-delimited output; needs convert_pipe_to_csv(). Full catalog enumeration via TAP /tables (plan P6A.S5.T1 -- 1027 tables across 4 schemas as of 2026-04-17 snapshot)."
 
 [[server]]
 id = "heasarc_xamin"
