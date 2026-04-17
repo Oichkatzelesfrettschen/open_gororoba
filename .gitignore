@@ -207,6 +207,10 @@ credentials.*
 ![Rr][Ee][Aa][Dd][Mm][Ee].md
 !**/[Rr][Ee][Aa][Dd][Mm][Ee].md
 !proofs/EPISTEMIC_BOUNDARIES.md
+!docs/toolchain/
+!docs/toolchain/*.md
+!docs/adr/
+!docs/adr/*.md
 !docs/research/high_dimensional_algebra_unification_2026.md
 !docs/research/nanograv_15yr_cayley_dickson_synthesis_2026.md
 !docs/external_sources/PIONEER_FLYBY_ANOMALY_SOURCES.md

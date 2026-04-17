@@ -20,11 +20,15 @@ path = "src/bin/claims_consolidate.rs"
 name = "claims-verify"
 path = "src/bin/claims_verify.rs"
 
-# ---- Registry (4) ----
+# ---- Registry (5) ----
 
 [[bin]]
 name = "registry-check"
 path = "src/bin/registry_check.rs"
+
+[[bin]]
+name = "ndlb-gate"
+path = "src/bin/ndlb_gate.rs"
 
 [[bin]]
 name = "registry-emit"

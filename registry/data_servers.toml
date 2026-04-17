@@ -1,0 +1,523 @@
+# Data server registry (Tier I; plan Phase 6A.S1).
+#
+# Catalogs every external server / endpoint the codebase connects to
+# for dataset fetches. Populated from a full survey of
+# crates/data_core/src/catalogs/, crates/data_core/src/fetcher.rs,
+# crates/data_core/src/download_stack.rs, and the binary fetchers under
+# crates/gororoba_cli_data/src/bin/ on 2026-04-17.
+#
+# Required for:
+#   - data_servers_xref governance check (plan P6A.S1.T2): every URL
+#     inside a catalog module must be reachable via a registered server.
+#   - No-Dataset-Left-Behind gate (plan P6A.S3): every external_sources
+#     row must carry a server_ref into this file.
+#   - Rate-limit policy (plan P6A.S6): download_stack.rs reads
+#     rate_limit_ms and daily_budget_bytes from here.
+#
+# Schema:
+#   id                     -- short canonical identifier (snake_case)
+#   name                   -- human-readable title
+#   base_url               -- canonical base URL (may include path prefix)
+#   protocol               -- "HAPI" | "HTTP" | "VO" | "S3" | "FTP"
+#                             | "rsync" | "GIT" | "HEASARC_W3BROWSE"
+#                             | "TAP" | "HEPDATA"
+#   auth                   -- "anonymous" | "token" | "cookie"
+#   rate_limit_ms          -- minimum inter-request delay, 0 if unset
+#   daily_budget_bytes     -- 0 if unlimited/unknown; set for cost-capped
+#                             catalogs like MAST S3
+#   owner_module           -- primary Rust module (relative path)
+#   catalog_enumeration    -- "full" | "partial" | "none"
+#                             "full"    = every product enumerable via catalog API
+#                             "partial" = some products reachable, others cherry-picked
+#                             "none"    = manual URL construction only
+#   terms_of_use_url       -- public ToS / citation policy (optional)
+#   admin_contact          -- contact for escalation (optional)
+#   retry_class            -- "DefaultHttp" | "CurlFirst" | "ProbeFirst"
+#   notes                  -- free-form
+#
+# Rules (enforced by governance-gate):
+#   - every entry must have id, base_url, protocol, owner_module.
+#   - base_url must be lowercase (punycode for IDN).
+#   - if protocol = S3, daily_budget_bytes > 0 is required.
+#   - if rate_limit_ms > 0, download_stack.rs must honour it.
+
+[data_servers]
+updated = "2026-04-17"
+authoritative = true
+status = "active"
+status_token = "ACTIVE"
+schema_version = 1
+
+# ==============================================================================
+# NASA / SPDF / CDAWeb (Heliophysics Data Environment)
+# ==============================================================================
+
+[[server]]
+id = "cdaweb_hapi"
+name = "NASA CDAWeb HAPI service"
+base_url = "https://cdaweb.gsfc.nasa.gov/hapi"
+protocol = "HAPI"
+auth = "anonymous"
+rate_limit_ms = 0
+daily_budget_bytes = 0
+owner_module = "crates/data_core/src/fetcher.rs"
+catalog_enumeration = "full"
+terms_of_use_url = "https://cdaweb.gsfc.nasa.gov/misc/NotesA.html"
+admin_contact = "gsfc-spdf-support@lists.nasa.gov"
+retry_class = "DefaultHttp"
+notes = "Primary heliophysics HAPI endpoint; LARGE_HAPI_DATASETS routes to aria2c fallback for >50 MB/day datasets (MMS FGM SRVY, MESSENGER MAG RTN, Cluster 4x FGM 5 VPS)."
+
+[[server]]
+id = "spdf_merged"
+name = "NASA SPDF merged data archive"
+base_url = "https://spdf.gsfc.nasa.gov/pub/data"
+protocol = "HTTP"
+auth = "anonymous"
+rate_limit_ms = 0
+daily_budget_bytes = 0
+owner_module = "crates/data_core/src/catalogs"
+catalog_enumeration = "partial"
+terms_of_use_url = "https://spdf.gsfc.nasa.gov/misc/CredEx.html"
+retry_class = "DefaultHttp"
+notes = "Mission cruise/merged CDFs (Cassini, Helios, IBEX, IMP-8, Pioneer, Ulysses, Voyager, OMNI, STEREO/PLASTIC, etc.); each mission has its own subdirectory."
+
+[[server]]
+id = "amda_hapi"
+name = "CNES/IRAP AMDA HAPI (European CDAWeb mirror)"
+base_url = "https://amda.irap.omp.eu/service/hapi"
+protocol = "HAPI"
+auth = "anonymous"
+rate_limit_ms = 0
+daily_budget_bytes = 0
+owner_module = "crates/data_core/src/catalogs/rosetta_fetch.rs"
+catalog_enumeration = "partial"
+terms_of_use_url = "https://amda.irap.omp.eu"
+retry_class = "DefaultHttp"
+notes = "Fallback used for Rosetta ros-magob-rsmp when CDAWeb lacks coverage."
+
+[[server]]
+id = "bartol_voyager"
+name = "Bartol Voyager cosmic-ray rates FTP mirror"
+base_url = "ftp://ftp.bartol.udel.edu/whm/Voyager"
+protocol = "FTP"
+auth = "anonymous"
+rate_limit_ms = 500
+daily_budget_bytes = 0
+owner_module = "crates/data_core/src/catalogs/voyager.rs"
+catalog_enumeration = "none"
+retry_class = "CurlFirst"
+notes = "Legacy FTP mirror; no checksum stream."
+
+# ==============================================================================
+# NASA HEASARC (High Energy Astrophysics Science Archive)
+# ==============================================================================
+
+[[server]]
+id = "heasarc_w3browse"
+name = "HEASARC W3Browse batch query"
+base_url = "https://heasarc.gsfc.nasa.gov/db-perl/W3Browse"
+protocol = "HEASARC_W3BROWSE"
+auth = "anonymous"
+rate_limit_ms = 250
+daily_budget_bytes = 0
+owner_module = "crates/data_core/src/catalogs/fermi_gbm_fetch.rs"
+catalog_enumeration = "none"
+terms_of_use_url = "https://heasarc.gsfc.nasa.gov/docs/software/heasoft/authorship.html"
+retry_class = "DefaultHttp"
+notes = "Pipe-delimited output; needs convert_pipe_to_csv(); plan P6A.S5.T1 adds a Browse All Catalogs walker."
+
+[[server]]
+id = "heasarc_xamin"
+name = "HEASARC Xamin query servlet"
+base_url = "https://heasarc.gsfc.nasa.gov/xamin/QueryServlet"
+protocol = "HEASARC_W3BROWSE"
+auth = "anonymous"
+rate_limit_ms = 250
+daily_budget_bytes = 0
+owner_module = "crates/data_core/src/catalogs/atnf.rs"
+catalog_enumeration = "partial"
+retry_class = "DefaultHttp"
+notes = "ATNF pulsar catalogue source with Galactic-to-equatorial fallback."
+
+# ==============================================================================
+# STScI MAST (Mikulski Archive for Space Telescopes)
+# ==============================================================================
+
+[[server]]
+id = "mast_api"
+name = "MAST public REST API"
+base_url = "https://mast.stsci.edu/api/v0"
+protocol = "HTTP"
+auth = "anonymous"
+rate_limit_ms = 250
+daily_budget_bytes = 0
+owner_module = "crates/data_core/src/catalogs/hst_fetch.rs"
+catalog_enumeration = "partial"
+terms_of_use_url = "https://archive.stsci.edu/publishing/acknowledgments"
+retry_class = "DefaultHttp"
+notes = "HST/JWST product queries + cone search; full catalog walker pending (plan P6A.S5.T2)."
+
+[[server]]
+id = "mast_s3_zarr"
+name = "FAIR-MAST Zarr mirror on STFC S3"
+base_url = "https://s3.echo.stfc.ac.uk/mast"
+protocol = "S3"
+auth = "anonymous"
+rate_limit_ms = 0
+daily_budget_bytes = 32212254720
+owner_module = "crates/gororoba_cli_data/src/bin/mast_fetch.rs"
+catalog_enumeration = "partial"
+retry_class = "DefaultHttp"
+notes = "Parallel chunk downloader with rayon; daily_budget_bytes=30 GB cap."
+
+# ==============================================================================
+# IRSA / IPAC (Infrared Science Archive + CMB mirror)
+# ==============================================================================
+
+[[server]]
+id = "irsa_planck"
+name = "IRSA Planck mirror"
+base_url = "https://irsa.ipac.caltech.edu/data/Planck"
+protocol = "HTTP"
+auth = "anonymous"
+rate_limit_ms = 0
+daily_budget_bytes = 0
+owner_module = "crates/data_core/src/catalogs/planck_fetch.rs"
+catalog_enumeration = "partial"
+terms_of_use_url = "https://irsa.ipac.caltech.edu/frontpage/acknowledge.html"
+retry_class = "DefaultHttp"
+notes = "PR3 / PR4 MCMC chains; calibration_version field required on each downstream row."
+
+# ==============================================================================
+# NASA LAMBDA (WMAP and CMB legacy)
+# ==============================================================================
+
+[[server]]
+id = "nasa_lambda"
+name = "NASA LAMBDA WMAP archive"
+base_url = "https://lambda.gsfc.nasa.gov/data/map"
+protocol = "HTTP"
+auth = "anonymous"
+rate_limit_ms = 0
+daily_budget_bytes = 0
+owner_module = "crates/data_core/src/catalogs/planck_fetch.rs"
+catalog_enumeration = "partial"
+retry_class = "DefaultHttp"
+notes = "WMAP 9yr MCMC chains (tar.gz)."
+
+# ==============================================================================
+# ESA / Gaia / ESAC
+# ==============================================================================
+
+[[server]]
+id = "gaia_tap"
+name = "ESA Gaia Archive TAP server"
+base_url = "https://gea.esac.esa.int/tap-server/tap"
+protocol = "TAP"
+auth = "anonymous"
+rate_limit_ms = 1000
+daily_budget_bytes = 0
+owner_module = "crates/data_core/src/catalogs/gaia_fetch.rs"
+catalog_enumeration = "full"
+terms_of_use_url = "https://www.cosmos.esa.int/web/gaia-users/archive/credits"
+retry_class = "DefaultHttp"
+notes = "TAP-Sync ADQL; cone search supported; rate_limit_ms=1000 per ESAC guidance."
+
+# ==============================================================================
+# NSF DESI, SDSS, radio surveys
+# ==============================================================================
+
+[[server]]
+id = "desi_bao_cobaya"
+name = "Cobaya BAO measurements GitHub mirror"
+base_url = "https://raw.githubusercontent.com/CobayaSampler/bao_data"
+protocol = "GIT"
+auth = "anonymous"
+rate_limit_ms = 0
+daily_budget_bytes = 0
+owner_module = "crates/data_core/src/catalogs/desi_bao_fetch.rs"
+catalog_enumeration = "partial"
+retry_class = "DefaultHttp"
+notes = "7 text files; unhardcode from E-003 into dataset_refs (plan P6A.S4.T4)."
+
+[[server]]
+id = "sdss_dr17"
+name = "SDSS DR17 MaNGA/APOGEE/BOSS"
+base_url = "https://data.sdss.org/sas/dr17"
+protocol = "HTTP"
+auth = "anonymous"
+rate_limit_ms = 250
+daily_budget_bytes = 0
+owner_module = "crates/data_core/src/catalogs/sdss_fetch.rs"
+catalog_enumeration = "partial"
+terms_of_use_url = "https://www.sdss4.org/collaboration/citing-sdss"
+retry_class = "DefaultHttp"
+notes = "MaNGA IFU spectroscopy; DRP/DAP products; 38 GB on disk per survey."
+
+[[server]]
+id = "lotss_vo"
+name = "ASTRON / LOFAR LoTSS DR3 Virtual Observatory"
+base_url = "https://vo.astron.nl/hetdex/q"
+protocol = "VO"
+auth = "anonymous"
+rate_limit_ms = 250
+daily_budget_bytes = 0
+owner_module = "crates/gororoba_cli_data/src/bin/lotss_fetch.rs"
+catalog_enumeration = "partial"
+retry_class = "DefaultHttp"
+notes = "Tile-based VO cone search; full-footprint walker pending (plan P6A.S5.T3)."
+
+[[server]]
+id = "lotss_astrowise"
+name = "LoTSS DR1/DR2 Astrowise FITS bulk"
+base_url = "https://astrowise.org"
+protocol = "HTTP"
+auth = "anonymous"
+rate_limit_ms = 250
+daily_budget_bytes = 0
+owner_module = "crates/gororoba_cli_data/src/bin/lotss_fetch.rs"
+catalog_enumeration = "partial"
+retry_class = "DefaultHttp"
+notes = "FITS bulk downloads; VizieR fallback via cdsarc.cds.unistra.fr."
+
+# ==============================================================================
+# ESO / CDS / VizieR
+# ==============================================================================
+
+[[server]]
+id = "cds_vizier"
+name = "CDS VizieR (Strasbourg) catalog service"
+base_url = "https://cdsarc.cds.unistra.fr/ftp"
+protocol = "HTTP"
+auth = "anonymous"
+rate_limit_ms = 250
+daily_budget_bytes = 0
+owner_module = "crates/data_core/src/catalogs"
+catalog_enumeration = "full"
+terms_of_use_url = "https://cds.unistra.fr/Acknowledgements/"
+retry_class = "DefaultHttp"
+notes = "Multi-mirror fallback for hipparcos, THINGS HI, Pantheon+, Union3."
+
+[[server]]
+id = "vizier_strasbourg_mirror"
+name = "VizieR University of Strasbourg alternate mirror"
+base_url = "https://cdsarc.u-strasbg.fr/ftp"
+protocol = "HTTP"
+auth = "anonymous"
+rate_limit_ms = 250
+daily_budget_bytes = 0
+owner_module = "crates/data_core/src/catalogs"
+catalog_enumeration = "full"
+retry_class = "DefaultHttp"
+notes = "Secondary mirror for CDS; same content as cds_vizier."
+
+# ==============================================================================
+# Gravitational-wave and transient archives
+# ==============================================================================
+
+[[server]]
+id = "gwosc_events"
+name = "Gravitational Wave Open Science Center event API"
+base_url = "https://gwosc.org/eventapi"
+protocol = "HTTP"
+auth = "anonymous"
+rate_limit_ms = 500
+daily_budget_bytes = 0
+owner_module = "crates/data_core/src/catalogs/gwtc.rs"
+catalog_enumeration = "full"
+terms_of_use_url = "https://gwosc.org/agreement/"
+retry_class = "DefaultHttp"
+notes = "GWTC-3-confident CSV + fallback JSON API."
+
+[[server]]
+id = "eht_github"
+name = "Event Horizon Telescope GitHub releases"
+base_url = "https://github.com/eventhorizontelescope"
+protocol = "GIT"
+auth = "anonymous"
+rate_limit_ms = 0
+daily_budget_bytes = 0
+owner_module = "crates/data_core/src/catalogs/eht_fetch.rs"
+catalog_enumeration = "partial"
+terms_of_use_url = "https://eventhorizontelescope.org/for-scientists/data"
+retry_class = "DefaultHttp"
+notes = "M87, Sgr A*, 3C 279, Cen A data; CSV/UVFITS/TXT."
+
+[[server]]
+id = "chime_frb_gcs"
+name = "CHIME/FRB Catalog Google Cloud Storage"
+base_url = "https://storage.googleapis.com/chimefrb-dev"
+protocol = "HTTP"
+auth = "anonymous"
+rate_limit_ms = 0
+daily_budget_bytes = 0
+owner_module = "crates/data_core/src/catalogs/chime.rs"
+catalog_enumeration = "partial"
+retry_class = "DefaultHttp"
+notes = "Catalog1 (722 FRBs), Catalog2 (536 FRBs) in distinct GCS buckets."
+
+[[server]]
+id = "zenodo_api"
+name = "Zenodo records API (CERN)"
+base_url = "https://zenodo.org/api/records"
+protocol = "HTTP"
+auth = "anonymous"
+rate_limit_ms = 250
+daily_budget_bytes = 0
+owner_module = "crates/data_core/src/catalogs/nanograv_fetch.rs"
+catalog_enumeration = "partial"
+terms_of_use_url = "https://about.zenodo.org/terms/"
+retry_class = "DefaultHttp"
+notes = "NANOGrav 15yr free spectrum + timing package (tar.gz)."
+
+# ==============================================================================
+# Materials / physics databases (non-astronomy)
+# ==============================================================================
+
+[[server]]
+id = "aflow_aflux"
+name = "AFLOW AFLUX REST API"
+base_url = "https://aflow.org/API/aflux"
+protocol = "HTTP"
+auth = "anonymous"
+rate_limit_ms = 500
+daily_budget_bytes = 0
+owner_module = "crates/data_core/src/catalogs/aflow_fetch.rs"
+catalog_enumeration = "partial"
+retry_class = "DefaultHttp"
+notes = "Materials properties JSON; no direct bulk download."
+
+[[server]]
+id = "jarvis_nist"
+name = "JARVIS-DFT (NIST materials database)"
+base_url = "https://jarvis.nist.gov"
+protocol = "HTTP"
+auth = "anonymous"
+rate_limit_ms = 500
+daily_budget_bytes = 0
+owner_module = "crates/data_core/src/catalogs/jarvis_fetch.rs"
+catalog_enumeration = "partial"
+retry_class = "DefaultHttp"
+notes = "DFT database REST JSON surface."
+
+[[server]]
+id = "hepdata"
+name = "HEPData (CERN)"
+base_url = "https://hepdata.net"
+protocol = "HEPDATA"
+auth = "anonymous"
+rate_limit_ms = 250
+daily_budget_bytes = 0
+owner_module = "crates/data_core/src/catalogs/hic_raa_fetch.rs"
+catalog_enumeration = "partial"
+terms_of_use_url = "https://hepdata.net/"
+retry_class = "DefaultHttp"
+notes = "Heavy-ion tables (ins1496050, ins1511868, etc.)."
+
+# ==============================================================================
+# Misc (SETI, magnetars, Landsat, etc.)
+# ==============================================================================
+
+[[server]]
+id = "bl_seti"
+name = "Berkeley SETI Breakthrough Listen archive"
+base_url = "https://breakthroughinitiatives.org/opendatasearch"
+protocol = "HTTP"
+auth = "anonymous"
+rate_limit_ms = 500
+daily_budget_bytes = 0
+owner_module = "crates/gororoba_cli_data/src/bin/bl_data_fetch.rs"
+catalog_enumeration = "none"
+retry_class = "DefaultHttp"
+notes = "Filterbank HDF5 data; no checksums."
+
+[[server]]
+id = "mcgill_magnetar"
+name = "McGill Magnetar Catalog"
+base_url = "https://www.physics.mcgill.ca/~pulsar/magnetar"
+protocol = "HTTP"
+auth = "anonymous"
+rate_limit_ms = 0
+daily_budget_bytes = 0
+owner_module = "crates/data_core/src/catalogs/mcgill.rs"
+catalog_enumeration = "full"
+retry_class = "DefaultHttp"
+notes = "Single CSV; lightweight."
+
+# ==============================================================================
+# ESA Euclid Q1
+# ==============================================================================
+
+[[server]]
+id = "euclid_q1"
+name = "ESA Euclid Q1 early data release"
+base_url = "https://easdr1.esac.esa.int"
+protocol = "HTTP"
+auth = "anonymous"
+rate_limit_ms = 500
+daily_budget_bytes = 0
+owner_module = "crates/gororoba_cli_data/src/bin/euclid_fetch.rs"
+catalog_enumeration = "partial"
+terms_of_use_url = "https://www.euclid-ec.org/"
+retry_class = "DefaultHttp"
+notes = "Q1 data products; earlier DR pending."
+
+# ==============================================================================
+# LASP solar irradiance
+# ==============================================================================
+
+[[server]]
+id = "lasp_sorce"
+name = "LASP SORCE TSI archive"
+base_url = "https://lasp.colorado.edu/home/sorce/data"
+protocol = "HTTP"
+auth = "anonymous"
+rate_limit_ms = 250
+daily_budget_bytes = 0
+owner_module = "crates/data_core/src/catalogs/sorce.rs"
+catalog_enumeration = "partial"
+retry_class = "DefaultHttp"
+notes = "24-hour solar irradiance time series."
+
+# ==============================================================================
+# Servers with no downloader yet (documented gaps; plan P6A backlog)
+# ==============================================================================
+
+[[server]]
+id = "pds_planetary"
+name = "NASA Planetary Data System (stub; no downloader)"
+base_url = "https://pds.nasa.gov"
+protocol = "HTTP"
+auth = "anonymous"
+rate_limit_ms = 1000
+daily_budget_bytes = 0
+owner_module = "(none)"
+catalog_enumeration = "none"
+retry_class = "DefaultHttp"
+notes = "STUB: no downloader yet; multiple missions host at PDS (MESSENGER MAG, Juno JEDI, etc.)."
+
+[[server]]
+id = "cadc"
+name = "Canadian Astronomy Data Centre (stub; no downloader)"
+base_url = "https://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca"
+protocol = "TAP"
+auth = "anonymous"
+rate_limit_ms = 1000
+daily_budget_bytes = 0
+owner_module = "(none)"
+catalog_enumeration = "none"
+retry_class = "DefaultHttp"
+notes = "STUB: no downloader yet."
+
+[[server]]
+id = "nrao_archive"
+name = "NRAO (VLA/ALMA) archive (stub; no downloader)"
+base_url = "https://data.nrao.edu"
+protocol = "HTTP"
+auth = "anonymous"
+rate_limit_ms = 1000
+daily_budget_bytes = 0
+owner_module = "(none)"
+catalog_enumeration = "none"
+retry_class = "DefaultHttp"
+notes = "STUB: no downloader yet; radio astronomy archive."

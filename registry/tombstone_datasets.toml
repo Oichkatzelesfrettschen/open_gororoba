@@ -1,0 +1,284 @@
+# Dataset tombstones (Tier I; plan Phase 6A.S3.T1).
+#
+# Explicit deferral or archive markers for datasets that are present on
+# disk (or were fetched historically) but do NOT have active experiment
+# bindings and will not be analyzed in the near-term. Tombstoning lets
+# the No-Dataset-Left-Behind (NDLB) gate pass on these entries without
+# forcing an immediate experiment.
+#
+# A tombstone is a compromise, not a release. Every tombstoned row is
+# debt; future sprints should either bind an experiment or promote to
+# archive/ status.
+#
+# Schema:
+#   id                     -- must match registry/datasets.toml row id
+#   local_path             -- data/external/<id> relative path
+#   reason                 -- one-line justification
+#   defer_to_sprint        -- integer sprint number OR 0 for "never"
+#                             (0 = permanent deferral; consider archive)
+#   archive_at             -- ISO date for forced archival review
+#   last_fetched           -- ISO date of last known successful download
+#   upstream_status        -- "available" | "archived" | "dead"
+#   owner_contact          -- email/handle for follow-up
+#   notes                  -- free-form
+
+[tombstones]
+updated = "2026-04-17"
+authoritative = true
+status = "active"
+status_token = "ACTIVE"
+schema_version = 1
+entry_count = 23
+
+[[tombstone]]
+id = "ace_swepam"
+local_path = "data/external/ace_swepam"
+reason = "Instrument subset; parent `ace` has active bindings (E-113, E-138, E-226). Refetch as needed."
+defer_to_sprint = 90
+archive_at = "2026-12-31"
+last_fetched = "2026-04-17"
+upstream_status = "available"
+owner_contact = ""
+notes = ""
+
+[[tombstone]]
+id = "alice_pbpb_raa"
+local_path = "data/external/alice_pbpb_raa"
+reason = "ALICE PbPb collisions R_AA; reserved for future high-energy physics sprint."
+defer_to_sprint = 100
+archive_at = "2026-12-31"
+last_fetched = "2026-04-17"
+upstream_status = "available"
+owner_contact = ""
+notes = ""
+
+[[tombstone]]
+id = "alice_xexe_raa"
+local_path = "data/external/alice_xexe_raa"
+reason = "ALICE XeXe R_AA; reserved for future high-energy physics sprint."
+defer_to_sprint = 100
+archive_at = "2026-12-31"
+last_fetched = "2026-04-17"
+upstream_status = "available"
+owner_contact = ""
+notes = ""
+
+[[tombstone]]
+id = "bepicolombo"
+local_path = "data/external/bepicolombo"
+reason = "ESA/JAXA Mercury mission; kept for future inner-heliosphere comparison work."
+defer_to_sprint = 95
+archive_at = "2026-12-31"
+last_fetched = "2026-04-17"
+upstream_status = "available"
+owner_contact = ""
+notes = ""
+
+[[tombstone]]
+id = "cms_oo_raa"
+local_path = "data/external/cms_oo_raa"
+reason = "CMS OO R_AA; reserved for future high-energy physics sprint."
+defer_to_sprint = 100
+archive_at = "2026-12-31"
+last_fetched = "2026-04-17"
+upstream_status = "available"
+owner_contact = ""
+notes = ""
+
+[[tombstone]]
+id = "hic_raa"
+local_path = "data/external/hic_raa"
+reason = "Heavy-ion R_AA (HEPData); reserved for future high-energy physics sprint."
+defer_to_sprint = 100
+archive_at = "2026-12-31"
+last_fetched = "2026-04-17"
+upstream_status = "available"
+owner_contact = ""
+notes = ""
+
+[[tombstone]]
+id = "ibex"
+local_path = "data/external/ibex"
+reason = "IBEX ENA sky maps; kept for heliopause context comparisons (next heliosphere sprint)."
+defer_to_sprint = 95
+archive_at = "2026-12-31"
+last_fetched = "2026-04-17"
+upstream_status = "available"
+owner_contact = ""
+notes = ""
+
+[[tombstone]]
+id = "imap"
+local_path = "data/external/imap"
+reason = "IMAP realtime + L2 HI/Helio1HR; full integration pending instrument calibration maturation."
+defer_to_sprint = 95
+archive_at = "2026-12-31"
+last_fetched = "2026-04-17"
+upstream_status = "available"
+owner_contact = ""
+notes = ""
+
+[[tombstone]]
+id = "imp8"
+local_path = "data/external/imp8"
+reason = "IMP-8 legacy heliosphere data; cross-calibration utility pending."
+defer_to_sprint = 98
+archive_at = "2026-12-31"
+last_fetched = "2026-04-17"
+upstream_status = "available"
+owner_contact = ""
+notes = ""
+
+[[tombstone]]
+id = "intermagnet"
+local_path = "data/external/intermagnet"
+reason = "Ground magnetometer consortium; reserved for geomagnetic cross-validation sprint."
+defer_to_sprint = 100
+archive_at = "2026-12-31"
+last_fetched = "2026-04-17"
+upstream_status = "available"
+owner_contact = ""
+notes = ""
+
+[[tombstone]]
+id = "magnetar"
+local_path = "data/external/magnetar"
+reason = "McGill magnetar catalog; lightweight but no active analysis binding yet."
+defer_to_sprint = 95
+archive_at = "2026-12-31"
+last_fetched = "2026-04-17"
+upstream_status = "available"
+owner_contact = ""
+notes = ""
+
+[[tombstone]]
+id = "mast"
+local_path = "data/external/mast"
+reason = "Generic MAST catalog root; specific mission subsets (JWST, HST) pending explicit experiment."
+defer_to_sprint = 95
+archive_at = "2026-12-31"
+last_fetched = "2026-04-17"
+upstream_status = "available"
+owner_contact = ""
+notes = ""
+
+[[tombstone]]
+id = "maven_swia"
+local_path = "data/external/maven_swia"
+reason = "Instrument subset; parent `maven` has active bindings (E-233, E-235)."
+defer_to_sprint = 90
+archive_at = "2026-12-31"
+last_fetched = "2026-04-17"
+upstream_status = "available"
+owner_contact = ""
+notes = ""
+
+[[tombstone]]
+id = "messenger_mag_cdf"
+local_path = "data/external/messenger_mag_cdf"
+reason = "Instrument subset; parent `messenger` has active binding (E-060)."
+defer_to_sprint = 90
+archive_at = "2026-12-31"
+last_fetched = "2026-04-17"
+upstream_status = "available"
+owner_contact = ""
+notes = ""
+
+[[tombstone]]
+id = "sdo_aia"
+local_path = "data/external/sdo_aia"
+reason = "SDO atmospheric imaging; reserved for solar imagery sprint."
+defer_to_sprint = 100
+archive_at = "2026-12-31"
+last_fetched = "2026-04-17"
+upstream_status = "available"
+owner_contact = ""
+notes = ""
+
+[[tombstone]]
+id = "sdo_hmi"
+local_path = "data/external/sdo_hmi"
+reason = "SDO magnetograms; reserved for solar imagery sprint."
+defer_to_sprint = 100
+archive_at = "2026-12-31"
+last_fetched = "2026-04-17"
+upstream_status = "available"
+owner_contact = ""
+notes = ""
+
+[[tombstone]]
+id = "soho"
+local_path = "data/external/soho"
+reason = "SOHO CELIAS/LASCO; reserved for inner heliosphere sprint."
+defer_to_sprint = 95
+archive_at = "2026-12-31"
+last_fetched = "2026-04-17"
+upstream_status = "available"
+owner_contact = ""
+notes = ""
+
+[[tombstone]]
+id = "solar_orbiter"
+local_path = "data/external/solar_orbiter"
+reason = "Solar Orbiter MAG/SWA/RPW; reserved for PSP+SolO comparison sprint (follow-on to E-241)."
+defer_to_sprint = 92
+archive_at = "2026-12-31"
+last_fetched = "2026-04-17"
+upstream_status = "available"
+owner_contact = ""
+notes = ""
+
+[[tombstone]]
+id = "solo"
+local_path = "data/external/solo"
+reason = "Solar Orbiter alias directory; to be merged with solar_orbiter during consolidation."
+defer_to_sprint = 90
+archive_at = "2026-12-31"
+last_fetched = "2026-04-17"
+upstream_status = "available"
+owner_contact = ""
+notes = ""
+
+[[tombstone]]
+id = "themis_esa"
+local_path = "data/external/themis_esa"
+reason = "Instrument subset; parent `themis` has active bindings (E-227, E-231, E-235, E-237, E-240)."
+defer_to_sprint = 90
+archive_at = "2026-12-31"
+last_fetched = "2026-04-17"
+upstream_status = "available"
+owner_contact = ""
+notes = ""
+
+[[tombstone]]
+id = "voyager1_mag48"
+local_path = "data/external/voyager1_mag48"
+reason = "Subset of voyager1 mag data at 48s cadence; parent has bindings."
+defer_to_sprint = 90
+archive_at = "2026-12-31"
+last_fetched = "2026-04-17"
+upstream_status = "available"
+owner_contact = ""
+notes = ""
+
+[[tombstone]]
+id = "voyager2_mag48"
+local_path = "data/external/voyager2_mag48"
+reason = "Subset of voyager2 mag data at 48s cadence; parent has bindings."
+defer_to_sprint = 90
+archive_at = "2026-12-31"
+last_fetched = "2026-04-17"
+upstream_status = "available"
+owner_contact = ""
+notes = ""
+
+[[tombstone]]
+id = "voyager_coho_hapi"
+local_path = "data/external/voyager_coho_hapi"
+reason = "COHO HAPI snapshot of voyager merged; parent has bindings."
+defer_to_sprint = 90
+archive_at = "2026-12-31"
+last_fetched = "2026-04-17"
+upstream_status = "available"
+owner_contact = ""
+notes = ""
