@@ -503,11 +503,27 @@ fn main() -> Result<()> {
         );
     }
 
+    // Gap detection: discard Takens windows whose actual elapsed-hours span
+    // exceeds the expected span by more than 2*lag minutes, indicating a
+    // telemetry gap crossing the window.
+    let expected_span_hours = (steps - 1) as f64 * cli.takens_lag as f64 / 60.0;
+    let gap_tolerance_hours = 2.0 * cli.takens_lag as f64 / 60.0;
+    let max_window_span_hours = expected_span_hours + gap_tolerance_hours;
+
     let mut embedded_vectors: Vec<Vec<f64>> = Vec::new();
     let mut embed_meta: Vec<usize> = Vec::new();
+    let mut n_gap_skipped: usize = 0;
 
     for w_start in 0..=(all_minutes.len() - window_rows) {
         let sample_indices: Vec<usize> = (0..steps).map(|s| w_start + s * cli.takens_lag).collect();
+
+        let first_h = all_minutes[*sample_indices.first().unwrap()].elapsed_hours;
+        let last_h = all_minutes[*sample_indices.last().unwrap()].elapsed_hours;
+        if last_h - first_h > max_window_span_hours {
+            n_gap_skipped += 1;
+            continue;
+        }
+
         let sum_b: f64 = sample_indices
             .iter()
             .map(|&i| all_minutes[i].b_magnitude)
@@ -570,7 +586,11 @@ fn main() -> Result<()> {
         }
     }
 
-    println!("  CD associator: {} transitions", cd_hours.len());
+    println!(
+        "  CD associator: {} transitions ({} windows gap-discarded)",
+        cd_hours.len(),
+        n_gap_skipped
+    );
 
     // -----------------------------------------------------------------------
     // Evaluate both methods

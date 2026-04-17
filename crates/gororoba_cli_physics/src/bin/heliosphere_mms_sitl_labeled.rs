@@ -158,6 +158,11 @@ struct SitlLabeledResults {
     delta_recall: f64,
     delta_f1: f64,
     sitl_events: Vec<SitlEventSummary>,
+    /// Elapsed hours (from reference_midnight) of each CD associator fire.
+    /// Needed for FTE case-study classification (reviewer Major Comment 1).
+    cd_fire_hours: Vec<f64>,
+    /// Elapsed hours of each |B|-gradient+rotation detector fire.
+    gradient_fire_hours: Vec<f64>,
     ascii_table: String,
 }
 
@@ -509,11 +514,28 @@ fn main() -> Result<()> {
         );
     }
 
+    // Expected elapsed-hours span of one Takens window (minutes -> hours).
+    // A window spanning a telemetry gap will have actual span >> expected span.
+    // Tolerance: 2 * lag minutes in hours.
+    let expected_span_hours = (steps - 1) as f64 * cli.takens_lag as f64 / 60.0;
+    let gap_tolerance_hours = 2.0 * cli.takens_lag as f64 / 60.0;
+    let max_window_span_hours = expected_span_hours + gap_tolerance_hours;
+
     let mut embedded_vectors: Vec<Vec<f64>> = Vec::new();
     let mut embed_meta: Vec<usize> = Vec::new();
+    let mut n_gap_skipped: usize = 0;
 
     for w_start in 0..=(all_minutes.len() - window_rows) {
         let sample_indices: Vec<usize> = (0..steps).map(|s| w_start + s * cli.takens_lag).collect();
+
+        // Gap detection: discard windows that span a telemetry gap.
+        let first_h = all_minutes[*sample_indices.first().unwrap()].elapsed_hours;
+        let last_h = all_minutes[*sample_indices.last().unwrap()].elapsed_hours;
+        if last_h - first_h > max_window_span_hours {
+            n_gap_skipped += 1;
+            continue;
+        }
+
         let sum_b: f64 = sample_indices
             .iter()
             .map(|&i| all_minutes[i].b_magnitude)
@@ -578,7 +600,11 @@ fn main() -> Result<()> {
         }
     }
 
-    println!("  CD associator: {} transitions", cd_hours.len());
+    println!(
+        "  CD associator: {} transitions ({} windows gap-discarded)",
+        cd_hours.len(),
+        n_gap_skipped
+    );
 
     // -----------------------------------------------------------------------
     // Evaluate both methods against SITL
@@ -648,6 +674,8 @@ fn main() -> Result<()> {
         delta_recall: delta_r,
         delta_f1,
         sitl_events,
+        cd_fire_hours: cd_hours.clone(),
+        gradient_fire_hours: gradient_hours.clone(),
         ascii_table: ascii,
     };
 
