@@ -107,8 +107,7 @@ offsets adds noise without proportional signal gain.
 
 ## Commit Hash
 
-**Pre-registration commit hash:** TBD (to be filled in by `git rev-parse HEAD`
-immediately after this file is committed)
+**Pre-registration commit hash:** 455d47455c46b623413c601fa2f8ad4c97d8c45f
 
 **Git tag:** `ablation-preregistered-v1`
 
