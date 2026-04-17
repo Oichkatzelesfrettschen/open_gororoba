@@ -1077,6 +1077,12 @@ crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
 
 [[binary]]
+name = "heliosphere-takens-tau-sweep"
+crate = "gororoba_cli_physics"
+description = "Sweep Takens lag tau in {1,2,5,10} min on THEMIS-A E-237 data against Staples+2020 catalog (224 crossings); reports P/R/F1 per tau plus tau-independent gradient baseline; confirms tau=1 min is empirically optimal for Earth-proximal magnetopause crossings. E-240, C-1633."
+experiment = "E-240"
+
+[[binary]]
 name = "heliosphere-synthetic-mhd"
 crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."

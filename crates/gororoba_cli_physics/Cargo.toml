@@ -388,6 +388,10 @@ name = "heliosphere-switchback-omega"
 path = "src/bin/heliosphere_switchback_omega.rs"
 
 [[bin]]
+name = "heliosphere-takens-tau-sweep"
+path = "src/bin/heliosphere_takens_tau_sweep.rs"
+
+[[bin]]
 name = "heliosphere-quench-scan"
 path = "src/bin/heliosphere_quench_scan.rs"
 

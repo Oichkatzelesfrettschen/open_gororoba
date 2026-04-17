@@ -6411,3 +6411,22 @@ run_command_sha256 = ""
 status = "active"
 status_token = "ACTIVE"
 title = "PSP E3 Alfvenic noise control: CD associator less susceptible than gradient to Alfvenic contamination (C-1631/C-1632)"
+
+[[experiment]]
+id = "E-240"
+input = "THEMIS-A FGM 1-min GSE data (DOY 242-248, 2016; 7968 minutes, 7 days); Staples et al. (2020) magnetopause crossing catalog (224 intervals); cached in data/external/themis/"
+input_path_refs = [
+    "data/external/themis/a_fgm_2016_242.csv",
+    "data/external/themis/a_fgm_2016_248.csv",
+    "data/external/crossing_lists/themis_mp_crossings_v2.txt",
+]
+lineage_id = "XL-240"
+method = "heliosphere-takens-tau-sweep: sweep tau in {1,2,5,10} min on 32D Takens embedding + CD associator with epsilon noise-floor (0.5 nT THEMIS FGS); gradient baseline computed once (tau-independent); gap windows discarded per 2*tau tolerance; P/R/F1 evaluated against 224 Staples+2020 catalog intervals (+-10 min pad); results confirm tau=1 min is empirically optimal for Earth-proximal missions (C-1633)."
+output = ["data/output/heliosphere/ablations/takens_tau_sweep.json"]
+output_path_refs = ["data/output/heliosphere/ablations/takens_tau_sweep.json"]
+reproducibility_class = "deterministic"
+run = "cargo run --release --bin heliosphere-takens-tau-sweep -- --start-date 2016-08-29 --n-days 7 --probe a --staples-catalog data/external/crossing_lists/themis_mp_crossings_v2.txt"
+run_command_sha256 = ""
+status = "active"
+status_token = "ACTIVE"
+title = "Takens tau sensitivity sweep (tau=1,2,5,10 min) on THEMIS E-237 data: tau=1 min empirically optimal, F1 degrades monotonically with tau (C-1633)"

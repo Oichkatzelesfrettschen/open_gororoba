@@ -105,6 +105,13 @@ struct Cli {
     #[arg(long, default_value_t = 100.0)]
     max_bmag: f64,
 
+    /// Instrument noise floor (nT) used as denominator floor in the
+    /// local-|B|-normalized Takens embedding.  Prevents near-zero mean |B|
+    /// at magnetic null points from amplifying instrument noise into spurious
+    /// associator spikes.  MMS FGM published noise floor: ~0.1 nT.
+    #[arg(long, default_value_t = 0.1)]
+    bmag_noise_floor: f64,
+
     /// Output JSON path.
     #[arg(
         long,
@@ -544,13 +551,17 @@ fn main() -> Result<()> {
         if local_mean_b <= 0.0 || !local_mean_b.is_finite() {
             continue;
         }
+        // Noise-floor regularization: clamp denominator to at least the
+        // instrument noise floor so near-zero |B| near magnetic null points
+        // cannot amplify instrument noise into spurious associator spikes.
+        let denom = local_mean_b.max(cli.bmag_noise_floor);
         let mut v = vec![0.0; cli.embedding_dim];
         for (s, &ri) in sample_indices.iter().enumerate() {
             let rec = &all_minutes[ri];
-            v[s * channels] = rec.bx_gse / local_mean_b;
-            v[s * channels + 1] = rec.by_gse / local_mean_b;
-            v[s * channels + 2] = rec.bz_gse / local_mean_b;
-            v[s * channels + 3] = (rec.b_magnitude - local_mean_b) / local_mean_b;
+            v[s * channels] = rec.bx_gse / denom;
+            v[s * channels + 1] = rec.by_gse / denom;
+            v[s * channels + 2] = rec.bz_gse / denom;
+            v[s * channels + 3] = (rec.b_magnitude - local_mean_b) / denom;
         }
         embedded_vectors.push(v);
         embed_meta.push(*sample_indices.last().unwrap());
