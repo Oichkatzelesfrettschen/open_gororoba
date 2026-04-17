@@ -19,14 +19,19 @@
 //!     --staples-catalog data/external/crossing_lists/themis_mp_crossings_v2.txt
 
 use anyhow::{Context, Result};
-use chrono::{Datelike, NaiveDate, NaiveDateTime};
+use chrono::{Datelike, NaiveDate, NaiveDateTime, TimeZone, Utc};
 use clap::Parser;
 use data_core::catalogs::{
-    mms::{MmsEventInterval, detect_magnetopause_crossings_filtered, timestamp_in_sitl_event},
+    mms::{MmsEventInterval, detect_magnetopause_crossings_filtered},
     themis::{ThemisFgmMinuteRecord, parse_staples_crossing_catalog, parse_themis_fgm_hapi_csv_minutes},
 };
 use serde::Serialize;
+use spectral_core::boundary_metrics;
 use std::{fs, path::PathBuf};
+
+/// MAD scale factor for the CD sliding-window transition detector.
+/// Fixed prior to evaluation on any test data. See plan P6A.S1, task 1.7.
+const MAD_SCALE_FACTOR: f64 = 1.5;
 
 // ============================================================================
 // CLI
@@ -156,42 +161,27 @@ fn detect_crossings_adapted(
     detect_magnetopause_crossings_filtered(&adapted, window, bmag_threshold, rotation_deg)
 }
 
+fn hours_to_unix(origin: &NaiveDateTime, h: f64) -> i64 {
+    Utc.from_utc_datetime(origin).timestamp() + (h * 3600.0) as i64
+}
+
+fn event_midpoint_unix(ev: &MmsEventInterval) -> i64 {
+    let mid = ev.start + (ev.end - ev.start) / 2;
+    Utc.from_utc_datetime(&mid).timestamp()
+}
+
 fn eval_detection_hours(
     detection_hours: &[f64],
     reference_midnight: &NaiveDateTime,
     catalog: &[MmsEventInterval],
+    window_secs: i64,
 ) -> (f64, f64, f64) {
-    let n_catalog = catalog.len();
-    let tp_det = detection_hours
+    let detection_unix: Vec<i64> = detection_hours
         .iter()
-        .filter(|&&h| timestamp_in_sitl_event(h, reference_midnight, catalog))
-        .count();
-    let tp_cat = catalog
-        .iter()
-        .filter(|ev| {
-            detection_hours.iter().any(|&h| {
-                use chrono::Duration;
-                let t = *reference_midnight + Duration::seconds((h * 3600.0) as i64);
-                ev.start <= t && t < ev.end
-            })
-        })
-        .count();
-    let prec = if detection_hours.is_empty() {
-        0.0
-    } else {
-        tp_det as f64 / detection_hours.len() as f64
-    };
-    let rec = if n_catalog == 0 {
-        0.0
-    } else {
-        tp_cat as f64 / n_catalog as f64
-    };
-    let f1 = if prec + rec > 0.0 {
-        2.0 * prec * rec / (prec + rec)
-    } else {
-        0.0
-    };
-    (prec, rec, f1)
+        .map(|&h| hours_to_unix(reference_midnight, h))
+        .collect();
+    let event_unix: Vec<i64> = catalog.iter().map(|ev| event_midpoint_unix(ev)).collect();
+    boundary_metrics::precision_recall_f1(&detection_unix, &event_unix, window_secs)
 }
 
 fn run_cd_for_tau(
@@ -266,7 +256,7 @@ fn run_cd_for_tau(
                 / associators.len() as f64;
             var.sqrt()
         };
-        let threshold = global_std * 1.5;
+        let threshold = global_std * MAD_SCALE_FACTOR;
         let half = trans_window;
         let assoc_minute_indices: Vec<usize> =
             (0..associators.len()).map(|k| embed_meta[k + 2]).collect();
@@ -442,8 +432,9 @@ fn main() -> Result<()> {
         .iter()
         .map(|&i| all_minutes[i].elapsed_hours)
         .collect();
+    let eval_window_secs = cli.pad_minutes * 60;
     let (grad_p, grad_r, grad_f1) =
-        eval_detection_hours(&gradient_hours, &reference_midnight, &catalog);
+        eval_detection_hours(&gradient_hours, &reference_midnight, &catalog, eval_window_secs);
     println!(
         "  Gradient: P={:.3} R={:.3} F1={:.3} ({} detections)",
         grad_p, grad_r, grad_f1, gradient_hours.len()
@@ -463,7 +454,7 @@ fn main() -> Result<()> {
         let (cd_hours, n_gap) =
             run_cd_for_tau(&all_minutes, cli.embedding_dim, tau, cli.crossing_window_minutes, cli.bmag_noise_floor);
         let (cd_p, cd_r, cd_f1) =
-            eval_detection_hours(&cd_hours, &reference_midnight, &catalog);
+            eval_detection_hours(&cd_hours, &reference_midnight, &catalog, eval_window_secs);
 
         println!(
             "  tau={:2}min  window={:3}min  P={:.3}  R={:.3}  F1={:.3}  ({} det, {} gap-skipped)",

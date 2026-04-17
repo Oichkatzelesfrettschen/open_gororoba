@@ -22,11 +22,11 @@
 //!     --staples-catalog data/external/crossing_lists/themis_mp_crossings_v2.txt
 
 use anyhow::{Context, Result};
-use chrono::{Datelike, NaiveDate, NaiveDateTime};
+use chrono::{Datelike, NaiveDate, NaiveDateTime, TimeZone, Utc};
 use clap::Parser;
 use data_core::{
     catalogs::{
-        mms::{MmsEventInterval, detect_magnetopause_crossings_filtered, timestamp_in_sitl_event},
+        mms::{MmsEventInterval, detect_magnetopause_crossings_filtered},
         themis::{
             ThemisFgmMinuteRecord, parse_staples_crossing_catalog,
             parse_themis_fgm_hapi_csv_minutes,
@@ -35,7 +35,13 @@ use data_core::{
     download_stack::{DownloadBackend, DownloadStack, TransferRequest},
 };
 use serde::Serialize;
+use spectral_core::boundary_metrics;
 use std::{fs, path::PathBuf};
+
+/// MAD scale factor for the CD sliding-window transition detector.
+/// This value was fixed prior to evaluation on any test data.
+/// See plan P6A.S1, task 1.7.
+const MAD_SCALE_FACTOR: f64 = 1.5;
 
 // ============================================================================
 // CLI
@@ -163,6 +169,13 @@ struct StaplesLabeledResults {
     cd_fire_hours: Vec<f64>,
     /// Elapsed hours of each |B|-gradient+rotation detector fire.
     gradient_fire_hours: Vec<f64>,
+    /// Block-bootstrap 95% CI for CD F1: [mean, ci_lo, ci_hi].
+    /// 30-min blocks, N=10000, seed=42 (boundary_metrics::bootstrap_f1_ci_seeded).
+    cd_bootstrap_ci: [f64; 3],
+    /// F1 null distribution p-value: P(F1_shuffled >= F1_observed) under
+    /// uniformly shuffled event times within the 7-day window.
+    /// N=10000 shuffles, seed=42.
+    f1_null_p_value: f64,
     ascii_table: String,
 }
 
@@ -197,49 +210,54 @@ fn detect_crossings_from_themis(
     detect_magnetopause_crossings_filtered(&adapted, window, bmag_threshold, rotation_deg)
 }
 
+/// Convert elapsed hours (from a NaiveDateTime origin) to a Unix timestamp (i64 seconds).
+fn hours_to_unix(origin: &NaiveDateTime, h: f64) -> i64 {
+    let base = Utc.from_utc_datetime(origin).timestamp();
+    base + (h * 3600.0) as i64
+}
+
+/// Convert a catalog event's padded window midpoint to Unix seconds.
+fn event_midpoint_unix(ev: &MmsEventInterval) -> i64 {
+    let mid = ev.start + (ev.end - ev.start) / 2;
+    Utc.from_utc_datetime(&mid).timestamp()
+}
+
+/// Evaluate a detector against the Staples catalog using the shared
+/// boundary_metrics implementation (detection-level P, event-level R).
+/// window_secs: half-width of the matching tolerance in seconds.
 fn eval_against_catalog(
     detection_hours: &[f64],
     reference_midnight: &NaiveDateTime,
     catalog: &[MmsEventInterval],
     method_label: &str,
+    window_secs: i64,
 ) -> DetectorEval {
-    let n_catalog = catalog.len();
-    let tp_detections = detection_hours
+    let detection_unix: Vec<i64> = detection_hours
         .iter()
-        .filter(|&&h| timestamp_in_sitl_event(h, reference_midnight, catalog))
-        .count();
-
-    let tp_catalog = catalog
+        .map(|&h| hours_to_unix(reference_midnight, h))
+        .collect();
+    let event_unix: Vec<i64> = catalog
         .iter()
-        .filter(|ev| {
-            detection_hours.iter().any(|&h| {
-                use chrono::Duration;
-                let t = *reference_midnight + Duration::seconds((h * 3600.0) as i64);
-                ev.start <= t && t < ev.end
-            })
-        })
-        .count();
+        .map(|ev| event_midpoint_unix(ev))
+        .collect();
 
-    let precision = if detection_hours.is_empty() {
-        0.0
-    } else {
-        tp_detections as f64 / detection_hours.len() as f64
-    };
-    let recall = if n_catalog == 0 {
-        0.0
-    } else {
-        tp_catalog as f64 / n_catalog as f64
-    };
-    let f1 = if precision + recall > 0.0 {
-        2.0 * precision * recall / (precision + recall)
-    } else {
-        0.0
-    };
+    let (precision, recall, f1) =
+        boundary_metrics::precision_recall_f1(&detection_unix, &event_unix, window_secs);
+
+    // Recompute TP counts for the JSON output (boundary_metrics returns only rates).
+    let tp_detections = detection_unix
+        .iter()
+        .filter(|&&d| event_unix.iter().any(|&e| (d - e).abs() <= window_secs))
+        .count();
+    let tp_catalog = event_unix
+        .iter()
+        .filter(|&&e| detection_unix.iter().any(|&d| (d - e).abs() <= window_secs))
+        .count();
 
     DetectorEval {
         method: method_label.to_string(),
         n_detections: detection_hours.len(),
-        n_catalog_intervals: n_catalog,
+        n_catalog_intervals: catalog.len(),
         tp_detections,
         tp_catalog,
         precision,
@@ -583,7 +601,7 @@ fn main() -> Result<()> {
                 / associators.len() as f64;
             var.sqrt()
         };
-        let threshold = global_std * 1.5;
+        let threshold = global_std * MAD_SCALE_FACTOR;
         let half = trans_window;
         let mut last_trans_idx: Option<usize> = None;
         for i in half..associators.len().saturating_sub(half) {
@@ -615,17 +633,23 @@ fn main() -> Result<()> {
     // -----------------------------------------------------------------------
     // Evaluate both methods
     // -----------------------------------------------------------------------
+    // Matching window: +/- pad_minutes converted to seconds.
+    // This is a half-width tolerance around each catalog event midpoint.
+    let eval_window_secs = cli.pad_minutes * 60;
+
     let grad_eval = eval_against_catalog(
         &gradient_hours,
         &reference_midnight,
         &fom_catalog,
         "|B|-gradient+rotation detector",
+        eval_window_secs,
     );
     let cd_eval = eval_against_catalog(
         &cd_hours,
         &reference_midnight,
         &fom_catalog,
         "CD associator (32D)",
+        eval_window_secs,
     );
 
     let catalog_events: Vec<CatalogEventSummary> = fom_catalog
@@ -653,6 +677,58 @@ fn main() -> Result<()> {
         })
         .collect();
 
+    // Block-bootstrap 95% CI for the CD F1 score.
+    // 30-min blocks capture intra-magnetopause-crossing structure without
+    // contaminating the CI with between-crossing quiet intervals.
+    let series_start_unix = Utc
+        .from_utc_datetime(&reference_midnight)
+        .timestamp();
+    let series_end_unix = series_start_unix
+        + all_minutes
+            .last()
+            .map(|r| (r.elapsed_hours * 3600.0) as i64)
+            .unwrap_or(0);
+    let cd_det_unix: Vec<i64> = cd_hours
+        .iter()
+        .map(|&h| hours_to_unix(&reference_midnight, h))
+        .collect();
+    let ev_unix: Vec<i64> = fom_catalog
+        .iter()
+        .map(|ev| event_midpoint_unix(ev))
+        .collect();
+    let (bs_mean, bs_lo, bs_hi) = boundary_metrics::bootstrap_f1_ci_seeded(
+        &cd_det_unix,
+        &ev_unix,
+        series_start_unix,
+        series_end_unix,
+        1800,   // 30-min block
+        10_000,
+        0.95,
+        eval_window_secs,
+        42,
+    );
+    println!(
+        "  CD F1 bootstrap CI (95%): {:.3} [{:.3}, {:.3}]",
+        bs_mean, bs_lo, bs_hi
+    );
+
+    // F1 null distribution: shuffle catalog event times N=10000 times within
+    // the 7-day window; report P(F1_shuffled >= observed F1).
+    let f1_null_p_value = boundary_metrics::f1_null_distribution_seeded(
+        &cd_det_unix,
+        ev_unix.len(),
+        series_start_unix,
+        series_end_unix,
+        10_000,
+        cd_eval.f1,
+        eval_window_secs,
+        42,
+    );
+    println!(
+        "  F1 null p-value (shuffled events, N=10000): p = {:.4}",
+        f1_null_p_value
+    );
+
     let ascii = build_ascii_table(&grad_eval, &cd_eval);
     println!("\n{}", ascii);
 
@@ -675,6 +751,8 @@ fn main() -> Result<()> {
         catalog_events,
         cd_fire_hours: cd_hours.clone(),
         gradient_fire_hours: gradient_hours.clone(),
+        cd_bootstrap_ci: [bs_mean, bs_lo, bs_hi],
+        f1_null_p_value,
         ascii_table: ascii,
     };
 

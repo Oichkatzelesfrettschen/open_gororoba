@@ -10851,3 +10851,51 @@ statement = "In PSP E4 quiet solar wind (perihelion 2020-01-29, 27.9 Rs; 23158 m
 status = "Established"
 status_note = "ESTABLISHED 2026-04-16, corrected E3->E4 2026-04-17: E4 perihelion (2020-01-29, 27.9 Rs). Background 39.2%, CD quiet fires near microrot 67.5% (81/120), gradient 2.20x. 32.5% of quiet CD fires have no nearby rotation event. Sub-minute claim retracted per Phase 5.1 Board revision. Full JSON: data/output/heliosphere/ablations/psp_switchback_correlation.json."
 where_stated = "crates/gororoba_cli_physics/src/bin/heliosphere_psp_switchback_correlation.rs"
+
+[[claim]]
+id = "C-1635"
+last_verified = ""
+statement = "Block-bootstrap 95% CI for the THEMIS CD associator F1=0.601 (E-237/E-242, 7-day SC window, 30-min blocks, N=10000, seed=42): mean and [lo, hi] bounds. Pending execution of heliosphere-bootstrap-f1 binary."
+status = "Pending"
+status_note = "PENDING 2026-04-17: heliosphere-bootstrap-f1 binary created (plan P6A.S1 task 1.4). Run heliosphere-bootstrap-f1 to populate CI values."
+where_stated = "crates/gororoba_cli_physics/src/bin/heliosphere_bootstrap_f1.rs"
+
+[[claim]]
+id = "C-1636"
+last_verified = ""
+statement = "Permutation p-value for the PSP E4 compressive/Alfvenic CD fire-rate ratio (discrimination ratio 2.83x, E-239/E-243): P(shuffled_ratio >= observed) under N=10000 label shuffles, seed=42. Pending re-run of heliosphere-psp-alfven-control with updated binary."
+status = "Pending"
+status_note = "PENDING 2026-04-17: permutation test added inline to heliosphere-psp-alfven-control (plan P6A.S1 task 1.5). Re-run binary to populate p-value."
+where_stated = "crates/gororoba_cli_physics/src/bin/heliosphere_psp_alfven_control.rs"
+
+[[claim]]
+id = "C-1637"
+last_verified = ""
+statement = "F1 null distribution p-value for THEMIS CD associator: P(F1_shuffled >= 0.601) under N=10000 shuffled event-time draws within 7-day window, seed=42 (E-237/E-244). Pending re-run of heliosphere-themis-staples-labeled with updated binary."
+status = "Pending"
+status_note = "PENDING 2026-04-17: f1_null_distribution_seeded added inline to heliosphere-themis-staples-labeled (plan P6A.S1 task 1.6). Re-run binary to populate p-value."
+where_stated = "crates/gororoba_cli_physics/src/bin/heliosphere_themis_staples_labeled.rs"
+
+[[claim]]
+id = "C-1640"
+last_verified = ""
+statement = "General-interval THEMIS F1 (2016-08-01 to 2016-08-30, 30-day window, all Staples THA entries, no SC-event selection): CD associator F1, P/R, fire rate per hour, and 95% bootstrap CI. Pending execution of heliosphere-themis-general-benchmark (plan P6A.S1 tasks 1.9-1.10, E-247)."
+status = "Pending"
+status_note = "PENDING 2026-04-17: heliosphere-themis-general-benchmark binary created (plan P6A.S1 task 1.10). Data sourcing: 2016-08 has some Staples entries; quiet months (0 entries) identified as 2015-11 (E-248)."
+where_stated = "crates/gororoba_cli_physics/src/bin/heliosphere_themis_general_benchmark.rs"
+
+[[claim]]
+id = "C-1641"
+last_verified = ""
+statement = "Negative control: THEMIS CD fire rate per hour in quiet month (2015-11-01 to 2015-11-30, zero Staples SC entries, E-248). Expected to be consistent with E-239 quiet-interval background rate (0.311/hr). Pending execution of heliosphere-themis-general-benchmark --start-date 2015-11-01."
+status = "Pending"
+status_note = "PENDING 2026-04-17: E-248 registered. Run binary to populate fire rate."
+where_stated = "crates/gororoba_cli_physics/src/bin/heliosphere_themis_general_benchmark.rs"
+
+[[claim]]
+id = "C-1642"
+last_verified = ""
+statement = "Block-bootstrap 95% CI for general-interval THEMIS F1 (E-247). Enables comparison of CI widths between SC-selected (E-242) and general-interval (E-249) windows. Pending E-247 and E-249 execution."
+status = "Pending"
+status_note = "PENDING 2026-04-17: E-249 registered (heliosphere-bootstrap-f1 on E-247 output)."
+where_stated = "crates/gororoba_cli_physics/src/bin/heliosphere_bootstrap_f1.rs"
