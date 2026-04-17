@@ -1,3 +1,41 @@
-#!/bin/sh
-command -v git-lfs >/dev/null 2>&1 || { printf >&2 "\n%s\n\n" "This repository is configured for Git LFS but 'git-lfs' was not found on your path. If you no longer wish to use Git LFS, remove this hook by deleting the 'pre-push' file in the hooks directory (set by 'core.hookspath'; usually '.git/hooks')."; exit 2; }
-git lfs pre-push "$@"
+#!/usr/bin/env bash
+# ============================================================================
+# open_gororoba pre-push hook
+#
+# Chains the governance gate so no push lands without:
+#   1. Git-LFS handoff (preserves existing LFS behavior).
+#   2. cache-check (fails on ballooned target dirs).
+#   3. terminology-gate + ansi-check (repo hygiene).
+#   4. rust-regression-scoped (warnings-as-errors, scoped tests).
+#   5. governance-gate-readonly (registry integrity, schema sigs).
+#
+# Bypass escape hatch (documented in docs/toolchain/hooks.md if added):
+#   git -c core.hooksPath=/dev/null push ...
+# Use only when the gate itself is broken, not to dodge failures.
+#
+# Authored: 2026-04-17 (Phase 1 remediation; plan P1.S3.T2).
+# ============================================================================
+
+set -euo pipefail
+
+# --- Git-LFS handoff (preserves upstream behavior) --------------------------
+if command -v git-lfs >/dev/null 2>&1; then
+    git lfs pre-push "$@"
+else
+    printf >&2 '\n%s\n\n' "This repository is configured for Git LFS but 'git-lfs' was not found on your path. If you no longer wish to use Git LFS, remove this hook by deleting the 'pre-push' file in the hooks directory (set by 'core.hookspath'; usually '.git/hooks')."
+    exit 2
+fi
+
+# --- Gate chain --------------------------------------------------------------
+repo_root="$(git rev-parse --show-toplevel)"
+cd "$repo_root"
+
+echo '[pre-push] running make gate-local (4-gate chain)'
+# gate-local internally runs:
+#   - cache-check
+#   - workspace routing + scoped clippy/test (warnings-as-errors)
+#   - governance-gate-readonly (which includes terminology-gate and
+#     ansi-check via the markdown/TOML invariant gate)
+make gate-local
+
+echo '[pre-push] OK: gate passed, push allowed.'

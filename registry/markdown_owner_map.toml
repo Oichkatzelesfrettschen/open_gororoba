@@ -12,7 +12,7 @@ updated = "2026-04-08"
 authoritative = true
 status = "active"
 status_token = "ACTIVE"
-document_count = 197
+document_count = 199
 
 [[owner]]
 path = "README.md"
@@ -1199,6 +1199,18 @@ removal_reason = ""
 
 [[owner]]
 path = "REQUIREMENTS.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/toolchain/nightly-2026-04-05-ice.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/toolchain/shell-retirement.md"
 owner_group = "project"
 removal_status = "active"
 removal_reason = ""

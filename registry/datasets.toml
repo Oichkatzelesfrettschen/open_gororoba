@@ -1,0 +1,966 @@
+# Dataset registry (Tier I; plan Phase 6A.S2).
+#
+# Per-directory inventory of data/external/*. Created 2026-04-17 as part
+# of the No-Dataset-Left-Behind (NDLB) gate implementation. Populated
+# by initial heuristic server-mapping; each row should be refined with:
+#   (a) server_ref double-checked against registry/data_servers.toml
+#   (b) experiment_bindings populated from registry/experiments.toml
+#   (c) sha256 computed via dataset-hash-sweep binary (P6A.S2.T3)
+#   (d) calibration_version pinned per-row (PR3/PR4, DR17, etc.)
+#   (e) status triaged to active | deferred | archived (P6A.S2.T4)
+#
+# Schema (strict; enforced by NDLB gate):
+#   id                     -- snake_case local identifier
+#   local_path             -- data/external/<id> relative path
+#   server_ref             -- server id in registry/data_servers.toml
+#                             or "(synthetic)" for locally-generated artifacts
+#                             or "(unknown)" for unmapped sources (must triage)
+#   bytes                  -- du -sb size at time of entry
+#   sha256                 -- "" placeholder until P6A.S2.T3 populates
+#   calibration_version    -- "" placeholder until P6A.S2 triage
+#   status                 -- "active" | "deferred" | "archived"
+#                             | "classified_pending" (must be resolved
+#                                before NDLB gate hard-passes)
+#   experiment_bindings    -- list of E-NNN ids; [] = orphan
+#   notes                  -- free-form
+#
+# Rules (enforced by governance-gate once NDLB is armed):
+#   - server_ref must resolve in data_servers.toml unless equals
+#     "(synthetic)" or "(unknown)".
+#   - status "active" requires experiment_bindings non-empty.
+#   - status "deferred" requires a tombstone row in
+#     registry/tombstone_datasets.toml.
+
+[datasets]
+updated = "2026-04-17"
+authoritative = true
+status = "active"
+status_token = "ACTIVE"
+schema_version = 1
+entry_count = 84
+
+
+[[dataset]]
+id = "ace"
+local_path = "data/external/ace"
+server_ref = "cdaweb_hapi"
+bytes = 2887734236
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = ["E-113", "E-138", "E-226"]
+notes = ""
+
+[[dataset]]
+id = "ace_mag"
+local_path = "data/external/ace_mag"
+server_ref = "cdaweb_hapi"
+bytes = 1001339
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = ["E-113"]
+notes = ""
+
+[[dataset]]
+id = "ace_swepam"
+local_path = "data/external/ace_swepam"
+server_ref = "cdaweb_hapi"
+bytes = 652612
+sha256 = ""
+calibration_version = ""
+status = "deferred"
+experiment_bindings = []
+notes = ""
+
+[[dataset]]
+id = "alice_pbpb_raa"
+local_path = "data/external/alice_pbpb_raa"
+server_ref = "hepdata"
+bytes = 159212
+sha256 = ""
+calibration_version = ""
+status = "deferred"
+experiment_bindings = []
+notes = ""
+
+[[dataset]]
+id = "alice_xexe_raa"
+local_path = "data/external/alice_xexe_raa"
+server_ref = "hepdata"
+bytes = 26302
+sha256 = ""
+calibration_version = ""
+status = "deferred"
+experiment_bindings = []
+notes = ""
+
+[[dataset]]
+id = "bepicolombo"
+local_path = "data/external/bepicolombo"
+server_ref = "spdf_merged"
+bytes = 416441
+sha256 = ""
+calibration_version = ""
+status = "deferred"
+experiment_bindings = []
+notes = ""
+
+[[dataset]]
+id = "cassini"
+local_path = "data/external/cassini"
+server_ref = "spdf_merged"
+bytes = 3622730
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = ["E-114"]
+notes = ""
+
+[[dataset]]
+id = "cluster"
+local_path = "data/external/cluster"
+server_ref = "cdaweb_hapi"
+bytes = 29629026
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = ["E-228", "E-235"]
+notes = ""
+
+[[dataset]]
+id = "cms_oo_raa"
+local_path = "data/external/cms_oo_raa"
+server_ref = "hepdata"
+bytes = 15415
+sha256 = ""
+calibration_version = ""
+status = "deferred"
+experiment_bindings = []
+notes = ""
+
+[[dataset]]
+id = "cosmology_maps"
+local_path = "data/external/cosmology_maps"
+server_ref = "(synthetic)"
+bytes = 118593539
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = []
+notes = ""
+
+[[dataset]]
+id = "crossing_lists"
+local_path = "data/external/crossing_lists"
+server_ref = "(synthetic)"
+bytes = 2894427
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = ["E-237", "E-238", "E-239", "E-240", "E-241"]
+notes = ""
+
+[[dataset]]
+id = "desi_bao"
+local_path = "data/external/desi_bao"
+server_ref = "desi_bao_cobaya"
+bytes = 958
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = ["E-003", "E-087"]
+notes = ""
+
+[[dataset]]
+id = "euclid"
+local_path = "data/external/euclid"
+server_ref = "gaia_tap"
+bytes = 681501154
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = ["E-140", "E-150", "E-151", "E-152", "E-153", "E-154", "E-155", "E-156", "E-157", "E-158", "E-159", "E-160", "E-161", "E-162", "E-163", "E-164", "E-165", "E-166", "E-169", "E-172", "E-174", "E-177"]
+notes = ""
+
+[[dataset]]
+id = "flyby_anomaly"
+local_path = "data/external/flyby_anomaly"
+server_ref = "(synthetic)"
+bytes = 1299
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = ["E-135", "E-136"]
+notes = ""
+
+[[dataset]]
+id = "gaia_mw_rotation"
+local_path = "data/external/gaia_mw_rotation"
+server_ref = "gaia_tap"
+bytes = 38278
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = ["E-180"]
+notes = ""
+
+[[dataset]]
+id = "hapi_downloads"
+local_path = "data/external/hapi_downloads"
+server_ref = "(synthetic)"
+bytes = 933598088
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = []
+notes = ""
+
+[[dataset]]
+id = "helios"
+local_path = "data/external/helios"
+server_ref = "spdf_merged"
+bytes = 22625568
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = ["E-131"]
+notes = ""
+
+[[dataset]]
+id = "heliosphere"
+local_path = "data/external/heliosphere"
+server_ref = "(synthetic)"
+bytes = 7058476
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = ["E-237", "E-238", "E-239", "E-240", "E-241"]
+notes = ""
+
+[[dataset]]
+id = "hic_raa"
+local_path = "data/external/hic_raa"
+server_ref = "hepdata"
+bytes = 75806
+sha256 = ""
+calibration_version = ""
+status = "deferred"
+experiment_bindings = []
+notes = ""
+
+[[dataset]]
+id = "ibex"
+local_path = "data/external/ibex"
+server_ref = "cdaweb_hapi"
+bytes = 17398113
+sha256 = ""
+calibration_version = ""
+status = "deferred"
+experiment_bindings = []
+notes = ""
+
+[[dataset]]
+id = "imap"
+local_path = "data/external/imap"
+server_ref = "cdaweb_hapi"
+bytes = 107402677
+sha256 = ""
+calibration_version = ""
+status = "deferred"
+experiment_bindings = []
+notes = ""
+
+[[dataset]]
+id = "imp8"
+local_path = "data/external/imp8"
+server_ref = "cdaweb_hapi"
+bytes = 823465440
+sha256 = ""
+calibration_version = ""
+status = "deferred"
+experiment_bindings = []
+notes = ""
+
+[[dataset]]
+id = "intermagnet"
+local_path = "data/external/intermagnet"
+server_ref = "cdaweb_hapi"
+bytes = 114070461
+sha256 = ""
+calibration_version = ""
+status = "deferred"
+experiment_bindings = []
+notes = ""
+
+[[dataset]]
+id = "jarvis_dft"
+local_path = "data/external/jarvis_dft"
+server_ref = "jarvis_nist"
+bytes = 16551519
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = ["E-010"]
+notes = ""
+
+[[dataset]]
+id = "juno"
+local_path = "data/external/juno"
+server_ref = "spdf_merged"
+bytes = 419039
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = ["E-114", "E-133"]
+notes = ""
+
+[[dataset]]
+id = "magnetar"
+local_path = "data/external/magnetar"
+server_ref = "mcgill_magnetar"
+bytes = 122
+sha256 = ""
+calibration_version = ""
+status = "deferred"
+experiment_bindings = []
+notes = ""
+
+[[dataset]]
+id = "manga"
+local_path = "data/external/manga"
+server_ref = "sdss_dr17"
+bytes = 39964668946
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = ["E-183", "E-184", "E-192"]
+notes = ""
+
+[[dataset]]
+id = "mast"
+local_path = "data/external/mast"
+server_ref = "mast_s3_zarr"
+bytes = 310598874
+sha256 = ""
+calibration_version = ""
+status = "deferred"
+experiment_bindings = []
+notes = ""
+
+[[dataset]]
+id = "maven"
+local_path = "data/external/maven"
+server_ref = "cdaweb_hapi"
+bytes = 53675612
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = ["E-233", "E-235"]
+notes = ""
+
+[[dataset]]
+id = "maven_swia"
+local_path = "data/external/maven_swia"
+server_ref = "cdaweb_hapi"
+bytes = 17472956
+sha256 = ""
+calibration_version = ""
+status = "deferred"
+experiment_bindings = []
+notes = ""
+
+[[dataset]]
+id = "messenger"
+local_path = "data/external/messenger"
+server_ref = "spdf_merged"
+bytes = 1394086317
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = ["E-060"]
+notes = ""
+
+[[dataset]]
+id = "messenger_mag_cdf"
+local_path = "data/external/messenger_mag_cdf"
+server_ref = "spdf_merged"
+bytes = 0
+sha256 = ""
+calibration_version = ""
+status = "deferred"
+experiment_bindings = []
+notes = ""
+
+[[dataset]]
+id = "mms"
+local_path = "data/external/mms"
+server_ref = "cdaweb_hapi"
+bytes = 870340089
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = ["E-232", "E-236", "E-238"]
+notes = ""
+
+[[dataset]]
+id = "mms_fpi"
+local_path = "data/external/mms_fpi"
+server_ref = "cdaweb_hapi"
+bytes = 4840040
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = ["E-238"]
+notes = ""
+
+[[dataset]]
+id = "nanograv_15yr"
+local_path = "data/external/nanograv_15yr"
+server_ref = "zenodo_api"
+bytes = 17789619
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = ["E-207"]
+notes = ""
+
+[[dataset]]
+id = "nanograv_15yr_timing"
+local_path = "data/external/nanograv_15yr_timing"
+server_ref = "zenodo_api"
+bytes = 2521261848
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = ["E-178"]
+notes = ""
+
+[[dataset]]
+id = "nanograv_timing_engine"
+local_path = "data/external/nanograv_timing_engine"
+server_ref = "zenodo_api"
+bytes = 5236802
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = ["E-178"]
+notes = ""
+
+[[dataset]]
+id = "new_horizons"
+local_path = "data/external/new_horizons"
+server_ref = "spdf_merged"
+bytes = 3762764
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = ["E-114"]
+notes = ""
+
+[[dataset]]
+id = "omni2"
+local_path = "data/external/omni2"
+server_ref = "spdf_merged"
+bytes = 49568240
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = ["E-113", "E-114", "E-117", "E-134"]
+notes = ""
+
+[[dataset]]
+id = "orix-data"
+local_path = "data/external/orix-data"
+server_ref = "(synthetic)"
+bytes = 41091098
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = []
+notes = ""
+
+[[dataset]]
+id = "papers"
+local_path = "data/external/papers"
+server_ref = "(synthetic)"
+bytes = 2253455112
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = []
+notes = ""
+
+[[dataset]]
+id = "pdg_2025"
+local_path = "data/external/pdg_2025"
+server_ref = "(synthetic)"
+bytes = 736969
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = []
+notes = ""
+
+[[dataset]]
+id = "pioneer"
+local_path = "data/external/pioneer"
+server_ref = "spdf_merged"
+bytes = 23441129
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = ["E-166"]
+notes = ""
+
+[[dataset]]
+id = "pioneer_anomaly"
+local_path = "data/external/pioneer_anomaly"
+server_ref = "spdf_merged"
+bytes = 406
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = ["E-135", "E-136"]
+notes = ""
+
+[[dataset]]
+id = "psp"
+local_path = "data/external/psp"
+server_ref = "cdaweb_hapi"
+bytes = 1832453636
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = ["E-241"]
+notes = ""
+
+[[dataset]]
+id = "psp_fields"
+local_path = "data/external/psp_fields"
+server_ref = "cdaweb_hapi"
+bytes = 8289846
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = ["E-241"]
+notes = ""
+
+[[dataset]]
+id = "radio_surveys"
+local_path = "data/external/radio_surveys"
+server_ref = "lotss_vo"
+bytes = 4277257264
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = ["E-198"]
+notes = ""
+
+[[dataset]]
+id = "real_kv_cache"
+local_path = "data/external/real_kv_cache"
+server_ref = "(synthetic)"
+bytes = 2857263
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = []
+notes = ""
+
+[[dataset]]
+id = "real_kv_cache_deepseek8b"
+local_path = "data/external/real_kv_cache_deepseek8b"
+server_ref = "(synthetic)"
+bytes = 16253238
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = []
+notes = ""
+
+[[dataset]]
+id = "real_kv_cache_llama3b"
+local_path = "data/external/real_kv_cache_llama3b"
+server_ref = "(synthetic)"
+bytes = 0
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = []
+notes = ""
+
+[[dataset]]
+id = "real_kv_cache_long"
+local_path = "data/external/real_kv_cache_long"
+server_ref = "(synthetic)"
+bytes = 23132464
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = []
+notes = ""
+
+[[dataset]]
+id = "real_kv_cache_mistral7b"
+local_path = "data/external/real_kv_cache_mistral7b"
+server_ref = "(synthetic)"
+bytes = 18350384
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = []
+notes = ""
+
+[[dataset]]
+id = "real_kv_cache_phi2"
+local_path = "data/external/real_kv_cache_phi2"
+server_ref = "(synthetic)"
+bytes = 0
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = []
+notes = ""
+
+[[dataset]]
+id = "real_kv_cache_qwen05b"
+local_path = "data/external/real_kv_cache_qwen05b"
+server_ref = "(synthetic)"
+bytes = 1524006
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = []
+notes = ""
+
+[[dataset]]
+id = "real_kv_cache_qwen3b"
+local_path = "data/external/real_kv_cache_qwen3b"
+server_ref = "(synthetic)"
+bytes = 4571430
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = []
+notes = ""
+
+[[dataset]]
+id = "real_kv_cache_tinyllama"
+local_path = "data/external/real_kv_cache_tinyllama"
+server_ref = "(synthetic)"
+bytes = 3244335
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = []
+notes = ""
+
+[[dataset]]
+id = "rosetta"
+local_path = "data/external/rosetta"
+server_ref = "amda_hapi"
+bytes = 6437145
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = ["E-096", "E-229"]
+notes = ""
+
+[[dataset]]
+id = "sdo_aia"
+local_path = "data/external/sdo_aia"
+server_ref = "cdaweb_hapi"
+bytes = 430830
+sha256 = ""
+calibration_version = ""
+status = "deferred"
+experiment_bindings = []
+notes = ""
+
+[[dataset]]
+id = "sdo_hmi"
+local_path = "data/external/sdo_hmi"
+server_ref = "cdaweb_hapi"
+bytes = 4444306900
+sha256 = ""
+calibration_version = ""
+status = "deferred"
+experiment_bindings = []
+notes = ""
+
+[[dataset]]
+id = "soho"
+local_path = "data/external/soho"
+server_ref = "cdaweb_hapi"
+bytes = 99564565
+sha256 = ""
+calibration_version = ""
+status = "deferred"
+experiment_bindings = []
+notes = ""
+
+[[dataset]]
+id = "solar_orbiter"
+local_path = "data/external/solar_orbiter"
+server_ref = "cdaweb_hapi"
+bytes = 6051524429
+sha256 = ""
+calibration_version = ""
+status = "deferred"
+experiment_bindings = []
+notes = ""
+
+[[dataset]]
+id = "solo"
+local_path = "data/external/solo"
+server_ref = "cdaweb_hapi"
+bytes = 187225948
+sha256 = ""
+calibration_version = ""
+status = "deferred"
+experiment_bindings = []
+notes = ""
+
+[[dataset]]
+id = "space_weather"
+local_path = "data/external/space_weather"
+server_ref = "(synthetic)"
+bytes = 3342037
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = []
+notes = ""
+
+[[dataset]]
+id = "sparc"
+local_path = "data/external/sparc"
+server_ref = "cds_vizier"
+bytes = 282984
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = ["E-180", "E-182", "E-191"]
+notes = ""
+
+[[dataset]]
+id = "sparc_nfw"
+local_path = "data/external/sparc_nfw"
+server_ref = "cds_vizier"
+bytes = 328048
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = ["E-180", "E-182", "E-191"]
+notes = ""
+
+[[dataset]]
+id = "stereo_impact"
+local_path = "data/external/stereo_impact"
+server_ref = "cdaweb_hapi"
+bytes = 2718936
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = ["E-113"]
+notes = ""
+
+[[dataset]]
+id = "stereo_plastic"
+local_path = "data/external/stereo_plastic"
+server_ref = "cdaweb_hapi"
+bytes = 745253
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = ["E-113"]
+notes = ""
+
+[[dataset]]
+id = "swarm"
+local_path = "data/external/swarm"
+server_ref = "cdaweb_hapi"
+bytes = 0
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = ["E-060", "E-062"]
+notes = ""
+
+[[dataset]]
+id = "themis"
+local_path = "data/external/themis"
+server_ref = "cdaweb_hapi"
+bytes = 3427635442
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = ["E-227", "E-231", "E-235", "E-237", "E-240"]
+notes = ""
+
+[[dataset]]
+id = "themis_esa"
+local_path = "data/external/themis_esa"
+server_ref = "cdaweb_hapi"
+bytes = 202137
+sha256 = ""
+calibration_version = ""
+status = "deferred"
+experiment_bindings = []
+notes = ""
+
+[[dataset]]
+id = "things"
+local_path = "data/external/things"
+server_ref = "cds_vizier"
+bytes = 15597882638
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = ["E-193"]
+notes = ""
+
+[[dataset]]
+id = "turboquant"
+local_path = "data/external/turboquant"
+server_ref = "(synthetic)"
+bytes = 2097375
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = []
+notes = ""
+
+[[dataset]]
+id = "ulysses"
+local_path = "data/external/ulysses"
+server_ref = "spdf_merged"
+bytes = 32378236
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = ["E-114", "E-115", "E-132"]
+notes = ""
+
+[[dataset]]
+id = "voyager"
+local_path = "data/external/voyager"
+server_ref = "spdf_merged"
+bytes = 188503671
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = ["E-166", "E-228", "E-237"]
+notes = ""
+
+[[dataset]]
+id = "voyager1"
+local_path = "data/external/voyager1"
+server_ref = "spdf_merged"
+bytes = 168295183
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = ["E-166", "E-228"]
+notes = ""
+
+[[dataset]]
+id = "voyager1_mag48"
+local_path = "data/external/voyager1_mag48"
+server_ref = "spdf_merged"
+bytes = 31539433
+sha256 = ""
+calibration_version = ""
+status = "deferred"
+experiment_bindings = []
+notes = ""
+
+[[dataset]]
+id = "voyager2"
+local_path = "data/external/voyager2"
+server_ref = "spdf_merged"
+bytes = 251651230
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = ["E-166", "E-228"]
+notes = ""
+
+[[dataset]]
+id = "voyager2_mag48"
+local_path = "data/external/voyager2_mag48"
+server_ref = "spdf_merged"
+bytes = 41119781
+sha256 = ""
+calibration_version = ""
+status = "deferred"
+experiment_bindings = []
+notes = ""
+
+[[dataset]]
+id = "voyager_coho_hapi"
+local_path = "data/external/voyager_coho_hapi"
+server_ref = "spdf_merged"
+bytes = 8985494
+sha256 = ""
+calibration_version = ""
+status = "deferred"
+experiment_bindings = []
+notes = ""
+
+[[dataset]]
+id = "voyager_crs"
+local_path = "data/external/voyager_crs"
+server_ref = "spdf_merged"
+bytes = 414335
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = ["E-237"]
+notes = ""
+
+[[dataset]]
+id = "voyager_mag48_cdf"
+local_path = "data/external/voyager_mag48_cdf"
+server_ref = "spdf_merged"
+bytes = 509785955
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = ["E-166"]
+notes = ""
+
+[[dataset]]
+id = "voyager_pws_cdf"
+local_path = "data/external/voyager_pws_cdf"
+server_ref = "spdf_merged"
+bytes = 601974115
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = ["E-237"]
+notes = ""
+
+[[dataset]]
+id = "wind_mfi"
+local_path = "data/external/wind_mfi"
+server_ref = "cdaweb_hapi"
+bytes = 2881152
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = ["E-113"]
+notes = ""
+
+[[dataset]]
+id = "wind_swe"
+local_path = "data/external/wind_swe"
+server_ref = "cdaweb_hapi"
+bytes = 54049300
+sha256 = ""
+calibration_version = ""
+status = "active"
+experiment_bindings = ["E-051", "E-113"]
+notes = ""
+
