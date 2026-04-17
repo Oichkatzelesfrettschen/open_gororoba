@@ -10811,3 +10811,11 @@ statement = "Against the Staples et al. (2020) peer-reviewed THEMIS magnetopause
 status = "Established"
 status_note = "ESTABLISHED 2026-04-16: 7968 THEMIS-A FGM minute-records, 224 Staples+2020 peer-reviewed events. CD: 104 detections, 59 TP, 143/224 intervals covered. Gradient: 164 detections, 52 TP, 105/224 covered. Full JSON: data/output/heliosphere/ablations/themis_staples_labeled_eval.json."
 where_stated = "crates/gororoba_cli_physics/src/bin/heliosphere_themis_staples_labeled.rs"
+
+[[claim]]
+id = "C-1630"
+last_verified = "2026-04-16"
+statement = "Of the 86 MMS CD associator detections unmatched by FPI ion density ground truth (E-236), 87.2% (75/86) are topology-positive by field-rotation criteria (rotation > 15 deg between mean B in pre- and post-event halves). Breakdown: 4 pure-rotational (4.7%, rotation>15 deg, compressiveness<0.30), 11 compressive (12.8%, rotation<15 deg, compressiveness>0.30), 71 combined (82.6%, both), 0 weak. The pure-rotational class (rotation>15 deg, delta_B/|B|<0.30) provides the cleanest paper case-study candidates (Jan 2 at 17:58, 18:41, 19:49; Jan 4 at 17:00), confirming that ground-truth label bias explains most so-called false alarms -- the CD associator fires on genuine magnetic topology changes that lack a plasma density signature. Binary: heliosphere-fte-case-study. E-238."
+status = "Established"
+status_note = "ESTABLISHED 2026-04-16: 86 extra CD detections over 7-day MMS window analyzed. 75/86 topology-positive (87.2%). 4 pure-rotational candidates identified as paper case-study intervals. Full JSON: data/output/heliosphere/ablations/fte_case_study.json."
+where_stated = "crates/gororoba_cli_physics/src/bin/heliosphere_fte_case_study.rs"

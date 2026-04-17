@@ -152,6 +152,11 @@ struct StaplesLabeledResults {
     delta_recall: f64,
     delta_f1: f64,
     catalog_events: Vec<CatalogEventSummary>,
+    /// Elapsed hours (from reference_midnight) of each CD associator fire.
+    /// Enables FTE case-study classification (reviewer Major Comment 1).
+    cd_fire_hours: Vec<f64>,
+    /// Elapsed hours of each |B|-gradient+rotation detector fire.
+    gradient_fire_hours: Vec<f64>,
     ascii_table: String,
 }
 
@@ -653,6 +658,8 @@ fn main() -> Result<()> {
         delta_recall: delta_r,
         delta_f1,
         catalog_events,
+        cd_fire_hours: cd_hours.clone(),
+        gradient_fire_hours: gradient_hours.clone(),
         ascii_table: ascii,
     };
 
