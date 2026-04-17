@@ -579,7 +579,7 @@ fn main() -> Result<()> {
         &gradient_hours,
         &reference_midnight,
         &fom_catalog,
-        "|B|-gradient + rotation",
+        "|B|-gradient+rotation detector",
     );
     let cd_eval = eval_against_catalog(
         &cd_hours,

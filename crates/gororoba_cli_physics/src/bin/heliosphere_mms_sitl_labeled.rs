@@ -589,7 +589,7 @@ fn main() -> Result<()> {
         &gradient_hours,
         &reference_midnight,
         &mp_sitl,
-        "|B|-gradient + rotation",
+        "|B|-gradient+rotation detector",
         n_sitl,
     );
 
