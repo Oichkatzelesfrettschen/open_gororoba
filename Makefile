@@ -1732,7 +1732,7 @@ latex:
 latex-heliosphere:
 	@command -v latexmk >/dev/null 2>&1 || { echo "ERROR: latexmk not found"; exit 1; }
 	@mkdir -p docs/latex/heliosphere/out
-	cd docs/latex/heliosphere && latexmk -pdf -interaction=nonstopmode -halt-on-error -output-directory=out jgr_cd_magnetopause.tex
+	cd docs/latex/heliosphere && latexmk -xelatex -interaction=nonstopmode -halt-on-error -output-directory=out jgr_cd_magnetopause.tex
 
 # ---- Quantum Docker ----
 
