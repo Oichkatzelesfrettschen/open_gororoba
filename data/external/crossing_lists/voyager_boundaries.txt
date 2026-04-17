@@ -1,0 +1,32 @@
+# Voyager 1 and Voyager 2 major heliospheric boundary crossings.
+#
+# Sources:
+#   Termination shock V1: Stone et al. (2005), Science 309:2017-2020,
+#     doi:10.1126/science.1117684
+#   Termination shock V2: Stone et al. (2008), Nature 454:71-74,
+#     doi:10.1038/nature07022
+#   Heliopause V1: Gurnett et al. (2013), Science 341:1489-1492,
+#     doi:10.1126/science.1241681; Burlaga et al. (2013), Science 341:147-150
+#     doi:10.1126/science.1235451
+#   Heliopause V2: Burlaga et al. (2019), Nature Astronomy 3:1007-1012,
+#     doi:10.1038/s41550-019-0920-y; Stone et al. (2019), Nature Astronomy 3:1013-1018
+#     doi:10.1038/s41550-019-0928-3
+#
+# Format: spacecraft  boundary           crossing_date       approx_distance_AU  notes
+#
+# All crossing times are given to day precision. Sub-day precision is
+# available in the cited papers but not required for CD associator evaluation.
+#
+# Crossing definitions:
+#   termination_shock: inbound crossing where solar wind speed dropped to zero
+#     and plasma pressure increased sharply (V1 and V2 each had multiple nearby
+#     crossings over several days; the date given is the first confirmed crossing).
+#   heliopause: final crossing into the Very Local Interstellar Medium (VLISM)
+#     where suprathermal electron oscillations and magnetic field direction
+#     changed abruptly.
+#
+spacecraft  boundary             crossing_date         distance_AU  reference
+V1          termination_shock    2004-12-16            94.0         Stone2005
+V2          termination_shock    2007-08-30            83.7         Stone2008
+V1          heliopause           2012-08-25           121.7         Gurnett2013
+V2          heliopause           2018-11-05           119.0         Burlaga2019
