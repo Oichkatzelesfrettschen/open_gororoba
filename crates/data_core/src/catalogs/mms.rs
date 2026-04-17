@@ -77,8 +77,11 @@ pub struct MmsFgmMinuteRecord {
 
 /// Parse HAPI CSV into minute-averaged records for crossing detection.
 ///
-/// Groups raw high-cadence samples (~16 Hz SRVY) into 1-minute bins,
-/// preserving sub-hour resolution needed for magnetopause identification.
+/// Groups raw high-cadence samples (~16 Hz SRVY) into 1-minute bins by
+/// client-side arithmetic mean over all finite samples within each UTC
+/// minute boundary.  `|B|` is averaged directly when provided; otherwise
+/// it is recomputed from the mean component vector.  This is the decimation
+/// protocol for all Takens delay embeddings built from MMS data.
 pub fn parse_mms_fgm_hapi_csv_minutes(content: &str) -> Vec<MmsFgmMinuteRecord> {
     let mut reader = ReaderBuilder::new()
         .has_headers(true)

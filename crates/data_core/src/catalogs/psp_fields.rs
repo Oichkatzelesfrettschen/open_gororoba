@@ -117,9 +117,15 @@ pub struct PspFieldsMagMinuteRecord {
 
 /// Parse a `PSP_FLD_L2_MAG_RTN_1MIN` HAPI CSV preserving minute resolution.
 ///
-/// Each valid row becomes exactly one `PspFieldsMagMinuteRecord`.  No hourly
-/// accumulation is performed.  `elapsed_hours` is set to 0.0 and must be
-/// recomputed by the caller relative to a reference time.
+/// Each valid row becomes exactly one `PspFieldsMagMinuteRecord`.  No
+/// additional averaging is performed: `PSP_FLD_L2_MAG_RTN_1MIN` is a
+/// designated SPDF Level-2 product whose samples already represent the
+/// arithmetic mean of all valid high-rate FIELDS magnetometer samples
+/// (native ~73 Hz or higher) within each calendar minute, computed by
+/// the FIELDS pipeline at SPDF.  This is the decimation protocol for
+/// all Takens delay embeddings built from PSP data.
+/// `elapsed_hours` is set to 0.0 and must be recomputed by the caller
+/// relative to a reference time.
 pub fn parse_psp_fields_hapi_csv_minutes(content: &str) -> Vec<PspFieldsMagMinuteRecord> {
     let mut reader = ReaderBuilder::new()
         .has_headers(true)
