@@ -360,6 +360,10 @@ name = "heliosphere-psp-alfven-control"
 path = "src/bin/heliosphere_psp_alfven_control.rs"
 
 [[bin]]
+name = "heliosphere-psp-switchback-correlation"
+path = "src/bin/heliosphere_psp_switchback_correlation.rs"
+
+[[bin]]
 name = "heliosphere-fa-cross-mission-table"
 path = "src/bin/heliosphere_fa_cross_mission_table.rs"
 

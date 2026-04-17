@@ -1047,6 +1047,12 @@ crate = "gororoba_cli_physics"
 description = "Consolidate PSP switchback omega results across E1/E4/E6/E10 perihelion encounters. Computes trend statistics on ratio_switchback_to_quiet vs encounter number. Result: monotonically decreasing with Spearman rho=-1.0 (switchbacks more Alfvenic at closer perihelia)."
 
 [[binary]]
+name = "heliosphere-psp-switchback-correlation"
+crate = "gororoba_cli_physics"
+description = "PSP E3 micro-switchback enrichment: tests whether quiet-interval CD fires co-occur with sub-classifier B-vector rotation events (consecutive rotation >= 15 deg). CD fires are 1.72x enriched near micro-rotation events vs background 39.2%; gradient is 2.20x enriched; 32.5% of quiet CD fires have no nearby rotation signature, confirming the CD associator detects topology below the 1-min rotation floor. E-241, C-1634."
+experiment = "E-241"
+
+[[binary]]
 name = "heliosphere-maven-crossing-gen"
 crate = "gororoba_cli_physics"
 description = "Generate a surrogate MAVEN Mars bow shock crossing list from FGM minute-averaged data using a |B| regime filter (solar wind <sw_threshold nT -> magnetosheath >sheath_threshold nT). Applies minimum gap suppression (default 30 min) and writes MESSENGER-compatible crossing list for use with heliosphere-fa-attribution --mission maven."
