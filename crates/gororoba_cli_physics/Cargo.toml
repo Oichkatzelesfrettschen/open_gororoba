@@ -428,6 +428,10 @@ name = "heliosphere-window-sensitivity"
 path = "src/bin/heliosphere_window_sensitivity.rs"
 
 [[bin]]
+name = "heliosphere-voyager-heliopause"
+path = "src/bin/heliosphere_voyager_heliopause.rs"
+
+[[bin]]
 name = "heliosphere-fte-case-study"
 path = "src/bin/heliosphere_fte_case_study.rs"
 

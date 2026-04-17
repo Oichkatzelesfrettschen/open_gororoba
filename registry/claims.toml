@@ -10995,3 +10995,19 @@ statement = "MAD window decorrelation sensitivity (Phase 4.10): F1 change when t
 status = "Pending"
 status_note = "PENDING 2026-04-17: --decorrelated-mad flag added to heliosphere-themis-staples-labeled. Run both variants to populate."
 where_stated = "crates/gororoba_cli_physics/src/bin/heliosphere_themis_staples_labeled.rs"
+
+[[claim]]
+id = "C-1655"
+last_verified = ""
+statement = "CD associator detection at Voyager 1 heliopause crossing 2012-08-25 (E-265): does CD fire within +-6 hours of the catalogued crossing? Reports closest_detection_hours. Tests whether the 32D CD embedding detects the heliopause at 121 AU with native 48s MAG48 data and relative normalization. Pending E-265 execution."
+status = "Pending"
+status_note = "PENDING 2026-04-17: E-265 registered. Run heliosphere-voyager-heliopause --spacecraft v1 to populate."
+where_stated = "crates/gororoba_cli_physics/src/bin/heliosphere_voyager_heliopause.rs"
+
+[[claim]]
+id = "C-1656"
+last_verified = ""
+statement = "CD associator enrichment ratio at Voyager 1 heliopause crossing (E-265): fire rate in +-24h boundary window vs quiet background. Comparable cross-mission metric to THEMIS 2.83x Alfvenic/Compressive ratio and ISM floor 0.017. Pending E-265 execution."
+status = "Pending"
+status_note = "PENDING 2026-04-17: E-265 registered. Run heliosphere-voyager-heliopause --spacecraft v1 to populate."
+where_stated = "crates/gororoba_cli_physics/src/bin/heliosphere_voyager_heliopause.rs"
