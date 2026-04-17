@@ -8,24 +8,21 @@
 %%   C-1629..C-1634 (experiments E-237..E-241)
 %%   Registry: registry/claims.toml, registry/experiments.toml
 %%
-%% To compile:
-%%   latexmk -pdf -shell-escape -output-directory=out jgr_cd_magnetopause.tex
+%% Compile with XeLaTeX (required by agujournal2025.cls for fontspec):
+%%   latexmk -xelatex -interaction=nonstopmode -output-directory=out jgr_cd_magnetopause.tex
 %%
-%% For AGU submission: replace \documentclass{article} below with
-%%   \documentclass[jgrspacephysics,manuscript]{agujournal2019}
-%% and obtain agujournal2019.cls from the AGU author-resources page.
-%%
-\documentclass{article}
+\documentclass[draft]{agujournal2025}
 
-\usepackage{amsmath}
+%% Additional packages not loaded by agujournal2025
 \usepackage{amssymb}
-\usepackage{graphicx}
 \usepackage{pgfplots}
 \usepackage{tikz}
 \pgfplotsset{compat=1.18}
 \usepackage{standalone}
-\usepackage{xcolor}
+\usepackage{booktabs}
+
 %% Okabe-Ito colorblind-safe palette (shared by all figures)
+%% xcolor is already loaded by agujournal2025 with [x11names]
 \definecolor{OIorange}{RGB}{230,159,0}
 \definecolor{OIskyblue}{RGB}{86,180,233}
 \definecolor{OIblue}{RGB}{0,114,178}
@@ -33,27 +30,37 @@
 \definecolor{OIgreen}{RGB}{0,158,115}
 \definecolor{OIgray}{RGB}{153,153,153}
 \definecolor{OIvermillion}{RGB}{213,94,0}
-\usepackage{booktabs}
-\usepackage{natbib}
-\usepackage{hyperref}
-\usepackage{geometry}
-\usepackage{setspace}
-\geometry{a4paper, margin=1in}
-\doublespacing
 
 \newcommand{\CD}{\mathrm{CD}}
 \newcommand{\Assoc}{\mathrm{\Omega}}
 \newcommand{\bvec}{\mathbf{B}}
 \newcommand{\eps}{\varepsilon}
 
+%% apacite compatibility shims for natbib-style commands
+\AtBeginDocument{%
+  \let\citep\cite%
+  \let\citet\citeA%
+  \providecommand{\citeyearpar}[1]{(\citeyear{#1})}%
+}
+
+\begin{document}
+
+\journalname{Journal of Geophysical Research: Space Physics}
+
 \title{Cayley--Dickson Associator as a Magnetopause Boundary Detector:\\
        Evaluation on MMS, THEMIS, and Parker Solar Probe Data}
 
-\author{open\_gororoba collaboration}
+\authors{open\_gororoba collaboration\affil{1}}
+\affiliation{1}{open\_gororoba project}
+\authoraddr{Corresponding author: open\_gororoba collaboration (iamhumanipromise1010101@gmail.com)}
+\authorrunninghead{open\_gororoba}
+\titlerunninghead{CD Associator Boundary Detector}
 
-\date{\today}
+\keypoints
+  {CD associator achieves F1$=0.601$ on THEMIS magnetopause, $+59\%$ over gradient baseline}
+  {Compressive/Alfvenic fire-rate ratio $2.83\times$ confirms topological selectivity over Alfvenic amplitude}
+  {32.5\% of quiet PSP fires lack nearby rotation events: $\mathbb{R}^{32}$ sensitivity exceeds $\mathbb{R}^3$}
 
-\begin{document}
 \maketitle
 
 %% ===================================================================
@@ -611,7 +618,7 @@ evidence of this additional topological sensitivity.
 %% ===================================================================
 %% DATA AVAILABILITY
 %% ===================================================================
-\section*{Data Availability Statement}
+\section*{Open Research Statement}
 
 THEMIS FGM data were obtained from the HAPI server
 (\url{http://cdaweb.gsfc.nasa.gov/hapi}) using the
@@ -635,7 +642,7 @@ high-quality data products publicly available.
 %% ===================================================================
 %% REFERENCES
 %% ===================================================================
-\bibliographystyle{agufull}
+%% bibliographystyle is set automatically by agujournal2025.cls (apacite)
 \bibliography{refs_heliosphere}
 
 \end{document}
