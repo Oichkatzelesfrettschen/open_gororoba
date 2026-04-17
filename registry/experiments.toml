@@ -6374,3 +6374,21 @@ run_command_sha256 = ""
 status = "active"
 status_token = "ACTIVE"
 title = "THEMIS-A CD associator evaluation against Staples+2020 peer-reviewed catalog (C-1629)"
+
+[[experiment]]
+id = "E-238"
+input = "MMS1 FGM minute-averaged HAPI CSV (2024-01-01..2024-01-07); heliosphere-mms-sitl-labeled JSON output (cd_fire_hours: 86 extra CD detections unmatched by FPI ground truth)"
+input_path_refs = [
+    "data/external/mms/mms1_fgm_srvy_l2_2024_*.csv",
+    "data/output/heliosphere/ablations/mms_sitl_labeled_eval.json",
+]
+lineage_id = "XL-238"
+method = "heliosphere-fte-case-study: for each unmatched CD detection, load the +/-30 min FGM window; compute compressiveness (peak_delta_B / mean_|B|) and rotation angle (angle between mean unit-B in pre- vs post-half); classify as rotational (rotation>15 deg, compressiveness<0.30), compressive (rotation<15, compressiveness>0.30), combined (both), or weak (neither). Telemetry gap check applied (C-1630)."
+output = ["data/output/heliosphere/ablations/fte_case_study.json"]
+output_path_refs = ["data/output/heliosphere/ablations/fte_case_study.json"]
+reproducibility_class = "deterministic"
+run = "cargo run --release --bin heliosphere-fte-case-study -- --eval-json data/output/heliosphere/ablations/mms_sitl_labeled_eval.json --data-dir data/external/mms"
+run_command_sha256 = ""
+status = "active"
+status_token = "ACTIVE"
+title = "FTE case-study classification: 87.2% of extra CD detections are topology-positive (C-1630)"

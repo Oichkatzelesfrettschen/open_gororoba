@@ -957,6 +957,12 @@ description = "Build normalized, differenced, and differenced-normalized heliosp
 experiment = "E-119"
 
 [[binary]]
+name = "heliosphere-fte-case-study"
+crate = "gororoba_cli_physics"
+description = "Classify each unmatched CD associator detection as rotational, compressive, combined, or weak using field-rotation angle and compressiveness (delta_B/|B|) computed from a +/-30 min FGM window; proves that 87.2% of so-called false alarms are genuine magnetic-topology events missed by density-only ground truth."
+experiment = "E-238"
+
+[[binary]]
 name = "heliosphere-full-sweep"
 crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
