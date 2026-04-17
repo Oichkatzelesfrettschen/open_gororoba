@@ -1214,6 +1214,12 @@ ablation-baseline-random:
 ablation-baseline-sparse:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin heliosphere-random-trilinear-sparse -- --start-date 2016-08-29 --n-days 7 --n-draws 100 --base-seed 2000
 
+ablation-baseline-commutator:
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin heliosphere-commutator-baseline -- --start-date 2016-08-29 --n-days 7
+
+ablation-baseline-pca:
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin heliosphere-pca-variance-baseline -- --start-date 2016-08-29 --n-days 7 --pca-window 15
+
 ablation-axis-a:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin heliosphere-r16-ablation -- --start-date 2016-08-29 --n-days 7
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin heliosphere-r64-ablation -- --start-date 2016-08-29 --n-days 7
@@ -1221,7 +1227,7 @@ ablation-axis-a:
 ablation-axis-b:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin heliosphere-lag-depth-sweep -- --start-date 2016-08-29 --n-days 7
 
-ablation-baselines: ablation-baseline-l2 ablation-baseline-random ablation-baseline-sparse
+ablation-baselines: ablation-baseline-l2 ablation-baseline-random ablation-baseline-sparse ablation-baseline-commutator ablation-baseline-pca
 
 ablation-all: ablation-baselines ablation-axis-a ablation-axis-b
 

@@ -6,7 +6,7 @@
 [experiments]
 authoritative = true
 deterministic_count = 164
-experiment_count = 232
+experiment_count = 234
 gpu_count = 29
 seeded_count = 46
 status_allowlist = ["active", "deprecated", "planned", "blocked"]
@@ -6681,3 +6681,41 @@ run_command_sha256 = ""
 status = "planned"
 status_token = "PLANNED"
 title = "Axis B lag-depth sweep d=4,6,8,12 (plan P6A.S2.T2.3)"
+
+[[experiment]]
+binary = "heliosphere-commutator-baseline"
+binary_experiment_declared = "E-257"
+binary_registered = true
+claim_refs = ["C-1651"]
+id = "E-257"
+input = "THEMIS-A FGM HAPI CSV (2016-08-29..2016-09-04, DOY 242-248)."
+input_path_refs = ["data/external/themis/"]
+lineage_id = "XL-257"
+method = "Commutator baseline. Score: ||xy - yx||_2 for consecutive 32D delay vectors using CD multiplication. Same Takens embedding, noise-floor normalization, MAD_SCALE_FACTOR=1.5. Pre-registered: if commutator matches CD F1, the third-argument structure of the associator adds nothing."
+output = ["data/output/heliosphere/ablations/commutator_baseline_eval.json"]
+output_path_refs = ["data/output/heliosphere/ablations/commutator_baseline_eval.json"]
+reproducibility_class = "deterministic"
+run = "cargo run --release --bin heliosphere-commutator-baseline -- --start-date 2016-08-29 --n-days 7"
+run_command_sha256 = ""
+status = "planned"
+status_token = "PLANNED"
+title = "Commutator ||xy-yx||_2 baseline (plan P6A.S2.T2.7)"
+
+[[experiment]]
+binary = "heliosphere-pca-variance-baseline"
+binary_experiment_declared = "E-258"
+binary_registered = true
+claim_refs = ["C-1652"]
+id = "E-258"
+input = "THEMIS-A FGM HAPI CSV (2016-08-29..2016-09-04, DOY 242-248)."
+input_path_refs = ["data/external/themis/"]
+lineage_id = "XL-258"
+method = "PCA variance baseline. Leading principal component variance ratio of rolling pca_window=15 delay vectors (dim=32). Score is variance_pc1/variance_total via power iteration (20 iter). Same MAD_SCALE_FACTOR=1.5. Pre-registered: if PCA matches CD F1, nonlinear algebraic structure adds nothing over linear variance concentration."
+output = ["data/output/heliosphere/ablations/pca_variance_baseline_eval.json"]
+output_path_refs = ["data/output/heliosphere/ablations/pca_variance_baseline_eval.json"]
+reproducibility_class = "deterministic"
+run = "cargo run --release --bin heliosphere-pca-variance-baseline -- --start-date 2016-08-29 --n-days 7 --pca-window 15"
+run_command_sha256 = ""
+status = "planned"
+status_token = "PLANNED"
+title = "PCA leading-PC variance ratio baseline (plan P6A.S2.T2.8)"

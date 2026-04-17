@@ -10963,3 +10963,19 @@ statement = "Pre-registered prediction P2b: CD R32 F1 = 0.601 vs sparsity-matche
 status = "Pending"
 status_note = "PENDING 2026-04-17: E-252 registered. Run heliosphere-random-trilinear-sparse then compare to C-1629 (CD R32 F1). Update with comparison result."
 where_stated = "docs/ablation_preregistration.md"
+
+[[claim]]
+id = "C-1651"
+last_verified = ""
+statement = "Commutator baseline F1 on THEMIS DOY 242-248 (E-257, dim=32). Score: ||xy-yx||_2 for consecutive delay vectors. Tests whether CD associator's three-argument dependence on the third lag adds information beyond the two-argument commutator. Pending E-257 execution."
+status = "Pending"
+status_note = "PENDING 2026-04-17: E-257 registered. Run heliosphere-commutator-baseline to populate."
+where_stated = "crates/gororoba_cli_physics/src/bin/heliosphere_commutator_baseline.rs"
+
+[[claim]]
+id = "C-1652"
+last_verified = ""
+statement = "PCA leading-PC variance ratio baseline F1 on THEMIS DOY 242-248 (E-258, dim=32, pca_window=15). Tests whether variance concentration in the first principal component (linear geometry) explains boundary detection as well as the CD associator (nonlinear algebra). Pending E-258 execution."
+status = "Pending"
+status_note = "PENDING 2026-04-17: E-258 registered. Run heliosphere-pca-variance-baseline to populate."
+where_stated = "crates/gororoba_cli_physics/src/bin/heliosphere_pca_variance_baseline.rs"
