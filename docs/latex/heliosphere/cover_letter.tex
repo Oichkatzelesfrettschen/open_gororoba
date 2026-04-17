@@ -1,0 +1,91 @@
+%% Cover letter for JGR:Space Physics revision
+%% Manuscript: Cayley-Dickson Associator as a Magnetopause Boundary Detector
+%% Compile: pdflatex cover_letter.tex
+%%
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{parskip}
+\usepackage{xurl}
+\usepackage{amssymb}
+
+\begin{document}
+
+\noindent
+April 2026
+
+\vspace{1em}
+\noindent
+Editor-in-Chief\\
+\textit{Journal of Geophysical Research: Space Physics}\\
+American Geophysical Union
+
+\vspace{1.5em}
+\noindent
+Dear Editor,
+
+\vspace{0.5em}
+\noindent
+We are pleased to submit a revised version of our manuscript,
+``Cayley--Dickson Associator as a Magnetopause Boundary Detector:
+Evaluation on MMS, THEMIS, and Parker Solar Probe Data,''
+for consideration in \textit{JGR: Space Physics}.
+We thank the Associate Editor and two reviewers for their thorough
+evaluations, which substantially improved the manuscript.
+
+\textbf{Summary of revisions.}
+The revision addresses three major concerns raised by the reviewers:
+
+\begin{enumerate}
+
+\item \textit{Embedding-lag sensitivity (MC1).}
+We added a full tau-sweep experiment (Section~3) evaluating lags
+$\tau = 1, 2, 5, 10$~min on the THEMIS-A Staples+2020 magnetopause catalog.
+Performance peaks at $\mathrm{F1}=0.601$ ($\tau=1$~min), degrades to
+$\mathrm{F1}=0.431$ at $\tau=2$~min, and collapses at $\tau \geq 5$~min.
+The monotonic decay directly validates the physical crossing-timescale
+argument: a 1-minute lag produces an 8-minute embedding window that matches
+the 5--20~minute magnetopause transit time, while longer lags integrate
+across pre- and post-boundary plasma simultaneously.
+
+\item \textit{Alfvenic selectivity and micro-switchback correlation (MC2).}
+We added two new experiments.
+(a) An Alfvenic control analysis on PSP Encounter~3 (Section~4) shows the
+CD associator fires $2.83\times$ more frequently during compressive
+intervals than during Alfvenic intervals (gradient: $2.91\times$),
+confirming topological selectivity rather than amplitude sensitivity.
+(b) A micro-switchback correlation analysis on the same interval (Section~5)
+finds quiet-interval CD fires are $1.72\times$ enriched near consecutive
+B-vector micro-rotation events ($\geq 15^\circ/\mathrm{min}$), yet
+32.5\% of quiet fires have no adjacent rotation event, establishing
+sensitivity to sub-$\mathbb{R}^3$ topology.
+
+\item \textit{Data gaps, spin-tone filtering, and epsilon regularization (MC3).}
+We quantified data-gap fractions (THEMIS 47/7{,}968~min; MMS 14/9{,}460~min),
+added a Dirichlet-kernel calculation demonstrating $>46$~dB attenuation of
+spin-tone harmonics above 0.5~mHz by the FIELDS search-coil bandpass,
+and provided a physical justification for the epsilon noise-floor
+regularization as a phase-transition mechanism at the Alfv\'en critical
+surface.
+
+\end{enumerate}
+
+All source code, registry entries, and data provenance records for the
+four experiments (E-237 through E-241) are available in the
+\texttt{open\_gororoba} repository.
+The detailed point-by-point responses to each reviewer comment are
+provided in the enclosed Response to Reviewers document.
+
+We confirm that this manuscript has not been submitted elsewhere and that
+all authors have approved the submission.
+We declare no conflicts of interest.
+
+\vspace{1.5em}
+\noindent
+Sincerely,
+
+\vspace{2em}
+\noindent
+open\_gororoba collaboration\\
+\texttt{iamhumanipromise1010101@gmail.com}
+
+\end{document}
