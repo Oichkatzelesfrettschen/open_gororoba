@@ -6430,3 +6430,22 @@ run_command_sha256 = ""
 status = "active"
 status_token = "ACTIVE"
 title = "Takens tau sensitivity sweep (tau=1,2,5,10 min) on THEMIS E-237 data: tau=1 min empirically optimal, F1 degrades monotonically with tau (C-1633)"
+
+[[experiment]]
+id = "E-241"
+input = "PSP FIELDS L2 MAG RTN 1-min HAPI CSV, encounter E3 (2020-01-20..2020-02-10, 31673 minutes, 22 days); same cached files as E-239: data/external/psp_fields/"
+input_path_refs = [
+    "data/external/psp_fields/psp_fields_mag_20200120_20200127.csv",
+    "data/external/psp_fields/psp_fields_mag_20200128_20200204.csv",
+    "data/external/psp_fields/psp_fields_mag_20200205_20200210.csv",
+]
+lineage_id = "XL-241"
+method = "heliosphere-psp-switchback-correlation: use same E3 data and window classification as E-239; compute consecutive-minute B-vector rotation for each minute; define micro-rotation events as consecutive rotation >= 15 deg; for quiet-interval CD fires compute fraction within +-3 min of a micro-rotation event (enrichment rate); compare to fraction of all quiet minutes within +-3 min of a micro-rotation event (background rate); enrichment factor = cd_fraction / background_fraction. Also compute gradient baseline enrichment factor for comparison. Results: CD 1.72x enriched (background 39.2%, CD fires 67.5%), gradient 2.20x enriched; 32.5% of quiet CD fires lack any nearby micro-rotation event (C-1634)."
+output = ["data/output/heliosphere/ablations/psp_switchback_correlation.json"]
+output_path_refs = ["data/output/heliosphere/ablations/psp_switchback_correlation.json"]
+reproducibility_class = "deterministic"
+run = "cargo run --release --bin heliosphere-psp-switchback-correlation -- --start-date 2020-01-20 --end-date 2020-02-10"
+run_command_sha256 = ""
+status = "active"
+status_token = "ACTIVE"
+title = "PSP E3 micro-switchback enrichment: quiet CD fires 1.72x enriched near micro-rotation events; 32.5% occur with no nearby rotation signature (C-1634)"

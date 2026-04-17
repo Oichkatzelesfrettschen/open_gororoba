@@ -10843,3 +10843,11 @@ statement = "On the THEMIS E-237 7-day window (THA, 2016 DOY 242-248, 7968 minut
 status = "Established"
 status_note = "ESTABLISHED 2026-04-16: tau=1: P=0.567 R=0.638 F1=0.601 (104 det). tau=2: P=0.492 R=0.384 F1=0.431 (59 det). tau=5: P=0.111 R=0.022 F1=0.037 (9 det). tau=10: F1=0.000. Gradient: P=0.317 R=0.469 F1=0.378 (164 det). Full JSON: data/output/heliosphere/ablations/takens_tau_sweep.json."
 where_stated = "crates/gororoba_cli_physics/src/bin/heliosphere_takens_tau_sweep.rs"
+
+[[claim]]
+id = "C-1634"
+last_verified = "2026-04-16"
+statement = "In PSP E3 quiet solar wind (23158 minutes, 73.1% of E3), quiet-interval 32D CD associator fires (120 events) are 1.72x enriched over background within +-3 minutes of micro-rotation events (consecutive B-vector rotation >= 15 deg between 1-minute means; 5807 such events, background rate 39.2% of quiet minutes). The gradient baseline is 2.20x enriched in the same quiet-interval micro-rotation analysis, indicating the gradient detector is more directly sensitive to rotation-based micro-events. Critically, 32.5% of quiet-interval CD fires (39 events) occur with NO nearby micro-rotation event, implying the CD associator detects magnetic topology changes that produce no measurable consecutive rotation signature at 1-minute resolution -- consistent with sub-minute kinetic-scale topological folds below the HAPI decimation threshold. Binary: heliosphere-psp-switchback-correlation. E-241."
+status = "Established"
+status_note = "ESTABLISHED 2026-04-16: E3 perihelion. Background 39.2%, CD quiet fires near microrot 67.5% (81/120), gradient 2.20x. 32.5% of quiet CD fires have no nearby rotation event. Full JSON: data/output/heliosphere/ablations/psp_switchback_correlation.json."
+where_stated = "crates/gororoba_cli_physics/src/bin/heliosphere_psp_switchback_correlation.rs"
