@@ -10819,3 +10819,19 @@ statement = "Of the 86 MMS CD associator detections unmatched by FPI ion density
 status = "Established"
 status_note = "ESTABLISHED 2026-04-16: 86 extra CD detections over 7-day MMS window analyzed. 75/86 topology-positive (87.2%). 4 pure-rotational candidates identified as paper case-study intervals. Full JSON: data/output/heliosphere/ablations/fte_case_study.json."
 where_stated = "crates/gororoba_cli_physics/src/bin/heliosphere_fte_case_study.rs"
+
+[[claim]]
+id = "C-1631"
+last_verified = "2026-04-16"
+statement = "In PSP encounter E3 (2020-01-20 to 2020-02-10, 31673 minutes, canonical high-Alfvenicity perihelion passage), the 32D CD associator fires at 0.958 fires/hour in Alfvenic intervals (6390 minutes, 20.2% of E3; classified by Br sign reversal OR field rotation >= 20 deg with delta_B/|B| < 0.25) vs 1.155 fires/hour for the |B|-gradient+rotation detector in the same Alfvenic intervals. The CD associator is 17% less susceptible to spurious Alfvenic noise than the gradient baseline, refuting the hypothesis that high-amplitude Alfven waves contaminate the CD associator. Binary: heliosphere-psp-alfven-control. E-239."
+status = "Established"
+status_note = "ESTABLISHED 2026-04-16: E3 perihelion, 31673 min total. Alfvenic class: 6390 min (20.2%). CD Alfvenic fire rate: 0.958/hr. Gradient Alfvenic fire rate: 1.155/hr. CD is 17% lower. Full JSON: data/output/heliosphere/ablations/psp_alfven_control.json."
+where_stated = "crates/gororoba_cli_physics/src/bin/heliosphere_psp_alfven_control.rs"
+
+[[claim]]
+id = "C-1632"
+last_verified = "2026-04-16"
+statement = "In PSP encounter E3, the CD associator discrimination ratio (CompressiveBoundary fire rate / Alfvenic fire rate) is 2.83x: 2.711 fires/hour in CompressiveBoundary intervals (2125 min, delta_B/|B|>=0.30 AND rotation>=15 deg) vs 0.958 fires/hour in Alfvenic intervals. The corresponding ratio for the |B|-gradient+rotation detector is 2.91x (3.360/1.155). Both detectors achieve similar discrimination ratios, but the CD associator has a LOWER absolute Alfvenic fire rate (0.958 vs 1.155/hr) and a HIGHER quiet-interval fire rate (0.311 vs 0.168/hr), indicating that the CD associator captures more subtle magnetic-topology structures in background solar wind that the gradient detector misses, while being less triggered by non-compressive Alfvenic rotations. Binary: heliosphere-psp-alfven-control. E-239."
+status = "Established"
+status_note = "ESTABLISHED 2026-04-16: E3 perihelion. CD: Compressive 2.711/hr, Alfvenic 0.958/hr, Quiet 0.311/hr. Discrimination ratio 2.83x. Gradient: Compressive 3.360/hr, Alfvenic 1.155/hr, Quiet 0.168/hr. Ratio 2.91x. Full JSON: data/output/heliosphere/ablations/psp_alfven_control.json."
+where_stated = "crates/gororoba_cli_physics/src/bin/heliosphere_psp_alfven_control.rs"
