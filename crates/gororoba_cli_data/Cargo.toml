@@ -31,6 +31,10 @@ name = "ndlb-gate"
 path = "src/bin/ndlb_gate.rs"
 
 [[bin]]
+name = "dataset-hash-sweep"
+path = "src/bin/dataset_hash_sweep.rs"
+
+[[bin]]
 name = "registry-emit"
 path = "src/bin/registry_emit.rs"
 
