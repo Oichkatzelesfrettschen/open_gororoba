@@ -122,7 +122,7 @@ $\mathbb{R}^4$ when field magnitude is included) and therefore detect only the
 local geometric properties of the field vector, missing non-local coherence
 structures that span multiple lag times simultaneously.
 
-The Takens embedding theorem \citep{takens1981} provides a principled way to
+The Takens embedding theorem \citep{packard1980,takens1981} provides a principled way to
 reconstruct the attractor of an unknown dynamical system from a scalar or
 vector time series.  Embedding with lag $\tau$ and dimension $d$ maps the
 local time series into a point in $\mathbb{R}^d$, and the topology of the
@@ -149,12 +149,13 @@ intervals.
 This paper presents the first systematic evaluation of the CD associator as a
 boundary detector across three spacecraft and three physical contexts:
 \begin{enumerate}
-  \item THEMIS-A dayside magnetopause (Earth-proximal, Section~\ref{sec:tau_sweep}),
-  \item Parker Solar Probe inner heliosphere (Alfvenic vs.\ compressive intervals,
-    Section~\ref{sec:alfven_control}),
+  \item THEMIS-A \citep{angelopoulos2008} dayside magnetopause (Earth-proximal,
+    Section~\ref{sec:tau_sweep}),
+  \item Parker Solar Probe \citep{fox2016} inner heliosphere (Alfvenic vs.\ compressive
+    intervals, Section~\ref{sec:alfven_control}),
   \item Parker Solar Probe micro-switchback correlation (Section~\ref{sec:enrichment}),
-  \item MMS fluorescence topology (extra-detection classification,
-    Section~\ref{sec:mms_fte}).
+  \item MMS \citep{burch2016} extra-detection topology classification
+    (Section~\ref{sec:mms_fte}).
 \end{enumerate}
 
 %% ===================================================================
@@ -199,7 +200,7 @@ within the UTC minute boundary.
 \subsection{Cayley--Dickson Associator}
 
 The 32-dimensional trigintaduonion algebra $\mathbb{R}^{32}$ is constructed
-via the Cayley--Dickson doubling process \citep{dickson1919}: starting from
+via the Cayley--Dickson doubling process \citep{dickson1919,moreno1997}: starting from
 $\mathbb{R}$, each doubling produces $\mathbb{C}$, $\mathbb{H}$, $\mathbb{O}$,
 $\mathbb{S}$ (sedenions, $\mathbb{R}^{16}$), and finally $\mathbb{T}$
 (trigintaduonions, $\mathbb{R}^{32}$).
@@ -241,9 +242,10 @@ while preserving local field geometry.
 \subsection{Experimental Setup}
 
 We evaluate four embedding lags ($\tau = 1, 2, 5, 10$~min) against the
-Staples et al.\ \citeyearpar{staples2020} THEMIS-A magnetopause crossing catalog.
+Staples et al.\ \citeyearpar{staples2020} THEMIS-A \citep{angelopoulos2008}
+magnetopause crossing catalog.
 The evaluation interval is 2016-08-29 to 2016-09-05 (7 days, $n = 7{,}968$
-FGM minutes), containing 224 labeled crossing events.  A detection within
+FGM \citep{auster2008} minutes), containing 224 labeled crossing events.  A detection within
 $\pm 5$~min of a catalog event counts as a true positive.
 The gradient-magnitude baseline uses the same threshold logic applied to
 $\|\nabla\bvec\|$ computed from first-difference field components.
@@ -305,7 +307,8 @@ Table~\ref{tab:tau_sweep} summarizes the results quantitatively.
 
 To test whether the CD associator is spuriously triggered by large-amplitude
 Alfvenic fluctuations rather than true boundary topology, we classify each
-1-minute interval in Parker Solar Probe Encounter 3
+1-minute interval from Parker Solar Probe \citep{fox2016} Encounter 3
+FIELDS \citep{bale2016} 1-min RTN magnetometer data
 (2020-01-20 to 2020-02-10, $n = 31{,}673$ minutes) into one of three classes
 using a $\pm 5$-minute sliding window:
 
@@ -454,9 +457,10 @@ metric sees only the averaged result.
 
 \subsection{Setup}
 
-We apply the CD associator to MMS-1 data for 2024-01-01 to 2024-01-07
-(seven days crossing the dayside magnetopause) and compare detections to the
-MMS Fast Plasma Investigation (FPI) plasma-boundary catalog \citep{pollock2016}.
+We apply the CD associator to MMS-1 \citep{burch2016} data for
+2024-01-01 to 2024-01-07 (seven days crossing the dayside magnetopause)
+and compare detections to the MMS Fast Plasma Investigation (FPI)
+plasma-boundary catalog \citep{pollock2016}.
 All 86 CD fires that do not match any FPI catalog event within $\pm 5$~min
 (``extra detections'') are classified post-hoc by their local field topology:
 \begin{description}
@@ -626,7 +630,7 @@ evidence of this additional topological sensitivity.
 %% ===================================================================
 \section*{Open Research Statement}
 
-THEMIS FGM data were obtained from the HAPI server
+THEMIS FGM data were obtained from the HAPI server \citep{bonnell2019}
 (\url{http://cdaweb.gsfc.nasa.gov/hapi}) using the
 \texttt{THX\_L2\_FGS} product.
 MMS FGM SRVY L2 data were obtained from the MMS SDC
