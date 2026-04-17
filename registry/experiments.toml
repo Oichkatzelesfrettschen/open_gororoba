@@ -6,7 +6,7 @@
 [experiments]
 authoritative = true
 deterministic_count = 164
-experiment_count = 231
+experiment_count = 232
 gpu_count = 29
 seeded_count = 46
 status_allowlist = ["active", "deprecated", "planned", "blocked"]
@@ -6605,6 +6605,25 @@ run_command_sha256 = ""
 status = "planned"
 status_token = "PLANNED"
 title = "Dense-random trilinear baseline (100 draws, ablation pre-registration P2, plan P6A.S2.T2.4)"
+
+[[experiment]]
+binary = "heliosphere-random-trilinear-sparse"
+binary_experiment_declared = "E-252"
+binary_registered = true
+claim_refs = ["C-1649", "C-1650"]
+id = "E-252"
+input = "THEMIS-A FGM HAPI CSV (2016-08-29..2016-09-04, DOY 242-248)."
+input_path_refs = ["data/external/themis/"]
+lineage_id = "XL-252"
+method = "Sparsity-matched random trilinear baseline. Extract CD T_ijk zero-pattern by probing [e_j, e_0, e_k] for all basis pairs. Randomize only nonzero entries from N(0, sigma_cd) where sigma_cd = RMS of nonzero CD coefficients. 100 draws. Same Takens embedding, noise-floor normalization, and MAD_SCALE_FACTOR=1.5 as CD baseline. Pre-registered: if CD exceeds mean+2sigma here, specific coefficient values matter beyond zero-pattern; if not, zero-pattern is sufficient."
+output = ["data/output/heliosphere/ablations/random_trilinear_sparse_eval.json"]
+output_path_refs = ["data/output/heliosphere/ablations/random_trilinear_sparse_eval.json"]
+reproducibility_class = "deterministic"
+run = "cargo run --release --bin heliosphere-random-trilinear-sparse -- --start-date 2016-08-29 --n-days 7 --n-draws 100 --base-seed 2000"
+run_command_sha256 = ""
+status = "planned"
+status_token = "PLANNED"
+title = "Sparsity-matched random trilinear baseline (100 draws, ablation pre-registration P2, plan P6A.S2.T2.5)"
 
 [[experiment]]
 binary = "heliosphere-r16-ablation"
