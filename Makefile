@@ -1192,6 +1192,15 @@ integrity-resolution:
 		$(REPO_CARGO_TARGET_DIR)/release-gate/integrity-resolution --repo-root .; \
 	fi
 
+# DOI audit for refs_heliosphere.bib via CrossRef REST API.
+# Flags fabricated citations, wrong metadata, and 404 DOIs.
+# Use --strict to fail CI on any detected mismatch.
+ref-audit:
+	python3 scripts/check_refs.py docs/latex/heliosphere/refs_heliosphere.bib
+
+ref-audit-strict:
+	python3 scripts/check_refs.py --strict docs/latex/heliosphere/refs_heliosphere.bib
+
 registry-strict-toml-batch3-build:
 	$(CARGO_ENV) cargo build --profile release-gate -p gororoba_cli_data --bin integrity-resolution
 	$(REPO_CARGO_TARGET_DIR)/release-gate/integrity-resolution --repo-root .
