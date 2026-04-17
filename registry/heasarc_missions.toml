@@ -1,0 +1,649 @@
+# HEASARC mission directory (plan Phase 6A.S5.T1 extension).
+#
+# Parallel to registry/mast_catalogs.toml: a hand-curated scoped list
+# of high-energy astrophysics missions hosted at HEASARC. Separate
+# from the full CATALOG table snapshot at
+# registry/heasarc_catalogs.toml (1027 tables) because a mission is
+# a publisher of catalogs and observations -- a coarser, longer-lived
+# concept that moves slowly.
+#
+# Source: https://heasarc.gsfc.nasa.gov/docs/observatories.html
+#
+# Schema:
+#   mission             -- short canonical id (snake_case)
+#   full_title          -- human-readable full name
+#   operational_years   -- "YYYY-YYYY" or "YYYY-present" (best-effort;
+#                          many HEASARC missions pre-date good
+#                          machine-readable metadata)
+#   status              -- "active" | "past"
+#   band                -- one or more of "x_ray" | "gamma_ray" |
+#                          "uv" | "euv" | "cosmic_ray" | "radio"
+#   instruments         -- per-mission instrument list where known
+#   tap_table_prefix    -- TAP_SCHEMA table name prefix used in
+#                          registry/heasarc_catalogs.toml for cross-
+#                          reference (e.g. "chan" for Chandra,
+#                          "xmm" for XMM-Newton)
+#   owner_fetcher       -- path to fetcher module (optional)
+#   last_verified       -- ISO date
+
+[heasarc_missions]
+updated = "2026-04-17"
+source_url = "https://heasarc.gsfc.nasa.gov/docs/observatories.html"
+authoritative = true
+status = "active"
+status_token = "ACTIVE"
+schema_version = 1
+mission_count = 53
+
+# ================================================================
+# ACTIVE MISSIONS (20)
+# ================================================================
+
+[[mission]]
+mission = "ams_02"
+full_title = "Alpha Magnetic Spectrometer 02 (ISS)"
+operational_years = "2011-present"
+status = "active"
+band = ["cosmic_ray"]
+instruments = ["TRD", "TOF", "Tracker", "RICH", "ECAL"]
+tap_table_prefix = "ams"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "astrosat"
+full_title = "ISRO AstroSat multi-wavelength observatory"
+operational_years = "2015-present"
+status = "active"
+band = ["x_ray", "uv"]
+instruments = ["UVIT", "SXT", "LAXPC", "CZTI", "SSM"]
+tap_table_prefix = "astrosat"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "blackcat"
+full_title = "BlackCAT CubeSat X-ray monitor"
+operational_years = "2024-present"
+status = "active"
+band = ["x_ray"]
+instruments = ["coded_mask_detector"]
+tap_table_prefix = "blackcat"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "calet"
+full_title = "CALorimetric Electron Telescope (ISS)"
+operational_years = "2015-present"
+status = "active"
+band = ["cosmic_ray", "gamma_ray"]
+instruments = ["TASC", "IMC", "CHD"]
+tap_table_prefix = "calet"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "chandra"
+full_title = "Chandra X-ray Observatory"
+operational_years = "1999-present"
+status = "active"
+band = ["x_ray"]
+instruments = ["ACIS", "HRC", "HETG", "LETG"]
+tap_table_prefix = "chan"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "dampe"
+full_title = "DArk Matter Particle Explorer"
+operational_years = "2015-present"
+status = "active"
+band = ["cosmic_ray", "gamma_ray"]
+instruments = ["PSD", "STK", "BGO", "NUD"]
+tap_table_prefix = "dampe"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "einstein_probe"
+full_title = "Einstein Probe"
+operational_years = "2024-present"
+status = "active"
+band = ["x_ray"]
+instruments = ["WXT", "FXT"]
+tap_table_prefix = "epxrt"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "fermi"
+full_title = "Fermi Gamma-ray Space Telescope"
+operational_years = "2008-present"
+status = "active"
+band = ["gamma_ray"]
+instruments = ["LAT", "GBM"]
+tap_table_prefix = "fermi"
+owner_fetcher = "crates/data_core/src/catalogs/fermi_gbm_fetch.rs"
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "gecam"
+full_title = "GECAM (Gravitational wave high-energy Electromagnetic Counterpart All-sky Monitor)"
+operational_years = "2020-present"
+status = "active"
+band = ["gamma_ray", "x_ray"]
+instruments = ["GRD", "CPD"]
+tap_table_prefix = "gecam"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "grbbeta"
+full_title = "GRBBeta CubeSat"
+operational_years = "2024-present"
+status = "active"
+band = ["gamma_ray"]
+instruments = []
+tap_table_prefix = "grbbeta"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "hxmt_insight"
+full_title = "Hard X-ray Modulation Telescope (Insight)"
+operational_years = "2017-present"
+status = "active"
+band = ["x_ray"]
+instruments = ["LE", "ME", "HE"]
+tap_table_prefix = "hxmt"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "ixpe"
+full_title = "Imaging X-ray Polarimetry Explorer"
+operational_years = "2021-present"
+status = "active"
+band = ["x_ray"]
+instruments = ["DetectorUnit1", "DetectorUnit2", "DetectorUnit3"]
+tap_table_prefix = "ixpe"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "maxi"
+full_title = "Monitor of All-sky X-ray Image (ISS)"
+operational_years = "2009-present"
+status = "active"
+band = ["x_ray"]
+instruments = ["GSC", "SSC"]
+tap_table_prefix = "maxi"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "nustar"
+full_title = "Nuclear Spectroscopic Telescope Array"
+operational_years = "2012-present"
+status = "active"
+band = ["x_ray"]
+instruments = ["FPMA", "FPMB"]
+tap_table_prefix = "nustar"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "srg"
+full_title = "Spektr-RG (eROSITA + ART-XC)"
+operational_years = "2019-present"
+status = "active"
+band = ["x_ray"]
+instruments = ["eROSITA", "ART-XC"]
+tap_table_prefix = "srg"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "svom"
+full_title = "Space Variable Objects Monitor"
+operational_years = "2024-present"
+status = "active"
+band = ["gamma_ray", "x_ray"]
+instruments = ["ECLAIRs", "MXT", "VT", "GRM"]
+tap_table_prefix = "svom"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "swift"
+full_title = "Neil Gehrels Swift Observatory"
+operational_years = "2004-present"
+status = "active"
+band = ["gamma_ray", "x_ray", "uv"]
+instruments = ["BAT", "XRT", "UVOT"]
+tap_table_prefix = "swift"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "xmm_newton"
+full_title = "XMM-Newton X-ray Multi-Mirror Mission"
+operational_years = "1999-present"
+status = "active"
+band = ["x_ray"]
+instruments = ["EPIC-pn", "EPIC-MOS1", "EPIC-MOS2", "RGS1", "RGS2", "OM"]
+tap_table_prefix = "xmm"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "xposat"
+full_title = "X-Ray Polarimeter Satellite (ISRO)"
+operational_years = "2024-present"
+status = "active"
+band = ["x_ray"]
+instruments = ["POLIX", "XSPECT"]
+tap_table_prefix = "xposat"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "xrism"
+full_title = "X-Ray Imaging and Spectroscopy Mission"
+operational_years = "2023-present"
+status = "active"
+band = ["x_ray"]
+instruments = ["Resolve", "Xtend"]
+tap_table_prefix = "xrism"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+# ================================================================
+# PAST MISSIONS (33)
+# ================================================================
+
+[[mission]]
+mission = "agile"
+full_title = "Astro-rivelatore Gamma a Immagini LEggero"
+operational_years = "2007-2024"
+status = "past"
+band = ["gamma_ray"]
+instruments = ["GRID", "MCAL", "SuperAGILE"]
+tap_table_prefix = "agile"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "ans"
+full_title = "Astronomical Netherlands Satellite"
+operational_years = "1974-1976"
+status = "past"
+band = ["x_ray", "uv"]
+instruments = ["SXX", "HXX", "UVE"]
+tap_table_prefix = "ans"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "ariel_v"
+full_title = "Ariel V X-ray Observatory"
+operational_years = "1974-1980"
+status = "past"
+band = ["x_ray"]
+instruments = ["SSI", "RMC", "ASM", "AFSG"]
+tap_table_prefix = "ariel5"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "asca"
+full_title = "Advanced Satellite for Cosmology and Astrophysics (Astro-D)"
+operational_years = "1993-2001"
+status = "past"
+band = ["x_ray"]
+instruments = ["GIS2", "GIS3", "SIS0", "SIS1"]
+tap_table_prefix = "asca"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "bbxrt"
+full_title = "Broad-Band X-Ray Telescope (Astro-1 shuttle)"
+operational_years = "1990"
+status = "past"
+band = ["x_ray"]
+instruments = ["BBXRT"]
+tap_table_prefix = "bbxrt"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "beppo_sax"
+full_title = "BeppoSAX"
+operational_years = "1996-2002"
+status = "past"
+band = ["x_ray", "gamma_ray"]
+instruments = ["LECS", "MECS", "HPGSPC", "PDS", "WFC1", "WFC2"]
+tap_table_prefix = "sax"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "cgro"
+full_title = "Compton Gamma Ray Observatory"
+operational_years = "1991-2000"
+status = "past"
+band = ["gamma_ray"]
+instruments = ["BATSE", "OSSE", "COMPTEL", "EGRET"]
+tap_table_prefix = "cgro"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "copernicus"
+full_title = "Copernicus (Orbiting Astronomical Observatory 3)"
+operational_years = "1972-1981"
+status = "past"
+band = ["uv", "x_ray"]
+instruments = ["Princeton", "UCL"]
+tap_table_prefix = "copernic"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "cos_b"
+full_title = "COS-B"
+operational_years = "1975-1982"
+status = "past"
+band = ["gamma_ray"]
+instruments = ["Caravane", "ESD"]
+tap_table_prefix = "cosb"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "dxs"
+full_title = "Diffuse X-ray Spectrometer (ASTRO-1 shuttle)"
+operational_years = "1993"
+status = "past"
+band = ["x_ray"]
+instruments = ["DXS"]
+tap_table_prefix = "dxs"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "einstein"
+full_title = "Einstein Observatory (HEAO-2)"
+operational_years = "1978-1981"
+status = "past"
+band = ["x_ray"]
+instruments = ["IPC", "HRI", "MPC", "SSS", "FPCS", "OGS"]
+tap_table_prefix = "einstein"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "euve"
+full_title = "Extreme Ultraviolet Explorer"
+operational_years = "1992-2001"
+status = "past"
+band = ["euv"]
+instruments = ["Scanner", "Spectrometer"]
+tap_table_prefix = "euve"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "exosat"
+full_title = "European X-ray Observatory Satellite"
+operational_years = "1983-1986"
+status = "past"
+band = ["x_ray"]
+instruments = ["LE", "ME", "GSPC"]
+tap_table_prefix = "exosat"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "ginga"
+full_title = "Ginga (Astro-C)"
+operational_years = "1987-1991"
+status = "past"
+band = ["x_ray"]
+instruments = ["LAC", "ASM", "GBD"]
+tap_table_prefix = "ginga"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "granat"
+full_title = "Granat"
+operational_years = "1989-1998"
+status = "past"
+band = ["x_ray", "gamma_ray"]
+instruments = ["SIGMA", "ART-P", "PHEBUS", "WATCH", "KONUS-B"]
+tap_table_prefix = "granat"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "halosat"
+full_title = "HaloSat CubeSat"
+operational_years = "2018-2020"
+status = "past"
+band = ["x_ray"]
+instruments = ["SDD1", "SDD2", "SDD3"]
+tap_table_prefix = "halosat"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "hakucho"
+full_title = "Hakucho (CORSA-B)"
+operational_years = "1979-1985"
+status = "past"
+band = ["x_ray"]
+instruments = ["VSX", "SFX", "TFC", "HDX"]
+tap_table_prefix = "hakucho"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "heao_1"
+full_title = "High Energy Astronomy Observatory 1"
+operational_years = "1977-1979"
+status = "past"
+band = ["x_ray", "gamma_ray"]
+instruments = ["A1", "A2", "A3", "A4"]
+tap_table_prefix = "heao1"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "heao_3"
+full_title = "High Energy Astronomy Observatory 3"
+operational_years = "1979-1981"
+status = "past"
+band = ["cosmic_ray", "gamma_ray"]
+instruments = ["HRGRS", "HNE", "FRENCH-DANISH"]
+tap_table_prefix = "heao3"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "hete_2"
+full_title = "High Energy Transient Explorer 2"
+operational_years = "2000-2008"
+status = "past"
+band = ["gamma_ray", "x_ray"]
+instruments = ["FREGATE", "WXM", "SXC"]
+tap_table_prefix = "hete"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "hitomi"
+full_title = "Hitomi (ASTRO-H)"
+operational_years = "2016"
+status = "past"
+band = ["x_ray"]
+instruments = ["SXI", "SXS", "HXI1", "HXI2", "SGD1", "SGD2"]
+tap_table_prefix = "hitomi"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "oso_7"
+full_title = "Orbiting Solar Observatory 7"
+operational_years = "1971-1974"
+status = "past"
+band = ["x_ray", "gamma_ray"]
+instruments = ["NRL", "MIT"]
+tap_table_prefix = "oso7"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "oso_8"
+full_title = "Orbiting Solar Observatory 8"
+operational_years = "1975-1978"
+status = "past"
+band = ["x_ray"]
+instruments = ["GSFC", "LASL", "UNH"]
+tap_table_prefix = "oso8"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "rosat"
+full_title = "Roentgen Satellite"
+operational_years = "1990-1999"
+status = "past"
+band = ["x_ray", "euv"]
+instruments = ["PSPC", "HRI", "WFC"]
+tap_table_prefix = "rosat"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "rxte"
+full_title = "Rossi X-ray Timing Explorer"
+operational_years = "1995-2012"
+status = "past"
+band = ["x_ray"]
+instruments = ["PCA", "HEXTE", "ASM"]
+tap_table_prefix = "xte"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "sas_2"
+full_title = "Small Astronomy Satellite 2"
+operational_years = "1972-1973"
+status = "past"
+band = ["gamma_ray"]
+instruments = ["SAS2"]
+tap_table_prefix = "sas2"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "sas_3"
+full_title = "Small Astronomy Satellite 3"
+operational_years = "1975-1979"
+status = "past"
+band = ["x_ray"]
+instruments = ["Scanning", "Pinhole", "Extended"]
+tap_table_prefix = "sas3"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "suzaku"
+full_title = "Suzaku (Astro-E2)"
+operational_years = "2005-2015"
+status = "past"
+band = ["x_ray"]
+instruments = ["XIS0", "XIS1", "XIS2", "XIS3", "HXD", "XRS"]
+tap_table_prefix = "suzaku"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "tenma"
+full_title = "Tenma (Astro-B)"
+operational_years = "1983-1989"
+status = "past"
+band = ["x_ray"]
+instruments = ["SPC", "TSM", "GSFC"]
+tap_table_prefix = "tenma"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "uhuru"
+full_title = "Uhuru (SAS-1)"
+operational_years = "1970-1973"
+status = "past"
+band = ["x_ray"]
+instruments = ["Uhuru"]
+tap_table_prefix = "uhuru"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "vela_5b"
+full_title = "Vela 5B"
+operational_years = "1969-1979"
+status = "past"
+band = ["x_ray", "gamma_ray"]
+instruments = ["XC1", "XC2"]
+tap_table_prefix = "vela5b"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "wass"
+full_title = "Wisconsin Soft X-ray Diffuse Background All-Sky Survey"
+operational_years = "late-1970s"
+status = "past"
+band = ["x_ray"]
+instruments = []
+tap_table_prefix = "wass"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "xqc"
+full_title = "X-ray Quantum Calorimeter (sounding rocket)"
+operational_years = "1999-2013"
+status = "past"
+band = ["x_ray"]
+instruments = ["XQC-calorimeter"]
+tap_table_prefix = "xqc"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "integral"
+full_title = "INTErnational Gamma-Ray Astrophysics Laboratory"
+operational_years = "2002-present"
+status = "active"
+band = ["gamma_ray", "x_ray"]
+instruments = ["SPI", "IBIS", "JEM-X", "OMC"]
+tap_table_prefix = "integral"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "nicer"
+full_title = "Neutron star Interior Composition Explorer (ISS)"
+operational_years = "2017-present"
+status = "active"
+band = ["x_ray"]
+instruments = ["XTI"]
+tap_table_prefix = "nicer"
+owner_fetcher = ""
+last_verified = "2026-04-17"
