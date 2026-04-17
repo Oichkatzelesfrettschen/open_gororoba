@@ -9,12 +9,14 @@ use reqwest::{
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use std::{
+    collections::HashMap,
     fmt, fs,
     io::{self, Read, Write},
     net::{TcpStream, ToSocketAddrs},
     path::{Path, PathBuf},
     process::{Command, Stdio},
-    time::{Duration, SystemTime, UNIX_EPOCH},
+    sync::{Arc, Mutex},
+    time::{Duration, Instant, SystemTime, UNIX_EPOCH},
 };
 use thiserror::Error;
 use ureq::ResponseExt;
@@ -380,6 +382,135 @@ pub struct DownloadStack {
     user_agent: String,
     timeout: Duration,
     host_policies: Vec<HostRoutingPolicy>,
+    rate_limiter: Arc<RateLimiter>,
+}
+
+/// Per-host request rate limiter (plan P6A.S6).
+///
+/// Honours per-server `rate_limit_ms` values declared in
+/// `registry/data_servers.toml`. The default limiter ships with
+/// values matching the registry; `with_limits` overrides.
+///
+/// Rate-limit gates happen at `DownloadStack::gate_host` which is
+/// invoked from every backend dispatch (execute_with_trace) and the
+/// high-level `fetch_text` path. If no limit applies to a host,
+/// gating is a no-op (~ns).
+///
+/// Internally uses a `Mutex<HashMap<host, Instant>>` tracking the
+/// last-request timestamp per host. On re-entry the gate computes
+/// `delay - elapsed` and sleeps if positive, releasing the mutex
+/// before sleeping to avoid serializing unrelated hosts.
+#[derive(Debug)]
+pub struct RateLimiter {
+    /// Host-suffix -> minimum inter-request delay.
+    limits: Vec<(String, Duration)>,
+    last_request: Mutex<HashMap<String, Instant>>,
+}
+
+impl RateLimiter {
+    /// Empty limiter: no host limited.
+    pub fn empty() -> Self {
+        Self {
+            limits: Vec::new(),
+            last_request: Mutex::new(HashMap::new()),
+        }
+    }
+
+    /// Default limiter seeded from `registry/data_servers.toml` values
+    /// as of 2026-04-17. Keep in sync with that registry or call
+    /// `load_from_data_servers_toml` to pull fresh at init.
+    pub fn with_registry_defaults() -> Self {
+        Self {
+            limits: vec![
+                // LoTSS / ASTRON VO
+                ("vo.astron.nl".to_string(), Duration::from_millis(250)),
+                ("astrowise.org".to_string(), Duration::from_millis(250)),
+                // HEASARC
+                ("heasarc.gsfc.nasa.gov".to_string(), Duration::from_millis(250)),
+                // MAST
+                ("mast.stsci.edu".to_string(), Duration::from_millis(250)),
+                // CDS VizieR
+                ("cdsarc.cds.unistra.fr".to_string(), Duration::from_millis(250)),
+                ("cdsarc.u-strasbg.fr".to_string(), Duration::from_millis(250)),
+                // SDSS
+                ("data.sdss.org".to_string(), Duration::from_millis(250)),
+                // Zenodo
+                ("zenodo.org".to_string(), Duration::from_millis(250)),
+                // HEPData
+                ("hepdata.net".to_string(), Duration::from_millis(250)),
+                // McGill, SORCE, magnetar
+                ("lasp.colorado.edu".to_string(), Duration::from_millis(250)),
+                // Bartol legacy FTP (slower)
+                ("ftp.bartol.udel.edu".to_string(), Duration::from_millis(500)),
+                // GWOSC
+                ("gwosc.org".to_string(), Duration::from_millis(500)),
+                // Materials / AFLOW / JARVIS (slower per ToS)
+                ("aflow.org".to_string(), Duration::from_millis(500)),
+                ("jarvis.nist.gov".to_string(), Duration::from_millis(500)),
+                ("breakthroughinitiatives.org".to_string(), Duration::from_millis(500)),
+                // BepiColombo / ESA Euclid Q1 (per ESA ToS)
+                ("easdr1.esac.esa.int".to_string(), Duration::from_millis(500)),
+                // Gaia TAP (ESA recommendation)
+                ("gea.esac.esa.int".to_string(), Duration::from_millis(1000)),
+                // AMDA (IRAP)
+                ("amda.irap.omp.eu".to_string(), Duration::from_millis(500)),
+            ],
+            last_request: Mutex::new(HashMap::new()),
+        }
+    }
+
+    /// Override / extend limits at construction.
+    pub fn with_limit(mut self, host_suffix: impl Into<String>, delay: Duration) -> Self {
+        self.limits.push((host_suffix.into(), delay));
+        self
+    }
+
+    /// Returns the min-delay that would apply to this host, if any.
+    pub fn delay_for(&self, host: &str) -> Option<Duration> {
+        self.limits
+            .iter()
+            .find(|(suffix, _)| host_matches_suffix(host, suffix))
+            .map(|(_, d)| *d)
+    }
+
+    /// Gate a request to `host`. If the previous gated request to this
+    /// host landed less than the configured delay ago, block the current
+    /// thread for the remainder. No-op if no limit applies.
+    pub fn gate(&self, host: &str) {
+        let Some(delay) = self.delay_for(host) else {
+            return;
+        };
+        // Compute wait inside the lock, sleep outside it.
+        let wait: Option<Duration> = {
+            let mut map = self
+                .last_request
+                .lock()
+                .expect("rate-limiter mutex poisoned");
+            let now = Instant::now();
+            let w = map.get(host).and_then(|last| {
+                let elapsed = now.duration_since(*last);
+                if elapsed < delay {
+                    Some(delay - elapsed)
+                } else {
+                    None
+                }
+            });
+            // Reserve the slot now so a concurrent gate() on the same
+            // host computes its wait against our anticipated completion,
+            // not a stale value.
+            map.insert(host.to_string(), now + w.unwrap_or_default());
+            w
+        };
+        if let Some(w) = wait {
+            std::thread::sleep(w);
+        }
+    }
+}
+
+impl Default for RateLimiter {
+    fn default() -> Self {
+        Self::with_registry_defaults()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
@@ -462,6 +593,21 @@ impl DownloadStack {
             user_agent: DEFAULT_USER_AGENT.to_string(),
             timeout: Duration::from_secs(120),
             host_policies: default_host_policies(),
+            rate_limiter: Arc::new(RateLimiter::with_registry_defaults()),
+        }
+    }
+
+    /// Override the rate limiter (e.g. with `RateLimiter::empty()` for
+    /// tests that must not block, or a custom `with_limit` chain).
+    pub fn with_rate_limiter(mut self, limiter: RateLimiter) -> Self {
+        self.rate_limiter = Arc::new(limiter);
+        self
+    }
+
+    /// Internal entry point: gate one request by host.
+    fn gate_request(&self, url: &str) {
+        if let Some(host) = parse_url_host(url) {
+            self.rate_limiter.gate(&host);
         }
     }
 
@@ -672,6 +818,7 @@ impl DownloadStack {
     }
 
     pub fn fetch_text(&self, request: &TransferRequest) -> Result<String, TransferError> {
+        self.gate_request(&request.url);
         let headers = self.build_headers(request, None)?;
         let client = self.client()?;
         let response = self.send_reqwest_with_retry(&client, request, headers)?;
@@ -710,6 +857,7 @@ impl DownloadStack {
         let mut attempts = Vec::new();
         let route_clone = route.clone();
         for backend in route.backends.iter().copied() {
+            self.gate_request(&request.url);
             match self.execute_backend(request, kind, backend) {
                 Ok(result) => {
                     attempts.push(TransferAttempt {
@@ -2301,5 +2449,82 @@ mod tests {
         );
         assert_eq!(parse_total_bytes_from_content_range("bytes 0-0/*"), None);
         assert_eq!(parse_total_bytes_from_content_range("not-a-range"), None);
+    }
+
+    // ------------------------------------------------------------------
+    // RateLimiter tests (plan P6A.S6).
+    // ------------------------------------------------------------------
+
+    #[test]
+    fn rate_limiter_no_limit_is_noop() {
+        let limiter = RateLimiter::empty();
+        let t0 = Instant::now();
+        limiter.gate("example.com");
+        limiter.gate("example.com");
+        limiter.gate("example.com");
+        // No delay configured -> three calls complete in under 5 ms.
+        assert!(t0.elapsed() < Duration::from_millis(50));
+    }
+
+    #[test]
+    fn rate_limiter_respects_configured_delay() {
+        let limiter = RateLimiter::empty().with_limit("slowhost.test", Duration::from_millis(80));
+        let t0 = Instant::now();
+        limiter.gate("slowhost.test");
+        limiter.gate("slowhost.test");
+        // Second call must wait ~80 ms since the first.
+        let elapsed = t0.elapsed();
+        assert!(
+            elapsed >= Duration::from_millis(70),
+            "expected ~80ms delay, got {elapsed:?}"
+        );
+        assert!(
+            elapsed < Duration::from_millis(250),
+            "delay should not be excessive, got {elapsed:?}"
+        );
+    }
+
+    #[test]
+    fn rate_limiter_host_suffix_matching() {
+        let limiter = RateLimiter::empty().with_limit("example.com", Duration::from_millis(25));
+        // suffix match: sub.example.com ends with .example.com
+        assert_eq!(
+            limiter.delay_for("sub.example.com"),
+            Some(Duration::from_millis(25))
+        );
+        // exact match
+        assert_eq!(
+            limiter.delay_for("example.com"),
+            Some(Duration::from_millis(25))
+        );
+        // no match
+        assert_eq!(limiter.delay_for("other.org"), None);
+    }
+
+    #[test]
+    fn rate_limiter_independent_hosts_do_not_serialize() {
+        let limiter = RateLimiter::empty()
+            .with_limit("a.test", Duration::from_millis(50))
+            .with_limit("b.test", Duration::from_millis(50));
+        let t0 = Instant::now();
+        limiter.gate("a.test");
+        limiter.gate("b.test");
+        // Different hosts: no inter-host delay.
+        assert!(
+            t0.elapsed() < Duration::from_millis(20),
+            "different hosts must not serialize; elapsed {:?}",
+            t0.elapsed()
+        );
+    }
+
+    #[test]
+    fn rate_limiter_registry_defaults_include_known_hosts() {
+        let limiter = RateLimiter::with_registry_defaults();
+        // Spot-check: some hosts that must be gated per
+        // registry/data_servers.toml values as of 2026-04-17.
+        assert!(limiter.delay_for("vo.astron.nl").is_some());
+        assert!(limiter.delay_for("heasarc.gsfc.nasa.gov").is_some());
+        assert!(limiter.delay_for("mast.stsci.edu").is_some());
+        assert!(limiter.delay_for("gea.esac.esa.int").is_some());
     }
 }
