@@ -10923,3 +10923,27 @@ statement = "P2 pre-registered test: CD R32 F1=0.601 exceeds the mean+2sigma of 
 status = "Pending"
 status_note = "PENDING 2026-04-17: awaits E-251 execution to determine if 0.601 > mean+2sigma."
 where_stated = "docs/ablation_preregistration.md"
+
+[[claim]]
+id = "C-1646"
+last_verified = ""
+statement = "CD R16 (2ch: Bx,By x 8 lags = 16D) F1 on THEMIS-A Staples+2020 SC catalog (2016-08-29..2016-09-04, E-254). Pre-registered prediction P4: R16 F1 < R32 F1=0.601. Expected: Bz and |B| carry independent boundary information not captured by Bx,By alone. Pending E-254 execution."
+status = "Pending"
+status_note = "PENDING 2026-04-17: E-254 registered. Run heliosphere-r16-ablation to populate."
+where_stated = "crates/gororoba_cli_physics/src/bin/heliosphere_r16_ablation.rs"
+
+[[claim]]
+id = "C-1647"
+last_verified = ""
+statement = "CD R64 (8ch half-lag x 8 lags = 64D) F1 on THEMIS-A Staples+2020 SC catalog (2016-08-29..2016-09-04, E-255). Pre-registered prediction P5: R64 F1 within 0.05 of R32 F1=0.601. Expected: at 1-min cadence, doubling resolution via half-lag offsets adds noise without proportional gain. Pending E-255 execution."
+status = "Pending"
+status_note = "PENDING 2026-04-17: E-255 registered. Run heliosphere-r64-ablation to populate."
+where_stated = "crates/gororoba_cli_physics/src/bin/heliosphere_r64_ablation.rs"
+
+[[claim]]
+id = "C-1648"
+last_verified = ""
+statement = "Axis B lag-depth sweep: F1 at d=4,6,8,12 lags (4-channel, 1min tau, E-256). Pre-registered prediction P3: F1 monotonically decreasing from d=8 to d=4. Tests whether 8-min window is near-optimal for THEMIS magnetopause crossing timescale. Pending E-256 execution."
+status = "Pending"
+status_note = "PENDING 2026-04-17: E-256 registered. Run heliosphere-lag-depth-sweep to populate."
+where_stated = "crates/gororoba_cli_physics/src/bin/heliosphere_lag_depth_sweep.rs"
