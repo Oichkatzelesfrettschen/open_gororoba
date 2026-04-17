@@ -6,7 +6,7 @@
 [experiments]
 authoritative = true
 deterministic_count = 164
-experiment_count = 228
+experiment_count = 231
 gpu_count = 29
 seeded_count = 46
 status_allowlist = ["active", "deprecated", "planned", "blocked"]
@@ -6605,3 +6605,60 @@ run_command_sha256 = ""
 status = "planned"
 status_token = "PLANNED"
 title = "Dense-random trilinear baseline (100 draws, ablation pre-registration P2, plan P6A.S2.T2.4)"
+
+[[experiment]]
+binary = "heliosphere-r16-ablation"
+binary_experiment_declared = "E-254"
+binary_registered = true
+claim_refs = ["C-1646"]
+id = "E-254"
+input = "THEMIS-A FGM HAPI CSV (2016-08-29..2016-09-04)."
+input_path_refs = ["data/external/themis/"]
+lineage_id = "XL-254"
+method = "CD R16 ablation. 2 channels (Bx, By) x 8 lags = 16D sedenion embedding. Same MAD_SCALE_FACTOR=1.5, eval window +-10min. Pre-registered Axis A variant. Prediction P4: R16 F1 < R32 F1 (drops Bz and |B| cross-sheet information)."
+output = ["data/output/heliosphere/ablations/r16_ablation_eval.json"]
+output_path_refs = ["data/output/heliosphere/ablations/r16_ablation_eval.json"]
+reproducibility_class = "deterministic"
+run = "cargo run --release --bin heliosphere-r16-ablation -- --start-date 2016-08-29 --n-days 7"
+run_command_sha256 = ""
+status = "planned"
+status_token = "PLANNED"
+title = "CD R16 Axis A ablation (2ch x 8 lags, plan P6A.S2.T2.1)"
+
+[[experiment]]
+binary = "heliosphere-r64-ablation"
+binary_experiment_declared = "E-255"
+binary_registered = true
+claim_refs = ["C-1647"]
+id = "E-255"
+input = "THEMIS-A FGM HAPI CSV (2016-08-29..2016-09-04)."
+input_path_refs = ["data/external/themis/"]
+lineage_id = "XL-255"
+method = "CD R64 ablation. 8 channels (4-channel Bx,By,Bz,|B| at full-lag + 4-channel at half-lag offset) x 8 lags = 64D trigintaduonion embedding. takens_lag=2min, half_lag=1min, window=15min. Pre-registered Axis A variant. Prediction P5: R64 F1 within 0.05 of R32 F1."
+output = ["data/output/heliosphere/ablations/r64_ablation_eval.json"]
+output_path_refs = ["data/output/heliosphere/ablations/r64_ablation_eval.json"]
+reproducibility_class = "deterministic"
+run = "cargo run --release --bin heliosphere-r64-ablation -- --start-date 2016-08-29 --n-days 7"
+run_command_sha256 = ""
+status = "planned"
+status_token = "PLANNED"
+title = "CD R64 Axis A ablation (8ch half-lag x 8 lags, plan P6A.S2.T2.2)"
+
+[[experiment]]
+binary = "heliosphere-lag-depth-sweep"
+binary_experiment_declared = "E-256"
+binary_registered = true
+claim_refs = ["C-1648"]
+id = "E-256"
+input = "THEMIS-A FGM HAPI CSV (2016-08-29..2016-09-04)."
+input_path_refs = ["data/external/themis/"]
+lineage_id = "XL-256"
+method = "Axis B lag-depth sweep. 4 channels x d=4,6,8,12 lags. R32 CD algebra fixed (dim=16,24,32,48). tau=1min throughout. Reports F1, CI for each depth. Pre-registered prediction P3: F1 monotonically decreasing from d=8 to d=4."
+output = ["data/output/heliosphere/ablations/lag_depth_sweep_eval.json"]
+output_path_refs = ["data/output/heliosphere/ablations/lag_depth_sweep_eval.json"]
+reproducibility_class = "deterministic"
+run = "cargo run --release --bin heliosphere-lag-depth-sweep -- --start-date 2016-08-29 --n-days 7"
+run_command_sha256 = ""
+status = "planned"
+status_token = "PLANNED"
+title = "Axis B lag-depth sweep d=4,6,8,12 (plan P6A.S2.T2.3)"

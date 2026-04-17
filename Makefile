@@ -1201,6 +1201,27 @@ ref-audit:
 ref-audit-strict:
 	python3 scripts/check_refs.py --strict docs/latex/heliosphere/refs_heliosphere.bib
 
+# ===== Ablation campaign targets (Phase 2, plan P6A.S2) ======================
+# All binaries read from data/external/themis/ (cached) and write JSON to
+# data/output/heliosphere/ablations/.  Run ablation-all for the full campaign.
+
+ablation-baseline-l2:
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin heliosphere-l2-delay-baseline -- --start-date 2016-08-29 --n-days 7
+
+ablation-baseline-random:
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin heliosphere-random-trilinear -- --start-date 2016-08-29 --n-days 7 --n-draws 100 --base-seed 1000
+
+ablation-axis-a:
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin heliosphere-r16-ablation -- --start-date 2016-08-29 --n-days 7
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin heliosphere-r64-ablation -- --start-date 2016-08-29 --n-days 7
+
+ablation-axis-b:
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin heliosphere-lag-depth-sweep -- --start-date 2016-08-29 --n-days 7
+
+ablation-baselines: ablation-baseline-l2 ablation-baseline-random
+
+ablation-all: ablation-baselines ablation-axis-a ablation-axis-b
+
 registry-strict-toml-batch3-build:
 	$(CARGO_ENV) cargo build --profile release-gate -p gororoba_cli_data --bin integrity-resolution
 	$(REPO_CARGO_TARGET_DIR)/release-gate/integrity-resolution --repo-root .
