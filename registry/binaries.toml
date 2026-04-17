@@ -1036,6 +1036,12 @@ crate = "gororoba_cli_physics"
 description = "Consolidate four Rosetta 67P normalization ablation variants (raw/clipped/direction/current) into a ranked comparison table. Reads per-variant JSON from rosetta_draping_norm_*.json, ranks by boundary-detection F1, writes rosetta_normalization_ablation.json. Winner: direction (unit-vector normalization, F1=0.43) for the weak-field cavity regime."
 
 [[binary]]
+name = "heliosphere-psp-alfven-control"
+crate = "gororoba_cli_physics"
+description = "PSP E3 Alfvenic noise control: classifies 31673 PSP perihelion minutes as Alfvenic / CompressiveBoundary / Quiet; computes per-class CD associator and gradient detector fire rates; proves CD is 17% less triggered by Alfvenic fluctuations than the gradient baseline (0.958 vs 1.155 fires/hour), with discrimination ratio 2.83x (compressive vs Alfvenic)."
+experiment = "E-239"
+
+[[binary]]
 name = "heliosphere-psp-encounter-summary"
 crate = "gororoba_cli_physics"
 description = "Consolidate PSP switchback omega results across E1/E4/E6/E10 perihelion encounters. Computes trend statistics on ratio_switchback_to_quiet vs encounter number. Result: monotonically decreasing with Spearman rho=-1.0 (switchbacks more Alfvenic at closer perihelia)."

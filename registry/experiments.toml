@@ -6392,3 +6392,22 @@ run_command_sha256 = ""
 status = "active"
 status_token = "ACTIVE"
 title = "FTE case-study classification: 87.2% of extra CD detections are topology-positive (C-1630)"
+
+[[experiment]]
+id = "E-239"
+input = "PSP FIELDS L2 MAG RTN 1-min HAPI CSV, encounter E3 (2020-01-20..2020-02-10, 31673 minutes, 22 days); cached in data/external/psp_fields/"
+input_path_refs = [
+    "data/external/psp_fields/psp_fields_mag_20200120_20200127.csv",
+    "data/external/psp_fields/psp_fields_mag_20200128_20200204.csv",
+    "data/external/psp_fields/psp_fields_mag_20200205_20200210.csv",
+]
+lineage_id = "XL-239"
+method = "heliosphere-psp-alfven-control: parse E3 at 1-min resolution; classify each minute via +-5 min sliding window into Alfvenic (Br-reversal OR rotation>=20deg, delta_B/|B|<0.25), CompressiveBoundary (delta_B/|B|>=0.30 AND rotation>=15deg), or Quiet; run 32D Takens embedding + CD associator (gap-discarded: 6 windows); run |B|-gradient+rotation baseline; compute per-class fire rates (fires/hour) and discrimination ratio (C-1631, C-1632)."
+output = ["data/output/heliosphere/ablations/psp_alfven_control.json"]
+output_path_refs = ["data/output/heliosphere/ablations/psp_alfven_control.json"]
+reproducibility_class = "deterministic"
+run = "cargo run --release --bin heliosphere-psp-alfven-control -- --start-date 2020-01-20 --end-date 2020-02-10"
+run_command_sha256 = ""
+status = "active"
+status_token = "ACTIVE"
+title = "PSP E3 Alfvenic noise control: CD associator less susceptible than gradient to Alfvenic contamination (C-1631/C-1632)"

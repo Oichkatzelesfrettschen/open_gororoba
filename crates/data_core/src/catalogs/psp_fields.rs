@@ -8,6 +8,7 @@
 //! Fetch logic lives in `psp_fields_fetch`.
 
 use crate::parse::{parse_hapi_spacephysics_f64_or_nan, parse_hapi_time_to_ydh};
+use chrono::{DateTime, Datelike, Timelike, Utc};
 use csv::ReaderBuilder;
 use std::collections::BTreeMap;
 
@@ -88,6 +89,91 @@ pub fn parse_psp_fields_hapi_csv(content: &str) -> Vec<PspFieldsMagRecord> {
             }
         })
         .collect()
+}
+
+// ============================================================================
+// Minute-resolution record and parser
+// ============================================================================
+
+/// One minute of PSP FIELDS L2 MAG RTN data (PSP_FLD_L2_MAG_RTN_1MIN).
+///
+/// Unlike `PspFieldsMagRecord` (which averages sub-minute samples to hourly),
+/// this preserves each 1-minute row without accumulation.  Used by the
+/// Alfvenic-control experiment (E-239) which needs minute-level timestamps to
+/// classify windows and run Takens-delay embeddings.
+#[derive(Debug, Clone)]
+pub struct PspFieldsMagMinuteRecord {
+    pub year: u16,
+    pub doy: u16,
+    pub hour: u8,
+    pub minute: u8,
+    /// Elapsed hours from first record; set to 0.0 by the parser, caller fills.
+    pub elapsed_hours: f64,
+    pub br: f64,
+    pub bt: f64,
+    pub bn: f64,
+    pub b_magnitude: f64,
+}
+
+/// Parse a `PSP_FLD_L2_MAG_RTN_1MIN` HAPI CSV preserving minute resolution.
+///
+/// Each valid row becomes exactly one `PspFieldsMagMinuteRecord`.  No hourly
+/// accumulation is performed.  `elapsed_hours` is set to 0.0 and must be
+/// recomputed by the caller relative to a reference time.
+pub fn parse_psp_fields_hapi_csv_minutes(content: &str) -> Vec<PspFieldsMagMinuteRecord> {
+    let mut reader = ReaderBuilder::new()
+        .has_headers(true)
+        .from_reader(content.as_bytes());
+    let headers = match reader.headers() {
+        Ok(h) => h.clone(),
+        Err(_) => return Vec::new(),
+    };
+    let br_col = headers
+        .iter()
+        .position(|v| matches!(v, "psp_fld_l2_mag_RTN_0" | "psp_fld_l2_mag_RTN_1min_0"));
+    let bt_col = headers
+        .iter()
+        .position(|v| matches!(v, "psp_fld_l2_mag_RTN_1" | "psp_fld_l2_mag_RTN_1min_1"));
+    let bn_col = headers
+        .iter()
+        .position(|v| matches!(v, "psp_fld_l2_mag_RTN_2" | "psp_fld_l2_mag_RTN_1min_2"));
+    let (Some(br_col), Some(bt_col), Some(bn_col)) = (br_col, bt_col, bn_col) else {
+        return Vec::new();
+    };
+    let mut out = Vec::new();
+    for record in reader.records().flatten() {
+        let Some(time_str) = record.get(0) else {
+            continue;
+        };
+        // Parse RFC3339 timestamp; extract year/doy/hour/minute.
+        let Ok(dt) = DateTime::parse_from_rfc3339(time_str.trim()) else {
+            continue;
+        };
+        let utc: DateTime<Utc> = dt.with_timezone(&Utc);
+        let year = utc.year() as u16;
+        let doy = utc.ordinal() as u16;
+        let hour = utc.hour() as u8;
+        let minute = utc.minute() as u8;
+        let br = parse_hapi_spacephysics_f64_or_nan(record.get(br_col).unwrap_or(""));
+        let bt = parse_hapi_spacephysics_f64_or_nan(record.get(bt_col).unwrap_or(""));
+        let bn = parse_hapi_spacephysics_f64_or_nan(record.get(bn_col).unwrap_or(""));
+        if !br.is_finite() || !bt.is_finite() || !bn.is_finite() {
+            continue;
+        }
+        let b_magnitude = (br * br + bt * bt + bn * bn).sqrt();
+        out.push(PspFieldsMagMinuteRecord {
+            year,
+            doy,
+            hour,
+            minute,
+            elapsed_hours: 0.0,
+            br,
+            bt,
+            bn,
+            b_magnitude,
+        });
+    }
+    out
 }
 
 #[cfg(test)]
