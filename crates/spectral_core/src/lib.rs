@@ -12,6 +12,7 @@
 //! - Caffarelli & Silvestre (2007): Extension problem for fractional Laplacian
 
 pub mod boundary_detectors;
+pub mod boundary_metrics;
 pub mod cd_embedding;
 pub mod chsh_betti_bridge;
 pub mod coherence;
