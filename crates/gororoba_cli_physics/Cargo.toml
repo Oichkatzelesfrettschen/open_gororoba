@@ -412,6 +412,10 @@ name = "heliosphere-lag-depth-sweep"
 path = "src/bin/heliosphere_lag_depth_sweep.rs"
 
 [[bin]]
+name = "heliosphere-random-trilinear-sparse"
+path = "src/bin/heliosphere_random_trilinear_sparse.rs"
+
+[[bin]]
 name = "heliosphere-fte-case-study"
 path = "src/bin/heliosphere_fte_case_study.rs"
 

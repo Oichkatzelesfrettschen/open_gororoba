@@ -10947,3 +10947,19 @@ statement = "Axis B lag-depth sweep: F1 at d=4,6,8,12 lags (4-channel, 1min tau,
 status = "Pending"
 status_note = "PENDING 2026-04-17: E-256 registered. Run heliosphere-lag-depth-sweep to populate."
 where_stated = "crates/gororoba_cli_physics/src/bin/heliosphere_lag_depth_sweep.rs"
+
+[[claim]]
+id = "C-1649"
+last_verified = ""
+statement = "Sparsity-matched random trilinear baseline F1 distribution (E-252, 100 draws, dim=32). Reports mean, std, min, max. Tests whether CD zero-pattern alone (without specific coefficient values) explains detection performance. Pending E-252 execution."
+status = "Pending"
+status_note = "PENDING 2026-04-17: E-252 registered. Run heliosphere-random-trilinear-sparse to populate."
+where_stated = "crates/gororoba_cli_physics/src/bin/heliosphere_random_trilinear_sparse.rs"
+
+[[claim]]
+id = "C-1650"
+last_verified = ""
+statement = "Pre-registered prediction P2b: CD R32 F1 = 0.601 vs sparsity-matched-random mean+2sigma (E-252). If CD > mean+2sigma: specific CD coefficient values matter beyond zero-pattern. If CD <= mean+2sigma: zero-pattern is sufficient. Determines which aspect of CD algebra structure drives detection performance. Pending E-252 execution."
+status = "Pending"
+status_note = "PENDING 2026-04-17: E-252 registered. Run heliosphere-random-trilinear-sparse then compare to C-1629 (CD R32 F1). Update with comparison result."
+where_stated = "docs/ablation_preregistration.md"
