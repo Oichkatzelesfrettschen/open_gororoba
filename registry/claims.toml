@@ -10899,3 +10899,11 @@ statement = "Block-bootstrap 95% CI for general-interval THEMIS F1 (E-247). Enab
 status = "Pending"
 status_note = "PENDING 2026-04-17: E-249 registered (heliosphere-bootstrap-f1 on E-247 output)."
 where_stated = "crates/gororoba_cli_physics/src/bin/heliosphere_bootstrap_f1.rs"
+
+[[claim]]
+id = "C-1643"
+last_verified = ""
+statement = "L2-delay change-point F1 on THEMIS-A Staples+2020 SC catalog (2016-08-29..2016-09-04, E-253). This is the P1 pre-registered baseline: CD R32 must exceed this F1 by >= 0.05. Score: ||v_t - v_{t-1}||_2 for 32D Takens delay vectors. MAD_SCALE_FACTOR=1.5. Pending E-253 execution."
+status = "Pending"
+status_note = "PENDING 2026-04-17: E-253 registered (heliosphere-l2-delay-baseline). Run to populate."
+where_stated = "crates/gororoba_cli_physics/src/bin/heliosphere_l2_delay_baseline.rs"

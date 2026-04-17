@@ -392,6 +392,10 @@ name = "heliosphere-themis-general-benchmark"
 path = "src/bin/heliosphere_themis_general_benchmark.rs"
 
 [[bin]]
+name = "heliosphere-l2-delay-baseline"
+path = "src/bin/heliosphere_l2_delay_baseline.rs"
+
+[[bin]]
 name = "heliosphere-fte-case-study"
 path = "src/bin/heliosphere_fte_case_study.rs"
 

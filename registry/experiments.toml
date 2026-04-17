@@ -6,7 +6,7 @@
 [experiments]
 authoritative = true
 deterministic_count = 164
-experiment_count = 226
+experiment_count = 227
 gpu_count = 29
 seeded_count = 46
 status_allowlist = ["active", "deprecated", "planned", "blocked"]
@@ -6567,3 +6567,22 @@ run_command_sha256 = ""
 status = "planned"
 status_token = "PLANNED"
 title = "Block-bootstrap CI for general-benchmark F1 (E-247 supplemental)"
+
+[[experiment]]
+binary = "heliosphere-l2-delay-baseline"
+binary_experiment_declared = "E-253"
+binary_registered = true
+claim_refs = ["C-1643"]
+id = "E-253"
+input = "THEMIS-A FGM HAPI CSV (2016-08-29..2016-09-04, DOY 242-248)."
+input_path_refs = ["data/external/themis/"]
+lineage_id = "XL-253"
+method = "L2-delay change-point baseline. Score: ||v_t - v_{t-1}||_2 for 32D Takens delay vectors with same noise-floor normalization as CD associator. MAD_SCALE_FACTOR=1.5, same as CD binary. Evaluates against Staples+2020 SC catalog. Pre-registered baseline for P1 (CD R32 must exceed L2 F1 by >= 0.05)."
+output = ["data/output/heliosphere/ablations/l2_delay_baseline_eval.json"]
+output_path_refs = ["data/output/heliosphere/ablations/l2_delay_baseline_eval.json"]
+reproducibility_class = "deterministic"
+run = "cargo run --release --bin heliosphere-l2-delay-baseline -- --start-date 2016-08-29 --n-days 7"
+run_command_sha256 = ""
+status = "planned"
+status_token = "PLANNED"
+title = "L2-delay change-point baseline (ablation pre-registration P1, plan P6A.S2.T2.6)"
