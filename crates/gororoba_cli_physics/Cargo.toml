@@ -416,6 +416,14 @@ name = "heliosphere-random-trilinear-sparse"
 path = "src/bin/heliosphere_random_trilinear_sparse.rs"
 
 [[bin]]
+name = "heliosphere-commutator-baseline"
+path = "src/bin/heliosphere_commutator_baseline.rs"
+
+[[bin]]
+name = "heliosphere-pca-variance-baseline"
+path = "src/bin/heliosphere_pca_variance_baseline.rs"
+
+[[bin]]
 name = "heliosphere-fte-case-study"
 path = "src/bin/heliosphere_fte_case_study.rs"
 
