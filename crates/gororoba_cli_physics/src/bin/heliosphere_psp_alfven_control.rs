@@ -2,14 +2,17 @@
 //!
 //! WHY: JGR Major Comment 2 asks whether the CD associator fires spuriously on
 //! high-amplitude Alfven waves.  A pure Alfven wave is a rotational fluctuation
-//! with constant |B| (delta_B/|B| ~ 0).  PSP perihelion encounter E3 is the
-//! canonical high-Alfvenicity environment in the inner heliosphere.  If the CD
-//! associator fires LESS in Alfvenic intervals than in compressive-boundary
-//! intervals, it proves the detector is selective for topological boundaries,
+//! with constant |B| (delta_B/|B| ~ 0).  PSP perihelion encounter E4
+//! (perihelion 2020-01-29 at ~27.9 Rs) is a high-Alfvenicity environment in
+//! the inner heliosphere with frequent switchbacks.  Note: E4 is at 27.9 Rs
+//! vs E3 (2019-09-01 perihelion) at 35.7 Rs -- the Alfvenicity regime and
+//! switchback rate differ; see Bandyopadhyay et al. (2022) for E4 specifics.
+//! If the CD associator fires LESS in Alfvenic intervals than in compressive-
+//! boundary intervals, it proves selectivity for topological boundaries,
 //! not MHD wave turbulence.
 //!
-//! WHAT: Downloads (or reads cached) PSP FIELDS L2 1-min MAG RTN data for E3
-//! (2020-01-20 to 2020-02-10, ~30 days, ~43200 minutes).  Classifies each
+//! WHAT: Downloads (or reads cached) PSP FIELDS L2 1-min MAG RTN data for E4
+//! (2020-01-20 to 2020-02-10, 31,673 usable minutes; 7 fill-gap minutes excluded).  Classifies each
 //! minute window as Alfvenic, CompressiveBoundary, or Quiet using delta_B/|B|
 //! and field-rotation criteria.  Runs the 32D CD associator and the
 //! |B|-gradient+rotation baseline.  Computes per-class fire rates and the

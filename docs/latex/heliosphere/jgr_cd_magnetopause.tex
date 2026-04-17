@@ -86,7 +86,7 @@ $\mathrm{F1}=0.378$ for a gradient-magnitude baseline ($+59\%$).
 Performance degrades monotonically with lag ($\mathrm{F1}=0.431$ at $\tau=2$ min,
 collapse at $\tau \geq 5$ min), confirming that 1-minute sampling matches the
 5--20 minute physical crossing timescale.
-An Alfvenic control experiment on Parker Solar Probe Encounter 3
+An Alfvenic control experiment on Parker Solar Probe Encounter 4
 (2020-01-20 to 2020-02-10, $n=31{,}673$ minutes) shows that the CD associator
 fires $2.83\times$ more frequently during compressive boundary intervals than
 during Alfvenic intervals, demonstrating topological selectivity.
@@ -244,9 +244,20 @@ while preserving local field geometry.
 We evaluate four embedding lags ($\tau = 1, 2, 5, 10$~min) against the
 Staples et al.\ \citeyearpar{staples2020} THEMIS-A \citep{angelopoulos2008}
 magnetopause crossing catalog.
+The Staples et al.\ (2020) catalog is restricted to sudden-commencement-associated
+crossings; this selection biases the benchmark toward sharp, large-amplitude
+transitions that are the easiest regime for any detector.
+A complementary general-interval benchmark on non-SC-filtered THEMIS intervals
+is presented in Section~3.2.
 The evaluation interval is 2016-08-29 to 2016-09-05 (7 days, $n = 7{,}968$
-FGM \citep{auster2008} minutes), containing 224 labeled crossing events.  A detection within
-$\pm 5$~min of a catalog event counts as a true positive.
+FGM \citep{auster2008} minutes), containing 224 labeled crossing events.
+Precision is computed at detection level: a detection is a true positive if it
+falls within $\pm 5$~min of any catalog event.
+Recall is computed at event level: an event is recalled if any detection fires
+within $\pm 5$~min.
+Under these multi-match semantics, multiple detections near a single event each
+contribute independently to the precision denominator; one detection may recall
+at most one event per firing.
 The gradient-magnitude baseline uses the same threshold logic applied to
 $\|\nabla\bvec\|$ computed from first-difference field components.
 
@@ -298,7 +309,7 @@ Table~\ref{tab:tau_sweep} summarizes the results quantitatively.
 \end{table}
 
 %% ===================================================================
-%% 4. ALFVENIC CONTROL ANALYSIS (PSP E3)
+%% 4. ALFVENIC CONTROL ANALYSIS (PSP E4)
 %% ===================================================================
 \section{Alfvenic Control Analysis}
 \label{sec:alfven_control}
@@ -307,9 +318,10 @@ Table~\ref{tab:tau_sweep} summarizes the results quantitatively.
 
 To test whether the CD associator is spuriously triggered by large-amplitude
 Alfvenic fluctuations rather than true boundary topology, we classify each
-1-minute interval from Parker Solar Probe \citep{fox2016} Encounter 3
+1-minute interval from Parker Solar Probe \citep{fox2016} Encounter 4
 FIELDS \citep{bale2016} 1-min RTN magnetometer data
-(2020-01-20 to 2020-02-10, $n = 31{,}673$ minutes) into one of three classes
+(2020-01-20 to 2020-02-10, perihelion 2020-01-29 at $\approx 27.9\,R_\odot$;
+$n = 31{,}673$ minutes, seven excluded due to fill-value data gaps) into one of three classes
 using a $\pm 5$-minute sliding window:
 
 \begin{description}
@@ -328,7 +340,7 @@ and gradient fire rates (detections per hour) by window class.
   \centering
   \input{figures/fig_alfven_control.tex}
   \caption{CD associator and gradient fire rates by window class for PSP
-    Encounter 3 (2020-01-20 -- 2020-02-10, 31{,}673 minutes).
+    Encounter 4 (2020-01-20 -- 2020-02-10, 31{,}673 minutes).
     The CD associator fires $2.83\times$ more frequently during compressive
     intervals than during Alfvenic intervals, demonstrating topological
     selectivity rather than amplitude sensitivity.}
@@ -337,7 +349,7 @@ and gradient fire rates (detections per hour) by window class.
 
 \begin{table}[htbp]
   \centering
-  \caption{PSP E3 fire rates by window class (2020-01-20 to 2020-02-10).}
+  \caption{PSP E4 fire rates by window class (2020-01-20 to 2020-02-10).}
   \label{tab:alfven_control}
   \begin{tabular}{lrrccc}
     \toprule
@@ -365,7 +377,7 @@ sub-Alfvenic background topology signal in the pristine solar wind.
 This quiet-interval population is examined in Section~\ref{sec:enrichment}.
 
 %% ===================================================================
-%% 5. MICRO-SWITCHBACK CORRELATION (PSP E3)
+%% 5. MICRO-SWITCHBACK CORRELATION (PSP E4)
 %% ===================================================================
 \section{Micro-Switchback Correlation}
 \label{sec:enrichment}
@@ -392,7 +404,7 @@ A minute is ``near a micro-rotation'' if any of the six minutes in a
 $\pm 3$-min neighborhood contains a micro-rotation event.
 
 We apply this to the 120 quiet CD fires and to all 23{,}158 quiet minutes
-in PSP E3.
+in PSP E4.
 
 \subsection{Results}
 
@@ -415,7 +427,7 @@ Figure~\ref{fig:enrichment} and Table~\ref{tab:enrichment} summarize the results
 
 \begin{table}[htbp]
   \centering
-  \caption{PSP E3 micro-switchback enrichment (quiet-interval CD fires only).}
+  \caption{PSP E4 micro-switchback enrichment (quiet-interval CD fires only).}
   \label{tab:enrichment}
   \begin{tabular}{lrr}
     \toprule
@@ -535,7 +547,7 @@ $+59\%$ F1 improvement over the gradient baseline.
 
 Second, the 32-dimensional associator is sensitive to topological events that
 are \emph{invisible} in $\mathbb{R}^3$.  The $32.5\%$ rotation-free quiet fires
-in PSP E3 are the clearest evidence: after the Alfvenic classifier has removed
+in PSP E4 are the clearest evidence: after the Alfvenic classifier has removed
 all $B_r$-reversal minutes, and after restricting to minutes with no
 $\geq 15^\circ$ inter-minute rotation, the CD associator still fires.
 This population can only arise from intra-minute structure: field rotations
@@ -602,12 +614,12 @@ The main findings are:
     1-minute lag matches the 5--20~minute physical magnetopause crossing
     timescale.
 
-  \item PSP E3 Alfvenic control analysis yields a $2.83\times$
+  \item PSP E4 Alfvenic control analysis yields a $2.83\times$
     compressive-to-Alfvenic fire-rate ratio, demonstrating that the
     CD associator responds to boundary topology rather than Alfvenic
     amplitude fluctuations.
 
-  \item Quiet-interval CD fires on PSP E3 are $1.72\times$ enriched near
+  \item Quiet-interval CD fires on PSP E4 are $1.72\times$ enriched near
     micro-rotation events ($\geq 15^\circ/\mathrm{min}$), but $32.5\%$
     occur with no nearby rotation event -- indicating sensitivity to
     sub-minute topology changes invisible to 3-dimensional rotation measures.
@@ -630,7 +642,7 @@ evidence of this additional topological sensitivity.
 %% ===================================================================
 \section*{Open Research Statement}
 
-THEMIS FGM data were obtained from the HAPI server \citep{bonnell2019}
+THEMIS FGM data were obtained from the HAPI server \citep{weigel2021}
 (\url{http://cdaweb.gsfc.nasa.gov/hapi}) using the
 \texttt{THX\_L2\_FGS} product.
 MMS FGM SRVY L2 data were obtained from the MMS SDC
