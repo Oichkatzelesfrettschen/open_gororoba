@@ -1727,6 +1727,12 @@ latex:
 	cd docs/latex && TEXINPUTS=.:$(CURDIR)/papers/bib/: BIBINPUTS=$(CURDIR)/papers/bib/: latexmk -pdf -Werror -interaction=nonstopmode -halt-on-error -shell-escape -output-directory=out llm_scaffold_paper.tex
 	cd docs/latex && TEXINPUTS=.:$(CURDIR)/papers/bib/: BIBINPUTS=$(CURDIR)/papers/bib/: latexmk -pdf -Werror -interaction=nonstopmode -halt-on-error -output-directory=out MASTER_SYNTHESIS.tex
 	cd docs/latex && latexmk -pdf -Werror -interaction=nonstopmode -halt-on-error -output-directory=out MATHEMATICAL_FORMALISM.tex
+	$(MAKE) latex-heliosphere
+
+latex-heliosphere:
+	@command -v latexmk >/dev/null 2>&1 || { echo "ERROR: latexmk not found"; exit 1; }
+	@mkdir -p docs/latex/heliosphere/out
+	cd docs/latex/heliosphere && latexmk -pdf -interaction=nonstopmode -halt-on-error -output-directory=out jgr_cd_magnetopause.tex
 
 # ---- Quantum Docker ----
 

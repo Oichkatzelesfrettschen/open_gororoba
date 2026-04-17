@@ -1,0 +1,73 @@
+%% Figure: PSP micro-switchback enrichment analysis
+%% Data source: data/output/heliosphere/ablations/psp_switchback_correlation.json
+%% Experiment: E-241  |  Claim: C-1634
+%%
+%% Quiet-interval CD fires are enriched near consecutive B-vector rotation events
+%% (micro-rotations >= 15 deg/min) relative to the background rate.
+%%
+%% Key numbers:
+%%   Background: 9077/23158 quiet minutes near micro-rotation = 39.2%
+%%   CD fires:   81/120 quiet CD fires near micro-rotation   = 67.5%
+%%   Enrichment factor: 1.72x
+%%   Rotation-free fires: 39/120 = 32.5%
+%%
+%% Period: 2020-01-20 to 2020-02-10 (PSP E3)
+%% Micro-rotation threshold: 15 deg consecutive  |  Neighborhood: +-3 min
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{xcolor}
+
+\definecolor{OIblue}{RGB}{0,114,178}
+\definecolor{OIorange}{RGB}{230,159,0}
+\definecolor{OIgray}{RGB}{153,153,153}
+
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[
+    ybar,
+    bar width=28pt,
+    width=9cm,
+    height=7.5cm,
+    enlarge x limits=0.5,
+    ylabel={Fraction near micro-rotation (\%)},
+    ymin=0, ymax=85,
+    ytick={0,10,20,30,40,50,60,70,80},
+    yticklabel style={font=\small},
+    symbolic x coords={{Background\\ (quiet minutes)}, {Quiet CD fires}},
+    xtick=data,
+    xticklabel style={font=\small, align=center},
+    legend style={at={(0.98,0.98)}, anchor=north east, font=\small,
+                  draw=none, fill=none},
+    grid=major,
+    grid style={gray!20},
+    title style={font=\small\bfseries},
+    title={PSP E3 enrichment near micro-rotations ($\geq$15\textdegree/min, $\pm$3 min window)},
+    nodes near coords,
+    nodes near coords align={vertical},
+    every node near coord/.append style={font=\small\bfseries},
+]
+
+\addplot[fill=OIgray!70, draw=OIgray] coordinates {
+    ({Background\\ (quiet minutes)}, 39.2)
+};
+
+\addplot[fill=OIblue!80, draw=OIblue] coordinates {
+    ({Quiet CD fires}, 67.5)
+};
+
+%% Enrichment annotation
+\node[font=\small\bfseries, text=OIblue!80!black,
+      align=center, draw=OIblue!40, rounded corners=2pt,
+      fill=OIblue!8, inner sep=3pt]
+    at (axis cs:{Quiet CD fires}, 80)
+    {$1.72\times$ enriched};
+
+%% Rotation-free annotation
+\node[font=\scriptsize, text=gray, align=center]
+    at (axis cs:{Quiet CD fires}, 55)
+    {(32.5\% rotation-free)};
+
+\end{axis}
+\end{tikzpicture}
+\end{document}
