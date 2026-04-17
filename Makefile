@@ -1227,9 +1227,16 @@ ablation-axis-a:
 ablation-axis-b:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin heliosphere-lag-depth-sweep -- --start-date 2016-08-29 --n-days 7
 
+ablation-window-sensitivity:
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin heliosphere-window-sensitivity -- --start-date 2016-08-29 --n-days 7
+
+ablation-mad-decorrelation:
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin heliosphere-themis-staples-labeled -- --start-date 2016-08-29 --n-days 7
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin heliosphere-themis-staples-labeled -- --start-date 2016-08-29 --n-days 7 --decorrelated-mad --out-json data/output/heliosphere/ablations/themis_staples_labeled_decorrelated_mad_eval.json
+
 ablation-baselines: ablation-baseline-l2 ablation-baseline-random ablation-baseline-sparse ablation-baseline-commutator ablation-baseline-pca
 
-ablation-all: ablation-baselines ablation-axis-a ablation-axis-b
+ablation-all: ablation-baselines ablation-axis-a ablation-axis-b ablation-window-sensitivity ablation-mad-decorrelation
 
 registry-strict-toml-batch3-build:
 	$(CARGO_ENV) cargo build --profile release-gate -p gororoba_cli_data --bin integrity-resolution

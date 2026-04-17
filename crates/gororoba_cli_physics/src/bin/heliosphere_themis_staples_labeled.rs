@@ -113,6 +113,18 @@ struct Cli {
     #[arg(long, default_value_t = 0.5)]
     bmag_noise_floor: f64,
 
+    /// Use preceding disjoint 15-minute window for MAD threshold estimation (M-5/Phase 4.10).
+    /// Default: false (global std over entire series, matching paper baseline).
+    /// When enabled: threshold at index i is MAD_SCALE_FACTOR * std of scores in
+    /// [i - (trans_window + mad_lookback_minutes), i - trans_window].
+    #[arg(long, default_value_t = false)]
+    decorrelated_mad: bool,
+
+    /// Lookback window (minutes) for decorrelated MAD estimation.
+    /// Only used when --decorrelated-mad is set.
+    #[arg(long, default_value_t = 15)]
+    mad_lookback_minutes: usize,
+
     /// Data cache root directory.
     #[arg(long, default_value = "data/external")]
     data_dir: PathBuf,
@@ -592,6 +604,7 @@ fn main() -> Result<()> {
     let mut cd_hours: Vec<f64> = Vec::new();
 
     if associators.len() > trans_window * 2 {
+        // Global std for paper-baseline threshold (decorrelated_mad=false).
         let global_mean: f64 = associators.iter().sum::<f64>() / associators.len() as f64;
         let global_std: f64 = {
             let var = associators
@@ -601,10 +614,31 @@ fn main() -> Result<()> {
                 / associators.len() as f64;
             var.sqrt()
         };
-        let threshold = global_std * MAD_SCALE_FACTOR;
+        let global_threshold = global_std * MAD_SCALE_FACTOR;
+
+        let mad_lookback = cli.mad_lookback_minutes;
+
         let half = trans_window;
         let mut last_trans_idx: Option<usize> = None;
         for i in half..associators.len().saturating_sub(half) {
+            // Threshold: global (paper baseline) or local preceding-window (Phase 4.10).
+            let threshold = if cli.decorrelated_mad && i >= half + mad_lookback {
+                // Preceding disjoint window: [i - half - mad_lookback, i - half)
+                let lb_end = i.saturating_sub(half);
+                let lb_start = lb_end.saturating_sub(mad_lookback);
+                if lb_end > lb_start {
+                    let lb_slice = &associators[lb_start..lb_end];
+                    let lb_mean: f64 = lb_slice.iter().sum::<f64>() / lb_slice.len() as f64;
+                    let lb_std: f64 = (lb_slice.iter().map(|&a| (a - lb_mean).powi(2)).sum::<f64>()
+                        / lb_slice.len() as f64).sqrt();
+                    lb_std * MAD_SCALE_FACTOR
+                } else {
+                    global_threshold
+                }
+            } else {
+                global_threshold
+            };
+
             let pre_mean: f64 =
                 associators[i.saturating_sub(half)..i].iter().sum::<f64>() / half as f64;
             let post_mean: f64 = associators[i..(i + half).min(associators.len())]
