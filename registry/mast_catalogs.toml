@@ -31,7 +31,7 @@ authoritative = true
 status = "active"
 status_token = "ACTIVE"
 schema_version = 1
-mission_count = 25
+mission_count = 30
 
 # --- Active missions --------------------------------------------
 
@@ -291,4 +291,59 @@ status = "ground_based"
 instruments = ["SDSS-camera", "BOSS", "eBOSS", "MaNGA", "APOGEE"]
 query_base_url = ""
 owner_fetcher = "crates/data_core/src/catalogs/sdss_fetch.rs"
+last_verified = "2026-04-17"
+
+# --- Added 2026-04-17 after first mast-verify drift run ----------
+# These appear in the public MAST directory but were missed during
+# initial curation. Kept separate so future curation passes are
+# obvious from the section header.
+
+[[mission]]
+mission = "hsla"
+full_title = "Hubble Spectroscopic Legacy Archive"
+operational_years = "1990-present (HST-derived)"
+status = "legacy"
+instruments = ["COS", "STIS"]
+query_base_url = ""
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "astro"
+full_title = "ASTRO-1/-2 shuttle mission parent grouping"
+operational_years = "1990,1995"
+status = "shuttle_legacy_parent"
+instruments = ["HUT", "UIT", "WUPPE", "HPOL"]
+query_base_url = ""
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "orfeus"
+full_title = "ORFEUS-I/II shuttle mission parent grouping"
+operational_years = "1993,1996"
+status = "shuttle_legacy_parent"
+instruments = ["BEFS", "IMAPS", "TUES"]
+query_base_url = ""
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "fims_spear"
+full_title = "Far-ultraviolet IMaging Spectrograph / Spectroscopy of Plasma Evolution from Astrophysical Radiation"
+operational_years = "2003-2009"
+status = "legacy"
+instruments = ["FIMS/SPEAR"]
+query_base_url = ""
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "dss_gsc"
+full_title = "Digitized Sky Survey / Guide Star Catalog"
+operational_years = "1983-present"
+status = "legacy"
+instruments = []
+query_base_url = ""
+owner_fetcher = ""
 last_verified = "2026-04-17"

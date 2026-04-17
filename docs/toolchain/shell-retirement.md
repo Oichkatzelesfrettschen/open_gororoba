@@ -18,12 +18,14 @@ Task reference: P1.S4.T1 (inventory) and P1.S4.T2 (classify).
 
 ### Category A -- DELETE (trivial, replaceable by git commands)
 
-| File | Lines | Decision | Rationale |
-|---|---|---|---|
-| `bin/do_commit.sh` | 2 | DELETE | Hardcoded commit message; replaceable by `git commit -m "..."`. |
-| `bin/temp_commit.sh` | 3 | DELETE | Identical intent to do_commit.sh; obsoleted. |
-| `bin/build_fix.sh` | 4 | DELETE | One-line `cargo build` redirect; trivial. |
-| `bin/check_gemini.sh` | 14 | DELETE | Debug helper from a past investigation; no ongoing use. |
+Status: COMPLETE (2026-04-17). All four scripts removed from `bin/`.
+
+| File | Lines | Decision | Rationale | Status |
+|---|---|---|---|---|
+| `bin/do_commit.sh` | 2 | DELETE | Hardcoded commit message; replaceable by `git commit -m "..."`. | DELETED 2026-04-17 |
+| `bin/temp_commit.sh` | 3 | DELETE | Identical intent to do_commit.sh; obsoleted. | DELETED 2026-04-17 |
+| `bin/build_fix.sh` | 4 | DELETE | One-line `cargo build` redirect; trivial. | DELETED 2026-04-17 |
+| `bin/check_gemini.sh` | 14 | DELETE | Debug helper from a past investigation; no ongoing use. | DELETED 2026-04-17 |
 
 ### Category B -- PORT TO MAKEFILE TARGET
 

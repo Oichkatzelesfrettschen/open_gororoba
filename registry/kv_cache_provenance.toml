@@ -19,9 +19,20 @@
 #   - Two directories (real_kv_cache_llama3b, real_kv_cache_phi2)
 #     are 4 KB = zero tensor files (failed extractions).
 #
-# Action items (tracked here, not yet scheduled):
-#   A1. Restore the extractor as a Rust binary (project policy:
-#       "Rust over Python always; Python only as thin data bridge").
+# Action items:
+#   A1. PARTIAL 2026-04-17: Rust extractor landed at
+#       crates/gororoba_cli_data/src/bin/extract_real_kv_cache.rs
+#       with two modes.
+#         * --mode synthetic: DETERMINISTIC SplitMix64 + Box-Muller
+#           Gaussian generator producing the exact binary format
+#           the turboquant-real-kv consumer expects. No external
+#           deps; reproducible across machines via `--seed`.
+#         * --mode huggingface-hook: prints the PyO3 integration
+#           contract + Python reference snippet. Full production
+#           extractor is a follow-up (candle or tch-rs not yet in
+#           workspace; PyO3+transformers is the documented path).
+#       Remaining: implement the PyO3 production extractor and
+#       link from the `extractor` fields below.
 #   A2. Re-run extraction for llama3b + phi2 or archive those dirs.
 #   A3. Record the exact prompt that generated each tensor set.
 

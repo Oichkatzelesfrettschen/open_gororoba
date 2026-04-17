@@ -3,11 +3,11 @@
 # ID format: EX-XXXX. Managed by the governance gate (crossrefs + dataset-label-aliases checks).
 
 [external_csv_datasets]
-updated = "2026-04-15"
+updated = "2026-04-17"
 authoritative = true
 status = "active"
 status_token = "ACTIVE"
-dataset_count = 10
+dataset_count = 13
 
 [[dataset]]
 id = "EX-0001"
@@ -67,4 +67,28 @@ status = "active"
 id = "EX-0028"
 description = "THEMIS magnetopause crossing list v2 (Paschmann et al. 2018 / SSCWeb compilation). Curated list of THEMIS-A/D/E magnetopause crossings with time tags and plasma parameters used in E-227 CD-domain survey."
 source = "data/external/crossing_lists/themis_mp_crossings_v2.txt"
+status = "active"
+
+# --- 2026-04-17: seed entries for P6A.S4.T4 migration ------------
+# Raw external data files cited by experiments' input_path_refs but
+# not previously registered. These receive EX-IDs so the migration
+# binary (experiment-dataset-refs-migrate) can populate dataset_refs
+# on the consuming experiments.
+
+[[dataset]]
+id = "EX-0029"
+description = "Pantheon+ Type Ia supernova compilation with SH0ES Cepheid calibration (Scolnic et al. 2022 ApJ 938 113). 1578 SNe Ia distance moduli + covariance matrix used in E-003 real-cosmo-fit."
+source = "data/external/Pantheon+SH0ES.dat"
+status = "active"
+
+[[dataset]]
+id = "EX-0030"
+description = "GWOSC GWTC-3-confident all-events CSV export. Flattened gravitational-wave event catalog (GWTC-1/2/3 confident entries) consumed by E-008."
+source = "data/external/gwosc_all_events.csv"
+status = "active"
+
+[[dataset]]
+id = "EX-0031"
+description = "DESI DR1 BAO measurements flat-text files (Cobaya mirror). Seven tables of BAO distances/ratios used in E-003 and E-087."
+source = "data/external/desi_bao/"
 status = "active"
