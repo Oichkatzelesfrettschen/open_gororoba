@@ -1,0 +1,294 @@
+# MAST (STScI Mikulski Archive for Space Telescopes) catalog snapshot
+# (plan Phase 6A.S5.T2 -- see docs/toolchain/mast-enumeration-policy.md).
+#
+# Per the policy ADR, this is SCOPED DISCOVERY, not exhaustive
+# enumeration: one row per mission with operational-years and
+# instrument list, hand-curated from the MAST public mission directory
+# at https://archive.stsci.edu/missions-and-data.
+#
+# Drift check: re-read the source URL monthly; update rows if
+# missions appear or retire; a future `mast-verify` binary can do
+# this automatically (compares HTTP response against rows here).
+#
+# Schema:
+#   mission             -- short canonical id (snake_case)
+#   full_title          -- human-readable name
+#   operational_years   -- "YYYY-YYYY" or "YYYY-present"
+#   status              -- "active" | "legacy" | "shuttle_legacy" | "ground_based"
+#   instruments         -- per-mission instrument list (may be empty
+#                          for survey missions without discrete
+#                          instruments). Lists are extensible; new
+#                          instruments appended on drift check.
+#   query_base_url      -- REST endpoint prefix for Mast.Caom.Cone
+#                          queries (optional).
+#   owner_fetcher       -- path to the repo's fetcher module (optional).
+#   last_verified       -- ISO date of most recent directory sync.
+
+[mast_catalogs]
+updated = "2026-04-17"
+source_url = "https://archive.stsci.edu/missions-and-data"
+authoritative = true
+status = "active"
+status_token = "ACTIVE"
+schema_version = 1
+mission_count = 25
+
+# --- Active missions --------------------------------------------
+
+[[mission]]
+mission = "hst"
+full_title = "Hubble Space Telescope"
+operational_years = "1990-present"
+status = "active"
+instruments = ["ACS", "COS", "STIS", "WFC3", "FGS", "NICMOS", "WFPC2", "FOC", "FOS", "GHRS", "HSP"]
+query_base_url = "https://mast.stsci.edu/api/v0/invoke?service=Mast.Caom.Cone"
+owner_fetcher = "crates/data_core/src/catalogs/hst_fetch.rs"
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "jwst"
+full_title = "James Webb Space Telescope"
+operational_years = "2021-present"
+status = "active"
+instruments = ["NIRCam", "NIRSpec", "NIRISS", "MIRI", "FGS/NIRISS"]
+query_base_url = "https://mast.stsci.edu/api/v0/invoke?service=Mast.Caom.Cone"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "tess"
+full_title = "Transiting Exoplanet Survey Satellite"
+operational_years = "2018-present"
+status = "active"
+instruments = ["Camera1", "Camera2", "Camera3", "Camera4"]
+query_base_url = "https://mast.stsci.edu/api/v0/invoke?service=Mast.Caom.Cone"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "roman"
+full_title = "Nancy Grace Roman Space Telescope"
+operational_years = "~2027-planned"
+status = "active"
+instruments = ["WFI", "CGI"]
+query_base_url = ""
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "swiftuvot"
+full_title = "Neil Gehrels Swift Observatory (UVOT instrument)"
+operational_years = "2004-present"
+status = "active"
+instruments = ["UVOT"]
+query_base_url = ""
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "xmm_om"
+full_title = "XMM-Newton Optical Monitor"
+operational_years = "1999-present"
+status = "active"
+instruments = ["OM"]
+query_base_url = ""
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "gaia"
+full_title = "Gaia astrometry mission (MAST auxiliary data)"
+operational_years = "2013-present"
+status = "active"
+instruments = []
+query_base_url = ""
+owner_fetcher = "crates/data_core/src/catalogs/gaia_fetch.rs"
+last_verified = "2026-04-17"
+
+# --- Legacy missions --------------------------------------------
+
+[[mission]]
+mission = "kepler"
+full_title = "Kepler exoplanet survey"
+operational_years = "2009-2013"
+status = "legacy"
+instruments = ["PhotometerCCD"]
+query_base_url = "https://mast.stsci.edu/api/v0/invoke?service=Mast.Caom.Cone"
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "k2"
+full_title = "Kepler second mission (ecliptic campaigns)"
+operational_years = "2014-2018"
+status = "legacy"
+instruments = ["PhotometerCCD"]
+query_base_url = ""
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "iue"
+full_title = "International Ultraviolet Explorer"
+operational_years = "1978-1996"
+status = "legacy"
+instruments = ["SWP", "LWP", "LWR"]
+query_base_url = ""
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "galex"
+full_title = "Galaxy Evolution Explorer"
+operational_years = "2003-2013"
+status = "legacy"
+instruments = ["FUV", "NUV"]
+query_base_url = ""
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "fuse"
+full_title = "Far Ultraviolet Spectroscopic Explorer"
+operational_years = "1999-2007"
+status = "legacy"
+instruments = ["LiF1", "LiF2", "SiC1", "SiC2"]
+query_base_url = ""
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "copernicus"
+full_title = "Copernicus (Orbiting Astronomical Observatory 3)"
+operational_years = "1972-1981"
+status = "legacy"
+instruments = ["U1", "U2", "V1", "V2"]
+query_base_url = ""
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "epoch"
+full_title = "Extrasolar Planet Observations and Characterization"
+operational_years = "2008-2013"
+status = "legacy"
+instruments = ["HRI", "MRI", "IR"]
+query_base_url = ""
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "euve"
+full_title = "Extreme Ultraviolet Explorer"
+operational_years = "1992-2001"
+status = "legacy"
+instruments = ["Scanner", "Spectrometer"]
+query_base_url = ""
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+# --- Astro Shuttle Missions --------------------------------------
+
+[[mission]]
+mission = "hut"
+full_title = "Hopkins Ultraviolet Telescope"
+operational_years = "1990,1995"
+status = "shuttle_legacy"
+instruments = ["UV-spectrometer"]
+query_base_url = ""
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "uit"
+full_title = "Ultraviolet Imaging Telescope"
+operational_years = "1990,1995"
+status = "shuttle_legacy"
+instruments = ["FUV-camera"]
+query_base_url = ""
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "wuppe"
+full_title = "Wisconsin Ultraviolet Photo-Polarimeter Experiment"
+operational_years = "1990,1995"
+status = "shuttle_legacy"
+instruments = ["polarimeter"]
+query_base_url = ""
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "hpol"
+full_title = "Half-wave Spectropolarimeter"
+operational_years = "1990s"
+status = "shuttle_legacy"
+instruments = []
+query_base_url = ""
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+# --- ORFEUS Shuttle Missions -------------------------------------
+
+[[mission]]
+mission = "befs"
+full_title = "Berkeley Extreme and Far-UV Spectrometer (ORFEUS)"
+operational_years = "1993,1996"
+status = "shuttle_legacy"
+instruments = ["EUV/FUV-spectrometer"]
+query_base_url = ""
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "imaps"
+full_title = "Interstellar Medium Absorption Profile Spectrograph (ORFEUS)"
+operational_years = "1993,1996"
+status = "shuttle_legacy"
+instruments = ["spectrograph"]
+query_base_url = ""
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "tues"
+full_title = "Tuebingen Echelle Spectrograph (ORFEUS-II)"
+operational_years = "1996"
+status = "shuttle_legacy"
+instruments = ["echelle-spectrograph"]
+query_base_url = ""
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+# --- Ground-Based Missions ---------------------------------------
+
+[[mission]]
+mission = "pan_starrs"
+full_title = "Panoramic Survey Telescope & Rapid Response System"
+operational_years = "2010-present"
+status = "ground_based"
+instruments = ["GPC1"]
+query_base_url = ""
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "vla_first"
+full_title = "Faint Images of the Radio Sky at Twenty-cm"
+operational_years = "1993-2011"
+status = "ground_based"
+instruments = ["VLA-B"]
+query_base_url = ""
+owner_fetcher = ""
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "sdss"
+full_title = "Sloan Digital Sky Survey (via MAST mirror)"
+operational_years = "2000-present"
+status = "ground_based"
+instruments = ["SDSS-camera", "BOSS", "eBOSS", "MaNGA", "APOGEE"]
+query_base_url = ""
+owner_fetcher = "crates/data_core/src/catalogs/sdss_fetch.rs"
+last_verified = "2026-04-17"

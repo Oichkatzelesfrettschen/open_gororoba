@@ -39,6 +39,14 @@ name = "heasarc-enumerate"
 path = "src/bin/heasarc_enumerate.rs"
 
 [[bin]]
+name = "mast-verify"
+path = "src/bin/mast_verify.rs"
+
+[[bin]]
+name = "lotss-enumerate"
+path = "src/bin/lotss_enumerate.rs"
+
+[[bin]]
 name = "registry-emit"
 path = "src/bin/registry_emit.rs"
 
