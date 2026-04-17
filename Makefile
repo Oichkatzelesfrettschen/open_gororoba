@@ -293,8 +293,18 @@ governance-gate-readonly:
 	@echo "SQLite-first governance checks are operational."
 	@echo "=========================================="
 
-governance-gate: governance-gate-readonly
+governance-gate: governance-gate-readonly ndlb-gate
 	@echo "OK: governance-gate is a compatibility alias for governance-gate-readonly."
+
+# NDLB gate: No-Dataset-Left-Behind invariant (plan Phase 6A.S3).
+# Armed in strict mode after 2026-04-17 triage (P6A.S4). Every
+# data/external/* subdir must be one of: active (experiment-bound),
+# synthetic (local artifact), or deferred (tombstoned with a
+# defer_to_sprint target). Unknown / dark dirs fail fast.
+ndlb-gate:
+	@echo "[ndlb-gate] validating dataset/server/experiment invariants..."
+	$(CARGO_ENV) cargo run --profile release-gate -q -p gororoba_cli_data --bin ndlb-gate
+	@echo "[ndlb-gate] OK."
 
 wave6-gate: governance-gate
 	@echo "DEPRECATED: make wave6-gate is a legacy alias. Use make governance-gate."
@@ -406,26 +416,41 @@ cache-status:
 	@du -sh .cache/exp-*-target 2>/dev/null || printf '(none)\n'
 
 cache-sweep:
-	@echo "Sweeping gate-target to <= 100GB..."
-	cargo sweep --maxsize 100GB .cache/gate-target
-	@echo "Sweeping cargo-default-target to <= 100GB..."
-	cargo sweep --maxsize 100GB .cache/cargo-default-target
+	@echo "Sweeping .cache/gate-target to <= 100GB..."
+	@CARGO_TARGET_DIR=.cache/gate-target cargo sweep --maxsize 100GB --path . || echo "(skip: target absent or not a cargo project)"
+	@echo "Sweeping .cache/cargo-default-target to <= 100GB..."
+	@CARGO_TARGET_DIR=.cache/cargo-default-target cargo sweep --maxsize 100GB --path . || echo "(skip: target absent or not a cargo project)"
+	@echo "Sweeping ambient target/ to <= 100GB..."
+	@cargo sweep --maxsize 100GB --path . || echo "(skip: ambient target absent)"
 	@echo "OK: cache-sweep complete."
 
 cache-purge-exp:
 	rm -rf .cache/exp-*-target
 	@echo "OK: experimental target dirs purged."
 
-# Fast cache size check: warns but does not fail. Integrated into gate-local.
+# Cache size check: FAILS at configurable thresholds (plan P1.S3.T5).
+# WHY: prior target was warn-only and let 669 GB accumulate before
+# discovery in 2026-04 audit. Hard cap blocks push via pre-push hook.
+# Soft threshold warns without failing.
+#
+# Tunable via env vars:
+#   CACHE_CHECK_SOFT_MB  (default 153600  = 150 GB)
+#   CACHE_CHECK_HARD_MB  (default 256000  = 250 GB)
 cache-check:
 	@GATE_MB=$$(du -sm .cache/gate-target 2>/dev/null | cut -f1 || printf '0'); \
 	AMBIENT_MB=$$(du -sm .cache/cargo-default-target 2>/dev/null | cut -f1 || printf '0'); \
 	CBUILD_MB=$$(du -sm .cache/gate-cbuild 2>/dev/null | cut -f1 || printf '0'); \
-	TOTAL=$$((GATE_MB + AMBIENT_MB + CBUILD_MB)); \
-	if [ "$$TOTAL" -gt 102400 ]; then \
-		printf '[cache-check] WARNING: cargo target dirs total %dGB (>100GB). Run: make cache-sweep\n' "$$((TOTAL / 1024))"; \
+	TARGET_MB=$$(du -sm target 2>/dev/null | cut -f1 || printf '0'); \
+	TOTAL=$$((GATE_MB + AMBIENT_MB + CBUILD_MB + TARGET_MB)); \
+	SOFT=$${CACHE_CHECK_SOFT_MB:-153600}; \
+	HARD=$${CACHE_CHECK_HARD_MB:-256000}; \
+	if [ "$$TOTAL" -gt "$$HARD" ]; then \
+		printf '[cache-check] FAIL: cargo dirs total %dGB (>%dGB hard cap). Run: make cache-sweep\n' "$$((TOTAL / 1024))" "$$((HARD / 1024))"; \
+		exit 1; \
+	elif [ "$$TOTAL" -gt "$$SOFT" ]; then \
+		printf '[cache-check] WARN: cargo dirs total %dGB (>%dGB soft cap). Run: make cache-sweep soon.\n' "$$((TOTAL / 1024))" "$$((SOFT / 1024))"; \
 	else \
-		printf '[cache-check] OK: cargo target dirs at %dMB\n' "$$TOTAL"; \
+		printf '[cache-check] OK: cargo dirs at %dMB (soft=%dGB hard=%dGB)\n' "$$TOTAL" "$$((SOFT / 1024))" "$$((HARD / 1024))"; \
 	fi
 
 pre-push-gate-strict: gate-audit
@@ -1733,6 +1758,8 @@ latex-heliosphere:
 	@command -v latexmk >/dev/null 2>&1 || { echo "ERROR: latexmk not found"; exit 1; }
 	@mkdir -p docs/latex/heliosphere/out
 	cd docs/latex/heliosphere && latexmk -xelatex -interaction=nonstopmode -halt-on-error -output-directory=out jgr_cd_magnetopause.tex
+	cd docs/latex/heliosphere && latexmk -pdf -interaction=nonstopmode -halt-on-error -output-directory=out response_to_reviewers.tex
+	cd docs/latex/heliosphere && pdflatex -interaction=nonstopmode -output-directory=out cover_letter.tex
 
 # ---- Quantum Docker ----
 
