@@ -1236,6 +1236,12 @@ ablation-mad-decorrelation:
 
 ablation-baselines: ablation-baseline-l2 ablation-baseline-random ablation-baseline-sparse ablation-baseline-commutator ablation-baseline-pca
 
+voyager-heliopause-v1:
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin heliosphere-voyager-heliopause -- --spacecraft v1 --window-days 20
+
+voyager-heliopause-v2:
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin heliosphere-voyager-heliopause -- --spacecraft v2 --window-days 20
+
 ablation-all: ablation-baselines ablation-axis-a ablation-axis-b ablation-window-sensitivity ablation-mad-decorrelation
 
 registry-strict-toml-batch3-build:

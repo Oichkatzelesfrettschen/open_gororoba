@@ -6,7 +6,7 @@
 [experiments]
 authoritative = true
 deterministic_count = 164
-experiment_count = 235
+experiment_count = 236
 gpu_count = 29
 seeded_count = 46
 status_allowlist = ["active", "deprecated", "planned", "blocked"]
@@ -6738,3 +6738,22 @@ run_command_sha256 = ""
 status = "planned"
 status_token = "PLANNED"
 title = "Window function sensitivity boxcar/Hamming/Hann (M-5, plan P6A.S4.T4.9)"
+
+[[experiment]]
+binary = "heliosphere-voyager-heliopause"
+binary_experiment_declared = "E-265"
+binary_registered = true
+claim_refs = ["C-1655", "C-1656"]
+id = "E-265"
+input = "Voyager 1 MAG48 FLT1 ASCII files (data/external/voyager1_mag48/, 2012 DOY 218-258 window)."
+input_path_refs = ["data/external/voyager1_mag48/", "data/external/crossing_lists/voyager_boundaries.txt"]
+lineage_id = "XL-265"
+method = "CD associator on Voyager 1 heliopause crossing 2012-08-25 (DOY 238). 4-channel x 8-lag = 32D embedding at native 48s cadence. Relative noise floor normalization: eps = 0.01 * local_window_median_B (Phase 0.5 RelativeFraction(0.01)). Reports: detected_within_6h, closest_detection_hours, enrichment_ratio (boundary +-24h vs quiet background)."
+output = ["data/output/heliosphere/ablations/voyager_heliopause_eval.json"]
+output_path_refs = ["data/output/heliosphere/ablations/voyager_heliopause_eval.json"]
+reproducibility_class = "deterministic"
+run = "cargo run --release --bin heliosphere-voyager-heliopause -- --spacecraft v1 --window-days 20"
+run_command_sha256 = ""
+status = "planned"
+status_token = "PLANNED"
+title = "Voyager 1 heliopause CD associator (Phase 9A.2, relative normalization)"
