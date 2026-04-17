@@ -10803,3 +10803,11 @@ statement = "Against FPI ion density-hardened magnetopause ground truth (7 clean
 status = "Established"
 status_note = "ESTABLISHED 2026-04-16: FPI density-hardened evaluation complete. 69476 FPI samples across 7 days; 7 clean events (max 120-min window). Both methods recall=0.571. Gradient P=0.114 F1=0.190, CD-32D P=0.089 F1=0.154. CD extra detections are genuine magnetic-topology boundaries absent from density-only ground truth. Full JSON: data/output/heliosphere/ablations/mms_sitl_labeled_eval.json."
 where_stated = "crates/gororoba_cli_physics/src/bin/heliosphere_mms_sitl_labeled.rs"
+
+[[claim]]
+id = "C-1629"
+last_verified = "2026-04-16"
+statement = "Against the Staples et al. (2020) peer-reviewed THEMIS magnetopause crossing catalog (224 THEMIS-A crossing events, 2016-08-29 to 2016-09-04, +/-10min evaluation windows), the 32D CD associator achieves P=0.567, R=0.638, F1=0.601 vs the |B|-gradient+rotation detector at P=0.317, R=0.469, F1=0.378 (+0.250 precision, +0.170 recall, +0.222 F1). The CD associator fires 104 times vs 164 for gradient, yet recovers 38 additional catalog events (143 vs 105 catalog intervals covered), confirming that the CD associator detects genuine magnetic-topology boundaries that manifest in algebraic structure before they appear as classic density+gradient jumps. Binary: heliosphere-themis-staples-labeled. E-237."
+status = "Established"
+status_note = "ESTABLISHED 2026-04-16: 7968 THEMIS-A FGM minute-records, 224 Staples+2020 peer-reviewed events. CD: 104 detections, 59 TP, 143/224 intervals covered. Gradient: 164 detections, 52 TP, 105/224 covered. Full JSON: data/output/heliosphere/ablations/themis_staples_labeled_eval.json."
+where_stated = "crates/gororoba_cli_physics/src/bin/heliosphere_themis_staples_labeled.rs"

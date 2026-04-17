@@ -10,8 +10,11 @@
 //! Source: <https://cdaweb.gsfc.nasa.gov/hapi/info?id=THA_L2_FGM@0>
 //! Reference: Auster et al. (2008), Space Sci. Rev. 141, 235
 
-use crate::parse::{parse_hapi_spacephysics_f64_or_nan, parse_hapi_time_to_ydh};
-use chrono::{DateTime, Datelike, Timelike, Utc};
+use crate::{
+    catalogs::mms::MmsEventInterval,
+    parse::{parse_hapi_spacephysics_f64_or_nan, parse_hapi_time_to_ydh},
+};
+use chrono::{DateTime, Datelike, NaiveDate, Timelike, Utc};
 use csv::ReaderBuilder;
 use std::collections::BTreeMap;
 
@@ -199,5 +202,74 @@ pub fn parse_themis_fgm_hapi_csv(content: &str) -> Vec<ThemisFgmRecord> {
             })
         })
         .collect()
+}
+
+// ============================================================================
+// Staples et al. (2020) THEMIS magnetopause crossing catalog
+// ============================================================================
+
+/// Parse the Staples et al. (2020) THEMIS magnetopause crossing catalog.
+///
+/// Input: the plain-text catalog file (`themis_mp_crossings_v2.txt`).
+/// Format: tab-separated, header line starts with `TIMESTAMP`, data rows:
+///   `YYYY-MM-DDTHH:MM:SSZ<tab>X_GSE<tab>Y_GSE<tab>Z_GSE<tab>X_GSM<tab>Y_GSM<tab>Z_GSM<tab>probe`
+///
+/// Each crossing is an instantaneous timestamp.  The function pads each by
+/// `+/-pad_minutes` to form an interval suitable for interval-based P/R/F1.
+///
+/// Only crossings with probe label matching `probe_filter` (e.g., `'a'` for
+/// THEMIS-A) and within `[start, end]` (inclusive) are returned.
+///
+/// WHY: The Staples catalog is a peer-reviewed, independently verified ground
+/// truth (JGR 2020, doi:10.1029/2019JA027190).  Unlike FPI-derived events, it
+/// represents expert classification across a 9-year span, providing a
+/// scale-independent reference for the CD associator methods paper.
+pub fn parse_staples_crossing_catalog(
+    content: &str,
+    probe_filter: char,
+    start: NaiveDate,
+    end: NaiveDate,
+    pad_minutes: i64,
+) -> Vec<MmsEventInterval> {
+    use chrono::NaiveDateTime;
+    let pad = chrono::Duration::minutes(pad_minutes);
+    let start_dt: NaiveDateTime = start.and_hms_opt(0, 0, 0).unwrap();
+    let end_dt: NaiveDateTime = end.and_hms_opt(23, 59, 59).unwrap();
+
+    let mut events: Vec<MmsEventInterval> = content
+        .lines()
+        .filter_map(|raw| {
+            let line = raw.trim();
+            if line.is_empty() || line.starts_with('#') || line.starts_with("TIMESTAMP") {
+                return None;
+            }
+            let mut cols = line.split('\t');
+            let ts_raw = cols.next()?.trim_end_matches('Z');
+            for _ in 0..6 {
+                cols.next()?;
+            }
+            let probe_str = cols.next()?.trim();
+            if probe_str.chars().next() != Some(probe_filter) {
+                return None;
+            }
+            let dt = NaiveDateTime::parse_from_str(ts_raw, "%Y-%m-%dT%H:%M:%S").ok()?;
+            if dt < start_dt || dt > end_dt {
+                return None;
+            }
+            Some(MmsEventInterval {
+                start: dt - pad,
+                end: dt + pad,
+                fom: 100.0,
+                discussion: format!(
+                    "Staples+2020: THEMIS-{} crossing at {}",
+                    probe_filter.to_ascii_uppercase(),
+                    dt.format("%Y-%m-%dT%H:%M")
+                ),
+            })
+        })
+        .collect();
+
+    events.sort_by_key(|e| e.start);
+    events
 }
 

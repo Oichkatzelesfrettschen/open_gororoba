@@ -994,6 +994,12 @@ description = "Evaluate CD associator P/R/F1 against MMS SITL/GLS expert-curated
 experiment = "E-236"
 
 [[binary]]
+name = "heliosphere-themis-staples-labeled"
+crate = "gororoba_cli_physics"
+description = "Evaluate CD associator P/R/F1 against Staples et al. (2020) peer-reviewed THEMIS magnetopause crossing catalog (JGR 2020, doi:10.1029/2019JA027190); downloads THEMIS-A L2 FGM from CDAWeb HAPI; compares CD vs |B|-gradient+rotation detector using interval-based P/R/F1."
+experiment = "E-237"
+
+[[binary]]
 name = "heliosphere-norm-dump"
 crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
@@ -2346,4 +2352,3 @@ name = "zd-spectral-dimension"
 crate = "gororoba_cli_data"
 description = "Spectral-dimension census for Cayley-Dickson zero-divisor graphs via Laplacian heat-kernel plateaus and gaps."
 experiment = "E-084"
-

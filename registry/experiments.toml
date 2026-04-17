@@ -16,8 +16,32 @@ updated = "2026-02-10"
 binary = "motif-census"
 binary_experiment_declared = "E-001"
 binary_registered = true
-claim_refs = ["C-100", "C-101", "C-102", "C-103", "C-104", "C-105", "C-106", "C-107", "C-108", "C-109", "C-110"]
-claims = ["C-100", "C-101", "C-102", "C-103", "C-104", "C-105", "C-106", "C-107", "C-108", "C-109", "C-110"]
+claim_refs = [
+    "C-100",
+    "C-101",
+    "C-102",
+    "C-103",
+    "C-104",
+    "C-105",
+    "C-106",
+    "C-107",
+    "C-108",
+    "C-109",
+    "C-110",
+]
+claims = [
+    "C-100",
+    "C-101",
+    "C-102",
+    "C-103",
+    "C-104",
+    "C-105",
+    "C-106",
+    "C-107",
+    "C-108",
+    "C-109",
+    "C-110",
+]
 dataset_label_refs = []
 dataset_refs = []
 deterministic = true
@@ -69,8 +93,32 @@ truth_surface_consumption = []
 binary = "real-cosmo-fit"
 binary_experiment_declared = "E-003"
 binary_registered = true
-claim_refs = ["C-200", "C-201", "C-202", "C-203", "C-204", "C-205", "C-206", "C-207", "C-208", "C-209", "C-210"]
-claims = ["C-200", "C-201", "C-202", "C-203", "C-204", "C-205", "C-206", "C-207", "C-208", "C-209", "C-210"]
+claim_refs = [
+    "C-200",
+    "C-201",
+    "C-202",
+    "C-203",
+    "C-204",
+    "C-205",
+    "C-206",
+    "C-207",
+    "C-208",
+    "C-209",
+    "C-210",
+]
+claims = [
+    "C-200",
+    "C-201",
+    "C-202",
+    "C-203",
+    "C-204",
+    "C-205",
+    "C-206",
+    "C-207",
+    "C-208",
+    "C-209",
+    "C-210",
+]
 dataset_label_refs = []
 dataset_refs = []
 deterministic = true
@@ -95,7 +143,18 @@ truth_surface_consumption = []
 binary = "kerr-shadow"
 binary_experiment_declared = "E-004"
 binary_registered = true
-claim_refs = ["C-301", "C-302", "C-303", "C-304", "C-305", "C-306", "C-307", "C-308", "C-309", "C-310"]
+claim_refs = [
+    "C-301",
+    "C-302",
+    "C-303",
+    "C-304",
+    "C-305",
+    "C-306",
+    "C-307",
+    "C-308",
+    "C-309",
+    "C-310",
+]
 claims = ["C-301", "C-302", "C-303", "C-304", "C-305", "C-306", "C-307", "C-308", "C-309", "C-310"]
 dataset_label_refs = []
 dataset_refs = []
@@ -121,8 +180,32 @@ truth_surface_consumption = []
 binary = "zd-search"
 binary_experiment_declared = "E-005"
 binary_registered = true
-claim_refs = ["C-050", "C-051", "C-052", "C-053", "C-054", "C-055", "C-056", "C-057", "C-058", "C-059", "C-060"]
-claims = ["C-050", "C-051", "C-052", "C-053", "C-054", "C-055", "C-056", "C-057", "C-058", "C-059", "C-060"]
+claim_refs = [
+    "C-050",
+    "C-051",
+    "C-052",
+    "C-053",
+    "C-054",
+    "C-055",
+    "C-056",
+    "C-057",
+    "C-058",
+    "C-059",
+    "C-060",
+]
+claims = [
+    "C-050",
+    "C-051",
+    "C-052",
+    "C-053",
+    "C-054",
+    "C-055",
+    "C-056",
+    "C-057",
+    "C-058",
+    "C-059",
+    "C-060",
+]
 dataset_label_refs = []
 dataset_refs = []
 deterministic = true
@@ -147,8 +230,32 @@ truth_surface_consumption = []
 binary = "gravastar-sweep"
 binary_experiment_declared = "E-006"
 binary_registered = true
-claim_refs = ["C-400", "C-401", "C-402", "C-403", "C-404", "C-405", "C-406", "C-407", "C-408", "C-409", "C-410"]
-claims = ["C-400", "C-401", "C-402", "C-403", "C-404", "C-405", "C-406", "C-407", "C-408", "C-409", "C-410"]
+claim_refs = [
+    "C-400",
+    "C-401",
+    "C-402",
+    "C-403",
+    "C-404",
+    "C-405",
+    "C-406",
+    "C-407",
+    "C-408",
+    "C-409",
+    "C-410",
+]
+claims = [
+    "C-400",
+    "C-401",
+    "C-402",
+    "C-403",
+    "C-404",
+    "C-405",
+    "C-406",
+    "C-407",
+    "C-408",
+    "C-409",
+    "C-410",
+]
 dataset_label_refs = []
 dataset_refs = []
 deterministic = true
@@ -173,8 +280,32 @@ truth_surface_consumption = []
 binary = "tensor-network"
 binary_experiment_declared = "E-007"
 binary_registered = true
-claim_refs = ["C-350", "C-351", "C-352", "C-353", "C-354", "C-355", "C-356", "C-357", "C-358", "C-359", "C-360"]
-claims = ["C-350", "C-351", "C-352", "C-353", "C-354", "C-355", "C-356", "C-357", "C-358", "C-359", "C-360"]
+claim_refs = [
+    "C-350",
+    "C-351",
+    "C-352",
+    "C-353",
+    "C-354",
+    "C-355",
+    "C-356",
+    "C-357",
+    "C-358",
+    "C-359",
+    "C-360",
+]
+claims = [
+    "C-350",
+    "C-351",
+    "C-352",
+    "C-353",
+    "C-354",
+    "C-355",
+    "C-356",
+    "C-357",
+    "C-358",
+    "C-359",
+    "C-360",
+]
 dataset_label_refs = []
 dataset_refs = []
 deterministic = false
@@ -372,8 +503,14 @@ input = "None (Cayley-Dickson structure tables computed on the fly)"
 input_path_refs = []
 lineage_id = "XL-014"
 method = "Exhaustive and Monte Carlo Anti-Diagonal Parity Theorem verification across the full Cayley-Dickson dimensional ladder from dim=4 to dim=4096. Exhaustive mode: Enumerate ALL graph triangles in each zero-divisor component. For each triangle (a,b,c), compute eta via anti-diagonal parity formula: eta(a,b) = psi(lo_a, hi_b) XOR psi(hi_a, lo_b). Classify as pure (eta constant across 3 edges) or mixed (eta non-constant). Verify 1:3 pure:mixed ratio (Quarter Rule: pure*4 = total exactly). Verify Klein-four fiber symmetry: F(0,0) = F(0,1) = F(1,0) = F(1,1). Monte Carlo mode: Rejection-sample random node triples within components, accept only graph triangles (all 3 edges present), classify via APT. Deterministic with seed=42. Tier classification: dims 4-32 (TIER 0-1, <15s), dims 64-256 (TIER 2, ~5s release), dims 512-1024 (TIER 3, minutes-hours CPU), dims 2048-4096 (TIER 4, GPU Monte Carlo)."
-output = ["data/csv/apt_dimensional_census_summary.csv", "data/csv/apt_dimensional_census_details.csv"]
-output_path_refs = ["data/csv/apt_dimensional_census_details.csv", "data/csv/apt_dimensional_census_summary.csv"]
+output = [
+    "data/csv/apt_dimensional_census_summary.csv",
+    "data/csv/apt_dimensional_census_details.csv",
+]
+output_path_refs = [
+    "data/csv/apt_dimensional_census_details.csv",
+    "data/csv/apt_dimensional_census_summary.csv",
+]
 reproducibility_class = "deterministic_replay"
 run = "cargo run --release --bin dimensional-census -- --slow --details"
 run_command_sha256 = "ed72a3d2f1cac08e2a1787c6be706b5db2bda1acf02bb0f493ebc7107a7cd1be"
@@ -450,8 +587,14 @@ input = "None (box-kite structure + normalized cavity parameters computed on the
 input_path_refs = []
 lineage_id = "XL-017"
 method = "Build a 7-channel TCMT multi-resonator system from sedenion box-kite components. Each channel is an independent KerrCavity with resonance frequency offset by the component index. Verify zero crosstalk for uncoupled channels, compute per-channel Shannon entropy and pairwise mutual information via 2D histogram binning, and sweep absorption spectrum across all 7 resonance frequencies."
-output = ["data/csv/entropy_trap_7clique_absorption.csv", "data/csv/entropy_trap_7clique_summary.csv"]
-output_path_refs = ["data/csv/entropy_trap_7clique_absorption.csv", "data/csv/entropy_trap_7clique_summary.csv"]
+output = [
+    "data/csv/entropy_trap_7clique_absorption.csv",
+    "data/csv/entropy_trap_7clique_summary.csv",
+]
+output_path_refs = [
+    "data/csv/entropy_trap_7clique_absorption.csv",
+    "data/csv/entropy_trap_7clique_summary.csv",
+]
 reproducibility_class = "deterministic_replay"
 run = "cargo test -p optics_core --release --lib -- entropy_trap --nocapture"
 run_command_sha256 = "c1503da87e9b62691b7bbbaef9e04ac5610189a651a087c403289b9eb7ed05af"
@@ -477,7 +620,10 @@ input_path_refs = []
 lineage_id = "XL-018"
 method = "Compute ideal BEC critical temperature via zeta(3/2) formula, verify condensate fraction law 1-(T/T_c)^(3/2), validate Landau superfluid density fraction with exponent 5.6, and simulate 0D two-fluid relaxation dynamics using RK4 with relaxation timescales tau_rho = 1 us, tau_t = 100 us. Verify mass conservation, equilibrium relaxation, and thermal relaxation through the lambda transition."
 output = ["data/csv/he4_bec_condensate_fraction.csv", "data/csv/he4_two_fluid_evolution.csv"]
-output_path_refs = ["data/csv/he4_bec_condensate_fraction.csv", "data/csv/he4_two_fluid_evolution.csv"]
+output_path_refs = [
+    "data/csv/he4_bec_condensate_fraction.csv",
+    "data/csv/he4_two_fluid_evolution.csv",
+]
 reproducibility_class = "deterministic_replay"
 run = "cargo test -p quantum_core --release --lib -- superfluid --nocapture && cargo test -p quantum_core --release --lib -- two_fluid --nocapture"
 run_command_sha256 = "62f72266ac1433acefee385a9b6f1c1706d540133379667da1f4ff09a1cbed02"
@@ -659,7 +805,10 @@ input_path_refs = []
 lineage_id = "XL-025"
 method = "VR persistent homology on velocity point cloud, CD psi-weighted triangle imbalance, Pearson correlation + Fisher-Yates permutation test"
 output = ["data/e027/e027_topology_NNNcubed.toml", "data/e027/betti_timeseries_NNNcubed.csv"]
-output_path_refs = ["data/e027/betti_timeseries_NNNcubed.csv", "data/e027/e027_topology_NNNcubed.toml"]
+output_path_refs = [
+    "data/e027/betti_timeseries_NNNcubed.csv",
+    "data/e027/e027_topology_NNNcubed.toml",
+]
 reproducibility_class = "seeded_stochastic_replay"
 run = "cargo run --bin e027-topology-analyzer -- --grid-size 16 --epsilon-steps 20 --max-points 100 --n-permutations 200"
 run_command_sha256 = "1617ab44c55daf1fcca751119a46a33df1682dfe8c4972a30b0b9aa896e49ee0"
@@ -712,8 +861,16 @@ input = "Sedenion multiplication table (CURRENT::CRATE gororoba_algebra (LEGACY:
 input_path_refs = []
 lineage_id = "XL-027"
 method = "Sedenion associator tensor m_3 construction, Burn MLP training (Autodiff+NdArray+Adam, 256->128->64->16), pentagon-constrained batch coordinate descent, perturbation robustness testing"
-output = ["data/evidence/e029_neural_homotopy.toml", "data/evidence/e029_perturb/e029_neural_homotopy.toml", "data/evidence/e029_algebraic/e029_neural_homotopy.toml"]
-output_path_refs = ["data/evidence/e029_algebraic/e029_neural_homotopy.toml", "data/evidence/e029_neural_homotopy.toml", "data/evidence/e029_perturb/e029_neural_homotopy.toml"]
+output = [
+    "data/evidence/e029_neural_homotopy.toml",
+    "data/evidence/e029_perturb/e029_neural_homotopy.toml",
+    "data/evidence/e029_algebraic/e029_neural_homotopy.toml",
+]
+output_path_refs = [
+    "data/evidence/e029_algebraic/e029_neural_homotopy.toml",
+    "data/evidence/e029_neural_homotopy.toml",
+    "data/evidence/e029_perturb/e029_neural_homotopy.toml",
+]
 reproducibility_class = "seeded_stochastic_replay"
 run = "cargo run --release --bin neural-homotopy-trainer -- --n-steps 500 --n-restarts 5 --batch-size 8 --seed 42"
 run_command_sha256 = "ce7563e01a9364024b58b863da26d96c54c90e24941e6ada0aa2f3572641f1d6"
@@ -820,8 +977,20 @@ input = "Sedenion algebra (CD basis), LBM viscosity model, neural homotopy model
 input_path_refs = []
 lineage_id = "XL-031"
 method = "Orchestrated execution of T1 (spatial correlation), T2 (power-law viscosity), T3 (plateau detection + pentagon optimization), T4 (shell return-time power law). Each thesis evaluated independently with falsification gate."
-output = ["data/evidence/synthesis_final/synthesis_summary.toml", "data/evidence/synthesis_final/thesis1_evidence.toml", "data/evidence/synthesis_final/thesis2_evidence.toml", "data/evidence/synthesis_final/thesis3_evidence.toml", "data/evidence/synthesis_final/thesis4_evidence.toml"]
-output_path_refs = ["data/evidence/synthesis_final/synthesis_summary.toml", "data/evidence/synthesis_final/thesis1_evidence.toml", "data/evidence/synthesis_final/thesis2_evidence.toml", "data/evidence/synthesis_final/thesis3_evidence.toml", "data/evidence/synthesis_final/thesis4_evidence.toml"]
+output = [
+    "data/evidence/synthesis_final/synthesis_summary.toml",
+    "data/evidence/synthesis_final/thesis1_evidence.toml",
+    "data/evidence/synthesis_final/thesis2_evidence.toml",
+    "data/evidence/synthesis_final/thesis3_evidence.toml",
+    "data/evidence/synthesis_final/thesis4_evidence.toml",
+]
+output_path_refs = [
+    "data/evidence/synthesis_final/synthesis_summary.toml",
+    "data/evidence/synthesis_final/thesis1_evidence.toml",
+    "data/evidence/synthesis_final/thesis2_evidence.toml",
+    "data/evidence/synthesis_final/thesis3_evidence.toml",
+    "data/evidence/synthesis_final/thesis4_evidence.toml",
+]
 reproducibility_class = "seeded_stochastic_replay"
 run = "cargo run --release --bin thesis-synthesis-engine -- --thesis all --output-dir data/evidence/synthesis_final"
 run_command_sha256 = "102c01628dcb5cd474f3ad40ca66f829cac3eb01c1fce1df3e12eeeb8f7dca99"
@@ -1279,8 +1448,16 @@ input = "data/bl_6equj5_gbt/*.rawspec.0002.h5"
 input_path_refs = ["data/bl_6equj5_gbt/"]
 lineage_id = "XL-048"
 method = "Pure Rust de-Doppler shift-and-add narrowband signal search on BL 6EQUJ5 GBT filterbank HDF5 files (medium-res 0002). Per-coarse-channel SNR detection with MAD normalization, followed by ABACAD cadence discrimination (signal in ALL ON, NONE of OFF). Replaces turboSETI Python dependency."
-output = ["data/csv/bl_6equj5_doppler_results.csv", "data/csv/bl_6equj5_cadence_events.csv", "registry/bl_6equj5_analysis.toml"]
-output_path_refs = ["data/csv/bl_6equj5_cadence_events.csv", "data/csv/bl_6equj5_doppler_results.csv", "registry/bl_6equj5_analysis.toml"]
+output = [
+    "data/csv/bl_6equj5_doppler_results.csv",
+    "data/csv/bl_6equj5_cadence_events.csv",
+    "registry/bl_6equj5_analysis.toml",
+]
+output_path_refs = [
+    "data/csv/bl_6equj5_cadence_events.csv",
+    "data/csv/bl_6equj5_doppler_results.csv",
+    "registry/bl_6equj5_analysis.toml",
+]
 reproducibility_class = "non_deterministic"
 run = "cargo run --release --bin bl-doppler-search --features hdf5-export -- scan --res 0002 && cargo run --release --bin bl-doppler-search -- cadence && cargo run --release --bin bl-doppler-search -- export"
 run_command_sha256 = "069f7f672baea2689156b53529b4dbaa9f518abc5f22d6d4d348164220a78100"
@@ -1618,7 +1795,10 @@ input_path_refs = []
 lineage_id = "XL-061"
 method = "D3Q19 LBM at 128^3 with BF16 precision and per-cell Sedenion imbalance viscosity (Exponential model, lambda=3.0). Sweep tau from 0.55 to 1.00 (10 values). For each tau: nu_base=(tau-0.5)/3.0, compute per-cell viscosity field, 1000 steps, extract KE every 10 steps, FFT + ghost peak detection. Control run at matching resolution with constant tau (no ZD modulation). Tests C-792 (frequency locking: |slope| < 0.01 in peak_freq vs tau) and C-793 (production ghost detection: SNR > 3 at phi^{-1/2})."
 output = ["data/csv/zd_resonance_cuda_128_bf16.csv", "data/csv/zd_resonance_cuda_control_128.csv"]
-output_path_refs = ["data/csv/zd_resonance_cuda_128_bf16.csv", "data/csv/zd_resonance_cuda_control_128.csv"]
+output_path_refs = [
+    "data/csv/zd_resonance_cuda_128_bf16.csv",
+    "data/csv/zd_resonance_cuda_control_128.csv",
+]
 reproducibility_class = "non_deterministic"
 run = "cargo run --release --bin zd-resonance-cuda -- sweep --res 128 && cargo run --release --bin zd-resonance-cuda -- control --res 128"
 run_command_sha256 = "5022eb2ad2eb65f1d5fc7a84c6554f01f1733ff29f03554f84623cef2781dc93"
@@ -1644,7 +1824,10 @@ input_path_refs = []
 lineage_id = "XL-062"
 method = "D3Q19 LBM at 256^3 with BF16 precision. Same tau sweep protocol as E-063 but at 4x higher resolution (16.7M cells). Tests whether ghost peak narrows and converges toward 0.2138 with increasing resolution, paralleling real-data Cat1->Cat2 convergence (C-789)."
 output = ["data/csv/zd_resonance_cuda_256_bf16.csv", "data/csv/zd_resonance_cuda_control_256.csv"]
-output_path_refs = ["data/csv/zd_resonance_cuda_256_bf16.csv", "data/csv/zd_resonance_cuda_control_256.csv"]
+output_path_refs = [
+    "data/csv/zd_resonance_cuda_256_bf16.csv",
+    "data/csv/zd_resonance_cuda_control_256.csv",
+]
 reproducibility_class = "non_deterministic"
 run = "cargo run --release --bin zd-resonance-cuda -- sweep --res 256 --steps 500 && cargo run --release --bin zd-resonance-cuda -- control --res 256 --steps 500"
 run_command_sha256 = "cca99064934b590880d1f685565bc5291697378bbfab4b09c538a79127a34a03"
@@ -1696,7 +1879,10 @@ input_path_refs = []
 lineage_id = "XL-064"
 method = "D3Q19 batch LBM at 32^3 x 32 (1.05M cells) with BF16 precision. 4th dimension (w) parametrizes Sedenion field phase offsets. Tests whether 4D spatial embedding (16 = 4^2) reveals coupling symmetries invisible in 3D. Control run with constant tau for null hypothesis."
 output = ["data/csv/zd_resonance_4d_32x32.csv", "data/csv/zd_resonance_4d_control_32x32.csv"]
-output_path_refs = ["data/csv/zd_resonance_4d_32x32.csv", "data/csv/zd_resonance_4d_control_32x32.csv"]
+output_path_refs = [
+    "data/csv/zd_resonance_4d_32x32.csv",
+    "data/csv/zd_resonance_4d_control_32x32.csv",
+]
 reproducibility_class = "non_deterministic"
 run = "cargo run --release --bin zd-resonance-4d -- sweep-32 && cargo run --release --bin zd-resonance-4d -- control --res 32"
 run_command_sha256 = "e5a0d6004cb90e9c83f66278b2fa1970a9059ddd3c362f2b0752a78f80559e0c"
@@ -1822,11 +2008,25 @@ external_source_refs = []
 gpu = false
 id = "E-071"
 input = "data/external/chime_frb_cat2.csv, data/external/atnf_pulsars.csv, data/external/PantheonPlusSH0ES.dat"
-input_path_refs = ["data/external/PantheonPlusSH0ES.dat", "data/external/atnf_pulsars.csv", "data/external/chime_frb_cat2.csv"]
+input_path_refs = [
+    "data/external/PantheonPlusSH0ES.dat",
+    "data/external/atnf_pulsars.csv",
+    "data/external/chime_frb_cat2.csv",
+]
 lineage_id = "XL-069"
 method = "5-method falsification audit (Rigorous+Bonferroni MAD, Permutation N=10000, Lomb-Scargle Baluev FAP, IAAFT N=1000, Multitaper F-test) on 4 real astronomical catalog datasets: CHIME FRB Cat2 bonsai_dm (N=5045), ATNF pulsar DM (N=4233), ATNF pulsar period (N=4286), Pantheon+ MU_SH0ES (N=1701). Tests whether phi^{-1/2} ghost frequency is detectable under rigorous statistical framework."
-output = ["data/csv/ghost_audit/real_chime_dm.csv", "data/csv/ghost_audit/real_atnf_dm.csv", "data/csv/ghost_audit/real_atnf_period.csv", "data/csv/ghost_audit/real_pantheon_mu.csv"]
-output_path_refs = ["data/csv/ghost_audit/real_atnf_dm.csv", "data/csv/ghost_audit/real_atnf_period.csv", "data/csv/ghost_audit/real_chime_dm.csv", "data/csv/ghost_audit/real_pantheon_mu.csv"]
+output = [
+    "data/csv/ghost_audit/real_chime_dm.csv",
+    "data/csv/ghost_audit/real_atnf_dm.csv",
+    "data/csv/ghost_audit/real_atnf_period.csv",
+    "data/csv/ghost_audit/real_pantheon_mu.csv",
+]
+output_path_refs = [
+    "data/csv/ghost_audit/real_atnf_dm.csv",
+    "data/csv/ghost_audit/real_atnf_period.csv",
+    "data/csv/ghost_audit/real_chime_dm.csv",
+    "data/csv/ghost_audit/real_pantheon_mu.csv",
+]
 reproducibility_class = "deterministic_replay"
 run = "ghost-spectral-audit single --dataset <csv> --column value --permutations 10000 --bootstrap 10000 --seed 42"
 run_command_sha256 = "7746dc16305b5a9723529c578344ec4498e7c28e3baa5d9800d1b862881abaab"
@@ -1903,8 +2103,26 @@ input = "None (analytical computation from Sellmeier coefficients and paper para
 input_path_refs = []
 lineage_id = "XL-072"
 method = "Complete reproduction of all 4 figures from Son & Chekhova (2026) arXiv:2601.23137v1. Phase-matching analysis using Sellmeier dispersion (Zelmon 1997) and paper-calibrated wavevector mismatches. Figures 2a-d: SFWM phenomenology (P^2 scaling, cos^2 polarization, coincidences, g(2)=1+a/P^2). Figures 3a-b: SPDC comparison (linear P, g(2)=1+a/P). Figures 4a-b: Maker fringes and rate dominance sweep."
-output = ["data/sfwm_repro/fig2a.csv", "data/sfwm_repro/fig2b.csv", "data/sfwm_repro/fig2c.csv", "data/sfwm_repro/fig2d.csv", "data/sfwm_repro/fig3a.csv", "data/sfwm_repro/fig3b.csv", "data/sfwm_repro/fig4a.csv", "data/sfwm_repro/fig4b.csv"]
-output_path_refs = ["data/sfwm_repro/fig2a.csv", "data/sfwm_repro/fig2b.csv", "data/sfwm_repro/fig2c.csv", "data/sfwm_repro/fig2d.csv", "data/sfwm_repro/fig3a.csv", "data/sfwm_repro/fig3b.csv", "data/sfwm_repro/fig4a.csv", "data/sfwm_repro/fig4b.csv"]
+output = [
+    "data/sfwm_repro/fig2a.csv",
+    "data/sfwm_repro/fig2b.csv",
+    "data/sfwm_repro/fig2c.csv",
+    "data/sfwm_repro/fig2d.csv",
+    "data/sfwm_repro/fig3a.csv",
+    "data/sfwm_repro/fig3b.csv",
+    "data/sfwm_repro/fig4a.csv",
+    "data/sfwm_repro/fig4b.csv",
+]
+output_path_refs = [
+    "data/sfwm_repro/fig2a.csv",
+    "data/sfwm_repro/fig2b.csv",
+    "data/sfwm_repro/fig2c.csv",
+    "data/sfwm_repro/fig2d.csv",
+    "data/sfwm_repro/fig3a.csv",
+    "data/sfwm_repro/fig3b.csv",
+    "data/sfwm_repro/fig4a.csv",
+    "data/sfwm_repro/fig4b.csv",
+]
 reproducibility_class = "deterministic_replay"
 run = "cargo run --release --bin sfwm-figure-repro -- --output-dir data/sfwm_repro"
 run_command_sha256 = "c68353120f05f6232ddc7bd4dd025ca69a176d00e1cba39d264733389ceb9cd2"
@@ -2168,8 +2386,18 @@ input = "None (computational)"
 input_path_refs = []
 lineage_id = "XL-083"
 method = "For each CD dim: build cross-assessor ZD graph, compute Laplacian, eigendecompose, compute P(t) on geometric t-grid, SG-smooth ln P vs ln t, extract d_s plateau via central differences."
-output = ["data/csv/zd_spectral_dimension_curves.csv", "data/csv/zd_spectral_dimension_plateaus.csv", "data/csv/zd_laplacian_eigenvalues.csv", "data/csv/zd_spectral_gap.csv"]
-output_path_refs = ["data/csv/zd_laplacian_eigenvalues.csv", "data/csv/zd_spectral_dimension_curves.csv", "data/csv/zd_spectral_dimension_plateaus.csv", "data/csv/zd_spectral_gap.csv"]
+output = [
+    "data/csv/zd_spectral_dimension_curves.csv",
+    "data/csv/zd_spectral_dimension_plateaus.csv",
+    "data/csv/zd_laplacian_eigenvalues.csv",
+    "data/csv/zd_spectral_gap.csv",
+]
+output_path_refs = [
+    "data/csv/zd_laplacian_eigenvalues.csv",
+    "data/csv/zd_spectral_dimension_curves.csv",
+    "data/csv/zd_spectral_dimension_plateaus.csv",
+    "data/csv/zd_spectral_gap.csv",
+]
 reproducibility_class = "deterministic_replay"
 run = "cargo run --release --bin zd-spectral-dimension -- --min-dim 16 --max-dim 512 --t-points 300"
 run_command_sha256 = "e24ea86c6c91df00e671751cf437fffe25879316c29c7fb212dcb5fd13ca6c1a"
@@ -2223,7 +2451,11 @@ input_path_refs = []
 lineage_id = "XL-085"
 method = "Compute Laplacian eigenvalues per ZD graph component, Gaussian KDE unfold (sigma = 0.1*range), build normalized spacing histogram, fit Brody parameter via method-of-moments bisection, compute KS statistics vs Poisson and GOE CDFs."
 output = ["data/csv/zd_nnsd.csv", "data/csv/zd_nnsd_histogram.csv", "data/csv/zd_nnsd_motif.csv"]
-output_path_refs = ["data/csv/zd_nnsd.csv", "data/csv/zd_nnsd_histogram.csv", "data/csv/zd_nnsd_motif.csv"]
+output_path_refs = [
+    "data/csv/zd_nnsd.csv",
+    "data/csv/zd_nnsd_histogram.csv",
+    "data/csv/zd_nnsd_motif.csv",
+]
 reproducibility_class = "deterministic_replay"
 run = "cargo run --release --bin zd-quantum-chaos -- --min-dim 64 --max-dim 256 --by-motif"
 run_command_sha256 = "f9b5b0f38d5acc1e9b778bce12b2c8f4741a3fa45c9eef2474d23b70fcdb63a3"
@@ -2246,7 +2478,10 @@ external_source_refs = []
 gpu = false
 id = "E-087"
 input = "data/external/PantheonPlusSH0ES.dat, data/external/Pantheon+SH0ES_STAT+SYS.cov, DESI DR1 BAO (hardcoded)"
-input_path_refs = ["data/external/Pantheon+SH0ES_STAT+SYS.cov", "data/external/PantheonPlusSH0ES.dat"]
+input_path_refs = [
+    "data/external/Pantheon+SH0ES_STAT+SYS.cov",
+    "data/external/PantheonPlusSH0ES.dat",
+]
 lineage_id = "XL-086"
 method = "Bounded Nelder-Mead optimization over 5 parameters (omega_m, h0, alpha, beta, t_0) with k=63 fixed. Joint chi2 = chi2_SN (full 1578x1578 STAT+SYS precision matrix via Cholesky, analytic M_B marginalization) + chi2_BAO (mixed isotropic + 2x2 anisotropic covariance) + chi2_CC + chi2_fsig8 + chi2_CMB."
 output = ["data/csv/orthoplex_w_of_z.csv"]
@@ -2922,7 +3157,17 @@ truth_surface_consumption = []
 binary = "solar-wind-dm-mhd"
 binary_experiment_declared = "E-113"
 binary_registered = true
-claim_refs = ["C-1147", "C-1148", "C-1149", "C-1150", "C-1151", "C-1152", "C-1153", "C-1154", "C-1155"]
+claim_refs = [
+    "C-1147",
+    "C-1148",
+    "C-1149",
+    "C-1150",
+    "C-1151",
+    "C-1152",
+    "C-1153",
+    "C-1154",
+    "C-1155",
+]
 claims = ["C-1147", "C-1148", "C-1149", "C-1150", "C-1151", "C-1152", "C-1153", "C-1154", "C-1155"]
 dataset_label_refs = []
 dataset_refs = []
@@ -3217,7 +3462,11 @@ external_source_refs = []
 gpu = false
 id = "E-124"
 input = "Voyager 1/2 CRS data from data/external/voyager/voyager{1,2}/crs/"
-input_path_refs = ["data/external/voyager/voyager1/crs/", "data/external/voyager/voyager2/crs/", "data/external/voyager/voyager{1"]
+input_path_refs = [
+    "data/external/voyager/voyager1/crs/",
+    "data/external/voyager/voyager2/crs/",
+    "data/external/voyager/voyager{1",
+]
 lineage_id = "XL-123"
 method = "Load Voyager CRS ASCII files for both spacecraft. Compare proton count rates at overlapping heliocentric distances (80-100 AU). Compute intensity gradient dJ/dr and compare to PteSolver modulation gradient. This validates the PTE prediction against in-situ cosmic ray data at the termination shock."
 output = ["data/output/cr/crs_cross_calibration.csv"]
@@ -3321,7 +3570,10 @@ external_source_refs = []
 gpu = false
 id = "E-128"
 input = "data/external/voyager/voyager2/bartol/vy2_90.dat through vy2_95.dat, data/external/voyager/voyager2/vy2_*_amda_merged_hourly.asc for 1990-1995"
-input_path_refs = ["data/external/voyager/voyager2/bartol/vy2_90.dat", "data/external/voyager/voyager2/vy2_"]
+input_path_refs = [
+    "data/external/voyager/voyager2/bartol/vy2_90.dat",
+    "data/external/voyager/voyager2/vy2_",
+]
 lineage_id = "XL-127"
 method = "Compare hourly BR/BT/BN from Bartol 16-col RTN format against AMDA-derived Voyager 2 B-field for the 1990-1995 overlap window. Normalize coordinates (both are RTN). Compute Pearson correlation, RMSE, and systematic offset per component."
 output = ["data/output/bartol_vs_amda_v2_bfield_correlation.csv"]
@@ -3425,7 +3677,10 @@ external_source_refs = []
 gpu = false
 id = "E-132"
 input = "data/external/ulysses/uly_1994_amda_merged_hourly.asc, data/external/ulysses/uly_1994_merged_hourly.asc"
-input_path_refs = ["data/external/ulysses/uly_1994_amda_merged_hourly.asc", "data/external/ulysses/uly_1994_merged_hourly.asc"]
+input_path_refs = [
+    "data/external/ulysses/uly_1994_amda_merged_hourly.asc",
+    "data/external/ulysses/uly_1994_merged_hourly.asc",
+]
 lineage_id = "XL-131"
 method = "Fetch Ulysses AMDA data for 1994-1995 (first fast latitude scan). When SPDF becomes available, compare hourly B-field, density, speed between AMDA-derived and SPDF-original files. Verify agreement within measurement uncertainty."
 output = ["data/output/ulysses_amda_spdf_crossval.csv"]
@@ -3477,7 +3732,10 @@ external_source_refs = []
 gpu = false
 id = "E-134"
 input = "data/external/wind/wind_2024_amda_merged_hourly.asc, data/external/omni2/omni2_2024.dat"
-input_path_refs = ["data/external/omni2/omni2_2024.dat", "data/external/wind/wind_2024_amda_merged_hourly.asc"]
+input_path_refs = [
+    "data/external/omni2/omni2_2024.dat",
+    "data/external/wind/wind_2024_amda_merged_hourly.asc",
+]
 lineage_id = "XL-133"
 method = "Fetch Wind AMDA merged data for 2024. Compare hourly B-field and plasma against OMNI2 hourly dataset for the same period (OMNI2 uses Wind as primary L1 source). Agreement should be within resampling noise."
 output = ["data/output/wind_amda_omni2_crosscheck.csv"]
@@ -3503,7 +3761,10 @@ external_source_refs = ["XS-015", "XS-017"]
 gpu = false
 id = "E-135"
 input = "data/external/flyby_anomaly/anderson_2008_flyby_catalog.csv, data/external/pioneer_anomaly/pioneer_anomaly_benchmark.csv"
-input_path_refs = ["data/external/flyby_anomaly/anderson_2008_flyby_catalog.csv", "data/external/pioneer_anomaly/pioneer_anomaly_benchmark.csv"]
+input_path_refs = [
+    "data/external/flyby_anomaly/anderson_2008_flyby_catalog.csv",
+    "data/external/pioneer_anomaly/pioneer_anomaly_benchmark.csv",
+]
 lineage_id = "XL-134"
 method = "Stage Anderson 2008 flyby anomaly events and Anderson 2002 Pioneer anomaly benchmark values as governed external CSV artifacts with explicit bibliography and source contracts. This experiment verifies artifact schema, value drift, and provenance registration only."
 output = []
@@ -3529,11 +3790,22 @@ external_source_refs = ["XS-015", "XS-017"]
 gpu = false
 id = "E-136"
 input = "data/external/flyby_anomaly/anderson_2008_flyby_catalog.csv, data/external/pioneer_anomaly/pioneer_anomaly_benchmark.csv, data/external/pioneer/pioneer10/pds_ppi_merged/p10_*.TAB, data/external/pioneer/pioneer11/pds_ppi_merged/p11_*.TAB"
-input_path_refs = ["data/external/flyby_anomaly/anderson_2008_flyby_catalog.csv", "data/external/pioneer/pioneer10/pds_ppi_merged/p10_", "data/external/pioneer/pioneer11/pds_ppi_merged/p11_", "data/external/pioneer_anomaly/pioneer_anomaly_benchmark.csv"]
+input_path_refs = [
+    "data/external/flyby_anomaly/anderson_2008_flyby_catalog.csv",
+    "data/external/pioneer/pioneer10/pds_ppi_merged/p10_",
+    "data/external/pioneer/pioneer11/pds_ppi_merged/p11_",
+    "data/external/pioneer_anomaly/pioneer_anomaly_benchmark.csv",
+]
 lineage_id = "XL-135"
 method = "Generate governed anomaly comparison artifacts from staged observational benchmarks. flyby-residual-audit validates the external Anderson flyby table against internal config values and emits flyby_observed_vs_modeled.csv. pioneer-residual-audit samples governed Pioneer annual merged environment context at benchmark intervals and emits pioneer_benchmark_vs_environment.csv with explicit provider-contract coverage flags."
-output = ["data/output/anomaly/flyby/flyby_observed_vs_modeled.csv", "data/output/anomaly/pioneer/pioneer_benchmark_vs_environment.csv"]
-output_path_refs = ["data/output/anomaly/flyby/flyby_observed_vs_modeled.csv", "data/output/anomaly/pioneer/pioneer_benchmark_vs_environment.csv"]
+output = [
+    "data/output/anomaly/flyby/flyby_observed_vs_modeled.csv",
+    "data/output/anomaly/pioneer/pioneer_benchmark_vs_environment.csv",
+]
+output_path_refs = [
+    "data/output/anomaly/flyby/flyby_observed_vs_modeled.csv",
+    "data/output/anomaly/pioneer/pioneer_benchmark_vs_environment.csv",
+]
 reproducibility_class = "deterministic_replay"
 run = "cargo run --release -p gororoba_cli_physics --bin flyby-residual-audit && cargo run --release -p gororoba_cli_physics --bin pioneer-residual-audit"
 run_command_sha256 = "0d234a04f02d31366e935f1a67adc75e3f3ea2cbb01c86ade9519be41fec336e"
@@ -3555,11 +3827,20 @@ external_source_refs = ["XS-015", "XS-017"]
 gpu = false
 id = "E-137"
 input = "data/output/anomaly/flyby/flyby_observed_vs_modeled.csv, data/output/anomaly/pioneer/pioneer_benchmark_vs_environment.csv"
-input_path_refs = ["data/output/anomaly/flyby/flyby_observed_vs_modeled.csv", "data/output/anomaly/pioneer/pioneer_benchmark_vs_environment.csv"]
+input_path_refs = [
+    "data/output/anomaly/flyby/flyby_observed_vs_modeled.csv",
+    "data/output/anomaly/pioneer/pioneer_benchmark_vs_environment.csv",
+]
 lineage_id = "XL-136"
 method = "Sweep plain and Q-tensor fractal-metric parameter grids against the governed flyby and Pioneer benchmark artifacts. Emit fit_grid.csv and best_fit.json with an explicit support-or-refute verdict rather than narrative interpretation."
-output = ["data/output/anomaly/fractal_metric/fit_grid.csv", "data/output/anomaly/fractal_metric/best_fit.json"]
-output_path_refs = ["data/output/anomaly/fractal_metric/best_fit.json", "data/output/anomaly/fractal_metric/fit_grid.csv"]
+output = [
+    "data/output/anomaly/fractal_metric/fit_grid.csv",
+    "data/output/anomaly/fractal_metric/best_fit.json",
+]
+output_path_refs = [
+    "data/output/anomaly/fractal_metric/best_fit.json",
+    "data/output/anomaly/fractal_metric/fit_grid.csv",
+]
 reproducibility_class = "deterministic_replay"
 run = "cargo run --release -p gororoba_cli_physics --bin fractal-metric-fit"
 run_command_sha256 = "57c5a9d50e05471efd52e4c35ec32ac047ad67e71267e9ef16e1927e56073a0d"
@@ -3572,8 +3853,56 @@ truth_surface_consumption = ["observation_benchmark", "environment_context"]
 binary = "cr-modulation-sweep"
 binary_experiment_declared = "E-138"
 binary_registered = true
-claim_refs = ["C-1208", "C-1209", "C-1210", "C-1211", "C-1212", "C-1213", "C-1214", "C-1215", "C-1216", "C-1217", "C-1218", "C-1219", "C-1220", "C-1221", "C-1222", "C-1223", "C-1224", "C-1225", "C-1226", "C-1227", "C-1228", "C-1229", "C-1230"]
-claims = ["C-1208", "C-1209", "C-1210", "C-1211", "C-1212", "C-1213", "C-1214", "C-1215", "C-1216", "C-1217", "C-1218", "C-1219", "C-1220", "C-1221", "C-1222", "C-1223", "C-1224", "C-1225", "C-1226", "C-1227", "C-1228", "C-1229", "C-1230"]
+claim_refs = [
+    "C-1208",
+    "C-1209",
+    "C-1210",
+    "C-1211",
+    "C-1212",
+    "C-1213",
+    "C-1214",
+    "C-1215",
+    "C-1216",
+    "C-1217",
+    "C-1218",
+    "C-1219",
+    "C-1220",
+    "C-1221",
+    "C-1222",
+    "C-1223",
+    "C-1224",
+    "C-1225",
+    "C-1226",
+    "C-1227",
+    "C-1228",
+    "C-1229",
+    "C-1230",
+]
+claims = [
+    "C-1208",
+    "C-1209",
+    "C-1210",
+    "C-1211",
+    "C-1212",
+    "C-1213",
+    "C-1214",
+    "C-1215",
+    "C-1216",
+    "C-1217",
+    "C-1218",
+    "C-1219",
+    "C-1220",
+    "C-1221",
+    "C-1222",
+    "C-1223",
+    "C-1224",
+    "C-1225",
+    "C-1226",
+    "C-1227",
+    "C-1228",
+    "C-1229",
+    "C-1230",
+]
 dataset_label_refs = []
 dataset_refs = []
 deterministic = true
@@ -3629,15 +3958,30 @@ claims = []
 dataset_label_refs = []
 dataset_refs = []
 deterministic = true
-external_source_refs = ["SRC-EUCLID-Q1-ZENODO-MORPHOLOGY", "SRC-EUCLID-Q1-ZENODO-STRONG-LENSING", "SRC-EUCLID-Q1-ZENODO-MERGERS", "SRC-EUCLID-Q1-ZENODO-MORPHOLOGY-SUPP", "SRC-EUCLID-Q1-ZENODO-PHOTOZ", "SRC-EUCLID-Q1-ZENODO-CLUSTERING", "SRC-EUCLID-Q1-ZENODO-COMPACT-GROUPS", "SRC-EUCLID-Q1-ZENODO-GC"]
+external_source_refs = [
+    "SRC-EUCLID-Q1-ZENODO-MORPHOLOGY",
+    "SRC-EUCLID-Q1-ZENODO-STRONG-LENSING",
+    "SRC-EUCLID-Q1-ZENODO-MERGERS",
+    "SRC-EUCLID-Q1-ZENODO-MORPHOLOGY-SUPP",
+    "SRC-EUCLID-Q1-ZENODO-PHOTOZ",
+    "SRC-EUCLID-Q1-ZENODO-CLUSTERING",
+    "SRC-EUCLID-Q1-ZENODO-COMPACT-GROUPS",
+    "SRC-EUCLID-Q1-ZENODO-GC",
+]
 gpu = false
 id = "E-140"
 input = "Zenodo REST API (https://zenodo.org/api/records)"
 input_path_refs = []
 lineage_id = "XL-139"
 method = "Query Zenodo REST API for all Euclid Q1 supplementary science records. Discover, classify (catalog vs image, size thresholds), and ingest parquet/CSV catalogs for morphology, strong lensing, mergers, photo-z, clustering, compact groups, and globular clusters. MD5 verification against Zenodo checksums. Total footprint capped at 200 GB."
-output = ["data/external/euclid/zenodo/euclid_zenodo_manifest.json", "data/external/euclid/zenodo/euclid_zenodo_discovery.json"]
-output_path_refs = ["data/external/euclid/zenodo/euclid_zenodo_discovery.json", "data/external/euclid/zenodo/euclid_zenodo_manifest.json"]
+output = [
+    "data/external/euclid/zenodo/euclid_zenodo_manifest.json",
+    "data/external/euclid/zenodo/euclid_zenodo_discovery.json",
+]
+output_path_refs = [
+    "data/external/euclid/zenodo/euclid_zenodo_discovery.json",
+    "data/external/euclid/zenodo/euclid_zenodo_manifest.json",
+]
 reproducibility_class = "deterministic_replay"
 run = "cargo run -p gororoba_cli_data --bin euclid-fetch -- zenodo-discover && cargo run -p gororoba_cli_data --bin euclid-fetch -- zenodo-download --catalog all --skip-existing"
 run_command_sha256 = "bd89d3acfda711765ffd964bf9ff5ad41a06dc74cc65b4186fd2c4332c32e4d5"
@@ -4595,10 +4939,21 @@ external_source_refs = []
 gpu = false
 id = "E-180"
 input = "SPARC rotation curves (data/external/sparc/), Li et al. 2020 NFW fits (data/external/sparc_nfw/), Gaia DR3 MW rotation curve (data/external/gaia_mw/)"
-input_path_refs = ["data/external/gaia_mw/", "data/external/sparc/", "data/external/sparc/table2_rotcurves.dat", "data/external/sparc_nfw/", "data/external/sparc_nfw/table1.dat"]
+input_path_refs = [
+    "data/external/gaia_mw/",
+    "data/external/sparc/",
+    "data/external/sparc/table2_rotcurves.dat",
+    "data/external/sparc_nfw/",
+    "data/external/sparc_nfw/table1.dat",
+]
 lineage_id = "XL-180"
 method = "Download SPARC (175 galaxies) and Gaia DR3 MW rotation curve. For each galaxy: (1) fit NFW to get r_s, (2) subtract smooth NFW to get residuals delta_v(r), (3) rescale to r/r_s coordinates. Stack all residuals. Compute Fourier power at 7 predicted wavenumbers k_n' = 2*pi*n/7. Compare to null hypothesis (1000 random phase shuffles). Separately analyze MW curve via Gaia DR3 (Jiao et al. 2023). Report alpha_zd upper limit or detection significance."
-output = ["CSV stacked residuals in r/r_s", "Fourier power at 7 wavenumbers", "null hypothesis p-values", "alpha_zd limit"]
+output = [
+    "CSV stacked residuals in r/r_s",
+    "Fourier power at 7 wavenumbers",
+    "null hypothesis p-values",
+    "alpha_zd limit",
+]
 output_path_refs = ["/tmp/harmonic_stacking_final.csv"]
 reproducibility_class = "deterministic_replay"
 run = "cargo run --release --bin harmonic-halo-stacking -- --sparc-dir data/external/sparc --nfw-fits data/external/sparc_nfw/li2020_nfw_fits.csv --csv-out harmonic_stacking_results.csv"
@@ -4673,7 +5028,11 @@ external_source_refs = ["XS-026", "XS-027", "XS-028"]
 gpu = false
 id = "E-183"
 input = "data/external/manga/dapall_selection.csv, data/external/manga/rotcurves/manga_rotcurves_all.csv"
-input_path_refs = ["data/external/manga/", "data/external/manga/dapall_selection.csv", "data/external/manga/rotcurves/manga_rotcurves_all.csv"]
+input_path_refs = [
+    "data/external/manga/",
+    "data/external/manga/dapall_selection.csv",
+    "data/external/manga/rotcurves/manga_rotcurves_all.csv",
+]
 lineage_id = "XL-183"
 method = "Two-stage pipeline: (1) DAPall Guillotine -- morphological + quality cuts on MaNGA DR17 DAPall catalog (Sersic n<2.5, 30<i<70 deg, Ha EW>2A, log M*>8.5) to select ~3000 disk galaxies. (2) MAPS pseudo-slit extraction -- download per-galaxy MAPS FITS files via HTTP from data.sdss.org (6 parallel threads), extract 1D rotation curves from 2D H-alpha EMLINE_GVEL maps along kinematic PA, deproject by sin(i). Normalize by SMHM-derived NFW (Moster+2013), stack, Fourier-analyze at CD dimensions D=16..1024. NOTE: future reruns should use rsync://data.sdss.org instead of HTTP to avoid Apache QoS token-bucket exhaustion (cwnd=10 per thread at N>2000). The per-galaxy delta_v(x) = (v_obs - v_NFW) / v_NFW projection at x = r/r_s is novel: MaNGA DAP provides only 2D EMLINE_GVEL maps; no pre-existing 1D NFW-normalized rotation curve catalog exists for this dataset."
 output = ["manga_harmonic_stacking.csv"]
@@ -4858,8 +5217,18 @@ input = "data/csv/c010_nonlocal_material_calibrations.csv plus in-repo algebraic
 input_path_refs = ["data/csv/c010_nonlocal_material_calibrations.csv"]
 lineage_id = "XL-190"
 method = "Build one repo-consistent support bundle from three existing lanes: (1) the C-010 non-local metamaterial design-stage benchmark, (2) the algebraic Majorana complex-time friction sweep with inverse-bound residual checks, and (3) harmonic-halo/NFW observable summaries with exact alpha_zd=0 recovery. Emit one TOML summary plus CSV sidecars."
-output = ["data/evidence/thesis_42_support/summary.toml", "data/evidence/thesis_42_support/nonlocal_topologies.csv", "data/evidence/thesis_42_support/majorana_friction_sweep.csv", "data/evidence/thesis_42_support/harmonic_halo_reference.csv"]
-output_path_refs = ["data/evidence/thesis_42_support/harmonic_halo_reference.csv", "data/evidence/thesis_42_support/majorana_friction_sweep.csv", "data/evidence/thesis_42_support/nonlocal_topologies.csv", "data/evidence/thesis_42_support/summary.toml"]
+output = [
+    "data/evidence/thesis_42_support/summary.toml",
+    "data/evidence/thesis_42_support/nonlocal_topologies.csv",
+    "data/evidence/thesis_42_support/majorana_friction_sweep.csv",
+    "data/evidence/thesis_42_support/harmonic_halo_reference.csv",
+]
+output_path_refs = [
+    "data/evidence/thesis_42_support/harmonic_halo_reference.csv",
+    "data/evidence/thesis_42_support/majorana_friction_sweep.csv",
+    "data/evidence/thesis_42_support/nonlocal_topologies.csv",
+    "data/evidence/thesis_42_support/summary.toml",
+]
 reproducibility_class = "deterministic_replay"
 run = "cargo run --release --bin thesis-42-support -- --output-dir data/evidence/thesis_42_support"
 run_command_sha256 = "bb58732b71e8cea36ec8626b4f0dc08adaa772b122e14e258d6ac97119bb37cf"
@@ -4884,8 +5253,13 @@ input = "data/external/sparc/table2_rotcurves.dat, data/external/sparc_nfw/table
 input_path_refs = ["data/external/sparc/table2_rotcurves.dat", "data/external/sparc_nfw/table1.dat"]
 lineage_id = "XL-109"
 method = "Run harmonic-halo-stacking on 93 SPARC galaxies (chi2<3, c200>=2) with --cd-dim={16,32,64,128,256,512,1024}. At each CD dimension D, the number of Fourier modes is D/2-1 and the assessor fraction is exactly 0.5 (combinatorial identity). Detection SNR and alpha_zd estimates compared across all 7 dimensions."
-output = ["data/results/harmonic_stacking_cd_sweep/harmonic_stacking_d{16,32,64,128,256,512,1024}.csv"]
-output_path_refs = ["data/results/harmonic_stacking_cd_sweep/", "data/results/harmonic_stacking_cd_sweep/harmonic_stacking_d{16"]
+output = [
+    "data/results/harmonic_stacking_cd_sweep/harmonic_stacking_d{16,32,64,128,256,512,1024}.csv",
+]
+output_path_refs = [
+    "data/results/harmonic_stacking_cd_sweep/",
+    "data/results/harmonic_stacking_cd_sweep/harmonic_stacking_d{16",
+]
 reproducibility_class = "deterministic_replay"
 run = "harmonic-halo-stacking --sparc data/external/sparc/table2_rotcurves.dat --nfw-fits data/external/sparc_nfw/table1.dat --cd-dim {16..1024} --min-c200 2.0 --max-chi2 3.0 --x-min 0.5 --x-max 10.0"
 run_command_sha256 = "90ce986ada276700d5a6104633fceef301c72f3685279b8f28b7f9731c1eaecc"
@@ -4898,8 +5272,30 @@ truth_surface_consumption = []
 binary = "harmonic-halo-signal-analysis"
 binary_experiment_declared = "E-192"
 binary_registered = true
-claim_refs = ["C-1372", "C-1373", "C-1411", "C-1412", "C-1413", "C-1414", "C-1415", "C-1416", "C-1417", "C-1418"]
-claims = ["C-1372", "C-1373", "C-1411", "C-1412", "C-1413", "C-1414", "C-1415", "C-1416", "C-1417", "C-1418"]
+claim_refs = [
+    "C-1372",
+    "C-1373",
+    "C-1411",
+    "C-1412",
+    "C-1413",
+    "C-1414",
+    "C-1415",
+    "C-1416",
+    "C-1417",
+    "C-1418",
+]
+claims = [
+    "C-1372",
+    "C-1373",
+    "C-1411",
+    "C-1412",
+    "C-1413",
+    "C-1414",
+    "C-1415",
+    "C-1416",
+    "C-1417",
+    "C-1418",
+]
 dataset_label_refs = []
 dataset_refs = []
 deterministic = true
@@ -4910,8 +5306,25 @@ input = "data/results/e183/lie_jordan_full.csv, data/results/e183/lie_jordan_low
 input_path_refs = ["data/results/e183/lie_jordan_full.csv", "data/results/e183/lie_jordan_lowi.csv"]
 lineage_id = "XL-192"
 method = "Apply non-static signal analysis (STFT spectrogram, derivative stacking, jackknife Rayleigh phase coherence) to MaNGA E-183 stacked profiles. STFT uses Gaussian window sigma_x=1.5 r/r_s at 32 window centers. Derivative stacking kills the DC baryonic baseline. Rayleigh R test on jackknife drop-one-bin phases at CD-ZD wavenumbers. Expected: STFT power concentrated x<2, derivative DFT red-noise, Rayleigh R<0.3 p>0.3 at all modes. Synthetic pipeline validation: 11 conditions x 3 regimes x 20 seeds = 660 runs on N=6992 galaxies confirm zero false positives and injection anti-correlation."
-output = ["data/results/e183/stft_full.csv", "data/results/e183/deriv_full.csv", "data/results/e183/rayleigh_full.csv", "data/results/e183/stft_lowi.csv", "data/results/e183/deriv_lowi.csv", "data/results/e183/rayleigh_lowi.csv", "experiments/manga_zd_null/results.json"]
-output_path_refs = ["data/results/e183/", "data/results/e183/deriv_full.csv", "data/results/e183/deriv_lowi.csv", "data/results/e183/rayleigh_full.csv", "data/results/e183/rayleigh_lowi.csv", "data/results/e183/stft_full.csv", "data/results/e183/stft_lowi.csv", "experiments/manga_zd_null/results.json"]
+output = [
+    "data/results/e183/stft_full.csv",
+    "data/results/e183/deriv_full.csv",
+    "data/results/e183/rayleigh_full.csv",
+    "data/results/e183/stft_lowi.csv",
+    "data/results/e183/deriv_lowi.csv",
+    "data/results/e183/rayleigh_lowi.csv",
+    "experiments/manga_zd_null/results.json",
+]
+output_path_refs = [
+    "data/results/e183/",
+    "data/results/e183/deriv_full.csv",
+    "data/results/e183/deriv_lowi.csv",
+    "data/results/e183/rayleigh_full.csv",
+    "data/results/e183/rayleigh_lowi.csv",
+    "data/results/e183/stft_full.csv",
+    "data/results/e183/stft_lowi.csv",
+    "experiments/manga_zd_null/results.json",
+]
 reproducibility_class = "deterministic_replay"
 run = "harmonic-halo-signal-analysis --stacked-csv data/results/e183/lie_jordan_full.csv --min-per-bin 10 --sigma-x 1.5 --n-windows 32 --stft-csv data/results/e183/stft_full.csv --deriv-csv data/results/e183/deriv_full.csv --rayleigh-csv data/results/e183/rayleigh_full.csv"
 run_command_sha256 = "8d476d35ebb377437380543a96562a935dc79728bed77b885856e4c4eb8307a8"
@@ -4959,7 +5372,10 @@ external_source_refs = []
 gpu = false
 id = "E-194"
 input = "data/external/manga/manga_rotcurves_all.csv, data/external/manga/dapall_selection.csv"
-input_path_refs = ["data/external/manga/dapall_selection.csv", "data/external/manga/manga_rotcurves_all.csv"]
+input_path_refs = [
+    "data/external/manga/dapall_selection.csv",
+    "data/external/manga/manga_rotcurves_all.csv",
+]
 lineage_id = "XL-194"
 method = "Run the galaxy-ensemble Rayleigh phase-coherence test on all 6992 MaNGA galaxies at the seven CD-ZD wavenumbers. The goal is to confirm that ensemble phases stay incoherent (target R < 0.024 and p > 0.5 at every mode) and to remove the N=19 jackknife limitation from E-192."
 output = ["data/external/manga/galaxy_phase_coherence.csv"]
@@ -4985,11 +5401,23 @@ external_source_refs = []
 gpu = false
 id = "E-195"
 input = "data/results/e183/manga_stack_D16.csv, data/results/e183/stft_full.csv, data/results/e183/deriv_full.csv"
-input_path_refs = ["data/results/e183/deriv_full.csv", "data/results/e183/manga_stack_D16.csv", "data/results/e183/stft_full.csv"]
+input_path_refs = [
+    "data/results/e183/deriv_full.csv",
+    "data/results/e183/manga_stack_D16.csv",
+    "data/results/e183/stft_full.csv",
+]
 lineage_id = "XL-195"
 method = "Generate the publication-ready PGFPlots panels for the E-183/E-192 null-result lane: the stacked spatial residual profile with systematics, the derivative DFT, and the STFT spectrogram. Emit three .tex fragments that can be dropped directly into the MaNGA manuscript build."
-output = ["docs/latex/figs/stft_spectrogram.tex", "docs/latex/figs/derivative_dft.tex", "docs/latex/figs/spatial_residuals.tex"]
-output_path_refs = ["docs/latex/figs/derivative_dft.tex", "docs/latex/figs/spatial_residuals.tex", "docs/latex/figs/stft_spectrogram.tex"]
+output = [
+    "docs/latex/figs/stft_spectrogram.tex",
+    "docs/latex/figs/derivative_dft.tex",
+    "docs/latex/figs/spatial_residuals.tex",
+]
+output_path_refs = [
+    "docs/latex/figs/derivative_dft.tex",
+    "docs/latex/figs/spatial_residuals.tex",
+    "docs/latex/figs/stft_spectrogram.tex",
+]
 reproducibility_class = "deterministic_replay"
 run = "harmonic-halo-visualize --stack data/results/e183/manga_stack_D16.csv --stft data/results/e183/stft_full.csv --deriv data/results/e183/deriv_full.csv --out-dir docs/latex/figs"
 run_command_sha256 = "86e3c76410d3ec0ee99d50bb20ffe0853c4ebf807d519131698ba9cfffb47493"
@@ -5011,7 +5439,10 @@ external_source_refs = []
 gpu = false
 id = "E-196"
 input = "data/external/manga/manga_rotcurves_all.csv, data/external/manga/dapall_selection.csv"
-input_path_refs = ["data/external/manga/dapall_selection.csv", "data/external/manga/manga_rotcurves_all.csv"]
+input_path_refs = [
+    "data/external/manga/dapall_selection.csv",
+    "data/external/manga/manga_rotcurves_all.csv",
+]
 lineage_id = "XL-196"
 method = "Re-run the MaNGA stacking lane from E-183 with PSF-flagged inner bins excluded (r < PSF_FWHM ~= 2.5 arcsec). The expected outcome is a smaller inner-bin spike near x~0.95, a lower RMS residual, and a clean side-by-side SNR comparison with and without the beam-smearing mask."
 output = ["data/external/manga/manga_stack_psf_corrected.csv"]
@@ -5037,7 +5468,10 @@ external_source_refs = []
 gpu = false
 id = "E-197"
 input = "data/external/manga/manga_rotcurves_all.csv, data/external/manga/dapall_selection.csv"
-input_path_refs = ["data/external/manga/dapall_selection.csv", "data/external/manga/manga_rotcurves_all.csv"]
+input_path_refs = [
+    "data/external/manga/dapall_selection.csv",
+    "data/external/manga/manga_rotcurves_all.csv",
+]
 lineage_id = "XL-197"
 method = "Inject synthetic ZD harmonic signals with alpha_zd in {0, 0.001, 0.002, 0.004, 0.008, 0.016} into the MaNGA rotation-curve lane, then measure SNR and recovery ratio. The planned acceptance target is SNR > 3 with recovery_ratio in [0.7, 1.3] for alpha_zd >= 0.004."
 output = ["data/external/manga/injection_recovery.csv"]
@@ -5063,11 +5497,30 @@ external_source_refs = ["SRC-MANGA-DR17-CATALOGS", "SRC-LOTSS-DR2-FITS", "SRC-LO
 gpu = false
 id = "E-198"
 input = "data/external/manga/dapall_selection.csv, data/external/manga/drpall-v3_1_1.fits, data/external/radio_surveys/lotss_dr2.fits, data/external/radio_surveys/lotss_dr3.fits"
-input_path_refs = ["data/external/manga/dapall_selection.csv", "data/external/manga/drpall-v3_1_1.fits", "data/external/radio_surveys/lotss_dr2.fits", "data/external/radio_surveys/lotss_dr3.fits"]
+input_path_refs = [
+    "data/external/manga/dapall_selection.csv",
+    "data/external/manga/drpall-v3_1_1.fits",
+    "data/external/radio_surveys/lotss_dr2.fits",
+    "data/external/radio_surveys/lotss_dr3.fits",
+]
 lineage_id = "XL-198"
 method = "Join the selected MaNGA DR17 sample to DRPall sky coordinates, measure declination-band coverage ceilings, then crossmatch each target against LoTSS DR2 and DR3 source catalogs at 3 arcsec. Compare overall and declination-banded detection fractions to test whether the low-overlap conjecture is a DR2 coverage effect and preserve the LoTSS-undetected Radio-Quiet subset for downstream MaNGA kinematic analyses."
-output = ["reports/lotss_manga_preflight_2026-03-13.toml", "data/external/manga/manga_lotss_xmatch_dr2.csv", "reports/manga_lotss_xmatch_dr2.toml", "data/external/manga/manga_lotss_xmatch_dr3.csv", "reports/manga_lotss_xmatch_dr3.toml", "reports/lotss_lotss_dr3_summary.toml"]
-output_path_refs = ["data/external/manga/manga_lotss_xmatch_dr2.csv", "data/external/manga/manga_lotss_xmatch_dr3.csv", "reports/lotss_lotss_dr3_summary.toml", "reports/lotss_manga_preflight_2026-03-13.toml", "reports/manga_lotss_xmatch_dr2.toml", "reports/manga_lotss_xmatch_dr3.toml"]
+output = [
+    "reports/lotss_manga_preflight_2026-03-13.toml",
+    "data/external/manga/manga_lotss_xmatch_dr2.csv",
+    "reports/manga_lotss_xmatch_dr2.toml",
+    "data/external/manga/manga_lotss_xmatch_dr3.csv",
+    "reports/manga_lotss_xmatch_dr3.toml",
+    "reports/lotss_lotss_dr3_summary.toml",
+]
+output_path_refs = [
+    "data/external/manga/manga_lotss_xmatch_dr2.csv",
+    "data/external/manga/manga_lotss_xmatch_dr3.csv",
+    "reports/lotss_lotss_dr3_summary.toml",
+    "reports/lotss_manga_preflight_2026-03-13.toml",
+    "reports/manga_lotss_xmatch_dr2.toml",
+    "reports/manga_lotss_xmatch_dr3.toml",
+]
 reproducibility_class = "deterministic_replay"
 run = "lotss-fetch manga-preflight --manga-selection data/external/manga/dapall_selection.csv --manga-drpall data/external/manga/drpall-v3_1_1.fits --report reports/lotss_manga_preflight_2026-03-13.toml && lotss-fetch crossmatch-manga --release dr2 --input-format fits --input data/external/radio_surveys/lotss_dr2.fits --manga-selection data/external/manga/dapall_selection.csv --manga-drpall data/external/manga/drpall-v3_1_1.fits --output data/external/manga/manga_lotss_xmatch_dr2.csv --report reports/manga_lotss_xmatch_dr2.toml && lotss-fetch crossmatch-manga --release dr3 --input-format fits --input data/external/radio_surveys/lotss_dr3.fits --manga-selection data/external/manga/dapall_selection.csv --manga-drpall data/external/manga/drpall-v3_1_1.fits --output data/external/manga/manga_lotss_xmatch_dr3.csv --report reports/manga_lotss_xmatch_dr3.toml"
 run_command_sha256 = "232253d782d8fd2e8d8f601bdc5161cf1231da19aca1fbff112a15976696a990"
@@ -5089,11 +5542,20 @@ external_source_refs = ["SRC-MANGA-DR17-CATALOGS"]
 gpu = false
 id = "E-201"
 input = "data/external/manga/rotcurves/manga_rotcurves_all.csv, data/external/manga/subsamples/dapall_lowi.csv"
-input_path_refs = ["data/external/manga/rotcurves/manga_rotcurves_all.csv", "data/external/manga/subsamples/dapall_lowi.csv"]
+input_path_refs = [
+    "data/external/manga/rotcurves/manga_rotcurves_all.csv",
+    "data/external/manga/subsamples/dapall_lowi.csv",
+]
 lineage_id = "XL-201"
 method = "H1 face-on reanalysis: restrict to i<45 deg (N=3140), stack, compute Rayleigh R at 7 CD-ZD wavenumbers, fit k^gamma red-noise envelope (gamma=0.808 prior + free-gamma ablation), compute residuals, bootstrap 200x for alpha_zd CI. Also runs whitened matched filter and window function sensitivity on face-on stacked profile."
-output = ["data/results/e201/face_on_red_noise_rayleigh.csv", "data/results/e201/face_on_stack_D16.csv"]
-output_path_refs = ["data/results/e201/face_on_red_noise_rayleigh.csv", "data/results/e201/face_on_stack_D16.csv"]
+output = [
+    "data/results/e201/face_on_red_noise_rayleigh.csv",
+    "data/results/e201/face_on_stack_D16.csv",
+]
+output_path_refs = [
+    "data/results/e201/face_on_red_noise_rayleigh.csv",
+    "data/results/e201/face_on_stack_D16.csv",
+]
 reproducibility_class = "deterministic_replay"
 run = "cargo run --release -p gororoba_cli_physics --bin face-on-red-noise-rayleigh -- --rotcurves data/external/manga/rotcurves/manga_rotcurves_all.csv --dapall data/external/manga/subsamples/dapall_lowi.csv --cd-dim 16 --seed 42"
 run_command_sha256 = "de833d0376445a8b286424eeffbfda6f3a6c0592e4c01c2db1a5758669738ad1"
@@ -5115,7 +5577,10 @@ external_source_refs = ["SRC-MANGA-DR17-CATALOGS"]
 gpu = false
 id = "E-202"
 input = "data/external/manga/rotcurves/manga_rotcurves_all.csv, data/external/manga/dapall_selection.csv"
-input_path_refs = ["data/external/manga/dapall_selection.csv", "data/external/manga/rotcurves/manga_rotcurves_all.csv"]
+input_path_refs = [
+    "data/external/manga/dapall_selection.csv",
+    "data/external/manga/rotcurves/manga_rotcurves_all.csv",
+]
 lineage_id = "XL-202"
 method = "H2 Q3 injection recovery validation: sort galaxies by log(M200), extract Q3 (50th-75th percentile, N=1748, 6 valid bins). Inject alpha_zd at {0.001, 0.004, 0.01}, measure delta_SNR. Compare with Q1 control (18 bins) and synthetic-6-bin Q1 (window isolation). Bootstrap 200x."
 output = ["data/results/e202/q3_injection_recovery.csv"]
@@ -5167,7 +5632,12 @@ external_source_refs = []
 gpu = false
 id = "E-204"
 input = "data/csv/cayley_dickson/* and exact Rust Cayley-Dickson verifiers"
-input_path_refs = ["data/csv/cayley_dickson/", "data/csv/cayley_dickson/256d_basis_properties.csv", "data/csv/cayley_dickson/256d_lattice_mapping.csv", "data/csv/cayley_dickson/64d_chingon_adjacency.csv"]
+input_path_refs = [
+    "data/csv/cayley_dickson/",
+    "data/csv/cayley_dickson/256d_basis_properties.csv",
+    "data/csv/cayley_dickson/256d_lattice_mapping.csv",
+    "data/csv/cayley_dickson/64d_chingon_adjacency.csv",
+]
 lineage_id = "XL-204"
 method = "Exact Rust audit of refuted external Cayley-Dickson CSV claims: sparse 64D adjacency methodology mismatch (C-450), lattice-difference norm census excluding E8 roots (C-455), direct associativity mismatches in the 256D basis-properties CSV (C-456), and parity-clique failure across 16D/32D/64D (C-463)."
 output = ["data/output/claims_falsification/cd_external_audit.toml"]
@@ -5219,7 +5689,14 @@ external_source_refs = []
 gpu = false
 id = "E-206"
 input = "in-repo PMNS, subalgebra, Tang mass, and constants surfaces"
-input_path_refs = ["crates/algebra_analysis/src/grassmannian.rs", "crates/algebra_analysis/src/subalgebra.rs", "crates/gr_core/src/constants.rs", "crates/materials_core/src/tang_mass.rs", "crates/quantum_core/src/he3_superfluid.rs", "crates/stats_core/src/lib.rs"]
+input_path_refs = [
+    "crates/algebra_analysis/src/grassmannian.rs",
+    "crates/algebra_analysis/src/subalgebra.rs",
+    "crates/gr_core/src/constants.rs",
+    "crates/materials_core/src/tang_mass.rs",
+    "crates/quantum_core/src/he3_superfluid.rs",
+    "crates/stats_core/src/lib.rs",
+]
 lineage_id = "XL-206"
 method = "Shared Rust audit for six particle-numerology negative claims: octonion-subalgebra principal angles collapse to {0,90} rather than PMNS values (C-069); democratic associator mixing remains far from PMNS probabilities and is not better than a random doubly-stochastic null (C-077); three-angle Givens fits are exact for arbitrary targets and therefore non-evidentiary (C-081); small Yukawa-like diagonal perturbations improve the democratic matrix only modestly and remain null-like (C-084); depth-based associator norms fail to reproduce the lepton hierarchy and are not significant against a random-assignment null (C-587); and the Planck/BCS 1764 coincidence disappears outside chosen unit systems while the BCS factor remains pi/e^gamma numerics (C-1355)."
 output = ["data/output/claims_falsification/particle_numerology_audit.toml"]
@@ -5245,7 +5722,13 @@ external_source_refs = []
 gpu = false
 id = "E-207"
 input = "in-repo partner-graph spectrum, exact associator norms, checked-in NANOGrav medians, and SO(7) drift sweeps"
-input_path_refs = ["crates/algebra_analysis/src/reggiani.rs", "crates/algebra_experimental/src/so7_drift.rs", "crates/data_core/src/catalogs/nanograv.rs", "crates/stats_core/src/lib.rs", "data/external/nanograv_15yr_freespectrum.csv"]
+input_path_refs = [
+    "crates/algebra_analysis/src/reggiani.rs",
+    "crates/algebra_experimental/src/so7_drift.rs",
+    "crates/data_core/src/catalogs/nanograv.rs",
+    "crates/stats_core/src/lib.rs",
+    "data/external/nanograv_15yr_freespectrum.csv",
+]
 lineage_id = "XL-207"
 method = "Shared Rust audit for three refuted or methodology-insufficient Cayley-Dickson pattern claims: partner-graph eigenvalue ladders are compared against PDG masses under both log and linear transforms with random-subset nulls (C-068); exact associator-quantile curves are compared against checked-in NANOGrav medians with Frechet nulls and simple template families (C-070); and generic SO(7) rotations leave the exact zero-divisor lane immediately, so the surviving orbit structure is discrete rather than continuous (C-092)."
 output = ["data/output/claims_falsification/cd_pattern_baseline_audit.toml"]
@@ -5534,7 +6017,12 @@ input = "synthetic (Gaussian density perturbation)"
 input_path_refs = []
 lineage_id = "XL-218"
 method = "Per-step LBM instrumentation: (1) positivity sentinel tracks min(f_i) and max(Ma) each step to detect first f_i<0 violation; (2) entropy neighborhood computes H_rel = sum_i f_i ln(f_i/f_i^eq) in a 3-cell radius around the violation cell to test spatial correlation (center vs boundary). Runs BGK at contrast=23 and MRT at contrast=29 to straddle the catastrophic divergence threshold observed in E-167."
-output = ["stdout (trajectory CSV + Phase 1/2 summaries)", "data/output/e167_rca_bgk_c23.csv", "data/output/e167_rca_bgk_c29.csv", "data/output/e167_rca_mrt_c29.csv"]
+output = [
+    "stdout (trajectory CSV + Phase 1/2 summaries)",
+    "data/output/e167_rca_bgk_c23.csv",
+    "data/output/e167_rca_bgk_c29.csv",
+    "data/output/e167_rca_mrt_c29.csv",
+]
 output_path_refs = []
 reproducibility_class = "deterministic_replay"
 run = "cargo run --release --bin lbm-rca-probe -- --n 16 --tau 0.7 --contrast 23.0 --mode bgk --steps 400 --csv-out data/output/e167_rca_bgk_c23.csv"
@@ -5693,7 +6181,10 @@ external_source_refs = []
 gpu = false
 id = "E-227"
 input = "Staples et al. 2020 THEMIS crossing catalog v2 (9490 probe-a entries); 1783 THEMIS FGM CSV files at 3-second cadence (2007-2016)"
-input_path_refs = ["data/external/crossing_lists/themis_mp_crossings_v2.txt", "data/external/themis/"]
+input_path_refs = [
+    "data/external/crossing_lists/themis_mp_crossings_v2.txt",
+    "data/external/themis/",
+]
 lineage_id = "XL-227"
 method = "Group crossings by (year, doy); for each group load FGM CSV; binary search for crossing time; extract 120 pre-crossing rows; build 32D Takens embeddings (8-step x 4-ch, unit-norm); batch_sliding_associator_norms_parallel; last 12 norms = precursor window (6 early + 6 late); ratio = late_mean / early_mean."
 output = ["data/output/heliosphere/ablations/themis_cd_crossing_survey.json"]
@@ -5709,7 +6200,10 @@ truth_surface_consumption = ["themis_mp_crossings_v2.txt"]
 [[experiment]]
 id = "E-228"
 input = "Cluster C1 FGM spin-resolution CSV (DOY 001-007 2002); OMNI Cluster bow shock crossing list omni_bowshock_cluster_2002.txt (37 curated crossings)"
-input_path_refs = ["data/external/cluster/", "data/external/crossing_lists/omni_bowshock_cluster_2002.txt"]
+input_path_refs = [
+    "data/external/cluster/",
+    "data/external/crossing_lists/omni_bowshock_cluster_2002.txt",
+]
 lineage_id = "XL-228"
 method = "Load per-day Cluster C1 FGM CSV (HAPI spin-res); minute-level averaging; 32D Takens (8-step x 4-ch, unit-norm); batch_sliding_associator_norms_parallel; threshold-sweep for PR curve; per-transition type classification (rotation/b_jump/cv_bmag); false-negative analysis vs curated crossing list."
 output = ["data/output/heliosphere/ablations/fa_attribution_cluster_2002w01.json"]
@@ -5724,7 +6218,10 @@ title = "Cluster FA attribution: bow shock crossing detection P/R/F1 and per-typ
 [[experiment]]
 id = "E-229"
 input = "Rosetta 67P AMDA ros-magob-rsmp FGM data (July-September 2015, 126949 minutes); AMDA diamagnetic cavity boundary annotations (9298 cavity boundary events)"
-input_path_refs = ["data/external/rosetta/", "data/external/crossing_lists/rosetta_cavity_boundaries.txt"]
+input_path_refs = [
+    "data/external/rosetta/",
+    "data/external/crossing_lists/rosetta_cavity_boundaries.txt",
+]
 lineage_id = "XL-229"
 method = "Four normalization variants (raw/direction/clipped/current) of 32D Takens embedding; batch_sliding_associator_norms_parallel; detection_rate/FAR/selectivity/F1 for each variant; rank by F1_boundary; winner: direction."
 output = ["data/output/heliosphere/ablations/rosetta_normalization_ablation.json"]
@@ -5739,7 +6236,12 @@ title = "Rosetta 67P normalization ablation: direction vs raw/clipped/current in
 [[experiment]]
 id = "E-230"
 input = "Four pre-computed PSP switchback omega JSON files: E1/E4/E6/E10 (heliosphere-switchback-omega outputs)"
-input_path_refs = ["data/output/heliosphere/ablations/psp_switchback_omega_e1.json", "data/output/heliosphere/ablations/psp_switchback_omega.json", "data/output/heliosphere/ablations/psp_switchback_omega_e6.json", "data/output/heliosphere/ablations/psp_switchback_omega_e10.json"]
+input_path_refs = [
+    "data/output/heliosphere/ablations/psp_switchback_omega_e1.json",
+    "data/output/heliosphere/ablations/psp_switchback_omega.json",
+    "data/output/heliosphere/ablations/psp_switchback_omega_e6.json",
+    "data/output/heliosphere/ablations/psp_switchback_omega_e10.json",
+]
 lineage_id = "XL-230"
 method = "Read per-encounter JSON; extract ratio_switchback_to_quiet; Spearman rho vs encounter number (perihelion depth proxy); monotonicity check; mean/std across 4 encounters."
 output = ["data/output/heliosphere/ablations/psp_multiencounter_stability.json"]
@@ -5772,7 +6274,10 @@ input = "MMS1 FGM Survey L2 data (2024-01-01 to 2024-01-07, 9460 minutes after i
 input_path_refs = ["data/external/mms/"]
 lineage_id = "XL-232"
 method = "Two runs of heliosphere-mms-multiday: (1) baseline gradient-only (5 nT threshold), (2) rotation-hardened (5 nT + rotation>=30 deg). Compare n_crossings_detected, detection_rate, false_alarm_rate, mean_offset_minutes."
-output = ["data/output/heliosphere/ablations/mms_multiday_crossing_analysis.json", "data/output/heliosphere/ablations/mms_multiday_rot30.json"]
+output = [
+    "data/output/heliosphere/ablations/mms_multiday_crossing_analysis.json",
+    "data/output/heliosphere/ablations/mms_multiday_rot30.json",
+]
 output_path_refs = ["data/output/heliosphere/ablations/mms_multiday_rot30.json"]
 reproducibility_class = "deterministic"
 run = "cargo run --release --bin heliosphere-mms-multiday -- --start-date 2024-01-01 --n-days 7 --rotation-threshold-deg 30 --out-json data/output/heliosphere/ablations/mms_multiday_rot30.json"
@@ -5802,7 +6307,10 @@ input = "MAVEN MAG HAPI CSV (2015-03-01 to 2015-03-13, 16851 minutes, DOY 060-07
 input_path_refs = ["data/external/maven/", "data/external/crossing_lists/maven_bs_2015_regime.txt"]
 lineage_id = "XL-233"
 method = "Load MAVEN MAG minute-averaged FGM (SS frame); 32D Takens (8-step x 4-ch, unit-norm); batch_sliding_associator_norms_parallel; compare CD transitions against regime-filter-derived crossing list (heliosphere-maven-crossing-gen SW<4.5nT -> sheath>8nT, 30-min gap); per-transition type classification; PR curve sweep."
-output = ["data/output/heliosphere/ablations/fa_attribution_maven_2015.json", "data/output/heliosphere/ablations/fa_attribution_maven_pr_curve.json"]
+output = [
+    "data/output/heliosphere/ablations/fa_attribution_maven_2015.json",
+    "data/output/heliosphere/ablations/fa_attribution_maven_pr_curve.json",
+]
 output_path_refs = ["data/output/heliosphere/ablations/fa_attribution_maven_2015.json"]
 reproducibility_class = "deterministic"
 run = "cargo run --release --bin heliosphere-fa-attribution -- --mission maven --start-date 2015-03-01 --end-date 2015-03-13 --crossing-list data/external/crossing_lists/maven_bs_2015_regime.txt --out-json data/output/heliosphere/ablations/fa_attribution_maven_2015.json --out-pr-curve data/output/heliosphere/ablations/fa_attribution_maven_pr_curve.json"
@@ -5811,11 +6319,14 @@ status = "active"
 status_token = "ACTIVE"
 title = "MAVEN bow shock FA attribution with regime-filter crossing list (C-1625)"
 
-
 [[experiment]]
 id = "E-235"
 input = "Per-mission FA attribution JSONs (THEMIS 2008w44/2009w40/2009w44, Cluster 2002w01, MAVEN 2015); produced by heliosphere-fa-attribution with embedding_dim=32, match_tolerance=20min"
-input_path_refs = ["data/output/heliosphere/ablations/fa_attribution_themis_2008w44.json", "data/output/heliosphere/ablations/fa_attribution_cluster_2002w01.json", "data/output/heliosphere/ablations/fa_attribution_maven_2015.json"]
+input_path_refs = [
+    "data/output/heliosphere/ablations/fa_attribution_themis_2008w44.json",
+    "data/output/heliosphere/ablations/fa_attribution_cluster_2002w01.json",
+    "data/output/heliosphere/ablations/fa_attribution_maven_2015.json",
+]
 lineage_id = "XL-235"
 method = "heliosphere-fa-cross-mission-table: read per-mission JSONs; compute per-period P/R/F1; flag multi-match rows (recall>1); micro-average per mission; pool false-alarm type fractions; emit ASCII table + JSON (C-1627)."
 output = ["data/output/heliosphere/ablations/fa_cross_mission_table.json"]
@@ -5830,7 +6341,10 @@ title = "Cross-mission FA attribution table: THEMIS/Cluster/MAVEN P/R/F1 compari
 [[experiment]]
 id = "E-236"
 input = "MMS1 FGM Survey L2 HAPI CSV (2024-01-01..2024-07-31, monthly files); MMS SDC SITL/GLS event catalog (REST API lasp.colorado.edu/mms/sdc/public/files/api/v1/sitl/gls/csv)"
-input_path_refs = ["data/external/mms/mms1_fgm_srvy_l2_2024_*.csv", "data/external/mms/mms_sitl_*.csv"]
+input_path_refs = [
+    "data/external/mms/mms1_fgm_srvy_l2_2024_*.csv",
+    "data/external/mms/mms_sitl_*.csv",
+]
 lineage_id = "XL-236"
 method = "heliosphere-mms-sitl-labeled: parse SITL CSV, filter by magnetopause keywords (FOM>=10), run 32D Takens embedding + CD associator, run |B|-gradient+rotation baseline, evaluate both against SITL intervals using interval-based P/R/F1 (C-1628)."
 output = ["data/output/heliosphere/ablations/mms_sitl_labeled_eval.json"]
@@ -5841,3 +6355,22 @@ run_command_sha256 = ""
 status = "active"
 status_token = "ACTIVE"
 title = "MMS CD associator evaluation against SITL-curated magnetopause ground truth (C-1628)"
+
+[[experiment]]
+id = "E-237"
+input = "THEMIS-A L2 FGM spin-resolution data from CDAWeb HAPI (THA_L2_FGM@0, 2016-08-29..2016-09-04); Staples et al. (2020) THEMIS magnetopause crossing catalog (themis_mp_crossings_v2.txt, 224 probe-a events in window)"
+input_path_refs = [
+    "data/external/themis/a_fgm_2016_242.csv",
+    "data/external/themis/a_fgm_2016_248.csv",
+    "data/external/crossing_lists/themis_mp_crossings_v2.txt",
+]
+lineage_id = "XL-237"
+method = "heliosphere-themis-staples-labeled: fetch THA FGM via CurlCli HAPI bypass (avoids reqwest TLS panic); minute-average spin-resolution data; run 32D Takens embedding + CD associator pipeline identical to E-236; run |B|-gradient+rotation baseline; evaluate both against Staples catalog intervals (+/-10min pad) using interval-based P/R/F1 (C-1629)."
+output = ["data/output/heliosphere/ablations/themis_staples_labeled_eval.json"]
+output_path_refs = ["data/output/heliosphere/ablations/themis_staples_labeled_eval.json"]
+reproducibility_class = "deterministic"
+run = "cargo run --release --bin heliosphere-themis-staples-labeled -- --start-date 2016-08-29 --n-days 7 --probe a --staples-catalog data/external/crossing_lists/themis_mp_crossings_v2.txt --data-dir data/external"
+run_command_sha256 = ""
+status = "active"
+status_token = "ACTIVE"
+title = "THEMIS-A CD associator evaluation against Staples+2020 peer-reviewed catalog (C-1629)"
