@@ -45,6 +45,13 @@ pub struct ThemisFgmRecord {
 }
 
 /// Parse THEMIS FGM HAPI CSV into minute-averaged records.
+///
+/// Groups ~3-second spin-fit (FGS) samples into 1-minute bins by
+/// client-side arithmetic mean over all finite samples within each UTC
+/// minute boundary.  `|B|` is recomputed from the mean component vector
+/// (the FGS HAPI product does not include a separate |B| column at this
+/// cadence).  This is the decimation protocol for all Takens delay
+/// embeddings built from THEMIS data.
 pub fn parse_themis_fgm_hapi_csv_minutes(content: &str, probe: &str) -> Vec<ThemisFgmMinuteRecord> {
     let mut reader = ReaderBuilder::new()
         .has_headers(true)
@@ -249,7 +256,7 @@ pub fn parse_staples_crossing_catalog(
                 cols.next()?;
             }
             let probe_str = cols.next()?.trim();
-            if probe_str.chars().next() != Some(probe_filter) {
+            if !probe_str.starts_with(probe_filter) {
                 return None;
             }
             let dt = NaiveDateTime::parse_from_str(ts_raw, "%Y-%m-%dT%H:%M:%S").ok()?;

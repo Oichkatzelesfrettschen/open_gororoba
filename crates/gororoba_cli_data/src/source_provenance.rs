@@ -1512,6 +1512,43 @@ fn pick_first_str(table: &toml::map::Map<String, Value>, keys: &[&str]) -> Strin
     String::new()
 }
 
+/// Classify a lowercase TOML key into the field category it contributes to.
+///
+/// Extracted from `extract_candidates_from_toml_node` to reduce its
+/// cyclomatic complexity and make the matching rules easy to audit and extend.
+enum TomlFieldKind {
+    Url,
+    Doi,
+    Path,
+    Note,
+    Skip,
+}
+
+fn classify_toml_field_key(lower: &str) -> TomlFieldKind {
+    if lower.contains("url")
+        || lower.contains("link")
+        || lower.contains("mirror")
+        || lower.contains("href")
+    {
+        TomlFieldKind::Url
+    } else if lower.contains("doi") {
+        TomlFieldKind::Doi
+    } else if lower.contains("path")
+        || lower.ends_with("_file")
+        || lower.ends_with("_files")
+        || lower == "files"
+    {
+        TomlFieldKind::Path
+    } else if matches!(
+        lower,
+        "status" | "note" | "notes" | "reason" | "manual_intervention_reason"
+    ) {
+        TomlFieldKind::Note
+    } else {
+        TomlFieldKind::Skip
+    }
+}
+
 fn extract_candidates_from_toml_node(
     repo_root: &Path,
     source_rel: &str,
@@ -1559,25 +1596,14 @@ fn extract_candidates_from_toml_node(
             let mut notes = Vec::new();
             for (key, value) in table {
                 let lower = key.to_ascii_lowercase();
-                if lower.contains("url")
-                    || lower.contains("link")
-                    || lower.contains("mirror")
-                    || lower.contains("href")
-                {
-                    urls.extend(extract_urls(value));
-                } else if lower.contains("doi") {
-                    dois.extend(extract_dois(value));
-                } else if lower.contains("path")
-                    || lower.ends_with("_file")
-                    || lower.ends_with("_files")
-                    || lower == "files"
-                {
-                    local_paths.extend(extract_local_paths(value, repo_root));
-                } else if matches!(
-                    lower.as_str(),
-                    "status" | "note" | "notes" | "reason" | "manual_intervention_reason"
-                ) {
-                    notes.extend(extract_strings(value));
+                match classify_toml_field_key(&lower) {
+                    TomlFieldKind::Url => urls.extend(extract_urls(value)),
+                    TomlFieldKind::Doi => dois.extend(extract_dois(value)),
+                    TomlFieldKind::Path => {
+                        local_paths.extend(extract_local_paths(value, repo_root))
+                    }
+                    TomlFieldKind::Note => notes.extend(extract_strings(value)),
+                    TomlFieldKind::Skip => {}
                 }
             }
             let filtered_urls = dedupe(

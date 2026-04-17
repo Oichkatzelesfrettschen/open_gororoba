@@ -554,6 +554,11 @@ fn main() -> Result<()> {
         // Noise-floor regularization: clamp denominator to at least the
         // instrument noise floor so near-zero |B| near magnetic null points
         // cannot amplify instrument noise into spurious associator spikes.
+        // Algebraic note: when |B| < noise_floor the denominator locks to a
+        // constant, transitioning the normalization from scale-invariant
+        // (relative topology, the intended regime) to scale-dependent
+        // (absolute amplitude).  Local field geometry is preserved; only
+        // the sub-noise-floor amplitude modulation is suppressed.
         let denom = local_mean_b.max(cli.bmag_noise_floor);
         let mut v = vec![0.0; cli.embedding_dim];
         for (s, &ri) in sample_indices.iter().enumerate() {
