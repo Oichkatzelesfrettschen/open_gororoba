@@ -6615,14 +6615,14 @@ id = "E-252"
 input = "THEMIS-A FGM HAPI CSV (2016-08-29..2016-09-04, DOY 242-248)."
 input_path_refs = ["data/external/themis/"]
 lineage_id = "XL-252"
-method = "Sparsity-matched random trilinear baseline. Extract CD T_ijk zero-pattern by probing [e_j, e_0, e_k] for all basis pairs. Randomize only nonzero entries from N(0, sigma_cd) where sigma_cd = RMS of nonzero CD coefficients. 100 draws. Same Takens embedding, noise-floor normalization, and MAD_SCALE_FACTOR=1.5 as CD baseline. Pre-registered: if CD exceeds mean+2sigma here, specific coefficient values matter beyond zero-pattern; if not, zero-pattern is sufficient."
+method = "Sparsity-matched random trilinear baseline. Extract CD 4-index structure tensor S_{l,i,j,k}=[e_i,e_j,e_k]_l by probing all basis triples. 15960/1M entries nonzero. Randomize nonzero from N(0, sigma_cd=2.0). 100 draws with windows(3) matching CD associator. result: mean=0.535, std=0.042, mean+2sigma=0.620. P2b FALSIFIED."
 output = ["data/output/heliosphere/ablations/random_trilinear_sparse_eval.json"]
 output_path_refs = ["data/output/heliosphere/ablations/random_trilinear_sparse_eval.json"]
 reproducibility_class = "deterministic"
 run = "cargo run --release --bin heliosphere-random-trilinear-sparse -- --start-date 2016-08-29 --n-days 7 --n-draws 100 --base-seed 2000"
 run_command_sha256 = ""
-status = "planned"
-status_token = "PLANNED"
+status = "active"
+status_token = "ACTIVE"
 title = "Sparsity-matched random trilinear baseline (100 draws, ablation pre-registration P2, plan P6A.S2.T2.5)"
 
 [[experiment]]
@@ -6634,14 +6634,14 @@ id = "E-254"
 input = "THEMIS-A FGM HAPI CSV (2016-08-29..2016-09-04)."
 input_path_refs = ["data/external/themis/"]
 lineage_id = "XL-254"
-method = "CD R16 ablation. 2 channels (Bx, By) x 8 lags = 16D sedenion embedding. Same MAD_SCALE_FACTOR=1.5, eval window +-10min. Pre-registered Axis A variant. Prediction P4: R16 F1 < R32 F1 (drops Bz and |B| cross-sheet information)."
+method = "CD R16 ablation. 2 channels (Bx, By) x 8 lags = 16D sedenion embedding. Same MAD_SCALE_FACTOR=1.5, eval window +-10min. Pre-registered Axis A variant. Prediction P4: R16 F1 < R32 F1 (drops Bz and |B| cross-sheet information). RESULT: F1=0.207, P4 CONFIRMED."
 output = ["data/output/heliosphere/ablations/r16_ablation_eval.json"]
 output_path_refs = ["data/output/heliosphere/ablations/r16_ablation_eval.json"]
 reproducibility_class = "deterministic"
 run = "cargo run --release --bin heliosphere-r16-ablation -- --start-date 2016-08-29 --n-days 7"
 run_command_sha256 = ""
-status = "planned"
-status_token = "PLANNED"
+status = "active"
+status_token = "ACTIVE"
 title = "CD R16 Axis A ablation (2ch x 8 lags, plan P6A.S2.T2.1)"
 
 [[experiment]]
@@ -6659,8 +6659,8 @@ output_path_refs = ["data/output/heliosphere/ablations/r64_ablation_eval.json"]
 reproducibility_class = "deterministic"
 run = "cargo run --release --bin heliosphere-r64-ablation -- --start-date 2016-08-29 --n-days 7"
 run_command_sha256 = ""
-status = "planned"
-status_token = "PLANNED"
+status = "active"
+status_token = "ACTIVE"
 title = "CD R64 Axis A ablation (8ch half-lag x 8 lags, plan P6A.S2.T2.2)"
 
 [[experiment]]
@@ -6678,9 +6678,9 @@ output_path_refs = ["data/output/heliosphere/ablations/lag_depth_sweep_eval.json
 reproducibility_class = "deterministic"
 run = "cargo run --release --bin heliosphere-lag-depth-sweep -- --start-date 2016-08-29 --n-days 7"
 run_command_sha256 = ""
-status = "planned"
-status_token = "PLANNED"
-title = "Axis B lag-depth sweep d=4,6,8,12 (plan P6A.S2.T2.3)"
+status = "active"
+status_token = "ACTIVE"
+title = "Axis B lag-depth sweep d=4,8,16 (plan P6A.S2.T2.3, d=6,12 excluded: 24D/48D not power-of-2)"
 
 [[experiment]]
 binary = "heliosphere-commutator-baseline"
@@ -6697,8 +6697,8 @@ output_path_refs = ["data/output/heliosphere/ablations/commutator_baseline_eval.
 reproducibility_class = "deterministic"
 run = "cargo run --release --bin heliosphere-commutator-baseline -- --start-date 2016-08-29 --n-days 7"
 run_command_sha256 = ""
-status = "planned"
-status_token = "PLANNED"
+status = "active"
+status_token = "ACTIVE"
 title = "Commutator ||xy-yx||_2 baseline (plan P6A.S2.T2.7)"
 
 [[experiment]]
@@ -6716,8 +6716,8 @@ output_path_refs = ["data/output/heliosphere/ablations/pca_variance_baseline_eva
 reproducibility_class = "deterministic"
 run = "cargo run --release --bin heliosphere-pca-variance-baseline -- --start-date 2016-08-29 --n-days 7 --pca-window 15"
 run_command_sha256 = ""
-status = "planned"
-status_token = "PLANNED"
+status = "active"
+status_token = "ACTIVE"
 title = "PCA leading-PC variance ratio baseline (plan P6A.S2.T2.8)"
 
 [[experiment]]
@@ -6735,8 +6735,8 @@ output_path_refs = ["data/output/heliosphere/ablations/window_sensitivity_eval.j
 reproducibility_class = "deterministic"
 run = "cargo run --release --bin heliosphere-window-sensitivity -- --start-date 2016-08-29 --n-days 7"
 run_command_sha256 = ""
-status = "planned"
-status_token = "PLANNED"
+status = "active"
+status_token = "ACTIVE"
 title = "Window function sensitivity boxcar/Hamming/Hann (M-5, plan P6A.S4.T4.9)"
 
 [[experiment]]
@@ -6749,11 +6749,30 @@ input = "Voyager 1 MAG48 FLT1 ASCII files (data/external/voyager1_mag48/, 2012 D
 input_path_refs = ["data/external/voyager1_mag48/", "data/external/crossing_lists/voyager_boundaries.txt"]
 lineage_id = "XL-265"
 method = "CD associator on Voyager 1 heliopause crossing 2012-08-25 (DOY 238). 4-channel x 8-lag = 32D embedding at native 48s cadence. Relative noise floor normalization: eps = 0.01 * local_window_median_B (Phase 0.5 RelativeFraction(0.01)). Reports: detected_within_6h, closest_detection_hours, enrichment_ratio (boundary +-24h vs quiet background)."
-output = ["data/output/heliosphere/ablations/voyager_heliopause_eval.json"]
-output_path_refs = ["data/output/heliosphere/ablations/voyager_heliopause_eval.json"]
+output = ["data/output/heliosphere/ablations/voyager_heliopause_v1_eval.json"]
+output_path_refs = ["data/output/heliosphere/ablations/voyager_heliopause_v1_eval.json"]
 reproducibility_class = "deterministic"
 run = "cargo run --release --bin heliosphere-voyager-heliopause -- --spacecraft v1 --window-days 20"
 run_command_sha256 = ""
-status = "planned"
-status_token = "PLANNED"
+status = "active"
+status_token = "ACTIVE"
 title = "Voyager 1 heliopause CD associator (Phase 9A.2, relative normalization)"
+
+[[experiment]]
+binary = "heliosphere-voyager-heliopause"
+binary_experiment_declared = "E-266"
+binary_registered = true
+claim_refs = ["C-1657"]
+id = "E-266"
+input = "Voyager 2 MAG48 FLT1 ASCII files (data/external/voyager2_mag48/, 2018 DOY 289-329 window)."
+input_path_refs = ["data/external/voyager2_mag48/"]
+lineage_id = "XL-266"
+method = "CD associator on Voyager 2 heliopause crossing 2018-11-05 (DOY 309). 4-channel x 8-lag = 32D embedding at native 48s cadence. Relative noise floor normalization: eps = 0.01 * global_window_median_B. Reports: detected_within_6h, closest_detection_hours, enrichment_ratio."
+output = ["data/output/heliosphere/ablations/voyager_heliopause_v2_eval.json"]
+output_path_refs = ["data/output/heliosphere/ablations/voyager_heliopause_v2_eval.json"]
+reproducibility_class = "deterministic"
+run = "cargo run --release --bin heliosphere-voyager-heliopause -- --spacecraft v2 --window-days 20"
+run_command_sha256 = ""
+status = "active"
+status_token = "ACTIVE"
+title = "Voyager 2 heliopause CD associator (Phase 9A.3, null result)"

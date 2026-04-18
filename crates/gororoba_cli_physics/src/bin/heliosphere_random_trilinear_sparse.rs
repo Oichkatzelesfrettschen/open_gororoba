@@ -125,53 +125,49 @@ fn event_midpoint_unix(ev: &MmsEventInterval) -> i64 {
     Utc.from_utc_datetime(&mid).timestamp()
 }
 
-/// Compute the CD trilinear tensor T for the given dim by probing with basis triples.
-/// T_ijk = associator(e_j, e_0, e_k)_i  -- e_0 is the identity element.
+/// Compute the CD trilinear structure tensor for the given dim by probing all basis triples.
 ///
-/// Returns: (nonzero_indices, sigma_cd) where nonzero_indices is a Vec<(i,j,k)>
-/// of the index triples where T is nonzero, and sigma_cd is the RMS of the nonzero values.
+/// The CD associator [x,y,z]_l = ((xy)z - x(yz))_l is a trilinear form. The structure
+/// tensor entry S_{l,i,j,k} = [e_i, e_j, e_k]_l captures the l-th output component when
+/// inputs are basis vectors e_i, e_j, e_k.
 ///
-/// We use the (first lag, middle, last lag) basis triple formulation:
-/// T_ijk represents the contribution of v_j * v_k to output i in [v_t-1, v_t, v_t+1].
-/// For the CD associator [x,y,z]_i = ((x*y)*z - x*(y*z))_i, the trilinear coefficient
-/// T_ijk = d/d(x_j) d/d(y_k) [e_i^T * [x, e_0^perp, z]] evaluated at x=y=z=0, using z=e_0^perp.
+/// Returns: (nonzero_quads, sigma_cd) where nonzero_quads is Vec<(l,i,j,k)> of all index
+/// quadruples where S is nonzero, and sigma_cd is the RMS of the nonzero S values.
 ///
-/// Practical implementation: probe with T_ijk = [e_j, e_0, e_k]_i using cd_associator.
-fn build_cd_sparsity_pattern(dim: usize) -> (Vec<(usize, usize, usize)>, f64) {
-    let e0: Vec<f64> = {
-        let mut v = vec![0.0_f64; dim];
-        v[0] = 1.0; // e_0 is the real unit
-        v
-    };
-
-    let mut nonzero_indices: Vec<(usize, usize, usize)> = Vec::new();
+/// For dim=32, there are 32^3=32768 triples to probe; many are nonzero due to zero
+/// divisors present in 32D CD algebras. Using e_0 (identity) as any argument always
+/// gives zero and must be excluded from meaningful sparsity analysis.
+fn build_cd_sparsity_pattern(dim: usize) -> (Vec<(usize, usize, usize, usize)>, f64) {
+    let mut nonzero_quads: Vec<(usize, usize, usize, usize)> = Vec::new();
     let mut values_sq_sum = 0.0_f64;
     let mut n_values = 0usize;
 
-    for j in 0..dim {
-        let mut ej = vec![0.0_f64; dim];
-        ej[j] = 1.0;
-        for k in 0..dim {
-            let mut ek = vec![0.0_f64; dim];
-            ek[k] = 1.0;
-            // Compute [e_j, e_0, e_k] = (e_j * e_0) * e_k - e_j * (e_0 * e_k)
-            let assoc = cd_kernel::cd_associator_norm(&ej, &e0, &ek);
-            // We probe each output dimension i by computing the full associator vector.
-            // Skip (j,k) pairs where the norm is zero -- all entries will be zero.
-            if assoc < 1e-12 { continue; }
-            let assoc_vec = {
-                let ab = cd_kernel::cd_multiply(&ej, &e0);
+    for i in 0..dim {
+        let mut ei = vec![0.0_f64; dim];
+        ei[i] = 1.0;
+        for j in 0..dim {
+            let mut ej = vec![0.0_f64; dim];
+            ej[j] = 1.0;
+            for k in 0..dim {
+                let mut ek = vec![0.0_f64; dim];
+                ek[k] = 1.0;
+                // Quick norm check before computing the full vector
+                let assoc_norm = cd_kernel::cd_associator_norm(&ei, &ej, &ek);
+                if assoc_norm < 1e-12 { continue; }
+                // Compute full associator vector [e_i, e_j, e_k]
+                let ab = cd_kernel::cd_multiply(&ei, &ej);
                 let abc_left = cd_kernel::cd_multiply(&ab, &ek);
-                let bc = cd_kernel::cd_multiply(&e0, &ek);
-                let abc_right = cd_kernel::cd_multiply(&ej, &bc);
-                abc_left.iter().zip(&abc_right).map(|(l, r)| l - r).collect::<Vec<f64>>()
-            };
-            for i in 0..dim {
-                let val = assoc_vec[i];
-                if val.abs() > 1e-12 {
-                    nonzero_indices.push((i, j, k));
-                    values_sq_sum += val * val;
-                    n_values += 1;
+                let bc = cd_kernel::cd_multiply(&ej, &ek);
+                let abc_right = cd_kernel::cd_multiply(&ei, &bc);
+                let assoc_vec: Vec<f64> = abc_left.iter().zip(&abc_right)
+                    .map(|(l, r)| l - r).collect();
+                for l in 0..dim {
+                    let val = assoc_vec[l];
+                    if val.abs() > 1e-12 {
+                        nonzero_quads.push((l, i, j, k));
+                        values_sq_sum += val * val;
+                        n_values += 1;
+                    }
                 }
             }
         }
@@ -183,31 +179,38 @@ fn build_cd_sparsity_pattern(dim: usize) -> (Vec<(usize, usize, usize)>, f64) {
         1.0
     };
 
-    (nonzero_indices, sigma_cd)
+    (nonzero_quads, sigma_cd)
 }
 
 /// Compute sparse random trilinear scores using the CD sparsity pattern.
+///
+/// Models the same 3-vector associator structure as `batch_sliding_associator_norms_parallel`:
+/// for each consecutive triple (x, y, z), compute ||T[x,y,z]||_2 where T has the same
+/// zero-pattern as the CD structure tensor S_{l,i,j,k}.
+///
+/// Returns n-2 scores for n input delay vectors (same length contract as CD baseline).
 fn compute_sparse_random_scores(
     delay_vectors: &[Vec<f64>],
     dim: usize,
-    nonzero_indices: &[(usize, usize, usize)],
+    nonzero_quads: &[(usize, usize, usize, usize)],
     sigma_cd: f64,
     seed: u64,
 ) -> Vec<f64> {
     let mut rng = ChaCha8Rng::seed_from_u64(seed);
     let dist = Normal::new(0.0, sigma_cd).expect("valid normal distribution");
 
-    // Sample only the nonzero T entries
-    let t_sparse: Vec<f64> = (0..nonzero_indices.len()).map(|_| dist.sample(&mut rng)).collect();
+    // Sample only the nonzero S entries
+    let t_sparse: Vec<f64> = (0..nonzero_quads.len()).map(|_| dist.sample(&mut rng)).collect();
 
     delay_vectors
-        .windows(2)
+        .windows(3)
         .map(|w| {
             let x = &w[0];
             let y = &w[1];
+            let z = &w[2];
             let mut result = vec![0.0_f64; dim];
-            for (idx, &(i, j, k)) in nonzero_indices.iter().enumerate() {
-                result[i] += t_sparse[idx] * x[j] * y[k];
+            for (idx, &(l, i, j, k)) in nonzero_quads.iter().enumerate() {
+                result[l] += t_sparse[idx] * x[i] * y[j] * z[k];
             }
             result.iter().map(|v| v * v).sum::<f64>().sqrt()
         })
@@ -268,13 +271,14 @@ fn main() -> Result<()> {
 
     // Build CD sparsity pattern FIRST (deterministic, only depends on dim)
     println!("Computing CD T_ijk sparsity pattern (dim={})...", cli.embedding_dim);
-    let (nonzero_indices, sigma_cd) = build_cd_sparsity_pattern(cli.embedding_dim);
-    let total_entries = cli.embedding_dim.pow(3);
+    let (nonzero_quads, sigma_cd) = build_cd_sparsity_pattern(cli.embedding_dim);
+    // 4-index tensor: dim^4 total entries (l,i,j,k each in [0,dim))
+    let total_entries = cli.embedding_dim.pow(4);
     println!(
-        "  Nonzero entries: {}/{} ({:.1}% sparse)",
-        nonzero_indices.len(),
+        "  Nonzero (l,i,j,k) quads: {}/{} ({:.1}% sparse)",
+        nonzero_quads.len(),
         total_entries,
-        100.0 * (1.0 - nonzero_indices.len() as f64 / total_entries as f64)
+        100.0 * (1.0 - nonzero_quads.len() as f64 / total_entries as f64)
     );
     println!("  sigma_cd (RMS of nonzero): {:.6}", sigma_cd);
 
@@ -385,7 +389,8 @@ fn main() -> Result<()> {
         delay_vectors.push(v);
     }
 
-    let score_meta: Vec<usize> = embed_meta[1..].to_vec();
+    // windows(3) produces n-2 scores; align metadata to the LAST index of each triple
+    let score_meta: Vec<usize> = embed_meta[2..].to_vec();
     let trans_window = cli.crossing_window_minutes.max(5);
     let eval_window_secs = cli.pad_minutes * 60;
 
@@ -401,7 +406,7 @@ fn main() -> Result<()> {
         if draw_idx % 10 == 0 { println!("  Draw {}/{}", draw_idx + 1, cli.n_draws); }
 
         let scores = compute_sparse_random_scores(
-            &delay_vectors, cli.embedding_dim, &nonzero_indices, sigma_cd, seed);
+            &delay_vectors, cli.embedding_dim, &nonzero_quads, sigma_cd, seed);
         let fire_hours = detect_transitions(&scores, &score_meta, &all_minutes, trans_window);
 
         let detection_unix: Vec<i64> = fire_hours.iter()
@@ -443,7 +448,7 @@ fn main() -> Result<()> {
         n_fgm_minutes: all_minutes.len(),
         n_draws: cli.n_draws,
         base_seed: cli.base_seed,
-        n_nonzero_entries: nonzero_indices.len(),
+        n_nonzero_entries: nonzero_quads.len(),
         sigma_cd,
         f1_mean, f1_std, f1_min, f1_max, f1_mean_plus_2sigma,
         draws,
