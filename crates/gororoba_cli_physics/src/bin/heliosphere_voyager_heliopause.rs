@@ -318,7 +318,14 @@ fn main() -> Result<()> {
         enrichment_ratio, boundary_rate, quiet_rate
     );
 
-    if let Some(parent) = cli.out_json.parent() { fs::create_dir_all(parent)?; }
+    // If the caller left the default path, auto-suffix with spacecraft id (v1 or v2)
+    // so that voyager_heliopause_v1_eval.json and voyager_heliopause_v2_eval.json coexist.
+    let out_path = if cli.out_json.to_string_lossy().contains("voyager_heliopause_eval.json") {
+        cli.out_json.with_file_name(format!("voyager_heliopause_{}_eval.json", cli.spacecraft))
+    } else {
+        cli.out_json.clone()
+    };
+    if let Some(parent) = out_path.parent() { fs::create_dir_all(parent)?; }
 
     let results = VoyagerHeliopauseResults {
         spacecraft: cli.spacecraft.clone(),
@@ -338,8 +345,8 @@ fn main() -> Result<()> {
     };
 
     let json = serde_json::to_string_pretty(&results)?;
-    fs::write(&cli.out_json, &json)?;
-    println!("Results written to {}", cli.out_json.display());
+    fs::write(&out_path, &json)?;
+    println!("Results written to {}", out_path.display());
 
     Ok(())
 }

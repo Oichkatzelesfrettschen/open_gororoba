@@ -5,9 +5,9 @@
 //! Rationale: The 8-minute window captures the median crossing timescale.
 //! Shorter windows miss multi-minute transitions.
 //!
-//! WHAT: Runs CD associator at four lag depths d=4,6,8,12 with 4 channels (R32
-//! algebra fixed).  Embedding dimension = 4 * d.  Windows span d*tau minutes.
-//! tau=1min for d=4,6,8; tau=1min for d=12 (window=12min, within 5-20min regime).
+//! WHAT: Runs CD associator at lag depths d=4,8,16 with 4 channels.  Embedding
+//! dimensions 16D, 32D, 64D -- all powers of 2 required by cd_kernel.  Windows
+//! span d*tau minutes: 4-min, 8-min (paper baseline), 16-min.
 //!
 //! HOW:
 //!   cargo run --release -p gororoba_cli_physics \
@@ -33,7 +33,9 @@ use std::{fs, path::PathBuf};
 
 const MAD_SCALE_FACTOR: f64 = 1.5;
 const CHANNELS: usize = 4;
-const LAG_DEPTHS: [usize; 4] = [4, 6, 8, 12];
+// All values must give CHANNELS * d = power of 2 (cd_kernel constraint).
+// 4*4=16, 4*8=32, 4*16=64.  d=6 (24D) and d=12 (48D) are excluded.
+const LAG_DEPTHS: [usize; 3] = [4, 8, 16];
 
 #[derive(Parser, Debug)]
 #[command(

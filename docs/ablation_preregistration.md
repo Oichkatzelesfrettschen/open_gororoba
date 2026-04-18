@@ -105,6 +105,60 @@ offsets adds noise without proportional signal gain.
 
 ---
 
+## Actual Results (recorded post-execution, 2026-04-17)
+
+All binaries ran against THEMIS-A Staples+2020, 2016-08-29 to 2016-09-04 (7 days).
+F1 CI from block-bootstrap (1800 s blocks, N=10000, seed=42).
+
+### Prediction verdicts
+
+| Prediction | Verdict | Details |
+|-----------|---------|---------|
+| P1: CD R32 > L2-delay by >=0.05 | **FALSIFIED** | L2-delay F1=0.615 > CD R32 F1=0.601 (delta=-0.014) |
+| P2: CD R32 > dense-random mean by >=2 sigma | **FALSIFIED** | CD R32 at 1.30 sigma above dense-random mean (need 2.0) |
+| P3: Monotonically decreasing F1 from d=8 to d=4 | **FALSIFIED** | d=4 F1=0.625 > d=8 F1=0.601 (shorter window is BETTER) |
+| P4: CD R16 F1 < CD R32 F1 | **CONFIRMED** | R16 F1=0.207 << R32 F1=0.601 (Bz and |B| are critical) |
+| P5: CD R64 within 0.05 of CD R32 | **FALSIFIED** | R64 F1=0.419, delta=-0.182 from R32 (much worse, not within 0.05) |
+
+Only P4 confirmed. P1, P2, P3, P5 falsified.
+
+### Full results table
+
+| Method | F1 | Notes |
+|--------|-----|-------|
+| L2-delay baseline | 0.615 | Simple Euclidean distance; exceeds CD R32 |
+| d=4 (Axis B, 4-min window) | 0.625 | Shorter window better on this dataset |
+| CD R32 (paper baseline) | 0.601 | CI=[0.456,0.667] |
+| Commutator ||xy-yx|| | 0.590 | CI=[0.452,0.675]; close to CD |
+| Dense-random mean | 0.528 | sigma=0.056; CD R32 at 1.30 sigma above mean |
+| Sparsity-matched mean | 0.535 | sigma=0.042; CD R32 at 1.57 sigma above mean; 15960/1M nonzero entries |
+| Window Hamming | 0.536 | Boxcar is optimal |
+| Window Hann | 0.510 | Boxcar is optimal |
+| d=8 (Axis B, paper) | 0.601 | = CD R32 baseline |
+| d=16 (Axis B, 16-min) | 0.419 | Longer window degrades performance |
+| CD R64 (Axis A) | 0.419 | 8ch x 8 lags; much worse than R32 |
+| CD R16 (Axis A) | 0.207 | 2ch (no Bz/|B|); poor |
+| PCA variance ratio | 0.127 | CI=[0.076,0.226]; nonlinear structure essential |
+
+### Scientific interpretation
+
+CD R32 falls within the distribution of both random baselines. The specific CD coefficient
+structure is not demonstrably superior to random trilinear coefficients with the same
+zero-pattern. Nor is the CD zero-pattern demonstrably superior to fully-random dense trilinear.
+
+The positive findings are:
+1. PCA (linear) F1=0.127 confirms nonlinear structure is essential.
+2. R16 (2ch) F1=0.207 confirms cross-axis field components (Bz, |B|) are critical.
+3. Boxcar window is optimal (Hamming/Hann degrade by 0.065-0.091).
+4. Commutator F1=0.590 is close to CD R32, suggesting the non-associative 3-body
+   structure adds only marginal value over the 2-body anti-commutative structure.
+
+The paper must be reframed from "CD algebra uniquely detects boundaries" to:
+"Nonlinear trilinear forms over multi-channel delay embeddings detect boundaries;
+the CD structure is one canonical member of this family but is not uniquely optimal."
+
+---
+
 ## Commit Hash
 
 **Pre-registration commit hash:** 455d47455c46b623413c601fa2f8ad4c97d8c45f
