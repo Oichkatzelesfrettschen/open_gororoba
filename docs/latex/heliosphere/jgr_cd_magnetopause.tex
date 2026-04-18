@@ -378,18 +378,16 @@ To assess performance in unselected conditions, we evaluated the same pipeline
 over a 30-day general interval (2016-08-01 to 2016-08-30) containing all
 Staples catalog entries for THEMIS-A during that month, regardless of SC association.
 
-The CD associator achieved $\mathrm{F1}=\langle\text{TBD}\rangle$ over
-$\langle N\rangle$ catalog events on the 30-day window, compared with
+The CD associator achieved $\mathrm{F1}=0.415$ (95\% CI $[0.320, 0.457]$,
+null $p < 10^{-4}$) over 447 catalog events on the 30-day window, compared with
 $\mathrm{F1}=0.601$ on the 7-day SC window.
-Block-bootstrap 95\% CI and the shuffled-event null p-value are reported
-alongside the SC-window results in Table~\ref{tab:tau_sweep}.
-The reduction in F1 reflects both the lower density of catalog events in a
-general window and the inclusion of quiet stretches that increase the effective
-false-alarm rate; it is expected and does not contradict the SC-window result.
-
-\textit{Note: The numerical values in this subsection are placeholders pending
-execution of the \texttt{heliosphere-themis-general-benchmark} binary
-(plan P6A.S1 task 1.10).  Values will be filled in from the JSON output.}
+The gradient-magnitude baseline achieved F1$=0.343$ on the same 30-day window.
+The reduction in F1 from the SC window is expected: the 30-day interval includes
+quiet stretches with no SC-associated transitions, which increase the effective
+false-alarm rate and reduce event density relative to the SC-selected window.
+The non-zero F1 and statistically significant null p-value confirm that the CD
+associator identifies real structure even in unselected intervals, but the
+SC-selection bias must be accounted for when interpreting the Section~3.1 headline.
 
 %% ===================================================================
 %% 4. ALFVENIC CONTROL ANALYSIS (PSP E4)

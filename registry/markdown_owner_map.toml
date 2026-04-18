@@ -8,11 +8,11 @@
 #   - owner_group=third_party or owner_group=external MUST have removal_status=locked.
 
 [markdown_owner_map]
-updated = "2026-04-08"
+updated = "2026-04-17"
 authoritative = true
 status = "active"
 status_token = "ACTIVE"
-document_count = 202
+document_count = 203
 
 [[owner]]
 path = "README.md"
@@ -1229,6 +1229,12 @@ removal_reason = ""
 
 [[owner]]
 path = "docs/adr/lotss-footprint-policy.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/ablation_preregistration.md"
 owner_group = "project"
 removal_status = "active"
 removal_reason = ""
