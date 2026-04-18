@@ -10806,10 +10806,10 @@ where_stated = "crates/gororoba_cli_physics/src/bin/heliosphere_mms_sitl_labeled
 
 [[claim]]
 id = "C-1629"
-last_verified = "2026-04-16"
+last_verified = "2026-04-17"
 statement = "Against the Staples et al. (2020) peer-reviewed THEMIS magnetopause crossing catalog (224 THEMIS-A crossing events, 2016-08-29 to 2016-09-04, +/-10min evaluation windows), the 32D CD associator achieves P=0.567, R=0.638, F1=0.601 vs the |B|-gradient+rotation detector at P=0.317, R=0.469, F1=0.378 (+0.250 precision, +0.170 recall, +0.222 F1). The CD associator fires 104 times vs 164 for gradient, yet recovers 38 additional catalog events (143 vs 105 catalog intervals covered), confirming that the CD associator detects genuine magnetic-topology boundaries that manifest in algebraic structure before they appear as classic density+gradient jumps. Binary: heliosphere-themis-staples-labeled. E-237."
 status = "Established"
-status_note = "ESTABLISHED 2026-04-16: 7968 THEMIS-A FGM minute-records, 224 Staples+2020 peer-reviewed events. CD: 104 detections, 59 TP, 143/224 intervals covered. Gradient: 164 detections, 52 TP, 105/224 covered. Full JSON: data/output/heliosphere/ablations/themis_staples_labeled_eval.json."
+status_note = "ESTABLISHED 2026-04-16, CI/p-values added 2026-04-17: SC-window F1=0.601, bootstrap CI=[0.456,0.667], F1 null p=0.0000 (N=10000). General-interval F1=0.415 CI=[0.320,0.457] null p<1e-4. Held-out-threshold F1=0.332. Full JSON: data/output/heliosphere/ablations/themis_staples_labeled_eval.json."
 where_stated = "crates/gororoba_cli_physics/src/bin/heliosphere_themis_staples_labeled.rs"
 
 [[claim]]
@@ -10830,10 +10830,10 @@ where_stated = "crates/gororoba_cli_physics/src/bin/heliosphere_psp_alfven_contr
 
 [[claim]]
 id = "C-1632"
-last_verified = "2026-04-16"
+last_verified = "2026-04-17"
 statement = "In PSP encounter E4 (perihelion 2020-01-29, ~27.9 Rs), the CD associator discrimination ratio (CompressiveBoundary fire rate / Alfvenic fire rate) is 2.83x: 2.711 fires/hour in CompressiveBoundary intervals (2125 min, delta_B/|B|>=0.30 AND rotation>=15 deg) vs 0.958 fires/hour in Alfvenic intervals. The corresponding ratio for the |B|-gradient+rotation detector is 2.91x (3.360/1.155). Both detectors achieve similar discrimination ratios, but the CD associator has a LOWER absolute Alfvenic fire rate (0.958 vs 1.155/hr) and a HIGHER quiet-interval fire rate (0.311 vs 0.168/hr), indicating that the CD associator captures more subtle magnetic-topology structures in background solar wind that the gradient detector misses, while being less triggered by non-compressive Alfvenic rotations. Binary: heliosphere-psp-alfven-control. E-239."
 status = "Established"
-status_note = "ESTABLISHED 2026-04-16, corrected E3->E4 2026-04-17: E4 perihelion (2020-01-29, 27.9 Rs). CD: Compressive 2.711/hr, Alfvenic 0.958/hr, Quiet 0.311/hr. Discrimination ratio 2.83x. Gradient: Compressive 3.360/hr, Alfvenic 1.155/hr, Quiet 0.168/hr. Ratio 2.91x. Full JSON: data/output/heliosphere/ablations/psp_alfven_control.json."
+status_note = "ESTABLISHED 2026-04-16, corrected E3->E4, permutation p added 2026-04-17: E4 perihelion (2020-01-29, 27.9 Rs). CD: Compressive 2.711/hr, Alfvenic 0.958/hr, Quiet 0.311/hr. Discrimination ratio 2.83x. Permutation p=0.0000 for count ratio=0.941 (N=10000, seed=42, E-243). Full JSON: data/output/heliosphere/ablations/psp_alfven_control.json."
 where_stated = "crates/gororoba_cli_physics/src/bin/heliosphere_psp_alfven_control.rs"
 
 [[claim]]
