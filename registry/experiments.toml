@@ -6465,8 +6465,8 @@ output_path_refs = ["data/output/heliosphere/ablations/themis_bootstrap_f1_ci.js
 reproducibility_class = "deterministic"
 run = "cargo run --release --bin heliosphere-bootstrap-f1 -- --n-bootstrap 10000 --seed 42"
 run_command_sha256 = ""
-status = "planned"
-status_token = "PLANNED"
+status = "active"
+status_token = "ACTIVE"
 title = "Block-bootstrap 95% CI for THEMIS CD F1=0.601 (plan P6A.S1 task 1.4)"
 
 [[experiment]]
@@ -6488,8 +6488,8 @@ output_path_refs = ["data/output/heliosphere/ablations/psp_alfven_control.json"]
 reproducibility_class = "deterministic"
 run = "cargo run --release --bin heliosphere-psp-alfven-control -- --start-date 2020-01-20 --end-date 2020-02-10"
 run_command_sha256 = ""
-status = "planned"
-status_token = "PLANNED"
+status = "active"
+status_token = "ACTIVE"
 title = "Permutation test for PSP E4 discrimination ratio (2.83x compressive/Alfvenic CD fire rate; plan P6A.S1 task 1.5)"
 
 [[experiment]]
@@ -6507,8 +6507,8 @@ output_path_refs = ["data/output/heliosphere/ablations/themis_staples_labeled_ev
 reproducibility_class = "deterministic"
 run = "cargo run --release --bin heliosphere-themis-staples-labeled -- --start-date 2016-08-29 --n-days 7"
 run_command_sha256 = ""
-status = "planned"
-status_token = "PLANNED"
+status = "active"
+status_token = "ACTIVE"
 title = "F1 null distribution: P(F1_shuffled >= 0.601) for THEMIS CD associator (plan P6A.S1 task 1.6)"
 
 [[experiment]]

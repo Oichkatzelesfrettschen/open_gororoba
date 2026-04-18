@@ -10854,26 +10854,26 @@ where_stated = "crates/gororoba_cli_physics/src/bin/heliosphere_psp_switchback_c
 
 [[claim]]
 id = "C-1635"
-last_verified = ""
-statement = "Block-bootstrap 95% CI for the THEMIS CD associator F1=0.601 (E-237/E-242, 7-day SC window, 30-min blocks, N=10000, seed=42): mean and [lo, hi] bounds. Pending execution of heliosphere-bootstrap-f1 binary."
-status = "Pending"
-status_note = "PENDING 2026-04-17: heliosphere-bootstrap-f1 binary created (plan P6A.S1 task 1.4). Run heliosphere-bootstrap-f1 to populate CI values."
+last_verified = "2026-04-17"
+statement = "Block-bootstrap 95% CI for the THEMIS CD associator F1=0.601 (E-237/E-242, 7-day SC window, 1800s blocks, N=10000, seed=42): mean=0.565, CI=[0.456, 0.667]."
+status = "Verified"
+status_note = "EXECUTED 2026-04-17: heliosphere-bootstrap-f1 on themis_staples_labeled_eval.json. CI mean=0.565, [0.456, 0.667] at 95%. JSON artifact: data/output/heliosphere/ablations/themis_bootstrap_f1_ci.json."
 where_stated = "crates/gororoba_cli_physics/src/bin/heliosphere_bootstrap_f1.rs"
 
 [[claim]]
 id = "C-1636"
-last_verified = ""
-statement = "Permutation p-value for the PSP E4 compressive/Alfvenic CD fire-rate ratio (discrimination ratio 2.83x, E-239/E-243): P(shuffled_ratio >= observed) under N=10000 label shuffles, seed=42. Pending re-run of heliosphere-psp-alfven-control with updated binary."
-status = "Pending"
-status_note = "PENDING 2026-04-17: permutation test added inline to heliosphere-psp-alfven-control (plan P6A.S1 task 1.5). Re-run binary to populate p-value."
+last_verified = "2026-04-17"
+statement = "Permutation p-value for PSP E4 compressive/Alfvenic CD fire-rate ratio (discrimination ratio 2.83x, E-239): count ratio=0.941, p=0.0000 under N=10000 label shuffles, seed=42. Rate ratio p-value equals count ratio p-value (class sizes cancel under permutation)."
+status = "Verified"
+status_note = "EXECUTED 2026-04-17: heliosphere-psp-alfven-control re-run with permutation test inline. count ratio=0.941, p=0.0000 (N=10000, seed=42). Rate ratio 2.83x is statistically significant at p<1e-4."
 where_stated = "crates/gororoba_cli_physics/src/bin/heliosphere_psp_alfven_control.rs"
 
 [[claim]]
 id = "C-1637"
-last_verified = ""
-statement = "F1 null distribution p-value for THEMIS CD associator: P(F1_shuffled >= 0.601) under N=10000 shuffled event-time draws within 7-day window, seed=42 (E-237/E-244). Pending re-run of heliosphere-themis-staples-labeled with updated binary."
-status = "Pending"
-status_note = "PENDING 2026-04-17: f1_null_distribution_seeded added inline to heliosphere-themis-staples-labeled (plan P6A.S1 task 1.6). Re-run binary to populate p-value."
+last_verified = "2026-04-17"
+statement = "F1 null distribution p-value for THEMIS CD associator: P(F1_shuffled >= 0.601) = 0.0000 under N=10000 shuffled event-time draws within 7-day window, seed=42. CD associator F1 exceeds all 10000 null draws."
+status = "Verified"
+status_note = "EXECUTED 2026-04-17: heliosphere-themis-staples-labeled re-run. F1 null p=0.0000 (N=10000, seed=42). F1=0.601 exceeds 100% of shuffled-event draws, confirming the signal is not an artifact of event-time alignment."
 where_stated = "crates/gororoba_cli_physics/src/bin/heliosphere_themis_staples_labeled.rs"
 
 [[claim]]
