@@ -6526,8 +6526,8 @@ output_path_refs = ["data/output/heliosphere/ablations/themis_general_benchmark.
 reproducibility_class = "deterministic"
 run = "cargo run --release --bin heliosphere-themis-general-benchmark -- --start-date 2016-08-01 --n-days 30"
 run_command_sha256 = ""
-status = "planned"
-status_token = "PLANNED"
+status = "active"
+status_token = "ACTIVE"
 title = "General-interval THEMIS benchmark (30-day, no SC-event selection; plan P6A.S1 task 1.10, Section 3.2)"
 
 [[experiment]]
@@ -6545,8 +6545,8 @@ output_path_refs = ["data/output/heliosphere/ablations/themis_general_benchmark_
 reproducibility_class = "deterministic"
 run = "cargo run --release --bin heliosphere-themis-general-benchmark -- --start-date 2015-11-01 --n-days 30 --out-json data/output/heliosphere/ablations/themis_general_benchmark_control.json"
 run_command_sha256 = ""
-status = "planned"
-status_token = "PLANNED"
+status = "active"
+status_token = "ACTIVE"
 title = "Negative control: THEMIS general benchmark on quiet month (0 SC events, 2015-11; plan P6A.S1 task 1.9)"
 
 [[experiment]]

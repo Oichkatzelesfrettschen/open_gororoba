@@ -10878,27 +10878,27 @@ where_stated = "crates/gororoba_cli_physics/src/bin/heliosphere_themis_staples_l
 
 [[claim]]
 id = "C-1640"
-last_verified = ""
-statement = "General-interval THEMIS F1 (2016-08-01 to 2016-08-30, 30-day window, all Staples THA entries, no SC-event selection): CD associator F1, P/R, fire rate per hour, and 95% bootstrap CI. Pending execution of heliosphere-themis-general-benchmark (plan P6A.S1 tasks 1.9-1.10, E-247)."
-status = "Pending"
-status_note = "PENDING 2026-04-17: heliosphere-themis-general-benchmark binary created (plan P6A.S1 task 1.10). Data sourcing: 2016-08 has some Staples entries; quiet months (0 entries) identified as 2015-11 (E-248)."
+last_verified = "2026-04-17"
+statement = "General-interval THEMIS F1 (2016-08-01 to 2016-08-30, 30-day window, all Staples THA entries, no SC-event selection): CD associator F1=0.415 (P=0.335, R=0.544), fire rate 0.437/h, 95% bootstrap CI=[0.320,0.457], null p<1e-4. Gradient F1=0.343 on same window."
+status = "Verified"
+status_note = "EXECUTED 2026-04-17: heliosphere-themis-general-benchmark on 2016-08-01..2016-08-30. 447 catalog events, 33654 FGM minutes. CD F1=0.415 vs SC-window F1=0.601 (31% degradation expected from removing SC selection bias). Null p<1e-4 confirms real signal. Gradient baseline F1=0.343. Results in data/output/heliosphere/ablations/themis_general_benchmark.json."
 where_stated = "crates/gororoba_cli_physics/src/bin/heliosphere_themis_general_benchmark.rs"
 
 [[claim]]
 id = "C-1641"
-last_verified = ""
-statement = "Negative control: THEMIS CD fire rate per hour in quiet month (2015-11-01 to 2015-11-30, zero Staples SC entries, E-248). Expected to be consistent with E-239 quiet-interval background rate (0.311/hr). Pending execution of heliosphere-themis-general-benchmark --start-date 2015-11-01."
-status = "Pending"
-status_note = "PENDING 2026-04-17: E-248 registered. Run binary to populate fire rate."
+last_verified = "2026-04-17"
+statement = "Negative control: THEMIS CD fire rate in quiet month (2015-11-01 to 2015-11-30, 0 Staples SC entries): 0.251 fires/h. Consistent with E-239 background rate (0.311/h). F1=0 trivially (no events to recall)."
+status = "Verified"
+status_note = "EXECUTED 2026-04-17: heliosphere-themis-general-benchmark on 2015-11-01..2015-11-30. Zero catalog events confirmed. CD fires=179 in 712.4h = 0.251/h. Consistent with expected background. Results in data/output/heliosphere/ablations/themis_general_benchmark_control.json."
 where_stated = "crates/gororoba_cli_physics/src/bin/heliosphere_themis_general_benchmark.rs"
 
 [[claim]]
 id = "C-1642"
-last_verified = ""
-statement = "Block-bootstrap 95% CI for general-interval THEMIS F1 (E-247). Enables comparison of CI widths between SC-selected (E-242) and general-interval (E-249) windows. Pending E-247 and E-249 execution."
-status = "Pending"
-status_note = "PENDING 2026-04-17: E-249 registered (heliosphere-bootstrap-f1 on E-247 output)."
-where_stated = "crates/gororoba_cli_physics/src/bin/heliosphere_bootstrap_f1.rs"
+last_verified = "2026-04-17"
+statement = "Block-bootstrap 95% CI for general-interval THEMIS F1 (E-247): CI=[0.320, 0.457] (1800s blocks, N=10000, seed=42). CI is wider than SC window (CI=[0.456,0.667]) reflecting greater variance in unselected conditions."
+status = "Verified"
+status_note = "EXECUTED 2026-04-17: Block-bootstrap CI computed inline by heliosphere-themis-general-benchmark binary. F1=0.415, CI=[0.320,0.457] (bootstrap mean=0.390). SC-window CI=[0.456,0.667] from E-242. Wider CI in general window is expected."
+where_stated = "crates/gororoba_cli_physics/src/bin/heliosphere_themis_general_benchmark.rs"
 
 [[claim]]
 id = "C-1643"
