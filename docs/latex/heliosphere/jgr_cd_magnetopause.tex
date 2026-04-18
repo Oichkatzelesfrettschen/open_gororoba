@@ -14,6 +14,7 @@
 \documentclass[draft]{agujournal2025}
 
 %% Additional packages not loaded by agujournal2025
+\usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{pgfplots}
 \usepackage{tikz}
@@ -130,15 +131,18 @@ resulting point cloud is a diffeomorphic invariant of the underlying attractor.
 For a four-channel magnetic field record and $d=8$ lags per channel, the
 natural embedding space is $\mathbb{R}^{32}$.
 
-The $32$-dimensional Cayley--Dickson algebra (the \emph{trigintaduonions}) is
-uniquely suited as a metric for this space: it is the largest power-of-two
-real division-like algebra that retains a natural trilinear alternator, the
-\emph{associator} $[x,y,z] \equiv (x \cdot y) \cdot z - x \cdot (y \cdot z)$.
+The $32$-dimensional Cayley--Dickson algebra (the \emph{trigintaduonions}) provides
+a canonical trilinear alternator for this embedding space: the \emph{associator}
+$[x,y,z] \equiv (x \cdot y) \cdot z - x \cdot (y \cdot z)$.
 For associative sub-algebras ($\mathbb{R}$, $\mathbb{C}$, $\mathbb{H}$, $\mathbb{O}$)
 the associator vanishes identically.  For $\mathbb{R}^{32}$, it is non-zero
 precisely where the algebraic structure of the delay embedding departs from
 commutativity and associativity -- that is, where the field topology is
 undergoing a transition.
+The dimensional ablation in Section~\ref{sec:dimensional_ablation} establishes
+the empirical performance of the CD associator relative to random trilinear
+alternatives and motivates the framing of CD as a canonical member of a
+broader nonlinear trilinear family, rather than as the uniquely optimal choice.
 
 The key intuition is that a magnetopause crossing injects a sharp rotation into
 the delay vector, pushing the local trajectory of $\bvec(t)$ in $\mathbb{R}^{32}$
@@ -246,10 +250,22 @@ the associator norm is
                - \hat{x} \cdot (\hat{y} \cdot \hat{z}) \bigr\|_2.
   \label{eq:associator}
 \end{equation}
-A detection is fired when $\Assoc(t)$ exceeds an adaptive threshold equal to
-\texttt{MAD\_SCALE\_FACTOR} $= 1.5$ times the local 15-minute sliding
-median-absolute-deviation of $\Assoc$.  This scale factor was fixed prior
-to any evaluation on labeled test data.
+A detection is fired when the local jump in $\Assoc(t)$ exceeds a fixed
+threshold equal to \texttt{MAD\_SCALE\_FACTOR}$= 1.5$ times the global standard
+deviation of $\Assoc$ computed over the full evaluation window.
+This scale factor was fixed prior to any evaluation on labeled test data.
+
+\paragraph{Threshold disclosure.}
+The global-standard-deviation threshold integrates information from the
+full evaluation window, introducing a form of in-sample calibration.
+To quantify this effect, we re-evaluated the same associator with a held-out
+threshold: for each detection candidate, the threshold is estimated from the
+preceding disjoint 15-minute window only.  Under this decorrelated estimator,
+F1 falls from 0.601 to 0.332, indicating that approximately half of the
+headline performance is attributable to window-integrated threshold calibration
+rather than boundary discrimination alone.
+Both values are reported in Table~\ref{tab:ablation}; the held-out F1 = 0.332
+represents the conservative estimate for deployment on new data.
 
 \subsection{Epsilon Noise-Floor Regularization}
 
@@ -593,7 +609,7 @@ has at least one topology signature above threshold.  The $87.2\%$ topology-
 positive fraction suggests that CD fires outside the FPI catalog window are
 associated with organized field rotation or compression events.
 Independent validation against an FPI plasma-jet criterion (ion bulk velocity
-$V_x > 100$~km/s post-crossing; \citealt{eastwood2016}) is needed to
+$V_x > 100$~km/s post-crossing; \citet{eastwood2016}) is needed to
 determine what fraction represent flux-transfer events (FTEs) versus other
 boundary-layer processes; this is deferred to a follow-on study.
 
@@ -727,29 +743,54 @@ All binaries described below were designed and registered prior to execution;
 see \texttt{docs/ablation\_preregistration.md} for the pre-registered
 hyperparameters and predictions.
 
-\textit{Note: This section is a placeholder pending execution of the ablation
-binaries (Phase~2 of the revision plan).  Table~\ref{tab:ablation} and the
-accompanying pre-registered predictions (P1--P5) will be populated once the
-binaries complete.}
+All five pre-registered predictions (P1--P5) were tested; only P4 was confirmed.
+P1 (CD R32 $>$ L2-delay by $\geq 0.05$), P2 (CD R32 $>$ dense-random mean
+by $\geq 2\sigma$), P3 (F1 monotonically decreasing from $d=8$ to $d=4$),
+and P5 (CD R64 within 0.05 of CD R32) were all falsified.
+P4 (CD R16 F1 $<$ CD R32 F1) was strongly confirmed.
+
+\textbf{Pre-registered predictions falsified.}  The L2-delay baseline
+(F1$=0.615$) exceeds CD R32 (F1$=0.601$), falsifying P1.  CD R32 falls within
+1.30$\sigma$ of the dense-random mean and 1.57$\sigma$ of the sparsity-matched
+mean, falsifying P2.  The shorter $d=4$ window (F1$=0.625$) outperforms the
+$d=8$ paper baseline, falsifying P3.  CD R64 (F1$=0.419$) is $0.182$ below R32,
+falsifying P5.  The single confirmed prediction, P4, shows that removing Bz
+and $|B|$ reduces F1 by $0.394$, confirming those channels are critical.
+
+\textbf{Linear baseline.}  PCA variance achieves F1$=0.127$, establishing that
+linear variance concentration near-trivially fails to detect boundaries.
+Nonlinear algebraic structure is necessary, though not uniquely realized by CD.
+
+\textbf{Honest framing.}  CD R32 does not demonstrably outperform random trilinear
+forms with the same sparsity pattern at the pre-registered 2$\sigma$ level.
+The CD algebra is one canonical member of the nonlinear trilinear family; other
+members (including random ones) achieve comparable or superior F1 on this window.
+The held-out-threshold F1 is 0.332 (see Section~\ref{sec:method}), which is the
+appropriate estimate for out-of-sample deployment.
 
 \begin{table}[htbp]
-\caption{Pre-registered dimensional ablation results (THEMIS-A, 2016-DOY-242--248).
-All F1 values are computed with detection-level precision and event-level recall
-at $\pm 10$~min matching window.  CI is 95\% block-bootstrap (1800~s blocks,
-$N=10{,}000$, seed~42).  TBD entries will be filled upon binary execution.}
+\caption{Pre-registered dimensional ablation results (THEMIS-A, 2016-DOY-242--248,
+commit \texttt{455d4745}).
+All F1 values use detection-level precision, event-level recall, $\pm 10$~min match.
+CI is 95\% block-bootstrap (1800~s blocks, $N=10{,}000$, seed~42).
+``Held-out F1'' uses preceding-window threshold (Section~\ref{sec:method}).
+$\sigma_\mathrm{dense}$ = sigma units above dense-random mean; $\sigma_\mathrm{sparse}$ = sigma units above sparsity-matched mean.}
 \label{tab:ablation}
-\begin{tabular}{lrrrl}
+\begin{tabular}{lrrlrr}
 \toprule
-Method & Dim & F1 & F1 CI 95\% & $\Delta$ vs L2-delay \\
+Method & Dim & F1 & F1 CI 95\% & $\sigma_\mathrm{dense}$ & $\Delta$ vs L2-delay \\
 \midrule
-L2-delay baseline        & --  & TBD & TBD & --   \\
-PCA variance             & --  & TBD & TBD & TBD  \\
-Commutator               & 32  & TBD & TBD & TBD  \\
-Dense-random (mean)      & 32  & TBD$\pm$TBD & -- & TBD \\
-Sparsity-matched (mean)  & 32  & TBD$\pm$TBD & -- & TBD \\
-CD R16 ($d=8$)           & 16  & TBD & TBD & TBD  \\
-\textbf{CD R32 ($d=8$)}  & \textbf{32} & \textbf{0.601} & TBD & TBD \\
-CD R64 ($d=8$)           & 64  & TBD & TBD & TBD  \\
+L2-delay baseline           & 32 & 0.615 & -- & -- & -- \\
+PCA variance                & 32 & 0.127 & [0.076, 0.226] & -- & $-0.488$ \\
+Commutator $\|xy-yx\|$      & 32 & 0.590 & [0.452, 0.675] & -- & $-0.025$ \\
+Dense-random (mean$\pm$std) & 32 & $0.528\pm0.056$ & -- & -- & $-0.087$ \\
+Sparsity-matched (mean$\pm$std) & 32 & $0.535\pm0.042$ & -- & -- & $-0.080$ \\
+CD R16 ($d=8$, 2ch)         & 16 & 0.207 & -- & -- & $-0.408$ \\
+\textbf{CD R32 ($d=8$)}     & \textbf{32} & \textbf{0.601} & [0.456, 0.667] & $+1.30$ & $-0.014$ \\
+CD R32 held-out threshold   & 32 & 0.332 & [0.265, 0.399] & -- & $-0.283$ \\
+CD R64 ($d=8$, 8ch)         & 64 & 0.419 & -- & -- & $-0.196$ \\
+CD $d=4$ (4ch)              & 16 & 0.625 & -- & -- & $+0.010$ \\
+CD $d=16$ (4ch)             & 64 & 0.419 & -- & -- & $-0.196$ \\
 \bottomrule
 \end{tabular}
 \end{table}
