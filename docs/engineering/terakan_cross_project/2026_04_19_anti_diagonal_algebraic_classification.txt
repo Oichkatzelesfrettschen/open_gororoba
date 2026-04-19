@@ -1,0 +1,110 @@
+# Terakan anti-diagonal residual algebraic classification
+
+## What this document records
+
+A formal algebraic classification of a specific failure-set
+geometry observed in the Terakan Vulkan driver
+(`dEQP-VK.image.store.with_format.2d_array.r32_sint_single_layer`,
+2026-04-19), produced by the `analyze_bitwise_anti_diagonal` binary
+in `crates/algebra_experimental/src/bin/`.
+
+## Why this lives in open_gororoba
+
+The Terakan failure pattern is not a generic geometric curiosity but a
+named algebraic object: the graph of the dim=64 Cayley-Dickson
+conjugation involution on the F_2-linear coordinate basis.  Naming it
+correctly directs hardware-side debugging at the right layer and rules
+out entire families of hypothesis (per-tile bugs, address-swizzle bugs,
+thread-collapse bugs).
+
+## Inputs
+
+64 of 4096 pixels wrong on layer 0 of a 64x64 r32_sint compute write,
+all on the anti-diagonal `x + y == 63`, with observed `x XOR y == 62`
+where the CTS expects `63`.
+
+## Algebraic classification (machine-verified by the analyzer)
+
+The 64-pixel set is **exactly** the graph of the involution
+
+```
+tau : F_2^6 -> F_2^6
+tau(x) = NOT x  mod 64
+```
+
+This involution is the conjugation operator of the Cayley-Dickson
+tower at dimension `2^6 = 64` (the pathion level), restricted to the
+F_2-linear coordinate basis.  The key identities verified by the
+analyzer's tests:
+
+- Every point satisfies `x + y == 63` (sum identity).
+- Every point satisfies `x XOR y == 63` (CD top-element identity).
+- Every point is a `(x, tau(x))` complement pair.
+- The set is closed under coordinate swap (involution closure).
+- `tau` has zero fixed points (6-bit complement has no fixed point).
+- The 64-point set decomposes into exactly 8 macro-tiles of 8x8,
+  each on the macro-tile anti-diagonal `tx + ty == 7`, with each
+  tile contributing exactly 8 pixels on its intra-tile anti-diagonal
+  `intra_x + intra_y == 7`.
+
+## What this rules out
+
+- **Per-tile tiling bugs.**  The failure is uniform across all 8
+  diagonal-crossing macro-tiles; the per-tile pattern is identical.
+  No per-tile state error can produce this.
+- **Thread-ID collapse.**  PM4 evidence already showed
+  `NUM_THREAD_X/Y/Z = (1, 1, 1)` with `groupCount = (64, 64, 1)`,
+  so each thread has unique `WorkGroupID == GlobalInvocationID`.
+- **CD-tower-level dimension confusion.**  The classification is
+  insensitive to the specific bit that drops; any saturation of the
+  CD top-element `2^6 - 1 = 63` produces this same pattern.
+
+## What this points at (hardware-side candidates)
+
+In priority order:
+
+1. **MEM_RAT STORE_TYPED format-conversion saturation on R32_SINT.**
+   The colorExpr encodes `x XOR y` into a signed 6-bit value
+   `(x XOR y) - 32`, so `x XOR y = 63` becomes `+31` (signed max).
+   Any sint clamp at `[-32, +30]` instead of `[-32, +31]` reproduces
+   exactly the observed residual.  PALM probe 5 from 2026-04-09
+   only covered R32_UINT (proved bit-transparent).  R32_SINT was not
+   probed.
+2. **CB export-path clamp.**  An off-by-one on the sint channel clamp
+   range in the CB exporter produces the same.
+3. **SFN ALU clamp flag downstream of `XOR_INT`.**  If a `mov` after
+   the XOR has an `alu_dst_clamp` flag with range `[0, 62]`, the
+   geometry follows.  `sfn_instr_alu.cpp` shows several clamp paths
+   (lines 1058, 2023, 2310, 2345, 2637); none obviously connect to
+   `XOR_INT`, but emit_alu_op2_int could propagate the flag through.
+
+Already ruled out by archive mining (recorded in
+`feedback_cm_false_positive_pattern.md` companion finding):
+
+- SFN x^y identity-lowering to `(x|y) - (x&y)`: native `XOR_INT`
+  emission proven at `sfn_instr_alu.cpp:2066`.
+- MEM_RAT STORE_TYPED saturation on R32_UINT: PALM probe 5 proved
+  bit-transparency.
+
+## How to regenerate
+
+```bash
+cd /home/eirikr/Github/open_gororoba
+cargo run -q -p algebra_experimental --bin analyze_bitwise_anti_diagonal
+# Output: structured JSON report classifying the failure set.
+
+cargo test -p algebra_experimental --bin analyze_bitwise_anti_diagonal
+# Runs 5 unit tests verifying the algebraic identities.
+```
+
+## Cross-references
+
+- Steinmarder mining doc:
+  `~/workspaces/mesa/steinmarder/src/re/r600/findings/2026-04-19-mined-clues-from-copilot-archives.md`
+  (commit 1f9ac535)
+- Steinmarder coordinate extraction:
+  `~/workspaces/mesa/steinmarder/src/re/r600/scripts/analyze/extract_wrong_coords.py`
+- Steinmarder full grid decoder:
+  `~/workspaces/mesa/steinmarder/src/re/r600/scripts/analyze/full_grid_decode.py`
+- Claude memory:
+  `~/.claude/projects/-Users-eirikr/memory/project_terakan_single_layer_rca.md`
