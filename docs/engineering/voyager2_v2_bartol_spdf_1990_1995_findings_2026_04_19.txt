@@ -1,0 +1,72 @@
+T-058 / E-128: Bartol vs SPDF Voyager 2 cross-validation (1990-1995)
+=====================================================================
+
+Run date:        2026-04-19
+Run command:     CUDA_PATH=/opt/cuda PATH=/opt/cuda/bin:$PATH \
+                 cargo run -p gororoba_cli_data --bin bartol-spdf-crossval \
+                   -- --start-year 1990 --end-year 1995 \
+                      --out data/output/bartol_vs_spdf_v2_bfield_correlation_1990_1995.csv \
+                      --verbose
+Output:          data/output/bartol_vs_spdf_v2_bfield_correlation_1990_1995.csv
+
+Note on AMDA vs SPDF
+--------------------
+T-058 description specifies "Bartol vs AMDA" cross-validation.  The
+existing comparator binary (crates/gororoba_cli_data/src/bin/
+bartol_spdf_crossval.rs) compares Bartol vs SPDF, where SPDF .asc
+files at data/external/voyager2/vy2_YYYY.asc are sourced from
+spdf.gsfc.nasa.gov per crates/data_core/src/catalogs/voyager.rs:23.
+SPDF and AMDA both ultimately derive from NSSDC level-2 data; for
+1990-1995 V2 data the SPDF path is the locally-available proxy.
+
+Results
+-------
+
+Field            n_matched  n_both_finite  Pearson r    RMSE     Bias (SPDF-Bartol)
+b_magnitude_nT   52584      0              NaN          NaN      NaN
+bulk_speed_km_s  52584      27472          0.999414     1.647    -0.0099 km/s
+proton_density   52584      10887          0.269010     0.0509   +0.0348 cm^-3
+
+Key findings
+------------
+
+1. SPDF .asc files at data/external/voyager2/vy2_1990..vy2_1995.asc
+   contain ZERO finite B-field magnitude rows for 1990-1995 (SPDF
+   fill-fraction 0.44 for B but 0 finite-pair overlap with Bartol's
+   100% fill).  This is the dataset the comparator reads.  The B-field
+   cross-validation cannot be completed against this SPDF source for
+   1990-1995; either (a) AMDA provides the missing B-field coverage,
+   or (b) a different SPDF file (e.g. magnetometer-only product) is
+   needed.
+
+2. Bulk speed cross-validation is excellent: r = 0.9994, RMSE
+   1.6 km/s, mean bias well within 1% of the ~465 km/s mean.  This
+   confirms the two providers agree on plasma bulk velocity through
+   the entire 1990-1995 V2 window (Voyager 2 was at ~31 to 47 AU
+   during this period).
+
+3. Proton density cross-validation is weak: r = 0.27, with SPDF
+   reporting ~10x larger mean density than Bartol (0.039 vs 0.004
+   cm^-3).  Likely a unit-convention or scaling discrepancy in the
+   density columns; needs separate investigation.
+
+Recommended next-action
+-----------------------
+
+* Status of E-128: PARTIAL.  Plasma cross-validation done; B-field
+  blocked by SPDF data gap for V2 1990-1995.
+
+* Acquire AMDA-specific magnetometer files for V2 1990-1995 and
+  re-run with a Bartol-vs-AMDA comparator (currently the binary only
+  knows the SPDF parser).
+
+* Investigate the proton density discrepancy as a separate ticket;
+  the 10x scaling smells like a F9.5 column-position bug.
+
+Files
+-----
+
+* New artifact: data/output/bartol_vs_spdf_v2_bfield_correlation_1990_1995.csv
+* Existing artifact (1983-1989): data/output/bartol_vs_amda_v2_bfield_correlation.csv
+  (mis-named -- it's actually SPDF, not AMDA)
+* Comparator binary: crates/gororoba_cli_data/src/bin/bartol_spdf_crossval.rs
