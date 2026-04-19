@@ -1,0 +1,77 @@
+T-051: Gate-audit run 2026-04-19T16:33:34 -- evidence + surfaced drift
+========================================================================
+
+Run command:    CUDA_PATH=/opt/cuda PATH=/opt/cuda/bin:$PATH \
+                make gate-audit
+Run date:       2026-04-19 16:33:34 -07:00
+Output dir:     reports/gates/2026-04-19/163334/  (untracked per .gitignore)
+Top-level exit: failure (1 step failed)
+
+Per-step results
+----------------
+
+| Step                | Exit | Status |
+| ------------------- | ---: | :----- |
+| gate-ci-registry    |   2  | FAILED |
+
+(make gate-audit is currently configured to run only the registry gate;
+the rust gate is invoked separately via gate-ci-rust.)
+
+Surfaced drift
+--------------
+
+Failure inside `make registry-acceptance-gate-readonly` ->
+`make registry-verify-strict-toml-batch1` ->
+`semantic-atoms --verify --repo-root .`:
+
+  ERROR: semantic-atoms registry lane verification failed.
+  - claims_atoms claim_id set does not match canonical claims set.
+  - proof_skeletons too small: 1417 < canonical claims 1441
+
+This is a real registry drift, not a tooling false-positive:
+
+  * canonical claims count: 1441
+  * proof_skeletons count:  1417
+  * gap:                      24 (~1.7% under)
+
+The ~24 missing skeletons most likely correspond to recent claims
+created during the heliosphere Phase 1 / Phase 2 / Phase 9A wave
+(commits 09630a0e, 33513f21, 3f7e1b3b, af8d3841, b4026dad, 5ba0c8ca,
+833f8604, e274d32f, cbf84ceb, 2096104c, 40f127aa, 514d5786, ...) that
+were registered in claims.toml but did not get matching skeleton
+entries in claims_atoms.toml or the proof skeleton manifest.
+
+Recommended next-action
+-----------------------
+
+1.  Identify the 24 missing claim IDs by diffing the canonical claims
+    set vs the proof_skeletons set:
+        cargo run --release -p gororoba_cli_data --bin claims-consolidate
+        cargo run --release -p gororoba_cli_data --bin semantic-atoms -- \
+            --report --repo-root .
+2.  For each missing claim, add a stub entry to whatever the canonical
+    proof_skeletons source file is.  Do the same for claims_atoms if
+    its claim_id set is missing the new claims.
+3.  Re-run `make gate-audit`.  Expect a passing run to surface no
+    semantic-atoms errors.
+
+T-051 status
+------------
+
+PARTIAL.  The gate-audit was run (the registry-only path) and the
+result is captured in this document.  The surfaced drift is a
+real regression that requires either a regen pass or a manual stub
+addition; closing T-051 fully requires the next pass through
+registry-acceptance-gate-readonly to come up green.
+
+The tranche acceptance evidence is the audit's own output; it lives
+under reports/gates/2026-04-19/163334/ on x570 and is not committed
+because reports/gates/* is gitignored except for latest.json.
+
+Note on gate-audit-fast vs gate-audit
+-------------------------------------
+
+`make gate-audit-fast` (which runs only `xtask gate-audit --fast`)
+exited 0 silently and produced no per-step output, because in
+`--fast` mode the audit skips claims.toml regeneration and the
+heavier semantic checks.  The drift is invisible to gate-audit-fast.
