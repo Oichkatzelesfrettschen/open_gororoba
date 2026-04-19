@@ -1,0 +1,139 @@
+Terakan anti-diagonal residual: open_gororoba algebraic toolkit map
+====================================================================
+
+This document tells you which open_gororoba crate to reach for when
+you need the next algebraic diagnostic on the Terakan anti-diagonal
+bug (`dEQP-VK.image.store.with_format.2d_array.r32_sint_single_layer`,
+2026-04-19; 64 wrong pixels, all on `xor_key(x, y) == 63`).
+
+It supersedes the earlier
+`2026_04_19_anti_diagonal_algebraic_classification.txt` which
+incorrectly identified the failure set with the CD conjugation
+involution.  The correct primitive is
+`algebra_analysis::zd_graphs::xor_key` (i ^ j); the failure set is
+the **top XOR-bucket**.
+
+Crate-by-crate diagnostic map
+-----------------------------
+
+### 1. `algebra_analysis::zd_graphs::xor_key`  (USED)
+
+The foundational primitive: `xor_key(i, j) = i ^ j`.  Documents
+the identity `e_i * e_j = +/- e_{i^j}` for any Cayley-Dickson
+algebra.  The failure set is precisely the
+`xor_key == 2^n - 1` bucket at `n = 6`.
+
+What it tells us: the failure has nothing to do with image tiling
+or pixel coordinates.  It is a basis-index phenomenon at the dim=64
+level of the CD tower.
+
+Used by: `analyze_bitwise_anti_diagonal` binary in
+`crates/algebra_experimental/src/bin/`.
+
+### 2. `algebra_analysis::boxkites`  (NOT YET USED)
+
+De Marrais 2000 / 2004 zero-divisor theory.  Constructs the 7
+"box-kites" of the sedenion algebra and uses XOR-bucket pruning as
+a fast pre-filter.  At dim 16 (sedenions), the box-kite structure
+covers all 42 primitive assessors.
+
+How it could help next: at dim 64 (pathion), there is an analogous
+box-kite-like structure.  Running
+`boxkite_assessors` (or its pathion-level analogue if exposed) on
+the indicator function of the top XOR-bucket would tell us whether
+our 64-pixel set is closed under the pathion analogue of box-kite
+multiplication, i.e., whether it has structural significance beyond
+"pairs whose product lands on e_63".
+
+If yes -> the hardware bug is at a STRUCTURAL level of the algebra,
+not just a per-element saturation.  If no -> per-element saturation
+is the right read.
+
+### 3. `algebra_analysis::annihilator`  (NOT YET USED)
+
+Reggiani 2024 zero-divisor manifold theory.  Builds left- and
+right-multiplication matrices `L_a` and `R_a` and computes their
+nullspace dimensions via SVD.  Zero-divisors are exactly the
+elements with nontrivial annihilators.
+
+How it could help next: define `a = sum over (x, y) in top-bucket of
+e_x` (the "top-bucket sum") in pathion (dim 64).  If `L_a` has a
+specific nullity, that nullity equals an algebraically-predicted
+count of "directions in which multiplication by the top-bucket sum
+can fail to produce the expected result".
+
+The numerical relationship between annihilator nullity and the 64
+failing pixels would constrain hardware hypotheses: a nullity
+matching 24, 56, or 64 each implies a different physical mechanism.
+
+### 4. `sign_imbalance::balance::compute_imbalance_index`  (NOT YET USED)
+
+Harary-Zaslavsky balance index for signed graphs derived from
+Cayley-Dickson multiplication tables.  The "3/8 imbalance attractor"
+defines a vacuum state in the framework's physical interpretation.
+
+How it could help next: build the signed graph whose nodes are the
+64 basis elements of pathion and whose edges are signed by the CD
+sign table.  Restrict to the top XOR-bucket subgraph.  Compute the
+balance index.  Hardware that drops bit 0 of `e_63` only would
+flip the sign of every edge incident on `e_63`, producing a specific
+imbalance-index delta.  Comparing measured-vs-predicted delta is a
+cross-check on which physical mechanism is acting.
+
+### 5. `cd_kernel::cayley_dickson::arith::cd_conjugate`  (RULED OUT)
+
+`cd_conjugate(x) = (x_0, -x_1, ..., -x_{n-1})` -- negates all
+imaginary REAL-VALUED coordinates.  This is NOT a basis-index
+permutation.  Conflating the basis-index complement (`y = NOT x`,
+correct) with `cd_conjugate` (incorrect) was the v1 analyzer error.
+
+### 6. `cd_kernel::cayley_dickson::trigintaduonion`  (POTENTIALLY USEFUL)
+
+The dim=32 (trigintaduonion) primitive table.  If a dim=64 analogue
+(`pathion.rs`) exists, mining its multiplication-sign convention
+would let us predict the EXACT bit-pattern that hardware would emit
+under various failure modes (e.g. drop-bit-0-of-target-index would
+turn e_63 into e_62 with sign +1; drop-bit-0-of-result would turn
++e_63 into +e_62 BUT with possibly different sign in some products).
+
+Open question: does `cd_kernel/src/cayley_dickson/` have a
+`pathion.rs` matching `trigintaduonion.rs`?
+
+Action ladder
+-------------
+
+The most valuable next algebraic action is checking if
+`algebra_analysis::annihilator` + a synthetic top-bucket sum at
+dim=64 gives a numerical signature that matches the 64-pixel count.
+If `L_a` has nullity 64 (matching the failure set size), that's
+strong evidence the hardware bug is acting on the annihilator
+manifold.
+
+If a pathion primitive table exists in `cd_kernel`, also worth
+running its multiplication-sign output on the top-bucket pairs and
+comparing to the empirical CTS expectation -- the comparison would
+flag whether sign-flip or magnitude-saturation is the dominant
+failure mode.
+
+References
+----------
+
+* `crates/algebra_analysis/src/zd_graphs.rs:533-545` -- `xor_key` and
+  `xor_bucket_necessary_for_two_blade`
+* `crates/algebra_analysis/src/boxkites.rs:1-32` -- box-kite header doc
+* `crates/algebra_analysis/src/annihilator.rs:1-40` -- annihilator
+  matrix construction
+* `crates/sign_imbalance/src/lib.rs:1-30` -- imbalance toolkit roots
+* `crates/cd_kernel/src/cayley_dickson/arith.rs:33-44` -- correct
+  `cd_conjugate` definition (negates imaginaries; NOT a basis-index
+  permutation)
+
+Steinmarder cross-link
+----------------------
+
+Companion mining note for the GPU side:
+`steinmarder/src/re/r600/findings/2026-04-19-mined-clues-from-copilot-archives.md`
+(commit 1f9ac535) lists the hardware-side candidates that the
+algebraic classification points at: MEM_RAT STORE_TYPED sint clamp,
+CB export-path sint clamp, SFN ALU clamp flag downstream of
+XOR_INT.

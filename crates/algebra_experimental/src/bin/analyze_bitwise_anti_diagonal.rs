@@ -12,28 +12,42 @@
 //! # What this analyzer does
 //!
 //! 1. Enumerates the 64 anti-diagonal points of `F_2^6`.
-//! 2. Identifies the set as the graph of the complement involution
-//!    `tau(x) = ~x mod 64`.
-//! 3. Cross-references this involution with the standard
-//!    Cayley-Dickson conjugation at dimension 64 (the dim=64 level
-//!    of the CD tower where the algebra is a pathion).
-//! 4. Characterizes the bit-0-drop at the fixed-locus `x XOR tau(x) = 63`
-//!    as a saturation at the top element of `F_2^6`.
-//! 5. Enumerates the tile-level structure: which of the 8x8 macro-tiles
+//! 2. Identifies the set as exactly the **top XOR-bucket** in
+//!    Cayley-Dickson basis-index theory: the set of pairs
+//!    `(x, y)` with `xor_key(x, y) = 2^6 - 1 = 63`, i.e. those
+//!    basis-index pairs whose CD product `e_x * e_y = +/- e_63`
+//!    lands on the top basis element of the 64D (pathion) algebra.
+//! 3. Characterizes the bit-0-drop as: hardware producing `e_62`
+//!    (drop bit 0 of the basis index) instead of `e_63` exclusively
+//!    for products in the top XOR-bucket.
+//! 4. Enumerates the tile-level structure: which of the 8x8 macro-tiles
 //!    on a 64x64 image contain anti-diagonal pixels, and what the
 //!    intra-tile pattern is.
-//! 6. Emits a structured JSON report to stdout.
+//! 5. Emits a structured JSON report to stdout.
 //!
 //! # Why this analyzer lives in open_gororoba
 //!
-//! The 6-bit XOR involution is exactly the dim=64 Cayley-Dickson
-//! conjugation restricted to the F_2-linear basis.  Classifying the
-//! failure as an algebraic object (rather than a geometric curiosity)
-//! points diagnostic attention at the correct layer of the driver:
-//! any mechanism that saturates the CD top-element (all-ones =
-//! dim-1 in F_2 basis) will produce exactly this 64-pixel anti-diagonal
-//! residual.
+//! The XOR-bucket structure is the foundational primitive of CD
+//! zero-divisor theory (de Marrais 2000, Reggiani 2024) and is
+//! formalized in this repository as
+//! `algebra_analysis::zd_graphs::xor_key`.  The Terakan failure is
+//! literally the top bucket of that primitive at n = 6.  Naming the
+//! failure set this way (instead of "anti-diagonal of a 64x64 grid")
+//! transports the diagnostic into a known mathematical object whose
+//! invariants the repository already exposes.
+//!
+//! # Correction note
+//!
+//! The earlier draft of this analyzer claimed the failure set was
+//! "the graph of CD conjugation restricted to F_2 basis".  That was
+//! wrong: `cd_kernel::cayley_dickson::arith::cd_conjugate` operates
+//! on real-valued coordinates `(x_0, x_1, ..., x_{n-1})` by negating
+//! all imaginary entries, NOT by permuting basis indices.  The
+//! correct algebraic identification is the XOR-bucket, as documented
+//! in `algebra_analysis::zd_graphs::xor_key` ("In CD algebras,
+//! `e_i * e_j = +/- e_{i^j}`").
 
+use algebra_analysis::zd_graphs::xor_key;
 use serde_json::json;
 
 const GRID_DIM: u32 = 64;
@@ -41,16 +55,27 @@ const GRID_BITS: u32 = 6;
 const TOP_ELEMENT: u32 = GRID_DIM - 1; // 63 = all six bits set
 const TILE_DIM: u32 = 8;
 
-/// Complement involution `tau(x) = ~x mod 64`.
-/// In the Cayley-Dickson tower at dim=64 this is the conjugation
-/// restricted to the F_2-linear coordinate basis.
-fn tau(x: u32) -> u32 {
-    (!x) & TOP_ELEMENT
+/// The "complement-of-x" partner under the top XOR-bucket: the
+/// unique `y` in `[0, 64)` with `xor_key(x, y) = 63`.
+///
+/// Equivalent to `(!x) & TOP_ELEMENT`, but framed via the CD
+/// `xor_key` primitive to make the algebraic identification
+/// explicit.
+fn top_bucket_partner(x: u32) -> u32 {
+    let y = (!x) & TOP_ELEMENT;
+    debug_assert_eq!(
+        xor_key(x as usize, y as usize),
+        TOP_ELEMENT as usize,
+        "top_bucket_partner consistency with algebra_analysis::zd_graphs::xor_key"
+    );
+    y
 }
 
-/// The 64 anti-diagonal points of the 64x64 grid.
-fn anti_diagonal_points() -> Vec<(u32, u32)> {
-    (0..GRID_DIM).map(|x| (x, tau(x))).collect()
+/// The 64 points `(x, y)` with `xor_key(x, y) = TOP_ELEMENT = 63`.
+/// In CD basis-index terms: the basis-index pairs whose product
+/// lands on `e_63`, the top basis element of the 64D pathion algebra.
+fn top_bucket_pairs() -> Vec<(u32, u32)> {
+    (0..GRID_DIM).map(|x| (x, top_bucket_partner(x))).collect()
 }
 
 /// Macro-tile coordinate `(tx, ty)`.
@@ -80,8 +105,11 @@ fn verify_algebraic_structure(points: &[(u32, u32)]) -> serde_json::Value {
     let count = points.len();
     let all_on_sum63 = points.iter().all(|&(x, y)| x + y == TOP_ELEMENT);
     let all_xor_63 = points.iter().all(|&(x, y)| (x ^ y) == TOP_ELEMENT);
-    let all_complement = points.iter().all(|&(x, y)| tau(x) == y);
-    let involution_closed = points.iter().all(|&(x, y)| {
+    let all_partner_pairs = points.iter().all(|&(x, y)| top_bucket_partner(x) == y);
+    let all_xor_key_top = points
+        .iter()
+        .all(|&(x, y)| xor_key(x as usize, y as usize) == TOP_ELEMENT as usize);
+    let bucket_closed_under_swap = points.iter().all(|&(x, y)| {
         let (x2, y2) = (y, x);
         points.contains(&(x2, y2))
     });
@@ -90,16 +118,20 @@ fn verify_algebraic_structure(points: &[(u32, u32)]) -> serde_json::Value {
         "point_count": count,
         "all_points_satisfy_x_plus_y_eq_63": all_on_sum63,
         "all_points_satisfy_x_xor_y_eq_63": all_xor_63,
-        "all_points_are_complement_pairs": all_complement,
-        "set_closed_under_coordinate_swap": involution_closed,
-        "fixed_points_of_tau": fixed_points,
-        "F_2_rank_of_involution": GRID_BITS,
-        "cayley_dickson_level": "dim=64 (pathion); tau = CD conjugation restricted to F_2-linear basis",
+        "all_points_satisfy_xor_key_top": all_xor_key_top,
+        "all_points_are_top_bucket_partners": all_partner_pairs,
+        "set_closed_under_coordinate_swap": bucket_closed_under_swap,
+        "fixed_points_of_top_bucket": fixed_points,
+        "F_2_rank": GRID_BITS,
+        "xor_key_primitive_source": "algebra_analysis::zd_graphs::xor_key",
+        "cd_basis_index_max": TOP_ELEMENT,
+        "cd_top_basis_element": format!("e_{}", TOP_ELEMENT),
+        "cd_algebra_at_dim_64": "pathion (32D = trigintaduonion is 2^5; 64D pathion is 2^6)",
     })
 }
 
 fn main() {
-    let points = anti_diagonal_points();
+    let points = top_bucket_pairs();
     let structure = verify_algebraic_structure(&points);
     let tiles = tile_structure(&points);
     let tile_report: Vec<serde_json::Value> = tiles
@@ -130,10 +162,10 @@ fn main() {
             "observed_residual": "64 wrong pixels; actual x^y = 62 where expected 63",
         },
         "algebraic_classification": {
-            "ambient_algebra": "F_2^6 (6-dimensional vector space over F_2, i.e. 6-bit XOR)",
-            "failure_set_identity": "graph of the complement involution tau(x) = NOT x mod 64",
-            "is_conjugation_graph_of_cd_tower": true,
-            "cd_tower_level": "dim=64 = 2^6 = pathion level",
+            "ambient_structure": "F_2^6 viewed as the basis-index space of the 64D Cayley-Dickson algebra (pathion)",
+            "failure_set_identity": "the top XOR-bucket: pairs (x, y) with xor_key(x, y) = 63",
+            "cd_significance": "These are exactly the basis-index pairs whose CD product e_x * e_y = +/- e_63 (the top basis element of pathion)",
+            "primitive_used": "algebra_analysis::zd_graphs::xor_key",
             "top_element": TOP_ELEMENT,
             "top_element_binary": "0b111111",
             "structure_properties": structure,
@@ -147,13 +179,14 @@ fn main() {
             "per_tile": tile_report,
         },
         "diagnosis": {
-            "failure_mode": "Bit 0 is cleared exclusively when the XOR result equals the top element of F_2^6.",
-            "algebraic_reading": "Saturation at the CD top-element under the dim=64 conjugation involution.",
+            "failure_mode": "Hardware produces e_62 instead of e_63 (bit-0 of the basis index drops) exclusively for products in the top XOR-bucket.",
+            "algebraic_reading": "Hardware fails to produce the top basis element e_{2^n - 1} of the dim=2^n CD algebra at n=6.",
             "implications": [
                 "Any pipeline stage that saturates unsigned 6-bit outputs at 62 instead of 63 reproduces this geometry exactly.",
                 "Any pipeline stage that applies a mask (_ & ~1) conditional on (value == 63) reproduces this geometry exactly.",
-                "The tile decomposition shows the failure is uniform across all eight 8x8 tiles that cross the global anti-diagonal, so the fault is NOT tile-local.",
-                "The CD-level classification (dim=64 conjugation) is independent of which specific bit drops; any fixed-locus-of-tau saturation produces this pattern.",
+                "The tile decomposition shows the failure is uniform across all eight 8x8 macro-tiles crossing the global anti-diagonal -- the fault is NOT tile-local.",
+                "The CD-level classification (top XOR-bucket) is independent of which specific bit drops; any saturation at the top basis element of F_2^6 produces this pattern.",
+                "By analogy with sedenion / pathion zero-divisor theory (de Marrais 2000, Reggiani 2024), the top-bucket subset has structurally distinguished status -- it is the unique bucket containing pairs whose product is the top basis element.",
             ],
             "hardware_side_candidates": [
                 "MEM_RAT STORE_TYPED format-conversion saturation on R32_SINT at signed max (+31 in the colorExpr encoding of x^y = 63).",
@@ -163,6 +196,12 @@ fn main() {
             "ruled_out_candidates": [
                 "SFN x^y identity-lowering to (x|y)-(x&y): sfn_instr_alu.cpp emits native XOR_INT (2026-04-19 mining).",
                 "MEM_RAT STORE_TYPED saturation on R32_UINT: PALM probe 5 proved bit-transparency (2026-04-19 mining).",
+                "CD conjugation involution: cd_kernel::cd_conjugate negates real-valued imaginary coordinates, NOT basis-index permutation; not the right primitive.",
+            ],
+            "open_gororoba_followups": [
+                "Run algebra_analysis::boxkites::boxkite_assessors at dim=64 (pathion) to test whether the 64-pixel set decomposes into a known box-kite at the pathion level.",
+                "Run algebra_analysis::annihilator::left_multiplication_matrix on a sedenion / pathion built from indicator-of-top-bucket coefficients; check if the resulting nullspace dimension matches the geometric structure of the failure set.",
+                "Run sign_imbalance::balance::compute_imbalance_index on the signed graph induced by the CD multiplication table restricted to the top XOR-bucket. Bit-0-drop hardware would produce a specific sign-imbalance signature.",
             ],
         },
     });
@@ -174,34 +213,39 @@ mod tests {
     use super::*;
 
     #[test]
-    fn tau_is_involution() {
+    fn top_bucket_partner_is_involution() {
         for x in 0..GRID_DIM {
-            assert_eq!(tau(tau(x)), x, "tau^2 = id failed at x={}", x);
+            assert_eq!(
+                top_bucket_partner(top_bucket_partner(x)),
+                x,
+                "partner^2 = id failed at x={}",
+                x
+            );
         }
     }
 
     #[test]
-    fn tau_has_no_fixed_points_for_even_bit_count() {
-        // For 6-bit complement, tau(x) = x would require all bits equal
-        // to their complement, impossible.
+    fn top_bucket_partner_has_no_fixed_points() {
+        // For 6-bit complement, partner(x) = x would require all bits
+        // equal to their complement, impossible at even bit-count.
         for x in 0..GRID_DIM {
-            assert_ne!(tau(x), x, "tau has unexpected fixed point at x={}", x);
+            assert_ne!(top_bucket_partner(x), x);
         }
     }
 
     #[test]
-    fn anti_diagonal_has_exactly_64_points() {
-        let pts = anti_diagonal_points();
+    fn top_bucket_has_exactly_64_pairs() {
+        let pts = top_bucket_pairs();
         assert_eq!(pts.len(), GRID_DIM as usize);
     }
 
     #[test]
-    fn every_point_satisfies_xor_identity() {
-        for (x, y) in anti_diagonal_points() {
+    fn every_pair_satisfies_xor_key_top() {
+        for (x, y) in top_bucket_pairs() {
             assert_eq!(
-                x ^ y,
-                TOP_ELEMENT,
-                "x^y identity failed at ({}, {})",
+                xor_key(x as usize, y as usize),
+                TOP_ELEMENT as usize,
+                "xor_key consistency failed at ({}, {})",
                 x,
                 y
             );
@@ -210,11 +254,11 @@ mod tests {
 
     #[test]
     fn tile_decomposition_hits_exactly_eight_tiles() {
-        let pts = anti_diagonal_points();
+        let pts = top_bucket_pairs();
         let tiles = tile_structure(&pts);
         assert_eq!(tiles.len(), 8, "expected exactly 8 macro-tiles crossed");
         for ((tx, ty), intras) in &tiles {
-            assert_eq!(tx + ty, (GRID_DIM / TILE_DIM) - 1, "tile not on macro anti-diagonal: ({}, {})", tx, ty);
+            assert_eq!(tx + ty, (GRID_DIM / TILE_DIM) - 1);
             assert_eq!(intras.len(), TILE_DIM as usize);
             for &(ix, iy) in intras {
                 assert_eq!(ix + iy, TILE_DIM - 1);
