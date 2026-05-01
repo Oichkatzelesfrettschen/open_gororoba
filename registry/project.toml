@@ -16,6 +16,12 @@ kernel_checked_claims = 126
 proof_files = 191
 scope_guardrails = "docs/SCOPE_GUARDRAILS.md"
 
+# Baseline / milestone tags created by the debt-resolution program.
+# Plan reference: plans/elucidate-and-build-out-nested-hollerith.md
+baseline_tags = [
+  { tag = "debt-baseline-v0", date = "2026-04-30", commit = "d00b1bff", purpose = "Phase 0 T-100 snapshot of code/registry/cache/proof/data debt before any change; deltas measured against this point" },
+]
+
 [sprints.s83]
 number = 83
 date = "2026-03-12"
