@@ -1,0 +1,171 @@
+# Phase 0 open questions (T-105) for the elucidate-and-build-out plan.
+#
+# The plan's T-105 instruction was to file these as registry/insights.toml
+# entry I-208. Two reasons that path is wrong:
+#   1. Insight ID I-208 is already occupied (highest existing ID is I-211).
+#   2. registry/insights.toml is an AUTO-GENERATED read-only export from
+#      registry/canonical/control_plane.sqlite3. Direct edits would be
+#      reverted on the next `gororoba_cli_data provenance
+#      export-control-plane` invocation.
+#
+# Tracked here as a standalone TOML for now. When the schema validator
+# from Phase 3 (T-131) ships, this file should be promoted into a proper
+# registry lane (or routed through the SQLite canonical path with a
+# requires_user_decision flag on each row).
+
+[meta]
+generated_at = "2026-04-30"
+generated_by = "T-105"
+plan_reference = "plans/elucidate-and-build-out-nested-hollerith.md"
+schema_version = 1
+all_questions_require_user_decision = true
+
+# ----------------------------------------------------------------------------
+# Q1: Sprint 83 phrasing tension
+# ----------------------------------------------------------------------------
+[[question]]
+id = "Q-2026-04-30-01"
+area = "scientific_synthesis"
+plan_task = "T-190"
+title = "Sprint 83 'null hypothesis rejected, 8D optimal for discrimination'"
+context = """
+Sprint 83 summary in MEMORY.md and project_sprint83_session_summary.md states
+'null hypothesis rejected, 8D optimal for discrimination'.
+
+E-183/E-184/E-192 (MaNGA, completed 2026-03-12) report SNR=0.25-0.29 and an
+algebra-universal NULL across G2, J3(O), sl(2). C-1373 was FALSIFIED.
+
+These two statements are not obviously consistent. Either the Sprint 83
+phrasing applies to a different signal/dataset/experiment, or the MaNGA
+null is being characterized in a counterintuitive way, or one of the two
+needs to be retracted/rephrased.
+"""
+options = [
+  "Sprint 83 phrasing refers to a different experiment (specify which)",
+  "8D-optimal is a discrimination-power statement, not a detection statement",
+  "Sprint 83 phrasing should be retracted/rephrased",
+  "Other (free-text)",
+]
+blocking = false  # plan continues, but T-190 needs the answer
+
+# ----------------------------------------------------------------------------
+# Q2: Pantheon+ FALSIFIED retention
+# ----------------------------------------------------------------------------
+[[question]]
+id = "Q-2026-04-30-02"
+area = "data_governance"
+plan_task = "T-184"
+title = "Pantheon+ FALSIFIED yet active in pipeline"
+context = """
+Sprint S68 marked the Pantheon+ analysis FALSIFIED (Delta BIC = +705).
+The data and pipeline code remain in the active research path. This is
+acceptable as a falsification artifact (negative-result laboratory) but
+needs a labeling decision so it does not look like a live result.
+"""
+options = [
+  "Retain as falsification artifact; relabel pipeline outputs with FALSIFIED prefix",
+  "Remove from active pipelines; archive data and code as historical",
+  "Retain unchanged; rely on registry status field for context",
+]
+blocking = false
+
+# ----------------------------------------------------------------------------
+# Q3: MaNGA null vs decisive tension
+# ----------------------------------------------------------------------------
+[[question]]
+id = "Q-2026-04-30-03"
+area = "scientific_synthesis"
+plan_task = "T-191"
+title = "MaNGA E-183/4/192 NULL vs E-201/202 DECISIVE reanalysis"
+context = """
+E-183/E-184/E-192: SNR=0.25-0.29 algebra-universal NULL.
+E-201/E-202: characterized as DECISIVE in I-206; finds gamma=0.808 is an
+inclination artifact, Q3 SNR=3.60 'detection' falsified, p=0.42 after
+red-noise correction, algebra-universal null across all statistical
+orders (C-1436..C-1439).
+
+The two findings are actually compatible (both are null on signal of
+interest, with E-201/2 adding inclination-artifact characterization),
+but the 'DECISIVE' label vs 'NULL' label is confusing. Need a single
+canonical phrasing to use in the methods paper.
+"""
+options = [
+  "Use 'DECISIVE NEGATIVE-RESULT' for E-201/2; keep NULL for E-183/4/192",
+  "Use NULL for both; relegate 'DECISIVE' to internal-use phrasing only",
+  "Keep both labels but add cross-reference notes in registry status_note",
+  "Other (free-text)",
+]
+blocking = false
+
+# ----------------------------------------------------------------------------
+# Q4: Dark Halo Hunt VF=0 acronym
+# ----------------------------------------------------------------------------
+[[question]]
+id = "Q-2026-04-30-04"
+area = "documentation"
+plan_task = "T-192"
+title = "Dark Halo Hunt FALSIFIED with VF=0 -- define VF"
+context = """
+S68 falsifies Dark Halo Hunt with reported VF=0. The acronym VF is not
+defined in registry, MEMORY, or visible code comments. Likely candidates:
+'violation factor', 'variance fraction', 'visual fraction', 'vacancy
+fraction'. A glossary entry must record the canonical definition.
+"""
+options = [
+  "VF = violation factor",
+  "VF = variance fraction",
+  "VF = visual fraction",
+  "VF = something else (specify)",
+]
+blocking = false  # T-192 deliverable is docs/glossary.md
+
+# ----------------------------------------------------------------------------
+# Q5: PyO3 / numpy declared-but-unused
+# ----------------------------------------------------------------------------
+[[question]]
+id = "Q-2026-04-30-05"
+area = "supply_chain"
+plan_task = "T-115"
+title = "pyo3 0.28 + numpy 0.28 declared workspace-wide; zero crates use them"
+context = """
+The workspace Cargo.toml declares pyo3 and numpy as workspace dependencies
+but no crate currently consumes either. Two paths:
+  (a) Remove the declarations; revisit if Python interop becomes necessary.
+  (b) Wire one binding (e.g., expose algebra_analysis as a Python module)
+      and add a smoke test, formalizing the declared interop strategy.
+
+Memory notes that the user prefers PyO3 wrapping over Python scripts
+(feedback_pure_rust_pyo3.md). That argues for path (b) but only if there
+is a concrete consumer.
+"""
+options = [
+  "Remove pyo3+numpy from workspace deps; revisit later",
+  "Wire one PyO3 binding now (specify which crate)",
+  "Defer decision until Phase 6",
+]
+blocking = false
+
+# ----------------------------------------------------------------------------
+# Q6: Methods paper venue and freeze deadline
+# ----------------------------------------------------------------------------
+[[question]]
+id = "Q-2026-04-30-06"
+area = "publication"
+plan_task = "Phase_9"
+title = "Methods paper target submission venue and freeze deadline"
+context = """
+The plan's Phase 9 sets a 'methods paper freeze' but does not specify a
+submission venue or a hard deadline. The cadence of Phases 7-9 depends
+on this; without a deadline the determinism work (Phase 7) can take its
+time, but with a deadline some manifest backfill (T-173) may need to be
+scoped to the highest-impact experiments.
+"""
+options = [
+  "ApJ; freeze date TBD; aim for end-of-Phase-9 (~ week 18)",
+  "MNRAS; same cadence",
+  "arXiv preprint first; journal submission later",
+  "No fixed venue/deadline yet; treat Phase 9 as preparation",
+]
+blocking = false  # but answers reshape Phase 7-9 priority order
+
+# End of Phase 0 open-questions registry.
