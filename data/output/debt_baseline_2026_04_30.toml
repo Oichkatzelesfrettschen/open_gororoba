@@ -152,6 +152,33 @@ agents_md_present  = false
 readme_md_lines    = 234
 requirements_md_lines = 23
 # Plan target: per-crate README + INSTALL.md across >=35/41 crates (T-161, T-162).
+# Note: .gitignore line 197 enforces *.md deny + explicit allowlist. Per-crate
+# README is allowlisted via !**/[Rr][Ee][Aa][Dd][Mm][Ee].md but new INSTALL.md
+# files would need to be added to the allowlist or the gitignore strategy
+# revisited; T-162 should account for this constraint.
+
+# ----------------------------------------------------------------------------
+# Hygiene actions taken in Phase 0 (post-baseline corrections)
+# ----------------------------------------------------------------------------
+[hygiene.actions_taken_2026_04_30]
+# T-103: deleted two worktree-agent branches (zero unique commits, see ADR
+# docs/adr/branch-lifecycle.md).
+deleted_branches = ["worktree-agent-ac02ad93", "worktree-agent-afe06576"]
+# T-104: corrected misreading of pre-push hook state. The 4-gate chain IS
+# active via core.hooksPath = .githooks; .git/hooks/pre-push is the unused
+# git-lfs stub. Plan T-136 rescoped from "implement" to "verify + document".
+pre_push_hook_state = "active_via_core_hookspath"
+pre_push_hook_path  = ".githooks/pre-push"
+pre_push_hook_chain = [
+  "git-lfs handoff",
+  "cache-check",
+  "terminology-gate",
+  "ansi-check",
+  "rust-regression-scoped (warnings-as-errors)",
+  "governance-gate-readonly",
+]
+# T-102: 10 stale plan TOMLs moved to plans/archive/ (plan estimated 7).
+archived_plans_count = 10
 
 # ----------------------------------------------------------------------------
 # End of baseline.
