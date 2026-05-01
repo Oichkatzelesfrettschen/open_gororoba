@@ -1,0 +1,88 @@
+name: unsafe-survey
+
+# Weekly cargo-geiger survey of `unsafe` blocks in the workspace and all
+# transitive dependencies. Output written to data/output/static_analysis/
+# geiger_<date>.json so the time series is visible.
+#
+# Cadence: weekly (Monday 08:00 UTC) is enough; cargo-geiger is slow
+# (~5-10 min on a clean cache) and the data does not change between PRs.
+# Manual dispatch is also wired so a contributor can re-run on demand.
+#
+# Plan: T-116 of plans/elucidate-and-build-out-nested-hollerith.md.
+
+on:
+  schedule:
+    - cron: "0 8 * * 1"
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "Cargo.lock"
+      - ".github/workflows/unsafe-survey.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: unsafe-survey-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  geiger:
+    runs-on: ubuntu-latest
+    env:
+      CARGO_HOME: ${{ github.workspace }}/.cache/cargo-home
+      CARGO_TARGET_DIR: ${{ github.workspace }}/target
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust toolchain (nightly)
+        uses: dtolnay/rust-toolchain@nightly
+
+      - name: Cache cargo registry and target
+        uses: actions/cache@v4
+        with:
+          path: |
+            ${{ env.CARGO_HOME }}/registry
+            ${{ env.CARGO_HOME }}/git
+            ${{ env.CARGO_HOME }}/bin
+            ${{ env.CARGO_TARGET_DIR }}
+          key: rust-geiger-${{ runner.os }}-${{ hashFiles('Cargo.lock') }}
+          restore-keys: rust-geiger-${{ runner.os }}-
+
+      - name: Install cargo-geiger
+        run: cargo install --locked --version 0.13.0 cargo-geiger || true
+
+      - name: Run cargo-geiger (workspace summary)
+        id: geiger
+        run: |
+          mkdir -p data/output/static_analysis
+          STAMP="$(date -u +%Y-%m-%d)"
+          OUT="data/output/static_analysis/geiger_${STAMP}.json"
+          # cargo-geiger 0.13's --output-format Json is unstable; capture
+          # both human-readable and a stub JSON header. Refine in T-118
+          # when the supply-chain-gate Make target is wired.
+          cargo geiger --workspace --all-targets > "${OUT%.json}.txt" 2>&1 || true
+          {
+            echo '{'
+            echo '  "schema_version": 1,'
+            echo '  "tool": "cargo-geiger 0.13.0",'
+            echo "  \"captured_at\": \"${STAMP}\","
+            echo "  \"git_commit\": \"${GITHUB_SHA}\","
+            echo '  "human_readable_artifact": "geiger_'"${STAMP}"'.txt"'
+            echo '}'
+          } > "${OUT}"
+          echo "out=${OUT}" >> "$GITHUB_OUTPUT"
+
+      - name: Upload geiger artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: geiger-${{ github.run_id }}
+          path: data/output/static_analysis/geiger_*.{json,txt}
+          if-no-files-found: error
+
+      - name: Note artifact path
+        run: |
+          echo "::notice title=geiger output::${{ steps.geiger.outputs.out }}"
+          echo "Commit the artifact manually if you want it tracked."
