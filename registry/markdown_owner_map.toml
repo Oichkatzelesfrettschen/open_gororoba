@@ -8,11 +8,11 @@
 #   - owner_group=third_party or owner_group=external MUST have removal_status=locked.
 
 [markdown_owner_map]
-updated = "2026-04-17"
+updated = "2026-04-30"
 authoritative = true
 status = "active"
 status_token = "ACTIVE"
-document_count = 203
+document_count = 207
 
 [[owner]]
 path = "README.md"
@@ -1234,7 +1234,33 @@ removal_status = "active"
 removal_reason = ""
 
 [[owner]]
+path = "docs/adr/branch-lifecycle.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/adr/rustsec-dispositions.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/adr/dependency-pin-rationale.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
 path = "docs/ablation_preregistration.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+# ---- Plans lifecycle documentation (plans/) ----
+
+[[owner]]
+path = "plans/README.md"
 owner_group = "project"
 removal_status = "active"
 removal_reason = ""

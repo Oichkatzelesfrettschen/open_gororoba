@@ -209,6 +209,10 @@ const SKIP_DIRS: &[&str] = &[
     // Each run creates a new timestamped directory, so owner-map tracking is
     // not viable.  The canonical output is reports/gates/latest.json.
     "gates",
+    // data/output/audit/: timestamped audit-agent output directories containing
+    // generated .md summaries.  Same rationale as "gates": per-run artifacts,
+    // not governed documents.
+    "audit",
 ];
 
 /// Returns all .md paths relative to repo_root, sorted, excluding skip dirs.
