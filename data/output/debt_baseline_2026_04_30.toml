@@ -1,0 +1,158 @@
+# Debt baseline snapshot for the open_gororoba debt-resolution program.
+# Generated 2026-04-30 from main @ 970b4da3 by Phase 0 task T-100.
+#
+# Purpose: lock current measurements before any change so deltas are
+# quantifiable later. Plan reference: plans/elucidate-and-build-out-nested-hollerith.md
+# (mirror at ~/.claude/plans/elucidate-and-build-out-nested-hollerith.md).
+#
+# Re-run procedure: see scripts referenced per-section, or T-100 in the plan.
+# Subsequent re-measurements should write data/output/debt_final_<date>.toml
+# with identical schema; the delta report compares the two TOML files.
+
+[meta]
+generated_at = "2026-04-30"
+generated_by = "T-100"
+git_commit = "970b4da3"
+git_branch = "main"
+plan_reference = "plans/elucidate-and-build-out-nested-hollerith.md"
+schema_version = 1
+
+# ----------------------------------------------------------------------------
+# Registry counts
+# Source: registry/*.toml header counts via grep -c '^\[\[<entity>\]\]'
+# ----------------------------------------------------------------------------
+[registry]
+claim_count = 1470
+experiment_count = 251
+insight_count = 182
+binary_count = 457
+provenance_source_count = 270
+
+[registry.claim_status]
+# Distribution of claims by status field (sum should equal claim_count).
+verified                          = 1201
+provisional                       = 121
+refuted                           = 57
+established                       = 52
+superseded                        = 11
+closed_negative_result            = 6
+falsified                         = 5
+theoretical                       = 4
+closed_research_program           = 3
+closed_refuted                    = 3
+closed_toy                        = 2
+closed_methodology_insufficient   = 2
+closed_source_insufficient        = 1
+closed_obstructed                 = 1
+closed_analogy                    = 1
+
+[registry.proof_linkage]
+# Field presence on the [[claim]] entries.
+formal_proof_present  = 144
+formal_proof_absent   = 1326
+proof_skeleton_present = 0
+# Plan note: prior commits reference 13 proof_skeleton mentions in *narrative*
+# fields (status_note, etc.), but the structural field is absent everywhere.
+
+[registry.last_verified]
+total_with_field = 1470
+unique_dates     = 51
+top_date         = "2026-02-01"
+top_date_count   = 264
+
+[registry.experiment_health]
+# Experiments registered but flagged as having no associated binary.
+binary_registered_false = 33
+
+# ----------------------------------------------------------------------------
+# Code quality (crates/, *.rs)
+# ----------------------------------------------------------------------------
+[code_quality]
+unsafe_block_count                  = 442
+unsafe_block_files                  = 54
+safety_comment_count                = 73
+safety_comment_files                = 13
+todo_fixme_xxx_hack_total           = 142
+todo_fixme_xxx_hack_files           = 26
+unimplemented_todo_unreachable_macros = 43
+ignore_attr_count                   = 117
+allow_clippy_count                  = 150
+allow_dead_code_count               = 69
+instant_now_call_sites              = 241
+
+[code_quality.notes]
+# SAFETY block coverage = 73/442 = 16.5% (block-level)
+# SAFETY file coverage  = 13/54  = 24.1% (file-level)
+# Plan target: SAFETY at 100% with documented exceptions (T-140).
+
+# ----------------------------------------------------------------------------
+# Formal verification (proofs/, *.v)
+# ----------------------------------------------------------------------------
+[formal_verification]
+v_file_count_proofs_dir   = 275
+admitted_count            = 0  # repo prefers Axiom/Parameter pattern
+axiom_count               = 130
+parameter_count           = 64
+admit_lowercase_count     = 3
+total_proof_gaps          = 197  # admitted + axiom + parameter + admit
+
+# ----------------------------------------------------------------------------
+# Supply chain
+# ----------------------------------------------------------------------------
+[supply_chain]
+rustsec_ignored_count = 7
+rustsec_ignored_ids = [
+  "RUSTSEC-2025-0141",
+  "RUSTSEC-2022-0081",
+  "RUSTSEC-2024-0436",
+  "RUSTSEC-2024-0384",
+  "RUSTSEC-2026-0097",
+  "RUSTSEC-2026-0098",
+  "RUSTSEC-2026-0099",
+]
+
+# ----------------------------------------------------------------------------
+# Build cache (.cache/)
+# ----------------------------------------------------------------------------
+[cache]
+total_size_human    = "215G"
+gate_target_size    = "200G"
+gate_cbuild_size    = "8.4G"
+cargo_home_size     = "2.6G"
+target_size         = "1.7G"
+sparse_cargo_home   = "818M"
+cargo_default_target = "71M"
+
+# ----------------------------------------------------------------------------
+# Data layer
+# ----------------------------------------------------------------------------
+[data]
+external_file_count = 114180
+provenance_records  = 270
+
+# ----------------------------------------------------------------------------
+# Repository hygiene
+# ----------------------------------------------------------------------------
+[hygiene]
+plans_toml_count        = 11
+worktree_branch_count   = 2  # worktree-agent-ac02ad93, worktree-agent-afe06576
+untracked_files = [
+  "data/external/crossing_lists/maven_bs_2015_regime.txt",
+  "data/output/audit/",
+  "data/output/static_analysis/",
+]
+
+# ----------------------------------------------------------------------------
+# Documentation
+# ----------------------------------------------------------------------------
+[documentation]
+# Per the plan, target presence of CLAUDE.md and AGENTS.md at project root.
+claude_md_present  = false
+agents_md_present  = false
+readme_md_lines    = 234
+requirements_md_lines = 23
+# Plan target: per-crate README + INSTALL.md across >=35/41 crates (T-161, T-162).
+
+# ----------------------------------------------------------------------------
+# End of baseline.
+# ----------------------------------------------------------------------------
