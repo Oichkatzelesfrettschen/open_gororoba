@@ -154,9 +154,18 @@ but no crate currently consumes either. Two paths:
 Memory notes that the user prefers PyO3 wrapping over Python scripts
 (feedback_pure_rust_pyo3.md). That argues for path (b) but only if there
 is a concrete consumer.
+
+Phase 1 T-115 verification (2026-04-30):
+  - root Cargo.toml: pyo3 = { version = "0.28", features = ["extension-module"] }
+  - root Cargo.toml: numpy = "0.28"
+  - per-crate: zero matches for `pyo3 = ` or `numpy = ` in crates/*/Cargo.toml
+  - source: zero matches for `use pyo3` or `extern crate pyo3` in crates/*.rs
+  - cargo-machete: silent (it does not detect workspace-level dead deps;
+    see data/output/static_analysis/machete_2026_04_30.txt for that note).
 """
+verification_command = "grep -rE '^\\s*pyo3\\s*=' crates/*/Cargo.toml | wc -l  # expect 0 if unused"
 options = [
-  "Remove pyo3+numpy from workspace deps; revisit later",
+  "Remove pyo3+numpy from workspace deps; revisit later (recommended given zero usage)",
   "Wire one PyO3 binding now (specify which crate)",
   "Defer decision until Phase 6",
 ]

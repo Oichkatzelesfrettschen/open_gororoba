@@ -1,0 +1,44 @@
+cargo-machete report -- 2026-04-30 (Phase 1 T-114)
+=====================================================
+
+Tool:    cargo-machete 0.9.1
+Repo:    /home/eirikr/Github/open_gororoba @ main 368679ec
+Command: `cargo machete`
+
+Output:
+  Analyzing dependencies of crates in this directory...
+  cargo-machete didn't find any unused dependencies in this directory. Good job!
+  Done!
+
+Per-crate unused-dep count:                    0
+Total reported issues:                         0
+
+NOTE -- machete scope vs. workspace declarations
+-------------------------------------------------
+cargo-machete inspects each crate's `[dependencies]`, `[dev-dependencies]`,
+and `[build-dependencies]` against that crate's source. It does NOT inspect
+`[workspace.dependencies]` for declared-but-unused entries because the
+workspace table is a versioning shim, not a usage declaration.
+
+A separate check is needed for workspace-level cruft. Phase 0 T-105 already
+filed Q-2026-04-30-05 against pyo3+numpy under that constraint:
+
+  pyo3 0.28 + numpy 0.28 are declared in workspace.dependencies but
+  zero crates pull them and zero source files import pyo3.
+  --> awaiting user decision in Q-2026-04-30-05
+
+The plan's earlier framing of "13 machete-flagged unused crates" was
+based on stale memory (project_static_analysis_audit_2026_04_15.md).
+Current state is clean.
+
+Removal trigger for this artifact: only when machete output changes
+(addition of declared-but-unused per-crate deps). Re-run via:
+
+    cargo machete > data/output/static_analysis/machete_<YYYY-MM-DD>.txt
+
+For workspace-level dead-dep detection, use:
+
+    grep -rE '^\s*<crate>\s*=' crates/*/Cargo.toml
+    grep -rn 'use <crate>' crates/
+
+(both should be non-empty for any crate listed in workspace.dependencies).
