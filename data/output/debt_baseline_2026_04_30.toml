@@ -65,6 +65,18 @@ top_date_count   = 264
 binary_registered_false = 33
 
 # ----------------------------------------------------------------------------
+# Workspace
+# Reconciled with Stage A audit at data/output/audit/2026-04-30/
+# Plan stated 41 crates; reality is 72 workspace members
+# (artifact: 01-cargo-metadata-no-deps.json + 01-workspace-summary.md).
+# ----------------------------------------------------------------------------
+[workspace]
+member_count           = 72
+direct_deps_lines      = 515
+duplicate_dep_lines    = 2160
+machete_unused_count   = 0  # Stage A 01-machete.txt: zero findings (was: plan said 13)
+
+# ----------------------------------------------------------------------------
 # Code quality (crates/, *.rs)
 # ----------------------------------------------------------------------------
 [code_quality]
@@ -87,14 +99,31 @@ instant_now_call_sites              = 241
 
 # ----------------------------------------------------------------------------
 # Formal verification (proofs/, *.v)
+# Stage A audit (data/output/audit/2026-04-30/05-{admits,axioms,summary,
+# admits-axioms-broad}.txt) measured this two ways. Both are useful:
+#   strict_top_level: declarations at start-of-line (top-level decl gaps)
+#   broad_total:      Axiom/Parameter mentions including indented forms
 # ----------------------------------------------------------------------------
 [formal_verification]
-v_file_count_proofs_dir   = 275
-admitted_count            = 0  # repo prefers Axiom/Parameter pattern
-axiom_count               = 130
-parameter_count           = 64
-admit_lowercase_count     = 3
-total_proof_gaps          = 197  # admitted + axiom + parameter + admit
+v_file_count_proofs_dir       = 275
+
+# Strict (top-level): from Stage A 05-summary.txt -- vfiles=275 admit_files=5
+# admit_total=5 axiom_files=7 axiom_total=40
+strict_admit_count            = 5    # Admitted/admit at top level
+strict_axiom_param_count      = 40   # ^Axiom or ^Parameter
+strict_top_level_proof_gaps   = 45
+
+# Broad (any indentation): from Stage A 05-admits-axioms-broad.txt
+broad_axiom_indented          = 154
+broad_admit_word_boundary     = 15
+broad_total_proof_gaps        = 209  # 154 indented + 40 strict + 15 admit
+
+# T-100 grep numbers (reconciled, do not match either Stage A view exactly):
+t100_grep_axiom_anywhere      = 130  # ^\s*Axiom\b
+t100_grep_parameter_anywhere  = 64   # ^\s*Parameter\b
+t100_grep_admit_lowercase     = 3    # \badmit\b -- lower than Stage A strict 5
+# Reconciliation: Stage A grep was more inclusive on admit (case-insensitive
+# word match); T-100 used strict lowercase. Use Stage A numbers for tracking.
 
 # ----------------------------------------------------------------------------
 # Supply chain
@@ -113,15 +142,19 @@ rustsec_ignored_ids = [
 
 # ----------------------------------------------------------------------------
 # Build cache (.cache/)
+# Reconciled with Stage A 02-cache-sizes.txt: .cache=215G, target=21G,
+# total ~236G. The "1.7TB balloon" framing in older memory is a
+# historical/worst-case artifact, not current state.
 # ----------------------------------------------------------------------------
 [cache]
 total_size_human    = "215G"
 gate_target_size    = "200G"
 gate_cbuild_size    = "8.4G"
 cargo_home_size     = "2.6G"
-target_size         = "1.7G"
+target_size         = "1.7G"  # repo-root target/, distinct from .cache/target/
 sparse_cargo_home   = "818M"
 cargo_default_target = "71M"
+ambient_target_size = "21G"   # Stage A: target/ ambient editor/LSP usage
 
 # ----------------------------------------------------------------------------
 # Data layer
@@ -179,6 +212,41 @@ pre_push_hook_chain = [
 ]
 # T-102: 10 stale plan TOMLs moved to plans/archive/ (plan estimated 7).
 archived_plans_count = 10
+
+# ----------------------------------------------------------------------------
+# Stage A audit cross-reference
+# A prior agent (~17:08-17:26 on 2026-04-30) ran a comprehensive Stage A
+# audit producing data/output/audit/2026-04-30/. That audit:
+#   - verified workspace member count = 72 (plan said 41)
+#   - verified machete unused deps = 0 (plan said 13)
+#   - reconciled cache size to 215G (plan referenced 1.7TB historical)
+#   - filed 4 anomaly tickets (Q1-Q4) parallel to T-105
+#   - produced a memory-delta report (M1-M6+) of stale MEMORY entries
+# Stage A artifacts: .txt and .json files trackable; .md summaries are
+# gitignored per the repo's *.md deny + allowlist policy.
+# ----------------------------------------------------------------------------
+[stage_a_audit]
+artifact_dir              = "data/output/audit/2026-04-30/"
+captured_at               = "2026-04-30T17:08-17:26"
+key_artifacts = [
+  "00-preflight.txt",
+  "01-machete.txt",
+  "01-workspace-summary.md",
+  "02-cache-sizes.txt",
+  "05-summary.txt",
+  "05-admits-axioms-broad.txt",
+  "10-anomaly-tickets.md",
+  "09-memory-delta.md",
+  "19-vf-acronym-grep.txt",
+  "SUMMARY.md",
+  "MANIFEST.md",
+]
+relationship_to_t100 = """
+T-100 baseline numbers reconciled where Stage A is authoritative.
+Where T-100 grep heuristics differ from Stage A measurements, the
+T-100 numbers are kept under t100_* prefixes for audit-trail purposes
+and the Stage A numbers are treated as canonical.
+"""
 
 # ----------------------------------------------------------------------------
 # End of baseline.

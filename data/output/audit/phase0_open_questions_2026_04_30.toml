@@ -106,16 +106,33 @@ area = "documentation"
 plan_task = "T-192"
 title = "Dark Halo Hunt FALSIFIED with VF=0 -- define VF"
 context = """
-S68 falsifies Dark Halo Hunt with reported VF=0. The acronym VF is not
-defined in registry, MEMORY, or visible code comments. Likely candidates:
-'violation factor', 'variance fraction', 'visual fraction', 'vacancy
-fraction'. A glossary entry must record the canonical definition.
+S68 falsifies Dark Halo Hunt with reported VF=0. Stage A audit
+(data/output/audit/2026-04-30/19-vf-acronym-grep.txt) found code-side
+evidence that pins down the meaning:
+
+  crates/gororoba_cli_physics/src/bin/generate_topological_voids.rs:
+    - "//! required to match the CDG-2 astrophysical observations
+       (VF=0.0)."
+    - eprintln!("  Baryon VF (Remaining): {:.6}", 1.0 - vf);
+    - "[SUCCESS] Matches CDG-2 astrophysical observation (VF < 0.0006)"
+
+  crates/gororoba_cli_physics/src/bin/dark_halo_hunt.rs:
+    - eprintln!("    GPU VF={vf:.6}");
+    - eprintln!("    [DRY RUN] estimated VF={:.4}", vf,);
+
+The "Baryon VF (Remaining)" label and the (1.0 - vf) framing strongly
+imply VF = (Baryon) Volume Fraction -- the fraction of grid cells
+occupied by the baryon/halo phase, with VF=0 meaning the void model
+matches the CDG-2 observation that essentially no baryons reside in
+the void interior.
+
+User confirmation pins the canonical phrasing for docs/glossary.md.
 """
+preliminary_answer = "Volume Fraction (specifically Baryon Volume Fraction in dark-halo / topological-void context)"
 options = [
-  "VF = violation factor",
-  "VF = variance fraction",
-  "VF = visual fraction",
-  "VF = something else (specify)",
+  "VF = Volume Fraction (Baryon Volume Fraction in halo/void context)",
+  "VF = something more specific (specify)",
+  "VF = none of the above; record alternative",
 ]
 blocking = false  # T-192 deliverable is docs/glossary.md
 
