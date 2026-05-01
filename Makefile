@@ -185,7 +185,7 @@ fmt-check:
 # gate-fast: Tier 1 only (<10s). Use for pre-push and rapid feedback.
 # gate-deep: Tier 1 + Tier 2 (minutes). Use for CI and thorough audits.
 
-.PHONY: gate-fast gate-warm gate-deep audit-deep typos machete audit geiger
+.PHONY: gate-fast gate-warm gate-deep audit-deep typos machete audit geiger supply-chain-gate
 
 # Tier 1 targets (no cargo lock contention, run in parallel)
 typos:
@@ -201,6 +201,26 @@ geiger:
 	@echo "[geiger] Checking unsafe code in core crates..."
 	cd crates/gororoba_algebra && cargo geiger 2>&1 | tail -5
 	cd crates/provenance_store && cargo geiger 2>&1 | tail -5
+
+# supply-chain-gate (T-118): aggregated check chaining cargo-deny + machete +
+# a register_custom_getrandom non-existence grep (keeps RUSTSEC-2026-0097
+# exposure provably zero per docs/adr/rustsec-dispositions.md).
+# Runs deterministically; safe in pre-push-gate-strict.
+supply-chain-gate:
+	@echo "=== supply-chain-gate ==="
+	@fail=0; \
+	echo "[supply-chain] cargo deny --workspace check ..."; \
+	cargo deny --workspace check 2>&1 | tail -2 | grep -E 'ok|advisories ok, bans ok' || { echo "FAIL: cargo deny check"; fail=1; }; \
+	echo "[supply-chain] cargo machete ..."; \
+	cargo machete > /dev/null 2>&1 || { echo "FAIL: cargo machete (unused deps)"; fail=1; }; \
+	echo "[supply-chain] register_custom_getrandom non-existence grep ..."; \
+	if grep -rn 'register_custom_getrandom' crates/ --include='*.rs' >/dev/null 2>&1; then \
+		echo "FAIL: register_custom_getrandom callers found -- RUSTSEC-2026-0097 exposure now nonzero"; \
+		grep -rn 'register_custom_getrandom' crates/ --include='*.rs'; \
+		fail=1; \
+	fi; \
+	if [ "$$fail" -ne 0 ]; then echo "=== supply-chain-gate: FAILED ==="; exit 1; fi
+	@echo "=== supply-chain-gate: PASSED ==="
 
 # gate-fast: parallel Tier 1 checks (no cargo compilation required).
 # Runs dprint, typos, and machete concurrently. ~5s on warm cache.
