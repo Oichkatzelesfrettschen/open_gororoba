@@ -1,0 +1,124 @@
+# Debt baseline v1: anchored re-validation of v0 (2026-04-30) heuristics.
+#
+# WHY: Stage A v0 used grep heuristics that produced false positives. This
+# v1 baseline uses an anchored regex pass (with Rust comment/string literal
+# stripping) implemented in crates/gororoba_cli_data/src/bin/repo_audit.rs.
+# The most dramatic delta is the TODO/FIXME/XXX/HACK count, where v0
+# matched the words in PROSE (docstrings, paper text, doc comments)
+# instead of code-comment context (// TODO:, /* FIXME: */).
+#
+# Re-run procedure:
+#   cargo run --release -p gororoba_cli_data --bin repo-audit -- \
+#       --output-dir data/output/audit/<date>/
+#
+# Source artifact: data/output/audit/2026-05-09/repo_audit_anchored_2026_05_09.toml
+
+[meta]
+generated_at = "2026-05-09"
+generated_by = "Phase-A.2"
+git_commit_at_generation = "149f29b4"  # tip prior to this commit
+git_branch = "main"
+plan_reference = "plans/elucidate-and-build-out-nested-hollerith.md"
+schema_version = 2
+supersedes = "data/output/debt_baseline_2026_04_30.toml"
+
+# ----------------------------------------------------------------------------
+# Anchored counts from crates/ (Rust workspace) only.
+# Rust counts are derived from comment-stripped + string-stripped source.
+# ----------------------------------------------------------------------------
+[code_quality_anchored.crates]
+rust_files                          = 2131
+unsafe_blocks                       = 392
+safety_comments                     = 65
+ignore_attrs                        = 109
+allow_clippy_attrs                  = 143
+allow_dead_code_attrs               = 64
+todo_fixme_xxx_hack                 = 3       # was 142 in v0 (47x overcount)
+unimplemented_macro_calls           = 0
+todo_macro_calls                    = 0
+unreachable_macro_calls             = 41
+
+# ----------------------------------------------------------------------------
+# Anchored counts from proofs/ tree.
+# Note: proofs/ also contains 130 Rust files (test harnesses + verifiers)
+# with 3420 unsafe blocks. These are SEPARATE from the crates/ count and
+# should be audited as their own lane (DEBT-UNSAFE-PROOFS).
+# ----------------------------------------------------------------------------
+[code_quality_anchored.proofs]
+rust_files                          = 130    # test harness + verifier scaffolding
+coq_files                           = 279
+unsafe_blocks                       = 3420   # in proofs/ Rust scaffolding only
+allow_clippy_attrs                  = 66
+allow_dead_code_attrs               = 102
+
+[formal_verification_anchored]
+v_file_count                        = 279
+admitted_strict_count               = 0     # was 5 in v0 (FALSE POSITIVE: matched "Zero Admitted." docstring)
+admit_strict_count                  = 0     # was 3 in v0 (also docstring matches)
+axiom_top_level_count               = 32    # was 40 in v0 (-8, line-end constraints differ)
+axiom_indented_count                = 100   # was 154 in v0 (-54, broad-grep included strings/comments)
+axiom_total                         = 132   # was 194 in v0
+parameter_top_level_count           = 8
+parameter_indented_count            = 56
+parameter_total                     = 64    # matches v0 (64)
+proof_gap_total                     = 196   # was 209 in v0; 132 axioms + 64 parameters
+
+# ----------------------------------------------------------------------------
+# Per-task scope adjustments based on anchored re-validation.
+# ----------------------------------------------------------------------------
+[task_scope_adjustments]
+
+[task_scope_adjustments.DEBT-PROOF-1]
+v0_estimate    = "5 strict admits to close"
+v1_actual      = "0 strict admits"
+status_change  = "RESOLVED -- false positive cleared independently 3 ways"
+
+[task_scope_adjustments.DEBT-PROOF-2]
+v0_estimate    = "130 indented Axioms + 64 Parameters = 194 proof gaps"
+v1_actual      = "100 indented Axioms + 32 top-level + 8 strict + 56 indented Parameters = 196 proof gaps"
+status_change  = "scope marginally adjusted; total roughly equivalent"
+
+[task_scope_adjustments.DEBT-UNSAFE-1]
+v0_estimate    = "442 unsafe blocks across 54 files; 16.5% SAFETY coverage"
+v1_actual      = "392 in crates/ + 3420 in proofs/; 65 SAFETY comments in crates/"
+status_change  = "split into two lanes -- DEBT-UNSAFE-CRATES and DEBT-UNSAFE-PROOFS-SCAFFOLDING"
+
+[task_scope_adjustments.DEBT-TEST-1]
+v0_estimate    = "117 #[ignore] tests"
+v1_actual      = "109 #[ignore] in crates/ + 0 in proofs/"
+status_change  = "scope reduced by 8 (less drift)"
+
+[task_scope_adjustments.DEBT-TEST-2]
+v0_estimate    = "150 allow(clippy::*) annotations"
+v1_actual      = "143 in crates/ + 66 in proofs/ = 209 total"
+status_change  = "scope grew when proofs/ test harnesses included; should be split per lane"
+
+[task_scope_adjustments.DEBT-PLACEHOLDER-1]
+v0_estimate    = "142 TODO/FIXME/XXX/HACK"
+v1_actual      = "3 TODO/FIXME/XXX/HACK in code-comment context"
+status_change  = "DRAMATIC scope reduction: 47x. Action plan now: read each of the 3, dispose individually. ETA 5-15 min total."
+
+[task_scope_adjustments.DEBT-PLACEHOLDER-2]
+v0_estimate    = "43 unimplemented!/todo!/unreachable! macros"
+v1_actual      = "0 unimplemented! + 0 todo! + 41 unreachable! macros"
+status_change  = "unreachable! is the dominant term. Each is an exhaustiveness pin not a proof gap. Consider re-audit lane."
+
+# ----------------------------------------------------------------------------
+# Methodology notes
+# ----------------------------------------------------------------------------
+[methodology]
+audit_binary       = "crates/gororoba_cli_data/src/bin/repo_audit.rs"
+strip_pass         = "Rust block comments, line comments, and \"...\" / '...' literals are replaced with whitespace before regex matching."
+limitations        = """
+v1 limitations vs an ideal AST-aware audit:
+- Raw string literals r#\"...\"# are NOT specially handled; the strip pass treats r as identifier and may leave content intact. Negligible impact on observed counts.
+- Macro-generated code is counted in source files; if a macro emits unsafe blocks they will count multiple times once expanded. v1 is correct for un-expanded source.
+- The strip pass does not parse cfg-gated code; counts include #[cfg(...)] gated unsafe blocks even if they would never compile on the current platform.
+"""
+recommended_v2     = """
+A v2 audit using `syn 2.x` would produce strictly more accurate counts for:
+- unsafe blocks (per-function, per-impl, per-module)
+- attribute placement (which item carries the #[ignore] or #[allow(clippy)])
+- macro invocations (distinguishing definitions from call sites)
+v2 is tracked in plans/ as a future refinement; v1 is sufficient for replacing v0 baseline.
+"""

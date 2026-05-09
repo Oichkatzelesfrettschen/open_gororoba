@@ -6,6 +6,12 @@ description = "Data, registry, and governance CLI binaries for gororoba"
 license = "MIT"
 autobins = false
 
+# ---- Audit (anchored debt-baseline counter) ----
+
+[[bin]]
+name = "repo-audit"
+path = "src/bin/repo_audit.rs"
+
 # ---- Claims (3) ----
 
 [[bin]]
