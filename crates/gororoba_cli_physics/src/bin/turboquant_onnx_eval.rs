@@ -203,8 +203,9 @@ fn main() -> Result<()> {
         println!("  Mode: synthetic (no ONNX model)");
         ("synthetic".to_string(), synthetic_eval(&cli))
     } else {
-        // TODO: re-add ort dep (ort = { workspace = true, optional = true } + onnx-eval feature)
-        // and wire real ONNX inference when the ML inference path is implemented.
+        // Deferred: re-add the ort dep (ort = { workspace = true, optional = true })
+        // behind an `onnx-eval` feature and wire real ONNX inference. CPU/synthetic
+        // fallback is intentional pending that work; see plans/repo_debt_roadmap_2026_04_11.toml.
         println!("  ONNX inference not yet wired. Running synthetic evaluation.");
         ("synthetic-no-onnx".to_string(), synthetic_eval(&cli))
     };
