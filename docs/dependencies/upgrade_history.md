@@ -65,6 +65,37 @@ Entries are most-recent-first.
     `lbm_vulkan`.
 - Reviewer: @eirikr (Stage B B-G4).
 
+## 2026-05-09 -- rand 0.8.5 -> 0.8.6, 0.9.2 -> 0.9.3, 0.10.0 -> 0.10.1
+
+- Crate: `rand` (three versions in dep graph)
+- From: `0.8.5`, `0.9.2`, `0.10.0`
+- To:   `0.8.6`, `0.9.3`, `0.10.1`
+- Advisory ID: RUSTSEC-2026-0097 (informational unsound)
+- Trigger: `cargo audit --json` 2026-05-09.
+- Exposure analysis:
+  - Unsoundness manifests only when ALL of these hold:
+    1. The `log` and `thread_rng` features are enabled.
+    2. A custom `log::Logger` is registered.
+    3. The custom logger calls `rand::rng()` (or `thread_rng()`) and any
+       `TryRng`/`RngCore` method.
+    4. `ThreadRng` reseeds while inside the logger callback (every 64 KiB).
+    5. Either trace-level logging is on, or warn-level + `getrandom`
+       cannot supply a fresh seed.
+  - This pipeline does not register a custom `log::Logger` that calls into
+    `rand`; the default `env_logger` and the logging in CLI binaries
+    consult `rand` only outside the logger callback. Real exploitability
+    is zero in our usage. The upgrade is still cheap and patched
+    versions are SemVer-compatible.
+- Verification:
+  - `cargo update -p 'rand@0.10.0' --precise 0.10.1` (and equivalents
+    for 0.9.2 and 0.8.5) updated each occurrence in Cargo.lock.
+  - `cargo audit` warning count went from 6 to 5 (the rand entry is
+    gone; remaining 5 are bincode 1.x/2.x, instant 0.1, json 0.12,
+    paste 1.0, all `unmaintained` not `unsound`).
+  - `cargo build --workspace` to be re-verified after the multi-version
+    bump (rand has minor API surface changes between 0.9 -> 0.10).
+- Reviewer: @eirikr (security-driven, beyond Stage B scope).
+
 ---
 
 ## How to add a new entry
