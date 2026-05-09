@@ -195,7 +195,7 @@ fn parse_mission_names(html: &str) -> BTreeSet<String> {
 fn normalize(s: &str) -> String {
     // Replace hyphens and dots with underscores, then collapse
     // consecutive underscores so "dss__gsc" normalizes to "dss_gsc".
-    let mut out = s.replace('-', "_").replace('.', "_");
+    let mut out = s.replace(['-', '.'], "_");
     while out.contains("__") {
         out = out.replace("__", "_");
     }

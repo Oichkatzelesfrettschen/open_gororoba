@@ -79,6 +79,10 @@ struct DatasetRow {
     local_path: String,
 }
 
+/// Per-directory hash result: `(sha256_hex, file_count, total_bytes)`.
+type HashOutcome = Result<(String, u64, u64), String>;
+type DatasetHashResult = (DatasetRow, HashOutcome);
+
 fn main() -> ExitCode {
     let args = Args::parse();
 
@@ -135,7 +139,7 @@ fn main() -> ExitCode {
     eprintln!("[hash-sweep] hashing {} datasets", to_hash.len());
     let t0 = Instant::now();
 
-    let results: Vec<(DatasetRow, Result<(String, u64, u64), String>)> = to_hash
+    let results: Vec<DatasetHashResult> = to_hash
         .into_par_iter()
         .map(|row| {
             let dir = Path::new(&row.local_path);
@@ -286,16 +290,16 @@ fn rewrite_in_place(
                 .next()
                 .map(String::from);
         }
-        if let Some(id) = &current_id {
-            if let Some((sha, bytes)) = updates.get(id) {
-                if trimmed.starts_with("sha256 = ") {
-                    out.push_str(&format!("sha256 = \"{sha}\"\n"));
-                    continue;
-                }
-                if trimmed.starts_with("bytes = ") {
-                    out.push_str(&format!("bytes = {bytes}\n"));
-                    continue;
-                }
+        if let Some(id) = &current_id
+            && let Some((sha, bytes)) = updates.get(id)
+        {
+            if trimmed.starts_with("sha256 = ") {
+                out.push_str(&format!("sha256 = \"{sha}\"\n"));
+                continue;
+            }
+            if trimmed.starts_with("bytes = ") {
+                out.push_str(&format!("bytes = {bytes}\n"));
+                continue;
             }
         }
         out.push_str(line);

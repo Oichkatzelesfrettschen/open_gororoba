@@ -208,10 +208,8 @@ fn parse_vosi_tableset(xml: &str) -> Result<Vec<Table>, String> {
                             next_text = Some("schema_name");
                         }
                     }
-                    "description" => {
-                        if in_table && !in_column {
-                            next_text = Some("table_desc");
-                        }
+                    "description" if in_table && !in_column => {
+                        next_text = Some("table_desc");
                     }
                     _ => {}
                 }
@@ -262,10 +260,10 @@ fn parse_vosi_tableset(xml: &str) -> Result<Vec<Table>, String> {
                 match tag.as_str() {
                     "table" if in_table => {
                         in_table = false;
-                        if let Some(t) = current_table.take() {
-                            if !t.name.is_empty() {
-                                tables.push(t);
-                            }
+                        if let Some(t) = current_table.take()
+                            && !t.name.is_empty()
+                        {
+                            tables.push(t);
                         }
                     }
                     "column" if in_column => {
