@@ -169,10 +169,10 @@ fn load_lotss_vo_datasets(path: &Path) -> Result<Vec<String>, String> {
             .get("server_ref")
             .and_then(|v| v.as_str())
             .unwrap_or("");
-        if server == "lotss_vo" {
-            if let Some(id) = r.get("id").and_then(|v| v.as_str()) {
-                out.push(id.to_string());
-            }
+        if server == "lotss_vo"
+            && let Some(id) = r.get("id").and_then(|v| v.as_str())
+        {
+            out.push(id.to_string());
         }
     }
     Ok(out)
@@ -210,7 +210,7 @@ fn write_manifest(
         "lotss_vo_dataset_refs = {}\n",
         format_array_of_strings(cross_refs)
     ));
-    out.push_str("\n");
+    out.push('\n');
 
     for t in tiles {
         out.push_str("[[tile]]\n");
@@ -219,7 +219,7 @@ fn write_manifest(
         out.push_str(&format!("dec = {:.6}\n", t.dec));
         out.push_str(&format!("radius = {:.6}\n", t.radius));
         out.push_str(&format!("source = \"{}\"\n", t.source));
-        out.push_str("\n");
+        out.push('\n');
     }
 
     let mut f = File::create(path).map_err(|e| e.to_string())?;

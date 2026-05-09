@@ -119,10 +119,9 @@ fn main() -> ExitCode {
             .unwrap_or("");
         match server {
             "" => errors.push(format!("[NDLB-A] {id}: empty server_ref")),
-            "(synthetic)" | "(unknown)" => {
-                if server == "(unknown)" {
-                    warns.push(format!("[NDLB-A] {id}: server_ref is (unknown); triage."));
-                }
+            "(synthetic)" => {}
+            "(unknown)" => {
+                warns.push(format!("[NDLB-A] {id}: server_ref is (unknown); triage."));
             }
             s if !server_ids.contains(s) => errors.push(format!(
                 "[NDLB-A] {id}: server_ref '{s}' not found in data_servers.toml"
