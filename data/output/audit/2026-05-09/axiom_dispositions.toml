@@ -1,0 +1,1771 @@
+# Axiom + Parameter disposition manifest for proofs/theories/.
+#
+# Generated 2026-05-09 from the anchored repo-audit count of 132 axioms +
+# 64 parameters across 28+ Rocq files. Each entry records the file:line
+# location, the kind (axiom or parameter), the declaration name, the
+# enclosing module (.v basename), and a classification slot for human
+# curation.
+#
+# CLASSIFICATION TAXONOMY:
+#
+#   module_signature_parameter
+#     A Parameter declared inside a Module Type that defines an abstract
+#     algebraic carrier or operation. Example: `Parameter carrier : Type.`
+#     Not technical debt -- this is how Rocq expresses universal algebraic
+#     properties.
+#
+#   module_signature_axiom
+#     An Axiom declared inside a Module Type that constrains the abstract
+#     algebra. Example: `Axiom mul_scale_left : forall r a b, ...`
+#     Not technical debt -- it is the law side of the Module Type interface.
+#
+#   external_theorem_axiomatized
+#     A known theorem from published mathematical literature, axiomatized
+#     rather than re-proved (because the proof would require multi-thousand
+#     line library development). Should carry a citation in the rationale.
+#     Example: Hurwitz's theorem on real division algebras.
+#
+#   numerical_real_analysis
+#     An axiom about real-number arithmetic, IEEE-754 floats, or special
+#     functions that is not provable in the current Coq/Rocq standard
+#     library. Example: FloatAxioms entries.
+#
+#   physics_specification
+#     A specification axiom describing the behavior of a physical or
+#     mathematical model that the proof script consumes as a postulate.
+#     Example: `Axiom chern_integral_linear : ...` in TightBindingTopology.
+#     May warrant promotion to proof-debt if the relation could be derived
+#     from more primitive axioms; review case by case.
+#
+#   proof_debt
+#     An axiom that COULD be proved with the current library but has not
+#     been. This is real proof debt.
+#
+#   unclassified
+#     Default. Needs human review.
+#
+# REGENERATION:
+#   See data/output/audit/2026-05-09/repo_audit_anchored_2026_05_09.toml
+#   for the count totals; the per-entry tuples below are produced by:
+#     grep -rEn "^[[:space:]]*Axiom[[:space:]]+[A-Za-z_][A-Za-z0-9_]*|^[[:space:]]*Parameter[[:space:]]+[A-Za-z_][A-Za-z0-9_]*" proofs/theories/
+#   then awk-shaped into TOML.
+
+[meta]
+generated_at = "2026-05-09"
+generated_by = "DEBT-PROOF-2 Phase A axiom census"
+total_entries = 190
+total_axioms = 132
+total_parameters = 58
+schema_version = 1
+classification_completion_pct = 0.0  # increase as entries are reviewed
+
+[[axiom_disposition]]
+file = "proofs/theories/CDDoubleFunctor.v"
+line = 19
+kind = "parameter"
+name = "carrier"
+module = "CDDoubleFunctor"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDDoubleFunctor.v"
+line = 21
+kind = "parameter"
+name = "cd_mul"
+module = "CDDoubleFunctor"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDDoubleFunctor.v"
+line = 22
+kind = "parameter"
+name = "cd_add"
+module = "CDDoubleFunctor"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDDoubleFunctor.v"
+line = 23
+kind = "parameter"
+name = "cd_neg"
+module = "CDDoubleFunctor"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDDoubleFunctor.v"
+line = 24
+kind = "parameter"
+name = "cd_sub"
+module = "CDDoubleFunctor"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDDoubleFunctor.v"
+line = 25
+kind = "parameter"
+name = "cd_conj"
+module = "CDDoubleFunctor"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDDoubleFunctor.v"
+line = 26
+kind = "parameter"
+name = "cd_scale"
+module = "CDDoubleFunctor"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDDoubleFunctor.v"
+line = 27
+kind = "parameter"
+name = "cd_zero"
+module = "CDDoubleFunctor"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDDoubleFunctor.v"
+line = 29
+kind = "axiom"
+name = "mul_scale_left"
+module = "CDDoubleFunctor"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDDoubleFunctor.v"
+line = 31
+kind = "axiom"
+name = "mul_scale_right"
+module = "CDDoubleFunctor"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDDoubleFunctor.v"
+line = 33
+kind = "axiom"
+name = "conj_scale"
+module = "CDDoubleFunctor"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDDoubleFunctor.v"
+line = 35
+kind = "axiom"
+name = "neg_scale"
+module = "CDDoubleFunctor"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDDoubleFunctor.v"
+line = 37
+kind = "axiom"
+name = "scale_add"
+module = "CDDoubleFunctor"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDDoubleFunctor.v"
+line = 39
+kind = "axiom"
+name = "scale_sub"
+module = "CDDoubleFunctor"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDDoubleFunctor.v"
+line = 41
+kind = "axiom"
+name = "sub_def"
+module = "CDDoubleFunctor"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/TightBindingTopology.v"
+line = 41
+kind = "parameter"
+name = "chern_integral"
+module = "TightBindingTopology"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/TightBindingTopology.v"
+line = 44
+kind = "axiom"
+name = "chern_integral_linear"
+module = "TightBindingTopology"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/TightBindingTopology.v"
+line = 51
+kind = "parameter"
+name = "valley_integral_K"
+module = "TightBindingTopology"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/TightBindingTopology.v"
+line = 52
+kind = "parameter"
+name = "valley_integral_Kp"
+module = "TightBindingTopology"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/TightBindingTopology.v"
+line = 54
+kind = "axiom"
+name = "chern_splits_into_valleys"
+module = "TightBindingTopology"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/TightBindingTopology.v"
+line = 59
+kind = "axiom"
+name = "trs_swaps_valleys"
+module = "TightBindingTopology"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/TightBindingTopology.v"
+line = 72
+kind = "parameter"
+name = "bandwidth"
+module = "TightBindingTopology"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/TightBindingTopology.v"
+line = 81
+kind = "parameter"
+name = "max_group_velocity"
+module = "TightBindingTopology"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/TightBindingTopology.v"
+line = 83
+kind = "axiom"
+name = "group_velocity_bandwidth_bound"
+module = "TightBindingTopology"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/C1539_MorSkewSymm.v"
+line = 29
+kind = "parameter"
+name = "A"
+module = "C1539_MorSkewSymm"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/C1539_MorSkewSymm.v"
+line = 30
+kind = "parameter"
+name = "mul"
+module = "C1539_MorSkewSymm"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/C1539_MorSkewSymm.v"
+line = 31
+kind = "parameter"
+name = "conj"
+module = "C1539_MorSkewSymm"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/C1539_MorSkewSymm.v"
+line = 32
+kind = "parameter"
+name = "neg"
+module = "C1539_MorSkewSymm"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/C1539_MorSkewSymm.v"
+line = 33
+kind = "parameter"
+name = "inner"
+module = "C1539_MorSkewSymm"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/C1539_MorSkewSymm.v"
+line = 34
+kind = "parameter"
+name = "zero"
+module = "C1539_MorSkewSymm"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/C1539_MorSkewSymm.v"
+line = 37
+kind = "axiom"
+name = "inner_adj_left"
+module = "C1539_MorSkewSymm"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/C1539_MorSkewSymm.v"
+line = 41
+kind = "axiom"
+name = "inner_adj_right"
+module = "C1539_MorSkewSymm"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/C1539_MorSkewSymm.v"
+line = 45
+kind = "axiom"
+name = "inner_symm"
+module = "C1539_MorSkewSymm"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/C1539_MorSkewSymm.v"
+line = 48
+kind = "axiom"
+name = "inner_neg_left"
+module = "C1539_MorSkewSymm"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/C1539_MorSkewSymm.v"
+line = 49
+kind = "axiom"
+name = "inner_neg_right"
+module = "C1539_MorSkewSymm"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/C1539_MorSkewSymm.v"
+line = 52
+kind = "axiom"
+name = "inner_zero_left"
+module = "C1539_MorSkewSymm"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/C1539_MorSkewSymm.v"
+line = 55
+kind = "axiom"
+name = "neg_mul_left"
+module = "C1539_MorSkewSymm"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/C1539_MorSkewSymm.v"
+line = 56
+kind = "axiom"
+name = "neg_mul_right"
+module = "C1539_MorSkewSymm"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/C1539_MorSkewSymm.v"
+line = 59
+kind = "axiom"
+name = "neg_zero"
+module = "C1539_MorSkewSymm"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/C1539_MorSkewSymm.v"
+line = 62
+kind = "axiom"
+name = "inner_nondeg"
+module = "C1539_MorSkewSymm"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/C1539_MorSkewSymm.v"
+line = 283
+kind = "axiom"
+name = "im_lx_eq_im_rx"
+module = "C1539_MorSkewSymm"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/C1539_MorSkewSymm.v"
+line = 290
+kind = "axiom"
+name = "im_rx_eq_im_lx"
+module = "C1539_MorSkewSymm"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/Brown1972ChapterIII.v"
+line = 117
+kind = "parameter"
+name = "A"
+module = "Brown1972ChapterIII"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/Brown1972ChapterIII.v"
+line = 118
+kind = "parameter"
+name = "add"
+module = "Brown1972ChapterIII"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/Brown1972ChapterIII.v"
+line = 119
+kind = "parameter"
+name = "sub"
+module = "Brown1972ChapterIII"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/Brown1972ChapterIII.v"
+line = 120
+kind = "parameter"
+name = "mul"
+module = "Brown1972ChapterIII"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/Brown1972ChapterIII.v"
+line = 121
+kind = "parameter"
+name = "conj"
+module = "Brown1972ChapterIII"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/Brown1972ChapterIII.v"
+line = 122
+kind = "parameter"
+name = "norm_sq"
+module = "Brown1972ChapterIII"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/Brown1972ChapterIII.v"
+line = 124
+kind = "axiom"
+name = "brown_norm_conj_preserved"
+module = "Brown1972ChapterIII"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/Brown1972ChapterIII.v"
+line = 126
+kind = "axiom"
+name = "brown_norm_mul"
+module = "Brown1972ChapterIII"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/Brown1972ChapterIII.v"
+line = 128
+kind = "axiom"
+name = "brown_polarization_identity"
+module = "Brown1972ChapterIII"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/C1543_MorMod4Bound.v"
+line = 79
+kind = "axiom"
+name = "ker_l_a_has_h_module_dim"
+module = "C1543_MorMod4Bound"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/HModuleDim.v"
+line = 163
+kind = "parameter"
+name = "V"
+module = "HModuleDim"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/HModuleDim.v"
+line = 164
+kind = "parameter"
+name = "v_add"
+module = "HModuleDim"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/HModuleDim.v"
+line = 165
+kind = "parameter"
+name = "v_scale"
+module = "HModuleDim"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/HModuleDim.v"
+line = 166
+kind = "parameter"
+name = "v_inner"
+module = "HModuleDim"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/HModuleDim.v"
+line = 167
+kind = "parameter"
+name = "v_zero"
+module = "HModuleDim"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/HModuleDim.v"
+line = 168
+kind = "parameter"
+name = "v_dim"
+module = "HModuleDim"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/HModuleDim.v"
+line = 171
+kind = "parameter"
+name = "act"
+module = "HModuleDim"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/HModuleDim.v"
+line = 174
+kind = "axiom"
+name = "v_inner_symm"
+module = "HModuleDim"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/HModuleDim.v"
+line = 175
+kind = "axiom"
+name = "v_inner_pos"
+module = "HModuleDim"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/HModuleDim.v"
+line = 176
+kind = "axiom"
+name = "v_inner_zero"
+module = "HModuleDim"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/HModuleDim.v"
+line = 181
+kind = "axiom"
+name = "act_inner"
+module = "HModuleDim"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/HModuleDim.v"
+line = 185
+kind = "axiom"
+name = "act_free"
+module = "HModuleDim"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/HModuleDim.v"
+line = 189
+kind = "axiom"
+name = "act_assoc"
+module = "HModuleDim"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/HModuleDim.v"
+line = 193
+kind = "axiom"
+name = "act_one"
+module = "HModuleDim"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/HModuleDim.v"
+line = 204
+kind = "axiom"
+name = "act_preserves_perp"
+module = "HModuleDim"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/HModuleDim.v"
+line = 214
+kind = "axiom"
+name = "v_dim_is_h_module_dim"
+module = "HModuleDim"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CarlsonIntegrals.v"
+line = 26
+kind = "axiom"
+name = "RF"
+module = "CarlsonIntegrals"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CarlsonIntegrals.v"
+line = 27
+kind = "axiom"
+name = "RF_symmetric_12"
+module = "CarlsonIntegrals"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CarlsonIntegrals.v"
+line = 28
+kind = "axiom"
+name = "RF_symmetric_13"
+module = "CarlsonIntegrals"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CarlsonIntegrals.v"
+line = 29
+kind = "axiom"
+name = "RF_symmetric_23"
+module = "CarlsonIntegrals"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CarlsonIntegrals.v"
+line = 32
+kind = "axiom"
+name = "RF_positive"
+module = "CarlsonIntegrals"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CarlsonIntegrals.v"
+line = 36
+kind = "axiom"
+name = "RF_equal_args"
+module = "CarlsonIntegrals"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CarlsonIntegrals.v"
+line = 40
+kind = "axiom"
+name = "RJ"
+module = "CarlsonIntegrals"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CarlsonIntegrals.v"
+line = 43
+kind = "axiom"
+name = "RJ_symmetric_12"
+module = "CarlsonIntegrals"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CarlsonIntegrals.v"
+line = 44
+kind = "axiom"
+name = "RJ_symmetric_13"
+module = "CarlsonIntegrals"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CarlsonIntegrals.v"
+line = 45
+kind = "axiom"
+name = "RJ_symmetric_23"
+module = "CarlsonIntegrals"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDTraceZero.v"
+line = 60
+kind = "parameter"
+name = "A"
+module = "CDTraceZero"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDTraceZero.v"
+line = 61
+kind = "parameter"
+name = "mul"
+module = "CDTraceZero"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDTraceZero.v"
+line = 62
+kind = "parameter"
+name = "conj"
+module = "CDTraceZero"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDTraceZero.v"
+line = 63
+kind = "parameter"
+name = "neg"
+module = "CDTraceZero"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDTraceZero.v"
+line = 64
+kind = "parameter"
+name = "add"
+module = "CDTraceZero"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDTraceZero.v"
+line = 65
+kind = "parameter"
+name = "scale"
+module = "CDTraceZero"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDTraceZero.v"
+line = 66
+kind = "parameter"
+name = "inner"
+module = "CDTraceZero"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDTraceZero.v"
+line = 67
+kind = "parameter"
+name = "norm_sq"
+module = "CDTraceZero"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDTraceZero.v"
+line = 68
+kind = "parameter"
+name = "zero"
+module = "CDTraceZero"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDTraceZero.v"
+line = 69
+kind = "parameter"
+name = "one"
+module = "CDTraceZero"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDTraceZero.v"
+line = 72
+kind = "axiom"
+name = "inner_symm"
+module = "CDTraceZero"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDTraceZero.v"
+line = 73
+kind = "axiom"
+name = "inner_self_norm"
+module = "CDTraceZero"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDTraceZero.v"
+line = 74
+kind = "axiom"
+name = "inner_neg_left"
+module = "CDTraceZero"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDTraceZero.v"
+line = 75
+kind = "axiom"
+name = "inner_neg_right"
+module = "CDTraceZero"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDTraceZero.v"
+line = 76
+kind = "axiom"
+name = "inner_zero_left"
+module = "CDTraceZero"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDTraceZero.v"
+line = 77
+kind = "axiom"
+name = "inner_scale_left"
+module = "CDTraceZero"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDTraceZero.v"
+line = 80
+kind = "axiom"
+name = "inner_nondeg"
+module = "CDTraceZero"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDTraceZero.v"
+line = 81
+kind = "axiom"
+name = "norm_sq_nonneg"
+module = "CDTraceZero"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDTraceZero.v"
+line = 82
+kind = "axiom"
+name = "norm_sq_pos"
+module = "CDTraceZero"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDTraceZero.v"
+line = 85
+kind = "axiom"
+name = "inner_adj_left"
+module = "CDTraceZero"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDTraceZero.v"
+line = 89
+kind = "axiom"
+name = "conj_antimorphism"
+module = "CDTraceZero"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDTraceZero.v"
+line = 93
+kind = "axiom"
+name = "conj_zero"
+module = "CDTraceZero"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDTraceZero.v"
+line = 96
+kind = "axiom"
+name = "neg_zero"
+module = "CDTraceZero"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDTraceZero.v"
+line = 97
+kind = "axiom"
+name = "neg_neg"
+module = "CDTraceZero"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDTraceZero.v"
+line = 98
+kind = "axiom"
+name = "neg_mul_left"
+module = "CDTraceZero"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDTraceZero.v"
+line = 99
+kind = "axiom"
+name = "neg_mul_right"
+module = "CDTraceZero"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDTraceZero.v"
+line = 102
+kind = "axiom"
+name = "mul_scale_right"
+module = "CDTraceZero"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDTraceZero.v"
+line = 103
+kind = "axiom"
+name = "scale_neg"
+module = "CDTraceZero"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDTraceZero.v"
+line = 104
+kind = "axiom"
+name = "scale_scale"
+module = "CDTraceZero"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDTraceZero.v"
+line = 105
+kind = "axiom"
+name = "norm_sq_scale"
+module = "CDTraceZero"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDTraceZero.v"
+line = 108
+kind = "axiom"
+name = "mul_one_right"
+module = "CDTraceZero"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDTraceZero.v"
+line = 111
+kind = "axiom"
+name = "add_comm"
+module = "CDTraceZero"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDTraceZero.v"
+line = 112
+kind = "axiom"
+name = "add_zero_left"
+module = "CDTraceZero"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDTraceZero.v"
+line = 113
+kind = "axiom"
+name = "add_neg_cancel"
+module = "CDTraceZero"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDTraceZero.v"
+line = 114
+kind = "axiom"
+name = "neg_add"
+module = "CDTraceZero"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDTraceZero.v"
+line = 115
+kind = "axiom"
+name = "mul_add_left"
+module = "CDTraceZero"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDTraceZero.v"
+line = 118
+kind = "axiom"
+name = "scale_zero_left"
+module = "CDTraceZero"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDTraceZero.v"
+line = 119
+kind = "axiom"
+name = "scale_neg_r"
+module = "CDTraceZero"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDTraceZero.v"
+line = 123
+kind = "parameter"
+name = "real_part"
+module = "CDTraceZero"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDTraceZero.v"
+line = 124
+kind = "parameter"
+name = "im_part"
+module = "CDTraceZero"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDTraceZero.v"
+line = 126
+kind = "axiom"
+name = "decompose"
+module = "CDTraceZero"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDTraceZero.v"
+line = 129
+kind = "axiom"
+name = "im_part_is_imaginary"
+module = "CDTraceZero"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDTraceZero.v"
+line = 132
+kind = "axiom"
+name = "im_part_perp_one"
+module = "CDTraceZero"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDTraceZero.v"
+line = 135
+kind = "axiom"
+name = "conj_decompose"
+module = "CDTraceZero"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/CDTraceZero.v"
+line = 141
+kind = "axiom"
+name = "imaginary_square"
+module = "CDTraceZero"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/C1538_MorZDSymmetry.v"
+line = 28
+kind = "parameter"
+name = "A"
+module = "C1538_MorZDSymmetry"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/C1538_MorZDSymmetry.v"
+line = 29
+kind = "parameter"
+name = "mul"
+module = "C1538_MorZDSymmetry"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/C1538_MorZDSymmetry.v"
+line = 30
+kind = "parameter"
+name = "conj"
+module = "C1538_MorZDSymmetry"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/C1538_MorZDSymmetry.v"
+line = 31
+kind = "parameter"
+name = "neg"
+module = "C1538_MorZDSymmetry"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/C1538_MorZDSymmetry.v"
+line = 32
+kind = "parameter"
+name = "inner"
+module = "C1538_MorZDSymmetry"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/C1538_MorZDSymmetry.v"
+line = 33
+kind = "parameter"
+name = "zero"
+module = "C1538_MorZDSymmetry"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/C1538_MorZDSymmetry.v"
+line = 36
+kind = "parameter"
+name = "norm_sq"
+module = "C1538_MorZDSymmetry"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/C1538_MorZDSymmetry.v"
+line = 37
+kind = "axiom"
+name = "norm_sq_nonneg"
+module = "C1538_MorZDSymmetry"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/C1538_MorZDSymmetry.v"
+line = 38
+kind = "axiom"
+name = "norm_sq_zero_iff"
+module = "C1538_MorZDSymmetry"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/C1538_MorZDSymmetry.v"
+line = 39
+kind = "axiom"
+name = "inner_self_norm"
+module = "C1538_MorZDSymmetry"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/C1538_MorZDSymmetry.v"
+line = 42
+kind = "axiom"
+name = "inner_adj_left"
+module = "C1538_MorZDSymmetry"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/C1538_MorZDSymmetry.v"
+line = 44
+kind = "axiom"
+name = "inner_adj_right"
+module = "C1538_MorZDSymmetry"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/C1538_MorZDSymmetry.v"
+line = 48
+kind = "axiom"
+name = "inner_symm"
+module = "C1538_MorZDSymmetry"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/C1538_MorZDSymmetry.v"
+line = 49
+kind = "axiom"
+name = "inner_neg_left"
+module = "C1538_MorZDSymmetry"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/C1538_MorZDSymmetry.v"
+line = 50
+kind = "axiom"
+name = "inner_neg_right"
+module = "C1538_MorZDSymmetry"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/C1538_MorZDSymmetry.v"
+line = 51
+kind = "axiom"
+name = "inner_zero_left"
+module = "C1538_MorZDSymmetry"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/C1538_MorZDSymmetry.v"
+line = 54
+kind = "axiom"
+name = "conj_invol"
+module = "C1538_MorZDSymmetry"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/C1538_MorZDSymmetry.v"
+line = 55
+kind = "axiom"
+name = "conj_zero"
+module = "C1538_MorZDSymmetry"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/C1538_MorZDSymmetry.v"
+line = 56
+kind = "axiom"
+name = "neg_zero"
+module = "C1538_MorZDSymmetry"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/C1538_MorZDSymmetry.v"
+line = 57
+kind = "axiom"
+name = "neg_neg"
+module = "C1538_MorZDSymmetry"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/C1538_MorZDSymmetry.v"
+line = 58
+kind = "axiom"
+name = "neg_mul_left"
+module = "C1538_MorZDSymmetry"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/C1538_MorZDSymmetry.v"
+line = 59
+kind = "axiom"
+name = "neg_mul_right"
+module = "C1538_MorZDSymmetry"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/C1538_MorZDSymmetry.v"
+line = 62
+kind = "axiom"
+name = "mul_zero_left"
+module = "C1538_MorZDSymmetry"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/C1538_MorZDSymmetry.v"
+line = 63
+kind = "axiom"
+name = "mul_zero_right"
+module = "C1538_MorZDSymmetry"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/C1538_MorZDSymmetry.v"
+line = 66
+kind = "axiom"
+name = "inner_nondeg"
+module = "C1538_MorZDSymmetry"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/C1538_MorZDSymmetry.v"
+line = 173
+kind = "axiom"
+name = "conj_antimorphism"
+module = "C1538_MorZDSymmetry"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/C1538_MorZDSymmetry.v"
+line = 179
+kind = "axiom"
+name = "zd_trace_zero"
+module = "C1538_MorZDSymmetry"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/SStructuralGaps.v"
+line = 62
+kind = "parameter"
+name = "su3_f"
+module = "SStructuralGaps"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/SStructuralGaps.v"
+line = 73
+kind = "axiom"
+name = "s1_g2_stabilizer_is_su3"
+module = "SStructuralGaps"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/SStructuralGaps.v"
+line = 115
+kind = "parameter"
+name = "abstract_sed_mul_lo"
+module = "SStructuralGaps"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/SStructuralGaps.v"
+line = 116
+kind = "parameter"
+name = "abstract_sed_mul_hi"
+module = "SStructuralGaps"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/SStructuralGaps.v"
+line = 140
+kind = "axiom"
+name = "s2_brown_thm715_abstract"
+module = "SStructuralGaps"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/SStructuralGaps.v"
+line = 152
+kind = "axiom"
+name = "s2_brown_thm714_trace_restriction"
+module = "SStructuralGaps"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/SStructuralGaps.v"
+line = 164
+kind = "axiom"
+name = "s2_brown_lemma717_normalized_zero_divisors"
+module = "SStructuralGaps"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/SStructuralGaps.v"
+line = 294
+kind = "axiom"
+name = "s3_hurwitz_dim_must_be_1248"
+module = "SStructuralGaps"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/SStructuralGaps.v"
+line = 302
+kind = "axiom"
+name = "s3_hurwitz_uniqueness"
+module = "SStructuralGaps"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/SStructuralGaps.v"
+line = 345
+kind = "axiom"
+name = "s4_e8_octonionic_origin"
+module = "SStructuralGaps"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/SStructuralGaps.v"
+line = 354
+kind = "axiom"
+name = "s4_f4_is_aut_j3o"
+module = "SStructuralGaps"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/SStructuralGaps.v"
+line = 390
+kind = "axiom"
+name = "s5_three_generations_from_T"
+module = "SStructuralGaps"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/SStructuralGaps.v"
+line = 416
+kind = "axiom"
+name = "s6_aut_oct_is_g2"
+module = "SStructuralGaps"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/SStructuralGaps.v"
+line = 464
+kind = "axiom"
+name = "s7_clifford_8_periodicity"
+module = "SStructuralGaps"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/SStructuralGaps.v"
+line = 474
+kind = "axiom"
+name = "s7_spinor_rank_is_rho"
+module = "SStructuralGaps"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/FloatAxioms.v"
+line = 19
+kind = "parameter"
+name = "t"
+module = "FloatAxioms"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/FloatAxioms.v"
+line = 20
+kind = "parameter"
+name = "zero"
+module = "FloatAxioms"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/FloatAxioms.v"
+line = 21
+kind = "parameter"
+name = "add"
+module = "FloatAxioms"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/FloatAxioms.v"
+line = 22
+kind = "parameter"
+name = "opp"
+module = "FloatAxioms"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/FloatAxioms.v"
+line = 23
+kind = "parameter"
+name = "div"
+module = "FloatAxioms"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/FloatAxioms.v"
+line = 24
+kind = "parameter"
+name = "sqrt_f"
+module = "FloatAxioms"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/FloatAxioms.v"
+line = 25
+kind = "parameter"
+name = "lt"
+module = "FloatAxioms"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/FloatAxioms.v"
+line = 34
+kind = "axiom"
+name = "add_comm"
+module = "FloatAxioms"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/FloatAxioms.v"
+line = 35
+kind = "axiom"
+name = "add_assoc"
+module = "FloatAxioms"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/FloatAxioms.v"
+line = 36
+kind = "axiom"
+name = "add_zero_l"
+module = "FloatAxioms"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/FloatAxioms.v"
+line = 37
+kind = "axiom"
+name = "add_opp_r"
+module = "FloatAxioms"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/FloatAxioms.v"
+line = 38
+kind = "axiom"
+name = "mul_comm"
+module = "FloatAxioms"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/FloatAxioms.v"
+line = 39
+kind = "axiom"
+name = "mul_assoc"
+module = "FloatAxioms"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/FloatAxioms.v"
+line = 40
+kind = "axiom"
+name = "mul_one_l"
+module = "FloatAxioms"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/FloatAxioms.v"
+line = 41
+kind = "axiom"
+name = "mul_add_distr_l"
+module = "FloatAxioms"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/FloatAxioms.v"
+line = 42
+kind = "axiom"
+name = "sub_def"
+module = "FloatAxioms"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/HurwitzTheorem.v"
+line = 118
+kind = "parameter"
+name = "n"
+module = "HurwitzTheorem"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/HurwitzTheorem.v"
+line = 119
+kind = "parameter"
+name = "num_generators"
+module = "HurwitzTheorem"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/HurwitzTheorem.v"
+line = 120
+kind = "axiom"
+name = "gen_count"
+module = "HurwitzTheorem"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/HurwitzTheorem.v"
+line = 125
+kind = "axiom"
+name = "products_independent"
+module = "HurwitzTheorem"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/HurwitzTheorem.v"
+line = 131
+kind = "axiom"
+name = "n_is_even"
+module = "HurwitzTheorem"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/HurwitzTheorem.v"
+line = 137
+kind = "axiom"
+name = "n_mod4_noted"
+module = "HurwitzTheorem"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/PathionZDGraph.v"
+line = 39
+kind = "axiom"
+name = "pathion_zd_components"
+module = "PathionZDGraph"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/C1542_MorVlambdaOrbit.v"
+line = 29
+kind = "parameter"
+name = "lambda"
+module = "C1542_MorVlambdaOrbit"
+classification = "unclassified"
+rationale = ""
+
+[[axiom_disposition]]
+file = "proofs/theories/C1542_MorVlambdaOrbit.v"
+line = 30
+kind = "axiom"
+name = "lambda_pos"
+module = "C1542_MorVlambdaOrbit"
+classification = "unclassified"
+rationale = ""
+
