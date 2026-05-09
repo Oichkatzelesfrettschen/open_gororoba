@@ -1,5 +1,12 @@
 //! generate-topological-voids: Generate macroscopic topological voids
-//! required to match the CDG-2 astrophysical observations (VF=0.0).
+//! to match the CDG-2 astrophysical constraint that the baryon filling
+//! fraction (1 - vf) is below 0.0006 (Li et al. 2025, arXiv:2506.15644).
+//!
+//! Notation: vf = void_count / total_cells in the LBM grid (the fraction
+//! of cells classified as topological voids). The complement (1 - vf) is
+//! the baryon filling fraction. Earlier prose described the CDG-2 target
+//! as "VF=0.0"; the precise statement is "(1 - vf) < 0.0006", i.e. dark
+//! matter fraction >= 99.94%.
 //!
 //! Creates a 3D density field where baryonic matter is excluded from
 //! regions of high Cayley-Dickson associator frustration.
@@ -199,14 +206,18 @@ fn main() -> anyhow::Result<()> {
     let vf = void_count as f64 / total_cells as f64;
     eprintln!("Void Generation Complete.");
     eprintln!("  Threshold: {}", args.threshold);
-    eprintln!("  Void Volume Fraction (Exclusion): {:.6}", vf);
-    eprintln!("  Baryon VF (Remaining): {:.6}", 1.0 - vf);
+    eprintln!("  Void fraction (vf = exclusion):           {:.6}", vf);
+    eprintln!("  Baryon filling fraction (1 - vf):         {:.6}", 1.0 - vf);
 
     if (1.0 - vf) < 0.0006 {
-        eprintln!("  [SUCCESS] Matches CDG-2 astrophysical observation (VF < 0.0006)");
+        eprintln!(
+            "  [SUCCESS] Matches CDG-2 (Li et al. 2025, arXiv:2506.15644): \
+             baryon filling fraction (1 - vf) < 0.0006"
+        );
     } else {
         eprintln!(
-            "  [NOTICE] Baryon fraction exceeds CDG-2 bound. Lower threshold or increase coupling."
+            "  [NOTICE] Baryon filling fraction (1 - vf) exceeds CDG-2 bound. \
+             Lower threshold or increase coupling."
         );
     }
 

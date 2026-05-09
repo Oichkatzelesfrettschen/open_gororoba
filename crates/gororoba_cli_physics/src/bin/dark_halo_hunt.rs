@@ -307,7 +307,7 @@ fn main() {
 
             match bc_engine.dispatch_halo_detector(ctx, &constants) {
                 Ok(vf) => {
-                    eprintln!("    GPU VF={vf:.6}");
+                    eprintln!("    GPU void fraction vf={vf:.6}");
                     vf
                 }
                 Err(e) => {
@@ -318,7 +318,7 @@ fn main() {
         } else {
             // Dry-run: estimate from spectral dimension
             let vf = (ds * 0.1).min(1.0);
-            eprintln!("    [DRY RUN] estimated VF={:.4}", vf,);
+            eprintln!("    [DRY RUN] estimated void fraction vf={:.4}", vf,);
             vf
         };
 
@@ -395,7 +395,7 @@ fn run_cuda(args: &Args, alpha_bf: f64, t_0_bf: f64) {
                 let elapsed = t0.elapsed();
                 let vf = result.volume_fraction;
                 eprintln!(
-                    "VF={vf:.6} ({} halos / {} cells, {} steps, {:.1}s{})",
+                    "void fraction vf={vf:.6} ({} halos / {} cells, {} steps, {:.1}s{})",
                     result.halo_count,
                     result.n_cells,
                     result.steps_run,
