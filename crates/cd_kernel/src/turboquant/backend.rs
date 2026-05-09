@@ -182,14 +182,17 @@ impl BackendQuantizer {
             }
             #[cfg(feature = "vulkan")]
             Backend::Vulkan(_tier) => {
-                // TODO: dispatch Vulkan compute shader
+                // Deferred: dispatch Vulkan compute shader. CPU fallback is
+                // intentional; the Vulkan quantize kernel is tracked as a
+                // future-work item -- see plans/repo_debt_roadmap_2026_04_11.toml.
                 self.cpu.quantize(values, out);
                 Ok(())
             }
             #[cfg(feature = "cubecl")]
             Backend::CubeCL => {
-                // TODO: dispatch cubecl unified kernel
-                // Falls through to CPU until cubecl kernels are implemented
+                // Deferred: dispatch cubecl unified kernel. CPU fallback is
+                // intentional; the cubecl unified kernel is tracked as a
+                // future-work item -- see plans/repo_debt_roadmap_2026_04_11.toml.
                 self.cpu.quantize(values, out);
                 Ok(())
             }
