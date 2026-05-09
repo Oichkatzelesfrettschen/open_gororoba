@@ -311,7 +311,7 @@ fn main() -> Result<()> {
     let eval_window_secs = cli.pad_minutes * 60;
     let detection_unix: Vec<i64> = cd_hours.iter()
         .map(|&h| hours_to_unix(&reference_midnight, h)).collect();
-    let event_unix: Vec<i64> = fom_catalog.iter().map(|ev| event_midpoint_unix(ev)).collect();
+    let event_unix: Vec<i64> = fom_catalog.iter().map(event_midpoint_unix).collect();
 
     let (precision, recall, f1) =
         boundary_metrics::precision_recall_f1(&detection_unix, &event_unix, eval_window_secs);

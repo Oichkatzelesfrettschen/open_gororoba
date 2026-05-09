@@ -250,7 +250,7 @@ fn eval_against_catalog(
         .collect();
     let event_unix: Vec<i64> = catalog
         .iter()
-        .map(|ev| event_midpoint_unix(ev))
+        .map(event_midpoint_unix)
         .collect();
 
     let (precision, recall, f1) =
@@ -728,7 +728,7 @@ fn main() -> Result<()> {
         .collect();
     let ev_unix: Vec<i64> = fom_catalog
         .iter()
-        .map(|ev| event_midpoint_unix(ev))
+        .map(event_midpoint_unix)
         .collect();
     let (bs_mean, bs_lo, bs_hi) = boundary_metrics::bootstrap_f1_ci_seeded(
         &cd_det_unix,

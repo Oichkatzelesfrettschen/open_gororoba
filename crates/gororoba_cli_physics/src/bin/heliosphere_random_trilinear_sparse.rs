@@ -161,8 +161,7 @@ fn build_cd_sparsity_pattern(dim: usize) -> (Vec<(usize, usize, usize, usize)>, 
                 let abc_right = cd_kernel::cd_multiply(&ei, &bc);
                 let assoc_vec: Vec<f64> = abc_left.iter().zip(&abc_right)
                     .map(|(l, r)| l - r).collect();
-                for l in 0..dim {
-                    let val = assoc_vec[l];
+                for (l, &val) in assoc_vec.iter().enumerate().take(dim) {
                     if val.abs() > 1e-12 {
                         nonzero_quads.push((l, i, j, k));
                         values_sq_sum += val * val;
@@ -394,7 +393,7 @@ fn main() -> Result<()> {
     let trans_window = cli.crossing_window_minutes.max(5);
     let eval_window_secs = cli.pad_minutes * 60;
 
-    let event_unix: Vec<i64> = fom_catalog.iter().map(|ev| event_midpoint_unix(ev)).collect();
+    let event_unix: Vec<i64> = fom_catalog.iter().map(event_midpoint_unix).collect();
 
     println!("Running {} sparsity-matched random draws...", cli.n_draws);
 

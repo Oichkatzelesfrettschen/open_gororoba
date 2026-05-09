@@ -439,7 +439,7 @@ fn main() -> Result<()> {
         .collect();
     let event_unix: Vec<i64> = fom_catalog
         .iter()
-        .map(|ev| event_midpoint_unix(ev))
+        .map(event_midpoint_unix)
         .collect();
 
     let (precision, recall, f1) =

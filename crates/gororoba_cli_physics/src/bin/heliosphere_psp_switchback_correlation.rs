@@ -142,7 +142,7 @@ fn classify_windows(
     let n = records.len();
     let mut labels = vec![WindowClass::Quiet; n];
 
-    for i in 0..n {
+    for (i, _r) in records.iter().enumerate().take(n) {
         let lo = i.saturating_sub(half_win);
         let hi = (i + half_win + 1).min(n);
         let window = &records[lo..hi];
@@ -292,7 +292,7 @@ fn build_ascii_summary(results: &SwitchbackCorrelationResults) -> String {
         "  Micro-rotation events total: {}\n",
         results.n_microrot_events_total
     ));
-    s.push_str("\n");
+    s.push('\n');
     s.push_str("  Enrichment analysis (quiet intervals only):\n");
     s.push_str(&format!(
         "    Quiet minutes total:          {:>6}\n",
@@ -312,7 +312,7 @@ fn build_ascii_summary(results: &SwitchbackCorrelationResults) -> String {
         results.n_quiet_cd_fires_microrot_proximate,
         100.0 * results.quiet_cd_microrot_fraction
     ));
-    s.push_str("\n");
+    s.push('\n');
     s.push_str(&format!(
         "  Enrichment factor: {:.2}x\n",
         results.enrichment_factor

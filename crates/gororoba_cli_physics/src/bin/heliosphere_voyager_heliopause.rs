@@ -22,7 +22,10 @@
 use anyhow::{Context, Result};
 use clap::Parser;
 use serde::Serialize;
-use std::{fs, path::PathBuf};
+use std::{
+    fs,
+    path::{Path, PathBuf},
+};
 
 const MAD_SCALE_FACTOR: f64 = 1.5;
 
@@ -116,7 +119,7 @@ struct CrossingConfig {
     label: String,
 }
 
-fn get_crossing_config(spacecraft: &str, data_dir: &PathBuf) -> Result<CrossingConfig> {
+fn get_crossing_config(spacecraft: &str, data_dir: &Path) -> Result<CrossingConfig> {
     match spacecraft.to_lowercase().as_str() {
         "v1" => Ok(CrossingConfig {
             full_year: 2012,

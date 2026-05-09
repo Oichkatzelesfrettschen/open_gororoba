@@ -146,7 +146,7 @@ fn classify_windows(
     let n = records.len();
     let mut labels = vec![WindowClass::Quiet; n];
 
-    for i in 0..n {
+    for (i, _r) in records.iter().enumerate().take(n) {
         let lo = i.saturating_sub(half_win);
         let hi = (i + half_win + 1).min(n);
         let window = &records[lo..hi];
