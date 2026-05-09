@@ -203,9 +203,12 @@ fn main() -> Result<()> {
         println!("  Mode: synthetic (no ONNX model)");
         ("synthetic".to_string(), synthetic_eval(&cli))
     } else {
-        // Deferred: re-add the ort dep (ort = { workspace = true, optional = true })
-        // behind an `onnx-eval` feature and wire real ONNX inference. CPU/synthetic
-        // fallback is intentional pending that work; see plans/repo_debt_roadmap_2026_04_11.toml.
+        // Deferred: re-add the ort dep behind an `onnx-eval` feature and
+        // wire real ONNX inference.
+        // Tracked: DEFER-ORT-ONNX-EVAL (TaskList task #50). The synthetic
+        // path is intentional pending that work; ort 2.x changed the
+        // Session::builder() signature so a fresh integration is needed
+        // rather than a straight cargo add.
         println!("  ONNX inference not yet wired. Running synthetic evaluation.");
         ("synthetic-no-onnx".to_string(), synthetic_eval(&cli))
     };

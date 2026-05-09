@@ -182,17 +182,21 @@ impl BackendQuantizer {
             }
             #[cfg(feature = "vulkan")]
             Backend::Vulkan(_tier) => {
-                // Deferred: dispatch Vulkan compute shader. CPU fallback is
-                // intentional; the Vulkan quantize kernel is tracked as a
-                // future-work item -- see plans/repo_debt_roadmap_2026_04_11.toml.
+                // Deferred: dispatch Vulkan compute shader.
+                // Tracked: DEFER-VULKAN-QUANTIZE (TaskList task #48). CPU
+                // fallback is intentional until the WGSL shader and per-tier
+                // dispatch ladder are implemented; reuse lbm_vulkan compute
+                // infrastructure when picking up.
                 self.cpu.quantize(values, out);
                 Ok(())
             }
             #[cfg(feature = "cubecl")]
             Backend::CubeCL => {
-                // Deferred: dispatch cubecl unified kernel. CPU fallback is
-                // intentional; the cubecl unified kernel is tracked as a
-                // future-work item -- see plans/repo_debt_roadmap_2026_04_11.toml.
+                // Deferred: dispatch cubecl unified kernel.
+                // Tracked: DEFER-CUBECL-QUANTIZE (TaskList task #49). CPU
+                // fallback is intentional until the #[cube] kernel macro
+                // is wired; cubecl 0.10.0-pre.2 targets CUDA, ROCm, and CPU
+                // SIMD from a single source.
                 self.cpu.quantize(values, out);
                 Ok(())
             }

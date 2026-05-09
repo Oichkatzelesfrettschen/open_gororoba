@@ -1947,6 +1947,28 @@ cpd-audit:
 	pmd cpd --language rust --minimum-tokens $(CPD_MIN_TOKENS) --file-list $(_CPD_FILE_LIST) --format xml 2>/dev/null \
 		| $(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin cpd-report -- --top $(CPD_TOP)
 
+# Anchored repo-debt counter (replaces unreliable grep heuristics).
+# Walks crates/, proofs/, xtask/ and emits a TOML snapshot of the
+# measurable debt classes (unsafe blocks, attrs, macros, Rocq Admitted/
+# Axiom/Parameter). Use REPO_AUDIT_OUT to override the output dir.
+# See crates/gororoba_cli_data/src/bin/repo_audit.rs for what is counted
+# and the limitations of the regex-on-stripped-source approach.
+REPO_AUDIT_OUT ?= data/output/audit/repo_audit
+REPO_AUDIT_BASELINE ?= data/output/debt_baseline_2026_05_09.toml
+
+repo-audit:
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin repo-audit -- \
+		--output-dir $(REPO_AUDIT_OUT)
+
+# CI gate: re-run the audit and fail if any debt class grew vs the
+# committed baseline. SAFETY-positive classes (more SAFETY comments) are
+# allowed to grow; everything else may not.
+repo-audit-strict:
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin repo-audit -- \
+		--output-dir $(REPO_AUDIT_OUT) \
+		--baseline-compare $(REPO_AUDIT_BASELINE) \
+		--strict
+
 cpd-audit-strict:
 	@command -v pmd >/dev/null 2>&1 || { echo "ERROR: pmd not found. Install PMD (e.g. paru -S pmd) to run cpd-audit-strict."; exit 1; }
 	$(CARGO_ENV) cargo run -q -p xtask -- cpd-file-list --output $(_CPD_FILE_LIST)
