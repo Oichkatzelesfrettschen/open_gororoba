@@ -390,8 +390,10 @@ mod tests {
         // Voyager-like 48s native cadence upsampled to 60s lag.
         // 20 samples at 48s => 960s span.
         let input = uniform_series(20, 48.0, 0.3);
-        let mut params = CdEmbeddingParams::default();
-        params.lag_secs = 60.0;
+        let params = CdEmbeddingParams {
+            lag_secs: 60.0,
+            ..CdEmbeddingParams::default()
+        };
         // median cadence = 48s, lag = 60s: undersampled path.
         let out = resample_to_lag_cadence(&input, &params);
         // 20 samples at 48s: t_end = 19*48 = 912s. floor(912/60)+1 = 16.
