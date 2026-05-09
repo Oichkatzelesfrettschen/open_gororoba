@@ -1,32 +1,46 @@
-//! repo-audit: anchored debt-baseline counter that replaces grep heuristics.
+//! repo-audit: durable anchored debt-baseline counter.
 //!
-//! WHY: the Stage A 2026-04-30 audit used substring grep that produced false
-//! positives -- for example, the literal docstring "Zero Admitted." was
-//! flagged as 5 actual Admitted statements. This binary replaces the
-//! heuristics with anchored counts after stripping Rust comments and string
-//! literals. The output is a TOML manifest suitable for replacing the
-//! [code_quality], [formal_verification], and related sections of
-//! data/output/debt_baseline_*.toml.
+//! WHY: a substring-grep audit is unreliable -- the Stage A 2026-04-30 pass
+//! flagged the docstring "Zero Admitted." as 5 actual Admitted statements,
+//! and "TODO" matches in prose as 142 actual code-comment placeholders.
+//! This binary replaces that heuristic with anchored regex on Rust source
+//! that has been pre-stripped of comments and string literals, plus
+//! line-anchored Rocq patterns.
 //!
-//! Usage:
-//!   cargo run --release -p gororoba_cli_data --bin repo-audit -- \
-//!       --root crates --root proofs --output data/output/audit/2026-05-09/
+//! WHAT this binary IS: a durable repo-debt counter intended to be run
+//! periodically (manually, in CI, or as a Make target). Its TOML output
+//! is the canonical record of "how much measurable debt does the repo
+//! carry today" across these classes:
+//!   - unsafe blocks (with SAFETY-comment coverage)
+//!   - #[ignore] / #[allow(clippy::*)] / #[allow(dead_code)] attrs
+//!   - unimplemented! / todo! / unreachable! macro calls
+//!   - TODO / FIXME / XXX / HACK in code-comment context
+//!   - Rocq Admitted / admit / Axiom / Parameter (strict + indented)
 //!
-//! All counts are conservatively under-counts when in doubt, never
-//! over-counts -- the rule is that a real problem is better surfaced by a
-//! second tool than a phantom problem treated as real.
+//! WHAT this binary is NOT: a full AST-based static analyzer. A v2 using
+//! `syn 2.x` would catch macro-expanded unsafe and per-item attribute
+//! placement; v1 is correct for un-expanded source and is sufficient for
+//! the baseline-tracking use case.
+//!
+//! Modes:
+//!   plain       Walk the configured roots and emit a TOML snapshot.
+//!   --baseline-compare PATH  Read a prior snapshot and emit a delta
+//!                             section comparing it to the current count.
+//!   --strict    Exit non-zero if any tracked class has grown vs the
+//!                 baseline. For CI use.
+//!   --print     Echo the TOML to stdout in addition to writing the file.
 
 use anyhow::{Context, Result};
 use clap::Parser;
 use regex::Regex;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 use std::fs;
 use std::path::{Path, PathBuf};
 use walkdir::WalkDir;
 
 #[derive(Parser)]
-#[command(name = "repo-audit", about = "Anchored debt-baseline counter")]
+#[command(name = "repo-audit", about = "Anchored debt-baseline counter (Rocq + Rust)")]
 struct Args {
     /// Root directories to walk (repeat to add multiple).
     #[arg(long = "root", default_values_t = vec![String::from("crates"), String::from("proofs"), String::from("xtask")])]
@@ -37,12 +51,18 @@ struct Args {
     /// Print results to stdout in addition to writing the file.
     #[arg(long, default_value_t = false)]
     print: bool,
+    /// Compare against a prior snapshot TOML and emit a delta block.
+    #[arg(long)]
+    baseline_compare: Option<PathBuf>,
+    /// Exit non-zero if any debt class grew compared to the baseline.
+    #[arg(long, default_value_t = false)]
+    strict: bool,
 }
 
-#[derive(Default, Serialize, Debug, Clone)]
+#[derive(Default, Serialize, Deserialize, Debug, Clone)]
 struct Counts {
     rust_files: u64,
-    coq_files: u64,
+    rocq_files: u64,
     other_files: u64,
     // Rust source counts (after comment/string stripping).
     unsafe_blocks: u64,
@@ -54,13 +74,15 @@ struct Counts {
     unimplemented_macros: u64,
     todo_macros: u64,
     unreachable_macros: u64,
-    // Rocq proof counts (anchored, line-start).
-    coq_admitted_strict: u64,    // ^\s*Admitted\b\.?\s*$
-    coq_admit_strict: u64,       // ^\s*admit\b\.?\s*$
-    coq_axiom_strict: u64,       // ^Axiom\b -- top level
-    coq_axiom_indented: u64,     // ^\s+Axiom\b -- nested
-    coq_parameter_strict: u64,   // ^Parameter\b
-    coq_parameter_indented: u64, // ^\s+Parameter\b
+    // Rocq proof counts (anchored, line-start). Rocq is the renamed Coq
+    // theorem prover; field names use rocq_* to track the project's
+    // canonical naming.
+    rocq_admitted_strict: u64,    // ^\s*Admitted\b\.?\s*$
+    rocq_admit_strict: u64,       // ^\s*admit\b\.?\s*$
+    rocq_axiom_strict: u64,       // ^Axiom\b -- top level
+    rocq_axiom_indented: u64,     // ^\s+Axiom\b -- nested
+    rocq_parameter_strict: u64,   // ^Parameter\b
+    rocq_parameter_indented: u64, // ^\s+Parameter\b
 }
 
 #[derive(Serialize, Debug)]
@@ -68,6 +90,21 @@ struct AuditOutput {
     meta: Meta,
     totals: Counts,
     by_root: BTreeMap<String, Counts>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    baseline_delta: Option<BaselineDelta>,
+}
+
+#[derive(Deserialize, Debug)]
+struct PriorSnapshot {
+    totals: Counts,
+}
+
+#[derive(Serialize, Debug)]
+struct BaselineDelta {
+    baseline_path: String,
+    grown: BTreeMap<String, i64>,
+    shrunk: BTreeMap<String, i64>,
+    unchanged_count: u64,
 }
 
 #[derive(Serialize, Debug)]
@@ -169,12 +206,12 @@ struct Patterns {
     unimplemented_macro: Regex,
     todo_macro: Regex,
     unreachable_macro: Regex,
-    coq_admitted_strict: Regex,
-    coq_admit_strict: Regex,
-    coq_axiom_top: Regex,
-    coq_axiom_indented: Regex,
-    coq_parameter_top: Regex,
-    coq_parameter_indented: Regex,
+    rocq_admitted_strict: Regex,
+    rocq_admit_strict: Regex,
+    rocq_axiom_top: Regex,
+    rocq_axiom_indented: Regex,
+    rocq_parameter_top: Regex,
+    rocq_parameter_indented: Regex,
 }
 
 impl Patterns {
@@ -193,12 +230,12 @@ impl Patterns {
             safety_comment: Regex::new(r"(?m)^\s*(?://|/\*)\s*SAFETY\s*:")?,
             todo_fixme: Regex::new(r"(?m)^\s*(?://|/\*)\s*(?:TODO|FIXME|XXX|HACK)\b")?,
             // Rocq patterns: anchored to line start; case-sensitive.
-            coq_admitted_strict: Regex::new(r"(?m)^[[:space:]]*Admitted[[:space:]]*\.\s*$")?,
-            coq_admit_strict: Regex::new(r"(?m)^[[:space:]]*admit[[:space:]]*\.\s*$")?,
-            coq_axiom_top: Regex::new(r"(?m)^Axiom\b")?,
-            coq_axiom_indented: Regex::new(r"(?m)^[[:space:]]+Axiom\b")?,
-            coq_parameter_top: Regex::new(r"(?m)^Parameter\b")?,
-            coq_parameter_indented: Regex::new(r"(?m)^[[:space:]]+Parameter\b")?,
+            rocq_admitted_strict: Regex::new(r"(?m)^[[:space:]]*Admitted[[:space:]]*\.\s*$")?,
+            rocq_admit_strict: Regex::new(r"(?m)^[[:space:]]*admit[[:space:]]*\.\s*$")?,
+            rocq_axiom_top: Regex::new(r"(?m)^Axiom\b")?,
+            rocq_axiom_indented: Regex::new(r"(?m)^[[:space:]]+Axiom\b")?,
+            rocq_parameter_top: Regex::new(r"(?m)^Parameter\b")?,
+            rocq_parameter_indented: Regex::new(r"(?m)^[[:space:]]+Parameter\b")?,
         })
     }
 }
@@ -219,21 +256,21 @@ fn count_in_rust_file(src: &str, patterns: &Patterns) -> Counts {
     c
 }
 
-fn count_in_coq_file(src: &str, patterns: &Patterns) -> Counts {
+fn count_in_rocq_file(src: &str, patterns: &Patterns) -> Counts {
     let mut c = Counts::default();
-    c.coq_files = 1;
-    c.coq_admitted_strict = patterns.coq_admitted_strict.find_iter(src).count() as u64;
-    c.coq_admit_strict = patterns.coq_admit_strict.find_iter(src).count() as u64;
-    c.coq_axiom_strict = patterns.coq_axiom_top.find_iter(src).count() as u64;
-    c.coq_axiom_indented = patterns.coq_axiom_indented.find_iter(src).count() as u64;
-    c.coq_parameter_strict = patterns.coq_parameter_top.find_iter(src).count() as u64;
-    c.coq_parameter_indented = patterns.coq_parameter_indented.find_iter(src).count() as u64;
+    c.rocq_files = 1;
+    c.rocq_admitted_strict = patterns.rocq_admitted_strict.find_iter(src).count() as u64;
+    c.rocq_admit_strict = patterns.rocq_admit_strict.find_iter(src).count() as u64;
+    c.rocq_axiom_strict = patterns.rocq_axiom_top.find_iter(src).count() as u64;
+    c.rocq_axiom_indented = patterns.rocq_axiom_indented.find_iter(src).count() as u64;
+    c.rocq_parameter_strict = patterns.rocq_parameter_top.find_iter(src).count() as u64;
+    c.rocq_parameter_indented = patterns.rocq_parameter_indented.find_iter(src).count() as u64;
     c
 }
 
 fn merge(into: &mut Counts, from: &Counts) {
     into.rust_files += from.rust_files;
-    into.coq_files += from.coq_files;
+    into.rocq_files += from.rocq_files;
     into.other_files += from.other_files;
     into.unsafe_blocks += from.unsafe_blocks;
     into.safety_comments += from.safety_comments;
@@ -244,12 +281,12 @@ fn merge(into: &mut Counts, from: &Counts) {
     into.unimplemented_macros += from.unimplemented_macros;
     into.todo_macros += from.todo_macros;
     into.unreachable_macros += from.unreachable_macros;
-    into.coq_admitted_strict += from.coq_admitted_strict;
-    into.coq_admit_strict += from.coq_admit_strict;
-    into.coq_axiom_strict += from.coq_axiom_strict;
-    into.coq_axiom_indented += from.coq_axiom_indented;
-    into.coq_parameter_strict += from.coq_parameter_strict;
-    into.coq_parameter_indented += from.coq_parameter_indented;
+    into.rocq_admitted_strict += from.rocq_admitted_strict;
+    into.rocq_admit_strict += from.rocq_admit_strict;
+    into.rocq_axiom_strict += from.rocq_axiom_strict;
+    into.rocq_axiom_indented += from.rocq_axiom_indented;
+    into.rocq_parameter_strict += from.rocq_parameter_strict;
+    into.rocq_parameter_indented += from.rocq_parameter_indented;
 }
 
 fn process_root(root: &Path, patterns: &Patterns) -> Result<Counts> {
@@ -273,7 +310,7 @@ fn process_root(root: &Path, patterns: &Patterns) -> Result<Counts> {
                     Ok(s) => s,
                     Err(_) => continue,
                 };
-                merge(&mut total, &count_in_coq_file(&src, patterns));
+                merge(&mut total, &count_in_rocq_file(&src, patterns));
             }
             _ => {
                 total.other_files += 1;
@@ -282,6 +319,55 @@ fn process_root(root: &Path, patterns: &Patterns) -> Result<Counts> {
     }
     Ok(total)
 }
+
+fn delta_field(name: &str, prev: u64, curr: u64) -> Option<(String, i64)> {
+    let d = curr as i64 - prev as i64;
+    if d == 0 { None } else { Some((name.to_string(), d)) }
+}
+
+fn compute_delta(baseline_path: &Path, prior: &Counts, curr: &Counts) -> BaselineDelta {
+    let mut grown = BTreeMap::new();
+    let mut shrunk = BTreeMap::new();
+    let mut unchanged = 0u64;
+    let pairs: Vec<(&str, u64, u64)> = vec![
+        ("unsafe_blocks", prior.unsafe_blocks, curr.unsafe_blocks),
+        ("safety_comments", prior.safety_comments, curr.safety_comments),
+        ("ignore_attrs", prior.ignore_attrs, curr.ignore_attrs),
+        ("allow_clippy_attrs", prior.allow_clippy_attrs, curr.allow_clippy_attrs),
+        ("allow_dead_code_attrs", prior.allow_dead_code_attrs, curr.allow_dead_code_attrs),
+        ("todo_fixme_xxx_hack", prior.todo_fixme_xxx_hack, curr.todo_fixme_xxx_hack),
+        ("unimplemented_macros", prior.unimplemented_macros, curr.unimplemented_macros),
+        ("todo_macros", prior.todo_macros, curr.todo_macros),
+        ("unreachable_macros", prior.unreachable_macros, curr.unreachable_macros),
+        ("rocq_admitted_strict", prior.rocq_admitted_strict, curr.rocq_admitted_strict),
+        ("rocq_admit_strict", prior.rocq_admit_strict, curr.rocq_admit_strict),
+        ("rocq_axiom_strict", prior.rocq_axiom_strict, curr.rocq_axiom_strict),
+        ("rocq_axiom_indented", prior.rocq_axiom_indented, curr.rocq_axiom_indented),
+        ("rocq_parameter_strict", prior.rocq_parameter_strict, curr.rocq_parameter_strict),
+        ("rocq_parameter_indented", prior.rocq_parameter_indented, curr.rocq_parameter_indented),
+    ];
+    for (name, prev, cur) in pairs {
+        if let Some((n, d)) = delta_field(name, prev, cur) {
+            if d > 0 {
+                grown.insert(n, d);
+            } else {
+                shrunk.insert(n, d);
+            }
+        } else {
+            unchanged += 1;
+        }
+    }
+    BaselineDelta {
+        baseline_path: baseline_path.display().to_string(),
+        grown,
+        shrunk,
+        unchanged_count: unchanged,
+    }
+}
+
+/// SAFETY-positive classes: SAFETY comments, safety_comments. Growth here
+/// is improvement, not debt.
+const SAFETY_POSITIVE_CLASSES: &[&str] = &["safety_comments"];
 
 fn main() -> Result<()> {
     let args = Args::parse();
@@ -301,15 +387,35 @@ fn main() -> Result<()> {
     }
     let now = chrono::Utc::now().format("%Y-%m-%dT%H:%M:%SZ").to_string();
     let date_only = chrono::Utc::now().format("%Y_%m_%d").to_string();
+    let mut baseline_delta = None;
+    let mut strict_failure = false;
+    if let Some(baseline_path) = &args.baseline_compare {
+        let prior_text = fs::read_to_string(baseline_path)
+            .with_context(|| format!("read baseline {}", baseline_path.display()))?;
+        let prior: PriorSnapshot = toml::from_str(&prior_text)
+            .with_context(|| format!("parse baseline {}", baseline_path.display()))?;
+        let delta = compute_delta(baseline_path, &prior.totals, &totals);
+        if args.strict {
+            for (class, growth) in &delta.grown {
+                if SAFETY_POSITIVE_CLASSES.contains(&class.as_str()) {
+                    continue;
+                }
+                eprintln!("strict: {} grew by {} since baseline", class, growth);
+                strict_failure = true;
+            }
+        }
+        baseline_delta = Some(delta);
+    }
     let output = AuditOutput {
         meta: Meta {
             generated_at: now,
             binary: env!("CARGO_BIN_NAME").to_string(),
             roots: args.roots.clone(),
-            method: "regex-anchored on comment-stripped Rust source; line-anchored on Rocq".to_string(),
+            method: "regex-anchored on comment-stripped Rust; line-anchored on Rocq (.v)".to_string(),
         },
         totals,
         by_root,
+        baseline_delta,
     };
     let toml_text = toml::to_string_pretty(&output)?;
     fs::create_dir_all(&args.output_dir)?;
@@ -320,6 +426,10 @@ fn main() -> Result<()> {
     eprintln!("wrote {}", out_path.display());
     if args.print {
         print!("{}", toml_text);
+    }
+    if strict_failure {
+        eprintln!("repo-audit --strict: at least one debt class grew vs baseline");
+        std::process::exit(1);
     }
     Ok(())
 }
