@@ -231,6 +231,12 @@ credentials.*
 !docs/reports/*_roadmap_*.md
 !docs/monograph/MERGED_MONOGRAPH.md
 !docs/reports/root_promoted/*.md
+# Stage B documentation lanes (glossary, cache policy, experiment manifest, upgrade history).
+!docs/engineering/
+!docs/engineering/*.md
+!docs/dependencies/
+!docs/dependencies/*.md
+!docs/glossary.md
 
 # ------------------------------------------------------------------------------
 # 7. Root Directory Protection (Keep Root Clean)
