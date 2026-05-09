@@ -120,6 +120,9 @@ fn migrations() -> Migrations<'static> {
         M::up(include_str!(
             "../../../db/migrations/0014_requirements_compat_exports.sql"
         )),
+        M::up(include_str!(
+            "../../../db/migrations/0015_revisions_audit.sql"
+        )),
     ])
 }
 
