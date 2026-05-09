@@ -8,7 +8,7 @@
 //! - Framework B: Freudenthal Functorial Construction (Magic Square)
 //! - Framework C: Loop Theory (Cayley-Dickson Loops)
 
-use crate::lie::e8_lattice::DivisionAlgebra;
+use crate::lie::e8::magic_square::DivisionAlgebra;
 
 /// Framework A: The Category of Composition Algebras.
 ///

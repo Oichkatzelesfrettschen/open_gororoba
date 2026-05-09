@@ -2059,3 +2059,27 @@ help:
 	@echo "    make run                  Run simulations (sedenion, modular, entropy)"
 	@echo "    make rocq                Compile Rocq proofs"
 	@echo "    make latex                Build MASTER_SYNTHESIS.pdf"
+
+# -----------------------------------------------------------------------------
+# Module discovery
+# -----------------------------------------------------------------------------
+# `cargo modules` (third-party `cargo-modules` crate) renders a tree of every
+# module in a crate. Install once with `cargo install cargo-modules`. If absent,
+# the target falls back to a filesystem walk that still surfaces every .rs file.
+# Pass CRATE=<name> to scope to a specific crate (default: gororoba_algebra).
+.PHONY: modules-tree modules-doc
+
+CRATE ?= gororoba_algebra
+
+modules-tree:
+	@if command -v cargo-modules >/dev/null 2>&1; then \
+		cargo modules structure --package $(CRATE) --no-fns --no-traits --no-types ; \
+	else \
+		echo "[fallback] cargo-modules not installed; listing .rs files under $(CRATE)/src/" ; \
+		echo "  install with: cargo install cargo-modules" ; \
+		find crates/$(CRATE)/src -name '*.rs' | sort ; \
+	fi
+
+modules-doc:
+	@CARGO_TARGET_DIR=.cache/gate-target cargo doc --no-deps --document-private-items -p $(CRATE)
+	@echo "open .cache/gate-target/doc/$(CRATE)/index.html in a browser"

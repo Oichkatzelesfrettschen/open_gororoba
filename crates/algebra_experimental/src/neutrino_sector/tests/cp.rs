@@ -203,7 +203,7 @@ fn test_effective_electron_neutrino_mass() {
 /// complex unitary matrix with nonzero J.
 #[test]
 fn test_cp_phase_from_fano_signs() {
-    use gororoba_algebra::lie::g2_stabilizer::complex_structure;
+    use gororoba_algebra::lie::g2::stabilizer::complex_structure;
 
     let result = compute_pmns((11, 12), (7, 8));
 
@@ -1203,7 +1203,7 @@ fn test_cross_sector_cp_phase() {
 #[test]
 fn test_complex_pmns_cp_violation() {
     use cd_kernel::gourlay_psi;
-    use gororoba_algebra::lie::g2_stabilizer::complex_structure;
+    use gororoba_algebra::lie::g2::stabilizer::complex_structure;
 
     let ch_pair = (11_usize, 12);
     let nu_pair = (7_usize, 8);
@@ -1496,7 +1496,7 @@ fn test_complex_pmns_cp_violation() {
 fn test_complex_pmns_alpha_scan() {
     use crate::{bell_inequality::rotate_sparse, majorana_braiding::MajoranaMode};
     use cd_kernel::gourlay_psi;
-    use gororoba_algebra::lie::g2_stabilizer::complex_structure;
+    use gororoba_algebra::lie::g2::stabilizer::complex_structure;
     use nalgebra::SMatrix;
     use num_complex::Complex;
 

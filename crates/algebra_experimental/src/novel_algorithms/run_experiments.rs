@@ -1,11 +1,11 @@
 use super::{
     algebraic_sieve::*, associator_gradient_descent::*, deep_factorization::*, defect_sensing::*,
-    e8_sieve::*, fano_algebraic_cloaking::*, fractal_metric_pathfinding::*, homotopic_pruning::*,
+    fano_algebraic_cloaking::*, fractal_metric_pathfinding::*, homotopic_pruning::*,
     hypercomplex_ca::*, mass_ladder_predictor::*, na_prng::*, padic_cd_crypto::*,
     sedenion_dithering::*, sedenion_kalman_filter::*, sedenion_raytracer::*, sedenion_svm::*,
-    sedenionic_braid_compiler::*, spin_emanation_routing::*, surreal_clustering::*,
-    void_compression::*, zd_hash_map::*, zd_routing::*, zd_tensor_network::*, zhilina_graph_db::*,
-    zpe_lbm_collision::*,
+    sedenion_zd_pair::*, sedenionic_braid_compiler::*, spin_emanation_routing::*,
+    surreal_clustering::*, void_compression::*, zd_hash_map::*, zd_routing::*,
+    zd_tensor_network::*, zhilina_graph_db::*, zpe_lbm_collision::*,
 };
 use cd_kernel::cayley_dickson::cd_norm_sq;
 
@@ -266,10 +266,10 @@ pub fn execute_all_prototypes() {
         diff[0]
     );
 
-    // 25. E8 Sieve
+    // 25. Sedenion ZD-pair test
     println!(
-        "[25/25] E8 Sieve: Is valid root candidate? {}",
-        is_e8_root_candidate(&key, &zd)
+        "[25/25] Sedenion ZD-pair test: product collapses to zero? {}",
+        is_sedenion_zd_pair(&key, &zd)
     );
 
     println!("\nALL ALGORITHMS EXECUTED SUCCESSFULLY.");

@@ -575,7 +575,7 @@ fn test_friction_native_baseline() {
 /// 5. NEW: G2 stabilizer norm decomposition
 #[test]
 fn test_weinberg_angle_from_g2() {
-    use gororoba_algebra::lie::g2_stabilizer::{stabilizer_decomposition, structure_constants};
+    use gororoba_algebra::lie::g2::stabilizer::{stabilizer_decomposition, structure_constants};
 
     let pdg_sin2_tw = 0.2312_f64;
 
@@ -1710,7 +1710,7 @@ fn test_cp_violation_jk_dimension_comparison() {
         three_fermion_generations::get_sedenion_subalgebras,
     };
     use cd_kernel::gourlay_psi;
-    use gororoba_algebra::lie::g2_stabilizer::complex_structure;
+    use gororoba_algebra::lie::g2::stabilizer::complex_structure;
 
     let ch_pair = (11_usize, 12);
     let nu_pair = (7_usize, 8);

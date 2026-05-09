@@ -19,7 +19,7 @@ use rand::RngExt;
 use std::{error::Error, f64::consts::PI, fs::File, io::Write, path::Path};
 
 // Import core modules
-use gororoba_algebra::lie::e7_geometry::generate_e7_roots;
+use gororoba_algebra::lie::e7::geometry::generate_e7_roots;
 use lbm_core::simulate_kolmogorov_flow;
 use spectral_core::ndfft::{fft_3d, ifft_3d, real_to_complex_3d};
 use stats_core::hypergraph::TriadHypergraph;

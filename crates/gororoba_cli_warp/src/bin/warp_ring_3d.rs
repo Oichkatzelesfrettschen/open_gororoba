@@ -9,7 +9,7 @@ use data_artifacts_core::hdf5_export::{
     export_simulation_trace, read_rho_mean_trace,
 };
 use data_artifacts_core::quality::{RhoQualityThresholds, validate_rho_trace};
-use gororoba_algebra::{lie::e7_geometry::generate_e7_roots, physics::octonion_field::FieldParams};
+use gororoba_algebra::{lie::e7::geometry::generate_e7_roots, physics::octonion_field::FieldParams};
 #[cfg(feature = "hdf5-export")]
 use gororoba_contracts::{WarpRingConfig, WarpRingExperiment, WarpRingResults};
 use gororoba_engine::simulation::{

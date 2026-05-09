@@ -244,7 +244,7 @@ fn handle_data(cmd: DataCmd) {
 fn handle_algebra(cmd: AlgebraCmd) {
     use algebra_analysis::boxkites::find_box_kites;
     use cd_kernel::find_zero_divisors;
-    use gororoba_algebra::lie::e8_lattice::generate_e8_roots;
+    use gororoba_algebra::lie::e8::root_system::generate_e8_roots;
 
     match cmd {
         AlgebraCmd::ZdSearch { dim, atol, output } => {
@@ -509,7 +509,7 @@ fn handle_quantum(cmd: QuantumCmd) {
 }
 
 fn handle_plot(cmd: PlotCmd) {
-    use gororoba_algebra::lie::e8_lattice::generate_e8_roots;
+    use gororoba_algebra::lie::e8::root_system::generate_e8_roots;
     use gr_core::shadow_boundary;
     use std::{f64::consts::FRAC_PI_2, io::BufRead};
     use viz::{Colormap, colors, heatmap_svg, line_plot_svg, scatter_plot_svg};

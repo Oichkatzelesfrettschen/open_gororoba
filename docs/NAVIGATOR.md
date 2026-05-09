@@ -157,4 +157,65 @@ LBM galaxy sims (L5)
 
 ---
 
+## Discovering Modules
+
+There is no built-in `cargo` subcommand that lists Rust *modules* (only crates,
+via `cargo tree`). Three idiomatic options:
+
+| Tool | Scope | Install | Output |
+|------|-------|---------|--------|
+| `make modules-tree` | One crate, one screen | Just `make` | Hierarchical module tree (uses `cargo-modules` when installed; falls back to a `find` walk) |
+| `make modules-doc` | One crate, full HTML | None (uses stock `cargo doc`) | Browsable rustdoc with `--document-private-items` |
+| `cargo install cargo-modules && cargo modules structure --package <crate>` | Direct | `cargo install` once | Same tree as `make modules-tree`, with extra flags for fns/traits/types |
+
+The default crate is `gororoba_algebra`. Override with `CRATE=<name>`, e.g.
+`make modules-tree CRATE=cd_kernel`.
+
+**Sample output of `make modules-tree CRATE=gororoba_algebra`** (lie subtree, with `cargo-modules` installed):
+
+```
+mod lie: pub #[cfg(feature = "lie")]
+├── mod e6: pub
+│   ├── mod casimir: pub
+│   └── mod root_system: pub
+├── mod e7: pub
+│   ├── mod geometry: pub
+│   └── mod structure: pub
+├── mod e8: pub
+│   ├── mod atlas_bridge: pub
+│   ├── mod heterotic: pub
+│   ├── mod magic_square: pub
+│   └── mod root_system: pub
+├── mod f4: pub
+│   └── mod casimir: pub
+├── mod g2: pub
+│   ├── mod stabilizer: pub
+│   └── mod su3_representation: pub
+├── mod group_theory: pub
+│   └── mod exceptional: pub
+├── mod kac_moody: pub
+│   ├── mod cartans: pub
+│   ├── mod e_series: pub  // E_9, E_10, E_11 root systems
+│   └── mod roots: pub
+├── mod lyndon_basis: pub
+├── mod nilpotent_orbits: pub
+├── mod su5_gut: pub #[cfg(feature = "physics-sm")]
+└── mod three_fermion_generations: pub
+```
+
+**Quick lookups for the Lie/exceptional-algebra cluster:**
+
+| Symbol or path | Location |
+|---|---|
+| `lie::e6::{root_system,casimir}` | `crates/gororoba_algebra/src/lie/e6/` |
+| `lie::e7::{geometry,structure}` | `crates/gororoba_algebra/src/lie/e7/` |
+| `lie::e8::{root_system,magic_square,atlas_bridge,heterotic}` | `crates/gororoba_algebra/src/lie/e8/` |
+| `lie::f4::casimir` | `crates/gororoba_algebra/src/lie/f4/casimir.rs` |
+| `lie::g2::{stabilizer,su3_representation}` | `crates/gororoba_algebra/src/lie/g2/` |
+| `lie::kac_moody::{cartans,roots,e_series}` | `crates/gororoba_algebra/src/lie/kac_moody/` |
+| Sedenion ZD-pair detector | `crates/algebra_experimental/src/novel_algorithms/sedenion_zd_pair.rs` |
+| TurboQuant E8/F4 rotations (separate `E8Root` type) | `crates/cd_kernel/src/turboquant/{e8_rotation,f4_rotation}.rs` |
+
+---
+
 *For full claim text, see `registry/claims.toml`. For experiment data, see `registry/experiments.toml`.*

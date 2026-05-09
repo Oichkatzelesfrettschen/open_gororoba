@@ -7,7 +7,7 @@
 //! Migrated from Appendix C of the Advanced Theoretical Developments.
 
 use crate::{
-    lie::e8_lattice::E8Lattice,
+    lie::e8::root_system::E8Lattice,
     physics::octonion_field::{Octonion, oct_multiply},
 };
 

@@ -23,8 +23,8 @@
 use std::collections::{HashMap, HashSet};
 
 use super::{
-    e7_geometry::{E7Root, generate_e7_roots},
-    e8_lattice::E8Root,
+    e7::geometry::{E7Root, generate_e7_roots},
+    e8::root_system::E8Root,
 };
 
 /// Discretize coordinates to integer keys for hash-based lookup.

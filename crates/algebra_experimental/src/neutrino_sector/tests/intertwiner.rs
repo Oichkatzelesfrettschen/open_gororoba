@@ -12,9 +12,9 @@ use super::super::*;
 /// 5. Compare solution with TensorElementLift
 #[test]
 fn test_intertwiner_analysis() {
-    use gororoba_algebra::lie::{
-        g2_stabilizer::{complex_structure, stabilizer_decomposition},
-        g2_su3_representation::fundamental_representation,
+    use gororoba_algebra::lie::g2::{
+        stabilizer::{complex_structure, stabilizer_decomposition},
+        su3_representation::fundamental_representation,
     };
     use nalgebra::DMatrix;
 
