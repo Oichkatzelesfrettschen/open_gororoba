@@ -23,7 +23,7 @@
 //!   Baez, "The Octonions" (2002), Section 4.1
 //!   Georgi, "Lie Algebras in Particle Physics" (1999)
 
-use super::g2_stabilizer::{ComplexStructure, G2Stabilizer, perp_block};
+use super::stabilizer::{ComplexStructure, G2Stabilizer, perp_block};
 use nalgebra::SMatrix;
 use num_complex::Complex;
 
@@ -333,7 +333,7 @@ pub fn adjoint_casimir_contraction(f: &[Vec<Vec<f64>>]) -> Vec<Vec<f64>> {
 #[cfg(test)]
 mod tests {
     use super::{
-        super::g2_stabilizer::{complex_structure, stabilizer_decomposition, structure_constants},
+        super::stabilizer::{complex_structure, stabilizer_decomposition, structure_constants},
         *,
     };
 
@@ -708,8 +708,8 @@ mod tests {
 mod physics_tests {
     use super::{
         super::{
-            g2_stabilizer::{complex_structure, stabilizer_decomposition},
-            su5_gut,
+            super::su5_gut,
+            stabilizer::{complex_structure, stabilizer_decomposition},
         },
         *,
     };

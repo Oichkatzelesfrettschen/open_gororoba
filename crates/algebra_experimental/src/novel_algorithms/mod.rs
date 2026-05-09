@@ -11,7 +11,6 @@ pub mod zd_tensor_network;
 pub mod zpe_lbm_collision;
 
 pub mod associator_gradient_descent;
-pub mod e8_sieve;
 pub mod fractal_metric_pathfinding;
 pub mod hypercomplex_ca;
 pub mod mass_ladder_predictor;
@@ -20,6 +19,7 @@ pub mod padic_cd_crypto;
 pub mod run_experiments;
 pub mod sedenion_dithering;
 pub mod sedenion_kalman_filter;
+pub mod sedenion_zd_pair;
 pub mod sedenion_svm;
 pub mod sedenionic_braid_compiler;
 pub mod spin_emanation_routing;

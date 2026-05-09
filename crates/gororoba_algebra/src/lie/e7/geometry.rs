@@ -19,10 +19,8 @@
 
 use std::collections::HashMap;
 
-use super::{
-    e7_structure::structure_constant,
-    e8_lattice::{E8Root, generate_e8_roots},
-};
+use super::structure::structure_constant;
+use super::super::e8::root_system::{E8Root, generate_e8_roots};
 
 /// An E7 root vector (subset of E8 root system).
 #[derive(Debug, Clone, PartialEq)]

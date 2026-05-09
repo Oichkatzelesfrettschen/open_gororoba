@@ -19,6 +19,10 @@ theories/FloatRealBridge.v
 theories/QuantumInequalities.v
 theories/EnergyConditions.v
 theories/CayleyDicksonAlgebra.v
+theories/E6CartanDerivation.v
+theories/E7CartanDerivation.v
+theories/E8CartanDerivation.v
+theories/F4CartanDerivation.v
 theories/SpatialAlgebra.v
 verified/C879_DimensionBijection.v
 verified/C877_ZeroCoupling.v

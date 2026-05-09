@@ -7,7 +7,6 @@ pub mod chingon;
 pub mod clifford;
 pub mod composition_algebra_census;
 pub mod deep_space;
-pub mod e8_root_system;
 pub mod exceptional_bridge;
 pub mod exotic_octonions;
 pub mod functor;
@@ -52,8 +51,7 @@ pub mod jordan_exceptional {
 
 pub mod auxiliary {
     pub use super::{
-        chingon::*, deep_space::*, e8_root_system::*, kronecker::*, octonion_geometry::*, padic::*,
-        wheels::*,
+        chingon::*, deep_space::*, kronecker::*, octonion_geometry::*, padic::*, wheels::*,
     };
 }
 pub mod complex_octonion;

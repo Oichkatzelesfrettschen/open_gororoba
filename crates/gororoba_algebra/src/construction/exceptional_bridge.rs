@@ -29,7 +29,7 @@
 
 use crate::{
     construction::{g2_automorphisms::compute_g2_basis, octonion::Octonion},
-    lie::e8_lattice::{DivisionAlgebra, FreudenthalTitsMagicSquare, MagicSquareLieAlgebra},
+    lie::e8::magic_square::{DivisionAlgebra, FreudenthalTitsMagicSquare, MagicSquareLieAlgebra},
 };
 
 // ============================================================================

@@ -37,7 +37,7 @@ pub fn classify_generator(gen_index: usize) -> GeneratorType {
 /// This gives a **14D active subspace**: each half has 7 imaginary components
 /// rotated by `e_k`, while the real (index 0) and `e_k` (index k) components
 /// rotate among themselves.  Compare with the 6D perp-only action from
-/// [`complex_structure()`](gororoba_algebra::lie::g2_stabilizer::complex_structure),
+/// [`complex_structure()`](gororoba_algebra::lie::g2::stabilizer::complex_structure),
 /// which restricts to the 6 indices perpendicular to both `e_0` and `e_k`
 /// within the lower octonion only.
 ///

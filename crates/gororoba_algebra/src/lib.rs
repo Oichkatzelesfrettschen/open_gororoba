@@ -65,7 +65,7 @@ pub use construction::symmetric_composition::{OkuboElement, TrialityAction};
 
 // -- lie re-exports ------------------------------------------------------
 #[cfg(feature = "lie")]
-pub use lie::e8_lattice::{E8Root, generate_e8_roots};
+pub use lie::e8::root_system::{E8Root, generate_e8_roots};
 #[cfg(feature = "lie")]
 pub use lie::group_theory::order_psl2_q;
 #[cfg(feature = "lie")]

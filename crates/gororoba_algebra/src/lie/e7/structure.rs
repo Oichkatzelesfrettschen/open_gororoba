@@ -12,7 +12,7 @@
 //! orientation). We use lexicographic ordering of root coordinates, which
 //! is deterministic and platform-independent.
 
-use super::e7_geometry::E7Root;
+use super::geometry::E7Root;
 
 /// Calculate structure constant N(alpha, beta).
 ///
@@ -63,7 +63,7 @@ fn lex_cmp(a: &[f64; 8], b: &[f64; 8]) -> std::cmp::Ordering {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::lie::e7_geometry::generate_e7_roots;
+    use crate::lie::e7::geometry::generate_e7_roots;
 
     #[test]
     fn test_antisymmetry() {
@@ -100,7 +100,7 @@ mod tests {
         let a = &roots[0];
         // The negative of a root is also a root, so a + (-a) = 0 (norm 0, not a root)
         let neg_a = E7Root {
-            root: crate::lie::e8_lattice::E8Root::new({
+            root: crate::lie::e8::root_system::E8Root::new({
                 let mut c = [0.0; 8];
                 for (i, val) in a.root.coords.iter().enumerate() {
                     c[i] = -val;

@@ -15,7 +15,7 @@
 //! 9. Visualize the composite "Warp Ring" + GRIN lensed star field
 
 use gororoba_algebra::{
-    lie::e7_geometry::{find_e7_triads, generate_e7_roots, project_to_plane},
+    lie::e7::geometry::{find_e7_triads, generate_e7_roots, project_to_plane},
     physics::octonion_field::FieldParams,
 };
 // use gororoba_engine::simulation::AlgebraicField; // Unused import removed
