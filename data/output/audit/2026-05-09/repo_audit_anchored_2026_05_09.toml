@@ -1,0 +1,89 @@
+[meta]
+generated_at = "2026-05-09T22:41:23Z"
+binary = "repo-audit"
+roots = [
+    "crates",
+    "proofs",
+    "xtask",
+]
+method = "regex-anchored on comment-stripped Rust source; line-anchored on Rocq"
+
+[totals]
+rust_files = 2262
+coq_files = 279
+other_files = 16630
+unsafe_blocks = 3812
+safety_comments = 65
+ignore_attrs = 109
+allow_clippy_attrs = 209
+allow_dead_code_attrs = 166
+todo_fixme_xxx_hack = 3
+unimplemented_macros = 0
+todo_macros = 0
+unreachable_macros = 41
+coq_admitted_strict = 0
+coq_admit_strict = 0
+coq_axiom_strict = 32
+coq_axiom_indented = 100
+coq_parameter_strict = 8
+coq_parameter_indented = 56
+
+[by_root.crates]
+rust_files = 2131
+coq_files = 0
+other_files = 172
+unsafe_blocks = 392
+safety_comments = 65
+ignore_attrs = 109
+allow_clippy_attrs = 143
+allow_dead_code_attrs = 64
+todo_fixme_xxx_hack = 3
+unimplemented_macros = 0
+todo_macros = 0
+unreachable_macros = 41
+coq_admitted_strict = 0
+coq_admit_strict = 0
+coq_axiom_strict = 0
+coq_axiom_indented = 0
+coq_parameter_strict = 0
+coq_parameter_indented = 0
+
+[by_root.proofs]
+rust_files = 130
+coq_files = 279
+other_files = 16457
+unsafe_blocks = 3420
+safety_comments = 0
+ignore_attrs = 0
+allow_clippy_attrs = 66
+allow_dead_code_attrs = 102
+todo_fixme_xxx_hack = 0
+unimplemented_macros = 0
+todo_macros = 0
+unreachable_macros = 0
+coq_admitted_strict = 0
+coq_admit_strict = 0
+coq_axiom_strict = 32
+coq_axiom_indented = 100
+coq_parameter_strict = 8
+coq_parameter_indented = 56
+
+[by_root.xtask]
+rust_files = 1
+coq_files = 0
+other_files = 1
+unsafe_blocks = 0
+safety_comments = 0
+ignore_attrs = 0
+allow_clippy_attrs = 0
+allow_dead_code_attrs = 0
+todo_fixme_xxx_hack = 0
+unimplemented_macros = 0
+todo_macros = 0
+unreachable_macros = 0
+coq_admitted_strict = 0
+coq_admit_strict = 0
+coq_axiom_strict = 0
+coq_axiom_indented = 0
+coq_parameter_strict = 0
+coq_parameter_indented = 0
