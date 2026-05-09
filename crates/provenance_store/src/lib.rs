@@ -378,6 +378,39 @@ pub struct NotebookSessionSummary {
     pub cell_count: i64,
 }
 
+/// Append-only audit record returned by claim/insight/experiment
+/// status_note mutators. Useful for callers that want to print a
+/// confirmation including the prev/new content hashes.
+#[derive(Debug, Clone)]
+pub struct StatusNoteRevision {
+    pub entity_id: String,
+    pub field_name: String,
+    pub prev_value_sha256: Option<String>,
+    pub new_value_sha256: String,
+    pub actor: String,
+    pub reason: Option<String>,
+    pub revision_id: i64,
+}
+
+/// Hex-encoded SHA-256 of `s`. Used by the status_note mutators to
+/// populate the prev/new_value_sha256 columns in *_revisions tables.
+fn sha256_hex(s: &str) -> String {
+    use sha2::{Digest, Sha256};
+    let mut hasher = Sha256::new();
+    hasher.update(s.as_bytes());
+    let bytes = hasher.finalize();
+    let mut out = String::with_capacity(bytes.len() * 2);
+    for b in bytes.iter() {
+        out.push_str(&format!("{:02x}", b));
+    }
+    out
+}
+
+/// Sentinel inserted into *_revisions.application_id so future triggers
+/// can distinguish CLI-driven mutations from raw SQL pokes. The hex
+/// digits "go ro" (`0x676f_726f`) -- a fingerprint of the gororoba CLI.
+const CLI_APPLICATION_ID: i64 = 0x676f_726f;
+
 impl ProvenanceStore {
     pub fn open(db_path: &Path) -> Result<Self> {
         if let Some(parent) = db_path.parent() {
@@ -3293,6 +3326,94 @@ impl ProvenanceStore {
             .execute("DELETE FROM todo_items WHERE id = ?1", params![id])?;
         Ok(())
     }
+
+    /// Read-only accessor for the current status_note on a claim row.
+    /// Returns Ok(None) if the row exists but the column is NULL,
+    /// Err if the row does not exist.
+    pub fn claim_status_note(&self, id: &str) -> Result<Option<String>> {
+        let row: Option<String> = self
+            .conn
+            .query_row(
+                "SELECT status_note FROM claims WHERE id = ?1",
+                params![id],
+                |row| row.get(0),
+            )
+            .map_err(|e| {
+                anyhow::anyhow!("claim {} not found in canonical DB: {}", id, e)
+            })?;
+        Ok(row)
+    }
+
+    /// Update the status_note on a claim row inside a BEGIN IMMEDIATE
+    /// transaction, append a row to claim_revisions, and return the
+    /// audit record. The compat-export TOML must be regenerated
+    /// afterwards via `make registry-export-markdown`.
+    ///
+    /// Idempotent: if the new note equals the current note, the
+    /// function still records a `touch` revision so the actor + reason
+    /// are preserved, but does not change the underlying row.
+    pub fn claim_update_status_note(
+        &mut self,
+        id: &str,
+        new_note: &str,
+        actor: &str,
+        reason: Option<&str>,
+    ) -> Result<StatusNoteRevision> {
+        let tx = self
+            .conn
+            .transaction_with_behavior(rusqlite::TransactionBehavior::Immediate)?;
+        let prev_note: Option<String> = tx
+            .query_row(
+                "SELECT status_note FROM claims WHERE id = ?1",
+                params![id],
+                |row| row.get(0),
+            )
+            .map_err(|e| {
+                anyhow::anyhow!(
+                    "claim {} not found in canonical DB (or read failed): {}",
+                    id,
+                    e
+                )
+            })?;
+        let prev_value_sha256 = prev_note.as_deref().map(sha256_hex);
+        let new_value_sha256 = sha256_hex(new_note);
+        let operation = if prev_note.as_deref() == Some(new_note) {
+            "touch"
+        } else {
+            tx.execute(
+                "UPDATE claims SET status_note = ?2 WHERE id = ?1",
+                params![id, new_note],
+            )?;
+            "update"
+        };
+        tx.execute(
+            "INSERT INTO claim_revisions
+             (claim_id, field_name, prev_value_sha256, new_value_sha256,
+              actor, reason, operation, application_id)
+             VALUES (?1, 'status_note', ?2, ?3, ?4, ?5, ?6, ?7)",
+            params![
+                id,
+                prev_value_sha256,
+                new_value_sha256,
+                actor,
+                reason,
+                operation,
+                CLI_APPLICATION_ID
+            ],
+        )?;
+        let revision_id = tx.last_insert_rowid();
+        tx.commit()?;
+        Ok(StatusNoteRevision {
+            entity_id: id.to_string(),
+            field_name: "status_note".to_string(),
+            prev_value_sha256,
+            new_value_sha256,
+            actor: actor.to_string(),
+            reason: reason.map(str::to_string),
+            revision_id,
+        })
+    }
+
 
     /// Insert or replace a next-action item.
     pub fn upsert_next_action(&self, item: &ActionItem<'_>) -> Result<()> {
