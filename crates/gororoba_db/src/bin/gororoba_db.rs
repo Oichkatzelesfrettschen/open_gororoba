@@ -98,6 +98,14 @@ enum Commands {
     /// compat-export TOMLs and downstream markdown.
     Claim(ClaimMutationArgs),
 
+    /// Mutate a single insight row in the canonical SQLite. Mirrors `claim`
+    /// modulo the target table. Requires migration 0016 applied.
+    Insight(InsightMutationArgs),
+
+    /// Mutate a single experiment row in the canonical SQLite. Mirrors `claim`
+    /// modulo the target table (experiments_cp). Requires migration 0016 applied.
+    Experiment(ExperimentMutationArgs),
+
     /// Query rows from any table by name with optional status filter.
     Query(QueryArgs),
 
@@ -321,6 +329,54 @@ enum ClaimMutationAction {
         reason: Option<String>,
     },
     /// Print the current status_note for one claim.
+    ShowStatusNote {
+        #[arg(long)]
+        id: String,
+    },
+}
+
+#[derive(Parser, Debug)]
+struct InsightMutationArgs {
+    #[command(subcommand)]
+    action: InsightMutationAction,
+}
+
+#[derive(Subcommand, Debug)]
+enum InsightMutationAction {
+    UpdateStatusNote {
+        #[arg(long)]
+        id: String,
+        #[arg(long)]
+        status_note: String,
+        #[arg(long)]
+        actor: Option<String>,
+        #[arg(long)]
+        reason: Option<String>,
+    },
+    ShowStatusNote {
+        #[arg(long)]
+        id: String,
+    },
+}
+
+#[derive(Parser, Debug)]
+struct ExperimentMutationArgs {
+    #[command(subcommand)]
+    action: ExperimentMutationAction,
+}
+
+#[derive(Subcommand, Debug)]
+enum ExperimentMutationAction {
+    UpdateStatusNote {
+        #[arg(long)]
+        id: String,
+        #[arg(long)]
+        status_note: String,
+        #[arg(long)]
+        actor: Option<String>,
+        #[arg(long)]
+        reason: Option<String>,
+    },
     ShowStatusNote {
         #[arg(long)]
         id: String,
@@ -601,6 +657,8 @@ fn main() -> Result<()> {
         Commands::ExportRequirements(args) => cmd_export_requirements(&store, &args),
         Commands::Planning(args) => cmd_planning_mutation(&mut store, &cli.repo_root, &args),
         Commands::Claim(args) => cmd_claim_mutation(&mut store, &args),
+        Commands::Insight(args) => cmd_insight_mutation(&mut store, &args),
+        Commands::Experiment(args) => cmd_experiment_mutation(&mut store, &args),
         Commands::Requirements(args) => {
             cmd_requirements_mutation(&mut store, &cli.repo_root, &args)
         }
@@ -1818,6 +1876,94 @@ fn cmd_claim_mutation(
         }
         ClaimMutationAction::ShowStatusNote { id } => {
             let note = store.claim_status_note(id)?;
+            match note {
+                Some(text) => println!("{}: {}", id, text),
+                None => println!("{}: (status_note is NULL)", id),
+            }
+        }
+    }
+    Ok(())
+}
+
+fn cmd_insight_mutation(
+    store: &mut ProvenanceStore,
+    args: &InsightMutationArgs,
+) -> Result<()> {
+    match &args.action {
+        InsightMutationAction::UpdateStatusNote {
+            id,
+            status_note,
+            actor,
+            reason,
+        } => {
+            let actor = actor
+                .clone()
+                .or_else(|| std::env::var("USER").ok())
+                .unwrap_or_else(|| "unknown".to_string());
+            let revision = store.insight_update_status_note(
+                id,
+                status_note,
+                &actor,
+                reason.as_deref(),
+            )?;
+            println!(
+                "insight {} status_note: revision {} actor={} prev_sha256={} new_sha256={}",
+                revision.entity_id,
+                revision.revision_id,
+                revision.actor,
+                revision
+                    .prev_value_sha256
+                    .as_deref()
+                    .unwrap_or("(none)"),
+                &revision.new_value_sha256
+            );
+        }
+        InsightMutationAction::ShowStatusNote { id } => {
+            let note = store.insight_status_note(id)?;
+            match note {
+                Some(text) => println!("{}: {}", id, text),
+                None => println!("{}: (status_note is NULL)", id),
+            }
+        }
+    }
+    Ok(())
+}
+
+fn cmd_experiment_mutation(
+    store: &mut ProvenanceStore,
+    args: &ExperimentMutationArgs,
+) -> Result<()> {
+    match &args.action {
+        ExperimentMutationAction::UpdateStatusNote {
+            id,
+            status_note,
+            actor,
+            reason,
+        } => {
+            let actor = actor
+                .clone()
+                .or_else(|| std::env::var("USER").ok())
+                .unwrap_or_else(|| "unknown".to_string());
+            let revision = store.experiment_update_status_note(
+                id,
+                status_note,
+                &actor,
+                reason.as_deref(),
+            )?;
+            println!(
+                "experiment {} status_note: revision {} actor={} prev_sha256={} new_sha256={}",
+                revision.entity_id,
+                revision.revision_id,
+                revision.actor,
+                revision
+                    .prev_value_sha256
+                    .as_deref()
+                    .unwrap_or("(none)"),
+                &revision.new_value_sha256
+            );
+        }
+        ExperimentMutationAction::ShowStatusNote { id } => {
+            let note = store.experiment_status_note(id)?;
             match note {
                 Some(text) => println!("{}: {}", id, text),
                 None => println!("{}: (status_note is NULL)", id),

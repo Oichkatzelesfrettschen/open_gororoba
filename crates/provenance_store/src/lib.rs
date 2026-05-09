@@ -123,6 +123,9 @@ fn migrations() -> Migrations<'static> {
         M::up(include_str!(
             "../../../db/migrations/0015_revisions_audit.sql"
         )),
+        M::up(include_str!(
+            "../../../db/migrations/0016_status_note_columns.sql"
+        )),
     ])
 }
 
@@ -3414,6 +3417,145 @@ impl ProvenanceStore {
         })
     }
 
+    /// Read-only accessor for an insight's status_note column (added in
+    /// migration 0016).
+    pub fn insight_status_note(&self, id: &str) -> Result<Option<String>> {
+        let row: Option<String> = self
+            .conn
+            .query_row(
+                "SELECT status_note FROM insights WHERE id = ?1",
+                params![id],
+                |row| row.get(0),
+            )
+            .map_err(|e| {
+                anyhow::anyhow!("insight {} not found in canonical DB: {}", id, e)
+            })?;
+        Ok(row)
+    }
+
+    /// Update the status_note on an insight row. Mirrors
+    /// claim_update_status_note end-to-end.
+    pub fn insight_update_status_note(
+        &mut self,
+        id: &str,
+        new_note: &str,
+        actor: &str,
+        reason: Option<&str>,
+    ) -> Result<StatusNoteRevision> {
+        self.entity_update_status_note(
+            id,
+            new_note,
+            actor,
+            reason,
+            "insights",
+            "insight_revisions",
+            "insight_id",
+        )
+    }
+
+    /// Read-only accessor for an experiment's status_note column.
+    pub fn experiment_status_note(&self, id: &str) -> Result<Option<String>> {
+        let row: Option<String> = self
+            .conn
+            .query_row(
+                "SELECT status_note FROM experiments_cp WHERE id = ?1",
+                params![id],
+                |row| row.get(0),
+            )
+            .map_err(|e| {
+                anyhow::anyhow!(
+                    "experiment {} not found in canonical DB: {}",
+                    id,
+                    e
+                )
+            })?;
+        Ok(row)
+    }
+
+    /// Update the status_note on an experiment row. Mirrors
+    /// claim_update_status_note end-to-end.
+    pub fn experiment_update_status_note(
+        &mut self,
+        id: &str,
+        new_note: &str,
+        actor: &str,
+        reason: Option<&str>,
+    ) -> Result<StatusNoteRevision> {
+        self.entity_update_status_note(
+            id,
+            new_note,
+            actor,
+            reason,
+            "experiments_cp",
+            "experiment_revisions",
+            "experiment_id",
+        )
+    }
+
+    /// Generic helper for status_note updates across claims, insights,
+    /// experiments_cp. Caller passes the table, the revisions table, and
+    /// the fk column name. All three call sites use this; it is the only
+    /// place SQL is constructed for the entity-level update.
+    fn entity_update_status_note(
+        &mut self,
+        id: &str,
+        new_note: &str,
+        actor: &str,
+        reason: Option<&str>,
+        table: &str,
+        revisions_table: &str,
+        fk_col: &str,
+    ) -> Result<StatusNoteRevision> {
+        let select_sql = format!("SELECT status_note FROM {} WHERE id = ?1", table);
+        let update_sql = format!("UPDATE {} SET status_note = ?2 WHERE id = ?1", table);
+        let insert_sql = format!(
+            "INSERT INTO {revisions_table}
+             ({fk_col}, field_name, prev_value_sha256, new_value_sha256,
+              actor, reason, operation, application_id)
+             VALUES (?1, 'status_note', ?2, ?3, ?4, ?5, ?6, ?7)",
+            revisions_table = revisions_table,
+            fk_col = fk_col,
+        );
+        let tx = self
+            .conn
+            .transaction_with_behavior(rusqlite::TransactionBehavior::Immediate)?;
+        let prev_note: Option<String> = tx
+            .query_row(&select_sql, params![id], |row| row.get(0))
+            .map_err(|e| {
+                anyhow::anyhow!("{} {} not found in canonical DB: {}", table, id, e)
+            })?;
+        let prev_value_sha256 = prev_note.as_deref().map(sha256_hex);
+        let new_value_sha256 = sha256_hex(new_note);
+        let operation = if prev_note.as_deref() == Some(new_note) {
+            "touch"
+        } else {
+            tx.execute(&update_sql, params![id, new_note])?;
+            "update"
+        };
+        tx.execute(
+            &insert_sql,
+            params![
+                id,
+                prev_value_sha256,
+                new_value_sha256,
+                actor,
+                reason,
+                operation,
+                CLI_APPLICATION_ID
+            ],
+        )?;
+        let revision_id = tx.last_insert_rowid();
+        tx.commit()?;
+        Ok(StatusNoteRevision {
+            entity_id: id.to_string(),
+            field_name: "status_note".to_string(),
+            prev_value_sha256,
+            new_value_sha256,
+            actor: actor.to_string(),
+            reason: reason.map(str::to_string),
+            revision_id,
+        })
+    }
 
     /// Insert or replace a next-action item.
     pub fn upsert_next_action(&self, item: &ActionItem<'_>) -> Result<()> {
