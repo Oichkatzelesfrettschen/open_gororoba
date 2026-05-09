@@ -2,7 +2,7 @@
 //!
 //! WHY: Pre-registered prediction P2 (ablation-preregistered-v1, commit 455d4745):
 //! "CD R32 mean F1 will EXCEED the mean of 100 dense-random-trilinear draws by
-//! >= 2 sigma of the dense-random distribution."
+//! at least 2 sigma of the dense-random distribution."
 //! If true, the specific CD coefficient structure contributes beyond embedding
 //! dimension alone.  This binary provides the dense-random reference distribution.
 //!
@@ -200,8 +200,7 @@ fn compute_random_trilinear_scores(
             for i in 0..dim {
                 let mut result_i = 0.0_f64;
                 let base = i * dim * dim;
-                for j in 0..dim {
-                    let xj = x[j];
+                for (j, &xj) in x.iter().enumerate().take(dim) {
                     if xj == 0.0 {
                         continue;
                     }
@@ -487,7 +486,7 @@ fn main() -> Result<()> {
 
     let event_unix: Vec<i64> = fom_catalog
         .iter()
-        .map(|ev| event_midpoint_unix(ev))
+        .map(event_midpoint_unix)
         .collect();
 
     // -----------------------------------------------------------------------

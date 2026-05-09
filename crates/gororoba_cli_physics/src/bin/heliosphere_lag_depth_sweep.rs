@@ -291,7 +291,7 @@ fn main() -> Result<()> {
         &reference_midnight,
         all_minutes.last().map(|r| r.elapsed_hours).unwrap_or(0.0),
     );
-    let event_unix: Vec<i64> = fom_catalog.iter().map(|ev| event_midpoint_unix(ev)).collect();
+    let event_unix: Vec<i64> = fom_catalog.iter().map(event_midpoint_unix).collect();
 
     let mut results: Vec<LagDepthResult> = Vec::new();
 

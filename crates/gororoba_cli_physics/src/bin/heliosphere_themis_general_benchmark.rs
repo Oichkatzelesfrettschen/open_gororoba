@@ -449,7 +449,7 @@ fn main() -> Result<()> {
         .iter()
         .map(|&h| hours_to_unix(&reference_midnight, h))
         .collect();
-    let ev_unix: Vec<i64> = catalog.iter().map(|ev| event_midpoint_unix(ev)).collect();
+    let ev_unix: Vec<i64> = catalog.iter().map(event_midpoint_unix).collect();
 
     let (cd_p, cd_r, cd_f1) =
         boundary_metrics::precision_recall_f1(&cd_unix, &ev_unix, eval_window_secs);

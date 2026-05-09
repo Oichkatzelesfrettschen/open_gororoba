@@ -180,7 +180,7 @@ fn eval_detection_hours(
         .iter()
         .map(|&h| hours_to_unix(reference_midnight, h))
         .collect();
-    let event_unix: Vec<i64> = catalog.iter().map(|ev| event_midpoint_unix(ev)).collect();
+    let event_unix: Vec<i64> = catalog.iter().map(event_midpoint_unix).collect();
     boundary_metrics::precision_recall_f1(&detection_unix, &event_unix, window_secs)
 }
 
