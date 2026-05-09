@@ -93,6 +93,11 @@ enum Commands {
     /// Mutate canonical requirements rows and refresh generated compatibility exports.
     Requirements(RequirementsMutationArgs),
 
+    /// Mutate a single claim row in the canonical SQLite. Status_note edits land
+    /// here. Run `make registry-export-markdown` afterward to regenerate the
+    /// compat-export TOMLs and downstream markdown.
+    Claim(ClaimMutationArgs),
+
     /// Query rows from any table by name with optional status filter.
     Query(QueryArgs),
 
@@ -289,6 +294,37 @@ struct ExportRequirementsArgs {
 struct PlanningMutationArgs {
     #[command(subcommand)]
     action: PlanningMutationAction,
+}
+
+#[derive(Parser, Debug)]
+struct ClaimMutationArgs {
+    #[command(subcommand)]
+    action: ClaimMutationAction,
+}
+
+#[derive(Subcommand, Debug)]
+enum ClaimMutationAction {
+    /// Replace the status_note on one claim row inside a single
+    /// BEGIN IMMEDIATE transaction. Appends to claim_revisions.
+    UpdateStatusNote {
+        /// Claim id (e.g., C-441).
+        #[arg(long)]
+        id: String,
+        /// New status_note text. Plain ASCII; no smart quotes.
+        #[arg(long)]
+        status_note: String,
+        /// Reviewer name. Defaults to $USER.
+        #[arg(long)]
+        actor: Option<String>,
+        /// Free-form reason recorded in claim_revisions.reason.
+        #[arg(long)]
+        reason: Option<String>,
+    },
+    /// Print the current status_note for one claim.
+    ShowStatusNote {
+        #[arg(long)]
+        id: String,
+    },
 }
 
 #[derive(Subcommand, Debug)]
@@ -564,6 +600,7 @@ fn main() -> Result<()> {
         Commands::ExportPlanning(args) => cmd_export_planning(&store, &args),
         Commands::ExportRequirements(args) => cmd_export_requirements(&store, &args),
         Commands::Planning(args) => cmd_planning_mutation(&mut store, &cli.repo_root, &args),
+        Commands::Claim(args) => cmd_claim_mutation(&mut store, &args),
         Commands::Requirements(args) => {
             cmd_requirements_mutation(&mut store, &cli.repo_root, &args)
         }
@@ -1738,6 +1775,55 @@ fn cmd_planning_mutation(
     }
 
     export_planning_compat_files(store, repo_root)?;
+    Ok(())
+}
+
+fn cmd_claim_mutation(
+    store: &mut ProvenanceStore,
+    args: &ClaimMutationArgs,
+) -> Result<()> {
+    match &args.action {
+        ClaimMutationAction::UpdateStatusNote {
+            id,
+            status_note,
+            actor,
+            reason,
+        } => {
+            let actor = actor
+                .clone()
+                .or_else(|| std::env::var("USER").ok())
+                .unwrap_or_else(|| "unknown".to_string());
+            let revision = store.claim_update_status_note(
+                id,
+                status_note,
+                &actor,
+                reason.as_deref(),
+            )?;
+            println!(
+                "claim {} status_note: revision {} actor={} prev_sha256={} new_sha256={}",
+                revision.entity_id,
+                revision.revision_id,
+                revision.actor,
+                revision
+                    .prev_value_sha256
+                    .as_deref()
+                    .unwrap_or("(none)"),
+                &revision.new_value_sha256
+            );
+            println!(
+                "next: run `make registry-export-markdown` to regenerate \
+                 registry/claims.toml and downstream mirrors, then \
+                 `make integrity-resolution` to refresh schema_signatures.toml."
+            );
+        }
+        ClaimMutationAction::ShowStatusNote { id } => {
+            let note = store.claim_status_note(id)?;
+            match note {
+                Some(text) => println!("{}: {}", id, text),
+                None => println!("{}: (status_note is NULL)", id),
+            }
+        }
+    }
     Ok(())
 }
 
