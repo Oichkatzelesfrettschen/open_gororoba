@@ -298,7 +298,7 @@ tar = "0.4"                   # Tar archive reading (WMAP/Planck chain extractio
 
 # PDF extraction (pdfium-render is primary; lopdf/pdf-extract are pure-Rust fallback)
 pdfium-render = "0.9"            # High-level PDFium wrapper (text, images, rendering)
-image = "0.25"                   # Image encoding/decoding (used by pdfium-render for PNG output)
+image = { version = "0.25", default-features = false, features = ["png", "jpeg"] }  # PNG/JPEG only; avif disabled to drop rav1e -> core2 chain (RUSTSEC-2026-0105)
 lopdf = "0.40"                   # Pure Rust PDF parser (fallback, object-level access)
 pdf-extract = "0.10"             # Pure Rust PDF text extraction (fallback, wraps lopdf)
 unpdf = "0.2"                    # Scientific PDF extraction with math support
