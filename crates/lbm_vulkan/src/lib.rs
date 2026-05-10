@@ -1,6 +1,16 @@
 //! Vulkan-backed compute and rendering infrastructure for gororoba fluid and
 //! field visualizations.
 //!
+//! # Universal SAFETY argument for `unsafe { device.<vk_fn>(...) }`
+//!
+//! Every `ash::Device` call in this crate is `unsafe` because ash exposes
+//! the Vulkan FFI verbatim. See `compute.rs` for the full 5-numbered
+//! soundness argument (active context, paired Drop destruction, fence-
+//! gated readback, descriptor-set typestate, gpu_allocator alignment).
+//! The lib.rs sites are device discovery + capability probes that
+//! follow the same pattern modulo handle creation -- queries are
+//! short-lived and do not retain handles.
+//!
 //! This crate currently mixes three roles:
 //! - hardware capability discovery for Vulkan devices,
 //! - domain-specific LBM compute pipelines,
