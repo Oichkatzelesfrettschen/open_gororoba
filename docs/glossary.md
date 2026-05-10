@@ -89,8 +89,11 @@ voids" in `generate-topological-voids` and `dark-halo-hunt`.
 
 ### Sign imbalance
 
-The named replacement for "vacuum frustration" (one of the 8 banned terms in
-the terminology-gate). See `sign_imbalance` crate.
+Repo-wide canonical name for the lattice-frustration measure formerly known
+by a now-banned legacy term (one of 8 patterns enforced by the
+terminology-gate; see `crates/gororoba_cli_data/src/bin/repo_utilities.rs`
+for the full list). The new name follows Harary (1959) graph-theory
+convention. See `sign_imbalance` crate for the implementation.
 
 ## Stage A / Stage B / debt baseline
 
