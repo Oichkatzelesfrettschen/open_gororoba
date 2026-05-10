@@ -1,13 +1,13 @@
 {
   "failure_count": 1,
-  "generated_at": "2026-04-19T16:39:22-07:00",
-  "output_dir": "reports/gates/2026-04-19/163334",
+  "generated_at": "2026-05-10T13:19:12-07:00",
+  "output_dir": "reports/gates/2026-05-10/131601",
   "steps": [
     {
       "exit_code": 2,
-      "log": "reports/gates/2026-04-19/163334/gate-ci-registry.log",
+      "log": "reports/gates/2026-05-10/131601/gate-ci-registry.log",
       "name": "gate-ci-registry"
     }
   ],
-  "summary": "reports/gates/2026-04-19/163334/summary.md"
+  "summary": "reports/gates/2026-05-10/131601/summary.md"
 }
