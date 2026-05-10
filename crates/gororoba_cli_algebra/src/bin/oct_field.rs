@@ -123,7 +123,20 @@ fn main() {
             output,
             json,
         } => {
-            run_evolve(n, domain, t_final, mass, coupling, dt, output, json);
+            run_evolve(
+                FieldParams {
+                    n,
+                    l: domain,
+                    mass,
+                    coupling,
+                    dt,
+                },
+                EvolveControl {
+                    t_final,
+                    output,
+                    json,
+                },
+            );
         }
         Commands::Dispersion {
             n,
@@ -146,25 +159,30 @@ fn main() {
     }
 }
 
-#[allow(clippy::too_many_arguments)]
-fn run_evolve(
-    n: usize,
-    domain: f64,
+/// Runtime control for an `evolve` invocation: integration endpoint,
+/// output target, and report format flag. The five physical
+/// `FieldParams` (n, l, mass, coupling, dt) are passed separately
+/// because they reuse the existing `FieldParams` type from the field
+/// crate.
+struct EvolveControl {
     t_final: f64,
-    mass: f64,
-    coupling: f64,
-    dt: f64,
     output: Option<String>,
     json: bool,
-) {
-    let params = FieldParams {
-        n,
-        l: domain,
-        mass,
-        coupling,
-        dt,
-    };
+}
 
+fn run_evolve(params: FieldParams, control: EvolveControl) {
+    // Alias struct fields to local bindings so the report formatters
+    // can reference them by their natural physics names.
+    let n = params.n;
+    let domain = params.l;
+    let mass = params.mass;
+    let coupling = params.coupling;
+    let dt = params.dt;
+    let EvolveControl {
+        t_final,
+        output,
+        json,
+    } = control;
     let n_steps = (t_final / dt) as usize;
     let (phi0, pi0) = gaussian_wave_packet(&params);
     let result = evolve(&phi0, &pi0, &params, n_steps);

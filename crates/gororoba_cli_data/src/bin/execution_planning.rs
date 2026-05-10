@@ -901,13 +901,15 @@ fn verify_execution_planning(repo_root: &Path, args: &Args) -> Result<()> {
             &mut failures,
             &deps,
             &format!("workstream[{wid}].dependencies"),
-            &claim_ids,
-            &insight_ids,
-            &exp_ids,
-            &workstream_ids,
-            &todo_ids,
-            &action_ids,
-            &req_ids,
+            &DependencyIdSets {
+                claim_ids: &claim_ids,
+                insight_ids: &insight_ids,
+                experiment_ids: &exp_ids,
+                workstream_ids: &workstream_ids,
+                todo_ids: &todo_ids,
+                action_ids: &action_ids,
+                req_ids: &req_ids,
+            },
         );
     }
 
@@ -945,13 +947,15 @@ fn verify_execution_planning(repo_root: &Path, args: &Args) -> Result<()> {
             &mut failures,
             &deps,
             &format!("todo[{tid}].dependencies"),
-            &claim_ids,
-            &insight_ids,
-            &exp_ids,
-            &workstream_ids,
-            &todo_ids,
-            &action_ids,
-            &req_ids,
+            &DependencyIdSets {
+                claim_ids: &claim_ids,
+                insight_ids: &insight_ids,
+                experiment_ids: &exp_ids,
+                workstream_ids: &workstream_ids,
+                todo_ids: &todo_ids,
+                action_ids: &action_ids,
+                req_ids: &req_ids,
+            },
         );
     }
 
@@ -991,13 +995,15 @@ fn verify_execution_planning(repo_root: &Path, args: &Args) -> Result<()> {
             &mut failures,
             &deps,
             &format!("next_actions[{aid}].dependencies"),
-            &claim_ids,
-            &insight_ids,
-            &exp_ids,
-            &workstream_ids,
-            &todo_ids,
-            &action_ids,
-            &req_ids,
+            &DependencyIdSets {
+                claim_ids: &claim_ids,
+                insight_ids: &insight_ids,
+                experiment_ids: &exp_ids,
+                workstream_ids: &workstream_ids,
+                todo_ids: &todo_ids,
+                action_ids: &action_ids,
+                req_ids: &req_ids,
+            },
         );
     }
 
@@ -2568,19 +2574,33 @@ fn choose_lineage_id(existing: &str, used: &mut BTreeSet<String>, sequence: &mut
     }
 }
 
-#[allow(clippy::too_many_arguments)]
+/// Bundle of cross-reference ID sets used by `verify_dependencies` to
+/// validate dependency strings. Seven `BTreeSet<String>` references that
+/// always travel together. Bundling keeps the verifier under
+/// clippy::too_many_arguments without #[allow] suppression.
+struct DependencyIdSets<'a> {
+    claim_ids: &'a BTreeSet<String>,
+    insight_ids: &'a BTreeSet<String>,
+    experiment_ids: &'a BTreeSet<String>,
+    workstream_ids: &'a BTreeSet<String>,
+    todo_ids: &'a BTreeSet<String>,
+    action_ids: &'a BTreeSet<String>,
+    req_ids: &'a BTreeSet<String>,
+}
+
 fn verify_dependencies(
     failures: &mut Vec<String>,
     deps: &[String],
     where_label: &str,
-    claim_ids: &BTreeSet<String>,
-    insight_ids: &BTreeSet<String>,
-    experiment_ids: &BTreeSet<String>,
-    workstream_ids: &BTreeSet<String>,
-    todo_ids: &BTreeSet<String>,
-    action_ids: &BTreeSet<String>,
-    req_ids: &BTreeSet<String>,
+    ids: &DependencyIdSets<'_>,
 ) {
+    let claim_ids = ids.claim_ids;
+    let insight_ids = ids.insight_ids;
+    let experiment_ids = ids.experiment_ids;
+    let workstream_ids = ids.workstream_ids;
+    let todo_ids = ids.todo_ids;
+    let action_ids = ids.action_ids;
+    let req_ids = ids.req_ids;
     for dep in deps {
         let dep_id = dep.trim();
         if dep_id.is_empty() {
