@@ -210,17 +210,47 @@ impl BackendQuantizer {
             }
             #[cfg(feature = "cubecl")]
             Backend::CubeCL => {
-                // Phase A scaffold landed in commit ac82bc92 (TaskList #56).
-                // The kernel signature is documented in
-                // crates/cd_kernel/src/turboquant/cubecl_backend/quantize_kernel.rs
-                // but the real #[cube] launch wrapper is gated on:
-                //   1. cubecl meta-crate landing in workspace deps
-                //   2. cubecl 1.0 stabilizing the AtomicU32 surface
-                // CPU fallback is intentional until both gates clear.
-                // See TaskList #57 for the wire-up step (depends on Phase B
-                // kernel + launcher).
-                self.cpu.quantize(values, out);
-                Ok(())
+                // Cross-platform GPU dispatch via the cubecl-wgpu runtime.
+                //
+                // # When this arm is selected
+                //
+                // BackendQuantizer::detect_best picks Backend::CubeCL only
+                // when (a) the cubecl feature is on AND (b) cubecl_backend::
+                // launcher::is_available() returns true (i.e. a wgpu adapter
+                // is reachable). On Linux/Vulkan hosts where Backend::Vulkan
+                // is also available, prefer that path -- it skips the wgpu/
+                // naga translation overhead. The cubecl path's value is
+                // cross-platform reach (macOS Metal / Windows DX12 / browser
+                // WebGPU) where Vulkan is not available.
+                //
+                // # Fallback ladder
+                //
+                // If the launcher fails (DeviceInit error from no reachable
+                // adapter, or LaunchFailed from a runtime error), drop to
+                // CPU. The launcher's InvalidRequest variant should never
+                // happen here because BackendQuantizer constructed the
+                // QuantizeRequest from validated CPU-quantizer state.
+                use super::cubecl_backend::launcher::{
+                    self, CubeclQuantizerError,
+                };
+                use super::gpu_backend_shared::QuantizeRequest;
+                let req = QuantizeRequest {
+                    values,
+                    boundaries: self.cpu.boundaries(),
+                    bits: self.cpu.bits() as u32,
+                };
+                match launcher::quantize(&req, out) {
+                    Ok(()) => Ok(()),
+                    Err(CubeclQuantizerError::DeviceInit(e)) => {
+                        eprintln!(
+                            "cubecl-wgpu init failed ({}); falling back to CPU.",
+                            e
+                        );
+                        self.cpu.quantize(values, out);
+                        Ok(())
+                    }
+                    Err(other) => Err(format!("cubecl quantize: {}", other)),
+                }
             }
         }
     }
@@ -380,6 +410,10 @@ mod tests {
             #[cfg(feature = "vulkan")]
             Backend::Vulkan(tier) => {
                 println!("  Vulkan tier: {}", tier);
+            }
+            #[cfg(feature = "cubecl")]
+            Backend::CubeCL => {
+                println!("  cubecl unified backend");
             }
         }
     }
