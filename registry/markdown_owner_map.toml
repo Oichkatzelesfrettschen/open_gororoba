@@ -12,7 +12,7 @@ updated = "2026-04-30"
 authoritative = true
 status = "active"
 status_token = "ACTIVE"
-document_count = 218
+document_count = 219
 [[owner]]
 path = "README.md"
 owner_group = "project"
@@ -1316,5 +1316,10 @@ removal_status = "active"
 
 [[owner]]
 path = "docs/glossary.md"
+owner_group = "project"
+removal_status = "active"
+
+[[owner]]
+path = "docs/engineering/formal_proof_field_schema_2026_05_09.md"
 owner_group = "project"
 removal_status = "active"
