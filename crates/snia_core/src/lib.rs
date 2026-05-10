@@ -33,7 +33,9 @@ pub use hydro::{BoundaryCondition, ConservativeState, HllcFlux1D, LimiterKind};
 pub use lightcurve::{LightCurveModel, LightCurveSample};
 pub use output::{SimulationSnapshot, read_snapshot_toml, write_snapshot_toml};
 pub use reaction::{BurnStepResult, CarbonBurnModel};
-pub use solver::{CellState, DetonationEvent, SimulationResult, SniaCoreSolver, SolverConfig};
+pub use solver::{
+    CellState, DetonationEvent, SimulationResult, SniaCoreSolver, SniaInitialState, SolverConfig,
+};
 pub use types::{BurnState, HydroState1D, ThermoState};
 pub use yield_model::NickelYieldModel;
 

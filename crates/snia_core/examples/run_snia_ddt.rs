@@ -23,9 +23,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         HllcFlux1D::default(),
         CarbonBurnModel::default(),
         NickelYieldModel::default(),
-        initial_hydro,
-        1.8e9,
-        BurnState::default(),
+        snia_core::SniaInitialState {
+            hydro: initial_hydro,
+            temperature: 1.8e9,
+            burn: BurnState::default(),
+        },
     )?;
 
     let result = solver.run()?;

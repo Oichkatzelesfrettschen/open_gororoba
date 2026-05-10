@@ -274,9 +274,11 @@ fn run(args: Args) -> Result<(), Box<dyn Error>> {
         HllcFlux1D::default(),
         CarbonBurnModel::default(),
         NickelYieldModel::default(),
-        initial_hydro,
-        initial_temperature,
-        BurnState::default(),
+        snia_core::SniaInitialState {
+            hydro: initial_hydro,
+            temperature: initial_temperature,
+            burn: BurnState::default(),
+        },
     )?;
 
     let result = solver.run()?;

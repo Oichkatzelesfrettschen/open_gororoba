@@ -115,7 +115,16 @@ fn main() {
             output,
             json,
         } => {
-            run_simulate(omega_m, omega_l, q_corr, t_end, steps, a0, output, json);
+            run_simulate(SimulateRun {
+                omega_m,
+                omega_l,
+                q_corr,
+                t_end,
+                steps,
+                a0,
+                output,
+                json,
+            });
         }
         Commands::Observables {
             omega_m,
@@ -138,8 +147,10 @@ fn main() {
     }
 }
 
-#[allow(clippy::too_many_arguments)]
-fn run_simulate(
+/// Bounce-cosmology simulation control: physical params (BounceParams
+/// triple), integration window (t_end + steps + a0 initial scale factor),
+/// and report target (output path + json flag).
+struct SimulateRun {
     omega_m: f64,
     omega_l: f64,
     q_corr: f64,
@@ -148,7 +159,19 @@ fn run_simulate(
     a0: f64,
     output: Option<String>,
     json: bool,
-) {
+}
+
+fn run_simulate(run: SimulateRun) {
+    let SimulateRun {
+        omega_m,
+        omega_l,
+        q_corr,
+        t_end,
+        steps,
+        a0,
+        output,
+        json,
+    } = run;
     eprintln!(
         "Bounce cosmology: omega_m={}, omega_l={}, q_corr={}",
         omega_m, omega_l, q_corr

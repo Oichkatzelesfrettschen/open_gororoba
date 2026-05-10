@@ -141,6 +141,21 @@ pub(crate) struct BufferSet {
     pub(crate) allocation: Allocation,
 }
 
+/// LBM pipeline buffer bundle: the seven storage-buffer references the
+/// LBM compute shader binds at descriptor set indices 0-6 (distribution
+/// fronts f_a/f_b, density rho, velocity u, relaxation time tau,
+/// external force, and entropy). Bundling avoids
+/// clippy::too_many_arguments on the pipeline-creation helpers.
+struct LbmPipelineBuffers<'a> {
+    f_a: &'a BufferSet,
+    f_b: &'a BufferSet,
+    rho: &'a BufferSet,
+    u: &'a BufferSet,
+    tau: &'a BufferSet,
+    force: &'a BufferSet,
+    entropy: &'a BufferSet,
+}
+
 struct ImageSet {
     image: vk::Image,
     view: vk::ImageView,
@@ -300,19 +315,29 @@ impl GororobaEngine {
         )?;
         drop(allocator);
 
-        let lbm_pipeline = Self::create_lbm_pipeline(
-            &device, ctx, &f_a, &f_b, &rho, &u, &tau, &force, &entropy, precision,
-        )?;
+        let pipeline_buffers = LbmPipelineBuffers {
+            f_a: &f_a,
+            f_b: &f_b,
+            rho: &rho,
+            u: &u,
+            tau: &tau,
+            force: &force,
+            entropy: &entropy,
+        };
+        let lbm_pipeline =
+            Self::create_lbm_pipeline(&device, ctx, pipeline_buffers, precision)?;
         let mrt_pipeline = Self::create_lbm_pipeline_with_src(
             &device,
             ctx,
-            &f_a,
-            &f_b,
-            &rho,
-            &u,
-            &tau,
-            &force,
-            &entropy,
+            LbmPipelineBuffers {
+                f_a: &f_a,
+                f_b: &f_b,
+                rho: &rho,
+                u: &u,
+                tau: &tau,
+                force: &force,
+                entropy: &entropy,
+            },
             match precision {
                 Precision::FP16 => include_str!("../shaders/lbm_mrt_f16.wgsl"),
                 _ => include_str!("../shaders/lbm_mrt.wgsl"),
@@ -363,41 +388,32 @@ impl GororobaEngine {
         self.collision_mode
     }
 
-    #[allow(clippy::too_many_arguments)]
     fn create_lbm_pipeline(
         device: &Arc<Device>,
         ctx: &VulkanContext,
-        f_a: &BufferSet,
-        f_b: &BufferSet,
-        rho: &BufferSet,
-        u: &BufferSet,
-        tau: &BufferSet,
-        force: &BufferSet,
-        entropy: &BufferSet,
+        buffers: LbmPipelineBuffers<'_>,
         precision: Precision,
     ) -> Result<ComputePipeline> {
         let lbm_src = match precision {
             Precision::FP16 => include_str!("../shaders/lbm_f16.wgsl"),
             _ => include_str!("../shaders/lbm.wgsl"),
         };
-        Self::create_lbm_pipeline_with_src(
-            device, ctx, f_a, f_b, rho, u, tau, force, entropy, lbm_src,
-        )
+        Self::create_lbm_pipeline_with_src(device, ctx, buffers, lbm_src)
     }
 
-    #[allow(clippy::too_many_arguments)]
     fn create_lbm_pipeline_with_src(
         device: &Arc<Device>,
         ctx: &VulkanContext,
-        f_a: &BufferSet,
-        f_b: &BufferSet,
-        rho: &BufferSet,
-        u: &BufferSet,
-        tau: &BufferSet,
-        force: &BufferSet,
-        entropy: &BufferSet,
+        buffers: LbmPipelineBuffers<'_>,
         shader_src: &str,
     ) -> Result<ComputePipeline> {
+        let f_a = buffers.f_a;
+        let f_b = buffers.f_b;
+        let rho = buffers.rho;
+        let u = buffers.u;
+        let tau = buffers.tau;
+        let force = buffers.force;
+        let entropy = buffers.entropy;
         let code =
             compile_wgsl(shader_src).map_err(|e| VulkanEngineError::ShaderError(e.to_string()))?;
         let module = unsafe {

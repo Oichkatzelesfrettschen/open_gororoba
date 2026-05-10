@@ -19,14 +19,16 @@ fn bench_solver_step(c: &mut Criterion) {
                 HllcFlux1D::default(),
                 CarbonBurnModel::default(),
                 NickelYieldModel::default(),
-                HydroState1D {
-                    density: 2.0e7,
-                    velocity: 1.0e6,
-                    pressure: 3.0e23,
-                    specific_internal_energy: 1.1e17,
+                snia_core::SniaInitialState {
+                    hydro: HydroState1D {
+                        density: 2.0e7,
+                        velocity: 1.0e6,
+                        pressure: 3.0e23,
+                        specific_internal_energy: 1.1e17,
+                    },
+                    temperature: 1.4e9,
+                    burn: BurnState::default(),
                 },
-                1.4e9,
-                BurnState::default(),
             )
             .expect("solver init");
             let _ = solver.step().expect("step");

@@ -240,18 +240,31 @@ fn run_multitaper(
     })
 }
 
-#[allow(clippy::too_many_arguments)]
-fn audit_single(
-    dataset: &Path,
-    column: &str,
+/// Single-dataset ghost-spectral audit configuration: data location
+/// (path + column), statistical resampling counts (permutations, bootstrap,
+/// surrogates), Python interpreter setup, and PRNG seed.
+struct AuditSingleConfig<'a> {
+    dataset: &'a Path,
+    column: &'a str,
     n_values: usize,
     permutations: usize,
     bootstrap: usize,
     surrogates: usize,
-    python: &str,
-    python_module: &Option<PathBuf>,
+    python: &'a str,
+    python_module: &'a Option<PathBuf>,
     seed: u64,
-) {
+}
+
+fn audit_single(cfg: AuditSingleConfig<'_>) {
+    let dataset = cfg.dataset;
+    let column = cfg.column;
+    let n_values = cfg.n_values;
+    let permutations = cfg.permutations;
+    let bootstrap = cfg.bootstrap;
+    let surrogates = cfg.surrogates;
+    let python = cfg.python;
+    let python_module = cfg.python_module;
+    let seed = cfg.seed;
     let _ = n_values; // used for clarity in caller
     println!("=== Ghost Spectral Audit ===");
     println!("Dataset: {}", dataset.display());
@@ -537,17 +550,17 @@ fn main() {
             let values = load_csv_values(&dataset, &column);
             let n = values.len();
             drop(values);
-            audit_single(
-                &dataset,
-                &column,
-                n,
+            audit_single(AuditSingleConfig {
+                dataset: &dataset,
+                column: &column,
+                n_values: n,
                 permutations,
                 bootstrap,
                 surrogates,
-                &python,
-                &python_module,
+                python: &python,
+                python_module: &python_module,
                 seed,
-            );
+            });
         }
         Commands::Batch {
             dir,

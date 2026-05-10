@@ -705,32 +705,76 @@ pub fn write_step_timing_report(
     Ok(())
 }
 
+/// Header-line metadata describing a bench-trace run: resolution, backend,
+/// precision, and forcing configuration. The output path is borrowed
+/// separately because it has its own lifetime in the caller.
 #[cfg(feature = "hdf5-export")]
-#[allow(clippy::too_many_arguments)]
-fn export_bench_trace(
-    out_path: &Path,
+struct BenchTraceSetup<'a> {
+    out_path: &'a Path,
     resolution: usize,
     backend: BackendKind,
     precision: Precision,
-    forcing: &KolmogorovForcingSpec,
+    forcing: &'a KolmogorovForcingSpec,
     total_steps: usize,
     elapsed_secs: f64,
-    time_hist: &[f64],
-    rho_hist: &[f64],
-    enstrophy_hist: &[f64],
-    enstrophy_measured_hist: &[f64],
-    algebra_norm_hist: &[f64],
-    u_rms_hist: &[f64],
-    u_rms_model_hist: &[f64],
-    mach_eff_hist: &[f64],
-    re_eff_hist: &[f64],
-    power_injection_proxy_hist: &[f64],
-    dissipation_proxy_hist: &[f64],
     gpu_u_rms_sync_cadence_secs: f64,
-    spectral_summary: &SpectralSummarySeries,
-    quality: &RhoTraceQuality,
+}
+
+/// Time-series histories captured by the bench loop. All have length =
+/// total_steps; each is one observable evolved per integration step.
+#[cfg(feature = "hdf5-export")]
+struct BenchTraceHistories<'a> {
+    time: &'a [f64],
+    rho: &'a [f64],
+    enstrophy: &'a [f64],
+    enstrophy_measured: &'a [f64],
+    algebra_norm: &'a [f64],
+    u_rms: &'a [f64],
+    u_rms_model: &'a [f64],
+    mach_eff: &'a [f64],
+    re_eff: &'a [f64],
+    power_injection_proxy: &'a [f64],
+    dissipation_proxy: &'a [f64],
+}
+
+/// Aggregated quality summary computed at the end of the run: spectral
+/// summary series, rho-trace quality verdict, and the thresholds used to
+/// reach the verdict.
+#[cfg(feature = "hdf5-export")]
+struct BenchTraceQuality<'a> {
+    spectral_summary: &'a SpectralSummarySeries,
+    quality: &'a RhoTraceQuality,
     thresholds: RhoQualityThresholds,
+}
+
+#[cfg(feature = "hdf5-export")]
+fn export_bench_trace(
+    setup: BenchTraceSetup<'_>,
+    histories: BenchTraceHistories<'_>,
+    quality_bundle: BenchTraceQuality<'_>,
 ) -> Result<(), Box<dyn Error>> {
+    let out_path = setup.out_path;
+    let resolution = setup.resolution;
+    let backend = setup.backend;
+    let precision = setup.precision;
+    let forcing = setup.forcing;
+    let total_steps = setup.total_steps;
+    let elapsed_secs = setup.elapsed_secs;
+    let gpu_u_rms_sync_cadence_secs = setup.gpu_u_rms_sync_cadence_secs;
+    let time_hist = histories.time;
+    let rho_hist = histories.rho;
+    let enstrophy_hist = histories.enstrophy;
+    let enstrophy_measured_hist = histories.enstrophy_measured;
+    let algebra_norm_hist = histories.algebra_norm;
+    let u_rms_hist = histories.u_rms;
+    let u_rms_model_hist = histories.u_rms_model;
+    let mach_eff_hist = histories.mach_eff;
+    let re_eff_hist = histories.re_eff;
+    let power_injection_proxy_hist = histories.power_injection_proxy;
+    let dissipation_proxy_hist = histories.dissipation_proxy;
+    let spectral_summary = quality_bundle.spectral_summary;
+    let quality = quality_bundle.quality;
+    let thresholds = quality_bundle.thresholds;
     if let Some(parent) = out_path.parent() {
         std::fs::create_dir_all(parent)?;
     }
@@ -1118,28 +1162,34 @@ pub fn run_case(case: &BenchCase) -> Result<BenchCaseReport, Box<dyn Error>> {
         #[cfg(feature = "hdf5-export")]
         {
             export_bench_trace(
-                path,
-                case.resolution,
-                case.backend,
-                case.precision,
-                &forcing,
-                steps,
-                elapsed,
-                &time_hist,
-                &rho_hist,
-                &enstrophy_hist,
-                &enstrophy_measured_hist,
-                &algebra_norm_hist,
-                &u_rms_hist,
-                &u_rms_model_hist,
-                &mach_eff_hist,
-                &re_eff_hist,
-                &power_injection_proxy_hist,
-                &dissipation_proxy_hist,
-                gpu_u_rms_sync_cadence_secs,
-                &spectral_summary,
-                &quality,
-                thresholds,
+                BenchTraceSetup {
+                    out_path: path,
+                    resolution: case.resolution,
+                    backend: case.backend,
+                    precision: case.precision,
+                    forcing: &forcing,
+                    total_steps: steps,
+                    elapsed_secs: elapsed,
+                    gpu_u_rms_sync_cadence_secs,
+                },
+                BenchTraceHistories {
+                    time: &time_hist,
+                    rho: &rho_hist,
+                    enstrophy: &enstrophy_hist,
+                    enstrophy_measured: &enstrophy_measured_hist,
+                    algebra_norm: &algebra_norm_hist,
+                    u_rms: &u_rms_hist,
+                    u_rms_model: &u_rms_model_hist,
+                    mach_eff: &mach_eff_hist,
+                    re_eff: &re_eff_hist,
+                    power_injection_proxy: &power_injection_proxy_hist,
+                    dissipation_proxy: &dissipation_proxy_hist,
+                },
+                BenchTraceQuality {
+                    spectral_summary: &spectral_summary,
+                    quality: &quality,
+                    thresholds,
+                },
             )?;
         }
         #[cfg(not(feature = "hdf5-export"))]

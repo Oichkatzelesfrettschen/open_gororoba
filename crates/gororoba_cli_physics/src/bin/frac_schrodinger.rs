@@ -166,7 +166,16 @@ fn main() {
             steps,
             json,
         } => {
-            run_ground_state(alpha, d, omega, n, l, tau, steps, json);
+            run_ground_state(GroundStateRun {
+                alpha,
+                d,
+                omega,
+                n,
+                l,
+                tau,
+                steps,
+                json,
+            });
         }
         Commands::PropagatorBenchmark {
             alpha,
@@ -178,7 +187,16 @@ fn main() {
             k_max,
             json,
         } => {
-            run_propagator_benchmark(alpha, d, t, n_x, l, n_k, k_max, json);
+            run_propagator_benchmark(PropagatorBenchmark {
+                alpha,
+                d,
+                t,
+                n_x,
+                l,
+                n_k,
+                k_max,
+                json,
+            });
         }
         Commands::AlphaSweep {
             alpha_start,
@@ -232,8 +250,10 @@ fn run_variational(alpha: f64, d: f64, omega: f64, m: f64, json: bool) {
     }
 }
 
-#[allow(clippy::too_many_arguments)]
-fn run_ground_state(
+/// Imaginary-time ground-state run parameters: alpha-fractional kinetic
+/// (alpha + d), oscillator frequency (omega), spatial discretization
+/// (n + l), and integrator (tau + steps + json flag).
+struct GroundStateRun {
     alpha: f64,
     d: f64,
     omega: f64,
@@ -242,7 +262,19 @@ fn run_ground_state(
     tau: f64,
     steps: usize,
     json: bool,
-) {
+}
+
+fn run_ground_state(run: GroundStateRun) {
+    let GroundStateRun {
+        alpha,
+        d,
+        omega,
+        n,
+        l,
+        tau,
+        steps,
+        json,
+    } = run;
     eprintln!(
         "Imaginary-time ground state: alpha={}, D={}, omega={}, n={}, L={}",
         alpha, d, omega, n, l
@@ -290,8 +322,10 @@ fn run_ground_state(
     }
 }
 
-#[allow(clippy::too_many_arguments)]
-fn run_propagator_benchmark(
+/// Propagator-L2-error benchmark parameters: alpha-fractional kinetic
+/// (alpha + d), time horizon (t), spatial discretization (n_x + l),
+/// momentum discretization (n_k + k_max), and json formatter flag.
+struct PropagatorBenchmark {
     alpha: f64,
     d: f64,
     t: f64,
@@ -300,7 +334,19 @@ fn run_propagator_benchmark(
     n_k: usize,
     k_max: f64,
     json: bool,
-) {
+}
+
+fn run_propagator_benchmark(bench: PropagatorBenchmark) {
+    let PropagatorBenchmark {
+        alpha,
+        d,
+        t,
+        n_x,
+        l,
+        n_k,
+        k_max,
+        json,
+    } = bench;
     eprintln!("Propagator L2 error: alpha={}, D={}, t={}", alpha, d, t);
 
     let l2_err = propagator_l2_error(alpha, d, t, n_x, l, n_k, k_max);
