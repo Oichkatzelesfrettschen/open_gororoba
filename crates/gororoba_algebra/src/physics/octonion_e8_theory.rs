@@ -45,11 +45,19 @@ impl E8GaugeTheory {
         f_abelian + f_nonabelian
     }
 
-    /// Compute Matter Covariant Derivative D_mu phi.
+    /// Compute the **gauge contribution** to the covariant derivative
+    /// `D_mu phi = d_mu phi + A_mu^a T^a phi`.
     ///
-    /// D_mu phi = d_mu phi + A_mu^a T^a phi
+    /// The signature `(&self, phi: &Octonion, mu: usize)` carries a single
+    /// `phi` value at a single space-time point and the gauge index `mu`,
+    /// so the partial-derivative term `d_mu phi` is not recoverable here
+    /// (it requires neighboring lattice samples). This routine returns
+    /// the gauge part `A_mu^a (T^a phi)` only; callers that need the full
+    /// `D_mu phi` must add their own finite-difference of `phi` along
+    /// direction `mu` before calling this function (or use the lattice
+    /// variant that takes a field, not a single point).
     pub fn covariant_derivative(&self, phi: &Octonion, mu: usize) -> Octonion {
-        let mut d_phi = [0.0; 8]; // Stub for d_mu phi
+        let mut d_phi = [0.0; 8];
 
         // Gauge connection: A_mu^a (T^a phi)
         // In the adjoint representation, T^a acts by multiplication e_a * phi
