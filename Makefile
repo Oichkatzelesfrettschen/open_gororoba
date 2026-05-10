@@ -443,6 +443,17 @@ cache-sweep:
 	@CARGO_TARGET_DIR=.cache/cargo-default-target cargo sweep --maxsize 100GB . || echo "(skip: target absent or not a cargo project)"
 	@echo "Sweeping ambient target/ to <= 100GB..."
 	@cargo sweep --maxsize 100GB . || echo "(skip: ambient target absent)"
+# Wipe stale debug-profile artifacts in gate-cbuild. The 4-gate chain uses
+# only --profile release-gate; debug artifacts here are leftovers from
+# one-off `cargo build` invocations and can balloon to 100+ GB. They are
+# regenerable on demand (next non-release cargo build will rebuild them).
+	@for d in .cache/gate-cbuild/*/debug; do \
+		if [ -d "$$d" ]; then \
+			SIZE=$$(du -sh "$$d" 2>/dev/null | cut -f1); \
+			echo "Removing stale gate-cbuild debug artifacts ($$SIZE) at $$d ..."; \
+			rm -rf "$$d"; \
+		fi; \
+	done
 	@echo "Post-sweep size: $$(du -sh .cache 2>/dev/null | cut -f1)"
 	@echo "OK: cache-sweep complete."
 
