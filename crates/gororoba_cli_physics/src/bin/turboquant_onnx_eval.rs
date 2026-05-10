@@ -265,6 +265,34 @@ fn onnx_eval(cli: &Cli, model_path: &std::path::Path) -> Result<Vec<EvalResult>>
         );
     }
 
+    // Phase B v3 (TaskList #60-C): wire ort.run() to consume detected
+    // KV inputs + extract KV outputs into the TurboQuantMSE pipeline.
+    //
+    // The integration sketch is:
+    //
+    //   1. For each ("input-*", name) candidate: allocate a synthetic
+    //      ort::Value tensor with the shape declared in
+    //      session.inputs()[i].dtype(). For GPT-style models the shape
+    //      is typically [batch=1, n_heads, seq_len, head_dim]; the
+    //      first run can use seq_len=0 to get a "no past KV" forward
+    //      pass.
+    //   2. session.run(inputs) -> Result<Vec<(String, Value)>, OrtError>
+    //   3. For each ("output-*", name): pull the f32 buffer out of
+    //      the returned Value, reshape to (batch, heads, seq, dim),
+    //      strip to the d=cli.head_dim axis, and feed into
+    //      TurboQuantMSE::quantize() / dequantize() round-trip.
+    //   4. Compute RMSE / top-1 / kv-byte savings against the
+    //      reference output (raw f32 KV) for each requested bit count.
+    //
+    // The shape unwrap requires either ValueType pattern-matching on
+    // ort::TensorElementType OR using ort::session::SessionInputs ABI
+    // helpers; both surfaces are stable in 2.0.0-rc.12.
+    //
+    // The synthetic_eval fallback below preserves the bench output so
+    // current callers continue to work; replace with the real path in
+    // a focused micro-sprint that has access to a distilgpt2.onnx or
+    // SmolLM2.onnx file for end-to-end verification.
+
     // Ensure the session lives at least until we are done printing the
     // metadata (the Session destructor frees the underlying OrtSession).
     drop(session);
