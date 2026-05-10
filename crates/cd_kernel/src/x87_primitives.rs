@@ -828,6 +828,13 @@ pub fn x87_is_exact_zero(x: f64) -> bool {
     #[cfg(target_arch = "x86_64")]
     {
         let mut status: u16 = 0;
+        // SAFETY: &x and &mut status are local stack pointers with the correct
+        // alignment for f64 and u16 respectively. The asm reads 8 bytes via
+        // fldl({x}) and writes 2 bytes via fnstsw({sw}); both stay within the
+        // local variables. The fstp at the end pops ST(0) so the x87 stack
+        // is balanced on exit (one push at fldl, one pop at fstp).
+        // options(nostack): x87 FP stack is independent of RSP.
+        // options(att_syntax): MANDATORY -- ftst/fnstsw in AT&T form.
         unsafe {
             core::arch::asm!(
                 // Load x into ST(0)
@@ -901,7 +908,13 @@ pub fn x87_cd_component(t: usize, dim: usize, a: &[f64], b: &[f64]) -> f64 {
         let p = t ^ q;
         let sign = cd_basis_mul_sign_iter(dim, p, q) as f64;
         let term = sign * a[p] * b[q];
-        // Use x87 for the accumulation step
+        // SAFETY: &term and &mut acc are local stack pointers with f64
+        // alignment. The asm reads 8 bytes via fldl({term}), reads 8 bytes
+        // via faddl({acc}), and writes 8 bytes via fstpl({acc}); all three
+        // stay within the local f64 slots. The x87 stack is balanced: one
+        // push at fldl, one pop at fstpl.
+        // options(nostack): x87 FP stack is independent of RSP.
+        // options(att_syntax): MANDATORY for fldl/faddl/fstpl AT&T form.
         unsafe {
             core::arch::asm!(
                 "fldl ({term})",
