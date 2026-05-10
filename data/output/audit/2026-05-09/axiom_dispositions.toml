@@ -57,7 +57,7 @@ total_entries = 190
 total_axioms = 132
 total_parameters = 58
 schema_version = 1
-classification_completion_pct = 0.0  # increase as entries are reviewed
+classification_completion_pct = 26.3  # 50 of 190 classified (CDDoubleFunctor + Brown1972ChapterIII module sigs + FloatAxioms + CarlsonIntegrals)
 
 [[axiom_disposition]]
 file = "proofs/theories/CDDoubleFunctor.v"
