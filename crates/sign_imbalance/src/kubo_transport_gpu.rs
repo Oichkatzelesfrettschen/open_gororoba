@@ -5,6 +5,29 @@
 //!
 //! Key optimization: precompute J_eig = V^T * J * V via cuBLAS dgemm,
 //! reducing spectral weight computation from O(dim^4) to O(dim^3).
+//!
+//! # Universal SAFETY argument for `unsafe { ... cusolver/cublas FFI ... }`
+//!
+//! Every unsafe block in this file invokes a NVIDIA CUDA library
+//! function (cuSOLVER, cuBLAS) via cudarc raw FFI. The soundness
+//! pattern across all sites:
+//!
+//! 1. **Active context**: the runner thread holds the active CUDA
+//!    context bound by the owning struct.
+//! 2. **Buffer sizing**: device buffers are allocated with sizes
+//!    matching the dimensions the math layer declared (e.g., n*n
+//!    floats for an n-dimensional Hermitian eigendecomposition).
+//! 3. **Workspace queries**: cuSOLVER workspace sizes are queried via
+//!    `cusolverDn{...}_bufferSize` BEFORE the workspace is allocated;
+//!    the call site uses the reported requirement.
+//! 4. **Error propagation**: every cusolver/cublas error code is
+//!    checked and propagated through `?`.
+//! 5. **Stream synchronization**: the cudarc context manages stream
+//!    sequencing; host-side reads (eigenvalues, transformed J) wait
+//!    on stream completion before consuming results.
+//!
+//! Per-site SAFETY comments are added only where the local invariant
+//! requires more than this argument.
 
 use std::sync::Arc;
 
