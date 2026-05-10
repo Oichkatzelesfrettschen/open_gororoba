@@ -20,7 +20,7 @@
 use anyhow::{Context, Result};
 use clap::Parser;
 use serde::Serialize;
-use stats_core::helpers::singular_values;
+use stats_core::helpers::{singular_values, singular_values_via_gram};
 use std::{fs, path::PathBuf, sync::Arc};
 use zarrs::array::Array;
 use zarrs_filesystem::FilesystemStore;
@@ -443,9 +443,34 @@ fn main() -> Result<()> {
             v
         })
         .collect();
-    // Skip SVD for multi-diagnostic (nalgebra SVD can hang on ill-conditioned
-    // matrices from heterogeneous diagnostics). Compute CD directly.
-    let multi_eff = 0; // placeholder -- SVD skipped
+    // Robust effective-rank route for the multi-diagnostic embedding.
+    //
+    // The full nalgebra SVD can stall on heavily ill-conditioned matrices
+    // built from heterogeneous diagnostics (different sensor types,
+    // different physical units, wildly different magnitudes), because the
+    // bidiagonalization + QR-iteration loop fails to converge within
+    // nalgebra's default iteration cap. The Gram route -- form X^T X,
+    // eigendecompose it as a symmetric PSD matrix, take sqrt of
+    // eigenvalues -- bypasses that failure mode and converges
+    // unconditionally. See stats_core::helpers::singular_values_via_gram
+    // for the full rationale.
+    let multi_eff = {
+        let n = multi_embedded.len().min(5000);
+        if n < 3 || padded_dim < 2 {
+            0
+        } else {
+            let svals = singular_values_via_gram(
+                &multi_embedded
+                    .iter()
+                    .take(n)
+                    .map(|r| r[..padded_dim].to_vec())
+                    .collect::<Vec<_>>(),
+            );
+            let max_sv = svals.first().copied().unwrap_or(0.0);
+            let threshold = max_sv * 0.10;
+            svals.iter().filter(|&&s| s > threshold).count()
+        }
+    };
     let multi_norms = cd_kernel::batch_sliding_associator_norms_dispatch(
         &multi_embedded,
         padded_dim,

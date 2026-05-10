@@ -35,9 +35,11 @@ impl LombScargleResult {
     }
 }
 
-/// Compute the Generalized Lomb-Scargle periodogram.
+/// Compute the Generalized Lomb-Scargle periodogram with unit weights.
 ///
-/// This version includes a floating mean offset (Zechmeister & Kurster 2009).
+/// This version includes a floating mean offset (Zechmeister & Kurster
+/// 2009). For per-sample uncertainties use
+/// [`compute_lomb_scargle_weighted`] instead.
 ///
 /// # Arguments
 /// * `t` - Observation times
@@ -45,12 +47,69 @@ impl LombScargleResult {
 /// * `freqs` - Frequencies to evaluate
 pub fn compute_lomb_scargle(t: &[f64], y: &[f64], freqs: &[f64]) -> LombScargleResult {
     let n = t.len();
-    assert_eq!(n, y.len(), "t and y must have equal length");
+    let w = vec![1.0_f64; n];
+    compute_lomb_scargle_weighted(t, y, &w, freqs)
+}
 
-    let w_sum = n as f64; // Assuming unit weights for now
-    let y_mean = y.iter().sum::<f64>() / w_sum;
+/// Compute the Generalized Lomb-Scargle periodogram with per-sample
+/// weights (Zechmeister & Kurster 2009, full Eq. 5 form).
+///
+/// # Weight convention
+///
+/// `weights[i]` is the *statistical* weight of sample `i`, typically
+/// `1 / sigma_i^2` for Gaussian measurement uncertainties `sigma_i`.
+/// The internal normalization divides by `sum(weights)`, so absolute
+/// scaling is irrelevant -- only the ratio between samples matters.
+/// Pass all-`1.0` weights to recover the unit-weight variant
+/// [`compute_lomb_scargle`].
+///
+/// # Why this exists
+///
+/// The original `compute_lomb_scargle` carried a "Assuming unit weights
+/// for now" comment because the `(t, y, freqs)` signature has no slot
+/// for sigmas. For heteroscedastic data (NANOGrav residuals, Pantheon+
+/// SNe distance moduli, MaNGA per-spaxel uncertainties), uniform-weight
+/// LS over-counts noisy samples and under-weights precise ones. The
+/// Zechmeister & Kurster Eq. 5 form replaces every plain sum
+/// `sum_i f(t_i, y_i)` with the weighted sum
+/// `sum_i w_i f(t_i, y_i) / sum_i w_i` and reduces to the unit-weight
+/// formula when all `w_i` are equal.
+///
+/// # Panics
+///
+/// Panics if `t`, `y`, and `weights` do not have equal length, or if
+/// any weight is negative.
+pub fn compute_lomb_scargle_weighted(
+    t: &[f64],
+    y: &[f64],
+    weights: &[f64],
+    freqs: &[f64],
+) -> LombScargleResult {
+    let n = t.len();
+    assert_eq!(n, y.len(), "t and y must have equal length");
+    assert_eq!(n, weights.len(), "t and weights must have equal length");
+    for (i, &w) in weights.iter().enumerate() {
+        assert!(w >= 0.0, "weight at index {} is negative: {}", i, w);
+    }
+
+    let w_sum: f64 = weights.iter().sum();
+    if w_sum <= 0.0 {
+        // All weights zero -> ill-posed; return zero-power result so
+        // callers can detect the degenerate case via the output instead
+        // of via a panic.
+        return LombScargleResult {
+            frequencies: freqs.to_vec(),
+            power: vec![0.0; freqs.len()],
+        };
+    }
+
+    let y_mean: f64 = y.iter().zip(weights.iter()).map(|(&yi, &wi)| wi * yi).sum::<f64>() / w_sum;
     let y_centered: Vec<f64> = y.iter().map(|&yi| yi - y_mean).collect();
-    let yy_sum: f64 = y_centered.iter().map(|&yi| yi * yi).sum();
+    let yy_sum: f64 = y_centered
+        .iter()
+        .zip(weights.iter())
+        .map(|(&yi, &wi)| wi * yi * yi)
+        .sum();
 
     let mut power = Vec::with_capacity(freqs.len());
 
@@ -67,34 +126,38 @@ pub fn compute_lomb_scargle(t: &[f64], y: &[f64], freqs: &[f64]) -> LombScargleR
 
         for (i, &ti) in t.iter().enumerate() {
             let (si, ci) = (omega * ti).sin_cos();
+            let wi = weights[i];
             let yi = y_centered[i];
 
-            s += si;
-            c += ci;
-            ss += si * si;
-            cc += ci * ci;
-            sc += si * ci;
-            yc += yi * ci;
-            ys += yi * si;
+            s += wi * si;
+            c += wi * ci;
+            ss += wi * si * si;
+            cc += wi * ci * ci;
+            sc += wi * si * ci;
+            yc += wi * yi * ci;
+            ys += wi * yi * si;
         }
 
-        // Floating mean normalization (Zechmeister & Kurster Eq. 5)
-        // We solve the 3x3 system for [offset, A, B] where y ~ offset + A*cos + B*sin
-        // But centered y_mean=0 and unit weights simplifies it slightly.
-
+        // Floating mean normalization (Zechmeister & Kurster Eq. 5).
+        // The weighted means s_hat = sum(w_i sin)/sum(w_i),
+        // c_hat = sum(w_i cos)/sum(w_i) shift the basis so the residual
+        // 2x2 system has determinant `det` and the periodogram power
+        // follows directly.
         let s_hat = s / w_sum;
         let c_hat = c / w_sum;
 
         let cc_tilde = cc - c * c_hat;
         let ss_tilde = ss - s * s_hat;
         let sc_tilde = sc - c * s_hat;
-        let yc_tilde = yc - y_mean * 0.0; // y_centered already has mean 0
-        let ys_tilde = ys - y_mean * 0.0;
+        // y_centered already has weighted mean 0, so the cross terms
+        // collapse to plain weighted sums.
+        let yc_tilde = yc;
+        let ys_tilde = ys;
 
-        // Determinant of the 2x2 reduced system
+        // Determinant of the 2x2 reduced system.
         let det = cc_tilde * ss_tilde - sc_tilde * sc_tilde;
 
-        if det.abs() < 1e-15 {
+        if det.abs() < 1e-15 || yy_sum.abs() < 1e-15 {
             power.push(0.0);
             continue;
         }
@@ -178,5 +241,105 @@ mod tests {
     fn test_baluev_fap_low_snr() {
         let fap = false_alarm_probability_baluev(0.05, 100, 0.5, 100.0);
         assert!(fap > 0.1);
+    }
+
+    #[test]
+    fn weighted_with_unit_weights_matches_unweighted() {
+        // Unit weights on the weighted variant must recover the unweighted
+        // periodogram to floating-point precision.
+        let n = 64;
+        let freq_true = 0.117;
+        let t: Vec<f64> = (0..n).map(|i| i as f64).collect();
+        let y: Vec<f64> = t
+            .iter()
+            .map(|&ti| (2.0 * PI * freq_true * ti).cos())
+            .collect();
+        let freqs: Vec<f64> = (1..200).map(|i| i as f64 / 1000.0).collect();
+
+        let unweighted = compute_lomb_scargle(&t, &y, &freqs);
+        let weights = vec![1.0_f64; n];
+        let weighted = compute_lomb_scargle_weighted(&t, &y, &weights, &freqs);
+
+        assert_eq!(unweighted.power.len(), weighted.power.len());
+        for (a, b) in unweighted.power.iter().zip(weighted.power.iter()) {
+            assert!((a - b).abs() < 1e-12, "unweighted={} weighted={}", a, b);
+        }
+    }
+
+    #[test]
+    fn weighted_downweights_noisy_samples() {
+        // Construct a signal sin(2 pi f t) and add a large outlier to one
+        // sample. With uniform weights the periodogram peak is shifted
+        // by the outlier; with that sample given a near-zero weight, the
+        // recovered peak frequency is closer to the true value.
+        let n = 256;
+        let freq_true = 0.073;
+        let t: Vec<f64> = (0..n).map(|i| i as f64).collect();
+        let mut y: Vec<f64> = t
+            .iter()
+            .map(|&ti| (2.0 * PI * freq_true * ti).sin())
+            .collect();
+        y[42] += 50.0;
+
+        let freqs: Vec<f64> = (1..500).map(|i| i as f64 / 5000.0).collect();
+        let uniform = compute_lomb_scargle(&t, &y, &freqs);
+        let mut weights = vec![1.0_f64; n];
+        weights[42] = 1.0e-6;
+        let downweighted = compute_lomb_scargle_weighted(&t, &y, &weights, &freqs);
+
+        let (f_uniform, _) = uniform.max_peak();
+        let (f_downweighted, _) = downweighted.max_peak();
+        let err_uniform = (f_uniform - freq_true).abs();
+        let err_downweighted = (f_downweighted - freq_true).abs();
+        assert!(
+            err_downweighted <= err_uniform,
+            "downweighted err {} should be <= uniform err {} (f_dw={}, f_uni={})",
+            err_downweighted,
+            err_uniform,
+            f_downweighted,
+            f_uniform,
+        );
+    }
+
+    #[test]
+    fn weighted_zero_weight_sample_is_ignored() {
+        // Marking a single sample with weight zero must produce the same
+        // periodogram as omitting that sample entirely.
+        let n = 32;
+        let freq_true = 0.21;
+        let t: Vec<f64> = (0..n).map(|i| i as f64).collect();
+        let y: Vec<f64> = t
+            .iter()
+            .map(|&ti| (2.0 * PI * freq_true * ti).cos())
+            .collect();
+        let freqs: Vec<f64> = (1..200).map(|i| i as f64 / 1000.0).collect();
+
+        // Mask sample 7.
+        let mut weights = vec![1.0_f64; n];
+        weights[7] = 0.0;
+        let masked = compute_lomb_scargle_weighted(&t, &y, &weights, &freqs);
+
+        // Drop sample 7 from the input.
+        let t_dropped: Vec<f64> = t
+            .iter()
+            .enumerate()
+            .filter_map(|(i, &v)| if i == 7 { None } else { Some(v) })
+            .collect();
+        let y_dropped: Vec<f64> = y
+            .iter()
+            .enumerate()
+            .filter_map(|(i, &v)| if i == 7 { None } else { Some(v) })
+            .collect();
+        let dropped = compute_lomb_scargle(&t_dropped, &y_dropped, &freqs);
+
+        for (a, b) in masked.power.iter().zip(dropped.power.iter()) {
+            assert!(
+                (a - b).abs() < 1e-12,
+                "masked={} dropped={} diff={}",
+                a,
+                b,
+                (a - b).abs()
+            );
+        }
     }
 }
