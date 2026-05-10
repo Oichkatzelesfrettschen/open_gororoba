@@ -57,6 +57,12 @@ pub fn probe_cubecl() -> Option<CubeclCapabilities> {
 #[cfg(feature = "cubecl")]
 pub mod quantize_kernel;
 
+/// Host-side launcher that bridges `quantize_kernel` to a runnable Rust
+/// function via the cubecl-wgpu runtime. See `launcher::quantize` for
+/// the public API and `launcher::is_available` for the runtime probe.
+#[cfg(feature = "cubecl")]
+pub mod launcher;
+
 /// Planned cubecl kernel signatures (to be implemented with #[cube] macro):
 ///
 /// 1. `cubecl_quantize_boundary`: boundary-search quantization

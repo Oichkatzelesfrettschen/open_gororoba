@@ -240,8 +240,16 @@ smallvec = "1.15"            # Inline small buffers, heap spill only when needed
 ort = { version = "2.0.0-rc.12", default-features = false, features = ["std", "load-dynamic", "api-18"] }
 
 # Unified GPU compute (cubecl: write once, dispatch to CUDA + Vulkan + WebGPU + Metal)
+# default-features=false to keep the cubecl base lean. The cd_kernel crate
+# enables features=["wgpu"] when its `cubecl` feature is on; that pulls in
+# cubecl-wgpu (~150 MB transitive dep tree: wgpu, naga, ash) but lets us
+# launch the same #[cube] kernel through the wgpu runtime on Vulkan/DX12/
+# Metal/WebGPU. On Linux/Vulkan our hand-rolled VulkanQuantizer is still
+# preferred because it avoids the wgpu/naga compilation cost; the cubecl
+# path is for cross-platform portability.
 cubecl = { version = "0.10.0", default-features = false }
 cubecl-core = { version = "0.10.0", default-features = false }
+cubecl-wgpu = { version = "0.10.0", default-features = false }
 
 # GPU compute (CUDA via dynamic loading -- binary works without GPU at runtime)
 cudarc = { version = "0.19", default-features = false, features = [
