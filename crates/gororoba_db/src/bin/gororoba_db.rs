@@ -328,7 +328,7 @@ enum ClaimMutationAction {
         #[arg(long)]
         reason: Option<String>,
         /// Run provenance export-control-plane after the SQLite update.
-        /// Pass --no-regen-toml to skip; useful for batch updates where
+        /// Pass `--regen-toml false` to skip; useful for batch updates where
         /// you want to call the exporter once at the end.
         #[arg(long, action = clap::ArgAction::Set, default_value_t = true)]
         regen_toml: bool,
@@ -387,7 +387,7 @@ enum InsightMutationAction {
         #[arg(long)]
         reason: Option<String>,
         /// Run provenance export-control-plane after the SQLite update.
-        /// Pass --no-regen-toml to skip; useful for batch updates where
+        /// Pass `--regen-toml false` to skip; useful for batch updates where
         /// you want to call the exporter once at the end.
         #[arg(long, action = clap::ArgAction::Set, default_value_t = true)]
         regen_toml: bool,
@@ -416,7 +416,7 @@ enum ExperimentMutationAction {
         #[arg(long)]
         reason: Option<String>,
         /// Run provenance export-control-plane after the SQLite update.
-        /// Pass --no-regen-toml to skip; useful for batch updates where
+        /// Pass `--regen-toml false` to skip; useful for batch updates where
         /// you want to call the exporter once at the end.
         #[arg(long, action = clap::ArgAction::Set, default_value_t = true)]
         regen_toml: bool,
@@ -1903,7 +1903,7 @@ fn print_revision_summary(entity_kind: &str, revision: &provenance_store::Status
 fn maybe_regen_toml(regen_toml: bool) -> Result<()> {
     if !regen_toml {
         eprintln!(
-            "skipped TOML regen (--no-regen-toml); run `make registry-export-markdown` later."
+            "skipped TOML regen (--regen-toml false); run `make registry-export-markdown` later."
         );
         return Ok(());
     }
