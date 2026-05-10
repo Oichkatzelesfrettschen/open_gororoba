@@ -235,8 +235,8 @@ smallvec = "1.15"            # Inline small buffers, heap spill only when needed
 ort = { version = "2.0.0-rc.12", default-features = false, features = ["std", "alternative-backend"] }
 
 # Unified GPU compute (cubecl: write once, dispatch to CUDA + Vulkan + WebGPU + Metal)
-cubecl = { version = "0.10.0-pre.2", default-features = false }
-cubecl-core = { version = "0.10.0-pre.2", default-features = false }
+cubecl = { version = "0.10.0", default-features = false }
+cubecl-core = { version = "0.10.0", default-features = false }
 
 # GPU compute (CUDA via dynamic loading -- binary works without GPU at runtime)
 cudarc = { version = "0.19", default-features = false, features = [
