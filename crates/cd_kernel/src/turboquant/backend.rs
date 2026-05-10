@@ -210,11 +210,15 @@ impl BackendQuantizer {
             }
             #[cfg(feature = "cubecl")]
             Backend::CubeCL => {
-                // Deferred: dispatch cubecl unified kernel.
-                // Tracked: DEFER-CUBECL-QUANTIZE (TaskList task #49). CPU
-                // fallback is intentional until the #[cube] kernel macro
-                // is wired; cubecl 0.10.0-pre.2 targets CUDA, ROCm, and CPU
-                // SIMD from a single source.
+                // Phase A scaffold landed in commit ac82bc92 (TaskList #56).
+                // The kernel signature is documented in
+                // crates/cd_kernel/src/turboquant/cubecl_backend/quantize_kernel.rs
+                // but the real #[cube] launch wrapper is gated on:
+                //   1. cubecl meta-crate landing in workspace deps
+                //   2. cubecl 1.0 stabilizing the AtomicU32 surface
+                // CPU fallback is intentional until both gates clear.
+                // See TaskList #57 for the wire-up step (depends on Phase B
+                // kernel + launcher).
                 self.cpu.quantize(values, out);
                 Ok(())
             }
