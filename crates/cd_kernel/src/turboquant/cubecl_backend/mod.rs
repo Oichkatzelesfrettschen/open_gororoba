@@ -15,11 +15,14 @@
 //! They look like regular Rust code but compile to GPU-specific backends
 //! via JIT at runtime.
 //!
-//! # Current status: stub module
+//! # Current status: WGPU launcher complete; other backends planned
 //!
-//! The kernel implementations will be filled in as cubecl reaches 1.0.
-//! For now, this module documents the planned kernel signatures and
-//! provides the Backend::CubeCL variant.
+//! As of 2026-05-10 the `quantize` kernel is wired up end-to-end against
+//! the cubecl-wgpu runtime via `launcher::quantize` (parity-verified
+//! against the CPU reference on 1024 samples). The remaining four
+//! planned kernels (dequant_dot, sign_dot, fast_jl_rotate,
+//! dequant_dot_q16) and the CUDA / Vulkan / Metal cubecl backends
+//! are still scheduled to land as cubecl reaches 1.0.
 
 /// cubecl backend capabilities.
 #[derive(Clone, Debug)]
@@ -36,16 +39,34 @@ pub struct CubeclCapabilities {
 
 /// Probe cubecl backend availability.
 ///
-/// Returns None if cubecl feature is not enabled.
+/// Returns `None` when the `cubecl` Cargo feature is disabled. When
+/// enabled, returns a [`CubeclCapabilities`] populated as follows:
+///
+/// - `wgpu_available`: probed live via [`launcher::is_available`],
+///   which constructs a `WgpuDevice::default()` + a `WgpuRuntime`
+///   client and returns `true` iff that handshake succeeds. This is the
+///   only backend with a real probe today.
+/// - `cuda_available` / `vulkan_available`: reported as `false` until
+///   the corresponding cubecl backends are wired up. They are intentionally
+///   conservative -- callers that route on these flags will fall back to
+///   the existing CUDA (cudarc) and Vulkan (ash) backends, which remain
+///   the production path for those targets.
+///
+/// `backends` lists the labels of every probe-positive backend, so a
+/// downstream feature-detect loop can iterate without having to know
+/// about each flag separately.
 #[cfg(feature = "cubecl")]
 pub fn probe_cubecl() -> Option<CubeclCapabilities> {
-    // cubecl probing will be implemented when the API stabilizes.
-    // For now, return a placeholder.
+    let wgpu_available = launcher::is_available();
+    let mut backends = Vec::new();
+    if wgpu_available {
+        backends.push("wgpu".to_string());
+    }
     Some(CubeclCapabilities {
-        backends: vec!["cuda".into(), "vulkan".into(), "wgpu".into()],
-        cuda_available: true,
-        vulkan_available: true,
-        wgpu_available: true,
+        backends,
+        cuda_available: false,
+        vulkan_available: false,
+        wgpu_available,
     })
 }
 

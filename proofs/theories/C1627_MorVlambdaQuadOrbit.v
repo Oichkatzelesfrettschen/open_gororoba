@@ -131,34 +131,22 @@ Record Moreno16QuadOrbitWitness := {
   r4_x_lift_def      : r4_x_lift = oct_to_sed_low r4_x;
   r4_xe_def          : r4_xe = cd_right_mul_e r4_x;
 
-  (** R-linear independence of the four-tuple.  Stated as a
-      Prop the caller must discharge; not an Axiom. *)
+  (** R-linear independence of the four-tuple in CDSed.  Stated as
+      a Prop the caller must discharge; not an Axiom.
+
+      WHY this is the right statement: Moreno's proof of Theorem 1.16
+      builds {x, y, xe, ye} as a *basis* of one H_a-orbit block in
+      V_lambda; any R-linear relation that produces sed_zero forces all
+      four coefficients to vanish.  This is exactly the four-dimensional
+      lower-bound input the hmd_step constructor needs. *)
   r4_orbit_lin_indep :
     forall c0 c1 c2 c3 : R,
-      sed_zero =
-        sed_zero
-      -> (* placeholder shape: full statement requires
-           sed_scale and sed_add, which are not yet in
-           the Sedenion module.  See orbit_lin_indep_spec
-           below for the intended statement once those
-           operations exist. *)
-      (c0 = c1 \/ c0 <> c1) (* trivial; always true *)
+      sed_add (sed_scale c0 r4_x_lift)
+        (sed_add (sed_scale c1 r4_y_lift)
+          (sed_add (sed_scale c2 r4_xe)
+            (sed_scale c3 r4_ye))) = sed_zero
+      -> c0 = 0%R /\ c1 = 0%R /\ c2 = 0%R /\ c3 = 0%R
 }.
-
-(** Future-work spec: once `sed_scale : R -> CDSed -> CDSed` and
-    `sed_add : CDSed -> CDSed -> CDSed` are added to Sedenion.v,
-    replace `r4_orbit_lin_indep` with:
-
-      forall c0 c1 c2 c3 : R,
-        sed_zero =
-          sed_add (sed_scale c0 r4_x_lift)
-            (sed_add (sed_scale c1 r4_y_lift)
-              (sed_add (sed_scale c2 r4_xe)
-                (sed_scale c3 r4_ye)))
-        -> c0 = 0%R /\ c1 = 0%R /\ c2 = 0%R /\ c3 = 0%R.
-
-    The placeholder form keeps this file compiling against the
-    current Sedenion API while documenting the intended invariant. *)
 
 (** ================================================================== *)
 (** * Block-count derivation.                                          *)
