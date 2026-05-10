@@ -158,6 +158,25 @@ fn tighten(where_stated: &str) -> Option<(String, u8)> {
         return Some((format!("external:source-doc:{}", &m[1]), 10));
     }
 
+    // Rule 13: data/external/SOURCES.toml provenance/source-manifest claim.
+    // These are dataset-provenance assertions ("X is reachable at URL Y";
+    // "endpoint Z returns 404"). The SOURCES.toml entry IS the evidence.
+    if where_stated.contains("data/external/SOURCES.toml") {
+        return Some(("external:source-manifest".to_string(), 13));
+    }
+
+    // Rule 14: external URL evidence (ftp:// / https:// / http:// in
+    // where_stated). These are "this dataset lives at this URL" claims;
+    // the URL itself is the pointer. We extract just the scheme +
+    // first path segment to keep the value short and stable.
+    let url_re = Regex::new(r"(?:ftp|https?)://[^\s,)]+").ok()?;
+    if let Some(m) = url_re.find(where_stated) {
+        let url = m.as_str();
+        // Truncate to first 80 chars to keep the field reasonable.
+        let short = if url.len() > 80 { &url[..80] } else { url };
+        return Some((format!("external:url:{}", short), 14));
+    }
+
     // Rule 8: Python script evidence under src/scripts/, tests/, or examples/.
     let py_re = Regex::new(r"(?:src/scripts|tests|examples)/[^,\s]*\.py").ok()?;
     if py_re.is_match(where_stated) {
@@ -168,6 +187,15 @@ fn tighten(where_stated: &str) -> Option<(String, u8)> {
     let csv_re = Regex::new(r"data/csv/[^,\s]*\.csv").ok()?;
     if csv_re.is_match(where_stated) {
         return Some(("na_observational:data_artifact".to_string(), 12));
+    }
+
+    // Rule 15: registry/experiments.toml (E-NNN) cross-reference. Claims
+    // that point at a numbered experiment are "the experiment is the
+    // evidence" claims; the experiment record carries the actual
+    // status / output_path / reproducibility metadata.
+    let exp_re = Regex::new(r"registry/experiments\.toml.*\(E-\d+\)").ok()?;
+    if exp_re.is_match(where_stated) {
+        return Some(("na_methodology:experiment_ref".to_string(), 15));
     }
 
     // Rule 9: only `crates/*` references, no docs and no scripts.
@@ -183,6 +211,18 @@ fn tighten(where_stated: &str) -> Option<(String, u8)> {
     // Rule 11: docs/theory/*.md only (no code or scripts).
     let theory_re = Regex::new(r"docs/theory/[^,\s]*\.md").ok()?;
     if theory_re.is_match(where_stated) && !has_crates && !has_scripts {
+        return Some(("pending:doc_only_review".to_string(), 11));
+    }
+
+    // Rule 11b: docs/research/*.md only (research narratives without
+    // code -- a sub-bucket of docs-only review for narrative work).
+    let research_re = Regex::new(r"docs/research/[^,\s]*\.md").ok()?;
+    if research_re.is_match(where_stated) && !has_crates && !has_scripts {
+        return Some(("pending:research_narrative_review".to_string(), 11));
+    }
+
+    // Rule 11c: any docs/* path with no code reference is doc-only.
+    if has_docs && !has_crates && !has_scripts {
         return Some(("pending:doc_only_review".to_string(), 11));
     }
 

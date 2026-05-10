@@ -885,7 +885,7 @@ statement = "Physical forces emerge as resonant modes within successive Cayley-D
 status = "Provisional"
 status_note = "Integrated from 2025-2026 frontier research synthesis. Mapping force tensors to CD basis components. | Legacy status token: Pending"
 where_stated = "docs/research/high_dimensional_algebra_unification_2026.md; Encyclopedia Luminis Genesis (2025)"
-formal_proof = "pending:reviewed_pending"
+formal_proof = "pending:research_narrative_review"
 
 [[claim]]
 id = "C-103"
@@ -902,7 +902,7 @@ statement = "The Riemann Resonance Law: The distribution of Riemann zeros dictat
 status = "Provisional"
 status_note = "Legacy status token: Pending"
 where_stated = "docs/research/high_dimensional_algebra_unification_2026.md; Valov et al. (2025)"
-formal_proof = "pending:reviewed_pending"
+formal_proof = "pending:research_narrative_review"
 
 [[claim]]
 id = "C-104"
@@ -1497,7 +1497,7 @@ statement = "The multi-spacecraft DM null result (O(10^-12) across OMNI, WIND, A
 status = "Provisional"
 status_note = "Legacy status token: Pending"
 where_stated = "registry/experiments.toml (E-113)"
-formal_proof = "pending:reviewed_pending"
+formal_proof = "na_methodology:experiment_ref"
 
 [[claim]]
 id = "C-1153"
@@ -1793,7 +1793,7 @@ statement = "New Horizons SWAP data has no known alternate provider besides SPDF
 status = "Provisional"
 status_note = "Legacy status token: Pending"
 where_stated = "data/external/SOURCES.toml (SRC-NH-SINGLE-SOURCE-FRAGILE)"
-formal_proof = "pending:reviewed_pending"
+formal_proof = "external:source-manifest"
 
 [[claim]]
 id = "C-1184"
@@ -1825,7 +1825,7 @@ last_verified = "2026-03-10"
 statement = "All four GSFC endpoints (SPDF, CDAWeb, COHOWeb, OMNIWeb) return ERR_CONNECTION_REFUSED at the TCP level from this host, confirmed via Playwright Chromium browser probe 2026-03-10. This is a firewall or server-side block, not a DNS, TLS, or browser-specific issue."
 status = "Verified"
 where_stated = "data/external/SOURCES.toml (blocker_notes on SRC-PSP-SPDF-BLOCKED, SRC-HELIOS-SPDF-BLOCKED, SRC-PIONEER10-1979-MERGED-HOURLY, SRC-PIONEER11-1979-MERGED-HOURLY)"
-formal_proof = "pending:reviewed_pending"
+formal_proof = "external:source-manifest"
 
 [[claim]]
 id = "C-1188"
@@ -1833,7 +1833,7 @@ last_verified = "2026-03-10"
 statement = "PSP Science Gateway at JHU/APL (sppgway.jhuapl.edu -> psp-gateway.jhuapl.edu redirect) is browser-accessible from this host. Data releases through Orbit 25 (2026-03-02) with FIELDS, ISOIS, WISPR, SWEAP instrument links. Vue.js SPA requiring Playwright for data download URL extraction."
 status = "Verified"
 where_stated = "data/external/SOURCES.toml (SRC-PSP-GATEWAY-JHUAPL)"
-formal_proof = "pending:reviewed_pending"
+formal_proof = "external:source-manifest"
 
 [[claim]]
 id = "C-1189"
@@ -1841,7 +1841,7 @@ last_verified = "2026-03-10"
 statement = "ESA Solar Orbiter Archive (SOAR) is at soar.esac.esa.int (NOT esoc). Version 1.23.0 confirmed reachable via Playwright 2026-03-10. Provides search interface for SWA, MAG, RPW, and other Solo instrument data."
 status = "Verified"
 where_stated = "data/external/SOURCES.toml (SRC-SOLO-SOAR-ESA)"
-formal_proof = "pending:reviewed_pending"
+formal_proof = "external:source-manifest"
 
 [[claim]]
 id = "C-119"
@@ -1857,7 +1857,7 @@ last_verified = "2026-03-10"
 statement = "GSFC SPDF/CDAWeb/COHOWeb outage starting 2026-03-09 is a TEMPORARY server migration, not a permanent block. HelioData portal banner confirms: 'services will be offline in March while primary servers are moved.' All GSFC endpoints will resume after migration. ERR_CONNECTION_REFUSED confirmed on ports 21 (FTP), 22 (SFTP), 443 (HTTPS), 990 (FTPS) via Playwright + curl + lftp 2026-03-10."
 status = "Verified"
 where_stated = "data/external/SOURCES.toml (SRC-GSFC-MIGRATION-2026-03), helio.data.nasa.gov banner"
-formal_proof = "pending:reviewed_pending"
+formal_proof = "external:source-manifest"
 
 [[claim]]
 id = "C-1191"
@@ -1865,7 +1865,7 @@ last_verified = "2026-03-10"
 statement = "MIT Space Plasma Group FTP server (space.mit.edu) provides Voyager PLS fine-resolution key parameters: V1 (1977-1980, 4 annual files), V2 (1977-2018+ including heliosheath, 40+ files). Columns: year, DOY, hour, speed, density, thermal_speed, VR, VT, VN (RTN). Sub-minute cadence (~192s). Independent non-GSFC source. Anonymous FTP, no auth."
 status = "Verified"
 where_stated = "ftp://space.mit.edu/pub/plasma/vgr/ (README + data files), data/external/SOURCES.toml (SRC-VOYAGER-MIT-PLS-FTP)"
-formal_proof = "pending:reviewed_pending"
+formal_proof = "external:source-manifest"
 
 [[claim]]
 id = "C-1192"
@@ -1873,7 +1873,7 @@ last_verified = "2026-03-10"
 statement = "UC Berkeley SSL serves PSP FIELDS MAG L2 RTN data publicly at research.ssl.berkeley.edu without authentication. Full cadence (6-hr CDF files) and 1-minute averages (daily CDF files). Coverage 2018-2026. URL pattern: http://research.ssl.berkeley.edu/data/psp/data/sci/fields/l2/mag_RTN_1min/{YYYY}/{MM}/psp_fld_l2_mag_RTN_1min_{YYYYMMDD}_v{VV}.cdf. SWEAP/SPC at same server requires auth (HTTP 401)."
 status = "Verified"
 where_stated = "data/external/SOURCES.toml (SRC-PSP-BERKELEY-FIELDS-MAG), PSP Gateway Playwright probe"
-formal_proof = "pending:reviewed_pending"
+formal_proof = "external:source-manifest"
 
 [[claim]]
 id = "C-1193"
@@ -1881,7 +1881,7 @@ last_verified = "2026-03-10"
 statement = "ESA SOAR SWA-PAS L2 ground-computed proton moments (swa-pas-grnd-mom) are freely downloadable: 1624 daily CDF files, 2020-07 to 2025-11. Contains proton density, velocity (RTN), temperature. TAP API at soar.esac.esa.int/soar-sl-tap/tap/sync. No authentication required for sync downloads <50 GB. This FILLS the Solar Orbiter partial lane gap."
 status = "Verified"
 where_stated = "data/external/SOURCES.toml (SRC-SOLO-SOAR-SWA-PAS-GRND-MOM), ESA SOAR Playwright deep-discovery probe"
-formal_proof = "pending:reviewed_pending"
+formal_proof = "external:source-manifest"
 
 [[claim]]
 id = "C-1194"
@@ -1889,7 +1889,7 @@ last_verified = "2026-03-10"
 statement = "PDS-PPI at UCLA (pds-ppi.igpp.ucla.edu) hosts 289 Voyager data collections (103 VG1, 186 VG2) including VG1 MAG hourly (VG1-SW-MAG-4-SUMM-HGCOORDS-1HR-V1.0), VG1 PLS hourly (VG1-SS-PLS-4-SUMM-1HR-AVG-V1.0), and Pioneer 10 plasma hourly (p10-pa/data-avg-1hr). All served from UCLA, NOT GSFC. PDS3 .TAB format. Confirmed reachable 2026-03-10."
 status = "Verified"
 where_stated = "data/external/SOURCES.toml (SRC-VOYAGER1-PDS-PPI-MAG-HOURLY, SRC-VOYAGER1-PDS-PPI-PLS-HOURLY, SRC-PIONEER10-PDS-PPI-PLASMA-HOURLY), PSI arcnav + PDS-PPI Playwright probes"
-formal_proof = "pending:reviewed_pending"
+formal_proof = "external:source-manifest"
 
 [[claim]]
 id = "C-1195"
@@ -1897,7 +1897,7 @@ last_verified = "2026-03-10"
 statement = "Pioneer 10 MERGED hourly data (MAG+plasma+CRS) available at PDS-PPI UCLA (p10-hvm-pa-crt-cal/data-merged-1hour), providing full merged product equivalent to blocked SPDF source. 17 columns: year, DOY, hour, r_AU, lat, lon, BR, BT, BN, |B|, speed, flow_elev, flow_azim, density, temp, CRS fluxes (3 channels). Annual .TAB files 1972-1995. HDRL S3 bucket has CDF mirror. UPGRADES Pioneer 10 from WEAK to GOOD."
 status = "Verified"
 where_stated = "data/external/SOURCES.toml (SRC-PIONEER10-PDS-PPI-MERGED-HOURLY), helio.data.nasa.gov Playwright deep-discovery probe"
-formal_proof = "pending:reviewed_pending"
+formal_proof = "external:source-manifest"
 
 [[claim]]
 id = "C-1196"
@@ -1905,7 +1905,7 @@ last_verified = "2026-03-10"
 statement = "Pioneer 11 MERGED hourly data (MAG+plasma+CRS) available at PDS-PPI UCLA (p11-hvm-pa-crt-cal/data-merged-1hour), same 17-column format as Pioneer 10. Annual .TAB files 1973-1994. HDRL S3 bucket has CDF mirror. UPGRADES Pioneer 11 from WEAK to GOOD."
 status = "Verified"
 where_stated = "data/external/SOURCES.toml (SRC-PIONEER11-PDS-PPI-MERGED-HOURLY), helio.data.nasa.gov Playwright deep-discovery probe"
-formal_proof = "pending:reviewed_pending"
+formal_proof = "external:source-manifest"
 
 [[claim]]
 id = "C-1197"
@@ -1913,7 +1913,7 @@ last_verified = "2026-03-10"
 statement = "NASA HDRL S3 bucket (gov-nasa-hdrl-data1.s3.amazonaws.com) mirrors CDAWeb Pioneer merged hourly data as CDF files, providing a third independent source (alongside PDS-PPI .TAB and blocked SPDF). No AWS authentication required for read access. Pioneer 10 and 11 annual CDF files available under spdf/cdaweb/data/pioneer/."
 status = "Verified"
 where_stated = "data/external/SOURCES.toml (SRC-HDRL-S3-PIONEER-CDF-MIRROR), helio.data.nasa.gov Playwright deep-discovery probe"
-formal_proof = "pending:reviewed_pending"
+formal_proof = "external:source-manifest"
 
 [[claim]]
 id = "C-1198"
@@ -1921,7 +1921,7 @@ last_verified = "2026-03-10"
 statement = "JPL NAIF/SPICE kernels provide heliocentric ephemeris for Pioneer 10 (p10-a.bsp, 1972-1995), Pioneer 11 (p11-a.bsp, 1973-1990), Voyager 1 (Voyager_1.a54206u_V0.2_merged.bsp, 1977-2031), and Voyager 2 (Voyager_2.m05016u.merged.bsp, 1977-2031). Hosted at naif.jpl.nasa.gov, independent of GSFC. Solves the position-column problem for multi-source data merging by providing (r_AU, lat, lon) via spiceypy at any timestamp."
 status = "Verified"
 where_stated = "data/external/SOURCES.toml (SRC-NAIF-PIONEER10-SPICE-BSP, SRC-NAIF-VOYAGER1-SPICE-BSP), NAIF/SPICE Playwright probe"
-formal_proof = "pending:reviewed_pending"
+formal_proof = "external:source-manifest"
 
 [[claim]]
 id = "C-1199"
@@ -1929,7 +1929,7 @@ last_verified = "2026-03-10"
 statement = "SOHO CELIAS/MTOF Proton Monitor data at University of Maryland (space.umd.edu/pm/, l1.umd.edu/) provides L1 solar wind proton density, speed, and thermal speed at 30s and 5-min cadence. Independent of GSFC. Complements ACE/Wind for L1 coverage continuity."
 status = "Verified"
 where_stated = "data/external/SOURCES.toml (SRC-SOHO-CELIAS-MTOF-PM-UMD), NASCOM Playwright probe"
-formal_proof = "pending:reviewed_pending"
+formal_proof = "external:source-manifest"
 
 [[claim]]
 id = "C-120"
@@ -1953,7 +1953,7 @@ last_verified = "2026-03-10"
 statement = "Euclid Quick Release 1 (Q1) supplementary catalogs are freely available from Zenodo under CC BY 4.0: Visual Morphology (DOI 10.5281/zenodo.15106473, morphology_catalogue.parquet 97.3 MB), Strong Lensing (DOI 10.5281/zenodo.15025832, q1_discovery_engine_lens_catalog.csv 422 KB), Galaxy Mergers (DOI 10.5281/zenodo.17087034, Q1_merger_classification.csv 39.7 MB). All files downloaded and MD5-verified via Zenodo REST API."
 status = "Verified"
 where_stated = "data/external/SOURCES.toml (SRC-EUCLID-Q1-ZENODO-*), data/external/euclid/zenodo/euclid_zenodo_manifest.json"
-formal_proof = "pending:reviewed_pending"
+formal_proof = "external:source-manifest"
 
 [[claim]]
 id = "C-1202"
@@ -1961,7 +1961,7 @@ last_verified = "2026-03-10"
 statement = "Euclid Q1 primary survey catalogs (~35 TB, 26M detections) are accessible via TAP/ADQL from 3 independent providers: ESA SAS (eas.esac.esa.int/sas/), IRSA (irsa.ipac.caltech.edu/Euclid/), and AWS S3 (s3://nasa-irsa-euclid-q1, no auth required, us-east-1). 6 catalog types organized by Tile ID. License CC BY-NC 3.0 IGO. Requires ADQL client for targeted subset queries, not bulk download."
 status = "Verified"
 where_stated = "data/external/SOURCES.toml (SRC-EUCLID-Q1-ESA-TAP), AWS S3 ListBucket XML response"
-formal_proof = "pending:reviewed_pending"
+formal_proof = "external:source-manifest"
 
 [[claim]]
 id = "C-1203"
@@ -1969,7 +1969,7 @@ last_verified = "2026-03-10"
 statement = "Iowa PWS (University of Iowa Plasma Wave Subsystem) provides Voyager 1 and 2 plasma wave spectra and VLISM electron density as PDS4 CDF files, updated daily through 2026-03-10. File pattern: vg{1,2}pws_lr_YYYYMMDD_v5.30.cdf. Hosted at space.physics.uiowa.edu, independent of GSFC."
 status = "Verified"
 where_stated = "data/external/SOURCES.toml (SRC-VOYAGER-IOWA-PWS), Iowa PWS Playwright probe"
-formal_proof = "pending:reviewed_pending"
+formal_proof = "external:source-manifest"
 
 [[claim]]
 id = "C-1204"
@@ -4637,7 +4637,7 @@ last_verified = "2026-03-22"
 statement = "Cariow 2013 sedenion multiplication analysis: WHT-diagonalization of B_16 Toeplitz component + sparse remainder achieves 122 muls / 298 adds (vs 256/240 naive, 15% fewer total ops). Algorithm NOT adopted for our SIMD path: the irregular sparse-matrix pattern (106 scattered multiply-accumulates in B_hat) destroys ILP and AVX2 utilization. Our CD-doubling SIMD path (4 octonion muls decomposed to 64 FMAs with 12/16 YMM register fit) runs at L1 cache speed with superior pipeline throughput. Cariow is optimal for VLSI/FPGA hardware multiplier design where multiplier count dominates area/power. For CPU software, wall-clock time is dominated by instruction throughput and data-dependency depth, not raw multiplication count."
 status = "Verified"
 where_stated = "docs/physics/sedenion_standard_model.md (bibliography, Cariow analysis)"
-formal_proof = "pending:reviewed_pending"
+formal_proof = "pending:doc_only_review"
 
 [[claim]]
 id = "C-1494"
@@ -4685,7 +4685,7 @@ last_verified = "2026-03-22"
 statement = "Canonical observable scorecard (registry/scorecard.toml): 17 observables across 3 epistemic bins. Bin 1 (9 framework-backed, zero-parameter): m_mu/m_e (0.1%), m_tau/m_e (0.0%), m_c/m_u (1.4%), m_t/m_c (1.6%), r_nu (1.0%), m_b/m_s (1.5%), m_s/m_d (22%, weak), sin^2(theta_W) (8.1%, tree-level structural estimate), mass ordering (categorical). Bin 2 (6 optimized fits): theta_12/13/23 PMNS (0.15/0.01/0.02%, 4 params), |V_us|/|V_ub|/|V_cb| CKM (8.9/2.4/5.0%, 2 params). Bin 3 (2 CP exploratory): |J_CP| and delta_CP with two materially different pipelines (CP-A phase-only vs CP-B Gram/rephasing). Resolves the 9/11/13 observable count drift across sessions."
 status = "Verified"
 where_stated = "registry/scorecard.toml, docs/physics/sedenion_standard_model.md (abstract)"
-formal_proof = "pending:reviewed_pending"
+formal_proof = "pending:doc_only_review"
 
 [[claim]]
 id = "C-150"
@@ -4709,7 +4709,7 @@ last_verified = "2026-03-22"
 statement = "Paper restructuring: 3-bin abstract with defensible thesis, negative-result ladder (6 null results in VIII-B), known tensions (7 items in XV-B), runtime/proof-time unification paragraph, surreal future-directions paragraph (one paragraph). Complementarity theorem foregrounded. Weinberg angle labeled tree-level structural estimate. Down-type quark asymmetry noted. CP-A/CP-B pipeline distinction explicit."
 status = "Verified"
 where_stated = "docs/physics/sedenion_standard_model.md (abstract, VIII-B, XV, XV-B)"
-formal_proof = "pending:reviewed_pending"
+formal_proof = "pending:doc_only_review"
 
 [[claim]]
 id = "C-1502"
@@ -8648,7 +8648,7 @@ last_verified = "2026-02-09"
 statement = "Construction Method Determines Algebraic Properties, Not Dimension Alone: Multiple families of 4D algebras exist (Hamilton H, split-quaternions ell, dual quaternions, biquaternions, tessarines) differing in construction method (CD doubling, tensor product, complexification, extension). Commutativity, divisibility, and norm composition properties vary by construction method, NOT just by dimension. Tessarines (commutative, tensor product) are inaccessible via any CD gamma choice, proving construction method is the fundamental arbiter of algebra properties."
 status = "Verified"
 where_stated = "`docs/ALGEBRA_FAMILY_TAXONOMY.md` (Phase 2d documentation), cross-reference I-020, I-022"
-formal_proof = "pending:reviewed_pending"
+formal_proof = "pending:doc_only_review"
 
 [[claim]]
 id = "C-553"
@@ -8728,7 +8728,7 @@ last_verified = "2026-02-09"
 statement = "Rust Algebra Crate Survey: Comprehensive evaluation of 71 Rust algebra crates identified 3 Tier-1 candidates suitable for Phase 3a-3d validation: wedged (dimension-agnostic GA, Apache-2.0), geonum (O(1) complexity claims, BSD-3-Clause), and amari (comprehensive ecosystem, license TBD). No Jordan algebra crates exist; Phase 3b requires custom trait implementation. Legacy abstract algebra crates (alga, algebra, un_algebra) are archived/unmaintained and unsuitable."
 status = "Verified"
 where_stated = "`docs/ALGEBRA_CRATES_SURVEY.md` (comprehensive 25-crate analysis with Tier-1/2/3/4/REF categorization), `docs/ALGEBRA_CRATES_QUICK_REFERENCE.csv` (sortable metadata table)"
-formal_proof = "pending:reviewed_pending"
+formal_proof = "pending:doc_only_review"
 
 [[claim]]
 id = "C-563"
@@ -8760,7 +8760,7 @@ last_verified = "2026-02-09"
 statement = "Construction Mechanism Determines Property Class: The commutativity class (0%, 80-90%, or 100%) is determined entirely by the algebraic construction mechanism (Cayley-Dickson, Clifford, or Jordan), independent of dimension or metric signature. Cayley-Dickson universally exhibits 0% commutative pairs at all dims >=4 regardless of gamma. Clifford algebras universally exhibit 80-90% commutative pairs at all dims regardless of (p,q) signature. Jordan algebras universally exhibit 100% commutativity at all dims regardless of A_1/A_2/A_3 choice. This establishes that algebraic property classes are discrete and mechanism-determined, not continuous or metric-tuned."
 status = "Verified"
 where_stated = "`docs/COMPLETE_ALGEBRA_FAMILY_TAXONOMY.md` (Sections 1, 2, Universal Laws section)"
-formal_proof = "pending:reviewed_pending"
+formal_proof = "pending:doc_only_review"
 
 [[claim]]
 id = "C-567"
@@ -8768,7 +8768,7 @@ last_verified = "2026-02-09"
 statement = "Three-Level Architecture Hierarchy Is Universal: All algebra families (Cayley-Dickson, Clifford, Jordan) follow a three-level hierarchy where Level 1 (Construction Mechanism) is primary determinant, Level 2 (Dimension) is secondary, and Level 3 (Metric/Parameters) is tertiary. This hierarchy is not specific to one family but applies universally across major construction methods. The hierarchy explains why: (1) same dimension with different mechanisms yields opposite properties, (2) dimension-dependent thresholds (e.g., associativity loss at CD dim 8) affect some mechanisms but not others, (3) metric parameters control secondary properties (zero-divisor count) but not primary properties (commutativity class)."
 status = "Verified"
 where_stated = "`docs/COMPLETE_ALGEBRA_FAMILY_TAXONOMY.md` (Sections 1, 7, Architectural Implications)"
-formal_proof = "pending:reviewed_pending"
+formal_proof = "pending:doc_only_review"
 
 [[claim]]
 id = "C-568"
@@ -8776,7 +8776,7 @@ last_verified = "2026-02-09"
 statement = "Commutativity-Associativity Trade-Off Law: Algebras enforcing commutativity (Jordan: 100% commutative) sacrifice associativity (fundamentally non-associative except degenerate case). Algebras preserving associativity (Clifford: always associative) do so with selective commutativity (80-90%). Cayley-Dickson trades off differently: universal non-commutativity (0%) with dimension-dependent associativity (full at dims 2-4, lost at dims 8+). This law suggests a fundamental tension in algebra design: achieving both full commutativity and associativity simultaneously is impossible for non-trivial algebras."
 status = "Verified"
 where_stated = "`docs/COMPLETE_ALGEBRA_FAMILY_TAXONOMY.md` (Sections 2, 3, Universal Laws)"
-formal_proof = "pending:reviewed_pending"
+formal_proof = "pending:doc_only_review"
 
 [[claim]]
 id = "C-569"
@@ -8784,7 +8784,7 @@ last_verified = "2026-02-09"
 statement = "Metric Signature Is Purely Parametric: Metric parameters (CD gamma vectors, Clifford (p,q) signatures) control secondary properties like zero-divisor count and distribution, but do NOT determine fundamental properties like commutativity class or associativity structure. All gamma choices in CD preserve 0% commutativity (gamma-invariant). All (p,q) choices in Clifford preserve 80-90% commutativity ((p,q)-invariant). Jordan algebras have no metric parameters. This establishes metric as a Level 3 tuning knob only, not a design choice affecting primary properties."
 status = "Verified"
 where_stated = "`docs/COMPLETE_ALGEBRA_FAMILY_TAXONOMY.md` (Sections 1, 5, 7)"
-formal_proof = "pending:reviewed_pending"
+formal_proof = "pending:doc_only_review"
 
 [[claim]]
 id = "C-570"
