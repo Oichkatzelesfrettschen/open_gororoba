@@ -30,6 +30,10 @@
 //! Signs packed as u32 words (32 signs per word) for subgroup popcount.
 
 pub mod context;
+#[cfg(feature = "vulkan")]
+pub mod quantizer;
 pub mod shaders;
 
 pub use context::VulkanCapabilities;
+#[cfg(feature = "vulkan")]
+pub use quantizer::{VulkanQuantizer, VulkanQuantizerError};
