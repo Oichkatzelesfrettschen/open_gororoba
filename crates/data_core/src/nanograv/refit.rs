@@ -228,12 +228,16 @@ pub fn solve_refit(
     let mut response = DVector::zeros(total_rows);
     let mut sigma = vec![0.0; total_rows];
     pack_stacked_system(
-        &toa_matrix,
-        &toa_response,
-        &toa_sigma,
-        &dm_matrix,
-        &dm_response,
-        &dm_sigma,
+        LinearSubsystem {
+            matrix: &toa_matrix,
+            response: &toa_response,
+            sigma: &toa_sigma,
+        },
+        LinearSubsystem {
+            matrix: &dm_matrix,
+            response: &dm_response,
+            sigma: &dm_sigma,
+        },
         &mut design,
         &mut response,
         &mut sigma,
@@ -259,21 +263,31 @@ pub fn solve_refit(
         &parameter_names,
         &wls_coefficients,
         dataset,
-        &toa_matrix,
-        &toa_response,
-        &toa_sigma,
-        &dm_matrix,
-        &dm_response,
+        LinearSubsystem {
+            matrix: &toa_matrix,
+            response: &toa_response,
+            sigma: &toa_sigma,
+        },
+        LinearSubsystem {
+            matrix: &dm_matrix,
+            response: &dm_response,
+            sigma: &dm_sigma,
+        },
     );
     let gls_summary = summarize_fit(
         &parameter_names,
         &gls_coefficients,
         dataset,
-        &toa_matrix,
-        &toa_response,
-        &toa_sigma,
-        &dm_matrix,
-        &dm_response,
+        LinearSubsystem {
+            matrix: &toa_matrix,
+            response: &toa_response,
+            sigma: &toa_sigma,
+        },
+        LinearSubsystem {
+            matrix: &dm_matrix,
+            response: &dm_response,
+            sigma: &dm_sigma,
+        },
     );
 
     let mut rows = Vec::new();
@@ -633,32 +647,36 @@ fn solve_block_generalized_least_squares(
     solve_normal_equations(&normal, &rhs)
 }
 
-#[allow(clippy::too_many_arguments)]
+/// One half (TOA or DM) of a stacked linear-fit subsystem: design matrix,
+/// observed response vector, and per-row sigma. Bundling avoids repeated
+/// 3-tuple plumbing through the GLS pack and summary path.
+struct LinearSubsystem<'a> {
+    matrix: &'a DMatrix<f64>,
+    response: &'a DVector<f64>,
+    sigma: &'a [f64],
+}
+
 fn pack_stacked_system(
-    toa_matrix: &DMatrix<f64>,
-    toa_response: &DVector<f64>,
-    toa_sigma: &[f64],
-    dm_matrix: &DMatrix<f64>,
-    dm_response: &DVector<f64>,
-    dm_sigma: &[f64],
+    toa: LinearSubsystem<'_>,
+    dm: LinearSubsystem<'_>,
     design: &mut DMatrix<f64>,
     response: &mut DVector<f64>,
     sigma: &mut [f64],
 ) {
-    for row in 0..toa_response.len() {
-        for col in 0..toa_matrix.ncols() {
-            design[(row, col)] = toa_matrix[(row, col)];
+    for row in 0..toa.response.len() {
+        for col in 0..toa.matrix.ncols() {
+            design[(row, col)] = toa.matrix[(row, col)];
         }
-        response[row] = toa_response[row];
-        sigma[row] = toa_sigma[row];
+        response[row] = toa.response[row];
+        sigma[row] = toa.sigma[row];
     }
-    for row in 0..dm_response.len() {
-        let offset = toa_response.len() + row;
-        for col in 0..dm_matrix.ncols() {
-            design[(offset, col)] = dm_matrix[(row, col)];
+    for row in 0..dm.response.len() {
+        let offset = toa.response.len() + row;
+        for col in 0..dm.matrix.ncols() {
+            design[(offset, col)] = dm.matrix[(row, col)];
         }
-        response[offset] = dm_response[row];
-        sigma[offset] = dm_sigma[row];
+        response[offset] = dm.response[row];
+        sigma[offset] = dm.sigma[row];
     }
 }
 
@@ -719,17 +737,18 @@ fn median_sigma(values: &[f64]) -> f64 {
     sorted[sorted.len() / 2]
 }
 
-#[allow(clippy::too_many_arguments)]
 fn summarize_fit(
     parameter_names: &[String],
     coefficients: &DVector<f64>,
     dataset: &RefitDataset,
-    toa_matrix: &DMatrix<f64>,
-    toa_response: &DVector<f64>,
-    toa_sigma: &[f64],
-    dm_matrix: &DMatrix<f64>,
-    dm_response: &DVector<f64>,
+    toa: LinearSubsystem<'_>,
+    dm: LinearSubsystem<'_>,
 ) -> LinearFitSummary {
+    let toa_matrix = toa.matrix;
+    let toa_response = toa.response;
+    let toa_sigma = toa.sigma;
+    let dm_matrix = dm.matrix;
+    let dm_response = dm.response;
     let predicted_toa = toa_matrix * coefficients;
     let predicted_dm = dm_matrix * coefficients;
     let toa_before = toa_response.iter().copied().collect::<Vec<_>>();
