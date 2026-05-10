@@ -16,6 +16,10 @@ path = "src/bin/repo_audit.rs"
 name = "formal-proof-backfill"
 path = "src/bin/formal_proof_backfill.rs"
 
+[[bin]]
+name = "formal-proof-tighten"
+path = "src/bin/formal_proof_tighten.rs"
+
 # ---- Claims (3) ----
 
 [[bin]]
