@@ -78,17 +78,12 @@ impl SedenionField3D {
                         phi[c] = component[[x, y, z]];
                     }
 
-                    // Sedenion multiplication (simplified recursive or re-use CD kernel)
-                    // For now, let's use a 16D variant of oct_multiply or re-use gororoba_algebra
-                    // Actually, we can use crate::construction::cayley_dickson::cd_multiply
-                    // but we need to ensure it's available.
-
-                    // Stub for sedenion multiplication (placeholder)
-                    let mut phi_sq = [0.0; 16];
-                    for i in 0..16 {
-                        phi_sq[i] = phi[i] * phi[i]; // Toy squares
-                    }
-
+                    // Sedenion-squared via the canonical Cayley-Dickson product.
+                    // `cd_multiply` dispatches on slice length (16 here -> sedenion)
+                    // and is already in scope from the file-level import. We
+                    // pass `&phi[..]` twice (the field at this site, squared)
+                    // and write the 16-component result back componentwise.
+                    let phi_sq = cd_multiply(&phi[..], &phi[..]);
                     for c in 0..16 {
                         next_data[c][[x, y, z]] += dt * phi_sq[c];
                     }
