@@ -47,11 +47,13 @@ layout(std430, set = 0, binding = 4) writeonly buffer ScoresBuffer {
     float scores[];
 };
 
-// Extract u8 index from packed u32 array at SoA position
+// Extract u8 index from packed u32 array at SoA position.
+// Note: avoid `flat` as a local var name -- it's a reserved GLSL
+// qualifier (used for flat-shaded vertex outputs).
 uint extract_index(int coord, int key_idx) {
-    int flat = coord * params.n_keys + key_idx;
-    uint word = packed_key_indices[flat / 4];
-    uint byte_pos = (uint(flat) % 4u) * 8u;
+    int flat_idx = coord * params.n_keys + key_idx;
+    uint word = packed_key_indices[flat_idx / 4];
+    uint byte_pos = (uint(flat_idx) % 4u) * 8u;
     return (word >> byte_pos) & 0xFFu;
 }
 
