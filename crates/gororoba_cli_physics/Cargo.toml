@@ -710,6 +710,10 @@ name = "synthesis-audit"
 path = "src/bin/synthesis_audit.rs"
 
 [[bin]]
+name = "manga-null-synthesis"
+path = "src/bin/manga_null_synthesis.rs"
+
+[[bin]]
 name = "window-function-sensitivity"
 path = "src/bin/window_function_sensitivity.rs"
 
