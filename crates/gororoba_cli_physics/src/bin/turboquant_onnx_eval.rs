@@ -196,34 +196,56 @@ fn synthetic_eval(cli: &Cli) -> Vec<EvalResult> {
     results
 }
 
-/// ONNX-driven evaluation: feature-gated stub.
+/// ONNX-driven evaluation: real ort 2.x Session loader.
 ///
-/// The `onnx-eval` Cargo feature pulls the ort 2.0.0-rc.12 dep into the
-/// build (verified compiles cleanly). This v1 stub completes Phase A of
-/// DEFER-ORT-ONNX-EVAL: the dep is wired, the feature gate exists, the
-/// build is green for both `--features onnx-eval` and the default
-/// (synthetic-only) configuration.
+/// Loads the ONNX model via the ort 2.0.0-rc.12 SessionBuilder, prints
+/// the discovered input/output tensor metadata, and runs synthetic_eval
+/// against the same TurboQuant pipeline. This v2 actually exercises
+/// ort -- the model loads in-process and its metadata is queried.
 ///
-/// Phase B (deferred to a focused future task) will replace this stub
-/// with the real ort Session loader. The ort 2.0.0-rc.12 API uses a
-/// builder pattern whose method names differ from the 1.x line; the
-/// integration needs a small dedicated reading of the ort 2.x docs
-/// before wiring (commit_from_memory vs commit_from_file_path vs
-/// commit_from_file -- the available method depends on the ort
-/// minor-version cut). Per-model architecture knowledge (distilgpt2 vs
-/// SmolLM2) is then needed to extract the KV-attention tensors.
-///
-/// Until Phase B lands, this function returns Ok(synthetic_eval(cli))
-/// so the binary still produces a result. The mode label
-/// "onnx-stub-synthetic" distinguishes the output from the pure
-/// synthetic path.
+/// Phase B remainder (per-model KV-tensor extraction): the v2 loader
+/// confirms ONNX is wired and the model is readable. The next step --
+/// extracting the per-architecture KV tensors (distilgpt2 vs SmolLM2)
+/// for actual quantization-on-real-weights -- is its own focused
+/// micro-sprint and is tracked under the same task ID.
 #[cfg(feature = "onnx-eval")]
 fn onnx_eval(cli: &Cli, model_path: &std::path::Path) -> Result<Vec<EvalResult>> {
+    use ort::session::Session;
+    let mut builder = Session::builder().map_err(|e| {
+        anyhow::anyhow!("ort: Session::builder() failed: {}", e)
+    })?;
+    let session = builder
+        .commit_from_file(model_path)
+        .map_err(|e| {
+            anyhow::anyhow!(
+                "ort: failed to load ONNX model {}: {}",
+                model_path.display(),
+                e
+            )
+        })?;
+    let input_names: Vec<String> = session
+        .inputs()
+        .iter()
+        .map(|i| i.name().to_string())
+        .collect();
+    let output_names: Vec<String> = session
+        .outputs()
+        .iter()
+        .map(|o| o.name().to_string())
+        .collect();
     println!(
-        "  ONNX feature ENABLED. Model path = {} (Phase A stub; Phase B \
-         loader pending).",
+        "  ONNX session loaded: model = {}",
         model_path.display()
     );
+    println!("  inputs ({})  = {:?}", input_names.len(), input_names);
+    println!("  outputs ({}) = {:?}", output_names.len(), output_names);
+    println!(
+        "  v2 loader: model is in-process and its metadata is readable. \
+         Per-architecture KV-tensor extraction is the next micro-sprint."
+    );
+    // Ensure the session lives at least until we are done printing the
+    // metadata (the Session destructor frees the underlying OrtSession).
+    drop(session);
     Ok(synthetic_eval(cli))
 }
 
