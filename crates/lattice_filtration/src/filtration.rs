@@ -772,6 +772,9 @@ mod tests {
     }
 
     #[test]
+    // shell-index cast: shells are populated by the simulation upstream,
+    // so the as-cast from i64 to usize is bounded by shells.len() (16
+    // here) and cannot overflow or sign-flip.
     #[allow(clippy::cast_sign_loss)]
     fn test_shell_storm_many_shells_populated() {
         // 3D OU walk with CD noise populates shells up to ~3*sigma.

@@ -19,6 +19,9 @@ struct Cli {
     command: Commands,
 }
 
+// Boxing the larger Subcommand variants would force callers through an
+// extra deref and lose clap derive ergonomics; the enum is dropped after
+// dispatch so the size cost is one-shot.
 #[allow(clippy::large_enum_variant)]
 #[derive(Debug, Subcommand)]
 enum Commands {

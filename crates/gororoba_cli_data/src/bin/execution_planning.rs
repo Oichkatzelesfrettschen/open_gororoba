@@ -2946,6 +2946,9 @@ fn collapse(text: &str) -> String {
 }
 
 #[cfg(test)]
+// The `mod tests` block is followed by helper fns that ARE referenced
+// by tests but are placed at file scope so they can be reused across
+// test modules; clippy::items_after_test_module is overly strict here.
 #[allow(clippy::items_after_test_module)]
 mod tests {
     use super::*;

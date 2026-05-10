@@ -145,6 +145,10 @@ pub fn phenix_auau_200_npart() -> Vec<NpartReference> {
 
 /// Published MC Glauber centrality geometry for ALICE Pb-Pb 5.02 TeV.
 #[must_use]
+// Published physics constant: ALICE collaboration's mean impact parameter
+// (b_mean = 2.43 fm at 0-5% centrality) coincidentally matches std::f64::
+// consts::E to a few digits; precision in the published table is what
+// matters for QGP fits, not symbolic identification with E.
 #[allow(clippy::approx_constant)]
 pub fn alice_pbpb_5020_mc_glauber() -> Vec<crate::glauber::CentralityBinGeometry> {
     let sigma_nn_fm2 = 67.6 * 0.1;
@@ -179,6 +183,8 @@ pub fn alice_pbpb_5020_mc_glauber() -> Vec<crate::glauber::CentralityBinGeometry
 
 /// Published MC Glauber centrality geometry for ALICE Pb-Pb 5.36 TeV (LHC Run 3).
 #[must_use]
+// Same E-coincidence as the 5.02 TeV table; values are the LHC Run 3
+// published MC Glauber numbers, not derived from std::f64::consts::E.
 #[allow(clippy::approx_constant)]
 pub fn alice_pbpb_5360_mc_glauber() -> Vec<crate::glauber::CentralityBinGeometry> {
     let sigma_nn_fm2 = 68.2 * 0.1;
