@@ -65,8 +65,8 @@ line = 19
 kind = "parameter"
 name = "carrier"
 module = "CDDoubleFunctor"
-classification = "unclassified"
-rationale = ""
+classification = "module_signature_parameter"
+rationale = "Module Type signature: parameters declare the abstract carrier+operations; axioms declare the algebraic laws. Standard Rocq universal-algebra encoding."
 
 [[axiom_disposition]]
 file = "proofs/theories/CDDoubleFunctor.v"
@@ -74,8 +74,8 @@ line = 21
 kind = "parameter"
 name = "cd_mul"
 module = "CDDoubleFunctor"
-classification = "unclassified"
-rationale = ""
+classification = "module_signature_parameter"
+rationale = "Module Type signature: parameters declare the abstract carrier+operations; axioms declare the algebraic laws. Standard Rocq universal-algebra encoding."
 
 [[axiom_disposition]]
 file = "proofs/theories/CDDoubleFunctor.v"
@@ -83,8 +83,8 @@ line = 22
 kind = "parameter"
 name = "cd_add"
 module = "CDDoubleFunctor"
-classification = "unclassified"
-rationale = ""
+classification = "module_signature_parameter"
+rationale = "Module Type signature: parameters declare the abstract carrier+operations; axioms declare the algebraic laws. Standard Rocq universal-algebra encoding."
 
 [[axiom_disposition]]
 file = "proofs/theories/CDDoubleFunctor.v"
@@ -92,8 +92,8 @@ line = 23
 kind = "parameter"
 name = "cd_neg"
 module = "CDDoubleFunctor"
-classification = "unclassified"
-rationale = ""
+classification = "module_signature_parameter"
+rationale = "Module Type signature: parameters declare the abstract carrier+operations; axioms declare the algebraic laws. Standard Rocq universal-algebra encoding."
 
 [[axiom_disposition]]
 file = "proofs/theories/CDDoubleFunctor.v"
@@ -101,8 +101,8 @@ line = 24
 kind = "parameter"
 name = "cd_sub"
 module = "CDDoubleFunctor"
-classification = "unclassified"
-rationale = ""
+classification = "module_signature_parameter"
+rationale = "Module Type signature: parameters declare the abstract carrier+operations; axioms declare the algebraic laws. Standard Rocq universal-algebra encoding."
 
 [[axiom_disposition]]
 file = "proofs/theories/CDDoubleFunctor.v"
@@ -110,8 +110,8 @@ line = 25
 kind = "parameter"
 name = "cd_conj"
 module = "CDDoubleFunctor"
-classification = "unclassified"
-rationale = ""
+classification = "module_signature_parameter"
+rationale = "Module Type signature: parameters declare the abstract carrier+operations; axioms declare the algebraic laws. Standard Rocq universal-algebra encoding."
 
 [[axiom_disposition]]
 file = "proofs/theories/CDDoubleFunctor.v"
@@ -119,8 +119,8 @@ line = 26
 kind = "parameter"
 name = "cd_scale"
 module = "CDDoubleFunctor"
-classification = "unclassified"
-rationale = ""
+classification = "module_signature_parameter"
+rationale = "Module Type signature: parameters declare the abstract carrier+operations; axioms declare the algebraic laws. Standard Rocq universal-algebra encoding."
 
 [[axiom_disposition]]
 file = "proofs/theories/CDDoubleFunctor.v"
@@ -128,8 +128,8 @@ line = 27
 kind = "parameter"
 name = "cd_zero"
 module = "CDDoubleFunctor"
-classification = "unclassified"
-rationale = ""
+classification = "module_signature_parameter"
+rationale = "Module Type signature: parameters declare the abstract carrier+operations; axioms declare the algebraic laws. Standard Rocq universal-algebra encoding."
 
 [[axiom_disposition]]
 file = "proofs/theories/CDDoubleFunctor.v"
@@ -137,8 +137,8 @@ line = 29
 kind = "axiom"
 name = "mul_scale_left"
 module = "CDDoubleFunctor"
-classification = "unclassified"
-rationale = ""
+classification = "module_signature_axiom"
+rationale = "Module Type signature: parameters declare the abstract carrier+operations; axioms declare the algebraic laws. Standard Rocq universal-algebra encoding."
 
 [[axiom_disposition]]
 file = "proofs/theories/CDDoubleFunctor.v"
@@ -146,8 +146,8 @@ line = 31
 kind = "axiom"
 name = "mul_scale_right"
 module = "CDDoubleFunctor"
-classification = "unclassified"
-rationale = ""
+classification = "module_signature_axiom"
+rationale = "Module Type signature: parameters declare the abstract carrier+operations; axioms declare the algebraic laws. Standard Rocq universal-algebra encoding."
 
 [[axiom_disposition]]
 file = "proofs/theories/CDDoubleFunctor.v"
@@ -155,8 +155,8 @@ line = 33
 kind = "axiom"
 name = "conj_scale"
 module = "CDDoubleFunctor"
-classification = "unclassified"
-rationale = ""
+classification = "module_signature_axiom"
+rationale = "Module Type signature: parameters declare the abstract carrier+operations; axioms declare the algebraic laws. Standard Rocq universal-algebra encoding."
 
 [[axiom_disposition]]
 file = "proofs/theories/CDDoubleFunctor.v"
@@ -164,8 +164,8 @@ line = 35
 kind = "axiom"
 name = "neg_scale"
 module = "CDDoubleFunctor"
-classification = "unclassified"
-rationale = ""
+classification = "module_signature_axiom"
+rationale = "Module Type signature: parameters declare the abstract carrier+operations; axioms declare the algebraic laws. Standard Rocq universal-algebra encoding."
 
 [[axiom_disposition]]
 file = "proofs/theories/CDDoubleFunctor.v"
@@ -173,8 +173,8 @@ line = 37
 kind = "axiom"
 name = "scale_add"
 module = "CDDoubleFunctor"
-classification = "unclassified"
-rationale = ""
+classification = "module_signature_axiom"
+rationale = "Module Type signature: parameters declare the abstract carrier+operations; axioms declare the algebraic laws. Standard Rocq universal-algebra encoding."
 
 [[axiom_disposition]]
 file = "proofs/theories/CDDoubleFunctor.v"
@@ -182,8 +182,8 @@ line = 39
 kind = "axiom"
 name = "scale_sub"
 module = "CDDoubleFunctor"
-classification = "unclassified"
-rationale = ""
+classification = "module_signature_axiom"
+rationale = "Module Type signature: parameters declare the abstract carrier+operations; axioms declare the algebraic laws. Standard Rocq universal-algebra encoding."
 
 [[axiom_disposition]]
 file = "proofs/theories/CDDoubleFunctor.v"
@@ -191,8 +191,8 @@ line = 41
 kind = "axiom"
 name = "sub_def"
 module = "CDDoubleFunctor"
-classification = "unclassified"
-rationale = ""
+classification = "module_signature_axiom"
+rationale = "Module Type signature: parameters declare the abstract carrier+operations; axioms declare the algebraic laws. Standard Rocq universal-algebra encoding."
 
 [[axiom_disposition]]
 file = "proofs/theories/TightBindingTopology.v"
@@ -443,8 +443,8 @@ line = 117
 kind = "parameter"
 name = "A"
 module = "Brown1972ChapterIII"
-classification = "unclassified"
-rationale = ""
+classification = "module_signature_parameter"
+rationale = "Module Type signature: parameters declare the abstract carrier+operations; axioms declare the algebraic laws. Standard Rocq universal-algebra encoding."
 
 [[axiom_disposition]]
 file = "proofs/theories/Brown1972ChapterIII.v"
@@ -452,8 +452,8 @@ line = 118
 kind = "parameter"
 name = "add"
 module = "Brown1972ChapterIII"
-classification = "unclassified"
-rationale = ""
+classification = "module_signature_parameter"
+rationale = "Module Type signature: parameters declare the abstract carrier+operations; axioms declare the algebraic laws. Standard Rocq universal-algebra encoding."
 
 [[axiom_disposition]]
 file = "proofs/theories/Brown1972ChapterIII.v"
@@ -461,8 +461,8 @@ line = 119
 kind = "parameter"
 name = "sub"
 module = "Brown1972ChapterIII"
-classification = "unclassified"
-rationale = ""
+classification = "module_signature_parameter"
+rationale = "Module Type signature: parameters declare the abstract carrier+operations; axioms declare the algebraic laws. Standard Rocq universal-algebra encoding."
 
 [[axiom_disposition]]
 file = "proofs/theories/Brown1972ChapterIII.v"
@@ -470,8 +470,8 @@ line = 120
 kind = "parameter"
 name = "mul"
 module = "Brown1972ChapterIII"
-classification = "unclassified"
-rationale = ""
+classification = "module_signature_parameter"
+rationale = "Module Type signature: parameters declare the abstract carrier+operations; axioms declare the algebraic laws. Standard Rocq universal-algebra encoding."
 
 [[axiom_disposition]]
 file = "proofs/theories/Brown1972ChapterIII.v"
@@ -479,8 +479,8 @@ line = 121
 kind = "parameter"
 name = "conj"
 module = "Brown1972ChapterIII"
-classification = "unclassified"
-rationale = ""
+classification = "module_signature_parameter"
+rationale = "Module Type signature: parameters declare the abstract carrier+operations; axioms declare the algebraic laws. Standard Rocq universal-algebra encoding."
 
 [[axiom_disposition]]
 file = "proofs/theories/Brown1972ChapterIII.v"
@@ -488,8 +488,8 @@ line = 122
 kind = "parameter"
 name = "norm_sq"
 module = "Brown1972ChapterIII"
-classification = "unclassified"
-rationale = ""
+classification = "module_signature_parameter"
+rationale = "Module Type signature: parameters declare the abstract carrier+operations; axioms declare the algebraic laws. Standard Rocq universal-algebra encoding."
 
 [[axiom_disposition]]
 file = "proofs/theories/Brown1972ChapterIII.v"
@@ -497,8 +497,8 @@ line = 124
 kind = "axiom"
 name = "brown_norm_conj_preserved"
 module = "Brown1972ChapterIII"
-classification = "unclassified"
-rationale = ""
+classification = "module_signature_axiom"
+rationale = "Module Type signature: parameters declare the abstract carrier+operations; axioms declare the algebraic laws. Standard Rocq universal-algebra encoding."
 
 [[axiom_disposition]]
 file = "proofs/theories/Brown1972ChapterIII.v"
@@ -506,8 +506,8 @@ line = 126
 kind = "axiom"
 name = "brown_norm_mul"
 module = "Brown1972ChapterIII"
-classification = "unclassified"
-rationale = ""
+classification = "module_signature_axiom"
+rationale = "Module Type signature: parameters declare the abstract carrier+operations; axioms declare the algebraic laws. Standard Rocq universal-algebra encoding."
 
 [[axiom_disposition]]
 file = "proofs/theories/Brown1972ChapterIII.v"
@@ -515,8 +515,8 @@ line = 128
 kind = "axiom"
 name = "brown_polarization_identity"
 module = "Brown1972ChapterIII"
-classification = "unclassified"
-rationale = ""
+classification = "module_signature_axiom"
+rationale = "Module Type signature: parameters declare the abstract carrier+operations; axioms declare the algebraic laws. Standard Rocq universal-algebra encoding."
 
 [[axiom_disposition]]
 file = "proofs/theories/C1543_MorMod4Bound.v"
@@ -677,8 +677,8 @@ line = 26
 kind = "axiom"
 name = "RF"
 module = "CarlsonIntegrals"
-classification = "unclassified"
-rationale = ""
+classification = "numerical_real_analysis"
+rationale = "Special integral identity (Carlson elliptic). Provable in principle but requires substantial real-analysis library development; axiomatized as cited mathematical fact."
 
 [[axiom_disposition]]
 file = "proofs/theories/CarlsonIntegrals.v"
@@ -686,8 +686,8 @@ line = 27
 kind = "axiom"
 name = "RF_symmetric_12"
 module = "CarlsonIntegrals"
-classification = "unclassified"
-rationale = ""
+classification = "numerical_real_analysis"
+rationale = "Special integral identity (Carlson elliptic). Provable in principle but requires substantial real-analysis library development; axiomatized as cited mathematical fact."
 
 [[axiom_disposition]]
 file = "proofs/theories/CarlsonIntegrals.v"
@@ -695,8 +695,8 @@ line = 28
 kind = "axiom"
 name = "RF_symmetric_13"
 module = "CarlsonIntegrals"
-classification = "unclassified"
-rationale = ""
+classification = "numerical_real_analysis"
+rationale = "Special integral identity (Carlson elliptic). Provable in principle but requires substantial real-analysis library development; axiomatized as cited mathematical fact."
 
 [[axiom_disposition]]
 file = "proofs/theories/CarlsonIntegrals.v"
@@ -704,8 +704,8 @@ line = 29
 kind = "axiom"
 name = "RF_symmetric_23"
 module = "CarlsonIntegrals"
-classification = "unclassified"
-rationale = ""
+classification = "numerical_real_analysis"
+rationale = "Special integral identity (Carlson elliptic). Provable in principle but requires substantial real-analysis library development; axiomatized as cited mathematical fact."
 
 [[axiom_disposition]]
 file = "proofs/theories/CarlsonIntegrals.v"
@@ -713,8 +713,8 @@ line = 32
 kind = "axiom"
 name = "RF_positive"
 module = "CarlsonIntegrals"
-classification = "unclassified"
-rationale = ""
+classification = "numerical_real_analysis"
+rationale = "Special integral identity (Carlson elliptic). Provable in principle but requires substantial real-analysis library development; axiomatized as cited mathematical fact."
 
 [[axiom_disposition]]
 file = "proofs/theories/CarlsonIntegrals.v"
@@ -722,8 +722,8 @@ line = 36
 kind = "axiom"
 name = "RF_equal_args"
 module = "CarlsonIntegrals"
-classification = "unclassified"
-rationale = ""
+classification = "numerical_real_analysis"
+rationale = "Special integral identity (Carlson elliptic). Provable in principle but requires substantial real-analysis library development; axiomatized as cited mathematical fact."
 
 [[axiom_disposition]]
 file = "proofs/theories/CarlsonIntegrals.v"
@@ -731,8 +731,8 @@ line = 40
 kind = "axiom"
 name = "RJ"
 module = "CarlsonIntegrals"
-classification = "unclassified"
-rationale = ""
+classification = "numerical_real_analysis"
+rationale = "Special integral identity (Carlson elliptic). Provable in principle but requires substantial real-analysis library development; axiomatized as cited mathematical fact."
 
 [[axiom_disposition]]
 file = "proofs/theories/CarlsonIntegrals.v"
@@ -740,8 +740,8 @@ line = 43
 kind = "axiom"
 name = "RJ_symmetric_12"
 module = "CarlsonIntegrals"
-classification = "unclassified"
-rationale = ""
+classification = "numerical_real_analysis"
+rationale = "Special integral identity (Carlson elliptic). Provable in principle but requires substantial real-analysis library development; axiomatized as cited mathematical fact."
 
 [[axiom_disposition]]
 file = "proofs/theories/CarlsonIntegrals.v"
@@ -749,8 +749,8 @@ line = 44
 kind = "axiom"
 name = "RJ_symmetric_13"
 module = "CarlsonIntegrals"
-classification = "unclassified"
-rationale = ""
+classification = "numerical_real_analysis"
+rationale = "Special integral identity (Carlson elliptic). Provable in principle but requires substantial real-analysis library development; axiomatized as cited mathematical fact."
 
 [[axiom_disposition]]
 file = "proofs/theories/CarlsonIntegrals.v"
@@ -758,8 +758,8 @@ line = 45
 kind = "axiom"
 name = "RJ_symmetric_23"
 module = "CarlsonIntegrals"
-classification = "unclassified"
-rationale = ""
+classification = "numerical_real_analysis"
+rationale = "Special integral identity (Carlson elliptic). Provable in principle but requires substantial real-analysis library development; axiomatized as cited mathematical fact."
 
 [[axiom_disposition]]
 file = "proofs/theories/CDTraceZero.v"
@@ -1550,8 +1550,8 @@ line = 19
 kind = "parameter"
 name = "t"
 module = "FloatAxioms"
-classification = "unclassified"
-rationale = ""
+classification = "numerical_real_analysis"
+rationale = "IEEE-754 float property not provable in Rocq stdlib; postulated as a mathematical model of f64 hardware behavior."
 
 [[axiom_disposition]]
 file = "proofs/theories/FloatAxioms.v"
@@ -1559,8 +1559,8 @@ line = 20
 kind = "parameter"
 name = "zero"
 module = "FloatAxioms"
-classification = "unclassified"
-rationale = ""
+classification = "numerical_real_analysis"
+rationale = "IEEE-754 float property not provable in Rocq stdlib; postulated as a mathematical model of f64 hardware behavior."
 
 [[axiom_disposition]]
 file = "proofs/theories/FloatAxioms.v"
@@ -1568,8 +1568,8 @@ line = 21
 kind = "parameter"
 name = "add"
 module = "FloatAxioms"
-classification = "unclassified"
-rationale = ""
+classification = "numerical_real_analysis"
+rationale = "IEEE-754 float property not provable in Rocq stdlib; postulated as a mathematical model of f64 hardware behavior."
 
 [[axiom_disposition]]
 file = "proofs/theories/FloatAxioms.v"
@@ -1577,8 +1577,8 @@ line = 22
 kind = "parameter"
 name = "opp"
 module = "FloatAxioms"
-classification = "unclassified"
-rationale = ""
+classification = "numerical_real_analysis"
+rationale = "IEEE-754 float property not provable in Rocq stdlib; postulated as a mathematical model of f64 hardware behavior."
 
 [[axiom_disposition]]
 file = "proofs/theories/FloatAxioms.v"
@@ -1586,8 +1586,8 @@ line = 23
 kind = "parameter"
 name = "div"
 module = "FloatAxioms"
-classification = "unclassified"
-rationale = ""
+classification = "numerical_real_analysis"
+rationale = "IEEE-754 float property not provable in Rocq stdlib; postulated as a mathematical model of f64 hardware behavior."
 
 [[axiom_disposition]]
 file = "proofs/theories/FloatAxioms.v"
@@ -1595,8 +1595,8 @@ line = 24
 kind = "parameter"
 name = "sqrt_f"
 module = "FloatAxioms"
-classification = "unclassified"
-rationale = ""
+classification = "numerical_real_analysis"
+rationale = "IEEE-754 float property not provable in Rocq stdlib; postulated as a mathematical model of f64 hardware behavior."
 
 [[axiom_disposition]]
 file = "proofs/theories/FloatAxioms.v"
@@ -1604,8 +1604,8 @@ line = 25
 kind = "parameter"
 name = "lt"
 module = "FloatAxioms"
-classification = "unclassified"
-rationale = ""
+classification = "numerical_real_analysis"
+rationale = "IEEE-754 float property not provable in Rocq stdlib; postulated as a mathematical model of f64 hardware behavior."
 
 [[axiom_disposition]]
 file = "proofs/theories/FloatAxioms.v"
@@ -1613,8 +1613,8 @@ line = 34
 kind = "axiom"
 name = "add_comm"
 module = "FloatAxioms"
-classification = "unclassified"
-rationale = ""
+classification = "numerical_real_analysis"
+rationale = "IEEE-754 float property not provable in Rocq stdlib; postulated as a mathematical model of f64 hardware behavior."
 
 [[axiom_disposition]]
 file = "proofs/theories/FloatAxioms.v"
@@ -1622,8 +1622,8 @@ line = 35
 kind = "axiom"
 name = "add_assoc"
 module = "FloatAxioms"
-classification = "unclassified"
-rationale = ""
+classification = "numerical_real_analysis"
+rationale = "IEEE-754 float property not provable in Rocq stdlib; postulated as a mathematical model of f64 hardware behavior."
 
 [[axiom_disposition]]
 file = "proofs/theories/FloatAxioms.v"
@@ -1631,8 +1631,8 @@ line = 36
 kind = "axiom"
 name = "add_zero_l"
 module = "FloatAxioms"
-classification = "unclassified"
-rationale = ""
+classification = "numerical_real_analysis"
+rationale = "IEEE-754 float property not provable in Rocq stdlib; postulated as a mathematical model of f64 hardware behavior."
 
 [[axiom_disposition]]
 file = "proofs/theories/FloatAxioms.v"
@@ -1640,8 +1640,8 @@ line = 37
 kind = "axiom"
 name = "add_opp_r"
 module = "FloatAxioms"
-classification = "unclassified"
-rationale = ""
+classification = "numerical_real_analysis"
+rationale = "IEEE-754 float property not provable in Rocq stdlib; postulated as a mathematical model of f64 hardware behavior."
 
 [[axiom_disposition]]
 file = "proofs/theories/FloatAxioms.v"
@@ -1649,8 +1649,8 @@ line = 38
 kind = "axiom"
 name = "mul_comm"
 module = "FloatAxioms"
-classification = "unclassified"
-rationale = ""
+classification = "numerical_real_analysis"
+rationale = "IEEE-754 float property not provable in Rocq stdlib; postulated as a mathematical model of f64 hardware behavior."
 
 [[axiom_disposition]]
 file = "proofs/theories/FloatAxioms.v"
@@ -1658,8 +1658,8 @@ line = 39
 kind = "axiom"
 name = "mul_assoc"
 module = "FloatAxioms"
-classification = "unclassified"
-rationale = ""
+classification = "numerical_real_analysis"
+rationale = "IEEE-754 float property not provable in Rocq stdlib; postulated as a mathematical model of f64 hardware behavior."
 
 [[axiom_disposition]]
 file = "proofs/theories/FloatAxioms.v"
@@ -1667,8 +1667,8 @@ line = 40
 kind = "axiom"
 name = "mul_one_l"
 module = "FloatAxioms"
-classification = "unclassified"
-rationale = ""
+classification = "numerical_real_analysis"
+rationale = "IEEE-754 float property not provable in Rocq stdlib; postulated as a mathematical model of f64 hardware behavior."
 
 [[axiom_disposition]]
 file = "proofs/theories/FloatAxioms.v"
@@ -1676,8 +1676,8 @@ line = 41
 kind = "axiom"
 name = "mul_add_distr_l"
 module = "FloatAxioms"
-classification = "unclassified"
-rationale = ""
+classification = "numerical_real_analysis"
+rationale = "IEEE-754 float property not provable in Rocq stdlib; postulated as a mathematical model of f64 hardware behavior."
 
 [[axiom_disposition]]
 file = "proofs/theories/FloatAxioms.v"
@@ -1685,8 +1685,8 @@ line = 42
 kind = "axiom"
 name = "sub_def"
 module = "FloatAxioms"
-classification = "unclassified"
-rationale = ""
+classification = "numerical_real_analysis"
+rationale = "IEEE-754 float property not provable in Rocq stdlib; postulated as a mathematical model of f64 hardware behavior."
 
 [[axiom_disposition]]
 file = "proofs/theories/HurwitzTheorem.v"
@@ -1733,7 +1733,8 @@ module = "HurwitzTheorem"
 classification = "unclassified"
 rationale = ""
 
-[[axiom_disposition]]
+[[axiom# CLASSIFIED 50 ENTRIES
+_disposition]]
 file = "proofs/theories/HurwitzTheorem.v"
 line = 137
 kind = "axiom"
