@@ -810,11 +810,25 @@ pub fn combine_p_values(p_values: &[f64], sample_sizes: &[f64]) -> CombinedPValu
     // Two-sided p-value for Stouffer Z
     let stouffer_p = 2.0 * normal_cdf(-stouffer_z.abs());
 
-    // Harmonic mean p-value (Wilson 2019)
-    // p_HM = sum(w_i) / sum(w_i / p_i)
-    // Using equal weights for now
-    let inv_p_sum: f64 = clamped_p.iter().map(|&p| 1.0 / p).sum();
-    let harmonic_mean_p = k as f64 / inv_p_sum;
+    // Harmonic mean p-value (Wilson 2019), full weighted form:
+    //   p_HM = sum_i w_i / sum_i (w_i / p_i).
+    //
+    // We reuse the same `weights` vector that Stouffer's Z uses
+    // (sqrt(sample_size)), so all three combiners (Fisher, Stouffer,
+    // HM) agree on what "evidence weight" means across the k datasets.
+    // The unit-weight limit (all `w_i == 1`) recovers the previous
+    // formula `p_HM = k / sum_i 1/p_i`.
+    let w_sum: f64 = weights.iter().sum();
+    let inv_p_weighted_sum: f64 = weights
+        .iter()
+        .zip(clamped_p.iter())
+        .map(|(&w, &p)| w / p)
+        .sum();
+    let harmonic_mean_p = if inv_p_weighted_sum > 0.0 {
+        w_sum / inv_p_weighted_sum
+    } else {
+        1.0
+    };
 
     // Asymptotically corrected p-value: p_corrected = e * ln(K) * p_HM
     let harmonic_mean_p_corrected = if k >= 2 {
@@ -1383,5 +1397,66 @@ mod tests {
         assert!(!is_monotonically_sorted(&[3.0, 1.0, 2.0, 4.0]));
         assert!(!is_monotonically_sorted(&[]));
         assert!(!is_monotonically_sorted(&[1.0]));
+    }
+
+    #[test]
+    fn combine_p_values_equal_sample_sizes_recovers_unit_weight_hm() {
+        // With all sample sizes equal, sqrt(n) is identical across datasets,
+        // so the weighted harmonic mean must reduce to the unit-weight form
+        // p_HM = k / sum(1/p_i).
+        let p_values = [0.01, 0.05, 0.5];
+        let n = 100.0_f64;
+        let sample_sizes = [n, n, n];
+        let result = combine_p_values(&p_values, &sample_sizes);
+        let k = p_values.len() as f64;
+        let inv_p_sum: f64 = p_values.iter().map(|&p| 1.0 / p).sum();
+        let expected = k / inv_p_sum;
+        assert!(
+            (result.harmonic_mean_p - expected).abs() < 1e-12,
+            "harmonic_mean_p={} expected={} diff={}",
+            result.harmonic_mean_p,
+            expected,
+            (result.harmonic_mean_p - expected).abs()
+        );
+    }
+
+    #[test]
+    fn combine_p_values_weighted_hm_uses_sqrt_sample_size() {
+        // Verify the documented formula: p_HM = sum(w_i) / sum(w_i / p_i)
+        // with w_i = sqrt(sample_size_i).
+        let p_values = [0.01, 0.5, 0.01];
+        // First dataset gets 9 samples (w=3), middle gets 1 sample (w=1),
+        // last gets 9 samples (w=3). So the small p-values dominate
+        // harmonic-mean p more strongly than the unit-weight version.
+        let sample_sizes = [9.0_f64, 1.0_f64, 9.0_f64];
+        let result = combine_p_values(&p_values, &sample_sizes);
+
+        let weights: Vec<f64> = sample_sizes.iter().map(|n| n.sqrt()).collect();
+        let w_sum: f64 = weights.iter().sum();
+        let inv_p_w_sum: f64 = weights
+            .iter()
+            .zip(p_values.iter())
+            .map(|(&w, &p)| w / p)
+            .sum();
+        let expected = w_sum / inv_p_w_sum;
+        assert!(
+            (result.harmonic_mean_p - expected).abs() < 1e-12,
+            "weighted HM mismatch: got {}, expected {}, diff {}",
+            result.harmonic_mean_p,
+            expected,
+            (result.harmonic_mean_p - expected).abs()
+        );
+
+        // Sanity: weighted HM must be strictly smaller than the unweighted
+        // form for this configuration (more weight on the small p-values).
+        let k = p_values.len() as f64;
+        let inv_p_sum_uniform: f64 = p_values.iter().map(|&p| 1.0 / p).sum();
+        let unweighted = k / inv_p_sum_uniform;
+        assert!(
+            result.harmonic_mean_p < unweighted,
+            "weighted HM ({}) should pull lower than uniform HM ({})",
+            result.harmonic_mean_p,
+            unweighted
+        );
     }
 }
