@@ -339,12 +339,14 @@ fn sync_control_plane_after_claim_write(
     }
     if let Err(err) = store.export_control_plane_compat(
         repo_root,
-        claims_path,
-        insights_path,
-        experiments_path,
-        binaries_path,
-        &theorems_path,
-        &theorems_mirror_path,
+        provenance_store::CompatExportPaths {
+            claims: claims_path,
+            insights: insights_path,
+            experiments: experiments_path,
+            binaries: binaries_path,
+            theorems: &theorems_path,
+            theorems_mirror: &theorems_mirror_path,
+        },
     ) {
         eprintln!("ERROR: export control-plane compatibility after claims write: {err}");
         std::process::exit(1);

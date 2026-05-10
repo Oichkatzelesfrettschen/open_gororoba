@@ -987,12 +987,14 @@ fn main() {
                     CompatExportPolicy::On => {
                         if let Err(err) = store.verify_control_plane_compat_exports(
                             &repo_root,
-                            &claims_path,
-                            &insights_path,
-                            &experiments_path,
-                            &binaries_path,
-                            &theorems_path,
-                            &theorems_mirror_path,
+                            provenance_store::CompatExportPaths {
+                                claims: &claims_path,
+                                insights: &insights_path,
+                                experiments: &experiments_path,
+                                binaries: &binaries_path,
+                                theorems: &theorems_path,
+                                theorems_mirror: &theorems_mirror_path,
+                            },
                         ) {
                             eprintln!(
                                 "ERROR: canonical control-plane compatibility exports failed for {}: {err}",

@@ -565,14 +565,22 @@ fn run_export_control_plane(
     args: ExportControlPlaneArgs,
 ) -> Result<()> {
     let mut store = ProvenanceStore::open(db_path)?;
+    let claims = repo_path(repo_root, &args.claims);
+    let insights = repo_path(repo_root, &args.insights);
+    let experiments = repo_path(repo_root, &args.experiments);
+    let binaries = repo_path(repo_root, &args.binaries);
+    let theorems = repo_path(repo_root, &args.theorems);
+    let theorems_mirror = repo_path(repo_root, &args.theorems_mirror);
     store.export_control_plane_compat(
         repo_root,
-        &repo_path(repo_root, &args.claims),
-        &repo_path(repo_root, &args.insights),
-        &repo_path(repo_root, &args.experiments),
-        &repo_path(repo_root, &args.binaries),
-        &repo_path(repo_root, &args.theorems),
-        &repo_path(repo_root, &args.theorems_mirror),
+        provenance_store::CompatExportPaths {
+            claims: &claims,
+            insights: &insights,
+            experiments: &experiments,
+            binaries: &binaries,
+            theorems: &theorems,
+            theorems_mirror: &theorems_mirror,
+        },
     )?;
     let counts = store.control_plane_counts()?;
     println!(
@@ -595,14 +603,22 @@ fn run_verify_control_plane(
     store.verify_control_plane_invariants(repo_root)?;
     let counts = store.control_plane_counts()?;
     if args.verify_compat_exports {
+        let claims = repo_path(repo_root, &args.claims);
+        let insights = repo_path(repo_root, &args.insights);
+        let experiments = repo_path(repo_root, &args.experiments);
+        let binaries = repo_path(repo_root, &args.binaries);
+        let theorems = repo_path(repo_root, &args.theorems);
+        let theorems_mirror = repo_path(repo_root, &args.theorems_mirror);
         store.verify_control_plane_compat_exports(
             repo_root,
-            &repo_path(repo_root, &args.claims),
-            &repo_path(repo_root, &args.insights),
-            &repo_path(repo_root, &args.experiments),
-            &repo_path(repo_root, &args.binaries),
-            &repo_path(repo_root, &args.theorems),
-            &repo_path(repo_root, &args.theorems_mirror),
+            provenance_store::CompatExportPaths {
+                claims: &claims,
+                insights: &insights,
+                experiments: &experiments,
+                binaries: &binaries,
+                theorems: &theorems,
+                theorems_mirror: &theorems_mirror,
+            },
         )?;
     }
     println!("{}", render_control_plane_counts(&counts));
