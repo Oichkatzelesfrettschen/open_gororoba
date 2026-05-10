@@ -160,11 +160,13 @@ fn classify_windows(
         let rotation_deg = compute_window_rotation_deg(records, lo, mid, mid, hi);
 
         let br_min = window.iter().map(|r| r.br).fold(f64::INFINITY, f64::min);
-        let br_max = window.iter().map(|r| r.br).fold(f64::NEG_INFINITY, f64::max);
+        let br_max = window
+            .iter()
+            .map(|r| r.br)
+            .fold(f64::NEG_INFINITY, f64::max);
         let has_br_reversal = br_min * br_max < 0.0;
 
-        let is_compressive_boundary =
-            rel_delta_b >= compress_boundary_min && rotation_deg >= 15.0;
+        let is_compressive_boundary = rel_delta_b >= compress_boundary_min && rotation_deg >= 15.0;
         let is_alfvenic = (has_br_reversal || rotation_deg >= alfven_rot_min_deg)
             && rel_delta_b < alfven_compress_max;
 
@@ -340,10 +342,7 @@ fn main() -> Result<()> {
     println!("=== PSP E3 Micro-Switchback Correlation (E-241) ===");
     println!(
         "Window: {} to {}  |  Micro-rot threshold: {:.0} deg  |  Neighborhood: +- {} min",
-        cli.start_date,
-        cli.end_date,
-        cli.micro_rot_threshold_deg,
-        cli.correlation_half_window,
+        cli.start_date, cli.end_date, cli.micro_rot_threshold_deg, cli.correlation_half_window,
     );
 
     // -----------------------------------------------------------------------
@@ -424,13 +423,17 @@ fn main() -> Result<()> {
     );
     for rec in &mut all_minutes {
         let day_diff = (rec.year as f64 - fy as f64) * 365.25 + (rec.doy as f64 - fd as f64);
-        rec.elapsed_hours =
-            day_diff * 24.0 + (rec.hour as f64 - fh as f64) + (rec.minute as f64 - fm as f64) / 60.0;
+        rec.elapsed_hours = day_diff * 24.0
+            + (rec.hour as f64 - fh as f64)
+            + (rec.minute as f64 - fm as f64) / 60.0;
     }
     println!(
         "  Total: {} minutes ({:.1} days)",
         all_minutes.len(),
-        all_minutes.last().map(|r| r.elapsed_hours / 24.0).unwrap_or(0.0),
+        all_minutes
+            .last()
+            .map(|r| r.elapsed_hours / 24.0)
+            .unwrap_or(0.0),
     );
 
     // -----------------------------------------------------------------------
@@ -466,7 +469,10 @@ fn main() -> Result<()> {
         .map(|&r| r >= cli.micro_rot_threshold_deg)
         .collect();
     let n_microrot_events_total = microrot_mask.iter().filter(|&&v| v).count();
-    println!("  Micro-rotation events (>= {:.0} deg): {}", cli.micro_rot_threshold_deg, n_microrot_events_total);
+    println!(
+        "  Micro-rotation events (>= {:.0} deg): {}",
+        cli.micro_rot_threshold_deg, n_microrot_events_total
+    );
 
     // Precompute: for each minute index, is there a micro-rotation event within
     // +- correlation_half_window minutes?
@@ -509,8 +515,7 @@ fn main() -> Result<()> {
     let mut n_gap_skipped: usize = 0;
 
     for w_start in 0..=(all_minutes.len() - window_rows) {
-        let sample_indices: Vec<usize> =
-            (0..steps).map(|s| w_start + s * cli.takens_lag).collect();
+        let sample_indices: Vec<usize> = (0..steps).map(|s| w_start + s * cli.takens_lag).collect();
 
         let first_h = all_minutes[*sample_indices.first().unwrap()].elapsed_hours;
         let last_h = all_minutes[*sample_indices.last().unwrap()].elapsed_hours;
@@ -567,8 +572,8 @@ fn main() -> Result<()> {
         let half_t = trans_window;
         let mut last_trans_idx: Option<usize> = None;
         for i in half_t..associators.len().saturating_sub(half_t) {
-            let pre_mean: f64 = associators[i.saturating_sub(half_t)..i].iter().sum::<f64>()
-                / half_t as f64;
+            let pre_mean: f64 =
+                associators[i.saturating_sub(half_t)..i].iter().sum::<f64>() / half_t as f64;
             let post_mean: f64 = associators[i..(i + half_t).min(associators.len())]
                 .iter()
                 .sum::<f64>()
@@ -690,8 +695,7 @@ fn main() -> Result<()> {
     };
     println!(
         "  Gradient baseline enrichment: {:.2}x  (CD: {:.2}x)",
-        grad_enrichment_factor,
-        enrichment_factor
+        grad_enrichment_factor, enrichment_factor
     );
 
     // -----------------------------------------------------------------------

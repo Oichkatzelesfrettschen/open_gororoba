@@ -1941,9 +1941,7 @@ fn emit_requirements_legacy(args: RequirementsLegacyArgs) -> Result<(), String> 
                         .to_string(),
                 );
                 lines.push(String::new());
-                lines.push(
-                    "| Tool | Make Target | Install | audit-deep | Status |".to_string(),
-                );
+                lines.push("| Tool | Make Target | Install | audit-deep | Status |".to_string());
                 lines.push("| --- | --- | --- | ---: | --- |".to_string());
                 for tool in &tool_rows {
                     let name = str_field(tool, "name");
@@ -4675,8 +4673,8 @@ fn patch_static_mirror_headers(args: PatchStaticMirrorHeadersArgs) -> Result<(),
     paths.sort();
 
     for path in &paths {
-        let content = fs::read_to_string(path)
-            .map_err(|e| format!("read {}: {}", path.display(), e))?;
+        let content =
+            fs::read_to_string(path).map_err(|e| format!("read {}: {}", path.display(), e))?;
 
         // Check the first five lines for the sentinel.
         let already_tagged = content
@@ -4705,8 +4703,7 @@ fn patch_static_mirror_headers(args: PatchStaticMirrorHeadersArgs) -> Result<(),
             println!("DRY-RUN would patch: {}", path.display());
         } else {
             let new_content = format!("{}{}", header, content);
-            fs::write(path, new_content)
-                .map_err(|e| format!("write {}: {}", path.display(), e))?;
+            fs::write(path, new_content).map_err(|e| format!("write {}: {}", path.display(), e))?;
         }
         patched += 1;
     }

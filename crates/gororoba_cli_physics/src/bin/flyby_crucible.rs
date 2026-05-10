@@ -15,12 +15,12 @@ use gororoba_cli_physics::{
     ephemeris_loader::{EphemerisLoader, GM_MOON, GM_SUN},
     flyby::{
         config::{
-            ALPHA_CHINGON, ETA_WAKE, FlybyConfig, GM_EARTH, R_EARTH, SOI_R_EARTH,
-            V_WIND_GALACTIC, all_flybys,
+            ALPHA_CHINGON, ETA_WAKE, FlybyConfig, GM_EARTH, R_EARTH, SOI_R_EARTH, V_WIND_GALACTIC,
+            all_flybys,
         },
         geometry::{
-            compute_soi_window, dm_wake_density_factor, dm_wind_j2000,
-            hyperbolic_initial_state, radec_to_unit,
+            compute_soi_window, dm_wake_density_factor, dm_wind_j2000, hyperbolic_initial_state,
+            radec_to_unit,
         },
     },
 };
@@ -33,19 +33,57 @@ use rayon::prelude::*;
 use std::sync::{Arc, Mutex};
 
 // --- Inline 3-vector helpers (replaces nalgebra::Vector3 at the CLI boundary) ---
-#[inline] fn v3_add(a: [f64; 3], b: [f64; 3]) -> [f64; 3] { [a[0]+b[0], a[1]+b[1], a[2]+b[2]] }
-#[inline] fn v3_sub(a: [f64; 3], b: [f64; 3]) -> [f64; 3] { [a[0]-b[0], a[1]-b[1], a[2]-b[2]] }
-#[inline] fn v3_scale(a: [f64; 3], s: f64) -> [f64; 3] { [a[0]*s, a[1]*s, a[2]*s] }
-#[inline] fn v3_norm_sq(a: [f64; 3]) -> f64 { a[0]*a[0] + a[1]*a[1] + a[2]*a[2] }
-#[inline] fn v3_norm(a: [f64; 3]) -> f64 { v3_norm_sq(a).sqrt() }
-#[inline] fn v3_dot(a: [f64; 3], b: [f64; 3]) -> f64 { a[0]*b[0] + a[1]*b[1] + a[2]*b[2] }
-#[inline] fn v3_cross(a: [f64; 3], b: [f64; 3]) -> [f64; 3] {
-    [a[1]*b[2] - a[2]*b[1], a[2]*b[0] - a[0]*b[2], a[0]*b[1] - a[1]*b[0]]
+#[inline]
+fn v3_add(a: [f64; 3], b: [f64; 3]) -> [f64; 3] {
+    [a[0] + b[0], a[1] + b[1], a[2] + b[2]]
 }
-#[inline] fn v3_add_assign(a: &mut [f64; 3], b: [f64; 3]) { a[0]+=b[0]; a[1]+=b[1]; a[2]+=b[2]; }
-#[inline] fn v3_sub_assign(a: &mut [f64; 3], b: [f64; 3]) { a[0]-=b[0]; a[1]-=b[1]; a[2]-=b[2]; }
-#[inline] fn v3_add4(a: [f64;3], b: [f64;3], c: [f64;3], d: [f64;3]) -> [f64;3] {
-    [a[0]+b[0]+c[0]+d[0], a[1]+b[1]+c[1]+d[1], a[2]+b[2]+c[2]+d[2]]
+#[inline]
+fn v3_sub(a: [f64; 3], b: [f64; 3]) -> [f64; 3] {
+    [a[0] - b[0], a[1] - b[1], a[2] - b[2]]
+}
+#[inline]
+fn v3_scale(a: [f64; 3], s: f64) -> [f64; 3] {
+    [a[0] * s, a[1] * s, a[2] * s]
+}
+#[inline]
+fn v3_norm_sq(a: [f64; 3]) -> f64 {
+    a[0] * a[0] + a[1] * a[1] + a[2] * a[2]
+}
+#[inline]
+fn v3_norm(a: [f64; 3]) -> f64 {
+    v3_norm_sq(a).sqrt()
+}
+#[inline]
+fn v3_dot(a: [f64; 3], b: [f64; 3]) -> f64 {
+    a[0] * b[0] + a[1] * b[1] + a[2] * b[2]
+}
+#[inline]
+fn v3_cross(a: [f64; 3], b: [f64; 3]) -> [f64; 3] {
+    [
+        a[1] * b[2] - a[2] * b[1],
+        a[2] * b[0] - a[0] * b[2],
+        a[0] * b[1] - a[1] * b[0],
+    ]
+}
+#[inline]
+fn v3_add_assign(a: &mut [f64; 3], b: [f64; 3]) {
+    a[0] += b[0];
+    a[1] += b[1];
+    a[2] += b[2];
+}
+#[inline]
+fn v3_sub_assign(a: &mut [f64; 3], b: [f64; 3]) {
+    a[0] -= b[0];
+    a[1] -= b[1];
+    a[2] -= b[2];
+}
+#[inline]
+fn v3_add4(a: [f64; 3], b: [f64; 3], c: [f64; 3], d: [f64; 3]) -> [f64; 3] {
+    [
+        a[0] + b[0] + c[0] + d[0],
+        a[1] + b[1] + c[1] + d[1],
+        a[2] + b[2] + c[2] + d[2],
+    ]
 }
 
 /// Type alias for the GPU pipeline, gated behind the `gpu` feature.
@@ -85,185 +123,216 @@ fn run_flyby(
     /// Seconds per Julian day.
     const SPD: f64 = 86400.0;
 
-    let rk4_run =
-        |use_chingon: bool, record: bool, do_trace: bool| -> (f64, Vec<[f64; 7]>, Vec<[f64; 12]>) {
-            let mut p = pos_init;
-            let mut v = vel_init;
-            let mut traj = Vec::new();
-            let mut h_trace_out: Vec<[f64; 12]> = Vec::new();
+    let rk4_run = |use_chingon: bool,
+                   record: bool,
+                   do_trace: bool|
+     -> (f64, Vec<[f64; 7]>, Vec<[f64; 12]>) {
+        let mut p = pos_init;
+        let mut v = vel_init;
+        let mut traj = Vec::new();
+        let mut h_trace_out: Vec<[f64; 12]> = Vec::new();
 
-            for step in 0..steps {
-                let t_sec = step as f64 * dt - t_before;
+        for step in 0..steps {
+            let t_sec = step as f64 * dt - t_before;
 
-                if record && step % trajectory_stride == 0 {
-                    traj.push([t_sec, p[0], p[1], p[2], v[0], v[1], v[2]]);
-                }
+            if record && step % trajectory_stride == 0 {
+                traj.push([t_sec, p[0], p[1], p[2], v[0], v[1], v[2]]);
+            }
 
-                // Current JED for ephemeris queries (perigee + offset in days)
-                let jed_now = cfg.perigee_jed + t_sec / SPD;
+            // Current JED for ephemeris queries (perigee + offset in days)
+            let jed_now = cfg.perigee_jed + t_sec / SPD;
 
-                // Pre-fetch three-body positions (once per step, shared across RK4 stages).
-                // Moon/Sun move negligibly during a single RK4 step (~1s), so querying
-                // once per step rather than per stage is both correct and 4x faster.
-                let (r_moon, r_sun, _emb_offset) = if let Some(eph) = ephem {
-                    let state = eph.three_body_state(jed_now);
-                    (state.moon_pos_km, state.sun_pos_km, state.emb_offset_km)
-                } else {
-                    ([0.0; 3], [0.0; 3], [0.0; 3])
-                };
+            // Pre-fetch three-body positions (once per step, shared across RK4 stages).
+            // Moon/Sun move negligibly during a single RK4 step (~1s), so querying
+            // once per step rather than per stage is both correct and 4x faster.
+            let (r_moon, r_sun, _emb_offset) = if let Some(eph) = ephem {
+                let state = eph.three_body_state(jed_now);
+                (state.moon_pos_km, state.sun_pos_km, state.emb_offset_km)
+            } else {
+                ([0.0; 3], [0.0; 3], [0.0; 3])
+            };
 
-                let accel = |p_in: [f64; 3], _v_in: [f64; 3]| -> [f64; 3] {
-                    let r_sq = v3_norm_sq(p_in);
-                    let r = r_sq.sqrt();
-                    let mut a = v3_scale(p_in, -(GM_EARTH / (r_sq * r)));
+            let accel = |p_in: [f64; 3], _v_in: [f64; 3]| -> [f64; 3] {
+                let r_sq = v3_norm_sq(p_in);
+                let r = r_sq.sqrt();
+                let mut a = v3_scale(p_in, -(GM_EARTH / (r_sq * r)));
 
-                    // Three-body: Moon and Sun gravitational perturbations
-                    if ephem.is_some() {
-                        let dp_moon = v3_sub(p_in, r_moon);
-                        let d_moon = v3_norm(dp_moon);
-                        if d_moon > 1.0 {
-                            v3_sub_assign(&mut a, v3_scale(dp_moon, GM_MOON / (d_moon * d_moon * d_moon)));
-                            // Indirect term: acceleration of Earth by Moon
-                            let d_moon_0 = v3_norm(r_moon);
-                            if d_moon_0 > 1.0 {
-                                v3_sub_assign(&mut a, v3_scale(r_moon, GM_MOON / (d_moon_0 * d_moon_0 * d_moon_0)));
-                            }
-                        }
-                        let dp_sun = v3_sub(p_in, r_sun);
-                        let d_sun = v3_norm(dp_sun);
-                        if d_sun > 1.0 {
-                            v3_sub_assign(&mut a, v3_scale(dp_sun, GM_SUN / (d_sun * d_sun * d_sun)));
-                            // Indirect term: acceleration of Earth by Sun
-                            let d_sun_0 = v3_norm(r_sun);
-                            if d_sun_0 > 1.0 {
-                                v3_sub_assign(&mut a, v3_scale(r_sun, GM_SUN / (d_sun_0 * d_sun_0 * d_sun_0)));
-                            }
+                // Three-body: Moon and Sun gravitational perturbations
+                if ephem.is_some() {
+                    let dp_moon = v3_sub(p_in, r_moon);
+                    let d_moon = v3_norm(dp_moon);
+                    if d_moon > 1.0 {
+                        v3_sub_assign(
+                            &mut a,
+                            v3_scale(dp_moon, GM_MOON / (d_moon * d_moon * d_moon)),
+                        );
+                        // Indirect term: acceleration of Earth by Moon
+                        let d_moon_0 = v3_norm(r_moon);
+                        if d_moon_0 > 1.0 {
+                            v3_sub_assign(
+                                &mut a,
+                                v3_scale(r_moon, GM_MOON / (d_moon_0 * d_moon_0 * d_moon_0)),
+                            );
                         }
                     }
-
-                    if use_chingon {
-                        let alpha_eff = ALPHA_CHINGON
-                            * dm_wake_density_factor(v3_norm(p_in), &p_in, v_wind, eta_wake);
-
-                        #[cfg(feature = "gpu")]
-                        let gpu_force = gpu_pipeline.and_then(|mtx| {
-                            let params = ThreeBodyOrbitalParams::compute(
-                                nalgebra::Vector3::from(p_in),
-                                nalgebra::Vector3::from(_v_in),
-                                nalgebra::Vector3::from(*v_wind),
-                                nalgebra::Vector3::from(r_moon),
-                                nalgebra::Vector3::from(r_sun),
-                            )?;
-                            let mut pipe = mtx.lock().ok()?;
-                            let f = pipe
-                                .compute_force_3body(
-                                    &params.triad_earth,
-                                    &params.triad_lunar,
-                                    &params.triad_solar,
-                                    &params.h_triad_earth,
-                                    &params.vrel_triad_lunar,
-                                    &params.h_triad_solar,
-                                    &params.vhat_triad_solar,
-                                    params.h_earth_norm,
-                                    params.v_rel_norm,
-                                    params.cross_sign,
-                                    alpha_eff,
-                                )
-                                .ok()?;
-                            Some(f)
-                        });
-
-                        #[cfg(feature = "gpu")]
-                        {
-                            if let Some(f) = gpu_force {
-                                v3_add_assign(&mut a, f);
-                            } else {
-                                let f = compute_chingon_bivector_drag_3body(
-                                    p_in, _v_in, *v_wind, alpha_eff, avt, r_moon, r_sun,
-                                );
-                                v3_add_assign(&mut a, f);
-                            }
+                    let dp_sun = v3_sub(p_in, r_sun);
+                    let d_sun = v3_norm(dp_sun);
+                    if d_sun > 1.0 {
+                        v3_sub_assign(&mut a, v3_scale(dp_sun, GM_SUN / (d_sun * d_sun * d_sun)));
+                        // Indirect term: acceleration of Earth by Sun
+                        let d_sun_0 = v3_norm(r_sun);
+                        if d_sun_0 > 1.0 {
+                            v3_sub_assign(
+                                &mut a,
+                                v3_scale(r_sun, GM_SUN / (d_sun_0 * d_sun_0 * d_sun_0)),
+                            );
                         }
-                        #[cfg(not(feature = "gpu"))]
-                        {
+                    }
+                }
+
+                if use_chingon {
+                    let alpha_eff = ALPHA_CHINGON
+                        * dm_wake_density_factor(v3_norm(p_in), &p_in, v_wind, eta_wake);
+
+                    #[cfg(feature = "gpu")]
+                    let gpu_force = gpu_pipeline.and_then(|mtx| {
+                        let params = ThreeBodyOrbitalParams::compute(
+                            nalgebra::Vector3::from(p_in),
+                            nalgebra::Vector3::from(_v_in),
+                            nalgebra::Vector3::from(*v_wind),
+                            nalgebra::Vector3::from(r_moon),
+                            nalgebra::Vector3::from(r_sun),
+                        )?;
+                        let mut pipe = mtx.lock().ok()?;
+                        let f = pipe
+                            .compute_force_3body(
+                                &params.triad_earth,
+                                &params.triad_lunar,
+                                &params.triad_solar,
+                                &params.h_triad_earth,
+                                &params.vrel_triad_lunar,
+                                &params.h_triad_solar,
+                                &params.vhat_triad_solar,
+                                params.h_earth_norm,
+                                params.v_rel_norm,
+                                params.cross_sign,
+                                alpha_eff,
+                            )
+                            .ok()?;
+                        Some(f)
+                    });
+
+                    #[cfg(feature = "gpu")]
+                    {
+                        if let Some(f) = gpu_force {
+                            v3_add_assign(&mut a, f);
+                        } else {
                             let f = compute_chingon_bivector_drag_3body(
                                 p_in, _v_in, *v_wind, alpha_eff, avt, r_moon, r_sun,
                             );
                             v3_add_assign(&mut a, f);
                         }
                     }
-
-                    a
-                };
-
-                // h(t).v_wind trace for diagnostics (geocentric h + body h norms)
-                if do_trace && step % trajectory_stride == 0 {
-                    let h = v3_cross(p, v);
-                    let h_dot_vw = v3_dot(h, *v_wind);
-                    let cross_sign = if h_dot_vw > 0.0 { 1.0 } else { -1.0 };
-                    let dm_fac = dm_wake_density_factor(v3_norm(p), &p, v_wind, eta_wake);
-                    let h_lunar = v3_cross(v3_sub(p, r_moon), v);
-                    let h_solar = v3_cross(v3_sub(p, r_sun), v);
-                    let a_chingon_mag = if use_chingon {
-                        let alpha_eff = ALPHA_CHINGON * dm_fac;
+                    #[cfg(not(feature = "gpu"))]
+                    {
                         let f = compute_chingon_bivector_drag_3body(
-                            p, v, *v_wind, alpha_eff, avt, r_moon, r_sun,
+                            p_in, _v_in, *v_wind, alpha_eff, avt, r_moon, r_sun,
                         );
-                        v3_norm(f)
-                    } else {
-                        0.0
-                    };
-                    let a_moon_mag = if ephem.is_some() {
-                        let dp = v3_sub(p, r_moon);
-                        let d = v3_norm(dp);
-                        if d > 1.0 { GM_MOON / (d * d) } else { 0.0 }
-                    } else {
-                        0.0
-                    };
-                    let a_sun_mag = if ephem.is_some() {
-                        let dp = v3_sub(p, r_sun);
-                        let d = v3_norm(dp);
-                        if d > 1.0 { GM_SUN / (d * d) } else { 0.0 }
-                    } else {
-                        0.0
-                    };
-                    h_trace_out.push([
-                        t_sec,
-                        h[0], h[1], h[2],
-                        h_dot_vw,
-                        cross_sign,
-                        a_chingon_mag,
-                        dm_fac,
-                        a_moon_mag,
-                        a_sun_mag,
-                        v3_norm(h_lunar),
-                        v3_norm(h_solar),
-                    ]);
+                        v3_add_assign(&mut a, f);
+                    }
                 }
 
-                let k1_v = accel(p, v);
-                let k1_p = v;
+                a
+            };
 
-                let k2_v = accel(v3_add(p, v3_scale(k1_p, dt / 2.0)), v3_add(v, v3_scale(k1_v, dt / 2.0)));
-                let k2_p = v3_add(v, v3_scale(k1_v, dt / 2.0));
-
-                let k3_v = accel(v3_add(p, v3_scale(k2_p, dt / 2.0)), v3_add(v, v3_scale(k2_v, dt / 2.0)));
-                let k3_p = v3_add(v, v3_scale(k2_v, dt / 2.0));
-
-                let k4_v = accel(v3_add(p, v3_scale(k3_p, dt)), v3_add(v, v3_scale(k3_v, dt)));
-                let k4_p = v3_add(v, v3_scale(k3_v, dt));
-
-                v3_add_assign(&mut p, v3_scale(v3_add4(k1_p, v3_scale(k2_p, 2.0), v3_scale(k3_p, 2.0), k4_p), dt / 6.0));
-                v3_add_assign(&mut v, v3_scale(v3_add4(k1_v, v3_scale(k2_v, 2.0), v3_scale(k3_v, 2.0), k4_v), dt / 6.0));
+            // h(t).v_wind trace for diagnostics (geocentric h + body h norms)
+            if do_trace && step % trajectory_stride == 0 {
+                let h = v3_cross(p, v);
+                let h_dot_vw = v3_dot(h, *v_wind);
+                let cross_sign = if h_dot_vw > 0.0 { 1.0 } else { -1.0 };
+                let dm_fac = dm_wake_density_factor(v3_norm(p), &p, v_wind, eta_wake);
+                let h_lunar = v3_cross(v3_sub(p, r_moon), v);
+                let h_solar = v3_cross(v3_sub(p, r_sun), v);
+                let a_chingon_mag = if use_chingon {
+                    let alpha_eff = ALPHA_CHINGON * dm_fac;
+                    let f = compute_chingon_bivector_drag_3body(
+                        p, v, *v_wind, alpha_eff, avt, r_moon, r_sun,
+                    );
+                    v3_norm(f)
+                } else {
+                    0.0
+                };
+                let a_moon_mag = if ephem.is_some() {
+                    let dp = v3_sub(p, r_moon);
+                    let d = v3_norm(dp);
+                    if d > 1.0 { GM_MOON / (d * d) } else { 0.0 }
+                } else {
+                    0.0
+                };
+                let a_sun_mag = if ephem.is_some() {
+                    let dp = v3_sub(p, r_sun);
+                    let d = v3_norm(dp);
+                    if d > 1.0 { GM_SUN / (d * d) } else { 0.0 }
+                } else {
+                    0.0
+                };
+                h_trace_out.push([
+                    t_sec,
+                    h[0],
+                    h[1],
+                    h[2],
+                    h_dot_vw,
+                    cross_sign,
+                    a_chingon_mag,
+                    dm_fac,
+                    a_moon_mag,
+                    a_sun_mag,
+                    v3_norm(h_lunar),
+                    v3_norm(h_solar),
+                ]);
             }
 
-            if record {
-                let t = steps as f64 * dt - t_before;
-                traj.push([t, p[0], p[1], p[2], v[0], v[1], v[2]]);
-            }
+            let k1_v = accel(p, v);
+            let k1_p = v;
 
-            (v3_norm(v), traj, h_trace_out)
-        };
+            let k2_v = accel(
+                v3_add(p, v3_scale(k1_p, dt / 2.0)),
+                v3_add(v, v3_scale(k1_v, dt / 2.0)),
+            );
+            let k2_p = v3_add(v, v3_scale(k1_v, dt / 2.0));
+
+            let k3_v = accel(
+                v3_add(p, v3_scale(k2_p, dt / 2.0)),
+                v3_add(v, v3_scale(k2_v, dt / 2.0)),
+            );
+            let k3_p = v3_add(v, v3_scale(k2_v, dt / 2.0));
+
+            let k4_v = accel(v3_add(p, v3_scale(k3_p, dt)), v3_add(v, v3_scale(k3_v, dt)));
+            let k4_p = v3_add(v, v3_scale(k3_v, dt));
+
+            v3_add_assign(
+                &mut p,
+                v3_scale(
+                    v3_add4(k1_p, v3_scale(k2_p, 2.0), v3_scale(k3_p, 2.0), k4_p),
+                    dt / 6.0,
+                ),
+            );
+            v3_add_assign(
+                &mut v,
+                v3_scale(
+                    v3_add4(k1_v, v3_scale(k2_v, 2.0), v3_scale(k3_v, 2.0), k4_v),
+                    dt / 6.0,
+                ),
+            );
+        }
+
+        if record {
+            let t = steps as f64 * dt - t_before;
+            traj.push([t, p[0], p[1], p[2], v[0], v[1], v[2]]);
+        }
+
+        (v3_norm(v), traj, h_trace_out)
+    };
 
     let (v_ctrl, _, _) = rk4_run(false, false, false);
     let (v_chingon, traj, h_trace_data) = rk4_run(true, true, trace_h);

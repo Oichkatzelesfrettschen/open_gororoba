@@ -14,8 +14,7 @@ use chrono::{Datelike, NaiveDate};
 use clap::Parser;
 use data_core::{
     catalogs::mms::{
-        MmsFgmMinuteRecord, detect_magnetopause_crossings_filtered,
-        parse_mms_fgm_hapi_csv_minutes,
+        MmsFgmMinuteRecord, detect_magnetopause_crossings_filtered, parse_mms_fgm_hapi_csv_minutes,
     },
     fetcher::download_hapi_csv_to_file,
 };
@@ -270,7 +269,10 @@ fn main() -> Result<()> {
             Some(r) => format!(", rotation>={:.0} deg", r),
             None => String::new(),
         };
-        println!("[3/5] Detecting magnetopause crossings (|B| gradient{})...", rot_note);
+        println!(
+            "[3/5] Detecting magnetopause crossings (|B| gradient{})...",
+            rot_note
+        );
     }
 
     let crossing_indices = detect_magnetopause_crossings_filtered(

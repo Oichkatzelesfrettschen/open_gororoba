@@ -55,7 +55,10 @@ struct Cli {
     n_days: u32,
     #[arg(long, default_value = "a")]
     probe: String,
-    #[arg(long, default_value = "data/external/crossing_lists/themis_mp_crossings_v2.txt")]
+    #[arg(
+        long,
+        default_value = "data/external/crossing_lists/themis_mp_crossings_v2.txt"
+    )]
     staples_catalog: PathBuf,
     #[arg(long, default_value_t = 10)]
     pad_minutes: i64,
@@ -153,14 +156,19 @@ fn build_cd_sparsity_pattern(dim: usize) -> (Vec<(usize, usize, usize, usize)>, 
                 ek[k] = 1.0;
                 // Quick norm check before computing the full vector
                 let assoc_norm = cd_kernel::cd_associator_norm(&ei, &ej, &ek);
-                if assoc_norm < 1e-12 { continue; }
+                if assoc_norm < 1e-12 {
+                    continue;
+                }
                 // Compute full associator vector [e_i, e_j, e_k]
                 let ab = cd_kernel::cd_multiply(&ei, &ej);
                 let abc_left = cd_kernel::cd_multiply(&ab, &ek);
                 let bc = cd_kernel::cd_multiply(&ej, &ek);
                 let abc_right = cd_kernel::cd_multiply(&ei, &bc);
-                let assoc_vec: Vec<f64> = abc_left.iter().zip(&abc_right)
-                    .map(|(l, r)| l - r).collect();
+                let assoc_vec: Vec<f64> = abc_left
+                    .iter()
+                    .zip(&abc_right)
+                    .map(|(l, r)| l - r)
+                    .collect();
                 for (l, &val) in assoc_vec.iter().enumerate().take(dim) {
                     if val.abs() > 1e-12 {
                         nonzero_quads.push((l, i, j, k));
@@ -199,7 +207,9 @@ fn compute_sparse_random_scores(
     let dist = Normal::new(0.0, sigma_cd).expect("valid normal distribution");
 
     // Sample only the nonzero S entries
-    let t_sparse: Vec<f64> = (0..nonzero_quads.len()).map(|_| dist.sample(&mut rng)).collect();
+    let t_sparse: Vec<f64> = (0..nonzero_quads.len())
+        .map(|_| dist.sample(&mut rng))
+        .collect();
 
     delay_vectors
         .windows(3)
@@ -223,11 +233,16 @@ fn detect_transitions(
     trans_window: usize,
 ) -> Vec<f64> {
     let mut hours: Vec<f64> = Vec::new();
-    if scores.len() <= trans_window * 2 { return hours; }
+    if scores.len() <= trans_window * 2 {
+        return hours;
+    }
 
     let global_mean: f64 = scores.iter().sum::<f64>() / scores.len() as f64;
     let global_std: f64 = {
-        let var = scores.iter().map(|&a| (a - global_mean).powi(2)).sum::<f64>()
+        let var = scores
+            .iter()
+            .map(|&a| (a - global_mean).powi(2))
+            .sum::<f64>()
             / scores.len() as f64;
         var.sqrt()
     };
@@ -240,8 +255,8 @@ fn detect_transitions(
             / half.min(scores.len() - i) as f64;
         let jump = (post_mean - pre_mean).abs();
         if jump > threshold {
-            let dominated = last_trans_idx.is_some_and(
-                |prev| i.saturating_sub(prev) < trans_window);
+            let dominated =
+                last_trans_idx.is_some_and(|prev| i.saturating_sub(prev) < trans_window);
             if !dominated {
                 hours.push(all_minutes[score_meta[i]].elapsed_hours);
                 last_trans_idx = Some(i);
@@ -257,7 +272,12 @@ fn main() -> Result<()> {
     let start = NaiveDate::parse_from_str(&cli.start_date, "%Y-%m-%d")
         .with_context(|| format!("invalid start_date: {}", cli.start_date))?;
     let end = start + chrono::Duration::days(cli.n_days as i64 - 1);
-    let probe_char = cli.probe.trim().to_lowercase().chars().next()
+    let probe_char = cli
+        .probe
+        .trim()
+        .to_lowercase()
+        .chars()
+        .next()
         .context("--probe must be a single letter (a-e)")?;
     let probe_upper = cli.probe.trim().to_uppercase();
     let spacecraft = format!("TH{probe_upper}");
@@ -269,7 +289,10 @@ fn main() -> Result<()> {
     );
 
     // Build CD sparsity pattern FIRST (deterministic, only depends on dim)
-    println!("Computing CD T_ijk sparsity pattern (dim={})...", cli.embedding_dim);
+    println!(
+        "Computing CD T_ijk sparsity pattern (dim={})...",
+        cli.embedding_dim
+    );
     let (nonzero_quads, sigma_cd) = build_cd_sparsity_pattern(cli.embedding_dim);
     // 4-index tensor: dim^4 total entries (l,i,j,k each in [0,dim))
     let total_entries = cli.embedding_dim.pow(4);
@@ -290,10 +313,17 @@ fn main() -> Result<()> {
     for day_offset in 0..cli.n_days {
         let date = start + chrono::Duration::days(day_offset as i64);
         let doy = date.ordinal();
-        let fname = format!("{}_fgm_{:04}_{:03}.csv",
-            probe_upper.to_lowercase(), date.year(), doy);
+        let fname = format!(
+            "{}_fgm_{:04}_{:03}.csv",
+            probe_upper.to_lowercase(),
+            date.year(),
+            doy
+        );
         let output = themis_dir.join(&fname);
-        if output.exists() { println!("  DOY {doy}: cached"); continue; }
+        if output.exists() {
+            println!("  DOY {doy}: cached");
+            continue;
+        }
         let t_min = format!("{}T00:00:00Z", date);
         let t_max = format!("{}T23:59:59Z", date);
         let url = format!(
@@ -316,26 +346,45 @@ fn main() -> Result<()> {
     let mut all_minutes: Vec<ThemisFgmMinuteRecord> = Vec::new();
     for day_offset in 0..cli.n_days {
         let date = start + chrono::Duration::days(day_offset as i64);
-        let fname = format!("{}_fgm_{:04}_{:03}.csv",
-            probe_upper.to_lowercase(), date.year(), date.ordinal());
+        let fname = format!(
+            "{}_fgm_{:04}_{:03}.csv",
+            probe_upper.to_lowercase(),
+            date.year(),
+            date.ordinal()
+        );
         let path = themis_dir.join(&fname);
-        if !path.exists() { eprintln!("  Warning: {} not found", path.display()); continue; }
+        if !path.exists() {
+            eprintln!("  Warning: {} not found", path.display());
+            continue;
+        }
         let content = fs::read_to_string(&path)?;
         let mut records = parse_themis_fgm_hapi_csv_minutes(&content, &spacecraft);
         all_minutes.append(&mut records);
     }
 
-    if all_minutes.is_empty() { anyhow::bail!("No THEMIS FGM data found."); }
+    if all_minutes.is_empty() {
+        anyhow::bail!("No THEMIS FGM data found.");
+    }
 
     all_minutes.retain(|r| r.b_magnitude <= cli.max_bmag);
-    all_minutes.sort_by(|a, b| a.year.cmp(&b.year).then(a.doy.cmp(&b.doy))
-        .then(a.hour.cmp(&b.hour)).then(a.minute.cmp(&b.minute)));
+    all_minutes.sort_by(|a, b| {
+        a.year
+            .cmp(&b.year)
+            .then(a.doy.cmp(&b.doy))
+            .then(a.hour.cmp(&b.hour))
+            .then(a.minute.cmp(&b.minute))
+    });
 
-    let (fy, fd, fh, fm) = (all_minutes[0].year, all_minutes[0].doy,
-                             all_minutes[0].hour, all_minutes[0].minute);
+    let (fy, fd, fh, fm) = (
+        all_minutes[0].year,
+        all_minutes[0].doy,
+        all_minutes[0].hour,
+        all_minutes[0].minute,
+    );
     for rec in &mut all_minutes {
         let day_diff = (rec.year as f64 - fy as f64) * 365.25 + (rec.doy as f64 - fd as f64);
-        rec.elapsed_hours = day_diff * 24.0 + (rec.hour as f64 - fh as f64)
+        rec.elapsed_hours = day_diff * 24.0
+            + (rec.hour as f64 - fh as f64)
             + (rec.minute as f64 - fm as f64) / 60.0;
     }
 
@@ -345,20 +394,29 @@ fn main() -> Result<()> {
 
     let catalog_content = fs::read_to_string(&cli.staples_catalog)
         .with_context(|| format!("reading catalog: {}", cli.staples_catalog.display()))?;
-    let catalog = parse_staples_crossing_catalog(
-        &catalog_content, probe_char, start, end, cli.pad_minutes);
-    let fom_catalog: Vec<MmsEventInterval> = catalog.into_iter()
-        .filter(|e| e.fom >= cli.min_fom).collect();
+    let catalog =
+        parse_staples_crossing_catalog(&catalog_content, probe_char, start, end, cli.pad_minutes);
+    let fom_catalog: Vec<MmsEventInterval> = catalog
+        .into_iter()
+        .filter(|e| e.fom >= cli.min_fom)
+        .collect();
 
-    println!("  Catalog: {} intervals, FGM: {} minutes",
-             fom_catalog.len(), all_minutes.len());
+    println!(
+        "  Catalog: {} intervals, FGM: {} minutes",
+        fom_catalog.len(),
+        all_minutes.len()
+    );
 
     // Build delay vectors
     let channels: usize = 4;
     let steps = cli.embedding_dim / channels;
     let window_rows = (steps - 1) * cli.takens_lag + 1;
     if all_minutes.len() < window_rows + 1 {
-        anyhow::bail!("Not enough data: need {} rows, have {}", window_rows + 1, all_minutes.len());
+        anyhow::bail!(
+            "Not enough data: need {} rows, have {}",
+            window_rows + 1,
+            all_minutes.len()
+        );
     }
 
     let expected_span_hours = (steps - 1) as f64 * cli.takens_lag as f64 / 60.0;
@@ -371,10 +429,17 @@ fn main() -> Result<()> {
         let sample_indices: Vec<usize> = (0..steps).map(|s| w_start + s * cli.takens_lag).collect();
         let first_h = all_minutes[*sample_indices.first().unwrap()].elapsed_hours;
         let last_h = all_minutes[*sample_indices.last().unwrap()].elapsed_hours;
-        if last_h - first_h > max_window_span_hours { continue; }
-        let sum_b: f64 = sample_indices.iter().map(|&i| all_minutes[i].b_magnitude).sum();
+        if last_h - first_h > max_window_span_hours {
+            continue;
+        }
+        let sum_b: f64 = sample_indices
+            .iter()
+            .map(|&i| all_minutes[i].b_magnitude)
+            .sum();
         let local_mean_b = sum_b / steps as f64;
-        if local_mean_b <= 0.0 || !local_mean_b.is_finite() { continue; }
+        if local_mean_b <= 0.0 || !local_mean_b.is_finite() {
+            continue;
+        }
         let denom = local_mean_b.max(cli.bmag_noise_floor);
         let mut v = vec![0.0_f64; cli.embedding_dim];
         for (s, &ri) in sample_indices.iter().enumerate() {
@@ -402,26 +467,46 @@ fn main() -> Result<()> {
 
     for draw_idx in 0..cli.n_draws {
         let seed = cli.base_seed + draw_idx as u64;
-        if draw_idx % 10 == 0 { println!("  Draw {}/{}", draw_idx + 1, cli.n_draws); }
+        if draw_idx % 10 == 0 {
+            println!("  Draw {}/{}", draw_idx + 1, cli.n_draws);
+        }
 
         let scores = compute_sparse_random_scores(
-            &delay_vectors, cli.embedding_dim, &nonzero_quads, sigma_cd, seed);
+            &delay_vectors,
+            cli.embedding_dim,
+            &nonzero_quads,
+            sigma_cd,
+            seed,
+        );
         let fire_hours = detect_transitions(&scores, &score_meta, &all_minutes, trans_window);
 
-        let detection_unix: Vec<i64> = fire_hours.iter()
-            .map(|&h| hours_to_unix(&reference_midnight, h)).collect();
+        let detection_unix: Vec<i64> = fire_hours
+            .iter()
+            .map(|&h| hours_to_unix(&reference_midnight, h))
+            .collect();
 
         let (precision, recall, f1) =
             boundary_metrics::precision_recall_f1(&detection_unix, &event_unix, eval_window_secs);
 
         f1_values.push(f1);
-        draws.push(DrawResult { draw_index: draw_idx, seed, n_detections: fire_hours.len(),
-                                 precision, recall, f1 });
+        draws.push(DrawResult {
+            draw_index: draw_idx,
+            seed,
+            n_detections: fire_hours.len(),
+            precision,
+            recall,
+            f1,
+        });
     }
 
     let n = f1_values.len() as f64;
     let f1_mean = f1_values.iter().sum::<f64>() / n;
-    let f1_std = (f1_values.iter().map(|&x| (x - f1_mean).powi(2)).sum::<f64>() / n).sqrt();
+    let f1_std = (f1_values
+        .iter()
+        .map(|&x| (x - f1_mean).powi(2))
+        .sum::<f64>()
+        / n)
+        .sqrt();
     let f1_min = f1_values.iter().cloned().fold(f64::INFINITY, f64::min);
     let f1_max = f1_values.iter().cloned().fold(f64::NEG_INFINITY, f64::max);
     let f1_mean_plus_2sigma = f1_mean + 2.0 * f1_std;
@@ -435,21 +520,30 @@ fn main() -> Result<()> {
         f1_mean_plus_2sigma
     );
 
-    if let Some(parent) = cli.out_json.parent() { fs::create_dir_all(parent)?; }
+    if let Some(parent) = cli.out_json.parent() {
+        fs::create_dir_all(parent)?;
+    }
 
     let results = SparseRandomResults {
         start_date: cli.start_date.clone(),
         n_days: cli.n_days,
         probe: spacecraft,
         embedding_dim: cli.embedding_dim,
-        method: format!("sparsity-matched random (CD zero-pattern, T_nonzero ~ N(0, sigma_cd={:.4}))", sigma_cd),
+        method: format!(
+            "sparsity-matched random (CD zero-pattern, T_nonzero ~ N(0, sigma_cd={:.4}))",
+            sigma_cd
+        ),
         n_catalog_events: fom_catalog.len(),
         n_fgm_minutes: all_minutes.len(),
         n_draws: cli.n_draws,
         base_seed: cli.base_seed,
         n_nonzero_entries: nonzero_quads.len(),
         sigma_cd,
-        f1_mean, f1_std, f1_min, f1_max, f1_mean_plus_2sigma,
+        f1_mean,
+        f1_std,
+        f1_min,
+        f1_max,
+        f1_mean_plus_2sigma,
         draws,
     };
 

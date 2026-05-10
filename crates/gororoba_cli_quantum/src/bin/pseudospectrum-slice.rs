@@ -45,8 +45,18 @@ fn main() -> Result<()> {
     let n_re = result.re_grid.len();
     let n_im = result.im_grid.len();
 
-    let min_val = result.log_smin.iter().flatten().cloned().fold(f64::INFINITY, f64::min);
-    let max_val = result.log_smin.iter().flatten().cloned().fold(f64::NEG_INFINITY, f64::max);
+    let min_val = result
+        .log_smin
+        .iter()
+        .flatten()
+        .cloned()
+        .fold(f64::INFINITY, f64::min);
+    let max_val = result
+        .log_smin
+        .iter()
+        .flatten()
+        .cloned()
+        .fold(f64::NEG_INFINITY, f64::max);
 
     // Upscale: each grid cell becomes a cell_size x cell_size block of pixels.
     let cell_size = 40_usize;

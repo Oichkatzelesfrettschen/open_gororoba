@@ -76,10 +76,7 @@ pub fn compute_soi_window(cfg: &FlybyConfig) -> f64 {
 
 /// Compute initial position and velocity at T seconds before perigee
 /// for a hyperbolic flyby in the orbital plane.
-pub fn hyperbolic_initial_state(
-    cfg: &FlybyConfig,
-    t_before_perigee: f64,
-) -> ([f64; 3], [f64; 3]) {
+pub fn hyperbolic_initial_state(cfg: &FlybyConfig, t_before_perigee: f64) -> ([f64; 3], [f64; 3]) {
     let r_perigee = R_EARTH + cfg.perigee_alt_km;
     let v_inf = cfg.v_inf;
 
@@ -240,11 +237,7 @@ fn neg3(a: [f64; 3]) -> [f64; 3] {
 /// `nalgebra::Matrix3::from_columns` semantics; `mat3_mul_vec3(m, v)` gives `m * v`.
 #[inline]
 fn mat3_from_columns(x: [f64; 3], y: [f64; 3], z: [f64; 3]) -> [[f64; 3]; 3] {
-    [
-        [x[0], y[0], z[0]],
-        [x[1], y[1], z[1]],
-        [x[2], y[2], z[2]],
-    ]
+    [[x[0], y[0], z[0]], [x[1], y[1], z[1]], [x[2], y[2], z[2]]]
 }
 
 /// Matrix-vector product for a 3x3 row-major matrix and a 3-vector.

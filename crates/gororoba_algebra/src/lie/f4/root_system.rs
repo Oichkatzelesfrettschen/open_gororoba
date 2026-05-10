@@ -70,12 +70,7 @@ pub fn f4_simple_roots() -> [[f64; 4]; 4] {
 /// `F_4` Cartan matrix (Bourbaki). Asymmetric due to the double bond at
 /// `(alpha_2, alpha_3)`: `A_23 = -2`, `A_32 = -1`.
 pub fn f4_cartan_matrix() -> [[i32; 4]; 4] {
-    [
-        [2, -1, 0, 0],
-        [-1, 2, -2, 0],
-        [0, -1, 2, -1],
-        [0, 0, -1, 2],
-    ]
+    [[2, -1, 0, 0], [-1, 2, -2, 0], [0, -1, 2, -1], [0, 0, -1, 2]]
 }
 
 /// Order of the Weyl group `|W(F_4)| = 1152 = 2^7 * 3^2`.
@@ -166,10 +161,7 @@ mod tests {
                 let dot_jj: f64 = alpha_j.iter().map(|x| x * x).sum();
                 let dot_ij: f64 = alpha_i.iter().zip(alpha_j.iter()).map(|(a, b)| a * b).sum();
                 let derived = (2.0 * dot_ij / dot_jj).round() as i32;
-                assert_eq!(
-                    derived, cartan[i][j],
-                    "F4 Cartan mismatch at ({i},{j})",
-                );
+                assert_eq!(derived, cartan[i][j], "F4 Cartan mismatch at ({i},{j})",);
             }
         }
     }

@@ -480,8 +480,7 @@ fn fetch_themis(
     end: NaiveDate,
 ) -> Result<Vec<MagMinute>> {
     use data_core::{
-        catalogs::themis::parse_themis_fgm_hapi_csv_minutes,
-        catalogs::themis_fetch::ThemisFgmProvider,
+        catalogs::{themis::parse_themis_fgm_hapi_csv_minutes, themis_fetch::ThemisFgmProvider},
         fetcher::{DatasetProvider, FetchConfig},
     };
 
@@ -554,8 +553,9 @@ fn fetch_cluster(
     end: NaiveDate,
 ) -> Result<Vec<MagMinute>> {
     use data_core::{
-        catalogs::cluster::parse_cluster_fgm_hapi_csv_minutes,
-        catalogs::cluster_fetch::ClusterFgmProvider,
+        catalogs::{
+            cluster::parse_cluster_fgm_hapi_csv_minutes, cluster_fetch::ClusterFgmProvider,
+        },
         fetcher::{DatasetProvider, FetchConfig},
     };
 
@@ -624,7 +624,9 @@ fn fetch_cluster(
 
 fn fetch_swarm(cli: &Cli, start: NaiveDate, end: NaiveDate) -> Result<Vec<MagMinute>> {
     use data_core::{
-        catalogs::{swarm_mag::parse_swarm_amda_mag_csv_minutes, swarm_mag_fetch::SwarmMagProvider},
+        catalogs::{
+            swarm_mag::parse_swarm_amda_mag_csv_minutes, swarm_mag_fetch::SwarmMagProvider,
+        },
         fetcher::{DatasetProvider, FetchConfig},
     };
 
@@ -678,8 +680,9 @@ fn fetch_swarm(cli: &Cli, start: NaiveDate, end: NaiveDate) -> Result<Vec<MagMin
 
 fn fetch_maven(cli: &Cli, start: NaiveDate, end: NaiveDate) -> Result<Vec<MagMinute>> {
     use data_core::{
-        catalogs::maven_mag::parse_maven_mag_hapi_csv_minutes,
-        catalogs::maven_mag_fetch::MavenMagProvider,
+        catalogs::{
+            maven_mag::parse_maven_mag_hapi_csv_minutes, maven_mag_fetch::MavenMagProvider,
+        },
         fetcher::{DatasetProvider, FetchConfig},
     };
 
@@ -732,8 +735,9 @@ fn fetch_maven(cli: &Cli, start: NaiveDate, end: NaiveDate) -> Result<Vec<MagMin
 
 fn fetch_messenger(cli: &Cli, start: NaiveDate, end: NaiveDate) -> Result<Vec<MagMinute>> {
     use data_core::{
-        catalogs::messenger::parse_messenger_mag_hapi_csv_minutes,
-        catalogs::messenger_fetch::MessengerMagProvider,
+        catalogs::{
+            messenger::parse_messenger_mag_hapi_csv_minutes, messenger_fetch::MessengerMagProvider,
+        },
         fetcher::{DatasetProvider, FetchConfig},
     };
 

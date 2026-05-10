@@ -47,7 +47,11 @@ pub fn precision_recall_f1(
     // Event-level TP: count events recalled by at least one detection.
     let tp_events = event_times
         .iter()
-        .filter(|&&e| detection_times.iter().any(|&d| (d - e).abs() <= window_secs))
+        .filter(|&&e| {
+            detection_times
+                .iter()
+                .any(|&d| (d - e).abs() <= window_secs)
+        })
         .count();
 
     let precision = if detection_times.is_empty() {
@@ -162,7 +166,9 @@ pub fn bootstrap_f1_ci_seeded(
     let mut f1_vals: Vec<f64> = Vec::with_capacity(n_bootstrap);
 
     for _ in 0..n_bootstrap {
-        let indices: Vec<usize> = (0..n_blocks).map(|_| rng.random_range(0..n_blocks)).collect();
+        let indices: Vec<usize> = (0..n_blocks)
+            .map(|_| rng.random_range(0..n_blocks))
+            .collect();
         let mut resampled_detections: Vec<i64> = Vec::new();
         let mut resampled_events: Vec<i64> = Vec::new();
 
@@ -183,8 +189,7 @@ pub fn bootstrap_f1_ci_seeded(
     f1_vals.sort_by(|a, b| a.partial_cmp(b).unwrap_or(std::cmp::Ordering::Equal));
     let alpha = (1.0 - coverage_pct) / 2.0;
     let lo_idx = (alpha * n_bootstrap as f64) as usize;
-    let hi_idx = ((1.0 - alpha) * n_bootstrap as f64)
-        .min(n_bootstrap as f64 - 1.0) as usize;
+    let hi_idx = ((1.0 - alpha) * n_bootstrap as f64).min(n_bootstrap as f64 - 1.0) as usize;
     let mean = f1_vals.iter().sum::<f64>() / n_bootstrap as f64;
 
     (mean, f1_vals[lo_idx], f1_vals[hi_idx])
@@ -211,7 +216,13 @@ pub fn permutation_ratio_test(
     n_permutations: usize,
     observed_ratio: f64,
 ) -> f64 {
-    permutation_ratio_test_seeded(labels, fire_mask, n_permutations, observed_ratio, DEFAULT_SEED)
+    permutation_ratio_test_seeded(
+        labels,
+        fire_mask,
+        n_permutations,
+        observed_ratio,
+        DEFAULT_SEED,
+    )
 }
 
 /// Seeded variant of `permutation_ratio_test`.
@@ -222,7 +233,11 @@ pub fn permutation_ratio_test_seeded(
     observed_ratio: f64,
     seed: u64,
 ) -> f64 {
-    assert_eq!(labels.len(), fire_mask.len(), "labels and fire_mask must be the same length");
+    assert_eq!(
+        labels.len(),
+        fire_mask.len(),
+        "labels and fire_mask must be the same length"
+    );
     if n_permutations == 0 {
         return 1.0;
     }
@@ -245,8 +260,16 @@ pub fn permutation_ratio_test_seeded(
 /// Compute fires_in_A / fires_in_B from labels and fire_mask.
 /// Returns 0.0 if class B has no fires (avoids division by zero).
 pub fn class_fire_ratio(labels: &[bool], fire_mask: &[bool]) -> f64 {
-    let fires_a = labels.iter().zip(fire_mask).filter(|&(&l, &f)| l && f).count();
-    let fires_b = labels.iter().zip(fire_mask).filter(|&(&l, &f)| !l && f).count();
+    let fires_a = labels
+        .iter()
+        .zip(fire_mask)
+        .filter(|&(&l, &f)| l && f)
+        .count();
+    let fires_b = labels
+        .iter()
+        .zip(fire_mask)
+        .filter(|&(&l, &f)| !l && f)
+        .count();
     if fires_b == 0 {
         0.0
     } else {
@@ -432,8 +455,7 @@ mod tests {
         let t_start = 0_i64;
         let t_end = 86400;
         let detections = vec![3600_i64, 7200];
-        let p =
-            f1_null_distribution_seeded(&detections, 3, t_start, t_end, 100, 2.0, 300, 42);
+        let p = f1_null_distribution_seeded(&detections, 3, t_start, t_end, 100, 2.0, 300, 42);
         assert_relative_eq!(p, 0.0, epsilon = 1e-9);
     }
 
@@ -463,6 +485,9 @@ mod tests {
         fire_mask.extend(vec![false; 950]); // no class B windows fire
         let observed = 50.0 / 1.0; // use 1 to avoid division by zero
         let p = permutation_ratio_test_seeded(&labels, &fire_mask, 500, observed, 42);
-        assert!(p < 0.05, "expected low p-value for extreme ratio, got p={p}");
+        assert!(
+            p < 0.05,
+            "expected low p-value for extreme ratio, got p={p}"
+        );
     }
 }

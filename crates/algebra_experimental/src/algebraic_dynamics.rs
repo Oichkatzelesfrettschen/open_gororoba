@@ -1845,7 +1845,7 @@ mod tests {
         }
     }
 
-#[test]
+    #[test]
     fn test_bigram_entropy_constant_sequence() {
         // All-DMZ sequence: entropy should be 0 (only one bigram type)
         let seq: Vec<BilliardCellType> = vec![BilliardCellType::Dmz; 100];

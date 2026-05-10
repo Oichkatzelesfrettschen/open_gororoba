@@ -93,11 +93,7 @@ fn main() -> ExitCode {
         let mut ra = ra_min;
         while ra <= ra_max + 1e-9 {
             tiles.push(Tile {
-                id: format!(
-                    "hetdex_ra{:05.1}_dec{:+05.1}",
-                    ra,
-                    dec
-                ),
+                id: format!("hetdex_ra{:05.1}_dec{:+05.1}", ra, dec),
                 ra,
                 dec,
                 radius: args.radius_deg,
@@ -124,10 +120,7 @@ fn main() -> ExitCode {
     // Deterministic de-dup using rounded coordinates at 0.05 deg.
     let mut seen: BTreeSet<(i64, i64)> = BTreeSet::new();
     tiles.retain(|t| {
-        let key = (
-            (t.ra * 20.0).round() as i64,
-            (t.dec * 20.0).round() as i64,
-        );
+        let key = ((t.ra * 20.0).round() as i64, (t.dec * 20.0).round() as i64);
         seen.insert(key)
     });
 
@@ -165,10 +158,7 @@ fn load_lotss_vo_datasets(path: &Path) -> Result<Vec<String>, String> {
         .unwrap_or(&empty);
     let mut out = Vec::new();
     for r in rows {
-        let server = r
-            .get("server_ref")
-            .and_then(|v| v.as_str())
-            .unwrap_or("");
+        let server = r.get("server_ref").and_then(|v| v.as_str()).unwrap_or("");
         if server == "lotss_vo"
             && let Some(id) = r.get("id").and_then(|v| v.as_str())
         {

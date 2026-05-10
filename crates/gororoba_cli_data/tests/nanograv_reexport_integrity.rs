@@ -23,17 +23,17 @@ use gororoba_cli_data::nanograv_timing_model::{
 
 #[allow(unused_imports)]
 use gororoba_cli_data::nanograv_refit::{
-    AggregatedObservation, ChannelResidual, FitParameterEstimate, LinearFitSummary,
-    RefitDataset, RefitOutputRow, RefitResult, WidebandToa, build_refit_dataset,
-    load_phase1_models_from_report, solve_refit,
+    AggregatedObservation, ChannelResidual, FitParameterEstimate, LinearFitSummary, RefitDataset,
+    RefitOutputRow, RefitResult, WidebandToa, build_refit_dataset, load_phase1_models_from_report,
+    solve_refit,
 };
 
 #[allow(unused_imports)]
 use gororoba_cli_data::nanograv_timing_engine::{
     IndependentDataset, IndependentFitSummary, IndependentObservation, IndependentRefitResult,
-    IndependentRefitRow, SiteId, StructuredCovarianceCalibration, TimingEphemeris,
-    TopocentricToa, build_independent_dataset, build_phase1_independent_datasets,
-    solve_independent_refit, tactical_lane_for_pulsar,
+    IndependentRefitRow, SiteId, StructuredCovarianceCalibration, TimingEphemeris, TopocentricToa,
+    build_independent_dataset, build_phase1_independent_datasets, solve_independent_refit,
+    tactical_lane_for_pulsar,
 };
 
 /// Verify that core timing types are constructible through the re-export path.
@@ -90,7 +90,11 @@ fn function_signatures_resolvable() {
     // These lines verify that the function types match what callers expect.
     // If the re-export broke a signature, this would fail to compile.
     let _: fn(String) -> String = canonical_pulsar_name;
-    let _: fn(&std::path::Path) -> anyhow::Result<std::collections::BTreeMap<String, PulsarTimingData>> = load_release;
-    let _: fn(&std::path::Path, ReleaseBand) -> anyhow::Result<Vec<TimingModel>> = load_release_timing_models;
-    let _: fn(&std::path::Path, ReleaseBand) -> anyhow::Result<TimingModel> = parse_par_timing_model;
+    let _: fn(
+        &std::path::Path,
+    ) -> anyhow::Result<std::collections::BTreeMap<String, PulsarTimingData>> = load_release;
+    let _: fn(&std::path::Path, ReleaseBand) -> anyhow::Result<Vec<TimingModel>> =
+        load_release_timing_models;
+    let _: fn(&std::path::Path, ReleaseBand) -> anyhow::Result<TimingModel> =
+        parse_par_timing_model;
 }

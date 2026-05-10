@@ -24,9 +24,7 @@ const ZERO_TOLERANCE: f64 = 1e-4;
 ///
 /// A nonzero `(a, b)` returning `true` is a sedenion zero-divisor pair.
 pub fn is_sedenion_zd_pair(a: &[f64; 16], b: &[f64; 16]) -> bool {
-    let product: [f64; 16] = cd_multiply(a, b)
-        .try_into()
-        .expect("16D sedenion product");
+    let product: [f64; 16] = cd_multiply(a, b).try_into().expect("16D sedenion product");
     cd_norm_sq(&product) < ZERO_TOLERANCE
 }
 

@@ -110,7 +110,8 @@ fn main() -> Result<()> {
     let dt = args.dt;
 
     let v_wind = dm_wind_j2000(&V_WIND_GALACTIC);
-    let v_wind_norm = (v_wind[0] * v_wind[0] + v_wind[1] * v_wind[1] + v_wind[2] * v_wind[2]).sqrt();
+    let v_wind_norm =
+        (v_wind[0] * v_wind[0] + v_wind[1] * v_wind[1] + v_wind[2] * v_wind[2]).sqrt();
 
     println!("=== Flyby Residual Audit ===");
     println!("  Using flyby/ library (EnvironmentModel trait dispatch)");

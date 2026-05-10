@@ -33,8 +33,7 @@ pub fn generate_e6_roots() -> Vec<E8Root> {
     let roots: Vec<E8Root> = generate_e8_roots()
         .into_iter()
         .filter(|r| {
-            (r.coords[0] - r.coords[1]).abs() < 1e-12
-                && (r.coords[1] - r.coords[2]).abs() < 1e-12
+            (r.coords[0] - r.coords[1]).abs() < 1e-12 && (r.coords[1] - r.coords[2]).abs() < 1e-12
         })
         .collect();
     assert_eq!(roots.len(), 72, "E6 must have exactly 72 roots");
@@ -125,10 +124,7 @@ mod tests {
             for (j, alpha_j) in simple.iter().enumerate() {
                 let dot_ij = alpha_i.inner_product(alpha_j);
                 let derived = (2.0 * dot_ij / dot_ii).round() as i32;
-                assert_eq!(
-                    derived, cartan[i][j],
-                    "E6 Cartan mismatch at ({i},{j})",
-                );
+                assert_eq!(derived, cartan[i][j], "E6 Cartan mismatch at ({i},{j})",);
             }
         }
     }

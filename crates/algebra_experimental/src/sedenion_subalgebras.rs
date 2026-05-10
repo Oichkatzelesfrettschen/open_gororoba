@@ -1048,55 +1048,56 @@ mod tests {
         let svd_x_full = mat_x.clone().svd(false, true);
 
         if let Some(ref vt_b) = svd_b_full.v_t
-            && let Some(ref vt_x) = svd_x_full.v_t {
-                // Extract the first rank_b/rank_x rows of V^T (= columns of V)
-                let q_b = vt_b.rows(0, rank_b).transpose();
-                let q_x = vt_x.rows(0, rank_x).transpose();
+            && let Some(ref vt_x) = svd_x_full.v_t
+        {
+            // Extract the first rank_b/rank_x rows of V^T (= columns of V)
+            let q_b = vt_b.rows(0, rank_b).transpose();
+            let q_x = vt_x.rows(0, rank_x).transpose();
 
-                // Cosines of principal angles = singular values of Q_B^T * Q_X
-                let cross = q_b.transpose() * &q_x;
-                let svd_cross = cross.svd(false, false);
+            // Cosines of principal angles = singular values of Q_B^T * Q_X
+            let cross = q_b.transpose() * &q_x;
+            let svd_cross = cross.svd(false, false);
 
-                let cosines: Vec<f64> = svd_cross.singular_values.iter().copied().collect();
-                let angles_deg: Vec<f64> = cosines
+            let cosines: Vec<f64> = svd_cross.singular_values.iter().copied().collect();
+            let angles_deg: Vec<f64> = cosines
+                .iter()
+                .map(|c| c.min(1.0).acos().to_degrees())
+                .collect();
+
+            println!("\n  Follow-up 3: Principal angles between B and X column spaces");
+            println!(
+                "    Cosines (top-10): [{}]",
+                cosines
                     .iter()
-                    .map(|c| c.min(1.0).acos().to_degrees())
-                    .collect();
-
-                println!("\n  Follow-up 3: Principal angles between B and X column spaces");
-                println!(
-                    "    Cosines (top-10): [{}]",
-                    cosines
-                        .iter()
-                        .take(10)
-                        .map(|c| format!("{:.4}", c))
-                        .collect::<Vec<_>>()
-                        .join(", ")
-                );
-                println!(
-                    "    Angles (top-10): [{}]",
-                    angles_deg
-                        .iter()
-                        .take(10)
-                        .map(|a| format!("{:.1}", a))
-                        .collect::<Vec<_>>()
-                        .join(", ")
-                );
-
-                let n_zero_angle = angles_deg.iter().filter(|a| **a < 1.0).count();
-                let n_right_angle = angles_deg
+                    .take(10)
+                    .map(|c| format!("{:.4}", c))
+                    .collect::<Vec<_>>()
+                    .join(", ")
+            );
+            println!(
+                "    Angles (top-10): [{}]",
+                angles_deg
                     .iter()
-                    .filter(|a| (**a - 90.0).abs() < 1.0)
-                    .count();
-                println!(
-                    "    Coincident directions (angle < 1 deg): {}",
-                    n_zero_angle
-                );
-                println!(
-                    "    Orthogonal directions (angle ~ 90 deg): {}",
-                    n_right_angle
-                );
-            }
+                    .take(10)
+                    .map(|a| format!("{:.1}", a))
+                    .collect::<Vec<_>>()
+                    .join(", ")
+            );
+
+            let n_zero_angle = angles_deg.iter().filter(|a| **a < 1.0).count();
+            let n_right_angle = angles_deg
+                .iter()
+                .filter(|a| (**a - 90.0).abs() < 1.0)
+                .count();
+            println!(
+                "    Coincident directions (angle < 1 deg): {}",
+                n_zero_angle
+            );
+            println!(
+                "    Orthogonal directions (angle ~ 90 deg): {}",
+                n_right_angle
+            );
+        }
     }
 
     /// Cross-tabulate 455 triads: Wilmot non-assoc type vs sigma-associativity.

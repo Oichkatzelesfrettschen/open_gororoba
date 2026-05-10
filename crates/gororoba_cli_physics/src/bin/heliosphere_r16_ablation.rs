@@ -46,7 +46,10 @@ struct Cli {
     n_days: u32,
     #[arg(long, default_value = "a")]
     probe: String,
-    #[arg(long, default_value = "data/external/crossing_lists/themis_mp_crossings_v2.txt")]
+    #[arg(
+        long,
+        default_value = "data/external/crossing_lists/themis_mp_crossings_v2.txt"
+    )]
     staples_catalog: PathBuf,
     #[arg(long, default_value_t = 10)]
     pad_minutes: i64,
@@ -108,7 +111,12 @@ fn main() -> Result<()> {
     let start = NaiveDate::parse_from_str(&cli.start_date, "%Y-%m-%d")
         .with_context(|| format!("invalid start_date: {}", cli.start_date))?;
     let end = start + chrono::Duration::days(cli.n_days as i64 - 1);
-    let probe_char = cli.probe.trim().to_lowercase().chars().next()
+    let probe_char = cli
+        .probe
+        .trim()
+        .to_lowercase()
+        .chars()
+        .next()
         .context("--probe must be a single letter (a-e)")?;
     let probe_upper = cli.probe.trim().to_uppercase();
     let spacecraft = format!("TH{probe_upper}");
@@ -138,10 +146,15 @@ fn main() -> Result<()> {
         let doy = date.ordinal();
         let fname = format!(
             "{}_fgm_{:04}_{:03}.csv",
-            probe_upper.to_lowercase(), date.year(), doy
+            probe_upper.to_lowercase(),
+            date.year(),
+            doy
         );
         let output = themis_dir.join(&fname);
-        if output.exists() { println!("  DOY {doy}: cached"); continue; }
+        if output.exists() {
+            println!("  DOY {doy}: cached");
+            continue;
+        }
         let t_min = format!("{}T00:00:00Z", date);
         let t_max = format!("{}T23:59:59Z", date);
         let url = format!(
@@ -167,26 +180,43 @@ fn main() -> Result<()> {
         let date = start + chrono::Duration::days(day_offset as i64);
         let fname = format!(
             "{}_fgm_{:04}_{:03}.csv",
-            probe_upper.to_lowercase(), date.year(), date.ordinal()
+            probe_upper.to_lowercase(),
+            date.year(),
+            date.ordinal()
         );
         let path = themis_dir.join(&fname);
-        if !path.exists() { eprintln!("  Warning: {} not found", path.display()); continue; }
+        if !path.exists() {
+            eprintln!("  Warning: {} not found", path.display());
+            continue;
+        }
         let content = fs::read_to_string(&path)?;
         let mut records = parse_themis_fgm_hapi_csv_minutes(&content, &spacecraft);
         all_minutes.append(&mut records);
     }
 
-    if all_minutes.is_empty() { anyhow::bail!("No THEMIS FGM data found."); }
+    if all_minutes.is_empty() {
+        anyhow::bail!("No THEMIS FGM data found.");
+    }
 
     all_minutes.retain(|r| r.b_magnitude <= cli.max_bmag);
-    all_minutes.sort_by(|a, b| a.year.cmp(&b.year).then(a.doy.cmp(&b.doy))
-        .then(a.hour.cmp(&b.hour)).then(a.minute.cmp(&b.minute)));
+    all_minutes.sort_by(|a, b| {
+        a.year
+            .cmp(&b.year)
+            .then(a.doy.cmp(&b.doy))
+            .then(a.hour.cmp(&b.hour))
+            .then(a.minute.cmp(&b.minute))
+    });
 
-    let (fy, fd, fh, fm) = (all_minutes[0].year, all_minutes[0].doy,
-                             all_minutes[0].hour, all_minutes[0].minute);
+    let (fy, fd, fh, fm) = (
+        all_minutes[0].year,
+        all_minutes[0].doy,
+        all_minutes[0].hour,
+        all_minutes[0].minute,
+    );
     for rec in &mut all_minutes {
         let day_diff = (rec.year as f64 - fy as f64) * 365.25 + (rec.doy as f64 - fd as f64);
-        rec.elapsed_hours = day_diff * 24.0 + (rec.hour as f64 - fh as f64)
+        rec.elapsed_hours = day_diff * 24.0
+            + (rec.hour as f64 - fh as f64)
             + (rec.minute as f64 - fm as f64) / 60.0;
     }
 
@@ -197,14 +227,17 @@ fn main() -> Result<()> {
     // Load catalog
     let catalog_content = fs::read_to_string(&cli.staples_catalog)
         .with_context(|| format!("reading catalog: {}", cli.staples_catalog.display()))?;
-    let catalog = parse_staples_crossing_catalog(
-        &catalog_content, probe_char, start, end, cli.pad_minutes);
-    let fom_catalog: Vec<MmsEventInterval> = catalog.into_iter()
-        .filter(|e| e.fom >= cli.min_fom).collect();
+    let catalog =
+        parse_staples_crossing_catalog(&catalog_content, probe_char, start, end, cli.pad_minutes);
+    let fom_catalog: Vec<MmsEventInterval> = catalog
+        .into_iter()
+        .filter(|e| e.fom >= cli.min_fom)
+        .collect();
 
     println!(
         "  Catalog: {} intervals, FGM: {} minutes",
-        fom_catalog.len(), all_minutes.len()
+        fom_catalog.len(),
+        all_minutes.len()
     );
 
     // -----------------------------------------------------------------------
@@ -212,7 +245,11 @@ fn main() -> Result<()> {
     // -----------------------------------------------------------------------
     let window_rows = (n_lags - 1) * cli.takens_lag + 1;
     if all_minutes.len() < window_rows + 2 {
-        anyhow::bail!("Not enough data: need {} rows, have {}", window_rows + 2, all_minutes.len());
+        anyhow::bail!(
+            "Not enough data: need {} rows, have {}",
+            window_rows + 2,
+            all_minutes.len()
+        );
     }
 
     let expected_span_hours = (n_lags - 1) as f64 * cli.takens_lag as f64 / 60.0;
@@ -222,15 +259,23 @@ fn main() -> Result<()> {
     let mut embed_meta: Vec<usize> = Vec::new();
 
     for w_start in 0..=(all_minutes.len() - window_rows) {
-        let sample_indices: Vec<usize> = (0..n_lags).map(|s| w_start + s * cli.takens_lag).collect();
+        let sample_indices: Vec<usize> =
+            (0..n_lags).map(|s| w_start + s * cli.takens_lag).collect();
 
         let first_h = all_minutes[*sample_indices.first().unwrap()].elapsed_hours;
         let last_h = all_minutes[*sample_indices.last().unwrap()].elapsed_hours;
-        if last_h - first_h > max_window_span_hours { continue; }
+        if last_h - first_h > max_window_span_hours {
+            continue;
+        }
 
-        let sum_b: f64 = sample_indices.iter().map(|&i| all_minutes[i].b_magnitude).sum();
+        let sum_b: f64 = sample_indices
+            .iter()
+            .map(|&i| all_minutes[i].b_magnitude)
+            .sum();
         let local_mean_b = sum_b / n_lags as f64;
-        if local_mean_b <= 0.0 || !local_mean_b.is_finite() { continue; }
+        if local_mean_b <= 0.0 || !local_mean_b.is_finite() {
+            continue;
+        }
         let denom = local_mean_b.max(cli.bmag_noise_floor);
 
         // 2-channel: Bx, By only
@@ -247,11 +292,11 @@ fn main() -> Result<()> {
     println!("  Embedded vectors: {}", embedded_vectors.len());
 
     // CD associator at dim=16 (sedenion -- fully supported)
-    let associators = cd_kernel::batch_sliding_associator_norms_parallel(
-        &embedded_vectors, embedding_dim);
+    let associators =
+        cd_kernel::batch_sliding_associator_norms_parallel(&embedded_vectors, embedding_dim);
 
-    let assoc_minute_indices: Vec<usize> = (0..associators.len())
-        .map(|k| embed_meta[k + 2]).collect();
+    let assoc_minute_indices: Vec<usize> =
+        (0..associators.len()).map(|k| embed_meta[k + 2]).collect();
 
     let trans_window = cli.crossing_window_minutes.max(5);
     let mut cd_hours: Vec<f64> = Vec::new();
@@ -259,7 +304,10 @@ fn main() -> Result<()> {
     if associators.len() > trans_window * 2 {
         let global_mean: f64 = associators.iter().sum::<f64>() / associators.len() as f64;
         let global_std: f64 = {
-            let var = associators.iter().map(|&a| (a - global_mean).powi(2)).sum::<f64>()
+            let var = associators
+                .iter()
+                .map(|&a| (a - global_mean).powi(2))
+                .sum::<f64>()
                 / associators.len() as f64;
             var.sqrt()
         };
@@ -267,14 +315,16 @@ fn main() -> Result<()> {
         let half = trans_window;
         let mut last_trans_idx: Option<usize> = None;
         for i in half..associators.len().saturating_sub(half) {
-            let pre_mean: f64 = associators[i.saturating_sub(half)..i].iter().sum::<f64>()
-                / half as f64;
-            let post_mean: f64 = associators[i..(i + half).min(associators.len())].iter().sum::<f64>()
+            let pre_mean: f64 =
+                associators[i.saturating_sub(half)..i].iter().sum::<f64>() / half as f64;
+            let post_mean: f64 = associators[i..(i + half).min(associators.len())]
+                .iter()
+                .sum::<f64>()
                 / half.min(associators.len() - i) as f64;
             let jump = (post_mean - pre_mean).abs();
             if jump > threshold {
-                let dominated = last_trans_idx.is_some_and(
-                    |prev| i.saturating_sub(prev) < trans_window);
+                let dominated =
+                    last_trans_idx.is_some_and(|prev| i.saturating_sub(prev) < trans_window);
                 if !dominated {
                     let mi = assoc_minute_indices[i];
                     cd_hours.push(all_minutes[mi].elapsed_hours);
@@ -288,8 +338,10 @@ fn main() -> Result<()> {
 
     // Evaluate
     let eval_window_secs = cli.pad_minutes * 60;
-    let detection_unix: Vec<i64> = cd_hours.iter()
-        .map(|&h| hours_to_unix(&reference_midnight, h)).collect();
+    let detection_unix: Vec<i64> = cd_hours
+        .iter()
+        .map(|&h| hours_to_unix(&reference_midnight, h))
+        .collect();
     let event_unix: Vec<i64> = fom_catalog.iter().map(event_midpoint_unix).collect();
 
     let (precision, recall, f1) =
@@ -302,9 +354,15 @@ fn main() -> Result<()> {
     );
 
     let (bci_mean, bci_lo, bci_hi) = boundary_metrics::bootstrap_f1_ci_seeded(
-        &detection_unix, &event_unix,
-        series_start_unix, series_end_unix,
-        1800, 10_000, 0.95, eval_window_secs, 42,
+        &detection_unix,
+        &event_unix,
+        series_start_unix,
+        series_end_unix,
+        1800,
+        10_000,
+        0.95,
+        eval_window_secs,
+        42,
     );
 
     println!(
@@ -312,7 +370,9 @@ fn main() -> Result<()> {
         f1, precision, recall, bci_lo, bci_hi
     );
 
-    if let Some(parent) = cli.out_json.parent() { fs::create_dir_all(parent)?; }
+    if let Some(parent) = cli.out_json.parent() {
+        fs::create_dir_all(parent)?;
+    }
 
     let results = AblationResult {
         start_date: cli.start_date.clone(),
@@ -325,7 +385,9 @@ fn main() -> Result<()> {
         n_catalog_events: fom_catalog.len(),
         n_fgm_minutes: all_minutes.len(),
         n_detections: cd_hours.len(),
-        precision, recall, f1,
+        precision,
+        recall,
+        f1,
         bootstrap_ci_mean: bci_mean,
         bootstrap_ci_lo: bci_lo,
         bootstrap_ci_hi: bci_hi,

@@ -100,21 +100,21 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         if (manifold_points[i + 1].g[0] - manifold_points[i].g[0]).abs() > 0.5
             && let Ok(jac) =
                 CouplerJacobian::estimate_from_delta(&manifold_points[i], &manifold_points[i + 1])
-            {
-                let j_val = jac.j_mat[(0, 0)];
-                println!(
-                    "  Transition: {} -> {}",
-                    sorted_points[i].dataset,
-                    sorted_points[i + 1].dataset
-                );
-                println!(
-                    "  g: {:.0} -> {:.0}",
-                    manifold_points[i].g[0],
-                    manifold_points[i + 1].g[0]
-                );
-                println!("  J: {:.4}\n", j_val);
-                cross_jacobians.push(j_val);
-            }
+        {
+            let j_val = jac.j_mat[(0, 0)];
+            println!(
+                "  Transition: {} -> {}",
+                sorted_points[i].dataset,
+                sorted_points[i + 1].dataset
+            );
+            println!(
+                "  g: {:.0} -> {:.0}",
+                manifold_points[i].g[0],
+                manifold_points[i + 1].g[0]
+            );
+            println!("  J: {:.4}\n", j_val);
+            cross_jacobians.push(j_val);
+        }
     }
 
     if !cross_jacobians.is_empty() {

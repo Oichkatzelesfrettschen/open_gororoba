@@ -175,14 +175,7 @@ fn parse_mission_names(html: &str) -> BTreeSet<String> {
         // `help` / `archive` are navigation pages, not missions.
         let raw_lower = raw.to_ascii_lowercase();
         let blocked = [
-            "index",
-            "search",
-            "help",
-            "archive",
-            "_images",
-            "data",
-            "api",
-            "about",
+            "index", "search", "help", "archive", "_images", "data", "api", "about",
         ];
         if !raw_lower.is_empty() && !blocked.contains(&raw_lower.as_str()) {
             names.insert(normalize(&raw_lower));

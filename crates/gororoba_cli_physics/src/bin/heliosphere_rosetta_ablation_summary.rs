@@ -81,7 +81,11 @@ struct AblationResult {
 
 fn interpret(norm: &str, det: f64, fa: f64, ratio: f64) -> String {
     // ratio_outside_to_cavity: >1 means outside > cavity (correct for a boundary detector).
-    let direction = if ratio > 1.0 { "outside > cavity" } else { "cavity > outside" };
+    let direction = if ratio > 1.0 {
+        "outside > cavity"
+    } else {
+        "cavity > outside"
+    };
     format!(
         "{}: det={:.1}%, FA={:.1}%, ratio_outside_cavity={:.3} ({})",
         norm,
@@ -99,9 +103,11 @@ fn main() -> Result<()> {
     let mut summaries: Vec<VariantSummary> = Vec::new();
 
     for name in names {
-        let path = cli.input_dir.join(format!("rosetta_draping_norm_{name}.json"));
-        let content = fs::read_to_string(&path)
-            .with_context(|| format!("reading {}", path.display()))?;
+        let path = cli
+            .input_dir
+            .join(format!("rosetta_draping_norm_{name}.json"));
+        let content =
+            fs::read_to_string(&path).with_context(|| format!("reading {}", path.display()))?;
         let raw: VariantRaw =
             serde_json::from_str(&content).with_context(|| format!("parsing {}", name))?;
 
@@ -144,7 +150,10 @@ fn main() -> Result<()> {
         s.rank = i + 1;
     }
 
-    let winner = summaries.first().map(|s| s.normalization.clone()).unwrap_or_default();
+    let winner = summaries
+        .first()
+        .map(|s| s.normalization.clone())
+        .unwrap_or_default();
     let winner_f1 = summaries.first().map(|s| s.f1_boundary).unwrap_or(0.0);
     let winner_rationale = format!(
         "{} achieves the highest boundary-detection F1 ({:.4}) in the weak-field cavity regime. \

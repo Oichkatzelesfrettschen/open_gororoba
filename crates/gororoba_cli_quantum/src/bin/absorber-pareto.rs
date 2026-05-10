@@ -1,6 +1,6 @@
 use anyhow::Result;
 use optics_core::absorber_pareto::{
-    FractionalSchrodingerConfig, ParetoPoint, WavePacketConfig, pareto_sweep,
+    pareto_sweep, FractionalSchrodingerConfig, ParetoPoint, WavePacketConfig,
 };
 use plotters::prelude::*;
 use std::path::PathBuf;
@@ -60,11 +60,7 @@ fn plot_pareto(points: &[ParetoPoint]) -> Result<()> {
         .fold(f64::INFINITY, f64::min)
         * 0.5;
     let max_x = points.iter().map(|p| p.m_edge).fold(0.0, f64::max) * 2.0;
-    let min_y = points
-        .iter()
-        .map(|p| p.e_int)
-        .fold(f64::INFINITY, f64::min)
-        * 0.5;
+    let min_y = points.iter().map(|p| p.e_int).fold(f64::INFINITY, f64::min) * 0.5;
     let max_y = points.iter().map(|p| p.e_int).fold(0.0, f64::max) * 2.0;
 
     let mut chart = ChartBuilder::on(&root)

@@ -32,8 +32,7 @@ fn main() -> anyhow::Result<()> {
     );
 
     // 4. Alignment Test
-    let alignment =
-        (axis[0] * axis_obs[0] + axis[1] * axis_obs[1] + axis[2] * axis_obs[2]).abs();
+    let alignment = (axis[0] * axis_obs[0] + axis[1] * axis_obs[1] + axis[2] * axis_obs[2]).abs();
     let angle_deg = alignment.acos().to_degrees();
 
     println!("\n=== Final Alignment Verdict ===");

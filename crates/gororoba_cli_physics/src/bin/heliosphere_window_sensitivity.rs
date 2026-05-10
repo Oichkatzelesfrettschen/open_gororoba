@@ -61,11 +61,15 @@ impl WindowFn {
     fn coefficients(&self, n_lags: usize) -> Vec<f64> {
         use std::f64::consts::PI;
         let n = n_lags;
-        (0..n).map(|k| match self {
-            WindowFn::Boxcar => 1.0,
-            WindowFn::Hamming => 0.54 - 0.46 * (2.0 * PI * k as f64 / (n - 1).max(1) as f64).cos(),
-            WindowFn::Hann => 0.5 * (1.0 - (2.0 * PI * k as f64 / (n - 1).max(1) as f64).cos()),
-        }).collect()
+        (0..n)
+            .map(|k| match self {
+                WindowFn::Boxcar => 1.0,
+                WindowFn::Hamming => {
+                    0.54 - 0.46 * (2.0 * PI * k as f64 / (n - 1).max(1) as f64).cos()
+                }
+                WindowFn::Hann => 0.5 * (1.0 - (2.0 * PI * k as f64 / (n - 1).max(1) as f64).cos()),
+            })
+            .collect()
     }
 }
 
@@ -161,10 +165,17 @@ fn build_windowed_delay_vectors(
         let sample_indices: Vec<usize> = (0..steps).map(|s| w_start + s * takens_lag).collect();
         let first_h = all_minutes[*sample_indices.first().unwrap()].elapsed_hours;
         let last_h = all_minutes[*sample_indices.last().unwrap()].elapsed_hours;
-        if last_h - first_h > max_window_span_hours { continue; }
-        let sum_b: f64 = sample_indices.iter().map(|&i| all_minutes[i].b_magnitude).sum();
+        if last_h - first_h > max_window_span_hours {
+            continue;
+        }
+        let sum_b: f64 = sample_indices
+            .iter()
+            .map(|&i| all_minutes[i].b_magnitude)
+            .sum();
         let local_mean_b = sum_b / steps as f64;
-        if local_mean_b <= 0.0 || !local_mean_b.is_finite() { continue; }
+        if local_mean_b <= 0.0 || !local_mean_b.is_finite() {
+            continue;
+        }
         let denom = local_mean_b.max(bmag_noise_floor);
         let mut v = vec![0.0_f64; embedding_dim];
         for (s, &ri) in sample_indices.iter().enumerate() {
@@ -199,11 +210,16 @@ fn run_window_variant(
     let window_coeffs = window_fn.coefficients(steps);
 
     let (delay_vectors, embed_meta) = build_windowed_delay_vectors(
-        all_minutes, cli.embedding_dim, cli.takens_lag,
-        max_window_span_hours, cli.bmag_noise_floor, &window_coeffs,
+        all_minutes,
+        cli.embedding_dim,
+        cli.takens_lag,
+        max_window_span_hours,
+        cli.bmag_noise_floor,
+        &window_coeffs,
     );
 
-    let associators = cd_kernel::batch_sliding_associator_norms_parallel(&delay_vectors, cli.embedding_dim);
+    let associators =
+        cd_kernel::batch_sliding_associator_norms_parallel(&delay_vectors, cli.embedding_dim);
     let assoc_meta: Vec<usize> = embed_meta[2..].to_vec();
 
     let trans_window = cli.crossing_window_minutes.max(5);
@@ -211,20 +227,26 @@ fn run_window_variant(
 
     if associators.len() > trans_window * 2 {
         let global_mean: f64 = associators.iter().sum::<f64>() / associators.len() as f64;
-        let global_std: f64 = (associators.iter().map(|&a| (a - global_mean).powi(2)).sum::<f64>()
-            / associators.len() as f64).sqrt();
+        let global_std: f64 = (associators
+            .iter()
+            .map(|&a| (a - global_mean).powi(2))
+            .sum::<f64>()
+            / associators.len() as f64)
+            .sqrt();
         let threshold = global_std * MAD_SCALE_FACTOR;
         let half = trans_window;
         let mut last_trans_idx: Option<usize> = None;
         for i in half..associators.len().saturating_sub(half) {
-            let pre_mean: f64 = associators[i.saturating_sub(half)..i].iter().sum::<f64>()
-                / half as f64;
-            let post_mean: f64 = associators[i..(i + half).min(associators.len())].iter().sum::<f64>()
+            let pre_mean: f64 =
+                associators[i.saturating_sub(half)..i].iter().sum::<f64>() / half as f64;
+            let post_mean: f64 = associators[i..(i + half).min(associators.len())]
+                .iter()
+                .sum::<f64>()
                 / half.min(associators.len() - i) as f64;
             let jump = (post_mean - pre_mean).abs();
             if jump > threshold {
-                let dominated = last_trans_idx.is_some_and(
-                    |prev| i.saturating_sub(prev) < trans_window);
+                let dominated =
+                    last_trans_idx.is_some_and(|prev| i.saturating_sub(prev) < trans_window);
                 if !dominated {
                     fire_hours.push(all_minutes[assoc_meta[i]].elapsed_hours);
                     last_trans_idx = Some(i);
@@ -233,28 +255,44 @@ fn run_window_variant(
         }
     }
 
-    let detection_unix: Vec<i64> = fire_hours.iter()
-        .map(|&h| hours_to_unix(reference_midnight, h)).collect();
+    let detection_unix: Vec<i64> = fire_hours
+        .iter()
+        .map(|&h| hours_to_unix(reference_midnight, h))
+        .collect();
     let event_unix: Vec<i64> = fom_catalog.iter().map(event_midpoint_unix).collect();
 
     let (precision, recall, f1) =
         boundary_metrics::precision_recall_f1(&detection_unix, &event_unix, eval_window_secs);
 
     let (bci_mean, bci_lo, bci_hi) = boundary_metrics::bootstrap_f1_ci_seeded(
-        &detection_unix, &event_unix,
-        series_start_unix, series_end_unix,
-        1800, 10_000, 0.95, eval_window_secs, 42,
+        &detection_unix,
+        &event_unix,
+        series_start_unix,
+        series_end_unix,
+        1800,
+        10_000,
+        0.95,
+        eval_window_secs,
+        42,
     );
 
     println!(
         "  {:8}: detections={:3}  F1={:.3}  P={:.3}  R={:.3}  CI=[{:.3},{:.3}]",
-        window_fn.name(), fire_hours.len(), f1, precision, recall, bci_lo, bci_hi
+        window_fn.name(),
+        fire_hours.len(),
+        f1,
+        precision,
+        recall,
+        bci_lo,
+        bci_hi
     );
 
     WindowResult {
         window_fn: window_fn.name().to_string(),
         n_detections: fire_hours.len(),
-        precision, recall, f1,
+        precision,
+        recall,
+        f1,
         bootstrap_ci_mean: bci_mean,
         bootstrap_ci_lo: bci_lo,
         bootstrap_ci_hi: bci_hi,
@@ -267,7 +305,12 @@ fn main() -> Result<()> {
     let start = NaiveDate::parse_from_str(&cli.start_date, "%Y-%m-%d")
         .with_context(|| format!("invalid start_date: {}", cli.start_date))?;
     let end = start + chrono::Duration::days(cli.n_days as i64 - 1);
-    let probe_char = cli.probe.trim().to_lowercase().chars().next()
+    let probe_char = cli
+        .probe
+        .trim()
+        .to_lowercase()
+        .chars()
+        .next()
         .context("--probe must be a single letter (a-e)")?;
     let probe_upper = cli.probe.trim().to_uppercase();
     let spacecraft = format!("TH{probe_upper}");
@@ -287,10 +330,17 @@ fn main() -> Result<()> {
     for day_offset in 0..cli.n_days {
         let date = start + chrono::Duration::days(day_offset as i64);
         let doy = date.ordinal();
-        let fname = format!("{}_fgm_{:04}_{:03}.csv",
-            probe_upper.to_lowercase(), date.year(), doy);
+        let fname = format!(
+            "{}_fgm_{:04}_{:03}.csv",
+            probe_upper.to_lowercase(),
+            date.year(),
+            doy
+        );
         let output = themis_dir.join(&fname);
-        if output.exists() { println!("  DOY {doy}: cached"); continue; }
+        if output.exists() {
+            println!("  DOY {doy}: cached");
+            continue;
+        }
         let t_min = format!("{}T00:00:00Z", date);
         let t_max = format!("{}T23:59:59Z", date);
         let url = format!(
@@ -313,28 +363,45 @@ fn main() -> Result<()> {
     let mut all_minutes: Vec<ThemisFgmMinuteRecord> = Vec::new();
     for day_offset in 0..cli.n_days {
         let date = start + chrono::Duration::days(day_offset as i64);
-        let fname = format!("{}_fgm_{:04}_{:03}.csv",
-            probe_upper.to_lowercase(), date.year(), date.ordinal());
+        let fname = format!(
+            "{}_fgm_{:04}_{:03}.csv",
+            probe_upper.to_lowercase(),
+            date.year(),
+            date.ordinal()
+        );
         let path = themis_dir.join(&fname);
-        if !path.exists() { eprintln!("  Warning: {} not found", path.display()); continue; }
+        if !path.exists() {
+            eprintln!("  Warning: {} not found", path.display());
+            continue;
+        }
         let content = fs::read_to_string(&path)?;
         let mut records = parse_themis_fgm_hapi_csv_minutes(&content, &spacecraft);
         all_minutes.append(&mut records);
     }
 
-    if all_minutes.is_empty() { anyhow::bail!("No THEMIS FGM data found."); }
+    if all_minutes.is_empty() {
+        anyhow::bail!("No THEMIS FGM data found.");
+    }
 
     all_minutes.retain(|r| r.b_magnitude <= cli.max_bmag);
     all_minutes.sort_by(|a, b| {
-        a.year.cmp(&b.year).then(a.doy.cmp(&b.doy))
-            .then(a.hour.cmp(&b.hour)).then(a.minute.cmp(&b.minute))
+        a.year
+            .cmp(&b.year)
+            .then(a.doy.cmp(&b.doy))
+            .then(a.hour.cmp(&b.hour))
+            .then(a.minute.cmp(&b.minute))
     });
 
-    let (fy, fd, fh, fm) = (all_minutes[0].year, all_minutes[0].doy,
-                             all_minutes[0].hour, all_minutes[0].minute);
+    let (fy, fd, fh, fm) = (
+        all_minutes[0].year,
+        all_minutes[0].doy,
+        all_minutes[0].hour,
+        all_minutes[0].minute,
+    );
     for rec in &mut all_minutes {
         let day_diff = (rec.year as f64 - fy as f64) * 365.25 + (rec.doy as f64 - fd as f64);
-        rec.elapsed_hours = day_diff * 24.0 + (rec.hour as f64 - fh as f64)
+        rec.elapsed_hours = day_diff * 24.0
+            + (rec.hour as f64 - fh as f64)
             + (rec.minute as f64 - fm as f64) / 60.0;
     }
 
@@ -344,13 +411,18 @@ fn main() -> Result<()> {
 
     let catalog_content = fs::read_to_string(&cli.staples_catalog)
         .with_context(|| format!("reading catalog: {}", cli.staples_catalog.display()))?;
-    let catalog = parse_staples_crossing_catalog(
-        &catalog_content, probe_char, start, end, cli.pad_minutes);
-    let fom_catalog: Vec<MmsEventInterval> = catalog.into_iter()
-        .filter(|e| e.fom >= cli.min_fom).collect();
+    let catalog =
+        parse_staples_crossing_catalog(&catalog_content, probe_char, start, end, cli.pad_minutes);
+    let fom_catalog: Vec<MmsEventInterval> = catalog
+        .into_iter()
+        .filter(|e| e.fom >= cli.min_fom)
+        .collect();
 
-    println!("  Catalog: {} intervals, FGM: {} minutes",
-             fom_catalog.len(), all_minutes.len());
+    println!(
+        "  Catalog: {} intervals, FGM: {} minutes",
+        fom_catalog.len(),
+        all_minutes.len()
+    );
 
     let series_start_unix = hours_to_unix(&reference_midnight, 0.0);
     let series_end_unix = hours_to_unix(
@@ -363,16 +435,31 @@ fn main() -> Result<()> {
     let mut windows: Vec<WindowResult> = Vec::new();
     for wfn in [WindowFn::Boxcar, WindowFn::Hamming, WindowFn::Hann] {
         windows.push(run_window_variant(
-            &all_minutes, &fom_catalog, &reference_midnight, &cli,
-            wfn, eval_window_secs, series_start_unix, series_end_unix,
+            &all_minutes,
+            &fom_catalog,
+            &reference_midnight,
+            &cli,
+            wfn,
+            eval_window_secs,
+            series_start_unix,
+            series_end_unix,
         ));
     }
 
-    let boxcar_f1 = windows.iter().find(|w| w.window_fn == "boxcar").map(|w| w.f1).unwrap_or(0.0);
-    let max_delta = windows.iter().map(|w| (w.f1 - boxcar_f1).abs()).fold(0.0_f64, f64::max);
+    let boxcar_f1 = windows
+        .iter()
+        .find(|w| w.window_fn == "boxcar")
+        .map(|w| w.f1)
+        .unwrap_or(0.0);
+    let max_delta = windows
+        .iter()
+        .map(|w| (w.f1 - boxcar_f1).abs())
+        .fold(0.0_f64, f64::max);
     println!("\n  Max F1 delta from boxcar: {:.3}", max_delta);
 
-    if let Some(parent) = cli.out_json.parent() { fs::create_dir_all(parent)?; }
+    if let Some(parent) = cli.out_json.parent() {
+        fs::create_dir_all(parent)?;
+    }
 
     let results = WindowSensitivityResults {
         start_date: cli.start_date.clone(),

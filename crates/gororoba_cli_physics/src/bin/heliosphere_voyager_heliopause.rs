@@ -94,19 +94,36 @@ fn parse_mag48_flt1(content: &str, full_year: u16) -> Vec<Mag48Sample> {
     let mut records = Vec::new();
     for line in content.lines() {
         let line = line.trim();
-        if line.is_empty() || !line.starts_with("FLT") { continue; }
+        if line.is_empty() || !line.starts_with("FLT") {
+            continue;
+        }
         let fields: Vec<&str> = line.split_whitespace().collect();
-        if fields.len() < 7 { continue; }
-        let doy_frac = match fields[2].parse::<f64>() { Ok(v) => v, Err(_) => continue };
+        if fields.len() < 7 {
+            continue;
+        }
+        let doy_frac = match fields[2].parse::<f64>() {
+            Ok(v) => v,
+            Err(_) => continue,
+        };
         let b_mag = fields[3].parse::<f64>().unwrap_or(f64::NAN);
         let br = fields[4].parse::<f64>().unwrap_or(f64::NAN);
         let bt = fields[5].parse::<f64>().unwrap_or(f64::NAN);
         let bn = fields[6].parse::<f64>().unwrap_or(f64::NAN);
         // Skip fill values (>99 nT is unphysical for VLISM/heliosheath)
-        if b_mag > 99.0 || b_mag.is_nan() { continue; }
-        if br.abs() > 99.0 || bt.abs() > 99.0 || bn.abs() > 99.0 { continue; }
+        if b_mag > 99.0 || b_mag.is_nan() {
+            continue;
+        }
+        if br.abs() > 99.0 || bt.abs() > 99.0 || bn.abs() > 99.0 {
+            continue;
+        }
         let _ = full_year; // year only used for config metadata
-        records.push(Mag48Sample { doy_frac, b_mag, br, bt, bn });
+        records.push(Mag48Sample {
+            doy_frac,
+            b_mag,
+            br,
+            bt,
+            bn,
+        });
     }
     records
 }
@@ -139,10 +156,7 @@ fn get_crossing_config(spacecraft: &str, data_dir: &Path) -> Result<CrossingConf
     }
 }
 
-fn load_mag48_window(
-    config: &CrossingConfig,
-    window_days: u32,
-) -> Result<Vec<Mag48Sample>> {
+fn load_mag48_window(config: &CrossingConfig, window_days: u32) -> Result<Vec<Mag48Sample>> {
     let doy_lo = config.crossing_doy_frac - window_days as f64;
     let doy_hi = config.crossing_doy_frac + window_days as f64;
 
@@ -153,9 +167,15 @@ fn load_mag48_window(
     for entry in dir {
         let entry = entry?;
         let path = entry.path();
-        if !path.extension().map(|e| e == "dat" || e == "txt").unwrap_or(false) { continue; }
-        let content = fs::read_to_string(&path)
-            .with_context(|| format!("reading {}", path.display()))?;
+        if !path
+            .extension()
+            .map(|e| e == "dat" || e == "txt")
+            .unwrap_or(false)
+        {
+            continue;
+        }
+        let content =
+            fs::read_to_string(&path).with_context(|| format!("reading {}", path.display()))?;
         let records = parse_mag48_flt1(&content, config.full_year);
         for r in records {
             if r.doy_frac >= doy_lo && r.doy_frac <= doy_hi {
@@ -164,9 +184,18 @@ fn load_mag48_window(
         }
     }
 
-    all.sort_by(|a, b| a.doy_frac.partial_cmp(&b.doy_frac).unwrap_or(std::cmp::Ordering::Equal));
+    all.sort_by(|a, b| {
+        a.doy_frac
+            .partial_cmp(&b.doy_frac)
+            .unwrap_or(std::cmp::Ordering::Equal)
+    });
     all.dedup_by(|a, b| (a.doy_frac - b.doy_frac).abs() < 1e-8);
-    println!("  Loaded {} MAG48 records in DOY [{:.1}, {:.1}]", all.len(), doy_lo, doy_hi);
+    println!(
+        "  Loaded {} MAG48 records in DOY [{:.1}, {:.1}]",
+        all.len(),
+        doy_lo,
+        doy_hi
+    );
     Ok(all)
 }
 
@@ -197,21 +226,37 @@ fn main() -> Result<()> {
         "=== Voyager Heliopause CD Associator (Phase 9A) ===\n\
          Spacecraft: {}  Crossing: DOY {:.0}  Window: +-{} days\n\
          Embedding: {}ch x {} lags = {}D  eps_rel={}\n",
-        config.label, config.crossing_doy_frac, cli.window_days,
-        cli.channels, cli.n_lags, embedding_dim, cli.eps_rel_frac
+        config.label,
+        config.crossing_doy_frac,
+        cli.window_days,
+        cli.channels,
+        cli.n_lags,
+        embedding_dim,
+        cli.eps_rel_frac
     );
 
     let records = load_mag48_window(&config, cli.window_days)?;
     if records.len() < embedding_dim + 2 {
-        anyhow::bail!("Insufficient data: {} records, need > {}", records.len(), embedding_dim + 2);
+        anyhow::bail!(
+            "Insufficient data: {} records, need > {}",
+            records.len(),
+            embedding_dim + 2
+        );
     }
 
     // Compute global median |B| for relative noise floor.
-    let mut b_vals: Vec<f64> = records.iter().map(|r| r.b_mag).filter(|b| b.is_finite()).collect();
+    let mut b_vals: Vec<f64> = records
+        .iter()
+        .map(|r| r.b_mag)
+        .filter(|b| b.is_finite())
+        .collect();
     b_vals.sort_by(|a, b| a.partial_cmp(b).unwrap());
     let global_median_b = b_vals[b_vals.len() / 2];
     let eps_floor = (cli.eps_rel_frac * global_median_b).max(1e-6);
-    println!("  Global median |B| = {:.4} nT  eps_floor = {:.6} nT", global_median_b, eps_floor);
+    println!(
+        "  Global median |B| = {:.4} nT  eps_floor = {:.6} nT",
+        global_median_b, eps_floor
+    );
 
     // Build delay vectors with relative normalization.
     let n_lags = cli.n_lags;
@@ -232,12 +277,22 @@ fn main() -> Result<()> {
                 break;
             }
         }
-        if !valid { continue; }
+        if !valid {
+            continue;
+        }
 
         // Local window median |B| for relative normalization.
-        let mut local_b: Vec<f64> = window.iter().map(|r| r.b_mag).filter(|b| b.is_finite()).collect();
+        let mut local_b: Vec<f64> = window
+            .iter()
+            .map(|r| r.b_mag)
+            .filter(|b| b.is_finite())
+            .collect();
         local_b.sort_by(|a, b| a.partial_cmp(b).unwrap());
-        let local_median_b = if local_b.is_empty() { global_median_b } else { local_b[local_b.len() / 2] };
+        let local_median_b = if local_b.is_empty() {
+            global_median_b
+        } else {
+            local_b[local_b.len() / 2]
+        };
         let denom = local_median_b.max(eps_floor);
 
         let mut v = vec![0.0_f64; embedding_dim];
@@ -251,21 +306,30 @@ fn main() -> Result<()> {
         delay_vectors.push(v);
     }
 
-    println!("  Built {} delay vectors (embedding_dim={})", delay_vectors.len(), embedding_dim);
+    println!(
+        "  Built {} delay vectors (embedding_dim={})",
+        delay_vectors.len(),
+        embedding_dim
+    );
 
     if delay_vectors.len() < cli.trans_window * 2 + 2 {
         anyhow::bail!("Not enough valid delay vectors: {}", delay_vectors.len());
     }
 
-    let associators = cd_kernel::batch_sliding_associator_norms_parallel(&delay_vectors, embedding_dim);
+    let associators =
+        cd_kernel::batch_sliding_associator_norms_parallel(&delay_vectors, embedding_dim);
     let assoc_doys: Vec<f64> = embed_meta_doys[2..].to_vec();
 
     println!("  Computed {} associator scores", associators.len());
 
     // Threshold and detect.
     let global_mean: f64 = associators.iter().sum::<f64>() / associators.len() as f64;
-    let global_std: f64 = (associators.iter().map(|&a| (a - global_mean).powi(2)).sum::<f64>()
-        / associators.len() as f64).sqrt();
+    let global_std: f64 = (associators
+        .iter()
+        .map(|&a| (a - global_mean).powi(2))
+        .sum::<f64>()
+        / associators.len() as f64)
+        .sqrt();
     let threshold = global_std * MAD_SCALE_FACTOR;
 
     let half = cli.trans_window;
@@ -273,8 +337,11 @@ fn main() -> Result<()> {
     let mut last_fire_idx: Option<usize> = None;
 
     for i in half..associators.len().saturating_sub(half) {
-        let pre_mean: f64 = associators[i.saturating_sub(half)..i].iter().sum::<f64>() / half as f64;
-        let post_mean: f64 = associators[i..(i + half).min(associators.len())].iter().sum::<f64>()
+        let pre_mean: f64 =
+            associators[i.saturating_sub(half)..i].iter().sum::<f64>() / half as f64;
+        let post_mean: f64 = associators[i..(i + half).min(associators.len())]
+            .iter()
+            .sum::<f64>()
             / half.min(associators.len() - i) as f64;
         let jump = (post_mean - pre_mean).abs();
         if jump > threshold {
@@ -291,26 +358,45 @@ fn main() -> Result<()> {
     // Evaluation metrics.
     let crossing_doy = config.crossing_doy_frac;
     let detection_half_h = cli.detection_half_window_hours;
-    let detected_within = fire_doys.iter().any(|&d| (d - crossing_doy).abs() * 24.0 <= detection_half_h);
+    let detected_within = fire_doys
+        .iter()
+        .any(|&d| (d - crossing_doy).abs() * 24.0 <= detection_half_h);
 
-    let closest_h = fire_doys.iter()
+    let closest_h = fire_doys
+        .iter()
         .map(|&d| (d - crossing_doy).abs() * 24.0)
         .fold(f64::INFINITY, f64::min);
 
     // Enrichment ratio: fire_rate in boundary_window_hours vs quiet background.
     let enrichment_half_doy = cli.enrichment_window_hours / 24.0;
-    let boundary_fires = fire_doys.iter().filter(|&&d| (d - crossing_doy).abs() <= enrichment_half_doy).count();
+    let boundary_fires = fire_doys
+        .iter()
+        .filter(|&&d| (d - crossing_doy).abs() <= enrichment_half_doy)
+        .count();
     let boundary_duration_hours = 2.0 * cli.enrichment_window_hours;
     let boundary_rate = boundary_fires as f64 / boundary_duration_hours;
 
     let bg_half_doy = cli.background_window_hours / 24.0;
-    let quiet_fires = fire_doys.iter().filter(|&&d| {
-        (d - crossing_doy).abs() <= bg_half_doy && (d - crossing_doy).abs() > enrichment_half_doy
-    }).count();
-    let quiet_duration_hours = 2.0 * cli.background_window_hours - 2.0 * cli.enrichment_window_hours;
-    let quiet_rate = if quiet_duration_hours > 0.0 { quiet_fires as f64 / quiet_duration_hours } else { 0.0 };
+    let quiet_fires = fire_doys
+        .iter()
+        .filter(|&&d| {
+            (d - crossing_doy).abs() <= bg_half_doy
+                && (d - crossing_doy).abs() > enrichment_half_doy
+        })
+        .count();
+    let quiet_duration_hours =
+        2.0 * cli.background_window_hours - 2.0 * cli.enrichment_window_hours;
+    let quiet_rate = if quiet_duration_hours > 0.0 {
+        quiet_fires as f64 / quiet_duration_hours
+    } else {
+        0.0
+    };
 
-    let enrichment_ratio = if quiet_rate > 0.0 { boundary_rate / quiet_rate } else { f64::INFINITY };
+    let enrichment_ratio = if quiet_rate > 0.0 {
+        boundary_rate / quiet_rate
+    } else {
+        f64::INFINITY
+    };
 
     println!(
         "  Detected within +-{:.0}h: {}  Closest: {:.2}h",
@@ -323,12 +409,19 @@ fn main() -> Result<()> {
 
     // If the caller left the default path, auto-suffix with spacecraft id (v1 or v2)
     // so that voyager_heliopause_v1_eval.json and voyager_heliopause_v2_eval.json coexist.
-    let out_path = if cli.out_json.to_string_lossy().contains("voyager_heliopause_eval.json") {
-        cli.out_json.with_file_name(format!("voyager_heliopause_{}_eval.json", cli.spacecraft))
+    let out_path = if cli
+        .out_json
+        .to_string_lossy()
+        .contains("voyager_heliopause_eval.json")
+    {
+        cli.out_json
+            .with_file_name(format!("voyager_heliopause_{}_eval.json", cli.spacecraft))
     } else {
         cli.out_json.clone()
     };
-    if let Some(parent) = out_path.parent() { fs::create_dir_all(parent)?; }
+    if let Some(parent) = out_path.parent() {
+        fs::create_dir_all(parent)?;
+    }
 
     let results = VoyagerHeliopauseResults {
         spacecraft: cli.spacecraft.clone(),

@@ -41,9 +41,10 @@ fn analyze_lattice_voids() -> Result<(), Box<dyn std::error::Error>> {
             }
 
             if let Ok(imbalance) = parts[4].parse::<f64>()
-                && imbalance > thr {
-                    count += 1;
-                }
+                && imbalance > thr
+            {
+                count += 1;
+            }
         }
         syndrome_counts.push(count as f64);
     }
@@ -109,13 +110,14 @@ fn analyze_frb_ultrametricity() -> Result<(), Box<dyn std::error::Error>> {
         let subset = parts[1];
         let metric = parts[2];
         if let Ok(effect_size) = parts[6].parse::<f64>()
-            && metric == "um_fraction_eps05" {
-                if subset.contains("+gl+gb") {
-                    effect_sizes_3d.push(effect_size);
-                } else if subset.contains("+gl") || subset.contains("+gb") {
-                    effect_sizes_2d.push(effect_size);
-                }
+            && metric == "um_fraction_eps05"
+        {
+            if subset.contains("+gl+gb") {
+                effect_sizes_3d.push(effect_size);
+            } else if subset.contains("+gl") || subset.contains("+gb") {
+                effect_sizes_2d.push(effect_size);
             }
+        }
     }
 
     let avg_2d = effect_sizes_2d.iter().sum::<f64>() / effect_sizes_2d.len() as f64;

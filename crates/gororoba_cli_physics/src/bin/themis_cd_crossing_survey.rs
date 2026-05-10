@@ -25,8 +25,8 @@ use std::{
 };
 
 use anyhow::Result;
-use clap::Parser;
 use cd_kernel::batch_sliding_associator_norms_parallel;
+use clap::Parser;
 use serde::Serialize;
 
 #[derive(Parser)]
@@ -114,7 +114,20 @@ struct SurveyOutput {
 /// Parse "2007-04-21" -> day-of-year (1-based).
 fn date_to_doy(year: u32, month: u32, day: u32) -> u32 {
     let leap = (year.is_multiple_of(4) && !year.is_multiple_of(100)) || year.is_multiple_of(400);
-    let days_in_month: [u32; 12] = [31, if leap { 29 } else { 28 }, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    let days_in_month: [u32; 12] = [
+        31,
+        if leap { 29 } else { 28 },
+        31,
+        30,
+        31,
+        30,
+        31,
+        31,
+        30,
+        31,
+        30,
+        31,
+    ];
     days_in_month[..(month as usize - 1)].iter().sum::<u32>() + day
 }
 
@@ -125,7 +138,10 @@ fn parse_crossing_timestamp(ts: &str) -> Option<Crossing> {
     let date_part = &ts[..t_pos];
     let time_part = ts[t_pos + 1..].trim_end_matches('Z');
 
-    let date_fields: Vec<u32> = date_part.split('-').filter_map(|s| s.parse().ok()).collect();
+    let date_fields: Vec<u32> = date_part
+        .split('-')
+        .filter_map(|s| s.parse().ok())
+        .collect();
     if date_fields.len() < 3 {
         return None;
     }
@@ -141,7 +157,11 @@ fn parse_crossing_timestamp(ts: &str) -> Option<Crossing> {
     let ss: f64 = time_fields[2].parse().ok()?;
     let secs_from_midnight = hh * 3600.0 + mm * 60.0 + ss;
 
-    Some(Crossing { year, doy, secs_from_midnight })
+    Some(Crossing {
+        year,
+        doy,
+        secs_from_midnight,
+    })
 }
 
 /// Parse FGM timestamp "2008-07-04T00:00:02.734Z" -> seconds from midnight.
@@ -322,7 +342,9 @@ fn main() -> Result<()> {
                     0
                 } else if pos >= rows.len() {
                     rows.len() - 1
-                } else if (rows[pos].secs - cross_secs).abs() < (rows[pos - 1].secs - cross_secs).abs() {
+                } else if (rows[pos].secs - cross_secs).abs()
+                    < (rows[pos - 1].secs - cross_secs).abs()
+                {
                     pos
                 } else {
                     pos - 1
@@ -415,13 +437,13 @@ fn main() -> Result<()> {
         frac_above_1_1 * 100.0,
         frac_above_1_5 * 100.0
     );
-    eprintln!("Precursor confirmed (majority > 1.0): {}", precursor_confirmed);
+    eprintln!(
+        "Precursor confirmed (majority > 1.0): {}",
+        precursor_confirmed
+    );
 
     eprintln!("\n=== Cross-Domain Comparison ===");
-    eprintln!(
-        "{:<45}  {:>10}  {:>10}",
-        "Source", "Mean", "Median"
-    );
+    eprintln!("{:<45}  {:>10}  {:>10}", "Source", "Mean", "Median");
     eprintln!("{}", "-".repeat(70));
     eprintln!(
         "{:<45}  {:>10}  {:>10}",
@@ -449,7 +471,9 @@ fn main() -> Result<()> {
                 "Regime boundary established: precursor is a general property of ",
                 "continuous-dynamics systems at magnetopause discontinuities."
             ),
-            ratio_mean, ratio_median, frac_above_1_0 * 100.0
+            ratio_mean,
+            ratio_median,
+            frac_above_1_0 * 100.0
         )
     } else {
         format!(
@@ -457,7 +481,8 @@ fn main() -> Result<()> {
                 "INCONCLUSIVE: ratio_mean={:.2}x, {:.1}% of crossings > 1.0. ",
                 "May require longer precursor windows or different embedding cadence."
             ),
-            ratio_mean, frac_above_1_0 * 100.0
+            ratio_mean,
+            frac_above_1_0 * 100.0
         )
     };
     eprintln!("\n{}", interpretation);

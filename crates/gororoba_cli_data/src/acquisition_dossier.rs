@@ -241,6 +241,9 @@ mod tests {
     fn resolve_manifest_entry_path_relative() {
         let manifest = Path::new("/data/manifests/batch.toml");
         let result = resolve_manifest_entry_path(manifest, "entries/dossier.json");
-        assert_eq!(result, PathBuf::from("/data/manifests/entries/dossier.json"));
+        assert_eq!(
+            result,
+            PathBuf::from("/data/manifests/entries/dossier.json")
+        );
     }
 }

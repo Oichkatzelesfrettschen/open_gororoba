@@ -112,7 +112,12 @@ fn main() -> Result<()> {
     let start = NaiveDate::parse_from_str(&cli.start_date, "%Y-%m-%d")
         .with_context(|| format!("invalid start_date: {}", cli.start_date))?;
     let end = start + chrono::Duration::days(cli.n_days as i64 - 1);
-    let probe_char = cli.probe.trim().to_lowercase().chars().next()
+    let probe_char = cli
+        .probe
+        .trim()
+        .to_lowercase()
+        .chars()
+        .next()
         .context("--probe must be a single letter (a-e)")?;
     let probe_upper = cli.probe.trim().to_uppercase();
     let spacecraft = format!("TH{probe_upper}");
@@ -132,10 +137,17 @@ fn main() -> Result<()> {
     for day_offset in 0..cli.n_days {
         let date = start + chrono::Duration::days(day_offset as i64);
         let doy = date.ordinal();
-        let fname = format!("{}_fgm_{:04}_{:03}.csv",
-            probe_upper.to_lowercase(), date.year(), doy);
+        let fname = format!(
+            "{}_fgm_{:04}_{:03}.csv",
+            probe_upper.to_lowercase(),
+            date.year(),
+            doy
+        );
         let output = themis_dir.join(&fname);
-        if output.exists() { println!("  DOY {doy}: cached"); continue; }
+        if output.exists() {
+            println!("  DOY {doy}: cached");
+            continue;
+        }
         let t_min = format!("{}T00:00:00Z", date);
         let t_max = format!("{}T23:59:59Z", date);
         let url = format!(
@@ -158,28 +170,45 @@ fn main() -> Result<()> {
     let mut all_minutes: Vec<ThemisFgmMinuteRecord> = Vec::new();
     for day_offset in 0..cli.n_days {
         let date = start + chrono::Duration::days(day_offset as i64);
-        let fname = format!("{}_fgm_{:04}_{:03}.csv",
-            probe_upper.to_lowercase(), date.year(), date.ordinal());
+        let fname = format!(
+            "{}_fgm_{:04}_{:03}.csv",
+            probe_upper.to_lowercase(),
+            date.year(),
+            date.ordinal()
+        );
         let path = themis_dir.join(&fname);
-        if !path.exists() { eprintln!("  Warning: {} not found", path.display()); continue; }
+        if !path.exists() {
+            eprintln!("  Warning: {} not found", path.display());
+            continue;
+        }
         let content = fs::read_to_string(&path)?;
         let mut records = parse_themis_fgm_hapi_csv_minutes(&content, &spacecraft);
         all_minutes.append(&mut records);
     }
 
-    if all_minutes.is_empty() { anyhow::bail!("No THEMIS FGM data found."); }
+    if all_minutes.is_empty() {
+        anyhow::bail!("No THEMIS FGM data found.");
+    }
 
     all_minutes.retain(|r| r.b_magnitude <= cli.max_bmag);
     all_minutes.sort_by(|a, b| {
-        a.year.cmp(&b.year).then(a.doy.cmp(&b.doy))
-            .then(a.hour.cmp(&b.hour)).then(a.minute.cmp(&b.minute))
+        a.year
+            .cmp(&b.year)
+            .then(a.doy.cmp(&b.doy))
+            .then(a.hour.cmp(&b.hour))
+            .then(a.minute.cmp(&b.minute))
     });
 
-    let (fy, fd, fh, fm) = (all_minutes[0].year, all_minutes[0].doy,
-                             all_minutes[0].hour, all_minutes[0].minute);
+    let (fy, fd, fh, fm) = (
+        all_minutes[0].year,
+        all_minutes[0].doy,
+        all_minutes[0].hour,
+        all_minutes[0].minute,
+    );
     for rec in &mut all_minutes {
         let day_diff = (rec.year as f64 - fy as f64) * 365.25 + (rec.doy as f64 - fd as f64);
-        rec.elapsed_hours = day_diff * 24.0 + (rec.hour as f64 - fh as f64)
+        rec.elapsed_hours = day_diff * 24.0
+            + (rec.hour as f64 - fh as f64)
             + (rec.minute as f64 - fm as f64) / 60.0;
     }
 
@@ -189,19 +218,28 @@ fn main() -> Result<()> {
 
     let catalog_content = fs::read_to_string(&cli.staples_catalog)
         .with_context(|| format!("reading catalog: {}", cli.staples_catalog.display()))?;
-    let catalog = parse_staples_crossing_catalog(
-        &catalog_content, probe_char, start, end, cli.pad_minutes);
-    let fom_catalog: Vec<MmsEventInterval> = catalog.into_iter()
-        .filter(|e| e.fom >= cli.min_fom).collect();
+    let catalog =
+        parse_staples_crossing_catalog(&catalog_content, probe_char, start, end, cli.pad_minutes);
+    let fom_catalog: Vec<MmsEventInterval> = catalog
+        .into_iter()
+        .filter(|e| e.fom >= cli.min_fom)
+        .collect();
 
-    println!("  Catalog: {} intervals, FGM: {} minutes",
-             fom_catalog.len(), all_minutes.len());
+    println!(
+        "  Catalog: {} intervals, FGM: {} minutes",
+        fom_catalog.len(),
+        all_minutes.len()
+    );
 
     let channels: usize = 4;
     let steps = cli.embedding_dim / channels;
     let window_rows = (steps - 1) * cli.takens_lag + 1;
     if all_minutes.len() < window_rows + 1 {
-        anyhow::bail!("Not enough data: need {} rows, have {}", window_rows + 1, all_minutes.len());
+        anyhow::bail!(
+            "Not enough data: need {} rows, have {}",
+            window_rows + 1,
+            all_minutes.len()
+        );
     }
 
     let expected_span_hours = (steps - 1) as f64 * cli.takens_lag as f64 / 60.0;
@@ -214,10 +252,17 @@ fn main() -> Result<()> {
         let sample_indices: Vec<usize> = (0..steps).map(|s| w_start + s * cli.takens_lag).collect();
         let first_h = all_minutes[*sample_indices.first().unwrap()].elapsed_hours;
         let last_h = all_minutes[*sample_indices.last().unwrap()].elapsed_hours;
-        if last_h - first_h > max_window_span_hours { continue; }
-        let sum_b: f64 = sample_indices.iter().map(|&i| all_minutes[i].b_magnitude).sum();
+        if last_h - first_h > max_window_span_hours {
+            continue;
+        }
+        let sum_b: f64 = sample_indices
+            .iter()
+            .map(|&i| all_minutes[i].b_magnitude)
+            .sum();
         let local_mean_b = sum_b / steps as f64;
-        if local_mean_b <= 0.0 || !local_mean_b.is_finite() { continue; }
+        if local_mean_b <= 0.0 || !local_mean_b.is_finite() {
+            continue;
+        }
         let denom = local_mean_b.max(cli.bmag_noise_floor);
         let mut v = vec![0.0_f64; cli.embedding_dim];
         for (s, &ri) in sample_indices.iter().enumerate() {
@@ -232,13 +277,20 @@ fn main() -> Result<()> {
     }
 
     // Commutator score: ||x*y - y*x||_2 for consecutive delay vector pairs.
-    let commutator_scores: Vec<f64> = delay_vectors.windows(2).map(|w| {
-        let x = &w[0];
-        let y = &w[1];
-        let xy = cd_kernel::cd_multiply(x, y);
-        let yx = cd_kernel::cd_multiply(y, x);
-        xy.iter().zip(yx.iter()).map(|(a, b)| (a - b).powi(2)).sum::<f64>().sqrt()
-    }).collect();
+    let commutator_scores: Vec<f64> = delay_vectors
+        .windows(2)
+        .map(|w| {
+            let x = &w[0];
+            let y = &w[1];
+            let xy = cd_kernel::cd_multiply(x, y);
+            let yx = cd_kernel::cd_multiply(y, x);
+            xy.iter()
+                .zip(yx.iter())
+                .map(|(a, b)| (a - b).powi(2))
+                .sum::<f64>()
+                .sqrt()
+        })
+        .collect();
 
     let score_meta: Vec<usize> = embed_meta[1..].to_vec();
 
@@ -246,9 +298,13 @@ fn main() -> Result<()> {
     let mut fire_hours: Vec<f64> = Vec::new();
 
     if commutator_scores.len() > trans_window * 2 {
-        let global_mean: f64 = commutator_scores.iter().sum::<f64>() / commutator_scores.len() as f64;
+        let global_mean: f64 =
+            commutator_scores.iter().sum::<f64>() / commutator_scores.len() as f64;
         let global_std: f64 = {
-            let var = commutator_scores.iter().map(|&a| (a - global_mean).powi(2)).sum::<f64>()
+            let var = commutator_scores
+                .iter()
+                .map(|&a| (a - global_mean).powi(2))
+                .sum::<f64>()
                 / commutator_scores.len() as f64;
             var.sqrt()
         };
@@ -256,14 +312,18 @@ fn main() -> Result<()> {
         let half = trans_window;
         let mut last_trans_idx: Option<usize> = None;
         for i in half..commutator_scores.len().saturating_sub(half) {
-            let pre_mean: f64 = commutator_scores[i.saturating_sub(half)..i].iter().sum::<f64>()
+            let pre_mean: f64 = commutator_scores[i.saturating_sub(half)..i]
+                .iter()
+                .sum::<f64>()
                 / half as f64;
             let post_mean: f64 = commutator_scores[i..(i + half).min(commutator_scores.len())]
-                .iter().sum::<f64>() / half.min(commutator_scores.len() - i) as f64;
+                .iter()
+                .sum::<f64>()
+                / half.min(commutator_scores.len() - i) as f64;
             let jump = (post_mean - pre_mean).abs();
             if jump > threshold {
-                let dominated = last_trans_idx.is_some_and(
-                    |prev| i.saturating_sub(prev) < trans_window);
+                let dominated =
+                    last_trans_idx.is_some_and(|prev| i.saturating_sub(prev) < trans_window);
                 if !dominated {
                     fire_hours.push(all_minutes[score_meta[i]].elapsed_hours);
                     last_trans_idx = Some(i);
@@ -273,8 +333,10 @@ fn main() -> Result<()> {
     }
 
     let eval_window_secs = cli.pad_minutes * 60;
-    let detection_unix: Vec<i64> = fire_hours.iter()
-        .map(|&h| hours_to_unix(&reference_midnight, h)).collect();
+    let detection_unix: Vec<i64> = fire_hours
+        .iter()
+        .map(|&h| hours_to_unix(&reference_midnight, h))
+        .collect();
     let event_unix: Vec<i64> = fom_catalog.iter().map(event_midpoint_unix).collect();
 
     let (precision, recall, f1) =
@@ -287,17 +349,30 @@ fn main() -> Result<()> {
     );
 
     let (bci_mean, bci_lo, bci_hi) = boundary_metrics::bootstrap_f1_ci_seeded(
-        &detection_unix, &event_unix,
-        series_start_unix, series_end_unix,
-        1800, 10_000, 0.95, eval_window_secs, 42,
+        &detection_unix,
+        &event_unix,
+        series_start_unix,
+        series_end_unix,
+        1800,
+        10_000,
+        0.95,
+        eval_window_secs,
+        42,
     );
 
     println!(
         "  Commutator detections: {}  F1={:.3}  P={:.3}  R={:.3}  CI=[{:.3},{:.3}]",
-        fire_hours.len(), f1, precision, recall, bci_lo, bci_hi
+        fire_hours.len(),
+        f1,
+        precision,
+        recall,
+        bci_lo,
+        bci_hi
     );
 
-    if let Some(parent) = cli.out_json.parent() { fs::create_dir_all(parent)?; }
+    if let Some(parent) = cli.out_json.parent() {
+        fs::create_dir_all(parent)?;
+    }
 
     let results = CommutatorResults {
         start_date: cli.start_date.clone(),
@@ -308,7 +383,9 @@ fn main() -> Result<()> {
         n_catalog_events: fom_catalog.len(),
         n_fgm_minutes: all_minutes.len(),
         n_detections: fire_hours.len(),
-        precision, recall, f1,
+        precision,
+        recall,
+        f1,
         bootstrap_ci_mean: bci_mean,
         bootstrap_ci_lo: bci_lo,
         bootstrap_ci_hi: bci_hi,

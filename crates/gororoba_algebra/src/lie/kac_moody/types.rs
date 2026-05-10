@@ -474,7 +474,6 @@ impl GeneralizedCartanMatrix {
     }
 }
 
-
 /// Weyl group information for a Kac-Moody algebra.
 #[derive(Debug, Clone)]
 pub struct WeylGroupInfo {

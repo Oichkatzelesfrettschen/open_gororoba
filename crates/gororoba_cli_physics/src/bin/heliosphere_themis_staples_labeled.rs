@@ -248,10 +248,7 @@ fn eval_against_catalog(
         .iter()
         .map(|&h| hours_to_unix(reference_midnight, h))
         .collect();
-    let event_unix: Vec<i64> = catalog
-        .iter()
-        .map(event_midpoint_unix)
-        .collect();
+    let event_unix: Vec<i64> = catalog.iter().map(event_midpoint_unix).collect();
 
     let (precision, recall, f1) =
         boundary_metrics::precision_recall_f1(&detection_unix, &event_unix, window_secs);
@@ -629,8 +626,10 @@ fn main() -> Result<()> {
                 if lb_end > lb_start {
                     let lb_slice = &associators[lb_start..lb_end];
                     let lb_mean: f64 = lb_slice.iter().sum::<f64>() / lb_slice.len() as f64;
-                    let lb_std: f64 = (lb_slice.iter().map(|&a| (a - lb_mean).powi(2)).sum::<f64>()
-                        / lb_slice.len() as f64).sqrt();
+                    let lb_std: f64 =
+                        (lb_slice.iter().map(|&a| (a - lb_mean).powi(2)).sum::<f64>()
+                            / lb_slice.len() as f64)
+                            .sqrt();
                     lb_std * MAD_SCALE_FACTOR
                 } else {
                     global_threshold
@@ -714,9 +713,7 @@ fn main() -> Result<()> {
     // Block-bootstrap 95% CI for the CD F1 score.
     // 30-min blocks capture intra-magnetopause-crossing structure without
     // contaminating the CI with between-crossing quiet intervals.
-    let series_start_unix = Utc
-        .from_utc_datetime(&reference_midnight)
-        .timestamp();
+    let series_start_unix = Utc.from_utc_datetime(&reference_midnight).timestamp();
     let series_end_unix = series_start_unix
         + all_minutes
             .last()
@@ -726,16 +723,13 @@ fn main() -> Result<()> {
         .iter()
         .map(|&h| hours_to_unix(&reference_midnight, h))
         .collect();
-    let ev_unix: Vec<i64> = fom_catalog
-        .iter()
-        .map(event_midpoint_unix)
-        .collect();
+    let ev_unix: Vec<i64> = fom_catalog.iter().map(event_midpoint_unix).collect();
     let (bs_mean, bs_lo, bs_hi) = boundary_metrics::bootstrap_f1_ci_seeded(
         &cd_det_unix,
         &ev_unix,
         series_start_unix,
         series_end_unix,
-        1800,   // 30-min block
+        1800, // 30-min block
         10_000,
         0.95,
         eval_window_secs,

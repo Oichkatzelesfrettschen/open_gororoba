@@ -219,7 +219,10 @@ fn main() {
                 } else {
                     [0.0; 3]
                 };
-                add_assign3(&mut accels[i], scale3(v_hat, alpha_pathion * coupling * GM_SUN / (r * r)));
+                add_assign3(
+                    &mut accels[i],
+                    scale3(v_hat, alpha_pathion * coupling * GM_SUN / (r * r)),
+                );
             }
         }
         accels

@@ -113,10 +113,7 @@ fn main() -> ExitCode {
     // Rule A: every dataset row's server_ref must resolve (unless synthetic/unknown).
     for ds in dataset_rows {
         let id = ds.get("id").and_then(Value::as_str).unwrap_or("(no-id)");
-        let server = ds
-            .get("server_ref")
-            .and_then(Value::as_str)
-            .unwrap_or("");
+        let server = ds.get("server_ref").and_then(Value::as_str).unwrap_or("");
         match server {
             "" => errors.push(format!("[NDLB-A] {id}: empty server_ref")),
             "(synthetic)" => {}
@@ -135,10 +132,7 @@ fn main() -> ExitCode {
     // Rule D: status=classified_pending is WARN by default, ERROR under --strict-pending.
     for ds in dataset_rows {
         let id = ds.get("id").and_then(Value::as_str).unwrap_or("(no-id)");
-        let status = ds
-            .get("status")
-            .and_then(Value::as_str)
-            .unwrap_or("");
+        let status = ds.get("status").and_then(Value::as_str).unwrap_or("");
         let bindings_empty = ds
             .get("experiment_bindings")
             .and_then(Value::as_array)
@@ -182,9 +176,9 @@ fn main() -> ExitCode {
 
     // Rule E: every on-disk data/external/<subdir> must have a registry row.
     if args.data_root.is_dir() {
-        for entry in fs::read_dir(&args.data_root).unwrap_or_else(|e| {
-            panic!("ERROR: cannot read {}: {}", args.data_root.display(), e)
-        }) {
+        for entry in fs::read_dir(&args.data_root)
+            .unwrap_or_else(|e| panic!("ERROR: cannot read {}: {}", args.data_root.display(), e))
+        {
             let entry = match entry {
                 Ok(e) => e,
                 Err(_) => continue,

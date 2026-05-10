@@ -34,13 +34,18 @@ use anyhow::{Context, Result};
 use clap::Parser;
 use regex::Regex;
 use serde::{Deserialize, Serialize};
-use std::collections::BTreeMap;
-use std::fs;
-use std::path::{Path, PathBuf};
+use std::{
+    collections::BTreeMap,
+    fs,
+    path::{Path, PathBuf},
+};
 use walkdir::WalkDir;
 
 #[derive(Parser)]
-#[command(name = "repo-audit", about = "Anchored debt-baseline counter (Rocq + Rust)")]
+#[command(
+    name = "repo-audit",
+    about = "Anchored debt-baseline counter (Rocq + Rust)"
+)]
 struct Args {
     /// Root directories to walk (repeat to add multiple).
     #[arg(long = "root", default_values_t = vec![String::from("crates"), String::from("proofs"), String::from("xtask")])]
@@ -291,7 +296,11 @@ fn merge(into: &mut Counts, from: &Counts) {
 
 fn process_root(root: &Path, patterns: &Patterns) -> Result<Counts> {
     let mut total = Counts::default();
-    for entry in WalkDir::new(root).follow_links(false).into_iter().filter_map(|r| r.ok()) {
+    for entry in WalkDir::new(root)
+        .follow_links(false)
+        .into_iter()
+        .filter_map(|r| r.ok())
+    {
         if !entry.file_type().is_file() {
             continue;
         }
@@ -322,7 +331,11 @@ fn process_root(root: &Path, patterns: &Patterns) -> Result<Counts> {
 
 fn delta_field(name: &str, prev: u64, curr: u64) -> Option<(String, i64)> {
     let d = curr as i64 - prev as i64;
-    if d == 0 { None } else { Some((name.to_string(), d)) }
+    if d == 0 {
+        None
+    } else {
+        Some((name.to_string(), d))
+    }
 }
 
 fn compute_delta(baseline_path: &Path, prior: &Counts, curr: &Counts) -> BaselineDelta {
@@ -331,20 +344,68 @@ fn compute_delta(baseline_path: &Path, prior: &Counts, curr: &Counts) -> Baselin
     let mut unchanged = 0u64;
     let pairs: Vec<(&str, u64, u64)> = vec![
         ("unsafe_blocks", prior.unsafe_blocks, curr.unsafe_blocks),
-        ("safety_comments", prior.safety_comments, curr.safety_comments),
+        (
+            "safety_comments",
+            prior.safety_comments,
+            curr.safety_comments,
+        ),
         ("ignore_attrs", prior.ignore_attrs, curr.ignore_attrs),
-        ("allow_clippy_attrs", prior.allow_clippy_attrs, curr.allow_clippy_attrs),
-        ("allow_dead_code_attrs", prior.allow_dead_code_attrs, curr.allow_dead_code_attrs),
-        ("todo_fixme_xxx_hack", prior.todo_fixme_xxx_hack, curr.todo_fixme_xxx_hack),
-        ("unimplemented_macros", prior.unimplemented_macros, curr.unimplemented_macros),
+        (
+            "allow_clippy_attrs",
+            prior.allow_clippy_attrs,
+            curr.allow_clippy_attrs,
+        ),
+        (
+            "allow_dead_code_attrs",
+            prior.allow_dead_code_attrs,
+            curr.allow_dead_code_attrs,
+        ),
+        (
+            "todo_fixme_xxx_hack",
+            prior.todo_fixme_xxx_hack,
+            curr.todo_fixme_xxx_hack,
+        ),
+        (
+            "unimplemented_macros",
+            prior.unimplemented_macros,
+            curr.unimplemented_macros,
+        ),
         ("todo_macros", prior.todo_macros, curr.todo_macros),
-        ("unreachable_macros", prior.unreachable_macros, curr.unreachable_macros),
-        ("rocq_admitted_strict", prior.rocq_admitted_strict, curr.rocq_admitted_strict),
-        ("rocq_admit_strict", prior.rocq_admit_strict, curr.rocq_admit_strict),
-        ("rocq_axiom_strict", prior.rocq_axiom_strict, curr.rocq_axiom_strict),
-        ("rocq_axiom_indented", prior.rocq_axiom_indented, curr.rocq_axiom_indented),
-        ("rocq_parameter_strict", prior.rocq_parameter_strict, curr.rocq_parameter_strict),
-        ("rocq_parameter_indented", prior.rocq_parameter_indented, curr.rocq_parameter_indented),
+        (
+            "unreachable_macros",
+            prior.unreachable_macros,
+            curr.unreachable_macros,
+        ),
+        (
+            "rocq_admitted_strict",
+            prior.rocq_admitted_strict,
+            curr.rocq_admitted_strict,
+        ),
+        (
+            "rocq_admit_strict",
+            prior.rocq_admit_strict,
+            curr.rocq_admit_strict,
+        ),
+        (
+            "rocq_axiom_strict",
+            prior.rocq_axiom_strict,
+            curr.rocq_axiom_strict,
+        ),
+        (
+            "rocq_axiom_indented",
+            prior.rocq_axiom_indented,
+            curr.rocq_axiom_indented,
+        ),
+        (
+            "rocq_parameter_strict",
+            prior.rocq_parameter_strict,
+            curr.rocq_parameter_strict,
+        ),
+        (
+            "rocq_parameter_indented",
+            prior.rocq_parameter_indented,
+            curr.rocq_parameter_indented,
+        ),
     ];
     for (name, prev, cur) in pairs {
         if let Some((n, d)) = delta_field(name, prev, cur) {
@@ -411,7 +472,8 @@ fn main() -> Result<()> {
             generated_at: now,
             binary: env!("CARGO_BIN_NAME").to_string(),
             roots: args.roots.clone(),
-            method: "regex-anchored on comment-stripped Rust; line-anchored on Rocq (.v)".to_string(),
+            method: "regex-anchored on comment-stripped Rust; line-anchored on Rocq (.v)"
+                .to_string(),
         },
         totals,
         by_root,

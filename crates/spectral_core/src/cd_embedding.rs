@@ -104,7 +104,13 @@ impl Default for CdEmbeddingParams {
     /// at 60 s spacing, THEMIS FGS noise floor 0.5 nT, no additional
     /// normalization, raw coordinates.
     fn default() -> Self {
-        Self::new(480.0, 8, EpsMode::Absolute(0.5), NormMode::None, CoordMode::Raw)
+        Self::new(
+            480.0,
+            8,
+            EpsMode::Absolute(0.5),
+            NormMode::None,
+            CoordMode::Raw,
+        )
     }
 }
 
@@ -120,7 +126,14 @@ impl CdEmbeddingParams {
         assert!(n_lags >= 2, "n_lags must be >= 2");
         assert!(window_secs > 0.0, "window_secs must be positive");
         let lag_secs = window_secs / n_lags as f64;
-        Self { window_secs, n_lags, lag_secs, eps_mode, norm_mode, coord_mode }
+        Self {
+            window_secs,
+            n_lags,
+            lag_secs,
+            eps_mode,
+            norm_mode,
+            coord_mode,
+        }
     }
 
     /// Embedding dimension = 4 channels * n_lags.
@@ -145,7 +158,13 @@ pub struct MagSample {
 impl MagSample {
     pub fn new(time_secs: f64, bx: f64, by: f64, bz: f64) -> Self {
         let b_mag = (bx * bx + by * by + bz * bz).sqrt();
-        Self { time_secs, bx, by, bz, b_mag }
+        Self {
+            time_secs,
+            bx,
+            by,
+            bz,
+            b_mag,
+        }
     }
 }
 
@@ -225,7 +244,13 @@ pub fn resample_to_lag_cadence(input: &[MagSample], params: &CdEmbeddingParams) 
                 let by = bin_samples.iter().map(|s| s.by).sum::<f64>() / n;
                 let bz = bin_samples.iter().map(|s| s.bz).sum::<f64>() / n;
                 let b_mag = bin_samples.iter().map(|s| s.b_mag).sum::<f64>() / n;
-                out.push(MagSample { time_secs: bin_start, bx, by, bz, b_mag });
+                out.push(MagSample {
+                    time_secs: bin_start,
+                    bx,
+                    by,
+                    bz,
+                    b_mag,
+                });
             }
         }
     } else {
@@ -320,7 +345,10 @@ fn interpolate_at(input: &[MagSample], t: f64, gap_limit: f64) -> Option<MagSamp
         // t is before first sample: extrapolate only within gap_limit.
         let s0 = &input[0];
         if (s0.time_secs - t).abs() <= gap_limit {
-            return Some(MagSample { time_secs: t, ..*s0 });
+            return Some(MagSample {
+                time_secs: t,
+                ..*s0
+            });
         }
         return None;
     }
@@ -328,7 +356,10 @@ fn interpolate_at(input: &[MagSample], t: f64, gap_limit: f64) -> Option<MagSamp
         // t is after last sample.
         let sl = &input[input.len() - 1];
         if (t - sl.time_secs).abs() <= gap_limit {
-            return Some(MagSample { time_secs: t, ..*sl });
+            return Some(MagSample {
+                time_secs: t,
+                ..*sl
+            });
         }
         return None;
     }
@@ -435,7 +466,9 @@ mod tests {
     #[test]
     fn test_eps_mode_absolute_themis_floor() {
         // THEMIS: |B| ~ 40 nT. Absolute(0.5) => denom = max(40, 0.5) = 40.
-        let samples: Vec<MagSample> = (0..8).map(|_| MagSample::new(0.0, 40.0, 0.0, 0.0)).collect();
+        let samples: Vec<MagSample> = (0..8)
+            .map(|_| MagSample::new(0.0, 40.0, 0.0, 0.0))
+            .collect();
         let refs: Vec<&MagSample> = samples.iter().collect();
         let eps_mode = EpsMode::Absolute(0.5);
         let (denom, _) = compute_eps(&refs, None, &eps_mode);
