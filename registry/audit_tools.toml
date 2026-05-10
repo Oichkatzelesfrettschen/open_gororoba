@@ -3,7 +3,7 @@
 # Emitted by `registry-emit requirements-legacy --audit-tools registry/audit_tools.toml`.
 
 [meta]
-updated = "2026-04-15"
+updated = "2026-05-10"
 description = "Tools invoked by `make audit-deep` and related quality targets."
 
 [[tool]]
@@ -37,7 +37,7 @@ status = "active"
 id = "cpd-audit"
 name = "PMD CPD"
 make_target = "cpd-audit"
-install = "paru -S pmd"
+install = "GitHub release: https://github.com/pmd/pmd/releases (Java tool; download tarball + JAVA_HOME). System-package fallback: paru -S pmd on Arch."
 description = "Cross/within-crate Rust copy-paste detection (42-token minimum)."
 audit_deep = true
 status = "active"
@@ -46,7 +46,7 @@ status = "active"
 id = "cpd-audit-tooling"
 name = "PMD CPD (Tooling)"
 make_target = "cpd-audit-tooling"
-install = "paru -S pmd"
+install = "GitHub release: https://github.com/pmd/pmd/releases (Java tool; download tarball + JAVA_HOME). System-package fallback: paru -S pmd on Arch."
 description = "CPD scan of xtask, scripts, and CLI bin surfaces (80-token minimum, report-only)."
 audit_deep = false
 status = "active"
@@ -55,7 +55,7 @@ status = "active"
 id = "cpd-audit-generated"
 name = "PMD CPD (Generated)"
 make_target = "cpd-audit-generated"
-install = "paru -S pmd"
+install = "GitHub release: https://github.com/pmd/pmd/releases (Java tool; download tarball + JAVA_HOME). System-package fallback: paru -S pmd on Arch."
 description = "CPD scan of registry_mirrors/ generated Rust surfaces (200-token minimum, report-only, never gates CI)."
 audit_deep = false
 status = "active"
@@ -79,3 +79,108 @@ description = "Validates docs site builds and redirect checks pass."
 audit_deep = false
 status = "blocked"
 blocked_reason = "Mathematical bracket notation [a,b,c] triggers broken-intra-doc-links."
+
+# -----------------------------------------------------------------------------
+# Tools added 2026-05-10 (PH-5.C lane: bring REQUIREMENTS.md into sync with
+# the Stage A + Stage B + cubecl/ONNX infrastructure).
+# -----------------------------------------------------------------------------
+
+[[tool]]
+id = "repo-audit"
+name = "repo-audit"
+make_target = "repo-audit"
+install = ""
+description = "Anchored debt-baseline counter (Rocq + Rust). Comment/string stripping eliminates phantom matches; --sqlite splices the canonical revisions audit into the report."
+audit_deep = false
+status = "active"
+
+[[tool]]
+id = "repo-audit-strict"
+name = "repo-audit (strict baseline)"
+make_target = "repo-audit-strict"
+install = ""
+description = "repo-audit with --baseline-compare against data/output/debt_baseline_2026_04_30.toml + --strict. Fails the build if any debt class grew vs baseline."
+audit_deep = false
+status = "active"
+
+[[tool]]
+id = "repo-audit-strict-unjustified"
+name = "repo-audit (strict unjustified)"
+make_target = "repo-audit-strict-unjustified"
+install = ""
+description = "repo-audit with --strict-unjustified-per-root 0 over crates/. Gates against any new #[allow(clippy::*)] in crates/ that lacks a justification comment."
+audit_deep = false
+status = "active"
+
+[[tool]]
+id = "cache-sweep"
+name = "Cache Sweep"
+make_target = "cache-sweep"
+install = "cargo install cargo-sweep"
+description = "Trims cargo target dirs to <= 100 GB per slot AND wipes stale gate-cbuild/<hash>/debug artifacts. Pre-push cache-check has a 250 GB hard cap; run this when it fires."
+audit_deep = false
+status = "active"
+
+[[tool]]
+id = "audit-deep-structured"
+name = "audit-deep (structured)"
+make_target = "audit-deep-structured"
+install = ""
+description = "xtask audit-deep variant: same 4-step chain as Makefile audit-deep but emits per-step exit codes, log files, Markdown summary, and structured TOML record under reports/audit-deep/<date>/<time>/. Use for tranche-acceptance archival."
+audit_deep = false
+status = "active"
+
+# -----------------------------------------------------------------------------
+# SQLite-canonical registry tooling (the four binaries that mutate / export
+# the canonical control plane). Not "audit" tools per se but documented here
+# so REQUIREMENTS.md has one tool table not two.
+# -----------------------------------------------------------------------------
+
+[[tool]]
+id = "gororoba-db"
+name = "gororoba-db"
+make_target = ""
+install = ""
+description = "Canonical mutator for claims, insights, experiments, planning, requirements. Writes to registry/canonical/control_plane.sqlite3 with append-only revisions audit. Run via `cargo run --release -p gororoba_db --bin gororoba-db -- <subcommand>`."
+audit_deep = false
+status = "active"
+
+[[tool]]
+id = "provenance-export-control-plane"
+name = "provenance export-control-plane"
+make_target = ""
+install = ""
+description = "Re-emit registry/*.toml from canonical SQLite. Run after any SQLite mutation with --regen-toml=false; auto-invoked when --regen-toml=true. Lives in crates/gororoba_cli_provenance."
+audit_deep = false
+status = "active"
+
+[[tool]]
+id = "integrity-resolution"
+name = "integrity-resolution"
+make_target = "integrity-resolution"
+install = ""
+description = "Recompute registry/schema_signatures.toml after legitimate Layer-2 TOML changes. Required for the governance gate's content_sha check to pass."
+audit_deep = false
+status = "active"
+
+# -----------------------------------------------------------------------------
+# ONNX + Vulkan build-time tools (only required by specific feature lanes).
+# -----------------------------------------------------------------------------
+
+[[tool]]
+id = "turboquant-onnx-eval"
+name = "turboquant-onnx-eval"
+make_target = ""
+install = "Vendored option: enable `ort` crate `download-binaries` feature (auto-fetches ONNX Runtime; +50 MB CI cache). System-pkg fallback: paru -S onnxruntime-opt-cuda on Arch; Microsoft GitHub release: https://github.com/microsoft/onnxruntime/releases."
+description = "TurboQuant real-model evaluation lane. Uses ort 2.0.0-rc.12 with load-dynamic + api-18; loads libonnxruntime.so via ORT_DYLIB_PATH. End-to-end verified on distilgpt2.onnx (12 layers, 24 KV tensors). Run --features onnx-eval."
+audit_deep = false
+status = "active"
+
+[[tool]]
+id = "vulkan-spirv-build"
+name = "Vulkan SPIR-V build"
+make_target = ""
+install = "GitHub release: https://github.com/google/shaderc/releases (prebuilt glslc tarball). System-pkg fallback: paru -S shaderc on Arch."
+description = "cd_kernel build.rs compiles quantize.comp + dequant_dot.comp to SPIR-V via glslc. Required for the cd_kernel vulkan feature; if shaderc is missing, build.rs writes 0-byte placeholders and VulkanQuantizer::is_available() returns false."
+audit_deep = false
+status = "active"

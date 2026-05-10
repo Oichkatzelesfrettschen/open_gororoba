@@ -330,8 +330,14 @@ unicode-normalization = "0.1"    # Unicode normalization for ANSI-safe UTF-8 san
 # HDF5 data export (requires system libhdf5)
 # Using hdf5-metno fork which supports HDF5 2.0 (Arch/CachyOS ships 2.0.0-3.1)
 # The upstream hdf5 0.8.1 panics on HDF5 2.0 with "Invalid H5_VERSION"
-# TRACKING: monitor https://github.com/aldanor/hdf5-rust for HDF5 2.0 support;
-# switch back to upstream once merged (eliminates fork dependency)
+#
+# TRACKING (T-041, verified 2026-05-10):
+#   upstream `hdf5`  : 0.8.1 last released 2021-11-21 (DORMANT; no HDF5 2.0)
+#   `hdf5-metno`     : 0.12.4 released 2026-03-23 (ACTIVE; HDF5 2.0 supported)
+# Conclusion: continue with the fork. Re-evaluate when upstream resumes
+# releases. See https://github.com/aldanor/hdf5-rust for upstream activity
+# and https://github.com/metno/hdf5-rust for the fork. The version pin
+# `"0.12"` floats to 0.12.4 already; no action needed.
 hdf5 = { package = "hdf5-metno", version = "0.12" }
 
 # NetCDF support (pure Rust, no C dependencies)
