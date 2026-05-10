@@ -3506,36 +3506,63 @@ impl ProvenanceStore {
         revisions_table: &str,
         fk_col: &str,
     ) -> Result<StatusNoteRevision> {
-        let select_sql = format!("SELECT status_note FROM {} WHERE id = ?1", table);
-        let update_sql = format!("UPDATE {} SET status_note = ?2 WHERE id = ?1", table);
+        self.entity_update_field(
+            id,
+            new_note,
+            actor,
+            reason,
+            table,
+            revisions_table,
+            fk_col,
+            "status_note",
+        )
+    }
+
+    /// Generic per-column updater used by status_note and formal_proof
+    /// mutators. Wraps a single BEGIN IMMEDIATE transaction that reads
+    /// the prior value, hashes prev/new, conditionally writes, and
+    /// appends a revisions audit row. The `field` parameter must be a
+    /// trusted identifier from the call site (never user input).
+    pub fn entity_update_field(
+        &mut self,
+        id: &str,
+        new_value: &str,
+        actor: &str,
+        reason: Option<&str>,
+        table: &str,
+        revisions_table: &str,
+        fk_col: &str,
+        field: &str,
+    ) -> Result<StatusNoteRevision> {
+        let select_sql = format!("SELECT {field} FROM {table} WHERE id = ?1");
+        let update_sql = format!("UPDATE {table} SET {field} = ?2 WHERE id = ?1");
         let insert_sql = format!(
             "INSERT INTO {revisions_table}
              ({fk_col}, field_name, prev_value_sha256, new_value_sha256,
               actor, reason, operation, application_id)
-             VALUES (?1, 'status_note', ?2, ?3, ?4, ?5, ?6, ?7)",
-            revisions_table = revisions_table,
-            fk_col = fk_col,
+             VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)"
         );
         let tx = self
             .conn
             .transaction_with_behavior(rusqlite::TransactionBehavior::Immediate)?;
-        let prev_note: Option<String> = tx
+        let prev: Option<String> = tx
             .query_row(&select_sql, params![id], |row| row.get(0))
             .map_err(|e| {
                 anyhow::anyhow!("{} {} not found in canonical DB: {}", table, id, e)
             })?;
-        let prev_value_sha256 = prev_note.as_deref().map(sha256_hex);
-        let new_value_sha256 = sha256_hex(new_note);
-        let operation = if prev_note.as_deref() == Some(new_note) {
+        let prev_value_sha256 = prev.as_deref().map(sha256_hex);
+        let new_value_sha256 = sha256_hex(new_value);
+        let operation = if prev.as_deref() == Some(new_value) {
             "touch"
         } else {
-            tx.execute(&update_sql, params![id, new_note])?;
+            tx.execute(&update_sql, params![id, new_value])?;
             "update"
         };
         tx.execute(
             &insert_sql,
             params![
                 id,
+                field,
                 prev_value_sha256,
                 new_value_sha256,
                 actor,
@@ -3548,13 +3575,49 @@ impl ProvenanceStore {
         tx.commit()?;
         Ok(StatusNoteRevision {
             entity_id: id.to_string(),
-            field_name: "status_note".to_string(),
+            field_name: field.to_string(),
             prev_value_sha256,
             new_value_sha256,
             actor: actor.to_string(),
             reason: reason.map(str::to_string),
             revision_id,
         })
+    }
+
+    /// Read-only accessor for the current formal_proof on a claim row.
+    pub fn claim_formal_proof(&self, id: &str) -> Result<Option<String>> {
+        let row: Option<String> = self
+            .conn
+            .query_row(
+                "SELECT formal_proof FROM claims WHERE id = ?1",
+                params![id],
+                |row| row.get(0),
+            )
+            .map_err(|e| {
+                anyhow::anyhow!("claim {} not found in canonical DB: {}", id, e)
+            })?;
+        Ok(row)
+    }
+
+    /// Update the formal_proof on a claim row. Mirrors
+    /// claim_update_status_note end-to-end via entity_update_field.
+    pub fn claim_update_formal_proof(
+        &mut self,
+        id: &str,
+        new_value: &str,
+        actor: &str,
+        reason: Option<&str>,
+    ) -> Result<StatusNoteRevision> {
+        self.entity_update_field(
+            id,
+            new_value,
+            actor,
+            reason,
+            "claims",
+            "claim_revisions",
+            "claim_id",
+            "formal_proof",
+        )
     }
 
     /// Insert or replace a next-action item.
