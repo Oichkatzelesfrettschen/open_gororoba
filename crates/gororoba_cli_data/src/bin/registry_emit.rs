@@ -1958,10 +1958,19 @@ fn emit_requirements_legacy(args: RequirementsLegacyArgs) -> Result<(), String> 
                     } else {
                         format!("{} -- {}", status, blocked)
                     };
+                    // When make_target is empty (e.g. for SQLite tooling
+                    // that is invoked directly via `cargo run` rather than
+                    // through a Makefile target), render an em-dash
+                    // instead of the cosmetic `make ` empty backtick.
+                    let make_cell = if make_target.is_empty() {
+                        "--".to_string()
+                    } else {
+                        format!("`make {}`", make_target)
+                    };
                     lines.push(format!(
-                        "| {} | `make {}` | {} | {} | {} |",
+                        "| {} | {} | {} | {} | {} |",
                         name,
-                        make_target,
+                        make_cell,
                         if install.is_empty() {
                             "(built-in)".to_string()
                         } else {

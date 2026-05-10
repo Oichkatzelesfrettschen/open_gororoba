@@ -46,43 +46,6 @@ strict mode (`make cpd-audit-strict`) behind the current generated-surface and
 lexical-error triage so structural duplicates fail CI only after known noise is
 classified.
 
-## Module docs
-
-For module-specific requirements, see:
-
-- `docs/requirements/algebra.md`
-- `docs/requirements/analysis.md`
-- `docs/requirements/astro.md`
-- `docs/requirements/cpp.md`
-- `docs/requirements/heliosphere.md`
-- `docs/requirements/latex.md`
-- `docs/requirements/materials.md`
-- `docs/requirements/particle.md`
-- `docs/requirements/quantum-docker.md`
-- `docs/requirements/rocq.md`
-- `crates/lbm_3d_cuda/README.md`
-- `apps/gororoba_studio/README.md`
-
-## Audit Tools
-
-Each tool listed below is available via a dedicated `make` target. Tools marked **audit-deep** are included in `make audit-deep`.
-
-| Tool | Make Target | Install | audit-deep | Status |
-| --- | --- | --- | ---: | --- |
-| Clippy | `make rust-clippy` | `rustup component add clippy` | yes | active |
-| cargo-deny | `make cargo-deny-check` | `cargo install cargo-deny` | yes | active |
-| Dependency Audit | `make dep-audit` | (built-in) | yes | active |
-| PMD CPD | `make cpd-audit` | `paru -S pmd` | yes | active |
-| PMD CPD (Tooling) | `make cpd-audit-tooling` | `paru -S pmd` | no | active |
-| PMD CPD (Generated) | `make cpd-audit-generated` | `paru -S pmd` | no | active |
-| cargo-semver-checks | `make rust-semver-check` | `cargo install cargo-semver-checks` | no | blocked -- fwht external path dep cannot resolve from git temp checkout. |
-| Docs Freshness | `make docs-freshness` | (built-in) | no | blocked -- Mathematical bracket notation [a,b,c] triggers broken-intra-doc-links. |
-| repo-audit | `make repo-audit` / `make repo-audit-strict` | (workspace-internal) | no | active |
-| Cache Sweep | `make cache-sweep` | `cargo install cargo-sweep` | no | active |
-| Provenance Export | (run via gororoba-db --regen-toml) | (workspace-internal) | no | active |
-| ONNX KV-cache eval | `turboquant-onnx-eval` | `paru -S onnxruntime-opt-cuda` (Arch) | no | active |
-| Vulkan SPIR-V build | (auto in cd_kernel build.rs) | `paru -S shaderc` (provides glslc) | no | active |
-
 ## SQLite-canonical registry tooling
 
 Since 2026-03-23 the registry source of truth is
@@ -124,3 +87,45 @@ soft cap) on cargo build artifacts in `.cache/`. Run `make cache-sweep`
 when the gate complains; the sweep target now also clears stale
 debug-profile artifacts in `.cache/gate-cbuild/<hash>/debug/` (the
 local 4-gate chain only uses `--profile release-gate`).
+
+## Module docs
+
+For module-specific requirements, see:
+
+- `docs/requirements/algebra.md`
+- `docs/requirements/analysis.md`
+- `docs/requirements/astro.md`
+- `docs/requirements/cpp.md`
+- `docs/requirements/heliosphere.md`
+- `docs/requirements/latex.md`
+- `docs/requirements/materials.md`
+- `docs/requirements/particle.md`
+- `docs/requirements/quantum-docker.md`
+- `docs/requirements/rocq.md`
+- `crates/lbm_3d_cuda/README.md`
+- `apps/gororoba_studio/README.md`
+
+## Audit Tools
+
+Each tool listed below is available via a dedicated `make` target. Tools marked **audit-deep** are included in `make audit-deep`.
+
+| Tool | Make Target | Install | audit-deep | Status |
+| --- | --- | --- | ---: | --- |
+| Clippy | `make rust-clippy` | `rustup component add clippy` | yes | active |
+| cargo-deny | `make cargo-deny-check` | `cargo install cargo-deny` | yes | active |
+| Dependency Audit | `make dep-audit` | (built-in) | yes | active |
+| PMD CPD | `make cpd-audit` | `GitHub release: https://github.com/pmd/pmd/releases (Java tool; download tarball + JAVA_HOME). System-package fallback: paru -S pmd on Arch.` | yes | active |
+| PMD CPD (Tooling) | `make cpd-audit-tooling` | `GitHub release: https://github.com/pmd/pmd/releases (Java tool; download tarball + JAVA_HOME). System-package fallback: paru -S pmd on Arch.` | no | active |
+| PMD CPD (Generated) | `make cpd-audit-generated` | `GitHub release: https://github.com/pmd/pmd/releases (Java tool; download tarball + JAVA_HOME). System-package fallback: paru -S pmd on Arch.` | no | active |
+| cargo-semver-checks | `make rust-semver-check` | `cargo install cargo-semver-checks` | no | blocked -- fwht external path dep cannot resolve from git temp checkout. |
+| Docs Freshness | `make docs-freshness` | (built-in) | no | blocked -- Mathematical bracket notation [a,b,c] triggers broken-intra-doc-links. |
+| repo-audit | `make repo-audit` | (built-in) | no | active |
+| repo-audit (strict baseline) | `make repo-audit-strict` | (built-in) | no | active |
+| repo-audit (strict unjustified) | `make repo-audit-strict-unjustified` | (built-in) | no | active |
+| Cache Sweep | `make cache-sweep` | `cargo install cargo-sweep` | no | active |
+| audit-deep (structured) | `make audit-deep-structured` | (built-in) | no | active |
+| gororoba-db | -- | (built-in) | no | active |
+| provenance export-control-plane | -- | (built-in) | no | active |
+| integrity-resolution | `make integrity-resolution` | (built-in) | no | active |
+| turboquant-onnx-eval | -- | `Vendored option: enable `ort` crate `download-binaries` feature (auto-fetches ONNX Runtime; +50 MB CI cache). System-pkg fallback: paru -S onnxruntime-opt-cuda on Arch; Microsoft GitHub release: https://github.com/microsoft/onnxruntime/releases.` | no | active |
+| Vulkan SPIR-V build | -- | `GitHub release: https://github.com/google/shaderc/releases (prebuilt glslc tarball). System-pkg fallback: paru -S shaderc on Arch.` | no | active |
