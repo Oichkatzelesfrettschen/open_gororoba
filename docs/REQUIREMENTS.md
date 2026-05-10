@@ -77,3 +77,50 @@ Each tool listed below is available via a dedicated `make` target. Tools marked 
 | PMD CPD (Generated) | `make cpd-audit-generated` | `paru -S pmd` | no | active |
 | cargo-semver-checks | `make rust-semver-check` | `cargo install cargo-semver-checks` | no | blocked -- fwht external path dep cannot resolve from git temp checkout. |
 | Docs Freshness | `make docs-freshness` | (built-in) | no | blocked -- Mathematical bracket notation [a,b,c] triggers broken-intra-doc-links. |
+| repo-audit | `make repo-audit` / `make repo-audit-strict` | (workspace-internal) | no | active |
+| Cache Sweep | `make cache-sweep` | `cargo install cargo-sweep` | no | active |
+| Provenance Export | (run via gororoba-db --regen-toml) | (workspace-internal) | no | active |
+| ONNX KV-cache eval | `turboquant-onnx-eval` | `paru -S onnxruntime-opt-cuda` (Arch) | no | active |
+| Vulkan SPIR-V build | (auto in cd_kernel build.rs) | `paru -S shaderc` (provides glslc) | no | active |
+
+## SQLite-canonical registry tooling
+
+Since 2026-03-23 the registry source of truth is
+`registry/canonical/control_plane.sqlite3` rather than `registry/*.toml`.
+Mutating claims, insights, or experiments requires the workspace-internal
+`gororoba-db` CLI plus the `provenance` exporter that regenerates compat
+TOMLs from canonical SQLite. Walk-through:
+`docs/engineering/registry_canonical_architecture.md`.
+
+| Tool | Source | Run | Purpose |
+| --- | --- | --- | --- |
+| `gororoba-db` | `crates/gororoba_db` | `cargo run --release -p gororoba_db --bin gororoba-db -- <subcommand>` | Canonical mutator for claims/insights/experiments + planning/requirements |
+| `provenance` | `crates/gororoba_cli_provenance` | `cargo run --release -p gororoba_cli_provenance --bin provenance -- export-control-plane` | Re-emit `registry/*.toml` from canonical SQLite |
+| `repo-audit` | `crates/gororoba_cli_data` | `cargo run --release -p gororoba_cli_data --bin repo-audit` | Anchored debt counter; supports `--sqlite` for revisions audit |
+| `integrity-resolution` | `crates/gororoba_cli_data` | `cargo run --release -p gororoba_cli_data --bin integrity-resolution` | Recompute `registry/schema_signatures.toml` after legitimate Layer-2 changes |
+
+## ONNX runtime (turboquant-onnx-eval)
+
+The TurboQuant real-model evaluation lane uses the ort 2.0.0-rc.12 crate
+configured with `load-dynamic` + `api-18`. This loads
+`libonnxruntime.so` at runtime via dlopen from the path in
+`ORT_DYLIB_PATH` or the system search path. Required:
+
+```
+paru -S onnxruntime-opt-cuda     # Arch; provides /usr/lib64/libonnxruntime.so
+ORT_DYLIB_PATH=/usr/lib64/libonnxruntime.so \
+  cargo run --release -p gororoba_cli_physics --bin turboquant-onnx-eval \
+    --features onnx-eval -- --model <path-to.onnx> --bits 2,3,4
+```
+
+Verified: end-to-end on data/external/onnx_test/distilgpt2.onnx (12-layer
+GPT-2 decoder export) -- detects 24 KV-cache outputs and produces
+real-model RMSE / top-1 / kv-byte metrics per requested bit count.
+
+## Cache budget policy
+
+The local pre-push 4-gate chain enforces a 250 GB hard cap (and 150 GB
+soft cap) on cargo build artifacts in `.cache/`. Run `make cache-sweep`
+when the gate complains; the sweep target now also clears stale
+debug-profile artifacts in `.cache/gate-cbuild/<hash>/debug/` (the
+local 4-gate chain only uses `--profile release-gate`).

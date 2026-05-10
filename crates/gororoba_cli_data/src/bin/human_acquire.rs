@@ -1025,23 +1025,29 @@ fn run_promote(
         })
         .collect::<Vec<_>>();
     promote_specs(
-        repo_root,
-        policy_registry,
-        sessions_dir,
-        &parent_manifest,
+        PromoteContext {
+            repo_root,
+            policy_registry,
+            sessions_dir,
+            parent_manifest: &parent_manifest,
+        },
         specs,
-        args.dest_rel.as_ref(),
-        args.browser_trace_rel.as_ref(),
-        args.cookie_jar_rel.as_ref(),
-        args.storage_state_rel.as_ref(),
-        args.profile_root_rel.as_ref(),
-        args.effective_url.clone(),
-        args.http_code,
-        args.transport_substrate,
-        args.backend,
-        args.probe_bytes,
-        args.probe,
-        args.handoff_out.as_ref(),
+        PromotePathOverrides {
+            dest_rel: args.dest_rel.as_ref(),
+            browser_trace_rel: args.browser_trace_rel.as_ref(),
+            cookie_jar_rel: args.cookie_jar_rel.as_ref(),
+            storage_state_rel: args.storage_state_rel.as_ref(),
+            profile_root_rel: args.profile_root_rel.as_ref(),
+            handoff_out: args.handoff_out.as_ref(),
+        },
+        PromoteRequestMeta {
+            effective_url: args.effective_url.clone(),
+            http_code: args.http_code,
+            transport_substrate: args.transport_substrate,
+            backend: args.backend,
+            probe_bytes: args.probe_bytes,
+            probe: args.probe,
+        },
         &args.note,
     )
 }
@@ -1073,23 +1079,29 @@ fn run_import_dossier(
             .map(|suggestion| dossier_suggestion_to_promote_spec(&dossier, suggestion, &args.note))
             .collect::<Vec<_>>();
         promote_specs(
-            repo_root,
-            policy_registry,
-            sessions_dir,
-            &parent_manifest,
+            PromoteContext {
+                repo_root,
+                policy_registry,
+                sessions_dir,
+                parent_manifest: &parent_manifest,
+            },
             specs,
-            None,
-            None,
-            None,
-            None,
-            None,
-            None,
-            None,
-            None,
-            BackendArg::Auto,
-            DEFAULT_PROBE_BYTES,
-            false,
-            None,
+            PromotePathOverrides {
+                dest_rel: None,
+                browser_trace_rel: None,
+                cookie_jar_rel: None,
+                storage_state_rel: None,
+                profile_root_rel: None,
+                handoff_out: None,
+            },
+            PromoteRequestMeta {
+                effective_url: None,
+                http_code: None,
+                transport_substrate: None,
+                backend: BackendArg::Auto,
+                probe_bytes: DEFAULT_PROBE_BYTES,
+                probe: false,
+            },
             &args.note,
         )?;
     }
@@ -1097,27 +1109,63 @@ fn run_import_dossier(
     Ok(())
 }
 
-#[allow(clippy::too_many_arguments)]
-fn promote_specs(
-    repo_root: &Path,
-    policy_registry: &Path,
-    sessions_dir: &Path,
-    parent_manifest: &Path,
-    specs: Vec<PromoteSpec>,
-    dest_rel: Option<&PathBuf>,
-    browser_trace_rel: Option<&PathBuf>,
-    cookie_jar_rel: Option<&PathBuf>,
-    storage_state_rel: Option<&PathBuf>,
-    profile_root_rel: Option<&PathBuf>,
+/// Workspace + policy locations a promote-specs flow needs to find existing
+/// sessions, the policy registry, and the parent session manifest.
+struct PromoteContext<'a> {
+    repo_root: &'a Path,
+    policy_registry: &'a Path,
+    sessions_dir: &'a Path,
+    parent_manifest: &'a Path,
+}
+
+/// Caller-supplied path overrides shared across every spec in the promotion
+/// batch (browser-trace, cookie-jar, storage-state, profile-root, dest, and
+/// handoff-out). Each is optional; when None the function uses defaults
+/// derived from the parent session.
+struct PromotePathOverrides<'a> {
+    dest_rel: Option<&'a PathBuf>,
+    browser_trace_rel: Option<&'a PathBuf>,
+    cookie_jar_rel: Option<&'a PathBuf>,
+    storage_state_rel: Option<&'a PathBuf>,
+    profile_root_rel: Option<&'a PathBuf>,
+    handoff_out: Option<&'a PathBuf>,
+}
+
+/// Request-level metadata describing the network/browser interaction whose
+/// outcome is being promoted (effective URL after redirects, HTTP status,
+/// transport substrate selection, backend, probe behavior).
+struct PromoteRequestMeta {
     effective_url: Option<String>,
     http_code: Option<u16>,
     transport_substrate: Option<TransportSubstrate>,
     backend: BackendArg,
     probe_bytes: usize,
     probe: bool,
-    handoff_out: Option<&PathBuf>,
+}
+
+fn promote_specs(
+    ctx: PromoteContext<'_>,
+    specs: Vec<PromoteSpec>,
+    overrides: PromotePathOverrides<'_>,
+    meta: PromoteRequestMeta,
     notes: &[String],
 ) -> Result<()> {
+    let repo_root = ctx.repo_root;
+    let policy_registry = ctx.policy_registry;
+    let sessions_dir = ctx.sessions_dir;
+    let parent_manifest = ctx.parent_manifest;
+    let dest_rel = overrides.dest_rel;
+    let browser_trace_rel = overrides.browser_trace_rel;
+    let cookie_jar_rel = overrides.cookie_jar_rel;
+    let storage_state_rel = overrides.storage_state_rel;
+    let profile_root_rel = overrides.profile_root_rel;
+    let handoff_out = overrides.handoff_out;
+    let effective_url = meta.effective_url;
+    let http_code = meta.http_code;
+    let transport_substrate = meta.transport_substrate;
+    let backend = meta.backend;
+    let probe_bytes = meta.probe_bytes;
+    let probe = meta.probe;
     let parent_checklist = parent_manifest
         .parent()
         .context("session manifest must have a parent directory")?

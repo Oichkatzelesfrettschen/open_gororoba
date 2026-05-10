@@ -42,6 +42,14 @@ guidance.
   `make integrity-resolution` to refresh `registry/schema_signatures.toml`.
 - Source manifest: `registry/source_manifest.toml` declares the 36 TOMLs that
   participate in compatibility round-trip verification.
+- Architecture walkthrough:
+  `docs/engineering/registry_canonical_architecture.md` (4-layer flow:
+  SQLite -> compat TOMLs -> Rust mirrors -> docs; mutation surface;
+  splice mechanism; audit trail; common footguns).
+- Audit metric taxonomy:
+  `docs/engineering/repo_audit_metric_taxonomy.md` (every repo-audit
+  metric, anchoring strategy, and what's "real debt" vs "valid
+  suppression"; SQLite revisions integration via `--sqlite` flag).
 
 ## Documentation policy
 

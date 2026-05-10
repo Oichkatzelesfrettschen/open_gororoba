@@ -378,16 +378,18 @@ fn main() -> Result<()> {
 
     render_scope_dashboard(
         &scope_path,
-        &project,
-        &scope_metrics,
-        &family_summaries,
-        &repo_edges,
-        &repo_surfaces,
-        &operating_layers,
-        &where_to_look_first,
-        &stable_today,
-        &exploratory,
-        &priorities,
+        ScopeDashboardInputs {
+            project: &project,
+            metrics: &scope_metrics,
+            families: &family_summaries,
+            edges: &repo_edges,
+            surfaces: &repo_surfaces,
+            layers: &operating_layers,
+            look_first: &where_to_look_first,
+            stable_today: &stable_today,
+            exploratory: &exploratory,
+            priorities: &priorities,
+        },
     )?;
     render_family_map(&family_path, &project, &family_summaries, &repo_edges)?;
     render_operator_matrix(&matrix_path, &project, &where_to_look_first, &operator_rows)?;
@@ -1134,20 +1136,34 @@ fn write_operator_matrix_csv(
     Ok(())
 }
 
-#[allow(clippy::too_many_arguments)]
-fn render_scope_dashboard(
-    path: &Path,
-    project: &ProjectBlock,
-    metrics: &[ScopeMetric],
-    families: &[FamilySummary],
-    edges: &[RepoEdge],
-    surfaces: &[RepoSurface],
-    layers: &[String],
-    look_first: &[String],
-    stable_today: &[String],
-    exploratory: &[String],
-    priorities: &[String],
-) -> Result<()> {
+/// Bundle of scope-dashboard render inputs. Decomposes into structural
+/// data (metrics, families, edges, surfaces) and four annotated string
+/// lists (layers, look_first, stable_today, exploratory, priorities) used
+/// in the legend / sidebars.
+struct ScopeDashboardInputs<'a> {
+    project: &'a ProjectBlock,
+    metrics: &'a [ScopeMetric],
+    families: &'a [FamilySummary],
+    edges: &'a [RepoEdge],
+    surfaces: &'a [RepoSurface],
+    layers: &'a [String],
+    look_first: &'a [String],
+    stable_today: &'a [String],
+    exploratory: &'a [String],
+    priorities: &'a [String],
+}
+
+fn render_scope_dashboard(path: &Path, inputs: ScopeDashboardInputs<'_>) -> Result<()> {
+    let project = inputs.project;
+    let metrics = inputs.metrics;
+    let families = inputs.families;
+    let edges = inputs.edges;
+    let surfaces = inputs.surfaces;
+    let layers = inputs.layers;
+    let look_first = inputs.look_first;
+    let stable_today = inputs.stable_today;
+    let exploratory = inputs.exploratory;
+    let priorities = inputs.priorities;
     let root = BitMapBackend::new(path, (WIDTH, HEIGHT)).into_drawing_area();
     root.fill(&BACKGROUND).map_err(plot_err)?;
     draw_background_field(&root, CYAN, AMBER)?;
@@ -1344,7 +1360,16 @@ fn render_family_map(
         ),
     )?;
 
-    let family_boxes = grid_positions(80, 2540, 24, 0, 4, 1, 732, 200);
+    let family_boxes = grid_positions(GridLayout {
+        left: 80,
+        top: 2540,
+        gap_x: 24,
+        gap_y: 0,
+        cols: 4,
+        rows: 1,
+        cell_w: 732,
+        cell_h: 200,
+    });
     for (family, &(x0, y0, x1, y1)) in families.iter().zip(family_boxes.iter()) {
         let intra_edges = edges
             .iter()
@@ -4605,8 +4630,11 @@ fn available_chars(width: i32, font_size: i32) -> usize {
     ((width.max(120) as f64) / (font_size.max(10) as f64 * 0.62)).floor() as usize
 }
 
-#[allow(clippy::too_many_arguments)]
-fn grid_positions(
+/// 2-D grid layout parameters for `grid_positions`. Six dimensional fields
+/// (origin + cell-size + gap) plus two shape fields (cols + rows); bundling
+/// keeps the helper under clippy::too_many_arguments and makes the caller
+/// site self-documenting at the call site.
+struct GridLayout {
     left: i32,
     top: i32,
     gap_x: i32,
@@ -4615,7 +4643,19 @@ fn grid_positions(
     rows: usize,
     cell_w: i32,
     cell_h: i32,
-) -> Vec<(i32, i32, i32, i32)> {
+}
+
+fn grid_positions(layout: GridLayout) -> Vec<(i32, i32, i32, i32)> {
+    let GridLayout {
+        left,
+        top,
+        gap_x,
+        gap_y,
+        cols,
+        rows,
+        cell_w,
+        cell_h,
+    } = layout;
     let mut out = Vec::with_capacity(cols * rows);
     for row in 0..rows {
         for col in 0..cols {

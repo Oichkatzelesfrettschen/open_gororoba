@@ -1945,17 +1945,21 @@ fn verify_crossrefs(args: &CommonArgs) -> Result<()> {
             check_dependency(
                 &dep,
                 &format!("roadmap.workstream[{workstream_id}].dependencies"),
-                &workstream_re,
-                &todo_re,
-                &action_re,
-                &req_re,
-                &claim_re,
-                &insight_re,
-                &experiment_re,
-                &workstream_ids,
-                &todo_ids,
-                &action_ids,
-                &req_ids,
+                &CrossRefRegexes {
+                    workstream: &workstream_re,
+                    todo: &todo_re,
+                    action: &action_re,
+                    req: &req_re,
+                    claim: &claim_re,
+                    insight: &insight_re,
+                    experiment: &experiment_re,
+                },
+                &CrossRefIdSets {
+                    workstream: &workstream_ids,
+                    todo: &todo_ids,
+                    action: &action_ids,
+                    req: &req_ids,
+                },
                 &mut counters,
                 &mut failures,
                 &CrossRefSets {
@@ -2032,17 +2036,21 @@ fn verify_crossrefs(args: &CommonArgs) -> Result<()> {
             check_dependency(
                 &dep,
                 &format!("todo.item[{todo_id}].dependencies"),
-                &workstream_re,
-                &todo_re,
-                &action_re,
-                &req_re,
-                &claim_re,
-                &insight_re,
-                &experiment_re,
-                &workstream_ids,
-                &todo_ids,
-                &action_ids,
-                &req_ids,
+                &CrossRefRegexes {
+                    workstream: &workstream_re,
+                    todo: &todo_re,
+                    action: &action_re,
+                    req: &req_re,
+                    claim: &claim_re,
+                    insight: &insight_re,
+                    experiment: &experiment_re,
+                },
+                &CrossRefIdSets {
+                    workstream: &workstream_ids,
+                    todo: &todo_ids,
+                    action: &action_ids,
+                    req: &req_ids,
+                },
                 &mut counters,
                 &mut failures,
                 &CrossRefSets {
@@ -2062,17 +2070,21 @@ fn verify_crossrefs(args: &CommonArgs) -> Result<()> {
             check_dependency(
                 &dep,
                 &format!("next_actions.action[{action_id}].dependencies"),
-                &workstream_re,
-                &todo_re,
-                &action_re,
-                &req_re,
-                &claim_re,
-                &insight_re,
-                &experiment_re,
-                &workstream_ids,
-                &todo_ids,
-                &action_ids,
-                &req_ids,
+                &CrossRefRegexes {
+                    workstream: &workstream_re,
+                    todo: &todo_re,
+                    action: &action_re,
+                    req: &req_re,
+                    claim: &claim_re,
+                    insight: &insight_re,
+                    experiment: &experiment_re,
+                },
+                &CrossRefIdSets {
+                    workstream: &workstream_ids,
+                    todo: &todo_ids,
+                    action: &action_ids,
+                    req: &req_ids,
+                },
                 &mut counters,
                 &mut failures,
                 &CrossRefSets {
@@ -2259,6 +2271,32 @@ struct CrossRefSets<'a> {
     datasets: &'a BTreeSet<String>,
 }
 
+/// Regex bundle for the cross-reference checker. Bundling the 7 ID-prefix
+/// detector regexes into one struct keeps `check_dependency` under
+/// clippy::too_many_arguments without resorting to #[allow]; each regex is
+/// borrowed so call sites can build it once and reuse.
+struct CrossRefRegexes<'a> {
+    workstream: &'a Regex,
+    todo: &'a Regex,
+    action: &'a Regex,
+    req: &'a Regex,
+    claim: &'a Regex,
+    insight: &'a Regex,
+    experiment: &'a Regex,
+}
+
+/// ID-set bundle for the kinds the cross-reference checker must validate
+/// against (workstreams, todos, actions, requirements). Claims, insights,
+/// experiments, sources, and datasets are validated through `CrossRefSets`
+/// instead because they share the same downstream `check_crossref_id`
+/// surface.
+struct CrossRefIdSets<'a> {
+    workstream: &'a BTreeSet<String>,
+    todo: &'a BTreeSet<String>,
+    action: &'a BTreeSet<String>,
+    req: &'a BTreeSet<String>,
+}
+
 enum CrossRefKind {
     Claims,
     Insights,
@@ -2387,21 +2425,11 @@ fn check_extracted_refs(
     }
 }
 
-#[allow(clippy::too_many_arguments)]
 fn check_dependency(
     dep: &str,
     where_label: &str,
-    workstream_re: &Regex,
-    todo_re: &Regex,
-    action_re: &Regex,
-    req_re: &Regex,
-    claim_re: &Regex,
-    insight_re: &Regex,
-    experiment_re: &Regex,
-    workstream_ids: &BTreeSet<String>,
-    todo_ids: &BTreeSet<String>,
-    action_ids: &BTreeSet<String>,
-    req_ids: &BTreeSet<String>,
+    res: &CrossRefRegexes<'_>,
+    aux_ids: &CrossRefIdSets<'_>,
     counters: &mut CrossRefCounters,
     failures: &mut Vec<String>,
     sets: &CrossRefSets<'_>,
@@ -2410,7 +2438,7 @@ fn check_dependency(
     if value.is_empty() {
         return;
     }
-    if claim_re.is_match(value) && claim_re.find(value).map(|m| m.as_str()) == Some(value) {
+    if res.claim.is_match(value) && res.claim.find(value).map(|m| m.as_str()) == Some(value) {
         check_crossref_id(
             CrossRefKind::Claims,
             value,
@@ -2421,7 +2449,7 @@ fn check_dependency(
         );
         return;
     }
-    if insight_re.is_match(value) && insight_re.find(value).map(|m| m.as_str()) == Some(value) {
+    if res.insight.is_match(value) && res.insight.find(value).map(|m| m.as_str()) == Some(value) {
         check_crossref_id(
             CrossRefKind::Insights,
             value,
@@ -2432,7 +2460,8 @@ fn check_dependency(
         );
         return;
     }
-    if experiment_re.is_match(value) && experiment_re.find(value).map(|m| m.as_str()) == Some(value)
+    if res.experiment.is_match(value)
+        && res.experiment.find(value).map(|m| m.as_str()) == Some(value)
     {
         check_crossref_id(
             CrossRefKind::Experiments,
@@ -2444,27 +2473,28 @@ fn check_dependency(
         );
         return;
     }
-    if workstream_re.is_match(value) && workstream_re.find(value).map(|m| m.as_str()) == Some(value)
+    if res.workstream.is_match(value)
+        && res.workstream.find(value).map(|m| m.as_str()) == Some(value)
     {
-        if !workstream_ids.contains(value) {
+        if !aux_ids.workstream.contains(value) {
             failures.push(format!("{where_label}: unknown workstream {value}"));
         }
         return;
     }
-    if todo_re.is_match(value) && todo_re.find(value).map(|m| m.as_str()) == Some(value) {
-        if !todo_ids.contains(value) {
+    if res.todo.is_match(value) && res.todo.find(value).map(|m| m.as_str()) == Some(value) {
+        if !aux_ids.todo.contains(value) {
             failures.push(format!("{where_label}: unknown todo {value}"));
         }
         return;
     }
-    if action_re.is_match(value) && action_re.find(value).map(|m| m.as_str()) == Some(value) {
-        if !action_ids.contains(value) {
+    if res.action.is_match(value) && res.action.find(value).map(|m| m.as_str()) == Some(value) {
+        if !aux_ids.action.contains(value) {
             failures.push(format!("{where_label}: unknown action {value}"));
         }
         return;
     }
-    if req_re.is_match(value) && req_re.find(value).map(|m| m.as_str()) == Some(value) {
-        if !req_ids.contains(value) {
+    if res.req.is_match(value) && res.req.find(value).map(|m| m.as_str()) == Some(value) {
+        if !aux_ids.req.contains(value) {
             failures.push(format!("{where_label}: unknown requirement module {value}"));
         }
         return;
