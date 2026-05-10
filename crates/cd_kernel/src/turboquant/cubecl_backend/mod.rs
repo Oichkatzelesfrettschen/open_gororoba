@@ -54,6 +54,9 @@ pub fn probe_cubecl() -> Option<CubeclCapabilities> {
     None
 }
 
+#[cfg(feature = "cubecl")]
+pub mod quantize_kernel;
+
 /// Planned cubecl kernel signatures (to be implemented with #[cube] macro):
 ///
 /// 1. `cubecl_quantize_boundary`: boundary-search quantization
