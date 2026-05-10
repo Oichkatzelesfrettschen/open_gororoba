@@ -381,6 +381,19 @@ pub struct NotebookSessionSummary {
     pub cell_count: i64,
 }
 
+/// SQL-identifier bundle for the generic per-column updater. Bundling the
+/// four `&str` identifiers into one parameter keeps `entity_update_field`
+/// under clippy::too_many_arguments without resorting to #[allow]; each
+/// field MUST be a trusted constant from the call site (never user input)
+/// because they are interpolated directly into SQL.
+#[derive(Debug, Clone, Copy)]
+pub struct EntityFieldTarget<'a> {
+    pub table: &'a str,
+    pub revisions_table: &'a str,
+    pub fk_col: &'a str,
+    pub field: &'a str,
+}
+
 /// Append-only audit record returned by claim/insight/experiment
 /// status_note mutators. Useful for callers that want to print a
 /// confirmation including the prev/new content hashes.
@@ -3445,9 +3458,12 @@ impl ProvenanceStore {
             new_note,
             actor,
             reason,
-            "insights",
-            "insight_revisions",
-            "insight_id",
+            EntityFieldTarget {
+                table: "insights",
+                revisions_table: "insight_revisions",
+                fk_col: "insight_id",
+                field: "status_note",
+            },
         )
     }
 
@@ -3478,9 +3494,12 @@ impl ProvenanceStore {
             new_note,
             actor,
             reason,
-            "experiments_cp",
-            "experiment_revisions",
-            "experiment_id",
+            EntityFieldTarget {
+                table: "experiments_cp",
+                revisions_table: "experiment_revisions",
+                fk_col: "experiment_id",
+                field: "status_note",
+            },
         )
     }
 
@@ -3494,38 +3513,41 @@ impl ProvenanceStore {
         new_note: &str,
         actor: &str,
         reason: Option<&str>,
-        table: &str,
-        revisions_table: &str,
-        fk_col: &str,
+        target: EntityFieldTarget<'_>,
     ) -> Result<StatusNoteRevision> {
         self.entity_update_field(
             id,
             new_note,
             actor,
             reason,
-            table,
-            revisions_table,
-            fk_col,
-            "status_note",
+            EntityFieldTarget {
+                table: target.table,
+                revisions_table: target.revisions_table,
+                fk_col: target.fk_col,
+                field: "status_note",
+            },
         )
     }
 
     /// Generic per-column updater used by status_note and formal_proof
     /// mutators. Wraps a single BEGIN IMMEDIATE transaction that reads
     /// the prior value, hashes prev/new, conditionally writes, and
-    /// appends a revisions audit row. The `field` parameter must be a
-    /// trusted identifier from the call site (never user input).
+    /// appends a revisions audit row. `target.field` must be a trusted
+    /// identifier from the call site (never user input).
     pub fn entity_update_field(
         &mut self,
         id: &str,
         new_value: &str,
         actor: &str,
         reason: Option<&str>,
-        table: &str,
-        revisions_table: &str,
-        fk_col: &str,
-        field: &str,
+        target: EntityFieldTarget<'_>,
     ) -> Result<StatusNoteRevision> {
+        let EntityFieldTarget {
+            table,
+            revisions_table,
+            fk_col,
+            field,
+        } = target;
         let select_sql = format!("SELECT {field} FROM {table} WHERE id = ?1");
         let update_sql = format!("UPDATE {table} SET {field} = ?2 WHERE id = ?1");
         let insert_sql = format!(
@@ -3601,10 +3623,12 @@ impl ProvenanceStore {
             new_value,
             actor,
             reason,
-            "claims",
-            "claim_revisions",
-            "claim_id",
-            "formal_proof",
+            EntityFieldTarget {
+                table: "claims",
+                revisions_table: "claim_revisions",
+                fk_col: "claim_id",
+                field: "formal_proof",
+            },
         )
     }
 
@@ -6959,7 +6983,7 @@ fn splice_compat_toml_overrides(compat_toml_text: &str, overrides: &[(&str, Opti
                 doc[*key] = toml_edit::value(*v);
             }
             None => {
-                doc.remove(*key);
+                doc.remove(key);
             }
         }
     }
