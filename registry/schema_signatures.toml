@@ -24,22 +24,22 @@ id = "SIG-0002"
 path = "registry/binaries.toml"
 top_level_keys = ["binary"]
 schema_version = "v1"
-schema_sha256 = "db02a513ce39e7f8d4b6203c5ed9c271fbfc10954e5ecb3142a8edd1e686499e"
-content_sha256 = "9e2663399368526642e3fa76565347b17773fe05cee8ec27d78b89bee8c5b5a1"
+schema_sha256 = "b455b715f7089ba6e6c39de2d44e515a7c3097e121d3db2f52a9d3f680bc7eb4"
+content_sha256 = "50d4409427baa47d3a14b48cd0a29532ad325555e7577a153a7773bc1b312022"
 array_table_count = 1
 table_count = 0
-shape_json = "{\"path\":\"registry/binaries.toml\",\"shapes\":{\"binary\":{\"entry_kind\":\"table\",\"required_keys\":[\"crate\",\"description\",\"name\"],\"row_count\":457,\"type\":\"array\",\"union_keys\":[\"crate\",\"description\",\"experiment\",\"name\"]}},\"top_level_keys\":[\"binary\"]}"
+shape_json = "{\"path\":\"registry/binaries.toml\",\"shapes\":{\"binary\":{\"entry_kind\":\"table\",\"required_keys\":[\"crate\",\"description\",\"name\"],\"row_count\":452,\"type\":\"array\",\"union_keys\":[\"crate\",\"description\",\"experiment\",\"name\"]}},\"top_level_keys\":[\"binary\"]}"
 
 [[signature]]
 id = "SIG-0003"
 path = "registry/claims.toml"
 top_level_keys = ["claim"]
 schema_version = "v1"
-schema_sha256 = "efd649fc84494f80d650c5f830d3cfdfbee78e4e75b19a4a57d902fe7f720ebb"
-content_sha256 = "7dc71ec88b8c2a5740ad4c0e4e4638ab777ccbf6c2428c1781dcc41d45ce21ac"
+schema_sha256 = "2c78fb05983f42f9373d259983738f0b3a925a9d255d397bf6cea6c1dc62526e"
+content_sha256 = "e8e7faf796e1b44efcc104d453f3f81b8d02fd4e359c9ffa9a505e195252ff82"
 array_table_count = 1
 table_count = 0
-shape_json = "{\"path\":\"registry/claims.toml\",\"shapes\":{\"claim\":{\"entry_kind\":\"table\",\"required_keys\":[\"id\",\"last_verified\",\"statement\",\"status\",\"where_stated\"],\"row_count\":1470,\"type\":\"array\",\"union_keys\":[\"formal_proof\",\"id\",\"last_verified\",\"statement\",\"status\",\"status_note\",\"where_stated\"]}},\"top_level_keys\":[\"claim\"]}"
+shape_json = "{\"path\":\"registry/claims.toml\",\"shapes\":{\"claim\":{\"entry_kind\":\"table\",\"required_keys\":[\"formal_proof\",\"id\",\"last_verified\",\"statement\",\"status\",\"where_stated\"],\"row_count\":1441,\"type\":\"array\",\"union_keys\":[\"formal_proof\",\"id\",\"last_verified\",\"statement\",\"status\",\"status_note\",\"where_stated\"]}},\"top_level_keys\":[\"claim\"]}"
 
 [[signature]]
 id = "SIG-0004"
@@ -68,11 +68,11 @@ id = "SIG-0006"
 path = "registry/experiments.toml"
 top_level_keys = ["experiment", "experiments"]
 schema_version = "v1"
-schema_sha256 = "14b5067a8add1a25bd729d6e735cb1092429d7454b9534fdb444b7708db75a8b"
-content_sha256 = "d2de4bc3715820eef1616df0d5ce3c2a58e5dd3ad220b022e7d5a537378f95bc"
+schema_sha256 = "56fd2657d9ad74e35addbf5d0be061ab8defd15a96b540f7d79956c517180599"
+content_sha256 = "cb4b81da948bf8d74f00e8fea0256df3cbb02e488881e31f02a42d1c1df17cda"
 array_table_count = 1
 table_count = 1
-shape_json = "{\"path\":\"registry/experiments.toml\",\"shapes\":{\"experiment\":{\"entry_kind\":\"table\",\"required_keys\":[\"id\",\"run\",\"status\",\"status_token\",\"title\"],\"row_count\":251,\"type\":\"array\",\"union_keys\":[\"binary\",\"binary_experiment_declared\",\"binary_name\",\"binary_registered\",\"claim_refs\",\"claims\",\"dataset_label_refs\",\"dataset_refs\",\"deterministic\",\"external_source_refs\",\"gpu\",\"id\",\"input\",\"input_path_refs\",\"lineage_id\",\"method\",\"output\",\"output_path_refs\",\"reproducibility_class\",\"run\",\"run_command_sha256\",\"seed\",\"status\",\"status_token\",\"title\",\"truth_surface_consumption\"]},\"experiments\":{\"keys\":[\"authoritative\",\"deterministic_count\",\"experiment_count\",\"gpu_count\",\"seeded_count\",\"status_allowlist\",\"updated\"],\"type\":\"table\"}},\"top_level_keys\":[\"experiment\",\"experiments\"]}"
+shape_json = "{\"path\":\"registry/experiments.toml\",\"shapes\":{\"experiment\":{\"entry_kind\":\"table\",\"required_keys\":[\"id\",\"run\",\"status\",\"status_token\",\"title\"],\"row_count\":227,\"type\":\"array\",\"union_keys\":[\"binary\",\"binary_experiment_declared\",\"binary_name\",\"binary_registered\",\"claim_refs\",\"claims\",\"dataset_label_refs\",\"dataset_refs\",\"deterministic\",\"external_source_refs\",\"gpu\",\"id\",\"input\",\"input_path_refs\",\"lineage_id\",\"method\",\"output\",\"output_path_refs\",\"reproducibility_class\",\"run\",\"run_command_sha256\",\"seed\",\"status\",\"status_note\",\"status_token\",\"title\",\"truth_surface_consumption\"]},\"experiments\":{\"keys\":[\"authoritative\",\"deterministic_count\",\"experiment_count\",\"gpu_count\",\"seeded_count\",\"status_allowlist\",\"updated\"],\"type\":\"table\"}},\"top_level_keys\":[\"experiment\",\"experiments\"]}"
 
 [[signature]]
 id = "SIG-0007"

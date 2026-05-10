@@ -6,7 +6,7 @@
 //!
 //! Authoritative source: `registry/canonical/control_plane.sqlite3`.
 //!
-//! Total claims: 1434
+//! Total claims: 1441
 //!
 //! ## C-001
 //!
@@ -11226,10 +11226,10 @@
 //!
 //! ## C-1542
 //!
-//! - Status: `Theoretical`
-//! - Last verified: 2026-03-25
+//! - Status: `Verified`
+//! - Last verified: 2026-04-15
 //! - Statement: Moreno Theorem 1.16 (mod-4 eigenspace constraint): dim_R(V_lambda) = 0 mod 4 for all lambda > 0, lambda != 1 in the T~_a spectrum (eigenvalue -lambda^2 of L_a^2 on H_a^perp). Source: Moreno (1997) arXiv:q-alg/9710013v1.
-//! - Where stated: crates/moreno_1997/src/lib.rs::MorenoDecomposition::all_mod4; proofs/theories/C1542_MorVlambdaMod4.v::moreno16_v1_eq_ha_perp, moreno16_nonunit_vlambda_trivial, moreno16_canonical_mod4_profile (canonical A_3 lane); proofs/theories/C1542_MorVlambdaOrbit.v::moreno16_vlambda_dim_div4, moreno16_vlambda_dim_mod4, moreno16_orbit_dim_div4, moreno16_orbit_dim_mod4 (abstract H-module lane)
+//! - Where stated: crates/moreno_1997/src/lib.rs::MorenoDecomposition::all_mod4; proofs/theories/C1542_MorVlambdaMod4.v::moreno16_v1_eq_ha_perp, moreno16_nonunit_vlambda_trivial, moreno16_canonical_mod4_profile (canonical A_3 lane); proofs/theories/C1542_MorVlambdaOrbit.v::moreno16_vlambda_dim_div4, moreno16_vlambda_dim_mod4, moreno16_orbit_dim_div4, moreno16_orbit_dim_mod4 (abstract H-module lane); proofs/theories/C1542_MorVlambdaArbClose.v::moreno16_vlambda_arb_trivial, moreno16_arb_close_bridge (arbitrary-a CDOct closure); proofs/theories/HModuleDim.v::h_a_perp_act_free (act_free obligation via quat_no_zero_divisors)
 //! - What would verify/refute it: 
 //!
 //! ## C-1543
@@ -11258,10 +11258,10 @@
 //!
 //! ## C-1546
 //!
-//! - Status: `Theoretical`
-//! - Last verified: 2026-03-25
+//! - Status: `Verified`
+//! - Last verified: 2026-04-13
 //! - Statement: Moreno Theorem 2.9 (ZD eigenvalue characterization): For alternative unit-norm trace-zero a, b in A_n, the pair (a,b) in A_{n+1} is a zero divisor iff -2 is an eigenvalue of L_{a+b}^2 on A_n. This is an O(dim^3) criterion replacing O(dim^4) brute-force search. In A_3 (alternative algebra), c=a+b with orthogonal unit a,b gives c^2=-2 so L_c^2=-2I; ALL such pairs lift to ZDs in A_4. Verified: known pair (e1+e10, e4-e15)/sqrt(2) in 16D satisfies the criterion. Source: Moreno (1997) arXiv:q-alg/9710013v1.
-//! - Where stated: crates/moreno_1997/src/lib.rs::has_eigenvalue_minus_2, find_zd_witness_moreno, is_zd_moreno; proofs/theories/C1546_MorEigenZD.v::moreno29_c_has_eigen_minus_two, moreno29_pair_is_zero_divisor, moreno29_parallel_not_eigen_minus_two (canonical witness lane); proofs/theories/C1546_MorEigenIFF.v::moreno29_witness_implies_eigen, moreno29_eigen_implies_witness, moreno29_abstract_iff (abstract iff core); tests::test_has_eigenvalue_minus_2_known_zd_16d, test_is_zd_moreno_known_pair_16d, test_is_zd_moreno_non_zd_pair_8d
+//! - Where stated: crates/moreno_1997/src/lib.rs::has_eigenvalue_minus_2, find_zd_witness_moreno, is_zd_moreno; proofs/theories/C1546_MorEigenZD.v::moreno29_c_has_eigen_minus_two, moreno29_pair_is_zero_divisor, moreno29_parallel_not_eigen_minus_two (canonical witness lane); proofs/theories/C1546_MorEigenIFF.v::moreno29_witness_implies_eigen, moreno29_eigen_implies_witness, moreno29_abstract_iff (abstract iff core); proofs/theories/C1546_MorArbitraryAlternative.v::moreno29_a_square_all, moreno29_b_square_all, moreno29_arbitrary_iff (discharged hypotheses); proofs/theories/C1546_MorZDAnticomm.v::oct_anticomm_of_pure_orthogonal, moreno29_anticomm_from_orthogonality, moreno29_orthogonal_iff (definitive inner-product form); tests::test_has_eigenvalue_minus_2_known_zd_16d, test_is_zd_moreno_known_pair_16d, test_is_zd_moreno_non_zd_pair_8d
 //! - What would verify/refute it: 
 //!
 //! ## C-1547
@@ -11354,7 +11354,7 @@
 //!
 //! ## C-1604
 //!
-//! - Status: `Falsified`
+//! - Status: `Refuted`
 //! - Last verified: 2026-04-13
 //! - Statement: Hierarchical CD tower quantization: negative result.
 //! - Where stated: TurboQuant CD bridge (2026-03-28)
@@ -11478,4 +11478,60 @@
 //! - Last verified: 2026-04-14
 //! - Statement: In the supervised THEMIS magnetopause crossing catalog (Staples et al. 2020 v2, 9455 probe-a crossings, 3-second FGM cadence), the CD associator early/late norm ratio over the 36-second precursor window (12 steps at 32D, 8-step x 4-channel Takens) is 4.48x mean / 1.44x median, IQR [0.75, 3.12]. 64.0% of crossings show ratio > 1.0 (null expectation 50%), confirming statistically significant precursor buildup.
 //! - Where stated: E-227 THEMIS supervised CD crossing survey (2026-04-14)
+//! - What would verify/refute it: 
+//!
+//! ## C-1620
+//!
+//! - Status: `Established`
+//! - Last verified: 2026-04-15
+//! - Statement: For Cluster C1 bow shock crossings in 2002-01-01 to 2002-01-07 (37 curated OMNI crossings), the 32D CD associator achieves precision=0.371, recall=0.622, F1=0.465 at default detection threshold. Per-type associator norms: Partial_crossing (mean 66.05, rotation 114 deg), TD (mean 25.95, rotation 81 deg), FTE_candidate (mean 26.16, rotation 44.7 deg), Unclassified (mean 12.22, rotation 35 deg), Mirror_mode (mean 7.74, rotation 7.3 deg). Mirror_mode events have the lowest associator signal (7.74) and lowest rotation (7.3 deg), consistent with their compressive rather than rotational character.
+//! - Where stated: E-228 Cluster FA attribution (2026-04-15)
+//! - What would verify/refute it: 
+//!
+//! ## C-1621
+//!
+//! - Status: `Established`
+//! - Last verified: 2026-04-15
+//! - Statement: For the Rosetta 67P diamagnetic cavity boundary (July-September 2015, ~2-5 nT total field), direction normalization (unit-vector Takens embedding) achieves F1=0.4326 (detection_rate=0.278, FAR=0.022), outperforming raw-field (F1=0.0882, detection_rate=0.046), clipped-field (F1=0.2316), and current-normalized (F1=0.2314) variants. In the raw variant, the cavity interior has much higher associator norm (81469 vs 559900 outside, ratio 6.87) but absolute-scale collapse reduces detected transitions to 247 vs 1552 for direction. Direction normalization removes the |B| scale dependence that dominates at ~2 nT, isolating the directional draping geometry that defines the diamagnetic cavity boundary.
+//! - Where stated: E-229 Rosetta normalization ablation (2026-04-15)
+//! - What would verify/refute it: 
+//!
+//! ## C-1622
+//!
+//! - Status: `Established`
+//! - Last verified: 2026-04-15
+//! - Statement: The CD associator ratio_switchback_to_quiet (switchback mean associator / quiet mean associator) decreases monotonically with PSP perihelion depth across 4 encounters: E1 (2018, ~35 Rs) = 0.699, E4 (2020-01, ~28 Rs) = 0.598, E6 (2020-09, ~23 Rs) = 0.566, E10 (2021-11, ~16 Rs) = 0.418. Spearman rho = -1.000 vs encounter number (perfect monotone decrease). Mean ratio 0.5705 +/- 0.1005 across encounters. This is consistent with near-perihelion switchbacks being more Alfvenic (lower CD phase-coupling disorder) and less compressively turbulent than switchbacks at larger heliocentric distances.
+//! - Where stated: E-230 PSP multi-encounter stability (2026-04-15)
+//! - What would verify/refute it: 
+//!
+//! ## C-1623
+//!
+//! - Status: `Established`
+//! - Last verified: 2026-04-15
+//! - Statement: In the THEMIS FA attribution analysis, false-negative crossings (13 events missed by the CD associator) have mean field rotation 1.6 deg vs 39.4 deg for detected crossings (ratio 24.6x). All 13 false negatives are classified as low-rotation (<30 deg), with 9 of 13 further classified as partial/grazing crossings (low rotation + low |B| jump). The CD associator is insensitive to magnetopause crossings where the field direction changes by less than ~15 deg between the pre- and post-crossing windows, corresponding to partial or grazing encounter geometries.
+//! - Where stated: E-231 THEMIS FA false-negative classification (2026-04-15)
+//! - What would verify/refute it: 
+//!
+//! ## C-1624
+//!
+//! - Status: `Established`
+//! - Last verified: 2026-04-15
+//! - Statement: Applying a 30-degree rotation filter to MMS1 gradient-based crossing detection reduces detected events from 104 to 44 (57.7% reduction) over 2024-01-01 to 2024-01-07 (9460 minutes), indicating ~60 of the original gradient-detected events are compressive rather than rotational discontinuities. Against the rotation-hardened label set, the CD associator detection rate improves from 61.5% to 75.0% (+13.5 pp) and mean temporal offset improves from 7.0 to 4.6 minutes, confirming the associator is better matched to genuine rotational boundaries. The false-alarm rate increases from 40% to 55.7% because 11 associator transitions that previously matched compressive gradient events are no longer counted as true positives under the stricter label definition. This demonstrates that the CD associator is a general field-discontinuity detector whose false-alarm rate is label-definition dependent: it correctly detects both rotational and compressive discontinuities.
+//! - Where stated: E-232 MMS rotation-threshold comparative run (2026-04-15)
+//! - What would verify/refute it: 
+//!
+//! ## C-1625
+//!
+//! - Status: `Established`
+//! - Last verified: 2026-04-15
+//! - Statement: For MAVEN bow shock crossings in 2015-03-01 to 2015-03-13 (16851 minutes, 12 of 13 days cached, DOY 069 missing), using a regime-filter-derived crossing list (136 crossings at |B|<4.5nT->|B|>8.0nT transitions, 30-min suppression), the 32D CD associator achieves precision=0.364, recall=0.632, F1=0.462. Extra-transition breakdown: Partial_crossing 39 (26%), Unclassified 51 (34%), TD 30 (20%), FTE_candidate 13 (9%), Mirror_mode 8 (5%), Compressive 9 (6%). Per-type associator norms: Compressive 36.57, Mirror_mode 30.26, Partial_crossing 24.89, TD 19.65, FTE_candidate 12.56. This F1=0.462 is within 0.003 of the Cluster C1 result (F1=0.465), providing cross-planet validation at Mars vs. Earth of the CD associator's bow shock detection capability.
+//! - Where stated: E-233 MAVEN bow shock FA attribution (2026-04-15)
+//! - What would verify/refute it: 
+//!
+//! ## C-1626
+//!
+//! - Status: `Established`
+//! - Last verified: 2026-04-15
+//! - Statement: PMD-equivalent static analysis gap audit of the 41-crate open_gororoba workspace (2026-04-15) reveals: (1) cargo-machete finds unused dependencies in 13 crates including ort (ONNX Runtime) in gororoba_cli_physics, ash+cubecl-core (GPU stubs) in cd_kernel, and pulp appearing unused in 4 crates (cd_kernel, data_core, materials_core, lbm_3d); (2) pmd-cpd with 80-token minimum detects 1596 total duplicate blocks, but only 3 cross-crate duplicates at 100+ tokens (LoTSS parsing in data_core/gororoba_cli_data/gororoba_cli_physics, turboquant cosine boilerplate in 7 binaries); (3) clippy cognitive_complexity lint (threshold 25) finds 7 violations across the workspace -- worst is source_provenance.rs:1788 at 37/25, followed by lbm_vulkan/compute.rs:2231 at 33/25 and flavor_lifts/basis.rs:214 at 31/25; (4) cargo miri on cd_kernel: 15 AVX2 tests pass clean, 12 predicates tests pass clean, test_high_dim_workspace fails due to rayon/crossbeam-epoch stacked borrows incompatibility with miri (not a cd_kernel UB). rust-code-analysis-cli cannot be installed due to tree-sitter ABI break in nightly-2026-04-05.
+//! - Where stated: E-234 PMD static analysis gap audit (2026-04-15)
 //! - What would verify/refute it: 

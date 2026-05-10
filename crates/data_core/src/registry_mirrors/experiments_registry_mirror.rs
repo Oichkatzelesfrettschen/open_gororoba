@@ -6,7 +6,7 @@
 //!
 //! Authoritative source: `registry/canonical/control_plane.sqlite3`.
 //!
-//! Total experiments: 220
+//! Total experiments: 227
 //!
 //! ## E-001: Cayley-Dickson Motif Census
 //!
@@ -3792,4 +3792,123 @@
 //! Run command:
 //! ```bash
 //! cargo run --release --bin themis-cd-crossing-survey -- --embed-dim 32 --steps 8 --precursor-window 12 --back-rows 120
+//! ```
+//!
+//! ## E-228: Cluster FA attribution: bow shock crossing detection P/R/F1 and per-type analysis (C-1620)
+//!
+//! - Binary: ``
+//! - Input: Cluster C1 FGM spin-resolution CSV (DOY 001-007 2002); OMNI Cluster bow shock crossing list omni_bowshock_cluster_2002.txt (37 curated crossings)
+//! - Output: data/output/heliosphere/ablations/fa_attribution_cluster_2002w01.json
+//! - Deterministic: `false`
+//! - GPU: `false`
+//! - Claims: (none)
+//!
+//! Method:
+//! Load per-day Cluster C1 FGM CSV (HAPI spin-res); minute-level averaging; 32D Takens (8-step x 4-ch, unit-norm); batch_sliding_associator_norms_parallel; threshold-sweep for PR curve; per-transition type classification (rotation/b_jump/cv_bmag); false-negative analysis vs curated crossing list.
+//!
+//! Run command:
+//! ```bash
+//! cargo run --release --bin heliosphere-fa-attribution -- --mission cluster --start-date 2002-01-01 --end-date 2002-01-07 --out-json data/output/heliosphere/ablations/fa_attribution_cluster_2002w01.json --out-pr-curve data/output/heliosphere/ablations/fa_attribution_cluster_pr_curve.json
+//! ```
+//!
+//! ## E-229: Rosetta 67P normalization ablation: direction vs raw/clipped/current in weak-field cavity (C-1621)
+//!
+//! - Binary: ``
+//! - Input: Rosetta 67P AMDA ros-magob-rsmp FGM data (July-September 2015, 126949 minutes); AMDA diamagnetic cavity boundary annotations (9298 cavity boundary events)
+//! - Output: data/output/heliosphere/ablations/rosetta_normalization_ablation.json
+//! - Deterministic: `false`
+//! - GPU: `false`
+//! - Claims: (none)
+//!
+//! Method:
+//! Four normalization variants (raw/direction/clipped/current) of 32D Takens embedding; batch_sliding_associator_norms_parallel; detection_rate/FAR/selectivity/F1 for each variant; rank by F1_boundary; winner: direction.
+//!
+//! Run command:
+//! ```bash
+//! cargo run --release --bin heliosphere-rosetta-ablation-summary -- --input-dir data/output/heliosphere/ablations
+//! ```
+//!
+//! ## E-230: PSP multi-encounter stability: switchback/quiet CD associator ratio vs perihelion depth (C-1622)
+//!
+//! - Binary: ``
+//! - Input: Four pre-computed PSP switchback omega JSON files: E1/E4/E6/E10 (heliosphere-switchback-omega outputs)
+//! - Output: data/output/heliosphere/ablations/psp_multiencounter_stability.json
+//! - Deterministic: `false`
+//! - GPU: `false`
+//! - Claims: (none)
+//!
+//! Method:
+//! Read per-encounter JSON; extract ratio_switchback_to_quiet; Spearman rho vs encounter number (perihelion depth proxy); monotonicity check; mean/std across 4 encounters.
+//!
+//! Run command:
+//! ```bash
+//! cargo run --release --bin heliosphere-psp-encounter-summary -- --input-dir data/output/heliosphere/ablations
+//! ```
+//!
+//! ## E-231: THEMIS FA false-negative classification: low-rotation crossings missed by CD associator (C-1623)
+//!
+//! - Binary: ``
+//! - Input: THEMIS FA attribution JSON (fa_attribution_themis.json) containing false-negative candidate list with rotation_deg, b_jump_nT, cv_bmag per event
+//! - Output: data/output/heliosphere/ablations/fa_attribution_themis.json
+//! - Deterministic: `false`
+//! - GPU: `false`
+//! - Claims: (none)
+//!
+//! Method:
+//! Extract false-negative candidates from FA attribution output; classify by rotation_deg threshold (low-rotation < 15 deg, partial-grazing criteria); compare mean rotation of FN vs detected events.
+//!
+//! Run command:
+//! ```bash
+//! cargo run --release --bin heliosphere-fa-attribution -- --mission themis --out-json data/output/heliosphere/ablations/fa_attribution_themis.json
+//! ```
+//!
+//! ## E-232: MMS rotation-threshold label hardening: gradient-only vs rotation>=30 deg comparison (C-1624)
+//!
+//! - Binary: ``
+//! - Input: MMS1 FGM Survey L2 data (2024-01-01 to 2024-01-07, 9460 minutes after inner-magnetosphere filter); cached daily CSVs in data/external/mms/
+//! - Output: data/output/heliosphere/ablations/mms_multiday_crossing_analysis.json, data/output/heliosphere/ablations/mms_multiday_rot30.json
+//! - Deterministic: `false`
+//! - GPU: `false`
+//! - Claims: (none)
+//!
+//! Method:
+//! Two runs of heliosphere-mms-multiday: (1) baseline gradient-only (5 nT threshold), (2) rotation-hardened (5 nT + rotation>=30 deg). Compare n_crossings_detected, detection_rate, false_alarm_rate, mean_offset_minutes.
+//!
+//! Run command:
+//! ```bash
+//! cargo run --release --bin heliosphere-mms-multiday -- --start-date 2024-01-01 --n-days 7 --rotation-threshold-deg 30 --out-json data/output/heliosphere/ablations/mms_multiday_rot30.json
+//! ```
+//!
+//! ## E-233: MAVEN bow shock FA attribution with regime-filter crossing list (C-1625)
+//!
+//! - Binary: ``
+//! - Input: MAVEN MAG HAPI CSV (2015-03-01 to 2015-03-13, 16851 minutes, DOY 060-073 except 069); regime-filter crossing list maven_bs_2015_regime.txt (136 crossings)
+//! - Output: data/output/heliosphere/ablations/fa_attribution_maven_2015.json, data/output/heliosphere/ablations/fa_attribution_maven_pr_curve.json
+//! - Deterministic: `false`
+//! - GPU: `false`
+//! - Claims: (none)
+//!
+//! Method:
+//! Load MAVEN MAG minute-averaged FGM (SS frame); 32D Takens (8-step x 4-ch, unit-norm); batch_sliding_associator_norms_parallel; compare CD transitions against regime-filter-derived crossing list (heliosphere-maven-crossing-gen SW<4.5nT -> sheath>8nT, 30-min gap); per-transition type classification; PR curve sweep.
+//!
+//! Run command:
+//! ```bash
+//! cargo run --release --bin heliosphere-fa-attribution -- --mission maven --start-date 2015-03-01 --end-date 2015-03-13 --crossing-list data/external/crossing_lists/maven_bs_2015_regime.txt --out-json data/output/heliosphere/ablations/fa_attribution_maven_2015.json --out-pr-curve data/output/heliosphere/ablations/fa_attribution_maven_pr_curve.json
+//! ```
+//!
+//! ## E-234: PMD-equivalent static analysis gap audit: machete + cpd + cognitive-complexity + miri (C-1626)
+//!
+//! - Binary: ``
+//! - Input: 41-crate open_gororoba workspace; toolchain nightly-2026-04-05; cargo-machete 0.9.1; pmd cpd 7.x (--language rust --minimum-tokens 80); clippy cognitive_complexity (threshold 25); cargo miri nightly-2026-04-05
+//! - Output: data/output/static_analysis/pmd_gap_audit_2026_04_15.txt
+//! - Deterministic: `false`
+//! - GPU: `false`
+//! - Claims: (none)
+//!
+//! Method:
+//! (1) cargo machete: scan all crate Cargo.toml for unused dependencies. (2) pmd cpd --language rust --minimum-tokens 80: cross-crate duplicate code detection. (3) CARGO_TARGET_DIR=.cache/rca-target RUSTFLAGS='' cargo clippy --workspace -- -W clippy::cognitive_complexity: function-level complexity. (4) CARGO_TARGET_DIR=.cache/miri-target MIRIFLAGS='-Zmiri-permissive-provenance' cargo miri test -p cd_kernel: UB detection in highest-unsafe crate.
+//!
+//! Run command:
+//! ```bash
+//! cargo machete && pmd cpd --language rust --minimum-tokens 80 -d crates/ --no-fail-on-error -f text && RUSTFLAGS='' cargo clippy --workspace -- -W clippy::cognitive_complexity && cargo miri test -p cd_kernel
 //! ```
