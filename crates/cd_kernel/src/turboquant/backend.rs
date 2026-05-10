@@ -182,13 +182,31 @@ impl BackendQuantizer {
             }
             #[cfg(feature = "vulkan")]
             Backend::Vulkan(_tier) => {
-                // Deferred: dispatch Vulkan compute shader.
-                // Tracked: DEFER-VULKAN-QUANTIZE (TaskList task #48). CPU
-                // fallback is intentional until the WGSL shader and per-tier
-                // dispatch ladder are implemented; reuse lbm_vulkan compute
-                // infrastructure when picking up.
-                self.cpu.quantize(values, out);
-                Ok(())
+                // Construct a fresh VulkanQuantizer per dispatch. Future
+                // optimization: cache the VulkanQuantizer on
+                // BackendQuantizer when the device probe + pipeline
+                // construction overhead becomes a bottleneck (~10ms
+                // per call vs ~10us for the actual compute).
+                match super::vulkan::VulkanQuantizer::new() {
+                    Ok(quantizer) => {
+                        let boundaries = self.cpu.boundaries();
+                        quantizer
+                            .quantize(values, boundaries, out)
+                            .map_err(|e| format!("Vulkan quantize: {}", e))?;
+                        Ok(())
+                    }
+                    Err(e) => {
+                        // Vulkan device not available at runtime (no
+                        // libvulkan, no compute-capable adapter, glslc
+                        // missing at build, etc.); fall back to CPU.
+                        eprintln!(
+                            "VulkanQuantizer init failed ({}); falling back to CPU.",
+                            e
+                        );
+                        self.cpu.quantize(values, out);
+                        Ok(())
+                    }
+                }
             }
             #[cfg(feature = "cubecl")]
             Backend::CubeCL => {
