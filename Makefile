@@ -395,6 +395,15 @@ gate-audit:
 	$(CARGO_ENV) cargo run -p xtask -- gate-audit
 	@echo "OK: gate-audit completed."
 
+# PH-5.A: structured audit-deep composite (rust-clippy + cargo-deny +
+# dep-audit + cpd-audit) with per-step log capture, Markdown summary,
+# and TOML record under reports/audit-deep/<date>/<time>/. Use this
+# for tranche-acceptance evidence; use plain `make audit-deep` for
+# interactive runs.
+audit-deep-structured:
+	$(CARGO_ENV) cargo run -p xtask -- audit-deep
+	@echo "OK: audit-deep-structured completed."
+
 # WHY: gate-ci-rust runs rust-regression (full workspace compile + nextest run,
 # ~9 min). For registry/governance-only edits -- TOML updates, schema changes,
 # claims.toml regeneration -- that compile overhead is pure waste. gate-audit-fast

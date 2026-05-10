@@ -328,6 +328,16 @@ fn main() -> Result<()> {
             let cfg = parse_gate_audit_args(args)?;
             run_gate_audit(cfg)
         }
+        "audit-deep" => {
+            // PH-5.A: structured audit-deep composite. Wraps the
+            // Makefile audit-deep chain (rust-clippy + cargo-deny-check +
+            // dep-audit + cpd-audit) but emits per-step exit codes,
+            // log files, and a Markdown summary instead of unstructured
+            // shell output. Mirrors the run_gate_audit reporting
+            // surface so a single archival workflow can consume both.
+            let cfg = parse_gate_audit_args(args)?;
+            run_audit_deep(cfg)
+        }
         "sparse-profile" => run_sparse_profile(SparseProfileCli::try_parse_from(
             std::iter::once("sparse-profile".to_string()).chain(args),
         )?),
@@ -1422,6 +1432,160 @@ fn run_gate_audit(cfg: GateAuditConfig) -> Result<()> {
     println!("Wrote: {}", repo_relative(&summary_path, &repo_root));
     if failures != 0 {
         bail!("gate-audit failed in {failures} step(s)");
+    }
+    Ok(())
+}
+
+/// PH-5.A: structured audit-deep composite lane.
+///
+/// # Purpose and call sites
+///
+/// Wraps the Makefile `audit-deep` chain (rust-clippy, cargo-deny-check,
+/// dep-audit, cpd-audit) and emits per-step exit codes, log files,
+/// and a Markdown summary in the same format as `run_gate_audit`. The
+/// Makefile target still exists as the user-facing entry point; this
+/// xtask variant adds structured archival for CI and tranche-acceptance
+/// evidence.
+///
+/// Called from `cargo run -p xtask -- audit-deep`. The Makefile target
+/// `make audit-deep-structured` will be added in a follow-up to give
+/// developers a familiar Makefile entry point.
+///
+/// # What this owns vs delegates
+///
+/// Owns: invocation order, per-step log capture, Markdown summary
+/// rendering, exit-code aggregation, structured TOML record assembly
+/// (so downstream consumers can index runs by date / step / pass-fail).
+///
+/// Delegates to the existing Makefile targets:
+/// - `make rust-clippy` (workspace clippy with -D warnings)
+/// - `make cargo-deny-check` (license + advisory + sources policy)
+/// - `make dep-audit` (cargo-audit advisory scan)
+/// - `make cpd-audit` (PMD copy-paste detector)
+///
+/// # Why skip the same things audit-deep Makefile skips
+///
+/// The Makefile target skips rust-semver-check (fwht path-dep
+/// resolution issue) and docs-freshness (bracket notation in math
+/// docs triggers broken-intra-doc-links). The xtask wrapper preserves
+/// those skips so the behavior is identical; the structured output
+/// just adds reporting on top.
+///
+/// # Cross-references
+///
+/// - Sibling: [`run_gate_audit`] (this fn mirrors its reporting surface).
+/// - Makefile: `audit-deep` target with full rationale comments.
+/// - PH-5 roadmap: `plans/repo_debt_roadmap_2026_04_11.toml`.
+fn run_audit_deep(cfg: GateAuditConfig) -> Result<()> {
+    let repo_root = repo_root()?;
+    let generated_at = Local::now();
+    let timestamp = generated_at.format("%Y-%m-%d/%H%M%S").to_string();
+    let output_dir = match cfg.output_dir {
+        Some(path) if path.is_absolute() => path,
+        Some(path) => repo_root.join(path),
+        None => repo_root.join("reports").join("audit-deep").join(timestamp),
+    };
+    fs::create_dir_all(&output_dir).with_context(|| {
+        format!(
+            "create audit-deep output directory {}",
+            output_dir.display()
+        )
+    })?;
+
+    // The four Makefile steps, in the same order as `audit-deep` runs
+    // them. We do NOT add semver-check or docs-freshness here; see the
+    // Makefile rationale comments.
+    let commands: Vec<(&str, Vec<String>)> = vec![
+        (
+            "rust-clippy",
+            vec!["make".to_string(), "rust-clippy".to_string()],
+        ),
+        (
+            "cargo-deny-check",
+            vec!["make".to_string(), "cargo-deny-check".to_string()],
+        ),
+        ("dep-audit", vec!["make".to_string(), "dep-audit".to_string()]),
+        ("cpd-audit", vec!["make".to_string(), "cpd-audit".to_string()]),
+    ];
+
+    let cargo_home = repo_root.join(".cache").join("cargo-home");
+    let cargo_target_dir = repo_root.join(".cache").join("gate-target");
+
+    let mut summary_lines = vec![
+        format!(
+            "# Audit Deep ({})",
+            generated_at.to_rfc3339_opts(SecondsFormat::Secs, false)
+        ),
+        String::new(),
+        format!(
+            "Output directory: `{}`",
+            repo_relative(&output_dir, &repo_root)
+        ),
+        String::new(),
+        "| Step | Exit Code | Log |".to_string(),
+        "| --- | ---: | --- |".to_string(),
+    ];
+
+    let mut failures = 0usize;
+    let mut step_rows = Vec::<GateAuditStepRecord>::new();
+
+    for (name, command) in commands {
+        let log_path = output_dir.join(format!("{name}.log"));
+        let output = Command::new(&command[0])
+            .args(&command[1..])
+            .current_dir(&repo_root)
+            .env("CARGO_HOME", &cargo_home)
+            .env("CARGO_TARGET_DIR", &cargo_target_dir)
+            .output()
+            .with_context(|| format!("run {}", format_command(&command)))?;
+        let exit_code = output.status.code().unwrap_or(1);
+        let stdout = String::from_utf8_lossy(&output.stdout);
+        let stderr = String::from_utf8_lossy(&output.stderr);
+        let combined_output = format!("{stdout}{stderr}");
+
+        let log_text = format!(
+            "# Step: {name}\n# Command: {}\n# Exit Code: {exit_code}\n\n{combined_output}",
+            format_command(&command)
+        );
+        fs::write(&log_path, log_text)
+            .with_context(|| format!("write audit-deep step log {}", log_path.display()))?;
+
+        let log_rel = repo_relative(&log_path, &repo_root);
+        summary_lines.push(format!("| `{name}` | `{exit_code}` | `{log_rel}` |"));
+        step_rows.push(GateAuditStepRecord {
+            name: name.to_string(),
+            exit_code,
+            log: log_rel,
+        });
+
+        if exit_code != 0 {
+            failures += 1;
+        }
+    }
+
+    let summary_path = output_dir.join("SUMMARY.md");
+    fs::write(&summary_path, summary_lines.join("\n")).with_context(|| {
+        format!(
+            "write audit-deep summary {}",
+            summary_path.display()
+        )
+    })?;
+
+    // Structured TOML record (parallel to the SUMMARY.md) so downstream
+    // tooling can index runs without parsing Markdown.
+    let toml_path = output_dir.join("audit_deep.toml");
+    let record = serde_json::json!({
+        "generated_at": generated_at.to_rfc3339_opts(SecondsFormat::Secs, false),
+        "failures": failures,
+        "steps": step_rows,
+    });
+    fs::write(&toml_path, toml::to_string_pretty(&record)?).with_context(|| {
+        format!("write audit-deep toml {}", toml_path.display())
+    })?;
+
+    println!("Wrote: {}", repo_relative(&summary_path, &repo_root));
+    if failures != 0 {
+        bail!("audit-deep failed in {failures} step(s)");
     }
     Ok(())
 }
