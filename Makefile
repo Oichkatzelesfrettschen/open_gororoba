@@ -436,12 +436,14 @@ cache-status:
 	@du -sh .cache/exp-*-target 2>/dev/null || printf '(none)\n'
 
 cache-sweep:
+	@echo "Pre-sweep size: $$(du -sh .cache 2>/dev/null | cut -f1)"
 	@echo "Sweeping .cache/gate-target to <= 100GB..."
-	@CARGO_TARGET_DIR=.cache/gate-target cargo sweep --maxsize 100GB --path . || echo "(skip: target absent or not a cargo project)"
+	@CARGO_TARGET_DIR=.cache/gate-target cargo sweep --maxsize 100GB . || echo "(skip: target absent or not a cargo project)"
 	@echo "Sweeping .cache/cargo-default-target to <= 100GB..."
-	@CARGO_TARGET_DIR=.cache/cargo-default-target cargo sweep --maxsize 100GB --path . || echo "(skip: target absent or not a cargo project)"
+	@CARGO_TARGET_DIR=.cache/cargo-default-target cargo sweep --maxsize 100GB . || echo "(skip: target absent or not a cargo project)"
 	@echo "Sweeping ambient target/ to <= 100GB..."
-	@cargo sweep --maxsize 100GB --path . || echo "(skip: ambient target absent)"
+	@cargo sweep --maxsize 100GB . || echo "(skip: ambient target absent)"
+	@echo "Post-sweep size: $$(du -sh .cache 2>/dev/null | cut -f1)"
 	@echo "OK: cache-sweep complete."
 
 cache-purge-exp:
