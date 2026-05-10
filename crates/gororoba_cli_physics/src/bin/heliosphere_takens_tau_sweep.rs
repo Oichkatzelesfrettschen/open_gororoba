@@ -23,7 +23,9 @@ use chrono::{Datelike, NaiveDate, NaiveDateTime, TimeZone, Utc};
 use clap::Parser;
 use data_core::catalogs::{
     mms::{MmsEventInterval, detect_magnetopause_crossings_filtered},
-    themis::{ThemisFgmMinuteRecord, parse_staples_crossing_catalog, parse_themis_fgm_hapi_csv_minutes},
+    themis::{
+        ThemisFgmMinuteRecord, parse_staples_crossing_catalog, parse_themis_fgm_hapi_csv_minutes,
+    },
 };
 use serde::Serialize;
 use spectral_core::boundary_metrics;
@@ -208,8 +210,7 @@ fn run_cd_for_tau(
     let mut n_gap_skipped: usize = 0;
 
     for w_start in 0..=(all_minutes.len() - window_rows) {
-        let sample_indices: Vec<usize> =
-            (0..steps).map(|s| w_start + s * tau).collect();
+        let sample_indices: Vec<usize> = (0..steps).map(|s| w_start + s * tau).collect();
 
         let first_h = all_minutes[*sample_indices.first().unwrap()].elapsed_hours;
         let last_h = all_minutes[*sample_indices.last().unwrap()].elapsed_hours;
@@ -239,15 +240,13 @@ fn run_cd_for_tau(
         embed_meta.push(*sample_indices.last().unwrap());
     }
 
-    let associators =
-        cd_kernel::batch_sliding_associator_norms_parallel(&embedded, embedding_dim);
+    let associators = cd_kernel::batch_sliding_associator_norms_parallel(&embedded, embedding_dim);
 
     let trans_window = crossing_window.max(5);
     let mut cd_hours: Vec<f64> = Vec::new();
 
     if associators.len() > trans_window * 2 {
-        let global_mean: f64 =
-            associators.iter().sum::<f64>() / associators.len() as f64;
+        let global_mean: f64 = associators.iter().sum::<f64>() / associators.len() as f64;
         let global_std: f64 = {
             let var = associators
                 .iter()
@@ -264,11 +263,10 @@ fn run_cd_for_tau(
         for i in half..associators.len().saturating_sub(half) {
             let pre_mean: f64 =
                 associators[i.saturating_sub(half)..i].iter().sum::<f64>() / half as f64;
-            let post_mean: f64 =
-                associators[i..(i + half).min(associators.len())]
-                    .iter()
-                    .sum::<f64>()
-                    / half.min(associators.len() - i) as f64;
+            let post_mean: f64 = associators[i..(i + half).min(associators.len())]
+                .iter()
+                .sum::<f64>()
+                / half.min(associators.len() - i) as f64;
             let jump = (post_mean - pre_mean).abs();
             if jump > threshold {
                 let dominated =
@@ -298,16 +296,21 @@ fn build_ascii_table(results: &TauSweepResults) -> String {
     s.push('\n');
     s.push_str(&format!(
         "{:<12} {:>10} {:>8.3} {:>8.3} {:>8.3} {:>10}\n",
-        "gradient", "--",
-        results.gradient_precision, results.gradient_recall,
-        results.gradient_f1, results.gradient_n_detections,
+        "gradient",
+        "--",
+        results.gradient_precision,
+        results.gradient_recall,
+        results.gradient_f1,
+        results.gradient_n_detections,
     ));
     for r in &results.tau_results {
         s.push_str(&format!(
             "{:<12} {:>10} {:>8.3} {:>8.3} {:>8.3} {:>10}\n",
             format!("CD tau={}min", r.tau_minutes),
             r.embedding_window_minutes,
-            r.cd_precision, r.cd_recall, r.cd_f1,
+            r.cd_precision,
+            r.cd_recall,
+            r.cd_f1,
             r.n_cd_detections,
         ));
     }
@@ -361,34 +364,46 @@ fn main() -> Result<()> {
         );
         let path = themis_dir.join(&fname);
         if !path.exists() {
-            eprintln!("  Warning: {} not found -- run heliosphere-themis-staples-labeled first", fname);
+            eprintln!(
+                "  Warning: {} not found -- run heliosphere-themis-staples-labeled first",
+                fname
+            );
             continue;
         }
         let content = fs::read_to_string(&path)?;
         let mut records = parse_themis_fgm_hapi_csv_minutes(&content, &spacecraft);
-        println!("  {} DOY {}: {} minutes", spacecraft, date.ordinal(), records.len());
+        println!(
+            "  {} DOY {}: {} minutes",
+            spacecraft,
+            date.ordinal(),
+            records.len()
+        );
         all_minutes.append(&mut records);
     }
 
     if all_minutes.is_empty() {
-        anyhow::bail!("No THEMIS data -- run heliosphere-themis-staples-labeled first to populate cache");
+        anyhow::bail!(
+            "No THEMIS data -- run heliosphere-themis-staples-labeled first to populate cache"
+        );
     }
 
     all_minutes.retain(|r| r.b_magnitude <= cli.max_bmag);
     all_minutes.sort_by(|a, b| {
-        a.year.cmp(&b.year)
+        a.year
+            .cmp(&b.year)
             .then(a.doy.cmp(&b.doy))
             .then(a.hour.cmp(&b.hour))
             .then(a.minute.cmp(&b.minute))
     });
 
     let (fy, fd, fh, fm) = (
-        all_minutes[0].year, all_minutes[0].doy,
-        all_minutes[0].hour, all_minutes[0].minute,
+        all_minutes[0].year,
+        all_minutes[0].doy,
+        all_minutes[0].hour,
+        all_minutes[0].minute,
     );
     for rec in &mut all_minutes {
-        let day_diff =
-            (rec.year as f64 - fy as f64) * 365.25 + (rec.doy as f64 - fd as f64);
+        let day_diff = (rec.year as f64 - fy as f64) * 365.25 + (rec.doy as f64 - fd as f64);
         rec.elapsed_hours = day_diff * 24.0
             + (rec.hour as f64 - fh as f64)
             + (rec.minute as f64 - fm as f64) / 60.0;
@@ -408,13 +423,8 @@ fn main() -> Result<()> {
     let catalog_content = fs::read_to_string(&cli.staples_catalog)
         .with_context(|| format!("reading catalog: {}", cli.staples_catalog.display()))?;
 
-    let catalog = parse_staples_crossing_catalog(
-        &catalog_content,
-        probe_char,
-        start,
-        end,
-        cli.pad_minutes,
-    );
+    let catalog =
+        parse_staples_crossing_catalog(&catalog_content, probe_char, start, end, cli.pad_minutes);
     println!("  {} catalog intervals", catalog.len());
 
     // -----------------------------------------------------------------------
@@ -433,11 +443,18 @@ fn main() -> Result<()> {
         .map(|&i| all_minutes[i].elapsed_hours)
         .collect();
     let eval_window_secs = cli.pad_minutes * 60;
-    let (grad_p, grad_r, grad_f1) =
-        eval_detection_hours(&gradient_hours, &reference_midnight, &catalog, eval_window_secs);
+    let (grad_p, grad_r, grad_f1) = eval_detection_hours(
+        &gradient_hours,
+        &reference_midnight,
+        &catalog,
+        eval_window_secs,
+    );
     println!(
         "  Gradient: P={:.3} R={:.3} F1={:.3} ({} detections)",
-        grad_p, grad_r, grad_f1, gradient_hours.len()
+        grad_p,
+        grad_r,
+        grad_f1,
+        gradient_hours.len()
     );
 
     // -----------------------------------------------------------------------
@@ -451,14 +468,25 @@ fn main() -> Result<()> {
         let steps = cli.embedding_dim / channels;
         let window_minutes = (steps - 1) * tau + 1;
 
-        let (cd_hours, n_gap) =
-            run_cd_for_tau(&all_minutes, cli.embedding_dim, tau, cli.crossing_window_minutes, cli.bmag_noise_floor);
+        let (cd_hours, n_gap) = run_cd_for_tau(
+            &all_minutes,
+            cli.embedding_dim,
+            tau,
+            cli.crossing_window_minutes,
+            cli.bmag_noise_floor,
+        );
         let (cd_p, cd_r, cd_f1) =
             eval_detection_hours(&cd_hours, &reference_midnight, &catalog, eval_window_secs);
 
         println!(
             "  tau={:2}min  window={:3}min  P={:.3}  R={:.3}  F1={:.3}  ({} det, {} gap-skipped)",
-            tau, window_minutes, cd_p, cd_r, cd_f1, cd_hours.len(), n_gap
+            tau,
+            window_minutes,
+            cd_p,
+            cd_r,
+            cd_f1,
+            cd_hours.len(),
+            n_gap
         );
 
         tau_results.push(TauResult {

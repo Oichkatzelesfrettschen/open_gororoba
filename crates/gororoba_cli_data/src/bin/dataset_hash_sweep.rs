@@ -121,10 +121,7 @@ fn main() -> ExitCode {
             .and_then(Value::as_str)
             .unwrap_or("")
             .to_string();
-        let existing_sha = r
-            .get("sha256")
-            .and_then(Value::as_str)
-            .unwrap_or("");
+        let existing_sha = r.get("sha256").and_then(Value::as_str).unwrap_or("");
         if args.skip_existing && !existing_sha.is_empty() {
             continue;
         }

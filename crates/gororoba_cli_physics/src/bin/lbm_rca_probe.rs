@@ -27,7 +27,7 @@ use cd_kernel::batch_sliding_associator_norms_parallel;
 use clap::{Parser, ValueEnum};
 use lbm_3d::{
     lattice::D3Q19Lattice,
-    solver::{aosoa_idx, CollisionMode, LbmSolver3D},
+    solver::{CollisionMode, LbmSolver3D, aosoa_idx},
 };
 
 /// Collision mode flag for CLI.
@@ -55,7 +55,9 @@ impl Mode {
 
 #[derive(Parser)]
 #[command(name = "lbm-rca-probe")]
-#[command(about = "Root Cause Analysis: per-step f_i positivity + entropy diagnostics for LBM divergence")]
+#[command(
+    about = "Root Cause Analysis: per-step f_i positivity + entropy diagnostics for LBM divergence"
+)]
 struct Args {
     /// Grid size (cubic: n x n x n)
     #[arg(long, default_value = "16")]
@@ -330,21 +332,18 @@ fn main() {
         let mut lines = vec!["step,min_f,max_ma,stable".to_string()];
         for s in &snapshots {
             lines.push(format!(
-                "{},{:.6e},{:.6},{}", s.step, s.min_f, s.max_ma, s.stable
+                "{},{:.6e},{:.6},{}",
+                s.step, s.min_f, s.max_ma, s.stable
             ));
         }
-        std::fs::write(path, lines.join("\n") + "\n")
-            .expect("failed to write trajectory CSV");
+        std::fs::write(path, lines.join("\n") + "\n").expect("failed to write trajectory CSV");
         eprintln!("Trajectory CSV written: {path} ({} rows)", snapshots.len());
     }
 
     // ---- Print trajectory to stdout ----
     println!("step,min_f,max_ma,stable");
     for s in &snapshots {
-        println!(
-            "{},{:.6e},{:.6},{}",
-            s.step, s.min_f, s.max_ma, s.stable
-        );
+        println!("{},{:.6e},{:.6},{}", s.step, s.min_f, s.max_ma, s.stable);
     }
 
     // ---- Phase 1 summary ----
@@ -372,22 +371,34 @@ fn main() {
         eprintln!(
             "  Ma > 0.3 before violation: {}  (Ma causally precedes f_i<0: {})",
             ma_exceeded_before,
-            if ma_exceeded_before { "YES -- compressibility truncation drove the violation" }
-            else { "NO -- violation may have a different origin" }
+            if ma_exceeded_before {
+                "YES -- compressibility truncation drove the violation"
+            } else {
+                "NO -- violation may have a different origin"
+            }
         );
     } else {
         eprintln!(
             "No positivity violation in {} steps (min_f={:.4e}, max_Ma={:.4})",
             snapshots.len(),
-            snapshots.iter().map(|s| s.min_f).fold(f64::INFINITY, f64::min),
+            snapshots
+                .iter()
+                .map(|s| s.min_f)
+                .fold(f64::INFINITY, f64::min),
             snapshots.iter().map(|s| s.max_ma).fold(0.0_f64, f64::max),
         );
     }
 
     // ---- Phase 2: entropy neighborhood ----
     if let Some(ref v) = violation {
-        eprintln!("\n--- Phase 2: Relative Entropy Neighborhood (radius={}) ---", args.entropy_radius);
-        eprintln!("Re-running to violation step {} for entropy snapshot...", v.step);
+        eprintln!(
+            "\n--- Phase 2: Relative Entropy Neighborhood (radius={}) ---",
+            args.entropy_radius
+        );
+        eprintln!(
+            "Re-running to violation step {} for entropy snapshot...",
+            v.step
+        );
 
         let mut solver2 = fresh_solver(n, tau, coll, contrast);
         for _ in 0..v.step {
@@ -395,9 +406,8 @@ fn main() {
             let _ = solver2.phase2_streaming();
         }
 
-        let neighbors = entropy_neighborhood(
-            &solver2, v.ix, v.iy, v.iz, args.entropy_radius, &lattice,
-        );
+        let neighbors =
+            entropy_neighborhood(&solver2, v.ix, v.iy, v.iz, args.entropy_radius, &lattice);
 
         eprintln!("  cell (ix,iy,iz)   r_norm   H_rel");
         for (ix, iy, iz, r, h) in &neighbors {
@@ -413,7 +423,10 @@ fn main() {
         let valid: Vec<_> = neighbors.iter().filter(|e| e.4.is_finite()).collect();
         if !valid.is_empty() {
             let max_h = valid.iter().map(|e| e.4).fold(f64::NEG_INFINITY, f64::max);
-            let max_h_entry = valid.iter().max_by(|a, b| a.4.partial_cmp(&b.4).unwrap()).unwrap();
+            let max_h_entry = valid
+                .iter()
+                .max_by(|a, b| a.4.partial_cmp(&b.4).unwrap())
+                .unwrap();
             eprintln!(
                 "\n  Peak H_rel={:.4e} at ({},{},{}) r_norm={:.3}",
                 max_h, max_h_entry.0, max_h_entry.1, max_h_entry.2, max_h_entry.3
@@ -436,9 +449,7 @@ fn main() {
                 "--cd-dim must be a power of 2 and >= 19 (got {cd_dim})"
             );
 
-            eprintln!(
-                "\n--- Phase 3: CD Spatial Associator Probe (C-1591) ---"
-            );
+            eprintln!("\n--- Phase 3: CD Spatial Associator Probe (C-1591) ---");
             eprintln!(
                 "cd_dim={cd_dim}, violation_step={}, site=({},{},{})",
                 v.step, v.ix, v.iy, v.iz
@@ -490,10 +501,7 @@ fn main() {
                         let ix2 = ((v.ix as i32 + off[0]).rem_euclid(n as i32)) as usize;
                         let iy2 = ((v.iy as i32 + off[1]).rem_euclid(n as i32)) as usize;
                         let iz2 = ((v.iz as i32 + off[2]).rem_euclid(n as i32)) as usize;
-                        pad_normalize(
-                            &get_f_cell(&solver3, iz2 * n * n + iy2 * n + ix2),
-                            cd_dim,
-                        )
+                        pad_normalize(&get_f_cell(&solver3, iz2 * n * n + iy2 * n + ix2), cd_dim)
                     })
                     .collect();
                 let sn = batch_sliding_associator_norms_parallel(&spatial_vecs, cd_dim);
@@ -515,10 +523,7 @@ fn main() {
                         let ix2 = ((v.ix as i32 + off[0]).rem_euclid(n as i32)) as usize;
                         let iy2 = ((v.iy as i32 + off[1]).rem_euclid(n as i32)) as usize;
                         let iz2 = ((v.iz as i32 + off[2]).rem_euclid(n as i32)) as usize;
-                        pad_normalize(
-                            &get_f_cell(&solver3, iz2 * n * n + iy2 * n + ix2),
-                            cd_dim,
-                        )
+                        pad_normalize(&get_f_cell(&solver3, iz2 * n * n + iy2 * n + ix2), cd_dim)
                     })
                     .collect();
                 let sn = batch_sliding_associator_norms_parallel(&spatial_vecs, cd_dim);
@@ -533,8 +538,7 @@ fn main() {
             }
 
             // Compute temporal norms from violation-cell sequence.
-            let temporal_norms =
-                batch_sliding_associator_norms_parallel(&temporal_viol, cd_dim);
+            let temporal_norms = batch_sliding_associator_norms_parallel(&temporal_viol, cd_dim);
             eprintln!(
                 "\n  Temporal CD norms at violation cell ({} norms from {} steps):",
                 temporal_norms.len(),
@@ -547,8 +551,7 @@ fn main() {
             // C-1591 verdict: does temporal associator increase toward violation?
             if temporal_norms.len() >= 2 {
                 let half = temporal_norms.len() / 2;
-                let early: f64 =
-                    temporal_norms[..half].iter().sum::<f64>() / half as f64;
+                let early: f64 = temporal_norms[..half].iter().sum::<f64>() / half as f64;
                 let late: f64 = temporal_norms[half..].iter().sum::<f64>()
                     / (temporal_norms.len() - half) as f64;
                 eprintln!("\n  C-1591 VERDICT:");

@@ -49,7 +49,12 @@ fn effective_rank(embedded: &[Vec<f64>], dim: usize) -> (usize, Vec<f64>) {
         return (0, vec![]);
     }
     let n_use = n.min(5000); // cap for SVD cost
-    let svals = singular_values(&embedded[..n_use].iter().map(|r| r[..dim].to_vec()).collect::<Vec<_>>());
+    let svals = singular_values(
+        &embedded[..n_use]
+            .iter()
+            .map(|r| r[..dim].to_vec())
+            .collect::<Vec<_>>(),
+    );
 
     // Effective rank at multiple thresholds
     let max_sv = svals.first().copied().unwrap_or(0.0);

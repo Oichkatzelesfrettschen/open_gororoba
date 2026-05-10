@@ -137,9 +137,7 @@ fn main() {
     let tile_report: Vec<serde_json::Value> = tiles
         .iter()
         .map(|((tx, ty), intras)| {
-            let intra_diagonal = intras
-                .iter()
-                .all(|&(ix, iy)| ix + iy == TILE_DIM - 1);
+            let intra_diagonal = intras.iter().all(|&(ix, iy)| ix + iy == TILE_DIM - 1);
             json!({
                 "tile_xy": [tx, ty],
                 "tile_index_sum": tx + ty,

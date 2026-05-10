@@ -13,8 +13,7 @@ use chrono::{Datelike, NaiveDate};
 use clap::Parser;
 use data_core::{
     catalogs::{
-        cluster::parse_cluster_fgm_hapi_csv_minutes,
-        maven_mag::parse_maven_mag_hapi_csv_minutes,
+        cluster::parse_cluster_fgm_hapi_csv_minutes, maven_mag::parse_maven_mag_hapi_csv_minutes,
         themis::parse_themis_fgm_hapi_csv_minutes,
     },
     crossing_lists::parse_crossing_list,
@@ -342,7 +341,12 @@ fn main() -> Result<()> {
     };
 
     let (matched_count, extras, fn_count) = match_transitions(&transitions);
-    println!("Matched: {}, Extras: {}, FN: {}", matched_count, extras.len(), fn_count);
+    println!(
+        "Matched: {}, Extras: {}, FN: {}",
+        matched_count,
+        extras.len(),
+        fn_count
+    );
 
     // Classify each extra by local B-field signature
     let w = 10usize;
@@ -433,13 +437,19 @@ fn main() -> Result<()> {
     // Per-type statistics (mean + std of key observables).
     let mut type_stats: BTreeMap<String, TypeStats> = BTreeMap::new();
     for (typ, &cnt) in &type_counts {
-        let events_of_type: Vec<&Attribution> =
-            attributions.iter().filter(|a| &a.event_type == typ).collect();
+        let events_of_type: Vec<&Attribution> = attributions
+            .iter()
+            .filter(|a| &a.event_type == typ)
+            .collect();
         let n = events_of_type.len().max(1) as f64;
         let mean_rot = events_of_type.iter().map(|a| a.rotation_deg).sum::<f64>() / n;
         let mean_bj = events_of_type.iter().map(|a| a.b_jump_nt).sum::<f64>() / n;
         let mean_cv = events_of_type.iter().map(|a| a.cv_bmag).sum::<f64>() / n;
-        let mean_an = events_of_type.iter().map(|a| a.associator_norm).sum::<f64>() / n;
+        let mean_an = events_of_type
+            .iter()
+            .map(|a| a.associator_norm)
+            .sum::<f64>()
+            / n;
         let std_rot = (events_of_type
             .iter()
             .map(|a| (a.rotation_deg - mean_rot).powi(2))
@@ -471,9 +481,21 @@ fn main() -> Result<()> {
     // Overall precision / recall / F1 at the default threshold.
     let tp = matched_count;
     let fp = extras.len();
-    let prec = if tp + fp > 0 { tp as f64 / (tp + fp) as f64 } else { 0.0 };
-    let rec = if n_curated > 0 { tp as f64 / n_curated as f64 } else { 0.0 };
-    let f1 = if prec + rec > 0.0 { 2.0 * prec * rec / (prec + rec) } else { 0.0 };
+    let prec = if tp + fp > 0 {
+        tp as f64 / (tp + fp) as f64
+    } else {
+        0.0
+    };
+    let rec = if n_curated > 0 {
+        tp as f64 / n_curated as f64
+    } else {
+        0.0
+    };
+    let f1 = if prec + rec > 0.0 {
+        2.0 * prec * rec / (prec + rec)
+    } else {
+        0.0
+    };
 
     println!("\n=== Attribution Results ===");
     println!("  Total extras: {}", attributions.len());
@@ -491,10 +513,7 @@ fn main() -> Result<()> {
         attributions.len(),
         frac * 100.0
     );
-    println!(
-        "  Precision={:.3}  Recall={:.3}  F1={:.3}",
-        prec, rec, f1
-    );
+    println!("  Precision={:.3}  Recall={:.3}  F1={:.3}", prec, rec, f1);
 
     let result = AttributionResult {
         start_date: cli.start_date.clone(),
@@ -532,8 +551,16 @@ fn main() -> Result<()> {
             let trans = detect_at(*factor);
             let (tp, extra_pr, fn_pr) = match_transitions(&trans);
             let fp = extra_pr.len();
-            let prec_pr = if tp + fp > 0 { tp as f64 / (tp + fp) as f64 } else { 1.0 };
-            let rec_pr = if n_curated > 0 { tp as f64 / n_curated as f64 } else { 0.0 };
+            let prec_pr = if tp + fp > 0 {
+                tp as f64 / (tp + fp) as f64
+            } else {
+                1.0
+            };
+            let rec_pr = if n_curated > 0 {
+                tp as f64 / n_curated as f64
+            } else {
+                0.0
+            };
             let f1_pr = if prec_pr + rec_pr > 0.0 {
                 2.0 * prec_pr * rec_pr / (prec_pr + rec_pr)
             } else {
@@ -555,7 +582,11 @@ fn main() -> Result<()> {
             fs::create_dir_all(parent)?;
         }
         fs::write(&pr_path, serde_json::to_string_pretty(&pr_curve)?)?;
-        println!("Wrote PR curve ({} points) to {}", pr_curve.len(), pr_path.display());
+        println!(
+            "Wrote PR curve ({} points) to {}",
+            pr_curve.len(),
+            pr_path.display()
+        );
     }
 
     Ok(())

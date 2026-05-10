@@ -243,7 +243,12 @@ fn main() -> Result<()> {
         }
         let content = fs::read_to_string(&path)?;
         let mut records = parse_themis_fgm_hapi_csv_minutes(&content, &spacecraft);
-        println!("  {} DOY {}: {} minutes", spacecraft, date.ordinal(), records.len());
+        println!(
+            "  {} DOY {}: {} minutes",
+            spacecraft,
+            date.ordinal(),
+            records.len()
+        );
         all_minutes.append(&mut records);
     }
 
@@ -348,7 +353,10 @@ fn main() -> Result<()> {
             continue;
         }
 
-        let sum_b: f64 = sample_indices.iter().map(|&i| all_minutes[i].b_magnitude).sum();
+        let sum_b: f64 = sample_indices
+            .iter()
+            .map(|&i| all_minutes[i].b_magnitude)
+            .sum();
         let local_mean_b = sum_b / steps as f64;
         if local_mean_b <= 0.0 || !local_mean_b.is_finite() {
             continue;
@@ -437,10 +445,7 @@ fn main() -> Result<()> {
         .iter()
         .map(|&h| hours_to_unix(&reference_midnight, h))
         .collect();
-    let event_unix: Vec<i64> = fom_catalog
-        .iter()
-        .map(event_midpoint_unix)
-        .collect();
+    let event_unix: Vec<i64> = fom_catalog.iter().map(event_midpoint_unix).collect();
 
     let (precision, recall, f1) =
         boundary_metrics::precision_recall_f1(&detection_unix, &event_unix, eval_window_secs);

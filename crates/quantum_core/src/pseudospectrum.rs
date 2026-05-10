@@ -131,13 +131,19 @@ pub fn fractional_laplacian_pseudospectrum(
 
             let svd = a_c.svd().unwrap();
             let sing_vals = svd.S();
-            let s_min = (0..n).map(|k| sing_vals[k].re).fold(f64::INFINITY, f64::min);
+            let s_min = (0..n)
+                .map(|k| sing_vals[k].re)
+                .fold(f64::INFINITY, f64::min);
 
             log_smin[i][j] = (s_min + 1e-14).log10();
         }
     }
 
-    PseudospectrumResult { log_smin, re_grid, im_grid }
+    PseudospectrumResult {
+        log_smin,
+        re_grid,
+        im_grid,
+    }
 }
 
 #[cfg(test)]

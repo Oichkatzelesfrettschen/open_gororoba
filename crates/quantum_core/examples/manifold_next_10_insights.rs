@@ -31,16 +31,17 @@ fn extract_csv_points(path: &str, g_col: usize, o_col: usize, skip: usize) -> Ve
                 continue;
             }
             let parts: Vec<&str> = l.split(',').collect();
-            if parts.len() > g_col && parts.len() > o_col
-                && let (Ok(g), Ok(o)) =
-                    (parts[g_col].parse::<f64>(), parts[o_col].parse::<f64>())
-                    && g > 0.0 {
-                        // Ensure strict positivity for log
-                        points.push(CouplerPoint {
-                            g: DVector::from_vec(vec![g]),
-                            o: DVector::from_vec(vec![o.abs() + 1e-12]),
-                        });
-                    }
+            if parts.len() > g_col
+                && parts.len() > o_col
+                && let (Ok(g), Ok(o)) = (parts[g_col].parse::<f64>(), parts[o_col].parse::<f64>())
+                && g > 0.0
+            {
+                // Ensure strict positivity for log
+                points.push(CouplerPoint {
+                    g: DVector::from_vec(vec![g]),
+                    o: DVector::from_vec(vec![o.abs() + 1e-12]),
+                });
+            }
         }
     }
     // Sort by g just in case
@@ -56,13 +57,14 @@ fn calculate_mean_jacobian(points: &[CouplerPoint]) -> f64 {
     let mut count = 0;
     for i in 0..(points.len() - 1) {
         if (points[i + 1].g[0] - points[i].g[0]).abs() > 1e-6
-            && let Ok(jac) = CouplerJacobian::estimate_from_delta(&points[i], &points[i + 1]) {
-                let j = jac.j_mat[(0, 0)];
-                if j.is_finite() {
-                    sum += j;
-                    count += 1;
-                }
+            && let Ok(jac) = CouplerJacobian::estimate_from_delta(&points[i], &points[i + 1])
+        {
+            let j = jac.j_mat[(0, 0)];
+            if j.is_finite() {
+                sum += j;
+                count += 1;
             }
+        }
     }
     if count > 0 {
         sum / count as f64

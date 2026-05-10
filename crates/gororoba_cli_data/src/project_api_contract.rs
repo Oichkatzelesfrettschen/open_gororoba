@@ -509,14 +509,20 @@ mod tests {
         let result = AcquisitionJournalRow::from_tsv_line(bad);
         assert!(result.is_err());
         let msg = result.unwrap_err().to_string();
-        assert!(msg.contains("31"), "error should mention expected 31 fields: {msg}");
+        assert!(
+            msg.contains("31"),
+            "error should mention expected 31 fields: {msg}"
+        );
     }
 
     #[test]
     fn header_has_31_columns() {
         let header = AcquisitionJournalRow::header();
         let count = header.split('\t').count();
-        assert_eq!(count, 31, "header must have exactly 31 tab-separated columns");
+        assert_eq!(
+            count, 31,
+            "header must have exactly 31 tab-separated columns"
+        );
     }
 
     #[test]

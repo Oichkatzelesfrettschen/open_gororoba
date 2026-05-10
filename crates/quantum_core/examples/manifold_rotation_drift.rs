@@ -27,16 +27,18 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
 
         if let (Ok(angle), Ok(norm)) = (parts[0].parse::<f64>(), parts[2].parse::<f64>())
-            && angle > 0.0 && norm > 0.0 {
-                points.push(CouplerPoint {
-                    g: DVector::from_vec(vec![angle]),
-                    o: DVector::from_vec(vec![norm]),
-                });
-                println!(
-                    "  Angle Scale (g): {:.2} | Mean Drift Norm (O): {:.4}",
-                    angle, norm
-                );
-            }
+            && angle > 0.0
+            && norm > 0.0
+        {
+            points.push(CouplerPoint {
+                g: DVector::from_vec(vec![angle]),
+                o: DVector::from_vec(vec![norm]),
+            });
+            println!(
+                "  Angle Scale (g): {:.2} | Mean Drift Norm (O): {:.4}",
+                angle, norm
+            );
+        }
     }
 
     if points.len() >= 2 {

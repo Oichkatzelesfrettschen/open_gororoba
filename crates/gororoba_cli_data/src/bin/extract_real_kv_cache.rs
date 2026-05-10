@@ -144,13 +144,10 @@ fn run_synthetic(args: &Args) -> ExitCode {
             .wrapping_add((layer as u64).wrapping_mul(0x9E37_79B9_7F4A_7C15));
 
         for kind in ["keys", "values"] {
-            let mut sub = SplitMix64::new(
-                layer_seed
-                    .wrapping_add(match kind {
-                        "keys" => 0x1000_0000_0000_0001,
-                        _ => 0x2000_0000_0000_0003,
-                    }),
-            );
+            let mut sub = SplitMix64::new(layer_seed.wrapping_add(match kind {
+                "keys" => 0x1000_0000_0000_0001,
+                _ => 0x2000_0000_0000_0003,
+            }));
             let path = args.out_dir.join(format!("{kind}_layer{layer:02}.f64"));
             let mut f = match File::create(&path) {
                 Ok(f) => f,

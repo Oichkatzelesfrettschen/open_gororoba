@@ -26,9 +26,7 @@
 //! of the matrix and equals the dimension of the left (resp. right)
 //! annihilator of `a` in the pathion algebra.
 
-use algebra_analysis::annihilator::{
-    left_multiplication_matrix, right_multiplication_matrix,
-};
+use algebra_analysis::annihilator::{left_multiplication_matrix, right_multiplication_matrix};
 use cd_kernel::cayley_dickson::cd_multiply;
 use nalgebra::{DMatrix, SVD};
 use serde_json::json;

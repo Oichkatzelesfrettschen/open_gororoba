@@ -14,14 +14,9 @@
 use anyhow::{Context, Result};
 use clap::Parser;
 use csv::Writer;
-use data_core::catalogs::voyager::{
-    VoyagerSpacecraft, parse_bartol_file, parse_voyager_file,
-};
+use data_core::catalogs::voyager::{VoyagerSpacecraft, parse_bartol_file, parse_voyager_file};
 use serde::Serialize;
-use std::{
-    collections::BTreeMap,
-    path::PathBuf,
-};
+use std::{collections::BTreeMap, path::PathBuf};
 
 #[derive(Parser, Debug)]
 #[command(name = "bartol-spdf-crossval")]
@@ -237,7 +232,11 @@ fn run(cli: &Cli) -> Result<()> {
     }
 
     // Find matched keys
-    let matched_keys: Vec<u64> = spdf_map.keys().filter(|k| bartol_map.contains_key(k)).copied().collect();
+    let matched_keys: Vec<u64> = spdf_map
+        .keys()
+        .filter(|k| bartol_map.contains_key(k))
+        .copied()
+        .collect();
     let n_matched = matched_keys.len();
 
     let mut stats_b = Stats::new();
@@ -262,10 +261,7 @@ fn run(cli: &Cli) -> Result<()> {
     if cli.verbose {
         eprintln!(
             "Matched hourly timestamps: {}, B pairs: {}, speed pairs: {}, density pairs: {}",
-            n_matched,
-            stats_b.n,
-            stats_speed.n,
-            stats_density.n,
+            n_matched, stats_b.n, stats_speed.n, stats_density.n,
         );
         eprintln!(
             "B-mag: r={:.4}, RMSE={:.4} nT, bias={:.4} nT",

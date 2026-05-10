@@ -99,7 +99,10 @@ fn main() -> ExitCode {
             }
             Ok(false) => {
                 skipped += 1;
-                println!("[migrate] {} already populated, skipped", entry.experiment_id);
+                println!(
+                    "[migrate] {} already populated, skipped",
+                    entry.experiment_id
+                );
             }
             Err(e) => {
                 failed += 1;

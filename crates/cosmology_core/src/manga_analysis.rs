@@ -204,7 +204,7 @@ pub fn gram_schmidt_ortho(mut basis: Array2<f64>) -> Array2<f64> {
 
 /// Real-valued FFT magnitude spectrum (length n/2+1).
 pub fn compute_rfft_abs(data: &Array1<f64>) -> Array1<f64> {
-    use rustfft::{num_complex::Complex, FftPlanner};
+    use rustfft::{FftPlanner, num_complex::Complex};
     let n = data.len();
     let mut planner = FftPlanner::new();
     let fft = planner.plan_fft_forward(n);

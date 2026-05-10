@@ -649,7 +649,10 @@ impl AlignedPmns {
                 matrix[(i, j)] = u_raw[(row, col)];
             }
         }
-        Self { matrix, col_perm: *perm_col }
+        Self {
+            matrix,
+            col_perm: *perm_col,
+        }
     }
 
     /// Borrow the underlying matrix.
@@ -695,7 +698,10 @@ pub fn align_pmns_columns(u: &Mat<f64>) -> AlignedPmns {
             aligned[(i, new_j)] = u[(i, old_j)];
         }
     }
-    AlignedPmns { matrix: aligned, col_perm: perm }
+    AlignedPmns {
+        matrix: aligned,
+        col_perm: perm,
+    }
 }
 
 /// Derive CKM matrix: V_CKM = U_up^T * U_down.

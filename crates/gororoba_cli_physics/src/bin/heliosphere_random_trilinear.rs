@@ -178,17 +178,15 @@ fn event_midpoint_unix(ev: &MmsEventInterval) -> i64 {
 /// scores: for consecutive delay vector pairs (x, y), compute
 ///   score = ||T(x,y)||_2  where  T(x,y)_i = sum_{j,k} T[i*dim*dim + j*dim + k] * x[j] * y[k]
 /// Returns one score per consecutive pair of delay vectors.
-fn compute_random_trilinear_scores(
-    delay_vectors: &[Vec<f64>],
-    dim: usize,
-    seed: u64,
-) -> Vec<f64> {
+fn compute_random_trilinear_scores(delay_vectors: &[Vec<f64>], dim: usize, seed: u64) -> Vec<f64> {
     let mut rng = ChaCha8Rng::seed_from_u64(seed);
     // T_ijk stored as flat [i][j][k] in row-major order, total dim^3 entries.
     // sigma = 1/sqrt(dim) so that T(x,y) has unit-ish variance when x, y are unit vectors.
     let sigma = 1.0 / (dim as f64).sqrt();
     let dist = Normal::new(0.0, sigma).expect("valid normal distribution");
-    let t: Vec<f64> = (0..dim * dim * dim).map(|_| dist.sample(&mut rng)).collect();
+    let t: Vec<f64> = (0..dim * dim * dim)
+        .map(|_| dist.sample(&mut rng))
+        .collect();
 
     delay_vectors
         .windows(2)
@@ -243,11 +241,8 @@ fn detect_transitions(
     let half = trans_window;
     let mut last_trans_idx: Option<usize> = None;
     for i in half..scores.len().saturating_sub(half) {
-        let pre_mean: f64 =
-            scores[i.saturating_sub(half)..i].iter().sum::<f64>() / half as f64;
-        let post_mean: f64 = scores[i..(i + half).min(scores.len())]
-            .iter()
-            .sum::<f64>()
+        let pre_mean: f64 = scores[i.saturating_sub(half)..i].iter().sum::<f64>() / half as f64;
+        let post_mean: f64 = scores[i..(i + half).min(scores.len())].iter().sum::<f64>()
             / half.min(scores.len() - i) as f64;
         let jump = (post_mean - pre_mean).abs();
         if jump > threshold {
@@ -359,7 +354,12 @@ fn main() -> Result<()> {
         }
         let content = fs::read_to_string(&path)?;
         let mut records = parse_themis_fgm_hapi_csv_minutes(&content, &spacecraft);
-        println!("  {} DOY {}: {} minutes", spacecraft, date.ordinal(), records.len());
+        println!(
+            "  {} DOY {}: {} minutes",
+            spacecraft,
+            date.ordinal(),
+            records.len()
+        );
         all_minutes.append(&mut records);
     }
 
@@ -456,7 +456,10 @@ fn main() -> Result<()> {
             continue;
         }
 
-        let sum_b: f64 = sample_indices.iter().map(|&i| all_minutes[i].b_magnitude).sum();
+        let sum_b: f64 = sample_indices
+            .iter()
+            .map(|&i| all_minutes[i].b_magnitude)
+            .sum();
         let local_mean_b = sum_b / steps as f64;
         if local_mean_b <= 0.0 || !local_mean_b.is_finite() {
             continue;
@@ -484,10 +487,7 @@ fn main() -> Result<()> {
     let trans_window = cli.crossing_window_minutes.max(5);
     let eval_window_secs = cli.pad_minutes * 60;
 
-    let event_unix: Vec<i64> = fom_catalog
-        .iter()
-        .map(event_midpoint_unix)
-        .collect();
+    let event_unix: Vec<i64> = fom_catalog.iter().map(event_midpoint_unix).collect();
 
     // -----------------------------------------------------------------------
     // Step 4: N_DRAWS random trilinear evaluations
@@ -508,8 +508,7 @@ fn main() -> Result<()> {
         }
 
         let scores = compute_random_trilinear_scores(&delay_vectors, cli.embedding_dim, seed);
-        let fire_hours =
-            detect_transitions(&scores, &score_meta, &all_minutes, trans_window);
+        let fire_hours = detect_transitions(&scores, &score_meta, &all_minutes, trans_window);
 
         let detection_unix: Vec<i64> = fire_hours
             .iter()

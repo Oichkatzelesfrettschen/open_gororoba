@@ -9,8 +9,10 @@ use clap::{Parser, Subcommand};
 use csv::{ReaderBuilder, WriterBuilder};
 use data_core::catalogs::jarvis;
 use plotters::{coord::types::RangedCoordf64, prelude::*};
-use stats_core::helpers::{center_columns_flat, project_rows_onto_components, svd_right_singular_vectors};
 use statrs::function::gamma::gamma;
+use stats_core::helpers::{
+    center_columns_flat, project_rows_onto_components, svd_right_singular_vectors,
+};
 use std::{
     collections::BTreeMap,
     fs,
@@ -435,7 +437,6 @@ fn composition_vector(formula: &str) -> [f64; 118] {
     }
     vector
 }
-
 
 fn spearman_distance_preservation(hi: &[Vec<f64>], lo: &[Vec<f64>], n_pairs: usize) -> f64 {
     let n = hi.len();

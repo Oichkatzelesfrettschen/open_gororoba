@@ -19,8 +19,8 @@
 
 use anyhow::{Context, Result};
 use clap::Parser;
-use stats_core::helpers::singular_values;
 use serde::Serialize;
+use stats_core::helpers::singular_values;
 use std::{fs, path::PathBuf, sync::Arc};
 use zarrs::array::Array;
 use zarrs_filesystem::FilesystemStore;
@@ -125,7 +125,12 @@ fn effective_rank(embedded: &[Vec<f64>], dim: usize) -> usize {
     if n < 3 || dim < 2 {
         return 0;
     }
-    let svals = singular_values(&embedded.iter().map(|r| r[..dim].to_vec()).collect::<Vec<_>>());
+    let svals = singular_values(
+        &embedded
+            .iter()
+            .map(|r| r[..dim].to_vec())
+            .collect::<Vec<_>>(),
+    );
     let max_sv = svals.first().copied().unwrap_or(0.0);
     let threshold = max_sv * 0.10;
     svals.iter().filter(|&&s| s > threshold).count()

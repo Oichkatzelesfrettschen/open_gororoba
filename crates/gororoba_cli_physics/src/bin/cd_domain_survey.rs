@@ -23,8 +23,8 @@
 use std::path::PathBuf;
 
 use anyhow::Result;
-use clap::Parser;
 use cd_kernel::batch_sliding_associator_norms_parallel;
+use clap::Parser;
 use serde::Serialize;
 
 #[derive(Parser)]
@@ -274,9 +274,7 @@ fn main() -> Result<()> {
     let step_pct = (wg256_ns - wg128_ns) / wg128_ns * 100.0;
 
     // Is the sequence monotonically increasing? (No -- wg032 > wg064 by noise)
-    let is_monotonic = wg_sweep
-        .windows(2)
-        .all(|w| w[1].1 >= w[0].1);
+    let is_monotonic = wg_sweep.windows(2).all(|w| w[1].1 >= w[0].1);
 
     eprintln!("\nTeraScale-2 LDS barrier wg-sweep (AMD Radeon HD 6310, VLIW5):");
     for (wg, ns) in &wg_sweep {
@@ -448,10 +446,7 @@ fn main() -> Result<()> {
     );
     eprintln!(
         "{:<40}  {:>12}  {:>10}  {:<30}",
-        "TeraScale-2 VLIW5 wg-sweep",
-        "N/A (step)",
-        "NO",
-        "GPU scheduler, discrete"
+        "TeraScale-2 VLIW5 wg-sweep", "N/A (step)", "NO", "GPU scheduler, discrete"
     );
 
     let summary = format!(

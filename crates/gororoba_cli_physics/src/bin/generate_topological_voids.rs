@@ -207,7 +207,10 @@ fn main() -> anyhow::Result<()> {
     eprintln!("Void Generation Complete.");
     eprintln!("  Threshold: {}", args.threshold);
     eprintln!("  Void fraction (vf = exclusion):           {:.6}", vf);
-    eprintln!("  Baryon filling fraction (1 - vf):         {:.6}", 1.0 - vf);
+    eprintln!(
+        "  Baryon filling fraction (1 - vf):         {:.6}",
+        1.0 - vf
+    );
 
     if (1.0 - vf) < 0.0006 {
         eprintln!(

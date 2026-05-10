@@ -1,9 +1,9 @@
+use algebra_analysis::spectrum_solvers::symmetric_eigenvalues_sorted;
 use anyhow::{Context, Result};
 use cd_kernel::{cd_associator_norm, cd_norm_sq};
 use chrono::{DateTime, Datelike, Utc};
 use clap::Parser;
 use data_core::{CatalogFeatureChannel, CatalogFeatureCube, parse_catalog_feature_cube_json};
-use algebra_analysis::spectrum_solvers::symmetric_eigenvalues_sorted;
 use serde::Serialize;
 use std::{
     collections::BTreeMap,
@@ -285,7 +285,10 @@ fn summarize_dataset(
     let covariance = covariance_matrix(&centered_vectors);
     let covariance_trace: f64 = (0..ALGEBRA_DIM).map(|i| covariance[i][i]).sum();
     let eigenvalues = symmetric_eigenvalues_sorted(
-        &covariance.iter().map(|row| row.to_vec()).collect::<Vec<_>>(),
+        &covariance
+            .iter()
+            .map(|row| row.to_vec())
+            .collect::<Vec<_>>(),
     );
     let effective_rank = effective_rank(&eigenvalues);
     let participation_ratio = participation_ratio(&eigenvalues);

@@ -105,7 +105,12 @@ fn spearman_rho(ranks_x: &[f64], values_y: &[f64]) -> f64 {
         .zip(rank_y.iter())
         .map(|(&rx, &ry)| (rx - mean_rx) * (ry - mean_ry))
         .sum();
-    let std_rx = (ranks_x.iter().map(|&rx| (rx - mean_rx).powi(2)).sum::<f64>() / n).sqrt();
+    let std_rx = (ranks_x
+        .iter()
+        .map(|&rx| (rx - mean_rx).powi(2))
+        .sum::<f64>()
+        / n)
+        .sqrt();
     let std_ry = (rank_y.iter().map(|&ry| (ry - mean_ry).powi(2)).sum::<f64>() / n).sqrt();
     if std_rx > 0.0 && std_ry > 0.0 {
         cov / (n * std_rx * std_ry)
@@ -129,8 +134,8 @@ fn main() -> Result<()> {
 
     for (label, fname) in &files {
         let path = cli.input_dir.join(fname);
-        let content = fs::read_to_string(&path)
-            .with_context(|| format!("reading {}", path.display()))?;
+        let content =
+            fs::read_to_string(&path).with_context(|| format!("reading {}", path.display()))?;
         let raw: EncounterRaw =
             serde_json::from_str(&content).with_context(|| format!("parsing {fname}"))?;
 
@@ -155,7 +160,10 @@ fn main() -> Result<()> {
     }
 
     // Trend statistics on ratio_switchback_to_quiet vs encounter number.
-    let ratios: Vec<f64> = encounters.iter().map(|e| e.ratio_switchback_to_quiet).collect();
+    let ratios: Vec<f64> = encounters
+        .iter()
+        .map(|e| e.ratio_switchback_to_quiet)
+        .collect();
     let n = ratios.len() as f64;
     let mean_r = ratios.iter().sum::<f64>() / n;
     let std_r = (ratios.iter().map(|&r| (r - mean_r).powi(2)).sum::<f64>() / n).sqrt();
@@ -170,7 +178,10 @@ fn main() -> Result<()> {
     let rho = spearman_rho(&enc_ranks, &ratios);
 
     let trend = TrendStats {
-        ratios: ratios.iter().map(|&r| (r * 10000.0).round() / 10000.0).collect(),
+        ratios: ratios
+            .iter()
+            .map(|&r| (r * 10000.0).round() / 10000.0)
+            .collect(),
         mean_ratio: (mean_r * 10000.0).round() / 10000.0,
         std_ratio: (std_r * 10000.0).round() / 10000.0,
         min_ratio: (min_r * 10000.0).round() / 10000.0,
@@ -179,7 +190,11 @@ fn main() -> Result<()> {
         spearman_rho_vs_encounter: (rho * 10000.0).round() / 10000.0,
     };
 
-    let mono_str = if is_mono { "monotonically decreasing" } else { "non-monotone" };
+    let mono_str = if is_mono {
+        "monotonically decreasing"
+    } else {
+        "non-monotone"
+    };
     let interp = format!(
         "ratio_switchback_to_quiet is {mono_str} across E1->E4->E6->E10 \
          (Spearman rho={rho:.3} vs encounter number, where higher encounter = closer perihelion). \

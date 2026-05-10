@@ -105,7 +105,6 @@ fn build_design_matrix(
         .collect()
 }
 
-
 fn main() -> anyhow::Result<()> {
     let cli = Cli::parse();
 

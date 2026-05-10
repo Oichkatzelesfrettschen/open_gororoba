@@ -248,12 +248,11 @@ fn register_markdown_paths(
         );
     }
     let map_path = repo_root.join("registry/markdown_owner_map.toml");
-    let original = fs::read_to_string(&map_path)
-        .with_context(|| format!("read {}", map_path.display()))?;
+    let original =
+        fs::read_to_string(&map_path).with_context(|| format!("read {}", map_path.display()))?;
     // Parse with the lossy parser purely to enumerate existing paths
     // and catch the document_count value; the write path uses text edits.
-    let value: toml::Value =
-        toml::from_str(&original).context("parse markdown_owner_map.toml")?;
+    let value: toml::Value = toml::from_str(&original).context("parse markdown_owner_map.toml")?;
     let existing: BTreeSet<String> = table_array(&value, "owner")
         .iter()
         .map(|row| table_str(row, "path").replace('\\', "/"))
@@ -288,17 +287,17 @@ fn register_markdown_paths(
         }
     }
     let new_count = declared_count + new_paths.len() as i64;
-    let count_re = regex::Regex::new(r"(?m)^document_count\s*=\s*\d+\s*$")
-        .expect("static regex");
-    let with_count =
-        count_re.replace(&original, format!("document_count = {}", new_count).as_str());
+    let count_re = regex::Regex::new(r"(?m)^document_count\s*=\s*\d+\s*$").expect("static regex");
+    let with_count = count_re.replace(
+        &original,
+        format!("document_count = {}", new_count).as_str(),
+    );
     let mut updated = with_count.into_owned();
     if !updated.ends_with('\n') {
         updated.push('\n');
     }
     updated.push_str(&blocks);
-    fs::write(&map_path, &updated)
-        .with_context(|| format!("write {}", map_path.display()))?;
+    fs::write(&map_path, &updated).with_context(|| format!("write {}", map_path.display()))?;
     eprintln!(
         "registered {} new path(s); document_count {} -> {}",
         new_paths.len(),

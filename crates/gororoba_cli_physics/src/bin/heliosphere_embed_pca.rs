@@ -137,7 +137,11 @@ fn main() {
         // Project: row_i * V[:, 0:3]
         let mut pcs = [0.0f64; 3];
         for (k, pc) in pcs.iter_mut().enumerate().take(3.min(v_t_rows.len())) {
-            *pc = centered[i].iter().zip(v_t_rows[k].iter()).map(|(a, b)| a * b).sum();
+            *pc = centered[i]
+                .iter()
+                .zip(v_t_rows[k].iter())
+                .map(|(a, b)| a * b)
+                .sum();
         }
 
         // Associator norm (offset by 2 for triple)

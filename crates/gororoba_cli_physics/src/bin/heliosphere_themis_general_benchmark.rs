@@ -103,8 +103,7 @@ struct Cli {
 
     #[arg(
         long,
-        default_value =
-            "data/output/heliosphere/ablations/themis_general_benchmark.json"
+        default_value = "data/output/heliosphere/ablations/themis_general_benchmark.json"
     )]
     out_json: PathBuf,
 }
@@ -302,13 +301,8 @@ fn main() -> Result<()> {
     println!("[3/4] Loading Staples+2020 catalog...");
     let catalog_content = fs::read_to_string(&cli.staples_catalog)
         .with_context(|| format!("reading {}", cli.staples_catalog.display()))?;
-    let catalog = parse_staples_crossing_catalog(
-        &catalog_content,
-        probe_char,
-        start,
-        end,
-        cli.pad_minutes,
-    );
+    let catalog =
+        parse_staples_crossing_catalog(&catalog_content, probe_char, start, end, cli.pad_minutes);
     println!(
         "  {} catalog events for TH{} in {} to {}",
         catalog.len(),
@@ -348,8 +342,7 @@ fn main() -> Result<()> {
     let mut n_gap_skipped: usize = 0;
 
     for w_start in 0..=(all_minutes.len().saturating_sub(window_rows)) {
-        let sample_indices: Vec<usize> =
-            (0..steps).map(|s| w_start + s * cli.takens_lag).collect();
+        let sample_indices: Vec<usize> = (0..steps).map(|s| w_start + s * cli.takens_lag).collect();
         let first_h = all_minutes[*sample_indices.first().unwrap()].elapsed_hours;
         let last_h = all_minutes[*sample_indices.last().unwrap()].elapsed_hours;
         if last_h - first_h > max_window_span_hours {
@@ -417,10 +410,7 @@ fn main() -> Result<()> {
         }
     }
 
-    let total_hours = all_minutes
-        .last()
-        .map(|r| r.elapsed_hours)
-        .unwrap_or(0.0);
+    let total_hours = all_minutes.last().map(|r| r.elapsed_hours).unwrap_or(0.0);
     let cd_fire_rate_per_hour = if total_hours > 0.0 {
         cd_hours.len() as f64 / total_hours
     } else {
@@ -462,8 +452,11 @@ fn main() -> Result<()> {
     );
 
     let series_start_unix = Utc.from_utc_datetime(&reference_midnight).timestamp();
-    let series_end_unix =
-        series_start_unix + all_minutes.last().map(|r| (r.elapsed_hours * 3600.0) as i64).unwrap_or(0);
+    let series_end_unix = series_start_unix
+        + all_minutes
+            .last()
+            .map(|r| (r.elapsed_hours * 3600.0) as i64)
+            .unwrap_or(0);
 
     let (bs_mean, bs_lo, bs_hi) = boundary_metrics::bootstrap_f1_ci_seeded(
         &cd_unix,

@@ -49,18 +49,19 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         let metric = parts[2];
 
         if let Ok(effect_size) = parts[6].parse::<f64>()
-            && metric == "um_fraction_eps05" {
-                // Approximate latent dimension 'g' by counting the number of features joined by '+'
-                let dim = (subset.matches('+').count() + 1) as f64;
+            && metric == "um_fraction_eps05"
+        {
+            // Approximate latent dimension 'g' by counting the number of features joined by '+'
+            let dim = (subset.matches('+').count() + 1) as f64;
 
-                domains
-                    .entry(dataset)
-                    .or_default()
-                    .push(ScalingObservation {
-                        dimension: dim,
-                        effect_size,
-                    });
-            }
+            domains
+                .entry(dataset)
+                .or_default()
+                .push(ScalingObservation {
+                    dimension: dim,
+                    effect_size,
+                });
+        }
     }
 
     println!("Dataset successfully parsed. Mapping Domains to the Coupler-Manifold...\n");

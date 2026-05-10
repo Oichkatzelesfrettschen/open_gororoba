@@ -217,8 +217,7 @@ fn parse_vosi_tableset(xml: &str) -> Result<Vec<Table>, String> {
             Event::Text(t) => {
                 // quick-xml 0.39: BytesText does NOT expose unescape() directly;
                 // use UTF-8 decode and strip common XML entities inline.
-                let raw =
-                    std::str::from_utf8(t.as_ref()).unwrap_or("").to_string();
+                let raw = std::str::from_utf8(t.as_ref()).unwrap_or("").to_string();
                 let txt = raw
                     .replace("&amp;", "&")
                     .replace("&lt;", "<")
@@ -376,4 +375,3 @@ fn chrono_today() -> String {
     let y = if m <= 2 { y + 1 } else { y };
     format!("{:04}-{:02}-{:02}", y, m, d)
 }
-

@@ -10,8 +10,7 @@ use anyhow::{Context, Result};
 use chrono::{Datelike, Duration, NaiveDate};
 use clap::Parser;
 use data_core::{
-    catalogs::themis::parse_themis_fgm_hapi_csv_minutes,
-    catalogs::themis_fetch::ThemisFgmProvider,
+    catalogs::{themis::parse_themis_fgm_hapi_csv_minutes, themis_fetch::ThemisFgmProvider},
     crossing_lists::{match_crossings, parse_crossing_list},
     fetcher::{DatasetProvider, FetchConfig},
 };

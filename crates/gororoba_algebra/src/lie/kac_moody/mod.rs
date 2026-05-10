@@ -31,7 +31,7 @@ pub mod cartans;
 pub mod e_series;
 pub mod roots;
 pub mod types;
-pub use cartans::{a_n_cartan, d_n_cartan, e10_cartan, e11_cartan, e8_cartan, e9_cartan};
+pub use cartans::{a_n_cartan, d_n_cartan, e8_cartan, e9_cartan, e10_cartan, e11_cartan};
 pub use e_series::{E9RootSystem, E10RootSystem, E11RootSystem, ESeriesRootSystem};
 pub use roots::{KacMoodyRoot, KacMoodyRootSystem, RootType};
 pub use types::{

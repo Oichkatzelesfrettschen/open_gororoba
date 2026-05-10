@@ -27,13 +27,7 @@ fn norm_sq3(a: [f64; 3]) -> f64 {
 }
 
 /// Simple RK4 step for position + velocity under Kepler + CD drag.
-fn rk4_step(
-    pos: &mut [f64; 3],
-    vel: &mut [f64; 3],
-    gm: f64,
-    force: &CdLadderForce,
-    dt: f64,
-) {
+fn rk4_step(pos: &mut [f64; 3], vel: &mut [f64; 3], gm: f64, force: &CdLadderForce, dt: f64) {
     let accel = |p: [f64; 3], v: [f64; 3]| -> [f64; 3] {
         let r2 = norm_sq3(p);
         let r = r2.sqrt();
@@ -64,8 +58,12 @@ fn rk4_step(
     let sum_v = add3(add3(k1v, scale3(k2v, 2.0)), add3(scale3(k3v, 2.0), k4v));
     let dx = scale3(sum_x, dt / 6.0);
     let dv = scale3(sum_v, dt / 6.0);
-    pos[0] += dx[0]; pos[1] += dx[1]; pos[2] += dx[2];
-    vel[0] += dv[0]; vel[1] += dv[1]; vel[2] += dv[2];
+    pos[0] += dx[0];
+    pos[1] += dx[1];
+    pos[2] += dx[2];
+    vel[0] += dv[0];
+    vel[1] += dv[1];
+    vel[2] += dv[2];
 }
 
 fn main() {

@@ -23,9 +23,7 @@ use cosmology_core::{
     nfw_utils::{nfw_enclosed_mass_from_params, nfw_params_from_mass},
 };
 use data_core::catalogs::manga::{parse_manga_dapall_csv, parse_manga_rotcurves};
-use stats_core::helpers::{
-    ols_svd_solve, r_squared_from_predictions, svd_right_singular_vectors,
-};
+use stats_core::helpers::{ols_svd_solve, r_squared_from_predictions, svd_right_singular_vectors};
 use std::{f64::consts::PI, path::PathBuf};
 
 const G_KPC_KMS2: f64 = 4.302e-6;
@@ -253,11 +251,8 @@ fn main() -> anyhow::Result<()> {
     let (sigma, vt_rows) = svd_right_singular_vectors(&centered);
 
     let total_var: f64 = sigma.iter().map(|s| s * s).sum();
-    let var_2modes = sigma
-        .first()
-        .map(|s| s * s)
-        .unwrap_or(0.0)
-        + sigma.get(1).map(|s| s * s).unwrap_or(0.0);
+    let var_2modes =
+        sigma.first().map(|s| s * s).unwrap_or(0.0) + sigma.get(1).map(|s| s * s).unwrap_or(0.0);
     eprintln!(
         "SVD: sigma_1={:.4e}, sigma_2={:.4e}",
         sigma.first().copied().unwrap_or(0.0),
@@ -325,10 +320,8 @@ fn main() -> anyhow::Result<()> {
     eprintln!("Valid galaxies with all features: {}", valid_count);
 
     // Solve via SVD-stabilized normal equations
-    let beta0 = ols_svd_solve(&x_rows, &y_svd0)
-        .unwrap_or_else(|| vec![0.0_f64; n_features]);
-    let beta1 = ols_svd_solve(&x_rows, &y_svd1)
-        .unwrap_or_else(|| vec![0.0_f64; n_features]);
+    let beta0 = ols_svd_solve(&x_rows, &y_svd0).unwrap_or_else(|| vec![0.0_f64; n_features]);
+    let beta1 = ols_svd_solve(&x_rows, &y_svd1).unwrap_or_else(|| vec![0.0_f64; n_features]);
 
     // Compute predictions and R^2 for each SVD coefficient
     let y0_pred: Vec<f64> = x_rows.iter().map(|row| dot_slice(row, &beta0)).collect();
@@ -366,8 +359,14 @@ fn main() -> anyhow::Result<()> {
     eprintln!("\nSubtracting predicted baryonic shape from each galaxy...");
 
     // V^T rows for shape reconstruction
-    let v0: Vec<f64> = vt_rows.first().cloned().unwrap_or_else(|| vec![0.0; n_valid]);
-    let v1: Vec<f64> = vt_rows.get(1).cloned().unwrap_or_else(|| vec![0.0; n_valid]);
+    let v0: Vec<f64> = vt_rows
+        .first()
+        .cloned()
+        .unwrap_or_else(|| vec![0.0; n_valid]);
+    let v1: Vec<f64> = vt_rows
+        .get(1)
+        .cloned()
+        .unwrap_or_else(|| vec![0.0; n_valid]);
 
     let mut corrected_galaxies: Vec<NormalizedResiduals> = Vec::new();
 

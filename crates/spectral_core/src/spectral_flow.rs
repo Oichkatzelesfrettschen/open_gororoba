@@ -130,7 +130,10 @@ pub fn sedenion_field_svd(phi: &[Vec<f64>]) -> Vec<f64> {
     let n_points = phi.len();
     assert!(n_points > 0, "sedenion_field_svd: empty field");
     let n_comp = phi[0].len();
-    assert_eq!(n_comp, 16, "sedenion_field_svd: each point must have 16 components");
+    assert_eq!(
+        n_comp, 16,
+        "sedenion_field_svd: each point must have 16 components"
+    );
 
     let mut mat = Mat::<f64>::zeros(n_comp, n_points);
     for (j, site) in phi.iter().enumerate() {

@@ -338,10 +338,8 @@ pub fn compute_pmns(charged_pair: (usize, usize), neutrino_pair: (usize, usize))
     // Sort eigenvectors by ascending absolute mass before constructing U_PMNS.
     // Required because faer guarantees ascending signed-eigenvalue order, but
     // generation ordering (nu_1 lightest, nu_3 heaviest) requires abs ordering.
-    let (ch_masses, u_ch) =
-        crate::quark_sector::sort_mass_eigenstates(&eig_ch.S(), &eig_ch.U());
-    let (nu_masses, u_nu) =
-        crate::quark_sector::sort_mass_eigenstates(&eig_nu.S(), &eig_nu.U());
+    let (ch_masses, u_ch) = crate::quark_sector::sort_mass_eigenstates(&eig_ch.S(), &eig_ch.U());
+    let (nu_masses, u_nu) = crate::quark_sector::sort_mass_eigenstates(&eig_nu.S(), &eig_nu.U());
 
     // U_PMNS = U_charged^T * U_neutrino
     let u_pmns_raw = u_ch.transpose() * u_nu;

@@ -21,9 +21,11 @@ use anyhow::{Context, Result};
 use clap::Parser;
 use regex::Regex;
 use serde::Serialize;
-use std::collections::BTreeMap;
-use std::fs;
-use std::path::{Path, PathBuf};
+use std::{
+    collections::BTreeMap,
+    fs,
+    path::{Path, PathBuf},
+};
 
 #[derive(Parser, Debug)]
 #[command(
@@ -166,12 +168,7 @@ fn main() -> Result<()> {
                   docs/engineering/formal_proof_field_schema_2026_05_09.md";
     let mut applied = 0u64;
     for p in proposals {
-        store.claim_update_formal_proof(
-            &p.id,
-            &p.proposed_formal_proof,
-            &actor,
-            Some(reason),
-        )?;
+        store.claim_update_formal_proof(&p.id, &p.proposed_formal_proof, &actor, Some(reason))?;
         applied += 1;
         if applied % 100 == 0 {
             eprintln!("applied {} / {} ...", applied, total);
@@ -193,7 +190,8 @@ fn classify(
 ) -> (String, u8) {
     // Rule 1: refuted/falsified/closed-negative -> na_empirical
     let s = status.to_ascii_lowercase();
-    if s == "refuted" || s == "falsified" || s == "closed_negative_result" || s == "closed_refuted" {
+    if s == "refuted" || s == "falsified" || s == "closed_negative_result" || s == "closed_refuted"
+    {
         return ("na_empirical".to_string(), 1);
     }
     // Rule 2: arXiv: or doi in where_stated -> external:<key>

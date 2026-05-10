@@ -12,9 +12,9 @@
 // ---- project_api_contract -------------------------------------------------------
 
 use gororoba_cli_data::project_api_contract::{
-    AcquisitionJournalRow, ProjectApiContract, ProjectApiCrosswalkBinding,
-    ProjectApiCrosswalkFile, ProjectApiEntrypoints, journal_multi_value,
-    resolve_crosswalk_binding, repo_path, split_journal_multi_value,
+    AcquisitionJournalRow, ProjectApiContract, ProjectApiCrosswalkBinding, ProjectApiCrosswalkFile,
+    ProjectApiEntrypoints, journal_multi_value, repo_path, resolve_crosswalk_binding,
+    split_journal_multi_value,
 };
 
 // ---- acquisition_dossier --------------------------------------------------------

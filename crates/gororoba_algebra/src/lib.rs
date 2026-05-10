@@ -21,10 +21,9 @@ pub use traits::Hypercomplex;
 
 // Re-export common functions from cd_kernel for convenience
 pub use cd_kernel::{
-    batch_associator_norms, batch_associator_norms_parallel,
-    batch_sedenion_associator_norms, batch_sedenion_associator_norms_parallel, cd_associator,
-    cd_associator_norm, cd_conjugate, cd_multiply, cd_multiply_simd, cd_norm_sq,
-    find_zero_divisors,
+    batch_associator_norms, batch_associator_norms_parallel, batch_sedenion_associator_norms,
+    batch_sedenion_associator_norms_parallel, cd_associator, cd_associator_norm, cd_conjugate,
+    cd_multiply, cd_multiply_simd, cd_norm_sq, find_zero_divisors,
 };
 
 pub use cd_kernel::cayley_dickson::{SignTable, cd_basis_mul_sign, cd_multiply_into};
@@ -52,8 +51,10 @@ pub mod lie;
 pub mod gpu;
 
 // -- types ---------------------------------------------------------------
-pub use construction::auxiliary::{Rational, padic_distance};
-pub use construction::padic::vp_int;
+pub use construction::{
+    auxiliary::{Rational, padic_distance},
+    padic::vp_int,
+};
 
 // -- construction re-exports (core) -------------------------------------
 #[cfg(feature = "core")]

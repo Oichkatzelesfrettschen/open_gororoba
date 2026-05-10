@@ -167,11 +167,13 @@ fn classify_windows(
 
         // Br sign reversal: min(Br) * max(Br) < 0.
         let br_min = window.iter().map(|r| r.br).fold(f64::INFINITY, f64::min);
-        let br_max = window.iter().map(|r| r.br).fold(f64::NEG_INFINITY, f64::max);
+        let br_max = window
+            .iter()
+            .map(|r| r.br)
+            .fold(f64::NEG_INFINITY, f64::max);
         let has_br_reversal = br_min * br_max < 0.0;
 
-        let is_compressive_boundary =
-            rel_delta_b >= compress_boundary_min && rotation_deg >= 15.0;
+        let is_compressive_boundary = rel_delta_b >= compress_boundary_min && rotation_deg >= 15.0;
         let is_alfvenic = (has_br_reversal || rotation_deg >= alfven_rot_min_deg)
             && rel_delta_b < alfven_compress_max;
 
@@ -304,7 +306,10 @@ fn build_ascii_summary(
     for st in [af, co, qu] {
         s.push_str(&format!(
             "{:<22} {:>8} {:>8.1} {:>10.3} {:>10.3}\n",
-            st.class, st.total_minutes, st.total_hours, st.cd_fire_rate_per_hour,
+            st.class,
+            st.total_minutes,
+            st.total_hours,
+            st.cd_fire_rate_per_hour,
             st.gradient_fire_rate_per_hour,
         ));
     }
@@ -401,11 +406,7 @@ fn main() -> Result<()> {
         };
 
         let mut records = parse_psp_fields_hapi_csv_minutes(&content);
-        println!(
-            "  {}: {} minute records",
-            fname,
-            records.len()
-        );
+        println!("  {}: {} minute records", fname, records.len());
         all_minutes.append(&mut records);
         chunk_start = chunk_end + chrono::Duration::days(1);
     }
@@ -424,10 +425,7 @@ fn main() -> Result<()> {
     });
     // Remove duplicates (overlap at chunk boundaries).
     all_minutes.dedup_by(|a, b| {
-        b.year == a.year
-            && b.doy == a.doy
-            && b.hour == a.hour
-            && b.minute == a.minute
+        b.year == a.year && b.doy == a.doy && b.hour == a.hour && b.minute == a.minute
     });
 
     let (fy, fd, fh, fm) = (
@@ -437,8 +435,7 @@ fn main() -> Result<()> {
         all_minutes[0].minute,
     );
     for rec in &mut all_minutes {
-        let day_diff =
-            (rec.year as f64 - fy as f64) * 365.25 + (rec.doy as f64 - fd as f64);
+        let day_diff = (rec.year as f64 - fy as f64) * 365.25 + (rec.doy as f64 - fd as f64);
         rec.elapsed_hours = day_diff * 24.0
             + (rec.hour as f64 - fh as f64)
             + (rec.minute as f64 - fm as f64) / 60.0;
@@ -448,7 +445,10 @@ fn main() -> Result<()> {
         "  Total: {} minutes ({:.1} hours / {:.1} days)",
         all_minutes.len(),
         all_minutes.last().map(|r| r.elapsed_hours).unwrap_or(0.0),
-        all_minutes.last().map(|r| r.elapsed_hours / 24.0).unwrap_or(0.0),
+        all_minutes
+            .last()
+            .map(|r| r.elapsed_hours / 24.0)
+            .unwrap_or(0.0),
     );
 
     // -----------------------------------------------------------------------
@@ -464,7 +464,10 @@ fn main() -> Result<()> {
         cli.alfven_rot_min_deg,
     );
 
-    let n_alfvenic = labels.iter().filter(|&&c| c == WindowClass::Alfvenic).count();
+    let n_alfvenic = labels
+        .iter()
+        .filter(|&&c| c == WindowClass::Alfvenic)
+        .count();
     let n_compressive = labels
         .iter()
         .filter(|&&c| c == WindowClass::CompressiveBoundary)
@@ -543,8 +546,7 @@ fn main() -> Result<()> {
     let mut n_gap_skipped: usize = 0;
 
     for w_start in 0..=(all_minutes.len() - window_rows) {
-        let sample_indices: Vec<usize> =
-            (0..steps).map(|s| w_start + s * cli.takens_lag).collect();
+        let sample_indices: Vec<usize> = (0..steps).map(|s| w_start + s * cli.takens_lag).collect();
 
         let first_h = all_minutes[*sample_indices.first().unwrap()].elapsed_hours;
         let last_h = all_minutes[*sample_indices.last().unwrap()].elapsed_hours;
@@ -593,8 +595,7 @@ fn main() -> Result<()> {
     let mut cd_minute_indices: Vec<usize> = Vec::new();
 
     if associators.len() > trans_window * 2 {
-        let global_mean: f64 =
-            associators.iter().sum::<f64>() / associators.len() as f64;
+        let global_mean: f64 = associators.iter().sum::<f64>() / associators.len() as f64;
         let global_std: f64 = {
             let var = associators
                 .iter()
@@ -609,11 +610,10 @@ fn main() -> Result<()> {
         for i in half..associators.len().saturating_sub(half) {
             let pre_mean: f64 =
                 associators[i.saturating_sub(half)..i].iter().sum::<f64>() / half as f64;
-            let post_mean: f64 =
-                associators[i..(i + half).min(associators.len())]
-                    .iter()
-                    .sum::<f64>()
-                    / half.min(associators.len() - i) as f64;
+            let post_mean: f64 = associators[i..(i + half).min(associators.len())]
+                .iter()
+                .sum::<f64>()
+                / half.min(associators.len() - i) as f64;
             let jump = (post_mean - pre_mean).abs();
             if jump > threshold {
                 let dominated =
@@ -637,15 +637,12 @@ fn main() -> Result<()> {
     // -----------------------------------------------------------------------
     println!("[5/5] Computing per-class fire rates...");
 
-    let count_fires_by_class =
-        |fire_indices: &[usize], target: WindowClass| -> usize {
-            fire_indices
-                .iter()
-                .filter(|&&mi| {
-                    mi < labels.len() && labels[mi] == target
-                })
-                .count()
-        };
+    let count_fires_by_class = |fire_indices: &[usize], target: WindowClass| -> usize {
+        fire_indices
+            .iter()
+            .filter(|&&mi| mi < labels.len() && labels[mi] == target)
+            .count()
+    };
 
     // CD per class.
     let cd_af = count_fires_by_class(&cd_minute_indices, WindowClass::Alfvenic);

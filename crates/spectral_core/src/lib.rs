@@ -526,8 +526,8 @@ pub fn fractional_laplacian_periodic_2d_flat(
     lx: f64,
     ly: f64,
 ) -> Vec<f64> {
-    let grid = Array2::from_shape_vec((nx, ny), u.to_vec())
-        .expect("flat slice length must equal nx * ny");
+    let grid =
+        Array2::from_shape_vec((nx, ny), u.to_vec()).expect("flat slice length must equal nx * ny");
     fractional_laplacian_periodic_2d(&grid, s, lx, ly)
         .into_raw_vec_and_offset()
         .0
@@ -545,8 +545,8 @@ pub fn fractional_laplacian_dirichlet_2d_flat(
     lx: f64,
     ly: f64,
 ) -> Vec<f64> {
-    let grid = Array2::from_shape_vec((nx, ny), u.to_vec())
-        .expect("flat slice length must equal nx * ny");
+    let grid =
+        Array2::from_shape_vec((nx, ny), u.to_vec()).expect("flat slice length must equal nx * ny");
     fractional_laplacian_dirichlet_2d(&grid, s, lx, ly)
         .into_raw_vec_and_offset()
         .0

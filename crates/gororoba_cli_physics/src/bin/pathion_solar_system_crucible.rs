@@ -128,8 +128,10 @@ fn main() -> anyhow::Result<()> {
         p_sim_helio_final[1] - p_jpl_helio_final[1],
         p_sim_helio_final[2] - p_jpl_helio_final[2],
     ];
-    let drift_final =
-        (diff_final[0] * diff_final[0] + diff_final[1] * diff_final[1] + diff_final[2] * diff_final[2]).sqrt();
+    let drift_final = (diff_final[0] * diff_final[0]
+        + diff_final[1] * diff_final[1]
+        + diff_final[2] * diff_final[2])
+        .sqrt();
 
     println!("\n=== Final Results ===");
     println!(
