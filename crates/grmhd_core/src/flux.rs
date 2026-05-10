@@ -599,7 +599,12 @@ fn compute_rhs_3d_inner(
                     // Store EMF from HLL induction flux at this radial face.
                     // Only write from k == ng to avoid redundant writes across phi.
                     if k == ng {
-                        // Safety: each (face_i, j) pair is unique within this sweep.
+                        // SAFETY: each (face_i, j) pair is unique within this
+                        // sweep (rayon partitions (j, k) and we gate on k==ng,
+                        // so no two threads ever target the same (face_i, j)).
+                        // emf_p points to face_emfs.emf_r (length n1t * n2t);
+                        // face_i * n2t + j stays within bounds because
+                        // face_i in 0..n1t and j in 0..n2t.
                         unsafe {
                             let ep = emf_p.add(face_i * n2t + j);
                             *ep = -f_hll[6]; // negative of B^theta flux
@@ -737,6 +742,10 @@ fn compute_rhs_3d_inner(
 
                     // Store EMF (only first k writes to avoid races on 2D EMF)
                     if k == ng {
+                        // SAFETY: ep points to face_emfs.emf_th (length
+                        // n1t * n2t); the gate k==ng ensures only one thread
+                        // touches each (i, face_j). i*n2t + face_j is in
+                        // bounds because i < n1t and face_j < n2t.
                         unsafe {
                             *ep.add(i * n2t + face_j) = f_hll[5];
                         }
