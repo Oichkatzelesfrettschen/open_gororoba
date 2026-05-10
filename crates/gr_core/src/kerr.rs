@@ -1434,6 +1434,9 @@ mod tests {
     }
 
     #[test]
+    // Tensor inverse consistency: nested mu, nu, lambda loops compute
+    // delta^mu_nu = sum_lambda g^{mu lambda} g_{lambda nu}; all 3
+    // indices are needed simultaneously.
     #[allow(clippy::needless_range_loop)]
     fn test_kerr_trait_inverse_consistency() {
         // g * g^{-1} = delta (identity) for the (t,phi) block
@@ -1487,6 +1490,8 @@ mod tests {
     }
 
     #[test]
+    // Christoffel symmetry test: gamma^lambda_{mu nu} = gamma^lambda_{nu mu}
+    // requires both (mu, nu) and (nu, mu) accesses for the same lambda.
     #[allow(clippy::needless_range_loop)]
     fn test_kerr_trait_christoffel_symmetry() {
         // Christoffel symbols must be symmetric in lower indices
@@ -1598,6 +1603,8 @@ mod tests {
     }
 
     #[test]
+    // Ricci tensor R_{mu nu} = R^lambda_{mu lambda nu}: contraction
+    // requires nested mu, nu, lambda loops with simultaneous index access.
     #[allow(clippy::needless_range_loop)]
     fn test_kerr_trait_vacuum_einstein() {
         // Kerr is a vacuum solution: R_{mu nu} = 0

@@ -161,6 +161,8 @@ fn gaussian_eliminate_partial_pivot(
                 continue;
             }
             let factor = matrix[row][col] / pivot;
+            // Gauss-Jordan row reduction: matrix[row][c] depends on
+            // matrix[current_row][c]; needs `c` to index both rows.
             #[allow(clippy::needless_range_loop)]
             for c in 0..n_params {
                 matrix[row][c] -= factor * matrix[current_row][c];

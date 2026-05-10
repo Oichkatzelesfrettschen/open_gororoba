@@ -409,6 +409,8 @@ mod tests {
     }
 
     #[test]
+    // Minkowski Christoffel test: scan all (mu, nu, rho) for gamma^mu_{nu rho};
+    // 3-index tensor access is irreducible.
     #[allow(clippy::needless_range_loop)]
     fn test_minkowski_christoffel_zero() {
         let m = Minkowski;
@@ -431,6 +433,9 @@ mod tests {
     }
 
     #[test]
+    // Minkowski Riemann test: 4-index tensor R^rho_{sigma mu nu} requires
+    // nested rho, sigma, mu, nu loops; iter().enumerate() chains do not
+    // compose cleanly through 4 levels.
     #[allow(clippy::needless_range_loop)]
     fn test_minkowski_riemann_zero() {
         let m = Minkowski;
@@ -456,6 +461,8 @@ mod tests {
     }
 
     #[test]
+    // Minkowski Ricci tensor test: R_{mu nu} = R^lambda_{mu lambda nu}
+    // contracts the Riemann tensor; nested mu, nu, lambda loops needed.
     #[allow(clippy::needless_range_loop)]
     fn test_minkowski_ricci_zero() {
         let m = Minkowski;

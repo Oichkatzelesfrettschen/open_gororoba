@@ -429,6 +429,8 @@ mod tests {
     }
 
     #[test]
+    // Identity-matrix check: needs i and j separately for the
+    // diagonal-vs-off-diagonal expected-value branch.
     #[allow(clippy::needless_range_loop)]
     fn test_quaternion_to_matrix_identity() {
         let q = Quaternion::identity();

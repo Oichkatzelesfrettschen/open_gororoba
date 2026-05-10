@@ -1487,6 +1487,8 @@ mod tests {
     // === 64D adjacency (Phase 2.2) ===
 
     #[test]
+    // 31x32 cross-pair adjacency matrix scan; needs both indices i and j
+    // to access matrix[i][j] symmetry vs matrix[j][i] in the test body.
     #[allow(clippy::needless_range_loop)]
     fn test_64d_adjacency_basic_properties() {
         // Build our adjacency matrix for dim=64
@@ -3059,6 +3061,8 @@ mod tests {
     }
 
     #[test]
+    // K_4 disjoint union construction: nested i,j loops needed to write
+    // adj[i][j] and adj[j][i] in the same iteration as the symmetry check.
     #[allow(clippy::needless_range_loop)]
     fn test_thesis_g_k4_union_k4_spectrum() {
         // K_4 union K_4: spectrum = {3, 3, -1, -1, -1, -1, -1, -1}

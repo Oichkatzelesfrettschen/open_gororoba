@@ -429,6 +429,7 @@ mod tests {
         // Cocycle condition: f(a,b) + f(b,a) = (a,b) mod 2
         // Cross-indexed: f[i][j] and f[j][i] require both indices
         let cartan = compute_cartan_matrix(&basis.roots, &basis.simple_root_indices);
+        // Outer-by-i + inner-by-j matrix double loop with cross-index access f[i][j] + f[j][i].
         #[allow(clippy::needless_range_loop)]
         for i in 0..7 {
             for j in 0..7 {

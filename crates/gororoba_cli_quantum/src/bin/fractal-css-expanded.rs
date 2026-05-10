@@ -25,6 +25,8 @@ fn gf2_rank(matrix: &mut [Vec<u8>]) -> usize {
 
     for c in 0..n {
         let mut piv = None;
+        // GF(2) pivot search: iterating i in r..m needs the raw index to
+        // record `piv = Some(i)` for the row swap below.
         #[allow(clippy::needless_range_loop)]
         for i in r..m {
             if matrix[i][c] == 1 {
@@ -37,6 +39,8 @@ fn gf2_rank(matrix: &mut [Vec<u8>]) -> usize {
             if pivot_row != r {
                 matrix.swap(r, pivot_row);
             }
+            // GF(2) Gauss-Jordan pivot reduction: row i compares vs r and
+            // XOR-accumulates from matrix[r][..]; needs both indices.
             #[allow(clippy::needless_range_loop)]
             for i in 0..m {
                 if i != r && matrix[i][c] == 1 {
@@ -88,6 +92,8 @@ fn main() -> Result<()> {
 
     let translate = |mask: &[Vec<u8>], tx: usize, ty: usize| -> Vec<Vec<u8>> {
         let mut out = vec![vec![0u8; l]; l];
+        // Cyclic-shift translate: out[r][c] reads mask[src_r][src_c]
+        // where src_r/src_c are computed from (r, c, tx, ty).
         #[allow(clippy::needless_range_loop)]
         for r in 0..l {
             for c in 0..l {
@@ -130,6 +136,8 @@ fn main() -> Result<()> {
 
     let flat = |mask: &[Vec<u8>]| -> Vec<u8> {
         let mut out = Vec::with_capacity(n_qubits);
+        // Row-major flatten of a 2-D Vec<Vec<u8>>: explicit (r, c) order
+        // mirrors the qubit indexing convention used downstream.
         #[allow(clippy::needless_range_loop)]
         for r in 0..l {
             for c in 0..l {
@@ -230,6 +238,7 @@ fn main() -> Result<()> {
         let bg_color = Rgb([13u8, 15u8, 20u8]);
         let blue = Rgb([97u8, 166u8, 245u8]);
 
+        // PNG raster: same 4-deep grid->pixel pattern as fracton-code.rs.
         #[allow(clippy::needless_range_loop)]
         for r in 0..l {
             for c in 0..l {

@@ -337,6 +337,8 @@ mod tests {
     }
 
     #[test]
+    // Schwarzschild metric diagonality test: scan g[mu][nu] off-diagonal
+    // entries; needs both mu and nu separately to compare against zero.
     #[allow(clippy::needless_range_loop)]
     fn test_metric_diagonal() {
         let s = bh();
@@ -432,6 +434,8 @@ mod tests {
     }
 
     #[test]
+    // Schwarzschild Christoffel symmetry: gamma^lambda_{mu nu} =
+    // gamma^lambda_{nu mu} requires (mu, nu) and (nu, mu) for fixed lambda.
     #[allow(clippy::needless_range_loop)]
     fn test_christoffel_symmetry() {
         let s = bh();
@@ -488,6 +492,8 @@ mod tests {
     // -- Vacuum Einstein equation test --
 
     #[test]
+    // Schwarzschild Ricci tensor R_{mu nu} = R^lambda_{mu lambda nu};
+    // contraction needs nested mu, nu, lambda loops with index access.
     #[allow(clippy::needless_range_loop)]
     fn test_vacuum_einstein_equation() {
         // Schwarzschild is a vacuum solution: R_{mu nu} = 0

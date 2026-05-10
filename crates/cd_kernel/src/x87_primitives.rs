@@ -898,6 +898,8 @@ pub fn x87_is_exact_zero_vec(v: &[f64]) -> bool {
 /// On Zen3: ~3 cycles per FLD+FMUL+FMUL+FADDP chain = ~48 cycles per component.
 /// Total for all 16 components: ~768 cycles.
 #[cfg(target_arch = "x86_64")]
+// CD basis multiplication: each step computes p = t ^ q (XOR-indexed
+// pair) and accesses a[p], b[q] from two slices using the same q.
 #[allow(clippy::needless_range_loop)]
 pub fn x87_cd_component(t: usize, dim: usize, a: &[f64], b: &[f64]) -> f64 {
     use crate::cayley_dickson::cd_basis_mul_sign_iter;
@@ -930,6 +932,8 @@ pub fn x87_cd_component(t: usize, dim: usize, a: &[f64], b: &[f64]) -> f64 {
 }
 
 #[cfg(not(target_arch = "x86_64"))]
+// CD basis multiplication: each step computes p = t ^ q (XOR-indexed
+// pair) and accesses a[p], b[q] from two slices using the same q.
 #[allow(clippy::needless_range_loop)]
 pub fn x87_cd_component(t: usize, dim: usize, a: &[f64], b: &[f64]) -> f64 {
     use crate::cayley_dickson::cd_basis_mul_sign_iter;

@@ -1546,6 +1546,9 @@ impl LbmSolver3D {
         let lattice = self.collider.lattice.clone();
         let f_src = &self.f;
 
+        // 3-D LBM streaming step: nested z, y, x with 19-velocity inner
+        // loop computes dst_idx = z*(nx*ny) + y*nx + x; flat-index access
+        // requires raw indices, not iterator wrappers.
         #[allow(clippy::needless_range_loop)]
         for z in z_range {
             for y in 0..ny {

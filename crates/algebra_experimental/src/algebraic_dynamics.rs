@@ -1179,6 +1179,8 @@ pub fn extract_skybox_invariants(n: usize, s: usize) -> SkyboxInvariants {
     let mut n_components = 0usize;
     let mut largest_component = 0usize;
 
+    // BFS connected-components scan over a 2-D grid: (r, c) tuple is the
+    // node identity and the BFS queue stores raw indices.
     #[allow(clippy::needless_range_loop)]
     for r in 0..edge {
         for c in 0..edge {
