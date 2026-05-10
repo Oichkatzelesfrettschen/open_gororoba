@@ -1895,7 +1895,8 @@ fn print_revision_summary(entity_kind: &str, revision: &provenance_store::Status
 
 /// If `regen_toml` is true, spawn `provenance export-control-plane` to
 /// regenerate the compatibility-export TOMLs and downstream mirror files.
-/// The exporter is a separate binary in gororoba_cli_data; spawning it as
+/// The `provenance` binary lives in the slim gororoba_cli_provenance crate
+/// (which path-imports the source from gororoba_cli_data); spawning it as
 /// a subprocess keeps the gororoba-db dep graph small (no provenance_ops
 /// dep). Errors are propagated; the caller's mutation has already
 /// committed by the time we reach this function.
@@ -1912,7 +1913,7 @@ fn maybe_regen_toml(regen_toml: bool) -> Result<()> {
             "run",
             "--release",
             "-p",
-            "gororoba_cli_data",
+            "gororoba_cli_provenance",
             "--bin",
             "provenance",
             "--",
@@ -1921,7 +1922,7 @@ fn maybe_regen_toml(regen_toml: bool) -> Result<()> {
         .status()
         .map_err(|e| {
             anyhow::anyhow!(
-                "failed to spawn `cargo run -p gororoba_cli_data --bin provenance`: {}",
+                "failed to spawn `cargo run -p gororoba_cli_provenance --bin provenance`: {}",
                 e
             )
         })?;
