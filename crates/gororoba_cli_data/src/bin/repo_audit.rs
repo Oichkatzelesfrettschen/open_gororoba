@@ -247,30 +247,32 @@ impl Patterns {
 
 fn count_in_rust_file(src: &str, patterns: &Patterns) -> Counts {
     let stripped = strip_rust(src);
-    let mut c = Counts::default();
-    c.rust_files = 1;
-    c.unsafe_blocks = patterns.unsafe_block.find_iter(&stripped).count() as u64;
-    c.ignore_attrs = patterns.ignore_attr.find_iter(&stripped).count() as u64;
-    c.allow_clippy_attrs = patterns.allow_clippy.find_iter(&stripped).count() as u64;
-    c.allow_dead_code_attrs = patterns.allow_dead_code.find_iter(&stripped).count() as u64;
-    c.unimplemented_macros = patterns.unimplemented_macro.find_iter(&stripped).count() as u64;
-    c.todo_macros = patterns.todo_macro.find_iter(&stripped).count() as u64;
-    c.unreachable_macros = patterns.unreachable_macro.find_iter(&stripped).count() as u64;
-    c.safety_comments = patterns.safety_comment.find_iter(src).count() as u64;
-    c.todo_fixme_xxx_hack = patterns.todo_fixme.find_iter(src).count() as u64;
-    c
+    Counts {
+        rust_files: 1,
+        unsafe_blocks: patterns.unsafe_block.find_iter(&stripped).count() as u64,
+        ignore_attrs: patterns.ignore_attr.find_iter(&stripped).count() as u64,
+        allow_clippy_attrs: patterns.allow_clippy.find_iter(&stripped).count() as u64,
+        allow_dead_code_attrs: patterns.allow_dead_code.find_iter(&stripped).count() as u64,
+        unimplemented_macros: patterns.unimplemented_macro.find_iter(&stripped).count() as u64,
+        todo_macros: patterns.todo_macro.find_iter(&stripped).count() as u64,
+        unreachable_macros: patterns.unreachable_macro.find_iter(&stripped).count() as u64,
+        safety_comments: patterns.safety_comment.find_iter(src).count() as u64,
+        todo_fixme_xxx_hack: patterns.todo_fixme.find_iter(src).count() as u64,
+        ..Counts::default()
+    }
 }
 
 fn count_in_rocq_file(src: &str, patterns: &Patterns) -> Counts {
-    let mut c = Counts::default();
-    c.rocq_files = 1;
-    c.rocq_admitted_strict = patterns.rocq_admitted_strict.find_iter(src).count() as u64;
-    c.rocq_admit_strict = patterns.rocq_admit_strict.find_iter(src).count() as u64;
-    c.rocq_axiom_strict = patterns.rocq_axiom_top.find_iter(src).count() as u64;
-    c.rocq_axiom_indented = patterns.rocq_axiom_indented.find_iter(src).count() as u64;
-    c.rocq_parameter_strict = patterns.rocq_parameter_top.find_iter(src).count() as u64;
-    c.rocq_parameter_indented = patterns.rocq_parameter_indented.find_iter(src).count() as u64;
-    c
+    Counts {
+        rocq_files: 1,
+        rocq_admitted_strict: patterns.rocq_admitted_strict.find_iter(src).count() as u64,
+        rocq_admit_strict: patterns.rocq_admit_strict.find_iter(src).count() as u64,
+        rocq_axiom_strict: patterns.rocq_axiom_top.find_iter(src).count() as u64,
+        rocq_axiom_indented: patterns.rocq_axiom_indented.find_iter(src).count() as u64,
+        rocq_parameter_strict: patterns.rocq_parameter_top.find_iter(src).count() as u64,
+        rocq_parameter_indented: patterns.rocq_parameter_indented.find_iter(src).count() as u64,
+        ..Counts::default()
+    }
 }
 
 fn merge(into: &mut Counts, from: &Counts) {
