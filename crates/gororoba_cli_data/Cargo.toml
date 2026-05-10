@@ -12,6 +12,10 @@ autobins = false
 name = "repo-audit"
 path = "src/bin/repo_audit.rs"
 
+[[bin]]
+name = "formal-proof-backfill"
+path = "src/bin/formal_proof_backfill.rs"
+
 # ---- Claims (3) ----
 
 [[bin]]
