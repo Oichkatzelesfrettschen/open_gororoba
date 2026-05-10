@@ -1,0 +1,36 @@
+year = 1979
+bartol_path = "data/external/voyager2/vy2_1979.asc"
+amda_path = "data/external/voyager/voyager2/vy2_1979_amda_merged_hourly.asc"
+bartol_n_total = 8760
+amda_n_total = 8760
+paired_n_both_valid = 8760
+bartol_only = 0
+amda_only = 0
+
+[b_magnitude]
+n_paired = 5359
+mean = -0.03531871617839137
+rms = 0.10900373539944518
+max_abs = 2.54
+p99_abs = 0.44999999999999996
+
+[br]
+n_paired = 5707
+mean = -0.00004748554406868745
+rms = 0.002909203657196729
+max_abs = 0.0050000000000000044
+p99_abs = 0.0050000000000000044
+
+[bt]
+n_paired = 5707
+mean = -0.000005782372524970739
+rms = 0.0029248217197237023
+max_abs = 0.0050000000000000044
+p99_abs = 0.0050000000000000044
+
+[bn]
+n_paired = 5707
+mean = -0.000018924128263536193
+rms = 0.0029151303454196978
+max_abs = 0.0050000000000000044
+p99_abs = 0.0050000000000000044

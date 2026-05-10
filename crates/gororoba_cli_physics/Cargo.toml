@@ -1157,3 +1157,9 @@ path = "src/bin/themis_cd_crossing_survey.rs"
 [[bin]]
 name = "su5-gut"
 path = "src/bin/su5_gut.rs"
+
+# ---- Voyager 2 cross-validation (T-058) ----
+
+[[bin]]
+name = "voyager2-bartol-amda-crossval"
+path = "src/bin/voyager2_bartol_amda_crossval.rs"
