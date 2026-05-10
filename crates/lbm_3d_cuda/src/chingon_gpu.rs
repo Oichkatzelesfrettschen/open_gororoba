@@ -129,22 +129,14 @@ impl ChingonGpuPipeline {
 
     /// Execute the full tensor contraction pipeline for one RK4 sub-step.
     ///
-    /// All orbital parameters are passed as f64 from the CPU integrator,
-    /// cast to f32 for the GPU kernel. The 3D force is returned as f64
-    /// for integration back into the f64 RK4 loop.
-    #[allow(clippy::too_many_arguments)]
+    /// All orbital parameters are passed as f64 from the CPU integrator
+    /// inside the shared `ThreeBodyOrbitalParams` bundle (computed by
+    /// `gr_core::forces::ThreeBodyOrbitalParams::compute`), cast to f32
+    /// for the GPU kernel. The 3D force is returned as f64 for
+    /// integration back into the f64 RK4 loop.
     pub fn compute_force_3body(
         &mut self,
-        triad_earth: &[[f64; 3]; 3],
-        triad_lunar: &[[f64; 3]; 3],
-        triad_solar: &[[f64; 3]; 3],
-        h_triad_earth: &[f64; 3],
-        vrel_triad_lunar: &[f64; 3],
-        h_triad_solar: &[f64; 3],
-        vhat_triad_solar: &[f64; 3],
-        h_earth_norm: f64,
-        v_rel_norm: f64,
-        cross_sign: f64,
+        params: &gr_core::forces::chingon_bivector_drag::ThreeBodyOrbitalParams,
         alpha: f64,
     ) -> Result<[f64; 3]> {
         // Step 1: Zero the force buffers
@@ -157,29 +149,18 @@ impl ChingonGpuPipeline {
         zero_device_buffer(&self.stream, &self.zero_kernel, &mut self.d_force_3d, 3)?;
 
         // Step 2: Build the N-D state vector
-        self.build_state(
-            triad_earth,
-            triad_lunar,
-            triad_solar,
-            h_triad_earth,
-            vrel_triad_lunar,
-            h_triad_solar,
-            vhat_triad_solar,
-            h_earth_norm,
-            v_rel_norm,
-            cross_sign,
-        )?;
+        self.build_state(params)?;
 
         // Step 3: AVT tensor contraction
         self.run_contraction(alpha as f32)?;
 
         // Step 4: Project N-D force to 3D
         self.run_projection(
-            triad_solar,
-            h_triad_solar,
-            vhat_triad_solar,
-            h_earth_norm,
-            cross_sign,
+            &params.triad_solar,
+            &params.h_triad_solar,
+            &params.vhat_triad_solar,
+            params.h_earth_norm,
+            params.cross_sign,
         )?;
 
         // Step 5: Read back 3D force
@@ -191,19 +172,9 @@ impl ChingonGpuPipeline {
         Ok([force[0] as f64, force[1] as f64, force[2] as f64])
     }
 
-    #[allow(clippy::too_many_arguments)]
     fn build_state(
         &mut self,
-        triad_earth: &[[f64; 3]; 3],
-        triad_lunar: &[[f64; 3]; 3],
-        triad_solar: &[[f64; 3]; 3],
-        h_triad_earth: &[f64; 3],
-        vrel_triad_lunar: &[f64; 3],
-        h_triad_solar: &[f64; 3],
-        vhat_triad_solar: &[f64; 3],
-        h_earth_norm: f64,
-        v_rel_norm: f64,
-        cross_sign: f64,
+        params: &gr_core::forces::chingon_bivector_drag::ThreeBodyOrbitalParams,
     ) -> Result<()> {
         // Launch enough threads to cover all axes
         let threads = 256u32.min(self.dim);
@@ -213,6 +184,10 @@ impl ChingonGpuPipeline {
             block_dim: (threads, 1, 1),
             shared_mem_bytes: 0,
         };
+
+        let triad_earth = &params.triad_earth;
+        let triad_lunar = &params.triad_lunar;
+        let triad_solar = &params.triad_solar;
 
         // Cast all f64 -> f32 for kernel args
         let e_v_earth_x = triad_earth[0][0] as f32;
@@ -245,21 +220,21 @@ impl ChingonGpuPipeline {
         let e_n_solar_y = triad_solar[2][1] as f32;
         let e_n_solar_z = triad_solar[2][2] as f32;
 
-        let ht_e0 = h_triad_earth[0] as f32;
-        let ht_e1 = h_triad_earth[1] as f32;
-        let ht_e2 = h_triad_earth[2] as f32;
-        let vr_l0 = vrel_triad_lunar[0] as f32;
-        let vr_l1 = vrel_triad_lunar[1] as f32;
-        let vr_l2 = vrel_triad_lunar[2] as f32;
-        let ht_s0 = h_triad_solar[0] as f32;
-        let ht_s1 = h_triad_solar[1] as f32;
-        let ht_s2 = h_triad_solar[2] as f32;
-        let vh_s0 = vhat_triad_solar[0] as f32;
-        let vh_s1 = vhat_triad_solar[1] as f32;
-        let vh_s2 = vhat_triad_solar[2] as f32;
-        let h_norm = h_earth_norm as f32;
-        let v_norm = v_rel_norm as f32;
-        let cs = cross_sign as f32;
+        let ht_e0 = params.h_triad_earth[0] as f32;
+        let ht_e1 = params.h_triad_earth[1] as f32;
+        let ht_e2 = params.h_triad_earth[2] as f32;
+        let vr_l0 = params.vrel_triad_lunar[0] as f32;
+        let vr_l1 = params.vrel_triad_lunar[1] as f32;
+        let vr_l2 = params.vrel_triad_lunar[2] as f32;
+        let ht_s0 = params.h_triad_solar[0] as f32;
+        let ht_s1 = params.h_triad_solar[1] as f32;
+        let ht_s2 = params.h_triad_solar[2] as f32;
+        let vh_s0 = params.vhat_triad_solar[0] as f32;
+        let vh_s1 = params.vhat_triad_solar[1] as f32;
+        let vh_s2 = params.vhat_triad_solar[2] as f32;
+        let h_norm = params.h_earth_norm as f32;
+        let v_norm = params.v_rel_norm as f32;
+        let cs = params.cross_sign as f32;
 
         let mut builder = self.stream.launch_builder(&self.build_state_kernel);
         builder.arg(&mut self.d_v_nd);
