@@ -327,6 +327,11 @@ enum ClaimMutationAction {
         /// Free-form reason recorded in claim_revisions.reason.
         #[arg(long)]
         reason: Option<String>,
+        /// Run provenance export-control-plane after the SQLite update.
+        /// Pass --no-regen-toml to skip; useful for batch updates where
+        /// you want to call the exporter once at the end.
+        #[arg(long, action = clap::ArgAction::Set, default_value_t = true)]
+        regen_toml: bool,
     },
     /// Print the current status_note for one claim.
     ShowStatusNote {
@@ -352,6 +357,11 @@ enum InsightMutationAction {
         actor: Option<String>,
         #[arg(long)]
         reason: Option<String>,
+        /// Run provenance export-control-plane after the SQLite update.
+        /// Pass --no-regen-toml to skip; useful for batch updates where
+        /// you want to call the exporter once at the end.
+        #[arg(long, action = clap::ArgAction::Set, default_value_t = true)]
+        regen_toml: bool,
     },
     ShowStatusNote {
         #[arg(long)]
@@ -376,6 +386,11 @@ enum ExperimentMutationAction {
         actor: Option<String>,
         #[arg(long)]
         reason: Option<String>,
+        /// Run provenance export-control-plane after the SQLite update.
+        /// Pass --no-regen-toml to skip; useful for batch updates where
+        /// you want to call the exporter once at the end.
+        #[arg(long, action = clap::ArgAction::Set, default_value_t = true)]
+        regen_toml: bool,
     },
     ShowStatusNote {
         #[arg(long)]
@@ -1836,6 +1851,66 @@ fn cmd_planning_mutation(
     Ok(())
 }
 
+/// Pretty-print a status_note revision audit row to stdout.
+fn print_revision_summary(entity_kind: &str, revision: &provenance_store::StatusNoteRevision) {
+    println!(
+        "{} {} status_note: revision {} actor={} prev_sha256={} new_sha256={}",
+        entity_kind,
+        revision.entity_id,
+        revision.revision_id,
+        revision.actor,
+        revision
+            .prev_value_sha256
+            .as_deref()
+            .unwrap_or("(none)"),
+        &revision.new_value_sha256
+    );
+}
+
+/// If `regen_toml` is true, spawn `provenance export-control-plane` to
+/// regenerate the compatibility-export TOMLs and downstream mirror files.
+/// The exporter is a separate binary in gororoba_cli_data; spawning it as
+/// a subprocess keeps the gororoba-db dep graph small (no provenance_ops
+/// dep). Errors are propagated; the caller's mutation has already
+/// committed by the time we reach this function.
+fn maybe_regen_toml(regen_toml: bool) -> Result<()> {
+    if !regen_toml {
+        eprintln!(
+            "skipped TOML regen (--no-regen-toml); run `make registry-export-markdown` later."
+        );
+        return Ok(());
+    }
+    eprintln!("regenerating compatibility-export TOMLs ...");
+    let status = std::process::Command::new("cargo")
+        .args([
+            "run",
+            "--release",
+            "-p",
+            "gororoba_cli_data",
+            "--bin",
+            "provenance",
+            "--",
+            "export-control-plane",
+        ])
+        .status()
+        .map_err(|e| {
+            anyhow::anyhow!(
+                "failed to spawn `cargo run -p gororoba_cli_data --bin provenance`: {}",
+                e
+            )
+        })?;
+    if !status.success() {
+        return Err(anyhow::anyhow!(
+            "TOML regen subprocess exited with {}; the SQLite mutation already \
+             committed -- you may need to re-run `make registry-export-markdown` \
+             manually.",
+            status
+        ));
+    }
+    eprintln!("regen complete; remember to run `make integrity-resolution` to refresh schema_signatures.toml.");
+    Ok(())
+}
+
 fn cmd_claim_mutation(
     store: &mut ProvenanceStore,
     args: &ClaimMutationArgs,
@@ -1846,6 +1921,7 @@ fn cmd_claim_mutation(
             status_note,
             actor,
             reason,
+            regen_toml,
         } => {
             let actor = actor
                 .clone()
@@ -1857,22 +1933,8 @@ fn cmd_claim_mutation(
                 &actor,
                 reason.as_deref(),
             )?;
-            println!(
-                "claim {} status_note: revision {} actor={} prev_sha256={} new_sha256={}",
-                revision.entity_id,
-                revision.revision_id,
-                revision.actor,
-                revision
-                    .prev_value_sha256
-                    .as_deref()
-                    .unwrap_or("(none)"),
-                &revision.new_value_sha256
-            );
-            println!(
-                "next: run `make registry-export-markdown` to regenerate \
-                 registry/claims.toml and downstream mirrors, then \
-                 `make integrity-resolution` to refresh schema_signatures.toml."
-            );
+            print_revision_summary("claim", &revision);
+            maybe_regen_toml(*regen_toml)?;
         }
         ClaimMutationAction::ShowStatusNote { id } => {
             let note = store.claim_status_note(id)?;
@@ -1895,6 +1957,7 @@ fn cmd_insight_mutation(
             status_note,
             actor,
             reason,
+            regen_toml,
         } => {
             let actor = actor
                 .clone()
@@ -1906,17 +1969,8 @@ fn cmd_insight_mutation(
                 &actor,
                 reason.as_deref(),
             )?;
-            println!(
-                "insight {} status_note: revision {} actor={} prev_sha256={} new_sha256={}",
-                revision.entity_id,
-                revision.revision_id,
-                revision.actor,
-                revision
-                    .prev_value_sha256
-                    .as_deref()
-                    .unwrap_or("(none)"),
-                &revision.new_value_sha256
-            );
+            print_revision_summary("insight", &revision);
+            maybe_regen_toml(*regen_toml)?;
         }
         InsightMutationAction::ShowStatusNote { id } => {
             let note = store.insight_status_note(id)?;
@@ -1939,6 +1993,7 @@ fn cmd_experiment_mutation(
             status_note,
             actor,
             reason,
+            regen_toml,
         } => {
             let actor = actor
                 .clone()
@@ -1950,17 +2005,8 @@ fn cmd_experiment_mutation(
                 &actor,
                 reason.as_deref(),
             )?;
-            println!(
-                "experiment {} status_note: revision {} actor={} prev_sha256={} new_sha256={}",
-                revision.entity_id,
-                revision.revision_id,
-                revision.actor,
-                revision
-                    .prev_value_sha256
-                    .as_deref()
-                    .unwrap_or("(none)"),
-                &revision.new_value_sha256
-            );
+            print_revision_summary("experiment", &revision);
+            maybe_regen_toml(*regen_toml)?;
         }
         ExperimentMutationAction::ShowStatusNote { id } => {
             let note = store.experiment_status_note(id)?;
