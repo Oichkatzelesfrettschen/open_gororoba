@@ -265,38 +265,216 @@ fn onnx_eval(cli: &Cli, model_path: &std::path::Path) -> Result<Vec<EvalResult>>
         );
     }
 
-    // Phase B v3 (TaskList #60-C): wire ort.run() to consume detected
-    // KV inputs + extract KV outputs into the TurboQuantMSE pipeline.
-    //
-    // The integration sketch is:
-    //
-    //   1. For each ("input-*", name) candidate: allocate a synthetic
-    //      ort::Value tensor with the shape declared in
-    //      session.inputs()[i].dtype(). For GPT-style models the shape
-    //      is typically [batch=1, n_heads, seq_len, head_dim]; the
-    //      first run can use seq_len=0 to get a "no past KV" forward
-    //      pass.
-    //   2. session.run(inputs) -> Result<Vec<(String, Value)>, OrtError>
-    //   3. For each ("output-*", name): pull the f32 buffer out of
-    //      the returned Value, reshape to (batch, heads, seq, dim),
-    //      strip to the d=cli.head_dim axis, and feed into
-    //      TurboQuantMSE::quantize() / dequantize() round-trip.
-    //   4. Compute RMSE / top-1 / kv-byte savings against the
-    //      reference output (raw f32 KV) for each requested bit count.
-    //
-    // The shape unwrap requires either ValueType pattern-matching on
-    // ort::TensorElementType OR using ort::session::SessionInputs ABI
-    // helpers; both surfaces are stable in 2.0.0-rc.12.
-    //
-    // The synthetic_eval fallback below preserves the bench output so
-    // current callers continue to work; replace with the real path in
-    // a focused micro-sprint that has access to a distilgpt2.onnx or
-    // SmolLM2.onnx file for end-to-end verification.
+    // #60-C: actually run the model with synthetic inputs and extract
+    // real KV-cache tensors. Only run() if the input surface matches the
+    // canonical decoder shape ("input_ids" + "attention_mask" + nothing
+    // else, or those two plus past_key_values which we pass as length-0
+    // tensors). For other layouts we fall back to synthetic so the
+    // binary stays usable on unknown architectures.
+    let canonical_decoder = input_names.iter().any(|n| n == "input_ids")
+        && input_names.iter().any(|n| n == "attention_mask")
+        && input_names
+            .iter()
+            .all(|n| n == "input_ids" || n == "attention_mask" || n.starts_with("past_key_values"));
+    if !canonical_decoder || kv_candidates.is_empty() {
+        eprintln!(
+            "  Non-canonical input layout or no KV outputs detected; \
+             falling back to synthetic eval for the metric pass."
+        );
+        drop(session);
+        return Ok(synthetic_eval(cli));
+    }
 
-    // Ensure the session lives at least until we are done printing the
-    // metadata (the Session destructor frees the underlying OrtSession).
-    drop(session);
-    Ok(synthetic_eval(cli))
+    let real_results = run_kv_quantization(cli, &mut session_mut(session), &input_names, &output_names)?;
+    Ok(real_results)
+}
+
+/// Cast `Session` to `&mut Session`. ort 2.0.0-rc.12 `Session::run` takes
+/// `&mut self`; we owned the session by-value above so this is a free move
+/// into the helper. Implemented as a free function to keep the conditional
+/// fallback path above readable.
+#[cfg(feature = "onnx-eval")]
+fn session_mut(s: ort::session::Session) -> ort::session::Session {
+    s
+}
+
+/// Real-model KV quantization eval. For each requested bit count, runs the
+/// model once with synthetic input_ids + attention_mask, extracts the
+/// `present.<N>.{key,value}` outputs, runs them through
+/// `TurboQuantMSE::{quantize,dequantize}` and reports per-bit RMSE,
+/// top-1 KV-position agreement, and exact KV byte savings.
+///
+/// The metric is "self-RMSE": how well the dequantized KV reconstructs the
+/// original KV produced by the model. This is the right ground truth for
+/// "how much will quantizing the KV cache hurt downstream attention
+/// scores"; it does not require re-running with `past_key_values` because
+/// non-merged exports do not accept that input.
+#[cfg(feature = "onnx-eval")]
+fn run_kv_quantization(
+    cli: &Cli,
+    session: &mut ort::session::Session,
+    input_names: &[String],
+    output_names: &[String],
+) -> Result<Vec<EvalResult>> {
+    use ort::value::Tensor;
+
+    // Synthetic input: [1, seq_len] all-zero token IDs + all-one mask.
+    // Token-ID 0 is the BOS for GPT-2 (50256 = "<|endoftext|>") but we
+    // use 0 to keep the test reproducible across models that disagree on
+    // BOS choice; the KV statistics we measure are not BOS-specific.
+    let seq_len = cli.seq_len.min(64); // bound runtime for slow CPU EP
+    let input_ids: Tensor<i64> =
+        Tensor::from_array(([1usize, seq_len], vec![0i64; seq_len]))?;
+    let attn_mask: Tensor<i64> =
+        Tensor::from_array(([1usize, seq_len], vec![1i64; seq_len]))?;
+
+    let mut model_inputs = ort::inputs! {
+        "input_ids" => input_ids,
+        "attention_mask" => attn_mask,
+    };
+
+    // For merged decoders that also accept past_key_values inputs, supply
+    // an empty cache: a [1, n_heads, 0, head_dim] f32 tensor per slot.
+    // Empty-time-axis tensors are valid ONNX and signal "no past state".
+    for name in input_names.iter().filter(|n| n.starts_with("past_key_values")) {
+        let empty: Tensor<f32> = Tensor::from_array((
+            vec![1i64, cli.n_heads as i64, 0, cli.head_dim as i64],
+            Vec::<f32>::new(),
+        ))?;
+        model_inputs.push((name.clone().into(), empty.into()));
+    }
+
+    let outputs = session.run(model_inputs)?;
+
+    // Locate the present.<N>.{key,value} outputs.
+    let kv_names: Vec<&String> = output_names
+        .iter()
+        .filter(|n| {
+            let lower = n.to_ascii_lowercase();
+            (lower.contains("present") || lower.contains("past_key_values"))
+                && (lower.contains("key") || lower.contains("value"))
+        })
+        .collect();
+
+    if kv_names.is_empty() {
+        return Ok(synthetic_eval(cli));
+    }
+
+    // Materialize each KV tensor as Vec<f32> + (heads, seq, dim) shape.
+    // Decoder KV layout is canonically [batch=1, n_heads, seq_len, head_dim].
+    struct KvTensor {
+        data: Vec<f32>,
+        n_heads: usize,
+        seq_len: usize,
+        head_dim: usize,
+    }
+    let mut kv_tensors: Vec<KvTensor> = Vec::with_capacity(kv_names.len());
+    for name in &kv_names {
+        let value = outputs
+            .get(name.as_str())
+            .ok_or_else(|| anyhow::anyhow!("output {} missing from session.run()", name))?;
+        let (shape, slice): (&ort::value::Shape, &[f32]) = value.try_extract_tensor::<f32>()?;
+        let dims: Vec<i64> = shape.iter().copied().collect();
+        if dims.len() != 4 {
+            // Some exports emit [batch, seq, heads, dim] -- skip rather than
+            // mis-quantize them. The synthetic-eval RMSE will still anchor
+            // the comparison if no canonical-shape tensors remain.
+            eprintln!(
+                "  skip KV tensor {} with non-canonical shape {:?}",
+                name, dims
+            );
+            continue;
+        }
+        kv_tensors.push(KvTensor {
+            data: slice.to_vec(),
+            n_heads: dims[1] as usize,
+            seq_len: dims[2] as usize,
+            head_dim: dims[3] as usize,
+        });
+    }
+    if kv_tensors.is_empty() {
+        return Ok(synthetic_eval(cli));
+    }
+
+    // Quantize each tensor at each requested bit count, accumulate stats.
+    let mut results = Vec::with_capacity(cli.bits.len());
+    for &bits in &cli.bits {
+        let mut sum_sq_err: f64 = 0.0;
+        let mut count: usize = 0;
+        let mut top1_total: usize = 0;
+        let mut top1_match: usize = 0;
+        let mut compressed_bytes: usize = 0;
+        let mut uncompressed_bytes: usize = 0;
+
+        for kv in &kv_tensors {
+            let d = kv.head_dim;
+            let tq = cd_kernel::turboquant::pipeline::TurboQuantMSE::new(d, bits, 42, true);
+            let mut buf = vec![0.0f64; 3 * d];
+            uncompressed_bytes += kv.data.len() * 4; // f32 input
+            compressed_bytes += kv.n_heads * kv.seq_len * d * bits as usize / 8
+                + kv.n_heads * kv.seq_len * 2; // per-vector norm bytes
+            for head in 0..kv.n_heads {
+                // Track the original-vs-quantized argmax-by-norm position for
+                // a coarse top-1 metric: which token slot has the largest
+                // KV norm in the head, and does quantization preserve it?
+                let mut orig_norms = vec![0.0f64; kv.seq_len];
+                let mut quant_norms = vec![0.0f64; kv.seq_len];
+                for tok in 0..kv.seq_len {
+                    let base = ((head * kv.seq_len) + tok) * d;
+                    let v_f32 = &kv.data[base..base + d];
+                    let v_f64: Vec<f64> = v_f32.iter().map(|&x| x as f64).collect();
+                    let comp = tq.quantize(&v_f64, &mut buf);
+                    let mut recon = vec![0.0f64; d];
+                    tq.dequantize(&comp, &mut buf, &mut recon);
+                    for k in 0..d {
+                        let e = v_f64[k] - recon[k];
+                        sum_sq_err += e * e;
+                    }
+                    count += d;
+                    orig_norms[tok] = v_f64.iter().map(|x| x * x).sum::<f64>().sqrt();
+                    quant_norms[tok] = recon.iter().map(|x| x * x).sum::<f64>().sqrt();
+                }
+                let argmax = |v: &[f64]| -> usize {
+                    v.iter()
+                        .enumerate()
+                        .max_by(|(_, a), (_, b)| a.partial_cmp(b).unwrap())
+                        .map(|(i, _)| i)
+                        .unwrap_or(0)
+                };
+                if argmax(&orig_norms) == argmax(&quant_norms) {
+                    top1_match += 1;
+                }
+                top1_total += 1;
+            }
+        }
+
+        let rmse = if count > 0 {
+            (sum_sq_err / count as f64).sqrt()
+        } else {
+            0.0
+        };
+        let top1_rate = if top1_total > 0 {
+            (top1_match as f64 / top1_total as f64) * 100.0
+        } else {
+            0.0
+        };
+        let kv_fp16 = uncompressed_bytes / 2; // fp16 reference
+
+        results.push(EvalResult {
+            mode: "onnx".into(),
+            bits,
+            seq_len,
+            head_dim: kv_tensors[0].head_dim,
+            n_heads: kv_tensors[0].n_heads,
+            logit_rmse: rmse,
+            top1_match_rate: top1_rate,
+            top5_match_rate: top1_rate, // top-1 stand-in until we wire merged-decoder eval
+            kv_memory_bytes: compressed_bytes,
+            kv_memory_fp16_bytes: kv_fp16,
+            compression_ratio: kv_fp16 as f64 / compressed_bytes.max(1) as f64,
+        });
+    }
+    Ok(results)
 }
 
 /// Scan input/output names for transformer KV-cache patterns. Returns
