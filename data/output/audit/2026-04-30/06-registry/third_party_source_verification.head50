@@ -1,0 +1,6 @@
+# Third-party source verification log.
+# Records Playwright and manual probes confirming external data source availability.
+# See C-655 and C-656 for specification.
+
+[[verification]]
+# Stub entry.

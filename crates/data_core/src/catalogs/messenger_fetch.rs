@@ -1,6 +1,8 @@
 //! Fetch/provider support for MESSENGER MAG data.
 
-use crate::fetcher::{DailyHapiFetchRequest, DatasetProvider, FetchConfig, FetchError, fetch_daily_hapi_csv_range};
+use crate::fetcher::{
+    DailyHapiFetchRequest, DatasetProvider, FetchConfig, FetchError, fetch_daily_hapi_csv_range,
+};
 use std::path::PathBuf;
 
 const MESSENGER_MAG_HAPI_DATASET: &str = "MESSENGER_MAG_RTN@0";

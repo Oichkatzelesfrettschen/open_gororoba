@@ -6,10 +6,7 @@
 //! Source: https://skyserver.sdss.org/
 //! Reference: Almeida et al. (2023), ApJS 267, 44
 
-use crate::{
-    fetcher::FetchError,
-    parse::parse_f64_or_nan,
-};
+use crate::{fetcher::FetchError, parse::parse_f64_or_nan};
 use std::path::Path;
 
 /// A quasar from SDSS DR18.
@@ -172,5 +169,4 @@ objid,ra,dec,z,zerr,u,g,r,i
     fn test_sdss_quasar_field_count() {
         assert_eq!(SDSS_QUASAR_FIELD_COUNT, 10);
     }
-
 }

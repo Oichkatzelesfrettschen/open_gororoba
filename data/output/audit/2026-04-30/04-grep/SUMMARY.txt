@@ -1,0 +1,9 @@
+todo_fixme             pat=TODO|FIXME|XXX|HACK                                ->    162 matches across    32 files
+safety                 pat=// SAFETY                                          ->     73 matches across    13 files
+allow_dead_code        pat=#\[allow\(dead_code\)\]                            ->     69 matches across    37 files
+unimpl_todo_unreach    pat=unimplemented!\(|todo!\(|unreachable!\(            ->     43 matches across    21 files
+instant_now            pat=Instant::now                                       ->    241 matches across    82 files
+unsafe                 pat=unsafe                                             ->    447 matches across    57 files
+allow_clippy           pat=#\[allow\(clippy::                                 ->    150 matches across    85 files
+test_attr              pat=#\[test\]|#\[tokio::test\]                         ->   7417 matches across   898 files
+ignore_attr            pat=#\[ignore\]                                        ->     49 matches across    14 files

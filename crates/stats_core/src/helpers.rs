@@ -94,8 +94,8 @@ pub fn normal_two_tailed_p_value(z: f64) -> f64 {
 /// Panics if `dof <= 0`. Returns 1.0 for t = 0, approaches 0.0 for large |t|.
 pub fn students_t_two_tailed_p_value(t: f64, dof: f64) -> f64 {
     use statrs::distribution::{ContinuousCDF, StudentsT};
-    let dist = StudentsT::new(0.0, 1.0, dof)
-        .expect("students_t_two_tailed_p_value: dof must be positive");
+    let dist =
+        StudentsT::new(0.0, 1.0, dof).expect("students_t_two_tailed_p_value: dof must be positive");
     2.0 * (1.0 - dist.cdf(t.abs()))
 }
 
@@ -121,7 +121,10 @@ pub fn ridge_predictions(design_rows: &[Vec<f64>], y: &[f64], lambda: f64) -> Op
     if k == 0 {
         return None;
     }
-    let flat: Vec<f64> = design_rows.iter().flat_map(|row| row.iter().copied()).collect();
+    let flat: Vec<f64> = design_rows
+        .iter()
+        .flat_map(|row| row.iter().copied())
+        .collect();
     let x = DMatrix::from_row_slice(n, k, &flat);
     let y_vec = DVector::from_column_slice(y);
     let xt = x.transpose();
@@ -156,7 +159,11 @@ pub fn singular_values(matrix: &[Vec<f64>]) -> Vec<f64> {
     }
     let flat: Vec<f64> = matrix.iter().flat_map(|row| row.iter().copied()).collect();
     let mat = DMatrix::from_row_slice(n_rows, n_cols, &flat);
-    mat.svd(false, false).singular_values.iter().copied().collect()
+    mat.svd(false, false)
+        .singular_values
+        .iter()
+        .copied()
+        .collect()
 }
 
 /// Compute the right singular vectors and singular values of a matrix.
@@ -219,7 +226,10 @@ pub fn svd_projection_r_squared(design_rows: &[Vec<f64>], y: &[f64]) -> f64 {
     if n_cols == 0 {
         return 0.0;
     }
-    let flat: Vec<f64> = design_rows.iter().flat_map(|row| row.iter().copied()).collect();
+    let flat: Vec<f64> = design_rows
+        .iter()
+        .flat_map(|row| row.iter().copied())
+        .collect();
     let a = DMatrix::from_row_slice(n, n_cols, &flat);
     let y_vec = DVector::from_column_slice(y);
     let svd = a.clone().svd(true, true);
@@ -228,7 +238,11 @@ pub fn svd_projection_r_squared(design_rows: &[Vec<f64>], y: &[f64]) -> f64 {
         _ => return 0.0,
     };
     let sigma = &svd.singular_values;
-    let threshold = if sigma[0].abs() > 0.0 { 1e-12 * sigma[0].abs() } else { 1e-30 };
+    let threshold = if sigma[0].abs() > 0.0 {
+        1e-12 * sigma[0].abs()
+    } else {
+        1e-30
+    };
     // y_hat = A * V * S^{-1} * U^T * y
     let mut coeffs = DVector::zeros(sigma.len());
     for k in 0..sigma.len() {
@@ -328,7 +342,10 @@ pub fn ols_svd_solve(design_rows: &[Vec<f64>], y: &[f64]) -> Option<Vec<f64>> {
     if k == 0 {
         return None;
     }
-    let flat: Vec<f64> = design_rows.iter().flat_map(|row| row.iter().copied()).collect();
+    let flat: Vec<f64> = design_rows
+        .iter()
+        .flat_map(|row| row.iter().copied())
+        .collect();
     let x = DMatrix::from_row_slice(n, k, &flat);
     let y_vec = DVector::from_column_slice(y);
     let xt = x.transpose();
@@ -496,7 +513,12 @@ mod tests {
         // Two-tailed p-value is symmetric: p(z) == p(-z).
         let p_pos = normal_two_tailed_p_value(1.5);
         let p_neg = normal_two_tailed_p_value(-1.5);
-        assert!((p_pos - p_neg).abs() < 1e-15, "asymmetry: {} vs {}", p_pos, p_neg);
+        assert!(
+            (p_pos - p_neg).abs() < 1e-15,
+            "asymmetry: {} vs {}",
+            p_pos,
+            p_neg
+        );
     }
 
     #[test]
@@ -529,7 +551,12 @@ mod tests {
         // Two-tailed p-value is symmetric.
         let p_pos = students_t_two_tailed_p_value(2.0, 10.0);
         let p_neg = students_t_two_tailed_p_value(-2.0, 10.0);
-        assert!((p_pos - p_neg).abs() < 1e-15, "asymmetry: {} vs {}", p_pos, p_neg);
+        assert!(
+            (p_pos - p_neg).abs() < 1e-15,
+            "asymmetry: {} vs {}",
+            p_pos,
+            p_neg
+        );
     }
 
     #[test]
@@ -587,11 +614,7 @@ mod tests {
     #[test]
     fn svd_right_singular_vectors_v_t_orthonormal() {
         // 3x2 matrix: rows of V^T should be orthonormal (2 vectors in R^2)
-        let mat = vec![
-            vec![1.0, 0.0],
-            vec![0.0, 1.0],
-            vec![1.0, 1.0],
-        ];
+        let mat = vec![vec![1.0, 0.0], vec![0.0, 1.0], vec![1.0, 1.0]];
         let (_svals, v_t) = svd_right_singular_vectors(&mat);
         assert_eq!(v_t.len(), 2);
         // Each row is unit-length

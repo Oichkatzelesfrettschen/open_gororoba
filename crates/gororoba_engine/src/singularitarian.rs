@@ -461,10 +461,8 @@ impl SingularitarianEngine {
         let pioneer_a = Some(self.pioneer_anomaly(6.0e9, 12.0));
 
         // 7. Adaptive Wick evolution
-        let mut system = NBodySystem::new(
-            1e-5,
-            [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]],
-        );
+        let mut system =
+            NBodySystem::new(1e-5, [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]);
         let adaptive_wick = Some(self.adaptive_wick_evolve(
             &mut system,
             4.1e6,

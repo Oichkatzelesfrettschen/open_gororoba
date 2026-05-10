@@ -87,9 +87,7 @@ pub fn fractional_schrodinger_evolve(
     let n = cfg.n;
     let dx = (2.0 * cfg.l_domain) / n as f64;
 
-    let x: Vec<f64> = (0..n)
-        .map(|i| -cfg.l_domain + i as f64 * dx)
-        .collect();
+    let x: Vec<f64> = (0..n).map(|i| -cfg.l_domain + i as f64 * dx).collect();
 
     let k: Vec<f64> = (0..n)
         .map(|i| {
@@ -181,9 +179,7 @@ pub fn pareto_sweep(
 ) -> Vec<ParetoPoint> {
     let n = cfg.n;
     let dx = (2.0 * cfg.l_domain) / n as f64;
-    let x: Vec<f64> = (0..n)
-        .map(|i| -cfg.l_domain + i as f64 * dx)
-        .collect();
+    let x: Vec<f64> = (0..n).map(|i| -cfg.l_domain + i as f64 * dx).collect();
 
     // Free evolution baseline (no absorber)
     let psi_free = fractional_schrodinger_evolve(cfg, wp, None);

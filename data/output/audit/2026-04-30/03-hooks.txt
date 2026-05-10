@@ -1,0 +1,40 @@
+=== ls -la .git/hooks/ ===
+total 88
+drwxr-xr-x  2 eirikr eirikr 4096 Feb  8 12:10 .
+drwxr-xr-x 10 eirikr eirikr 4096 Apr 30 17:08 ..
+-rwxr-xr-x  1 eirikr eirikr  478 Jan 27 08:32 applypatch-msg.sample
+-rwxr-xr-x  1 eirikr eirikr  896 Jan 27 08:32 commit-msg.sample
+-rwxr-xr-x  1 eirikr eirikr 4726 Jan 27 08:32 fsmonitor-watchman.sample
+-rwxr-xr-x  1 eirikr eirikr  360 Feb  8 12:10 post-checkout
+-rwxr-xr-x  1 eirikr eirikr  356 Feb  8 12:10 post-commit
+-rwxr-xr-x  1 eirikr eirikr  354 Feb  8 12:10 post-merge
+-rwxr-xr-x  1 eirikr eirikr  189 Jan 27 08:32 post-update.sample
+-rwxr-xr-x  1 eirikr eirikr  424 Jan 27 08:32 pre-applypatch.sample
+-rwxr-xr-x  1 eirikr eirikr 1649 Jan 27 08:32 pre-commit.sample
+-rwxr-xr-x  1 eirikr eirikr  416 Jan 27 08:32 pre-merge-commit.sample
+-rwxr-xr-x  1 eirikr eirikr 1492 Jan 27 08:32 prepare-commit-msg.sample
+-rwxr-xr-x  1 eirikr eirikr  350 Feb  8 12:10 pre-push
+-rwxr-xr-x  1 eirikr eirikr 1374 Jan 27 08:32 pre-push.sample
+-rwxr-xr-x  1 eirikr eirikr 4898 Jan 27 08:32 pre-rebase.sample
+-rwxr-xr-x  1 eirikr eirikr  544 Jan 27 08:32 pre-receive.sample
+-rwxr-xr-x  1 eirikr eirikr 2783 Jan 27 08:32 push-to-checkout.sample
+-rwxr-xr-x  1 eirikr eirikr 2308 Jan 27 08:32 sendemail-validate.sample
+-rwxr-xr-x  1 eirikr eirikr 3650 Jan 27 08:32 update.sample
+
+=== ls -la scripts/hooks/ (if present) ===
+ls: cannot access 'scripts/hooks/': No such file or directory
+
+=== ls -la .githooks/ (if present) ===
+total 88
+drwxr-xr-x  2 eirikr eirikr  4096 Apr 17 10:08 .
+drwxr-xr-x 28 eirikr eirikr 65536 Apr 17 16:39 ..
+-rwxr-xr-x  1 eirikr eirikr   360 Mar 18 21:57 post-checkout
+-rwxr-xr-x  1 eirikr eirikr   356 Mar 18 21:57 post-commit
+-rwxr-xr-x  1 eirikr eirikr   354 Mar 18 21:57 post-merge
+-rwxr-xr-x  1 eirikr eirikr  1772 Apr 17 10:08 pre-push
+
+=== git config core.hooksPath ===
+.githooks
+(empty or missing means default .git/hooks)
+
+=== captured at 2026-04-30T17:09:46-07:00 ===

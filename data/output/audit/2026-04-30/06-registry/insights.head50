@@ -1,0 +1,50 @@
+# AUTO-GENERATED: READ-ONLY COMPATIBILITY EXPORT.
+# Canonical write path: registry/canonical/control_plane.sqlite3
+# Regenerate with: cargo run -p gororoba_cli_data --bin provenance -- export-control-plane
+# Compatibility export lane: insights
+
+[[insight]]
+claims = ["C-071"]
+date = "2026-02-06"
+id = "I-001"
+sprint = 6
+status = "verified"
+summary = "The Macquart relation connects FRB dispersion measures to redshift via integrated baryon density: DM_cosmic(z) = 935 * integral (1+z')/E(z') dz'. Bisection inversion (DM->z) converges in ~27 iterations. Foundation for comoving distance in ultrametric analysis."
+title = "Macquart Relation Fills the Comoving Distance Gap"
+
+[[insight]]
+claims = ["C-071"]
+date = "2026-02-06"
+id = "I-002"
+sprint = 6
+status = "verified"
+summary = "C-071 (FRB DMs exhibit p-adic ultrametric structure) definitively refuted using raw DM values. Ultrametricity is a property of hierarchical organization, not scalar distributions. This motivated five new analysis directions testing multi-attribute encodings, temporal cascades, and transformed coordinate spaces."
+title = "Ultrametric Structure Lives in Representations, Not Scalars"
+
+[[insight]]
+claims = []
+date = "2026-02-06"
+id = "I-003"
+sprint = 6
+status = "verified"
+summary = "Identified key crates preventing reimplementation: kodama 0.3.0 (dendrograms), kiddo 5.2.4 (k-d trees, AVX2), fitsrs 0.4.1 (FITS), rustfft 6.4.1 + realfft 3.5.0 (FFT), votable 0.7.0, satkit 0.9.3. Notable gaps requiring custom implementation: cophenetic correlation, Baire metric, local ultrametricity (Bradley 2025), KDE."
+title = "Existing Rust Crate Ecosystem for Cosmological Analysis"
+
+[[insight]]
+claims = ["C-200", "C-201", "C-202", "C-203", "C-204", "C-205", "C-206", "C-207", "C-208", "C-209", "C-210"]
+date = "2026-02-06"
+id = "I-004"
+sprint = 6
+status = "verified"
+summary = "Kodama returns Dendrogram with Step{cluster1, cluster2, dissimilarity, size}; cophenetic distance c(i,j) = dissimilarity at first merge, enabling cophenetic correlation. Also: first real-data joint fit of Lambda-CDM vs bounce cosmology using 1578 Pantheon+ SNe + 7 DESI DR1 BAO bins. Delta BIC = +7.37 favoring Lambda-CDM. Critical data quality fix: BGS/QSO bins are isotropic-only (not anisotropic)."
+title = "Kodama Dendrogram and Real Observational Cosmology Infrastructure"
+
+[[insight]]
+claims = ["C-437", "C-442"]
+date = "2026-02-06"
+id = "I-005"
+sprint = 6
+status = "superseded"
+summary = "Initial 7-catalog survey with 5K subsampling found only FRB/pulsar catalogs showing significant ultrametric excess. SUPERSEDED by I-011 (GPU 10M-triple sweep): the 5K subsampling destroyed Hipparcos galactic signal, making the conclusion too narrow. The ISM-mediation hypothesis for radio transients remains valid."
+title = "Ultrametric Structure is Radio-Transient-Specific (Preliminary)"
+

@@ -2125,9 +2125,7 @@ fn run_cpd_file_list(output: &Path) -> Result<()> {
             .replace('\\', "/");
 
         // Check excluded directories.
-        let in_excluded_dir = CPD_EXCLUDE_DIRS
-            .iter()
-            .any(|excl| rel.starts_with(excl));
+        let in_excluded_dir = CPD_EXCLUDE_DIRS.iter().any(|excl| rel.starts_with(excl));
         if in_excluded_dir {
             continue;
         }

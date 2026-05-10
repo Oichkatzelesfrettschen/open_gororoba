@@ -1,0 +1,5 @@
+proofs/theories/WilmotCDStructure.v:1
+proofs/theories/SStructuralGaps.v:1
+proofs/theories/SchaferDivAlg16.v:1
+proofs/theories/CDPowerAssociative.v:1
+proofs/theories/BrownGeneralizedCD.v:1

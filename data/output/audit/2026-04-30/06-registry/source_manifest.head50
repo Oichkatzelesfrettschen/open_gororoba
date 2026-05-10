@@ -1,0 +1,50 @@
+# Source Manifest: Registry Compatibility Layer
+#
+# This file declares which TOML files are compatibility artifacts for SQLite-first
+# migration and verification flows.
+#
+# The `gororoba-db build` command reads this manifest to discover which files
+# feed compatibility ingest and export consistency checks against the canonical DB.
+
+[manifest]
+version = 1
+description = "Compatibility manifest for TOML artifacts in SQLite-first workflows"
+
+# ── Core research registries ─────────────────────────────────────────
+
+[[source]]
+path = "registry/claims.toml"
+role = "core"
+table = "claims"
+description = "1300+ formal research claims with verification status"
+
+[[source]]
+path = "registry/insights.toml"
+role = "core"
+table = "insights"
+description = "Cross-domain research insights"
+
+[[source]]
+path = "registry/experiments.toml"
+role = "core"
+table = "experiments"
+description = "Reproducible experiment definitions"
+
+[[source]]
+path = "registry/binaries.toml"
+role = "core"
+table = "binaries"
+description = "Binary entrypoint to experiment mapping"
+
+[[source]]
+path = "registry/project.toml"
+role = "core"
+table = "project_metadata"
+description = "Project metadata and sprint history"
+
+[[source]]
+path = "registry/external_sources.toml"
+role = "core"
+table = "external_source_contracts"
+description = "External data source contracts"
+

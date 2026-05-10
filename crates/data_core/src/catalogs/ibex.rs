@@ -138,7 +138,6 @@ pub fn parse_ibex_ena_file(
     ))
 }
 
-
 /// Parse IBEX orbit/support HAPI CSV from CDAWeb.
 ///
 /// Deduplicates to one record per (year, doy, hour) -- the first occurrence wins.
@@ -155,9 +154,12 @@ pub fn parse_ibex_orbit_hapi_csv(content: &str) -> Vec<IbexOrbitRecord> {
             continue;
         };
         let radius_re = parse_hapi_spacephysics_f64_or_nan(record.get(1).unwrap_or(""));
-        hourly
-            .entry((year, doy, hour))
-            .or_insert(IbexOrbitRecord { year, doy, hour, radius_re });
+        hourly.entry((year, doy, hour)).or_insert(IbexOrbitRecord {
+            year,
+            doy,
+            hour,
+            radius_re,
+        });
     }
     hourly.into_values().collect()
 }

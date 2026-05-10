@@ -1,0 +1,59 @@
+=== A19 VF acronym search (audit only; user decides definition) ===
+
+=== rg 'VF' MEMORY (file from prior context only) ===
+(MEMORY.md is at /home/eirikr/.claude/projects/-home-eirikr-Github-open-gororoba/memory/MEMORY.md)
+100:- S68: Dark Halo Hunt FALSIFIED (VF=0.0), Pantheon+ FALSIFIED (BIC+705), WGSL SoA rewrite
+
+=== rg -nw 'VF' across registry/ ===
+
+=== rg -nw 'VF' across docs/ ===
+
+=== rg -nw 'VF' across plans/ ===
+
+=== rg -nw -t rust 'VF' across crates/ (rust files) ===
+crates/gororoba_cli_physics/src/bin/dark_halo_hunt.rs:310:                    eprintln!("    GPU VF={vf:.6}");
+crates/gororoba_cli_physics/src/bin/dark_halo_hunt.rs:321:            eprintln!("    [DRY RUN] estimated VF={:.4}", vf,);
+crates/gororoba_cli_physics/src/bin/dark_halo_hunt.rs:398:                    "VF={vf:.6} ({} halos / {} cells, {} steps, {:.1}s{})",
+crates/gororoba_cli_physics/src/bin/generate_topological_voids.rs:2://! required to match the CDG-2 astrophysical observations (VF=0.0).
+crates/gororoba_cli_physics/src/bin/generate_topological_voids.rs:203:    eprintln!("  Baryon VF (Remaining): {:.6}", 1.0 - vf);
+crates/gororoba_cli_physics/src/bin/generate_topological_voids.rs:206:        eprintln!("  [SUCCESS] Matches CDG-2 astrophysical observation (VF < 0.0006)");
+
+=== rg 'VF *=' (any context, possible binding form) across crates/ ===
+crates/gororoba_cli_physics/src/bin/dark_halo_hunt.rs:                    eprintln!("    GPU VF={vf:.6}");
+crates/gororoba_cli_physics/src/bin/dark_halo_hunt.rs:            eprintln!("    [DRY RUN] estimated VF={:.4}", vf,);
+crates/gororoba_cli_physics/src/bin/dark_halo_hunt.rs:                    "VF={vf:.6} ({} halos / {} cells, {} steps, {:.1}s{})",
+crates/gororoba_cli_physics/src/bin/generate_topological_voids.rs://! required to match the CDG-2 astrophysical observations (VF=0.0).
+
+=== rg -i 'dark.*halo.*hunt' (find Dark Halo Hunt context) ===
+registry/source_lanes/web_references.toml:9008:key = "title:dark_halo_hunt_cdg_2_consistency_across_k_values"
+registry/source_lanes/web_references.toml:9009:title = "Dark Halo Hunt: CDG-2 Consistency Across k Values"
+registry/source_lanes/web_references.toml:9013:canonical_download_path = "data/evidence/dark_halo_hunt_cuda.toml"
+registry/source_lanes/web_references.toml:10403:canonical_download_path = "data/evidence/dark_halo_hunt_cuda.toml"
+crates/gororoba_cli_data/src/bin/governance_verify.rs:163:        "name = \"dark-halo-hunt\"\npath = \"src/bin/dark_halo_hunt.rs\"\nrequired-features = [\"gpu\"]",
+crates/lbm_3d_cuda/src/lib.rs:2335:// Dark Halo Hunt CUDA solver (SoA layout, optimized for Ada Lovelace)
+crates/lbm_3d_cuda/src/lib.rs:2357:/// CUDA-accelerated dark halo hunt solver with SoA memory layout.
+crates/lbm_3d_cuda/src/lib.rs:2726:    /// Run dark halo hunt for a single k-value.
+crates/lbm_3d_cuda/src/kernels_dark_halo.cu:1:// Dark Halo Hunt CUDA kernel: SoA layout + shared memory tiling
+crates/cosmology_core/src/cdg2_mapping.rs:5://! 2025, arXiv:2506.15644). Used by the dark_halo_hunt binary to test whether
+crates/gororoba_cli_physics/Cargo.toml:860:name = "dark-halo-hunt"
+crates/gororoba_cli_physics/Cargo.toml:861:path = "src/bin/dark_halo_hunt.rs"
+registry/markdown_export/experiments_registry_mirror.rs:1511://! ## E-089: Dark Halo Hunt: CDG-2 Consistency Across k Values
+registry/markdown_export/experiments_registry_mirror.rs:1513://! - Binary: `dark-halo-hunt`
+registry/markdown_export/experiments_registry_mirror.rs:1515://! - Output: data/evidence/dark_halo_hunt_cuda.toml
+registry/markdown_export/experiments_registry_mirror.rs:1526://! cargo run --release --bin dark-halo-hunt -- --cuda --grid 256 --steps 2000 --k-values 4,8,16,32,63
+registry/experiment_lineage.toml:1601:binary = "dark-halo-hunt"
+registry/experiment_lineage.toml:1605:run_command = "cargo run --release --bin dark-halo-hunt -- --cuda --grid 256 --steps 2000 --k-values 4,8,16,32,63"
+registry/experiment_lineage.toml:1609:output_path_refs = ["data/evidence/dark_halo_hunt_cuda.toml"]
+registry/experiment_lineage.toml:1614:replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin dark-halo-hunt -- --cuda --grid 256 --steps 2000 --k-values 4,8,16,32,63", "Verify expected outputs or stdout artifacts are produced."]
+registry/experiment_lineage.toml:8134:to_ref = "dark-halo-hunt"
+registry/experiment_lineage.toml:8143:to_ref = "data/evidence/dark_halo_hunt_cuda.toml"
+crates/gororoba_cli_physics/src/bin/dark_halo_hunt.rs:1://! dark-halo-hunt: Search for topological dark halos in ZD-mediated LBM
+crates/gororoba_cli_physics/src/bin/dark_halo_hunt.rs:9://!   dark-halo-hunt                                    # Default k=[4,8,16,32]
+crates/gororoba_cli_physics/src/bin/dark_halo_hunt.rs:10://!   dark-halo-hunt --grid 128 --k-values 4,8,16      # Quick scan
+crates/gororoba_cli_physics/src/bin/dark_halo_hunt.rs:11://!   dark-halo-hunt --output data/evidence/halos.toml  # Custom output
+crates/gororoba_cli_physics/src/bin/dark_halo_hunt.rs:12://!   dark-halo-hunt --dry-run                          # Spectral dim only (no GPU)
+crates/gororoba_cli_physics/src/bin/dark_halo_hunt.rs:29:#[command(name = "dark-halo-hunt")]
+crates/gororoba_cli_physics/src/bin/dark_halo_hunt.rs:57:    #[arg(long, default_value = "data/evidence/dark_halo_hunt.toml")]
+crates/gororoba_cli_physics/src/bin/dark_halo_hunt.rs:80:    eprintln!("=== Dark Halo Hunt ===");
+
+=== rg 'visibility.fraction|violation.factor|variance.fraction|vector.flux|void.fraction' (acronym candidates) ===

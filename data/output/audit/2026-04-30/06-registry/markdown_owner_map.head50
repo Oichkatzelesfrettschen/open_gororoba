@@ -1,0 +1,50 @@
+# Markdown document ownership registry.
+# Each [[owner]] entry maps a markdown file to its owner group and removal status.
+# Required by the governance gate markdown-removal-policy check.
+# Valid removal_status values: active, candidate_for_removal, deprecated, archived, locked.
+# Rules:
+#   - active documents must NOT have a removal_reason.
+#   - non-active documents MUST have a removal_reason.
+#   - owner_group=third_party or owner_group=external MUST have removal_status=locked.
+
+[markdown_owner_map]
+updated = "2026-04-17"
+authoritative = true
+status = "active"
+status_token = "ACTIVE"
+document_count = 203
+
+[[owner]]
+path = "README.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/NAVIGATOR.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/GRAND_SYNTHESIS.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/GRAND_SYNTHESIS_PLAN.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/EXCEPTIONAL_COSMOLOGY.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
+[[owner]]
+path = "docs/SEDENION_GRAVASTAR_EQUIVALENCE.md"
+owner_group = "project"
+removal_status = "active"

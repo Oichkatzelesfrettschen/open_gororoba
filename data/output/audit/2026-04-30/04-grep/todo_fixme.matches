@@ -1,0 +1,162 @@
+crates/wilmot_2025/src/triad_classification.rs:11://! 8 "silos": AAA, ACC, XBB, BBA, BXC, CAB, CCX, XXX.
+crates/wilmot_2025/Cargo.toml:15:# 8 cycle silos (AAA/ACC/XBB/BBA/BXC/CAB/CCX/XXX), zero divisor
+crates/lbm_3d_cuda/src/kernels_dark_halo.cu:15:// FIXME: 3D texture binding for streaming neighbor fetch (cudaTextureObject_t)
+crates/lbm_3d_cuda/src/kernels_dark_halo.cu:16:// TODO: L2 residency pinning via cudaAccessPolicyWindow for rho/u fields
+crates/lbm_3d_cuda/src/kernels_dark_halo.cu:17:// TODO: A-A (in-place) streaming pattern to halve VRAM usage
+crates/lbm_3d_cuda/src/kernels_dark_halo.cu:18:// TODO: f16 storage with f32 compute for 2x bandwidth
+crates/lbm_3d_cuda/src/lib.rs:2367:/// Additional ~2x from f16 storage (TODO).
+crates/cd_kernel/src/turboquant/backend.rs:185:                // TODO: dispatch Vulkan compute shader
+crates/cd_kernel/src/turboquant/backend.rs:191:                // TODO: dispatch cubecl unified kernel
+crates/gororoba_cli/src/claims/verify.rs:593:        let text = "Date: 2026-02-07\n\n| C-001 | Task | TODO |\n";
+crates/gororoba_cli/src/claims/verify.rs:600:        let text = "No date header here\n\n| C-001 | Task | TODO |\n";
+crates/gororoba_cli/src/claims/schema.rs:71:    "TODO",
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:67://! ### CTASK-0004 (C-025, TODO)
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:71://! - Status raw: TODO
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:319://! ### CTASK-0032 (C-453, TODO)
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:323://! - Status raw: TODO
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:1714://! ### CTASK-0187 (C-417, TODO)
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:1718://! - Status raw: TODO
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:1759://! ### CTASK-0192 (C-426, TODO)
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:1763://! - Status raw: TODO
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:1768://! ### CTASK-0193 (C-427, TODO)
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:1772://! - Status raw: TODO
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:1966://! ### CTASK-0215 (C-046, TODO)
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:1970://! - Status raw: TODO
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:1984://! ### CTASK-0217 (C-071, TODO)
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:1988://! - Status raw: TODO
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2011://! ### CTASK-0220 (C-402, TODO)
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2015://! - Status raw: TODO
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2020://! ### CTASK-0221 (C-430, TODO)
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2024://! - Status raw: TODO
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2029://! ### CTASK-0222 (C-436, TODO)
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2033://! - Status raw: TODO
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2038://! ### CTASK-0223 (C-440, TODO)
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2042://! - Status raw: TODO
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2047://! ### CTASK-0224 (C-442, TODO)
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2051://! - Status raw: TODO
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2065://! ### CTASK-0226 (C-450, TODO)
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2069://! - Status raw: TODO
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2074://! ### CTASK-0227 (C-455, TODO)
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2078://! - Status raw: TODO
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2083://! ### CTASK-0228 (C-456, TODO)
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2087://! - Status raw: TODO
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2092://! ### CTASK-0229 (C-463, TODO)
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2096://! - Status raw: TODO
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2119://! ### CTASK-0232 (C-543, TODO)
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2123://! - Status raw: TODO
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2146://! ### CTASK-0235 (C-669, TODO)
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2150://! - Status raw: TODO
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2155://! ### CTASK-0236 (C-773, TODO)
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2159://! - Status raw: TODO
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2164://! ### CTASK-0237 (C-781, TODO)
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2168://! - Status raw: TODO
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2173://! ### CTASK-0238 (C-782, TODO)
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2177://! - Status raw: TODO
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2182://! ### CTASK-0239 (C-783, TODO)
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2186://! - Status raw: TODO
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2191://! ### CTASK-0240 (C-784, TODO)
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2195://! - Status raw: TODO
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2200://! ### CTASK-0241 (C-785, TODO)
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2204://! - Status raw: TODO
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2209://! ### CTASK-0242 (C-786, TODO)
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2213://! - Status raw: TODO
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2218://! ### CTASK-0243 (C-789, TODO)
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2222://! - Status raw: TODO
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2227://! ### CTASK-0244 (C-791, TODO)
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2231://! - Status raw: TODO
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2236://! ### CTASK-0245 (C-792, TODO)
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2240://! - Status raw: TODO
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2245://! ### CTASK-0246 (C-793, TODO)
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2249://! - Status raw: TODO
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2254://! ### CTASK-0247 (C-794, TODO)
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2258://! - Status raw: TODO
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2263://! ### CTASK-0248 (C-795, TODO)
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2267://! - Status raw: TODO
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2272://! ### CTASK-0249 (C-796, TODO)
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2276://! - Status raw: TODO
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2281://! ### CTASK-0250 (C-842, TODO)
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2285://! - Status raw: TODO
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2290://! ### CTASK-0251 (C-844, TODO)
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2294://! - Status raw: TODO
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2299://! ### CTASK-0252 (C-845, TODO)
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2303://! - Status raw: TODO
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2308://! ### CTASK-0253 (C-846, TODO)
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2312://! - Status raw: TODO
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2317://! ### CTASK-0254 (C-923, TODO)
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2321://! - Status raw: TODO
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2326://! ### CTASK-0255 (C-932, TODO)
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2330://! - Status raw: TODO
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2335://! ### CTASK-0256 (C-1103, TODO)
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2339://! - Status raw: TODO
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2344://! ### CTASK-0257 (C-1329, TODO)
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2348://! - Status raw: TODO
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2353://! ### CTASK-0258 (C-1353, TODO)
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2357://! - Status raw: TODO
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2371://! ### CTASK-0260 (C-1357, TODO)
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2375://! - Status raw: TODO
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2380://! ### CTASK-0261 (C-1358, TODO)
+crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs:2384://! - Status raw: TODO
+crates/data_core/src/registry_mirrors/data_papers_intake_2026_02_15_cayley_dickson_sources_supplemental_docs_lambda_core_documents_primary_lambda_gororoba_backups_20260214_121216_workspace_root_todowrite.rs:5://! # TODOWRITE -- Lambda Workspace Consolidation Ledger
+crates/data_core/src/registry_mirrors/data_papers_intake_2026_02_15_cayley_dickson_sources_supplemental_docs_lambda_core_documents_primary_lambda_gororoba_backups_20260214_121216_workspace_root_todowrite.rs:20://! 7. [x] Generate baseline TODO/FIXME extraction and per-module counts for source control visibility (owner: Codex; done).
+crates/data_core/src/registry_mirrors/data_papers_intake_2026_02_15_cayley_dickson_sources_supplemental_docs_lambda_core_documents_primary_lambda_gororoba_backups_20260214_121216_workspace_root_todowrite.rs:25://! 12. [x] Define workspace quality policy where TODO/FIXME, warnings, and unverified claims are tracked as blocking risks (owner: Codex; policy in `docs/QUALITY_POLICY.md`).
+crates/data_core/src/registry_mirrors/data_papers_intake_2026_02_15_cayley_dickson_sources_supplemental_docs_lambda_core_documents_primary_lambda_gororoba_backups_20260214_121216_workspace_root_todowrite.rs:30://! 17. [x] Map all TODO/FIXME hotspots to concrete tasks by priority and estimate effort (owner: Codex; latest hotspot scan refreshed: 2026-02-13).
+crates/data_core/src/registry_mirrors/data_papers_intake_2026_02_15_cayley_dickson_sources_supplemental_docs_lambda_core_documents_primary_lambda_gororoba_backups_20260214_121216_workspace_root_todowrite.rs:48://! 35. [x] Add claim review checkpoints and TODO debt triage to each consolidation pass (owner: Codex; no fixed weekly cadence).
+crates/data_core/src/registry_mirrors/reports_todo_fixme_scan.rs:34://! # TODO/FIXME Scan (2026-02-07)
+crates/data_core/src/registry_mirrors/reports_todo_fixme_scan.rs:38://! `rg -n "\\b(TODO|FIXME)\\b" -S --glob '!venv/**' --glob '!.mamba/**' --glob '!data/**' --glob '!curated/**' --glob '!archive/**'`
+crates/data_core/src/registry_mirrors/reports_todo_fixme_scan.rs:42://! - Claims pipeline backlog: `docs/CLAIMS_TASKS.md` (many rows still `TODO`)
+crates/data_core/src/registry_mirrors/reports_todo_fixme_scan.rs:43://! - Global tracker: `docs/TODO.md`
+crates/data_core/src/registry_mirrors/reports_todo_fixme_scan.rs:47://! - Code-level implementation TODOs:
+crates/data_core/src/registry_mirrors/reports_todo_fixme_scan.rs:53://! - This scan is a navigation aid only. Treat each TODO as a scoped
+crates/data_core/src/registry_mirrors/reports_todo_fixme_scan.rs:55://! - TODO entries in docs are expected and intentionally retained for provenance.
+crates/data_core/src/registry_mirrors/reports_theorem_claim_link_audit_2026_03_13.rs:30://! - helper lemmas or theorem families using nonstandard IDs that do not map cleanly to an existing `C-XXXX` claim
+crates/data_core/src/registry_mirrors/todo_registry_mirror.rs:1://! # TODO Registry Mirror
+crates/data_core/src/registry_mirrors/knowledge_migration_plan_registry_mirror.rs:91://!   - `docs/TODO.md`
+crates/data_core/src/registry_mirrors/knowledge_migration_plan_registry_mirror.rs:99://!   - `docs/generated/TODO_REGISTRY_MIRROR.md`
+crates/data_core/src/registry_mirrors/claims_registry_mirror.rs:5254://! - Statement: Third-Party Source Verification Pipeline (W7-005): Python verification script verify_third_party_sources.py performs comprehensive source validity checks via 7 validation gates: (1) ISO 8601 date format validation, (2) checksum format (hex string or 'unknown'), (3) status enumeration (pending/success/modified/expired/inaccessible/failed), (4) boolean field format, (5) no duplicate verification IDs, (6) source ID format (SOURCE-XXXX), (7) verification-cache bidirectional consistency. Cadence: weekly automated checks with manual-review alerts on modifications.
+crates/data_core/src/registry_mirrors/claims_registry_mirror.rs:5486://! - Statement: Published Benchmark: Integrable Ballistic Fraction Exact Match. Our N=10 B=3.0 T=0.1 computation yields B(alpha=0) = 1.000000, exactly matching the theoretical prediction of Castella, Zotos, Prelovsek PRL 74, 972 (1995) that the spin-1/2 XXX Heisenberg chain has D_S = I0_S (fully ballistic transport). This validates the Kubo transport implementation.
+crates/data_core/src/registry_mirrors/data_papers_intake_2026_02_15_cayley_dickson_sources_supplemental_docs_lambda_core_documents_primary_lambda_gororoba_backups_20260214_121216_workspace_root_docs_first_party_filetype_harmonization_playbook.rs:17://! >  - TODO/FIXME density,
+crates/data_core/src/registry_mirrors/roadmap_registry_mirror.rs:14://! - `docs/TODO.md`
+crates/data_core/src/registry_mirrors/data_papers_intake_2026_02_15_cayley_dickson_sources_supplemental_docs_lambda_core_documents_primary_lambda_gororoba_backups_20260214_121216_workspace_root_docs_roadmap_status.rs:26://! - [x] Refresh TODO/FIXME map and retain source discovery artifacts.
+crates/data_core/src/registry_mirrors/reports_control_plane_rca_2026_03_13.rs:109://! - theorem stems encoded the claim number without matching the `C-XXXX` claim format exactly
+crates/data_core/src/registry_mirrors/reports_control_plane_rca_2026_03_13.rs:126://! - normalized theorem stems like `C1313_...` and `C1140b_...` against `C-XXXX` claims
+crates/data_core/src/registry_mirrors/data_papers_intake_2026_02_15_cayley_dickson_sources_supplemental_docs_lambda_core_documents_primary_lambda_gororoba_backups_20260213_160846_workspace_root_todowrite.rs:5://! # TODOWRITE -- Lambda Workspace Consolidation Ledger
+crates/data_core/src/registry_mirrors/data_papers_intake_2026_02_15_cayley_dickson_sources_supplemental_docs_lambda_core_documents_primary_lambda_gororoba_backups_20260213_160846_workspace_root_todowrite.rs:20://! 7. [x] Generate baseline TODO/FIXME extraction and per-module counts for source control visibility (owner: Codex; done).
+crates/data_core/src/registry_mirrors/data_papers_intake_2026_02_15_cayley_dickson_sources_supplemental_docs_lambda_core_documents_primary_lambda_gororoba_backups_20260213_160846_workspace_root_todowrite.rs:25://! 12. [x] Define workspace quality policy where TODO/FIXME, warnings, and unverified claims are tracked as blocking risks (owner: Codex; policy in `docs/QUALITY_POLICY.md`).
+crates/data_core/src/registry_mirrors/data_papers_intake_2026_02_15_cayley_dickson_sources_supplemental_docs_lambda_core_documents_primary_lambda_gororoba_backups_20260213_160846_workspace_root_todowrite.rs:30://! 17. [x] Map all TODO/FIXME hotspots to concrete tasks by priority and estimate effort (owner: Codex; latest hotspot scan refreshed: 2026-02-13).
+crates/data_core/src/registry_mirrors/data_papers_intake_2026_02_15_cayley_dickson_sources_supplemental_docs_lambda_core_documents_primary_lambda_gororoba_backups_20260213_160846_workspace_root_todowrite.rs:48://! 35. [x] Add claim review checkpoints and TODO debt triage to each consolidation pass (owner: Codex; no fixed weekly cadence).
+crates/data_core/src/registry_mirrors/docs_tickets_ticket_warp_physics_reconciliation.rs:8://! Status: TODO
+crates/data_core/src/registry_mirrors/docs_tickets_ticket_warp_physics_reconciliation.rs:18://! - Status token: `TODO`
+crates/gororoba_cli_data/src/bin/execution_planning.rs:161:const TODO_STATUS_ALLOWLIST: &[&str] = &["open", "in_progress", "done", "blocked", "deferred"];
+crates/gororoba_cli_data/src/bin/execution_planning.rs:301:        TODO_STATUS_ALLOWLIST,
+crates/gororoba_cli_data/src/bin/execution_planning.rs:2108:                &TODO_STATUS_ALLOWLIST
+crates/data_core/src/registry_mirrors/data_papers_intake_2026_02_15_cayley_dickson_sources_supplemental_docs_lambda_core_documents_primary_lambda_gororoba_backups_20260213_155256_workspace_root_todowrite.rs:5://! # TODOWRITE -- Lambda Workspace Consolidation Ledger
+crates/data_core/src/registry_mirrors/data_papers_intake_2026_02_15_cayley_dickson_sources_supplemental_docs_lambda_core_documents_primary_lambda_gororoba_backups_20260213_155256_workspace_root_todowrite.rs:20://! 7. [x] Generate baseline TODO/FIXME extraction and per-module counts for source control visibility (owner: Codex; done).
+crates/data_core/src/registry_mirrors/data_papers_intake_2026_02_15_cayley_dickson_sources_supplemental_docs_lambda_core_documents_primary_lambda_gororoba_backups_20260213_155256_workspace_root_todowrite.rs:25://! 12. [x] Define workspace quality policy where TODO/FIXME, warnings, and unverified claims are tracked as blocking risks (owner: Codex; policy in `docs/QUALITY_POLICY.md`).
+crates/data_core/src/registry_mirrors/data_papers_intake_2026_02_15_cayley_dickson_sources_supplemental_docs_lambda_core_documents_primary_lambda_gororoba_backups_20260213_155256_workspace_root_todowrite.rs:30://! 17. [x] Map all TODO/FIXME hotspots to concrete tasks by priority and estimate effort (owner: Codex; latest hotspot scan refreshed: 2026-02-13).
+crates/data_core/src/registry_mirrors/data_papers_intake_2026_02_15_cayley_dickson_sources_supplemental_docs_lambda_core_documents_primary_lambda_gororoba_backups_20260213_155256_workspace_root_todowrite.rs:48://! 35. [x] Add claim review checkpoints and TODO debt triage to each consolidation pass (owner: Codex; no fixed weekly cadence).
+crates/data_core/src/registry_mirrors/data_papers_intake_2026_02_15_cayley_dickson_sources_supplemental_docs_lambda_core_documents_primary_lambda_gororoba_backups_20260213_163149_workspace_root_docs_roadmap_status.rs:26://! - [x] Refresh TODO/FIXME map and retain source discovery artifacts.
+crates/data_core/src/registry_mirrors/data_papers_intake_2026_02_15_cayley_dickson_sources_supplemental_docs_lambda_core_documents_primary_lambda_gororoba_backups_20260213_163149_workspace_root_docs_roadmap_status.rs:41://! 3. Resolve top remaining TODO/FIXME high-priority items with owners and evidence-backed acceptance criteria.
+crates/gororoba_cli_data/src/bin/claims_audit.rs:1256:                status_token: "TODO".to_string(),
+crates/gororoba_cli_data/src/bin/registry_emit.rs:27:    /// Emit the structured TODO markdown mirror from registry/todo.toml.
+crates/gororoba_cli_data/src/bin/registry_emit.rs:29:    /// Emit the legacy crates/data_core/src/registry_mirrors/todo.rs from TODO TOML sources.
+crates/gororoba_cli_data/src/bin/registry_emit.rs:174:    /// TODO registry TOML path.
+crates/gororoba_cli_data/src/bin/registry_emit.rs:1305:    let mut lines = markdown_header("TODO Registry Mirror", &args.input.display().to_string());
+crates/gororoba_cli_data/src/bin/registry_emit.rs:1352:        "Emitted TODO markdown mirror from {} to {}.",
+crates/gororoba_cli_data/src/bin/registry_emit.rs:1367:    lines.extend(legacy_lines_from_body(&body, "TODO", &fallback));
+crates/gororoba_cli_data/src/bin/registry_emit.rs:1370:        "Emitted TODO legacy markdown from {} and {} to {}.",
+crates/gororoba_cli_data/src/bin/pantheon_physicsforge_verify.rs:13:const TODO_PATH: &str =
+crates/gororoba_cli_data/src/bin/pantheon_physicsforge_verify.rs:297:    let todo = load_toml(&root.join(TODO_PATH))?;
+crates/data_core/src/registry_mirrors/data_papers_intake_2026_02_15_cayley_dickson_sources_supplemental_docs_lambda_core_documents_primary_lambda_gororoba_backups_20260213_163149_workspace_root_todowrite.rs:5://! # TODOWRITE -- Lambda Workspace Consolidation Ledger
+crates/data_core/src/registry_mirrors/data_papers_intake_2026_02_15_cayley_dickson_sources_supplemental_docs_lambda_core_documents_primary_lambda_gororoba_backups_20260213_163149_workspace_root_todowrite.rs:20://! 7. [x] Generate baseline TODO/FIXME extraction and per-module counts for source control visibility (owner: Codex; done).
+crates/data_core/src/registry_mirrors/data_papers_intake_2026_02_15_cayley_dickson_sources_supplemental_docs_lambda_core_documents_primary_lambda_gororoba_backups_20260213_163149_workspace_root_todowrite.rs:25://! 12. [x] Define workspace quality policy where TODO/FIXME, warnings, and unverified claims are tracked as blocking risks (owner: Codex; policy in `docs/QUALITY_POLICY.md`).
+crates/data_core/src/registry_mirrors/data_papers_intake_2026_02_15_cayley_dickson_sources_supplemental_docs_lambda_core_documents_primary_lambda_gororoba_backups_20260213_163149_workspace_root_todowrite.rs:30://! 17. [x] Map all TODO/FIXME hotspots to concrete tasks by priority and estimate effort (owner: Codex; latest hotspot scan refreshed: 2026-02-13).
+crates/data_core/src/registry_mirrors/data_papers_intake_2026_02_15_cayley_dickson_sources_supplemental_docs_lambda_core_documents_primary_lambda_gororoba_backups_20260213_163149_workspace_root_todowrite.rs:48://! 35. [x] Add claim review checkpoints and TODO debt triage to each consolidation pass (owner: Codex; no fixed weekly cadence).
+crates/data_core/src/registry_mirrors/data_papers_intake_2026_02_15_cayley_dickson_sources_supplemental_docs_lambda_core_documents_primary_lambda_gororoba_backups_20260213_155256_workspace_root_docs_roadmap_status.rs:26://! - [x] Refresh TODO/FIXME map and retain source discovery artifacts.
+crates/data_core/src/registry_mirrors/data_papers_intake_2026_02_15_cayley_dickson_sources_supplemental_docs_lambda_core_documents_primary_lambda_gororoba_backups_20260213_155256_workspace_root_docs_roadmap_status.rs:32://! 3. Resolve top remaining TODO/FIXME high-priority items with owners and evidence-backed acceptance criteria.
+crates/data_core/src/registry_mirrors/reports_narratives_registry_mirror.rs:345://! ### RPT-051: TODO/FIXME Scan (2026-02-07)
+crates/data_core/src/registry_mirrors/reports_tickets_inventory.rs:41://! - TODO: 3
+crates/data_core/src/registry_mirrors/reports_tickets_inventory.rs:54://! | A5_gwtc3_selection_bias_control | 2026-01-28 | TODO | `docs/tickets/A5_gwtc3_selection_bias_control.md` |
+crates/data_core/src/registry_mirrors/reports_tickets_inventory.rs:55://! | A6_tensor_network_measurement_pipeline | 2026-01-28 | TODO | `docs/tickets/A6_tensor_network_measurement_pipeline.md` |
+crates/data_core/src/registry_mirrors/reports_tickets_inventory.rs:56://! | A7_psl_2_7_explicit_action | 2026-01-28 | TODO | `docs/tickets/A7_psl_2_7_explicit_action.md` |
+crates/gororoba_cli_physics/src/bin/turboquant_onnx_eval.rs:206:        // TODO: re-add ort dep (ort = { workspace = true, optional = true } + onnx-eval feature)
+crates/gororoba_cli_physics/src/bin/sdo_fits_parse.rs:288:        magnetograms: Vec::new(), // TODO: group by timestamp into vector sets

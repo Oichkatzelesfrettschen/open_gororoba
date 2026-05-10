@@ -722,8 +722,8 @@ mod tests {
         // Different Moon positions should produce different forces
         // because the Lunar triad (Block 2) rotates, changing AVT couplings
         let diff = {
-            let d = [f_x[0]-f_y[0], f_x[1]-f_y[1], f_x[2]-f_y[2]];
-            (d[0]*d[0]+d[1]*d[1]+d[2]*d[2]).sqrt()
+            let d = [f_x[0] - f_y[0], f_x[1] - f_y[1], f_x[2] - f_y[2]];
+            (d[0] * d[0] + d[1] * d[1] + d[2] * d[2]).sqrt()
         };
         assert!(
             diff > 0.0,
@@ -754,10 +754,14 @@ mod tests {
             compute_chingon_bivector_drag_3body(r, v_north, v_wind, alpha, &avt, r_moon, r_sun);
 
         // Forces should differ in sign for at least one component
-        let dot = f_south[0]*f_north[0] + f_south[1]*f_north[1] + f_south[2]*f_north[2];
+        let dot = f_south[0] * f_north[0] + f_south[1] * f_north[1] + f_south[2] * f_north[2];
         let diff_norm = {
-            let d = [f_south[0]-f_north[0], f_south[1]-f_north[1], f_south[2]-f_north[2]];
-            (d[0]*d[0]+d[1]*d[1]+d[2]*d[2]).sqrt()
+            let d = [
+                f_south[0] - f_north[0],
+                f_south[1] - f_north[1],
+                f_south[2] - f_north[2],
+            ];
+            (d[0] * d[0] + d[1] * d[1] + d[2] * d[2]).sqrt()
         };
         assert!(
             dot < 0.0 || diff_norm > 1e-20,
@@ -782,7 +786,7 @@ mod tests {
         assert!(f[1].is_finite(), "Force y not finite");
         assert!(f[2].is_finite(), "Force z not finite");
         assert!(
-            f[0]*f[0]+f[1]*f[1]+f[2]*f[2] > 0.0,
+            f[0] * f[0] + f[1] * f[1] + f[2] * f[2] > 0.0,
             "Force should be nonzero for non-degenerate geometry"
         );
     }

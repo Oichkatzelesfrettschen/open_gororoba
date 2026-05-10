@@ -1888,10 +1888,7 @@ fn print_revision_summary(entity_kind: &str, revision: &provenance_store::Status
         revision.entity_id,
         revision.revision_id,
         revision.actor,
-        revision
-            .prev_value_sha256
-            .as_deref()
-            .unwrap_or("(none)"),
+        revision.prev_value_sha256.as_deref().unwrap_or("(none)"),
         &revision.new_value_sha256
     );
 }
@@ -1936,14 +1933,13 @@ fn maybe_regen_toml(regen_toml: bool) -> Result<()> {
             status
         ));
     }
-    eprintln!("regen complete; remember to run `make integrity-resolution` to refresh schema_signatures.toml.");
+    eprintln!(
+        "regen complete; remember to run `make integrity-resolution` to refresh schema_signatures.toml."
+    );
     Ok(())
 }
 
-fn cmd_claim_mutation(
-    store: &mut ProvenanceStore,
-    args: &ClaimMutationArgs,
-) -> Result<()> {
+fn cmd_claim_mutation(store: &mut ProvenanceStore, args: &ClaimMutationArgs) -> Result<()> {
     match &args.action {
         ClaimMutationAction::UpdateStatusNote {
             id,
@@ -1956,12 +1952,8 @@ fn cmd_claim_mutation(
                 .clone()
                 .or_else(|| std::env::var("USER").ok())
                 .unwrap_or_else(|| "unknown".to_string());
-            let revision = store.claim_update_status_note(
-                id,
-                status_note,
-                &actor,
-                reason.as_deref(),
-            )?;
+            let revision =
+                store.claim_update_status_note(id, status_note, &actor, reason.as_deref())?;
             print_revision_summary("claim", &revision);
             maybe_regen_toml(*regen_toml)?;
         }
@@ -1983,12 +1975,8 @@ fn cmd_claim_mutation(
                 .clone()
                 .or_else(|| std::env::var("USER").ok())
                 .unwrap_or_else(|| "unknown".to_string());
-            let revision = store.claim_update_formal_proof(
-                id,
-                formal_proof,
-                &actor,
-                reason.as_deref(),
-            )?;
+            let revision =
+                store.claim_update_formal_proof(id, formal_proof, &actor, reason.as_deref())?;
             print_revision_summary("claim formal_proof", &revision);
             maybe_regen_toml(*regen_toml)?;
         }
@@ -2006,10 +1994,7 @@ fn cmd_claim_mutation(
     Ok(())
 }
 
-fn cmd_insight_mutation(
-    store: &mut ProvenanceStore,
-    args: &InsightMutationArgs,
-) -> Result<()> {
+fn cmd_insight_mutation(store: &mut ProvenanceStore, args: &InsightMutationArgs) -> Result<()> {
     match &args.action {
         InsightMutationAction::UpdateStatusNote {
             id,
@@ -2022,12 +2007,8 @@ fn cmd_insight_mutation(
                 .clone()
                 .or_else(|| std::env::var("USER").ok())
                 .unwrap_or_else(|| "unknown".to_string());
-            let revision = store.insight_update_status_note(
-                id,
-                status_note,
-                &actor,
-                reason.as_deref(),
-            )?;
+            let revision =
+                store.insight_update_status_note(id, status_note, &actor, reason.as_deref())?;
             print_revision_summary("insight", &revision);
             maybe_regen_toml(*regen_toml)?;
         }
@@ -2058,12 +2039,8 @@ fn cmd_experiment_mutation(
                 .clone()
                 .or_else(|| std::env::var("USER").ok())
                 .unwrap_or_else(|| "unknown".to_string());
-            let revision = store.experiment_update_status_note(
-                id,
-                status_note,
-                &actor,
-                reason.as_deref(),
-            )?;
+            let revision =
+                store.experiment_update_status_note(id, status_note, &actor, reason.as_deref())?;
             print_revision_summary("experiment", &revision);
             maybe_regen_toml(*regen_toml)?;
         }

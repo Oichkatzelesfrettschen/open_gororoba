@@ -247,7 +247,6 @@ pub fn parse_desi_bao_txt(path: &Path) -> Result<Vec<BaoMeasurement>, FetchError
     Ok(measurements)
 }
 
-
 #[cfg(test)]
 mod tests {
     use super::*;

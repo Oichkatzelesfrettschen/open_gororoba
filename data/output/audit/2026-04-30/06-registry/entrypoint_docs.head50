@@ -1,0 +1,50 @@
+# Authoritative source: `registry/entrypoint_docs.toml`.
+# Regenerate mirrors with: `make registry-build registry-export-markdown`.
+[entrypoint_docs]
+updated = "2026-03-12"
+document_count = 7
+
+[[document]]
+path = "CLAUDE.md"
+title = "CLAUDE Stub"
+body_markdown = '''# CLAUDE Stub
+
+Use `agents.toml` as the canonical cross-agent source.
+Read sections:
+- `shared`
+- `agents.claude`
+
+Apply Claude-specific notes only as additive overlays to shared policy.
+'''
+
+[[document]]
+path = "GEMINI.md"
+title = "GEMINI Stub"
+body_markdown = '''# GEMINI Stub
+
+Use `agents.toml` as the canonical cross-agent source.
+Read sections:
+- `shared`
+- `agents.gemini`
+
+Apply Gemini-specific notes only as additive overlays to shared policy.
+'''
+
+[[document]]
+path = "README.md"
+title = "open_gororoba: Rust-First Evidence-First Scientific Workspace"
+body_markdown = '''# open_gororoba
+
+`open_gororoba` is a large Rust-first scientific research workspace, not a
+single-purpose solver crate.
+
+The repository currently combines four major operating layers:
+
+1. Algebra and spectral analysis for Cayley-Dickson / obstruction / Jacobi work.
+2. Physics and simulation crates for cosmology, GR, materials, optics, QGP,
+>  transport, and lattice-Boltzmann workflows.
+3. Data, provenance, and registry infrastructure for evidence-first,
+>  reproducible research operations.
+4. CLI, reporting, and publication surfaces that turn experiments, claims, and
+>  artifacts into reproducible outputs.
+

@@ -1,0 +1,50 @@
+# Data server registry (Tier I; plan Phase 6A.S1).
+#
+# Catalogs every external server / endpoint the codebase connects to
+# for dataset fetches. Populated from a full survey of
+# crates/data_core/src/catalogs/, crates/data_core/src/fetcher.rs,
+# crates/data_core/src/download_stack.rs, and the binary fetchers under
+# crates/gororoba_cli_data/src/bin/ on 2026-04-17.
+#
+# Required for:
+#   - data_servers_xref governance check (plan P6A.S1.T2): every URL
+#     inside a catalog module must be reachable via a registered server.
+#   - No-Dataset-Left-Behind gate (plan P6A.S3): every external_sources
+#     row must carry a server_ref into this file.
+#   - Rate-limit policy (plan P6A.S6): download_stack.rs reads
+#     rate_limit_ms and daily_budget_bytes from here.
+#
+# Schema:
+#   id                     -- short canonical identifier (snake_case)
+#   name                   -- human-readable title
+#   base_url               -- canonical base URL (may include path prefix)
+#   protocol               -- "HAPI" | "HTTP" | "VO" | "S3" | "FTP"
+#                             | "rsync" | "GIT" | "HEASARC_W3BROWSE"
+#                             | "TAP" | "HEPDATA"
+#   auth                   -- "anonymous" | "token" | "cookie"
+#   rate_limit_ms          -- minimum inter-request delay, 0 if unset
+#   daily_budget_bytes     -- 0 if unlimited/unknown; set for cost-capped
+#                             catalogs like MAST S3
+#   owner_module           -- primary Rust module (relative path)
+#   catalog_enumeration    -- "full" | "partial" | "none"
+#                             "full"    = every product enumerable via catalog API
+#                             "partial" = some products reachable, others cherry-picked
+#                             "none"    = manual URL construction only
+#   terms_of_use_url       -- public ToS / citation policy (optional)
+#   admin_contact          -- contact for escalation (optional)
+#   retry_class            -- "DefaultHttp" | "CurlFirst" | "ProbeFirst"
+#   notes                  -- free-form
+#
+# Rules (enforced by governance-gate):
+#   - every entry must have id, base_url, protocol, owner_module.
+#   - base_url must be lowercase (punycode for IDN).
+#   - if protocol = S3, daily_budget_bytes > 0 is required.
+#   - if rate_limit_ms > 0, download_stack.rs must honour it.
+
+[data_servers]
+updated = "2026-04-17"
+authoritative = true
+status = "active"
+status_token = "ACTIVE"
+schema_version = 1
+

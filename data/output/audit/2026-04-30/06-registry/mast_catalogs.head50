@@ -1,0 +1,50 @@
+# MAST (STScI Mikulski Archive for Space Telescopes) catalog snapshot
+# (plan Phase 6A.S5.T2 -- see docs/toolchain/mast-enumeration-policy.md).
+#
+# Per the policy ADR, this is SCOPED DISCOVERY, not exhaustive
+# enumeration: one row per mission with operational-years and
+# instrument list, hand-curated from the MAST public mission directory
+# at https://archive.stsci.edu/missions-and-data.
+#
+# Drift check: re-read the source URL monthly; update rows if
+# missions appear or retire; a future `mast-verify` binary can do
+# this automatically (compares HTTP response against rows here).
+#
+# Schema:
+#   mission             -- short canonical id (snake_case)
+#   full_title          -- human-readable name
+#   operational_years   -- "YYYY-YYYY" or "YYYY-present"
+#   status              -- "active" | "legacy" | "shuttle_legacy" | "ground_based"
+#   instruments         -- per-mission instrument list (may be empty
+#                          for survey missions without discrete
+#                          instruments). Lists are extensible; new
+#                          instruments appended on drift check.
+#   query_base_url      -- REST endpoint prefix for Mast.Caom.Cone
+#                          queries (optional).
+#   owner_fetcher       -- path to the repo's fetcher module (optional).
+#   last_verified       -- ISO date of most recent directory sync.
+
+[mast_catalogs]
+updated = "2026-04-17"
+source_url = "https://archive.stsci.edu/missions-and-data"
+authoritative = true
+status = "active"
+status_token = "ACTIVE"
+schema_version = 1
+mission_count = 30
+
+# --- Active missions --------------------------------------------
+
+[[mission]]
+mission = "hst"
+full_title = "Hubble Space Telescope"
+operational_years = "1990-present"
+status = "active"
+instruments = ["ACS", "COS", "STIS", "WFC3", "FGS", "NICMOS", "WFPC2", "FOC", "FOS", "GHRS", "HSP"]
+query_base_url = "https://mast.stsci.edu/api/v0/invoke?service=Mast.Caom.Cone"
+owner_fetcher = "crates/data_core/src/catalogs/hst_fetch.rs"
+last_verified = "2026-04-17"
+
+[[mission]]
+mission = "jwst"
+full_title = "James Webb Space Telescope"

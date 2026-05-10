@@ -1,0 +1,50 @@
+# Canonical semantic validation contract for data lanes.
+
+[semantic_validators]
+updated = "2026-02-24"
+authoritative = true
+policy_version = "v1"
+
+[[validator]]
+id = "SV-001"
+lane_id = "artifacts"
+name = "Artifacts Manifest Coverage"
+validator_kind = "artifacts_manifest_coverage"
+enabled = true
+severity = "hard_fail"
+command = "cargo run -p gororoba_cli_data --bin data-semantic-validate -- --lane artifacts"
+description = "Every artifacts-lane file must be represented in ARTIFACTS_MANIFEST.csv (or covered by allowed provenance sidecars)."
+
+[[validator]]
+id = "SV-002"
+lane_id = "external"
+name = "External Dataset Semantics"
+validator_kind = "external_dataset_semantics"
+enabled = true
+severity = "hard_fail"
+command = "cargo run -p gororoba_cli_data --bin data-semantic-validate -- --lane external"
+description = "External files must have source rules + hashes, pass baseline format checks, and satisfy known parser-level dataset checks."
+
+[[validator]]
+id = "SV-003"
+lane_id = "evidence"
+name = "Evidence Manifest Integrity"
+validator_kind = "evidence_manifest_integrity"
+enabled = true
+severity = "hard_fail"
+command = "cargo run -p gororoba_cli_data --bin data-semantic-validate -- --lane evidence"
+description = "Evidence files must be present in MANIFEST.toml with valid sha256 and status=present."
+
+[[validator]]
+id = "SV-004"
+lane_id = "csv"
+name = "CSV Lane Structure"
+validator_kind = "csv_lane_structure"
+enabled = true
+severity = "hard_fail"
+command = "cargo run -p gororoba_cli_data --bin data-semantic-validate -- --lane csv"
+description = "CSV files must parse, include headers, and contain at least one data row."
+
+[[validator]]
+id = "SV-005"
+lane_id = "csv_legacy"

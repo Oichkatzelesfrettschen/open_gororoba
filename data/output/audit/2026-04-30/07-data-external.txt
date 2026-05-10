@@ -1,0 +1,364 @@
+=== data/external -maxdepth 2 directory tree ===
+data/external
+data/external/ace
+data/external/ace_mag
+data/external/ace_swepam
+data/external/alice_pbpb_raa
+data/external/alice_xexe_raa
+data/external/bepicolombo
+data/external/cassini
+data/external/cluster
+data/external/cms_oo_raa
+data/external/cosmology_maps
+data/external/cosmology_maps/basin_of_attraction
+data/external/cosmology_maps/euclid_cosmic_web
+data/external/cosmology_maps/jwst_cosmosweb_dark_matter
+data/external/crossing_lists
+data/external/desi_bao
+data/external/euclid
+data/external/euclid/tap
+data/external/euclid/zenodo
+data/external/flyby_anomaly
+data/external/gaia_mw_rotation
+data/external/hapi_downloads
+data/external/hapi_downloads/cassini_vec
+data/external/hapi_downloads/messenger
+data/external/helios
+data/external/helios/helios1
+data/external/helios/helios2
+data/external/heliosphere
+data/external/heliosphere/voyager
+data/external/hic_raa
+data/external/ibex
+data/external/ibex/orbits
+data/external/ibex/release17
+data/external/imap
+data/external/imap/helio1hr
+data/external/imap/hi
+data/external/imap/ialirt
+data/external/imp8
+data/external/intermagnet
+data/external/jarvis_dft
+data/external/jarvis_dft/jdft_3d-4-26-2020
+data/external/juno
+data/external/magnetar
+data/external/manga
+data/external/manga/maps_cache
+data/external/manga/maps_cache_b
+data/external/manga/maps_cache_c
+data/external/manga/maps_cache_d
+data/external/manga/maps_cache_e
+data/external/manga/rotcurves
+data/external/manga/rotcurves_b
+data/external/manga/rotcurves_c
+data/external/manga/rotcurves_d
+data/external/manga/rotcurves_e
+data/external/manga/rotcurves_e2
+data/external/manga/subsamples
+data/external/mast
+data/external/mast/shot12000.zarr
+data/external/mast/shot12500.zarr
+data/external/mast/shot13000.zarr
+data/external/mast/shot13500.zarr
+data/external/mast/shot14000.zarr
+data/external/mast/shot14500.zarr
+data/external/mast/shot15000.zarr
+data/external/mast/shot15500.zarr
+data/external/mast/shot16000.zarr
+data/external/mast/shot16500.zarr
+data/external/mast/shot17000.zarr
+data/external/mast/shot17500.zarr
+data/external/mast/shot18000.zarr
+data/external/mast/shot18500.zarr
+data/external/mast/shot19000.zarr
+data/external/mast/shot19500.zarr
+data/external/mast/shot20000.zarr
+data/external/mast/shot20500.zarr
+data/external/mast/shot21000.zarr
+data/external/mast/shot22000.zarr
+data/external/mast/shot22500.zarr
+data/external/mast/shot23000.zarr
+data/external/mast/shot23500.zarr
+data/external/mast/shot24000.zarr
+data/external/mast/shot24500.zarr
+data/external/mast/shot24600.zarr
+data/external/mast/shot25000.zarr
+data/external/mast/shot25500.zarr
+data/external/mast/shot26000.zarr
+data/external/mast/shot26500.zarr
+data/external/mast/shot27000.zarr
+data/external/mast/shot27500.zarr
+data/external/mast/shot27880.zarr
+data/external/mast/shot28000.zarr
+data/external/mast/shot28500.zarr
+data/external/mast/shot28787.zarr
+data/external/mast/shot29000.zarr
+data/external/mast/shot29200.zarr
+data/external/mast/shot29500.zarr
+data/external/mast/shot29800.zarr
+data/external/mast/shot30000.zarr
+data/external/mast/shot30100.zarr
+data/external/mast/shot30420.zarr
+data/external/maven
+data/external/maven_swia
+data/external/messenger
+data/external/messenger_mag_cdf
+data/external/mms
+data/external/mms_fpi
+data/external/nanograv_15yr
+data/external/nanograv_15yr/kde_contents
+data/external/nanograv_15yr_timing
+data/external/nanograv_15yr_timing/NANOGrav15yr_PulsarTiming_v2.1.0
+data/external/nanograv_timing_engine
+data/external/new_horizons
+data/external/omni2
+data/external/orix-data
+data/external/orix-data/sdss_austenite
+data/external/orix-data/sdss_ferrite_austenite
+data/external/orix-data/ti_orientations
+data/external/papers
+data/external/papers/zero_divisor_literature
+data/external/pdg_2025
+data/external/pioneer
+data/external/pioneer_anomaly
+data/external/pioneer/pioneer10
+data/external/pioneer/pioneer11
+data/external/psp
+data/external/psp/berkeley_fields
+data/external/psp_fields
+data/external/psp/fields_l2_mag_rtn_1min
+data/external/psp/sqtn_rfs_v1v2
+data/external/psp/sweap_spc_l3i
+data/external/psp/sweap_spi_sf00_l3_mom
+data/external/radio_surveys
+data/external/radio_surveys/dr3_tiles
+data/external/real_kv_cache
+data/external/real_kv_cache_deepseek8b
+data/external/real_kv_cache_llama3b
+data/external/real_kv_cache_long
+data/external/real_kv_cache_mistral7b
+data/external/real_kv_cache_phi2
+data/external/real_kv_cache_qwen05b
+data/external/real_kv_cache_qwen3b
+data/external/real_kv_cache_tinyllama
+data/external/rosetta
+data/external/sdo_aia
+data/external/sdo_aia/multi_flare
+data/external/sdo_hmi
+data/external/sdo_hmi/partition1
+data/external/soho
+data/external/soho/celias
+data/external/soho/celias_pm_5min
+data/external/soho/lasco
+data/external/solar_orbiter
+data/external/solar_orbiter/mag_rtn_normal_1min
+data/external/solar_orbiter/rpw_bia_density
+data/external/solar_orbiter/rpw_bia_scpot_10s
+data/external/solar_orbiter/rpw_hfr_surv_flux
+data/external/solar_orbiter/rpw_tnr_surv_flux
+data/external/solo
+data/external/solo/soar_swa_pas
+data/external/space_weather
+data/external/space_weather/ccmc_scoreboard
+data/external/space_weather/donki
+data/external/sparc
+data/external/sparc_nfw
+data/external/stereo_impact
+data/external/stereo_plastic
+data/external/swarm
+data/external/themis
+data/external/themis_esa
+data/external/things
+data/external/things/cubes
+data/external/turboquant
+data/external/ulysses
+data/external/voyager
+data/external/voyager1
+data/external/voyager1_mag48
+data/external/voyager1/pls
+data/external/voyager2
+data/external/voyager2/bartol
+data/external/voyager2_mag48
+data/external/voyager2/pls
+data/external/voyager_coho_hapi
+data/external/voyager_crs
+data/external/voyager_mag48_cdf
+data/external/voyager_mag48_cdf/v1
+data/external/voyager_mag48_cdf/v1_planetary
+data/external/voyager_mag48_cdf/v2
+data/external/voyager_mag48_cdf/v2_planetary
+data/external/voyager/pws
+data/external/voyager_pws_cdf
+data/external/voyager_pws_cdf/v1
+data/external/voyager_pws_cdf/v1_sample
+data/external/voyager_pws_cdf/v2
+data/external/voyager/voyager1
+data/external/voyager/voyager2
+data/external/wind_mfi
+data/external/wind_swe
+
+=== du -sh data/external ===
+88G	data/external
+
+=== du -sh data/external/* (sorted desc) ===
+38G	data/external/manga
+15G	data/external/things
+5.7G	data/external/solar_orbiter
+4.4G	data/external/sdo_hmi
+4.0G	data/external/radio_surveys
+3.4G	data/external/themis
+2.7G	data/external/ace
+2.4G	data/external/nanograv_15yr_timing
+2.2G	data/external/papers
+1.8G	data/external/psp
+1.3G	data/external/messenger
+891M	data/external/hapi_downloads
+831M	data/external/mms
+786M	data/external/imp8
+750M	data/external/wmap9_chains.tar.gz
+650M	data/external/euclid
+645M	data/external/de441_part1.bsp
+610M	data/external/nanograv_15yr_pulsar_timing_v2.1.0.tar.gz
+595M	data/external/voyager_pws_cdf
+488M	data/external/voyager_mag48_cdf
+325M	data/external/mast
+241M	data/external/voyager2
+195M	data/external/jarvis_dft_3d.json
+180M	data/external/voyager
+179M	data/external/solo
+161M	data/external/voyager1
+115M	data/external/de440.bsp
+114M	data/external/cosmology_maps
+109M	data/external/intermagnet
+103M	data/external/imap
+97M	data/external/soho
+63M	data/external/planck2018_chains.zip
+62M	data/external/v1_pls_1977_1980.csv
+52M	data/external/wind_swe
+52M	data/external/maven
+51M	data/external/hip_main.dat
+48M	data/external/omni2
+43M	data/external/galileo.bsp
+40M	data/external/voyager2_mag48
+40M	data/external/orix-data
+32M	data/external/Pantheon+SH0ES_STAT+SYS.cov
+32M	data/external/de440s.bsp
+31M	data/external/voyager1_mag48
+31M	data/external/ulysses
+29M	data/external/cluster
+23M	data/external/real_kv_cache_long
+23M	data/external/pioneer
+22M	data/external/helios
+18M	data/external/real_kv_cache_mistral7b
+18M	data/external/nanograv_15yr
+17M	data/external/maven_swia
+17M	data/external/ibex
+16M	data/external/real_kv_cache_deepseek8b
+16M	data/external/jarvis_dft
+9.8M	data/external/wow_1977_printout.jpg
+9.3M	data/external/v1_crs_1977_2016.csv
+9.3M	data/external/arxiv_2207.02472_microsoft_tgp.pdf
+8.7M	data/external/voyager_coho_hapi
+8.0M	data/external/psp_fields
+7.9M	data/external/gaia_dr3_nearby.csv
+7.0M	data/external/heliosphere
+6.8M	data/external/eht_sgra_2017_uvfits.tgz
+6.2M	data/external/rosetta
+5.1M	data/external/nanograv_timing_engine
+5.1M	data/external/nanograv_15yr_kde.zip
+4.7M	data/external/sdss_dr18_quasars.csv
+4.7M	data/external/mms_fpi
+4.6M	data/external/real_kv_cache_qwen3b
+4.4M	data/external/jwst_public_observations.csv
+3.9M	data/external/chime_frb_cat2.csv
+3.7M	data/external/new_horizons
+3.5M	data/external/cassini
+3.3M	data/external/space_weather
+3.2M	data/external/real_kv_cache_tinyllama
+2.9M	data/external/real_kv_cache
+2.8M	data/external/wind_mfi
+2.8M	data/external/crossing_lists
+2.7M	data/external/eht_m87_2018_uvfits.tgz
+2.6M	data/external/stereo_impact
+2.4M	data/external/ace_mag
+2.1M	data/external/turboquant
+2.1M	data/external/arxiv_2502.12252_microsoft_majorana_2025.pdf
+1.9M	data/external/union3_chain_1.txt
+1.8M	data/external/eht_3c279_2017_uvfits.tgz
+1.6M	data/external/real_kv_cache_qwen05b
+1.6M	data/external/eht_m87_2017_uvfits.tgz
+1.6M	data/external/arxiv_0707.1889_nayak_anyons_tqc.pdf
+1.4M	data/external/arxiv_2412.19322_mixed_precision_scientific.pdf
+1.3M	data/external/GGM05S.gfc
+1.3M	data/external/fermi_gbm_grbs.csv
+1.2M	data/external/arxiv_2502.04456_earth_dm_wind.pdf
+1.2M	data/external/arxiv_2112.05718_gravitational_focusing.pdf
+1.1M	data/external/eht_cena_2017_uvfits.tgz
+912K	data/external/sorce_tsi_daily.csv
+828K	data/external/arxiv_2512.13002_zd_holonomy.pdf
+800K	data/external/pds_ppi_missions_bottom.png
+780K	data/external/arxiv_2407.09621_tensor_core_acceleration.pdf
+740K	data/external/pdg_2025
+732K	data/external/stereo_plastic
+644K	data/external/ace_swepam
+568K	data/external/PantheonPlusSH0ES.dat
+464K	data/external/sdo_aia
+416K	data/external/voyager_crs
+416K	data/external/juno
+412K	data/external/bepicolombo
+392K	data/external/arxiv_1409.2858_earth_moon_modulation.pdf
+376K	data/external/hst_public_observations.csv
+332K	data/external/atnf_pulsars.csv
+328K	data/external/sparc_nfw
+324K	data/external/arxiv_2105.10161_wick_rotation.pdf
+304K	data/external/tsis1_tsi_daily.csv
+304K	data/external/pds_atm_homepage.png
+284K	data/external/sparc
+272K	data/external/pds_atm_venus_viewport.png
+268K	data/external/pds_ppi_homepage.png
+260K	data/external/pds_ppi_missions_top.png
+248K	data/external/pds_ppi_missions.png
+236K	data/external/galileo_cruise.bsp
+224K	data/external/arxiv_2411.18881_sedenion_geometry.pdf
+220K	data/external/themis_esa
+216K	data/external/swarm_magnetic_sample.csv
+216K	data/external/PROVENANCE.local.json
+216K	data/external/chime_frb_cat1.csv
+184K	data/external/alice_pbpb_raa
+172K	data/external/arxiv_cond-mat_0010440_kitaev_majorana.pdf
+152K	data/external/GRACEFO_monthly_sample.gfc
+128K	data/external/SOURCES.toml
+120K	data/external/hic_raa
+116K	data/external/arxiv_cond-mat_0005069_ivanov_braiding.pdf
+64K	data/external/gwosc_all_events.csv
+48K	data/external/jpl_planets_2020_2030.csv
+48K	data/external/gaia_mw_rotation
+44K	data/external/wmm2025.zip
+40K	data/external/igrf13coeffs.txt
+36K	data/external/wow_omni_aug1977.csv
+36K	data/external/alice_xexe_raa
+24K	data/external/landsat_c2l2_sr_sample.json
+24K	data/external/eht_m87_legacy_2011_2013.tgz
+20K	data/external/euclid_q1_catalogs.toml
+20K	data/external/cms_oo_raa
+16K	data/external/desi_bao
+12K	data/external/wikitext2_test.txt
+12K	data/external/planck2018_base_params.txt
+12K	data/external/GWTC-3_confident.csv
+8.0K	data/external/pioneer_anomaly
+8.0K	data/external/mcgill_magnetars.csv
+8.0K	data/external/magnetar
+8.0K	data/external/flyby_anomaly
+4.0K	data/external/swarm
+4.0K	data/external/real_kv_cache_phi2
+4.0K	data/external/real_kv_cache_llama3b
+4.0K	data/external/nanograv_15yr_freespectrum.csv
+4.0K	data/external/messenger_mag_cdf
+4.0K	data/external/bl_6equj5_gbt_manifest.csv
+4.0K	data/external/atnf_pulsars_lotss_xmatch_dr3.csv
+0	data/external/wow_imp8_aug1977.csv
+0	data/external/near_cruise.bsp
+0	data/external/near.bsp
+0	data/external/mcgill_magnetars_lotss_xmatch_dr3.csv
+
+=== captured at 2026-04-30T17:11:57-07:00 ===

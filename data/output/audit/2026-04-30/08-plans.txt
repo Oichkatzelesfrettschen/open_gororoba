@@ -1,0 +1,255 @@
+=== ls -la plans/ ===
+total 172
+drwxr-xr-x  2 eirikr eirikr  4096 Apr 11 09:25 .
+drwxr-xr-x 28 eirikr eirikr 65536 Apr 17 16:39 ..
+-rw-r--r--  1 eirikr eirikr  4377 Feb 14 11:56 frontend_execution_roadmap_2026_02_12.toml
+-rw-r--r--  1 eirikr eirikr  7259 Mar  9 09:10 grand_synthesis_roadmap_2026_02_14.toml
+-rw-r--r--  1 eirikr eirikr 10344 Mar  9 09:10 pure_rust_port_boundaries_roadmap_2026_02_14.toml
+-rw-r--r--  1 eirikr eirikr  5077 Feb 12 11:01 repo_audit_hypothesis_matrix_2026_02_12.toml
+-rw-r--r--  1 eirikr eirikr 16322 Apr 11 09:25 repo_debt_roadmap_2026_04_11.toml
+-rw-r--r--  1 eirikr eirikr  8707 Feb 13 18:51 research_hypercomplex_ingest_roadmap_2026_02_14.toml
+-rw-r--r--  1 eirikr eirikr  5984 Feb 13 19:27 research_rescope_execution_2026_02_14.toml
+-rw-r--r--  1 eirikr eirikr 10242 Mar  7 16:41 resumption_unified_master_plan_2026_02_14.toml
+-rw-r--r--  1 eirikr eirikr  5919 Feb 12 11:01 ultra_frontend_harmonization_roadmap_2026_02_12.toml
+-rw-r--r--  1 eirikr eirikr   552 Feb 14 16:27 warp_ring_data_contract_migration.toml
+-rw-r--r--  1 eirikr eirikr  1284 Mar  9 09:10 wow_sedenion_moonshine_synthesis.toml
+
+=== head -20 plans/frontend_execution_roadmap_2026_02_12.toml ===
+[roadmap]
+id = "FRONTEND-ROADMAP-2026-02-12"
+updated = "2026-02-12"
+status = "in_progress"
+scope = "cross-platform app strategy + first full-featured app implementation + repo harmonization"
+
+[[task]]
+id = "FR-001"
+title = "Capture repo state and in-flight changes"
+status = "done"
+priority = "high"
+
+[[task]]
+id = "FR-002"
+title = "Map workspace, registry, scripts, docs topology"
+status = "done"
+priority = "high"
+
+[[task]]
+id = "FR-003"
+
+=== head -20 plans/grand_synthesis_roadmap_2026_02_14.toml ===
+# Grand Synthesis Roadmap: From Toy Models to Scientific Coherence
+#
+# Strategy: Recursively scope, plan, and execute the transition from isolated
+# proof-of-concept scripts to a unified, falsifiable scientific engine.
+
+[grand_synthesis_roadmap]
+id = "GSR-2026-02-14"
+created = "2026-02-14"
+updated = "2026-02-14"
+status = "done"
+status_token = "DONE"
+authoritative = true
+scope = "full_modelling_distillation_infusion_synchronicity"
+phases = 4
+
+# Phase 1: Engine Activation & Integration
+# Goal: Make `gororoba_engine` the central orchestrator, consuming `gororoba_algebra`, `gr_core`, and `lbm_core`.
+[[phase]]
+id = "PH-01"
+title = "Engine Activation"
+
+=== head -20 plans/pure_rust_port_boundaries_roadmap_2026_02_14.toml ===
+# NA-023 phased roadmap for clean-room pure-Rust port boundaries.
+
+[roadmap]
+id = "NA023-PURE-RUST-BOUNDARIES-ROADMAP-2026-02-14"
+updated = "2026-02-14"
+source_ref = "NA-023"
+status = "active"
+status_token = "ACTIVE"
+authoritative = false
+boundary_report = "reports/pure_rust_port_boundaries_2026_02_14.toml"
+scope = "short_and_medium_term_execution_for_clean_room_module_boundaries"
+
+[execution_contract]
+clean_room_only = true
+direct_external_code_import = "blocked_until_NA-021_resolution"
+targeted_checks_only = true
+full_workspace_gate_default = false
+
+[[phase]]
+id = "PH-SHORT"
+
+=== head -20 plans/repo_audit_hypothesis_matrix_2026_02_12.toml ===
+# Repo audit hypothesis matrix for current execution tranche.
+
+[meta]
+updated = "2026-02-12"
+scope = "open_gororoba core repo + docs/registry/build gates + new app lane"
+status = "active"
+
+[[hypothesis]]
+id = "HYP-AUD-001"
+statement = "Mirror verification could be skipped silently in default make flow."
+validation = "Inspect Makefile registry-export-markdown and registry-verify-mirrors targets."
+result = "confirmed"
+resolution = "Removed skip guards; mirror export + verification now execute deterministically."
+evidence_paths = ["Makefile"]
+
+[[hypothesis]]
+id = "HYP-AUD-002"
+statement = "MCP smoke gate fails on machines missing local per-user MCP config files."
+validation = "Review verify_mcp_smoke.py handling for missing config paths."
+result = "confirmed"
+
+=== head -20 plans/repo_debt_roadmap_2026_04_11.toml ===
+# Repository debt roadmap seeded from the 2026-04-11 CPD and structure audit.
+
+[meta]
+id = "REPO-DEBT-ROADMAP-2026-04-11"
+updated = "2026-04-11"
+status = "active"
+scope = "open_gororoba repository structure, build gates, scientific evidence lanes, and modularization"
+authoritative = false
+source_mode = "repo_evidence_plus_primary_pmd_docs"
+
+[execution_contract]
+warnings_as_errors = true
+full_workspace_gate_default = false
+prefer_crate_scoped_validation = true
+network_in_tests = "forbidden"
+default_network_features = "forbidden_without_explicit_opt_in"
+generated_files = "do_not_hand_edit"
+documentation_updates = "update_source_registries_first_then_regenerate"
+hardcoded_demonstrations = "forbidden"
+
+
+=== head -20 plans/research_hypercomplex_ingest_roadmap_2026_02_14.toml ===
+# Granular execution roadmap for hypercomplex + sensational-news intake.
+
+[roadmap]
+id = "RM-2026-02-14-hypercomplex-ingest"
+created = "2026-02-14"
+updated = "2026-02-14"
+status = "active"
+task_count = 80
+scope = "dotfiles audit, repo gaps, source normalization, fetch/provenance, claims/evidence integration, rust validation"
+
+[[task]]
+id = "RM-001"
+status = "done"
+title = "Activate MCP tool discovery and relevant tool surfaces"
+
+[[task]]
+id = "RM-002"
+status = "done"
+title = "Load open_gororoba workflow skills"
+
+
+=== head -20 plans/research_rescope_execution_2026_02_14.toml ===
+# Rescoped execution roadmap after Python-first/pyo3 pivot.
+
+[roadmap]
+id = "RM-2026-02-14-rescope-v2"
+created = "2026-02-14"
+updated = "2026-02-14"
+status = "active"
+task_count = 50
+scope = "python-first orchestration, pyo3 provenance bridge, sensational-source mapping, claims-evidence wiring, validation"
+
+[[phase]]
+id = "P1"
+name = "Policy and Lane Stabilization"
+step_range = "R2-001..R2-010"
+
+[[phase]]
+id = "P2"
+name = "Provenance Consolidation"
+step_range = "R2-011..R2-020"
+
+
+=== head -20 plans/resumption_unified_master_plan_2026_02_14.toml ===
+# Unified Master Plan: Warp Ring & Open Gororoba Synthesis
+# Status: Active
+# Date: 2026-02-14
+
+[plan]
+authoritative = true
+phase_count = 5
+step_count = 55
+
+[phase.1]
+name = "Analysis & Validation (Reynolds Independence)"
+goal = "Confirm physical scaling laws in decaying turbulence data."
+
+[[phase.1.step]]
+id = 1
+action = "Load all `warp_experiment_c_topology_*.csv` files into a Python analysis script."
+validation = "Dataframes loaded."
+
+[[phase.1.step]]
+id = 2
+
+=== head -20 plans/ultra_frontend_harmonization_roadmap_2026_02_12.toml ===
+[roadmap]
+id = "ULTRA-FRONTEND-HARMONIZATION-2026-02-12"
+updated = "2026-02-12"
+objective = "Audit, reconcile, and expand front-end and governance lanes with warning-clean reproducible execution."
+status = "in_progress"
+
+[[task]]
+id = "UFH-001"
+title = "Establish repo baseline and branch state"
+owner = "codex"
+estimate_hours = 0.25
+status = "done"
+
+[[task]]
+id = "UFH-002"
+title = "Map top-level structure, app lanes, and registry surfaces"
+owner = "codex"
+estimate_hours = 0.5
+status = "done"
+
+
+=== head -20 plans/warp_ring_data_contract_migration.toml ===
+# Plan: Warp Ring Data Contract Formalization
+# Goal: Unify experiment artifacts under a rigorous schema.
+
+[contracts]
+crate = "crates/gororoba_contracts"
+schema = "WarpRingExperiment"
+
+[migration]
+step_1 = "Define WarpRingExperiment struct in gororoba_contracts"
+step_2 = "Update data_core to use gororoba_contracts"
+step_3 = "Implement HDF5 serialization for Contract"
+step_4 = "Update warp-ring-3d binary to output Contract"
+
+[validation]
+metric_1 = "Type safety (Serde)"
+metric_2 = "Schema versioning"
+metric_3 = "Interoperability (Python bridge)"
+
+=== head -20 plans/wow_sedenion_moonshine_synthesis.toml ===
+# Wow! Signal + Sedenion Moonshine Synthesis Plan
+# "The 1420 MHz Monster"
+
+[astrometry]
+epoch_origin = "1977-08-15T22:16:00Z"
+epoch_current = "2026-02-18T00:00:00Z"
+ra_b1950 = "19h22m24.64s"
+dec_b1950 = "-27d03m00s"
+ra_j2000_code = "19h25m31s" # Derived from RA_RAD in wow_signal_analysis.rs
+dec_j2000_code = "-27d00m00s" # Derived from DEC_RAD in wow_signal_analysis.rs
+uncertainty_ra = "10s" # 2 beams
+uncertainty_dec = "20m" # drift scan
+
+[data_ingest]
+dataset_volume = "288 GB"
+format = "GUPPI / HDF5 Filterbank"
+location = "data/bl_6equj5_gbt"
+pipeline = "Rust-Native Sedenion Filterbank"
+
+[algebraic_filters]
+

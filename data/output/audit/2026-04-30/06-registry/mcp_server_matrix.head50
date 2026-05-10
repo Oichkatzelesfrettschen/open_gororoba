@@ -1,0 +1,50 @@
+[meta]
+checked_utc = "2026-02-16T01:56:18Z"
+repo = "open_gororoba"
+purpose = "cross-LLM MCP inventory, parity, and repo-fit audit"
+
+[client_config_paths]
+codex_primary = "/home/eirikr/.codex/config.toml"
+codex_secondary = "/home/eirikr/.codex/mcp-config.json"
+claude = "/home/eirikr/.claude/.mcp.json"
+gemini = "/home/eirikr/.gemini/settings.json"
+copilot_primary = "/home/eirikr/.copilot/mcp-config.json"
+copilot_secondary = "/home/eirikr/.copilot/config/settings.json"
+
+[policy]
+critical_servers = ["filesystem", "git", "ripgrep", "rust", "rust-docs", "github", "time"]
+on_demand_servers = [
+  "arxiv",
+  "bash",
+  "calculator",
+  "chrome-devtools",
+  "context7",
+  "desktop-commander",
+  "dotfiles-orchestrator",
+  "file-finder",
+  "markitdown",
+  "math",
+  "memory",
+  "ollama",
+  "playwright",
+  "puppeteer",
+  "python",
+  "semgrep",
+  "sequential-thinking",
+  "sqlite",
+]
+recommended_servers = ["context7", "sqlite"]
+fallback_rule = "if MCP transport fails, use deterministic shell fallback and record failure"
+config_location_rule = "client config paths are home-level references only; do not mirror Codex, Claude, Gemini, or Copilot config under the repository root"
+expected_enabled_count = 7
+expected_disabled_count = 23
+
+[gpu_relevance]
+primary_servers = ["rust", "rust-docs", "bash", "github", "context7", "playwright", "puppeteer"]
+notes = [
+  "Use rust/rust-docs for crate and API selection in CUDA/OpenCL/Vulkan paths.",
+  "Use containers only when a valid compose service exists; currently disabled in shared configs.",
+  "Use bash for local GPU diagnostics (nvidia-smi, vulkaninfo, clinfo) when available.",
+]
+
+[all_detected_servers]

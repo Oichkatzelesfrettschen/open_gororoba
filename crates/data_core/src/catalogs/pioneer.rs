@@ -167,7 +167,6 @@ pub fn pioneer_to_omni(records: &[SpdfMergedRecord]) -> Vec<OmniRecord> {
     PIONEER10_MISSION.to_omni(records)
 }
 
-
 #[cfg(test)]
 mod tests {
     use super::*;

@@ -7,8 +7,6 @@
 //! Best-fit: Planck Collaboration VI (2020), A&A 641, A6
 //! Chains: https://pla.esac.esa.int/
 
-
-
 /// Planck 2018 TT,TE,EE+lowE+lensing best-fit parameters.
 /// Source: Planck 2018 VI, Table 2, Column 6 (TT,TE,EE+lowE+lensing).
 pub mod bestfit {

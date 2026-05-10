@@ -1,0 +1,50 @@
+# Engineering Standards & Style Guide (Canonical Registry)
+# Formalized from RUST_STYLE_GUIDE.md
+
+[engineering_standards]
+authoritative = true
+updated = "2026-02-17"
+status = "active"
+
+[engineering_standards.toolchain]
+channel = "nightly"
+reason = "Required for cudarc, nvrtc, and SIMD intrinsics"
+edition = "2024"
+lockfile_policy = "checked_in"
+ci_strictness = "deny_warnings"
+
+[engineering_standards.formatting]
+tool = "rustfmt"
+trigger = "pre-commit"
+import_grouping = "std_external_crate"
+
+[engineering_standards.linting]
+tool = "clippy_and_ruff"
+policy = "Rust required gates use cargo clippy --all-targets --all-features -- -D warnings; Python required gates use the changed-file Ruff ratchet via scripts/run_ruff_changed.py while full-corpus Ruff remains an explicit backlog/advisory lane."
+allowed_lints_policy = "explicit_justification_required"
+license_check = "cargo-deny"
+python_ratchet_policy = "Required Python linting applies only to changed files under src/, tests/, bin/, and scripts/ so legacy debt does not block unrelated pushes; use make lint-all or make lint-advisory to burn down and report the remaining backlog."
+
+[engineering_standards.quality_gate_cadence]
+mode = "two_speed"
+fast_iteration_scope = "crate_local"
+fast_iteration_commands = [
+  "WORKER_BUDGET=$(sh scripts/detect_worker_budget.sh) CARGO_BUILD_JOBS=$WORKER_BUDGET cargo check -p <crate> --all-targets",
+  "WORKER_BUDGET=$(sh scripts/detect_worker_budget.sh) CARGO_BUILD_JOBS=$WORKER_BUDGET RAYON_NUM_THREADS=$WORKER_BUDGET RUST_TEST_THREADS=$WORKER_BUDGET cargo nextest run --build-jobs $WORKER_BUDGET --test-threads $WORKER_BUDGET -p <crate> <filter-or-test>",
+  "WORKER_BUDGET=$(sh scripts/detect_worker_budget.sh) CARGO_BUILD_JOBS=$WORKER_BUDGET cargo clippy -p <crate> --all-targets -- -D warnings",
+]
+checkpoint_push_policy = "Allowed via git push --no-verify for rapid iteration only after focused crate gates pass."
+milestone_gate_policy = "Required for production claims and major merges: make check plus make rust-regression, with algebra_analysis and gr_core routed through cargo nextest --cargo-profile test-heavy, and with Python lint enforced as a changed-file ratchet rather than a full-repo legacy sweep."
+local_push_fast_path = "make gate-local keeps the Rust lint surface intentionally narrow: rust-regression-scoped runs cargo clippy over --lib --tests for the affected packages, then runs light nextest for the scoped regression surface. Full-target clippy coverage remains authoritative in CI and the full rust-regression lane."
+execution_topology = "Detect logical threads at runtime, divide by two to set the worker budget, apply that same budget to Cargo build jobs, nextest test threads, libtest test threads, and Rayon worker pools unless a narrower lane override is required."
+cargo_state_isolation = "Required gates set repo-scoped CARGO_HOME=.cache/cargo-home and CARGO_TARGET_DIR=.cache/gate-target so multiple agents, MCP background checks, or neighboring repos do not contend on shared Cargo package/build locks."
+rationale = "Balance high-velocity iteration with strict milestone integrity."
+
+[engineering_standards.gpu_run_cadence]
+default_run_class = "smoke_or_short_basemark"
+default_duration_seconds = 20
+default_sweep_repeats = 1
+avoid_concurrent_long_gpu_lanes = true
+production_300s_policy = "Run only on explicit request, or when measured-gate/fastpath changes require fresh production evidence."
+rationale = "Keep iteration cycles fast while reserving long production lanes for explicit, evidence-driven checkpoints."
+

@@ -1,0 +1,50 @@
+# KV-cache provenance registry (plan P6A.S7).
+#
+# Each `data/external/real_kv_cache_*` directory is NOT a raw model
+# download -- it is an extract of key/value tensors emitted during a
+# forward pass through an LLM. The provenance therefore captures:
+#   - source model (HuggingFace repo + revision)
+#   - source model license
+#   - extractor binary / script that produced the tensors
+#   - prompt / seed used at extraction time
+#   - resulting tensor shape (n_layers, n_heads, seq_len, head_dim)
+#
+# Consumer: crates/gororoba_cli_physics/src/bin/turboquant_real_kv.rs
+# reads these tensors to evaluate TurboQuant quantization quality on
+# real data (as opposed to synthetic Gaussian vectors).
+#
+# Discovered during P6A.S7 audit:
+#   - scripts/extract_real_kv_cache.py is referenced by the Rust
+#     consumer doc comment but is MISSING from the repo.
+#   - Two directories (real_kv_cache_llama3b, real_kv_cache_phi2)
+#     are 4 KB = zero tensor files (failed extractions).
+#
+# Action items:
+#   A1. PARTIAL 2026-04-17: Rust extractor landed at
+#       crates/gororoba_cli_data/src/bin/extract_real_kv_cache.rs
+#       with two modes.
+#         * --mode synthetic: DETERMINISTIC SplitMix64 + Box-Muller
+#           Gaussian generator producing the exact binary format
+#           the turboquant-real-kv consumer expects. No external
+#           deps; reproducible across machines via `--seed`.
+#         * --mode huggingface-hook: prints the PyO3 integration
+#           contract + Python reference snippet. Full production
+#           extractor is a follow-up (candle or tch-rs not yet in
+#           workspace; PyO3+transformers is the documented path).
+#       Remaining: implement the PyO3 production extractor and
+#       link from the `extractor` fields below.
+#   A2. Re-run extraction for llama3b + phi2 or archive those dirs.
+#   A3. Record the exact prompt that generated each tensor set.
+
+[kv_cache_provenance]
+updated = "2026-04-17"
+authoritative = true
+status = "active"
+status_token = "ACTIVE"
+schema_version = 1
+entry_count = 9
+
+# -----------------------------------------------------------------
+# Active extracts (tensors present)
+# -----------------------------------------------------------------
+

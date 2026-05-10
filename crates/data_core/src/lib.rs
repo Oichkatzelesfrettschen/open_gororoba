@@ -40,10 +40,10 @@ pub mod download_stack;
 pub mod fetcher;
 pub mod formats;
 pub mod geophysical;
-pub mod nanograv;
 #[cfg(feature = "fetch")]
 pub mod heliosphere_event_labels;
 pub mod heliosphere_feature_cube;
+pub mod nanograv;
 pub mod parse;
 pub mod provenance;
 pub mod registry;
@@ -118,6 +118,10 @@ pub use catalogs::things_fetch::{
     ThingsPreferredCubesProvider, ThingsTablesProvider, discover_things_cube_manifest,
     parse_things_cube_manifest_html,
 };
+#[cfg(feature = "fetch")]
+pub use catalogs::voyager_pws_fetch::VoyagerPwsProvider;
+#[cfg(feature = "fetch")]
+pub use catalogs::wow_fetch::{Bl6equj5ManifestProvider, WowPrintoutProvider};
 pub use catalogs::{
     aflow::{AflowMaterial, parse_aflow_json, parse_aflow_records},
     atnf::{Pulsar, parse_atnf_csv},
@@ -146,10 +150,6 @@ pub use catalogs::{
         parse_wow_printout_csv, wow_char_to_intensity,
     },
 };
-#[cfg(feature = "fetch")]
-pub use catalogs::voyager_pws_fetch::VoyagerPwsProvider;
-#[cfg(feature = "fetch")]
-pub use catalogs::wow_fetch::{Bl6equj5ManifestProvider, WowPrintoutProvider};
 #[cfg(feature = "fits")]
 pub use spatial::{
     PreparedPointGrid, for_each_point_grid_match, precise_angular_separation_arcsec,

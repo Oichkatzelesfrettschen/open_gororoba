@@ -14,11 +14,7 @@
 //! KDE method: Lamb, Taylor & van Haasteren (2023), PhysRevD 108, 103019
 
 use crate::fetcher::FetchError;
-use std::{
-    fs,
-    io::Read as IoRead,
-    path::Path,
-};
+use std::{fs, io::Read as IoRead, path::Path};
 
 /// A single frequency bin from the NANOGrav free spectrum.
 #[derive(Debug, Clone)]

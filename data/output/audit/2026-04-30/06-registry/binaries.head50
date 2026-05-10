@@ -1,0 +1,50 @@
+# AUTO-GENERATED: READ-ONLY COMPATIBILITY EXPORT.
+# Canonical write path: registry/canonical/control_plane.sqlite3
+# Regenerate with: cargo run -p gororoba_cli_data --bin provenance -- export-control-plane
+# Compatibility export lane: binaries
+
+# CLI binaries registry -- generated from the canonical SQLite control plane.
+
+[[binary]]
+name = "absorber-pareto"
+crate = "gororoba_cli_quantum"
+description = "Absorber Pareto sweep: edge mass vs interior distortion optimization"
+
+[[binary]]
+name = "absorber-topology-benchmark"
+crate = "gororoba_cli"
+description = "C-010 absorber topology benchmark: scores ZD clique vs local (ring/chain/complete) coupling topologies on mode-suppression isolation. Confirms CLOSED_NEGATIVE_RESULT."
+
+[[binary]]
+name = "adm-decompose"
+crate = "gororoba_cli_physics"
+description = "ADM 3+1 decomposition diagnostic: lapse, shift, spatial metric, extrinsic curvature, constraint residuals for Minkowski/Schwarzschild/warp spacetimes."
+
+[[binary]]
+name = "agents-render"
+crate = "gororoba_cli_data"
+description = "Render AGENTS.md deterministically from agents.toml and fail closed in --check mode when the markdown stub drifts."
+
+[[binary]]
+name = "albert-algebra-structure-census"
+crate = "gororoba_cli"
+description = "Albert algebra commutativity and exceptional-structure census workflow"
+experiment = "E-022"
+
+[[binary]]
+name = "algebra-entropy-census"
+crate = "gororoba_cli"
+description = "Reframed T2: Shannon entropy of CD associator-norm distribution across dimensions 2..256, detecting phase transitions at dim=8 (non-associative) and dim=16 (zero divisors)"
+
+[[binary]]
+name = "algebra-refutation-audit"
+crate = "gororoba_cli_algebra"
+description = "Deterministic audit for C-445, C-466, C-518, and C-585."
+experiment = "E-205"
+
+[[binary]]
+name = "algebra-theory-crosswalk"
+crate = "gororoba_cli_data"
+description = "Rust-native algebra/theory crosswalk report linking Cayley-Dickson, Jordan, exceptional Lie, Kac-Moody/moonshine, and Planck/operator scaffolds to experiments, claims, binaries, and empirical outputs."
+
+[[binary]]

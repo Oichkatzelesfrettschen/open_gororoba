@@ -1,0 +1,49 @@
+crates/materials_core/src/e8_crystal_bridge.rs:897:    #[ignore] // ~2-5 min at 256D (4 billion O(1) checks). Run with --include-ignored.
+crates/gororoba_algebra/src/gpu/dimensional.rs:912:    #[ignore] // Takes ~10s in release mode; run with --ignored
+crates/algebra_experimental/src/cd_tower_violations.rs:715:    #[ignore] // Run manually: cargo test --release -- enumerate_tower --ignored --nocapture
+crates/algebra_experimental/src/cd_tower_violations.rs:764:    #[ignore] // dim=512 scalar O(n^3) exceeds nextest 120s in debug mode; verified by test_fast_matches_scalar_256
+crates/algebra_experimental/src/cd_tower_violations.rs:801:    #[ignore] // Run manually: ~9 min on 5600X3D (scalar). Use test_fast_enumerate_8192d instead.
+crates/algebra_experimental/src/cd_tower_violations.rs:818:    #[ignore] // ~2s each path at dim=1024
+crates/algebra_experimental/src/cd_tower_violations.rs:839:    #[ignore] // ~8-15s at dim=2048
+crates/algebra_experimental/src/cd_tower_violations.rs:860:    #[ignore] // Needs fast path: ~8s on 5600X3D
+crates/algebra_experimental/src/cd_tower_violations.rs:876:    #[ignore] // ~76s on 5600X3D
+crates/algebra_experimental/src/cd_tower_violations.rs:944:    #[ignore] // CompressedSignTable::new(32768) builds a 16384x16384 SignTable (~200s even in release); formula verified statically
+crates/quantum_core/src/harper_chern.rs:617:    #[ignore] // Known limitation: symmetric spectrum at half-filling
+crates/sign_imbalance/src/besag_clifford_cuda.rs:473:    #[ignore] // Requires GPU
+crates/sign_imbalance/src/besag_clifford_cuda.rs:484:    #[ignore] // Requires GPU + full implementation
+crates/lbm_3d_cuda/src/box_counting_gpu.rs:428:    // GPU tests are gated with #[ignore] -- require CUDA hardware
+crates/lbm_3d_cuda/src/box_counting_gpu.rs:430:    #[ignore]
+crates/lbm_3d_cuda/src/box_counting_gpu.rs:447:    #[ignore]
+crates/lbm_3d_cuda/src/box_counting_gpu.rs:466:    #[ignore]
+crates/lbm_3d_cuda/src/box_counting_gpu.rs:489:    #[ignore]
+crates/lbm_3d_cuda/src/box_counting_gpu.rs:519:    #[ignore]
+crates/gororoba_cli_data/src/bin/test_inventory.rs:473:                    "ERROR: heavy-package Rust test `{}` in {} ({}) should be #[ignore] for the heavy lane: {}",
+crates/algebra_experimental/src/neutrino_sector/tests/intertwiner.rs:679:/// Runtime: ~56s. Marked #[ignore] for CI.
+crates/algebra_experimental/src/neutrino_sector/tests/intertwiner.rs:682:#[ignore]
+crates/algebra_experimental/src/neutrino_sector/tests/intertwiner.rs:896:/// Runtime: ~160s (Rayon-parallel). Marked #[ignore] for CI.
+crates/algebra_experimental/src/neutrino_sector/tests/intertwiner.rs:899:#[ignore]
+crates/algebra_experimental/src/neutrino_sector/tests/spectrum.rs:871:#[ignore] // ~4 min due to dim=64 triple loop (C(63,3) = 39,711 triads)
+crates/algebra_analysis/src/crystal_bands.rs:332:    #[ignore] // ~30s in release
+crates/algebra_analysis/src/flat_band_localization.rs:105:    /// is gated behind #[ignore]. Run with:
+crates/algebra_analysis/src/flat_band_localization.rs:108:    #[ignore]
+crates/algebra_analysis/src/flat_band_localization.rs:122:    #[ignore]
+crates/algebra_analysis/src/projective_geometry.rs:1940:    #[ignore] // O(256^3): 30-60s under Cranelift. Use --profile test-heavy for dim256+.
+crates/algebra_analysis/src/projective_geometry.rs:1976:    #[ignore] // O(256^3): 15-30s under Cranelift. Use --profile test-heavy for dim256+.
+crates/algebra_analysis/src/projective_geometry.rs:2016:    #[ignore] // Iterates dim=2..256: 2-3 min under Cranelift. Use --profile test-heavy.
+crates/algebra_analysis/src/boxkites.rs:4189:    #[ignore] // Long-running: ~30-60s in release mode
+crates/algebra_analysis/src/boxkites.rs:5650:    #[ignore] // Long-running: ~15-30s in release mode
+crates/algebra_analysis/src/boxkites.rs:7023:    #[ignore] // ~15s in release mode
+crates/algebra_analysis/src/boxkites.rs:7370:    #[ignore] // Long-running: ~3-5 min in release mode
+crates/algebra_analysis/src/boxkites.rs:7599:    #[ignore] // ~30s in release mode (graph construction dominates)
+crates/algebra_analysis/src/boxkites.rs:7717:    #[ignore] // ~7-8 min in release mode
+crates/algebra_analysis/src/boxkites.rs:7834:    #[ignore] // VERY long-running: ~35-40 min in release mode
+crates/algebra_analysis/src/boxkites.rs:8074:    #[ignore] // Long-running: ~3-4 min in release mode
+crates/algebra_analysis/src/boxkites.rs:8473:    #[ignore] // Long-running: ~2-5 min in release mode (CPU exhaustive census)
+crates/algebra_analysis/src/boxkites.rs:8482:    #[ignore] // Long-running: ~5-15 min in release mode (CPU exhaustive census)
+crates/algebra_analysis/src/boxkites.rs:8491:    #[ignore] // Long-running: ~15-30 min in release mode (CPU exhaustive census)
+crates/algebra_analysis/src/boxkites.rs:8502:    #[ignore] // Very long-running: ~2+ hours in release mode (CPU exhaustive census)
+crates/algebra_analysis/src/boxkites.rs:8514:    #[ignore] // Extremely long: ~17+ hours in release mode (CPU exhaustive census)
+crates/algebra_analysis/src/boxkites.rs:8528:    #[ignore] // Requires GPU: Monte Carlo sampling (not yet implemented)
+crates/algebra_analysis/src/boxkites.rs:8537:    #[ignore] // Requires GPU: Monte Carlo sampling (not yet implemented)
+crates/algebra_analysis/src/boxkites.rs:8552:    #[ignore] // ~60 min in release mode
+crates/data_core/src/registry_mirrors/todo_registry_mirror.rs:651://! - Description: DONE 2026-03-20. Two pre-existing failures bucketed and fixed: (1) test_chingon_basis_quantization routed to heavy lane via #[ignore] + nextest override (O(dim^4) ZD search too slow for 120s default timeout at 64D); (2) test-inventory fixed: validate_python_files short-circuits when python_test_file is empty, gitignored docs/*.md removed from doc_no_count, narrative TOML stubs created. gate-ci-rust now passes: 4860+1329 tests, 0 failures.

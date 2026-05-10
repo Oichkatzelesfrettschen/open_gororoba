@@ -1,0 +1,50 @@
+# Workspace crate catalog -- governed inventory of all Rust crates.
+# Required by: crates/gororoba_cli_data/src/bin/crate_inventory.rs
+# Schema: gororoba.rust.crate_catalog.v1
+# Referenced by: agents.toml (rust_crate_catalog field)
+#
+# target_types must exactly match cargo metadata normalize_targets output
+# (sorted unique set of first-kind per target, includes custom-build).
+#
+# WHY: Provides a governed, auditable inventory of workspace crates with
+#      domain classification and backend relevance metadata, validated
+#      against live cargo metadata on every gate run.
+
+schema = "gororoba.rust.crate_catalog.v1"
+
+[meta]
+repo = "open_gororoba"
+source_of_truth = "registry/rust_crate_catalog.toml"
+
+# ---- Algebra ----
+
+[[workspace_crate]]
+name = "algebra_analysis"
+manifest_path = "crates/algebra_analysis/Cargo.toml"
+target_types = ["bench", "bin", "example", "lib", "test"]
+domain = "algebra"
+backend_relevance = "core"
+status = "active"
+
+[[workspace_crate]]
+name = "algebra_experimental"
+manifest_path = "crates/algebra_experimental/Cargo.toml"
+target_types = ["bench", "bin", "example", "lib"]
+domain = "algebra"
+backend_relevance = "experimental"
+status = "active"
+
+[[workspace_crate]]
+name = "cd_kernel"
+manifest_path = "crates/cd_kernel/Cargo.toml"
+target_types = ["bench", "lib"]
+domain = "algebra"
+backend_relevance = "core"
+status = "active"
+
+[[workspace_crate]]
+name = "cd_spin_bridge"
+manifest_path = "crates/cd_spin_bridge/Cargo.toml"
+target_types = ["lib"]
+domain = "algebra"
+backend_relevance = "library"

@@ -1,0 +1,121 @@
+=== Pantheon+ context in claims.toml ===
+6919-last_verified = "2026-02-06"
+6920:statement = "Bounce cosmology (quantum-corrected Friedmann equation) is disfavored by joint Pantheon+ SN Ia + DESI DR1 BAO fit; Lambda-CDM is the simpler adequate model."
+6921-status = "Verified"
+6922-where_stated = "`crates/cosmology_core/src/observational.rs`, `crates/gororoba_cli_physics/src/bin/real_cosmo_fit.rs`, `docs/INSIGHTS.md`"
+6923-
+6924-[[claim]]
+6925-id = "C-442"
+6926-last_verified = "2026-02-06"
+--
+6976-last_verified = "2026-02-07"
+6977:statement = "Ultrametric Core Mining Hypothesis (UCMH): for multi-attribute astronomical catalogs, the minimal attribute subsets exhibiting statistically significant ultrametric structure (BH-FDR < 0.05) cluster into distinct physical mechanism families that are catalog-independent. Seven of nine catalogs yield significant cores; cores group by ISM column density (CHIME, ATNF), galactic kinematics (Gaia, Hipparcos), compact binary formation (GWOSC), standard candle standardization (Pantheon+), and photometric redshift (SDSS)."
+6978-status = "Verified"
+6979-where_stated = "`src/scripts/analysis/extract_ultrametric_cores.py`, `data/csv/c071g_exploration_gpu_10M_1000perm.csv`, `docs/INSIGHTS.md` (I-013)"
+6980-
+6981-[[claim]]
+6982-id = "C-450"
+6983-last_verified = "2026-02-19"
+--
+9400-last_verified = "2026-02-18"
+9401:statement = "Ghost frequency phi^{-1/2} detected in Pantheon+ SNIa distance moduli at f=0.211 normalized, SNR=4.43. Third independent messenger (optical SNIa) with consistent ghost detection."
+9402-status = "Refuted"
+9403:status_note = "E-071 Phase 5 re-verification: 5-method audit on real Pantheon+ MU_SH0ES (N=1701). Corrected SNR=0.21, p_bonf=1.0, permutation p=1.0, Lomb-Scargle FAP=1.0. Ghost power (7e-7) two orders of magnitude below null mean (2.5e-3). Completely noise-dominated. | Legacy status token: Falsified"
+9404-where_stated = "`crates/gororoba_cli_physics/src/bin/rho_ghost_fft.rs`, `data/csv/zd_resonance_real_distribution.csv`"
+9405-
+9406-[[claim]]
+9407-id = "C-787"
+9408-last_verified = "2026-02-18"
+9409-statement = "Ghost frequency phi^{-1/2} absent in S-band (2.25 GHz) Wow! GBT follow-up data. Stacked SNR=0.38 across 12 filterbank files. Spectral analysis is clean with no algebraic signatures at S-band."
+--
+9552-last_verified = "2026-02-18"
+9553:statement = "Ghost frequency phi^{-1/2} is NOT detectable in any of four real astronomical catalog datasets (CHIME FRB Cat2 DM N=5045, ATNF pulsar DM N=4233, ATNF pulsar period N=4286, Pantheon+ distance moduli N=1701) when analyzed with 5-method rigorous pipeline (Bonferroni-corrected MAD, permutation N=10000, Lomb-Scargle Baluev FAP, IAAFT N=1000, Multitaper F-test). All 20 tests (5 methods x 4 datasets) FAIL TO REJECT null. Combined Fisher p > 0.65 for all datasets."
+9554-status = "Verified"
+9555-status_note = "Phase 5 re-verification of C-784/C-785/C-786. Confirms I-096: sorted-catalog FFT tests distributional shape, not physical periodicity. Original detections were artifacts of inflated mean noise floor and lack of multiple-testing correction. This claim falsifies C-784, C-785, C-786."
+9556-where_stated = "`crates/gororoba_cli_physics/src/bin/ghost_spectral_audit.rs`, E-071 output"
+9557-
+9558-[[claim]]
+9559-id = "C-806"
+--
+10624-last_verified = "2026-03-05"
+10625:statement = "Orthoplex diffusion dark energy with fixed beta=1.0 (w = -1 + d_s(t(z)), t = t_0/(1+z)^alpha) fitted to 1638 data points (1578 Pantheon+ SNe + 12 DESI DR1 BAO + 31 cosmic chronometers + 16 f*sigma8 RSD + CMB R shift) at k=63: chi2=749.01 (vs LCDM 767.39), delta-AIC=-14.38, delta-BIC=-3.58. Fixed-beta model (4 params: omega_m, h0, alpha, t_0) preferred over LCDM by Kass-Raftery scale. Free-beta (5 params): delta-BIC=+3.82, LCDM weakly preferred. Thawing EOS: w(0)=-0.663, w(2)=-0.9999. Pre-registered falsification: delta-BIC > +10 = disfavored. Result: delta-BIC=-3.58, orthoplex PREFERRED."
+10626-status = "Refuted"
+10627:status_note = "FALSIFIED in Sprint 68 (2026-03-05). With full Pantheon+ STAT+SYS 1578x1578 covariance matrix (auto-downloaded, sub-matrix extracted for filtered SNe), the result reverses completely. Fixed-beta: chi2=1458.07 vs LCDM 767.39, delta-BIC=+705.48. Free-beta: delta-BIC=+712.88. Pre-registered falsification threshold was delta-BIC > +10; measured +705 exceeds by 70x. The original delta-BIC=-3.58 used diagonal errors only, which absorbed the apparent signal that off-diagonal correlations (shared calibration, dust, survey systematics) now eliminate. Rocq proofs of mathematical properties (C932_OrthoplexThawing.v) remain valid -- they prove structural EOS bounds, not observational preference. The model is mathematically consistent but observationally disfavored against LCDM by overwhelming margin. | Legacy status token: Falsified"
+10628-where_stated = "crates/cosmology_core/src/orthoplex_diffusion.rs"
+10629-
+10630-[[claim]]
+10631-id = "C-936"
+10632-last_verified = "2026-03-05"
+10633-statement = "The Arleo-Falmagne path-length exponent beta extracted from density scaling (epsilon_bar = K * rho * L^beta) and from azimuthal anisotropy (v2/epsilon = (beta/2) * d(ln R_AA)/d(ln pT)) are statistically consistent (z-score < 2), confirming universality of the path-length dependence across independent observables."
+
+=== Pantheon+ entries in experiments.toml ===
+76-id = "E-002"
+77:input = "data/external/ (CHIME/FRB, ATNF, GWOSC, Pantheon+, Gaia DR3, SDSS DR18, Fermi GBM, Hipparcos, McGill)"
+78-input_path_refs = ["data/external/"]
+79-lineage_id = "XL-002"
+80-method = "For 9 catalogs: normalize, compute Euclidean distances, ultrametric fraction test with column-shuffled null. 10M triples x 1000 permutations. BH-FDR correction."
+81-output = ["data/csv/c071g_multi_dataset_ultrametric.csv"]
+--
+127-id = "E-003"
+128:input = "data/external/Pantheon+SH0ES.dat"
+129:input_path_refs = ["data/external/Pantheon+SH0ES.dat"]
+130-lineage_id = "XL-003"
+131:method = "Joint chi-square over 1578 Pantheon+ SNe + 7 DESI DR1 BAO bins. Analytic M_B marginalization. Nelder-Mead. Lambda-CDM vs w0-CDM via delta-BIC."
+132-output = ["stdout"]
+133-output_path_refs = []
+134-reproducibility_class = "deterministic_replay"
+135-run = "cargo run --release --bin real-cosmo-fit"
+--
+138-status_token = "ACTIVE"
+139:title = "Real Cosmological Fit (Pantheon+ / DESI BAO)"
+140-truth_surface_consumption = []
+141-
+142-[[experiment]]
+143-binary = "kerr-shadow"
+--
+1714-id = "E-060"
+1715:input = "data/external/ (CHIME Cat1/Cat2, ATNF, Pantheon+, SDSS, Gaia, ALICE, Swarm, SORCE, Wow GBT)"
+1716-input_path_refs = ["data/external/"]
+1717-lineage_id = "XL-058"
+1718-method = "Apply rho-ghost-fft power spectrum analysis to 10+ catalogs across 5 messengers (FRB, pulsar, SNIa, SETI, null controls). Detect phi^{-1/2} ghost frequency at 0.2138 normalized. Compare peak frequency, SNR, and FWHM across catalog sizes and wavebands."
+1719-output = ["data/csv/zd_resonance_real_distribution.csv"]
+--
+2009-id = "E-071"
+2010:input = "data/external/chime_frb_cat2.csv, data/external/atnf_pulsars.csv, data/external/PantheonPlusSH0ES.dat"
+2011-input_path_refs = [
+2012:    "data/external/PantheonPlusSH0ES.dat",
+2013-    "data/external/atnf_pulsars.csv",
+2014-    "data/external/chime_frb_cat2.csv",
+2015-]
+2016-lineage_id = "XL-069"
+2017:method = "5-method falsification audit (Rigorous+Bonferroni MAD, Permutation N=10000, Lomb-Scargle Baluev FAP, IAAFT N=1000, Multitaper F-test) on 4 real astronomical catalog datasets: CHIME FRB Cat2 bonsai_dm (N=5045), ATNF pulsar DM (N=4233), ATNF pulsar period (N=4286), Pantheon+ MU_SH0ES (N=1701). Tests whether phi^{-1/2} ghost frequency is detectable under rigorous statistical framework."
+2018-output = [
+2019-    "data/csv/ghost_audit/real_chime_dm.csv",
+2020-    "data/csv/ghost_audit/real_atnf_dm.csv",
+2021-    "data/csv/ghost_audit/real_atnf_period.csv",
+2022:    "data/csv/ghost_audit/real_pantheon_mu.csv",
+2023-]
+2024-output_path_refs = [
+2025-    "data/csv/ghost_audit/real_atnf_dm.csv",
+2026-    "data/csv/ghost_audit/real_atnf_period.csv",
+2027-    "data/csv/ghost_audit/real_chime_dm.csv",
+2028:    "data/csv/ghost_audit/real_pantheon_mu.csv",
+2029-]
+2030-reproducibility_class = "deterministic_replay"
+2031-run = "ghost-spectral-audit single --dataset <csv> --column value --permutations 10000 --bootstrap 10000 --seed 42"
+2032-run_command_sha256 = "7746dc16305b5a9723529c578344ec4498e7c28e3baa5d9800d1b862881abaab"
+--
+2479-id = "E-087"
+2480:input = "data/external/PantheonPlusSH0ES.dat, data/external/Pantheon+SH0ES_STAT+SYS.cov, DESI DR1 BAO (hardcoded)"
+2481-input_path_refs = [
+2482:    "data/external/Pantheon+SH0ES_STAT+SYS.cov",
+
+=== Pantheon+ in data/external/ ===
+data/external/Pantheon+SH0ES_STAT+SYS.cov
+data/external/PantheonPlusSH0ES.dat
+
+=== Pantheon+ files actually present (vs declared) ===
+-rw-r--r-- 1 eirikr eirikr   579283 Feb 24 00:44 data/external/PantheonPlusSH0ES.dat
+-rw-r--r-- 1 eirikr eirikr 33284960 Mar  5 11:23 data/external/Pantheon+SH0ES_STAT+SYS.cov
+ls: cannot access 'data/external/pantheon*': No such file or directory
+(no data/external/pantheon*)

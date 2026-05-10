@@ -1,0 +1,50 @@
+# Authoritative source: `registry/claims_domains.toml`.
+# Source inputs: `docs/claims/CLAIMS_DOMAIN_MAP.csv` and `docs/claims/by_domain/*.md`.
+# Regenerate mirrors with: `make registry-build registry-export-markdown`.
+[claims_domains]
+updated = "2026-03-12"
+source_csv = "docs/claims/CLAIMS_DOMAIN_MAP.csv"
+source_markdown_glob = "docs/claims/by_domain/*.md"
+domain_file_count = 16
+claim_count = 443
+
+[[domain]]
+id = "algebra"
+source_markdown = "docs/claims/by_domain/algebra.md"
+declared_count = 67
+csv_claim_count = 67
+markdown_claim_count = 67
+count_match = true
+mapping_match = true
+
+[[domain]]
+id = "cosmology"
+source_markdown = "docs/claims/by_domain/cosmology.md"
+declared_count = 14
+csv_claim_count = 14
+markdown_claim_count = 14
+count_match = true
+mapping_match = true
+
+[[domain]]
+id = "cpp"
+source_markdown = "docs/claims/by_domain/cpp.md"
+declared_count = 2
+csv_claim_count = 2
+markdown_claim_count = 2
+count_match = true
+mapping_match = true
+
+[[domain]]
+id = "datasets"
+source_markdown = "docs/claims/by_domain/datasets.md"
+declared_count = 33
+csv_claim_count = 33
+markdown_claim_count = 33
+count_match = true
+mapping_match = true
+
+[[domain]]
+id = "engineering"
+source_markdown = "docs/claims/by_domain/engineering.md"
+declared_count = 2

@@ -1,0 +1,515 @@
+algebra_analysis v0.1.0 (/home/eirikr/Github/open_gororoba/crates/algebra_analysis)
+├── cd_kernel v0.1.0 (/home/eirikr/Github/open_gororoba/crates/cd_kernel)
+│   [dev-dependencies]
+├── core_affinity v0.8.3
+├── moreno_1997 v0.1.0 (/home/eirikr/Github/open_gororoba/crates/moreno_1997)
+├── nalgebra v0.34.2
+├── petgraph v0.8.3
+├── rand v0.10.0
+├── rand_chacha v0.10.0
+├── rand_distr v0.6.0
+├── rayon v1.11.0
+├── serde v1.0.228
+└── verified_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/verified_core)
+    [dev-dependencies]
+[dev-dependencies]
+├── approx v0.5.1
+└── criterion v0.8.2
+
+algebra_experimental v0.1.0 (/home/eirikr/Github/open_gororoba/crates/algebra_experimental)
+├── algebra_analysis v0.1.0 (/home/eirikr/Github/open_gororoba/crates/algebra_analysis) (*)
+├── argmin v0.11.0
+├── argmin-math v0.5.1
+├── cd_kernel v0.1.0 (/home/eirikr/Github/open_gororoba/crates/cd_kernel) (*)
+├── cudarc v0.19.4
+├── faer v0.24.0
+├── flavor_lifts v0.1.0 (/home/eirikr/Github/open_gororoba/crates/flavor_lifts)
+├── gororoba_algebra v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_algebra)
+│   [dev-dependencies]
+├── nalgebra v0.34.2 (*)
+├── num-bigint v0.4.6
+├── num-complex v0.4.6
+├── petgraph v0.8.3 (*)
+├── rand v0.10.0 (*)
+├── rand_chacha v0.10.0 (*)
+├── rand_distr v0.6.0 (*)
+├── rayon v1.11.0 (*)
+├── serde v1.0.228 (*)
+├── serde_json v1.0.149
+└── wide v1.2.0
+[dev-dependencies]
+├── approx v0.5.1 (*)
+├── criterion v0.8.2 (*)
+└── plotters v0.3.7
+
+brown_1967 v0.1.0 (/home/eirikr/Github/open_gororoba/crates/brown_1967)
+└── cd_kernel v0.1.0 (/home/eirikr/Github/open_gororoba/crates/cd_kernel) (*)
+
+brown_1972 v0.1.0 (/home/eirikr/Github/open_gororoba/crates/brown_1972)
+├── cd_kernel v0.1.0 (/home/eirikr/Github/open_gororoba/crates/cd_kernel) (*)
+└── schafer_1945 v0.1.0 (/home/eirikr/Github/open_gororoba/crates/schafer_1945)
+
+casimir_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/casimir_core)
+├── gauss-quad v0.3.1
+├── rand v0.10.0 (*)
+├── rand_chacha v0.10.0 (*)
+├── rand_distr v0.6.0 (*)
+└── rayon v1.11.0 (*)
+[dev-dependencies]
+└── approx v0.5.1 (*)
+
+cd_kernel v0.1.0 (/home/eirikr/Github/open_gororoba/crates/cd_kernel) (*)
+
+cd_papers v0.1.0 (/home/eirikr/Github/open_gororoba/crates/cd_papers)
+├── brown_1967 v0.1.0 (/home/eirikr/Github/open_gororoba/crates/brown_1967) (*)
+├── brown_1972 v0.1.0 (/home/eirikr/Github/open_gororoba/crates/brown_1972) (*)
+├── cd_kernel v0.1.0 (/home/eirikr/Github/open_gororoba/crates/cd_kernel) (*)
+├── de_marrais_2000 v0.1.0 (/home/eirikr/Github/open_gororoba/crates/de_marrais_2000)
+├── dickson_1919 v0.1.0 (/home/eirikr/Github/open_gororoba/crates/dickson_1919)
+├── hurwitz_1898 v0.1.0 (/home/eirikr/Github/open_gororoba/crates/hurwitz_1898)
+├── moreno_1997 v0.1.0 (/home/eirikr/Github/open_gororoba/crates/moreno_1997) (*)
+├── schafer_1945 v0.1.0 (/home/eirikr/Github/open_gororoba/crates/schafer_1945) (*)
+└── wilmot_2025 v0.1.0 (/home/eirikr/Github/open_gororoba/crates/wilmot_2025)
+
+cd_spin_bridge v0.1.0 (/home/eirikr/Github/open_gororoba/crates/cd_spin_bridge)
+├── gororoba_algebra v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_algebra) (*)
+├── nalgebra v0.34.2 (*)
+├── num-complex v0.4.6 (*)
+├── sign_imbalance v0.1.0 (/home/eirikr/Github/open_gororoba/crates/sign_imbalance)
+│   [dev-dependencies]
+└── spin_tomography_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/spin_tomography_core)
+    [dev-dependencies]
+
+control_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/control_core)
+├── nalgebra v0.34.2 (*)
+├── num-complex v0.4.6 (*)
+└── thiserror v2.0.18
+[dev-dependencies]
+└── approx v0.5.1 (*)
+
+cosmic_scheduler v0.1.0 (/home/eirikr/Github/open_gororoba/crates/cosmic_scheduler)
+└── serde v1.0.228 (*)
+[dev-dependencies]
+└── fixed_point_lbm v0.1.0 (/home/eirikr/Github/open_gororoba/crates/fixed_point_lbm)
+
+cosmology_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/cosmology_core)
+├── algebra_analysis v0.1.0 (/home/eirikr/Github/open_gororoba/crates/algebra_analysis) (*)
+├── arrow-array v58.1.0
+├── csv v1.4.0
+├── data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+│   [dev-dependencies]
+├── gauss-quad v0.3.1 (*)
+├── gr_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gr_core)
+│   [dev-dependencies]
+├── nalgebra v0.34.2 (*)
+├── ndarray v0.17.2
+├── parquet v58.1.0
+├── quantum_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/quantum_core)
+│   [dev-dependencies]
+├── rand v0.10.0 (*)
+├── rand_distr v0.6.0 (*)
+├── rayon v1.11.0 (*)
+├── rustfft v6.4.1
+├── serde v1.0.228 (*)
+├── statrs v0.18.0
+└── stats_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/stats_core)
+    [dev-dependencies]
+[dev-dependencies]
+└── approx v0.5.1 (*)
+
+cr_transport v0.1.0 (/home/eirikr/Github/open_gororoba/crates/cr_transport)
+└── gauss-quad v0.3.1 (*)
+[dev-dependencies]
+└── tempfile v3.27.0
+
+data_artifacts_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_artifacts_core)
+├── gororoba_contracts v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_contracts)
+│   [dev-dependencies]
+└── thiserror v2.0.18 (*)
+
+data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core) (*)
+
+de_marrais_2000 v0.1.0 (/home/eirikr/Github/open_gororoba/crates/de_marrais_2000)
+
+dickson_1919 v0.1.0 (/home/eirikr/Github/open_gororoba/crates/dickson_1919) (*)
+
+docpipe v0.1.0 (/home/eirikr/Github/open_gororoba/crates/docpipe)
+├── anyhow v1.0.102
+├── csv v1.4.0 (*)
+├── image v0.25.10
+├── lopdf v0.40.0
+├── pdf-extract v0.10.0
+├── pdfium-render v0.9.0
+├── regex v1.12.3
+├── serde v1.0.228 (*)
+├── thiserror v2.0.18 (*)
+└── toml v1.1.2+spec-1.1.0
+[dev-dependencies]
+└── tempfile v3.27.0 (*)
+
+fixed_point_lbm v0.1.0 (/home/eirikr/Github/open_gororoba/crates/fixed_point_lbm)
+
+flavor_lifts v0.1.0 (/home/eirikr/Github/open_gororoba/crates/flavor_lifts) (*)
+
+gororoba_algebra v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_algebra) (*)
+
+gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli)
+├── algebra_analysis v0.1.0 (/home/eirikr/Github/open_gororoba/crates/algebra_analysis) (*)
+├── algebra_experimental v0.1.0 (/home/eirikr/Github/open_gororoba/crates/algebra_experimental) (*)
+├── anyhow v1.0.102
+├── ash v0.38.0+1.3.281
+├── axum v0.8.8
+├── cd_kernel v0.1.0 (/home/eirikr/Github/open_gororoba/crates/cd_kernel) (*)
+├── chrono v0.4.41
+├── clap v4.6.0
+├── cosmology_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/cosmology_core) (*)
+├── csv v1.4.0 (*)
+├── data_artifacts_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_artifacts_core) (*)
+├── env_logger v0.11.10
+├── glob v0.3.3
+├── gororoba_algebra v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_algebra) (*)
+├── gororoba_cli_physics v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli_physics)
+├── gororoba_engine v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_engine)
+│   [dev-dependencies]
+├── gororoba_view_raster v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_view_raster)
+├── gr_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gr_core) (*)
+├── lattice_filtration v0.1.0 (/home/eirikr/Github/open_gororoba/crates/lattice_filtration)
+│   [dev-dependencies]
+├── lbm_3d v0.1.0 (/home/eirikr/Github/open_gororoba/crates/lbm_3d)
+│   [dev-dependencies]
+├── lbm_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/lbm_core)
+│   [dev-dependencies]
+├── lbm_vulkan v0.1.0 (/home/eirikr/Github/open_gororoba/crates/lbm_vulkan)
+│   [dev-dependencies]
+├── log v0.4.29
+├── materials_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/materials_core)
+│   [dev-dependencies]
+├── ndarray v0.17.2 (*)
+├── neural_homotopy v0.1.0 (/home/eirikr/Github/open_gororoba/crates/neural_homotopy)
+│   [dev-dependencies]
+├── optics_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/optics_core)
+│   [dev-dependencies]
+├── pgfplots v0.5.1
+├── plotters v0.3.7 (*)
+├── provenance_ops v0.1.0 (/home/eirikr/Github/open_gororoba/crates/provenance_ops)
+├── provenance_store v0.1.0 (/home/eirikr/Github/open_gororoba/crates/provenance_store)
+├── quantum_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/quantum_core) (*)
+├── rand v0.10.0 (*)
+├── regex v1.12.3 (*)
+├── serde v1.0.228 (*)
+├── serde_json v1.0.149 (*)
+├── sha2 v0.11.0
+├── sign_imbalance v0.1.0 (/home/eirikr/Github/open_gororoba/crates/sign_imbalance) (*)
+├── spectral_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/spectral_core)
+│   [dev-dependencies]
+├── stats_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/stats_core) (*)
+├── strsim v0.11.1
+├── tokio v1.51.0
+├── toml v1.1.2+spec-1.1.0 (*)
+├── ureq v3.3.0
+└── walkdir v2.5.0
+[dev-dependencies]
+└── tempfile v3.27.0 (*)
+
+gororoba_cli_algebra v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli_algebra)
+├── algebra_analysis v0.1.0 (/home/eirikr/Github/open_gororoba/crates/algebra_analysis) (*)
+├── algebra_experimental v0.1.0 (/home/eirikr/Github/open_gororoba/crates/algebra_experimental) (*)
+├── anyhow v1.0.102
+├── cd_kernel v0.1.0 (/home/eirikr/Github/open_gororoba/crates/cd_kernel) (*)
+├── clap v4.6.0 (*)
+├── csv v1.4.0 (*)
+├── env_logger v0.11.10 (*)
+├── flate2 v1.1.9
+├── glob v0.3.3
+├── gororoba_algebra v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_algebra) (*)
+├── gororoba_engine v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_engine) (*)
+├── hdf5-metno v0.12.4
+├── rand v0.10.0 (*)
+├── rand_chacha v0.10.0 (*)
+├── serde v1.0.228 (*)
+├── serde_json v1.0.149 (*)
+├── spectral_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/spectral_core) (*)
+├── stats_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/stats_core) (*)
+├── tracing v0.1.44
+└── tracing-subscriber v0.3.23
+
+gororoba_cli_data v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli_data)
+├── algebra_analysis v0.1.0 (/home/eirikr/Github/open_gororoba/crates/algebra_analysis) (*)
+├── algebra_experimental v0.1.0 (/home/eirikr/Github/open_gororoba/crates/algebra_experimental) (*)
+├── anstyle v1.0.14
+├── anyhow v1.0.102
+├── arrow-array v58.1.0 (*)
+├── arrow-ipc v58.1.0
+├── arrow-schema v58.1.0
+├── cd_kernel v0.1.0 (/home/eirikr/Github/open_gororoba/crates/cd_kernel) (*)
+├── chrono v0.4.41 (*)
+├── clap v4.6.0 (*)
+├── core_affinity v0.8.3 (*)
+├── cosmology_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/cosmology_core) (*)
+├── csv v1.4.0 (*)
+├── data_artifacts_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_artifacts_core) (*)
+├── data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core) (*)
+├── docpipe v0.1.0 (/home/eirikr/Github/open_gororoba/crates/docpipe) (*)
+├── env_logger v0.11.10 (*)
+├── fitsio v0.21.1
+├── glob v0.3.3
+├── gororoba_algebra v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_algebra) (*)
+├── gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli) (*)
+├── gr_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gr_core) (*)
+├── hdf5-metno v0.12.4 (*)
+├── hifitime v4.2.6
+├── lit_search v0.1.0 (/home/eirikr/Github/open_gororoba/crates/lit_search)
+├── lopdf v0.40.0 (*)
+├── materials_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/materials_core) (*)
+├── md-5 v0.11.0
+├── parquet v58.1.0 (*)
+├── plotters v0.3.7 (*)
+├── polars v0.53.0
+│   [build-dependencies]
+├── provenance_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/provenance_core)
+├── provenance_ops v0.1.0 (/home/eirikr/Github/open_gororoba/crates/provenance_ops) (*)
+├── provenance_store v0.1.0 (/home/eirikr/Github/open_gororoba/crates/provenance_store) (*)
+├── quick-xml v0.39.2
+├── rand v0.10.0 (*)
+├── rand_chacha v0.10.0 (*)
+├── rand_distr v0.6.0 (*)
+├── rayon v1.11.0 (*)
+├── regex v1.12.3 (*)
+├── reqwest v0.13.2
+├── rusqlite v0.39.0
+├── scrolls_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/scrolls_core)
+│   [dev-dependencies]
+├── serde v1.0.228 (*)
+├── serde_json v1.0.149 (*)
+├── sha2 v0.11.0 (*)
+├── stats_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/stats_core) (*)
+├── tempfile v3.27.0 (*)
+├── tokio v1.51.0 (*)
+├── toml v1.1.2+spec-1.1.0 (*)
+├── tracing-subscriber v0.3.23 (*)
+├── unicode-normalization v0.1.25
+├── ureq v3.3.0 (*)
+├── url v2.5.8
+├── verified_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/verified_core) (*)
+└── walkdir v2.5.0 (*)
+
+gororoba_cli_governance v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli_governance)
+├── anyhow v1.0.102
+├── chrono v0.4.41 (*)
+├── clap v4.6.0 (*)
+├── csv v1.4.0 (*)
+├── glob v0.3.3
+├── provenance_ops v0.1.0 (/home/eirikr/Github/open_gororoba/crates/provenance_ops) (*)
+├── provenance_store v0.1.0 (/home/eirikr/Github/open_gororoba/crates/provenance_store) (*)
+├── regex v1.12.3 (*)
+├── serde_json v1.0.149 (*)
+├── sha2 v0.11.0 (*)
+├── toml v1.1.2+spec-1.1.0 (*)
+└── walkdir v2.5.0 (*)
+
+gororoba_cli_physics v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli_physics) (*)
+
+gororoba_cli_provenance v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli_provenance)
+├── anyhow v1.0.102
+├── chrono v0.4.41 (*)
+├── clap v4.6.0 (*)
+├── csv v1.4.0 (*)
+├── data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core) (*)
+├── lit_search v0.1.0 (/home/eirikr/Github/open_gororoba/crates/lit_search) (*)
+├── provenance_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/provenance_core) (*)
+├── provenance_ops v0.1.0 (/home/eirikr/Github/open_gororoba/crates/provenance_ops) (*)
+├── provenance_store v0.1.0 (/home/eirikr/Github/open_gororoba/crates/provenance_store) (*)
+├── regex v1.12.3 (*)
+├── serde v1.0.228 (*)
+├── serde_json v1.0.149 (*)
+├── tokio v1.51.0 (*)
+├── toml v1.1.2+spec-1.1.0 (*)
+└── url v2.5.8 (*)
+
+gororoba_cli_quantum v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli_quantum)
+├── anyhow v1.0.102
+├── clap v4.6.0 (*)
+├── image v0.25.10 (*)
+├── num-complex v0.4.6 (*)
+├── optics_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/optics_core) (*)
+├── plotters v0.3.7 (*)
+├── quantum_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/quantum_core) (*)
+└── rand v0.10.0 (*)
+
+gororoba_cli_warp v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli_warp)
+├── chrono v0.4.41 (*)
+├── clap v4.6.0 (*)
+├── cudarc v0.19.4 (*)
+├── data_artifacts_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_artifacts_core) (*)
+├── env_logger v0.11.10 (*)
+├── glob v0.3.3
+├── gororoba_algebra v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_algebra) (*)
+├── gororoba_cli v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli) (*)
+├── gororoba_contracts v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_contracts) (*)
+├── gororoba_engine v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_engine) (*)
+├── gr_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gr_core) (*)
+├── lbm_3d_cuda v0.1.0 (/home/eirikr/Github/open_gororoba/crates/lbm_3d_cuda)
+│   [dev-dependencies]
+├── lbm_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/lbm_core) (*)
+├── log v0.4.29
+├── materials_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/materials_core) (*)
+├── ndarray v0.17.2 (*)
+├── num-complex v0.4.6 (*)
+├── nvml-wrapper v0.12.1
+├── optics_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/optics_core) (*)
+├── plotters v0.3.7 (*)
+├── rand v0.10.0 (*)
+├── spectral_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/spectral_core) (*)
+├── stats_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/stats_core) (*)
+├── toml v1.1.2+spec-1.1.0 (*)
+├── tracing v0.1.44 (*)
+└── tracing-subscriber v0.3.23 (*)
+
+gororoba_contracts v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_contracts) (*)
+
+gororoba_db v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_db)
+├── anyhow v1.0.102
+├── chrono v0.4.41 (*)
+├── clap v4.6.0 (*)
+├── provenance_store v0.1.0 (/home/eirikr/Github/open_gororoba/crates/provenance_store) (*)
+├── serde v1.0.228 (*)
+├── serde_json v1.0.149 (*)
+└── toml v1.1.2+spec-1.1.0 (*)
+
+gororoba_engine v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_engine) (*)
+
+gororoba_gpu_bridge v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_gpu_bridge)
+└── core_affinity v0.8.3 (*)
+
+gororoba_gpu_readback v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_gpu_readback)
+
+gororoba_optix v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_optix)
+├── anyhow v1.0.102
+└── libloading v0.9.0
+
+gororoba_pipeline v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_pipeline)
+└── serde v1.0.228 (*)
+
+gororoba_sparse_grid v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_sparse_grid)
+
+gororoba_structurable v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_structurable)
+├── cd_kernel v0.1.0 (/home/eirikr/Github/open_gororoba/crates/cd_kernel) (*)
+├── serde v1.0.228 (*)
+└── serde_json v1.0.149 (*)
+
+gororoba_view_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_view_core)
+├── anyhow v1.0.102
+├── gororoba_gpu_bridge v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_gpu_bridge) (*)
+└── gororoba_gpu_readback v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_gpu_readback)
+
+gororoba_view_raster v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_view_raster) (*)
+
+gr_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gr_core) (*)
+
+grmhd_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/grmhd_core)
+├── anyhow v1.0.102
+├── rayon v1.11.0 (*)
+└── wide v1.2.0 (*)
+
+hurwitz_1898 v0.1.0 (/home/eirikr/Github/open_gororoba/crates/hurwitz_1898) (*)
+
+lattice_filtration v0.1.0 (/home/eirikr/Github/open_gororoba/crates/lattice_filtration) (*)
+
+lbm_3d v0.1.0 (/home/eirikr/Github/open_gororoba/crates/lbm_3d) (*)
+
+lbm_3d_cuda v0.1.0 (/home/eirikr/Github/open_gororoba/crates/lbm_3d_cuda) (*)
+
+lbm_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/lbm_core) (*)
+
+lbm_vulkan v0.1.0 (/home/eirikr/Github/open_gororoba/crates/lbm_vulkan) (*)
+
+lit_search v0.1.0 (/home/eirikr/Github/open_gororoba/crates/lit_search) (*)
+
+manga_experiments v0.1.0 (/home/eirikr/Github/open_gororoba/crates/manga_experiments)
+├── adjustp v0.1.6
+├── cosmology_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/cosmology_core) (*)
+├── rand v0.10.0 (*)
+├── rand_chacha v0.10.0 (*)
+├── rand_distr v0.6.0 (*)
+├── rayon v1.11.0 (*)
+└── statrs v0.18.0 (*)
+
+materials_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/materials_core) (*)
+
+materials_data v0.1.0 (/home/eirikr/Github/open_gororoba/crates/materials_data)
+
+moreno_1997 v0.1.0 (/home/eirikr/Github/open_gororoba/crates/moreno_1997) (*)
+
+neural_homotopy v0.1.0 (/home/eirikr/Github/open_gororoba/crates/neural_homotopy) (*)
+
+optics_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/optics_core) (*)
+
+pathion_ellip v0.1.0 (/home/eirikr/Github/open_gororoba/crates/pathion_ellip)
+├── algebra_experimental v0.1.0 (/home/eirikr/Github/open_gororoba/crates/algebra_experimental) (*)
+├── anyhow v1.0.102
+├── num-complex v0.4.6 (*)
+└── rayon v1.11.0 (*)
+[dev-dependencies]
+└── approx v0.5.1 (*)
+
+provenance_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/provenance_core) (*)
+
+provenance_ops v0.1.0 (/home/eirikr/Github/open_gororoba/crates/provenance_ops) (*)
+
+provenance_store v0.1.0 (/home/eirikr/Github/open_gororoba/crates/provenance_store) (*)
+
+qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+└── gauss-quad v0.3.1 (*)
+[dev-dependencies]
+└── approx v0.5.1 (*)
+
+quantum_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/quantum_core) (*)
+
+schafer_1945 v0.1.0 (/home/eirikr/Github/open_gororoba/crates/schafer_1945) (*)
+
+scrolls_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/scrolls_core) (*)
+
+sign_imbalance v0.1.0 (/home/eirikr/Github/open_gororoba/crates/sign_imbalance) (*)
+
+snia_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/snia_core)
+├── serde v1.0.228 (*)
+├── thiserror v2.0.18 (*)
+└── toml v1.1.2+spec-1.1.0 (*)
+[dev-dependencies]
+├── approx v0.5.1 (*)
+├── criterion v0.8.2 (*)
+├── proptest v1.11.0
+└── tempfile v3.27.0 (*)
+
+spectral_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/spectral_core) (*)
+
+spin_tomography_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/spin_tomography_core) (*)
+
+stats_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/stats_core) (*)
+
+surreal_algebra v0.1.0 (/home/eirikr/Github/open_gororoba/crates/surreal_algebra)
+└── cd_kernel v0.1.0 (/home/eirikr/Github/open_gororoba/crates/cd_kernel) (*)
+
+tensor_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/tensor_core)
+├── faer v0.24.0 (*)
+└── ndarray v0.17.2 (*)
+
+verified_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/verified_core) (*)
+
+wilmot_2025 v0.1.0 (/home/eirikr/Github/open_gororoba/crates/wilmot_2025) (*)
+
+xtask v0.1.0 (/home/eirikr/Github/open_gororoba/xtask)
+├── anstyle v1.0.14
+├── anyhow v1.0.102
+├── chrono v0.4.41 (*)
+├── clap v4.6.0 (*)
+├── csv v1.4.0 (*)
+├── provenance_store v0.1.0 (/home/eirikr/Github/open_gororoba/crates/provenance_store) (*)
+├── regex v1.12.3 (*)
+├── rusqlite v0.39.0 (*)
+├── serde v1.0.228 (*)
+├── serde_json v1.0.149 (*)
+├── tempfile v3.27.0 (*)
+├── toml v1.1.2+spec-1.1.0 (*)
+├── verified_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/verified_core) (*)
+└── walkdir v2.5.0 (*)

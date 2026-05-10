@@ -1,0 +1,34 @@
+# Authoritative source: `registry/markdown_governance.toml`.
+# Regenerate mirrors with: `make registry-build registry-export-markdown`.
+[markdown_governance]
+generated_at = "deterministic"
+document_count = 2
+toml_generated_mirror_count = 2
+toml_manual_source_count = 0
+generated_artifact_count = 0
+manual_narrative_count = 0
+immutable_transcript_count = 0
+
+[[document]]
+id = "MDG-0026"
+path = "docs/COUPLER_MANIFOLD_FINAL_SYNTHESIS.md"
+kind = "markdown"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = [
+  "registry/docs_root_narratives.toml",
+  "registry/markdown_governance.toml",
+]
+notes = "Generated from TOML registries and overlays."
+
+[[document]]
+id = "MDG-0027"
+path = "docs/COUPLER_MANIFOLD_TEN_ELUCIDATIONS.md"
+kind = "markdown"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = [
+  "registry/docs_root_narratives.toml",
+  "registry/markdown_governance.toml",
+]
+notes = "Generated from TOML registries and overlays."

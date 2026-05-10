@@ -9,14 +9,8 @@
 //! This module aggregates those minute records to hourly means for historical
 //! Helios-era comparisons.
 
-use crate::{
-    catalogs::omni::OmniRecord,
-    fetcher::FetchError,
-};
-use std::{
-    collections::BTreeMap,
-    path::Path,
-};
+use crate::{catalogs::omni::OmniRecord, fetcher::FetchError};
+use std::{collections::BTreeMap, path::Path};
 
 /// Base URL for SPDF IMP 8 merged minute data. Used by `imp8_fetch`.
 pub const IMP8_MERGED_ROOT: &str = "https://spdf.gsfc.nasa.gov/pub/data/imp/imp8/merged/";

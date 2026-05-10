@@ -1,0 +1,50 @@
+# SOURCE OF TRUTH: external sources registry.
+# Edit this file directly. Rebuild derived DB with: make registry-build
+
+[external_sources]
+updated = "2026-03-12"
+authoritative = true
+source_markdown_glob = "docs/external_sources/*.md"
+document_count = 29
+
+[[document]]
+id = "XS-001"
+source_markdown = "docs/external_sources/C010_NONLOCAL_ALGEBRAIC_METAMATERIALS_SOURCES.md"
+slug = "c010_nonlocal_algebraic_metamaterials_sources"
+title = "C-010 Non-Local Algebraic Metamaterials Sources"
+status_token = "ACTIVE"
+content_kind = "claim_dataset_provenance"
+authority_level = "primary_paper_bridge"
+verification_level = "design_stage_replication"
+operational_role = "claim_bridge"
+source_lineage_summary = ""
+truth_surfaces = [
+  "environment_context",
+]
+artifact_contract_paths = [
+  "crates/materials_core/src/nonlocal_metamaterial.rs",
+  "crates/gororoba_cli_physics/src/bin/nonlocal_algebraic_metamaterial.rs",
+  "data/csv/c010_nonlocal_material_calibrations.csv",
+]
+has_full_transcript = false
+claim_refs = [
+  "C-010",
+]
+url_refs = [
+  "https://arxiv.org/abs/1710.01373",
+  "https://doi.org/10.1002/adma.202209988",
+  "https://doi.org/10.1021/acsphotonics.5c01385",
+  "https://doi.org/10.1038/s41467-020-15940-3",
+  "https://doi.org/10.1038/s41467-022-31140-7",
+  "https://doi.org/10.1038/s42005-021-00719-9",
+  "https://pubmed.ncbi.nlm.nih.gov/36655553/",
+  "https://www.aph.kit.edu/wegener/english/21_1085.php",
+]
+path_refs = [
+  "crates/algebra_analysis/src/boxkites.rs",
+  "crates/algebra_analysis/src/crystal_bands.rs",
+  "crates/algebra_analysis/src/homotopy_algebra.rs",
+  "crates/algebra_analysis/src/reggiani.rs",
+  "crates/cosmology_core/src/sersic.rs",
+  "crates/quantum_core/src/magnonic_crystal.rs",
+  "data/csv/c010_nonlocal_material_calibrations.csv",

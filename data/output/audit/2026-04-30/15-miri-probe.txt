@@ -1,0 +1,11 @@
+=== rustup component list --installed (filtered for miri) ===
+miri-x86_64-unknown-linux-gnu
+
+=== which cargo-miri ===
+/usr/bin/cargo-miri
+
+=== rustup which --toolchain nightly-2026-04-05 cargo-miri ===
+/home/eirikr/.rustup/toolchains/nightly-2026-04-05-x86_64-unknown-linux-gnu/bin/cargo-miri
+
+=== captured at 2026-04-30T17:22:10-07:00 ===
+NOTE: full miri test run is intentionally NOT performed in Stage A (slow, may take 30+ min on the touched test set)

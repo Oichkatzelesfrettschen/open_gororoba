@@ -1,0 +1,400 @@
+[profile.dev]
+opt-level = 2              # Cranelift max; does not support opt-level 3
+debug = 1                  # line tables only: file+line for stack traces, flamegraph, perf
+strip = "none"
+lto = "off"                # Cranelift does not support LTO (LLVM-only)
+codegen-units = 16         # saturates 12-thread CPU; 256 causes thrashing
+incremental = false        # user-local Cargo config (~/.cargo/config.toml) may also enforce this
+overflow-checks = true
+debug-assertions = true
+panic = "unwind"
+codegen-backend = "cranelift"
+
+# Test: fast compile iteration. Cranelift for sub-minute cold test builds.
+# For numerically-sensitive tests: cargo test --profile parity
+[profile.test]
+opt-level = 1              # Cranelift: opt-level 1 inlines generics, enough for tests
+lto = "off"                # Cranelift does not support LTO
+codegen-units = 256        # max Cranelift parallelism within each crate (no LLVM opt tradeoff)
+incremental = false        # user-local Cargo config (~/.cargo/config.toml) may also enforce this
+overflow-checks = true
+codegen-backend = "cranelift"
+debug = 1                  # line tables only (~60% smaller .o than full DWARF)
+split-debuginfo = "unpacked" # per-object .dwo files; mold links without re-reading all DWARF
+
+# Heavy math tests: LLVM backend for vectorization + FMA on eigensolvers,
+# associator computations, and O(dim^4) ZD graph construction.
+# Use: cargo nextest run --cargo-profile test-heavy --profile heavy -p algebra_analysis
+[profile.test-heavy]
+inherits = "test"
+opt-level = 2
+codegen-backend = "llvm"
+codegen-units = 4
+
+# lbm_3d uses wide::f64x4 for AVX2 SIMD collision; Cranelift does not support
+# _mm256_max_pd and related SSE2/AVX2 intrinsics. Revert to LLVM for this crate.
+[profile.dev.package.lbm_3d]
+codegen-backend = "llvm"
+
+[profile.test.package.lbm_3d]
+codegen-backend = "llvm"
+
+[profile.dev.package.lbm_3d_cuda]
+codegen-backend = "llvm"
+
+[profile.test.package.lbm_3d_cuda]
+codegen-backend = "llvm"
+
+# algebra_analysis uses x87 inline asm for 80-bit extended precision Jacobi
+# eigenvalue solver. Cranelift does not support inline assembly.
+[profile.dev.package.algebra_analysis]
+codegen-backend = "llvm"
+
+[profile.test.package.algebra_analysis]
+codegen-backend = "llvm"
+
+# SIMD-heavy numerical stack: keep the low-level SIMD/runtime-dispatch layer plus
+# the workspace crates that directly instantiate it on LLVM in dev/test. Roles:
+# - wide: explicit fixed-width vector types (e.g. f32x8/f64x4)
+# - pulp: runtime SIMD dispatch and ISA-specialized kernels (used by faer/gemm)
+# - simsimd: external C/C++ SIMD distance kernels
+# - faer/gemm: linear algebra front-end built atop the dispatch/vector layer
+# These layers are complementary rather than redundant, but cg_clif currently
+# fails in their overlap region when downstream crates monomorphize AVX paths.
+[profile.dev.package.faer]
+codegen-backend = "llvm"
+
+[profile.test.package.faer]
+codegen-backend = "llvm"
+
+[profile.dev.package."faer-traits"]
+codegen-backend = "llvm"
+
+[profile.test.package."faer-traits"]
+codegen-backend = "llvm"
+
+[profile.dev.package.wide]
+codegen-backend = "llvm"
+
+[profile.test.package.wide]
+codegen-backend = "llvm"
+
+# pulp exposes x86 AVX load/store wrappers (for example x86::avx::ld_u32s)
+# that currently trip cg_clif with Unsupported("Unexpected SSA-value type:
+# f32x8") on nightly 2026-04-05. Keep this dependency on LLVM until vendor
+# intrinsics / SIMD lowering support lands upstream.
+[profile.dev.package.pulp]
+codegen-backend = "llvm"
+
+[profile.test.package.pulp]
+codegen-backend = "llvm"
+
+[profile.dev.package.simsimd]
+codegen-backend = "llvm"
+
+[profile.test.package.simsimd]
+codegen-backend = "llvm"
+
+[profile.dev.package.gemm]
+codegen-backend = "llvm"
+
+[profile.test.package.gemm]
+codegen-backend = "llvm"
+
+[profile.dev.package."gemm-common"]
+codegen-backend = "llvm"
+
+[profile.test.package."gemm-common"]
+codegen-backend = "llvm"
+
+[profile.dev.package."gemm-c32"]
+codegen-backend = "llvm"
+
+[profile.test.package."gemm-c32"]
+codegen-backend = "llvm"
+
+[profile.dev.package."gemm-c64"]
+codegen-backend = "llvm"
+
+[profile.test.package."gemm-c64"]
+codegen-backend = "llvm"
+
+[profile.dev.package."gemm-f32"]
+codegen-backend = "llvm"
+
+[profile.test.package."gemm-f32"]
+codegen-backend = "llvm"
+
+[profile.dev.package."gemm-f64"]
+codegen-backend = "llvm"
+
+[profile.test.package."gemm-f64"]
+codegen-backend = "llvm"
+
+[profile.dev.package."private-gemm-x86"]
+codegen-backend = "llvm"
+
+[profile.test.package."private-gemm-x86"]
+codegen-backend = "llvm"
+
+[profile.dev.package.cd_kernel]
+codegen-backend = "llvm"
+
+[profile.test.package.cd_kernel]
+codegen-backend = "llvm"
+
+[profile.dev.package.data_core]
+codegen-backend = "llvm"
+
+[profile.test.package.data_core]
+codegen-backend = "llvm"
+
+[profile.dev.package.algebra_experimental]
+codegen-backend = "llvm"
+
+[profile.test.package.algebra_experimental]
+codegen-backend = "llvm"
+
+[profile.dev.package.gororoba_algebra]
+codegen-backend = "llvm"
+
+[profile.test.package.gororoba_algebra]
+codegen-backend = "llvm"
+
+[profile.dev.package.materials_core]
+codegen-backend = "llvm"
+
+[profile.test.package.materials_core]
+codegen-backend = "llvm"
+
+[profile.dev.package.stats_core]
+codegen-backend = "llvm"
+
+[profile.test.package.stats_core]
+codegen-backend = "llvm"
+
+[profile.dev.package.gr_core]
+codegen-backend = "llvm"
+
+[profile.test.package.gr_core]
+codegen-backend = "llvm"
+
+[profile.dev.package.cosmology_core]
+codegen-backend = "llvm"
+
+[profile.test.package.cosmology_core]
+codegen-backend = "llvm"
+
+[profile.dev.package.quantum_core]
+codegen-backend = "llvm"
+
+[profile.test.package.quantum_core]
+codegen-backend = "llvm"
+
+[profile.dev.package.tensor_core]
+codegen-backend = "llvm"
+
+[profile.test.package.tensor_core]
+codegen-backend = "llvm"
+
+[profile.dev.package.flavor_lifts]
+codegen-backend = "llvm"
+
+[profile.test.package.flavor_lifts]
+codegen-backend = "llvm"
+
+[profile.dev.package.gororoba_cli_data]
+codegen-backend = "llvm"
+
+[profile.test.package.gororoba_cli_data]
+codegen-backend = "llvm"
+
+# Remaining workspace "host" crates that compile or re-export the faer/pulp
+# subtree in dev/test. Keeping these on LLVM prevents cg_clif from entering the
+# same AVX lowering path while compiling higher-level shells like spectral_core.
+[profile.dev.package.spectral_core]
+codegen-backend = "llvm"
+
+[profile.test.package.spectral_core]
+codegen-backend = "llvm"
+
+[profile.dev.package.sign_imbalance]
+codegen-backend = "llvm"
+
+[profile.test.package.sign_imbalance]
+codegen-backend = "llvm"
+
+[profile.dev.package.cd_spin_bridge]
+codegen-backend = "llvm"
+
+[profile.test.package.cd_spin_bridge]
+codegen-backend = "llvm"
+
+[profile.dev.package.grmhd_core]
+codegen-backend = "llvm"
+
+[profile.test.package.grmhd_core]
+codegen-backend = "llvm"
+
+[profile.dev.package.gororoba_cli]
+codegen-backend = "llvm"
+
+[profile.test.package.gororoba_cli]
+codegen-backend = "llvm"
+
+[profile.dev.package.gororoba_engine]
+codegen-backend = "llvm"
+
+[profile.test.package.gororoba_engine]
+codegen-backend = "llvm"
+
+[profile.dev.package.gororoba_cli_algebra]
+codegen-backend = "llvm"
+
+[profile.test.package.gororoba_cli_algebra]
+codegen-backend = "llvm"
+
+[profile.dev.package.gororoba_cli_quantum]
+codegen-backend = "llvm"
+
+[profile.test.package.gororoba_cli_quantum]
+codegen-backend = "llvm"
+
+[profile.dev.package.gororoba_cli_physics]
+codegen-backend = "llvm"
+
+[profile.test.package.gororoba_cli_physics]
+codegen-backend = "llvm"
+
+[profile.dev.package.gororoba_cli_warp]
+codegen-backend = "llvm"
+
+[profile.test.package.gororoba_cli_warp]
+codegen-backend = "llvm"
+
+# Release: maximum optimization, no debug data, stripped for distribution.
+# Use for final binaries, benchmarks against baselines, and published artifacts.
+[profile.release]
+opt-level = 3
+debug = false               # no debug info in production binaries
+strip = "symbols"           # remove symbol table for smaller binary
+lto = "fat"                 # full cross-crate LTO (slowest compile, best runtime)
+codegen-units = 1           # single codegen unit = maximum LLVM optimization
+overflow-checks = true      # keep arithmetic behavior aligned with dev/test lanes
+panic = "unwind"            # required: quantum_core/src/gpu/peps.rs:204 uses catch_unwind
+
+# Gate: fast-compile release for governance gate binaries (TOML parsing + SHA-256).
+# Why not full release: fat LTO + 1 codegen-unit takes 2-9 minutes for binaries
+# that spend 90% of runtime in TOML deserialization. Thin LTO + 6 codegen-units
+# compiles in ~15s and runs within 10% of fat-LTO speed for I/O-bound workloads.
+[profile.release-gate]
+inherits = "release"
+lto = "thin"                # 10x faster link vs fat LTO; <5% runtime difference for TOML parsing
+codegen-units = 6           # parallel codegen; matches physical core count
+debug = "line-tables-only"  # perf/flamegraph profiling without full DWARF
+strip = "none"              # keep symbols for perf report
+overflow-checks = true
+
+# Bench: release-level optimization with fat LTO for baseline parity.
+[profile.bench]
+opt-level = 3
+debug = "line-tables-only"  # minimal debug info for flamegraph profiling
+lto = "fat"                 # benchmark against production-optimized code paths
+codegen-units = 1           # single codegen for consistent benchmark results
+
+# Parity: bit-exact numerical match with release for validation.
+# Uses LLVM (codegen-backend = "llvm" overrides dev's cranelift).
+# inherits = "dev" propagates cranelift; must explicitly override here.
+# Use: cargo build --profile=parity -p <crate>
+# Use: cargo test --profile=parity -p <crate>
+[profile.parity]
+inherits = "dev"
+opt-level = 3              # LLVM opt-level 3 for release parity
+lto = "fat"                # full cross-crate LTO for exact release parity
+codegen-units = 1          # single codegen unit for deterministic output
+incremental = false        # do not pollute cache with LTO artifacts
+codegen-backend = "llvm"   # override dev cranelift; LTO requires LLVM
+# No new string, just remove the old one
+
+=== grep -nE '^\[profile' Cargo.toml ===
+406:[profile.dev]
+420:[profile.test]
+433:[profile.test-heavy]
+441:[profile.dev.package.lbm_3d]
+444:[profile.test.package.lbm_3d]
+447:[profile.dev.package.lbm_3d_cuda]
+450:[profile.test.package.lbm_3d_cuda]
+455:[profile.dev.package.algebra_analysis]
+458:[profile.test.package.algebra_analysis]
+469:[profile.dev.package.faer]
+472:[profile.test.package.faer]
+475:[profile.dev.package."faer-traits"]
+478:[profile.test.package."faer-traits"]
+481:[profile.dev.package.wide]
+484:[profile.test.package.wide]
+491:[profile.dev.package.pulp]
+494:[profile.test.package.pulp]
+497:[profile.dev.package.simsimd]
+500:[profile.test.package.simsimd]
+503:[profile.dev.package.gemm]
+506:[profile.test.package.gemm]
+509:[profile.dev.package."gemm-common"]
+512:[profile.test.package."gemm-common"]
+515:[profile.dev.package."gemm-c32"]
+518:[profile.test.package."gemm-c32"]
+521:[profile.dev.package."gemm-c64"]
+524:[profile.test.package."gemm-c64"]
+527:[profile.dev.package."gemm-f32"]
+530:[profile.test.package."gemm-f32"]
+533:[profile.dev.package."gemm-f64"]
+536:[profile.test.package."gemm-f64"]
+539:[profile.dev.package."private-gemm-x86"]
+542:[profile.test.package."private-gemm-x86"]
+545:[profile.dev.package.cd_kernel]
+548:[profile.test.package.cd_kernel]
+551:[profile.dev.package.data_core]
+554:[profile.test.package.data_core]
+557:[profile.dev.package.algebra_experimental]
+560:[profile.test.package.algebra_experimental]
+563:[profile.dev.package.gororoba_algebra]
+566:[profile.test.package.gororoba_algebra]
+569:[profile.dev.package.materials_core]
+572:[profile.test.package.materials_core]
+575:[profile.dev.package.stats_core]
+578:[profile.test.package.stats_core]
+581:[profile.dev.package.gr_core]
+584:[profile.test.package.gr_core]
+587:[profile.dev.package.cosmology_core]
+590:[profile.test.package.cosmology_core]
+593:[profile.dev.package.quantum_core]
+596:[profile.test.package.quantum_core]
+599:[profile.dev.package.tensor_core]
+602:[profile.test.package.tensor_core]
+605:[profile.dev.package.flavor_lifts]
+608:[profile.test.package.flavor_lifts]
+611:[profile.dev.package.gororoba_cli_data]
+614:[profile.test.package.gororoba_cli_data]
+620:[profile.dev.package.spectral_core]
+623:[profile.test.package.spectral_core]
+626:[profile.dev.package.sign_imbalance]
+629:[profile.test.package.sign_imbalance]
+632:[profile.dev.package.cd_spin_bridge]
+635:[profile.test.package.cd_spin_bridge]
+638:[profile.dev.package.grmhd_core]
+641:[profile.test.package.grmhd_core]
+644:[profile.dev.package.gororoba_cli]
+647:[profile.test.package.gororoba_cli]
+650:[profile.dev.package.gororoba_engine]
+653:[profile.test.package.gororoba_engine]
+656:[profile.dev.package.gororoba_cli_algebra]
+659:[profile.test.package.gororoba_cli_algebra]
+662:[profile.dev.package.gororoba_cli_quantum]
+665:[profile.test.package.gororoba_cli_quantum]
+668:[profile.dev.package.gororoba_cli_physics]
+671:[profile.test.package.gororoba_cli_physics]
+674:[profile.dev.package.gororoba_cli_warp]
+677:[profile.test.package.gororoba_cli_warp]
+682:[profile.release]
+695:[profile.release-gate]
+704:[profile.bench]
+715:[profile.parity]

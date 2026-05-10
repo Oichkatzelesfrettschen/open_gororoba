@@ -192,5 +192,4 @@ mod tests {
         let n = tgz_member_count(path).expect("failed to read EHT SgrA archive");
         assert!(n > 0, "EHT SgrA archive should contain members");
     }
-
 }

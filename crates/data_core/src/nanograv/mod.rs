@@ -47,14 +47,11 @@ pub fn generate_hd_synthetic_draws(
     let mut gamma = DMatrix::zeros(n, n);
     for i in 0..n {
         for j in 0..n {
-            gamma[(i, j)] = *correlation_rows[i]
-                .get(j)
-                .unwrap_or(&0.0);
+            gamma[(i, j)] = *correlation_rows[i].get(j).unwrap_or(&0.0);
         }
         gamma[(i, i)] += 1e-9;
     }
-    let chol =
-        Cholesky::new(gamma).context("HD correlation matrix is not positive definite")?;
+    let chol = Cholesky::new(gamma).context("HD correlation matrix is not positive definite")?;
     let lower = chol.l();
 
     let mut result = Vec::with_capacity(draws);

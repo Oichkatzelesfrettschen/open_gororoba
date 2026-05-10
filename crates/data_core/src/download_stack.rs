@@ -426,12 +426,21 @@ impl RateLimiter {
                 ("vo.astron.nl".to_string(), Duration::from_millis(250)),
                 ("astrowise.org".to_string(), Duration::from_millis(250)),
                 // HEASARC
-                ("heasarc.gsfc.nasa.gov".to_string(), Duration::from_millis(250)),
+                (
+                    "heasarc.gsfc.nasa.gov".to_string(),
+                    Duration::from_millis(250),
+                ),
                 // MAST
                 ("mast.stsci.edu".to_string(), Duration::from_millis(250)),
                 // CDS VizieR
-                ("cdsarc.cds.unistra.fr".to_string(), Duration::from_millis(250)),
-                ("cdsarc.u-strasbg.fr".to_string(), Duration::from_millis(250)),
+                (
+                    "cdsarc.cds.unistra.fr".to_string(),
+                    Duration::from_millis(250),
+                ),
+                (
+                    "cdsarc.u-strasbg.fr".to_string(),
+                    Duration::from_millis(250),
+                ),
                 // SDSS
                 ("data.sdss.org".to_string(), Duration::from_millis(250)),
                 // Zenodo
@@ -441,15 +450,24 @@ impl RateLimiter {
                 // McGill, SORCE, magnetar
                 ("lasp.colorado.edu".to_string(), Duration::from_millis(250)),
                 // Bartol legacy FTP (slower)
-                ("ftp.bartol.udel.edu".to_string(), Duration::from_millis(500)),
+                (
+                    "ftp.bartol.udel.edu".to_string(),
+                    Duration::from_millis(500),
+                ),
                 // GWOSC
                 ("gwosc.org".to_string(), Duration::from_millis(500)),
                 // Materials / AFLOW / JARVIS (slower per ToS)
                 ("aflow.org".to_string(), Duration::from_millis(500)),
                 ("jarvis.nist.gov".to_string(), Duration::from_millis(500)),
-                ("breakthroughinitiatives.org".to_string(), Duration::from_millis(500)),
+                (
+                    "breakthroughinitiatives.org".to_string(),
+                    Duration::from_millis(500),
+                ),
                 // BepiColombo / ESA Euclid Q1 (per ESA ToS)
-                ("easdr1.esac.esa.int".to_string(), Duration::from_millis(500)),
+                (
+                    "easdr1.esac.esa.int".to_string(),
+                    Duration::from_millis(500),
+                ),
                 // Gaia TAP (ESA recommendation)
                 ("gea.esac.esa.int".to_string(), Duration::from_millis(1000)),
                 // AMDA (IRAP)

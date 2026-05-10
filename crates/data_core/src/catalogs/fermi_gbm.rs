@@ -5,10 +5,7 @@
 //!
 //! Source: https://heasarc.gsfc.nasa.gov/W3Browse/fermi/fermigbrst.html
 
-use crate::{
-    fetcher::FetchError,
-    parse::parse_f64_or_nan,
-};
+use crate::{fetcher::FetchError, parse::parse_f64_or_nan};
 use std::path::Path;
 
 /// A gamma-ray burst from the Fermi GBM catalog.

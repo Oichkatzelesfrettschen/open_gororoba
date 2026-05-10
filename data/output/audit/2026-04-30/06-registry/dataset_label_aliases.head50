@@ -1,0 +1,50 @@
+# Dataset label alias registry (execution-planning and governance support).
+
+[dataset_label_aliases]
+updated = "2026-04-15"
+authoritative = true
+status = "active"
+status_token = "ACTIVE"
+alias_count = 12
+
+[dataset_label_aliases.schema]
+required_alias_fields = ["id", "label", "label_normalized", "canonical_dataset_id", "status", "status_token", "notes"]
+
+[[alias]]
+id = "DLA-001"
+label = "Lelli+2016"
+label_normalized = "lelli+2016"
+canonical_dataset_id = "EX-0001"
+status = "active"
+status_token = "ACTIVE"
+notes = "Short citation alias for Lelli et al. 2016 AJ 152 157 SPARC database. Used in E-180, E-182 dataset_label_refs."
+
+[[alias]]
+id = "DLA-002"
+label = "Li+2020"
+label_normalized = "li+2020"
+canonical_dataset_id = "EX-0002"
+status = "active"
+status_token = "ACTIVE"
+notes = "Short citation alias for Li et al. 2020 ApJS 247 31 NFW fits for SPARC. Used in E-180, E-182 dataset_label_refs."
+
+[[alias]]
+id = "DLA-003"
+label = "SPARC rotation curves"
+label_normalized = "sparc rotation curves"
+canonical_dataset_id = "EX-0001"
+status = "active"
+status_token = "ACTIVE"
+notes = "Descriptive alias for the SPARC rotation curve database (Lelli+2016). Used in E-182 dataset_label_refs."
+
+[[alias]]
+id = "DLA-004"
+label = "Li et al. 2020 NFW fits"
+label_normalized = "li et al. 2020 nfw fits"
+canonical_dataset_id = "EX-0002"
+status = "active"
+status_token = "ACTIVE"
+notes = "Descriptive alias for Li et al. 2020 Bayesian NFW fitting parameters for SPARC galaxies. Used in E-182 dataset_label_refs."
+
+[[alias]]
+id = "DLA-005"

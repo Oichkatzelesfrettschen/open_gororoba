@@ -182,9 +182,7 @@ pub fn parse_rosetta_amda_mag_csv_minutes(content: &str) -> Vec<RosettaMagMinute
             let elapsed = match first {
                 Some((fy, fd, fh, fm)) => {
                     let day_diff = (year as f64 - fy as f64) * 365.25 + (doy as f64 - fd as f64);
-                    day_diff * 24.0
-                        + (hour as f64 - fh as f64)
-                        + (minute as f64 - fm as f64) / 60.0
+                    day_diff * 24.0 + (hour as f64 - fh as f64) + (minute as f64 - fm as f64) / 60.0
                 }
                 None => 0.0,
             };

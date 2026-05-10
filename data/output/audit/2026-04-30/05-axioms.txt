@@ -1,0 +1,7 @@
+proofs/theories/SStructuralGaps.v:15
+proofs/theories/CarlsonIntegrals.v:10
+proofs/theories/TightBindingTopology.v:9
+proofs/CDFidelity.v:3
+proofs/verified/C958_ZDGraphTopology.v:1
+proofs/theories/PathionZDGraph.v:1
+proofs/theories/C1543_MorMod4Bound.v:1

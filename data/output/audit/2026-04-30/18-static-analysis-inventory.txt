@@ -1,0 +1,16 @@
+=== ls -la data/output/static_analysis/ ===
+total 16
+drwxr-xr-x  2 eirikr eirikr 4096 Apr 15 19:50 .
+drwxr-xr-x 11 eirikr eirikr 4096 Apr 30 17:17 ..
+-rw-r--r--  1 eirikr eirikr 6684 Apr 15 19:50 pmd_gap_audit_2026_04_15.txt
+
+=== find data/output/static_analysis/ -type f ===
+data/output/static_analysis/pmd_gap_audit_2026_04_15.txt
+
+=== for each file: wc -l + head -3 ===
+--- data/output/static_analysis/pmd_gap_audit_2026_04_15.txt ---
+125 data/output/static_analysis/pmd_gap_audit_2026_04_15.txt
+PMD-EQUIVALENT STATIC ANALYSIS GAP AUDIT
+open_gororoba workspace -- 41 crates
+Date: 2026-04-15
+

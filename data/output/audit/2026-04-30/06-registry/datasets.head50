@@ -1,0 +1,50 @@
+# Dataset registry (Tier I; plan Phase 6A.S2).
+#
+# Per-directory inventory of data/external/*. Created 2026-04-17 as part
+# of the No-Dataset-Left-Behind (NDLB) gate implementation. Populated
+# by initial heuristic server-mapping; each row should be refined with:
+#   (a) server_ref double-checked against registry/data_servers.toml
+#   (b) experiment_bindings populated from registry/experiments.toml
+#   (c) sha256 computed via dataset-hash-sweep binary (P6A.S2.T3)
+#   (d) calibration_version pinned per-row (PR3/PR4, DR17, etc.)
+#   (e) status triaged to active | deferred | archived (P6A.S2.T4)
+#
+# Schema (strict; enforced by NDLB gate):
+#   id                     -- snake_case local identifier
+#   local_path             -- data/external/<id> relative path
+#   server_ref             -- server id in registry/data_servers.toml
+#                             or "(synthetic)" for locally-generated artifacts
+#                             or "(unknown)" for unmapped sources (must triage)
+#   bytes                  -- du -sb size at time of entry
+#   sha256                 -- "" placeholder until P6A.S2.T3 populates
+#   calibration_version    -- "" placeholder until P6A.S2 triage
+#   status                 -- "active" | "deferred" | "archived"
+#                             | "classified_pending" (must be resolved
+#                                before NDLB gate hard-passes)
+#   experiment_bindings    -- list of E-NNN ids; [] = orphan
+#   notes                  -- free-form
+#
+# Rules (enforced by governance-gate once NDLB is armed):
+#   - server_ref must resolve in data_servers.toml unless equals
+#     "(synthetic)" or "(unknown)".
+#   - status "active" requires experiment_bindings non-empty.
+#   - status "deferred" requires a tombstone row in
+#     registry/tombstone_datasets.toml.
+
+[datasets]
+updated = "2026-04-17"
+authoritative = true
+status = "active"
+status_token = "ACTIVE"
+schema_version = 1
+entry_count = 84
+
+
+[[dataset]]
+id = "ace"
+local_path = "data/external/ace"
+server_ref = "cdaweb_hapi"
+bytes = 2887734236
+sha256 = "8dbcebc33585297663202baed1d64a8a797d1fc7ac5a8366e14a6b24f55961eb"
+calibration_version = ""
+status = "active"

@@ -29,17 +29,22 @@ fn main() {
 
     // 3. Demonstrate Unified Step in Complex Time
     println!("\nExecuting unified N-Body step in 2D Complex Time...");
-    let mut system = NBodySystem::new(
-        1e-5,
-        [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]],
-    );
+    let mut system = NBodySystem::new(1e-5, [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]);
 
     // Add a test body near the event horizon
     system.push_body_complex(
         1,
         1.0,
-        [Complex::new(10.0, 0.1), Complex::new(0.0, 0.0), Complex::new(0.0, 0.0)],
-        [Complex::new(0.0, 0.0), Complex::new(0.5, 0.01), Complex::new(0.0, 0.0)],
+        [
+            Complex::new(10.0, 0.1),
+            Complex::new(0.0, 0.0),
+            Complex::new(0.0, 0.0),
+        ],
+        [
+            Complex::new(0.0, 0.0),
+            Complex::new(0.5, 0.01),
+            Complex::new(0.0, 0.0),
+        ],
     );
 
     let d_tau = Complex::new(0.01, 0.001); // Real step + Imaginary tunneling

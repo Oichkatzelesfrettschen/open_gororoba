@@ -1,0 +1,46 @@
+=== A5.2 RE-MEASURE proof debt with broader patterns ===
+
+=== STRICT: '^Axiom |^Parameter ' (start-of-line, space-after) ===
+proofs/theories/SStructuralGaps.v:15
+proofs/theories/CarlsonIntegrals.v:10
+proofs/theories/TightBindingTopology.v:9
+proofs/CDFidelity.v:3
+proofs/verified/C958_ZDGraphTopology.v:1
+proofs/theories/PathionZDGraph.v:1
+proofs/theories/C1543_MorMod4Bound.v:1
+TOTAL strict occurrences:
+40
+
+=== BROAD: 'Axiom ' anywhere on line ===
+155
+files:
+20
+
+=== BROAD: 'Parameter ' anywhere on line ===
+65
+files:
+12
+
+=== Local Axiom / Local Parameter (these would be missed by strict ^) ===
+
+=== Indented Axiom / Parameter (missed by strict ^) ===
+154
+
+=== Strict Admitted/admit ===
+5
+files:
+5
+
+=== BROAD admit (word boundary, any case) ===
+15
+files:
+11
+
+=== Hypothesis (often used as proof axiom) ===
+0
+
+=== Conjecture ===
+0
+
+=== Variable / Variables (axiom-like in section) ===
+0

@@ -1,0 +1,45 @@
+=== E-220 to E-223 details ===
+--- E-220 ---
+[[experiment]]]
+id = "E-220"
+title = "TurboQuant WHT/E8 rotation benchmark and KIVI comparison (d=128, 3-bit)"
+status = "active"
+status_token = "ACTIVE"
+run = "cargo run --release -p gororoba_cli_physics --bin turboquant-bench -- --dims 128 --bits 3 --n-vectors 5000 --rotation both --out-json reports/e220_turboquant_bench.json"
+binary_name = "turboquant-bench"
+
+[[experimen
+
+--- E-221 ---
+[[experiment]]]
+id = "E-221"
+title = "TurboQuant adaptive bit allocation via CD associator (d=32, 3-bit)"
+status = "active"
+status_token = "ACTIVE"
+run = "cargo test -p cd_kernel --release -- test_adaptive_vs_uniform --nocapture"
+binary_name = "turboquant-cd-fidelity"
+
+[[experimen
+
+--- E-222 ---
+[[experiment]]]
+id = "E-222"
+title = "TurboQuant QJL correction crossover analysis (2-4 bit)"
+status = "active"
+status_token = "ACTIVE"
+run = "cargo run --release -p gororoba_cli_physics --bin turboquant-validate -- --dim 128 --bits 2,3,4 --seq-lens 512 --n-heads 4 --out-json reports/e222_turboquant_qjl.json"
+binary_name = "turboquant-validate"
+
+[[experimen
+
+--- E-223 ---
+[[experiment]]]
+id = "E-223"
+title = "TurboQuant E8 lattice root system and rotation roundtrip validation"
+status = "active"
+status_token = "ACTIVE"
+run = "cargo test -p cd_kernel --release -- test_e8_root_count test_e8_root_norms test_e8_rotation_roundtrip test_f4_as_pipeline_rotation"
+binary_name = "turboquant-sedenion-rotation"
+
+[[experimen
+

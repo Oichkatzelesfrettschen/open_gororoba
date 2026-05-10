@@ -1,0 +1,80 @@
+name: CD Kernel Multi-Platform Benchmark
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'crates/cd_kernel/**'
+      - '.github/workflows/bench-cd-kernel.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  bench-x86:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq mold clang git-lfs
+          git lfs install
+      - uses: actions/checkout@v4
+        with:
+          lfs: false  # LFS budget exceeded; benchmark doesn't need archived data
+      - uses: dtolnay/rust-toolchain@nightly
+      - name: System info
+        run: |
+          lscpu | grep -E "Model name|L1d|L2|L3|CPU|Thread|Architecture"
+          free -h
+          uname -a
+      - name: Prepare sibling crate and build-dir
+        run: |
+          git clone --depth 1 https://github.com/Oichkatzelesfrettschen/cratesgororobas.git ../cratesgororobas
+          sed -i 's|build-dir = .*|build-dir = "target/ambient"|' .cargo/config.toml
+      - name: Build benchmark binary
+        run: cargo build --release -p cd_kernel --test bench_multiplatform
+        env:
+          CARGO_TARGET_DIR: target
+      - name: Run CD kernel benchmark
+        run: cargo test --release -p cd_kernel -- bench_multiplatform --nocapture 2>&1 | tee bench_x86.txt
+        env:
+          CARGO_TARGET_DIR: target
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bench-x86
+          path: bench_x86.txt
+
+  bench-arm:
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq mold clang git-lfs
+          git lfs install
+      - uses: actions/checkout@v4
+        with:
+          lfs: false  # LFS budget exceeded; benchmark doesn't need archived data
+      - uses: dtolnay/rust-toolchain@nightly
+      - name: System info
+        run: |
+          lscpu | grep -E "Model name|L1d|L2|L3|CPU|Thread|Architecture"
+          free -h
+          uname -a
+      - name: Prepare sibling crate and build-dir
+        run: |
+          git clone --depth 1 https://github.com/Oichkatzelesfrettschen/cratesgororobas.git ../cratesgororobas
+          sed -i 's|build-dir = .*|build-dir = "target/ambient"|' .cargo/config.toml
+      - name: Build benchmark binary
+        run: cargo build --release -p cd_kernel --test bench_multiplatform
+        env:
+          CARGO_TARGET_DIR: target
+      - name: Run CD kernel benchmark
+        run: cargo test --release -p cd_kernel -- bench_multiplatform --nocapture 2>&1 | tee bench_arm.txt
+        env:
+          CARGO_TARGET_DIR: target
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bench-arm
+          path: bench_arm.txt

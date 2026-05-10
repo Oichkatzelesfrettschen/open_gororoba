@@ -1,0 +1,21 @@
+# Monograph registry -- source of truth for the unified treatise structure.
+# Schema: data_core::registry::MonographRegistry
+# Generated document: docs/monograph/unified_treatise.md
+#
+# WHY: registry-check --typed-policy error validates this file parses correctly.
+#      registry-emit monograph-legacy regenerates the legacy Rust mirror from it.
+
+[monograph]
+title = "Ad Astra Per Mathematica: The Gororoba Synthesis"
+authors = ["open_gororoba contributors"]
+status = "active"
+updated = "2026-03-23"
+version = "0.1.0"
+license = "MIT"
+authoritative = true
+document_count = 1
+
+[[document]]
+path = "docs/monograph/unified_treatise.md"
+title = "Ad Astra Per Mathematica: The Gororoba Synthesis"
+body_markdown = ""

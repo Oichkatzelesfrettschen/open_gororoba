@@ -1,0 +1,6 @@
+# Experiments narrative overlay registry.
+# Generated as an empty compatibility placeholder until curated overlay text is restored.
+# Regenerate mirrors with: `make registry-build registry-export-markdown`.
+
+[experiments_narrative]
+preamble_markdown = ""
