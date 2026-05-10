@@ -276,6 +276,14 @@ fn build_dependency_graph(root: &Path) -> Result<DependencyGraph> {
                 .insert(entry.file_name().to_string_lossy().to_string());
         }
     }
+    // `xtask/` is a top-level workspace member that lives outside the
+    // `crates/` tree. Add it explicitly so the classifier's
+    // `affected_crates.insert("xtask")` branch (for files matching
+    // `xtask/...`) resolves to a known target instead of falling
+    // through to the force_workspace path.
+    if root.join("xtask").join("Cargo.toml").is_file() {
+        graph.all_crates.insert("xtask".to_string());
+    }
 
     let ws_path_map = parse_workspace_path_deps(root)?;
     let inline_path_re =
@@ -286,7 +294,13 @@ fn build_dependency_graph(root: &Path) -> Result<DependencyGraph> {
             .expect("valid workspace dep regex");
 
     for crate_name in &graph.all_crates {
-        let cargo_toml = crates_root.join(crate_name).join("Cargo.toml");
+        // xtask lives at root/xtask, not crates_root/xtask; every
+        // other entry in all_crates is under crates_root.
+        let cargo_toml = if crate_name == "xtask" {
+            root.join("xtask").join("Cargo.toml")
+        } else {
+            crates_root.join(crate_name).join("Cargo.toml")
+        };
         let text = fs::read_to_string(&cargo_toml)
             .with_context(|| format!("read crate manifest {}", cargo_toml.display()))?;
 
@@ -409,6 +423,25 @@ fn classify_changes(
             } else {
                 classification.force_workspace = true;
             }
+            continue;
+        }
+
+        // `xtask/` is a top-level workspace member that lives outside
+        // `crates/`. Treat it as its own package so xtask-only edits
+        // do not fall through to the `--workspace` fallback.
+        //
+        // # Why this fix exists
+        //
+        // Before this branch, a change to `xtask/src/main.rs` was not
+        // matched by any of the prefix rules (it does not start with
+        // `crates/`, is not a top-level `.rs`/`.toml`, and is not in
+        // the RUST_IRRELEVANT_PREFIXES list). The classifier returned
+        // an empty change set, which then promoted to `--workspace`
+        // downstream via the local_base_fallback path. Pre-push
+        // therefore recompiled and re-tested the ENTIRE workspace
+        // (~3-8 minutes) for a one-line xtask edit.
+        if file.starts_with("xtask/") {
+            classification.affected_crates.insert("xtask".to_string());
             continue;
         }
 
