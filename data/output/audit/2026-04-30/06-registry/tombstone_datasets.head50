@@ -1,0 +1,50 @@
+# Dataset tombstones (Tier I; plan Phase 6A.S3.T1).
+#
+# Explicit deferral or archive markers for datasets that are present on
+# disk (or were fetched historically) but do NOT have active experiment
+# bindings and will not be analyzed in the near-term. Tombstoning lets
+# the No-Dataset-Left-Behind (NDLB) gate pass on these entries without
+# forcing an immediate experiment.
+#
+# A tombstone is a compromise, not a release. Every tombstoned row is
+# debt; future sprints should either bind an experiment or promote to
+# archive/ status.
+#
+# Schema:
+#   id                     -- must match registry/datasets.toml row id
+#   local_path             -- data/external/<id> relative path
+#   reason                 -- one-line justification
+#   defer_to_sprint        -- integer sprint number OR 0 for "never"
+#                             (0 = permanent deferral; consider archive)
+#   archive_at             -- ISO date for forced archival review
+#   last_fetched           -- ISO date of last known successful download
+#   upstream_status        -- "available" | "archived" | "dead"
+#   owner_contact          -- email/handle for follow-up
+#   notes                  -- free-form
+
+[tombstones]
+updated = "2026-04-17"
+authoritative = true
+status = "active"
+status_token = "ACTIVE"
+schema_version = 1
+entry_count = 23
+
+[[tombstone]]
+id = "ace_swepam"
+local_path = "data/external/ace_swepam"
+reason = "Instrument subset; parent `ace` has active bindings (E-113, E-138, E-226). Refetch as needed."
+defer_to_sprint = 90
+archive_at = "2026-12-31"
+last_fetched = "2026-04-17"
+upstream_status = "available"
+owner_contact = ""
+notes = ""
+
+[[tombstone]]
+id = "alice_pbpb_raa"
+local_path = "data/external/alice_pbpb_raa"
+reason = "ALICE PbPb collisions R_AA; reserved for future high-energy physics sprint."
+defer_to_sprint = 100
+archive_at = "2026-12-31"
+last_fetched = "2026-04-17"

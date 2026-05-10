@@ -1,0 +1,6 @@
+# Artifact-to-experiment linkage registry.
+# Maps produced artifact files to the experiment IDs that generated them.
+# See C-653 and C-654 for specification.
+
+[[link]]
+# Stub entry.

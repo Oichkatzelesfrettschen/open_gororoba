@@ -16,10 +16,8 @@
 //! - Gray & Ellingsen (2002) ApJ 578 967
 //! - Perez et al. (2022) RNAAS 6 197 (BL 6EQUJ5 follow-up)
 
-
 use crate::fetcher::FetchError;
 use std::path::Path;
-
 
 /// Convert a single printout character to its base-36 intensity value.
 ///

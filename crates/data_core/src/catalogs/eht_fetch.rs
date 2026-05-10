@@ -242,7 +242,6 @@ simple_provider! {
     urls = EHT_M87_LEGACY;
 }
 
-
 #[cfg(test)]
 mod tests {
     use super::*;

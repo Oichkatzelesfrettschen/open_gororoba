@@ -1,8 +1,8 @@
 //! Fetch implementation for hic_raa. See hic_raa.rs for record types and parsers.
 
 use super::hic_raa::{
-    atlas_jet_raa_tables, atlas_jet_v2_tables, cms_pbpb_5020_raa_tables,
-    cms_pbpb_5020_v2_tables, cms_pp_5020_spectrum_table, phenix_auau_raa_tables,
+    atlas_jet_raa_tables, atlas_jet_v2_tables, cms_pbpb_5020_raa_tables, cms_pbpb_5020_v2_tables,
+    cms_pp_5020_spectrum_table, phenix_auau_raa_tables,
 };
 use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks};
 use std::path::PathBuf;

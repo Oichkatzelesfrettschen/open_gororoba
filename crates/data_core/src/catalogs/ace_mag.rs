@@ -19,11 +19,7 @@ use crate::{
     parse::{parse_hapi_spacephysics_f64_or_nan, parse_hapi_time_to_ydh},
 };
 use csv::ReaderBuilder;
-use std::{
-    collections::HashMap,
-    fs,
-    path::Path,
-};
+use std::{collections::HashMap, fs, path::Path};
 
 /// A single 16-second ACE MAG measurement.
 #[derive(Debug, Clone)]

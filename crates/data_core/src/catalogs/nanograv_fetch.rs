@@ -1,13 +1,14 @@
 //! Fetch implementation for nanograv. See nanograv.rs for record types and parsers.
 
-use super::nanograv::{
-    bestfit, extract_free_spectrum_from_kde_zip, write_free_spectrum_csv,
-};
+use super::nanograv::{bestfit, extract_free_spectrum_from_kde_zip, write_free_spectrum_csv};
 use crate::fetcher::{
     DatasetProvider, FetchConfig, FetchError, download_to_file, download_with_fallbacks,
     extract_tar_gz, validate_not_html,
 };
-use std::{fs, path::{Path, PathBuf}};
+use std::{
+    fs,
+    path::{Path, PathBuf},
+};
 
 const NANOGRAV_KDE_URL: &str =
     "https://zenodo.org/api/records/10344086/files/NANOGrav15yr_KDE-FreeSpectra_v1.1.0.zip/content";

@@ -1,0 +1,50 @@
+# Source of truth for downloader host-family routing overrides.
+# These policies are merged on top of the Rust default policy layer.
+
+[[policy]]
+name = "arxiv"
+host_suffix = "arxiv.org"
+retry_class = "curl_first"
+probe_backends = ["curl-cli", "reqwest", "ureq"]
+download_backends = ["curl-cli", "reqwest", "wget-cli", "aria2-cli"]
+note = "arXiv PDF endpoints are curl-first because ranged probes are reliable and cheap."
+
+[[policy]]
+name = "core"
+host_suffix = "core.ac.uk"
+retry_class = "probe_first"
+probe_backends = ["reqwest", "curl-cli", "ureq"]
+download_backends = ["reqwest", "curl-cli", "wget-cli"]
+note = "CORE URLs often redirect through fileserver mirrors before yielding a terminal PDF status."
+
+[[policy]]
+name = "science-direct"
+host_suffix = "sciencedirect.com"
+retry_class = "curl_first"
+probe_backends = ["curl-cli", "reqwest", "ureq"]
+download_backends = ["curl-cli", "reqwest", "aria2-cli"]
+note = "ScienceDirect remains curl-first because article and PDF redirects are host-sensitive."
+
+[[policy]]
+name = "springer"
+host_suffix = "springer.com"
+retry_class = "curl_first"
+probe_backends = ["curl-cli", "reqwest", "ureq"]
+download_backends = ["curl-cli", "reqwest", "wget-cli"]
+note = "Springer family URLs are curl-first because article and chapter redirects are brittle."
+
+[[policy]]
+name = "link-springer"
+host_suffix = "link.springer.com"
+retry_class = "curl_first"
+probe_backends = ["curl-cli", "reqwest", "ureq"]
+download_backends = ["curl-cli", "reqwest", "wget-cli"]
+note = "Direct Link Springer override."
+
+[[policy]]
+name = "researchgate"
+host_suffix = "researchgate.net"
+retry_class = "blocked_host"
+probe_backends = ["curl-cli", "reqwest"]
+download_backends = ["curl-cli", "reqwest", "aria2-cli"]
+note = "ResearchGate is treated as a likely blocked host; probe it cheaply, then pivot to mirrors or DOI-linked alternates."

@@ -3341,9 +3341,7 @@ impl ProvenanceStore {
                 params![id],
                 |row| row.get(0),
             )
-            .map_err(|e| {
-                anyhow::anyhow!("claim {} not found in canonical DB: {}", id, e)
-            })?;
+            .map_err(|e| anyhow::anyhow!("claim {} not found in canonical DB: {}", id, e))?;
         Ok(row)
     }
 
@@ -3427,9 +3425,7 @@ impl ProvenanceStore {
                 params![id],
                 |row| row.get(0),
             )
-            .map_err(|e| {
-                anyhow::anyhow!("insight {} not found in canonical DB: {}", id, e)
-            })?;
+            .map_err(|e| anyhow::anyhow!("insight {} not found in canonical DB: {}", id, e))?;
         Ok(row)
     }
 
@@ -3462,13 +3458,7 @@ impl ProvenanceStore {
                 params![id],
                 |row| row.get(0),
             )
-            .map_err(|e| {
-                anyhow::anyhow!(
-                    "experiment {} not found in canonical DB: {}",
-                    id,
-                    e
-                )
-            })?;
+            .map_err(|e| anyhow::anyhow!("experiment {} not found in canonical DB: {}", id, e))?;
         Ok(row)
     }
 
@@ -3547,9 +3537,7 @@ impl ProvenanceStore {
             .transaction_with_behavior(rusqlite::TransactionBehavior::Immediate)?;
         let prev: Option<String> = tx
             .query_row(&select_sql, params![id], |row| row.get(0))
-            .map_err(|e| {
-                anyhow::anyhow!("{} {} not found in canonical DB: {}", table, id, e)
-            })?;
+            .map_err(|e| anyhow::anyhow!("{} {} not found in canonical DB: {}", table, id, e))?;
         let prev_value_sha256 = prev.as_deref().map(sha256_hex);
         let new_value_sha256 = sha256_hex(new_value);
         let operation = if prev.as_deref() == Some(new_value) {
@@ -3593,9 +3581,7 @@ impl ProvenanceStore {
                 params![id],
                 |row| row.get(0),
             )
-            .map_err(|e| {
-                anyhow::anyhow!("claim {} not found in canonical DB: {}", id, e)
-            })?;
+            .map_err(|e| anyhow::anyhow!("claim {} not found in canonical DB: {}", id, e))?;
         Ok(row)
     }
 

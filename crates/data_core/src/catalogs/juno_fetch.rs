@@ -1,6 +1,8 @@
 //! Fetch/provider support for Juno cruise data.
 
-use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_amda_hapi_csv, download_hapi_csv};
+use crate::fetcher::{
+    DatasetProvider, FetchConfig, FetchError, download_amda_hapi_csv, download_hapi_csv,
+};
 use std::path::PathBuf;
 
 use crate::catalogs::juno::{

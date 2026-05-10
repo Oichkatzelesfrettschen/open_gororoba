@@ -279,4 +279,3 @@ pub fn parse_staples_crossing_catalog(
     events.sort_by_key(|e| e.start);
     events
 }
-

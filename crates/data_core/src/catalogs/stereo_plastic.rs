@@ -25,10 +25,7 @@ use crate::{
     parse::{parse_hapi_spacephysics_f64_or_nan, parse_hapi_time_to_ydh},
 };
 use csv::ReaderBuilder;
-use std::{
-    collections::HashMap,
-    path::Path,
-};
+use std::{collections::HashMap, path::Path};
 
 // ---------------------------------------------------------------------------
 // STEREO PLASTIC (plasma)

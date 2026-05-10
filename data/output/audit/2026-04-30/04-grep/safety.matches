@@ -1,0 +1,73 @@
+crates/lbm_3d/src/solver.rs:269:/// SAFETY contract: the caller guarantees via `aosoa_idx` algebra that no
+crates/lbm_3d/src/solver.rs:278:// SAFETY: UnsafeAoSoAPtr wraps a pointer into a Vec-backed buffer. Send+Sync
+crates/lbm_3d/src/solver.rs:293:        // SAFETY: offset is computed from grid indices (i,j,k,q) bounded by
+crates/lbm_3d/src/solver.rs:306:        // SAFETY: offset is computed from grid indices (i,j,k,q) bounded by
+crates/lbm_3d/src/solver.rs:1260:        // SAFETY: each chunk maps to non-overlapping AoSoA locations.
+crates/lbm_3d/src/solver.rs:1437:                // SAFETY: tail cells are within bounds and not touched by SIMD path.
+crates/lbm_3d/src/solver.rs:1471:                // SAFETY: tail cells are within bounds and not touched by SIMD path.
+crates/cd_kernel/src/turboquant/fp8.rs:33:// SAFETY: Both are #[repr(transparent)] wrappers around u8
+crates/cd_kernel/src/avx2_primitives.rs:67:/// SAFETY: Requires `avx` target feature (verified by callers).
+crates/cd_kernel/src/avx2_primitives.rs:97:        // SAFETY: i + 8 <= n guarantees both loads are in bounds.
+crates/cd_kernel/src/avx2_primitives.rs:107:        // SAFETY: i + 4 <= n guarantees load is in bounds.
+crates/cd_kernel/src/avx2_primitives.rs:114:    // SAFETY: avx feature confirmed; pointer reads use in-bounds ptr.add.
+crates/cd_kernel/src/avx2_primitives.rs:117:        // SAFETY: i < n guarantees in-bounds.
+crates/cd_kernel/src/avx2_primitives.rs:130:        // SAFETY: AVX confirmed by runtime detection.
+crates/cd_kernel/src/avx2_primitives.rs:154:        // SAFETY: i + 8 <= n guarantees all four loads are in bounds.
+crates/cd_kernel/src/avx2_primitives.rs:166:        // SAFETY: i + 4 <= n guarantees loads are in bounds.
+crates/cd_kernel/src/avx2_primitives.rs:174:    // SAFETY: avx+fma confirmed; pointer reads are in-bounds.
+crates/cd_kernel/src/avx2_primitives.rs:177:        // SAFETY: i < n guarantees in-bounds.
+crates/cd_kernel/src/avx2_primitives.rs:192:        // SAFETY: AVX and FMA confirmed by runtime detection.
+crates/cd_kernel/src/avx2_primitives.rs:215:        // SAFETY: i + 8 <= n guarantees both loads are in bounds.
+crates/cd_kernel/src/avx2_primitives.rs:225:        // SAFETY: i + 4 <= n guarantees load is in bounds.
+crates/cd_kernel/src/avx2_primitives.rs:232:    // SAFETY: avx+fma confirmed; pointer reads are in-bounds.
+crates/cd_kernel/src/avx2_primitives.rs:235:        // SAFETY: i < n guarantees in-bounds.
+crates/cd_kernel/src/avx2_primitives.rs:249:        // SAFETY: AVX and FMA confirmed by runtime detection.
+crates/cd_kernel/src/avx2_primitives.rs:265:    // SAFETY: array has exactly 16 elements; offsets 0,4,8,12 are all in bounds.
+crates/cd_kernel/src/avx2_primitives.rs:279:    // SAFETY: avx2+fma confirmed; hsum256 requires avx2 only.
+crates/cd_kernel/src/avx2_primitives.rs:290:        // SAFETY: AVX2 and FMA confirmed by runtime detection.
+crates/cd_kernel/src/x87_ext80.rs:60:        // SAFETY: `fld` loads one `f64`, `fstp` stores one `tbyte` and restores
+crates/cd_kernel/src/x87_ext80.rs:77:        // SAFETY: `fld` loads one `tbyte`, `fstp` stores one `f64` and restores
+crates/cd_kernel/src/x87_ext80.rs:94:        // SAFETY: `fild` loads one 32-bit integer, `fstp` stores one `tbyte`,
+crates/cd_kernel/src/x87_ext80.rs:111:        // SAFETY: `fild` loads one 64-bit integer, `fstp` stores one `tbyte`,
+crates/cd_kernel/src/x87_ext80.rs:128:        // SAFETY: `fld` loads one `tbyte`, `fistp` stores one 32-bit integer,
+crates/cd_kernel/src/x87_ext80.rs:145:        // SAFETY: `fld` loads one `tbyte`, `fistp` stores one 64-bit integer,
+crates/cd_kernel/src/x87_ext80.rs:174:        // SAFETY: `fld` loads one `tbyte`, `fisttp` truncates to one 32-bit
+crates/cd_kernel/src/x87_ext80.rs:204:        // SAFETY: `fld` loads one `tbyte`, `fisttp` truncates to one 64-bit
+crates/cd_kernel/src/x87_ext80.rs:222:        // SAFETY: `fld` loads one `tbyte`, `fsqrt` operates in place, `fstp`
+crates/cd_kernel/src/x87_ext80.rs:240:        // SAFETY: `fild` loads the integer exponent into ST(0), `fld` loads the
+crates/cd_kernel/src/x87_ext80.rs:410:        // SAFETY: `fnstcw` stores the current control word to memory without
+crates/cd_kernel/src/x87_ext80.rs:423:        // SAFETY: `fldcw` loads a new control word from memory and does not
+crates/cd_kernel/src/x87_ext80.rs:509:        // SAFETY: `fnstsw` stores the status word to memory without altering
+crates/cd_kernel/src/x87_primitives.rs:118:    // SAFETY: pointer arithmetic stays within the slice bounds (pairs*2 + remainder <= n).
+crates/cd_kernel/src/x87_primitives.rs:181:    // SAFETY: Both slices have length n. pairs*2 + remainder == n. Pointer arithmetic
+crates/cd_kernel/src/x87_primitives.rs:266:    // SAFETY: quads*4 + rem == n. Pointer arithmetic stays within the slice.
+crates/cd_kernel/src/x87_primitives.rs:371:    // SAFETY: `a` is [f64; 16], exactly 128 bytes. All byte offsets 0..=120 are valid.
+crates/cd_kernel/src/x87_primitives.rs:465:    // SAFETY: n >= 2, so n-1 is a valid index into coeffs.
+crates/cd_kernel/src/x87_primitives.rs:470:    // SAFETY: p starts at &coeffs[n-1] and is decremented by 8 bytes per iteration.
+crates/lbm_3d_cuda/src/lib.rs:83:// SAFETY: CudaGraph is only used from a single device context and
+crates/lbm_3d_cuda/src/lib.rs:105:    // SAFETY: cuMemGetInfo_v2 is a read-only CUDA driver API call that writes
+crates/lbm_3d_cuda/src/lib.rs:679:            // SAFETY: cuMemGetInfo_v2 is a read-only CUDA driver API call that
+crates/lbm_3d_cuda/src/lib.rs:2417:            // SAFETY: cuMemGetInfo_v2 is a read-only CUDA driver API call that
+crates/gororoba_cli_warp/src/bin/warp_fastpath_suite.rs:489:        // SAFETY: Called single-threaded in binary main before spawning work.
+crates/gororoba_cli_warp/src/bin/warp_fastpath_suite.rs:640:    // SAFETY: Called single-threaded in binary main before spawning work.
+crates/grmhd_core/src/flux.rs:610:                    // SAFETY: `v` indexes into a conserved-variable array of size
+crates/grmhd_core/src/flux.rs:745:                    // SAFETY: `v` indexes into NCONS * n_total RHS array.
+crates/grmhd_core/src/flux.rs:854:                    // SAFETY: `v` indexes into NCONS * n_total RHS array.
+crates/grmhd_core/src/flux.rs:913:                // SAFETY: `v` indexes into NCONS * n_total RHS array.
+crates/grmhd_core/src/flux.rs:987:                // SAFETY: idx = grid.idx(i,j,k) is injective and bounded by
+crates/grmhd_core/src/flux.rs:1104:                // SAFETY: base = idx * NPRIM where idx is bounded by n_total
+crates/lbm_vulkan/src/compute.rs:1236:        // SAFETY: mapped_ptr was obtained from vkMapMemory with sufficient size
+crates/lbm_vulkan/src/compute.rs:1250:        // SAFETY: force_buffer was allocated with size >= force.len() * size_of::<f32>().
+crates/lbm_vulkan/src/compute.rs:1331:        // SAFETY: mapped_ptr was obtained from vkMapMemory with sufficient size
+crates/lbm_vulkan/src/compute.rs:1345:        // SAFETY: force_buffer was allocated with size >= force.len() * size_of::<f32>().
+crates/lbm_vulkan/src/compute.rs:1448:        // SAFETY (all ptr::write in this function): Each uniform buffer was
+crates/lbm_vulkan/src/compute.rs:1647:        // SAFETY (all ptr::write in this function): see step() -- uniform buffers
+crates/lbm_vulkan/src/compute.rs:1851:        // SAFETY (all ptr::write in this function): see step() -- uniform buffers
+crates/lbm_vulkan/src/compute.rs:2047:        // SAFETY (all ptr::write in this function): see step() -- uniform buffers
+crates/gororoba_cli/src/warp_forcing_policy.rs:289:    // SAFETY: Called single-threaded at binary startup before any parallel work.
+crates/gororoba_algebra/src/construction/cd_tower.rs:133:            /// SAFETY: `f64x4` is `#[repr(C, align(32))]` containing exactly
+crates/gororoba_algebra/src/construction/cd_tower.rs:139:                // SAFETY: [f64x4; N] and [f64; N*4] have identical layout
+crates/gororoba_algebra/src/construction/cd_tower.rs:146:                // SAFETY: same layout guarantee as as_flat
+crates/data_core/src/registry_mirrors/docs_engineering_rust_style_guide.rs:37://! - **Panics:** `unwrap()` and `expect()` are forbidden in library code unless mathematically impossible to fail (and documented with `// SAFETY:` comment). Allowed in tests and prototypes.
+crates/gororoba_cli_data/src/bin/nanograv_timing_phase1_independent.rs:510:        // SAFETY: flock(2) operates on a valid open file descriptor. We use a blocking
+crates/gororoba_cli_data/src/bin/nanograv_timing_phase1_independent.rs:525:        // SAFETY: unlocking the same still-open descriptor is the corresponding cleanup path.

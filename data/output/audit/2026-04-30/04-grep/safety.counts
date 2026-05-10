@@ -1,0 +1,13 @@
+crates/cd_kernel/src/avx2_primitives.rs:19
+crates/cd_kernel/src/x87_ext80.rs:13
+crates/lbm_vulkan/src/compute.rs:8
+crates/lbm_3d/src/solver.rs:7
+crates/grmhd_core/src/flux.rs:6
+crates/cd_kernel/src/x87_primitives.rs:6
+crates/lbm_3d_cuda/src/lib.rs:4
+crates/gororoba_algebra/src/construction/cd_tower.rs:3
+crates/gororoba_cli_warp/src/bin/warp_fastpath_suite.rs:2
+crates/gororoba_cli_data/src/bin/nanograv_timing_phase1_independent.rs:2
+crates/gororoba_cli/src/warp_forcing_policy.rs:1
+crates/data_core/src/registry_mirrors/docs_engineering_rust_style_guide.rs:1
+crates/cd_kernel/src/turboquant/fp8.rs:1

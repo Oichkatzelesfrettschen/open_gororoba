@@ -1,0 +1,50 @@
+# Canonical Observable Scorecard
+#
+# Single source of truth for all sedenion SM observable claims.
+# Each observable is assigned to exactly ONE epistemic bin:
+#   1 = Framework-backed, zero/low-parameter prediction
+#   2 = Optimized angle-sector fit
+#   3 = CP and lift-level exploratory (frontier)
+#
+# All public-facing text MUST reference this file for observable counts.
+# Do NOT write a specific count without checking this registry first.
+
+# --------------------------------------------------------------------------
+# BIN 1: Framework-backed predictions (zero or low free parameters)
+# --------------------------------------------------------------------------
+
+[[observable]]
+id = "OBS-001"
+name = "m_mu/m_e"
+bin = 1
+method = "3-blade lepton zero-divisor friction"
+value = 207.0
+pdg_value = 206.768
+error_pct = 0.1
+parameter_count = 0
+claim_id = "C-1459"
+strength = "strong"
+notes = "Exact 3-blade friction ratio, zero free parameters"
+
+[[observable]]
+id = "OBS-002"
+name = "m_tau/m_e"
+bin = 1
+method = "3-blade lepton zero-divisor friction"
+value = 3477.0
+pdg_value = 3477.2
+error_pct = 0.0
+parameter_count = 0
+claim_id = "C-1459"
+strength = "strong"
+notes = "Exact 3-blade friction ratio, zero free parameters"
+
+[[observable]]
+id = "OBS-003"
+name = "m_c/m_u"
+bin = 1
+method = "3-blade up-type quark zero-divisor friction"
+value = 542.0
+pdg_value = 550.0
+error_pct = 1.4
+parameter_count = 0

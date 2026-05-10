@@ -1,0 +1,50 @@
+# Materials Viscosity Database
+# TOML registry for kinematic and dynamic viscosity (pending SQLite promotion)
+# All data from NIST, peer-reviewed literature, or authoritative handbooks
+# Units: kinematic nu [m^2/s], dynamic eta [Pa*s], density rho [kg/m^3]
+# Relation: nu = eta / rho
+
+[metadata]
+version = "1.0.0"
+date_created = "2026-02-11"
+sources = [
+    "NIST Chemistry WebBook (https://webbook.nist.gov)",
+    "Donnelly & Barenghi (1998). J. Phys. Chem. Ref. Data 27, 1217 (He-4 superfluid)",
+    "Petrenko & Whitworth (1999). Physics of Ice. Oxford University Press (Ice VII)",
+    "Lemmon et al. (2023). NIST Standard Reference Database 23 (He-3, He-4)",
+    "Engineering ToolBox (www.engineeringtoolbox.com) - cross-validated with NIST",
+]
+notes = "Temperature-dependent properties. Interpolate or use closest tabulated value."
+
+# ============================================================================
+# HELIUM ISOTOPES
+# ============================================================================
+
+[[material]]
+id = "He4_normal"
+name = "Helium-4 (Normal Fluid)"
+formula = "He-4"
+phase = "liquid"
+temperature_K = 4.2
+pressure_Pa = 101325
+density_kg_m3 = 145.0
+dynamic_viscosity_Pa_s = 3.16e-6
+kinematic_viscosity_m2_s = 2.18e-8
+notes = "Above lambda point (T > 2.17 K). Normal viscous liquid."
+reference = "Donnelly & Barenghi (1998), Table 3"
+
+[[material]]
+id = "He4_superfluid"
+name = "Helium-4 (Superfluid)"
+formula = "He-4"
+phase = "superfluid"
+temperature_K = 1.5
+pressure_Pa = 101325
+density_kg_m3 = 145.5
+dynamic_viscosity_Pa_s = 0.0
+kinematic_viscosity_m2_s = 0.0
+quantum_viscosity = true
+notes = "Below lambda point (T < 2.17 K). Zero viscosity in superfluid component. Two-fluid model applies."
+reference = "Donnelly & Barenghi (1998), Section 2.3"
+quantum_circulation = 9.97e-8  # m^2/s, quantized vorticity
+

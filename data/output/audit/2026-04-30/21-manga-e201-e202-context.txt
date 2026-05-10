@@ -1,0 +1,92 @@
+=== E-201 in experiments.toml ===
+[[experiment]]
+deterministic = true
+external_source_refs = ["SRC-MANGA-DR17-CATALOGS"]
+gpu = false
+id = "E-201"
+input = "data/external/manga/rotcurves/manga_rotcurves_all.csv, data/external/manga/subsamples/dapall_lowi.csv"
+input_path_refs = [
+    "data/external/manga/rotcurves/manga_rotcurves_all.csv",
+    "data/external/manga/subsamples/dapall_lowi.csv",
+]
+lineage_id = "XL-201"
+method = "H1 face-on reanalysis: restrict to i<45 deg (N=3140), stack, compute Rayleigh R at 7 CD-ZD wavenumbers, fit k^gamma red-noise envelope (gamma=0.808 prior + free-gamma ablation), compute residuals, bootstrap 200x for alpha_zd CI. Also runs whitened matched filter and window function sensitivity on face-on stacked profile."
+output = [
+    "data/results/e201/face_on_red_noise_rayleigh.csv",
+    "data/results/e201/face_on
+
+=== E-202 ===
+[[experiment]]
+dataset_refs = ["EX-0003"]
+deterministic = true
+external_source_refs = ["SRC-MANGA-DR17-CATALOGS"]
+gpu = false
+id = "E-202"
+input = "data/external/manga/rotcurves/manga_rotcurves_all.csv, data/external/manga/dapall_selection.csv"
+input_path_refs = [
+    "data/external/manga/dapall_selection.csv",
+    "data/external/manga/rotcurves/manga_rotcurves_all.csv",
+]
+lineage_id = "XL-202"
+method = "H2 Q3 injection recovery validation: sort galaxies by log(M200), extract Q3 (50th-75th percentile, N=1748, 6 valid bins). Inject alpha_zd at {0.001, 0.004, 0.01}, measure delta_SNR. Compare with Q1 control (18 bins) and synthetic-6-bin Q1 (window isolation). Bootstrap 200x."
+output = ["data/results/e202/q3_injection_recovery.csv"]
+output_path_refs = ["data/results/e202/q3_injection_recovery.csv"]
+reprod
+
+=== MaNGA references in experiments and claims (top 20) ===
+registry/mast_catalogs.toml
+registry/data_servers.toml
+registry/bibliography.toml
+registry/claims_evidence_edges.toml
+registry/binaries.toml
+registry/provenance_sources.toml
+registry/insights.toml
+registry/bibliography_normalized.toml
+registry/book_docs.toml
+registry/dataset_label_aliases.toml
+
+=== claims referencing manga (sampled) ===
+2844:statement = "The 7-mode harmonic halo signature is strictly falsifiable today using existing kinematic datasets. By normalizing galactic rotation curves to dimensionless r/r_s coordinates, the topological wavenumbers align at k_n' = 2*pi*n/7 regardless of galaxy mass. Stacking N rotation curves reduces the kinematic noise floor by sqrt(N), allowing the 42/84=0.5 amplitude signature to be resolved down to alpha_zd >= 0.005 using MaNGA DR17 IFU data (~10,000 galaxies). SPARC (175 galaxies) reaches alpha_zd >= 0.015, Gaia DR3/DR4 MW curve reaches alpha_zd >= 0.01 (systematics-limited). No need to wait for SKA 2030."
+2952:statement = "With N=93 SPARC galaxies, the harmonic halo detection threshold is alpha_zd >= 0.021 (5% of velocity error budget). The noise floor scales as 1/sqrt(N), requiring N ~ 10000 (MaNGA) to reach sub-percent alpha_zd sensitivity (~0.0015). THINGS (N=34, no rotation curves) is strategically irrelevant for this pipeline."
+2959:statement = "MaNGA pseudo-slit rotation curve extraction: 2D H-alpha EMLINE_GVEL maps from MAPS files are sliced along the kinematic PA with 2-spaxel slit width, deprojected by sin(i), and binned radially to produce SPARC-compatible V(r) profiles. DAPall scalars (sigma_star, integrated EW) are insufficient for harmonic Fourier analysis requiring spatially resolved k_n modes."
+2962:where_stated = "crates/data_core/src/catalogs, crates/data_core/src/catalogs/manga.rs"
+2967:statement = "MaNGA DAPall Guillotine selection cuts (Sersic n < 2.5, 30 < i < 70 deg, H-alpha EW > 2 A, log M* > 8.5) reduce 10262 DR17 galaxies to 3222 disk-dominated targets (31.4%), dominated by Sersic cut (5580 rejected). Stage 1 measured: 10,157/10,262 have DRPall stellar masses (99% cross-match), median log M* = 10.11. With N=3222 and sqrt(N)=56.8, noise floor reaches alpha_zd >= 0.003 (7x improvement over SPARC N=93)."
+2969:where_stated = "crates/data_core/src/catalogs::apply_selection_cuts(), data/external/manga/dapall_selection.csv"
+2974:statement = "Moster et al. (2013) SMHM relation provides NFW halo mass priors from MaNGA stellar masses: log(M_halo) from log(M_star) via iterative inversion of the double-power-law parametrization. This replaces the Li et al. (2020) published NFW fits used for SPARC, enabling self-consistent halo normalization without external fitting tables."
+2977:where_stated = "crates/data_core/src/catalogs/manga.rs::MangaDapallEntry::estimated_log_m200()"
+3026:statement = "Harmonic halo modulation amplitude 42/84=0.5 is the flat-band fraction invariant (C-1262) re-parameterized as rotation curve modulation depth. CdDimensionParams generalizes to D=32 (15 modes), D=64 (31 modes), up to D=4096 (2047 modes). The algebra is sound and universal across the CD tower, but the physical prediction has no observational support at any dimension tested. Detection threshold analysis (harmonic_stacking.rs detection_threshold()) shows MaNGA (~10000 galaxies, 2500 after cuts) needed for threshold alpha_zd ~ 0.003-0.005."
+3120:statement = "MaNGA DR17 harmonic-halo stacking with N=6992 disk galaxies (Sersic n<2.5, 30<i<70 deg, Ha EW>2A) and pseudo-slit rotation curves yields: peak Fourier detection SNR = 0.29 at the sedenion CD-ZD wavenumbers (D=16, 7 modes); RMS residual = 0.075083; detection threshold 4*sigma_v/sqrt(N) = 0.002392 (alpha_zd units). The threshold is 40% below the SKA (2030) design sensitivity of alpha_zd = 0.004. The null result (SNR << 3) confirms that at MaNGA spatial resolution and coverage (r/r_s < 1.35), no ZD harmonic velocity modulation is detectable above the baryonic and systematic noise floor."
+3123:where_stated = "data/results/e183/manga_stack_D16.csv, data/results/e183/manga_stack_D64.csv, data/results/e183/manga_stack_D256.csv, data/results/e183/manga_stack_D1024.csv, E-183"
+3128:statement = "MaNGA harmonic-halo stacking results are numerically identical across all tested CD dimensions: D=16,32,64,128,256,512,1024 (full E-183 dense sweep) and D=256,4096,65536,262144 (D^2 and D^3 families, inner-halo sweep). SNR=0.25, RMS=0.092442, threshold=0.002392 across all 11 tested dimensions. This is mathematically guaranteed by the assessor_fraction=0.5 identity (C-1349): the stacking amplitude af/n does not vary with CD dimension. Changing D changes the number of Fourier modes evaluated (7 at D=16, 131071 at D=262144) but not the profile or noise floor."
+3135:statement = "MaNGA E-183 stacking Fourier residual SNR is strongly inclination-dependent: low-i (30-45 deg, N=3140) SNR=0.98, mid-i (45-60 deg, N=2677) SNR=0.59, high-i (60-70 deg, N=1175) SNR=1.30. The full sample (all inclinations, N=6992) achieves SNR=0.29, lower than any sub-sample, because inclination-dependent projection effects partially cancel. A genuine ZD harmonic velocity modulation would be inclination-INDEPENDENT; the observed inclination scaling confirms the dominant residual is a projection artifact (pseudo-slit line-of-sight integration depth varies with inclination), not a ZD signal. High-i galaxies show +40-60% velocity excess at x=0.92-0.96 r_s and mid-i galaxies show -44% excess at the same radii."
+3142:statement = "Full-frequency Fourier power spectrum of the low-inclination MaNGA stacking profile (N=3140, 30-45 deg) peaks at k -> 0 (amplitude = 9.0% of v_NFW at k=0.1) and decreases monotonically to k=6.3 r_s^{-1}. The sedenion CD-ZD wavenumbers (k=0.897 to 6.283) lie on the falling tail of this red-noise-like baryonic power spectrum. The peak-at-DC result confirms the dominant signal is a mean NFW over-prediction (core-cusp systematic), not a harmonic oscillation. No peaked structure at any ZD wavenumber is observed above the baryonic noise floor."
+3149:statement = "G2 angular wavenumbers (k_n = 2*pi*n/6 for n=1..6, derived from the 6 positive roots of g2 = Aut(O)) yield SNR=0.29 (full sample) and SNR=0.98 (low-inclination) on the MaNGA E-183 stacked profile -- identical to the CD-ZD D=16 sedenion result (SNR=0.29/0.98). The power spectrum is monotonically decreasing with mode index in both samples. The algebraic change from 7 CD-ZD modes (D=16) to 6 G2 angular modes produces no change in detection capability."
+3163:statement = "Albert algebra J3(O) Peirce wavenumbers (k_n = 2*pi*n/3 for n=1,2,3, from the rank-3 exceptional Jordan frame) yield SNR=0.29 (full sample) and SNR=0.91 (low-inclination) on the MaNGA E-183 stacked profile. Despite probing only 3 modes versus 7 for CD-ZD, the maximum detected power (4.81e-4 full, 6.79e-3 low-i) matches CD-ZD within 1.5%. The J3(O) Peirce structure does not enhance detection: the null result is algebra-independent."
+3177:statement = "The MaNGA E-183 null result (no ZD harmonic detection at SNR < 2.0) is algebraically universal: CD-ZD D=16 (SNR=0.29), G2 Aut(O) angular modes (SNR=0.29), Albert J3(O) Peirce (SNR=0.29), and sl(2) partner-graph (SNR=0.23) all fail to detect forcing in the inner halo x<1.36 r/r_s at N=6992. The baryonic noise floor RMS=0.075 (full) / 0.090 (low-i) exceeds the ZD detection threshold (0.002392) by 30-38x regardless of which algebraically-motivated wavenumber set is analyzed. No algebraic structure from the sedenion tower (G2, J3(O), sl(2), CD) provides a spectral window into the inner baryonic regime."
+3184:statement = "The sl(2,R) spin-2 degeneracy ratio prediction P(k=1.795)/P(k=3.590) = 14:7 = 2.0 is falsified by the MaNGA E-183 stacked profiles. Observed: low-inclination sub-sample gives P(k=1.795)/P(k=3.590) = 7.136e-3/4.663e-3 = 1.53 (not 2.0); full N=6992 sample gives 1.575e-4/2.887e-4 = 0.55 (inverted). The ratio is not only incorrect but reverses sign between samples, confirming it reflects baryonic noise rather than sl(2) structure. The partner graph degeneracy {14, 7} at weights {2, 4} provides no spectral selection rule that would survive stacking over N=6992 disk galaxies."
+3191:statement = "The STFT spectrogram of the MaNGA E-183 stacked profile (harmonic-halo-signal-analysis, sigma_x=1.5 r/r_s, 32 window centers) shows baryonic_frac=1.000 for all 7 CD-ZD modes: 100% of harmonic power is concentrated in the innermost x-bin (x_peak=0.5 r/r_s for all modes). The derivative stacking DFT shows monotonically increasing power from mode 1 (k=0.90) to mode 7 (k=6.28), opposite to the ZD forcing prediction which would peak at the fundamental mode k_1. The jackknife Rayleigh R=0.97-0.99 at all modes is an artifact of N=19 smooth bins (smooth baryonic profile causes stable jackknife phases); discriminatory power requires N >> 1/SNR^2 ~ 1700 bins. All three non-static diagnostics confirm baryonic-dominated, noise-dominated null result."
+3338:statement = "Mass-binned phase coherence test (H1, NMR spin-echo analogy): 10 equal-N mass bins of 6992 MaNGA galaxies show NO monotonic phase-vs-mass trend. Max Spearman |rho| = 0.462 (mode 4), all modes below the 0.7 detection threshold. Bins 7-9 (log M200 > 11.9) have zero valid stacking bins (r_s exceeds MaNGA IFU reach). Per-bin SNR > 3.0 in bins 5-6 (log M200 = 11.5-11.9) is a BARYONIC artifact: intermediate-mass halos have concentrated NFW cusp structure that produces coherent residuals in narrow mass windows. Rayleigh R decreases monotonically from 0.38 (mode 1) to 0.05 (mode 7), confirming phase scatter increases with wavenumber (noise-like). The mass-dependent phase hypothesis is REJECTED by the Spearman criterion (max |rho| < 0.5) despite triggering the per-bin SNR > 2.0 secondary criterion."
+3417:statement = "H2 Phase-Mass Entanglement REJECTED: Spearman rank correlation of DFT phase vs mass-bin index DECREASES with finer binning -- |rho|_max = 0.46 (N=10 bins), 0.40 (N=50), 0.26 (N=100). This confirms the N=10 value (mode 4) was a statistical fluctuation, not a real mass-dependent phase gradient. The high per-bin SNR at fine binning (up to 62.6 at N=100, bin 66 at log M200=11.81-11.84) is a small-N artifact: bins with RMS < 0.02 have only a few galaxies contributing to the stacking grid, producing SNR dominated by individual galaxy noise. Bins above log M200 ~ 11.92 have zero populated stacking bins (RMS=0.0, SNR=0.0) because these massive galaxies' rotation curves map to x < x_min in the normalized frame. No mass-dependent ZD forcing phase exists in MaNGA data."
+3449:statement = "Galaxy-ensemble Rayleigh phase coherence test (E-194) on 7024 MaNGA galaxies yields modest but nonzero coherence at the 7 CD-ZD modes: R = 0.0329, 0.0497, 0.0721, 0.0960, 0.1171, 0.1327, 0.1409 for modes 1..7, compared with the incoherent null expectation 1/sqrt(N) = 0.0119. The coherence rises monotonically with wavenumber rather than peaking at the fundamental mode, so this lane is better interpreted as broad structured baryonic/systematic phase alignment than as evidence for a selective ZD harmonic signal."
+3451:status_note = "harmonic-halo-galaxy-phase binary rerun on MaNGA rotcurves_all + dapall_selection (7024 galaxies)."
+3465:statement = "Contrarian D2 (mass-quartile Fourier stacking): Q3 (log M200 = 11.54-12.07, r_s_median=15.4 kpc, N=1749) shows SNR=3.60 across all 7 modes -- formally above 3.0 detection threshold. However, Q3 has only 6 valid stacking bins (x=0.50-0.74) and Q4 (log M200 > 12.07, r_s_median=42.1 kpc) has ZERO valid bins. The Q3 Fourier spectrum is monotonically decreasing (mode 1 power=0.0253, mode 7=0.0188) -- a red-noise pattern consistent with a smooth baryonic residual (NFW cusp trough) sampled over a narrow x-window, NOT a peaked ZD structure at a specific wavenumber. The low RMS (0.044 vs full-sample 0.126) inflates SNR via the denominator. The quartile decomposition reveals that ~25% of MaNGA galaxies (Q4: log M200 > 12.07) contribute NOTHING to the stacking grid because their large r_s maps all observed radii to x < 0.5. The null result is driven by Q1-Q3 only. VERDICT: spurious detection from narrow x-coverage; requires injection recovery validation on Q3 alone."
+3473:statement = "Signal injection-recovery sweep (E-197) is currently miscalibrated and cannot be used as a sensitivity validation. Across injected alpha_zd values 0, 0.001, 0.002, 0.004, 0.008, and 0.016, the detected SNR remains nearly constant at 0.429-0.430 and the recovered alpha_zd remains nearly constant at 0.294-0.296. The recovery ratio therefore scales as 1/alpha_zd instead of staying near unity. This is a pipeline calibration blocker, not evidence that the present MaNGA lane can recover alpha_zd = 0.004."
+3475:status_note = "harmonic-halo-injection binary rerun on MaNGA rotcurves_all + dapall_selection (7024 galaxies)."
+3496:statement = "Synthetic MaNGA pipeline validation: 11 conditions x 3 regimes x 20 seeds = 660 runs on N=6992 synthetic galaxies produce zero false positives (all SNR << 2.0, range 0.471-0.486 for algebraic conditions). The analysis pipeline used for E-183/E-184 real-data null results does not hallucinate signals on synthetic null data."
+3499:where_stated = "experiments/manga_zd_null/main.py, experiments/manga_zd_null/results.json"
+3504:statement = "Injection recovery anti-correlation: injecting ZD-wavenumber signals at alpha=0.004, 0.01, and 0.05 into synthetic MaNGA galaxies produces NEGATIVE delta_snr (mean_diff vs baseline: +0.011, +0.009, -0.001 respectively). The exp(-x) injection envelope concentrates power at x~0.5 where baryonic systematics dominate (+5% bulge excess), causing destructive interference. Even alpha=5.0 (1250x SKA threshold) yields delta_snr=+0.17, below recovery threshold of 2.0."
+3507:where_stated = "experiments/manga_zd_null/models.py (InjectionRecovery class), experiments/manga_zd_null/results.json"
+
+=== insights I-193..I-204 (the nine-hypothesis test series) ===
+1777:id = "I-193"
+1784:id = "I-194"
+1791:id = "I-195"
+1798:id = "I-196"
+1805:id = "I-197"
+1812:id = "I-198"
+1819:id = "I-199"
+1826:id = "I-200"
+1833:id = "I-201"
+1840:id = "I-202"
+1847:id = "I-203"
+1854:id = "I-204"

@@ -1,0 +1,447 @@
+crates/gororoba_cli_physics/src/voyager_arrow.rs:39:        let mmap = unsafe { Mmap::map(&file) }
+crates/lbm_3d/src/solver.rs:282:unsafe impl<T> Send for UnsafeAoSoAPtr<T> {}
+crates/lbm_3d/src/solver.rs:283:unsafe impl<T> Sync for UnsafeAoSoAPtr<T> {}
+crates/lbm_3d/src/solver.rs:292:    pub unsafe fn read(&self, offset: usize) -> T {
+crates/lbm_3d/src/solver.rs:296:        unsafe { core::ptr::read(self.0.add(offset)) }
+crates/lbm_3d/src/solver.rs:305:    pub unsafe fn write(&self, offset: usize, val: T) {
+crates/lbm_3d/src/solver.rs:309:        unsafe { core::ptr::write(self.0.add(offset), val) }
+crates/lbm_3d/src/solver.rs:320:    pub unsafe fn read_x4(&self, offset: usize) -> f64x4 {
+crates/lbm_3d/src/solver.rs:321:        unsafe {
+crates/lbm_3d/src/solver.rs:333:    pub unsafe fn write_x4(&self, offset: usize, val: f64x4) {
+crates/lbm_3d/src/solver.rs:334:        unsafe {
+crates/lbm_3d/src/solver.rs:1267:                unsafe {
+crates/lbm_3d/src/solver.rs:1438:                *f_val = unsafe { f_ptr.read(aosoa_idx(idx, dir)) };
+crates/lbm_3d/src/solver.rs:1472:                unsafe { f_ptr.write(aosoa_idx(idx, dir), f_val) };
+crates/verified_core/src/x87_math.rs:27:        unsafe {
+crates/verified_core/src/x87_math.rs:80:        unsafe {
+crates/verified_core/src/x87_math.rs:127:        unsafe {
+crates/verified_core/src/x87_math.rs:172:        unsafe {
+crates/verified_core/src/x87_math.rs:238:        unsafe {
+crates/lbm_vulkan/src/alignment_vulkan.rs:39:        let module = unsafe {
+crates/lbm_vulkan/src/alignment_vulkan.rs:50:        let dsl = unsafe {
+crates/lbm_vulkan/src/alignment_vulkan.rs:111:        let layout = unsafe {
+crates/lbm_vulkan/src/alignment_vulkan.rs:122:        let pipeline = unsafe {
+crates/lbm_vulkan/src/alignment_vulkan.rs:140:        unsafe {
+crates/lbm_vulkan/src/alignment_vulkan.rs:144:        let pool = unsafe {
+crates/lbm_vulkan/src/alignment_vulkan.rs:166:        let set = unsafe {
+crates/lbm_vulkan/src/alignment_vulkan.rs:208:        let buffer = unsafe {
+crates/lbm_vulkan/src/alignment_vulkan.rs:218:        let reqs = unsafe { device.get_buffer_memory_requirements(buffer) };
+crates/lbm_vulkan/src/alignment_vulkan.rs:226:        unsafe { device.bind_buffer_memory(buffer, allocation.memory(), allocation.offset()) }?;
+crates/lbm_vulkan/src/alignment_vulkan.rs:288:        unsafe {
+crates/lbm_vulkan/src/alignment_vulkan.rs:356:        unsafe {
+crates/lbm_vulkan/src/alignment_vulkan.rs:361:        unsafe {
+crates/lbm_vulkan/src/alignment_vulkan.rs:412:        let out_m = unsafe {
+crates/lbm_vulkan/src/alignment_vulkan.rs:416:        let out_b = unsafe {
+crates/lbm_vulkan/src/alignment_vulkan.rs:427:        unsafe {
+crates/lbm_vulkan/src/alignment_vulkan.rs:441:        unsafe {
+crates/lbm_vulkan/src/swapchain.rs:70:        let cmd_pool = unsafe { device.create_command_pool(&pool_info, None) }?;
+crates/lbm_vulkan/src/swapchain.rs:78:        let cmd_bufs = unsafe { device.allocate_command_buffers(&alloc_info) }?;
+crates/lbm_vulkan/src/swapchain.rs:80:        let fence = unsafe {
+crates/lbm_vulkan/src/swapchain.rs:115:        unsafe {
+crates/lbm_vulkan/src/swapchain.rs:265:        unsafe {
+crates/lbm_vulkan/src/swapchain.rs:289:        unsafe {
+crates/lbm_vulkan/src/lib.rs:92:        let entry = unsafe { Entry::load() }?;
+crates/lbm_vulkan/src/lib.rs:118:        let instance = unsafe { entry.create_instance(&create_info, None) }?;
+crates/lbm_vulkan/src/lib.rs:121:        let pdevices = unsafe { instance.enumerate_physical_devices() }?;
+crates/lbm_vulkan/src/lib.rs:125:                unsafe { instance.get_physical_device_queue_family_properties(*pdevice) }
+crates/lbm_vulkan/src/lib.rs:142:        let props = unsafe { instance.get_physical_device_properties(pdevice) };
+crates/lbm_vulkan/src/lib.rs:143:        let mem_props = unsafe { instance.get_physical_device_memory_properties(pdevice) };
+crates/lbm_vulkan/src/lib.rs:173:        unsafe { instance.get_physical_device_features2(pdevice, &mut features2) };
+crates/lbm_vulkan/src/lib.rs:180:            device_name: unsafe {
+crates/lbm_vulkan/src/lib.rs:240:        let device = unsafe { instance.create_device(pdevice, &device_create_info, None) }?;
+crates/lbm_vulkan/src/lib.rs:242:        let queue = unsafe { device.get_device_queue(queue_family_index, 0) };
+crates/cd_kernel/src/x87_jacobi_kernels.rs:71:    unsafe {
+crates/lbm_vulkan/src/coop_matrix_probe.rs:34:    let ext_props = unsafe {
+crates/lbm_vulkan/src/coop_matrix_probe.rs:41:        let name = unsafe { std::ffi::CStr::from_ptr(p.extension_name.as_ptr()) };
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:237:    let buffer = unsafe {
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:247:    let reqs = unsafe { device.get_buffer_memory_requirements(buffer) };
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:255:    unsafe { device.bind_buffer_memory(buffer, allocation.memory(), allocation.offset()) }?;
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:267:    let pipeline = unsafe {
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:294:    unsafe {
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:314:    unsafe {
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:334:    unsafe {
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:397:        let bc_module = unsafe {
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:422:        let dsl = unsafe {
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:434:        let pipeline_layout = unsafe {
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:464:        unsafe { device.destroy_shader_module(bc_module, None) };
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:549:        let halo_module = unsafe {
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:573:        let halo_dsl = unsafe {
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:585:        let halo_layout = unsafe {
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:600:        unsafe { device.destroy_shader_module(halo_module, None) };
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:625:        let pool = unsafe {
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:648:        let sets = unsafe {
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:715:        unsafe { device.update_descriptor_sets(&writes, &[]) };
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:718:        let halo_pool = unsafe {
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:741:        let halo_sets = unsafe {
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:798:        unsafe { device.update_descriptor_sets(&halo_writes, &[]) };
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:866:        unsafe { std::ptr::write(mapped_ptr.as_ptr() as *mut BesagConstants, constants) };
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:871:        unsafe {
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:886:        unsafe {
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:893:        unsafe {
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:923:        unsafe {
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:938:        unsafe {
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:963:        let cmd_pool = unsafe {
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:975:        let cmd = unsafe {
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:985:        let fence = unsafe { device.create_fence(&vk::FenceCreateInfo::default(), None) }
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:1009:            unsafe {
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:1023:            unsafe { device.end_command_buffer(cmd) }.map_err(|e| format!("End cmd: {e}"))?;
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:1026:            unsafe {
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:1039:            unsafe { device.wait_for_fences(&[fence], true, u64::MAX) }
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:1041:            unsafe { device.reset_fences(&[fence]) }.map_err(|e| format!("Reset fence: {e}"))?;
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:1059:        unsafe {
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:1096:        unsafe { std::ptr::write(mapped_ptr.as_ptr() as *mut HaloConstants, *constants) };
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:1099:        let cmd_pool = unsafe {
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:1111:        let cmd = unsafe {
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:1121:        let fence = unsafe { device.create_fence(&vk::FenceCreateInfo::default(), None) }
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:1125:        unsafe {
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:1136:        unsafe {
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:1150:        unsafe { device.end_command_buffer(cmd) }.map_err(|e| format!("Halo end cmd: {e}"))?;
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:1153:        unsafe {
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:1166:        unsafe { device.wait_for_fences(&[fence], true, u64::MAX) }
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:1176:        let mask = unsafe { std::slice::from_raw_parts(ptr, n_cells as usize) };
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:1181:        unsafe {
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:1196:        let cmd_pool = unsafe {
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:1205:        let cmd = unsafe {
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:1214:        let fence = unsafe {
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:1219:        unsafe {
+crates/lbm_vulkan/src/besag_clifford_vulkan.rs:1259:        Ok(unsafe { *ptr })
+crates/lbm_vulkan/src/main.rs:63:    let pool = unsafe {
+crates/lbm_vulkan/src/main.rs:73:    let cmd = unsafe {
+crates/lbm_vulkan/src/main.rs:82:    let fence = unsafe {
+crates/lbm_vulkan/src/main.rs:97:        unsafe {
+crates/lbm_vulkan/src/main.rs:123:    unsafe { ctx.device.wait_for_fences(&[fence], true, u64::MAX)? };
+crates/lbm_vulkan/src/compute.rs:233:        let render_image = unsafe { device.create_image(&image_info, None) }?;
+crates/lbm_vulkan/src/compute.rs:236:            requirements: unsafe { device.get_image_memory_requirements(render_image) },
+crates/lbm_vulkan/src/compute.rs:241:        unsafe { device.bind_image_memory(render_image, img_alloc.memory(), img_alloc.offset()) }?;
+crates/lbm_vulkan/src/compute.rs:242:        let render_view = unsafe {
+crates/lbm_vulkan/src/compute.rs:369:        let module = unsafe {
+crates/lbm_vulkan/src/compute.rs:379:        let dsl = unsafe {
+crates/lbm_vulkan/src/compute.rs:447:        let layout = unsafe {
+crates/lbm_vulkan/src/compute.rs:457:        let pipeline = unsafe {
+crates/lbm_vulkan/src/compute.rs:488:        let pool = unsafe {
+crates/lbm_vulkan/src/compute.rs:509:        let sets = unsafe {
+crates/lbm_vulkan/src/compute.rs:581:            unsafe { device.update_descriptor_sets(&writes, &[]) };
+crates/lbm_vulkan/src/compute.rs:583:        unsafe {
+crates/lbm_vulkan/src/compute.rs:603:        let module = unsafe {
+crates/lbm_vulkan/src/compute.rs:613:        let dsl = unsafe {
+crates/lbm_vulkan/src/compute.rs:639:        let layout = unsafe {
+crates/lbm_vulkan/src/compute.rs:649:        let pipeline = unsafe {
+crates/lbm_vulkan/src/compute.rs:680:        let pool = unsafe {
+crates/lbm_vulkan/src/compute.rs:701:        let sets = unsafe {
+crates/lbm_vulkan/src/compute.rs:709:        unsafe {
+crates/lbm_vulkan/src/compute.rs:740:        unsafe {
+crates/lbm_vulkan/src/compute.rs:762:        let module = unsafe {
+crates/lbm_vulkan/src/compute.rs:772:        let dsl = unsafe {
+crates/lbm_vulkan/src/compute.rs:812:        let layout = unsafe {
+crates/lbm_vulkan/src/compute.rs:822:        let pipeline = unsafe {
+crates/lbm_vulkan/src/compute.rs:853:        let pool = unsafe {
+crates/lbm_vulkan/src/compute.rs:874:        let sets = unsafe {
+crates/lbm_vulkan/src/compute.rs:882:        unsafe {
+crates/lbm_vulkan/src/compute.rs:937:        unsafe {
+crates/lbm_vulkan/src/compute.rs:960:        let module = unsafe {
+crates/lbm_vulkan/src/compute.rs:970:        let dsl = unsafe {
+crates/lbm_vulkan/src/compute.rs:1010:        let layout = unsafe {
+crates/lbm_vulkan/src/compute.rs:1020:        let pipeline = unsafe {
+crates/lbm_vulkan/src/compute.rs:1051:        let pool = unsafe {
+crates/lbm_vulkan/src/compute.rs:1076:        let sets = unsafe {
+crates/lbm_vulkan/src/compute.rs:1084:        unsafe {
+crates/lbm_vulkan/src/compute.rs:1139:        unsafe {
+crates/lbm_vulkan/src/compute.rs:1160:        let buffer = unsafe {
+crates/lbm_vulkan/src/compute.rs:1170:        let reqs = unsafe { device.get_buffer_memory_requirements(buffer) };
+crates/lbm_vulkan/src/compute.rs:1178:        unsafe { device.bind_buffer_memory(buffer, allocation.memory(), allocation.offset()) }?;
+crates/lbm_vulkan/src/compute.rs:1240:        unsafe {
+crates/lbm_vulkan/src/compute.rs:1253:        unsafe {
+crates/lbm_vulkan/src/compute.rs:1260:        unsafe {
+crates/lbm_vulkan/src/compute.rs:1335:        unsafe {
+crates/lbm_vulkan/src/compute.rs:1348:        unsafe {
+crates/lbm_vulkan/src/compute.rs:1355:        unsafe {
+crates/lbm_vulkan/src/compute.rs:1420:        let data = unsafe { std::slice::from_raw_parts(ptr, n) };
+crates/lbm_vulkan/src/compute.rs:1441:        let data = unsafe { std::slice::from_raw_parts(ptr, n) };
+crates/lbm_vulkan/src/compute.rs:1455:        unsafe {
+crates/lbm_vulkan/src/compute.rs:1650:        unsafe {
+crates/lbm_vulkan/src/compute.rs:1854:        unsafe {
+crates/lbm_vulkan/src/compute.rs:2030:        let data = unsafe { std::slice::from_raw_parts(ptr, n) };
+crates/lbm_vulkan/src/compute.rs:2050:        unsafe {
+crates/lbm_vulkan/src/compute.rs:2148:        unsafe {
+crates/lbm_vulkan/src/compute.rs:2175:        unsafe {
+crates/lbm_vulkan/src/compute.rs:2216:        let data = unsafe { std::slice::from_raw_parts(ptr, n) };
+crates/lbm_vulkan/src/compute.rs:2234:unsafe fn drop_compute_pipeline(
+crates/lbm_vulkan/src/compute.rs:2240:    unsafe {
+crates/lbm_vulkan/src/compute.rs:2257:unsafe fn drop_buffer_set(
+crates/lbm_vulkan/src/compute.rs:2263:    unsafe {
+crates/lbm_vulkan/src/compute.rs:2274:unsafe fn drop_render_image(device: &Device, allocator: &mut Allocator, image: &mut ImageSet) {
+crates/lbm_vulkan/src/compute.rs:2275:    unsafe {
+crates/lbm_vulkan/src/compute.rs:2291:        unsafe {
+crates/lbm_vulkan/shader/src/lib.rs:197:    unsafe {
+crates/sign_imbalance/src/kubo_transport_gpu.rs:53:            let stat = unsafe { cusolver_sys::cusolverDnCreate(handle.as_mut_ptr()) };
+crates/sign_imbalance/src/kubo_transport_gpu.rs:57:            let handle = unsafe { handle.assume_init() };
+crates/sign_imbalance/src/kubo_transport_gpu.rs:60:                unsafe { cusolver_sys::cusolverDnSetStream(handle, stream.cu_stream() as _) };
+crates/sign_imbalance/src/kubo_transport_gpu.rs:100:            let stat = unsafe {
+crates/sign_imbalance/src/kubo_transport_gpu.rs:127:            let stat = unsafe {
+crates/sign_imbalance/src/kubo_transport_gpu.rs:195:        unsafe { self.blas.gemm(cfg1, &d_j, &d_v, &mut d_temp)? };
+crates/sign_imbalance/src/kubo_transport_gpu.rs:210:        unsafe { self.blas.gemm(cfg2, &d_v, &d_temp, &mut d_result)? };
+crates/sign_imbalance/src/kubo_transport_gpu.rs:247:            unsafe {
+crates/gororoba_cli_physics/src/bin/experiment_c756.rs:53:    let pool = unsafe {
+crates/gororoba_cli_physics/src/bin/experiment_c756.rs:62:    let cmd = unsafe {
+crates/gororoba_cli_physics/src/bin/experiment_c756.rs:71:    let fence = unsafe {
+crates/gororoba_cli_physics/src/bin/experiment_c756.rs:86:        unsafe {
+crates/sign_imbalance/src/besag_clifford_cuda.rs:260:        unsafe {
+crates/sign_imbalance/src/besag_clifford_cuda.rs:304:        unsafe {
+crates/sign_imbalance/src/besag_clifford_cuda.rs:346:        unsafe {
+crates/cd_kernel/src/turboquant/cuda/launch.rs:122:        unsafe { b.launch(config) }.map_err(|e| format!("quantize launch: {}", e))?;
+crates/cd_kernel/src/turboquant/cuda/launch.rs:201:        unsafe { b.launch(config) }.map_err(|e| format!("dequant_dot launch: {}", e))?;
+crates/gororoba_cli_data/src/bin/nanograv_timing_phase1_independent.rs:24:unsafe extern "C" {
+crates/gororoba_cli_data/src/bin/nanograv_timing_phase1_independent.rs:512:        let result = unsafe { flock(file.as_raw_fd(), LOCK_EX) };
+crates/gororoba_cli_data/src/bin/nanograv_timing_phase1_independent.rs:526:        let _ = unsafe { flock(self.file.as_raw_fd(), LOCK_UN) };
+crates/cd_kernel/src/turboquant/fp8.rs:34:unsafe impl bytemuck::Pod for Fp8E4M3 {}
+crates/cd_kernel/src/turboquant/fp8.rs:35:unsafe impl bytemuck::Zeroable for Fp8E4M3 {}
+crates/cd_kernel/src/turboquant/fp8.rs:36:unsafe impl bytemuck::Pod for Fp8E5M2 {}
+crates/cd_kernel/src/turboquant/fp8.rs:37:unsafe impl bytemuck::Zeroable for Fp8E5M2 {}
+crates/cd_kernel/src/x87_transcendentals.rs:25:    unsafe {
+crates/cd_kernel/src/x87_transcendentals.rs:55:    unsafe {
+crates/cd_kernel/src/x87_transcendentals.rs:90:    unsafe {
+crates/cd_kernel/src/x87_transcendentals.rs:134:    unsafe {
+crates/cd_kernel/src/avx2_primitives.rs:49://! # Rust 2024 unsafe discipline
+crates/cd_kernel/src/avx2_primitives.rs:53://! `unsafe {}` around them is spurious and triggers a warning. Raw pointer
+crates/cd_kernel/src/avx2_primitives.rs:54://! operations (`ptr.add(i)`, `*ptr`) still require explicit `unsafe {}`.
+crates/cd_kernel/src/avx2_primitives.rs:71:unsafe fn hsum256(v: __m256d) -> f64 {
+crates/cd_kernel/src/avx2_primitives.rs:88:unsafe fn avx2_sum_impl(a: &[f64]) -> f64 {
+crates/cd_kernel/src/avx2_primitives.rs:98:        let v0 = unsafe { _mm256_loadu_pd(ptr.add(i)) };
+crates/cd_kernel/src/avx2_primitives.rs:99:        let v1 = unsafe { _mm256_loadu_pd(ptr.add(i + 4)) };
+crates/cd_kernel/src/avx2_primitives.rs:108:        let v = unsafe { _mm256_loadu_pd(ptr.add(i)) };
+crates/cd_kernel/src/avx2_primitives.rs:115:    let mut acc = unsafe { hsum256(acc0) + hsum256(acc1) };
+crates/cd_kernel/src/avx2_primitives.rs:118:        acc += unsafe { *ptr.add(i) };
+crates/cd_kernel/src/avx2_primitives.rs:131:        return unsafe { avx2_sum_impl(a) };
+crates/cd_kernel/src/avx2_primitives.rs:144:unsafe fn avx2_dot_impl(a: &[f64], b: &[f64]) -> f64 {
+crates/cd_kernel/src/avx2_primitives.rs:155:        let a0 = unsafe { _mm256_loadu_pd(a_ptr.add(i)) };
+crates/cd_kernel/src/avx2_primitives.rs:156:        let b0 = unsafe { _mm256_loadu_pd(b_ptr.add(i)) };
+crates/cd_kernel/src/avx2_primitives.rs:157:        let a1 = unsafe { _mm256_loadu_pd(a_ptr.add(i + 4)) };
+crates/cd_kernel/src/avx2_primitives.rs:158:        let b1 = unsafe { _mm256_loadu_pd(b_ptr.add(i + 4)) };
+crates/cd_kernel/src/avx2_primitives.rs:167:        let av = unsafe { _mm256_loadu_pd(a_ptr.add(i)) };
+crates/cd_kernel/src/avx2_primitives.rs:168:        let bv = unsafe { _mm256_loadu_pd(b_ptr.add(i)) };
+crates/cd_kernel/src/avx2_primitives.rs:175:    let mut acc = unsafe { hsum256(acc0) + hsum256(acc1) };
+crates/cd_kernel/src/avx2_primitives.rs:178:        acc += unsafe { *a_ptr.add(i) * *b_ptr.add(i) };
+crates/cd_kernel/src/avx2_primitives.rs:193:        return unsafe { avx2_dot_impl(a, b) };
+crates/cd_kernel/src/avx2_primitives.rs:206:unsafe fn avx2_norm_sq_impl(a: &[f64]) -> f64 {
+crates/cd_kernel/src/avx2_primitives.rs:216:        let v0 = unsafe { _mm256_loadu_pd(ptr.add(i)) };
+crates/cd_kernel/src/avx2_primitives.rs:217:        let v1 = unsafe { _mm256_loadu_pd(ptr.add(i + 4)) };
+crates/cd_kernel/src/avx2_primitives.rs:226:        let v = unsafe { _mm256_loadu_pd(ptr.add(i)) };
+crates/cd_kernel/src/avx2_primitives.rs:233:    let mut acc = unsafe { hsum256(acc0) + hsum256(acc1) };
+crates/cd_kernel/src/avx2_primitives.rs:236:        let x = unsafe { *ptr.add(i) };
+crates/cd_kernel/src/avx2_primitives.rs:250:        return unsafe { avx2_norm_sq_impl(a) };
+crates/cd_kernel/src/avx2_primitives.rs:263:unsafe fn avx2_norm_sq_16_impl(a: &[f64; 16]) -> f64 {
+crates/cd_kernel/src/avx2_primitives.rs:266:    let (v0, v1, v2, v3) = unsafe {
+crates/cd_kernel/src/avx2_primitives.rs:280:    unsafe { hsum256(acc0) + hsum256(acc1) + hsum256(acc2) + hsum256(acc3) }
+crates/cd_kernel/src/avx2_primitives.rs:291:        return unsafe { avx2_norm_sq_16_impl(a) };
+crates/cd_kernel/src/x87_ext80.rs:62:        unsafe {
+crates/cd_kernel/src/x87_ext80.rs:79:        unsafe {
+crates/cd_kernel/src/x87_ext80.rs:96:        unsafe {
+crates/cd_kernel/src/x87_ext80.rs:113:        unsafe {
+crates/cd_kernel/src/x87_ext80.rs:130:        unsafe {
+crates/cd_kernel/src/x87_ext80.rs:147:        unsafe {
+crates/cd_kernel/src/x87_ext80.rs:177:        unsafe {
+crates/cd_kernel/src/x87_ext80.rs:207:        unsafe {
+crates/cd_kernel/src/x87_ext80.rs:224:        unsafe {
+crates/cd_kernel/src/x87_ext80.rs:244:        unsafe {
+crates/cd_kernel/src/x87_ext80.rs:311:    unsafe {
+crates/cd_kernel/src/x87_ext80.rs:329:    unsafe {
+crates/cd_kernel/src/x87_ext80.rs:347:    unsafe {
+crates/cd_kernel/src/x87_ext80.rs:365:    unsafe {
+crates/cd_kernel/src/x87_ext80.rs:412:        unsafe {
+crates/cd_kernel/src/x87_ext80.rs:425:        unsafe {
+crates/cd_kernel/src/x87_ext80.rs:511:        unsafe {
+crates/cd_kernel/src/x87_primitives.rs:121:    unsafe {
+crates/cd_kernel/src/x87_primitives.rs:185:    unsafe {
+crates/cd_kernel/src/x87_primitives.rs:269:    unsafe {
+crates/cd_kernel/src/x87_primitives.rs:374:    unsafe {
+crates/cd_kernel/src/x87_primitives.rs:466:    let p: *const f64 = unsafe { coeffs.as_ptr().add(n - 1) };
+crates/cd_kernel/src/x87_primitives.rs:474:    unsafe {
+crates/cd_kernel/src/x87_primitives.rs:831:        unsafe {
+crates/cd_kernel/src/x87_primitives.rs:905:        unsafe {
+crates/quantum_core/src/gpu/peps.rs:154:        unsafe {
+crates/gororoba_cli_physics/src/bin/kerr_pathion_gpu.rs:64:    let pool = unsafe {
+crates/gororoba_cli_physics/src/bin/kerr_pathion_gpu.rs:73:    let cmd = unsafe {
+crates/gororoba_cli_physics/src/bin/kerr_pathion_gpu.rs:82:    let fence = unsafe {
+crates/gororoba_cli_physics/src/bin/kerr_pathion_gpu.rs:97:        unsafe {
+crates/gororoba_cli_physics/src/bin/kerr_pathion_gpu.rs:111:        unsafe {
+crates/gororoba_cli_physics/src/bin/kerr_pathion_gpu.rs:121:            unsafe { ctx.device.wait_for_fences(&[fence], true, u64::MAX)? };
+crates/gororoba_cli_physics/src/bin/kerr_pathion_gpu.rs:132:    unsafe { ctx.device.wait_for_fences(&[fence], true, u64::MAX)? };
+crates/gororoba_cli_physics/src/bin/kerr_pathion_gpu.rs:141:    unsafe {
+crates/gororoba_cli_physics/src/bin/dark_halo_hunt.rs:153:            let cmd_pool = unsafe {
+crates/gororoba_cli_physics/src/bin/dark_halo_hunt.rs:178:            let cmd = unsafe {
+crates/gororoba_cli_physics/src/bin/dark_halo_hunt.rs:191:                    unsafe { ctx.device.destroy_command_pool(cmd_pool, None) };
+crates/gororoba_cli_physics/src/bin/dark_halo_hunt.rs:203:            let fence = unsafe {
+crates/gororoba_cli_physics/src/bin/dark_halo_hunt.rs:220:                    unsafe {
+crates/gororoba_cli_physics/src/bin/dark_halo_hunt.rs:238:                    unsafe {
+crates/gororoba_cli_physics/src/bin/dark_halo_hunt.rs:265:            unsafe {
+crates/lbm_3d_cuda/src/optix_pipeline.rs:283:    pub unsafe fn init(
+crates/gororoba_cli/src/warp_forcing_policy.rs:290:    unsafe {
+crates/lbm_3d_cuda/src/lib.rs:85:unsafe impl Send for SendSyncGraph {}
+crates/lbm_3d_cuda/src/lib.rs:86:unsafe impl Sync for SendSyncGraph {}
+crates/lbm_3d_cuda/src/lib.rs:108:    unsafe {
+crates/lbm_3d_cuda/src/lib.rs:262:unsafe impl cudarc::driver::DeviceRepr for ComplexDevice {}
+crates/lbm_3d_cuda/src/lib.rs:263:unsafe impl cudarc::driver::ValidAsZeroBits for ComplexDevice {}
+crates/lbm_3d_cuda/src/lib.rs:682:            unsafe {
+crates/lbm_3d_cuda/src/lib.rs:757:            unsafe { init.launch(Self::launch_config_1d(n_cells as u32, precision)) }?;
+crates/lbm_3d_cuda/src/lib.rs:783:            unsafe { init.launch(config) }?;
+crates/lbm_3d_cuda/src/lib.rs:798:            unsafe { init.launch(Self::launch_config_1d(n_cells as u32, precision)) }?;
+crates/lbm_3d_cuda/src/lib.rs:957:        unsafe { b.launch(config) }?;
+crates/lbm_3d_cuda/src/lib.rs:979:            unsafe { init.launch(Self::launch_config_1d(self.n_cells as u32, self.precision)) }?;
+crates/lbm_3d_cuda/src/lib.rs:1006:            unsafe { init.launch(config) }?;
+crates/lbm_3d_cuda/src/lib.rs:1021:            unsafe { init.launch(Self::launch_config_1d(self.n_cells as u32, self.precision)) }?;
+crates/lbm_3d_cuda/src/lib.rs:1063:            unsafe { init.launch(Self::launch_config_1d(self.n_cells as u32, self.precision)) }?;
+crates/lbm_3d_cuda/src/lib.rs:1114:                unsafe { init.launch(config) }?;
+crates/lbm_3d_cuda/src/lib.rs:1125:                unsafe {
+crates/lbm_3d_cuda/src/lib.rs:1152:        unsafe { b.launch(Self::launch_config_1d(n_cells, self.precision)) }?;
+crates/lbm_3d_cuda/src/lib.rs:1271:            unsafe { b.launch(config) }?;
+crates/lbm_3d_cuda/src/lib.rs:1293:            unsafe { b.launch(config) }?;
+crates/lbm_3d_cuda/src/lib.rs:1389:                unsafe { b.launch(config) }?;
+crates/lbm_3d_cuda/src/lib.rs:1427:                unsafe { b.launch(config) }?;
+crates/lbm_3d_cuda/src/lib.rs:1456:                unsafe { b.launch(config) }?;
+crates/lbm_3d_cuda/src/lib.rs:1484:                unsafe { b.launch(config) }?;
+crates/lbm_3d_cuda/src/lib.rs:1512:                unsafe { b.launch(config) }?;
+crates/lbm_3d_cuda/src/lib.rs:1535:            unsafe { b.launch(config) }?;
+crates/lbm_3d_cuda/src/lib.rs:1672:            unsafe { bz.launch(LaunchConfig::for_num_elems(1)) }?;
+crates/lbm_3d_cuda/src/lib.rs:1687:            unsafe { b.launch(enstrophy_config) }?;
+crates/lbm_3d_cuda/src/lib.rs:1693:            unsafe { b_reduce.launch(reduce_config) }?;
+crates/lbm_3d_cuda/src/lib.rs:1703:            unsafe { bz.launch(LaunchConfig::for_num_elems(1)) }?;
+crates/lbm_3d_cuda/src/lib.rs:1719:            unsafe { b.launch(enstrophy_config) }?;
+crates/lbm_3d_cuda/src/lib.rs:1726:            unsafe { b_reduce.launch(reduce_config) }?;
+crates/lbm_3d_cuda/src/lib.rs:1746:            unsafe { bz.launch(LaunchConfig::for_num_elems(1)) }?;
+crates/lbm_3d_cuda/src/lib.rs:1751:            unsafe {
+crates/lbm_3d_cuda/src/lib.rs:1767:            unsafe { bz.launch(LaunchConfig::for_num_elems(1)) }?;
+crates/lbm_3d_cuda/src/lib.rs:1771:            unsafe {
+crates/lbm_3d_cuda/src/lib.rs:1828:            unsafe { b1.launch(config1) }?;
+crates/lbm_3d_cuda/src/lib.rs:2055:        unsafe {
+crates/lbm_3d_cuda/src/lib.rs:2076:        unsafe {
+crates/lbm_3d_cuda/src/lib.rs:2092:        unsafe { b.launch(Self::launch_config_1d(self.n_cells as u32, self.precision)) }?;
+crates/lbm_3d_cuda/src/lib.rs:2106:        unsafe { b.launch(Self::launch_config_1d(self.n_cells as u32, self.precision)) }?;
+crates/lbm_3d_cuda/src/lib.rs:2125:        unsafe { b.launch(Self::launch_config_1d(self.n_cells as u32, self.precision)) }?;
+crates/lbm_3d_cuda/src/lib.rs:2200:            unsafe { cuCtxSetLimit(CUlimit_enum::CU_LIMIT_PERSISTING_L2_CACHE_SIZE, budget) };
+crates/lbm_3d_cuda/src/lib.rs:2221:        let result = unsafe {
+crates/lbm_3d_cuda/src/lib.rs:2260:        let result = unsafe {
+crates/lbm_3d_cuda/src/lib.rs:2296:            let _ = unsafe { cufft::destroy(handle) };
+crates/lbm_3d_cuda/src/lib.rs:2420:            unsafe {
+crates/lbm_3d_cuda/src/lib.rs:2545:            unsafe { cuCtxSetLimit(CUlimit_enum::CU_LIMIT_PERSISTING_L2_CACHE_SIZE, budget) };
+crates/lbm_3d_cuda/src/lib.rs:2570:        let result = unsafe {
+crates/lbm_3d_cuda/src/lib.rs:2698:        let mut pinned = unsafe {
+crates/lbm_3d_cuda/src/lib.rs:2770:        unsafe {
+crates/lbm_3d_cuda/src/lib.rs:2817:            unsafe {
+crates/lbm_3d_cuda/src/lib.rs:2846:                unsafe {
+crates/lbm_3d_cuda/src/lib.rs:2896:        unsafe {
+crates/lbm_3d_cuda/src/aot_cubins.rs:53:        unsafe { cudarc::driver::result::module::load_data(cubin_bytes.as_ptr() as *const _) }
+crates/lbm_3d_cuda/src/aot_cubins.rs:59:    unsafe { cudarc::driver::sys::cuModuleUnload(cu_module) };
+crates/data_core/src/spice/daf.rs:26:        let mmap = unsafe { Mmap::map(&file)? };
+crates/data_core/src/spice/daf.rs:132:        Ok(unsafe { std::slice::from_raw_parts(ptr, len) })
+crates/lbm_3d_cuda/src/sparse/mod.rs:114:        unsafe { b1.launch(cfg) }?;
+crates/lbm_3d_cuda/src/sparse/mod.rs:127:        unsafe {
+crates/lbm_3d_cuda/src/sparse/mod.rs:226:                let mut buf = unsafe {
+crates/lbm_3d_cuda/src/sparse/mod.rs:405:                    unsafe { b.launch(cfg) }?;
+crates/lbm_3d_cuda/src/sparse/mod.rs:444:                    unsafe { b.launch(cfg) }?;
+crates/lbm_3d_cuda/src/sparse/mod.rs:523:                            unsafe { b.launch(cfg) }?;
+crates/lbm_3d_cuda/src/sparse/mod.rs:699:    unsafe {
+crates/lbm_3d_cuda/src/alignment_gpu.rs:68:        unsafe { builder.launch(cfg) }?;
+crates/lbm_3d_cuda/src/bench_kernels.rs:187:            unsafe {
+crates/lbm_3d_cuda/src/bench_kernels.rs:233:            unsafe { b.launch(cfg) }?;
+crates/lbm_3d_cuda/src/bench_kernels.rs:381:            unsafe { b.launch(cfg) }?;
+crates/lbm_3d_cuda/src/bench_kernels.rs:482:            unsafe {
+crates/lbm_3d_cuda/src/bench_kernels.rs:527:            unsafe { b.launch(cfg) }?;
+crates/lbm_3d_cuda/src/bench_kernels.rs:944:            unsafe { b.launch(cfg) }?;
+crates/lbm_3d_cuda/src/bench_kernels.rs:999:            unsafe { b.launch(cfg) }?;
+crates/lbm_3d_cuda/src/bench_kernels.rs:1102:            unsafe { b.launch(cfg) }?;
+crates/lbm_3d_cuda/src/bench_kernels.rs:1140:            unsafe { b.launch(cfg) }?;
+crates/lbm_3d_cuda/src/bench_kernels.rs:1239:            unsafe { b.launch(cfg) }?;
+crates/lbm_3d_cuda/src/bench_kernels.rs:1277:            unsafe { b.launch(cfg) }?;
+crates/lbm_3d_cuda/src/bench_kernels.rs:1374:            unsafe { b.launch(cfg) }?;
+crates/lbm_3d_cuda/src/bench_kernels.rs:1415:            unsafe { b.launch(cfg) }?;
+crates/lbm_3d_cuda/src/bench_kernels.rs:1629:        unsafe { b.launch(cfg) }?;
+crates/lbm_3d_cuda/src/bench_kernels.rs:1648:        unsafe { b.launch(cfg) }?;
+crates/lbm_3d_cuda/src/bench_kernels.rs:1667:        unsafe { b.launch(cfg) }?;
+crates/lbm_3d_cuda/src/bench_kernels.rs:1686:        unsafe { b.launch(cfg) }?;
+crates/lbm_3d_cuda/src/bench_kernels.rs:1722:        unsafe { b.launch(cfg) }?;
+crates/grmhd_core/src/flux.rs:603:                        unsafe {
+crates/grmhd_core/src/flux.rs:618:                        let base = unsafe { rhs_p.add(cell_l * NCONS) };
+crates/grmhd_core/src/flux.rs:620:                            unsafe {
+crates/grmhd_core/src/flux.rs:627:                        let base = unsafe { rhs_p.add(cell_r * NCONS) };
+crates/grmhd_core/src/flux.rs:629:                            unsafe {
+crates/grmhd_core/src/flux.rs:740:                        unsafe {
+crates/grmhd_core/src/flux.rs:750:                        let base = unsafe { rp.add(cell_l * NCONS) };
+crates/grmhd_core/src/flux.rs:752:                            unsafe {
+crates/grmhd_core/src/flux.rs:759:                        let base = unsafe { rp.add(cell_r * NCONS) };
+crates/grmhd_core/src/flux.rs:761:                            unsafe {
+crates/grmhd_core/src/flux.rs:858:                    let base_l = unsafe { rp.add(cell_l * NCONS) };
+crates/grmhd_core/src/flux.rs:860:                        unsafe {
+crates/grmhd_core/src/flux.rs:865:                    let base_r = unsafe { rp.add(cell_r * NCONS) };
+crates/grmhd_core/src/flux.rs:867:                        unsafe {
+crates/grmhd_core/src/flux.rs:917:                let base = unsafe { rp.add(idx * NCONS) };
+crates/grmhd_core/src/flux.rs:919:                    unsafe {
+crates/grmhd_core/src/flux.rs:990:                unsafe {
+crates/grmhd_core/src/flux.rs:1108:                unsafe {
+crates/grmhd_core/src/gpu.rs:174:        unsafe { builder.launch(cfg) }.context("Launch precompute_metric")?;
+crates/grmhd_core/src/gpu.rs:231:        unsafe { builder.launch(cfg) }.context("Launch compute_flux")?;
+crates/grmhd_core/src/gpu.rs:249:        unsafe { builder.launch(cfg) }.context("Launch flux_divergence")?;
+crates/grmhd_core/src/gpu.rs:294:            unsafe { builder.launch(cfg) }.context("Launch prim2con")?;
+crates/grmhd_core/src/gpu.rs:317:            unsafe { builder.launch(cfg) }.context("Launch euler_update")?;
+crates/optics_core/src/algebraic_lensing_gpu.rs:27:unsafe impl DeviceRepr for GpuVec3 {}
+crates/optics_core/src/algebraic_lensing_gpu.rs:29:unsafe impl ValidAsZeroBits for GpuVec3 {}
+crates/optics_core/src/algebraic_lensing_gpu.rs:121:        unsafe { builder.launch(config) }?;
+crates/lbm_3d_cuda/src/box_counting_gpu.rs:179:            unsafe { bz.launch(LaunchConfig::for_num_elems(1)) }?;
+crates/lbm_3d_cuda/src/box_counting_gpu.rs:206:            unsafe { b.launch(config) }?;
+crates/lbm_3d_cuda/src/box_counting_gpu.rs:248:        unsafe { b.launch(config) }?;
+crates/lbm_3d_cuda/src/box_counting_gpu.rs:273:        unsafe { bz.launch(LaunchConfig::for_num_elems(256)) }?;
+crates/lbm_3d_cuda/src/box_counting_gpu.rs:281:        unsafe { bh.launch(config) }?;
+crates/gororoba_algebra/src/gpu/tensor_avt/cuda.rs:362:        unsafe {
+crates/gororoba_algebra/src/gpu/tensor_avt/cuda.rs:398:        unsafe {
+crates/gororoba_algebra/src/gpu/tensor_avt/cuda.rs:430:        unsafe {
+crates/gororoba_algebra/src/gpu/tensor_avt/cuda.rs:695:        unsafe {
+crates/gororoba_algebra/src/gpu/tensor_avt/cuda.rs:743:        unsafe {
+crates/lbm_3d_cuda/src/chingon_gpu.rs:323:        unsafe { builder.launch(cfg).context("Launch build_state_3body")? };
+crates/lbm_3d_cuda/src/chingon_gpu.rs:351:        unsafe { builder.launch(cfg).context("Launch avt_contraction")? };
+crates/lbm_3d_cuda/src/chingon_gpu.rs:414:        unsafe { builder.launch(cfg).context("Launch project_3body")? };
+crates/lbm_3d_cuda/src/chingon_gpu.rs:450:    unsafe { builder.launch(cfg).context("Launch zero_buffer")? };
+crates/lbm_3d_cuda/src/managed_memory.rs:105:    let unified = unsafe { ctx.alloc_unified::<u8>(total_bytes, true) }?;
+crates/lbm_3d_cuda/src/unified_runner.rs:85:        let mut d_f = unsafe { ctx.alloc_unified::<u8>(f_bytes, true) }?;
+crates/lbm_3d_cuda/src/unified_runner.rs:91:        let mut d_tau = unsafe { ctx.alloc_unified::<f32>(n_cells, true) }?;
+crates/lbm_3d_cuda/src/unified_runner.rs:112:            unsafe { b.launch(cfg) }?;
+crates/lbm_3d_cuda/src/unified_runner.rs:158:            unsafe { b.launch(cfg) }?;
+crates/lbm_3d_cuda/src/unified_runner.rs:208:            unsafe { b.launch(cfg) }?;
+crates/gororoba_cli/src/bin/zd_resonance_sweep.rs:136:    let pool = unsafe { ctx.device.create_command_pool(&pool_info, None) }?;
+crates/gororoba_cli/src/bin/zd_resonance_sweep.rs:143:    let cmd = unsafe { ctx.device.allocate_command_buffers(&alloc_info) }?[0];
+crates/gororoba_cli/src/bin/zd_resonance_sweep.rs:148:    let fence = unsafe { ctx.device.create_fence(&fence_info, None) }?;
+crates/gororoba_cli/src/bin/zd_resonance_sweep.rs:152:        unsafe {
+crates/gororoba_cli/src/bin/zd_resonance_sweep.rs:168:        unsafe {
+crates/gororoba_cli/src/bin/zd_resonance_sweep.rs:184:    unsafe {
+crates/gororoba_algebra/src/gpu/dimensional.rs:337:        unsafe {
+crates/gororoba_algebra/src/gpu/imbalance.rs:188:        unsafe {
+crates/gororoba_algebra/src/gpu/voudon.rs:127:        unsafe {
+crates/gororoba_algebra/src/gpu/graph_construction.rs:212:        unsafe {
+crates/gororoba_algebra/src/gpu/graph_construction.rs:248:        unsafe {
+crates/lbm_3d_cuda/tests/test_cudarc_alloc.rs:9:    let _ = unsafe { ctx.alloc_unified::<u8>(10, false) };
+crates/gororoba_algebra/src/gpu/eta_matrix.rs:185:        unsafe {
+crates/lbm_3d_cuda/benches/gpu_sparse_1024.rs:100:    unsafe {
+crates/gororoba_algebra/src/construction/cd_tower.rs:140:                unsafe { &*(self.data.as_ptr() as *const [f64; $dim]) }
+crates/gororoba_algebra/src/construction/cd_tower.rs:147:                unsafe { &mut *(self.data.as_mut_ptr() as *mut [f64; $dim]) }
+crates/gororoba_cli_warp/src/bin/warp_fastpath_suite.rs:490:        unsafe {
+crates/gororoba_cli_warp/src/bin/warp_fastpath_suite.rs:641:    unsafe {
+crates/gororoba_optix/src/lib.rs:42:    pub log_callback_function: Option<unsafe extern "C" fn(u32, *const i8, usize, *mut c_void)>,
+crates/gororoba_optix/src/lib.rs:158:    pub optix_device_context_create: unsafe extern "C" fn(
+crates/gororoba_optix/src/lib.rs:163:    pub optix_device_context_destroy: unsafe extern "C" fn(OptixDeviceContext) -> OptixResult,
+crates/gororoba_optix/src/lib.rs:164:    pub optix_module_create: unsafe extern "C" fn(
+crates/gororoba_optix/src/lib.rs:174:    pub optix_module_destroy: unsafe extern "C" fn(OptixModule) -> OptixResult,
+crates/gororoba_optix/src/lib.rs:175:    pub optix_pipeline_create: unsafe extern "C" fn(
+crates/gororoba_optix/src/lib.rs:185:    pub optix_pipeline_destroy: unsafe extern "C" fn(OptixPipeline) -> OptixResult,
+crates/gororoba_optix/src/lib.rs:186:    pub optix_launch: unsafe extern "C" fn(
+crates/gororoba_optix/src/lib.rs:197:        unsafe extern "C" fn(OptixProgramGroup, *mut OptixSbtRecordHeader) -> OptixResult,
+crates/gororoba_optix/src/lib.rs:198:    pub optix_accel_compute_memory_usage: unsafe extern "C" fn(
+crates/gororoba_optix/src/lib.rs:205:    pub optix_accel_build: unsafe extern "C" fn(
+crates/gororoba_optix/src/lib.rs:228:    unsafe extern "C" fn(u32, u32, *mut c_void, *mut c_void, *mut c_void, usize) -> OptixResult;
+crates/gororoba_optix/src/lib.rs:237:    pub unsafe fn load() -> anyhow::Result<Self> {
+crates/gororoba_optix/src/lib.rs:339:    pub unsafe fn init_current_context(log_level: u32) -> anyhow::Result<Self> {
+crates/gororoba_optix/src/lib.rs:365:            unsafe {
+crates/gororoba_optix/src/lib.rs:384:    match unsafe { OptixApi::load() } {
+crates/stats_core/src/ultrametric/gpu.rs:189:        unsafe { builder.launch(cfg) }?;
+crates/algebra_experimental/src/voudon_stabilizer.rs:102:        unsafe {
+crates/data_core/src/registry_mirrors/docs_engineering_rust_style_guide.rs:41://! - **Crates:** `lbm_3d_cuda` encapsulates unsafe FFI/NVRTC interactions.
+crates/data_core/src/registry_mirrors/claims_registry_mirror.rs:9774://! - Statement: Packed-double accumulation primitives in `cd_kernel::avx2_primitives` keep the stable public names `avx2_sum`, `avx2_dot`, `avx2_norm_sq`, and `avx2_norm_sq_16`, but the feature split is: `__m256d`, `_mm256_extractf128_pd`, and `_mm256_hadd_pd` are AVX packed-f64 operations, while `_mm256_fmadd_pd` is separately gated by the `fma` target feature. The reduction path therefore uses AVX for 256-bit packed doubles and AVX+FMA for the fused multiply-add kernels. `_mm256_fmadd_pd` computes `a*b + c` with one IEEE-754 rounding of the infinite-precision intermediate, so it is typically more accurate than separate binary64 multiply then add, but the right comparison to x87 is binary64 single rounding versus x87 extended-precision intermediates, not a fixed 'digits below x87' slogan. The dual-accumulator pattern (8 elements per iteration = 2 vector loads) breaks the carried dependency chain and is intended to fill Zen 3's two FMA pipes. Rust 2024 unsafe discipline still applies: matching SIMD intrinsics inside the right `#[target_feature]` context are safe, while raw pointer reads remain explicit `unsafe`.
+crates/data_core/src/registry_mirrors/data_papers_intake_2026_02_15_cayley_dickson_sources_supplemental_docs_linear_transport_documents_primary_1_analysis_data_pdf_corpus_markdown_agl_library_semantics_linear_haskell.rs:111://! the array is a potentially unsafe operation. However, it is simpler because there is less bureaucracy
+crates/data_core/src/registry_mirrors/data_papers_intake_2026_02_15_cayley_dickson_sources_supplemental_docs_linear_transport_documents_primary_1_analysis_data_pdf_corpus_markdown_agl_library_semantics_linear_haskell.rs:622://! 5 Indeed, Rust’s implementation uses an unsafe block.

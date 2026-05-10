@@ -3,11 +3,9 @@
 //! Parse logic and record types live in `solar_orbiter_rpw_hfr`.
 
 use super::solar_orbiter_rpw_hfr::{SolarOrbiterRpwHfrRecord, parse_solar_orbiter_rpw_hfr_csv};
-use crate::{
-    fetcher::{
-        DatasetProvider, FetchConfig, FetchError, download_hapi_csv, download_to_file,
-        download_to_string,
-    },
+use crate::fetcher::{
+    DatasetProvider, FetchConfig, FetchError, download_hapi_csv, download_to_file,
+    download_to_string,
 };
 use chrono::NaiveDate;
 use regex::Regex;

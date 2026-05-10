@@ -45,8 +45,16 @@ impl NBodySystem {
         self.bodies.push(BodyState {
             id,
             mass,
-            pos: Vector3::new(Complex::from(pos[0]), Complex::from(pos[1]), Complex::from(pos[2])),
-            vel: Vector3::new(Complex::from(vel[0]), Complex::from(vel[1]), Complex::from(vel[2])),
+            pos: Vector3::new(
+                Complex::from(pos[0]),
+                Complex::from(pos[1]),
+                Complex::from(pos[2]),
+            ),
+            vel: Vector3::new(
+                Complex::from(vel[0]),
+                Complex::from(vel[1]),
+                Complex::from(vel[2]),
+            ),
         });
     }
 
@@ -54,7 +62,13 @@ impl NBodySystem {
     ///
     /// Allows callers without a nalgebra dependency to push bodies with
     /// imaginary initial components (e.g. complex-time tunneling states).
-    pub fn push_body_complex(&mut self, id: i32, mass: f64, pos: [Complex<f64>; 3], vel: [Complex<f64>; 3]) {
+    pub fn push_body_complex(
+        &mut self,
+        id: i32,
+        mass: f64,
+        pos: [Complex<f64>; 3],
+        vel: [Complex<f64>; 3],
+    ) {
         self.bodies.push(BodyState {
             id,
             mass,
@@ -653,10 +667,8 @@ mod tests {
     use std::f64::consts::PI;
 
     fn two_body_system(alpha: f64) -> NBodySystem {
-        let mut system = NBodySystem::new(
-            alpha,
-            [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]],
-        );
+        let mut system =
+            NBodySystem::new(alpha, [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]);
         // Sun-like central mass
         system.bodies.push(BodyState {
             id: 0,
@@ -779,10 +791,7 @@ mod tests {
 
     #[test]
     fn test_pathion_shadow_radius_nonzero() {
-        let system = NBodySystem::new(
-            1e-10,
-            [[1.0, 0.0, 0.0], [0.0, 0.5, 0.0], [0.0, 0.0, 0.3]],
-        );
+        let system = NBodySystem::new(1e-10, [[1.0, 0.0, 0.0], [0.0, 0.5, 0.0], [0.0, 0.0, 0.3]]);
         let r_shadow = system.pathion_shadow_radius(1.327e11);
         assert!(r_shadow.is_some());
         let rs = r_shadow.unwrap();
@@ -793,10 +802,8 @@ mod tests {
 
     #[test]
     fn test_adaptive_wick_evolve() {
-        let mut system = NBodySystem::new(
-            1e-12,
-            [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]],
-        );
+        let mut system =
+            NBodySystem::new(1e-12, [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]);
         system.bodies.push(BodyState {
             id: 0,
             mass: 1.327e11,

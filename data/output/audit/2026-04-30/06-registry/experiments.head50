@@ -1,0 +1,50 @@
+# AUTO-GENERATED: READ-ONLY COMPATIBILITY EXPORT.
+# Canonical write path: registry/canonical/control_plane.sqlite3
+# Regenerate with: cargo run -p gororoba_cli_data --bin provenance -- export-control-plane
+# Compatibility export lane: experiments
+
+[experiments]
+authoritative = true
+deterministic_count = 164
+experiment_count = 236
+gpu_count = 29
+seeded_count = 46
+status_allowlist = ["active", "deprecated", "planned", "blocked"]
+updated = "2026-04-17"
+
+[[experiment]]
+binary = "motif-census"
+binary_experiment_declared = "E-001"
+binary_registered = true
+claim_refs = [
+    "C-100",
+    "C-101",
+    "C-102",
+    "C-103",
+    "C-104",
+    "C-105",
+    "C-106",
+    "C-107",
+    "C-108",
+    "C-109",
+    "C-110",
+]
+claims = [
+    "C-100",
+    "C-101",
+    "C-102",
+    "C-103",
+    "C-104",
+    "C-105",
+    "C-106",
+    "C-107",
+    "C-108",
+    "C-109",
+    "C-110",
+]
+dataset_label_refs = []
+dataset_refs = []
+deterministic = true
+external_source_refs = []
+gpu = false
+id = "E-001"

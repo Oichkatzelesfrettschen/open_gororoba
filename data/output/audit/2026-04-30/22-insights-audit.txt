@@ -1,0 +1,89 @@
+=== last 20 insight IDs (highest numbers) ===
+id = "I-192"
+id = "I-193"
+id = "I-194"
+id = "I-195"
+id = "I-196"
+id = "I-197"
+id = "I-198"
+id = "I-199"
+id = "I-200"
+id = "I-201"
+id = "I-202"
+id = "I-203"
+id = "I-204"
+id = "I-205"
+id = "I-206"
+id = "I-207"
+id = "I-208"
+id = "I-209"
+id = "I-210"
+id = "I-211"
+
+=== insight ID range gaps detection ===
+gap: 61 to 63
+gap: 142 to 167
+max ID: 211
+
+=== insights with manga in body (sample) ===
+registry/insights.toml
+sprint = "S83"
+summary = "THINGS VizieR catalog J/AJ/136/2563 contains HI spectra (velocity-channel flux), not rotation curves. Rotation curves require downloading multi-GB FITS cubes and running tilted-ring fitting (3D-Barolo/GIPSY). Even if extracted, N=34 cannot break the 1/sqrt(N) noise floor that N=93 SPARC already fails at (SNR=0.68). MaNGA (N~10000) is the only viable path to sub-percent alpha_zd sensitivity."
+title = "THINGS dropped from harmonic halo pipeline: N=34 insufficient, no rotation curves in VizieR catalog"
+
+[[insight]]
+claims = ["C-1344", "C-1341"]
+--
+sprint = "S83"
+summary = "The MaNGA pipeline is architecturally split into Stage 1 (DAPall scalar catalog for morphological selection: n, i, EW, M*) and Stage 2 (per-galaxy MAPS FITS download for spatially-resolved EMLINE_GVEL pseudo-slit extraction). DAPall integrated moments cannot resolve the k_n = 2*pi*n/(n_modes * r_s) wavenumbers needed for harmonic Fourier lock-in. Only the 2D velocity maps preserve the spatial frequency content. With N~2500 disk galaxies after cuts, the noise floor drops to alpha_zd ~ 0.003, a 5x improvement over SPARC N=93."
+title = "MaNGA two-stage pipeline: DAPall Guillotine + MAPS pseudo-slit replaces THINGS"
+
+[[insight]]
+claims = ["C-1349"]
+id = "I-172"
+--
+sprint = "S83"
+summary = "The MaNGA E-183 inner halo exhibits three distinct baryonic systematics at x = r/r_s: (1) inner bulge excess: +5% at x<0.56, caused by the de Vaucouleurs bulge contributing velocity support that the NFW cusp alone cannot account for; (2) NFW cusp over-prediction trough: -15% at x~0.83, where the NFW profile overshoots observed velocities at the density-field cusp-to-core transition; (3) IFU projection spike: +29% at x~0.953, caused by beam-smearing of the steep velocity gradient near the half-light radius in MaNGA 2.5-arcsec fiber bundles. All three features are morphologically correlated with inclination (stronger at high i) and baryon fraction (stronger at high M*). No ZD harmonic pattern is needed to explain them."
+title = "MaNGA inner halo baryonic systematics: bulge excess, cusp trough, IFU projection spike"
+
+[[insight]]
+claims = ["C-1372", "C-1369", "C-1370", "C-1371"]
+id = "I-180"
+--
+sprint = "S83"
+summary = "The MaNGA E-183 SNR for CD-ZD detection shows a clear inclination gradient: SNR=0.98 for 30<i<50 deg (low-i, N=3140) vs SNR=0.29 for full 30<i<70 deg sample (N=6992). If the harmonic signal originated from ZD gravitational forcing, it would be inclination-invariant (gravitational effects act in 3D, not along the line-of-sight). The observed inclination dependence -- higher apparent SNR at lower inclination -- is consistent with reduced beam-smearing and projection effects in more face-on galaxies, which produce cleaner rotation curves and therefore more internally-correlated velocity residuals. The SNR gradient is therefore a diagnostic for optical projection origin, not for ZD forcing."
+title = "Inclination SNR gradient proves optical projection origin: ZD forcing would be inclination-invariant"
+
+[[insight]]
+claims = ["C-1372", "C-1373"]
+--
+sprint = "S83"
+summary = "E-183 synthesis: the MaNGA inner halo (x < 1.36 r/r_s) is fundamentally baryonic-limited at current N=6992 and IFU resolution. The multi-algebra analysis (C-1369..C-1372) proves the null result is algebra-independent: no algebraic structure from {CD-ZD, G2, Albert J3(O), sl(2)} provides a spectral window into the inner regime. The sl(2) degeneracy ratio test (C-1373) is independently falsified (observed ratio 0.55-1.53, predicted 2.0). The path forward requires SKA neutral hydrogen kinematics (outer halo x > 3) or Euclid weak lensing (mass-not-velocity), where the baryonic noise floor drops by ~10x and the harmonic amplitude from ZD forcing grows (exp(-x) term is larger at smaller x/r_s). The MaNGA IFU data cannot distinguish ZD forcing from baryonic systematics in the inner bulge-disk region."
+title = "E-183 synthesis: inner halo baryonic-limited, SKA/Euclid outer halo required for ZD detection"
+
+[[insight]]
+claims = ["C-1373"]
+--
+sprint = "S84"
+summary = "A deterministic analysis pipeline applied to synthetic null data with fixed baryonic systematics has an analytic fixed-point SNR determined entirely by the systematic model parameters. The E-192 MaNGA ZD robustness experiment converges to detection_snr = 0.4704 (sl2_partner/mass_Q3) and 0.4675-0.4825 (full_sample Fourier conditions) across 3 independent REFINE iterations. Each iteration fixed real issues (bug corrections, seed expansion 5->20, ablation additions) but the primary metric did not shift because the bottleneck is MaNGA's radial coverage (x=0.5-1.35 r/r_s), not pipeline quality. This is the mathematical signature of a data-limited experiment: when all pipeline improvements are exhausted, the metric converges to the noise floor set by baryonic systematics. The correct response to a degenerate REFINE cycle is PROCEED with documented caveats, not further iteration."
+title = "Degenerate REFINE cycle convergence: deterministic null pipeline has analytic fixed-point SNR"
+
+[[insight]]
+claims = ["C-1412", "C-1415"]
+--
+sprint = "S84"
+summary = "Literature synthesis for the GHOST MaNGA null result identifies six topic clusters (precision cosmology, IFU methodology, algebraic predictions, baryonic noise floor, null-result standards, next-generation forecasts) and seven research gaps. The three highest-impact gaps are: (1) no theoretical calculation of alpha_zd amplitude from first principles exists -- frameworks predict wavenumbers only, leaving GHOST as an exploration rather than a decisive test; (2) Fourier spectral decomposition of stacked IFU rotation curve residuals at N>1000 scale is genuinely novel -- GHOST fills this gap with the k^0.81 baryonic red-noise index and three-component taxonomy; (3) outer-halo stacking at x>3 r/r_s does not exist in the literature -- SPARC/THINGS use individual fits, not large-N stacking, creating the primary opportunity for the SKA era. The synthesis maps 17 references across clusters and identifies three narrative threads: concordance-to-constraint, prediction-to-test, and bound-to-forecast. Full document at docs/research/manga_null_literature_synthesis_2026.md."
+title = "Literature synthesis: six clusters, seven gaps, three narrative threads for GHOST MaNGA null"
+
+[[insight]]
+claims = ["C-1372", "C-1365", "C-1412"]
+id = "I-198"
+sprint = "S84"
+summary = "Six prioritized research opportunities emerge from the GHOST literature synthesis, ranked by impact times feasibility: (1) SKA Phase 1 outer-halo stacking forecast (HIGH/HIGH) -- the sensitivity projection figure alpha_zd vs radial coverage is what survey planners will cite; (2) face-on galaxy reanalysis with k^0.81 baseline subtraction (MEDIUM-HIGH/HIGH) -- N~3140 low-i galaxies have cleanest curves but red-noise correction on full sample was neutral; (3) injection-recovery calibration via matched filter (HIGH/MEDIUM) -- blocks publication sensitivity claims, three resolution options identified; (4) SPARC/THINGS cross-validation at outer radii (MEDIUM/MEDIUM) -- proof-of-concept before SKA; (5) theoretical framework separation computation at x=3-10 (MEDIUM/HIGH) -- determines if SKA can discriminate algebras or only improve bound; (6) baryonic index validation against FIRE/NIHAO simulations (MEDIUM/LOW-MEDIUM). The quasi-degeneracy (rho>0.97) must be disclosed honestly: four algebraic frameworks are effectively one constraint at MaNGA radii, reframed as model-independence of the bound."
+title = "Six prioritized opportunities from GHOST literature synthesis: SKA forecast highest, simulation validation lowest"
+
+[[insight]]
+claims = ["C-1419", "C-1420", "C-1421", "C-1422"]
+--
+sprint = "S84"
+summary = "Four novel higher-order statistical hypotheses tested against MaNGA null result: (H3) topological persistence N=1 feature, falsified as baryonic; (H1) bispectral Fano selection rule ratio=1.0, falsified as trivial; (H2) variance quantization dip D=0.46 p=0.0002, falsified as algebra-universal; (H4) cross-algebra MI 2.8-4.5 nats, falsified as algebra-universal. All four results reinforce the E-183/E-184 conclusion: the null is comprehensive across two-point statistics (power spectrum, correlation), three-point statistics (bispectrum), distributional shape (dip test, kurtosis), topological invariants (persistence), and information-theoretic measures (MI). The baryonic floor dominates every observable at x=0.5-1.22 r/r_s."

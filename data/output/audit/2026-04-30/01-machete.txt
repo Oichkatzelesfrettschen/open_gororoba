@@ -1,0 +1,10 @@
+=== which cargo-machete ===
+/home/eirikr/.cargo/bin/cargo-machete
+
+=== cargo-machete --version ===
+0.9.1
+
+=== cargo machete output ===
+Analyzing dependencies of crates in this directory...
+cargo-machete didn't find any unused dependencies in this directory. Good job!
+Done!

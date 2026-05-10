@@ -1,6 +1,8 @@
 //! Fetch/provider support for MAVEN MAG data.
 
-use crate::fetcher::{DailyHapiFetchRequest, DatasetProvider, FetchConfig, FetchError, fetch_daily_hapi_csv_range};
+use crate::fetcher::{
+    DailyHapiFetchRequest, DatasetProvider, FetchConfig, FetchError, fetch_daily_hapi_csv_range,
+};
 use std::path::PathBuf;
 
 const MAVEN_MAG_HAPI_DATASET: &str = "MVN_MAG_L2-SUNSTATE-1SEC";

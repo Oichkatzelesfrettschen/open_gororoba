@@ -1,0 +1,50 @@
+# Experiment Lineage Edge Strength Registry (Wave 6, W6-018)
+# Normalized semantic relationships between experiments with strength metrics
+# Date: 2026-02-10
+
+[metadata]
+authoritative = true
+updated = "2026-02-10"
+source_registry = "registry/experiment_lineage.toml"
+purpose = "Normalize edge types between experiments with semantic relationship strength"
+schema_version = "experiment_edges_v1"
+edge_types = ["derives_from", "extends", "refutes", "complements", "replaces"]
+
+# ---- Edge Type Definitions ----
+
+[edge_type_definitions]
+
+derives_from = """
+  Source experiment directly enables target through output/input coupling.
+  Strength metric: 0.0-1.0 based on data flow completeness.
+  Example: E-001 (motif census) derives E-002 (ultrametric analysis on motif data)
+"""
+
+extends = """
+  Target experiment builds on methodology of source, expanding scope or dimension.
+  Strength metric: 0.0-1.0 based on methodological similarity + scope expansion.
+  Example: E-002 (dim=16,32) extends to E-003 (dim=64,128,256)
+"""
+
+refutes = """
+  Target experiment contradicts or invalidates claims from source.
+  Strength metric: 0.0-1.0 based on evidence contradiction severity.
+  Example: E-011 (non-commutativity universal) refutes E-007 (commutativity conditional)
+"""
+
+complements = """
+  Target experiment provides orthogonal validation or cross-check of source results.
+  Strength metric: 0.0-1.0 based on orthogonality of methods and alignment of outcomes.
+  Example: E-004 (numerical census) complements E-005 (symbolic derivation)
+"""
+
+replaces = """
+  Target experiment supersedes source with improved methodology or extended validity.
+  Strength metric: 0.0-1.0 based on improvement magnitude.
+  Example: E-010 (GPE-only) replaced by E-020 (GPE+He3+He4+two-fluid)
+"""
+
+# ---- Normalized Edges for Phase 10.3 Experiments ----
+
+[[edge]]
+id = "EDGE-00001"

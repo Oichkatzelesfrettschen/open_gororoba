@@ -252,7 +252,6 @@ fn wrap_ra_cell(cell: i32, ra_cells: i32) -> i32 {
     }
 }
 
-
 pub fn ecliptic_to_equatorial_vector(longitude_rad: f64, latitude_rad: f64) -> [f64; 3] {
     let epsilon = 23.4392911_f64.to_radians();
     let x_ecl = latitude_rad.cos() * longitude_rad.cos();

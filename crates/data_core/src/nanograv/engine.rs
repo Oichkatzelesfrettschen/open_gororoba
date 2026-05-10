@@ -306,19 +306,13 @@ pub struct TimingEphemeris {
 }
 
 trait TimingModelExt {
-    fn parameter_term_local(
-        &self,
-        name: &str,
-    ) -> Option<&super::timing_model::ParameterTerm>;
+    fn parameter_term_local(&self, name: &str) -> Option<&super::timing_model::ParameterTerm>;
     fn parameter_value_local(&self, name: &str) -> Option<f64>;
     fn parameter_bool_local(&self, name: &str) -> Option<bool>;
 }
 
 impl TimingModelExt for TimingModel {
-    fn parameter_term_local(
-        &self,
-        name: &str,
-    ) -> Option<&super::timing_model::ParameterTerm> {
+    fn parameter_term_local(&self, name: &str) -> Option<&super::timing_model::ParameterTerm> {
         let astrometry = [
             self.astrometry.raj.as_ref(),
             self.astrometry.decj.as_ref(),

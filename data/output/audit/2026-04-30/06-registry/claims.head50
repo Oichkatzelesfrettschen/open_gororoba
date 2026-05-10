@@ -1,0 +1,50 @@
+# AUTO-GENERATED: READ-ONLY COMPATIBILITY EXPORT.
+# Canonical write path: registry/canonical/control_plane.sqlite3
+# Regenerate with: cargo run -p gororoba_cli_data --bin provenance -- export-control-plane
+# Compatibility export lane: claims
+
+[[claim]]
+formal_proof = "proofs/verified/C001_CDNonAssociative.v"
+id = "C-001"
+last_verified = "2026-02-06"
+statement = "Cayley-Dickson algebras become non-associative at 8D and beyond."
+status = "Verified"
+status_note = "Kernel-checked via Rocq 9.1: proofs/verified/C001_CDNonAssociative.v"
+where_stated = "`CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)` (test_sedenion_non_associative), `CURRENT::PATH crates/gororoba_algebra/src/construction/hypercomplex.rs (LEGACY::PATH crates/algebra_core/src/construction/hypercomplex.rs)` (test_non_associativity_scaling), `docs/external_sources/CAYLEY_DICKSON_BASICS_SOURCES.md`"
+
+[[claim]]
+formal_proof = "proofs/verified/C002_SedenionZDAndNormFail.v"
+id = "C-002"
+last_verified = "2026-02-06"
+statement = "16D sedenions have zero divisors and lose norm composition."
+status = "Verified"
+status_note = "Kernel-checked via Rocq 9.1: proofs/verified/C002_SedenionZDAndNormFail.v"
+where_stated = "`crates/algebra_analysis/src/boxkites.rs` (test_primitive_unit_zero_divisors_count), `crates/algebra_analysis/src/annihilator.rs` (test_known_zero_divisor_has_nontrivial_annihilator), `docs/external_sources/DE_MARRAIS_SOURCES.md`, `docs/external_sources/CAYLEY_DICKSON_BASICS_SOURCES.md`"
+
+[[claim]]
+formal_proof = "proofs/verified/C003_AssessorsBoxkites.v"
+id = "C-003"
+last_verified = "2026-02-06"
+statement = '"42 assessors" / "7 box-kites" organize primitive sedenion zero divisors.'
+status = "Verified"
+status_note = "Kernel-checked via Rocq 9.1: proofs/verified/C003_AssessorsBoxkites.v"
+where_stated = "`crates/algebra_analysis/src/boxkites.rs` (test_primitive_assessors_count, test_sedenion_boxkite_count, test_assessors_partition_into_boxkites), `docs/SEDENION_ATLAS.md`, `docs/external_sources/DE_MARRAIS_SOURCES.md`"
+
+[[claim]]
+formal_proof = "proofs/verified/C004_PSL27Order168.v"
+id = "C-004"
+last_verified = "2026-01-28"
+statement = "The relevant symmetry group count is `PSL(2,7) has order 168` and an explicit 168-element action is constructed which permutes the 7 box-kites (as computed in-repo) as labeled subgraphs."
+status = "Verified"
+status_note = "Kernel-checked via Rocq 9.1: proofs/verified/C004_PSL27Order168.v"
+where_stated = "`docs/SEDENION_ATLAS.md`, `docs/external_sources/PSL_2_7_SOURCES.md`, `CURRENT::PATH crates/gororoba_algebra/src/lie/group_theory.rs (LEGACY::PATH crates/algebra_core/src/lie/group_theory.rs)`, `crates/algebra_analysis/src/boxkites.rs` (Rust tests: test_sedenion_boxkite_structure, test_coassessor_symmetry)"
+
+[[claim]]
+formal_proof = "proofs/verified/C005_ZDAnnihilatorGeometry.v"
+id = "C-005"
+last_verified = "2026-02-06"
+statement = '"The geometry of sedenion zero divisors" (Reggiani, 2024) implies specific manifold identifications (e.g., `G2`, `V_2(R^7)`).'
+status = "Verified"
+status_note = "Kernel-checked via Rocq 9.1: proofs/verified/C005_ZDAnnihilatorGeometry.v"
+where_stated = "`crates/algebra_analysis/src/grassmannian.rs` (test_c005_* tests), `data/csv/c005_grassmannian_zd_analysis.csv`, `docs/theory/REGGIANI_GEOMETRIC_VALIDATION.md`"
+

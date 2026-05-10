@@ -1,0 +1,39 @@
+=== du -sh .cache target ===
+215G	.cache
+21G	target
+
+=== du -sh .cache/* ===
+709M	.cache/cargo
+71M	.cache/cargo-default-target
+2.6G	.cache/cargo-home
+221M	.cache/cargo-home-v6verify
+4.0K	.cache/cli_physics_nextest.jsonl
+4.0K	.cache/clippy_scope_perf.txt
+4.0K	.cache/clippy_scope_time.txt
+8.4G	.cache/gate-cbuild
+4.0K	.cache/gate_local_after_rg_fix_perf.txt
+4.0K	.cache/gate_local_after_rg_fix_time.txt
+24K	.cache/gate_local_nextest_after_cd.jsonl
+4.0K	.cache/gate_local_perf.txt
+4.0K	.cache/gate_local_perf_warm.txt
+200G	.cache/gate-target
+1.1M	.cache/grmhd-target
+4.0K	.cache/local_nextest_timing.jsonl
+4.0K	.cache/make_local_nextest_timing.jsonl
+38M	.cache/profiles
+112M	.cache/profiling
+221M	.cache/provenance
+9.3M	.cache/registry.sqlite3
+818M	.cache/sparse-cargo-home
+1.7G	.cache/target
+172K	.cache/terminology_gate.prof
+4.0K	.cache/term_perf_after_rg_fix.txt
+4.0K	.cache/term_perf.txt
+256K	.cache/test-mat-target
+71M	.cache/v6-verify-target
+16K	.cache/x130e-target
+
+=== du -sh target ===
+21G	target
+
+=== captured at 2026-04-30T17:09:38-07:00 ===

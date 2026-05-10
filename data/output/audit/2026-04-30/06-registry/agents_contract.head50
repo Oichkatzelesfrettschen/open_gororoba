@@ -1,0 +1,50 @@
+# AGENTS overflow extension.
+# Purpose: extended matrices, role contracts, and optimization profile tables.
+# Edit compactly. Use imperative phrasing. Keep machine-readable.
+
+[meta]
+contract_name = "open_gororoba_agents_overflow"
+version = "2.0"
+authority_file = "AGENTS.md"
+repo_kind = "pure_rust_plus_toml"
+
+[roles]
+human = [
+  "Define intent, scope, constraints, acceptance.",
+  "Approve non-obvious tradeoffs.",
+]
+agent = [
+  "Read AGENTS.md first; load overflow as needed.",
+  "Plan hypergranular steps before substantial edits.",
+  "Prefer deterministic local tools.",
+  "Close with validation evidence and open risks.",
+]
+delegate = [
+  "Own bounded subsystem work.",
+  "Return files_touched, commands_run, checks_run, unresolved_risks.",
+]
+
+[startup]
+required = [
+  "Capture branch, commit, scoped status.",
+  "Load task-relevant registry TOML files.",
+  "Choose required and recommended gates before implementation.",
+]
+
+[tooling]
+preferred_sequence = ["filesystem", "ripgrep", "git", "bash_or_containers", "verifiers"]
+parallelize_independent_tasks = true
+prefer_existing_targets = true
+
+[paths]
+workspace_manifest = "Cargo.toml"
+task_runner = "Makefile"
+registry_root = "registry/"
+verification_root = "src/verification/"
+analysis_root = "src/scripts/analysis/"
+docs_generated_root = "build/docs/generated/"
+artifact_roots = ["data/", "reports/"]
+hooks_root = ".githooks/"
+
+[machine_docs]
+policy_overflow = "registry/agents_contract.toml"

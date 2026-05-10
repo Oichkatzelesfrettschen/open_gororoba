@@ -1,0 +1,14 @@
+crates/algebra_analysis/src/boxkites.rs:16
+crates/algebra_experimental/src/cd_tower_violations.rs:8
+crates/lbm_3d_cuda/src/box_counting_gpu.rs:6
+crates/algebra_experimental/src/neutrino_sector/tests/intertwiner.rs:4
+crates/algebra_analysis/src/projective_geometry.rs:3
+crates/algebra_analysis/src/flat_band_localization.rs:3
+crates/sign_imbalance/src/besag_clifford_cuda.rs:2
+crates/quantum_core/src/harper_chern.rs:1
+crates/materials_core/src/e8_crystal_bridge.rs:1
+crates/gororoba_cli_data/src/bin/test_inventory.rs:1
+crates/gororoba_algebra/src/gpu/dimensional.rs:1
+crates/data_core/src/registry_mirrors/todo_registry_mirror.rs:1
+crates/algebra_experimental/src/neutrino_sector/tests/spectrum.rs:1
+crates/algebra_analysis/src/crystal_bands.rs:1

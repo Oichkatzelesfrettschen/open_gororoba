@@ -1,0 +1,50 @@
+# Project canonical CSV dataset registry.
+# Each [[dataset]] entry declares a project-generated canonical CSV that serves as
+# a reproducible artifact consumed by downstream experiments or claims verification.
+# ID format: PC-XXXX. Managed by the governance gate (crossrefs check).
+
+[project_csv_canonical_datasets]
+updated = "2026-03-20"
+authoritative = true
+status = "active"
+status_token = "ACTIVE"
+dataset_count = 42
+
+[[dataset]]
+id = "PC-0002"
+description = "APT dimensional census details. Output of dimensional-census binary: associator pattern taxonomy across CD tower dimensions 16-1024."
+source = "data/csv/apt_dimensional_census_details.csv"
+status = "active"
+
+[[dataset]]
+id = "PC-0003"
+description = "Breakthrough Listen GBT 6EQUJ5 observation manifest. Input catalog for wow-signal-analysis, wow-topology, and rho-ghost-fft experiments."
+source = "data/csv/bl_6equj5_gbt_manifest.csv"
+status = "active"
+
+[[dataset]]
+id = "PC-0006"
+description = "Harmonic halo reference CSV for thesis-42-support. Output used in E-190 evidence chain for the 42-dimensional resonance claim."
+source = "data/evidence/thesis_42_support/harmonic_halo_reference.csv"
+status = "active"
+
+[[dataset]]
+id = "PC-0017"
+description = "Multi-dataset ultrametric output (primary variant). Output of multi-dataset-ultrametric binary: ultrametric triangle inequality test results across multiple rotation curve datasets."
+source = "data/csv/c071g_multi_dataset_ultrametric.csv"
+status = "active"
+
+[[dataset]]
+id = "PC-0020"
+description = "Multi-dataset ultrametric output (secondary variant). Second dataset reference for multi-dataset-ultrametric experiment E-002."
+source = "data/csv/c071g_multi_dataset_ultrametric.csv"
+status = "active"
+
+[[dataset]]
+id = "PC-0033"
+description = "Cross-stack locality comparison CSV. Output of cross-stack-locality binary testing locality preservation across Cayley-Dickson tower stacking operations."
+source = "data/csv/cross_stack_locality_comparison.csv"
+status = "active"
+
+[[dataset]]
+id = "PC-0034"

@@ -273,14 +273,14 @@ impl DatasetProvider for UlyssesAmdaProvider {
                 continue;
             }
 
-            let plasma_csv =
-                match download_amda_hapi_csv(ULYSSES_AMDA_PLASMA, &t_min, &t_max, None) {
-                    Ok(csv) => csv,
-                    Err(e) => {
-                        log::warn!("AMDA Ulysses plasma {year}: {e}");
-                        continue;
-                    }
-                };
+            let plasma_csv = match download_amda_hapi_csv(ULYSSES_AMDA_PLASMA, &t_min, &t_max, None)
+            {
+                Ok(csv) => csv,
+                Err(e) => {
+                    log::warn!("AMDA Ulysses plasma {year}: {e}");
+                    continue;
+                }
+            };
             let mag_csv = match download_amda_hapi_csv(ULYSSES_AMDA_MAG, &t_min, &t_max, None) {
                 Ok(csv) => csv,
                 Err(e) => {

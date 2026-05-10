@@ -172,4 +172,3 @@ pub fn parse_cluster_fgm_hapi_csv_minutes(
         })
         .collect()
 }
-

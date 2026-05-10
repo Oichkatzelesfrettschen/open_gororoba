@@ -1,0 +1,50 @@
+# Canonical data governance contract for data-origin auditing and cleanup lanes.
+
+[data_governance]
+updated = "2026-02-24"
+authoritative = true
+default_gitignore_required = true
+
+[[lane]]
+id = "artifacts"
+root = "data/artifacts"
+class = "generated_reproducible"
+strict = true
+cleanable = true
+gitignore_required = true
+naming_policy = "mixed_transition"
+required_manifests = ["data/artifacts/ARTIFACTS_MANIFEST.csv", "data/artifacts/PROVENANCE.local.json"]
+gitignore_allowlist = ["data/artifacts/ARTIFACTS_MANIFEST.csv", "data/artifacts/README.md", "data/artifacts/PROVENANCE.local.json"]
+
+[[lane]]
+id = "external"
+root = "data/external"
+class = "external_reproducible_fetch"
+strict = true
+cleanable = false
+gitignore_required = true
+naming_policy = "mixed_vendor_allowed"
+required_manifests = ["data/external/PROVENANCE.local.json", "data/external/SOURCES.toml"]
+gitignore_allowlist = ["data/external/PROVENANCE.local.json", "data/external/README.md", "data/external/SOURCES.toml"]
+
+[[lane]]
+id = "evidence"
+root = "data/evidence"
+class = "generated_reproducible"
+strict = true
+cleanable = true
+gitignore_required = true
+naming_policy = "lower_snake"
+required_manifests = ["data/evidence/MANIFEST.toml"]
+gitignore_allowlist = ["data/evidence/MANIFEST.toml"]
+
+[[lane]]
+id = "csv"
+root = "data/csv"
+class = "generated_reproducible"
+strict = false
+cleanable = true
+gitignore_required = true
+naming_policy = "mixed_transition"
+required_manifests = ["data/csv/README.md", "registry/project_csv_generated_artifacts.toml", "registry/external_csv_holding_datasets.toml", "registry/data_generated_patterns.toml"]
+gitignore_allowlist = ["data/csv/README.md", "data/csv/bl_6equj5_gbt_manifest.csv"]

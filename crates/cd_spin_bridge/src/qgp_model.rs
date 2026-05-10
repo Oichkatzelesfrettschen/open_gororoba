@@ -59,10 +59,8 @@ impl QGPImbalanceBridge {
 
         // Biased part (vorticity alignment)
         // Alignment polarization P ~ (h_bar * omega) / (2 k_B T)
-        let vort_norm = (qgp.vorticity[0].powi(2)
-            + qgp.vorticity[1].powi(2)
-            + qgp.vorticity[2].powi(2))
-        .sqrt();
+        let vort_norm =
+            (qgp.vorticity[0].powi(2) + qgp.vorticity[1].powi(2) + qgp.vorticity[2].powi(2)).sqrt();
         let p_vort = if qgp.temperature > 0.0 {
             (vort_norm * 0.5) / qgp.temperature
         } else {

@@ -15,14 +15,8 @@
 //!   Format: 12 whitespace-delimited columns, NO header lines.
 //!   Fill: varies per column (see constants below).
 
-use crate::{
-    catalogs::omni::OmniRecord,
-    fetcher::FetchError,
-};
-use std::{
-    collections::HashMap,
-    path::Path,
-};
+use crate::{catalogs::omni::OmniRecord, fetcher::FetchError};
+use std::{collections::HashMap, path::Path};
 
 // ---------------------------------------------------------------------------
 // WIND MFI (magnetic field)
@@ -407,8 +401,6 @@ pub fn wind_mfi_to_omni(records: &[WindMfiRecord]) -> Vec<OmniRecord> {
 // Fetch/provider support moved to wind_swe_fetch (feature-gated on `fetch`).
 // ---------------------------------------------------------------------------
 
-
-
 // ---------------------------------------------------------------------------
 // Knudsen number diagnostics
 // ---------------------------------------------------------------------------
@@ -688,5 +680,4 @@ mod tests {
             "Kn should increase with T: low={kn_low:.1}, high={kn_high:.1}"
         );
     }
-
 }

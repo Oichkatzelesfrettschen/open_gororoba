@@ -483,5 +483,4 @@ mod tests {
         assert!(records[2].bulk_speed > 700.0);
         assert!(records[2].proton_density < 4.0);
     }
-
 }

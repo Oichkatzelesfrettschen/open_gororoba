@@ -1,0 +1,73 @@
+=== git rev-parse HEAD ===
+970b4da3e643476d1a4814b29220e95a1376090c
+
+=== git status --short --branch ===
+## main...origin/main [ahead 61]
+?? data/external/crossing_lists/maven_bs_2015_regime.txt
+?? data/output/audit/
+?? data/output/static_analysis/
+
+=== git log -1 --pretty=fuller ===
+commit 970b4da3e643476d1a4814b29220e95a1376090c
+Author:     eirikr <151315375+Oichkatzelesfrettschen@users.noreply.github.com>
+AuthorDate: Sun Apr 19 17:05:11 2026 -0700
+Commit:     eirikr <151315375+Oichkatzelesfrettschen@users.noreply.github.com>
+CommitDate: Sun Apr 19 17:05:11 2026 -0700
+
+    feat(algebra_experimental): annihilator-nullity test falsifies ZD-manifold hypothesis
+    
+    Adds a focused diagnostic binary that tests whether the Terakan
+    top-XOR-bucket failure set corresponds to a pathion (dim=64) zero-
+    divisor manifold.  Computes the left and right annihilator nullity
+    (kernel dimension of the multiplication matrix via
+    `algebra_analysis::annihilator::{left, right}_multiplication_matrix`)
+    for three top-bucket-derived candidate elements:
+    
+      C1.  a = e_0 + e_63                    (top-bucket dipole)
+      C2.  a = sum_{k=0..63} e_k * e_{63^k}  (full wavefront sum)
+      C3.  a = same as C2 but with (e_0, e_63) identity pair excluded
+           (isolates the all-imaginary, all-anti-commuting portion)
+    
+    Results (real pathion arithmetic on x570):
+    
+      C1 left nullity = 0          (unit; I + L_{e_63} is invertible)
+      C1 right nullity = 0
+      C2 left nullity = 0          (reduces to 2*e_63 = unit)
+      C2 right nullity = 0
+      C2 linf(a) = 2.0             (confirms only identity pair survives)
+      C3 left nullity = 64         (TRIVIAL -- because a = 0; linf(a) = 0)
+      Sanity: L_{e_63} nullity = 0 (e_63 is a unit in pathion, confirmed)
+      Sign signature: 31 anti-commuting + 1 commuting (e_0, e_63) pairs
+    
+    Conclusion: HYPOTHESIS FALSIFIED.  The Terakan 64-pixel failure is
+    NOT a manifestation of the pathion zero-divisor manifold.  None of
+    the three top-bucket-derived elements has a non-trivial annihilator
+    structure; C3's nullity of 64 is trivially explained by a = 0 (anti-
+    commutation cancellation), not by any structural collapse.
+    
+    This narrows the hardware hypothesis space:
+    
+      REMOVED:  "The Terakan bit-0 drop at xor=63 is caused by the hardware
+                 landing on a pathion zero-divisor manifold."
+    
+      RETAINED: "Per-element saturation at the 6-bit max boundary" and
+                "ALU carry-chain overflow at the all-ones value" remain
+                live candidates.  These are now the only surviving
+                mechanisms consistent with both the failure geometry and
+                the algebraic non-pathology we just verified.
+    
+    In other words: the 64-pixel failure set IS the top XOR-bucket
+    (verified earlier), but the bug is a numeric saturation at the top
+    value, NOT an expression of higher-dimensional algebraic collapse.
+    
+    Adds:
+      crates/algebra_experimental/src/bin/analyze_top_bucket_annihilator.rs
+    
+    Dependencies: `algebra_analysis` (already a workspace dep),
+    `cd_kernel` (already a workspace dep), `nalgebra` (already a
+    workspace dep), `serde_json` (already a workspace dep).  Clippy
+    -D warnings clean.
+    
+    Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
+
+=== captured at 2026-04-30T17:08:20-07:00 on x570-5600X3D ===

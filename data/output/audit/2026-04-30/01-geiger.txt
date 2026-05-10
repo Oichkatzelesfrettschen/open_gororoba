@@ -1,0 +1,7 @@
+=== which cargo-geiger ===
+/usr/bin/cargo-geiger
+
+=== cargo-geiger --version ===
+cargo-geiger 0.13.0
+
+(NOTE: full cargo geiger run is expensive; only the version probe runs here. Full run requires explicit user approval.)

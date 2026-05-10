@@ -4,3 +4,9 @@ edition = "2024"
 max_width = 100
 use_field_init_shorthand = true
 imports_granularity = "Crate"
+
+# Skip files marked with `// @generated` on the first line. The
+# registry-emit binary prepends this marker to every file in
+# crates/data_core/src/registry_mirrors/ so that cargo fmt --all
+# does not reformat them and trigger oscillation with the next regen.
+format_generated_files = false

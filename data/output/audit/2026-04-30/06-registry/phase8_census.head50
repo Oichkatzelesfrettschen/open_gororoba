@@ -1,0 +1,22 @@
+# Phase 8 algebra census: low-dimensional survey results.
+# Covers dims 4, 8, 16 (28 signature families) and sampled dim=32.
+# Canonical verification in crates/gororoba_algebra/tests/test_low_dimensional_survey.rs.
+# This file is a traceability stub; the authoritative test artifacts are in the Rust test suite.
+
+[[entry]]
+dim = 4
+signature_count = 4
+non_commutative_fraction = 1.0
+division_algebra_count = 1
+
+[[entry]]
+dim = 8
+signature_count = 8
+non_commutative_fraction = 1.0
+division_algebra_count = 1
+
+[[entry]]
+dim = 16
+signature_count = 16
+non_commutative_fraction = 1.0
+division_algebra_count = 0

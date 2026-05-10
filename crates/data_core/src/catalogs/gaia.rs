@@ -6,10 +6,7 @@
 //! Source: https://gea.esac.esa.int/archive/
 //! Reference: Gaia Collaboration, Vallenari et al. (2023), A&A 674, A1
 
-use crate::{
-    fetcher::FetchError,
-    parse::parse_f64_or_nan,
-};
+use crate::{fetcher::FetchError, parse::parse_f64_or_nan};
 use std::path::Path;
 
 /// A stellar source from Gaia DR3.

@@ -1,0 +1,43 @@
+crates/gororoba_algebra/src/gpu/tensor_avt/cuda.rs:161:    unreachable!("expected a launch shape at one warp per block")
+crates/gororoba_algebra/src/gpu/tensor_avt/api.rs:97:            ComputeBackend::Vulkan => unreachable!("validated unsupported Vulkan above"),
+crates/gororoba_algebra/src/gpu/tensor_avt/api.rs:99:            ComputeBackend::Cuda => unreachable!("validated unavailable CUDA above"),
+crates/gororoba_algebra/src/gpu/tensor_avt/api.rs:126:            ComputeBackend::Vulkan => unreachable!("validated unsupported Vulkan above"),
+crates/gororoba_algebra/src/gpu/tensor_avt/api.rs:128:            ComputeBackend::Cuda => unreachable!("validated unavailable CUDA above"),
+crates/gororoba_cli_data/src/bin/heliosphere_catalog_audit.rs:667:        PioneerCoverage::AnnualMerged => unreachable!(),
+crates/lbm_3d_cuda/src/lib.rs:1080:                Precision::FP64 => unreachable!("FP64 handled in outer branch"),
+crates/lbm_3d_cuda/src/lib.rs:1085:                Precision::FP64 => unreachable!("FP64 handled in outer branch"),
+crates/lbm_3d_cuda/src/lib.rs:1194:                Precision::FP64 => unreachable!("FP64 handled in outer branch"),
+crates/lbm_3d_cuda/src/lib.rs:1227:                Precision::FP64 => unreachable!("FP64 handled in outer branch"),
+crates/lbm_3d_cuda/src/sparse/mod.rs:374:                        unreachable!("device-local sparse solver requires device buffers")
+crates/lbm_3d_cuda/src/sparse/mod.rs:377:                        unreachable!("device-local sparse solver requires device buffers")
+crates/lbm_3d_cuda/src/sparse/mod.rs:380:                        unreachable!("device-local sparse solver requires device buffers")
+crates/lbm_3d_cuda/src/sparse/mod.rs:383:                        unreachable!("device-local sparse solver requires device buffers")
+crates/lbm_3d_cuda/src/sparse/mod.rs:386:                        unreachable!("device-local sparse solver requires device buffers")
+crates/lbm_3d_cuda/src/sparse/mod.rs:413:                        unreachable!("managed sparse solver requires unified buffers")
+crates/lbm_3d_cuda/src/sparse/mod.rs:416:                        unreachable!("managed sparse solver requires unified buffers")
+crates/lbm_3d_cuda/src/sparse/mod.rs:419:                        unreachable!("managed sparse solver requires unified buffers")
+crates/lbm_3d_cuda/src/sparse/mod.rs:422:                        unreachable!("managed sparse solver requires unified buffers")
+crates/lbm_3d_cuda/src/sparse/mod.rs:425:                        unreachable!("managed sparse solver requires unified buffers")
+crates/lbm_3d_cuda/src/sparse/mod.rs:449:                        unreachable!("managed sparse solver requires unified buffers")
+crates/lbm_3d_cuda/src/sparse/mod.rs:452:                        unreachable!("managed sparse solver requires unified buffers")
+crates/lbm_3d_cuda/src/sparse/mod.rs:455:                        unreachable!("managed sparse solver requires unified buffers")
+crates/lbm_3d_cuda/src/sparse/mod.rs:458:                        unreachable!("managed sparse solver requires unified buffers")
+crates/lbm_3d_cuda/src/sparse/mod.rs:461:                        unreachable!("managed sparse solver requires unified buffers")
+crates/gororoba_cli_data/src/bin/claims_verify.rs:271:        _ => unreachable!("clap validates check type"),
+crates/gororoba_cli_data/src/bin/claims_audit.rs:341:        _ => unreachable!("clap validates report type"),
+crates/gororoba_algebra/examples/tensor_avt_profile.rs:435:                unreachable!("validated gpu feature above");
+crates/algebra_analysis/src/codebook.rs:616:            _ => unreachable!("sum of two trinary values is in [-2, 2]"),
+crates/gororoba_cli_algebra/src/bin/jacobi_benchmark_cases.rs:176:        | MatrixFamily::RealObstruction => unreachable!("handled above"),
+crates/gororoba_cli_algebra/src/bin/tensor_avt_profile_suite.rs:535:                unreachable!("validated gpu feature above");
+crates/algebra_analysis/src/partial_spectrum.rs:73:            SpectrumObjective::FullSpectrum => unreachable!("handled above"),
+crates/algebra_analysis/src/avt.rs:426:    unreachable!("assessor (1, 10) must have at least one co-assessor partner");
+crates/algebra_analysis/src/boxkites.rs:1312:        _ => unreachable!("triangle has exactly 3 edges, n_same is 0..=3"),
+crates/algebra_analysis/src/boxkites.rs:4052:                                _ => unreachable!("triangle has exactly 3 edges, n_same is 0..=3"),
+crates/algebra_analysis/src/subalgebra.rs:699:            _ => unreachable!("depth is always 0..=3"),
+crates/gororoba_db/src/bin/gororoba_db.rs:549:        Commands::Build(_) => unreachable!(),
+crates/data_core/src/download_stack.rs:922:            DownloadBackend::Auto => unreachable!("auto backend must be routed before execution"),
+crates/gororoba_cli_physics/src/bin/bout_cd_analysis.rs:137:        _ => unreachable!(),
+crates/gororoba_cli_physics/src/bin/bout_cd_analysis.rs:173:                    _ => unreachable!(),
+crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs:626:        (None, None) => unreachable!("caller ensures at least one WIND file"),
+crates/gororoba_cli_physics/src/bin/lbm_live_viewer/transport.rs:47:                unreachable!()
+crates/gororoba_cli_physics/src/bin/mrt_stability_audit.rs:108:            unreachable!("--gpu check prevents reaching here without feature");

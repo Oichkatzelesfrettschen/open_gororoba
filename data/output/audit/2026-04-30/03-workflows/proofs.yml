@@ -1,0 +1,60 @@
+# Standalone CI for Rocq formal proofs.
+#
+# This workflow is designed for the future open_gororoba_proofs repository.
+# Until extraction, it runs in the monorepo on proofs/ changes only.
+#
+# When extracted to a separate repo, copy this file as .github/workflows/ci.yml
+# and remove the paths filter + working-directory settings.
+name: proofs
+
+on:
+  push:
+    paths:
+      - 'proofs/**'
+  pull_request:
+    paths:
+      - 'proofs/**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache opam
+        uses: actions/cache@v4
+        with:
+          path: ~/.opam
+          key: opam-${{ runner.os }}-rocq-9.1.1
+          restore-keys: opam-${{ runner.os }}-
+
+      - name: Install Rocq 9.1
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y opam
+          opam init --bare --disable-sandboxing --yes
+          opam switch create rocq-9.1.1 ocaml-base-compiler.5.4.0 --yes || true
+          eval $(opam env --switch=rocq-9.1.1)
+          opam install rocq-core.9.1.1 rocq-stdlib.9.1.1 --yes
+
+      - name: Compile all proofs
+        working-directory: proofs
+        run: |
+          eval $(opam env --switch=rocq-9.1.1)
+          make all
+
+      - name: Zero-Admitted check
+        working-directory: proofs
+        run: |
+          eval $(opam env --switch=rocq-9.1.1)
+          make check
+
+      - name: Extraction golden-file diff
+        working-directory: proofs
+        run: |
+          eval $(opam env --switch=rocq-9.1.1)
+          make extract-check

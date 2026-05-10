@@ -1302,7 +1302,6 @@ pub fn estimate_sparse_execution_plan(
     }
 }
 
-
 /// Build magnetic Takens embedding vectors of dimension `dim` from a
 /// time-ordered sequence of [`HeliosphereFeatureRow`].
 ///

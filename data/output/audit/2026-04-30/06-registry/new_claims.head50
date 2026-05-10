@@ -1,0 +1,8 @@
+[[claim]]
+id = "C-1165"
+status = "Verified"
+statement = "Sedenion zero-divisor (ZD) coupling in 128^3 CUDA BF16 LBM simulations acts as a dynamical stabilizer that suppresses non-physical lattice ghost resonances. In the coupling-strength sweep (tau=0.55), the f=0.2 ghost resonance present in the control (lambda=0.0) is eliminated for all coupling strengths lambda >= 0.1."
+where_stated = "crates/gororoba_cli_physics/src/bin/zd_resonance_cuda.rs"
+last_verified = "2026-03-25"
+formal_proof = ""
+status_note = "Verified via CUDA coupling sweep at 128^3 resolution. Sedenion frustration introduces discrete phase-scrambling that prevents the establishment of coherent lattice artifacts observed in the control baseline."

@@ -1,0 +1,50 @@
+# Terminology Standards Registry
+# Source of truth for standardized mathematical and scientific language
+# Generated: 2026-02-11 from Phase 1 Week 2 implementation
+
+[[term]]
+id = "T-LBM-001"
+domain = "Lattice Boltzmann Method"
+informal = "populations"
+standard = "population distribution function f_i"
+definition = "Discrete representation of fluid particle distribution across lattice velocity vectors {c_i}. Sum over velocities yields macroscopic density: rho = Sigma_i f_i"
+mathematical = "f_i(x, t) in R"
+reference = "crates/lbm_3d/src/lattice.rs"
+status = "active"
+
+[[term]]
+id = "T-LBM-002"
+domain = "Lattice Boltzmann Method"
+informal = "target state"
+standard = "equilibrium distribution"
+definition = "Maxwell-Boltzmann equilibrium state toward which BGK collision relaxes. Computed from macroscopic density rho and velocity u via Chapman-Enskog expansion."
+mathematical = "f_i^eq(rho, u) = rho w_i [1 + (c_i * u)/c_s^2 + (c_i * u)^2/(2c_s^4) - u^2/(2c_s^2)]"
+reference = "crates/lbm_3d/src/lattice.rs:115"
+status = "active"
+
+[[term]]
+id = "T-LBM-003"
+domain = "Lattice Boltzmann Method"
+informal = "relaxation effect"
+standard = "Chapman-Enskog collision operator"
+definition = "BGK (Bhatnagar-Gross-Krook) approximation to Boltzmann collision integral. Drives distribution toward equilibrium with relaxation time tau."
+mathematical = "Omega_BGK(f) = -(f - f^eq)/tau"
+reference = "crates/lbm_3d/src/solver.rs:98-108"
+status = "active"
+
+[[term]]
+id = "T-LBM-004"
+domain = "Lattice Boltzmann Method"
+informal = "D3Q19 lattice"
+standard = "D3Q19 discrete lattice"
+definition = "3-dimensional, 19-velocity lattice structure. D=dimension, Q=number of discrete velocities. Velocities: {0}, 6 cardinal directions, 12 diagonal directions."
+reference = "crates/lbm_3d/src/lattice.rs:1"
+status = "active"
+
+[[term]]
+id = "T-LBM-005"
+domain = "Lattice Boltzmann Method"
+informal = "viscosity modulation"
+standard = "kinematic viscosity via Chapman-Enskog expansion"
+definition = "Spatial viscosity field derived from relaxation time tau. In LBM, kinematic viscosity nu relates to tau through Mach number expansion."
+mathematical = "nu = c_s^2(tau - 0.5) = (1/3)(tau - 0.5)"

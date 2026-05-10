@@ -1,0 +1,50 @@
+# Authoritative source: `registry/claims_tasks.toml`.
+# Source input: `docs/CLAIMS_TASKS.md`.
+# Regenerate mirrors with: `make registry-build registry-export-markdown`.
+[claims_tasks]
+updated = "2026-03-18"
+source_markdown = "docs/CLAIMS_TASKS.md"
+task_count = 261
+section_count = 20
+canonical_status_task_count = 261
+noncanonical_status_task_count = 0
+
+[[section]]
+id = "CTS-001"
+name = "Phase 7 Sprint 6.1: Rust Infrastructure Buildouts (2026-02-06)"
+task_count = 0
+
+[[section]]
+id = "CTS-002"
+name = "Phase 7 R6 Triage Summary (2026-02-06)"
+task_count = 0
+
+[[section]]
+id = "CTS-003"
+name = "Active tasks (start here)"
+task_count = 33
+
+[[section]]
+id = "CTS-004"
+name = "Backfill (triage) tasks (auto-generated)"
+task_count = 208
+
+[[section]]
+id = "CTS-005"
+name = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
+task_count = 20
+
+[[section]]
+id = "CTS-006"
+name = "Phase 6 Batch Triage (2026-02-04)"
+task_count = 0
+
+[[section]]
+id = "CTS-007"
+name = "Upgraded by Phase 6 work (Sprints 1-4)"
+task_count = 0
+
+[[section]]
+id = "CTS-008"
+name = "Confirmed Refuted (matrix status: \"Not supported (rejected)\")"
+task_count = 0

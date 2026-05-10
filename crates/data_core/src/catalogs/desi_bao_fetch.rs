@@ -1,6 +1,6 @@
 //! Fetch implementation for desi_bao. See desi_bao.rs for record types and parsers.
 
-use super::desi_bao::{desi_dr1_bao, desi_dr2_bao, BaoMeasurement};
+use super::desi_bao::{BaoMeasurement, desi_dr1_bao, desi_dr2_bao};
 use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_to_string};
 use std::path::{Path, PathBuf};
 

@@ -1,0 +1,37 @@
+# Canonical source infrastructure manifest.
+
+[source_infrastructure]
+id = "SINFRA-2026-02-15"
+generated_at = "2026-03-19"
+authoritative = true
+policy_version = 1
+policy = "artifact_source_of_truth.toml is authoritative; lane files are deterministic projections and must never diverge from master."
+best_practice = "single authoritative master, deterministic generated lanes, explicit blocked/manual intervention tracking, provenance-preserving mirrors, reproducible verification gates."
+best_practice_sources = ["https://www.w3.org/TR/prov-overview/", "https://www.nature.com/articles/sdata201618", "https://doi.org/10.25490/a97f-egyk", "https://schema.datacite.org/meta/kernel-4.5/", "https://docs.github.com/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-citation-files", "https://openlineage.io/docs/"]
+master_registry = "registry/artifact_source_of_truth.toml"
+lane_count = 4
+total_artifact_count = 3236
+
+[[lane]]
+name = "datasets"
+description = "Numerical or tabular research datasets and machine-readable data artifacts."
+path = "registry/source_lanes/datasets.toml"
+artifact_count = 1303
+
+[[lane]]
+name = "slides_artifacts"
+description = "Slides, decks, archives, notebooks, and non-dataset non-paper binary artifacts."
+path = "registry/source_lanes/slides_artifacts.toml"
+artifact_count = 7
+
+[[lane]]
+name = "papers_pdf"
+description = "Paper-oriented references with PDF documents or PDF mirrors."
+path = "registry/source_lanes/papers_pdf.toml"
+artifact_count = 327
+
+[[lane]]
+name = "web_references"
+description = "Reference URLs without locally identified PDF/data/artifact files."
+path = "registry/source_lanes/web_references.toml"
+artifact_count = 1599

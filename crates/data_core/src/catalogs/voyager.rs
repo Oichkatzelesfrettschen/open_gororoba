@@ -658,7 +658,13 @@ mod tests {
             .enumerate()
             .map(|(i, &x)| {
                 // Small deterministic perturbation (no RNG dependency)
-                let offset = if i % 3 == 0 { 0.05 } else if i % 3 == 1 { -0.03 } else { 0.01 };
+                let offset = if i % 3 == 0 {
+                    0.05
+                } else if i % 3 == 1 {
+                    -0.03
+                } else {
+                    0.01
+                };
                 x + offset
             })
             .collect();
@@ -751,7 +757,9 @@ mod tests {
             "Constant-offset SPDF/Bartol pairs must correlate perfectly; got r={r:.10}"
         );
         // Now add realistic scatter (< 3% of signal) and verify r remains > 0.985
-        let scatter = [0.002, -0.001, 0.003, -0.002, 0.001, -0.003, 0.002, 0.001, -0.002, 0.003];
+        let scatter = [
+            0.002, -0.001, 0.003, -0.002, 0.001, -0.003, 0.002, 0.001, -0.002, 0.003,
+        ];
         let spdf_noisy: Vec<f64> = bartol_b
             .iter()
             .zip(scatter.iter())

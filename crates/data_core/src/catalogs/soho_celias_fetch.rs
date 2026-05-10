@@ -1,6 +1,8 @@
 //! Fetch implementation for soho_celias. See soho_celias.rs for record types and parsers.
 
-use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_to_file, download_to_string};
+use crate::fetcher::{
+    DatasetProvider, FetchConfig, FetchError, download_to_file, download_to_string,
+};
 use regex::Regex;
 use std::path::{Path, PathBuf};
 

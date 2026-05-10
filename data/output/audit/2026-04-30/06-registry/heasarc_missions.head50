@@ -1,0 +1,50 @@
+# HEASARC mission directory (plan Phase 6A.S5.T1 extension).
+#
+# Parallel to registry/mast_catalogs.toml: a hand-curated scoped list
+# of high-energy astrophysics missions hosted at HEASARC. Separate
+# from the full CATALOG table snapshot at
+# registry/heasarc_catalogs.toml (1027 tables) because a mission is
+# a publisher of catalogs and observations -- a coarser, longer-lived
+# concept that moves slowly.
+#
+# Source: https://heasarc.gsfc.nasa.gov/docs/observatories.html
+#
+# Schema:
+#   mission             -- short canonical id (snake_case)
+#   full_title          -- human-readable full name
+#   operational_years   -- "YYYY-YYYY" or "YYYY-present" (best-effort;
+#                          many HEASARC missions pre-date good
+#                          machine-readable metadata)
+#   status              -- "active" | "past"
+#   band                -- one or more of "x_ray" | "gamma_ray" |
+#                          "uv" | "euv" | "cosmic_ray" | "radio"
+#   instruments         -- per-mission instrument list where known
+#   tap_table_prefix    -- TAP_SCHEMA table name prefix used in
+#                          registry/heasarc_catalogs.toml for cross-
+#                          reference (e.g. "chan" for Chandra,
+#                          "xmm" for XMM-Newton)
+#   owner_fetcher       -- path to fetcher module (optional)
+#   last_verified       -- ISO date
+
+[heasarc_missions]
+updated = "2026-04-17"
+source_url = "https://heasarc.gsfc.nasa.gov/docs/observatories.html"
+authoritative = true
+status = "active"
+status_token = "ACTIVE"
+schema_version = 1
+mission_count = 53
+
+# ================================================================
+# ACTIVE MISSIONS (20)
+# ================================================================
+
+[[mission]]
+mission = "ams_02"
+full_title = "Alpha Magnetic Spectrometer 02 (ISS)"
+operational_years = "2011-present"
+status = "active"
+band = ["cosmic_ray"]
+instruments = ["TRD", "TOF", "Tracker", "RICH", "ECAL"]
+tap_table_prefix = "ams"
+owner_fetcher = ""

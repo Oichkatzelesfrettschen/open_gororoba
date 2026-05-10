@@ -1,0 +1,15 @@
+=== git branch -a ===
+* main
+  worktree-agent-ac02ad93
+  worktree-agent-afe06576
+  remotes/origin/HEAD -> origin/main
+  remotes/origin/main
+
+=== git tag --list ===
+ablation-preregistered-v1
+v1.0-methods
+
+=== git worktree list ===
+/home/eirikr/Github/open_gororoba 970b4da3 [main]
+
+=== captured at 2026-04-30T17:12:06-07:00 ===

@@ -1,0 +1,50 @@
+# Bibliography registry (TOML lane pending SQLite promotion).
+# Bootstrap/import source markdown is docs/BIBLIOGRAPHY.md.
+
+[bibliography]
+authoritative = true
+updated = "2026-03-23"
+source_markdown = "docs/BIBLIOGRAPHY.md"
+group_count = 1
+section_count = 62
+entry_count = 442
+
+[[group]]
+id = "BGR-001"
+name = "Primary Research & Data Sources"
+section_count = 62
+entry_count = 442
+
+[[section]]
+id = "BSEC-001"
+name = "Astrophysics & Cosmology"
+groups = ["Primary Research & Data Sources"]
+entry_count = 10
+
+[[section]]
+id = "BSEC-002"
+name = "Kerr Black Holes & Shadows"
+groups = ["Primary Research & Data Sources"]
+entry_count = 6
+
+[[section]]
+id = "BSEC-003"
+name = "Warp Drive & Exotic Spacetimes"
+groups = ["Primary Research & Data Sources"]
+entry_count = 7
+
+[[section]]
+id = "BSEC-004"
+name = "Topological Insulators & Quantum Hall Effect"
+groups = ["Primary Research & Data Sources"]
+entry_count = 7
+
+[[section]]
+id = "BSEC-005"
+name = "Tensor Networks & Quantum Simulation"
+groups = ["Primary Research & Data Sources"]
+entry_count = 6
+
+[[section]]
+id = "BSEC-006"
+name = "Holographic Entropy & Information"

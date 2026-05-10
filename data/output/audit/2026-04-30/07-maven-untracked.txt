@@ -1,0 +1,21 @@
+=== file ===
+data/external/crossing_lists/maven_bs_2015_regime.txt: ASCII text
+=== wc -l ===
+139 data/external/crossing_lists/maven_bs_2015_regime.txt
+=== head -10 ===
+# MAVEN bow shock regime crossings generated from FGM minute data
+# SW threshold: 4.5 nT, Sheath threshold: 8.0 nT, Gap: 30 min
+# Window: 2015-03-01 to 2015-03-13, rolling: 5 min
+2015-03-01/00:08:00 2015-03-01/00:09:00
+2015-03-01/03:19:00 2015-03-01/03:20:00
+2015-03-01/04:40:00 2015-03-01/04:41:00
+2015-03-01/07:35:00 2015-03-01/07:36:00
+2015-03-01/09:19:00 2015-03-01/09:20:00
+2015-03-01/10:02:00 2015-03-01/10:03:00
+2015-03-01/10:40:00 2015-03-01/10:41:00
+=== git log all paths --oneline ===
+=== ls -la ===
+-rw-r--r-- 1 eirikr eirikr 5619 Apr 15 18:49 data/external/crossing_lists/maven_bs_2015_regime.txt
+=== references in registry/docs/scripts/crates ===
+crates/gororoba_cli_physics/src/bin/heliosphere_maven_crossing_gen.rs
+registry/experiments.toml

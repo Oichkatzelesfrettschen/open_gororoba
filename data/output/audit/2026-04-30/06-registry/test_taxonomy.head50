@@ -1,0 +1,50 @@
+# Canonical test taxonomy for smoke/regression/heavy lanes.
+
+[test_taxonomy]
+authoritative = true
+updated = "2026-03-07"
+status = "active"
+stale_test_count_pattern = "\\b[0-9][0-9,]*(?:\\+)?\\s+(?:Rust\\s+)?tests\\b"
+
+[rust_runtime_policy]
+require_ignore_runtime_seconds = 30
+runtime_comment_pattern = '(?i)runtime:\s*~?([0-9]+)(?:-([0-9]+))?\s*(s|sec|secs|second|seconds|min|mins|minute|minutes|hr|hrs|hour|hours)\b'
+name_hints_require_ignore = [
+  "full_sweep",
+  "full_basepoint_sweep",
+  "dim512_full",
+  "dim1024",
+  "dim2048",
+  "census",
+]
+
+[[rust_smoke_target]]
+package = "gororoba_algebra"
+target = "smoke_gororoba_algebra"
+kind = "integration"
+description = "Fast algebra invariants for the default smoke lane."
+
+[[rust_smoke_target]]
+package = "gr_core"
+target = "smoke_gr_core"
+kind = "integration"
+description = "Fast Kerr/GR sanity checks for the default smoke lane."
+
+[[rust_smoke_target]]
+package = "lbm_3d"
+target = "smoke_lbm_3d"
+kind = "integration"
+description = "Fast LBM solver initialization and conservation smoke checks."
+
+[[rust_smoke_target]]
+package = "gororoba_engine"
+target = "smoke_gororoba_engine"
+kind = "integration"
+description = "Fast engine orchestration smoke checks."
+
+[[rust_heavy_package]]
+name = "algebra_analysis"
+cargo_profile = "test-heavy"
+nextest_profile = "heavy"
+reason = "O(dim^3+) graph/eigen/triangle-enumeration research tests."
+

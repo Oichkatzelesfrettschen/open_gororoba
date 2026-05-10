@@ -1,0 +1,50 @@
+# Authoritative source: `registry/navigator.toml`.
+# Regenerate mirrors with: `make registry-build registry-export-markdown`.
+[navigator]
+title = "Navigator"
+updated = "2026-02-09"
+epoch = "Era of Synthesis"
+mission = "Navigate algebra, physics, and computation with evidence-first discipline."
+source_markdown = ["NAVIGATOR.md"]
+authoritative_toml = ["registry/navigator.toml"]
+generated_mirror = [
+  "docs/generated/NAVIGATOR_REGISTRY_MIRROR.md",
+  "crates/data_core/src/registry_mirrors/navigator_registry_mirror.rs",
+]
+
+[navigator.disclaimer]
+text = "Many linked narratives are hypotheses. Use registry claims and reproducible verification before asserting physical validity."
+claims_source = "registry/claims.toml"
+legacy_claims_mirror = "docs/CLAIMS_EVIDENCE_MATRIX.md"
+
+[[section]]
+id = "NAV-001"
+title = "Cosmological Map"
+summary = "Theory-facing map of foundations, bridge hypotheses, and interpretation notes."
+
+[[section.link]]
+label = "Mathematical Formalism"
+path = "docs/latex/MASTER_SYNTHESIS.tex"
+hypothesis = false
+notes = "Axiomatic and derivational manuscript source."
+
+[[section.link]]
+label = "Sedenion-Gravastar Equivalence"
+path = "docs/SEDENION_GRAVASTAR_EQUIVALENCE.md"
+hypothesis = true
+notes = "Mechanistic bridge from algebraic structures to gravastar model assumptions."
+
+[[section.link]]
+label = "Physical Interpretation"
+path = "docs/PHYSICAL_INTERPRETATION.md"
+hypothesis = true
+notes = "Interpretive model linking negative-dimension diffusion narratives."
+
+[[section]]
+id = "NAV-002"
+title = "Observational Deck"
+summary = "Data-facing visual outputs and cross-domain correlation artifacts."
+
+[[section.link]]
+label = "LIGO O3 Mass Spectrum"
+path = "data/artifacts/images/LIGO_GWTC3_Mass_Spectrum.png"

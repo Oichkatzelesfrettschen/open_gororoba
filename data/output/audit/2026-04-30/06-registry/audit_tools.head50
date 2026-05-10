@@ -1,0 +1,50 @@
+# Audit tools registry.
+# Source of truth for the "Audit Tools" section in docs/REQUIREMENTS.md.
+# Emitted by `registry-emit requirements-legacy --audit-tools registry/audit_tools.toml`.
+
+[meta]
+updated = "2026-04-15"
+description = "Tools invoked by `make audit-deep` and related quality targets."
+
+[[tool]]
+id = "rust-clippy"
+name = "Clippy"
+make_target = "rust-clippy"
+install = "rustup component add clippy"
+description = "Workspace-wide Rust lint pass with warnings-as-errors (-D warnings)."
+audit_deep = true
+status = "active"
+
+[[tool]]
+id = "cargo-deny"
+name = "cargo-deny"
+make_target = "cargo-deny-check"
+install = "cargo install cargo-deny"
+description = "License, advisory, ban, and source policy checks (deny.toml)."
+audit_deep = true
+status = "active"
+
+[[tool]]
+id = "dep-audit"
+name = "Dependency Audit"
+make_target = "dep-audit"
+install = ""
+description = "Duplicate dependency version report via `cargo tree -d`."
+audit_deep = true
+status = "active"
+
+[[tool]]
+id = "cpd-audit"
+name = "PMD CPD"
+make_target = "cpd-audit"
+install = "paru -S pmd"
+description = "Cross/within-crate Rust copy-paste detection (42-token minimum)."
+audit_deep = true
+status = "active"
+
+[[tool]]
+id = "cpd-audit-tooling"
+name = "PMD CPD (Tooling)"
+make_target = "cpd-audit-tooling"
+install = "paru -S pmd"
+description = "CPD scan of xtask, scripts, and CLI bin surfaces (80-token minimum, report-only)."
