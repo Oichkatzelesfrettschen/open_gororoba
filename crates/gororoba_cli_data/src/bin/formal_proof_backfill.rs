@@ -100,16 +100,16 @@ fn main() -> Result<()> {
         if !is_empty {
             continue;
         }
-        let (proposed, rule) = classify(
-            &claim.id,
-            &claim.status,
-            &claim.where_stated,
-            &claim.statement,
-            &verified_index,
-            &theories_index,
-            &arxiv_re,
-            &doi_re,
-        );
+        let (proposed, rule) = classify(ClassifyInput {
+            id: &claim.id,
+            status: &claim.status,
+            where_stated: &claim.where_stated,
+            statement: &claim.statement,
+            verified_index: &verified_index,
+            theories_index: &theories_index,
+            arxiv_re: &arxiv_re,
+            doi_re: &doi_re,
+        });
         proposals.push(Proposal {
             id: claim.id.clone(),
             proposed_formal_proof: proposed,
@@ -170,7 +170,7 @@ fn main() -> Result<()> {
     for p in proposals {
         store.claim_update_formal_proof(&p.id, &p.proposed_formal_proof, &actor, Some(reason))?;
         applied += 1;
-        if applied % 100 == 0 {
+        if applied.is_multiple_of(100) {
             eprintln!("applied {} / {} ...", applied, total);
         }
     }
@@ -178,16 +178,31 @@ fn main() -> Result<()> {
     Ok(())
 }
 
-fn classify(
-    id: &str,
-    status: &str,
-    where_stated: &str,
-    statement: &str,
-    verified_index: &BTreeMap<String, String>,
-    theories_index: &BTreeMap<String, String>,
-    arxiv_re: &Regex,
-    doi_re: &Regex,
-) -> (String, u8) {
+/// Bundle of `classify` arguments. Keeps the function under
+/// clippy::too_many_arguments without resorting to #[allow]; each field is
+/// borrowed so the input itself is zero-copy at call sites.
+struct ClassifyInput<'a> {
+    id: &'a str,
+    status: &'a str,
+    where_stated: &'a str,
+    statement: &'a str,
+    verified_index: &'a BTreeMap<String, String>,
+    theories_index: &'a BTreeMap<String, String>,
+    arxiv_re: &'a Regex,
+    doi_re: &'a Regex,
+}
+
+fn classify(input: ClassifyInput<'_>) -> (String, u8) {
+    let ClassifyInput {
+        id,
+        status,
+        where_stated,
+        statement,
+        verified_index,
+        theories_index,
+        arxiv_re,
+        doi_re,
+    } = input;
     // Rule 1: refuted/falsified/closed-negative -> na_empirical
     let s = status.to_ascii_lowercase();
     if s == "refuted" || s == "falsified" || s == "closed_negative_result" || s == "closed_refuted"
