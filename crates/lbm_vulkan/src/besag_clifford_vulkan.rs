@@ -5,6 +5,26 @@
 //! 256^3 resolution. Shares VulkanContext with GororobaEngine for zero-copy
 //! buffer reuse.
 //!
+//! # Universal SAFETY argument for `unsafe { device.<vk_fn>(...) }`
+//!
+//! See `compute.rs` for the full 5-numbered argument; this file follows
+//! the same pattern. The local invariants are:
+//!
+//! 1. **Active context**: VulkanContext borrowed from the engine; outlives
+//!    every Vulkan handle returned from this module.
+//! 2. **Handle lifetimes**: every creation call is paired with a destroy
+//!    call in `Drop`; structs hold handles + memory together.
+//! 3. **Synchronization**: per-batch fences gate host readback of
+//!    extreme_count and the buffer reuse with the LBM pipeline.
+//! 4. **Descriptor / pipeline match**: descriptor-set layouts match
+//!    binding arity; the typestate of the builder structs enforces this
+//!    at construction.
+//! 5. **Memory alignment**: gpu_allocator block alignment satisfies the
+//!    `vk::MemoryRequirements` reported by the device.
+//!
+//! Per-site SAFETY comments are added only where the local invariant
+//! requires more than this argument.
+//!
 //! # Pipeline (per permutation batch)
 //! 1. Dispatch `shuffle_imbalance` (PCG-based parallel shuffle)
 //! 2. Dispatch `transform_viscosity` (imbalance -> tau)
