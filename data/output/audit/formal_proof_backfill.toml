@@ -1,8 +1,8 @@
 [meta]
-generated_at = "2026-05-10T02:57:13Z"
+generated_at = "2026-05-10T15:04:23Z"
 binary = "formal-proof-backfill"
 canonical_db = "registry/canonical/control_plane.sqlite3"
-apply = false
+apply = true
 total_empty_rows = 1297
 proposals_count = 1297
 

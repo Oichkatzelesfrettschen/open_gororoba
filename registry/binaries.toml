@@ -218,6 +218,11 @@ crate = "gororoba_cli_data"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; consult crate source for authoritative behavior."
 
 [[binary]]
+name = "cd-domain-survey"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
 name = "cd-external-audit"
 crate = "gororoba_cli_algebra"
 description = "Deterministic audit for refuted external Cayley-Dickson CSV claims."
@@ -934,12 +939,6 @@ crate = "gororoba_cli_physics"
 description = "Classify CD false-alarm transitions by B-field signature (TD/FTE_candidate/Mirror_mode/Partial_crossing/Compressive/Unclassified). Outputs attribution JSON with per-type statistics (mean rotation, |B| jump, CV, associator norm), overall precision/recall/F1 at default threshold, FN count, and optional PR curve (--out-pr-curve, 50 log-spaced threshold steps)."
 
 [[binary]]
-name = "heliosphere-fa-cross-mission-table"
-crate = "gororoba_cli_physics"
-description = "Consolidate per-mission FA attribution JSONs (THEMIS/Cluster/MAVEN) into a cross-mission comparison table with per-period P/R/F1, dominant false-alarm type, micro-averaged mission aggregates, and ASCII summary for the methods paper. Multi-match rows (recall>1 from magnetopause oscillation bunching) are flagged and excluded from aggregates."
-experiment = "E-235"
-
-[[binary]]
 name = "heliosphere-falsification-audit"
 crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
@@ -955,12 +954,6 @@ name = "heliosphere-feature-transform"
 crate = "gororoba_cli_physics"
 description = "Build normalized, differenced, and differenced-normalized heliosphere event cubes without dropping rows, then emit transform manifests for downstream algebra and LBM analysis."
 experiment = "E-119"
-
-[[binary]]
-name = "heliosphere-fte-case-study"
-crate = "gororoba_cli_physics"
-description = "Classify each unmatched CD associator detection as rotational, compressive, combined, or weak using field-rotation angle and compressiveness (delta_B/|B|) computed from a +/-30 min FGM window; proves that 87.2% of so-called false alarms are genuine magnetic-topology events missed by density-only ground truth."
-experiment = "E-238"
 
 [[binary]]
 name = "heliosphere-full-sweep"
@@ -989,21 +982,14 @@ crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
+name = "heliosphere-maven-crossing-gen"
+crate = "gororoba_cli_physics"
+description = "Generate a surrogate MAVEN Mars bow shock crossing list from FGM minute-averaged data using a |B| regime filter (solar wind <sw_threshold nT -> magnetosheath >sheath_threshold nT). Applies minimum gap suppression (default 30 min) and writes MESSENGER-compatible crossing list for use with heliosphere-fa-attribution --mission maven."
+
+[[binary]]
 name = "heliosphere-mms-multiday"
 crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
-
-[[binary]]
-name = "heliosphere-mms-sitl-labeled"
-crate = "gororoba_cli_physics"
-description = "Evaluate CD associator P/R/F1 against MMS SITL/GLS expert-curated magnetopause ground truth; downloads SITL catalog from MMS SDC public API; strips compressive pseudo-labels; compares CD vs gradient detector using interval-based recall."
-experiment = "E-236"
-
-[[binary]]
-name = "heliosphere-themis-staples-labeled"
-crate = "gororoba_cli_physics"
-description = "Evaluate CD associator P/R/F1 against Staples et al. (2020) peer-reviewed THEMIS magnetopause crossing catalog (JGR 2020, doi:10.1029/2019JA027190); downloads THEMIS-A L2 FGM from CDAWeb HAPI; compares CD vs |B|-gradient+rotation detector using interval-based P/R/F1."
-experiment = "E-237"
 
 [[binary]]
 name = "heliosphere-norm-dump"
@@ -1021,6 +1007,11 @@ crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
+name = "heliosphere-psp-encounter-summary"
+crate = "gororoba_cli_physics"
+description = "Consolidate PSP switchback omega results across E1/E4/E6/E10 perihelion encounters. Computes trend statistics on ratio_switchback_to_quiet vs encounter number. Result: monotonically decreasing with Spearman rho=-1.0 (switchbacks more Alfvenic at closer perihelia)."
+
+[[binary]]
 name = "heliosphere-q2-transverse"
 crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
@@ -1034,28 +1025,6 @@ description = "Workspace binary discovered from cargo metadata in crate gororoba
 name = "heliosphere-rosetta-ablation-summary"
 crate = "gororoba_cli_physics"
 description = "Consolidate four Rosetta 67P normalization ablation variants (raw/clipped/direction/current) into a ranked comparison table. Reads per-variant JSON from rosetta_draping_norm_*.json, ranks by boundary-detection F1, writes rosetta_normalization_ablation.json. Winner: direction (unit-vector normalization, F1=0.43) for the weak-field cavity regime."
-
-[[binary]]
-name = "heliosphere-psp-alfven-control"
-crate = "gororoba_cli_physics"
-description = "PSP E3 Alfvenic noise control: classifies 31673 PSP perihelion minutes as Alfvenic / CompressiveBoundary / Quiet; computes per-class CD associator and gradient detector fire rates; proves CD is 17% less triggered by Alfvenic fluctuations than the gradient baseline (0.958 vs 1.155 fires/hour), with discrimination ratio 2.83x (compressive vs Alfvenic)."
-experiment = "E-239"
-
-[[binary]]
-name = "heliosphere-psp-encounter-summary"
-crate = "gororoba_cli_physics"
-description = "Consolidate PSP switchback omega results across E1/E4/E6/E10 perihelion encounters. Computes trend statistics on ratio_switchback_to_quiet vs encounter number. Result: monotonically decreasing with Spearman rho=-1.0 (switchbacks more Alfvenic at closer perihelia)."
-
-[[binary]]
-name = "heliosphere-psp-switchback-correlation"
-crate = "gororoba_cli_physics"
-description = "PSP E3 micro-switchback enrichment: tests whether quiet-interval CD fires co-occur with sub-classifier B-vector rotation events (consecutive rotation >= 15 deg). CD fires are 1.72x enriched near micro-rotation events vs background 39.2%; gradient is 2.20x enriched; 32.5% of quiet CD fires have no nearby rotation signature, confirming the CD associator detects topology below the 1-min rotation floor. E-241, C-1634."
-experiment = "E-241"
-
-[[binary]]
-name = "heliosphere-maven-crossing-gen"
-crate = "gororoba_cli_physics"
-description = "Generate a surrogate MAVEN Mars bow shock crossing list from FGM minute-averaged data using a |B| regime filter (solar wind <sw_threshold nT -> magnetosheath >sheath_threshold nT). Applies minimum gap suppression (default 30 min) and writes MESSENGER-compatible crossing list for use with heliosphere-fa-attribution --mission maven."
 
 [[binary]]
 name = "heliosphere-rosetta-draping"
@@ -1081,12 +1050,6 @@ description = "Parser-aware staging and audit pass for local Voyager merged, CRS
 name = "heliosphere-switchback-omega"
 crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
-
-[[binary]]
-name = "heliosphere-takens-tau-sweep"
-crate = "gororoba_cli_physics"
-description = "Sweep Takens lag tau in {1,2,5,10} min on THEMIS-A E-237 data against Staples+2020 catalog (224 crossings); reports P/R/F1 per tau plus tau-independent gradient baseline; confirms tau=1 min is empirically optimal for Earth-proximal magnetopause crossings. E-240, C-1633."
-experiment = "E-240"
 
 [[binary]]
 name = "heliosphere-synthetic-mhd"
@@ -1964,6 +1927,11 @@ crate = "gororoba_cli"
 description = "Validate TDA Vietoris-Rips persistent homology API on a known 2D circle topology"
 
 [[binary]]
+name = "themis-cd-crossing-survey"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
 name = "thesis-42-support"
 crate = "gororoba_cli"
 description = "Evidence-first thesis support bundle for the 42-lane synthesis. Aggregates C-010 non-local metamaterial design-stage evidence, algebraic Majorana friction sweeps, and harmonic-halo/NFW observable checks into one TOML summary plus CSV sidecars."
@@ -2376,3 +2344,4 @@ name = "zd-spectral-dimension"
 crate = "gororoba_cli_data"
 description = "Spectral-dimension census for Cayley-Dickson zero-divisor graphs via Laplacian heat-kernel plateaus and gaps."
 experiment = "E-084"
+

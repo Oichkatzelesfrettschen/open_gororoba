@@ -1677,7 +1677,7 @@ impl ProvenanceStore {
 
     pub fn list_insights(&self) -> Result<Vec<InsightRecord>> {
         let mut stmt = self.conn.prepare(
-            "SELECT id, title, status, claim_refs_json, compat_toml_text
+            "SELECT id, title, status, claim_refs_json, status_note, compat_toml_text
              FROM insights ORDER BY id",
         )?;
         let rows = stmt.query_map([], |row| {
@@ -1687,7 +1687,8 @@ impl ProvenanceStore {
                 title: row.get(1)?,
                 status: row.get(2)?,
                 claim_refs: serde_json::from_str(&claim_refs_json).unwrap_or_default(),
-                compat_toml_text: row.get(4)?,
+                status_note: row.get(4)?,
+                compat_toml_text: row.get(5)?,
             })
         })?;
         collect_rows(rows)
@@ -1695,7 +1696,7 @@ impl ProvenanceStore {
 
     pub fn list_experiments(&self) -> Result<Vec<ExperimentRecord>> {
         let mut stmt = self.conn.prepare(
-            "SELECT id, title, status, binary_name, claim_refs_json, compat_toml_text
+            "SELECT id, title, status, binary_name, claim_refs_json, status_note, compat_toml_text
              FROM experiments_cp ORDER BY id",
         )?;
         let rows = stmt.query_map([], |row| {
@@ -1706,7 +1707,8 @@ impl ProvenanceStore {
                 status: row.get(2)?,
                 binary: row.get(3)?,
                 claim_refs: serde_json::from_str(&claim_refs_json).unwrap_or_default(),
-                compat_toml_text: row.get(5)?,
+                status_note: row.get(5)?,
+                compat_toml_text: row.get(6)?,
             })
         })?;
         collect_rows(rows)
@@ -5142,13 +5144,14 @@ impl ProvenanceStore {
                 status: row.get(2)?,
                 binary: row.get(3)?,
                 claim_refs: serde_json::from_str(&row.get::<_, String>(4)?).unwrap_or_default(),
-                compat_toml_text: row.get::<_, String>(5).unwrap_or_default(),
+                status_note: row.get(5)?,
+                compat_toml_text: row.get::<_, String>(6).unwrap_or_default(),
             })
         };
         let mut out = Vec::new();
         if let Some(s) = status {
             let mut stmt = self.conn.prepare(
-                "SELECT id, title, status, binary_name, claim_refs_json, compat_toml_text
+                "SELECT id, title, status, binary_name, claim_refs_json, status_note, compat_toml_text
                  FROM experiments_cp WHERE status = ?1 ORDER BY id LIMIT ?2",
             )?;
             let rows = stmt.query_map(params![s, limit as i64], map_row)?;
@@ -5157,7 +5160,7 @@ impl ProvenanceStore {
             }
         } else {
             let mut stmt = self.conn.prepare(
-                "SELECT id, title, status, binary_name, claim_refs_json, compat_toml_text
+                "SELECT id, title, status, binary_name, claim_refs_json, status_note, compat_toml_text
                  FROM experiments_cp ORDER BY id LIMIT ?1",
             )?;
             let rows = stmt.query_map(params![limit as i64], map_row)?;
@@ -6081,6 +6084,7 @@ fn load_insights_from_registry(raw: &str) -> Result<Vec<InsightRecord>> {
             title,
             status,
             claim_refs,
+            status_note: optional_string_field(table, "status_note"),
             compat_toml_text: render_normalized_insight_compat_toml(table, raw_status.as_deref())?,
         });
     }
@@ -6113,6 +6117,7 @@ fn load_experiments_from_registry(raw: &str) -> Result<Vec<ExperimentRecord>> {
             status,
             binary: optional_string_field(table, "binary"),
             claim_refs,
+            status_note: optional_string_field(table, "status_note"),
             compat_toml_text: render_toml_table(table)?,
         });
     }
@@ -6863,7 +6868,17 @@ fn render_claim_row(row: &ClaimRecord) -> String {
         }
         lines.join("\n")
     } else {
-        row.compat_toml_text.trim().to_string()
+        // Splice live SQLite columns (formal_proof, status_note) into the
+        // cached compat_toml_text. Without this, mutations applied via
+        // `gororoba-db claim update-*` land in the database but never reach
+        // the registry/claims.toml consumer surface.
+        splice_compat_toml_overrides(
+            &row.compat_toml_text,
+            &[
+                ("formal_proof", row.formal_proof.as_deref()),
+                ("status_note", row.status_note.as_deref()),
+            ],
+        )
     }
 }
 
@@ -6877,9 +6892,15 @@ fn render_insight_row(row: &InsightRecord) -> String {
         if !row.claim_refs.is_empty() {
             lines.push(format!("claims = {:?}", row.claim_refs));
         }
+        if let Some(status_note) = &row.status_note {
+            lines.push(format!("status_note = {:?}", status_note));
+        }
         lines.join("\n")
     } else {
-        row.compat_toml_text.trim().to_string()
+        splice_compat_toml_overrides(
+            &row.compat_toml_text,
+            &[("status_note", row.status_note.as_deref())],
+        )
     }
 }
 
@@ -6896,10 +6917,53 @@ fn render_experiment_row(row: &ExperimentRecord) -> String {
         if !row.claim_refs.is_empty() {
             lines.push(format!("claim_refs = {:?}", row.claim_refs));
         }
+        if let Some(status_note) = &row.status_note {
+            lines.push(format!("status_note = {:?}", status_note));
+        }
         lines.join("\n")
     } else {
-        row.compat_toml_text.trim().to_string()
+        splice_compat_toml_overrides(
+            &row.compat_toml_text,
+            &[("status_note", row.status_note.as_deref())],
+        )
     }
+}
+
+/// Splice live SQLite column values into a cached compat-export TOML row.
+///
+/// `compat_toml_text` is the verbatim TOML body that was captured when the row
+/// was originally bootstrapped into SQLite. The canonical mutation surface
+/// (`gororoba-db claim/insight/experiment update-*`) writes new values to the
+/// dedicated SQLite columns but does NOT rewrite `compat_toml_text`. Without
+/// re-projecting those live columns into the emitted compat TOML, mutations
+/// would be invisible to every consumer that reads `registry/*.toml`.
+///
+/// Each `(key, value)` pair is applied as follows:
+/// - `Some(v)`: insert the key with that value, replacing any existing value.
+/// - `None`:    remove the key from the TOML if present (column was cleared).
+///
+/// Falls back to the original text on parse failure so a single malformed row
+/// cannot regress the entire export.
+fn splice_compat_toml_overrides(compat_toml_text: &str, overrides: &[(&str, Option<&str>)]) -> String {
+    let trimmed = compat_toml_text.trim();
+    if overrides.iter().all(|(_, v)| v.is_none()) {
+        return trimmed.to_string();
+    }
+    let Ok(parsed) = trimmed.parse::<toml_edit::DocumentMut>() else {
+        return trimmed.to_string();
+    };
+    let mut doc = parsed;
+    for (key, value) in overrides {
+        match value {
+            Some(v) => {
+                doc[*key] = toml_edit::value(*v);
+            }
+            None => {
+                doc.remove(*key);
+            }
+        }
+    }
+    doc.to_string().trim().to_string()
 }
 
 fn render_binaries_registry(binaries: &[BinaryRecord]) -> String {
