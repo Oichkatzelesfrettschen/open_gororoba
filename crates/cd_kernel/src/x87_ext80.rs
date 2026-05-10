@@ -308,6 +308,11 @@ impl fmt::Debug for Ext80 {
 #[must_use]
 fn binary_add(lhs: Ext80, rhs: Ext80) -> Ext80 {
     let mut out = Ext80::ZERO;
+    // SAFETY: lhs/rhs are owned Ext80 (10-byte tbyte) values on the local
+    // stack. The asm pushes both onto the x87 FP stack via fld, executes
+    // faddp (pops one, leaves the result on top), then fstp pops the
+    // result into out. Stack delta: +2 from fld, -2 from faddp+fstp = 0.
+    // options(nostack): x87 FP stack is independent of RSP.
     unsafe {
         asm!(
             "fld tbyte ptr [{lhs}]",
@@ -326,6 +331,9 @@ fn binary_add(lhs: Ext80, rhs: Ext80) -> Ext80 {
 #[must_use]
 fn binary_sub(lhs: Ext80, rhs: Ext80) -> Ext80 {
     let mut out = Ext80::ZERO;
+    // SAFETY: same as binary_add modulo the operator (fsubp instead of
+    // faddp). lhs/rhs are 10-byte tbyte stack values; the asm balances
+    // the x87 stack push/pop and writes the result into `out`.
     unsafe {
         asm!(
             "fld tbyte ptr [{lhs}]",
@@ -344,6 +352,9 @@ fn binary_sub(lhs: Ext80, rhs: Ext80) -> Ext80 {
 #[must_use]
 fn binary_mul(lhs: Ext80, rhs: Ext80) -> Ext80 {
     let mut out = Ext80::ZERO;
+    // SAFETY: same as binary_add modulo the operator (fmulp). lhs/rhs are
+    // 10-byte tbyte stack values; the asm balances the x87 stack and
+    // writes the result into `out`.
     unsafe {
         asm!(
             "fld tbyte ptr [{lhs}]",
@@ -362,6 +373,10 @@ fn binary_mul(lhs: Ext80, rhs: Ext80) -> Ext80 {
 #[must_use]
 fn binary_div(lhs: Ext80, rhs: Ext80) -> Ext80 {
     let mut out = Ext80::ZERO;
+    // SAFETY: same as binary_add modulo the operator (fdivp). lhs/rhs are
+    // 10-byte tbyte stack values; the asm balances the x87 stack and
+    // writes the result into `out`. Caller must guarantee rhs != 0; the
+    // x87 fdivp will set the FPU divide-by-zero flag otherwise.
     unsafe {
         asm!(
             "fld tbyte ptr [{lhs}]",
