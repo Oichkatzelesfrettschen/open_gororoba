@@ -75,7 +75,7 @@ CARGO_JOBS ?= $(WORKER_BUDGET)
 NEXTEST_TEST_THREADS ?= $(WORKER_BUDGET)
 RUST_TEST_THREADS ?= $(WORKER_BUDGET)
 RAYON_THREADS ?= $(WORKER_BUDGET)
-RUST_SCOPED_CLIPPY_TARGETS ?= --lib --tests
+RUST_SCOPED_CLIPPY_TARGETS ?= --all-targets
 LOCAL_NEXTEST_TIMING_JSON ?=
 RUST_LOCAL_SKIP_FILTERSET ?= not ((package(stats_core) and test(/ultrametric::baire_codebook::tests::(test_euclidean_ultrametricity_across_filtration_levels|test_intermediate_filtration_gradient|test_random_removal_control|test_lambda512_to_256_intermediate_gradient|test_lambda512_to_256_random_removal_control|test_sbase_to_lambda2048_gradient|test_l0_subpopulation_ultrametricity|test_lambda2048_to_1024_intermediate_gradient|test_l1_filter_on_l0_neg1_subset|test_recursive_simpsons_paradox_l2|test_cross_stratum_triple_decomposition|test_l0_zero_simpsons_paradox|test_dimensional_universality_simpsons_paradox|test_lambda1024_stratum_paradox_and_summary)/)) or (package(algebra_experimental) and test(test_thesis_e_xor_involution_invariants_128d)) or (package(algebra_experimental) and test(/test_v6_(2d_constrained_scan|joint_4d_optimization)/)) or (package(algebra_experimental) and test(/test_(enumerate_tower|fast_enumerate|benchmark_fast_vs_scalar|compressed_memory|enumerate_8192d|fast_enumerate_16384d)/)) or (package(algebra_experimental) and test(test_pathion_vk_spectrum)) or (package(algebra_analysis) and test(/test_(d64_flat_band|d16_d32_d64_scaling)/)) or (package(materials_core) and test(test_separating_degree_formula_universality)) or (package(gororoba_algebra) and test(test_split_octonion_attractor_regression_dim_128_256_guarded)) or (package(gororoba_cli) and test(test_zero_divisor_scaling)) or (package(sign_imbalance) and test(test_kubo_j1j2_alpha_sweep)) or test(/gpu/))
 REPO_TMPDIR ?= $(or $(TMPDIR),/tmp)
@@ -1493,60 +1493,14 @@ registry-data: registry-migrate-legacy-csv registry-migrate-curated-csv registry
 # through several data tools, and cg_clif still ICEs on AVX f32x8 lowering in that
 # lane on nightly 2026-04-05.
 registry-export-markdown: registry-refresh registry-build
-	@legacy_claims_sync=1; \
-	if [ "$(MARKDOWN_EXPORT_LEGACY_CLAIMS_SYNC)" = "0" ]; then legacy_claims_sync=0; fi; \
-	$(CARGO_ENV) cargo build --profile release-gate -p gororoba_cli_data --bin registry-emit --bin markdown-registry; \
-	$(REPO_CARGO_TARGET_DIR)/release-gate/registry-emit insights-mirror \
-		--output "crates/data_core/src/registry_mirrors/insights_registry_mirror.rs"; \
-	$(REPO_CARGO_TARGET_DIR)/release-gate/registry-emit claims-mirror \
-		--output "crates/data_core/src/registry_mirrors/claims_registry_mirror.rs"; \
-	$(REPO_CARGO_TARGET_DIR)/release-gate/registry-emit bibliography-mirror \
-		--output "crates/data_core/src/registry_mirrors/bibliography_registry_mirror.rs"; \
-	$(REPO_CARGO_TARGET_DIR)/release-gate/registry-emit experiments-mirror \
-		--output "crates/data_core/src/registry_mirrors/experiments_registry_mirror.rs"; \
-	$(REPO_CARGO_TARGET_DIR)/release-gate/registry-emit theorems-mirror \
-		--output "crates/data_core/src/registry_mirrors/theorems_registry_mirror.rs"; \
-	$(REPO_CARGO_TARGET_DIR)/release-gate/registry-emit roadmap-mirror \
-		--output "crates/data_core/src/registry_mirrors/roadmap_registry_mirror.rs"; \
-	$(REPO_CARGO_TARGET_DIR)/release-gate/registry-emit todo-mirror \
-		--output "crates/data_core/src/registry_mirrors/todo_registry_mirror.rs"; \
-	$(REPO_CARGO_TARGET_DIR)/release-gate/registry-emit next-actions-mirror \
-		--output "crates/data_core/src/registry_mirrors/next_actions_registry_mirror.rs"; \
-	$(REPO_CARGO_TARGET_DIR)/release-gate/registry-emit navigator-mirror \
-		--output "crates/data_core/src/registry_mirrors/navigator_registry_mirror.rs"; \
-	$(REPO_CARGO_TARGET_DIR)/release-gate/registry-emit entrypoint-docs-mirror \
-		--output "crates/data_core/src/registry_mirrors/entrypoint_docs_registry_mirror.rs"; \
-	$(REPO_CARGO_TARGET_DIR)/release-gate/registry-emit requirements-mirror \
-		--output "crates/data_core/src/registry_mirrors/requirements_registry_mirror.rs"; \
-	$(REPO_CARGO_TARGET_DIR)/release-gate/registry-emit knowledge-migration-plan-mirror \
-		--output "crates/data_core/src/registry_mirrors/knowledge_migration_plan_registry_mirror.rs"; \
-	$(REPO_CARGO_TARGET_DIR)/release-gate/registry-emit markdown-governance-mirror \
-		--output "crates/data_core/src/registry_mirrors/markdown_governance_registry_mirror.rs"; \
-	$(REPO_CARGO_TARGET_DIR)/release-gate/registry-emit claims-tasks-mirror \
-		--output "crates/data_core/src/registry_mirrors/claims_tasks_registry_mirror.rs"; \
-	$(REPO_CARGO_TARGET_DIR)/release-gate/registry-emit claims-domains-mirror \
-		--output "crates/data_core/src/registry_mirrors/claims_domains_registry_mirror.rs"; \
-	$(REPO_CARGO_TARGET_DIR)/release-gate/registry-emit claim-tickets-mirror \
-		--output "crates/data_core/src/registry_mirrors/claim_tickets_registry_mirror.rs"; \
-	$(REPO_CARGO_TARGET_DIR)/release-gate/registry-emit external-sources-mirror \
-		--output "crates/data_core/src/registry_mirrors/external_sources_registry_mirror.rs"; \
-	$(REPO_CARGO_TARGET_DIR)/release-gate/registry-emit book-docs-mirror \
-		--output "crates/data_core/src/registry_mirrors/book_docs_registry_mirror.rs"; \
-	$(REPO_CARGO_TARGET_DIR)/release-gate/registry-emit data-artifact-narratives-mirror \
-		--output "crates/data_core/src/registry_mirrors/data_artifact_narratives_registry_mirror.rs"; \
-	$(REPO_CARGO_TARGET_DIR)/release-gate/registry-emit reports-narratives-mirror \
-		--output "crates/data_core/src/registry_mirrors/reports_narratives_registry_mirror.rs"; \
-	$(REPO_CARGO_TARGET_DIR)/release-gate/registry-emit docs-convos-mirror \
-		--output "crates/data_core/src/registry_mirrors/docs_convos_registry_mirror.rs"; \
-	$(REPO_CARGO_TARGET_DIR)/release-gate/registry-emit docs-root-narratives-mirror \
-		--output "crates/data_core/src/registry_mirrors/docs_root_narratives_registry_mirror.rs"; \
-	$(REPO_CARGO_TARGET_DIR)/release-gate/registry-emit research-narratives-mirror \
-		--output "crates/data_core/src/registry_mirrors/research_narratives_registry_mirror.rs"; \
-	$(REPO_CARGO_TARGET_DIR)/release-gate/markdown-registry build-toml-inventory; \
-	$(REPO_CARGO_TARGET_DIR)/release-gate/markdown-registry build-corpus; \
-	$(REPO_CARGO_TARGET_DIR)/release-gate/markdown-registry build-origin-audit; \
-	$(REPO_CARGO_TARGET_DIR)/release-gate/markdown-registry build-owner-map; \
-	$(REPO_CARGO_TARGET_DIR)/release-gate/markdown-registry build-payloads
+# PH-5.B migration: the 54-line shell heredoc that used to live here
+# (23 sequential `registry-emit Xmirror --output Y` calls plus 4 stale
+# `markdown-registry build-*` calls that referenced subcommands which
+# no longer exist) has been promoted to the xtask command
+# `registry-emit-all-mirrors`. The xtask owns the (kind, output_path)
+# list as Rust data with proper error propagation; the Makefile is
+# now a thin delegation.
+	$(CARGO_ENV) cargo run -p xtask -- registry-emit-all-mirrors
 
 # Keep mirror freshness and governance checks on the LLVM-backed gate lane for the
 # same reason as registry-export-markdown above.

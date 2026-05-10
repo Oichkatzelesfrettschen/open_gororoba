@@ -338,6 +338,18 @@ fn main() -> Result<()> {
             let cfg = parse_gate_audit_args(args)?;
             run_audit_deep(cfg)
         }
+        "registry-emit-all-mirrors" => {
+            // PH-5.B: replaces the 54-line shell heredoc that the
+            // Makefile `registry-export-markdown` target carried. The
+            // shell version invoked `registry-emit Xmirror --output Y`
+            // sequentially 23 times with a hand-maintained list of
+            // (mirror_kind, output_path) pairs. The xtask version owns
+            // the list as Rust data so adding a new mirror is a single
+            // entry and the loop is exit-coded properly. See
+            // memory feedback_install_source_priority.md for the
+            // Makefile -> xtask migration policy.
+            run_registry_emit_all_mirrors()
+        }
         "sparse-profile" => run_sparse_profile(SparseProfileCli::try_parse_from(
             std::iter::once("sparse-profile".to_string()).chain(args),
         )?),
@@ -1587,6 +1599,180 @@ fn run_audit_deep(cfg: GateAuditConfig) -> Result<()> {
     if failures != 0 {
         bail!("audit-deep failed in {failures} step(s)");
     }
+    Ok(())
+}
+
+/// PH-5.B: structured replacement for the 54-line `registry-export-markdown`
+/// Makefile heredoc.
+///
+/// # Purpose and call sites
+///
+/// The Makefile target `registry-export-markdown` historically invoked
+/// `registry-emit Xmirror --output Y` 23 times sequentially with a
+/// hand-maintained list of (mirror_kind, output_path) pairs. Adding a
+/// new mirror meant editing the Makefile in two places (the cargo build
+/// list and the invocation list), and any failure mid-chain produced a
+/// confusing partial-state.
+///
+/// This xtask command owns the list as a Rust array, builds the
+/// `registry-emit` binary once, then loops with proper error
+/// propagation. Adding a new mirror is a single tuple in the
+/// `MIRRORS` array below.
+///
+/// Called from `cargo run -p xtask -- registry-emit-all-mirrors`. The
+/// Makefile target `registry-export-markdown` should now delegate
+/// to this xtask command for the per-mirror loop (the
+/// `registry-refresh registry-build` prerequisites still live in
+/// the Makefile).
+///
+/// # Why an array, not a TOML manifest?
+///
+/// The list rarely changes (~23 entries) and adding one is editing a
+/// single tuple. A TOML manifest would add deserialization overhead
+/// and one more file to keep in sync. The array is the source of
+/// truth; the Makefile no longer encodes any of it.
+///
+/// # What this owns vs delegates
+///
+/// Owns: the (mirror_kind, output_path) list, the build-then-loop
+/// structure, per-step error reporting.
+///
+/// Delegates to `registry-emit`: actual mirror generation (existing
+/// binary; this command just invokes it).
+///
+/// # Cross-references
+///
+/// - Memory: `feedback_install_source_priority.md` (Makefile -> xtask
+///   migration policy).
+/// - Sibling: [`run_audit_deep`] (same xtask reporting pattern).
+/// - Replaced shell: Makefile line 1495 `registry-export-markdown`.
+fn run_registry_emit_all_mirrors() -> Result<()> {
+    let repo_root = repo_root()?;
+    let cargo_home = repo_root.join(".cache").join("cargo-home");
+    let cargo_target_dir = repo_root.join(".cache").join("gate-target");
+
+    // The 23 mirror kinds. Format: (registry-emit subcommand, output
+    // path relative to crates/data_core/src/registry_mirrors/).
+    //
+    // # Why this list is hand-maintained vs derived
+    //
+    // The registry-emit binary's own enum is the structural truth, but
+    // not every variant has a single canonical output path -- e.g.
+    // `requirements-legacy` emits multiple markdown files, not one
+    // Rust mirror. Keeping the list local to this xtask lets us be
+    // explicit about which mirrors fan out to a Rust file vs which
+    // emit markdown elsewhere.
+    const MIRRORS: &[(&str, &str)] = &[
+        ("insights-mirror", "insights_registry_mirror.rs"),
+        ("claims-mirror", "claims_registry_mirror.rs"),
+        ("bibliography-mirror", "bibliography_registry_mirror.rs"),
+        ("experiments-mirror", "experiments_registry_mirror.rs"),
+        ("theorems-mirror", "theorems_registry_mirror.rs"),
+        ("roadmap-mirror", "roadmap_registry_mirror.rs"),
+        ("todo-mirror", "todo_registry_mirror.rs"),
+        ("next-actions-mirror", "next_actions_registry_mirror.rs"),
+        ("navigator-mirror", "navigator_registry_mirror.rs"),
+        ("entrypoint-docs-mirror", "entrypoint_docs_registry_mirror.rs"),
+        ("requirements-mirror", "requirements_registry_mirror.rs"),
+        (
+            "knowledge-migration-plan-mirror",
+            "knowledge_migration_plan_registry_mirror.rs",
+        ),
+        (
+            "markdown-governance-mirror",
+            "markdown_governance_registry_mirror.rs",
+        ),
+        ("claims-tasks-mirror", "claims_tasks_registry_mirror.rs"),
+        ("claims-domains-mirror", "claims_domains_registry_mirror.rs"),
+        ("claim-tickets-mirror", "claim_tickets_registry_mirror.rs"),
+        ("external-sources-mirror", "external_sources_registry_mirror.rs"),
+        ("book-docs-mirror", "book_docs_registry_mirror.rs"),
+        (
+            "data-artifact-narratives-mirror",
+            "data_artifact_narratives_registry_mirror.rs",
+        ),
+        (
+            "reports-narratives-mirror",
+            "reports_narratives_registry_mirror.rs",
+        ),
+        ("docs-convos-mirror", "docs_convos_registry_mirror.rs"),
+        (
+            "docs-root-narratives-mirror",
+            "docs_root_narratives_registry_mirror.rs",
+        ),
+        (
+            "research-narratives-mirror",
+            "research_narratives_registry_mirror.rs",
+        ),
+    ];
+
+    // Step 1: build registry-emit + markdown-registry once. Use the
+    // release-gate profile (matches the Makefile heredoc; both binaries
+    // are stable so we don't need full release LTO).
+    println!("Building registry-emit + markdown-registry ...");
+    let build_status = Command::new("cargo")
+        .args([
+            "build",
+            "--profile",
+            "release-gate",
+            "-p",
+            "gororoba_cli_data",
+            "--bin",
+            "registry-emit",
+            "--bin",
+            "markdown-registry",
+        ])
+        .current_dir(&repo_root)
+        .env("CARGO_HOME", &cargo_home)
+        .env("CARGO_TARGET_DIR", &cargo_target_dir)
+        .status()
+        .context("invoke cargo build for registry-emit + markdown-registry")?;
+    if !build_status.success() {
+        bail!(
+            "build of registry-emit + markdown-registry failed: {}",
+            build_status
+        );
+    }
+
+    let registry_emit = cargo_target_dir.join("release-gate").join("registry-emit");
+    let mirror_dir = repo_root
+        .join("crates")
+        .join("data_core")
+        .join("src")
+        .join("registry_mirrors");
+
+    // Step 2: invoke registry-emit Xmirror --output Y for each entry.
+    // Fail fast on the first error -- a stale mirror is worse than a
+    // partial emission because the dependent crate's `include!` macros
+    // would then read inconsistent state.
+    let mut applied = 0usize;
+    for (kind, output_name) in MIRRORS {
+        let output_path = mirror_dir.join(output_name);
+        print!("  emit {} -> {} ... ", kind, output_name);
+        let status = Command::new(&registry_emit)
+            .args([kind, "--output"])
+            .arg(&output_path)
+            .current_dir(&repo_root)
+            .env("CARGO_HOME", &cargo_home)
+            .env("CARGO_TARGET_DIR", &cargo_target_dir)
+            .status()
+            .with_context(|| format!("invoke registry-emit {}", kind))?;
+        if !status.success() {
+            bail!(
+                "registry-emit {} failed (exit {:?}); aborting fan-out",
+                kind,
+                status.code()
+            );
+        }
+        println!("ok");
+        applied += 1;
+    }
+
+    println!(
+        "registry-emit-all-mirrors: {} / {} mirrors emitted.",
+        applied,
+        MIRRORS.len()
+    );
     Ok(())
 }
 
