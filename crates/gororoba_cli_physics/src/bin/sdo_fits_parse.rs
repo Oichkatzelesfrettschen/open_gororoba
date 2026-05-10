@@ -42,7 +42,7 @@ struct Cli {
     out_json: PathBuf,
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Clone, Serialize)]
 struct FitsImageStats {
     filename: String,
     component: String,
@@ -196,6 +196,49 @@ fn detect_component(filename: &str) -> String {
     }
 }
 
+/// Extract the SHARP CEA timestamp and HARPNUM from a filename.
+///
+/// SHARP filename convention (JSOC):
+///   `hmi.sharp_cea_720s.{HARPNUM}.{YYYYMMDD_HHMMSS_TAI}.{COMPONENT}.fits`
+///
+/// e.g. `hmi.sharp_cea_720s.7115.20170714_103600_TAI.Bp.fits` yields
+/// HARPNUM=7115 and timestamp="20170714_103600_TAI". Either field is
+/// `None` if the filename does not match the SHARP convention.
+fn extract_sharp_timestamp_and_harp(filename: &str) -> (Option<String>, Option<u32>) {
+    // The TAI marker is the most reliable anchor; split around it.
+    let tai_idx = filename.find("_TAI");
+    let timestamp = tai_idx.and_then(|idx| {
+        // Walk backward 15 chars from "_TAI" to grab "YYYYMMDD_HHMMSS".
+        if idx < 15 {
+            return None;
+        }
+        let ts_start = idx - 15;
+        let ts = &filename[ts_start..idx + 4];
+        // Validate: 8 digits, underscore, 6 digits, "_TAI"
+        let bytes = ts.as_bytes();
+        if bytes.len() == 19
+            && bytes[..8].iter().all(|b| b.is_ascii_digit())
+            && bytes[8] == b'_'
+            && bytes[9..15].iter().all(|b| b.is_ascii_digit())
+            && &bytes[15..] == b"_TAI"
+        {
+            Some(ts.to_string())
+        } else {
+            None
+        }
+    });
+
+    // HARPNUM lives between the second and third dot from the start of
+    // the SHARP filename (sharp_cea_720s.{HARPNUM}.{TIMESTAMP}...).
+    let mut parts = filename.split('.');
+    let harpnum = parts
+        .find(|p| *p == "sharp_cea_720s")
+        .and_then(|_| parts.next())
+        .and_then(|h| h.parse::<u32>().ok());
+
+    (timestamp, harpnum)
+}
+
 fn main() -> Result<()> {
     let cli = Cli::parse();
     println!("=== SDO/HMI SHARP FITS Parser ===");
@@ -255,8 +298,7 @@ fn main() -> Result<()> {
         }
     }
 
-    // Group into vector magnetograms (Bp + Br + Bt sets)
-    // For now, just output individual statistics
+    // Per-component summary (groups individual stats by component label).
     println!("\n=== Summary ===");
     println!("  {} images parsed successfully", all_stats.len());
 
@@ -281,11 +323,57 @@ fn main() -> Result<()> {
         }
     }
 
+    // Group into vector magnetograms (Bp + Br + Bt sets sharing the
+    // same SHARP T_REC timestamp and HARPNUM). The grouping key is
+    // (HARPNUM, timestamp); each group with at least one of the three
+    // components becomes a VectorMagnetogramStats row. Total unsigned
+    // flux is the sum of per-component unsigned_flux_proxy across the
+    // available components; mean_shear_proxy and complexity_index use
+    // the Br kurtosis as a smoothness proxy when Br is present.
+    use std::collections::BTreeMap;
+    let mut groups: BTreeMap<(Option<u32>, Option<String>), Vec<FitsImageStats>> =
+        BTreeMap::new();
+    for s in &all_stats {
+        let (ts, harp) = extract_sharp_timestamp_and_harp(&s.filename);
+        groups.entry((harp, ts)).or_default().push(s.clone());
+    }
+    let mut magnetograms: Vec<VectorMagnetogramStats> = Vec::with_capacity(groups.len());
+    for ((harp, ts), comps) in groups {
+        let bp = comps.iter().find(|s| s.component == "Bp").cloned();
+        let br = comps.iter().find(|s| s.component == "Br").cloned();
+        let bt = comps.iter().find(|s| s.component == "Bt").cloned();
+        let total_unsigned_flux = bp
+            .as_ref()
+            .map(|s| s.unsigned_flux_proxy)
+            .unwrap_or(0.0)
+            + br.as_ref().map(|s| s.unsigned_flux_proxy).unwrap_or(0.0)
+            + bt.as_ref().map(|s| s.unsigned_flux_proxy).unwrap_or(0.0);
+        let mean_shear_proxy = match (bp.as_ref(), bt.as_ref()) {
+            (Some(p), Some(t)) => (p.rms - t.rms).abs(),
+            _ => 0.0,
+        };
+        let complexity_index = br.as_ref().map(|s| s.kurtosis).unwrap_or(0.0);
+        magnetograms.push(VectorMagnetogramStats {
+            harpnum: harp,
+            timestamp: ts.unwrap_or_else(|| "unknown".to_string()),
+            bp_stats: bp,
+            br_stats: br,
+            bt_stats: bt,
+            total_unsigned_flux,
+            mean_shear_proxy,
+            complexity_index,
+        });
+    }
+    println!(
+        "  {} vector magnetograms grouped (harpnum + SHARP timestamp)",
+        magnetograms.len()
+    );
+
     let result = ParseResult {
         n_files: files.len(),
         n_images: all_stats.len(),
-        image_stats: all_stats,
-        magnetograms: Vec::new(), // TODO: group by timestamp into vector sets
+        image_stats: all_stats.clone(),
+        magnetograms,
     };
 
     let json = serde_json::to_string_pretty(&result)?;
@@ -296,4 +384,41 @@ fn main() -> Result<()> {
     println!("\nResults -> {}", cli.out_json.display());
 
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn sharp_timestamp_and_harp_canonical_filename() {
+        let f = "hmi.sharp_cea_720s.7115.20170714_103600_TAI.Bp.fits";
+        let (ts, harp) = extract_sharp_timestamp_and_harp(f);
+        assert_eq!(ts.as_deref(), Some("20170714_103600_TAI"));
+        assert_eq!(harp, Some(7115));
+    }
+
+    #[test]
+    fn sharp_timestamp_handles_each_component_label() {
+        for comp in ["Bp", "Br", "Bt"] {
+            let f = format!("hmi.sharp_cea_720s.42.20200101_000000_TAI.{}.fits", comp);
+            let (ts, harp) = extract_sharp_timestamp_and_harp(&f);
+            assert_eq!(ts.as_deref(), Some("20200101_000000_TAI"));
+            assert_eq!(harp, Some(42));
+        }
+    }
+
+    #[test]
+    fn sharp_timestamp_returns_none_for_non_sharp_filename() {
+        let (ts, harp) = extract_sharp_timestamp_and_harp("aia_lev1_193a_2025_03_28.fits");
+        assert_eq!(ts, None);
+        assert_eq!(harp, None);
+    }
+
+    #[test]
+    fn sharp_timestamp_returns_none_on_malformed_tai_block() {
+        // _TAI present but digits before it are wrong shape.
+        let (ts, _) = extract_sharp_timestamp_and_harp("foo.bar_TAI.Bp.fits");
+        assert_eq!(ts, None);
+    }
 }
