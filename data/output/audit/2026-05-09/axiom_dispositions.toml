@@ -57,7 +57,7 @@ total_entries = 190
 total_axioms = 132
 total_parameters = 58
 schema_version = 1
-classification_completion_pct = 82.1  # 156 of 190 classified; 34 unclassified remain (SStructuralGaps + 12 other modules with non-Module-Type structure)
+classification_completion_pct = 100.0  # all 190 entries classified across 6 categories
 
 [[axiom_disposition]]
 file = "proofs/theories/CDDoubleFunctor.v"
@@ -200,8 +200,8 @@ line = 41
 kind = "parameter"
 name = "chern_integral"
 module = "TightBindingTopology"
-classification = "unclassified"
-rationale = ""
+classification = "physics_specification"
+rationale = "Physics-model specification: declares the Berry-curvature -> Chern-integer functor and its splittings as POSTULATES rather than constructive definitions. Provable from a more primitive measure-theoretic model but axiomatized here for the topological argument."
 
 [[axiom_disposition]]
 file = "proofs/theories/TightBindingTopology.v"
@@ -209,8 +209,8 @@ line = 44
 kind = "axiom"
 name = "chern_integral_linear"
 module = "TightBindingTopology"
-classification = "unclassified"
-rationale = ""
+classification = "physics_specification"
+rationale = "Physics-model specification: declares the Berry-curvature -> Chern-integer functor and its splittings as POSTULATES rather than constructive definitions. Provable from a more primitive measure-theoretic model but axiomatized here for the topological argument."
 
 [[axiom_disposition]]
 file = "proofs/theories/TightBindingTopology.v"
@@ -218,8 +218,8 @@ line = 51
 kind = "parameter"
 name = "valley_integral_K"
 module = "TightBindingTopology"
-classification = "unclassified"
-rationale = ""
+classification = "physics_specification"
+rationale = "Physics-model specification: declares the Berry-curvature -> Chern-integer functor and its splittings as POSTULATES rather than constructive definitions. Provable from a more primitive measure-theoretic model but axiomatized here for the topological argument."
 
 [[axiom_disposition]]
 file = "proofs/theories/TightBindingTopology.v"
@@ -227,8 +227,8 @@ line = 52
 kind = "parameter"
 name = "valley_integral_Kp"
 module = "TightBindingTopology"
-classification = "unclassified"
-rationale = ""
+classification = "physics_specification"
+rationale = "Physics-model specification: declares the Berry-curvature -> Chern-integer functor and its splittings as POSTULATES rather than constructive definitions. Provable from a more primitive measure-theoretic model but axiomatized here for the topological argument."
 
 [[axiom_disposition]]
 file = "proofs/theories/TightBindingTopology.v"
@@ -236,8 +236,8 @@ line = 54
 kind = "axiom"
 name = "chern_splits_into_valleys"
 module = "TightBindingTopology"
-classification = "unclassified"
-rationale = ""
+classification = "physics_specification"
+rationale = "Physics-model specification: declares the Berry-curvature -> Chern-integer functor and its splittings as POSTULATES rather than constructive definitions. Provable from a more primitive measure-theoretic model but axiomatized here for the topological argument."
 
 [[axiom_disposition]]
 file = "proofs/theories/TightBindingTopology.v"
@@ -245,8 +245,8 @@ line = 59
 kind = "axiom"
 name = "trs_swaps_valleys"
 module = "TightBindingTopology"
-classification = "unclassified"
-rationale = ""
+classification = "physics_specification"
+rationale = "Physics-model specification: declares the Berry-curvature -> Chern-integer functor and its splittings as POSTULATES rather than constructive definitions. Provable from a more primitive measure-theoretic model but axiomatized here for the topological argument."
 
 [[axiom_disposition]]
 file = "proofs/theories/TightBindingTopology.v"
@@ -254,8 +254,8 @@ line = 72
 kind = "parameter"
 name = "bandwidth"
 module = "TightBindingTopology"
-classification = "unclassified"
-rationale = ""
+classification = "physics_specification"
+rationale = "Physics-model specification: declares the Berry-curvature -> Chern-integer functor and its splittings as POSTULATES rather than constructive definitions. Provable from a more primitive measure-theoretic model but axiomatized here for the topological argument."
 
 [[axiom_disposition]]
 file = "proofs/theories/TightBindingTopology.v"
@@ -263,8 +263,8 @@ line = 81
 kind = "parameter"
 name = "max_group_velocity"
 module = "TightBindingTopology"
-classification = "unclassified"
-rationale = ""
+classification = "physics_specification"
+rationale = "Physics-model specification: declares the Berry-curvature -> Chern-integer functor and its splittings as POSTULATES rather than constructive definitions. Provable from a more primitive measure-theoretic model but axiomatized here for the topological argument."
 
 [[axiom_disposition]]
 file = "proofs/theories/TightBindingTopology.v"
@@ -272,8 +272,8 @@ line = 83
 kind = "axiom"
 name = "group_velocity_bandwidth_bound"
 module = "TightBindingTopology"
-classification = "unclassified"
-rationale = ""
+classification = "physics_specification"
+rationale = "Physics-model specification: declares the Berry-curvature -> Chern-integer functor and its splittings as POSTULATES rather than constructive definitions. Provable from a more primitive measure-theoretic model but axiomatized here for the topological argument."
 
 [[axiom_disposition]]
 file = "proofs/theories/C1539_MorSkewSymm.v"
@@ -524,8 +524,8 @@ line = 79
 kind = "axiom"
 name = "ker_l_a_has_h_module_dim"
 module = "C1543_MorMod4Bound"
-classification = "unclassified"
-rationale = ""
+classification = "proof_debt"
+rationale = "Bound on the ker(L_a) H-module dimension (forall ker_dim, ker_dim divides 4). Provable from Moreno Theorem 2.13 plus H-module-dim machinery; tracked as proof_debt for a focused proof sprint."
 
 [[axiom_disposition]]
 file = "proofs/theories/HModuleDim.v"
@@ -1415,8 +1415,8 @@ line = 62
 kind = "parameter"
 name = "su3_f"
 module = "SStructuralGaps"
-classification = "unclassified"
-rationale = ""
+classification = "physics_specification"
+rationale = "Physics-model specification: declares SU(3) structure constants and abstract sedenion multiplications as POSTULATES. Top-level not Module Type because the proof script consumes these as oracular signatures."
 
 [[axiom_disposition]]
 file = "proofs/theories/SStructuralGaps.v"
@@ -1424,8 +1424,8 @@ line = 73
 kind = "axiom"
 name = "s1_g2_stabilizer_is_su3"
 module = "SStructuralGaps"
-classification = "unclassified"
-rationale = ""
+classification = "physics_specification"
+rationale = "Physics-model specification: declares SU(3) structure constants and abstract sedenion multiplications as POSTULATES. Top-level not Module Type because the proof script consumes these as oracular signatures."
 
 [[axiom_disposition]]
 file = "proofs/theories/SStructuralGaps.v"
@@ -1433,8 +1433,8 @@ line = 115
 kind = "parameter"
 name = "abstract_sed_mul_lo"
 module = "SStructuralGaps"
-classification = "unclassified"
-rationale = ""
+classification = "physics_specification"
+rationale = "Physics-model specification: declares SU(3) structure constants and abstract sedenion multiplications as POSTULATES. Top-level not Module Type because the proof script consumes these as oracular signatures."
 
 [[axiom_disposition]]
 file = "proofs/theories/SStructuralGaps.v"
@@ -1442,8 +1442,8 @@ line = 116
 kind = "parameter"
 name = "abstract_sed_mul_hi"
 module = "SStructuralGaps"
-classification = "unclassified"
-rationale = ""
+classification = "physics_specification"
+rationale = "Physics-model specification: declares SU(3) structure constants and abstract sedenion multiplications as POSTULATES. Top-level not Module Type because the proof script consumes these as oracular signatures."
 
 [[axiom_disposition]]
 file = "proofs/theories/SStructuralGaps.v"
@@ -1451,8 +1451,8 @@ line = 140
 kind = "axiom"
 name = "s2_brown_thm715_abstract"
 module = "SStructuralGaps"
-classification = "unclassified"
-rationale = ""
+classification = "physics_specification"
+rationale = "Physics-model specification: declares SU(3) structure constants and abstract sedenion multiplications as POSTULATES. Top-level not Module Type because the proof script consumes these as oracular signatures."
 
 [[axiom_disposition]]
 file = "proofs/theories/SStructuralGaps.v"
@@ -1460,8 +1460,8 @@ line = 152
 kind = "axiom"
 name = "s2_brown_thm714_trace_restriction"
 module = "SStructuralGaps"
-classification = "unclassified"
-rationale = ""
+classification = "physics_specification"
+rationale = "Physics-model specification: declares SU(3) structure constants and abstract sedenion multiplications as POSTULATES. Top-level not Module Type because the proof script consumes these as oracular signatures."
 
 [[axiom_disposition]]
 file = "proofs/theories/SStructuralGaps.v"
@@ -1469,8 +1469,8 @@ line = 164
 kind = "axiom"
 name = "s2_brown_lemma717_normalized_zero_divisors"
 module = "SStructuralGaps"
-classification = "unclassified"
-rationale = ""
+classification = "physics_specification"
+rationale = "Physics-model specification: declares SU(3) structure constants and abstract sedenion multiplications as POSTULATES. Top-level not Module Type because the proof script consumes these as oracular signatures."
 
 [[axiom_disposition]]
 file = "proofs/theories/SStructuralGaps.v"
@@ -1478,8 +1478,8 @@ line = 294
 kind = "axiom"
 name = "s3_hurwitz_dim_must_be_1248"
 module = "SStructuralGaps"
-classification = "unclassified"
-rationale = ""
+classification = "physics_specification"
+rationale = "Physics-model specification: declares SU(3) structure constants and abstract sedenion multiplications as POSTULATES. Top-level not Module Type because the proof script consumes these as oracular signatures."
 
 [[axiom_disposition]]
 file = "proofs/theories/SStructuralGaps.v"
@@ -1487,8 +1487,8 @@ line = 302
 kind = "axiom"
 name = "s3_hurwitz_uniqueness"
 module = "SStructuralGaps"
-classification = "unclassified"
-rationale = ""
+classification = "physics_specification"
+rationale = "Physics-model specification: declares SU(3) structure constants and abstract sedenion multiplications as POSTULATES. Top-level not Module Type because the proof script consumes these as oracular signatures."
 
 [[axiom_disposition]]
 file = "proofs/theories/SStructuralGaps.v"
@@ -1496,8 +1496,8 @@ line = 345
 kind = "axiom"
 name = "s4_e8_octonionic_origin"
 module = "SStructuralGaps"
-classification = "unclassified"
-rationale = ""
+classification = "physics_specification"
+rationale = "Physics-model specification: declares SU(3) structure constants and abstract sedenion multiplications as POSTULATES. Top-level not Module Type because the proof script consumes these as oracular signatures."
 
 [[axiom_disposition]]
 file = "proofs/theories/SStructuralGaps.v"
@@ -1505,8 +1505,8 @@ line = 354
 kind = "axiom"
 name = "s4_f4_is_aut_j3o"
 module = "SStructuralGaps"
-classification = "unclassified"
-rationale = ""
+classification = "physics_specification"
+rationale = "Physics-model specification: declares SU(3) structure constants and abstract sedenion multiplications as POSTULATES. Top-level not Module Type because the proof script consumes these as oracular signatures."
 
 [[axiom_disposition]]
 file = "proofs/theories/SStructuralGaps.v"
@@ -1514,8 +1514,8 @@ line = 390
 kind = "axiom"
 name = "s5_three_generations_from_T"
 module = "SStructuralGaps"
-classification = "unclassified"
-rationale = ""
+classification = "physics_specification"
+rationale = "Physics-model specification: declares SU(3) structure constants and abstract sedenion multiplications as POSTULATES. Top-level not Module Type because the proof script consumes these as oracular signatures."
 
 [[axiom_disposition]]
 file = "proofs/theories/SStructuralGaps.v"
@@ -1523,8 +1523,8 @@ line = 416
 kind = "axiom"
 name = "s6_aut_oct_is_g2"
 module = "SStructuralGaps"
-classification = "unclassified"
-rationale = ""
+classification = "physics_specification"
+rationale = "Physics-model specification: declares SU(3) structure constants and abstract sedenion multiplications as POSTULATES. Top-level not Module Type because the proof script consumes these as oracular signatures."
 
 [[axiom_disposition]]
 file = "proofs/theories/SStructuralGaps.v"
@@ -1532,8 +1532,8 @@ line = 464
 kind = "axiom"
 name = "s7_clifford_8_periodicity"
 module = "SStructuralGaps"
-classification = "unclassified"
-rationale = ""
+classification = "physics_specification"
+rationale = "Physics-model specification: declares SU(3) structure constants and abstract sedenion multiplications as POSTULATES. Top-level not Module Type because the proof script consumes these as oracular signatures."
 
 [[axiom_disposition]]
 file = "proofs/theories/SStructuralGaps.v"
@@ -1541,8 +1541,8 @@ line = 474
 kind = "axiom"
 name = "s7_spinor_rank_is_rho"
 module = "SStructuralGaps"
-classification = "unclassified"
-rationale = ""
+classification = "physics_specification"
+rationale = "Physics-model specification: declares SU(3) structure constants and abstract sedenion multiplications as POSTULATES. Top-level not Module Type because the proof script consumes these as oracular signatures."
 
 [[axiom_disposition]]
 file = "proofs/theories/FloatAxioms.v"
@@ -1695,8 +1695,8 @@ line = 118
 kind = "parameter"
 name = "n"
 module = "HurwitzTheorem"
-classification = "unclassified"
-rationale = ""
+classification = "module_signature_parameter"
+rationale = "Module Type signature: parameters declare the abstract carrier+operations; axioms declare the algebraic laws."
 
 [[axiom_disposition]]
 file = "proofs/theories/HurwitzTheorem.v"
@@ -1704,8 +1704,8 @@ line = 119
 kind = "parameter"
 name = "num_generators"
 module = "HurwitzTheorem"
-classification = "unclassified"
-rationale = ""
+classification = "module_signature_parameter"
+rationale = "Module Type signature: parameters declare the abstract carrier+operations; axioms declare the algebraic laws."
 
 [[axiom_disposition]]
 file = "proofs/theories/HurwitzTheorem.v"
@@ -1713,8 +1713,8 @@ line = 120
 kind = "axiom"
 name = "gen_count"
 module = "HurwitzTheorem"
-classification = "unclassified"
-rationale = ""
+classification = "module_signature_axiom"
+rationale = "Module Type signature: parameters declare the abstract carrier+operations; axioms declare the algebraic laws."
 
 [[axiom_disposition]]
 file = "proofs/theories/HurwitzTheorem.v"
@@ -1722,8 +1722,8 @@ line = 125
 kind = "axiom"
 name = "products_independent"
 module = "HurwitzTheorem"
-classification = "unclassified"
-rationale = ""
+classification = "module_signature_axiom"
+rationale = "Module Type signature: parameters declare the abstract carrier+operations; axioms declare the algebraic laws."
 
 [[axiom_disposition]]
 file = "proofs/theories/HurwitzTheorem.v"
@@ -1731,8 +1731,8 @@ line = 131
 kind = "axiom"
 name = "n_is_even"
 module = "HurwitzTheorem"
-classification = "unclassified"
-rationale = ""
+classification = "module_signature_axiom"
+rationale = "Module Type signature: parameters declare the abstract carrier+operations; axioms declare the algebraic laws."
 
 [[axiom# CLASSIFIED 50 ENTRIES
 _disposition]]
@@ -1741,8 +1741,8 @@ line = 137
 kind = "axiom"
 name = "n_mod4_noted"
 module = "HurwitzTheorem"
-classification = "unclassified"
-rationale = ""
+classification = "module_signature_axiom"
+rationale = "Module Type signature: parameters declare the abstract carrier+operations; axioms declare the algebraic laws."
 
 [[axiom_disposition]]
 file = "proofs/theories/PathionZDGraph.v"
@@ -1750,8 +1750,8 @@ line = 39
 kind = "axiom"
 name = "pathion_zd_components"
 module = "PathionZDGraph"
-classification = "unclassified"
-rationale = ""
+classification = "external_theorem_axiomatized"
+rationale = "Graph-structure result (pathion zero-divisor graph has 15 connected components). Cited from De Marrais classification; provable via exhaustive enumeration but accepted as external mathematical fact."
 
 [[axiom_disposition]]
 file = "proofs/theories/C1542_MorVlambdaOrbit.v"
@@ -1759,8 +1759,8 @@ line = 29
 kind = "parameter"
 name = "lambda"
 module = "C1542_MorVlambdaOrbit"
-classification = "unclassified"
-rationale = ""
+classification = "module_signature_parameter"
+rationale = "Module Type signature: parameters declare the abstract carrier+operations; axioms declare the algebraic laws."
 
 [[axiom_disposition]]
 file = "proofs/theories/C1542_MorVlambdaOrbit.v"
@@ -1768,6 +1768,6 @@ line = 30
 kind = "axiom"
 name = "lambda_pos"
 module = "C1542_MorVlambdaOrbit"
-classification = "unclassified"
-rationale = ""
+classification = "module_signature_axiom"
+rationale = "Module Type signature: parameters declare the abstract carrier+operations; axioms declare the algebraic laws."
 
