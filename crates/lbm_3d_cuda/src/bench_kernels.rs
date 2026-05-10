@@ -5,6 +5,30 @@
 //! TensorCore, INT4, FP4) live here so they do not pollute the production
 //! solver's kernel-loading path.
 //!
+//! # Universal SAFETY argument for the per-runner `unsafe { b.launch(cfg) }?`
+//!
+//! Every kernel-launch site in this file follows the same soundness pattern:
+//!
+//! 1. The PTX source was compiled by NVRTC at runtime against the target
+//!    compute capability. NVRTC validates the kernel signature against the
+//!    declared parameters; type mismatches are surfaced as errors before
+//!    `LaunchAsync` is reached.
+//! 2. The cudarc `LaunchArgs` builder pushes parameters in the order the
+//!    kernel signature requires. The builder's typestate prevents launching
+//!    with a wrong-arity argument list at compile time.
+//! 3. Device buffers used by the launch are allocated from the same
+//!    `CudaContext` that the launch runs in; their lifetimes are gated by the
+//!    runner struct holding both the buffers and the context.
+//! 4. Configuration (grid_dim, block_dim, shared_mem) is computed at runtime
+//!    from grid sizes that have already been validated against
+//!    `cuMemGetInfo_v2`.
+//! 5. The launch is enqueued on the runner's stream; subsequent kernels on
+//!    the same stream are sequenced naturally and the next host-side
+//!    `synchronize()` waits for completion before reading results.
+//!
+//! Each `unsafe { b.launch(cfg) }?;` site below relies on this argument; the
+//! per-site rationale is therefore unchanged across runners.
+//!
 //! # Design
 //! Each runner owns a fresh [`cudarc::driver::CudaContext`], compiles its kernel
 //! source via NVRTC, allocates device buffers with equilibrium initialization,
@@ -184,6 +208,11 @@ impl BenchKernelRunner {
         let free_vram = {
             let mut free: usize = 0;
             let mut total: usize = 0;
+            // SAFETY: cuMemGetInfo_v2 is a CUDA driver API that writes two
+            // usize values via raw pointers. `&mut free` and `&mut total`
+            // are local stack slots with the correct alignment and size.
+            // The current thread holds the active CUDA context (the outer
+            // runner pinned it before calling this block).
             unsafe {
                 cudarc::driver::sys::cuMemGetInfo_v2(
                     &mut free as *mut usize,
@@ -479,6 +508,9 @@ impl SoaBenchRunner {
         let free_vram = {
             let mut free: usize = 0;
             let mut total: usize = 0;
+            // SAFETY: same as the cuMemGetInfo_v2 SAFETY comment above; the
+            // driver writes two usize values via raw pointers to local
+            // stack slots while the active CUDA context is bound.
             unsafe {
                 cudarc::driver::sys::cuMemGetInfo_v2(
                     &mut free as *mut usize,
