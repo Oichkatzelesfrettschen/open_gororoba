@@ -338,6 +338,35 @@ enum ClaimMutationAction {
         #[arg(long)]
         id: String,
     },
+    /// Replace the formal_proof on one claim row inside a single
+    /// BEGIN IMMEDIATE transaction. Appends to claim_revisions with
+    /// field_name='formal_proof'.
+    UpdateFormalProof {
+        /// Claim id (e.g., C-441).
+        #[arg(long)]
+        id: String,
+        /// New formal_proof value. Per docs/engineering/formal_proof_field_schema_2026_05_09.md
+        /// this should be one of: na_empirical[:rationale],
+        /// na_observational[:source], na_methodology[:tool], pending[:reason],
+        /// proofs/verified/<file>.v[#theorem], proofs/theories/<file>.v[#theorem],
+        /// or external:<citation>.
+        #[arg(long)]
+        formal_proof: String,
+        /// Reviewer name. Defaults to $USER.
+        #[arg(long)]
+        actor: Option<String>,
+        /// Free-form reason recorded in claim_revisions.reason.
+        #[arg(long)]
+        reason: Option<String>,
+        /// Run provenance export-control-plane after the SQLite update.
+        #[arg(long, action = clap::ArgAction::Set, default_value_t = true)]
+        regen_toml: bool,
+    },
+    /// Print the current formal_proof for one claim.
+    ShowFormalProof {
+        #[arg(long)]
+        id: String,
+    },
 }
 
 #[derive(Parser, Debug)]
@@ -1941,6 +1970,36 @@ fn cmd_claim_mutation(
             match note {
                 Some(text) => println!("{}: {}", id, text),
                 None => println!("{}: (status_note is NULL)", id),
+            }
+        }
+        ClaimMutationAction::UpdateFormalProof {
+            id,
+            formal_proof,
+            actor,
+            reason,
+            regen_toml,
+        } => {
+            let actor = actor
+                .clone()
+                .or_else(|| std::env::var("USER").ok())
+                .unwrap_or_else(|| "unknown".to_string());
+            let revision = store.claim_update_formal_proof(
+                id,
+                formal_proof,
+                &actor,
+                reason.as_deref(),
+            )?;
+            print_revision_summary("claim formal_proof", &revision);
+            maybe_regen_toml(*regen_toml)?;
+        }
+        ClaimMutationAction::ShowFormalProof { id } => {
+            let note = store.claim_formal_proof(id)?;
+            match note {
+                Some(text) if text.is_empty() => {
+                    println!("{}: (formal_proof is empty)", id)
+                }
+                Some(text) => println!("{}: {}", id, text),
+                None => println!("{}: (formal_proof is NULL)", id),
             }
         }
     }
