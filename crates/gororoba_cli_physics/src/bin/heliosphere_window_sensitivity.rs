@@ -192,17 +192,29 @@ fn build_windowed_delay_vectors(
     (delay_vectors, embed_meta)
 }
 
-#[allow(clippy::too_many_arguments)]
-fn run_window_variant(
-    all_minutes: &[ThemisFgmMinuteRecord],
-    fom_catalog: &[MmsEventInterval],
-    reference_midnight: &NaiveDateTime,
-    cli: &Cli,
+/// Window-sensitivity evaluation context: input data (THEMIS minutes,
+/// MMS event intervals), reference midnight anchor, CLI configuration,
+/// the window function being tested, and the time-series bounds.
+struct WindowVariantInputs<'a> {
+    all_minutes: &'a [ThemisFgmMinuteRecord],
+    fom_catalog: &'a [MmsEventInterval],
+    reference_midnight: &'a NaiveDateTime,
+    cli: &'a Cli,
     window_fn: WindowFn,
     eval_window_secs: i64,
     series_start_unix: i64,
     series_end_unix: i64,
-) -> WindowResult {
+}
+
+fn run_window_variant(inputs: WindowVariantInputs<'_>) -> WindowResult {
+    let all_minutes = inputs.all_minutes;
+    let fom_catalog = inputs.fom_catalog;
+    let reference_midnight = inputs.reference_midnight;
+    let cli = inputs.cli;
+    let window_fn = inputs.window_fn;
+    let eval_window_secs = inputs.eval_window_secs;
+    let series_start_unix = inputs.series_start_unix;
+    let series_end_unix = inputs.series_end_unix;
     let channels: usize = 4;
     let steps = cli.embedding_dim / channels;
     let expected_span_hours = (steps - 1) as f64 * cli.takens_lag as f64 / 60.0;
@@ -434,16 +446,16 @@ fn main() -> Result<()> {
     println!("\nRunning window function variants:");
     let mut windows: Vec<WindowResult> = Vec::new();
     for wfn in [WindowFn::Boxcar, WindowFn::Hamming, WindowFn::Hann] {
-        windows.push(run_window_variant(
-            &all_minutes,
-            &fom_catalog,
-            &reference_midnight,
-            &cli,
-            wfn,
+        windows.push(run_window_variant(WindowVariantInputs {
+            all_minutes: &all_minutes,
+            fom_catalog: &fom_catalog,
+            reference_midnight: &reference_midnight,
+            cli: &cli,
+            window_fn: wfn,
             eval_window_secs,
             series_start_unix,
             series_end_unix,
-        ));
+        }));
     }
 
     let boxcar_f1 = windows

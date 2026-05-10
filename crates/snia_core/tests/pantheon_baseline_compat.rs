@@ -86,9 +86,11 @@ fn pantheon_baseline_window_compatibility() {
         HllcFlux1D::default(),
         CarbonBurnModel::default(),
         NickelYieldModel::default(),
-        hydro,
-        fixture.initial_hydro.temperature,
-        burn,
+        snia_core::SniaInitialState {
+            hydro,
+            temperature: fixture.initial_hydro.temperature,
+            burn,
+        },
     )
     .expect("solver init");
     let result = solver.run().expect("run");

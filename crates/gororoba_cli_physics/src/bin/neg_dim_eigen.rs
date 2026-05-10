@@ -131,7 +131,16 @@ fn main() {
             n_steps,
             json,
         } => {
-            run_eigenvalues(alpha, epsilon, n, domain, n_eig, dt, n_steps, json);
+            run_eigenvalues(EigenvalueRun {
+                alpha,
+                epsilon,
+                n,
+                domain,
+                n_eig,
+                dt,
+                n_steps,
+                json,
+            });
         }
         Commands::Sweep {
             alpha,
@@ -143,9 +152,16 @@ fn main() {
             n_eig,
             output,
         } => {
-            run_sweep(
-                alpha, eps_start, eps_end, eps_steps, n, domain, n_eig, output,
-            );
+            run_sweep(EpsilonSweepRun {
+                alpha,
+                eps_start,
+                eps_end,
+                eps_steps,
+                n,
+                domain,
+                n_eig,
+                output,
+            });
         }
         Commands::CaffarelliSilvestre {
             s,
@@ -158,8 +174,11 @@ fn main() {
         }
     }
 }
-#[allow(clippy::too_many_arguments)]
-fn run_eigenvalues(
+/// Negative-dimension eigenvalue solver setup. Five physics parameters
+/// (alpha, epsilon, n, domain, n_eig) plus three integration parameters
+/// (dt, n_steps, json formatter flag) form one logical unit per
+/// imaginary-time-evolution invocation.
+struct EigenvalueRun {
     alpha: f64,
     epsilon: f64,
     n: usize,
@@ -168,7 +187,19 @@ fn run_eigenvalues(
     dt: f64,
     n_steps: usize,
     json: bool,
-) {
+}
+
+fn run_eigenvalues(run: EigenvalueRun) {
+    let EigenvalueRun {
+        alpha,
+        epsilon,
+        n,
+        domain,
+        n_eig,
+        dt,
+        n_steps,
+        json,
+    } = run;
     eprintln!(
         "Negative-dimension eigenvalues: alpha={}, epsilon={}, n={}, L={}",
         alpha, epsilon, n, domain
@@ -205,8 +236,10 @@ fn run_eigenvalues(
     }
 }
 
-#[allow(clippy::too_many_arguments)]
-fn run_sweep(
+/// Epsilon convergence sweep parameters. Six numerical parameters
+/// (alpha, eps_start, eps_end, eps_steps, n, domain, n_eig) plus an
+/// optional CSV output path.
+struct EpsilonSweepRun {
     alpha: f64,
     eps_start: f64,
     eps_end: f64,
@@ -215,7 +248,19 @@ fn run_sweep(
     domain: f64,
     n_eig: usize,
     output: Option<String>,
-) {
+}
+
+fn run_sweep(run: EpsilonSweepRun) {
+    let EpsilonSweepRun {
+        alpha,
+        eps_start,
+        eps_end,
+        eps_steps,
+        n,
+        domain,
+        n_eig,
+        output,
+    } = run;
     eprintln!(
         "Epsilon convergence sweep: alpha={}, eps=[{} -> {}], {} steps",
         alpha, eps_start, eps_end, eps_steps

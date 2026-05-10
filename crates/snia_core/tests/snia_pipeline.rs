@@ -18,14 +18,16 @@ fn short_pipeline_produces_snapshot() {
         HllcFlux1D::default(),
         CarbonBurnModel::default(),
         snia_core::NickelYieldModel::default(),
-        HydroState1D {
-            density: 2.2e7,
-            velocity: 8.0e5,
-            pressure: 2.8e23,
-            specific_internal_energy: 1.0e17,
+        snia_core::SniaInitialState {
+            hydro: HydroState1D {
+                density: 2.2e7,
+                velocity: 8.0e5,
+                pressure: 2.8e23,
+                specific_internal_energy: 1.0e17,
+            },
+            temperature: 1.2e9,
+            burn: BurnState::default(),
         },
-        1.2e9,
-        BurnState::default(),
     )
     .expect("solver init");
 

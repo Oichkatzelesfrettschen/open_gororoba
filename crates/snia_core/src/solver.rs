@@ -82,18 +82,28 @@ pub struct SniaCoreSolver {
     pub detonation_events: Vec<DetonationEvent>,
 }
 
+/// Initial-state bundle for `SniaCoreSolver::new`. Three values describing
+/// the per-cell state at t=0: hydrodynamic state, temperature, and the
+/// burn-fraction starting point. Bundling avoids the 8-arg constructor
+/// without losing constructor ergonomics at call sites.
+pub struct SniaInitialState {
+    pub hydro: HydroState1D,
+    pub temperature: f64,
+    pub burn: BurnState,
+}
+
 impl SniaCoreSolver {
-    #[allow(clippy::too_many_arguments)]
     pub fn new(
         config: SolverConfig,
         eos: WhiteDwarfEos,
         hydro_solver: HllcFlux1D,
         burner: CarbonBurnModel,
         yield_model: NickelYieldModel,
-        initial_hydro: HydroState1D,
-        initial_temperature: f64,
-        initial_burn: BurnState,
+        initial: SniaInitialState,
     ) -> Result<Self, SniaError> {
+        let initial_hydro = initial.hydro;
+        let initial_temperature = initial.temperature;
+        let initial_burn = initial.burn;
         if config.n_cells == 0 {
             return Err(SniaError::EmptyGrid);
         }
@@ -306,9 +316,11 @@ mod tests {
             HllcFlux1D::default(),
             CarbonBurnModel::default(),
             NickelYieldModel::default(),
-            initial_hydro,
-            1.5e9,
-            BurnState::default(),
+            SniaInitialState {
+                hydro: initial_hydro,
+                temperature: 1.5e9,
+                burn: BurnState::default(),
+            },
         )
         .expect("solver");
         let result = solver.run().expect("run");

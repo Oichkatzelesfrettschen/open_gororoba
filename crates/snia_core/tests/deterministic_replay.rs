@@ -24,9 +24,11 @@ fn run_once() -> snia_core::SimulationResult {
         HllcFlux1D::default(),
         CarbonBurnModel::default(),
         NickelYieldModel::default(),
-        hydro,
-        1.4e9,
-        burn,
+        snia_core::SniaInitialState {
+            hydro,
+            temperature: 1.4e9,
+            burn,
+        },
     )
     .expect("solver init");
     solver.run().expect("run")

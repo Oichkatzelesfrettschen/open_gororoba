@@ -536,17 +536,29 @@ fn run_analyze(_hdf5_path: &std::path::Path, _top_k: usize) {
     std::process::exit(1);
 }
 
-#[allow(clippy::too_many_arguments)]
-fn run_csv(
-    path: &std::path::Path,
-    column: &str,
+/// Configuration for `run_csv`: signal location (path + column), peak
+/// extraction (top_k), and the four permutation/bootstrap statistics
+/// parameters that define the rigorous-mode test.
+struct CsvRunConfig<'a> {
+    path: &'a std::path::Path,
+    column: &'a str,
     top_k: usize,
     rigorous: bool,
     n_permutations: usize,
     n_bootstrap: usize,
     bonferroni_datasets: usize,
     seed: u64,
-) {
+}
+
+fn run_csv(cfg: CsvRunConfig<'_>) {
+    let path = cfg.path;
+    let column = cfg.column;
+    let top_k = cfg.top_k;
+    let rigorous = cfg.rigorous;
+    let n_permutations = cfg.n_permutations;
+    let n_bootstrap = cfg.n_bootstrap;
+    let bonferroni_datasets = cfg.bonferroni_datasets;
+    let seed = cfg.seed;
     let signal = read_csv_column(path, column);
 
     if signal.is_empty() {
@@ -872,16 +884,16 @@ fn main() {
             bootstrap,
             bonferroni_datasets,
             seed,
-        } => run_csv(
-            &path,
-            &column,
+        } => run_csv(CsvRunConfig {
+            path: &path,
+            column: &column,
             top_k,
             rigorous,
-            permutations,
-            bootstrap,
+            n_permutations: permutations,
+            n_bootstrap: bootstrap,
             bonferroni_datasets,
             seed,
-        ),
+        }),
         Command::Synth {
             n,
             inject_ghost,
