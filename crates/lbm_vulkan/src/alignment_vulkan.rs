@@ -1,3 +1,13 @@
+//! Alignment-aware Vulkan dispatch for sedenion-batched LBM compute.
+//!
+//! # Universal SAFETY argument for `unsafe { device.<vk_fn>(...) }`
+//!
+//! See `compute.rs` for the full 5-numbered argument; this file follows
+//! the same pattern (active VulkanContext, paired Drop destruction,
+//! fence-gated readback, descriptor-set typestate, gpu_allocator
+//! alignment satisfies vk::MemoryRequirements). Per-site SAFETY
+//! comments are added only where the local invariant requires more.
+
 use crate::{
     VulkanContext,
     compute::{BufferSet, VulkanEngineError, compile_wgsl},
