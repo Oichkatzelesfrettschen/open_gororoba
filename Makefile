@@ -1982,6 +1982,18 @@ repo-audit-strict:
 		--baseline-compare $(REPO_AUDIT_BASELINE) \
 		--strict
 
+# Tighter gate: enforces per-root allow_clippy_unjustified cap. Fails the
+# build if `crates/` exceeds the cap. Currently set to 0 because A1-A25
+# closed every unjustified clippy allow in `crates/` -- new code adding
+# an unjustified suppression must add a comment immediately above (see
+# docs/engineering/repo_audit_metric_taxonomy.md for the policy).
+# `proofs/` is excluded indirectly by the `crates/`-only roots default.
+repo-audit-strict-unjustified:
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin repo-audit -- \
+		--output-dir $(REPO_AUDIT_OUT) \
+		--root crates \
+		--strict-unjustified-per-root 0
+
 cpd-audit-strict:
 	@command -v pmd >/dev/null 2>&1 || { echo "ERROR: pmd not found. Install PMD (e.g. paru -S pmd) to run cpd-audit-strict."; exit 1; }
 	$(CARGO_ENV) cargo run -q -p xtask -- cpd-file-list --output $(_CPD_FILE_LIST)

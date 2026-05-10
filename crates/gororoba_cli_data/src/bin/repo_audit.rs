@@ -62,6 +62,14 @@ struct Args {
     /// Exit non-zero if any debt class grew compared to the baseline.
     #[arg(long, default_value_t = false)]
     strict: bool,
+    /// Maximum allowed allow_clippy_unjustified count per root. When set,
+    /// the binary exits non-zero if the per-root unjustified count
+    /// exceeds the threshold. Use to gate "no new unjustified clippy
+    /// suppression in crates/" as a pre-push regression guard.
+    /// Default: disabled (None). Suggested value: 0 (no regression
+    /// allowed) once the baseline is at zero.
+    #[arg(long)]
+    strict_unjustified_per_root: Option<u64>,
     /// Path to canonical SQLite control plane to read revisions audit from.
     /// When supplied, the report includes a `[revisions]` block with
     /// claim/insight/experiment revision counts, top mutators, and
@@ -666,6 +674,25 @@ fn main() -> Result<()> {
     if strict_failure {
         eprintln!("repo-audit --strict: at least one debt class grew vs baseline");
         std::process::exit(1);
+    }
+    if let Some(cap) = args.strict_unjustified_per_root {
+        let mut cap_failures = Vec::new();
+        for (root, counts) in &output.by_root {
+            if counts.allow_clippy_unjustified > cap {
+                cap_failures.push(format!(
+                    "  {}: {} unjustified clippy allows (cap = {})",
+                    root, counts.allow_clippy_unjustified, cap
+                ));
+            }
+        }
+        if !cap_failures.is_empty() {
+            eprintln!(
+                "repo-audit --strict-unjustified-per-root {}: cap exceeded:\n{}",
+                cap,
+                cap_failures.join("\n")
+            );
+            std::process::exit(1);
+        }
     }
     Ok(())
 }

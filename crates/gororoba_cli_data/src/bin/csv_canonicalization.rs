@@ -2074,6 +2074,9 @@ fn wave_state(total: usize, done: usize, pending_label: &str, done_label: &str) 
     format!("in_progress: {done}/{total} done, {remaining} pending ({pending_label})")
 }
 
+// 6-tuple CSV parse result: (has_header, delimiter, quote_char,
+// existing_columns, header_row, rows). A named struct here would not be
+// reused; this is the only call site that constructs the tuple.
 #[allow(clippy::type_complexity)]
 fn parse_csv_with_stability(
     path: &Path,
@@ -2103,6 +2106,9 @@ fn parse_csv_with_stability(
     ))
 }
 
+// Multi-tuple verify-side parse return: extracted columns + raw rows +
+// row hashes. Single call site, no reuse; named struct would only add
+// indirection.
 #[allow(clippy::type_complexity)]
 fn parse_source_for_verify(
     path: &Path,
