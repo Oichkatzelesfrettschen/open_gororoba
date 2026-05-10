@@ -239,14 +239,97 @@ fn onnx_eval(cli: &Cli, model_path: &std::path::Path) -> Result<Vec<EvalResult>>
     );
     println!("  inputs ({})  = {:?}", input_names.len(), input_names);
     println!("  outputs ({}) = {:?}", output_names.len(), output_names);
-    println!(
-        "  v2 loader: model is in-process and its metadata is readable. \
-         Per-architecture KV-tensor extraction is the next micro-sprint."
-    );
+
+    // KV-tensor candidate detection. Walks input + output names and
+    // reports any that match the canonical KV cache patterns used by
+    // common transformer architectures:
+    //   - distilgpt2:    past_key_values.<layer>.{key,value}
+    //   - SmolLM2:       past_key_values.<layer>.{key,value} (GQA)
+    //   - generic:       <prefix>{key,value} or kv_cache references
+    let kv_candidates = scan_kv_candidates(&input_names, &output_names);
+    if kv_candidates.is_empty() {
+        println!(
+            "  No KV-tensor candidates detected by name pattern. The model \
+             may use a non-standard naming convention; print the full input/\
+             output list above and configure quantize_kv_tensor_names manually."
+        );
+    } else {
+        println!("  KV-tensor candidates ({}):", kv_candidates.len());
+        for (kind, name) in &kv_candidates {
+            println!("    [{}] {}", kind, name);
+        }
+        println!(
+            "  Phase B v3 (TaskList #60): allocate ort::Value tensors for \
+             these inputs, run session.run(), extract KV from outputs, \
+             quantize via TurboQuantMSE."
+        );
+    }
+
     // Ensure the session lives at least until we are done printing the
     // metadata (the Session destructor frees the underlying OrtSession).
     drop(session);
     Ok(synthetic_eval(cli))
+}
+
+/// Scan input/output names for transformer KV-cache patterns. Returns
+/// (kind, name) pairs where kind is "input-key" / "input-value" /
+/// "output-key" / "output-value" / "input-kv" / "output-kv".
+#[cfg(feature = "onnx-eval")]
+fn scan_kv_candidates(
+    input_names: &[String],
+    output_names: &[String],
+) -> Vec<(&'static str, String)> {
+    let mut out = Vec::new();
+    let classify_name = |name: &str| -> Option<&'static str> {
+        let lower = name.to_ascii_lowercase();
+        // Canonical past_key_values.<n>.key / .value
+        if lower.contains("past_key_values") {
+            if lower.ends_with(".key") || lower.contains(".key.") {
+                return Some("key");
+            }
+            if lower.ends_with(".value") || lower.contains(".value.") {
+                return Some("value");
+            }
+            return Some("kv");
+        }
+        // Generic kv_cache / kv references
+        if lower.contains("kv_cache") || lower.contains("kvcache") {
+            return Some("kv");
+        }
+        // Bare key. / value. patterns (some HuggingFace exports)
+        if lower.contains("present") && (lower.contains("key") || lower.contains("value")) {
+            if lower.contains("key") {
+                return Some("key");
+            }
+            return Some("value");
+        }
+        None
+    };
+    for name in input_names {
+        if let Some(kind) = classify_name(name) {
+            out.push((
+                match kind {
+                    "key" => "input-key",
+                    "value" => "input-value",
+                    _ => "input-kv",
+                },
+                name.clone(),
+            ));
+        }
+    }
+    for name in output_names {
+        if let Some(kind) = classify_name(name) {
+            out.push((
+                match kind {
+                    "key" => "output-key",
+                    "value" => "output-value",
+                    _ => "output-kv",
+                },
+                name.clone(),
+            ));
+        }
+    }
+    out
 }
 
 fn main() -> Result<()> {
