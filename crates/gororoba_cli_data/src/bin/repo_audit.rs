@@ -74,6 +74,12 @@ struct Counts {
     safety_comments: u64,
     ignore_attrs: u64,
     allow_clippy_attrs: u64,
+    /// Subset of `allow_clippy_attrs` that lack any justification (no
+    /// trailing `// ...` comment on the same line and no `// ...` line
+    /// directly above the attribute). This is the actual debt count;
+    /// `allow_clippy_attrs` includes legitimate multi-cursor / matrix
+    /// loop patterns where the lint is correctly silenced.
+    allow_clippy_unjustified: u64,
     allow_dead_code_attrs: u64,
     todo_fixme_xxx_hack: u64,
     unimplemented_macros: u64,
@@ -252,6 +258,7 @@ fn count_in_rust_file(src: &str, patterns: &Patterns) -> Counts {
         unsafe_blocks: patterns.unsafe_block.find_iter(&stripped).count() as u64,
         ignore_attrs: patterns.ignore_attr.find_iter(&stripped).count() as u64,
         allow_clippy_attrs: patterns.allow_clippy.find_iter(&stripped).count() as u64,
+        allow_clippy_unjustified: count_unjustified_allow_clippy(src),
         allow_dead_code_attrs: patterns.allow_dead_code.find_iter(&stripped).count() as u64,
         unimplemented_macros: patterns.unimplemented_macro.find_iter(&stripped).count() as u64,
         todo_macros: patterns.todo_macro.find_iter(&stripped).count() as u64,
@@ -260,6 +267,45 @@ fn count_in_rust_file(src: &str, patterns: &Patterns) -> Counts {
         todo_fixme_xxx_hack: patterns.todo_fixme.find_iter(src).count() as u64,
         ..Counts::default()
     }
+}
+
+/// Count `#[allow(clippy::*)]` attributes that lack any justification:
+/// neither a trailing `// ...` comment on the same line nor a `// ...`
+/// comment immediately above the attribute. Operates on the ORIGINAL
+/// source (not stripped) so it can see the comments. False positives are
+/// possible if the attribute is on the same line as code and nothing else
+/// (rare); false negatives are possible if the comment is multiple lines
+/// above the attribute (also rare and correctly flagged as unjustified).
+fn count_unjustified_allow_clippy(src: &str) -> u64 {
+    let attr_re = match Regex::new(r"^\s*#\[\s*allow\s*\(\s*clippy::") {
+        Ok(r) => r,
+        Err(_) => return 0,
+    };
+    let trailing_re = match Regex::new(r"#\[\s*allow\s*\([^)]+\)\s*\]\s*//") {
+        Ok(r) => r,
+        Err(_) => return 0,
+    };
+    let comment_re = match Regex::new(r"^\s*(?://|/\*)") {
+        Ok(r) => r,
+        Err(_) => return 0,
+    };
+    let lines: Vec<&str> = src.lines().collect();
+    let mut unjustified = 0u64;
+    for (i, line) in lines.iter().enumerate() {
+        if !attr_re.is_match(line) {
+            continue;
+        }
+        // Trailing comment on the same line?
+        if trailing_re.is_match(line) {
+            continue;
+        }
+        // Comment line directly above the attribute?
+        if i > 0 && comment_re.is_match(lines[i - 1]) {
+            continue;
+        }
+        unjustified += 1;
+    }
+    unjustified
 }
 
 fn count_in_rocq_file(src: &str, patterns: &Patterns) -> Counts {
@@ -283,6 +329,7 @@ fn merge(into: &mut Counts, from: &Counts) {
     into.safety_comments += from.safety_comments;
     into.ignore_attrs += from.ignore_attrs;
     into.allow_clippy_attrs += from.allow_clippy_attrs;
+    into.allow_clippy_unjustified += from.allow_clippy_unjustified;
     into.allow_dead_code_attrs += from.allow_dead_code_attrs;
     into.todo_fixme_xxx_hack += from.todo_fixme_xxx_hack;
     into.unimplemented_macros += from.unimplemented_macros;
