@@ -237,7 +237,7 @@ impl BackendQuantizer {
                 let req = QuantizeRequest {
                     values,
                     boundaries: self.cpu.boundaries(),
-                    bits: self.cpu.bits() as u32,
+                    bits: self.cpu.bits(),
                 };
                 match launcher::quantize(&req, out) {
                     Ok(()) => Ok(()),

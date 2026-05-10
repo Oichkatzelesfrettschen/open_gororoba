@@ -56,6 +56,7 @@ From OpenGororoba Require Export
   C1542_MorVlambdaMod4
   C1542_MorVlambdaOrbit
   C1548_MorVlambdaHBlock
+  C1627_MorVlambdaQuadOrbit
   C1542_MorHaStabilityArb
   C1542_MorVlambdaArbClose
   C1544_MorKerSDecomp

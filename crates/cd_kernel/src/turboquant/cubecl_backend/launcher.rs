@@ -240,7 +240,7 @@ pub fn quantize(req: &QuantizeRequest<'_>, out: &mut [u8]) -> Result<(), CubeclQ
     // already enforces the bound, so the trampoline is redundant; we
     // measured ~3% throughput improvement on 1024-element batches.
     const THREADS_PER_CUBE: u32 = 256;
-    let n_cubes = ((n as u32) + THREADS_PER_CUBE - 1) / THREADS_PER_CUBE;
+    let n_cubes = (n as u32).div_ceil(THREADS_PER_CUBE);
     let cube_count = CubeCount::Static(n_cubes, 1, 1);
     // CubeDim::new_3d is the explicit (x, y, z) constructor; CubeDim::new
     // is an auto-config helper that takes a client + working-units count

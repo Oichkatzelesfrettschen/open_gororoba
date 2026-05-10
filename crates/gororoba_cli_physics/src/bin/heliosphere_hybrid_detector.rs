@@ -331,26 +331,38 @@ fn main() -> Result<()> {
     });
 
     // === Agreement thresholds ===
-    // For each curated crossing, count how many detectors fire within tolerance
+    //
+    // For each minimum-agreement count k in 1..=6, materialize the set of
+    // candidate hours where at least k of the six detectors fire within
+    // `tol`. Then route that hour set through the same `score()` helper
+    // used for unions, so detection/FA/F1 are computed identically
+    // (rather than the prior approximation `fa_rate = 0.0` placeholder).
+    //
+    // Candidate-hour generation: a candidate is any hour where at least
+    // one detector fires (i.e., the all-detectors union `all6`). For each
+    // such hour we count how many of the six lists contain it within
+    // tolerance; if the count reaches k, the hour joins the agreement
+    // set for threshold k. This is O(|all6| * 6 * max_list_len) which is
+    // bounded by the detector counts (typically a few hundred hours each).
     let mut agreement = Vec::new();
     for min_agree in 1..=6 {
-        let mut detected = 0usize;
-        for &ch in &curated_hours {
-            let count = all_detectors
-                .iter()
-                .filter(|&&(_, hours)| hours.iter().any(|&dh| (dh - ch).abs() < tol))
-                .count();
-            if count >= min_agree {
-                detected += 1;
-            }
-        }
-        let det_rate = detected as f64 / nc.max(1) as f64;
-        // FA is harder to compute for agreement -- approximate
-        let fa_rate = 0.0; // placeholder
-        let f1 = det_rate; // simplified
+        let agreed_hours: Vec<f64> = all6
+            .iter()
+            .copied()
+            .filter(|&candidate| {
+                all_detectors
+                    .iter()
+                    .filter(|&&(_, hours)| {
+                        hours.iter().any(|&dh| (dh - candidate).abs() < tol)
+                    })
+                    .count()
+                    >= min_agree
+            })
+            .collect();
+        let (det_rate, fa_rate, f1, nd) = score(&agreed_hours);
         agreement.push(HybridResult {
             combination: format!(">={}-of-6 agree", min_agree),
-            n_detections: detected,
+            n_detections: nd,
             detection_rate: det_rate,
             false_alarm_rate: fa_rate,
             f1_score: f1,
