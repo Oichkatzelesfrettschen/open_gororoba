@@ -238,6 +238,7 @@ theories/C1542_MorVlambdaMod4.v
 theories/C1542_MorVlambdaOrbit.v
 theories/C1548_MorVlambdaHBlock.v
 theories/C1549_MorHaStabilitySed.v
+theories/C1627_MorVlambdaQuadOrbit.v
 theories/C1542_MorHaStabilityArb.v
 theories/C1542_MorVlambdaArbClose.v
 theories/C1544_MorKerSDecomp.v

@@ -18,6 +18,8 @@
     - C1542_MorVlambdaMod4.v : Theorem 1.16 canonical octonion V_lambda lane
     - C1542_MorVlambdaOrbit.v : Theorem 1.16 abstract H_a-orbit/module lane
     - C1548_MorVlambdaHBlock.v : Theorem 1.16 nonempty H_a-block stepping bridge (T-065)
+    - C1627_MorVlambdaQuadOrbit.v : Theorem 1.16 explicit {x, y, xe, ye} four-tuple
+      witness (T-065 geometric materialization)
     - C1544_MorKerSDecomp.v : Theorem 2.3 + Corollary 2.4 canonical special-couple lane
     - C1546_MorEigenZD.v : Theorem 2.9 canonical eigenvalue witness lane
     - C1546_MorEigenIFF.v : Theorem 2.9 abstract iff core with explicit side conditions

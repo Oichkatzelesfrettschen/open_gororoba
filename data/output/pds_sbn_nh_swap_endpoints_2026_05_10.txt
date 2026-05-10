@@ -1,0 +1,38 @@
+PDS-SBN New Horizons SWAP Endpoint Report (T-062, T-063)
+========================================================
+Probed: 2026-05-10
+Probe method: curl HEAD via -o /dev/null -w "%{http_code}" --max-time 10 -L
+
+PDS-SBN UMD New Horizons SWAP datasets (CONFIRMED 200):
+  https://pds-smallbodies.astro.umd.edu/holdings/nh-j-swap-2-jupiter-v4.0/dataset.shtml      level 2 raw
+  https://pds-smallbodies.astro.umd.edu/holdings/nh-j-swap-3-jupiter-v4.0/dataset.shtml      level 3 calibrated
+  https://pds-smallbodies.astro.umd.edu/holdings/nh-x-swap-2-launch-v2.0/dataset.shtml       level 2 raw
+  https://pds-smallbodies.astro.umd.edu/holdings/nh-x-swap-2-plutocruise-v3.0/dataset.shtml  level 2 raw
+  https://pds-smallbodies.astro.umd.edu/holdings/nh-x-swap-3-launch-v2.0/dataset.shtml       level 3 calibrated
+  https://pds-smallbodies.astro.umd.edu/holdings/nh-x-swap-3-plutocruise-v3.0/dataset.shtml  level 3 calibrated
+
+PDS-SBN UMD landing pages (CONFIRMED 200):
+  https://pds-smallbodies.astro.umd.edu/                                                     UMD root
+  https://pds-smallbodies.astro.umd.edu/data_sb/missions/newhorizons/index.shtml             NH mission index
+  https://pdssbn.astro.umd.edu/                                                              alt root
+  https://sbnarchive.psi.edu/                                                                PSI mirror root
+  https://sbn.psi.edu/                                                                       PSI mirror
+
+PDS4 SUPPORT directories (IDs not URL-resolvable; query via PDS API):
+  pds4-nh_swap:calibration_files-v1.0
+  pds4-nh_swap:pluto_cal-v1.0
+  pds4-nh_swap:pluto_data_summary_plots-v1.0
+  pds4-nh_swap:pluto_raw-v1.0
+  pds4-nh_swap:trajectory-v2.0
+
+GSFC endpoints (T-063 re-probe, all CONFIRMED 200):
+  https://omniweb.gsfc.nasa.gov/
+  https://cdaweb.gsfc.nasa.gov/
+  https://spdf.gsfc.nasa.gov/
+  https://cohoweb.gsfc.nasa.gov/
+
+Conclusions:
+  T-062: C-1183 wording "PDS-SBN is a potential but unverified alternative source" FALSIFIED.
+         PDS-SBN UMD is a verified alternate provider for NH SWAP across mission phases.
+  T-063: GSFC migration complete; previously-flagged outages resolved. No further migration
+         monitoring required for omniweb/cdaweb/spdf/cohoweb.
