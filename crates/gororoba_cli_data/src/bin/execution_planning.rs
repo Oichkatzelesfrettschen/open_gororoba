@@ -2851,14 +2851,21 @@ fn sync_or_write_experiments_registry(repo_root: &Path, args: &Args, content: &s
             &canonical_experiments_path,
             content,
         )?;
+        let claims = repo_root.join("registry/claims.toml");
+        let insights = repo_root.join("registry/insights.toml");
+        let binaries = repo_root.join("registry/binaries.toml");
+        let theorems = repo_root.join("docs/THEOREMS.md");
+        let theorems_mirror = repo_root.join("docs/generated/THEOREMS_REGISTRY_MIRROR.md");
         store.export_control_plane_compat(
             repo_root,
-            &repo_root.join("registry/claims.toml"),
-            &repo_root.join("registry/insights.toml"),
-            &canonical_experiments_path,
-            &repo_root.join("registry/binaries.toml"),
-            &repo_root.join("docs/THEOREMS.md"),
-            &repo_root.join("docs/generated/THEOREMS_REGISTRY_MIRROR.md"),
+            provenance_store::CompatExportPaths {
+                claims: &claims,
+                insights: &insights,
+                experiments: &canonical_experiments_path,
+                binaries: &binaries,
+                theorems: &theorems,
+                theorems_mirror: &theorems_mirror,
+            },
         )?;
         return Ok(());
     }
@@ -2980,16 +2987,24 @@ deterministic = true
         assert!(!rendered.contains("id = \"E-001\""));
         assert!(exported.contains("id = \"E-002\""));
         store.verify_control_plane_invariants(&fixture.root)?;
+        let claims = fixture.root.join("registry/claims.toml");
+        let insights = fixture.root.join("registry/insights.toml");
+        let experiments = fixture.root.join("registry/experiments.toml");
+        let binaries = fixture.root.join("registry/binaries.toml");
+        let theorems = fixture.root.join("docs/THEOREMS.md");
+        let theorems_mirror = fixture
+            .root
+            .join("docs/generated/THEOREMS_REGISTRY_MIRROR.md");
         store.verify_control_plane_compat_exports(
             &fixture.root,
-            &fixture.root.join("registry/claims.toml"),
-            &fixture.root.join("registry/insights.toml"),
-            &fixture.root.join("registry/experiments.toml"),
-            &fixture.root.join("registry/binaries.toml"),
-            &fixture.root.join("docs/THEOREMS.md"),
-            &fixture
-                .root
-                .join("docs/generated/THEOREMS_REGISTRY_MIRROR.md"),
+            provenance_store::CompatExportPaths {
+                claims: &claims,
+                insights: &insights,
+                experiments: &experiments,
+                binaries: &binaries,
+                theorems: &theorems,
+                theorems_mirror: &theorems_mirror,
+            },
         )?;
         Ok(())
     }
@@ -3099,14 +3114,22 @@ experiment = "E-001"
             &root.join("registry/binaries.toml"),
             &root.join("proofs/_RocqProject"),
         )?;
+        let claims = root.join("registry/claims.toml");
+        let insights = root.join("registry/insights.toml");
+        let experiments = root.join("registry/experiments.toml");
+        let binaries = root.join("registry/binaries.toml");
+        let theorems = root.join("docs/THEOREMS.md");
+        let theorems_mirror = root.join("docs/generated/THEOREMS_REGISTRY_MIRROR.md");
         store.export_control_plane_compat(
             &root,
-            &root.join("registry/claims.toml"),
-            &root.join("registry/insights.toml"),
-            &root.join("registry/experiments.toml"),
-            &root.join("registry/binaries.toml"),
-            &root.join("docs/THEOREMS.md"),
-            &root.join("docs/generated/THEOREMS_REGISTRY_MIRROR.md"),
+            provenance_store::CompatExportPaths {
+                claims: &claims,
+                insights: &insights,
+                experiments: &experiments,
+                binaries: &binaries,
+                theorems: &theorems,
+                theorems_mirror: &theorems_mirror,
+            },
         )?;
 
         Ok(TestWorkspace { root, db })

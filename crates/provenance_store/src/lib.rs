@@ -381,6 +381,22 @@ pub struct NotebookSessionSummary {
     pub cell_count: i64,
 }
 
+/// Bundle of compat-export TOML target paths. The 6 paths form a logical
+/// unit (the canonical compat-export surface: claims, insights,
+/// experiments, binaries, theorems, theorems_mirror) so passing them as
+/// individual `&Path` arguments would trip clippy::too_many_arguments and
+/// scatter related state. Borrowed so callers can pass references without
+/// allocation.
+#[derive(Debug, Clone, Copy)]
+pub struct CompatExportPaths<'a> {
+    pub claims: &'a Path,
+    pub insights: &'a Path,
+    pub experiments: &'a Path,
+    pub binaries: &'a Path,
+    pub theorems: &'a Path,
+    pub theorems_mirror: &'a Path,
+}
+
 /// SQL-identifier bundle for the generic per-column updater. Bundling the
 /// four `&str` identifiers into one parameter keeps `entity_update_field`
 /// under clippy::too_many_arguments without resorting to #[allow]; each
@@ -876,35 +892,29 @@ impl ProvenanceStore {
         })
     }
 
-    #[allow(clippy::too_many_arguments)]
     pub fn export_control_plane_compat(
         &mut self,
         repo_root: &Path,
-        claims_path: &Path,
-        insights_path: &Path,
-        experiments_path: &Path,
-        binaries_path: &Path,
-        theorems_path: &Path,
-        theorems_mirror_path: &Path,
+        paths: CompatExportPaths<'_>,
     ) -> Result<()> {
         self.backfill_control_plane_compat_from_snapshots()?;
         let outputs = self.render_control_plane_compat_outputs()?;
-        write_text(claims_path, &outputs.claims)?;
-        write_text(insights_path, &outputs.insights)?;
-        write_text(experiments_path, &outputs.experiments)?;
-        write_text(binaries_path, &outputs.binaries)?;
-        write_text(theorems_path, &outputs.theorems)?;
-        write_text(theorems_mirror_path, &outputs.theorems_mirror)?;
+        write_text(paths.claims, &outputs.claims)?;
+        write_text(paths.insights, &outputs.insights)?;
+        write_text(paths.experiments, &outputs.experiments)?;
+        write_text(paths.binaries, &outputs.binaries)?;
+        write_text(paths.theorems, &outputs.theorems)?;
+        write_text(paths.theorems_mirror, &outputs.theorems_mirror)?;
 
         self.record_control_plane_run(
             "export_control_plane",
             &serde_json::json!({
-                "claims": to_repo_rel(repo_root, claims_path),
-                "insights": to_repo_rel(repo_root, insights_path),
-                "experiments": to_repo_rel(repo_root, experiments_path),
-                "binaries": to_repo_rel(repo_root, binaries_path),
-                "theorems": to_repo_rel(repo_root, theorems_path),
-                "theorems_mirror": to_repo_rel(repo_root, theorems_mirror_path),
+                "claims": to_repo_rel(repo_root, paths.claims),
+                "insights": to_repo_rel(repo_root, paths.insights),
+                "experiments": to_repo_rel(repo_root, paths.experiments),
+                "binaries": to_repo_rel(repo_root, paths.binaries),
+                "theorems": to_repo_rel(repo_root, paths.theorems),
+                "theorems_mirror": to_repo_rel(repo_root, paths.theorems_mirror),
             })
             .to_string(),
         )?;
@@ -973,26 +983,20 @@ impl ProvenanceStore {
         Ok(text)
     }
 
-    #[allow(clippy::too_many_arguments)]
     pub fn verify_control_plane_compat_exports(
         &mut self,
         repo_root: &Path,
-        claims_path: &Path,
-        insights_path: &Path,
-        experiments_path: &Path,
-        binaries_path: &Path,
-        theorems_path: &Path,
-        theorems_mirror_path: &Path,
+        paths: CompatExportPaths<'_>,
     ) -> Result<()> {
         self.backfill_control_plane_compat_from_snapshots()?;
         let outputs = self.render_control_plane_compat_outputs()?;
         let checks = [
-            (claims_path, outputs.claims.as_str()),
-            (insights_path, outputs.insights.as_str()),
-            (experiments_path, outputs.experiments.as_str()),
-            (binaries_path, outputs.binaries.as_str()),
-            (theorems_path, outputs.theorems.as_str()),
-            (theorems_mirror_path, outputs.theorems_mirror.as_str()),
+            (paths.claims, outputs.claims.as_str()),
+            (paths.insights, outputs.insights.as_str()),
+            (paths.experiments, outputs.experiments.as_str()),
+            (paths.binaries, outputs.binaries.as_str()),
+            (paths.theorems, outputs.theorems.as_str()),
+            (paths.theorems_mirror, outputs.theorems_mirror.as_str()),
         ];
         let mut failures = Vec::new();
         for (path, expected) in checks {
