@@ -166,6 +166,69 @@ pub fn singular_values(matrix: &[Vec<f64>]) -> Vec<f64> {
         .collect()
 }
 
+/// Compute the singular values of a tall (n >= d) matrix via the Gram
+/// route: form `X^T X` (a `d x d` symmetric positive-semidefinite
+/// matrix), eigendecompose it with [`nalgebra::SymmetricEigen`], and
+/// return the square roots of the eigenvalues sorted descending.
+///
+/// # When to prefer this over [`singular_values`]
+///
+/// nalgebra's full SVD ([`DMatrix::svd`]) can stall on heavily
+/// ill-conditioned inputs (the bidiagonalization plus QR iteration
+/// loop fails to converge within the default iteration cap). For
+/// **rectangular tall** matrices arising from multi-diagnostic delay
+/// embeddings (e.g. heterogeneous-channel rotation curves), the Gram
+/// route is both faster and more robust:
+///
+///   - the input passed to the eigensolver is symmetric PSD, so the
+///     Jacobi / divide-and-conquer paths converge unconditionally;
+///   - we never need the singular vectors, only the singular *values*,
+///     which means we never have to recover U and V;
+///   - work is O(n d^2 + d^3) instead of O(n^2 d + d^3), strictly better
+///     when n >> d.
+///
+/// # When this is wrong
+///
+/// - Wide matrices (n < d): the Gram matrix is `d x d` but only has
+///   rank n, so this returns d eigenvalues most of which are zero.
+///   That is mathematically correct (the extra "singular values" are
+///   genuinely zero), but if you need exactly n non-zero singular
+///   values use the row-Gram variant or fall back to `singular_values`.
+/// - Numerical loss for tiny singular values: squaring before
+///   eigendecomposition halves the working precision on small svals
+///   (a sval of 1e-9 becomes an eigenvalue of 1e-18, near f64 epsilon).
+///   For PCA-style effective-rank computation this is fine; for
+///   condition-number assessment near machine precision it is not.
+///
+/// Returns an empty `Vec` for empty or zero-width input.
+pub fn singular_values_via_gram(matrix: &[Vec<f64>]) -> Vec<f64> {
+    use nalgebra::{DMatrix, SymmetricEigen};
+    let n_rows = matrix.len();
+    if n_rows == 0 {
+        return vec![];
+    }
+    let n_cols = match matrix.first() {
+        Some(row) => row.len(),
+        None => return vec![],
+    };
+    if n_cols == 0 {
+        return vec![];
+    }
+    let flat: Vec<f64> = matrix.iter().flat_map(|row| row.iter().copied()).collect();
+    let x = DMatrix::from_row_slice(n_rows, n_cols, &flat);
+    // Gram matrix X^T X is d x d, symmetric PSD.
+    let xtx = x.transpose() * &x;
+    let eig = SymmetricEigen::new(xtx);
+    let mut svals: Vec<f64> = eig
+        .eigenvalues
+        .iter()
+        .copied()
+        .map(|v| v.max(0.0).sqrt())
+        .collect();
+    svals.sort_by(|a, b| b.partial_cmp(a).unwrap_or(std::cmp::Ordering::Equal));
+    svals
+}
+
 /// Compute the right singular vectors and singular values of a matrix.
 ///
 /// WHY: PCA projection requires V^T to project data onto principal components.
@@ -595,6 +658,62 @@ mod tests {
     fn singular_values_empty_returns_empty() {
         assert!(singular_values(&[]).is_empty());
         assert!(singular_values(&[vec![]]).is_empty());
+    }
+
+    // --- singular_values_via_gram ---
+
+    #[test]
+    fn singular_values_via_gram_identity_2x2() {
+        let mat = vec![vec![1.0, 0.0], vec![0.0, 1.0]];
+        let svals = singular_values_via_gram(&mat);
+        assert_eq!(svals.len(), 2);
+        for s in &svals {
+            assert!((s - 1.0).abs() < 1e-12, "sval={}", s);
+        }
+    }
+
+    #[test]
+    fn singular_values_via_gram_diagonal_3x2() {
+        // 3x2 matrix with column norms 3 and 2: svals = {3, 2}.
+        let mat = vec![vec![3.0, 0.0], vec![0.0, 2.0], vec![0.0, 0.0]];
+        let svals = singular_values_via_gram(&mat);
+        assert_eq!(svals.len(), 2);
+        assert!((svals[0] - 3.0).abs() < 1e-10, "svals={:?}", svals);
+        assert!((svals[1] - 2.0).abs() < 1e-10, "svals={:?}", svals);
+    }
+
+    #[test]
+    fn singular_values_via_gram_matches_full_svd_on_random() {
+        // Reproducible random matrix; Gram-route svals must match full-SVD svals
+        // (sorted desc) to within 1e-9.
+        let mut seed: u64 = 0xC0FFEE;
+        let mut next = || {
+            seed = seed.wrapping_mul(6364136223846793005).wrapping_add(1442695040888963407);
+            ((seed >> 33) as f64) / (u32::MAX as f64) - 0.5
+        };
+        let n_rows = 32;
+        let n_cols = 8;
+        let mat: Vec<Vec<f64>> =
+            (0..n_rows).map(|_| (0..n_cols).map(|_| next()).collect()).collect();
+        let mut sv_full = singular_values(&mat);
+        let sv_gram = singular_values_via_gram(&mat);
+        sv_full.sort_by(|a, b| b.partial_cmp(a).unwrap_or(std::cmp::Ordering::Equal));
+        assert_eq!(sv_full.len(), sv_gram.len());
+        for (a, b) in sv_full.iter().zip(sv_gram.iter()) {
+            assert!(
+                (a - b).abs() < 1e-9,
+                "sv_full={} sv_gram={} diff={}",
+                a,
+                b,
+                (a - b).abs()
+            );
+        }
+    }
+
+    #[test]
+    fn singular_values_via_gram_empty_returns_empty() {
+        assert!(singular_values_via_gram(&[]).is_empty());
+        assert!(singular_values_via_gram(&[vec![]]).is_empty());
     }
 
     // --- svd_right_singular_vectors ---
