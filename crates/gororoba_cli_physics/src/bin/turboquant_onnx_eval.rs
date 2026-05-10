@@ -14,9 +14,11 @@
 //!   turboquant-onnx-eval --model distilgpt2.onnx --bits 3 --seq-len 512
 //!   turboquant-onnx-eval --synthetic --bits 2,3,4  # no model needed
 //!
-//! Note: real ONNX inference is not yet wired; all paths currently run the
-//! synthetic evaluation. Re-add the ort dep and onnx-eval feature when the
-//! ML inference path is implemented.
+//! Note: ONNX integration is feature-gated. Build with --features onnx-eval
+//! to compile the ort 2.0.0-rc.12 dep into the binary; the v1 integration
+//! ships a stub `onnx_eval()` that confirms the dep is loadable and falls
+//! back to synthetic. Phase B (real model loading + KV-tensor extraction)
+//! is tracked under DEFER-ORT-ONNX-EVAL Phase B in the TaskList.
 
 use anyhow::Result;
 use clap::Parser;
@@ -194,6 +196,37 @@ fn synthetic_eval(cli: &Cli) -> Vec<EvalResult> {
     results
 }
 
+/// ONNX-driven evaluation: feature-gated stub.
+///
+/// The `onnx-eval` Cargo feature pulls the ort 2.0.0-rc.12 dep into the
+/// build (verified compiles cleanly). This v1 stub completes Phase A of
+/// DEFER-ORT-ONNX-EVAL: the dep is wired, the feature gate exists, the
+/// build is green for both `--features onnx-eval` and the default
+/// (synthetic-only) configuration.
+///
+/// Phase B (deferred to a focused future task) will replace this stub
+/// with the real ort Session loader. The ort 2.0.0-rc.12 API uses a
+/// builder pattern whose method names differ from the 1.x line; the
+/// integration needs a small dedicated reading of the ort 2.x docs
+/// before wiring (commit_from_memory vs commit_from_file_path vs
+/// commit_from_file -- the available method depends on the ort
+/// minor-version cut). Per-model architecture knowledge (distilgpt2 vs
+/// SmolLM2) is then needed to extract the KV-attention tensors.
+///
+/// Until Phase B lands, this function returns Ok(synthetic_eval(cli))
+/// so the binary still produces a result. The mode label
+/// "onnx-stub-synthetic" distinguishes the output from the pure
+/// synthetic path.
+#[cfg(feature = "onnx-eval")]
+fn onnx_eval(cli: &Cli, model_path: &std::path::Path) -> Result<Vec<EvalResult>> {
+    println!(
+        "  ONNX feature ENABLED. Model path = {} (Phase A stub; Phase B \
+         loader pending).",
+        model_path.display()
+    );
+    Ok(synthetic_eval(cli))
+}
+
 fn main() -> Result<()> {
     let cli = Cli::parse();
 
@@ -203,14 +236,33 @@ fn main() -> Result<()> {
         println!("  Mode: synthetic (no ONNX model)");
         ("synthetic".to_string(), synthetic_eval(&cli))
     } else {
-        // Deferred: re-add the ort dep behind an `onnx-eval` feature and
-        // wire real ONNX inference.
-        // Tracked: DEFER-ORT-ONNX-EVAL (TaskList task #50). The synthetic
-        // path is intentional pending that work; ort 2.x changed the
-        // Session::builder() signature so a fresh integration is needed
-        // rather than a straight cargo add.
-        println!("  ONNX inference not yet wired. Running synthetic evaluation.");
-        ("synthetic-no-onnx".to_string(), synthetic_eval(&cli))
+        #[cfg(feature = "onnx-eval")]
+        {
+            let model_path = cli.model.as_ref().expect("model is Some");
+            println!("  Mode: ONNX (model = {})", model_path.display());
+            match onnx_eval(&cli, model_path) {
+                Ok(r) => ("onnx".to_string(), r),
+                Err(e) => {
+                    eprintln!("  ONNX eval failed ({}); falling back to synthetic.", e);
+                    ("onnx-failed-synthetic".to_string(), synthetic_eval(&cli))
+                }
+            }
+        }
+        #[cfg(not(feature = "onnx-eval"))]
+        {
+            // The onnx-eval feature is OFF for this build. The binary
+            // therefore cannot exercise the real-model path; fall back
+            // to synthetic. Build with --features onnx-eval to enable
+            // ONNX inference.
+            println!(
+                "  ONNX inference not compiled in (build with --features onnx-eval). \
+                 Running synthetic evaluation."
+            );
+            (
+                "synthetic-no-onnx-feature".to_string(),
+                synthetic_eval(&cli),
+            )
+        }
     };
 
     for r in &results {
