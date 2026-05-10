@@ -62,6 +62,12 @@ struct Args {
     /// Exit non-zero if any debt class grew compared to the baseline.
     #[arg(long, default_value_t = false)]
     strict: bool,
+    /// Path to canonical SQLite control plane to read revisions audit from.
+    /// When supplied, the report includes a `[revisions]` block with
+    /// claim/insight/experiment revision counts, top mutators, and
+    /// per-field counts.
+    #[arg(long)]
+    sqlite: Option<PathBuf>,
 }
 
 #[derive(Default, Serialize, Deserialize, Debug, Clone)]
@@ -103,6 +109,31 @@ struct AuditOutput {
     by_root: BTreeMap<String, Counts>,
     #[serde(skip_serializing_if = "Option::is_none")]
     baseline_delta: Option<BaselineDelta>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    revisions: Option<RevisionsSummary>,
+}
+
+/// Snapshot of the canonical SQLite revisions audit trail. Synthesizes
+/// repo-audit's static debt count with the dynamic mutation flow recorded
+/// in claim_revisions / insight_revisions / experiment_revisions, so a
+/// single audit report shows both "how much debt exists" and "how much
+/// has been touched recently".
+#[derive(Serialize, Debug)]
+struct RevisionsSummary {
+    sqlite_path: String,
+    claim_revisions: u64,
+    insight_revisions: u64,
+    experiment_revisions: u64,
+    /// Per-field counts across all three revisions tables, sorted by name.
+    by_field: BTreeMap<String, u64>,
+    /// Top 5 actors by revision count, sorted descending.
+    top_actors: Vec<ActorCount>,
+}
+
+#[derive(Serialize, Debug)]
+struct ActorCount {
+    actor: String,
+    revisions: u64,
 }
 
 #[derive(Deserialize, Debug)]
@@ -321,6 +352,85 @@ fn count_in_rocq_file(src: &str, patterns: &Patterns) -> Counts {
     }
 }
 
+/// Read the canonical revisions audit trail from `sqlite_path` and
+/// summarize it into a RevisionsSummary. Aggregates across all three
+/// revisions tables (claim, insight, experiment) for the by_field and
+/// top_actors blocks. Errors propagate; callers may choose to warn-and-
+/// continue rather than fail the audit.
+fn read_revisions_summary(sqlite_path: &Path) -> Result<RevisionsSummary> {
+    let conn = rusqlite::Connection::open_with_flags(
+        sqlite_path,
+        rusqlite::OpenFlags::SQLITE_OPEN_READ_ONLY,
+    )?;
+    let count_table = |table: &str| -> Result<u64> {
+        let mut stmt = conn.prepare(&format!("SELECT COUNT(*) FROM {}", table))?;
+        let n: i64 = stmt.query_row([], |row| row.get(0))?;
+        Ok(n as u64)
+    };
+    let claim_revisions = count_table("claim_revisions")?;
+    let insight_revisions = count_table("insight_revisions")?;
+    let experiment_revisions = count_table("experiment_revisions")?;
+
+    let mut by_field: BTreeMap<String, u64> = BTreeMap::new();
+    let aggregate_field = |conn: &rusqlite::Connection,
+                           table: &str,
+                           by_field: &mut BTreeMap<String, u64>|
+     -> Result<()> {
+        let mut stmt = conn.prepare(&format!(
+            "SELECT field_name, COUNT(*) FROM {} GROUP BY field_name",
+            table
+        ))?;
+        let rows = stmt.query_map([], |row| {
+            Ok((row.get::<_, String>(0)?, row.get::<_, i64>(1)? as u64))
+        })?;
+        for row in rows {
+            let (field, n) = row?;
+            *by_field.entry(field).or_insert(0) += n;
+        }
+        Ok(())
+    };
+    aggregate_field(&conn, "claim_revisions", &mut by_field)?;
+    aggregate_field(&conn, "insight_revisions", &mut by_field)?;
+    aggregate_field(&conn, "experiment_revisions", &mut by_field)?;
+
+    let mut actor_counts: BTreeMap<String, u64> = BTreeMap::new();
+    let aggregate_actors = |conn: &rusqlite::Connection,
+                            table: &str,
+                            actor_counts: &mut BTreeMap<String, u64>|
+     -> Result<()> {
+        let mut stmt = conn.prepare(&format!(
+            "SELECT actor, COUNT(*) FROM {} GROUP BY actor",
+            table
+        ))?;
+        let rows = stmt.query_map([], |row| {
+            Ok((row.get::<_, String>(0)?, row.get::<_, i64>(1)? as u64))
+        })?;
+        for row in rows {
+            let (actor, n) = row?;
+            *actor_counts.entry(actor).or_insert(0) += n;
+        }
+        Ok(())
+    };
+    aggregate_actors(&conn, "claim_revisions", &mut actor_counts)?;
+    aggregate_actors(&conn, "insight_revisions", &mut actor_counts)?;
+    aggregate_actors(&conn, "experiment_revisions", &mut actor_counts)?;
+    let mut top_actors: Vec<ActorCount> = actor_counts
+        .into_iter()
+        .map(|(actor, revisions)| ActorCount { actor, revisions })
+        .collect();
+    top_actors.sort_by(|a, b| b.revisions.cmp(&a.revisions).then(a.actor.cmp(&b.actor)));
+    top_actors.truncate(5);
+
+    Ok(RevisionsSummary {
+        sqlite_path: sqlite_path.display().to_string(),
+        claim_revisions,
+        insight_revisions,
+        experiment_revisions,
+        by_field,
+        top_actors,
+    })
+}
+
 fn merge(into: &mut Counts, from: &Counts) {
     into.rust_files += from.rust_files;
     into.rocq_files += from.rocq_files;
@@ -516,6 +626,20 @@ fn main() -> Result<()> {
         }
         baseline_delta = Some(delta);
     }
+    let revisions = match args.sqlite.as_ref() {
+        Some(path) => match read_revisions_summary(path) {
+            Ok(summary) => Some(summary),
+            Err(err) => {
+                eprintln!(
+                    "WARN: failed to read SQLite revisions from {}: {}",
+                    path.display(),
+                    err
+                );
+                None
+            }
+        },
+        None => None,
+    };
     let output = AuditOutput {
         meta: Meta {
             generated_at: now,
@@ -527,6 +651,7 @@ fn main() -> Result<()> {
         totals,
         by_root,
         baseline_delta,
+        revisions,
     };
     let toml_text = toml::to_string_pretty(&output)?;
     fs::create_dir_all(&args.output_dir)?;
