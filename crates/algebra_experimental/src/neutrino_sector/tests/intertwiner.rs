@@ -679,7 +679,7 @@ fn test_s3_intertwiner_analysis() {
 /// Runtime: ~56s. Marked #[ignore] for CI.
 /// Run: cargo test -- test_v6_2d_constrained --ignored --nocapture
 #[test]
-#[ignore]
+#[ignore = "heavy: ~56s constrained 2D V6 scan"]
 fn test_v6_2d_constrained_scan() {
     let ch_pair = (11_usize, 12);
     let nu_pair = (7_usize, 8);
@@ -896,7 +896,7 @@ fn test_v6_2d_constrained_scan() {
 /// Runtime: ~160s (Rayon-parallel). Marked #[ignore] for CI.
 /// Run: cargo test -- test_v6_joint_4d --ignored --nocapture
 #[test]
-#[ignore]
+#[ignore = "heavy: ~160s rayon-parallel 4D V6 joint optimization"]
 fn test_v6_joint_4d_optimization() {
     use rayon::prelude::*;
 
