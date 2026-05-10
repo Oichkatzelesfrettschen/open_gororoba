@@ -705,6 +705,16 @@ debug = "line-tables-only"  # perf/flamegraph profiling without full DWARF
 strip = "none"              # keep symbols for perf report
 overflow-checks = true
 
+# Per-package codegen-units=1 override for gororoba_cli in release-gate.
+# Why: thin-LTO + codegen-units=6 creates dangling references to gemm/pulp
+# SIMD trampolines (gemm_microkernel_c64_simd256_*, libpulp_v0_22_2_st_b32s_*)
+# in the thesis-42-support binary. The bug reproduces with both rust-lld
+# and gnu gold; root cause is multi-cgu LTO discarding "duplicate" symbols
+# while still keeping references in the survivor cgu. cgu=1 forces a single
+# cgu so LTO has nothing to discard. Other workspace crates remain at cgu=6.
+[profile.release-gate.package.gororoba_cli]
+codegen-units = 1
+
 # Bench: release-level optimization with fat LTO for baseline parity.
 [profile.bench]
 opt-level = 3

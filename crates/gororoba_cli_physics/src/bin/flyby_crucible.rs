@@ -204,21 +204,7 @@ fn run_flyby(
                             nalgebra::Vector3::from(r_sun),
                         )?;
                         let mut pipe = mtx.lock().ok()?;
-                        let f = pipe
-                            .compute_force_3body(
-                                &params.triad_earth,
-                                &params.triad_lunar,
-                                &params.triad_solar,
-                                &params.h_triad_earth,
-                                &params.vrel_triad_lunar,
-                                &params.h_triad_solar,
-                                &params.vhat_triad_solar,
-                                params.h_earth_norm,
-                                params.v_rel_norm,
-                                params.cross_sign,
-                                alpha_eff,
-                            )
-                            .ok()?;
+                        let f = pipe.compute_force_3body(&params, alpha_eff).ok()?;
                         Some(f)
                     });
 
