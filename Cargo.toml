@@ -231,8 +231,13 @@ smallvec = "1.15"            # Inline small buffers, heap spill only when needed
 
 # Benchmarking (criterion + iai-callgrind already in workspace)
 
-# ONNX Runtime for real-model evaluation
-ort = { version = "2.0.0-rc.12", default-features = false, features = ["std", "alternative-backend"] }
+# ONNX Runtime for real-model evaluation.
+# load-dynamic: link to the system libonnxruntime.so at runtime via dlopen.
+# Requires onnxruntime-opt-cuda (or equivalent) installed system-wide.
+# On Arch with onnxruntime-opt-cuda, the .so is at /usr/lib64/libonnxruntime.so.
+# Alternative: download-binaries (default) auto-fetches a vendored runtime --
+# avoid because it adds ~50 MB to every CI cache entry and pins the version.
+ort = { version = "2.0.0-rc.12", default-features = false, features = ["std", "load-dynamic", "api-18"] }
 
 # Unified GPU compute (cubecl: write once, dispatch to CUDA + Vulkan + WebGPU + Metal)
 cubecl = { version = "0.10.0", default-features = false }
