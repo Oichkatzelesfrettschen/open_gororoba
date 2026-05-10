@@ -116,6 +116,26 @@ enum Command {
     NormalizeOperationalNarratives,
     /// Normalize narrative overlays bootstrap (stub)
     NormalizeNarrativeOverlays,
+
+    /// Register one or more markdown files in
+    /// registry/markdown_owner_map.toml. Idempotent: re-registering an
+    /// existing path is a no-op. Bumps the document_count field.
+    Register {
+        /// Repo-relative path to the markdown file (e.g., docs/glossary.md).
+        /// Repeat to register multiple paths in one transaction.
+        #[arg(long = "path", required = true)]
+        paths: Vec<String>,
+        /// Owner group label (e.g., "project", "research", "third_party").
+        #[arg(long, default_value = "project")]
+        owner_group: String,
+        /// Removal status: active / candidate_for_removal / deprecated /
+        /// archived / locked. Default: active.
+        #[arg(long, default_value = "active")]
+        removal_status: String,
+        /// Required when removal_status is anything other than "active".
+        #[arg(long)]
+        removal_reason: Option<String>,
+    },
 }
 
 fn main() -> Result<()> {
@@ -187,7 +207,108 @@ fn main() -> Result<()> {
             println!("OK: normalize (stub)");
             Ok(())
         }
+        Command::Register {
+            paths,
+            owner_group,
+            removal_status,
+            removal_reason,
+        } => register_markdown_paths(
+            &repo_root,
+            &paths,
+            &owner_group,
+            &removal_status,
+            removal_reason.as_deref(),
+        ),
     }
+}
+
+/// Register one or more markdown files in
+/// registry/markdown_owner_map.toml. Idempotent: re-registering an
+/// existing path is a no-op. Bumps the `document_count` field via
+/// in-place text edit so the file's documentation header and per-row
+/// comments are preserved exactly as they appear on disk.
+///
+/// WHY text-based: the markdown_owner_map.toml has a hand-curated
+/// comment header explaining the schema and rules. Round-tripping
+/// through `toml::from_str` -> mutate -> `toml::to_string` would drop
+/// every # comment. toml_edit could preserve them but would still
+/// reformat array-of-tables blocks. Text append is the simplest
+/// minimum-perturbation approach.
+fn register_markdown_paths(
+    repo_root: &Path,
+    paths: &[String],
+    owner_group: &str,
+    removal_status: &str,
+    removal_reason: Option<&str>,
+) -> Result<()> {
+    if removal_status != "active" && removal_reason.is_none() {
+        bail!(
+            "removal_status='{}' requires --removal-reason (per registry rule)",
+            removal_status
+        );
+    }
+    let map_path = repo_root.join("registry/markdown_owner_map.toml");
+    let original = fs::read_to_string(&map_path)
+        .with_context(|| format!("read {}", map_path.display()))?;
+    // Parse with the lossy parser purely to enumerate existing paths
+    // and catch the document_count value; the write path uses text edits.
+    let value: toml::Value =
+        toml::from_str(&original).context("parse markdown_owner_map.toml")?;
+    let existing: BTreeSet<String> = table_array(&value, "owner")
+        .iter()
+        .map(|row| table_str(row, "path").replace('\\', "/"))
+        .filter(|p| !p.is_empty())
+        .collect();
+    let declared_count: i64 = value
+        .get("markdown_owner_map")
+        .and_then(|m| m.get("document_count"))
+        .and_then(toml::Value::as_integer)
+        .unwrap_or(existing.len() as i64);
+    let mut new_paths: Vec<&String> = paths
+        .iter()
+        .filter(|p| !existing.contains(p.as_str()))
+        .collect();
+    new_paths.sort();
+    new_paths.dedup();
+    if new_paths.is_empty() {
+        eprintln!(
+            "all {} input paths already registered; no changes",
+            paths.len()
+        );
+        return Ok(());
+    }
+    let mut blocks = String::new();
+    for p in &new_paths {
+        blocks.push_str("\n[[owner]]\n");
+        blocks.push_str(&format!("path = \"{}\"\n", p));
+        blocks.push_str(&format!("owner_group = \"{}\"\n", owner_group));
+        blocks.push_str(&format!("removal_status = \"{}\"\n", removal_status));
+        if let Some(reason) = removal_reason {
+            blocks.push_str(&format!("removal_reason = \"{}\"\n", reason));
+        }
+    }
+    let new_count = declared_count + new_paths.len() as i64;
+    let count_re = regex::Regex::new(r"(?m)^document_count\s*=\s*\d+\s*$")
+        .expect("static regex");
+    let with_count =
+        count_re.replace(&original, format!("document_count = {}", new_count).as_str());
+    let mut updated = with_count.into_owned();
+    if !updated.ends_with('\n') {
+        updated.push('\n');
+    }
+    updated.push_str(&blocks);
+    fs::write(&map_path, &updated)
+        .with_context(|| format!("write {}", map_path.display()))?;
+    eprintln!(
+        "registered {} new path(s); document_count {} -> {}",
+        new_paths.len(),
+        declared_count,
+        new_count
+    );
+    for p in &new_paths {
+        eprintln!("  + {}", p);
+    }
+    Ok(())
 }
 
 /// Directories to skip when walking for .md files.

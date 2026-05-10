@@ -12,8 +12,7 @@ updated = "2026-04-30"
 authoritative = true
 status = "active"
 status_token = "ACTIVE"
-document_count = 207
-
+document_count = 218
 [[owner]]
 path = "README.md"
 owner_group = "project"
@@ -1264,3 +1263,58 @@ path = "plans/README.md"
 owner_group = "project"
 removal_status = "active"
 removal_reason = ""
+
+[[owner]]
+path = "AGENTS.md"
+owner_group = "project"
+removal_status = "active"
+
+[[owner]]
+path = "CLAUDE.md"
+owner_group = "project"
+removal_status = "active"
+
+[[owner]]
+path = "docs/dependencies/upgrade_history.md"
+owner_group = "project"
+removal_status = "active"
+
+[[owner]]
+path = "docs/engineering/cache_policy.md"
+owner_group = "project"
+removal_status = "active"
+
+[[owner]]
+path = "docs/engineering/clippy_allow_inventory_2026_05_09.md"
+owner_group = "project"
+removal_status = "active"
+
+[[owner]]
+path = "docs/engineering/cpd_top20_classification_2026_05_09.md"
+owner_group = "project"
+removal_status = "active"
+
+[[owner]]
+path = "docs/engineering/experiment_manifest_schema.md"
+owner_group = "project"
+removal_status = "active"
+
+[[owner]]
+path = "docs/engineering/experiments_missing_binary_disposition_2026_05_09.md"
+owner_group = "project"
+removal_status = "active"
+
+[[owner]]
+path = "docs/engineering/sqlite_canonical_write_plane_design.md"
+owner_group = "project"
+removal_status = "active"
+
+[[owner]]
+path = "docs/engineering/unsafe_safety_methodology_2026_05_09.md"
+owner_group = "project"
+removal_status = "active"
+
+[[owner]]
+path = "docs/glossary.md"
+owner_group = "project"
+removal_status = "active"
