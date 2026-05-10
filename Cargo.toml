@@ -232,7 +232,7 @@ smallvec = "1.15"            # Inline small buffers, heap spill only when needed
 # Benchmarking (criterion + iai-callgrind already in workspace)
 
 # ONNX Runtime for real-model evaluation
-ort = { version = "2.0.0-rc.12", default-features = false }
+ort = { version = "2.0.0-rc.12", default-features = false, features = ["std", "alternative-backend"] }
 
 # Unified GPU compute (cubecl: write once, dispatch to CUDA + Vulkan + WebGPU + Metal)
 cubecl = { version = "0.10.0-pre.2", default-features = false }
