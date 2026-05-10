@@ -1,3 +1,37 @@
+//! Vulkan compute pipeline for the LBM solver.
+//!
+//! # Universal SAFETY argument for `unsafe { device.<vk_fn>(...) }`
+//!
+//! Every `ash::Device` call in this file is `unsafe` because ash exposes
+//! the Vulkan FFI verbatim. Every site here relies on the same soundness
+//! pattern, stated once and not repeated per-block:
+//!
+//! 1. **Active context**: the calling thread is inside a `VulkanContext`
+//!    scope; `device` is borrowed from that context's `Arc<Device>` and
+//!    outlives every handle returned from this module.
+//! 2. **Handle lifetimes**: every Vulkan handle (image, buffer, view,
+//!    descriptor set, pipeline, command pool) returned by a creation
+//!    call is paired with a destroy call in the corresponding `Drop`
+//!    implementation. The `LbmComputeContext` and `LbmComputePipeline`
+//!    structs hold the handles and their backing memory together so
+//!    drop order is well-defined.
+//! 3. **Synchronization**: command buffers built here are submitted to
+//!    a queue with explicit `vk::Fence` synchronization; the host waits
+//!    on the fence before reading back results. No CPU-side reads occur
+//!    while the GPU is writing.
+//! 4. **Descriptor / pipeline match**: pipeline descriptor-set layouts
+//!    are constructed alongside the matching descriptor-set bindings;
+//!    the typestate of the builder structs prevents dispatching with a
+//!    wrong-arity descriptor set at runtime under normal control flow.
+//! 5. **Memory alignment**: gpu_allocator returns memory blocks with
+//!    alignment satisfying the `vk::MemoryRequirements` that
+//!    `get_image_memory_requirements` / `get_buffer_memory_requirements`
+//!    reported.
+//!
+//! Per-site SAFETY comments are added only where the local invariant
+//! requires more than this argument (e.g., partial pipeline state, or a
+//! non-obvious lifetime claim).
+
 use crate::{Precision, VulkanContext};
 use ash::{Device, vk};
 use gororoba_gpu_readback::{
