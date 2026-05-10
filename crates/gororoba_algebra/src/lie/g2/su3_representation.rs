@@ -271,6 +271,8 @@ pub fn align_with_gell_mann(rep: &FundamentalRepresentation) -> GellMannAlignmen
 
     // Verify orthogonality: O O^T should be identity
     let mut max_residual = 0.0f64;
+    // 8x8 Gram-matrix check: nested i,j needed to access overlap[i][k]
+    // and overlap[j][k] in the same inner-product expression.
     #[allow(clippy::needless_range_loop)]
     for i in 0..8 {
         for j in 0..8 {
@@ -496,6 +498,9 @@ mod tests {
         // where O_{ab} = <computed[a], standard[b]>, so computed = O * standard.
         // Inverse rotation: O^{-1} = O^T, so (O^T)_{ia} = O_{ai}.
         let mut max_diff = 0.0f64;
+        // Five-deep rank-3 tensor rotation; outer (i,j,k_idx) and inner
+        // (a,b,ci) all indexed individually; iter().enumerate() chains
+        // do not compose cleanly through 5 levels.
         #[allow(clippy::needless_range_loop)]
         for i in 0..8 {
             for j in 0..8 {

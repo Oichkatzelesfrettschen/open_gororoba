@@ -451,6 +451,7 @@ pub fn is_skew_adjoint_on_perp(
     tol: f64,
 ) -> bool {
     let block = perp_block(derivation, perp_indices);
+    // 6x6 antisymmetry test: needs both r and s to access block[r][s] and block[s][r].
     #[allow(clippy::needless_range_loop)]
     for r in 0..6 {
         for s in 0..6 {

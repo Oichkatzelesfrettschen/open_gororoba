@@ -469,6 +469,8 @@ fn test_octonion_subalgebra_with_non_fano_vector() {
 // ===================================================================
 
 #[test]
+// QSIGNS table indexed test: assert!() messages reference {i, j} so the
+// raw indices are needed for the panic-on-fail diagnostic.
 #[allow(clippy::needless_range_loop)]
 fn test_qsigns_base_case_quaternions() {
     // Verify QSIGNS matches de Marrais's table exactly.

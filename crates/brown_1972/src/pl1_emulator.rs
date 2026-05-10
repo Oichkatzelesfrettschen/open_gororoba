@@ -353,6 +353,9 @@ impl Pl1Emulator {
             let a_norm = cd_norm_sq(&self.pairs[i].a);
             let b_norm = cd_norm_sq(&self.pairs[i].b);
 
+            // Triangular pair-scan: starts at j=i+1 and writes used[j],
+            // requires the bare index for both the slice access and the
+            // mutable used[] write.
             #[allow(clippy::needless_range_loop)]
             for j in (i + 1)..self.pairs.len() {
                 if used[j] {

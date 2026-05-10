@@ -223,6 +223,8 @@ impl GeneralizedCartanMatrix {
 
             for k in (i + 1)..n {
                 let factor = matrix[k][i] / matrix[i][i];
+                // LU pivot row reduction: matrix[k][j] depends on matrix[i][j];
+                // both rows referenced by index j in the same expression.
                 #[allow(clippy::needless_range_loop)]
                 for j in i..n {
                     matrix[k][j] -= factor * matrix[i][j];

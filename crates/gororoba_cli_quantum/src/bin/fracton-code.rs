@@ -54,6 +54,9 @@ fn main() -> Result<()> {
     let img_size = (l * cell_size) as u32;
     let mut img = ImageBuffer::new(img_size, img_size);
 
+    // PNG raster: outer (r, c) selects a grid cell, inner (dy, dx) fills
+    // each cell at cell_size resolution; both grid and pixel offsets
+    // need raw indices for the 4-deep nested loop.
     #[allow(clippy::needless_range_loop)]
     for r in 0..l {
         for c in 0..l {

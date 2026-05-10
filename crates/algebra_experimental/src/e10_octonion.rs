@@ -1028,6 +1028,8 @@ mod tests {
     }
 
     #[test]
+    // Fano-plane symmetry test: nested 1..=7 loops verify table[i][j]
+    // == table[j][i] for the involution structure of the Fano lines.
     #[allow(clippy::needless_range_loop)]
     fn test_fano_complement_table_consistent() {
         let table = fano_complement_table();
@@ -1226,6 +1228,8 @@ mod tests {
     }
 
     #[test]
+    // Octonion simple-root products: nested loop scans table[i][j]
+    // for norm bounds; both i and j needed for the table lookup.
     #[allow(clippy::needless_range_loop)]
     fn test_simple_root_products_norm() {
         // Product of two norm-sqrt(2) octonions should have norm <= 2
@@ -1246,6 +1250,8 @@ mod tests {
     }
 
     #[test]
+    // Imaginary unit pair scan: for each (i, j) we need both indices to
+    // verify the Fano-line membership for the unordered pair {i, j}.
     #[allow(clippy::needless_range_loop)]
     fn test_all_imag_pairs_fano_connected() {
         // In the Fano plane, every pair of distinct imaginary units lies
@@ -1360,6 +1366,7 @@ mod tests {
     }
 
     #[test]
+    // E8 Dynkin diagram edge counter: triangular i,j scan with i+1..8.
     #[allow(clippy::needless_range_loop)]
     fn test_e8_dynkin_adjacency_edge_count() {
         let adj = e8_dynkin_adjacency();
@@ -1403,6 +1410,7 @@ mod tests {
     }
 
     #[test]
+    // E8 wall-transition graph builder test: indexed by sequence position.
     #[allow(clippy::needless_range_loop)]
     fn test_build_e8_transition_graph() {
         // Sequence: 0->1->2->3->8->4 (walls 0-7 are E8, wall 8 is affine)
