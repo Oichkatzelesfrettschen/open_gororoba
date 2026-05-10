@@ -427,7 +427,7 @@ mod tests {
 
     // GPU tests are gated with #[ignore] -- require CUDA hardware
     #[test]
-    #[ignore]
+    #[ignore = "gpu (CUDA hardware required)"]
     fn test_gpu_box_counting_uniform() {
         let ctx = CudaContext::new(0).expect("CUDA context");
         let mut counter = GpuBoxCounter::new(&ctx).expect("GpuBoxCounter");
@@ -444,7 +444,7 @@ mod tests {
     }
 
     #[test]
-    #[ignore]
+    #[ignore = "gpu (CUDA hardware required)"]
     fn test_gpu_box_counting_single_cell() {
         let ctx = CudaContext::new(0).expect("CUDA context");
         let mut counter = GpuBoxCounter::new(&ctx).expect("GpuBoxCounter");
@@ -463,7 +463,7 @@ mod tests {
     }
 
     #[test]
-    #[ignore]
+    #[ignore = "gpu (CUDA hardware required)"]
     fn test_gpu_box_counting_filled_plane() {
         let ctx = CudaContext::new(0).expect("CUDA context");
         let mut counter = GpuBoxCounter::new(&ctx).expect("GpuBoxCounter");
@@ -486,7 +486,7 @@ mod tests {
     }
 
     #[test]
-    #[ignore]
+    #[ignore = "gpu (CUDA hardware required)"]
     fn test_gpu_cpu_agreement() {
         use cosmology_core::sersic::{box_counting_fractal_dim_threshold, otsu_threshold_f32};
 
@@ -516,7 +516,7 @@ mod tests {
     }
 
     #[test]
-    #[ignore]
+    #[ignore = "gpu (CUDA hardware required)"]
     fn test_gpu_empty_field_graceful() {
         let ctx = CudaContext::new(0).expect("CUDA context");
         let mut counter = GpuBoxCounter::new(&ctx).expect("GpuBoxCounter");

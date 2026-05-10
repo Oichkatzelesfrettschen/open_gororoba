@@ -105,7 +105,7 @@ mod tests {
     /// is gated behind #[ignore]. Run with:
     ///   cargo test -p algebra_analysis -- --ignored test_d64_flat_band
     #[test]
-    #[ignore]
+    #[ignore = "heavy: O(dim^3) eigenvalue at D=64"]
     fn test_d64_flat_band_fraction() {
         let result = flat_band_scaling(&[64], 0.01);
         assert_eq!(result.dims.len(), 1);
@@ -119,7 +119,7 @@ mod tests {
 
     /// Verify scaling holds across D=16, D=32, D=64.
     #[test]
-    #[ignore]
+    #[ignore = "heavy: D=16/32/64 flat-band scaling sweep"]
     fn test_d16_d32_d64_scaling() {
         let result = flat_band_scaling(&[16, 32, 64], 0.01);
         assert_eq!(result.dims.len(), 3);
