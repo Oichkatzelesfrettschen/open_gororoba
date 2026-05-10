@@ -1,0 +1,223 @@
+# Registry canonical architecture: a four-layer walkthrough
+
+This document is a user-facing walkthrough of how the open_gororoba
+registry layer actually works in practice as of 2026-05-10. It pairs
+with `sqlite_canonical_write_plane_design.md` (which captures the
+design rationale + stack pinning) and explains the lifecycle of a
+single registry mutation from CLI invocation to consumer surface.
+
+If you are about to mutate a claim, insight, or experiment, or you are
+debugging "I changed the database but my Rust mirror still has the old
+value", read this file first.
+
+## The four layers
+
+```
++-----------------------------------------------------------+
+| Layer 1 -- canonical SQLite                               |
+|   registry/canonical/control_plane.sqlite3                |
+|   tables: claims, insights, experiments_cp,               |
+|           binaries_cp, theorems,                          |
+|           claim_revisions, insight_revisions,             |
+|           experiment_revisions  (audit trail)             |
++-----------------------------------------------------------+
+                          |
+                          | provenance export-control-plane
+                          v
++-----------------------------------------------------------+
+| Layer 2 -- compatibility-export TOML                      |
+|   registry/claims.toml                                    |
+|   registry/insights.toml                                  |
+|   registry/experiments.toml                               |
+|   registry/binaries.toml                                  |
+|   docs/THEOREMS.md                                        |
+|   docs/generated/THEOREMS_REGISTRY_MIRROR.md              |
+|   (each TOML carries the AUTO-GENERATED header)           |
++-----------------------------------------------------------+
+                          |
+                          | registry-emit <kind>-mirror
+                          v
++-----------------------------------------------------------+
+| Layer 3 -- Rust mirror modules                            |
+|   crates/data_core/src/registry_mirrors/*.rs              |
+|   each carries `// @generated` so rustfmt skips them      |
++-----------------------------------------------------------+
+                          |
+                          | markdown-registry build-...
+                          v
++-----------------------------------------------------------+
+| Layer 4 -- documentation surfaces                         |
+|   docs/CLAIMS.md, docs/INSIGHTS.md, docs/THEOREMS.md      |
+|   docs/EXPERIMENTS_INDEX.md, etc.                         |
++-----------------------------------------------------------+
+```
+
+Layer 1 is the only layer you write to. Every other layer is regenerated
+by deterministic tooling.
+
+## What lives where
+
+- **Layer 1, canonical SQLite.** This is the source of truth. It holds
+  the row state plus an append-only revisions audit. Schema lives in
+  `db/migrations/*.sql`. The `gororoba-db` CLI is the canonical mutator.
+
+- **Layer 2, compat TOML.** These files exist so any pre-existing tool
+  or downstream consumer that knew the TOML format keeps working. They
+  are regenerated from Layer 1 by `provenance export-control-plane`
+  (binary in `gororoba_cli_provenance`, source in
+  `gororoba_cli_data/src/bin/provenance.rs`). Each Layer-2 TOML starts
+  with a header line that begins
+  `# AUTO-GENERATED: READ-ONLY COMPATIBILITY EXPORT.` -- if you see
+  that header, do not edit by hand.
+
+- **Layer 3, Rust mirrors.** Generated from Layer 2 by `registry-emit`
+  (in `gororoba_cli_data`). Each module has `// @generated` so
+  `rustfmt` does not touch it (see `rustfmt.toml`:
+  `format_generated_files = false`). Consumed by Rust code that wants
+  compile-time access to registry contents.
+
+- **Layer 4, documentation.** Generated from Layer 2 + Layer 3 by
+  `markdown-registry` (in `gororoba_cli_data`). The mdBook in
+  `docs/book/` consumes some of these.
+
+## Mutation flow: how to change one row
+
+The canonical command shape is:
+
+```
+gororoba-db {claim,insight,experiment} update-status-note \
+    --id C-441 \
+    --status-note "..." \
+    --actor eirikr \
+    --reason "Stage B B-R1" \
+    [--regen-toml false]
+```
+
+What happens, step by step:
+
+1. **BEGIN IMMEDIATE transaction** opens on Layer 1.
+2. The current value is read and SHA-256 hashed for the audit trail.
+3. The new value is written to the entity table column.
+4. A row is appended to the corresponding revisions table
+   (`claim_revisions`, `insight_revisions`, or `experiment_revisions`)
+   recording: `prev_value_sha256`, `new_value_sha256`, `actor`,
+   `reason`, `ts_utc`, `operation`, `application_id`.
+5. The transaction commits.
+6. If `--regen-toml true` (default), `gororoba-db` spawns
+   `cargo run -p gororoba_cli_provenance --bin provenance --
+    export-control-plane`, which regenerates all six Layer-2 outputs.
+7. The CLI prints a one-line revision summary including the new SHA.
+
+If you pass `--regen-toml false` (useful for batch updates), Layer 1
+mutates but Layer 2 does not refresh. You then call
+`make registry-export-markdown` (or `provenance export-control-plane`
+directly) once after the batch completes.
+
+## The render-row splice mechanism
+
+The Layer-1-to-Layer-2 export does not regenerate each TOML row from
+SQLite columns alone -- the columns are a strict subset of the original
+TOML body. Each row in the entity tables therefore carries a
+`compat_toml_text` column that holds the verbatim original TOML body
+captured at bootstrap time.
+
+When mutating a column like `status_note` or `formal_proof`, only that
+column changes; `compat_toml_text` retains the rest of the original
+body. At export time, `render_claim_row` /`render_insight_row` /
+`render_experiment_row` parse `compat_toml_text` via `toml_edit` and
+splice in the live SQLite columns:
+
+```
+splice_compat_toml_overrides(
+    &row.compat_toml_text,
+    &[
+        ("formal_proof", row.formal_proof.as_deref()),
+        ("status_note",  row.status_note.as_deref()),
+    ],
+)
+```
+
+If the parse fails the function falls back to the raw cached text so a
+single malformed row cannot regress the entire export.
+
+This splice was introduced in commit `20e3325b`
+(`fix(provenance_store): splice live SQLite columns into compat-export
+TOML`) on 2026-05-10. Before that commit, mutations to
+`formal_proof` and `status_note` landed in SQLite but never reached the
+consumer surface, making the entire mutator decorative.
+
+## Hash chain: how the gate stays consistent
+
+After any Layer-2 change, the governance gate hashes each Layer-2 TOML
+and compares to the recorded signatures in
+`registry/schema_signatures.toml`. To refresh the signatures after a
+legitimate Layer-2 change, run:
+
+```
+make integrity-resolution
+```
+
+This invokes `gororoba_cli_data --bin integrity-resolution` which
+recomputes both `content_sha256` (the file's literal SHA) and
+`schema_sha256` (the SHA of the normalized shape JSON including
+`row_count`). The gate refuses pushes where the file SHA on disk does
+not match the recorded SHA in `schema_signatures.toml`.
+
+## Audit trail: how to ask "what changed since last week"
+
+The revisions tables are queryable:
+
+```sql
+SELECT claim_id, field_name, actor, ts_utc
+FROM claim_revisions
+WHERE ts_utc > '2026-05-01T00:00:00Z'
+ORDER BY ts_utc DESC LIMIT 20;
+```
+
+Each row carries the SHA of the prior value (via
+`prev_value_sha256`) so a reviewer can chain back through history
+without storing the entire prior body.
+
+The `repo-audit --sqlite registry/canonical/control_plane.sqlite3`
+flag emits a summary block with total revisions per table, per-field
+counts, and top actors -- combine with the static debt counts to see
+both the static state and the mutation flow that produced it in one
+report.
+
+## Known footguns
+
+- **Editing `registry/*.toml` by hand.** The `# AUTO-GENERATED` header
+  is the warning. If you edit anyway and run `make integrity-resolution`,
+  your edit *will* land in `schema_signatures.toml` -- and then be
+  silently overwritten the next time anyone runs
+  `provenance export-control-plane`. Always edit Layer 1.
+
+- **Forgetting `make registry-export-markdown` after a batch with
+  `--regen-toml false`.** Layer 1 will be ahead of Layer 2; consumers
+  of Layer 2 see stale data; the gate will eventually fail when it
+  notices the SHA mismatch.
+
+- **Editing `compat_toml_text` directly in SQLite.** This is the cached
+  TOML body and editing it bypasses the splice. Use the dedicated
+  column mutators instead.
+
+- **WAL/shm files in `registry/canonical/`.** SQLite's WAL mode creates
+  `control_plane.sqlite3-wal` and `control_plane.sqlite3-shm` companion
+  files when a connection is open. They are excluded by `.gitignore`
+  (since 2026-05-10) and should never be committed.
+
+## Cross-references
+
+- Design rationale + stack pinning:
+  `docs/engineering/sqlite_canonical_write_plane_design.md`
+- Audit metric taxonomy:
+  `docs/engineering/repo_audit_metric_taxonomy.md`
+- Schema migrations:
+  `db/migrations/0015_revisions_audit.sql`,
+  `db/migrations/0016_status_note_columns.sql`
+- Splice implementation:
+  `crates/provenance_store/src/lib.rs` (search
+  `splice_compat_toml_overrides`)
+- Audit trail integration:
+  `crates/gororoba_cli_data/src/bin/repo_audit.rs` (search
+  `read_revisions_summary`)

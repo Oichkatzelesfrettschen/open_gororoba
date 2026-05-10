@@ -143,12 +143,14 @@ fn main() {
             if !cli.dry_run {
                 write_claims_output(
                     &cli,
-                    &repo_root,
-                    &claims_path,
-                    &insights_path,
-                    &experiments_path,
-                    &binaries_path,
-                    &proofs_project_path,
+                    ClaimsWritePaths {
+                        repo_root: &repo_root,
+                        default_path: &claims_path,
+                        insights: &insights_path,
+                        experiments: &experiments_path,
+                        binaries: &binaries_path,
+                        proofs_project: &proofs_project_path,
+                    },
                     &claims,
                 );
             } else {
@@ -161,12 +163,14 @@ fn main() {
             if !cli.dry_run {
                 write_claims_output(
                     &cli,
-                    &repo_root,
-                    &claims_path,
-                    &insights_path,
-                    &experiments_path,
-                    &binaries_path,
-                    &proofs_project_path,
+                    ClaimsWritePaths {
+                        repo_root: &repo_root,
+                        default_path: &claims_path,
+                        insights: &insights_path,
+                        experiments: &experiments_path,
+                        binaries: &binaries_path,
+                        proofs_project: &proofs_project_path,
+                    },
                     &claims,
                 );
             } else {
@@ -179,12 +183,14 @@ fn main() {
             if !cli.dry_run {
                 write_claims_output(
                     &cli,
-                    &repo_root,
-                    &claims_path,
-                    &insights_path,
-                    &experiments_path,
-                    &binaries_path,
-                    &proofs_project_path,
+                    ClaimsWritePaths {
+                        repo_root: &repo_root,
+                        default_path: &claims_path,
+                        insights: &insights_path,
+                        experiments: &experiments_path,
+                        binaries: &binaries_path,
+                        proofs_project: &proofs_project_path,
+                    },
                     &claims,
                 );
             } else {
@@ -197,12 +203,14 @@ fn main() {
             if !cli.dry_run {
                 write_claims_output(
                     &cli,
-                    &repo_root,
-                    &claims_path,
-                    &insights_path,
-                    &experiments_path,
-                    &binaries_path,
-                    &proofs_project_path,
+                    ClaimsWritePaths {
+                        repo_root: &repo_root,
+                        default_path: &claims_path,
+                        insights: &insights_path,
+                        experiments: &experiments_path,
+                        binaries: &binaries_path,
+                        proofs_project: &proofs_project_path,
+                    },
                     &claims,
                 );
             } else {
@@ -215,12 +223,14 @@ fn main() {
             if !cli.dry_run {
                 write_claims_output(
                     &cli,
-                    &repo_root,
-                    &claims_path,
-                    &insights_path,
-                    &experiments_path,
-                    &binaries_path,
-                    &proofs_project_path,
+                    ClaimsWritePaths {
+                        repo_root: &repo_root,
+                        default_path: &claims_path,
+                        insights: &insights_path,
+                        experiments: &experiments_path,
+                        binaries: &binaries_path,
+                        proofs_project: &proofs_project_path,
+                    },
                     &claims,
                 );
                 // Also write updated conflict markers
@@ -240,30 +250,36 @@ fn main() {
     }
 }
 
-#[allow(clippy::too_many_arguments)]
+/// Bundle of registry paths consumed by the claims-write + control-plane-sync
+/// flow. Five paths form a single logical unit (the canonical claims output
+/// and the four cross-referenced compat-export targets that need re-syncing
+/// when claims change). Bundling avoids clippy::too_many_arguments and
+/// keeps the call sites readable.
+struct ClaimsWritePaths<'a> {
+    repo_root: &'a std::path::Path,
+    default_path: &'a std::path::Path,
+    insights: &'a std::path::Path,
+    experiments: &'a std::path::Path,
+    binaries: &'a std::path::Path,
+    proofs_project: &'a std::path::Path,
+}
+
 fn write_claims_output(
     cli: &Cli,
-    repo_root: &std::path::Path,
-    default_path: &std::path::Path,
-    insights_path: &std::path::Path,
-    experiments_path: &std::path::Path,
-    binaries_path: &std::path::Path,
-    proofs_project_path: &std::path::Path,
+    paths: ClaimsWritePaths<'_>,
     claims: &[consolidate::FullClaimEntry],
 ) {
-    let target = cli.output.as_deref().unwrap_or(default_path);
+    let target = cli.output.as_deref().unwrap_or(paths.default_path);
     match consolidate::write_claims(target, claims) {
         Ok(()) => {
             println!("Updated: {}", target.display());
             if cli.output.is_none() {
                 sync_control_plane_after_claim_write(
                     &cli.canonical_db,
-                    repo_root,
-                    target,
-                    insights_path,
-                    experiments_path,
-                    binaries_path,
-                    proofs_project_path,
+                    ClaimsWritePaths {
+                        default_path: target,
+                        ..paths
+                    },
                 );
             } else {
                 println!(
@@ -300,12 +316,7 @@ fn load_registry_compat_text(
 
 fn sync_control_plane_after_claim_write(
     canonical_db: &std::path::Path,
-    repo_root: &std::path::Path,
-    claims_path: &std::path::Path,
-    insights_path: &std::path::Path,
-    experiments_path: &std::path::Path,
-    binaries_path: &std::path::Path,
-    proofs_project_path: &std::path::Path,
+    paths: ClaimsWritePaths<'_>,
 ) {
     if !canonical_db.exists() {
         println!(
@@ -314,8 +325,10 @@ fn sync_control_plane_after_claim_write(
         );
         return;
     }
-    let theorems_path = repo_root.join("docs/THEOREMS.md");
-    let theorems_mirror_path = repo_root.join("docs/generated/THEOREMS_REGISTRY_MIRROR.md");
+    let theorems_path = paths.repo_root.join("docs/THEOREMS.md");
+    let theorems_mirror_path = paths
+        .repo_root
+        .join("docs/generated/THEOREMS_REGISTRY_MIRROR.md");
     let mut store = match ProvenanceStore::open(canonical_db) {
         Ok(store) => store,
         Err(err) => {
@@ -327,23 +340,23 @@ fn sync_control_plane_after_claim_write(
         }
     };
     if let Err(err) = store.reindex_control_plane_from_registries(
-        repo_root,
-        claims_path,
-        insights_path,
-        experiments_path,
-        binaries_path,
-        proofs_project_path,
+        paths.repo_root,
+        paths.default_path,
+        paths.insights,
+        paths.experiments,
+        paths.binaries,
+        paths.proofs_project,
     ) {
         eprintln!("ERROR: reindex canonical control plane after claims write: {err}");
         std::process::exit(1);
     }
     if let Err(err) = store.export_control_plane_compat(
-        repo_root,
+        paths.repo_root,
         provenance_store::CompatExportPaths {
-            claims: claims_path,
-            insights: insights_path,
-            experiments: experiments_path,
-            binaries: binaries_path,
+            claims: paths.default_path,
+            insights: paths.insights,
+            experiments: paths.experiments,
+            binaries: paths.binaries,
             theorems: &theorems_path,
             theorems_mirror: &theorems_mirror_path,
         },
