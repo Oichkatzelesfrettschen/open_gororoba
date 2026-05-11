@@ -115,6 +115,7 @@ impl Default for WarpRingPipeline {
                 coupling_fluid_algebra: 0.1,
                 coupling_algebra_fluid: 0.1,
                 coupling_metric_algebra: 0.1,
+                species: crate::simulation::AlgebraicSpecies::default(),
             },
             n_steps: 100,
         }

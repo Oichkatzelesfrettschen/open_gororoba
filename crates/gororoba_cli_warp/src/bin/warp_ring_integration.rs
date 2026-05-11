@@ -133,6 +133,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         coupling_fluid_algebra: 0.1,
         coupling_algebra_fluid: 0.1,
         coupling_metric_algebra: 0.1,
+        species: gororoba_engine::simulation::AlgebraicSpecies::default(),
     };
 
     let mut state = SimulationState::new(sim_config);
