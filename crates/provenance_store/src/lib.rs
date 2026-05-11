@@ -66,16 +66,16 @@ struct ExternalSourcesCompatOutputs {
 }
 
 #[derive(Clone, Debug)]
-struct ProofInventoryEntry {
-    stem: String,
-    path: Utf8PathBuf,
+pub(crate) struct ProofInventoryEntry {
+    pub(crate) stem: String,
+    pub(crate) path: Utf8PathBuf,
 }
 
 #[derive(Clone, Debug, Default)]
-struct ProofInventory {
-    project_raw: String,
-    verified_entries: Vec<ProofInventoryEntry>,
-    verified_by_claim_id: BTreeMap<String, Vec<ProofInventoryEntry>>,
+pub(crate) struct ProofInventory {
+    pub(crate) project_raw: String,
+    pub(crate) verified_entries: Vec<ProofInventoryEntry>,
+    pub(crate) verified_by_claim_id: BTreeMap<String, Vec<ProofInventoryEntry>>,
 }
 
 // Public row, table, and revision types for the ProvenanceStore control
@@ -5442,208 +5442,17 @@ fn normalize_claims_against_proof_inventory(
 mod status_normalize;
 use status_normalize::{normalize_claim_record, normalize_insight_status};
 
-fn canonical_formal_proof_for_claim(
-    repo_root: &Path,
-    claim: &ClaimRecord,
-    proof_inventory: &ProofInventory,
-) -> Option<String> {
-    if let Some(formal_proof) = claim.formal_proof.as_deref()
-        && !formal_proof.trim().is_empty()
-        && repo_root.join(formal_proof).exists()
-    {
-        return Some(formal_proof.trim().to_string());
-    }
-
-    let mut referenced_paths = extract_proof_paths(&claim.where_stated);
-    if let Some(status_note) = &claim.status_note {
-        referenced_paths.extend(extract_proof_paths(status_note));
-    }
-    if let Some(formal_proof) = claim.formal_proof.as_deref() {
-        referenced_paths.extend(extract_proof_paths(formal_proof));
-    }
-    referenced_paths.retain(|path| repo_root.join(path).exists());
-    referenced_paths.sort();
-    referenced_paths.dedup();
-
-    if let Some(primary_verified) =
-        preferred_primary_verified_proof_for_claim(claim, proof_inventory)
-    {
-        return Some(primary_verified);
-    }
-
-    if referenced_paths.len() == 1 {
-        return referenced_paths.into_iter().next();
-    }
-
-    None
-}
-
-fn preferred_primary_verified_proof_for_claim(
-    claim: &ClaimRecord,
-    proof_inventory: &ProofInventory,
-) -> Option<String> {
-    let claim_prefix = claim.id.strip_prefix("C-").unwrap_or(&claim.id);
-    let mut candidates = proof_inventory
-        .verified_by_claim_id
-        .get(&claim.id)
-        .cloned()
-        .unwrap_or_default();
-    candidates.sort_by(|lhs, rhs| {
-        proof_entry_priority(claim_prefix, lhs)
-            .cmp(&proof_entry_priority(claim_prefix, rhs))
-            .reverse()
-            .then_with(|| lhs.path.as_str().cmp(rhs.path.as_str()))
-    });
-    candidates
-        .first()
-        .map(|entry| entry.path.as_str().to_string())
-}
-
-fn proof_entry_priority(claim_prefix: &str, entry: &ProofInventoryEntry) -> (u8, usize) {
-    let suffix = entry.stem.strip_prefix('C').unwrap_or(&entry.stem);
-    let suffix = suffix.strip_prefix(claim_prefix).unwrap_or(suffix);
-    let primary_rank = if suffix.starts_with('_') || suffix.is_empty() {
-        2
-    } else {
-        1
-    };
-    (primary_rank, usize::MAX - entry.stem.len())
-}
-
-pub(crate) fn render_normalized_claim_compat_toml(row: &ClaimRecord) -> Result<String> {
-    let mut table = if row.compat_toml_text.trim().is_empty() {
-        let mut table = toml::map::Map::new();
-        table.insert("id".to_string(), Value::String(row.id.clone()));
-        table.insert(
-            "statement".to_string(),
-            Value::String(row.statement.clone()),
-        );
-        table.insert("status".to_string(), Value::String(row.status.clone()));
-        table.insert(
-            "where_stated".to_string(),
-            Value::String(row.where_stated.clone()),
-        );
-        table.insert(
-            "last_verified".to_string(),
-            Value::String(row.last_verified.clone()),
-        );
-        if let Some(status_note) = &row.status_note {
-            table.insert(
-                "status_note".to_string(),
-                Value::String(status_note.clone()),
-            );
-        }
-        table
-    } else {
-        toml::from_str::<toml::map::Map<String, Value>>(&row.compat_toml_text)
-            .context("parse normalized claim compat row")?
-    };
-    table.insert("status".to_string(), Value::String(row.status.clone()));
-    match &row.status_note {
-        Some(status_note) if !status_note.trim().is_empty() => {
-            table.insert(
-                "status_note".to_string(),
-                Value::String(status_note.clone()),
-            );
-        }
-        _ => {
-            table.remove("status_note");
-        }
-    }
-    match &row.formal_proof {
-        Some(formal_proof) if !formal_proof.trim().is_empty() => {
-            table.insert(
-                "formal_proof".to_string(),
-                Value::String(formal_proof.clone()),
-            );
-        }
-        _ => {
-            table.remove("formal_proof");
-        }
-    }
-    render_toml_table(&table)
-}
-
-fn render_normalized_insight_compat_toml(
-    table: &toml::map::Map<String, Value>,
-    raw_status: Option<&str>,
-) -> Result<String> {
-    let mut table = table.clone();
-    match raw_status.map(normalize_insight_status) {
-        Some(status) if !status.trim().is_empty() => {
-            table.insert("status".to_string(), Value::String(status.to_string()));
-        }
-        _ => {
-            table.remove("status");
-        }
-    }
-    render_toml_table(&table)
-}
-
-fn extract_proof_paths(text: &str) -> Vec<String> {
-    let mut out = Vec::new();
-    let mut cursor = text;
-    while let Some(start) = cursor.find("proofs/") {
-        let candidate = &cursor[start..];
-        let mut end = 0usize;
-        for ch in candidate.chars() {
-            if ch.is_ascii_alphanumeric() || matches!(ch, '/' | '_' | '-' | '.') {
-                end += ch.len_utf8();
-            } else {
-                break;
-            }
-        }
-        let path = candidate[..end].trim_matches('`').trim_matches('"').trim();
-        if path.ends_with(".v") {
-            out.push(path.to_string());
-        }
-        cursor = &candidate[end..];
-    }
-    out
-}
-
-fn link_claims_for_proof(
-    proof_path: &Utf8PathBuf,
-    stem: &str,
-    claims: &[ClaimRecord],
-) -> Vec<String> {
-    let proof_path_str = proof_path.as_str();
-    let normalized_claim_id = normalized_claim_id_from_theorem_stem(stem);
-    let mut out = Vec::new();
-    for claim in claims {
-        let matches = claim.id == stem
-            || normalized_claim_id.as_deref() == Some(&claim.id)
-            || claim
-                .formal_proof
-                .as_deref()
-                .map(|path| path.trim() == proof_path_str)
-                .unwrap_or(false)
-            || claim.where_stated.contains(proof_path_str)
-            || claim
-                .status_note
-                .as_deref()
-                .map(|note| note.contains(proof_path_str))
-                .unwrap_or(false);
-        if matches {
-            out.push(claim.id.clone());
-        }
-    }
-    out.sort();
-    out.dedup();
-    out
-}
-
-fn normalized_claim_id_from_theorem_stem(stem: &str) -> Option<String> {
-    let suffix = stem.strip_prefix('C')?;
-    let digits = suffix
-        .chars()
-        .take_while(|ch| ch.is_ascii_digit())
-        .collect::<String>();
-    if digits.is_empty() {
-        return None;
-    }
-    Some(format!("C-{digits}"))
-}
+// Claim <-> proof correlation and per-row compat-export rendering
+// (canonical_formal_proof_for_claim, preferred_primary_verified_proof_for_claim,
+// proof_entry_priority, render_normalized_claim_compat_toml,
+// render_normalized_insight_compat_toml, extract_proof_paths,
+// link_claims_for_proof, normalized_claim_id_from_theorem_stem) live
+// in the `claim_proofs` submodule. Items are pub(crate).
+mod claim_proofs;
+use claim_proofs::{
+    canonical_formal_proof_for_claim, link_claims_for_proof, normalized_claim_id_from_theorem_stem,
+    render_normalized_claim_compat_toml, render_normalized_insight_compat_toml,
+};
 
 fn render_theorem_markdown(source_label: &str, theorems: &[TheoremRecord]) -> String {
     let mut lines = compat_markdown_export_header(source_label);
