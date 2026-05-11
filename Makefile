@@ -604,13 +604,22 @@ rust-regression: rust-clippy
 
 rust-regression-scoped:
 	$(eval RUST_SCOPE ?= $(shell $(CARGO_ENV) cargo run -q -p gororoba_cli_governance --bin workspace-routing -- --local 2>/dev/null || echo "--workspace"))
+	# Clippy runs only on DIRECTLY changed crates (no reverse-closure expansion).
+	# WHY: clippy lints fire on the package owning the source -- a change in a
+	# hub crate cannot induce a new lint on a downstream consumer whose source
+	# is unchanged. Skipping the closure for clippy saves the bulk of compile
+	# time (gororoba_cli_data with 100+ binaries is the worst offender).
+	$(eval RUST_CLIPPY_SCOPE ?= $(shell $(CARGO_ENV) cargo run -q -p gororoba_cli_governance --bin workspace-routing -- --local --direct-only 2>/dev/null || echo "$(RUST_SCOPE)"))
 	$(eval RUST_RUN_HEAVY ?= 1)
 	@set -e; \
 	if [ -z "$(RUST_SCOPE)" ]; then \
 	    echo "SKIP: no Rust-relevant changes detected."; \
 	else \
-	    echo "[rust-regression-scoped] scope: $(RUST_SCOPE)"; \
-	    $(CARGO_ENV) cargo clippy $(RUST_SCOPE) $(RUST_SCOPED_CLIPPY_TARGETS) -- -D warnings; \
+	    echo "[rust-regression-scoped] clippy scope: $(RUST_CLIPPY_SCOPE)"; \
+	    echo "[rust-regression-scoped] nextest scope: $(RUST_SCOPE)"; \
+	    if [ -n "$(RUST_CLIPPY_SCOPE)" ]; then \
+	        $(CARGO_ENV) cargo clippy $(RUST_CLIPPY_SCOPE) $(RUST_SCOPED_CLIPPY_TARGETS) -- -D warnings; \
+	    fi; \
 	    local_light_scope=""; \
 	    local_light_packages=""; \
 	    if [ "$(RUST_SCOPE)" = "--workspace" ]; then \
