@@ -9,15 +9,16 @@ use reqwest::{
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use std::{
-    collections::HashMap,
     fmt, fs,
     io::{self, Read, Write},
     net::{TcpStream, ToSocketAddrs},
     path::{Path, PathBuf},
     process::{Command, Stdio},
-    sync::{Arc, Mutex},
-    time::{Duration, Instant, SystemTime, UNIX_EPOCH},
+    sync::Arc,
+    time::{Duration, SystemTime, UNIX_EPOCH},
 };
+#[cfg(test)]
+use std::time::Instant;
 use thiserror::Error;
 use ureq::ResponseExt;
 use url::Url;
