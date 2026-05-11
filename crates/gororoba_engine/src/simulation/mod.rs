@@ -126,6 +126,19 @@ pub enum AlgebraicField {
     Pathion(Array2<Pathion>),
 }
 
+/// Discriminator for which `AlgebraicField` variant a `SimulationConfig`
+/// asks `SimulationState::new` to construct.
+///
+/// The grid is always zero-initialized; this enum chooses only the
+/// per-cell algebra dimension (8, 16, or 32). Defaults to `Octonion`.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
+pub enum AlgebraicSpecies {
+    #[default]
+    Octonion,
+    Sedenion,
+    Pathion,
+}
+
 impl AlgebraicField {
     pub fn dim(&self) -> (usize, usize) {
         match self {
@@ -184,6 +197,15 @@ pub struct SimulationConfig {
 
     /// Coupling constant: Metric -> Algebra (imbalance source).
     pub coupling_metric_algebra: f64,
+
+    /// Which algebraic species the per-cell field carries.
+    ///
+    /// Selects the [`AlgebraicField`] variant that `SimulationState::new`
+    /// allocates. Defaults to [`AlgebraicSpecies::Octonion`], matching
+    /// the historical pre-config behavior. Sedenion / Pathion runs need
+    /// only flip this field instead of patching the constructor.
+    #[doc(alias = "algebra_species")]
+    pub species: AlgebraicSpecies,
 }
 
 impl SimulationState {
@@ -194,9 +216,20 @@ impl SimulationState {
         // Default to a rotating black hole background
         let metric = Kerr::new(1.0, 0.9);
 
-        // Initialize algebraic field to zero based on requested species (defaulting to Octonion for now)
-        // In a real config we would pass the species enum.
-        let algebra = AlgebraicField::Octonion(Array2::from_elem((config.nx, config.ny), [0.0; 8]));
+        // Initialize the algebraic field per-cell based on the species
+        // discriminator in `config.species`. All variants zero-initialize
+        // to the dimension of the chosen algebra (8, 16, 32).
+        let algebra = match config.species {
+            AlgebraicSpecies::Octonion => {
+                AlgebraicField::Octonion(Array2::from_elem((config.nx, config.ny), [0.0; 8]))
+            }
+            AlgebraicSpecies::Sedenion => {
+                AlgebraicField::Sedenion(Array2::from_elem((config.nx, config.ny), [0.0; 16]))
+            }
+            AlgebraicSpecies::Pathion => {
+                AlgebraicField::Pathion(Array2::from_elem((config.nx, config.ny), [0.0; 32]))
+            }
+        };
 
         Self {
             fluid,
@@ -336,3 +369,59 @@ impl SimulationState {
     }
 }
 pub mod state_4d;
+
+#[cfg(test)]
+mod species_dispatch_tests {
+    use super::*;
+
+    fn make_config(species: AlgebraicSpecies) -> SimulationConfig {
+        SimulationConfig {
+            nx: 4,
+            ny: 4,
+            tau: 0.8,
+            algebra_params: FieldParams {
+                n: 4,
+                l: 4.0,
+                mass: 1.0,
+                coupling: 0.1,
+                dt: 0.01,
+            },
+            coupling_fluid_algebra: 0.1,
+            coupling_algebra_fluid: 0.1,
+            coupling_metric_algebra: 0.1,
+            species,
+        }
+    }
+
+    #[test]
+    fn default_species_is_octonion() {
+        let state = SimulationState::new(make_config(AlgebraicSpecies::default()));
+        assert!(matches!(state.algebra, AlgebraicField::Octonion(_)));
+        assert_eq!(state.algebra.dim(), (4, 4));
+    }
+
+    #[test]
+    fn sedenion_species_constructs_16d_field() {
+        let state = SimulationState::new(make_config(AlgebraicSpecies::Sedenion));
+        match &state.algebra {
+            AlgebraicField::Sedenion(arr) => {
+                // Per-cell element is [f64; 16].
+                assert_eq!(arr.dim(), (4, 4));
+                assert_eq!(arr[[0, 0]].len(), 16);
+            }
+            other => panic!("expected Sedenion, got {:?}", other.dim()),
+        }
+    }
+
+    #[test]
+    fn pathion_species_constructs_32d_field() {
+        let state = SimulationState::new(make_config(AlgebraicSpecies::Pathion));
+        match &state.algebra {
+            AlgebraicField::Pathion(arr) => {
+                assert_eq!(arr.dim(), (4, 4));
+                assert_eq!(arr[[0, 0]].len(), 32);
+            }
+            other => panic!("expected Pathion, got {:?}", other.dim()),
+        }
+    }
+}
