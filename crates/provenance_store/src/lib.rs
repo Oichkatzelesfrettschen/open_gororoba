@@ -27,10 +27,7 @@ use toml::Value;
 // live in the `migrations` submodule. Items are pub(crate) and brought
 // back into lib.rs scope via plain use statements.
 mod migrations;
-use migrations::{
-    CANONICAL_CLAIM_STATUSES, CANONICAL_INSIGHT_STATUSES, JUSTIFIED_UNLINKED_THEOREM_IDS,
-    migrations,
-};
+use migrations::{JUSTIFIED_UNLINKED_THEOREM_IDS, migrations};
 
 pub struct ProvenanceStore {
     conn: Connection,
@@ -5438,79 +5435,12 @@ fn normalize_claims_against_proof_inventory(
     Ok(())
 }
 
-fn normalize_claim_record(claim: &mut ClaimRecord) -> Result<()> {
-    let (canonical_status, legacy_status_note) = normalize_claim_status(&claim.status);
-    claim.status = canonical_status;
-    claim.status_note = merge_status_note(claim.status_note.take(), legacy_status_note);
-    claim.compat_toml_text = render_normalized_claim_compat_toml(claim)?;
-    Ok(())
-}
-
-fn normalize_claim_status(raw: &str) -> (String, Option<String>) {
-    let trimmed = raw.trim();
-    if trimmed.is_empty() {
-        return (String::new(), None);
-    }
-    if let Some(canonical) = match_case_insensitive(trimmed, CANONICAL_CLAIM_STATUSES) {
-        return (canonical.to_string(), None);
-    }
-    if let Some(paren_idx) = trimmed.find('(') {
-        let base = trimmed[..paren_idx].trim();
-        if let Some(canonical) = match_case_insensitive(base, CANONICAL_CLAIM_STATUSES) {
-            return (canonical.to_string(), Some(trimmed.to_string()));
-        }
-    }
-    match trimmed {
-        "Open" | "Pending" | "Active" | "Proposed" | "Deferred" | "Speculative" => {
-            ("Provisional".to_string(), Some(trimmed.to_string()))
-        }
-        "Conjecture" => ("Theoretical".to_string(), Some(trimmed.to_string())),
-        "Falsified" => ("Refuted".to_string(), Some(trimmed.to_string())),
-        "Closed/Verified" => ("Verified".to_string(), Some(trimmed.to_string())),
-        "Closed/Falsified" => ("Closed/Refuted".to_string(), Some(trimmed.to_string())),
-        "Closed/Methodology-Mismatch" => (
-            "Closed/Methodology-Insufficient".to_string(),
-            Some(trimmed.to_string()),
-        ),
-        _ => (trimmed.to_string(), None),
-    }
-}
-
-fn normalize_insight_status(raw: &str) -> &str {
-    let trimmed = raw.trim();
-    if let Some(canonical) = match_case_insensitive(trimmed, CANONICAL_INSIGHT_STATUSES) {
-        return canonical;
-    }
-    match trimmed {
-        "Active" | "Proposed" | "Speculative" => "open",
-        "Verified" => "verified",
-        "Superseded" => "superseded",
-        "Partial" => "partial",
-        _ => trimmed,
-    }
-}
-
-fn match_case_insensitive<'a>(raw: &str, allowed: &'a [&'a str]) -> Option<&'a str> {
-    allowed
-        .iter()
-        .copied()
-        .find(|candidate| candidate.eq_ignore_ascii_case(raw))
-}
-
-fn merge_status_note(existing: Option<String>, legacy_status: Option<String>) -> Option<String> {
-    match (existing, legacy_status) {
-        (existing, None) => existing,
-        (None, Some(raw)) => Some(format!("Legacy status token: {raw}")),
-        (Some(existing), Some(raw)) => {
-            let legacy_note = format!("Legacy status token: {raw}");
-            if existing.contains(&legacy_note) || existing.contains(&raw) {
-                Some(existing)
-            } else {
-                Some(format!("{existing} | {legacy_note}"))
-            }
-        }
-    }
-}
+// Status-token normalization (normalize_claim_record,
+// normalize_claim_status, normalize_insight_status,
+// match_case_insensitive, merge_status_note) lives in the
+// `status_normalize` submodule. Items are pub(crate).
+mod status_normalize;
+use status_normalize::{normalize_claim_record, normalize_insight_status};
 
 fn canonical_formal_proof_for_claim(
     repo_root: &Path,
@@ -5580,7 +5510,7 @@ fn proof_entry_priority(claim_prefix: &str, entry: &ProofInventoryEntry) -> (u8,
     (primary_rank, usize::MAX - entry.stem.len())
 }
 
-fn render_normalized_claim_compat_toml(row: &ClaimRecord) -> Result<String> {
+pub(crate) fn render_normalized_claim_compat_toml(row: &ClaimRecord) -> Result<String> {
     let mut table = if row.compat_toml_text.trim().is_empty() {
         let mut table = toml::map::Map::new();
         table.insert("id".to_string(), Value::String(row.id.clone()));
