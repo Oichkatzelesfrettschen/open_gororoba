@@ -394,3 +394,51 @@ acceptance_hooks = [
 conflict_controls = [
   "Online research may seed provenance, but tests and gates must not depend on live network access.",
 ]
+
+[[debt_class]]
+id = "DEBT-MODULARIZATION"
+label = "Modularization debt (hand-written monoliths)"
+risk = "Multi-thousand-line hand-written .rs files slow language servers, defeat focused review, and concentrate merge conflicts. Single impl blocks running thousands of lines mask coupling and obscure module boundaries."
+confirmed_examples = [
+  "materials_core/src/optical_database.rs is a 10648-line flat material-table surface in a single file.",
+  "algebra_analysis/src/boxkites.rs is 8615 lines of hand-written algebra code in one file.",
+  "provenance_store/src/lib.rs is 7314 lines with a single 4850-line impl ProvenanceStore block.",
+  "lbm_3d_cuda/src/lib.rs is 3130 lines mixing probes, the LBM solver impl, and an independent DarkHaloCudaSolver.",
+  "quantum_core/src/casimir.rs is 3228 lines covering geometry, PFA, Lifshitz, transistor, and three-body in one file.",
+]
+resolution_pattern = "Split monoliths by logical surface (types vs algorithms vs IO vs material/phenomenon classes), keep public API stable via re-exports from the original module path, and validate per-crate with cargo check + clippy + nextest under workspace deny-warnings."
+
+[[phase]]
+id = "PH-MOD"
+title = "Hand-written monolith modularization (DEBT-MODULARIZATION Phase 1)"
+horizon = "1_to_3_sprints"
+goal = "Lower the worst non-generated monoliths to under 4000 lines per file by extracting logical surfaces into sibling modules, with public API stable and per-crate gates green."
+non_generated_thresholds = [
+  "warn_at_loc = 2000",
+  "target_max_loc = 4000",
+  "urgent_at_loc = 8000",
+]
+excluded_paths = [
+  "crates/data_core/src/registry_mirrors/",
+  "**/target/**",
+]
+tasks = [
+  "Split provenance_store/src/lib.rs into types.rs, helpers.rs, and inherent-impl files; preserve the public ProvenanceStore API.",
+  "Split lbm_3d_cuda/src/lib.rs into probe.rs, solver.rs, and dark_halo.rs.",
+  "Split materials_core/src/optical_database.rs into optical_database/{core,metals,oxides,semiconductors,conductors,mod}.rs.",
+  "Split quantum_core/src/casimir.rs into casimir/{geometry,pfa,lifshitz,transistor,additivity,mod}.rs.",
+  "Re-snapshot the monolith inventory after each split and write into data/output/audit/<date>/monolith_inventory.txt.",
+  "Hold algebra_analysis/boxkites.rs, algebra_experimental/emanation, materials_core/crystal_symmetry, and lbm_3d/solver for Phase 2 after Phase 1 is reviewed.",
+]
+acceptance_hooks = [
+  "cargo check -p materials_core",
+  "cargo check -p quantum_core",
+  "cargo check -p lbm_3d_cuda --no-default-features",
+  "cargo check -p provenance_store",
+  "cargo clippy --workspace --all-targets -- -D warnings",
+]
+conflict_controls = [
+  "Splits must be behaviour-preserving; no API renames or signature changes in the same commit.",
+  "Generated mirror files in crates/data_core/src/registry_mirrors/ are excluded from this phase.",
+  "Each extracted submodule keeps an explicit pub use re-export from the parent so call sites do not break.",
+]
