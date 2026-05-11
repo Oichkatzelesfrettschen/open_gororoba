@@ -71,6 +71,17 @@ struct Cli {
     base: Option<String>,
     #[arg(long)]
     verbose: bool,
+    /// Emit only the DIRECTLY changed crates as the scope (no
+    /// reverse-dependency transitive closure). Use this for clippy
+    /// runs, where lints fire on the package owning the source: a
+    /// change in a hub crate cannot induce a new lint on a downstream
+    /// consumer whose source has not changed.
+    ///
+    /// Without this flag (the default), the scope is the full
+    /// transitive reverse-closure, which is correct for nextest
+    /// because consumer tests exercise the changed hub crate.
+    #[arg(long)]
+    direct_only: bool,
 }
 
 #[derive(Debug)]
@@ -569,8 +580,17 @@ fn run(cli: &Cli) -> Result<i32> {
     let (scope, run_rust) = if classification.force_workspace {
         ("--workspace".to_string(), true)
     } else if !classification.affected_crates.is_empty() {
-        let full_set = transitive_closure(&classification.affected_crates, &reverse);
-        (format_cargo_scope(&full_set), true)
+        // --direct-only (clippy lane) skips the transitive closure
+        // expansion: lints fire on the package owning the source, so
+        // pulling in dependents only inflates compile time without
+        // catching new diagnostics. The default branch keeps the full
+        // reverse-closure so consumer tests run against the hub change.
+        let target = if cli.direct_only {
+            classification.affected_crates.clone()
+        } else {
+            transitive_closure(&classification.affected_crates, &reverse)
+        };
+        (format_cargo_scope(&target), true)
     } else if classification.has_shared_rust_changes {
         ("--workspace".to_string(), true)
     } else {
