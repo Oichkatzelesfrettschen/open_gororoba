@@ -5007,9 +5007,8 @@ use toml_helpers::{
     compat_child_table, compat_json_string_array, compat_root_table,
     compat_table_array, compat_table_bool, compat_table_string, compat_toml_quote,
     compat_toml_string_array, host_for_url, join_refs, load_registry_table_toml, load_text,
-    load_toml_text, load_toml_value, optional_integer_field, optional_string_field,
-    render_toml_table, string_array_field, string_field, toml_array_to_json_string,
-    trim_trailing_blank_lines,
+    load_toml_text, load_toml_value, optional_integer_field, string_array_field, string_field,
+    toml_array_to_json_string, trim_trailing_blank_lines,
 };
 
 // External-source contracts and dossiers (loaders +
@@ -5032,97 +5031,14 @@ fn collect_rows<T>(
     Ok(out)
 }
 
-fn load_claims_from_registry(raw: &str) -> Result<Vec<ClaimRecord>> {
-    let value: Value = toml::from_str(raw).context("parse claims registry")?;
-    let claims = value
-        .get("claim")
-        .and_then(Value::as_array)
-        .context("claim array missing")?;
-    let mut out = Vec::new();
-    for claim in claims {
-        let table = claim.as_table().context("claim row must be table")?;
-        let mut record = ClaimRecord {
-            id: string_field(table, "id"),
-            statement: string_field(table, "statement"),
-            status: string_field(table, "status"),
-            where_stated: string_field(table, "where_stated"),
-            last_verified: string_field(table, "last_verified"),
-            formal_proof: optional_string_field(table, "formal_proof"),
-            status_note: optional_string_field(table, "status_note"),
-            compat_toml_text: String::new(),
-        };
-        normalize_claim_record(&mut record)?;
-        out.push(record);
-    }
-    Ok(out)
-}
-
-fn load_insights_from_registry(raw: &str) -> Result<Vec<InsightRecord>> {
-    let value: Value = toml::from_str(raw).context("parse insights registry")?;
-    let insights = value
-        .get("insight")
-        .and_then(Value::as_array)
-        .context("insight array missing")?;
-    let mut out = Vec::new();
-    for insight in insights {
-        let table = insight.as_table().context("insight row must be table")?;
-        let title = optional_string_field(table, "title")
-            .or_else(|| optional_string_field(table, "insight"))
-            .unwrap_or_else(|| string_field(table, "id"));
-        let raw_status = optional_string_field(table, "status");
-        let status = raw_status
-            .as_deref()
-            .map(normalize_insight_status)
-            .unwrap_or("unknown")
-            .to_string();
-        let mut claim_refs = string_array_field(table, "claims");
-        claim_refs.extend(string_array_field(table, "related_claims"));
-        claim_refs.sort();
-        claim_refs.dedup();
-        out.push(InsightRecord {
-            id: string_field(table, "id"),
-            title,
-            status,
-            claim_refs,
-            status_note: optional_string_field(table, "status_note"),
-            compat_toml_text: render_normalized_insight_compat_toml(table, raw_status.as_deref())?,
-        });
-    }
-    Ok(out)
-}
-
-fn load_experiments_from_registry(raw: &str) -> Result<Vec<ExperimentRecord>> {
-    let value: Value = toml::from_str(raw).context("parse experiments registry")?;
-    let experiments = value
-        .get("experiment")
-        .and_then(Value::as_array)
-        .context("experiment array missing")?;
-    let mut out = Vec::new();
-    for experiment in experiments {
-        let table = experiment
-            .as_table()
-            .context("experiment row must be table")?;
-        let title =
-            optional_string_field(table, "title").unwrap_or_else(|| string_field(table, "id"));
-        let status = optional_string_field(table, "status")
-            .or_else(|| optional_string_field(table, "status_token"))
-            .unwrap_or_else(|| "unknown".to_string());
-        let mut claim_refs = string_array_field(table, "claims");
-        claim_refs.extend(string_array_field(table, "claim_refs"));
-        claim_refs.sort();
-        claim_refs.dedup();
-        out.push(ExperimentRecord {
-            id: string_field(table, "id"),
-            title,
-            status,
-            binary: optional_string_field(table, "binary"),
-            claim_refs,
-            status_note: optional_string_field(table, "status_note"),
-            compat_toml_text: render_toml_table(table)?,
-        });
-    }
-    Ok(out)
-}
+// Registry TOML loaders for claim, insight, and experiment records
+// (load_claims_from_registry, load_insights_from_registry,
+// load_experiments_from_registry) live in the `registry_loaders`
+// submodule. Items are pub(crate).
+mod registry_loaders;
+use registry_loaders::{
+    load_claims_from_registry, load_experiments_from_registry, load_insights_from_registry,
+};
 
 // Workspace binary inventory (load_binaries_from_registry + cargo
 // metadata discovery + manifest-walk fallback + merge) lives in the
@@ -5217,7 +5133,7 @@ fn normalize_claims_against_proof_inventory(
 // match_case_insensitive, merge_status_note) lives in the
 // `status_normalize` submodule. Items are pub(crate).
 mod status_normalize;
-use status_normalize::{normalize_claim_record, normalize_insight_status};
+use status_normalize::normalize_claim_record;
 
 // Claim <-> proof correlation and per-row compat-export rendering
 // (canonical_formal_proof_for_claim, preferred_primary_verified_proof_for_claim,
@@ -5228,7 +5144,7 @@ use status_normalize::{normalize_claim_record, normalize_insight_status};
 mod claim_proofs;
 use claim_proofs::{
     canonical_formal_proof_for_claim, link_claims_for_proof, normalized_claim_id_from_theorem_stem,
-    render_normalized_claim_compat_toml, render_normalized_insight_compat_toml,
+    render_normalized_claim_compat_toml,
 };
 
 fn render_theorem_markdown(source_label: &str, theorems: &[TheoremRecord]) -> String {
