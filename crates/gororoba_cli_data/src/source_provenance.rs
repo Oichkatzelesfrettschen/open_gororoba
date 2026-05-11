@@ -7,7 +7,6 @@ use std::{
     collections::{BTreeMap, BTreeSet, HashMap, HashSet},
     fs,
     path::{Path, PathBuf},
-    sync::OnceLock,
 };
 use toml::Value;
 use url::Url;
@@ -216,94 +215,19 @@ pub fn default_repo_root() -> PathBuf {
         .to_path_buf()
 }
 
-fn url_re() -> &'static Regex {
-    static URL_RE: OnceLock<Regex> = OnceLock::new();
-    URL_RE.get_or_init(|| Regex::new(r"(?i)^https?://").expect("valid URL regex"))
-}
-
-fn url_inline_re() -> &'static Regex {
-    static URL_INLINE_RE: OnceLock<Regex> = OnceLock::new();
-    URL_INLINE_RE
-        .get_or_init(|| Regex::new(r#"(?i)https?://[^\s<>()"']+"#).expect("valid inline URL regex"))
-}
-
-fn doi_re() -> &'static Regex {
-    static DOI_RE: OnceLock<Regex> = OnceLock::new();
-    DOI_RE.get_or_init(|| {
-        Regex::new(r"(?i)10\.\d{4,9}/[-._;()/:A-Za-z0-9]+").expect("valid DOI regex")
-    })
-}
-
-fn bib_entry_re() -> &'static Regex {
-    static BIB_ENTRY_RE: OnceLock<Regex> = OnceLock::new();
-    BIB_ENTRY_RE.get_or_init(|| {
-        Regex::new(r"(?s)@(?P<etype>[A-Za-z]+)\s*\{\s*(?P<key>[^,]+)\s*,(?P<body>.*?)\n\}\s*")
-            .expect("valid BibTeX regex")
-    })
-}
-
-fn ascii_sanitize(text: &str) -> String {
-    text.chars()
-        .map(|ch| {
-            let code = ch as u32;
-            if code >= 128 || (code < 32 && !matches!(ch, '\n' | '\r' | '\t')) || code == 127 {
-                ' '
-            } else {
-                ch
-            }
-        })
-        .collect()
-}
-
-fn escape_toml(text: &str) -> String {
-    let sanitized = ascii_sanitize(text);
-    let escaped = sanitized
-        .replace('\\', "\\\\")
-        .replace('"', "\\\"")
-        .replace('\n', "\\n")
-        .replace('\r', "\\r")
-        .replace('\t', "\\t");
-    format!("\"{escaped}\"")
-}
-
-fn render_list(values: &[String]) -> String {
-    if values.is_empty() {
-        return "[]".to_string();
-    }
-    let body = values
-        .iter()
-        .map(|value| escape_toml(value))
-        .collect::<Vec<_>>()
-        .join(", ");
-    format!("[{body}]")
-}
-
-fn assert_ascii(text: &str, context: &str) -> Result<()> {
-    if !text.is_ascii() {
-        bail!("non-ASCII output in {context}");
-    }
-    Ok(())
-}
-
-fn slug(text: &str) -> String {
-    let mut out = String::new();
-    let mut last_was_sep = false;
-    for ch in text.to_ascii_lowercase().chars() {
-        if ch.is_ascii_alphanumeric() {
-            out.push(ch);
-            last_was_sep = false;
-        } else if !last_was_sep {
-            out.push('_');
-            last_was_sep = true;
-        }
-    }
-    let trimmed = out.trim_matches('_').to_string();
-    if trimmed.is_empty() {
-        "unknown".to_string()
-    } else {
-        trimmed
-    }
-}
+// Cached Regex factories (url_re, url_inline_re, doi_re, bib_entry_re)
+// and pure text helpers (ascii_sanitize, escape_toml, render_list,
+// assert_ascii, slug) live in the `text_helpers` submodule. The #[path]
+// attribute is required because source_provenance.rs is itself loaded
+// via #[path] from the provenance_ops crate (see
+// crates/provenance_ops/src/lib.rs); the relative submodule lookup
+// otherwise resolves against provenance_ops/src/source_provenance/,
+// not the canonical gororoba_cli_data/src/source_provenance/ location.
+#[path = "source_provenance/text_helpers.rs"]
+mod text_helpers;
+use text_helpers::{
+    assert_ascii, bib_entry_re, doi_re, escape_toml, render_list, slug, url_re, url_inline_re,
+};
 
 fn normalize_identity_hint(hint: &str) -> String {
     let trimmed = hint.trim();
