@@ -3126,6 +3126,11 @@ struct ToolStatusEntry {
     cached_path: PathBuf,
     /// Source files whose mtime would trigger rebuild.
     source_deps: Vec<PathBuf>,
+    /// True when the entry is a transient runtime artifact whose
+    /// missing/absent state is the EXPECTED steady-state (e.g.,
+    /// gate-local.lock is written at gate start and removed by trap
+    /// at gate end -- absence means no gate is running).
+    runtime_artifact: bool,
 }
 
 fn format_age(now: u64, then: u64) -> String {
@@ -3158,6 +3163,7 @@ fn run_gate_tools_status(cli: GateToolsStatusCli) -> Result<()> {
                 root.join("crates/gororoba_cli_data/src/bin/workspace_routing.rs"),
                 root.join("crates/gororoba_cli_data/Cargo.toml"),
             ],
+            runtime_artifact: false,
         },
         ToolStatusEntry {
             name: "host-profile.sh",
@@ -3166,6 +3172,7 @@ fn run_gate_tools_status(cli: GateToolsStatusCli) -> Result<()> {
                 root.join("xtask/src/main.rs"),
                 root.join("xtask/Cargo.toml"),
             ],
+            runtime_artifact: false,
         },
         ToolStatusEntry {
             name: "xtask",
@@ -3174,6 +3181,7 @@ fn run_gate_tools_status(cli: GateToolsStatusCli) -> Result<()> {
                 root.join("xtask/src/main.rs"),
                 root.join("xtask/Cargo.toml"),
             ],
+            runtime_artifact: false,
         },
         ToolStatusEntry {
             name: "markdown-registry",
@@ -3182,6 +3190,7 @@ fn run_gate_tools_status(cli: GateToolsStatusCli) -> Result<()> {
                 root.join("crates/gororoba_cli_data/src/bin/markdown_registry.rs"),
                 root.join("crates/gororoba_cli_data/Cargo.toml"),
             ],
+            runtime_artifact: false,
         },
         ToolStatusEntry {
             name: "governance-verify",
@@ -3190,6 +3199,7 @@ fn run_gate_tools_status(cli: GateToolsStatusCli) -> Result<()> {
                 root.join("crates/gororoba_cli_data/src/bin/governance_verify.rs"),
                 root.join("crates/gororoba_cli_data/Cargo.toml"),
             ],
+            runtime_artifact: false,
         },
         ToolStatusEntry {
             name: "integrity-resolution",
@@ -3198,16 +3208,19 @@ fn run_gate_tools_status(cli: GateToolsStatusCli) -> Result<()> {
                 root.join("crates/gororoba_cli_data/src/bin/integrity_resolution.rs"),
                 root.join("crates/gororoba_cli_data/Cargo.toml"),
             ],
+            runtime_artifact: false,
         },
         ToolStatusEntry {
             name: "cache-check.last",
             cached_path: tools_dir.join("cache-check.last"),
             source_deps: vec![],
+            runtime_artifact: true,
         },
         ToolStatusEntry {
             name: "gate-local.lock",
             cached_path: tools_dir.join("gate-local.lock"),
             source_deps: vec![],
+            runtime_artifact: true,
         },
     ];
 
@@ -3224,11 +3237,16 @@ fn run_gate_tools_status(cli: GateToolsStatusCli) -> Result<()> {
     let mut any_stale = false;
     for entry in &entries {
         if !entry.cached_path.exists() {
+            let status = if entry.runtime_artifact {
+                "absent (runtime artifact, expected when idle)"
+            } else {
+                any_stale = true;
+                "MISSING"
+            };
             println!(
-                "{:<22} {:>10} {:>14} {:>12}  MISSING",
-                entry.name, "-", "-", "-"
+                "{:<22} {:>10} {:>14} {:>12}  {}",
+                entry.name, "-", "-", "-", status
             );
-            any_stale = true;
             continue;
         }
         let meta = fs::metadata(&entry.cached_path)?;

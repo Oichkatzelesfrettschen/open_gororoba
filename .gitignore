@@ -106,6 +106,7 @@ data/artifacts/*.json
 data/artifacts/*.txt
 !data/artifacts/PROVENANCE.local.json
 data/output/**/*.json
+data/output/**/*.jsonl
 data/output/**/*.csv
 data/output/**/*.md
 data/artifacts/frames_*/
