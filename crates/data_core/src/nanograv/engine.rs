@@ -38,6 +38,16 @@ const ARCSEC_PER_RAD: f64 = 206_264.806_247_096_36;
 const JULIAN_YEAR_S: f64 = 31_557_600.0;
 const MAS_TO_RAD: f64 = PI / (180.0 * 3_600.0 * 1_000.0);
 
+// Pure scalar / small-array math helpers (wrap_cycles, fract, dot3,
+// norm3, matern_three_halves, gaussian_kernel, median_value,
+// fractional_improvement, synthesis_score) live in the
+// `scalar_math` submodule.
+mod scalar_math;
+use scalar_math::{
+    dot3, fractional_improvement, gaussian_kernel, matern_three_halves, median_value, norm3,
+    synthesis_score, wrap_cycles,
+};
+
 #[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd)]
 pub enum SiteId {
     Arecibo,
@@ -2973,64 +2983,6 @@ fn weighted_rms_from_rows_gls(rows: &[IndependentRefitRow]) -> f64 {
     } else {
         (weighted_sum / total_weight).sqrt() * 1.0e6
     }
-}
-
-fn wrap_cycles(value: f64) -> f64 {
-    let wrapped = value - value.round();
-    if wrapped >= 0.5 {
-        wrapped - 1.0
-    } else if wrapped < -0.5 {
-        wrapped + 1.0
-    } else {
-        wrapped
-    }
-}
-
-fn fract(value: f64) -> f64 {
-    value - value.floor()
-}
-
-fn dot3(left: [f64; 3], right: [f64; 3]) -> f64 {
-    left[0] * right[0] + left[1] * right[1] + left[2] * right[2]
-}
-
-fn norm3(value: [f64; 3]) -> f64 {
-    dot3(value, value).sqrt()
-}
-
-fn matern_three_halves(scaled_distance: f64) -> f64 {
-    let x = 3.0_f64.sqrt() * scaled_distance.abs();
-    (1.0 + x) * (-x).exp()
-}
-
-fn gaussian_kernel(scaled_distance: f64) -> f64 {
-    (-0.5 * scaled_distance * scaled_distance).exp()
-}
-
-fn median_value(values: &[f64]) -> f64 {
-    let mut finite = values
-        .iter()
-        .copied()
-        .filter(|value| value.is_finite() && *value > 0.0)
-        .collect::<Vec<_>>();
-    finite.sort_by(|left, right| left.total_cmp(right));
-    finite
-        .get(finite.len().saturating_sub(1) / 2)
-        .copied()
-        .unwrap_or(0.0)
-}
-
-fn fractional_improvement(before: f64, after: f64) -> f64 {
-    if !before.is_finite() || before.abs() < 1.0e-18 {
-        0.0
-    } else {
-        (before - after) / before.abs()
-    }
-}
-
-fn synthesis_score(raw: f64, weighted: f64, dm: Option<f64>) -> f64 {
-    let dm_component = dm.unwrap_or(0.0);
-    0.45 * raw + 0.45 * weighted + 0.10 * dm_component
 }
 
 #[cfg(test)]
