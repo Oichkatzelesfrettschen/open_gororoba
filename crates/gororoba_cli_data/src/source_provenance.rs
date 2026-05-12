@@ -1,6 +1,5 @@
 use anyhow::{Context, Result, bail};
 use chrono::Utc;
-use csv::ReaderBuilder;
 use regex::Regex;
 use rusqlite::Connection;
 use std::{
@@ -258,6 +257,12 @@ use identity_aliases::{
     arxiv_equivalent_urls, cambridge_content_id, canonical_identity_url, expand_reference_aliases,
 };
 
+// File-loading helpers (load_toml_value, read_text_lossy,
+// read_tsv_rows, derive_status) live in the `file_io` submodule.
+#[path = "source_provenance/file_io.rs"]
+mod file_io;
+use file_io::{derive_status, load_toml_value, read_text_lossy, read_tsv_rows};
+
 fn normalize_identity_hint(hint: &str) -> String {
     let trimmed = hint.trim();
     if trimmed.is_empty() {
@@ -492,65 +497,6 @@ fn extract_local_paths(value: &Value, repo_root: &Path) -> Vec<String> {
         }
     }
     dedupe(out)
-}
-
-fn load_toml_value(path: &Path) -> Result<Value> {
-    let raw = fs::read_to_string(path).with_context(|| format!("read {}", path.display()))?;
-    toml::from_str(&raw).with_context(|| format!("parse {}", path.display()))
-}
-
-fn read_text_lossy(path: &Path) -> Result<String> {
-    let raw = fs::read(path).with_context(|| format!("read {}", path.display()))?;
-    Ok(String::from_utf8_lossy(&raw).into_owned())
-}
-
-fn derive_status(row: &HashMap<String, String>) -> String {
-    let status = row.get("status").cloned().unwrap_or_default();
-    if !status.is_empty() {
-        return status;
-    }
-    let result = row.get("result").cloned().unwrap_or_default();
-    if !result.is_empty() {
-        return result;
-    }
-    let http_code = row.get("http_code").cloned().unwrap_or_default();
-    let is_pdf_raw = row
-        .get("is_pdf")
-        .cloned()
-        .unwrap_or_default()
-        .to_ascii_lowercase();
-    let is_pdf = matches!(is_pdf_raw.as_str(), "yes" | "true" | "1");
-    if http_code.starts_with('2') && is_pdf {
-        return "pdf_ok".to_string();
-    }
-    if http_code.starts_with('2') {
-        return "ok_nonpdf".to_string();
-    }
-    if !http_code.is_empty() {
-        return format!("http_{http_code}");
-    }
-    "unknown".to_string()
-}
-
-fn read_tsv_rows(path: &Path) -> Result<Vec<HashMap<String, String>>> {
-    let mut reader = ReaderBuilder::new()
-        .delimiter(b'\t')
-        .from_path(path)
-        .with_context(|| format!("open TSV {}", path.display()))?;
-    let headers = reader
-        .headers()
-        .with_context(|| format!("read TSV headers {}", path.display()))?
-        .clone();
-    let mut rows = Vec::new();
-    for record in reader.records() {
-        let record = record.with_context(|| format!("read TSV record {}", path.display()))?;
-        let mut row = HashMap::new();
-        for (header, field) in headers.iter().zip(record.iter()) {
-            row.insert(header.to_string(), field.trim().to_string());
-        }
-        rows.push(row);
-    }
-    Ok(rows)
 }
 
 type LinkMap = (HashMap<String, Vec<LinkObservation>>, Vec<String>);
