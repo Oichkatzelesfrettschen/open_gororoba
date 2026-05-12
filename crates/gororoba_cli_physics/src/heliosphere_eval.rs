@@ -1472,119 +1472,6 @@ fn build_normalized_samples_with_strategy_and_seed(
     normalized
 }
 
-fn fit_normalization_params(samples: &[&LabeledInvariantSample]) -> NormalizationParams {
-    let mut medians = [0.0_f64; HELIOSPHERE_INVARIANT_DIM];
-    let mut scales = [1.0_f64; HELIOSPHERE_INVARIANT_DIM];
-    for idx in 0..HELIOSPHERE_INVARIANT_DIM {
-        let values = samples
-            .iter()
-            .map(|sample| sample.channels[idx])
-            .filter(|value| value.is_finite())
-            .collect::<Vec<_>>();
-        let uncertainties = samples
-            .iter()
-            .map(|sample| sample.uncertainty_scales[idx])
-            .filter(|value| value.is_finite() && *value > 0.0)
-            .collect::<Vec<_>>();
-        let median = finite_median(&values);
-        let robust_sigma = 1.4826 * finite_mad(&values, median);
-        let uncertainty_sigma = finite_median_opt(&uncertainties).unwrap_or(0.0);
-        let std_sigma = finite_std(&values, median);
-        medians[idx] = if median.is_finite() { median } else { 0.0 };
-        scales[idx] = [robust_sigma, uncertainty_sigma, std_sigma, 1.0]
-            .into_iter()
-            .filter(|value| value.is_finite() && *value > 1.0e-6)
-            .fold(1.0, f64::max);
-    }
-    NormalizationParams { medians, scales }
-}
-
-fn normalize_channels(
-    sample: &LabeledInvariantSample,
-    params: &NormalizationParams,
-) -> [f64; HELIOSPHERE_INVARIANT_DIM] {
-    let mut out = [0.0_f64; HELIOSPHERE_INVARIANT_DIM];
-    for (idx, slot) in out.iter_mut().enumerate().take(HELIOSPHERE_INVARIANT_DIM) {
-        let value = sample.channels[idx];
-        *slot = if value.is_finite() {
-            (value - params.medians[idx]) / params.scales[idx]
-        } else {
-            0.0
-        };
-    }
-    out
-}
-
-fn invariant_vector(
-    sample: &LabeledInvariantSample,
-    view_mode: ViewMode,
-    normalized: &BTreeMap<RowKey, NormalizedSample>,
-) -> [f64; HELIOSPHERE_INVARIANT_DIM] {
-    match view_mode {
-        ViewMode::Raw => sample.weighted_channels,
-        ViewMode::Normalized => normalized
-            .get(&sample.key)
-            .map(|row| row.normalized_channels)
-            .unwrap_or([0.0_f64; HELIOSPHERE_INVARIANT_DIM]),
-    }
-}
-
-fn descriptor_vector(
-    sample: &LabeledInvariantSample,
-    view_mode: ViewMode,
-    normalized: &BTreeMap<RowKey, NormalizedSample>,
-) -> [f64; DESCRIPTOR_DIM] {
-    match view_mode {
-        ViewMode::Raw => sample.descriptor_channels,
-        ViewMode::Normalized => normalized
-            .get(&sample.key)
-            .map(|row| row.normalized_descriptor_channels)
-            .unwrap_or([0.0_f64; DESCRIPTOR_DIM]),
-    }
-}
-
-fn selected_descriptor_values(
-    sample: &LabeledInvariantSample,
-    view_mode: ViewMode,
-    normalized: &BTreeMap<RowKey, NormalizedSample>,
-    descriptor_profile: DescriptorProfile,
-) -> Vec<f64> {
-    let descriptor = descriptor_vector(sample, view_mode, normalized);
-    match descriptor_profile {
-        DescriptorProfile::Full => descriptor.to_vec(),
-        DescriptorProfile::DeltaAssociator => vec![descriptor[1], descriptor[2]],
-        DescriptorProfile::AssociatorOnly => vec![descriptor[2]],
-        DescriptorProfile::TakensSedenion => vec![descriptor[4]],
-        DescriptorProfile::TakensComparison => descriptor[4..8].to_vec(),
-    }
-}
-
-fn sample_invariant_value(
-    sample: &LabeledInvariantSample,
-    view_mode: ViewMode,
-    normalized: &BTreeMap<RowKey, NormalizedSample>,
-    idx: usize,
-) -> f64 {
-    invariant_vector(sample, view_mode, normalized)[idx]
-}
-
-fn sample_descriptor_value(
-    sample: &LabeledInvariantSample,
-    view_mode: ViewMode,
-    normalized: &BTreeMap<RowKey, NormalizedSample>,
-    idx: usize,
-) -> f64 {
-    descriptor_vector(sample, view_mode, normalized)[idx]
-}
-
-fn sample_invariant_norm(
-    sample: &LabeledInvariantSample,
-    view_mode: ViewMode,
-    normalized: &BTreeMap<RowKey, NormalizedSample>,
-) -> f64 {
-    l2_norm_sq(&invariant_vector(sample, view_mode, normalized)).sqrt()
-}
-
 fn top_blocking_channels(mission_vector: &[f64], rest_vector: &[f64], top_n: usize) -> Vec<String> {
     let names = HELIOSPHERE_INVARIANT_CHANNEL_NAMES
         .iter()
@@ -2270,8 +2157,7 @@ fn mean_feature_vector(
 // existing call sites in heliosphere_eval.rs continue to resolve them.
 mod stats;
 use stats::{
-    cosine_similarity, finite_mad, finite_median, finite_median_opt, finite_std, l2_norm_sq,
-    mean, ratio_usize,
+    cosine_similarity, finite_mad, finite_median, finite_median_opt, mean, ratio_usize,
 };
 
 // Mask-ops helpers (median_filter_3, hysteresis_mask, dilate_mask,
@@ -2306,6 +2192,16 @@ mod logistic;
 use logistic::{
     LogisticModel, ScaledFeatureSet, apply_scaler, fit_scaler, predict_scores,
     train_logistic_model,
+};
+
+// Sample-vector access + normalization helpers
+// (fit_normalization_params, normalize_channels, invariant_vector,
+// descriptor_vector, selected_descriptor_values, sample_*) live in
+// the `vectors` submodule.
+mod vectors;
+use vectors::{
+    fit_normalization_params, invariant_vector, normalize_channels, sample_descriptor_value,
+    sample_invariant_norm, sample_invariant_value, selected_descriptor_values,
 };
 
 /// Public channel names for the algebra descriptor extension.
