@@ -1,5 +1,8 @@
 //! Skybox label-line extension (L9d) for the strutted emanation table.
 //!
+//! Doubling recursion: G x G grid extends a K x K strutted ET with
+//! S-assessor label lines on all four sides.
+//!
 //! The ET proper is a K x K grid where K = G - 2 = 2^(N-1) - 2.
 //! For the doubling recursion (N -> N+1), we need a power-of-2 edge:
 //! promote the strut constant S and composite X = G + S to "label lines"
