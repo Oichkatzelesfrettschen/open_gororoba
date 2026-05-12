@@ -730,15 +730,40 @@ overflow-checks = true
 [profile.release-gate.package.gororoba_cli]
 codegen-units = 1
 
-# NOTE (2026-05-12): `cargo build -p gororoba_cli_physics --release`
-# fails at link time on the nonlocal-algebraic-metamaterial binary
-# with mold + pulp 0.22.2 + gemm 0.19.0 COMDAT/ODR errors followed by
-# clang segfault. The Stage B per-package cgu=1 trick is inapplicable
-# in `release` (cgu=1 is the workspace default there) and cargo
-# rejects per-package `lto`. The binary builds fine under
-# `release-gate` profile which gate-ci-rust uses. Filed as task #132;
-# the next durable fix is either bumping the pulp/gemm version or
-# adding a per-binary linker override via a build script.
+# NOTE (2026-05-12, task #132 -- exhausted, deferred to upstream fix):
+# `cargo build -p gororoba_cli_physics --release` fails at link time
+# on the nonlocal-algebraic-metamaterial binary with hundreds of
+# COMDAT/ODR errors against libpulp_v0_22_2_{ld,st}_b32s_* (and
+# gemm_v0_gemm_microkernel_c64_simd256_*) symbols, followed by a
+# clang/lld/gold/mold segfault depending on which linker is in use.
+# Tried 2026-05-12:
+#   * Switching linker to lld -- same COMDAT-discard errors, just
+#     emitted by lld instead of mold.
+#   * Switching linker to gold + --allow-multiple-definition -- same
+#     errors at gold's pre-link stage; the discarded relocations are
+#     emitted by LLVM during fat-LTO object generation, not by the
+#     linker.
+#   * Stage B per-package cgu=1 trick -- inapplicable here. In
+#     `release` cgu=1 is already the workspace default, and the
+#     duplicates are not coming from cgu splitting in this crate but
+#     from upstream copies in pulp / gemm / private-gemm-x86 monomorphized
+#     during fat-LTO import.
+#   * Per-package `lto = "..."` override in Cargo.toml -- rejected by
+#     cargo with "lto may not be specified in a package profile."
+#   * `pulp = "0.22.3"` or newer -- not yet published; 0.22.2 is the
+#     latest as of 2026-05-12.
+# Working alternative: build with the `release-gate` profile, which
+# inherits release but uses lto="thin" + cgu=6 and does NOT trigger
+# the COMDAT folding. gate-ci-rust uses this profile, so the binary
+# is exercised by CI.
+# Production workaround:
+#   cargo build --profile release-gate -p gororoba_cli_physics \
+#     --bin nonlocal-algebraic-metamaterial
+# Durable fixes require either upstream pulp/gemm cleanup (smaller
+# COMDAT groups or different visibility for monomorphized SIMD
+# trampolines), or splitting nonlocal-algebraic-metamaterial into its
+# own crate so it can opt out of fat LTO via its own
+# `[profile.release-package-only] lto = "off"` profile.
 
 # Bench: release-level optimization with fat LTO for baseline parity.
 [profile.bench]
