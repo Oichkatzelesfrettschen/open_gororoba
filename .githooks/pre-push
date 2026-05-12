@@ -18,9 +18,35 @@
 
 set -euo pipefail
 
+# --- Capture stdin (refs to push) for shared use ---------------------------
+# Git passes one line per pushed ref on stdin:
+#   <local-ref> <local-sha> <remote-ref> <remote-sha>
+# We pipe it to both git-lfs and our deletion-detection so each gets a
+# fresh copy.
+refs_in="$(cat)"
+
+# --- Skip gate for branch deletions ----------------------------------------
+# For `git push --delete <branch>`, local-sha is all-zeros. There is no
+# new code to gate; skip the gate so deletions are instant.
+zero_sha="0000000000000000000000000000000000000000"
+all_zero=true
+nonempty=false
+while IFS=' ' read -r local_ref local_sha remote_ref remote_sha; do
+    [ -z "${local_ref:-}" ] && continue
+    nonempty=true
+    if [ "${local_sha:-}" != "$zero_sha" ]; then
+        all_zero=false
+        break
+    fi
+done <<< "$refs_in"
+if $nonempty && $all_zero; then
+    echo '[pre-push] branch deletion detected (all-zero local SHA); skipping gate.'
+    exit 0
+fi
+
 # --- Git-LFS handoff (preserves upstream behavior) --------------------------
 if command -v git-lfs >/dev/null 2>&1; then
-    git lfs pre-push "$@"
+    echo "$refs_in" | git lfs pre-push "$@"
 else
     printf >&2 '\n%s\n\n' "This repository is configured for Git LFS but 'git-lfs' was not found on your path. If you no longer wish to use Git LFS, remove this hook by deleting the 'pre-push' file in the hooks directory (set by 'core.hookspath'; usually '.git/hooks')."
     exit 2
