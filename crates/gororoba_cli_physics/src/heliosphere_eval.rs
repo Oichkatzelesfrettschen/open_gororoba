@@ -1278,106 +1278,6 @@ fn contains_time(window: &HeliosphereEventWindow, timestamp: DateTime<Utc>) -> b
     }
 }
 
-fn descriptor_channels(group: &[HeliosphereInvariantSample], idx: usize) -> [f64; DESCRIPTOR_DIM] {
-    let vectors = group
-        .iter()
-        .map(|sample| sample.weighted_channels)
-        .collect::<Vec<_>>();
-    let mut out = [0.0; DESCRIPTOR_DIM];
-    let base = descriptor_channels_from_arrays(&vectors, idx);
-    out[..4].copy_from_slice(&base);
-
-    // Compute Takens descriptors (using 4-step delay of 4D B-field)
-    let takens = takens_descriptors(group, idx);
-    out[4..8].copy_from_slice(&takens);
-    out
-}
-
-trait HasBField {
-    fn b_field(&self) -> [f64; 4];
-}
-
-impl HasBField for HeliosphereInvariantSample {
-    fn b_field(&self) -> [f64; 4] {
-        self.b_field
-    }
-}
-
-impl HasBField for &LabeledInvariantSample {
-    fn b_field(&self) -> [f64; 4] {
-        self.b_field
-    }
-}
-
-fn takens_descriptors<T: HasBField>(group: &[T], idx: usize) -> [f64; 4] {
-    let get_v16 = |target_idx: usize| -> Option<[f64; 16]> {
-        if target_idx < 3 {
-            return None;
-        }
-        let mut v16 = [0.0; 16];
-        for i in 0..4 {
-            let s = &group[target_idx - 3 + i];
-            v16[i * 4..i * 4 + 4].copy_from_slice(&s.b_field());
-        }
-        Some(v16)
-    };
-
-    let v_curr = get_v16(idx);
-    let v_prev = idx.checked_sub(1).and_then(get_v16);
-    let v_prev2 = idx.checked_sub(2).and_then(get_v16);
-
-    match (v_prev2, v_prev, v_curr) {
-        (Some(a), Some(b), Some(c)) => {
-            let sedenion_assoc = cd_kernel::cd_associator_norm(&a, &b, &c);
-
-            let mut a_oct = [0.0; 16];
-            let mut b_oct = [0.0; 16];
-            let mut c_oct = [0.0; 16];
-            a_oct[..8].copy_from_slice(&a[..8]);
-            b_oct[..8].copy_from_slice(&b[..8]);
-            c_oct[..8].copy_from_slice(&c[..8]);
-            let octonion_assoc = cd_kernel::cd_associator_norm(&a_oct, &b_oct, &c_oct);
-
-            let mut a_rand = a;
-            a_rand.reverse();
-            let mut b_rand = b;
-            b_rand.reverse();
-            let mut c_rand = c;
-            c_rand.reverse();
-            let random_assoc = cd_kernel::cd_associator_norm(&a_rand, &b_rand, &c_rand);
-
-            let euclidean = (l2_norm_sq(&a) + l2_norm_sq(&b) + l2_norm_sq(&c)).sqrt();
-
-            [sedenion_assoc, octonion_assoc, random_assoc, euclidean]
-        }
-        _ => [0.0; 4],
-    }
-}
-
-fn descriptor_channels_from_arrays(
-    vectors: &[[f64; HELIOSPHERE_INVARIANT_DIM]],
-    idx: usize,
-) -> [f64; 4] {
-    let current = &vectors[idx];
-    let prev = idx.checked_sub(1).map(|index| &vectors[index]);
-    let prev2 = idx.checked_sub(2).map(|index| &vectors[index]);
-    let norm_sq = l2_norm_sq(current);
-    let delta_norm = prev
-        .map(|value| (norm_sq - l2_norm_sq(value)).abs())
-        .unwrap_or(0.0);
-    let associator = match (prev2, prev) {
-        (Some(a), Some(b)) => {
-            let a_cd = to_cd16(a);
-            let b_cd = to_cd16(b);
-            let c_cd = to_cd16(current);
-            cd_kernel::cd_associator_norm(&a_cd, &b_cd, &c_cd)
-        }
-        _ => 0.0,
-    };
-    let mean_abs = current.iter().map(|value| value.abs()).sum::<f64>() / current.len() as f64;
-    [norm_sq, delta_norm, associator, mean_abs]
-}
-
 fn mission_splits(samples: &[LabeledInvariantSample]) -> Vec<MissionSplitSummary> {
     let mut grouped: BTreeMap<String, Vec<&LabeledInvariantSample>> = BTreeMap::new();
     for sample in samples {
@@ -2587,6 +2487,12 @@ use occupancy::{
     label_index, occupancy_tile_fraction_for_scores, occupancy_tile_stats_from_mask,
 };
 
+// Descriptor-channel helpers (HasBField trait, descriptor_channels,
+// takens_descriptors, descriptor_channels_from_arrays, to_cd16) live
+// in the `descriptors` submodule.
+mod descriptors;
+use descriptors::{descriptor_channels, descriptor_channels_from_arrays, takens_descriptors};
+
 /// Public channel names for the algebra descriptor extension.
 pub const HELIOSPHERE_DESCRIPTOR_CHANNEL_NAMES: [&str; DESCRIPTOR_DIM] = [
     "weighted_norm_sq",
@@ -2599,16 +2505,10 @@ pub const HELIOSPHERE_DESCRIPTOR_CHANNEL_NAMES: [&str; DESCRIPTOR_DIM] = [
     "takens_euclidean_baseline",
 ];
 
-fn to_cd16(values: &[f64; HELIOSPHERE_INVARIANT_DIM]) -> [f64; 16] {
-    let mut out = [0.0_f64; 16];
-    out[..HELIOSPHERE_INVARIANT_DIM].copy_from_slice(values);
-    out
-}
-
 #[cfg(test)]
 pub(crate) fn assert_takens_descriptor_sedenion_lane_matches_scalar_reference() {
+    use self::descriptors::{HasBField, takens_descriptors};
     use self::tests::sample;
-    use crate::heliosphere_eval::{HasBField, takens_descriptors};
 
     let group = (0..6).map(sample).collect::<Vec<_>>();
     let descriptor = takens_descriptors(&group, 5);
