@@ -2,14 +2,14 @@
 //! sparsification experiments.
 
 use anyhow::{Context, Result, bail};
-use chrono::{DateTime, Duration, Utc};
+use chrono::Duration;
 use csv::ReaderBuilder;
 use data_core::{
     HELIOSPHERE_INVARIANT_CHANNEL_NAMES, HELIOSPHERE_INVARIANT_DIM, HeliosphereEventSource,
-    HeliosphereEventWindow, HeliosphereFeatureRow, HeliosphereInvariantSample,
-    HeliosphereTransformMode, SparseHardwareEnvelope, compute_invariant_samples,
-    estimate_sparse_execution_plan, fetch_donki_event_labels, fetch_official_forecast_residuals,
-    heliosphere_row_datetime, labels_to_prediction_windows, transform_feature_rows_with_stats,
+    HeliosphereFeatureRow, HeliosphereInvariantSample, HeliosphereTransformMode,
+    SparseHardwareEnvelope, compute_invariant_samples, estimate_sparse_execution_plan,
+    fetch_donki_event_labels, fetch_official_forecast_residuals, heliosphere_row_datetime,
+    labels_to_prediction_windows, transform_feature_rows_with_stats,
 };
 use std::{
     collections::{BTreeMap, BTreeSet},
@@ -1241,23 +1241,6 @@ struct ThresholdedInvariant {
     threshold: f64,
 }
 
-fn parse_timestamp(value: &str) -> Result<DateTime<Utc>> {
-    Ok(DateTime::parse_from_rfc3339(value)
-        .with_context(|| format!("parse timestamp {value}"))?
-        .with_timezone(&Utc))
-}
-
-fn contains_time(window: &HeliosphereEventWindow, timestamp: DateTime<Utc>) -> bool {
-    let start = DateTime::parse_from_rfc3339(&window.window_start_utc)
-        .map(|value| value.with_timezone(&Utc));
-    let end =
-        DateTime::parse_from_rfc3339(&window.window_end_utc).map(|value| value.with_timezone(&Utc));
-    match (start, end) {
-        (Ok(start), Ok(end)) => timestamp >= start && timestamp <= end,
-        _ => false,
-    }
-}
-
 fn feature_matrix(
     samples: &[&LabeledInvariantSample],
     view_mode: ViewMode,
@@ -1302,46 +1285,6 @@ fn binary_labels(samples: &[&LabeledInvariantSample]) -> Vec<f64> {
         .iter()
         .map(|sample| if sample.label_positive { 1.0 } else { 0.0 })
         .collect()
-}
-
-fn cube_date_bounds(
-    rows: &[HeliosphereFeatureRow],
-) -> Result<(chrono::NaiveDate, chrono::NaiveDate)> {
-    let start_date = rows
-        .iter()
-        .filter_map(heliosphere_row_datetime)
-        .map(|value| value.date_naive())
-        .min()
-        .ok_or_else(|| anyhow::anyhow!("cube contains no timestamped rows"))?;
-    let end_date = rows
-        .iter()
-        .filter_map(heliosphere_row_datetime)
-        .map(|value| value.date_naive())
-        .max()
-        .ok_or_else(|| anyhow::anyhow!("cube contains no timestamped rows"))?;
-    Ok((start_date, end_date))
-}
-
-fn positive_row_count(
-    rows: &[&HeliosphereFeatureRow],
-    windows: &[HeliosphereEventWindow],
-) -> usize {
-    rows.iter()
-        .filter_map(|row| heliosphere_row_datetime(row))
-        .filter(|timestamp| {
-            windows
-                .iter()
-                .any(|window| contains_time(window, *timestamp))
-        })
-        .count()
-}
-
-fn normalize_text(value: &str) -> String {
-    value
-        .trim()
-        .to_ascii_lowercase()
-        .replace([' ', '_', '/'], "-")
-        .replace("--", "-")
 }
 
 fn build_normalized_samples(
@@ -2202,6 +2145,14 @@ mod vectors;
 use vectors::{
     fit_normalization_params, invariant_vector, normalize_channels, sample_descriptor_value,
     sample_invariant_norm, sample_invariant_value, selected_descriptor_values,
+};
+
+// Time / window / text-key helpers (parse_timestamp, contains_time,
+// cube_date_bounds, positive_row_count, normalize_text) live in the
+// `windows` submodule.
+mod windows;
+use windows::{
+    contains_time, cube_date_bounds, normalize_text, parse_timestamp, positive_row_count,
 };
 
 /// Public channel names for the algebra descriptor extension.
