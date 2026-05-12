@@ -411,8 +411,44 @@ gate-tools-clean:
 	rm -f $(WORKSPACE_ROUTING_CACHE) $(HOST_PROFILE_CACHE)
 	@echo "OK: gate-tools cache cleared."
 
+# TIER-2-CLEANUP (2026-05-12): gate-lock file. When gate-local starts,
+# it writes $(GATE_LOCK) with its PID + start time. A sibling `make
+# gate-lock-status` target lets editors check whether a gate is in
+# flight. The lock is removed in a shell trap on EXIT so even crashed
+# gates clean up. Wave-2 push of the PH-MOD session failed because
+# I edited mod.rs while a gate was mid-read; this lock surfaces that
+# class of bug before it bites.
+GATE_LOCK := $(REPO_CARGO_TARGET_DIR)/gate-tools/gate-local.lock
+
+.PHONY: gate-lock-status
+gate-lock-status:
+	@if [ -f "$(GATE_LOCK)" ]; then \
+	    pid=$$(awk '/^pid=/ {sub("pid=",""); print}' "$(GATE_LOCK)" 2>/dev/null || echo ""); \
+	    started=$$(awk '/^started=/ {sub("started=",""); print}' "$(GATE_LOCK)" 2>/dev/null || echo ""); \
+	    if [ -n "$$pid" ] && kill -0 "$$pid" 2>/dev/null; then \
+	        printf 'gate-local IN FLIGHT: pid=%s started=%s\n' "$$pid" "$$started"; \
+	        exit 1; \
+	    else \
+	        printf 'gate-lock stale (pid %s not running); removing\n' "$$pid"; \
+	        rm -f "$(GATE_LOCK)"; \
+	    fi; \
+	else \
+	    echo 'no gate-local in flight'; \
+	fi
+
 gate-local: cache-check $(WORKSPACE_ROUTING_CACHE) $(HOST_PROFILE_CACHE)
-	@set -e; \
+	@mkdir -p $(dir $(GATE_LOCK))
+	@if [ -f "$(GATE_LOCK)" ]; then \
+	    prev_pid=$$(awk '/^pid=/ {sub("pid=",""); print}' "$(GATE_LOCK)" 2>/dev/null || echo ""); \
+	    if [ -n "$$prev_pid" ] && kill -0 "$$prev_pid" 2>/dev/null; then \
+	        echo "[gate-local] another gate-local already in flight (pid=$$prev_pid). Wait or `make gate-lock-status`."; \
+	        exit 1; \
+	    fi; \
+	    rm -f "$(GATE_LOCK)"; \
+	fi
+	@trap 'rm -f "$(GATE_LOCK)"' EXIT INT TERM; \
+	printf 'pid=%s\nstarted=%s\n' "$$$$" "$$(date -Iseconds)" > "$(GATE_LOCK)"; \
+	set -e; \
 	scope=""; \
 	run_rust="true"; \
 	run_governance="true"; \
@@ -713,17 +749,35 @@ rust-regression: rust-clippy
 rust-regression-scoped:
 	# BUG FIX (2026-05-11): workspace-routing lives in gororoba_cli_data, NOT
 	# gororoba_cli_governance. Prior invocations silently failed (cargo errored
-	# on the missing -p, 2>/dev/null swallowed the error, the `||` fallback
-	# fired) so RUST_CLIPPY_SCOPE always degraded to RUST_SCOPE -- defeating
-	# the clippy/nextest scope split from commit a9edfd86. See data/output/audit
-	# /pre-push-gate-rca-2026-05-11.md for the full analysis.
-	$(eval RUST_SCOPE ?= $(shell $(CARGO_ENV) cargo run -q -p gororoba_cli_data --bin workspace-routing -- --local 2>/dev/null || echo "--workspace"))
+	# on the missing -p, the original 2>/dev/null swallowed the error, the
+	# `||` fallback fired) so RUST_CLIPPY_SCOPE always degraded to RUST_SCOPE
+	# -- defeating the clippy/nextest scope split from commit a9edfd86.
+	# See data/output/audit/2026-05-11/pre-push-gate-rca-v2-comprehensive.md.
+	#
+	# TIER-3 (2026-05-12): prefer the cached binary at $(WORKSPACE_ROUTING_CACHE)
+	# to skip cargo's metadata walk. The cached binary IS rebuilt by its own
+	# target-dep rules in gate-tools when workspace_routing.rs changes.
+	#
+	# TIER-2-CLEANUP (2026-05-12): we no longer suppress stderr from the
+	# routing CLI. Errors surface to the gate operator so silent
+	# fallbacks like the original wave-3 bug cannot repeat.
+	$(eval RUST_SCOPE ?= $(shell \
+	    if [ -x "$(WORKSPACE_ROUTING_CACHE)" ]; then \
+	        "$(WORKSPACE_ROUTING_CACHE)" --local 2> >(tee /dev/stderr); \
+	    else \
+	        $(CARGO_ENV) cargo run -q -p gororoba_cli_data --bin workspace-routing -- --local; \
+	    fi || echo "--workspace"))
 	# Clippy runs only on DIRECTLY changed crates (no reverse-closure expansion).
 	# WHY: clippy lints fire on the package owning the source -- a change in a
 	# hub crate cannot induce a new lint on a downstream consumer whose source
 	# is unchanged. Skipping the closure for clippy saves the bulk of compile
 	# time (gororoba_cli_data with 100+ binaries is the worst offender).
-	$(eval RUST_CLIPPY_SCOPE ?= $(shell $(CARGO_ENV) cargo run -q -p gororoba_cli_data --bin workspace-routing -- --local --direct-only 2>/dev/null || echo "$(RUST_SCOPE)"))
+	$(eval RUST_CLIPPY_SCOPE ?= $(shell \
+	    if [ -x "$(WORKSPACE_ROUTING_CACHE)" ]; then \
+	        "$(WORKSPACE_ROUTING_CACHE)" --local --direct-only 2> >(tee /dev/stderr); \
+	    else \
+	        $(CARGO_ENV) cargo run -q -p gororoba_cli_data --bin workspace-routing -- --local --direct-only; \
+	    fi || echo "$(RUST_SCOPE)"))
 	# Nextest in the LOCAL pre-push fast path also runs only on directly
 	# changed crates. Trust the layered model:
 	#   - Direct-changed crate tests + clippy = pre-push smoke gate (< 3 min).
