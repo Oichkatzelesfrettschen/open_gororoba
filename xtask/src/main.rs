@@ -142,6 +142,39 @@ struct LocalNextestCli {
     packages: Vec<String>,
 }
 
+/// Tier-5B (2026-05-12): `cargo xtask gate-local` -- pre-push gate
+/// driver with structured timing output.
+///
+/// Wraps the three Make sub-targets (check, rust-regression-scoped,
+/// governance-gate-readonly) and records per-phase elapsed time +
+/// exit code to a JSONL timing log under
+/// `data/output/audit/<YYYY-MM-DD>/gate-timing-<unix-ts>.jsonl`.
+///
+/// This is the replacement for the inline shell loop in `gate-local`.
+/// Currently the Makefile target still drives end-to-end orchestration;
+/// the xtask version is an opt-in via `make gate-local-xtask`.
+#[derive(Parser, Debug)]
+#[command(name = "gate-local", about = "Run pre-push gate with structured timing JSONL output")]
+struct GateLocalCli {
+    /// Path to the workspace-routing binary cache (default:
+    /// .cache/gate-target/gate-tools/workspace-routing).
+    #[arg(long)]
+    routing_bin: Option<PathBuf>,
+    /// Write timing JSONL to this path. Default:
+    /// data/output/audit/<YYYY-MM-DD>/gate-timing-<unix-ts>.jsonl
+    #[arg(long)]
+    timing_json: Option<PathBuf>,
+    /// Force run rust-regression-scoped regardless of routing.
+    #[arg(long)]
+    force_rust: bool,
+    /// Force run make check regardless of routing.
+    #[arg(long)]
+    force_check: bool,
+    /// Force run governance-gate-readonly regardless of routing.
+    #[arg(long)]
+    force_governance: bool,
+}
+
 #[derive(Parser, Debug)]
 #[command(
     name = "sparse-profile",
@@ -331,6 +364,16 @@ fn main() -> Result<()> {
         "local-nextest-plan" => run_local_nextest_plan(LocalNextestCli::try_parse_from(
             std::iter::once("local-nextest-plan".to_string()).chain(args),
         )?),
+        "gate-local" => {
+            let cli = GateLocalCli::try_parse_from(
+                std::iter::once("gate-local".to_string()).chain(args),
+            )?;
+            let exit_code = run_gate_local(cli)?;
+            if exit_code != 0 {
+                std::process::exit(exit_code);
+            }
+            Ok(())
+        }
         "gate-audit" => {
             let cfg = parse_gate_audit_args(args)?;
             run_gate_audit(cfg)
@@ -2559,4 +2602,206 @@ fn repo_root() -> Result<PathBuf> {
         .parent()
         .map(Path::to_path_buf)
         .context("resolve repository root from xtask manifest directory")
+}
+
+// ===========================================================================
+// gate-local xtask driver (Tier-5B, 2026-05-12)
+// ===========================================================================
+
+/// Routing flags emitted by workspace-routing CLI (parsed from stderr lines
+/// like `[ci-routing] run_rust=True`).
+#[derive(Debug, Default)]
+struct RoutingFlags {
+    run_rust: bool,
+    run_governance: bool,
+    run_check: bool,
+    scope: String,
+}
+
+fn parse_routing_flags(stderr: &str, stdout: &str) -> RoutingFlags {
+    let mut flags = RoutingFlags {
+        scope: stdout.trim().to_string(),
+        ..Default::default()
+    };
+    for line in stderr.lines() {
+        let Some(rest) = line.strip_prefix("[ci-routing] ") else {
+            continue;
+        };
+        let Some((key, val)) = rest.split_once('=') else {
+            continue;
+        };
+        match key {
+            "run_rust" => flags.run_rust = val == "True",
+            "run_governance" => flags.run_governance = val == "True",
+            "run_check" => flags.run_check = val == "True",
+            _ => {}
+        }
+    }
+    flags
+}
+
+/// Run a make sub-target, streaming stdout/stderr to the parent terminal,
+/// and return (exit_code, elapsed_seconds).
+fn run_make_target(root: &Path, target: &str, env: &[(&str, &str)]) -> Result<(i32, f64)> {
+    let start = Instant::now();
+    let mut command = std::process::Command::new("make");
+    command.current_dir(root);
+    command.arg(target);
+    for (key, value) in env {
+        command.env(key, value);
+    }
+    let status = command
+        .status()
+        .with_context(|| format!("spawn make {target}"))?;
+    let elapsed = start.elapsed().as_secs_f64();
+    Ok((status.code().unwrap_or(-1), elapsed))
+}
+
+fn run_gate_local(cli: GateLocalCli) -> Result<i32> {
+    let root = repo_root()?;
+    let routing_bin = cli.routing_bin.unwrap_or_else(|| {
+        root.join(".cache/gate-target/gate-tools/workspace-routing")
+    });
+
+    // Default timing path: data/output/audit/<date>/gate-timing-<ts>.jsonl
+    let timing_path = cli.timing_json.unwrap_or_else(|| {
+        let now = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .map(|d| d.as_secs())
+            .unwrap_or(0);
+        let date = chrono::Local::now().format("%Y-%m-%d").to_string();
+        root.join("data/output/audit")
+            .join(date)
+            .join(format!("gate-timing-{now}.jsonl"))
+    });
+
+    let timing = TimingRecorder::new(Some(timing_path.clone()));
+
+    // Routing decision via cached workspace-routing binary.
+    let mut flags = RoutingFlags {
+        run_rust: true,
+        run_governance: true,
+        run_check: true,
+        scope: "--workspace".to_string(),
+    };
+    let routing_start = Instant::now();
+    if routing_bin.exists() {
+        let output = std::process::Command::new(&routing_bin)
+            .arg("--local")
+            .arg("--verbose")
+            .current_dir(&root)
+            .output()
+            .with_context(|| format!("run workspace-routing at {}", routing_bin.display()))?;
+        let stderr = String::from_utf8_lossy(&output.stderr);
+        let stdout = String::from_utf8_lossy(&output.stdout);
+        eprint!("{}", stderr);
+        flags = parse_routing_flags(&stderr, &stdout);
+    } else {
+        eprintln!(
+            "[gate-local] WARNING: workspace-routing cache not found at {}; running full workspace",
+            routing_bin.display()
+        );
+    }
+    timing.write(serde_json::json!({
+        "kind": "routing",
+        "elapsed_sec": routing_start.elapsed().as_secs_f64(),
+        "run_rust": flags.run_rust,
+        "run_governance": flags.run_governance,
+        "run_check": flags.run_check,
+        "scope": flags.scope,
+    }))?;
+
+    let mut total_exit = 0;
+
+    // Phase: cache-check (always, near-instant when memoized).
+    let (code, elapsed) = run_make_target(&root, "cache-check", &[])?;
+    timing.write(serde_json::json!({
+        "kind": "phase",
+        "phase": "cache-check",
+        "exit_code": code,
+        "elapsed_sec": elapsed,
+    }))?;
+    if code != 0 {
+        return Ok(code);
+    }
+
+    // Phase: make check.
+    if flags.run_check || cli.force_check {
+        let (code, elapsed) = run_make_target(&root, "check", &[])?;
+        timing.write(serde_json::json!({
+            "kind": "phase",
+            "phase": "check",
+            "exit_code": code,
+            "elapsed_sec": elapsed,
+        }))?;
+        if code != 0 {
+            return Ok(code);
+        }
+    } else {
+        eprintln!("[gate-local] SKIP: no check-relevant (non-Rust) file changes detected.");
+        timing.write(serde_json::json!({
+            "kind": "skip",
+            "phase": "check",
+            "reason": "run_check=False",
+        }))?;
+    }
+
+    // Phase: rust-regression-scoped.
+    if flags.run_rust || cli.force_rust {
+        let scope = if flags.scope.is_empty() {
+            "--workspace".to_string()
+        } else {
+            flags.scope.clone()
+        };
+        let env_pairs: Vec<(&str, &str)> = vec![
+            ("RUST_SCOPE", scope.as_str()),
+            ("RUST_RUN_HEAVY", "0"),
+        ];
+        let (code, elapsed) = run_make_target(&root, "rust-regression-scoped", &env_pairs)?;
+        timing.write(serde_json::json!({
+            "kind": "phase",
+            "phase": "rust-regression-scoped",
+            "exit_code": code,
+            "elapsed_sec": elapsed,
+            "scope": scope,
+        }))?;
+        if code != 0 {
+            total_exit = code;
+        }
+    } else {
+        eprintln!("[gate-local] SKIP: no Rust-relevant changes detected.");
+        timing.write(serde_json::json!({
+            "kind": "skip",
+            "phase": "rust-regression-scoped",
+            "reason": "run_rust=False",
+        }))?;
+    }
+
+    // Phase: governance-gate-readonly.
+    if flags.run_governance || cli.force_governance {
+        let (code, elapsed) = run_make_target(&root, "governance-gate-readonly", &[])?;
+        timing.write(serde_json::json!({
+            "kind": "phase",
+            "phase": "governance-gate-readonly",
+            "exit_code": code,
+            "elapsed_sec": elapsed,
+        }))?;
+        if code != 0 && total_exit == 0 {
+            total_exit = code;
+        }
+    } else {
+        eprintln!("[gate-local] SKIP: no governance-relevant changes detected.");
+        timing.write(serde_json::json!({
+            "kind": "skip",
+            "phase": "governance-gate-readonly",
+            "reason": "run_governance=False",
+        }))?;
+    }
+
+    timing.record_summary(total_exit)?;
+    eprintln!(
+        "[gate-local] xtask driver complete. Timing JSONL at {}",
+        timing_path.display()
+    );
+    Ok(total_exit)
 }

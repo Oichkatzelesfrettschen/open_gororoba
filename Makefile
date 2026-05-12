@@ -383,8 +383,29 @@ $(HOST_PROFILE_CACHE): $(HOST_PROFILE_DEPS)
 	@$(CARGO_ENV) cargo run -q -p xtask -- host-profile --format shell > $@.tmp
 	@mv $@.tmp $@
 
-gate-tools: $(WORKSPACE_ROUTING_CACHE) $(HOST_PROFILE_CACHE)
+# TIER-5B (2026-05-12): xtask binary cached for the optional
+# gate-local-xtask driver. Source-dep tracking keeps it skipping
+# cargo's metadata walk when xtask source is unchanged.
+XTASK_CACHE := $(GATE_TOOLS_DIR)/xtask
+XTASK_DEPS := xtask/src/main.rs xtask/Cargo.toml
+
+$(XTASK_CACHE): $(XTASK_DEPS)
+	@mkdir -p $(GATE_TOOLS_DIR)
+	@echo "[gate-tools] rebuilding xtask binary (source changed)"
+	@$(CARGO_ENV) cargo build --release -q -p xtask --bin xtask
+	@cp -f $(REPO_CARGO_TARGET_DIR)/release/xtask $@
+	@touch $@
+
+gate-tools: $(WORKSPACE_ROUTING_CACHE) $(HOST_PROFILE_CACHE) $(XTASK_CACHE)
 	@echo "OK: gate-tools cached at $(GATE_TOOLS_DIR)/."
+
+# gate-local-xtask: opt-in Rust-driven gate. Same end result as
+# `make gate-local`, but writes per-phase timing JSONL to
+# data/output/audit/<date>/gate-timing-<unix-ts>.jsonl for regression
+# tracking. Set GATE_DRIVER=xtask to make this the default in CI.
+.PHONY: gate-local-xtask
+gate-local-xtask: cache-check $(WORKSPACE_ROUTING_CACHE) $(HOST_PROFILE_CACHE) $(XTASK_CACHE)
+	@$(XTASK_CACHE) gate-local --routing-bin $(WORKSPACE_ROUTING_CACHE) $(if $(GATE_TIMING_OUT),--timing-json $(GATE_TIMING_OUT),)
 
 gate-tools-clean:
 	rm -f $(WORKSPACE_ROUTING_CACHE) $(HOST_PROFILE_CACHE)
