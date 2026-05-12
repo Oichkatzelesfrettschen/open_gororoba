@@ -226,8 +226,17 @@ pub fn default_repo_root() -> PathBuf {
 #[path = "source_provenance/text_helpers.rs"]
 mod text_helpers;
 use text_helpers::{
-    assert_ascii, bib_entry_re, doi_re, escape_toml, render_list, slug, url_re, url_inline_re,
+    assert_ascii, bib_entry_re, escape_toml, render_list, slug, url_re, url_inline_re,
 };
+
+// DOI parsing/identity helpers (normalize_doi, extract_dois,
+// doi_to_url, doi_from_url, extract_dois_from_urls) live in the
+// `doi_helpers` submodule. Uses the same #[path] indirection as
+// text_helpers because source_provenance.rs is loaded via #[path]
+// from the provenance_ops crate.
+#[path = "source_provenance/doi_helpers.rs"]
+mod doi_helpers;
+use doi_helpers::{doi_to_url, extract_dois, extract_dois_from_urls, normalize_doi};
 
 fn normalize_identity_hint(hint: &str) -> String {
     let trimmed = hint.trim();
@@ -506,90 +515,6 @@ fn dedupe(values: Vec<String>) -> Vec<String> {
         out.push(trimmed);
     }
     out
-}
-
-fn normalize_doi(doi: &str) -> String {
-    let mut value = doi.trim().to_string();
-    let lower = value.to_ascii_lowercase();
-    if lower.starts_with("https://doi.org/") {
-        value = value["https://doi.org/".len()..].to_string();
-    } else if lower.starts_with("http://doi.org/") {
-        value = value["http://doi.org/".len()..].to_string();
-    }
-    if value.to_ascii_lowercase().starts_with("doi:") {
-        value = value[4..].trim().to_string();
-    }
-    let mut normalized = value
-        .trim()
-        .trim_start_matches('(')
-        .trim_end_matches(['.', ',', ';', ')'])
-        .to_string();
-    loop {
-        let lower = normalized.to_ascii_lowercase();
-        if lower.ends_with("/fulltext") {
-            normalized.truncate(normalized.len() - "/fulltext".len());
-            continue;
-        }
-        if lower.ends_with("/pdf") {
-            normalized.truncate(normalized.len() - "/pdf".len());
-            continue;
-        }
-        if lower.ends_with(".pdf") {
-            normalized.truncate(normalized.len() - ".pdf".len());
-            continue;
-        }
-        break;
-    }
-    if doi_re().is_match(&normalized)
-        && doi_re().find(&normalized).map(|m| m.as_str()) == Some(normalized.as_str())
-    {
-        normalized
-    } else {
-        String::new()
-    }
-}
-
-fn extract_dois(value: &Value) -> Vec<String> {
-    let mut out = Vec::new();
-    for text in extract_strings(value) {
-        let cleaned = normalize_doi(&text);
-        if doi_re().is_match(&cleaned)
-            && doi_re().find(&cleaned).map(|m| m.as_str()) == Some(cleaned.as_str())
-        {
-            out.push(cleaned);
-            continue;
-        }
-        for capture in doi_re().find_iter(&text) {
-            out.push(normalize_doi(capture.as_str()));
-        }
-    }
-    dedupe(out)
-}
-
-fn doi_to_url(doi: &str) -> String {
-    format!("https://doi.org/{doi}")
-}
-
-fn doi_from_url(url: &str) -> String {
-    if let Ok(parsed) = Url::parse(url) {
-        let host = parsed.host_str().unwrap_or_default().to_ascii_lowercase();
-        if matches!(host.as_str(), "doi.org" | "dx.doi.org") {
-            let doi = normalize_doi(parsed.path().trim_start_matches('/'));
-            if !doi.is_empty() {
-                return doi;
-            }
-        }
-    }
-    String::new()
-}
-
-fn extract_dois_from_urls(urls: &[String]) -> Vec<String> {
-    dedupe(
-        urls.iter()
-            .map(|url| doi_from_url(url))
-            .filter(|doi| !doi.is_empty())
-            .collect(),
-    )
 }
 
 fn looks_like_reference_url(url: &str) -> bool {
