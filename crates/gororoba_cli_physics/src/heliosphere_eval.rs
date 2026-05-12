@@ -2752,71 +2752,10 @@ use stats::{
     mean, ratio_usize,
 };
 
-fn median_filter_3(values: &[f64]) -> Vec<f64> {
-    if values.len() < 3 {
-        return values.to_vec();
-    }
-    let mut out = Vec::with_capacity(values.len());
-    for idx in 0..values.len() {
-        let start = idx.saturating_sub(1);
-        let end = (idx + 1).min(values.len() - 1);
-        out.push(finite_median(&values[start..=end]));
-    }
-    out
-}
-
-fn hysteresis_mask(values: &[f64], on: f64, off: f64) -> Vec<bool> {
-    let mut active = false;
-    let mut out = Vec::with_capacity(values.len());
-    for value in values {
-        if !active && *value >= on {
-            active = true;
-        } else if active && *value <= off {
-            active = false;
-        }
-        out.push(active);
-    }
-    out
-}
-
-fn dilate_mask(values: &[bool], radius: usize) -> Vec<bool> {
-    let mut out = vec![false; values.len()];
-    for (idx, active) in values.iter().copied().enumerate() {
-        if !active {
-            continue;
-        }
-        let start = idx.saturating_sub(radius);
-        let end = (idx + radius).min(values.len().saturating_sub(1));
-        out[start..=end].fill(true);
-    }
-    out
-}
-
-fn merge_small_gaps(values: &[bool], max_gap: usize) -> Vec<bool> {
-    let mut out = values.to_vec();
-    let mut idx = 0usize;
-    while idx < out.len() {
-        if out[idx] {
-            idx += 1;
-            continue;
-        }
-        let gap_start = idx;
-        while idx < out.len() && !out[idx] {
-            idx += 1;
-        }
-        let gap_end = idx;
-        let gap_len = gap_end.saturating_sub(gap_start);
-        if gap_len <= max_gap
-            && gap_start > 0
-            && gap_end < out.len()
-            && out[gap_start - 1]
-            && out[gap_end]
-        {
-            out[gap_start..gap_end].fill(true);
-        }
-    }
-    out
-}
+// Mask-ops helpers (median_filter_3, hysteresis_mask, dilate_mask,
+// merge_small_gaps) live in the `mask_ops` submodule.
+mod mask_ops;
+use mask_ops::{dilate_mask, hysteresis_mask, median_filter_3, merge_small_gaps};
 
 /// Public channel names for the algebra descriptor extension.
 pub const HELIOSPHERE_DESCRIPTOR_CHANNEL_NAMES: [&str; DESCRIPTOR_DIM] = [
