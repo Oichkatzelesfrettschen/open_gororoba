@@ -1,0 +1,30 @@
+# open_gororoba cargo configuration.
+#
+# Linker selection:
+#   Use clang + mold for x86_64-linux. mold is single-threaded but
+#   ~3-5x faster than the default GNU ld for typical Rust binaries.
+#   The project's pre-push gate compiles 441 integration test
+#   binaries; each links the workspace dep graph. Mold compresses the
+#   ~4m30s link phase to ~1m.
+#
+#   Requires: clang, mold (both in Arch repos). Verify:
+#     command -v clang && command -v mold
+#
+#   To override on a per-shell basis, set:
+#     CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_LINKER=
+#     CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_RUSTFLAGS=
+#   to empty strings before invoking cargo.
+#
+# Net config:
+#   sparse registry protocol (faster index updates) and git CLI for
+#   fetches (handles proxy / auth more robustly than the default).
+
+[target.x86_64-unknown-linux-gnu]
+linker = "clang"
+rustflags = ["-C", "link-arg=-fuse-ld=mold"]
+
+[net]
+git-fetch-with-cli = true
+
+[registries.crates-io]
+protocol = "sparse"

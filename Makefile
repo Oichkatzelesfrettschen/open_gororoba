@@ -283,7 +283,19 @@ audit-deep:
 
 test: rust-regression
 
-check: ansi-check terminology-gate verify-no-reports-writes
+# PERF FIX (2026-05-11): build repo-utilities once, then invoke the binary
+# directly. `cargo run --release ...` triggers a full workspace metadata
+# walk on every invocation (~53s cold per fresh cargo process). With a
+# single `cargo build` at the top of `check`, subsequent ansi-check +
+# terminology-gate calls execute the cached binary directly (<1s each).
+# Net saving: ~55s per push when nothing in gororoba_cli_data changed.
+REPO_UTILITIES_BIN := $(REPO_CARGO_TARGET_DIR)/release/repo-utilities
+
+check:
+	@$(CARGO_ENV) cargo build --release -p gororoba_cli_data --bin repo-utilities
+	@$(REPO_UTILITIES_BIN) ansi-check --check
+	@$(REPO_UTILITIES_BIN) terminology-gate
+	$(MAKE) verify-no-reports-writes
 	@echo "OK: fast shared check suite complete."
 
 # Governance verifier targets
@@ -624,13 +636,22 @@ rust-regression-scoped:
 	# a single invocation when needed (e.g. after toolchain bumps).
 	$(eval RUST_NEXTEST_SCOPE_MODE ?= direct)
 	$(eval RUST_NEXTEST_SCOPE ?= $(if $(filter direct,$(RUST_NEXTEST_SCOPE_MODE)),$(RUST_CLIPPY_SCOPE),$(RUST_SCOPE)))
+	# Pre-push test kind: `lib` runs only library unit tests; `all` runs
+	# lib + integration test binaries (--lib --tests). Integration test
+	# compile is the largest single contributor to gate wall-time (the
+	# 441-binary link phase, ~4m30s); restricting to --lib at pre-push
+	# makes the gate a true smoke gate. CI on PR open runs the full
+	# `all` suite. Override per invocation:
+	#   make gate-local RUST_NEXTEST_KIND_MODE=all
+	$(eval RUST_NEXTEST_KIND_MODE ?= lib)
+	$(eval RUST_NEXTEST_KINDS ?= $(if $(filter lib,$(RUST_NEXTEST_KIND_MODE)),--lib,--lib --tests))
 	$(eval RUST_RUN_HEAVY ?= 1)
 	@set -e; \
 	if [ -z "$(RUST_SCOPE)" ]; then \
 	    echo "SKIP: no Rust-relevant changes detected."; \
 	else \
 	    echo "[rust-regression-scoped] clippy scope: $(RUST_CLIPPY_SCOPE)"; \
-	    echo "[rust-regression-scoped] nextest scope: $(RUST_NEXTEST_SCOPE) (mode=$(RUST_NEXTEST_SCOPE_MODE))"; \
+	    echo "[rust-regression-scoped] nextest scope: $(RUST_NEXTEST_SCOPE) (scope_mode=$(RUST_NEXTEST_SCOPE_MODE) kinds=$(RUST_NEXTEST_KINDS))"; \
 	    if [ -n "$(RUST_CLIPPY_SCOPE)" ]; then \
 	        $(CARGO_ENV) cargo clippy $(RUST_CLIPPY_SCOPE) $(RUST_SCOPED_CLIPPY_TARGETS) -- -D warnings; \
 	    fi; \
@@ -665,16 +686,16 @@ rust-regression-scoped:
 	    if [ "$(RUST_NEXTEST_SCOPE)" = "--workspace" ]; then \
 	        if [ -n "$$filterset" ]; then \
 	            echo "[rust-regression-scoped] local skip filter enabled"; \
-	            $(CARGO_ENV) cargo nextest run --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) --lib --tests $$local_light_scope -E "$$filterset"; \
+	            $(CARGO_ENV) cargo nextest run --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) $(RUST_NEXTEST_KINDS) $$local_light_scope -E "$$filterset"; \
 	        else \
-	            $(CARGO_ENV) cargo nextest run --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) --lib --tests $$local_light_scope; \
+	            $(CARGO_ENV) cargo nextest run --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) $(RUST_NEXTEST_KINDS) $$local_light_scope; \
 	        fi; \
 	    elif [ -n "$$local_light_packages" ]; then \
 	        if [ -n "$$filterset" ]; then \
 	            echo "[rust-regression-scoped] local skip filter enabled"; \
-	            $(CARGO_ENV) cargo run -q -p xtask -- local-nextest-plan --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) $(if $(LOCAL_NEXTEST_TIMING_JSON),--timing-json-out $(LOCAL_NEXTEST_TIMING_JSON),) --filterset "$$filterset" $$local_light_packages; \
+	            $(CARGO_ENV) cargo run -q -p xtask -- local-nextest-plan --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) --kinds $(RUST_NEXTEST_KIND_MODE) $(if $(LOCAL_NEXTEST_TIMING_JSON),--timing-json-out $(LOCAL_NEXTEST_TIMING_JSON),) --filterset "$$filterset" $$local_light_packages; \
 	        else \
-	            $(CARGO_ENV) cargo run -q -p xtask -- local-nextest-plan --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) $(if $(LOCAL_NEXTEST_TIMING_JSON),--timing-json-out $(LOCAL_NEXTEST_TIMING_JSON),) $$local_light_packages; \
+	            $(CARGO_ENV) cargo run -q -p xtask -- local-nextest-plan --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) --kinds $(RUST_NEXTEST_KIND_MODE) $(if $(LOCAL_NEXTEST_TIMING_JSON),--timing-json-out $(LOCAL_NEXTEST_TIMING_JSON),) $$local_light_packages; \
 	        fi; \
 	    fi; \
 	    if [ -n "$$heavy_scope" ] && [ "$(RUST_RUN_HEAVY)" = "1" ]; then \

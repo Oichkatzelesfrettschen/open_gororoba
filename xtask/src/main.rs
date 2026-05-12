@@ -132,6 +132,13 @@ struct LocalNextestCli {
     filterset: String,
     #[arg(long)]
     timing_json_out: Option<PathBuf>,
+    /// Which test kinds to run. `lib` (default) runs only library unit
+    /// tests; `all` runs lib + integration tests. Integration test
+    /// binaries are the dominant link-time cost in the local pre-push
+    /// gate (~4m30s for 441 binaries on this workspace), so the
+    /// default skips them. CI on PR open should use `all`.
+    #[arg(long, default_value = "lib")]
+    kinds: String,
     packages: Vec<String>,
 }
 
@@ -1833,7 +1840,15 @@ fn local_nextest_plan(cli: LocalNextestCli) -> Result<i32> {
             return Ok(exit_code);
         }
     }
-    if !test_packages.is_empty() {
+    let run_integration_tests = matches!(cli.kinds.as_str(), "all" | "tests");
+    if !run_integration_tests && !test_packages.is_empty() {
+        println!(
+            "[local-nextest] skip integration-test phase for {} packages (kinds={}). Run with --kinds all to include.",
+            test_packages.len(),
+            cli.kinds
+        );
+    }
+    if run_integration_tests && !test_packages.is_empty() {
         let command = build_local_nextest_command(
             &test_packages,
             false,

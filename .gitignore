@@ -12,7 +12,8 @@ Thumbs.db
 *~
 .vscode/
 .idea/
-.cargo/
+.cargo/*
+!.cargo/config.toml
 .config/**
 !.config/nextest.toml
 .claude/
