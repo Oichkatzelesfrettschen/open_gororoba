@@ -3176,6 +3176,30 @@ fn run_gate_tools_status(cli: GateToolsStatusCli) -> Result<()> {
             ],
         },
         ToolStatusEntry {
+            name: "markdown-registry",
+            cached_path: tools_dir.join("markdown-registry"),
+            source_deps: vec![
+                root.join("crates/gororoba_cli_data/src/bin/markdown_registry.rs"),
+                root.join("crates/gororoba_cli_data/Cargo.toml"),
+            ],
+        },
+        ToolStatusEntry {
+            name: "governance-verify",
+            cached_path: tools_dir.join("governance-verify"),
+            source_deps: vec![
+                root.join("crates/gororoba_cli_data/src/bin/governance_verify.rs"),
+                root.join("crates/gororoba_cli_data/Cargo.toml"),
+            ],
+        },
+        ToolStatusEntry {
+            name: "integrity-resolution",
+            cached_path: tools_dir.join("integrity-resolution"),
+            source_deps: vec![
+                root.join("crates/gororoba_cli_data/src/bin/integrity_resolution.rs"),
+                root.join("crates/gororoba_cli_data/Cargo.toml"),
+            ],
+        },
+        ToolStatusEntry {
             name: "cache-check.last",
             cached_path: tools_dir.join("cache-check.last"),
             source_deps: vec![],

@@ -312,12 +312,13 @@ registry-verify-markdown-governance:
 	$(CARGO_ENV) cargo build --profile release-gate -p gororoba_cli_data --bin governance-verify
 	$(REPO_CARGO_TARGET_DIR)/release-gate/governance-verify markdown-removal-policy
 
-governance-gate-readonly:
-	@# release-gate profile: thin LTO + 6 codegen-units = 10x faster compile
-	@# than fat LTO, <5% runtime difference for TOML-parsing gate binaries.
-	$(CARGO_ENV) cargo build --profile release-gate -p gororoba_cli_data --bin markdown-registry --bin governance-verify --bin integrity-resolution
-	$(REPO_CARGO_TARGET_DIR)/release-gate/markdown-registry verify-gate-all
-	$(REPO_CARGO_TARGET_DIR)/release-gate/governance-verify gate-all
+# TIER-6 governance gate binaries are cached at stable paths under
+# $(GATE_TOOLS_DIR)/. Cache vars + rules live below where
+# GATE_TOOLS_DIR is defined (search "MARKDOWN_REGISTRY_CACHE").
+# Here we just consume them.
+governance-gate-readonly: $(MARKDOWN_REGISTRY_CACHE) $(GOVERNANCE_VERIFY_CACHE) $(INTEGRITY_RESOLUTION_CACHE)
+	$(MARKDOWN_REGISTRY_CACHE) verify-gate-all
+	$(GOVERNANCE_VERIFY_CACHE) gate-all
 	@echo ""
 	@echo "=========================================="
 	@echo "READ-ONLY GOVERNANCE GATE: PASSED"
@@ -387,6 +388,41 @@ $(HOST_PROFILE_CACHE): $(HOST_PROFILE_DEPS)
 # gate-local-xtask driver. Source-dep tracking keeps it skipping
 # cargo's metadata walk when xtask source is unchanged.
 XTASK_CACHE := $(GATE_TOOLS_DIR)/xtask
+
+# TIER-6 (2026-05-12): cache governance gate binaries at stable paths
+# under $(GATE_TOOLS_DIR)/. Without caching, every push that triggers
+# run_governance=True paid a 5m 24s rebuild of these three binaries
+# in release-gate profile (separate from release/dev/test profile
+# caches, so they go cold whenever the others are exercised in
+# isolation). Same pattern fixed in tier-2 for repo_utilities.
+#
+# Source dep tracking via Make: rebuild triggers ONLY when the bin
+# source or its package manifest changes. Most pushes (including
+# docs/registry-only commits) reuse the cached binaries instantly.
+GOV_GATE_DEPS := crates/gororoba_cli_data/src/bin/markdown_registry.rs \
+                 crates/gororoba_cli_data/src/bin/governance_verify.rs \
+                 crates/gororoba_cli_data/src/bin/integrity_resolution.rs \
+                 crates/gororoba_cli_data/Cargo.toml
+MARKDOWN_REGISTRY_CACHE := $(GATE_TOOLS_DIR)/markdown-registry
+GOVERNANCE_VERIFY_CACHE := $(GATE_TOOLS_DIR)/governance-verify
+INTEGRITY_RESOLUTION_CACHE := $(GATE_TOOLS_DIR)/integrity-resolution
+
+# Single rule produces all three binaries; use ordering deps so
+# downstream targets can list any subset.
+$(MARKDOWN_REGISTRY_CACHE): $(GOV_GATE_DEPS)
+	@mkdir -p $(GATE_TOOLS_DIR)
+	@echo "[gate-tools] rebuilding governance gate binaries (source changed)"
+	@$(CARGO_ENV) cargo build --profile release-gate -p gororoba_cli_data --bin markdown-registry --bin governance-verify --bin integrity-resolution
+	@cp -f $(REPO_CARGO_TARGET_DIR)/release-gate/markdown-registry $(MARKDOWN_REGISTRY_CACHE)
+	@cp -f $(REPO_CARGO_TARGET_DIR)/release-gate/governance-verify $(GOVERNANCE_VERIFY_CACHE)
+	@cp -f $(REPO_CARGO_TARGET_DIR)/release-gate/integrity-resolution $(INTEGRITY_RESOLUTION_CACHE)
+	@touch $(MARKDOWN_REGISTRY_CACHE) $(GOVERNANCE_VERIFY_CACHE) $(INTEGRITY_RESOLUTION_CACHE)
+
+$(GOVERNANCE_VERIFY_CACHE): $(MARKDOWN_REGISTRY_CACHE)
+	@: # built alongside markdown-registry above
+
+$(INTEGRITY_RESOLUTION_CACHE): $(MARKDOWN_REGISTRY_CACHE)
+	@: # built alongside markdown-registry above
 XTASK_DEPS := xtask/src/main.rs xtask/Cargo.toml
 
 $(XTASK_CACHE): $(XTASK_DEPS)
