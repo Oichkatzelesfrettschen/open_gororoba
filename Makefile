@@ -346,6 +346,7 @@ gate-local: cache-check
 	scope=""; \
 	run_rust="true"; \
 	run_governance="true"; \
+	run_check="true"; \
 	eval "$$(cargo run -q -p xtask -- host-profile --format shell)"; \
 	submake_env="WORKER_BUDGET=$$HOST_WORKER_BUDGET CARGO_JOBS=$$HOST_CARGO_JOBS NEXTEST_TEST_THREADS=$$HOST_NEXTEST_TEST_THREADS RUST_TEST_THREADS=$$HOST_RUST_TEST_THREADS RAYON_THREADS=$$HOST_RAYON_THREADS"; \
 	echo "[gate-local] host profile: physical_cores=$$HOST_PHYSICAL_CORES core_ids=$$HOST_PHYSICAL_CORE_IDS l3_cache_bytes=$$HOST_L3_CACHE_BYTES l3_safe_bytes=$$HOST_L3_SAFE_WORKING_SET_BYTES worker_budget=$$HOST_WORKER_BUDGET"; \
@@ -360,11 +361,16 @@ gate-local: cache-check
 	    if [ -n "$$routing_meta" ]; then printf '%s\n' "$$routing_meta"; fi; \
 	    printf '%s\n' "$$routing_meta" | grep -q 'run_rust=False' && run_rust="false" || true; \
 	    printf '%s\n' "$$routing_meta" | grep -q 'run_governance=False' && run_governance="false" || true; \
+	    printf '%s\n' "$$routing_meta" | grep -q 'run_check=False' && run_check="false" || true; \
 	else \
 	    echo "[gate-local] WARNING: workspace-routing unavailable, running full workspace"; \
 	    scope="--workspace"; \
 	fi; \
-	$(MAKE) check $$submake_env; \
+	if [ "$$run_check" = "true" ]; then \
+	    $(MAKE) check $$submake_env; \
+	else \
+	    echo "[gate-local] SKIP: no check-relevant (non-Rust) file changes detected."; \
+	fi; \
 	if [ "$$run_rust" = "true" ]; then \
 	    if [ -z "$$scope" ]; then scope="--workspace"; fi; \
 	    echo "[gate-local] rust scope: $$scope"; \
