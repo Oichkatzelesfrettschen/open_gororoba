@@ -13,7 +13,6 @@ use data_core::{
 };
 use std::{
     collections::{BTreeMap, BTreeSet},
-    hash::{DefaultHasher, Hash, Hasher},
     path::Path,
 };
 
@@ -1254,13 +1253,6 @@ struct ThresholdedInvariant {
     threshold: f64,
 }
 
-#[derive(Debug, Clone)]
-struct SampleSplits<'a> {
-    train: Vec<&'a LabeledInvariantSample>,
-    validation: Vec<&'a LabeledInvariantSample>,
-    test: Vec<&'a LabeledInvariantSample>,
-}
-
 fn parse_timestamp(value: &str) -> Result<DateTime<Utc>> {
     Ok(DateTime::parse_from_rfc3339(value)
         .with_context(|| format!("parse timestamp {value}"))?
@@ -1276,89 +1268,6 @@ fn contains_time(window: &HeliosphereEventWindow, timestamp: DateTime<Utc>) -> b
         (Ok(start), Ok(end)) => timestamp >= start && timestamp <= end,
         _ => false,
     }
-}
-
-fn mission_splits(samples: &[LabeledInvariantSample]) -> Vec<MissionSplitSummary> {
-    let mut grouped: BTreeMap<String, Vec<&LabeledInvariantSample>> = BTreeMap::new();
-    for sample in samples {
-        grouped
-            .entry(sample.mission.clone())
-            .or_default()
-            .push(sample);
-    }
-    grouped
-        .into_iter()
-        .map(|(mission, mut group)| {
-            group.sort_by_key(|sample| sample.timestamp_utc.clone());
-            let n = group.len();
-            let train_end = ((n as f64) * 0.70).round() as usize;
-            let val_end = ((n as f64) * 0.85).round() as usize;
-            MissionSplitSummary {
-                mission,
-                train_rows: train_end.min(n),
-                validation_rows: val_end
-                    .saturating_sub(train_end)
-                    .min(n.saturating_sub(train_end)),
-                test_rows: n.saturating_sub(val_end),
-            }
-        })
-        .collect()
-}
-
-fn split_samples(samples: &[LabeledInvariantSample]) -> SampleSplits<'_> {
-    split_samples_with_seed(samples, 0)
-}
-
-fn split_samples_with_seed(
-    samples: &[LabeledInvariantSample],
-    split_seed: u64,
-) -> SampleSplits<'_> {
-    let mut grouped: BTreeMap<String, Vec<&LabeledInvariantSample>> = BTreeMap::new();
-    for sample in samples {
-        grouped
-            .entry(sample.mission.clone())
-            .or_default()
-            .push(sample);
-    }
-    let mut train = Vec::new();
-    let mut validation = Vec::new();
-    let mut test = Vec::new();
-    for mut group in grouped.into_values() {
-        if split_seed == 0 {
-            group.sort_by_key(|sample| sample.timestamp_utc.clone());
-        } else {
-            group.sort_by(|a, b| {
-                seeded_split_rank(a, split_seed)
-                    .cmp(&seeded_split_rank(b, split_seed))
-                    .then_with(|| a.timestamp_utc.cmp(&b.timestamp_utc))
-            });
-        }
-        let n = group.len();
-        let train_end = ((n as f64) * 0.70).round() as usize;
-        let val_end = ((n as f64) * 0.85).round() as usize;
-        train.extend(group.iter().take(train_end).copied());
-        validation.extend(
-            group
-                .iter()
-                .skip(train_end)
-                .take(val_end.saturating_sub(train_end))
-                .copied(),
-        );
-        test.extend(group.iter().skip(val_end).copied());
-    }
-    SampleSplits {
-        train,
-        validation,
-        test,
-    }
-}
-
-fn seeded_split_rank(sample: &LabeledInvariantSample, split_seed: u64) -> u64 {
-    let mut hasher = DefaultHasher::new();
-    split_seed.hash(&mut hasher);
-    sample.key.hash(&mut hasher);
-    sample.timestamp_utc.hash(&mut hasher);
-    hasher.finish()
 }
 
 fn feature_matrix(
@@ -2492,6 +2401,12 @@ use occupancy::{
 // in the `descriptors` submodule.
 mod descriptors;
 use descriptors::{descriptor_channels, descriptor_channels_from_arrays, takens_descriptors};
+
+// Split helpers (SampleSplits struct, mission_splits, split_samples,
+// split_samples_with_seed, seeded_split_rank) live in the `splits`
+// submodule.
+mod splits;
+use splits::{SampleSplits, mission_splits, split_samples, split_samples_with_seed};
 
 /// Public channel names for the algebra descriptor extension.
 pub const HELIOSPHERE_DESCRIPTOR_CHANNEL_NAMES: [&str; DESCRIPTOR_DIM] = [
