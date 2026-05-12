@@ -13,6 +13,8 @@
 //!    until we reach the quaternion base case or a termination condition
 //!
 //! Reference: de Marrais (2006), arXiv:math/0603281, Appendix pp.20-27.
+//! The recursion terminates either at the quaternion base case or when
+//! one index becomes zero.
 
 /// Quaternion multiplication sign table (indices 0..3).
 ///
