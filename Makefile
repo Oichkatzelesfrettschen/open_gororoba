@@ -603,26 +603,40 @@ rust-regression: rust-clippy
 	@echo "OK: Rust regression lane passed."
 
 rust-regression-scoped:
-	$(eval RUST_SCOPE ?= $(shell $(CARGO_ENV) cargo run -q -p gororoba_cli_governance --bin workspace-routing -- --local 2>/dev/null || echo "--workspace"))
+	# BUG FIX (2026-05-11): workspace-routing lives in gororoba_cli_data, NOT
+	# gororoba_cli_governance. Prior invocations silently failed (cargo errored
+	# on the missing -p, 2>/dev/null swallowed the error, the `||` fallback
+	# fired) so RUST_CLIPPY_SCOPE always degraded to RUST_SCOPE -- defeating
+	# the clippy/nextest scope split from commit a9edfd86. See data/output/audit
+	# /pre-push-gate-rca-2026-05-11.md for the full analysis.
+	$(eval RUST_SCOPE ?= $(shell $(CARGO_ENV) cargo run -q -p gororoba_cli_data --bin workspace-routing -- --local 2>/dev/null || echo "--workspace"))
 	# Clippy runs only on DIRECTLY changed crates (no reverse-closure expansion).
 	# WHY: clippy lints fire on the package owning the source -- a change in a
 	# hub crate cannot induce a new lint on a downstream consumer whose source
 	# is unchanged. Skipping the closure for clippy saves the bulk of compile
 	# time (gororoba_cli_data with 100+ binaries is the worst offender).
-	$(eval RUST_CLIPPY_SCOPE ?= $(shell $(CARGO_ENV) cargo run -q -p gororoba_cli_governance --bin workspace-routing -- --local --direct-only 2>/dev/null || echo "$(RUST_SCOPE)"))
+	$(eval RUST_CLIPPY_SCOPE ?= $(shell $(CARGO_ENV) cargo run -q -p gororoba_cli_data --bin workspace-routing -- --local --direct-only 2>/dev/null || echo "$(RUST_SCOPE)"))
+	# Nextest in the LOCAL pre-push fast path also runs only on directly
+	# changed crates. Trust the layered model:
+	#   - Direct-changed crate tests + clippy = pre-push smoke gate (< 3 min).
+	#   - Full reverse-closure regression = CI on PR open (gate-ci-rust).
+	# Set RUST_NEXTEST_SCOPE_MODE=closure to opt back into the wide scope for
+	# a single invocation when needed (e.g. after toolchain bumps).
+	$(eval RUST_NEXTEST_SCOPE_MODE ?= direct)
+	$(eval RUST_NEXTEST_SCOPE ?= $(if $(filter direct,$(RUST_NEXTEST_SCOPE_MODE)),$(RUST_CLIPPY_SCOPE),$(RUST_SCOPE)))
 	$(eval RUST_RUN_HEAVY ?= 1)
 	@set -e; \
 	if [ -z "$(RUST_SCOPE)" ]; then \
 	    echo "SKIP: no Rust-relevant changes detected."; \
 	else \
 	    echo "[rust-regression-scoped] clippy scope: $(RUST_CLIPPY_SCOPE)"; \
-	    echo "[rust-regression-scoped] nextest scope: $(RUST_SCOPE)"; \
+	    echo "[rust-regression-scoped] nextest scope: $(RUST_NEXTEST_SCOPE) (mode=$(RUST_NEXTEST_SCOPE_MODE))"; \
 	    if [ -n "$(RUST_CLIPPY_SCOPE)" ]; then \
 	        $(CARGO_ENV) cargo clippy $(RUST_CLIPPY_SCOPE) $(RUST_SCOPED_CLIPPY_TARGETS) -- -D warnings; \
 	    fi; \
 	    local_light_scope=""; \
 	    local_light_packages=""; \
-	    if [ "$(RUST_SCOPE)" = "--workspace" ]; then \
+	    if [ "$(RUST_NEXTEST_SCOPE)" = "--workspace" ]; then \
 	        light_scope="--workspace --exclude algebra_analysis --exclude gr_core"; \
 	        heavy_scope="-p algebra_analysis -p gr_core"; \
 	        local_light_scope="$$light_scope"; \
@@ -630,7 +644,7 @@ rust-regression-scoped:
 	        light_scope=""; \
 	        heavy_scope=""; \
 	        prev=""; \
-	        for token in $(RUST_SCOPE); do \
+	        for token in $(RUST_NEXTEST_SCOPE); do \
 	            if [ "$$prev" = "-p" ]; then \
 	                case "$$token" in \
 	                    algebra_analysis|gr_core) heavy_scope="$$heavy_scope -p $$token" ;; \
@@ -648,7 +662,7 @@ rust-regression-scoped:
 	    if [ "$(RUST_RUN_HEAVY)" != "1" ]; then \
 	        filterset='$(RUST_LOCAL_SKIP_FILTERSET)'; \
 	    fi; \
-	    if [ "$(RUST_SCOPE)" = "--workspace" ]; then \
+	    if [ "$(RUST_NEXTEST_SCOPE)" = "--workspace" ]; then \
 	        if [ -n "$$filterset" ]; then \
 	            echo "[rust-regression-scoped] local skip filter enabled"; \
 	            $(CARGO_ENV) cargo nextest run --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) --lib --tests $$local_light_scope -E "$$filterset"; \
