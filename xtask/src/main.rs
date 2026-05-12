@@ -175,6 +175,62 @@ struct GateLocalCli {
     force_governance: bool,
 }
 
+/// `cargo xtask gate-timing-summary` -- aggregate recent gate-local
+/// timing JSONL files into a per-phase stats table.
+///
+/// Reads files under `data/output/audit/<YYYY-MM-DD>/gate-timing-*.jsonl`
+/// and computes count/mean/median/p95/max/min for each phase's
+/// `elapsed_sec`.
+#[derive(Parser, Debug)]
+#[command(name = "gate-timing-summary", about = "Aggregate gate-local timing JSONL")]
+struct GateTimingSummaryCli {
+    /// Look-back window in days. Default 30.
+    #[arg(long, default_value_t = 30)]
+    since_days: u64,
+    /// Root directory for timing JSONL files.
+    /// Default: data/output/audit/
+    #[arg(long)]
+    audit_root: Option<PathBuf>,
+    /// Filter to a single phase name (cache-check, check,
+    /// rust-regression-scoped, governance-gate-readonly).
+    #[arg(long)]
+    phase: Option<String>,
+    /// Output format: `table` (default) or `json`.
+    #[arg(long, default_value = "table")]
+    format: String,
+    /// Show the last N raw run lines for each phase. Default 0 = none.
+    #[arg(long, default_value_t = 0)]
+    last: usize,
+}
+
+/// `cargo xtask gate-timing-regression-check` -- detect regressions
+/// vs a baseline.
+///
+/// Loads recent gate-timing JSONL files (same source as
+/// gate-timing-summary), computes per-phase median over baseline,
+/// then checks the latest run's elapsed against `baseline_median *
+/// threshold`. Non-zero exit if any phase regressed.
+#[derive(Parser, Debug)]
+#[command(
+    name = "gate-timing-regression-check",
+    about = "Compare latest gate timing to baseline median; fail on regression"
+)]
+struct GateTimingRegressionCheckCli {
+    /// Baseline look-back in days. Default 14.
+    #[arg(long, default_value_t = 14)]
+    baseline_days: u64,
+    /// Threshold multiplier: regression if elapsed > median * threshold.
+    /// Default 2.0.
+    #[arg(long, default_value_t = 2.0)]
+    threshold: f64,
+    /// Minimum baseline sample count to enable check. Default 5.
+    #[arg(long, default_value_t = 5)]
+    min_samples: usize,
+    /// Audit root override.
+    #[arg(long)]
+    audit_root: Option<PathBuf>,
+}
+
 #[derive(Parser, Debug)]
 #[command(
     name = "sparse-profile",
@@ -339,7 +395,7 @@ fn main() -> Result<()> {
     let mut args = env::args().skip(1);
     let Some(command) = args.next() else {
         println!(
-            "{HEADER_STYLE}usage: cargo run -p xtask -- <db-docs|host-profile|local-nextest-plan|gate-audit|sparse-profile|gpu-profile|ci-route|ascii-check|ascii-cleanup|coq-stub|convos-chunk|terminology-gate|cpd-file-list|worker-budget> [args]{RESET}"
+            "{HEADER_STYLE}usage: cargo run -p xtask -- <db-docs|host-profile|local-nextest-plan|gate-local|gate-timing-summary|gate-timing-regression-check|gate-audit|audit-deep|registry-emit-all-mirrors|sparse-profile|gpu-profile|ci-route|ascii-check|ascii-cleanup|coq-stub|convos-chunk|terminology-gate|cpd-file-list|worker-budget> [args]{RESET}"
         );
         return Ok(());
     };
@@ -369,6 +425,22 @@ fn main() -> Result<()> {
                 std::iter::once("gate-local".to_string()).chain(args),
             )?;
             let exit_code = run_gate_local(cli)?;
+            if exit_code != 0 {
+                std::process::exit(exit_code);
+            }
+            Ok(())
+        }
+        "gate-timing-summary" => {
+            let cli = GateTimingSummaryCli::try_parse_from(
+                std::iter::once("gate-timing-summary".to_string()).chain(args),
+            )?;
+            run_gate_timing_summary(cli)
+        }
+        "gate-timing-regression-check" => {
+            let cli = GateTimingRegressionCheckCli::try_parse_from(
+                std::iter::once("gate-timing-regression-check".to_string()).chain(args),
+            )?;
+            let exit_code = run_gate_timing_regression_check(cli)?;
             if exit_code != 0 {
                 std::process::exit(exit_code);
             }
@@ -2804,4 +2876,307 @@ fn run_gate_local(cli: GateLocalCli) -> Result<i32> {
         timing_path.display()
     );
     Ok(total_exit)
+}
+
+// ===========================================================================
+// gate-timing-summary + gate-timing-regression-check (Tier-5C, 2026-05-12)
+// ===========================================================================
+
+/// One phase record parsed out of a gate-timing-*.jsonl file.
+#[derive(Debug, Clone)]
+struct PhaseRecord {
+    file_mtime_secs: u64,
+    phase: String,
+    elapsed_sec: f64,
+    exit_code: i64,
+}
+
+fn default_audit_root() -> Result<PathBuf> {
+    Ok(repo_root()?.join("data/output/audit"))
+}
+
+/// Walk audit_root for date directories within `since_days`, collect
+/// gate-timing-*.jsonl phase records.
+fn collect_phase_records(audit_root: &Path, since_days: u64) -> Result<Vec<PhaseRecord>> {
+    let now = std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .context("system clock before unix epoch")?
+        .as_secs();
+    let cutoff = now.saturating_sub(since_days * 86_400);
+
+    let mut records = Vec::new();
+    if !audit_root.exists() {
+        return Ok(records);
+    }
+    for entry in fs::read_dir(audit_root)
+        .with_context(|| format!("read audit root {}", audit_root.display()))?
+    {
+        let entry = entry?;
+        let date_dir = entry.path();
+        if !date_dir.is_dir() {
+            continue;
+        }
+        for jsonl in fs::read_dir(&date_dir)
+            .with_context(|| format!("read date dir {}", date_dir.display()))?
+        {
+            let jsonl = jsonl?;
+            let path = jsonl.path();
+            let name = path.file_name().and_then(|s| s.to_str()).unwrap_or("");
+            if !name.starts_with("gate-timing-") || !name.ends_with(".jsonl") {
+                continue;
+            }
+            let meta = jsonl.metadata()?;
+            let mtime_secs = meta
+                .modified()
+                .ok()
+                .and_then(|t| t.duration_since(std::time::UNIX_EPOCH).ok())
+                .map(|d| d.as_secs())
+                .unwrap_or(0);
+            if mtime_secs < cutoff {
+                continue;
+            }
+            let text = fs::read_to_string(&path)
+                .with_context(|| format!("read {}", path.display()))?;
+            for line in text.lines() {
+                let line = line.trim();
+                if line.is_empty() {
+                    continue;
+                }
+                let value: serde_json::Value = match serde_json::from_str(line) {
+                    Ok(v) => v,
+                    Err(_) => continue,
+                };
+                if value.get("kind").and_then(|v| v.as_str()) != Some("phase") {
+                    continue;
+                }
+                let phase = match value.get("phase").and_then(|v| v.as_str()) {
+                    Some(p) => p.to_string(),
+                    None => continue,
+                };
+                let elapsed_sec = match value.get("elapsed_sec").and_then(|v| v.as_f64()) {
+                    Some(e) => e,
+                    None => continue,
+                };
+                let exit_code = value
+                    .get("exit_code")
+                    .and_then(|v| v.as_i64())
+                    .unwrap_or(0);
+                records.push(PhaseRecord {
+                    file_mtime_secs: mtime_secs,
+                    phase,
+                    elapsed_sec,
+                    exit_code,
+                });
+            }
+        }
+    }
+    records.sort_by_key(|r| r.file_mtime_secs);
+    Ok(records)
+}
+
+fn percentile(sorted: &[f64], p: f64) -> f64 {
+    if sorted.is_empty() {
+        return 0.0;
+    }
+    let idx = ((sorted.len() as f64 - 1.0) * p).round() as usize;
+    sorted[idx.min(sorted.len() - 1)]
+}
+
+#[derive(Debug, serde::Serialize)]
+struct PhaseStats {
+    phase: String,
+    count: usize,
+    mean_sec: f64,
+    median_sec: f64,
+    p95_sec: f64,
+    max_sec: f64,
+    min_sec: f64,
+    last_sec: f64,
+}
+
+fn compute_phase_stats(records: &[PhaseRecord]) -> Vec<PhaseStats> {
+    let mut by_phase: BTreeMap<String, Vec<f64>> = BTreeMap::new();
+    let mut last_by_phase: BTreeMap<String, f64> = BTreeMap::new();
+    for r in records {
+        by_phase
+            .entry(r.phase.clone())
+            .or_default()
+            .push(r.elapsed_sec);
+        last_by_phase.insert(r.phase.clone(), r.elapsed_sec);
+    }
+    let mut out = Vec::new();
+    for (phase, mut elapsed) in by_phase {
+        elapsed.sort_by(|a, b| a.partial_cmp(b).unwrap_or(std::cmp::Ordering::Equal));
+        let count = elapsed.len();
+        let sum: f64 = elapsed.iter().sum();
+        let mean = sum / count as f64;
+        let median = percentile(&elapsed, 0.5);
+        let p95 = percentile(&elapsed, 0.95);
+        let max = *elapsed.last().unwrap_or(&0.0);
+        let min = *elapsed.first().unwrap_or(&0.0);
+        let last = last_by_phase.get(&phase).copied().unwrap_or(0.0);
+        out.push(PhaseStats {
+            phase,
+            count,
+            mean_sec: mean,
+            median_sec: median,
+            p95_sec: p95,
+            max_sec: max,
+            min_sec: min,
+            last_sec: last,
+        });
+    }
+    out
+}
+
+fn run_gate_timing_summary(cli: GateTimingSummaryCli) -> Result<()> {
+    let audit_root = match cli.audit_root {
+        Some(p) => p,
+        None => default_audit_root()?,
+    };
+    let mut records = collect_phase_records(&audit_root, cli.since_days)?;
+    if let Some(filter) = &cli.phase {
+        records.retain(|r| &r.phase == filter);
+    }
+
+    if records.is_empty() {
+        eprintln!(
+            "[gate-timing-summary] no records under {} within last {} days",
+            audit_root.display(),
+            cli.since_days
+        );
+        return Ok(());
+    }
+
+    let stats = compute_phase_stats(&records);
+
+    match cli.format.as_str() {
+        "json" => {
+            println!("{}", serde_json::to_string_pretty(&stats)?);
+        }
+        "table" => {
+            println!(
+                "{:<28} {:>6} {:>10} {:>10} {:>10} {:>10} {:>10} {:>10}",
+                "phase", "count", "mean", "median", "p95", "min", "max", "last"
+            );
+            println!("{:-<108}", "");
+            for s in &stats {
+                println!(
+                    "{:<28} {:>6} {:>10.3} {:>10.3} {:>10.3} {:>10.3} {:>10.3} {:>10.3}",
+                    s.phase,
+                    s.count,
+                    s.mean_sec,
+                    s.median_sec,
+                    s.p95_sec,
+                    s.min_sec,
+                    s.max_sec,
+                    s.last_sec,
+                );
+            }
+            if cli.last > 0 {
+                let recent: Vec<&PhaseRecord> =
+                    records.iter().rev().take(cli.last * stats.len()).collect();
+                println!();
+                println!("Last {} raw records (newest first):", cli.last * stats.len());
+                for r in recent {
+                    println!(
+                        "  {}  {:<28}  {:>10.3}s  exit={}",
+                        chrono::DateTime::<chrono::Local>::from(
+                            std::time::UNIX_EPOCH
+                                + std::time::Duration::from_secs(r.file_mtime_secs)
+                        )
+                        .format("%Y-%m-%d %H:%M"),
+                        r.phase,
+                        r.elapsed_sec,
+                        r.exit_code,
+                    );
+                }
+            }
+        }
+        other => bail!("unsupported --format: {other} (expected table|json)"),
+    }
+    Ok(())
+}
+
+fn run_gate_timing_regression_check(cli: GateTimingRegressionCheckCli) -> Result<i32> {
+    let audit_root = match cli.audit_root {
+        Some(p) => p,
+        None => default_audit_root()?,
+    };
+    let records = collect_phase_records(&audit_root, cli.baseline_days)?;
+    if records.is_empty() {
+        eprintln!(
+            "[gate-timing-regression-check] no records under {} within last {} days; skipping",
+            audit_root.display(),
+            cli.baseline_days
+        );
+        return Ok(0);
+    }
+
+    // Group by phase, last is "latest", rest is baseline.
+    let mut by_phase: BTreeMap<String, Vec<f64>> = BTreeMap::new();
+    let mut latest_by_phase: BTreeMap<String, f64> = BTreeMap::new();
+    for r in &records {
+        by_phase
+            .entry(r.phase.clone())
+            .or_default()
+            .push(r.elapsed_sec);
+        latest_by_phase.insert(r.phase.clone(), r.elapsed_sec);
+    }
+
+    let mut regressed = false;
+    println!(
+        "{:<28} {:>10} {:>10} {:>10} {:>10} {:>8}",
+        "phase", "baseline_n", "median", "threshold", "latest", "status"
+    );
+    println!("{:-<90}", "");
+    for (phase, mut elapsed) in by_phase {
+        let latest = latest_by_phase.get(&phase).copied().unwrap_or(0.0);
+        // Drop latest from baseline samples for cleaner comparison.
+        if let Some(pos) = elapsed
+            .iter()
+            .rposition(|v| (*v - latest).abs() < f64::EPSILON)
+        {
+            elapsed.remove(pos);
+        }
+        if elapsed.len() < cli.min_samples {
+            println!(
+                "{:<28} {:>10} {:>10} {:>10} {:>10.3} {:>8}",
+                phase,
+                elapsed.len(),
+                "n/a",
+                "n/a",
+                latest,
+                "warmup"
+            );
+            continue;
+        }
+        elapsed.sort_by(|a, b| a.partial_cmp(b).unwrap_or(std::cmp::Ordering::Equal));
+        let median = percentile(&elapsed, 0.5);
+        let thresh = median * cli.threshold;
+        let status = if latest > thresh { "FAIL" } else { "ok" };
+        if latest > thresh {
+            regressed = true;
+        }
+        println!(
+            "{:<28} {:>10} {:>10.3} {:>10.3} {:>10.3} {:>8}",
+            phase,
+            elapsed.len(),
+            median,
+            thresh,
+            latest,
+            status,
+        );
+    }
+
+    if regressed {
+        eprintln!(
+            "[gate-timing-regression-check] FAIL: at least one phase regressed >{:.2}x median",
+            cli.threshold
+        );
+        Ok(2)
+    } else {
+        eprintln!("[gate-timing-regression-check] OK: no regressions detected");
+        Ok(0)
+    }
 }
