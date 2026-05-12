@@ -20,6 +20,18 @@
 #   fetches (handles proxy / auth more robustly than the default).
 
 [build]
+# Tier-8 (2026-05-12): single target dir for both CLI cargo and gate
+# cargo. Before this, `target/` (CLI default), `.cache/gate-target/`
+# (gate via CARGO_TARGET_DIR env), `.cache/cargo-default-target/`
+# (legacy), and `.cache/cargo/` (legacy) each held independent
+# incremental caches. Cross-invocation cold-cache cost was paid every
+# time someone ran `cargo X` without prefixing CARGO_TARGET_DIR.
+# Pointing the default at .cache/gate-target/ means CLI cargo and
+# gate cargo share artifacts (gate still sets CARGO_TARGET_DIR
+# explicitly for isolation under parallel invocations). Saves ~36 GB
+# of duplicate working set and restores cache locality.
+target-dir = ".cache/gate-target"
+
 # sccache (re-enabled 2026-05-12): cache compiled crate artifacts
 # across sessions. Originally enabled sprint-62 (commit 3c3cb85f),
 # removed in c4a779e5 for "gate-controlled caching" -- but the
