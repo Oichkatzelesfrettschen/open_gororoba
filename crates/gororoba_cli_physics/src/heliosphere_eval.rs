@@ -33,12 +33,6 @@ pub use public_types::{
 };
 
 #[derive(Debug, Clone)]
-struct ScaledFeatureSet {
-    means: Vec<f64>,
-    scales: Vec<f64>,
-}
-
-#[derive(Debug, Clone)]
 struct NormalizationParams {
     medians: [f64; HELIOSPHERE_INVARIANT_DIM],
     scales: [f64; HELIOSPHERE_INVARIANT_DIM],
@@ -1242,12 +1236,6 @@ enum FeatureMode {
 }
 
 #[derive(Debug, Clone)]
-struct LogisticModel {
-    weights: Vec<f64>,
-    bias: f64,
-}
-
-#[derive(Debug, Clone)]
 struct ThresholdedInvariant {
     index: usize,
     threshold: f64,
@@ -1972,107 +1960,10 @@ fn median_mask_lead_time_hours(
     finite_median_opt(&leads)
 }
 
-fn fit_scaler(rows: &[Vec<f64>]) -> ScaledFeatureSet {
-    if rows.is_empty() {
-        return ScaledFeatureSet {
-            means: Vec::new(),
-            scales: Vec::new(),
-        };
-    }
-    let dim = rows[0].len();
-    let mut means = vec![0.0; dim];
-    let mut scales = vec![1.0; dim];
-    for idx in 0..dim {
-        let column = rows.iter().map(|row| row[idx]).collect::<Vec<_>>();
-        means[idx] = mean(&column);
-        let variance = column
-            .iter()
-            .map(|value| {
-                let delta = *value - means[idx];
-                delta * delta
-            })
-            .sum::<f64>()
-            / column.len().max(1) as f64;
-        let scale = variance.sqrt();
-        scales[idx] = if scale.is_finite() && scale > 0.0 {
-            scale
-        } else {
-            1.0
-        };
-    }
-    ScaledFeatureSet { means, scales }
-}
-
-fn apply_scaler(scaler: &ScaledFeatureSet, rows: &[Vec<f64>]) -> Vec<Vec<f64>> {
-    rows.iter()
-        .map(|row| {
-            row.iter()
-                .enumerate()
-                .map(|(idx, value)| (value - scaler.means[idx]) / scaler.scales[idx])
-                .collect::<Vec<_>>()
-        })
-        .collect()
-}
-
-fn train_logistic_model(
-    rows: &[Vec<f64>],
-    labels: &[f64],
-    learning_rate: f64,
-    epochs: usize,
-    lambda: f64,
-) -> LogisticModel {
-    let dim = rows.first().map(Vec::len).unwrap_or(0);
-    let mut weights = vec![0.0; dim];
-    let mut bias = 0.0;
-    let positives = labels.iter().copied().sum::<f64>().max(1.0);
-    let negatives = (labels.len() as f64 - positives).max(1.0);
-    let positive_weight = negatives / positives;
-    for _ in 0..epochs {
-        let mut grad_w = vec![0.0; dim];
-        let mut grad_b = 0.0;
-        for (row, label) in rows.iter().zip(labels.iter().copied()) {
-            let linear = bias
-                + row
-                    .iter()
-                    .zip(weights.iter())
-                    .map(|(value, weight)| value * weight)
-                    .sum::<f64>();
-            let prediction = sigmoid(linear);
-            let error = prediction - label;
-            let weight = if label > 0.5 { positive_weight } else { 1.0 };
-            for idx in 0..dim {
-                grad_w[idx] += error * row[idx] * weight;
-            }
-            grad_b += error * weight;
-        }
-        let denom = rows.len().max(1) as f64;
-        for idx in 0..dim {
-            grad_w[idx] = grad_w[idx] / denom + lambda * weights[idx];
-            weights[idx] -= learning_rate * grad_w[idx];
-        }
-        bias -= learning_rate * grad_b / denom;
-    }
-    LogisticModel { weights, bias }
-}
-
-fn predict_scores(model: &LogisticModel, rows: &[Vec<f64>]) -> Vec<f64> {
-    rows.iter()
-        .map(|row| {
-            let linear = model.bias
-                + row
-                    .iter()
-                    .zip(model.weights.iter())
-                    .map(|(value, weight)| value * weight)
-                    .sum::<f64>();
-            sigmoid(linear)
-        })
-        .collect()
-}
-
 // sigmoid / threshold_metrics / best_threshold / auprc / auroc live
 // in the `metrics` submodule.
 mod metrics;
-use metrics::{auprc, auroc, best_threshold, sigmoid, threshold_metrics};
+use metrics::{auprc, auroc, best_threshold, threshold_metrics};
 
 fn best_single_invariant_threshold(
     samples: &[&LabeledInvariantSample],
@@ -2407,6 +2298,15 @@ use descriptors::{descriptor_channels, descriptor_channels_from_arrays, takens_d
 // submodule.
 mod splits;
 use splits::{SampleSplits, mission_splits, split_samples, split_samples_with_seed};
+
+// Logistic-regression helpers (ScaledFeatureSet, LogisticModel,
+// fit_scaler, apply_scaler, train_logistic_model, predict_scores)
+// live in the `logistic` submodule.
+mod logistic;
+use logistic::{
+    LogisticModel, ScaledFeatureSet, apply_scaler, fit_scaler, predict_scores,
+    train_logistic_model,
+};
 
 /// Public channel names for the algebra descriptor extension.
 pub const HELIOSPHERE_DESCRIPTOR_CHANNEL_NAMES: [&str; DESCRIPTOR_DIM] = [
