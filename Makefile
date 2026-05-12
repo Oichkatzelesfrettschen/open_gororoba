@@ -556,7 +556,7 @@ data-core-pure-check:
 # Experimental target dirs: MUST be named .cache/exp-<name>-target/
 # Use: CARGO_TARGET_DIR=$(CURDIR)/.cache/exp-myname-target cargo ...
 # Clean: make cache-purge-exp
-.PHONY: cache-status cache-sweep cache-purge-exp cache-check cache-check-force
+.PHONY: cache-status cache-sweep cache-purge-exp cache-check cache-check-force cache-sweep-dry-run
 
 cache-status:
 	@printf '=== Cargo target dirs ===\n'
@@ -568,26 +568,70 @@ cache-status:
 	@printf '=== Experimental dirs (.cache/exp-*-target) ===\n'
 	@du -sh .cache/exp-*-target 2>/dev/null || printf '(none)\n'
 
+# TIER-2-CLEANUP (2026-05-12): cache-sweep policy changed from
+# `--maxsize 100GB` + unconditional gate-cbuild wipe to age-based
+# preservation. The prior policy wiped 119GB of debug artifacts in a
+# single run during PH-MOD, forcing a cold rebuild on the next push.
+# `cargo sweep --time N` keeps artifacts accessed within the last N
+# days; this preserves the incremental working set across sessions.
+#
+# Tunables:
+#   CACHE_SWEEP_KEEP_DAYS (default 7): cargo-sweep --time argument.
+#     Anything older than this many days is removed.
+#   CACHE_SWEEP_DEBUG_KEEP_DAYS (default 14): gate-cbuild debug wipe
+#     threshold. Set to 0 to never auto-wipe (let cargo-sweep handle).
+CACHE_SWEEP_KEEP_DAYS ?= 7
+CACHE_SWEEP_DEBUG_KEEP_DAYS ?= 14
+
 cache-sweep:
 	@echo "Pre-sweep size: $$(du -sh .cache 2>/dev/null | cut -f1)"
-	@echo "Sweeping .cache/gate-target to <= 100GB..."
-	@CARGO_TARGET_DIR=.cache/gate-target cargo sweep --maxsize 100GB . || echo "(skip: target absent or not a cargo project)"
-	@echo "Sweeping .cache/cargo-default-target to <= 100GB..."
-	@CARGO_TARGET_DIR=.cache/cargo-default-target cargo sweep --maxsize 100GB . || echo "(skip: target absent or not a cargo project)"
-	@echo "Sweeping ambient target/ to <= 100GB..."
-	@cargo sweep --maxsize 100GB . || echo "(skip: ambient target absent)"
-# Wipe stale debug-profile artifacts in gate-cbuild. The 4-gate chain uses
-# only --profile release-gate; debug artifacts here are leftovers from
-# one-off `cargo build` invocations and can balloon to 100+ GB. They are
-# regenerable on demand (next non-release cargo build will rebuild them).
-	@for d in .cache/gate-cbuild/*/debug; do \
-		if [ -d "$$d" ]; then \
-			SIZE=$$(du -sh "$$d" 2>/dev/null | cut -f1); \
-			echo "Removing stale gate-cbuild debug artifacts ($$SIZE) at $$d ..."; \
-			rm -rf "$$d"; \
-		fi; \
-	done
+	@echo "Sweeping .cache/gate-target (keep artifacts accessed in last $(CACHE_SWEEP_KEEP_DAYS) days)..."
+	@CARGO_TARGET_DIR=.cache/gate-target cargo sweep --time $(CACHE_SWEEP_KEEP_DAYS) . || echo "(skip: target absent or not a cargo project)"
+	@echo "Sweeping .cache/cargo-default-target (keep last $(CACHE_SWEEP_KEEP_DAYS) days)..."
+	@CARGO_TARGET_DIR=.cache/cargo-default-target cargo sweep --time $(CACHE_SWEEP_KEEP_DAYS) . || echo "(skip: target absent or not a cargo project)"
+	@echo "Sweeping ambient target/ (keep last $(CACHE_SWEEP_KEEP_DAYS) days)..."
+	@cargo sweep --time $(CACHE_SWEEP_KEEP_DAYS) . || echo "(skip: ambient target absent)"
+# Conditional gate-cbuild debug wipe: only remove directories where the
+# most recent file was modified more than CACHE_SWEEP_DEBUG_KEEP_DAYS
+# days ago. Skips wipe entirely if CACHE_SWEEP_DEBUG_KEEP_DAYS=0.
+	@if [ "$(CACHE_SWEEP_DEBUG_KEEP_DAYS)" -gt 0 ]; then \
+	    for d in .cache/gate-cbuild/*/debug; do \
+	        if [ -d "$$d" ]; then \
+	            most_recent=$$(find "$$d" -type f -printf '%T@\n' 2>/dev/null | sort -nr | head -1 | cut -d. -f1); \
+	            if [ -z "$$most_recent" ]; then continue; fi; \
+	            age_days=$$(( ( $$(date +%s) - $$most_recent ) / 86400 )); \
+	            if [ "$$age_days" -gt "$(CACHE_SWEEP_DEBUG_KEEP_DAYS)" ]; then \
+	                SIZE=$$(du -sh "$$d" 2>/dev/null | cut -f1); \
+	                echo "Removing stale gate-cbuild debug ($$SIZE, $${age_days}d old) at $$d ..."; \
+	                rm -rf "$$d"; \
+	            else \
+	                echo "Keeping gate-cbuild debug at $$d (last touched $${age_days}d ago)"; \
+	            fi; \
+	        fi; \
+	    done; \
+	fi
 	@echo "Post-sweep size: $$(du -sh .cache 2>/dev/null | cut -f1)"
+
+# cache-sweep-dry-run: show what would be removed without removing.
+.PHONY: cache-sweep-dry-run
+cache-sweep-dry-run:
+	@echo "DRY RUN: would sweep with --time $(CACHE_SWEEP_KEEP_DAYS) days"
+	@echo "=== cargo-sweep dry-run on .cache/gate-target ==="
+	@CARGO_TARGET_DIR=.cache/gate-target cargo sweep --time $(CACHE_SWEEP_KEEP_DAYS) --dry-run . || true
+	@echo "=== gate-cbuild debug dirs older than $(CACHE_SWEEP_DEBUG_KEEP_DAYS) days ==="
+	@for d in .cache/gate-cbuild/*/debug; do \
+	    if [ -d "$$d" ]; then \
+	        most_recent=$$(find "$$d" -type f -printf '%T@\n' 2>/dev/null | sort -nr | head -1 | cut -d. -f1); \
+	        if [ -z "$$most_recent" ]; then continue; fi; \
+	        age_days=$$(( ( $$(date +%s) - $$most_recent ) / 86400 )); \
+	        SIZE=$$(du -sh "$$d" 2>/dev/null | cut -f1); \
+	        if [ "$$age_days" -gt "$(CACHE_SWEEP_DEBUG_KEEP_DAYS)" ]; then \
+	            echo "  WOULD REMOVE: $$d ($$SIZE, $${age_days}d old)"; \
+	        else \
+	            echo "  KEEP: $$d ($$SIZE, $${age_days}d old)"; \
+	        fi; \
+	    fi; \
+	done
 	@echo "OK: cache-sweep complete."
 
 cache-purge-exp:
