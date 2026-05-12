@@ -1,6 +1,9 @@
 //! Theorem 11 recursive ET embedding (L9e), per de Marrais (2004,
 //! "The 42 Assessors").
 //!
+//! The primary + shifted sub-block embedding is the structural
+//! mechanism that propagates ET cells through CD doubling.
+//!
 //! When building the ET for dim = 2^(N+1) with strut constant S, the
 //! old dim = 2^N ET (same S) reappears as an exact sub-block.
 //! Specifically:
