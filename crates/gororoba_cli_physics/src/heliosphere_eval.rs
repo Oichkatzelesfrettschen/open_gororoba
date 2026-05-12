@@ -33,8 +33,6 @@ pub use public_types::{
     SparsePolicyTransferSpec,
 };
 
-type OccupancyTileKey = (String, String, String, u16, u16, u8, Option<u32>);
-
 #[derive(Debug, Clone)]
 struct ScaledFeatureSet {
     means: Vec<f64>,
@@ -173,19 +171,6 @@ fn sample_key(sample: &HeliosphereInvariantSample) -> RowKey {
         sample.year,
         sample.doy,
         sample.hour,
-    )
-}
-
-fn occupancy_tile_key(sample: &LabeledInvariantSample) -> OccupancyTileKey {
-    let hour_bucket = (sample.key.5 / 6) * 6;
-    (
-        sample.window_name.clone(),
-        sample.mission.clone(),
-        sample.product.clone(),
-        sample.key.3,
-        sample.key.4,
-        hour_bucket,
-        None,
     )
 }
 
@@ -2465,59 +2450,6 @@ fn median_lead_time_hours(
     finite_median_opt(&leads)
 }
 
-fn label_index(samples: &[LabeledInvariantSample]) -> BTreeMap<RowKey, bool> {
-    samples
-        .iter()
-        .map(|sample| (sample.key.clone(), sample.label_positive))
-        .collect()
-}
-
-fn occupancy_tile_totals(samples: &[LabeledInvariantSample]) -> usize {
-    samples
-        .iter()
-        .map(occupancy_tile_key)
-        .collect::<BTreeSet<_>>()
-        .len()
-}
-
-fn occupancy_tile_stats_from_mask(
-    samples: &[LabeledInvariantSample],
-    active_index: &BTreeMap<RowKey, bool>,
-) -> (usize, usize, f64) {
-    let total_tiles = occupancy_tile_totals(samples);
-    let mut active_tiles = BTreeSet::new();
-    for sample in samples {
-        if *active_index.get(&sample.key).unwrap_or(&false) {
-            active_tiles.insert(occupancy_tile_key(sample));
-        }
-    }
-    let active_count = active_tiles.len();
-    (
-        active_count,
-        total_tiles,
-        ratio_usize(active_count, total_tiles.max(1)),
-    )
-}
-
-fn occupancy_tile_fraction_for_scores(
-    samples: &[&LabeledInvariantSample],
-    scores: &[f64],
-    threshold: f64,
-) -> f64 {
-    let total_tiles = samples
-        .iter()
-        .map(|sample| occupancy_tile_key(sample))
-        .collect::<BTreeSet<_>>()
-        .len();
-    let mut active_tiles = BTreeSet::new();
-    for (sample, score) in samples.iter().zip(scores.iter()) {
-        if score.is_finite() && *score >= threshold {
-            active_tiles.insert(occupancy_tile_key(sample));
-        }
-    }
-    ratio_usize(active_tiles.len(), total_tiles.max(1))
-}
-
 fn sparse_summary(
     name: &str,
     rows: &[&HeliosphereFeatureRow],
@@ -2646,6 +2578,14 @@ use stats::{
 // merge_small_gaps) live in the `mask_ops` submodule.
 mod mask_ops;
 use mask_ops::{dilate_mask, hysteresis_mask, median_filter_3, merge_small_gaps};
+
+// Occupancy-tile helpers (label_index, occupancy_tile_key,
+// occupancy_tile_totals, occupancy_tile_stats_from_mask,
+// occupancy_tile_fraction_for_scores) live in the `occupancy` submodule.
+mod occupancy;
+use occupancy::{
+    label_index, occupancy_tile_fraction_for_scores, occupancy_tile_stats_from_mask,
+};
 
 /// Public channel names for the algebra descriptor extension.
 pub const HELIOSPHERE_DESCRIPTOR_CHANNEL_NAMES: [&str; DESCRIPTOR_DIM] = [
