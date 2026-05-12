@@ -1,5 +1,7 @@
 //! Lanyard (cycle) classification in the zero-divisor graph.
 //!
+//! Census at dim=16: sails, tray-racks, and bicycle-chain cycles.
+//!
 //! De Marrais identifies several cycle types in the ZD graph:
 //! - Sail: 3-cycle of co-assessors forming a triangular face with
 //!   all Same-sign edges.
