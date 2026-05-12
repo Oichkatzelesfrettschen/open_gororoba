@@ -19,6 +19,27 @@
 #   sparse registry protocol (faster index updates) and git CLI for
 #   fetches (handles proxy / auth more robustly than the default).
 
+[build]
+# sccache (re-enabled 2026-05-12): cache compiled crate artifacts
+# across sessions. Originally enabled sprint-62 (commit 3c3cb85f),
+# removed in c4a779e5 for "gate-controlled caching" -- but the
+# removal leaves a measurable win on the table for cold-cache rebuilds
+# after make cache-sweep or branch switches. sccache wraps rustc;
+# mold wraps the linker (set below); they are orthogonal.
+#
+# CACHING POLICY: sccache caches across SESSIONS. Within a session,
+# cargo incremental compilation is faster (sccache passes through with
+# ~5ms overhead). The win materializes when:
+#   - First build after `make cache-sweep`
+#   - Switching branches that have different artifact graphs
+#   - CI runs without persistent target/ dir (gate-ci-rust uses
+#     CARGO_ENV_CI = CARGO_INCREMENTAL=0; sccache + non-incremental
+#     gives full cross-session cache hits)
+#
+# Verify cache state: sccache --show-stats
+# Disable per-shell: RUSTC_WRAPPER= cargo ...
+rustc-wrapper = "sccache"
+
 [target.x86_64-unknown-linux-gnu]
 linker = "clang"
 rustflags = ["-C", "link-arg=-fuse-ld=mold"]
