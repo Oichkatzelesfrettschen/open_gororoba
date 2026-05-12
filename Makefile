@@ -292,7 +292,7 @@ test: rust-regression
 REPO_UTILITIES_BIN := $(REPO_CARGO_TARGET_DIR)/release/repo-utilities
 
 check:
-	@$(CARGO_ENV) cargo build --release -p gororoba_cli_data --bin repo-utilities
+	@$(CARGO_ENV) cargo build --release -p repo_utilities --bin repo-utilities
 	@$(REPO_UTILITIES_BIN) ansi-check --check
 	@$(REPO_UTILITIES_BIN) terminology-gate
 	$(MAKE) verify-no-reports-writes
@@ -1007,7 +1007,7 @@ cargo-deny-check:
 	@echo "OK: cargo-deny policy gate passed."
 
 mcp-smoke:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin repo-utilities -- mcp-smoke
+	$(CARGO_ENV) cargo run --release -p repo_utilities --bin repo-utilities -- mcp-smoke
 
 e027-validate:
 	@echo "Validating E-027 Percolation Experiment (Thesis 1 binary)..."
@@ -1665,25 +1665,25 @@ docs-redirect-check:
 	./scripts/docs-redirect-check.sh $(DOCS_SITE_DIR)
 
 terminology-gate:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin repo-utilities -- terminology-gate
+	$(CARGO_ENV) cargo run --release -p repo_utilities --bin repo-utilities -- terminology-gate
 
 ansi-check:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin repo-utilities -- ansi-check --check
+	$(CARGO_ENV) cargo run --release -p repo_utilities --bin repo-utilities -- ansi-check --check
 
 ansi-check-strict:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin repo-utilities -- ansi-check --check --strict-placeholders --placeholder-scope-prefix crates/ --placeholder-scope-prefix tests/
+	$(CARGO_ENV) cargo run --release -p repo_utilities --bin repo-utilities -- ansi-check --check --strict-placeholders --placeholder-scope-prefix crates/ --placeholder-scope-prefix tests/
 
 verify:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin repo-utilities -- verify-artifacts
+	$(CARGO_ENV) cargo run --release -p repo_utilities --bin repo-utilities -- verify-artifacts
 
 verify-grand:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin repo-utilities -- verify-grand-images
+	$(CARGO_ENV) cargo run --release -p repo_utilities --bin repo-utilities -- verify-grand-images
 
 verify-c010-c011-theses:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin repo-utilities -- verify-c010-c011-theses
+	$(CARGO_ENV) cargo run --release -p repo_utilities --bin repo-utilities -- verify-c010-c011-theses
 
 doctor:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin repo-utilities -- doctor
+	$(CARGO_ENV) cargo run --release -p repo_utilities --bin repo-utilities -- doctor
 	sh scripts/detect_native_blas.sh
 
 doctor-blas:
@@ -1804,9 +1804,9 @@ run-e183:
 
 rocq:
 	@command -v coqc >/dev/null 2>&1 || { echo "ERROR: coqc not found. See docs/requirements/rocq.md"; exit 1; }
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin repo-utilities -- rocq-prepare-confine curated/01_theory_frameworks/confine_theorems_512.v curated/01_theory_frameworks/confine_theorems_512_axioms.v
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin repo-utilities -- rocq-prepare-confine curated/01_theory_frameworks/confine_theorems_1024.v curated/01_theory_frameworks/confine_theorems_1024_axioms.v
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin repo-utilities -- rocq-prepare-confine curated/01_theory_frameworks/confine_theorems_2048.v curated/01_theory_frameworks/confine_theorems_2048_axioms.v
+	$(CARGO_ENV) cargo run --release -p repo_utilities --bin repo-utilities -- rocq-prepare-confine curated/01_theory_frameworks/confine_theorems_512.v curated/01_theory_frameworks/confine_theorems_512_axioms.v
+	$(CARGO_ENV) cargo run --release -p repo_utilities --bin repo-utilities -- rocq-prepare-confine curated/01_theory_frameworks/confine_theorems_1024.v curated/01_theory_frameworks/confine_theorems_1024_axioms.v
+	$(CARGO_ENV) cargo run --release -p repo_utilities --bin repo-utilities -- rocq-prepare-confine curated/01_theory_frameworks/confine_theorems_2048.v curated/01_theory_frameworks/confine_theorems_2048_axioms.v
 	cd curated/01_theory_frameworks && \
 		coqc ConfineModel.v && \
 		coqc confine_theorems_512_axioms.v && \

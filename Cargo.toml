@@ -65,6 +65,7 @@ members = [
     "crates/gororoba_cli_algebra",
     "crates/gororoba_cli_physics",
     "crates/gororoba_cli_data",
+    "crates/repo_utilities",
     "crates/gororoba_cli_governance",
     "crates/gororoba_cli_provenance",
     "crates/gororoba_cli_warp",
