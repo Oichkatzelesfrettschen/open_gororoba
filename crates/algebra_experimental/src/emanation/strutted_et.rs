@@ -1,6 +1,8 @@
 //! Strutted Emanation Table (L2 + L3 in de Marrais's emanation
 //! framework): tone-row label generation and the DMZ X-pattern test.
 //!
+//! Final tier-5 validation probe -- algebra_experimental crate change.
+//!
 //! For a given (N, S) where N is the power-of-2 exponent and S is the
 //! strut constant, the tone row generates the ET row/column labels:
 //!
