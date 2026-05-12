@@ -45,7 +45,7 @@ const MAS_TO_RAD: f64 = PI / (180.0 * 3_600.0 * 1_000.0);
 mod scalar_math;
 use scalar_math::{
     dot3, fractional_improvement, gaussian_kernel, matern_three_halves, median_value, norm3,
-    synthesis_score, wrap_cycles,
+    solve_kepler, synthesis_score, true_anomaly_from_eccentric, wrap_cycles,
 };
 
 // RMS / weighted-RMS statistics + small helpers (rms_from_iter,
@@ -2337,24 +2337,6 @@ fn effective_dm_sigma(
     (((dmefac * pp_dme.max(1.0e-9)).powi(2) + dmequad2).sqrt()).max(1.0e-12)
 }
 
-fn solve_kepler(mean_anomaly: f64, ecc: f64) -> f64 {
-    let mut eccentric = mean_anomaly;
-    for _ in 0..24 {
-        let f = eccentric - ecc * eccentric.sin() - mean_anomaly;
-        let fp = 1.0 - ecc * eccentric.cos();
-        let delta = f / fp;
-        eccentric -= delta;
-        if delta.abs() < 1.0e-14 {
-            break;
-        }
-    }
-    eccentric
-}
-
-fn true_anomaly_from_eccentric(eccentric_anomaly: f64, ecc: f64) -> f64 {
-    let root = ((1.0 + ecc) / (1.0 - ecc).max(1.0e-12)).sqrt();
-    2.0 * (root * (0.5 * eccentric_anomaly).tan()).atan()
-}
 
 fn solve_weighted_least_squares(
     design: &DMatrix<f64>,

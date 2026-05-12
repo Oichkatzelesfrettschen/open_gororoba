@@ -73,3 +73,26 @@ pub(super) fn synthesis_score(raw: f64, weighted: f64, dm: Option<f64>) -> f64 {
     let dm_component = dm.unwrap_or(0.0);
     0.45 * raw + 0.45 * weighted + 0.10 * dm_component
 }
+
+/// Kepler equation: solve M = E - e*sin(E) for E.
+/// Newton-Raphson with 24 iterations and 1e-14 tolerance.
+pub(super) fn solve_kepler(mean_anomaly: f64, ecc: f64) -> f64 {
+    let mut eccentric = mean_anomaly;
+    for _ in 0..24 {
+        let f = eccentric - ecc * eccentric.sin() - mean_anomaly;
+        let fp = 1.0 - ecc * eccentric.cos();
+        let delta = f / fp;
+        eccentric -= delta;
+        if delta.abs() < 1.0e-14 {
+            break;
+        }
+    }
+    eccentric
+}
+
+/// Convert eccentric anomaly E to true anomaly nu via the standard
+/// half-angle identity. Guards 1 - e against zero division.
+pub(super) fn true_anomaly_from_eccentric(eccentric_anomaly: f64, ecc: f64) -> f64 {
+    let root = ((1.0 + ecc) / (1.0 - ecc).max(1.0e-12)).sqrt();
+    2.0 * (root * (0.5 * eccentric_anomaly).tan()).atan()
+}
