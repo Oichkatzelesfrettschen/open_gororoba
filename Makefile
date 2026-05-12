@@ -75,16 +75,16 @@ CARGO_JOBS ?= $(WORKER_BUDGET)
 NEXTEST_TEST_THREADS ?= $(WORKER_BUDGET)
 RUST_TEST_THREADS ?= $(WORKER_BUDGET)
 RAYON_THREADS ?= $(WORKER_BUDGET)
-# TIER-4 (2026-05-12): default to no extra clippy targets at pre-push,
-# i.e. lint only the library (cargo's default). The integration tests
-# and binaries are still linted in CI via gate-ci-rust which uses
-# --workspace --all-targets. At pre-push, the lib lint catches the
-# vast majority of issues; skipping --all-targets cuts ~50% off the
-# clippy compile phase (~8s -> ~4s for algebra_experimental).
+# Clippy targets default to --all-targets. Originally tier-4 (2026-05-12)
+# tried dropping --all-targets to halve clippy compile time, but
+# measurement showed that with --all-targets, clippy builds dev-profile
+# test artifacts that the subsequent `cargo nextest run --lib` reuses
+# (via cargo's profile-shared artifact cache). Removing --all-targets
+# saved clippy time but forced nextest to rebuild the test profile
+# from scratch, NET LONGER. Keeping --all-targets as the default.
 #
-# Override per invocation: RUST_SCOPED_CLIPPY_TARGETS=--all-targets
-# (e.g. `make gate-local RUST_SCOPED_CLIPPY_TARGETS=--all-targets`).
-RUST_SCOPED_CLIPPY_TARGETS ?=
+# Override per invocation: RUST_SCOPED_CLIPPY_TARGETS=""
+RUST_SCOPED_CLIPPY_TARGETS ?= --all-targets
 LOCAL_NEXTEST_TIMING_JSON ?=
 RUST_LOCAL_SKIP_FILTERSET ?= not ((package(stats_core) and test(/ultrametric::baire_codebook::tests::(test_euclidean_ultrametricity_across_filtration_levels|test_intermediate_filtration_gradient|test_random_removal_control|test_lambda512_to_256_intermediate_gradient|test_lambda512_to_256_random_removal_control|test_sbase_to_lambda2048_gradient|test_l0_subpopulation_ultrametricity|test_lambda2048_to_1024_intermediate_gradient|test_l1_filter_on_l0_neg1_subset|test_recursive_simpsons_paradox_l2|test_cross_stratum_triple_decomposition|test_l0_zero_simpsons_paradox|test_dimensional_universality_simpsons_paradox|test_lambda1024_stratum_paradox_and_summary)/)) or (package(algebra_experimental) and test(test_thesis_e_xor_involution_invariants_128d)) or (package(algebra_experimental) and test(/test_v6_(2d_constrained_scan|joint_4d_optimization)/)) or (package(algebra_experimental) and test(/test_(enumerate_tower|fast_enumerate|benchmark_fast_vs_scalar|compressed_memory|enumerate_8192d|fast_enumerate_16384d)/)) or (package(algebra_experimental) and test(test_pathion_vk_spectrum)) or (package(algebra_analysis) and test(/test_(d64_flat_band|d16_d32_d64_scaling)/)) or (package(materials_core) and test(test_separating_degree_formula_universality)) or (package(gororoba_algebra) and test(test_split_octonion_attractor_regression_dim_128_256_guarded)) or (package(gororoba_cli) and test(test_zero_divisor_scaling)) or (package(sign_imbalance) and test(test_kubo_j1j2_alpha_sweep)) or test(/gpu/))
 REPO_TMPDIR ?= $(or $(TMPDIR),/tmp)
