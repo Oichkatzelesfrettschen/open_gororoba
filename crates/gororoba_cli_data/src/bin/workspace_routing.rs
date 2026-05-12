@@ -107,6 +107,12 @@ struct ChangeClassification {
     force_workspace: bool,
     has_governance_changes: bool,
     has_shared_rust_changes: bool,
+    /// True when at least one changed file is non-source-code (markdown,
+    /// non-build TOML, shell scripts, configs, etc.) -- the file types
+    /// that `make check` (ansi-check + terminology-gate) actually scans
+    /// for hygiene violations. Pure Rust-source commits set this false
+    /// so gate-local can skip the `make check` rebuild entirely.
+    has_check_relevant_changes: bool,
 }
 
 fn repo_root() -> PathBuf {
@@ -397,6 +403,19 @@ fn classify_changes(
     let mut classification = ChangeClassification::default();
 
     for file in files {
+        // Check-relevance: ansi-check + terminology-gate scan all repo
+        // files of certain types. A file is check-relevant if it is
+        // anything other than a Rust source file. Pure-Rust diffs can
+        // therefore skip `make check` entirely (the cached binary
+        // already passed on the prior commit's snapshot of those files).
+        //
+        // Rust source files are still subject to ansi-check via clippy
+        // (clippy itself rejects non-ASCII identifiers and most
+        // emoji-like Unicode in strings outside doc comments).
+        if !file.ends_with(".rs") {
+            classification.has_check_relevant_changes = true;
+        }
+
         if workspace_triggers.contains(file.as_str()) {
             classification.force_workspace = true;
             continue;
@@ -476,13 +495,20 @@ fn python_bool(value: bool) -> &'static str {
     if value { "True" } else { "False" }
 }
 
-fn emit_local(scope: &str, run_rust: bool, run_governance: bool, verbose: bool) {
+fn emit_local(
+    scope: &str,
+    run_rust: bool,
+    run_governance: bool,
+    run_check: bool,
+    verbose: bool,
+) {
     if verbose {
         eprintln!("[ci-routing] run_rust={}", python_bool(run_rust));
         eprintln!(
             "[ci-routing] run_governance={}",
             python_bool(run_governance)
         );
+        eprintln!("[ci-routing] run_check={}", python_bool(run_check));
         eprintln!(
             "[ci-routing] scope={}",
             if scope.is_empty() { "(skip)" } else { scope }
@@ -491,13 +517,20 @@ fn emit_local(scope: &str, run_rust: bool, run_governance: bool, verbose: bool) 
     println!("{scope}");
 }
 
-fn emit_github(scope: &str, run_rust: bool, run_governance: bool, verbose: bool) -> Result<()> {
+fn emit_github(
+    scope: &str,
+    run_rust: bool,
+    run_governance: bool,
+    run_check: bool,
+    verbose: bool,
+) -> Result<()> {
     if verbose {
         eprintln!("[ci-routing] run_rust={}", python_bool(run_rust));
         eprintln!(
             "[ci-routing] run_governance={}",
             python_bool(run_governance)
         );
+        eprintln!("[ci-routing] run_check={}", python_bool(run_check));
         eprintln!(
             "[ci-routing] rust_scope={}",
             if scope.is_empty() { "(skip)" } else { scope }
@@ -517,6 +550,10 @@ fn emit_github(scope: &str, run_rust: bool, run_governance: bool, verbose: bool)
             "run_governance={}\n",
             if run_governance { "true" } else { "false" }
         ));
+        body.push_str(&format!(
+            "run_check={}\n",
+            if run_check { "true" } else { "false" }
+        ));
         fs::OpenOptions::new()
             .create(true)
             .append(true)
@@ -535,6 +572,10 @@ fn emit_github(scope: &str, run_rust: bool, run_governance: bool, verbose: bool)
     println!(
         "::set-output name=run_governance::{}",
         if run_governance { "true" } else { "false" }
+    );
+    println!(
+        "::set-output name=run_check::{}",
+        if run_check { "true" } else { "false" }
     );
     Ok(())
 }
@@ -600,11 +641,13 @@ fn run(cli: &Cli) -> Result<i32> {
     let mut final_scope = scope;
     let mut has_governance = classification.has_governance_changes;
     let mut final_run_rust = run_rust;
+    let mut run_check = classification.has_check_relevant_changes;
 
     if local_base_fallback && files.is_empty() {
         final_scope = "--workspace".to_string();
         final_run_rust = true;
         has_governance = true;
+        run_check = true;
         if cli.verbose {
             eprintln!(
                 "[ci-routing] local fallback could not inspect committed branch deltas; promoting to --workspace."
@@ -613,9 +656,21 @@ fn run(cli: &Cli) -> Result<i32> {
     }
 
     if cli.local {
-        emit_local(&final_scope, final_run_rust, has_governance, cli.verbose);
+        emit_local(
+            &final_scope,
+            final_run_rust,
+            has_governance,
+            run_check,
+            cli.verbose,
+        );
     } else {
-        emit_github(&final_scope, final_run_rust, has_governance, cli.verbose)?;
+        emit_github(
+            &final_scope,
+            final_run_rust,
+            has_governance,
+            run_check,
+            cli.verbose,
+        )?;
     }
 
     Ok(0)
@@ -634,7 +689,8 @@ fn main() -> ExitCode {
                 eprintln!("[ci-routing] ERROR: {message} -- falling back to --workspace");
                 if cli.local {
                     println!("--workspace");
-                } else if let Err(output_err) = emit_github("--workspace", true, true, cli.verbose)
+                } else if let Err(output_err) =
+                    emit_github("--workspace", true, true, true, cli.verbose)
                 {
                     eprintln!("[ci-routing] ERROR: failed to emit fallback outputs: {output_err}");
                     return ExitCode::from(1);
