@@ -730,6 +730,16 @@ overflow-checks = true
 [profile.release-gate.package.gororoba_cli]
 codegen-units = 1
 
+# NOTE (2026-05-12): `cargo build -p gororoba_cli_physics --release`
+# fails at link time on the nonlocal-algebraic-metamaterial binary
+# with mold + pulp 0.22.2 + gemm 0.19.0 COMDAT/ODR errors followed by
+# clang segfault. The Stage B per-package cgu=1 trick is inapplicable
+# in `release` (cgu=1 is the workspace default there) and cargo
+# rejects per-package `lto`. The binary builds fine under
+# `release-gate` profile which gate-ci-rust uses. Filed as task #132;
+# the next durable fix is either bumping the pulp/gemm version or
+# adding a per-binary linker override via a build script.
+
 # Bench: release-level optimization with fat LTO for baseline parity.
 [profile.bench]
 opt-level = 3
