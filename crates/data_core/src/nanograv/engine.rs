@@ -58,6 +58,18 @@ use rms_stats::{
     weighted_rms_from_rows, weighted_rms_from_rows_gls,
 };
 
+// nalgebra <-> faer adapters + Cholesky-fallback solver +
+// Woodbury inverse-covariance application (dmatrix_to_faer,
+// dvector_to_faer_col, faer_col_to_dvector, faer_column_norms,
+// scale_faer_columns, solve_square_system_faer,
+// apply_inverse_covariance_to_matrix) live in the `faer_adapters`
+// submodule.
+mod faer_adapters;
+use faer_adapters::{
+    apply_inverse_covariance_to_matrix, dmatrix_to_faer, dvector_to_faer_col, faer_col_to_dvector,
+    faer_column_norms, scale_faer_columns, solve_square_system_faer,
+};
+
 #[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd)]
 pub enum SiteId {
     Arecibo,
@@ -2848,74 +2860,6 @@ fn fourier_basis_weight(harmonic: usize, spectral_index: f64) -> f64 {
     0.5_f64.sqrt() / (harmonic as f64).powf(0.5 * spectral_index)
 }
 
-fn dmatrix_to_faer(matrix: &DMatrix<f64>) -> FaerMat<f64> {
-    FaerMat::from_fn(matrix.nrows(), matrix.ncols(), |row, col| {
-        matrix[(row, col)]
-    })
-}
-
-fn dvector_to_faer_col(vector: &DVector<f64>) -> FaerMat<f64> {
-    FaerMat::from_fn(vector.len(), 1, |row, _| vector[row])
-}
-
-fn faer_col_to_dvector(matrix: &FaerMat<f64>) -> DVector<f64> {
-    DVector::from_iterator(
-        matrix.nrows(),
-        (0..matrix.nrows()).map(|row| matrix[(row, 0)]),
-    )
-}
-
-fn faer_column_norms(matrix: &FaerMat<f64>) -> Vec<f64> {
-    (0..matrix.ncols())
-        .map(|col| {
-            let sumsq = (0..matrix.nrows())
-                .map(|row| matrix[(row, col)] * matrix[(row, col)])
-                .sum::<f64>();
-            sumsq.sqrt().max(1.0)
-        })
-        .collect()
-}
-
-fn scale_faer_columns(matrix: &mut FaerMat<f64>, scales: &[f64], inverse: bool) {
-    for col in 0..matrix.ncols() {
-        let factor = if inverse {
-            1.0 / scales[col]
-        } else {
-            scales[col]
-        };
-        for row in 0..matrix.nrows() {
-            matrix[(row, col)] *= factor;
-        }
-    }
-}
-
-fn solve_square_system_faer(system: &FaerMat<f64>, rhs: &FaerMat<f64>) -> Result<FaerMat<f64>> {
-    if let Ok(cholesky) = system.llt(Side::Lower) {
-        return Ok(cholesky.solve(rhs));
-    }
-    let qr = system.col_piv_qr();
-    Ok(qr.solve_lstsq(rhs))
-}
-
-fn apply_inverse_covariance_to_matrix(
-    covariance: &StructuredCovariance,
-    rhs: &FaerMat<f64>,
-) -> Result<FaerMat<f64>> {
-    let mut scaled = rhs.clone();
-    for row in 0..scaled.nrows() {
-        let factor = covariance.inv_diagonal[row];
-        for col in 0..scaled.ncols() {
-            scaled[(row, col)] *= factor;
-        }
-    }
-    if covariance.low_rank.ncols() == 0 {
-        return Ok(scaled);
-    }
-    let projected = covariance.low_rank.transpose() * &scaled;
-    let solved = solve_square_system_faer(&covariance.middle, &projected)?;
-    let correction = &covariance.inv_low_rank * solved;
-    Ok(scaled - correction)
-}
 
 
 #[cfg(test)]
