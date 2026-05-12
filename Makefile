@@ -595,14 +595,21 @@ data-core-pure-check:
 .PHONY: cache-status cache-sweep cache-purge-exp cache-check cache-check-force cache-sweep-dry-run
 
 cache-status:
-	@printf '=== Cargo target dirs ===\n'
-	@du -sh .cache/gate-target .cache/cargo-default-target 2>/dev/null || true
+	@# TIER-8 (2026-05-12): single cargo target dir at .cache/gate-target.
+	@# CLI cargo and gate cargo both write there (via .cargo/config.toml
+	@# build.target-dir or CARGO_TARGET_DIR env override).
+	@printf '=== Cargo target dir (canonical) ===\n'
+	@du -sh .cache/gate-target 2>/dev/null || printf '(missing)\n'
 	@printf '=== CARGO_HOME ===\n'
 	@du -sh .cache/cargo-home 2>/dev/null || true
-	@printf '=== temp-root build-dir intermediates (%s) ===\n' "$(REPO_TMPDIR)"
-	@du -sh "$(REPO_TMPDIR)/open_gororoba-cargo-build" 2>/dev/null || printf '(empty)\n'
+	@printf '=== Build-dir intermediates ===\n'
+	@du -sh .cache/gate-cbuild 2>/dev/null || printf '(empty)\n'
+	@printf '=== Gate tools cache ===\n'
+	@du -sh .cache/gate-target/gate-tools 2>/dev/null || printf '(empty)\n'
 	@printf '=== Experimental dirs (.cache/exp-*-target) ===\n'
 	@du -sh .cache/exp-*-target 2>/dev/null || printf '(none)\n'
+	@printf '=== Residual target/ (cargo doc + mdbook, NOT cargo build) ===\n'
+	@du -sh target 2>/dev/null || printf '(missing)\n'
 
 # TIER-2-CLEANUP (2026-05-12): cache-sweep policy changed from
 # `--maxsize 100GB` + unconditional gate-cbuild wipe to age-based
@@ -620,13 +627,14 @@ CACHE_SWEEP_KEEP_DAYS ?= 7
 CACHE_SWEEP_DEBUG_KEEP_DAYS ?= 14
 
 cache-sweep:
+	@# TIER-8 (2026-05-12): single canonical target dir at .cache/gate-target.
+	@# Legacy cargo-default-target / .cache/cargo / .cache/sparse-cargo-home /
+	@# orphan target dirs were removed in commit 031ea9fe; this target no
+	@# longer references them. Residual target/ holds only cargo doc +
+	@# mdbook output (no cargo build artifacts post tier-8).
 	@echo "Pre-sweep size: $$(du -sh .cache 2>/dev/null | cut -f1)"
 	@echo "Sweeping .cache/gate-target (keep artifacts accessed in last $(CACHE_SWEEP_KEEP_DAYS) days)..."
 	@CARGO_TARGET_DIR=.cache/gate-target cargo sweep --time $(CACHE_SWEEP_KEEP_DAYS) . || echo "(skip: target absent or not a cargo project)"
-	@echo "Sweeping .cache/cargo-default-target (keep last $(CACHE_SWEEP_KEEP_DAYS) days)..."
-	@CARGO_TARGET_DIR=.cache/cargo-default-target cargo sweep --time $(CACHE_SWEEP_KEEP_DAYS) . || echo "(skip: target absent or not a cargo project)"
-	@echo "Sweeping ambient target/ (keep last $(CACHE_SWEEP_KEEP_DAYS) days)..."
-	@cargo sweep --time $(CACHE_SWEEP_KEEP_DAYS) . || echo "(skip: ambient target absent)"
 # Conditional gate-cbuild debug wipe: only remove directories where the
 # most recent file was modified more than CACHE_SWEEP_DEBUG_KEEP_DAYS
 # days ago. Skips wipe entirely if CACHE_SWEEP_DEBUG_KEEP_DAYS=0.
@@ -703,11 +711,13 @@ cache-check:
 	$(MAKE) -s cache-check-force | tee "$(CACHE_CHECK_SENTINEL)"
 
 cache-check-force:
+	@# TIER-8 (2026-05-12): single canonical target dir. Legacy ambient
+	@# target removed; cache-check totals now sum gate-target + gate-cbuild
+	@# + residual target/ (cargo doc + mdbook output only, no build artifacts).
 	@GATE_MB=$$(du -sm .cache/gate-target 2>/dev/null | cut -f1 || printf '0'); \
-	AMBIENT_MB=$$(du -sm .cache/cargo-default-target 2>/dev/null | cut -f1 || printf '0'); \
 	CBUILD_MB=$$(du -sm .cache/gate-cbuild 2>/dev/null | cut -f1 || printf '0'); \
 	TARGET_MB=$$(du -sm target 2>/dev/null | cut -f1 || printf '0'); \
-	TOTAL=$$((GATE_MB + AMBIENT_MB + CBUILD_MB + TARGET_MB)); \
+	TOTAL=$$((GATE_MB + CBUILD_MB + TARGET_MB)); \
 	SOFT=$${CACHE_CHECK_SOFT_MB:-153600}; \
 	HARD=$${CACHE_CHECK_HARD_MB:-256000}; \
 	if [ "$$TOTAL" -gt "$$HARD" ]; then \
