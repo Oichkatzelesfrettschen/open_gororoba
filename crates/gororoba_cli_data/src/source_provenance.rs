@@ -1,6 +1,5 @@
 use anyhow::{Context, Result, bail};
 use chrono::Utc;
-use regex::Regex;
 use std::{
     collections::{BTreeMap, BTreeSet, HashMap, HashSet},
     fs,
@@ -222,9 +221,7 @@ pub fn default_repo_root() -> PathBuf {
 // not the canonical gororoba_cli_data/src/source_provenance/ location.
 #[path = "source_provenance/text_helpers.rs"]
 mod text_helpers;
-use text_helpers::{
-    assert_ascii, bib_entry_re, escape_toml, render_list, slug, url_re, url_inline_re,
-};
+use text_helpers::{assert_ascii, escape_toml, render_list, slug, url_re};
 
 // DOI parsing/identity helpers (normalize_doi, extract_dois,
 // doi_to_url, doi_from_url, extract_dois_from_urls) live in the
@@ -233,7 +230,7 @@ use text_helpers::{
 // from the provenance_ops crate.
 #[path = "source_provenance/doi_helpers.rs"]
 mod doi_helpers;
-use doi_helpers::{doi_to_url, extract_dois, extract_dois_from_urls, normalize_doi};
+use doi_helpers::{doi_to_url, extract_dois_from_urls, normalize_doi};
 
 // URL canonicalization helpers (strip_url_wrappers,
 // rewrite_arxiv_typo_prefix, apply_host_specific_rewrites,
@@ -259,7 +256,7 @@ use identity_aliases::{
 // read_tsv_rows, derive_status) live in the `file_io` submodule.
 #[path = "source_provenance/file_io.rs"]
 mod file_io;
-use file_io::{load_toml_value, read_text_lossy};
+use file_io::load_toml_value;
 
 // Download-attempt observation pipeline (LinkMap type alias plus
 // collect_link_observations, merge_sqlite_download_observations,
@@ -281,8 +278,15 @@ use download_pipeline::{
 mod reference_predicates;
 use reference_predicates::{
     is_artifact_local_path, is_citation_locator_url, key_is_citation_locator,
-    looks_like_reference_url,
 };
+
+// CandidateRecord extraction from TOML / BibTeX / text source files
+// (extract_candidates_from_source_file dispatcher + the 3 format
+// extractors + classify_toml_field_key + pick_first_str) lives in
+// the `candidate_extract` submodule.
+#[path = "source_provenance/candidate_extract.rs"]
+mod candidate_extract;
+use candidate_extract::extract_candidates_from_source_file;
 
 fn normalize_identity_hint(hint: &str) -> String {
     let trimmed = hint.trim();
@@ -495,328 +499,6 @@ fn discover_candidate_source_files(repo_root: &Path) -> Vec<PathBuf> {
     paths.into_iter().collect()
 }
 
-fn pick_first_str(table: &toml::map::Map<String, Value>, keys: &[&str]) -> String {
-    for key in keys {
-        if let Some(value) = table.get(*key).and_then(Value::as_str) {
-            let trimmed = value.trim();
-            if !trimmed.is_empty() {
-                return trimmed.to_string();
-            }
-        }
-    }
-    String::new()
-}
-
-/// Classify a lowercase TOML key into the field category it contributes to.
-///
-/// Extracted from `extract_candidates_from_toml_node` to reduce its
-/// cyclomatic complexity and make the matching rules easy to audit and extend.
-enum TomlFieldKind {
-    Url,
-    Doi,
-    Path,
-    Note,
-    Skip,
-}
-
-fn classify_toml_field_key(lower: &str) -> TomlFieldKind {
-    if lower.contains("url")
-        || lower.contains("link")
-        || lower.contains("mirror")
-        || lower.contains("href")
-    {
-        TomlFieldKind::Url
-    } else if lower.contains("doi") {
-        TomlFieldKind::Doi
-    } else if lower.contains("path")
-        || lower.ends_with("_file")
-        || lower.ends_with("_files")
-        || lower == "files"
-    {
-        TomlFieldKind::Path
-    } else if matches!(
-        lower,
-        "status" | "note" | "notes" | "reason" | "manual_intervention_reason"
-    ) {
-        TomlFieldKind::Note
-    } else {
-        TomlFieldKind::Skip
-    }
-}
-
-fn extract_candidates_from_toml_node(
-    repo_root: &Path,
-    source_rel: &str,
-    node: &Value,
-    breadcrumbs: &[String],
-    out: &mut Vec<CandidateRecord>,
-) {
-    match node {
-        Value::Array(items) => {
-            for (index, item) in items.iter().enumerate() {
-                let mut next = breadcrumbs.to_vec();
-                next.push(index.to_string());
-                extract_candidates_from_toml_node(repo_root, source_rel, item, &next, out);
-            }
-        }
-        Value::Table(table) => {
-            let mut title = pick_first_str(table, TITLE_KEYS);
-            let citation = {
-                let picked = pick_first_str(table, CITATION_KEYS);
-                if picked.is_empty() {
-                    title.clone()
-                } else {
-                    picked
-                }
-            };
-            let ref_hint = pick_first_str(table, ID_KEYS);
-            let identity_override = {
-                let hint = pick_first_str(table, &["artifact_key_hint", "identity_hint"]);
-                let normalized = normalize_identity_hint(&hint);
-                if normalized.is_empty() {
-                    None
-                } else {
-                    Some(normalized)
-                }
-            };
-            let mut source_ref = format!("{source_rel}::{}", breadcrumbs.join("/"));
-            if !ref_hint.is_empty() {
-                source_ref.push_str("::");
-                source_ref.push_str(&ref_hint);
-            }
-
-            let mut urls = Vec::new();
-            let mut dois = Vec::new();
-            let mut local_paths = Vec::new();
-            let mut notes = Vec::new();
-            for (key, value) in table {
-                let lower = key.to_ascii_lowercase();
-                match classify_toml_field_key(&lower) {
-                    TomlFieldKind::Url => urls.extend(extract_urls(value)),
-                    TomlFieldKind::Doi => dois.extend(extract_dois(value)),
-                    TomlFieldKind::Path => {
-                        local_paths.extend(extract_local_paths(value, repo_root))
-                    }
-                    TomlFieldKind::Note => notes.extend(extract_strings(value)),
-                    TomlFieldKind::Skip => {}
-                }
-            }
-            let filtered_urls = dedupe(
-                urls.into_iter()
-                    .filter(|url| looks_like_reference_url(url))
-                    .collect(),
-            );
-            let dois = dedupe(dois);
-            let local_paths = dedupe(local_paths);
-            let notes = dedupe(notes);
-            if !filtered_urls.is_empty() || !dois.is_empty() || !local_paths.is_empty() {
-                if title.is_empty() {
-                    title = if !citation.is_empty() {
-                        citation.clone()
-                    } else if let Some(url) = filtered_urls.first() {
-                        url.clone()
-                    } else if let Some(doi) = dois.first() {
-                        doi.clone()
-                    } else {
-                        source_ref.clone()
-                    };
-                }
-                let mut links = filtered_urls.clone();
-                links.extend(dois.iter().map(|doi| doi_to_url(doi)));
-                out.push(CandidateRecord {
-                    source_kind: "toml_source".to_string(),
-                    source_ref,
-                    identity_override,
-                    title: title.clone(),
-                    citation: if citation.is_empty() { title } else { citation },
-                    dois,
-                    links: dedupe(links),
-                    local_paths,
-                    notes,
-                });
-            }
-            for (key, value) in table {
-                if matches!(value, Value::Table(_) | Value::Array(_)) {
-                    let mut next = breadcrumbs.to_vec();
-                    next.push(key.clone());
-                    extract_candidates_from_toml_node(repo_root, source_rel, value, &next, out);
-                }
-            }
-        }
-        _ => {}
-    }
-}
-
-fn extract_bib_field(body: &str, field: &str) -> String {
-    let brace = Regex::new(&format!(
-        r"(?is){}\s*=\s*\{{(?P<value>.*?)\}}",
-        regex::escape(field)
-    ))
-    .expect("valid brace regex");
-    if let Some(captures) = brace.captures(body) {
-        return captures
-            .name("value")
-            .map(|m| m.as_str().trim().to_string())
-            .unwrap_or_default();
-    }
-    let quote = Regex::new(&format!(
-        r#"(?is){}\s*=\s*"(?P<value>.*?)""#,
-        regex::escape(field)
-    ))
-    .expect("valid quote regex");
-    quote
-        .captures(body)
-        .and_then(|captures| {
-            captures
-                .name("value")
-                .map(|m| m.as_str().trim().to_string())
-        })
-        .unwrap_or_default()
-}
-
-fn extract_candidates_from_bib_file(repo_root: &Path, path: &Path) -> Result<Vec<CandidateRecord>> {
-    let rel = path
-        .strip_prefix(repo_root)
-        .unwrap_or(path)
-        .to_string_lossy()
-        .replace('\\', "/");
-    let text = read_text_lossy(path)?;
-    let mut out = Vec::new();
-    for captures in bib_entry_re().captures_iter(&text) {
-        let etype = captures
-            .name("etype")
-            .map(|m| m.as_str().trim())
-            .unwrap_or("");
-        let key = captures
-            .name("key")
-            .map(|m| m.as_str().trim())
-            .unwrap_or("");
-        let body = captures.name("body").map(|m| m.as_str()).unwrap_or("");
-        let title = extract_bib_field(body, "title");
-        let citation = format!("@{etype}{{{key}}}");
-        let mut urls = find_urls(body);
-        let mut dois = extract_dois(&Value::String(extract_bib_field(body, "doi")));
-        if dois.is_empty() {
-            dois = extract_dois(&Value::String(body.to_string()));
-        }
-        if !urls.iter().any(|url| looks_like_reference_url(url)) && dois.is_empty() {
-            continue;
-        }
-        urls = dedupe(
-            urls.into_iter()
-                .filter(|url| looks_like_reference_url(url))
-                .collect(),
-        );
-        urls.extend(dois.iter().map(|doi| doi_to_url(doi)));
-        out.push(CandidateRecord {
-            source_kind: "bibtex_entry".to_string(),
-            source_ref: format!("{rel}::{key}"),
-            identity_override: None,
-            title: if title.is_empty() {
-                key.to_string()
-            } else {
-                title
-            },
-            citation,
-            dois: dedupe(dois),
-            links: dedupe(urls),
-            local_paths: Vec::new(),
-            notes: Vec::new(),
-        });
-    }
-    Ok(out)
-}
-
-fn clean_line_title(line: &str) -> String {
-    let url_free = url_inline_re().replace_all(line.trim(), "");
-    let trimmed = url_free
-        .trim_matches(|ch: char| " -*|`[]()".contains(ch))
-        .split_whitespace()
-        .collect::<Vec<_>>()
-        .join(" ");
-    trimmed.trim().to_string()
-}
-
-fn extract_candidates_from_text_file(
-    repo_root: &Path,
-    path: &Path,
-) -> Result<Vec<CandidateRecord>> {
-    let rel = path
-        .strip_prefix(repo_root)
-        .unwrap_or(path)
-        .to_string_lossy()
-        .replace('\\', "/");
-    let text = read_text_lossy(path)?;
-    let mut out = Vec::new();
-    for (line_no, raw_line) in text.lines().enumerate() {
-        let urls = dedupe(
-            find_urls(raw_line)
-                .into_iter()
-                .filter(|url| looks_like_reference_url(url))
-                .collect(),
-        );
-        let dois = extract_dois(&Value::String(raw_line.to_string()));
-        if urls.is_empty() && dois.is_empty() {
-            continue;
-        }
-        let title = {
-            let cleaned = clean_line_title(raw_line);
-            if !cleaned.is_empty() {
-                cleaned
-            } else if let Some(url) = urls.first() {
-                url.clone()
-            } else {
-                dois[0].clone()
-            }
-        };
-        if title.eq_ignore_ascii_case("onion-location:") {
-            continue;
-        }
-        let mut links = urls.clone();
-        links.extend(dois.iter().map(|doi| doi_to_url(doi)));
-        out.push(CandidateRecord {
-            source_kind: "text_reference".to_string(),
-            source_ref: format!("{rel}:{}", line_no + 1),
-            identity_override: None,
-            title: title.clone(),
-            citation: title,
-            dois: dedupe(dois),
-            links: dedupe(links),
-            local_paths: Vec::new(),
-            notes: Vec::new(),
-        });
-    }
-    Ok(out)
-}
-
-fn extract_candidates_from_source_file(
-    repo_root: &Path,
-    path: &Path,
-) -> Result<Vec<CandidateRecord>> {
-    match path
-        .extension()
-        .and_then(|ext| ext.to_str())
-        .unwrap_or_default()
-    {
-        "bib" | "bibtex" => extract_candidates_from_bib_file(repo_root, path),
-        "toml" => {
-            let value = match load_toml_value(path) {
-                Ok(value) => value,
-                Err(_) => return Ok(Vec::new()),
-            };
-            let rel = path
-                .strip_prefix(repo_root)
-                .unwrap_or(path)
-                .to_string_lossy()
-                .replace('\\', "/");
-            let mut out = Vec::new();
-            extract_candidates_from_toml_node(repo_root, &rel, &value, &[], &mut out);
-            Ok(out)
-        }
-        "md" | "txt" | "rst" => extract_candidates_from_text_file(repo_root, path),
-        _ => Ok(Vec::new()),
-    }
-}
 
 fn candidates_from_bibliography(repo_root: &Path) -> Result<Vec<CandidateRecord>> {
     let mut candidates = Vec::new();
