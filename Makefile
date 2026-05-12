@@ -341,20 +341,60 @@ ndlb-gate:
 wave6-gate: governance-gate
 	@echo "DEPRECATED: make wave6-gate is a legacy alias. Use make governance-gate."
 
-gate-local: cache-check
+# TIER-3 (2026-05-12): cache gate-tool binaries and host-profile output.
+# Each `cargo run -q -p X --bin Y` invocation pays ~30-60s of metadata
+# walk overhead even when nothing changed. By caching binaries at
+# stable paths with Make-tracked dependency timestamps, we skip cargo
+# entirely when source is unchanged.
+GATE_TOOLS_DIR := $(REPO_CARGO_TARGET_DIR)/gate-tools
+WORKSPACE_ROUTING_CACHE := $(GATE_TOOLS_DIR)/workspace-routing
+HOST_PROFILE_CACHE := $(GATE_TOOLS_DIR)/host-profile.sh
+
+# workspace-routing dep set: only the bin source + its package manifest.
+# The bin imports only external crates (anyhow, clap, std) so workspace-
+# crate changes do not invalidate it.
+WORKSPACE_ROUTING_DEPS := crates/gororoba_cli_data/src/bin/workspace_routing.rs \
+                          crates/gororoba_cli_data/Cargo.toml
+
+# xtask host-profile dep set: xtask's main.rs (where detect_host_profile
+# lives) plus the xtask manifest. Most xtask edits won't touch the
+# host-profile codepath, so we accept slight over-invalidation.
+HOST_PROFILE_DEPS := xtask/src/main.rs xtask/Cargo.toml
+
+$(WORKSPACE_ROUTING_CACHE): $(WORKSPACE_ROUTING_DEPS)
+	@mkdir -p $(GATE_TOOLS_DIR)
+	@echo "[gate-tools] rebuilding workspace-routing (source changed)"
+	@$(CARGO_ENV) cargo build --release -q -p gororoba_cli_data --bin workspace-routing
+	@cp -f $(REPO_CARGO_TARGET_DIR)/release/workspace-routing $@
+	@touch $@
+
+$(HOST_PROFILE_CACHE): $(HOST_PROFILE_DEPS)
+	@mkdir -p $(GATE_TOOLS_DIR)
+	@echo "[gate-tools] refreshing host-profile snapshot (xtask source changed)"
+	@$(CARGO_ENV) cargo run -q -p xtask -- host-profile --format shell > $@.tmp
+	@mv $@.tmp $@
+
+gate-tools: $(WORKSPACE_ROUTING_CACHE) $(HOST_PROFILE_CACHE)
+	@echo "OK: gate-tools cached at $(GATE_TOOLS_DIR)/."
+
+gate-tools-clean:
+	rm -f $(WORKSPACE_ROUTING_CACHE) $(HOST_PROFILE_CACHE)
+	@echo "OK: gate-tools cache cleared."
+
+gate-local: cache-check $(WORKSPACE_ROUTING_CACHE) $(HOST_PROFILE_CACHE)
 	@set -e; \
 	scope=""; \
 	run_rust="true"; \
 	run_governance="true"; \
 	run_check="true"; \
-	eval "$$(cargo run -q -p xtask -- host-profile --format shell)"; \
+	eval "$$(cat $(HOST_PROFILE_CACHE))"; \
 	submake_env="WORKER_BUDGET=$$HOST_WORKER_BUDGET CARGO_JOBS=$$HOST_CARGO_JOBS NEXTEST_TEST_THREADS=$$HOST_NEXTEST_TEST_THREADS RUST_TEST_THREADS=$$HOST_RUST_TEST_THREADS RAYON_THREADS=$$HOST_RAYON_THREADS"; \
 	echo "[gate-local] host profile: physical_cores=$$HOST_PHYSICAL_CORES core_ids=$$HOST_PHYSICAL_CORE_IDS l3_cache_bytes=$$HOST_L3_CACHE_BYTES l3_safe_bytes=$$HOST_L3_SAFE_WORKING_SET_BYTES worker_budget=$$HOST_WORKER_BUDGET"; \
 	echo "[gate-local] determining scope..."; \
-	if command -v cargo >/dev/null 2>&1; then \
+	if [ -x "$(WORKSPACE_ROUTING_CACHE)" ]; then \
 	    scope_file="$$(mktemp)"; \
 	    meta_file="$$(mktemp)"; \
-	    CARGO_HOME=$(REPO_CARGO_HOME) CARGO_TARGET_DIR=$(REPO_CARGO_TARGET_DIR) MAKEFLAGS= MFLAGS= CARGO_MAKEFLAGS= CARGO_BUILD_JOBS=$$HOST_CARGO_JOBS RAYON_NUM_THREADS=$$HOST_RAYON_THREADS RUST_TEST_THREADS=$$HOST_RUST_TEST_THREADS cargo run -q -p gororoba_cli_data --bin workspace-routing -- --local --verbose 1>"$$scope_file" 2>"$$meta_file" || true; \
+	    $(WORKSPACE_ROUTING_CACHE) --local --verbose 1>"$$scope_file" 2>"$$meta_file" || true; \
 	    scope="$$(cat "$$scope_file" 2>/dev/null || true)"; \
 	    routing_meta="$$(cat "$$meta_file" 2>/dev/null || true)"; \
 	    rm -f "$$scope_file" "$$meta_file"; \
