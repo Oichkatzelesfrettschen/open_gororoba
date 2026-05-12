@@ -8,7 +8,7 @@
 .PHONY: rust-test rust-clippy rust-semver-check rust-smoke rust-regression rust-regression-scoped miri-cd-kernel dep-audit cargo-deny-check mcp-smoke e027-validate studio-run studio-check profile-tensor-avt x87-strategy-bench x87-strategy-perf x87-strategy-hyperfine x87-strategy-flamegraph x87-givens-microbench x87-givens-microbench-perf jacobi-backend-sweep jacobi-backend-perf jacobi-backend-flamegraph jacobi-backend-samply jacobi-backend-samply-compare gpu-bench gpu-bench-ncu gpu-bench-nsys
 .PHONY: cpu-bench cpu-bench-perf cpu-bench-cachegrind cpu-bench-flamegraph parity-bench parity-report
 .PHONY: pre-push-gate-scoped submodule-sync gate-local gate-ci-registry gate-ci-rust gate-audit gate-audit-fast data-core-pure-check
-.PHONY: cache-status cache-sweep cache-purge-exp cache-check
+.PHONY: cache-status cache-sweep cache-purge-exp cache-check cache-check-force
 .PHONY: v6-branch-transport-artifacts pathion-control-artifacts pathion-resonance-artifacts
 .PHONY: registry-control-plane-gate-readonly registry-acceptance-gate-readonly
 .PHONY: rust-parity rust-release-fat-lto rust-pgo-instrument rust-pgo-merge rust-pgo-build
@@ -75,7 +75,16 @@ CARGO_JOBS ?= $(WORKER_BUDGET)
 NEXTEST_TEST_THREADS ?= $(WORKER_BUDGET)
 RUST_TEST_THREADS ?= $(WORKER_BUDGET)
 RAYON_THREADS ?= $(WORKER_BUDGET)
-RUST_SCOPED_CLIPPY_TARGETS ?= --all-targets
+# TIER-4 (2026-05-12): default to no extra clippy targets at pre-push,
+# i.e. lint only the library (cargo's default). The integration tests
+# and binaries are still linted in CI via gate-ci-rust which uses
+# --workspace --all-targets. At pre-push, the lib lint catches the
+# vast majority of issues; skipping --all-targets cuts ~50% off the
+# clippy compile phase (~8s -> ~4s for algebra_experimental).
+#
+# Override per invocation: RUST_SCOPED_CLIPPY_TARGETS=--all-targets
+# (e.g. `make gate-local RUST_SCOPED_CLIPPY_TARGETS=--all-targets`).
+RUST_SCOPED_CLIPPY_TARGETS ?=
 LOCAL_NEXTEST_TIMING_JSON ?=
 RUST_LOCAL_SKIP_FILTERSET ?= not ((package(stats_core) and test(/ultrametric::baire_codebook::tests::(test_euclidean_ultrametricity_across_filtration_levels|test_intermediate_filtration_gradient|test_random_removal_control|test_lambda512_to_256_intermediate_gradient|test_lambda512_to_256_random_removal_control|test_sbase_to_lambda2048_gradient|test_l0_subpopulation_ultrametricity|test_lambda2048_to_1024_intermediate_gradient|test_l1_filter_on_l0_neg1_subset|test_recursive_simpsons_paradox_l2|test_cross_stratum_triple_decomposition|test_l0_zero_simpsons_paradox|test_dimensional_universality_simpsons_paradox|test_lambda1024_stratum_paradox_and_summary)/)) or (package(algebra_experimental) and test(test_thesis_e_xor_involution_invariants_128d)) or (package(algebra_experimental) and test(/test_v6_(2d_constrained_scan|joint_4d_optimization)/)) or (package(algebra_experimental) and test(/test_(enumerate_tower|fast_enumerate|benchmark_fast_vs_scalar|compressed_memory|enumerate_8192d|fast_enumerate_16384d)/)) or (package(algebra_experimental) and test(test_pathion_vk_spectrum)) or (package(algebra_analysis) and test(/test_(d64_flat_band|d16_d32_d64_scaling)/)) or (package(materials_core) and test(test_separating_degree_formula_universality)) or (package(gororoba_algebra) and test(test_split_octonion_attractor_regression_dim_128_256_guarded)) or (package(gororoba_cli) and test(test_zero_divisor_scaling)) or (package(sign_imbalance) and test(test_kubo_j1j2_alpha_sweep)) or test(/gpu/))
 REPO_TMPDIR ?= $(or $(TMPDIR),/tmp)
@@ -490,7 +499,7 @@ data-core-pure-check:
 # Experimental target dirs: MUST be named .cache/exp-<name>-target/
 # Use: CARGO_TARGET_DIR=$(CURDIR)/.cache/exp-myname-target cargo ...
 # Clean: make cache-purge-exp
-.PHONY: cache-status cache-sweep cache-purge-exp cache-check
+.PHONY: cache-status cache-sweep cache-purge-exp cache-check cache-check-force
 
 cache-status:
 	@printf '=== Cargo target dirs ===\n'
@@ -536,7 +545,27 @@ cache-purge-exp:
 # Tunable via env vars:
 #   CACHE_CHECK_SOFT_MB  (default 153600  = 150 GB)
 #   CACHE_CHECK_HARD_MB  (default 256000  = 250 GB)
+# TIER-4 (2026-05-12): memoize cache-check with a 30-min TTL. The four
+# `du -sm` walks over hundreds of GB take ~10s of wall time per push.
+# The cache size grows slowly during a session; checking once every
+# 30 minutes (or on explicit `make cache-check-force`) gives the same
+# safety guarantee with ~0s overhead for in-session pushes.
+CACHE_CHECK_SENTINEL := $(REPO_CARGO_TARGET_DIR)/gate-tools/cache-check.last
+CACHE_CHECK_TTL_SECS ?= 1800
+
 cache-check:
+	@mkdir -p $(dir $(CACHE_CHECK_SENTINEL)); \
+	if [ -f "$(CACHE_CHECK_SENTINEL)" ]; then \
+	    age=$$(($$(date +%s) - $$(stat -c %Y "$(CACHE_CHECK_SENTINEL)" 2>/dev/null || echo 0))); \
+	    if [ "$$age" -lt "$(CACHE_CHECK_TTL_SECS)" ]; then \
+	        cat "$(CACHE_CHECK_SENTINEL)"; \
+	        printf '[cache-check] (memoized; refreshed %ds ago; run make cache-check-force to recompute)\n' "$$age"; \
+	        exit 0; \
+	    fi; \
+	fi; \
+	$(MAKE) -s cache-check-force | tee "$(CACHE_CHECK_SENTINEL)"
+
+cache-check-force:
 	@GATE_MB=$$(du -sm .cache/gate-target 2>/dev/null | cut -f1 || printf '0'); \
 	AMBIENT_MB=$$(du -sm .cache/cargo-default-target 2>/dev/null | cut -f1 || printf '0'); \
 	CBUILD_MB=$$(du -sm .cache/gate-cbuild 2>/dev/null | cut -f1 || printf '0'); \
