@@ -175,6 +175,22 @@ struct GateLocalCli {
     force_governance: bool,
 }
 
+/// `cargo xtask gate-tools-status` -- inspect cached gate-tool binary
+/// freshness.
+///
+/// Prints, for each cached binary under
+/// `.cache/gate-target/gate-tools/`, its mtime, size, and whether its
+/// declared Makefile source dependencies are newer (would trigger
+/// rebuild on next gate-local invocation).
+#[derive(Parser, Debug)]
+#[command(name = "gate-tools-status", about = "Inspect cached gate-tool binaries and source-dep freshness")]
+struct GateToolsStatusCli {
+    /// Override the gate-tools cache root.
+    /// Default: $(REPO_CARGO_TARGET_DIR)/gate-tools = .cache/gate-target/gate-tools.
+    #[arg(long)]
+    tools_dir: Option<PathBuf>,
+}
+
 /// `cargo xtask gate-timing-summary` -- aggregate recent gate-local
 /// timing JSONL files into a per-phase stats table.
 ///
@@ -395,7 +411,7 @@ fn main() -> Result<()> {
     let mut args = env::args().skip(1);
     let Some(command) = args.next() else {
         println!(
-            "{HEADER_STYLE}usage: cargo run -p xtask -- <db-docs|host-profile|local-nextest-plan|gate-local|gate-timing-summary|gate-timing-regression-check|gate-audit|audit-deep|registry-emit-all-mirrors|sparse-profile|gpu-profile|ci-route|ascii-check|ascii-cleanup|coq-stub|convos-chunk|terminology-gate|cpd-file-list|worker-budget> [args]{RESET}"
+            "{HEADER_STYLE}usage: cargo run -p xtask -- <db-docs|host-profile|local-nextest-plan|gate-local|gate-tools-status|gate-timing-summary|gate-timing-regression-check|gate-audit|audit-deep|registry-emit-all-mirrors|sparse-profile|gpu-profile|ci-route|ascii-check|ascii-cleanup|coq-stub|convos-chunk|terminology-gate|cpd-file-list|worker-budget> [args]{RESET}"
         );
         return Ok(());
     };
@@ -435,6 +451,12 @@ fn main() -> Result<()> {
                 std::iter::once("gate-timing-summary".to_string()).chain(args),
             )?;
             run_gate_timing_summary(cli)
+        }
+        "gate-tools-status" => {
+            let cli = GateToolsStatusCli::try_parse_from(
+                std::iter::once("gate-tools-status".to_string()).chain(args),
+            )?;
+            run_gate_tools_status(cli)
         }
         "gate-timing-regression-check" => {
             let cli = GateTimingRegressionCheckCli::try_parse_from(
@@ -3094,6 +3116,157 @@ fn run_gate_timing_summary(cli: GateTimingSummaryCli) -> Result<()> {
             }
         }
         other => bail!("unsupported --format: {other} (expected table|json)"),
+    }
+    Ok(())
+}
+
+/// One entry in the gate-tools-status table.
+struct ToolStatusEntry {
+    name: &'static str,
+    cached_path: PathBuf,
+    /// Source files whose mtime would trigger rebuild.
+    source_deps: Vec<PathBuf>,
+}
+
+fn format_age(now: u64, then: u64) -> String {
+    if now <= then {
+        return "future".to_string();
+    }
+    let secs = now - then;
+    if secs < 60 {
+        format!("{}s ago", secs)
+    } else if secs < 3600 {
+        format!("{}m ago", secs / 60)
+    } else if secs < 86400 {
+        format!("{}h ago", secs / 3600)
+    } else {
+        format!("{}d ago", secs / 86400)
+    }
+}
+
+fn run_gate_tools_status(cli: GateToolsStatusCli) -> Result<()> {
+    let root = repo_root()?;
+    let tools_dir = cli
+        .tools_dir
+        .unwrap_or_else(|| root.join(".cache/gate-target/gate-tools"));
+
+    let entries = vec![
+        ToolStatusEntry {
+            name: "workspace-routing",
+            cached_path: tools_dir.join("workspace-routing"),
+            source_deps: vec![
+                root.join("crates/gororoba_cli_data/src/bin/workspace_routing.rs"),
+                root.join("crates/gororoba_cli_data/Cargo.toml"),
+            ],
+        },
+        ToolStatusEntry {
+            name: "host-profile.sh",
+            cached_path: tools_dir.join("host-profile.sh"),
+            source_deps: vec![
+                root.join("xtask/src/main.rs"),
+                root.join("xtask/Cargo.toml"),
+            ],
+        },
+        ToolStatusEntry {
+            name: "xtask",
+            cached_path: tools_dir.join("xtask"),
+            source_deps: vec![
+                root.join("xtask/src/main.rs"),
+                root.join("xtask/Cargo.toml"),
+            ],
+        },
+        ToolStatusEntry {
+            name: "cache-check.last",
+            cached_path: tools_dir.join("cache-check.last"),
+            source_deps: vec![],
+        },
+        ToolStatusEntry {
+            name: "gate-local.lock",
+            cached_path: tools_dir.join("gate-local.lock"),
+            source_deps: vec![],
+        },
+    ];
+
+    let now = std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .map(|d| d.as_secs())
+        .unwrap_or(0);
+
+    println!("Gate tools cache at {}", tools_dir.display());
+    println!();
+    println!("tool                       size_kb          mtime          age  status");
+    println!("------------------------------------------------------------------------------");
+
+    let mut any_stale = false;
+    for entry in &entries {
+        if !entry.cached_path.exists() {
+            println!(
+                "{:<22} {:>10} {:>14} {:>12}  MISSING",
+                entry.name, "-", "-", "-"
+            );
+            any_stale = true;
+            continue;
+        }
+        let meta = fs::metadata(&entry.cached_path)?;
+        let size_kb = meta.len() / 1024;
+        let mtime_secs = meta
+            .modified()
+            .ok()
+            .and_then(|t| t.duration_since(std::time::UNIX_EPOCH).ok())
+            .map(|d| d.as_secs())
+            .unwrap_or(0);
+        let mtime_str = chrono::DateTime::<chrono::Local>::from(
+            std::time::UNIX_EPOCH + std::time::Duration::from_secs(mtime_secs),
+        )
+        .format("%m-%d %H:%M")
+        .to_string();
+
+        // Check source deps: if any is newer than cached binary, status=STALE.
+        let mut newest_dep: Option<u64> = None;
+        let mut newest_dep_name: Option<String> = None;
+        for dep in &entry.source_deps {
+            if let Ok(dep_meta) = fs::metadata(dep)
+                && let Ok(modified) = dep_meta.modified()
+                && let Ok(dep_secs) = modified.duration_since(std::time::UNIX_EPOCH)
+            {
+                let dep_secs = dep_secs.as_secs();
+                if dep_secs > newest_dep.unwrap_or(0) {
+                    newest_dep = Some(dep_secs);
+                    newest_dep_name = Some(
+                        dep.file_name()
+                            .and_then(|s| s.to_str())
+                            .unwrap_or("?")
+                            .to_string(),
+                    );
+                }
+            }
+        }
+        let status = match newest_dep {
+            Some(dep_t) if dep_t > mtime_secs => {
+                any_stale = true;
+                format!(
+                    "STALE (newer: {})",
+                    newest_dep_name.as_deref().unwrap_or("?")
+                )
+            }
+            _ if entry.source_deps.is_empty() => "ok (runtime artifact)".to_string(),
+            _ => "ok".to_string(),
+        };
+        println!(
+            "{:<22} {:>10} {:>14} {:>12}  {}",
+            entry.name,
+            size_kb,
+            mtime_str,
+            format_age(now, mtime_secs),
+            status,
+        );
+    }
+
+    println!();
+    if any_stale {
+        println!("Some tools are stale or missing. Run `make gate-tools` to refresh.");
+    } else {
+        println!("All cached gate tools fresh.");
     }
     Ok(())
 }

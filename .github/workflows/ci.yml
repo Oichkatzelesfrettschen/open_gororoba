@@ -59,6 +59,27 @@ jobs:
       - name: Full Rust gate
         run: ./makew gate-ci-rust
 
+      # Tier-5C (2026-05-12): gate-timing regression check. Reads
+      # data/output/audit/<date>/gate-timing-*.jsonl artifacts from
+      # prior runs (committed by post-merge tooling or restored from
+      # actions/cache) and compares the latest run's per-phase
+      # elapsed_sec against the baseline median.
+      #
+      # ADVISORY: continue-on-error allows the rest of CI to pass
+      # while we observe baseline behavior. Promote to a hard gate
+      # (remove continue-on-error) after ~2 weeks of stable data.
+      - name: Gate-timing regression check (advisory)
+        continue-on-error: true
+        run: |
+          if [ -d data/output/audit ]; then
+            cargo run -q -p xtask -- gate-timing-regression-check \
+              --baseline-days 14 \
+              --threshold 2.0 \
+              --min-samples 5
+          else
+            echo "No gate-timing JSONL history yet; skipping regression check."
+          fi
+
       - name: Warp artifact acceptance gate (when HDF5 artifacts are present)
         if: ${{ hashFiles('data/h5/**/*.h5') != '' }}
         run: |
