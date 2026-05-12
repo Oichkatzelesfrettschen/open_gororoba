@@ -442,9 +442,10 @@ path = "src/bin/execution_planning.rs"
 name = "csv-canonicalization"
 path = "src/bin/csv_canonicalization.rs"
 
-[[bin]]
-name = "repo-utilities"
-path = "src/bin/repo_utilities.rs"
+# repo-utilities moved to standalone crate `repo_utilities` on 2026-05-11
+# so that gate-time release rebuilds are not invalidated by changes to
+# this crate's deps (algebra_experimental, etc.). See
+# data/output/audit/2026-05-11/pre-push-gate-rca-v2-comprehensive.md.
 
 [[bin]]
 name = "repo-visuals"
