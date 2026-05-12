@@ -1,6 +1,8 @@
 //! Twist transition system (H* and V* operations) and the
 //! Twisted Sisters PSL(2,7) navigation graph.
 //!
+//! Final tier-4 validation probe: pure-Rust single-file change.
+//!
 //! De Marrais's "twist products" map tray-racks between box-kites:
 //! - V* (vertical twist): twist vertical edges of Royal Hunt presentation
 //! - H* (horizontal twist): twist horizontal edges
