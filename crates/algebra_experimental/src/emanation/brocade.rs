@@ -10,6 +10,9 @@
 //!
 //! The brocade normalization maps a box-kite's L-indices to a standard
 //! form where a chosen O-trip serves as the Rule-0 central circle.
+//!
+//! Each box-kite admits 4 valid relabelings (one per O-trip in its
+//! L-set of 6 indices).
 
 use std::collections::HashSet;
 
