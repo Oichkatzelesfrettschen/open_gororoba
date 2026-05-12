@@ -1,0 +1,154 @@
+# Post-gate-optimization roadmap (2026-05-12).
+#
+# Captures unresolved items mined from:
+#   - ~/.claude/plans/stage-b-debt-resolution.md (Stage B closed 2026-05-10)
+#   - project_ph_mod_phase1_2026_05_10.md (PH-MOD Phase 1 partial)
+#   - project_stage_b_complete.md "Pending (not blocking)" section
+#   - project_gate_optimization_journey.md (gate sprint closed 2026-05-12)
+#
+# Baseline tag at commit 55d8e848 (gate-optimization-v1). All items
+# below are tracked in the active task list (#116-#130) at the time
+# of writing.
+
+[plan]
+name = "post_gate_optimization_2026_05_12"
+status = "active"
+created = "2026-05-12"
+baseline_tag = "gate-optimization-v1"
+baseline_commit = "55d8e848"
+
+# ---- PH-MOD Phase 1 monoliths (still over 2000 lines) ----
+
+[[remaining_work]]
+task_id = 116
+class = "DEBT-MODULARIZATION"
+file = "crates/algebra_analysis/src/boxkites.rs"
+size_lines = 7950
+target_lines = 2000
+status = "pending"
+notes = "de Marrais 2000/2004 zero-divisor structure theory. 5 sibling submodules already extracted; substantial multi-commit effort. Dependency analysis needed before further split."
+
+[[remaining_work]]
+task_id = 117
+class = "DEBT-MODULARIZATION"
+file = "crates/data_core/src/nanograv/engine.rs"
+size_lines = 3099
+target_lines = 2000
+status = "pending"
+blocked_by = [116]
+notes = "Heavy use of private types (StructuredCovariance, IndependentRefitRow). Clean helper-only extraction yields ~125 lines and leaves file over 2000. Requires StructuredCovariance widening to pub(crate)."
+
+[[remaining_work]]
+task_id = 118
+class = "DEBT-MODULARIZATION"
+file = "crates/provenance_store/src/lib.rs"
+size_lines = 5335
+target_lines = 2000
+status = "pending"
+notes = "4850-line single impl ProvenanceStore block; risky split. 13 sibling submodules already extracted in Stage B."
+
+[[remaining_work]]
+task_id = 118
+class = "DEBT-MODULARIZATION"
+file = "crates/algebra_experimental/src/cd_external.rs"
+size_lines = 3243
+target_lines = 2000
+status = "pending"
+
+[[remaining_work]]
+task_id = 118
+class = "DEBT-MODULARIZATION"
+file = "crates/algebra_experimental/src/sedenion_subalgebras.rs"
+size_lines = 3062
+target_lines = 2000
+status = "pending"
+
+[[remaining_work]]
+task_id = 118
+class = "DEBT-MODULARIZATION"
+file = "crates/algebra_experimental/src/emanation/tests.rs"
+size_lines = 4327
+target_lines = 2000
+status = "pending"
+notes = "Test file. May not need to hit the 2000-line warn threshold; tests are bulkier than code."
+
+[[remaining_work]]
+task_id = 124
+class = "DEBT-MODULARIZATION"
+file = "crates/cosmology_core/src/heliosphere_eval.rs"
+size_lines = 2975
+target_lines = 2000
+status = "pending"
+notes = "3134 -> 2975 (-159) during Stage B. Further submodule extraction feasible."
+
+[[remaining_work]]
+task_id = 125
+class = "DEBT-MODULARIZATION"
+file = "crates/data_core/src/source_provenance.rs"
+size_lines = 3554
+target_lines = 2000
+status = "pending"
+notes = "#[path]-included from provenance_ops crate. Submodule extraction cascades #[path] attributes."
+
+[[remaining_work]]
+task_id = 126
+class = "DEBT-MODULARIZATION"
+file = "crates/algebra_analysis/src/codebook.rs"
+size_lines = 3310
+target_lines = 2000
+status = "pending"
+notes = "3 sibling submodules already extracted in Stage B."
+
+[[remaining_work]]
+task_id = 127
+class = "PH-MOD-ALTERNATE-PATH"
+file = "crates/materials_core/src/crystal_symmetry.rs"
+size_lines = 4599
+status = "alternate_approach"
+blocked_by = [116, 117, 118, 124, 125, 126]
+notes = "TRANSCRIBED-DATA: International Tables for Crystallography, Burns & Glazer (1990). NOT hand-split. Future work: build.rs codegen from TOML/JSON source. Different approach than other PH-MOD."
+
+[[remaining_work]]
+task_id = 127
+class = "PH-MOD-ALTERNATE-PATH"
+file = "crates/materials_core/src/optical_database.rs"
+size_lines = 10648
+status = "alternate_approach"
+blocked_by = [116, 117, 118, 124, 125, 126]
+notes = "TRANSCRIBED-DATA: Palik (1998), Klimchitskaya et al. (2009). Marked #![allow(clippy::all)]. Same OUT_DIR codegen path as crystal_symmetry."
+
+# ---- Cross-platform / deferred ----
+
+[[remaining_work]]
+task_id = 128
+class = "CROSS-PLATFORM-COVERAGE"
+file = "crates/cd_kernel/src/cubecl_backend.rs (or similar)"
+status = "deferred_to_non_linux_sprint"
+notes = "#57 Backend::CubeCL launcher. Vulkan path satisfies Linux; cubecl matters for CUDA/Metal/WGPU. Wait until non-Linux target becomes priority."
+
+# ---- Registry hygiene ----
+
+[[remaining_work]]
+task_id = 129
+class = "DEBT-DATA-PROVENANCE"
+file = "registry/project.toml"
+status = "pending"
+notes = "binary_count=453 in project.toml; binaries.toml has 452 [[binary]] entries. Off-by-one drift. Fix via gororoba-db CLI re-export from SQLite canonical."
+
+# ---- Observability post-soak (was task #122 advisory, hard-gate after 2 weeks) ----
+
+[[remaining_work]]
+task_id = "122-followup"
+class = "DEBT-TEST-VERIFICATION"
+file = ".github/workflows/ci.yml"
+status = "soak_active"
+soak_start = "2026-05-12"
+soak_end = "2026-05-26"
+notes = "gate-timing-regression-check is wired with continue-on-error: true. After 2-week soak with baseline accumulating in data/output/audit/<date>/gate-timing-*.jsonl, remove continue-on-error to make it a hard gate."
+
+# ---- Closed (reference) ----
+
+[closed_summary]
+gate_optimization = "Tier-1..7 landed 2026-05-11..12. Pre-push 16min -> 88s (pure-Rust), branch-delete -> 1s, governance trigger -> 2.5s warm. See docs/engineering/pre_push_gate_optimization.md."
+stage_b = "All 11 debt classes closed 2026-05-10. See project_stage_b_complete.md."
+ph_mod_emanation = "emanation/mod.rs 4720 -> 275 lines (94% reduction) in 26 submodule extractions during the gate-optimization session. See project_gate_optimization_journey.md."
