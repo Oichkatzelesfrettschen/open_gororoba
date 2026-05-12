@@ -1740,56 +1740,6 @@ fn best_budgeted_threshold(
         .unwrap_or(1.0)
 }
 
-fn raw_time_index(rows: &[HeliosphereFeatureRow]) -> BTreeMap<RowKey, String> {
-    rows.iter()
-        .filter_map(|row| {
-            heliosphere_row_datetime(row).map(|timestamp| (row_key(row), timestamp.to_rfc3339()))
-        })
-        .collect()
-}
-
-fn median_mask_lead_time_hours(
-    time_index: &BTreeMap<RowKey, String>,
-    label_index: &BTreeMap<RowKey, bool>,
-    active_index: &BTreeMap<RowKey, bool>,
-) -> Option<f64> {
-    let mut grouped: BTreeMap<String, Vec<(String, bool, bool)>> = BTreeMap::new();
-    for (key, timestamp) in time_index {
-        let mission = key.1.clone();
-        grouped.entry(mission).or_default().push((
-            timestamp.clone(),
-            *label_index.get(key).unwrap_or(&false),
-            *active_index.get(key).unwrap_or(&false),
-        ));
-    }
-    let mut leads = Vec::new();
-    for rows in grouped.values_mut() {
-        rows.sort_by(|a, b| a.0.cmp(&b.0));
-        for positive_idx in rows
-            .iter()
-            .enumerate()
-            .filter_map(|(idx, (_, positive, _))| (*positive).then_some(idx))
-        {
-            let event_time = parse_timestamp(&rows[positive_idx].0).ok()?;
-            let mut earliest_prediction = None;
-            for (timestamp, _positive, active) in rows[..=positive_idx].iter().rev() {
-                if *active {
-                    earliest_prediction = parse_timestamp(timestamp).ok();
-                } else if earliest_prediction.is_some() {
-                    break;
-                }
-            }
-            if let Some(start) = earliest_prediction {
-                let hours = (event_time - start).num_minutes() as f64 / 60.0;
-                if hours.is_finite() && hours >= 0.0 {
-                    leads.push(hours);
-                }
-            }
-        }
-    }
-    finite_median_opt(&leads)
-}
-
 // sigmoid / threshold_metrics / best_threshold / auprc / auroc live
 // in the `metrics` submodule.
 mod metrics;
@@ -2152,7 +2102,8 @@ use vectors::{
 // `windows` submodule.
 mod windows;
 use windows::{
-    contains_time, cube_date_bounds, normalize_text, parse_timestamp, positive_row_count,
+    contains_time, cube_date_bounds, median_mask_lead_time_hours, normalize_text, parse_timestamp,
+    positive_row_count, raw_time_index,
 };
 
 /// Public channel names for the algebra descriptor extension.
