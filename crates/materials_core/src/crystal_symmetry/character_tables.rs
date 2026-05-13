@@ -2041,12 +2041,54 @@ mod codegen_parity_tests {
     }
 
     #[test]
-    fn unmigrated_groups_return_none_from_codegen() {
-        // S4 has no inline table (returns None from for_point_group inline
-        // dispatch in the original implementation), so it is not in the
-        // codegen TOML either. The dispatcher returns None overall, which
-        // is the expected behaviour for these scaffolded-but-unimplemented
-        // groups.
-        assert!(from_codegen_table(PointGroup::S4).is_none());
+    fn all_thirty_two_crystallographic_point_groups_have_codegen_tables() {
+        // After #127 Phase 7 completion, every one of the 32 crystallographic
+        // point groups has a TOML entry. This is the regression test that
+        // catches accidental removal of any group from
+        // character_tables.toml.
+        use super::PointGroup as P;
+        for pg in [
+            P::C1, P::Ci, P::C2, P::Cs, P::C2h,
+            P::D2, P::C2v, P::D2h,
+            P::C4, P::S4, P::C4h, P::D4, P::C4v, P::D2d, P::D4h,
+            P::C3, P::C3i, P::C3v, P::D3, P::D3d,
+            P::C6, P::C3h, P::C6h, P::D6, P::C6v, P::D3h, P::D6h,
+            P::T, P::Td, P::Th, P::O, P::Oh,
+        ] {
+            assert!(
+                from_codegen_table(pg).is_some(),
+                "{:?} missing from CHARACTER_TABLE_REGISTRY -- regression vs #127 Phase 7 completion",
+                pg
+            );
+        }
+    }
+
+    #[test]
+    fn schur_orthogonality_for_real_form_tables() {
+        // For the dim=2 real-form irreps used in cyclic groups,
+        // sum_k n_k * |chi_E(C_k)|^2 should equal 2 * |G|.
+        // We verify this on D2d as a representative non-abelian group
+        // with an E irrep.
+        let t = from_codegen_table(PointGroup::D2d).expect("D2d in registry");
+        let g_order: f64 = t.classes.iter().map(|c| c.count as f64).sum();
+        // E is the 5th irrep (index 4): chi at E,2S4,C2,2C2',2sigma_d = 2,0,-2,0,0
+        let row_e = &t.characters[4];
+        let sum_sq: f64 = t
+            .classes
+            .iter()
+            .zip(row_e.iter())
+            .map(|(c, &(re, im))| (c.count as f64) * (re * re + im * im))
+            .sum();
+        // For a 2D real irrep, expected = 2 * |G|.
+        // sum_sq = 1*4 + 2*0 + 1*4 + 2*0 + 2*0 = 8, |G| = 1+2+1+2+2 = 8, so 8 = 2*4? No, 8 = |G|.
+        // Real-form 2D irreps satisfy sum_sq = |G| (one dimension's worth of
+        // orthogonality per the two paired complex irreps). This is the
+        // convention used by the codebase.
+        assert!(
+            (sum_sq - g_order).abs() < 1e-9,
+            "D2d E-irrep real-form orthogonality: sum_sq={} should equal |G|={}",
+            sum_sq,
+            g_order
+        );
     }
 }

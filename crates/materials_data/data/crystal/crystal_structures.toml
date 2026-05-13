@@ -2475,3 +2475,1067 @@ gamma = 90.0
 z = 1
 density = 2.40
 reference = "Hassan et al. (1985) Am. Mineralogist 70, 1080 ((Na,Ca)8(Al,Si)12O24(S,SO4) lazurite, lapis lazuli)."
+
+# ============================================================================
+# Expansion pass 2026-05-13 (#3): push registry past 200 entries.
+# Categories: additional III-V/II-VI semiconductors, alkali halides,
+# transition-metal monoxides, additional aluminosilicates + minerals,
+# refractory carbides + borides, halide perovskite variants,
+# biomedical apatite-class minerals, MOFs reference, high-pressure
+# polymorphs of geophysical interest.
+# ============================================================================
+
+# ----- Additional III-V semiconductors -----
+[[structure]]
+name = "alas_zincblende"
+sg_num = 216
+sg_sym = "F-43m"
+point_group = "Td"
+lattice_system = "Cubic"
+centering = "F"
+a = 5.6611
+b = 5.6611
+c = 5.6611
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 4
+density = 3.760
+reference = "Wyckoff (1963) vol. 1 (AlAs III-V semiconductor)."
+
+[[structure]]
+name = "aln_wurtzite"
+sg_num = 186
+sg_sym = "P6_3mc"
+point_group = "C6v"
+lattice_system = "Hexagonal"
+centering = "P"
+a = 3.111
+b = 3.111
+c = 4.978
+alpha = 90.0
+beta = 90.0
+gamma = 120.0
+z = 2
+density = 3.255
+reference = "Schulz & Thiemann (1977) Solid State Commun. 23, 815 (AlN deep-UV optoelectronics)."
+
+[[structure]]
+name = "alsb_zincblende"
+sg_num = 216
+sg_sym = "F-43m"
+point_group = "Td"
+lattice_system = "Cubic"
+centering = "F"
+a = 6.1355
+b = 6.1355
+c = 6.1355
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 4
+density = 4.26
+reference = "Wyckoff (1963) vol. 1 (AlSb infrared detector base)."
+
+[[structure]]
+name = "inas_zincblende"
+sg_num = 216
+sg_sym = "F-43m"
+point_group = "Td"
+lattice_system = "Cubic"
+centering = "F"
+a = 6.0583
+b = 6.0583
+c = 6.0583
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 4
+density = 5.667
+reference = "Wyckoff (1963) vol. 1 (InAs narrow-gap III-V)."
+
+[[structure]]
+name = "gap_zincblende"
+sg_num = 216
+sg_sym = "F-43m"
+point_group = "Td"
+lattice_system = "Cubic"
+centering = "F"
+a = 5.4505
+b = 5.4505
+c = 5.4505
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 4
+density = 4.138
+reference = "Wyckoff (1963) vol. 1 (GaP indirect-gap III-V)."
+
+[[structure]]
+name = "gasb_zincblende"
+sg_num = 216
+sg_sym = "F-43m"
+point_group = "Td"
+lattice_system = "Cubic"
+centering = "F"
+a = 6.0959
+b = 6.0959
+c = 6.0959
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 4
+density = 5.6137
+reference = "Wyckoff (1963) vol. 1 (GaSb mid-IR III-V)."
+
+[[structure]]
+name = "hgte_zincblende"
+sg_num = 216
+sg_sym = "F-43m"
+point_group = "Td"
+lattice_system = "Cubic"
+centering = "F"
+a = 6.453
+b = 6.453
+c = 6.453
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 4
+density = 8.10
+reference = "Wyckoff (1963) vol. 1 (HgTe zero-gap II-VI topological semimetal)."
+
+# ----- Alkali halides + cesium chloride structure -----
+[[structure]]
+name = "nabr_rocksalt"
+sg_num = 225
+sg_sym = "Fm-3m"
+point_group = "Oh"
+lattice_system = "Cubic"
+centering = "F"
+a = 5.9776
+b = 5.9776
+c = 5.9776
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 4
+density = 3.21
+reference = "Wyckoff (1963) vol. 1 p.85 (NaBr alkali halide)."
+
+[[structure]]
+name = "kcl_sylvite"
+sg_num = 225
+sg_sym = "Fm-3m"
+point_group = "Oh"
+lattice_system = "Cubic"
+centering = "F"
+a = 6.2929
+b = 6.2929
+c = 6.2929
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 4
+density = 1.987
+reference = "Wyckoff (1963) vol. 1 p.85 (KCl sylvite mineral)."
+
+[[structure]]
+name = "ki_rocksalt"
+sg_num = 225
+sg_sym = "Fm-3m"
+point_group = "Oh"
+lattice_system = "Cubic"
+centering = "F"
+a = 7.0655
+b = 7.0655
+c = 7.0655
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 4
+density = 3.123
+reference = "Wyckoff (1963) vol. 1 p.85 (KI scintillator base)."
+
+[[structure]]
+name = "cscl_cesium_chloride"
+sg_num = 221
+sg_sym = "Pm-3m"
+point_group = "Oh"
+lattice_system = "Cubic"
+centering = "P"
+a = 4.123
+b = 4.123
+c = 4.123
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 1
+density = 3.99
+reference = "Wyckoff (1963) vol. 1 p.85 (CsCl, prototype CsCl-type structure)."
+
+[[structure]]
+name = "baf2_fluorite"
+sg_num = 225
+sg_sym = "Fm-3m"
+point_group = "Oh"
+lattice_system = "Cubic"
+centering = "F"
+a = 6.196
+b = 6.196
+c = 6.196
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 4
+density = 4.893
+reference = "Wyckoff (1963) vol. 1 p.239 (BaF2 fluorite-type)."
+
+# ----- Transition-metal monoxides + sesquioxides -----
+[[structure]]
+name = "nio_rocksalt"
+sg_num = 225
+sg_sym = "Fm-3m"
+point_group = "Oh"
+lattice_system = "Cubic"
+centering = "F"
+a = 4.1684
+b = 4.1684
+c = 4.1684
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 4
+density = 6.67
+reference = "Wyckoff (1963) vol. 1 p.86 (NiO antiferromagnet, Mott insulator)."
+
+[[structure]]
+name = "coo_rocksalt"
+sg_num = 225
+sg_sym = "Fm-3m"
+point_group = "Oh"
+lattice_system = "Cubic"
+centering = "F"
+a = 4.260
+b = 4.260
+c = 4.260
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 4
+density = 6.45
+reference = "Wyckoff (1963) vol. 1 p.86 (CoO antiferromagnet)."
+
+[[structure]]
+name = "cuo_tenorite"
+sg_num = 15
+sg_sym = "C2/c"
+point_group = "C2h"
+lattice_system = "Monoclinic"
+centering = "C"
+a = 4.6837
+b = 3.4226
+c = 5.1288
+alpha = 90.0
+beta = 99.54
+gamma = 90.0
+z = 4
+density = 6.45
+reference = "Asbrink & Norrby (1970) Acta Crystallogr. B 26, 8 (CuO tenorite, monoclinic)."
+
+[[structure]]
+name = "cr2o3_corundum"
+sg_num = 167
+sg_sym = "R-3c"
+point_group = "D3d"
+lattice_system = "Hexagonal"
+centering = "R"
+a = 4.9587
+b = 4.9587
+c = 13.5942
+alpha = 90.0
+beta = 90.0
+gamma = 120.0
+z = 6
+density = 5.22
+reference = "Finger & Hazen (1980) J. Appl. Phys. 51, 5362 (Cr2O3 chromia, corundum-type)."
+
+[[structure]]
+name = "v2o3_corundum"
+sg_num = 167
+sg_sym = "R-3c"
+point_group = "D3d"
+lattice_system = "Hexagonal"
+centering = "R"
+a = 4.9540
+b = 4.9540
+c = 14.0080
+alpha = 90.0
+beta = 90.0
+gamma = 120.0
+z = 6
+density = 4.870
+reference = "Dernier & Marezio (1970) Phys. Rev. B 2, 3771 (V2O3 Mott transition reference)."
+
+[[structure]]
+name = "mn2o3_bixbyite"
+sg_num = 206
+sg_sym = "Ia-3"
+point_group = "Th"
+lattice_system = "Cubic"
+centering = "I"
+a = 9.408
+b = 9.408
+c = 9.408
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 16
+density = 4.50
+reference = "Geller (1971) Acta Crystallogr. B 27, 821 (alpha-Mn2O3 bixbyite)."
+
+[[structure]]
+name = "co3o4_spinel"
+sg_num = 227
+sg_sym = "Fd-3m"
+point_group = "Oh"
+lattice_system = "Cubic"
+centering = "F"
+a = 8.0837
+b = 8.0837
+c = 8.0837
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 8
+density = 6.07
+reference = "Hill et al. (1979) Phys. Chem. Minerals 4, 317 (Co3O4 normal spinel)."
+
+# ----- High-pressure + geophysical phases -----
+[[structure]]
+name = "post_perovskite_mgsio3"
+sg_num = 63
+sg_sym = "Cmcm"
+point_group = "D2h"
+lattice_system = "Orthorhombic"
+centering = "C"
+a = 2.456
+b = 8.042
+c = 6.093
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 4
+density = 4.103
+reference = "Murakami et al. (2004) Science 304, 855 (MgSiO3 post-perovskite, D'' layer phase)."
+
+[[structure]]
+name = "stishovite_sio2_rutile"
+sg_num = 136
+sg_sym = "P4_2/mnm"
+point_group = "D4h"
+lattice_system = "Tetragonal"
+centering = "P"
+a = 4.1772
+b = 4.1772
+c = 2.6651
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 2
+density = 4.290
+reference = "Hill et al. (1983) Z. Kristallogr. 162, 89 (SiO2 stishovite, rutile-type, high pressure)."
+
+[[structure]]
+name = "iron_epsilon_hcp"
+sg_num = 194
+sg_sym = "P6_3/mmc"
+point_group = "D6h"
+lattice_system = "Hexagonal"
+centering = "P"
+a = 2.480
+b = 2.480
+c = 3.965
+alpha = 90.0
+beta = 90.0
+gamma = 120.0
+z = 2
+density = 8.34
+reference = "Mao et al. (1990) J. Geophys. Res. 95, 21737 (epsilon-iron HCP high-pressure phase, Earth's inner core)."
+
+[[structure]]
+name = "iron_gamma_fcc"
+sg_num = 225
+sg_sym = "Fm-3m"
+point_group = "Oh"
+lattice_system = "Cubic"
+centering = "F"
+a = 3.6468
+b = 3.6468
+c = 3.6468
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 4
+density = 8.10
+reference = "Onink et al. (1993) Scr. Metall. Mater. 29, 1011 (gamma-Fe FCC austenite)."
+
+# ----- Refractory carbides + borides -----
+[[structure]]
+name = "titanium_carbide_tic"
+sg_num = 225
+sg_sym = "Fm-3m"
+point_group = "Oh"
+lattice_system = "Cubic"
+centering = "F"
+a = 4.3274
+b = 4.3274
+c = 4.3274
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 4
+density = 4.93
+reference = "Hugosson et al. (2001) J. Appl. Phys. 90, 2197 (TiC rocksalt-type carbide)."
+
+[[structure]]
+name = "zirconium_carbide_zrc"
+sg_num = 225
+sg_sym = "Fm-3m"
+point_group = "Oh"
+lattice_system = "Cubic"
+centering = "F"
+a = 4.6878
+b = 4.6878
+c = 4.6878
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 4
+density = 6.73
+reference = "Hugosson et al. (2001) J. Appl. Phys. 90, 2197 (ZrC NaCl-type carbide)."
+
+[[structure]]
+name = "tantalum_carbide_tac"
+sg_num = 225
+sg_sym = "Fm-3m"
+point_group = "Oh"
+lattice_system = "Cubic"
+centering = "F"
+a = 4.4554
+b = 4.4554
+c = 4.4554
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 4
+density = 14.30
+reference = "Wyckoff (1963) vol. 1 (TaC; mp = 4150 K, one of the highest melting compounds)."
+
+[[structure]]
+name = "zirconium_diboride_zrb2"
+sg_num = 191
+sg_sym = "P6/mmm"
+point_group = "D6h"
+lattice_system = "Hexagonal"
+centering = "P"
+a = 3.169
+b = 3.169
+c = 3.530
+alpha = 90.0
+beta = 90.0
+gamma = 120.0
+z = 1
+density = 6.085
+reference = "Fahrenholtz et al. (2007) J. Am. Ceram. Soc. 90, 1347 (ZrB2 AlB2-type ultra-high-temp ceramic)."
+
+[[structure]]
+name = "hafnium_diboride_hfb2"
+sg_num = 191
+sg_sym = "P6/mmm"
+point_group = "D6h"
+lattice_system = "Hexagonal"
+centering = "P"
+a = 3.142
+b = 3.142
+c = 3.476
+alpha = 90.0
+beta = 90.0
+gamma = 120.0
+z = 1
+density = 10.5
+reference = "Fahrenholtz et al. (2007) J. Am. Ceram. Soc. 90, 1347 (HfB2)."
+
+[[structure]]
+name = "tantalum_diboride_tab2"
+sg_num = 191
+sg_sym = "P6/mmm"
+point_group = "D6h"
+lattice_system = "Hexagonal"
+centering = "P"
+a = 3.0980
+b = 3.0980
+c = 3.227
+alpha = 90.0
+beta = 90.0
+gamma = 120.0
+z = 1
+density = 12.62
+reference = "Fahrenholtz et al. (2007) J. Am. Ceram. Soc. 90, 1347 (TaB2)."
+
+# ----- Additional aluminosilicates + framework silicates -----
+[[structure]]
+name = "anorthite_caal2si2o8"
+sg_num = 2
+sg_sym = "P-1"
+point_group = "Ci"
+lattice_system = "Triclinic"
+centering = "P"
+a = 8.184
+b = 12.880
+c = 14.187
+alpha = 93.16
+beta = 115.85
+gamma = 91.13
+z = 8
+density = 2.76
+reference = "Wainwright & Starkey (1971) Z. Kristallogr. 133, 75 (CaAl2Si2O8 anorthite plagioclase endmember)."
+
+[[structure]]
+name = "microcline_kalsi3o8"
+sg_num = 2
+sg_sym = "C-1"
+point_group = "Ci"
+lattice_system = "Triclinic"
+centering = "C"
+a = 8.5784
+b = 12.96
+c = 7.2112
+alpha = 90.65
+beta = 115.94
+gamma = 87.70
+z = 4
+density = 2.56
+reference = "Brown & Bailey (1964) Acta Crystallogr. 17, 1391 (KAlSi3O8 alkali feldspar)."
+
+[[structure]]
+name = "leucite_kalsi2o6"
+sg_num = 88
+sg_sym = "I4_1/a"
+point_group = "C4h"
+lattice_system = "Tetragonal"
+centering = "I"
+a = 13.05
+b = 13.05
+c = 13.74
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 16
+density = 2.48
+reference = "Mazzi et al. (1976) Am. Mineralogist 61, 108 (KAlSi2O6 leucite)."
+
+[[structure]]
+name = "nepheline_kna3al4si4o16"
+sg_num = 173
+sg_sym = "P6_3"
+point_group = "C6"
+lattice_system = "Hexagonal"
+centering = "P"
+a = 9.978
+b = 9.978
+c = 8.376
+alpha = 90.0
+beta = 90.0
+gamma = 120.0
+z = 2
+density = 2.61
+reference = "Foreman & Peacor (1970) Z. Kristallogr. 132, 45 (KNa3Al4Si4O16 nepheline)."
+
+# ----- Biological / pharmaceutical reference minerals -----
+[[structure]]
+name = "struvite_mgnh4po4_6h2o"
+sg_num = 31
+sg_sym = "Pmn2_1"
+point_group = "C2v"
+lattice_system = "Orthorhombic"
+centering = "P"
+a = 6.945
+b = 6.137
+c = 11.199
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 2
+density = 1.711
+reference = "Whitaker & Jeffery (1970) Acta Crystallogr. B 26, 1429 (MgNH4PO4.6H2O struvite, kidney-stone mineral)."
+
+[[structure]]
+name = "calcium_oxalate_monohydrate_whewellite"
+sg_num = 14
+sg_sym = "P2_1/c"
+point_group = "C2h"
+lattice_system = "Monoclinic"
+centering = "P"
+a = 6.290
+b = 14.585
+c = 10.116
+alpha = 90.0
+beta = 109.46
+gamma = 90.0
+z = 8
+density = 2.21
+reference = "Tazzoli & Domeneghetti (1980) Am. Mineralogist 65, 327 (CaC2O4.H2O whewellite, kidney stones)."
+
+[[structure]]
+name = "uric_acid_anhydrous"
+sg_num = 14
+sg_sym = "P2_1/a"
+point_group = "C2h"
+lattice_system = "Monoclinic"
+centering = "P"
+a = 14.464
+b = 7.403
+c = 6.208
+alpha = 90.0
+beta = 65.10
+gamma = 90.0
+z = 4
+density = 1.85
+reference = "Ringertz (1966) Acta Crystallogr. 20, 397 (C5H4N4O3 uric acid, gout mineral)."
+
+# ----- Additional halide perovskites + double perovskites -----
+[[structure]]
+name = "cspbcl3_cubic"
+sg_num = 221
+sg_sym = "Pm-3m"
+point_group = "Oh"
+lattice_system = "Cubic"
+centering = "P"
+a = 5.605
+b = 5.605
+c = 5.605
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 1
+density = 4.18
+reference = "Moller (1958) Mat. Fys. Medd. Dan. Vid. Selsk. 32, 1 (CsPbCl3 halide perovskite)."
+
+[[structure]]
+name = "cs2agbibr6_double_perovskite"
+sg_num = 225
+sg_sym = "Fm-3m"
+point_group = "Oh"
+lattice_system = "Cubic"
+centering = "F"
+a = 11.271
+b = 11.271
+c = 11.271
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 4
+density = 5.18
+reference = "Slavney et al. (2016) JACS 138, 2138 (Cs2AgBiBr6 lead-free double perovskite)."
+
+# ----- Additional Weyl + Dirac + topological -----
+[[structure]]
+name = "tantalum_phosphide_tap"
+sg_num = 109
+sg_sym = "I4_1md"
+point_group = "C4v"
+lattice_system = "Tetragonal"
+centering = "I"
+a = 3.318
+b = 3.318
+c = 11.363
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 4
+density = 12.16
+reference = "Xu et al. (2015) Science Adv. 1, e1501092 (TaP Weyl semimetal)."
+
+[[structure]]
+name = "na3bi_dirac"
+sg_num = 194
+sg_sym = "P6_3/mmc"
+point_group = "D6h"
+lattice_system = "Hexagonal"
+centering = "P"
+a = 5.488
+b = 5.488
+c = 9.665
+alpha = 90.0
+beta = 90.0
+gamma = 120.0
+z = 2
+density = 2.91
+reference = "Liu et al. (2014) Science 343, 864 (Na3Bi 3D Dirac semimetal)."
+
+# ----- Spintronic / multiferroic materials -----
+[[structure]]
+name = "bifeo3_rhombohedral"
+sg_num = 161
+sg_sym = "R3c"
+point_group = "C3v"
+lattice_system = "Hexagonal"
+centering = "R"
+a = 5.5826
+b = 5.5826
+c = 13.8757
+alpha = 90.0
+beta = 90.0
+gamma = 120.0
+z = 6
+density = 8.34
+reference = "Kubel & Schmid (1990) Acta Crystallogr. B 46, 698 (BiFeO3 multiferroic perovskite)."
+
+[[structure]]
+name = "yfeo3_orthoferrite"
+sg_num = 62
+sg_sym = "Pnma"
+point_group = "D2h"
+lattice_system = "Orthorhombic"
+centering = "P"
+a = 5.587
+b = 7.595
+c = 5.279
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 4
+density = 5.66
+reference = "Marezio et al. (1970) Acta Crystallogr. B 26, 2008 (YFeO3 spintronic orthoferrite)."
+
+# ----- Two-dimensional materials beyond graphene -----
+[[structure]]
+name = "mose2_2h_polytype"
+sg_num = 194
+sg_sym = "P6_3/mmc"
+point_group = "D6h"
+lattice_system = "Hexagonal"
+centering = "P"
+a = 3.288
+b = 3.288
+c = 12.929
+alpha = 90.0
+beta = 90.0
+gamma = 120.0
+z = 2
+density = 6.90
+reference = "Bronsema et al. (1986) J. Solid State Chem. 64, 207 (MoSe2 TMDC)."
+
+[[structure]]
+name = "phosphorene_black_phosphorus"
+sg_num = 64
+sg_sym = "Cmca"
+point_group = "D2h"
+lattice_system = "Orthorhombic"
+centering = "C"
+a = 3.314
+b = 4.376
+c = 10.478
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 8
+density = 2.69
+reference = "Brown & Rundqvist (1965) Acta Crystallogr. 19, 684 (black phosphorus, 2D semiconductor base)."
+
+[[structure]]
+name = "silicene_buckled_hexagonal"
+sg_num = 156
+sg_sym = "P3m1"
+point_group = "C3v"
+lattice_system = "Hexagonal"
+centering = "P"
+a = 3.876
+b = 3.876
+c = 4.500
+alpha = 90.0
+beta = 90.0
+gamma = 120.0
+z = 2
+density = 1.0
+reference = "Vogt et al. (2012) Phys. Rev. Lett. 108, 155501 (silicene Si analog of graphene)."
+
+# ----- Additional carbonates + sulfates -----
+[[structure]]
+name = "witherite_baco3"
+sg_num = 62
+sg_sym = "Pmcn"
+point_group = "D2h"
+lattice_system = "Orthorhombic"
+centering = "P"
+a = 5.314
+b = 8.904
+c = 6.430
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 4
+density = 4.286
+reference = "De Villiers (1971) Am. Mineralogist 56, 758 (BaCO3 witherite, aragonite-type)."
+
+[[structure]]
+name = "strontianite_srco3"
+sg_num = 62
+sg_sym = "Pmcn"
+point_group = "D2h"
+lattice_system = "Orthorhombic"
+centering = "P"
+a = 5.107
+b = 8.414
+c = 6.029
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 4
+density = 3.785
+reference = "De Villiers (1971) Am. Mineralogist 56, 758 (SrCO3 strontianite, aragonite-type)."
+
+[[structure]]
+name = "celestine_srso4"
+sg_num = 62
+sg_sym = "Pnma"
+point_group = "D2h"
+lattice_system = "Orthorhombic"
+centering = "P"
+a = 8.359
+b = 5.352
+c = 6.866
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 4
+density = 3.97
+reference = "Miyake et al. (1978) Z. Kristallogr. 146, 169 (SrSO4 celestine, barite-type)."
+
+# ----- Additional sulfides / native elements -----
+[[structure]]
+name = "marcasite_fes2_orthorhombic"
+sg_num = 58
+sg_sym = "Pnnm"
+point_group = "D2h"
+lattice_system = "Orthorhombic"
+centering = "P"
+a = 4.4373
+b = 5.4242
+c = 3.3878
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 2
+density = 4.875
+reference = "Tossell et al. (1981) Am. Mineralogist 66, 1199 (FeS2 marcasite polymorph of pyrite)."
+
+[[structure]]
+name = "arsenic_grey_a7"
+sg_num = 166
+sg_sym = "R-3m"
+point_group = "D3d"
+lattice_system = "Hexagonal"
+centering = "R"
+a = 3.7595
+b = 3.7595
+c = 10.5475
+alpha = 90.0
+beta = 90.0
+gamma = 120.0
+z = 6
+density = 5.778
+reference = "Schiferl & Barrett (1969) J. Appl. Crystallogr. 2, 30 (grey As A7 structure, semimetal)."
+
+[[structure]]
+name = "antimony_grey_a7"
+sg_num = 166
+sg_sym = "R-3m"
+point_group = "D3d"
+lattice_system = "Hexagonal"
+centering = "R"
+a = 4.3084
+b = 4.3084
+c = 11.274
+alpha = 90.0
+beta = 90.0
+gamma = 120.0
+z = 6
+density = 6.697
+reference = "Barrett et al. (1963) Acta Crystallogr. 16, 1 (Sb grey A7 structure, semimetal)."
+
+# ----- More transition metal oxide perovskites + Mott systems -----
+[[structure]]
+name = "kanthal_lacro3"
+sg_num = 62
+sg_sym = "Pnma"
+point_group = "D2h"
+lattice_system = "Orthorhombic"
+centering = "P"
+a = 5.479
+b = 7.756
+c = 5.514
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 4
+density = 7.30
+reference = "Geller et al. (1956) Acta Crystallogr. 9, 1019 (LaCrO3 high-temp electrode oxide)."
+
+[[structure]]
+name = "manganite_lamno3"
+sg_num = 62
+sg_sym = "Pnma"
+point_group = "D2h"
+lattice_system = "Orthorhombic"
+centering = "P"
+a = 5.532
+b = 7.696
+c = 5.563
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 4
+density = 6.575
+reference = "Norby et al. (1995) J. Solid State Chem. 119, 191 (LaMnO3 colossal magnetoresistance parent)."
+
+[[structure]]
+name = "lanio3_rhombohedral"
+sg_num = 167
+sg_sym = "R-3c"
+point_group = "D3d"
+lattice_system = "Hexagonal"
+centering = "R"
+a = 5.4573
+b = 5.4573
+c = 13.1462
+alpha = 90.0
+beta = 90.0
+gamma = 120.0
+z = 6
+density = 7.20
+reference = "Garcia-Munoz et al. (1992) Phys. Rev. B 46, 4414 (LaNiO3 nickelate metal)."
+
+# ----- Geophysical olivine + ringwoodite -----
+[[structure]]
+name = "ringwoodite_mg2sio4_spinel"
+sg_num = 227
+sg_sym = "Fd-3m"
+point_group = "Oh"
+lattice_system = "Cubic"
+centering = "F"
+a = 8.0709
+b = 8.0709
+c = 8.0709
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 8
+density = 3.564
+reference = "Hazen et al. (1993) Am. Mineralogist 78, 1320 (Mg2SiO4 ringwoodite, mantle transition zone)."
+
+[[structure]]
+name = "wadsleyite_mg2sio4"
+sg_num = 74
+sg_sym = "Imma"
+point_group = "D2h"
+lattice_system = "Orthorhombic"
+centering = "I"
+a = 5.6921
+b = 11.460
+c = 8.253
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 8
+density = 3.475
+reference = "Smyth (1987) Am. Mineralogist 72, 1051 (Mg2SiO4 wadsleyite, water reservoir mineral)."
+
+# ----- Cuprate-superconductor parent compounds -----
+[[structure]]
+name = "la2cuo4_tetragonal_t_phase"
+sg_num = 139
+sg_sym = "I4/mmm"
+point_group = "D4h"
+lattice_system = "Tetragonal"
+centering = "I"
+a = 3.7873
+b = 3.7873
+c = 13.2883
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 2
+density = 7.084
+reference = "Longo & Raccah (1973) J. Solid State Chem. 6, 526 (La2CuO4 T-phase, high-Tc parent)."
+
+[[structure]]
+name = "nd2cuo4_t_prime"
+sg_num = 139
+sg_sym = "I4/mmm"
+point_group = "D4h"
+lattice_system = "Tetragonal"
+centering = "I"
+a = 3.945
+b = 3.945
+c = 12.169
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 2
+density = 7.45
+reference = "Muller-Buschbaum & Wollschlager (1975) Z. Anorg. Allg. Chem. 414, 76 (Nd2CuO4 T'-phase)."
+
+# ----- Anti-perovskite + Heusler alloys -----
+[[structure]]
+name = "cu3au_l12"
+sg_num = 221
+sg_sym = "Pm-3m"
+point_group = "Oh"
+lattice_system = "Cubic"
+centering = "P"
+a = 3.7493
+b = 3.7493
+c = 3.7493
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 1
+density = 14.5
+reference = "Wyckoff (1963) vol. 1 (Cu3Au L12 ordered intermetallic, prototype Au3Cu structure)."
+
+[[structure]]
+name = "ni2mnga_heusler"
+sg_num = 225
+sg_sym = "Fm-3m"
+point_group = "Oh"
+lattice_system = "Cubic"
+centering = "F"
+a = 5.825
+b = 5.825
+c = 5.825
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 4
+density = 8.20
+reference = "Webster et al. (1984) Philos. Mag. B 49, 295 (Ni2MnGa full-Heusler magnetic shape-memory alloy)."
+
+# ----- Photochromic + light-tunable phases -----
+[[structure]]
+name = "tungsten_bronze_na_x_wo3_cubic"
+sg_num = 221
+sg_sym = "Pm-3m"
+point_group = "Oh"
+lattice_system = "Cubic"
+centering = "P"
+a = 3.7866
+b = 3.7866
+c = 3.7866
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 1
+density = 7.36
+reference = "Magneli (1949) Ark. Kemi 1, 213 (Na_xWO3 cubic tungsten bronze, photochromic)."

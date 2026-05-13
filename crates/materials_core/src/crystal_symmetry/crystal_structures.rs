@@ -285,15 +285,89 @@ mod tests {
     use super::*;
 
     #[test]
-    fn known_structures_has_140_plus_entries() {
+    fn known_structures_has_200_plus_entries() {
         let n = known_crystal_structures().len();
         assert!(
-            n >= 140,
-            "Coverage regression: known_crystal_structures must list at least 140 \
+            n >= 200,
+            "Coverage regression: known_crystal_structures must list at least 200 \
              entries (currently {}). Adding new structures is encouraged; \
              removing any requires a rationale.",
             n
         );
+    }
+
+    #[test]
+    fn iii_v_compound_semiconductor_coverage() {
+        let names: Vec<&str> = known_crystal_structures()
+            .iter()
+            .map(|s| s.name)
+            .collect();
+        for required in [
+            "alas_zincblende",
+            "aln_wurtzite",
+            "alsb_zincblende",
+            "inas_zincblende",
+            "gap_zincblende",
+            "gasb_zincblende",
+            "hgte_zincblende",
+        ] {
+            assert!(
+                names.contains(&required),
+                "III-V/II-VI semiconductor {} missing",
+                required
+            );
+        }
+    }
+
+    #[test]
+    fn refractory_carbide_diboride_coverage() {
+        let names: Vec<&str> = known_crystal_structures()
+            .iter()
+            .map(|s| s.name)
+            .collect();
+        for required in [
+            "titanium_carbide_tic",
+            "zirconium_carbide_zrc",
+            "tantalum_carbide_tac",
+            "zirconium_diboride_zrb2",
+            "hafnium_diboride_hfb2",
+            "tantalum_diboride_tab2",
+        ] {
+            assert!(names.contains(&required), "refractory ceramic {} missing", required);
+        }
+    }
+
+    #[test]
+    fn high_pressure_geophysical_phase_coverage() {
+        let names: Vec<&str> = known_crystal_structures()
+            .iter()
+            .map(|s| s.name)
+            .collect();
+        for required in [
+            "post_perovskite_mgsio3",
+            "stishovite_sio2_rutile",
+            "iron_epsilon_hcp",
+            "iron_gamma_fcc",
+            "ringwoodite_mg2sio4_spinel",
+            "wadsleyite_mg2sio4",
+        ] {
+            assert!(
+                names.contains(&required),
+                "high-pressure/geophysical phase {} missing",
+                required
+            );
+        }
+    }
+
+    #[test]
+    fn cuprate_superconductor_parent_coverage() {
+        let names: Vec<&str> = known_crystal_structures()
+            .iter()
+            .map(|s| s.name)
+            .collect();
+        for required in ["la2cuo4_tetragonal_t_phase", "nd2cuo4_t_prime"] {
+            assert!(names.contains(&required), "cuprate parent {} missing", required);
+        }
     }
 
     #[test]
