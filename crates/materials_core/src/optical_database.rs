@@ -1011,267 +1011,17 @@ impl DrudeLorentzParams {
         Some(beta)
     }
 
-    // ---- Part 10: Surface plasmon + Interface optics ----
+    // SPP / LSPR plasmonics methods (4) extracted to the `plasmonics` submodule
+    // (#138 PH-MOD split). See optical_database/plasmonics.rs.
 
-    /// Surface plasmon polariton wavevector k_spp in 1/m.
-    ///
-    /// k_spp = (omega/c) * sqrt(eps_m * eps_d / (eps_m + eps_d))
-    /// where eps_d is the dielectric medium permittivity (default: vacuum = 1).
-    /// SPPs exist when `Re[eps_m] < -Re[eps_d]`. Returns the complex `k_spp`;
-    /// `Re[k_spp]` gives the spatial wavelength, `Im[k_spp]` the decay.
-    pub fn spp_wavevector(&self, omega: f64, eps_dielectric: f64) -> Complex64 {
-        let eps_m = self.epsilon(omega);
-        let eps_d = Complex64::new(eps_dielectric, 0.0);
-        let ratio = (eps_m * eps_d) / (eps_m + eps_d);
-        (omega / C) * ratio.sqrt()
-    }
+    // Fresnel + angular reflectance methods (4) extracted to the `fresnel`
+    // submodule (#138 PH-MOD split). See optical_database/fresnel.rs.
 
-    /// SPP propagation length in meters.
-    ///
-    /// `L_spp = 1 / (2 * Im[k_spp])`. This is the `1/e` decay length of
-    /// the SPP intensity along the surface. For gold at 633 nm, L_spp ~ 10 um.
-    /// Returns `None` if `Im[k_spp]` is non-positive (no damping, unphysical).
-    pub fn spp_propagation_length(&self, omega: f64, eps_dielectric: f64) -> Option<f64> {
-        let k_spp = self.spp_wavevector(omega, eps_dielectric);
-        let k_im = k_spp.im.abs();
-        if k_im < 1e-30 {
-            return None;
-        }
-        Some(1.0 / (2.0 * k_im))
-    }
-
-    /// Evanescent decay length into vacuum (or dielectric medium) in meters.
-    ///
-    /// `delta = c / (omega * sqrt(-eps_m'))` where `eps_m' = Re[eps_m]`.
-    /// Valid only when `Re[eps_m] < 0` (metallic regime). Returns `None` for
-    /// dielectrics with `Re[eps] > 0`. This determines how deeply evanescent
-    /// fields penetrate into the medium -- critical for Casimir proximity effects.
-    pub fn evanescent_decay_length(&self, omega: f64) -> Option<f64> {
-        let eps_re = self.epsilon(omega).re;
-        if eps_re >= 0.0 {
-            return None; // Not metallic at this frequency
-        }
-        Some(C / (omega * (-eps_re).sqrt()))
-    }
-
-    /// Localized surface plasmon resonance (LSPR) frequency in rad/s.
-    ///
-    /// Finds the Frohlich condition: Re[eps_m(omega)] = -2 * eps_d for a
-    /// spherical nanoparticle in a dielectric medium. Scans from 0.5 to 15 eV.
-    /// Returns None if no crossing found (e.g., for pure dielectrics).
-    pub fn lspr_frequency(&self, eps_dielectric: f64) -> Option<f64> {
-        let target = -2.0 * eps_dielectric;
-        let steps: usize = 3000;
-        let ev_min = 0.1;
-        let ev_max = 15.0;
-        let dev = (ev_max - ev_min) / steps as f64;
-        let mut prev_re = self.epsilon(ev_min * EV_TO_RADS).re;
-        for i in 1..=steps {
-            let ev = ev_min + i as f64 * dev;
-            let omega = ev * EV_TO_RADS;
-            let re = self.epsilon(omega).re;
-            // Looking for Re[eps] crossing target from below (going upward through target)
-            if prev_re < target && re >= target {
-                let frac = (target - prev_re) / (re - prev_re);
-                return Some(((ev - dev) + frac * dev) * EV_TO_RADS);
-            }
-            prev_re = re;
-        }
-        None
-    }
-
-    /// Fresnel reflection coefficient r_s (s-polarization) at an interface.
-    ///
-    /// r_s = (n1*cos_i - n2*cos_t) / (n1*cos_i + n2*cos_t) where n1 is the
-    /// incident medium (real) and n2 = sqrt(eps) is from this material.
-    /// theta_i is the angle of incidence in radians.
-    pub fn fresnel_rs(&self, omega: f64, theta_i: f64, n_incident: f64) -> Complex64 {
-        let n2 = self.refractive_index(omega);
-        let cos_i = theta_i.cos();
-        let sin_i = theta_i.sin();
-        // Snell: n1*sin(theta_i) = n2*sin(theta_t) => cos_t = sqrt(1 - (n1/n2*sin_i)^2)
-        let sin_t_sq = Complex64::new(n_incident * n_incident * sin_i * sin_i, 0.0) / (n2 * n2);
-        let cos_t = (Complex64::new(1.0, 0.0) - sin_t_sq).sqrt();
-        let n1_cos_i = Complex64::new(n_incident * cos_i, 0.0);
-        let n2_cos_t = n2 * cos_t;
-        (n1_cos_i - n2_cos_t) / (n1_cos_i + n2_cos_t)
-    }
-
-    /// Fresnel reflection coefficient r_p (p-polarization) at an interface.
-    ///
-    /// r_p = (n2*cos_i - n1*cos_t) / (n2*cos_i + n1*cos_t).
-    pub fn fresnel_rp(&self, omega: f64, theta_i: f64, n_incident: f64) -> Complex64 {
-        let n2 = self.refractive_index(omega);
-        let cos_i = theta_i.cos();
-        let sin_i = theta_i.sin();
-        let sin_t_sq = Complex64::new(n_incident * n_incident * sin_i * sin_i, 0.0) / (n2 * n2);
-        let cos_t = (Complex64::new(1.0, 0.0) - sin_t_sq).sqrt();
-        let n2_cos_i = n2 * cos_i;
-        let n1_cos_t = Complex64::new(n_incident, 0.0) * cos_t;
-        (n2_cos_i - n1_cos_t) / (n2_cos_i + n1_cos_t)
-    }
-
-    /// Brewster angle in radians for p-polarized light.
-    ///
-    /// theta_B = atan(n2/n1) for non-absorbing dielectrics.
-    /// Returns `None` if the material is absorbing (`Im[n] > 0.01 * Re[n]`)
-    /// because the pseudo-Brewster angle in absorbing media requires
-    /// numerical search. For low-loss dielectrics, this gives the angle
-    /// where p-polarization reflectivity vanishes.
-    pub fn brewster_angle(&self, omega: f64, n_incident: f64) -> Option<f64> {
-        let n = self.refractive_index(omega);
-        // Only valid for nearly non-absorbing materials
-        if n.im > 0.01 * n.re {
-            return None;
-        }
-        Some((n.re / n_incident).atan())
-    }
-
-    /// Reflectance at arbitrary angle (intensity, not amplitude).
-    ///
-    /// R_s = |r_s|^2, R_p = |r_p|^2. Returns (R_s, R_p).
-    pub fn reflectance_angular(&self, omega: f64, theta_i: f64, n_incident: f64) -> (f64, f64) {
-        let rs = self.fresnel_rs(omega, theta_i, n_incident);
-        let rp = self.fresnel_rp(omega, theta_i, n_incident);
-        (rs.norm_sqr(), rp.norm_sqr())
-    }
 
     // ---- Part 11: Magneto-optical + Drude weight diagnostics ----
+    // Transport methods (7) extracted to the `transport` submodule
+    // (#138 PH-MOD split). See optical_database/transport.rs.
 
-    /// Drude weight D in SI units (S/m * rad/s = S * rad / (m * s)).
-    ///
-    /// D = (pi/2) * omega_p^2 * eps_0 = pi * n * e^2 / (2 * m*)
-    /// This is the integrated spectral weight under the Drude peak:
-    /// D = integral_0^inf sigma_1_Drude(omega) domega.
-    /// Returns None for non-metallic (no Drude) materials.
-    pub fn drude_weight(&self) -> Option<f64> {
-        let omega_p = if let Some(ext) = &self.extended_drude {
-            ext.omega_p_ev * EV_TO_RADS
-        } else if let Some(drude) = &self.drude {
-            drude.omega_p_ev * EV_TO_RADS
-        } else {
-            return None;
-        };
-        Some(std::f64::consts::PI / 2.0 * omega_p * omega_p * EPS_0)
-    }
-
-    /// Carrier mobility mu in m^2/(V*s) from Drude parameters.
-    ///
-    /// mu = e / (m* * gamma) where gamma is the Drude scattering rate
-    /// and m* is the effective mass. Requires carrier_density for m* extraction.
-    /// For gold (n ~ 5.9e28 m^-3), mu ~ 0.004 m^2/(V*s) at room temperature.
-    /// Returns None if no Drude term or carrier density gives unphysical mass.
-    pub fn carrier_mobility(&self, carrier_density: f64) -> Option<f64> {
-        let gamma_ev = if let Some(ext) = &self.extended_drude {
-            ext.scattering.gamma_at_ev(0.0)
-        } else if let Some(drude) = &self.drude {
-            drude.gamma_ev
-        } else {
-            return None;
-        };
-        let m_star = self.optical_effective_mass(carrier_density)?;
-        let m_star_kg = m_star * M_E_KG;
-        let gamma = gamma_ev * EV_TO_RADS;
-        if gamma < 1e-30 {
-            return None;
-        }
-        Some(E_CHARGE / (m_star_kg * gamma))
-    }
-
-    /// Plasma frequency from carrier density and effective mass.
-    ///
-    /// omega_p = sqrt(n * e^2 / (eps_0 * m*)) in rad/s.
-    /// This is the inverse of optical_effective_mass(): given n and m*,
-    /// compute omega_p. Useful for predicting Drude params of doped materials.
-    pub fn plasma_frequency_from_density(carrier_density: f64, m_star_ratio: f64) -> f64 {
-        let m_star = m_star_ratio * M_E_KG;
-        (carrier_density * E_CHARGE * E_CHARGE / (EPS_0 * m_star)).sqrt()
-    }
-
-    /// Off-diagonal Voigt dielectric tensor element eps_xy for MOKE.
-    ///
-    /// In an external magnetic field B (Tesla), the cyclotron frequency
-    /// omega_c = e*B / m* introduces off-diagonal elements:
-    /// eps_xy(omega) = i * omega_c * omega_p^2 / (omega * (omega^2 + i*gamma*omega))
-    /// This is the lowest-order magneto-optical response (free-electron).
-    /// Returns None if no Drude term (no free carriers to precess).
-    pub fn voigt_eps_xy(
-        &self,
-        omega: f64,
-        b_field: f64,
-        carrier_density: f64,
-    ) -> Option<Complex64> {
-        let (omega_p_ev, gamma_ev) = if let Some(ext) = &self.extended_drude {
-            (ext.omega_p_ev, ext.scattering.gamma_at_ev(0.0))
-        } else if let Some(drude) = &self.drude {
-            (drude.omega_p_ev, drude.gamma_ev)
-        } else {
-            return None;
-        };
-        let m_star = self.optical_effective_mass(carrier_density)?;
-        let m_star_kg = m_star * M_E_KG;
-        let omega_c = E_CHARGE * b_field / m_star_kg; // cyclotron frequency
-        let omega_p = omega_p_ev * EV_TO_RADS;
-        let gamma = gamma_ev * EV_TO_RADS;
-        let denom = Complex64::new(-omega * omega, gamma * omega);
-        // eps_xy = i * omega_c * omega_p^2 / (omega * denom)
-        let numerator = Complex64::new(0.0, omega_c * omega_p * omega_p);
-        Some(numerator / (omega * denom))
-    }
-
-    /// Faraday rotation per unit length in rad/m.
-    ///
-    /// `theta_F = omega * Re[eps_xy] / (2 * n * c)` where `n` is the real
-    /// refractive index and eps_xy is the off-diagonal Voigt element.
-    /// Returns None if no Drude term.
-    pub fn faraday_rotation(&self, omega: f64, b_field: f64, carrier_density: f64) -> Option<f64> {
-        let eps_xy = self.voigt_eps_xy(omega, b_field, carrier_density)?;
-        let n = self.refractive_index(omega).re;
-        if n < 1e-10 {
-            return None;
-        }
-        Some(omega * eps_xy.re / (2.0 * n * C))
-    }
-
-    /// DC resistivity in Ohm*m from Drude parameters.
-    ///
-    /// rho = m* * gamma / (n * e^2) = 1 / (eps_0 * omega_p^2 * tau)
-    /// where tau = 1/gamma is the scattering time.
-    /// For gold: rho ~ 2.2e-8 Ohm*m at room temperature.
-    /// Returns None if no Drude term.
-    pub fn dc_resistivity(&self) -> Option<f64> {
-        let (omega_p_ev, gamma_ev) = if let Some(ext) = &self.extended_drude {
-            (ext.omega_p_ev, ext.scattering.gamma_at_ev(0.0))
-        } else if let Some(drude) = &self.drude {
-            (drude.omega_p_ev, drude.gamma_ev)
-        } else {
-            return None;
-        };
-        let omega_p = omega_p_ev * EV_TO_RADS;
-        let gamma = gamma_ev * EV_TO_RADS;
-        // rho = gamma / (eps_0 * omega_p^2)
-        Some(gamma / (EPS_0 * omega_p * omega_p))
-    }
-
-    /// Scattering time (Drude relaxation time) tau in seconds.
-    ///
-    /// tau = 1 / gamma = hbar / gamma_eV.
-    /// For gold at 300 K: tau ~ 9.5 fs.
-    /// Returns None if no Drude term.
-    pub fn scattering_time(&self) -> Option<f64> {
-        let gamma_ev = if let Some(ext) = &self.extended_drude {
-            ext.scattering.gamma_at_ev(0.0)
-        } else if let Some(drude) = &self.drude {
-            drude.gamma_ev
-        } else {
-            return None;
-        };
-        let gamma = gamma_ev * EV_TO_RADS;
-        if gamma < 1e-30 {
-            return None;
-        }
-        Some(1.0 / gamma)
-    }
 
     // ========================================================================
     // Part 12: Ellipsometry, Thermal Emission, ENZ Physics
@@ -2887,8 +2637,11 @@ pub use semiconductors::{
 mod bandgap_analysis;
 mod effective_medium_methods;
 mod electro_optic;
+mod fresnel;
 mod photonic_crystals;
+mod plasmonics;
 mod sum_rules_kk;
+mod transport;
 
 // ============================================================================
 // Tourmaline supergroup (#127 Phase 5+): species-specific uniaxial
