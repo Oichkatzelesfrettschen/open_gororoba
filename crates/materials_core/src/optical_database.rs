@@ -136,6 +136,59 @@ pub struct UniaxialOptical {
     pub axis_description: &'static str,
 }
 
+/// Sign of the principal-axis vs ordinary refractive-index difference for
+/// uniaxial crystals. `Negative` when `n_e < n_o` (e.g. calcite, tourmaline).
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum OpticSign {
+    /// Uniaxial positive: n_e > n_o.
+    Positive,
+    /// Uniaxial negative: n_e < n_o.
+    Negative,
+    /// Biaxial crystals (orthorhombic / monoclinic / triclinic) require a
+    /// 3-index tensor; not representable in the simple uniaxial pair.
+    Biaxial,
+    /// Isotropic (cubic crystals, amorphous solids).
+    Isotropic,
+}
+
+/// Crystallographic + measured properties accompanying a mineral's optical
+/// dispersion model. Complements `DrudeLorentzParams` (which captures the
+/// frequency-dependent dielectric response) with the static gemological /
+/// mineralogical context used in identification, classification, and
+/// downstream geochemistry calculations.
+///
+/// All fields are optional in the sense that a sentinel value (`0.0`,
+/// empty string) may be supplied when the property is not catalogued for
+/// a specific species; the field set is intentionally a superset so that
+/// adding new properties to the registry does not require a struct change.
+#[derive(Debug, Clone, Copy)]
+pub struct MineralMetadata {
+    /// IMA-approved species name (e.g. "schorl", "dravite", "elbaite").
+    pub species_name: &'static str,
+    /// Idealized chemical formula (X Y3 Z6 T6 O18 (BO3)3 V3 W convention for tourmaline group).
+    pub formula: &'static str,
+    /// Crystal system: "trigonal", "tetragonal", "hexagonal", "cubic", etc.
+    pub crystal_system: &'static str,
+    /// Space-group symbol (Hermann-Mauguin form) and ITA number, e.g. "R3m (160)".
+    pub space_group: &'static str,
+    /// Ordinary refractive index at sodium-D line (587.6 nm, ~2.110 eV).
+    pub n_omega: f64,
+    /// Extraordinary refractive index at sodium-D line.
+    pub n_epsilon: f64,
+    /// Birefringence delta_n = |n_omega - n_epsilon|.
+    pub birefringence: f64,
+    /// Uniaxial optic sign or biaxial/isotropic marker.
+    pub optic_sign: OpticSign,
+    /// Mohs hardness (1-10).
+    pub hardness_mohs: f64,
+    /// Density in g/cm^3.
+    pub density_g_cm3: f64,
+    /// Typical color (English plain text; see species comments for pleochroism).
+    pub color: &'static str,
+    /// Reference citation for the catalogued values.
+    pub reference: &'static str,
+}
+
 impl UniaxialOptical {
     /// Dielectric function along the principal axis at angular frequency omega (rad/s).
     pub fn epsilon_parallel(&self, omega: f64) -> Complex64 {
@@ -3490,6 +3543,24 @@ mod semiconductors;
 pub use semiconductors::{
     germanium_optical, silica_casimir_optical, silica_optical, silicon_nitride_optical,
     silicon_optical,
+};
+
+// ============================================================================
+// Tourmaline supergroup (#127 Phase 5+): species-specific uniaxial
+// optical models + crystallographic/gemological metadata. The legacy
+// isotropic `tourmaline_optical()` constructor stays in `oxides_tcos`
+// (preserving byte-identical behaviour for existing callers); this new
+// submodule adds 8 IMA species (schorl, dravite, elbaite, uvite,
+// liddicoatite, rossmanite, foitite, povondraite) each returning
+// `UniaxialOptical` with paired `*_metadata()` accessors.
+// ============================================================================
+mod tourmaline;
+pub use tourmaline::{
+    default_metadata as tourmaline_default_metadata, dravite_metadata, dravite_optical,
+    elbaite_metadata, elbaite_optical, foitite_metadata, foitite_optical,
+    liddicoatite_metadata, liddicoatite_optical, povondraite_metadata, povondraite_optical,
+    rossmanite_metadata, rossmanite_optical, schorl_metadata, schorl_optical, uvite_metadata,
+    uvite_optical,
 };
 
 /// Perfect metal (ideal conductor limit).
