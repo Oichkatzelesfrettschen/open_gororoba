@@ -1,0 +1,500 @@
+# Audit: MineralMetadata coverage in optical_database
+# Date: 2026-05-13
+# Source commit: 696bb1d4 (tourmaline supergroup added)
+# Conjecture under test: "we have all possible properties built out in this repo"
+# Verdict: FALSIFIED -- 35 of 43 optical-model constructors (81.4%) lack any
+# crystallographic / gemological MineralMetadata accessor. Only the 8
+# tourmaline species added at commit 696bb1d4 expose the new metadata path.
+
+[summary]
+total_optical_constructors = 43
+constructors_with_metadata = 8
+constructors_without_metadata = 35
+metadata_coverage_pct = 18.6
+conjecture_verdict = "falsified"
+
+# Properties currently captured by MineralMetadata:
+#   species_name, formula, crystal_system, space_group, n_omega, n_epsilon,
+#   birefringence, optic_sign, hardness_mohs, density_g_cm3, color, reference
+# Properties NOT YET in MineralMetadata (future expansion candidates):
+#   melting_point_k, debye_temperature_k, thermal_conductivity_w_mk,
+#   thermal_expansion_1e6_per_k, electrical_resistivity_ohm_m,
+#   magnetic_susceptibility, dielectric_constant_static, cleavage_planes,
+#   fracture_type, streak_color, luster, fluorescence_uv_response,
+#   ima_status_code, mindat_id, rruff_id, refractiveindex_info_path,
+#   doi_primary_reference, type_locality, year_first_described.
+
+# -----------------------------------------------------------------------
+# CATEGORY: Tourmaline supergroup (commit 696bb1d4 -- FULL coverage)
+# -----------------------------------------------------------------------
+[[material_with_metadata]]
+species = "schorl"
+optical_fn = "schorl_optical"
+metadata_fn = "schorl_metadata"
+
+[[material_with_metadata]]
+species = "dravite"
+optical_fn = "dravite_optical"
+metadata_fn = "dravite_metadata"
+
+[[material_with_metadata]]
+species = "elbaite"
+optical_fn = "elbaite_optical"
+metadata_fn = "elbaite_metadata"
+
+[[material_with_metadata]]
+species = "uvite"
+optical_fn = "uvite_optical"
+metadata_fn = "uvite_metadata"
+
+[[material_with_metadata]]
+species = "liddicoatite"
+optical_fn = "liddicoatite_optical"
+metadata_fn = "liddicoatite_metadata"
+
+[[material_with_metadata]]
+species = "rossmanite"
+optical_fn = "rossmanite_optical"
+metadata_fn = "rossmanite_metadata"
+
+[[material_with_metadata]]
+species = "foitite"
+optical_fn = "foitite_optical"
+metadata_fn = "foitite_metadata"
+
+[[material_with_metadata]]
+species = "povondraite"
+optical_fn = "povondraite_optical"
+metadata_fn = "povondraite_metadata"
+
+# -----------------------------------------------------------------------
+# CATEGORY: Semiconductors + dielectrics (5 materials, 0 metadata)
+# -----------------------------------------------------------------------
+[[gap]]
+optical_fn = "silicon_optical"
+expected_crystal_system = "cubic"
+expected_space_group = "Fd-3m (227)"
+expected_density_g_cm3 = 2.329
+expected_hardness_mohs = 6.5
+expected_n_at_1550nm = 3.45
+expected_optic_sign = "Isotropic"
+priority = "high"
+source = "Palik 1998 vol I p.547; NIST silicon properties"
+
+[[gap]]
+optical_fn = "silica_optical"
+expected_crystal_system = "amorphous_or_trigonal"
+expected_space_group = "P3_121 (152) when alpha-quartz; amorphous for fused silica"
+expected_density_g_cm3 = 2.20
+expected_hardness_mohs = 7.0
+expected_n_at_1550nm = 1.444
+expected_optic_sign = "Isotropic"
+priority = "high"
+source = "Palik 1998 vol I p.749; Malitson 1965 J.Opt.Soc.Am. 55, 1205"
+
+[[gap]]
+optical_fn = "silica_casimir_optical"
+note = "Same material as silica_optical but tuned for Casimir geometry; metadata identical to silica."
+priority = "low"
+
+[[gap]]
+optical_fn = "silicon_nitride_optical"
+expected_crystal_system = "trigonal (alpha-Si3N4) or hexagonal (beta-Si3N4)"
+expected_space_group = "P31c (159) alpha; P6_3 (173) beta"
+expected_density_g_cm3 = 3.17
+expected_hardness_mohs = 9.0
+expected_n_at_1550nm = 1.997
+expected_optic_sign = "Uniaxial Positive (alpha and beta)"
+priority = "high"
+source = "Palik 1998 vol II p.771"
+
+[[gap]]
+optical_fn = "germanium_optical"
+expected_crystal_system = "cubic"
+expected_space_group = "Fd-3m (227)"
+expected_density_g_cm3 = 5.323
+expected_hardness_mohs = 6.0
+expected_n_at_1550nm = 4.00
+expected_optic_sign = "Isotropic"
+priority = "high"
+source = "Palik 1998 vol I p.465"
+
+# -----------------------------------------------------------------------
+# CATEGORY: Tungstates (6 materials, 0 metadata)
+# -----------------------------------------------------------------------
+[[gap]]
+optical_fn = "wo3_optical"
+expected_crystal_system = "monoclinic"
+expected_space_group = "P2_1/n (14) gamma-WO3 (room temperature)"
+expected_density_g_cm3 = 7.16
+expected_hardness_mohs = 2.75
+expected_optic_sign = "Biaxial"
+priority = "medium"
+source = "Tilley (1995) Defect Cryst. Chem. p.114"
+
+[[gap]]
+optical_fn = "wo3_x_optical"
+note = "Substoichiometric WO3-x; same monoclinic basis as wo3 with oxygen-vacancy color centers."
+priority = "low"
+
+[[gap]]
+optical_fn = "cs_wo3_optical"
+expected_crystal_system = "hexagonal"
+expected_space_group = "P6/mmm (191) hexagonal tungsten bronze"
+expected_density_g_cm3 = 6.6
+priority = "medium"
+source = "Magneli (1953) Acta Chem. Scand. 7, 315"
+
+[[gap]]
+optical_fn = "cs_wo3_uniaxial"
+note = "Already returns UniaxialOptical -- metadata wrapper just needs to add MineralMetadata accessor."
+expected_optic_sign = "Uniaxial (hexagonal P6/mmm)"
+priority = "high"
+
+[[gap]]
+optical_fn = "cawo4_optical"
+expected_crystal_system = "tetragonal"
+expected_space_group = "I4_1/a (88) scheelite structure"
+expected_density_g_cm3 = 6.12
+expected_hardness_mohs = 4.75
+expected_n_omega = 1.918
+expected_n_epsilon = 1.934
+expected_optic_sign = "Uniaxial Positive"
+priority = "medium"
+source = "Nikl (2000) Phys. Status Solidi A 178, 595"
+
+[[gap]]
+optical_fn = "pbwo4_optical"
+expected_crystal_system = "tetragonal"
+expected_space_group = "I4_1/a (88) scheelite structure"
+expected_density_g_cm3 = 8.28
+expected_hardness_mohs = 3.0
+expected_n_omega = 2.27
+expected_n_epsilon = 2.24
+expected_optic_sign = "Uniaxial Negative"
+priority = "medium"
+source = "Nikl (2000) Phys. Status Solidi A 178, 595; PbWO4 in CMS/ALICE calorimeters."
+
+# -----------------------------------------------------------------------
+# CATEGORY: Oxides + transparent conductors (12 materials, 0 metadata)
+# -----------------------------------------------------------------------
+[[gap]]
+optical_fn = "alumina_optical"
+expected_crystal_system = "trigonal"
+expected_space_group = "R-3c (167) corundum structure"
+expected_density_g_cm3 = 3.987
+expected_hardness_mohs = 9.0
+expected_n_omega = 1.768
+expected_n_epsilon = 1.760
+expected_optic_sign = "Uniaxial Negative"
+priority = "high"
+source = "Palik 1998 vol I p.761; Malitson & Dodge (1972) J.Opt.Soc.Am. 62, 1405"
+
+[[gap]]
+optical_fn = "tourmaline_optical"
+note = "LEGACY isotropic stub. Use tourmaline_default_metadata() (= elbaite) or the species-specific schorl/dravite/elbaite/etc *_metadata() accessors instead."
+status = "deprecated_in_favor_of_species_specific"
+priority = "resolved"
+
+[[gap]]
+optical_fn = "diamond_optical"
+expected_crystal_system = "cubic"
+expected_space_group = "Fd-3m (227)"
+expected_density_g_cm3 = 3.52
+expected_hardness_mohs = 10.0
+expected_n_at_589nm = 2.418
+expected_optic_sign = "Isotropic"
+priority = "high"
+source = "Palik 1998 vol II p.665"
+
+[[gap]]
+optical_fn = "quartz_optical"
+expected_crystal_system = "trigonal"
+expected_space_group = "P3_121 (152) alpha-quartz right-handed; P3_221 (154) left-handed enantiomorph"
+expected_density_g_cm3 = 2.65
+expected_hardness_mohs = 7.0
+expected_n_omega = 1.5443
+expected_n_epsilon = 1.5534
+expected_optic_sign = "Uniaxial Positive"
+priority = "high"
+source = "Ghosh (1999) Opt. Commun. 163, 95 (Sellmeier dispersion for alpha-quartz)"
+
+[[gap]]
+optical_fn = "tio2_optical"
+expected_crystal_system = "tetragonal"
+expected_space_group = "P4_2/mnm (136) rutile"
+expected_density_g_cm3 = 4.23
+expected_hardness_mohs = 6.0
+expected_n_omega = 2.616
+expected_n_epsilon = 2.903
+expected_optic_sign = "Uniaxial Positive"
+priority = "high"
+source = "DeVore (1951) J.Opt.Soc.Am. 41, 416; Palik 1985 vol I p.795"
+note = "Anatase polymorph (I4_1/amd) has different n; not represented in current tio2_optical."
+
+[[gap]]
+optical_fn = "tio_optical"
+expected_crystal_system = "cubic"
+expected_space_group = "Fm-3m (225) rock salt structure"
+expected_density_g_cm3 = 4.93
+expected_hardness_mohs = 5.0
+expected_optic_sign = "Isotropic"
+priority = "low"
+
+[[gap]]
+optical_fn = "srtio3_optical"
+expected_crystal_system = "cubic"
+expected_space_group = "Pm-3m (221) perovskite"
+expected_density_g_cm3 = 5.12
+expected_hardness_mohs = 6.0
+expected_n_at_589nm = 2.412
+expected_optic_sign = "Isotropic"
+priority = "medium"
+source = "Cardona (1965) Phys. Rev. 140, A651; van Benthem (2001) J.Appl.Phys. 90, 6156"
+
+[[gap]]
+optical_fn = "srtio3_doped_optical"
+note = "Same crystal structure as srtio3 with carrier-induced Drude tail."
+priority = "low"
+
+[[gap]]
+optical_fn = "latio3_optical"
+expected_crystal_system = "orthorhombic"
+expected_space_group = "Pnma (62) GdFeO3-type perovskite"
+expected_density_g_cm3 = 6.39
+expected_optic_sign = "Biaxial"
+priority = "low"
+source = "Okimoto (1995) Phys. Rev. B 51, 9581"
+
+[[gap]]
+optical_fn = "ito_optical"
+expected_crystal_system = "cubic"
+expected_space_group = "Ia-3 (206) bixbyite-type In2O3 with Sn dopant"
+expected_density_g_cm3 = 7.14
+expected_hardness_mohs = 6.0
+expected_optic_sign = "Isotropic"
+priority = "high"
+source = "Hamberg & Granqvist (1986) J.Appl.Phys. 60, R123"
+
+[[gap]]
+optical_fn = "azo_optical"
+expected_crystal_system = "hexagonal"
+expected_space_group = "P6_3mc (186) wurtzite ZnO with Al dopant"
+expected_density_g_cm3 = 5.61
+expected_hardness_mohs = 4.5
+expected_n_at_589nm = 2.008
+expected_optic_sign = "Uniaxial Positive"
+priority = "medium"
+source = "Sun & Kwok (1999) Appl. Phys. Lett. 75, 1605"
+
+[[gap]]
+optical_fn = "doped_silicon_optical"
+note = "Same lattice as silicon_optical; metadata reuses silicon's crystallographic structure with added Drude tail."
+priority = "low"
+
+# -----------------------------------------------------------------------
+# CATEGORY: Pure-Drude metals (11 materials, 0 metadata)
+# -----------------------------------------------------------------------
+[[gap]]
+optical_fn = "gold_drude"
+expected_crystal_system = "cubic"
+expected_space_group = "Fm-3m (225) FCC"
+expected_density_g_cm3 = 19.30
+expected_hardness_mohs = 2.5
+expected_optic_sign = "Isotropic"
+priority = "high"
+source = "Rakic et al. (1998) Appl. Opt. 37, 5271"
+
+[[gap]]
+optical_fn = "silver_drude"
+expected_crystal_system = "cubic"
+expected_space_group = "Fm-3m (225) FCC"
+expected_density_g_cm3 = 10.49
+expected_hardness_mohs = 2.5
+expected_optic_sign = "Isotropic"
+priority = "high"
+
+[[gap]]
+optical_fn = "copper_drude"
+expected_crystal_system = "cubic"
+expected_space_group = "Fm-3m (225) FCC"
+expected_density_g_cm3 = 8.96
+expected_hardness_mohs = 3.0
+expected_optic_sign = "Isotropic"
+priority = "high"
+
+[[gap]]
+optical_fn = "aluminum_drude"
+expected_crystal_system = "cubic"
+expected_space_group = "Fm-3m (225) FCC"
+expected_density_g_cm3 = 2.70
+expected_hardness_mohs = 2.75
+expected_optic_sign = "Isotropic"
+priority = "high"
+
+[[gap]]
+optical_fn = "beryllium_drude"
+expected_crystal_system = "hexagonal"
+expected_space_group = "P6_3/mmc (194) HCP"
+expected_density_g_cm3 = 1.85
+expected_hardness_mohs = 5.5
+expected_optic_sign = "Uniaxial Positive"
+priority = "medium"
+
+[[gap]]
+optical_fn = "chromium_drude"
+expected_crystal_system = "cubic"
+expected_space_group = "Im-3m (229) BCC"
+expected_density_g_cm3 = 7.19
+expected_hardness_mohs = 8.5
+expected_optic_sign = "Isotropic"
+priority = "medium"
+
+[[gap]]
+optical_fn = "nickel_drude"
+expected_crystal_system = "cubic"
+expected_space_group = "Fm-3m (225) FCC"
+expected_density_g_cm3 = 8.91
+expected_hardness_mohs = 4.0
+expected_optic_sign = "Isotropic"
+priority = "medium"
+
+[[gap]]
+optical_fn = "palladium_drude"
+expected_crystal_system = "cubic"
+expected_space_group = "Fm-3m (225) FCC"
+expected_density_g_cm3 = 12.02
+expected_hardness_mohs = 4.75
+expected_optic_sign = "Isotropic"
+priority = "medium"
+
+[[gap]]
+optical_fn = "platinum_drude"
+expected_crystal_system = "cubic"
+expected_space_group = "Fm-3m (225) FCC"
+expected_density_g_cm3 = 21.45
+expected_hardness_mohs = 4.0
+expected_optic_sign = "Isotropic"
+priority = "medium"
+
+[[gap]]
+optical_fn = "titanium_drude"
+expected_crystal_system = "hexagonal"
+expected_space_group = "P6_3/mmc (194) HCP (alpha-Ti below 1155 K)"
+expected_density_g_cm3 = 4.51
+expected_hardness_mohs = 6.0
+expected_optic_sign = "Uniaxial Positive"
+priority = "medium"
+
+[[gap]]
+optical_fn = "tungsten_drude"
+expected_crystal_system = "cubic"
+expected_space_group = "Im-3m (229) BCC"
+expected_density_g_cm3 = 19.25
+expected_hardness_mohs = 7.5
+expected_optic_sign = "Isotropic"
+priority = "medium"
+
+# -----------------------------------------------------------------------
+# CATEGORY: Drude-Lorentz metals (12 -- same elements as above with full LD)
+# -----------------------------------------------------------------------
+[[gap]]
+optical_fn = "gold_drude_lorentz"
+note = "Same lattice as gold_drude -- reuse metadata accessor."
+priority = "deduplicate_with_drude_variant"
+
+[[gap]]
+optical_fn = "gold_rakic_ld"
+note = "Same lattice as gold_drude (5-osc Rakic LD model)."
+priority = "deduplicate_with_drude_variant"
+
+[[gap]]
+optical_fn = "silver_drude_lorentz"
+note = "Same lattice as silver_drude."
+priority = "deduplicate_with_drude_variant"
+
+[[gap]]
+optical_fn = "copper_drude_lorentz"
+note = "Same lattice as copper_drude."
+priority = "deduplicate_with_drude_variant"
+
+[[gap]]
+optical_fn = "aluminum_drude_lorentz"
+note = "Same lattice as aluminum_drude."
+priority = "deduplicate_with_drude_variant"
+
+[[gap]]
+optical_fn = "beryllium_drude_lorentz"
+note = "Same lattice as beryllium_drude."
+priority = "deduplicate_with_drude_variant"
+
+[[gap]]
+optical_fn = "chromium_drude_lorentz"
+note = "Same lattice as chromium_drude."
+priority = "deduplicate_with_drude_variant"
+
+[[gap]]
+optical_fn = "nickel_drude_lorentz"
+note = "Same lattice as nickel_drude."
+priority = "deduplicate_with_drude_variant"
+
+[[gap]]
+optical_fn = "palladium_drude_lorentz"
+note = "Same lattice as palladium_drude."
+priority = "deduplicate_with_drude_variant"
+
+[[gap]]
+optical_fn = "platinum_drude_lorentz"
+note = "Same lattice as platinum_drude."
+priority = "deduplicate_with_drude_variant"
+
+[[gap]]
+optical_fn = "titanium_drude_lorentz"
+note = "Same lattice as titanium_drude."
+priority = "deduplicate_with_drude_variant"
+
+[[gap]]
+optical_fn = "tungsten_drude_lorentz"
+note = "Same lattice as tungsten_drude."
+priority = "deduplicate_with_drude_variant"
+
+# -----------------------------------------------------------------------
+# CATEGORY: Conducting polymers (1 material, 0 metadata)
+# -----------------------------------------------------------------------
+[[gap]]
+optical_fn = "pedot_pss_optical"
+expected_crystal_system = "amorphous"
+expected_density_g_cm3 = 1.011
+expected_hardness_mohs = 0  # polymer; not measured on Mohs scale
+expected_optic_sign = "Isotropic"
+priority = "low"
+note = "ExtendedDrudeParams variant -- frequency-dependent gamma. PEDOT:PSS lacks a defined crystal structure; amorphous block copolymer."
+source = "Pettersson et al. (1998) J.Appl.Phys. 84, 3812"
+
+# -----------------------------------------------------------------------
+# NEXT-STEP RECOMMENDATIONS
+# -----------------------------------------------------------------------
+[recommendations]
+high_priority_actions = [
+    "Add metadata accessors for silicon, silica, silicon_nitride, germanium, alumina, diamond, quartz, tio2, ito (9 high-impact materials)",
+    "Add metadata accessors for the 4 most-used Drude metals (Au, Ag, Cu, Al) and route the *_drude_lorentz variants to share them",
+    "Extend MineralMetadata struct with: melting_point_k, thermal_conductivity_w_mk, debye_temperature_k, primary_doi (high value-per-byte)",
+    "Mine refractiveindex.info (CC0 GitHub) for explicit Sellmeier coefficients for quartz, alumina, tio2 to replace approximated Lorentz models in oxides_tcos."
+]
+medium_priority_actions = [
+    "Add wo3 / cs_wo3 / cawo4 / pbwo4 metadata (scheelite-structure tungstates important for scintillator physics).",
+    "Add the 7 medium-priority pure-Drude metals (Be, Cr, Ni, Pd, Pt, Ti, W).",
+    "Add anatase TiO2 polymorph as separate constructor (current tio2_optical models rutile only)."
+]
+low_priority_actions = [
+    "Resolve doped_silicon_optical / srtio3_doped_optical / wo3_x_optical / silica_casimir_optical metadata via delegation to their parent materials.",
+    "Track ima_status_code + mindat_id + rruff_id once an open-source mineralogical-id mapping (RRUFF API or COD) is wired into materials_data."
+]
+
+[open_source_databases_evaluated]
+refractiveindex_info = { license = "CC0", url = "github.com/polyanskiy/refractiveindex.info-database", coverage = "stoichiometric_compounds_only", suitable_for = "non-mineral inorganic materials (Si, Au, SiO2, etc.)" }
+rruff_project = { license = "open_for_research", url = "rruff.info", coverage = "minerals_raman_ir_xrd", suitable_for = "tourmaline_supergroup_and_other_minerals" }
+crystallography_open_database = { license = "public_domain", url = "crystallography.net", coverage = "230_space_groups_with_cifs", suitable_for = "crystallographic_lattice_parameters" }
+materials_project = { license = "CC-BY-4.0", url = "materialsproject.org", coverage = "DFT_computed_properties", suitable_for = "DFT-derived dielectric tensors when literature gaps exist", requires_registration = true }
+optimade = { license = "varies_per_node", url = "optimade.org", coverage = "federated_materials_query_protocol", suitable_for = "cross-database lookups via OPTIMADE 1.x API" }
+mindat = { license = "proprietary", url = "mindat.org", coverage = "comprehensive_mineral_id", suitable_for = "REFERENCE ONLY -- not license-compatible for redistribution" }

@@ -13,7 +13,7 @@
 //! build-time codegen path -- the literal arrays no longer live in
 //! Rust source (Phase 5 / task #127).
 
-use super::{DrudeLorentzParams, DrudeParams, LorentzOscillator};
+use super::{DrudeLorentzParams, DrudeParams, LorentzOscillator, MineralMetadata, OpticSign};
 
 /// Build a `DrudeLorentzParams` from the codegen'd consts. Matches
 /// the signature used by `tungstates::from_codegen` so the call
@@ -96,4 +96,92 @@ pub fn germanium_optical() -> DrudeLorentzParams {
         materials_data::GERMANIUM_DRUDE,
         materials_data::GERMANIUM_OSCILLATORS,
     )
+}
+
+// ============================================================================
+// MineralMetadata accessors (task #134 remediation; data sourced from Palik
+// 1998, NIST condensed-matter handbooks, and Malitson 1965 / 1972 for the
+// dielectrics). n_omega / n_epsilon refer to the sodium-D line (587.6 nm)
+// for visible-transparent materials; for opaque semiconductors the columns
+// hold n at 1550 nm (telecom band) where the indices are real-valued.
+// ============================================================================
+
+/// Silicon: intrinsic diamond-cubic Fd-3m semiconductor.
+pub fn silicon_metadata() -> MineralMetadata {
+    MineralMetadata {
+        species_name: "silicon",
+        formula: "Si",
+        crystal_system: "cubic",
+        space_group: "Fd-3m (227)",
+        n_omega: 3.45,
+        n_epsilon: 3.45,
+        birefringence: 0.0,
+        optic_sign: OpticSign::Isotropic,
+        hardness_mohs: 6.5,
+        density_g_cm3: 2.329,
+        color: "metallic gray (bulk), bluish-iridescent thin film",
+        reference: "Palik (1998) Handbook of Optical Constants vol. I p.547; NIST condensed-matter handbook silicon entry.",
+    }
+}
+
+/// Silica (fused / amorphous SiO2): n_omega columns are n at sodium-D.
+pub fn silica_metadata() -> MineralMetadata {
+    MineralMetadata {
+        species_name: "fused_silica",
+        formula: "SiO2 (amorphous)",
+        crystal_system: "amorphous",
+        space_group: "n/a (no long-range order)",
+        n_omega: 1.4585,
+        n_epsilon: 1.4585,
+        birefringence: 0.0,
+        optic_sign: OpticSign::Isotropic,
+        hardness_mohs: 7.0,
+        density_g_cm3: 2.20,
+        color: "colorless transparent",
+        reference: "Palik (1998) vol. I p.749; Malitson (1965) J.Opt.Soc.Am. 55, 1205-1209 (Sellmeier).",
+    }
+}
+
+/// Casimir-tuned silica: same material, same metadata as `silica_metadata`.
+pub fn silica_casimir_metadata() -> MineralMetadata {
+    silica_metadata()
+}
+
+/// Silicon Nitride (alpha-Si3N4 trigonal P31c; beta-Si3N4 hexagonal P6_3 is the
+/// high-temperature polymorph). The optical model is fitted on amorphous LPCVD
+/// Si3N4 films which are predominantly beta-precursor short-range order.
+pub fn silicon_nitride_metadata() -> MineralMetadata {
+    MineralMetadata {
+        species_name: "silicon_nitride",
+        formula: "Si3N4",
+        crystal_system: "trigonal (alpha) or hexagonal (beta)",
+        space_group: "P31c (159) alpha; P6_3 (173) beta",
+        n_omega: 1.998,
+        n_epsilon: 2.045,
+        birefringence: 0.047,
+        optic_sign: OpticSign::Positive,
+        hardness_mohs: 9.0,
+        density_g_cm3: 3.17,
+        color: "gray to brownish-gray (bulk); colorless thin film",
+        reference: "Palik (1998) vol. II p.771; Luke et al. (2015) Opt. Lett. 40, 4823 (broadband Si3N4 dispersion).",
+    }
+}
+
+/// Germanium: same Fd-3m cubic lattice as silicon but with larger ionic radius
+/// (5.658 vs 5.431 angstrom lattice constant) and smaller bandgap (0.67 vs 1.12 eV).
+pub fn germanium_metadata() -> MineralMetadata {
+    MineralMetadata {
+        species_name: "germanium",
+        formula: "Ge",
+        crystal_system: "cubic",
+        space_group: "Fd-3m (227)",
+        n_omega: 4.00,
+        n_epsilon: 4.00,
+        birefringence: 0.0,
+        optic_sign: OpticSign::Isotropic,
+        hardness_mohs: 6.0,
+        density_g_cm3: 5.323,
+        color: "grayish-white metallic",
+        reference: "Palik (1998) vol. I p.465.",
+    }
 }

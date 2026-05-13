@@ -1,0 +1,163 @@
+# Crystal structure registry -- TOML codegen source for
+# `CrystalStructureInfo` entries (#127 Phase 6).
+#
+# Each [[structure]] entry emits one row in the
+# `CRYSTAL_STRUCTURE_TABLE: &[(...)]` static array. materials_core's
+# `known_crystal_structures()` reads this array and converts the string
+# point_group / lattice_system fields to the corresponding enum variants.
+#
+# Migration status (2026-05-13):
+# - Tourmaline supergroup (8 species) -- this file.
+# - Remaining 101 entries (foundational oxides, metals, II-VI, perovskites,
+#   silicates, sulfides, carbonates, modern materials) stay inline in
+#   `crystal_symmetry::crystal_structures::known_crystal_structures()`.
+#   Migration to this file is a follow-up commit.
+#
+# Schema:
+#   name             -- common species name
+#   sg_num           -- space group ITA number (1..=230)
+#   sg_sym           -- Hermann-Mauguin symbol
+#   point_group      -- Schoenflies symbol matching crystal_symmetry::PointGroup
+#   lattice_system   -- matches crystal_symmetry::LatticeSystem variant name
+#   centering        -- Bravais centering (P, F, I, C, R)
+#   a, b, c          -- lattice parameters in angstrom
+#   alpha, beta, gamma -- lattice angles in degrees
+#   z                -- atoms_per_unit_cell
+#   density          -- theoretical density in g/cm^3
+#   reference        -- primary citation
+
+[[structure]]
+name = "schorl_tourmaline"
+sg_num = 160
+sg_sym = "R3m"
+point_group = "C3v"
+lattice_system = "Hexagonal"
+centering = "R"
+a = 15.985
+b = 15.985
+c = 7.220
+alpha = 90.0
+beta = 90.0
+gamma = 120.0
+z = 3
+density = 3.20
+reference = "Henry et al. (2011) Am. Mineralogist 96, 895; Bosi et al. (2019) Lithos 322."
+
+[[structure]]
+name = "dravite_tourmaline"
+sg_num = 160
+sg_sym = "R3m"
+point_group = "C3v"
+lattice_system = "Hexagonal"
+centering = "R"
+a = 15.945
+b = 15.945
+c = 7.224
+alpha = 90.0
+beta = 90.0
+gamma = 120.0
+z = 3
+density = 3.05
+reference = "Henry et al. (2011) Am. Mineralogist 96, 895."
+
+[[structure]]
+name = "elbaite_tourmaline"
+sg_num = 160
+sg_sym = "R3m"
+point_group = "C3v"
+lattice_system = "Hexagonal"
+centering = "R"
+a = 15.842
+b = 15.842
+c = 7.106
+alpha = 90.0
+beta = 90.0
+gamma = 120.0
+z = 3
+density = 3.05
+reference = "Henry et al. (2011) Am. Mineralogist 96, 895; GIA Gem Encyclopedia."
+
+[[structure]]
+name = "uvite_tourmaline"
+sg_num = 160
+sg_sym = "R3m"
+point_group = "C3v"
+lattice_system = "Hexagonal"
+centering = "R"
+a = 15.961
+b = 15.961
+c = 7.207
+alpha = 90.0
+beta = 90.0
+gamma = 120.0
+z = 3
+density = 3.10
+reference = "Henry et al. (2011) Am. Mineralogist 96, 895."
+
+[[structure]]
+name = "liddicoatite_tourmaline"
+sg_num = 160
+sg_sym = "R3m"
+point_group = "C3v"
+lattice_system = "Hexagonal"
+centering = "R"
+a = 15.870
+b = 15.870
+c = 7.124
+alpha = 90.0
+beta = 90.0
+gamma = 120.0
+z = 3
+density = 3.02
+reference = "Dirlam et al. (2002) Gems & Gemology 38(3)."
+
+[[structure]]
+name = "rossmanite_tourmaline"
+sg_num = 160
+sg_sym = "R3m"
+point_group = "C3v"
+lattice_system = "Hexagonal"
+centering = "R"
+a = 15.820
+b = 15.820
+c = 7.080
+alpha = 90.0
+beta = 90.0
+gamma = 120.0
+z = 3
+density = 3.00
+reference = "Selway et al. (1998) Am. Mineralogist 83."
+
+[[structure]]
+name = "foitite_tourmaline"
+sg_num = 160
+sg_sym = "R3m"
+point_group = "C3v"
+lattice_system = "Hexagonal"
+centering = "R"
+a = 15.967
+b = 15.967
+c = 7.126
+alpha = 90.0
+beta = 90.0
+gamma = 120.0
+z = 3
+density = 3.18
+reference = "MacDonald & Hawthorne (1995) Can. Mineralogist 33."
+
+[[structure]]
+name = "povondraite_tourmaline"
+sg_num = 160
+sg_sym = "R3m"
+point_group = "C3v"
+lattice_system = "Hexagonal"
+centering = "R"
+a = 16.186
+b = 16.186
+c = 7.444
+alpha = 90.0
+beta = 90.0
+gamma = 120.0
+z = 3
+density = 3.32
+reference = "Grice et al. (1993) Can. Mineralogist 31."

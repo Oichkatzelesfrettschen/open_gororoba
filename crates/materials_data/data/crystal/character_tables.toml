@@ -1,0 +1,105 @@
+# Character table registry -- TOML codegen source for the 32
+# crystallographic point group character tables (#127 Phase 7).
+#
+# Schema:
+#   [[table]]
+#   point_group   -- variant name matching crystal_symmetry::PointGroup
+#   classes       -- list of conjugacy classes: name + count
+#   irreps        -- list of irreps: label + dimension
+#   characters    -- 2D matrix: characters[i][j] = (re, im) for the j-th
+#                    class character of the i-th irrep. Outer length must
+#                    equal len(irreps); inner length must equal len(classes).
+#
+# Validation invariants enforced by build.rs:
+#   - characters is a square matrix iff n_irreps == n_classes (always true
+#     for finite groups by Burnside's theorem).
+#   - First irrep at first class is the dimension of the irrep (chi_i(E) = d_i).
+#   - The Schur orthogonality |G| = sum_i d_i^2 (column sum of |chi(E)|^2)
+#     must equal sum_k n_k (the total group order).
+#
+# Migration status (2026-05-13):
+# - C1, Ci, C2, Cs, C2h -- this file (5 groups: simplest triclinic +
+#   monoclinic abelian groups).
+# - Remaining 27 groups: inline in character_tables.rs. Migration is
+#   mechanical and lands as follow-up.
+
+[[table]]
+point_group = "C1"
+classes = [
+    { name = "E", count = 1 },
+]
+irreps = [
+    { label = "A", dimension = 1 },
+]
+# 1x1 matrix
+characters = [
+    [[1.0, 0.0]],
+]
+
+[[table]]
+point_group = "Ci"
+classes = [
+    { name = "E", count = 1 },
+    { name = "i", count = 1 },
+]
+irreps = [
+    { label = "Ag", dimension = 1 },
+    { label = "Au", dimension = 1 },
+]
+# 2x2 matrix
+characters = [
+    [[1.0, 0.0], [1.0, 0.0]],
+    [[1.0, 0.0], [-1.0, 0.0]],
+]
+
+[[table]]
+point_group = "C2"
+classes = [
+    { name = "E", count = 1 },
+    { name = "C2", count = 1 },
+]
+irreps = [
+    { label = "A", dimension = 1 },
+    { label = "B", dimension = 1 },
+]
+characters = [
+    [[1.0, 0.0], [1.0, 0.0]],
+    [[1.0, 0.0], [-1.0, 0.0]],
+]
+
+[[table]]
+point_group = "Cs"
+classes = [
+    { name = "E", count = 1 },
+    { name = "sigma", count = 1 },
+]
+irreps = [
+    { label = "A'", dimension = 1 },
+    { label = "A''", dimension = 1 },
+]
+characters = [
+    [[1.0, 0.0], [1.0, 0.0]],
+    [[1.0, 0.0], [-1.0, 0.0]],
+]
+
+[[table]]
+point_group = "C2h"
+classes = [
+    { name = "E", count = 1 },
+    { name = "C2", count = 1 },
+    { name = "i", count = 1 },
+    { name = "sigma_h", count = 1 },
+]
+irreps = [
+    { label = "Ag", dimension = 1 },
+    { label = "Bg", dimension = 1 },
+    { label = "Au", dimension = 1 },
+    { label = "Bu", dimension = 1 },
+]
+# 4x4 matrix
+characters = [
+    [[1.0, 0.0], [1.0, 0.0], [1.0, 0.0], [1.0, 0.0]],
+    [[1.0, 0.0], [-1.0, 0.0], [1.0, 0.0], [-1.0, 0.0]],
+    [[1.0, 0.0], [1.0, 0.0], [-1.0, 0.0], [-1.0, 0.0]],
+    [[1.0, 0.0], [-1.0, 0.0], [-1.0, 0.0], [1.0, 0.0]],
+]
