@@ -365,6 +365,40 @@ fn emit_lorentz_models(out: &mut File, path: &PathBuf) {
         writeln!(out, "#[allow(dead_code)]").unwrap();
         writeln!(out, "pub const {name}_EPS_INF: f64 = {eps_inf:?};").unwrap();
 
+        // Optional Drude free-carrier component: `[material.drude]` table
+        // with omega_p_ev / gamma_ev / eps_inf. Emit `Option<[f64; 3]>`
+        // so the caller can pattern-match without a separate has-Drude
+        // boolean flag.
+        let drude_opt = table.get("drude").and_then(Value::as_table);
+        writeln!(
+            out,
+            "/// Optional Drude free-carrier component for {name}: `Some([omega_p_ev, gamma_ev, eps_inf])` if present."
+        )
+        .unwrap();
+        writeln!(out, "#[allow(dead_code)]").unwrap();
+        match drude_opt {
+            Some(d) => {
+                let op = d.get("omega_p_ev").and_then(Value::as_float).unwrap_or_else(
+                    || panic!("`{name}.drude` missing omega_p_ev"),
+                );
+                let g = d
+                    .get("gamma_ev")
+                    .and_then(Value::as_float)
+                    .unwrap_or_else(|| panic!("`{name}.drude` missing gamma_ev"));
+                let ei = d.get("eps_inf").and_then(Value::as_float).unwrap_or_else(
+                    || panic!("`{name}.drude` missing eps_inf"),
+                );
+                writeln!(
+                    out,
+                    "pub const {name}_DRUDE: Option<[f64; 3]> = Some([{op:?}, {g:?}, {ei:?}]);"
+                )
+                .unwrap();
+            }
+            None => {
+                writeln!(out, "pub const {name}_DRUDE: Option<[f64; 3]> = None;").unwrap();
+            }
+        }
+
         writeln!(
             out,
             "/// Lorentz oscillators for {name}: each row is `[strength, omega_0_ev, gamma_ev]`."

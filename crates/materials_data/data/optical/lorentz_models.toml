@@ -107,3 +107,160 @@ gamma_ev = 0.15
 strength = 8.0
 omega_0_ev = 2.3
 gamma_ev = 0.2
+
+# ============================================================
+# Tungsten oxide family (Sprint 44 / Garcia + Granqvist + Lynch)
+# ============================================================
+
+[[material]]
+name = "WO3"
+eps_inf = 4.5
+reference = "Granqvist (2000), Niklasson & Granqvist (2007). Stoichiometric wide-gap semiconductor, no free carriers."
+
+[[material.oscillators]]
+# W-O stretching mode
+strength = 1.5
+omega_0_ev = 0.085
+gamma_ev = 0.008
+
+[[material.oscillators]]
+# W-O-W bending mode
+strength = 0.8
+omega_0_ev = 0.042
+gamma_ev = 0.005
+
+[[material.oscillators]]
+# Higher phonon
+strength = 0.4
+omega_0_ev = 0.120
+gamma_ev = 0.010
+
+[[material.oscillators]]
+# Band-edge absorption
+strength = 6.0
+omega_0_ev = 3.5
+gamma_ev = 0.8
+
+[[material.oscillators]]
+# Higher UV transition
+strength = 3.0
+omega_0_ev = 5.5
+gamma_ev = 1.5
+
+[[material]]
+name = "WO3_X"
+eps_inf = 5.88
+reference = "Garcia et al. Nano Lett. 11(10), 2011. Oxygen-deficient WO3-x plasmonic conductor. omega_p ~1.07 eV for n~1e21 cm^-3 and m*=1.2*m_e."
+
+[material.drude]
+omega_p_ev = 1.07
+gamma_ev = 0.20
+eps_inf = 1.0
+
+[[material.oscillators]]
+# Residual phonon (reduced by vacancy disorder)
+strength = 0.8
+omega_0_ev = 0.085
+gamma_ev = 0.015
+
+[[material.oscillators]]
+# Band-edge (blue-shifted by Burstein-Moss effect)
+strength = 5.0
+omega_0_ev = 3.8
+gamma_ev = 1.0
+
+[[material]]
+name = "CS_WO3"
+eps_inf = 5.97
+reference = "Lynch & Hunter (1991) Handbook of Optical Constants II. Polycrystalline scalar average of anisotropic Cs0.33WO3 tungsten bronze. omega_p_avg^2 = (4.664^2 + 2*3.180^2)/3 -> 3.741 eV; gamma_avg = (0.217 + 2*0.335)/3 = 0.296 eV; eps_inf_avg = (6.3 + 2*5.8)/3 = 5.97."
+
+[material.drude]
+omega_p_ev = 3.741
+gamma_ev = 0.296
+eps_inf = 1.0
+
+[[material.oscillators]]
+# Interband transition
+strength = 2.0
+omega_0_ev = 4.0
+gamma_ev = 1.5
+
+# Uniaxial anisotropic Cs0.33WO3 -- parallel + perpendicular split. Each
+# direction is a full DrudeLorentz model; emitted as a pair of [[material]]
+# entries that the caller (cs_wo3_uniaxial constructor) wraps in a
+# UniaxialOptical struct.
+[[material]]
+name = "CS_WO3_PARALLEL"
+eps_inf = 6.3
+reference = "Lynch & Hunter (1991). c-axis parallel component of hexagonal Cs0.33WO3 tungsten bronze."
+
+[material.drude]
+omega_p_ev = 4.664
+gamma_ev = 0.217
+eps_inf = 1.0
+
+[[material.oscillators]]
+strength = 2.0
+omega_0_ev = 4.0
+gamma_ev = 1.5
+
+[[material]]
+name = "CS_WO3_PERPENDICULAR"
+eps_inf = 5.8
+reference = "Lynch & Hunter (1991). a-b plane perpendicular component of hexagonal Cs0.33WO3 tungsten bronze."
+
+[material.drude]
+omega_p_ev = 3.180
+gamma_ev = 0.335
+eps_inf = 1.0
+
+[[material.oscillators]]
+strength = 2.0
+omega_0_ev = 4.0
+gamma_ev = 1.5
+
+[[material]]
+name = "CAWO4"
+eps_inf = 3.7
+reference = "Nikl et al. Rad. Meas. 33(5), 2000. Calcium tungstate scheelite scintillator (Eg ~5.0 eV), CRESST experiment."
+
+[[material.oscillators]]
+# WO4 internal stretching modes
+strength = 1.0
+omega_0_ev = 0.110
+gamma_ev = 0.006
+
+[[material.oscillators]]
+# Lattice phonon
+strength = 0.6
+omega_0_ev = 0.045
+gamma_ev = 0.004
+
+[[material.oscillators]]
+# UV absorption edge
+strength = 4.0
+omega_0_ev = 5.5
+gamma_ev = 1.0
+
+[[material]]
+name = "PBWO4"
+eps_inf = 4.8
+reference = "Nikl et al. Rad. Meas. 33(5), 2000. Lead tungstate fast scintillator (Eg ~4.2 eV), CMS calorimeter. UV edge lower than CaWO4 due to Pb 6s states."
+
+[[material.oscillators]]
+# WO4 internal modes
+strength = 1.2
+omega_0_ev = 0.100
+gamma_ev = 0.008
+
+[[material.oscillators]]
+# Pb-O lattice mode
+strength = 0.8
+omega_0_ev = 0.035
+gamma_ev = 0.005
+
+[[material.oscillators]]
+# UV absorption edge (lower than CaWO4 due to Pb 6s states)
+strength = 5.0
+omega_0_ev = 4.5
+gamma_ev = 1.2

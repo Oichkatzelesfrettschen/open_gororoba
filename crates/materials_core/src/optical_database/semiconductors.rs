@@ -13,17 +13,22 @@
 //! build-time codegen path -- the literal arrays no longer live in
 //! Rust source (Phase 5 / task #127).
 
-use super::{DrudeLorentzParams, LorentzOscillator};
+use super::{DrudeLorentzParams, DrudeParams, LorentzOscillator};
 
-/// Build a `DrudeLorentzParams` from the codegen'd `<NAME>_EPS_INF`
-/// scalar and `<NAME>_OSCILLATORS: &[[f64; 3]]` array constants.
-/// Local helper -- not exported.
+/// Build a `DrudeLorentzParams` from the codegen'd consts. Matches
+/// the signature used by `tungstates::from_codegen` so the call
+/// sites are identical across both submodules.
 fn from_codegen(
     eps_inf: f64,
+    drude: Option<[f64; 3]>,
     oscillators: &'static [[f64; 3]],
 ) -> DrudeLorentzParams {
     DrudeLorentzParams {
-        drude: None,
+        drude: drude.map(|[omega_p_ev, gamma_ev, eps_inf]| DrudeParams {
+            omega_p_ev,
+            gamma_ev,
+            eps_inf,
+        }),
         oscillators: oscillators
             .iter()
             .map(|&[strength, omega_0_ev, gamma_ev]| LorentzOscillator {
@@ -41,6 +46,7 @@ fn from_codegen(
 pub fn silicon_optical() -> DrudeLorentzParams {
     from_codegen(
         materials_data::SILICON_EPS_INF,
+        materials_data::SILICON_DRUDE,
         materials_data::SILICON_OSCILLATORS,
     )
 }
@@ -49,6 +55,7 @@ pub fn silicon_optical() -> DrudeLorentzParams {
 pub fn silica_optical() -> DrudeLorentzParams {
     from_codegen(
         materials_data::SILICA_EPS_INF,
+        materials_data::SILICA_DRUDE,
         materials_data::SILICA_OSCILLATORS,
     )
 }
@@ -68,6 +75,7 @@ pub fn silica_optical() -> DrudeLorentzParams {
 pub fn silica_casimir_optical() -> DrudeLorentzParams {
     from_codegen(
         materials_data::SILICA_CASIMIR_EPS_INF,
+        materials_data::SILICA_CASIMIR_DRUDE,
         materials_data::SILICA_CASIMIR_OSCILLATORS,
     )
 }
@@ -76,6 +84,7 @@ pub fn silica_casimir_optical() -> DrudeLorentzParams {
 pub fn silicon_nitride_optical() -> DrudeLorentzParams {
     from_codegen(
         materials_data::SILICON_NITRIDE_EPS_INF,
+        materials_data::SILICON_NITRIDE_DRUDE,
         materials_data::SILICON_NITRIDE_OSCILLATORS,
     )
 }
@@ -84,6 +93,7 @@ pub fn silicon_nitride_optical() -> DrudeLorentzParams {
 pub fn germanium_optical() -> DrudeLorentzParams {
     from_codegen(
         materials_data::GERMANIUM_EPS_INF,
+        materials_data::GERMANIUM_DRUDE,
         materials_data::GERMANIUM_OSCILLATORS,
     )
 }
