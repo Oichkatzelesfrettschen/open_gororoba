@@ -500,3 +500,267 @@ gamma_ev = 0.25
 strength = 3.0
 omega_0_ev = 4.40
 gamma_ev = 0.2
+
+# ============================================================
+# Drude-Lorentz metals (Rakic 1998 LD model + canonical Au/Ag)
+# ============================================================
+
+[[material]]
+name = "GOLD_DRUDE_LORENTZ"
+eps_inf = 1.0
+reference = "Gold (Au) with 2 interband oscillators. Lower-fidelity than gold_rakic_ld but simpler."
+
+[material.drude]
+omega_p_ev = 8.45
+gamma_ev = 0.069
+eps_inf = 1.0
+
+[[material.oscillators]]
+strength = 1.27
+omega_0_ev = 2.68
+gamma_ev = 0.72
+
+[[material.oscillators]]
+strength = 1.1
+omega_0_ev = 3.87
+gamma_ev = 1.7
+
+[[material]]
+name = "GOLD_RAKIC_LD"
+eps_inf = 1.0
+reference = "Rakic et al. Appl. Opt. 37, 5271-5283 (1998) BIB-0199. 5-oscillator high-fidelity Au model. Effective Drude omega_p = sqrt(0.760) * 9.03 = 7.8720 eV. Oscillator strengths converted from Rakic f_j to our S_j = f_j * omega_p^2 / omega_0j^2 (omega_p_sq = 81.5409)."
+
+[material.drude]
+omega_p_ev = 7.8720
+gamma_ev = 0.053
+eps_inf = 1.0
+
+[[material.oscillators]]
+# f_1 = 0.024, omega_0 = 0.415 -> S = 0.024 * 81.5409 / 0.172225 = 11.3635
+strength = 11.3635
+omega_0_ev = 0.415
+gamma_ev = 0.241
+
+[[material.oscillators]]
+# f_2 = 0.010, omega_0 = 0.830 -> S = 0.010 * 81.5409 / 0.6889 = 1.18365
+strength = 1.18365
+omega_0_ev = 0.830
+gamma_ev = 0.345
+
+[[material.oscillators]]
+# f_3 = 0.071, omega_0 = 2.969 -> S = 0.071 * 81.5409 / 8.81496 = 0.65676
+strength = 0.65676
+omega_0_ev = 2.969
+gamma_ev = 0.870
+
+[[material.oscillators]]
+# f_4 = 0.601, omega_0 = 4.304 -> S = 0.601 * 81.5409 / 18.524416 = 2.64550
+strength = 2.64550
+omega_0_ev = 4.304
+gamma_ev = 2.494
+
+[[material.oscillators]]
+# f_5 = 4.384, omega_0 = 13.32 -> S = 4.384 * 81.5409 / 177.4224 = 2.01480
+strength = 2.01480
+omega_0_ev = 13.32
+gamma_ev = 2.214
+
+[[material]]
+name = "SILVER_DRUDE_LORENTZ"
+eps_inf = 1.0
+reference = "Silver (Ag) with 2 interband oscillators."
+
+[material.drude]
+omega_p_ev = 9.01
+gamma_ev = 0.018
+eps_inf = 1.0
+
+[[material.oscillators]]
+strength = 0.845
+omega_0_ev = 4.49
+gamma_ev = 0.65
+
+[[material.oscillators]]
+strength = 0.065
+omega_0_ev = 8.0
+gamma_ev = 1.5
+
+[[material]]
+name = "COPPER_DRUDE_LORENTZ"
+eps_inf = 1.0
+reference = "Copper (Cu) Rakic 1998 LD model. Enhanced with interband oscillators."
+
+[material.drude]
+omega_p_ev = 8.21
+gamma_ev = 0.030
+eps_inf = 1.0
+
+[[material.oscillators]]
+strength = 1.40
+omega_0_ev = 2.957
+gamma_ev = 1.056
+
+[[material.oscillators]]
+strength = 3.02
+omega_0_ev = 5.300
+gamma_ev = 3.213
+
+[[material]]
+name = "ALUMINUM_DRUDE_LORENTZ"
+eps_inf = 1.0
+reference = "Aluminum (Al) Rakic 1998 LD model."
+
+[material.drude]
+omega_p_ev = 10.83
+gamma_ev = 0.047
+eps_inf = 1.0
+
+[[material.oscillators]]
+strength = 4.71
+omega_0_ev = 1.544
+gamma_ev = 0.312
+
+[[material.oscillators]]
+strength = 11.40
+omega_0_ev = 1.808
+gamma_ev = 1.351
+
+[[material]]
+name = "BERYLLIUM_DRUDE_LORENTZ"
+eps_inf = 1.0
+reference = "Beryllium (Be) Rakic 1998 LD model."
+
+[material.drude]
+omega_p_ev = 5.37
+gamma_ev = 0.035
+eps_inf = 1.0
+
+[[material.oscillators]]
+strength = 17.93
+omega_0_ev = 3.183
+gamma_ev = 4.454
+
+[[material.oscillators]]
+strength = 2.10
+omega_0_ev = 4.604
+gamma_ev = 1.802
+
+[[material]]
+name = "CHROMIUM_DRUDE_LORENTZ"
+eps_inf = 1.0
+reference = "Chromium (Cr) Rakic 1998 LD model."
+
+[material.drude]
+omega_p_ev = 4.41
+gamma_ev = 0.047
+eps_inf = 1.0
+
+[[material.oscillators]]
+strength = 34.24
+omega_0_ev = 1.970
+gamma_ev = 2.676
+
+[[material.oscillators]]
+strength = 1.24
+omega_0_ev = 8.775
+gamma_ev = 1.335
+
+[[material]]
+name = "NICKEL_DRUDE_LORENTZ"
+eps_inf = 1.0
+reference = "Nickel (Ni) Rakic 1998 LD model."
+
+[material.drude]
+omega_p_ev = 4.93
+gamma_ev = 0.048
+eps_inf = 1.0
+
+[[material.oscillators]]
+strength = 10.53
+omega_0_ev = 1.597
+gamma_ev = 2.178
+
+[[material.oscillators]]
+strength = 4.98
+omega_0_ev = 6.089
+gamma_ev = 6.292
+
+[[material]]
+name = "PALLADIUM_DRUDE_LORENTZ"
+eps_inf = 1.0
+reference = "Palladium (Pd) Rakic 1998 LD model."
+
+[material.drude]
+omega_p_ev = 5.58
+gamma_ev = 0.009
+eps_inf = 1.0
+
+[[material.oscillators]]
+strength = 3.58
+omega_0_ev = 2.855
+gamma_ev = 2.022
+
+[[material.oscillators]]
+strength = 1.36
+omega_0_ev = 5.331
+gamma_ev = 5.285
+
+[[material]]
+name = "PLATINUM_DRUDE_LORENTZ"
+eps_inf = 1.0
+reference = "Platinum (Pt) Rakic 1998 LD model."
+
+[material.drude]
+omega_p_ev = 5.54
+gamma_ev = 0.080
+eps_inf = 1.0
+
+[[material.oscillators]]
+strength = 35.12
+omega_0_ev = 1.314
+gamma_ev = 1.838
+
+[[material.oscillators]]
+strength = 5.10
+omega_0_ev = 3.145
+gamma_ev = 3.668
+
+[[material]]
+name = "TITANIUM_DRUDE_LORENTZ"
+eps_inf = 1.0
+reference = "Titanium (Ti) Rakic 1998 LD model."
+
+[material.drude]
+omega_p_ev = 2.81
+gamma_ev = 0.082
+eps_inf = 1.0
+
+[[material.oscillators]]
+strength = 8.75
+omega_0_ev = 1.545
+gamma_ev = 2.518
+
+[[material.oscillators]]
+strength = 1.58
+omega_0_ev = 2.509
+gamma_ev = 1.663
+
+[[material]]
+name = "TUNGSTEN_DRUDE_LORENTZ"
+eps_inf = 1.0
+reference = "Tungsten (W) Rakic 1998 LD model."
+
+[material.drude]
+omega_p_ev = 6.00
+gamma_ev = 0.064
+eps_inf = 1.0
+
+[[material.oscillators]]
+strength = 7.90
+omega_0_ev = 1.917
+gamma_ev = 1.281
+
+[[material.oscillators]]
+strength = 9.63
+omega_0_ev = 3.580
+gamma_ev = 3.332
