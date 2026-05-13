@@ -23,6 +23,100 @@
 
 use super::{CharacterTable, LatticeSystem, PointGroup};
 
+/// Convert a codegen-emitted point-group name string to the PointGroup enum.
+/// Panics on an unknown name (build-time table must stay in sync with the enum).
+fn point_group_from_codegen_name(name: &str) -> PointGroup {
+    match name {
+        "C1" => PointGroup::C1,
+        "Ci" => PointGroup::Ci,
+        "C2" => PointGroup::C2,
+        "Cs" => PointGroup::Cs,
+        "C2h" => PointGroup::C2h,
+        "D2" => PointGroup::D2,
+        "C2v" => PointGroup::C2v,
+        "D2h" => PointGroup::D2h,
+        "C4" => PointGroup::C4,
+        "S4" => PointGroup::S4,
+        "C4h" => PointGroup::C4h,
+        "D4" => PointGroup::D4,
+        "C4v" => PointGroup::C4v,
+        "D2d" => PointGroup::D2d,
+        "D4h" => PointGroup::D4h,
+        "C3" => PointGroup::C3,
+        "C3i" => PointGroup::C3i,
+        "C3v" => PointGroup::C3v,
+        "D3" => PointGroup::D3,
+        "D3d" => PointGroup::D3d,
+        "C6" => PointGroup::C6,
+        "C3h" => PointGroup::C3h,
+        "C6h" => PointGroup::C6h,
+        "D6" => PointGroup::D6,
+        "C6v" => PointGroup::C6v,
+        "D3h" => PointGroup::D3h,
+        "D6h" => PointGroup::D6h,
+        "T" => PointGroup::T,
+        "Td" => PointGroup::Td,
+        "Th" => PointGroup::Th,
+        "O" => PointGroup::O,
+        "Oh" => PointGroup::Oh,
+        other => panic!("unknown point group name in codegen table: {}", other),
+    }
+}
+
+/// Convert a codegen-emitted lattice-system name string to the LatticeSystem enum.
+fn lattice_system_from_codegen_name(name: &str) -> LatticeSystem {
+    match name {
+        "Triclinic" => LatticeSystem::Triclinic,
+        "Monoclinic" => LatticeSystem::Monoclinic,
+        "Orthorhombic" => LatticeSystem::Orthorhombic,
+        "Tetragonal" => LatticeSystem::Tetragonal,
+        "Hexagonal" => LatticeSystem::Hexagonal,
+        "Rhombohedral" => LatticeSystem::Rhombohedral,
+        "Cubic" => LatticeSystem::Cubic,
+        other => panic!("unknown lattice system name in codegen table: {}", other),
+    }
+}
+
+/// Convert one codegen tuple from materials_data::CRYSTAL_STRUCTURE_TABLE
+/// into a CrystalStructureInfo instance.
+fn structure_from_codegen_row(
+    row: &(
+        &'static str,
+        u16,
+        &'static str,
+        &'static str,
+        &'static str,
+        char,
+        f64,
+        f64,
+        f64,
+        f64,
+        f64,
+        f64,
+        u32,
+        f64,
+        &'static str,
+    ),
+) -> CrystalStructureInfo {
+    CrystalStructureInfo {
+        name: row.0,
+        space_group_number: row.1,
+        space_group_symbol: row.2,
+        point_group: point_group_from_codegen_name(row.3),
+        lattice_system: lattice_system_from_codegen_name(row.4),
+        bravais_centering: row.5,
+        lattice_a_angstrom: row.6,
+        lattice_b_angstrom: row.7,
+        lattice_c_angstrom: row.8,
+        alpha_deg: row.9,
+        beta_deg: row.10,
+        gamma_deg: row.11,
+        atoms_per_unit_cell: row.12,
+        density_g_cm3: row.13,
+        primary_reference: row.14,
+    }
+}
+
 /// High-level structure record associating a name with its complete
 /// crystallographic + quantitative-property classification.
 ///
@@ -144,7 +238,14 @@ fn make(
 /// hexagonal setting of trigonal R3m.  Future expansion targets full
 /// inorganic crystal chemistry: 200+ entries.
 pub fn known_crystal_structures() -> Vec<CrystalStructureInfo> {
-    vec![
+    // Tourmaline supergroup (8 species) and any future Phase-6 TOML
+    // additions come from materials_data codegen.
+    let mut v: Vec<CrystalStructureInfo> = materials_data::CRYSTAL_STRUCTURE_TABLE
+        .iter()
+        .map(structure_from_codegen_row)
+        .collect();
+
+    v.extend(vec![
         // ----- Pre-existing trio -----
         make("NaCl", 225, "Fm-3m", PointGroup::Oh, LatticeSystem::Cubic, 'F',
              cubic(5.6402, 4, 2.165),
@@ -156,31 +257,6 @@ pub fn known_crystal_structures() -> Vec<CrystalStructureInfo> {
              hexagonal(3.823, 6.261, 2, 4.09),
              "Wyckoff (1963) Crystal Structures vol. 1 p.111"),
 
-        // ----- Tourmaline supergroup (8 species, all R3m hexagonal setting) -----
-        make("schorl_tourmaline", 160, "R3m", PointGroup::C3v, LatticeSystem::Hexagonal, 'R',
-             hexagonal(15.985, 7.220, 3, 3.20),
-             "Henry et al. (2011) Am. Mineralogist 96, 895; Bosi et al. (2019) Lithos 322."),
-        make("dravite_tourmaline", 160, "R3m", PointGroup::C3v, LatticeSystem::Hexagonal, 'R',
-             hexagonal(15.945, 7.224, 3, 3.05),
-             "Henry et al. (2011) Am. Mineralogist 96, 895."),
-        make("elbaite_tourmaline", 160, "R3m", PointGroup::C3v, LatticeSystem::Hexagonal, 'R',
-             hexagonal(15.842, 7.106, 3, 3.05),
-             "Henry et al. (2011) Am. Mineralogist 96, 895; GIA Gem Encyclopedia."),
-        make("uvite_tourmaline", 160, "R3m", PointGroup::C3v, LatticeSystem::Hexagonal, 'R',
-             hexagonal(15.961, 7.207, 3, 3.10),
-             "Henry et al. (2011) Am. Mineralogist 96, 895."),
-        make("liddicoatite_tourmaline", 160, "R3m", PointGroup::C3v, LatticeSystem::Hexagonal, 'R',
-             hexagonal(15.870, 7.124, 3, 3.02),
-             "Dirlam et al. (2002) Gems & Gemology 38(3)."),
-        make("rossmanite_tourmaline", 160, "R3m", PointGroup::C3v, LatticeSystem::Hexagonal, 'R',
-             hexagonal(15.820, 7.080, 3, 3.00),
-             "Selway et al. (1998) Am. Mineralogist 83 (rossmanite type description)."),
-        make("foitite_tourmaline", 160, "R3m", PointGroup::C3v, LatticeSystem::Hexagonal, 'R',
-             hexagonal(15.967, 7.126, 3, 3.18),
-             "MacDonald & Hawthorne (1995) Can. Mineralogist 33."),
-        make("povondraite_tourmaline", 160, "R3m", PointGroup::C3v, LatticeSystem::Hexagonal, 'R',
-             hexagonal(16.186, 7.444, 3, 3.32),
-             "Grice et al. (1993) Can. Mineralogist 31."),
 
         // ----- Foundational oxides + their polymorphs -----
         make("alumina_sapphire", 167, "R-3c", PointGroup::D3d, LatticeSystem::Hexagonal, 'R',
@@ -493,7 +569,9 @@ pub fn known_crystal_structures() -> Vec<CrystalStructureInfo> {
         make("titanium_nitride", 225, "Fm-3m", PointGroup::Oh, LatticeSystem::Cubic, 'F',
              cubic(4.2417, 4, 5.22),
              "Christensen et al. (1979) Acta Chem. Scand. A33, 569 (TiN rocksalt-type, plasmonic)."),
-    ]
+    ]);
+
+    v
 }
 
 /// Look up structures matching both `lattice` and `point_group`.
