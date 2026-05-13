@@ -837,215 +837,22 @@ impl DrudeLorentzParams {
 
 
     // ========================================================================
-    // Part 13: EELS, Photonic Density of States, Absorption Engineering
+    // Part 13: EELS + LDOS + absorption engineering
     // ========================================================================
+    // 7 methods (surface_loss_function, volume_loss_weighted,
+    // purcell_factor, lamb_shift_fractional, absorption_per_pass,
+    // optimal_absorber_thickness, impedance_mismatch) extracted to the
+    // `eels_absorption_engineering` submodule (#138 PH-MOD).
 
-    /// Surface electron energy loss function: Im[-1/(1+eps(omega))].
-    ///
-    /// The surface loss function describes the probability of energy loss for
-    /// electrons scattered from a surface, probing surface plasmon excitations.
-    /// Peaks at the surface plasmon frequency where `Re[eps] = -1`.
-    pub fn surface_loss_function(&self, omega: f64) -> f64 {
-        let eps = self.epsilon(omega);
-        let denom = Complex64::new(1.0, 0.0) + eps;
-        if denom.norm() < 1e-30 {
-            return 0.0;
-        }
-        (-1.0 / denom).im
-    }
-
-    /// Weighted volume loss function: omega * Im[-1/eps(omega)].
-    ///
-    /// This is proportional to the differential EELS cross-section d^2sigma/(dE dq)
-    /// in the optical limit (q -> 0). The omega weighting comes from the
-    /// fluctuation-dissipation theorem relating loss to the spectral function.
-    pub fn volume_loss_weighted(&self, omega: f64) -> f64 {
-        omega * self.loss_function(omega)
-    }
-
-    /// Purcell factor for a dipole emitter at distance d from a planar surface.
-    ///
-    /// F_P = 1 + (3/(4*(k*d)^3)) * Im[(eps-1)/(eps+1)]
-    /// where k = omega/c. This gives the enhancement of the local density of
-    /// optical states (LDOS) relative to free space. Near a metal surface,
-    /// F_P >> 1 due to near-field coupling to surface plasmons.
-    /// Valid in the near-field regime (k*d << 1).
-    pub fn purcell_factor(&self, omega: f64, distance_m: f64) -> f64 {
-        let eps = self.epsilon(omega);
-        let k = omega / C;
-        let kd = k * distance_m;
-        if kd < 1e-30 {
-            return 1.0;
-        }
-        let reflection_factor = (eps - Complex64::new(1.0, 0.0)) / (eps + Complex64::new(1.0, 0.0));
-        1.0 + 3.0 / (4.0 * kd.powi(3)) * reflection_factor.im
-    }
-
-    /// Lamb shift (frequency shift) for a dipole emitter near a planar surface.
-    ///
-    /// delta_omega / omega = -(3/(8*(k*d)^3)) * Re[(eps-1)/(eps+1)]
-    /// Returns the fractional frequency shift delta_omega/omega.
-    /// Negative means redshift (towards surface plasmon), positive means blueshift.
-    pub fn lamb_shift_fractional(&self, omega: f64, distance_m: f64) -> f64 {
-        let eps = self.epsilon(omega);
-        let k = omega / C;
-        let kd = k * distance_m;
-        if kd < 1e-30 {
-            return 0.0;
-        }
-        let reflection_factor = (eps - Complex64::new(1.0, 0.0)) / (eps + Complex64::new(1.0, 0.0));
-        -3.0 / (8.0 * kd.powi(3)) * reflection_factor.re
-    }
-
-    /// Single-pass absorption fraction through a thin film of given thickness.
-    ///
-    /// A = 1 - exp(-alpha * thickness) where alpha = absorption_coefficient.
-    /// For thin films (alpha*d << 1): A ~ alpha * d (Beer-Lambert).
-    pub fn absorption_per_pass(&self, omega: f64, thickness_m: f64) -> f64 {
-        let alpha = self.absorption_coefficient(omega);
-        1.0 - (-alpha * thickness_m).exp()
-    }
-
-    /// Optimal absorber thickness for maximum single-pass absorption.
-    ///
-    /// The optimal thickness balances absorption vs reflection losses:
-    /// d_opt ~ 1/alpha * ln(1/(1-A_target))
-    /// Here we return d = 1/alpha (one penetration depth), which gives
-    /// A = 1 - 1/e ~ 63.2% absorption.
-    /// Returns None if alpha < 1e-10 (transparent material).
-    pub fn optimal_absorber_thickness(&self, omega: f64) -> Option<f64> {
-        let alpha = self.absorption_coefficient(omega);
-        if alpha < 1e-10 {
-            return None;
-        }
-        Some(1.0 / alpha)
-    }
-
-    /// Impedance matching parameter: |Z_surface / Z_0 - 1|.
-    ///
-    /// Z_0 = 377 Ohm (free space impedance).
-    /// Z_surface = Z_0 / n (for normal incidence on a half-space).
-    /// Returns 0 for perfect impedance match (zero reflection),
-    /// large values for high-reflectivity materials.
-    pub fn impedance_mismatch(&self, omega: f64) -> f64 {
-        let n = self.refractive_index(omega);
-        let z_ratio = 1.0 / n; // Z_surface / Z_0
-        (z_ratio - Complex64::new(1.0, 0.0)).norm()
-    }
 
     // ========================================================================
-    // Part 14: Coherence, Quality Metrics, Spectral Characterization
+    // Part 14: Coherence + quality metrics + spectral characterization
     // ========================================================================
+    // 7 methods (oscillator_quality_factor, drude_quality,
+    // figure_of_merit_spp, spectral_weight_window, optical_path_length,
+    // coherence_length, penetration_depth_ratio) extracted to the
+    // `coherence_quality_metrics` submodule (#138 PH-MOD).
 
-    /// Quality factor of the strongest Lorentz oscillator: Q = omega_0 / gamma.
-    ///
-    /// High Q means narrow resonance (long-lived excitation).
-    /// Returns None if no oscillators.
-    pub fn oscillator_quality_factor(&self) -> Option<f64> {
-        let strongest = self.oscillators.iter().max_by(|a, b| {
-            a.strength
-                .partial_cmp(&b.strength)
-                .unwrap_or(std::cmp::Ordering::Equal)
-        })?;
-        if strongest.gamma_ev < 1e-30 {
-            return None;
-        }
-        Some(strongest.omega_0_ev / strongest.gamma_ev)
-    }
-
-    /// Drude quality factor: omega / gamma at the given frequency.
-    ///
-    /// Q_Drude = omega / gamma measures how many oscillation cycles occur
-    /// before scattering. Q >> 1 means the material is a good conductor at
-    /// that frequency (coherent carrier response).
-    /// Returns None if no Drude term.
-    pub fn drude_quality(&self, omega: f64) -> Option<f64> {
-        let gamma_ev = if let Some(ext) = &self.extended_drude {
-            ext.scattering.gamma_at_ev(0.0)
-        } else if let Some(drude) = &self.drude {
-            drude.gamma_ev
-        } else {
-            return None;
-        };
-        let gamma = gamma_ev * EV_TO_RADS;
-        if gamma < 1e-30 {
-            return None;
-        }
-        Some(omega / gamma)
-    }
-
-    /// Figure of merit for surface plasmon polariton propagation.
-    ///
-    /// `FoM = Re[k_spp] / (2 * Im[k_spp])` = number of wavelengths the SPP
-    /// propagates before decaying to 1/e. Higher FoM means longer-range SPPs.
-    /// Returns None if no SPP exists (dielectric material).
-    pub fn figure_of_merit_spp(&self, omega: f64, eps_dielectric: f64) -> Option<f64> {
-        let k = self.spp_wavevector(omega, eps_dielectric);
-        if k.im.abs() < 1e-30 {
-            return None;
-        }
-        Some(k.re / (2.0 * k.im.abs()))
-    }
-
-    /// Partial spectral weight in a frequency window [omega_min, omega_max].
-    ///
-    /// `SW = integral[sigma_1(omega) d_omega]` from `omega_min` to `omega_max`
-    /// where `sigma_1 = Re[sigma] = omega * Im[eps] * eps_0`.
-    /// This is the partial oscillator strength sum rule.
-    pub fn spectral_weight_window(&self, omega_min: f64, omega_max: f64, n_steps: usize) -> f64 {
-        if n_steps < 2 || omega_max <= omega_min {
-            return 0.0;
-        }
-        let d_omega = (omega_max - omega_min) / n_steps as f64;
-        let mut sum = 0.0;
-        for i in 0..=n_steps {
-            let omega = omega_min + i as f64 * d_omega;
-            let sigma_1 = self.optical_conductivity_re(omega);
-            let w = if i == 0 || i == n_steps { 0.5 } else { 1.0 };
-            sum += w * sigma_1;
-        }
-        sum * d_omega
-    }
-
-    /// Optical path length: n * d (real part of refractive index times thickness).
-    ///
-    /// OPL determines interference: constructive when OPL = m * lambda,
-    /// destructive when OPL = (m + 1/2) * lambda.
-    /// Returns (real OPL, imaginary OPL) in meters.
-    pub fn optical_path_length(&self, omega: f64, thickness_m: f64) -> (f64, f64) {
-        let n = self.refractive_index(omega);
-        (n.re * thickness_m, n.im * thickness_m)
-    }
-
-    /// Temporal coherence length of light in this medium.
-    ///
-    /// l_c = c / (n * delta_omega) where delta_omega is the spectral bandwidth.
-    /// For a monochromatic source (delta_omega -> 0), l_c -> infinity.
-    /// The coherence length determines the maximum path difference for
-    /// interference experiments (Michelson, Fabry-Perot).
-    pub fn coherence_length(&self, omega: f64, bandwidth_rad_s: f64) -> f64 {
-        if bandwidth_rad_s < 1e-30 {
-            return f64::INFINITY;
-        }
-        let n = self.refractive_index(omega);
-        C / (n.re.abs() * bandwidth_rad_s)
-    }
-
-    /// Penetration depth / wavelength ratio: delta / lambda.
-    ///
-    /// When delta/lambda << 1, the material is opaque within a single wavelength
-    /// (good metal behavior). When delta/lambda >> 1, the material is transparent
-    /// over many wavelengths. This dimensionless ratio determines whether the
-    /// material is effectively a bulk absorber or a thin-film phase shifter.
-    pub fn penetration_depth_ratio(&self, omega: f64) -> f64 {
-        let alpha = self.absorption_coefficient(omega);
-        if alpha < 1e-30 {
-            return f64::INFINITY;
-        }
-        let delta = 1.0 / alpha;
-        let lambda = 2.0 * std::f64::consts::PI * C / omega;
-        delta / lambda
-    }
 
     // ========================================================================
     // Part 15: Photovoltaic and Solar Energy Metrics
@@ -2273,6 +2080,8 @@ pub use semiconductors::{
 // call sites resolve transparently with no signature changes.
 // ============================================================================
 mod bandgap_analysis;
+mod coherence_quality_metrics;
+mod eels_absorption_engineering;
 mod effective_medium_methods;
 mod electro_optic;
 mod ellipsometry_thermal_enz;
