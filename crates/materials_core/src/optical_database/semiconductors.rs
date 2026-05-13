@@ -7,63 +7,50 @@
 //! materials_core::optical_database::{silicon_optical, silica_optical,
 //! silica_casimir_optical, silicon_nitride_optical, germanium_optical}
 //! stay stable.
+//!
+//! All five constructors source their parameters from
+//! `crates/materials_data/data/optical/lorentz_models.toml` via the
+//! build-time codegen path -- the literal arrays no longer live in
+//! Rust source (Phase 5 / task #127).
 
 use super::{DrudeLorentzParams, LorentzOscillator};
 
-/// Silicon (intrinsic) optical model.
-///
-/// Semiconductor with bandgap at ~1.1 eV.
-pub fn silicon_optical() -> DrudeLorentzParams {
+/// Build a `DrudeLorentzParams` from the codegen'd `<NAME>_EPS_INF`
+/// scalar and `<NAME>_OSCILLATORS: &[[f64; 3]]` array constants.
+/// Local helper -- not exported.
+fn from_codegen(
+    eps_inf: f64,
+    oscillators: &'static [[f64; 3]],
+) -> DrudeLorentzParams {
     DrudeLorentzParams {
         drude: None,
-        oscillators: vec![
-            // E0 critical point (direct gap at ~3.4 eV)
-            LorentzOscillator {
-                strength: 29.0,
-                omega_0_ev: 3.40,
-                gamma_ev: 0.1,
-            },
-            // E1 critical point
-            LorentzOscillator {
-                strength: 6.0,
-                omega_0_ev: 3.74,
-                gamma_ev: 0.25,
-            },
-            // E2 critical point
-            LorentzOscillator {
-                strength: 3.0,
-                omega_0_ev: 4.40,
-                gamma_ev: 0.2,
-            },
-        ],
-        eps_inf: 1.0,
+        oscillators: oscillators
+            .iter()
+            .map(|&[strength, omega_0_ev, gamma_ev]| LorentzOscillator {
+                strength,
+                omega_0_ev,
+                gamma_ev,
+            })
+            .collect(),
+        eps_inf,
         extended_drude: None,
     }
 }
 
-/// Silica (SiO2) optical model.
-///
-/// Wide-bandgap dielectric.
+/// Silicon (intrinsic) optical model. Bandgap ~1.1 eV; E0/E1/E2 critical points.
+pub fn silicon_optical() -> DrudeLorentzParams {
+    from_codegen(
+        materials_data::SILICON_EPS_INF,
+        materials_data::SILICON_OSCILLATORS,
+    )
+}
+
+/// Silica (SiO2) optical model -- wide-bandgap dielectric; IR phonon + UV edge.
 pub fn silica_optical() -> DrudeLorentzParams {
-    DrudeLorentzParams {
-        drude: None,
-        oscillators: vec![
-            // IR phonon resonance
-            LorentzOscillator {
-                strength: 1.0,
-                omega_0_ev: 0.064, // ~8 microns
-                gamma_ev: 0.005,
-            },
-            // UV absorption edge
-            LorentzOscillator {
-                strength: 1.0,
-                omega_0_ev: 11.0,
-                gamma_ev: 2.0,
-            },
-        ],
-        eps_inf: 2.1, // n = 1.45 -> eps = 2.1
-        extended_drude: None,
-    }
+    from_codegen(
+        materials_data::SILICA_EPS_INF,
+        materials_data::SILICA_OSCILLATORS,
+    )
 }
 
 /// Silica (SiO2) optical model calibrated for Casimir-Lifshitz calculations.
@@ -79,62 +66,24 @@ pub fn silica_optical() -> DrudeLorentzParams {
 ///
 /// No explicit UV oscillator: eps_inf=2.1 already encodes the UV edge contribution.
 pub fn silica_casimir_optical() -> DrudeLorentzParams {
-    // Parameters codegen'd from crates/materials_data/data/optical/lorentz_models.toml
-    // (build.rs::emit_lorentz_models). The three oscillators are the
-    // Si-O rocking (460 cm^{-1}), bending (800 cm^{-1}), and stretching
-    // (1075 cm^{-1}) IR modes. eps_inf = n^2 = 1.45^2 = 2.10 (UV edge
-    // already encoded). Check: eps(0) = 2.1 + 0.185 + 0.115 + 1.400 = 3.800.
-    DrudeLorentzParams {
-        drude: None,
-        oscillators: materials_data::SILICA_CASIMIR_OSCILLATORS
-            .iter()
-            .map(|&[strength, omega_0_ev, gamma_ev]| LorentzOscillator {
-                strength,
-                omega_0_ev,
-                gamma_ev,
-            })
-            .collect(),
-        eps_inf: materials_data::SILICA_CASIMIR_EPS_INF,
-        extended_drude: None,
-    }
+    from_codegen(
+        materials_data::SILICA_CASIMIR_EPS_INF,
+        materials_data::SILICA_CASIMIR_OSCILLATORS,
+    )
 }
 
-/// Silicon Nitride (Si3N4) optical model.
+/// Silicon Nitride (Si3N4) optical model -- n ~ 2.0, single IR resonance.
 pub fn silicon_nitride_optical() -> DrudeLorentzParams {
-    DrudeLorentzParams {
-        drude: None,
-        oscillators: vec![
-            // IR resonance
-            LorentzOscillator {
-                strength: 1.5,
-                omega_0_ev: 0.11,
-                gamma_ev: 0.01,
-            },
-        ],
-        eps_inf: 4.0, // n ~ 2.0
-        extended_drude: None,
-    }
+    from_codegen(
+        materials_data::SILICON_NITRIDE_EPS_INF,
+        materials_data::SILICON_NITRIDE_OSCILLATORS,
+    )
 }
 
-/// Germanium optical model.
+/// Germanium optical model -- E0 gap + E1 critical point.
 pub fn germanium_optical() -> DrudeLorentzParams {
-    DrudeLorentzParams {
-        drude: None,
-        oscillators: vec![
-            // E0 gap
-            LorentzOscillator {
-                strength: 25.0,
-                omega_0_ev: 2.1,
-                gamma_ev: 0.15,
-            },
-            // E1 critical point
-            LorentzOscillator {
-                strength: 8.0,
-                omega_0_ev: 2.3,
-                gamma_ev: 0.2,
-            },
-        ],
-        eps_inf: 1.0,
-        extended_drude: None,
-    }
+    from_codegen(
+        materials_data::GERMANIUM_EPS_INF,
+        materials_data::GERMANIUM_OSCILLATORS,
+    )
 }
