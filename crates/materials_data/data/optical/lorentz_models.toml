@@ -264,3 +264,239 @@ gamma_ev = 0.005
 strength = 5.0
 omega_0_ev = 4.5
 gamma_ev = 1.2
+
+# ============================================================
+# C-418 gap materials (Phase 1) + titanates (Phase 3) + TCOs
+# ============================================================
+
+[[material]]
+name = "ALUMINA"
+eps_inf = 3.07
+reference = "Palik (1998). Al2O3 / sapphire dielectric."
+
+[[material.oscillators]]
+strength = 0.8
+omega_0_ev = 0.048
+gamma_ev = 0.003
+
+[[material.oscillators]]
+strength = 1.2
+omega_0_ev = 0.071
+gamma_ev = 0.005
+
+[[material.oscillators]]
+strength = 1.5
+omega_0_ev = 10.0
+gamma_ev = 2.0
+
+[[material]]
+name = "TOURMALINE"
+eps_inf = 2.5
+reference = "Simple dispersion representation for the pink R3m crystal."
+
+[[material.oscillators]]
+strength = 1.5
+omega_0_ev = 6.0
+gamma_ev = 0.5
+
+[[material]]
+name = "DIAMOND"
+eps_inf = 5.7
+reference = "Palik (1998). Crystalline C."
+
+[[material.oscillators]]
+strength = 0.3
+omega_0_ev = 0.165
+gamma_ev = 0.005
+
+[[material.oscillators]]
+strength = 2.5
+omega_0_ev = 7.0
+gamma_ev = 1.0
+
+[[material]]
+name = "QUARTZ"
+eps_inf = 2.38
+reference = "Palik (1998). Crystalline SiO2; sharper phonon modes than amorphous silica."
+
+[[material.oscillators]]
+strength = 0.9
+omega_0_ev = 0.056
+gamma_ev = 0.002
+
+[[material.oscillators]]
+strength = 0.5
+omega_0_ev = 0.137
+gamma_ev = 0.004
+
+[[material.oscillators]]
+strength = 1.2
+omega_0_ev = 11.0
+gamma_ev = 2.0
+
+[[material]]
+name = "TIO2"
+eps_inf = 5.9
+reference = "Palik (1998), DeVore (1951). Rutile TiO2."
+
+[[material.oscillators]]
+strength = 3.0
+omega_0_ev = 0.050
+gamma_ev = 0.008
+
+[[material.oscillators]]
+strength = 1.5
+omega_0_ev = 0.099
+gamma_ev = 0.010
+
+[[material.oscillators]]
+strength = 8.0
+omega_0_ev = 3.0
+gamma_ev = 0.3
+
+[[material]]
+name = "TIO"
+eps_inf = 4.0
+reference = "Barman & Sarma PRB 51 (1995). Titanium monoxide bad metal."
+
+[material.drude]
+omega_p_ev = 2.50
+gamma_ev = 0.50
+eps_inf = 1.0
+
+[[material.oscillators]]
+strength = 3.0
+omega_0_ev = 3.0
+gamma_ev = 1.5
+
+[[material]]
+name = "SRTIO3"
+eps_inf = 5.2
+reference = "Servoin et al. PRB 22 (1980). Undoped SrTiO3 incipient ferroelectric with giant TO1 soft-mode oscillator strength (~280)."
+
+[[material.oscillators]]
+# Soft mode TO1 at 11 meV with enormous oscillator strength
+strength = 280.0
+omega_0_ev = 0.011
+gamma_ev = 0.003
+
+[[material.oscillators]]
+# TO2 mode
+strength = 2.5
+omega_0_ev = 0.022
+gamma_ev = 0.002
+
+[[material.oscillators]]
+# TO4 mode
+strength = 0.6
+omega_0_ev = 0.067
+gamma_ev = 0.005
+
+[[material.oscillators]]
+# UV absorption edge
+strength = 3.5
+omega_0_ev = 3.2
+gamma_ev = 0.5
+
+[[material]]
+name = "SRTIO3_DOPED"
+eps_inf = 5.2
+reference = "van Mechelen et al. PRL 100 (2008). Electron-doped metallic SrTiO3:n."
+
+[material.drude]
+omega_p_ev = 0.15
+gamma_ev = 0.020
+eps_inf = 1.0
+
+[[material.oscillators]]
+strength = 280.0
+omega_0_ev = 0.011
+gamma_ev = 0.003
+
+[[material.oscillators]]
+strength = 2.5
+omega_0_ev = 0.022
+gamma_ev = 0.002
+
+[[material.oscillators]]
+strength = 0.6
+omega_0_ev = 0.067
+gamma_ev = 0.005
+
+[[material.oscillators]]
+strength = 3.5
+omega_0_ev = 3.2
+gamma_ev = 0.5
+
+[[material]]
+name = "LATIO3"
+eps_inf = 4.5
+reference = "Okimoto et al. PRB 51 (1995). LaTiO3 Mott insulator, ~0.2 eV Mott gap, mid-IR spectral weight from d-d transitions."
+
+[[material.oscillators]]
+# Mid-IR d-d transition (Mott gap excitation)
+strength = 5.0
+omega_0_ev = 0.50
+gamma_ev = 0.30
+
+[[material.oscillators]]
+# IR phonon modes
+strength = 1.5
+omega_0_ev = 0.065
+gamma_ev = 0.008
+
+[[material.oscillators]]
+# Charge-transfer UV
+strength = 4.0
+omega_0_ev = 3.5
+gamma_ev = 1.0
+
+[[material]]
+name = "ITO"
+eps_inf = 4.0
+reference = "Typical degenerate transparent conductor; n ~ 4e20 cm^-3, m* = 0.4. Pure Drude (no oscillators)."
+
+[material.drude]
+omega_p_ev = 1.17
+gamma_ev = 0.10
+eps_inf = 4.0
+
+[[material]]
+name = "AZO"
+eps_inf = 3.7
+reference = "Aluminum-doped Zinc Oxide transparent conductor. Metallic in IR, transparent in visible. Crossover near 1 eV."
+
+[material.drude]
+omega_p_ev = 1.75
+gamma_ev = 0.12
+eps_inf = 1.0
+
+[[material.oscillators]]
+strength = 2.0
+omega_0_ev = 3.3
+gamma_ev = 0.2
+
+[[material]]
+name = "DOPED_SILICON"
+eps_inf = 1.0
+reference = "Si:n at ~1e18 cm-3 with THz Drude tail. Oscillators inherit from intrinsic Si (E0/E1/E2 critical points)."
+
+[material.drude]
+omega_p_ev = 0.12
+gamma_ev = 0.010
+eps_inf = 1.0
+
+[[material.oscillators]]
+strength = 29.0
+omega_0_ev = 3.40
+gamma_ev = 0.1
+
+[[material.oscillators]]
+strength = 6.0
+omega_0_ev = 3.74
+gamma_ev = 0.25
+
+[[material.oscillators]]
+strength = 3.0
+omega_0_ev = 4.40
+gamma_ev = 0.2
