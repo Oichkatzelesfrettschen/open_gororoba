@@ -27,6 +27,7 @@ use std::{ffi::CStr, sync::Arc};
 
 pub mod alignment_vulkan;
 pub mod besag_clifford_vulkan;
+pub mod box_counting_cpu;
 pub mod box_counting_vulkan;
 pub mod chingon_vulkan;
 pub mod compute;
