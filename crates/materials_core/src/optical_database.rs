@@ -872,232 +872,12 @@ impl DrudeLorentzParams {
     // submodule (#138 PH-MOD).
 
     // ========================================================================
-    // Part 16b: Plasmonic Sensing and SERS Metrics
+    // Part 16b: Plasmonic sensing + SERS metrics
     // ========================================================================
+    // 7 methods extracted to `plasmonic_sensing` submodule (#138 PH-MOD).
 
-    /// Refractive index sensitivity: shift of LSPR wavelength per RIU change.
-    ///
-    /// Computed as d(lambda_LSPR)/d(n) by finite difference of LSPR condition
-    /// Re[eps(omega)] = -2*eps_d evaluated at eps_d and eps_d + delta.
-    /// Returns None if no LSPR is found. Result in nm/RIU.
-    pub fn refractive_index_sensitivity(&self, eps_dielectric: f64) -> Option<f64> {
-        let dn = 0.01;
-        let n_d = eps_dielectric.sqrt();
-        let omega1 = self.lspr_frequency(eps_dielectric)?;
-        let omega2 = self.lspr_frequency((n_d + dn) * (n_d + dn))?;
-        let lambda1 = 2.0 * PI * C / omega1 * 1e9; // nm
-        let lambda2 = 2.0 * PI * C / omega2 * 1e9;
-        Some((lambda2 - lambda1) / dn)
-    }
+    // Part 16c: 6 methods extracted to `thin_film_coating` submodule (#138).
 
-    /// Figure of merit for plasmonic sensor: sensitivity / FWHM.
-    ///
-    /// FWHM estimated from the Drude damping rate as delta_lambda ~ gamma * lambda^2 / (2*pi*c).
-    /// Higher FoM means sharper resonances and better detection limits.
-    pub fn figure_of_merit_sensor(&self, eps_dielectric: f64) -> Option<f64> {
-        let sensitivity = self.refractive_index_sensitivity(eps_dielectric)?;
-        let omega_lspr = self.lspr_frequency(eps_dielectric)?;
-        let gamma = self.drude.as_ref()?.gamma_ev * EV_TO_RADS;
-        let lambda_lspr = 2.0 * PI * C / omega_lspr * 1e9;
-        let fwhm_nm = gamma * lambda_lspr * lambda_lspr / (2.0 * PI * C) * 1e9;
-        if fwhm_nm.abs() < 1e-30 {
-            return None;
-        }
-        Some(sensitivity.abs() / fwhm_nm)
-    }
-
-    /// Quasistatic field enhancement factor |E_loc/E_0| at nanoparticle surface.
-    ///
-    /// From Clausius-Mossotti: alpha = 3*V*eps_0*(eps-eps_d)/(eps+2*eps_d),
-    /// giving |E_loc/E_0| = |eps - eps_d| / |eps + 2*eps_d| + 1 at the surface
-    /// (factor 2 from dipole field at equator + incident field).
-    pub fn field_enhancement_factor(&self, omega: f64, eps_dielectric: f64) -> f64 {
-        let eps = self.epsilon(omega);
-        let eps_d = Complex64::new(eps_dielectric, 0.0);
-        let ratio = (eps - eps_d) / (eps + 2.0 * eps_d);
-        // Enhancement = 1 + 2*|alpha/V/(3*eps_0)| = 1 + 2*|ratio| at equator
-        1.0 + 2.0 * ratio.norm()
-    }
-
-    /// SERS electromagnetic enhancement factor: |E_loc/E_0|^4.
-    ///
-    /// The SERS signal scales as the fourth power of local field enhancement
-    /// (two factors each for excitation and emission). This provides the
-    /// EM contribution; the chemical enhancement (typically 10-100x) is separate.
-    pub fn sers_enhancement_factor(&self, omega: f64, eps_dielectric: f64) -> f64 {
-        let fe = self.field_enhancement_factor(omega, eps_dielectric);
-        fe * fe * fe * fe
-    }
-
-    /// Total decay rate enhancement Gamma/Gamma_0 near a planar surface.
-    ///
-    /// Near-field approximation (kd << 1):
-    /// Gamma/Gamma_0 = 1 + 3/(2*(kd)^3) * Im[(eps-1)/(eps+1)]
-    /// Includes both radiative and non-radiative channels.
-    pub fn decay_rate_enhancement(&self, omega: f64, distance_m: f64) -> f64 {
-        let eps = self.epsilon(omega);
-        let k = omega / C;
-        let kd = k * distance_m;
-        let ratio = (eps - 1.0) / (eps + 1.0);
-        1.0 + 1.5 / (kd * kd * kd) * ratio.im
-    }
-
-    /// Quantum efficiency of emitter near a surface.
-    ///
-    /// eta = QY_free * F_rad / (QY_free * F_rad + (1 - QY_free) + F_nr)
-    /// where F_rad ~ 1 (far-field), F_nr ~ 3/(4*(kd)^3)*Im[(eps-1)/(eps+1)].
-    /// qy_free is the free-space quantum yield (0-1).
-    pub fn quantum_efficiency_near_surface(
-        &self,
-        omega: f64,
-        distance_m: f64,
-        qy_free: f64,
-    ) -> f64 {
-        let eps = self.epsilon(omega);
-        let k = omega / C;
-        let kd = k * distance_m;
-        let ratio = (eps - 1.0) / (eps + 1.0);
-        let f_nr = 0.75 / (kd * kd * kd) * ratio.im;
-        let f_nr_abs = f_nr.abs();
-        let numerator = qy_free;
-        let denominator = qy_free + (1.0 - qy_free) + qy_free * f_nr_abs;
-        if denominator < 1e-30 {
-            return 0.0;
-        }
-        numerator / denominator
-    }
-
-    /// Hot-electron generation rate proxy: proportional to `Im[eps]` at the given frequency.
-    ///
-    /// Hot electron generation from plasmon decay scales as `Im[eps(omega)] * |E|^2`.
-    /// This returns `Im[eps]` as the material-dependent factor; the field enhancement
-    /// must be computed separately from geometry.
-    pub fn hot_electron_generation_proxy(&self, omega: f64) -> f64 {
-        self.epsilon(omega).im.abs()
-    }
-
-    // ========================================================================
-    // Part 16c: Thin-Film Interference and Coating Design
-    // ========================================================================
-
-    /// Single-layer thin-film reflectance on a substrate (Airy formula).
-    ///
-    /// Uses coherent multiple-beam interference for a film of thickness d
-    /// with refractive index n_film on a substrate with index n_sub.
-    /// Normal incidence from air (n=1).
-    pub fn thin_film_reflectance(&self, omega: f64, thickness_m: f64, n_substrate: f64) -> f64 {
-        let n_film = self.refractive_index(omega);
-        let n_i = Complex64::new(1.0, 0.0); // air
-        let n_s = Complex64::new(n_substrate, 0.0);
-
-        // Fresnel coefficients at interfaces
-        let r12 = (n_i - n_film) / (n_i + n_film);
-        let r23 = (n_film - n_s) / (n_film + n_s);
-
-        // Phase accumulated in the film (round trip)
-        let delta = 2.0 * PI * n_film * thickness_m * omega / (2.0 * PI * C);
-        let phase = Complex64::new(0.0, 2.0 * delta.re) * Complex64::new(1.0, 0.0)
-            + Complex64::new(-2.0 * delta.im, 0.0);
-        let exp_phase = Complex64::new(phase.re.cos(), phase.re.sin()) * (-phase.im).exp(); // handle absorption
-
-        // Airy formula
-        let r_total = (r12 + r23 * exp_phase) / (1.0 + r12 * r23 * exp_phase);
-        r_total.norm_sqr()
-    }
-
-    /// Single-layer thin-film transmittance on a substrate.
-    ///
-    /// T = 1 - R for non-absorbing films; for absorbing films T < 1 - R
-    /// because some light is absorbed. Uses the coherent Airy formula.
-    pub fn thin_film_transmittance(&self, omega: f64, thickness_m: f64, n_substrate: f64) -> f64 {
-        let n_film = self.refractive_index(omega);
-        let n_i = Complex64::new(1.0, 0.0);
-        let n_s = Complex64::new(n_substrate, 0.0);
-
-        let r12 = (n_i - n_film) / (n_i + n_film);
-        let t12 = 2.0 * n_i / (n_i + n_film);
-        let r23 = (n_film - n_s) / (n_film + n_s);
-        let t23 = 2.0 * n_film / (n_film + n_s);
-
-        let delta = n_film * thickness_m * omega / C;
-        let exp_phase = Complex64::new(0.0, delta.re).exp() * (-delta.im).exp();
-
-        let t_total = (t12 * t23 * exp_phase) / (1.0 + r12 * r23 * exp_phase * exp_phase);
-        // Transmittance accounts for impedance mismatch at exit
-        (n_s.re / n_i.re) * t_total.norm_sqr()
-    }
-
-    /// Phase shift accumulated by light traversing the film once.
-    ///
-    /// `phi = Re[n] * omega * d / c` (in radians).
-    pub fn thin_film_phase_shift(&self, omega: f64, thickness_m: f64) -> f64 {
-        let n = self.refractive_index(omega);
-        n.re * omega * thickness_m / C
-    }
-
-    /// Constructive interference orders for a thin film.
-    ///
-    /// Returns integer orders m where 2*n*d ~ m*lambda (constructive reflection
-    /// when both interfaces have the same reflection phase).
-    /// Scans from m=1 up to max order that fits in the film.
-    pub fn constructive_interference_orders(&self, omega: f64, thickness_m: f64) -> Vec<u32> {
-        let n = self.refractive_index(omega).re;
-        let lambda = 2.0 * PI * C / omega;
-        let max_order = (2.0 * n * thickness_m / lambda).floor() as u32;
-        (1..=max_order).collect()
-    }
-
-    /// Fabry-Perot finesse for a thin-film etalon.
-    ///
-    /// F = pi*sqrt(R) / (1 - R), where R is the reflectance at each interface
-    /// (assumed symmetric: film between identical media, or computed from
-    /// the air-film interface reflectance).
-    pub fn fabry_perot_finesse(&self, omega: f64) -> f64 {
-        let r = self.reflectivity_normal(omega);
-        if r >= 1.0 - 1e-15 {
-            return f64::INFINITY;
-        }
-        PI * r.sqrt() / (1.0 - r)
-    }
-
-    /// CIE 1931 chromaticity coordinates (x, y) from spectral reflectance.
-    ///
-    /// Integrates R(omega) against CIE color-matching functions approximated
-    /// as Gaussians: X peaks at 1.82 eV (680nm), Y at 2.23 eV (555nm),
-    /// Z at 2.72 eV (455nm). Returns (x, y, Y_luminance).
-    pub fn color_coordinates_cie(&self, n_steps: usize) -> (f64, f64, f64) {
-        let omega_min = ev_to_omega(1.55); // 800 nm
-        let omega_max = ev_to_omega(3.10); // 400 nm
-        let d_omega = (omega_max - omega_min) / n_steps as f64;
-
-        let mut x_sum = 0.0_f64;
-        let mut y_sum = 0.0_f64;
-        let mut z_sum = 0.0_f64;
-
-        for i in 0..n_steps {
-            let omega = omega_min + (i as f64 + 0.5) * d_omega;
-            let ev = omega_to_ev(omega);
-            let r = self.reflectivity_normal(omega);
-
-            // Gaussian approximations for CIE x-bar, y-bar, z-bar
-            let x_bar = 1.056 * (-(ev - 1.82_f64).powi(2) / (2.0 * 0.12)).exp()
-                + 0.362 * (-(ev - 2.24_f64).powi(2) / (2.0 * 0.07)).exp();
-            let y_bar = 0.821 * (-(ev - 2.23_f64).powi(2) / (2.0 * 0.08)).exp()
-                + 0.286 * (-(ev - 2.06_f64).powi(2) / (2.0 * 0.14)).exp();
-            let z_bar = 1.217 * (-(ev - 2.72_f64).powi(2) / (2.0 * 0.08)).exp()
-                + 0.681 * (-(ev - 2.98_f64).powi(2) / (2.0 * 0.12)).exp();
-
-            x_sum += r * x_bar * d_omega;
-            y_sum += r * y_bar * d_omega;
-            z_sum += r * z_bar * d_omega;
-        }
-
-        let total = x_sum + y_sum + z_sum;
-        if total < 1e-30 {
-            return (0.333, 0.333, 0.0);
-        }
-        (x_sum / total, y_sum / total, y_sum)
-    }
 
     // ========================================================================
     // Part 16d: Phonon Polaritonics and IR Spectroscopy
@@ -1849,9 +1629,11 @@ mod fresnel;
 mod photonic_crystals;
 mod photonic_waveguide;
 mod photovoltaic_solar;
+mod plasmonic_sensing;
 mod plasmonics;
 mod sum_rules_kk;
 mod temperature_dispersion;
+mod thin_film_coating;
 mod transport;
 
 // ============================================================================
