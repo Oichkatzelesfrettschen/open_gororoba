@@ -285,15 +285,103 @@ mod tests {
     use super::*;
 
     #[test]
-    fn known_structures_has_250_plus_entries() {
+    fn known_structures_has_310_plus_entries() {
         let n = known_crystal_structures().len();
         assert!(
-            n >= 250,
-            "Coverage regression: known_crystal_structures must list at least 250 \
+            n >= 310,
+            "Coverage regression: known_crystal_structures must list at least 310 \
              entries (currently {}). Adding new structures is encouraged; \
              removing any requires a rationale.",
             n
         );
+    }
+
+    #[test]
+    fn hume_rothery_intermetallic_coverage() {
+        let names: Vec<&str> = known_crystal_structures()
+            .iter()
+            .map(|s| s.name)
+            .collect();
+        for required in [
+            "beta_brass_cuzn_b2",
+            "gamma_brass_cu5zn8",
+            "epsilon_brass_cuzn3",
+            "mgcu2_laves_c15",
+            "mgzn2_laves_c14",
+            "ni3al_l12_gamma_prime",
+            "tial_l10_ordered",
+        ] {
+            assert!(
+                names.contains(&required),
+                "Hume-Rothery intermetallic {} missing",
+                required
+            );
+        }
+    }
+
+    #[test]
+    fn cuprate_high_tc_extended_coverage() {
+        let names: Vec<&str> = known_crystal_structures()
+            .iter()
+            .map(|s| s.name)
+            .collect();
+        for required in [
+            "yba2cu3o6_tetragonal",
+            "bi2sr2cacu2o8_bscco_2212",
+            "hgba2ca2cu3o8_hg_1223",
+            "ndnio2_nickelate_infinite_layer",
+        ] {
+            assert!(names.contains(&required), "extended cuprate {} missing", required);
+        }
+    }
+
+    #[test]
+    fn biological_mineral_coverage() {
+        let names: Vec<&str> = known_crystal_structures()
+            .iter()
+            .map(|s| s.name)
+            .collect();
+        for required in [
+            "calcite_biogenic_eggshell",
+            "aragonite_biogenic_nacre",
+            "vaterite_caco3",
+            "biological_apatite_dahllite",
+            "magnetite_biogenic_magnetosome",
+        ] {
+            assert!(names.contains(&required), "biomineral {} missing", required);
+        }
+    }
+
+    #[test]
+    fn additional_zeolite_framework_coverage() {
+        let names: Vec<&str> = known_crystal_structures()
+            .iter()
+            .map(|s| s.name)
+            .collect();
+        for required in [
+            "linde_a_zeolite",
+            "chabazite_chabazite",
+            "heulandite_heu",
+            "analcime_ana",
+            "sodalite_sod",
+        ] {
+            assert!(names.contains(&required), "zeolite framework {} missing", required);
+        }
+    }
+
+    #[test]
+    fn niobate_ferroelectric_coverage() {
+        let names: Vec<&str> = known_crystal_structures()
+            .iter()
+            .map(|s| s.name)
+            .collect();
+        for required in [
+            "linbo3_trigonal_room_t",
+            "litao3_trigonal",
+            "knbo3_orthorhombic",
+        ] {
+            assert!(names.contains(&required), "niobate/tantalate {} missing", required);
+        }
     }
 
     #[test]
