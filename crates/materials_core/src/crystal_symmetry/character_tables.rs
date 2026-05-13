@@ -49,6 +49,8 @@ pub struct CharacterTable {
 
 /// Convert a codegen-emitted point-group name string back to the
 /// PointGroup enum for the character-table lookup (#127 Phase 7).
+/// Full mapping of all 32 crystallographic point groups; the codegen
+/// path is the canonical source for any group whose name matches.
 fn point_group_name_to_enum(name: &str) -> Option<PointGroup> {
     match name {
         "C1" => Some(PointGroup::C1),
@@ -56,7 +58,33 @@ fn point_group_name_to_enum(name: &str) -> Option<PointGroup> {
         "C2" => Some(PointGroup::C2),
         "Cs" => Some(PointGroup::Cs),
         "C2h" => Some(PointGroup::C2h),
-        // Subsequent point-group migrations (D2..Oh) follow the same arm.
+        "D2" => Some(PointGroup::D2),
+        "C2v" => Some(PointGroup::C2v),
+        "D2h" => Some(PointGroup::D2h),
+        "C4" => Some(PointGroup::C4),
+        "S4" => Some(PointGroup::S4),
+        "C4h" => Some(PointGroup::C4h),
+        "D4" => Some(PointGroup::D4),
+        "C4v" => Some(PointGroup::C4v),
+        "D2d" => Some(PointGroup::D2d),
+        "D4h" => Some(PointGroup::D4h),
+        "C3" => Some(PointGroup::C3),
+        "C3i" => Some(PointGroup::C3i),
+        "C3v" => Some(PointGroup::C3v),
+        "D3" => Some(PointGroup::D3),
+        "D3d" => Some(PointGroup::D3d),
+        "C6" => Some(PointGroup::C6),
+        "C3h" => Some(PointGroup::C3h),
+        "C6h" => Some(PointGroup::C6h),
+        "D6" => Some(PointGroup::D6),
+        "C6v" => Some(PointGroup::C6v),
+        "D3h" => Some(PointGroup::D3h),
+        "D6h" => Some(PointGroup::D6h),
+        "T" => Some(PointGroup::T),
+        "Td" => Some(PointGroup::Td),
+        "Th" => Some(PointGroup::Th),
+        "O" => Some(PointGroup::O),
+        "Oh" => Some(PointGroup::Oh),
         _ => None,
     }
 }
@@ -2014,8 +2042,11 @@ mod codegen_parity_tests {
 
     #[test]
     fn unmigrated_groups_return_none_from_codegen() {
-        // D2 is not yet in the TOML registry; codegen lookup must return None
-        // so the dispatcher falls through to Self::d2().
-        assert!(from_codegen_table(PointGroup::D2).is_none());
+        // S4 has no inline table (returns None from for_point_group inline
+        // dispatch in the original implementation), so it is not in the
+        // codegen TOML either. The dispatcher returns None overall, which
+        // is the expected behaviour for these scaffolded-but-unimplemented
+        // groups.
+        assert!(from_codegen_table(PointGroup::S4).is_none());
     }
 }
