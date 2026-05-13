@@ -13,7 +13,7 @@
 //! materials_core::optical_database::{wo3_optical, cs_wo3_optical,
 //! cawo4_optical, pbwo4_optical, ...} remain stable.
 
-use super::{DrudeLorentzParams, DrudeParams, LorentzOscillator, UniaxialOptical};
+use super::{DrudeLorentzParams, DrudeParams, LorentzOscillator, MineralMetadata, OpticSign, UniaxialOptical};
 
 /// Build a `DrudeLorentzParams` from the codegen'd consts. Handles
 /// the optional Drude free-carrier component pattern uniformly.
@@ -104,4 +104,89 @@ pub fn pbwo4_optical() -> DrudeLorentzParams {
         materials_data::PBWO4_DRUDE,
         materials_data::PBWO4_OSCILLATORS,
     )
+}
+
+// ============================================================================
+// MineralMetadata accessors for the tungstate family (task #140 medium-priority
+// remediation from the 2026-05-13 audit). All tungstates share scheelite
+// structure (CaWO4, PbWO4) or are tungsten bronzes (WO3, Cs-WO3) with
+// well-defined polymorphism.
+// ============================================================================
+
+/// gamma-WO3 (room-temperature monoclinic polymorph). Electrochromic;
+/// reversibly turns blue when intercalated with Li+ or H+.
+pub fn wo3_metadata() -> MineralMetadata {
+    MineralMetadata {
+        species_name: "tungsten_trioxide_gamma",
+        formula: "WO3",
+        crystal_system: "monoclinic",
+        space_group: "P2_1/n (14) gamma-WO3 (RT polymorph)",
+        n_omega: 2.50,
+        n_epsilon: 2.50,
+        birefringence: 0.0,
+        optic_sign: OpticSign::Biaxial,
+        hardness_mohs: 2.75,
+        density_g_cm3: 7.16,
+        color: "lemon-yellow polycrystalline; thin films electrochromic (yellow->deep blue)",
+        reference: "Tilley (1995) Defect Crystal Chemistry p.114; canonical WO3 polymorphism review.",
+    }
+}
+
+/// Cesium tungsten bronze Cs_xWO3 (0.18 <= x <= 0.33): hexagonal P6/mmm
+/// bronze with delocalized W 5d electrons. Used as a near-IR shielding
+/// transparent conductor.
+pub fn cs_wo3_metadata() -> MineralMetadata {
+    MineralMetadata {
+        species_name: "cesium_tungsten_bronze",
+        formula: "Cs_xWO3 (0.18..=0.33)",
+        crystal_system: "hexagonal",
+        space_group: "P6/mmm (191) hexagonal tungsten bronze (HTB)",
+        n_omega: 1.90,
+        n_epsilon: 1.95,
+        birefringence: 0.05,
+        optic_sign: OpticSign::Positive,
+        hardness_mohs: 3.0,
+        density_g_cm3: 6.6,
+        color: "deep blue to violet (carrier-induced plasma resonance)",
+        reference: "Magneli (1953) Acta Chem. Scand. 7, 315 (HTB structure); Takeda et al. (2008) Cs-WO3 IR shielding.",
+    }
+}
+
+/// Scheelite CaWO4: tetragonal I4_1/a. Used historically as a primary
+/// X-ray fluorescence screen ("scheelite green" line at 425 nm).
+pub fn cawo4_metadata() -> MineralMetadata {
+    MineralMetadata {
+        species_name: "scheelite_cawo4",
+        formula: "CaWO4",
+        crystal_system: "tetragonal",
+        space_group: "I4_1/a (88) scheelite",
+        n_omega: 1.918,
+        n_epsilon: 1.934,
+        birefringence: 0.016,
+        optic_sign: OpticSign::Positive,
+        hardness_mohs: 4.75,
+        density_g_cm3: 6.12,
+        color: "colorless to pale yellow; characteristic blue-white fluorescence under SW UV",
+        reference: "Nikl (2000) Phys. Status Solidi A 178, 595; mindat.org canonical scheelite entry.",
+    }
+}
+
+/// Stolzite-structured PbWO4: tetragonal I4_1/a. The fastest commercial
+/// scintillator (~10 ns decay); chosen as the CMS / ALICE ECAL calorimeter
+/// crystal at CERN. Uniaxial NEGATIVE.
+pub fn pbwo4_metadata() -> MineralMetadata {
+    MineralMetadata {
+        species_name: "stolzite_pbwo4",
+        formula: "PbWO4",
+        crystal_system: "tetragonal",
+        space_group: "I4_1/a (88) stolzite (scheelite-type)",
+        n_omega: 2.27,
+        n_epsilon: 2.24,
+        birefringence: 0.03,
+        optic_sign: OpticSign::Negative,
+        hardness_mohs: 3.0,
+        density_g_cm3: 8.28,
+        color: "pale yellow-green when pure; doped with Mo for radiation hardness in HEP calorimetry",
+        reference: "Nikl (2000) Phys. Status Solidi A 178, 595; LHC CMS PWO calorimeter design literature.",
+    }
 }

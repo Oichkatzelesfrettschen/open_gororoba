@@ -3503,7 +3503,8 @@ pub fn pedot_pss_optical() -> DrudeLorentzParams {
 // ============================================================================
 mod tungstates;
 pub use tungstates::{
-    cawo4_optical, cs_wo3_optical, cs_wo3_uniaxial, pbwo4_optical, wo3_optical, wo3_x_optical,
+    cawo4_metadata, cawo4_optical, cs_wo3_metadata, cs_wo3_optical, cs_wo3_uniaxial,
+    pbwo4_metadata, pbwo4_optical, wo3_metadata, wo3_optical, wo3_x_optical,
 };
 
 // ============================================================================
@@ -3530,10 +3531,12 @@ pub use oxides_tcos::{
 // ============================================================================
 mod metals_dl;
 pub use metals_dl::{
-    aluminum_drude_lorentz, aluminum_metadata, beryllium_drude_lorentz, chromium_drude_lorentz,
-    copper_drude_lorentz, copper_metadata, gold_drude_lorentz, gold_metadata, gold_rakic_ld,
-    nickel_drude_lorentz, palladium_drude_lorentz, platinum_drude_lorentz, silver_drude_lorentz,
-    silver_metadata, titanium_drude_lorentz, tungsten_drude_lorentz,
+    aluminum_drude_lorentz, aluminum_metadata, beryllium_drude_lorentz, beryllium_metadata,
+    chromium_drude_lorentz, chromium_metadata, copper_drude_lorentz, copper_metadata,
+    gold_drude_lorentz, gold_metadata, gold_rakic_ld, nickel_drude_lorentz, nickel_metadata,
+    palladium_drude_lorentz, palladium_metadata, platinum_drude_lorentz, platinum_metadata,
+    silver_drude_lorentz, silver_metadata, titanium_drude_lorentz, titanium_metadata,
+    tungsten_drude_lorentz, tungsten_metadata,
 };
 
 // ============================================================================
@@ -9843,6 +9846,24 @@ mod tests {
         assert_metadata_sane(silver_metadata());
         assert_metadata_sane(copper_metadata());
         assert_metadata_sane(aluminum_metadata());
+        assert_metadata_sane(beryllium_metadata());
+        assert_metadata_sane(chromium_metadata());
+        assert_metadata_sane(nickel_metadata());
+        assert_metadata_sane(palladium_metadata());
+        assert_metadata_sane(platinum_metadata());
+        assert_metadata_sane(titanium_metadata());
+        assert_metadata_sane(tungsten_metadata());
+    }
+
+    #[test]
+    fn test_metadata_accessors_tungstates() {
+        assert_metadata_sane(wo3_metadata());
+        assert_metadata_sane(cs_wo3_metadata());
+        assert_metadata_sane(cawo4_metadata());
+        assert_metadata_sane(pbwo4_metadata());
+        // CaWO4 + PbWO4 share scheelite I4_1/a (88) but have opposite optic signs.
+        assert_eq!(cawo4_metadata().optic_sign, OpticSign::Positive);
+        assert_eq!(pbwo4_metadata().optic_sign, OpticSign::Negative);
     }
 
     #[test]
