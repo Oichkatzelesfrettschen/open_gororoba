@@ -60,9 +60,14 @@ Legend:
 
 - Total kernels enumerated: 15
 - Full 3-way parity (CPU + CUDA + Vulkan, ideally also cubecl): 3 / 15
-  (TurboQuant + Box-counting + Chingon -- all have CPU oracles and a
-   runtime-probed cubecl path with seeded parity tests).
-- CUDA + Vulkan present (no cubecl): 2 / 15 (alignment, besag-clifford)
+  (TurboQuant + Box-counting + Chingon).
+- CPU + cubecl partial (no full Vulkan device-pipeline): 1 / 15
+  (transform_viscosity -- besag_clifford sub-kernel; shader exists but
+   device-pipeline not wired up for non-besag callers).
+- CUDA + Vulkan present (no cubecl): 1 / 15 (alignment, besag-clifford
+  full pipeline)
+- See docs/engineering/issue_136_phase2_finalization.md for the
+  per-cell deferral rationale.
 - CUDA only: 8 / 15 (LBM core, sparse LBM, dark-halo, kubo, lensing, voudon, GRMHD, MRT)
 - Vulkan only: 1 / 15 (coop-matrix probe; structurally NVIDIA-incompatible)
 - OptiX (NVIDIA-only, expected): 1 / 15
