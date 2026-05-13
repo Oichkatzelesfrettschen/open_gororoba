@@ -7,7 +7,8 @@
 //
 // Output files:
 //   $OUT_DIR/generated_nk_tables.rs     -- tabulated n,k const arrays (Phase 2)
-//   $OUT_DIR/generated_optical_params.rs -- Drude metal const arrays (Phase 3)
+//   $OUT_DIR/generated_optical_params.rs -- Drude metal + DrudeLorentz arrays
+//                                            (Phase 3 + Phase 5 / task #127)
 //   $OUT_DIR/generated_crystal_tables.rs -- all 230 ITA space groups (Phase 4 / task #58)
 
 use std::{
@@ -16,6 +17,7 @@ use std::{
     io::{BufRead, BufReader, Write},
     path::PathBuf,
 };
+use toml::Value;
 
 fn main() {
     let manifest = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
@@ -91,6 +93,11 @@ fn main() {
     .unwrap();
 
     emit_drude_metals(&mut optical_file, &drude_toml_path);
+
+    // ---------- Phase 5: Drude-Lorentz oscillator models (task #127) ----------
+    let lorentz_toml_path = data_optical.join("lorentz_models.toml");
+    println!("cargo:rerun-if-changed=data/optical/lorentz_models.toml");
+    emit_lorentz_models(&mut optical_file, &lorentz_toml_path);
 
     // ---------- Phase 4: crystal tables -- all 230 ITA space groups ----------
     // WHY: crystal_symmetry.rs::SpaceGroup::from_number previously had only 2 hardcoded
@@ -292,6 +299,97 @@ fn emit_drude_metals(out: &mut File, path: &PathBuf) {
             "pub const {name}: [f64; 3] = [{omega_p:?}, {gamma:?}, {eps_inf:?}];\n"
         )
         .unwrap();
+    }
+}
+
+/// Parse data/optical/lorentz_models.toml and emit, for each `[[material]]`
+/// entry:
+///
+///   pub const <NAME>_EPS_INF: f64 = X;
+///   pub const <NAME>_OSCILLATORS: &[[f64; 3]] =
+///       &[[strength, omega_0_ev, gamma_ev], ...];
+///
+/// The caller (materials_core::optical_database::*) reads
+/// SILICA_CASIMIR_EPS_INF + SILICA_CASIMIR_OSCILLATORS and rebuilds the
+/// `DrudeLorentzParams` struct at runtime. This codegen path moves
+/// ~30 hand-written constructor bodies' worth of literal arrays out of
+/// optical_database.rs's source surface, reducing rustc parse + CPD work.
+///
+/// Uses the `toml` crate as a build-dependency (vs the hand-rolled flat
+/// parser used for drude_metals.toml) because Lorentz models contain
+/// nested array-of-tables (`[[material.oscillators]]`) which the flat
+/// parser cannot represent.
+fn emit_lorentz_models(out: &mut File, path: &PathBuf) {
+    let raw = fs::read_to_string(path).unwrap_or_else(|e| panic!("cannot read {path:?}: {e}"));
+    // toml 1.x: use `toml::from_str` (the `FromStr` impl was narrowed to
+    // single-value parsing; documents need the explicit deserializer).
+    let doc: Value =
+        toml::from_str(&raw).unwrap_or_else(|e| panic!("parse {path:?}: {e}"));
+
+    let materials = doc
+        .get("material")
+        .and_then(Value::as_array)
+        .unwrap_or_else(|| panic!("{path:?} has no [[material]] entries"));
+
+    writeln!(
+        out,
+        "// ---------- DrudeLorentz oscillator models (Phase 5 / task #127) ----------\n\
+         // Source: crates/materials_data/data/optical/lorentz_models.toml"
+    )
+    .unwrap();
+
+    for mat in materials {
+        let table = mat
+            .as_table()
+            .unwrap_or_else(|| panic!("[[material]] entry is not a table in {path:?}"));
+        let name = table
+            .get("name")
+            .and_then(Value::as_str)
+            .unwrap_or_else(|| panic!("[[material]] missing `name` in {path:?}"));
+        let eps_inf = table
+            .get("eps_inf")
+            .and_then(Value::as_float)
+            .unwrap_or_else(|| panic!("[[material]] `{name}` missing eps_inf in {path:?}"));
+        let osc_array = table
+            .get("oscillators")
+            .and_then(Value::as_array)
+            .unwrap_or_else(|| {
+                panic!("[[material]] `{name}` missing [[material.oscillators]] in {path:?}")
+            });
+
+        writeln!(
+            out,
+            "\n/// High-frequency dielectric background eps_inf for {name}."
+        )
+        .unwrap();
+        writeln!(out, "#[allow(dead_code)]").unwrap();
+        writeln!(out, "pub const {name}_EPS_INF: f64 = {eps_inf:?};").unwrap();
+
+        writeln!(
+            out,
+            "/// Lorentz oscillators for {name}: each row is `[strength, omega_0_ev, gamma_ev]`."
+        )
+        .unwrap();
+        writeln!(out, "#[allow(dead_code)]").unwrap();
+        writeln!(out, "pub const {name}_OSCILLATORS: &[[f64; 3]] = &[").unwrap();
+        for (i, osc) in osc_array.iter().enumerate() {
+            let ot = osc.as_table().unwrap_or_else(|| {
+                panic!("[[material.oscillators]][{i}] of `{name}` is not a table")
+            });
+            let strength = ot
+                .get("strength")
+                .and_then(Value::as_float)
+                .unwrap_or_else(|| panic!("oscillator[{i}] of `{name}` missing strength"));
+            let omega = ot.get("omega_0_ev").and_then(Value::as_float).unwrap_or_else(
+                || panic!("oscillator[{i}] of `{name}` missing omega_0_ev"),
+            );
+            let gamma = ot
+                .get("gamma_ev")
+                .and_then(Value::as_float)
+                .unwrap_or_else(|| panic!("oscillator[{i}] of `{name}` missing gamma_ev"));
+            writeln!(out, "    [{strength:?}, {omega:?}, {gamma:?}],").unwrap();
+        }
+        writeln!(out, "];").unwrap();
     }
 }
 

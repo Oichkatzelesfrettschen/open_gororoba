@@ -9,6 +9,13 @@ build = "build.rs"
 # No runtime dependencies -- this crate is purely data.
 [dependencies]
 
+# Build-time only: parse data/optical/lorentz_models.toml's
+# nested oscillator arrays (the existing hand-rolled flat parser
+# in build.rs handles drude_metals.toml but cannot represent
+# the per-material variable-length oscillator vectors).
+[build-dependencies]
+toml = { workspace = true }
+
 [dev-dependencies]
 
 [lints]

@@ -1,0 +1,41 @@
+# Drude-Lorentz optical models -- DrudeLorentzParams constructors that
+# pair an optional Drude free-carrier response with one or more Lorentz
+# oscillators plus a high-frequency dielectric background (eps_inf).
+#
+# Each [[material]] entry emits two constants:
+#   pub const <NAME>_EPS_INF: f64 = X;
+#   pub const <NAME>_OSCILLATORS: &[[f64; 3]] =
+#       &[[strength, omega_0_ev, gamma_ev], ...];
+#
+# (Drude-component-free materials only for now; a future iteration can
+# add `drude_omega_p_ev / drude_gamma_ev` scalar fields for combined
+# Drude+Lorentz models like the metal Drude-Lorentz variants.)
+#
+# Fields:
+#   name        -- const prefix (e.g. "SILICA_CASIMIR" -> SILICA_CASIMIR_*)
+#   eps_inf     -- high-frequency dielectric background
+#   oscillators -- array of {strength, omega_0_ev, gamma_ev} tables
+#   reference   -- literature source (ignored by build.rs, for humans)
+
+[[material]]
+name = "SILICA_CASIMIR"
+eps_inf = 2.1
+reference = "Lambrecht & Reynaud (2000) Lifshitz Casimir calculations; Palik handbook IR phonon assignments. eps(0) = 2.1 + 0.185 + 0.115 + 1.400 = 3.800 matches measured static dielectric."
+
+[[material.oscillators]]
+# IR1: Si-O rocking mode (460 cm^{-1} = 0.057 eV)
+strength = 0.185
+omega_0_ev = 0.057
+gamma_ev = 0.003
+
+[[material.oscillators]]
+# IR2: Si-O bending mode (800 cm^{-1} = 0.099 eV)
+strength = 0.115
+omega_0_ev = 0.099
+gamma_ev = 0.005
+
+[[material.oscillators]]
+# IR3: Si-O stretching mode (1075 cm^{-1} = 0.133 eV), dominant
+strength = 1.400
+omega_0_ev = 0.133
+gamma_ev = 0.012

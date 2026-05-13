@@ -79,31 +79,22 @@ pub fn silica_optical() -> DrudeLorentzParams {
 ///
 /// No explicit UV oscillator: eps_inf=2.1 already encodes the UV edge contribution.
 pub fn silica_casimir_optical() -> DrudeLorentzParams {
+    // Parameters codegen'd from crates/materials_data/data/optical/lorentz_models.toml
+    // (build.rs::emit_lorentz_models). The three oscillators are the
+    // Si-O rocking (460 cm^{-1}), bending (800 cm^{-1}), and stretching
+    // (1075 cm^{-1}) IR modes. eps_inf = n^2 = 1.45^2 = 2.10 (UV edge
+    // already encoded). Check: eps(0) = 2.1 + 0.185 + 0.115 + 1.400 = 3.800.
     DrudeLorentzParams {
         drude: None,
-        oscillators: vec![
-            // IR1: Si-O rocking mode (460 cm^{-1} = 0.057 eV)
-            LorentzOscillator {
-                strength: 0.185,
-                omega_0_ev: 0.057,
-                gamma_ev: 0.003,
-            },
-            // IR2: Si-O bending mode (800 cm^{-1} = 0.099 eV)
-            LorentzOscillator {
-                strength: 0.115,
-                omega_0_ev: 0.099,
-                gamma_ev: 0.005,
-            },
-            // IR3: Si-O stretching mode (1075 cm^{-1} = 0.133 eV), dominant
-            LorentzOscillator {
-                strength: 1.400,
-                omega_0_ev: 0.133,
-                gamma_ev: 0.012,
-            },
-        ],
-        // eps_inf = n^2 = 1.45^2 = 2.10; UV edge already encoded.
-        // Verify: eps(0) = 2.1 + 0.185 + 0.115 + 1.400 = 3.800
-        eps_inf: 2.1,
+        oscillators: materials_data::SILICA_CASIMIR_OSCILLATORS
+            .iter()
+            .map(|&[strength, omega_0_ev, gamma_ev]| LorentzOscillator {
+                strength,
+                omega_0_ev,
+                gamma_ev,
+            })
+            .collect(),
+        eps_inf: materials_data::SILICA_CASIMIR_EPS_INF,
         extended_drude: None,
     }
 }
