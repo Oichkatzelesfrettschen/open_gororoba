@@ -806,210 +806,14 @@ impl DrudeLorentzParams {
 
 
     // ====================================================================
-    // Temperature-dependent optical + effective medium (Part 8)
+    // Temperature + dispersion engineering + nonlinear optics (Parts 8-9)
     // ====================================================================
+    // 9 methods (at_temperature, optical_effective_mass, gvd_beta2,
+    // gvd_fs2_per_mm, dispersion_regime, zero_dispersion_omega,
+    // chi3_miller_estimate, kerr_n2_estimate, beta_tpa_estimate)
+    // extracted to the `temperature_dispersion` submodule (#138 PH-MOD).
+    // See optical_database/temperature_dispersion.rs.
 
-    /// Return a new DrudeLorentzParams with thermally broadened oscillators.
-    ///
-    /// Phonon oscillator damping increases with temperature via the
-    /// Bose-Einstein occupation factor:
-    ///   gamma_j(T) = gamma_j(0) * coth(hbar*omega_0j / (2*k_B*T))
-    ///
-    /// At T=0: coth -> 1, so gamma(0) = gamma_0 (no broadening).
-    /// At high T: coth(x) -> 1/x, so gamma ~ gamma_0 * 2*k_B*T / (hbar*omega_0)
-    /// (classical linear broadening).
-    ///
-    /// Drude damping also increases with temperature:
-    ///   gamma_Drude(T) = gamma_0 * (1 + (T/T_Debye)^2) approximately
-    /// Here we use the simpler Bloch-Gruneisen T^2 correction with
-    /// a user-supplied Debye temperature.
-    pub fn at_temperature(&self, temperature_k: f64, debye_t_k: Option<f64>) -> Self {
-        let broadened_oscs: Vec<LorentzOscillator> = self
-            .oscillators
-            .iter()
-            .map(|osc| {
-                let x = osc.omega_0_ev / (2.0 * K_B_EV * temperature_k);
-                let coth = if x > 20.0 {
-                    1.0 // coth(x) -> 1 for large x
-                } else if x < 0.01 {
-                    1.0 / x // coth(x) -> 1/x for small x (high T limit)
-                } else {
-                    (x.exp() + (-x).exp()) / (x.exp() - (-x).exp())
-                };
-                LorentzOscillator {
-                    strength: osc.strength,
-                    omega_0_ev: osc.omega_0_ev,
-                    gamma_ev: osc.gamma_ev * coth,
-                }
-            })
-            .collect();
-
-        let broadened_drude = self.drude.map(|d| {
-            let t_ratio_sq = if let Some(t_d) = debye_t_k {
-                (temperature_k / t_d).powi(2)
-            } else {
-                0.0
-            };
-            DrudeParams {
-                omega_p_ev: d.omega_p_ev,
-                gamma_ev: d.gamma_ev * (1.0 + t_ratio_sq),
-                eps_inf: d.eps_inf,
-            }
-        });
-
-        DrudeLorentzParams {
-            drude: broadened_drude,
-            oscillators: broadened_oscs,
-            eps_inf: self.eps_inf,
-            extended_drude: self.extended_drude.clone(),
-        }
-    }
-
-    /// Optical effective mass in units of free electron mass.
-    ///
-    /// From the Drude plasma frequency: omega_p^2 = n*e^2/(eps_0*m*)
-    /// => m* = n*e^2/(eps_0*omega_p^2)
-    ///
-    /// Requires the carrier density n in m^-3. Returns m*/m_e (dimensionless).
-    /// Returns None for non-metallic materials.
-    pub fn optical_effective_mass(&self, carrier_density: f64) -> Option<f64> {
-        let omega_p = if let Some(ext) = &self.extended_drude {
-            ext.omega_p_ev * EV_TO_RADS
-        } else if let Some(drude) = &self.drude {
-            drude.omega_p_ev * EV_TO_RADS
-        } else {
-            return None;
-        };
-        let m_star = carrier_density * E_CHARGE * E_CHARGE / (EPS_0 * omega_p * omega_p);
-        Some(m_star / M_E_KG)
-    }
-
-    // Effective-medium + dielectric-contrast methods (4) extracted to the
-    // `effective_medium_methods` submodule (#138 PH-MOD split). See
-    // `crates/materials_core/src/optical_database/effective_medium_methods.rs`.
-
-    // ---- Part 9: Dispersion engineering + Nonlinear optics estimates ----
-
-    /// Group velocity dispersion parameter beta_2 in s^2/m.
-    ///
-    /// beta_2 = d^2 k / d omega^2 = (1/c) * d(n_g)/d(omega)
-    /// where n_g = n + omega * dn/domega is the group index.
-    /// Positive beta_2 = normal dispersion (red faster), negative = anomalous.
-    /// Computed via finite differences on the group index.
-    pub fn gvd_beta2(&self, omega: f64) -> f64 {
-        let delta = omega * 1e-4;
-        let ng_plus = self.group_refractive_index(omega + delta);
-        let ng_minus = self.group_refractive_index(omega - delta);
-        let dng_domega = (ng_plus - ng_minus) / (2.0 * delta);
-        dng_domega / C
-    }
-
-    /// GVD in fs^2/mm (common ultrafast optics unit).
-    ///
-    /// Converts beta_2 from s^2/m to fs^2/mm: multiply by 1e30 (1e30 = 1e-3/1e-30*1e-3).
-    /// Typical values: silica at 800 nm ~ +36 fs^2/mm (normal), at 1550 nm ~ -26 (anomalous).
-    pub fn gvd_fs2_per_mm(&self, omega: f64) -> f64 {
-        self.gvd_beta2(omega) * 1e27
-    }
-
-    /// Dispersion classification at a given frequency.
-    ///
-    /// Returns +1 for normal dispersion (beta_2 > 0, longer pulses broaden),
-    /// -1 for anomalous (beta_2 < 0, soliton formation possible),
-    /// 0 if |beta_2| < 1e-30 (effectively zero dispersion).
-    pub fn dispersion_regime(&self, omega: f64) -> i32 {
-        let beta2 = self.gvd_beta2(omega);
-        if beta2 > 1e-30 {
-            1
-        } else if beta2 < -1e-30 {
-            -1
-        } else {
-            0
-        }
-    }
-
-    /// Zero-dispersion frequency finder in rad/s.
-    ///
-    /// Scans the range [omega_min, omega_max] for where beta_2 crosses zero.
-    /// Returns None if no crossing found. For silica, this is around 1.27 um
-    /// wavelength (1.49e15 rad/s).
-    pub fn zero_dispersion_omega(&self, omega_min: f64, omega_max: f64) -> Option<f64> {
-        let steps: usize = 2000;
-        let domega = (omega_max - omega_min) / steps as f64;
-        let mut prev_beta2 = self.gvd_beta2(omega_min);
-        for i in 1..=steps {
-            let omega = omega_min + i as f64 * domega;
-            let beta2 = self.gvd_beta2(omega);
-            if (prev_beta2 > 0.0 && beta2 <= 0.0) || (prev_beta2 < 0.0 && beta2 >= 0.0) {
-                // Linear interpolation
-                let frac = prev_beta2.abs() / (prev_beta2.abs() + beta2.abs());
-                return Some(omega - domega + frac * domega);
-            }
-            prev_beta2 = beta2;
-        }
-        None
-    }
-
-    /// Third-order nonlinear susceptibility estimate chi^(3) in m^2/V^2.
-    ///
-    /// Uses Miller's rule generalization: chi^(3)(omega) ~ delta * [chi^(1)(omega)]^4
-    /// where chi^(1) = eps - 1 and delta ~ 4.52e-24 m^2/V^2 (Miller delta for
-    /// typical dielectrics). This is a semi-empirical scaling; actual chi^(3)
-    /// can differ by order of magnitude due to resonant enhancement, many-body
-    /// effects, etc. Returns the magnitude (positive real).
-    ///
-    /// Reference: Miller (1964), Appl. Phys. Lett. 5(1), 17-19.
-    pub fn chi3_miller_estimate(&self, omega: f64) -> f64 {
-        let miller_delta: f64 = 4.52e-24; // m^2/V^2
-        let chi1 = self.epsilon(omega) - 1.0;
-        let chi1_sq = chi1.norm_sqr();
-        miller_delta * chi1_sq * chi1_sq
-    }
-
-    /// Kerr nonlinear refractive index n_2 in m^2/W.
-    ///
-    /// n_2 = 3 * chi^(3) / (4 * eps_0 * c * n^2) where n is the real
-    /// refractive index and chi^(3) is from Miller's rule.
-    /// Typical values: silica ~ 2.2e-20 m^2/W, CS2 ~ 3e-18 m^2/W.
-    pub fn kerr_n2_estimate(&self, omega: f64) -> f64 {
-        let chi3 = self.chi3_miller_estimate(omega);
-        let n = self.refractive_index(omega).re;
-        if n < 1e-10 {
-            return 0.0;
-        }
-        3.0 * chi3 / (4.0 * EPS_0 * C * n * n)
-    }
-
-    /// Two-photon absorption coefficient beta_TPA in m/W (Sheik-Bahae model).
-    ///
-    /// beta_TPA = K * sqrt(E_p) * F_2(x) / (n^2 * E_g^3)
-    /// where x = 2*hv/E_g, E_p = 21 eV (Kane energy), E_g is the band gap,
-    /// and F_2(x) = (2x-1)^(3/2) / (2x)^5 for x > 0.5 (two-photon allowed).
-    /// K ~ 1940 in units giving beta in cm/GW; converted to m/W.
-    ///
-    /// Returns None if no Tauc gap found or if 2*hv < E_g (below threshold).
-    /// Reference: Sheik-Bahae et al. (1991), IEEE J. Quantum Electron. 27(6).
-    pub fn beta_tpa_estimate(&self, omega: f64) -> Option<f64> {
-        let e_g = self.tauc_gap_ev(2.0)?; // direct gap
-        let hv = omega / EV_TO_RADS;
-        let x = 2.0 * hv / e_g;
-        if x <= 0.5 {
-            return None; // Below two-photon threshold
-        }
-        let n = self.refractive_index(omega).re;
-        if n < 1e-10 {
-            return None;
-        }
-        let e_p: f64 = 21.0; // Kane energy in eV
-        let f2 = (2.0 * x - 1.0).powf(1.5) / (2.0 * x).powi(5);
-        // K = 1940 cm/GW = 1940 * 1e-2 / 1e9 m/W = 1.94e-8 m/W
-        // but E_g and E_p are in eV, need conversion:
-        // beta = K * sqrt(E_p) * F_2 / (n^2 * E_g^3)
-        // with K including the unit conversion
-        let k_si: f64 = 1.94e-8; // m/W (converted from 1940 cm/GW)
-        let beta = k_si * e_p.sqrt() * f2 / (n * n * e_g.powi(3));
-        Some(beta)
-    }
 
     // SPP / LSPR plasmonics methods (4) extracted to the `plasmonics` submodule
     // (#138 PH-MOD split). See optical_database/plasmonics.rs.
@@ -1024,179 +828,13 @@ impl DrudeLorentzParams {
 
 
     // ========================================================================
-    // Part 12: Ellipsometry, Thermal Emission, ENZ Physics
+    // Part 12: Ellipsometry + thermal emission + ENZ + Reststrahlen
     // ========================================================================
+    // 7 methods (psi_delta, emissivity, spectral_emittance,
+    // integrated_emissivity, enz_frequency, enz_group_velocity,
+    // reststrahlen_band) extracted to the `ellipsometry_thermal_enz`
+    // submodule (#138 PH-MOD split).
 
-    /// Spectroscopic ellipsometry angles (psi, delta) at frequency omega and
-    /// angle of incidence theta_i (radians).
-    ///
-    /// Ellipsometry measures rho = r_p / r_s = tan(psi) * exp(i*delta).
-    /// Returns (psi, delta) in radians.
-    pub fn psi_delta(&self, omega: f64, theta_i: f64) -> (f64, f64) {
-        let rs = self.fresnel_rs(omega, theta_i, 1.0);
-        let rp = self.fresnel_rp(omega, theta_i, 1.0);
-        let rho = if rs.norm() < 1e-30 {
-            Complex64::new(0.0, 0.0)
-        } else {
-            rp / rs
-        };
-        let psi = rho.norm().atan();
-        let delta = rho.arg();
-        (psi, delta)
-    }
-
-    /// Emissivity at frequency omega for an opaque material (Kirchhoff's law).
-    ///
-    /// For an opaque (thick) slab: emissivity = absorptivity = 1 - reflectivity.
-    /// This is the normal-incidence hemispherical emissivity.
-    pub fn emissivity(&self, omega: f64) -> f64 {
-        1.0 - self.reflectivity_normal(omega)
-    }
-
-    /// Spectral radiance (W / m^2 / sr / (rad/s)) at frequency omega and
-    /// temperature T, accounting for material emissivity.
-    ///
-    /// L(omega, T) = emissivity(omega) * B(omega, T)
-    /// where B is the Planck function:
-    /// B(omega, T) = hbar * omega^3 / (4 * pi^3 * c^2 * (exp(hbar*omega/(k_B*T)) - 1))
-    pub fn spectral_emittance(&self, omega: f64, temperature_k: f64) -> f64 {
-        if temperature_k < 1e-10 || omega < 1e-10 {
-            return 0.0;
-        }
-        let hbar = HBAR_EV_S * 1.602_176_634e-19; // J*s
-        let k_b = K_B_EV * 1.602_176_634e-19; // J/K
-        let x = hbar * omega / (k_b * temperature_k);
-        // Prevent overflow for large x
-        if x > 500.0 {
-            return 0.0;
-        }
-        let planck =
-            hbar * omega.powi(3) / (4.0 * std::f64::consts::PI.powi(3) * C * C * (x.exp() - 1.0));
-        self.emissivity(omega) * planck
-    }
-
-    /// Integrated emissivity over a frequency range, weighted by Planck function.
-    ///
-    /// eta_total = integral[emissivity(omega) * B(omega, T)] / integral[B(omega, T)]
-    /// Integrates from omega_min to omega_max with trapezoidal rule.
-    pub fn integrated_emissivity(
-        &self,
-        temperature_k: f64,
-        omega_min: f64,
-        omega_max: f64,
-        n_steps: usize,
-    ) -> f64 {
-        if n_steps < 2 || omega_max <= omega_min {
-            return 0.0;
-        }
-        let hbar = HBAR_EV_S * 1.602_176_634e-19;
-        let k_b = K_B_EV * 1.602_176_634e-19;
-        let d_omega = (omega_max - omega_min) / n_steps as f64;
-        let mut num = 0.0;
-        let mut den = 0.0;
-        for i in 0..=n_steps {
-            let omega = omega_min + i as f64 * d_omega;
-            let x = hbar * omega / (k_b * temperature_k);
-            if !(1e-30..=500.0).contains(&x) {
-                continue;
-            }
-            let planck = omega.powi(3) / (x.exp() - 1.0);
-            let w = if i == 0 || i == n_steps { 0.5 } else { 1.0 };
-            num += w * self.emissivity(omega) * planck;
-            den += w * planck;
-        }
-        if den < 1e-30 {
-            return 0.0;
-        }
-        num / den
-    }
-
-    /// Epsilon-near-zero (ENZ) frequency: where Re[epsilon(omega)] crosses zero.
-    ///
-    /// Scans from scan_min to scan_max (rad/s) looking for a sign change in
-    /// `Re[epsilon]`. Returns the frequency in `rad/s` via bisection.
-    /// For metals, this is the screened plasma frequency.
-    pub fn enz_frequency(&self, scan_min: f64, scan_max: f64) -> Option<f64> {
-        let n_scan = 2000;
-        let d_omega = (scan_max - scan_min) / n_scan as f64;
-        let mut prev_re = self.epsilon(scan_min).re;
-        let mut crossing_omega = None;
-        for i in 1..=n_scan {
-            let omega = scan_min + i as f64 * d_omega;
-            let re = self.epsilon(omega).re;
-            if prev_re * re < 0.0 {
-                // Bisect
-                let mut lo = omega - d_omega;
-                let mut hi = omega;
-                for _ in 0..60 {
-                    let mid = 0.5 * (lo + hi);
-                    let mid_re = self.epsilon(mid).re;
-                    if prev_re * mid_re < 0.0 {
-                        hi = mid;
-                    } else {
-                        lo = mid;
-                        prev_re = mid_re;
-                    }
-                }
-                crossing_omega = Some(0.5 * (lo + hi));
-                break;
-            }
-            prev_re = re;
-        }
-        crossing_omega
-    }
-
-    /// Group velocity at the ENZ frequency, normalized to c.
-    ///
-    /// `v_g/c = 1 / Re[n_g]` where `n_g = n + omega * dn/domega`.
-    /// At the ENZ point, `Re[eps] ~ 0` so the phase velocity diverges, but the
-    /// group velocity remains finite and can be very slow (slow light).
-    /// Returns v_g/c, or None if no ENZ crossing exists.
-    pub fn enz_group_velocity(&self, scan_min: f64, scan_max: f64) -> Option<f64> {
-        let omega_enz = self.enz_frequency(scan_min, scan_max)?;
-        let n_g = self.group_refractive_index(omega_enz);
-        if n_g.abs() < 1e-30 {
-            return None;
-        }
-        Some(1.0 / n_g)
-    }
-
-    /// Reststrahlen band boundaries for polar dielectrics.
-    ///
-    /// In a polar dielectric with TO and LO phonon frequencies, the region
-    /// `omega_TO < omega < omega_LO` has `Re[eps] < 0` (metallic-like behavior).
-    /// This method returns (omega_TO, omega_LO) in rad/s if such a band exists,
-    /// detected from the Lorentz oscillators.
-    ///
-    /// The LO frequency is estimated from the Lyddane-Sachs-Teller relation:
-    /// omega_LO^2 = omega_TO^2 * eps_static / eps_inf
-    pub fn reststrahlen_band(&self) -> Option<(f64, f64)> {
-        if self.oscillators.is_empty() {
-            return None;
-        }
-        // Find the strongest oscillator (largest S parameter)
-        let strongest = self.oscillators.iter().max_by(|a, b| {
-            a.strength
-                .partial_cmp(&b.strength)
-                .unwrap_or(std::cmp::Ordering::Equal)
-        })?;
-
-        let omega_to = strongest.omega_0_ev * EV_TO_RADS;
-
-        // LST relation: omega_LO^2 / omega_TO^2 = eps_static / eps_inf
-        // eps_static = eps_inf + sum(S_j * omega_0j^2 / omega_0j^2) = eps_inf + sum(S_j)
-        // for a single oscillator at omega_TO
-        let eps_s = self.eps_inf + strongest.strength;
-        if eps_s < 1e-10 || self.eps_inf < 1e-10 {
-            return None;
-        }
-        let lst_ratio = eps_s / self.eps_inf;
-        if lst_ratio <= 1.0 {
-            return None;
-        }
-        let omega_lo = omega_to * lst_ratio.sqrt();
-        Some((omega_to, omega_lo))
-    }
 
     // ========================================================================
     // Part 13: EELS, Photonic Density of States, Absorption Engineering
@@ -2637,10 +2275,12 @@ pub use semiconductors::{
 mod bandgap_analysis;
 mod effective_medium_methods;
 mod electro_optic;
+mod ellipsometry_thermal_enz;
 mod fresnel;
 mod photonic_crystals;
 mod plasmonics;
 mod sum_rules_kk;
+mod temperature_dispersion;
 mod transport;
 
 // ============================================================================
