@@ -855,261 +855,21 @@ impl DrudeLorentzParams {
 
 
     // ========================================================================
-    // Part 15: Photovoltaic and Solar Energy Metrics
+    // Part 15: Photovoltaic + solar energy + TPV metrics
     // ========================================================================
+    // 7 methods (solar_absorptance, solar_reflectance, antireflection_thickness,
+    // wien_peak_omega, wien_peak_ev, luminous_reflectance,
+    // selective_emitter_efficiency) extracted to `photovoltaic_solar`
+    // submodule (#138 PH-MOD).
 
-    /// Solar-weighted absorptance using simplified AM1.5G spectrum.
-    ///
-    /// A_solar = integral[A(E) * S(E) dE] / integral[S(E) dE]
-    /// where A(E) = 1 - R(E) for opaque materials, and S(E) is the AM1.5G
-    /// spectral irradiance approximated as a 5800K blackbody * atmospheric
-    /// transmission window (0.3 - 4.0 eV, peak ~2.5 eV).
-    pub fn solar_absorptance(&self, n_steps: usize) -> f64 {
-        if n_steps < 2 {
-            return 0.0;
-        }
-        let e_min = 0.3; // eV (4.1 um cutoff, atmospheric IR)
-        let e_max = 4.0; // eV (310 nm UV cutoff, ozone)
-        let de = (e_max - e_min) / n_steps as f64;
-        // AM1.5G approximation: 5800K blackbody envelope
-        let t_sun = 5800.0;
-        let mut num = 0.0;
-        let mut den = 0.0;
-        for i in 0..=n_steps {
-            let e_ev = e_min + i as f64 * de;
-            let omega = ev_to_omega(e_ev);
-            // Planck-like weighting: E^3 / (exp(E/(k_B*T_sun)) - 1)
-            let x = e_ev / (K_B_EV * t_sun);
-            if x > 500.0 {
-                continue;
-            }
-            let weight = e_ev.powi(3) / (x.exp() - 1.0);
-            let absorptance = self.emissivity(omega); // 1 - R for opaque
-            let w = if i == 0 || i == n_steps { 0.5 } else { 1.0 };
-            num += w * absorptance * weight;
-            den += w * weight;
-        }
-        if den < 1e-30 {
-            return 0.0;
-        }
-        num / den
-    }
-
-    /// Solar-weighted reflectance (complement of absorptance for opaque materials).
-    pub fn solar_reflectance(&self, n_steps: usize) -> f64 {
-        1.0 - self.solar_absorptance(n_steps)
-    }
-
-    /// Quarter-wave antireflection coating thickness.
-    ///
-    /// For a single-layer AR coating with refractive index n_coating on a
-    /// substrate with refractive index n_sub:
-    /// - Ideal n_coating = sqrt(n_sub) for minimum reflection
-    /// - Thickness d = lambda / (4 * n_coating) for destructive interference
-    ///
-    /// Returns the thickness in meters for the given frequency.
-    pub fn antireflection_thickness(&self, omega: f64) -> f64 {
-        let n_sub = self.refractive_index(omega).re;
-        let n_coating = n_sub.abs().sqrt();
-        let lambda = 2.0 * std::f64::consts::PI * C / omega;
-        lambda / (4.0 * n_coating)
-    }
-
-    /// Wien displacement law: peak emission frequency for a blackbody at
-    /// the given temperature.
-    ///
-    /// omega_peak = alpha * k_B * T / hbar
-    /// where alpha ~ 2.821 (root of x = 3*(1-e^(-x))).
-    /// Returns the peak angular frequency in rad/s.
-    pub fn wien_peak_omega(temperature_k: f64) -> f64 {
-        let alpha = 2.821_439_372; // solution of x = 3*(1 - exp(-x))
-        let hbar_j = HBAR_EV_S * 1.602_176_634e-19;
-        let k_b_j = K_B_EV * 1.602_176_634e-19;
-        alpha * k_b_j * temperature_k / hbar_j
-    }
-
-    /// Wien peak energy in eV for a blackbody at the given temperature.
-    pub fn wien_peak_ev(temperature_k: f64) -> f64 {
-        2.821_439_372 * K_B_EV * temperature_k
-    }
-
-    /// Luminous reflectance: reflectance weighted by CIE photopic luminosity function.
-    ///
-    /// The photopic luminosity function V(lambda) peaks at 555 nm (2.23 eV)
-    /// and spans ~380-780 nm (1.59-3.26 eV). We approximate V(lambda) as a
-    /// Gaussian centered at 2.23 eV with FWHM ~0.8 eV.
-    pub fn luminous_reflectance(&self, n_steps: usize) -> f64 {
-        if n_steps < 2 {
-            return 0.0;
-        }
-        let e_min = 1.59; // eV (780 nm)
-        let e_max = 3.26; // eV (380 nm)
-        let de = (e_max - e_min) / n_steps as f64;
-        let center_ev = 2.23; // 555 nm peak
-        let sigma = 0.34; // Gaussian sigma (~0.8 eV FWHM)
-        let mut num = 0.0;
-        let mut den = 0.0;
-        for i in 0..=n_steps {
-            let e_ev = e_min + i as f64 * de;
-            let omega = ev_to_omega(e_ev);
-            // Gaussian approximation to photopic luminosity
-            let v = (-0.5 * ((e_ev - center_ev) / sigma).powi(2)).exp();
-            let r = self.reflectivity_normal(omega);
-            let w = if i == 0 || i == n_steps { 0.5 } else { 1.0 };
-            num += w * r * v;
-            den += w * v;
-        }
-        if den < 1e-30 {
-            return 0.0;
-        }
-        num / den
-    }
-
-    /// Selective emitter efficiency for thermophotovoltaics.
-    ///
-    /// eta = integral[e(omega) * B(omega, T_hot) d_omega, omega > omega_gap]
-    ///     / integral[e(omega) * B(omega, T_hot) d_omega, all omega]
-    ///
-    /// This measures what fraction of thermal emission falls above the PV cell
-    /// band gap (useful photons) vs total emission (including sub-gap waste).
-    /// omega_gap is estimated from absorption_onset_ev().
-    pub fn selective_emitter_efficiency(
-        &self,
-        temperature_k: f64,
-        omega_gap: f64,
-        omega_min: f64,
-        omega_max: f64,
-        n_steps: usize,
-    ) -> f64 {
-        if n_steps < 2 || omega_max <= omega_min {
-            return 0.0;
-        }
-        let hbar = HBAR_EV_S * 1.602_176_634e-19;
-        let k_b = K_B_EV * 1.602_176_634e-19;
-        let d_omega = (omega_max - omega_min) / n_steps as f64;
-        let mut above_gap = 0.0;
-        let mut total = 0.0;
-        for i in 0..=n_steps {
-            let omega = omega_min + i as f64 * d_omega;
-            let x = hbar * omega / (k_b * temperature_k);
-            if !(1e-30..=500.0).contains(&x) {
-                continue;
-            }
-            let planck = omega.powi(3) / (x.exp() - 1.0);
-            let e = self.emissivity(omega);
-            let w = if i == 0 || i == n_steps { 0.5 } else { 1.0 };
-            let contribution = w * e * planck;
-            total += contribution;
-            if omega >= omega_gap {
-                above_gap += contribution;
-            }
-        }
-        if total < 1e-30 {
-            return 0.0;
-        }
-        above_gap / total
-    }
 
     // ========================================================================
-    // Part 16a: Photonic Crystal and Waveguide Metrics
+    // Part 16a: Photonic crystal + waveguide metrics
     // ========================================================================
-
-    /// Numerical aperture for a step-index fiber with this material as core.
-    ///
-    /// NA = sqrt(n_core^2 - n_clad^2), where n_core = Re[n(omega)].
-    /// Returns None if n_core < n_cladding (no guiding condition).
-    pub fn numerical_aperture(&self, omega: f64, n_cladding: f64) -> Option<f64> {
-        let n_core = self.refractive_index(omega).re;
-        let diff = n_core * n_core - n_cladding * n_cladding;
-        if diff > 0.0 { Some(diff.sqrt()) } else { None }
-    }
-
-    /// V-parameter (normalized frequency) for step-index fiber.
-    ///
-    /// V = (2*pi/lambda) * a * NA. Single-mode cutoff at V = 2.405 (LP11).
-    /// Returns None if no guiding condition exists.
-    pub fn v_parameter(&self, omega: f64, core_radius_m: f64, n_cladding: f64) -> Option<f64> {
-        let na = self.numerical_aperture(omega, n_cladding)?;
-        let lambda = 2.0 * PI * C / omega;
-        Some(2.0 * PI * core_radius_m / lambda * na)
-    }
-
-    /// Confinement factor Gamma: fraction of optical power within the fiber core.
-    ///
-    /// Gaussian approximation: Gamma = 1 - exp(-2*(a/w)^2), where the mode
-    /// field radius w ~ a * (0.65 + 1.619/V^1.5 + 2.879/V^6) (Marcuse formula).
-    /// Returns None if V < 0.8 (formula invalid) or no guiding.
-    pub fn confinement_factor(
-        &self,
-        omega: f64,
-        core_radius_m: f64,
-        n_cladding: f64,
-    ) -> Option<f64> {
-        let v = self.v_parameter(omega, core_radius_m, n_cladding)?;
-        if v < 0.8 {
-            return None;
-        }
-        let w_over_a = 0.65 + 1.619 / v.powf(1.5) + 2.879 / v.powi(6);
-        let gamma = 1.0 - (-2.0 / (w_over_a * w_over_a)).exp();
-        Some(gamma)
-    }
-
-    /// Effective mode area A_eff for single-mode fiber (Gaussian approximation).
-    ///
-    /// A_eff = pi * w^2 where w = a * (0.65 + 1.619/V^1.5 + 2.879/V^6).
-    /// Returns None if V < 0.8 or no guiding.
-    pub fn effective_mode_area(
-        &self,
-        omega: f64,
-        core_radius_m: f64,
-        n_cladding: f64,
-    ) -> Option<f64> {
-        let v = self.v_parameter(omega, core_radius_m, n_cladding)?;
-        if v < 0.8 {
-            return None;
-        }
-        let w = core_radius_m * (0.65 + 1.619 / v.powf(1.5) + 2.879 / v.powi(6));
-        Some(PI * w * w)
-    }
-
-    /// Modal birefringence: difference between `Re[n]` at two polarizations.
-    ///
-    /// For isotropic DL materials this is zero by symmetry, but for materials
-    /// with strong absorption the effective birefringence `|n - n*| = 2*Im[n]`
-    /// characterizes polarization-dependent loss.
-    pub fn modal_birefringence(&self, omega: f64) -> f64 {
-        let n = self.refractive_index(omega);
-        2.0 * n.im.abs()
-    }
-
-    /// Critical bend radius below which radiation loss dominates in fiber.
-    ///
-    /// R_c ~ (2*pi*n_eff / lambda) * (n_core^2 - n_clad^2)^(-3/2) * exp(const).
-    /// Simplified: R_c = lambda / (pi * NA^3) * n_eff (Unger formula).
-    /// Returns None if no guiding condition.
-    pub fn bend_loss_critical_radius(&self, omega: f64, n_cladding: f64) -> Option<f64> {
-        let na = self.numerical_aperture(omega, n_cladding)?;
-        let n_core = self.refractive_index(omega).re;
-        let lambda = 2.0 * PI * C / omega;
-        Some(lambda * n_core / (PI * na * na * na))
-    }
-
-    /// Chromatic dispersion in fiber-convention units: ps/(nm*km).
-    ///
-    /// D = -(2*pi*c/lambda^2) * beta_2, where beta_2 = d^2(beta)/d(omega)^2.
-    /// Positive D = anomalous dispersion, negative D = normal dispersion.
-    pub fn chromatic_dispersion_ps_nm_km(&self, omega: f64) -> f64 {
-        let beta2 = self.gvd_beta2(omega);
-        let lambda = 2.0 * PI * C / omega;
-        // D = -(2*pi*c/lambda^2) * beta_2
-        // beta_2 in s^2/m, D in s/(m*m) -> convert to ps/(nm*km)
-        // 1 s/(m*m) = 1e12 ps / (1e9 nm * 1e3 km) = 1e12/(1e12) = 1.0 ps/(nm*km)? No.
-        // D [s/m^2] -> ps/(nm*km): multiply by 1e12 * 1e-9 * 1e3 = 1e6
-        // Actually: D has units s/m^2. 1 ps/(nm*km) = 1e-12 s / (1e-9 m * 1e3 m) = 1e-6 s/m^2.
-        // So D [s/m^2] = D * 1e6 [ps/(nm*km)].
-        let d_si = -(2.0 * PI * C / (lambda * lambda)) * beta2;
-        d_si * 1e6
-    }
+    // 7 methods (numerical_aperture, v_parameter, confinement_factor,
+    // effective_mode_area, modal_birefringence, bend_loss_critical_radius,
+    // chromatic_dispersion_ps_nm_km) extracted to `photonic_waveguide`
+    // submodule (#138 PH-MOD).
 
     // ========================================================================
     // Part 16b: Plasmonic Sensing and SERS Metrics
@@ -2087,6 +1847,8 @@ mod electro_optic;
 mod ellipsometry_thermal_enz;
 mod fresnel;
 mod photonic_crystals;
+mod photonic_waveguide;
+mod photovoltaic_solar;
 mod plasmonics;
 mod sum_rules_kk;
 mod temperature_dispersion;
