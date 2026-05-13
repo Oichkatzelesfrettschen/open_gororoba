@@ -31,6 +31,9 @@ pub mod box_counting_cpu;
 #[cfg(feature = "cubecl")]
 pub mod box_counting_cubecl;
 pub mod box_counting_vulkan;
+pub mod chingon_cpu;
+#[cfg(feature = "cubecl")]
+pub mod chingon_cubecl;
 pub mod chingon_vulkan;
 pub mod compute;
 pub mod coop_matrix_probe;
