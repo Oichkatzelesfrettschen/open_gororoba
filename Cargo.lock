@@ -6295,12 +6295,18 @@ name = "lbm_vulkan"
 version = "0.1.0"
 dependencies = [
  "ash",
+ "bytemuck",
+ "cubecl 0.10.0",
+ "cubecl-core 0.10.0",
+ "cubecl-wgpu 0.10.0",
  "env_logger",
  "gororoba_gpu_readback",
  "gpu-allocator 0.28.0",
  "image 0.25.10",
  "log",
  "naga 29.0.1",
+ "rand 0.10.1",
+ "rand_chacha 0.10.0",
  "raw-window-handle",
  "thiserror 2.0.18",
  "winit",

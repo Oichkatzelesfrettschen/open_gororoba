@@ -38,7 +38,7 @@ runtime adapter probe, ChaCha20-seeded inputs, byte-exact comparison.
 | LBM D3Q19 stream + collide          | lbm_3d_cuda / lbm_3d  | YES | YES  | NO     | NO     | NO         |
 | LBM MRT collision                   | lbm_3d_cuda / lbm_3d  | YES | YES  | NO     | NO     | NO         |
 | Sparse-grid LBM                     | lbm_3d_cuda           | n/a | YES  | NO     | NO     | NO         |
-| Box-counting fractal dimension      | lbm_3d_cuda + lbm_vulkan | YES | YES  | YES    | NO     | PARTIAL    |
+| Box-counting fractal dimension      | lbm_3d_cuda + lbm_vulkan | YES | YES  | YES    | YES    | YES (CPU vs cubecl in lbm_vulkan; CUDA + Vulkan oracles share box_counting_cpu) |
 | Chingon (anisotropy operator)       | lbm_3d_cuda + lbm_vulkan | YES | YES  | YES    | NO     | NO         |
 | Alignment / orientation projection  | lbm_3d_cuda + lbm_vulkan | YES | YES  | YES    | NO     | NO         |
 | Besag-Clifford GMRF                 | sign_imbalance + lbm_vulkan | YES | YES  | YES    | NO     | NO         |
@@ -59,8 +59,10 @@ Legend:
 ## Quantitative Gap Summary
 
 - Total kernels enumerated: 15
-- Full 3-way parity (CPU + CUDA + Vulkan, ideally also cubecl): 1 / 15
-- CUDA + Vulkan present (no cubecl): 4 / 15 (box-counting, chingon, alignment, besag-clifford)
+- Full 3-way parity (CPU + CUDA + Vulkan, ideally also cubecl): 2 / 15
+  (TurboQuant + Box-counting -- both have CPU oracles and a runtime-probed
+   cubecl path with seeded parity tests).
+- CUDA + Vulkan present (no cubecl): 3 / 15 (chingon, alignment, besag-clifford)
 - CUDA only: 8 / 15 (LBM core, sparse LBM, dark-halo, kubo, lensing, voudon, GRMHD, MRT)
 - Vulkan only: 1 / 15 (coop-matrix probe; structurally NVIDIA-incompatible)
 - OptiX (NVIDIA-only, expected): 1 / 15
