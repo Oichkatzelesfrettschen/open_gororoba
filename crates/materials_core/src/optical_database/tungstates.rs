@@ -171,6 +171,18 @@ pub fn cawo4_metadata() -> MineralMetadata {
     }
 }
 
+/// Substoichiometric WO3-x: shares the parent monoclinic gamma-WO3 lattice
+/// (P2_1/n #14) but with random oxygen vacancies acting as color centers.
+pub fn wo3_x_metadata() -> MineralMetadata {
+    let parent = wo3_metadata();
+    MineralMetadata {
+        species_name: "tungsten_trioxide_substoichiometric",
+        formula: "WO3-x (x ~ 0.05 to 0.30 oxygen vacancies)",
+        color: "intense blue to navy (oxygen-vacancy color centers)",
+        ..parent
+    }
+}
+
 /// Stolzite-structured PbWO4: tetragonal I4_1/a. The fastest commercial
 /// scintillator (~10 ns decay); chosen as the CMS / ALICE ECAL calorimeter
 /// crystal at CERN. Uniaxial NEGATIVE.

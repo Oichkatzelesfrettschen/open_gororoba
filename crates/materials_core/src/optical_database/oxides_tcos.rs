@@ -266,3 +266,107 @@ pub fn ito_metadata() -> MineralMetadata {
 pub fn tourmaline_metadata() -> MineralMetadata {
     super::tourmaline::default_metadata()
 }
+
+/// Titanium monoxide (TiO): cubic NaCl-type rock-salt structure -- DISTINCT
+/// from rutile TiO2. Substoichiometric "bad metal" with up to 15% vacancies
+/// on both Ti and O sublattices at room temperature.
+pub fn tio_metadata() -> MineralMetadata {
+    MineralMetadata {
+        species_name: "titanium_monoxide",
+        formula: "TiO",
+        crystal_system: "cubic",
+        space_group: "Fm-3m (225) NaCl rock-salt",
+        n_omega: 2.10,
+        n_epsilon: 2.10,
+        birefringence: 0.0,
+        optic_sign: OpticSign::Isotropic,
+        hardness_mohs: 5.0,
+        density_g_cm3: 4.93,
+        color: "metallic golden-bronze (bulk); thin films opaque",
+        reference: "Barman & Sarma (1995) Phys. Rev. B 51, 4007; Wahila et al. (2019) on TiO defect chemistry.",
+    }
+}
+
+/// Strontium titanate SrTiO3: cubic Pm-3m perovskite at room temperature
+/// (becomes tetragonal I4/mcm below 105 K via antiferrodistortive transition,
+/// not modeled in the optical fit).
+pub fn srtio3_metadata() -> MineralMetadata {
+    MineralMetadata {
+        species_name: "strontium_titanate",
+        formula: "SrTiO3",
+        crystal_system: "cubic",
+        space_group: "Pm-3m (221) cubic perovskite (RT)",
+        n_omega: 2.412,
+        n_epsilon: 2.412,
+        birefringence: 0.0,
+        optic_sign: OpticSign::Isotropic,
+        hardness_mohs: 6.0,
+        density_g_cm3: 5.12,
+        color: "colorless when pure; commonly violet from Cr doping in synthetic crystals",
+        reference: "Servoin et al. (1980) Phys. Rev. B 22, 5501; van Benthem (2001) J.Appl.Phys. 90, 6156.",
+    }
+}
+
+/// Doped SrTiO3 -- same Pm-3m lattice as undoped SrTiO3 with Nb/La donors
+/// adding carriers. Metadata delegates to the parent oxide.
+pub fn srtio3_doped_metadata() -> MineralMetadata {
+    let parent = srtio3_metadata();
+    MineralMetadata {
+        species_name: "strontium_titanate_doped",
+        formula: "SrTiO3:Nb or SrTiO3-x",
+        ..parent
+    }
+}
+
+/// Lanthanum titanate LaTiO3: orthorhombic GdFeO3-type distorted perovskite.
+/// Mott insulator at room temperature; loses Mott gap below ~150 K to become
+/// a paramagnetic metal.
+pub fn latio3_metadata() -> MineralMetadata {
+    MineralMetadata {
+        species_name: "lanthanum_titanate",
+        formula: "LaTiO3",
+        crystal_system: "orthorhombic",
+        space_group: "Pnma (62) GdFeO3-type perovskite",
+        n_omega: 2.20,
+        n_epsilon: 2.25,
+        birefringence: 0.05,
+        optic_sign: OpticSign::Biaxial,
+        hardness_mohs: 5.5,
+        density_g_cm3: 6.39,
+        color: "black metallic single crystal",
+        reference: "Okimoto et al. (1995) Phys. Rev. B 51, 9581; Hays et al. (1999) Phys. Rev. B 60, 10367.",
+    }
+}
+
+/// Aluminum-doped ZnO (AZO): hexagonal wurtzite ZnO with substitutional Al on
+/// the Zn site (typically 2 at% Al for max conductivity). Same wurtzite
+/// P6_3mc lattice as undoped ZnO.
+pub fn azo_metadata() -> MineralMetadata {
+    MineralMetadata {
+        species_name: "aluminum_doped_zinc_oxide",
+        formula: "ZnO:Al",
+        crystal_system: "hexagonal",
+        space_group: "P6_3mc (186) wurtzite",
+        n_omega: 2.008,
+        n_epsilon: 2.029,
+        birefringence: 0.021,
+        optic_sign: OpticSign::Positive,
+        hardness_mohs: 4.5,
+        density_g_cm3: 5.61,
+        color: "colorless to pale-yellow transparent thin film",
+        reference: "Sun & Kwok (1999) Appl. Phys. Lett. 75, 1605; ASTM E1003 transparent conductor characterization.",
+    }
+}
+
+/// Doped silicon (n-Si or p-Si) -- same Fd-3m lattice as intrinsic silicon
+/// with Drude-tail free-carrier contribution. Metadata delegates to the
+/// parent semiconductor.
+pub fn doped_silicon_metadata() -> MineralMetadata {
+    let parent = super::semiconductors::silicon_metadata();
+    MineralMetadata {
+        species_name: "doped_silicon",
+        formula: "Si:n or Si:p (1e17 - 1e20 cm^-3)",
+        ..parent
+    }
+}
+

@@ -3495,6 +3495,29 @@ pub fn pedot_pss_optical() -> DrudeLorentzParams {
     }
 }
 
+/// PEDOT:PSS metadata: an amorphous conducting block-copolymer with no
+/// long-range crystallographic order. PEDOT is the conductive chain
+/// (poly-3,4-ethylenedioxythiophene); PSS (polystyrene-sulfonate) is the
+/// counter-ion / dopant balancing PEDOT's positively-charged backbone.
+/// Used as a hole-transport layer in OLEDs and as a transparent electrode
+/// in flexible photovoltaics.
+pub fn pedot_pss_metadata() -> MineralMetadata {
+    MineralMetadata {
+        species_name: "pedot_pss_conducting_polymer",
+        formula: "PEDOT:PSS (poly-3,4-ethylenedioxythiophene:polystyrene-sulfonate)",
+        crystal_system: "amorphous",
+        space_group: "n/a (block-copolymer; no long-range order)",
+        n_omega: 1.50,
+        n_epsilon: 1.50,
+        birefringence: 0.0,
+        optic_sign: OpticSign::Isotropic,
+        hardness_mohs: 0.0,
+        density_g_cm3: 1.011,
+        color: "transparent pale-blue thin film",
+        reference: "Pettersson et al. (1998) J.Appl.Phys. 84, 3812; Groenendaal et al. (2003) PEDOT review Adv. Mater. 15, 855.",
+    }
+}
+
 // ============================================================================
 // Tungsten oxide family (Sprint 44) -- moved to `tungstates` submodule.
 // Re-exported via pub use so external paths
@@ -3504,7 +3527,7 @@ pub fn pedot_pss_optical() -> DrudeLorentzParams {
 mod tungstates;
 pub use tungstates::{
     cawo4_metadata, cawo4_optical, cs_wo3_metadata, cs_wo3_optical, cs_wo3_uniaxial,
-    pbwo4_metadata, pbwo4_optical, wo3_metadata, wo3_optical, wo3_x_optical,
+    pbwo4_metadata, pbwo4_optical, wo3_metadata, wo3_optical, wo3_x_metadata, wo3_x_optical,
 };
 
 // ============================================================================
@@ -3515,10 +3538,11 @@ pub use tungstates::{
 // ============================================================================
 mod oxides_tcos;
 pub use oxides_tcos::{
-    alumina_metadata, alumina_optical, azo_optical, diamond_metadata, diamond_optical,
-    doped_silicon_optical, ito_metadata, ito_optical, latio3_optical, quartz_metadata,
-    quartz_optical, srtio3_doped_optical, srtio3_optical, tio2_metadata, tio2_optical,
-    tio_optical, tourmaline_metadata, tourmaline_optical,
+    alumina_metadata, alumina_optical, azo_metadata, azo_optical, diamond_metadata,
+    diamond_optical, doped_silicon_metadata, doped_silicon_optical, ito_metadata, ito_optical,
+    latio3_metadata, latio3_optical, quartz_metadata, quartz_optical, srtio3_doped_metadata,
+    srtio3_doped_optical, srtio3_metadata, srtio3_optical, tio2_metadata, tio2_optical,
+    tio_metadata, tio_optical, tourmaline_metadata, tourmaline_optical,
 };
 
 // ============================================================================
@@ -9858,12 +9882,93 @@ mod tests {
     #[test]
     fn test_metadata_accessors_tungstates() {
         assert_metadata_sane(wo3_metadata());
+        assert_metadata_sane(wo3_x_metadata());
         assert_metadata_sane(cs_wo3_metadata());
         assert_metadata_sane(cawo4_metadata());
         assert_metadata_sane(pbwo4_metadata());
         // CaWO4 + PbWO4 share scheelite I4_1/a (88) but have opposite optic signs.
         assert_eq!(cawo4_metadata().optic_sign, OpticSign::Positive);
         assert_eq!(pbwo4_metadata().optic_sign, OpticSign::Negative);
+        // WO3-x shares the parent gamma-WO3 lattice (P2_1/n #14).
+        assert_eq!(wo3_x_metadata().space_group, wo3_metadata().space_group);
+        assert_eq!(wo3_x_metadata().crystal_system, wo3_metadata().crystal_system);
+    }
+
+    #[test]
+    fn test_metadata_accessors_titanates_and_tcos() {
+        assert_metadata_sane(srtio3_metadata());
+        assert_metadata_sane(srtio3_doped_metadata());
+        assert_metadata_sane(latio3_metadata());
+        assert_metadata_sane(tio_metadata());
+        assert_metadata_sane(azo_metadata());
+        assert_metadata_sane(doped_silicon_metadata());
+        assert_metadata_sane(pedot_pss_metadata());
+
+        // Doped variants must inherit the parent material's lattice -- the
+        // only differences should be species_name, formula, and color
+        // (carrier doping does not change the crystal structure).
+        let parent_srtio3 = srtio3_metadata();
+        let doped_srtio3 = srtio3_doped_metadata();
+        assert_eq!(doped_srtio3.space_group, parent_srtio3.space_group);
+        assert_eq!(doped_srtio3.crystal_system, parent_srtio3.crystal_system);
+        assert_eq!(doped_srtio3.density_g_cm3, parent_srtio3.density_g_cm3);
+
+        let parent_si = silicon_metadata();
+        let doped_si = doped_silicon_metadata();
+        assert_eq!(doped_si.space_group, parent_si.space_group);
+        assert_eq!(doped_si.crystal_system, parent_si.crystal_system);
+
+        // TiO (monoxide) is structurally distinct from TiO2 (dioxide):
+        // rock-salt cubic vs rutile tetragonal.
+        assert_eq!(tio_metadata().crystal_system, "cubic");
+        assert_eq!(tio2_metadata().crystal_system, "tetragonal");
+
+        // PEDOT:PSS is amorphous -- hardness reported as 0 (Mohs n/a for polymers).
+        assert!((pedot_pss_metadata().hardness_mohs - 0.0).abs() < 1e-12);
+    }
+
+    #[test]
+    fn test_metadata_full_audit_coverage() {
+        // Coverage invariant: every optical-model constructor must reach a
+        // metadata accessor either directly (its own *_metadata fn) or via
+        // delegation to a parent material's metadata. Audit at commit
+        // d8ddb4ed identified 43 optical-model constructors. This test
+        // enumerates them by exercising every accessor; if any panic or
+        // return invalid data, the suite fails.
+        let all: Vec<MineralMetadata> = vec![
+            // Tourmaline supergroup (8)
+            schorl_metadata(), dravite_metadata(), elbaite_metadata(),
+            uvite_metadata(), liddicoatite_metadata(), rossmanite_metadata(),
+            foitite_metadata(), povondraite_metadata(),
+            // Semiconductors (5; silica_casimir aliases silica)
+            silicon_metadata(), silica_metadata(), silica_casimir_metadata(),
+            silicon_nitride_metadata(), germanium_metadata(),
+            // Oxides + TCOs (12)
+            alumina_metadata(), diamond_metadata(), quartz_metadata(),
+            tio2_metadata(), tio_metadata(), ito_metadata(), azo_metadata(),
+            srtio3_metadata(), srtio3_doped_metadata(), latio3_metadata(),
+            doped_silicon_metadata(), tourmaline_metadata(),
+            // Tungstates (5; wo3_x aliases wo3 lattice)
+            wo3_metadata(), wo3_x_metadata(), cs_wo3_metadata(),
+            cawo4_metadata(), pbwo4_metadata(),
+            // Elemental metals (11; *_drude_lorentz / *_rakic_ld share these)
+            gold_metadata(), silver_metadata(), copper_metadata(),
+            aluminum_metadata(), beryllium_metadata(), chromium_metadata(),
+            nickel_metadata(), palladium_metadata(), platinum_metadata(),
+            titanium_metadata(), tungsten_metadata(),
+            // Conducting polymer (1)
+            pedot_pss_metadata(),
+        ];
+        // 8 + 5 + 12 + 5 + 11 + 1 = 42 unique materials. The 43rd is
+        // tourmaline_default_metadata which routes to elbaite (already counted).
+        assert_eq!(
+            all.len(), 42,
+            "metadata enumeration drifted -- expected 42 unique accessors, got {}",
+            all.len()
+        );
+        for m in all.iter() {
+            assert_metadata_sane(*m);
+        }
     }
 
     #[test]
