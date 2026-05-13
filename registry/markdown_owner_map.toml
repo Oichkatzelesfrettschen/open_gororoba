@@ -8,11 +8,11 @@
 #   - owner_group=third_party or owner_group=external MUST have removal_status=locked.
 
 [markdown_owner_map]
-updated = "2026-04-30"
+updated = "2026-05-13"
 authoritative = true
 status = "active"
 status_token = "ACTIVE"
-document_count = 222
+document_count = 225
 [[owner]]
 path = "README.md"
 owner_group = "project"
@@ -1339,3 +1339,17 @@ path = "docs/engineering/repo_audit_metric_taxonomy.md"
 owner_group = "project"
 removal_status = "active"
 
+[[owner]]
+path = "docs/engineering/cubecl_vulkan_cuda_parity_matrix.md"
+owner_group = "project"
+removal_status = "active"
+
+[[owner]]
+path = "docs/engineering/issue_127_build_time_codegen_scope.md"
+owner_group = "project"
+removal_status = "active"
+
+[[owner]]
+path = "docs/engineering/issue_136_phase2_finalization.md"
+owner_group = "project"
+removal_status = "active"
