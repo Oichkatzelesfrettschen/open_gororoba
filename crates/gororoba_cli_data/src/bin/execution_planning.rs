@@ -6,177 +6,21 @@ use sha2::{Digest, Sha256};
 use std::{
     collections::{BTreeMap, BTreeSet},
     fs,
-    path::{Path, PathBuf},
+    path::Path,
 };
+// PathBuf is only used by the cfg(test) test workspace below;
+// gating the import keeps the non-test build warning-free.
+#[cfg(test)]
+use std::path::PathBuf;
 use toml::Value;
 
-type Table = toml::map::Map<String, Value>;
+// Type definitions live in the `types` submodule (~165 lines).
+// Uses `#[path]` because this binary has an explicit Cargo.toml path.
+#[path = "execution_planning/types.rs"]
+mod types;
+use types::*;
 
-#[derive(Parser, Debug)]
-#[command(
-    name = "execution-planning",
-    about = "Build or verify canonical execution-planning lane registries"
-)]
-struct Args {
-    #[arg(long, default_value = ".")]
-    repo_root: PathBuf,
-    #[arg(long, default_value = "registry/canonical/control_plane.sqlite3")]
-    db: PathBuf,
-    #[arg(long, default_value_t = false)]
-    verify: bool,
-    #[arg(long, default_value = "registry/experiments.toml")]
-    experiments_out: PathBuf,
-    #[arg(long, default_value = "registry/experiment_lineage.toml")]
-    lineage_out: PathBuf,
-    #[arg(long, default_value = "registry/roadmap.toml")]
-    roadmap_out: PathBuf,
-    #[arg(long, default_value = "registry/todo.toml")]
-    todo_out: PathBuf,
-    #[arg(long, default_value = "registry/next_actions.toml")]
-    next_actions_out: PathBuf,
-    #[arg(long, default_value = "registry/requirements.toml")]
-    requirements_out: PathBuf,
-    #[arg(long, default_value = "registry/module_requirements.toml")]
-    module_requirements_out: PathBuf,
-}
 
-#[derive(Debug, Clone)]
-struct ExperimentRow {
-    id: String,
-    title: String,
-    binary: String,
-    binary_registered: bool,
-    binary_experiment_declared: String,
-    method: String,
-    input: String,
-    output: Vec<String>,
-    run: String,
-    run_command_sha256: String,
-    claims: Vec<String>,
-    claim_refs: Vec<String>,
-    deterministic: bool,
-    seed: Option<i64>,
-    gpu: bool,
-    status: String,
-    status_token: String,
-    lineage_id: String,
-    input_path_refs: Vec<String>,
-    output_path_refs: Vec<String>,
-    dataset_refs: Vec<String>,
-    dataset_label_refs: Vec<String>,
-    external_source_refs: Vec<String>,
-    truth_surface_consumption: Vec<String>,
-    reproducibility_class: String,
-}
-
-#[derive(Debug, Clone)]
-struct LineageRow {
-    id: String,
-    experiment_id: String,
-    binary: String,
-    deterministic: bool,
-    seed: Option<i64>,
-    gpu: bool,
-    run_command: String,
-    run_command_sha256: String,
-    claim_refs: Vec<String>,
-    input_path_refs: Vec<String>,
-    output_path_refs: Vec<String>,
-    dataset_refs: Vec<String>,
-    dataset_label_refs: Vec<String>,
-    external_source_refs: Vec<String>,
-    truth_surface_consumption: Vec<String>,
-    replay_steps: Vec<String>,
-    acceptance_criteria: Vec<String>,
-}
-
-#[derive(Debug, Clone)]
-struct LineageEdge {
-    id: String,
-    lineage_id: String,
-    from_id: String,
-    to_ref: String,
-    to_kind: String,
-    edge_kind: String,
-    verified: bool,
-}
-
-#[derive(Debug, Clone)]
-struct PlanningRow {
-    raw: Table,
-}
-
-#[derive(Debug, Clone)]
-struct RequirementModule {
-    raw: Table,
-}
-
-#[derive(Debug, Clone)]
-struct CoverageGap {
-    raw: Table,
-}
-
-#[derive(Debug, Clone)]
-struct ModuleRequirement {
-    id: String,
-    name: String,
-    runtime_stack: String,
-    status: String,
-    status_token: String,
-    source_markdown: String,
-    requires_modules: Vec<String>,
-    command_refs: Vec<String>,
-    package_refs: Vec<String>,
-}
-
-#[derive(Debug, Clone)]
-struct ModuleCommand {
-    id: String,
-    module_id: String,
-    kind: String,
-    command: String,
-}
-
-#[derive(Debug, Clone)]
-struct ModulePackage {
-    id: String,
-    module_id: String,
-    manager: String,
-    name: String,
-    constraint: String,
-    spec: String,
-    group: String,
-    optional: bool,
-    source: String,
-}
-
-const ROADMAP_STATUS_ALLOWLIST: &[&str] = &[
-    "planned",
-    "active",
-    "in_progress",
-    "done",
-    "paused",
-    "blocked",
-];
-const TODO_STATUS_ALLOWLIST: &[&str] = &["open", "in_progress", "done", "blocked", "deferred"];
-const ACTION_STATUS_ALLOWLIST: &[&str] = &["todo", "in_progress", "done", "blocked", "deferred"];
-const PLANNING_PRIORITY_ALLOWLIST: &[&str] = &["high", "medium", "low"];
-const REQUIREMENT_STATUS_ALLOWLIST: &[&str] = &["active", "deprecated", "planned", "blocked"];
-const RUNTIME_STACK_ALLOWLIST: &[&str] = &[
-    "mixed",
-    "rust",
-    "python",
-    "docker_python",
-    "rocq",
-    "latex",
-    "cpp",
-];
-const TRUTH_SURFACE_ALLOWLIST: &[&str] = &[
-    "chronology_control",
-    "environment_context",
-    "lineage_transition",
-    "observation_benchmark",
-];
 
 fn experiment_binary_overrides() -> BTreeMap<String, String> {
     BTreeMap::from([
