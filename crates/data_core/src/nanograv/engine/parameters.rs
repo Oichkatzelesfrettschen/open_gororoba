@@ -28,8 +28,8 @@ use std::collections::BTreeMap;
 use anyhow::{Result, anyhow};
 
 use super::scalar_math::{dot3, norm3};
-use super::timing_model::TimingModel;
-use super::{C_KM_PER_S, GM_SUN_KM3_S2, IndependentObservation};
+use super::super::timing_model::TimingModel;
+use super::{C_KM_PER_S, GM_SUN_KM3_S2, IndependentObservation, TimingModelExt};
 
 pub(super) fn parse_selector_parameter_index(name: &str, prefix: &str) -> Option<usize> {
     name.strip_prefix(prefix)?.parse::<usize>().ok()
