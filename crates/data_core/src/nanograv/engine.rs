@@ -8,10 +8,7 @@ use anise::{
     prelude::{Almanac, Orbit},
 };
 use anyhow::{Context, Result, anyhow, bail};
-use faer::{
-    Mat as FaerMat, Side,
-    prelude::{Solve, SolveLstsq},
-};
+use faer::{Mat as FaerMat, Side, prelude::SolveLstsq};
 use hifitime::{Epoch, TimeScale};
 use nalgebra::{DMatrix, DVector};
 use rayon::prelude::*;
@@ -44,7 +41,7 @@ const MAS_TO_RAD: f64 = PI / (180.0 * 3_600.0 * 1_000.0);
 // `scalar_math` submodule.
 mod scalar_math;
 use scalar_math::{
-    dot3, fractional_improvement, gaussian_kernel, matern_three_halves, median_value, norm3,
+    dot3, fract, fractional_improvement, gaussian_kernel, matern_three_halves, median_value,
     solve_kepler, synthesis_score, true_anomaly_from_eccentric, wrap_cycles,
 };
 
@@ -77,9 +74,8 @@ use faer_adapters::{
 mod parameters;
 use parameters::{
     effective_dm_sigma, effective_phase_sigma_seconds, fd_delay_seconds, parameter_prior_sigma,
-    parameter_step, parameter_value_or, parameter_value_or_default,
-    parse_selector_parameter_index, selector_matches_observation,
-    solar_system_shapiro_seconds, tagged_term_matches_observation,
+    parameter_step, parameter_value_or, parameter_value_or_default, parse_fd_order,
+    parse_selector_parameter_index, solar_system_shapiro_seconds, tagged_term_matches_observation,
 };
 
 #[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd)]
