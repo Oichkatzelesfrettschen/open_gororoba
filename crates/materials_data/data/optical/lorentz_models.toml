@@ -39,3 +39,71 @@ gamma_ev = 0.005
 strength = 1.400
 omega_0_ev = 0.133
 gamma_ev = 0.012
+
+[[material]]
+name = "SILICON"
+eps_inf = 1.0
+reference = "E0/E1/E2 critical points of intrinsic Si; bandgap ~1.1 eV."
+
+[[material.oscillators]]
+# E0 critical point (direct gap at ~3.4 eV)
+strength = 29.0
+omega_0_ev = 3.40
+gamma_ev = 0.1
+
+[[material.oscillators]]
+# E1 critical point
+strength = 6.0
+omega_0_ev = 3.74
+gamma_ev = 0.25
+
+[[material.oscillators]]
+# E2 critical point
+strength = 3.0
+omega_0_ev = 4.40
+gamma_ev = 0.2
+
+[[material]]
+name = "SILICA"
+eps_inf = 2.1
+reference = "Wide-bandgap dielectric; n = 1.45 -> eps = 2.1. Two-oscillator IR + UV."
+
+[[material.oscillators]]
+# IR phonon resonance (~8 microns)
+strength = 1.0
+omega_0_ev = 0.064
+gamma_ev = 0.005
+
+[[material.oscillators]]
+# UV absorption edge
+strength = 1.0
+omega_0_ev = 11.0
+gamma_ev = 2.0
+
+[[material]]
+name = "SILICON_NITRIDE"
+eps_inf = 4.0
+reference = "Si3N4 dielectric, n ~ 2.0. Single IR resonance."
+
+[[material.oscillators]]
+# IR resonance
+strength = 1.5
+omega_0_ev = 0.11
+gamma_ev = 0.01
+
+[[material]]
+name = "GERMANIUM"
+eps_inf = 1.0
+reference = "E0 gap + E1 critical point of Ge."
+
+[[material.oscillators]]
+# E0 gap
+strength = 25.0
+omega_0_ev = 2.1
+gamma_ev = 0.15
+
+[[material.oscillators]]
+# E1 critical point
+strength = 8.0
+omega_0_ev = 2.3
+gamma_ev = 0.2
