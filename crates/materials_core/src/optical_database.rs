@@ -136,6 +136,59 @@ pub struct UniaxialOptical {
     pub axis_description: &'static str,
 }
 
+/// Sign of the principal-axis vs ordinary refractive-index difference for
+/// uniaxial crystals. `Negative` when `n_e < n_o` (e.g. calcite, tourmaline).
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum OpticSign {
+    /// Uniaxial positive: n_e > n_o.
+    Positive,
+    /// Uniaxial negative: n_e < n_o.
+    Negative,
+    /// Biaxial crystals (orthorhombic / monoclinic / triclinic) require a
+    /// 3-index tensor; not representable in the simple uniaxial pair.
+    Biaxial,
+    /// Isotropic (cubic crystals, amorphous solids).
+    Isotropic,
+}
+
+/// Crystallographic + measured properties accompanying a mineral's optical
+/// dispersion model. Complements `DrudeLorentzParams` (which captures the
+/// frequency-dependent dielectric response) with the static gemological /
+/// mineralogical context used in identification, classification, and
+/// downstream geochemistry calculations.
+///
+/// All fields are optional in the sense that a sentinel value (`0.0`,
+/// empty string) may be supplied when the property is not catalogued for
+/// a specific species; the field set is intentionally a superset so that
+/// adding new properties to the registry does not require a struct change.
+#[derive(Debug, Clone, Copy)]
+pub struct MineralMetadata {
+    /// IMA-approved species name (e.g. "schorl", "dravite", "elbaite").
+    pub species_name: &'static str,
+    /// Idealized chemical formula (X Y3 Z6 T6 O18 (BO3)3 V3 W convention for tourmaline group).
+    pub formula: &'static str,
+    /// Crystal system: "trigonal", "tetragonal", "hexagonal", "cubic", etc.
+    pub crystal_system: &'static str,
+    /// Space-group symbol (Hermann-Mauguin form) and ITA number, e.g. "R3m (160)".
+    pub space_group: &'static str,
+    /// Ordinary refractive index at sodium-D line (587.6 nm, ~2.110 eV).
+    pub n_omega: f64,
+    /// Extraordinary refractive index at sodium-D line.
+    pub n_epsilon: f64,
+    /// Birefringence delta_n = |n_omega - n_epsilon|.
+    pub birefringence: f64,
+    /// Uniaxial optic sign or biaxial/isotropic marker.
+    pub optic_sign: OpticSign,
+    /// Mohs hardness (1-10).
+    pub hardness_mohs: f64,
+    /// Density in g/cm^3.
+    pub density_g_cm3: f64,
+    /// Typical color (English plain text; see species comments for pleochroism).
+    pub color: &'static str,
+    /// Reference citation for the catalogued values.
+    pub reference: &'static str,
+}
+
 impl UniaxialOptical {
     /// Dielectric function along the principal axis at angular frequency omega (rad/s).
     pub fn epsilon_parallel(&self, omega: f64) -> Complex64 {
@@ -728,108 +781,8 @@ impl DrudeLorentzParams {
         Complex64::new(z_0, 0.0) / sqrt_eps
     }
 
-    // ====================================================================
-    // Sum rules and spectral weight analysis
-    // ====================================================================
-
-    /// Effective electron count N_eff(omega_c) from the partial f-sum rule.
-    ///
-    /// N_eff = (2 * m_e * eps_0) / (pi * e^2) * integral_0^omega_c sigma_1(omega) domega
-    ///
-    /// This counts the effective number of electrons per unit volume contributing
-    /// to optical transitions below the cutoff energy. Uses trapezoidal integration
-    /// with `n_steps` points from 0.001 eV to `cutoff_ev`.
-    pub fn n_eff(&self, cutoff_ev: f64, n_steps: usize) -> f64 {
-        let prefactor = 2.0 * M_E_KG / (std::f64::consts::PI * E_CHARGE * E_CHARGE);
-        let dw = cutoff_ev * EV_TO_RADS / n_steps as f64;
-        let mut integral = 0.0;
-        let mut prev_sigma = 0.0;
-        for i in 1..=n_steps {
-            let omega = i as f64 * dw;
-            let sigma = self.optical_conductivity_re(omega);
-            integral += 0.5 * (prev_sigma + sigma) * dw;
-            prev_sigma = sigma;
-        }
-        prefactor * integral
-    }
-
-    /// Verify the f-sum rule against the known Drude plasma frequency.
-    ///
-    /// For a Drude metal, the f-sum integral should recover the free-carrier
-    /// spectral weight: integral_0^inf sigma_1 domega = (pi/2) * omega_p^2 * eps_0.
-    /// Returns (N_eff_computed, N_eff_drude) where N_eff_drude = eps_0*m_e*omega_p^2/e^2.
-    /// The ratio N_eff_computed/N_eff_drude approaches 1.0 as cutoff -> infinity.
-    pub fn f_sum_ratio(&self, cutoff_ev: f64, n_steps: usize) -> Option<(f64, f64)> {
-        let drude = self.drude.as_ref()?;
-        let omega_p = drude.omega_p_ev * EV_TO_RADS;
-        let n_drude = EPS_0 * M_E_KG * omega_p * omega_p / (E_CHARGE * E_CHARGE);
-        let n_eff = self.n_eff(cutoff_ev, n_steps);
-        Some((n_eff, n_drude))
-    }
-
-    /// Find the bulk plasmon energy from the loss function peak.
-    ///
-    /// Scans from `scan_min_ev` to `scan_max_ev` in 0.01 eV steps to find
-    /// the maximum of -Im[1/eps]. Returns the energy in eV. For free-electron
-    /// metals this equals omega_p; for real metals with interband transitions,
-    /// the peak is shifted and broadened.
-    pub fn plasmon_energy_ev(&self, scan_min_ev: f64, scan_max_ev: f64) -> f64 {
-        let steps = ((scan_max_ev - scan_min_ev) / 0.01) as usize;
-        let mut max_loss = 0.0_f64;
-        let mut max_ev = scan_min_ev;
-        for i in 0..=steps {
-            let ev = scan_min_ev + i as f64 * 0.01;
-            let omega = ev * EV_TO_RADS;
-            let loss = self.loss_function(omega);
-            if loss > max_loss {
-                max_loss = loss;
-                max_ev = ev;
-            }
-        }
-        max_ev
-    }
-
-    /// Loss function spectral weight (partial sum rule).
-    ///
-    /// integral_0^omega_c omega * (-Im[1/eps]) domega should equal
-    /// (pi/2) * omega_p^2 for a Drude metal as omega_c -> infinity.
-    /// Returns the integrated value divided by (pi/2) to give omega_p_eff^2.
-    pub fn loss_spectral_weight(&self, cutoff_ev: f64, n_steps: usize) -> f64 {
-        let dw = cutoff_ev * EV_TO_RADS / n_steps as f64;
-        let mut integral = 0.0;
-        let mut prev_val = 0.0;
-        for i in 1..=n_steps {
-            let omega = i as f64 * dw;
-            let val = omega * self.loss_function(omega);
-            integral += 0.5 * (prev_val + val) * dw;
-            prev_val = val;
-        }
-        // Return omega_p_eff^2 = integral / (pi/2)
-        integral / (std::f64::consts::PI / 2.0)
-    }
-
-    /// Screened plasma frequency from `Re[eps] = 0` crossing.
-    ///
-    /// For metals, Re[eps(omega)] crosses zero at the screened plasma frequency
-    /// omega_p* = omega_p / sqrt(eps_inf + chi_bound). Scans the specified range
-    /// and returns the first zero-crossing energy in eV, or None if no crossing found.
-    pub fn screened_plasma_ev(&self, scan_min_ev: f64, scan_max_ev: f64) -> Option<f64> {
-        let steps = ((scan_max_ev - scan_min_ev) / 0.01) as usize;
-        let mut prev_re = self.epsilon(scan_min_ev * EV_TO_RADS).re;
-        for i in 1..=steps {
-            let ev = scan_min_ev + i as f64 * 0.01;
-            let omega = ev * EV_TO_RADS;
-            let re = self.epsilon(omega).re;
-            if prev_re < 0.0 && re >= 0.0 {
-                // Linear interpolation
-                let ev_prev = ev - 0.01;
-                let frac = (0.0 - prev_re) / (re - prev_re);
-                return Some(ev_prev + frac * 0.01);
-            }
-            prev_re = re;
-        }
-        None
-    }
+    // Sum rules + Kramers-Kronig methods (8) extracted to the `sum_rules_kk`
+    // submodule (#138 PH-MOD split). See optical_database/sum_rules_kk.rs.
 
     /// Static dielectric constant (zero-frequency limit).
     ///
@@ -847,2434 +800,104 @@ impl DrudeLorentzParams {
         Some(eps_0_val)
     }
 
-    /// Intraband spectral weight from Drude parameters.
-    ///
-    /// W_intra = (pi/2) * omega_p^2 * eps_0 [in SI units, S/(m*s)].
-    /// This is the Drude contribution to the f-sum rule.
-    pub fn intraband_weight(&self) -> Option<f64> {
-        let omega_p = if let Some(ext) = &self.extended_drude {
-            ext.omega_p_ev * EV_TO_RADS
-        } else if let Some(drude) = &self.drude {
-            drude.omega_p_ev * EV_TO_RADS
-        } else {
-            return None;
-        };
-        Some(std::f64::consts::PI / 2.0 * omega_p * omega_p * EPS_0)
-    }
 
-    /// Interband spectral weight from Lorentz oscillators.
-    ///
-    /// W_inter = sum_j (pi/2) * S_j * omega_0j^2 * eps_0 [in SI units].
-    pub fn interband_weight(&self) -> f64 {
-        let mut w = 0.0;
-        for osc in &self.oscillators {
-            let omega_0 = osc.omega_0_ev * EV_TO_RADS;
-            w += std::f64::consts::PI / 2.0 * osc.strength * omega_0 * omega_0 * EPS_0;
-        }
-        w
-    }
+    // Bandgap analysis methods (5) extracted to the `bandgap_analysis` submodule
+    // (#138 PH-MOD split). See optical_database/bandgap_analysis.rs.
+
 
     // ====================================================================
-    // Kramers-Kronig validation + Band-gap spectroscopy (Part 7)
+    // Temperature + dispersion engineering + nonlinear optics (Parts 8-9)
     // ====================================================================
+    // 9 methods (at_temperature, optical_effective_mass, gvd_beta2,
+    // gvd_fs2_per_mm, dispersion_regime, zero_dispersion_omega,
+    // chi3_miller_estimate, kerr_n2_estimate, beta_tpa_estimate)
+    // extracted to the `temperature_dispersion` submodule (#138 PH-MOD).
+    // See optical_database/temperature_dispersion.rs.
 
-    /// Kramers-Kronig consistency check: numerical error metric.
-    ///
-    /// Reconstructs eps_1(omega) from eps_2(omega) via the Kramers-Kronig
-    /// relation and returns the RMS relative error compared to the model.
-    /// For a causal Drude-Lorentz model, the error should be small
-    /// (limited only by numerical quadrature accuracy and finite cutoff).
-    ///
-    /// KK relation: eps_1(omega) = 1 + (2/pi) * P int_0^inf [omega'*eps_2(omega')/(omega'^2 - omega^2)] domega'
-    ///
-    /// Returns RMS of |eps_1_model - eps_1_KK| / |eps_1_model| over the scan range.
-    pub fn kramers_kronig_error(&self, cutoff_ev: f64, n_steps: usize) -> f64 {
-        let lambda = cutoff_ev * EV_TO_RADS;
-        let domega = lambda / n_steps as f64;
 
-        // Precompute f(omega') = omega' * |eps_2(omega')| for all integration points
-        let f_table: Vec<f64> = (1..=n_steps)
-            .map(|j| {
-                let omega_p = j as f64 * domega;
-                omega_p * self.epsilon(omega_p).im.abs()
-            })
-            .collect();
+    // SPP / LSPR plasmonics methods (4) extracted to the `plasmonics` submodule
+    // (#138 PH-MOD split). See optical_database/plasmonics.rs.
 
-        // Evaluate subtracted KK integral at n_probe points.
-        //
-        // Subtracted form (removes the pole analytically):
-        //   eps_1(omega) - 1 = (2/pi) * int_0^Lambda
-        //       [f(omega') - f(omega)] / (omega'^2 - omega^2) domega'
-        //     + (2/pi) * f(omega) * PV int_0^Lambda 1/(omega'^2 - omega^2) domega'
-        //
-        // The first integrand has a removable singularity at omega'=omega.
-        // The PV integral has a known closed form:
-        //   PV int_0^Lambda 1/(omega'^2 - omega^2) domega'
-        //     = (1/(2*omega)) * ln|(Lambda - omega)/(Lambda + omega)| + (1/(2*omega))*ln(1)
-        //     ... actually = (1/(2*omega)) * ln|((Lambda-omega)*(0+omega))/((Lambda+omega)*(0-omega))|
-        // Careful: partial fractions give 1/(omega'^2-omega^2) = 1/(2omega)[1/(omega'-omega) - 1/(omega'+omega)]
-        // PV int_0^Lambda = (1/2omega)[ln|Lambda-omega| - ln(omega) - ln(Lambda+omega) + ln(omega)]
-        //                 = (1/2omega)*ln|(Lambda-omega)/(Lambda+omega)|
-        let n_probe: usize = 50;
-        let probe_step = n_steps / n_probe;
-        let mut sum_sq = 0.0;
-        let mut count = 0;
+    // Fresnel + angular reflectance methods (4) extracted to the `fresnel`
+    // submodule (#138 PH-MOD split). See optical_database/fresnel.rs.
 
-        for i in 1..n_probe {
-            let idx = i * probe_step;
-            let omega = idx as f64 * domega;
-            let eps1_model = self.epsilon(omega).re;
-            let f_omega = omega * self.epsilon(omega).im.abs();
-
-            // Subtracted integral (regular, no singularity)
-            let mut integral_sub = 0.0;
-            for j in 1..=n_steps {
-                let omega_p = j as f64 * domega;
-                let diff_sq = omega_p * omega_p - omega * omega;
-                if diff_sq.abs() < 1e-30 {
-                    // At the pole: use L'Hopital limit
-                    // [f(omega') - f(omega)] / (omega'^2 - omega^2) -> f'(omega)/(2*omega)
-                    // Approximate f' by finite difference
-                    let f_plus = if j < n_steps {
-                        f_table[j]
-                    } else {
-                        f_table[j - 1]
-                    };
-                    let f_minus = if j > 1 {
-                        f_table[j - 2]
-                    } else {
-                        f_table[j - 1]
-                    };
-                    let f_prime = (f_plus - f_minus) / (2.0 * domega);
-                    integral_sub += f_prime / (2.0 * omega) * domega;
-                } else {
-                    integral_sub += (f_table[j - 1] - f_omega) / diff_sq * domega;
-                }
-            }
-
-            // Analytic PV correction
-            // The KK relation reconstructs eps_1 - eps_inf (not eps_1 - 1),
-            // because eps_inf represents spectral weight above our cutoff.
-            let pv_log = ((lambda - omega) / (lambda + omega)).abs().ln() / (2.0 * omega);
-            let eps1_kk = self.eps_inf + 2.0 / PI * (integral_sub + f_omega * pv_log);
-
-            if eps1_model.abs() > 0.1 {
-                let rel_err = (eps1_model - eps1_kk) / eps1_model.abs();
-                sum_sq += rel_err * rel_err;
-                count += 1;
-            }
-        }
-
-        if count == 0 {
-            return 1.0;
-        }
-        (sum_sq / count as f64).sqrt()
-    }
-
-    /// Tauc plot analysis for band gap determination.
-    ///
-    /// Fits (alpha * hv)^exponent vs hv to find the band gap energy
-    /// by linear extrapolation. Standard exponents:
-    /// - exponent = 2.0: direct allowed transition
-    /// - exponent = 0.5: indirect allowed transition
-    /// - exponent = 2.0/3.0: direct forbidden transition
-    /// - exponent = 1.0/3.0: indirect forbidden transition
-    ///
-    /// Returns None for metals (Drude-like, no gap) or if no linear region found.
-    pub fn tauc_gap_ev(&self, exponent: f64) -> Option<f64> {
-        if self.drude.is_some() || self.extended_drude.is_some() {
-            return None;
-        }
-        if self.oscillators.is_empty() {
-            return None;
-        }
-
-        // Build Tauc plot data: y = (alpha * hv)^exponent vs x = hv
-        let n_pts: usize = 1000;
-        let e_min = 0.1_f64;
-        let e_max = 15.0_f64;
-        let de = (e_max - e_min) / n_pts as f64;
-
-        let tauc_data: Vec<(f64, f64)> = (0..n_pts)
-            .map(|i| {
-                let ev = e_min + (i as f64 + 0.5) * de;
-                let omega = ev * EV_TO_RADS;
-                let alpha = self.absorption_coefficient(omega);
-                let y = (alpha * ev).powf(exponent);
-                (ev, y)
-            })
-            .collect();
-
-        // Find the steepest segment (maximum slope region) using a sliding window
-        let window: usize = 30;
-        let mut best_slope = 0.0_f64;
-        let mut best_start = 0_usize;
-        for start in 0..n_pts.saturating_sub(window) {
-            let end = start + window;
-            // Linear regression over the window
-            let n_w = (end - start) as f64;
-            let mut sx = 0.0;
-            let mut sy = 0.0;
-            let mut sxx = 0.0;
-            let mut sxy = 0.0;
-            for &(x, y) in &tauc_data[start..end] {
-                sx += x;
-                sy += y;
-                sxx += x * x;
-                sxy += x * y;
-            }
-            let slope = (n_w * sxy - sx * sy) / (n_w * sxx - sx * sx);
-            if slope > best_slope {
-                best_slope = slope;
-                best_start = start;
-            }
-        }
-
-        if best_slope <= 0.0 {
-            return None;
-        }
-
-        // Fit the linear region and extrapolate to y=0
-        let best_end = best_start + window;
-        let n_w = window as f64;
-        let mut sx = 0.0;
-        let mut sy = 0.0;
-        let mut sxx = 0.0;
-        let mut sxy = 0.0;
-        for &(x, y) in &tauc_data[best_start..best_end] {
-            sx += x;
-            sy += y;
-            sxx += x * x;
-            sxy += x * y;
-        }
-        let slope = (n_w * sxy - sx * sy) / (n_w * sxx - sx * sx);
-        let intercept = (sy - slope * sx) / n_w;
-
-        // x-intercept: y = slope*x + intercept = 0 => x = -intercept/slope
-        let gap = -intercept / slope;
-        if gap > 0.0 && gap < e_max {
-            Some(gap)
-        } else {
-            None
-        }
-    }
-
-    /// Urbach energy (exponential tail parameter) in eV.
-    ///
-    /// In the sub-gap absorption tail, alpha ~ exp(E / E_u) where E_u is
-    /// the Urbach energy characterizing disorder. Extracted by fitting
-    /// ln(alpha) vs E in the region below the main absorption onset.
-    ///
-    /// For Lorentz oscillators, the tail is algebraic (not truly exponential),
-    /// so this returns an effective E_u that should be compared cautiously
-    /// with experimental Urbach energies from real semiconductors.
-    ///
-    /// Returns None for metals or if no meaningful fit region is found.
-    pub fn urbach_energy_ev(&self) -> Option<f64> {
-        if self.drude.is_some() || self.extended_drude.is_some() {
-            return None;
-        }
-        if self.oscillators.is_empty() {
-            return None;
-        }
-
-        // Sample ln(alpha) vs E in the sub-gap region (0.5 to 5.0 eV)
-        let n_pts = 200;
-        let e_min = 0.5;
-        let e_max = 5.0;
-        let de = (e_max - e_min) / n_pts as f64;
-
-        let mut data: Vec<(f64, f64)> = Vec::new();
-        for i in 0..n_pts {
-            let ev = e_min + (i as f64 + 0.5) * de;
-            let omega = ev * EV_TO_RADS;
-            let alpha = self.absorption_coefficient(omega);
-            if alpha > 1e2 {
-                // Only include points with measurable absorption
-                data.push((ev, alpha.ln()));
-            }
-        }
-
-        if data.len() < 20 {
-            return None;
-        }
-
-        // Find the region with the steepest positive slope in ln(alpha) vs E
-        // This corresponds to the absorption edge (sub-gap tail)
-        let window = 15;
-        let mut best_slope = 0.0_f64;
-        let mut best_start = 0_usize;
-        for start in 0..data.len().saturating_sub(window) {
-            let end = start + window;
-            let n_w = window as f64;
-            let mut sx = 0.0;
-            let mut sy = 0.0;
-            let mut sxx = 0.0;
-            let mut sxy = 0.0;
-            for &(x, y) in &data[start..end] {
-                sx += x;
-                sy += y;
-                sxx += x * x;
-                sxy += x * y;
-            }
-            let slope = (n_w * sxy - sx * sy) / (n_w * sxx - sx * sx);
-            if slope > best_slope {
-                best_slope = slope;
-                best_start = start;
-            }
-        }
-
-        // E_u = 1/slope (slope of ln(alpha) vs E in eV^-1 => E_u in eV)
-        if best_slope > 0.1 {
-            // Also check R^2 to ensure the fit is actually exponential-like
-            let best_end = (best_start + window).min(data.len());
-            let n_w = (best_end - best_start) as f64;
-            let mut sx = 0.0;
-            let mut sy = 0.0;
-            for &(ex, ey) in &data[best_start..best_end] {
-                sx += ex;
-                sy += ey;
-            }
-            let mean_x = sx / n_w;
-            let mean_y = sy / n_w;
-            let mut ss_res = 0.0;
-            let mut ss_tot = 0.0;
-            let mut sxx = 0.0;
-            let mut sxy = 0.0;
-            for &(ex, ey) in &data[best_start..best_end] {
-                let dx = ex - mean_x;
-                let dy = ey - mean_y;
-                sxx += dx * dx;
-                sxy += dx * dy;
-                ss_tot += dy * dy;
-            }
-            let slope = sxy / sxx;
-            let intercept = mean_y - slope * mean_x;
-            for &(ex, ey) in &data[best_start..best_end] {
-                let pred = slope * ex + intercept;
-                let residual = ey - pred;
-                ss_res += residual * residual;
-            }
-            let r_sq = 1.0 - ss_res / ss_tot;
-
-            if r_sq > 0.8 && slope > 0.1 {
-                Some(1.0 / slope)
-            } else {
-                None
-            }
-        } else {
-            None
-        }
-    }
-
-    /// Penn model gap energy in eV.
-    ///
-    /// The Penn model approximates a semiconductor's dielectric response
-    /// as a single oscillator, giving:
-    ///   E_g_Penn = hbar * omega_p_eff / sqrt(eps_s - 1)
-    /// where omega_p_eff is computed from the total oscillator strength
-    /// and eps_s is the static dielectric constant.
-    ///
-    /// Returns None for metals or if eps_static <= 1.
-    pub fn penn_gap_ev(&self) -> Option<f64> {
-        let eps_s = self.static_dielectric()?;
-        if eps_s <= 1.0 {
-            return None;
-        }
-
-        // omega_p_eff from total oscillator strength:
-        // omega_p_eff^2 = sum_j S_j * omega_0j^2
-        let mut omega_p_sq = 0.0;
-        for osc in &self.oscillators {
-            let omega_0 = osc.omega_0_ev * EV_TO_RADS;
-            omega_p_sq += osc.strength * omega_0 * omega_0;
-        }
-
-        if omega_p_sq <= 0.0 {
-            return None;
-        }
-
-        let omega_p_eff = omega_p_sq.sqrt();
-        let gap_rads = omega_p_eff / (eps_s - 1.0).sqrt();
-        let gap_ev = gap_rads / EV_TO_RADS;
-
-        if gap_ev > 0.0 && gap_ev < 50.0 {
-            Some(gap_ev)
-        } else {
-            None
-        }
-    }
-
-    /// Absorption onset energy where alpha reaches a fraction of its maximum.
-    ///
-    /// Scans from 0.1 to 15 eV and finds the energy where the absorption
-    /// coefficient first reaches `threshold_fraction * alpha_max`.
-    /// Useful for comparing with Tauc gap and optical gap methods.
-    ///
-    /// Returns None for metals or if alpha is below threshold everywhere.
-    pub fn absorption_onset_ev(&self, threshold_fraction: f64) -> Option<f64> {
-        if self.drude.is_some() || self.extended_drude.is_some() {
-            return None;
-        }
-
-        let n_pts = 1500;
-        let e_min = 0.1;
-        let e_max = 15.0;
-        let de = (e_max - e_min) / n_pts as f64;
-
-        // First pass: find alpha_max
-        let mut alpha_max = 0.0_f64;
-        let alphas: Vec<(f64, f64)> = (0..n_pts)
-            .map(|i| {
-                let ev = e_min + i as f64 * de;
-                let omega = ev * EV_TO_RADS;
-                let alpha = self.absorption_coefficient(omega);
-                if alpha > alpha_max {
-                    alpha_max = alpha;
-                }
-                (ev, alpha)
-            })
-            .collect();
-
-        if alpha_max < 1.0 {
-            return None;
-        }
-
-        let threshold = threshold_fraction * alpha_max;
-
-        // Second pass: find first crossing
-        for &(ev, alpha) in &alphas {
-            if alpha >= threshold {
-                return Some(ev);
-            }
-        }
-        None
-    }
-
-    /// Joint density of states (JDOS) proxy in arbitrary units.
-    ///
-    /// JDOS(omega) ~ omega * eps_2(omega) for direct transitions.
-    /// This quantity is proportional to the number of electronic states
-    /// available for vertical transitions at energy hbar*omega.
-    /// Useful for identifying van Hove singularities (peaks in JDOS).
-    pub fn joint_density_of_states(&self, omega: f64) -> f64 {
-        let eps = self.epsilon(omega);
-        omega * eps.im.abs()
-    }
-
-    // ====================================================================
-    // Temperature-dependent optical + effective medium (Part 8)
-    // ====================================================================
-
-    /// Return a new DrudeLorentzParams with thermally broadened oscillators.
-    ///
-    /// Phonon oscillator damping increases with temperature via the
-    /// Bose-Einstein occupation factor:
-    ///   gamma_j(T) = gamma_j(0) * coth(hbar*omega_0j / (2*k_B*T))
-    ///
-    /// At T=0: coth -> 1, so gamma(0) = gamma_0 (no broadening).
-    /// At high T: coth(x) -> 1/x, so gamma ~ gamma_0 * 2*k_B*T / (hbar*omega_0)
-    /// (classical linear broadening).
-    ///
-    /// Drude damping also increases with temperature:
-    ///   gamma_Drude(T) = gamma_0 * (1 + (T/T_Debye)^2) approximately
-    /// Here we use the simpler Bloch-Gruneisen T^2 correction with
-    /// a user-supplied Debye temperature.
-    pub fn at_temperature(&self, temperature_k: f64, debye_t_k: Option<f64>) -> Self {
-        let broadened_oscs: Vec<LorentzOscillator> = self
-            .oscillators
-            .iter()
-            .map(|osc| {
-                let x = osc.omega_0_ev / (2.0 * K_B_EV * temperature_k);
-                let coth = if x > 20.0 {
-                    1.0 // coth(x) -> 1 for large x
-                } else if x < 0.01 {
-                    1.0 / x // coth(x) -> 1/x for small x (high T limit)
-                } else {
-                    (x.exp() + (-x).exp()) / (x.exp() - (-x).exp())
-                };
-                LorentzOscillator {
-                    strength: osc.strength,
-                    omega_0_ev: osc.omega_0_ev,
-                    gamma_ev: osc.gamma_ev * coth,
-                }
-            })
-            .collect();
-
-        let broadened_drude = self.drude.map(|d| {
-            let t_ratio_sq = if let Some(t_d) = debye_t_k {
-                (temperature_k / t_d).powi(2)
-            } else {
-                0.0
-            };
-            DrudeParams {
-                omega_p_ev: d.omega_p_ev,
-                gamma_ev: d.gamma_ev * (1.0 + t_ratio_sq),
-                eps_inf: d.eps_inf,
-            }
-        });
-
-        DrudeLorentzParams {
-            drude: broadened_drude,
-            oscillators: broadened_oscs,
-            eps_inf: self.eps_inf,
-            extended_drude: self.extended_drude.clone(),
-        }
-    }
-
-    /// Optical effective mass in units of free electron mass.
-    ///
-    /// From the Drude plasma frequency: omega_p^2 = n*e^2/(eps_0*m*)
-    /// => m* = n*e^2/(eps_0*omega_p^2)
-    ///
-    /// Requires the carrier density n in m^-3. Returns m*/m_e (dimensionless).
-    /// Returns None for non-metallic materials.
-    pub fn optical_effective_mass(&self, carrier_density: f64) -> Option<f64> {
-        let omega_p = if let Some(ext) = &self.extended_drude {
-            ext.omega_p_ev * EV_TO_RADS
-        } else if let Some(drude) = &self.drude {
-            drude.omega_p_ev * EV_TO_RADS
-        } else {
-            return None;
-        };
-        let m_star = carrier_density * E_CHARGE * E_CHARGE / (EPS_0 * omega_p * omega_p);
-        Some(m_star / M_E_KG)
-    }
-
-    /// Maxwell-Garnett effective medium approximation at a given frequency.
-    ///
-    /// Treats `self` as the host medium and `inclusion` as spherical
-    /// inclusions with volume fraction `f`. Returns the effective
-    /// dielectric function of the composite.
-    pub fn maxwell_garnett_mix(
-        &self,
-        inclusion: &DrudeLorentzParams,
-        fill_fraction: f64,
-        omega: f64,
-    ) -> Complex64 {
-        let eps_host = self.epsilon(omega);
-        let eps_inc = inclusion.epsilon(omega);
-        crate::effective_medium::maxwell_garnett(eps_host, eps_inc, fill_fraction)
-    }
-
-    /// Bruggeman self-consistent effective medium at a given frequency.
-    ///
-    /// Treats the two materials symmetrically (no host/inclusion distinction).
-    /// Volume fraction `f` refers to `self`; `other` occupies (1-f).
-    pub fn bruggeman_mix(
-        &self,
-        other: &DrudeLorentzParams,
-        fill_fraction: f64,
-        omega: f64,
-    ) -> Complex64 {
-        let eps_1 = self.epsilon(omega);
-        let eps_2 = other.epsilon(omega);
-        crate::effective_medium::bruggeman(eps_1, eps_2, fill_fraction)
-    }
-
-    /// Dielectric contrast factor between two materials.
-    ///
-    /// Delta = (eps_1 - eps_2)/(eps_1 + eps_2)
-    /// Appears in the Clausius-Mossotti relation, Casimir proximity
-    /// corrections, and van der Waals interaction coefficients.
-    /// |Delta| = 1 for perfect metal vs vacuum; |Delta| ~ 0 for matched media.
-    pub fn dielectric_contrast(&self, other: &DrudeLorentzParams, omega: f64) -> Complex64 {
-        let eps_1 = self.epsilon(omega);
-        let eps_2 = other.epsilon(omega);
-        (eps_1 - eps_2) / (eps_1 + eps_2)
-    }
-
-    /// Screening ratio: bare plasma frequency / screened plasma frequency.
-    ///
-    /// Quantifies how much interband transitions screen the free-electron
-    /// response. For free-electron metals (no interband), ratio ~ 1.
-    /// For d-band metals like gold, ratio > 1 (significant screening).
-    ///
-    /// Returns None if no Drude term or no screened plasma crossing found.
-    pub fn plasma_screening_ratio(&self) -> Option<f64> {
-        let omega_p_bare = if let Some(ext) = &self.extended_drude {
-            ext.omega_p_ev
-        } else if let Some(drude) = &self.drude {
-            drude.omega_p_ev
-        } else {
-            return None;
-        };
-        let screened = self.screened_plasma_ev(0.5, 30.0)?;
-        Some(omega_p_bare / screened)
-    }
-
-    // ---- Part 9: Dispersion engineering + Nonlinear optics estimates ----
-
-    /// Group velocity dispersion parameter beta_2 in s^2/m.
-    ///
-    /// beta_2 = d^2 k / d omega^2 = (1/c) * d(n_g)/d(omega)
-    /// where n_g = n + omega * dn/domega is the group index.
-    /// Positive beta_2 = normal dispersion (red faster), negative = anomalous.
-    /// Computed via finite differences on the group index.
-    pub fn gvd_beta2(&self, omega: f64) -> f64 {
-        let delta = omega * 1e-4;
-        let ng_plus = self.group_refractive_index(omega + delta);
-        let ng_minus = self.group_refractive_index(omega - delta);
-        let dng_domega = (ng_plus - ng_minus) / (2.0 * delta);
-        dng_domega / C
-    }
-
-    /// GVD in fs^2/mm (common ultrafast optics unit).
-    ///
-    /// Converts beta_2 from s^2/m to fs^2/mm: multiply by 1e30 (1e30 = 1e-3/1e-30*1e-3).
-    /// Typical values: silica at 800 nm ~ +36 fs^2/mm (normal), at 1550 nm ~ -26 (anomalous).
-    pub fn gvd_fs2_per_mm(&self, omega: f64) -> f64 {
-        self.gvd_beta2(omega) * 1e27
-    }
-
-    /// Dispersion classification at a given frequency.
-    ///
-    /// Returns +1 for normal dispersion (beta_2 > 0, longer pulses broaden),
-    /// -1 for anomalous (beta_2 < 0, soliton formation possible),
-    /// 0 if |beta_2| < 1e-30 (effectively zero dispersion).
-    pub fn dispersion_regime(&self, omega: f64) -> i32 {
-        let beta2 = self.gvd_beta2(omega);
-        if beta2 > 1e-30 {
-            1
-        } else if beta2 < -1e-30 {
-            -1
-        } else {
-            0
-        }
-    }
-
-    /// Zero-dispersion frequency finder in rad/s.
-    ///
-    /// Scans the range [omega_min, omega_max] for where beta_2 crosses zero.
-    /// Returns None if no crossing found. For silica, this is around 1.27 um
-    /// wavelength (1.49e15 rad/s).
-    pub fn zero_dispersion_omega(&self, omega_min: f64, omega_max: f64) -> Option<f64> {
-        let steps: usize = 2000;
-        let domega = (omega_max - omega_min) / steps as f64;
-        let mut prev_beta2 = self.gvd_beta2(omega_min);
-        for i in 1..=steps {
-            let omega = omega_min + i as f64 * domega;
-            let beta2 = self.gvd_beta2(omega);
-            if (prev_beta2 > 0.0 && beta2 <= 0.0) || (prev_beta2 < 0.0 && beta2 >= 0.0) {
-                // Linear interpolation
-                let frac = prev_beta2.abs() / (prev_beta2.abs() + beta2.abs());
-                return Some(omega - domega + frac * domega);
-            }
-            prev_beta2 = beta2;
-        }
-        None
-    }
-
-    /// Third-order nonlinear susceptibility estimate chi^(3) in m^2/V^2.
-    ///
-    /// Uses Miller's rule generalization: chi^(3)(omega) ~ delta * [chi^(1)(omega)]^4
-    /// where chi^(1) = eps - 1 and delta ~ 4.52e-24 m^2/V^2 (Miller delta for
-    /// typical dielectrics). This is a semi-empirical scaling; actual chi^(3)
-    /// can differ by order of magnitude due to resonant enhancement, many-body
-    /// effects, etc. Returns the magnitude (positive real).
-    ///
-    /// Reference: Miller (1964), Appl. Phys. Lett. 5(1), 17-19.
-    pub fn chi3_miller_estimate(&self, omega: f64) -> f64 {
-        let miller_delta: f64 = 4.52e-24; // m^2/V^2
-        let chi1 = self.epsilon(omega) - 1.0;
-        let chi1_sq = chi1.norm_sqr();
-        miller_delta * chi1_sq * chi1_sq
-    }
-
-    /// Kerr nonlinear refractive index n_2 in m^2/W.
-    ///
-    /// n_2 = 3 * chi^(3) / (4 * eps_0 * c * n^2) where n is the real
-    /// refractive index and chi^(3) is from Miller's rule.
-    /// Typical values: silica ~ 2.2e-20 m^2/W, CS2 ~ 3e-18 m^2/W.
-    pub fn kerr_n2_estimate(&self, omega: f64) -> f64 {
-        let chi3 = self.chi3_miller_estimate(omega);
-        let n = self.refractive_index(omega).re;
-        if n < 1e-10 {
-            return 0.0;
-        }
-        3.0 * chi3 / (4.0 * EPS_0 * C * n * n)
-    }
-
-    /// Two-photon absorption coefficient beta_TPA in m/W (Sheik-Bahae model).
-    ///
-    /// beta_TPA = K * sqrt(E_p) * F_2(x) / (n^2 * E_g^3)
-    /// where x = 2*hv/E_g, E_p = 21 eV (Kane energy), E_g is the band gap,
-    /// and F_2(x) = (2x-1)^(3/2) / (2x)^5 for x > 0.5 (two-photon allowed).
-    /// K ~ 1940 in units giving beta in cm/GW; converted to m/W.
-    ///
-    /// Returns None if no Tauc gap found or if 2*hv < E_g (below threshold).
-    /// Reference: Sheik-Bahae et al. (1991), IEEE J. Quantum Electron. 27(6).
-    pub fn beta_tpa_estimate(&self, omega: f64) -> Option<f64> {
-        let e_g = self.tauc_gap_ev(2.0)?; // direct gap
-        let hv = omega / EV_TO_RADS;
-        let x = 2.0 * hv / e_g;
-        if x <= 0.5 {
-            return None; // Below two-photon threshold
-        }
-        let n = self.refractive_index(omega).re;
-        if n < 1e-10 {
-            return None;
-        }
-        let e_p: f64 = 21.0; // Kane energy in eV
-        let f2 = (2.0 * x - 1.0).powf(1.5) / (2.0 * x).powi(5);
-        // K = 1940 cm/GW = 1940 * 1e-2 / 1e9 m/W = 1.94e-8 m/W
-        // but E_g and E_p are in eV, need conversion:
-        // beta = K * sqrt(E_p) * F_2 / (n^2 * E_g^3)
-        // with K including the unit conversion
-        let k_si: f64 = 1.94e-8; // m/W (converted from 1940 cm/GW)
-        let beta = k_si * e_p.sqrt() * f2 / (n * n * e_g.powi(3));
-        Some(beta)
-    }
-
-    // ---- Part 10: Surface plasmon + Interface optics ----
-
-    /// Surface plasmon polariton wavevector k_spp in 1/m.
-    ///
-    /// k_spp = (omega/c) * sqrt(eps_m * eps_d / (eps_m + eps_d))
-    /// where eps_d is the dielectric medium permittivity (default: vacuum = 1).
-    /// SPPs exist when `Re[eps_m] < -Re[eps_d]`. Returns the complex `k_spp`;
-    /// `Re[k_spp]` gives the spatial wavelength, `Im[k_spp]` the decay.
-    pub fn spp_wavevector(&self, omega: f64, eps_dielectric: f64) -> Complex64 {
-        let eps_m = self.epsilon(omega);
-        let eps_d = Complex64::new(eps_dielectric, 0.0);
-        let ratio = (eps_m * eps_d) / (eps_m + eps_d);
-        (omega / C) * ratio.sqrt()
-    }
-
-    /// SPP propagation length in meters.
-    ///
-    /// `L_spp = 1 / (2 * Im[k_spp])`. This is the `1/e` decay length of
-    /// the SPP intensity along the surface. For gold at 633 nm, L_spp ~ 10 um.
-    /// Returns `None` if `Im[k_spp]` is non-positive (no damping, unphysical).
-    pub fn spp_propagation_length(&self, omega: f64, eps_dielectric: f64) -> Option<f64> {
-        let k_spp = self.spp_wavevector(omega, eps_dielectric);
-        let k_im = k_spp.im.abs();
-        if k_im < 1e-30 {
-            return None;
-        }
-        Some(1.0 / (2.0 * k_im))
-    }
-
-    /// Evanescent decay length into vacuum (or dielectric medium) in meters.
-    ///
-    /// `delta = c / (omega * sqrt(-eps_m'))` where `eps_m' = Re[eps_m]`.
-    /// Valid only when `Re[eps_m] < 0` (metallic regime). Returns `None` for
-    /// dielectrics with `Re[eps] > 0`. This determines how deeply evanescent
-    /// fields penetrate into the medium -- critical for Casimir proximity effects.
-    pub fn evanescent_decay_length(&self, omega: f64) -> Option<f64> {
-        let eps_re = self.epsilon(omega).re;
-        if eps_re >= 0.0 {
-            return None; // Not metallic at this frequency
-        }
-        Some(C / (omega * (-eps_re).sqrt()))
-    }
-
-    /// Localized surface plasmon resonance (LSPR) frequency in rad/s.
-    ///
-    /// Finds the Frohlich condition: Re[eps_m(omega)] = -2 * eps_d for a
-    /// spherical nanoparticle in a dielectric medium. Scans from 0.5 to 15 eV.
-    /// Returns None if no crossing found (e.g., for pure dielectrics).
-    pub fn lspr_frequency(&self, eps_dielectric: f64) -> Option<f64> {
-        let target = -2.0 * eps_dielectric;
-        let steps: usize = 3000;
-        let ev_min = 0.1;
-        let ev_max = 15.0;
-        let dev = (ev_max - ev_min) / steps as f64;
-        let mut prev_re = self.epsilon(ev_min * EV_TO_RADS).re;
-        for i in 1..=steps {
-            let ev = ev_min + i as f64 * dev;
-            let omega = ev * EV_TO_RADS;
-            let re = self.epsilon(omega).re;
-            // Looking for Re[eps] crossing target from below (going upward through target)
-            if prev_re < target && re >= target {
-                let frac = (target - prev_re) / (re - prev_re);
-                return Some(((ev - dev) + frac * dev) * EV_TO_RADS);
-            }
-            prev_re = re;
-        }
-        None
-    }
-
-    /// Fresnel reflection coefficient r_s (s-polarization) at an interface.
-    ///
-    /// r_s = (n1*cos_i - n2*cos_t) / (n1*cos_i + n2*cos_t) where n1 is the
-    /// incident medium (real) and n2 = sqrt(eps) is from this material.
-    /// theta_i is the angle of incidence in radians.
-    pub fn fresnel_rs(&self, omega: f64, theta_i: f64, n_incident: f64) -> Complex64 {
-        let n2 = self.refractive_index(omega);
-        let cos_i = theta_i.cos();
-        let sin_i = theta_i.sin();
-        // Snell: n1*sin(theta_i) = n2*sin(theta_t) => cos_t = sqrt(1 - (n1/n2*sin_i)^2)
-        let sin_t_sq = Complex64::new(n_incident * n_incident * sin_i * sin_i, 0.0) / (n2 * n2);
-        let cos_t = (Complex64::new(1.0, 0.0) - sin_t_sq).sqrt();
-        let n1_cos_i = Complex64::new(n_incident * cos_i, 0.0);
-        let n2_cos_t = n2 * cos_t;
-        (n1_cos_i - n2_cos_t) / (n1_cos_i + n2_cos_t)
-    }
-
-    /// Fresnel reflection coefficient r_p (p-polarization) at an interface.
-    ///
-    /// r_p = (n2*cos_i - n1*cos_t) / (n2*cos_i + n1*cos_t).
-    pub fn fresnel_rp(&self, omega: f64, theta_i: f64, n_incident: f64) -> Complex64 {
-        let n2 = self.refractive_index(omega);
-        let cos_i = theta_i.cos();
-        let sin_i = theta_i.sin();
-        let sin_t_sq = Complex64::new(n_incident * n_incident * sin_i * sin_i, 0.0) / (n2 * n2);
-        let cos_t = (Complex64::new(1.0, 0.0) - sin_t_sq).sqrt();
-        let n2_cos_i = n2 * cos_i;
-        let n1_cos_t = Complex64::new(n_incident, 0.0) * cos_t;
-        (n2_cos_i - n1_cos_t) / (n2_cos_i + n1_cos_t)
-    }
-
-    /// Brewster angle in radians for p-polarized light.
-    ///
-    /// theta_B = atan(n2/n1) for non-absorbing dielectrics.
-    /// Returns `None` if the material is absorbing (`Im[n] > 0.01 * Re[n]`)
-    /// because the pseudo-Brewster angle in absorbing media requires
-    /// numerical search. For low-loss dielectrics, this gives the angle
-    /// where p-polarization reflectivity vanishes.
-    pub fn brewster_angle(&self, omega: f64, n_incident: f64) -> Option<f64> {
-        let n = self.refractive_index(omega);
-        // Only valid for nearly non-absorbing materials
-        if n.im > 0.01 * n.re {
-            return None;
-        }
-        Some((n.re / n_incident).atan())
-    }
-
-    /// Reflectance at arbitrary angle (intensity, not amplitude).
-    ///
-    /// R_s = |r_s|^2, R_p = |r_p|^2. Returns (R_s, R_p).
-    pub fn reflectance_angular(&self, omega: f64, theta_i: f64, n_incident: f64) -> (f64, f64) {
-        let rs = self.fresnel_rs(omega, theta_i, n_incident);
-        let rp = self.fresnel_rp(omega, theta_i, n_incident);
-        (rs.norm_sqr(), rp.norm_sqr())
-    }
 
     // ---- Part 11: Magneto-optical + Drude weight diagnostics ----
+    // Transport methods (7) extracted to the `transport` submodule
+    // (#138 PH-MOD split). See optical_database/transport.rs.
 
-    /// Drude weight D in SI units (S/m * rad/s = S * rad / (m * s)).
-    ///
-    /// D = (pi/2) * omega_p^2 * eps_0 = pi * n * e^2 / (2 * m*)
-    /// This is the integrated spectral weight under the Drude peak:
-    /// D = integral_0^inf sigma_1_Drude(omega) domega.
-    /// Returns None for non-metallic (no Drude) materials.
-    pub fn drude_weight(&self) -> Option<f64> {
-        let omega_p = if let Some(ext) = &self.extended_drude {
-            ext.omega_p_ev * EV_TO_RADS
-        } else if let Some(drude) = &self.drude {
-            drude.omega_p_ev * EV_TO_RADS
-        } else {
-            return None;
-        };
-        Some(std::f64::consts::PI / 2.0 * omega_p * omega_p * EPS_0)
-    }
-
-    /// Carrier mobility mu in m^2/(V*s) from Drude parameters.
-    ///
-    /// mu = e / (m* * gamma) where gamma is the Drude scattering rate
-    /// and m* is the effective mass. Requires carrier_density for m* extraction.
-    /// For gold (n ~ 5.9e28 m^-3), mu ~ 0.004 m^2/(V*s) at room temperature.
-    /// Returns None if no Drude term or carrier density gives unphysical mass.
-    pub fn carrier_mobility(&self, carrier_density: f64) -> Option<f64> {
-        let gamma_ev = if let Some(ext) = &self.extended_drude {
-            ext.scattering.gamma_at_ev(0.0)
-        } else if let Some(drude) = &self.drude {
-            drude.gamma_ev
-        } else {
-            return None;
-        };
-        let m_star = self.optical_effective_mass(carrier_density)?;
-        let m_star_kg = m_star * M_E_KG;
-        let gamma = gamma_ev * EV_TO_RADS;
-        if gamma < 1e-30 {
-            return None;
-        }
-        Some(E_CHARGE / (m_star_kg * gamma))
-    }
-
-    /// Plasma frequency from carrier density and effective mass.
-    ///
-    /// omega_p = sqrt(n * e^2 / (eps_0 * m*)) in rad/s.
-    /// This is the inverse of optical_effective_mass(): given n and m*,
-    /// compute omega_p. Useful for predicting Drude params of doped materials.
-    pub fn plasma_frequency_from_density(carrier_density: f64, m_star_ratio: f64) -> f64 {
-        let m_star = m_star_ratio * M_E_KG;
-        (carrier_density * E_CHARGE * E_CHARGE / (EPS_0 * m_star)).sqrt()
-    }
-
-    /// Off-diagonal Voigt dielectric tensor element eps_xy for MOKE.
-    ///
-    /// In an external magnetic field B (Tesla), the cyclotron frequency
-    /// omega_c = e*B / m* introduces off-diagonal elements:
-    /// eps_xy(omega) = i * omega_c * omega_p^2 / (omega * (omega^2 + i*gamma*omega))
-    /// This is the lowest-order magneto-optical response (free-electron).
-    /// Returns None if no Drude term (no free carriers to precess).
-    pub fn voigt_eps_xy(
-        &self,
-        omega: f64,
-        b_field: f64,
-        carrier_density: f64,
-    ) -> Option<Complex64> {
-        let (omega_p_ev, gamma_ev) = if let Some(ext) = &self.extended_drude {
-            (ext.omega_p_ev, ext.scattering.gamma_at_ev(0.0))
-        } else if let Some(drude) = &self.drude {
-            (drude.omega_p_ev, drude.gamma_ev)
-        } else {
-            return None;
-        };
-        let m_star = self.optical_effective_mass(carrier_density)?;
-        let m_star_kg = m_star * M_E_KG;
-        let omega_c = E_CHARGE * b_field / m_star_kg; // cyclotron frequency
-        let omega_p = omega_p_ev * EV_TO_RADS;
-        let gamma = gamma_ev * EV_TO_RADS;
-        let denom = Complex64::new(-omega * omega, gamma * omega);
-        // eps_xy = i * omega_c * omega_p^2 / (omega * denom)
-        let numerator = Complex64::new(0.0, omega_c * omega_p * omega_p);
-        Some(numerator / (omega * denom))
-    }
-
-    /// Faraday rotation per unit length in rad/m.
-    ///
-    /// `theta_F = omega * Re[eps_xy] / (2 * n * c)` where `n` is the real
-    /// refractive index and eps_xy is the off-diagonal Voigt element.
-    /// Returns None if no Drude term.
-    pub fn faraday_rotation(&self, omega: f64, b_field: f64, carrier_density: f64) -> Option<f64> {
-        let eps_xy = self.voigt_eps_xy(omega, b_field, carrier_density)?;
-        let n = self.refractive_index(omega).re;
-        if n < 1e-10 {
-            return None;
-        }
-        Some(omega * eps_xy.re / (2.0 * n * C))
-    }
-
-    /// DC resistivity in Ohm*m from Drude parameters.
-    ///
-    /// rho = m* * gamma / (n * e^2) = 1 / (eps_0 * omega_p^2 * tau)
-    /// where tau = 1/gamma is the scattering time.
-    /// For gold: rho ~ 2.2e-8 Ohm*m at room temperature.
-    /// Returns None if no Drude term.
-    pub fn dc_resistivity(&self) -> Option<f64> {
-        let (omega_p_ev, gamma_ev) = if let Some(ext) = &self.extended_drude {
-            (ext.omega_p_ev, ext.scattering.gamma_at_ev(0.0))
-        } else if let Some(drude) = &self.drude {
-            (drude.omega_p_ev, drude.gamma_ev)
-        } else {
-            return None;
-        };
-        let omega_p = omega_p_ev * EV_TO_RADS;
-        let gamma = gamma_ev * EV_TO_RADS;
-        // rho = gamma / (eps_0 * omega_p^2)
-        Some(gamma / (EPS_0 * omega_p * omega_p))
-    }
-
-    /// Scattering time (Drude relaxation time) tau in seconds.
-    ///
-    /// tau = 1 / gamma = hbar / gamma_eV.
-    /// For gold at 300 K: tau ~ 9.5 fs.
-    /// Returns None if no Drude term.
-    pub fn scattering_time(&self) -> Option<f64> {
-        let gamma_ev = if let Some(ext) = &self.extended_drude {
-            ext.scattering.gamma_at_ev(0.0)
-        } else if let Some(drude) = &self.drude {
-            drude.gamma_ev
-        } else {
-            return None;
-        };
-        let gamma = gamma_ev * EV_TO_RADS;
-        if gamma < 1e-30 {
-            return None;
-        }
-        Some(1.0 / gamma)
-    }
 
     // ========================================================================
-    // Part 12: Ellipsometry, Thermal Emission, ENZ Physics
+    // Part 12: Ellipsometry + thermal emission + ENZ + Reststrahlen
     // ========================================================================
+    // 7 methods (psi_delta, emissivity, spectral_emittance,
+    // integrated_emissivity, enz_frequency, enz_group_velocity,
+    // reststrahlen_band) extracted to the `ellipsometry_thermal_enz`
+    // submodule (#138 PH-MOD split).
 
-    /// Spectroscopic ellipsometry angles (psi, delta) at frequency omega and
-    /// angle of incidence theta_i (radians).
-    ///
-    /// Ellipsometry measures rho = r_p / r_s = tan(psi) * exp(i*delta).
-    /// Returns (psi, delta) in radians.
-    pub fn psi_delta(&self, omega: f64, theta_i: f64) -> (f64, f64) {
-        let rs = self.fresnel_rs(omega, theta_i, 1.0);
-        let rp = self.fresnel_rp(omega, theta_i, 1.0);
-        let rho = if rs.norm() < 1e-30 {
-            Complex64::new(0.0, 0.0)
-        } else {
-            rp / rs
-        };
-        let psi = rho.norm().atan();
-        let delta = rho.arg();
-        (psi, delta)
-    }
-
-    /// Emissivity at frequency omega for an opaque material (Kirchhoff's law).
-    ///
-    /// For an opaque (thick) slab: emissivity = absorptivity = 1 - reflectivity.
-    /// This is the normal-incidence hemispherical emissivity.
-    pub fn emissivity(&self, omega: f64) -> f64 {
-        1.0 - self.reflectivity_normal(omega)
-    }
-
-    /// Spectral radiance (W / m^2 / sr / (rad/s)) at frequency omega and
-    /// temperature T, accounting for material emissivity.
-    ///
-    /// L(omega, T) = emissivity(omega) * B(omega, T)
-    /// where B is the Planck function:
-    /// B(omega, T) = hbar * omega^3 / (4 * pi^3 * c^2 * (exp(hbar*omega/(k_B*T)) - 1))
-    pub fn spectral_emittance(&self, omega: f64, temperature_k: f64) -> f64 {
-        if temperature_k < 1e-10 || omega < 1e-10 {
-            return 0.0;
-        }
-        let hbar = HBAR_EV_S * 1.602_176_634e-19; // J*s
-        let k_b = K_B_EV * 1.602_176_634e-19; // J/K
-        let x = hbar * omega / (k_b * temperature_k);
-        // Prevent overflow for large x
-        if x > 500.0 {
-            return 0.0;
-        }
-        let planck =
-            hbar * omega.powi(3) / (4.0 * std::f64::consts::PI.powi(3) * C * C * (x.exp() - 1.0));
-        self.emissivity(omega) * planck
-    }
-
-    /// Integrated emissivity over a frequency range, weighted by Planck function.
-    ///
-    /// eta_total = integral[emissivity(omega) * B(omega, T)] / integral[B(omega, T)]
-    /// Integrates from omega_min to omega_max with trapezoidal rule.
-    pub fn integrated_emissivity(
-        &self,
-        temperature_k: f64,
-        omega_min: f64,
-        omega_max: f64,
-        n_steps: usize,
-    ) -> f64 {
-        if n_steps < 2 || omega_max <= omega_min {
-            return 0.0;
-        }
-        let hbar = HBAR_EV_S * 1.602_176_634e-19;
-        let k_b = K_B_EV * 1.602_176_634e-19;
-        let d_omega = (omega_max - omega_min) / n_steps as f64;
-        let mut num = 0.0;
-        let mut den = 0.0;
-        for i in 0..=n_steps {
-            let omega = omega_min + i as f64 * d_omega;
-            let x = hbar * omega / (k_b * temperature_k);
-            if !(1e-30..=500.0).contains(&x) {
-                continue;
-            }
-            let planck = omega.powi(3) / (x.exp() - 1.0);
-            let w = if i == 0 || i == n_steps { 0.5 } else { 1.0 };
-            num += w * self.emissivity(omega) * planck;
-            den += w * planck;
-        }
-        if den < 1e-30 {
-            return 0.0;
-        }
-        num / den
-    }
-
-    /// Epsilon-near-zero (ENZ) frequency: where Re[epsilon(omega)] crosses zero.
-    ///
-    /// Scans from scan_min to scan_max (rad/s) looking for a sign change in
-    /// `Re[epsilon]`. Returns the frequency in `rad/s` via bisection.
-    /// For metals, this is the screened plasma frequency.
-    pub fn enz_frequency(&self, scan_min: f64, scan_max: f64) -> Option<f64> {
-        let n_scan = 2000;
-        let d_omega = (scan_max - scan_min) / n_scan as f64;
-        let mut prev_re = self.epsilon(scan_min).re;
-        let mut crossing_omega = None;
-        for i in 1..=n_scan {
-            let omega = scan_min + i as f64 * d_omega;
-            let re = self.epsilon(omega).re;
-            if prev_re * re < 0.0 {
-                // Bisect
-                let mut lo = omega - d_omega;
-                let mut hi = omega;
-                for _ in 0..60 {
-                    let mid = 0.5 * (lo + hi);
-                    let mid_re = self.epsilon(mid).re;
-                    if prev_re * mid_re < 0.0 {
-                        hi = mid;
-                    } else {
-                        lo = mid;
-                        prev_re = mid_re;
-                    }
-                }
-                crossing_omega = Some(0.5 * (lo + hi));
-                break;
-            }
-            prev_re = re;
-        }
-        crossing_omega
-    }
-
-    /// Group velocity at the ENZ frequency, normalized to c.
-    ///
-    /// `v_g/c = 1 / Re[n_g]` where `n_g = n + omega * dn/domega`.
-    /// At the ENZ point, `Re[eps] ~ 0` so the phase velocity diverges, but the
-    /// group velocity remains finite and can be very slow (slow light).
-    /// Returns v_g/c, or None if no ENZ crossing exists.
-    pub fn enz_group_velocity(&self, scan_min: f64, scan_max: f64) -> Option<f64> {
-        let omega_enz = self.enz_frequency(scan_min, scan_max)?;
-        let n_g = self.group_refractive_index(omega_enz);
-        if n_g.abs() < 1e-30 {
-            return None;
-        }
-        Some(1.0 / n_g)
-    }
-
-    /// Reststrahlen band boundaries for polar dielectrics.
-    ///
-    /// In a polar dielectric with TO and LO phonon frequencies, the region
-    /// `omega_TO < omega < omega_LO` has `Re[eps] < 0` (metallic-like behavior).
-    /// This method returns (omega_TO, omega_LO) in rad/s if such a band exists,
-    /// detected from the Lorentz oscillators.
-    ///
-    /// The LO frequency is estimated from the Lyddane-Sachs-Teller relation:
-    /// omega_LO^2 = omega_TO^2 * eps_static / eps_inf
-    pub fn reststrahlen_band(&self) -> Option<(f64, f64)> {
-        if self.oscillators.is_empty() {
-            return None;
-        }
-        // Find the strongest oscillator (largest S parameter)
-        let strongest = self.oscillators.iter().max_by(|a, b| {
-            a.strength
-                .partial_cmp(&b.strength)
-                .unwrap_or(std::cmp::Ordering::Equal)
-        })?;
-
-        let omega_to = strongest.omega_0_ev * EV_TO_RADS;
-
-        // LST relation: omega_LO^2 / omega_TO^2 = eps_static / eps_inf
-        // eps_static = eps_inf + sum(S_j * omega_0j^2 / omega_0j^2) = eps_inf + sum(S_j)
-        // for a single oscillator at omega_TO
-        let eps_s = self.eps_inf + strongest.strength;
-        if eps_s < 1e-10 || self.eps_inf < 1e-10 {
-            return None;
-        }
-        let lst_ratio = eps_s / self.eps_inf;
-        if lst_ratio <= 1.0 {
-            return None;
-        }
-        let omega_lo = omega_to * lst_ratio.sqrt();
-        Some((omega_to, omega_lo))
-    }
 
     // ========================================================================
-    // Part 13: EELS, Photonic Density of States, Absorption Engineering
+    // Part 13: EELS + LDOS + absorption engineering
     // ========================================================================
+    // 7 methods (surface_loss_function, volume_loss_weighted,
+    // purcell_factor, lamb_shift_fractional, absorption_per_pass,
+    // optimal_absorber_thickness, impedance_mismatch) extracted to the
+    // `eels_absorption_engineering` submodule (#138 PH-MOD).
 
-    /// Surface electron energy loss function: Im[-1/(1+eps(omega))].
-    ///
-    /// The surface loss function describes the probability of energy loss for
-    /// electrons scattered from a surface, probing surface plasmon excitations.
-    /// Peaks at the surface plasmon frequency where `Re[eps] = -1`.
-    pub fn surface_loss_function(&self, omega: f64) -> f64 {
-        let eps = self.epsilon(omega);
-        let denom = Complex64::new(1.0, 0.0) + eps;
-        if denom.norm() < 1e-30 {
-            return 0.0;
-        }
-        (-1.0 / denom).im
-    }
-
-    /// Weighted volume loss function: omega * Im[-1/eps(omega)].
-    ///
-    /// This is proportional to the differential EELS cross-section d^2sigma/(dE dq)
-    /// in the optical limit (q -> 0). The omega weighting comes from the
-    /// fluctuation-dissipation theorem relating loss to the spectral function.
-    pub fn volume_loss_weighted(&self, omega: f64) -> f64 {
-        omega * self.loss_function(omega)
-    }
-
-    /// Purcell factor for a dipole emitter at distance d from a planar surface.
-    ///
-    /// F_P = 1 + (3/(4*(k*d)^3)) * Im[(eps-1)/(eps+1)]
-    /// where k = omega/c. This gives the enhancement of the local density of
-    /// optical states (LDOS) relative to free space. Near a metal surface,
-    /// F_P >> 1 due to near-field coupling to surface plasmons.
-    /// Valid in the near-field regime (k*d << 1).
-    pub fn purcell_factor(&self, omega: f64, distance_m: f64) -> f64 {
-        let eps = self.epsilon(omega);
-        let k = omega / C;
-        let kd = k * distance_m;
-        if kd < 1e-30 {
-            return 1.0;
-        }
-        let reflection_factor = (eps - Complex64::new(1.0, 0.0)) / (eps + Complex64::new(1.0, 0.0));
-        1.0 + 3.0 / (4.0 * kd.powi(3)) * reflection_factor.im
-    }
-
-    /// Lamb shift (frequency shift) for a dipole emitter near a planar surface.
-    ///
-    /// delta_omega / omega = -(3/(8*(k*d)^3)) * Re[(eps-1)/(eps+1)]
-    /// Returns the fractional frequency shift delta_omega/omega.
-    /// Negative means redshift (towards surface plasmon), positive means blueshift.
-    pub fn lamb_shift_fractional(&self, omega: f64, distance_m: f64) -> f64 {
-        let eps = self.epsilon(omega);
-        let k = omega / C;
-        let kd = k * distance_m;
-        if kd < 1e-30 {
-            return 0.0;
-        }
-        let reflection_factor = (eps - Complex64::new(1.0, 0.0)) / (eps + Complex64::new(1.0, 0.0));
-        -3.0 / (8.0 * kd.powi(3)) * reflection_factor.re
-    }
-
-    /// Single-pass absorption fraction through a thin film of given thickness.
-    ///
-    /// A = 1 - exp(-alpha * thickness) where alpha = absorption_coefficient.
-    /// For thin films (alpha*d << 1): A ~ alpha * d (Beer-Lambert).
-    pub fn absorption_per_pass(&self, omega: f64, thickness_m: f64) -> f64 {
-        let alpha = self.absorption_coefficient(omega);
-        1.0 - (-alpha * thickness_m).exp()
-    }
-
-    /// Optimal absorber thickness for maximum single-pass absorption.
-    ///
-    /// The optimal thickness balances absorption vs reflection losses:
-    /// d_opt ~ 1/alpha * ln(1/(1-A_target))
-    /// Here we return d = 1/alpha (one penetration depth), which gives
-    /// A = 1 - 1/e ~ 63.2% absorption.
-    /// Returns None if alpha < 1e-10 (transparent material).
-    pub fn optimal_absorber_thickness(&self, omega: f64) -> Option<f64> {
-        let alpha = self.absorption_coefficient(omega);
-        if alpha < 1e-10 {
-            return None;
-        }
-        Some(1.0 / alpha)
-    }
-
-    /// Impedance matching parameter: |Z_surface / Z_0 - 1|.
-    ///
-    /// Z_0 = 377 Ohm (free space impedance).
-    /// Z_surface = Z_0 / n (for normal incidence on a half-space).
-    /// Returns 0 for perfect impedance match (zero reflection),
-    /// large values for high-reflectivity materials.
-    pub fn impedance_mismatch(&self, omega: f64) -> f64 {
-        let n = self.refractive_index(omega);
-        let z_ratio = 1.0 / n; // Z_surface / Z_0
-        (z_ratio - Complex64::new(1.0, 0.0)).norm()
-    }
 
     // ========================================================================
-    // Part 14: Coherence, Quality Metrics, Spectral Characterization
+    // Part 14: Coherence + quality metrics + spectral characterization
     // ========================================================================
+    // 7 methods (oscillator_quality_factor, drude_quality,
+    // figure_of_merit_spp, spectral_weight_window, optical_path_length,
+    // coherence_length, penetration_depth_ratio) extracted to the
+    // `coherence_quality_metrics` submodule (#138 PH-MOD).
 
-    /// Quality factor of the strongest Lorentz oscillator: Q = omega_0 / gamma.
-    ///
-    /// High Q means narrow resonance (long-lived excitation).
-    /// Returns None if no oscillators.
-    pub fn oscillator_quality_factor(&self) -> Option<f64> {
-        let strongest = self.oscillators.iter().max_by(|a, b| {
-            a.strength
-                .partial_cmp(&b.strength)
-                .unwrap_or(std::cmp::Ordering::Equal)
-        })?;
-        if strongest.gamma_ev < 1e-30 {
-            return None;
-        }
-        Some(strongest.omega_0_ev / strongest.gamma_ev)
-    }
-
-    /// Drude quality factor: omega / gamma at the given frequency.
-    ///
-    /// Q_Drude = omega / gamma measures how many oscillation cycles occur
-    /// before scattering. Q >> 1 means the material is a good conductor at
-    /// that frequency (coherent carrier response).
-    /// Returns None if no Drude term.
-    pub fn drude_quality(&self, omega: f64) -> Option<f64> {
-        let gamma_ev = if let Some(ext) = &self.extended_drude {
-            ext.scattering.gamma_at_ev(0.0)
-        } else if let Some(drude) = &self.drude {
-            drude.gamma_ev
-        } else {
-            return None;
-        };
-        let gamma = gamma_ev * EV_TO_RADS;
-        if gamma < 1e-30 {
-            return None;
-        }
-        Some(omega / gamma)
-    }
-
-    /// Figure of merit for surface plasmon polariton propagation.
-    ///
-    /// `FoM = Re[k_spp] / (2 * Im[k_spp])` = number of wavelengths the SPP
-    /// propagates before decaying to 1/e. Higher FoM means longer-range SPPs.
-    /// Returns None if no SPP exists (dielectric material).
-    pub fn figure_of_merit_spp(&self, omega: f64, eps_dielectric: f64) -> Option<f64> {
-        let k = self.spp_wavevector(omega, eps_dielectric);
-        if k.im.abs() < 1e-30 {
-            return None;
-        }
-        Some(k.re / (2.0 * k.im.abs()))
-    }
-
-    /// Partial spectral weight in a frequency window [omega_min, omega_max].
-    ///
-    /// `SW = integral[sigma_1(omega) d_omega]` from `omega_min` to `omega_max`
-    /// where `sigma_1 = Re[sigma] = omega * Im[eps] * eps_0`.
-    /// This is the partial oscillator strength sum rule.
-    pub fn spectral_weight_window(&self, omega_min: f64, omega_max: f64, n_steps: usize) -> f64 {
-        if n_steps < 2 || omega_max <= omega_min {
-            return 0.0;
-        }
-        let d_omega = (omega_max - omega_min) / n_steps as f64;
-        let mut sum = 0.0;
-        for i in 0..=n_steps {
-            let omega = omega_min + i as f64 * d_omega;
-            let sigma_1 = self.optical_conductivity_re(omega);
-            let w = if i == 0 || i == n_steps { 0.5 } else { 1.0 };
-            sum += w * sigma_1;
-        }
-        sum * d_omega
-    }
-
-    /// Optical path length: n * d (real part of refractive index times thickness).
-    ///
-    /// OPL determines interference: constructive when OPL = m * lambda,
-    /// destructive when OPL = (m + 1/2) * lambda.
-    /// Returns (real OPL, imaginary OPL) in meters.
-    pub fn optical_path_length(&self, omega: f64, thickness_m: f64) -> (f64, f64) {
-        let n = self.refractive_index(omega);
-        (n.re * thickness_m, n.im * thickness_m)
-    }
-
-    /// Temporal coherence length of light in this medium.
-    ///
-    /// l_c = c / (n * delta_omega) where delta_omega is the spectral bandwidth.
-    /// For a monochromatic source (delta_omega -> 0), l_c -> infinity.
-    /// The coherence length determines the maximum path difference for
-    /// interference experiments (Michelson, Fabry-Perot).
-    pub fn coherence_length(&self, omega: f64, bandwidth_rad_s: f64) -> f64 {
-        if bandwidth_rad_s < 1e-30 {
-            return f64::INFINITY;
-        }
-        let n = self.refractive_index(omega);
-        C / (n.re.abs() * bandwidth_rad_s)
-    }
-
-    /// Penetration depth / wavelength ratio: delta / lambda.
-    ///
-    /// When delta/lambda << 1, the material is opaque within a single wavelength
-    /// (good metal behavior). When delta/lambda >> 1, the material is transparent
-    /// over many wavelengths. This dimensionless ratio determines whether the
-    /// material is effectively a bulk absorber or a thin-film phase shifter.
-    pub fn penetration_depth_ratio(&self, omega: f64) -> f64 {
-        let alpha = self.absorption_coefficient(omega);
-        if alpha < 1e-30 {
-            return f64::INFINITY;
-        }
-        let delta = 1.0 / alpha;
-        let lambda = 2.0 * std::f64::consts::PI * C / omega;
-        delta / lambda
-    }
 
     // ========================================================================
-    // Part 15: Photovoltaic and Solar Energy Metrics
+    // Part 15: Photovoltaic + solar energy + TPV metrics
     // ========================================================================
+    // 7 methods (solar_absorptance, solar_reflectance, antireflection_thickness,
+    // wien_peak_omega, wien_peak_ev, luminous_reflectance,
+    // selective_emitter_efficiency) extracted to `photovoltaic_solar`
+    // submodule (#138 PH-MOD).
 
-    /// Solar-weighted absorptance using simplified AM1.5G spectrum.
-    ///
-    /// A_solar = integral[A(E) * S(E) dE] / integral[S(E) dE]
-    /// where A(E) = 1 - R(E) for opaque materials, and S(E) is the AM1.5G
-    /// spectral irradiance approximated as a 5800K blackbody * atmospheric
-    /// transmission window (0.3 - 4.0 eV, peak ~2.5 eV).
-    pub fn solar_absorptance(&self, n_steps: usize) -> f64 {
-        if n_steps < 2 {
-            return 0.0;
-        }
-        let e_min = 0.3; // eV (4.1 um cutoff, atmospheric IR)
-        let e_max = 4.0; // eV (310 nm UV cutoff, ozone)
-        let de = (e_max - e_min) / n_steps as f64;
-        // AM1.5G approximation: 5800K blackbody envelope
-        let t_sun = 5800.0;
-        let mut num = 0.0;
-        let mut den = 0.0;
-        for i in 0..=n_steps {
-            let e_ev = e_min + i as f64 * de;
-            let omega = ev_to_omega(e_ev);
-            // Planck-like weighting: E^3 / (exp(E/(k_B*T_sun)) - 1)
-            let x = e_ev / (K_B_EV * t_sun);
-            if x > 500.0 {
-                continue;
-            }
-            let weight = e_ev.powi(3) / (x.exp() - 1.0);
-            let absorptance = self.emissivity(omega); // 1 - R for opaque
-            let w = if i == 0 || i == n_steps { 0.5 } else { 1.0 };
-            num += w * absorptance * weight;
-            den += w * weight;
-        }
-        if den < 1e-30 {
-            return 0.0;
-        }
-        num / den
-    }
-
-    /// Solar-weighted reflectance (complement of absorptance for opaque materials).
-    pub fn solar_reflectance(&self, n_steps: usize) -> f64 {
-        1.0 - self.solar_absorptance(n_steps)
-    }
-
-    /// Quarter-wave antireflection coating thickness.
-    ///
-    /// For a single-layer AR coating with refractive index n_coating on a
-    /// substrate with refractive index n_sub:
-    /// - Ideal n_coating = sqrt(n_sub) for minimum reflection
-    /// - Thickness d = lambda / (4 * n_coating) for destructive interference
-    ///
-    /// Returns the thickness in meters for the given frequency.
-    pub fn antireflection_thickness(&self, omega: f64) -> f64 {
-        let n_sub = self.refractive_index(omega).re;
-        let n_coating = n_sub.abs().sqrt();
-        let lambda = 2.0 * std::f64::consts::PI * C / omega;
-        lambda / (4.0 * n_coating)
-    }
-
-    /// Wien displacement law: peak emission frequency for a blackbody at
-    /// the given temperature.
-    ///
-    /// omega_peak = alpha * k_B * T / hbar
-    /// where alpha ~ 2.821 (root of x = 3*(1-e^(-x))).
-    /// Returns the peak angular frequency in rad/s.
-    pub fn wien_peak_omega(temperature_k: f64) -> f64 {
-        let alpha = 2.821_439_372; // solution of x = 3*(1 - exp(-x))
-        let hbar_j = HBAR_EV_S * 1.602_176_634e-19;
-        let k_b_j = K_B_EV * 1.602_176_634e-19;
-        alpha * k_b_j * temperature_k / hbar_j
-    }
-
-    /// Wien peak energy in eV for a blackbody at the given temperature.
-    pub fn wien_peak_ev(temperature_k: f64) -> f64 {
-        2.821_439_372 * K_B_EV * temperature_k
-    }
-
-    /// Luminous reflectance: reflectance weighted by CIE photopic luminosity function.
-    ///
-    /// The photopic luminosity function V(lambda) peaks at 555 nm (2.23 eV)
-    /// and spans ~380-780 nm (1.59-3.26 eV). We approximate V(lambda) as a
-    /// Gaussian centered at 2.23 eV with FWHM ~0.8 eV.
-    pub fn luminous_reflectance(&self, n_steps: usize) -> f64 {
-        if n_steps < 2 {
-            return 0.0;
-        }
-        let e_min = 1.59; // eV (780 nm)
-        let e_max = 3.26; // eV (380 nm)
-        let de = (e_max - e_min) / n_steps as f64;
-        let center_ev = 2.23; // 555 nm peak
-        let sigma = 0.34; // Gaussian sigma (~0.8 eV FWHM)
-        let mut num = 0.0;
-        let mut den = 0.0;
-        for i in 0..=n_steps {
-            let e_ev = e_min + i as f64 * de;
-            let omega = ev_to_omega(e_ev);
-            // Gaussian approximation to photopic luminosity
-            let v = (-0.5 * ((e_ev - center_ev) / sigma).powi(2)).exp();
-            let r = self.reflectivity_normal(omega);
-            let w = if i == 0 || i == n_steps { 0.5 } else { 1.0 };
-            num += w * r * v;
-            den += w * v;
-        }
-        if den < 1e-30 {
-            return 0.0;
-        }
-        num / den
-    }
-
-    /// Selective emitter efficiency for thermophotovoltaics.
-    ///
-    /// eta = integral[e(omega) * B(omega, T_hot) d_omega, omega > omega_gap]
-    ///     / integral[e(omega) * B(omega, T_hot) d_omega, all omega]
-    ///
-    /// This measures what fraction of thermal emission falls above the PV cell
-    /// band gap (useful photons) vs total emission (including sub-gap waste).
-    /// omega_gap is estimated from absorption_onset_ev().
-    pub fn selective_emitter_efficiency(
-        &self,
-        temperature_k: f64,
-        omega_gap: f64,
-        omega_min: f64,
-        omega_max: f64,
-        n_steps: usize,
-    ) -> f64 {
-        if n_steps < 2 || omega_max <= omega_min {
-            return 0.0;
-        }
-        let hbar = HBAR_EV_S * 1.602_176_634e-19;
-        let k_b = K_B_EV * 1.602_176_634e-19;
-        let d_omega = (omega_max - omega_min) / n_steps as f64;
-        let mut above_gap = 0.0;
-        let mut total = 0.0;
-        for i in 0..=n_steps {
-            let omega = omega_min + i as f64 * d_omega;
-            let x = hbar * omega / (k_b * temperature_k);
-            if !(1e-30..=500.0).contains(&x) {
-                continue;
-            }
-            let planck = omega.powi(3) / (x.exp() - 1.0);
-            let e = self.emissivity(omega);
-            let w = if i == 0 || i == n_steps { 0.5 } else { 1.0 };
-            let contribution = w * e * planck;
-            total += contribution;
-            if omega >= omega_gap {
-                above_gap += contribution;
-            }
-        }
-        if total < 1e-30 {
-            return 0.0;
-        }
-        above_gap / total
-    }
 
     // ========================================================================
-    // Part 16a: Photonic Crystal and Waveguide Metrics
+    // Part 16a: Photonic crystal + waveguide metrics
     // ========================================================================
-
-    /// Numerical aperture for a step-index fiber with this material as core.
-    ///
-    /// NA = sqrt(n_core^2 - n_clad^2), where n_core = Re[n(omega)].
-    /// Returns None if n_core < n_cladding (no guiding condition).
-    pub fn numerical_aperture(&self, omega: f64, n_cladding: f64) -> Option<f64> {
-        let n_core = self.refractive_index(omega).re;
-        let diff = n_core * n_core - n_cladding * n_cladding;
-        if diff > 0.0 { Some(diff.sqrt()) } else { None }
-    }
-
-    /// V-parameter (normalized frequency) for step-index fiber.
-    ///
-    /// V = (2*pi/lambda) * a * NA. Single-mode cutoff at V = 2.405 (LP11).
-    /// Returns None if no guiding condition exists.
-    pub fn v_parameter(&self, omega: f64, core_radius_m: f64, n_cladding: f64) -> Option<f64> {
-        let na = self.numerical_aperture(omega, n_cladding)?;
-        let lambda = 2.0 * PI * C / omega;
-        Some(2.0 * PI * core_radius_m / lambda * na)
-    }
-
-    /// Confinement factor Gamma: fraction of optical power within the fiber core.
-    ///
-    /// Gaussian approximation: Gamma = 1 - exp(-2*(a/w)^2), where the mode
-    /// field radius w ~ a * (0.65 + 1.619/V^1.5 + 2.879/V^6) (Marcuse formula).
-    /// Returns None if V < 0.8 (formula invalid) or no guiding.
-    pub fn confinement_factor(
-        &self,
-        omega: f64,
-        core_radius_m: f64,
-        n_cladding: f64,
-    ) -> Option<f64> {
-        let v = self.v_parameter(omega, core_radius_m, n_cladding)?;
-        if v < 0.8 {
-            return None;
-        }
-        let w_over_a = 0.65 + 1.619 / v.powf(1.5) + 2.879 / v.powi(6);
-        let gamma = 1.0 - (-2.0 / (w_over_a * w_over_a)).exp();
-        Some(gamma)
-    }
-
-    /// Effective mode area A_eff for single-mode fiber (Gaussian approximation).
-    ///
-    /// A_eff = pi * w^2 where w = a * (0.65 + 1.619/V^1.5 + 2.879/V^6).
-    /// Returns None if V < 0.8 or no guiding.
-    pub fn effective_mode_area(
-        &self,
-        omega: f64,
-        core_radius_m: f64,
-        n_cladding: f64,
-    ) -> Option<f64> {
-        let v = self.v_parameter(omega, core_radius_m, n_cladding)?;
-        if v < 0.8 {
-            return None;
-        }
-        let w = core_radius_m * (0.65 + 1.619 / v.powf(1.5) + 2.879 / v.powi(6));
-        Some(PI * w * w)
-    }
-
-    /// Modal birefringence: difference between `Re[n]` at two polarizations.
-    ///
-    /// For isotropic DL materials this is zero by symmetry, but for materials
-    /// with strong absorption the effective birefringence `|n - n*| = 2*Im[n]`
-    /// characterizes polarization-dependent loss.
-    pub fn modal_birefringence(&self, omega: f64) -> f64 {
-        let n = self.refractive_index(omega);
-        2.0 * n.im.abs()
-    }
-
-    /// Critical bend radius below which radiation loss dominates in fiber.
-    ///
-    /// R_c ~ (2*pi*n_eff / lambda) * (n_core^2 - n_clad^2)^(-3/2) * exp(const).
-    /// Simplified: R_c = lambda / (pi * NA^3) * n_eff (Unger formula).
-    /// Returns None if no guiding condition.
-    pub fn bend_loss_critical_radius(&self, omega: f64, n_cladding: f64) -> Option<f64> {
-        let na = self.numerical_aperture(omega, n_cladding)?;
-        let n_core = self.refractive_index(omega).re;
-        let lambda = 2.0 * PI * C / omega;
-        Some(lambda * n_core / (PI * na * na * na))
-    }
-
-    /// Chromatic dispersion in fiber-convention units: ps/(nm*km).
-    ///
-    /// D = -(2*pi*c/lambda^2) * beta_2, where beta_2 = d^2(beta)/d(omega)^2.
-    /// Positive D = anomalous dispersion, negative D = normal dispersion.
-    pub fn chromatic_dispersion_ps_nm_km(&self, omega: f64) -> f64 {
-        let beta2 = self.gvd_beta2(omega);
-        let lambda = 2.0 * PI * C / omega;
-        // D = -(2*pi*c/lambda^2) * beta_2
-        // beta_2 in s^2/m, D in s/(m*m) -> convert to ps/(nm*km)
-        // 1 s/(m*m) = 1e12 ps / (1e9 nm * 1e3 km) = 1e12/(1e12) = 1.0 ps/(nm*km)? No.
-        // D [s/m^2] -> ps/(nm*km): multiply by 1e12 * 1e-9 * 1e3 = 1e6
-        // Actually: D has units s/m^2. 1 ps/(nm*km) = 1e-12 s / (1e-9 m * 1e3 m) = 1e-6 s/m^2.
-        // So D [s/m^2] = D * 1e6 [ps/(nm*km)].
-        let d_si = -(2.0 * PI * C / (lambda * lambda)) * beta2;
-        d_si * 1e6
-    }
+    // 7 methods (numerical_aperture, v_parameter, confinement_factor,
+    // effective_mode_area, modal_birefringence, bend_loss_critical_radius,
+    // chromatic_dispersion_ps_nm_km) extracted to `photonic_waveguide`
+    // submodule (#138 PH-MOD).
 
     // ========================================================================
-    // Part 16b: Plasmonic Sensing and SERS Metrics
+    // Part 16b: Plasmonic sensing + SERS metrics
     // ========================================================================
+    // 7 methods extracted to `plasmonic_sensing` submodule (#138 PH-MOD).
 
-    /// Refractive index sensitivity: shift of LSPR wavelength per RIU change.
-    ///
-    /// Computed as d(lambda_LSPR)/d(n) by finite difference of LSPR condition
-    /// Re[eps(omega)] = -2*eps_d evaluated at eps_d and eps_d + delta.
-    /// Returns None if no LSPR is found. Result in nm/RIU.
-    pub fn refractive_index_sensitivity(&self, eps_dielectric: f64) -> Option<f64> {
-        let dn = 0.01;
-        let n_d = eps_dielectric.sqrt();
-        let omega1 = self.lspr_frequency(eps_dielectric)?;
-        let omega2 = self.lspr_frequency((n_d + dn) * (n_d + dn))?;
-        let lambda1 = 2.0 * PI * C / omega1 * 1e9; // nm
-        let lambda2 = 2.0 * PI * C / omega2 * 1e9;
-        Some((lambda2 - lambda1) / dn)
-    }
+    // Part 16c: 6 methods extracted to `thin_film_coating` submodule (#138).
 
-    /// Figure of merit for plasmonic sensor: sensitivity / FWHM.
-    ///
-    /// FWHM estimated from the Drude damping rate as delta_lambda ~ gamma * lambda^2 / (2*pi*c).
-    /// Higher FoM means sharper resonances and better detection limits.
-    pub fn figure_of_merit_sensor(&self, eps_dielectric: f64) -> Option<f64> {
-        let sensitivity = self.refractive_index_sensitivity(eps_dielectric)?;
-        let omega_lspr = self.lspr_frequency(eps_dielectric)?;
-        let gamma = self.drude.as_ref()?.gamma_ev * EV_TO_RADS;
-        let lambda_lspr = 2.0 * PI * C / omega_lspr * 1e9;
-        let fwhm_nm = gamma * lambda_lspr * lambda_lspr / (2.0 * PI * C) * 1e9;
-        if fwhm_nm.abs() < 1e-30 {
-            return None;
-        }
-        Some(sensitivity.abs() / fwhm_nm)
-    }
 
-    /// Quasistatic field enhancement factor |E_loc/E_0| at nanoparticle surface.
-    ///
-    /// From Clausius-Mossotti: alpha = 3*V*eps_0*(eps-eps_d)/(eps+2*eps_d),
-    /// giving |E_loc/E_0| = |eps - eps_d| / |eps + 2*eps_d| + 1 at the surface
-    /// (factor 2 from dipole field at equator + incident field).
-    pub fn field_enhancement_factor(&self, omega: f64, eps_dielectric: f64) -> f64 {
-        let eps = self.epsilon(omega);
-        let eps_d = Complex64::new(eps_dielectric, 0.0);
-        let ratio = (eps - eps_d) / (eps + 2.0 * eps_d);
-        // Enhancement = 1 + 2*|alpha/V/(3*eps_0)| = 1 + 2*|ratio| at equator
-        1.0 + 2.0 * ratio.norm()
-    }
+    // Part 16d: 6 methods extracted to `phonon_polariton_ir` submodule (#138).
 
-    /// SERS electromagnetic enhancement factor: |E_loc/E_0|^4.
-    ///
-    /// The SERS signal scales as the fourth power of local field enhancement
-    /// (two factors each for excitation and emission). This provides the
-    /// EM contribution; the chemical enhancement (typically 10-100x) is separate.
-    pub fn sers_enhancement_factor(&self, omega: f64, eps_dielectric: f64) -> f64 {
-        let fe = self.field_enhancement_factor(omega, eps_dielectric);
-        fe * fe * fe * fe
-    }
+    // Part 16e: 5 methods extracted to `photoconductivity` submodule (#138).
 
-    /// Total decay rate enhancement Gamma/Gamma_0 near a planar surface.
-    ///
-    /// Near-field approximation (kd << 1):
-    /// Gamma/Gamma_0 = 1 + 3/(2*(kd)^3) * Im[(eps-1)/(eps+1)]
-    /// Includes both radiative and non-radiative channels.
-    pub fn decay_rate_enhancement(&self, omega: f64, distance_m: f64) -> f64 {
-        let eps = self.epsilon(omega);
-        let k = omega / C;
-        let kd = k * distance_m;
-        let ratio = (eps - 1.0) / (eps + 1.0);
-        1.0 + 1.5 / (kd * kd * kd) * ratio.im
-    }
+    // Part 17a: 7 methods extracted to `mie_rayleigh` submodule (#138).
 
-    /// Quantum efficiency of emitter near a surface.
-    ///
-    /// eta = QY_free * F_rad / (QY_free * F_rad + (1 - QY_free) + F_nr)
-    /// where F_rad ~ 1 (far-field), F_nr ~ 3/(4*(kd)^3)*Im[(eps-1)/(eps+1)].
-    /// qy_free is the free-space quantum yield (0-1).
-    pub fn quantum_efficiency_near_surface(
-        &self,
-        omega: f64,
-        distance_m: f64,
-        qy_free: f64,
-    ) -> f64 {
-        let eps = self.epsilon(omega);
-        let k = omega / C;
-        let kd = k * distance_m;
-        let ratio = (eps - 1.0) / (eps + 1.0);
-        let f_nr = 0.75 / (kd * kd * kd) * ratio.im;
-        let f_nr_abs = f_nr.abs();
-        let numerator = qy_free;
-        let denominator = qy_free + (1.0 - qy_free) + qy_free * f_nr_abs;
-        if denominator < 1e-30 {
-            return 0.0;
-        }
-        numerator / denominator
-    }
+    // Part 17b: 7 methods extracted to `fluctuation_electrodynamics` submodule (#138).
 
-    /// Hot-electron generation rate proxy: proportional to `Im[eps]` at the given frequency.
-    ///
-    /// Hot electron generation from plasmon decay scales as `Im[eps(omega)] * |E|^2`.
-    /// This returns `Im[eps]` as the material-dependent factor; the field enhancement
-    /// must be computed separately from geometry.
-    pub fn hot_electron_generation_proxy(&self, omega: f64) -> f64 {
-        self.epsilon(omega).im.abs()
-    }
+    // Part 17c: 4 methods extracted to `anharmonic_multiphonon` submodule (#138).
 
-    // ========================================================================
-    // Part 16c: Thin-Film Interference and Coating Design
-    // ========================================================================
-
-    /// Single-layer thin-film reflectance on a substrate (Airy formula).
-    ///
-    /// Uses coherent multiple-beam interference for a film of thickness d
-    /// with refractive index n_film on a substrate with index n_sub.
-    /// Normal incidence from air (n=1).
-    pub fn thin_film_reflectance(&self, omega: f64, thickness_m: f64, n_substrate: f64) -> f64 {
-        let n_film = self.refractive_index(omega);
-        let n_i = Complex64::new(1.0, 0.0); // air
-        let n_s = Complex64::new(n_substrate, 0.0);
-
-        // Fresnel coefficients at interfaces
-        let r12 = (n_i - n_film) / (n_i + n_film);
-        let r23 = (n_film - n_s) / (n_film + n_s);
-
-        // Phase accumulated in the film (round trip)
-        let delta = 2.0 * PI * n_film * thickness_m * omega / (2.0 * PI * C);
-        let phase = Complex64::new(0.0, 2.0 * delta.re) * Complex64::new(1.0, 0.0)
-            + Complex64::new(-2.0 * delta.im, 0.0);
-        let exp_phase = Complex64::new(phase.re.cos(), phase.re.sin()) * (-phase.im).exp(); // handle absorption
-
-        // Airy formula
-        let r_total = (r12 + r23 * exp_phase) / (1.0 + r12 * r23 * exp_phase);
-        r_total.norm_sqr()
-    }
-
-    /// Single-layer thin-film transmittance on a substrate.
-    ///
-    /// T = 1 - R for non-absorbing films; for absorbing films T < 1 - R
-    /// because some light is absorbed. Uses the coherent Airy formula.
-    pub fn thin_film_transmittance(&self, omega: f64, thickness_m: f64, n_substrate: f64) -> f64 {
-        let n_film = self.refractive_index(omega);
-        let n_i = Complex64::new(1.0, 0.0);
-        let n_s = Complex64::new(n_substrate, 0.0);
-
-        let r12 = (n_i - n_film) / (n_i + n_film);
-        let t12 = 2.0 * n_i / (n_i + n_film);
-        let r23 = (n_film - n_s) / (n_film + n_s);
-        let t23 = 2.0 * n_film / (n_film + n_s);
-
-        let delta = n_film * thickness_m * omega / C;
-        let exp_phase = Complex64::new(0.0, delta.re).exp() * (-delta.im).exp();
-
-        let t_total = (t12 * t23 * exp_phase) / (1.0 + r12 * r23 * exp_phase * exp_phase);
-        // Transmittance accounts for impedance mismatch at exit
-        (n_s.re / n_i.re) * t_total.norm_sqr()
-    }
-
-    /// Phase shift accumulated by light traversing the film once.
-    ///
-    /// `phi = Re[n] * omega * d / c` (in radians).
-    pub fn thin_film_phase_shift(&self, omega: f64, thickness_m: f64) -> f64 {
-        let n = self.refractive_index(omega);
-        n.re * omega * thickness_m / C
-    }
-
-    /// Constructive interference orders for a thin film.
-    ///
-    /// Returns integer orders m where 2*n*d ~ m*lambda (constructive reflection
-    /// when both interfaces have the same reflection phase).
-    /// Scans from m=1 up to max order that fits in the film.
-    pub fn constructive_interference_orders(&self, omega: f64, thickness_m: f64) -> Vec<u32> {
-        let n = self.refractive_index(omega).re;
-        let lambda = 2.0 * PI * C / omega;
-        let max_order = (2.0 * n * thickness_m / lambda).floor() as u32;
-        (1..=max_order).collect()
-    }
-
-    /// Fabry-Perot finesse for a thin-film etalon.
-    ///
-    /// F = pi*sqrt(R) / (1 - R), where R is the reflectance at each interface
-    /// (assumed symmetric: film between identical media, or computed from
-    /// the air-film interface reflectance).
-    pub fn fabry_perot_finesse(&self, omega: f64) -> f64 {
-        let r = self.reflectivity_normal(omega);
-        if r >= 1.0 - 1e-15 {
-            return f64::INFINITY;
-        }
-        PI * r.sqrt() / (1.0 - r)
-    }
-
-    /// CIE 1931 chromaticity coordinates (x, y) from spectral reflectance.
-    ///
-    /// Integrates R(omega) against CIE color-matching functions approximated
-    /// as Gaussians: X peaks at 1.82 eV (680nm), Y at 2.23 eV (555nm),
-    /// Z at 2.72 eV (455nm). Returns (x, y, Y_luminance).
-    pub fn color_coordinates_cie(&self, n_steps: usize) -> (f64, f64, f64) {
-        let omega_min = ev_to_omega(1.55); // 800 nm
-        let omega_max = ev_to_omega(3.10); // 400 nm
-        let d_omega = (omega_max - omega_min) / n_steps as f64;
-
-        let mut x_sum = 0.0_f64;
-        let mut y_sum = 0.0_f64;
-        let mut z_sum = 0.0_f64;
-
-        for i in 0..n_steps {
-            let omega = omega_min + (i as f64 + 0.5) * d_omega;
-            let ev = omega_to_ev(omega);
-            let r = self.reflectivity_normal(omega);
-
-            // Gaussian approximations for CIE x-bar, y-bar, z-bar
-            let x_bar = 1.056 * (-(ev - 1.82_f64).powi(2) / (2.0 * 0.12)).exp()
-                + 0.362 * (-(ev - 2.24_f64).powi(2) / (2.0 * 0.07)).exp();
-            let y_bar = 0.821 * (-(ev - 2.23_f64).powi(2) / (2.0 * 0.08)).exp()
-                + 0.286 * (-(ev - 2.06_f64).powi(2) / (2.0 * 0.14)).exp();
-            let z_bar = 1.217 * (-(ev - 2.72_f64).powi(2) / (2.0 * 0.08)).exp()
-                + 0.681 * (-(ev - 2.98_f64).powi(2) / (2.0 * 0.12)).exp();
-
-            x_sum += r * x_bar * d_omega;
-            y_sum += r * y_bar * d_omega;
-            z_sum += r * z_bar * d_omega;
-        }
-
-        let total = x_sum + y_sum + z_sum;
-        if total < 1e-30 {
-            return (0.333, 0.333, 0.0);
-        }
-        (x_sum / total, y_sum / total, y_sum)
-    }
-
-    // ========================================================================
-    // Part 16d: Phonon Polaritonics and IR Spectroscopy
-    // ========================================================================
-
-    /// Surface phonon-polariton frequency: where Re[eps(omega)] = -eps_dielectric.
-    ///
-    /// Like the surface plasmon condition but inside the Reststrahlen band.
-    /// Returns None if no crossing is found in the scan range.
-    pub fn surface_phonon_polariton_frequency(&self, eps_dielectric: f64) -> Option<f64> {
-        // Scan within the Reststrahlen band if available, otherwise full range
-        let (scan_min, scan_max) = self
-            .reststrahlen_band()
-            .unwrap_or((ev_to_omega(0.01), ev_to_omega(1.0)));
-        let n_scan = 2000;
-        let d_omega = (scan_max - scan_min) / n_scan as f64;
-
-        for i in 0..n_scan {
-            let omega_a = scan_min + i as f64 * d_omega;
-            let omega_b = omega_a + d_omega;
-            let val_a = self.epsilon(omega_a).re + eps_dielectric;
-            let val_b = self.epsilon(omega_b).re + eps_dielectric;
-
-            if val_a * val_b < 0.0 {
-                // Bisection refinement
-                let mut lo = omega_a;
-                let mut hi = omega_b;
-                for _ in 0..60 {
-                    let mid = 0.5 * (lo + hi);
-                    let val_mid = self.epsilon(mid).re + eps_dielectric;
-                    if val_a * val_mid < 0.0 {
-                        hi = mid;
-                    } else {
-                        lo = mid;
-                    }
-                }
-                return Some(0.5 * (lo + hi));
-            }
-        }
-        None
-    }
-
-    /// Phonon-polariton dispersion: wavevector k_PhP at given frequency.
-    ///
-    /// Same formula as SPP: k_PhP = (omega/c) * sqrt(eps*eps_d/(eps+eps_d)),
-    /// but evaluated in the phonon-polariton (Reststrahlen) band rather than
-    /// the metallic (Drude) region.
-    pub fn phonon_polariton_wavevector(&self, omega: f64, eps_dielectric: f64) -> Complex64 {
-        self.spp_wavevector(omega, eps_dielectric)
-    }
-
-    /// Polariton group velocity from the dispersion relation.
-    ///
-    /// v_g = d(omega)/d(k) estimated by finite difference of the inverse
-    /// dispersion k(omega). In the Reststrahlen band this can be very slow (~c/100).
-    pub fn polariton_group_velocity(&self, omega: f64, eps_dielectric: f64) -> f64 {
-        let dw = omega * 1e-6;
-        let k1 = self.spp_wavevector(omega - dw, eps_dielectric).re;
-        let k2 = self.spp_wavevector(omega + dw, eps_dielectric).re;
-        let dk = k2 - k1;
-        if dk.abs() < 1e-30 {
-            return 0.0;
-        }
-        2.0 * dw / dk
-    }
-
-    /// IR activity proxy for the j-th Lorentz oscillator.
-    ///
-    /// Proportional to S_j * omega_j^2, which relates to the Born effective
-    /// charge squared. Returns None if oscillator index is out of range.
-    pub fn ir_activity_proxy(&self, oscillator_index: usize) -> Option<f64> {
-        let osc = self.oscillators.get(oscillator_index)?;
-        Some(osc.strength * osc.omega_0_ev * osc.omega_0_ev)
-    }
-
-    /// Isotope frequency shift estimate for phonon modes.
-    ///
-    /// delta_omega/omega = -0.5 * (delta_M / M), from harmonic approximation
-    /// where omega ~ 1/sqrt(M). mass_ratio = M_new / M_original.
-    pub fn isotope_shift_estimate(mass_ratio: f64) -> f64 {
-        if mass_ratio <= 0.0 {
-            return 0.0;
-        }
-        1.0 - (1.0 / mass_ratio).sqrt()
-    }
-
-    /// Bose-Einstein phonon occupation number at given frequency and temperature.
-    ///
-    /// n_BE = 1 / (exp(hbar*omega / k_B*T) - 1).
-    /// Returns 0 if T = 0 or omega = 0.
-    pub fn bose_einstein_occupation(omega: f64, temperature_k: f64) -> f64 {
-        if temperature_k < 1e-10 || omega < 1e-10 {
-            return 0.0;
-        }
-        let hbar_omega_ev = omega / EV_TO_RADS;
-        let kt_ev = K_B_EV * temperature_k;
-        let x = hbar_omega_ev / kt_ev;
-        if x > 500.0 {
-            return 0.0;
-        }
-        1.0 / (x.exp() - 1.0)
-    }
-
-    // ========================================================================
-    // Part 16e: Photoconductivity and Carrier Dynamics
-    // ========================================================================
-
-    /// Plasma frequency shift from optically-injected carriers.
-    ///
-    /// delta_omega_p = sqrt(omega_p^2 + n_e * e^2/(eps_0 * m*)) - omega_p,
-    /// where n_e is the injected carrier density.
-    /// Returns None if no Drude component exists.
-    pub fn plasma_frequency_shift(&self, delta_n: f64, m_star_ratio: f64) -> Option<f64> {
-        let drude = self.drude.as_ref()?;
-        let omega_p = drude.omega_p_ev * EV_TO_RADS;
-        let m_star = m_star_ratio * M_E_KG;
-        let delta_wp_sq = delta_n * E_CHARGE * E_CHARGE / (EPS_0 * m_star);
-        let new_omega_p = (omega_p * omega_p + delta_wp_sq).sqrt();
-        Some((new_omega_p - omega_p) / EV_TO_RADS) // in eV
-    }
-
-    /// Photo-induced absorption change from transient carrier density.
-    ///
-    /// `Delta_alpha = (omega/c) * Im[delta_eps] / Re[n]`, where `delta_eps`
-    /// comes from the Drude response of injected carriers.
-    /// Returns None if no Drude component.
-    pub fn photo_induced_absorption(
-        &self,
-        omega: f64,
-        delta_n: f64,
-        m_star_ratio: f64,
-    ) -> Option<f64> {
-        let m_star = m_star_ratio * M_E_KG;
-        let delta_wp_sq = delta_n * E_CHARGE * E_CHARGE / (EPS_0 * m_star);
-        let gamma = self.drude.as_ref()?.gamma_ev * EV_TO_RADS;
-        // Drude contribution from injected carriers
-        let denom = Complex64::new(-(omega * omega) + gamma * gamma, omega * gamma);
-        let delta_eps = Complex64::new(-delta_wp_sq, 0.0)
-            / Complex64::new(omega * omega + gamma * gamma, 0.0)
-            * Complex64::new(1.0, gamma / omega);
-
-        let n_re = self.refractive_index(omega).re;
-        if n_re < 1e-10 {
-            return None;
-        }
-        // delta_alpha = omega * Im[delta_eps] / (c * n_re)
-        let _ = denom; // suppress unused warning
-        Some(omega * delta_eps.im.abs() / (C * n_re))
-    }
-
-    /// Transient reflectivity change Delta_R/R from pump-induced carriers.
-    ///
-    /// Computed from the finite difference of reflectivity with modified
-    /// Drude parameters (shifted plasma frequency).
-    /// Returns None if no Drude component.
-    pub fn transient_reflectivity_change(
-        &self,
-        omega: f64,
-        delta_n: f64,
-        m_star_ratio: f64,
-    ) -> Option<f64> {
-        let r0 = self.reflectivity_normal(omega);
-        if r0 < 1e-15 {
-            return None;
-        }
-
-        // Create a modified copy with shifted plasma frequency
-        let drude = self.drude.as_ref()?;
-        let omega_p = drude.omega_p_ev * EV_TO_RADS;
-        let m_star = m_star_ratio * M_E_KG;
-        let delta_wp_sq = delta_n * E_CHARGE * E_CHARGE / (EPS_0 * m_star);
-        let new_omega_p = (omega_p * omega_p + delta_wp_sq).sqrt();
-
-        let mut modified = self.clone();
-        if let Some(ref mut d) = modified.drude {
-            d.omega_p_ev = new_omega_p / EV_TO_RADS;
-        }
-
-        let r1 = modified.reflectivity_normal(omega);
-        Some((r1 - r0) / r0)
-    }
-
-    /// Drude-Smith mobility with persistence parameter c.
-    ///
-    /// mu_DS = mu_Drude * (1 + c), where c in [-1, 0]:
-    /// c = 0: standard Drude (ballistic), c = -1: complete backscattering.
-    /// Returns None if no Drude component.
-    pub fn drude_smith_mobility(&self, c_parameter: f64, carrier_density: f64) -> Option<f64> {
-        let drude = self.drude.as_ref()?;
-        let tau = 1.0 / (drude.gamma_ev * EV_TO_RADS);
-        let mu_drude = E_CHARGE * tau / (carrier_density * M_E_KG);
-        Some(mu_drude * (1.0 + c_parameter))
-    }
-
-    /// Carrier recombination time from steady-state conditions.
-    ///
-    /// tau_rec = delta_n / G, where G is the generation rate (carriers/m^3/s).
-    /// This is the effective lifetime including all recombination channels.
-    pub fn carrier_recombination_time(delta_n: f64, generation_rate: f64) -> f64 {
-        if generation_rate.abs() < 1e-30 {
-            return f64::INFINITY;
-        }
-        delta_n / generation_rate
-    }
-
-    // Part 17a: Mie and Rayleigh Scattering
-    // Small-particle light scattering from Clausius-Mossotti polarizability.
-
-    /// Clausius-Mossotti polarizability: alpha = 4*pi*a^3 * (eps - 1)/(eps + 2).
-    /// Returns complex polarizability in m^3 for a sphere of given radius.
-    pub fn polarizability_clausius_mossotti(&self, omega: f64, radius_m: f64) -> Complex64 {
-        let eps = self.epsilon(omega);
-        let ratio = (eps - 1.0) / (eps + 2.0);
-        4.0 * std::f64::consts::PI * radius_m.powi(3) * ratio
-    }
-
-    /// Rayleigh scattering cross section: C_sca = (8*pi/3) * k^4 * a^6 * |K|^2.
-    /// K = (eps - 1)/(eps + 2) is the Clausius-Mossotti factor.
-    pub fn rayleigh_cross_section(&self, omega: f64, radius_m: f64) -> f64 {
-        let k = omega / C;
-        let eps = self.epsilon(omega);
-        let k_factor = (eps - 1.0) / (eps + 2.0);
-        (8.0 * std::f64::consts::PI / 3.0) * k.powi(4) * radius_m.powi(6) * k_factor.norm_sqr()
-    }
-
-    /// Rayleigh scattering efficiency: Q_sca = C_sca / (pi * a^2).
-    pub fn rayleigh_scattering_efficiency(&self, omega: f64, radius_m: f64) -> f64 {
-        let c_sca = self.rayleigh_cross_section(omega, radius_m);
-        c_sca / (std::f64::consts::PI * radius_m * radius_m)
-    }
-
-    /// Mie extinction efficiency (small particle limit, x << 1):
-    /// Q_ext = 4*x * Im[(eps-1)/(eps+2)] where x = k*a.
-    pub fn mie_extinction_efficiency(&self, omega: f64, radius_m: f64) -> f64 {
-        let k = omega / C;
-        let x = k * radius_m;
-        let eps = self.epsilon(omega);
-        let k_factor = (eps - 1.0) / (eps + 2.0);
-        4.0 * x * k_factor.im
-    }
-
-    /// Mie scattering albedo = Q_sca / Q_ext.
-    /// For very absorbing particles this is near 0; for dielectrics near 1.
-    pub fn mie_scattering_albedo(&self, omega: f64, radius_m: f64) -> f64 {
-        let q_ext = self.mie_extinction_efficiency(omega, radius_m);
-        if q_ext.abs() < 1e-30 {
-            return 0.0;
-        }
-        let q_sca = self.rayleigh_scattering_efficiency(omega, radius_m);
-        (q_sca / q_ext).clamp(0.0, 1.0)
-    }
-
-    /// Absorption cross section from Mie theory (small particle):
-    /// C_abs = C_ext - C_sca.
-    pub fn absorption_cross_section_mie(&self, omega: f64, radius_m: f64) -> f64 {
-        let k = omega / C;
-        let x = k * radius_m;
-        let eps = self.epsilon(omega);
-        let k_factor = (eps - 1.0) / (eps + 2.0);
-        let c_ext = 4.0 * std::f64::consts::PI * radius_m * radius_m * x * k_factor.im;
-        let c_sca = self.rayleigh_cross_section(omega, radius_m);
-        (c_ext - c_sca).max(0.0)
-    }
-
-    /// Radiation pressure efficiency: Q_pr = Q_ext - g * Q_sca.
-    /// In the Rayleigh limit g ~ 0 (isotropic scattering), so Q_pr ~ Q_ext.
-    pub fn radiation_pressure_efficiency(&self, omega: f64, radius_m: f64) -> f64 {
-        // Rayleigh limit: asymmetry parameter g ~ 0
-        self.mie_extinction_efficiency(omega, radius_m)
-    }
-
-    // Part 17b: Fluctuation Electrodynamics and Noise
-    // Thermal and quantum fluctuation properties of dielectric functions.
-
-    /// Fluctuation-dissipation spectral density:
-    /// `S(omega,T) = (2*hbar*omega/pi) * Im[eps] * (n_BE + 1/2)`.
-    /// Returns spectral density in eV^2/(rad/s) units.
-    pub fn fluctuation_dissipation_spectral(&self, omega: f64, temperature_k: f64) -> f64 {
-        let eps_im = self.epsilon(omega).im;
-        let hbar_omega_ev = HBAR_EV_S * omega;
-        let n_be = if temperature_k > 0.0 && hbar_omega_ev > 0.0 {
-            let x = hbar_omega_ev / (K_B_EV * temperature_k);
-            if x > 500.0 {
-                0.0
-            } else {
-                1.0 / (x.exp() - 1.0)
-            }
-        } else {
-            0.0
-        };
-        (2.0 * hbar_omega_ev / std::f64::consts::PI) * eps_im.abs() * (n_be + 0.5)
-    }
-
-    /// Thermal noise power density:
-    /// `P(omega) = hbar*omega * Im[eps] * coth(hbar*omega / 2*k_B*T)`.
-    pub fn thermal_noise_power_density(&self, omega: f64, temperature_k: f64) -> f64 {
-        let eps_im = self.epsilon(omega).im;
-        let hbar_omega_ev = HBAR_EV_S * omega;
-        let coth = if temperature_k > 0.0 && hbar_omega_ev > 0.0 {
-            let x = hbar_omega_ev / (2.0 * K_B_EV * temperature_k);
-            if x > 500.0 { 1.0 } else { x.cosh() / x.sinh() }
-        } else {
-            1.0
-        };
-        hbar_omega_ev * eps_im.abs() * coth
-    }
-
-    /// Zero-point energy density per mode: E_0 = hbar*omega/2.
-    pub fn zero_point_energy_density(omega: f64) -> f64 {
-        HBAR_EV_S * omega / 2.0
-    }
-
-    /// Planck spectral energy density: u(omega,T) = (hbar*omega/pi^2*c^3) * n_BE(omega,T).
-    pub fn spectral_energy_density(omega: f64, temperature_k: f64) -> f64 {
-        let hbar_omega_ev = HBAR_EV_S * omega;
-        let n_be = if temperature_k > 0.0 && hbar_omega_ev > 0.0 {
-            let x = hbar_omega_ev / (K_B_EV * temperature_k);
-            if x > 500.0 {
-                0.0
-            } else {
-                1.0 / (x.exp() - 1.0)
-            }
-        } else {
-            0.0
-        };
-        hbar_omega_ev * omega * omega * n_be
-            / (std::f64::consts::PI * std::f64::consts::PI * C * C * C)
-    }
-
-    /// Near-field thermal emission enhancement factor relative to far-field blackbody.
-    /// At sub-wavelength distances, evanescent modes contribute: enhancement ~ 1/(k*d)^2.
-    pub fn near_field_thermal_emission(
-        &self,
-        omega: f64,
-        distance_m: f64,
-        temperature_k: f64,
-    ) -> f64 {
-        let eps_im = self.epsilon(omega).im;
-        let k = omega / C;
-        let kd = k * distance_m;
-        let n_be = if temperature_k > 0.0 {
-            let x = HBAR_EV_S * omega / (K_B_EV * temperature_k);
-            if x > 500.0 {
-                0.0
-            } else {
-                1.0 / (x.exp() - 1.0)
-            }
-        } else {
-            0.0
-        };
-        // Near-field: evanescent contribution scales as 1/(kd)^2 for d << lambda
-        let evanescent = if kd > 1e-10 && kd < 1.0 {
-            1.0 / (kd * kd)
-        } else {
-            1.0
-        };
-        eps_im.abs() * (n_be + 0.5) * evanescent
-    }
-
-    /// Photon tunneling probability through a vacuum gap of width d.
-    /// Uses the evanescent decay: T ~ exp(-2*kappa*d) where kappa is the
-    /// imaginary part of the wavevector in the gap.
-    pub fn photon_tunneling_probability(&self, omega: f64, kappa_m: f64) -> f64 {
-        if kappa_m <= 0.0 {
-            return 1.0;
-        }
-        let eps = self.epsilon(omega);
-        let r_fresnel = ((eps.sqrt() - 1.0) / (eps.sqrt() + 1.0)).norm_sqr();
-        let transmission = 1.0 - r_fresnel;
-        // Tunneling through evanescent gap
-        transmission * (-2.0 * kappa_m).exp()
-    }
-
-    /// Casimir-Lifshitz force integrand at imaginary frequency xi.
-    /// For two identical half-spaces separated by distance d:
-    /// integrand ~ r_TM^2 * exp(-2*xi*d/c).
-    pub fn fluctuation_induced_force_integrand(&self, xi: f64, distance_m: f64) -> f64 {
-        let eps_xi = self.epsilon_imaginary(xi);
-        // TM reflection coefficient at imaginary frequency
-        let r_tm = (eps_xi - 1.0) / (eps_xi + 1.0);
-        let decay = (-2.0 * xi * distance_m / C).exp();
-        r_tm * r_tm * decay
-    }
-
-    // Part 17c: Anharmonic and Multiphonon Effects
-    // Temperature-dependent phonon broadening and multi-phonon processes.
-
-    /// Anharmonic linewidth broadening: gamma(T) = gamma_0 + A * (1 + 2*n_BE(omega/2, T)).
-    /// Three-phonon (cubic anharmonic) process where a phonon at omega decays into
-    /// two phonons at omega/2. A is the anharmonic coupling coefficient.
-    pub fn anharmonic_linewidth(
-        &self,
-        oscillator_index: usize,
-        temperature_k: f64,
-        coupling_a: f64,
-    ) -> Option<f64> {
-        let osc = self.oscillators.get(oscillator_index)?;
-        // osc.omega_0_ev is already in eV, use directly for Bose-Einstein
-        let half_omega_ev = osc.omega_0_ev / 2.0;
-        let n_be = if temperature_k > 0.0 && half_omega_ev > 0.0 {
-            let x = half_omega_ev / (K_B_EV * temperature_k);
-            if x > 500.0 {
-                0.0
-            } else {
-                1.0 / (x.exp() - 1.0)
-            }
-        } else {
-            0.0
-        };
-        Some(osc.gamma_ev + coupling_a * (1.0 + 2.0 * n_be))
-    }
-
-    /// Multiphonon absorption coefficient for frequencies above the one-phonon cutoff.
-    /// Uses the Urbach-like exponential tail: alpha ~ exp(-beta * (omega - omega_max) / omega_max).
-    /// omega_ev and oscillator frequencies are compared in eV. Returns absorption coefficient in m^-1.
-    pub fn multiphonon_absorption(&self, omega_ev: f64, temperature_k: f64, beta: f64) -> f64 {
-        if self.oscillators.is_empty() {
-            return 0.0;
-        }
-        // Find maximum phonon frequency in eV
-        let omega_max_ev = self
-            .oscillators
-            .iter()
-            .map(|o| o.omega_0_ev)
-            .fold(0.0_f64, f64::max);
-        if omega_ev <= omega_max_ev || omega_max_ev <= 0.0 {
-            return 0.0;
-        }
-        // Temperature factor: stronger absorption at higher T
-        let t_factor = if temperature_k > 0.0 && omega_max_ev > 0.0 {
-            let x = omega_max_ev / (K_B_EV * temperature_k);
-            if x > 500.0 {
-                1.0
-            } else {
-                1.0 + 1.0 / (x.exp() - 1.0)
-            }
-        } else {
-            1.0
-        };
-        let excess = (omega_ev - omega_max_ev) / omega_max_ev;
-        1e4 * t_factor * (-beta * excess).exp()
-    }
-
-    /// Two-phonon density of states: self-convolution of the oscillator spectrum.
-    /// Approximates the combined DOS at frequency omega_ev (in eV) as the sum over all pairs
-    /// (i,j) where omega_i + omega_j ~ omega.
-    pub fn two_phonon_density_of_states(&self, omega_ev: f64) -> f64 {
-        let mut dos = 0.0;
-        for i in &self.oscillators {
-            for j in &self.oscillators {
-                let sum_ev = i.omega_0_ev + j.omega_0_ev;
-                let width = (i.gamma_ev + j.gamma_ev) * 0.5;
-                if width > 0.0 {
-                    let delta = omega_ev - sum_ev;
-                    dos += i.strength * j.strength / (delta * delta + width * width);
-                }
-            }
-        }
-        dos
-    }
-
-    /// Infrared combination band frequencies: all sum and difference frequencies
-    /// of oscillator pairs. Returns sorted unique frequencies in eV.
-    pub fn infrared_combination_bands(&self) -> Vec<f64> {
-        let mut bands: Vec<f64> = Vec::new();
-        for i in 0..self.oscillators.len() {
-            for j in i..self.oscillators.len() {
-                let sum = self.oscillators[i].omega_0_ev + self.oscillators[j].omega_0_ev;
-                bands.push(sum);
-                let diff = (self.oscillators[i].omega_0_ev - self.oscillators[j].omega_0_ev).abs();
-                if diff > 0.0 {
-                    bands.push(diff);
-                }
-            }
-        }
-        bands.sort_by(|a, b| a.partial_cmp(b).unwrap_or(std::cmp::Ordering::Equal));
-        bands.dedup_by(|a, b| (*a - *b).abs() < 1e-6);
-        bands
-    }
 
     // Part 17d: Photonic Band Gap Estimates
-    // 1D quarter-wave stack (Bragg mirror) properties.
+    // 1D quarter-wave stack (Bragg mirror) properties were extracted to the
+    // `photonic_crystals` submodule (see crates/materials_core/src/
+    // optical_database/photonic_crystals.rs) as part of #138 PH-MOD split.
 
-    /// Quarter-wave stack stop band edges for this material (high-n) with a low-n partner.
-    /// Returns (omega_low, omega_high) in rad/s for the first-order stop band.
-    /// The gap width: delta_omega/omega_0 = (4/pi)*arcsin(|n_h - n_l|/(n_h + n_l)).
-    pub fn quarter_wave_stack_gap(&self, omega_center: f64, n_low: f64) -> (f64, f64) {
-        let n_h = self.refractive_index(omega_center).re;
-        let n_l = n_low.max(1.0);
-        let ratio = ((n_h - n_l) / (n_h + n_l)).abs();
-        let half_gap = (2.0 / std::f64::consts::PI) * ratio.asin();
-        (
-            omega_center * (1.0 - half_gap),
-            omega_center * (1.0 + half_gap),
-        )
-    }
-
-    /// Quarter-wave stack peak reflectivity for N pairs.
-    /// R = [(n_h/n_l)^(2N) - 1]^2 / [(n_h/n_l)^(2N) + 1]^2.
-    pub fn quarter_wave_stack_reflectivity(
-        &self,
-        omega_center: f64,
-        n_low: f64,
-        n_pairs: u32,
-    ) -> f64 {
-        let n_h = self.refractive_index(omega_center).re;
-        let n_l = n_low.max(1.0);
-        let r = (n_h / n_l).powi(2 * n_pairs as i32);
-        let num = r - 1.0;
-        let den = r + 1.0;
-        (num / den).powi(2)
-    }
-
-    /// Photonic band gap fractional width: delta_omega/omega_0 = (4/pi)*arcsin(|n_h-n_l|/(n_h+n_l)).
-    pub fn photonic_band_gap_ratio(&self, omega: f64, n_low: f64) -> f64 {
-        let n_h = self.refractive_index(omega).re;
-        let n_l = n_low.max(1.0);
-        let ratio = ((n_h - n_l) / (n_h + n_l)).abs();
-        (4.0 / std::f64::consts::PI) * ratio.asin()
-    }
-
-    /// Bragg wavelength for a given period: lambda_B = 2 * d * n_eff.
-    /// Returns wavelength in meters.
-    pub fn bragg_wavelength(&self, period_m: f64, omega: f64) -> f64 {
-        let n = self.refractive_index(omega).re;
-        2.0 * period_m * n
-    }
-
-    /// Group velocity at band edge (fraction of c).
-    /// Near a stop band edge, v_g -> 0 due to Bragg reflection.
-    /// v_g/c ~ sqrt(1 - R_peak) for finite stacks.
-    pub fn group_velocity_at_band_edge(&self, omega_center: f64, n_low: f64, n_pairs: u32) -> f64 {
-        let r = self.quarter_wave_stack_reflectivity(omega_center, n_low, n_pairs);
-        (1.0 - r).sqrt()
-    }
-
-    /// Omnidirectional gap condition: the gap survives at all incidence angles
-    /// when n_h/n_l > (1 + sin^2(theta_B))/(cos^2(theta_B)) for theta_B = Brewster angle.
-    /// Returns true if the contrast is high enough for an omnidirectional gap.
-    pub fn omnidirectional_gap_condition(&self, omega: f64, n_low: f64) -> bool {
-        let n_h = self.refractive_index(omega).re;
-        let n_l = n_low.max(1.0);
-        // For omnidirectional gap: n_h/n_l must exceed the critical ratio
-        // from Fink et al. (1998): n_h/n_l > ~2.3 for typical cases,
-        // or more precisely: (n_h*n_l)^2 > n_h^2 + n_l^2
-        (n_h * n_l).powi(2) > n_h * n_h + n_l * n_l
-    }
-
-    // Part 17e: Electrooptic and Acoustooptic Effects
-    // Linear and quadratic electrooptic, photoelastic, and acoustooptic methods.
-
-    /// Pockels (linear electrooptic) refractive index change:
-    /// delta_n = -0.5 * n^3 * r * E.
-    /// r_eo is the electrooptic coefficient in m/V (typical 1e-12 to 30e-12).
-    pub fn pockels_delta_n(&self, omega: f64, electric_field_v_m: f64, r_eo: f64) -> f64 {
-        let n = self.refractive_index(omega).re;
-        -0.5 * n.powi(3) * r_eo * electric_field_v_m
-    }
-
-    /// Kerr (quadratic electrooptic) refractive index change:
-    /// delta_n = -0.5 * n^3 * s * E^2.
-    /// s_eo is the Kerr coefficient in m^2/V^2 (typical 1e-20 to 1e-18).
-    pub fn kerr_electro_optic(&self, omega: f64, electric_field_v_m: f64, s_eo: f64) -> f64 {
-        let n = self.refractive_index(omega).re;
-        -0.5 * n.powi(3) * s_eo * electric_field_v_m * electric_field_v_m
-    }
-
-    /// Half-wave voltage for Pockels modulator: V_pi = lambda / (2 * n^3 * r * L).
-    /// Returns voltage in Volts.
-    pub fn half_wave_voltage(&self, omega: f64, r_eo: f64, crystal_length_m: f64) -> f64 {
-        let n = self.refractive_index(omega).re;
-        let lambda = 2.0 * std::f64::consts::PI * C / omega;
-        lambda / (2.0 * n.powi(3) * r_eo * crystal_length_m)
-    }
-
-    /// Franz-Keldysh sub-gap absorption: field-enhanced tunneling absorption
-    /// below the band edge. alpha ~ exp(-4*sqrt(2*m*) * (Eg - hbar*omega)^(3/2) / (3*e*E*hbar)).
-    /// gap_ev is the band gap in eV.
-    pub fn franz_keldysh_absorption(
-        &self,
-        omega: f64,
-        electric_field_v_m: f64,
-        gap_ev: f64,
-    ) -> f64 {
-        let hbar_j_s = HBAR_EV_S * E_CHARGE; // in J*s
-        let hbar_omega_ev = HBAR_EV_S * omega;
-        if hbar_omega_ev >= gap_ev || electric_field_v_m <= 0.0 {
-            return 0.0;
-        }
-        let delta_e_j = (gap_ev - hbar_omega_ev) * E_CHARGE; // in Joules
-        let m_star = 0.1 * M_E_KG; // effective mass estimate
-        let exponent = -4.0_f64 * (2.0_f64 * m_star).sqrt() * delta_e_j.powf(1.5)
-            / (3.0 * E_CHARGE * electric_field_v_m * hbar_j_s);
-        1e6 * exponent.exp()
-    }
-
-    /// Photoelastic refractive index change: delta_n = -0.5 * n^3 * p * S.
-    /// p_ij is the photoelastic coefficient (dimensionless, typical 0.1-0.3).
-    /// strain is the applied strain (dimensionless).
-    pub fn photoelastic_delta_n(&self, omega: f64, strain: f64, p_ij: f64) -> f64 {
-        let n = self.refractive_index(omega).re;
-        -0.5 * n.powi(3) * p_ij * strain
-    }
-
-    /// Acoustooptic figure of merit: M2 = n^6 * p^2 / (rho * v^3).
-    /// p_ij is the photoelastic coefficient, v_sound in m/s, density in kg/m^3.
-    /// Returns M2 in s^3/kg.
-    pub fn acoustooptic_figure_of_merit(
-        &self,
-        omega: f64,
-        p_ij: f64,
-        v_sound: f64,
-        density: f64,
-    ) -> f64 {
-        let n = self.refractive_index(omega).re;
-        n.powi(6) * p_ij * p_ij / (density * v_sound.powi(3))
-    }
+    // Part 17e: Electrooptic + photoelastic + acousto-optic methods (6) were
+    // extracted to the `electro_optic` submodule (#138 PH-MOD split). See
+    // `crates/materials_core/src/optical_database/electro_optic.rs`.
 }
 
 // ============================================================================
@@ -3442,6 +1065,29 @@ pub fn pedot_pss_optical() -> DrudeLorentzParams {
     }
 }
 
+/// PEDOT:PSS metadata: an amorphous conducting block-copolymer with no
+/// long-range crystallographic order. PEDOT is the conductive chain
+/// (poly-3,4-ethylenedioxythiophene); PSS (polystyrene-sulfonate) is the
+/// counter-ion / dopant balancing PEDOT's positively-charged backbone.
+/// Used as a hole-transport layer in OLEDs and as a transparent electrode
+/// in flexible photovoltaics.
+pub fn pedot_pss_metadata() -> MineralMetadata {
+    MineralMetadata {
+        species_name: "pedot_pss_conducting_polymer",
+        formula: "PEDOT:PSS (poly-3,4-ethylenedioxythiophene:polystyrene-sulfonate)",
+        crystal_system: "amorphous",
+        space_group: "n/a (block-copolymer; no long-range order)",
+        n_omega: 1.50,
+        n_epsilon: 1.50,
+        birefringence: 0.0,
+        optic_sign: OpticSign::Isotropic,
+        hardness_mohs: 0.0,
+        density_g_cm3: 1.011,
+        color: "transparent pale-blue thin film",
+        reference: "Pettersson et al. (1998) J.Appl.Phys. 84, 3812; Groenendaal et al. (2003) PEDOT review Adv. Mater. 15, 855.",
+    }
+}
+
 // ============================================================================
 // Tungsten oxide family (Sprint 44) -- moved to `tungstates` submodule.
 // Re-exported via pub use so external paths
@@ -3450,7 +1096,8 @@ pub fn pedot_pss_optical() -> DrudeLorentzParams {
 // ============================================================================
 mod tungstates;
 pub use tungstates::{
-    cawo4_optical, cs_wo3_optical, cs_wo3_uniaxial, pbwo4_optical, wo3_optical, wo3_x_optical,
+    cawo4_metadata, cawo4_optical, cs_wo3_metadata, cs_wo3_optical, cs_wo3_uniaxial,
+    pbwo4_metadata, pbwo4_optical, wo3_metadata, wo3_optical, wo3_x_metadata, wo3_x_optical,
 };
 
 // ============================================================================
@@ -3461,9 +1108,11 @@ pub use tungstates::{
 // ============================================================================
 mod oxides_tcos;
 pub use oxides_tcos::{
-    alumina_optical, azo_optical, diamond_optical, doped_silicon_optical, ito_optical,
-    latio3_optical, quartz_optical, srtio3_doped_optical, srtio3_optical, tio2_optical,
-    tio_optical, tourmaline_optical,
+    alumina_metadata, alumina_optical, azo_metadata, azo_optical, diamond_metadata,
+    diamond_optical, doped_silicon_metadata, doped_silicon_optical, ito_metadata, ito_optical,
+    latio3_metadata, latio3_optical, quartz_metadata, quartz_optical, srtio3_doped_metadata,
+    srtio3_doped_optical, srtio3_metadata, srtio3_optical, tio2_metadata, tio2_optical,
+    tio_metadata, tio_optical, tourmaline_metadata, tourmaline_optical,
 };
 
 // ============================================================================
@@ -3476,10 +1125,12 @@ pub use oxides_tcos::{
 // ============================================================================
 mod metals_dl;
 pub use metals_dl::{
-    aluminum_drude_lorentz, beryllium_drude_lorentz, chromium_drude_lorentz,
-    copper_drude_lorentz, gold_drude_lorentz, gold_rakic_ld, nickel_drude_lorentz,
-    palladium_drude_lorentz, platinum_drude_lorentz, silver_drude_lorentz,
-    titanium_drude_lorentz, tungsten_drude_lorentz,
+    aluminum_drude_lorentz, aluminum_metadata, beryllium_drude_lorentz, beryllium_metadata,
+    chromium_drude_lorentz, chromium_metadata, copper_drude_lorentz, copper_metadata,
+    gold_drude_lorentz, gold_metadata, gold_rakic_ld, nickel_drude_lorentz, nickel_metadata,
+    palladium_drude_lorentz, palladium_metadata, platinum_drude_lorentz, platinum_metadata,
+    silver_drude_lorentz, silver_metadata, titanium_drude_lorentz, titanium_metadata,
+    tungsten_drude_lorentz, tungsten_metadata,
 };
 
 // ============================================================================
@@ -3488,8 +1139,56 @@ pub use metals_dl::{
 // ============================================================================
 mod semiconductors;
 pub use semiconductors::{
-    germanium_optical, silica_casimir_optical, silica_optical, silicon_nitride_optical,
-    silicon_optical,
+    germanium_metadata, germanium_optical, silica_casimir_metadata, silica_casimir_optical,
+    silica_metadata, silica_optical, silicon_metadata, silicon_nitride_metadata,
+    silicon_nitride_optical, silicon_optical,
+};
+
+// ============================================================================
+// Photonic crystals (#138 PH-MOD split): 6 methods on DrudeLorentzParams
+// relating to 1D quarter-wave Bragg-stack properties. The methods are
+// inherent to DrudeLorentzParams; the second impl block in this submodule
+// is unified with the primary impl block at compile time so existing
+// call sites resolve transparently with no signature changes.
+// ============================================================================
+mod anharmonic_multiphonon;
+mod bandgap_analysis;
+mod coherence_quality_metrics;
+mod eels_absorption_engineering;
+mod effective_medium_methods;
+mod electro_optic;
+mod ellipsometry_thermal_enz;
+mod fluctuation_electrodynamics;
+mod fresnel;
+mod mie_rayleigh;
+mod photonic_crystals;
+mod photonic_waveguide;
+mod phonon_polariton_ir;
+mod photoconductivity;
+mod photovoltaic_solar;
+mod plasmonic_sensing;
+mod plasmonics;
+mod sum_rules_kk;
+mod temperature_dispersion;
+mod thin_film_coating;
+mod transport;
+
+// ============================================================================
+// Tourmaline supergroup (#127 Phase 5+): species-specific uniaxial
+// optical models + crystallographic/gemological metadata. The legacy
+// isotropic `tourmaline_optical()` constructor stays in `oxides_tcos`
+// (preserving byte-identical behaviour for existing callers); this new
+// submodule adds 8 IMA species (schorl, dravite, elbaite, uvite,
+// liddicoatite, rossmanite, foitite, povondraite) each returning
+// `UniaxialOptical` with paired `*_metadata()` accessors.
+// ============================================================================
+mod tourmaline;
+pub use tourmaline::{
+    default_metadata as tourmaline_default_metadata, dravite_metadata, dravite_optical,
+    elbaite_metadata, elbaite_optical, foitite_metadata, foitite_optical,
+    liddicoatite_metadata, liddicoatite_optical, povondraite_metadata, povondraite_optical,
+    rossmanite_metadata, rossmanite_optical, schorl_metadata, schorl_optical, uvite_metadata,
+    uvite_optical,
 };
 
 /// Perfect metal (ideal conductor limit).
@@ -9715,5 +7414,214 @@ mod tests {
             ng,
             n
         );
+    }
+
+    // ====================================================================
+    // MineralMetadata accessor smoke tests (task #134 / #140 remediation).
+    // Each accessor must (1) compile, (2) return a struct whose density is
+    // positive and finite, and (3) report a hardness in the catalogued
+    // 0.0..=10.0 Mohs range. Hardness=0 is permitted for amorphous polymers.
+    // ====================================================================
+
+    fn assert_metadata_sane(m: MineralMetadata) {
+        assert!(
+            m.density_g_cm3 > 0.0 && m.density_g_cm3.is_finite(),
+            "density must be positive and finite for {}: got {}",
+            m.species_name,
+            m.density_g_cm3
+        );
+        assert!(
+            (0.0..=10.0).contains(&m.hardness_mohs),
+            "hardness for {} ({}) outside Mohs 0..=10",
+            m.species_name,
+            m.hardness_mohs
+        );
+        assert!(
+            !m.species_name.is_empty() && !m.formula.is_empty(),
+            "species_name and formula must be non-empty"
+        );
+        assert!(m.n_omega >= 0.0, "n_omega negative for {}", m.species_name);
+        assert!(m.n_epsilon >= 0.0, "n_epsilon negative for {}", m.species_name);
+    }
+
+    #[test]
+    fn test_metadata_accessors_semiconductors() {
+        assert_metadata_sane(silicon_metadata());
+        assert_metadata_sane(silica_metadata());
+        assert_metadata_sane(silica_casimir_metadata());
+        assert_metadata_sane(silicon_nitride_metadata());
+        assert_metadata_sane(germanium_metadata());
+    }
+
+    #[test]
+    fn test_metadata_accessors_oxides() {
+        assert_metadata_sane(alumina_metadata());
+        assert_metadata_sane(diamond_metadata());
+        assert_metadata_sane(quartz_metadata());
+        assert_metadata_sane(tio2_metadata());
+        assert_metadata_sane(ito_metadata());
+        assert_metadata_sane(tourmaline_metadata());
+    }
+
+    #[test]
+    fn test_metadata_accessors_metals() {
+        assert_metadata_sane(gold_metadata());
+        assert_metadata_sane(silver_metadata());
+        assert_metadata_sane(copper_metadata());
+        assert_metadata_sane(aluminum_metadata());
+        assert_metadata_sane(beryllium_metadata());
+        assert_metadata_sane(chromium_metadata());
+        assert_metadata_sane(nickel_metadata());
+        assert_metadata_sane(palladium_metadata());
+        assert_metadata_sane(platinum_metadata());
+        assert_metadata_sane(titanium_metadata());
+        assert_metadata_sane(tungsten_metadata());
+    }
+
+    #[test]
+    fn test_metadata_accessors_tungstates() {
+        assert_metadata_sane(wo3_metadata());
+        assert_metadata_sane(wo3_x_metadata());
+        assert_metadata_sane(cs_wo3_metadata());
+        assert_metadata_sane(cawo4_metadata());
+        assert_metadata_sane(pbwo4_metadata());
+        // CaWO4 + PbWO4 share scheelite I4_1/a (88) but have opposite optic signs.
+        assert_eq!(cawo4_metadata().optic_sign, OpticSign::Positive);
+        assert_eq!(pbwo4_metadata().optic_sign, OpticSign::Negative);
+        // WO3-x shares the parent gamma-WO3 lattice (P2_1/n #14).
+        assert_eq!(wo3_x_metadata().space_group, wo3_metadata().space_group);
+        assert_eq!(wo3_x_metadata().crystal_system, wo3_metadata().crystal_system);
+    }
+
+    #[test]
+    fn test_metadata_accessors_titanates_and_tcos() {
+        assert_metadata_sane(srtio3_metadata());
+        assert_metadata_sane(srtio3_doped_metadata());
+        assert_metadata_sane(latio3_metadata());
+        assert_metadata_sane(tio_metadata());
+        assert_metadata_sane(azo_metadata());
+        assert_metadata_sane(doped_silicon_metadata());
+        assert_metadata_sane(pedot_pss_metadata());
+
+        // Doped variants must inherit the parent material's lattice -- the
+        // only differences should be species_name, formula, and color
+        // (carrier doping does not change the crystal structure).
+        let parent_srtio3 = srtio3_metadata();
+        let doped_srtio3 = srtio3_doped_metadata();
+        assert_eq!(doped_srtio3.space_group, parent_srtio3.space_group);
+        assert_eq!(doped_srtio3.crystal_system, parent_srtio3.crystal_system);
+        assert_eq!(doped_srtio3.density_g_cm3, parent_srtio3.density_g_cm3);
+
+        let parent_si = silicon_metadata();
+        let doped_si = doped_silicon_metadata();
+        assert_eq!(doped_si.space_group, parent_si.space_group);
+        assert_eq!(doped_si.crystal_system, parent_si.crystal_system);
+
+        // TiO (monoxide) is structurally distinct from TiO2 (dioxide):
+        // rock-salt cubic vs rutile tetragonal.
+        assert_eq!(tio_metadata().crystal_system, "cubic");
+        assert_eq!(tio2_metadata().crystal_system, "tetragonal");
+
+        // PEDOT:PSS is amorphous -- hardness reported as 0 (Mohs n/a for polymers).
+        assert!((pedot_pss_metadata().hardness_mohs - 0.0).abs() < 1e-12);
+    }
+
+    #[test]
+    fn test_metadata_full_audit_coverage() {
+        // Coverage invariant: every optical-model constructor must reach a
+        // metadata accessor either directly (its own *_metadata fn) or via
+        // delegation to a parent material's metadata. Audit at commit
+        // d8ddb4ed identified 43 optical-model constructors. This test
+        // enumerates them by exercising every accessor; if any panic or
+        // return invalid data, the suite fails.
+        let all: Vec<MineralMetadata> = vec![
+            // Tourmaline supergroup (8)
+            schorl_metadata(), dravite_metadata(), elbaite_metadata(),
+            uvite_metadata(), liddicoatite_metadata(), rossmanite_metadata(),
+            foitite_metadata(), povondraite_metadata(),
+            // Semiconductors (5; silica_casimir aliases silica)
+            silicon_metadata(), silica_metadata(), silica_casimir_metadata(),
+            silicon_nitride_metadata(), germanium_metadata(),
+            // Oxides + TCOs (12)
+            alumina_metadata(), diamond_metadata(), quartz_metadata(),
+            tio2_metadata(), tio_metadata(), ito_metadata(), azo_metadata(),
+            srtio3_metadata(), srtio3_doped_metadata(), latio3_metadata(),
+            doped_silicon_metadata(), tourmaline_metadata(),
+            // Tungstates (5; wo3_x aliases wo3 lattice)
+            wo3_metadata(), wo3_x_metadata(), cs_wo3_metadata(),
+            cawo4_metadata(), pbwo4_metadata(),
+            // Elemental metals (11; *_drude_lorentz / *_rakic_ld share these)
+            gold_metadata(), silver_metadata(), copper_metadata(),
+            aluminum_metadata(), beryllium_metadata(), chromium_metadata(),
+            nickel_metadata(), palladium_metadata(), platinum_metadata(),
+            titanium_metadata(), tungsten_metadata(),
+            // Conducting polymer (1)
+            pedot_pss_metadata(),
+        ];
+        // 8 + 5 + 12 + 5 + 11 + 1 = 42 unique materials. The 43rd is
+        // tourmaline_default_metadata which routes to elbaite (already counted).
+        assert_eq!(
+            all.len(), 42,
+            "metadata enumeration drifted -- expected 42 unique accessors, got {}",
+            all.len()
+        );
+        for m in all.iter() {
+            assert_metadata_sane(*m);
+        }
+    }
+
+    #[test]
+    fn test_metadata_accessors_tourmaline_supergroup() {
+        assert_metadata_sane(schorl_metadata());
+        assert_metadata_sane(dravite_metadata());
+        assert_metadata_sane(elbaite_metadata());
+        assert_metadata_sane(uvite_metadata());
+        assert_metadata_sane(liddicoatite_metadata());
+        assert_metadata_sane(rossmanite_metadata());
+        assert_metadata_sane(foitite_metadata());
+        assert_metadata_sane(povondraite_metadata());
+        // tourmaline_default_metadata routes to elbaite -- confirm identity.
+        let default_meta = tourmaline_default_metadata();
+        let elbaite_meta = elbaite_metadata();
+        assert_eq!(default_meta.species_name, elbaite_meta.species_name);
+    }
+
+    #[test]
+    fn test_tourmaline_supergroup_all_uniaxial_negative() {
+        // Every tourmaline species is trigonal R3m and uniaxial NEGATIVE
+        // (Henry et al. 2011). Regression-protect this invariant.
+        let metas = [
+            schorl_metadata(),
+            dravite_metadata(),
+            elbaite_metadata(),
+            uvite_metadata(),
+            liddicoatite_metadata(),
+            rossmanite_metadata(),
+            foitite_metadata(),
+            povondraite_metadata(),
+        ];
+        for m in metas.iter() {
+            assert_eq!(
+                m.optic_sign,
+                OpticSign::Negative,
+                "{} reported optic sign {:?} but tourmaline-group is uniaxial negative",
+                m.species_name,
+                m.optic_sign
+            );
+            assert_eq!(m.crystal_system, "trigonal");
+            assert!(
+                m.space_group.starts_with("R3m"),
+                "{} space group {} but tourmaline-group is R3m (#160)",
+                m.species_name,
+                m.space_group
+            );
+            assert!(
+                m.n_omega > m.n_epsilon,
+                "{} reports n_omega={} <= n_epsilon={}; uniaxial NEGATIVE requires n_omega > n_epsilon",
+                m.species_name,
+                m.n_omega,
+                m.n_epsilon
+            );
+        }
     }
 }
