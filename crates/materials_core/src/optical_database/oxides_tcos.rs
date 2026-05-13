@@ -12,7 +12,7 @@
 //!
 //! Re-exported from optical_database via `pub use`.
 
-use super::{DrudeLorentzParams, DrudeParams, LorentzOscillator};
+use super::{DrudeLorentzParams, DrudeParams, LorentzOscillator, MineralMetadata, OpticSign};
 
 /// Same signature as the helpers in semiconductors.rs / tungstates.rs;
 /// uniform call sites across all three family submodules.
@@ -150,4 +150,119 @@ pub fn doped_silicon_optical() -> DrudeLorentzParams {
         materials_data::DOPED_SILICON_DRUDE,
         materials_data::DOPED_SILICON_OSCILLATORS,
     )
+}
+
+// ============================================================================
+// MineralMetadata accessors (task #140 remediation): high-priority materials
+// from the 2026-05-13 metadata-coverage audit. Indices reported at the
+// sodium-D line (587.6 nm) where the material is transparent; references
+// favor Palik 1998 and primary Sellmeier-fit papers.
+// ============================================================================
+
+/// Alumina (Al2O3 / sapphire / corundum): trigonal R-3c. Hardness 9 makes
+/// it the second-hardest natural material after diamond. Uniaxial NEGATIVE.
+pub fn alumina_metadata() -> MineralMetadata {
+    MineralMetadata {
+        species_name: "alumina_sapphire",
+        formula: "Al2O3",
+        crystal_system: "trigonal",
+        space_group: "R-3c (167) corundum",
+        n_omega: 1.768,
+        n_epsilon: 1.760,
+        birefringence: 0.008,
+        optic_sign: OpticSign::Negative,
+        hardness_mohs: 9.0,
+        density_g_cm3: 3.987,
+        color: "colorless when pure; chromophore-dependent (ruby: Cr; sapphire: Fe/Ti)",
+        reference: "Palik (1998) vol. I p.761; Malitson & Dodge (1972) J.Opt.Soc.Am. 62, 1405.",
+    }
+}
+
+/// Diamond (C): cubic Fd-3m. The hardest naturally-occurring substance
+/// (Mohs 10). Highest known optical refractive index for a gemstone
+/// (n=2.418 at sodium-D), giving rise to its characteristic dispersion.
+pub fn diamond_metadata() -> MineralMetadata {
+    MineralMetadata {
+        species_name: "diamond",
+        formula: "C",
+        crystal_system: "cubic",
+        space_group: "Fd-3m (227)",
+        n_omega: 2.4175,
+        n_epsilon: 2.4175,
+        birefringence: 0.0,
+        optic_sign: OpticSign::Isotropic,
+        hardness_mohs: 10.0,
+        density_g_cm3: 3.52,
+        color: "colorless when pure; defect-dependent (N, B, vacancy clusters)",
+        reference: "Palik (1998) vol. II p.665; Peter (1923) Z. Phys. 15, 358 (original dispersion fit).",
+    }
+}
+
+/// Alpha-quartz (SiO2): trigonal P3_121 (right-handed) or P3_221 (left-handed).
+/// Optically active: rotates plane-polarized light by ~21.7 deg/mm at 589 nm
+/// for cuts parallel to the c-axis. Uniaxial POSITIVE.
+pub fn quartz_metadata() -> MineralMetadata {
+    MineralMetadata {
+        species_name: "alpha_quartz",
+        formula: "SiO2",
+        crystal_system: "trigonal",
+        space_group: "P3_121 (152) right-handed; P3_221 (154) left-handed",
+        n_omega: 1.5443,
+        n_epsilon: 1.5534,
+        birefringence: 0.0091,
+        optic_sign: OpticSign::Positive,
+        hardness_mohs: 7.0,
+        density_g_cm3: 2.65,
+        color: "colorless when pure; many varietal colors (amethyst, citrine, smoky, rose)",
+        reference: "Ghosh (1999) Opt. Commun. 163, 95 (Sellmeier dispersion); Palik (1985) vol. I p.719.",
+    }
+}
+
+/// Rutile TiO2: tetragonal P4_2/mnm. Highest birefringence among common
+/// minerals (delta_n = 0.287 at sodium-D). Uniaxial POSITIVE.
+/// Note: anatase (I4_1/amd #141) and brookite (Pbca #61) are additional
+/// polymorphs not currently modeled here.
+pub fn tio2_metadata() -> MineralMetadata {
+    MineralMetadata {
+        species_name: "rutile_tio2",
+        formula: "TiO2",
+        crystal_system: "tetragonal",
+        space_group: "P4_2/mnm (136) rutile",
+        n_omega: 2.616,
+        n_epsilon: 2.903,
+        birefringence: 0.287,
+        optic_sign: OpticSign::Positive,
+        hardness_mohs: 6.0,
+        density_g_cm3: 4.23,
+        color: "reddish-brown to black; transparent thin films near-colorless",
+        reference: "DeVore (1951) J.Opt.Soc.Am. 41, 416; Palik (1985) vol. I p.795; Dorenwendt (1971).",
+    }
+}
+
+/// Indium Tin Oxide (In2O3:Sn ~10 wt% SnO2): cubic Ia-3 bixbyite-type with
+/// Sn-doping providing free carriers. The dominant transparent conductor used
+/// in displays and photovoltaics; Drude-tail dominated optical response.
+pub fn ito_metadata() -> MineralMetadata {
+    MineralMetadata {
+        species_name: "indium_tin_oxide",
+        formula: "In2O3:Sn",
+        crystal_system: "cubic",
+        space_group: "Ia-3 (206) bixbyite",
+        n_omega: 1.95,
+        n_epsilon: 1.95,
+        birefringence: 0.0,
+        optic_sign: OpticSign::Isotropic,
+        hardness_mohs: 6.0,
+        density_g_cm3: 7.14,
+        color: "yellowish-pale-green thin film; transparent in vis, reflective in IR",
+        reference: "Hamberg & Granqvist (1986) J.Appl.Phys. 60, R123-R160 (canonical ITO review).",
+    }
+}
+
+/// Tourmaline default metadata: returns elbaite (the most-common gemstone
+/// tourmaline). Provided here for symmetry with the legacy
+/// `tourmaline_optical()` constructor. New code should call the
+/// species-specific metadata accessors in the `tourmaline` submodule.
+pub fn tourmaline_metadata() -> MineralMetadata {
+    super::tourmaline::default_metadata()
 }

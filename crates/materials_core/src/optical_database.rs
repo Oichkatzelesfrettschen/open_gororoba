@@ -3514,9 +3514,10 @@ pub use tungstates::{
 // ============================================================================
 mod oxides_tcos;
 pub use oxides_tcos::{
-    alumina_optical, azo_optical, diamond_optical, doped_silicon_optical, ito_optical,
-    latio3_optical, quartz_optical, srtio3_doped_optical, srtio3_optical, tio2_optical,
-    tio_optical, tourmaline_optical,
+    alumina_metadata, alumina_optical, azo_optical, diamond_metadata, diamond_optical,
+    doped_silicon_optical, ito_metadata, ito_optical, latio3_optical, quartz_metadata,
+    quartz_optical, srtio3_doped_optical, srtio3_optical, tio2_metadata, tio2_optical,
+    tio_optical, tourmaline_metadata, tourmaline_optical,
 };
 
 // ============================================================================
@@ -3529,10 +3530,10 @@ pub use oxides_tcos::{
 // ============================================================================
 mod metals_dl;
 pub use metals_dl::{
-    aluminum_drude_lorentz, beryllium_drude_lorentz, chromium_drude_lorentz,
-    copper_drude_lorentz, gold_drude_lorentz, gold_rakic_ld, nickel_drude_lorentz,
-    palladium_drude_lorentz, platinum_drude_lorentz, silver_drude_lorentz,
-    titanium_drude_lorentz, tungsten_drude_lorentz,
+    aluminum_drude_lorentz, aluminum_metadata, beryllium_drude_lorentz, chromium_drude_lorentz,
+    copper_drude_lorentz, copper_metadata, gold_drude_lorentz, gold_metadata, gold_rakic_ld,
+    nickel_drude_lorentz, palladium_drude_lorentz, platinum_drude_lorentz, silver_drude_lorentz,
+    silver_metadata, titanium_drude_lorentz, tungsten_drude_lorentz,
 };
 
 // ============================================================================
@@ -3541,8 +3542,9 @@ pub use metals_dl::{
 // ============================================================================
 mod semiconductors;
 pub use semiconductors::{
-    germanium_optical, silica_casimir_optical, silica_optical, silicon_nitride_optical,
-    silicon_optical,
+    germanium_metadata, germanium_optical, silica_casimir_metadata, silica_casimir_optical,
+    silica_metadata, silica_optical, silicon_metadata, silicon_nitride_metadata,
+    silicon_nitride_optical, silicon_optical,
 };
 
 // ============================================================================
@@ -9786,5 +9788,115 @@ mod tests {
             ng,
             n
         );
+    }
+
+    // ====================================================================
+    // MineralMetadata accessor smoke tests (task #134 / #140 remediation).
+    // Each accessor must (1) compile, (2) return a struct whose density is
+    // positive and finite, and (3) report a hardness in the catalogued
+    // 0.0..=10.0 Mohs range. Hardness=0 is permitted for amorphous polymers.
+    // ====================================================================
+
+    fn assert_metadata_sane(m: MineralMetadata) {
+        assert!(
+            m.density_g_cm3 > 0.0 && m.density_g_cm3.is_finite(),
+            "density must be positive and finite for {}: got {}",
+            m.species_name,
+            m.density_g_cm3
+        );
+        assert!(
+            (0.0..=10.0).contains(&m.hardness_mohs),
+            "hardness for {} ({}) outside Mohs 0..=10",
+            m.species_name,
+            m.hardness_mohs
+        );
+        assert!(
+            !m.species_name.is_empty() && !m.formula.is_empty(),
+            "species_name and formula must be non-empty"
+        );
+        assert!(m.n_omega >= 0.0, "n_omega negative for {}", m.species_name);
+        assert!(m.n_epsilon >= 0.0, "n_epsilon negative for {}", m.species_name);
+    }
+
+    #[test]
+    fn test_metadata_accessors_semiconductors() {
+        assert_metadata_sane(silicon_metadata());
+        assert_metadata_sane(silica_metadata());
+        assert_metadata_sane(silica_casimir_metadata());
+        assert_metadata_sane(silicon_nitride_metadata());
+        assert_metadata_sane(germanium_metadata());
+    }
+
+    #[test]
+    fn test_metadata_accessors_oxides() {
+        assert_metadata_sane(alumina_metadata());
+        assert_metadata_sane(diamond_metadata());
+        assert_metadata_sane(quartz_metadata());
+        assert_metadata_sane(tio2_metadata());
+        assert_metadata_sane(ito_metadata());
+        assert_metadata_sane(tourmaline_metadata());
+    }
+
+    #[test]
+    fn test_metadata_accessors_metals() {
+        assert_metadata_sane(gold_metadata());
+        assert_metadata_sane(silver_metadata());
+        assert_metadata_sane(copper_metadata());
+        assert_metadata_sane(aluminum_metadata());
+    }
+
+    #[test]
+    fn test_metadata_accessors_tourmaline_supergroup() {
+        assert_metadata_sane(schorl_metadata());
+        assert_metadata_sane(dravite_metadata());
+        assert_metadata_sane(elbaite_metadata());
+        assert_metadata_sane(uvite_metadata());
+        assert_metadata_sane(liddicoatite_metadata());
+        assert_metadata_sane(rossmanite_metadata());
+        assert_metadata_sane(foitite_metadata());
+        assert_metadata_sane(povondraite_metadata());
+        // tourmaline_default_metadata routes to elbaite -- confirm identity.
+        let default_meta = tourmaline_default_metadata();
+        let elbaite_meta = elbaite_metadata();
+        assert_eq!(default_meta.species_name, elbaite_meta.species_name);
+    }
+
+    #[test]
+    fn test_tourmaline_supergroup_all_uniaxial_negative() {
+        // Every tourmaline species is trigonal R3m and uniaxial NEGATIVE
+        // (Henry et al. 2011). Regression-protect this invariant.
+        let metas = [
+            schorl_metadata(),
+            dravite_metadata(),
+            elbaite_metadata(),
+            uvite_metadata(),
+            liddicoatite_metadata(),
+            rossmanite_metadata(),
+            foitite_metadata(),
+            povondraite_metadata(),
+        ];
+        for m in metas.iter() {
+            assert_eq!(
+                m.optic_sign,
+                OpticSign::Negative,
+                "{} reported optic sign {:?} but tourmaline-group is uniaxial negative",
+                m.species_name,
+                m.optic_sign
+            );
+            assert_eq!(m.crystal_system, "trigonal");
+            assert!(
+                m.space_group.starts_with("R3m"),
+                "{} space group {} but tourmaline-group is R3m (#160)",
+                m.species_name,
+                m.space_group
+            );
+            assert!(
+                m.n_omega > m.n_epsilon,
+                "{} reports n_omega={} <= n_epsilon={}; uniaxial NEGATIVE requires n_omega > n_epsilon",
+                m.species_name,
+                m.n_omega,
+                m.n_epsilon
+            );
+        }
     }
 }
