@@ -3293,85 +3293,7 @@ pub fn gold_drude() -> DrudeParams {
     }
 }
 
-/// Gold (Au) with interband transitions.
-///
-/// More accurate for visible/UV range.
-pub fn gold_drude_lorentz() -> DrudeLorentzParams {
-    DrudeLorentzParams {
-        drude: Some(DrudeParams {
-            omega_p_ev: 8.45,
-            gamma_ev: 0.069,
-            eps_inf: 1.0,
-        }),
-        oscillators: vec![
-            LorentzOscillator {
-                strength: 1.27,
-                omega_0_ev: 2.68,
-                gamma_ev: 0.72,
-            },
-            LorentzOscillator {
-                strength: 1.1,
-                omega_0_ev: 3.87,
-                gamma_ev: 1.7,
-            },
-        ],
-        eps_inf: 1.0,
-        extended_drude: None,
-    }
-}
 
-/// Gold (Au) high-fidelity Lorentz-Drude model from Rakic et al. 1998 (Table I).
-///
-/// 5 Lorentz oscillators plus Drude term. This model accurately captures the
-/// d-band transitions and gives LSPR ~ 2.6 eV in vacuum (Frohlich condition),
-/// matching experiment. The simpler 2-oscillator gold_drude_lorentz() gives
-/// LSPR at ~5.9 eV due to insufficient d-band representation.
-///
-/// Rakic convention: eps_j = f_j * omega_p^2 / (omega_j^2 - omega^2 - i*Gamma_j*omega)
-/// Our convention: eps_j = S_j * omega_0j^2 / (omega_0j^2 - omega^2 - i*gamma_j*omega)
-/// So S_j = f_j * omega_p^2 / omega_0j^2.
-///
-/// Reference: Rakic et al., Appl. Opt. 37, 5271-5283 (1998), BIB-0199.
-pub fn gold_rakic_ld() -> DrudeLorentzParams {
-    let omega_p: f64 = 9.03; // eV (bare plasma frequency)
-    let omega_p_sq = omega_p * omega_p; // 81.54
-    DrudeLorentzParams {
-        drude: Some(DrudeParams {
-            omega_p_ev: (0.760_f64).sqrt() * omega_p, // 7.87 eV effective
-            gamma_ev: 0.053,
-            eps_inf: 1.0,
-        }),
-        oscillators: vec![
-            LorentzOscillator {
-                strength: 0.024 * omega_p_sq / (0.415 * 0.415), // ~11.36
-                omega_0_ev: 0.415,
-                gamma_ev: 0.241,
-            },
-            LorentzOscillator {
-                strength: 0.010 * omega_p_sq / (0.830 * 0.830), // ~1.18
-                omega_0_ev: 0.830,
-                gamma_ev: 0.345,
-            },
-            LorentzOscillator {
-                strength: 0.071 * omega_p_sq / (2.969 * 2.969), // ~0.66
-                omega_0_ev: 2.969,
-                gamma_ev: 0.870,
-            },
-            LorentzOscillator {
-                strength: 0.601 * omega_p_sq / (4.304 * 4.304), // ~2.65
-                omega_0_ev: 4.304,
-                gamma_ev: 2.494,
-            },
-            LorentzOscillator {
-                strength: 4.384 * omega_p_sq / (13.32 * 13.32), // ~2.01
-                omega_0_ev: 13.32,
-                gamma_ev: 2.214,
-            },
-        ],
-        eps_inf: 1.0,
-        extended_drude: None,
-    }
-}
 
 /// Silver (Ag) Drude parameters.
 pub fn silver_drude() -> DrudeParams {
@@ -3383,30 +3305,6 @@ pub fn silver_drude() -> DrudeParams {
     }
 }
 
-/// Silver (Ag) with interband transitions.
-pub fn silver_drude_lorentz() -> DrudeLorentzParams {
-    DrudeLorentzParams {
-        drude: Some(DrudeParams {
-            omega_p_ev: 9.01,
-            gamma_ev: 0.018,
-            eps_inf: 1.0,
-        }),
-        oscillators: vec![
-            LorentzOscillator {
-                strength: 0.845,
-                omega_0_ev: 4.49,
-                gamma_ev: 0.65,
-            },
-            LorentzOscillator {
-                strength: 0.065,
-                omega_0_ev: 8.0,
-                gamma_ev: 1.5,
-            },
-        ],
-        eps_inf: 1.0,
-        extended_drude: None,
-    }
-}
 
 /// Copper (Cu) Drude parameters.
 pub fn copper_drude() -> DrudeParams {
@@ -3433,55 +3331,7 @@ pub fn aluminum_drude() -> DrudeParams {
 // Enhanced Cu/Al with interband oscillators (Rakic 1998)
 // ============================================================================
 
-/// Copper (Cu) with interband transitions (Rakic 1998 LD model).
-pub fn copper_drude_lorentz() -> DrudeLorentzParams {
-    DrudeLorentzParams {
-        drude: Some(DrudeParams {
-            omega_p_ev: 8.21,
-            gamma_ev: 0.030,
-            eps_inf: 1.0,
-        }),
-        oscillators: vec![
-            LorentzOscillator {
-                strength: 1.40,
-                omega_0_ev: 2.957,
-                gamma_ev: 1.056,
-            },
-            LorentzOscillator {
-                strength: 3.02,
-                omega_0_ev: 5.300,
-                gamma_ev: 3.213,
-            },
-        ],
-        eps_inf: 1.0,
-        extended_drude: None,
-    }
-}
 
-/// Aluminum (Al) with interband transitions (Rakic 1998 LD model).
-pub fn aluminum_drude_lorentz() -> DrudeLorentzParams {
-    DrudeLorentzParams {
-        drude: Some(DrudeParams {
-            omega_p_ev: 10.83,
-            gamma_ev: 0.047,
-            eps_inf: 1.0,
-        }),
-        oscillators: vec![
-            LorentzOscillator {
-                strength: 4.71,
-                omega_0_ev: 1.544,
-                gamma_ev: 0.312,
-            },
-            LorentzOscillator {
-                strength: 11.40,
-                omega_0_ev: 1.808,
-                gamma_ev: 1.351,
-            },
-        ],
-        eps_inf: 1.0,
-        extended_drude: None,
-    }
-}
 
 // ============================================================================
 // Rakic 11-metal canonical set: 7 new metals (Phase 2)
@@ -3497,30 +3347,6 @@ pub fn beryllium_drude() -> DrudeParams {
     }
 }
 
-/// Beryllium (Be) Drude-Lorentz (Rakic 1998 LD model).
-pub fn beryllium_drude_lorentz() -> DrudeLorentzParams {
-    DrudeLorentzParams {
-        drude: Some(DrudeParams {
-            omega_p_ev: 5.37,
-            gamma_ev: 0.035,
-            eps_inf: 1.0,
-        }),
-        oscillators: vec![
-            LorentzOscillator {
-                strength: 17.93,
-                omega_0_ev: 3.183,
-                gamma_ev: 4.454,
-            },
-            LorentzOscillator {
-                strength: 2.10,
-                omega_0_ev: 4.604,
-                gamma_ev: 1.802,
-            },
-        ],
-        eps_inf: 1.0,
-        extended_drude: None,
-    }
-}
 
 /// Chromium (Cr) Drude parameters (Rakic 1998).
 pub fn chromium_drude() -> DrudeParams {
@@ -3532,30 +3358,6 @@ pub fn chromium_drude() -> DrudeParams {
     }
 }
 
-/// Chromium (Cr) Drude-Lorentz (Rakic 1998 LD model).
-pub fn chromium_drude_lorentz() -> DrudeLorentzParams {
-    DrudeLorentzParams {
-        drude: Some(DrudeParams {
-            omega_p_ev: 4.41,
-            gamma_ev: 0.047,
-            eps_inf: 1.0,
-        }),
-        oscillators: vec![
-            LorentzOscillator {
-                strength: 34.24,
-                omega_0_ev: 1.970,
-                gamma_ev: 2.676,
-            },
-            LorentzOscillator {
-                strength: 1.24,
-                omega_0_ev: 8.775,
-                gamma_ev: 1.335,
-            },
-        ],
-        eps_inf: 1.0,
-        extended_drude: None,
-    }
-}
 
 /// Nickel (Ni) Drude parameters (Rakic 1998).
 pub fn nickel_drude() -> DrudeParams {
@@ -3567,30 +3369,6 @@ pub fn nickel_drude() -> DrudeParams {
     }
 }
 
-/// Nickel (Ni) Drude-Lorentz (Rakic 1998 LD model).
-pub fn nickel_drude_lorentz() -> DrudeLorentzParams {
-    DrudeLorentzParams {
-        drude: Some(DrudeParams {
-            omega_p_ev: 4.93,
-            gamma_ev: 0.048,
-            eps_inf: 1.0,
-        }),
-        oscillators: vec![
-            LorentzOscillator {
-                strength: 10.53,
-                omega_0_ev: 1.597,
-                gamma_ev: 2.178,
-            },
-            LorentzOscillator {
-                strength: 4.98,
-                omega_0_ev: 6.089,
-                gamma_ev: 6.292,
-            },
-        ],
-        eps_inf: 1.0,
-        extended_drude: None,
-    }
-}
 
 /// Palladium (Pd) Drude parameters (Rakic 1998).
 pub fn palladium_drude() -> DrudeParams {
@@ -3602,30 +3380,6 @@ pub fn palladium_drude() -> DrudeParams {
     }
 }
 
-/// Palladium (Pd) Drude-Lorentz (Rakic 1998 LD model).
-pub fn palladium_drude_lorentz() -> DrudeLorentzParams {
-    DrudeLorentzParams {
-        drude: Some(DrudeParams {
-            omega_p_ev: 5.58,
-            gamma_ev: 0.009,
-            eps_inf: 1.0,
-        }),
-        oscillators: vec![
-            LorentzOscillator {
-                strength: 3.58,
-                omega_0_ev: 2.855,
-                gamma_ev: 2.022,
-            },
-            LorentzOscillator {
-                strength: 1.36,
-                omega_0_ev: 5.331,
-                gamma_ev: 5.285,
-            },
-        ],
-        eps_inf: 1.0,
-        extended_drude: None,
-    }
-}
 
 /// Platinum (Pt) Drude parameters (Rakic 1998).
 pub fn platinum_drude() -> DrudeParams {
@@ -3637,30 +3391,6 @@ pub fn platinum_drude() -> DrudeParams {
     }
 }
 
-/// Platinum (Pt) Drude-Lorentz (Rakic 1998 LD model).
-pub fn platinum_drude_lorentz() -> DrudeLorentzParams {
-    DrudeLorentzParams {
-        drude: Some(DrudeParams {
-            omega_p_ev: 5.54,
-            gamma_ev: 0.080,
-            eps_inf: 1.0,
-        }),
-        oscillators: vec![
-            LorentzOscillator {
-                strength: 35.12,
-                omega_0_ev: 1.314,
-                gamma_ev: 1.838,
-            },
-            LorentzOscillator {
-                strength: 5.10,
-                omega_0_ev: 3.145,
-                gamma_ev: 3.668,
-            },
-        ],
-        eps_inf: 1.0,
-        extended_drude: None,
-    }
-}
 
 /// Titanium (Ti) Drude parameters (Rakic 1998).
 pub fn titanium_drude() -> DrudeParams {
@@ -3672,30 +3402,6 @@ pub fn titanium_drude() -> DrudeParams {
     }
 }
 
-/// Titanium (Ti) Drude-Lorentz (Rakic 1998 LD model).
-pub fn titanium_drude_lorentz() -> DrudeLorentzParams {
-    DrudeLorentzParams {
-        drude: Some(DrudeParams {
-            omega_p_ev: 2.81,
-            gamma_ev: 0.082,
-            eps_inf: 1.0,
-        }),
-        oscillators: vec![
-            LorentzOscillator {
-                strength: 8.75,
-                omega_0_ev: 1.545,
-                gamma_ev: 2.518,
-            },
-            LorentzOscillator {
-                strength: 1.58,
-                omega_0_ev: 2.509,
-                gamma_ev: 1.663,
-            },
-        ],
-        eps_inf: 1.0,
-        extended_drude: None,
-    }
-}
 
 /// Tungsten (W) Drude parameters (Rakic 1998).
 pub fn tungsten_drude() -> DrudeParams {
@@ -3707,30 +3413,6 @@ pub fn tungsten_drude() -> DrudeParams {
     }
 }
 
-/// Tungsten (W) Drude-Lorentz (Rakic 1998 LD model).
-pub fn tungsten_drude_lorentz() -> DrudeLorentzParams {
-    DrudeLorentzParams {
-        drude: Some(DrudeParams {
-            omega_p_ev: 6.00,
-            gamma_ev: 0.064,
-            eps_inf: 1.0,
-        }),
-        oscillators: vec![
-            LorentzOscillator {
-                strength: 7.90,
-                omega_0_ev: 1.917,
-                gamma_ev: 1.281,
-            },
-            LorentzOscillator {
-                strength: 9.63,
-                omega_0_ev: 3.580,
-                gamma_ev: 3.332,
-            },
-        ],
-        eps_inf: 1.0,
-        extended_drude: None,
-    }
-}
 
 
 // ============================================================================
@@ -3782,6 +3464,22 @@ pub use oxides_tcos::{
     alumina_optical, azo_optical, diamond_optical, doped_silicon_optical, ito_optical,
     latio3_optical, quartz_optical, srtio3_doped_optical, srtio3_optical, tio2_optical,
     tio_optical, tourmaline_optical,
+};
+
+// ============================================================================
+// Drude-Lorentz metals (Phase 5 / #127): all 12 *_drude_lorentz fns
+// (Au/Ag/Cu/Al + Rakic Be/Cr/Ni/Pd/Pt/Ti/W) + the 5-oscillator
+// gold_rakic_ld high-fidelity Au model live in the `metals_dl`
+// submodule. Simple Drude-only variants (gold_drude, silver_drude,
+// ...) stay inline because they already consume the existing
+// materials_data::*_DRUDE 3-tuple consts directly.
+// ============================================================================
+mod metals_dl;
+pub use metals_dl::{
+    aluminum_drude_lorentz, beryllium_drude_lorentz, chromium_drude_lorentz,
+    copper_drude_lorentz, gold_drude_lorentz, gold_rakic_ld, nickel_drude_lorentz,
+    palladium_drude_lorentz, platinum_drude_lorentz, silver_drude_lorentz,
+    titanium_drude_lorentz, tungsten_drude_lorentz,
 };
 
 // ============================================================================
