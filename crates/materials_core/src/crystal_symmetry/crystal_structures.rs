@@ -285,15 +285,88 @@ mod tests {
     use super::*;
 
     #[test]
-    fn known_structures_has_200_plus_entries() {
+    fn known_structures_has_250_plus_entries() {
         let n = known_crystal_structures().len();
         assert!(
-            n >= 200,
-            "Coverage regression: known_crystal_structures must list at least 200 \
+            n >= 250,
+            "Coverage regression: known_crystal_structures must list at least 250 \
              entries (currently {}). Adding new structures is encouraged; \
              removing any requires a rationale.",
             n
         );
+    }
+
+    #[test]
+    fn organic_semiconductor_coverage() {
+        let names: Vec<&str> = known_crystal_structures()
+            .iter()
+            .map(|s| s.name)
+            .collect();
+        for required in [
+            "pentacene_herringbone",
+            "rubrene_orthorhombic",
+            "c60_buckminsterfullerene_fcc",
+            "naphthalene",
+            "anthracene",
+        ] {
+            assert!(names.contains(&required), "organic semiconductor {} missing", required);
+        }
+    }
+
+    #[test]
+    fn mof_and_zeolite_coverage() {
+        let names: Vec<&str> = known_crystal_structures()
+            .iter()
+            .map(|s| s.name)
+            .collect();
+        for required in [
+            "mof_5_irmof_1",
+            "hkust_1_cu_btc",
+            "zif_8_zn_methylimidazolate",
+            "uio_66_zr",
+            "faujasite_zeolite_y",
+            "zsm_5_mfi_framework",
+            "mordenite_zeolite",
+        ] {
+            assert!(names.contains(&required), "MOF/zeolite {} missing", required);
+        }
+    }
+
+    #[test]
+    fn ice_polymorph_coverage() {
+        let names: Vec<&str> = known_crystal_structures()
+            .iter()
+            .map(|s| s.name)
+            .collect();
+        for required in [
+            "ice_ih_hexagonal",
+            "ice_ic_cubic",
+            "ice_vii_cubic_high_pressure",
+        ] {
+            assert!(names.contains(&required), "ice polymorph {} missing", required);
+        }
+    }
+
+    #[test]
+    fn nuclear_actinide_coverage() {
+        let names: Vec<&str> = known_crystal_structures()
+            .iter()
+            .map(|s| s.name)
+            .collect();
+        for required in ["uo2_fluorite", "tho2_fluorite", "puo2_fluorite"] {
+            assert!(names.contains(&required), "actinide oxide {} missing", required);
+        }
+    }
+
+    #[test]
+    fn permanent_magnet_coverage() {
+        let names: Vec<&str> = known_crystal_structures()
+            .iter()
+            .map(|s| s.name)
+            .collect();
+        for required in ["nd2fe14b_neomag", "smco5_caCu5_type", "fept_l10_ordered"] {
+            assert!(names.contains(&required), "hard-magnet phase {} missing", required);
+        }
     }
 
     #[test]

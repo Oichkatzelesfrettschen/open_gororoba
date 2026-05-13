@@ -40,3 +40,121 @@ c_form = "linear"
 c_coeffs = [0.0684043, 0.1162414, 9.896161]
 validity_range_um = [0.21, 3.71]
 reference = "Malitson, JOSA 55, 1205 (1965) -- fused silica. lambda_i squared by build.rs to match inline powi(2) f64 byte-for-byte."
+
+# ============================================================================
+# Expansion 2026-05-13: nonlinear-optical + UV-window + gemstone crystals.
+# Coefficients sourced from primary refractive-index references (Dmitriev
+# 1999 Handbook of Nonlinear Optical Crystals; Ghosh 1997 for sapphire;
+# Tropf 1995 for fluorides).
+# ============================================================================
+
+# ---------- KDP (KH2PO4) negative uniaxial ----------
+[[sellmeier]]
+name = "KDP_ORDINARY"
+b_coeffs = [1.256618, 33.89909]
+c_form = "squared"
+c_coeffs = [0.0084478168, 1207.515]
+validity_range_um = [0.213, 1.529]
+reference = "Zernike (1964) JOSA 54, 1215 -- KDP ordinary ray."
+
+[[sellmeier]]
+name = "KDP_EXTRAORDINARY"
+b_coeffs = [1.131091, 8.582841]
+c_form = "squared"
+c_coeffs = [0.0078306276, 689.0498]
+validity_range_um = [0.213, 1.529]
+reference = "Zernike (1964) JOSA 54, 1215 -- KDP extraordinary ray."
+
+# ---------- BBO (beta-BaB2O4) negative uniaxial ----------
+[[sellmeier]]
+name = "BBO_ORDINARY"
+b_coeffs = [0.90291, 0.83155, 0.76536]
+c_form = "squared"
+c_coeffs = [0.003926, 0.018786, 60.01]
+validity_range_um = [0.189, 3.5]
+reference = "Eimerl et al. (1987) J. Appl. Phys. 62, 1968 -- beta-BBO ordinary ray; Dmitriev (1999) Handbook of NLO crystals."
+
+[[sellmeier]]
+name = "BBO_EXTRAORDINARY"
+b_coeffs = [1.151075, 0.21803, 0.656]
+c_form = "squared"
+c_coeffs = [0.007142, 0.02259, 263.0]
+validity_range_um = [0.189, 3.5]
+reference = "Eimerl et al. (1987) J. Appl. Phys. 62, 1968 -- beta-BBO extraordinary ray."
+
+# ---------- LBO (LiB3O5) negative biaxial -- principal axes ----------
+[[sellmeier]]
+name = "LBO_NX"
+b_coeffs = [1.41365, 0.6584, 1.0]
+c_form = "squared"
+c_coeffs = [0.011, 0.0354, 4128.0]
+validity_range_um = [0.16, 2.6]
+reference = "Kato (1990) IEEE J. Quantum Electron. 26, 1173 -- LBO Nx principal index; Dmitriev (1999) Handbook."
+
+[[sellmeier]]
+name = "LBO_NY"
+b_coeffs = [1.4853, 0.7032, 1.0]
+c_form = "squared"
+c_coeffs = [0.011, 0.0322, 5113.0]
+validity_range_um = [0.16, 2.6]
+reference = "Kato (1990) IEEE J. Quantum Electron. 26, 1173 -- LBO Ny principal index."
+
+[[sellmeier]]
+name = "LBO_NZ"
+b_coeffs = [1.5512, 0.7349, 1.0]
+c_form = "squared"
+c_coeffs = [0.011, 0.0344, 4395.0]
+validity_range_um = [0.16, 2.6]
+reference = "Kato (1990) IEEE J. Quantum Electron. 26, 1173 -- LBO Nz principal index."
+
+# ---------- Sapphire (alpha-Al2O3) negative uniaxial ----------
+[[sellmeier]]
+name = "SAPPHIRE_ORDINARY"
+b_coeffs = [1.4313493, 0.65054713, 5.3414021]
+c_form = "squared"
+c_coeffs = [0.005279317, 0.014239625, 325.017834]
+validity_range_um = [0.2, 5.5]
+reference = "Malitson & Dodge (1972) J.Opt.Soc.Am. 62, 1405 -- alpha-Al2O3 ordinary ray."
+
+[[sellmeier]]
+name = "SAPPHIRE_EXTRAORDINARY"
+b_coeffs = [1.5039759, 0.55069141, 6.5927379]
+c_form = "squared"
+c_coeffs = [0.005480606, 0.014762824, 402.895140]
+validity_range_um = [0.2, 5.5]
+reference = "Malitson & Dodge (1972) J.Opt.Soc.Am. 62, 1405 -- alpha-Al2O3 extraordinary ray."
+
+# ---------- Calcium fluoride CaF2 (UV-grade window) ----------
+[[sellmeier]]
+name = "CAF2"
+b_coeffs = [0.5675888, 0.4710914, 3.8484723]
+c_form = "squared"
+c_coeffs = [0.002526435, 0.010078333, 1200.555597]
+validity_range_um = [0.23, 9.7]
+reference = "Malitson (1963) Appl. Opt. 2, 1103 -- CaF2 fluorite UV window."
+
+# ---------- Magnesium fluoride MgF2 negative uniaxial ----------
+[[sellmeier]]
+name = "MGF2_ORDINARY"
+b_coeffs = [0.48755108, 0.39875031, 2.3120353]
+c_form = "squared"
+c_coeffs = [0.001882178, 0.008951888, 566.13559]
+validity_range_um = [0.2, 7.04]
+reference = "Dodge (1984) Appl. Opt. 23, 1980 -- MgF2 ordinary ray."
+
+[[sellmeier]]
+name = "MGF2_EXTRAORDINARY"
+b_coeffs = [0.41344023, 0.50497499, 2.4904862]
+c_form = "squared"
+c_coeffs = [0.001354437, 0.008636474, 565.10846]
+validity_range_um = [0.2, 7.04]
+reference = "Dodge (1984) Appl. Opt. 23, 1980 -- MgF2 extraordinary ray."
+
+# ---------- ZnSe (IR window + CO2-laser optics) ----------
+[[sellmeier]]
+name = "ZNSE"
+b_coeffs = [4.45813734, 0.467216334, 2.89566290]
+c_form = "squared"
+c_coeffs = [0.20085923692, 0.039127, 470.83576]
+validity_range_um = [0.54, 18.2]
+reference = "Tatian (1984) Appl. Opt. 23, 4477 -- ZnSe Schott-type three-term fit."
