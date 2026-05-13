@@ -285,15 +285,80 @@ mod tests {
     use super::*;
 
     #[test]
-    fn known_structures_has_100_plus_entries() {
+    fn known_structures_has_140_plus_entries() {
         let n = known_crystal_structures().len();
         assert!(
-            n >= 100,
-            "Coverage regression: known_crystal_structures must list at least 100 \
+            n >= 140,
+            "Coverage regression: known_crystal_structures must list at least 140 \
              entries (currently {}). Adding new structures is encouraged; \
              removing any requires a rationale.",
             n
         );
+    }
+
+    #[test]
+    fn halide_perovskite_coverage() {
+        let names: Vec<&str> = known_crystal_structures()
+            .iter()
+            .map(|s| s.name)
+            .collect();
+        for required in [
+            "cspbi3_orthorhombic_gamma",
+            "mapbi3_tetragonal",
+            "fapbbr3_cubic",
+            "cspbbr3_orthorhombic",
+        ] {
+            assert!(
+                names.contains(&required),
+                "halide perovskite {} missing from registry",
+                required
+            );
+        }
+    }
+
+    #[test]
+    fn iron_pnictide_superconductor_coverage() {
+        let names: Vec<&str> = known_crystal_structures()
+            .iter()
+            .map(|s| s.name)
+            .collect();
+        for required in ["bafe2as2_122", "lafeaso_1111", "fese_pbo_type"] {
+            assert!(
+                names.contains(&required),
+                "iron-pnictide superconductor {} missing",
+                required
+            );
+        }
+    }
+
+    #[test]
+    fn weyl_dirac_semimetal_coverage() {
+        let names: Vec<&str> = known_crystal_structures()
+            .iter()
+            .map(|s| s.name)
+            .collect();
+        for required in ["tantalum_arsenide_taas", "niobium_phosphide_nbp", "cd3as2_dirac"] {
+            assert!(names.contains(&required), "Weyl/Dirac semimetal {} missing", required);
+        }
+    }
+
+    #[test]
+    fn ceramic_and_nlo_coverage() {
+        let names: Vec<&str> = known_crystal_structures()
+            .iter()
+            .map(|s| s.name)
+            .collect();
+        for required in [
+            "yag_y3al5o12",
+            "magnesium_fluoride_rutile",
+            "bbo_beta_barium_borate",
+            "kdp_potassium_dihydrogen_phosphate",
+            "zirconia_cubic_yttria_stabilized",
+            "zirconia_monoclinic_baddeleyite",
+            "tungsten_carbide_alpha",
+        ] {
+            assert!(names.contains(&required), "ceramic/NLO crystal {} missing", required);
+        }
     }
 
     #[test]
