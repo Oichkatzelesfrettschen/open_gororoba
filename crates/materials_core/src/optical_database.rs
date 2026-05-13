@@ -3192,142 +3192,13 @@ impl DrudeLorentzParams {
     }
 
     // Part 17d: Photonic Band Gap Estimates
-    // 1D quarter-wave stack (Bragg mirror) properties.
+    // 1D quarter-wave stack (Bragg mirror) properties were extracted to the
+    // `photonic_crystals` submodule (see crates/materials_core/src/
+    // optical_database/photonic_crystals.rs) as part of #138 PH-MOD split.
 
-    /// Quarter-wave stack stop band edges for this material (high-n) with a low-n partner.
-    /// Returns (omega_low, omega_high) in rad/s for the first-order stop band.
-    /// The gap width: delta_omega/omega_0 = (4/pi)*arcsin(|n_h - n_l|/(n_h + n_l)).
-    pub fn quarter_wave_stack_gap(&self, omega_center: f64, n_low: f64) -> (f64, f64) {
-        let n_h = self.refractive_index(omega_center).re;
-        let n_l = n_low.max(1.0);
-        let ratio = ((n_h - n_l) / (n_h + n_l)).abs();
-        let half_gap = (2.0 / std::f64::consts::PI) * ratio.asin();
-        (
-            omega_center * (1.0 - half_gap),
-            omega_center * (1.0 + half_gap),
-        )
-    }
-
-    /// Quarter-wave stack peak reflectivity for N pairs.
-    /// R = [(n_h/n_l)^(2N) - 1]^2 / [(n_h/n_l)^(2N) + 1]^2.
-    pub fn quarter_wave_stack_reflectivity(
-        &self,
-        omega_center: f64,
-        n_low: f64,
-        n_pairs: u32,
-    ) -> f64 {
-        let n_h = self.refractive_index(omega_center).re;
-        let n_l = n_low.max(1.0);
-        let r = (n_h / n_l).powi(2 * n_pairs as i32);
-        let num = r - 1.0;
-        let den = r + 1.0;
-        (num / den).powi(2)
-    }
-
-    /// Photonic band gap fractional width: delta_omega/omega_0 = (4/pi)*arcsin(|n_h-n_l|/(n_h+n_l)).
-    pub fn photonic_band_gap_ratio(&self, omega: f64, n_low: f64) -> f64 {
-        let n_h = self.refractive_index(omega).re;
-        let n_l = n_low.max(1.0);
-        let ratio = ((n_h - n_l) / (n_h + n_l)).abs();
-        (4.0 / std::f64::consts::PI) * ratio.asin()
-    }
-
-    /// Bragg wavelength for a given period: lambda_B = 2 * d * n_eff.
-    /// Returns wavelength in meters.
-    pub fn bragg_wavelength(&self, period_m: f64, omega: f64) -> f64 {
-        let n = self.refractive_index(omega).re;
-        2.0 * period_m * n
-    }
-
-    /// Group velocity at band edge (fraction of c).
-    /// Near a stop band edge, v_g -> 0 due to Bragg reflection.
-    /// v_g/c ~ sqrt(1 - R_peak) for finite stacks.
-    pub fn group_velocity_at_band_edge(&self, omega_center: f64, n_low: f64, n_pairs: u32) -> f64 {
-        let r = self.quarter_wave_stack_reflectivity(omega_center, n_low, n_pairs);
-        (1.0 - r).sqrt()
-    }
-
-    /// Omnidirectional gap condition: the gap survives at all incidence angles
-    /// when n_h/n_l > (1 + sin^2(theta_B))/(cos^2(theta_B)) for theta_B = Brewster angle.
-    /// Returns true if the contrast is high enough for an omnidirectional gap.
-    pub fn omnidirectional_gap_condition(&self, omega: f64, n_low: f64) -> bool {
-        let n_h = self.refractive_index(omega).re;
-        let n_l = n_low.max(1.0);
-        // For omnidirectional gap: n_h/n_l must exceed the critical ratio
-        // from Fink et al. (1998): n_h/n_l > ~2.3 for typical cases,
-        // or more precisely: (n_h*n_l)^2 > n_h^2 + n_l^2
-        (n_h * n_l).powi(2) > n_h * n_h + n_l * n_l
-    }
-
-    // Part 17e: Electrooptic and Acoustooptic Effects
-    // Linear and quadratic electrooptic, photoelastic, and acoustooptic methods.
-
-    /// Pockels (linear electrooptic) refractive index change:
-    /// delta_n = -0.5 * n^3 * r * E.
-    /// r_eo is the electrooptic coefficient in m/V (typical 1e-12 to 30e-12).
-    pub fn pockels_delta_n(&self, omega: f64, electric_field_v_m: f64, r_eo: f64) -> f64 {
-        let n = self.refractive_index(omega).re;
-        -0.5 * n.powi(3) * r_eo * electric_field_v_m
-    }
-
-    /// Kerr (quadratic electrooptic) refractive index change:
-    /// delta_n = -0.5 * n^3 * s * E^2.
-    /// s_eo is the Kerr coefficient in m^2/V^2 (typical 1e-20 to 1e-18).
-    pub fn kerr_electro_optic(&self, omega: f64, electric_field_v_m: f64, s_eo: f64) -> f64 {
-        let n = self.refractive_index(omega).re;
-        -0.5 * n.powi(3) * s_eo * electric_field_v_m * electric_field_v_m
-    }
-
-    /// Half-wave voltage for Pockels modulator: V_pi = lambda / (2 * n^3 * r * L).
-    /// Returns voltage in Volts.
-    pub fn half_wave_voltage(&self, omega: f64, r_eo: f64, crystal_length_m: f64) -> f64 {
-        let n = self.refractive_index(omega).re;
-        let lambda = 2.0 * std::f64::consts::PI * C / omega;
-        lambda / (2.0 * n.powi(3) * r_eo * crystal_length_m)
-    }
-
-    /// Franz-Keldysh sub-gap absorption: field-enhanced tunneling absorption
-    /// below the band edge. alpha ~ exp(-4*sqrt(2*m*) * (Eg - hbar*omega)^(3/2) / (3*e*E*hbar)).
-    /// gap_ev is the band gap in eV.
-    pub fn franz_keldysh_absorption(
-        &self,
-        omega: f64,
-        electric_field_v_m: f64,
-        gap_ev: f64,
-    ) -> f64 {
-        let hbar_j_s = HBAR_EV_S * E_CHARGE; // in J*s
-        let hbar_omega_ev = HBAR_EV_S * omega;
-        if hbar_omega_ev >= gap_ev || electric_field_v_m <= 0.0 {
-            return 0.0;
-        }
-        let delta_e_j = (gap_ev - hbar_omega_ev) * E_CHARGE; // in Joules
-        let m_star = 0.1 * M_E_KG; // effective mass estimate
-        let exponent = -4.0_f64 * (2.0_f64 * m_star).sqrt() * delta_e_j.powf(1.5)
-            / (3.0 * E_CHARGE * electric_field_v_m * hbar_j_s);
-        1e6 * exponent.exp()
-    }
-
-    /// Photoelastic refractive index change: delta_n = -0.5 * n^3 * p * S.
-    /// p_ij is the photoelastic coefficient (dimensionless, typical 0.1-0.3).
-    /// strain is the applied strain (dimensionless).
-    pub fn photoelastic_delta_n(&self, omega: f64, strain: f64, p_ij: f64) -> f64 {
-        let n = self.refractive_index(omega).re;
-        -0.5 * n.powi(3) * p_ij * strain
-    }
-
-    /// Acoustooptic figure of merit: M2 = n^6 * p^2 / (rho * v^3).
-    /// p_ij is the photoelastic coefficient, v_sound in m/s, density in kg/m^3.
-    /// Returns M2 in s^3/kg.
-    pub fn acoustooptic_figure_of_merit(
-        &self,
-        omega: f64,
-        p_ij: f64,
-        v_sound: f64,
-        density: f64,
-    ) -> f64 {
-        let n = self.refractive_index(omega).re;
-        n.powi(6) * p_ij * p_ij / (density * v_sound.powi(3))
-    }
+    // Part 17e: Electrooptic + photoelastic + acousto-optic methods (6) were
+    // extracted to the `electro_optic` submodule (#138 PH-MOD split). See
+    // `crates/materials_core/src/optical_database/electro_optic.rs`.
 }
 
 // ============================================================================
@@ -3573,6 +3444,16 @@ pub use semiconductors::{
     silica_metadata, silica_optical, silicon_metadata, silicon_nitride_metadata,
     silicon_nitride_optical, silicon_optical,
 };
+
+// ============================================================================
+// Photonic crystals (#138 PH-MOD split): 6 methods on DrudeLorentzParams
+// relating to 1D quarter-wave Bragg-stack properties. The methods are
+// inherent to DrudeLorentzParams; the second impl block in this submodule
+// is unified with the primary impl block at compile time so existing
+// call sites resolve transparently with no signature changes.
+// ============================================================================
+mod electro_optic;
+mod photonic_crystals;
 
 // ============================================================================
 // Tourmaline supergroup (#127 Phase 5+): species-specific uniaxial
