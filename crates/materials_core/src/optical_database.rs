@@ -3732,337 +3732,31 @@ pub fn tungsten_drude_lorentz() -> DrudeLorentzParams {
     }
 }
 
-// ============================================================================
-// C-418 gap materials: Al2O3, Diamond, Quartz, TiO2 (Phase 1)
-// ============================================================================
-
-/// Alumina (Al2O3 / Sapphire) optical model (Palik 1998).
-pub fn alumina_optical() -> DrudeLorentzParams {
-    DrudeLorentzParams {
-        drude: None,
-        oscillators: vec![
-            LorentzOscillator {
-                strength: 0.8,
-                omega_0_ev: 0.048,
-                gamma_ev: 0.003,
-            },
-            LorentzOscillator {
-                strength: 1.2,
-                omega_0_ev: 0.071,
-                gamma_ev: 0.005,
-            },
-            LorentzOscillator {
-                strength: 1.5,
-                omega_0_ev: 10.0,
-                gamma_ev: 2.0,
-            },
-        ],
-        eps_inf: 3.07,
-        extended_drude: None,
-    }
-}
-
-/// Tourmaline (Pink) optical model.
-/// Simple dispersion representation for the R3m space group crystal.
-pub fn tourmaline_optical() -> DrudeLorentzParams {
-    DrudeLorentzParams {
-        drude: None,
-        oscillators: vec![LorentzOscillator {
-            strength: 1.5,
-            omega_0_ev: 6.0,
-            gamma_ev: 0.5,
-        }],
-        eps_inf: 2.5,
-        extended_drude: None,
-    }
-}
-
-/// Diamond (C) optical model (Palik 1998).
-pub fn diamond_optical() -> DrudeLorentzParams {
-    DrudeLorentzParams {
-        drude: None,
-        oscillators: vec![
-            LorentzOscillator {
-                strength: 0.3,
-                omega_0_ev: 0.165,
-                gamma_ev: 0.005,
-            },
-            LorentzOscillator {
-                strength: 2.5,
-                omega_0_ev: 7.0,
-                gamma_ev: 1.0,
-            },
-        ],
-        eps_inf: 5.7,
-        extended_drude: None,
-    }
-}
-
-/// Crystalline Quartz optical model (Palik 1998).
-///
-/// Distinct from amorphous SiO2 (silica): has sharper phonon modes.
-pub fn quartz_optical() -> DrudeLorentzParams {
-    DrudeLorentzParams {
-        drude: None,
-        oscillators: vec![
-            LorentzOscillator {
-                strength: 0.9,
-                omega_0_ev: 0.056,
-                gamma_ev: 0.002,
-            },
-            LorentzOscillator {
-                strength: 0.5,
-                omega_0_ev: 0.137,
-                gamma_ev: 0.004,
-            },
-            LorentzOscillator {
-                strength: 1.2,
-                omega_0_ev: 11.0,
-                gamma_ev: 2.0,
-            },
-        ],
-        eps_inf: 2.38,
-        extended_drude: None,
-    }
-}
-
-/// Titanium Dioxide rutile (TiO2) optical model (Palik 1998, DeVore 1951).
-pub fn tio2_optical() -> DrudeLorentzParams {
-    DrudeLorentzParams {
-        drude: None,
-        oscillators: vec![
-            LorentzOscillator {
-                strength: 3.0,
-                omega_0_ev: 0.050,
-                gamma_ev: 0.008,
-            },
-            LorentzOscillator {
-                strength: 1.5,
-                omega_0_ev: 0.099,
-                gamma_ev: 0.010,
-            },
-            LorentzOscillator {
-                strength: 8.0,
-                omega_0_ev: 3.0,
-                gamma_ev: 0.3,
-            },
-        ],
-        eps_inf: 5.9,
-        extended_drude: None,
-    }
-}
 
 // ============================================================================
-// Titanate/Ti-O core set (Phase 3)
+// PEDOT:PSS -- disordered conducting polymer (Drude-Smith model).
+// Stays inline because ExtendedDrudeParams + ScatteringModel::DrudeSmith
+// is a different shape than the materials_data codegen schema (which
+// targets the Drude + Lorentz pair). Could be migrated later by
+// extending the schema with `[material.drude_smith]` blocks.
 // ============================================================================
-
-/// Titanium Monoxide (TiO) "bad metal" optical model (Barman & Sarma PRB 51, 1995).
-pub fn tio_optical() -> DrudeLorentzParams {
-    DrudeLorentzParams {
-        drude: Some(DrudeParams {
-            omega_p_ev: 2.50,
-            gamma_ev: 0.50,
-            eps_inf: 1.0,
-        }),
-        oscillators: vec![LorentzOscillator {
-            strength: 3.0,
-            omega_0_ev: 3.0,
-            gamma_ev: 1.5,
-        }],
-        eps_inf: 4.0,
-        extended_drude: None,
-    }
-}
-
-/// Strontium Titanate (SrTiO3) undoped optical model (Servoin et al. PRB 22, 1980).
-///
-/// Incipient ferroelectric with giant soft-mode oscillator strength.
-pub fn srtio3_optical() -> DrudeLorentzParams {
-    DrudeLorentzParams {
-        drude: None,
-        oscillators: vec![
-            // Soft mode TO1 at 11 meV with enormous oscillator strength
-            LorentzOscillator {
-                strength: 280.0,
-                omega_0_ev: 0.011,
-                gamma_ev: 0.003,
-            },
-            // TO2 mode
-            LorentzOscillator {
-                strength: 2.5,
-                omega_0_ev: 0.022,
-                gamma_ev: 0.002,
-            },
-            // TO4 mode
-            LorentzOscillator {
-                strength: 0.6,
-                omega_0_ev: 0.067,
-                gamma_ev: 0.005,
-            },
-            // UV absorption edge
-            LorentzOscillator {
-                strength: 3.5,
-                omega_0_ev: 3.2,
-                gamma_ev: 0.5,
-            },
-        ],
-        eps_inf: 5.2,
-        extended_drude: None,
-    }
-}
-
-/// Doped SrTiO3 (SrTiO3:n) optical model (van Mechelen et al. PRL 100, 2008).
-///
-/// Metallic via electron doping: phonon modes plus Drude tail.
-pub fn srtio3_doped_optical() -> DrudeLorentzParams {
-    DrudeLorentzParams {
-        drude: Some(DrudeParams {
-            omega_p_ev: 0.15,
-            gamma_ev: 0.020,
-            eps_inf: 1.0,
-        }),
-        oscillators: vec![
-            LorentzOscillator {
-                strength: 280.0,
-                omega_0_ev: 0.011,
-                gamma_ev: 0.003,
-            },
-            LorentzOscillator {
-                strength: 2.5,
-                omega_0_ev: 0.022,
-                gamma_ev: 0.002,
-            },
-            LorentzOscillator {
-                strength: 0.6,
-                omega_0_ev: 0.067,
-                gamma_ev: 0.005,
-            },
-            LorentzOscillator {
-                strength: 3.5,
-                omega_0_ev: 3.2,
-                gamma_ev: 0.5,
-            },
-        ],
-        eps_inf: 5.2,
-        extended_drude: None,
-    }
-}
-
-/// Lanthanum Titanate (LaTiO3) Mott insulator model (Okimoto et al. PRB 51, 1995).
-///
-/// Mott gap at ~0.2 eV, mid-IR spectral weight from d-d transitions.
-pub fn latio3_optical() -> DrudeLorentzParams {
-    DrudeLorentzParams {
-        drude: None,
-        oscillators: vec![
-            // Mid-IR d-d transition (Mott gap excitation)
-            LorentzOscillator {
-                strength: 5.0,
-                omega_0_ev: 0.50,
-                gamma_ev: 0.30,
-            },
-            // IR phonon modes
-            LorentzOscillator {
-                strength: 1.5,
-                omega_0_ev: 0.065,
-                gamma_ev: 0.008,
-            },
-            // Charge-transfer UV
-            LorentzOscillator {
-                strength: 4.0,
-                omega_0_ev: 3.5,
-                gamma_ev: 1.0,
-            },
-        ],
-        eps_inf: 4.5,
-        extended_drude: None,
-    }
-}
-
-// ============================================================================
-// TCO / doped semiconductor materials (Phase 3)
-// ============================================================================
-
-/// Aluminum-doped Zinc Oxide (AZO) transparent conductor.
-///
-/// Metallic in IR, transparent in visible. Crossover near 1 eV.
-/// Indium Tin Oxide (ITO) - Typical degenerate TCO
-/// PEDOT:PSS - Disordered conducting polymer (Drude-Smith model)
-/// Values are representative for highly conductive grades in THz/IR.
+/// PEDOT:PSS optical model. Representative values for highly
+/// conductive grades in THz/IR. Effective carrier density
+/// n ~ 1e21 cm^-3; strong backscattering localization (c = -0.85)
+/// reflects the disordered conducting-polymer transport.
 pub fn pedot_pss_optical() -> DrudeLorentzParams {
     DrudeLorentzParams {
         drude: None,
         extended_drude: Some(ExtendedDrudeParams {
-            omega_p_ev: 1.2, // ~1e21 cm^-3 effective carrier density
+            omega_p_ev: 1.2,
             scattering: ScatteringModel::DrudeSmith {
                 gamma_ev: 0.15,
-                backscatter_c: -0.85, // strong backscattering (localization)
+                backscatter_c: -0.85,
             },
             eps_inf: 2.2,
         }),
         oscillators: vec![],
         eps_inf: 2.2,
-    }
-}
-
-pub fn ito_optical() -> DrudeLorentzParams {
-    DrudeLorentzParams {
-        drude: Some(DrudeParams {
-            // approx for n = 4e20 cm^-3, m* = 0.4
-            omega_p_ev: 1.17,
-            gamma_ev: 0.10,
-            eps_inf: 4.0,
-        }),
-        extended_drude: None,
-        oscillators: vec![],
-        eps_inf: 4.0,
-    }
-}
-
-pub fn azo_optical() -> DrudeLorentzParams {
-    DrudeLorentzParams {
-        drude: Some(DrudeParams {
-            omega_p_ev: 1.75,
-            gamma_ev: 0.12,
-            eps_inf: 1.0,
-        }),
-        oscillators: vec![LorentzOscillator {
-            strength: 2.0,
-            omega_0_ev: 3.3,
-            gamma_ev: 0.2,
-        }],
-        eps_inf: 3.7,
-        extended_drude: None,
-    }
-}
-
-/// Doped Silicon (Si:n, ~1e18 cm-3) with THz Drude tail.
-pub fn doped_silicon_optical() -> DrudeLorentzParams {
-    DrudeLorentzParams {
-        drude: Some(DrudeParams {
-            omega_p_ev: 0.12,
-            gamma_ev: 0.010,
-            eps_inf: 1.0,
-        }),
-        oscillators: vec![
-            LorentzOscillator {
-                strength: 29.0,
-                omega_0_ev: 3.40,
-                gamma_ev: 0.1,
-            },
-            LorentzOscillator {
-                strength: 6.0,
-                omega_0_ev: 3.74,
-                gamma_ev: 0.25,
-            },
-            LorentzOscillator {
-                strength: 3.0,
-                omega_0_ev: 4.40,
-                gamma_ev: 0.2,
-            },
-        ],
-        eps_inf: 1.0,
-        extended_drude: None,
     }
 }
 
@@ -4075,6 +3769,19 @@ pub fn doped_silicon_optical() -> DrudeLorentzParams {
 mod tungstates;
 pub use tungstates::{
     cawo4_optical, cs_wo3_optical, cs_wo3_uniaxial, pbwo4_optical, wo3_optical, wo3_x_optical,
+};
+
+// ============================================================================
+// Oxides + titanates + transparent conductors (Phase 5 / #127):
+// alumina, tourmaline, diamond, quartz, tio2, tio, srtio3,
+// srtio3_doped, latio3, ito, azo, doped_silicon. All sourced from
+// materials_data codegen consts via the `oxides_tcos` submodule.
+// ============================================================================
+mod oxides_tcos;
+pub use oxides_tcos::{
+    alumina_optical, azo_optical, diamond_optical, doped_silicon_optical, ito_optical,
+    latio3_optical, quartz_optical, srtio3_doped_optical, srtio3_optical, tio2_optical,
+    tio_optical, tourmaline_optical,
 };
 
 // ============================================================================

@@ -350,12 +350,12 @@ fn emit_lorentz_models(out: &mut File, path: &PathBuf) {
             .get("eps_inf")
             .and_then(Value::as_float)
             .unwrap_or_else(|| panic!("[[material]] `{name}` missing eps_inf in {path:?}"));
-        let osc_array = table
+        // `oscillators` may be absent for pure-Drude materials (e.g. ITO).
+        // Treat missing as empty slice rather than panicking.
+        let osc_slice: &[Value] = table
             .get("oscillators")
             .and_then(Value::as_array)
-            .unwrap_or_else(|| {
-                panic!("[[material]] `{name}` missing [[material.oscillators]] in {path:?}")
-            });
+            .map_or(&[][..], |v| v.as_slice());
 
         writeln!(
             out,
@@ -406,7 +406,7 @@ fn emit_lorentz_models(out: &mut File, path: &PathBuf) {
         .unwrap();
         writeln!(out, "#[allow(dead_code)]").unwrap();
         writeln!(out, "pub const {name}_OSCILLATORS: &[[f64; 3]] = &[").unwrap();
-        for (i, osc) in osc_array.iter().enumerate() {
+        for (i, osc) in osc_slice.iter().enumerate() {
             let ot = osc.as_table().unwrap_or_else(|| {
                 panic!("[[material.oscillators]][{i}] of `{name}` is not a table")
             });
