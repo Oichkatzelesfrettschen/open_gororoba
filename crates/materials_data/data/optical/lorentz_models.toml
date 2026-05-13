@@ -764,3 +764,175 @@ gamma_ev = 1.281
 strength = 9.63
 omega_0_ev = 3.580
 gamma_ev = 3.332
+
+# ============================================================================
+# Tourmaline supergroup uniaxial Drude-Lorentz models (#137).
+#
+# All 8 IMA-recognised species exposed as 16 per-axis entries
+# (<species>_PARALLEL + <species>_PERPENDICULAR). Trigonal R3m (#160),
+# uniaxial NEGATIVE; n_omega > n_epsilon by ~0.018-0.040.
+# Single-oscillator approximation tuned so the Sellmeier-like real part
+# reproduces the catalogued sodium-D-line indices.
+#
+# Reference: Henry et al. (2011) Am. Mineralogist 96, 895-913.
+# ============================================================================
+
+[[material]]
+name = "SCHORL_PARALLEL"
+eps_inf = 2.622
+reference = "Schorl tourmaline NaFe(II)3Al6 borosilicate, R3m, n_e=1.637 at sodium-D."
+
+[[material.oscillators]]
+strength = 0.50
+omega_0_ev = 6.0
+gamma_ev = 0.6
+
+[[material]]
+name = "SCHORL_PERPENDICULAR"
+eps_inf = 2.722
+reference = "Schorl tourmaline ordinary ray; n_o=1.675 at sodium-D."
+
+[[material.oscillators]]
+strength = 0.50
+omega_0_ev = 6.0
+gamma_ev = 0.6
+
+[[material]]
+name = "DRAVITE_PARALLEL"
+eps_inf = 2.612
+reference = "Dravite tourmaline NaMg3Al6, R3m, n_e=1.622 at sodium-D."
+
+[[material.oscillators]]
+strength = 0.42
+omega_0_ev = 7.5
+gamma_ev = 0.8
+
+[[material]]
+name = "DRAVITE_PERPENDICULAR"
+eps_inf = 2.697
+reference = "Dravite ordinary ray; n_o=1.644 at sodium-D."
+
+[[material.oscillators]]
+strength = 0.42
+omega_0_ev = 7.5
+gamma_ev = 0.8
+
+[[material]]
+name = "ELBAITE_PARALLEL"
+eps_inf = 2.578
+reference = "Elbaite tourmaline Na(Li1.5Al1.5)Al6, R3m, n_e=1.620 at sodium-D."
+
+[[material.oscillators]]
+strength = 0.36
+omega_0_ev = 8.0
+gamma_ev = 1.0
+
+[[material]]
+name = "ELBAITE_PERPENDICULAR"
+eps_inf = 2.624
+reference = "Elbaite ordinary ray; n_o=1.640 at sodium-D."
+
+[[material.oscillators]]
+strength = 0.36
+omega_0_ev = 8.0
+gamma_ev = 1.0
+
+[[material]]
+name = "UVITE_PARALLEL"
+eps_inf = 2.598
+reference = "Uvite tourmaline CaMg3MgAl5, R3m, n_e=1.619."
+
+[[material.oscillators]]
+strength = 0.40
+omega_0_ev = 7.0
+gamma_ev = 0.7
+
+[[material]]
+name = "UVITE_PERPENDICULAR"
+eps_inf = 2.692
+reference = "Uvite ordinary ray; n_o=1.640."
+
+[[material.oscillators]]
+strength = 0.40
+omega_0_ev = 7.0
+gamma_ev = 0.7
+
+[[material]]
+name = "LIDDICOATITE_PARALLEL"
+eps_inf = 2.569
+reference = "Liddicoatite tourmaline Ca(Li2Al)Al6, R3m, n_e=1.616."
+
+[[material.oscillators]]
+strength = 0.35
+omega_0_ev = 8.0
+gamma_ev = 1.0
+
+[[material]]
+name = "LIDDICOATITE_PERPENDICULAR"
+eps_inf = 2.625
+reference = "Liddicoatite ordinary ray; n_o=1.637."
+
+[[material.oscillators]]
+strength = 0.35
+omega_0_ev = 8.0
+gamma_ev = 1.0
+
+[[material]]
+name = "ROSSMANITE_PARALLEL"
+eps_inf = 2.560
+reference = "Rossmanite tourmaline (vacancy)(LiAl2)Al6, R3m, n_e=1.613."
+
+[[material.oscillators]]
+strength = 0.35
+omega_0_ev = 8.0
+gamma_ev = 1.0
+
+[[material]]
+name = "ROSSMANITE_PERPENDICULAR"
+eps_inf = 2.613
+reference = "Rossmanite ordinary ray; n_o=1.633."
+
+[[material.oscillators]]
+strength = 0.35
+omega_0_ev = 8.0
+gamma_ev = 1.0
+
+[[material]]
+name = "FOITITE_PARALLEL"
+eps_inf = 2.616
+reference = "Foitite tourmaline (vacancy)(Fe2Al)Al6, R3m, n_e=1.635."
+
+[[material.oscillators]]
+strength = 0.48
+omega_0_ev = 6.0
+gamma_ev = 0.7
+
+[[material]]
+name = "FOITITE_PERPENDICULAR"
+eps_inf = 2.704
+reference = "Foitite ordinary ray; n_o=1.654."
+
+[[material.oscillators]]
+strength = 0.48
+omega_0_ev = 6.0
+gamma_ev = 0.7
+
+[[material]]
+name = "POVONDRAITE_PARALLEL"
+eps_inf = 2.760
+reference = "Povondraite tourmaline NaFe(III)3..., R3m, n_e=1.715."
+
+[[material.oscillators]]
+strength = 0.55
+omega_0_ev = 5.0
+gamma_ev = 0.8
+
+[[material]]
+name = "POVONDRAITE_PERPENDICULAR"
+eps_inf = 2.865
+reference = "Povondraite ordinary ray; n_o=1.735."
+
+[[material.oscillators]]
+strength = 0.55
+omega_0_ev = 5.0
+gamma_ev = 0.8

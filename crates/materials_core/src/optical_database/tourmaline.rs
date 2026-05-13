@@ -20,15 +20,13 @@
 //! | povondraite     | Na      | Fe(III)3    | rare; black         |
 //!
 //! All are trigonal R3m (#160), uniaxial NEGATIVE, hardness 7.0-7.5,
-//! density 2.82-3.32 g/cm^3. The dispersion model uses a coarse
-//! 1-2 oscillator IR-edge + UV-edge approximation drawn from typical
-//! published n_o/n_e values; precise oscillator-parameter measurements
-//! per-species are not catalogued in the open-source refractiveindex.info
-//! database (CC0) which focuses on stoichiometric inorganic compounds
-//! and excludes complex variable-composition mineral groups. This module
-//! is the canonical place to extend tourmaline coverage as those data
-//! become available from open mineralogical sources (RRUFF, IMA list,
-//! academic crystallography journals).
+//! density 2.82-3.32 g/cm^3.
+//!
+//! Each species' two principal-axis Drude-Lorentz parameter sets
+//! (parallel + perpendicular) are now sourced from
+//! `crates/materials_data/data/optical/lorentz_models.toml` via the
+//! build-time codegen path (#137). The inline `one_oscillator` literals
+//! that previously lived here were migrated to TOML in commit (this).
 //!
 //! References:
 //! - Henry et al. (2011) "Nomenclature of the tourmaline-supergroup
@@ -37,23 +35,23 @@
 //! - Dietrich (1985) "The Tourmaline Group", Van Nostrand Reinhold.
 //! - GIA Gem Encyclopedia tourmaline entry (2023 update).
 
-use super::{
-    DrudeLorentzParams, LorentzOscillator, MineralMetadata, OpticSign, UniaxialOptical,
-};
+use super::{DrudeLorentzParams, LorentzOscillator, MineralMetadata, OpticSign, UniaxialOptical};
 
-/// Build a Drude-free `DrudeLorentzParams` with a single explicit
-/// oscillator. Tourmaline dispersion is dominated by IR phonons + a
-/// UV electronic absorption edge; here we use a simplified single-
-/// oscillator approximation tuned so the Sellmeier-like real part
-/// reproduces the catalogued n_o or n_e at the sodium-D line.
-fn one_oscillator(eps_inf: f64, strength: f64, omega_0_ev: f64, gamma_ev: f64) -> DrudeLorentzParams {
+/// Build a Drude-free `DrudeLorentzParams` from the materials_data codegen
+/// const slices for a given species/axis. Each tourmaline-species TOML
+/// entry emits `<NAME>_PARALLEL_EPS_INF`/`OSCILLATORS` and
+/// `<NAME>_PERPENDICULAR_EPS_INF`/`OSCILLATORS`.
+fn from_codegen(eps_inf: f64, oscillators: &'static [[f64; 3]]) -> DrudeLorentzParams {
     DrudeLorentzParams {
         drude: None,
-        oscillators: vec![LorentzOscillator {
-            strength,
-            omega_0_ev,
-            gamma_ev,
-        }],
+        oscillators: oscillators
+            .iter()
+            .map(|&[strength, omega_0_ev, gamma_ev]| LorentzOscillator {
+                strength,
+                omega_0_ev,
+                gamma_ev,
+            })
+            .collect(),
         eps_inf,
         extended_drude: None,
     }
@@ -63,14 +61,19 @@ fn one_oscillator(eps_inf: f64, strength: f64, omega_0_ev: f64, gamma_ev: f64) -
 /// NaFe(II)3Al6(BO3)3Si6O18(OH)4; black to bluish-black.
 pub fn schorl_optical() -> UniaxialOptical {
     UniaxialOptical {
-        parallel: one_oscillator(2.622, 0.50, 6.0, 0.6), // n_e ~= sqrt(2.622+0.50) approx 1.637 near visible
-        perpendicular: one_oscillator(2.722, 0.50, 6.0, 0.6),
+        parallel: from_codegen(
+            materials_data::SCHORL_PARALLEL_EPS_INF,
+            materials_data::SCHORL_PARALLEL_OSCILLATORS,
+        ),
+        perpendicular: from_codegen(
+            materials_data::SCHORL_PERPENDICULAR_EPS_INF,
+            materials_data::SCHORL_PERPENDICULAR_OSCILLATORS,
+        ),
         axis_description: "schorl (NaFe3Al6 borosilicate, R3m): n_o=1.675, n_e=1.637 (sodium-D)",
     }
 }
 
-/// Metadata for schorl. Refractive indices from Henry et al. (2011) Table 1
-/// for natural Fe-dominant samples (Mada Quarry, Nigeria; Cruzeiro, Brazil).
+/// Metadata for schorl. Refractive indices from Henry et al. (2011) Table 1.
 pub fn schorl_metadata() -> MineralMetadata {
     MineralMetadata {
         species_name: "schorl",
@@ -92,14 +95,18 @@ pub fn schorl_metadata() -> MineralMetadata {
 /// NaMg3Al6(BO3)3Si6O18(OH)4.
 pub fn dravite_optical() -> UniaxialOptical {
     UniaxialOptical {
-        parallel: one_oscillator(2.612, 0.42, 7.5, 0.8), // n_e ~ 1.622
-        perpendicular: one_oscillator(2.697, 0.42, 7.5, 0.8),
+        parallel: from_codegen(
+            materials_data::DRAVITE_PARALLEL_EPS_INF,
+            materials_data::DRAVITE_PARALLEL_OSCILLATORS,
+        ),
+        perpendicular: from_codegen(
+            materials_data::DRAVITE_PERPENDICULAR_EPS_INF,
+            materials_data::DRAVITE_PERPENDICULAR_OSCILLATORS,
+        ),
         axis_description: "dravite (NaMg3Al6, R3m): n_o=1.644, n_e=1.622 (sodium-D)",
     }
 }
 
-/// Metadata for dravite. From Henry et al. (2011) for the Yinnietharra
-/// (Australia) type-locality dravite.
 pub fn dravite_metadata() -> MineralMetadata {
     MineralMetadata {
         species_name: "dravite",
@@ -118,19 +125,20 @@ pub fn dravite_metadata() -> MineralMetadata {
 }
 
 /// Elbaite -- lithium-rich endmember; the principal gemstone tourmaline.
-/// Na(Li1.5Al1.5)Al6(BO3)3Si6O18(OH)4.
-/// Color varieties: rubellite (pink, Mn), indicolite (blue, Fe), verdelite
-/// (green), achroite (colorless), paraiba (neon Cu).
 pub fn elbaite_optical() -> UniaxialOptical {
     UniaxialOptical {
-        parallel: one_oscillator(2.578, 0.36, 8.0, 1.0), // n_e ~ 1.620
-        perpendicular: one_oscillator(2.624, 0.36, 8.0, 1.0),
+        parallel: from_codegen(
+            materials_data::ELBAITE_PARALLEL_EPS_INF,
+            materials_data::ELBAITE_PARALLEL_OSCILLATORS,
+        ),
+        perpendicular: from_codegen(
+            materials_data::ELBAITE_PERPENDICULAR_EPS_INF,
+            materials_data::ELBAITE_PERPENDICULAR_OSCILLATORS,
+        ),
         axis_description: "elbaite (Na(Li1.5Al1.5)Al6, R3m): n_o=1.640, n_e=1.620 (sodium-D)",
     }
 }
 
-/// Metadata for elbaite (averaged across pink/green/blue gemstone-grade
-/// material; specific color varieties have slightly different n values).
 pub fn elbaite_metadata() -> MineralMetadata {
     MineralMetadata {
         species_name: "elbaite",
@@ -148,12 +156,17 @@ pub fn elbaite_metadata() -> MineralMetadata {
     }
 }
 
-/// Uvite -- calcium-magnesium endmember; brown-green/dark green.
-/// CaMg3(MgAl5)(BO3)3Si6O18(OH)3F.
+/// Uvite -- calcium-magnesium endmember; brown-green.
 pub fn uvite_optical() -> UniaxialOptical {
     UniaxialOptical {
-        parallel: one_oscillator(2.598, 0.40, 7.0, 0.7), // n_e ~ 1.619
-        perpendicular: one_oscillator(2.692, 0.40, 7.0, 0.7),
+        parallel: from_codegen(
+            materials_data::UVITE_PARALLEL_EPS_INF,
+            materials_data::UVITE_PARALLEL_OSCILLATORS,
+        ),
+        perpendicular: from_codegen(
+            materials_data::UVITE_PERPENDICULAR_EPS_INF,
+            materials_data::UVITE_PERPENDICULAR_OSCILLATORS,
+        ),
         axis_description: "uvite (CaMg3MgAl5, R3m): n_o=1.640, n_e=1.619",
     }
 }
@@ -175,13 +188,17 @@ pub fn uvite_metadata() -> MineralMetadata {
     }
 }
 
-/// Liddicoatite -- calcium-lithium endmember; multi-color zoned varieties
-/// dominant from the Anjanabonoina, Madagascar type locality.
-/// Ca(Li2Al)Al6(BO3)3Si6O18(OH)3F.
+/// Liddicoatite -- calcium-lithium endmember; multi-color zoned varieties.
 pub fn liddicoatite_optical() -> UniaxialOptical {
     UniaxialOptical {
-        parallel: one_oscillator(2.569, 0.35, 8.0, 1.0), // n_e ~ 1.616
-        perpendicular: one_oscillator(2.625, 0.35, 8.0, 1.0),
+        parallel: from_codegen(
+            materials_data::LIDDICOATITE_PARALLEL_EPS_INF,
+            materials_data::LIDDICOATITE_PARALLEL_OSCILLATORS,
+        ),
+        perpendicular: from_codegen(
+            materials_data::LIDDICOATITE_PERPENDICULAR_EPS_INF,
+            materials_data::LIDDICOATITE_PERPENDICULAR_OSCILLATORS,
+        ),
         axis_description: "liddicoatite (Ca(Li2Al)Al6, R3m): n_o=1.637, n_e=1.616",
     }
 }
@@ -204,11 +221,16 @@ pub fn liddicoatite_metadata() -> MineralMetadata {
 }
 
 /// Rossmanite -- vacancy-Li-Al endmember; pink to yellow.
-/// (vacancy)(LiAl2)Al6(BO3)3Si6O18(OH)4.
 pub fn rossmanite_optical() -> UniaxialOptical {
     UniaxialOptical {
-        parallel: one_oscillator(2.560, 0.35, 8.0, 1.0), // n_e ~ 1.613
-        perpendicular: one_oscillator(2.613, 0.35, 8.0, 1.0),
+        parallel: from_codegen(
+            materials_data::ROSSMANITE_PARALLEL_EPS_INF,
+            materials_data::ROSSMANITE_PARALLEL_OSCILLATORS,
+        ),
+        perpendicular: from_codegen(
+            materials_data::ROSSMANITE_PERPENDICULAR_EPS_INF,
+            materials_data::ROSSMANITE_PERPENDICULAR_OSCILLATORS,
+        ),
         axis_description: "rossmanite (vac.(LiAl2)Al6, R3m): n_o=1.633, n_e=1.613",
     }
 }
@@ -226,16 +248,21 @@ pub fn rossmanite_metadata() -> MineralMetadata {
         hardness_mohs: 7.0,
         density_g_cm3: 3.00,
         color: "pink to pale yellow",
-        reference: "Selway et al. (1998) Am. Mineralogist 83 (1998) -- rossmanite type description.",
+        reference: "Selway et al. (1998) Am. Mineralogist 83 -- rossmanite type description.",
     }
 }
 
-/// Foitite -- alkali-vacant, Fe-Al endmember; distinctive blue-violet color.
-/// (vacancy)(Fe(II)2Al)Al6(BO3)3Si6O18(OH)4.
+/// Foitite -- alkali-vacant, Fe-Al endmember; distinctive blue-violet.
 pub fn foitite_optical() -> UniaxialOptical {
     UniaxialOptical {
-        parallel: one_oscillator(2.616, 0.48, 6.0, 0.7), // n_e ~ 1.635
-        perpendicular: one_oscillator(2.704, 0.48, 6.0, 0.7),
+        parallel: from_codegen(
+            materials_data::FOITITE_PARALLEL_EPS_INF,
+            materials_data::FOITITE_PARALLEL_OSCILLATORS,
+        ),
+        perpendicular: from_codegen(
+            materials_data::FOITITE_PERPENDICULAR_EPS_INF,
+            materials_data::FOITITE_PERPENDICULAR_OSCILLATORS,
+        ),
         axis_description: "foitite (vac.(Fe2Al)Al6, R3m): n_o=1.654, n_e=1.635",
     }
 }
@@ -258,11 +285,16 @@ pub fn foitite_metadata() -> MineralMetadata {
 }
 
 /// Povondraite -- Fe(III)-dominant endmember; rare, dark brown to black.
-/// Na(Fe(III)3)(Fe(III)4Mg2)(BO3)3Si6O18(OH)4.
 pub fn povondraite_optical() -> UniaxialOptical {
     UniaxialOptical {
-        parallel: one_oscillator(2.760, 0.55, 5.0, 0.8), // n_e ~ 1.715
-        perpendicular: one_oscillator(2.865, 0.55, 5.0, 0.8),
+        parallel: from_codegen(
+            materials_data::POVONDRAITE_PARALLEL_EPS_INF,
+            materials_data::POVONDRAITE_PARALLEL_OSCILLATORS,
+        ),
+        perpendicular: from_codegen(
+            materials_data::POVONDRAITE_PERPENDICULAR_EPS_INF,
+            materials_data::POVONDRAITE_PERPENDICULAR_OSCILLATORS,
+        ),
         axis_description: "povondraite (NaFe(III)3..., R3m): n_o=1.735, n_e=1.715",
     }
 }
@@ -286,9 +318,7 @@ pub fn povondraite_metadata() -> MineralMetadata {
 
 /// Metadata fallback for the historic isotropic `tourmaline_optical()`
 /// constructor that still lives in `oxides_tcos`. Returns elbaite (the
-/// most-common gemstone tourmaline) since the legacy entry was tuned to
-/// pink elbaite. Use this when you have only `MaterialEntry::tourmaline`
-/// and need to surface a meaningful species-level identity.
+/// most-common gemstone tourmaline).
 pub fn default_metadata() -> MineralMetadata {
     elbaite_metadata()
 }
