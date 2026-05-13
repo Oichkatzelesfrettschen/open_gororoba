@@ -2233,34 +2233,34 @@ impl SellmeierParams {
 }
 
 /// LiNbO3 ordinary ray Sellmeier coefficients (Zelmon et al. 1997, Table 2).
+/// Coefficients sourced from `materials_data::LINBO3_ORDINARY_*` codegen
+/// consts (#127 Phase 8).
 pub fn linbo3_ordinary_sellmeier() -> SellmeierParams {
     SellmeierParams {
-        b_coeffs: vec![2.6734, 1.2290, 12.614],
-        c_coeffs: vec![0.01764, 0.05914, 474.60],
-        validity_range_um: (0.4, 5.0),
+        b_coeffs: materials_data::LINBO3_ORDINARY_B_COEFFS.to_vec(),
+        c_coeffs: materials_data::LINBO3_ORDINARY_C_COEFFS.to_vec(),
+        validity_range_um: materials_data::LINBO3_ORDINARY_VALIDITY_UM,
     }
 }
 
 /// LiNbO3 extraordinary ray Sellmeier coefficients (Zelmon et al. 1997, Table 2).
 pub fn linbo3_extraordinary_sellmeier() -> SellmeierParams {
     SellmeierParams {
-        b_coeffs: vec![2.9804, 0.5981, 8.9543],
-        c_coeffs: vec![0.02047, 0.06660, 416.08],
-        validity_range_um: (0.4, 5.0),
+        b_coeffs: materials_data::LINBO3_EXTRAORDINARY_B_COEFFS.to_vec(),
+        c_coeffs: materials_data::LINBO3_EXTRAORDINARY_C_COEFFS.to_vec(),
+        validity_range_um: materials_data::LINBO3_EXTRAORDINARY_VALIDITY_UM,
     }
 }
 
 /// Fused silica Sellmeier coefficients (Malitson 1965).
+/// c_coeffs sourced from codegen with c_form="linear" so the build.rs
+/// emitter applies powi(2) to preserve f64 byte-identity with the
+/// historical inline expression.
 pub fn fused_silica_sellmeier() -> SellmeierParams {
     SellmeierParams {
-        b_coeffs: vec![0.6961663, 0.4079426, 0.8974794],
-        // Malitson gives lambda_i in um, so C_i = lambda_i^2
-        c_coeffs: vec![
-            0.0684043_f64.powi(2),
-            0.1162414_f64.powi(2),
-            9.896161_f64.powi(2),
-        ],
-        validity_range_um: (0.21, 3.71),
+        b_coeffs: materials_data::FUSED_SILICA_B_COEFFS.to_vec(),
+        c_coeffs: materials_data::FUSED_SILICA_C_COEFFS.to_vec(),
+        validity_range_um: materials_data::FUSED_SILICA_VALIDITY_UM,
     }
 }
 
