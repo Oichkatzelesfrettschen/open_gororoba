@@ -1,0 +1,136 @@
+# Audit: known_crystal_structures coverage
+# Date: 2026-05-13
+# Source: crates/materials_core/src/crystal_symmetry/crystal_structures.rs
+# Conjecture under test: "our crystal structures and other crystal items
+# have exhaustive crystalline and materials properties mined from recent
+# research and sources and are fully maximally built out."
+# Verdict: FALSIFIED severely. The known_crystal_structures() registry
+# currently lists 3 entries (NaCl, Diamond, Wurtzite). Tourmaline -- a
+# 43-species IMA supergroup with crystallographic properties already
+# captured in optical_database/tourmaline.rs MineralMetadata -- has ZERO
+# crystal_structures entries despite being one of the most-studied
+# mineral groups in materials science.
+
+[summary]
+known_crystal_structures_count_before = 3
+known_crystal_structures_count_target = 50  # next-pass target after this commit
+tourmaline_supergroup_in_registry = false
+metadata_extended_with_lattice_parameters = false
+conjecture_verdict = "falsified"
+
+# CrystalStructureInfo currently has 6 fields:
+#   name, space_group_number, space_group_symbol, point_group,
+#   lattice_system, bravais_centering.
+# These are categorical; NO quantitative lattice parameters
+# (a/b/c/alpha/beta/gamma), NO density, NO atomic count per unit cell,
+# NO primary literature reference. Building "exhaustive properties" out
+# requires extending the struct AND populating real values.
+
+[gaps_high_priority]
+# Tourmaline supergroup: 0 of 8 species in optical_database have a
+# matching crystal_structures entry (despite their MineralMetadata being
+# 100% populated as of commit 408b43a4).
+tourmaline_species_missing = [
+    "schorl", "dravite", "elbaite", "uvite",
+    "liddicoatite", "rossmanite", "foitite", "povondraite",
+]
+# All tourmaline species share R3m (#160) trigonal lattice. Unit cell
+# parameters typical for natural samples:
+#   a = 15.842 - 15.985 angstrom (varies with X-site cation)
+#   c = 7.075 - 7.232 angstrom
+#   alpha = beta = 90 deg, gamma = 120 deg (hexagonal setting)
+# Reference: Bosi et al. (2019) Lithos 322 "Tourmaline crystal chemistry".
+
+# Foundational oxides + tetragonal structures (already in MineralMetadata
+# at optical_database but NOT in known_crystal_structures):
+foundational_oxides_missing = [
+    { name = "alumina_sapphire", space_group = "R-3c (167) corundum", lattice = "trigonal" },
+    { name = "rutile_tio2", space_group = "P4_2/mnm (136) rutile", lattice = "tetragonal" },
+    { name = "anatase_tio2", space_group = "I4_1/amd (141) anatase", lattice = "tetragonal", note = "not currently in MineralMetadata either" },
+    { name = "brookite_tio2", space_group = "Pbca (61)", lattice = "orthorhombic", note = "not in MineralMetadata" },
+    { name = "alpha_quartz", space_group = "P3_121 (152) right-handed", lattice = "trigonal" },
+    { name = "calcite", space_group = "R-3c (167)", lattice = "trigonal", note = "geologically prominent; not in MineralMetadata" },
+    { name = "aragonite", space_group = "Pmcn (62)", lattice = "orthorhombic", note = "CaCO3 polymorph; not in MineralMetadata" },
+    { name = "fluorite_caf2", space_group = "Fm-3m (225)", lattice = "cubic", note = "Mohs 4; reference fluorite-type" },
+    { name = "spinel_mgal2o4", space_group = "Fd-3m (227)", lattice = "cubic", note = "AB2X4 reference; not in MineralMetadata" },
+    { name = "galena_pbs", space_group = "Fm-3m (225) NaCl-type", lattice = "cubic", note = "thermoelectric reference" },
+    { name = "pyrite_fes2", space_group = "Pa-3 (205)", lattice = "cubic", note = "semiconductor; photovoltaic candidate" },
+    { name = "sphalerite_zns", space_group = "F-43m (216) zincblende", lattice = "cubic", note = "II-VI semiconductor reference" },
+    { name = "scheelite_cawo4", space_group = "I4_1/a (88)", lattice = "tetragonal", note = "metadata exists; structure absent" },
+    { name = "stolzite_pbwo4", space_group = "I4_1/a (88)", lattice = "tetragonal", note = "scintillator; CMS calorimeter material" },
+    { name = "wurtzite_zno", space_group = "P6_3mc (186)", lattice = "hexagonal", note = "transparent conductor base" },
+    { name = "rocksalt_lif", space_group = "Fm-3m (225)", lattice = "cubic", note = "soft alkali halide reference" },
+    { name = "perovskite_srtio3", space_group = "Pm-3m (221)", lattice = "cubic", note = "Mott insulator + photocatalyst" },
+    { name = "perovskite_batio3_tetragonal", space_group = "P4mm (99)", lattice = "tetragonal", note = "ferroelectric below 393 K" },
+    { name = "barium_titanate_cubic", space_group = "Pm-3m (221)", lattice = "cubic", note = "BaTiO3 paraelectric > 393 K" },
+    { name = "lanthanum_titanate", space_group = "Pnma (62)", lattice = "orthorhombic" },
+    { name = "indium_tin_oxide_bixbyite", space_group = "Ia-3 (206)", lattice = "cubic" },
+]
+
+# Elemental metals (FCC/BCC/HCP) -- only 4 (gold/silver/copper/aluminum)
+# currently have MineralMetadata but ZERO are in crystal_structures.
+elemental_metals_missing = [
+    { element = "Au", space_group = "Fm-3m (225) FCC", lattice = "cubic" },
+    { element = "Ag", space_group = "Fm-3m (225) FCC", lattice = "cubic" },
+    { element = "Cu", space_group = "Fm-3m (225) FCC", lattice = "cubic" },
+    { element = "Al", space_group = "Fm-3m (225) FCC", lattice = "cubic" },
+    { element = "Pt", space_group = "Fm-3m (225) FCC", lattice = "cubic" },
+    { element = "Pd", space_group = "Fm-3m (225) FCC", lattice = "cubic" },
+    { element = "Ni", space_group = "Fm-3m (225) FCC", lattice = "cubic" },
+    { element = "Cr", space_group = "Im-3m (229) BCC", lattice = "cubic" },
+    { element = "W",  space_group = "Im-3m (229) BCC", lattice = "cubic" },
+    { element = "Fe", space_group = "Im-3m (229) alpha-Fe BCC", lattice = "cubic" },
+    { element = "Be", space_group = "P6_3/mmc (194) HCP", lattice = "hexagonal" },
+    { element = "Ti", space_group = "P6_3/mmc (194) alpha-Ti HCP", lattice = "hexagonal" },
+    { element = "Mg", space_group = "P6_3/mmc (194) HCP", lattice = "hexagonal" },
+    { element = "Zn", space_group = "P6_3/mmc (194) HCP", lattice = "hexagonal" },
+    { element = "Si", space_group = "Fd-3m (227) diamond cubic", lattice = "cubic" },
+    { element = "Ge", space_group = "Fd-3m (227) diamond cubic", lattice = "cubic" },
+]
+
+[gaps_metadata_struct_extension]
+# CrystalStructureInfo today has only 6 fields. Properties any
+# "exhaustive properties" claim must include:
+required_additions = [
+    "lattice_a_angstrom (f64): a-axis length",
+    "lattice_b_angstrom (f64): b-axis length",
+    "lattice_c_angstrom (f64): c-axis length",
+    "alpha_deg (f64): alpha angle",
+    "beta_deg (f64): beta angle",
+    "gamma_deg (f64): gamma angle",
+    "atoms_per_unit_cell (u32): Z, number of formula units",
+    "density_g_cm3 (f64): theoretical density",
+    "primary_reference (&'static str): doi or paper citation",
+]
+optional_future_additions = [
+    "wyckoff_positions (Vec<(letter, multiplicity, x, y, z)>)",
+    "atomic_basis (Vec<(element, x, y, z, occupancy)>)",
+    "thermal_expansion_1e6_per_k (f64)",
+    "bulk_modulus_gpa (f64)",
+    "linear_compressibility (f64)",
+    "elasticity_tensor (6x6 voigt notation, [[f64; 6]; 6])",
+    "piezoelectric_tensor (3x6, [[f64; 6]; 3])",
+    "raman_active_modes (Vec<RamanMode>)",
+    "ir_active_modes (Vec<IRMode>)",
+]
+
+[open_source_data_sources_for_remediation]
+# License-compatible sources for populating these fields:
+crystallography_open_database = { license = "public_domain", url = "crystallography.net", api = "OPTIMADE 1.x", primary_use = "CIF files for 500k+ structures with full lattice parameters" }
+rruff_project = { license = "open_for_research", url = "rruff.info", primary_use = "mineralogical samples with measured Raman/IR/XRD; type-locality references" }
+materials_project = { license = "CC-BY-4.0", url = "materialsproject.org", primary_use = "DFT-computed lattice constants and elastic tensors" }
+mindat = { license = "proprietary", url = "mindat.org", primary_use = "REFERENCE ONLY -- chemistry/locality lookup; cannot redistribute" }
+optimade = { license = "varies", url = "optimade.org", primary_use = "federated query across COD, MaterialsProject, AFLOW, NOMAD" }
+
+[recommendations]
+# Action items prioritised for this commit + follow-ups:
+this_commit = [
+    "Extend CrystalStructureInfo with 9 new fields (lattice_a/b/c, alpha/beta/gamma, atoms_per_unit_cell, density, primary_reference).",
+    "Add the 8 tourmaline species to known_crystal_structures with lattice a~15.95, c~7.13 (Bosi et al. 2019).",
+    "Add 21 foundational oxide / metal / semiconductor / II-VI structures with lattice parameters from CRC Handbook 102nd ed. + Wyckoff (1963) Crystal Structures vol. 1.",
+]
+followups = [
+    "Migrate known_crystal_structures() to materials_data codegen (#127 Phase 6).",
+    "Wire MineralMetadata <-> CrystalStructureInfo cross-reference so every metadata entry can fetch its structure record.",
+    "Add Wyckoff positions + atomic basis + elastic tensor fields in subsequent commits.",
+]

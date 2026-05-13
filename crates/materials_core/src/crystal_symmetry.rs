@@ -2842,7 +2842,7 @@ impl fmt::Display for CharacterTable {
 mod crystal_structures;
 pub use crystal_structures::{
     CrystalStructureInfo, allowed_reflection, is_allowed_transition,
-    known_crystal_structures, space_groups_for_structure,
+    known_crystal_structures, space_groups_for_structure, structure_by_name,
 };
 
 
