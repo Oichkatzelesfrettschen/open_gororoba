@@ -47,10 +47,80 @@ pub struct CharacterTable {
     pub characters: Vec<Vec<(f64, f64)>>,
 }
 
+/// Convert a codegen-emitted point-group name string back to the
+/// PointGroup enum for the character-table lookup (#127 Phase 7).
+fn point_group_name_to_enum(name: &str) -> Option<PointGroup> {
+    match name {
+        "C1" => Some(PointGroup::C1),
+        "Ci" => Some(PointGroup::Ci),
+        "C2" => Some(PointGroup::C2),
+        "Cs" => Some(PointGroup::Cs),
+        "C2h" => Some(PointGroup::C2h),
+        // Subsequent point-group migrations (D2..Oh) follow the same arm.
+        _ => None,
+    }
+}
+
+/// Look up a CharacterTable from the build-time codegen registry.
+/// Returns `None` if the point group is not yet migrated to TOML.
+fn from_codegen_table(pg: PointGroup) -> Option<CharacterTable> {
+    materials_data::CHARACTER_TABLE_REGISTRY
+        .iter()
+        .find_map(|(pg_name, classes_slice, irreps_slice, chars_slice)| {
+            let pg_match = point_group_name_to_enum(pg_name)?;
+            if pg_match != pg {
+                return None;
+            }
+            let n_cls = classes_slice.len();
+            let n_irr = irreps_slice.len();
+            assert_eq!(
+                chars_slice.len(),
+                n_cls * n_irr,
+                "codegen character table for {} has flat-slice length {} but n_irr*n_cls = {}",
+                pg_name,
+                chars_slice.len(),
+                n_cls * n_irr
+            );
+            let classes: Vec<ConjugacyClass> = classes_slice
+                .iter()
+                .map(|(name, count)| ConjugacyClass {
+                    name: name.to_string(),
+                    count: *count as usize,
+                })
+                .collect();
+            let irreps: Vec<IrreducibleRepresentation> = irreps_slice
+                .iter()
+                .map(|(label, dim)| IrreducibleRepresentation {
+                    label: label.to_string(),
+                    dimension: *dim as usize,
+                })
+                .collect();
+            // Un-flatten the row-major (re, im) slice into the nested Vec<Vec<(f64, f64)>>.
+            let characters: Vec<Vec<(f64, f64)>> = (0..n_irr)
+                .map(|i| {
+                    let start = i * n_cls;
+                    chars_slice[start..start + n_cls].to_vec()
+                })
+                .collect();
+            Some(CharacterTable {
+                point_group: pg,
+                classes,
+                irreps,
+                characters,
+            })
+        })
+}
+
 impl CharacterTable {
     /// Get character table for a given point group.
     /// Returns Some(table) for supported groups, None otherwise.
     pub fn for_point_group(pg: PointGroup) -> Option<Self> {
+        // Phase 7 codegen path: try the build-time TOML registry first.
+        // The first 5 abelian groups (C1, Ci, C2, Cs, C2h) are migrated;
+        // remaining 27 fall through to the inline `Self::*()` methods.
+        if let Some(table) = from_codegen_table(pg) {
+            return Some(table);
+        }
         match pg {
             PointGroup::C1 => Some(Self::c1()),
             PointGroup::Ci => Some(Self::ci()),
@@ -1873,5 +1943,79 @@ impl fmt::Display for CharacterTable {
         }
         writeln!(f)?;
         Ok(())
+    }
+}
+
+#[cfg(test)]
+mod codegen_parity_tests {
+    //! Regression tests pinning the Phase 7 #127 codegen-vs-inline parity
+    //! for the 5 migrated abelian point groups. Each test reads the
+    //! codegen path AND the inline path and asserts they agree on every
+    //! field. If they ever drift, the test catches it immediately.
+
+    use super::*;
+
+    fn assert_tables_equal(a: &CharacterTable, b: &CharacterTable) {
+        assert_eq!(a.point_group, b.point_group);
+        assert_eq!(a.classes.len(), b.classes.len(), "class count");
+        for (ca, cb) in a.classes.iter().zip(b.classes.iter()) {
+            assert_eq!(ca.name, cb.name);
+            assert_eq!(ca.count, cb.count);
+        }
+        assert_eq!(a.irreps.len(), b.irreps.len(), "irrep count");
+        for (ia, ib) in a.irreps.iter().zip(b.irreps.iter()) {
+            assert_eq!(ia.label, ib.label);
+            assert_eq!(ia.dimension, ib.dimension);
+        }
+        assert_eq!(a.characters.len(), b.characters.len(), "matrix rows");
+        for (ra, rb) in a.characters.iter().zip(b.characters.iter()) {
+            assert_eq!(ra.len(), rb.len(), "matrix row width");
+            for ((re_a, im_a), (re_b, im_b)) in ra.iter().zip(rb.iter()) {
+                assert!((re_a - re_b).abs() < 1e-12, "re drift: {} vs {}", re_a, re_b);
+                assert!((im_a - im_b).abs() < 1e-12, "im drift: {} vs {}", im_a, im_b);
+            }
+        }
+    }
+
+    #[test]
+    fn c1_codegen_matches_inline() {
+        let codegen = from_codegen_table(PointGroup::C1).expect("C1 in registry");
+        let inline = CharacterTable::c1();
+        assert_tables_equal(&codegen, &inline);
+    }
+
+    #[test]
+    fn ci_codegen_matches_inline() {
+        let codegen = from_codegen_table(PointGroup::Ci).expect("Ci in registry");
+        let inline = CharacterTable::ci();
+        assert_tables_equal(&codegen, &inline);
+    }
+
+    #[test]
+    fn c2_codegen_matches_inline() {
+        let codegen = from_codegen_table(PointGroup::C2).expect("C2 in registry");
+        let inline = CharacterTable::c2();
+        assert_tables_equal(&codegen, &inline);
+    }
+
+    #[test]
+    fn cs_codegen_matches_inline() {
+        let codegen = from_codegen_table(PointGroup::Cs).expect("Cs in registry");
+        let inline = CharacterTable::cs();
+        assert_tables_equal(&codegen, &inline);
+    }
+
+    #[test]
+    fn c2h_codegen_matches_inline() {
+        let codegen = from_codegen_table(PointGroup::C2h).expect("C2h in registry");
+        let inline = CharacterTable::c2h();
+        assert_tables_equal(&codegen, &inline);
+    }
+
+    #[test]
+    fn unmigrated_groups_return_none_from_codegen() {
+        // D2 is not yet in the TOML registry; codegen lookup must return None
+        // so the dispatcher falls through to Self::d2().
+        assert!(from_codegen_table(PointGroup::D2).is_none());
     }
 }
