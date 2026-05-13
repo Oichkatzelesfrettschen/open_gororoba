@@ -32,7 +32,7 @@ use lbm_vulkan::chingon_cubecl::{chingon_contract_cubecl, is_available};
 use lbm_vulkan::chingon_vulkan::{index_bits_for_dim, pack_violation};
 use rand::SeedableRng;
 use rand::seq::SliceRandom;
-use rand::Rng;
+use rand::RngExt;
 use rand_chacha::ChaCha20Rng;
 
 const EPS_ABS: f32 = 1e-5;
@@ -65,14 +65,14 @@ fn chingon_parity_16d_sparse() {
     let dim: u32 = 16;
     let ib = index_bits_for_dim(dim);
     let mut rng = ChaCha20Rng::seed_from_u64(42);
-    let v_nd: Vec<f32> = (0..dim).map(|_| rng.r#gen::<f32>() - 0.5).collect();
+    let v_nd: Vec<f32> = (0..dim).map(|_| rng.random::<f32>() - 0.5).collect();
     let n_viol = 32;
     let packed_avt: Vec<u32> = (0..n_viol)
         .map(|_| {
-            let i = rng.gen_range(0..dim);
-            let j = rng.gen_range(0..dim);
-            let m = rng.gen_range(0..dim);
-            let sign = rng.r#gen::<bool>();
+            let i = rng.random_range(0..dim);
+            let j = rng.random_range(0..dim);
+            let m = rng.random_range(0..dim);
+            let sign = rng.random::<bool>();
             pack_violation(i, j, m, sign, ib)
         })
         .collect();
@@ -100,14 +100,14 @@ fn chingon_parity_64d_dense() {
     let dim: u32 = 64;
     let ib = index_bits_for_dim(dim);
     let mut rng = ChaCha20Rng::seed_from_u64(7);
-    let v_nd: Vec<f32> = (0..dim).map(|_| rng.r#gen::<f32>() - 0.5).collect();
+    let v_nd: Vec<f32> = (0..dim).map(|_| rng.random::<f32>() - 0.5).collect();
     let n_viol = 256;
     let packed_avt: Vec<u32> = (0..n_viol)
         .map(|_| {
-            let i = rng.gen_range(0..dim);
-            let j = rng.gen_range(0..dim);
-            let m = rng.gen_range(0..dim);
-            let sign = rng.r#gen::<bool>();
+            let i = rng.random_range(0..dim);
+            let j = rng.random_range(0..dim);
+            let m = rng.random_range(0..dim);
+            let sign = rng.random::<bool>();
             pack_violation(i, j, m, sign, ib)
         })
         .collect();

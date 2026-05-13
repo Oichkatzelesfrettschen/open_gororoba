@@ -107,8 +107,8 @@ mod tests {
         let force = chingon_contract_cpu(&inputs);
         // 0.5 * 3 * 3 * 2 * 1 = 9.0
         assert_eq!(force[0], 9.0);
-        for i in 1..4 {
-            assert_eq!(force[i], 0.0);
+        for f in force.iter().take(4).skip(1) {
+            assert_eq!(*f, 0.0);
         }
     }
 
