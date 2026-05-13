@@ -1,0 +1,42 @@
+# Sellmeier dispersion model registry -- TOML codegen source for
+# SellmeierParams constructors (#127 Phase 8).
+#
+# Each [[sellmeier]] entry emits three pub static consts:
+#   pub static <NAME>_B_COEFFS: &[f64] = &[...]
+#   pub static <NAME>_C_COEFFS: &[f64] = &[...]
+#   pub static <NAME>_VALIDITY_UM: (f64, f64) = (min, max)
+#
+# Schema fields:
+#   name              -- const prefix (must be a valid Rust ident, uppercase)
+#   b_coeffs          -- oscillator strengths B_i (dimensionless)
+#   c_form            -- "squared" if c_coeffs are already lambda_i^2,
+#                        or "linear" if they should be squared at codegen time
+#                        (to preserve byte-identical f64 with the original
+#                        Rust `powi(2)` evaluation).
+#   c_coeffs          -- resonance values (either C_i or lambda_i, per c_form)
+#   validity_range_um -- [min_um, max_um]
+#   reference         -- primary literature citation (ignored by build.rs)
+
+[[sellmeier]]
+name = "LINBO3_ORDINARY"
+b_coeffs = [2.6734, 1.2290, 12.614]
+c_form = "squared"
+c_coeffs = [0.01764, 0.05914, 474.60]
+validity_range_um = [0.4, 5.0]
+reference = "Zelmon et al., JOSA B 14, 3319 (1997) Table 2 -- LiNbO3 ordinary ray."
+
+[[sellmeier]]
+name = "LINBO3_EXTRAORDINARY"
+b_coeffs = [2.9804, 0.5981, 8.9543]
+c_form = "squared"
+c_coeffs = [0.02047, 0.06660, 416.08]
+validity_range_um = [0.4, 5.0]
+reference = "Zelmon et al., JOSA B 14, 3319 (1997) Table 2 -- LiNbO3 extraordinary ray."
+
+[[sellmeier]]
+name = "FUSED_SILICA"
+b_coeffs = [0.6961663, 0.4079426, 0.8974794]
+c_form = "linear"
+c_coeffs = [0.0684043, 0.1162414, 9.896161]
+validity_range_um = [0.21, 3.71]
+reference = "Malitson, JOSA 55, 1205 (1965) -- fused silica. lambda_i squared by build.rs to match inline powi(2) f64 byte-for-byte."
