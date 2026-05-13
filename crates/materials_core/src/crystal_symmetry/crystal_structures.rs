@@ -288,6 +288,139 @@ pub fn known_crystal_structures() -> Vec<CrystalStructureInfo> {
              cubic(5.4307, 8, 2.329), "CRC Handbook 102nd ed.; Wyckoff vol. 1 p.27."),
         make("Ge_germanium", 227, "Fd-3m", PointGroup::Oh, LatticeSystem::Cubic, 'F',
              cubic(5.6580, 8, 5.323), "CRC Handbook 102nd ed."),
+
+        // ----- Additional silicates -----
+        make("forsterite_olivine", 62, "Pbnm", PointGroup::D2h, LatticeSystem::Orthorhombic, 'P',
+             orthorhombic(10.196, 5.981, 4.755, 4, 3.275),
+             "Birle et al. (1968) Am. Mineralogist 53, 807 (Mg2SiO4 olivine endmember)."),
+        make("fayalite_olivine", 62, "Pbnm", PointGroup::D2h, LatticeSystem::Orthorhombic, 'P',
+             orthorhombic(10.481, 6.087, 4.819, 4, 4.392),
+             "Smyth (1975) Am. Mineralogist 60, 1092 (Fe2SiO4 olivine endmember)."),
+        make("almandine_garnet", 230, "Ia-3d", PointGroup::Oh, LatticeSystem::Cubic, 'I',
+             cubic(11.519, 8, 4.318),
+             "Geller (1967) Z. Kristallogr. 125, 1 (Fe3Al2(SiO4)3 garnet)."),
+        make("pyrope_garnet", 230, "Ia-3d", PointGroup::Oh, LatticeSystem::Cubic, 'I',
+             cubic(11.456, 8, 3.582),
+             "Novak & Gibbs (1971) Am. Mineralogist 56, 791 (Mg3Al2(SiO4)3 garnet)."),
+        make("muscovite_2M1", 15, "C2/c", PointGroup::C2h, LatticeSystem::Monoclinic, 'C',
+             (5.199, 9.027, 20.106, 90.0, 95.74, 90.0, 4, 2.83),
+             "Guggenheim (1981) Am. Mineralogist 66, 1221 (KAl2(AlSi3)O10(OH)2 mica)."),
+        make("albite_feldspar", 2, "C-1", PointGroup::Ci, LatticeSystem::Triclinic, 'C',
+             (8.144, 12.787, 7.160, 94.26, 116.59, 87.65, 4, 2.62),
+             "Smith (1974) Feldspar Minerals vol. 2 (NaAlSi3O8 plagioclase endmember)."),
+        make("orthoclase_feldspar", 12, "C2/m", PointGroup::C2h, LatticeSystem::Monoclinic, 'C',
+             (8.564, 12.964, 7.198, 90.0, 116.07, 90.0, 4, 2.56),
+             "Smith (1974) Feldspar Minerals vol. 1 (KAlSi3O8 alkali feldspar)."),
+        make("zircon_zrsio4", 141, "I4_1/amd", PointGroup::D4h, LatticeSystem::Tetragonal, 'I',
+             tetragonal(6.6042, 5.9796, 4, 4.65),
+             "Robinson et al. (1971) Am. Mineralogist 56, 782 (ZrSiO4 zircon)."),
+        make("kyanite_al2sio5", 2, "P-1", PointGroup::Ci, LatticeSystem::Triclinic, 'P',
+             (7.1262, 7.852, 5.5724, 89.99, 101.11, 106.03, 4, 3.610),
+             "Burnham (1963) Z. Kristallogr. 118, 337 (Al2SiO5 kyanite polymorph)."),
+        make("sillimanite_al2sio5", 62, "Pbnm", PointGroup::D2h, LatticeSystem::Orthorhombic, 'P',
+             orthorhombic(7.4843, 7.6724, 5.7707, 4, 3.247),
+             "Winter & Ghose (1979) Am. Mineralogist 64, 573 (Al2SiO5 sillimanite)."),
+        make("andalusite_al2sio5", 58, "Pnnm", PointGroup::D2h, LatticeSystem::Orthorhombic, 'P',
+             orthorhombic(7.7942, 7.8985, 5.5594, 4, 3.144),
+             "Burnham & Buerger (1961) Z. Kristallogr. 115, 269 (Al2SiO5 andalusite)."),
+        make("topaz_al2sio4f2", 62, "Pbnm", PointGroup::D2h, LatticeSystem::Orthorhombic, 'P',
+             orthorhombic(4.6499, 8.7968, 8.3909, 4, 3.534),
+             "Ribbe & Gibbs (1971) Am. Mineralogist 56, 24 (Al2SiO4(F,OH)2 topaz)."),
+        make("beryl_be3al2si6o18", 192, "P6/mcc", PointGroup::D6h, LatticeSystem::Hexagonal, 'P',
+             hexagonal(9.215, 9.192, 2, 2.71),
+             "Morosin (1972) Acta Crystallogr. B 28, 1899 (Be3Al2(SiO3)6 beryl/emerald/aquamarine)."),
+
+        // ----- Carbonates -----
+        make("dolomite_camg_co3_2", 148, "R-3", PointGroup::C3i, LatticeSystem::Hexagonal, 'R',
+             hexagonal(4.808, 16.022, 3, 2.876),
+             "Reeder & Wenk (1983) Am. Mineralogist 68, 1175 (CaMg(CO3)2 dolomite)."),
+        make("magnesite_mgco3", 167, "R-3c", PointGroup::D3d, LatticeSystem::Hexagonal, 'R',
+             hexagonal(4.6328, 15.0129, 6, 3.009),
+             "Markgraf & Reeder (1985) Am. Mineralogist 70, 590 (MgCO3 magnesite)."),
+        make("siderite_feco3", 167, "R-3c", PointGroup::D3d, LatticeSystem::Hexagonal, 'R',
+             hexagonal(4.6916, 15.379, 6, 3.96),
+             "Effenberger et al. (1981) Z. Kristallogr. 156, 233 (FeCO3 siderite)."),
+
+        // ----- Sulfides -----
+        make("chalcopyrite_cufes2", 122, "I-42d", PointGroup::D2d, LatticeSystem::Tetragonal, 'I',
+             tetragonal(5.289, 10.423, 4, 4.20),
+             "Hall & Stewart (1973) Acta Crystallogr. B 29, 579 (CuFeS2 chalcopyrite)."),
+        make("molybdenite_2H_mos2", 194, "P6_3/mmc", PointGroup::D6h, LatticeSystem::Hexagonal, 'P',
+             hexagonal(3.160, 12.295, 2, 5.06),
+             "Dickinson & Pauling (1923) JACS 45, 1466 (MoS2 2H polytype)."),
+        make("stibnite_sb2s3", 62, "Pbnm", PointGroup::D2h, LatticeSystem::Orthorhombic, 'P',
+             orthorhombic(11.229, 11.310, 3.839, 4, 4.63),
+             "Hofmann (1933) Z. Kristallogr. 86, 225 (Sb2S3 stibnite)."),
+        make("cinnabar_hgs", 152, "P3_121", PointGroup::D3, LatticeSystem::Hexagonal, 'P',
+             hexagonal(4.149, 9.495, 3, 8.176),
+             "Aurivillius (1950) Acta Chem. Scand. 4, 1413 (HgS cinnabar)."),
+
+        // ----- Iron + chromium + manganese oxides -----
+        make("hematite_alpha_fe2o3", 167, "R-3c", PointGroup::D3d, LatticeSystem::Hexagonal, 'R',
+             hexagonal(5.0356, 13.7489, 6, 5.27),
+             "Blake et al. (1966) Am. Mineralogist 51, 123 (alpha-Fe2O3 hematite, corundum-type)."),
+        make("magnetite_fe3o4", 227, "Fd-3m", PointGroup::Oh, LatticeSystem::Cubic, 'F',
+             cubic(8.3963, 8, 5.197),
+             "Fleet (1981) Acta Crystallogr. B 37, 917 (Fe3O4 magnetite, spinel-type)."),
+        make("ilmenite_fetio3", 148, "R-3", PointGroup::C3i, LatticeSystem::Hexagonal, 'R',
+             hexagonal(5.088, 14.085, 6, 4.78),
+             "Wechsler & Prewitt (1984) Am. Mineralogist 69, 176 (FeTiO3 ilmenite)."),
+        make("chromite_fecr2o4", 227, "Fd-3m", PointGroup::Oh, LatticeSystem::Cubic, 'F',
+             cubic(8.378, 8, 4.795),
+             "Lenaz & Princivalle (2005) Phys. Chem. Minerals 32, 31 (FeCr2O4 spinel)."),
+        make("periclase_mgo", 225, "Fm-3m", PointGroup::Oh, LatticeSystem::Cubic, 'F',
+             cubic(4.213, 4, 3.581),
+             "Wyckoff (1963) vol. 1 p.86 (MgO rocksalt-type)."),
+        make("cuprite_cu2o", 224, "Pn-3m", PointGroup::Oh, LatticeSystem::Cubic, 'P',
+             cubic(4.2696, 2, 6.10),
+             "Restori & Schwarzenbach (1986) Acta Crystallogr. B 42, 201 (Cu2O cuprite)."),
+
+        // ----- Sulfates + phosphates -----
+        make("barite_baso4", 62, "Pnma", PointGroup::D2h, LatticeSystem::Orthorhombic, 'P',
+             orthorhombic(8.884, 5.456, 7.157, 4, 4.480),
+             "Miyake et al. (1978) Z. Kristallogr. 146, 169 (BaSO4 barite)."),
+        make("anhydrite_caso4", 63, "Cmcm", PointGroup::D2h, LatticeSystem::Orthorhombic, 'C',
+             orthorhombic(7.006, 6.998, 6.245, 4, 2.96),
+             "Hawthorne & Ferguson (1975) Can. Mineralogist 13, 289 (CaSO4 anhydrite)."),
+        make("gypsum_caso4_2h2o", 15, "C2/c", PointGroup::C2h, LatticeSystem::Monoclinic, 'C',
+             (5.679, 15.202, 6.522, 90.0, 118.43, 90.0, 4, 2.31),
+             "Cole & Lancucki (1974) Acta Crystallogr. B 30, 921 (CaSO4.2H2O gypsum)."),
+        make("apatite_ca5_po4_3_oh", 176, "P6_3/m", PointGroup::C6h, LatticeSystem::Hexagonal, 'P',
+             hexagonal(9.4254, 6.8814, 2, 3.16),
+             "Hughes et al. (1989) Am. Mineralogist 74, 870 (Ca5(PO4)3(OH) apatite)."),
+
+        // ----- 2D materials + topological insulators -----
+        make("graphite_hexagonal_2H", 194, "P6_3/mmc", PointGroup::D6h, LatticeSystem::Hexagonal, 'P',
+             hexagonal(2.4612, 6.7079, 4, 2.267),
+             "Lipson & Stokes (1942) Proc. R. Soc. A 181, 101 (carbon graphite)."),
+        make("bismuth_telluride_bi2te3", 166, "R-3m", PointGroup::D3d, LatticeSystem::Hexagonal, 'R',
+             hexagonal(4.3835, 30.487, 3, 7.86),
+             "Feutelais et al. (1993) Mater. Res. Bull. 28, 591 (Bi2Te3 topological insulator)."),
+        make("bismuth_selenide_bi2se3", 166, "R-3m", PointGroup::D3d, LatticeSystem::Hexagonal, 'R',
+             hexagonal(4.143, 28.636, 3, 6.82),
+             "Nakajima (1963) J. Phys. Chem. Solids 24, 479 (Bi2Se3 topological insulator)."),
+
+        // ----- Halide perovskites + chalcogenide superconductors -----
+        make("cspbbr3_orthorhombic", 62, "Pnma", PointGroup::D2h, LatticeSystem::Orthorhombic, 'P',
+             orthorhombic(8.207, 11.755, 8.244, 4, 4.844),
+             "Stoumpos et al. (2013) Cryst. Growth Des. 13, 2722 (CsPbBr3 halide perovskite)."),
+        make("ybco_orthorhombic", 47, "Pmmm", PointGroup::D2h, LatticeSystem::Orthorhombic, 'P',
+             orthorhombic(3.823, 3.886, 11.681, 1, 6.38),
+             "Beno et al. (1987) Appl. Phys. Lett. 51, 57 (YBa2Cu3O7-x high-Tc superconductor)."),
+        make("magnesium_diboride_mgb2", 191, "P6/mmm", PointGroup::D6h, LatticeSystem::Hexagonal, 'P',
+             hexagonal(3.086, 3.524, 1, 2.57),
+             "Jones & Marsh (1954) JACS 76, 1434 (MgB2 superconductor, ALB2-type)."),
+
+        // ----- Additional native elements -----
+        make("graphite_3R_rhombohedral", 166, "R-3m", PointGroup::D3d, LatticeSystem::Hexagonal, 'R',
+             hexagonal(2.456, 10.044, 6, 2.265),
+             "Lipson & Stokes (1942) Proc. R. Soc. A 181, 101 (rhombohedral 3R-graphite polytype)."),
+        make("sulfur_alpha_s8", 70, "Fddd", PointGroup::D2h, LatticeSystem::Orthorhombic, 'F',
+             orthorhombic(10.4646, 12.8660, 24.4860, 16, 2.07),
+             "Coppens (1977) Acta Crystallogr. B 33, 2275 (alpha-S8 native sulfur)."),
+        make("diamond_lonsdaleite", 194, "P6_3/mmc", PointGroup::D6h, LatticeSystem::Hexagonal, 'P',
+             hexagonal(2.51, 4.12, 4, 3.51),
+             "Frondel & Marvin (1967) Nature 214, 587 (hexagonal-diamond polymorph)."),
     ]
 }
 
@@ -395,15 +528,57 @@ mod tests {
     use super::*;
 
     #[test]
-    fn known_structures_has_50_plus_entries() {
+    fn known_structures_has_80_plus_entries() {
         let n = known_crystal_structures().len();
         assert!(
-            n >= 50,
-            "Coverage regression: known_crystal_structures must list at least 50 \
+            n >= 80,
+            "Coverage regression: known_crystal_structures must list at least 80 \
              entries (currently {}). Adding new structures is encouraged; \
              removing any requires a rationale.",
             n
         );
+    }
+
+    #[test]
+    fn silicate_coverage_includes_olivines_and_polymorphs() {
+        let names: Vec<&str> = known_crystal_structures()
+            .iter()
+            .map(|s| s.name)
+            .collect();
+        for required in [
+            "forsterite_olivine",
+            "fayalite_olivine",
+            "kyanite_al2sio5",
+            "andalusite_al2sio5",
+            "sillimanite_al2sio5",
+            "topaz_al2sio4f2",
+            "beryl_be3al2si6o18",
+            "zircon_zrsio4",
+        ] {
+            assert!(names.contains(&required), "silicate {} missing", required);
+        }
+    }
+
+    #[test]
+    fn modern_materials_coverage() {
+        let names: Vec<&str> = known_crystal_structures()
+            .iter()
+            .map(|s| s.name)
+            .collect();
+        for required in [
+            "graphite_hexagonal_2H",
+            "bismuth_telluride_bi2te3",
+            "bismuth_selenide_bi2se3",
+            "cspbbr3_orthorhombic",
+            "ybco_orthorhombic",
+            "magnesium_diboride_mgb2",
+        ] {
+            assert!(
+                names.contains(&required),
+                "modern material {} (2D/topological/superconductor/halide-perovskite) missing",
+                required
+            );
+        }
     }
 
     #[test]
