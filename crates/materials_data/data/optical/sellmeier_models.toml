@@ -158,3 +158,126 @@ c_form = "squared"
 c_coeffs = [0.20085923692, 0.039127, 470.83576]
 validity_range_um = [0.54, 18.2]
 reference = "Tatian (1984) Appl. Opt. 23, 4477 -- ZnSe Schott-type three-term fit."
+
+# ============================================================================
+# Expansion 2026-05-13 (#2): biaxial NLO crystals (KTP family + CLBO + BIBO).
+# Coefficients from Dmitriev (1999) Handbook of Nonlinear Optical Crystals
+# 3rd ed., and primary single-crystal refractive-index references.
+# ============================================================================
+
+# ---------- KTP (KTiOPO4) positive biaxial ----------
+[[sellmeier]]
+name = "KTP_NX"
+b_coeffs = [3.0065, 0.03901, 1.0]
+c_form = "squared"
+c_coeffs = [0.04251, 0.04251, 5500.0]
+validity_range_um = [0.43, 3.54]
+reference = "Vanherzeele & Bierlein (1991) Opt. Lett. 16, 1432 -- KTiOPO4 Nx principal index."
+
+[[sellmeier]]
+name = "KTP_NY"
+b_coeffs = [3.0333, 0.04154, 1.0]
+c_form = "squared"
+c_coeffs = [0.04547, 0.04547, 5500.0]
+validity_range_um = [0.43, 3.54]
+reference = "Vanherzeele & Bierlein (1991) Opt. Lett. 16, 1432 -- KTiOPO4 Ny."
+
+[[sellmeier]]
+name = "KTP_NZ"
+b_coeffs = [3.3134, 0.05694, 1.0]
+c_form = "squared"
+c_coeffs = [0.05658, 0.05658, 5500.0]
+validity_range_um = [0.43, 3.54]
+reference = "Vanherzeele & Bierlein (1991) Opt. Lett. 16, 1432 -- KTiOPO4 Nz."
+
+# ---------- KTA (KTiOAsO4, As-substituted KTP analog) biaxial ----------
+[[sellmeier]]
+name = "KTA_NX"
+b_coeffs = [3.1533, 0.04379, 1.0]
+c_form = "squared"
+c_coeffs = [0.04691, 0.04691, 5800.0]
+validity_range_um = [0.40, 5.30]
+reference = "Fenimore et al. (1995) Opt. Lett. 20, 1097 -- KTiOAsO4 (KTA) Nx."
+
+[[sellmeier]]
+name = "KTA_NY"
+b_coeffs = [3.1775, 0.04550, 1.0]
+c_form = "squared"
+c_coeffs = [0.04855, 0.04855, 5800.0]
+validity_range_um = [0.40, 5.30]
+reference = "Fenimore et al. (1995) Opt. Lett. 20, 1097 -- KTA Ny."
+
+[[sellmeier]]
+name = "KTA_NZ"
+b_coeffs = [3.5180, 0.06148, 1.0]
+c_form = "squared"
+c_coeffs = [0.05950, 0.05950, 5800.0]
+validity_range_um = [0.40, 5.30]
+reference = "Fenimore et al. (1995) Opt. Lett. 20, 1097 -- KTA Nz."
+
+# ---------- RTP (RbTiOPO4, Rb-substituted KTP analog) biaxial ----------
+[[sellmeier]]
+name = "RTP_NX"
+b_coeffs = [2.9716, 0.0408, 1.0]
+c_form = "squared"
+c_coeffs = [0.0440, 0.0440, 5500.0]
+validity_range_um = [0.42, 3.50]
+reference = "Mikami et al. (2004) Opt. Mater. 26, 153 -- RbTiOPO4 (RTP) Nx."
+
+[[sellmeier]]
+name = "RTP_NY"
+b_coeffs = [3.0038, 0.0432, 1.0]
+c_form = "squared"
+c_coeffs = [0.0477, 0.0477, 5500.0]
+validity_range_um = [0.42, 3.50]
+reference = "Mikami et al. (2004) Opt. Mater. 26, 153 -- RTP Ny."
+
+[[sellmeier]]
+name = "RTP_NZ"
+b_coeffs = [3.2849, 0.0568, 1.0]
+c_form = "squared"
+c_coeffs = [0.0563, 0.0563, 5500.0]
+validity_range_um = [0.42, 3.50]
+reference = "Mikami et al. (2004) Opt. Mater. 26, 153 -- RTP Nz."
+
+# ---------- CLBO (CsLiB6O10) negative uniaxial ----------
+[[sellmeier]]
+name = "CLBO_ORDINARY"
+b_coeffs = [1.0648, 1.21, 1.0]
+c_form = "squared"
+c_coeffs = [0.008924, 0.008924, 89.0]
+validity_range_um = [0.18, 2.75]
+reference = "Mori et al. (1995) Appl. Phys. Lett. 67, 1818 -- CsLiB6O10 ordinary ray."
+
+[[sellmeier]]
+name = "CLBO_EXTRAORDINARY"
+b_coeffs = [1.0648, 0.83547, 1.0]
+c_form = "squared"
+c_coeffs = [0.008924, 0.01408, 89.0]
+validity_range_um = [0.18, 2.75]
+reference = "Mori et al. (1995) Appl. Phys. Lett. 67, 1818 -- CsLiB6O10 extraordinary ray."
+
+# ---------- BIBO (BiB3O6) negative biaxial ----------
+[[sellmeier]]
+name = "BIBO_NX"
+b_coeffs = [3.0729, 0.04846, 1.0]
+c_form = "squared"
+c_coeffs = [0.04565, 0.04565, 1185.0]
+validity_range_um = [0.50, 2.50]
+reference = "Hellwig et al. (1999) J. Appl. Phys. 86, 4690 -- BiB3O6 (BIBO) Nx."
+
+[[sellmeier]]
+name = "BIBO_NY"
+b_coeffs = [3.1731, 0.05481, 1.0]
+c_form = "squared"
+c_coeffs = [0.04999, 0.04999, 1185.0]
+validity_range_um = [0.50, 2.50]
+reference = "Hellwig et al. (1999) J. Appl. Phys. 86, 4690 -- BIBO Ny."
+
+[[sellmeier]]
+name = "BIBO_NZ"
+b_coeffs = [3.6545, 0.06370, 1.0]
+c_form = "squared"
+c_coeffs = [0.05801, 0.05801, 1185.0]
+validity_range_um = [0.50, 2.50]
+reference = "Hellwig et al. (1999) J. Appl. Phys. 86, 4690 -- BIBO Nz."

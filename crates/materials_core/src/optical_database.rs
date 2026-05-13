@@ -1154,6 +1154,8 @@ pub use semiconductors::{
 mod anharmonic_multiphonon;
 mod bandgap_analysis;
 mod coherence_quality_metrics;
+mod cross_reference;
+pub use cross_reference::{metadata_for_structure, structures_with_metadata};
 mod eels_absorption_engineering;
 mod effective_medium_methods;
 mod electro_optic;

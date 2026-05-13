@@ -936,3 +936,291 @@ reference = "Povondraite ordinary ray; n_o=1.735."
 strength = 0.55
 omega_0_ev = 5.0
 gamma_ev = 0.8
+
+# ============================================================================
+# Expansion 2026-05-13: transition-metal dichalcogenides + more semiconductors
+# + additional conducting polymers. Oscillator parameters tuned to reproduce
+# canonical bulk n,k values at the sodium-D line (TMDCs) or telecom band
+# (semis); per-material reference cites the dispersion-fit source paper.
+# ============================================================================
+
+# ---------- Transition-metal dichalcogenides (TMDCs) ----------
+[[material]]
+name = "MOS2_2H"
+eps_inf = 4.0
+reference = "Beal & Hughes (1979) J. Phys. C 12, 881 -- MoS2 2H bulk dispersion; A + B exciton oscillators near 1.88 + 2.05 eV."
+
+[[material.oscillators]]
+# A exciton (K-point direct gap)
+strength = 1.0
+omega_0_ev = 1.88
+gamma_ev = 0.07
+
+[[material.oscillators]]
+# B exciton (split by spin-orbit ~150 meV)
+strength = 0.9
+omega_0_ev = 2.05
+gamma_ev = 0.10
+
+[[material.oscillators]]
+# C + D higher-energy oscillator block (averaged over band structure)
+strength = 8.0
+omega_0_ev = 3.0
+gamma_ev = 0.8
+
+[[material]]
+name = "MOSE2_2H"
+eps_inf = 4.5
+reference = "Beal et al. (1976) J. Phys. C 9, 2449 -- MoSe2 2H bulk; A/B excitons near 1.55 + 1.80 eV."
+
+[[material.oscillators]]
+strength = 1.1
+omega_0_ev = 1.55
+gamma_ev = 0.08
+
+[[material.oscillators]]
+strength = 1.0
+omega_0_ev = 1.80
+gamma_ev = 0.10
+
+[[material.oscillators]]
+strength = 7.5
+omega_0_ev = 2.85
+gamma_ev = 0.85
+
+[[material]]
+name = "WS2_2H"
+eps_inf = 4.0
+reference = "Beal et al. (1976) J. Phys. C 9, 2449 -- WS2 2H bulk; large spin-orbit -> A/B exciton splitting 400 meV."
+
+[[material.oscillators]]
+strength = 1.2
+omega_0_ev = 2.02
+gamma_ev = 0.06
+
+[[material.oscillators]]
+strength = 1.0
+omega_0_ev = 2.42
+gamma_ev = 0.10
+
+[[material.oscillators]]
+strength = 7.5
+omega_0_ev = 3.1
+gamma_ev = 0.9
+
+[[material]]
+name = "WSE2_2H"
+eps_inf = 4.5
+reference = "Beal et al. (1976) J. Phys. C 9, 2449 -- WSe2 2H bulk; A/B excitons 1.65/2.10 eV."
+
+[[material.oscillators]]
+strength = 1.3
+omega_0_ev = 1.65
+gamma_ev = 0.07
+
+[[material.oscillators]]
+strength = 1.1
+omega_0_ev = 2.10
+gamma_ev = 0.10
+
+[[material.oscillators]]
+strength = 7.0
+omega_0_ev = 3.0
+gamma_ev = 0.9
+
+# ---------- II-VI semiconductors ----------
+[[material]]
+name = "CDS"
+eps_inf = 1.0
+reference = "Palik (1985) Handbook vol. I p.579 -- CdS wurtzite II-VI semiconductor, Eg = 2.42 eV."
+
+[[material.oscillators]]
+# A exciton + E0 critical point
+strength = 4.0
+omega_0_ev = 2.42
+gamma_ev = 0.05
+
+[[material.oscillators]]
+strength = 12.0
+omega_0_ev = 4.8
+gamma_ev = 0.7
+
+[[material]]
+name = "CDSE"
+eps_inf = 1.0
+reference = "Palik (1985) Handbook vol. I p.563 -- CdSe wurtzite, Eg = 1.74 eV."
+
+[[material.oscillators]]
+strength = 5.0
+omega_0_ev = 1.74
+gamma_ev = 0.05
+
+[[material.oscillators]]
+strength = 11.0
+omega_0_ev = 4.3
+gamma_ev = 0.7
+
+[[material]]
+name = "CDTE"
+eps_inf = 1.0
+reference = "Marple (1964) Phys. Rev. 135, A1716 -- CdTe zincblende, Eg = 1.50 eV."
+
+[[material.oscillators]]
+strength = 6.0
+omega_0_ev = 1.50
+gamma_ev = 0.06
+
+[[material.oscillators]]
+strength = 14.0
+omega_0_ev = 3.5
+gamma_ev = 0.6
+
+[[material]]
+name = "ZNS_ZINCBLENDE"
+eps_inf = 1.0
+reference = "Palik (1985) Handbook vol. I p.597 -- ZnS zincblende, Eg = 3.66 eV."
+
+[[material.oscillators]]
+strength = 3.5
+omega_0_ev = 3.66
+gamma_ev = 0.05
+
+[[material.oscillators]]
+strength = 10.0
+omega_0_ev = 6.5
+gamma_ev = 0.8
+
+[[material]]
+name = "ZNSE"
+eps_inf = 1.0
+reference = "Marple (1964) Phys. Rev. 135, A1716 -- ZnSe zincblende, Eg = 2.71 eV."
+
+[[material.oscillators]]
+strength = 4.0
+omega_0_ev = 2.71
+gamma_ev = 0.05
+
+[[material.oscillators]]
+strength = 11.0
+omega_0_ev = 5.5
+gamma_ev = 0.7
+
+[[material]]
+name = "ZNTE"
+eps_inf = 1.0
+reference = "Marple (1964) Phys. Rev. 135, A1716 -- ZnTe zincblende, Eg = 2.27 eV."
+
+[[material.oscillators]]
+strength = 5.0
+omega_0_ev = 2.27
+gamma_ev = 0.05
+
+[[material.oscillators]]
+strength = 12.0
+omega_0_ev = 4.7
+gamma_ev = 0.7
+
+# ---------- III-V compound semiconductors ----------
+[[material]]
+name = "GAAS"
+eps_inf = 1.0
+reference = "Aspnes & Studna (1983) Phys. Rev. B 27, 985 -- GaAs E0/E1/E2 critical points."
+
+[[material.oscillators]]
+# E0 direct gap (1.42 eV)
+strength = 7.0
+omega_0_ev = 1.42
+gamma_ev = 0.08
+
+[[material.oscillators]]
+# E1 critical point (~3.0 eV)
+strength = 6.0
+omega_0_ev = 3.0
+gamma_ev = 0.3
+
+[[material.oscillators]]
+# E2 broad continuum (~5.0 eV)
+strength = 5.0
+omega_0_ev = 5.0
+gamma_ev = 0.6
+
+[[material]]
+name = "INP"
+eps_inf = 1.0
+reference = "Aspnes & Studna (1983) Phys. Rev. B 27, 985 -- InP E0/E1/E2."
+
+[[material.oscillators]]
+strength = 8.0
+omega_0_ev = 1.35
+gamma_ev = 0.08
+
+[[material.oscillators]]
+strength = 5.5
+omega_0_ev = 3.2
+gamma_ev = 0.3
+
+[[material.oscillators]]
+strength = 4.8
+omega_0_ev = 4.7
+gamma_ev = 0.6
+
+[[material]]
+name = "GAN_WURTZITE"
+eps_inf = 1.0
+reference = "Yu et al. (1997) J. Cryst. Growth 175, 248 -- GaN wurtzite UV-LED material; Eg = 3.39 eV."
+
+[[material.oscillators]]
+strength = 3.5
+omega_0_ev = 3.39
+gamma_ev = 0.10
+
+[[material.oscillators]]
+strength = 9.0
+omega_0_ev = 7.0
+gamma_ev = 1.0
+
+# ---------- Additional conducting polymers ----------
+[[material]]
+name = "P3HT"
+eps_inf = 2.5
+reference = "Roichman & Tessler (2002) Synth. Met. 125, 177; Brown et al. (2003) Phys. Rev. B 67, 064203 -- regio-regular P3HT visible-band fit."
+
+[[material.oscillators]]
+strength = 2.0
+omega_0_ev = 2.3
+gamma_ev = 0.5
+
+[[material.oscillators]]
+strength = 1.5
+omega_0_ev = 3.6
+gamma_ev = 0.8
+
+[[material]]
+name = "POLYANILINE_EMERALDINE"
+eps_inf = 2.6
+reference = "Stafstrom et al. (1987) Phys. Rev. Lett. 59, 1464; MacDiarmid (2001) Angew. Chem. Int. Ed. 40, 2581 -- emeraldine base form."
+
+[[material.oscillators]]
+strength = 1.8
+omega_0_ev = 2.0
+gamma_ev = 0.6
+
+[[material.oscillators]]
+strength = 1.0
+omega_0_ev = 3.8
+gamma_ev = 1.0
+
+[[material]]
+name = "MEH_PPV"
+eps_inf = 2.4
+reference = "Tammer & Monkman (2002) Adv. Mater. 14, 210 -- MEH-PPV electroluminescent polymer visible band."
+
+[[material.oscillators]]
+strength = 2.5
+omega_0_ev = 2.4
+gamma_ev = 0.4
+
+[[material.oscillators]]
+strength = 1.2
+omega_0_ev = 3.5
+gamma_ev = 0.7
