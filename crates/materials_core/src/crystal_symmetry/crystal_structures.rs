@@ -421,6 +421,78 @@ pub fn known_crystal_structures() -> Vec<CrystalStructureInfo> {
         make("diamond_lonsdaleite", 194, "P6_3/mmc", PointGroup::D6h, LatticeSystem::Hexagonal, 'P',
              hexagonal(2.51, 4.12, 4, 3.51),
              "Frondel & Marvin (1967) Nature 214, 587 (hexagonal-diamond polymorph)."),
+
+        // ----- Pyroxenes + amphiboles (chain silicates) -----
+        make("enstatite_mgsio3", 62, "Pbca", PointGroup::D2h, LatticeSystem::Orthorhombic, 'P',
+             orthorhombic(18.235, 8.818, 5.179, 16, 3.20),
+             "Hawthorne & Ito (1977) Z. Kristallogr. 145, 273 (orthopyroxene MgSiO3)."),
+        make("diopside_camgsi2o6", 15, "C2/c", PointGroup::C2h, LatticeSystem::Monoclinic, 'C',
+             (9.745, 8.899, 5.251, 90.0, 105.63, 90.0, 4, 3.279),
+             "Cameron et al. (1973) Am. Mineralogist 58, 594 (CaMgSi2O6 clinopyroxene)."),
+        make("tremolite_amphibole", 12, "C2/m", PointGroup::C2h, LatticeSystem::Monoclinic, 'C',
+             (9.836, 18.052, 5.275, 90.0, 104.69, 90.0, 2, 2.977),
+             "Hawthorne & Grundy (1976) Can. Mineralogist 14, 334 (Ca2Mg5Si8O22(OH)2)."),
+
+        // ----- Additional sulfides + Mn/Fe oxides -----
+        make("bornite_cu5fes4", 70, "Fd-3m", PointGroup::Oh, LatticeSystem::Cubic, 'F',
+             cubic(10.94, 8, 5.09),
+             "Koto & Morimoto (1975) Acta Crystallogr. B 31, 2268 (Cu5FeS4 anti-fluorite)."),
+        make("pyrrhotite_4c_fe7s8", 15, "C2/c", PointGroup::C2h, LatticeSystem::Monoclinic, 'C',
+             (11.954, 6.866, 12.792, 90.0, 117.31, 90.0, 4, 4.61),
+             "Tokonami et al. (1972) Am. Mineralogist 57, 1066 (Fe7S8 4C polytype)."),
+        make("rhodochrosite_mnco3", 167, "R-3c", PointGroup::D3d, LatticeSystem::Hexagonal, 'R',
+             hexagonal(4.7771, 15.6638, 6, 3.70),
+             "Effenberger et al. (1981) Z. Kristallogr. 156, 233 (MnCO3 calcite-isotype)."),
+
+        // ----- III-V + II-VI semiconductors (canonical Wyckoff structures) -----
+        make("gaas_zincblende", 216, "F-43m", PointGroup::Td, LatticeSystem::Cubic, 'F',
+             cubic(5.6533, 4, 5.32),
+             "Wyckoff (1963) vol. 1 p.110 (GaAs III-V semiconductor)."),
+        make("gan_wurtzite", 186, "P6_3mc", PointGroup::C6v, LatticeSystem::Hexagonal, 'P',
+             hexagonal(3.189, 5.185, 2, 6.15),
+             "Schulz & Thiemann (1977) Solid State Commun. 23, 815 (GaN UV-LED material)."),
+        make("inp_zincblende", 216, "F-43m", PointGroup::Td, LatticeSystem::Cubic, 'F',
+             cubic(5.8687, 4, 4.81),
+             "Wyckoff (1963) vol. 1 (InP III-V telecom photonics)."),
+        make("cdte_zincblende", 216, "F-43m", PointGroup::Td, LatticeSystem::Cubic, 'F',
+             cubic(6.4823, 4, 5.85),
+             "Wyckoff (1963) vol. 1 (CdTe II-VI photovoltaic absorber)."),
+        make("cdse_wurtzite", 186, "P6_3mc", PointGroup::C6v, LatticeSystem::Hexagonal, 'P',
+             hexagonal(4.299, 7.010, 2, 5.81),
+             "Wyckoff (1963) vol. 1 (CdSe nanocrystal phosphor base)."),
+        make("hgse_zincblende", 216, "F-43m", PointGroup::Td, LatticeSystem::Cubic, 'F',
+             cubic(6.084, 4, 8.27),
+             "Wyckoff (1963) vol. 1 (HgSe topological zero-gap semiconductor)."),
+
+        // ----- Battery + ion-conducting materials -----
+        make("licoo2_layered", 166, "R-3m", PointGroup::D3d, LatticeSystem::Hexagonal, 'R',
+             hexagonal(2.815, 14.05, 3, 5.05),
+             "Reimers & Dahn (1992) J. Electrochem. Soc. 139, 2091 (LiCoO2 Li-ion cathode)."),
+        make("lifepo4_olivine", 62, "Pnma", PointGroup::D2h, LatticeSystem::Orthorhombic, 'P',
+             orthorhombic(10.332, 6.011, 4.692, 4, 3.6),
+             "Padhi et al. (1997) J. Electrochem. Soc. 144, 1188 (LiFePO4 olivine-structure cathode)."),
+        make("limn2o4_spinel", 227, "Fd-3m", PointGroup::Oh, LatticeSystem::Cubic, 'F',
+             cubic(8.247, 8, 4.28),
+             "Thackeray et al. (1983) Mater. Res. Bull. 18, 461 (LiMn2O4 cathode)."),
+
+        // ----- Thermoelectrics + clathrates -----
+        make("bi2_alpha", 166, "R-3m", PointGroup::D3d, LatticeSystem::Hexagonal, 'R',
+             hexagonal(4.5460, 11.862, 6, 9.747),
+             "Cucka & Barrett (1962) Acta Crystallogr. 15, 865 (bismuth A7 structure)."),
+        make("pbte_rocksalt", 225, "Fm-3m", PointGroup::Oh, LatticeSystem::Cubic, 'F',
+             cubic(6.461, 4, 8.16),
+             "Noda et al. (1987) Acta Crystallogr. C 43, 1443 (PbTe thermoelectric)."),
+
+        // ----- Refractory carbides + nitrides -----
+        make("silicon_carbide_3C_beta", 216, "F-43m", PointGroup::Td, LatticeSystem::Cubic, 'F',
+             cubic(4.3596, 4, 3.21),
+             "Wyckoff (1963) vol. 1 (cubic 3C-SiC beta-polytype)."),
+        make("silicon_carbide_6H_alpha", 186, "P6_3mc", PointGroup::C6v, LatticeSystem::Hexagonal, 'P',
+             hexagonal(3.073, 15.117, 6, 3.21),
+             "Wyckoff (1963) vol. 1 (hexagonal 6H-SiC alpha-polytype, power electronics base)."),
+        make("titanium_nitride", 225, "Fm-3m", PointGroup::Oh, LatticeSystem::Cubic, 'F',
+             cubic(4.2417, 4, 5.22),
+             "Christensen et al. (1979) Acta Chem. Scand. A33, 569 (TiN rocksalt-type, plasmonic)."),
     ]
 }
 
@@ -528,15 +600,55 @@ mod tests {
     use super::*;
 
     #[test]
-    fn known_structures_has_80_plus_entries() {
+    fn known_structures_has_100_plus_entries() {
         let n = known_crystal_structures().len();
         assert!(
-            n >= 80,
-            "Coverage regression: known_crystal_structures must list at least 80 \
+            n >= 100,
+            "Coverage regression: known_crystal_structures must list at least 100 \
              entries (currently {}). Adding new structures is encouraged; \
              removing any requires a rationale.",
             n
         );
+    }
+
+    #[test]
+    fn semiconductor_iii_v_ii_vi_coverage() {
+        let names: Vec<&str> = known_crystal_structures()
+            .iter()
+            .map(|s| s.name)
+            .collect();
+        for required in [
+            "gaas_zincblende",
+            "gan_wurtzite",
+            "inp_zincblende",
+            "cdte_zincblende",
+            "cdse_wurtzite",
+            "hgse_zincblende",
+            "silicon_carbide_3C_beta",
+            "silicon_carbide_6H_alpha",
+        ] {
+            assert!(
+                names.contains(&required),
+                "compound semiconductor {} missing from registry",
+                required
+            );
+        }
+    }
+
+    #[test]
+    fn energy_materials_coverage() {
+        let names: Vec<&str> = known_crystal_structures()
+            .iter()
+            .map(|s| s.name)
+            .collect();
+        for required in [
+            "licoo2_layered",
+            "lifepo4_olivine",
+            "limn2o4_spinel",
+            "pbte_rocksalt",
+        ] {
+            assert!(names.contains(&required), "energy-material {} missing", required);
+        }
     }
 
     #[test]
