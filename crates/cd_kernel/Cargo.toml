@@ -7,6 +7,7 @@ license = "GPL-2.0-or-later"
 
 [dependencies]
 core_affinity = { workspace = true }
+gororoba_gpu_bridge = { workspace = true }
 rayon = { workspace = true }
 wide = { workspace = true }
 pulp = { workspace = true }
