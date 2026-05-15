@@ -6,8 +6,9 @@ repo_hash="$(printf "%s" "$repo_root" | sha256sum | cut -c1-16)"
 tmp_root="${TMPDIR:-/tmp}/open_gororoba-cargo-build"
 gate_root="${tmp_root}/gate/${repo_hash}"
 ambient_root="${tmp_root}/ambient"
-repo_budget_gib="${CARGO_CACHE_REPO_BUDGET_GIB:-8}"
+repo_budget_gib="${CARGO_CACHE_REPO_BUDGET_GIB:-150}"
 tmp_budget_gib="${CARGO_CACHE_TMP_BUDGET_GIB:-16}"
+status=0
 
 show_path() {
     local path="$1"
@@ -43,9 +44,10 @@ emit_budget_status() {
     echo "${label}_total_gib=${gib}"
     echo "${label}_budget_gib=${budget_gib}"
     if [ "$kib" -gt "$budget_kib" ]; then
-        echo "warning.${label}=over-budget"
+        echo "status.${label}=over-budget"
+        status=1
     else
-        echo "warning.${label}=ok"
+        echo "status.${label}=ok"
     fi
 }
 
@@ -68,9 +70,11 @@ echo
 
 show_path "$repo_root/.cache/cargo-default-target"
 show_path "$repo_root/.cache/gate-target"
+show_path "$repo_root/.cache/gate-cbuild"
 show_path "$repo_root/.cache/phase7-target"
 show_path "$repo_root/.cache/sparse-mainline-target"
 show_path "$repo_root/.cache/cargo-home"
+show_path "$repo_root/target"
 show_path "$ambient_root"
 show_path "$gate_root"
 show_path "$HOME/.cargo"
@@ -80,10 +84,17 @@ echo
 repo_total_kib="$(sum_kib \
     "$repo_root/.cache/cargo-default-target" \
     "$repo_root/.cache/gate-target" \
+    "$repo_root/.cache/gate-cbuild" \
     "$repo_root/.cache/phase7-target" \
     "$repo_root/.cache/sparse-mainline-target" \
-    "$repo_root/.cache/cargo-home")"
+    "$repo_root/.cache/cargo-home" \
+    "$repo_root/target")"
 tmp_total_kib="$(sum_kib "$ambient_root" "$gate_root")"
 
 emit_budget_status "repo_cache" "$repo_total_kib" "$repo_budget_gib"
 emit_budget_status "tmp_cache" "$tmp_total_kib" "$tmp_budget_gib"
+
+if [ "$status" -ne 0 ]; then
+    echo "remediation=make cache-sweep-soft"
+    exit "$status"
+fi
