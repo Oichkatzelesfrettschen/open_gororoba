@@ -11,5 +11,4 @@
 # Realigns the workspace to rustfmt.toml after accumulated drift across
 # multi-session feature branches. Zero semantic change; verified with
 # `cargo check --workspace` and `cargo clippy --workspace -- -D warnings`.
-# The merged commit SHA on main will be added here in a follow-on once
-# this PR is squash-merged.
+c29cd2cf30898b8413e8ffb40b378f2f3ed65f39  # PR #29 squash merge
