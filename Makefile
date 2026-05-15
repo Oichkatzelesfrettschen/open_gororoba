@@ -3,12 +3,12 @@
 .PHONY: test lint check smoke integrity integrity-rust math-verify governance-gate governance-gate-readonly wave6-gate pre-push-gate pre-push-gate-strict hooks-install hooks-install-strict hooks-status synthesis-execution-contract
 .PHONY: verify verify-grand verify-c010-c011-theses ansi-check ansi-check-strict terminology-gate doctor doctor-blas provenance
 .PHONY: provenance-registry-index provenance-registry-export provenance-registry-verify provenance-registry-doctor provenance-registry-link-audit provenance-registry-recover
-.PHONY: rocq-proofs rocq-proofs-check lva-paper
+.PHONY: rocq-proofs rocq-proofs-check rocq-makefile-check lva-paper
 .PHONY: heavy test-inventory verify-no-reports-writes
 .PHONY: rust-test rust-clippy rust-semver-check rust-smoke rust-regression rust-regression-scoped miri-cd-kernel dep-audit cargo-deny-check mcp-smoke e027-validate studio-run studio-check profile-tensor-avt x87-strategy-bench x87-strategy-perf x87-strategy-hyperfine x87-strategy-flamegraph x87-givens-microbench x87-givens-microbench-perf jacobi-backend-sweep jacobi-backend-perf jacobi-backend-flamegraph jacobi-backend-samply jacobi-backend-samply-compare gpu-bench gpu-bench-ncu gpu-bench-nsys
 .PHONY: cpu-bench cpu-bench-perf cpu-bench-cachegrind cpu-bench-flamegraph parity-bench parity-report
 .PHONY: pre-push-gate-scoped submodule-sync gate-local gate-ci-registry gate-ci-rust gate-audit gate-audit-fast data-core-pure-check
-.PHONY: cache-status cache-sweep cache-purge-exp cache-check cache-check-force
+.PHONY: cache-status cache-sweep cache-sweep-soft cache-purge-exp cache-check cache-check-force
 .PHONY: v6-branch-transport-artifacts pathion-control-artifacts pathion-resonance-artifacts
 .PHONY: registry-control-plane-gate-readonly registry-acceptance-gate-readonly
 .PHONY: rust-parity rust-release-fat-lto rust-pgo-instrument rust-pgo-merge rust-pgo-build
@@ -91,7 +91,7 @@ REPO_TMPDIR ?= $(or $(TMPDIR),/tmp)
 REPO_PATH_HASH ?= $(shell printf "%s" "$(CURDIR)" | sha256sum | cut -c1-16)
 REPO_TMP_CARGO_ROOT ?= $(REPO_TMPDIR)/open_gororoba-cargo-build/gate/$(REPO_PATH_HASH)
 REPO_CARGO_HOME ?= $(CURDIR)/.cache/cargo-home
-CARGO_CACHE_REPO_BUDGET_GIB ?= 8
+CARGO_CACHE_REPO_BUDGET_GIB ?= 150
 CARGO_CACHE_TMP_BUDGET_GIB ?= 16
 # Gate builds use a separate target dir from ambient (LSP/editor) builds to
 # avoid file-lock contention during concurrent cargo check / nextest runs.
@@ -592,7 +592,7 @@ data-core-pure-check:
 # Experimental target dirs: MUST be named .cache/exp-<name>-target/
 # Use: CARGO_TARGET_DIR=$(CURDIR)/.cache/exp-myname-target cargo ...
 # Clean: make cache-purge-exp
-.PHONY: cache-status cache-sweep cache-purge-exp cache-check cache-check-force cache-sweep-dry-run
+.PHONY: cache-status cache-sweep cache-sweep-soft cache-purge-exp cache-check cache-check-force cache-sweep-dry-run
 
 cache-status:
 	@# TIER-8 (2026-05-12): single cargo target dir at .cache/gate-target.
@@ -623,8 +623,12 @@ cache-status:
 #     Anything older than this many days is removed.
 #   CACHE_SWEEP_DEBUG_KEEP_DAYS (default 14): gate-cbuild debug wipe
 #     threshold. Set to 0 to never auto-wipe (let cargo-sweep handle).
+#   CACHE_SWEEP_PRESSURE_TARGET_MB (default CACHE_CHECK_SOFT_MB): after the
+#     normal age sweep, cache-sweep-soft removes regenerable gate-cbuild
+#     intermediates when total cargo cache pressure is still above this limit.
 CACHE_SWEEP_KEEP_DAYS ?= 7
 CACHE_SWEEP_DEBUG_KEEP_DAYS ?= 14
+CACHE_SWEEP_PRESSURE_TARGET_MB ?= $(CACHE_CHECK_SOFT_MB)
 
 cache-sweep:
 	@# TIER-8 (2026-05-12): single canonical target dir at .cache/gate-target.
@@ -656,6 +660,22 @@ cache-sweep:
 	fi
 	@echo "Post-sweep size: $$(du -sh .cache 2>/dev/null | cut -f1)"
 
+cache-sweep-soft:
+	@$(MAKE) -s cache-sweep
+	@GATE_MB=$$(du -sm .cache/gate-target 2>/dev/null | cut -f1 || printf '0'); \
+	CBUILD_MB=$$(du -sm .cache/gate-cbuild 2>/dev/null | cut -f1 || printf '0'); \
+	TARGET_MB=$$(du -sm target 2>/dev/null | cut -f1 || printf '0'); \
+	TOTAL=$$((GATE_MB + CBUILD_MB + TARGET_MB)); \
+	LIMIT=$${CACHE_SWEEP_PRESSURE_TARGET_MB:-$${CACHE_CHECK_SOFT_MB:-153600}}; \
+	if [ "$$TOTAL" -gt "$$LIMIT" ] && [ "$$CBUILD_MB" -gt 0 ] && [ -d .cache/gate-cbuild ]; then \
+	    printf '[cache-sweep-soft] size pressure: %dMB > %dMB; removing regenerable gate-cbuild intermediates (%dMB)\n' "$$TOTAL" "$$LIMIT" "$$CBUILD_MB"; \
+	    rm -rf .cache/gate-cbuild; \
+	else \
+	    printf '[cache-sweep-soft] no size-pressure purge needed (total=%dMB limit=%dMB gate-cbuild=%dMB)\n' "$$TOTAL" "$$LIMIT" "$$CBUILD_MB"; \
+	fi
+	@rm -f "$(CACHE_CHECK_SENTINEL)"
+	@$(MAKE) -s cache-check-force
+
 # cache-sweep-dry-run: show what would be removed without removing.
 .PHONY: cache-sweep-dry-run
 cache-sweep-dry-run:
@@ -685,7 +705,8 @@ cache-purge-exp:
 # Cache size check: FAILS at configurable thresholds (plan P1.S3.T5).
 # WHY: prior target was warn-only and let 669 GB accumulate before
 # discovery in 2026-04 audit. Hard cap blocks push via pre-push hook.
-# Soft threshold warns without failing.
+# Soft cap is also an error: warnings-as-errors means gate diagnostics must be
+# actionable failures, not non-blocking noise.
 #
 # Tunable via env vars:
 #   CACHE_CHECK_SOFT_MB  (default 153600  = 150 GB)
@@ -721,10 +742,11 @@ cache-check-force:
 	SOFT=$${CACHE_CHECK_SOFT_MB:-153600}; \
 	HARD=$${CACHE_CHECK_HARD_MB:-256000}; \
 	if [ "$$TOTAL" -gt "$$HARD" ]; then \
-		printf '[cache-check] FAIL: cargo dirs total %dGB (>%dGB hard cap). Run: make cache-sweep\n' "$$((TOTAL / 1024))" "$$((HARD / 1024))"; \
+		printf '[cache-check] FAIL: cargo dirs total %dGB (>%dGB hard cap). Run: make cache-sweep-soft\n' "$$((TOTAL / 1024))" "$$((HARD / 1024))"; \
 		exit 1; \
 	elif [ "$$TOTAL" -gt "$$SOFT" ]; then \
-		printf '[cache-check] WARN: cargo dirs total %dGB (>%dGB soft cap). Run: make cache-sweep soon.\n' "$$((TOTAL / 1024))" "$$((SOFT / 1024))"; \
+		printf '[cache-check] FAIL: cargo dirs total %dGB (>%dGB soft cap). Run: make cache-sweep-soft\n' "$$((TOTAL / 1024))" "$$((SOFT / 1024))"; \
+		exit 1; \
 	else \
 		printf '[cache-check] OK: cargo dirs at %dMB (soft=%dGB hard=%dGB)\n' "$$TOTAL" "$$((SOFT / 1024))" "$$((HARD / 1024))"; \
 	fi
@@ -1789,6 +1811,7 @@ registry-export-markdown: registry-refresh registry-build
 # Keep mirror freshness and governance checks on the LLVM-backed gate lane for the
 # same reason as registry-export-markdown above.
 registry-verify-mirrors:
+	set -e; \
 	legacy_flag=""; \
 	claims_value="true"; \
 	if [ "$(MARKDOWN_EXPORT_LEGACY_CLAIMS_SYNC)" = "0" ]; then claims_value="false"; fi; \
@@ -1796,10 +1819,10 @@ registry-verify-mirrors:
 	$(REPO_CARGO_TARGET_DIR)/release-gate/verify-registry-mirror-freshness \
 		--out-dir "crates/data_core/src/registry_mirrors" $$legacy_flag --legacy-claims-sync $$claims_value
 	$(MAKE) registry-verify-markdown-toml-first
-	$(REPO_CARGO_TARGET_DIR)/release-gate/governance-verify markdown-headers; \
-	$(REPO_CARGO_TARGET_DIR)/release-gate/governance-verify markdown-parity; \
-	$(REPO_CARGO_TARGET_DIR)/release-gate/governance-verify mirror-immutability; \
-	$(REPO_CARGO_TARGET_DIR)/release-gate/governance-verify claim-ticket-mirrors;
+	$(REPO_CARGO_TARGET_DIR)/release-gate/governance-verify markdown-headers
+	$(REPO_CARGO_TARGET_DIR)/release-gate/governance-verify markdown-parity
+	$(REPO_CARGO_TARGET_DIR)/release-gate/governance-verify mirror-immutability
+	$(REPO_CARGO_TARGET_DIR)/release-gate/governance-verify claim-ticket-mirrors
 
 registry-sync-project-counters:
 	$(CARGO_ENV) cargo run --release --bin project-counter-sync
@@ -2066,6 +2089,14 @@ rocq-proofs:
 rocq-proofs-check:
 	@if [ -f proofs/Makefile ]; then \
 	    $(MAKE) -C proofs check; \
+	else \
+	    echo "SKIP: proofs/ not present (submodule not initialized? run: make submodule-sync)"; \
+	fi
+
+rocq-makefile-check:
+	@command -v rocq >/dev/null 2>&1 || { echo "ERROR: rocq not found. See docs/requirements/rocq.md"; exit 1; }
+	@if [ -f proofs/Makefile ]; then \
+	    $(MAKE) -C proofs rocq-makefile-check; \
 	else \
 	    echo "SKIP: proofs/ not present (submodule not initialized? run: make submodule-sync)"; \
 	fi

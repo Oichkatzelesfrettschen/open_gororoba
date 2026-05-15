@@ -122,7 +122,7 @@ Each tool listed below is available via a dedicated `make` target. Tools marked 
 | repo-audit | `make repo-audit` | (built-in) | no | active |
 | repo-audit (strict baseline) | `make repo-audit-strict` | (built-in) | no | active |
 | repo-audit (strict unjustified) | `make repo-audit-strict-unjustified` | (built-in) | no | active |
-| Cache Sweep | `make cache-sweep` | `cargo install cargo-sweep` | no | active |
+| Cache Sweep | `make cache-sweep-soft` | `cargo install cargo-sweep` | no | active |
 | audit-deep (structured) | `make audit-deep-structured` | (built-in) | no | active |
 | gororoba-db | -- | (built-in) | no | active |
 | provenance export-control-plane | -- | (built-in) | no | active |

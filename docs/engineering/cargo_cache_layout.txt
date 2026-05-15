@@ -10,7 +10,7 @@ Current layout
 --------------
 - Final workspace-local artifacts live under `.cache/` inside the repo.
 - Heavy intermediate build state for Make/scripts lives under
-  `${TMPDIR:-/tmp}/open_gororoba-cargo-build/`.
+  `.cache/gate-cbuild/<repo-hash>/`.
 - `scripts/bootstrap_user_local_xdg.sh` chooses the first writable build-dir
   root in this order: `${TMPDIR}` (if set), `/tmp`,
   `${XDG_CACHE_HOME:-~/.cache}`.
@@ -28,22 +28,39 @@ the global Cargo download cache.
 
 Practical commands
 ------------------
+- `make cache-status`
+- `make cache-check-force`
+- `make cache-sweep-soft`
 - `make cargo-cache-status`
 - `make cargo-cache-prune`
 - `make cargo-cache-smoke`
 - `scripts/bootstrap_user_local_xdg.sh`
 
-Budget warnings
----------------
-`make cargo-cache-status` now emits soft warnings only. It does not fail the
-build. Default budgets:
+Budget enforcement
+------------------
+All cache budget overflow is an error. `make cache-check-force` fails above the
+soft cap and names `make cache-sweep-soft` as the remediation. The remediation
+first runs the normal age-based sweep, then removes regenerable
+`.cache/gate-cbuild/` intermediates only if cache pressure still exceeds the
+soft cap.
 
-- repo cache budget: 8 GiB
+Default `cache-check` budgets:
+
+- soft cap: 150 GiB
+- hard cap: 250 GiB
+
+`make cargo-cache-status` reports the same repo-local cache family as
+`status.*` rows and exits nonzero when a budget is exceeded. Default status
+budgets:
+
+- repo cache budget: 150 GiB
 - tmp cache budget: 16 GiB
 
 Override them ad hoc if needed:
 
-- `CARGO_CACHE_REPO_BUDGET_GIB=12 make cargo-cache-status`
+- `CACHE_CHECK_SOFT_MB=204800 make cache-check-force`
+- `CACHE_SWEEP_PRESSURE_TARGET_MB=204800 make cache-sweep-soft`
+- `CARGO_CACHE_REPO_BUDGET_GIB=200 make cargo-cache-status`
 - `CARGO_CACHE_TMP_BUDGET_GIB=32 make cargo-cache-status`
 
 Decision guidance
