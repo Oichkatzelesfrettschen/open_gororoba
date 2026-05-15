@@ -19,7 +19,7 @@
 
 #![cfg(feature = "vulkan")]
 
-use ash::{Entry, Instance, Device, vk};
+use ash::{Device, Entry, Instance, vk};
 use std::ffi::CString;
 
 use super::shaders::quantize_spv;
@@ -275,11 +275,7 @@ impl VulkanQuantizer {
         boundaries: &[f32],
         out: &mut [u8],
     ) -> Result<(), VulkanQuantizerError> {
-        assert_eq!(
-            values.len(),
-            out.len(),
-            "values.len() must equal out.len()"
-        );
+        assert_eq!(values.len(), out.len(), "values.len() must equal out.len()");
         let n_values = values.len();
         if n_values == 0 {
             return Ok(());
@@ -377,14 +373,13 @@ impl VulkanQuantizer {
 
         // ---- Allocate + record + submit command buffer. ----
         let cmd_buf = unsafe {
-            self.device.allocate_command_buffers(
-                &vk::CommandBufferAllocateInfo {
+            self.device
+                .allocate_command_buffers(&vk::CommandBufferAllocateInfo {
                     command_pool: self.cmd_pool,
                     level: vk::CommandBufferLevel::PRIMARY,
                     command_buffer_count: 1,
                     ..Default::default()
-                },
-            )
+                })
         }?[0];
         let push_constants: [i32; 4] = [n_values as i32, n_boundaries as i32, 0, 0];
         let workgroup_count = ((n_values + 255) / 256) as u32;
@@ -396,11 +391,8 @@ impl VulkanQuantizer {
                     ..Default::default()
                 },
             )?;
-            self.device.cmd_bind_pipeline(
-                cmd_buf,
-                vk::PipelineBindPoint::COMPUTE,
-                self.pipeline,
-            );
+            self.device
+                .cmd_bind_pipeline(cmd_buf, vk::PipelineBindPoint::COMPUTE, self.pipeline);
             self.device.cmd_bind_descriptor_sets(
                 cmd_buf,
                 vk::PipelineBindPoint::COMPUTE,
@@ -437,13 +429,14 @@ impl VulkanQuantizer {
                 fence,
             )?;
             // Wait up to 5 seconds for the GPU to finish.
-            self.device
-                .wait_for_fences(&[fence], true, 5_000_000_000)?;
+            self.device.wait_for_fences(&[fence], true, 5_000_000_000)?;
         }
 
         // ---- Read back packed indices and unpack to u8. ----
         let mut packed = vec![0u32; packed_words];
-        unsafe { self.download_u32(indices_mem, &mut packed)?; }
+        unsafe {
+            self.download_u32(indices_mem, &mut packed)?;
+        }
         for (i, slot) in out.iter_mut().enumerate() {
             let word = packed[i / 4];
             let shift = (i % 4) * 8;
@@ -453,8 +446,7 @@ impl VulkanQuantizer {
         // ---- Cleanup: per-call resources. ----
         unsafe {
             self.device.destroy_fence(fence, None);
-            self.device
-                .free_command_buffers(self.cmd_pool, &[cmd_buf]);
+            self.device.free_command_buffers(self.cmd_pool, &[cmd_buf]);
             self.device.destroy_descriptor_pool(pool, None);
             self.device.free_memory(indices_mem, None);
             self.device.free_memory(boundaries_mem, None);
@@ -533,7 +525,9 @@ impl VulkanQuantizer {
     ) -> Result<(), VulkanQuantizerError> {
         unsafe {
             let size = (values.len() * 4) as vk::DeviceSize;
-            let ptr = self.device.map_memory(mem, 0, size, vk::MemoryMapFlags::empty())?
+            let ptr = self
+                .device
+                .map_memory(mem, 0, size, vk::MemoryMapFlags::empty())?
                 as *mut f32;
             std::ptr::copy_nonoverlapping(values.as_ptr(), ptr, values.len());
             self.device.unmap_memory(mem);
@@ -549,7 +543,9 @@ impl VulkanQuantizer {
     ) -> Result<(), VulkanQuantizerError> {
         unsafe {
             let size = (words.len() * 4) as vk::DeviceSize;
-            let ptr = self.device.map_memory(mem, 0, size, vk::MemoryMapFlags::empty())?
+            let ptr = self
+                .device
+                .map_memory(mem, 0, size, vk::MemoryMapFlags::empty())?
                 as *mut u32;
             std::ptr::copy_nonoverlapping(words.as_ptr(), ptr, words.len());
             self.device.unmap_memory(mem);
@@ -565,7 +561,9 @@ impl VulkanQuantizer {
     ) -> Result<(), VulkanQuantizerError> {
         unsafe {
             let size = (words.len() * 4) as vk::DeviceSize;
-            let ptr = self.device.map_memory(mem, 0, size, vk::MemoryMapFlags::empty())?
+            let ptr = self
+                .device
+                .map_memory(mem, 0, size, vk::MemoryMapFlags::empty())?
                 as *const u32;
             std::ptr::copy_nonoverlapping(ptr, words.as_mut_ptr(), words.len());
             self.device.unmap_memory(mem);
@@ -586,8 +584,7 @@ impl Drop for VulkanQuantizer {
                 .destroy_pipeline_layout(self.pipeline_layout, None);
             self.device
                 .destroy_descriptor_set_layout(self.descriptor_set_layout, None);
-            self.device
-                .destroy_shader_module(self.shader_module, None);
+            self.device.destroy_shader_module(self.shader_module, None);
             self.device.destroy_device(None);
             self.instance.destroy_instance(None);
         }

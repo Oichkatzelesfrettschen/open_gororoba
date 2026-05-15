@@ -30,11 +30,14 @@ use provenance_core::{
 };
 use toml::Value;
 
-use super::compat_render::{
-    bool_toml, external_sources_compat_toml_export_header, external_sources_markdown_export_header,
-};
-use super::toml_helpers::{
-    bool_field, optional_integer_field, optional_string_field, string_array_field, string_field,
+use super::{
+    compat_render::{
+        bool_toml, external_sources_compat_toml_export_header,
+        external_sources_markdown_export_header,
+    },
+    toml_helpers::{
+        bool_field, optional_integer_field, optional_string_field, string_array_field, string_field,
+    },
 };
 
 pub(crate) fn load_external_source_contracts_from_registry(

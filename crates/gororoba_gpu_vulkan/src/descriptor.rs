@@ -10,8 +10,7 @@ use std::sync::Arc;
 
 use ash::vk;
 
-use crate::device::Device;
-use crate::error::Result;
+use crate::{device::Device, error::Result};
 
 /// Descriptor type vocabulary aligned with the workspace's prior usage.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]

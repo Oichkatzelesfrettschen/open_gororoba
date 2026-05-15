@@ -21,10 +21,12 @@ use provenance_core::PantheonSeedSummary;
 use rusqlite::params;
 use toml::Value;
 
-use crate::ProvenanceStore;
-use crate::sql_helpers::scalar_count;
-use crate::toml_helpers::{
-    join_refs, load_toml_value, optional_integer_field, string_array_field, string_field,
+use crate::{
+    ProvenanceStore,
+    sql_helpers::scalar_count,
+    toml_helpers::{
+        join_refs, load_toml_value, optional_integer_field, string_array_field, string_field,
+    },
 };
 
 impl ProvenanceStore {

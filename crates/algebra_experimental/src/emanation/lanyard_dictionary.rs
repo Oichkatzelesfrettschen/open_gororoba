@@ -18,8 +18,10 @@ use algebra_analysis::boxkites::{
     Assessor, EdgeSignType, FaceSignPattern, classify_face_pattern, edge_sign_type, find_box_kites,
 };
 
-use super::sail_loop::boxkite_faces;
-use super::strutted_et::{StruttedEmanationTable, create_strutted_et};
+use super::{
+    sail_loop::boxkite_faces,
+    strutted_et::{StruttedEmanationTable, create_strutted_et},
+};
 
 /// A signed edge in the box-kite adjacency graph.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]

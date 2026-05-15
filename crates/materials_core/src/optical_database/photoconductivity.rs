@@ -11,7 +11,7 @@
 
 use num_complex::Complex64;
 
-use super::{C, DrudeLorentzParams, EPS_0, EV_TO_RADS, E_CHARGE, M_E_KG};
+use super::{C, DrudeLorentzParams, E_CHARGE, EPS_0, EV_TO_RADS, M_E_KG};
 
 impl DrudeLorentzParams {
     /// Plasma frequency shift `Delta_omega_p` in eV from optically injected

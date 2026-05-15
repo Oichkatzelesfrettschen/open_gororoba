@@ -10,8 +10,7 @@
 //! - Path normalization (`to_repo_rel`) used by every fingerprint and
 //!   snapshot writer to record paths relative to the repo root.
 
-use std::fs;
-use std::path::Path;
+use std::{fs, path::Path};
 
 use anyhow::{Context, Result};
 use blake3::Hasher;

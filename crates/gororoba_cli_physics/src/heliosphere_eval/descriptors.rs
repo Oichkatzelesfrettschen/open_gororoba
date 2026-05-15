@@ -15,9 +15,7 @@
 
 use data_core::{HELIOSPHERE_INVARIANT_DIM, HeliosphereInvariantSample};
 
-use super::DESCRIPTOR_DIM;
-use super::public_types::LabeledInvariantSample;
-use super::stats::l2_norm_sq;
+use super::{DESCRIPTOR_DIM, public_types::LabeledInvariantSample, stats::l2_norm_sq};
 
 pub(super) trait HasBField {
     fn b_field(&self) -> [f64; 4];

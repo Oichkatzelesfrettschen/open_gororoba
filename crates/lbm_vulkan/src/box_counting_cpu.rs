@@ -120,7 +120,12 @@ pub fn fractal_dimension_counts_cpu(
     let sizes = default_box_sizes(n_min);
     sizes
         .into_iter()
-        .map(|s| (s as u32, count_occupied_boxes(rho, threshold, nx, ny, nz, s)))
+        .map(|s| {
+            (
+                s as u32,
+                count_occupied_boxes(rho, threshold, nx, ny, nz, s),
+            )
+        })
         .collect()
 }
 

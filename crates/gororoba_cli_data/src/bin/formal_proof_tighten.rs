@@ -237,11 +237,9 @@ fn main() -> Result<()> {
         .or_else(|| std::env::var("USER").ok())
         .unwrap_or_else(|| "unknown".to_string());
 
-    let conn = rusqlite::Connection::open_with_flags(
-        &args.db,
-        rusqlite::OpenFlags::SQLITE_OPEN_READ_ONLY,
-    )
-    .with_context(|| format!("open canonical db {}", args.db.display()))?;
+    let conn =
+        rusqlite::Connection::open_with_flags(&args.db, rusqlite::OpenFlags::SQLITE_OPEN_READ_ONLY)
+            .with_context(|| format!("open canonical db {}", args.db.display()))?;
 
     // Walk only pending:reviewed_pending rows; the first-pass
     // classifications (na_*, external:*, proofs/*) are out of scope.

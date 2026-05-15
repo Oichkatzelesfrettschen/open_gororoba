@@ -661,8 +661,6 @@ pub fn build_zd_adjacency_bucketed(dim: usize) -> (Vec<CrossPair>, Vec<Vec<u8>>)
     (pairs, matrix)
 }
 
-
-
 // ---------------------------------------------------------------------------
 // Helpers: Lattice CSV loading
 // ---------------------------------------------------------------------------

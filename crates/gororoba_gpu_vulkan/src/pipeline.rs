@@ -5,15 +5,16 @@
 //! and cd_kernel turboquant (quantizer.rs:216-225) that build identical
 //! vk::ComputePipelineCreateInfo from a ShaderModule + PipelineLayout.
 
-use std::ffi::CString;
-use std::sync::Arc;
+use std::{ffi::CString, sync::Arc};
 
 use ash::vk;
 
-use crate::descriptor::DescriptorSetLayout;
-use crate::device::Device;
-use crate::error::{Result, VulkanError};
-use crate::shader::ShaderModule;
+use crate::{
+    descriptor::DescriptorSetLayout,
+    device::Device,
+    error::{Result, VulkanError},
+    shader::ShaderModule,
+};
 
 /// Builder for a compute pipeline.
 pub struct ComputePipelineBuilder<'a> {
@@ -45,21 +46,14 @@ impl<'a> ComputePipelineBuilder<'a> {
 
     /// Build the pipeline + return it bundled with its pipeline layout.
     pub fn build(self) -> Result<ComputePipeline> {
-        let set_layouts: Vec<vk::DescriptorSetLayout> = self
-            .descriptor_layouts
-            .iter()
-            .map(|l| l.raw())
-            .collect();
+        let set_layouts: Vec<vk::DescriptorSetLayout> =
+            self.descriptor_layouts.iter().map(|l| l.raw()).collect();
         let pl_ci = vk::PipelineLayoutCreateInfo::default()
             .set_layouts(&set_layouts)
             .push_constant_ranges(&self.push_constant_ranges);
         // SAFETY: set_layouts + push_constant_ranges outlive this call;
         // ash copies them into a driver-owned object.
-        let pipeline_layout = unsafe {
-            self.device
-                .raw()
-                .create_pipeline_layout(&pl_ci, None)
-        }?;
+        let pipeline_layout = unsafe { self.device.raw().create_pipeline_layout(&pl_ci, None) }?;
 
         let entry_cstring =
             CString::new(self.shader.entry_point()).expect("entry_point free of NUL");
@@ -83,9 +77,12 @@ impl<'a> ComputePipelineBuilder<'a> {
         }
         .map_err(|(_, err)| VulkanError::Vk(err))?;
 
-        let pipeline = pipelines.into_iter().next().ok_or(
-            VulkanError::UnsupportedFeature("create_compute_pipelines returned empty vec"),
-        )?;
+        let pipeline = pipelines
+            .into_iter()
+            .next()
+            .ok_or(VulkanError::UnsupportedFeature(
+                "create_compute_pipelines returned empty vec",
+            ))?;
 
         Ok(ComputePipeline {
             device: Arc::new(self.device.clone()),
@@ -118,9 +115,7 @@ impl Drop for ComputePipeline {
         // keeps the device alive past this Drop.
         unsafe {
             self.device.raw().destroy_pipeline(self.raw, None);
-            self.device
-                .raw()
-                .destroy_pipeline_layout(self.layout, None);
+            self.device.raw().destroy_pipeline_layout(self.layout, None);
         }
     }
 }

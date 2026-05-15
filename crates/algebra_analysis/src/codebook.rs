@@ -27,10 +27,10 @@ use std::collections::HashMap;
 // at algebra_analysis::codebook::{LatticeVector, is_in_*}.
 pub mod lambda_predicates;
 pub use lambda_predicates::{
-    LatticeVector, enumerate_lambda_4096, is_in_base_universe, is_in_lambda_256,
-    is_in_lambda_512, is_in_lambda_512_minus_k, is_in_lambda_1024,
-    is_in_lambda_1024_minus_k, is_in_lambda_2048, is_in_lambda_2048_minus_k,
-    is_in_lambda_4096, is_in_sbase_minus_k, verify_octonion_parity_constraints,
+    LatticeVector, enumerate_lambda_4096, is_in_base_universe, is_in_lambda_256, is_in_lambda_512,
+    is_in_lambda_512_minus_k, is_in_lambda_1024, is_in_lambda_1024_minus_k, is_in_lambda_2048,
+    is_in_lambda_2048_minus_k, is_in_lambda_4096, is_in_sbase_minus_k,
+    verify_octonion_parity_constraints,
 };
 
 // Forbidden-prefix enumeration (ForbiddenFamily, ForbiddenPoint,
@@ -52,7 +52,6 @@ pub use lattice_arith::{
     SliceCharacterization, apply_scalar_shadow, characterize_pinned_slice, lattice_add_f3,
     lattice_diff, lattice_negate_f3,
 };
-
 
 // Layer 0: TypedCarrier, CarrierSet, CarrierSetValidation live in
 // the `carriers` submodule. Re-exported pub so external paths
@@ -189,8 +188,6 @@ impl EncodingDictionary {
     }
 }
 
-
-
 // Layer 2: Elevated Addition (lattice_add, try_narrow_to_lattice,
 // ElevatedResult enum, ElevatedAdditionStats, ElevatedResultF3 enum,
 // ElevatedAdditionStatsF3, plus four EncodingDictionary methods via
@@ -225,8 +222,10 @@ pub use coupling::{BasisCouplingResult, MultiplicationCoupling, compute_multipli
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-    use super::linear_algebra::{det_nxn, gram_schmidt_basis, invert_nxn};
+    use super::{
+        linear_algebra::{det_nxn, gram_schmidt_basis, invert_nxn},
+        *,
+    };
 
     #[test]
     fn test_typed_carrier_from_i32_vec() {

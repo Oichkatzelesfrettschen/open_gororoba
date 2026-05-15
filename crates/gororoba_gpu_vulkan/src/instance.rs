@@ -181,4 +181,3 @@ impl Drop for InstanceInner {
         }
     }
 }
-

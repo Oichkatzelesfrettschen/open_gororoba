@@ -688,13 +688,16 @@ mod tests {
         // (sorted desc) to within 1e-9.
         let mut seed: u64 = 0xC0FFEE;
         let mut next = || {
-            seed = seed.wrapping_mul(6364136223846793005).wrapping_add(1442695040888963407);
+            seed = seed
+                .wrapping_mul(6364136223846793005)
+                .wrapping_add(1442695040888963407);
             ((seed >> 33) as f64) / (u32::MAX as f64) - 0.5
         };
         let n_rows = 32;
         let n_cols = 8;
-        let mat: Vec<Vec<f64>> =
-            (0..n_rows).map(|_| (0..n_cols).map(|_| next()).collect()).collect();
+        let mat: Vec<Vec<f64>> = (0..n_rows)
+            .map(|_| (0..n_cols).map(|_| next()).collect())
+            .collect();
         let mut sv_full = singular_values(&mat);
         let sv_gram = singular_values_via_gram(&mat);
         sv_full.sort_by(|a, b| b.partial_cmp(a).unwrap_or(std::cmp::Ordering::Equal));

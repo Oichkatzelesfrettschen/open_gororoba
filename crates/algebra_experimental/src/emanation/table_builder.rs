@@ -18,7 +18,9 @@
 
 use std::collections::{HashMap, HashSet};
 
-use algebra_analysis::boxkites::{CrossPair, cross_assessors, motif_components_for_cross_assessors};
+use algebra_analysis::boxkites::{
+    CrossPair, cross_assessors, motif_components_for_cross_assessors,
+};
 use cd_kernel::cayley_dickson::cd_basis_mul_sign;
 
 use super::{EmanationTable, EtCell, EtScaling, MandalaSummary};

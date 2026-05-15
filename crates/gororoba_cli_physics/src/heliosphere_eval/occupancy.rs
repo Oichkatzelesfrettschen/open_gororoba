@@ -14,8 +14,10 @@
 
 use std::collections::{BTreeMap, BTreeSet};
 
-use super::public_types::{LabeledInvariantSample, RowKey};
-use super::stats::ratio_usize;
+use super::{
+    public_types::{LabeledInvariantSample, RowKey},
+    stats::ratio_usize,
+};
 
 pub(super) type OccupancyTileKey = (String, String, String, u16, u16, u8, Option<u32>);
 

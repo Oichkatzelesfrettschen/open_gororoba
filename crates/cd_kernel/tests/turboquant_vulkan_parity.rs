@@ -12,10 +12,14 @@
 
 #![cfg(feature = "vulkan")]
 
-use cd_kernel::lloyd_max::get_codebook;
-use cd_kernel::turboquant::backend::{Backend, BackendQuantizer};
-use cd_kernel::turboquant::dispatch::SimdLevel;
-use cd_kernel::turboquant::vulkan::VulkanQuantizer;
+use cd_kernel::{
+    lloyd_max::get_codebook,
+    turboquant::{
+        backend::{Backend, BackendQuantizer},
+        dispatch::SimdLevel,
+        vulkan::VulkanQuantizer,
+    },
+};
 
 #[test]
 #[ignore = "gpu (Vulkan ICD + compute-capable adapter required)"]

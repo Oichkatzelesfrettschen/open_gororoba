@@ -7,8 +7,7 @@
 //! `HostPolicyRegistry` is the deserialization shape for the TOML
 //! configuration consumed by `load_host_policy_registry`.
 
-use std::fs;
-use std::path::Path;
+use std::{fs, path::Path};
 
 use super::{DownloadBackend, HostPolicyRegistry, HostRoutingPolicy, RetryClass, TransferError};
 

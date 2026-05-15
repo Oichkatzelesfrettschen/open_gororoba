@@ -20,15 +20,15 @@ use std::collections::BTreeMap;
 use anyhow::Result;
 use data_core::{SparseHardwareEnvelope, estimate_sparse_execution_plan};
 
-use super::logistic::{apply_scaler, fit_scaler, predict_scores, train_logistic_model};
-use super::metrics::threshold_metrics;
-use super::occupancy::occupancy_tile_fraction_for_scores;
-use super::public_types::{LabeledInvariantSample, RowKey};
-use super::splits::{split_samples, split_samples_with_seed};
 use super::{
-    DescriptorProfile, FeatureMode, FittedSparsePolicyProfile, NormalizedSample,
-    SparsePolicyKind, ThresholdedSparsePolicy, ViewMode, binary_labels, feature_matrix,
+    DescriptorProfile, FeatureMode, FittedSparsePolicyProfile, NormalizedSample, SparsePolicyKind,
+    ThresholdedSparsePolicy, ViewMode, binary_labels, feature_matrix,
     feature_matrix_with_descriptor_profile,
+    logistic::{apply_scaler, fit_scaler, predict_scores, train_logistic_model},
+    metrics::threshold_metrics,
+    occupancy::occupancy_tile_fraction_for_scores,
+    public_types::{LabeledInvariantSample, RowKey},
+    splits::{split_samples, split_samples_with_seed},
 };
 
 pub(super) fn best_budgeted_threshold(

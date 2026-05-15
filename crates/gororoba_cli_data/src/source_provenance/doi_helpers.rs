@@ -13,8 +13,7 @@
 use toml::Value;
 use url::Url;
 
-use super::text_helpers::doi_re;
-use super::{dedupe, extract_strings};
+use super::{dedupe, extract_strings, text_helpers::doi_re};
 
 pub(super) fn normalize_doi(doi: &str) -> String {
     let mut value = doi.trim().to_string();

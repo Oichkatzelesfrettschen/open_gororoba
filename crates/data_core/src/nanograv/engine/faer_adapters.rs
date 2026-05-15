@@ -16,7 +16,10 @@
 //! All items `pub(super)`.
 
 use anyhow::Result;
-use faer::{Mat as FaerMat, Side, prelude::{Solve, SolveLstsq}};
+use faer::{
+    Mat as FaerMat, Side,
+    prelude::{Solve, SolveLstsq},
+};
 use nalgebra::{DMatrix, DVector};
 
 use super::StructuredCovariance;

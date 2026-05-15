@@ -11,8 +11,10 @@
 
 use ash::vk;
 
-use crate::error::{Result, VulkanError};
-use crate::instance::Instance;
+use crate::{
+    error::{Result, VulkanError},
+    instance::Instance,
+};
 
 /// What kind of queue family is needed?
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -71,13 +73,9 @@ impl Adapter {
                 .find(|(_, p)| p.queue_flags.contains(needed_flags))
             {
                 // SAFETY: pdev was just enumerated from this instance.
-                let properties =
-                    unsafe { instance.raw().get_physical_device_properties(pdev) };
-                let memory_properties = unsafe {
-                    instance
-                        .raw()
-                        .get_physical_device_memory_properties(pdev)
-                };
+                let properties = unsafe { instance.raw().get_physical_device_properties(pdev) };
+                let memory_properties =
+                    unsafe { instance.raw().get_physical_device_memory_properties(pdev) };
                 return Ok(Self {
                     physical_device: pdev,
                     queue_family_index: u32::try_from(qfi).unwrap_or(u32::MAX),
@@ -108,9 +106,8 @@ impl Adapter {
         let nul = bytes.iter().position(|b| *b == 0).unwrap_or(bytes.len());
         // properties.device_name is i8 in ash 0.38; reinterpret as u8 for
         // String conversion.
-        let u8_slice: &[u8] = unsafe {
-            std::slice::from_raw_parts(bytes.as_ptr().cast::<u8>(), nul)
-        };
+        let u8_slice: &[u8] =
+            unsafe { std::slice::from_raw_parts(bytes.as_ptr().cast::<u8>(), nul) };
         String::from_utf8_lossy(u8_slice).into_owned()
     }
 }

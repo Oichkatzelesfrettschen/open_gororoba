@@ -495,13 +495,7 @@ fn python_bool(value: bool) -> &'static str {
     if value { "True" } else { "False" }
 }
 
-fn emit_local(
-    scope: &str,
-    run_rust: bool,
-    run_governance: bool,
-    run_check: bool,
-    verbose: bool,
-) {
+fn emit_local(scope: &str, run_rust: bool, run_governance: bool, run_check: bool, verbose: bool) {
     if verbose {
         eprintln!("[ci-routing] run_rust={}", python_bool(run_rust));
         eprintln!(

@@ -659,4 +659,3 @@ pub(crate) enum NotebookAction {
         description: String,
     },
 }
-

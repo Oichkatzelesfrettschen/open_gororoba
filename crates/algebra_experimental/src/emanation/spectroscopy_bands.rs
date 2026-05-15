@@ -18,9 +18,11 @@
 //! varies across all struts in a band: a vector of (S, dmz_count,
 //! regime_address) triples enabling quick comparison.
 
-use super::regime_address::regime_address;
-use super::strut_spectroscopy::{StrutClass, classify_strut};
-use super::strutted_et::create_strutted_et;
+use super::{
+    regime_address::regime_address,
+    strut_spectroscopy::{StrutClass, classify_strut},
+    strutted_et::create_strutted_et,
+};
 
 /// Dominant behavior in a spectroscopy band.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]

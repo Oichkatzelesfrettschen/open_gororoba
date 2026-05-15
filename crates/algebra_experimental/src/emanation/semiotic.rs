@@ -11,7 +11,9 @@
 
 use std::collections::HashSet;
 
-use algebra_analysis::boxkites::{Assessor, BoxKite, EdgeSignType, canonical_strut_table, edge_sign_type};
+use algebra_analysis::boxkites::{
+    Assessor, BoxKite, EdgeSignType, canonical_strut_table, edge_sign_type,
+};
 
 /// Strut link type in the semiotic square.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]

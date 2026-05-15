@@ -27,9 +27,11 @@ use std::collections::BTreeMap;
 
 use anyhow::{Result, anyhow};
 
-use super::scalar_math::{dot3, norm3};
-use super::super::timing_model::TimingModel;
-use super::{C_KM_PER_S, GM_SUN_KM3_S2, IndependentObservation, TimingModelExt};
+use super::{
+    super::timing_model::TimingModel,
+    C_KM_PER_S, GM_SUN_KM3_S2, IndependentObservation, TimingModelExt,
+    scalar_math::{dot3, norm3},
+};
 
 pub(super) fn parse_selector_parameter_index(name: &str, prefix: &str) -> Option<usize> {
     name.strip_prefix(prefix)?.parse::<usize>().ok()
@@ -163,10 +165,7 @@ pub(super) fn parameter_prior_sigma(model: &TimingModel, name: &str) -> Option<f
         .map(|step| prior_scale.max(1.0) * 100.0 * step)
 }
 
-pub(super) fn solar_system_shapiro_seconds(
-    sun_from_earth_km: [f64; 3],
-    sky_unit: [f64; 3],
-) -> f64 {
+pub(super) fn solar_system_shapiro_seconds(sun_from_earth_km: [f64; 3], sky_unit: [f64; 3]) -> f64 {
     let radius = norm3(sun_from_earth_km);
     if radius <= 0.0 {
         return 0.0;

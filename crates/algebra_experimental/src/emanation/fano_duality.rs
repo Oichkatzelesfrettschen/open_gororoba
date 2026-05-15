@@ -16,8 +16,7 @@
 use std::collections::HashSet;
 
 use algebra_analysis::boxkites::{
-    Assessor, O_TRIPS, automorpheme_assessors, find_box_kites,
-    motif_components_for_cross_assessors,
+    Assessor, O_TRIPS, automorpheme_assessors, find_box_kites, motif_components_for_cross_assessors,
 };
 
 // ===========================================================================

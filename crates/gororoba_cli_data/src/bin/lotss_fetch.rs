@@ -41,14 +41,12 @@ use std::{
 use verified_core::topology::HardwareTopology;
 use walkdir::WalkDir;
 
-
 // CLI surface (Cli + Cmd subcommand + ReleaseArg/InputFormatArg
 // ValueEnums + label() impls) lives in the `types` submodule.
 // #[path] indirection because this binary has explicit Cargo.toml path.
 #[path = "lotss_fetch/types.rs"]
 mod types;
 use types::*;
-
 
 // ---- Constants ---------------------------------------------------------------
 

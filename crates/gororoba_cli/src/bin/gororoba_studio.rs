@@ -35,8 +35,6 @@ use tokio::{
 mod types;
 use types::*;
 
-
-
 fn now_unix_seconds() -> u64 {
     SystemTime::now()
         .duration_since(UNIX_EPOCH)

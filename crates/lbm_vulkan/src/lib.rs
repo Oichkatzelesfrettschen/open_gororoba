@@ -35,13 +35,13 @@ pub mod chingon_cpu;
 #[cfg(feature = "cubecl")]
 pub mod chingon_cubecl;
 pub mod chingon_vulkan;
-pub mod transform_viscosity_cpu;
-#[cfg(feature = "cubecl")]
-pub mod transform_viscosity_cubecl;
 pub mod compute;
 pub mod coop_matrix_probe;
 pub mod precision_dispatch;
 pub mod swapchain;
+pub mod transform_viscosity_cpu;
+#[cfg(feature = "cubecl")]
+pub mod transform_viscosity_cubecl;
 
 /// Collision mode for the Vulkan LBM engine.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]

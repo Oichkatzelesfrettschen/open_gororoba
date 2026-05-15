@@ -216,7 +216,10 @@ mod tests {
     fn rejects_wrong_rho_length() {
         let bad = vec![0.0f32; 7];
         match count_occupied_boxes_cubecl(&bad, 0.5, 2, 2, 2, 1) {
-            Err(CubeclBoxCountError::RhoLengthMismatch { got: 7, expected: 8 }) => {}
+            Err(CubeclBoxCountError::RhoLengthMismatch {
+                got: 7,
+                expected: 8,
+            }) => {}
             other => panic!("expected RhoLengthMismatch, got {:?}", other),
         }
     }

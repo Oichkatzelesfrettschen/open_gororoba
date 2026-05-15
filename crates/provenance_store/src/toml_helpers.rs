@@ -14,8 +14,7 @@
 //! - Miscellaneous (`trim_trailing_blank_lines`, `host_for_url`,
 //!   `join_refs`, `toml_array_to_json_string`).
 
-use std::fs;
-use std::path::Path;
+use std::{fs, path::Path};
 
 use anyhow::{Context, Result};
 use toml::Value;

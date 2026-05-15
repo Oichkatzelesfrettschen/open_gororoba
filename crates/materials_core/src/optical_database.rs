@@ -800,10 +800,8 @@ impl DrudeLorentzParams {
         Some(eps_0_val)
     }
 
-
     // Bandgap analysis methods (5) extracted to the `bandgap_analysis` submodule
     // (#138 PH-MOD split). See optical_database/bandgap_analysis.rs.
-
 
     // ====================================================================
     // Temperature + dispersion engineering + nonlinear optics (Parts 8-9)
@@ -814,18 +812,15 @@ impl DrudeLorentzParams {
     // extracted to the `temperature_dispersion` submodule (#138 PH-MOD).
     // See optical_database/temperature_dispersion.rs.
 
-
     // SPP / LSPR plasmonics methods (4) extracted to the `plasmonics` submodule
     // (#138 PH-MOD split). See optical_database/plasmonics.rs.
 
     // Fresnel + angular reflectance methods (4) extracted to the `fresnel`
     // submodule (#138 PH-MOD split). See optical_database/fresnel.rs.
 
-
     // ---- Part 11: Magneto-optical + Drude weight diagnostics ----
     // Transport methods (7) extracted to the `transport` submodule
     // (#138 PH-MOD split). See optical_database/transport.rs.
-
 
     // ========================================================================
     // Part 12: Ellipsometry + thermal emission + ENZ + Reststrahlen
@@ -835,7 +830,6 @@ impl DrudeLorentzParams {
     // reststrahlen_band) extracted to the `ellipsometry_thermal_enz`
     // submodule (#138 PH-MOD split).
 
-
     // ========================================================================
     // Part 13: EELS + LDOS + absorption engineering
     // ========================================================================
@@ -843,7 +837,6 @@ impl DrudeLorentzParams {
     // purcell_factor, lamb_shift_fractional, absorption_per_pass,
     // optimal_absorber_thickness, impedance_mismatch) extracted to the
     // `eels_absorption_engineering` submodule (#138 PH-MOD).
-
 
     // ========================================================================
     // Part 14: Coherence + quality metrics + spectral characterization
@@ -853,7 +846,6 @@ impl DrudeLorentzParams {
     // coherence_length, penetration_depth_ratio) extracted to the
     // `coherence_quality_metrics` submodule (#138 PH-MOD).
 
-
     // ========================================================================
     // Part 15: Photovoltaic + solar energy + TPV metrics
     // ========================================================================
@@ -861,7 +853,6 @@ impl DrudeLorentzParams {
     // wien_peak_omega, wien_peak_ev, luminous_reflectance,
     // selective_emitter_efficiency) extracted to `photovoltaic_solar`
     // submodule (#138 PH-MOD).
-
 
     // ========================================================================
     // Part 16a: Photonic crystal + waveguide metrics
@@ -878,7 +869,6 @@ impl DrudeLorentzParams {
 
     // Part 16c: 6 methods extracted to `thin_film_coating` submodule (#138).
 
-
     // Part 16d: 6 methods extracted to `phonon_polariton_ir` submodule (#138).
 
     // Part 16e: 5 methods extracted to `photoconductivity` submodule (#138).
@@ -888,7 +878,6 @@ impl DrudeLorentzParams {
     // Part 17b: 7 methods extracted to `fluctuation_electrodynamics` submodule (#138).
 
     // Part 17c: 4 methods extracted to `anharmonic_multiphonon` submodule (#138).
-
 
     // Part 17d: Photonic Band Gap Estimates
     // 1D quarter-wave stack (Bragg mirror) properties were extracted to the
@@ -916,8 +905,6 @@ pub fn gold_drude() -> DrudeParams {
     }
 }
 
-
-
 /// Silver (Ag) Drude parameters.
 pub fn silver_drude() -> DrudeParams {
     let [omega_p_ev, gamma_ev, eps_inf] = materials_data::SILVER_DRUDE;
@@ -927,7 +914,6 @@ pub fn silver_drude() -> DrudeParams {
         eps_inf,
     }
 }
-
 
 /// Copper (Cu) Drude parameters.
 pub fn copper_drude() -> DrudeParams {
@@ -949,12 +935,9 @@ pub fn aluminum_drude() -> DrudeParams {
     }
 }
 
-
 // ============================================================================
 // Enhanced Cu/Al with interband oscillators (Rakic 1998)
 // ============================================================================
-
-
 
 // ============================================================================
 // Rakic 11-metal canonical set: 7 new metals (Phase 2)
@@ -970,7 +953,6 @@ pub fn beryllium_drude() -> DrudeParams {
     }
 }
 
-
 /// Chromium (Cr) Drude parameters (Rakic 1998).
 pub fn chromium_drude() -> DrudeParams {
     let [omega_p_ev, gamma_ev, eps_inf] = materials_data::CHROMIUM_DRUDE;
@@ -980,7 +962,6 @@ pub fn chromium_drude() -> DrudeParams {
         eps_inf,
     }
 }
-
 
 /// Nickel (Ni) Drude parameters (Rakic 1998).
 pub fn nickel_drude() -> DrudeParams {
@@ -992,7 +973,6 @@ pub fn nickel_drude() -> DrudeParams {
     }
 }
 
-
 /// Palladium (Pd) Drude parameters (Rakic 1998).
 pub fn palladium_drude() -> DrudeParams {
     let [omega_p_ev, gamma_ev, eps_inf] = materials_data::PALLADIUM_DRUDE;
@@ -1002,7 +982,6 @@ pub fn palladium_drude() -> DrudeParams {
         eps_inf,
     }
 }
-
 
 /// Platinum (Pt) Drude parameters (Rakic 1998).
 pub fn platinum_drude() -> DrudeParams {
@@ -1014,7 +993,6 @@ pub fn platinum_drude() -> DrudeParams {
     }
 }
 
-
 /// Titanium (Ti) Drude parameters (Rakic 1998).
 pub fn titanium_drude() -> DrudeParams {
     let [omega_p_ev, gamma_ev, eps_inf] = materials_data::TITANIUM_DRUDE;
@@ -1025,7 +1003,6 @@ pub fn titanium_drude() -> DrudeParams {
     }
 }
 
-
 /// Tungsten (W) Drude parameters (Rakic 1998).
 pub fn tungsten_drude() -> DrudeParams {
     let [omega_p_ev, gamma_ev, eps_inf] = materials_data::TUNGSTEN_DRUDE;
@@ -1035,8 +1012,6 @@ pub fn tungsten_drude() -> DrudeParams {
         eps_inf,
     }
 }
-
-
 
 // ============================================================================
 // PEDOT:PSS -- disordered conducting polymer (Drude-Smith model).
@@ -1112,8 +1087,8 @@ pub use oxides_tcos::{
     brookite_metadata, diamond_metadata, diamond_optical, doped_silicon_metadata,
     doped_silicon_optical, ito_metadata, ito_optical, latio3_metadata, latio3_optical,
     linbo3_metadata, litao3_metadata, quartz_metadata, quartz_optical, srtio3_doped_metadata,
-    srtio3_doped_optical, srtio3_metadata, srtio3_optical, tio2_metadata, tio2_optical,
-    tio_metadata, tio_optical, tourmaline_metadata, tourmaline_optical,
+    srtio3_doped_optical, srtio3_metadata, srtio3_optical, tio_metadata, tio_optical,
+    tio2_metadata, tio2_optical, tourmaline_metadata, tourmaline_optical,
 };
 
 // ============================================================================
@@ -1164,10 +1139,10 @@ mod ellipsometry_thermal_enz;
 mod fluctuation_electrodynamics;
 mod fresnel;
 mod mie_rayleigh;
-mod photonic_crystals;
-mod photonic_waveguide;
 mod phonon_polariton_ir;
 mod photoconductivity;
+mod photonic_crystals;
+mod photonic_waveguide;
 mod photovoltaic_solar;
 mod plasmonic_sensing;
 mod plasmonics;
@@ -1188,10 +1163,9 @@ mod transport;
 mod tourmaline;
 pub use tourmaline::{
     default_metadata as tourmaline_default_metadata, dravite_metadata, dravite_optical,
-    elbaite_metadata, elbaite_optical, foitite_metadata, foitite_optical,
-    liddicoatite_metadata, liddicoatite_optical, povondraite_metadata, povondraite_optical,
-    rossmanite_metadata, rossmanite_optical, schorl_metadata, schorl_optical, uvite_metadata,
-    uvite_optical,
+    elbaite_metadata, elbaite_optical, foitite_metadata, foitite_optical, liddicoatite_metadata,
+    liddicoatite_optical, povondraite_metadata, povondraite_optical, rossmanite_metadata,
+    rossmanite_optical, schorl_metadata, schorl_optical, uvite_metadata, uvite_optical,
 };
 
 /// Perfect metal (ideal conductor limit).
@@ -7444,7 +7418,11 @@ mod tests {
             "species_name and formula must be non-empty"
         );
         assert!(m.n_omega >= 0.0, "n_omega negative for {}", m.species_name);
-        assert!(m.n_epsilon >= 0.0, "n_epsilon negative for {}", m.species_name);
+        assert!(
+            m.n_epsilon >= 0.0,
+            "n_epsilon negative for {}",
+            m.species_name
+        );
     }
 
     #[test]
@@ -7493,7 +7471,10 @@ mod tests {
         assert_eq!(pbwo4_metadata().optic_sign, OpticSign::Negative);
         // WO3-x shares the parent gamma-WO3 lattice (P2_1/n #14).
         assert_eq!(wo3_x_metadata().space_group, wo3_metadata().space_group);
-        assert_eq!(wo3_x_metadata().crystal_system, wo3_metadata().crystal_system);
+        assert_eq!(
+            wo3_x_metadata().crystal_system,
+            wo3_metadata().crystal_system
+        );
     }
 
     #[test]
@@ -7539,32 +7520,59 @@ mod tests {
         // return invalid data, the suite fails.
         let all: Vec<MineralMetadata> = vec![
             // Tourmaline supergroup (8)
-            schorl_metadata(), dravite_metadata(), elbaite_metadata(),
-            uvite_metadata(), liddicoatite_metadata(), rossmanite_metadata(),
-            foitite_metadata(), povondraite_metadata(),
+            schorl_metadata(),
+            dravite_metadata(),
+            elbaite_metadata(),
+            uvite_metadata(),
+            liddicoatite_metadata(),
+            rossmanite_metadata(),
+            foitite_metadata(),
+            povondraite_metadata(),
             // Semiconductors (5; silica_casimir aliases silica)
-            silicon_metadata(), silica_metadata(), silica_casimir_metadata(),
-            silicon_nitride_metadata(), germanium_metadata(),
+            silicon_metadata(),
+            silica_metadata(),
+            silica_casimir_metadata(),
+            silicon_nitride_metadata(),
+            germanium_metadata(),
             // Oxides + TCOs (12)
-            alumina_metadata(), diamond_metadata(), quartz_metadata(),
-            tio2_metadata(), tio_metadata(), ito_metadata(), azo_metadata(),
-            srtio3_metadata(), srtio3_doped_metadata(), latio3_metadata(),
-            doped_silicon_metadata(), tourmaline_metadata(),
+            alumina_metadata(),
+            diamond_metadata(),
+            quartz_metadata(),
+            tio2_metadata(),
+            tio_metadata(),
+            ito_metadata(),
+            azo_metadata(),
+            srtio3_metadata(),
+            srtio3_doped_metadata(),
+            latio3_metadata(),
+            doped_silicon_metadata(),
+            tourmaline_metadata(),
             // Tungstates (5; wo3_x aliases wo3 lattice)
-            wo3_metadata(), wo3_x_metadata(), cs_wo3_metadata(),
-            cawo4_metadata(), pbwo4_metadata(),
+            wo3_metadata(),
+            wo3_x_metadata(),
+            cs_wo3_metadata(),
+            cawo4_metadata(),
+            pbwo4_metadata(),
             // Elemental metals (11; *_drude_lorentz / *_rakic_ld share these)
-            gold_metadata(), silver_metadata(), copper_metadata(),
-            aluminum_metadata(), beryllium_metadata(), chromium_metadata(),
-            nickel_metadata(), palladium_metadata(), platinum_metadata(),
-            titanium_metadata(), tungsten_metadata(),
+            gold_metadata(),
+            silver_metadata(),
+            copper_metadata(),
+            aluminum_metadata(),
+            beryllium_metadata(),
+            chromium_metadata(),
+            nickel_metadata(),
+            palladium_metadata(),
+            platinum_metadata(),
+            titanium_metadata(),
+            tungsten_metadata(),
             // Conducting polymer (1)
             pedot_pss_metadata(),
         ];
         // 8 + 5 + 12 + 5 + 11 + 1 = 42 unique materials. The 43rd is
         // tourmaline_default_metadata which routes to elbaite (already counted).
         assert_eq!(
-            all.len(), 42,
+            all.len(),
+            42,
             "metadata enumeration drifted -- expected 42 unique accessors, got {}",
             all.len()
         );

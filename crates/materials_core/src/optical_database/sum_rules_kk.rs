@@ -21,7 +21,7 @@
 
 use std::f64::consts::PI;
 
-use super::{DrudeLorentzParams, EPS_0, E_CHARGE, EV_TO_RADS, M_E_KG};
+use super::{DrudeLorentzParams, E_CHARGE, EPS_0, EV_TO_RADS, M_E_KG};
 
 impl DrudeLorentzParams {
     /// f-sum effective number of electrons:
