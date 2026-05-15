@@ -285,15 +285,94 @@ mod tests {
     use super::*;
 
     #[test]
-    fn known_structures_has_310_plus_entries() {
+    fn known_structures_has_360_plus_entries() {
         let n = known_crystal_structures().len();
         assert!(
-            n >= 310,
-            "Coverage regression: known_crystal_structures must list at least 310 \
+            n >= 360,
+            "Coverage regression: known_crystal_structures must list at least 360 \
              entries (currently {}). Adding new structures is encouraged; \
              removing any requires a rationale.",
             n
         );
+    }
+
+    #[test]
+    fn rare_earth_garnet_and_laser_host_coverage() {
+        let names: Vec<&str> = known_crystal_structures()
+            .iter()
+            .map(|s| s.name)
+            .collect();
+        for required in [
+            "rare_earth_iron_garnet_yig",
+            "ggg_gadolinium_gallium_garnet",
+            "yvo4_yttrium_vanadate",
+            "ceo2_ceria_fluorite",
+            "smfeo3_orthoferrite_magnetic",
+        ] {
+            assert!(names.contains(&required), "rare-earth/laser-host {} missing", required);
+        }
+    }
+
+    #[test]
+    fn additional_topological_material_coverage() {
+        let names: Vec<&str> = known_crystal_structures()
+            .iter()
+            .map(|s| s.name)
+            .collect();
+        for required in [
+            "zrte5_orthorhombic_topological",
+            "wte2_td_weyl_typeii",
+            "mote2_td_weyl",
+            "snte_rocksalt_tci",
+        ] {
+            assert!(names.contains(&required), "topological material {} missing", required);
+        }
+    }
+
+    #[test]
+    fn max_phase_and_mxene_coverage() {
+        let names: Vec<&str> = known_crystal_structures()
+            .iter()
+            .map(|s| s.name)
+            .collect();
+        for required in [
+            "ti2alc_max_phase",
+            "v2alc_max_phase",
+            "nb2alc_max_phase",
+            "ti2c_mxene",
+        ] {
+            assert!(names.contains(&required), "MAX phase/MXene {} missing", required);
+        }
+    }
+
+    #[test]
+    fn scintillator_and_pet_imaging_coverage() {
+        let names: Vec<&str> = known_crystal_structures()
+            .iter()
+            .map(|s| s.name)
+            .collect();
+        for required in [
+            "bgo_bismuth_germanate_bi4ge3o12",
+            "lso_lutetium_oxyorthosilicate",
+            "yso_yttrium_oxyorthosilicate",
+        ] {
+            assert!(names.contains(&required), "scintillator {} missing", required);
+        }
+    }
+
+    #[test]
+    fn geophysical_lower_mantle_coverage() {
+        let names: Vec<&str> = known_crystal_structures()
+            .iter()
+            .map(|s| s.name)
+            .collect();
+        for required in [
+            "majorite_garnet_mg4si4o12",
+            "perovskite_mgsio3_bridgmanite",
+            "ferropericlase_mgo_feo",
+        ] {
+            assert!(names.contains(&required), "lower-mantle phase {} missing", required);
+        }
     }
 
     #[test]

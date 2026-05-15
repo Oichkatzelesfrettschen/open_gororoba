@@ -1224,3 +1224,231 @@ gamma_ev = 0.4
 strength = 1.2
 omega_0_ev = 3.5
 gamma_ev = 0.7
+
+# ============================================================================
+# Expansion 2026-05-13 (#6): topological insulators + graphene + organic
+# semiconductors + perovskite absorbers (visible-band fits).
+# ============================================================================
+
+# ---------- Topological insulators ----------
+[[material]]
+name = "BI2SE3_TOPOLOGICAL"
+eps_inf = 29.0
+reference = "Eddrief et al. (2016) J. Phys. D 49, 215101 -- Bi2Se3 strong topological insulator; alpha + beta interband + Drude tail."
+
+[material.drude]
+omega_p_ev = 0.45
+gamma_ev = 0.05
+eps_inf = 1.0
+
+[[material.oscillators]]
+# alpha interband near 1.9 eV
+strength = 4.0
+omega_0_ev = 1.90
+gamma_ev = 0.40
+
+[[material.oscillators]]
+# beta interband near 3.2 eV
+strength = 8.0
+omega_0_ev = 3.20
+gamma_ev = 0.70
+
+[[material]]
+name = "BI2TE3_TOPOLOGICAL"
+eps_inf = 50.0
+reference = "Greenaway & Harbeke (1965) J. Phys. Chem. Solids 26, 1585 -- Bi2Te3 narrow-gap thermoelectric + TI."
+
+[material.drude]
+omega_p_ev = 0.62
+gamma_ev = 0.07
+eps_inf = 1.0
+
+[[material.oscillators]]
+strength = 6.0
+omega_0_ev = 1.55
+gamma_ev = 0.35
+
+[[material.oscillators]]
+strength = 12.0
+omega_0_ev = 2.80
+gamma_ev = 0.80
+
+[[material]]
+name = "SB2TE3_TOPOLOGICAL"
+eps_inf = 45.0
+reference = "Hu et al. (2014) Phys. Rev. B 89, 045304 -- Sb2Te3 topological insulator."
+
+[material.drude]
+omega_p_ev = 0.50
+gamma_ev = 0.06
+eps_inf = 1.0
+
+[[material.oscillators]]
+strength = 5.5
+omega_0_ev = 1.70
+gamma_ev = 0.40
+
+[[material.oscillators]]
+strength = 11.0
+omega_0_ev = 3.10
+gamma_ev = 0.85
+
+# ---------- Graphene (Kubo conductivity simplified to Drude-Lorentz) ----------
+[[material]]
+name = "GRAPHENE_DOPED"
+eps_inf = 2.0
+reference = "Kuzmenko et al. (2008) Phys. Rev. Lett. 100, 117401 -- doped graphene Kubo conductivity approximated as Drude + interband 2*E_F edge."
+
+[material.drude]
+omega_p_ev = 2.0
+gamma_ev = 0.01
+eps_inf = 1.0
+
+[[material.oscillators]]
+# Interband absorption onset near 2*E_F (here 0.4 eV)
+strength = 1.0
+omega_0_ev = 0.4
+gamma_ev = 0.05
+
+[[material.oscillators]]
+# pi -> pi* van Hove peak at ~4.6 eV
+strength = 4.0
+omega_0_ev = 4.6
+gamma_ev = 0.6
+
+# ---------- Organic semiconductors (additional) ----------
+[[material]]
+name = "PENTACENE"
+eps_inf = 2.5
+reference = "Faltermeier et al. (2008) Phys. Rev. B 78, 035438 -- pentacene molecular crystal n,k visible-NIR fit."
+
+[[material.oscillators]]
+# HOMO->LUMO + vibronic progression
+strength = 1.5
+omega_0_ev = 1.85
+gamma_ev = 0.15
+
+[[material.oscillators]]
+strength = 1.0
+omega_0_ev = 2.30
+gamma_ev = 0.25
+
+[[material.oscillators]]
+strength = 2.5
+omega_0_ev = 3.6
+gamma_ev = 0.7
+
+[[material]]
+name = "RUBRENE"
+eps_inf = 2.6
+reference = "Saeki et al. (2008) Adv. Mater. 20, 920 -- rubrene single-crystal n,k visible fit."
+
+[[material.oscillators]]
+strength = 1.8
+omega_0_ev = 2.32
+gamma_ev = 0.20
+
+[[material.oscillators]]
+strength = 1.2
+omega_0_ev = 2.95
+gamma_ev = 0.30
+
+[[material.oscillators]]
+strength = 2.8
+omega_0_ev = 4.5
+gamma_ev = 0.7
+
+[[material]]
+name = "C60_FULLERENE"
+eps_inf = 1.9
+reference = "Ren et al. (1991) Appl. Phys. Lett. 59, 2678; Ching et al. (1992) Phys. Rev. Lett. 67, 2045 -- C60 thin-film n,k."
+
+[[material.oscillators]]
+strength = 0.8
+omega_0_ev = 2.7
+gamma_ev = 0.2
+
+[[material.oscillators]]
+strength = 2.5
+omega_0_ev = 3.6
+gamma_ev = 0.3
+
+[[material.oscillators]]
+strength = 5.0
+omega_0_ev = 4.8
+gamma_ev = 0.7
+
+# ---------- Halide perovskite absorbers ----------
+[[material]]
+name = "MAPBI3"
+eps_inf = 1.8
+reference = "Phillips et al. (2018) J. Mater. Chem. C 6, 11017 -- CH3NH3PbI3 ellipsometry fit; Eg ~ 1.55 eV."
+
+[[material.oscillators]]
+# Band-edge exciton + continuum
+strength = 5.0
+omega_0_ev = 1.6
+gamma_ev = 0.10
+
+[[material.oscillators]]
+strength = 6.0
+omega_0_ev = 2.5
+gamma_ev = 0.30
+
+[[material.oscillators]]
+strength = 4.0
+omega_0_ev = 3.6
+gamma_ev = 0.60
+
+[[material]]
+name = "CSPBBR3"
+eps_inf = 2.0
+reference = "Kondo et al. (2003) Solid State Commun. 127, 33 -- CsPbBr3 ellipsometry; Eg ~ 2.3 eV."
+
+[[material.oscillators]]
+strength = 3.0
+omega_0_ev = 2.32
+gamma_ev = 0.10
+
+[[material.oscillators]]
+strength = 5.0
+omega_0_ev = 3.0
+gamma_ev = 0.35
+
+[[material.oscillators]]
+strength = 4.0
+omega_0_ev = 4.4
+gamma_ev = 0.70
+
+# ---------- Polar III-V wide-gap (additional) ----------
+[[material]]
+name = "ALN_UV"
+eps_inf = 1.0
+reference = "Pastrnak & Roskovcova (1968) Phys. Status Solidi 26, 591 -- AlN deep-UV wurtzite, Eg = 6.2 eV."
+
+[[material.oscillators]]
+strength = 1.5
+omega_0_ev = 6.2
+gamma_ev = 0.10
+
+[[material.oscillators]]
+strength = 8.0
+omega_0_ev = 8.5
+gamma_ev = 1.0
+
+[[material]]
+name = "DIAMOND_VISIBLE_UV"
+eps_inf = 1.0
+reference = "Edwards & Philipp (1985) Handbook of Optical Constants vol. II p.665 -- diamond UV indirect + direct gap fit."
+
+[[material.oscillators]]
+# Indirect gap near 5.5 eV (broadened to capture phonon-assisted onset)
+strength = 5.0
+omega_0_ev = 7.2
+gamma_ev = 0.8
+
+[[material.oscillators]]
+# Direct gap near 12 eV
+strength = 25.0
+omega_0_ev = 13.0
+gamma_ev = 2.0

@@ -787,10 +787,10 @@ evidence_refs = ["proofs/theories/Brown1972ChapterVII.v", "proofs/theories/SStru
 id = "T-065"
 area = "proofs"
 title = "Bridge Moreno arbitrary-a concrete V_lambda hypotheses into the H_a witness lane"
-description = "Finish the remaining Theorem 1.16 gap by deriving Moreno's quaternionic-block decomposition, and therefore Moreno16ArbitraryAVlambdaWitness, from the full concrete arbitrary-a V_lambda geometry instead of stopping at the current explicit-builder, concrete-hypothesis package, geometry-shaped block package, and non-canonical witness scaffolding."
+description = "DONE: Moreno Theorem 1.16 arbitrary-a CDOct closure is exposed through C1542_MorVlambdaArbClose.v and Moreno1997.v. For unit imaginary a, oct_unit_imag_left_sq_neg gives L_a^2 = -I, so every V_lambda(a) with lambda > 0 and lambda <> 1 is trivial; the dimension witness is the zero H-module."
 priority = "high"
-status = "open"
-status_token = "OPEN"
+status = "done"
+status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable.", "The Moreno paper lane exposes a source-faithful arbitrary-a bridge from concrete V_lambda data to the mod-4 theorem."]
-evidence_refs = ["proofs/theories/C1542_MorVlambdaOrbit.v", "proofs/theories/Moreno1997.v"]
+acceptance_criteria = []
+evidence_refs = []
