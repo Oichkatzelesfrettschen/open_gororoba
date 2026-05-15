@@ -5187,6 +5187,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "gororoba_gpu_cuda"
+version = "0.1.0"
+dependencies = [
+ "cudarc 0.19.4",
+ "gororoba_gpu_bridge",
+ "gororoba_optix",
+ "log",
+ "nvml-wrapper",
+ "thiserror 2.0.18",
+]
+
+[[package]]
 name = "gororoba_gpu_readback"
 version = "0.1.0"
 
