@@ -198,3 +198,115 @@ Definition moreno16_build_arb_trivial_witness
      moreno16_concrete_lambda_pos          := Hpos;
      moreno16_concrete_vlambda_dim         := 0%nat;
      moreno16_concrete_vlambda_is_h_module_dim := hmd_zero |}.
+
+(** ================================================================== *)
+(** * Concrete geometry package: no H-module hypothesis assumed.       *)
+(** ================================================================== *)
+
+(** This record is the concrete CDOct replacement for the older
+    `Moreno16ArbitraryAConcreteVlambdaHypotheses` package in the lambda <> 1
+    branch.  It records actual V_lambda(a) geometry: every vector satisfying
+    the Moreno eigen-equation is zero.  The finite H-module witness is then
+    derived as the zero module, not assumed as a field. *)
+Record Moreno16ArbitraryAConcreteVlambdaGeometry := {
+  moreno16_concrete_geom_a : CDOct;
+  moreno16_concrete_geom_a_unit :
+    oct_norm_sq moreno16_concrete_geom_a = 1%R;
+  moreno16_concrete_geom_a_pure :
+    oct_conj moreno16_concrete_geom_a =
+      oct_neg moreno16_concrete_geom_a;
+  moreno16_concrete_geom_lambda : R;
+  moreno16_concrete_geom_lambda_pos :
+    0 < moreno16_concrete_geom_lambda;
+  moreno16_concrete_geom_lambda_ne_one :
+    moreno16_concrete_geom_lambda <> 1;
+  moreno16_concrete_geom_vlambda_trivial :
+    forall y : CDOct,
+      oct_mul moreno16_concrete_geom_a
+        (oct_mul moreno16_concrete_geom_a y) =
+        oct_scale
+          (-(moreno16_concrete_geom_lambda *
+             moreno16_concrete_geom_lambda)) y ->
+      y = oct_zero
+}.
+
+Definition moreno16_build_arbitrary_a_concrete_vlambda_geometry
+  (a : CDOct)
+  (Ha_unit : oct_norm_sq a = 1%R)
+  (Ha_pure : oct_conj a = oct_neg a)
+  (lambda : R)
+  (Hpos : 0 < lambda)
+  (Hne : lambda <> 1)
+  : Moreno16ArbitraryAConcreteVlambdaGeometry :=
+  {| moreno16_concrete_geom_a := a;
+     moreno16_concrete_geom_a_unit := Ha_unit;
+     moreno16_concrete_geom_a_pure := Ha_pure;
+     moreno16_concrete_geom_lambda := lambda;
+     moreno16_concrete_geom_lambda_pos := Hpos;
+     moreno16_concrete_geom_lambda_ne_one := Hne;
+     moreno16_concrete_geom_vlambda_trivial :=
+       fun y Hvl =>
+         moreno16_vlambda_arb_trivial a y lambda
+           Ha_unit Ha_pure Hpos Hne Hvl |}.
+
+Definition moreno16_concrete_geometry_to_concrete_witness
+  (G : Moreno16ArbitraryAConcreteVlambdaGeometry)
+  : Moreno16ConcreteVlambdaWitness :=
+  {| moreno16_concrete_lambda := moreno16_concrete_geom_lambda G;
+     moreno16_concrete_lambda_pos :=
+       moreno16_concrete_geom_lambda_pos G;
+     moreno16_concrete_vlambda_dim := 0%nat;
+     moreno16_concrete_vlambda_is_h_module_dim := hmd_zero |}.
+
+Definition moreno16_concrete_geometry_to_witness
+  (G : Moreno16ArbitraryAConcreteVlambdaGeometry)
+  : Moreno16ArbitraryAVlambdaWitness :=
+  {| moreno16_arbitrary_a := moreno16_concrete_geom_a G;
+     moreno16_arbitrary_a_unit :=
+       moreno16_concrete_geom_a_unit G;
+     moreno16_arbitrary_a_pure :=
+       moreno16_concrete_geom_a_pure G;
+     moreno16_arbitrary_lambda :=
+       moreno16_concrete_geom_lambda G;
+     moreno16_arbitrary_lambda_pos :=
+       moreno16_concrete_geom_lambda_pos G;
+     moreno16_arbitrary_vlambda_dim := 0%nat;
+     moreno16_arbitrary_vlambda_is_h_module_dim := hmd_zero |}.
+
+Definition moreno16_concrete_geometry_to_hypotheses
+  (G : Moreno16ArbitraryAConcreteVlambdaGeometry)
+  : Moreno16ArbitraryAConcreteVlambdaHypotheses :=
+  {| moreno16_concrete_hyp_a := moreno16_concrete_geom_a G;
+     moreno16_concrete_hyp_a_unit :=
+       moreno16_concrete_geom_a_unit G;
+     moreno16_concrete_hyp_a_pure :=
+       moreno16_concrete_geom_a_pure G;
+     moreno16_concrete_hyp_lambda :=
+       moreno16_concrete_geom_lambda G;
+     moreno16_concrete_hyp_lambda_pos :=
+       moreno16_concrete_geom_lambda_pos G;
+     moreno16_concrete_hyp_vlambda_dim := 0%nat;
+     moreno16_concrete_hyp_vlambda_is_h_module_dim := hmd_zero |}.
+
+Theorem moreno16_concrete_geometry_vlambda_dim_mod4 :
+  forall G : Moreno16ArbitraryAConcreteVlambdaGeometry,
+    Nat.modulo
+      (moreno16_arbitrary_vlambda_dim
+         (moreno16_concrete_geometry_to_witness G)) 4%nat = 0%nat.
+Proof.
+  intro G.
+  reflexivity.
+Qed.
+
+Theorem moreno16_concrete_geometry_members_zero :
+  forall (G : Moreno16ArbitraryAConcreteVlambdaGeometry) (y : CDOct),
+    oct_mul (moreno16_concrete_geom_a G)
+      (oct_mul (moreno16_concrete_geom_a G) y) =
+      oct_scale
+        (-(moreno16_concrete_geom_lambda G *
+           moreno16_concrete_geom_lambda G)) y ->
+    y = oct_zero.
+Proof.
+  intros G y Hvl.
+  exact (moreno16_concrete_geom_vlambda_trivial G y Hvl).
+Qed.
