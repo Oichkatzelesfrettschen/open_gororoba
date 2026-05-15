@@ -7,12 +7,17 @@
 #
 # REQUIRES: opam switch rocq-9.1.1 with rocq-core >= 9.1.1.
 
-# Guard: abort if OPAM_SWITCH_PREFIX is unset (opam env not sourced).
+# Guard: prefer the pinned opam switch, but allow a valid Rocq 9.x binary on
+# PATH so non-opam CI/user environments can still run the proof lane.
+HAVE_ROCQ := $(shell command -v rocq >/dev/null 2>&1 && echo yes)
 ifndef OPAM_SWITCH_PREFIX
-$(error OPAM_SWITCH_PREFIX is not set. Run: eval "$$(opam env --switch rocq-9.1.1)")
+ifneq ($(HAVE_ROCQ),yes)
+$(error OPAM_SWITCH_PREFIX is not set and rocq is not on PATH. Run: eval "$$(opam env --switch rocq-9.1.1)")
+endif
 endif
 
 ROCQMAKEFILE := rocq makefile
+ROCQMAKEFILE_WARN_RE := [Ww]arning
 
 # Detect PHYSICAL core count (not logical/SMT threads).
 # WHY: Rocq proofs peak at ~500MB per file. Running on all SMT threads
@@ -45,7 +50,37 @@ export OCAMLRUNPARAM ?= o=200
 PROJ_FILE := $(shell if [ -f _RocqProject ]; then echo _RocqProject; else echo _CoqProject; fi)
 
 Makefile.rocq: $(PROJ_FILE)
-	$(ROCQMAKEFILE) -f $(PROJ_FILE) -o Makefile.rocq
+	@tmp_log=$$(mktemp); \
+	if ! $(ROCQMAKEFILE) -f $(PROJ_FILE) -o Makefile.rocq >"$$tmp_log" 2>&1; then \
+	  cat "$$tmp_log"; \
+	  rm -f "$$tmp_log"; \
+	  exit 1; \
+	fi; \
+	if grep -n "$(ROCQMAKEFILE_WARN_RE)" "$$tmp_log"; then \
+	  cat "$$tmp_log"; \
+	  echo "FAIL: rocq makefile emitted a warning; warnings are errors."; \
+	  rm -f "$$tmp_log"; \
+	  exit 1; \
+	fi; \
+	cat "$$tmp_log"; \
+	rm -f "$$tmp_log"
+
+rocq-makefile-check:
+	@tmp_log=$$(mktemp); tmp_make=.Makefile.rocq.check.$$$$; \
+	if ! $(ROCQMAKEFILE) -f $(PROJ_FILE) -o "$$tmp_make" >"$$tmp_log" 2>&1; then \
+	  cat "$$tmp_log"; \
+	  rm -f "$$tmp_log" "$$tmp_make" "$$tmp_make.conf" ".$$tmp_make.d"; \
+	  exit 1; \
+	fi; \
+	if grep -n "$(ROCQMAKEFILE_WARN_RE)" "$$tmp_log"; then \
+	  cat "$$tmp_log"; \
+	  echo "FAIL: rocq makefile emitted a warning; warnings are errors."; \
+	  rm -f "$$tmp_log" "$$tmp_make" "$$tmp_make.conf" ".$$tmp_make.d"; \
+	  exit 1; \
+	fi; \
+	cat "$$tmp_log"; \
+	rm -f "$$tmp_log" "$$tmp_make" "$$tmp_make.conf" ".$$tmp_make.d"; \
+	echo "OK: rocq makefile completed without warnings."
 
 all: Makefile.rocq
 	$(PINNED) $(MAKE) -j$(JOBS) -f Makefile.rocq all
@@ -107,4 +142,4 @@ count:
 	@echo "Interfaces .vos: $$(ls theories/*.vos verified/*.vos 2>/dev/null | wc -l)"
 	@echo "Checked .vok:    $$(ls theories/*.vok verified/*.vok 2>/dev/null | wc -l)"
 
-.PHONY: all vos vok clean check extract extract-check count
+.PHONY: all vos vok clean check extract extract-check count rocq-makefile-check
