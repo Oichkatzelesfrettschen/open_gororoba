@@ -248,9 +248,7 @@ use url_helpers::{find_urls, normalize_url};
 // `identity_aliases` submodule.
 #[path = "source_provenance/identity_aliases.rs"]
 mod identity_aliases;
-use identity_aliases::{
-    cambridge_content_id, canonical_identity_url, expand_reference_aliases,
-};
+use identity_aliases::{cambridge_content_id, canonical_identity_url, expand_reference_aliases};
 
 // File-loading helpers (load_toml_value, read_text_lossy,
 // read_tsv_rows, derive_status) live in the `file_io` submodule.
@@ -323,7 +321,6 @@ fn normalize_identity_hint(hint: &str) -> String {
     }
     trimmed.to_string()
 }
-
 
 fn extract_strings(value: &Value) -> Vec<String> {
     match value {
@@ -498,7 +495,6 @@ fn discover_candidate_source_files(repo_root: &Path) -> Vec<PathBuf> {
     }
     paths.into_iter().collect()
 }
-
 
 fn candidates_from_bibliography(repo_root: &Path) -> Result<Vec<CandidateRecord>> {
     let mut candidates = Vec::new();

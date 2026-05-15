@@ -15,10 +15,10 @@ use anyhow::{Context, Result};
 use provenance_core::{ClaimRecord, ExperimentRecord, InsightRecord};
 use toml::Value;
 
-use super::claim_proofs::render_normalized_insight_compat_toml;
-use super::status_normalize::{normalize_claim_record, normalize_insight_status};
-use super::toml_helpers::{
-    optional_string_field, render_toml_table, string_array_field, string_field,
+use super::{
+    claim_proofs::render_normalized_insight_compat_toml,
+    status_normalize::{normalize_claim_record, normalize_insight_status},
+    toml_helpers::{optional_string_field, render_toml_table, string_array_field, string_field},
 };
 
 pub(crate) fn load_claims_from_registry(raw: &str) -> Result<Vec<ClaimRecord>> {

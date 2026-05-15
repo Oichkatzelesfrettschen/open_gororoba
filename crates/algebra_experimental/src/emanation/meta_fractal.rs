@@ -19,8 +19,7 @@
 
 use algebra_analysis::boxkites::find_box_kites;
 
-use super::strut_spectroscopy::et_regimes;
-use super::strutted_et::create_strutted_et;
+use super::{strut_spectroscopy::et_regimes, strutted_et::create_strutted_et};
 
 // ===========================================================================
 // L13: ET Meta-Fractal / Regime Doubling

@@ -8,6 +8,8 @@ use reqwest::{
 };
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
+#[cfg(test)]
+use std::time::Instant;
 use std::{
     fmt, fs,
     io::{self, Read, Write},
@@ -17,8 +19,6 @@ use std::{
     sync::Arc,
     time::{Duration, SystemTime, UNIX_EPOCH},
 };
-#[cfg(test)]
-use std::time::Instant;
 use thiserror::Error;
 use ureq::ResponseExt;
 use url::Url;
@@ -1597,8 +1597,8 @@ impl Default for DownloadStack {
 // TOML configuration, default_host_policies returns the canonical
 // per-host backend preferences seeded from registry/data_servers.toml.
 mod host_policy;
-pub use host_policy::load_host_policy_registry;
 use host_policy::default_host_policies;
+pub use host_policy::load_host_policy_registry;
 
 fn best_matching_policy<'a>(
     policies: &'a [HostRoutingPolicy],

@@ -13,7 +13,9 @@
 //! materials_core::optical_database::{wo3_optical, cs_wo3_optical,
 //! cawo4_optical, pbwo4_optical, ...} remain stable.
 
-use super::{DrudeLorentzParams, DrudeParams, LorentzOscillator, MineralMetadata, OpticSign, UniaxialOptical};
+use super::{
+    DrudeLorentzParams, DrudeParams, LorentzOscillator, MineralMetadata, OpticSign, UniaxialOptical,
+};
 
 /// Build a `DrudeLorentzParams` from the codegen'd consts. Handles
 /// the optional Drude free-carrier component pattern uniformly.

@@ -162,9 +162,9 @@ pub fn chingon_contract_cubecl(inputs: &ChingonInputs) -> Result<Vec<f32>, Cubec
             n_viol as u32,
             ib,
             mask,
-            ib,           // shift_j
-            2u32 * ib,    // shift_i
-            3u32 * ib,    // shift_s
+            ib,        // shift_j
+            2u32 * ib, // shift_i
+            3u32 * ib, // shift_s
             inputs.alpha.to_bits(),
             inputs.inv_n_viol.to_bits(),
         );
@@ -204,7 +204,10 @@ mod tests {
             dim: 8,
         };
         match chingon_contract_cubecl(&bad) {
-            Err(CubeclChingonError::VLengthMismatch { got: 4, expected: 8 }) => {}
+            Err(CubeclChingonError::VLengthMismatch {
+                got: 4,
+                expected: 8,
+            }) => {}
             other => panic!("expected VLengthMismatch, got {:?}", other),
         }
     }

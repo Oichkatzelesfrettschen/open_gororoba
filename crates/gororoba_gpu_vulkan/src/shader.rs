@@ -9,8 +9,10 @@ use std::sync::Arc;
 use ash::vk;
 use naga::{ShaderStage, back::spv, front::wgsl, valid::Validator};
 
-use crate::device::Device;
-use crate::error::{Result, VulkanError};
+use crate::{
+    device::Device,
+    error::{Result, VulkanError},
+};
 
 /// Owned VkShaderModule + the source SPIR-V bytecode it was built from.
 pub struct ShaderModule {
@@ -26,8 +28,8 @@ impl ShaderModule {
     /// `entry_point` is the function name in the WGSL source that this
     /// module exposes (typically "main").
     pub fn from_wgsl(device: &Device, wgsl_source: &str, entry_point: &str) -> Result<Self> {
-        let module = wgsl::parse_str(wgsl_source)
-            .map_err(|e| VulkanError::WgslParse(e.to_string()))?;
+        let module =
+            wgsl::parse_str(wgsl_source).map_err(|e| VulkanError::WgslParse(e.to_string()))?;
         let info = Validator::new(
             naga::valid::ValidationFlags::all(),
             naga::valid::Capabilities::all(),

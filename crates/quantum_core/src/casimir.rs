@@ -55,9 +55,7 @@ pub use geometry::{Plate, Sphere, SpherePlateSphere};
 // Transistor analysis and source-gap sweep helpers live in the
 // `transistor` submodule.
 pub mod transistor;
-pub use transistor::{
-    SweepResult, TransistorResult, analyze_transistor, sweep_source_gap,
-};
+pub use transistor::{SweepResult, TransistorResult, analyze_transistor, sweep_source_gap};
 
 /// Result of Casimir force calculation.
 #[derive(Debug, Clone)]
@@ -176,7 +174,6 @@ pub fn compute_casimir_forces(system: &SpherePlateSphere) -> CasimirForceResult 
         pfa_valid: pfa_valid_source && pfa_valid_drain,
     }
 }
-
 
 /// Compute Casimir energy between sphere and plate (PFA).
 ///

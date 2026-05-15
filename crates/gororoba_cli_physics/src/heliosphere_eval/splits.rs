@@ -9,8 +9,10 @@
 //!
 //! `SampleSplits` is the shared output struct (3 borrowed slices).
 
-use std::collections::BTreeMap;
-use std::hash::{DefaultHasher, Hash, Hasher};
+use std::{
+    collections::BTreeMap,
+    hash::{DefaultHasher, Hash, Hasher},
+};
 
 use super::public_types::{LabeledInvariantSample, MissionSplitSummary};
 

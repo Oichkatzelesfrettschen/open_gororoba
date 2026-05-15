@@ -8,15 +8,18 @@
 
 use clap::Parser;
 use serde::{Deserialize, Serialize};
-use std::collections::BTreeMap;
-use std::sync::Arc;
-use std::sync::atomic::AtomicU64;
-use tokio::sync::Mutex;
 use serde_json::Value;
+use std::{
+    collections::BTreeMap,
+    sync::{Arc, atomic::AtomicU64},
+};
+use tokio::sync::Mutex;
 
-pub(crate) const INDEX_HTML: &str = include_str!("../../../../../apps/gororoba_studio/ui/index.html");
+pub(crate) const INDEX_HTML: &str =
+    include_str!("../../../../../apps/gororoba_studio/ui/index.html");
 pub(crate) const APP_JS: &str = include_str!("../../../../../apps/gororoba_studio/ui/app.js");
-pub(crate) const STYLES_CSS: &str = include_str!("../../../../../apps/gororoba_studio/ui/styles.css");
+pub(crate) const STYLES_CSS: &str =
+    include_str!("../../../../../apps/gororoba_studio/ui/styles.css");
 
 #[derive(Debug, Parser)]
 #[command(
@@ -251,11 +254,14 @@ pub(crate) struct StudioPipelineCatalogEntry {
 pub(crate) const RUN_TIMEOUT_SECONDS: u64 = 60;
 pub(crate) const MAX_HISTORY_ITEMS: usize = 200;
 pub(crate) const API_VERSION: &str = "studio.v1";
-pub(crate) const ORCH_DEFAULT_GATE_RUNTIME_PATH: &str = "reports/gate_validation_runtime_2026_02_14.toml";
-pub(crate) const ORCH_DEFAULT_TRANCHE_LEDGER_PATH: &str = "reports/tranche5_execution_ledger_2026_02_14.toml";
+pub(crate) const ORCH_DEFAULT_GATE_RUNTIME_PATH: &str =
+    "reports/gate_validation_runtime_2026_02_14.toml";
+pub(crate) const ORCH_DEFAULT_TRANCHE_LEDGER_PATH: &str =
+    "reports/tranche5_execution_ledger_2026_02_14.toml";
 pub(crate) const ORCH_DEFAULT_INTAKE_LEDGER_PATH: &str =
     "reports/research_intake_execution_ledger_2026_02_14.toml";
-pub(crate) const ORCH_DEFAULT_PROMOTION_REGISTRY_PATH: &str = "registry/hypercomplex_taxonomy_promotion.toml";
+pub(crate) const ORCH_DEFAULT_PROMOTION_REGISTRY_PATH: &str =
+    "registry/hypercomplex_taxonomy_promotion.toml";
 pub(crate) const ORCH_DEFAULT_RECONCILIATION_PATH: &str =
     "reports/research_intake_reconciliation_2026_02_14.toml";
 pub(crate) const ORCH_DEFAULT_BINARY_RECONCILIATION_PATH: &str =

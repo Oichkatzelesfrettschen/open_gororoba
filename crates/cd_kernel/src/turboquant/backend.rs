@@ -199,10 +199,7 @@ impl BackendQuantizer {
                         // Vulkan device not available at runtime (no
                         // libvulkan, no compute-capable adapter, glslc
                         // missing at build, etc.); fall back to CPU.
-                        eprintln!(
-                            "VulkanQuantizer init failed ({}); falling back to CPU.",
-                            e
-                        );
+                        eprintln!("VulkanQuantizer init failed ({}); falling back to CPU.", e);
                         self.cpu.quantize(values, out);
                         Ok(())
                     }
@@ -230,10 +227,10 @@ impl BackendQuantizer {
                 // CPU. The launcher's InvalidRequest variant should never
                 // happen here because BackendQuantizer constructed the
                 // QuantizeRequest from validated CPU-quantizer state.
-                use super::cubecl_backend::launcher::{
-                    self, CubeclQuantizerError,
+                use super::{
+                    cubecl_backend::launcher::{self, CubeclQuantizerError},
+                    gpu_backend_shared::QuantizeRequest,
                 };
-                use super::gpu_backend_shared::QuantizeRequest;
                 let req = QuantizeRequest {
                     values,
                     boundaries: self.cpu.boundaries(),
@@ -242,10 +239,7 @@ impl BackendQuantizer {
                 match launcher::quantize(&req, out) {
                     Ok(()) => Ok(()),
                     Err(CubeclQuantizerError::DeviceInit(e)) => {
-                        eprintln!(
-                            "cubecl-wgpu init failed ({}); falling back to CPU.",
-                            e
-                        );
+                        eprintln!("cubecl-wgpu init failed ({}); falling back to CPU.", e);
                         self.cpu.quantize(values, out);
                         Ok(())
                     }

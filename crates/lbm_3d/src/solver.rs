@@ -20,9 +20,9 @@ use wide::f64x4;
 // submodule. Used internally by the collision dispatcher below; not part
 // of the public API surface.
 mod mrt;
-use mrt::{collide_mrt_d3q19, collide_mrt_d3q19_x4};
 #[cfg(test)]
 use mrt::mrt_forward_transform;
+use mrt::{collide_mrt_d3q19, collide_mrt_d3q19_x4};
 
 #[derive(Error, Debug)]
 pub enum LbmError {
@@ -48,8 +48,8 @@ pub use bgk::{BgkCollision, CollisionMode};
 // padding helper, UnsafeAoSoAPtr Send+Sync wrapper for parallel rayon
 // write paths) live in the `aosoa` submodule.
 mod aosoa;
-pub use aosoa::{AOSOA_CHUNK, UnsafeAoSoAPtr, aosoa_idx};
 use aosoa::aosoa_pad;
+pub use aosoa::{AOSOA_CHUNK, UnsafeAoSoAPtr, aosoa_idx};
 
 /// Encapsulates a complete fluid simulation domain with:
 /// - Distribution functions at each grid point
@@ -83,7 +83,6 @@ pub struct LbmSolver3D {
     /// Timestep counter
     pub timestep: usize,
 }
-
 
 impl LbmSolver3D {
     /// Create a new 3D LBM solver domain.

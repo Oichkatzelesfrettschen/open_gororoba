@@ -331,8 +331,7 @@ fn main() -> Result<()> {
     // available components; mean_shear_proxy and complexity_index use
     // the Br kurtosis as a smoothness proxy when Br is present.
     use std::collections::BTreeMap;
-    let mut groups: BTreeMap<(Option<u32>, Option<String>), Vec<FitsImageStats>> =
-        BTreeMap::new();
+    let mut groups: BTreeMap<(Option<u32>, Option<String>), Vec<FitsImageStats>> = BTreeMap::new();
     for s in &all_stats {
         let (ts, harp) = extract_sharp_timestamp_and_harp(&s.filename);
         groups.entry((harp, ts)).or_default().push(s.clone());
@@ -342,10 +341,7 @@ fn main() -> Result<()> {
         let bp = comps.iter().find(|s| s.component == "Bp").cloned();
         let br = comps.iter().find(|s| s.component == "Br").cloned();
         let bt = comps.iter().find(|s| s.component == "Bt").cloned();
-        let total_unsigned_flux = bp
-            .as_ref()
-            .map(|s| s.unsigned_flux_proxy)
-            .unwrap_or(0.0)
+        let total_unsigned_flux = bp.as_ref().map(|s| s.unsigned_flux_proxy).unwrap_or(0.0)
             + br.as_ref().map(|s| s.unsigned_flux_proxy).unwrap_or(0.0)
             + bt.as_ref().map(|s| s.unsigned_flux_proxy).unwrap_or(0.0);
         let mean_shear_proxy = match (bp.as_ref(), bt.as_ref()) {

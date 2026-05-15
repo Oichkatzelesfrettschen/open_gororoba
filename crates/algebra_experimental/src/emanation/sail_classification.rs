@@ -25,8 +25,10 @@ use std::collections::HashSet;
 
 use algebra_analysis::boxkites::{BoxKite, O_TRIPS};
 
-use super::sail_loop::face_otrip_index;
-use super::tray_racks::{TwistType, tray_racks};
+use super::{
+    sail_loop::face_otrip_index,
+    tray_racks::{TwistType, tray_racks},
+};
 
 // ===========================================================================
 // L15: Representation-Aware Trip Sync (Orientation Coherence)

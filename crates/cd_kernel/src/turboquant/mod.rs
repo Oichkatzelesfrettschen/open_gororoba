@@ -101,8 +101,6 @@ pub mod cross_layer;
 pub mod cubecl_backend;
 #[cfg(feature = "cuda")]
 pub mod cuda;
-#[cfg(any(feature = "vulkan", feature = "cubecl"))]
-pub mod gpu_backend_shared;
 mod dequant_contract;
 pub mod dispatch;
 pub mod dot_product_bench;
@@ -113,6 +111,8 @@ pub mod f4_rotation;
 pub mod fixed_codebook;
 pub mod fixed_point;
 pub mod fp8;
+#[cfg(any(feature = "vulkan", feature = "cubecl"))]
+pub mod gpu_backend_shared;
 pub mod gpu_evaluation;
 pub mod grouping;
 pub mod hierarchical;

@@ -31,19 +31,23 @@
 //! `url_helpers::normalize_url`, `text_helpers::url_re`,
 //! `identity_aliases::arxiv_equivalent_urls`).
 
-use std::collections::HashMap;
-use std::path::{Path, PathBuf};
+use std::{
+    collections::HashMap,
+    path::{Path, PathBuf},
+};
 
 use anyhow::{Context, Result};
 use rusqlite::Connection;
 use toml::Value;
 use walkdir::WalkDir;
 
-use super::file_io::{derive_status, load_toml_value, read_tsv_rows};
-use super::identity_aliases::arxiv_equivalent_urls;
-use super::text_helpers::url_re;
-use super::url_helpers::normalize_url;
-use super::{LinkObservation, UnifiedArtifact, dedupe};
+use super::{
+    LinkObservation, UnifiedArtifact, dedupe,
+    file_io::{derive_status, load_toml_value, read_tsv_rows},
+    identity_aliases::arxiv_equivalent_urls,
+    text_helpers::url_re,
+    url_helpers::normalize_url,
+};
 
 pub(super) type LinkMap = (HashMap<String, Vec<LinkObservation>>, Vec<String>);
 

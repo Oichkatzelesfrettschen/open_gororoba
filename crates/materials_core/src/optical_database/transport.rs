@@ -19,7 +19,7 @@ use std::f64::consts::PI;
 
 use num_complex::Complex64;
 
-use super::{C, DrudeLorentzParams, EPS_0, EV_TO_RADS, E_CHARGE, M_E_KG};
+use super::{C, DrudeLorentzParams, E_CHARGE, EPS_0, EV_TO_RADS, M_E_KG};
 
 impl DrudeLorentzParams {
     /// Drude weight `D = (pi/2) * omega_p^2 * eps_0` in S*rad/(m*s).

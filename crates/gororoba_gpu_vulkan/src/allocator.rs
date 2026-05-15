@@ -10,9 +10,7 @@ use std::sync::{Arc, Mutex};
 use ash::vk;
 use gpu_allocator::vulkan::{Allocator as GaAllocator, AllocatorCreateDesc};
 
-use crate::device::Device;
-use crate::error::Result;
-use crate::instance::Instance;
+use crate::{device::Device, error::Result, instance::Instance};
 
 /// Shareable Vulkan allocator.
 ///

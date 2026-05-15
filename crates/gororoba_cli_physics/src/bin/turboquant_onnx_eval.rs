@@ -211,18 +211,15 @@ fn synthetic_eval(cli: &Cli) -> Vec<EvalResult> {
 #[cfg(feature = "onnx-eval")]
 fn onnx_eval(cli: &Cli, model_path: &std::path::Path) -> Result<Vec<EvalResult>> {
     use ort::session::Session;
-    let mut builder = Session::builder().map_err(|e| {
-        anyhow::anyhow!("ort: Session::builder() failed: {}", e)
+    let mut builder =
+        Session::builder().map_err(|e| anyhow::anyhow!("ort: Session::builder() failed: {}", e))?;
+    let session = builder.commit_from_file(model_path).map_err(|e| {
+        anyhow::anyhow!(
+            "ort: failed to load ONNX model {}: {}",
+            model_path.display(),
+            e
+        )
     })?;
-    let session = builder
-        .commit_from_file(model_path)
-        .map_err(|e| {
-            anyhow::anyhow!(
-                "ort: failed to load ONNX model {}: {}",
-                model_path.display(),
-                e
-            )
-        })?;
     let input_names: Vec<String> = session
         .inputs()
         .iter()
@@ -233,10 +230,7 @@ fn onnx_eval(cli: &Cli, model_path: &std::path::Path) -> Result<Vec<EvalResult>>
         .iter()
         .map(|o| o.name().to_string())
         .collect();
-    println!(
-        "  ONNX session loaded: model = {}",
-        model_path.display()
-    );
+    println!("  ONNX session loaded: model = {}", model_path.display());
     println!("  inputs ({})  = {:?}", input_names.len(), input_names);
     println!("  outputs ({}) = {:?}", output_names.len(), output_names);
 
@@ -285,7 +279,8 @@ fn onnx_eval(cli: &Cli, model_path: &std::path::Path) -> Result<Vec<EvalResult>>
         return Ok(synthetic_eval(cli));
     }
 
-    let real_results = run_kv_quantization(cli, &mut session_mut(session), &input_names, &output_names)?;
+    let real_results =
+        run_kv_quantization(cli, &mut session_mut(session), &input_names, &output_names)?;
     Ok(real_results)
 }
 
@@ -323,10 +318,8 @@ fn run_kv_quantization(
     // use 0 to keep the test reproducible across models that disagree on
     // BOS choice; the KV statistics we measure are not BOS-specific.
     let seq_len = cli.seq_len.min(64); // bound runtime for slow CPU EP
-    let input_ids: Tensor<i64> =
-        Tensor::from_array(([1usize, seq_len], vec![0i64; seq_len]))?;
-    let attn_mask: Tensor<i64> =
-        Tensor::from_array(([1usize, seq_len], vec![1i64; seq_len]))?;
+    let input_ids: Tensor<i64> = Tensor::from_array(([1usize, seq_len], vec![0i64; seq_len]))?;
+    let attn_mask: Tensor<i64> = Tensor::from_array(([1usize, seq_len], vec![1i64; seq_len]))?;
 
     let mut model_inputs = ort::inputs! {
         "input_ids" => input_ids,
@@ -336,7 +329,10 @@ fn run_kv_quantization(
     // For merged decoders that also accept past_key_values inputs, supply
     // an empty cache: a [1, n_heads, 0, head_dim] f32 tensor per slot.
     // Empty-time-axis tensors are valid ONNX and signal "no past state".
-    for name in input_names.iter().filter(|n| n.starts_with("past_key_values")) {
+    for name in input_names
+        .iter()
+        .filter(|n| n.starts_with("past_key_values"))
+    {
         let empty: Tensor<f32> = Tensor::from_array((
             vec![1i64, cli.n_heads as i64, 0, cli.head_dim as i64],
             Vec::<f32>::new(),
@@ -411,8 +407,8 @@ fn run_kv_quantization(
             let tq = cd_kernel::turboquant::pipeline::TurboQuantMSE::new(d, bits, 42, true);
             let mut buf = vec![0.0f64; 3 * d];
             uncompressed_bytes += kv.data.len() * 4; // f32 input
-            compressed_bytes += kv.n_heads * kv.seq_len * d * bits as usize / 8
-                + kv.n_heads * kv.seq_len * 2; // per-vector norm bytes
+            compressed_bytes +=
+                kv.n_heads * kv.seq_len * d * bits as usize / 8 + kv.n_heads * kv.seq_len * 2; // per-vector norm bytes
             for head in 0..kv.n_heads {
                 // Track the original-vs-quantized argmax-by-norm position for
                 // a coarse top-1 metric: which token slot has the largest

@@ -13,7 +13,6 @@
 //! algebra_experimental::cd_external::{MotifFingerprint,
 //! spectral_fingerprint_from_adjacency} remain stable.
 
-
 /// Spectral fingerprint of a graph component.
 #[derive(Debug, Clone)]
 pub struct MotifFingerprint {

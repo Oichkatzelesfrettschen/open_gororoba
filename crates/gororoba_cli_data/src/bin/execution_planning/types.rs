@@ -160,10 +160,13 @@ pub(crate) const ROADMAP_STATUS_ALLOWLIST: &[&str] = &[
     "paused",
     "blocked",
 ];
-pub(crate) const TODO_STATUS_ALLOWLIST: &[&str] = &["open", "in_progress", "done", "blocked", "deferred"];
-pub(crate) const ACTION_STATUS_ALLOWLIST: &[&str] = &["todo", "in_progress", "done", "blocked", "deferred"];
+pub(crate) const TODO_STATUS_ALLOWLIST: &[&str] =
+    &["open", "in_progress", "done", "blocked", "deferred"];
+pub(crate) const ACTION_STATUS_ALLOWLIST: &[&str] =
+    &["todo", "in_progress", "done", "blocked", "deferred"];
 pub(crate) const PLANNING_PRIORITY_ALLOWLIST: &[&str] = &["high", "medium", "low"];
-pub(crate) const REQUIREMENT_STATUS_ALLOWLIST: &[&str] = &["active", "deprecated", "planned", "blocked"];
+pub(crate) const REQUIREMENT_STATUS_ALLOWLIST: &[&str] =
+    &["active", "deprecated", "planned", "blocked"];
 pub(crate) const RUNTIME_STACK_ALLOWLIST: &[&str] = &[
     "mixed",
     "rust",

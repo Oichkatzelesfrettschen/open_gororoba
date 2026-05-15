@@ -16,10 +16,12 @@
 use anyhow::Result;
 use rusqlite::OptionalExtension;
 
-use crate::ProvenanceStore;
-use crate::types::{
-    ActionCompatRow, RequirementCoverageGapCompatRow, RequirementModuleCompatRow,
-    RequirementsMetaCompatRow, RoadmapCompatRow,
+use crate::{
+    ProvenanceStore,
+    types::{
+        ActionCompatRow, RequirementCoverageGapCompatRow, RequirementModuleCompatRow,
+        RequirementsMetaCompatRow, RoadmapCompatRow,
+    },
 };
 
 impl ProvenanceStore {

@@ -24,7 +24,10 @@
 //! References: Sheik-Bahae et al. (1991) IEEE J. Quantum Electron. 27, 1296;
 //! Miller (1964) Appl. Phys. Lett. 5, 17; Boyd (2008) "Nonlinear Optics" 3rd ed.
 
-use super::{C, DrudeLorentzParams, DrudeParams, EPS_0, EV_TO_RADS, E_CHARGE, K_B_EV, LorentzOscillator, M_E_KG};
+use super::{
+    C, DrudeLorentzParams, DrudeParams, E_CHARGE, EPS_0, EV_TO_RADS, K_B_EV, LorentzOscillator,
+    M_E_KG,
+};
 
 impl DrudeLorentzParams {
     /// Return a new `DrudeLorentzParams` with thermally broadened

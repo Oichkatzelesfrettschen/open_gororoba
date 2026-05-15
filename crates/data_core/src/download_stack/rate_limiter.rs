@@ -9,9 +9,11 @@
 //! `RateLimiter::with_limit(...)` or rebuild via the registry loader
 //! to extend the table at construction time.
 
-use std::collections::HashMap;
-use std::sync::Mutex;
-use std::time::{Duration, Instant};
+use std::{
+    collections::HashMap,
+    sync::Mutex,
+    time::{Duration, Instant},
+};
 
 use super::host_matches_suffix;
 

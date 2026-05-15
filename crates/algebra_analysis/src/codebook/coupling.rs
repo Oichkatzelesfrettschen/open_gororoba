@@ -22,10 +22,12 @@
 //! `algebra_analysis::codebook::BasisCouplingResult` etc. remain
 //! stable for external callers.
 
-use super::EncodingDictionary;
-use super::linear_algebra::{
-    build_square_matrix, det_nxn, find_pivot_columns_reduced, gram_schmidt_basis, invert_nxn,
-    mat_mul_nxn, project_to_basis,
+use super::{
+    EncodingDictionary,
+    linear_algebra::{
+        build_square_matrix, det_nxn, find_pivot_columns_reduced, gram_schmidt_basis, invert_nxn,
+        mat_mul_nxn, project_to_basis,
+    },
 };
 
 /// Result of attempting to compute rho(b) for a single basis element.

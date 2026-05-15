@@ -25,7 +25,6 @@ use thiserror::Error;
 
 use super::{CASIMIR_COEFF, PfaAccuracy, casimir_force_pfa};
 
-
 /// Errors arising from Casimir force calculations.
 #[derive(Debug, Clone, Error)]
 pub enum CasimirError {

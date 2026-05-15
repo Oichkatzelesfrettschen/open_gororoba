@@ -12,8 +12,7 @@
 //! All items are `pub(super)`; depends only on `super::stats::mean`
 //! and `super::metrics::sigmoid`.
 
-use super::metrics::sigmoid;
-use super::stats::mean;
+use super::{metrics::sigmoid, stats::mean};
 
 #[derive(Debug, Clone)]
 pub(super) struct ScaledFeatureSet {

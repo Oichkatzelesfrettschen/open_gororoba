@@ -154,7 +154,10 @@ struct LocalNextestCli {
 /// Currently the Makefile target still drives end-to-end orchestration;
 /// the xtask version is an opt-in via `make gate-local-xtask`.
 #[derive(Parser, Debug)]
-#[command(name = "gate-local", about = "Run pre-push gate with structured timing JSONL output")]
+#[command(
+    name = "gate-local",
+    about = "Run pre-push gate with structured timing JSONL output"
+)]
 struct GateLocalCli {
     /// Path to the workspace-routing binary cache (default:
     /// .cache/gate-target/gate-tools/workspace-routing).
@@ -183,7 +186,10 @@ struct GateLocalCli {
 /// declared Makefile source dependencies are newer (would trigger
 /// rebuild on next gate-local invocation).
 #[derive(Parser, Debug)]
-#[command(name = "gate-tools-status", about = "Inspect cached gate-tool binaries and source-dep freshness")]
+#[command(
+    name = "gate-tools-status",
+    about = "Inspect cached gate-tool binaries and source-dep freshness"
+)]
 struct GateToolsStatusCli {
     /// Override the gate-tools cache root.
     /// Default: $(REPO_CARGO_TARGET_DIR)/gate-tools = .cache/gate-target/gate-tools.
@@ -198,7 +204,10 @@ struct GateToolsStatusCli {
 /// and computes count/mean/median/p95/max/min for each phase's
 /// `elapsed_sec`.
 #[derive(Parser, Debug)]
-#[command(name = "gate-timing-summary", about = "Aggregate gate-local timing JSONL")]
+#[command(
+    name = "gate-timing-summary",
+    about = "Aggregate gate-local timing JSONL"
+)]
 struct GateTimingSummaryCli {
     /// Look-back window in days. Default 30.
     #[arg(long, default_value_t = 30)]
@@ -1660,8 +1669,14 @@ fn run_audit_deep(cfg: GateAuditConfig) -> Result<()> {
             "cargo-deny-check",
             vec!["make".to_string(), "cargo-deny-check".to_string()],
         ),
-        ("dep-audit", vec!["make".to_string(), "dep-audit".to_string()]),
-        ("cpd-audit", vec!["make".to_string(), "cpd-audit".to_string()]),
+        (
+            "dep-audit",
+            vec!["make".to_string(), "dep-audit".to_string()],
+        ),
+        (
+            "cpd-audit",
+            vec!["make".to_string(), "cpd-audit".to_string()],
+        ),
     ];
 
     let cargo_home = repo_root.join(".cache").join("cargo-home");
@@ -1720,12 +1735,8 @@ fn run_audit_deep(cfg: GateAuditConfig) -> Result<()> {
     }
 
     let summary_path = output_dir.join("SUMMARY.md");
-    fs::write(&summary_path, summary_lines.join("\n")).with_context(|| {
-        format!(
-            "write audit-deep summary {}",
-            summary_path.display()
-        )
-    })?;
+    fs::write(&summary_path, summary_lines.join("\n"))
+        .with_context(|| format!("write audit-deep summary {}", summary_path.display()))?;
 
     // Structured TOML record (parallel to the SUMMARY.md) so downstream
     // tooling can index runs without parsing Markdown.
@@ -1735,9 +1746,8 @@ fn run_audit_deep(cfg: GateAuditConfig) -> Result<()> {
         "failures": failures,
         "steps": step_rows,
     });
-    fs::write(&toml_path, toml::to_string_pretty(&record)?).with_context(|| {
-        format!("write audit-deep toml {}", toml_path.display())
-    })?;
+    fs::write(&toml_path, toml::to_string_pretty(&record)?)
+        .with_context(|| format!("write audit-deep toml {}", toml_path.display()))?;
 
     println!("Wrote: {}", repo_relative(&summary_path, &repo_root));
     if failures != 0 {
@@ -1816,7 +1826,10 @@ fn run_registry_emit_all_mirrors() -> Result<()> {
         ("todo-mirror", "todo_registry_mirror.rs"),
         ("next-actions-mirror", "next_actions_registry_mirror.rs"),
         ("navigator-mirror", "navigator_registry_mirror.rs"),
-        ("entrypoint-docs-mirror", "entrypoint_docs_registry_mirror.rs"),
+        (
+            "entrypoint-docs-mirror",
+            "entrypoint_docs_registry_mirror.rs",
+        ),
         ("requirements-mirror", "requirements_registry_mirror.rs"),
         (
             "knowledge-migration-plan-mirror",
@@ -1829,7 +1842,10 @@ fn run_registry_emit_all_mirrors() -> Result<()> {
         ("claims-tasks-mirror", "claims_tasks_registry_mirror.rs"),
         ("claims-domains-mirror", "claims_domains_registry_mirror.rs"),
         ("claim-tickets-mirror", "claim_tickets_registry_mirror.rs"),
-        ("external-sources-mirror", "external_sources_registry_mirror.rs"),
+        (
+            "external-sources-mirror",
+            "external_sources_registry_mirror.rs",
+        ),
         ("book-docs-mirror", "book_docs_registry_mirror.rs"),
         (
             "data-artifact-narratives-mirror",
@@ -2753,9 +2769,9 @@ fn run_make_target(root: &Path, target: &str, env: &[(&str, &str)]) -> Result<(i
 
 fn run_gate_local(cli: GateLocalCli) -> Result<i32> {
     let root = repo_root()?;
-    let routing_bin = cli.routing_bin.unwrap_or_else(|| {
-        root.join(".cache/gate-target/gate-tools/workspace-routing")
-    });
+    let routing_bin = cli
+        .routing_bin
+        .unwrap_or_else(|| root.join(".cache/gate-target/gate-tools/workspace-routing"));
 
     // Default timing path: data/output/audit/<date>/gate-timing-<ts>.jsonl
     let timing_path = cli.timing_json.unwrap_or_else(|| {
@@ -2847,10 +2863,8 @@ fn run_gate_local(cli: GateLocalCli) -> Result<i32> {
         } else {
             flags.scope.clone()
         };
-        let env_pairs: Vec<(&str, &str)> = vec![
-            ("RUST_SCOPE", scope.as_str()),
-            ("RUST_RUN_HEAVY", "0"),
-        ];
+        let env_pairs: Vec<(&str, &str)> =
+            vec![("RUST_SCOPE", scope.as_str()), ("RUST_RUN_HEAVY", "0")];
         let (code, elapsed) = run_make_target(&root, "rust-regression-scoped", &env_pairs)?;
         timing.write(serde_json::json!({
             "kind": "phase",
@@ -2957,8 +2971,8 @@ fn collect_phase_records(audit_root: &Path, since_days: u64) -> Result<Vec<Phase
             if mtime_secs < cutoff {
                 continue;
             }
-            let text = fs::read_to_string(&path)
-                .with_context(|| format!("read {}", path.display()))?;
+            let text =
+                fs::read_to_string(&path).with_context(|| format!("read {}", path.display()))?;
             for line in text.lines() {
                 let line = line.trim();
                 if line.is_empty() {
@@ -2979,10 +2993,7 @@ fn collect_phase_records(audit_root: &Path, since_days: u64) -> Result<Vec<Phase
                     Some(e) => e,
                     None => continue,
                 };
-                let exit_code = value
-                    .get("exit_code")
-                    .and_then(|v| v.as_i64())
-                    .unwrap_or(0);
+                let exit_code = value.get("exit_code").and_then(|v| v.as_i64()).unwrap_or(0);
                 records.push(PhaseRecord {
                     file_mtime_secs: mtime_secs,
                     phase,
@@ -3099,7 +3110,10 @@ fn run_gate_timing_summary(cli: GateTimingSummaryCli) -> Result<()> {
                 let recent: Vec<&PhaseRecord> =
                     records.iter().rev().take(cli.last * stats.len()).collect();
                 println!();
-                println!("Last {} raw records (newest first):", cli.last * stats.len());
+                println!(
+                    "Last {} raw records (newest first):",
+                    cli.last * stats.len()
+                );
                 for r in recent {
                     println!(
                         "  {}  {:<28}  {:>10.3}s  exit={}",

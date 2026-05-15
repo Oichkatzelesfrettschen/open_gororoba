@@ -12,8 +12,7 @@
 //! rows so mutations applied via the canonical SQLite write path
 //! reach every downstream consumer.
 
-use std::fs;
-use std::path::Path;
+use std::{fs, path::Path};
 
 use anyhow::{Context, Result};
 use provenance_core::{BinaryRecord, ClaimRecord, ExperimentRecord, InsightRecord};
@@ -35,7 +34,10 @@ pub(crate) fn render_insights_registry(insights: &[InsightRecord]) -> String {
     )
 }
 
-pub(crate) fn render_experiments_registry(header_toml: &str, experiments: &[ExperimentRecord]) -> String {
+pub(crate) fn render_experiments_registry(
+    header_toml: &str,
+    experiments: &[ExperimentRecord],
+) -> String {
     let mut lines = compat_toml_export_header("experiments");
     let header = rebuild_experiments_header_toml(header_toml, experiments);
     if !header.trim().is_empty() {
@@ -51,7 +53,10 @@ pub(crate) fn render_experiments_registry(header_toml: &str, experiments: &[Expe
     lines.join("\n")
 }
 
-pub(crate) fn rebuild_experiments_header_toml(header_toml: &str, experiments: &[ExperimentRecord]) -> String {
+pub(crate) fn rebuild_experiments_header_toml(
+    header_toml: &str,
+    experiments: &[ExperimentRecord],
+) -> String {
     // Use toml::from_str rather than .parse::<Value>(): in toml 1.1 the FromStr
     // implementation rejects multi-line key-value documents.
     let mut table = toml::from_str::<Value>(header_toml.trim())
@@ -232,7 +237,10 @@ pub(crate) fn render_experiment_row(row: &ExperimentRecord) -> String {
 ///
 /// Falls back to the original text on parse failure so a single malformed row
 /// cannot regress the entire export.
-pub(crate) fn splice_compat_toml_overrides(compat_toml_text: &str, overrides: &[(&str, Option<&str>)]) -> String {
+pub(crate) fn splice_compat_toml_overrides(
+    compat_toml_text: &str,
+    overrides: &[(&str, Option<&str>)],
+) -> String {
     let trimmed = compat_toml_text.trim();
     if overrides.iter().all(|(_, v)| v.is_none()) {
         return trimmed.to_string();

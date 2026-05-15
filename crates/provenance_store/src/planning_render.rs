@@ -25,11 +25,13 @@
 
 use anyhow::Result;
 
-use crate::ProvenanceStore;
-use crate::toml_helpers::{
-    compat_child_table, compat_json_string_array, compat_root_table, compat_table_array,
-    compat_table_bool, compat_table_string, compat_toml_quote, compat_toml_string_array,
-    trim_trailing_blank_lines,
+use crate::{
+    ProvenanceStore,
+    toml_helpers::{
+        compat_child_table, compat_json_string_array, compat_root_table, compat_table_array,
+        compat_table_bool, compat_table_string, compat_toml_quote, compat_toml_string_array,
+        trim_trailing_blank_lines,
+    },
 };
 
 impl ProvenanceStore {

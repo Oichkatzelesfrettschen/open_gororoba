@@ -64,7 +64,6 @@ pub use table_builder::{
 // Generator Triad and LO/HI Split (MIL 2, 7)
 // ===========================================================================
 
-
 /// The LO/HI split of basis indices for a Cayley-Dickson dimension.
 ///
 /// LO = 1..dim/2 (imaginary units inherited from parent algebra)
@@ -90,7 +89,9 @@ pub use lanyard::{LanyardType, classify_lanyard, lanyard_census_dim16};
 // map_boxkite_to_semiotic, verify_semiotic_completeness) lives in
 // the `semiotic` submodule.
 pub mod semiotic;
-pub use semiotic::{SemioticSquare, StrutLinkType, map_boxkite_to_semiotic, verify_semiotic_completeness};
+pub use semiotic::{
+    SemioticSquare, StrutLinkType, map_boxkite_to_semiotic, verify_semiotic_completeness,
+};
 
 // Twist transition system (H*/V* operations) and the Twisted Sisters
 // PSL(2,7) navigation graph (TwistTransition, twist_transition_table,
@@ -106,7 +107,9 @@ pub use twist_transitions::{
 // Extended lanyard taxonomy (ExtendedLanyardType, classify_face_extended,
 // extended_lanyard_census_dim16) lives in the `extended_lanyard` submodule.
 pub mod extended_lanyard;
-pub use extended_lanyard::{ExtendedLanyardType, classify_face_extended, extended_lanyard_census_dim16};
+pub use extended_lanyard::{
+    ExtendedLanyardType, classify_face_extended, extended_lanyard_census_dim16,
+};
 
 // Trip Sync property and Quaternion Copy decomposition
 // (QuaternionCopy, sail_quaternion_copies, verify_trip_sync) live
@@ -167,10 +170,9 @@ pub use strut_spectroscopy::{
 // to be re-exported without conflict.
 pub mod regime_address;
 pub use regime_address::{
-    HideFillResult, RowDegreeDistribution, hide_fill_analysis, regime_count,
+    HideFillResult, RowDegreeDistribution, hide_fill_analysis, regime_address, regime_count,
     row_degree_distribution,
 };
-pub use regime_address::regime_address;
 
 // Skybox label-line extension (L9d) for the doubling recursion lives
 // in the `skybox` submodule.
@@ -187,8 +189,7 @@ pub use theorem11::{Theorem11Result, verify_theorem11};
 // name with the module; Rust's separate type/value namespaces allow
 // both re-exports.
 pub mod balloon_ride;
-pub use balloon_ride::{BalloonRide, BalloonRideStep, min_level_for_strut};
-pub use balloon_ride::balloon_ride;
+pub use balloon_ride::{BalloonRide, BalloonRideStep, balloon_ride, min_level_for_strut};
 
 // Spectroscopy bands (L9g) -- fixed-N, all-S band structure -- live
 // in the `spectroscopy_bands` submodule. The function
@@ -196,9 +197,8 @@ pub use balloon_ride::balloon_ride;
 // separate type/value namespaces allow both re-exports.
 pub mod spectroscopy_bands;
 pub use spectroscopy_bands::{
-    BandBehavior, FlipBookFrame, SpectroscopyBand, SpectroscopyResult,
+    BandBehavior, FlipBookFrame, SpectroscopyBand, SpectroscopyResult, spectroscopy_bands,
 };
-pub use spectroscopy_bands::spectroscopy_bands;
 
 // CT Boundary / A7 Star (L10: twist as double transfer) lives in
 // the `ct_boundary` submodule.
@@ -255,17 +255,15 @@ pub use lanyard_dictionary::{
 // both re-exports.
 pub mod delta_transition;
 pub use delta_transition::{
-    DeltaTransitionTable, StrutPair, TwistDeltaComparison, VentPairingAnalysis,
+    DeltaTransitionTable, StrutPair, TwistDeltaComparison, VentPairingAnalysis, delta_transition,
     delta_transition_tables, strut_pairs_for, twist_delta_correspondence, vent_pairing_analysis,
     verify_delta_reachability,
 };
-pub use delta_transition::delta_transition;
 
 // Brocade / Slipcover normalization (L18 PSL(2,7) relabeling) lives in
 // the `brocade` submodule.
 pub mod brocade;
 pub use brocade::{BrocadeRelabeling, brocade_relabelings, verify_brocade_consistency};
-
 
 // ===========================================================================
 // Tests

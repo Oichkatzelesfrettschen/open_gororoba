@@ -158,7 +158,6 @@ pub struct CrystalStructureInfo {
     pub primary_reference: &'static str,
 }
 
-
 /// Known crystal-structure registry mined from open-licence
 /// crystallographic + mineralogical sources. References favour:
 ///
@@ -195,7 +194,9 @@ pub fn space_groups_for_structure(
 /// Look up structures by exact `name` (case-sensitive). Returns `None` if
 /// not in the registry. Convenience for callers that already know the key.
 pub fn structure_by_name(name: &str) -> Option<CrystalStructureInfo> {
-    known_crystal_structures().into_iter().find(|s| s.name == name)
+    known_crystal_structures()
+        .into_iter()
+        .find(|s| s.name == name)
 }
 
 /// Extinction rule for `(hkl)` reflection at the given space group.
@@ -298,10 +299,7 @@ mod tests {
 
     #[test]
     fn rare_earth_garnet_and_laser_host_coverage() {
-        let names: Vec<&str> = known_crystal_structures()
-            .iter()
-            .map(|s| s.name)
-            .collect();
+        let names: Vec<&str> = known_crystal_structures().iter().map(|s| s.name).collect();
         for required in [
             "rare_earth_iron_garnet_yig",
             "ggg_gadolinium_gallium_garnet",
@@ -309,69 +307,77 @@ mod tests {
             "ceo2_ceria_fluorite",
             "smfeo3_orthoferrite_magnetic",
         ] {
-            assert!(names.contains(&required), "rare-earth/laser-host {} missing", required);
+            assert!(
+                names.contains(&required),
+                "rare-earth/laser-host {} missing",
+                required
+            );
         }
     }
 
     #[test]
     fn additional_topological_material_coverage() {
-        let names: Vec<&str> = known_crystal_structures()
-            .iter()
-            .map(|s| s.name)
-            .collect();
+        let names: Vec<&str> = known_crystal_structures().iter().map(|s| s.name).collect();
         for required in [
             "zrte5_orthorhombic_topological",
             "wte2_td_weyl_typeii",
             "mote2_td_weyl",
             "snte_rocksalt_tci",
         ] {
-            assert!(names.contains(&required), "topological material {} missing", required);
+            assert!(
+                names.contains(&required),
+                "topological material {} missing",
+                required
+            );
         }
     }
 
     #[test]
     fn max_phase_and_mxene_coverage() {
-        let names: Vec<&str> = known_crystal_structures()
-            .iter()
-            .map(|s| s.name)
-            .collect();
+        let names: Vec<&str> = known_crystal_structures().iter().map(|s| s.name).collect();
         for required in [
             "ti2alc_max_phase",
             "v2alc_max_phase",
             "nb2alc_max_phase",
             "ti2c_mxene",
         ] {
-            assert!(names.contains(&required), "MAX phase/MXene {} missing", required);
+            assert!(
+                names.contains(&required),
+                "MAX phase/MXene {} missing",
+                required
+            );
         }
     }
 
     #[test]
     fn scintillator_and_pet_imaging_coverage() {
-        let names: Vec<&str> = known_crystal_structures()
-            .iter()
-            .map(|s| s.name)
-            .collect();
+        let names: Vec<&str> = known_crystal_structures().iter().map(|s| s.name).collect();
         for required in [
             "bgo_bismuth_germanate_bi4ge3o12",
             "lso_lutetium_oxyorthosilicate",
             "yso_yttrium_oxyorthosilicate",
         ] {
-            assert!(names.contains(&required), "scintillator {} missing", required);
+            assert!(
+                names.contains(&required),
+                "scintillator {} missing",
+                required
+            );
         }
     }
 
     #[test]
     fn geophysical_lower_mantle_coverage() {
-        let names: Vec<&str> = known_crystal_structures()
-            .iter()
-            .map(|s| s.name)
-            .collect();
+        let names: Vec<&str> = known_crystal_structures().iter().map(|s| s.name).collect();
         for required in [
             "majorite_garnet_mg4si4o12",
             "perovskite_mgsio3_bridgmanite",
             "ferropericlase_mgo_feo",
         ] {
-            assert!(names.contains(&required), "lower-mantle phase {} missing", required);
+            assert!(
+                names.contains(&required),
+                "lower-mantle phase {} missing",
+                required
+            );
         }
     }
 
@@ -385,10 +391,8 @@ mod tests {
         // misinterpret the bulk density.
         let two_d_keywords = ["monolayer", "buckled", "honeycomb", "slab", "2D"];
         let all = known_crystal_structures();
-        let two_d_entries: Vec<&CrystalStructureInfo> = all
-            .iter()
-            .filter(|s| s.name.ends_with("_2d"))
-            .collect();
+        let two_d_entries: Vec<&CrystalStructureInfo> =
+            all.iter().filter(|s| s.name.ends_with("_2d")).collect();
         assert!(
             !two_d_entries.is_empty(),
             "No _2d entries found -- germanene_2d + stanene_2d at minimum should be present"
@@ -408,10 +412,7 @@ mod tests {
 
     #[test]
     fn hume_rothery_intermetallic_coverage() {
-        let names: Vec<&str> = known_crystal_structures()
-            .iter()
-            .map(|s| s.name)
-            .collect();
+        let names: Vec<&str> = known_crystal_structures().iter().map(|s| s.name).collect();
         for required in [
             "beta_brass_cuzn_b2",
             "gamma_brass_cu5zn8",
@@ -431,26 +432,24 @@ mod tests {
 
     #[test]
     fn cuprate_high_tc_extended_coverage() {
-        let names: Vec<&str> = known_crystal_structures()
-            .iter()
-            .map(|s| s.name)
-            .collect();
+        let names: Vec<&str> = known_crystal_structures().iter().map(|s| s.name).collect();
         for required in [
             "yba2cu3o6_tetragonal",
             "bi2sr2cacu2o8_bscco_2212",
             "hgba2ca2cu3o8_hg_1223",
             "ndnio2_nickelate_infinite_layer",
         ] {
-            assert!(names.contains(&required), "extended cuprate {} missing", required);
+            assert!(
+                names.contains(&required),
+                "extended cuprate {} missing",
+                required
+            );
         }
     }
 
     #[test]
     fn biological_mineral_coverage() {
-        let names: Vec<&str> = known_crystal_structures()
-            .iter()
-            .map(|s| s.name)
-            .collect();
+        let names: Vec<&str> = known_crystal_structures().iter().map(|s| s.name).collect();
         for required in [
             "calcite_biogenic_eggshell",
             "aragonite_biogenic_nacre",
@@ -464,10 +463,7 @@ mod tests {
 
     #[test]
     fn additional_zeolite_framework_coverage() {
-        let names: Vec<&str> = known_crystal_structures()
-            .iter()
-            .map(|s| s.name)
-            .collect();
+        let names: Vec<&str> = known_crystal_structures().iter().map(|s| s.name).collect();
         for required in [
             "linde_a_zeolite",
             "chabazite_chabazite",
@@ -475,31 +471,33 @@ mod tests {
             "analcime_ana",
             "sodalite_sod",
         ] {
-            assert!(names.contains(&required), "zeolite framework {} missing", required);
+            assert!(
+                names.contains(&required),
+                "zeolite framework {} missing",
+                required
+            );
         }
     }
 
     #[test]
     fn niobate_ferroelectric_coverage() {
-        let names: Vec<&str> = known_crystal_structures()
-            .iter()
-            .map(|s| s.name)
-            .collect();
+        let names: Vec<&str> = known_crystal_structures().iter().map(|s| s.name).collect();
         for required in [
             "linbo3_trigonal_room_t",
             "litao3_trigonal",
             "knbo3_orthorhombic",
         ] {
-            assert!(names.contains(&required), "niobate/tantalate {} missing", required);
+            assert!(
+                names.contains(&required),
+                "niobate/tantalate {} missing",
+                required
+            );
         }
     }
 
     #[test]
     fn organic_semiconductor_coverage() {
-        let names: Vec<&str> = known_crystal_structures()
-            .iter()
-            .map(|s| s.name)
-            .collect();
+        let names: Vec<&str> = known_crystal_structures().iter().map(|s| s.name).collect();
         for required in [
             "pentacene_herringbone",
             "rubrene_orthorhombic",
@@ -507,16 +505,17 @@ mod tests {
             "naphthalene",
             "anthracene",
         ] {
-            assert!(names.contains(&required), "organic semiconductor {} missing", required);
+            assert!(
+                names.contains(&required),
+                "organic semiconductor {} missing",
+                required
+            );
         }
     }
 
     #[test]
     fn mof_and_zeolite_coverage() {
-        let names: Vec<&str> = known_crystal_structures()
-            .iter()
-            .map(|s| s.name)
-            .collect();
+        let names: Vec<&str> = known_crystal_structures().iter().map(|s| s.name).collect();
         for required in [
             "mof_5_irmof_1",
             "hkust_1_cu_btc",
@@ -526,53 +525,57 @@ mod tests {
             "zsm_5_mfi_framework",
             "mordenite_zeolite",
         ] {
-            assert!(names.contains(&required), "MOF/zeolite {} missing", required);
+            assert!(
+                names.contains(&required),
+                "MOF/zeolite {} missing",
+                required
+            );
         }
     }
 
     #[test]
     fn ice_polymorph_coverage() {
-        let names: Vec<&str> = known_crystal_structures()
-            .iter()
-            .map(|s| s.name)
-            .collect();
+        let names: Vec<&str> = known_crystal_structures().iter().map(|s| s.name).collect();
         for required in [
             "ice_ih_hexagonal",
             "ice_ic_cubic",
             "ice_vii_cubic_high_pressure",
         ] {
-            assert!(names.contains(&required), "ice polymorph {} missing", required);
+            assert!(
+                names.contains(&required),
+                "ice polymorph {} missing",
+                required
+            );
         }
     }
 
     #[test]
     fn nuclear_actinide_coverage() {
-        let names: Vec<&str> = known_crystal_structures()
-            .iter()
-            .map(|s| s.name)
-            .collect();
+        let names: Vec<&str> = known_crystal_structures().iter().map(|s| s.name).collect();
         for required in ["uo2_fluorite", "tho2_fluorite", "puo2_fluorite"] {
-            assert!(names.contains(&required), "actinide oxide {} missing", required);
+            assert!(
+                names.contains(&required),
+                "actinide oxide {} missing",
+                required
+            );
         }
     }
 
     #[test]
     fn permanent_magnet_coverage() {
-        let names: Vec<&str> = known_crystal_structures()
-            .iter()
-            .map(|s| s.name)
-            .collect();
+        let names: Vec<&str> = known_crystal_structures().iter().map(|s| s.name).collect();
         for required in ["nd2fe14b_neomag", "smco5_cacu5_type", "fept_l10_ordered"] {
-            assert!(names.contains(&required), "hard-magnet phase {} missing", required);
+            assert!(
+                names.contains(&required),
+                "hard-magnet phase {} missing",
+                required
+            );
         }
     }
 
     #[test]
     fn iii_v_compound_semiconductor_coverage() {
-        let names: Vec<&str> = known_crystal_structures()
-            .iter()
-            .map(|s| s.name)
-            .collect();
+        let names: Vec<&str> = known_crystal_structures().iter().map(|s| s.name).collect();
         for required in [
             "alas_zincblende",
             "aln_wurtzite",
@@ -592,10 +595,7 @@ mod tests {
 
     #[test]
     fn refractory_carbide_diboride_coverage() {
-        let names: Vec<&str> = known_crystal_structures()
-            .iter()
-            .map(|s| s.name)
-            .collect();
+        let names: Vec<&str> = known_crystal_structures().iter().map(|s| s.name).collect();
         for required in [
             "titanium_carbide_tic",
             "zirconium_carbide_zrc",
@@ -604,16 +604,17 @@ mod tests {
             "hafnium_diboride_hfb2",
             "tantalum_diboride_tab2",
         ] {
-            assert!(names.contains(&required), "refractory ceramic {} missing", required);
+            assert!(
+                names.contains(&required),
+                "refractory ceramic {} missing",
+                required
+            );
         }
     }
 
     #[test]
     fn high_pressure_geophysical_phase_coverage() {
-        let names: Vec<&str> = known_crystal_structures()
-            .iter()
-            .map(|s| s.name)
-            .collect();
+        let names: Vec<&str> = known_crystal_structures().iter().map(|s| s.name).collect();
         for required in [
             "post_perovskite_mgsio3",
             "stishovite_sio2_rutile",
@@ -632,21 +633,19 @@ mod tests {
 
     #[test]
     fn cuprate_superconductor_parent_coverage() {
-        let names: Vec<&str> = known_crystal_structures()
-            .iter()
-            .map(|s| s.name)
-            .collect();
+        let names: Vec<&str> = known_crystal_structures().iter().map(|s| s.name).collect();
         for required in ["la2cuo4_tetragonal_t_phase", "nd2cuo4_t_prime"] {
-            assert!(names.contains(&required), "cuprate parent {} missing", required);
+            assert!(
+                names.contains(&required),
+                "cuprate parent {} missing",
+                required
+            );
         }
     }
 
     #[test]
     fn halide_perovskite_coverage() {
-        let names: Vec<&str> = known_crystal_structures()
-            .iter()
-            .map(|s| s.name)
-            .collect();
+        let names: Vec<&str> = known_crystal_structures().iter().map(|s| s.name).collect();
         for required in [
             "cspbi3_orthorhombic_gamma",
             "mapbi3_tetragonal",
@@ -663,10 +662,7 @@ mod tests {
 
     #[test]
     fn iron_pnictide_superconductor_coverage() {
-        let names: Vec<&str> = known_crystal_structures()
-            .iter()
-            .map(|s| s.name)
-            .collect();
+        let names: Vec<&str> = known_crystal_structures().iter().map(|s| s.name).collect();
         for required in ["bafe2as2_122", "lafeaso_1111", "fese_pbo_type"] {
             assert!(
                 names.contains(&required),
@@ -678,21 +674,23 @@ mod tests {
 
     #[test]
     fn weyl_dirac_semimetal_coverage() {
-        let names: Vec<&str> = known_crystal_structures()
-            .iter()
-            .map(|s| s.name)
-            .collect();
-        for required in ["tantalum_arsenide_taas", "niobium_phosphide_nbp", "cd3as2_dirac"] {
-            assert!(names.contains(&required), "Weyl/Dirac semimetal {} missing", required);
+        let names: Vec<&str> = known_crystal_structures().iter().map(|s| s.name).collect();
+        for required in [
+            "tantalum_arsenide_taas",
+            "niobium_phosphide_nbp",
+            "cd3as2_dirac",
+        ] {
+            assert!(
+                names.contains(&required),
+                "Weyl/Dirac semimetal {} missing",
+                required
+            );
         }
     }
 
     #[test]
     fn ceramic_and_nlo_coverage() {
-        let names: Vec<&str> = known_crystal_structures()
-            .iter()
-            .map(|s| s.name)
-            .collect();
+        let names: Vec<&str> = known_crystal_structures().iter().map(|s| s.name).collect();
         for required in [
             "yag_y3al5o12",
             "magnesium_fluoride_rutile",
@@ -702,16 +700,17 @@ mod tests {
             "zirconia_monoclinic_baddeleyite",
             "tungsten_carbide_alpha",
         ] {
-            assert!(names.contains(&required), "ceramic/NLO crystal {} missing", required);
+            assert!(
+                names.contains(&required),
+                "ceramic/NLO crystal {} missing",
+                required
+            );
         }
     }
 
     #[test]
     fn semiconductor_iii_v_ii_vi_coverage() {
-        let names: Vec<&str> = known_crystal_structures()
-            .iter()
-            .map(|s| s.name)
-            .collect();
+        let names: Vec<&str> = known_crystal_structures().iter().map(|s| s.name).collect();
         for required in [
             "gaas_zincblende",
             "gan_wurtzite",
@@ -732,26 +731,24 @@ mod tests {
 
     #[test]
     fn energy_materials_coverage() {
-        let names: Vec<&str> = known_crystal_structures()
-            .iter()
-            .map(|s| s.name)
-            .collect();
+        let names: Vec<&str> = known_crystal_structures().iter().map(|s| s.name).collect();
         for required in [
             "licoo2_layered",
             "lifepo4_olivine",
             "limn2o4_spinel",
             "pbte_rocksalt",
         ] {
-            assert!(names.contains(&required), "energy-material {} missing", required);
+            assert!(
+                names.contains(&required),
+                "energy-material {} missing",
+                required
+            );
         }
     }
 
     #[test]
     fn silicate_coverage_includes_olivines_and_polymorphs() {
-        let names: Vec<&str> = known_crystal_structures()
-            .iter()
-            .map(|s| s.name)
-            .collect();
+        let names: Vec<&str> = known_crystal_structures().iter().map(|s| s.name).collect();
         for required in [
             "forsterite_olivine",
             "fayalite_olivine",
@@ -768,10 +765,7 @@ mod tests {
 
     #[test]
     fn modern_materials_coverage() {
-        let names: Vec<&str> = known_crystal_structures()
-            .iter()
-            .map(|s| s.name)
-            .collect();
+        let names: Vec<&str> = known_crystal_structures().iter().map(|s| s.name).collect();
         for required in [
             "graphite_hexagonal_2H",
             "bismuth_telluride_bi2te3",
@@ -832,7 +826,11 @@ mod tests {
                 s.name,
                 s.density_g_cm3
             );
-            assert!(!s.primary_reference.is_empty(), "{} missing reference", s.name);
+            assert!(
+                !s.primary_reference.is_empty(),
+                "{} missing reference",
+                s.name
+            );
         }
     }
 
@@ -842,8 +840,16 @@ mod tests {
             .iter()
             .filter(|s| s.lattice_system == LatticeSystem::Cubic)
         {
-            assert!((s.lattice_a_angstrom - s.lattice_b_angstrom).abs() < 1e-9, "{}", s.name);
-            assert!((s.lattice_a_angstrom - s.lattice_c_angstrom).abs() < 1e-9, "{}", s.name);
+            assert!(
+                (s.lattice_a_angstrom - s.lattice_b_angstrom).abs() < 1e-9,
+                "{}",
+                s.name
+            );
+            assert!(
+                (s.lattice_a_angstrom - s.lattice_c_angstrom).abs() < 1e-9,
+                "{}",
+                s.name
+            );
             assert!((s.alpha_deg - 90.0).abs() < 1e-9);
             assert!((s.beta_deg - 90.0).abs() < 1e-9);
             assert!((s.gamma_deg - 90.0).abs() < 1e-9);

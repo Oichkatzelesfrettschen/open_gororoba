@@ -84,8 +84,10 @@ use clap::Parser;
 use serde::Serialize;
 use std::path::PathBuf;
 
-use data_core::catalogs::spdf_merged::{SpdfColumnLayout, parse_spdf_merged};
-use data_core::catalogs::voyager::{BARTOL_V2_LAYOUT, parse_bartol_v2};
+use data_core::catalogs::{
+    spdf_merged::{SpdfColumnLayout, parse_spdf_merged},
+    voyager::{BARTOL_V2_LAYOUT, parse_bartol_v2},
+};
 
 /// Column layout for the AMDA-merged Voyager 2 hourly file.
 ///
@@ -238,7 +240,11 @@ fn slots_for_year(year: u16) -> usize {
 /// Compute statistics from a raw residual list. Treats NaN as a fill
 /// indicator and excludes those rows from the count and aggregates.
 fn stats_from_residuals(residuals: &[f64]) -> FieldResiduals {
-    let valid: Vec<f64> = residuals.iter().copied().filter(|x| x.is_finite()).collect();
+    let valid: Vec<f64> = residuals
+        .iter()
+        .copied()
+        .filter(|x| x.is_finite())
+        .collect();
     let n = valid.len() as u64;
     if n == 0 {
         return FieldResiduals {

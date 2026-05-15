@@ -52,7 +52,6 @@ use std::{fs, io::Write, path::PathBuf};
 mod types;
 use types::*;
 
-
 /// Built-in OMNI2 sample: real data from 2024 DOY 1, hours 0-23.
 /// Includes actual measured Bx/By/Bz (GSE) alongside plasma parameters.
 /// Source: https://spdf.gsfc.nasa.gov/pub/data/omni/low_res_omni/omni2_2024.dat
