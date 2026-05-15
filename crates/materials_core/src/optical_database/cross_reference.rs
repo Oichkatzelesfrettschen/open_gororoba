@@ -18,15 +18,16 @@
 //!   pairing is a single-line edit in this file.
 
 use super::{
-    MineralMetadata, alumina_metadata, aluminum_metadata, azo_metadata, beryllium_metadata,
-    cawo4_metadata, chromium_metadata, copper_metadata, cs_wo3_metadata, diamond_metadata,
-    doped_silicon_metadata, dravite_metadata, elbaite_metadata, foitite_metadata,
-    germanium_metadata, gold_metadata, ito_metadata, latio3_metadata, liddicoatite_metadata,
-    nickel_metadata, palladium_metadata, pbwo4_metadata, pedot_pss_metadata, platinum_metadata,
-    povondraite_metadata, quartz_metadata, rossmanite_metadata, schorl_metadata,
-    silica_casimir_metadata, silica_metadata, silicon_metadata, silicon_nitride_metadata,
-    silver_metadata, srtio3_doped_metadata, srtio3_metadata, tio2_metadata, tio_metadata,
-    titanium_metadata, tungsten_metadata, uvite_metadata, wo3_metadata, wo3_x_metadata,
+    MineralMetadata, alumina_metadata, aluminum_metadata, anatase_metadata, azo_metadata,
+    beryllium_metadata, brookite_metadata, cawo4_metadata, chromium_metadata, copper_metadata,
+    cs_wo3_metadata, diamond_metadata, doped_silicon_metadata, dravite_metadata, elbaite_metadata,
+    foitite_metadata, germanium_metadata, gold_metadata, ito_metadata, latio3_metadata,
+    liddicoatite_metadata, linbo3_metadata, litao3_metadata, nickel_metadata, palladium_metadata,
+    pbwo4_metadata, pedot_pss_metadata, platinum_metadata, povondraite_metadata, quartz_metadata,
+    rossmanite_metadata, schorl_metadata, silica_casimir_metadata, silica_metadata,
+    silicon_metadata, silicon_nitride_metadata, silver_metadata, srtio3_doped_metadata,
+    srtio3_metadata, tio2_metadata, tio_metadata, titanium_metadata, tungsten_metadata,
+    uvite_metadata, wo3_metadata, wo3_x_metadata,
 };
 
 /// Look up MineralMetadata for a crystal-structure name from
@@ -66,17 +67,20 @@ pub fn metadata_for_structure(name: &str) -> Option<MineralMetadata> {
         "alpha_quartz" => Some(quartz_metadata()),
         "silicon_nitride_alpha" | "silicon_nitride_beta" => Some(silicon_nitride_metadata()),
 
-        // ---------- Oxides + TCOs ----------
+        // ---------- Oxides + TCOs (polymorph-disambiguated where possible) ----------
         "alumina_sapphire" => Some(alumina_metadata()),
         "rutile_tio2" => Some(tio2_metadata()),
-        "anatase_tio2" => Some(tio2_metadata()),
-        "brookite_tio2" => Some(tio2_metadata()),
+        "anatase_tio2" => Some(anatase_metadata()),
+        "brookite_tio2" => Some(brookite_metadata()),
         "indium_tin_oxide_bixbyite" => Some(ito_metadata()),
         // Wurtzite ZnO + AZO share the same lattice; AZO is doped variant.
         "wurtzite_zno" => Some(azo_metadata()),
         "perovskite_srtio3" => Some(srtio3_metadata()),
         "perovskite_batio3_tetragonal" | "barium_titanate_cubic" => Some(srtio3_doped_metadata()),
         "lanthanum_titanate" => Some(latio3_metadata()),
+        // Niobate / tantalate ferroelectric + NLO crystals
+        "linbo3_trigonal_room_t" => Some(linbo3_metadata()),
+        "litao3_trigonal" => Some(litao3_metadata()),
 
         // ---------- Tungstates ----------
         "tungsten_trioxide_gamma" => Some(wo3_metadata()),
@@ -126,6 +130,8 @@ pub fn structures_with_metadata() -> Vec<&'static str> {
         "indium_tin_oxide_bixbyite", "wurtzite_zno", "perovskite_srtio3",
         "perovskite_batio3_tetragonal", "barium_titanate_cubic",
         "lanthanum_titanate",
+        // Niobate + tantalate ferroelectrics
+        "linbo3_trigonal_room_t", "litao3_trigonal",
         // Tungstates
         "tungsten_trioxide_gamma", "cesium_tungsten_bronze",
         "tungsten_bronze_na_x_wo3_cubic", "scheelite_cawo4", "stolzite_pbwo4",
@@ -142,6 +148,7 @@ pub fn structures_with_metadata() -> Vec<&'static str> {
 
 #[cfg(test)]
 mod tests {
+    use super::super::OpticSign;
     use super::*;
 
     #[test]
@@ -190,17 +197,48 @@ mod tests {
     }
 
     #[test]
-    fn cross_reference_covers_at_least_46_structures() {
+    fn cross_reference_covers_at_least_48_structures() {
         // Coverage regression: the cross-reference should grow with the
-        // metadata catalog. Currently 46 mappings (34 unique metadata
-        // accessors x ~1.4 average structure aliases per accessor).
-        // Adding new pairings is encouraged.
+        // metadata catalog. 48 mappings after polymorph specialisation
+        // (anatase + brookite get dedicated accessors; LiNbO3 + LiTaO3
+        // added). Adding new pairings is encouraged.
         let n = structures_with_metadata().len();
         assert!(
-            n >= 46,
-            "Cross-reference coverage regression: {} mappings (expected >= 46). \
+            n >= 48,
+            "Cross-reference coverage regression: {} mappings (expected >= 48). \
              Adding new structure -> metadata pairings is encouraged.",
             n
         );
+    }
+
+    #[test]
+    fn polymorph_aliases_resolve_to_distinct_metadata() {
+        // PR #19 review flagged that rutile + anatase + brookite were
+        // all resolving to tio2_metadata even though they have distinct
+        // refractive indices. This regression test pins the polymorph
+        // specialisation: each TiO2 polymorph must return its own n_o
+        // and n_e values matching primary literature.
+        let rutile = metadata_for_structure("rutile_tio2").expect("rutile");
+        let anatase = metadata_for_structure("anatase_tio2").expect("anatase");
+        let brookite = metadata_for_structure("brookite_tio2").expect("brookite");
+        assert!((rutile.n_omega - 2.616).abs() < 0.01);
+        assert!((anatase.n_omega - 2.561).abs() < 0.01);
+        assert!((brookite.n_omega - 2.583).abs() < 0.01);
+        // The three polymorphs must NOT share the same n_omega.
+        assert_ne!(rutile.space_group, anatase.space_group);
+        assert_ne!(rutile.space_group, brookite.space_group);
+        assert_ne!(anatase.space_group, brookite.space_group);
+    }
+
+    #[test]
+    fn niobate_tantalate_cross_reference_resolves() {
+        let nbo = metadata_for_structure("linbo3_trigonal_room_t").expect("LiNbO3");
+        let tao = metadata_for_structure("litao3_trigonal").expect("LiTaO3");
+        assert_eq!(nbo.formula, "LiNbO3");
+        assert_eq!(tao.formula, "LiTaO3");
+        assert_eq!(nbo.crystal_system, "trigonal");
+        assert_eq!(tao.crystal_system, "trigonal");
+        // LiNbO3 is uniaxial negative; LiTaO3 is barely positive.
+        assert!(matches!(nbo.optic_sign, OpticSign::Negative));
     }
 }

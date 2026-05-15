@@ -220,8 +220,8 @@ pub fn quartz_metadata() -> MineralMetadata {
 
 /// Rutile TiO2: tetragonal P4_2/mnm. Highest birefringence among common
 /// minerals (delta_n = 0.287 at sodium-D). Uniaxial POSITIVE.
-/// Note: anatase (I4_1/amd #141) and brookite (Pbca #61) are additional
-/// polymorphs not currently modeled here.
+/// For polymorph-specific metadata use `anatase_metadata()` (I4_1/amd
+/// #141) or `brookite_metadata()` (Pbca #61).
 pub fn tio2_metadata() -> MineralMetadata {
     MineralMetadata {
         species_name: "rutile_tio2",
@@ -236,6 +236,87 @@ pub fn tio2_metadata() -> MineralMetadata {
         density_g_cm3: 4.23,
         color: "reddish-brown to black; transparent thin films near-colorless",
         reference: "DeVore (1951) J.Opt.Soc.Am. 41, 416; Palik (1985) vol. I p.795; Dorenwendt (1971).",
+    }
+}
+
+/// Anatase TiO2: tetragonal I4_1/amd (#141). Lower density + lower
+/// indices than rutile (n_o = 2.49, n_e = 2.56). Uniaxial NEGATIVE.
+/// Metastable at ambient pressure; transforms to rutile near 700 deg-C.
+/// Photocatalytic UV applications + dye-sensitized solar cells.
+pub fn anatase_metadata() -> MineralMetadata {
+    MineralMetadata {
+        species_name: "anatase_tio2",
+        formula: "TiO2",
+        crystal_system: "tetragonal",
+        space_group: "I4_1/amd (141) anatase",
+        n_omega: 2.561,
+        n_epsilon: 2.488,
+        birefringence: 0.073,
+        optic_sign: OpticSign::Negative,
+        hardness_mohs: 6.0,
+        density_g_cm3: 3.895,
+        color: "blue, brown, black to colorless thin films",
+        reference: "Burdett et al. (1987) J.Am.Chem.Soc. 109, 3639; Hosaka et al. (1997) J.Phys.Soc.Jpn. 66, 877 (n at sodium-D).",
+    }
+}
+
+/// Brookite TiO2: orthorhombic Pbca (#61). Biaxial. Rarest of the three
+/// natural TiO2 polymorphs. Metastable at ambient; transforms to rutile
+/// near 750 deg-C.
+pub fn brookite_metadata() -> MineralMetadata {
+    MineralMetadata {
+        species_name: "brookite_tio2",
+        formula: "TiO2",
+        crystal_system: "orthorhombic",
+        space_group: "Pbca (61) brookite",
+        n_omega: 2.583,
+        n_epsilon: 2.700,
+        birefringence: 0.117,
+        optic_sign: OpticSign::Biaxial,
+        hardness_mohs: 5.75,
+        density_g_cm3: 4.123,
+        color: "brown to dark brown",
+        reference: "Meagher & Lager (1979) Can. Mineralogist 17 p.77; Pauling & Sturdivant (1928) Z. Kristallogr. 68, 239.",
+    }
+}
+
+/// Lithium niobate LiNbO3: trigonal R3c (#161). Principal ferroelectric +
+/// nonlinear-optical crystal. Uniaxial NEGATIVE. Curie point 1483 K;
+/// pyroelectric + electro-optic + photorefractive.
+pub fn linbo3_metadata() -> MineralMetadata {
+    MineralMetadata {
+        species_name: "lithium_niobate",
+        formula: "LiNbO3",
+        crystal_system: "trigonal",
+        space_group: "R3c (161)",
+        n_omega: 2.286,
+        n_epsilon: 2.203,
+        birefringence: 0.083,
+        optic_sign: OpticSign::Negative,
+        hardness_mohs: 5.5,
+        density_g_cm3: 4.65,
+        color: "colorless when pure; varies with doping (Mg, Fe, Cr, etc.)",
+        reference: "Abrahams et al. (1973) J. Chem. Phys. 59, 4012; Zelmon et al. (1997) JOSA B 14, 3319 (Sellmeier dispersion).",
+    }
+}
+
+/// Lithium tantalate LiTaO3: trigonal R3c (#161), isostructural with
+/// LiNbO3. Lower Curie point (878 K) + lower nonlinear coefficients but
+/// higher optical-damage threshold. SAW + electro-optic applications.
+pub fn litao3_metadata() -> MineralMetadata {
+    MineralMetadata {
+        species_name: "lithium_tantalate",
+        formula: "LiTaO3",
+        crystal_system: "trigonal",
+        space_group: "R3c (161)",
+        n_omega: 2.183,
+        n_epsilon: 2.188,
+        birefringence: 0.005,
+        optic_sign: OpticSign::Positive,
+        hardness_mohs: 5.5,
+        density_g_cm3: 7.46,
+        color: "colorless when pure",
+        reference: "Abrahams & Reddy (1965) J. Chem. Phys. 43, 2533; Bruner et al. (2003) JOSA B 20, 1893.",
     }
 }
 
