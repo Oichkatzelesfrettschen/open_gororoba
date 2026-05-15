@@ -343,6 +343,32 @@ impl Precision {
     }
 }
 
+// Bridge to the canonical workspace precision vocabulary
+// (gororoba_gpu_bridge::StoragePrecision). Consumers should migrate to
+// StoragePrecision directly; this enum is slated for removal in the
+// Wave C-tail cleanup PR after all consumers migrate.
+impl From<Precision> for gororoba_gpu_bridge::StoragePrecision {
+    fn from(value: Precision) -> Self {
+        match value {
+            Precision::FP16 => Self::Fp16,
+            Precision::FP32 => Self::Fp32,
+            Precision::FP64 => Self::Fp64,
+        }
+    }
+}
+
+impl TryFrom<gororoba_gpu_bridge::StoragePrecision> for Precision {
+    type Error = &'static str;
+    fn try_from(value: gororoba_gpu_bridge::StoragePrecision) -> Result<Self, Self::Error> {
+        match value {
+            gororoba_gpu_bridge::StoragePrecision::Fp16 => Ok(Self::FP16),
+            gororoba_gpu_bridge::StoragePrecision::Fp32 => Ok(Self::FP32),
+            gororoba_gpu_bridge::StoragePrecision::Fp64 => Ok(Self::FP64),
+            _ => Err("StoragePrecision variant has no lbm_vulkan::Precision equivalent"),
+        }
+    }
+}
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum MathComplexity {
     /// Newtonian approximation.

@@ -400,6 +400,22 @@ pub enum PrecisionControl {
     Extended = 0b11,
 }
 
+// Bridge to the canonical workspace precision vocabulary
+// (gororoba_gpu_bridge::StoragePrecision). Consumers should migrate to
+// StoragePrecision directly; this enum is slated for removal in the
+// Wave C-tail cleanup PR after all consumers migrate.
+impl From<PrecisionControl> for gororoba_gpu_bridge::StoragePrecision {
+    fn from(value: PrecisionControl) -> Self {
+        match value {
+            PrecisionControl::Single => Self::Fp32,
+            PrecisionControl::Double => Self::Fp64,
+            // Extended (80-bit x87) has no exact StoragePrecision variant;
+            // map to DdFp128 as the nearest >64-bit option.
+            PrecisionControl::Extended => Self::DdFp128,
+        }
+    }
+}
+
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[repr(u16)]
 pub enum RoundingControl {
