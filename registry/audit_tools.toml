@@ -3,7 +3,7 @@
 # Emitted by `registry-emit requirements-legacy --audit-tools registry/audit_tools.toml`.
 
 [meta]
-updated = "2026-05-10"
+updated = "2026-05-14"
 description = "Tools invoked by `make audit-deep` and related quality targets."
 
 [[tool]]
@@ -115,9 +115,9 @@ status = "active"
 [[tool]]
 id = "cache-sweep"
 name = "Cache Sweep"
-make_target = "cache-sweep"
+make_target = "cache-sweep-soft"
 install = "cargo install cargo-sweep"
-description = "Trims cargo target dirs to <= 100 GB per slot AND wipes stale gate-cbuild/<hash>/debug artifacts. Pre-push cache-check has a 250 GB hard cap; run this when it fires."
+description = "Runs age-based cargo-sweep first, then removes regenerable gate-cbuild/<hash>/ intermediates when repo-local cargo cache pressure still exceeds the 150 GB soft cap. cache-check fails at both soft and hard caps."
 audit_deep = false
 status = "active"
 
