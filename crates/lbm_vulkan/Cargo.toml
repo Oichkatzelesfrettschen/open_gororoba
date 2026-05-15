@@ -23,6 +23,7 @@ cubecl = { workspace = true, optional = true }
 cubecl-core = { workspace = true, optional = true }
 cubecl-wgpu = { workspace = true, optional = true }
 bytemuck = { workspace = true, optional = true }
+gororoba_gpu_cubecl = { workspace = true, optional = true }
 
 [dev-dependencies]
 winit = { workspace = true }
@@ -34,7 +35,7 @@ rand_chacha = { workspace = true }
 default = []
 # Enables the cubecl-wgpu backend for box-counting + the 3-way parity test.
 # Mirrors the cubecl gating used by cd_kernel (commit 8f8d90e4 era).
-cubecl = ["dep:cubecl", "dep:cubecl-core", "dep:cubecl-wgpu", "dep:bytemuck"]
+cubecl = ["dep:cubecl", "dep:cubecl-core", "dep:cubecl-wgpu", "dep:bytemuck", "dep:gororoba_gpu_cubecl", "gororoba_gpu_cubecl/cubecl"]
 
 # cubecl-core, cubecl-wgpu, bytemuck are conditionally enabled via the
 # `cubecl` feature; cargo machete / unused-dep checks must ignore them

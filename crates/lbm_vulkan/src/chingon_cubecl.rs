@@ -77,12 +77,12 @@ pub fn chingon_kernel(
 }
 
 /// Probe whether a cubecl-wgpu adapter is reachable on this host.
+///
+/// Delegates to `gororoba_gpu_cubecl::Runtime::probe()` (Wave B2
+/// consolidation). Public re-export so existing parity tests + call sites
+/// can keep using the local name.
 pub fn is_available() -> bool {
-    std::panic::catch_unwind(|| {
-        let device = WgpuDevice::default();
-        let _client = WgpuRuntime::client(&device);
-    })
-    .is_ok()
+    gororoba_gpu_cubecl::Runtime::probe()
 }
 
 #[derive(Debug, thiserror::Error)]
