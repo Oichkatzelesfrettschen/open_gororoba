@@ -1,0 +1,26 @@
+[package]
+name = "gororoba_gpu_cubecl"
+version = "0.1.0"
+edition = { workspace = true }
+license = "GPL-2.0-or-later"
+repository = { workspace = true }
+description = "Shared cubecl-wgpu runtime helpers (panic-safe probe + skip-if-unavailable test macro) consolidating the workspace's cubecl boilerplate"
+
+[dependencies]
+gororoba_gpu_bridge = { workspace = true }
+
+cubecl = { workspace = true, optional = true }
+cubecl-core = { workspace = true, optional = true }
+cubecl-wgpu = { workspace = true, optional = true }
+
+[features]
+default = []
+# Enables the cubecl-wgpu helpers. When off, the crate exposes only the
+# re-exported gororoba_gpu_bridge types and the test-support macro stub.
+cubecl = ["dep:cubecl", "dep:cubecl-core", "dep:cubecl-wgpu"]
+
+[lints]
+workspace = true
+
+[package.metadata.cargo-machete]
+ignored = ["cubecl", "cubecl-core", "cubecl-wgpu"]

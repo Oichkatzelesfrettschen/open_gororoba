@@ -5177,6 +5177,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "gororoba_gpu_cubecl"
+version = "0.1.0"
+dependencies = [
+ "cubecl 0.10.0",
+ "cubecl-core 0.10.0",
+ "cubecl-wgpu 0.10.0",
+ "gororoba_gpu_bridge",
+]
+
+[[package]]
 name = "gororoba_gpu_readback"
 version = "0.1.0"
 
