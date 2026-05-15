@@ -7,7 +7,7 @@ updated = "2026-04-17"
 authoritative = true
 status = "active"
 status_token = "ACTIVE"
-dataset_count = 13
+dataset_count = 15
 
 [[dataset]]
 id = "EX-0001"
@@ -91,4 +91,16 @@ status = "active"
 id = "EX-0031"
 description = "DESI DR1 BAO measurements flat-text files (Cobaya mirror). Seven tables of BAO distances/ratios used in E-003 and E-087."
 source = "data/external/desi_bao/"
+status = "active"
+
+[[dataset]]
+id = "EX-0032"
+description = "ACE December 2004 - January 2005 HAPI magnetic-field slice. Solar-wind upstream context for heliospheric CD-domain-survey E-226 (cd-domain-survey binary)."
+source = "data/output/heliosphere/ablations/ace_dec2004_jan2005.csv"
+status = "active"
+
+[[dataset]]
+id = "EX-0033"
+description = "THEMIS-A FGM CSV bundle. Magnetometer slices used by THEMIS CD-crossing-survey E-227 (themis-cd-crossing-survey binary)."
+source = "data/external/themis/tha_fgm_*.csv"
 status = "active"
