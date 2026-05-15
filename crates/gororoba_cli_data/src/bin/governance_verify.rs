@@ -1086,13 +1086,18 @@ fn verify_markdown_headers(args: &CommonArgs) -> Result<()> {
 
 fn verify_markdown_parity(args: &CommonArgs) -> Result<()> {
     let root = resolve_root(args)?;
-    let knowledge = load_toml(&root.join("registry/knowledge_sources.toml"))?;
     let governance = load_toml(&root.join("registry/markdown_governance.toml"))?;
-    let ks_paths: BTreeSet<String> = table_array(&knowledge, "document")
-        .iter()
-        .map(|row| table_str(row, "path").trim().to_string())
-        .filter(|path| path.ends_with(".md"))
-        .collect();
+    let legacy_knowledge_path = root.join("registry/knowledge_sources.toml");
+    let ks_paths: BTreeSet<String> = if legacy_knowledge_path.exists() {
+        let knowledge = load_toml(&legacy_knowledge_path)?;
+        table_array(&knowledge, "document")
+            .iter()
+            .map(|row| table_str(row, "path").trim().to_string())
+            .filter(|path| path.ends_with(".md"))
+            .collect()
+    } else {
+        BTreeSet::new()
+    };
     let gov_paths: BTreeSet<String> = table_array(&governance, "document")
         .iter()
         .map(|row| table_str(row, "path").trim().to_string())
@@ -1105,7 +1110,11 @@ fn verify_markdown_parity(args: &CommonArgs) -> Result<()> {
             missing.join(", ")
         );
     }
-    println!("OK: markdown governance parity verified");
+    if legacy_knowledge_path.exists() {
+        println!("OK: markdown governance parity verified");
+    } else {
+        println!("OK: markdown governance parity verified (legacy knowledge_sources.toml absent)");
+    }
     Ok(())
 }
 
