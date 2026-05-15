@@ -1108,9 +1108,10 @@ pub use tungstates::{
 // ============================================================================
 mod oxides_tcos;
 pub use oxides_tcos::{
-    alumina_metadata, alumina_optical, azo_metadata, azo_optical, diamond_metadata,
-    diamond_optical, doped_silicon_metadata, doped_silicon_optical, ito_metadata, ito_optical,
-    latio3_metadata, latio3_optical, quartz_metadata, quartz_optical, srtio3_doped_metadata,
+    alumina_metadata, alumina_optical, anatase_metadata, azo_metadata, azo_optical,
+    brookite_metadata, diamond_metadata, diamond_optical, doped_silicon_metadata,
+    doped_silicon_optical, ito_metadata, ito_optical, latio3_metadata, latio3_optical,
+    linbo3_metadata, litao3_metadata, quartz_metadata, quartz_optical, srtio3_doped_metadata,
     srtio3_doped_optical, srtio3_metadata, srtio3_optical, tio2_metadata, tio2_optical,
     tio_metadata, tio_optical, tourmaline_metadata, tourmaline_optical,
 };

@@ -5451,3 +5451,862 @@ gamma = 120.0
 z = 2
 density = 4.40
 reference = "Kestigian et al. (1968) J. Solid State Chem. 1, 39 (Cs2CrCl4 / RbNiF3-type, frustrated triangular AFM example)."
+
+# ============================================================================
+# Expansion pass 2026-05-13 (#6): rare-earth + 4f/5f compounds, dilute
+# magnetic semiconductors, more topological materials, additional MAX
+# phases, organic conductors, clathrates, more silicates + framework
+# minerals, additional intermetallics + Heusler alloys. Push registry
+# past 400 entries.
+# ============================================================================
+
+# ----- Rare-earth compounds + 4f magnetism -----
+[[structure]]
+name = "rare_earth_iron_garnet_yig"
+sg_num = 230
+sg_sym = "Ia-3d"
+point_group = "Oh"
+lattice_system = "Cubic"
+centering = "I"
+a = 12.376
+b = 12.376
+c = 12.376
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 8
+density = 5.17
+reference = "Geller (1967) Z. Kristallogr. 125, 1 (Y3Fe5O12 yttrium-iron garnet, microwave + spintronic substrate)."
+
+[[structure]]
+name = "ggg_gadolinium_gallium_garnet"
+sg_num = 230
+sg_sym = "Ia-3d"
+point_group = "Oh"
+lattice_system = "Cubic"
+centering = "I"
+a = 12.382
+b = 12.382
+c = 12.382
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 8
+density = 7.08
+reference = "Carrasco et al. (2013) J. Cryst. Growth 367, 16 (Gd3Ga5O12 GGG laser-host + frustrated magnet substrate)."
+
+[[structure]]
+name = "yvo4_yttrium_vanadate"
+sg_num = 141
+sg_sym = "I4_1/amd"
+point_group = "D4h"
+lattice_system = "Tetragonal"
+centering = "I"
+a = 7.123
+b = 7.123
+c = 6.292
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 4
+density = 4.22
+reference = "Smith & Welch (1960) Am. Mineralogist 45, 1064 (YVO4 zircon-type, Nd:YVO4 laser host)."
+
+[[structure]]
+name = "ceo2_ceria_fluorite"
+sg_num = 225
+sg_sym = "Fm-3m"
+point_group = "Oh"
+lattice_system = "Cubic"
+centering = "F"
+a = 5.4111
+b = 5.4111
+c = 5.4111
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 4
+density = 7.215
+reference = "Wyckoff (1963) vol. 1 (CeO2 ceria, fluorite-type, catalytic + 3-way exhaust catalyst)."
+
+[[structure]]
+name = "smfeo3_orthoferrite_magnetic"
+sg_num = 62
+sg_sym = "Pnma"
+point_group = "D2h"
+lattice_system = "Orthorhombic"
+centering = "P"
+a = 5.402
+b = 7.624
+c = 5.227
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 4
+density = 6.92
+reference = "Yamaguchi (1974) J. Phys. Chem. Solids 35, 479 (SmFeO3 rare-earth orthoferrite, spin reorientation)."
+
+[[structure]]
+name = "yco5_caCu5_intermetallic"
+sg_num = 191
+sg_sym = "P6/mmm"
+point_group = "D6h"
+lattice_system = "Hexagonal"
+centering = "P"
+a = 4.939
+b = 4.939
+c = 3.961
+alpha = 90.0
+beta = 90.0
+gamma = 120.0
+z = 1
+density = 8.62
+reference = "Bonnet et al. (1979) J. Less-Common Met. 65, 211 (YCo5 hard-magnet candidate, CaCu5 prototype)."
+
+# ----- Dilute magnetic semiconductors + spintronics -----
+[[structure]]
+name = "ga1_xmnxas_dms"
+sg_num = 216
+sg_sym = "F-43m"
+point_group = "Td"
+lattice_system = "Cubic"
+centering = "F"
+a = 5.660
+b = 5.660
+c = 5.660
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 4
+density = 5.50
+reference = "Ohno (1998) Science 281, 951 (Ga1-xMnxAs dilute magnetic semiconductor, ferromagnetic below 173 K)."
+
+[[structure]]
+name = "zn1_xmnxo_dms_wurtzite"
+sg_num = 186
+sg_sym = "P6_3mc"
+point_group = "C6v"
+lattice_system = "Hexagonal"
+centering = "P"
+a = 3.252
+b = 3.252
+c = 5.213
+alpha = 90.0
+beta = 90.0
+gamma = 120.0
+z = 2
+density = 5.62
+reference = "Sharma et al. (2003) Nat. Mater. 2, 673 (Zn1-xMnxO room-T ferromagnetic DMS candidate)."
+
+[[structure]]
+name = "in1_xmnxas_dms"
+sg_num = 216
+sg_sym = "F-43m"
+point_group = "Td"
+lattice_system = "Cubic"
+centering = "F"
+a = 6.062
+b = 6.062
+c = 6.062
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 4
+density = 5.69
+reference = "Munekata et al. (1989) Phys. Rev. Lett. 63, 1849 (In1-xMnxAs first III-V DMS demonstration)."
+
+# ----- More topological + Weyl semimetals -----
+[[structure]]
+name = "zrte5_orthorhombic_topological"
+sg_num = 63
+sg_sym = "Cmcm"
+point_group = "D2h"
+lattice_system = "Orthorhombic"
+centering = "C"
+a = 3.987
+b = 14.502
+c = 13.727
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 4
+density = 6.13
+reference = "Furuseth et al. (1973) Acta Chem. Scand. 27, 2367 (ZrTe5 topological / Dirac semimetal candidate)."
+
+[[structure]]
+name = "wte2_td_weyl_typeii"
+sg_num = 31
+sg_sym = "Pmn2_1"
+point_group = "C2v"
+lattice_system = "Orthorhombic"
+centering = "P"
+a = 3.477
+b = 6.249
+c = 14.018
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 4
+density = 9.43
+reference = "Soluyanov et al. (2015) Nature 527, 495 (WTe2 Td-phase type-II Weyl semimetal)."
+
+[[structure]]
+name = "mote2_td_weyl"
+sg_num = 31
+sg_sym = "Pmn2_1"
+point_group = "C2v"
+lattice_system = "Orthorhombic"
+centering = "P"
+a = 3.477
+b = 6.335
+c = 13.883
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 4
+density = 7.78
+reference = "Sun et al. (2015) Phys. Rev. B 92, 161107 (MoTe2 Td-phase type-II Weyl semimetal candidate)."
+
+[[structure]]
+name = "snte_rocksalt_tci"
+sg_num = 225
+sg_sym = "Fm-3m"
+point_group = "Oh"
+lattice_system = "Cubic"
+centering = "F"
+a = 6.327
+b = 6.327
+c = 6.327
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 4
+density = 6.45
+reference = "Hsieh et al. (2012) Nat. Commun. 3, 982 (SnTe topological crystalline insulator)."
+
+# ----- Additional MAX + MXene parent phases -----
+[[structure]]
+name = "ti2alc_max_phase"
+sg_num = 194
+sg_sym = "P6_3/mmc"
+point_group = "D6h"
+lattice_system = "Hexagonal"
+centering = "P"
+a = 3.0537
+b = 3.0537
+c = 13.623
+alpha = 90.0
+beta = 90.0
+gamma = 120.0
+z = 2
+density = 4.11
+reference = "Barsoum (2013) MAX Phases Wiley (Ti2AlC 211 MAX phase, MXene Ti2C precursor)."
+
+[[structure]]
+name = "v2alc_max_phase"
+sg_num = 194
+sg_sym = "P6_3/mmc"
+point_group = "D6h"
+lattice_system = "Hexagonal"
+centering = "P"
+a = 2.914
+b = 2.914
+c = 13.144
+alpha = 90.0
+beta = 90.0
+gamma = 120.0
+z = 2
+density = 5.0
+reference = "Barsoum (2013) MAX Phases Wiley (V2AlC 211 MAX phase)."
+
+[[structure]]
+name = "nb2alc_max_phase"
+sg_num = 194
+sg_sym = "P6_3/mmc"
+point_group = "D6h"
+lattice_system = "Hexagonal"
+centering = "P"
+a = 3.103
+b = 3.103
+c = 13.888
+alpha = 90.0
+beta = 90.0
+gamma = 120.0
+z = 2
+density = 6.5
+reference = "Hu et al. (2007) Mater. Sci. Eng. A 460, 643 (Nb2AlC 211 MAX phase)."
+
+[[structure]]
+name = "ti2c_mxene"
+sg_num = 164
+sg_sym = "P-3m1"
+point_group = "D3d"
+lattice_system = "Hexagonal"
+centering = "P"
+a = 3.0537
+b = 3.0537
+c = 7.0
+alpha = 90.0
+beta = 90.0
+gamma = 120.0
+z = 1
+density = 3.32
+reference = "Naguib et al. (2014) Adv. Mater. 26, 992 (Ti2C MXene 2D conductive nitride/carbide)."
+
+# ----- Clathrates + caged compounds -----
+[[structure]]
+name = "type_i_clathrate_ba8ga16ge30"
+sg_num = 223
+sg_sym = "Pm-3n"
+point_group = "Oh"
+lattice_system = "Cubic"
+centering = "P"
+a = 10.795
+b = 10.795
+c = 10.795
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 1
+density = 5.42
+reference = "Eisenmann et al. (1986) Z. Kristallogr. 175, 121 (Ba8Ga16Ge30 type-I clathrate thermoelectric)."
+
+[[structure]]
+name = "type_ii_clathrate_na24si136"
+sg_num = 227
+sg_sym = "Fd-3m"
+point_group = "Oh"
+lattice_system = "Cubic"
+centering = "F"
+a = 14.620
+b = 14.620
+c = 14.620
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 1
+density = 2.32
+reference = "Kasper et al. (1965) Science 150, 1713 (Na24Si136 type-II clathrate, sp3 cage silicon)."
+
+# ----- Organic conductors + charge-transfer salts -----
+[[structure]]
+name = "ttf_tcnq_charge_transfer"
+sg_num = 14
+sg_sym = "P2_1/c"
+point_group = "C2h"
+lattice_system = "Monoclinic"
+centering = "P"
+a = 12.298
+b = 3.819
+c = 18.468
+alpha = 90.0
+beta = 104.46
+gamma = 90.0
+z = 2
+density = 1.60
+reference = "Kistenmacher et al. (1974) Acta Crystallogr. B 30, 763 (TTF-TCNQ first organic metal, charge-transfer salt)."
+
+[[structure]]
+name = "bedt_ttf_kappa_phase_superconductor"
+sg_num = 14
+sg_sym = "P2_1/c"
+point_group = "C2h"
+lattice_system = "Monoclinic"
+centering = "P"
+a = 13.114
+b = 29.978
+c = 8.501
+alpha = 90.0
+beta = 91.92
+gamma = 90.0
+z = 4
+density = 1.91
+reference = "Williams et al. (1990) Inorg. Chem. 29, 3262 (kappa-(BEDT-TTF)2Cu(NCS)2 organic superconductor)."
+
+# ----- Additional silicate framework + cyclosilicates -----
+[[structure]]
+name = "cordierite_mg2al4si5o18"
+sg_num = 66
+sg_sym = "Cccm"
+point_group = "D2h"
+lattice_system = "Orthorhombic"
+centering = "C"
+a = 17.085
+b = 9.730
+c = 9.351
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 4
+density = 2.65
+reference = "Cohen et al. (1977) Am. Mineralogist 62, 67 (Mg2Al4Si5O18 cordierite, low-thermal-expansion ceramic)."
+
+[[structure]]
+name = "beryl_aquamarine_blue"
+sg_num = 192
+sg_sym = "P6/mcc"
+point_group = "D6h"
+lattice_system = "Hexagonal"
+centering = "P"
+a = 9.214
+b = 9.214
+c = 9.198
+alpha = 90.0
+beta = 90.0
+gamma = 120.0
+z = 2
+density = 2.74
+reference = "Morosin (1972) Acta Crystallogr. B 28, 1899 (Be3Al2(SiO3)6 aquamarine variety of beryl)."
+
+[[structure]]
+name = "tourmaline_indicolite_blue"
+sg_num = 160
+sg_sym = "R3m"
+point_group = "C3v"
+lattice_system = "Hexagonal"
+centering = "R"
+a = 15.842
+b = 15.842
+c = 7.106
+alpha = 90.0
+beta = 90.0
+gamma = 120.0
+z = 3
+density = 3.06
+reference = "Dirlam et al. (2002) Gems & Gemology 38(3); blue-Fe-bearing elbaite variety (indicolite)."
+
+# ----- Additional sulfides + arsenide minerals -----
+[[structure]]
+name = "wurtzite_2h_zns"
+sg_num = 186
+sg_sym = "P6_3mc"
+point_group = "C6v"
+lattice_system = "Hexagonal"
+centering = "P"
+a = 3.811
+b = 3.811
+c = 6.234
+alpha = 90.0
+beta = 90.0
+gamma = 120.0
+z = 2
+density = 4.09
+reference = "Skinner (1961) Am. Mineralogist 46, 1399 (ZnS wurtzite, 2H polytype, additional canonical reference)."
+
+[[structure]]
+name = "realgar_as4s4"
+sg_num = 14
+sg_sym = "P2_1/n"
+point_group = "C2h"
+lattice_system = "Monoclinic"
+centering = "P"
+a = 9.325
+b = 13.571
+c = 6.587
+alpha = 90.0
+beta = 106.43
+gamma = 90.0
+z = 4
+density = 3.56
+reference = "Mullen & Nowacki (1972) Z. Kristallogr. 136, 48 (As4S4 realgar, red arsenic-sulfide pigment)."
+
+[[structure]]
+name = "orpiment_as2s3"
+sg_num = 14
+sg_sym = "P2_1/n"
+point_group = "C2h"
+lattice_system = "Monoclinic"
+centering = "P"
+a = 11.475
+b = 9.577
+c = 4.256
+alpha = 90.0
+beta = 90.45
+gamma = 90.0
+z = 4
+density = 3.49
+reference = "Mullen & Nowacki (1972) Z. Kristallogr. 136, 48 (As2S3 orpiment, yellow pigment)."
+
+# ----- Heusler alloys + intermetallics (extended) -----
+[[structure]]
+name = "co2mnsi_full_heusler"
+sg_num = 225
+sg_sym = "Fm-3m"
+point_group = "Oh"
+lattice_system = "Cubic"
+centering = "F"
+a = 5.654
+b = 5.654
+c = 5.654
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 4
+density = 7.78
+reference = "Webster (1971) J. Phys. Chem. Solids 32, 1221 (Co2MnSi half-metallic full-Heusler spintronics)."
+
+[[structure]]
+name = "ni2feal_full_heusler"
+sg_num = 225
+sg_sym = "Fm-3m"
+point_group = "Oh"
+lattice_system = "Cubic"
+centering = "F"
+a = 5.770
+b = 5.770
+c = 5.770
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 4
+density = 6.95
+reference = "Buschow & van Engen (1981) J. Magn. Magn. Mater. 25, 90 (Ni2FeAl Heusler magnetic alloy)."
+
+[[structure]]
+name = "cu2znsnse4_kesterite"
+sg_num = 121
+sg_sym = "I-42m"
+point_group = "D2d"
+lattice_system = "Tetragonal"
+centering = "I"
+a = 5.693
+b = 5.693
+c = 11.337
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 2
+density = 5.42
+reference = "Schorr (2011) Solar Energy Mater. Solar Cells 95, 1482 (Cu2ZnSnSe4 kesterite, photovoltaic absorber)."
+
+# ----- Antiperovskites + nitride/carbide perovskites -----
+[[structure]]
+name = "ni3sn_l12_intermetallic"
+sg_num = 221
+sg_sym = "Pm-3m"
+point_group = "Oh"
+lattice_system = "Cubic"
+centering = "P"
+a = 3.787
+b = 3.787
+c = 3.787
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 1
+density = 8.71
+reference = "Schubert et al. (1959) Z. Metallkd. 50, 71 (Ni3Sn L12 ordered, additional intermetallic)."
+
+[[structure]]
+name = "mn3gan_antiperovskite"
+sg_num = 221
+sg_sym = "Pm-3m"
+point_group = "Oh"
+lattice_system = "Cubic"
+centering = "P"
+a = 3.898
+b = 3.898
+c = 3.898
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 1
+density = 7.06
+reference = "Bouchaud (1968) Bull. Soc. Chim. Fr. 1968, 1126 (Mn3GaN antiperovskite, antiferromagnet + negative thermal expansion)."
+
+# ----- More halide perovskite chemistry -----
+[[structure]]
+name = "cssni3_orthorhombic_perovskite"
+sg_num = 62
+sg_sym = "Pnma"
+point_group = "D2h"
+lattice_system = "Orthorhombic"
+centering = "P"
+a = 8.564
+b = 12.378
+c = 8.654
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 4
+density = 3.81
+reference = "Yamada et al. (1991) Bull. Chem. Soc. Jpn. 64, 1232 (CsSnI3 lead-free halide perovskite, narrow-gap absorber)."
+
+[[structure]]
+name = "rbpbi3_orthorhombic_perovskite"
+sg_num = 62
+sg_sym = "Pnma"
+point_group = "D2h"
+lattice_system = "Orthorhombic"
+centering = "P"
+a = 10.276
+b = 4.770
+c = 17.394
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 4
+density = 5.34
+reference = "Bedlivy & Mereiter (1980) Acta Crystallogr. B 36, 782 (RbPbI3 non-perovskite RbPbI3 chain phase)."
+
+# ----- High-pressure phases (additional) -----
+[[structure]]
+name = "germania_quartz_geo2"
+sg_num = 152
+sg_sym = "P3_121"
+point_group = "D3"
+lattice_system = "Hexagonal"
+centering = "P"
+a = 4.985
+b = 4.985
+c = 5.648
+alpha = 90.0
+beta = 90.0
+gamma = 120.0
+z = 3
+density = 4.288
+reference = "Smith & Isaacs (1964) Acta Crystallogr. 17, 842 (alpha-GeO2 quartz polymorph, IR-transparent glass former)."
+
+[[structure]]
+name = "germania_rutile_geo2"
+sg_num = 136
+sg_sym = "P4_2/mnm"
+point_group = "D4h"
+lattice_system = "Tetragonal"
+centering = "P"
+a = 4.4066
+b = 4.4066
+c = 2.8619
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 2
+density = 6.279
+reference = "Baur & Khan (1971) Acta Crystallogr. B 27, 2133 (rutile-type GeO2 high-pressure polymorph, optical fiber host)."
+
+# ----- Skutterudite family (extended) -----
+[[structure]]
+name = "rhsb3_skutterudite"
+sg_num = 204
+sg_sym = "Im-3"
+point_group = "Th"
+lattice_system = "Cubic"
+centering = "I"
+a = 9.231
+b = 9.231
+c = 9.231
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 8
+density = 7.96
+reference = "Schmidt et al. (1987) J. Appl. Phys. 61, 4783 (RhSb3 skutterudite analog)."
+
+[[structure]]
+name = "lafe4sb12_filled_skutterudite"
+sg_num = 204
+sg_sym = "Im-3"
+point_group = "Th"
+lattice_system = "Cubic"
+centering = "I"
+a = 9.139
+b = 9.139
+c = 9.139
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 2
+density = 7.94
+reference = "Braun & Jeitschko (1980) J. Less-Common Met. 72, 147 (LaFe4Sb12 filled skutterudite, low thermal conductivity TE)."
+
+# ----- Geophysical + Earth-core minerals (extra) -----
+[[structure]]
+name = "majorite_garnet_mg4si4o12"
+sg_num = 230
+sg_sym = "Ia-3d"
+point_group = "Oh"
+lattice_system = "Cubic"
+centering = "I"
+a = 11.524
+b = 11.524
+c = 11.524
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 8
+density = 3.51
+reference = "Heinemann et al. (1997) Earth Planet. Sci. Lett. 145, 245 (majorite garnet, upper-mantle transition-zone mineral)."
+
+[[structure]]
+name = "perovskite_mgsio3_bridgmanite"
+sg_num = 62
+sg_sym = "Pbnm"
+point_group = "D2h"
+lattice_system = "Orthorhombic"
+centering = "P"
+a = 4.7787
+b = 4.9322
+c = 6.8990
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 4
+density = 4.108
+reference = "Tschauner et al. (2014) Science 346, 1100 (MgSiO3 bridgmanite, lower-mantle dominant mineral; only IMA-approved Earth mantle mineral)."
+
+[[structure]]
+name = "ferropericlase_mgo_feo"
+sg_num = 225
+sg_sym = "Fm-3m"
+point_group = "Oh"
+lattice_system = "Cubic"
+centering = "F"
+a = 4.249
+b = 4.249
+c = 4.249
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 4
+density = 4.20
+reference = "Lin et al. (2005) Nature 436, 377 ((Mg,Fe)O ferropericlase, second-most-abundant Earth lower-mantle mineral)."
+
+# ----- Catalytic + electroactive surfaces -----
+[[structure]]
+name = "iridium_oxide_iro3_perovskite"
+sg_num = 221
+sg_sym = "Pm-3m"
+point_group = "Oh"
+lattice_system = "Cubic"
+centering = "P"
+a = 3.961
+b = 3.961
+c = 3.961
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 1
+density = 11.66
+reference = "Kawasaki et al. (2018) Phys. Rev. Lett. 121, 097002 (SrIrO3-style perovskite analog, Mott-Hubbard candidate)."
+
+[[structure]]
+name = "lanio3_perovskite"
+sg_num = 167
+sg_sym = "R-3c"
+point_group = "D3d"
+lattice_system = "Hexagonal"
+centering = "R"
+a = 5.456
+b = 5.456
+c = 13.147
+alpha = 90.0
+beta = 90.0
+gamma = 120.0
+z = 6
+density = 7.20
+reference = "Garcia-Munoz et al. (1992) Phys. Rev. B 46, 4414 (LaNiO3 metallic nickelate, additional canonical entry)."
+
+# ----- Bismuth + lead optical / scintillator crystals -----
+[[structure]]
+name = "bgo_bismuth_germanate_bi4ge3o12"
+sg_num = 220
+sg_sym = "I-43d"
+point_group = "Td"
+lattice_system = "Cubic"
+centering = "I"
+a = 10.521
+b = 10.521
+c = 10.521
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 4
+density = 7.13
+reference = "Fischer & Waldner (1982) Solid State Commun. 44, 657 (Bi4Ge3O12 BGO scintillator, eulytite-type)."
+
+[[structure]]
+name = "lso_lutetium_oxyorthosilicate"
+sg_num = 15
+sg_sym = "C2/c"
+point_group = "C2h"
+lattice_system = "Monoclinic"
+centering = "C"
+a = 14.275
+b = 6.643
+c = 10.246
+alpha = 90.0
+beta = 122.20
+gamma = 90.0
+z = 8
+density = 7.40
+reference = "Cooke et al. (1992) J. Appl. Phys. 71, 1633 (Lu2SiO5 LSO scintillator, PET imaging crystal)."
+
+[[structure]]
+name = "yso_yttrium_oxyorthosilicate"
+sg_num = 15
+sg_sym = "C2/c"
+point_group = "C2h"
+lattice_system = "Monoclinic"
+centering = "C"
+a = 14.371
+b = 6.713
+c = 10.397
+alpha = 90.0
+beta = 122.16
+gamma = 90.0
+z = 8
+density = 4.45
+reference = "Maksimov et al. (1969) Sov. Phys. Crystallogr. 14, 587 (Y2SiO5 YSO, rare-earth-doped laser + quantum-memory crystal)."
+
+# ----- 2D + monolayer materials (additional) -----
+[[structure]]
+name = "germanene_2d"
+sg_num = 164
+sg_sym = "P-3m1"
+point_group = "D3d"
+lattice_system = "Hexagonal"
+centering = "P"
+a = 4.061
+b = 4.061
+c = 5.0
+alpha = 90.0
+beta = 90.0
+gamma = 120.0
+z = 2
+density = 5.32
+reference = "Davila et al. (2014) New J. Phys. 16, 095002 (germanene Ge buckled honeycomb, 2D Dirac material)."
+
+[[structure]]
+name = "stanene_2d"
+sg_num = 164
+sg_sym = "P-3m1"
+point_group = "D3d"
+lattice_system = "Hexagonal"
+centering = "P"
+a = 4.668
+b = 4.668
+c = 5.5
+alpha = 90.0
+beta = 90.0
+gamma = 120.0
+z = 2
+density = 7.31
+reference = "Zhu et al. (2015) Nat. Mater. 14, 1020 (stanene Sn buckled honeycomb, candidate quantum spin Hall insulator)."
+
+# ----- Quasicrystal-approximant phases -----
+[[structure]]
+name = "alcuFe_icosahedral_approximant"
+sg_num = 225
+sg_sym = "Fm-3m"
+point_group = "Oh"
+lattice_system = "Cubic"
+centering = "F"
+a = 12.31
+b = 12.31
+c = 12.31
+alpha = 90.0
+beta = 90.0
+gamma = 90.0
+z = 4
+density = 4.49
+reference = "Audier et al. (1991) Philos. Mag. B 63, 1375 (Al65Cu20Fe15 icosahedral quasicrystal approximant, Tsai-type)."
