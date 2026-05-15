@@ -60,6 +60,7 @@ members = [
     "crates/lattice_filtration",
     "crates/neural_homotopy",
     "crates/gororoba_pipeline", "crates/gororoba_gpu_bridge",
+    "crates/gororoba_gpu_vulkan",
     "crates/gororoba_engine", "crates/gororoba_contracts", "crates/spin_tomography_core", "crates/cd_spin_bridge", "crates/lbm_vulkan",
     "crates/qgp_scaling",
     "crates/gororoba_cli_algebra",
@@ -116,6 +117,7 @@ cd_kernel = { path = "crates/cd_kernel" }
 algebra_analysis = { path = "crates/algebra_analysis" }
 algebra_experimental = { path = "crates/algebra_experimental" }
 gororoba_gpu_bridge = { path = "crates/gororoba_gpu_bridge" }
+gororoba_gpu_vulkan = { path = "crates/gororoba_gpu_vulkan" }
 gororoba_optix = { path = "crates/gororoba_optix" }
 gororoba_gpu_readback = { path = "crates/gororoba_gpu_readback" }
 gororoba_sparse_grid = { path = "crates/gororoba_sparse_grid" }
