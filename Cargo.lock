@@ -5181,6 +5181,20 @@ name = "gororoba_gpu_readback"
 version = "0.1.0"
 
 [[package]]
+name = "gororoba_gpu_vulkan"
+version = "0.1.0"
+dependencies = [
+ "ash",
+ "env_logger",
+ "gororoba_gpu_bridge",
+ "gororoba_gpu_readback",
+ "gpu-allocator 0.28.0",
+ "log",
+ "naga 29.0.1",
+ "thiserror 2.0.18",
+]
+
+[[package]]
 name = "gororoba_optix"
 version = "0.1.0"
 dependencies = [
