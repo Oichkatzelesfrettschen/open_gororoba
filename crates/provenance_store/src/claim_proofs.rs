@@ -28,9 +28,10 @@ use camino::Utf8PathBuf;
 use provenance_core::ClaimRecord;
 use toml::Value;
 
-use super::status_normalize::normalize_insight_status;
-use super::toml_helpers::render_toml_table;
-use super::{ProofInventory, ProofInventoryEntry};
+use super::{
+    ProofInventory, ProofInventoryEntry, status_normalize::normalize_insight_status,
+    toml_helpers::render_toml_table,
+};
 
 pub(crate) fn canonical_formal_proof_for_claim(
     repo_root: &Path,

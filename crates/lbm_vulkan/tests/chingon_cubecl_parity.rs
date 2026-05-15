@@ -27,12 +27,12 @@
 
 #![cfg(feature = "cubecl")]
 
-use lbm_vulkan::chingon_cpu::{ChingonInputs, chingon_contract_cpu};
-use lbm_vulkan::chingon_cubecl::{chingon_contract_cubecl, is_available};
-use lbm_vulkan::chingon_vulkan::{index_bits_for_dim, pack_violation};
-use rand::SeedableRng;
-use rand::seq::SliceRandom;
-use rand::RngExt;
+use lbm_vulkan::{
+    chingon_cpu::{ChingonInputs, chingon_contract_cpu},
+    chingon_cubecl::{chingon_contract_cubecl, is_available},
+    chingon_vulkan::{index_bits_for_dim, pack_violation},
+};
+use rand::{RngExt, SeedableRng, seq::SliceRandom};
 use rand_chacha::ChaCha20Rng;
 
 const EPS_ABS: f32 = 1e-5;

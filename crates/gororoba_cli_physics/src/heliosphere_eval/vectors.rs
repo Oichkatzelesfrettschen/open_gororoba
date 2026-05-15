@@ -20,14 +20,13 @@ use std::collections::BTreeMap;
 
 use data_core::HELIOSPHERE_INVARIANT_DIM;
 
-use super::DESCRIPTOR_DIM;
-use super::public_types::{LabeledInvariantSample, RowKey};
-use super::stats::{finite_mad, finite_median, finite_median_opt, finite_std, l2_norm_sq};
-use super::{DescriptorProfile, NormalizationParams, NormalizedSample, ViewMode};
+use super::{
+    DESCRIPTOR_DIM, DescriptorProfile, NormalizationParams, NormalizedSample, ViewMode,
+    public_types::{LabeledInvariantSample, RowKey},
+    stats::{finite_mad, finite_median, finite_median_opt, finite_std, l2_norm_sq},
+};
 
-pub(super) fn fit_normalization_params(
-    samples: &[&LabeledInvariantSample],
-) -> NormalizationParams {
+pub(super) fn fit_normalization_params(samples: &[&LabeledInvariantSample]) -> NormalizationParams {
     let mut medians = [0.0_f64; HELIOSPHERE_INVARIANT_DIM];
     let mut scales = [1.0_f64; HELIOSPHERE_INVARIANT_DIM];
     for idx in 0..HELIOSPHERE_INVARIANT_DIM {

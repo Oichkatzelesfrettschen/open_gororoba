@@ -17,7 +17,11 @@ fn main() {
     let shader_src_dir = manifest_dir.join("src/turboquant/vulkan/shaders");
     let shader_out_dir = out_dir.join("turboquant_vulkan");
     if let Err(e) = std::fs::create_dir_all(&shader_out_dir) {
-        println!("cargo:warning=mkdir {} failed: {}", shader_out_dir.display(), e);
+        println!(
+            "cargo:warning=mkdir {} failed: {}",
+            shader_out_dir.display(),
+            e
+        );
         return;
     }
 

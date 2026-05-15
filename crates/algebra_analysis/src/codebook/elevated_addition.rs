@@ -20,9 +20,11 @@
 //!     struct via a second `impl` block (Rust allows multiple impl
 //!     blocks across modules in the same crate).
 
-use super::EncodingDictionary;
-use super::lambda_predicates::LatticeVector;
-use super::lattice_arith::{lattice_add_f3, lattice_diff};
+use super::{
+    EncodingDictionary,
+    lambda_predicates::LatticeVector,
+    lattice_arith::{lattice_add_f3, lattice_diff},
+};
 
 // ============================================================================
 // Layer 2: Elevated Addition

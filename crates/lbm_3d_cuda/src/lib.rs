@@ -2336,7 +2336,6 @@ impl LbmSolver3DCuda {
     }
 }
 
-
 #[cfg(test)]
 mod tests {
     use super::*;

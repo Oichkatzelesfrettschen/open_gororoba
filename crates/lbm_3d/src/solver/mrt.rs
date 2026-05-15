@@ -114,7 +114,14 @@ pub(super) fn mrt_forward_transform(f: &[f64; 19]) -> [f64; 19] {
 /// Cost: ~722 FMA operations per cell vs ~57 for BGK (~12x more FLOPs),
 /// but the GPU memory-bound regime absorbs this within the latency window.
 #[inline(always)]
-pub(super) fn collide_mrt_d3q19(f: &[f64; 19], rho: f64, ux: f64, uy: f64, uz: f64, tau: f64) -> [f64; 19] {
+pub(super) fn collide_mrt_d3q19(
+    f: &[f64; 19],
+    rho: f64,
+    ux: f64,
+    uy: f64,
+    uz: f64,
+    tau: f64,
+) -> [f64; 19] {
     // Relaxation rates (diagonal of S matrix)
     let s_nu = 1.0 / tau; // Physical kinematic viscosity
     let s_e = 1.19; // Energy relaxation

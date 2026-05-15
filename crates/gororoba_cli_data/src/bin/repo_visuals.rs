@@ -35,14 +35,12 @@ const E183_PHASE_PLATE_FILE: &str = "science_e183_phase_plate_3160x2820.png";
 const GRAVASTAR_PLATE_FILE: &str = "science_gravastar_stability_plate_3160x2820.png";
 const ALGEBRA_PLATE_FILE: &str = "science_pathion_zero_divisor_interaction_graph_3160x2820.png";
 
-
 // Cli args + data-frame structs live in the `types` submodule (clap
 // Cli + ~30 deserialize structs for the various renderers, ~285 lines).
 // Uses `#[path]` because this binary has an explicit Cargo.toml path.
 #[path = "repo_visuals/types.rs"]
 mod types;
 use types::*;
-
 
 fn main() -> Result<()> {
     let cli = Cli::parse();

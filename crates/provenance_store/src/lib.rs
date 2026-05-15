@@ -11,13 +11,13 @@ use provenance_core::{
     TheoremRecord,
 };
 use rusqlite::{Connection, OptionalExtension, params};
+#[cfg(test)]
+use std::path::PathBuf;
 use std::{
     collections::{BTreeMap, BTreeSet},
     fs,
     path::Path,
 };
-#[cfg(test)]
-use std::path::PathBuf;
 use toml::Value;
 
 // Canonical claim/insight status taxonomies, theorem-ID allowlist,
@@ -2325,7 +2325,6 @@ impl ProvenanceStore {
         Ok(())
     }
 
-
     pub fn verify_invariants(&self, repo_root: &Path) -> Result<()> {
         let mut failures = Vec::new();
         let invalid_status_count = self.conn.query_row(
@@ -2421,7 +2420,6 @@ impl ProvenanceStore {
         }
         Ok(out)
     }
-
 
     fn load_mirrors(&self, artifact_id: &str) -> Result<Vec<MirrorObservationRecord>> {
         let mut stmt = self.conn.prepare(
@@ -2912,7 +2910,6 @@ impl ProvenanceStore {
         Ok(())
     }
 
-
     /// Insert or replace a research narrative.
     pub fn upsert_research_narrative(&self, row: &ResearchNarrativeRow<'_>) -> Result<()> {
         self.conn.execute(
@@ -3323,7 +3320,6 @@ impl ProvenanceStore {
         }
     }
 
-
     fn parse_registry_snapshot(&self, kind: &str) -> Result<Option<Value>> {
         self.registry_snapshot(kind)?
             .map(|raw| {
@@ -3332,7 +3328,6 @@ impl ProvenanceStore {
             })
             .transpose()
     }
-
 
     /// Insert or replace a notebook session.
     pub fn upsert_notebook_session(&self, row: &NotebookSessionRow<'_>) -> Result<()> {
@@ -3897,8 +3892,8 @@ mod toml_helpers;
 use toml_helpers::{
     compat_child_table, compat_json_string_array, compat_root_table, compat_table_array,
     compat_table_bool, compat_table_string, compat_toml_quote, compat_toml_string_array,
-    host_for_url, load_registry_table_toml, load_text, load_toml_text,
-    toml_array_to_json_string, trim_trailing_blank_lines,
+    host_for_url, load_registry_table_toml, load_text, load_toml_text, toml_array_to_json_string,
+    trim_trailing_blank_lines,
 };
 
 // External-source contracts and dossiers (loaders +
@@ -3973,8 +3968,8 @@ use proof_inventory::{
 // into lib.rs scope via plain use statements.
 mod compat_render;
 use compat_render::{
-    render_binaries_registry, render_claims_registry,
-    render_experiments_registry, render_insights_registry, write_text,
+    render_binaries_registry, render_claims_registry, render_experiments_registry,
+    render_insights_registry, write_text,
 };
 
 #[cfg(test)]

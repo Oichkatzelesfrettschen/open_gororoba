@@ -16,9 +16,7 @@ use chrono::{DateTime, Utc};
 
 use data_core::{HeliosphereEventWindow, HeliosphereFeatureRow, heliosphere_row_datetime};
 
-use super::public_types::RowKey;
-use super::row_key;
-use super::stats::finite_median_opt;
+use super::{public_types::RowKey, row_key, stats::finite_median_opt};
 
 pub(super) fn parse_timestamp(value: &str) -> Result<DateTime<Utc>> {
     Ok(DateTime::parse_from_rfc3339(value)

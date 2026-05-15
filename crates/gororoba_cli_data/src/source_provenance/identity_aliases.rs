@@ -23,8 +23,7 @@
 
 use url::Url;
 
-use super::dedupe;
-use super::url_helpers::normalize_url;
+use super::{dedupe, url_helpers::normalize_url};
 
 pub(super) fn arxiv_equivalent_urls(url: &str) -> Vec<String> {
     let Ok(parsed) = Url::parse(url) else {

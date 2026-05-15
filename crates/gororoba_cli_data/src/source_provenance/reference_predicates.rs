@@ -20,9 +20,10 @@
 
 use url::Url;
 
-use super::text_helpers::url_re;
-use super::url_helpers::is_non_reference_service_url;
-use super::{ARTIFACT_LOCAL_PREFIXES, REFERENCE_HOST_HINTS};
+use super::{
+    ARTIFACT_LOCAL_PREFIXES, REFERENCE_HOST_HINTS, text_helpers::url_re,
+    url_helpers::is_non_reference_service_url,
+};
 
 pub(super) fn looks_like_reference_url(url: &str) -> bool {
     if !url_re().is_match(url) {

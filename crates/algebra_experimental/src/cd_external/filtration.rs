@@ -194,4 +194,3 @@ pub fn enumerate_base_universe() -> BTreeSet<Vec<i32>> {
     }
     result
 }
-

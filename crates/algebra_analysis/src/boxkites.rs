@@ -630,7 +630,6 @@ pub use face_sign_census::{
 pub mod imbalance;
 pub use imbalance::{ImbalanceResult, compute_imbalance_ratio};
 
-
 // Test block relocated to sibling boxkites/tests.rs.
 // The 7030-line cfg(test) section made the parent file 7665 lines
 // with only 633 lines of production code -- moving tests out keeps

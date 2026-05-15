@@ -34,14 +34,15 @@ use anyhow::Result;
 use regex::Regex;
 use toml::Value;
 
-use super::doi_helpers::{doi_to_url, extract_dois};
-use super::file_io::{load_toml_value, read_text_lossy};
-use super::reference_predicates::looks_like_reference_url;
-use super::text_helpers::{bib_entry_re, url_inline_re};
-use super::url_helpers::find_urls;
 use super::{
-    CITATION_KEYS, CandidateRecord, ID_KEYS, TITLE_KEYS, dedupe, extract_local_paths,
-    extract_strings, extract_urls, normalize_identity_hint,
+    CITATION_KEYS, CandidateRecord, ID_KEYS, TITLE_KEYS, dedupe,
+    doi_helpers::{doi_to_url, extract_dois},
+    extract_local_paths, extract_strings, extract_urls,
+    file_io::{load_toml_value, read_text_lossy},
+    normalize_identity_hint,
+    reference_predicates::looks_like_reference_url,
+    text_helpers::{bib_entry_re, url_inline_re},
+    url_helpers::find_urls,
 };
 
 pub(super) fn pick_first_str(table: &toml::map::Map<String, Value>, keys: &[&str]) -> String {

@@ -324,8 +324,7 @@ impl GororobaEngine {
             force: &force,
             entropy: &entropy,
         };
-        let lbm_pipeline =
-            Self::create_lbm_pipeline(&device, ctx, pipeline_buffers, precision)?;
+        let lbm_pipeline = Self::create_lbm_pipeline(&device, ctx, pipeline_buffers, precision)?;
         let mrt_pipeline = Self::create_lbm_pipeline_with_src(
             &device,
             ctx,

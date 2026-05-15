@@ -26,7 +26,7 @@ use super::{
     pbwo4_metadata, pedot_pss_metadata, platinum_metadata, povondraite_metadata, quartz_metadata,
     rossmanite_metadata, schorl_metadata, silica_casimir_metadata, silica_metadata,
     silicon_metadata, silicon_nitride_metadata, silver_metadata, srtio3_doped_metadata,
-    srtio3_metadata, tio2_metadata, tio_metadata, titanium_metadata, tungsten_metadata,
+    srtio3_metadata, tio_metadata, tio2_metadata, titanium_metadata, tungsten_metadata,
     uvite_metadata, wo3_metadata, wo3_x_metadata,
 };
 
@@ -119,37 +119,66 @@ pub fn metadata_for_structure(name: &str) -> Option<MineralMetadata> {
 pub fn structures_with_metadata() -> Vec<&'static str> {
     vec![
         // Metals
-        "Au_gold", "Ag_silver", "Cu_copper", "Al_aluminum", "Pt_platinum",
-        "Pd_palladium", "Ni_nickel", "Cr_chromium", "W_tungsten", "Be_beryllium",
+        "Au_gold",
+        "Ag_silver",
+        "Cu_copper",
+        "Al_aluminum",
+        "Pt_platinum",
+        "Pd_palladium",
+        "Ni_nickel",
+        "Cr_chromium",
+        "W_tungsten",
+        "Be_beryllium",
         "Ti_alpha",
         // Semis + dielectrics
-        "Si_silicon", "Ge_germanium", "Diamond", "alpha_quartz",
-        "silicon_nitride_alpha", "silicon_nitride_beta",
+        "Si_silicon",
+        "Ge_germanium",
+        "Diamond",
+        "alpha_quartz",
+        "silicon_nitride_alpha",
+        "silicon_nitride_beta",
         // Oxides + TCOs
-        "alumina_sapphire", "rutile_tio2", "anatase_tio2", "brookite_tio2",
-        "indium_tin_oxide_bixbyite", "wurtzite_zno", "perovskite_srtio3",
-        "perovskite_batio3_tetragonal", "barium_titanate_cubic",
+        "alumina_sapphire",
+        "rutile_tio2",
+        "anatase_tio2",
+        "brookite_tio2",
+        "indium_tin_oxide_bixbyite",
+        "wurtzite_zno",
+        "perovskite_srtio3",
+        "perovskite_batio3_tetragonal",
+        "barium_titanate_cubic",
         "lanthanum_titanate",
         // Niobate + tantalate ferroelectrics
-        "linbo3_trigonal_room_t", "litao3_trigonal",
+        "linbo3_trigonal_room_t",
+        "litao3_trigonal",
         // Tungstates
-        "tungsten_trioxide_gamma", "cesium_tungsten_bronze",
-        "tungsten_bronze_na_x_wo3_cubic", "scheelite_cawo4", "stolzite_pbwo4",
+        "tungsten_trioxide_gamma",
+        "cesium_tungsten_bronze",
+        "tungsten_bronze_na_x_wo3_cubic",
+        "scheelite_cawo4",
+        "stolzite_pbwo4",
         // Tourmaline supergroup
-        "schorl_tourmaline", "dravite_tourmaline", "elbaite_tourmaline",
-        "uvite_tourmaline", "liddicoatite_tourmaline", "rossmanite_tourmaline",
-        "foitite_tourmaline", "povondraite_tourmaline",
+        "schorl_tourmaline",
+        "dravite_tourmaline",
+        "elbaite_tourmaline",
+        "uvite_tourmaline",
+        "liddicoatite_tourmaline",
+        "rossmanite_tourmaline",
+        "foitite_tourmaline",
+        "povondraite_tourmaline",
         // Variants + polymorphs
-        "doped_silicon", "pedot_pss_conducting_polymer",
-        "tungsten_trioxide_substoichiometric", "fused_silica", "silica_casimir",
+        "doped_silicon",
+        "pedot_pss_conducting_polymer",
+        "tungsten_trioxide_substoichiometric",
+        "fused_silica",
+        "silica_casimir",
         "titanium_monoxide",
     ]
 }
 
 #[cfg(test)]
 mod tests {
-    use super::super::OpticSign;
-    use super::*;
+    use super::{super::OpticSign, *};
 
     #[test]
     fn gold_structure_resolves_to_gold_metadata() {

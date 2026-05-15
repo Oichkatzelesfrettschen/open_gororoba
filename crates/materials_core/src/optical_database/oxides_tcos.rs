@@ -450,4 +450,3 @@ pub fn doped_silicon_metadata() -> MineralMetadata {
         ..parent
     }
 }
-

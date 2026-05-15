@@ -15,8 +15,10 @@
 use anyhow::Result;
 use provenance_core::ClaimRecord;
 
-use super::migrations::{CANONICAL_CLAIM_STATUSES, CANONICAL_INSIGHT_STATUSES};
-use super::render_normalized_claim_compat_toml;
+use super::{
+    migrations::{CANONICAL_CLAIM_STATUSES, CANONICAL_INSIGHT_STATUSES},
+    render_normalized_claim_compat_toml,
+};
 
 pub(crate) fn normalize_claim_record(claim: &mut ClaimRecord) -> Result<()> {
     let (canonical_status, legacy_status_note) = normalize_claim_status(&claim.status);

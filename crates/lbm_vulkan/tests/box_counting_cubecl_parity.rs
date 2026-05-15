@@ -24,13 +24,20 @@
 
 #![cfg(feature = "cubecl")]
 
-use lbm_vulkan::box_counting_cpu::{count_occupied_boxes, default_box_sizes};
-use lbm_vulkan::box_counting_cubecl::{count_occupied_boxes_cubecl, is_available};
-use rand::SeedableRng;
-use rand::seq::SliceRandom;
+use lbm_vulkan::{
+    box_counting_cpu::{count_occupied_boxes, default_box_sizes},
+    box_counting_cubecl::{count_occupied_boxes_cubecl, is_available},
+};
+use rand::{SeedableRng, seq::SliceRandom};
 use rand_chacha::ChaCha20Rng;
 
-fn build_test_grid(seed: u64, nx: usize, ny: usize, nz: usize, occupancy_fraction: f64) -> Vec<f32> {
+fn build_test_grid(
+    seed: u64,
+    nx: usize,
+    ny: usize,
+    nz: usize,
+    occupancy_fraction: f64,
+) -> Vec<f32> {
     let total = nx * ny * nz;
     let n_occupied = (total as f64 * occupancy_fraction) as usize;
     let mut rng = ChaCha20Rng::seed_from_u64(seed);

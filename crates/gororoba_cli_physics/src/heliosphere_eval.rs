@@ -1641,7 +1641,6 @@ fn train_counterfactual_predictive_model(
     }
 }
 
-
 fn median_lead_time_hours(
     samples: &[&LabeledInvariantSample],
     scores: &[f64],
@@ -1803,9 +1802,7 @@ fn mean_feature_vector(
 // modularization. Re-exported here at the parent module scope so all
 // existing call sites in heliosphere_eval.rs continue to resolve them.
 mod stats;
-use stats::{
-    cosine_similarity, finite_mad, finite_median, finite_median_opt, mean, ratio_usize,
-};
+use stats::{cosine_similarity, finite_mad, finite_median, finite_median_opt, mean, ratio_usize};
 
 // Mask-ops helpers (median_filter_3, hysteresis_mask, dilate_mask,
 // merge_small_gaps) live in the `mask_ops` submodule.
@@ -1835,8 +1832,7 @@ use splits::{SampleSplits, mission_splits, split_samples, split_samples_with_see
 // live in the `logistic` submodule.
 mod logistic;
 use logistic::{
-    LogisticModel, ScaledFeatureSet, apply_scaler, fit_scaler, predict_scores,
-    train_logistic_model,
+    LogisticModel, ScaledFeatureSet, apply_scaler, fit_scaler, predict_scores, train_logistic_model,
 };
 
 // Sample-vector access + normalization helpers
@@ -1880,8 +1876,10 @@ pub const HELIOSPHERE_DESCRIPTOR_CHANNEL_NAMES: [&str; DESCRIPTOR_DIM] = [
 
 #[cfg(test)]
 pub(crate) fn assert_takens_descriptor_sedenion_lane_matches_scalar_reference() {
-    use self::descriptors::{HasBField, takens_descriptors};
-    use self::tests::sample;
+    use self::{
+        descriptors::{HasBField, takens_descriptors},
+        tests::sample,
+    };
 
     let group = (0..6).map(sample).collect::<Vec<_>>();
     let descriptor = takens_descriptors(&group, 5);

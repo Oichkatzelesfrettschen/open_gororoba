@@ -43,10 +43,14 @@
 
 #![cfg(feature = "cubecl")]
 
-use cd_kernel::lloyd_max::get_codebook;
-use cd_kernel::turboquant::backend::{Backend, BackendQuantizer};
-use cd_kernel::turboquant::cubecl_backend::launcher::is_available as cubecl_is_available;
-use cd_kernel::turboquant::dispatch::SimdLevel;
+use cd_kernel::{
+    lloyd_max::get_codebook,
+    turboquant::{
+        backend::{Backend, BackendQuantizer},
+        cubecl_backend::launcher::is_available as cubecl_is_available,
+        dispatch::SimdLevel,
+    },
+};
 
 #[test]
 #[ignore = "gpu (cubecl-wgpu requires a Vulkan/Metal/DX12/WebGPU adapter)"]
@@ -133,5 +137,8 @@ fn cubecl_parity_3bit_1024() {
             total_mismatches, mismatches
         );
     }
-    eprintln!("all {} indices match between Backend::Cpu and Backend::CubeCL", values.len());
+    eprintln!(
+        "all {} indices match between Backend::Cpu and Backend::CubeCL",
+        values.len()
+    );
 }

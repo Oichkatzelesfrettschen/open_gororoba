@@ -352,9 +352,7 @@ fn main() -> Result<()> {
             .filter(|&candidate| {
                 all_detectors
                     .iter()
-                    .filter(|&&(_, hours)| {
-                        hours.iter().any(|&dh| (dh - candidate).abs() < tol)
-                    })
+                    .filter(|&&(_, hours)| hours.iter().any(|&dh| (dh - candidate).abs() < tol))
                     .count()
                     >= min_agree
             })

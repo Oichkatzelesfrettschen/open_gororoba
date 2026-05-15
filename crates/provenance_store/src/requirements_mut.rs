@@ -13,8 +13,10 @@
 use anyhow::Result;
 use rusqlite::params;
 
-use crate::ProvenanceStore;
-use crate::types::{RequirementCoverageGapItem, RequirementModuleItem, RequirementsMeta};
+use crate::{
+    ProvenanceStore,
+    types::{RequirementCoverageGapItem, RequirementModuleItem, RequirementsMeta},
+};
 
 impl ProvenanceStore {
     pub fn upsert_requirements_meta(&self, meta: &RequirementsMeta<'_>) -> Result<()> {

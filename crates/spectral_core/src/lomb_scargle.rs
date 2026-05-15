@@ -103,7 +103,12 @@ pub fn compute_lomb_scargle_weighted(
         };
     }
 
-    let y_mean: f64 = y.iter().zip(weights.iter()).map(|(&yi, &wi)| wi * yi).sum::<f64>() / w_sum;
+    let y_mean: f64 = y
+        .iter()
+        .zip(weights.iter())
+        .map(|(&yi, &wi)| wi * yi)
+        .sum::<f64>()
+        / w_sum;
     let y_centered: Vec<f64> = y.iter().map(|&yi| yi - y_mean).collect();
     let yy_sum: f64 = y_centered
         .iter()

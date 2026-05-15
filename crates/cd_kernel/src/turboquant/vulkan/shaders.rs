@@ -18,8 +18,10 @@ pub const QUANTIZE_SPV: &[u8] =
     include_bytes!(concat!(env!("OUT_DIR"), "/turboquant_vulkan/quantize.spv"));
 
 /// Pre-compiled SPIR-V for dequant_dot.comp.
-pub const DEQUANT_DOT_SPV: &[u8] =
-    include_bytes!(concat!(env!("OUT_DIR"), "/turboquant_vulkan/dequant_dot.spv"));
+pub const DEQUANT_DOT_SPV: &[u8] = include_bytes!(concat!(
+    env!("OUT_DIR"),
+    "/turboquant_vulkan/dequant_dot.spv"
+));
 
 /// Returns the quantize SPIR-V bytes if non-empty, else None. Use this
 /// at runtime to decide between Vulkan and CPU dispatch.

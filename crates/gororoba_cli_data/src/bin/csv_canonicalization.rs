@@ -21,8 +21,6 @@ use walkdir::WalkDir;
 mod types;
 use types::*;
 
-
-
 fn main() -> Result<()> {
     let cli = Cli::parse();
     let repo_root = cli.repo_root.canonicalize().context("resolve repo root")?;

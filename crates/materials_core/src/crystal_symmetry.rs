@@ -27,7 +27,6 @@
 //! - Burns & Glazer (1990), Space Groups for Solid State Scientists
 //! - Cotton (1990), Chemical Applications of Group Theory
 
-
 // PointGroup + LatticeSystem + SpaceGroup extracted to dedicated submodules
 // (#139 PH-MOD split). The submodules expose the canonical types; this
 // parent re-exports them so the existing API surface stays stable.
@@ -38,36 +37,30 @@ pub use lattice_systems::LatticeSystem;
 pub use point_groups::PointGroup;
 pub use space_groups::SpaceGroup;
 
-
 // SymmetryOperation extracted to crystal_symmetry/symmetry_operation.rs (#139).
 mod symmetry_operation;
 pub use symmetry_operation::SymmetryOperation;
 
-
 // Miller indices extracted to crystal_symmetry/miller_indices.rs (#139 PH-MOD).
 mod miller_indices;
-pub use miller_indices::{MillerPlane, MillerDirection};
-
+pub use miller_indices::{MillerDirection, MillerPlane};
 
 // Character tables + ConjugacyClass + IrreducibleRepresentation extracted
 // to crystal_symmetry/character_tables.rs (#139 PH-MOD largest cluster).
 mod character_tables;
 pub use character_tables::{CharacterTable, ConjugacyClass, IrreducibleRepresentation};
 
-
 // Crystal-structure lookup + extinction + selection rules extracted to
 // crystal_symmetry/crystal_structures.rs (#139 PH-MOD).
 mod crystal_structures;
 pub use crystal_structures::{
-    CrystalStructureInfo, allowed_reflection, is_allowed_transition,
-    known_crystal_structures, space_groups_for_structure, structure_by_name,
+    CrystalStructureInfo, allowed_reflection, is_allowed_transition, known_crystal_structures,
+    space_groups_for_structure, structure_by_name,
 };
-
 
 // Phonon mode analysis extracted to crystal_symmetry/phonon_symmetry.rs (#139).
 mod phonon_symmetry;
 pub use phonon_symmetry::{PhononMode, phonon_modes_by_symmetry};
-
 
 // ============================================================================
 // Tests

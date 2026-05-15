@@ -20,8 +20,10 @@
 //! The label lines carry DMZ status from the S-assessor interacting with
 //! each ET assessor via the same X-pattern test.
 
-use super::cdp::cdp_signed_product;
-use super::strutted_et::{StruttedEmanationTable, create_strutted_et};
+use super::{
+    cdp::cdp_signed_product,
+    strutted_et::{StruttedEmanationTable, create_strutted_et},
+};
 
 /// A cell in the skybox extension of the emanation table.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]

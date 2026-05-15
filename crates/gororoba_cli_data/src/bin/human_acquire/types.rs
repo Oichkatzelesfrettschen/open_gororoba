@@ -756,4 +756,3 @@ pub(crate) struct PromoteSpec {
     pub(crate) access_class: Option<String>,
     pub(crate) note: Option<String>,
 }
-

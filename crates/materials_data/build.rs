@@ -149,12 +149,18 @@ fn main() {
     //      crystal_symmetry::crystal_structures::known_crystal_structures()
     //      to a TOML registry. materials_core converts the string
     //      point_group / lattice_system to enum variants at runtime.
-    let cs_toml = manifest.join("data").join("crystal").join("crystal_structures.toml");
+    let cs_toml = manifest
+        .join("data")
+        .join("crystal")
+        .join("crystal_structures.toml");
     println!("cargo:rerun-if-changed=data/crystal/crystal_structures.toml");
     emit_crystal_structures(&mut crystal_file, &cs_toml);
 
     // ---------- Phase 7: character tables (#127) ----------
-    let ct_toml = manifest.join("data").join("crystal").join("character_tables.toml");
+    let ct_toml = manifest
+        .join("data")
+        .join("crystal")
+        .join("character_tables.toml");
     println!("cargo:rerun-if-changed=data/crystal/character_tables.toml");
     emit_character_tables(&mut crystal_file, &ct_toml);
 }
@@ -196,7 +202,12 @@ fn emit_sellmeier_models(out: &mut File, path: &PathBuf) {
             .get("validity_range_um")
             .and_then(|v| v.as_array())
             .expect("validity_range_um array");
-        assert_eq!(validity.len(), 2, "{} validity_range_um needs 2 elements", name);
+        assert_eq!(
+            validity.len(),
+            2,
+            "{} validity_range_um needs 2 elements",
+            name
+        );
 
         // Apply squaring per c_form to preserve byte-identical f64 vs the
         // original Rust `.powi(2)` evaluation.
@@ -217,8 +228,18 @@ fn emit_sellmeier_models(out: &mut File, path: &PathBuf) {
             .map(|v| v.as_float().expect("b coeff must be float"))
             .collect();
 
-        emit_f64_const(out, &format!("{name}_B_COEFFS"), b_vals.len(), b_vals.iter().copied());
-        emit_f64_const(out, &format!("{name}_C_COEFFS"), c_coeffs.len(), c_coeffs.iter().copied());
+        emit_f64_const(
+            out,
+            &format!("{name}_B_COEFFS"),
+            b_vals.len(),
+            b_vals.iter().copied(),
+        );
+        emit_f64_const(
+            out,
+            &format!("{name}_C_COEFFS"),
+            c_coeffs.len(),
+            c_coeffs.iter().copied(),
+        );
 
         let v_min = validity[0].as_float().expect("validity min");
         let v_max = validity[1].as_float().expect("validity max");
@@ -266,10 +287,19 @@ fn emit_character_tables(out: &mut File, path: &PathBuf) {
     .unwrap();
 
     for t in tables {
-        let pg = t.get("point_group").and_then(|v| v.as_str()).expect("point_group");
-        let classes = t.get("classes").and_then(|v| v.as_array()).expect("classes");
+        let pg = t
+            .get("point_group")
+            .and_then(|v| v.as_str())
+            .expect("point_group");
+        let classes = t
+            .get("classes")
+            .and_then(|v| v.as_array())
+            .expect("classes");
         let irreps = t.get("irreps").and_then(|v| v.as_array()).expect("irreps");
-        let chars = t.get("characters").and_then(|v| v.as_array()).expect("characters");
+        let chars = t
+            .get("characters")
+            .and_then(|v| v.as_array())
+            .expect("characters");
 
         let n_cls = classes.len();
         let n_irr = irreps.len();
@@ -286,17 +316,24 @@ fn emit_character_tables(out: &mut File, path: &PathBuf) {
             .iter()
             .map(|c| {
                 let name = c.get("name").and_then(|v| v.as_str()).expect("class name");
-                let count = c.get("count").and_then(|v| v.as_integer()).expect("class count")
-                    as u32;
+                let count = c
+                    .get("count")
+                    .and_then(|v| v.as_integer())
+                    .expect("class count") as u32;
                 format!("({name:?}, {count})")
             })
             .collect();
         let irrep_tuples: Vec<String> = irreps
             .iter()
             .map(|i| {
-                let label = i.get("label").and_then(|v| v.as_str()).expect("irrep label");
-                let dim = i.get("dimension").and_then(|v| v.as_integer()).expect("irrep dim")
-                    as u32;
+                let label = i
+                    .get("label")
+                    .and_then(|v| v.as_str())
+                    .expect("irrep label");
+                let dim = i
+                    .get("dimension")
+                    .and_then(|v| v.as_integer())
+                    .expect("irrep dim") as u32;
                 format!("({label:?}, {dim})")
             })
             .collect();
@@ -369,10 +406,19 @@ fn emit_crystal_structures(out: &mut File, path: &PathBuf) {
 
     for s in structures {
         let name = s.get("name").and_then(|v| v.as_str()).expect("name");
-        let sg_num = s.get("sg_num").and_then(|v| v.as_integer()).expect("sg_num") as u16;
+        let sg_num = s
+            .get("sg_num")
+            .and_then(|v| v.as_integer())
+            .expect("sg_num") as u16;
         let sg_sym = s.get("sg_sym").and_then(|v| v.as_str()).expect("sg_sym");
-        let pg = s.get("point_group").and_then(|v| v.as_str()).expect("point_group");
-        let ls = s.get("lattice_system").and_then(|v| v.as_str()).expect("lattice_system");
+        let pg = s
+            .get("point_group")
+            .and_then(|v| v.as_str())
+            .expect("point_group");
+        let ls = s
+            .get("lattice_system")
+            .and_then(|v| v.as_str())
+            .expect("lattice_system");
         let centering = s
             .get("centering")
             .and_then(|v| v.as_str())
@@ -387,8 +433,14 @@ fn emit_crystal_structures(out: &mut File, path: &PathBuf) {
         let beta = s.get("beta").and_then(|v| v.as_float()).expect("beta");
         let gamma = s.get("gamma").and_then(|v| v.as_float()).expect("gamma");
         let z = s.get("z").and_then(|v| v.as_integer()).expect("z") as u32;
-        let density = s.get("density").and_then(|v| v.as_float()).expect("density");
-        let reference = s.get("reference").and_then(|v| v.as_str()).expect("reference");
+        let density = s
+            .get("density")
+            .and_then(|v| v.as_float())
+            .expect("density");
+        let reference = s
+            .get("reference")
+            .and_then(|v| v.as_str())
+            .expect("reference");
 
         writeln!(
             out,
@@ -585,8 +637,7 @@ fn emit_lorentz_models(out: &mut File, path: &PathBuf) {
     let raw = fs::read_to_string(path).unwrap_or_else(|e| panic!("cannot read {path:?}: {e}"));
     // toml 1.x: use `toml::from_str` (the `FromStr` impl was narrowed to
     // single-value parsing; documents need the explicit deserializer).
-    let doc: Value =
-        toml::from_str(&raw).unwrap_or_else(|e| panic!("parse {path:?}: {e}"));
+    let doc: Value = toml::from_str(&raw).unwrap_or_else(|e| panic!("parse {path:?}: {e}"));
 
     let materials = doc
         .get("material")
@@ -640,16 +691,18 @@ fn emit_lorentz_models(out: &mut File, path: &PathBuf) {
         writeln!(out, "#[allow(dead_code)]").unwrap();
         match drude_opt {
             Some(d) => {
-                let op = d.get("omega_p_ev").and_then(Value::as_float).unwrap_or_else(
-                    || panic!("`{name}.drude` missing omega_p_ev"),
-                );
+                let op = d
+                    .get("omega_p_ev")
+                    .and_then(Value::as_float)
+                    .unwrap_or_else(|| panic!("`{name}.drude` missing omega_p_ev"));
                 let g = d
                     .get("gamma_ev")
                     .and_then(Value::as_float)
                     .unwrap_or_else(|| panic!("`{name}.drude` missing gamma_ev"));
-                let ei = d.get("eps_inf").and_then(Value::as_float).unwrap_or_else(
-                    || panic!("`{name}.drude` missing eps_inf"),
-                );
+                let ei = d
+                    .get("eps_inf")
+                    .and_then(Value::as_float)
+                    .unwrap_or_else(|| panic!("`{name}.drude` missing eps_inf"));
                 writeln!(
                     out,
                     "pub const {name}_DRUDE: Option<[f64; 3]> = Some([{op:?}, {g:?}, {ei:?}]);"
@@ -676,9 +729,10 @@ fn emit_lorentz_models(out: &mut File, path: &PathBuf) {
                 .get("strength")
                 .and_then(Value::as_float)
                 .unwrap_or_else(|| panic!("oscillator[{i}] of `{name}` missing strength"));
-            let omega = ot.get("omega_0_ev").and_then(Value::as_float).unwrap_or_else(
-                || panic!("oscillator[{i}] of `{name}` missing omega_0_ev"),
-            );
+            let omega = ot
+                .get("omega_0_ev")
+                .and_then(Value::as_float)
+                .unwrap_or_else(|| panic!("oscillator[{i}] of `{name}` missing omega_0_ev"));
             let gamma = ot
                 .get("gamma_ev")
                 .and_then(Value::as_float)

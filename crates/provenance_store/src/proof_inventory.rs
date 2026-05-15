@@ -21,14 +21,16 @@ use anyhow::Result;
 use camino::Utf8PathBuf;
 use provenance_core::{ClaimRecord, TheoremRecord};
 
-use super::claim_proofs::{
-    canonical_formal_proof_for_claim, link_claims_for_proof, normalized_claim_id_from_theorem_stem,
-    render_normalized_claim_compat_toml,
+use super::{
+    ProofInventory, ProofInventoryEntry,
+    claim_proofs::{
+        canonical_formal_proof_for_claim, link_claims_for_proof,
+        normalized_claim_id_from_theorem_stem, render_normalized_claim_compat_toml,
+    },
+    compat_render::compat_markdown_export_header,
+    status_normalize::normalize_claim_record,
+    toml_helpers::load_text,
 };
-use super::compat_render::compat_markdown_export_header;
-use super::status_normalize::normalize_claim_record;
-use super::toml_helpers::load_text;
-use super::{ProofInventory, ProofInventoryEntry};
 
 pub(crate) fn load_proof_inventory(proofs_project_path: &Path) -> Result<ProofInventory> {
     let raw = load_text(proofs_project_path)?;
@@ -111,10 +113,7 @@ pub(crate) fn normalize_claims_against_proof_inventory(
     Ok(())
 }
 
-pub(crate) fn render_theorem_markdown(
-    source_label: &str,
-    theorems: &[TheoremRecord],
-) -> String {
+pub(crate) fn render_theorem_markdown(source_label: &str, theorems: &[TheoremRecord]) -> String {
     let mut lines = compat_markdown_export_header(source_label);
     lines.extend([
         "# Theorems".to_string(),

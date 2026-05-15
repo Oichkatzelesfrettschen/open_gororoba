@@ -10,9 +10,7 @@
 //! All items `pub(super)`. Pure file-I/O / data-shaping helpers with
 //! no dependencies on other source_provenance submodules.
 
-use std::collections::HashMap;
-use std::fs;
-use std::path::Path;
+use std::{collections::HashMap, fs, path::Path};
 
 use anyhow::{Context, Result};
 use csv::ReaderBuilder;

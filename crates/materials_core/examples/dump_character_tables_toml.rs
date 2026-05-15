@@ -103,7 +103,10 @@ fn main() {
             if idx > 0 {
                 print!(",");
             }
-            print!("\n    {{ label = {:?}, dimension = {} }}", i.label, i.dimension);
+            print!(
+                "\n    {{ label = {:?}, dimension = {} }}",
+                i.label, i.dimension
+            );
         }
         println!("\n]");
         // 2D characters: outer list of rows, inner list of [re, im] pairs.

@@ -92,9 +92,8 @@ fn point_group_name_to_enum(name: &str) -> Option<PointGroup> {
 /// Look up a CharacterTable from the build-time codegen registry.
 /// Returns `None` if the point group is not yet migrated to TOML.
 fn from_codegen_table(pg: PointGroup) -> Option<CharacterTable> {
-    materials_data::CHARACTER_TABLE_REGISTRY
-        .iter()
-        .find_map(|(pg_name, classes_slice, irreps_slice, chars_slice)| {
+    materials_data::CHARACTER_TABLE_REGISTRY.iter().find_map(
+        |(pg_name, classes_slice, irreps_slice, chars_slice)| {
             let pg_match = point_group_name_to_enum(pg_name)?;
             if pg_match != pg {
                 return None;
@@ -136,7 +135,8 @@ fn from_codegen_table(pg: PointGroup) -> Option<CharacterTable> {
                 irreps,
                 characters,
             })
-        })
+        },
+    )
 }
 
 impl CharacterTable {
@@ -1999,8 +1999,18 @@ mod codegen_parity_tests {
         for (ra, rb) in a.characters.iter().zip(b.characters.iter()) {
             assert_eq!(ra.len(), rb.len(), "matrix row width");
             for ((re_a, im_a), (re_b, im_b)) in ra.iter().zip(rb.iter()) {
-                assert!((re_a - re_b).abs() < 1e-12, "re drift: {} vs {}", re_a, re_b);
-                assert!((im_a - im_b).abs() < 1e-12, "im drift: {} vs {}", im_a, im_b);
+                assert!(
+                    (re_a - re_b).abs() < 1e-12,
+                    "re drift: {} vs {}",
+                    re_a,
+                    re_b
+                );
+                assert!(
+                    (im_a - im_b).abs() < 1e-12,
+                    "im drift: {} vs {}",
+                    im_a,
+                    im_b
+                );
             }
         }
     }
@@ -2048,12 +2058,38 @@ mod codegen_parity_tests {
         // character_tables.toml.
         use super::PointGroup as P;
         for pg in [
-            P::C1, P::Ci, P::C2, P::Cs, P::C2h,
-            P::D2, P::C2v, P::D2h,
-            P::C4, P::S4, P::C4h, P::D4, P::C4v, P::D2d, P::D4h,
-            P::C3, P::C3i, P::C3v, P::D3, P::D3d,
-            P::C6, P::C3h, P::C6h, P::D6, P::C6v, P::D3h, P::D6h,
-            P::T, P::Td, P::Th, P::O, P::Oh,
+            P::C1,
+            P::Ci,
+            P::C2,
+            P::Cs,
+            P::C2h,
+            P::D2,
+            P::C2v,
+            P::D2h,
+            P::C4,
+            P::S4,
+            P::C4h,
+            P::D4,
+            P::C4v,
+            P::D2d,
+            P::D4h,
+            P::C3,
+            P::C3i,
+            P::C3v,
+            P::D3,
+            P::D3d,
+            P::C6,
+            P::C3h,
+            P::C6h,
+            P::D6,
+            P::C6v,
+            P::D3h,
+            P::D6h,
+            P::T,
+            P::Td,
+            P::Th,
+            P::O,
+            P::Oh,
         ] {
             assert!(
                 from_codegen_table(pg).is_some(),

@@ -20,17 +20,21 @@
 //! description/experiment/crate_name annotations onto the discovered
 //! workspace entries.
 
-use std::collections::{BTreeMap, BTreeSet};
-use std::path::{Path, PathBuf};
-use std::process::Command;
+use std::{
+    collections::{BTreeMap, BTreeSet},
+    path::{Path, PathBuf},
+    process::Command,
+};
 
 use anyhow::{Context, Result, bail};
 use provenance_core::BinaryRecord;
 use serde::Deserialize;
 use toml::Value;
 
-use super::sql_helpers::to_repo_rel;
-use super::toml_helpers::{load_toml_text, optional_string_field, string_field};
+use super::{
+    sql_helpers::to_repo_rel,
+    toml_helpers::{load_toml_text, optional_string_field, string_field},
+};
 
 pub(crate) fn load_binaries_from_registry(raw: &str) -> Result<Vec<BinaryRecord>> {
     let value: Value = toml::from_str(raw).context("parse binaries registry")?;

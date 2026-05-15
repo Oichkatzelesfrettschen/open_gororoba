@@ -2132,8 +2132,6 @@ fn parameter_current_value(model: &TimingModel, name: &str) -> Result<f64> {
         .ok_or_else(|| anyhow!("{} missing parameter {name}", model.solution_id))
 }
 
-
-
 fn solve_weighted_least_squares(
     design: &DMatrix<f64>,
     response: &DVector<f64>,
@@ -2637,8 +2635,6 @@ fn write_fourier_basis_row(
 fn fourier_basis_weight(harmonic: usize, spectral_index: f64) -> f64 {
     0.5_f64.sqrt() / (harmonic as f64).powf(0.5 * spectral_index)
 }
-
-
 
 #[cfg(test)]
 mod tests {

@@ -88,9 +88,11 @@
 
 use anyhow::{Context, Result};
 use clap::Parser;
-use std::fmt::Write as _;
-use std::fs;
-use std::path::{Path, PathBuf};
+use std::{
+    fmt::Write as _,
+    fs,
+    path::{Path, PathBuf},
+};
 
 #[derive(Parser, Debug)]
 #[command(
@@ -301,7 +303,10 @@ fn process_e192(path: &Path) -> Result<Vec<Row>> {
             statistic: "rayleigh_r_max",
             value: r_max,
             n: n_gal,
-            note: format!("max mean-resultant-length across modes; mode={}", r_max_mode),
+            note: format!(
+                "max mean-resultant-length across modes; mode={}",
+                r_max_mode
+            ),
         },
         Row {
             experiment: "E-192",
@@ -319,8 +324,8 @@ fn process_e192(path: &Path) -> Result<Vec<Row>> {
 /// We capture chi2/dof and (if present) the p-value from the
 /// `fixed_gamma` row, plus the corrected `alpha_zd` quotient.
 fn process_e201(path: &Path) -> Result<Vec<Row>> {
-    let mut rdr = csv::Reader::from_path(path)
-        .with_context(|| format!("open E-201 {}", path.display()))?;
+    let mut rdr =
+        csv::Reader::from_path(path).with_context(|| format!("open E-201 {}", path.display()))?;
     let header = rdr.headers()?.clone();
     let idx_chi2 = header.iter().position(|h| h == "chi2_per_dof");
     let idx_p = header.iter().position(|h| h == "p_value");
@@ -372,7 +377,10 @@ fn process_e201(path: &Path) -> Result<Vec<Row>> {
         }
     }
     if out.is_empty() {
-        anyhow::bail!("E-201 produced no recognized columns from {}", path.display());
+        anyhow::bail!(
+            "E-201 produced no recognized columns from {}",
+            path.display()
+        );
     }
     Ok(out)
 }
@@ -381,8 +389,8 @@ fn process_e201(path: &Path) -> Result<Vec<Row>> {
 /// Q1-6bin (sensitivity-mismatch) delta_snr for the C-1432/C-1433/C-1434
 /// chain.
 fn process_e202(path: &Path) -> Result<Vec<Row>> {
-    let mut rdr = csv::Reader::from_path(path)
-        .with_context(|| format!("open E-202 {}", path.display()))?;
+    let mut rdr =
+        csv::Reader::from_path(path).with_context(|| format!("open E-202 {}", path.display()))?;
     let header = rdr.headers()?.clone();
     let idx_q = header
         .iter()
@@ -407,8 +415,16 @@ fn process_e202(path: &Path) -> Result<Vec<Row>> {
         let rec = rec?;
         let q = rec.get(idx_q).unwrap_or("?").to_string();
         let cfg = rec.get(idx_cfg).unwrap_or("?").to_string();
-        let delta: f64 = rec.get(idx_delta).unwrap_or("NaN").parse().unwrap_or(f64::NAN);
-        let baseline: f64 = rec.get(idx_base).unwrap_or("NaN").parse().unwrap_or(f64::NAN);
+        let delta: f64 = rec
+            .get(idx_delta)
+            .unwrap_or("NaN")
+            .parse()
+            .unwrap_or(f64::NAN);
+        let baseline: f64 = rec
+            .get(idx_base)
+            .unwrap_or("NaN")
+            .parse()
+            .unwrap_or(f64::NAN);
         let n = idx_n
             .and_then(|i| rec.get(i))
             .and_then(|s| s.parse::<i64>().ok())
@@ -448,7 +464,14 @@ fn write_csv(path: &Path, rows: &[Row]) -> Result<()> {
         fs::create_dir_all(parent)?;
     }
     let mut wtr = csv::Writer::from_path(path)?;
-    wtr.write_record(["experiment", "dataset_label", "statistic", "value", "n", "note"])?;
+    wtr.write_record([
+        "experiment",
+        "dataset_label",
+        "statistic",
+        "value",
+        "n",
+        "note",
+    ])?;
     for r in rows {
         wtr.write_record([
             r.experiment,

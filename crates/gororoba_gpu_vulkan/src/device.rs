@@ -13,9 +13,7 @@ use std::sync::Arc;
 
 use ash::vk;
 
-use crate::adapter::Adapter;
-use crate::error::Result;
-use crate::instance::Instance;
+use crate::{adapter::Adapter, error::Result, instance::Instance};
 
 /// Optional feature requests forwarded to vk::DeviceCreateInfo.
 #[derive(Debug, Clone, Copy, Default)]

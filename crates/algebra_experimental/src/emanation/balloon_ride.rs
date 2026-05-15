@@ -16,9 +16,10 @@
 //! The minimum valid level for strut S is the smallest N where
 //! G = 2^(N-1) > S.
 
-use super::regime_address::regime_address;
-use super::strut_spectroscopy::is_sky_strut;
-use super::strutted_et::create_strutted_et;
+use super::{
+    regime_address::regime_address, strut_spectroscopy::is_sky_strut,
+    strutted_et::create_strutted_et,
+};
 
 /// One step of a balloon ride: the ET data for strut S at level N.
 #[derive(Debug, Clone)]
