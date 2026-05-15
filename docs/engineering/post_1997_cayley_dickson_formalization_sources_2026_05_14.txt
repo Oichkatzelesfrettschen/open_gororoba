@@ -1,0 +1,98 @@
+Post-1997 Cayley-Dickson Formalization Sources
+==============================================
+
+WHY
+---
+The Brown and Moreno proof stack is now strong enough to support modern
+post-1997 Cayley-Dickson papers, but the repo needs a clean routing map before
+new theorem lanes are added.
+
+WHAT
+----
+This file records the immediate source-to-formalization plan for modern CD
+papers while the larger Jacobson and Freudenthal physical-source intake is
+handled separately.
+
+HOW
+---
+Route each paper as one of:
+
+- Rocq-first: compact finite theorem, algebraic identity, or proof interface.
+- Rust-first: large enumeration, table extraction, graph census, or numeric
+  certificate generator.
+- Paired: Rust produces finite witnesses or tables; Rocq certifies the
+  theorem-facing invariant.
+
+Current Rocq anchors
+--------------------
+
+| Surface | Role |
+| --- | --- |
+| proofs/theories/CDSignBridge.v | XOR/sign-table basis multiplication bridge. |
+| proofs/theories/CDFusedBilinear.v | Flattened quaternion/octonion/sedenion multiplication interface. |
+| proofs/theories/ZD_Criterion.v | Fused zero-divisor criterion shared by Brown/de Marrais/Moreno. |
+| proofs/theories/Brown1972ChapterVII.v | Brown 7.15 through 7.19 theorem anchor. |
+| proofs/theories/Moreno1997.v | Paper-facing Moreno 1997 index and 1.16/2.9 bridges. |
+| proofs/theories/DeMarraisAssessors.v | Assessor, O-trip, S-trip, and production-rule lane. |
+| proofs/theories/WilmotCDStructure.v | Wilmot tower-counting and zero-divisor counting formulas. |
+| proofs/theories/WilmotPathionRetraction.v | Wilmot retraction classification data. |
+| proofs/theories/WilmotRetractionTheorem.v | Retraction-to-Wilmot decomposition theorem surface. |
+
+Local source cache
+------------------
+
+The following sources are already present outside this repo and should be
+indexed or copied only through the repo provenance policy:
+
+| Lane | Local source path | First repo action |
+| --- | --- | --- |
+| Baez 2002 | ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/canonical_reference/arxiv_math0105155_baez_2002_octonions.pdf | Keep as normalization/reference layer for Hurwitz, composition, and alternative algebra vocabulary. |
+| Elduque survey | ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/composition_alternative_algebras/elduque_2018_composition_algebras.pdf | Keep as reference layer; do not duplicate older primary-source theorems. |
+| Bremner-Hentzel 2001 | ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/foundational_followups/bremner_hentzel_2001_identities_cd_process.pdf | Extract identity list and route compact identities to Rocq. |
+| Moreno 2005 zero divisors | ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/zero_divisors_geometry/moreno_2005_math0512517_constructing_zero_divisors.pdf | Extend Moreno 1997 with pure/doubly-pure, spectrum, and Stiefel relation interfaces. |
+| Moreno 2005 monomorphisms | ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/zero_divisors_geometry/moreno_2005_math0512516_companion.pdf | Stage type-I/type-II monomorphism criteria after the spectrum lane. |
+| Biss-Dugger-Isaksen 2005 | ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/annihilator_eigentheory/biss_2005_math0511691_large_annihilators_I.pdf | Build annihilator interface and dimension-bound statement. |
+| Biss-Dugger-Isaksen 2009 | ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/annihilator_eigentheory/biss_2009_0905.2987_alternativity_fails_cd.pdf | Use after annihilator interface exists; route alternativity-failure identities to paired checks. |
+| Chan-Dokovic | ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/annihilator_eigentheory/chan_dokovic_conjugacy_sedenion_subalgebras.pdf | Rust enumerates representatives; Rocq certifies closure and invariants. |
+| Cawagas | ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/loop_subalgebra_automorphism/CawagasMatimyas.pdf | Pair with de Marrais sail-loop and automorpheme tables. |
+| Bales 2011/2016 | ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/alternative_constructions/bales_2011_1107.1375_cd_clifford_twisted_group_algebras.pdf | Normalize Bales sign conventions against CDSignBridge. |
+| Flaut 2021 | ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/alternative_constructions/flaut_2021_2103.12805_twisted_group_algebra_cd.pdf | Use as twisted-group-algebra bridge after Bales sign normalization. |
+| de Marrais 2000-2007 | ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/cd_tower_structure/de_marrais_2000_math0011260.pdf | Extend assessor lane into sail loops, automorphemes, catamarans, and recipe theory. |
+| Reggiani 2024 | ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/zero_divisors_geometry/reggiani_2024_2411.18881.pdf | Split Rust partner-graph and standard-ZD logic into a paper lane before deeper geometry. |
+| Wilmot 2025 | ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/cd_tower_structure/wilmot_2025_structure_of_the_cayley_dickson_algebras.pdf | Strengthen the existing Rocq/Rust lane with source-indexed theorem rows. |
+
+Routing order
+-------------
+
+1. Baez/Elduque normalization: define shared vocabulary and interfaces only.
+2. Bales/Flaut sign normalization: align twisted products with repo XOR signs.
+3. Bremner-Hentzel identities: land small reusable CD-process identity surfaces.
+4. Moreno 2005 zero-divisor spectrum: extend the Moreno 1997 theorem stack.
+5. Biss-Dugger-Isaksen annihilators: add annihilator interfaces and bounds.
+6. de Marrais/Cawagas: certify finite sail-loop and automorpheme structures.
+7. Chan-Dokovic: certify representative sedenion subalgebra classes.
+8. Reggiani: split standard-ZD and partner-graph logic into a paper lane.
+9. Wilmot: cross-link counts, retraction theorems, and Reggiani/de Marrais data.
+10. Only after these lanes are stable, revisit full differential-geometry claims.
+
+First theorem candidates
+------------------------
+
+| Candidate | Target |
+| --- | --- |
+| Bales sign comparison | bales_sign agrees or differs from repo cd_sign_fuel by an explicit convention transform. |
+| Flaut twisted group law | Basis multiplication is a twisted group algebra over (Z/2)^n using the repo sign table. |
+| Bremner-Hentzel flexible identity | A compact CD-process identity phrased through CDFusedBilinearSurface. |
+| Moreno 2005 spectrum zero criterion | Zero in the spectrum implies a zero-divisor witness under explicit pure/doubly-pure hypotheses. |
+| de Marrais sail-loop closure | The 28 O-trip sails partition into seven four-sail loops under the existing XOR table. |
+
+Gate expectations
+-----------------
+
+- Run make rocq-makefile-check before compiling new .v files.
+- Run make -C proofs vos after adding a proof file to _RocqProject.
+- Run the smallest target .vo build before wider make -C proofs check.
+- Run Rust paired tests with cargo clippy --workspace -- -D warnings before
+  marking a paper lane as verified.
+- If registry rows change, mutate the SQLite canonical control plane first and
+  regenerate compatibility exports atomically.

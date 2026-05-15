@@ -1,0 +1,126 @@
+Cayley-Dickson source corpus audit snapshot
+==========================================
+
+Date
+----
+2026-05-14
+
+Scope
+-----
+This note reconciles the local off-repo Cayley-Dickson document cache with the
+open_gororoba registry and proof surfaces. The cache root inspected was:
+
+- /home/eirikr/Documents/Projects/CayleyDickson
+
+The alternate root /home/eirikr/Documents/CayleyDickson was not present in this
+snapshot.
+
+Primary local trackers
+----------------------
+- CHRONOLOGICAL_REFERENCE_MATRIX.md: acquisition and availability ledger.
+- FORMALIZATION_ROADMAP.md: paper-to-Rocq/Rust distillation map.
+- metadata/project_api/row_availability_ledger.tsv: centurywise availability
+  layer referenced by the chronology matrix.
+- metadata/repo_extracted_metadata/MANIFEST.toml: normalized local_pdf
+  resolution ledger.
+
+Repository tracker surfaces
+---------------------------
+- proofs/_RocqProject: active Rocq proof inventory.
+- registry/book_docs.toml: paper-facing formalization narrative and next gaps.
+- registry/lacunae.toml: closed and open proof gaps.
+- registry/bibliography.toml: bibliography entries, including modern CD and
+  zero-divisor literature.
+- registry/source_lanes/papers_pdf.toml: governed PDF/source acquisition lane.
+- registry/claims_evidence_edges.toml: claim-to-proof evidence references.
+
+Current local cache facts
+-------------------------
+- The local cache contains 640 PDF/TXT/MD/TOML/CSV-like files under the root.
+- tier1_core_cd_algebra contains 203 PDFs and 69 TXT files.
+- The chronology matrix header records 119 main table entries, with 117
+  on-disk/formalized and 2 missing/audit-needed.
+- A direct table parser sees 132 rows after including later strict-century
+  support additions: 126 ON DISK, 4 FORMALIZED, and 2 MISSING.
+
+Dense tier1 PDF lanes
+---------------------
+- composition_alternative_algebras: 33 PDFs.
+- quaternion_family: 29 PDFs.
+- cd_tower_structure: 23 PDFs.
+- precursor_genealogy: 19 PDFs.
+- zero_divisors_geometry: 17 PDFs.
+- broader_cd_theory: 13 PDFs.
+- adjacent: 11 PDFs.
+- foundational_followups: 8 PDFs.
+- foundational_legacy: 8 PDFs.
+- interleaved_generation_physics: 8 PDFs.
+
+Exact-source gaps still open
+----------------------------
+- Freudenthal 1951, "Oktaven, Ausnahmegruppen und Oktavengeometrie": exact
+  Utrecht original still missing. Support exists locally through the Russian
+  translation, the 1985 reworking/preview, the 1954 Utrecht proceedings support
+  paper, holder metadata, and staged reconstruction notes.
+- Jacobson 1958, "Composition Algebras and Their Automorphisms": exact full
+  original remains institution-locked. Support exists locally through Springer
+  page-one previews, the 1989 collected-papers preview, DNB/HBZ/UCSD page-range
+  anchors for pp. 341-366, Google Books snippet witnesses, and scan-request
+  workflow traces.
+
+Availability/formalization distinction
+--------------------------------------
+The chronology matrix uses FORMALIZED tags conservatively. The open_gororoba
+formalization surface is broader than those four chronology tags because the
+repo now carries active Rocq paper files and paper-index surfaces for:
+
+- Hurwitz 1898: proofs/theories/HurwitzTheorem.v and verified/C031.
+- Wedderburn 1914: proofs/theories/WedderburnPrimitive.v.
+- Dickson 1919 and 1921: proofs/theories/DicksonCDProcess.v and
+  proofs/theories/Dickson1921.v.
+- Schafer 1945 and 1954: proofs/theories/SchaferDivAlg16.v and
+  proofs/theories/Schafer1954.v.
+- Brown 1967: proofs/theories/BrownGeneralizedCD.v.
+- Brown 1972: proofs/theories/Brown1972*.v, Brown1972ChapterIII/IV/V/VI/VII,
+  ZD_Criterion.v, SStructuralGaps.v, and BrownAssessorEquivalence.v.
+- Moreno 1997: proofs/theories/Moreno1997.v plus the C1538-C1549 and C1627
+  Moreno bridge files.
+- Baez/octonion references: proofs/theories/BaezNormedDivAlgebra.v,
+  G2OctonionAutomorphisms.v, and related octonion/fused-basis support.
+- Modern companion lanes: proofs/theories/WilmotCDStructure.v,
+  DeMarraisAssessors.v, CDSignBridge.v, CDFusedBilinear.v, and higher-CD
+  support files.
+
+Source-lane pressure
+--------------------
+registry/source_lanes/papers_pdf.toml still has substantial CD-related intake
+debt. A keyword pass over CD/quaternion/octonion/sedenion/composition rows found
+161 relevant artifact rows:
+
+- downloaded: 20
+- downloadable: 83
+- unverified: 56
+- citation_only_no_link: 2
+
+This is not the same as the curated chronology cache: the source-lane registry
+also tracks broader modern and adjacent paper intake that has not necessarily
+been pulled into the tier1 chronology cache.
+
+Immediate synthesis
+-------------------
+- The core historical chain is mostly acquired. The two exact historical holes
+  that still matter most are Freudenthal 1951 and Jacobson 1958.
+- The proof stack is no longer waiting on Moreno 1.16 or Brown 7.19(iii);
+  registry/lacunae.toml records those as closed, and registry/book_docs.toml
+  points the next Brown work toward deeper Chapter VI/Brown VIII/Appendix C
+  mining.
+- The most productive next source-work split is:
+  1. Keep Freudenthal 1951 and Jacobson 1958 as acquisition workflows, not
+     theorem blockers.
+  2. Promote the source-lane downloadable CD papers with high formalization
+     leverage first: Bremner-Hentzel identities, Eakin-Sathaye automorphisms,
+     Chan-Dokovic sedenion subalgebras, Elduque symmetric composition, and
+     Biss-Dugger-Isaksen annihilators.
+  3. Keep speculative/surreal/A-infinity lanes separated from the primary CD
+     historical/formalization lane until they have explicit claim-evidence
+     edges.
