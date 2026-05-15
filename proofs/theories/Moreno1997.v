@@ -209,6 +209,48 @@ Proof.
   exact (moreno16_geometry_dim_mod4 G).
 Qed.
 
+Theorem Moreno1997_theorem_1_16_arbitrary_a_concrete_geometry_to_witness_bridge :
+  forall G : Moreno16ArbitraryAConcreteVlambdaGeometry,
+    exists W : Moreno16ArbitraryAVlambdaWitness,
+      moreno16_arbitrary_a W = moreno16_concrete_geom_a G /\
+      moreno16_arbitrary_lambda W = moreno16_concrete_geom_lambda G /\
+      moreno16_arbitrary_vlambda_dim W = 0%nat /\
+      Nat.modulo (moreno16_arbitrary_vlambda_dim W) 4 = 0 /\
+      (forall y : CDOct,
+        oct_mul (moreno16_concrete_geom_a G)
+          (oct_mul (moreno16_concrete_geom_a G) y) =
+          oct_scale
+            (-(moreno16_concrete_geom_lambda G *
+               moreno16_concrete_geom_lambda G)) y ->
+        y = oct_zero).
+Proof.
+  intro G.
+  exists (moreno16_concrete_geometry_to_witness G).
+  repeat split; try reflexivity.
+  intros y Hvl.
+  exact (moreno16_concrete_geometry_members_zero G y Hvl).
+Qed.
+
+Theorem Moreno1997_theorem_1_16_arbitrary_a_concrete_geometry_derived_bridge :
+  forall (a : CDOct) (lambda : R),
+    oct_norm_sq a = 1%R ->
+    oct_conj a = oct_neg a ->
+    (0 < lambda)%R ->
+    lambda <> 1%R ->
+    exists W : Moreno16ArbitraryAVlambdaWitness,
+      moreno16_arbitrary_a W = a /\
+      moreno16_arbitrary_lambda W = lambda /\
+      moreno16_arbitrary_vlambda_dim W = 0%nat /\
+      Nat.modulo (moreno16_arbitrary_vlambda_dim W) 4 = 0.
+Proof.
+  intros a lambda Ha_unit Ha_pure Hpos Hne.
+  set (G :=
+         moreno16_build_arbitrary_a_concrete_vlambda_geometry
+           a Ha_unit Ha_pure lambda Hpos Hne).
+  exists (moreno16_concrete_geometry_to_witness G).
+  repeat split; reflexivity.
+Qed.
+
 (** ** Full paper-facing arbitrary-a bridge for Theorem 1.16.
 
     The statements below are the paper-level formulations of Theorem 1.16:
