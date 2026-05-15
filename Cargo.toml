@@ -62,6 +62,7 @@ members = [
     "crates/gororoba_pipeline", "crates/gororoba_gpu_bridge",
     "crates/gororoba_gpu_vulkan",
     "crates/gororoba_gpu_cubecl",
+    "crates/gororoba_gpu_cuda",
     "crates/gororoba_engine", "crates/gororoba_contracts", "crates/spin_tomography_core", "crates/cd_spin_bridge", "crates/lbm_vulkan",
     "crates/qgp_scaling",
     "crates/gororoba_cli_algebra",
@@ -120,6 +121,7 @@ algebra_experimental = { path = "crates/algebra_experimental" }
 gororoba_gpu_bridge = { path = "crates/gororoba_gpu_bridge" }
 gororoba_gpu_vulkan = { path = "crates/gororoba_gpu_vulkan" }
 gororoba_gpu_cubecl = { path = "crates/gororoba_gpu_cubecl" }
+gororoba_gpu_cuda = { path = "crates/gororoba_gpu_cuda" }
 gororoba_optix = { path = "crates/gororoba_optix" }
 gororoba_gpu_readback = { path = "crates/gororoba_gpu_readback" }
 gororoba_sparse_grid = { path = "crates/gororoba_sparse_grid" }
