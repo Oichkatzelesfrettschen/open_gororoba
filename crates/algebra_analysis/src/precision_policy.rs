@@ -99,6 +99,30 @@ pub enum JacobiPrecisionGoal {
     ReferenceCrossCheck,
 }
 
+impl JacobiPrecisionGoal {
+    /// Bridge to the canonical workspace precision vocabulary
+    /// (gororoba_gpu_bridge::StoragePrecision). This maps each goal to
+    /// its representative target storage type; the goal enum itself
+    /// captures a portability + accuracy policy that StoragePrecision
+    /// does not.
+    pub fn storage_precision(self) -> gororoba_gpu_bridge::StoragePrecision {
+        use gororoba_gpu_bridge::StoragePrecision as SP;
+        match self {
+            // Default obstruction-spectrum policy uses FP64 as the
+            // reference accumulator type.
+            Self::ObstructionSpectrumDefault => SP::Fp64,
+            // ext80 = x87 80-bit extended; closest StoragePrecision is
+            // DdFp128 (the only >64-bit variant).
+            Self::StrictExt80 => SP::DdFp128,
+            // Portable software high precision -- pick FP64 since no
+            // workspace variant captures double-double explicitly here.
+            Self::PortableHighPrecision => SP::Fp64,
+            // Reference cross-check -- FP64 oracle.
+            Self::ReferenceCrossCheck => SP::Fp64,
+        }
+    }
+}
+
 /// Portability constraint for the solver selection.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum JacobiPortability {

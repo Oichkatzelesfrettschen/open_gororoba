@@ -11,6 +11,7 @@ profile-dd-hotspots = []
 
 [dependencies]
 cd_kernel = { workspace = true }
+gororoba_gpu_bridge = { workspace = true }
 verified_core = { version = "0.1.0", path = "../verified_core" }
 moreno_1997 = { path = "../moreno_1997" }
 core_affinity = { workspace = true }

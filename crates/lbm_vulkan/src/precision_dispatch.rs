@@ -42,6 +42,50 @@ pub enum PrecisionTier {
     Fp8E5m2,
 }
 
+// Bridge to the canonical workspace precision vocabulary
+// (gororoba_gpu_bridge::StoragePrecision). PrecisionTier has 9
+// variants, 8 of which map 1:1 to StoragePrecision. PrecisionTier::Int4
+// collapses to StoragePrecision::Int8 because SP has no sub-byte
+// variant -- this is lossy on the From direction. The reverse TryFrom
+// is total over StoragePrecision MINUS DdFp128 (PrecisionTier has no
+// >64-bit variant).
+impl From<PrecisionTier> for gororoba_gpu_bridge::StoragePrecision {
+    fn from(value: PrecisionTier) -> Self {
+        match value {
+            PrecisionTier::Fp32 => Self::Fp32,
+            PrecisionTier::Fp64 => Self::Fp64,
+            PrecisionTier::Fp16 => Self::Fp16,
+            PrecisionTier::Bf16 => Self::Bf16,
+            PrecisionTier::Int8 => Self::Int8,
+            PrecisionTier::Int16 => Self::Int16,
+            // Int4 has no exact StoragePrecision variant; closest neighbour
+            // is Int8 (sub-byte quant tier). Wave C-tail will remove this
+            // entire enum.
+            PrecisionTier::Int4 => Self::Int8,
+            PrecisionTier::Fp8E4m3 => Self::Fp8E4m3,
+            PrecisionTier::Fp8E5m2 => Self::Fp8E5m2,
+        }
+    }
+}
+
+impl TryFrom<gororoba_gpu_bridge::StoragePrecision> for PrecisionTier {
+    type Error = &'static str;
+    fn try_from(value: gororoba_gpu_bridge::StoragePrecision) -> Result<Self, Self::Error> {
+        use gororoba_gpu_bridge::StoragePrecision as SP;
+        match value {
+            SP::Fp32 => Ok(Self::Fp32),
+            SP::Fp64 => Ok(Self::Fp64),
+            SP::Fp16 => Ok(Self::Fp16),
+            SP::Bf16 => Ok(Self::Bf16),
+            SP::Int8 => Ok(Self::Int8),
+            SP::Int16 => Ok(Self::Int16),
+            SP::Fp8E4m3 => Ok(Self::Fp8E4m3),
+            SP::Fp8E5m2 => Ok(Self::Fp8E5m2),
+            SP::DdFp128 => Err("PrecisionTier has no DdFp128 equivalent"),
+        }
+    }
+}
+
 /// Streaming and memory access layout.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum StreamingLayout {

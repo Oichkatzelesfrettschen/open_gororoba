@@ -47,6 +47,23 @@ pub enum PrecisionRequirement {
     Validation,
 }
 
+impl PrecisionRequirement {
+    /// Bridge to the canonical workspace precision vocabulary
+    /// (gororoba_gpu_bridge::StoragePrecision). This is a representative
+    /// storage type per tier, not a bijection -- the requirement enum
+    /// captures a policy choice, not a precise type.
+    pub fn storage_precision(self) -> gororoba_gpu_bridge::StoragePrecision {
+        use gororoba_gpu_bridge::StoragePrecision as SP;
+        match self {
+            Self::MaxThroughput => SP::Int8,
+            Self::MaxFloatThroughput => SP::Fp8E4m3,
+            Self::Balanced => SP::Fp16,
+            Self::HighAccuracy => SP::Fp32,
+            Self::Validation => SP::Fp64,
+        }
+    }
+}
+
 /// Selected kernel configuration.
 #[derive(Debug, Clone)]
 pub struct KernelSelection {

@@ -193,6 +193,17 @@ pub enum MultiPrecisionCompressed {
 }
 
 impl MultiPrecisionCompressed {
+    /// Bridge to the canonical workspace precision vocabulary
+    /// (gororoba_gpu_bridge::StoragePrecision). All compressed bit
+    /// widths share the Int8 tier since StoragePrecision does not
+    /// distinguish sub-byte index widths -- the bit width is encoded in
+    /// the variant itself, not in the precision tier.
+    pub fn storage_precision(&self) -> gororoba_gpu_bridge::StoragePrecision {
+        gororoba_gpu_bridge::StoragePrecision::Int8
+    }
+}
+
+impl MultiPrecisionCompressed {
     #[inline]
     fn meta_and_norm_bits(&self) -> usize {
         match self {
