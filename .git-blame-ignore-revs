@@ -1,0 +1,15 @@
+# `git blame` reference: commits listed here are skipped when computing
+# line authorship. Use this for repository-wide reformatting commits whose
+# changes have no semantic content.
+#
+# Activate locally with:
+#     git config blame.ignoreRevsFile .git-blame-ignore-revs
+#
+# GitHub uses this file automatically on the web UI.
+
+# 2026-05-14: cargo fmt --all baseline sweep across 115 source files.
+# Realigns the workspace to rustfmt.toml after accumulated drift across
+# multi-session feature branches. Zero semantic change; verified with
+# `cargo check --workspace` and `cargo clippy --workspace -- -D warnings`.
+# The merged commit SHA on main will be added here in a follow-on once
+# this PR is squash-merged.
