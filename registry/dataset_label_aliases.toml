@@ -5,7 +5,7 @@ updated = "2026-04-15"
 authoritative = true
 status = "active"
 status_token = "ACTIVE"
-alias_count = 12
+alias_count = 14
 
 [dataset_label_aliases.schema]
 required_alias_fields = ["id", "label", "label_normalized", "canonical_dataset_id", "status", "status_token", "notes"]
@@ -117,3 +117,21 @@ canonical_dataset_id = "EX-0028"
 status = "active"
 status_token = "ACTIVE"
 notes = "Filename alias for THEMIS magnetopause crossing list v2 (EX-0028). Used in E-227 dataset_label_refs and truth_surface_consumption."
+
+[[alias]]
+id = "DLA-013"
+label = "ace_dec2004_jan2005.csv"
+label_normalized = "ace_dec2004_jan2005.csv"
+canonical_dataset_id = "EX-0032"
+status = "active"
+status_token = "ACTIVE"
+notes = "Filename alias for the ACE December 2004-January 2005 HAPI magnetic-field slice used by E-226."
+
+[[alias]]
+id = "DLA-014"
+label = "data/external/themis/tha_fgm_*.csv"
+label_normalized = "data/external/themis/tha_fgm_*.csv"
+canonical_dataset_id = "EX-0033"
+status = "active"
+status_token = "ACTIVE"
+notes = "Glob alias for the THEMIS-A FGM CSV bundle used by E-227."
