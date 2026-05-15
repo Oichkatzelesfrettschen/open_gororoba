@@ -98,15 +98,11 @@ pub fn box_counting_kernel(
 
 /// Probe whether a cubecl-wgpu adapter is reachable on this host.
 ///
-/// Mirrors `cd_kernel::turboquant::cubecl_backend::launcher::is_available`.
-/// Cheap on success; catches panics from headless containers without a
-/// software renderer so the probe is non-fatal.
+/// Thin delegate to `gororoba_gpu_cubecl::Runtime::probe()` since Wave B2
+/// consolidated this pattern; kept here as a public re-export for the
+/// existing call-sites + parity test that already use the local name.
 pub fn is_available() -> bool {
-    std::panic::catch_unwind(|| {
-        let device = WgpuDevice::default();
-        let _client = WgpuRuntime::client(&device);
-    })
-    .is_ok()
+    gororoba_gpu_cubecl::Runtime::probe()
 }
 
 /// Errors from the cubecl box-counting launcher.

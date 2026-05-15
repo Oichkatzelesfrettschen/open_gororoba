@@ -6339,6 +6339,7 @@ dependencies = [
  "cubecl-wgpu 0.10.0",
  "env_logger",
  "gororoba_gpu_bridge",
+ "gororoba_gpu_cubecl",
  "gororoba_gpu_readback",
  "gpu-allocator 0.28.0",
  "image 0.25.10",
