@@ -376,6 +376,37 @@ mod tests {
     }
 
     #[test]
+    fn two_d_entries_document_slab_convention() {
+        // PR #21 review followup: 2D materials (germanene, stanene, etc.) use
+        // a finite c-axis as a slab-supercell convention; their density value
+        // is therefore not a physical observable. Any entry whose name ends
+        // in "_2d" must acknowledge the 2D / monolayer / buckled / slab
+        // character in its primary_reference so future readers do not
+        // misinterpret the bulk density.
+        let two_d_keywords = ["monolayer", "buckled", "honeycomb", "slab", "2D"];
+        let all = known_crystal_structures();
+        let two_d_entries: Vec<&CrystalStructureInfo> = all
+            .iter()
+            .filter(|s| s.name.ends_with("_2d"))
+            .collect();
+        assert!(
+            !two_d_entries.is_empty(),
+            "No _2d entries found -- germanene_2d + stanene_2d at minimum should be present"
+        );
+        for entry in two_d_entries {
+            let mentions_2d = two_d_keywords
+                .iter()
+                .any(|kw| entry.primary_reference.contains(kw));
+            assert!(
+                mentions_2d,
+                "_2d entry {} must mention 2D character in primary_reference \
+                 (one of: {:?}); current reference: {:?}",
+                entry.name, two_d_keywords, entry.primary_reference
+            );
+        }
+    }
+
+    #[test]
     fn hume_rothery_intermetallic_coverage() {
         let names: Vec<&str> = known_crystal_structures()
             .iter()
@@ -531,7 +562,7 @@ mod tests {
             .iter()
             .map(|s| s.name)
             .collect();
-        for required in ["nd2fe14b_neomag", "smco5_caCu5_type", "fept_l10_ordered"] {
+        for required in ["nd2fe14b_neomag", "smco5_cacu5_type", "fept_l10_ordered"] {
             assert!(names.contains(&required), "hard-magnet phase {} missing", required);
         }
     }

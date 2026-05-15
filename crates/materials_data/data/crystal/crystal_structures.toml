@@ -3928,7 +3928,7 @@ density = 7.4
 reference = "Herbst et al. (1984) Phys. Rev. B 29, 4176 (Nd2Fe14B permanent magnet)."
 
 [[structure]]
-name = "smco5_caCu5_type"
+name = "smco5_cacu5_type"
 sg_num = 191
 sg_sym = "P6/mmm"
 point_group = "D6h"
@@ -5547,7 +5547,7 @@ density = 6.92
 reference = "Yamaguchi (1974) J. Phys. Chem. Solids 35, 479 (SmFeO3 rare-earth orthoferrite, spin reorientation)."
 
 [[structure]]
-name = "yco5_caCu5_intermetallic"
+name = "yco5_cacu5_intermetallic"
 sg_num = 191
 sg_sym = "P6/mmm"
 point_group = "D6h"
@@ -5824,8 +5824,10 @@ density = 1.91
 reference = "Williams et al. (1990) Inorg. Chem. 29, 3262 (kappa-(BEDT-TTF)2Cu(NCS)2 organic superconductor)."
 
 # ----- Additional silicate framework + cyclosilicates -----
+# Low-T cordierite (Cccm orthorhombic); the high-T disordered polymorph
+# (indialite) is hexagonal P6/mcc and is treated as a separate phase.
 [[structure]]
-name = "cordierite_mg2al4si5o18"
+name = "cordierite_low_t_cccm"
 sg_num = 66
 sg_sym = "Cccm"
 point_group = "D2h"
@@ -5839,7 +5841,7 @@ beta = 90.0
 gamma = 90.0
 z = 4
 density = 2.65
-reference = "Cohen et al. (1977) Am. Mineralogist 62, 67 (Mg2Al4Si5O18 cordierite, low-thermal-expansion ceramic)."
+reference = "Cohen et al. (1977) Am. Mineralogist 62, 67 (Mg2Al4Si5O18 cordierite, low-T Cccm orthorhombic, low-thermal-expansion ceramic)."
 
 [[structure]]
 name = "beryl_aquamarine_blue"
@@ -6172,8 +6174,11 @@ density = 4.20
 reference = "Lin et al. (2005) Nature 436, 377 ((Mg,Fe)O ferropericlase, second-most-abundant Earth lower-mantle mineral)."
 
 # ----- Catalytic + electroactive surfaces -----
+# Renamed from iridium_oxide_iro3_perovskite (PR #21 review): IrO3 itself is
+# not a stable ABO3 perovskite (no A-site cation); the citation studies the
+# SrIrO3 thin-film analog, so the entry name follows the actual material.
 [[structure]]
-name = "iridium_oxide_iro3_perovskite"
+name = "sriro3_perovskite_thinfilm"
 sg_num = 221
 sg_sym = "Pm-3m"
 point_group = "Oh"
@@ -6187,7 +6192,7 @@ beta = 90.0
 gamma = 90.0
 z = 1
 density = 11.66
-reference = "Kawasaki et al. (2018) Phys. Rev. Lett. 121, 097002 (SrIrO3-style perovskite analog, Mott-Hubbard candidate)."
+reference = "Kawasaki et al. (2018) Phys. Rev. Lett. 121, 097002 (SrIrO3 perovskite thin-film, Mott-Hubbard candidate)."
 
 [[structure]]
 name = "lanio3_perovskite"
@@ -6295,7 +6300,7 @@ reference = "Zhu et al. (2015) Nat. Mater. 14, 1020 (stanene Sn buckled honeycom
 
 # ----- Quasicrystal-approximant phases -----
 [[structure]]
-name = "alcuFe_icosahedral_approximant"
+name = "alcufe_icosahedral_approximant"
 sg_num = 225
 sg_sym = "Fm-3m"
 point_group = "Oh"
