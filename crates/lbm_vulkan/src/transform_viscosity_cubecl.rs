@@ -35,12 +35,12 @@ pub fn transform_viscosity_kernel(
     tau_out[i] = 3.0_f32 * nu_i + 0.5_f32;
 }
 
+/// Probe whether a cubecl-wgpu adapter is reachable on this host.
+///
+/// Delegates to `gororoba_gpu_cubecl::Runtime::probe()` (Wave B2
+/// consolidation). Public re-export preserved for call-site continuity.
 pub fn is_available() -> bool {
-    std::panic::catch_unwind(|| {
-        let device = WgpuDevice::default();
-        let _client = WgpuRuntime::client(&device);
-    })
-    .is_ok()
+    gororoba_gpu_cubecl::Runtime::probe()
 }
 
 #[derive(Debug, thiserror::Error)]
