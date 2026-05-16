@@ -63,10 +63,10 @@ pub fn detect_best_backend() -> Backend {
     // Try Vulkan next
     #[cfg(feature = "vulkan")]
     {
-        if let Some(caps) = super::vulkan::context::probe_vulkan() {
-            if caps.is_compute_capable() {
-                return Backend::Vulkan(caps.recommended_shader_tier());
-            }
+        if let Some(caps) = super::vulkan::context::probe_vulkan()
+            && caps.is_compute_capable()
+        {
+            return Backend::Vulkan(caps.recommended_shader_tier());
         }
     }
 
@@ -96,10 +96,10 @@ pub fn detect_all_backends() -> Vec<Backend> {
 
     #[cfg(feature = "vulkan")]
     {
-        if let Some(caps) = super::vulkan::context::probe_vulkan() {
-            if caps.is_compute_capable() {
-                backends.push(Backend::Vulkan(caps.recommended_shader_tier()));
-            }
+        if let Some(caps) = super::vulkan::context::probe_vulkan()
+            && caps.is_compute_capable()
+        {
+            backends.push(Backend::Vulkan(caps.recommended_shader_tier()));
         }
     }
 

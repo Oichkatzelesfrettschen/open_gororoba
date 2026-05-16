@@ -65,7 +65,7 @@ pub use adapter::{Adapter, QueueFamilyRequirement};
 #[cfg(feature = "ash")]
 pub use allocator::Allocator;
 #[cfg(feature = "ash")]
-pub use descriptor::{DescriptorSetLayoutSpec, DescriptorType};
+pub use descriptor::{DescriptorSetLayout, DescriptorSetLayoutSpec, DescriptorType};
 #[cfg(feature = "ash")]
 pub use device::{Device, DeviceBuilder, DeviceFeatures};
 #[cfg(feature = "ash")]
@@ -75,7 +75,7 @@ pub use error::VulkanError;
 #[cfg(feature = "ash")]
 pub use instance::{Instance, InstanceBuilder, ValidationPolicy};
 #[cfg(feature = "ash")]
-pub use pipeline::ComputePipelineBuilder;
+pub use pipeline::{ComputePipeline, ComputePipelineBuilder};
 #[cfg(feature = "ash")]
 pub use shader::ShaderModule;
 
