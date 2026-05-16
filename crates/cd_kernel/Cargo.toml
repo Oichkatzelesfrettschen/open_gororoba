@@ -27,6 +27,7 @@ thiserror = { workspace = true }
 verified_core = { path = "../verified_core" }
 gauss-quad = { workspace = true }
 cudarc = { workspace = true, optional = true }
+gororoba_gpu_cuda = { workspace = true, optional = true }
 ash = { version = "0.38.0", optional = true }
 gororoba_gpu_vulkan = { workspace = true, optional = true }
 cubecl-core = { workspace = true, optional = true }
@@ -36,7 +37,14 @@ gororoba_gpu_cubecl = { workspace = true, optional = true }
 
 [features]
 default = []
-cuda = ["dep:cudarc"]
+# `cuda` chains gororoba_gpu_cuda's `cudarc` feature so the workspace's
+# consolidated Context, DeviceProbe, CompileOptions, ModuleRegistry, and
+# LaunchConfig helpers are available behind the same flag that previously
+# enabled raw cudarc usage. The local `cudarc` dep stays because the
+# turboquant kernel-launch paths still call cudarc::driver builder APIs
+# (PushKernelArg, CudaSlice<T> typed buffers) that gpu_cuda does not yet
+# wrap end-to-end.
+cuda = ["dep:cudarc", "dep:gororoba_gpu_cuda", "gororoba_gpu_cuda/cudarc"]
 # `vulkan` chains gororoba_gpu_vulkan/ash so the workspace's consolidated
 # Vulkan helpers (InstanceBuilder, Adapter, DeviceBuilder, ShaderModule,
 # DescriptorSetLayoutSpec, ComputePipelineBuilder) are available behind

@@ -109,38 +109,23 @@ impl std::fmt::Display for KernelTier {
 /// This function does NOT require the `cuda` feature -- it probes
 /// availability at runtime.
 ///
-/// When the `cuda` feature is enabled, this uses cudarc to query
-/// actual device properties.  Without it, returns None.
+/// When the `cuda` feature is enabled, this delegates to the
+/// consolidated `gororoba_gpu_cuda::DeviceProbe::query` helper and
+/// adapts its fields onto the local [`CudaDeviceProps`] shape (which
+/// retains the domain-specific `KernelTier` companion).
 #[cfg(feature = "cuda")]
 pub fn probe_device() -> Option<CudaDeviceProps> {
-    use cudarc::runtime::result::device as cudart_device;
-
-    // Get device count -- if zero or error, no CUDA available
-    let count = cudart_device::get_count().ok()?;
-    if count == 0 {
-        return None;
-    }
-
-    // Get device properties for device 0
-    let props = cudart_device::get_device_prop(0).ok()?;
-    let major = props.major as u32;
-    let minor = props.minor as u32;
-
+    let probe = gororoba_gpu_cuda::DeviceProbe::query().ok()?;
     Some(CudaDeviceProps {
-        major,
-        minor,
-        l2_bytes: props.l2CacheSize as usize,
-        shared_mem_per_block: props.sharedMemPerBlock as usize,
-        total_global_mem: props.totalGlobalMem,
-        bf16_native: major >= 8,
-        fp8_native: (major == 8 && minor >= 9) || major >= 9,
-        tma_available: major >= 9,
-        name: {
-            let bytes: Vec<u8> = props.name.iter().map(|&c| c as u8).collect();
-            String::from_utf8_lossy(&bytes)
-                .trim_end_matches('\0')
-                .to_string()
-        },
+        major: probe.major,
+        minor: probe.minor,
+        l2_bytes: probe.l2_bytes,
+        shared_mem_per_block: probe.shared_mem_per_block,
+        total_global_mem: probe.total_global_mem,
+        bf16_native: probe.bf16_native,
+        fp8_native: probe.fp8_native,
+        tma_available: probe.tma_available,
+        name: probe.name,
     })
 }
 

@@ -1532,6 +1532,7 @@ dependencies = [
  "gauss-quad",
  "gororoba_gpu_bridge",
  "gororoba_gpu_cubecl",
+ "gororoba_gpu_cuda",
  "gororoba_gpu_vulkan",
  "iai-callgrind",
  "proptest",
