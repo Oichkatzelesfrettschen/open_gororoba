@@ -32,6 +32,7 @@ gororoba_gpu_vulkan = { workspace = true, optional = true }
 cubecl-core = { workspace = true, optional = true }
 cubecl = { workspace = true, optional = true }
 cubecl-wgpu = { workspace = true, optional = true }
+gororoba_gpu_cubecl = { workspace = true, optional = true }
 
 [features]
 default = []
@@ -44,7 +45,17 @@ cuda = ["dep:cudarc"]
 # command buffer recording with push constants) can keep calling raw
 # vk handles obtained via helper accessors.
 vulkan = ["dep:ash", "dep:gororoba_gpu_vulkan", "gororoba_gpu_vulkan/ash"]
-cubecl = ["dep:cubecl-core", "dep:cubecl", "dep:cubecl-wgpu"]
+# `cubecl` chains gororoba_gpu_cubecl's `cubecl` feature so the workspace's
+# consolidated panic-safe `Runtime::probe()` is available alongside the raw
+# cubecl + cubecl-wgpu deps that the launcher still needs for the actual
+# kernel launch path.
+cubecl = [
+    "dep:cubecl-core",
+    "dep:cubecl",
+    "dep:cubecl-wgpu",
+    "dep:gororoba_gpu_cubecl",
+    "gororoba_gpu_cubecl/cubecl",
+]
 
 [dev-dependencies]
 approx = { workspace = true }

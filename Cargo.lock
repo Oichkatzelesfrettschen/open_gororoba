@@ -1531,6 +1531,7 @@ dependencies = [
  "fwht",
  "gauss-quad",
  "gororoba_gpu_bridge",
+ "gororoba_gpu_cubecl",
  "gororoba_gpu_vulkan",
  "iai-callgrind",
  "proptest",
