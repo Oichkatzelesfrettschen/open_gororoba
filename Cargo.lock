@@ -5100,6 +5100,7 @@ dependencies = [
  "gororoba_cli",
  "gororoba_contracts",
  "gororoba_engine",
+ "gororoba_gpu_cuda",
  "gr_core",
  "lbm_3d_cuda",
  "lbm_core",

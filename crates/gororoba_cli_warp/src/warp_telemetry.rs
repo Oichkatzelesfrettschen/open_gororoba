@@ -116,9 +116,13 @@ fn spawn_gpu_telemetry_sampler_nvml(
         enum_wrappers::device::{Clock, TemperatureSensor},
     };
 
-    // Validate NVML availability up front so callers can fall back cleanly.
-    let nvml = Nvml::init().ok()?;
-    let _ = nvml.device_by_index(0).ok()?;
+    // Validate NVML availability up front via the consolidated
+    // gpu_cuda::telemetry::Telemetry helper so callers can fall back
+    // cleanly. The handle is dropped immediately; the worker re-initialises
+    // NVML inside the thread because nvml-wrapper's `Nvml` handle does not
+    // implement `Send` (the underlying NVML library is per-thread).
+    let _validation = gororoba_gpu_cuda::telemetry::Telemetry::with_default_device().ok()?;
+    drop(_validation);
 
     let stop = Arc::new(AtomicBool::new(false));
     let stop_worker = Arc::clone(&stop);
