@@ -7,7 +7,9 @@ license = "MIT"
 
 [features]
 default = []
-gpu = ["cudarc"]
+# `gpu` chains gororoba_gpu_cuda/cudarc so the consolidated Context
+# helper is available alongside raw cudarc.
+gpu = ["dep:cudarc", "dep:gororoba_gpu_cuda", "gororoba_gpu_cuda/cudarc"]
 
 [dependencies]
 nalgebra = { workspace = true }
@@ -20,6 +22,7 @@ kodama = { workspace = true }
 kiddo.workspace = true
 gororoba_algebra = { path = "../gororoba_algebra" }
 cudarc = { workspace = true, optional = true }
+gororoba_gpu_cuda = { workspace = true, optional = true }
 clarabel = "0.11.1"
 
 [dev-dependencies]

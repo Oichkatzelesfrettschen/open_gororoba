@@ -72,7 +72,12 @@ impl GrmhdGpu {
         kerr_a: f64,
         gamma: f64,
     ) -> Result<Self> {
-        let ctx = CudaContext::new(0).context("CUDA init for GRMHD")?;
+        // Delegate context acquisition to gpu_cuda::Context so the
+        // `cudart_device::get_count` + ordinal-range checks happen in
+        // one place across the workspace.
+        let ctx_wrapper = gororoba_gpu_cuda::Context::with_default_device()
+            .context("CUDA init for GRMHD")?;
+        let ctx = ctx_wrapper.raw().clone();
         let stream = ctx.default_stream();
 
         // Compile kernels via NVRTC
@@ -338,8 +343,8 @@ mod tests {
 
     #[test]
     fn test_gpu_init() {
-        // Only run if CUDA is available
-        if CudaContext::new(0).is_err() {
+        // Only run if CUDA is available (cheap probe via gpu_cuda).
+        if !gororoba_gpu_cuda::Context::is_available() {
             eprintln!("No CUDA device, skipping GPU test");
             return;
         }
