@@ -74,6 +74,7 @@ lbm_core = { path = "../lbm_core" }
 lbm_3d_cuda = { path = "../lbm_3d_cuda", optional = true }
 cudarc = { workspace = true, optional = true }
 nvml-wrapper = { workspace = true, optional = true }
+gororoba_gpu_cuda = { workspace = true, optional = true }
 stats_core = { path = "../stats_core" }
 spectral_core = { path = "../spectral_core" }
 gr_core = { path = "../gr_core" }
@@ -99,6 +100,8 @@ gpu = [
     "lbm_3d_cuda/cufft",
     "dep:cudarc",
     "dep:nvml-wrapper",
+    "dep:gororoba_gpu_cuda",
+    "gororoba_gpu_cuda/cudarc",
     "gororoba_algebra/gpu",
     "gororoba_engine/gpu",
     "stats_core/gpu",
