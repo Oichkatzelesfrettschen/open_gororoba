@@ -122,32 +122,19 @@ impl std::error::Error for CubeclQuantizerError {}
 
 /// Probe whether a cubecl-wgpu device is reachable on this host.
 ///
-/// Used by [`BackendQuantizer::detect_best`] when deciding whether to
-/// pick `Backend::CubeCL`. Cheap on success (just opens a default
-/// `WgpuDevice` and checks that `WgpuRuntime::client` returns).
-///
-/// # Why so eager?
-///
-/// We explicitly call `client(&device)` rather than just constructing
-/// the device because some hosts have a `WgpuDevice` enum value but no
-/// reachable adapter (e.g. headless containers without a software
-/// renderer). The client construction is what catches those.
+/// Thin delegate to `gororoba_gpu_cubecl::Runtime::probe()` -- the
+/// shared probe consolidates the panic-safe `WgpuDevice::default() +
+/// WgpuRuntime::client()` pattern that previously lived in four
+/// separate sites (this one plus three lbm_vulkan modules). Public re-
+/// export preserved so `BackendQuantizer::detect_best` and
+/// `super::probe_cubecl` keep working without an import change.
 ///
 /// # Returns
 ///
 /// `true` if the runtime initialised successfully. `false` on any
 /// error -- callers should treat this as "GPU unavailable, fall back".
 pub fn is_available() -> bool {
-    // The default WgpuDevice picks the platform's preferred adapter
-    // (Vulkan on Linux, Metal on macOS, DX12 on Windows, browser-
-    // chosen on WebGPU). If none is reachable, client() panics inside
-    // wgpu; we catch that with std::panic::catch_unwind so the prober
-    // is non-fatal even on misconfigured hosts.
-    std::panic::catch_unwind(|| {
-        let device = WgpuDevice::default();
-        let _client = WgpuRuntime::client(&device);
-    })
-    .is_ok()
+    gororoba_gpu_cubecl::Runtime::probe()
 }
 
 /// Quantize a batch of f32 values using the cubecl-wgpu backend.
