@@ -10,6 +10,7 @@ license = "MIT OR Apache-2.0"
 lbm_3d = { path = "../lbm_3d" }
 gororoba_algebra = { path = "../gororoba_algebra" }
 gororoba_gpu_bridge = { workspace = true }
+gororoba_gpu_cuda = { workspace = true, features = ["cudarc"] }
 gororoba_gpu_readback = { workspace = true }
 gororoba_sparse_grid = { workspace = true }
 gororoba_optix = { workspace = true }
