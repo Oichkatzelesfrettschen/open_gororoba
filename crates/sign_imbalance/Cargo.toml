@@ -17,6 +17,7 @@ rand_chacha = { workspace = true }
 statrs = { workspace = true }
 anyhow = { workspace = true }
 cudarc = { workspace = true, optional = true }
+gororoba_gpu_cuda = { workspace = true, optional = true }
 thiserror.workspace = true
 
 [dev-dependencies]
@@ -25,7 +26,10 @@ criterion = { workspace = true }
 
 [features]
 default = []
-gpu = ["cudarc"]
+# `gpu` chains gororoba_gpu_cuda/cudarc so the consolidated Context
+# helper is available behind the same flag that previously enabled
+# raw cudarc usage.
+gpu = ["dep:cudarc", "dep:gororoba_gpu_cuda", "gororoba_gpu_cuda/cudarc"]
 
 [[bench]]
 name = "imbalance_bench"

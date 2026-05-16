@@ -541,7 +541,14 @@ impl LbmSolver3DCuda {
 
     pub fn new(nx: usize, ny: usize, nz: usize, tau: f64, precision: Precision) -> Result<Self> {
         let n_cells = nx * ny * nz;
-        let ctx = CudaContext::new(0).context("CUDA Init Failed")?;
+        // Route context acquisition through the consolidated helper so the
+        // gpu_cuda crate owns the `cudart_device::get_count` + `CudaContext::new`
+        // sequencing (previously duplicated across 8+ lbm_3d_cuda call sites
+        // plus 13 other workspace crates). `Context::raw()` borrows the same
+        // `Arc<CudaContext>` the rest of this fn already expects.
+        let ctx_wrapper = gororoba_gpu_cuda::Context::with_default_device()
+            .map_err(|e| anyhow::anyhow!("CUDA Init Failed: {}", e))?;
+        let ctx = ctx_wrapper.raw().clone();
         let stream = ctx.default_stream();
         let cuda_props = probe_cuda_device_props();
         let src = match precision {
@@ -2368,7 +2375,9 @@ mod tests {
     use approx::assert_abs_diff_eq;
 
     fn gpu_available() -> bool {
-        CudaContext::new(0).is_ok()
+        // Cheap probe -- counts CUDA devices without committing to a
+        // context. Delegates to `gpu_cuda::Context::is_available`.
+        gororoba_gpu_cuda::Context::is_available()
     }
 
     fn maybe_solver(precision: Precision) -> Option<LbmSolver3DCuda> {

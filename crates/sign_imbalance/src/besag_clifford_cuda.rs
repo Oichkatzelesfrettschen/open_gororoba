@@ -94,8 +94,12 @@ impl GpuBesagCliffordTester {
             );
         }
 
-        // Initialize CUDA
-        let ctx = CudaContext::new(0).context("Failed to initialize CUDA context")?;
+        // Initialize CUDA via the consolidated gpu_cuda::Context helper
+        // (one-line replacement for CudaContext::new(0) -- centralises the
+        // get_count + ordinal-range checks across 13+ workspace crates).
+        let ctx_wrapper = gororoba_gpu_cuda::Context::with_default_device()
+            .context("Failed to initialize CUDA context")?;
+        let ctx = ctx_wrapper.raw().clone();
         let stream = ctx.default_stream();
 
         // Upload imbalance field (persistent)
