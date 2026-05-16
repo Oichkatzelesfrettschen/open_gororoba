@@ -9,10 +9,13 @@ anyhow = { workspace = true }
 rayon = { workspace = true }
 wide = { workspace = true }
 cudarc = { workspace = true, optional = true }
+gororoba_gpu_cuda = { workspace = true, optional = true }
 
 [features]
 default = []
-gpu = ["dep:cudarc"]
+# `gpu` chains gororoba_gpu_cuda/cudarc so the consolidated Context
+# helper is available alongside raw cudarc.
+gpu = ["dep:cudarc", "dep:gororoba_gpu_cuda", "gororoba_gpu_cuda/cudarc"]
 
 [lints]
 workspace = true

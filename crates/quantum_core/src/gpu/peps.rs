@@ -88,8 +88,11 @@ impl PepsGpuContext {
     ///
     /// Returns `None` if CUDA device not found or compilation fails.
     pub fn init() -> Option<Self> {
-        // Try to create a CUDA context
-        let ctx = CudaContext::new(0).ok()?;
+        // Try to create a CUDA context through the consolidated
+        // gpu_cuda::Context helper (None on missing-device, same as
+        // the prior `.ok()?` short-circuit).
+        let ctx_wrapper = gororoba_gpu_cuda::Context::with_default_device().ok()?;
+        let ctx = ctx_wrapper.raw().clone();
         let stream = ctx.default_stream();
 
         // Compile kernel at initialization time

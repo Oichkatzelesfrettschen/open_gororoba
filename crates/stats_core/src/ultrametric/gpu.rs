@@ -123,7 +123,11 @@ impl GpuUltrametricEngine {
     /// This uses dynamic loading: the binary works on machines without CUDA,
     /// it just won't have GPU acceleration.
     pub fn try_new() -> Option<Self> {
-        let ctx = CudaContext::new(0).ok()?;
+        // Route through gpu_cuda::Context so the get_count + ordinal
+        // checks happen in one place; None on missing-device matches
+        // the prior `.ok()?` short-circuit.
+        let ctx_wrapper = gororoba_gpu_cuda::Context::with_default_device().ok()?;
+        let ctx = ctx_wrapper.raw().clone();
         let stream = ctx.default_stream();
         let ptx = compile_ptx(KERNEL_SRC).ok()?;
         let module = ctx.load_module(ptx).ok()?;

@@ -31,6 +31,7 @@ diffusionx = { workspace = true }
 
 # GPU acceleration (optional, feature-gated)
 cudarc = { workspace = true, optional = true }
+gororoba_gpu_cuda = { workspace = true, optional = true }
 verified_core = { version = "0.1.0", path = "../verified_core" }
 
 [features]
@@ -47,8 +48,9 @@ physics = ["core", "lie"]
 # E8 lattice, E7 geometry, Kac-Moody, group theory, nilpotent orbits, Lyndon.
 # No cross-module deps beyond self-referential.
 lie = []
-# GPU acceleration (CUDA via cudarc).
-gpu = ["cudarc"]
+# GPU acceleration (CUDA via cudarc). Chains gororoba_gpu_cuda/cudarc
+# so the consolidated Context helper is available alongside raw cudarc.
+gpu = ["dep:cudarc", "dep:gororoba_gpu_cuda", "gororoba_gpu_cuda/cudarc"]
 wedged = []
 # CD tower feature gates: each level enables the one below.
 cd-512  = []

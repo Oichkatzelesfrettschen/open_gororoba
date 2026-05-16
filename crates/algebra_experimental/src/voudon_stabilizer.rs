@@ -1,11 +1,9 @@
 //! GPU-accelerated search for stable zero-divisor cycles in 256D Voudon algebra.
 
 #[cfg(feature = "gpu")]
-use cudarc::driver::{CudaContext, LaunchConfig, PushKernelArg};
+use cudarc::driver::{LaunchConfig, PushKernelArg};
 #[cfg(feature = "gpu")]
 use cudarc::nvrtc::compile_ptx;
-#[cfg(feature = "gpu")]
-use std::sync::Arc;
 
 /// CUDA kernel to find stable (associative) triples in 256D.
 #[cfg(feature = "gpu")]
@@ -68,7 +66,12 @@ pub struct Cd256StabilizerKernel;
 impl Cd256StabilizerKernel {
     #[cfg(feature = "gpu")]
     pub fn find_stable_cycles(max_triples: usize) -> Result<Vec<(usize, usize, usize)>, String> {
-        let ctx = Arc::new(CudaContext::new(0).map_err(|e| format!("CUDA init: {}", e))?);
+        // Delegate context acquisition to gpu_cuda::Context so the
+        // get_count + ordinal-range checks live in one place across
+        // the workspace.
+        let ctx_wrapper = gororoba_gpu_cuda::Context::with_default_device()
+            .map_err(|e| format!("CUDA init: {}", e))?;
+        let ctx = ctx_wrapper.raw().clone();
         let stream = ctx.default_stream();
 
         let ptx =
