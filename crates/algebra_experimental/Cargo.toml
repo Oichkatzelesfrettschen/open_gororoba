@@ -23,13 +23,22 @@ petgraph = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
 cudarc = { workspace = true, optional = true }
+gororoba_gpu_cuda = { workspace = true, optional = true }
 faer.workspace = true
 flavor_lifts = { path = "../flavor_lifts" }
 argmin = { workspace = true }
 argmin-math = { workspace = true }
 
 [features]
-gpu = ["gororoba_algebra/gpu", "dep:cudarc"]
+# `gpu` chains gororoba_algebra/gpu and gororoba_gpu_cuda/cudarc so the
+# consolidated Context helper resolves at this crate's call sites
+# (transitive feature activation does not expose foreign crates).
+gpu = [
+    "gororoba_algebra/gpu",
+    "dep:cudarc",
+    "dep:gororoba_gpu_cuda",
+    "gororoba_gpu_cuda/cudarc",
+]
 
 [dev-dependencies]
 approx = { workspace = true }

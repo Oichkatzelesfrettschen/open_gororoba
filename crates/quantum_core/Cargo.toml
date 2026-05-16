@@ -24,12 +24,15 @@ lbm_core = { path = "../lbm_core" }
 
 # GPU acceleration (optional)
 cudarc = { workspace = true, optional = true }
+gororoba_gpu_cuda = { workspace = true, optional = true }
 nalgebra-sparse = { workspace = true, optional = true }
 gr_core = { version = "0.1.0", path = "../gr_core" }
 
 [features]
 default = []
-gpu = ["cudarc"]
+# `gpu` chains gororoba_gpu_cuda/cudarc so the consolidated Context
+# helper is available alongside raw cudarc.
+gpu = ["dep:cudarc", "dep:gororoba_gpu_cuda", "gororoba_gpu_cuda/cudarc"]
 sparse-hamiltonians = ["dep:nalgebra-sparse"]
 
 [dev-dependencies]

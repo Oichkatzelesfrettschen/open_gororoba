@@ -45,15 +45,28 @@ pub mod device {
 
     /// Initialize GPU device for computation.
     ///
+    /// Routes through the consolidated
+    /// `gororoba_gpu_cuda::Context::with_default_device` helper so the
+    /// `cudart_device::get_count` + ordinal-range check lives in one
+    /// place across 13 workspace crates. The returned
+    /// `Arc<CudaContext>` is byte-compatible with the prior direct
+    /// `CudaContext::new(0)` return.
+    ///
     /// # Returns
     /// A handle to GPU context for device 0, or an error if CUDA is unavailable.
     pub fn init_gpu() -> Result<Arc<CudaContext>, String> {
-        CudaContext::new(0).map_err(|e| format!("CUDA device initialization failed: {}", e))
+        let ctx_wrapper = gororoba_gpu_cuda::Context::with_default_device()
+            .map_err(|e| format!("CUDA device initialization failed: {}", e))?;
+        Ok(ctx_wrapper.raw().clone())
     }
 
     /// Check if GPU is available without initializing.
+    ///
+    /// Delegates to `gororoba_gpu_cuda::Context::is_available` which
+    /// probes `cudart_device::get_count` without paying for context
+    /// creation.
     pub fn is_gpu_available() -> bool {
-        CudaContext::new(0).is_ok()
+        gororoba_gpu_cuda::Context::is_available()
     }
 }
 
