@@ -17,34 +17,28 @@ pub mod kernel_names {
     pub const DEQUANT_DOT_Q16: &str = "turboquant_dequant_dot_q16";
 }
 
-/// Compile the TurboQuant kernel source for the detected architecture.
+/// Compile the TurboQuant kernel source for the given compute capability.
 ///
-/// Returns the compiled PTX.  The caller loads it into a CudaModule
-/// and extracts individual functions by name.
+/// Returns the compiled PTX. The caller loads it into a `CudaModule`
+/// (typically via `gororoba_gpu_cuda::ModuleRegistry::load`).
 ///
-/// Pattern from `lbm_3d_cuda/lib.rs`:
+/// Delegates to `gororoba_gpu_cuda::CompileOptions::for_arch` which
+/// owns the canonical `(major, minor) -> "sm_XX"` mapping and avoids
+/// the `Box::leak(arch.to_string())` static-lifetime trick that prior
+/// versions of this fn used.
+///
+/// Pattern from `lbm_3d_cuda`:
 /// ```ignore
-/// let ptx = compile_kernels("sm_89")?;
-/// let module = ctx.load_module(ptx)?;
-/// let quantize_fn = module.load_function("turboquant_quantize_boundary")?;
+/// let probe = gororoba_gpu_cuda::DeviceProbe::query()?;
+/// let ptx = compile_kernels(probe.major, probe.minor)?;
+/// let registry = gororoba_gpu_cuda::ModuleRegistry::load(
+///     ctx.raw(), ptx, &[kernel_names::QUANTIZE_BOUNDARY])?;
 /// ```
 #[cfg(feature = "cuda")]
-pub fn compile_kernels(arch: &str) -> Result<cudarc::nvrtc::Ptx, String> {
-    use cudarc::nvrtc::CompileOptions;
-
-    // CompileOptions borrows arch, so use a static leak for the lifetime.
-    // This is fine because we only compile once per architecture.
-    let arch_static: &'static str = Box::leak(arch.to_string().into_boxed_str());
-
-    let opts = CompileOptions {
-        arch: Some(arch_static),
-        include_paths: vec![],
-        ..Default::default()
-    };
-
-    let arch_owned = arch.to_string();
-    cudarc::nvrtc::compile_ptx_with_opts(KERNEL_SRC, opts)
-        .map_err(move |e| format!("NVRTC compilation failed for {}: {}", arch_owned, e))
+pub fn compile_kernels(major: u32, minor: u32) -> Result<cudarc::nvrtc::Ptx, String> {
+    let opts = gororoba_gpu_cuda::CompileOptions::for_arch(major, minor);
+    gororoba_gpu_cuda::CompileOptions::compile_ptx(KERNEL_SRC, &opts)
+        .map_err(|e| format!("NVRTC compilation failed for sm_{}{}: {}", major, minor, e))
 }
 
 #[cfg(test)]
@@ -76,7 +70,7 @@ mod tests {
     fn test_compile_for_detected_arch() {
         if let Some(props) = super::super::device::probe_device() {
             let arch = props.compile_arch();
-            match compile_kernels(arch) {
+            match compile_kernels(props.major, props.minor) {
                 Ok(_ptx) => {
                     println!("NVRTC compiled successfully for {}", arch);
                 }
