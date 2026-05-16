@@ -2,21 +2,25 @@
 //!
 //! Pattern proven in lbm_3d_cuda/src/lib.rs (steinmarder SoA design):
 //!   CudaContext::new -> compile_ptx -> load_module -> load_function -> launch
+//!
+//! Wave C2.3 migrated the context acquisition, PTX module load, and
+//! launch-config helpers to `gororoba_gpu_cuda`. The
+//! `TurboQuantCudaKernels` struct still owns the resolved `CudaFunction`
+//! handles directly so the per-call launch path stays a thin builder
+//! against cudarc::driver (which gpu_cuda does not yet wrap).
 
 #[cfg(feature = "cuda")]
 use std::sync::Arc;
 
 #[cfg(feature = "cuda")]
 #[allow(deprecated)]
-use cudarc::driver::{
-    CudaContext, CudaFunction, CudaSlice, CudaStream, LaunchConfig, PushKernelArg,
-};
+use cudarc::driver::{CudaFunction, CudaSlice, CudaStream, LaunchConfig, PushKernelArg};
 
 /// Compiled TurboQuant CUDA kernel handles.
 #[cfg(feature = "cuda")]
 #[allow(deprecated, dead_code)]
 pub struct TurboQuantCudaKernels {
-    _ctx: Arc<CudaContext>,
+    _ctx: gororoba_gpu_cuda::Context,
     stream: Arc<CudaStream>,
     quantize_fn: CudaFunction,
     dequant_dot_fn: CudaFunction,
@@ -29,34 +33,49 @@ pub struct TurboQuantCudaKernels {
 #[allow(deprecated)]
 impl TurboQuantCudaKernels {
     /// Initialize: probe device, NVRTC compile, load all 5 kernel functions.
+    ///
+    /// Routes through `gororoba_gpu_cuda::Context::with_default_device` and
+    /// `gororoba_gpu_cuda::ModuleRegistry::load` so the cudarc-init
+    /// boilerplate stays in one place. The function preserves the
+    /// `Result<Self, String>` shape so the `BackendQuantizer::try_quantize`
+    /// call site keeps compiling without an import change.
     pub fn new() -> Result<Self, String> {
         let props =
             super::device::probe_device().ok_or_else(|| "No CUDA device available".to_string())?;
-        let arch = props.compile_arch();
 
-        let ctx = CudaContext::new(0).map_err(|e| format!("CUDA context: {}", e))?;
+        let ctx = gororoba_gpu_cuda::Context::with_default_device()
+            .map_err(|e| format!("CUDA context: {}", e))?;
         let stream = ctx.default_stream();
 
-        let ptx = super::jit::compile_kernels(arch)?;
-        let module = ctx
-            .load_module(ptx)
-            .map_err(|e| format!("Module load: {}", e))?;
-
+        let ptx = super::jit::compile_kernels(props.major, props.minor)?;
         use super::jit::kernel_names;
-        let quantize_fn = module
-            .load_function(kernel_names::QUANTIZE_BOUNDARY)
+        let registry = gororoba_gpu_cuda::ModuleRegistry::load(
+            ctx.raw(),
+            ptx,
+            &[
+                kernel_names::QUANTIZE_BOUNDARY,
+                kernel_names::DEQUANT_DOT,
+                kernel_names::FAST_JL_ROTATE,
+                kernel_names::SIGN_DOT,
+                kernel_names::DEQUANT_DOT_Q16,
+            ],
+        )
+        .map_err(|e| format!("Module load: {}", e))?;
+
+        let quantize_fn = registry
+            .get(kernel_names::QUANTIZE_BOUNDARY)
             .map_err(|e| format!("Load {}: {}", kernel_names::QUANTIZE_BOUNDARY, e))?;
-        let dequant_dot_fn = module
-            .load_function(kernel_names::DEQUANT_DOT)
+        let dequant_dot_fn = registry
+            .get(kernel_names::DEQUANT_DOT)
             .map_err(|e| format!("Load {}: {}", kernel_names::DEQUANT_DOT, e))?;
-        let fast_jl_fn = module
-            .load_function(kernel_names::FAST_JL_ROTATE)
+        let fast_jl_fn = registry
+            .get(kernel_names::FAST_JL_ROTATE)
             .map_err(|e| format!("Load {}: {}", kernel_names::FAST_JL_ROTATE, e))?;
-        let sign_dot_fn = module
-            .load_function(kernel_names::SIGN_DOT)
+        let sign_dot_fn = registry
+            .get(kernel_names::SIGN_DOT)
             .map_err(|e| format!("Load {}: {}", kernel_names::SIGN_DOT, e))?;
-        let dequant_dot_q16_fn = module
-            .load_function(kernel_names::DEQUANT_DOT_Q16)
+        let dequant_dot_q16_fn = registry
+            .get(kernel_names::DEQUANT_DOT_Q16)
             .map_err(|e| format!("Load {}: {}", kernel_names::DEQUANT_DOT_Q16, e))?;
 
         Ok(TurboQuantCudaKernels {
@@ -70,16 +89,18 @@ impl TurboQuantCudaKernels {
         })
     }
 
+    /// 1D launch config: thin wrapper around
+    /// `gororoba_gpu_cuda::LaunchConfig::launch_1d` so the call site
+    /// reads the same as before.
     fn launch_config_1d(n: u32) -> LaunchConfig {
-        let block = 256u32;
-        let grid = n.div_ceil(block);
-        LaunchConfig {
-            grid_dim: (grid, 1, 1),
-            block_dim: (block, 1, 1),
-            shared_mem_bytes: 0,
-        }
+        gororoba_gpu_cuda::LaunchConfig::launch_1d(n)
     }
 
+    /// 2D launch config: cd_kernel turboquant uses a 1D block of 256
+    /// threads paired with `n_y` as the y-axis grid dimension (one row
+    /// of queries per slice). `gpu_cuda::LaunchConfig::launch_2d`'s
+    /// 16x16 block is a different convention, so this fn keeps the
+    /// hand-rolled shape rather than delegate.
     fn launch_config_2d(n_x: u32, n_y: u32) -> LaunchConfig {
         let block = 256u32;
         let grid_x = n_x.div_ceil(block);
