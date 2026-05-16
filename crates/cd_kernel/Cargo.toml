@@ -28,6 +28,7 @@ verified_core = { path = "../verified_core" }
 gauss-quad = { workspace = true }
 cudarc = { workspace = true, optional = true }
 ash = { version = "0.38.0", optional = true }
+gororoba_gpu_vulkan = { workspace = true, optional = true }
 cubecl-core = { workspace = true, optional = true }
 cubecl = { workspace = true, optional = true }
 cubecl-wgpu = { workspace = true, optional = true }
@@ -35,7 +36,14 @@ cubecl-wgpu = { workspace = true, optional = true }
 [features]
 default = []
 cuda = ["dep:cudarc"]
-vulkan = ["dep:ash"]
+# `vulkan` chains gororoba_gpu_vulkan/ash so the workspace's consolidated
+# Vulkan helpers (InstanceBuilder, Adapter, DeviceBuilder, ShaderModule,
+# DescriptorSetLayoutSpec, ComputePipelineBuilder) are available behind
+# the same flag that previously enabled raw ash usage. The local `ash`
+# dep stays optional so the bespoke quantize() pipeline (memory mapping,
+# command buffer recording with push constants) can keep calling raw
+# vk handles obtained via helper accessors.
+vulkan = ["dep:ash", "dep:gororoba_gpu_vulkan", "gororoba_gpu_vulkan/ash"]
 cubecl = ["dep:cubecl-core", "dep:cubecl", "dep:cubecl-wgpu"]
 
 [dev-dependencies]
