@@ -37,6 +37,8 @@ pub mod chingon_cubecl;
 pub mod chingon_vulkan;
 pub mod compute;
 pub mod coop_matrix_probe;
+#[cfg(feature = "cubecl")]
+pub mod lbm_d3q19_cubecl;
 pub mod lbm_d3q19_vulkan;
 pub mod precision_dispatch;
 pub mod swapchain;
