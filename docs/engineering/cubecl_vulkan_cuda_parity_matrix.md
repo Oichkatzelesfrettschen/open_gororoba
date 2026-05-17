@@ -41,7 +41,7 @@ runtime adapter probe, ChaCha20-seeded inputs, byte-exact comparison.
 | Box-counting fractal dimension      | lbm_3d_cuda + lbm_vulkan | YES | YES  | YES    | YES    | YES (CPU vs cubecl in lbm_vulkan; CUDA + Vulkan oracles share box_counting_cpu) |
 | Chingon (anisotropy operator)       | lbm_3d_cuda + lbm_vulkan | YES | YES  | YES    | YES    | YES (CPU oracle + cubecl in lbm_vulkan) |
 | Alignment / orientation projection  | lbm_3d_cuda + lbm_vulkan | YES | YES  | YES    | YES    | YES (CPU-vs-cubecl in lbm_vulkan/tests/alignment_cubecl_parity.rs) |
-| Besag-Clifford GMRF                 | sign_imbalance + lbm_vulkan | YES | YES  | YES    | NO     | NO         |
+| Besag-Clifford GMRF                 | sign_imbalance + lbm_vulkan | YES | YES  | YES    | YES    | YES (CPU-vs-cubecl in besag_clifford_cubecl_parity.rs: exact PCG shuffle + 1e-5 transform) |
 | Dark-halo Monte Carlo               | lbm_3d_cuda + lbm_vulkan | n/a | YES  | YES    | NO     | YES (CPU-ZD-oracle vs Vulkan in dark_halo_vulkan_parity.rs) |
 | Kubo transport conductivity         | sign_imbalance        | YES | YES  | n/a    | n/a    | NO (cuSOLVER/cuBLAS; not a portable compute shader) |
 | Algebraic lensing                   | optics_core           | YES | YES  | NO     | NO     | NO         |
@@ -67,7 +67,9 @@ Legend:
   (transform_viscosity -- besag_clifford sub-kernel; shader exists but
    device-pipeline not wired up for non-besag callers).
 - CPU + cubecl (CUDA + Vulkan also present, no 3-way test yet): 1 / 15 (alignment)
-- CUDA + Vulkan present (no cubecl): 2 / 15 (besag-clifford, dark-halo)
+- CUDA + Vulkan + cubecl present: besag-clifford (Wave G5 -- shuffle + transform GPU,
+  regional correlation on CPU; parity test at besag_clifford_cubecl_parity.rs)
+- CUDA + Vulkan present (no cubecl): 1 / 15 (dark-halo; cubecl RNG not yet ported)
 - See docs/engineering/issue_136_phase2_finalization.md for the
   per-cell deferral rationale.
 - CUDA only: 5 / 15 (sparse LBM, lensing, voudon, GRMHD, MRT)
