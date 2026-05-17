@@ -228,6 +228,7 @@ fn three_way_mrt_parity_16cubed_10steps() {
     }
 }
 
+#[allow(clippy::too_many_arguments)]
 fn check_cell(
     label: &str,
     cell: usize,

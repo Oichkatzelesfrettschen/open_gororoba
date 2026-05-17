@@ -132,10 +132,10 @@ pub fn lbm_mrt_d3q19_step_kernel(
 
     // Phase 5: relax ms = m - S*(m - m_eq) with 5 distinct rates.
     let s_nu = f32::reinterpret(inv_tau_bits); // 1/tau
-    let s_e: f32 = 1.19_f32;
-    let s_eps: f32 = 1.40_f32;
-    let s_q: f32 = 1.20_f32;
-    let s_ghost: f32 = 1.00_f32;
+    let s_e = 1.19_f32;
+    let s_eps = 1.40_f32;
+    let s_q = 1.20_f32;
+    let s_ghost = 1.00_f32;
 
     let ms0 = m0;
     let ms1 = m1 - s_e * (m1 - m1_eq);

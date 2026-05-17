@@ -26,6 +26,8 @@ use gpu_allocator::vulkan::*;
 use std::{ffi::CStr, sync::Arc};
 
 pub mod alignment_vulkan;
+#[cfg(feature = "cubecl")]
+pub mod alignment_cubecl;
 pub mod besag_clifford_vulkan;
 pub mod box_counting_cpu;
 #[cfg(feature = "cubecl")]

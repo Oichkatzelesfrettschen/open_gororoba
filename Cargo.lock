@@ -6340,6 +6340,7 @@ dependencies = [
 name = "lbm_vulkan"
 version = "0.1.0"
 dependencies = [
+ "algebra_analysis",
  "approx",
  "ash",
  "bytemuck",
