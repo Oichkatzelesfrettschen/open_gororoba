@@ -40,11 +40,28 @@ pub mod coop_matrix_probe;
 #[cfg(feature = "cubecl")]
 pub mod lbm_d3q19_cubecl;
 pub mod lbm_d3q19_vulkan;
+#[cfg(feature = "cubecl")]
+pub mod lbm_mrt_d3q19_cubecl;
+pub mod lbm_mrt_d3q19_vulkan;
 pub mod precision_dispatch;
 pub mod swapchain;
 pub mod transform_viscosity_cpu;
 #[cfg(feature = "cubecl")]
 pub mod transform_viscosity_cubecl;
+
+/// Macroscopic moment fields (rho, ux, uy, uz) returned by all D3Q19
+/// Vulkan and cubecl solvers. Shared across BGK and MRT backends so
+/// parity tests can compare them without conversion.
+#[derive(Clone, Debug)]
+pub struct MacroFields {
+    pub nx: usize,
+    pub ny: usize,
+    pub nz: usize,
+    pub rho: Vec<f32>,
+    pub ux: Vec<f32>,
+    pub uy: Vec<f32>,
+    pub uz: Vec<f32>,
+}
 
 /// Collision mode for the Vulkan LBM engine.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -657,6 +674,12 @@ mod tests {
     fn compile_wgsl_mrt_shader() {
         let src = include_str!("../shaders/lbm_mrt.wgsl");
         crate::compute::compile_wgsl(src).expect("MRT LBM shader must compile via naga");
+    }
+
+    #[test]
+    fn compile_wgsl_mrt_d3q19_shader() {
+        let src = include_str!("../shaders/lbm_mrt_d3q19.wgsl");
+        crate::compute::compile_wgsl(src).expect("MRT D3Q19 shader must compile via naga");
     }
 
     #[test]
