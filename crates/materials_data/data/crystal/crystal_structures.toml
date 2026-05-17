@@ -4101,7 +4101,7 @@ reference = "Hidaka et al. (1979) J. Phys. Soc. Jpn. 47, 1965 (CsPbF3 fluoride p
 
 # ----- Battery + ion-conducting materials extension -----
 [[structure]]
-name = "lifesi04_triphylite"
+name = "lifesio4_triphylite"
 sg_num = 62
 sg_sym = "Pnma"
 point_group = "D2h"
@@ -4240,6 +4240,14 @@ reference = "Takada et al. (2003) Nature 422, 53 (Na_xCoO2.yH2O hydrated cobalta
 
 # ----- Carbon allotropes + nitrides -----
 [[structure]]
+# 2D slab supercell: c (~6.708 A) is dominated by the vacuum gap that
+# separates periodic images, not by a physical interlayer spacing.
+# The density field is the bulk graphite reference (2.267 g/cm^3) so
+# downstream tooling that asks "what is graphene's density" gets the
+# meaningful answer; combining `density * cell_volume` to recover a
+# per-cell mass for THIS particular supercell will undercount because
+# the supercell volume includes vacuum. Treat density here as a
+# species-level constant rather than a per-cell observable.
 name = "graphene_2d_layer"
 sg_num = 191
 sg_sym = "P6/mmm"
@@ -4254,7 +4262,7 @@ beta = 90.0
 gamma = 120.0
 z = 2
 density = 2.267
-reference = "Geim & Novoselov (2007) Nat. Mater. 6, 183 (free-standing graphene ideal lattice, c is interlayer + vacuum gap)."
+reference = "Geim & Novoselov (2007) Nat. Mater. 6, 183 (free-standing graphene ideal lattice; c is interlayer + vacuum gap; density value corresponds to bulk graphite, not to this supercell)."
 
 [[structure]]
 name = "carbon_nanotube_armchair_5_5"
@@ -4343,9 +4351,16 @@ density = 3.18
 reference = "Hughes et al. (1989) Am. Mineralogist 74, 870 (Ca5(PO4)3Cl chlorapatite)."
 
 [[structure]]
+# Space group #1 in ITC notation is Hermann-Mauguin "P1" with point
+# group "C1" (Schoenflies) and primitive triclinic centering. Bish
+# (1993) reports the space group as Schoenflies "C1"; the ITC sg_sym
+# field uses Hermann-Mauguin, so the two systems agree on group
+# identity but use different symbols. Keeping sg_sym = "P1" makes
+# sg_num/sg_sym/centering internally consistent for downstream code
+# that infers centering from the symbol prefix.
 name = "kaolinite"
 sg_num = 1
-sg_sym = "C1"
+sg_sym = "P1"
 point_group = "C1"
 lattice_system = "Triclinic"
 centering = "P"
@@ -4357,7 +4372,7 @@ beta = 104.862
 gamma = 89.822
 z = 2
 density = 2.65
-reference = "Bish (1993) Clays Clay Miner. 41, 738 (Al2Si2O5(OH)4 kaolinite, paper + ceramics clay mineral)."
+reference = "Bish (1993) Clays Clay Miner. 41, 738 (Al2Si2O5(OH)4 kaolinite, paper + ceramics clay mineral; reports SG as Schoenflies C1, equivalent to Hermann-Mauguin P1)."
 
 [[structure]]
 name = "talc_3t_polytype"
