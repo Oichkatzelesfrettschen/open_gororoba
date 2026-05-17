@@ -42,8 +42,8 @@ runtime adapter probe, ChaCha20-seeded inputs, byte-exact comparison.
 | Chingon (anisotropy operator)       | lbm_3d_cuda + lbm_vulkan | YES | YES  | YES    | YES    | YES (CPU oracle + cubecl in lbm_vulkan) |
 | Alignment / orientation projection  | lbm_3d_cuda + lbm_vulkan | YES | YES  | YES    | YES    | YES (CPU-vs-cubecl in lbm_vulkan/tests/alignment_cubecl_parity.rs) |
 | Besag-Clifford GMRF                 | sign_imbalance + lbm_vulkan | YES | YES  | YES    | NO     | NO         |
-| Dark-halo Monte Carlo               | lbm_3d_cuda           | n/a | YES  | NO     | NO     | NO         |
-| Kubo transport conductivity         | sign_imbalance        | YES | YES  | NO     | NO     | NO         |
+| Dark-halo Monte Carlo               | lbm_3d_cuda + lbm_vulkan | n/a | YES  | YES    | NO     | YES (CPU-ZD-oracle vs Vulkan in dark_halo_vulkan_parity.rs) |
+| Kubo transport conductivity         | sign_imbalance        | YES | YES  | n/a    | n/a    | NO (cuSOLVER/cuBLAS; not a portable compute shader) |
 | Algebraic lensing                   | optics_core           | YES | YES  | NO     | NO     | NO         |
 | Voudon stabilizer                   | algebra_experimental  | YES | YES  | NO     | NO     | NO         |
 | GRMHD GPU advance                   | grmhd_core            | YES | YES  | NO     | NO     | NO         |
@@ -67,10 +67,12 @@ Legend:
   (transform_viscosity -- besag_clifford sub-kernel; shader exists but
    device-pipeline not wired up for non-besag callers).
 - CPU + cubecl (CUDA + Vulkan also present, no 3-way test yet): 1 / 15 (alignment)
-- CUDA + Vulkan present (no cubecl): 1 / 15 (besag-clifford)
+- CUDA + Vulkan present (no cubecl): 2 / 15 (besag-clifford, dark-halo)
 - See docs/engineering/issue_136_phase2_finalization.md for the
   per-cell deferral rationale.
-- CUDA only: 7 / 15 (sparse LBM, dark-halo, kubo, lensing, voudon, GRMHD, MRT)
+- CUDA only: 5 / 15 (sparse LBM, lensing, voudon, GRMHD, MRT)
+  Kubo is n/a for Vulkan/cubecl (uses cuSOLVER symmetric eigensolver + cuBLAS DGEMM,
+  not portable compute shaders; implementing from scratch is out of scope for #136).
 - Vulkan only: 1 / 15 (coop-matrix probe; structurally NVIDIA-incompatible)
 - OptiX (NVIDIA-only, expected): 1 / 15
 
@@ -101,14 +103,22 @@ Highest expected ROI (closes parity for the most-used kernels first):
 4. **Chingon / alignment cubecl backend**
    - Same pattern as (3): existing CUDA + Vulkan; add cubecl + parity test.
 
-5. **Dark-halo Monte Carlo Vulkan port**
-   - Compute-only kernel; RNG state per-thread; reduction at the end.
-   - Vulkan needs a PCG or Philox RNG implemented in WGSL/GLSL (cudarc
-     uses cuRAND); recommend Philox-2x32-10 (license: BSD-3, easy port).
+5. **Dark-halo ZD Vulkan port -- COMPLETE**
+   - Three-pipeline Vulkan backend in `dark_halo_vulkan.rs`:
+     (1) deterministic ZD viscosity (dark_halo_viscosity.wgsl, Murmur-inspired hash),
+     (2) D3Q19 BGK PUSH with per-cell tau (dark_halo_lbm_step.wgsl),
+     (3) 3-criterion cell classifier (dark_halo_detector.wgsl).
+   - Parity tests at `tests/dark_halo_vulkan_parity.rs` (deterministic_zd_count,
+     all_pass_all_fail).
+   - Note: the CUDA path uses cuRAND "Monte Carlo" label but the ZD viscosity field
+     is deterministic (spatial hash, no true RNG). The Vulkan port implements the
+     deterministic variant.
 
-6. **Kubo transport conductivity Vulkan port**
-   - Algorithmically simpler than dark-halo (no RNG); just a tensor
-     contraction. Direct WGSL translation of the cudarc reduction.
+6. **Kubo transport conductivity -- n/a for Vulkan/cubecl**
+   - The CUDA path calls cuSOLVER (symmetric eigendecomposition) and cuBLAS (DGEMM).
+     These are vendor-library calls, not custom compute shaders. Porting to Vulkan
+     would require implementing full Jacobi or QR iteration from scratch -- out of
+     scope for #136. Marked n/a in the parity matrix.
 
 Lower-priority (more specialized):
 
@@ -194,8 +204,11 @@ Each becomes its own task once #136 is signed off:
 - T-LBM-CUBECL-2: COMPLETE. cubecl backend for alignment (box-kite orientation scan).
   `lbm_vulkan/src/alignment_cubecl.rs` (per-(v,o)-pair kernel, immutable-only IR).
   Parity test at `tests/alignment_cubecl_parity.rs` (CPU-vs-cubecl, 64 vectors).
-- T-DARK-HALO-VULKAN-1: WGSL Philox RNG + dark-halo Monte Carlo.
-- T-KUBO-VULKAN-1: Kubo transport conductivity WGSL port.
+- T-DARK-HALO-VULKAN-1: COMPLETE. Three-pipeline dark-halo Vulkan backend:
+  viscosity (dark_halo_viscosity.wgsl), LBM step with per-cell tau
+  (dark_halo_lbm_step.wgsl), classifier (dark_halo_detector.wgsl).
+  Parity tests in `tests/dark_halo_vulkan_parity.rs`.
+- T-KUBO-VULKAN-1: n/a. Kubo uses cuSOLVER + cuBLAS; not a portable compute shader.
 
 Each phase-2 task delivers exactly one cell in the parity matrix going
 from NO to YES, with its accompanying parity test. The matrix in this
