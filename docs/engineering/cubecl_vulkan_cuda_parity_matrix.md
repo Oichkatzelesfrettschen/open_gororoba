@@ -35,7 +35,7 @@ runtime adapter probe, ChaCha20-seeded inputs, byte-exact comparison.
 | Kernel / Subsystem                  | Crate                 | CPU | CUDA | Vulkan | cubecl | Parity Test |
 |-------------------------------------|-----------------------|-----|------|--------|--------|-------------|
 | TurboQuant quantize (3-bit, 128-d)  | cd_kernel             | YES | n/a  | YES    | YES    | YES (both) |
-| LBM D3Q19 stream + collide          | lbm_3d_cuda / lbm_3d  | YES | YES  | NO     | NO     | NO         |
+| LBM D3Q19 stream + collide          | lbm_vulkan / lbm_3d   | YES | YES  | YES    | YES    | YES (CPU-vs-Vulkan, CPU-vs-cubecl, 3-way in lbm_d3q19_parity.rs) |
 | LBM MRT collision                   | lbm_3d_cuda / lbm_3d  | YES | YES  | NO     | NO     | NO         |
 | Sparse-grid LBM                     | lbm_3d_cuda           | n/a | YES  | NO     | NO     | NO         |
 | Box-counting fractal dimension      | lbm_3d_cuda + lbm_vulkan | YES | YES  | YES    | YES    | YES (CPU vs cubecl in lbm_vulkan; CUDA + Vulkan oracles share box_counting_cpu) |
@@ -59,16 +59,17 @@ Legend:
 ## Quantitative Gap Summary
 
 - Total kernels enumerated: 15
-- Full 3-way parity (CPU + CUDA + Vulkan, ideally also cubecl): 3 / 15
-  (TurboQuant + Box-counting + Chingon).
+- Full 3-way parity (CPU + CUDA + Vulkan, ideally also cubecl): 4 / 15
+  (TurboQuant + Box-counting + Chingon + LBM D3Q19 BGK).
+  LBM D3Q19 completed: Vulkan in PR #51 (Wave D), cubecl in PR #52 (Wave E),
+  3-way parity test in PR #54 (Wave F).
 - CPU + cubecl partial (no full Vulkan device-pipeline): 1 / 15
   (transform_viscosity -- besag_clifford sub-kernel; shader exists but
    device-pipeline not wired up for non-besag callers).
-- CUDA + Vulkan present (no cubecl): 1 / 15 (alignment, besag-clifford
-  full pipeline)
+- CUDA + Vulkan present (no cubecl): 2 / 15 (alignment, besag-clifford)
 - See docs/engineering/issue_136_phase2_finalization.md for the
   per-cell deferral rationale.
-- CUDA only: 8 / 15 (LBM core, sparse LBM, dark-halo, kubo, lensing, voudon, GRMHD, MRT)
+- CUDA only: 7 / 15 (sparse LBM, dark-halo, kubo, lensing, voudon, GRMHD, MRT)
 - Vulkan only: 1 / 15 (coop-matrix probe; structurally NVIDIA-incompatible)
 - OptiX (NVIDIA-only, expected): 1 / 15
 
@@ -180,9 +181,10 @@ For each kernel in the matrix, parity is achieved when:
 
 Each becomes its own task once #136 is signed off:
 
-- T-LBM-VULKAN-1: Port D3Q19 stream + collide to WGSL compute shader.
-  Acceptance: 32^3 grid, single-relaxation-time BGK, parity vs
-  `LbmSolver3D::stream_collide()`.
+- T-LBM-VULKAN-1: COMPLETE (PR #51, Wave D). D3Q19 WGSL PUSH BGK shipped
+  in `crates/lbm_vulkan/shaders/lbm_d3q19.wgsl` + `lbm_d3q19_vulkan.rs`.
+  Parity test at `tests/lbm_d3q19_vulkan_parity.rs` (CPU vs Vulkan).
+  3-way parity test at `tests/lbm_d3q19_parity.rs` (PR #54, Wave F).
 - T-LBM-VULKAN-2: Port MRT collision matrix to WGSL.
   Acceptance: parity vs `LbmSolver3DCuda::new_mrt().step()`.
 - T-LBM-CUBECL-1: cubecl backend for box-counting fractal dimension.
