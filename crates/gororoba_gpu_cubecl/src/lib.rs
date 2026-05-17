@@ -29,10 +29,15 @@ pub use runtime::Runtime;
 
 /// Test-support macros + helpers, available in all builds.
 ///
-/// The `skip_if_unavailable!` macro emits a `println!` + `return` when the
-/// cubecl wgpu runtime cannot be initialised. In default builds (no `cubecl`
-/// feature) the macro always returns -- callers can write tests gated by
-/// `#[cfg(feature = "cubecl")]` if they need the actual probe.
+/// The `skip_if_unavailable!` macro emits an `eprintln!` + `return` when
+/// the cubecl wgpu runtime cannot be initialised. The decision is made
+/// inside this crate (via [`__skip_if_unavailable_should_skip`]) so the
+/// macro evaluates `feature = "cubecl"` against *this* crate's features
+/// at definition time, not the calling crate's features after macro
+/// expansion. Without that indirection a downstream test crate that
+/// enabled `gororoba_gpu_cubecl/cubecl` but did not also define a
+/// same-named local feature would unconditionally take the "feature
+/// disabled" branch and silently skip every GPU assertion.
 pub mod test_support {
     /// Skip the calling test if the cubecl wgpu runtime is unavailable.
     ///
@@ -53,21 +58,37 @@ pub mod test_support {
     #[macro_export]
     macro_rules! skip_if_unavailable {
         () => {
-            #[cfg(feature = "cubecl")]
-            {
-                if !$crate::Runtime::probe() {
-                    eprintln!("[gpu_cubecl] skip: wgpu runtime not available");
-                    return;
-                }
-            }
-            #[cfg(not(feature = "cubecl"))]
-            {
-                eprintln!("[gpu_cubecl] skip: feature cubecl is disabled");
+            let (should_skip, reason) = $crate::__skip_if_unavailable_should_skip();
+            if should_skip {
+                eprintln!("[gpu_cubecl] skip: {}", reason);
                 return;
             }
         };
     }
     pub use skip_if_unavailable;
+}
+
+/// Internal: decide whether the caller's GPU test should be skipped.
+///
+/// Returns `(true, reason)` to skip, `(false, _)` to proceed. The
+/// feature gate that selects between "runtime probe" and "feature
+/// disabled" is evaluated in this crate, so the macro consumer sees
+/// the correct decision regardless of which features its own crate
+/// enables.
+#[doc(hidden)]
+#[cfg(feature = "cubecl")]
+pub fn __skip_if_unavailable_should_skip() -> (bool, &'static str) {
+    if Runtime::probe() {
+        (false, "")
+    } else {
+        (true, "wgpu runtime not available")
+    }
+}
+
+#[doc(hidden)]
+#[cfg(not(feature = "cubecl"))]
+pub fn __skip_if_unavailable_should_skip() -> (bool, &'static str) {
+    (true, "feature cubecl is disabled in gororoba_gpu_cubecl")
 }
 
 #[cfg(test)]
