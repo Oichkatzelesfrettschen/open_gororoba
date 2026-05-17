@@ -37,6 +37,7 @@ pub mod chingon_cubecl;
 pub mod chingon_vulkan;
 pub mod compute;
 pub mod coop_matrix_probe;
+pub mod lbm_d3q19_vulkan;
 pub mod precision_dispatch;
 pub mod swapchain;
 pub mod transform_viscosity_cpu;
