@@ -118,13 +118,18 @@ pub fn chingon_contract_cubecl(inputs: &ChingonInputs) -> Result<Vec<f32>, Cubec
             dim: inputs.dim,
         });
     }
-    if !is_available() {
-        return Err(CubeclChingonError::AdapterUnavailable);
-    }
 
+    // Empty-input fast path: the contribution-sum over zero violations
+    // is deterministically zero, and reporting AdapterUnavailable here
+    // would force headless / CPU-only CI to fail even though no kernel
+    // launch is required. Resolve before probing the wgpu adapter.
     let n_viol = inputs.packed_avt.len();
     if n_viol == 0 {
         return Ok(vec![0.0_f32; inputs.dim as usize]);
+    }
+
+    if !is_available() {
+        return Err(CubeclChingonError::AdapterUnavailable);
     }
 
     let device = WgpuDevice::default();
