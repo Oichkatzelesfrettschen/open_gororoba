@@ -18,16 +18,16 @@
 //!   pairing is a single-line edit in this file.
 
 use super::{
-    MineralMetadata, alumina_metadata, aluminum_metadata, anatase_metadata, azo_metadata,
-    beryllium_metadata, brookite_metadata, cawo4_metadata, chromium_metadata, copper_metadata,
-    cs_wo3_metadata, diamond_metadata, doped_silicon_metadata, dravite_metadata, elbaite_metadata,
-    foitite_metadata, germanium_metadata, gold_metadata, ito_metadata, latio3_metadata,
-    liddicoatite_metadata, linbo3_metadata, litao3_metadata, nickel_metadata, palladium_metadata,
-    pbwo4_metadata, pedot_pss_metadata, platinum_metadata, povondraite_metadata, quartz_metadata,
+    MineralMetadata, alumina_metadata, aluminum_metadata, anatase_metadata, beryllium_metadata,
+    brookite_metadata, cawo4_metadata, chromium_metadata, copper_metadata, cs_wo3_metadata,
+    diamond_metadata, doped_silicon_metadata, dravite_metadata, elbaite_metadata, foitite_metadata,
+    germanium_metadata, gold_metadata, ito_metadata, latio3_metadata, liddicoatite_metadata,
+    linbo3_metadata, litao3_metadata, nickel_metadata, palladium_metadata, pbwo4_metadata,
+    pedot_pss_metadata, platinum_metadata, povondraite_metadata, quartz_metadata,
     rossmanite_metadata, schorl_metadata, silica_casimir_metadata, silica_metadata,
-    silicon_metadata, silicon_nitride_metadata, silver_metadata, srtio3_doped_metadata,
-    srtio3_metadata, tio_metadata, tio2_metadata, titanium_metadata, tungsten_metadata,
-    uvite_metadata, wo3_metadata, wo3_x_metadata,
+    silicon_metadata, silicon_nitride_metadata, silver_metadata, srtio3_metadata, tio_metadata,
+    tio2_metadata, titanium_metadata, tungsten_metadata, uvite_metadata, wo3_metadata,
+    wo3_x_metadata,
 };
 
 /// Look up MineralMetadata for a crystal-structure name from
@@ -73,10 +73,18 @@ pub fn metadata_for_structure(name: &str) -> Option<MineralMetadata> {
         "anatase_tio2" => Some(anatase_metadata()),
         "brookite_tio2" => Some(brookite_metadata()),
         "indium_tin_oxide_bixbyite" => Some(ito_metadata()),
-        // Wurtzite ZnO + AZO share the same lattice; AZO is doped variant.
-        "wurtzite_zno" => Some(azo_metadata()),
+        // NB: wurtzite_zno (undoped ZnO) intentionally returns None.
+        // The helper's contract is "same composition, same phase", and
+        // mapping it to azo_metadata() (Al-doped ZnO, a different
+        // composition) silently corrupts downstream optical
+        // calculations. When a true ZnO optical accessor is added, wire
+        // it here.
         "perovskite_srtio3" => Some(srtio3_metadata()),
-        "perovskite_batio3_tetragonal" | "barium_titanate_cubic" => Some(srtio3_doped_metadata()),
+        // NB: BaTiO3 (Ba cation) is a different compound from SrTiO3
+        // (Sr cation), so mapping perovskite_batio3_tetragonal or
+        // barium_titanate_cubic to srtio3_doped_metadata() (doped
+        // SrTiO3) is a composition mismatch. Both names intentionally
+        // resolve to None until a dedicated BaTiO3 accessor lands.
         "lanthanum_titanate" => Some(latio3_metadata()),
         // Niobate / tantalate ferroelectric + NLO crystals
         "linbo3_trigonal_room_t" => Some(linbo3_metadata()),
@@ -143,10 +151,12 @@ pub fn structures_with_metadata() -> Vec<&'static str> {
         "anatase_tio2",
         "brookite_tio2",
         "indium_tin_oxide_bixbyite",
-        "wurtzite_zno",
+        // wurtzite_zno, perovskite_batio3_tetragonal, and
+        // barium_titanate_cubic intentionally absent: see the doc
+        // comment in metadata_for_structure for the composition-
+        // mismatch rationale. Re-add here when paired with a correct
+        // accessor.
         "perovskite_srtio3",
-        "perovskite_batio3_tetragonal",
-        "barium_titanate_cubic",
         "lanthanum_titanate",
         // Niobate + tantalate ferroelectrics
         "linbo3_trigonal_room_t",
@@ -226,17 +236,42 @@ mod tests {
     }
 
     #[test]
-    fn cross_reference_covers_at_least_48_structures() {
+    fn cross_reference_covers_at_least_45_structures() {
         // Coverage regression: the cross-reference should grow with the
-        // metadata catalog. 48 mappings after polymorph specialisation
-        // (anatase + brookite get dedicated accessors; LiNbO3 + LiTaO3
-        // added). Adding new pairings is encouraged.
+        // metadata catalog. The previous floor of 48 included three
+        // composition-mismatched mappings (ZnO -> AZO; BaTiO3 -> SrTiO3-
+        // doped) that were dropped to honor the helper's same-composition
+        // contract. The floor was lowered to 45 to reflect the
+        // correctness-preserving removal; re-raise it as accurate
+        // accessors are added.
         let n = structures_with_metadata().len();
         assert!(
-            n >= 48,
-            "Cross-reference coverage regression: {} mappings (expected >= 48). \
+            n >= 45,
+            "Cross-reference coverage regression: {} mappings (expected >= 45). \
              Adding new structure -> metadata pairings is encouraged.",
             n
+        );
+    }
+
+    #[test]
+    fn composition_mismatched_aliases_return_none() {
+        // Pin the correctness fix: undoped ZnO must NOT resolve to AZO
+        // metadata, and BaTiO3 must NOT resolve to SrTiO3-doped metadata.
+        // Mapping these silently corrupts optical calculations.
+        assert!(
+            metadata_for_structure("wurtzite_zno").is_none(),
+            "wurtzite_zno (undoped ZnO) must not silently return AZO-doped \
+             metadata; add a dedicated ZnO accessor instead."
+        );
+        assert!(
+            metadata_for_structure("perovskite_batio3_tetragonal").is_none(),
+            "BaTiO3 must not silently return SrTiO3-derived metadata; add a \
+             dedicated BaTiO3 accessor instead."
+        );
+        assert!(
+            metadata_for_structure("barium_titanate_cubic").is_none(),
+            "BaTiO3 must not silently return SrTiO3-derived metadata; add a \
+             dedicated BaTiO3 accessor instead."
         );
     }
 
