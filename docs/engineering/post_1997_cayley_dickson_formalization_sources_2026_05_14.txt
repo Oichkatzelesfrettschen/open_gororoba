@@ -89,7 +89,10 @@ First theorem candidates
 Gate expectations
 -----------------
 
-- Run make rocq-makefile-check before compiling new .v files.
+- Run `make -C proofs rocq-makefile-check` before compiling new .v
+  files (the rocq-makefile-check target lives in `proofs/Makefile`;
+  invoking `make rocq-makefile-check` from the repo root has no rule
+  by design, since the root Makefile is workspace-wide).
 - Run make -C proofs vos after adding a proof file to _RocqProject.
 - Run the smallest target .vo build before wider make -C proofs check.
 - Run Rust paired tests with cargo clippy --workspace -- -D warnings before

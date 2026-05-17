@@ -49,17 +49,25 @@ export OCAMLRUNPARAM ?= o=200
 # Prefer _RocqProject (Rocq 9.x native), fall back to _CoqProject.
 PROJ_FILE := $(shell if [ -f _RocqProject ]; then echo _RocqProject; else echo _CoqProject; fi)
 
+# GNU make's default behavior leaves a target file in place when its
+# recipe exits non-zero, which means a Makefile.rocq written by
+# rocq-makefile before the warning grep fires would survive across
+# invocations and let `make vos` / `make vok` skip the warnings-as-
+# errors gate on the next run. .DELETE_ON_ERROR forces make to delete
+# any target whose recipe failed, restoring fail-closed semantics.
+.DELETE_ON_ERROR:
+
 Makefile.rocq: $(PROJ_FILE)
 	@tmp_log=$$(mktemp); \
 	if ! $(ROCQMAKEFILE) -f $(PROJ_FILE) -o Makefile.rocq >"$$tmp_log" 2>&1; then \
 	  cat "$$tmp_log"; \
-	  rm -f "$$tmp_log"; \
+	  rm -f "$$tmp_log" Makefile.rocq Makefile.rocq.conf .Makefile.rocq.d; \
 	  exit 1; \
 	fi; \
 	if grep -n "$(ROCQMAKEFILE_WARN_RE)" "$$tmp_log"; then \
 	  cat "$$tmp_log"; \
 	  echo "FAIL: rocq makefile emitted a warning; warnings are errors."; \
-	  rm -f "$$tmp_log"; \
+	  rm -f "$$tmp_log" Makefile.rocq Makefile.rocq.conf .Makefile.rocq.d; \
 	  exit 1; \
 	fi; \
 	cat "$$tmp_log"; \
