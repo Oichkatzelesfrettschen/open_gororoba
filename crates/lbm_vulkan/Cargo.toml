@@ -33,6 +33,7 @@ rand = { workspace = true }
 rand_chacha = { workspace = true }
 lbm_3d = { path = "../lbm_3d" }
 approx = { workspace = true }
+algebra_analysis = { workspace = true }
 
 [features]
 default = []
