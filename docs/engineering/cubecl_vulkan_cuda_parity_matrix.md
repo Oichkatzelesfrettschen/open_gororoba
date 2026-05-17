@@ -40,7 +40,7 @@ runtime adapter probe, ChaCha20-seeded inputs, byte-exact comparison.
 | Sparse-grid LBM                     | lbm_3d_cuda           | n/a | YES  | NO     | NO     | NO         |
 | Box-counting fractal dimension      | lbm_3d_cuda + lbm_vulkan | YES | YES  | YES    | YES    | YES (CPU vs cubecl in lbm_vulkan; CUDA + Vulkan oracles share box_counting_cpu) |
 | Chingon (anisotropy operator)       | lbm_3d_cuda + lbm_vulkan | YES | YES  | YES    | YES    | YES (CPU oracle + cubecl in lbm_vulkan) |
-| Alignment / orientation projection  | lbm_3d_cuda + lbm_vulkan | YES | YES  | YES    | NO     | NO         |
+| Alignment / orientation projection  | lbm_3d_cuda + lbm_vulkan | YES | YES  | YES    | YES    | YES (CPU-vs-cubecl in lbm_vulkan/tests/alignment_cubecl_parity.rs) |
 | Besag-Clifford GMRF                 | sign_imbalance + lbm_vulkan | YES | YES  | YES    | NO     | NO         |
 | Dark-halo Monte Carlo               | lbm_3d_cuda           | n/a | YES  | NO     | NO     | NO         |
 | Kubo transport conductivity         | sign_imbalance        | YES | YES  | NO     | NO     | NO         |
@@ -66,7 +66,8 @@ Legend:
 - CPU + cubecl partial (no full Vulkan device-pipeline): 1 / 15
   (transform_viscosity -- besag_clifford sub-kernel; shader exists but
    device-pipeline not wired up for non-besag callers).
-- CUDA + Vulkan present (no cubecl): 2 / 15 (alignment, besag-clifford)
+- CPU + cubecl (CUDA + Vulkan also present, no 3-way test yet): 1 / 15 (alignment)
+- CUDA + Vulkan present (no cubecl): 1 / 15 (besag-clifford)
 - See docs/engineering/issue_136_phase2_finalization.md for the
   per-cell deferral rationale.
 - CUDA only: 7 / 15 (sparse LBM, dark-halo, kubo, lensing, voudon, GRMHD, MRT)
@@ -190,7 +191,9 @@ Each becomes its own task once #136 is signed off:
   Acceptance: parity vs `LbmSolver3DCuda::new_mrt().step()`.
 - T-LBM-CUBECL-1: cubecl backend for box-counting fractal dimension.
   Acceptance: 3-way parity test mirroring `turboquant_cubecl_parity.rs`.
-- T-LBM-CUBECL-2: cubecl backend for chingon / alignment.
+- T-LBM-CUBECL-2: COMPLETE. cubecl backend for alignment (box-kite orientation scan).
+  `lbm_vulkan/src/alignment_cubecl.rs` (per-(v,o)-pair kernel, immutable-only IR).
+  Parity test at `tests/alignment_cubecl_parity.rs` (CPU-vs-cubecl, 64 vectors).
 - T-DARK-HALO-VULKAN-1: WGSL Philox RNG + dark-halo Monte Carlo.
 - T-KUBO-VULKAN-1: Kubo transport conductivity WGSL port.
 

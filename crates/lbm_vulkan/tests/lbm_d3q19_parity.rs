@@ -36,7 +36,7 @@ const ABS_TOL: f64 = 5e-4;
 
 // Seed chosen to differ from the two per-backend parity seeds
 // (0x10110D3_00000019 for Vulkan, 0xCBC_0019 for cubecl).
-const SEED: u64 = 0xD3_19_3A_F0CF;
+const SEED: u64 = 0x00D3_193A_F0CF;
 
 #[test]
 #[ignore = "gpu (Vulkan ICD + cubecl-wgpu adapter required)"]
@@ -233,6 +233,7 @@ fn three_way_parity_16cubed_10steps() {
     }
 }
 
+#[allow(clippy::too_many_arguments)]
 fn check_cell(
     label: &str,
     cell: usize,
