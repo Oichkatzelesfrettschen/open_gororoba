@@ -26,6 +26,7 @@ pub enum ComputeBackend {
 /// given backend only supports a subset of these modes in production.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub enum StoragePrecision {
+    Int4,
     Int8,
     Int16,
     Fp8E4m3,

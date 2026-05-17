@@ -43,12 +43,9 @@ pub enum PrecisionTier {
 }
 
 // Bridge to the canonical workspace precision vocabulary
-// (gororoba_gpu_bridge::StoragePrecision). PrecisionTier has 9
-// variants, 8 of which map 1:1 to StoragePrecision. PrecisionTier::Int4
-// collapses to StoragePrecision::Int8 because SP has no sub-byte
-// variant -- this is lossy on the From direction. The reverse TryFrom
-// is total over StoragePrecision MINUS DdFp128 (PrecisionTier has no
-// >64-bit variant).
+// (gororoba_gpu_bridge::StoragePrecision). PrecisionTier maps 1:1 to
+// StoragePrecision for every shader tier. The reverse TryFrom is total over
+// StoragePrecision MINUS DdFp128 (PrecisionTier has no >64-bit variant).
 impl From<PrecisionTier> for gororoba_gpu_bridge::StoragePrecision {
     fn from(value: PrecisionTier) -> Self {
         match value {
@@ -58,10 +55,7 @@ impl From<PrecisionTier> for gororoba_gpu_bridge::StoragePrecision {
             PrecisionTier::Bf16 => Self::Bf16,
             PrecisionTier::Int8 => Self::Int8,
             PrecisionTier::Int16 => Self::Int16,
-            // Int4 has no exact StoragePrecision variant; closest neighbour
-            // is Int8 (sub-byte quant tier). Wave C-tail will remove this
-            // entire enum.
-            PrecisionTier::Int4 => Self::Int8,
+            PrecisionTier::Int4 => Self::Int4,
             PrecisionTier::Fp8E4m3 => Self::Fp8E4m3,
             PrecisionTier::Fp8E5m2 => Self::Fp8E5m2,
         }
@@ -79,6 +73,7 @@ impl TryFrom<gororoba_gpu_bridge::StoragePrecision> for PrecisionTier {
             SP::Bf16 => Ok(Self::Bf16),
             SP::Int8 => Ok(Self::Int8),
             SP::Int16 => Ok(Self::Int16),
+            SP::Int4 => Ok(Self::Int4),
             SP::Fp8E4m3 => Ok(Self::Fp8E4m3),
             SP::Fp8E5m2 => Ok(Self::Fp8E5m2),
             SP::DdFp128 => Err("PrecisionTier has no DdFp128 equivalent"),
@@ -339,6 +334,13 @@ mod tests {
             streaming: StreamingLayout::Tiled,
         };
         assert!(registry.get_or_compile(key).is_err());
+    }
+
+    #[test]
+    fn precision_tier_int4_round_trips_through_storage_precision() {
+        let storage = gororoba_gpu_bridge::StoragePrecision::from(PrecisionTier::Int4);
+        assert_eq!(storage, gororoba_gpu_bridge::StoragePrecision::Int4);
+        assert_eq!(PrecisionTier::try_from(storage), Ok(PrecisionTier::Int4));
     }
 
     #[test]

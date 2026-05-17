@@ -114,9 +114,9 @@ impl JacobiPrecisionGoal {
             // ext80 = x87 80-bit extended; closest StoragePrecision is
             // DdFp128 (the only >64-bit variant).
             Self::StrictExt80 => SP::DdFp128,
-            // Portable software high precision -- pick FP64 since no
-            // workspace variant captures double-double explicitly here.
-            Self::PortableHighPrecision => SP::Fp64,
+            // Portable software high precision uses the workspace's
+            // >64-bit representative storage tier.
+            Self::PortableHighPrecision => SP::DdFp128,
             // Reference cross-check -- FP64 oracle.
             Self::ReferenceCrossCheck => SP::Fp64,
         }
@@ -436,6 +436,14 @@ mod tests {
         let decision = choose_jacobi_backend(JacobiDispatchInput::portable_high_precision(64));
 
         assert_eq!(decision.backend, JacobiBackend::DoubleDouble);
+    }
+
+    #[test]
+    fn portable_policy_storage_precision_preserves_high_precision_tier() {
+        assert_eq!(
+            JacobiPrecisionGoal::PortableHighPrecision.storage_precision(),
+            gororoba_gpu_bridge::StoragePrecision::DdFp128
+        );
     }
 
     #[test]
