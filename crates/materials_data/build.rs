@@ -186,14 +186,12 @@ fn emit_sellmeier_models(out: &mut File, path: &PathBuf) {
 
     for entry in entries {
         let name = entry.get("name").and_then(|v| v.as_str()).expect("name");
-        let b_coeffs = entry
-            .get("b_coeffs")
-            .and_then(|v| v.as_array())
-            .expect("b_coeffs array");
-        let c_coeffs_raw = entry
-            .get("c_coeffs")
-            .and_then(|v| v.as_array())
-            .expect("c_coeffs array");
+        let b_coeffs = entry.get("b_coeffs").and_then(|v| v.as_array()).unwrap_or_else(|| {
+            panic!("sellmeier model `{name}`: missing or non-array `b_coeffs` field")
+        });
+        let c_coeffs_raw = entry.get("c_coeffs").and_then(|v| v.as_array()).unwrap_or_else(|| {
+            panic!("sellmeier model `{name}`: missing or non-array `c_coeffs` field")
+        });
         let c_form = entry
             .get("c_form")
             .and_then(|v| v.as_str())
@@ -201,31 +199,63 @@ fn emit_sellmeier_models(out: &mut File, path: &PathBuf) {
         let validity = entry
             .get("validity_range_um")
             .and_then(|v| v.as_array())
-            .expect("validity_range_um array");
+            .unwrap_or_else(|| {
+                panic!("sellmeier model `{name}`: missing or non-array `validity_range_um` field")
+            });
+
+        // Build-time shape validation: catch malformed TOML up-front
+        // with material-named error messages so downstream callers do
+        // not chase mismatched coefficient counts at runtime.
+        assert!(
+            !b_coeffs.is_empty(),
+            "sellmeier model `{name}`: b_coeffs must contain at least one coefficient",
+        );
+        assert_eq!(
+            b_coeffs.len(),
+            c_coeffs_raw.len(),
+            "sellmeier model `{name}`: b_coeffs.len() ({}) != c_coeffs.len() ({})",
+            b_coeffs.len(),
+            c_coeffs_raw.len(),
+        );
         assert_eq!(
             validity.len(),
             2,
-            "{} validity_range_um needs 2 elements",
-            name
+            "sellmeier model `{name}`: validity_range_um needs exactly 2 elements (got {})",
+            validity.len(),
         );
 
-        // Apply squaring per c_form to preserve byte-identical f64 vs the
-        // original Rust `.powi(2)` evaluation.
+        // Determinism note: host-floating-point semantics. IEEE 754
+        // requires `x * x` to be deterministic and identical across any
+        // compliant implementation for finite inputs, so squaring at
+        // build time produces byte-identical f64 results regardless of
+        // build host. The `.powi(2)` alternative is equivalent for this
+        // case (i32 exponent of 2 reduces to a single multiplication
+        // by the rust compiler) but using `*` makes the determinism
+        // contract explicit and obviates any concern about libm
+        // implementations diverging between cross-compile hosts.
         let c_coeffs: Vec<f64> = c_coeffs_raw
             .iter()
             .map(|v| {
-                let raw = v.as_float().expect("c coeff must be float");
+                let raw = v.as_float().unwrap_or_else(|| {
+                    panic!("sellmeier model `{name}`: c coefficient must be float (got {v:?})")
+                });
                 match c_form {
-                    "linear" => raw.powi(2),
+                    "linear" => raw * raw,
                     "squared" => raw,
-                    other => panic!("unknown c_form {} for {}", other, name),
+                    other => panic!(
+                        "sellmeier model `{name}`: unknown c_form `{other}` (expected `linear` or `squared`)"
+                    ),
                 }
             })
             .collect();
 
         let b_vals: Vec<f64> = b_coeffs
             .iter()
-            .map(|v| v.as_float().expect("b coeff must be float"))
+            .map(|v| {
+                v.as_float().unwrap_or_else(|| {
+                    panic!("sellmeier model `{name}`: b coefficient must be float (got {v:?})")
+                })
+            })
             .collect();
 
         emit_f64_const(
@@ -241,8 +271,20 @@ fn emit_sellmeier_models(out: &mut File, path: &PathBuf) {
             c_coeffs.iter().copied(),
         );
 
-        let v_min = validity[0].as_float().expect("validity min");
-        let v_max = validity[1].as_float().expect("validity max");
+        let v_min = validity[0].as_float().unwrap_or_else(|| {
+            panic!("sellmeier model `{name}`: validity_range_um[0] must be float")
+        });
+        let v_max = validity[1].as_float().unwrap_or_else(|| {
+            panic!("sellmeier model `{name}`: validity_range_um[1] must be float")
+        });
+        assert!(
+            v_min.is_finite() && v_max.is_finite(),
+            "sellmeier model `{name}`: validity_range_um endpoints must be finite (got {v_min}, {v_max})",
+        );
+        assert!(
+            v_min < v_max,
+            "sellmeier model `{name}`: validity_range_um must satisfy min < max (got {v_min}, {v_max})",
+        );
         writeln!(
             out,
             "pub const {name}_VALIDITY_UM: (f64, f64) = ({v_min:?}, {v_max:?});"
