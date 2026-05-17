@@ -1,6 +1,6 @@
 # cubecl + Vulkan + CUDA Parity Matrix (task #136)
 
-Date: 2026-05-13
+Date: 2026-05-17
 Issue: User asked for "cubecl+vulkan items in sync for CUDA+Vulkan at full-feature-parity".
 Scope: enumerate every GPU compute kernel in the workspace and identify which
 backends (CPU reference, CUDA via cudarc, Vulkan via ash, cubecl) are present
@@ -36,7 +36,7 @@ runtime adapter probe, ChaCha20-seeded inputs, byte-exact comparison.
 |-------------------------------------|-----------------------|-----|------|--------|--------|-------------|
 | TurboQuant quantize (3-bit, 128-d)  | cd_kernel             | YES | n/a  | YES    | YES    | YES (both) |
 | LBM D3Q19 stream + collide          | lbm_vulkan / lbm_3d   | YES | YES  | YES    | YES    | YES (CPU-vs-Vulkan, CPU-vs-cubecl, 3-way in lbm_d3q19_parity.rs) |
-| LBM MRT collision                   | lbm_3d_cuda / lbm_3d  | YES | YES  | NO     | NO     | NO         |
+| LBM MRT collision                   | lbm_vulkan / lbm_3d_cuda / lbm_3d | YES | YES  | YES    | YES    | YES (CPU-vs-Vulkan in lbm_mrt_d3q19_vulkan_parity.rs, CPU-vs-cubecl in lbm_mrt_d3q19_cubecl_parity.rs, 3-way in lbm_mrt_d3q19_parity.rs) |
 | Sparse-grid LBM                     | lbm_3d_cuda           | n/a | YES  | NO     | NO     | NO         |
 | Box-counting fractal dimension      | lbm_3d_cuda + lbm_vulkan | YES | YES  | YES    | YES    | YES (CPU vs cubecl in lbm_vulkan; CUDA + Vulkan oracles share box_counting_cpu) |
 | Chingon (anisotropy operator)       | lbm_3d_cuda + lbm_vulkan | YES | YES  | YES    | YES    | YES (CPU oracle + cubecl in lbm_vulkan) |
@@ -85,11 +85,12 @@ Highest expected ROI (closes parity for the most-used kernels first):
      loop into a WGSL or GLSL compute shader; wire through `naga` (already
      a dep). Reference grid: 32^3 to validate at PR time; ramp to 128^3.
 
-2. **LBM MRT collision (Vulkan + cubecl)**
-   - Builds on (1); shares the streaming step.
-   - Hand-CUDA expression already at `lbm_3d_cuda::LbmSolver3DCuda::new_mrt`.
-   - Once Vulkan stream+collide lands, MRT is a 19x19 matrix-multiply per cell
-     in the collision step -- naturally maps to compute shader workgroups.
+2. **LBM MRT collision (Vulkan + cubecl)** -- COMPLETE (Wave G1)
+   - `lbm_vulkan/shaders/lbm_mrt_d3q19.wgsl`: d'Humieres D3Q19 MRT WGSL shader.
+   - `lbm_vulkan/src/lbm_mrt_d3q19_vulkan.rs`: Vulkan solver using gpu_vulkan helpers.
+   - `lbm_vulkan/src/lbm_mrt_d3q19_cubecl.rs`: cubecl #[cube] MRT kernel.
+   - Parity tests: CPU-vs-Vulkan, CPU-vs-cubecl, 3-way (all gated #[ignore = "gpu"]).
+   - abs_tol=2e-3 / rel_tol=2e-2 (wider than BGK due to higher MRT FMA count).
 
 3. **Box-counting fractal dimension cubecl backend**
    - Already has CUDA + Vulkan paths; add cubecl path so we have a 3-way
