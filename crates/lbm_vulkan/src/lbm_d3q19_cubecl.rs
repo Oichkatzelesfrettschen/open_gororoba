@@ -285,12 +285,14 @@ pub fn evolve_d3q19_cubecl(
     if tau.is_nan() || tau <= 0.5 {
         return Err(CubeclLbmError::UnstableTau(tau));
     }
-    // u64 arithmetic to detect overflow before narrowing. The kernel
-    // launch signature takes u32 grid dimensions and a u32 cube count,
-    // so a usize-sized grid that wraps during `as u32` would launch
-    // for a truncated cell range while the buffers still describe the
-    // full domain -- a silent-corruption mode we'd rather refuse.
-    let n_cells_u64 = (nx as u64) * (ny as u64) * (nz as u64);
+    // Checked u64 arithmetic to detect product overflow before narrowing.
+    // Each usize dimension is at most 2^64-1 on a 64-bit host; their product
+    // can overflow u64, so use checked_mul and treat overflow the same as
+    // GridTooLarge (any overflow means far more than u32::MAX cells).
+    let n_cells_u64 = (nx as u64)
+        .checked_mul(ny as u64)
+        .and_then(|p| p.checked_mul(nz as u64))
+        .unwrap_or(u64::MAX);
     if n_cells_u64 > u32::MAX as u64 {
         return Err(CubeclLbmError::GridTooLarge {
             n_cells: n_cells_u64,

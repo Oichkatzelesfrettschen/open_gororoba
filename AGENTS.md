@@ -10,8 +10,10 @@ Codex, Gemini, Mistral, Ollama, DeepSeek, human) working in this
 repository. `CLAUDE.md` (also at the repo root) is a Claude-specific
 overlay that points back at this file for the shared policies and
 states only the Claude-tool deltas on top. There is no `GEMINI.md`
-in the tree today; if one is added later it SHOULD follow the same
-overlay pattern (or be a literal symlink to this file). If `CLAUDE.md`
+in the tree today; if one is added later it SHOULD be a regular overlay
+file following the same pattern as `CLAUDE.md` (not a symlink -- the
+no-symlinks policy in section "No-Python, no-symlinks, no-shell" applies
+to agent entrypoints too). If `CLAUDE.md`
 and `AGENTS.md` ever disagree on a shared policy, this file is
 authoritative.
 
