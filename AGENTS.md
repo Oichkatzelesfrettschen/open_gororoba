@@ -7,8 +7,13 @@ last_verified: 2026-05-17
 
 This file is the canonical operating guide for any agent (Claude,
 Codex, Gemini, Mistral, Ollama, DeepSeek, human) working in this
-repository. `CLAUDE.md` and `GEMINI.md` at the repo root are symlinks
-to this file; if they ever drift, this file is authoritative.
+repository. `CLAUDE.md` (also at the repo root) is a Claude-specific
+overlay that points back at this file for the shared policies and
+states only the Claude-tool deltas on top. There is no `GEMINI.md`
+in the tree today; if one is added later it SHOULD follow the same
+overlay pattern (or be a literal symlink to this file). If `CLAUDE.md`
+and `AGENTS.md` ever disagree on a shared policy, this file is
+authoritative.
 
 Peer references this document inherits style from:
 
