@@ -107,11 +107,34 @@ impl InstanceBuilder {
             .engine_version(0)
             .api_version(self.api_version);
 
+        // Validation layer is requested-but-best-effort: drivers-only
+        // installs without the Vulkan SDK do not ship
+        // VK_LAYER_KHRONOS_validation, and requesting an absent layer
+        // would make create_instance fail with VK_ERROR_LAYER_NOT_PRESENT
+        // rather than silently falling through to no-validation. So we
+        // enumerate the loader's advertised layers first and only ask for
+        // validation when it is actually present.
         let layer_names: Vec<CString> = match self.validation {
-            ValidationPolicy::Enable => vec![
-                CString::new("VK_LAYER_KHRONOS_validation")
-                    .expect("static literal is valid CString"),
-            ],
+            ValidationPolicy::Enable => {
+                let validation_layer_name = c"VK_LAYER_KHRONOS_validation";
+                // SAFETY: entry is alive; enumerate returns owned Vec.
+                let advertised = unsafe { entry.enumerate_instance_layer_properties() }
+                    .unwrap_or_default();
+                let validation_available = advertised.iter().any(|layer| {
+                    // SAFETY: layer_name is a NUL-terminated [c_char; 256]
+                    // populated by the Vulkan loader.
+                    let name = unsafe { CStr::from_ptr(layer.layer_name.as_ptr()) };
+                    name == validation_layer_name
+                });
+                if validation_available {
+                    vec![
+                        CString::new("VK_LAYER_KHRONOS_validation")
+                            .expect("static literal is valid CString"),
+                    ]
+                } else {
+                    Vec::new()
+                }
+            }
             ValidationPolicy::Disable => Vec::new(),
         };
         let layer_ptrs: Vec<*const i8> = layer_names.iter().map(|n| n.as_ptr().cast()).collect();

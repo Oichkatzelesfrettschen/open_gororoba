@@ -68,21 +68,45 @@ impl<'a> ComputePipelineBuilder<'a> {
 
         // SAFETY: pipeline_ci references stage_ci which holds entry_cstring
         // via its borrow; entry_cstring lives to the end of this fn.
-        let pipelines = unsafe {
+        let pipelines_result = unsafe {
             self.device.raw().create_compute_pipelines(
                 vk::PipelineCache::null(),
                 std::slice::from_ref(&pipeline_ci),
                 None,
             )
-        }
-        .map_err(|(_, err)| VulkanError::Vk(err))?;
+        };
 
-        let pipeline = pipelines
-            .into_iter()
-            .next()
-            .ok_or(VulkanError::UnsupportedFeature(
-                "create_compute_pipelines returned empty vec",
-            ))?;
+        let pipelines = match pipelines_result {
+            Ok(pipelines) => pipelines,
+            Err((_, err)) => {
+                // pipeline_layout was created above but create_compute_pipelines
+                // failed; clean it up before propagating so repeated build
+                // failures do not leak driver-side layout objects.
+                // SAFETY: pipeline_layout was just created on self.device.
+                unsafe {
+                    self.device
+                        .raw()
+                        .destroy_pipeline_layout(pipeline_layout, None);
+                }
+                return Err(VulkanError::Vk(err));
+            }
+        };
+
+        let pipeline = match pipelines.into_iter().next() {
+            Some(p) => p,
+            None => {
+                // Same cleanup obligation as the error arm above.
+                // SAFETY: pipeline_layout still owned by us.
+                unsafe {
+                    self.device
+                        .raw()
+                        .destroy_pipeline_layout(pipeline_layout, None);
+                }
+                return Err(VulkanError::UnsupportedFeature(
+                    "create_compute_pipelines returned empty vec",
+                ));
+            }
+        };
 
         Ok(ComputePipeline {
             device: Arc::new(self.device.clone()),
