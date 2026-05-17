@@ -29,6 +29,8 @@ pub mod alignment_vulkan;
 #[cfg(feature = "cubecl")]
 pub mod alignment_cubecl;
 pub mod besag_clifford_vulkan;
+#[cfg(feature = "cubecl")]
+pub mod besag_clifford_cubecl;
 pub mod box_counting_cpu;
 #[cfg(feature = "cubecl")]
 pub mod box_counting_cubecl;
