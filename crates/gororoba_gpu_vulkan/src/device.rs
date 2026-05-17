@@ -92,17 +92,58 @@ impl DeviceBuilder {
             enabled = enabled.shader_float64(true);
         }
 
+        // Extended-feature chains: each requested capability lives in a
+        // dedicated VkPhysicalDeviceXxxFeatures struct that the caller
+        // threads into VkDeviceCreateInfo.pNext via push_next. We
+        // construct only the structs whose corresponding bit is set so
+        // drivers that don't expose the feature still build cleanly.
+        let mut storage_16bit = vk::PhysicalDeviceVulkan11Features::default();
+        let mut storage_8bit_features = vk::PhysicalDevice8BitStorageFeatures::default();
+        let mut shader_f16_i8_features = vk::PhysicalDeviceShaderFloat16Int8Features::default();
+        let mut dynamic_rendering_features =
+            vk::PhysicalDeviceDynamicRenderingFeatures::default();
+
+        if self.features.fp16_storage {
+            storage_16bit.storage_buffer16_bit_access = vk::TRUE;
+            storage_16bit.uniform_and_storage_buffer16_bit_access = vk::TRUE;
+        }
+        if self.features.int8_storage {
+            storage_8bit_features.storage_buffer8_bit_access = vk::TRUE;
+            storage_8bit_features.uniform_and_storage_buffer8_bit_access = vk::TRUE;
+        }
+        if self.features.fp16_arith {
+            shader_f16_i8_features.shader_float16 = vk::TRUE;
+            shader_f16_i8_features.shader_int8 = vk::TRUE;
+        }
+        if self.features.dynamic_rendering {
+            dynamic_rendering_features.dynamic_rendering = vk::TRUE;
+        }
+
         let extension_ptrs: Vec<*const i8> =
             self.extensions.iter().map(|n| n.as_ptr().cast()).collect();
 
-        let device_ci = vk::DeviceCreateInfo::default()
+        let mut device_ci = vk::DeviceCreateInfo::default()
             .queue_create_infos(&queue_cis)
             .enabled_extension_names(&extension_ptrs)
             .enabled_features(&enabled);
+        if self.features.fp16_storage {
+            device_ci = device_ci.push_next(&mut storage_16bit);
+        }
+        if self.features.int8_storage {
+            device_ci = device_ci.push_next(&mut storage_8bit_features);
+        }
+        if self.features.fp16_arith {
+            device_ci = device_ci.push_next(&mut shader_f16_i8_features);
+        }
+        if self.features.dynamic_rendering {
+            device_ci = device_ci.push_next(&mut dynamic_rendering_features);
+        }
 
         // SAFETY: adapter.physical_device was enumerated from the same
         // instance; queue_ci references priorities slice which outlives
-        // this call.
+        // this call. The pushed feature structs are stack-allocated above
+        // and outlive create_device because device_ci borrows them and is
+        // dropped at the end of this scope after the call returns.
         let device = unsafe {
             instance
                 .raw()
