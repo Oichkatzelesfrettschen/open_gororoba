@@ -22,12 +22,7 @@ use crate::{adapter::Adapter, error::Result, instance::Instance};
 /// support each one independently. Requesting `int8_arith` on a device
 /// that only exposes `shaderFloat16` would make `vkCreateDevice` fail
 /// with `VK_ERROR_FEATURE_NOT_PRESENT`, and vice versa.
-///
-/// Marked `#[non_exhaustive]` so future field additions are backwards-
-/// compatible for callers that construct via `DeviceFeatures::default()`
-/// or field-update syntax (`DeviceFeatures { fp16_arith: true, ..Default::default() }`).
 #[derive(Debug, Clone, Copy, Default)]
-#[non_exhaustive]
 pub struct DeviceFeatures {
     /// Request 16-bit shader-storage support (VK_KHR_16bit_storage).
     pub fp16_storage: bool,
