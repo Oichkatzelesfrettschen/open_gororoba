@@ -12,7 +12,7 @@ updated = "2026-05-13"
 authoritative = true
 status = "active"
 status_token = "ACTIVE"
-document_count = 226
+document_count = 227
 [[owner]]
 path = "README.md"
 owner_group = "project"
@@ -1331,6 +1331,11 @@ removal_status = "active"
 
 [[owner]]
 path = "docs/engineering/registry_canonical_architecture.md"
+owner_group = "project"
+removal_status = "active"
+
+[[owner]]
+path = "docs/engineering/registry_sqlite_canonical_rca_2026_05_17.md"
 owner_group = "project"
 removal_status = "active"
 
