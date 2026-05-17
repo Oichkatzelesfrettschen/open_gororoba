@@ -16,14 +16,26 @@ use ash::vk;
 use crate::{adapter::Adapter, error::Result, instance::Instance};
 
 /// Optional feature requests forwarded to vk::DeviceCreateInfo.
+///
+/// The two members of `VK_KHR_shader_float16_int8` (`shaderFloat16` and
+/// `shaderInt8`) are tracked as separate flags because GPUs in the wild
+/// support each one independently. Requesting `int8_arith` on a device
+/// that only exposes `shaderFloat16` would make `vkCreateDevice` fail
+/// with `VK_ERROR_FEATURE_NOT_PRESENT`, and vice versa.
 #[derive(Debug, Clone, Copy, Default)]
 pub struct DeviceFeatures {
     /// Request 16-bit shader-storage support (VK_KHR_16bit_storage).
     pub fp16_storage: bool,
     /// Request 8-bit integer storage (VK_KHR_8bit_storage).
     pub int8_storage: bool,
-    /// Request shader-side fp16 arithmetic (VK_KHR_shader_float16_int8).
+    /// Request shader-side fp16 arithmetic
+    /// (VK_KHR_shader_float16_int8::shaderFloat16). Independent of
+    /// `int8_arith` because a GPU may expose one without the other.
     pub fp16_arith: bool,
+    /// Request shader-side int8 arithmetic
+    /// (VK_KHR_shader_float16_int8::shaderInt8). Independent of
+    /// `fp16_arith` because a GPU may expose one without the other.
+    pub int8_arith: bool,
     /// Request shader-side fp64 arithmetic (built-in PhysicalDeviceFeatures.shaderFloat64).
     pub fp64_arith: bool,
     /// Request VK_KHR_dynamic_rendering (Vulkan 1.3 promoted to core; needed
@@ -113,6 +125,8 @@ impl DeviceBuilder {
         }
         if self.features.fp16_arith {
             shader_f16_i8_features.shader_float16 = vk::TRUE;
+        }
+        if self.features.int8_arith {
             shader_f16_i8_features.shader_int8 = vk::TRUE;
         }
         if self.features.dynamic_rendering {
@@ -132,7 +146,11 @@ impl DeviceBuilder {
         if self.features.int8_storage {
             device_ci = device_ci.push_next(&mut storage_8bit_features);
         }
-        if self.features.fp16_arith {
+        // shader_f16_i8_features carries both shaderFloat16 and
+        // shaderInt8 bits; push it once if either capability was
+        // requested so the chain only appears in the pNext list a
+        // single time.
+        if self.features.fp16_arith || self.features.int8_arith {
             device_ci = device_ci.push_next(&mut shader_f16_i8_features);
         }
         if self.features.dynamic_rendering {

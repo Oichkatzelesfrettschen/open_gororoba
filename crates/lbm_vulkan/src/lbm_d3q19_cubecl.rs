@@ -250,6 +250,11 @@ pub fn is_available() -> bool {
 pub enum CubeclLbmError {
     #[error("grid dimensions must all be positive (got nx={nx}, ny={ny}, nz={nz})")]
     EmptyGrid { nx: usize, ny: usize, nz: usize },
+    #[error(
+        "grid too large for u32 cell indexing: nx*ny*nz = {n_cells} (max = {})",
+        u32::MAX
+    )]
+    GridTooLarge { n_cells: u64 },
     #[error("input f slice length {got} does not match nx*ny*nz*19 = {expected}")]
     LengthMismatch { got: usize, expected: usize },
     #[error("tau must satisfy tau > 0.5 for BGK stability (got {0})")]
@@ -279,6 +284,17 @@ pub fn evolve_d3q19_cubecl(
     }
     if tau.is_nan() || tau <= 0.5 {
         return Err(CubeclLbmError::UnstableTau(tau));
+    }
+    // u64 arithmetic to detect overflow before narrowing. The kernel
+    // launch signature takes u32 grid dimensions and a u32 cube count,
+    // so a usize-sized grid that wraps during `as u32` would launch
+    // for a truncated cell range while the buffers still describe the
+    // full domain -- a silent-corruption mode we'd rather refuse.
+    let n_cells_u64 = (nx as u64) * (ny as u64) * (nz as u64);
+    if n_cells_u64 > u32::MAX as u64 {
+        return Err(CubeclLbmError::GridTooLarge {
+            n_cells: n_cells_u64,
+        });
     }
     let n_cells = nx * ny * nz;
     let expected = n_cells * D3Q19_CHANNELS as usize;
@@ -371,6 +387,27 @@ mod tests {
         match evolve_d3q19_cubecl(2, 2, 2, 1.0, &bad, 1) {
             Err(CubeclLbmError::LengthMismatch { got: 7, expected: 152 }) => {}
             other => panic!("expected LengthMismatch, got {other:?}"),
+        }
+    }
+
+    /// Refuse grids whose total cell count would overflow u32, before
+    /// any allocation. Tested by picking three dimensions whose product
+    /// strictly exceeds u32::MAX without allocating the full buffer.
+    #[test]
+    fn rejects_grid_too_large_for_u32_indexing() {
+        // 2^16 * 2^16 * 2 = 2^33 cells -- well beyond u32::MAX = 2^32 - 1.
+        let nx = 1usize << 16;
+        let ny = 1usize << 16;
+        let nz = 2usize;
+        // Empty slice so the length-mismatch arm would fire if the
+        // grid-size guard let the call through. The guard must reject
+        // BEFORE reading f_init.len().
+        let f: Vec<f32> = Vec::new();
+        match evolve_d3q19_cubecl(nx, ny, nz, 1.0, &f, 1) {
+            Err(CubeclLbmError::GridTooLarge { n_cells }) => {
+                assert_eq!(n_cells, (nx as u64) * (ny as u64) * (nz as u64));
+            }
+            other => panic!("expected GridTooLarge, got {other:?}"),
         }
     }
 }
