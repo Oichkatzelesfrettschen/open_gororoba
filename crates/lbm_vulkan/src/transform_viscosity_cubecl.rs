@@ -52,12 +52,16 @@ pub enum CubeclViscosityError {
 pub fn transform_viscosity_cubecl(
     inputs: &ViscosityTransformInputs,
 ) -> Result<Vec<f32>, CubeclViscosityError> {
-    if !is_available() {
-        return Err(CubeclViscosityError::AdapterUnavailable);
-    }
+    // Empty-input fast path: no kernel launch is required, so reporting
+    // AdapterUnavailable here would force headless / CPU-only callers
+    // (including the gated unit test below) to see a spurious error.
+    // Resolve before probing the wgpu adapter.
     let n = inputs.phi.len();
     if n == 0 {
         return Ok(vec![]);
+    }
+    if !is_available() {
+        return Err(CubeclViscosityError::AdapterUnavailable);
     }
 
     let device = WgpuDevice::default();
