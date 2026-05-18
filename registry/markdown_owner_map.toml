@@ -8,11 +8,17 @@
 #   - owner_group=third_party or owner_group=external MUST have removal_status=locked.
 
 [markdown_owner_map]
-updated = "2026-05-13"
+updated = "2026-05-17"
 authoritative = true
 status = "active"
 status_token = "ACTIVE"
-document_count = 227
+document_count = 228
+[[owner]]
+path = "README_GPU_STEPS.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
+
 [[owner]]
 path = "README.md"
 owner_group = "project"
