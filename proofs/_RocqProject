@@ -248,6 +248,8 @@ theories/C1546_MorArbitraryAlternative.v
 theories/C1546_MorZDAnticomm.v
 theories/C1547_MorSpecialTripleOct.v
 theories/C1543_MorMod4Bound.v
+theories/MorenoKerLaNonAlternative.v
+theories/MorenoSedenionInstance.v
 theories/Moreno1997.v
 theories/WedderburnPrimitive.v
 theories/DicksonCDProcess.v
