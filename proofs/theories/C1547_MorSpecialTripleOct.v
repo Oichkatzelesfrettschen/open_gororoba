@@ -7,6 +7,13 @@
 
     with a copy of the octonions.
 
+    SCOPE -- degenerate regime + one direction.  The witness triple lives in
+    the octonions A_3, so "a copy of O inside A_n" degenerates to V = all of
+    A_3 (the basis collapses to e0..e7).  Only the multiplication-table
+    direction is verified for this fixed triple -- not Moreno's iff, and not
+    an embedding of O into a strictly larger A_n (n >= 4).  This file verifies
+    the degenerate instance only.
+
     This file formalizes the canonical octonion witness used by the Rust
     Moreno lane:
 

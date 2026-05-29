@@ -15,8 +15,14 @@
 
     Proof strategy:
     [Mod 4] H_a acts on Ker(L_a) by right multiplication.  Any real
-    right H-module has R-dim divisible by 4 (Artin-Wedderburn for H).
-    This deep algebraic fact is axiomatized; the rest is proved.
+    right H-module has R-dim divisible by 4 (Artin-Wedderburn for H),
+    captured by the inductive predicate is_h_module_dim in FinDimHModule.v.
+    The mod-4 result is therefore stated as a CONDITIONAL: whenever the
+    kernel dimension is an H-module dimension, it is divisible by 4.  The
+    remaining bridge -- that the concrete dim_R(Ker L_a) for doubly-pure a
+    actually is such an H-module dimension -- is the open obligation; the
+    non-alternative-a orbit witness (right H_a-action producing four
+    independent annihilated elements) is the concrete evidence for it.
     [Upper bound] H_a is 4-dimensional (Thm 1.13); Ker(L_a) is in H_a^perp;
     so dim Ker(L_a) <= 2^n - 4.  Fully proved from subspace orthogonality. *)
 
@@ -71,27 +77,34 @@ Qed.
     the action of H_a on H_a^perp is associative because H_a is the
     quaternion subalgebra (Thm 1.13) and the decomposition (Thm 1.15)
     ensures that left multiplication by a and right multiplication by h
-    commute modulo signs on each eigenspace.
+    commute modulo signs on each eigenspace.  This right H_a-action makes
+    Ker(L_a) a finite-dimensional real right-H module, so its R-dimension
+    is an [is_h_module_dim] value.
 
-    What remains axiomatized here is only the concrete bridge:
-    the full Moreno decomposition must show that the specific kernel
-    dimension does satisfy the shared predicate [is_h_module_dim]. *)
-Axiom ker_l_a_has_h_module_dim : forall (ker_dim : nat),
-  is_h_module_dim ker_dim.
+    The mod-4 corollary is stated CONDITIONALLY on that hypothesis rather
+    than asserted unconditionally.  A blanket axiom
+    [forall ker_dim, is_h_module_dim ker_dim] would be inconsistent: it
+    implies is_h_module_dim 1, and FinDimHModule.h_module_dim_div4 then
+    yields 4 | 1.  The honest obligation is is_h_module_dim applied to the
+    SPECIFIC kernel dimension, mirroring HModuleDim.HModuleFinDim's
+    per-instance [v_dim_is_h_module_dim].  Discharging it for the concrete
+    Ker(L_a) of a non-alternative doubly-pure a is the open bridge; the
+    orbit witness in the C-1627/Moreno-orbit lane provides four independent
+    annihilated elements as the concrete lower-bound evidence. *)
 
-(** ** Corollary 1.17, part (i): dim Ker(L_a) = 0 mod 4. *)
+(** ** Corollary 1.17, part (i): if dim Ker(L_a) is an H-module dimension,
+    then dim Ker(L_a) = 0 mod 4.  (= FinDimHModule.h_module_dim_div4 named
+    at the Moreno corollary.) *)
 Theorem cor_1_17_mod4 : forall (ker_dim : nat),
-  exists k, ker_dim = 4 * k.
+  is_h_module_dim ker_dim -> exists k, ker_dim = 4 * k.
 Proof.
-  intro ker_dim.
-  exact (FinDimHModule.h_module_dim_div4 ker_dim (ker_l_a_has_h_module_dim ker_dim)).
+  exact FinDimHModule.h_module_dim_div4.
 Qed.
 
 Corollary cor_1_17_mod4_nat : forall (ker_dim : nat),
-  Nat.modulo ker_dim 4 = 0.
+  is_h_module_dim ker_dim -> Nat.modulo ker_dim 4 = 0.
 Proof.
-  intro ker_dim.
-  exact (FinDimHModule.h_module_dim_mod4 ker_dim (ker_l_a_has_h_module_dim ker_dim)).
+  exact FinDimHModule.h_module_dim_mod4.
 Qed.
 
 (** ** Subspace orthogonality bound (general linear algebra). *)

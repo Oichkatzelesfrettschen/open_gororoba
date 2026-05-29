@@ -7,6 +7,16 @@
 
     for every lambda > 0.
 
+    SCOPE -- degenerate (alternative) regime.  The witness a = e1 in A_3 is
+    alternative, so V_1 = H_a^perp (dim 4) and every other V_lambda is {0};
+    "0 mod 4" is witnessed only by the dimensions 4 and 0, not by the
+    quaternionic orbit argument that gives 1.16 its content.  Moreno's
+    Theorem 1.16 is non-trivial for the non-alternative regime at n >= 4,
+    where V_lambda can be genuinely nonzero; the mod-4 mechanism is captured
+    abstractly in C1542_MorVlambdaOrbit and witnessed concretely (dim
+    Ker(L_a) >= 4 for a = e3+e10) in MorenoKerLaNonAlternative.v.  This file
+    verifies the alternative instance only.
+
     This file formalizes the canonical octonion witness used by the Moreno
     paper lane:
 
