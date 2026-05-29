@@ -292,7 +292,10 @@ Module MorSkewSymm (Alg : CDAlgMoreno).
     (forall z, inner y (mul z x) = 0) ->
     (forall z, inner y (mul x z) = 0).
 
-  (** Moreno Proposition 1.7, final form: Ker(L_x) = Ker(R_x). *)
+  (** Moreno's unnumbered Remark following Proposition 1.7: Ker(L_x) =
+      Ker(R_x).  (Prop 1.7 itself is the skew-symmetry of L_x and R_x,
+      proved above; the kernel equality is the Remark that follows it, and
+      depends on the Im(L_x) = Im(R_x) axioms below.) *)
   Theorem ker_lx_eq_ker_rx : forall x y,
     conj x = neg x ->
     (mul x y = zero <-> mul y x = zero).

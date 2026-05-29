@@ -10,6 +10,15 @@
 
     Corollary 2.4 then gives the mod-8 constraint on the restricted kernel.
 
+    SCOPE -- degenerate (alternative) regime.  The witnesses a, b are
+    octonion (A_3) basis elements, so S restricted to V(a;b)^perp has trivial
+    kernel and Ker(L_(a+b)) = Ker(L_(a-b)) = {0}; the decomposition is an
+    equality of zero subspaces and the Corollary-2.4 dimension is 0 (trivially
+    0 mod 8).  Moreno's Theorem 2.3 / Corollary 2.4 carry content only for the
+    non-alternative zero-divisor regime at n >= 4 (where Ker(L_(a+-b)) is
+    nonzero); cf. MorenoKerLaNonAlternative.v for nonzero kernels at n = 4.
+    This file verifies the alternative instance only.
+
     This file formalizes the canonical octonion witness used throughout the
     Rust Moreno lane:
 

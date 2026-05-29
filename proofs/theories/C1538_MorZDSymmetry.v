@@ -1,73 +1,62 @@
 (** * C1538_MorZDSymmetry: Moreno (1997) Corollary 1.6 -- ZD symmetry.
 
-    In any Cayley-Dickson algebra A_n (n >= 4), zero-divisor annihilation
-    is symmetric:
+    Moreno's Corollary 1.6 (part 1) is the four-way chain, holding for ALL
+    x, y with no hypotheses:
       xy = 0  iff  yx = 0  iff  x_bar * y = 0  iff  x * y_bar = 0.
-    Furthermore: if xy = 0 and x <> 0, then t(y) = 0 (y is purely imaginary).
+
+    What THIS file establishes is narrower than that full chain:
+    PART I proves the two-way symmetry xy = 0 iff yx = 0 for a purely
+    imaginary nonzero x (extra hypotheses Moreno does not need), plus the
+    one-directional conjugate lemma xy = 0 -> x_bar*y = 0.  PART II verifies
+    the concrete dim-16 instance (the Moreno-Froloff pair e3+e10, e6-e15):
+    both products vanish and both factors are nonzero.
 
     Source: Moreno 1997, arXiv:q-alg/9710013v1, Corollary 1.6.
     Claim:  C-1538.
 
     Structure of this file:
-    PART I:   Abstract proof via Module Type (builds on C1539 results).
+    PART I:   Abstract two-way symmetry over the CDAlgInnerTrace interface.
     PART II:  Concrete sedenion verification (cbv + ring at dim=16).
 
-    The abstract proof reduces ZD symmetry to Im(L_x) = Im(R_x), which
-    requires the CD-specific H_a-module decomposition (Theorem 1.15).
-    The concrete proof bypasses this entirely by direct computation. *)
+    PART I derives the symmetry from the conjugate anti-automorphism plus
+    the trace-zero lemma; both come from the interface / the verified
+    TraceZero functor rather than being assumed.  PART II is independent and
+    establishes the concrete result by direct computation. *)
 
 (** ================================================================== *)
 (** * PART I: Abstract proof from CDAlgMoreno axioms.                  *)
 (** ================================================================== *)
 
 From Stdlib Require Import Reals Lra.
+From OpenGororoba Require Import CDTraceZero.
 Open Scope R_scope.
 
-(** Module Type: same as CDAlgMoreno from C1539. *)
-Module Type CDAlgInner.
-  Parameter A     : Type.
-  Parameter mul   : A -> A -> A.
-  Parameter conj  : A -> A.
-  Parameter neg   : A -> A.
-  Parameter inner : A -> A -> R.
-  Parameter zero  : A.
+(** Interface for the abstract ZD-symmetry derivation.
 
-  (** Norm squared. *)
-  Parameter norm_sq : A -> R.
-  Axiom norm_sq_nonneg   : forall x, norm_sq x >= 0.
-  Axiom norm_sq_zero_iff : forall x, norm_sq x = 0 <-> x = zero.
-  Axiom inner_self_norm  : forall x, inner x x = norm_sq x.
+    This INCLUDES the verified trace-zero interface CDAlgTraceZero -- which
+    already carries conj_antimorphism and the real/imaginary decomposition
+    that PROVING trace-zero needs -- and adds the four extra structural
+    identities the skew-symmetry / anti-automorphism route uses.  Folding
+    conj_antimorphism into the interface (rather than asserting it as a free
+    axiom mid-proof) turns it into a discharge obligation for any model;
+    trace-zero is then DERIVED from this interface, not assumed. *)
+Module Type CDAlgInnerTrace.
+  Include CDTraceZero.CDAlgTraceZero.
 
-  (** Moreno Lemma 1.3: adjoint identities. *)
-  Axiom inner_adj_left  : forall x y z,
-    inner (mul x y) z = inner y (mul (conj x) z).
+  (** Right adjoint identity.  The left adjoint identity and the conjugate
+      anti-automorphism are in the included interface; R_x skew-symmetry
+      needs the right form too. *)
   Axiom inner_adj_right : forall x y z,
     inner (mul x y) z = inner x (mul z (conj y)).
 
-  (** Inner product properties. *)
-  Axiom inner_symm      : forall x y, inner x y = inner y x.
-  Axiom inner_neg_left  : forall x y, inner (neg x) y = - inner x y.
-  Axiom inner_neg_right : forall x y, inner x (neg y) = - inner x y.
-  Axiom inner_zero_left : forall y, inner zero y = 0.
-
-  (** Conjugate and negation. *)
+  (** Conjugation is involutive; multiplication annihilates zero. *)
   Axiom conj_invol    : forall x, conj (conj x) = x.
-  Axiom conj_zero     : conj zero = zero.
-  Axiom neg_zero       : neg zero = zero.
-  Axiom neg_neg        : forall x, neg (neg x) = x.
-  Axiom neg_mul_left  : forall x y, mul (neg x) y = neg (mul x y).
-  Axiom neg_mul_right : forall x y, mul x (neg y) = neg (mul x y).
-
-  (** mul by zero. *)
   Axiom mul_zero_left  : forall x, mul zero x = zero.
   Axiom mul_zero_right : forall x, mul x zero = zero.
-
-  (** Non-degeneracy. *)
-  Axiom inner_nondeg : forall x, (forall y, inner x y = 0) -> x = zero.
-End CDAlgInner.
+End CDAlgInnerTrace.
 
 (** * ZD Symmetry derived from the axioms. *)
-Module MorZDSymmetry (Alg : CDAlgInner).
+Module MorZDSymmetry (Alg : CDAlgInnerTrace).
   Import Alg.
 
   (* ================================================================== *)
@@ -169,18 +158,17 @@ Module MorZDSymmetry (Alg : CDAlgInner).
 
       This completely replaces the Im(L_x) = Im(R_x) argument. *)
 
-  (** Conjugate anti-automorphism (proved concretely in CDConjAntimorph.v). *)
-  Axiom conj_antimorphism : forall x y,
-    conj (mul x y) = mul (conj y) (conj x).
+  (** Conjugate anti-automorphism is now an obligation of the
+      CDAlgInnerTrace interface (inherited from CDAlgTraceZero via Include),
+      so any model must discharge it -- concretely CDConjAntimorph.v's
+      sed_conj_antimorphism -- rather than it being assumed here. *)
 
-  (** Trace-zero: ZD pairs with a purely imaginary nonzero factor
-      force the other factor to also be purely imaginary.
-      Proved in CDTraceZero.v from adjoint + quadratic identity. *)
-  Axiom zd_trace_zero : forall x y,
-    conj x = neg x ->
-    mul x y = zero ->
-    x <> zero ->
-    conj y = neg y.
+  (** Trace-zero is DERIVED, not axiomatized: instantiate the verified
+      TraceZero functor on this same algebra.  Its zd_implies_y_imaginary is
+      exactly the statement the ZD-symmetry argument needs (so named in
+      CDTraceZero.v: "the form needed by C1538_MorZDSymmetry.v"). *)
+  Module TZ := CDTraceZero.TraceZero Alg.
+  Definition zd_trace_zero := TZ.zd_implies_y_imaginary.
 
   (** Double negation in products: (-a)(-b) = ab. *)
   Lemma neg_neg_mul : forall a b,

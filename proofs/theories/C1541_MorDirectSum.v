@@ -11,6 +11,16 @@
       Ker(T~_a) = V_1,
       V_lambda = {x in H_a^perp | a*(a*x) = -(lambda^2) x}.
 
+    SCOPE -- degenerate (alternative) regime.  The witness a is an octonion
+    (A_3) basis element, hence ALTERNATIVE: L_a^2 = -I, so Ker(L_a) = {0},
+    Ker(T~_a) = H_a^perp, and every nontrivial V_lambda vanishes.  The
+    4-summand decomposition collapses to H_a (+) H_a^perp (profile 4+4+0+0).
+    Moreno's Theorem 1.15 has non-trivial content only for NON-alternative
+    doubly-pure a at n >= 4 (the zero-divisor regime); that regime is
+    witnessed in MorenoKerLaNonAlternative.v (nonzero Ker(L_a), four
+    independent annihilators giving dim Ker(L_a) >= 4).  This file verifies
+    the alternative instance only.
+
     This file formalizes the canonical octonion witness used by the Rust
     Moreno lane:
 

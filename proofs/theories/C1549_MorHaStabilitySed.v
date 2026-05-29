@@ -11,6 +11,15 @@
     Key theorem: for a = sed_e 1 in CDSed,
       a*(a*x) = -x   for all x in CDSed.
 
+    SCOPE -- degenerate (alternative) regime.  a = sed_e 1 is a canonical
+    basis element, hence ALTERNATIVE -- the proved identity a*(a*x) = -x is
+    exactly L_a^2 = -I.  So Ker(L_a) = {0} and every nontrivial V_lambda
+    vanishes: even though dim 16 = A_4 is within Moreno's n >= 4 range, THIS
+    choice of a lands in the trivial case.  Moreno's structure has content
+    only for NON-alternative doubly-pure a (e.g. a = e3 + e10): see
+    MorenoKerLaNonAlternative.v for nonzero Ker(L_a) and dim Ker(L_a) >= 4 at
+    the same dimension.
+
     Proof:  The CD doubling formula gives
       (a*y)_lo = oct_mul(oct_e 1)(oct_lo y)
       (a*y)_hi = oct_mul(oct_hi y)(oct_neg(oct_e 1))
