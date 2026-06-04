@@ -12,7 +12,8 @@
 
 [plan]
 name = "post_gate_optimization_2026_05_12"
-status = "active"
+status = "subsumed"
+subsumed_by = "plans/repo_debt_taxonomy_roadmap_2026_06_04.toml"
 created = "2026-05-12"
 baseline_tag = "gate-optimization-v1"
 baseline_commit = "55d8e848"

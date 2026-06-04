@@ -3,7 +3,8 @@
 [meta]
 id = "REPO-DEBT-ROADMAP-2026-04-11"
 updated = "2026-04-11"
-status = "active"
+status = "superseded"
+superseded_by = "plans/repo_debt_taxonomy_roadmap_2026_06_04.toml"
 scope = "open_gororoba repository structure, build gates, scientific evidence lanes, and modularization"
 authoritative = false
 source_mode = "repo_evidence_plus_primary_pmd_docs"
