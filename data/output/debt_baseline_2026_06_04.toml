@@ -1,0 +1,148 @@
+# Debt baseline v3: anchored re-measurement for the reconciled taxonomy.
+#
+# WHY: Lock current numbers before the forward debt program so deltas are
+# quantifiable. Supersedes the 2026-05-09 v2 baseline. The taxonomy that
+# consumes these numbers is plans/repo_debt_taxonomy_roadmap_2026_06_04.toml.
+#
+# Re-run procedure:
+#   make repo-audit
+#   # writes data/output/audit/2026-06-04/repo_audit_anchored_2026_06_04.toml
+#   # this file is the hand-curated summary of that machine emission plus the
+#   # supplementary find/wc/ripgrep census recorded under [monolith], [registry],
+#   # and [supply_chain].
+#
+# Source artifact: data/output/audit/2026-06-04/repo_audit_anchored_2026_06_04.toml
+
+[meta]
+generated_at = "2026-06-04"
+generated_by = "repo-audit (anchored) + find/wc/ripgrep census"
+git_branch = "main"
+schema_version = 3
+supersedes = "data/output/debt_baseline_2026_05_09.toml"
+taxonomy_reference = "plans/repo_debt_taxonomy_roadmap_2026_06_04.toml"
+
+# ----------------------------------------------------------------------------
+# Anchored counts from crates/ (Rust workspace) only.
+# Comment-stripped + string-stripped source; see repo_audit.rs.
+# ----------------------------------------------------------------------------
+[code_quality_anchored.crates]
+rust_files                          = 2342   # was 2131 (workspace grew)
+unsafe_blocks                       = 488    # was 392 (+96, workspace grew)
+safety_comments                     = 163    # was 65  (+98, coverage 16.6% -> 33.4%)
+ignore_attrs                        = 131    # was 109
+allow_clippy_attrs                  = 124    # was 143
+allow_clippy_unjustified            = 7      # was 0 -- REGRESSION; strict-unjustified-per-root 0 gate would fail
+allow_dead_code_attrs               = 83     # was 64
+todo_fixme_xxx_hack                 = 0      # was 3 -- closed
+unimplemented_macro_calls           = 0
+todo_macro_calls                    = 0
+unreachable_macro_calls             = 41     # exhaustiveness pins, informational
+
+[code_quality_anchored.crates.notes]
+safety_block_coverage = "163/488 = 33.4% (block-level); up from 65/392 = 16.6% at 2026-05-09"
+allow_clippy_unjustified_regression = """
+allow_clippy_unjustified rose 0 -> 7 in crates/ since the Stage-B closure.
+make repo-audit-strict-unjustified-per-root 0 would now exit non-zero.
+Action: add a one-line rationale comment immediately above each of the 7
+new suppressions, or remove them. Tracked under DEBT-TEST-VERIFICATION.
+"""
+
+# ----------------------------------------------------------------------------
+# Anchored counts from proofs/ tree (Rust scaffolding + Rocq).
+# ----------------------------------------------------------------------------
+[code_quality_anchored.proofs]
+rust_files                          = 130
+rocq_files                          = 282    # was 279
+unsafe_blocks                       = 3420   # test/verifier scaffolding only
+allow_clippy_attrs                  = 66
+allow_clippy_unjustified            = 64
+allow_dead_code_attrs               = 102
+
+[code_quality_anchored.xtask]
+rust_files                          = 1      # single 3411-line manual dispatcher
+unsafe_blocks                       = 0
+
+# ----------------------------------------------------------------------------
+# Formal verification (proofs/, *.v), line-anchored.
+# ----------------------------------------------------------------------------
+[formal_verification_anchored]
+v_file_count                        = 282
+admitted_strict_count               = 0      # held at zero
+admit_strict_count                  = 0      # held at zero
+axiom_top_level_count               = 31     # was 32
+axiom_indented_count                = 84     # was 100 (-16)
+axiom_total                         = 115    # was 132
+parameter_top_level_count           = 8
+parameter_indented_count            = 49     # was 56
+parameter_total                     = 57     # was 64
+proof_gap_total                     = 172    # was 196 (115 axioms + 57 parameters)
+
+# ----------------------------------------------------------------------------
+# Monolith inventory (non-generated .rs; excludes registry_mirrors/, target/).
+# Source: find crates xtask -name '*.rs' -not -path '*/registry_mirrors/*'
+#         | xargs wc -l | sort -rn
+# ----------------------------------------------------------------------------
+[monolith]
+nongenerated_rs_files     = 1989
+over_2000_warn            = 33
+over_4000_target_max      = 5
+over_8000_urgent          = 0     # was 1 at 2026-05-12 (optical_database was 10648)
+
+[monolith.top5]
+optical_database_rs       = 7638  # TRANSCRIBED-DATA (Palik 1998); DEBT-DATA-TRANSCRIPTION
+boxkites_tests_rs         = 7016  # test file; boxkites.rs main already split
+repo_visuals_rs           = 4394
+emanation_tests_rs        = 4327  # test file
+provenance_store_lib_rs   = 4220  # was 5335 (partial impl-block decomposition)
+
+# ----------------------------------------------------------------------------
+# Registry counts (compat TOML headers).
+# ----------------------------------------------------------------------------
+[registry]
+claim_count               = 1441
+insight_count             = 182
+experiment_count          = 227
+binary_count_compat       = 452   # registry/binaries.toml [[binary]] entries
+binary_count_canonical    = 485   # registry/project.toml (SQLite); 33-gap by design
+provenance_records        = 270
+experiments_without_binary = 33   # DEBT-SCIENTIFIC-EVIDENCE actionable surface
+claims_with_formal_proof  = 144
+
+# ----------------------------------------------------------------------------
+# Supply chain.
+# ----------------------------------------------------------------------------
+[supply_chain]
+rustsec_ignored_count     = 9     # was 7 at 2026-04-30 -- GREW (+2 rustls-webpki: 0104, 0105)
+duplicate_dep_lines       = 2160
+machete_unused_count      = 0
+
+# ----------------------------------------------------------------------------
+# Deltas vs the 2026-05-09 v2 baseline, by direction.
+# ----------------------------------------------------------------------------
+[deltas_vs_2026_05_09]
+improved = [
+  "safety_comments 65 -> 163 (crates/ block coverage 16.6% -> 33.4%)",
+  "todo_fixme_xxx_hack 3 -> 0",
+  "axiom_total 132 -> 115; parameter_total 64 -> 57; proof_gap_total 196 -> 172",
+  "over_8000_urgent monoliths 1 -> 0",
+  "provenance_store/lib.rs 5335 -> 4220",
+]
+regressed = [
+  "allow_clippy_unjustified (crates/) 0 -> 7 -- strict gate would fail",
+  "rustsec_ignored_count 7 -> 9 (+2 rustls-webpki advisories)",
+  "unsafe_blocks (crates/) 392 -> 488 (workspace growth; coverage still improved)",
+]
+neutral = [
+  "unreachable_macro_calls 41 (unchanged; exhaustiveness pins)",
+  "machete_unused_count 0 (unchanged)",
+]
+
+[methodology]
+audit_binary = "crates/gororoba_cli_data/src/bin/repo_audit.rs"
+strip_pass   = "Rust block comments, line comments, and string/char literals replaced with same-length whitespace before regex matching."
+limitations  = """
+Same as v2: raw string literals are not specially handled; macro-generated
+code is counted un-expanded; cfg-gated unsafe is counted even if it would not
+compile on the current target. A syn-based v2 audit remains the future
+refinement for per-item attribution. v3 is sufficient as a regression anchor.
+"""
