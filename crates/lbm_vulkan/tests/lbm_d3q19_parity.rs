@@ -233,7 +233,7 @@ fn three_way_parity_16cubed_10steps() {
     }
 }
 
-#[allow(clippy::too_many_arguments)]
+#[allow(clippy::too_many_arguments)] // parity helper compares rho, velocity components, and per-channel values per cell
 fn check_cell(
     label: &str,
     cell: usize,

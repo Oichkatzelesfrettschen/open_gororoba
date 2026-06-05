@@ -43,7 +43,7 @@ const THREADS_PER_CUBE: u32 = 64;
 /// one source thread). cubecl writes through `Array<f32>` without
 /// atomics for this reason.
 #[cube(launch_unchecked)]
-#[allow(clippy::too_many_arguments)]
+#[allow(clippy::too_many_arguments)] // cubecl launch ABI: one kernel arg per GPU buffer/scalar; no struct packing under #[cube]
 pub fn lbm_d3q19_step_kernel(
     f_in: &Array<f32>,
     f_out: &mut Array<f32>,
@@ -208,7 +208,7 @@ pub fn lbm_d3q19_step_kernel(
 /// passes nx_u so the helper can return usize directly without an
 /// extra cast site at every call.
 #[cube]
-#[allow(clippy::too_many_arguments)]
+#[allow(clippy::too_many_arguments)] // #[cube] device fn takes lattice coords and grid dims as scalars
 fn periodic_neighbor(
     x: i32,
     y: i32,
