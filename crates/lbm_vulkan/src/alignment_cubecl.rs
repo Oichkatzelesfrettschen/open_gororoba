@@ -35,7 +35,7 @@ use cubecl_wgpu::{WgpuDevice, WgpuRuntime};
 /// All intermediate f32 values are immutable let bindings so the expand IR
 /// does not need to track phi-nodes for f32 mutable variables.
 #[cube(launch_unchecked)]
-#[allow(clippy::too_many_arguments)]
+#[allow(clippy::too_many_arguments)] // cubecl launch ABI: one kernel arg per GPU buffer/scalar; no struct packing under #[cube]
 pub fn box_kite_score_kernel(
     vectors: &Array<f32>,
     orientations: &Array<u32>,

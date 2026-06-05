@@ -65,11 +65,12 @@ jobs:
       # actions/cache) and compares the latest run's per-phase
       # elapsed_sec against the baseline median.
       #
-      # ADVISORY: continue-on-error allows the rest of CI to pass
-      # while we observe baseline behavior. Promote to a hard gate
-      # (remove continue-on-error) after ~2 weeks of stable data.
-      - name: Gate-timing regression check (advisory)
-        continue-on-error: true
+      # HARD GATE: the 2-week observation window has elapsed. The check
+      # is warmup-guarded -- a phase with fewer than --min-samples baseline
+      # records is reported as "warmup" and never fails -- so the gate stays
+      # dormant until enough committed history accrues, then catches a phase
+      # whose latest elapsed_sec exceeds --threshold x the baseline median.
+      - name: Gate-timing regression check
         run: |
           if [ -d data/output/audit ]; then
             cargo run -q -p xtask -- gate-timing-regression-check \

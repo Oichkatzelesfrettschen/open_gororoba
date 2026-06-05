@@ -112,7 +112,11 @@ claims_with_formal_proof  = 144
 # Supply chain.
 # ----------------------------------------------------------------------------
 [supply_chain]
-rustsec_ignored_count     = 9     # was 7 at 2026-04-30 -- GREW (+2 rustls-webpki: 0104, 0105)
+# Count active entries only: grep -cE '^\s*"RUSTSEC' deny.toml
+# (a naive grep -c RUSTSEC overcounts by 3 -- it matches resolved ids
+# named in the deny.toml resolution comment, the same comment-vs-code
+# artifact the repo_audit metric taxonomy warns about).
+rustsec_ignored_count     = 6     # was 7 at 2026-04-30 -- SHRANK (rustls-webpki 0098/0099/0104 resolved; core2 0105 added)
 duplicate_dep_lines       = 2160
 machete_unused_count      = 0
 
@@ -126,11 +130,11 @@ improved = [
   "axiom_total 132 -> 115; parameter_total 64 -> 57; proof_gap_total 196 -> 172",
   "over_8000_urgent monoliths 1 -> 0",
   "provenance_store/lib.rs 5335 -> 4220",
+  "rustsec active ignores 7 -> 6 (rustls-webpki 0098/0099/0104 resolved via 0.103.13; core2 0105 added)",
 ]
 regressed = [
-  "allow_clippy_unjustified (crates/) 0 -> 7 -- strict gate would fail",
-  "rustsec_ignored_count 7 -> 9 (+2 rustls-webpki advisories)",
-  "unsafe_blocks (crates/) 392 -> 488 (workspace growth; coverage still improved)",
+  "allow_clippy_unjustified (crates/) 0 -> 7 at snapshot time -- strict gate would fail; RESOLVED in the execution follow-up (7 lbm_vulkan cubecl/test allows justified)",
+  "unsafe_blocks (crates/) 392 -> 488 (workspace growth; SAFETY coverage still improved 16.6% -> 33.4%)",
 ]
 neutral = [
   "unreachable_macro_calls 41 (unchanged; exhaustiveness pins)",
