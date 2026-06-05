@@ -26,7 +26,7 @@ const THREADS_PER_CUBE: u32 = 64;
 /// one cell, performs the d'Humieres D3Q19 MRT collision (8 phases), then
 /// pushes post-collision values to the 19 periodic-neighbor cells.
 #[cube(launch_unchecked)]
-#[allow(clippy::too_many_arguments)]
+#[allow(clippy::too_many_arguments)] // cubecl launch ABI: one kernel arg per GPU buffer/scalar; no struct packing under #[cube]
 pub fn lbm_mrt_d3q19_step_kernel(
     f_in: &Array<f32>,
     f_out: &mut Array<f32>,
@@ -245,7 +245,7 @@ pub fn lbm_mrt_d3q19_step_kernel(
 
 /// Periodic neighbor index in row-major (z, y, x) order.
 #[cube]
-#[allow(clippy::too_many_arguments)]
+#[allow(clippy::too_many_arguments)] // #[cube] device fn takes lattice coords and grid dims as scalars
 fn periodic_neighbor(
     x: i32,
     y: i32,

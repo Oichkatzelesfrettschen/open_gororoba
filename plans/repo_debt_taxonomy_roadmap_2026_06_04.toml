@@ -258,15 +258,16 @@ id = "DEBT-SUPPLY-CHAIN"
 axis = "B_build_toolchain_delivery"
 label = "Security, license, and dependency-advisory currency"
 risk = "Advisories, duplicate dependency versions, unused deps, and accumulating RUSTSEC ignores enter through wide workspace growth; an ignore list that only grows hides unaddressed advisories."
-current_magnitude = "deny.toml RUSTSEC ignore list GREW from 7 (2026-04-30 baseline) to 9 (added RUSTSEC-2026-0104, RUSTSEC-2026-0105, both rustls-webpki). 2160 duplicate-dependency lines in cargo tree -d; cargo-machete reports 0 unused deps (Stage A)."
-magnitude_reproduce = "grep -c RUSTSEC deny.toml ; cargo tree -d | wc -l ; make machete"
+current_magnitude = "deny.toml has 6 active RUSTSEC ignores, down from 7 at the 2026-04-30 baseline (the rustls-webpki cluster 0098/0099/0104 was resolved via 0.103.13; core2 0105 was added). An earlier 7->9 figure was a measurement artifact: grep -c RUSTSEC counts the 3 resolved ids named in the deny.toml resolution comment. Use grep -cE '^\\s*\"RUSTSEC' for the true active count. 2160 duplicate-dependency lines in cargo tree -d; cargo-machete reports 0 unused deps (Stage A)."
+magnitude_reproduce = "grep -cE '^\\s*\"RUSTSEC' deny.toml ; cargo tree -d | wc -l ; make machete"
 confirmed_examples = [
-  "deny.toml ignores 9 RUSTSEC advisories (rustls-webpki cluster: 0098/0099/0104; plus 0141/0097/0105 and 2022-0081, 2024-0436, 2024-0384).",
+  "deny.toml has 6 active RUSTSEC ignores, each already annotated with the blocking dependency and dependency path, plus docs/adr/rustsec-dispositions.md.",
+  "rustls-webpki 0098/0099/0104 resolved 2026-04-30 via cargo update -p rustls-webpki --precise 0.103.13.",
   "2160 duplicate-dependency lines (cargo tree -d).",
 ]
-resolution_pattern = "Keep cargo-deny as the hard gate; for each RUSTSEC ignore record the upstream-fix tracking status and a re-evaluation date so the list shrinks over time; use duplicate-version audits for planning, not as a hard gate."
-falsifiable_acceptance = "Every entry in deny.toml [advisories].ignore has an adjacent comment naming the blocking dependency and a re-check trigger; grep -c RUSTSEC deny.toml does not exceed the prior snapshot without a recorded justification."
-status = "regressing"
+resolution_pattern = "Keep cargo-deny as the hard gate; for each RUSTSEC ignore record the blocking dependency and a re-check trigger (already present in deny.toml + the ADR); use duplicate-version audits for planning, not as a hard gate. Count active ignores with the anchored regex, never a bare grep -c."
+falsifiable_acceptance = "Every entry in deny.toml [advisories].ignore has an adjacent comment naming the blocking dependency and a re-check trigger (satisfied); grep -cE '^\\s*\"RUSTSEC' deny.toml does not exceed the prior snapshot without a recorded justification."
+status = "controlled"
 predecessor_ids = ["DEBT-SUPPLY-CHAIN"]
 cross_links = ["make cargo-deny-check", "make dep-audit"]
 
@@ -313,17 +314,17 @@ id = "DEBT-PROOF-EXTRACTION-FIDELITY"
 axis = "C_test_verification"
 label = "Binding between Rocq-proven models and shipping Rust code"
 risk = "A proof can be internally complete yet prove a property of an idealized model that the Rust executable does not actually implement. Without a binding, the formal-verification badge overclaims: the proof constrains a definition, not the kernel that runs. This is the single highest research-integrity risk for arXiv-grade claims."
-current_magnitude = "Qualitative. The repo proves theorems about Cayley-Dickson structures (Moreno 1997, Brown 1972) and ships Rust kernels (cd_kernel) computing in those algebras, but the linkage between a proven theorem identifier and the Rust function it certifies is by-naming-convention, not by extraction or property-based parity test. claims registry: 144 of 1441 claims carry formal_proof_present."
+current_magnitude = "The repo proves theorems about Cayley-Dickson structures (Moreno 1997, Brown 1972) and ships Rust kernels (cd_kernel) computing in those algebras. The first explicit proof-to-executable binding now exists: crates/cd_kernel/tests/proof_extraction_fidelity.rs reimplements the Rocq CDDoubleFunctor::cd_mul / cd_conj recurrence as an independent oracle and asserts all three production multiply paths (recursive cd_multiply, SIMD cd_multiply_simd, sign-table multiply_via_table) match it on seeded random inputs at dims 8..256, plus the octonion composition identity at dim 8. Remaining: most of the other 144-of-1441 proof-backed claims still bind by naming convention, not by a parity test."
 magnitude_reproduce = "grep -c 'formal_proof' registry/claims.toml ; ls proofs/extraction 2>/dev/null ; rg 'Brown1972|Moreno1997' crates/cd_kernel/src | wc -l"
 confirmed_examples = [
   "cd_kernel Rust multiplication vs Rocq sed_mul / oct_mul definitions (parity asserted by naming, not by a generated oracle).",
   "FidelityCD / tower-instantiation proofs referenced in scattered DEBT-PROOF tags.",
 ]
 resolution_pattern = "For each safety-critical algebraic identity, add a property-based Rust test (proptest) whose oracle is the same recurrence the Rocq proof uses, so the executable is checked against the proven recurrence on random inputs; record the theorem-id <-> Rust-function binding in the claim registry's formal_proof field."
-falsifiable_acceptance = "Each claim with formal_proof_present names both a Rocq theorem id AND a Rust test that exercises the corresponding executable path; the test suite includes a cd_kernel-vs-recurrence proptest that passes at dims 8..256."
-status = "open"
+falsifiable_acceptance = "cargo nextest run -p cd_kernel --test proof_extraction_fidelity passes (recurrence-binding landed); and each claim with formal_proof_present names both a Rocq theorem id AND a Rust test that exercises the corresponding executable path."
+status = "in_progress"  # first binding landed: cd_kernel multiply <-> CDDoubleFunctor::cd_mul
 predecessor_ids = []
-cross_links = ["DEBT-FORMAL-VERIFICATION", "DEBT-SCIENTIFIC-EVIDENCE"]
+cross_links = ["DEBT-FORMAL-VERIFICATION", "DEBT-SCIENTIFIC-EVIDENCE", "crates/cd_kernel/tests/proof_extraction_fidelity.rs"]
 
 [[debt_class]]
 id = "DEBT-OBSERVABILITY"
@@ -406,15 +407,16 @@ id = "DEBT-NUMERICAL-REPRODUCIBILITY"
 axis = "E_scientific_methodology"
 label = "Determinism, seed control, and cross-backend bitwise parity"
 risk = "A scientific result that does not reproduce bit-for-bit (or within a stated tolerance) on re-run or on a different backend is not research-grade. Nondeterministic time-seeding, unseeded RNG, and silent f32-GPU vs f64-CPU divergence undermine the source-of-data claim."
-current_magnitude = "241 Instant::now() call sites in crates/ (timing is fine for telemetry but must never seed a computation); GPU kernels run FP32 while CPU reference runs FP64, with an empirically-characterized ~1e-4 relative drift per D3Q19 step at low Mach. The drift is documented but not universally asserted by a parity test."
-magnitude_reproduce = "rg -c 'Instant::now\\(\\)' crates --type rust | awk -F: '{s+=$2} END{print s}' ; rg -n 'StdRng::seed_from_u64|thread_rng|from_entropy' crates --type rust"
+current_magnitude = "36 entropy-seeded RNG sites (rand::rng() / ThreadRng) across 22 crates/ files seed computations nondeterministically. NOTE: rand 0.10 renamed thread_rng() to rand::rng(), so a thread_rng/from_entropy grep is a false-negative detector (it reports 0 while the nondeterminism persists under the new name) -- detect with 'rand::rng\\(\\)|ThreadRng'. Also 241 Instant::now() call sites (telemetry is fine, but must never seed a computation). GPU kernels run FP32 while CPU reference runs FP64, with an empirically-characterized ~1e-4 relative drift per D3Q19 step at low Mach, documented but not universally asserted by a parity test. The seeded-ChaCha discipline is exemplified in crates/cd_kernel/tests/proof_extraction_fidelity.rs."
+magnitude_reproduce = "rg -c 'rand::rng\\(\\)|ThreadRng|thread_rng|from_entropy' crates --type rust | awk -F: '{s+=$2} END{print s}' ; rg -c 'Instant::now\\(\\)' crates --type rust | awk -F: '{s+=$2} END{print s}'"
 confirmed_examples = [
+  "36 rand::rng()/ThreadRng sites in 22 files (gororoba_algebra species_audit, lattice_filtration zero_divisor_census, cosmology_core mass_ladder, many gororoba_cli_physics bins).",
   "241 Instant::now() sites (telemetry vs computation must be separable).",
   "GPU FP32 vs CPU FP64 LBM drift (~1e-4 rel/step; documented in cd_kernel/lbm comments).",
 ]
-resolution_pattern = "Seed every stochastic pathway from an explicit u64 (never from_entropy/thread_rng in a computation); keep Instant::now strictly for telemetry; add cross-backend parity tests asserting GPU-vs-CPU agreement within a stated tolerance; record the tolerance as a claim with evidence."
-falsifiable_acceptance = "rg 'from_entropy|thread_rng' in non-test computation paths yields zero; a GPU-vs-CPU parity test asserts a bounded relative error at fixed seed for at least one LBM and one cd_kernel pathway."
-status = "open"
+resolution_pattern = "Seed every stochastic pathway from an explicit u64 (rand::rng()/ThreadRng forbidden in a computation; expose a --seed CLI flag defaulting to a fixed value so a run is reproducible yet a sweep can vary the seed); keep Instant::now strictly for telemetry; add cross-backend parity tests asserting GPU-vs-CPU agreement within a stated tolerance recorded as a claim. The 36-site conversion is a careful per-site sweep (a blind global hardcoded seed would break Monte-Carlo null-test semantics), not a single mechanical edit."
+falsifiable_acceptance = "rg 'rand::rng\\(\\)|ThreadRng|thread_rng|from_entropy' crates --type rust outside tests yields zero; a GPU-vs-CPU parity test asserts a bounded relative error at fixed seed for at least one LBM and one cd_kernel pathway."
+status = "open"  # detector corrected; 36-site seed-parameterization sweep remaining
 predecessor_ids = []
 cross_links = ["DEBT-SCIENTIFIC-EVIDENCE", "DEBT-PROOF-EXTRACTION-FIDELITY"]
 
@@ -423,15 +425,15 @@ id = "DEBT-DIMENSIONAL-UNITS"
 axis = "E_scientific_methodology"
 label = "Physical-unit correctness and non-dimensionalization conventions"
 risk = "Mixing physical units or conflating a quantity with its complement is a classic silent physics bug. In a workspace spanning cosmology (Mpc, redshift), heliosphere (AU), materials (eV, nm), and LBM (lattice units), an undeclared unit or an inverted convention corrupts results without a compiler error."
-current_magnitude = "Qualitative. A known notation hazard: the void-fraction variable vf in the LBM topological-void code, where a comment reads 'VF < 0.0006' but refers to the baryon filling fraction (1-vf), not vf itself (notation bug B-C1). Units are documented in comments but not type-enforced."
-magnitude_reproduce = "rg -n 'vf|void_fraction|filling_fraction' crates/*/src --type rust ; rg -n 'AU|Mpc|redshift|lattice_units|eV' crates --type rust | wc -l"
+current_magnitude = "The specific void-fraction notation hazard is RESOLVED: generate_topological_voids.rs now documents vf = void_count/total_cells (void fraction = exclusion) vs (1-vf) = baryon filling fraction in its header and labels both at the print site, with a debug_assert!((0.0..=1.0).contains(&vf)) range invariant. Broader debt remains: cross-domain unit conventions (Mpc, AU, eV, lattice units) are documented by comment, not enforced by a newtype, so a unit mix-up is not a compile error."
+magnitude_reproduce = "rg -n 'void_fraction|filling_fraction' crates --type rust ; rg -c 'AU|Mpc|redshift|lattice_units|eV' crates --type rust | awk -F: '{s+=$2} END{print s}'"
 confirmed_examples = [
-  "LBM void-fraction notation hazard (vf vs 1-vf; see generate_topological_voids).",
-  "Cross-domain unit conventions documented by comment, not by newtype.",
+  "LBM void-fraction notation hazard resolved in generate_topological_voids.rs (header + labeled prints + range debug_assert).",
+  "Cross-domain unit conventions still documented by comment, not by newtype.",
 ]
 resolution_pattern = "Where a quantity and its complement coexist, encode the convention in the name (filling_fraction vs void_fraction) and ideally a newtype; document the unit system per module header; add assertions on physical ranges (0<=fraction<=1, redshift>=0) at lane boundaries."
-falsifiable_acceptance = "The vf/(1-vf) notation hazard is resolved by an unambiguous name and a range assertion; each physics crate header declares its unit system; boundary assertions catch out-of-range physical quantities in tests."
-status = "open"
+falsifiable_acceptance = "Each physics crate header declares its unit system; boundary assertions catch out-of-range physical quantities; no variable conflates a quantity with its complement (vf/(1-vf) instance closed)."
+status = "in_progress"  # vf instance resolved; cross-domain unit type-safety remains
 predecessor_ids = []
 cross_links = ["MEMORY notation bug B-C1", "DEBT-NUMERICAL-REPRODUCIBILITY"]
 
@@ -661,11 +663,11 @@ goal = "Typed xtask owns policy parsing; toolchain pin reconciled; the RUSTSEC i
 tasks = [
   "Update the stale nightly-2026-03-05 references in AGENTS.md, CLAUDE.md, and the per-project MEMORY to the authoritative nightly-2026-04-05 pin in rust-toolchain.toml (the requirements narrative already matches).",
   "Migrate Makefile policy-heavy parsing (cpd report, integrity, governance) into xtask subcommands with structured output; keep make as a thin front door.",
-  "For each deny.toml RUSTSEC ignore, add an adjacent comment with the blocking dependency and a re-check trigger; remove any whose upstream fix has landed.",
+  "Keep each deny.toml RUSTSEC ignore annotated with the blocking dependency and a re-check trigger (already satisfied) and remove any whose upstream fix has landed (rustls-webpki cluster already removed).",
 ]
 acceptance_hooks = [
   "grep -rn nightly rust-toolchain.toml AGENTS.md CLAUDE.md registry/requirements_narrative.toml | grep -o 'nightly-[0-9-]*' | sort -u | wc -l  # == 1",
-  "make cargo-deny-check ; grep -c RUSTSEC deny.toml  # not above prior snapshot without justification",
+  "make cargo-deny-check ; grep -cE '^\\s*\"RUSTSEC' deny.toml  # active count not above prior snapshot without justification",
   "xtask --help  # subcommands discoverable via clap",
 ]
 risk_controls = [
@@ -679,7 +681,7 @@ axis = "C_test_verification"
 horizon = "2_to_5_sprints"
 goal = "Proven theorems bind to executable code via property tests; gate-timing regression is a hard gate."
 tasks = [
-  "Add a cd_kernel-vs-recurrence proptest whose oracle is the same recurrence the Rocq sed_mul/oct_mul proofs use; pass at dims 8..256 (DEBT-PROOF-EXTRACTION-FIDELITY).",
+  "Bind cd_kernel multiply to the proven recurrence with a seeded property test whose oracle is transcribed from Rocq CDDoubleFunctor::cd_mul; pass at dims 8..256 (LANDED: crates/cd_kernel/tests/proof_extraction_fidelity.rs). Extend the pattern to the next safety-critical proven identity.",
   "Record the Rocq-theorem-id <-> Rust-function binding in the formal_proof field for each proof-backed claim.",
   "Hold strict Admitted/admit at 0; keep a disposition row for every top-level Axiom.",
   "Remove continue-on-error from the CI gate-timing-regression-check now that the soak window (ended 2026-05-26) is complete.",
@@ -721,13 +723,13 @@ axis = "E_scientific_methodology"
 horizon = "ongoing"
 goal = "Every result reproduces at a fixed seed; units are unambiguous; signal claims carry blind-injection evidence."
 tasks = [
-  "Replace from_entropy/thread_rng in computation paths with explicit seeded RNG; keep Instant::now for telemetry only.",
+  "Replace the 36 rand::rng()/ThreadRng computation sites (22 files) with explicit seeded RNG behind a --seed flag (detect with 'rand::rng\\(\\)|ThreadRng'; rand 0.10 renamed thread_rng to rand::rng); keep Instant::now for telemetry only.",
   "Add at least one GPU-vs-CPU parity test asserting bounded relative error at a fixed seed (LBM and cd_kernel).",
-  "Resolve the vf vs (1-vf) notation hazard with an unambiguous name and a 0..1 range assertion; declare unit systems in physics-crate headers.",
+  "Declare unit systems in physics-crate headers and add 0..1 range assertions at fraction lane boundaries (the vf vs (1-vf) notation hazard in generate_topological_voids.rs is already resolved: header distinguishes vf=void fraction from (1-vf)=baryon filling fraction, with a debug_assert range invariant on vf).",
   "For each signal-detection claim, attach a blind-injection recovery measurement and a multiple-comparison treatment; record as an insight.",
 ]
 acceptance_hooks = [
-  "rg 'from_entropy|thread_rng' crates --type rust | rg -v test  # empty in computation paths",
+  "rg 'rand::rng\\(\\)|ThreadRng|thread_rng|from_entropy' crates --type rust | rg -v test  # empty in computation paths",
   "cargo nextest run  # GPU-vs-CPU parity test green",
   "rg -n 'void_fraction|filling_fraction' crates --type rust  # unambiguous naming",
 ]
