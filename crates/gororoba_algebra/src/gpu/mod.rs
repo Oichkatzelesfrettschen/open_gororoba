@@ -109,8 +109,8 @@ pub mod device {
     /// `gororoba_gpu_cuda::Context::with_default_device` helper so the
     /// `cudart_device::get_count` + ordinal-range check lives in one
     /// place across 13 workspace crates. The returned
-    /// `Arc<CudaContext>` is byte-compatible with the prior direct
-    /// `CudaContext::new(0)` return.
+    /// `Arc<CudaContext>` preserves the public return type for existing
+    /// GPU callers.
     ///
     /// # Returns
     /// A handle to GPU context for device 0, or an error if CUDA is unavailable.

@@ -68,11 +68,10 @@ struct GrmhdBuffers {
 
 fn load_kernels(ctx: &CudaContextHelper) -> Result<GrmhdKernels> {
     let opts = CompileOptions::for_arch(7, 0);
-    let ptx =
-        CompileOptions::compile_ptx(KERNEL_SRC, &opts).context("NVRTC compile kernels_grmhd.cu")?;
-    let registry = ModuleRegistry::load(
+    let registry = ModuleRegistry::compile_and_load(
         ctx.raw(),
-        ptx,
+        KERNEL_SRC,
+        &opts,
         &[
             "precompute_metric_kernel",
             "compute_flux_kernel",
@@ -81,7 +80,7 @@ fn load_kernels(ctx: &CudaContextHelper) -> Result<GrmhdKernels> {
             "flux_divergence_kernel",
         ],
     )
-    .context("Load GRMHD CUDA module")?;
+    .context("Compile/load GRMHD CUDA module")?;
 
     Ok(GrmhdKernels {
         precompute_metric: registry.get("precompute_metric_kernel")?,

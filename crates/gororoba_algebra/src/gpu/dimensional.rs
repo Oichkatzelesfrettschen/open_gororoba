@@ -311,11 +311,13 @@ impl GpuDimensionalEngine {
         let stream = ctx.default_stream();
 
         let opts = CompileOptions::empty();
-        let ptx = CompileOptions::compile_ptx(APT_CENSUS_KERNEL_SRC, &opts)
-            .map_err(|e| format!("NVRTC compile: {}", e))?;
-
-        let registry = ModuleRegistry::load(ctx.raw(), ptx, &["apt_census_kernel"])
-            .map_err(|e| format!("Module load: {}", e))?;
+        let registry = ModuleRegistry::compile_and_load(
+            ctx.raw(),
+            APT_CENSUS_KERNEL_SRC,
+            &opts,
+            &["apt_census_kernel"],
+        )
+        .map_err(|e| format!("Module compile/load: {}", e))?;
 
         let kernel = registry
             .get("apt_census_kernel")
@@ -897,10 +899,6 @@ mod tests {
             cpu_result.pure_count, cpu_result.n_samples, cpu_result.pure_ratio
         );
     }
-
-    // ================================================================
-    // Phase A (T4): dim=4096 wide-index APT census tests
-    // ================================================================
 
     #[test]
     fn test_generate_nodes_wide_dim512() {

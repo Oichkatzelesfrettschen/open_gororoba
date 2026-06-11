@@ -1,8 +1,7 @@
 //! NVRTC JIT compilation for TurboQuant CUDA kernels.
 //!
-//! Pattern from `lbm_3d_cuda/src/lib.rs`: embed kernel source as a static
-//! string, compile at runtime with architecture-targeted options, cache
-//! the compiled module.
+//! TurboQuant keeps compilation in the JIT layer and module loading in
+//! the launch layer so tests can validate the generated PTX boundary.
 
 /// Embedded CUDA kernel source.
 pub const KERNEL_SRC: &str = include_str!("kernels/turboquant.cu");
@@ -19,15 +18,15 @@ pub mod kernel_names {
 
 /// Compile the TurboQuant kernel source for the given compute capability.
 ///
-/// Returns the compiled PTX. The caller loads it into a `CudaModule`
-/// (typically via `gororoba_gpu_cuda::ModuleRegistry::load`).
+/// Returns the compiled PTX. The launch layer owns module loading
+/// because TurboQuant tests and dispatch code share the same JIT output.
 ///
 /// Delegates to `gororoba_gpu_cuda::CompileOptions::for_arch` which
 /// owns the canonical `(major, minor) -> "sm_XX"` mapping and avoids
 /// the `Box::leak(arch.to_string())` static-lifetime trick that prior
 /// versions of this fn used.
 ///
-/// Pattern from `lbm_3d_cuda`:
+/// TurboQuant intentionally keeps the PTX handoff visible:
 /// ```ignore
 /// let probe = gororoba_gpu_cuda::DeviceProbe::query()?;
 /// let ptx = compile_kernels(probe.major, probe.minor)?;
