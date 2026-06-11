@@ -75,10 +75,10 @@ impl UnifiedInt8Runner {
         // Compile INT8 SoA MRT kernel
         let src = include_str!("kernels_int8_soa.cu");
         let opts = compile_options_for_detected_arch();
-        let ptx = CompileOptions::compile_ptx(src, &opts)?;
-        let step_module_registry = ModuleRegistry::load(
+        let step_module_registry = ModuleRegistry::compile_and_load(
             ctx.raw(),
-            ptx,
+            src,
+            &opts,
             &[
                 "lbm_step_int8_soa_mrt_aa_ephemeral_kernel",
                 "initialize_int8_soa_ephemeral_kernel",
@@ -171,9 +171,12 @@ impl UnifiedInt8Runner {
         // Lazy-compile slice kernel
         if self.slice_kernel.is_none() {
             let opts = compile_options_for_detected_arch();
-            let ptx = CompileOptions::compile_ptx(KERNEL_SLICE_SRC, &opts)?;
-            let module_registry =
-                ModuleRegistry::load(self.ctx.raw(), ptx, &["read_slice_int8_soa"])?;
+            let module_registry = ModuleRegistry::compile_and_load(
+                self.ctx.raw(),
+                KERNEL_SLICE_SRC,
+                &opts,
+                &["read_slice_int8_soa"],
+            )?;
             let slice_kernel = module_registry.get("read_slice_int8_soa")?;
             self.slice_kernel = Some(slice_kernel);
             self.slice_module_registry = Some(module_registry);
