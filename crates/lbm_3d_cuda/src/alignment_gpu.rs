@@ -20,9 +20,13 @@ impl GpuBoxKiteAlignmentEngine {
         let stream = ctx.default_stream();
 
         let opts = CompileOptions::empty();
-        let ptx = CompileOptions::compile_ptx(include_str!("kernels_alignment.cu"), &opts).ok()?;
-        let module_registry =
-            ModuleRegistry::load(ctx.raw(), ptx, &["box_kite_alignment_scan"]).ok()?;
+        let module_registry = ModuleRegistry::compile_and_load(
+            ctx.raw(),
+            include_str!("kernels_alignment.cu"),
+            &opts,
+            &["box_kite_alignment_scan"],
+        )
+        .ok()?;
         let kernel = module_registry.get("box_kite_alignment_scan").ok()?;
 
         Some(Self {
