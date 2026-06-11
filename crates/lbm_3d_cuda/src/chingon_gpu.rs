@@ -68,11 +68,10 @@ impl ChingonGpuPipeline {
         let stream = ctx.default_stream();
 
         let opts = CompileOptions::with_arch(crate::preferred_cuda_arch());
-        let ptx = CompileOptions::compile_ptx(KERNEL_SRC, &opts)
-            .context("NVRTC compile kernels_chingon.cu")?;
-        let module_registry = ModuleRegistry::load(
+        let module_registry = ModuleRegistry::compile_and_load(
             ctx.raw(),
-            ptx,
+            KERNEL_SRC,
+            &opts,
             &[
                 "chingon_build_state_3body",
                 "chingon_avt_contraction",

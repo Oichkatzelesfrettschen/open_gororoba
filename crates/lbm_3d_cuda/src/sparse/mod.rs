@@ -48,14 +48,13 @@ impl SparseBrickMap {
     ) -> Result<Self> {
         // Compile kernels
         let opts = CompileOptions::with_arch(crate::preferred_cuda_arch());
-        let ptx = CompileOptions::compile_ptx(KERNEL_SPARSE_MAP_SRC, &opts)
-            .context("Failed to compile kernels_sparse_map.cu")?;
-        let module_registry = ModuleRegistry::load(
+        let module_registry = ModuleRegistry::compile_and_load(
             &ctx,
-            ptx,
+            KERNEL_SPARSE_MAP_SRC,
+            &opts,
             &["generate_occupancy_bitmask", "compact_bitmask_atomic"],
         )
-        .context("Failed to load sparse map module")?;
+        .context("Failed to compile/load sparse map module")?;
 
         let generate_occupancy_kernel = module_registry.get("generate_occupancy_bitmask")?;
         let compact_bitmask_kernel = module_registry.get("compact_bitmask_atomic")?;
@@ -290,15 +289,18 @@ impl SparseLbmSolver {
 
         // Compile kernel
         let opts = CompileOptions::with_arch(crate::preferred_cuda_arch());
-        let ptx = CompileOptions::compile_ptx(KERNEL_SPARSE_LBM_SRC, &opts)
-            .context("Failed to compile kernels_sparse_lbm.cu")?;
         let kernel_variant = preferred_sparse_kernel_variant();
         let kernel_name = match kernel_variant {
             SparseKernelVariant::DirectGlobal => "lbm_step_sparse_aa",
             SparseKernelVariant::SharedHaloTiled => "lbm_step_sparse_aa_tiled",
         };
-        let module_registry = ModuleRegistry::load(&map.ctx, ptx, &[kernel_name])
-            .context("Failed to load sparse lbm module")?;
+        let module_registry = ModuleRegistry::compile_and_load(
+            &map.ctx,
+            KERNEL_SPARSE_LBM_SRC,
+            &opts,
+            &[kernel_name],
+        )
+        .context("Failed to compile/load sparse lbm module")?;
 
         let lbm_step_kernel = module_registry.get(kernel_name)?;
         let prefetch_stream = match memory_mode {
