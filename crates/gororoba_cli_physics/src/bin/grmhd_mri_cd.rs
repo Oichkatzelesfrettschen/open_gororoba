@@ -1,7 +1,7 @@
 //! GRMHD MRI CD analysis: extract B-field from nubhlight HDF5 dumps, compute
 //! 32D Cayley-Dickson associator through MRI onset and saturation.
 //!
-//! Reads primitive variable array P[N1,N2,N3,8] where indices 5,6,7 are B1,B2,B3.
+//! Reads primitive variable array `P[N1,N2,N3,8]` where indices 5,6,7 are B1,B2,B3.
 //! Extracts midplane (theta=pi/2) slice, builds sliding Takens embedding windows,
 //! and computes associator norms at each dump time.
 

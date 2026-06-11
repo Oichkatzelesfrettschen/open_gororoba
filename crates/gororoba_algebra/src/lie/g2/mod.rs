@@ -8,12 +8,5 @@
 //!   embedding into 7-dimensional and 6-dimensional representations used
 //!   downstream by the neutrino-sector and Fano-line analyses.
 //!
-//! # Consolidation note (2026-05-08)
-//!
-//! These two files lived directly under `lie/` as `g2_stabilizer.rs` and
-//! `g2_su3_representation.rs`. Promoted into a sibling subdirectory because
-//! together they exceed 1800 lines and form a coherent G2-specific cluster.
-//! All external imports were hard-renamed; no compatibility shim.
-
 pub mod stabilizer;
 pub mod su3_representation;

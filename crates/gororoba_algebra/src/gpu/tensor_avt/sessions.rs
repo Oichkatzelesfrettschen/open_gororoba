@@ -2,6 +2,8 @@ use gororoba_gpu_bridge::ComputeBackend;
 
 #[cfg(feature = "gpu")]
 use super::cuda::{TensorAvtMulGpuWorkspace, TensorAvtNormGpuWorkspace};
+#[cfg(feature = "vulkan")]
+use super::vulkan::{TensorAvtMulVulkanWorkspace, TensorAvtNormVulkanWorkspace};
 use super::{
     TensorAVT,
     cpu::{TensorAvtCpuMulSession, TensorAvtCpuNormSession},
@@ -11,6 +13,8 @@ pub(crate) enum TensorAvtMulSessionInner {
     Cpu(TensorAvtCpuMulSession),
     #[cfg(feature = "gpu")]
     Cuda(TensorAvtMulGpuWorkspace),
+    #[cfg(feature = "vulkan")]
+    Vulkan(Box<TensorAvtMulVulkanWorkspace>),
 }
 
 pub struct TensorAvtMulSession {
@@ -44,6 +48,8 @@ impl TensorAvtMulSession {
             }
             #[cfg(feature = "gpu")]
             TensorAvtMulSessionInner::Cuda(workspace) => workspace.upload_a(a),
+            #[cfg(feature = "vulkan")]
+            TensorAvtMulSessionInner::Vulkan(workspace) => workspace.upload_a(a),
         }
     }
 
@@ -71,6 +77,10 @@ impl TensorAvtMulSession {
             TensorAvtMulSessionInner::Cuda(workspace) => {
                 workspace.upload_x(x, batch_size, self.dim)
             }
+            #[cfg(feature = "vulkan")]
+            TensorAvtMulSessionInner::Vulkan(workspace) => {
+                workspace.upload_x(x, batch_size, self.dim)
+            }
         }
     }
 
@@ -84,6 +94,10 @@ impl TensorAvtMulSession {
             #[cfg(feature = "gpu")]
             TensorAvtMulSessionInner::Cuda(workspace) => {
                 avt.launch_cd_mul_with_workspace(workspace)
+            }
+            #[cfg(feature = "vulkan")]
+            TensorAvtMulSessionInner::Vulkan(workspace) => {
+                avt.launch_cd_mul_vulkan_with_workspace(workspace.as_mut())
             }
         }
     }
@@ -109,6 +123,10 @@ impl TensorAvtMulSession {
             TensorAvtMulSessionInner::Cuda(workspace) => {
                 avt.launch_cd_mul_batch_with_workspace(batch_size, workspace)
             }
+            #[cfg(feature = "vulkan")]
+            TensorAvtMulSessionInner::Vulkan(workspace) => {
+                avt.launch_cd_mul_batch_vulkan_with_workspace(batch_size, workspace.as_mut())
+            }
         }
     }
 
@@ -133,6 +151,8 @@ impl TensorAvtMulSession {
             }
             #[cfg(feature = "gpu")]
             TensorAvtMulSessionInner::Cuda(workspace) => workspace.download_y(len),
+            #[cfg(feature = "vulkan")]
+            TensorAvtMulSessionInner::Vulkan(workspace) => workspace.download_y(len),
         }
     }
 }
@@ -141,6 +161,8 @@ pub(crate) enum TensorAvtNormSessionInner {
     Cpu(TensorAvtCpuNormSession),
     #[cfg(feature = "gpu")]
     Cuda(TensorAvtNormGpuWorkspace),
+    #[cfg(feature = "vulkan")]
+    Vulkan(Box<TensorAvtNormVulkanWorkspace>),
 }
 
 pub struct TensorAvtNormSession {
@@ -183,6 +205,10 @@ impl TensorAvtNormSession {
             TensorAvtNormSessionInner::Cuda(workspace) => {
                 workspace.upload_vectors(vectors, n_vectors, self.dim)
             }
+            #[cfg(feature = "vulkan")]
+            TensorAvtNormSessionInner::Vulkan(workspace) => {
+                workspace.upload_vectors(vectors, n_vectors, self.dim)
+            }
         }
     }
 
@@ -203,6 +229,10 @@ impl TensorAvtNormSession {
             #[cfg(feature = "gpu")]
             TensorAvtNormSessionInner::Cuda(workspace) => {
                 avt.launch_norm_sq_batch_with_workspace(n_vectors, workspace)
+            }
+            #[cfg(feature = "vulkan")]
+            TensorAvtNormSessionInner::Vulkan(workspace) => {
+                avt.launch_norm_sq_batch_vulkan_with_workspace(n_vectors, workspace.as_mut())
             }
         }
     }
@@ -227,6 +257,8 @@ impl TensorAvtNormSession {
             }
             #[cfg(feature = "gpu")]
             TensorAvtNormSessionInner::Cuda(workspace) => workspace.download_norms(n_vectors),
+            #[cfg(feature = "vulkan")]
+            TensorAvtNormSessionInner::Vulkan(workspace) => workspace.download_norms(n_vectors),
         }
     }
 }

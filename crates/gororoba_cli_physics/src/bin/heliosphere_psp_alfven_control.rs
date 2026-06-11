@@ -64,7 +64,7 @@ struct Cli {
     takens_lag: usize,
 
     /// Half-width (minutes) of the sliding window used for per-minute
-    /// class labeling.  Each minute sees a [t-W, t+W] context.
+    /// class labeling.  Each minute sees a `[t-W, t+W]` context.
     #[arg(long, default_value_t = 5)]
     label_half_window: usize,
 

@@ -23,6 +23,9 @@ pub struct PspSqtnRecord {
     pub electron_core_temperature_k: f64,
 }
 
+#[cfg(feature = "fetch")]
+pub use super::psp_sqtn_fetch::{PspSqtnProvider, parse_psp_sqtn_file};
+
 #[derive(Default)]
 pub(crate) struct SqtnHourAccumulator {
     pub density_sum: f64,

@@ -7,7 +7,14 @@ authoritative = true
 policy_version = 1
 policy = "artifact_source_of_truth.toml is authoritative; lane files are deterministic projections and must never diverge from master."
 best_practice = "single authoritative master, deterministic generated lanes, explicit blocked/manual intervention tracking, provenance-preserving mirrors, reproducible verification gates."
-best_practice_sources = ["https://www.w3.org/TR/prov-overview/", "https://www.nature.com/articles/sdata201618", "https://doi.org/10.25490/a97f-egyk", "https://schema.datacite.org/meta/kernel-4.5/", "https://docs.github.com/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-citation-files", "https://openlineage.io/docs/"]
+best_practice_sources = [
+    "https://www.w3.org/TR/prov-overview/",
+    "https://www.nature.com/articles/sdata201618",
+    "https://doi.org/10.25490/a97f-egyk",
+    "https://schema.datacite.org/meta/kernel-4.5/",
+    "https://docs.github.com/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-citation-files",
+    "https://openlineage.io/docs/",
+]
 master_registry = "registry/artifact_source_of_truth.toml"
 lane_count = 4
 total_artifact_count = 3236

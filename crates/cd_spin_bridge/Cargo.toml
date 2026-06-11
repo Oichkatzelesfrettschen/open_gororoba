@@ -5,11 +5,11 @@ edition = { workspace = true }
 license = { workspace = true }
 
 [dependencies]
-spin_tomography_core = { path = "../spin_tomography_core" }
-sign_imbalance = { path = "../sign_imbalance" }
 gororoba_algebra = { path = "../gororoba_algebra" }
 nalgebra = { workspace = true }
 num-complex = { workspace = true }
+sign_imbalance = { path = "../sign_imbalance" }
+spin_tomography_core = { path = "../spin_tomography_core" }
 
 [lints]
 workspace = true

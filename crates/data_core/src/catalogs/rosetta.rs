@@ -25,6 +25,9 @@ pub struct RosettaMagRecord {
     pub b_magnitude: f64,
 }
 
+#[cfg(feature = "fetch")]
+pub use super::rosetta_fetch::RosettaMagProvider;
+
 /// Rosetta RPC-MAG minute-resolution record for boundary detection.
 #[derive(Debug, Clone)]
 pub struct RosettaMagMinuteRecord {

@@ -39,10 +39,10 @@
 //!
 //! `__m256d` holds 4 f64 lanes `[a, b, c, d]`. The `hsum256` helper reduces to scalar:
 //! ```text
-//! lo     = castpd256_pd128([a, b, c, d]) = [a, b]   (low 128 bits, no instruction)
-//! hi     = extractf128([a, b, c, d], 1)  = [c, d]   (high 128 bits)
-//! sum128 = addpd([a,b], [c,d])           = [a+c, b+d]
-//! out    = hadd_pd(sum128, sum128)        = [a+b+c+d, a+b+c+d]
+//! lo     = castpd256_pd128(`[a, b, c, d]`) = `[a, b]`   (low 128 bits, no instruction)
+//! hi     = extractf128(`[a, b, c, d]`, 1)  = `[c, d]`   (high 128 bits)
+//! sum128 = addpd(`[a,b]`, `[c,d]`)           = `[a+c, b+d]`
+//! out    = hadd_pd(sum128, sum128)        = `[a+b+c+d, a+b+c+d]`
 //! result = cvtsd_f64(out)                = a+b+c+d
 //! ```
 //!
@@ -461,8 +461,8 @@ impl SignTableI8 {
     /// Compute the inner product sign(p, .) * coeffs using scalar i8 arithmetic.
     /// Returns i16 results (sign * coeff accumulated).
     ///
-    /// For the CD multiply inner loop: result[p^q] += sign(p,q) * b[q]
-    /// When b[q] is quantized to i8, this computes 16 products in one pass.
+    /// For the CD multiply inner loop: result`[p^q]` += sign(p,q) * b`[q]`
+    /// When b`[q]` is quantized to i8, this computes 16 products in one pass.
     pub fn signed_inner_product_scalar(&self, p: usize, coeffs: &[i8]) -> Vec<i16> {
         let row = self.row(p);
         let n = row.len().min(coeffs.len());

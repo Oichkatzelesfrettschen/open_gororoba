@@ -17,18 +17,18 @@ either gets resolved or has a written, exposure-bounded rationale.
 
 ## Decision
 
-| Advisory          | Severity | Status   | Action                                                 |
-|-------------------|----------|----------|--------------------------------------------------------|
-| RUSTSEC-2026-0098 | HIGH     | RESOLVED | cargo update -p rustls-webpki --precise 0.103.13       |
-| RUSTSEC-2026-0099 | HIGH     | RESOLVED | (same upgrade)                                         |
-| RUSTSEC-2026-0104 | HIGH     | RESOLVED | (same upgrade; this one was new since the plan)        |
-| fastrand yank     | --       | RESOLVED | cargo update -p fastrand                               |
-| RUSTSEC-2025-0141 | CRITICAL | IGNORED  | Dev-dep only; no runtime exposure                      |
-| RUSTSEC-2022-0081 | MEDIUM   | IGNORED  | Build-dep only; no runtime artifact                    |
-| RUSTSEC-2024-0436 | MEDIUM   | IGNORED  | Proc-macro; compile-time only                          |
-| RUSTSEC-2024-0384 | MEDIUM   | IGNORED  | Runtime via minifb; tracked for upstream resolution    |
-| RUSTSEC-2026-0097 | HIGH     | IGNORED  | We do not install custom rand loggers; exposure zero   |
-| RUSTSEC-2026-0105 | unmaint  | IGNORED  | core2 yanked, no upgrade path; via image -> rav1e      |
+| Advisory          | Severity | Status   | Action                                               |
+| ----------------- | -------- | -------- | ---------------------------------------------------- |
+| RUSTSEC-2026-0098 | HIGH     | RESOLVED | cargo update -p rustls-webpki --precise 0.103.13     |
+| RUSTSEC-2026-0099 | HIGH     | RESOLVED | (same upgrade)                                       |
+| RUSTSEC-2026-0104 | HIGH     | RESOLVED | (same upgrade; this one was new since the plan)      |
+| fastrand yank     | --       | RESOLVED | cargo update -p fastrand                             |
+| RUSTSEC-2025-0141 | CRITICAL | IGNORED  | Dev-dep only; no runtime exposure                    |
+| RUSTSEC-2022-0081 | MEDIUM   | IGNORED  | Build-dep only; no runtime artifact                  |
+| RUSTSEC-2024-0436 | MEDIUM   | IGNORED  | Proc-macro; compile-time only                        |
+| RUSTSEC-2024-0384 | MEDIUM   | IGNORED  | Runtime via minifb; tracked for upstream resolution  |
+| RUSTSEC-2026-0097 | HIGH     | IGNORED  | We do not install custom rand loggers; exposure zero |
+| RUSTSEC-2026-0105 | unmaint  | IGNORED  | core2 yanked, no upgrade path; via image -> rav1e    |
 
 After: `advisories ok, bans ok, licenses ok, sources ok`.
 
@@ -181,9 +181,9 @@ replace the AVIF/AV1 dep chain with another image format.
 - The `[advisories] ignore` list in `deny.toml` carries a one-line
   rationale per entry pointing back to this ADR.
 - T-118 will add `make supply-chain-gate` chaining cargo-deny + machete
-  + geiger-drift; it should also include a grep-check that
-  `register_custom_getrandom` has no callers (so RUSTSEC-2026-0097
-  exposure stays zero).
+  - geiger-drift; it should also include a grep-check that
+    `register_custom_getrandom` has no callers (so RUSTSEC-2026-0097
+    exposure stays zero).
 - T-119 tracks burn 0.21 evaluation as upstream blocker (when burn 0.21+
   releases with bincode 2 only, `iai-callgrind` is the last dep on
   bincode 1.x in this repo).

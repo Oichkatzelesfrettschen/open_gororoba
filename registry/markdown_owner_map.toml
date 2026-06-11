@@ -420,7 +420,6 @@ owner_group = "project"
 removal_status = "active"
 removal_reason = ""
 
-
 [[owner]]
 path = "docs/THEOREMS.md"
 owner_group = "project"
@@ -786,7 +785,6 @@ path = "docs/reports/pppl_nstxu_data_access_research_2026-03-28.md"
 owner_group = "project"
 removal_status = "active"
 removal_reason = ""
-
 
 [[owner]]
 path = "docs/reports/RC1_EVIDENCE_NOTE.md"

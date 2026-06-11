@@ -8,7 +8,7 @@
 //!
 //! WHAT: For each of N_DRAWS random seeds, samples T_ijk ~ N(0, 1/sqrt(dim))
 //! for i,j,k in [0,dim-1]^3 and uses the trilinear form
-//!   result_i = sum_{j,k} T[i][j][k] * x[j] * y[k]
+//!   `result_i = sum_{j,k} T[i][j][k] * x[j] * y[k]`
 //! as the per-step score (||result||_2).  This is the same tensor contraction
 //! structure as the CD associator but with random weights.
 //!
@@ -176,7 +176,7 @@ fn event_midpoint_unix(ev: &MmsEventInterval) -> i64 {
 
 /// Sample a dense random trilinear tensor T_ijk ~ N(0, 1/sqrt(dim)) and compute
 /// scores: for consecutive delay vector pairs (x, y), compute
-///   score = ||T(x,y)||_2  where  T(x,y)_i = sum_{j,k} T[i*dim*dim + j*dim + k] * x[j] * y[k]
+///   `score = ||T(x,y)||_2` where `T(x,y)_i = sum_{j,k} T[i*dim*dim + j*dim + k] * x[j] * y[k]`
 /// Returns one score per consecutive pair of delay vectors.
 fn compute_random_trilinear_scores(delay_vectors: &[Vec<f64>], dim: usize, seed: u64) -> Vec<f64> {
     let mut rng = ChaCha8Rng::seed_from_u64(seed);

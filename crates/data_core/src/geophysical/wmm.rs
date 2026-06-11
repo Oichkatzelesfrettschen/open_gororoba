@@ -4,7 +4,7 @@
 //! NOAA/NCEI and the British Geological Survey. Updated every 5 years.
 //! Degree/order up to 12, valid 2025-2030.
 //!
-//! Source: NOAA/NCEI, https://www.ncei.noaa.gov/products/world-magnetic-model
+//! Source: NOAA/NCEI, <https://www.ncei.noaa.gov/products/world-magnetic-model>
 //! Reference: Chulliat et al. (2024), NOAA Technical Report
 
 /// WMM 2025 coefficient file URLs.

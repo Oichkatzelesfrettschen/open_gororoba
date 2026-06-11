@@ -27,9 +27,9 @@
 
 use ash::vk;
 use gororoba_gpu_vulkan::{
-    Adapter, ComputePipeline, ComputePipelineBuilder, DescriptorSetLayout,
-    DescriptorSetLayoutSpec, Device, DeviceBuilder, Instance, InstanceBuilder, QueueFamilyRequirement,
-    ShaderModule, ValidationPolicy, VulkanError,
+    Adapter, ComputePipeline, ComputePipelineBuilder, DescriptorSetLayout, DescriptorSetLayoutSpec,
+    Device, DeviceBuilder, Instance, InstanceBuilder, QueueFamilyRequirement, ShaderModule,
+    ValidationPolicy, VulkanError,
 };
 
 use super::shaders::quantize_spv;
@@ -330,11 +330,7 @@ impl VulkanQuantizer {
                     ..Default::default()
                 },
             )?;
-            device.cmd_bind_pipeline(
-                cmd_buf,
-                vk::PipelineBindPoint::COMPUTE,
-                self.pipeline.raw(),
-            );
+            device.cmd_bind_pipeline(cmd_buf, vk::PipelineBindPoint::COMPUTE, self.pipeline.raw());
             device.cmd_bind_descriptor_sets(
                 cmd_buf,
                 vk::PipelineBindPoint::COMPUTE,
@@ -454,7 +450,7 @@ impl VulkanQuantizer {
         Ok(mem)
     }
 
-    /// Map memory, copy &[f32] into it, unmap. SAFETY: caller must
+    /// Map memory, copy &`[f32]` into it, unmap. SAFETY: caller must
     /// ensure mem was allocated with HOST_VISIBLE | HOST_COHERENT and
     /// is at least values.len()*4 bytes.
     unsafe fn upload_f32(
@@ -494,7 +490,7 @@ impl VulkanQuantizer {
         }
     }
 
-    /// Map memory, copy out into &mut [u32], unmap.
+    /// Map memory, copy out into &mut `[u32]`, unmap.
     unsafe fn download_u32(
         &self,
         mem: vk::DeviceMemory,
@@ -527,9 +523,7 @@ impl Drop for VulkanQuantizer {
         // tear-down order is reverse of construction order regardless
         // of struct field order.
         unsafe {
-            self.device
-                .raw()
-                .destroy_command_pool(self.cmd_pool, None);
+            self.device.raw().destroy_command_pool(self.cmd_pool, None);
         }
     }
 }

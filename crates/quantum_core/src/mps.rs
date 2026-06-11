@@ -3,7 +3,7 @@
 //! Implements a proper tensor network representation where an n-qubit state is
 //! decomposed into a chain of 3-index tensors:
 //!
-//!   |psi> = sum_{i1,...,in} A1[i1] * A2[i2] * ... * An[in] |i1...in>
+//!   `|psi> = sum_{i1,...,in} A1[i1] * A2[i2] * ... * An[in] |i1...in>`
 //!
 //! Each tensor Ak has indices (chi_L, d, chi_R) where:
 //! - chi_L: left bond dimension (connection to previous site)
@@ -52,7 +52,7 @@ const DEFAULT_SVD_THRESHOLD: f64 = 1e-12;
 /// Stored as a flattened Vec with row-major ordering.
 #[derive(Clone, Debug)]
 pub struct MpsTensor {
-    /// Tensor data in row-major order: [chi_L][d][chi_R]
+    /// Tensor data in row-major order: `[chi_L][d][chi_R]`
     pub data: Vec<c64>,
     /// Left bond dimension
     pub chi_left: usize,

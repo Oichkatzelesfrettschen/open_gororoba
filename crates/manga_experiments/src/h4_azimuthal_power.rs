@@ -74,7 +74,7 @@ impl Default for H4Config {
 /// A 2D velocity residual map on a square pixel grid.
 #[derive(Debug, Clone)]
 pub struct VelocityMap {
-    /// Pixel values [row][col] in km/s.
+    /// Pixel values `data[row][col]` in km/s.
     pub data: Vec<Vec<f64>>,
     /// Map half-size in pixels.
     pub half_size: usize,

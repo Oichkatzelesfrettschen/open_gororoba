@@ -139,14 +139,14 @@ pub struct OrbitalSite {
 }
 
 /// Hopping between orbitals. Specifies one direction only; the Hermitian
-/// conjugate H[to,from] += conj(amp)*exp(-ik.R) is added automatically.
+/// conjugate `H[to,from] += conj(amp)*exp(-ik.R)` is added automatically.
 #[derive(Clone, Debug)]
 pub struct Hopping {
     /// Source orbital index (in cell 0).
     pub from: usize,
     /// Target orbital index (in cell at `cell_offset`).
     pub to: usize,
-    /// Bravais lattice offset: R = cell_offset[0]*a1 + cell_offset[1]*a2.
+    /// Bravais lattice offset: `R = cell_offset[0]*a1 + cell_offset[1]*a2`.
     pub cell_offset: [i32; 2],
     /// Complex hopping amplitude t_{from,to}(R).
     pub amplitude: c64,
@@ -280,7 +280,7 @@ impl TightBindingModel {
 
     /// Compute band structure along a k-path.
     ///
-    /// Returns (k_distances, band_energies) where band_energies[band][k_idx].
+    /// Returns (k_distances, band_energies) where `band_energies[band][k_idx]`.
     pub fn band_structure_along_path(&self, path: &[(f64, f64)]) -> (Vec<f64>, Vec<Vec<f64>>) {
         let n_bands = self.n_orbitals();
         let n_k = path.len();

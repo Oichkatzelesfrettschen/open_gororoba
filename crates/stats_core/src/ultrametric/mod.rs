@@ -53,6 +53,10 @@ pub mod local;
 pub mod null_models;
 pub mod subset_search;
 pub mod temporal;
+#[cfg(feature = "cubecl")]
+pub mod ultrametric_cubecl;
+#[cfg(feature = "vulkan")]
+pub mod ultrametric_vulkan;
 
 use gororoba_algebra::{Rational, padic_distance};
 use rand::prelude::*;
@@ -97,6 +101,13 @@ pub use subset_search::{
     subset_search,
 };
 pub use temporal::{CascadeAnalysis, WaitingTimeStats, analyze_temporal_cascade};
+#[cfg(feature = "cubecl")]
+pub use ultrametric_cubecl::{
+    INF_DISTANCE, UltrametricCubeclKernel, minimax_distance_matrix_cpu,
+    ultrametric_cubecl_available,
+};
+#[cfg(feature = "vulkan")]
+pub use ultrametric_vulkan::{UltrametricVulkanKernel, ultrametric_vulkan_available};
 
 /// Configuration for ultrametric analysis.
 #[derive(Debug, Clone)]

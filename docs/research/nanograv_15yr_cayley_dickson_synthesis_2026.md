@@ -1,5 +1,7 @@
 # NANOGrav 15-Year Cayley-Dickson Synthesis
+
 # Repo-grounded technical monograph and gap audit
+
 # Snapshot date: 2026-03-19
 
 **Status**: Active research synthesis, not a publication-ready detection paper.
@@ -237,9 +239,9 @@ After the constant shift:
 Therefore
 
 `tilde{r}'_i(t_k) = r'_i(t_k) - mu'_i`
-`                  = (r_i(t_k) - lambda f_i) - (mu_i - lambda f_i)`
-`                  = r_i(t_k) - mu_i`
-`                  = tilde{r}_i(t_k)`
+`= (r_i(t_k) - lambda f_i) - (mu_i - lambda f_i)`
+`= r_i(t_k) - mu_i`
+`= tilde{r}_i(t_k)`
 
 So the centered residual series is invariant under the transform.
 
@@ -444,15 +446,15 @@ The repo contains several slice reports:
 
 For `dim = 512`, the reported cross-correlation drop varies noticeably across slices:
 
-| Slice | cross_corr_drop_pct | cv_cross_corr_drop_pct | null_pvalue |
-|---|---:|---:|---:|
-| full | 10.3156 | 4.7385 | 0.375 |
-| disk | 14.6648 | 15.5884 | 0.125 |
-| halo | 8.2685 | 1.0007 | 0.000 |
-| early | 10.1343 | 11.0124 | 0.875 |
-| middle | 11.4430 | 8.4270 | 0.500 |
-| late | 10.3156 | 4.7385 | 0.625 |
-| synthetic | 0.0102 | 0.1344 | 0.375 |
+| Slice     | cross_corr_drop_pct | cv_cross_corr_drop_pct | null_pvalue |
+| --------- | ------------------: | ---------------------: | ----------: |
+| full      |             10.3156 |                 4.7385 |       0.375 |
+| disk      |             14.6648 |                15.5884 |       0.125 |
+| halo      |              8.2685 |                 1.0007 |       0.000 |
+| early     |             10.1343 |                11.0124 |       0.875 |
+| middle    |             11.4430 |                 8.4270 |       0.500 |
+| late      |             10.3156 |                 4.7385 |       0.625 |
+| synthetic |              0.0102 |                 0.1344 |       0.375 |
 
 Interpretation:
 

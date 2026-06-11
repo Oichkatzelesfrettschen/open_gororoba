@@ -25,7 +25,7 @@ impl TomographyMoments {
     /// u'_i = 3 * (n1 . e_i) / alpha1
     /// v'_j = 3 * (n2 . e_j) / alpha2
     ///
-    /// Then E[u'] = a, E[v'] = b, E[u'v'] = T + ab^T (if no single-spin correlations leak).
+    /// Then E`[u']` = a, E`[v']` = b, E`[u'v']` = T + ab^T (if no single-spin correlations leak).
     pub fn add(&mut self, event: &SpinEvent, triad: &AlgebraicTriad) {
         let axes = triad.to_axes_vec();
 

@@ -4,7 +4,7 @@
 //! (Astronomical Data Query Language). This module provides a minimal sync
 //! query interface for TAP endpoints at ESA, CDS, NED, and similar archives.
 //!
-//! Reference: IVOA TAP 1.1 (2019), https://www.ivoa.net/documents/TAP/
+//! Reference: IVOA TAP 1.1 (2019), <https://www.ivoa.net/documents/TAP/>
 
 use crate::fetcher::{FetchError, download_to_string};
 

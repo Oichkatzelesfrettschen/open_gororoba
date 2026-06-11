@@ -36,7 +36,7 @@ impl ScalarImbalanceMap {
         Self { lambda }
     }
 
-    /// Map imbalance density F in [0,1] to scalar field phi in (0,1].
+    /// Map imbalance density F in `[0,1]` to scalar field phi in `(0,1]`.
     pub fn phi(self, imbalance: f64) -> f64 {
         let f = imbalance.clamp(0.0, 1.0);
         (-self.lambda * f).exp()

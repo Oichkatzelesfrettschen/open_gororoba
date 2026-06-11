@@ -13,7 +13,7 @@ pub struct EmanationTable {
     pub dimension: usize,
     pub strut_constant: usize,
     pub density: f64,
-    /// Adjacency matrix where table[i][j] is true if unit e_i and e_j zero-divide.
+    /// Adjacency matrix where table`[i]``[j]` is true if unit e_i and e_j zero-divide.
     pub table: Vec<Vec<bool>>,
 }
 

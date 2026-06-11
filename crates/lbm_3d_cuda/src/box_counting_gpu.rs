@@ -19,12 +19,16 @@
 //! global atomics by 32x compared to naive per-thread atomicAdd.
 
 use anyhow::{Context, Result};
-use cudarc::driver::{
-    CudaContext, CudaFunction, CudaSlice, CudaStream, LaunchConfig, PushKernelArg,
-};
+use cudarc::driver::{CudaContext, CudaSlice, CudaStream, PushKernelArg};
+use gororoba_gpu_cuda::{Buffer, CompileOptions, KernelHandle, LaunchConfig, ModuleRegistry};
 use std::sync::Arc;
 
 const KERNEL_BOX_COUNTING_SRC: &str = include_str!("kernels_box_counting.cu");
+const BOX_COUNT_AT_SCALE_KERNEL: &str = "box_count_at_scale";
+const ZERO_U32_KERNEL: &str = "zero_u32";
+const REDUCE_MINMAX_F32_KERNEL: &str = "reduce_minmax_f32";
+const BUILD_HISTOGRAM_F32_KERNEL: &str = "build_histogram_f32";
+const ZERO_HISTOGRAM_KERNEL: &str = "zero_histogram";
 
 /// Result of a GPU box-counting fractal dimension measurement.
 #[derive(Debug, Clone)]
@@ -42,64 +46,113 @@ pub struct BoxCountingResult {
 /// GPU box-counting engine.  Compile once, reuse across many galaxies.
 pub struct GpuBoxCounter {
     stream: Arc<CudaStream>,
-    kernel: CudaFunction,
-    zero_kernel: CudaFunction,
-    reduce_minmax_kernel: CudaFunction,
-    build_histogram_kernel: CudaFunction,
-    zero_histogram_kernel: CudaFunction,
-    d_count: CudaSlice<u32>,
-    d_histogram: CudaSlice<u32>,
-    d_min_buf: CudaSlice<f32>,
-    d_max_buf: CudaSlice<f32>,
+    _module_registry: ModuleRegistry,
+    kernel: KernelHandle,
+    zero_kernel: KernelHandle,
+    reduce_minmax_kernel: KernelHandle,
+    build_histogram_kernel: KernelHandle,
+    zero_histogram_kernel: KernelHandle,
+    d_count: Buffer<u32>,
+    d_histogram: Buffer<u32>,
+    d_min_buf: Buffer<f32>,
+    d_max_buf: Buffer<f32>,
+}
+
+struct BoxCountingKernels {
+    module_registry: ModuleRegistry,
+    kernel: KernelHandle,
+    zero_kernel: KernelHandle,
+    reduce_minmax_kernel: KernelHandle,
+    build_histogram_kernel: KernelHandle,
+    zero_histogram_kernel: KernelHandle,
+}
+
+struct BoxCountingBuffers {
+    d_count: Buffer<u32>,
+    d_histogram: Buffer<u32>,
+    d_min_buf: Buffer<f32>,
+    d_max_buf: Buffer<f32>,
 }
 
 impl GpuBoxCounter {
+    fn load_kernels(ctx: &Arc<CudaContext>) -> Result<BoxCountingKernels> {
+        let opts = CompileOptions::empty();
+        let ptx = CompileOptions::compile_ptx(KERNEL_BOX_COUNTING_SRC, &opts)
+            .context("NVRTC compilation of box-counting kernels")?;
+        let module_registry = ModuleRegistry::load(
+            ctx,
+            ptx,
+            &[
+                BOX_COUNT_AT_SCALE_KERNEL,
+                ZERO_U32_KERNEL,
+                REDUCE_MINMAX_F32_KERNEL,
+                BUILD_HISTOGRAM_F32_KERNEL,
+                ZERO_HISTOGRAM_KERNEL,
+            ],
+        )
+        .context("Load box-counting CUDA module")?;
+
+        let kernel = module_registry
+            .get(BOX_COUNT_AT_SCALE_KERNEL)
+            .context("Load box_count_at_scale")?;
+        let zero_kernel = module_registry
+            .get(ZERO_U32_KERNEL)
+            .context("Load zero_u32")?;
+        let reduce_minmax_kernel = module_registry
+            .get(REDUCE_MINMAX_F32_KERNEL)
+            .context("Load reduce_minmax_f32")?;
+        let build_histogram_kernel = module_registry
+            .get(BUILD_HISTOGRAM_F32_KERNEL)
+            .context("Load build_histogram_f32")?;
+        let zero_histogram_kernel = module_registry
+            .get(ZERO_HISTOGRAM_KERNEL)
+            .context("Load zero_histogram")?;
+
+        Ok(BoxCountingKernels {
+            module_registry,
+            kernel,
+            zero_kernel,
+            reduce_minmax_kernel,
+            build_histogram_kernel,
+            zero_histogram_kernel,
+        })
+    }
+
+    fn allocate_buffers(stream: &Arc<CudaStream>) -> Result<BoxCountingBuffers> {
+        let d_count = Buffer::<u32>::alloc_zeros(stream, 1).context("Alloc d_count")?;
+        let d_histogram = Buffer::<u32>::alloc_zeros(stream, 256).context("Alloc d_histogram")?;
+        let d_min_buf = Buffer::<f32>::alloc_zeros(stream, 1024).context("Alloc d_min_buf")?;
+        let d_max_buf = Buffer::<f32>::alloc_zeros(stream, 1024).context("Alloc d_max_buf")?;
+
+        Ok(BoxCountingBuffers {
+            d_count,
+            d_histogram,
+            d_min_buf,
+            d_max_buf,
+        })
+    }
+
     /// Compile box-counting kernels via NVRTC. Call once per session.
     ///
     /// Includes box-counting, histogram, and min/max reduction kernels
     /// for fully GPU-resident D_f computation (no density readback needed).
     pub fn new(ctx: &Arc<CudaContext>) -> Result<Self> {
         let stream = ctx.default_stream();
-        let ptx = cudarc::nvrtc::compile_ptx(KERNEL_BOX_COUNTING_SRC)
-            .context("NVRTC compilation of box-counting kernels")?;
-        let module = ctx
-            .load_module(ptx)
-            .context("Load box-counting CUDA module")?;
-
-        let kernel = module
-            .load_function("box_count_at_scale")
-            .context("Load box_count_at_scale")?;
-        let zero_kernel = module.load_function("zero_u32").context("Load zero_u32")?;
-        let reduce_minmax_kernel = module
-            .load_function("reduce_minmax_f32")
-            .context("Load reduce_minmax_f32")?;
-        let build_histogram_kernel = module
-            .load_function("build_histogram_f32")
-            .context("Load build_histogram_f32")?;
-        let zero_histogram_kernel = module
-            .load_function("zero_histogram")
-            .context("Load zero_histogram")?;
-
-        let d_count = stream.alloc_zeros::<u32>(1).context("Alloc d_count")?;
-        // 256-bin histogram for Otsu threshold
-        let d_histogram = stream
-            .alloc_zeros::<u32>(256)
-            .context("Alloc d_histogram")?;
-        // Min/max reduction buffers (max 1024 blocks)
-        let d_min_buf = stream.alloc_zeros::<f32>(1024).context("Alloc d_min_buf")?;
-        let d_max_buf = stream.alloc_zeros::<f32>(1024).context("Alloc d_max_buf")?;
+        let kernels = Self::load_kernels(ctx)?;
+        let buffers = Self::allocate_buffers(&stream)?;
 
         Ok(Self {
             stream,
-            kernel,
-            zero_kernel,
-            reduce_minmax_kernel,
-            build_histogram_kernel,
-            zero_histogram_kernel,
-            d_count,
-            d_histogram,
-            d_min_buf,
-            d_max_buf,
+            _module_registry: kernels.module_registry,
+            kernel: kernels.kernel,
+            zero_kernel: kernels.zero_kernel,
+            reduce_minmax_kernel: kernels.reduce_minmax_kernel,
+            build_histogram_kernel: kernels.build_histogram_kernel,
+            zero_histogram_kernel: kernels.zero_histogram_kernel,
+            d_count: buffers.d_count,
+            d_histogram: buffers.d_histogram,
+            d_min_buf: buffers.d_min_buf,
+            d_max_buf: buffers.d_max_buf,
         })
     }
 
@@ -108,44 +161,21 @@ impl GpuBoxCounter {
     /// Used for multi-stream pipelines where box-counting runs concurrently
     /// with LBM on a separate CUDA stream.
     pub fn new_with_stream(ctx: &Arc<CudaContext>, stream: Arc<CudaStream>) -> Result<Self> {
-        let ptx = cudarc::nvrtc::compile_ptx(KERNEL_BOX_COUNTING_SRC)
-            .context("NVRTC compilation of box-counting kernels")?;
-        let module = ctx
-            .load_module(ptx)
-            .context("Load box-counting CUDA module")?;
-
-        let kernel = module
-            .load_function("box_count_at_scale")
-            .context("Load box_count_at_scale")?;
-        let zero_kernel = module.load_function("zero_u32").context("Load zero_u32")?;
-        let reduce_minmax_kernel = module
-            .load_function("reduce_minmax_f32")
-            .context("Load reduce_minmax_f32")?;
-        let build_histogram_kernel = module
-            .load_function("build_histogram_f32")
-            .context("Load build_histogram_f32")?;
-        let zero_histogram_kernel = module
-            .load_function("zero_histogram")
-            .context("Load zero_histogram")?;
-
-        let d_count = stream.alloc_zeros::<u32>(1).context("Alloc d_count")?;
-        let d_histogram = stream
-            .alloc_zeros::<u32>(256)
-            .context("Alloc d_histogram")?;
-        let d_min_buf = stream.alloc_zeros::<f32>(1024).context("Alloc d_min_buf")?;
-        let d_max_buf = stream.alloc_zeros::<f32>(1024).context("Alloc d_max_buf")?;
+        let kernels = Self::load_kernels(ctx)?;
+        let buffers = Self::allocate_buffers(&stream)?;
 
         Ok(Self {
             stream,
-            kernel,
-            zero_kernel,
-            reduce_minmax_kernel,
-            build_histogram_kernel,
-            zero_histogram_kernel,
-            d_count,
-            d_histogram,
-            d_min_buf,
-            d_max_buf,
+            _module_registry: kernels.module_registry,
+            kernel: kernels.kernel,
+            zero_kernel: kernels.zero_kernel,
+            reduce_minmax_kernel: kernels.reduce_minmax_kernel,
+            build_histogram_kernel: kernels.build_histogram_kernel,
+            zero_histogram_kernel: kernels.zero_histogram_kernel,
+            d_count: buffers.d_count,
+            d_histogram: buffers.d_histogram,
+            d_min_buf: buffers.d_min_buf,
+            d_max_buf: buffers.d_max_buf,
         })
     }
 
@@ -175,17 +205,11 @@ impl GpuBoxCounter {
 
             // Zero counter
             let mut bz = self.stream.launch_builder(&self.zero_kernel);
-            bz.arg(&mut self.d_count);
-            unsafe { bz.launch(LaunchConfig::for_num_elems(1)) }?;
+            bz.arg(self.d_count.raw_mut());
+            unsafe { bz.launch(LaunchConfig::launch_1d(1)) }?;
 
             // Launch box-counting kernel
-            let threads = 256u32;
-            let blocks = total_boxes.div_ceil(threads);
-            let config = LaunchConfig {
-                grid_dim: (blocks, 1, 1),
-                block_dim: (threads, 1, 1),
-                shared_mem_bytes: 0,
-            };
+            let config = LaunchConfig::launch_1d(total_boxes);
 
             let nx_i = nx as i32;
             let ny_i = ny as i32;
@@ -194,7 +218,7 @@ impl GpuBoxCounter {
 
             let mut b = self.stream.launch_builder(&self.kernel);
             b.arg(d_rho_bytes)
-                .arg(&mut self.d_count)
+                .arg(self.d_count.raw_mut())
                 .arg(&threshold)
                 .arg(&nx_i)
                 .arg(&ny_i)
@@ -206,7 +230,7 @@ impl GpuBoxCounter {
             unsafe { b.launch(config) }?;
 
             // Read back count
-            let result = self.stream.clone_dtoh(&self.d_count)?;
+            let result = self.d_count.dtoh_vec()?;
             let count = result[0] as u64;
 
             if count > 0 {
@@ -234,23 +258,19 @@ impl GpuBoxCounter {
         // Pass 1: find min and max via parallel reduction
         let threads = 256u32;
         let blocks = ((n_cells as u32).div_ceil(threads)).min(1024);
-        let config = LaunchConfig {
-            grid_dim: (blocks, 1, 1),
-            block_dim: (threads, 1, 1),
-            shared_mem_bytes: 0,
-        };
+        let config = LaunchConfig::launch_blocks_1d(blocks, threads);
 
         let mut b = self.stream.launch_builder(&self.reduce_minmax_kernel);
         b.arg(d_rho_bytes)
-            .arg(&mut self.d_min_buf)
-            .arg(&mut self.d_max_buf)
+            .arg(self.d_min_buf.raw_mut())
+            .arg(self.d_max_buf.raw_mut())
             .arg(&n);
         unsafe { b.launch(config) }?;
 
         // Read back per-block results and reduce on CPU (<=1024 floats = 8 KB,
         // negligible vs the 8 MB density readback we are eliminating)
-        let min_vals = self.stream.clone_dtoh(&self.d_min_buf)?;
-        let max_vals = self.stream.clone_dtoh(&self.d_max_buf)?;
+        let min_vals = self.d_min_buf.dtoh_vec()?;
+        let max_vals = self.d_max_buf.dtoh_vec()?;
 
         let vmin = min_vals
             .iter()
@@ -269,19 +289,19 @@ impl GpuBoxCounter {
 
         // Pass 3: build 256-bin histogram on GPU
         let mut bz = self.stream.launch_builder(&self.zero_histogram_kernel);
-        bz.arg(&mut self.d_histogram);
-        unsafe { bz.launch(LaunchConfig::for_num_elems(256)) }?;
+        bz.arg(self.d_histogram.raw_mut());
+        unsafe { bz.launch(LaunchConfig::launch_1d(256)) }?;
 
         let mut bh = self.stream.launch_builder(&self.build_histogram_kernel);
         bh.arg(d_rho_bytes)
-            .arg(&mut self.d_histogram)
+            .arg(self.d_histogram.raw_mut())
             .arg(&vmin)
             .arg(&vmax)
             .arg(&n);
         unsafe { bh.launch(config) }?;
 
         // Read back 256 u32 histogram (1 KB -- 8000x smaller than density field)
-        let hist = self.stream.clone_dtoh(&self.d_histogram)?;
+        let hist = self.d_histogram.dtoh_vec()?;
 
         // Otsu's method on CPU from histogram (O(256), negligible)
         Ok(Self::otsu_from_histogram(&hist, vmin, vmax))
@@ -362,8 +382,8 @@ impl GpuBoxCounter {
     ) -> Result<BoxCountingResult> {
         // Upload density as raw bytes (FP32)
         let bytes: Vec<u8> = rho.iter().flat_map(|v| v.to_le_bytes()).collect();
-        let d_rho = self.stream.clone_htod(&bytes)?;
-        self.fractal_dimension_device(&d_rho, threshold, nx, ny, nz)
+        let d_rho = Buffer::<u8>::htod(&self.stream, &bytes)?;
+        self.fractal_dimension_device(d_rho.raw(), threshold, nx, ny, nz)
     }
 
     /// Log-log linear regression: D_f = -slope, plus R^2.
@@ -429,8 +449,8 @@ mod tests {
     #[test]
     #[ignore = "gpu (CUDA hardware required)"]
     fn test_gpu_box_counting_uniform() {
-        let ctx = CudaContext::new(0).expect("CUDA context");
-        let mut counter = GpuBoxCounter::new(&ctx).expect("GpuBoxCounter");
+        let ctx = gororoba_gpu_cuda::Context::with_default_device().expect("CUDA context");
+        let mut counter = GpuBoxCounter::new(ctx.raw()).expect("GpuBoxCounter");
         let n = 16usize;
         let rho = vec![2.0_f32; n * n * n];
         let result = counter
@@ -446,8 +466,8 @@ mod tests {
     #[test]
     #[ignore = "gpu (CUDA hardware required)"]
     fn test_gpu_box_counting_single_cell() {
-        let ctx = CudaContext::new(0).expect("CUDA context");
-        let mut counter = GpuBoxCounter::new(&ctx).expect("GpuBoxCounter");
+        let ctx = gororoba_gpu_cuda::Context::with_default_device().expect("CUDA context");
+        let mut counter = GpuBoxCounter::new(ctx.raw()).expect("GpuBoxCounter");
         let n = 16usize;
         let mut rho = vec![0.0_f32; n * n * n];
         let c = n / 2;
@@ -465,8 +485,8 @@ mod tests {
     #[test]
     #[ignore = "gpu (CUDA hardware required)"]
     fn test_gpu_box_counting_filled_plane() {
-        let ctx = CudaContext::new(0).expect("CUDA context");
-        let mut counter = GpuBoxCounter::new(&ctx).expect("GpuBoxCounter");
+        let ctx = gororoba_gpu_cuda::Context::with_default_device().expect("CUDA context");
+        let mut counter = GpuBoxCounter::new(ctx.raw()).expect("GpuBoxCounter");
         let n = 16usize;
         let mut rho = vec![0.0_f32; n * n * n];
         let cz = n / 2;
@@ -490,8 +510,8 @@ mod tests {
     fn test_gpu_cpu_agreement() {
         use cosmology_core::sersic::{box_counting_fractal_dim_threshold, otsu_threshold_f32};
 
-        let ctx = CudaContext::new(0).expect("CUDA context");
-        let mut counter = GpuBoxCounter::new(&ctx).expect("GpuBoxCounter");
+        let ctx = gororoba_gpu_cuda::Context::with_default_device().expect("CUDA context");
+        let mut counter = GpuBoxCounter::new(ctx.raw()).expect("GpuBoxCounter");
         let n = 16usize;
         let rho: Vec<f32> = (0..(n * n * n)).map(|i| ((i % 7) as f32) * 0.3).collect();
 
@@ -518,8 +538,8 @@ mod tests {
     #[test]
     #[ignore = "gpu (CUDA hardware required)"]
     fn test_gpu_empty_field_graceful() {
-        let ctx = CudaContext::new(0).expect("CUDA context");
-        let mut counter = GpuBoxCounter::new(&ctx).expect("GpuBoxCounter");
+        let ctx = gororoba_gpu_cuda::Context::with_default_device().expect("CUDA context");
+        let mut counter = GpuBoxCounter::new(ctx.raw()).expect("GpuBoxCounter");
         let n = 8usize;
         let rho = vec![0.0_f32; n * n * n];
         let result = counter

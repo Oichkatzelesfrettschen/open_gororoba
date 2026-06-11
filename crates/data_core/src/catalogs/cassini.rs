@@ -81,6 +81,9 @@ pub fn parse_cassini_cruise(content: &str) -> Vec<SpdfMergedRecord> {
     CASSINI_MISSION.parse_merged(content)
 }
 
+#[cfg(feature = "fetch")]
+pub use super::cassini_fetch::CassiniCruiseProvider;
+
 /// Parse Cassini cruise merged hourly data from a file.
 pub fn parse_cassini_cruise_file(
     path: &std::path::Path,

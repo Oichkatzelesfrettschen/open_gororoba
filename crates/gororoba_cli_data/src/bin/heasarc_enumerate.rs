@@ -2,7 +2,7 @@
 //! docs/toolchain/heasarc-catalog-walker.md).
 //!
 //! Pulls the full VOSI `tableset` from the HEASARC TAP service at
-//! https://heasarc.gsfc.nasa.gov/xamin/vo/tap/tables and persists a
+//! <https://heasarc.gsfc.nasa.gov/xamin/vo/tap/tables> and persists a
 //! snapshot in `registry/heasarc_catalogs.toml` covering every
 //! catalog table with its schema membership and description. The
 //! snapshot is SHA256-fingerprinted so drift-check can run without

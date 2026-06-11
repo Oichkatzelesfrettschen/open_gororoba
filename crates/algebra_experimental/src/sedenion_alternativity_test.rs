@@ -1,4 +1,4 @@
-use cd_kernel::cayley_dickson::{cd_multiply};
+use cd_kernel::cayley_dickson::cd_multiply;
 use rand::Rng;
 
 fn main() {
@@ -10,8 +10,8 @@ fn main() {
         let mut y: Vec<f64> = (0..dim).map(|_| rng.random_range(-1.0..1.0)).collect();
 
         // Normalize
-        let norm_x = x.iter().map(|v| v*v).sum::<f64>().sqrt();
-        let norm_y = y.iter().map(|v| v*v).sum::<f64>().sqrt();
+        let norm_x = x.iter().map(|v| v * v).sum::<f64>().sqrt();
+        let norm_y = y.iter().map(|v| v * v).sum::<f64>().sqrt();
         x.iter_mut().for_each(|v| *v /= norm_x);
         y.iter_mut().for_each(|v| *v /= norm_y);
 

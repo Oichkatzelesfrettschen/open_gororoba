@@ -11,11 +11,9 @@
 //! - Cross-validation: GPU sampled vs CPU exhaustive at dims 64-256
 
 #[cfg(feature = "gpu")]
-use cudarc::driver::{CudaContext, LaunchConfig, PushKernelArg};
+use cudarc::driver::PushKernelArg;
 #[cfg(feature = "gpu")]
-use cudarc::nvrtc::compile_ptx;
-#[cfg(feature = "gpu")]
-use std::sync::Arc;
+use gororoba_gpu_cuda::{Buffer, CompileOptions, LaunchConfig, ModuleRegistry};
 
 /// Result of GPU APT census computation
 #[derive(Debug, Clone)]
@@ -50,6 +48,42 @@ impl GpuAptResult {
 
 /// GPU-accelerated APT census engine for Monte Carlo sampling
 pub struct GpuDimensionalEngine;
+
+fn validate_apt_sampling_input(dim: usize, n_nodes: usize, n_samples: usize) -> Result<(), String> {
+    if dim < 2 {
+        return Err(format!("dimensional APT dimension must be >= 2, got {dim}"));
+    }
+    if !dim.is_power_of_two() {
+        return Err(format!(
+            "dimensional APT dimension must be a power of two, got {dim}"
+        ));
+    }
+    if n_nodes < 3 && n_samples != 0 {
+        return Err(format!(
+            "dimensional APT needs at least 3 nodes for sampling, got {n_nodes}"
+        ));
+    }
+    Ok(())
+}
+
+#[cfg(feature = "gpu")]
+fn validate_apt_gpu_input(dim: usize, n_nodes: usize, n_samples: usize) -> Result<(), String> {
+    validate_apt_sampling_input(dim, n_nodes, n_samples)?;
+    if dim > u32::MAX as usize {
+        return Err(format!(
+            "dimensional APT dimension {dim} exceeds u32 kernel range"
+        ));
+    }
+    if n_nodes > u32::MAX as usize {
+        return Err(format!("dimensional APT node count {n_nodes} exceeds u32"));
+    }
+    if n_samples > u32::MAX as usize {
+        return Err(format!(
+            "dimensional APT sample count {n_samples} exceeds u32 dispatch"
+        ));
+    }
+    Ok(())
+}
 
 /// CUDA kernel for APT census via Monte Carlo triangle sampling
 /// Each thread samples one random triangle and classifies via APT
@@ -253,86 +287,83 @@ impl GpuDimensionalEngine {
         n_samples: usize,
         seed: u64,
     ) -> Result<GpuAptResult, String> {
-        let ctx = Arc::new(CudaContext::new(0).map_err(|e| format!("CUDA init: {}", e))?);
-        let stream = ctx.default_stream();
+        validate_apt_gpu_input(dim, nodes.len(), n_samples)?;
+        if n_samples == 0 {
+            return Self::compute_apt_cpu(dim, nodes, n_samples, seed);
+        }
 
-        let ptx =
-            compile_ptx(APT_CENSUS_KERNEL_SRC).map_err(|e| format!("NVRTC compile: {}", e))?;
-
-        let module = ctx
-            .load_module(ptx)
-            .map_err(|e| format!("Module load: {}", e))?;
-
-        let kernel = module
-            .load_function("apt_census_kernel")
-            .map_err(|e| format!("Kernel load: {}", e))?;
-
-        let dim_u32 = dim as u32;
-        let dim_half = (dim / 2) as u32;
-        let n_nodes_u32 = nodes.len() as u32;
-        let n_samples_u32 = n_samples as u32;
+        let dim_u32 = u32::try_from(dim)
+            .map_err(|_| format!("dimensional APT dimension {dim} exceeds u32 kernel range"))?;
+        let dim_half = u32::try_from(dim / 2)
+            .map_err(|_| format!("dimensional APT half dimension {} exceeds u32", dim / 2))?;
+        let n_nodes_u32 = u32::try_from(nodes.len())
+            .map_err(|_| format!("dimensional APT node count {} exceeds u32", nodes.len()))?;
+        let n_samples_u32 = u32::try_from(n_samples).map_err(|_| {
+            format!("dimensional APT sample count {n_samples} exceeds u32 dispatch")
+        })?;
 
         // Extract node arrays
         let node_a: Vec<u8> = nodes.iter().map(|&(a, _)| a).collect();
         let node_b: Vec<u8> = nodes.iter().map(|&(_, b)| b).collect();
 
-        // Upload nodes to GPU
-        let node_a_dev = stream
-            .clone_htod(&node_a)
-            .map_err(|e| format!("Upload node_a: {}", e))?;
+        let ctx = gororoba_gpu_cuda::Context::with_default_device()
+            .map_err(|e| format!("CUDA init: {}", e))?;
+        let stream = ctx.default_stream();
 
-        let node_b_dev = stream
-            .clone_htod(&node_b)
-            .map_err(|e| format!("Upload node_b: {}", e))?;
+        let opts = CompileOptions::empty();
+        let ptx = CompileOptions::compile_ptx(APT_CENSUS_KERNEL_SRC, &opts)
+            .map_err(|e| format!("NVRTC compile: {}", e))?;
+
+        let registry = ModuleRegistry::load(ctx.raw(), ptx, &["apt_census_kernel"])
+            .map_err(|e| format!("Module load: {}", e))?;
+
+        let kernel = registry
+            .get("apt_census_kernel")
+            .map_err(|e| format!("Kernel load: {}", e))?;
+
+        // Upload nodes to GPU
+        let node_a_dev =
+            Buffer::htod(&stream, &node_a).map_err(|e| format!("Upload node_a: {}", e))?;
+
+        let node_b_dev =
+            Buffer::htod(&stream, &node_b).map_err(|e| format!("Upload node_b: {}", e))?;
 
         // Allocate counter arrays (initialized to 0)
-        let mut pure_count_dev = stream
-            .alloc_zeros::<u32>(1)
+        let mut pure_count_dev = Buffer::<u32>::alloc_zeros(&stream, 1)
             .map_err(|e| format!("Alloc pure_count: {}", e))?;
 
-        let mut mixed_count_dev = stream
-            .alloc_zeros::<u32>(1)
+        let mut mixed_count_dev = Buffer::<u32>::alloc_zeros(&stream, 1)
             .map_err(|e| format!("Alloc mixed_count: {}", e))?;
 
-        let mut fiber_00_dev = stream
-            .alloc_zeros::<u32>(1)
-            .map_err(|e| format!("Alloc fiber_00: {}", e))?;
+        let mut fiber_00_dev =
+            Buffer::<u32>::alloc_zeros(&stream, 1).map_err(|e| format!("Alloc fiber_00: {}", e))?;
 
-        let mut fiber_01_dev = stream
-            .alloc_zeros::<u32>(1)
-            .map_err(|e| format!("Alloc fiber_01: {}", e))?;
+        let mut fiber_01_dev =
+            Buffer::<u32>::alloc_zeros(&stream, 1).map_err(|e| format!("Alloc fiber_01: {}", e))?;
 
-        let mut fiber_10_dev = stream
-            .alloc_zeros::<u32>(1)
-            .map_err(|e| format!("Alloc fiber_10: {}", e))?;
+        let mut fiber_10_dev =
+            Buffer::<u32>::alloc_zeros(&stream, 1).map_err(|e| format!("Alloc fiber_10: {}", e))?;
 
-        let mut fiber_11_dev = stream
-            .alloc_zeros::<u32>(1)
-            .map_err(|e| format!("Alloc fiber_11: {}", e))?;
+        let mut fiber_11_dev =
+            Buffer::<u32>::alloc_zeros(&stream, 1).map_err(|e| format!("Alloc fiber_11: {}", e))?;
 
         // Launch kernel
-        let block_size = 256u32;
-        let grid_size = n_samples_u32.div_ceil(block_size);
-        let cfg = LaunchConfig {
-            grid_dim: (grid_size, 1, 1),
-            block_dim: (block_size, 1, 1),
-            shared_mem_bytes: 0,
-        };
+        let cfg = LaunchConfig::launch_1d(n_samples_u32);
 
         let mut builder = stream.launch_builder(&kernel);
         builder.arg(&dim_u32);
         builder.arg(&dim_half);
         builder.arg(&n_nodes_u32);
-        builder.arg(&node_a_dev);
-        builder.arg(&node_b_dev);
+        builder.arg(node_a_dev.raw());
+        builder.arg(node_b_dev.raw());
         builder.arg(&seed);
         builder.arg(&n_samples_u32);
-        builder.arg(&mut pure_count_dev);
-        builder.arg(&mut mixed_count_dev);
-        builder.arg(&mut fiber_00_dev);
-        builder.arg(&mut fiber_01_dev);
-        builder.arg(&mut fiber_10_dev);
-        builder.arg(&mut fiber_11_dev);
+        builder.arg(pure_count_dev.raw_mut());
+        builder.arg(mixed_count_dev.raw_mut());
+        builder.arg(fiber_00_dev.raw_mut());
+        builder.arg(fiber_01_dev.raw_mut());
+        builder.arg(fiber_10_dev.raw_mut());
+        builder.arg(fiber_11_dev.raw_mut());
 
         unsafe {
             builder
@@ -341,28 +372,28 @@ impl GpuDimensionalEngine {
         }
 
         // Download results
-        let pure_count_vec: Vec<u32> = stream
-            .clone_dtoh(&pure_count_dev)
+        let pure_count_vec: Vec<u32> = pure_count_dev
+            .dtoh_vec()
             .map_err(|e| format!("Copy pure_count: {}", e))?;
 
-        let mixed_count_vec: Vec<u32> = stream
-            .clone_dtoh(&mixed_count_dev)
+        let mixed_count_vec: Vec<u32> = mixed_count_dev
+            .dtoh_vec()
             .map_err(|e| format!("Copy mixed_count: {}", e))?;
 
-        let fiber_00_vec: Vec<u32> = stream
-            .clone_dtoh(&fiber_00_dev)
+        let fiber_00_vec: Vec<u32> = fiber_00_dev
+            .dtoh_vec()
             .map_err(|e| format!("Copy fiber_00: {}", e))?;
 
-        let fiber_01_vec: Vec<u32> = stream
-            .clone_dtoh(&fiber_01_dev)
+        let fiber_01_vec: Vec<u32> = fiber_01_dev
+            .dtoh_vec()
             .map_err(|e| format!("Copy fiber_01: {}", e))?;
 
-        let fiber_10_vec: Vec<u32> = stream
-            .clone_dtoh(&fiber_10_dev)
+        let fiber_10_vec: Vec<u32> = fiber_10_dev
+            .dtoh_vec()
             .map_err(|e| format!("Copy fiber_10: {}", e))?;
 
-        let fiber_11_vec: Vec<u32> = stream
-            .clone_dtoh(&fiber_11_dev)
+        let fiber_11_vec: Vec<u32> = fiber_11_dev
+            .dtoh_vec()
             .map_err(|e| format!("Copy fiber_11: {}", e))?;
 
         let pure_count = pure_count_vec[0] as usize;
@@ -396,6 +427,8 @@ impl GpuDimensionalEngine {
         seed: u64,
     ) -> Result<GpuAptResult, String> {
         use crate::construction::cayley_dickson::cd_basis_mul_sign;
+
+        validate_apt_sampling_input(dim, nodes.len(), n_samples)?;
 
         let psi = |dim: usize, i: usize, j: usize| -> u8 {
             if cd_basis_mul_sign(dim, i, j) == 1 {
@@ -538,6 +571,8 @@ impl GpuDimensionalEngine {
         seed: u64,
     ) -> Result<GpuAptResultWide, String> {
         use crate::construction::cayley_dickson::cd_basis_mul_sign;
+
+        validate_apt_sampling_input(dim, nodes.len(), n_samples)?;
 
         let psi = |dim: usize, i: usize, j: usize| -> u8 {
             if cd_basis_mul_sign(dim, i, j) == 1 {

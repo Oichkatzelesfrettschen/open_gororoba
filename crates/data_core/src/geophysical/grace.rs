@@ -4,7 +4,7 @@
 //! (Gravity Recovery and Climate Experiment) data. Degree/order 180.
 //! Available in ICGEM .gfc format (~350 KB).
 //!
-//! Source: ICGEM, http://icgem.gfz-potsdam.de/
+//! Source: ICGEM, <http://icgem.gfz-potsdam.de/>
 //! Reference: Ries et al. (2016), GFZ Data Services
 
 /// ICGEM .gfc download URLs for GGM05S.

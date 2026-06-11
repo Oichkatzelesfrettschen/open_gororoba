@@ -37,6 +37,9 @@ pub struct RaaPoint {
     pub syst_err_down: f64,
 }
 
+#[cfg(feature = "fetch")]
+pub use super::hic_raa_fetch::HicRaaProvider;
+
 /// Parsed v2 data point from HEPData CSV.
 #[derive(Debug, Clone)]
 pub struct V2Point {

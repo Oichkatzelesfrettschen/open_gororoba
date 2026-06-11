@@ -15,7 +15,7 @@
 //!    via 3x3 complex matrices is deferred to PR 2.
 //!
 //! Normalization: anti-Hermitian convention. Invariant form <A,B> = -tr(AB).
-//! Structure constants: f_{abc} = <[T_a,T_b], T_c> (totally antisymmetric).
+//! Structure constants: f_{abc} = <`[T_a,T_b]`, T_c> (totally antisymmetric).
 //!
 //! Note on stabilizer_basis: The SVD-derived basis is orthonormal but
 //! non-canonical (defined up to O(8) rotation and sign choices). Only
@@ -51,7 +51,7 @@ const RANK_TOL_FACTOR: f64 = 64.0;
 /// and structure constant extraction.
 ///
 /// For skew-symmetric A, B this equals the Frobenius inner product
-/// sum_{i,j} A[i][j] * B[i][j], but the -tr(AB) definition is the
+/// sum_{i,j} A`[i]``[j]` * B`[i]``[j]`, but the -tr(AB) definition is the
 /// canonical Killing form and generalizes to non-skew matrices.
 pub fn invariant_form(a: &OctonionDerivation, b: &OctonionDerivation) -> f64 {
     let mut trace = 0.0;
@@ -109,7 +109,7 @@ fn orthonormalize(basis: &[OctonionDerivation], tol: f64) -> Vec<OctonionDerivat
 // Lie bracket
 // ---------------------------------------------------------------------------
 
-/// Lie bracket [A, B] = AB - BA as 8x8 matrix commutator.
+/// Lie bracket `[A, B]` = AB - BA as 8x8 matrix commutator.
 ///
 /// The commutator of two derivations is a derivation (closure property
 /// of the Lie algebra Der(O) = g2).
@@ -171,7 +171,7 @@ pub struct G2Stabilizer {
 ///
 /// Algorithm:
 /// 1. Compute G2 basis via `compute_g2_basis()`, orthonormalize.
-/// 2. Build 6x14 evaluation matrix E where E\[r\]\[a\] = (T_a(e_k))_{perp\[r\]}.
+/// 2. Build 6x14 evaluation matrix E where E\`[r\]`\`[a\]` = (T_a(e_k))_{perp\`[r\]`}.
 /// 3. SVD of E with relative threshold for rank determination.
 /// 4. Right singular vectors for zero singular values span ker(E_k) = stab(e_k).
 /// 5. Right singular vectors for nonzero singular values span coset complement.
@@ -307,7 +307,7 @@ pub fn stabilizer_decomposition(fixed_unit: usize) -> G2Stabilizer {
 // Structure constants
 // ---------------------------------------------------------------------------
 
-/// Structure constants f_{abc} = <[T_a, T_b], T_c> for a Lie subalgebra.
+/// Structure constants f_{abc} = <`[T_a, T_b]`, T_c> for a Lie subalgebra.
 ///
 /// Precondition: `basis` must be orthonormal w.r.t. `invariant_form`.
 /// With an orthonormal basis, coefficient extraction is simply the
@@ -344,10 +344,10 @@ pub struct ComplexStructure {
     /// The ordered perpendicular basis indices.
     pub perp_indices: [usize; 6],
     /// The 3 Fano-derived complex lines: (a_idx, b_idx, sign) where
-    /// e_k * e_{perp\[a_idx\]} = sign * e_{perp\[b_idx\]}.
+    /// e_k * e_{perp\`[a_idx\]`} = sign * e_{perp\`[b_idx\]`}.
     /// Convention: a_idx < b_idx in the perp_indices ordering.
-    /// These define the complex basis: v_j = e_{perp\[a_idx\]},
-    /// J_k(v_j) = sign * e_{perp\[b_idx\]}.
+    /// These define the complex basis: v_j = e_{perp\`[a_idx\]`},
+    /// J_k(v_j) = sign * e_{perp\`[b_idx\]`}.
     pub fano_pairs: [(usize, usize, i8); 3],
 }
 

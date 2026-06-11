@@ -13,7 +13,7 @@ fn bench_solver_step(c: &mut Criterion) {
                 max_steps: 8,
                 ..SolverConfig::default()
             };
-            let mut solver = SniaCoreSolver::new(
+            let mut solver = SniaCoreSolver::from_initial_state(
                 config,
                 WhiteDwarfEos::default(),
                 HllcFlux1D::default(),

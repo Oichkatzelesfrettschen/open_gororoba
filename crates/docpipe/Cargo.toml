@@ -13,18 +13,18 @@ fallback = ["dep:lopdf", "dep:pdf-extract"]
 
 [dependencies]
 # Primary PDF engine (requires libpdfium.so at runtime)
-pdfium-render = { workspace = true, optional = true }
+anyhow.workspace = true
+csv = { workspace = true }
 image = { workspace = true, optional = true }
 # Fallback: pure Rust PDF parsing
 lopdf = { workspace = true, optional = true }
 pdf-extract = { workspace = true, optional = true }
+pdfium-render = { workspace = true, optional = true }
+regex = { workspace = true }
 # Always needed
 serde = { workspace = true }
-toml = { workspace = true }
-regex = { workspace = true }
 thiserror = { workspace = true }
-csv = { workspace = true }
-anyhow.workspace = true
+toml = { workspace = true }
 
 [dev-dependencies]
 tempfile = { workspace = true }

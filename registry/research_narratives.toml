@@ -18,7 +18,15 @@ content_kind = "research_note"
 verification_level = "engineering_narrative"
 claim_refs = []
 url_refs = []
-path_refs = ["#[cfg(test)] mod tests { ... }", "// SAFETY:", "Cargo.lock", "Cargo.toml", "deny.toml", "src/", "tests/"]
+path_refs = [
+    "#[cfg(test)] mod tests { ... }",
+    "// SAFETY:",
+    "Cargo.lock",
+    "Cargo.toml",
+    "deny.toml",
+    "src/",
+    "tests/",
+]
 line_count = 66
 body_markdown = '''
 # Rust Engineering Standards & Style Guide
@@ -343,7 +351,29 @@ content_kind = "research_note"
 verification_level = "engineering_narrative"
 claim_refs = ["C-1020", "C-1030", "C-1134", "C-1137", "C-1138", "C-1140", "C-1141", "C-1142"]
 url_refs = []
-path_refs = ["(ceil(batch/16), ceil(dim/64))", "-arch=sm_89 -I/opt/cuda/include -std=c++14", "CURRENT::PATH crates/gororoba_algebra/src/gpu/dimensional.rs (LEGACY::PATH crates/algebra_core/src/gpu/dimensional.rs)", "CURRENT::PATH crates/gororoba_algebra/src/gpu/tensor_avt/kernels.cu (LEGACY::PATH crates/algebra_core/src/gpu/kernels_tensor_avt.cu)", "CURRENT::PATH crates/gororoba_algebra/src/gpu/tensor_avt/mod.rs (LEGACY::PATH crates/algebra_core/src/gpu/tensor_avt.rs)", "CURRENT::PATH crates/gororoba_algebra/src/gpu/voudon.rs (LEGACY::PATH crates/algebra_core/src/gpu/voudon.rs)", "crates/algebra_analysis/src/phase_transition.rs", "crates/algebra_experimental/src/majorana_braiding.rs", "crates/gr_core/src/nbody_integration.rs", "crates/lbm_3d_cuda/src/kernels_dark_halo.cu", "crates/materials_core/src/e8_crystal_bridge.rs", "cuda_fp16.h", "kernels_tensor_avt.cu", "mma.h", "proofs/theories/ComplexTimeEIH.v", "proofs/verified/C1137_MissingEdgeQuantizedGap.v", "proofs/verified/C1138_WickDampingFriction.v", "proofs/verified/C1140_PathionQuantizedGap.v", "proofs/verified/C1141_ZDGraphGeneralStructure.v", "proofs/verified/C1142_XORScatterGatherDuality.v", "registry/research_narratives.toml"]
+path_refs = [
+    "(ceil(batch/16), ceil(dim/64))",
+    "-arch=sm_89 -I/opt/cuda/include -std=c++14",
+    "CURRENT::PATH crates/gororoba_algebra/src/gpu/dimensional.rs (LEGACY::PATH crates/algebra_core/src/gpu/dimensional.rs)",
+    "CURRENT::PATH crates/gororoba_algebra/src/gpu/tensor_avt/kernels.cu (LEGACY::PATH crates/algebra_core/src/gpu/kernels_tensor_avt.cu)",
+    "CURRENT::PATH crates/gororoba_algebra/src/gpu/tensor_avt/mod.rs (LEGACY::PATH crates/algebra_core/src/gpu/tensor_avt.rs)",
+    "CURRENT::PATH crates/gororoba_algebra/src/gpu/voudon.rs (LEGACY::PATH crates/algebra_core/src/gpu/voudon.rs)",
+    "crates/algebra_analysis/src/phase_transition.rs",
+    "crates/algebra_experimental/src/majorana_braiding.rs",
+    "crates/gr_core/src/nbody_integration.rs",
+    "crates/lbm_3d_cuda/src/kernels_dark_halo.cu",
+    "crates/materials_core/src/e8_crystal_bridge.rs",
+    "cuda_fp16.h",
+    "kernels_tensor_avt.cu",
+    "mma.h",
+    "proofs/theories/ComplexTimeEIH.v",
+    "proofs/verified/C1137_MissingEdgeQuantizedGap.v",
+    "proofs/verified/C1138_WickDampingFriction.v",
+    "proofs/verified/C1140_PathionQuantizedGap.v",
+    "proofs/verified/C1141_ZDGraphGeneralStructure.v",
+    "proofs/verified/C1142_XORScatterGatherDuality.v",
+    "registry/research_narratives.toml",
+]
 line_count = 171
 body_markdown = '''
 # Research Summary: High-Dimensional Cayley-Dickson Physics (2024-2026)
@@ -527,9 +557,35 @@ title = "Sedenion 42-Structure: Algebraic Fact vs Physical Speculation"
 status_token = "AUDIT"
 content_kind = "audit_note"
 verification_level = "engineering_narrative"
-claim_refs = ["C-003", "C-010", "C-1254", "C-1255", "C-1308", "C-1309", "C-1310", "C-1311", "C-1312", "C-1313", "C-1314", "C-611", "C-614", "C-615", "I-157"]
+claim_refs = [
+    "C-003",
+    "C-010",
+    "C-1254",
+    "C-1255",
+    "C-1308",
+    "C-1309",
+    "C-1310",
+    "C-1311",
+    "C-1312",
+    "C-1313",
+    "C-1314",
+    "C-611",
+    "C-614",
+    "C-615",
+    "I-157",
+]
 url_refs = []
-path_refs = ["crates/algebra_analysis/src/boxkites.rs", "crates/algebra_analysis/src/homotopy_algebra.rs", "crates/algebra_analysis/src/reggiani.rs", "crates/cosmology_core/src/harmonic_halos.rs", "crates/lbm_3d/src/dm_force.rs", "crates/spin_tomography_core/src/event_gen.rs", "dm_force.rs", "docs/research/high_dimensional_algebra_unification_2026.md:40", "galaxy_pipeline.rs"]
+path_refs = [
+    "crates/algebra_analysis/src/boxkites.rs",
+    "crates/algebra_analysis/src/homotopy_algebra.rs",
+    "crates/algebra_analysis/src/reggiani.rs",
+    "crates/cosmology_core/src/harmonic_halos.rs",
+    "crates/lbm_3d/src/dm_force.rs",
+    "crates/spin_tomography_core/src/event_gen.rs",
+    "dm_force.rs",
+    "docs/research/high_dimensional_algebra_unification_2026.md:40",
+    "galaxy_pipeline.rs",
+]
 line_count = 166
 body_markdown = '''
 # Sedenion 42-Structure: Algebraic Fact vs Physical Speculation
@@ -710,7 +766,10 @@ content_kind = "research_note"
 verification_level = "engineering_narrative"
 claim_refs = []
 url_refs = []
-path_refs = ["reports/benchmarks/x87_strategy_multicore_65536.csv", "reports/benchmarks/x87_strategy_multicore_65536.md"]
+path_refs = [
+    "reports/benchmarks/x87_strategy_multicore_65536.csv",
+    "reports/benchmarks/x87_strategy_multicore_65536.md",
+]
 line_count = 61
 body_markdown = '''
 # x87 Multicore Strategy Note (2026-03-12)
@@ -1041,9 +1100,26 @@ title = "Cayley-Dickson Integrable Expanders"
 status_token = "NARRATIVE"
 content_kind = "research_note"
 verification_level = "theoretical"
-claim_refs = ["C-922", "C-923", "C-924", "C-925", "C-926", "C-927", "C-928", "C-929", "C-930", "C-931", "C-932"]
+claim_refs = [
+    "C-922",
+    "C-923",
+    "C-924",
+    "C-925",
+    "C-926",
+    "C-927",
+    "C-928",
+    "C-929",
+    "C-930",
+    "C-931",
+    "C-932",
+]
 url_refs = []
-path_refs = ["proofs/theories/DarkEnergyEOS.v", "proofs/theories/HeatKernel.v", "proofs/verified/C931_OrthoplexHeatKernel.v", "proofs/verified/C932_OrthoplexThawing.v"]
+path_refs = [
+    "proofs/theories/DarkEnergyEOS.v",
+    "proofs/theories/HeatKernel.v",
+    "proofs/verified/C931_OrthoplexHeatKernel.v",
+    "proofs/verified/C932_OrthoplexThawing.v",
+]
 line_count = 447
 body_markdown = '''
 # Cayley-Dickson Integrable Expanders
@@ -1503,9 +1579,39 @@ title = "Grand Synthesis: From Cayley-Dickson Algebra to the Heliosphere and Bey
 status_token = "NARRATIVE"
 content_kind = "synthesis"
 verification_level = "multi_scale_synthesis"
-claim_refs = ["C-001", "C-002", "C-003", "C-004", "C-010", "C-011", "C-012", "C-014", "C-031", "C-035", "C-039", "C-052", "C-053", "C-1156", "C-1159", "C-1162", "C-1171", "C-1210", "C-1137", "C-1138", "C-1140", "C-1141", "C-1142"]
+claim_refs = [
+    "C-001",
+    "C-002",
+    "C-003",
+    "C-004",
+    "C-010",
+    "C-011",
+    "C-012",
+    "C-014",
+    "C-031",
+    "C-035",
+    "C-039",
+    "C-052",
+    "C-053",
+    "C-1156",
+    "C-1159",
+    "C-1162",
+    "C-1171",
+    "C-1210",
+    "C-1137",
+    "C-1138",
+    "C-1140",
+    "C-1141",
+    "C-1142",
+]
 url_refs = []
-path_refs = ["docs/NAVIGATOR.md", "docs/EXCEPTIONAL_COSMOLOGY.md", "docs/SEDENION_GRAVASTAR_EQUIVALENCE.md", "registry/claims.toml", "registry/experiments.toml"]
+path_refs = [
+    "docs/NAVIGATOR.md",
+    "docs/EXCEPTIONAL_COSMOLOGY.md",
+    "docs/SEDENION_GRAVASTAR_EQUIVALENCE.md",
+    "registry/claims.toml",
+    "registry/experiments.toml",
+]
 line_count = 220
 body_markdown = ""
 
@@ -1518,7 +1624,30 @@ title = "Navigator: Conceptual Map of the open_gororoba Research Space"
 status_token = "NARRATIVE"
 content_kind = "navigation"
 verification_level = "engineering_narrative"
-claim_refs = ["C-001", "C-010", "C-011", "C-012", "C-035", "C-039", "C-052", "C-053", "C-931", "C-932", "C-952", "C-953", "C-1156", "C-1159", "C-1162", "C-1171", "C-1210", "C-1137", "C-1138", "C-1140", "C-1141", "C-1142"]
+claim_refs = [
+    "C-001",
+    "C-010",
+    "C-011",
+    "C-012",
+    "C-035",
+    "C-039",
+    "C-052",
+    "C-053",
+    "C-931",
+    "C-932",
+    "C-952",
+    "C-953",
+    "C-1156",
+    "C-1159",
+    "C-1162",
+    "C-1171",
+    "C-1210",
+    "C-1137",
+    "C-1138",
+    "C-1140",
+    "C-1141",
+    "C-1142",
+]
 url_refs = []
 path_refs = ["docs/GRAND_SYNTHESIS.md", "docs/EXCEPTIONAL_COSMOLOGY.md", "registry/claims.toml"]
 line_count = 120
@@ -1548,7 +1677,13 @@ content_kind = "synthesis"
 verification_level = "multi_scale_synthesis"
 claim_refs = ["C-010", "C-011", "C-012"]
 url_refs = []
-path_refs = ["docs/GRAND_SYNTHESIS.md", "crates/cosmology_core/src/gravastar.rs", "crates/cosmology_core/src/tov.rs", "data/csv/genesis_gravastar_bridge.csv", "proofs/verified/C011_AssociatorObstruction.v"]
+path_refs = [
+    "docs/GRAND_SYNTHESIS.md",
+    "crates/cosmology_core/src/gravastar.rs",
+    "crates/cosmology_core/src/tov.rs",
+    "data/csv/genesis_gravastar_bridge.csv",
+    "proofs/verified/C011_AssociatorObstruction.v",
+]
 line_count = 140
 
 [[document]]
@@ -1560,7 +1695,19 @@ title = "Grand Synthesis Plan: Research Roadmap and Execution Priority"
 status_token = "NARRATIVE"
 content_kind = "plan"
 verification_level = "engineering_narrative"
-claim_refs = ["C-001", "C-010", "C-011", "C-012", "C-1156", "C-1159", "C-1162", "C-1171", "C-1137", "C-1140", "C-1141"]
+claim_refs = [
+    "C-001",
+    "C-010",
+    "C-011",
+    "C-012",
+    "C-1156",
+    "C-1159",
+    "C-1162",
+    "C-1171",
+    "C-1137",
+    "C-1140",
+    "C-1141",
+]
 url_refs = []
 path_refs = ["docs/GRAND_SYNTHESIS.md", "docs/NAVIGATOR.md", "registry/next_actions.toml"]
 line_count = 100

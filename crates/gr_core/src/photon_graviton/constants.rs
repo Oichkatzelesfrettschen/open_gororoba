@@ -42,25 +42,25 @@ pub const ONE_LOOP_PREFACTOR: f64 = KAPPA_NATURAL * ALPHA_EM / (8.0 * PI * PI);
 // SI fundamental constants (for conversion to/from natural units)
 // ---------------------------------------------------------------------------
 
-/// Electron mass [kg].
+/// Electron mass `[kg]`.
 pub const M_E_SI: f64 = 9.109_383_701_5e-31;
 
-/// Speed of light [m/s].
+/// Speed of light `[m/s]`.
 pub const C_SI: f64 = 2.997_924_58e8;
 
-/// Elementary charge [C].
+/// Elementary charge `[C]`.
 pub const E_SI: f64 = 1.602_176_634e-19;
 
-/// Reduced Planck constant [J*s].
+/// Reduced Planck constant `[J*s]`.
 pub const HBAR_SI: f64 = 1.054_571_817e-34;
 
 /// Gravitational constant [m^3 kg^-1 s^-2].
 pub const G_SI: f64 = 6.674_30e-11;
 
-/// Schwinger critical field in SI [T].
+/// Schwinger critical field in SI `[T]`.
 pub const B_CR_SI: f64 = 4.414e9;
 
-/// Planck mass [kg].
+/// Planck mass `[kg]`.
 pub const M_PLANCK_SI: f64 = 2.176_434e-8;
 
 // ---------------------------------------------------------------------------

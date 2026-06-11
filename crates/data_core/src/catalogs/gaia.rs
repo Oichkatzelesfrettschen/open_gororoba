@@ -3,7 +3,7 @@
 //! Queries the Gaia archive TAP endpoint for nearby stars with radial
 //! velocities, providing 6D phase-space information for Galactic dynamics.
 //!
-//! Source: https://gea.esac.esa.int/archive/
+//! Source: <https://gea.esac.esa.int/archive/>
 //! Reference: Gaia Collaboration, Vallenari et al. (2023), A&A 674, A1
 
 use crate::{fetcher::FetchError, parse::parse_f64_or_nan};
@@ -35,6 +35,9 @@ pub struct GaiaSource {
     /// BP-RP color index.
     pub bp_rp: f64,
 }
+
+#[cfg(feature = "fetch")]
+pub use super::gaia_fetch::GaiaDr3Provider;
 
 /// Parse Gaia DR3 CSV data.
 pub fn parse_gaia_csv(path: &Path) -> Result<Vec<GaiaSource>, FetchError> {

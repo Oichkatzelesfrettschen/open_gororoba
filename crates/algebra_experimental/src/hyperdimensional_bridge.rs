@@ -58,7 +58,7 @@ mod tests {
         // roughly 3.595
         assert!((freq - 3.595).abs() < 0.01);
     }
-    
+
     #[test]
     fn test_universal_lattice_norm_check() {
         assert!(is_universal_lattice_norm(50.49, 0.02));

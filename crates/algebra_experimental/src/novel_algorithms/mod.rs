@@ -1,6 +1,7 @@
 pub mod algebraic_sieve;
 pub mod deep_factorization;
 pub mod defect_sensing;
+pub mod e8_sieve;
 pub mod surreal_clustering;
 pub mod zd_routing;
 

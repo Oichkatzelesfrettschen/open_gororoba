@@ -8,7 +8,6 @@ description = "Shared Vulkan helpers (instance / adapter / device / allocator / 
 
 [dependencies]
 gororoba_gpu_bridge = { workspace = true }
-gororoba_gpu_readback = { workspace = true }
 
 # All Vulkan-side deps are optional and gated behind the `ash` feature.
 # Default builds (no features) compile to an empty stub so non-Vulkan
@@ -17,7 +16,6 @@ ash = { workspace = true, optional = true, features = ["debug", "libloading", "l
 gpu-allocator = { workspace = true, optional = true, features = ["vulkan"] }
 naga = { workspace = true, optional = true, features = ["wgsl-in", "spv-out"] }
 thiserror = { workspace = true, optional = true }
-log = { workspace = true, optional = true }
 
 [dev-dependencies]
 env_logger = { workspace = true }
@@ -26,12 +24,7 @@ env_logger = { workspace = true }
 default = []
 # Enables the Vulkan helpers. When off, the crate exposes only the
 # re-exported gororoba_gpu_bridge types (ComputeBackend, StoragePrecision, ...).
-ash = ["dep:ash", "dep:gpu-allocator", "dep:naga", "dep:thiserror", "dep:log"]
+ash = ["dep:ash", "dep:gpu-allocator", "dep:naga", "dep:thiserror"]
 
 [lints]
 workspace = true
-
-# Optional deps are conditionally enabled via the `ash` feature; cargo-machete
-# must not flag them as unused in default builds.
-[package.metadata.cargo-machete]
-ignored = ["ash", "gpu-allocator", "naga", "thiserror", "log"]

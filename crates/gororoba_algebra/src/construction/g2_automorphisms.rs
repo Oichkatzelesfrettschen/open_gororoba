@@ -8,7 +8,7 @@
 //! - dim(G2) = 14 = dim(SO(7)) - 7 (codimension in SO(7))
 //! - G2 acts on Im(O) = R^7 as a subgroup of SO(7)
 //! - G2 preserves the 3-form phi(x,y,z) = <x, yz> on Im(O)
-//! - G2 preserves the cross product on Im(O): x * y = [x,y]/2
+//! - G2 preserves the cross product on Im(O): x * y = `[x,y]`/2
 //! - Lie algebra: g2 = Der(O), the derivation algebra of the octonions
 //! - A derivation D satisfies D(xy) = D(x)y + xD(y) (Leibniz rule)
 //!
@@ -53,8 +53,8 @@ fn build_param_matrix(a: usize, b: usize) -> [[f64; 8]; 8] {
 /// constraint row for output component `c` on basis pair (ei, ej).
 ///
 /// Returns `lhs_c - rhs_c` where:
-///   lhs_c = (pm * (ei*ej))[c]
-///   rhs_c = ((pm*ei)*ej)[c] + (ei*(pm*ej))[c]
+///   lhs_c = (pm * (ei*ej))`[c]`
+///   rhs_c = ((pm*ei)*ej)`[c]` + (ei*(pm*ej))`[c]`
 fn leibniz_row_entry(
     pm: &[[f64; 8]; 8],
     ei: &Octonion,
@@ -344,7 +344,7 @@ pub fn compute_g2_basis() -> Vec<OctonionDerivation> {
 ///
 /// G2 is characterized as the subgroup of GL(7,R) preserving:
 /// 1. The inner product on Im(O)
-/// 2. The cross product: x * y = [x,y]/2
+/// 2. The cross product: x * y = `[x,y]`/2
 /// 3. The associative 3-form: phi(x,y,z) = <x, yz>
 pub struct G2Structure;
 

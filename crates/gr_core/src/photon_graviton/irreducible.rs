@@ -8,7 +8,7 @@
 //!
 //! Pi_bar^{mn,a}(k;F) = -(e*kappa / 32 pi^2) * integral dT/T * exp(-m^2 T)
 //!   * { det(z) * integral_0^1 du * exp(-k.Phi.k)
-//!     * [J_1 + J_2 + J_3]
+//!     * `[J_1 + J_2 + J_3]`
 //!     + (4i/3) * e * C^{mn,a} }
 //!
 //! The three tensor structures J_{1,2,3} (Eq 4.11) involve products of

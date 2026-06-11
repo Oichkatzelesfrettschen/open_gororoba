@@ -1,7 +1,7 @@
 //! Error type for CUDA helper failures.
 //!
 //! WHY: 13 cudarc-using crates have three competing error patterns
-//! (anyhow::Result, Result<T, String>, Option<T>). This module
+//! (`anyhow::Result`, `Result<T, String>`, `Option<T>`). This module
 //! consolidates them under a single error type with `From` impls so
 //! callers see one error surface.
 
@@ -27,7 +27,9 @@ pub enum CudaError {
     OrdinalOutOfRange { ordinal: usize, count: usize },
 
     /// Compute capability is below the requested minimum.
-    #[error("CUDA device compute capability {found_major}.{found_minor} is below required {needed_major}.{needed_minor}")]
+    #[error(
+        "CUDA device compute capability {found_major}.{found_minor} is below required {needed_major}.{needed_minor}"
+    )]
     InsufficientComputeCapability {
         found_major: u32,
         found_minor: u32,

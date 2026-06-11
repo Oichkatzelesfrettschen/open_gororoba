@@ -1,6 +1,6 @@
 //! Cli struct for the `solar-wind-ic` binary. ~190 lines of clap
 //! Parser-derived configuration options. Fields are pub(crate) so
-//! the bin root can read them. Uses #[path] indirection because
+//! the bin root can read them. Uses `#[path]` indirection because
 //! this binary has explicit Cargo.toml path.
 
 use clap::Parser;
@@ -126,12 +126,12 @@ pub(crate) struct Cli {
     #[arg(long, default_value_t = 3600)]
     pub(crate) time_resolution: u32,
 
-    /// Density clamp range [min, max] in LBM units for shock mode.
+    /// Density clamp range `[min, max]` in LBM units for shock mode.
     /// Default: 0.1,10.0. For high-variability shock data: 0.01,50.0.
     #[arg(long, default_value = "0.1,10.0")]
     pub(crate) clamp_density_range: String,
 
-    /// Speed clamp range [min, max] in LBM units for shock mode.
+    /// Speed clamp range `[min, max]` in LBM units for shock mode.
     /// Default: 0.001,0.15. For CME shock data: 0.0001,0.25.
     #[arg(long, default_value = "0.001,0.15")]
     pub(crate) clamp_speed_range: String,

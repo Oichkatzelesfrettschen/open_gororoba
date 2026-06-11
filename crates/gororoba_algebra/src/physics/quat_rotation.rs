@@ -4,7 +4,7 @@
 //! construction at dimension 4 (cd_multiply) internally. Quaternions are
 //! the most efficient gimbal-lock-free representation of 3D rotations.
 //!
-//! Convention: q = [w, x, y, z] where w is the scalar part and (x,y,z)
+//! Convention: q = `[w, x, y, z]` where w is the scalar part and (x,y,z)
 //! is the vector (imaginary) part. A rotation by angle theta about unit
 //! axis n is encoded as:
 //!   q = cos(theta/2) + sin(theta/2) * (n_x*i + n_y*j + n_z*k)
@@ -16,7 +16,7 @@
 
 use crate::construction::cayley_dickson::{cd_conjugate, cd_multiply, cd_norm_sq};
 
-/// Quaternion type: [w, x, y, z].
+/// Quaternion type: `[w, x, y, z]`.
 pub type Quaternion = [f64; 4];
 
 /// Identity quaternion (no rotation).
@@ -63,9 +63,9 @@ pub fn quat_rotate_vector(q: &Quaternion, v: &[f64; 3]) -> [f64; 3] {
 /// Convert a unit quaternion to a 3x3 rotation matrix.
 ///
 /// Direct formula (avoids double quaternion multiplication for batch use):
-/// R = [[1-2(y^2+z^2), 2(xy-wz),     2(xz+wy)    ],
-///      [2(xy+wz),     1-2(x^2+z^2),  2(yz-wx)    ],
-///      [2(xz-wy),     2(yz+wx),      1-2(x^2+y^2)]]
+/// R = `[[1-2(y^2+z^2), 2(xy-wz),     2(xz+wy)    ]`,
+///      `[2(xy+wz),     1-2(x^2+z^2),  2(yz-wx)    ]`,
+///      `[2(xz-wy),     2(yz+wx),      1-2(x^2+y^2)]`]
 pub fn quat_to_rotation_matrix(q: &Quaternion) -> [[f64; 3]; 3] {
     let (w, x, y, z) = (q[0], q[1], q[2], q[3]);
     let x2 = x * x;
@@ -130,7 +130,7 @@ pub fn quat_from_rotation_matrix(m: &[[f64; 3]; 3]) -> Quaternion {
 
 /// Spherical linear interpolation (SLERP) between two quaternions.
 ///
-/// Returns the quaternion at fraction t in [0, 1] along the shortest
+/// Returns the quaternion at fraction t in `[0, 1]` along the shortest
 /// great-circle arc from q1 to q2 on the 3-sphere.
 pub fn quat_slerp(q1: &Quaternion, q2: &Quaternion, t: f64) -> Quaternion {
     // Dot product to find angle
@@ -176,7 +176,7 @@ pub fn quat_slerp(q1: &Quaternion, q2: &Quaternion, t: f64) -> Quaternion {
 ///
 /// omega = 2 * q^{-1} * dq/dt (body frame)
 ///
-/// Returns the angular velocity vector [omega_x, omega_y, omega_z].
+/// Returns the angular velocity vector `[omega_x, omega_y, omega_z]`.
 pub fn quat_angular_velocity(q: &Quaternion, q_dot: &Quaternion) -> [f64; 3] {
     let q_conj = cd_conjugate(q);
     let norm_sq = cd_norm_sq(q);

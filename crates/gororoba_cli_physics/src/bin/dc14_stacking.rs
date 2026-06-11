@@ -8,7 +8,7 @@
 //! The Michelson-Morley inversion: a "failed" ZD search becomes a successful
 //! measurement of baryonic feedback efficiency.
 //!
-//! Detection: DC14 RMS < NFW RMS AND extracted eta in [0.01, 0.05]
+//! Detection: DC14 RMS < NFW RMS AND extracted eta in `[0.01, 0.05]`
 //! Rejection: DC14 RMS >= NFW RMS OR chi2/dof > 3
 //!
 //! Reference: Hypothesis H3, plan imperative-skipping-kahn.md

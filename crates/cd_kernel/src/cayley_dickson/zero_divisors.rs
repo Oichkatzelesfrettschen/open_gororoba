@@ -1,7 +1,7 @@
 //! Zero-divisor analysis: algebraic defects in the Cayley-Dickson tower.
 //!
-//! # Prerequisite modules: [`arith`] (multiply), [`signs`] (basis product)
-//! # Depended on by: [`predicates`], Moreno theorem implementations
+//! # Prerequisite modules: `arith` (multiply), `signs` (basis product)
+//! # Depended on by: `predicates`, Moreno theorem implementations
 //!
 //! # What are zero divisors?
 //!
@@ -295,10 +295,10 @@ fn accumulate_sparse_basis_term(
 
 /// Sequential sign-table-based 2-blade zero-divisor enumeration.
 ///
-/// # Why this exists alongside [`find_zero_divisors_parallel`]
+/// # Why this exists alongside `find_zero_divisors_parallel`
 ///
 /// This is the sequential reference implementation for canonical comparison
-/// testing. It produces results in the SAME iteration order as [`find_zero_divisors`]
+/// testing. It produces results in the SAME iteration order as `find_zero_divisors`
 /// (loops: i < j over outer blade, k < l over inner blade, +1 then -1 sign)
 /// but uses O(1) sign-table lookups instead of O(dim) heap-allocated cd_multiply.
 ///
@@ -331,7 +331,7 @@ pub fn find_zero_divisors_sign_table(dim: usize) -> Vec<(usize, usize, usize, us
 
 /// Sequential sign-table-based 3-blade zero-divisor enumeration.
 ///
-/// Companion to [`find_zero_divisors_sign_table`] for 3-blade zero divisors.
+/// Companion to `find_zero_divisors_sign_table` for 3-blade zero divisors.
 /// Uses 9 product terms (3 x 3 basis cross-products) with sign-table lookups.
 #[allow(dead_code)]
 pub fn find_zero_divisors_3blade_sign_table(
@@ -398,7 +398,7 @@ fn accumulate_sparse_basis_term_9(
 
 /// Koebisu's D_2 polynomial for zero-divisor detection.
 ///
-/// For a sedenion v = v_1 + v_2*e_8 (where v_1 = v[0..8], v_2 = v[8..16]):
+/// For a sedenion v = v_1 + v_2*e_8 (where v_1 = v`[0..8]`, v_2 = v`[8..16]`):
 ///
 ///   D_2(v) = (||v_1||^2 - ||v_2||^2)^2 + 4*<v_1, v_2>^2
 ///

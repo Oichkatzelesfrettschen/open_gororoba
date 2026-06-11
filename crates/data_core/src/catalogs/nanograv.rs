@@ -9,7 +9,7 @@
 //! estimates (median + 90% credible interval) in pure Rust by reading the
 //! numpy arrays from the ZIP archive.
 //!
-//! Source: Zenodo, https://doi.org/10.5281/zenodo.10344086
+//! Source: Zenodo, <https://doi.org/10.5281/zenodo.10344086>
 //! Reference: Agazie et al. (2023), ApJL 951, L8
 //! KDE method: Lamb, Taylor & van Haasteren (2023), PhysRevD 108, 103019
 
@@ -28,6 +28,9 @@ pub struct FreeSpectrumPoint {
     /// Upper 95th percentile of log10(rho).
     pub log10_rho_hi: f64,
 }
+
+#[cfg(feature = "fetch")]
+pub use super::nanograv_fetch::{NanoGrav15yrProvider, NanoGrav15yrTimingProvider};
 
 /// Interpretation to apply to the stored KDE surface before percentile recovery.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]

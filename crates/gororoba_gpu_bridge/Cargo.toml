@@ -2,8 +2,8 @@
 name = "gororoba_gpu_bridge"
 version = "0.1.0"
 edition = { workspace = true }
-description = "GPU backend selection and dispatch for gororoba simulation workloads"
 license = "GPL-2.0-or-later"
+description = "GPU backend selection and dispatch for gororoba simulation workloads"
 
 [dependencies]
 core_affinity = { workspace = true }

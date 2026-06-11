@@ -2,17 +2,17 @@
 //!
 //! # Purpose and call sites
 //!
-//! Both [`crate::turboquant::vulkan::quantizer::VulkanQuantizer`]
+//! Both `crate::turboquant::vulkan::quantizer::VulkanQuantizer`
 //! (hand-rolled via `ash`) and the cubecl backend (cross-platform via
 //! `cubecl-wgpu`) share a four-step contract:
 //!
 //! ```text
-//! 1. Take a &[f32] of input values + &[f32] of boundaries.
+//! 1. Take a &`[f32]` of input values + &`[f32]` of boundaries.
 //! 2. Compute a per-input "boundary count" (how many boundaries the
 //!    value is strictly greater than).
 //! 3. Read back u32 counts on the host.
 //! 4. Pack the u32 counts into u8 indices that fit `bits` bit-widths.
-//! 5. Return the packed &mut [u8] to the caller.
+//! 5. Return the packed &mut `[u8]` to the caller.
 //! ```
 //!
 //! Steps (1), (2), and (4) have nothing to do with Vulkan or cubecl
@@ -36,14 +36,14 @@
 //!
 //! A new backend conforms to this lane by:
 //!
-//! 1. Accepting a [`QuantizeRequest`] (NOT a tuple of disconnected
+//! 1. Accepting a `QuantizeRequest` (NOT a tuple of disconnected
 //!    slices; see `# Why a struct?` below).
 //! 2. Returning the per-input u32 boundary count via whatever native
 //!    mechanism it has (atomic counter, scalar accumulator, etc.) into
 //!    a host-visible `Vec<u32>` of length `req.values.len()`.
-//! 3. Calling [`pack_u32_counts_to_u8`] on that vector to write into
+//! 3. Calling `pack_u32_counts_to_u8` on that vector to write into
 //!    the caller's `&mut [u8]`.
-//! 4. Calling [`validate_quantize`] before any GPU dispatch to reject
+//! 4. Calling `validate_quantize` before any GPU dispatch to reject
 //!    malformed inputs without paying GPU init cost.
 //!
 //! # Why a struct (`QuantizeRequest`) instead of three slices?
@@ -74,7 +74,7 @@
 //!
 //! # Cross-references
 //!
-//! - Reference CPU implementation: [`quantize_cpu_reference`].
+//! - Reference CPU implementation: `quantize_cpu_reference`.
 //! - Vulkan dispatch surface: see `vulkan/quantizer.rs::VulkanQuantizer::quantize`.
 //! - cubecl dispatch surface: see `cubecl_backend/launcher.rs`.
 //! - Architectural overview: `docs/engineering/registry_canonical_architecture.md`
@@ -93,7 +93,7 @@
 /// - `boundaries.len() == 2^bits - 1`. The codebook has `2^bits`
 ///   entries; `2^bits - 1` boundaries partition the real line into
 ///   `2^bits` bins. Violating this invariant returns an error from
-///   [`validate_quantize`] without dispatching to the GPU.
+///   `validate_quantize` without dispatching to the GPU.
 /// - `bits` is in `1..=8`. Higher widths than u8 are not supported by
 ///   the index-pack step; `bits=0` would be a degenerate codebook.
 /// - `boundaries` MUST be sorted ascending. The shaders assume this and
@@ -118,7 +118,7 @@ pub struct QuantizeRequest<'a> {
 // Validation
 // ---------------------------------------------------------------------------
 
-/// Validate a [`QuantizeRequest`] against an output buffer.
+/// Validate a `QuantizeRequest` against an output buffer.
 ///
 /// Returns the expected u32-index count (== `values.len()`) on success
 /// so callers can pass it to `client.empty(n * 4)` without recomputing.
@@ -186,13 +186,13 @@ pub fn validate_quantize(
 ///
 /// `debug_assert_eq!(counts.len(), out.len())`. In release builds the
 /// `iter().zip()` truncates to the shorter slice; callers should have
-/// validated lengths via [`validate_quantize`] beforehand.
+/// validated lengths via `validate_quantize` beforehand.
 ///
 /// # Concrete example
 ///
 /// ```text
-///  counts: [0, 1, 2, 3, 7]
-///  out:    [0, 1, 2, 3, 7]   // identical, narrowed to u8
+///  counts: `[0, 1, 2, 3, 7]`
+///  out:    `[0, 1, 2, 3, 7]`   // identical, narrowed to u8
 /// ```
 pub fn pack_u32_counts_to_u8(counts: &[u32], out: &mut [u8]) {
     debug_assert_eq!(counts.len(), out.len());
@@ -234,7 +234,7 @@ pub fn pack_u32_counts_to_u8(counts: &[u32], out: &mut [u8]) {
 /// # Panics in debug builds
 ///
 /// `debug_assert_eq!(out_indices.len(), req.values.len())`. Production
-/// callers should validate via [`validate_quantize`] first.
+/// callers should validate via `validate_quantize` first.
 ///
 /// # Worked example
 ///

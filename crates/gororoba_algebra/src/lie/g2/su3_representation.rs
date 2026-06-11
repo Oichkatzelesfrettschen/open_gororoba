@@ -14,7 +14,7 @@
 //!
 //! Normalization convention (stated once):
 //!   T_a = (i/2) lambda_a  (anti-Hermitian)
-//!   [T_a, T_b] = f_{abc} T_c
+//!   `[T_a, T_b]` = f_{abc} T_c
 //!   <A, B> = -2 tr(A B)  (Hilbert-Schmidt, orthonormalizes T_a)
 //!
 //! No physics-sm dependency. No su5_gut.rs edits. No physics language.
@@ -52,7 +52,7 @@ fn ci(x: f64) -> Complex<f64> {
 /// The three vectors {z_1, z_2, z_3} form a complex basis for (e_k^perp, J_k).
 pub struct ComplexBasis3 {
     /// For each of the 3 complex lines: (real_perp_idx, imag_perp_idx, sign)
-    /// where u_j = e_{perp[real_idx]} and J_k(u_j) = sign * e_{perp[imag_idx]}.
+    /// where u_j = e_{perp`[real_idx]`} and J_k(u_j) = sign * e_{perp`[imag_idx]`}.
     pub lines: [(usize, usize, i8); 3],
     /// The perpendicular basis indices (copied from ComplexStructure).
     pub perp_indices: [usize; 6],
@@ -73,8 +73,8 @@ pub fn build_complex_basis(cs: &ComplexStructure) -> ComplexBasis3 {
 /// Convert a 6x6 real matrix R (acting on e_k^perp) to a 3x3 complex matrix
 /// M (acting on C^3 = span{z_1, z_2, z_3}).
 ///
-/// The basis z_j = u_j - i * sigma_j * w_j where u_j = e_{perp[a_j]} and
-/// w_j = e_{perp[b_j]}, with J_k(u_j) = sigma_j * w_j.
+/// The basis z_j = u_j - i * sigma_j * w_j where u_j = e_{perp`[a_j]`} and
+/// w_j = e_{perp`[b_j]`}, with J_k(u_j) = sigma_j * w_j.
 ///
 /// The complex matrix entry M_{pq} is determined by:
 ///   R(z_q) = sum_p M_{pq} z_p
@@ -83,8 +83,8 @@ pub fn build_complex_basis(cs: &ComplexStructure) -> ComplexBasis3 {
 ///   R(z_q) = R(e_{a_q}) - i sigma_q R(e_{b_q})
 ///
 /// And projecting onto z_p = e_{a_p} - i sigma_p e_{b_p}:
-///   M_{pq} = R[a_p][a_q] + sigma_p sigma_q R[b_p][b_q]
-///            + i (sigma_p R[b_p][a_q] - sigma_q R[a_p][b_q])
+///   M_{pq} = R`[a_p]``[a_q]` + sigma_p sigma_q R`[b_p]``[b_q]`
+///            + i (sigma_p R`[b_p]``[a_q]` - sigma_q R`[a_p]``[b_q]`)
 ///
 /// (derived from the real/imaginary decomposition of the complex inner product)
 fn real_6x6_to_complex_3x3(r: &[[f64; 6]; 6], basis: &ComplexBasis3) -> Mat3c {
@@ -167,7 +167,7 @@ pub fn hs_inner_product(a: &Mat3c, b: &Mat3c) -> f64 {
 
 /// The 8 standard anti-Hermitian Gell-Mann generators T_a = (i/2) lambda_a.
 ///
-/// Convention: [T_a, T_b] = f_{abc} T_c with the standard SU(3) structure
+/// Convention: `[T_a, T_b]` = f_{abc} T_c with the standard SU(3) structure
 /// constants. The Hilbert-Schmidt inner product <T_a, T_b> = -2 tr(T_a T_b)
 /// gives delta_{ab} (orthonormal).
 pub fn standard_gell_mann_antihermitian() -> [Mat3c; 8] {
@@ -245,7 +245,7 @@ pub fn standard_gell_mann_antihermitian() -> [Mat3c; 8] {
 /// Result of aligning the computed representation to the standard Gell-Mann basis.
 pub struct GellMannAlignment {
     /// The 8x8 orthogonal rotation matrix R such that
-    /// computed_basis[a] = sum_b R[a][b] * standard_basis[b].
+    /// computed_basis`[a]` = sum_b R`[a]``[b]` * standard_basis`[b]`.
     pub rotation: [[f64; 8]; 8],
     /// Maximum residual after alignment.
     pub max_residual: f64,

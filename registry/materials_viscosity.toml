@@ -46,7 +46,7 @@ kinematic_viscosity_m2_s = 0.0
 quantum_viscosity = true
 notes = "Below lambda point (T < 2.17 K). Zero viscosity in superfluid component. Two-fluid model applies."
 reference = "Donnelly & Barenghi (1998), Section 2.3"
-quantum_circulation = 9.97e-8  # m^2/s, quantized vorticity
+quantum_circulation = 9.97e-8 # m^2/s, quantized vorticity
 
 [[material]]
 id = "He3_normal"
@@ -67,7 +67,7 @@ name = "Helium-3 Superfluid A Phase"
 formula = "He-3"
 phase = "superfluid_A"
 temperature_K = 0.0025
-pressure_Pa = 3.4e6  # 34 bar critical pressure
+pressure_Pa = 3.4e6 # 34 bar critical pressure
 density_kg_m3 = 82.0
 dynamic_viscosity_Pa_s = 0.0
 kinematic_viscosity_m2_s = 0.0
@@ -124,7 +124,7 @@ id = "N2_liquid"
 name = "Liquid Nitrogen"
 formula = "N2"
 phase = "liquid"
-temperature_K = 77.36  # Boiling point at 1 atm
+temperature_K = 77.36 # Boiling point at 1 atm
 pressure_Pa = 101325
 density_kg_m3 = 808.5
 dynamic_viscosity_Pa_s = 1.58e-4
@@ -155,7 +155,7 @@ name = "Ice Ih (Hexagonal Ice)"
 formula = "H2O"
 phase = "solid"
 crystal_structure = "hexagonal"
-temperature_K = 263.15  # -10 C
+temperature_K = 263.15 # -10 C
 pressure_Pa = 101325
 density_kg_m3 = 917.0
 dynamic_viscosity_Pa_s = 1.0e308
@@ -171,7 +171,7 @@ formula = "H2O"
 phase = "solid"
 crystal_structure = "body_centered_cubic"
 temperature_K = 300.0
-pressure_Pa = 3.0e9  # 30 kbar = 3 GPa
+pressure_Pa = 3.0e9 # 30 kbar = 3 GPa
 density_kg_m3 = 1650.0
 dynamic_viscosity_Pa_s = 1.0e308
 kinematic_viscosity_m2_s = 1.0e308
@@ -180,7 +180,7 @@ reference = "Petrenko & Whitworth (1999), Section 5.2; Hemley et al. (1987) Natu
 shear_modulus_GPa = 22.0
 bulk_modulus_GPa = 23.9
 formation_pressure_GPa = 2.1
-creep_viscosity_Pa_s = 1.0e16  # Estimated from ice Ih scaling at high P
+creep_viscosity_Pa_s = 1.0e16 # Estimated from ice Ih scaling at high P
 
 # ============================================================================
 # MINERALS: TOURMALINE / ELBAITE
@@ -199,7 +199,7 @@ dynamic_viscosity_Pa_s = 1.0e308
 kinematic_viscosity_m2_s = 1.0e308
 notes = "Crystalline borosilicate mineral. Pink to green gem variety of tourmaline. Piezoelectric and pyroelectric properties. Viscosity only relevant at grain boundaries or melt phase (T > 1500 K)."
 reference = "Deer et al. (2013), Rock-Forming Minerals Vol 3B, 2nd Ed."
-melting_point_K = 1473.0  # Approximate decomposition temperature
+melting_point_K = 1473.0 # Approximate decomposition temperature
 hardness_Mohs = 7.5
 elastic_modulus_GPa = 160.0
 

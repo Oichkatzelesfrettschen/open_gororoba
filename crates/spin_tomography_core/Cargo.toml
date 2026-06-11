@@ -5,9 +5,9 @@ edition = { workspace = true }
 license = { workspace = true }
 
 [dependencies]
+gororoba_algebra = { path = "../gororoba_algebra" }
 nalgebra = { workspace = true }
 num-complex = { workspace = true }
-gororoba_algebra = { path = "../gororoba_algebra" }
 rand = { workspace = true }
 rand_chacha = { workspace = true }
 rand_distr = { workspace = true }

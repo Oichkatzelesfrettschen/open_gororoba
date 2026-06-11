@@ -24,7 +24,7 @@ Entries are most-recent-first.
 
 - Crate: `rustls-webpki`
 - From: `0.103.10` (per data/output/audit/2026-04-30/04-gates/deny-check.txt)
-- To:   `0.103.13` (per current Cargo.lock at commit 2f7b8ff4)
+- To: `0.103.13` (per current Cargo.lock at commit 2f7b8ff4)
 - Advisory ID: RUSTSEC-2026-0104
 - Trigger: cargo deny check at the 2026-04-30 audit pass.
 - Exposure analysis:
@@ -45,7 +45,7 @@ Entries are most-recent-first.
 
 - Crate: `image`
 - From: `image = "0.25"` (default features include `avif`)
-- To:   `image = { version = "0.25", default-features = false, features = ["png", "jpeg"] }`
+- To: `image = { version = "0.25", default-features = false, features = ["png", "jpeg"] }`
 - Advisory ID: RUSTSEC-2026-0105 (transitive via core2 yanked)
 - Trigger: cargo deny check yanked-version warning, audited 2026-05-09.
 - Exposure analysis:
@@ -69,7 +69,7 @@ Entries are most-recent-first.
 
 - Crate: `rand` (three versions in dep graph)
 - From: `0.8.5`, `0.9.2`, `0.10.0`
-- To:   `0.8.6`, `0.9.3`, `0.10.1`
+- To: `0.8.6`, `0.9.3`, `0.10.1`
 - Advisory ID: RUSTSEC-2026-0097 (informational unsound)
 - Trigger: `cargo audit --json` 2026-05-09.
 - Exposure analysis:
@@ -113,4 +113,4 @@ Entries are most-recent-first.
 - `data/output/audit/2026-04-30/04-gates/deny-check.txt` (Stage A audit).
 - `~/.claude/plans/stage-b-debt-resolution.md` (B-G3, B-G4 task definitions).
 - `Cargo.lock` is the source of truth for current versions; this file
-  documents *upgrade events*, not *current state*.
+  documents _upgrade events_, not _current state_.

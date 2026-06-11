@@ -2,17 +2,17 @@
 
 # Exceptional Cosmology: E8, F4, G2 and the Limits of Algebraic Cosmological Frameworks
 
-**Date:** 2026-03-15  
-**Status:** Closed programme -- strong predictions refuted; algebraic identities verified  
-**Relevant claims:** C-035, C-036, C-037, C-038, C-039, C-040, C-041  
-**Related documents:** `docs/GRAND_SYNTHESIS.md`, `docs/NAVIGATOR.md`  
+**Date:** 2026-03-15\
+**Status:** Closed programme -- strong predictions refuted; algebraic identities verified\
+**Relevant claims:** C-035, C-036, C-037, C-038, C-039, C-040, C-041\
+**Related documents:** `docs/GRAND_SYNTHESIS.md`, `docs/NAVIGATOR.md`\
 **External sources:** `docs/external_sources/PIONEER_FLYBY_ANOMALY_SOURCES.md`
 
 ---
 
 ## Overview
 
-The *exceptional cosmology* programme investigated whether the exceptional Lie algebras -- G2, F4, E6, E7, E8 -- and their associated combinatorial structures provide a natural framework for cosmological parameters. The programme has been systematically tested and its strong predictions have been refuted. This document records what was found, what was refuted, and what structural lessons remain.
+The _exceptional cosmology_ programme investigated whether the exceptional Lie algebras -- G2, F4, E6, E7, E8 -- and their associated combinatorial structures provide a natural framework for cosmological parameters. The programme has been systematically tested and its strong predictions have been refuted. This document records what was found, what was refuted, and what structural lessons remain.
 
 ---
 
@@ -22,13 +22,13 @@ The *exceptional cosmology* programme investigated whether the exceptional Lie a
 
 The exceptional simple Lie algebras do not fit the standard A_n/B_n/C_n/D_n series:
 
-| Algebra | Rank | dim | Root system | Notes |
-|---------|------|-----|-------------|-------|
-| G2 | 2 | 14 | 12 roots | Aut(O), exceptional triality |
-| F4 | 4 | 52 | 48 roots | 26D representation |
-| E6 | 6 | 78 | 72 roots | Jordan algebra connection |
-| E7 | 7 | 133 | 126 roots | quantum information |
-| E8 | 8 | 248 | 240 roots | densest known packing |
+| Algebra | Rank | dim | Root system | Notes                        |
+| ------- | ---- | --- | ----------- | ---------------------------- |
+| G2      | 2    | 14  | 12 roots    | Aut(O), exceptional triality |
+| F4      | 4    | 52  | 48 roots    | 26D representation           |
+| E6      | 6    | 78  | 72 roots    | Jordan algebra connection    |
+| E7      | 7    | 133 | 126 roots   | quantum information          |
+| E8      | 8    | 248 | 240 roots   | densest known packing        |
 
 **G2** is the automorphism group of the octonions. Its 14-dimensional adjoint representation appears in the sedenion ZD geometry: the G2 x S3 automorphism group of the sedenion algebra (where S3 permutes box-kite orientation) is the bridge between exceptional algebras and the Cayley-Dickson tower.
 
@@ -60,7 +60,7 @@ This is an exact algebraic fact with no free parameters and no empirical content
 
 **Status:** Refuted (`proofs/verified/C036_TrialityClusteringBound.v`).
 
-Numerical study showed that the clustering coefficient does *not* converge to exactly 0.25 under triality-governed attachment; the conjecture was based on a false analogy between F4 Casimir ratios and graph-theoretic clustering.
+Numerical study showed that the clustering coefficient does _not_ converge to exactly 0.25 under triality-governed attachment; the conjecture was based on a false analogy between F4 Casimir ratios and graph-theoretic clustering.
 
 ---
 
@@ -77,6 +77,7 @@ The three quantities are numerically close (\gamma ~= 0.2375, \epsilon = 0.25, 4
 3. The near-equality ~1/4 is a coincidence in the range of physically reasonable values, not a structural identity.
 
 **Structural lesson:** The value 1/4 appears in multiple physically motivated frameworks because it is the simplest non-trivial rational number that is:
+
 - Large enough to be phenomenologically significant (f > 0)
 - Small enough not to violate perturbativity (f < 1)
 - Appearing naturally in group-theoretic ratios (e.g., 6/24)
@@ -135,11 +136,11 @@ The F4 Lie algebra has a 26-dimensional representation (the minuscule representa
 
 The exceptional cosmology programme generated seven specific, falsifiable predictions. Six were refuted. The surviving claim (C-035) is an exact algebraic identity that carries no empirical content. This is scientifically healthy: the programme was properly preregistered, tested, and closed.
 
-**Key insight:** Exceptional algebras appear naturally in the *mathematical* structure of quantum geometry (E8 in string theory compactifications, G2 as Aut(O), F4 in Jordan algebras), but this does not mean they directly parametrise *large-scale cosmological observables* like w_0, n_s, or \gamma. The programme conflated structural appearance with causal determination.
+**Key insight:** Exceptional algebras appear naturally in the _mathematical_ structure of quantum geometry (E8 in string theory compactifications, G2 as Aut(O), F4 in Jordan algebras), but this does not mean they directly parametrise _large-scale cosmological observables_ like w_0, n_s, or \gamma. The programme conflated structural appearance with causal determination.
 
 ### What Remains
 
-1. **C-035 (\epsilon = 1/4):** The exact Casimir ratio is a genuine algebraic fact that appears in multiple contexts (LQG area spectrum, Gauss-Bonnet coupling, network clustering). Understanding *why* 1/4 appears in so many physically motivated contexts may be structurally productive, even if the strong equality claims are refuted.
+1. **C-035 (\epsilon = 1/4):** The exact Casimir ratio is a genuine algebraic fact that appears in multiple contexts (LQG area spectrum, Gauss-Bonnet coupling, network clustering). Understanding _why_ 1/4 appears in so many physically motivated contexts may be structurally productive, even if the strong equality claims are refuted.
 
 2. **C-039 (spectral dimension running):** The D_s -> 2 short-scale limit is a robust prediction of CDT and asymptotic safety that the repo's toy model correctly captures the qualitative behavior of. This motivates further investigation of how the sedenion ZD topology (which also defines a discrete graph dimension ~= 2 at short scales) relates to the CDT continuum limit.
 
@@ -157,4 +158,4 @@ If the exceptional cosmology programme is to be revived, the following would nee
 
 ---
 
-*For claim provenance, see `registry/claims.toml` (C-035 through C-041). For data sources, see `docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md`.*
+_For claim provenance, see `registry/claims.toml` (C-035 through C-041). For data sources, see `docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md`._

@@ -377,7 +377,7 @@ fn build_tits_form(cartan: &[[i32; 7]; 7]) -> [[u8; 7]; 7] {
 }
 
 /// Decompose all roots into simple root basis coordinates.
-/// Solves c = C^{-1} * b where b[j] = (root, s_j).
+/// Solves c = C^{-1} * b where b`[j]` = (root, s_j).
 fn decompose_all_roots(
     roots: &[E7Root],
     simple_indices: &[usize; 7],

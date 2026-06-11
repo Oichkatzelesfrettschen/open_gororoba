@@ -24,7 +24,7 @@ pub struct MultiResCodebook {
     /// Coarse boundaries.
     pub coarse_boundaries: Vec<f32>,
     /// Fine sub-centroids: for each coarse partition, 2 sub-centroids.
-    /// fine_sub[coarse_idx] = (lower_centroid, upper_centroid)
+    /// fine_sub`[coarse_idx]` = (lower_centroid, upper_centroid)
     pub fine_sub: Vec<(f32, f32)>,
     /// Fine sub-boundary: midpoint within each coarse partition.
     pub fine_boundaries: Vec<f32>,

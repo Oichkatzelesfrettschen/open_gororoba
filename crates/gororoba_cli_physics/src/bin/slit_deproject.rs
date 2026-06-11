@@ -6,7 +6,7 @@
 //! to recover the intrinsic circular velocity v_circ.
 //!
 //! Metadata CSV formats supported:
-//!   DAPall style: plateifu, nsa_elpetro_ba, psf_fwhm_arcsec, distance_mpc[, z]
+//!   DAPall style: `plateifu, nsa_elpetro_ba, psf_fwhm_arcsec, distance_mpc[, z]`
 //!   HiCube style: name (or object_name), inclination_deg, beam_fwhm_arcsec, distance_mpc
 //!
 //! The format is detected automatically from the header.

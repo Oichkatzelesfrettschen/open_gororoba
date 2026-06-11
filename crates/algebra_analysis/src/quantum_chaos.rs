@@ -8,7 +8,7 @@
 //! In RMT, the distribution of nearest-neighbor eigenvalue spacings distinguishes:
 //! - **Poisson** P(s) = exp(-s): integrable systems, no level repulsion.
 //! - **GOE (Wigner-Dyson)** P(s) = (pi*s/2) exp(-pi*s^2/4): chaotic, level repulsion.
-//! - **Brody** parameter q in [0,1] interpolates: q=0 Poisson, q=1 GOE.
+//! - **Brody** parameter q in `[0,1]` interpolates: q=0 Poisson, q=1 GOE.
 //!
 //! # Spectrum unfolding
 //!

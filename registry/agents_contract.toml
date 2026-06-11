@@ -10,25 +10,25 @@ repo_kind = "pure_rust_plus_toml"
 
 [roles]
 human = [
-  "Define intent, scope, constraints, acceptance.",
-  "Approve non-obvious tradeoffs.",
+    "Define intent, scope, constraints, acceptance.",
+    "Approve non-obvious tradeoffs.",
 ]
 agent = [
-  "Read AGENTS.md first; load overflow as needed.",
-  "Plan hypergranular steps before substantial edits.",
-  "Prefer deterministic local tools.",
-  "Close with validation evidence and open risks.",
+    "Read AGENTS.md first; load overflow as needed.",
+    "Plan hypergranular steps before substantial edits.",
+    "Prefer deterministic local tools.",
+    "Close with validation evidence and open risks.",
 ]
 delegate = [
-  "Own bounded subsystem work.",
-  "Return files_touched, commands_run, checks_run, unresolved_risks.",
+    "Own bounded subsystem work.",
+    "Return files_touched, commands_run, checks_run, unresolved_risks.",
 ]
 
 [startup]
 required = [
-  "Capture branch, commit, scoped status.",
-  "Load task-relevant registry TOML files.",
-  "Choose required and recommended gates before implementation.",
+    "Capture branch, commit, scoped status.",
+    "Load task-relevant registry TOML files.",
+    "Choose required and recommended gates before implementation.",
 ]
 
 [tooling]
@@ -54,103 +54,103 @@ edit_note = "Edit registry/agents_contract.toml for policy; edit machine docs fo
 
 [rust_modularization]
 principles = [
-  "Design one crate per stable domain boundary; avoid god crates.",
-  "Keep *_core crates pure: deterministic compute, no CLI, no network, minimal side effects.",
-  "Put orchestration and workflow glue in engine/scheduler/cli crates, not in core kernels.",
-  "Use feature flags for optional heavy backends; keep defaults lean.",
-  "Prefer composition through traits/interfaces over cross-crate leakage.",
+    "Design one crate per stable domain boundary; avoid god crates.",
+    "Keep *_core crates pure: deterministic compute, no CLI, no network, minimal side effects.",
+    "Put orchestration and workflow glue in engine/scheduler/cli crates, not in core kernels.",
+    "Use feature flags for optional heavy backends; keep defaults lean.",
+    "Prefer composition through traits/interfaces over cross-crate leakage.",
 ]
 roles = [
-  "core_kernel = math/physics/stat kernels and reusable algorithms",
-  "integration = cross-domain composition and pipelines",
-  "entrypoint = CLI, Python bindings, docs/export",
+    "core_kernel = math/physics/stat kernels and reusable algorithms",
+    "integration = cross-domain composition and pipelines",
+    "entrypoint = CLI, Python bindings, docs/export",
 ]
 module_layout = [
-  "lib.rs exports stable API surface only",
-  "internal modules stay private unless reuse pressure is proven",
-  "tests: unit in crate, integration in tests/ or crate tests/",
+    "lib.rs exports stable API surface only",
+    "internal modules stay private unless reuse pressure is proven",
+    "tests: unit in crate, integration in tests/ or crate tests/",
 ]
 
 [crate_discovery]
 goal = "choose crates deliberately, then align dependency placement workspace-wide"
 search_commands = [
-  "cargo search <keyword>",
-  "cargo info <crate>",
-  "cargo tree -d",
-  "cargo metadata --no-deps",
+    "cargo search <keyword>",
+    "cargo info <crate>",
+    "cargo tree -d",
+    "cargo metadata --no-deps",
 ]
 selection_criteria = [
-  "API fit to exact use case",
-  "maintenance activity and release cadence",
-  "license compatibility with workspace policy",
-  "pure Rust preference; justify native/system dependencies",
-  "performance characteristics on release-parity profiles",
+    "API fit to exact use case",
+    "maintenance activity and release cadence",
+    "license compatibility with workspace policy",
+    "pure Rust preference; justify native/system dependencies",
+    "performance characteristics on release-parity profiles",
 ]
 disqualifiers = [
-  "unmaintained or low-signal crate history",
-  "license mismatch risk",
-  "duplicate capability already present in workspace",
-  "forces broad transitive bloat without clear gain",
+    "unmaintained or low-signal crate history",
+    "license mismatch risk",
+    "duplicate capability already present in workspace",
+    "forces broad transitive bloat without clear gain",
 ]
 
 [dependency_alignment]
 rules = [
-  "Workspace root owns shared versions and profile policy.",
-  "Declare shared versions only in Cargo.toml [workspace.dependencies].",
-  "In member crates, reference shared deps with workspace = true.",
-  "Avoid per-crate version pins unless isolation is intentional and documented.",
-  "Group related dependency additions and remove dead deps in same change when safe.",
+    "Workspace root owns shared versions and profile policy.",
+    "Declare shared versions only in Cargo.toml [workspace.dependencies].",
+    "In member crates, reference shared deps with workspace = true.",
+    "Avoid per-crate version pins unless isolation is intentional and documented.",
+    "Group related dependency additions and remove dead deps in same change when safe.",
 ]
 audit_commands = [
-  "cargo tree -d",
-  "cargo clippy --workspace -j$(nproc) -- -D warnings",
-  "cargo test --workspace -j$(nproc)",
+    "cargo tree -d",
+    "cargo clippy --workspace -j$(nproc) -- -D warnings",
+    "cargo test --workspace -j$(nproc)",
 ]
 
 [iteration_loop]
 steps = [
-  "1_scope: define boundary and API in smallest target crate first",
-  "2_search: shortlist crates via cargo search/info and existing workspace scan",
-  "3_spike: integrate minimally behind feature or narrow module",
-  "4_align: move accepted deps to [workspace.dependencies] and workspace=true references",
-  "5_validate_local: run crate-focused tests/checks",
-  "6_validate_workspace: run rust-smoke and required gates",
-  "7_pre_push: run make pre-push-gate; use make pre-push-gate-strict for dependency-sensitive pushes",
-  "8_prune: remove dead/duplicate deps and rerun checks",
+    "1_scope: define boundary and API in smallest target crate first",
+    "2_search: shortlist crates via cargo search/info and existing workspace scan",
+    "3_spike: integrate minimally behind feature or narrow module",
+    "4_align: move accepted deps to [workspace.dependencies] and workspace=true references",
+    "5_validate_local: run crate-focused tests/checks",
+    "6_validate_workspace: run rust-smoke and required gates",
+    "7_pre_push: run make pre-push-gate; use make pre-push-gate-strict for dependency-sensitive pushes",
+    "8_prune: remove dead/duplicate deps and rerun checks",
 ]
 artifacts_to_update = [
-  "Cargo.toml workspace deps/profile notes",
-  "affected crates/*/Cargo.toml dependency refs",
-  "AGENTS policy only when process rules change",
+    "Cargo.toml workspace deps/profile notes",
+    "affected crates/*/Cargo.toml dependency refs",
+    "AGENTS policy only when process rules change",
 ]
 
 [source_discovery]
 hosts = [
-  "crates.io",
-  "docs.rs",
-  "github.com",
-  "gitlab.com",
-  "codeberg.org",
-  "sourcehut",
-  "self-hosted git",
+    "crates.io",
+    "docs.rs",
+    "github.com",
+    "gitlab.com",
+    "codeberg.org",
+    "sourcehut",
+    "self-hosted git",
 ]
 priority = [
-  "Discover candidate crates via crates.io (cargo search/info).",
-  "Validate API/docs via docs.rs.",
-  "Trace upstream canonical repo (GitHub/GitLab/etc) and release tags.",
-  "Compare official upstream and active community forks before selection.",
+    "Discover candidate crates via crates.io (cargo search/info).",
+    "Validate API/docs via docs.rs.",
+    "Trace upstream canonical repo (GitHub/GitLab/etc) and release tags.",
+    "Compare official upstream and active community forks before selection.",
 ]
 stability_checks = [
-  "recent releases and maintenance cadence",
-  "issue/PR responsiveness",
-  "clear versioning and changelog discipline",
-  "license compatibility",
-  "bounded transitive dependency growth",
+    "recent releases and maintenance cadence",
+    "issue/PR responsiveness",
+    "clear versioning and changelog discipline",
+    "license compatibility",
+    "bounded transitive dependency growth",
 ]
 availability_checks = [
-  "repository accessible over HTTPS",
-  "mirrors/tags available when primary host is degraded",
-  "crate publish history present on crates.io",
+    "repository accessible over HTTPS",
+    "mirrors/tags available when primary host is degraded",
+    "crate publish history present on crates.io",
 ]
 
 [mcp_usage]
@@ -159,16 +159,47 @@ rule = "Treat MCP servers as model-agnostic control plane for deterministic oper
 preference = ["MCP Git/Rust/GitHub first", "shell fallback second", "ad-hoc manual last"]
 
 [mcp_rust_features]
-introspection = ["workspace-info", "cargo-metadata", "cargo-tree", "cargo-info", "cargo-search", "cargo-list"]
+introspection = [
+    "workspace-info",
+    "cargo-metadata",
+    "cargo-tree",
+    "cargo-info",
+    "cargo-search",
+    "cargo-list",
+]
 quality = ["cargo-check", "cargo-test", "cargo-clippy", "cargo-fmt", "cargo-doc", "rustc-explain"]
-dependency = ["cargo-add", "cargo-remove", "cargo-update", "cargo-machete", "cargo-hack", "cargo-deny-check"]
+dependency = [
+    "cargo-add",
+    "cargo-remove",
+    "cargo-update",
+    "cargo-machete",
+    "cargo-hack",
+    "cargo-deny-check",
+]
 release_perf = ["cargo-build", "cargo-package", "cargo-expand", "rustup-show", "rustup-update"]
 
 [mcp_git_features]
-core = ["git_status", "git_diff_unstaged", "git_diff_staged", "git_log", "git_show", "git_branch", "git_checkout", "git_add", "git_commit"]
+core = [
+    "git_status",
+    "git_diff_unstaged",
+    "git_diff_staged",
+    "git_log",
+    "git_show",
+    "git_branch",
+    "git_checkout",
+    "git_add",
+    "git_commit",
+]
 
 [mcp_github_features]
-core = ["search_repositories", "search_code", "list_pull_requests", "get_pull_request", "get_pull_request_status", "list_issues"]
+core = [
+    "search_repositories",
+    "search_code",
+    "list_pull_requests",
+    "get_pull_request",
+    "get_pull_request_status",
+    "list_issues",
+]
 
 [mcp_validation_status]
 git_status = "PASS"
@@ -209,32 +240,47 @@ last_checked_utc = "2026-02-16T01:56:18Z"
 
 [command_matrix]
 required = [
-  "cargo clippy --workspace -j$(nproc) -- -D warnings",
-  "cargo test --workspace -j$(nproc)",
-  "make ansi-check",
+    "cargo clippy --workspace -j$(nproc) -- -D warnings",
+    "cargo test --workspace -j$(nproc)",
+    "make ansi-check",
 ]
-recommended = ["make rust-smoke", "make mcp-smoke", "make cargo-deny-check", "make registry", "make check"]
+recommended = [
+    "make rust-smoke",
+    "make mcp-smoke",
+    "make cargo-deny-check",
+    "make registry",
+    "make check",
+]
 dependency_change = ["make dep-audit", "make cargo-deny-check"]
 pre_push = ["make pre-push-gate"]
 pre_push_strict = ["make pre-push-gate-strict"]
 core = ["check", "smoke", "ansi-check", "registry", "docs-publish", "governance-gate"]
-rust = ["rust-test", "rust-clippy", "rust-smoke", "dep-audit", "cargo-deny-check", "mcp-smoke", "rust-parity", "rust-release-fat-lto"]
+rust = [
+    "rust-test",
+    "rust-clippy",
+    "rust-smoke",
+    "dep-audit",
+    "cargo-deny-check",
+    "mcp-smoke",
+    "rust-parity",
+    "rust-release-fat-lto",
+]
 registry = [
-  "registry-verify-markdown-inventory",
-  "registry-verify-markdown-owner",
-  "registry-verify-markdown-governance",
-  "registry-verify-schema-signatures",
-  "registry-verify-crossrefs",
-  "registry-verify-mirrors",
+    "registry-verify-markdown-inventory",
+    "registry-verify-markdown-owner",
+    "registry-verify-markdown-governance",
+    "registry-verify-schema-signatures",
+    "registry-verify-crossrefs",
+    "registry-verify-mirrors",
 ]
 aliases = []
 artifacts = [
-  "artifacts",
-  "artifacts-motifs",
-  "artifacts-boxkites",
-  "artifacts-reggiani",
-  "artifacts-m3",
-  "artifacts-dimensional",
+    "artifacts",
+    "artifacts-motifs",
+    "artifacts-boxkites",
+    "artifacts-reggiani",
+    "artifacts-m3",
+    "artifacts-dimensional",
 ]
 
 [hooks]
@@ -246,20 +292,20 @@ pre_push_strict = ".githooks/pre-push -> make pre-push-gate-strict"
 
 [claims_and_provenance]
 rules = [
-  "Treat narrative as hypothesis until verified.",
-  "Map claims to first-party evidence + reproducible checks.",
-  "Keep claim/experiment/source crossrefs consistent.",
-  "Record external provenance and mark synthetic substitutions.",
-  "Append citations; do not remove citations.",
+    "Treat narrative as hypothesis until verified.",
+    "Map claims to first-party evidence + reproducible checks.",
+    "Keep claim/experiment/source crossrefs consistent.",
+    "Record external provenance and mark synthetic substitutions.",
+    "Append citations; do not remove citations.",
 ]
 
 [rust_optimization]
 source = "Cargo.toml [profile.dev|test|release|bench]"
 policy = [
-  "Maintain release-parity optimization across dev/test/release lanes.",
-  "Use fat LTO + codegen-units=1 for runtime parity.",
-  "Keep overflow-checks=true across lanes for safety parity.",
-  "Keep panic='unwind' while catch_unwind call-sites remain.",
+    "Maintain release-parity optimization across dev/test/release lanes.",
+    "Use fat LTO + codegen-units=1 for runtime parity.",
+    "Keep overflow-checks=true across lanes for safety parity.",
+    "Keep panic='unwind' while catch_unwind call-sites remain.",
 ]
 
 [[rust_profile]]
@@ -306,8 +352,8 @@ require_failed_check_disclosure = true
 
 [forbidden]
 items = [
-  "manual_edits_to_generated_markdown_mirrors",
-  "new_manual_markdown_outside_allowlist",
-  "warnings_in_final_state",
-  "unverifiable_claim_promotion",
+    "manual_edits_to_generated_markdown_mirrors",
+    "new_manual_markdown_outside_allowlist",
+    "warnings_in_final_state",
+    "unverifiable_claim_promotion",
 ]

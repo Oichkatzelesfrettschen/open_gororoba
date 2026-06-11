@@ -76,6 +76,9 @@ use cudarc::{
     },
     runtime::result::device as cudart_device,
 };
+use gororoba_gpu_cuda::{
+    CompileOptions as CudaCompileOptions, LaunchConfig as CudaLaunchConfig, ModuleRegistry,
+};
 use gororoba_gpu_readback::{
     ReadbackBufferShape, ReadbackDescriptor, ReadbackElementType, ReadbackLayout, ReadbackResidency,
 };
@@ -355,6 +358,8 @@ pub struct LbmSolver3DCuda {
     pub precision: Precision,
     _ctx: Arc<CudaContext>,
     stream: Arc<CudaStream>,
+    _module_registry: ModuleRegistry,
+    _soa_module_registry: Option<ModuleRegistry>,
     d_f: CudaSlice<u8>,
     d_f_tmp: CudaSlice<u8>,
     d_rho: CudaSlice<u8>,
@@ -486,12 +491,7 @@ impl LbmSolver3DCuda {
         } else {
             1024u32
         };
-        let blocks = n_elems.div_ceil(threads).max(1);
-        LaunchConfig {
-            grid_dim: (blocks, 1, 1),
-            block_dim: (threads, 1, 1),
-            shared_mem_bytes: 0,
-        }
+        CudaLaunchConfig::launch_1d_with_block(n_elems, threads)
     }
 
     /// Probe hardware and construct a CUDA solver only if the backend
@@ -542,10 +542,9 @@ impl LbmSolver3DCuda {
     pub fn new(nx: usize, ny: usize, nz: usize, tau: f64, precision: Precision) -> Result<Self> {
         let n_cells = nx * ny * nz;
         // Route context acquisition through the consolidated helper so the
-        // gpu_cuda crate owns the `cudart_device::get_count` + `CudaContext::new`
-        // sequencing (previously duplicated across 8+ lbm_3d_cuda call sites
-        // plus 13 other workspace crates). `Context::raw()` borrows the same
-        // `Arc<CudaContext>` the rest of this fn already expects.
+        // gpu_cuda crate owns the device-count probe plus raw cudarc context
+        // construction. `Context::raw()` borrows the same `Arc<CudaContext>`
+        // the rest of this fn already expects.
         let ctx_wrapper = gororoba_gpu_cuda::Context::with_default_device()
             .map_err(|e| anyhow::anyhow!("CUDA Init Failed: {}", e))?;
         let ctx = ctx_wrapper.raw().clone();
@@ -557,85 +556,105 @@ impl LbmSolver3DCuda {
             Precision::FP64 => KERNEL_FP64_SRC,
         };
 
-        use cudarc::nvrtc::CompileOptions;
         let arch_str = cuda_props
             .map(CudaDeviceProps::compile_arch)
             .unwrap_or("sm_75");
         let opts = if precision == Precision::BF16 {
-            CompileOptions {
-                include_paths: vec!["/opt/cuda/include".to_string()],
-                arch: Some(arch_str),
-                ..Default::default()
-            }
+            CudaCompileOptions::with_arch(arch_str).include_path("/opt/cuda/include")
         } else {
-            CompileOptions {
-                arch: Some(arch_str),
-                ..Default::default()
-            }
+            CudaCompileOptions::with_arch(arch_str)
         };
-        let ptx = cudarc::nvrtc::compile_ptx_with_opts(src, opts)?;
-        let module = ctx.load_module(ptx)?;
-
-        let lbm_step_fused_kernel = module.load_function(match precision {
+        let ptx = CudaCompileOptions::compile_ptx(src, &opts)?;
+        let lbm_step_name = match precision {
             Precision::BF16 => "lbm_step_fused_bf16_kernel",
             Precision::FP64 => "lbm_step_fused_fp64_kernel",
             Precision::FP32 => "lbm_step_fused_kernel",
-        })?;
-        let lbm_step_fused_4d_kernel = if precision == Precision::BF16 {
-            Some(module.load_function("lbm_step_fused_bf16_4d_batch_kernel")?)
-        } else {
-            None
         };
-        let initialize_uniform_kernel = module.load_function(match precision {
+        let initialize_uniform_name = match precision {
             Precision::BF16 => "initialize_uniform_bf16_kernel",
             Precision::FP64 => "initialize_uniform_fp64_kernel",
             Precision::FP32 => "initialize_uniform_kernel",
-        })?;
-        let initialize_custom_kernel = module.load_function(match precision {
+        };
+        let initialize_custom_name = match precision {
             Precision::BF16 => "initialize_custom_bf16_kernel",
             Precision::FP64 => "initialize_custom_fp64_kernel",
             Precision::FP32 => "initialize_custom_kernel",
-        })?;
-        let enstrophy_cell_kernel = module.load_function(if precision == Precision::FP64 {
+        };
+        let enstrophy_cell_name = if precision == Precision::FP64 {
             "compute_enstrophy_cell_fp64_kernel"
         } else {
             "compute_enstrophy_cell_kernel"
-        })?;
-        // FP64: reduce_sum operates on double*, uses reduce_sum_fp64_kernel
-        let reduce_sum_rho_kernel = module.load_function(match precision {
+        };
+        let reduce_sum_rho_name = match precision {
             Precision::BF16 => "reduce_sum_bf16_to_f32_kernel",
             Precision::FP64 => "reduce_sum_fp64_kernel",
             Precision::FP32 => "reduce_sum_kernel",
-        })?;
-        // FP32 reduction kernel -- FP64 module has no reduce_sum_kernel, use fp64 variant
-        let reduce_sum_f32_kernel = if precision == Precision::FP64 {
-            module.load_function("reduce_sum_fp64_kernel")?
-        } else {
-            module.load_function("reduce_sum_kernel")?
         };
-        let zero_kernel = module.load_function(match precision {
+        let reduce_sum_f32_name = if precision == Precision::FP64 {
+            "reduce_sum_fp64_kernel"
+        } else {
+            "reduce_sum_kernel"
+        };
+        let zero_name = match precision {
             Precision::BF16 => "zero_f32_kernel",
             Precision::FP64 => "zero_fp64_kernel",
             Precision::FP32 => "zero_kernel",
-        })?;
-        let apply_mask_kernel = module.load_function(if precision == Precision::FP64 {
+        };
+        let apply_mask_name = if precision == Precision::FP64 {
             "apply_spectral_mask_fp64_kernel"
         } else {
             "apply_spectral_mask_kernel"
-        })?;
-        let convert_real_to_complex_kernel = module.load_function(match precision {
+        };
+        let convert_real_to_complex_name = match precision {
             Precision::BF16 => "convert_real_bf16_to_complex_f32_kernel",
             Precision::FP64 => "convert_real_fp64_to_complex_f32_kernel",
             Precision::FP32 => "convert_real_to_complex_kernel",
-        })?;
-        let convert_complex_to_real_kernel = module.load_function(match precision {
+        };
+        let convert_complex_to_real_name = match precision {
             Precision::BF16 => "convert_complex_f32_to_real_bf16_kernel",
             Precision::FP64 => "convert_complex_f32_to_real_fp64_kernel",
             Precision::FP32 => "convert_complex_to_real_kernel",
-        })?;
-        let update_tau_from_voudon_kernel = module
-            .load_function("update_tau_from_voudon_frustration_kernel")
-            .ok();
+        };
+        let mut core_kernel_names = vec![
+            lbm_step_name,
+            initialize_uniform_name,
+            initialize_custom_name,
+            enstrophy_cell_name,
+            reduce_sum_rho_name,
+            reduce_sum_f32_name,
+            zero_name,
+            apply_mask_name,
+            convert_real_to_complex_name,
+            convert_complex_to_real_name,
+        ];
+        if precision == Precision::BF16 {
+            core_kernel_names.push("lbm_step_fused_bf16_4d_batch_kernel");
+        }
+        if precision == Precision::FP32 {
+            core_kernel_names.push("update_tau_from_voudon_frustration_kernel");
+        }
+        let module_registry = ModuleRegistry::load(&ctx, ptx, &core_kernel_names)?;
+
+        let lbm_step_fused_kernel = module_registry.get(lbm_step_name)?;
+        let lbm_step_fused_4d_kernel = if precision == Precision::BF16 {
+            Some(module_registry.get("lbm_step_fused_bf16_4d_batch_kernel")?)
+        } else {
+            None
+        };
+        let initialize_uniform_kernel = module_registry.get(initialize_uniform_name)?;
+        let initialize_custom_kernel = module_registry.get(initialize_custom_name)?;
+        let enstrophy_cell_kernel = module_registry.get(enstrophy_cell_name)?;
+        let reduce_sum_rho_kernel = module_registry.get(reduce_sum_rho_name)?;
+        let reduce_sum_f32_kernel = module_registry.get(reduce_sum_f32_name)?;
+        let zero_kernel = module_registry.get(zero_name)?;
+        let apply_mask_kernel = module_registry.get(apply_mask_name)?;
+        let convert_real_to_complex_kernel = module_registry.get(convert_real_to_complex_name)?;
+        let convert_complex_to_real_kernel = module_registry.get(convert_complex_to_real_name)?;
+        let update_tau_from_voudon_kernel = if precision == Precision::FP32 {
+            Some(module_registry.get("update_tau_from_voudon_frustration_kernel")?)
+        } else {
+            None
+        };
 
         // Compile SoA kernels for FP32 (production path with coalesced memory)
         let (
@@ -656,47 +675,62 @@ impl LbmSolver3DCuda {
             soa_mrt_tiled_step_kernel,
             soa_aa_step_kernel,
             soa_mrt_aa_step_kernel,
+            soa_module_registry,
         ) = if precision == Precision::FP32 {
-            let soa_opts = cudarc::nvrtc::CompileOptions {
-                arch: Some(arch_str),
-                ..Default::default()
+            let soa_opts = CudaCompileOptions::with_arch(arch_str);
+            let soa_ptx = CudaCompileOptions::compile_ptx(KERNEL_SOA_SRC, &soa_opts)?;
+            let coarsened_step_name = if cuda_props
+                .map(|caps| caps.is_ada() || caps.sparse_tile_preferred)
+                .unwrap_or(false)
+            {
+                "lbm_step_soa_coarsened_float4"
+            } else {
+                "lbm_step_soa_coarsened"
             };
-            let soa_ptx = cudarc::nvrtc::compile_ptx_with_opts(KERNEL_SOA_SRC, soa_opts)?;
-            let soa_module = ctx.load_module(soa_ptx)?;
+            let soa_kernel_names = [
+                "lbm_step_soa_fused",
+                "initialize_uniform_soa_kernel",
+                "initialize_custom_soa_kernel",
+                "compute_smagorinsky_tau_kernel",
+                "compute_smagorinsky_tau_tiled",
+                "lbm_step_soa_batch_kernel",
+                "initialize_custom_soa_batch_kernel",
+                "lbm_step_soa_mrt_fused",
+                coarsened_step_name,
+                "lbm_step_soa_mrt_coarsened",
+                "reduce_max_speed_f32",
+                "lbm_step_soa_pull",
+                "lbm_step_soa_mrt_pull",
+                "lbm_step_soa_tiled",
+                "lbm_step_soa_mrt_tiled",
+                "lbm_step_soa_aa",
+                "lbm_step_soa_mrt_aa",
+            ];
+            let soa_module_registry = ModuleRegistry::load(&ctx, soa_ptx, &soa_kernel_names)?;
             (
-                Some(soa_module.load_function("lbm_step_soa_fused")?),
-                Some(soa_module.load_function("initialize_uniform_soa_kernel")?),
-                Some(soa_module.load_function("initialize_custom_soa_kernel")?),
-                Some(soa_module.load_function("compute_smagorinsky_tau_kernel")?),
-                Some(soa_module.load_function("compute_smagorinsky_tau_tiled")?),
-                Some(soa_module.load_function("lbm_step_soa_batch_kernel")?),
-                Some(soa_module.load_function("initialize_custom_soa_batch_kernel")?),
-                Some(soa_module.load_function("lbm_step_soa_mrt_fused")?),
-                Some(
-                    soa_module.load_function(
-                        if cuda_props
-                            .map(|caps| caps.is_ada() || caps.sparse_tile_preferred)
-                            .unwrap_or(false)
-                        {
-                            "lbm_step_soa_coarsened_float4"
-                        } else {
-                            "lbm_step_soa_coarsened"
-                        },
-                    )?,
-                ),
-                Some(soa_module.load_function("lbm_step_soa_mrt_coarsened")?),
-                Some(soa_module.load_function("reduce_max_speed_f32")?),
-                Some(soa_module.load_function("lbm_step_soa_pull")?),
-                Some(soa_module.load_function("lbm_step_soa_mrt_pull")?),
-                Some(soa_module.load_function("lbm_step_soa_tiled")?),
-                Some(soa_module.load_function("lbm_step_soa_mrt_tiled")?),
-                Some(soa_module.load_function("lbm_step_soa_aa")?),
-                Some(soa_module.load_function("lbm_step_soa_mrt_aa")?),
+                Some(soa_module_registry.get("lbm_step_soa_fused")?),
+                Some(soa_module_registry.get("initialize_uniform_soa_kernel")?),
+                Some(soa_module_registry.get("initialize_custom_soa_kernel")?),
+                Some(soa_module_registry.get("compute_smagorinsky_tau_kernel")?),
+                Some(soa_module_registry.get("compute_smagorinsky_tau_tiled")?),
+                Some(soa_module_registry.get("lbm_step_soa_batch_kernel")?),
+                Some(soa_module_registry.get("initialize_custom_soa_batch_kernel")?),
+                Some(soa_module_registry.get("lbm_step_soa_mrt_fused")?),
+                Some(soa_module_registry.get(coarsened_step_name)?),
+                Some(soa_module_registry.get("lbm_step_soa_mrt_coarsened")?),
+                Some(soa_module_registry.get("reduce_max_speed_f32")?),
+                Some(soa_module_registry.get("lbm_step_soa_pull")?),
+                Some(soa_module_registry.get("lbm_step_soa_mrt_pull")?),
+                Some(soa_module_registry.get("lbm_step_soa_tiled")?),
+                Some(soa_module_registry.get("lbm_step_soa_mrt_tiled")?),
+                Some(soa_module_registry.get("lbm_step_soa_aa")?),
+                Some(soa_module_registry.get("lbm_step_soa_mrt_aa")?),
+                Some(soa_module_registry),
             )
         } else {
             (
                 None, None, None, None, None, None, None, None, None, None, None, None, None, None,
-                None, None, None,
+                None, None, None, None,
             )
         };
         let use_soa = precision == Precision::FP32;
@@ -801,12 +835,7 @@ impl LbmSolver3DCuda {
             let rho_init = 1.0_f32;
             let u_init = 0.0_f32;
             let threads = 128u32;
-            let blocks = (n_cells as u32).div_ceil(threads);
-            let config = LaunchConfig {
-                grid_dim: (blocks, 1, 1),
-                block_dim: (threads, 1, 1),
-                shared_mem_bytes: 0,
-            };
+            let config = CudaLaunchConfig::launch_1d_with_block(n_cells as u32, threads);
             let mut init = stream.launch_builder(soa_kernel);
             init.arg(&mut d_f)
                 .arg(&mut d_rho)
@@ -849,6 +878,8 @@ impl LbmSolver3DCuda {
             precision,
             _ctx: ctx,
             stream,
+            _module_registry: module_registry,
+            _soa_module_registry: soa_module_registry,
             d_f,
             d_f_tmp,
             d_rho,
@@ -971,15 +1002,14 @@ impl LbmSolver3DCuda {
             .context("4D kernel not available (requires BF16)")?;
 
         let (bx, by, bz) = self.lbm_block_dim;
-        let config = LaunchConfig {
-            grid_dim: (
-                self.nx.div_ceil(bx as usize) as u32,
-                self.ny.div_ceil(by as usize) as u32,
-                self.nz.div_ceil(bz as usize) as u32,
-            ),
-            block_dim: (bx, by, bz),
-            shared_mem_bytes: 0,
-        };
+        let config = CudaLaunchConfig::launch_blocks_3d(
+            self.nx.div_ceil(bx as usize) as u32,
+            self.ny.div_ceil(by as usize) as u32,
+            self.nz.div_ceil(bz as usize) as u32,
+            bx,
+            by,
+            bz,
+        );
 
         let mut b = self.stream.launch_builder(kernel);
         b.arg(&self.d_f)
@@ -1024,12 +1054,7 @@ impl LbmSolver3DCuda {
             let rho_init = rho;
             let (ux, uy, uz) = (u[0], u[1], u[2]);
             let threads = 128u32;
-            let blocks = (self.n_cells as u32).div_ceil(threads);
-            let config = LaunchConfig {
-                grid_dim: (blocks, 1, 1),
-                block_dim: (threads, 1, 1),
-                shared_mem_bytes: 0,
-            };
+            let config = CudaLaunchConfig::launch_1d_with_block(self.n_cells as u32, threads);
             let mut init = self.stream.launch_builder(soa_kernel);
             init.arg(&mut self.d_f)
                 .arg(&mut self.d_rho)
@@ -1134,12 +1159,7 @@ impl LbmSolver3DCuda {
                     .as_ref()
                     .context("SoA custom init kernel not loaded")?;
                 let threads = 128u32;
-                let blocks = (self.n_cells as u32).div_ceil(threads);
-                let config = LaunchConfig {
-                    grid_dim: (blocks, 1, 1),
-                    block_dim: (threads, 1, 1),
-                    shared_mem_bytes: 0,
-                };
+                let config = CudaLaunchConfig::launch_1d_with_block(self.n_cells as u32, threads);
                 let mut init = self.stream.launch_builder(soa_kernel);
                 init.arg(&mut self.d_f)
                     .arg(&mut self.d_rho)
@@ -1293,11 +1313,7 @@ impl LbmSolver3DCuda {
             let gx = (self.nx as u32).div_ceil(8);
             let gy = (self.ny as u32).div_ceil(8);
             let gz = (self.nz as u32).div_ceil(4);
-            let config = LaunchConfig {
-                grid_dim: (gx, gy, gz),
-                block_dim: (8, 8, 4),
-                shared_mem_bytes: 0, // statically allocated __shared__
-            };
+            let config = CudaLaunchConfig::launch_blocks_3d(gx, gy, gz, 8, 8, 4);
             let mut b = self.stream.launch_builder(soa_kernel);
             b.arg(&self.d_u)
                 .arg(&mut self.d_tau)
@@ -1314,12 +1330,7 @@ impl LbmSolver3DCuda {
                 .as_ref()
                 .context("Smagorinsky kernel requires SoA mode (FP32)")?;
             let threads = 128u32;
-            let blocks = (self.n_cells as u32).div_ceil(threads);
-            let config = LaunchConfig {
-                grid_dim: (blocks, 1, 1),
-                block_dim: (threads, 1, 1),
-                shared_mem_bytes: 0,
-            };
+            let config = CudaLaunchConfig::launch_1d_with_block(self.n_cells as u32, threads);
             let mut b = self.stream.launch_builder(soa_kernel);
             b.arg(&self.d_u)
                 .arg(&mut self.d_tau)
@@ -1407,12 +1418,7 @@ impl LbmSolver3DCuda {
                         .as_ref()
                         .context("A-A BGK SoA step kernel not loaded")?
                 };
-                let blocks = (self.n_cells as u32).div_ceil(threads);
-                let config = LaunchConfig {
-                    grid_dim: (blocks, 1, 1),
-                    block_dim: (threads, 1, 1),
-                    shared_mem_bytes: 0,
-                };
+                let config = CudaLaunchConfig::launch_1d_with_block(self.n_cells as u32, threads);
                 let parity = self.aa_parity;
                 let mut b = self.stream.launch_builder(soa_kernel);
                 b.arg(&mut self.d_f)
@@ -1438,20 +1444,16 @@ impl LbmSolver3DCuda {
                         .as_ref()
                         .context("Tiled BGK SoA step kernel not loaded")?
                 };
-                let config = LaunchConfig {
-                    grid_dim: (
-                        (self.nx as u32).div_ceil(8),
-                        (self.ny as u32).div_ceil(8),
-                        (self.nz as u32).div_ceil(4),
-                    ),
-                    block_dim: (8, 8, 4),
-                    // 0: shared memory is statically declared in the kernel as
-                    //   __shared__ float sf[19 * PAD_VOL]  (45600 bytes, ~44.5 KB).
-                    // Setting dynamic shared_mem_bytes > 0 would double the allocation
-                    // (static + dynamic = 91200 B), exceeding the 48 KB per-block limit
-                    // and causing CUDA_ERROR_INVALID_VALUE at launch.
-                    shared_mem_bytes: 0,
-                };
+                // Dynamic shared memory must remain 0: this tiled kernel declares
+                // its shared tile statically.
+                let config = CudaLaunchConfig::launch_blocks_3d(
+                    (self.nx as u32).div_ceil(8),
+                    (self.ny as u32).div_ceil(8),
+                    (self.nz as u32).div_ceil(4),
+                    8,
+                    8,
+                    4,
+                );
                 let mut b = self.stream.launch_builder(soa_kernel);
                 b.arg(&self.d_f)
                     .arg(&mut self.d_f_tmp)
@@ -1475,12 +1477,7 @@ impl LbmSolver3DCuda {
                         .context("Coarsened BGK SoA step kernel not loaded")?
                 };
                 let half_cells = (self.n_cells as u32).div_ceil(2);
-                let blocks = half_cells.div_ceil(threads);
-                let config = LaunchConfig {
-                    grid_dim: (blocks, 1, 1),
-                    block_dim: (threads, 1, 1),
-                    shared_mem_bytes: 0,
-                };
+                let config = CudaLaunchConfig::launch_1d_with_block(half_cells, threads);
                 let mut b = self.stream.launch_builder(soa_kernel);
                 b.arg(&self.d_f)
                     .arg(&mut self.d_f_tmp)
@@ -1503,12 +1500,7 @@ impl LbmSolver3DCuda {
                         .as_ref()
                         .context("Pull BGK SoA step kernel not loaded")?
                 };
-                let blocks = (self.n_cells as u32).div_ceil(threads);
-                let config = LaunchConfig {
-                    grid_dim: (blocks, 1, 1),
-                    block_dim: (threads, 1, 1),
-                    shared_mem_bytes: 0,
-                };
+                let config = CudaLaunchConfig::launch_1d_with_block(self.n_cells as u32, threads);
                 let mut b = self.stream.launch_builder(soa_kernel);
                 b.arg(&self.d_f)
                     .arg(&mut self.d_f_tmp)
@@ -1531,12 +1523,7 @@ impl LbmSolver3DCuda {
                         .as_ref()
                         .context("SoA step kernel not loaded")?
                 };
-                let blocks = (self.n_cells as u32).div_ceil(threads);
-                let config = LaunchConfig {
-                    grid_dim: (blocks, 1, 1),
-                    block_dim: (threads, 1, 1),
-                    shared_mem_bytes: 0,
-                };
+                let config = CudaLaunchConfig::launch_1d_with_block(self.n_cells as u32, threads);
                 let mut b = self.stream.launch_builder(soa_kernel);
                 b.arg(&self.d_f)
                     .arg(&mut self.d_f_tmp)
@@ -1551,15 +1538,14 @@ impl LbmSolver3DCuda {
             }
         } else {
             let (bx, by, bz) = self.lbm_block_dim;
-            let config = LaunchConfig {
-                grid_dim: (
-                    self.nx.div_ceil(bx as usize) as u32,
-                    self.ny.div_ceil(by as usize) as u32,
-                    self.nz.div_ceil(bz as usize) as u32,
-                ),
-                block_dim: (bx, by, bz),
-                shared_mem_bytes: 0,
-            };
+            let config = CudaLaunchConfig::launch_blocks_3d(
+                self.nx.div_ceil(bx as usize) as u32,
+                self.ny.div_ceil(by as usize) as u32,
+                self.nz.div_ceil(bz as usize) as u32,
+                bx,
+                by,
+                bz,
+            );
             let mut b = self.stream.launch_builder(&self.lbm_step_fused_kernel);
             b.arg(&self.d_f)
                 .arg(&mut self.d_f_tmp)
@@ -1682,21 +1668,16 @@ impl LbmSolver3DCuda {
             self.nz as i32,
             self.n_cells as i32,
         );
-        let enstrophy_config = LaunchConfig {
-            grid_dim: (
-                self.nx.div_ceil(2) as u32,
-                self.ny.div_ceil(2) as u32,
-                self.nz.div_ceil(2) as u32,
-            ),
-            block_dim: (2, 2, 2),
-            shared_mem_bytes: 0,
-        };
+        let enstrophy_config = CudaLaunchConfig::launch_blocks_3d(
+            self.nx.div_ceil(2) as u32,
+            self.ny.div_ceil(2) as u32,
+            self.nz.div_ceil(2) as u32,
+            2,
+            2,
+            2,
+        );
         let grid_size = self.n_cells.div_ceil(256) as u32;
-        let reduce_config = LaunchConfig {
-            grid_dim: (grid_size, 1, 1),
-            block_dim: (256, 1, 1),
-            shared_mem_bytes: 0,
-        };
+        let reduce_config = CudaLaunchConfig::launch_blocks_1d(grid_size, 256);
 
         if self.precision == Precision::FP64 {
             // FP64: enstrophy kernel writes double*, reduce uses double buffers
@@ -1786,13 +1767,7 @@ impl LbmSolver3DCuda {
             let d_out = self.d_reduction_out_f64.as_mut().unwrap();
             let mut b = self.stream.launch_builder(&self.reduce_sum_rho_kernel);
             b.arg(&self.d_rho).arg(d_out).arg(&n);
-            unsafe {
-                b.launch(LaunchConfig {
-                    grid_dim: (grid_size, 1, 1),
-                    block_dim: (256, 1, 1),
-                    shared_mem_bytes: 0,
-                })
-            }?;
+            unsafe { b.launch(CudaLaunchConfig::launch_blocks_1d(grid_size, 256)) }?;
 
             let res = self
                 .stream
@@ -1806,13 +1781,7 @@ impl LbmSolver3DCuda {
 
             let mut b = self.stream.launch_builder(&self.reduce_sum_rho_kernel);
             b.arg(&self.d_rho).arg(&mut self.d_reduction_out).arg(&n);
-            unsafe {
-                b.launch(LaunchConfig {
-                    grid_dim: (grid_size, 1, 1),
-                    block_dim: (256, 1, 1),
-                    shared_mem_bytes: 0,
-                })
-            }?;
+            unsafe { b.launch(CudaLaunchConfig::launch_blocks_1d(grid_size, 256)) }?;
 
             let res = self.stream.clone_dtoh(&self.d_reduction_out)?;
             Ok(res[0] / self.n_cells as f32)
@@ -1851,11 +1820,7 @@ impl LbmSolver3DCuda {
         let blocks_pass1 = (self.n_cells as u32).div_ceil(threads);
 
         // Pass 1: N cells -> blocks_pass1 per-block maxima (written to d_buf).
-        let config1 = LaunchConfig {
-            grid_dim: (blocks_pass1, 1, 1),
-            block_dim: (threads, 1, 1),
-            shared_mem_bytes: 0,
-        };
+        let config1 = CudaLaunchConfig::launch_blocks_1d(blocks_pass1, threads);
         {
             let d_buf = self
                 .d_reduction_buffer_f32

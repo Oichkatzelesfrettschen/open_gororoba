@@ -47,6 +47,11 @@ pub struct SohoCeliasRecord {
     pub lon_deg: f64,
 }
 
+#[cfg(feature = "fetch")]
+pub use super::soho_celias_fetch::{
+    SohoCeliasBundleProvider, SohoCeliasPm5MinProvider, SohoLascoDaySampleProvider,
+};
+
 #[derive(Debug, Clone)]
 pub struct SohoLascoSampleRecord {
     pub file_name: String,

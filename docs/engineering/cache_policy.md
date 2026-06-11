@@ -14,12 +14,12 @@ when to escalate.
 
 ## Budgets
 
-| Cache subtree              | Soft limit | Hard limit | Action when exceeded                |
-|----------------------------|-----------:|-----------:|-------------------------------------|
-| `.cache/gate-target/`      |       200G |       250G | `make cache-sweep`; re-run gates    |
-| `.cache/cbuild/`           |        20G |        40G | `cargo clean -p <crate>` selectively |
-| `.cache/cargo-default/`    |       150G |       200G | `cargo sweep --maxsize 100GB`        |
-| All `.cache/exp-*-target/` |        50G |       100G | Delete experiments older than 30 days |
+| Cache subtree              | Soft limit | Hard limit | Action when exceeded                    |
+| -------------------------- | ---------: | ---------: | --------------------------------------- |
+| `.cache/gate-target/`      |       200G |       250G | `make cache-sweep`; re-run gates        |
+| `.cache/cbuild/`           |        20G |        40G | `cargo clean -p <crate>` selectively    |
+| `.cache/cargo-default/`    |       150G |       200G | `cargo sweep --maxsize 100GB`           |
+| All `.cache/exp-*-target/` |        50G |       100G | Delete experiments older than 30 days   |
 | Total `.cache/`            |       250G |       400G | Manual review; possibly retire branches |
 
 The `gate-target` budget exists because a single gate run pulls many crates

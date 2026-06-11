@@ -46,6 +46,8 @@ mod adapter;
 #[cfg(feature = "ash")]
 mod allocator;
 #[cfg(feature = "ash")]
+mod buffer;
+#[cfg(feature = "ash")]
 mod descriptor;
 #[cfg(feature = "ash")]
 mod device;
@@ -65,7 +67,11 @@ pub use adapter::{Adapter, QueueFamilyRequirement};
 #[cfg(feature = "ash")]
 pub use allocator::Allocator;
 #[cfg(feature = "ash")]
-pub use descriptor::{DescriptorSetLayout, DescriptorSetLayoutSpec, DescriptorType};
+pub use buffer::HostVisibleBuffer;
+#[cfg(feature = "ash")]
+pub use descriptor::{
+    DescriptorPool, DescriptorSet, DescriptorSetLayout, DescriptorSetLayoutSpec, DescriptorType,
+};
 #[cfg(feature = "ash")]
 pub use device::{Device, DeviceBuilder, DeviceFeatures};
 #[cfg(feature = "ash")]

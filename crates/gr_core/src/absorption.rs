@@ -18,10 +18,10 @@
 use crate::constants::*;
 use std::f64::consts::PI;
 
-/// Planck constant [erg s].
+/// Planck constant `[erg s]`.
 const H_PLANCK: f64 = 6.626_070_15e-27;
 
-/// Compton wavelength of the electron [cm].
+/// Compton wavelength of the electron `[cm]`.
 const LAMBDA_COMPTON: f64 = 2.426_310_239e-10;
 
 // ============================================================================
@@ -146,7 +146,7 @@ pub fn dominant_mode(nu: f64, b_gauss: f64, n_e: f64, temp_k: f64) -> Absorption
     }
 }
 
-/// Frequency where optical depth = 1 for a given path length [Hz].
+/// Frequency where optical depth = 1 for a given path length `[Hz]`.
 ///
 /// Uses bisection on log(nu) to find where alpha(nu) * path_length = 1.
 /// Returns the threshold frequency for the specified absorption mode.
@@ -235,7 +235,7 @@ pub fn planck_function(nu: f64, temp_k: f64) -> f64 {
 // Plasma frequency
 // ============================================================================
 
-/// Plasma frequency [Hz].
+/// Plasma frequency `[Hz]`.
 ///
 /// nu_p = (n_e * e^2 / (pi * m_e))^{1/2}
 ///

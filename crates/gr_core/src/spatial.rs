@@ -35,7 +35,7 @@ pub type SpatialSymmetricTensor = [[f64; SDIM]; SDIM];
 /// A spatial 3-vector (shift beta^i, momentum density S^i, etc.).
 pub type SpatialVector = [f64; SDIM];
 
-/// Spatial Christoffel symbols Gamma^i_{jk}, stored as [i][j][k].
+/// Spatial Christoffel symbols Gamma^i_{jk}, stored as `[i]``[j]``[k]`.
 pub type SpatialChristoffel = [[[f64; SDIM]; SDIM]; SDIM];
 
 /// Identity 3-metric (flat Euclidean space).

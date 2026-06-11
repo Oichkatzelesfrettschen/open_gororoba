@@ -3,7 +3,7 @@
 //! shared DEFAULT_* constants and the Table type alias.
 //!
 //! Fields and constants are pub(crate) so the bin root can match
-//! and reference. Uses #[path] indirection because the binary has
+//! and reference. Uses `#[path]` indirection because the binary has
 //! an explicit Cargo.toml path.
 
 use clap::{Parser, Subcommand};

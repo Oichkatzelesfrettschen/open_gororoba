@@ -40,12 +40,15 @@ pub mod download_stack;
 pub mod fetcher;
 pub mod formats;
 pub mod geophysical;
+#[cfg(feature = "hdf5-export")]
+pub mod hdf5_export;
 #[cfg(feature = "fetch")]
 pub mod heliosphere_event_labels;
 pub mod heliosphere_feature_cube;
 pub mod nanograv;
 pub mod parse;
 pub mod provenance;
+pub mod quality;
 pub mod registry;
 #[cfg(feature = "registry-mirrors")]
 pub mod registry_mirrors;
@@ -86,6 +89,9 @@ pub use heliosphere_feature_cube::{
     compute_invariant_samples, estimate_sparse_execution_plan, estimate_sparse_memory_plan,
     heliosphere_row_datetime, magnetic_plasma_takens_embed, magnetic_takens_embed,
     plasma_takens_embed_dim, transform_feature_rows, transform_feature_rows_with_stats,
+};
+pub use quality::{
+    RhoQualityError, RhoQualityThresholds, RhoTraceQuality, assess_rho_trace, validate_rho_trace,
 };
 pub use spatial::{
     CatalogModality, RadiusMatch, SkyGridIndex, SkyPoint, angular_separation_arcsec,

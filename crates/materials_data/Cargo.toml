@@ -1,14 +1,13 @@
 [package]
 name = "materials_data"
 version = "0.1.0"
-edition = { workspace = true }
-description = "Compile-time optical, crystal, and periodic-table data tables for materials_core. Data lives in data/ as CSV/TOML; build.rs emits const arrays into OUT_DIR."
-license = "GPL-2.0-or-later"
 build = "build.rs"
+edition = { workspace = true }
+license = "GPL-2.0-or-later"
+description = "Compile-time optical, crystal, and periodic-table data tables for materials_core. Data lives in data/ as CSV/TOML; build.rs emits const arrays into OUT_DIR."
 
 # No runtime dependencies -- this crate is purely data.
 [dependencies]
-
 # Build-time only: parse data/optical/lorentz_models.toml's
 # nested oscillator arrays (the existing hand-rolled flat parser
 # in build.rs handles drude_metals.toml but cannot represent

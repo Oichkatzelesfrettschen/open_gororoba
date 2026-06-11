@@ -320,7 +320,6 @@ pub struct InsightRecord {
     pub title: String,
     pub status: String,
     pub claim_refs: Vec<String>,
-    pub status_note: Option<String>,
     pub compat_toml_text: String,
 }
 
@@ -331,7 +330,6 @@ pub struct ExperimentRecord {
     pub status: String,
     pub binary: Option<String>,
     pub claim_refs: Vec<String>,
-    pub status_note: Option<String>,
     pub compat_toml_text: String,
 }
 

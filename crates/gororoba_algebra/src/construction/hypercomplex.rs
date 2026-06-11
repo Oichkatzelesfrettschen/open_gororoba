@@ -375,7 +375,7 @@ impl HypercomplexAlgebra {
         self.norm_sq(x).sqrt()
     }
 
-    /// Compute the associator [a, b, c] = (ab)c - a(bc).
+    /// Compute the associator `[a, b, c]` = (ab)c - a(bc).
     pub fn associator(&self, a: &[f64], b: &[f64], c: &[f64]) -> Vec<f64> {
         assert_eq!(a.len(), self.dim);
         assert_eq!(b.len(), self.dim);
@@ -383,7 +383,7 @@ impl HypercomplexAlgebra {
         cd_associator(a, b, c)
     }
 
-    /// Associator norm ||[a, b, c]||.
+    /// Associator norm ||`[a, b, c]`||.
     pub fn associator_norm(&self, a: &[f64], b: &[f64], c: &[f64]) -> f64 {
         assert_eq!(a.len(), self.dim);
         assert_eq!(b.len(), self.dim);

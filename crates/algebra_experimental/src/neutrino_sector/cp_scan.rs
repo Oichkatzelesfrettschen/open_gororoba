@@ -31,7 +31,7 @@ use nalgebra::ComplexField;
 ///
 /// `delta_cp` is `arg(-U_e3)` in degrees -- this is convention-dependent.
 /// For the rephasing-invariant delta, compute `arg(Jarlskog quartet)`
-/// separately (see the rephasing analysis in [`test_cp_violation_joint_3d_scan`]).
+/// separately (see the rephasing analysis in `test_cp_violation_joint_3d_scan`).
 ///
 /// # Concrete values at the optimum (C-1497, AMENDED)
 ///
@@ -262,7 +262,7 @@ impl CpScanBuffers {
 ///
 /// # Callers
 ///
-/// - [`test_cp_violation_joint_3d_scan`]: coarse + fine inner loops
+/// - `test_cp_violation_joint_3d_scan`: coarse + fine inner loops
 /// - Future Nelder-Mead objective via argmin (planned, C-1497 follow-up)
 #[allow(clippy::too_many_arguments, clippy::needless_range_loop)]
 pub fn evaluate_cp_scan_point(

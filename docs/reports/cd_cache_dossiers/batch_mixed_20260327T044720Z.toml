@@ -41,4 +41,3 @@ kind = "holder_workflow_followup"
 dossier_json = "docs/reports/cd_cache_dossiers/freudenthal_1951_exact_original_20260327.json"
 dossier_markdown = "docs/reports/cd_cache_dossiers/freudenthal_1951_exact_original_20260327.md"
 suggestion_count = 0
-

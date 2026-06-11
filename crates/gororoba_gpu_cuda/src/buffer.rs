@@ -1,4 +1,4 @@
-//! Buffer<T>: stream-attached CUDA device allocations.
+//! `Buffer<T>`: stream-attached CUDA device allocations.
 //!
 //! Consolidates 60+ `stream.alloc_zeros::<T>(n)` + 40+
 //! `stream.memcpy_stod` + `memcpy_dtoh` sites across the workspace.

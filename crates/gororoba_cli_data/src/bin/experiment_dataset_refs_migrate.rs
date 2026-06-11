@@ -17,7 +17,7 @@
 //!
 //! Mapping file schema (TOML):
 //!
-//!   [[migration]]
+//!   `[[migration]]`
 //!   experiment_id = "E-003"
 //!   dataset_refs = ["EX-0029", "EX-0031"]
 //!   rationale = "Pantheon+ primary + DESI BAO secondary"

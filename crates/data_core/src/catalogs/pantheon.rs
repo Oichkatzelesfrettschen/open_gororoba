@@ -3,7 +3,7 @@
 //! Pantheon+ contains 1701 light curves of 1550 spectroscopically confirmed
 //! Type Ia supernovae. The distance modulus data is the primary product.
 //!
-//! Source: https://github.com/PantheonPlusSH0ES/DataRelease
+//! Source: <https://github.com/PantheonPlusSH0ES/DataRelease>
 //! Reference: Scolnic et al. (2022), ApJ 938, 113; Brout et al. (2022), ApJ 938, 110
 
 use crate::{fetcher::FetchError, parse::parse_f64_or_nan};
@@ -158,7 +158,7 @@ pub fn parse_pantheon_dat(path: &Path) -> Result<Vec<Supernova>, FetchError> {
 /// Format: first line is N (integer), then N*N whitespace-delimited f64
 /// values in row-major order. For Pantheon+, N=1701.
 ///
-/// Returns the covariance matrix as nalgebra::DMatrix<f64>.
+/// Returns the covariance matrix as `nalgebra::DMatrix<f64>`.
 pub fn parse_pantheon_cov(path: &Path) -> Result<nalgebra::DMatrix<f64>, FetchError> {
     let content = std::fs::read_to_string(path)
         .map_err(|e| FetchError::Validation(format!("Read error: {}", e)))?;

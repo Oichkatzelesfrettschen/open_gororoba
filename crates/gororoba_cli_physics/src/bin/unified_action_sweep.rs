@@ -1,7 +1,7 @@
 //! Unified Action Sweep: Computational proof of the Sedenion Vacuum Attractor
 //!
 //! This executable sweeps the algebraic imbalance parameter ($\phi$) across
-//! the full interval $[0, 1]$ and computes the components of the
+//! the full interval `$[0, 1]$` and computes the components of the
 //! Unified Field Action ($\mathcal{S}$), proving that the action is
 //! maximized (friction minimized) exactly at the 3/8 attractor.
 //!

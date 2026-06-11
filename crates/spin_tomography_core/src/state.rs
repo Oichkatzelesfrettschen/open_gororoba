@@ -15,7 +15,7 @@ impl TwoQubitState {
         Self { rho }
     }
 
-    /// Constructs the density matrix from plain [f64;3] Bloch vectors and a [3x3] correlation matrix.
+    /// Constructs the density matrix from plain `[f64;3]` Bloch vectors and a `[3x3]` correlation matrix.
     /// Convenience wrapper for callers that do not import nalgebra.
     pub fn from_ab_t_arr(a: [f64; 3], b: [f64; 3], t: [[f64; 3]; 3]) -> Self {
         Self::from_ab_t(

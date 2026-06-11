@@ -893,7 +893,7 @@ pub fn get_physical_properties(name: &str) -> Option<PhysicalProperties> {
 
 /// Linear interpolation on a sorted ascending grid.
 ///
-/// Clamps to ys[0] below xs[0] and ys[n-1] above xs[n-1].
+/// Clamps to `ys[0]` below `xs[0]` and `ys[n-1]` above `xs[n-1]`.
 fn interp_linear(xs: &[f64], ys: &[f64], x: f64) -> f64 {
     let n = xs.len();
     if n == 0 {

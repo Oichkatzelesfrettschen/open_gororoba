@@ -33,7 +33,7 @@ pub struct CouplingTopology {
     pub name: String,
     /// Number of nodes (cavities).
     pub n_nodes: usize,
-    /// Symmetric adjacency matrix: coupling[i][j] = coupling strength.
+    /// Symmetric adjacency matrix: coupling`[i]``[j]` = coupling strength.
     pub adjacency: Vec<Vec<f64>>,
 }
 

@@ -11,7 +11,7 @@
 //! - SDSS DR18 Quasars: (z, u, g, r, i)
 //! - Fermi GBM GRBs: (log_t90, log_fluence, ra, dec) -- 4203 GRBs
 //!
-//! For each dataset, normalizes attributes to [0,1], computes Euclidean
+//! For each dataset, normalizes attributes to `[0,1]`, computes Euclidean
 //! distance matrices, and runs the ultrametric fraction test against a
 //! column-shuffled null. Reports p-values per dataset with CSV output.
 //!

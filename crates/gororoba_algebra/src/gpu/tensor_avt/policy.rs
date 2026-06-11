@@ -419,6 +419,9 @@ impl TensorAVT {
                         .into(),
                 );
             }
+            #[cfg(feature = "vulkan")]
+            ComputeBackend::Vulkan => self.compute_cd_mul_vulkan(a, x)?,
+            #[cfg(not(feature = "vulkan"))]
             ComputeBackend::Vulkan => return Err(vulkan::tensor_avt_vulkan_error()),
         };
         Ok(TensorAvtAutoResult {
@@ -469,6 +472,9 @@ impl TensorAVT {
                         .into(),
                 );
             }
+            #[cfg(feature = "vulkan")]
+            ComputeBackend::Vulkan => self.compute_cd_mul_batch_vulkan(a, x_batch, batch_size)?,
+            #[cfg(not(feature = "vulkan"))]
             ComputeBackend::Vulkan => return Err(vulkan::tensor_avt_vulkan_error()),
         };
         Ok(TensorAvtAutoResult {
@@ -516,6 +522,9 @@ impl TensorAVT {
                         .into(),
                 );
             }
+            #[cfg(feature = "vulkan")]
+            ComputeBackend::Vulkan => self.compute_norm_sq_batch_vulkan(vectors, n_vectors)?,
+            #[cfg(not(feature = "vulkan"))]
             ComputeBackend::Vulkan => return Err(vulkan::tensor_avt_vulkan_error()),
         };
         Ok(TensorAvtAutoResult {

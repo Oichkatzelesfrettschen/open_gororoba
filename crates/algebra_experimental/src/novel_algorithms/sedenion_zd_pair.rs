@@ -20,7 +20,7 @@ use cd_kernel::cayley_dickson::{cd_multiply, cd_norm_sq};
 const ZERO_TOLERANCE: f64 = 1e-4;
 
 /// True iff the sedenion product `a * b` has norm-squared below
-/// [`ZERO_TOLERANCE`].
+/// `ZERO_TOLERANCE`.
 ///
 /// A nonzero `(a, b)` returning `true` is a sedenion zero-divisor pair.
 pub fn is_sedenion_zd_pair(a: &[f64; 16], b: &[f64; 16]) -> bool {

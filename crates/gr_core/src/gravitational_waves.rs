@@ -26,27 +26,27 @@ use std::f64::consts::PI;
 /// Parameters for a compact binary system.
 #[derive(Debug, Clone, Copy)]
 pub struct BinarySystem {
-    /// Primary mass [g]
+    /// Primary mass `[g]`
     pub m1: f64,
-    /// Secondary mass [g]
+    /// Secondary mass `[g]`
     pub m2: f64,
     /// Primary dimensionless spin (0 to 1)
     pub chi1: f64,
     /// Secondary dimensionless spin (0 to 1)
     pub chi2: f64,
-    /// Luminosity distance [cm]
+    /// Luminosity distance `[cm]`
     pub distance: f64,
-    /// Orbital inclination [rad] (0 = face-on)
+    /// Orbital inclination `[rad]` (0 = face-on)
     pub inclination: f64,
 }
 
 impl BinarySystem {
-    /// Total mass [g].
+    /// Total mass `[g]`.
     pub fn m_total(&self) -> f64 {
         self.m1 + self.m2
     }
 
-    /// Reduced mass [g].
+    /// Reduced mass `[g]`.
     pub fn mu(&self) -> f64 {
         self.m1 * self.m2 / self.m_total()
     }
@@ -61,7 +61,7 @@ impl BinarySystem {
         self.m2 / self.m1
     }
 
-    /// Chirp mass [g].
+    /// Chirp mass `[g]`.
     pub fn chirp_mass(&self) -> f64 {
         chirp_mass(self.m1, self.m2)
     }
@@ -95,7 +95,7 @@ impl BinarySystem {
 // Chirp mass
 // ============================================================================
 
-/// Chirp mass M_c = M_total * eta^{3/5} [g].
+/// Chirp mass M_c = M_total * eta^{3/5} `[g]`.
 ///
 /// The chirp mass is the primary parameter measurable from GW signals.
 /// For equal-mass systems, M_c = M_total / 2^{1/5}.
@@ -105,7 +105,7 @@ pub fn chirp_mass(m1: f64, m2: f64) -> f64 {
     m_total * eta.powf(0.6)
 }
 
-/// Chirp mass in geometric units [s].
+/// Chirp mass in geometric units `[s]`.
 ///
 /// M_c^{geo} = G M_c / c^3
 fn chirp_mass_geometric(m_c: f64) -> f64 {
@@ -160,7 +160,7 @@ pub fn strain_amplitude_1pn(m_c: f64, eta: f64, f: f64, distance: f64) -> f64 {
 // Frequency evolution
 // ============================================================================
 
-/// GW frequency derivative (chirp rate) [Hz/s].
+/// GW frequency derivative (chirp rate) `[Hz/s]`.
 ///
 /// df/dt = (96/5) pi^{8/3} (G M_c/c^3)^{5/3} f^{11/3}
 pub fn frequency_derivative(m_c: f64, f: f64) -> f64 {
@@ -168,7 +168,7 @@ pub fn frequency_derivative(m_c: f64, f: f64) -> f64 {
     (96.0 / 5.0) * PI.powf(8.0 / 3.0) * m_c_geo.powf(5.0 / 3.0) * f.powf(11.0 / 3.0)
 }
 
-/// Time to coalescence [s].
+/// Time to coalescence `[s]`.
 ///
 /// tau = (5/256) (G M_c/c^3)^{-5/3} (pi f)^{-8/3}
 pub fn time_to_coalescence(m_c: f64, f: f64) -> f64 {
@@ -179,7 +179,7 @@ pub fn time_to_coalescence(m_c: f64, f: f64) -> f64 {
     (5.0 / 256.0) * m_c_geo.powf(-5.0 / 3.0) * (PI * f).powf(-8.0 / 3.0)
 }
 
-/// Orbital separation from Kepler's third law [cm].
+/// Orbital separation from Kepler's third law `[cm]`.
 ///
 /// a^3 = G M_total / (4 pi^2 f_orb^2) where f_GW = 2 f_orb.
 pub fn orbital_separation(m_total: f64, f: f64) -> f64 {
@@ -191,7 +191,7 @@ pub fn orbital_separation(m_total: f64, f: f64) -> f64 {
     a_cubed.cbrt()
 }
 
-/// GW frequency at ISCO [Hz].
+/// GW frequency at ISCO `[Hz]`.
 ///
 /// f_ISCO = 1 / (pi M_geo * (r_ISCO/M)^{3/2})
 ///
@@ -205,7 +205,7 @@ pub fn frequency_isco(m_total: f64, r_isco_over_m: f64) -> f64 {
 // Post-Newtonian phase
 // ============================================================================
 
-/// GW phase with 2.5PN corrections [rad].
+/// GW phase with 2.5PN corrections `[rad]`.
 ///
 /// Includes PN coefficients from Blanchet (2014).
 pub fn phase_2p5pn(m_c: f64, eta: f64, f: f64, t_c: f64, phi_c: f64) -> f64 {
@@ -236,7 +236,7 @@ pub fn phase_2p5pn(m_c: f64, eta: f64, f: f64, t_c: f64, phi_c: f64) -> f64 {
 // Ringdown (quasi-normal modes)
 // ============================================================================
 
-/// Dominant (l=2, m=2) QNM frequency for Schwarzschild BH [Hz].
+/// Dominant (l=2, m=2) QNM frequency for Schwarzschild BH `[Hz]`.
 ///
 /// omega_22 = 0.3737 / M_geo (geometric units)
 /// f_22 = omega_22 / (2 pi)
@@ -245,7 +245,7 @@ pub fn qnm_frequency_schwarzschild(m_final: f64) -> f64 {
     0.3737 / (2.0 * PI * m_geo)
 }
 
-/// QNM damping time for Schwarzschild BH [s].
+/// QNM damping time for Schwarzschild BH `[s]`.
 ///
 /// tau_22 = M_geo / 0.0890
 pub fn qnm_damping_time_schwarzschild(m_final: f64) -> f64 {
@@ -267,7 +267,7 @@ pub fn ringdown_strain(amplitude: f64, omega_qnm: f64, tau: f64, t: f64, phi: f6
 // Energy and luminosity
 // ============================================================================
 
-/// GW luminosity [erg/s].
+/// GW luminosity `[erg/s]`.
 ///
 /// L_GW = (32/5) (c^5/G) eta^2 (M omega)^{10/3}
 ///
@@ -280,7 +280,7 @@ pub fn luminosity(m_total: f64, eta: f64, f: f64) -> f64 {
     (32.0 / 5.0) * c5_g * eta * eta * m_omega.powf(10.0 / 3.0)
 }
 
-/// Total energy radiated in GWs [erg].
+/// Total energy radiated in GWs `[erg]`.
 ///
 /// E_rad = epsilon * M c^2 where epsilon ~ 0.0559 eta^2 (NR fit).
 pub fn energy_radiated(m_total: f64, eta: f64) -> f64 {
@@ -305,15 +305,15 @@ pub fn characteristic_strain(m_c: f64, f: f64, distance: f64) -> f64 {
 /// A single point in a gravitational waveform.
 #[derive(Debug, Clone, Copy)]
 pub struct WaveformPoint {
-    /// Time [s]
+    /// Time `[s]`
     pub t: f64,
-    /// GW frequency [Hz]
+    /// GW frequency `[Hz]`
     pub f: f64,
     /// Plus polarization strain
     pub h_plus: f64,
     /// Cross polarization strain
     pub h_cross: f64,
-    /// Orbital phase [rad]
+    /// Orbital phase `[rad]`
     pub phase: f64,
 }
 

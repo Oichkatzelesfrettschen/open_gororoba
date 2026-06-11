@@ -88,7 +88,7 @@ pub fn dpss_tapers(n: usize, nw: f64, k: usize) -> Vec<Vec<f64>> {
 pub struct MultitaperResult {
     pub frequencies: Vec<f64>,
     pub psd: Vec<f64>,
-    /// Eigencoefficients [k][freq_bin]
+    /// Eigencoefficients `[k][freq_bin]`
     pub eigencoefficients: Vec<Vec<Complex64>>,
 }
 

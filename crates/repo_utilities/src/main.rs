@@ -5,8 +5,11 @@ use regex::Regex;
 use std::{
     collections::{BTreeSet, HashSet},
     fs,
+    io::{BufRead, BufReader, Write},
     path::{Path, PathBuf},
     process::{Command, ExitCode},
+    sync::mpsc,
+    time::Duration,
 };
 use unicode_normalization::UnicodeNormalization;
 use walkdir::WalkDir;
@@ -152,6 +155,21 @@ const DOCTOR_PYTHON_MODULES: &[&str] = &[
 
 const DOCTOR_BINARIES: &[&str] = &["docker", "coqc", "latexmk"];
 
+const SOURCE_ANALYSIS_MCP_TOOLS: &[&str] = &[
+    "source_analysis_catalog",
+    "source_analysis_hazard_ack",
+    "source_analysis_version",
+    "source_search",
+    "source_transform",
+    "source_index",
+    "source_static_analysis",
+    "source_metrics",
+    "binary_analysis",
+    "trace_profile",
+    "fuzz_instrument",
+    "source_analysis_doctor",
+];
+
 #[derive(Parser, Debug)]
 #[command(
     name = "repo-utilities",
@@ -168,6 +186,8 @@ enum Commands {
     AnsiCheck(CharacterPolicyArgs),
     TerminologyGate(TerminologyArgs),
     Doctor,
+    #[command(name = "mcp-smoke")]
+    McpSmoke,
     #[command(name = "rocq-prepare-confine", visible_alias = "coq-prepare-confine")]
     RocqPrepareConfine(CoqArgs),
 }
@@ -742,6 +762,118 @@ fn run_doctor() -> Result<()> {
     Ok(())
 }
 
+fn wait_for_jsonrpc_id(
+    rx: &mpsc::Receiver<Result<String, String>>,
+    request_id: i64,
+    timeout: Duration,
+) -> Result<serde_json::Value> {
+    loop {
+        let line = rx
+            .recv_timeout(timeout)
+            .with_context(|| format!("timed out waiting for JSON-RPC response id {request_id}"))?
+            .map_err(|err| anyhow::anyhow!(err))?;
+        let value: serde_json::Value =
+            serde_json::from_str(&line).with_context(|| format!("parse MCP response: {line}"))?;
+        if value.get("id").and_then(serde_json::Value::as_i64) == Some(request_id) {
+            return Ok(value);
+        }
+    }
+}
+
+fn run_mcp_smoke() -> Result<()> {
+    let mut child = Command::new("source-analysis-mcp")
+        .arg("serve")
+        .current_dir(repo_root())
+        .stdin(std::process::Stdio::piped())
+        .stdout(std::process::Stdio::piped())
+        .stderr(std::process::Stdio::piped())
+        .spawn()
+        .context("start source-analysis-mcp serve")?;
+
+    let stdout = child.stdout.take().context("capture MCP stdout")?;
+    let stderr = child.stderr.take().context("capture MCP stderr")?;
+    let mut stdin = child.stdin.take().context("capture MCP stdin")?;
+    let (tx, rx) = mpsc::channel::<Result<String, String>>();
+    let stdout_tx = tx.clone();
+    std::thread::spawn(move || {
+        for line in BufReader::new(stdout).lines() {
+            let _ = stdout_tx.send(line.map_err(|err| format!("read MCP stdout: {err}")));
+        }
+    });
+    std::thread::spawn(move || {
+        for line in BufReader::new(stderr).lines().map_while(Result::ok) {
+            if !line.trim().is_empty() {
+                eprintln!("source-analysis-mcp stderr: {line}");
+            }
+        }
+    });
+
+    let initialize = serde_json::json!({
+        "method": "initialize",
+        "params": {
+            "protocolVersion": "2025-11-25",
+            "capabilities": {},
+            "clientInfo": {
+                "name": "open-gororoba-repo-utilities",
+                "version": env!("CARGO_PKG_VERSION")
+            }
+        },
+        "jsonrpc": "2.0",
+        "id": 0
+    });
+    writeln!(stdin, "{initialize}").context("send MCP initialize")?;
+    stdin.flush().context("flush MCP initialize")?;
+    let init_response = wait_for_jsonrpc_id(&rx, 0, Duration::from_secs(10))?;
+    if init_response.get("error").is_some() {
+        bail!("MCP initialize failed: {init_response}");
+    }
+
+    let initialized = serde_json::json!({
+        "method": "notifications/initialized",
+        "jsonrpc": "2.0"
+    });
+    let list_tools = serde_json::json!({
+        "method": "tools/list",
+        "jsonrpc": "2.0",
+        "id": 1
+    });
+    writeln!(stdin, "{initialized}").context("send MCP initialized notification")?;
+    writeln!(stdin, "{list_tools}").context("send MCP tools/list")?;
+    stdin.flush().context("flush MCP tools/list")?;
+
+    let tools_response = wait_for_jsonrpc_id(&rx, 1, Duration::from_secs(10))?;
+    if tools_response.get("error").is_some() {
+        bail!("MCP tools/list failed: {tools_response}");
+    }
+    let tools = tools_response
+        .pointer("/result/tools")
+        .and_then(serde_json::Value::as_array)
+        .context("MCP tools/list response missing result.tools array")?;
+    let actual: BTreeSet<String> = tools
+        .iter()
+        .filter_map(|tool| tool.get("name").and_then(serde_json::Value::as_str))
+        .map(str::to_string)
+        .collect();
+    let expected: BTreeSet<String> = SOURCE_ANALYSIS_MCP_TOOLS
+        .iter()
+        .map(|tool| (*tool).to_string())
+        .collect();
+    if actual != expected {
+        let missing: Vec<_> = expected.difference(&actual).cloned().collect();
+        let extra: Vec<_> = actual.difference(&expected).cloned().collect();
+        bail!("source-analysis MCP tool mismatch; missing={missing:?} extra={extra:?}");
+    }
+
+    drop(stdin);
+    let _ = child.kill();
+    let _ = child.wait();
+    println!(
+        "OK: source-analysis MCP smoke listed {} expected tools.",
+        SOURCE_ANALYSIS_MCP_TOOLS.len()
+    );
+    Ok(())
+}
+
 fn run_rocq_prepare_confine(args: CoqArgs) -> Result<()> {
     let text =
         fs::read_to_string(&args.src).with_context(|| format!("read {}", args.src.display()))?;
@@ -769,6 +901,7 @@ fn main() -> ExitCode {
         Commands::AnsiCheck(args) => run_character_policy(args),
         Commands::TerminologyGate(args) => run_terminology_gate(args),
         Commands::Doctor => run_doctor(),
+        Commands::McpSmoke => run_mcp_smoke(),
         Commands::RocqPrepareConfine(args) => run_rocq_prepare_confine(args),
     };
     match result {

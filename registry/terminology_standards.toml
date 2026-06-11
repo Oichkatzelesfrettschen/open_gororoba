@@ -308,14 +308,14 @@ version = "1.1"
 source = "TOML-first glossary registry"
 generated = "2026-03-01"
 domains = [
-  "Lattice Boltzmann Method",
-  "Physics & Differential Geometry",
-  "Algebra & Group Theory",
-  "Graph Theory & Topology",
-  "Topology & Filtration",
-  "Quantum Field Theory",
-  "Statistics & Testing",
-  "Engine Architecture"
+    "Lattice Boltzmann Method",
+    "Physics & Differential Geometry",
+    "Algebra & Group Theory",
+    "Graph Theory & Topology",
+    "Topology & Filtration",
+    "Quantum Field Theory",
+    "Statistics & Testing",
+    "Engine Architecture",
 ]
 total_terms = 28
 banned_terms = 8

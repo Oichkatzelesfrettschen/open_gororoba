@@ -107,7 +107,7 @@ pub fn construct_pmns_matrices(
 /// measures the transition amplitude between generations.
 ///
 /// The 3x3 friction tensor F_ij is:
-///   F_ii = w1*sel_own[i] + w2*sel_other[i]  (diagonal, as before)
+///   `F_ii = w1*sel_own[i] + w2*sel_other[i]`  (diagonal, as before)
 ///   F_ij = alpha_cross * <sel_own, psi^k(sel_other)> for i != j
 ///
 /// alpha_cross controls the off-diagonal coupling strength.

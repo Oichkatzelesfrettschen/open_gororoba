@@ -2,8 +2,8 @@
 name = "control_core"
 version = "0.1.0"
 edition = { workspace = true }
-description = "Control systems: Plant traits, feedback controllers, state estimation"
 license = "MIT"
+description = "Control systems: Plant traits, feedback controllers, state estimation"
 
 [dependencies]
 nalgebra = { workspace = true }

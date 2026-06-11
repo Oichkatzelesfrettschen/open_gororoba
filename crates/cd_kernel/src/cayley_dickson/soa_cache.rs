@@ -1,15 +1,15 @@
 //! Structure-of-Arrays (SoA) embedding cache for high-performance CD associator.
 //!
 //! Translated from steinmarder's D3Q19 SoA layout (2.85x speedup).
-//! Instead of Vec<Vec<f32>> (AoS), stores all component[i] values contiguously:
-//!   [v0[0], v1[0], v2[0], ...] [v0[1], v1[1], v2[1], ...] ...
+//! Instead of `Vec<Vec<f32>`> (AoS), stores all component`[i]` values contiguously:
+//!   `[v0[0]`, v1`[0]`, v2`[0]`, ...] `[v0[1]`, v1`[1]`, v2`[1]`, ...] ...
 //!
 //! This gives cache-line-aligned access when the CD butterfly processes
 //! one component across multiple vectors simultaneously.
 
 /// SoA embedding cache: contiguous per-component storage
 pub struct SoaEmbeddingCache {
-    /// Flat storage: data[component * n_vectors + vector_idx]
+    /// Flat storage: data`[component * n_vectors + vector_idx]`
     data: Vec<f32>,
     /// Number of vectors stored
     n_vectors: usize,
@@ -47,7 +47,7 @@ impl SoaEmbeddingCache {
     }
 
     /// Get a component slice across all vectors (the SoA advantage)
-    /// Returns &[f32] of length n_vectors for component `c`
+    /// Returns &`[f32]` of length n_vectors for component `c`
     pub fn component_slice(&self, c: usize) -> &[f32] {
         debug_assert!(c < self.dim);
         let start = c * self.n_vectors;
@@ -93,7 +93,7 @@ impl SoaEmbeddingCache {
 /// Uses AssociatorWorkspace internally: the ring buffer holds 3 embedding slots
 /// and the workspace holds 3 computation buffers, for a total of 6*dim f32 memory.
 pub struct RingEmbeddingCache {
-    /// Three slots for the sliding window [oldest, middle, newest]
+    /// Three slots for the sliding window `[oldest, middle, newest]`
     slots: [Vec<f32>; 3],
     /// Reusable workspace for associator computation
     ws: super::fast_associator::AssociatorWorkspace,

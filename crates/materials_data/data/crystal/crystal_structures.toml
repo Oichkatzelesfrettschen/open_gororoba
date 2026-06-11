@@ -28,7 +28,6 @@
 #   density          -- theoretical density in g/cm^3
 #   reference        -- primary citation
 
-
 [[structure]]
 name = "schorl_tourmaline"
 sg_num = 160

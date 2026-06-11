@@ -6,7 +6,7 @@
 //! product: `sign * (LI XOR RI)`.
 //!
 //! The algorithm:
-//! 1. QSIGNS[4x4] quaternion base case (hard-coded multiplication table)
+//! 1. `QSIGNS[4x4]` quaternion base case (hard-coded multiplication table)
 //! 2. Handle negative inputs (absorb signs into NegTally accumulator)
 //! 3. XorRoot = LI XOR RI (the product index, assuming we know the sign)
 //! 4. Recursive reduction: strip highest bits while toggling NegTally,
@@ -18,7 +18,7 @@
 
 /// Quaternion multiplication sign table (indices 0..3).
 ///
-/// QSigns[i][j] gives the sign of e_i * e_j in the quaternion subalgebra.
+/// `QSigns[i][j]` gives the sign of e_i * e_j in the quaternion subalgebra.
 /// Layout:
 ///   e0=1 (real), e1=i, e2=j, e3=k
 ///   e1*e2 = +e3, e2*e1 = -e3

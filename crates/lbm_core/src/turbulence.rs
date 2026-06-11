@@ -182,8 +182,8 @@ pub fn fft3d(field: &Array3<f64>) -> SpectralField3D {
 
 /// Compute radially-binned isotropic power spectrum P(k).
 ///
-/// Returns (k_bins, power) where k_bins[i] is the wavenumber magnitude
-/// and power[i] is the average |F(kx,ky)|^2 / N^2 in that radial shell.
+/// Returns (k_bins, power) where k_bins`[i]` is the wavenumber magnitude
+/// and power`[i]` is the average |F(kx,ky)|^2 / N^2 in that radial shell.
 /// The DC component (k=0) is excluded.
 pub fn power_spectrum(field: &Array2<f64>) -> (Vec<f64>, Vec<f64>) {
     let (nx, ny) = field.dim();
@@ -477,7 +477,7 @@ pub fn extract_dominant_triads(
 
 /// Calculate energy transfer for a specific triad.
 ///
-/// T(k|p,q) = -Im[ conj(u_hat(k)) * (p . u_hat(p)) * u_hat(q) ]
+/// T(k|p,q) = -Im`[ conj(u_hat(k)) * (p . u_hat(p)) * u_hat(q) ]`
 ///
 /// This is a simplified scalar form of the nonlinear transfer term.
 /// The vector p modulates the advection (p . u_hat(p)) representing

@@ -3,7 +3,7 @@
 //! Queries the SDSS SkyServer for spectroscopically confirmed quasars,
 //! returning RA, Dec, redshift, and photometric magnitudes.
 //!
-//! Source: https://skyserver.sdss.org/
+//! Source: <https://skyserver.sdss.org/>
 //! Reference: Almeida et al. (2023), ApJS 267, 44
 
 use crate::{fetcher::FetchError, parse::parse_f64_or_nan};
@@ -33,6 +33,9 @@ pub struct SdssQuasar {
     /// PSF magnitude in z band.
     pub mag_z: f64,
 }
+
+#[cfg(feature = "fetch")]
+pub use super::sdss_fetch::SdssQsoProvider;
 
 /// Parse SDSS quasar CSV data.
 pub fn parse_sdss_quasar_csv(path: &Path) -> Result<Vec<SdssQuasar>, FetchError> {

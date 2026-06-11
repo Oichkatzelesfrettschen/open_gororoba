@@ -32,11 +32,11 @@ struct Args {
     #[arg(long, default_value = "500")]
     n_points: usize,
 
-    /// Maximum pump power [W]
+    /// Maximum pump power `[W]`
     #[arg(long, default_value = "0.5")]
     max_power_w: f64,
 
-    /// Maximum crystal thickness [um]
+    /// Maximum crystal thickness `[um]`
     #[arg(long, default_value = "100.0")]
     max_thickness_um: f64,
 }

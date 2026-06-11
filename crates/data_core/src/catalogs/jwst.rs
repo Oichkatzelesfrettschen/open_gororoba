@@ -32,6 +32,9 @@ pub struct JwstPublicObservation {
     pub calib_level: String,
 }
 
+#[cfg(feature = "fetch")]
+pub use super::jwst_fetch::JwstPublicMetadataProvider;
+
 pub fn parse_jwst_public_metadata_json(
     content: &str,
 ) -> Result<Vec<JwstPublicObservation>, FetchError> {

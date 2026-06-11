@@ -151,7 +151,7 @@ impl EncodingDictionary {
 
     /// Compute the full elevated addition table for all ordered pairs (a, b).
     ///
-    /// Returns an n x n table where table[a][b] = elevated_add(a, b).
+    /// Returns an n x n table where `table[a][b] = elevated_add(a, b)`.
     /// This table captures the complete lattice-addition structure of the codebook.
     pub fn elevated_addition_table(&self) -> Vec<Vec<ElevatedResult>> {
         let n = self.dim();

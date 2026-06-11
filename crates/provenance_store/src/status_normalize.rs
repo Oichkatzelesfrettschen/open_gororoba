@@ -9,7 +9,7 @@
 //! - `normalize_insight_status`: maps insight tokens onto the canonical
 //!   set (verified, open, superseded, cross-validation-complete, partial).
 //! - `match_case_insensitive`: case-insensitive constant-set lookup.
-//! - `merge_status_note`: appends a 'Legacy status token: <raw>' tag to
+//! - `merge_status_note`: appends a `Legacy status token: <raw>` tag to
 //!   the existing note when canonicalization stripped a legacy token.
 
 use anyhow::Result;

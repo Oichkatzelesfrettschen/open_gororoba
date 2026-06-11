@@ -25,7 +25,7 @@ use num_complex::Complex64 as C64;
 /// * `_weak_field_param` - Weak-field parameter epsilon (dimensionless)
 ///
 /// # Returns
-/// Normalized lineshape (dimensionless), range [0, 1] typical for lossless case
+/// Normalized lineshape (dimensionless), range `[0, 1]` typical for lossless case
 pub fn fano_lineshape(x: f64, asymmetry: &AsymmetryParameter, _weak_field_param: f64) -> f64 {
     let x_squared = x * x;
     let _q_squared = asymmetry.q * asymmetry.q;

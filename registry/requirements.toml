@@ -17,8 +17,26 @@ status_allowlist = ["active", "deprecated", "planned", "blocked"]
 runtime_stack_allowlist = ["mixed", "rust", "python", "docker_python", "rocq", "latex", "cpp"]
 
 [requirements.schema]
-required_module_fields = ["id", "name", "status", "status_token", "runtime_stack", "requires_modules", "install_targets", "verify_targets", "acceptance_criteria"]
-required_gap_fields = ["id", "area", "status", "status_token", "description", "proposed_resolution", "related_module_ids"]
+required_module_fields = [
+    "id",
+    "name",
+    "status",
+    "status_token",
+    "runtime_stack",
+    "requires_modules",
+    "install_targets",
+    "verify_targets",
+    "acceptance_criteria",
+]
+required_gap_fields = [
+    "id",
+    "area",
+    "status",
+    "status_token",
+    "description",
+    "proposed_resolution",
+    "related_module_ids",
+]
 
 [[module]]
 id = "REQ-ALGEBRA"
@@ -30,7 +48,11 @@ runtime_stack = "rust"
 requires_modules = ["REQ-CORE"]
 install_targets = []
 verify_targets = []
-acceptance_criteria = ["Runtime stack classification is explicit.", "Install and verify commands are reproducible.", "Module dependencies are fully declared in TOML."]
+acceptance_criteria = [
+    "Runtime stack classification is explicit.",
+    "Install and verify commands are reproducible.",
+    "Module dependencies are fully declared in TOML.",
+]
 
 [[module]]
 id = "REQ-ANALYSIS"
@@ -42,7 +64,11 @@ runtime_stack = "python"
 requires_modules = ["REQ-CORE"]
 install_targets = ["make install-analysis"]
 verify_targets = ["make install-analysis"]
-acceptance_criteria = ["Runtime stack classification is explicit.", "Install and verify commands are reproducible.", "Module dependencies are fully declared in TOML."]
+acceptance_criteria = [
+    "Runtime stack classification is explicit.",
+    "Install and verify commands are reproducible.",
+    "Module dependencies are fully declared in TOML.",
+]
 
 [[module]]
 id = "REQ-ASTRO"
@@ -54,7 +80,11 @@ runtime_stack = "python"
 requires_modules = ["REQ-CORE"]
 install_targets = ["make install-astro"]
 verify_targets = ["make install-astro"]
-acceptance_criteria = ["Runtime stack classification is explicit.", "Install and verify commands are reproducible.", "Module dependencies are fully declared in TOML."]
+acceptance_criteria = [
+    "Runtime stack classification is explicit.",
+    "Install and verify commands are reproducible.",
+    "Module dependencies are fully declared in TOML.",
+]
 
 [[module]]
 id = "REQ-COQ"
@@ -66,7 +96,11 @@ runtime_stack = "rocq"
 requires_modules = ["REQ-CORE"]
 install_targets = ["make rocq"]
 verify_targets = ["make rocq"]
-acceptance_criteria = ["Runtime stack classification is explicit.", "Install and verify commands are reproducible.", "Module dependencies are fully declared in TOML."]
+acceptance_criteria = [
+    "Runtime stack classification is explicit.",
+    "Install and verify commands are reproducible.",
+    "Module dependencies are fully declared in TOML.",
+]
 
 [[module]]
 id = "REQ-CORE"
@@ -78,7 +112,11 @@ runtime_stack = "mixed"
 requires_modules = []
 install_targets = ["make install"]
 verify_targets = ["make install"]
-acceptance_criteria = ["Runtime stack classification is explicit.", "Install and verify commands are reproducible.", "Module dependencies are fully declared in TOML."]
+acceptance_criteria = [
+    "Runtime stack classification is explicit.",
+    "Install and verify commands are reproducible.",
+    "Module dependencies are fully declared in TOML.",
+]
 
 [[module]]
 id = "REQ-CPP"
@@ -90,7 +128,11 @@ runtime_stack = "cpp"
 requires_modules = ["REQ-CORE"]
 install_targets = ["make cpp-build", "make cpp-test"]
 verify_targets = ["make cpp-build", "make cpp-test"]
-acceptance_criteria = ["Runtime stack classification is explicit.", "Install and verify commands are reproducible.", "Module dependencies are fully declared in TOML."]
+acceptance_criteria = [
+    "Runtime stack classification is explicit.",
+    "Install and verify commands are reproducible.",
+    "Module dependencies are fully declared in TOML.",
+]
 
 [[module]]
 id = "REQ-DATA-GOVERNANCE"
@@ -100,9 +142,27 @@ status = "active"
 status_token = "ACTIVE"
 runtime_stack = "mixed"
 requires_modules = ["REQ-CORE"]
-install_targets = ["cargo run -p gororoba_cli_data --bin fetch-datasets -- --all --skip-existing --output-dir data/external", "cargo run -p gororoba_cli_data --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json", "cargo run -p gororoba_cli_data --bin external-redownload-audit -- --out reports/external_redownload_audit_YYYY-MM-DD.toml --backend-order wget,curl,fetch", "cargo run -p gororoba_cli_data --bin data-origin-audit -- --fail-on-strict-unknown", "cargo run -p gororoba_cli_data --bin data-governance-gate --", "cargo run -p gororoba_cli_data --bin data-semantic-validate --"]
-verify_targets = ["cargo run -p gororoba_cli_data --bin data-governance-gate --", "cargo run -p gororoba_cli_data --bin data-origin-audit -- --fail-on-strict-unknown", "cargo run -p gororoba_cli_data --bin data-semantic-validate --", "cargo run -p gororoba_cli_data --bin external-redownload-audit -- --out reports/external_redownload_audit_YYYY-MM-DD.toml --backend-order wget,curl,fetch", "cargo run -p gororoba_cli_data --bin fetch-datasets -- --all --skip-existing --output-dir data/external", "cargo run -p gororoba_cli_data --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json"]
-acceptance_criteria = ["Runtime stack classification is explicit.", "Install and verify commands are reproducible.", "Module dependencies are fully declared in TOML."]
+install_targets = [
+    "cargo run -p gororoba_cli_data --bin fetch-datasets -- --all --skip-existing --output-dir data/external",
+    "cargo run -p gororoba_cli_data --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json",
+    "cargo run -p gororoba_cli_data --bin external-redownload-audit -- --out reports/external_redownload_audit_YYYY-MM-DD.toml --backend-order wget,curl,fetch",
+    "cargo run -p gororoba_cli_data --bin data-origin-audit -- --fail-on-strict-unknown",
+    "cargo run -p gororoba_cli_data --bin data-governance-gate --",
+    "cargo run -p gororoba_cli_data --bin data-semantic-validate --",
+]
+verify_targets = [
+    "cargo run -p gororoba_cli_data --bin data-governance-gate --",
+    "cargo run -p gororoba_cli_data --bin data-origin-audit -- --fail-on-strict-unknown",
+    "cargo run -p gororoba_cli_data --bin data-semantic-validate --",
+    "cargo run -p gororoba_cli_data --bin external-redownload-audit -- --out reports/external_redownload_audit_YYYY-MM-DD.toml --backend-order wget,curl,fetch",
+    "cargo run -p gororoba_cli_data --bin fetch-datasets -- --all --skip-existing --output-dir data/external",
+    "cargo run -p gororoba_cli_data --bin record-external-hashes -- --root data/external --output data/external/PROVENANCE.local.json",
+]
+acceptance_criteria = [
+    "Runtime stack classification is explicit.",
+    "Install and verify commands are reproducible.",
+    "Module dependencies are fully declared in TOML.",
+]
 
 [[module]]
 id = "REQ-HELIOSPHERE"
@@ -112,9 +172,25 @@ status = "active"
 status_token = "ACTIVE"
 runtime_stack = "mixed"
 requires_modules = ["REQ-CORE"]
-install_targets = ["cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset \"Helios 1 Merged Hourly\" --skip-existing", "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset \"Helios 2 Merged Hourly\" --skip-existing", "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset \"Voyager 1 Merged Hourly (2016)\" --skip-existing", "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset \"Voyager 1 CRS Daily Flux (2016)\" --skip-existing", "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset \"NASA OMNI2 Solar Wind + IMF (2016)\" --skip-existing"]
-verify_targets = ["cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset \"Helios 1 Merged Hourly\" --skip-existing", "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset \"Helios 2 Merged Hourly\" --skip-existing", "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset \"NASA OMNI2 Solar Wind + IMF (2016)\" --skip-existing", "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset \"Voyager 1 CRS Daily Flux (2016)\" --skip-existing", "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset \"Voyager 1 Merged Hourly (2016)\" --skip-existing"]
-acceptance_criteria = ["Runtime stack classification is explicit.", "Install and verify commands are reproducible.", "Module dependencies are fully declared in TOML."]
+install_targets = [
+    "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset \"Helios 1 Merged Hourly\" --skip-existing",
+    "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset \"Helios 2 Merged Hourly\" --skip-existing",
+    "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset \"Voyager 1 Merged Hourly (2016)\" --skip-existing",
+    "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset \"Voyager 1 CRS Daily Flux (2016)\" --skip-existing",
+    "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset \"NASA OMNI2 Solar Wind + IMF (2016)\" --skip-existing",
+]
+verify_targets = [
+    "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset \"Helios 1 Merged Hourly\" --skip-existing",
+    "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset \"Helios 2 Merged Hourly\" --skip-existing",
+    "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset \"NASA OMNI2 Solar Wind + IMF (2016)\" --skip-existing",
+    "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset \"Voyager 1 CRS Daily Flux (2016)\" --skip-existing",
+    "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset \"Voyager 1 Merged Hourly (2016)\" --skip-existing",
+]
+acceptance_criteria = [
+    "Runtime stack classification is explicit.",
+    "Install and verify commands are reproducible.",
+    "Module dependencies are fully declared in TOML.",
+]
 
 [[module]]
 id = "REQ-LATEX"
@@ -126,7 +202,11 @@ runtime_stack = "latex"
 requires_modules = ["REQ-CORE"]
 install_targets = ["make latex"]
 verify_targets = ["make latex"]
-acceptance_criteria = ["Runtime stack classification is explicit.", "Install and verify commands are reproducible.", "Module dependencies are fully declared in TOML."]
+acceptance_criteria = [
+    "Runtime stack classification is explicit.",
+    "Install and verify commands are reproducible.",
+    "Module dependencies are fully declared in TOML.",
+]
 
 [[module]]
 id = "REQ-LBM-CUDA"
@@ -138,7 +218,11 @@ runtime_stack = "mixed"
 requires_modules = ["REQ-CORE"]
 install_targets = ["cargo check -p lbm_3d_cuda"]
 verify_targets = ["cargo check -p lbm_3d_cuda"]
-acceptance_criteria = ["Runtime stack classification is explicit.", "Install and verify commands are reproducible.", "Module dependencies are fully declared in TOML."]
+acceptance_criteria = [
+    "Runtime stack classification is explicit.",
+    "Install and verify commands are reproducible.",
+    "Module dependencies are fully declared in TOML.",
+]
 
 [[module]]
 id = "REQ-MATERIALS"
@@ -150,7 +234,11 @@ runtime_stack = "mixed"
 requires_modules = ["REQ-CORE"]
 install_targets = []
 verify_targets = []
-acceptance_criteria = ["Runtime stack classification is explicit.", "Install and verify commands are reproducible.", "Module dependencies are fully declared in TOML."]
+acceptance_criteria = [
+    "Runtime stack classification is explicit.",
+    "Install and verify commands are reproducible.",
+    "Module dependencies are fully declared in TOML.",
+]
 
 [[module]]
 id = "REQ-PARTICLE"
@@ -162,7 +250,11 @@ runtime_stack = "python"
 requires_modules = ["REQ-CORE"]
 install_targets = ["make install-particle"]
 verify_targets = ["make install-particle"]
-acceptance_criteria = ["Runtime stack classification is explicit.", "Install and verify commands are reproducible.", "Module dependencies are fully declared in TOML."]
+acceptance_criteria = [
+    "Runtime stack classification is explicit.",
+    "Install and verify commands are reproducible.",
+    "Module dependencies are fully declared in TOML.",
+]
 
 [[module]]
 id = "REQ-QUANTUM"
@@ -174,7 +266,11 @@ runtime_stack = "docker_python"
 requires_modules = ["REQ-CORE"]
 install_targets = ["make install-quantum", "docker-quantum-build", "docker-quantum-run"]
 verify_targets = ["docker-quantum-build", "docker-quantum-run", "make install-quantum"]
-acceptance_criteria = ["Runtime stack classification is explicit.", "Install and verify commands are reproducible.", "Module dependencies are fully declared in TOML."]
+acceptance_criteria = [
+    "Runtime stack classification is explicit.",
+    "Install and verify commands are reproducible.",
+    "Module dependencies are fully declared in TOML.",
+]
 
 [[module]]
 id = "REQ-STUDIO"
@@ -186,7 +282,11 @@ runtime_stack = "mixed"
 requires_modules = ["REQ-CORE"]
 install_targets = ["make studio-run"]
 verify_targets = ["make studio-run"]
-acceptance_criteria = ["Runtime stack classification is explicit.", "Install and verify commands are reproducible.", "Module dependencies are fully declared in TOML."]
+acceptance_criteria = [
+    "Runtime stack classification is explicit.",
+    "Install and verify commands are reproducible.",
+    "Module dependencies are fully declared in TOML.",
+]
 
 [[coverage_gap]]
 id = "REQ-GAP-001"

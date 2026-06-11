@@ -43,6 +43,12 @@ simulate_redirect() {
 
   for prefix in "${legacy_prefixes[@]}"; do
     if [[ "$path" == *"$prefix"* ]]; then
+      local prefix_part="${path%%${prefix}*}"
+      if [ -n "$prefix_part" ] && [ "$prefix_part" != "/" ]; then
+        root="${prefix_part%/}/"
+      else
+        root="/"
+      fi
       suffix="${path#*${prefix}}"
       printf '%s\n' "${root}rustdoc${suffix}"
       return 0

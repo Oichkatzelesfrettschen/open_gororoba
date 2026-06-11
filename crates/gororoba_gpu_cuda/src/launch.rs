@@ -34,6 +34,15 @@ impl LaunchConfig {
         }
     }
 
+    /// 1D launch for callers that already selected the block count.
+    pub fn launch_blocks_1d(grid_dim: u32, block_dim: u32) -> CudarcLaunchConfig {
+        CudarcLaunchConfig {
+            grid_dim: (grid_dim.max(1), 1, 1),
+            block_dim: (block_dim.max(1), 1, 1),
+            shared_mem_bytes: 0,
+        }
+    }
+
     /// 2D launch: `nx` x `ny`, default 16x16 threads per block.
     pub fn launch_2d(nx: u32, ny: u32) -> CudarcLaunchConfig {
         let block_x = 16;
@@ -45,13 +54,47 @@ impl LaunchConfig {
         }
     }
 
+    /// 2D grid launch for callers that already selected the block shape.
+    pub fn launch_blocks_2d(
+        grid_x: u32,
+        grid_y: u32,
+        block_x: u32,
+        block_y: u32,
+    ) -> CudarcLaunchConfig {
+        CudarcLaunchConfig {
+            grid_dim: (grid_x.max(1), grid_y.max(1), 1),
+            block_dim: (block_x.max(1), block_y.max(1), 1),
+            shared_mem_bytes: 0,
+        }
+    }
+
+    /// 3D grid launch for callers that already selected the block shape.
+    pub fn launch_blocks_3d(
+        grid_x: u32,
+        grid_y: u32,
+        grid_z: u32,
+        block_x: u32,
+        block_y: u32,
+        block_z: u32,
+    ) -> CudarcLaunchConfig {
+        CudarcLaunchConfig {
+            grid_dim: (grid_x.max(1), grid_y.max(1), grid_z.max(1)),
+            block_dim: (block_x.max(1), block_y.max(1), block_z.max(1)),
+            shared_mem_bytes: 0,
+        }
+    }
+
     /// 3D launch: `nx` x `ny` x `nz`, default 8x8x8 threads per block.
     pub fn launch_3d(nx: u32, ny: u32, nz: u32) -> CudarcLaunchConfig {
         let block_x = 8;
         let block_y = 8;
         let block_z = 8;
         CudarcLaunchConfig {
-            grid_dim: (nx.div_ceil(block_x), ny.div_ceil(block_y), nz.div_ceil(block_z)),
+            grid_dim: (
+                nx.div_ceil(block_x),
+                ny.div_ceil(block_y),
+                nz.div_ceil(block_z),
+            ),
             block_dim: (block_x, block_y, block_z),
             shared_mem_bytes: 0,
         }

@@ -7,14 +7,14 @@ repository = "https://github.com/Oichkatzelesfrettschen/open_gororoba"
 
 [dependencies]
 gororoba_algebra = { path = "../gororoba_algebra", version = "0.1" }
-rand.workspace = true
 petgraph.workspace = true
+rand.workspace = true
 sign_imbalance = { version = "0.1.0", path = "../sign_imbalance" }
 
 [dev-dependencies]
-stats_core = { path = "../stats_core" }
-proptest = { workspace = true }
 criterion = { workspace = true }
+proptest = { workspace = true }
+stats_core = { path = "../stats_core" }
 
 [[bench]]
 name = "filtration_bench"

@@ -116,7 +116,7 @@ struct Cli {
     /// Use preceding disjoint 15-minute window for MAD threshold estimation (M-5/Phase 4.10).
     /// Default: false (global std over entire series, matching paper baseline).
     /// When enabled: threshold at index i is MAD_SCALE_FACTOR * std of scores in
-    /// [i - (trans_window + mad_lookback_minutes), i - trans_window].
+    /// `[i - (trans_window + mad_lookback_minutes), i - trans_window]`.
     #[arg(long, default_value_t = false)]
     decorrelated_mad: bool,
 
@@ -181,7 +181,7 @@ struct StaplesLabeledResults {
     cd_fire_hours: Vec<f64>,
     /// Elapsed hours of each |B|-gradient+rotation detector fire.
     gradient_fire_hours: Vec<f64>,
-    /// Block-bootstrap 95% CI for CD F1: [mean, ci_lo, ci_hi].
+    /// Block-bootstrap 95% CI for CD F1: `[mean, ci_lo, ci_hi]`.
     /// 30-min blocks, N=10000, seed=42 (boundary_metrics::bootstrap_f1_ci_seeded).
     cd_bootstrap_ci: [f64; 3],
     /// F1 null distribution p-value: P(F1_shuffled >= F1_observed) under
@@ -196,7 +196,7 @@ struct StaplesLabeledResults {
 // ============================================================================
 
 /// Adapt ThemisFgmMinuteRecord to the 4-field layout expected by
-/// detect_magnetopause_crossings_filtered (which takes &[MmsFgmMinuteRecord]).
+/// detect_magnetopause_crossings_filtered (which takes `&[MmsFgmMinuteRecord]`).
 /// We replicate the logic directly here to avoid a cross-crate adapter.
 fn detect_crossings_from_themis(
     records: &[ThemisFgmMinuteRecord],

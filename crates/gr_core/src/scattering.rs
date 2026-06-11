@@ -23,7 +23,7 @@
 use crate::constants::*;
 use std::f64::consts::PI;
 
-/// Planck constant [erg s].
+/// Planck constant `[erg s]`.
 const H_PLANCK: f64 = 6.626_070_15e-27;
 
 // ============================================================================
@@ -51,7 +51,7 @@ pub fn thomson_cross_section() -> f64 {
 /// electrons have significant thermal velocity (theta = k*T / (m_e*c^2)).
 ///
 /// # Arguments
-/// * `nu` - Photon frequency [Hz]
+/// * `nu` - Photon frequency `[Hz]`
 /// * `theta` - Dimensionless electron temperature k*T / (m_e*c^2)
 pub fn thomson_corrected(nu: f64, theta: f64) -> f64 {
     // Photon energy in units of electron rest mass energy
@@ -89,8 +89,8 @@ pub fn thomson_opacity(n_e: f64) -> f64 {
 /// than red light, explaining both blue skies and red sunsets.
 ///
 /// # Arguments
-/// * `nu` - Observing frequency [Hz]
-/// * `grain_radius` - Dust grain radius [cm] (typically 0.01 to 1 micron)
+/// * `nu` - Observing frequency `[Hz]`
+/// * `grain_radius` - Dust grain radius `[cm]` (typically 0.01 to 1 micron)
 /// * `refractive_index` - Real part of refractive index (typically 1.3-2.0)
 pub fn rayleigh_cross_section(nu: f64, grain_radius: f64, refractive_index: f64) -> f64 {
     let lambda = C_CGS / nu;
@@ -114,8 +114,8 @@ pub fn rayleigh_cross_section(nu: f64, grain_radius: f64, refractive_index: f64)
 /// kappa_R = n_grain * sigma_R
 ///
 /// # Arguments
-/// * `nu` - Observing frequency [Hz]
-/// * `grain_radius` - Dust grain radius [cm]
+/// * `nu` - Observing frequency `[Hz]`
+/// * `grain_radius` - Dust grain radius `[cm]`
 /// * `grain_density` - Grain number density [cm^-3]
 /// * `refractive_index` - Real part of refractive index
 pub fn rayleigh_opacity(
@@ -131,7 +131,7 @@ pub fn rayleigh_opacity(
 // Mie scattering
 // ============================================================================
 
-/// Mie scattering efficiency Q_sca [dimensionless].
+/// Mie scattering efficiency Q_sca `[dimensionless]`.
 ///
 /// Transitions smoothly between three regimes:
 /// - x << 1 (Rayleigh limit): Q_sca ~ x^4
@@ -141,8 +141,8 @@ pub fn rayleigh_opacity(
 /// The size parameter is x = 2*pi*a / lambda.
 ///
 /// # Arguments
-/// * `nu` - Observing frequency [Hz]
-/// * `grain_radius` - Grain radius [cm]
+/// * `nu` - Observing frequency `[Hz]`
+/// * `grain_radius` - Grain radius `[cm]`
 pub fn mie_efficiency(nu: f64, grain_radius: f64) -> f64 {
     let lambda = C_CGS / nu;
     let x = 2.0 * PI * grain_radius / lambda;
@@ -166,8 +166,8 @@ pub fn mie_efficiency(nu: f64, grain_radius: f64) -> f64 {
 /// sigma_Mie = Q_sca * pi * a^2
 ///
 /// # Arguments
-/// * `nu` - Observing frequency [Hz]
-/// * `grain_radius` - Grain radius [cm]
+/// * `nu` - Observing frequency `[Hz]`
+/// * `grain_radius` - Grain radius `[cm]`
 pub fn mie_cross_section(nu: f64, grain_radius: f64) -> f64 {
     let area = PI * grain_radius * grain_radius;
     mie_efficiency(nu, grain_radius) * area
@@ -178,8 +178,8 @@ pub fn mie_cross_section(nu: f64, grain_radius: f64) -> f64 {
 /// kappa_Mie = n_grain * sigma_Mie
 ///
 /// # Arguments
-/// * `nu` - Observing frequency [Hz]
-/// * `grain_radius` - Grain radius [cm]
+/// * `nu` - Observing frequency `[Hz]`
+/// * `grain_radius` - Grain radius `[cm]`
 /// * `grain_density` - Grain number density [cm^-3]
 pub fn mie_opacity(nu: f64, grain_radius: f64, grain_density: f64) -> f64 {
     grain_density * mie_cross_section(nu, grain_radius)
@@ -189,7 +189,7 @@ pub fn mie_opacity(nu: f64, grain_radius: f64, grain_density: f64) -> f64 {
 // Scattering albedo and asymmetry
 // ============================================================================
 
-/// Single-scattering albedo [dimensionless, 0 to 1].
+/// Single-scattering albedo `[dimensionless, 0 to 1]`.
 ///
 /// The probability that an interaction event is scattering rather than
 /// absorption: omega = kappa_sca / (kappa_sca + kappa_abs).
@@ -219,7 +219,7 @@ pub enum ScatteringType {
     Mie,
 }
 
-/// Asymmetry parameter g = <cos(theta)> [dimensionless, -1 to 1].
+/// Asymmetry parameter g = <cos(theta)> `[dimensionless, -1 to 1]`.
 ///
 /// Characterizes the angular distribution of scattered photons:
 /// - g = 0: isotropic scattering
@@ -232,8 +232,8 @@ pub enum ScatteringType {
 ///
 /// # Arguments
 /// * `scat_type` - Type of scattering mechanism
-/// * `nu` - Observing frequency [Hz] (only needed for Mie)
-/// * `grain_radius` - Grain radius [cm] (only needed for Mie)
+/// * `nu` - Observing frequency `[Hz]` (only needed for Mie)
+/// * `grain_radius` - Grain radius `[cm]` (only needed for Mie)
 pub fn asymmetry_parameter(scat_type: ScatteringType, nu: f64, grain_radius: f64) -> f64 {
     match scat_type {
         ScatteringType::Thomson => 0.2,
@@ -298,8 +298,8 @@ pub fn classify_scattering_regime(x: f64) -> ScatteringRegime {
 /// Convenience wrapper that computes x = 2*pi*a/lambda internally.
 ///
 /// # Arguments
-/// * `nu` - Observing frequency [Hz]
-/// * `grain_radius` - Grain radius [cm]
+/// * `nu` - Observing frequency `[Hz]`
+/// * `grain_radius` - Grain radius `[cm]`
 pub fn classify_scattering_regime_from_params(nu: f64, grain_radius: f64) -> ScatteringRegime {
     let lambda = C_CGS / nu;
     let x = 2.0 * PI * grain_radius / lambda;
@@ -315,9 +315,9 @@ pub fn classify_scattering_regime_from_params(nu: f64, grain_radius: f64) -> Sca
 /// kappa_sca = kappa_Thomson + kappa_Rayleigh + kappa_Mie
 ///
 /// # Arguments
-/// * `nu` - Observing frequency [Hz]
+/// * `nu` - Observing frequency `[Hz]`
 /// * `n_e` - Electron number density [cm^-3]
-/// * `grain_radius` - Dust grain radius [cm]
+/// * `grain_radius` - Dust grain radius `[cm]`
 /// * `grain_density` - Dust grain number density [cm^-3]
 /// * `refractive_index` - Real part of grain refractive index
 pub fn total_scattering_opacity(

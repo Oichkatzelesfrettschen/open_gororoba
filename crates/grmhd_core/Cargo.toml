@@ -6,16 +6,31 @@ license.workspace = true
 
 [dependencies]
 anyhow = { workspace = true }
-rayon = { workspace = true }
-wide = { workspace = true }
+cubecl = { workspace = true, optional = true }
+cubecl-wgpu = { workspace = true, optional = true }
 cudarc = { workspace = true, optional = true }
 gororoba_gpu_cuda = { workspace = true, optional = true }
+gororoba_gpu_cubecl = { workspace = true, optional = true }
+gororoba_gpu_vulkan = { workspace = true, optional = true }
+rayon = { workspace = true }
+wide = { workspace = true }
 
 [features]
 default = []
 # `gpu` chains gororoba_gpu_cuda/cudarc so the consolidated Context
 # helper is available alongside raw cudarc.
 gpu = ["dep:cudarc", "dep:gororoba_gpu_cuda", "gororoba_gpu_cuda/cudarc"]
+vulkan = ["dep:gororoba_gpu_vulkan", "gororoba_gpu_vulkan/ash"]
+cubecl = [
+    "vulkan",
+    "dep:cubecl",
+    "dep:cubecl-wgpu",
+    "dep:gororoba_gpu_cubecl",
+    "gororoba_gpu_cubecl/cubecl",
+]
+
+[dev-dependencies]
+naga = { workspace = true, features = ["wgsl-in", "spv-out"] }
 
 [lints]
 workspace = true

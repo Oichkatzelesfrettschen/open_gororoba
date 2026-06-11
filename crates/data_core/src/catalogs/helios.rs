@@ -92,6 +92,9 @@ pub enum HeliosSpacecraft {
     H2,
 }
 
+#[cfg(feature = "fetch")]
+pub use super::helios_fetch::HeliosProvider;
+
 /// `SpdfMission` config for Helios 1 merged hourly data.
 pub static HELIOS1_MISSION: SpdfMission = SpdfMission {
     layout: &HELIOS1_LAYOUT,

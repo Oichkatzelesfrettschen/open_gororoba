@@ -5,7 +5,10 @@
 use std::sync::Arc;
 
 use anyhow::{Context, Result};
-use cudarc::driver::{CudaFunction, CudaSlice, CudaStream, DevicePtr, LaunchConfig, PushKernelArg};
+use cudarc::driver::{CudaFunction, CudaStream, DevicePtr, PushKernelArg};
+use gororoba_gpu_cuda::{
+    Buffer, CompileOptions, Context as CudaContextHelper, LaunchConfig, ModuleRegistry,
+};
 use gororoba_gpu_readback::{
     ReadbackBufferShape, ReadbackDescriptor, ReadbackElementType, ReadbackLayout, ReadbackResidency,
 };
@@ -51,18 +54,20 @@ pub struct DarkHaloCudaSolver {
     ny: usize,
     nz: usize,
     n_cells: usize,
+    _ctx: CudaContextHelper,
     stream: Arc<CudaStream>,
+    _module_registry: ModuleRegistry,
     // SoA distribution function buffers: [19 * N] floats
-    d_f: CudaSlice<f32>,
-    d_f_tmp: CudaSlice<f32>,
+    d_f: Buffer<f32>,
+    d_f_tmp: Buffer<f32>,
     // Macroscopic fields
-    d_rho: CudaSlice<f32>,
-    d_rho_prev: CudaSlice<f32>, // for convergence check
-    d_u: CudaSlice<f32>,        // [3 * N] SoA: ux[N], uy[N], uz[N]
-    d_tau: CudaSlice<f32>,
+    d_rho: Buffer<f32>,
+    d_rho_prev: Buffer<f32>, // for convergence check
+    d_u: Buffer<f32>,        // [3 * N] SoA: ux[N], uy[N], uz[N]
+    d_tau: Buffer<f32>,
     // Atomic counter for halo detection
-    d_halo_count: CudaSlice<u32>,
-    d_delta_sum: CudaSlice<f32>,
+    d_halo_count: Buffer<u32>,
+    d_delta_sum: Buffer<f32>,
     // Kernels
     lbm_step_kernel: CudaFunction,
     halo_detector_kernel: CudaFunction,
@@ -80,7 +85,7 @@ impl DarkHaloCudaSolver {
     /// - 384^3: ~9.5 GB (fits 12 GB cards)
     /// - 512^3: ~23.6 GB (REQUIRES f16 + A-A streaming, or >24 GB card)
     pub fn new(nx: usize, ny: usize, nz: usize) -> Result<Self> {
-        let ctx = cudarc::driver::CudaContext::new(0).context("CUDA context creation")?;
+        let ctx = CudaContextHelper::with_default_device().context("CUDA context creation")?;
         // Check VRAM budget before allocating
         let n_cells = nx * ny * nz;
         let required_bytes = (19 * n_cells * 4 * 2) // f, f_tmp (ping-pong)
@@ -114,49 +119,39 @@ impl DarkHaloCudaSolver {
         }
         let stream = ctx.default_stream();
 
-        let arch_str = preferred_cuda_arch();
-        let opts = cudarc::nvrtc::CompileOptions {
-            arch: Some(arch_str),
-            prec_div: Some(false),
-            prec_sqrt: Some(false),
-            ftz: Some(true),
-            fmad: Some(true),
-            ..Default::default()
-        };
-        let ptx = cudarc::nvrtc::compile_ptx_with_opts(KERNEL_DARK_HALO_SRC, opts)
+        let opts = CompileOptions::with_arch(preferred_cuda_arch())
+            .prec_div(false)
+            .prec_sqrt(false)
+            .ftz(true)
+            .fmad(true);
+        let ptx = CompileOptions::compile_ptx(KERNEL_DARK_HALO_SRC, &opts)
             .context("NVRTC compilation of dark halo kernels")?;
-        let module = ctx.load_module(ptx).context("Load dark halo CUDA module")?;
+        let module_registry = ModuleRegistry::load(
+            ctx.raw(),
+            ptx,
+            &[
+                "lbm_step_soa_fused",
+                "dark_halo_detector",
+                "zd_viscosity_modulation",
+                "convergence_check",
+            ],
+        )
+        .context("Load dark halo CUDA module")?;
 
-        let lbm_step_kernel = module
-            .load_function("lbm_step_soa_fused")
-            .context("Load lbm_step_soa_fused")?;
-        let halo_detector_kernel = module
-            .load_function("dark_halo_detector")
-            .context("Load dark_halo_detector")?;
-        let zd_viscosity_kernel = module
-            .load_function("zd_viscosity_modulation")
-            .context("Load zd_viscosity_modulation")?;
-        let convergence_kernel = module
-            .load_function("convergence_check")
-            .context("Load convergence_check")?;
+        let lbm_step_kernel = module_registry.get("lbm_step_soa_fused")?;
+        let halo_detector_kernel = module_registry.get("dark_halo_detector")?;
+        let zd_viscosity_kernel = module_registry.get("zd_viscosity_modulation")?;
+        let convergence_kernel = module_registry.get("convergence_check")?;
 
         // Allocate SoA buffers (cudarc 0.19: allocations go through CudaStream)
-        let d_f = stream
-            .alloc_zeros::<f32>(19 * n_cells)
-            .context("Alloc d_f")?;
-        let d_f_tmp = stream
-            .alloc_zeros::<f32>(19 * n_cells)
-            .context("Alloc d_f_tmp")?;
-        let d_rho = stream.alloc_zeros::<f32>(n_cells).context("Alloc d_rho")?;
-        let d_rho_prev = stream
-            .alloc_zeros::<f32>(n_cells)
-            .context("Alloc d_rho_prev")?;
-        let d_u = stream
-            .alloc_zeros::<f32>(3 * n_cells)
-            .context("Alloc d_u")?;
-        let d_tau = stream.alloc_zeros::<f32>(n_cells).context("Alloc d_tau")?;
-        let d_halo_count = stream.alloc_zeros::<u32>(1).context("Alloc d_halo_count")?;
-        let d_delta_sum = stream.alloc_zeros::<f32>(1).context("Alloc d_delta_sum")?;
+        let d_f = Buffer::alloc_zeros(&stream, 19 * n_cells).context("Alloc d_f")?;
+        let d_f_tmp = Buffer::alloc_zeros(&stream, 19 * n_cells).context("Alloc d_f_tmp")?;
+        let d_rho = Buffer::alloc_zeros(&stream, n_cells).context("Alloc d_rho")?;
+        let d_rho_prev = Buffer::alloc_zeros(&stream, n_cells).context("Alloc d_rho_prev")?;
+        let d_u = Buffer::alloc_zeros(&stream, 3 * n_cells).context("Alloc d_u")?;
+        let d_tau = Buffer::alloc_zeros(&stream, n_cells).context("Alloc d_tau")?;
+        let d_halo_count = Buffer::alloc_zeros(&stream, 1).context("Alloc d_halo_count")?;
+        let d_delta_sum = Buffer::alloc_zeros(&stream, 1).context("Alloc d_delta_sum")?;
 
         let vram_mb = (
             19 * n_cells * 4 * 2 // f, f_tmp
@@ -175,7 +170,9 @@ impl DarkHaloCudaSolver {
             ny,
             nz,
             n_cells,
+            _ctx: ctx,
             stream,
+            _module_registry: module_registry,
             d_f,
             d_f_tmp,
             d_rho,
@@ -228,7 +225,7 @@ impl DarkHaloCudaSolver {
         }
 
         let rho_bytes = self.n_cells * std::mem::size_of::<f32>();
-        let (rho_ptr, _guard) = self.d_rho.device_ptr(&self.stream);
+        let (rho_ptr, _guard) = self.d_rho.raw().device_ptr(&self.stream);
 
         let policy = CUaccessPolicyWindow_st {
             base_ptr: rho_ptr as *mut std::ffi::c_void,
@@ -292,8 +289,8 @@ impl DarkHaloCudaSolver {
 
         // Also readback velocity for the velocity threshold check
         let u_host = self
-            .stream
-            .clone_dtoh(&self.d_u)
+            .d_u
+            .dtoh_vec()
             .map_err(|e| anyhow::anyhow!("Clone u dtoh: {e}"))?;
         let n = self.n_cells;
 
@@ -377,7 +374,7 @@ impl DarkHaloCudaSolver {
                 .map_err(|e| anyhow::anyhow!("Pinned alloc failed: {e}"))?
         };
         self.stream
-            .memcpy_dtoh(&self.d_rho, &mut pinned)
+            .memcpy_dtoh(self.d_rho.raw(), &mut pinned)
             .map_err(|e| anyhow::anyhow!("DMA dtoh failed: {e}"))?;
         Ok(pinned)
     }
@@ -435,18 +432,14 @@ impl DarkHaloCudaSolver {
         let lambda = (k as f32).ln();
         let threads = 128u32;
         let blocks = (n as u32).div_ceil(threads);
-        let cfg = LaunchConfig {
-            grid_dim: (blocks, 1, 1),
-            block_dim: (threads, 1, 1),
-            shared_mem_bytes: 0,
-        };
+        let cfg = LaunchConfig::launch_blocks_1d(blocks, threads);
 
         // Step 1: Generate ZD viscosity field
         let seed = 42u32;
         let k_dim = k as i32;
         unsafe {
             let mut b = self.stream.launch_builder(&self.zd_viscosity_kernel);
-            b.arg(&mut self.d_tau)
+            b.arg(self.d_tau.raw_mut())
                 .arg(&nx)
                 .arg(&ny)
                 .arg(&nz)
@@ -470,14 +463,9 @@ impl DarkHaloCudaSolver {
                 std::iter::repeat_n(w, n)
             })
             .collect();
-        self.d_f = self
-            .stream
-            .clone_htod(&equilibrium)
-            .context("Init f equilibrium")?;
-        self.d_f_tmp = self
-            .stream
-            .clone_htod(&equilibrium)
-            .context("Init f_tmp equilibrium")?;
+        self.d_f = Buffer::htod(&self.stream, &equilibrium).context("Init f equilibrium")?;
+        self.d_f_tmp =
+            Buffer::htod(&self.stream, &equilibrium).context("Init f_tmp equilibrium")?;
 
         // Step 2b: Pin rho in L2 cache (Ada Lovelace, best-effort)
         if let Err(e) = self.pin_rho_in_l2() {
@@ -493,11 +481,11 @@ impl DarkHaloCudaSolver {
         for step in 0..steps {
             unsafe {
                 let mut b = self.stream.launch_builder(&self.lbm_step_kernel);
-                b.arg(&self.d_f)
-                    .arg(&mut self.d_f_tmp)
-                    .arg(&mut self.d_rho)
-                    .arg(&mut self.d_u)
-                    .arg(&self.d_tau)
+                b.arg(self.d_f.raw())
+                    .arg(self.d_f_tmp.raw_mut())
+                    .arg(self.d_rho.raw_mut())
+                    .arg(self.d_u.raw_mut())
+                    .arg(self.d_tau.raw())
                     .arg(&null_force)
                     .arg(&nx)
                     .arg(&ny)
@@ -514,31 +502,26 @@ impl DarkHaloCudaSolver {
             if convergence_tol > 0.0 && check_interval > 0 && step > 0 && step % check_interval == 0
             {
                 // Zero the atomic accumulator before each launch.
-                self.d_delta_sum = self
-                    .stream
-                    .clone_htod(&[0.0f32])
-                    .context("Zero d_delta_sum")?;
+                self.d_delta_sum =
+                    Buffer::htod(&self.stream, &[0.0f32]).context("Zero d_delta_sum")?;
 
                 let n_i32 = n as i32;
                 unsafe {
                     let mut b = self.stream.launch_builder(&self.convergence_kernel);
-                    b.arg(&self.d_rho)
-                        .arg(&self.d_rho_prev)
-                        .arg(&mut self.d_delta_sum)
+                    b.arg(self.d_rho.raw())
+                        .arg(self.d_rho_prev.raw())
+                        .arg(self.d_delta_sum.raw_mut())
                         .arg(&n_i32);
                     b.launch(cfg).context("Convergence check kernel")?;
                 }
 
-                // clone_dtoh synchronizes the stream before returning.
-                let delta_buf = self
-                    .stream
-                    .clone_dtoh(&self.d_delta_sum)
-                    .context("Read d_delta_sum")?;
+                // dtoh_vec synchronizes the stream before returning.
+                let delta_buf = self.d_delta_sum.dtoh_vec().context("Read d_delta_sum")?;
                 let delta_mean = delta_buf[0] / n as f32;
 
                 // Update the reference snapshot for the next interval.
                 self.stream
-                    .memcpy_dtod(&self.d_rho, &mut self.d_rho_prev)
+                    .memcpy_dtod(self.d_rho.raw(), self.d_rho_prev.raw_mut())
                     .context("Update rho_prev")?;
 
                 if delta_mean < convergence_tol {
@@ -555,26 +538,20 @@ impl DarkHaloCudaSolver {
         // dark_halo_detector.wgsl criterion 3). We compute the actual mean
         // density and set threshold = density_factor * rho_mean so that
         // density_factor=1.5 finds cells at >= 150% of mean density.
-        let rho_host = self
-            .stream
-            .clone_dtoh(&self.d_rho)
-            .context("Readback rho for mean")?;
+        let rho_host = self.d_rho.dtoh_vec().context("Readback rho for mean")?;
         let rho_sum: f64 = rho_host.iter().map(|&r| r as f64).sum();
         let rho_mean = (rho_sum / n as f64) as f32;
         let effective_threshold = rho_threshold * rho_mean;
 
         let zero_count = vec![0u32; 1];
-        self.d_halo_count = self
-            .stream
-            .clone_htod(&zero_count)
-            .context("Zero halo count")?;
+        self.d_halo_count = Buffer::htod(&self.stream, &zero_count).context("Zero halo count")?;
 
         let n_i32 = n as i32;
         unsafe {
             let mut b = self.stream.launch_builder(&self.halo_detector_kernel);
-            b.arg(&self.d_rho)
-                .arg(&self.d_u)
-                .arg(&mut self.d_halo_count)
+            b.arg(self.d_rho.raw())
+                .arg(self.d_u.raw())
+                .arg(self.d_halo_count.raw_mut())
                 .arg(&effective_threshold)
                 .arg(&velocity_epsilon)
                 .arg(&n_i32);
@@ -582,10 +559,7 @@ impl DarkHaloCudaSolver {
         }
 
         // Read back result
-        let halo_count = self
-            .stream
-            .clone_dtoh(&self.d_halo_count)
-            .context("Read halo count")?;
+        let halo_count = self.d_halo_count.dtoh_vec().context("Read halo count")?;
 
         let count = halo_count[0];
         let vf = count as f64 / n as f64;

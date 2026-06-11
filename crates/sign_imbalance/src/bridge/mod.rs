@@ -115,7 +115,7 @@ impl SedenionField {
     ///
     ///   F(x) = sum_T w_i*w_j*w_k * frustrated(T) / sum_T w_i*w_j*w_k
     ///
-    /// where w_i = |sedenion[i]| and frustrated(T) = 1 iff psi(i,j)*psi(j,k)*psi(i,k) = -1.
+    /// where `w_i = |sedenion[i]|` and frustrated(T) = 1 iff psi(i,j)*psi(j,k)*psi(i,k) = -1.
     ///
     /// At uniform weights, this reduces to the global CD imbalance (~3/8).
     /// Spatially varying Sedenion fields produce spatially varying imbalance
@@ -261,7 +261,7 @@ impl ImbalanceViscosityBridge {
     /// where F(x) is local imbalance density and 3/8 is the imbalance attractor.
     ///
     /// # Arguments
-    /// * `imbalance_field` - Local imbalance density [0,1] at each grid point
+    /// * `imbalance_field` - Local imbalance density `[0,1]` at each grid point
     /// * `nu_base` - Base kinematic viscosity (e.g., 1/3 for inviscid limit)
     /// * `lambda` - Coupling strength (typical: 1.0-2.0)
     pub fn imbalance_to_viscosity(
@@ -684,7 +684,7 @@ impl SedenionField4D {
 
     /// Compute Pearson correlations between adjacent w-slices.
     ///
-    /// Returns nw-1 correlation coefficients: corr(slice[w], slice[w+1])
+    /// Returns nw-1 correlation coefficients: `corr(slice[w], slice[w+1])`
     /// for w = 0..nw-2. High correlations indicate the 4th dimension
     /// is redundant; low correlations indicate genuine 4D structure.
     pub fn inter_slice_correlations(&self, dim: usize) -> Vec<f64> {

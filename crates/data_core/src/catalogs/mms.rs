@@ -24,6 +24,9 @@ pub struct MmsFgmRecord {
     pub b_magnitude: f64,
 }
 
+#[cfg(feature = "fetch")]
+pub use super::mms_fetch::MmsFgmProvider;
+
 #[derive(Default)]
 struct FgmHourAccumulator {
     bx_sum: f64,

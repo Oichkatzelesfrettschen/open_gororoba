@@ -1,7 +1,7 @@
 //! Chingon AVT tensor contraction on Vulkan.
 //!
 //! Dimension-parametric bilinear contraction:
-//!   force[m] += alpha * v[i] * v[j] * sign
+//!   `force[m] += alpha * v[i] * v[j] * sign`
 //! for each bit-packed violation (i, j, m, sign).
 //!
 //! Mirrors the API of `lbm_3d_cuda::chingon_gpu`.

@@ -32,7 +32,7 @@ pub fn cosine_similarity(a: &[f64], b: &[f64]) -> f64 {
     }
 }
 
-/// Alignment score in [0,1] from normalized cosine similarity.
+/// Alignment score in `[0,1]` from normalized cosine similarity.
 pub fn alignment_score(loss_curve: &[f64], hubble_curve: &[f64]) -> f64 {
     let lhs = min_max_normalize(loss_curve);
     let rhs = min_max_normalize(hubble_curve);

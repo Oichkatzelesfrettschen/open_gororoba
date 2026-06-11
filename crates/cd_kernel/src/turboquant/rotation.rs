@@ -120,7 +120,7 @@ pub fn rotate(x: &[f64], pi: &[f64], d: usize, out: &mut [f64]) {
 
 /// Apply inverse rotation: x = y @ Pi (row-vector convention).
 ///
-/// For orthogonal Pi, Pi^{-1} = Pi^T, so x[j] = sum_i y[i] * Pi[i][j].
+/// For orthogonal Pi, Pi^{-1} = Pi^T, so x`[j]` = sum_i y`[i]` * Pi`[i]``[j]`.
 pub fn unrotate(y: &[f64], pi: &[f64], d: usize, out: &mut [f64]) {
     debug_assert_eq!(y.len(), d);
     debug_assert_eq!(pi.len(), d * d);

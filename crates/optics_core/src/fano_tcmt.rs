@@ -11,7 +11,7 @@
 //!
 //! Reflection coefficient (Eq. 21):
 //! ```text
-//!   R_l = e^{i*phi} * [i*(w0-w) + g0 - g] / [i*(w0-w) + g0 + g]
+//!   R_l = e^{i*phi} * `[i*(w0-w) + g0 - g]` / `[i*(w0-w) + g0 + g]`
 //! ```
 //!
 //! Cross-sections (Eq. 23):
@@ -62,8 +62,8 @@ pub struct CrossSections {
 
 /// Reflection coefficient R_l for a single channel (Eq. 21).
 ///
-/// R_l = e^{i*phi} * [i*(omega_0 - omega) + gamma_0 - gamma]
-///                   / [i*(omega_0 - omega) + gamma_0 + gamma]
+/// R_l = e^{i*phi} * `[i*(omega_0 - omega) + gamma_0 - gamma]`
+///                   / `[i*(omega_0 - omega) + gamma_0 + gamma]`
 pub fn fano_reflection(ch: &FanoChannel, omega: f64) -> Complex64 {
     let delta = ch.omega_0 - omega;
     let numerator = Complex64::new(ch.gamma_0 - ch.gamma, delta);

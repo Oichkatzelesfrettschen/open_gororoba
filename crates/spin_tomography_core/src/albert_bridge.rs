@@ -8,7 +8,7 @@ use nalgebra::{Matrix3, Vector3};
 /// - xi_1 = 1/3 (trace is 1, so divide evenly or use fixed weights)
 /// - xi_2 = 1/3
 /// - xi_3 = 1/3
-/// - x_3 (1,2) octonion: real part = a[0], e1 = a[1], e2 = a[2], e3 = b[0], e4 = b[1], e5 = b[2], e6=0, e7=0
+/// - x_3 (1,2) octonion: real part = a`[0]`, e1 = a`[1]`, e2 = a`[2]`, e3 = b`[0]`, e4 = b`[1]`, e5 = b`[2]`, e6=0, e7=0
 /// - x_2 (1,3) octonion: components from first 8 entries of T
 /// - x_1 (2,3) octonion: last entry of T + padding
 pub fn embed_to_albert(

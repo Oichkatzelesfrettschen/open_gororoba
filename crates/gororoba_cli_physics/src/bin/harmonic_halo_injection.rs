@@ -5,7 +5,7 @@
 //!
 //! The current executed sweep is a calibration failure:
 //! the recovered SNR stays flat near 0.43 and the recovered alpha_zd stays
-//! near 0.295 for injected alpha_zd in [0, 0.016].
+//! near 0.295 for injected alpha_zd in `[0, 0.016]`.
 //! This means the lane is not yet valid evidence for pipeline sensitivity.
 //!
 //! Reference: C-1409, E-197

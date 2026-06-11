@@ -48,6 +48,9 @@ pub fn parse_solar_orbiter_merged(content: &str) -> Vec<SpdfMergedRecord> {
     parse_spdf_merged(content, &SOLO_LAYOUT)
 }
 
+#[cfg(feature = "fetch")]
+pub use super::solar_orbiter_fetch::SolarOrbiterProvider;
+
 /// Parse Solar Orbiter merged hourly data from a file.
 pub fn parse_solar_orbiter_file(
     path: &std::path::Path,

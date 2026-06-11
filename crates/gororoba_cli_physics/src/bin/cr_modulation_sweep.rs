@@ -8,7 +8,7 @@
 //!   5. Write snapshots: cr_snapshot_{step}.csv
 //!   6. Optionally inject DM source term for annihilation signal search
 //!
-//! The radial x-axis maps to heliocentric distance [r_min_au, r_max_au].
+//! The radial x-axis maps to heliocentric distance `[r_min_au, r_max_au]`.
 //! The ISM local interstellar spectrum (LIS) is applied as a Bess-Pamela power
 //! law at the outer boundary: J_LIS(R) = J_0 * (R/1 GV)^{-gamma}.
 
@@ -167,7 +167,7 @@ struct RadialProfileCsvRow {
 
 /// Local interstellar spectrum (LIS) power law.
 /// J_LIS(R) = J_0 * (R / 1 GV)^{-gamma}
-/// Bess-Pamela proton LIS reference: J_0 = 2.1e4 [m^-2 s^-1 sr^-1 GV^-1], gamma = 2.75.
+/// Bess-Pamela proton LIS reference: J_0 = 2.1e4 `[m^-2 s^-1 sr^-1 GV^-1]`, gamma = 2.75.
 fn lis_proton(r_gv: f64) -> f64 {
     let j0 = 2.1e4_f64;
     let gamma = 2.75_f64;

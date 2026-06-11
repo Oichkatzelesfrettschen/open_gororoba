@@ -2,7 +2,7 @@
 //!
 //! Enforces the markdown governance compatibility discipline for a SQLite-first
 //! repository: every .md file in the repository must have a corresponding
-//! [[owner]] entry in registry/markdown_owner_map.toml BEFORE it is added to the
+//! `[[owner]]` entry in registry/markdown_owner_map.toml BEFORE it is added to the
 //! repo. The owner map remains authoritative for this lane until markdown
 //! governance is promoted into the SQLite control plane; files on disk are
 //! derived artifacts of the decisions recorded there.

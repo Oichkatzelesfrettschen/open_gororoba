@@ -2,17 +2,17 @@
 
 # Sedenion-Gravastar Equivalence: Phenomenological Bridge and Associator Obstruction
 
-**Date:** 2026-03-15  
-**Status:** Closed/Obstructed -- phenomenological match established; literal interpretation obstructed  
-**Relevant claims:** C-010, C-011, C-012  
-**Related documents:** `docs/GRAND_SYNTHESIS.md`  
+**Date:** 2026-03-15\
+**Status:** Closed/Obstructed -- phenomenological match established; literal interpretation obstructed\
+**Relevant claims:** C-010, C-011, C-012\
+**Related documents:** `docs/GRAND_SYNTHESIS.md`\
 **Code references:** `crates/cosmology_core/src/{gravastar,tov}.rs`, `crates/gororoba_cli_physics/src/bin/gravastar_sweep.rs`
 
 ---
 
 ## Overview
 
-The *sedenion-gravastar equivalence* thesis proposed that a gravastar's anti-diffusion core pressure could be phenomenologically matched to a sedenion non-associative coherence-failure term, suggesting black-hole candidates might be understood as sedenion solitons. This thesis (C-011) was formally tested, verified as a numerical phenomenological match, and simultaneously obstructed as a literal physical claim. This document explains both the match and the obstruction.
+The _sedenion-gravastar equivalence_ thesis proposed that a gravastar's anti-diffusion core pressure could be phenomenologically matched to a sedenion non-associative coherence-failure term, suggesting black-hole candidates might be understood as sedenion solitons. This thesis (C-011) was formally tested, verified as a numerical phenomenological match, and simultaneously obstructed as a literal physical claim. This document explains both the match and the obstruction.
 
 ---
 
@@ -58,7 +58,7 @@ The gravastar sweep (`crates/gororoba_cli_physics/src/bin/gravastar_sweep.rs`) s
 
 ## The Associator Obstruction
 
-The phenomenological match does not survive as a *physical identification* for the following reasons:
+The phenomenological match does not survive as a _physical identification_ for the following reasons:
 
 ### Obstruction 1: Non-Hilbert-space Structure
 
@@ -74,7 +74,7 @@ The sedenion algebra has 84 pairs of zero divisors (C-002). A field Φ that take
 
 ### Obstruction 3: Non-Associativity and Causality
 
-The non-associativity of the sedenion product means that (Φ*\partial_r Φ)*\partial_t Φ = Φ*(\partial_r Φ*\partial_t Φ). In a standard covariant field theory, the time-ordering of field operators must be causal (associative with respect to the causal structure). Non-associativity therefore introduces a form of acausality at the algebraic level that is distinct from the standard retarded propagator structure.
+The non-associativity of the sedenion product means that (Φ*\partial_r Φ)_\partial_t Φ = Φ_(\partial_r Φ*\partial_t Φ). In a standard covariant field theory, the time-ordering of field operators must be causal (associative with respect to the causal structure). Non-associativity therefore introduces a form of acausality at the algebraic level that is distinct from the standard retarded propagator structure.
 
 **Formal status:** This obstruction is kernel-checked via Rocq 9.1 in `proofs/verified/C011_AssociatorObstruction.v`.
 
@@ -82,7 +82,7 @@ The non-associativity of the sedenion product means that (Φ*\partial_r Φ)*\par
 
 ## What the Obstruction Teaches
 
-The obstruction does not render the phenomenological correspondence meaningless. Instead, it identifies precisely *what would need to change* for the literal identification to work:
+The obstruction does not render the phenomenological correspondence meaningless. Instead, it identifies precisely _what would need to change_ for the literal identification to work:
 
 1. **A non-Hilbert quantisation scheme** for sedenion-valued fields (e.g., a C*-algebraic formulation that accommodates non-associativity).
 2. **A zero-divisor regularisation** that removes or regularises the singularities at the ZD locus.
@@ -99,20 +99,20 @@ The gravastar-sedenion match occurs precisely at D_eff = -1.5, the same value th
 - The negative dimension model D_eff = -1.5 was refuted by cosmological data (it gives incorrect w_0, n_s, H_0 values).
 - The sedenion coherence-failure term at D_eff = -1.5 matches gravastar core pressures.
 
-This suggests that D_eff = -1.5 is a *fixed point* of the dimensional renormalisation structure -- a value at which multiple physically distinct systems (dark energy, gravastar core, sedenion coherence) produce numerically similar pressure profiles. The physical reason for this coincidence is unknown.
+This suggests that D_eff = -1.5 is a _fixed point_ of the dimensional renormalisation structure -- a value at which multiple physically distinct systems (dark energy, gravastar core, sedenion coherence) produce numerically similar pressure profiles. The physical reason for this coincidence is unknown.
 
 ---
 
 ## Data Files
 
-| File | Content |
-|------|---------|
-| `data/csv/genesis_gravastar_bridge.csv` | Best-fit sedenion-gravastar correspondence at D_eff = -1.5 |
-| `data/csv/gravastar_ligo_mass_sweep.csv` | Gravastar mass range vs GWTC-3 BH masses |
-| `data/csv/gravastar_anisotropic_stability.csv` | Stability under anisotropic perturbations |
-| `data/csv/gravastar_radial_stability.csv` | Radial stability profile |
-| `data/csv/gravastar_polytropic_sweep.csv` | Polytropic core EOS parameter sweep |
+| File                                           | Content                                                    |
+| ---------------------------------------------- | ---------------------------------------------------------- |
+| `data/csv/genesis_gravastar_bridge.csv`        | Best-fit sedenion-gravastar correspondence at D_eff = -1.5 |
+| `data/csv/gravastar_ligo_mass_sweep.csv`       | Gravastar mass range vs GWTC-3 BH masses                   |
+| `data/csv/gravastar_anisotropic_stability.csv` | Stability under anisotropic perturbations                  |
+| `data/csv/gravastar_radial_stability.csv`      | Radial stability profile                                   |
+| `data/csv/gravastar_polytropic_sweep.csv`      | Polytropic core EOS parameter sweep                        |
 
 ---
 
-*For formal proof of obstruction, see `proofs/verified/C011_AssociatorObstruction.v`. For claim text, see `registry/claims.toml` (C-011).*
+_For formal proof of obstruction, see `proofs/verified/C011_AssociatorObstruction.v`. For claim text, see `registry/claims.toml` (C-011)._

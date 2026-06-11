@@ -363,7 +363,24 @@ section = "architecture"
 slug = "docs_book_src_architecture_canonical-sources"
 title = "Canonical Sources"
 claim_refs = ["C-001"]
-path_refs = ["crates/", "docs/", "docs/book/", "docs/book/src/", "docs/generated/BOOK_DOCS_REGISTRY_MIRROR.md", "docs/latex/", "docs/latex/arxiv/*.tex", "docs/latex/claims_appendix.tex", "docs/latex/experiments_appendix.tex", "docs/latex/insights_appendix.tex", "lib.rs", "proofs/", "registry/", "registry/book_docs.toml", "registry/canonical/", "registry/canonical/control_plane.sqlite3"]
+path_refs = [
+    "crates/",
+    "docs/",
+    "docs/book/",
+    "docs/book/src/",
+    "docs/generated/BOOK_DOCS_REGISTRY_MIRROR.md",
+    "docs/latex/",
+    "docs/latex/arxiv/*.tex",
+    "docs/latex/claims_appendix.tex",
+    "docs/latex/experiments_appendix.tex",
+    "docs/latex/insights_appendix.tex",
+    "lib.rs",
+    "proofs/",
+    "registry/",
+    "registry/book_docs.toml",
+    "registry/canonical/",
+    "registry/canonical/control_plane.sqlite3",
+]
 line_count = 101
 body_markdown = '''
 <!-- AUTO-GENERATED: DO NOT EDIT -->
@@ -475,7 +492,17 @@ section = "architecture"
 slug = "docs_book_src_architecture_compatibility-exports"
 title = "Compatibility Exports"
 claim_refs = []
-path_refs = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md", "docs/INSIGHTS.md", "docs/THEOREMS.md", "registry/binaries.toml", "registry/claims.toml", "registry/control_plane_compatibility_exports.toml", "registry/experiments.toml", "registry/insights.toml"]
+path_refs = [
+    "docs/CLAIMS_EVIDENCE_MATRIX.md",
+    "docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md",
+    "docs/INSIGHTS.md",
+    "docs/THEOREMS.md",
+    "registry/binaries.toml",
+    "registry/claims.toml",
+    "registry/control_plane_compatibility_exports.toml",
+    "registry/experiments.toml",
+    "registry/insights.toml",
+]
 line_count = 48
 body_markdown = '''
 # Compatibility Exports
@@ -630,7 +657,11 @@ section = "architecture"
 slug = "docs_book_src_architecture_db-authoring"
 title = "DB Authoring Workflow"
 claim_refs = []
-path_refs = ["registry/canonical/control_plane.sqlite3", "registry/claims.toml", "registry/experiments.toml"]
+path_refs = [
+    "registry/canonical/control_plane.sqlite3",
+    "registry/claims.toml",
+    "registry/experiments.toml",
+]
 line_count = 55
 body_markdown = '''
 # DB Authoring Workflow
@@ -746,7 +777,15 @@ section = "architecture"
 slug = "docs_book_src_architecture_layout"
 title = "Project Layout"
 claim_refs = []
-path_refs = ["Cargo.toml", "[workspace.dependencies]", "crates/", "docs/*.md", "papers/", "registry/canonical/", "registry/canonical/control_plane.sqlite3"]
+path_refs = [
+    "Cargo.toml",
+    "[workspace.dependencies]",
+    "crates/",
+    "docs/*.md",
+    "papers/",
+    "registry/canonical/",
+    "registry/canonical/control_plane.sqlite3",
+]
 line_count = 100
 body_markdown = '''
 <!-- AUTO-GENERATED: DO NOT EDIT -->
@@ -862,7 +901,11 @@ section = "architecture"
 slug = "docs_book_src_architecture_migrated-lanes"
 title = "Migrated Lanes"
 claim_refs = []
-path_refs = ["provenance query ...", "registry/canonical/control_plane.sqlite3", "registry/control_plane_migrated_lanes.toml"]
+path_refs = [
+    "provenance query ...",
+    "registry/canonical/control_plane.sqlite3",
+    "registry/control_plane_migrated_lanes.toml",
+]
 line_count = 58
 body_markdown = '''
 # Migrated Lanes
@@ -933,8 +976,35 @@ source_markdown = "docs/book/src/architecture/verification.md"
 section = "architecture"
 slug = "docs_book_src_architecture_verification"
 title = "Verification Ladder"
-claim_refs = ["C-001", "C-006", "C-050", "C-060", "C-126", "C-130", "C-200", "C-210", "C-400", "C-410", "C-420", "C-425", "C-438", "C-445", "C-448", "C-454", "C-455", "C-458", "C-467", "C-468", "C-475"]
-path_refs = ["docs/THEOREMS.md", "proofs/_RocqProject", "registry/canonical/control_plane.sqlite3", "registry/claims.toml"]
+claim_refs = [
+    "C-001",
+    "C-006",
+    "C-050",
+    "C-060",
+    "C-126",
+    "C-130",
+    "C-200",
+    "C-210",
+    "C-400",
+    "C-410",
+    "C-420",
+    "C-425",
+    "C-438",
+    "C-445",
+    "C-448",
+    "C-454",
+    "C-455",
+    "C-458",
+    "C-467",
+    "C-468",
+    "C-475",
+]
+path_refs = [
+    "docs/THEOREMS.md",
+    "proofs/_RocqProject",
+    "registry/canonical/control_plane.sqlite3",
+    "registry/claims.toml",
+]
 line_count = 85
 body_markdown = '''
 <!-- AUTO-GENERATED: DO NOT EDIT -->
@@ -1525,7 +1595,18 @@ section = "introduction.md"
 slug = "docs_book_src_introduction"
 title = "open_gororoba"
 claim_refs = []
-path_refs = ["crates/", "docs/latex/", "papers/MANIFEST.toml", "registry/*.toml", "registry/binaries.toml", "registry/canonical/control_plane.sqlite3", "registry/claims.toml", "registry/experiments.toml", "registry/insights.toml", "registry/project.toml"]
+path_refs = [
+    "crates/",
+    "docs/latex/",
+    "papers/MANIFEST.toml",
+    "registry/*.toml",
+    "registry/binaries.toml",
+    "registry/canonical/control_plane.sqlite3",
+    "registry/claims.toml",
+    "registry/experiments.toml",
+    "registry/insights.toml",
+    "registry/project.toml",
+]
 line_count = 101
 body_markdown = '''
 <!-- AUTO-GENERATED: DO NOT EDIT -->
@@ -1665,7 +1746,13 @@ section = "papers"
 slug = "docs_book_src_papers_collection"
 title = "Paper Collection"
 claim_refs = []
-path_refs = ["crates/cd_papers/", "crates/docpipe/", "data/papers/corpus/", "proofs/theories/", "registry/source_lanes/papers_pdf.toml"]
+path_refs = [
+    "crates/cd_papers/",
+    "crates/docpipe/",
+    "data/papers/corpus/",
+    "proofs/theories/",
+    "registry/source_lanes/papers_pdf.toml",
+]
 line_count = 46
 body_markdown = '''
 <!-- AUTO-GENERATED: DO NOT EDIT -->
@@ -1741,7 +1828,12 @@ section = "papers"
 slug = "docs_book_src_papers_chronology"
 title = "Paper Chronology"
 claim_refs = []
-path_refs = ["crates/cd_papers/", "data/papers/corpus/", "proofs/theories/", "registry/source_lanes/papers_pdf.toml"]
+path_refs = [
+    "crates/cd_papers/",
+    "data/papers/corpus/",
+    "proofs/theories/",
+    "registry/source_lanes/papers_pdf.toml",
+]
 line_count = 43
 body_markdown = '''
 <!-- AUTO-GENERATED: DO NOT EDIT -->
@@ -1797,7 +1889,13 @@ section = "papers"
 slug = "docs_book_src_papers_frontier"
 title = "Formalization Frontier"
 claim_refs = []
-path_refs = ["crates/moreno_1997/", "crates/algebra_analysis/src/reggiani.rs", "crates/cd_papers/", "crates/docpipe/", "proofs/theories/"]
+path_refs = [
+    "crates/moreno_1997/",
+    "crates/algebra_analysis/src/reggiani.rs",
+    "crates/cd_papers/",
+    "crates/docpipe/",
+    "proofs/theories/",
+]
 line_count = 57
 body_markdown = '''
 <!-- AUTO-GENERATED: DO NOT EDIT -->
@@ -1886,7 +1984,20 @@ section = "papers"
 slug = "docs_book_src_papers_pre-moreno"
 title = "Pre-Moreno Distillation"
 claim_refs = []
-path_refs = ["crates/cd_papers/", "crates/hurwitz_1898/", "crates/dickson_1919/", "crates/schafer_1945/", "crates/brown_1967/", "crates/brown_1972/", "proofs/theories/", "registry/source_lanes/papers_pdf.toml", "~/Documents/Projects/CayleyDickson/CHRONOLOGICAL_REFERENCE_MATRIX.md", "~/Documents/Projects/CayleyDickson/FORMALIZATION_ROADMAP.md", "~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/quaternion_family/quaternionic_analysis/cullen_1965_integral_theorem_analytic_intrinsic_functions_quaternions_archive_reconstructed.pdf", "~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/quaternion_family/quaternionic_analysis/cullen_1965_integral_theorem_analytic_intrinsic_functions_quaternions_archive_reconstructed.txt"]
+path_refs = [
+    "crates/cd_papers/",
+    "crates/hurwitz_1898/",
+    "crates/dickson_1919/",
+    "crates/schafer_1945/",
+    "crates/brown_1967/",
+    "crates/brown_1972/",
+    "proofs/theories/",
+    "registry/source_lanes/papers_pdf.toml",
+    "~/Documents/Projects/CayleyDickson/CHRONOLOGICAL_REFERENCE_MATRIX.md",
+    "~/Documents/Projects/CayleyDickson/FORMALIZATION_ROADMAP.md",
+    "~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/quaternion_family/quaternionic_analysis/cullen_1965_integral_theorem_analytic_intrinsic_functions_quaternions_archive_reconstructed.pdf",
+    "~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/quaternion_family/quaternionic_analysis/cullen_1965_integral_theorem_analytic_intrinsic_functions_quaternions_archive_reconstructed.txt",
+]
 line_count = 69
 body_markdown = '''
 <!-- AUTO-GENERATED: DO NOT EDIT -->
@@ -2030,7 +2141,13 @@ section = "proofs"
 slug = "docs_book_src_proofs_index"
 title = "Proof Inventory"
 claim_refs = []
-path_refs = ["docs/THEOREMS.md", "docs/generated/THEOREMS_REGISTRY_MIRROR.md", "proofs/", "proofs/_RocqProject", "proofs/verified/*.v"]
+path_refs = [
+    "docs/THEOREMS.md",
+    "docs/generated/THEOREMS_REGISTRY_MIRROR.md",
+    "proofs/",
+    "proofs/_RocqProject",
+    "proofs/verified/*.v",
+]
 line_count = 35
 body_markdown = '''
 <!-- AUTO-GENERATED: DO NOT EDIT -->
@@ -2076,7 +2193,13 @@ section = "proofs"
 slug = "docs_book_src_proofs_linking"
 title = "Theorem Linking"
 claim_refs = []
-path_refs = ["docs/THEOREMS.md", "docs/generated/THEOREMS_REGISTRY_MIRROR.md", "proofs/", "proofs/_RocqProject", "registry/canonical/control_plane.sqlite3"]
+path_refs = [
+    "docs/THEOREMS.md",
+    "docs/generated/THEOREMS_REGISTRY_MIRROR.md",
+    "proofs/",
+    "proofs/_RocqProject",
+    "registry/canonical/control_plane.sqlite3",
+]
 line_count = 38
 body_markdown = '''
 # Theorem Linking
@@ -2125,7 +2248,16 @@ section = "architecture"
 slug = "docs_book_src_architecture_mergus-bridge"
 title = "RFC-001.1 The Mergus Bridge"
 claim_refs = []
-path_refs = ["crates/cd_kernel/", "crates/flavor_lifts/", "crates/gororoba_algebra/", "crates/gororoba_structurable/", "docs/external_sources/MERGUS_BRIDGE_SOURCES.md", "docs/physics/sedenion_standard_model.md", "registry/book_docs.toml", "registry/claim_tickets.toml"]
+path_refs = [
+    "crates/cd_kernel/",
+    "crates/flavor_lifts/",
+    "crates/gororoba_algebra/",
+    "crates/gororoba_structurable/",
+    "docs/external_sources/MERGUS_BRIDGE_SOURCES.md",
+    "docs/physics/sedenion_standard_model.md",
+    "registry/book_docs.toml",
+    "registry/claim_tickets.toml",
+]
 line_count = 42
 body_markdown = '''
 <!-- AUTO-GENERATED: DO NOT EDIT -->
@@ -2182,7 +2314,12 @@ section = "registry"
 slug = "docs_book_src_registry_claims"
 title = "Claims Evidence Matrix"
 claim_refs = ["C-001", "C-455"]
-path_refs = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/latex/claims_appendix.tex", "registry/canonical/control_plane.sqlite3", "registry/claims.toml"]
+path_refs = [
+    "docs/CLAIMS_EVIDENCE_MATRIX.md",
+    "docs/latex/claims_appendix.tex",
+    "registry/canonical/control_plane.sqlite3",
+    "registry/claims.toml",
+]
 line_count = 95
 body_markdown = '''
 <!-- AUTO-GENERATED: DO NOT EDIT -->
@@ -2380,7 +2517,11 @@ section = "registry"
 slug = "docs_book_src_registry_insights"
 title = "Insights"
 claim_refs = []
-path_refs = ["docs/latex/insights_appendix.tex", "registry/canonical/control_plane.sqlite3", "registry/insights.toml"]
+path_refs = [
+    "docs/latex/insights_appendix.tex",
+    "registry/canonical/control_plane.sqlite3",
+    "registry/insights.toml",
+]
 line_count = 81
 body_markdown = '''
 <!-- AUTO-GENERATED: DO NOT EDIT -->

@@ -8,7 +8,7 @@
 //!
 //! Functions:
 //!   * `collect_link_observations` -- gather both sources into a
-//!     URL -> Vec<LinkObservation> map plus the list of source tables
+//!     URL -> `Vec<LinkObservation>` map plus the list of source tables
 //!   * `merge_sqlite_download_observations` -- internal SQLite step
 //!   * `derive_attempt_status` -- normalize SQLite attempt fields
 //!     into the same status vocabulary used by the TSV path

@@ -386,7 +386,7 @@ pub fn juno_sensitivity() -> JunoMassOrderingSensitivity {
 /// Print the full experimental overlay to stdout.
 ///
 /// Structured output suitable for copy-paste into docs or markdown tables.
-/// Called from [`tests::test_print_full_overlay_table`].
+/// Called from `tests::test_print_full_overlay_table`.
 pub fn print_overlay_table() {
     let fit = NuFit60::normal_ordering();
     let angles = compute_angle_overlay();

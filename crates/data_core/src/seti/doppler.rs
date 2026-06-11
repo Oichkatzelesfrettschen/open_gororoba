@@ -7,7 +7,7 @@
 //! Algorithm detail:
 //! 1. For drift rate `r` (Hz/s), time step `t`, fine channel `c`:
 //!    - shifted_c = c + round(r * t * tsamp / |foff_hz|)
-//!    - Accumulate data[t][shifted_c] into integrated spectrum
+//!    - Accumulate `data[t][shifted_c]` into integrated spectrum
 //! 2. Normalize: spectrum = (integrated - median) / (1.4826 * MAD)
 //! 3. Detect peaks above SNR threshold
 //! 4. De-duplicate: keep strongest hit within a frequency window

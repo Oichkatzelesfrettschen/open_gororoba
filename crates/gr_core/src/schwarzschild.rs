@@ -23,7 +23,7 @@ use crate::metric::{
 /// Schwarzschild black hole spacetime.
 ///
 /// Parameterized by mass M in natural units (G = c = 1).
-/// The metric is diagonal in Schwarzschild coordinates [t, r, theta, phi].
+/// The metric is diagonal in Schwarzschild coordinates `[t, r, theta, phi]`.
 #[derive(Debug, Clone, Copy)]
 pub struct Schwarzschild {
     /// Mass parameter (G = c = 1)

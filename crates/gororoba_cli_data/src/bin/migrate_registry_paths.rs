@@ -6,17 +6,21 @@
 
 use anyhow::{Context, Result};
 use regex::Regex;
-use std::fs;
-use std::path::Path;
+use std::{fs, path::Path};
 
 fn main() -> Result<()> {
     // 1. migrate_xtask logic
     let xtask_path = Path::new("xtask/src/main.rs");
     if xtask_path.exists() {
         let mut content = fs::read_to_string(xtask_path)?;
-        content = content.replace("docs/db/catalog.md", "crates/data_core/src/registry_mirrors/db_catalog.rs");
-        
-        let wrapper_re = Regex::new(r"fn render_catalog_markdown\(snapshot: &SchemaSnapshot\) -> String \{(?s:.*?)\}")?;
+        content = content.replace(
+            "docs/db/catalog.md",
+            "crates/data_core/src/registry_mirrors/db_catalog.rs",
+        );
+
+        let wrapper_re = Regex::new(
+            r"fn render_catalog_markdown\(snapshot: &SchemaSnapshot\) -> String \{(?s:.*?)\}",
+        )?;
         let wrapper = r#"fn render_catalog_markdown(snapshot: &SchemaSnapshot) -> String {
     let mut rustdoc = String::new();
     rustdoc.push_str("//! # Database Catalog Snapshot\n//!\n");
@@ -43,7 +47,7 @@ fn main() -> Result<()> {
 }
 
 fn render_catalog_markdown_raw(snapshot: &SchemaSnapshot) -> String {"#;
-        
+
         content = wrapper_re.replace(&content, wrapper).to_string();
         fs::write(xtask_path, content)?;
         println!("Migrated xtask paths.");
@@ -63,18 +67,27 @@ fn render_catalog_markdown_raw(snapshot: &SchemaSnapshot) -> String {"#;
     }
 
     // 3. migrate_freshness logic
-    let freshness_path = Path::new("crates/gororoba_cli_data/src/bin/verify_registry_mirror_freshness.rs");
+    let freshness_path =
+        Path::new("crates/gororoba_cli_data/src/bin/verify_registry_mirror_freshness.rs");
     if freshness_path.exists() {
         let mut content = fs::read_to_string(freshness_path)?;
         let freshness_re = Regex::new(r#"(docs/generated/|docs/)([A-Z_a-z0-9]+)\.md"#)?;
-        content = freshness_re.replace_all(&content, |caps: &regex::Captures| {
-            let stem = caps.get(2).unwrap().as_str().to_lowercase();
-            format!("crates/data_core/src/registry_mirrors/{stem}.rs")
-        }).to_string();
-        
-        content = content.replace("\"NAVIGATOR.md\"", "\"crates/data_core/src/registry_mirrors/navigator.rs\"");
-        content = content.replace("NAVIGATOR.md", "crates/data_core/src/registry_mirrors/navigator.rs");
-        
+        content = freshness_re
+            .replace_all(&content, |caps: &regex::Captures| {
+                let stem = caps.get(2).unwrap().as_str().to_lowercase();
+                format!("crates/data_core/src/registry_mirrors/{stem}.rs")
+            })
+            .to_string();
+
+        content = content.replace(
+            "\"NAVIGATOR.md\"",
+            "\"crates/data_core/src/registry_mirrors/navigator.rs\"",
+        );
+        content = content.replace(
+            "NAVIGATOR.md",
+            "crates/data_core/src/registry_mirrors/navigator.rs",
+        );
+
         fs::write(freshness_path, content)?;
         println!("Migrated freshness paths.");
     }

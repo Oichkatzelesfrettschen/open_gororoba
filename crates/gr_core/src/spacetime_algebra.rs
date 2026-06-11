@@ -199,7 +199,7 @@ impl DiracSpinor {
 
     /// Dirac bilinear form: psibarpsi where psibar = psidagger gamma_0
     /// In Dirac representation, gamma_0 permutes components: psibar = (cbar2, cbar3, cbar0, cbar1)
-    /// Therefore: psibarpsi = Re[cbar2c0 + cbar3c1 + cbar0c2 + cbar1c3]
+    /// Therefore: psibarpsi = Re`[cbar2c0 + cbar3c1 + cbar0c2 + cbar1c3]`
     ///
     /// This is the quantity that is actually conserved under Lorentz transformations,
     /// not the Euclidean norm. This is fundamental to relativistic quantum mechanics.

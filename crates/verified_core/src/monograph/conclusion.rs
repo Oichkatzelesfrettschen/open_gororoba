@@ -21,7 +21,7 @@
 //! | Imbalance Attractor ($\phi$) | $3/8 = 0.375$ | Sedenion Triples |
 //! | Immirzi Parameter ($\gamma$) | $H(3/8) / \pi \sqrt{3} \approx 0.1216$ | Entropy Bridge |
 //! | Weak Mixing Angle ($\sin^2 \theta_W$) | $15/40 = 0.375$ | SU(5) Unification |
-//! | Code Distance ($d$) | $3$ | Steane [[7,1,3]] |
+//! | Code Distance ($d$) | $3$ | Steane `[[7,1,3]]` |
 //! | Topo Invariant ($N$) | $42$ | Box-Kite Nodes |
 //!
 //! ## 3. Final Interpretation

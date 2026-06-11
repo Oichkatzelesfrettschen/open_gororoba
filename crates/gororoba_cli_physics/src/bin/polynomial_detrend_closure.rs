@@ -3,7 +3,7 @@
 //! Tests whether a low-order polynomial absorbs all Fourier power at CD-ZD
 //! wavenumbers because the dominant residual shape is a smooth baryonic trend,
 //! not a harmonic signal. Extends C-1400 by scanning ALL wavenumbers k in
-//! [k_min, k_max] (not just the 7 CD-ZD modes) to close the escape route
+//! `[k_min, k_max]` (not just the 7 CD-ZD modes) to close the escape route
 //! that a non-ZD peaked signal might be hidden.
 //!
 //! After detrending, computes a tightened alpha_zd upper limit with bootstrap
@@ -86,7 +86,7 @@ struct Cli {
 }
 
 /// Fit a polynomial of given order to (x, y) data using normal equations.
-/// Returns coefficients [a0, a1, ..., a_order] where poly(x) = sum a_i * x^i.
+/// Returns coefficients `[a0, a1, ..., a_order]` where poly(x) = sum a_i * x^i.
 fn fit_polynomial(x: &[f64], y: &[f64], order: usize) -> Vec<f64> {
     let n_coeffs = order + 1;
 

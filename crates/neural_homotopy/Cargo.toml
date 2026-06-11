@@ -6,9 +6,9 @@ license = "GPL-2.0-or-later"
 repository = "https://github.com/Oichkatzelesfrettschen/open_gororoba"
 
 [dependencies]
-gororoba_algebra = { path = "../gororoba_algebra" }
-cosmology_core = { path = "../cosmology_core" }
 burn = { workspace = true, features = ["ndarray"] }
+cosmology_core = { path = "../cosmology_core" }
+gororoba_algebra = { path = "../gororoba_algebra" }
 
 [dev-dependencies]
 approx = { workspace = true }

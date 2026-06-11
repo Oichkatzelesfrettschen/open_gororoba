@@ -10,7 +10,7 @@
 //!   --> The specific CD coefficient values contribute beyond the zero-pattern.
 //!
 //! WHAT: Extract the CD T_ijk sparsity pattern by evaluating the associator on
-//! standard basis triples.  T_ijk = e_i^T * [e_j, e_0, e_k] where e_j is the
+//! standard basis triples.  `T_ijk = e_i^T * [e_j, e_0, e_k]` where e_j is the
 //! j-th standard basis vector.  Entry (i,j,k) is nonzero iff T_ijk != 0.
 //! Compute sigma_cd = RMS of the non-zero CD T entries.
 //! For each draw: randomize only non-zero entries from N(0, sigma_cd).
@@ -130,11 +130,11 @@ fn event_midpoint_unix(ev: &MmsEventInterval) -> i64 {
 
 /// Compute the CD trilinear structure tensor for the given dim by probing all basis triples.
 ///
-/// The CD associator [x,y,z]_l = ((xy)z - x(yz))_l is a trilinear form. The structure
-/// tensor entry S_{l,i,j,k} = [e_i, e_j, e_k]_l captures the l-th output component when
+/// The CD associator `[x,y,z]_l = ((xy)z - x(yz))_l` is a trilinear form. The structure
+/// tensor entry `S_{l,i,j,k} = [e_i, e_j, e_k]_l` captures the l-th output component when
 /// inputs are basis vectors e_i, e_j, e_k.
 ///
-/// Returns: (nonzero_quads, sigma_cd) where nonzero_quads is Vec<(l,i,j,k)> of all index
+/// Returns: (nonzero_quads, sigma_cd) where nonzero_quads is `Vec<(l,i,j,k)>` of all index
 /// quadruples where S is nonzero, and sigma_cd is the RMS of the nonzero S values.
 ///
 /// For dim=32, there are 32^3=32768 triples to probe; many are nonzero due to zero
@@ -192,7 +192,7 @@ fn build_cd_sparsity_pattern(dim: usize) -> (Vec<(usize, usize, usize, usize)>, 
 /// Compute sparse random trilinear scores using the CD sparsity pattern.
 ///
 /// Models the same 3-vector associator structure as `batch_sliding_associator_norms_parallel`:
-/// for each consecutive triple (x, y, z), compute ||T[x,y,z]||_2 where T has the same
+/// for each consecutive triple (x, y, z), compute `||T[x,y,z]||_2` where T has the same
 /// zero-pattern as the CD structure tensor S_{l,i,j,k}.
 ///
 /// Returns n-2 scores for n input delay vectors (same length contract as CD baseline).

@@ -24,22 +24,22 @@ use std::f64::consts::PI;
 // Planck scale constants
 // ============================================================================
 
-/// Planck mass: m_P = sqrt(hbar c / G) [g]
+/// Planck mass: m_P = sqrt(hbar c / G) `[g]`
 pub const M_PLANCK: f64 = 2.176_434e-5; // sqrt(1.0546e-27 * 2.998e10 / 6.674e-8)
 
-/// Planck length: l_P = sqrt(hbar G / c^3) [cm]
+/// Planck length: l_P = sqrt(hbar G / c^3) `[cm]`
 pub const L_PLANCK: f64 = 1.616_255e-33;
 
-/// Planck time: t_P = sqrt(hbar G / c^5) [s]
+/// Planck time: t_P = sqrt(hbar G / c^5) `[s]`
 pub const T_PLANCK_TIME: f64 = 5.391_247e-44;
 
-/// Planck temperature: T_P = sqrt(hbar c^5 / (G k_B^2)) [K]
+/// Planck temperature: T_P = sqrt(hbar c^5 / (G k_B^2)) `[K]`
 pub const T_PLANCK_TEMP: f64 = 1.416_784e32;
 
-/// Wien displacement constant [cm K]
+/// Wien displacement constant `[cm K]`
 const B_WIEN: f64 = 0.289_8;
 
-/// Hubble time (age of the universe) [s]
+/// Hubble time (age of the universe) `[s]`
 const HUBBLE_TIME: f64 = 4.35e17;
 
 // ============================================================================
@@ -92,7 +92,7 @@ pub fn hawking_temperature_kerr(mass_g: f64, a_star: f64) -> f64 {
 
 /// Hawking luminosity (power radiated) for Schwarzschild.
 ///
-/// L_H = hbar c^6 / (15360 pi G^2 M^2) [erg/s]
+/// L_H = hbar c^6 / (15360 pi G^2 M^2) `[erg/s]`
 ///
 /// This is the Stefan-Boltzmann radiation from a sphere of radius r_s.
 pub fn hawking_luminosity(mass_g: f64) -> f64 {
@@ -105,7 +105,7 @@ pub fn hawking_luminosity(mass_g: f64) -> f64 {
 
 /// Black hole evaporation time.
 ///
-/// t_evap = 5120 pi G^2 M^3 / (hbar c^4) [s]
+/// t_evap = 5120 pi G^2 M^3 / (hbar c^4) `[s]`
 ///
 /// For 1 solar mass: t_evap ~ 10^67 years.
 /// For M ~ 1e15 g: t_evap ~ age of universe.
@@ -119,7 +119,7 @@ pub fn hawking_evaporation_time(mass_g: f64) -> f64 {
 
 /// Mass at which evaporation time equals given time.
 ///
-/// M = (hbar c^4 t / (5120 pi G^2))^{1/3} [g]
+/// M = (hbar c^4 t / (5120 pi G^2))^{1/3} `[g]`
 pub fn evaporating_mass(t_s: f64) -> f64 {
     if t_s <= 0.0 {
         return 0.0;
@@ -128,7 +128,7 @@ pub fn evaporating_mass(t_s: f64) -> f64 {
     (HBAR_CGS * c4 * t_s / (5120.0 * PI * G_CGS * G_CGS)).cbrt()
 }
 
-/// Mass loss rate dM/dt = -L_H / c^2 [g/s] (negative).
+/// Mass loss rate dM/dt = -L_H / c^2 `[g/s]` (negative).
 pub fn mass_loss_rate(mass_g: f64) -> f64 {
     -hawking_luminosity(mass_g) / (C_CGS * C_CGS)
 }
@@ -139,7 +139,7 @@ pub fn mass_loss_rate(mass_g: f64) -> f64 {
 
 /// Peak wavelength of Hawking radiation (Wien displacement).
 ///
-/// lambda_peak = b / T_H [cm]
+/// lambda_peak = b / T_H `[cm]`
 pub fn hawking_peak_wavelength(mass_g: f64) -> f64 {
     let t = hawking_temperature(mass_g);
     if t <= 0.0 || t.is_infinite() {
@@ -150,7 +150,7 @@ pub fn hawking_peak_wavelength(mass_g: f64) -> f64 {
 
 /// Peak frequency of Hawking radiation.
 ///
-/// nu_peak = 2.821 k_B T / h [Hz]
+/// nu_peak = 2.821 k_B T / h `[Hz]`
 pub fn hawking_peak_frequency(mass_g: f64) -> f64 {
     let t = hawking_temperature(mass_g);
     2.821 * K_B_CGS * t / (2.0 * PI * HBAR_CGS)
@@ -158,7 +158,7 @@ pub fn hawking_peak_frequency(mass_g: f64) -> f64 {
 
 /// Hawking radiation power spectrum (simplified blackbody).
 ///
-/// dE/(dt dnu) = area * pi * B_nu [erg/s/Hz]
+/// dE/(dt dnu) = area * pi * B_nu `[erg/s/Hz]`
 ///
 /// where B_nu is the Planck function evaluated at T_H.
 /// Greybody factors are omitted (would require solving the
@@ -185,7 +185,7 @@ pub fn hawking_spectrum(nu: f64, mass_g: f64) -> f64 {
 
 /// Bekenstein-Hawking entropy for Schwarzschild.
 ///
-/// S = k_B c^3 A / (4 G hbar) [erg/K]
+/// S = k_B c^3 A / (4 G hbar) `[erg/K]`
 ///
 /// where A = 4 pi r_s^2 is the horizon area.
 pub fn bekenstein_hawking_entropy(mass_g: f64) -> f64 {
@@ -220,7 +220,7 @@ pub fn bekenstein_hawking_entropy_kerr(mass_g: f64, a_star: f64) -> f64 {
 
 /// Page time: when entanglement entropy of radiation peaks.
 ///
-/// t_Page ~ t_evap / 2^{2/3} ~ 0.63 * t_evap [s]
+/// t_Page ~ t_evap / 2^{2/3} ~ 0.63 * t_evap `[s]`
 ///
 /// After Page time, information should start being recovered.
 pub fn page_time(mass_g: f64) -> f64 {
@@ -229,7 +229,7 @@ pub fn page_time(mass_g: f64) -> f64 {
 
 /// Scrambling time: how long for thrown-in information to be scrambled.
 ///
-/// t_scr = (r_s / c) * ln(S / k_B) [s]
+/// t_scr = (r_s / c) * ln(S / k_B) `[s]`
 ///
 /// Fast compared to Page time, slow compared to light-crossing time.
 pub fn scrambling_time(mass_g: f64) -> f64 {

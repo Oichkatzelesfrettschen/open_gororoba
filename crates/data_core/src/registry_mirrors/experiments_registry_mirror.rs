@@ -340,7 +340,7 @@
 //! ## E-021: Tessarines vs. Mixed-Quaternions Categorical Distinction Census
 //!
 //! - Binary: `tessarines-mixed-quaternions-census`
-//! - Input: 
+//! - Input:
 //! - Output: (none)
 //! - Deterministic: `false`
 //! - GPU: `false`
@@ -357,7 +357,7 @@
 //! ## E-022: Albert Algebra Commutativity and Exceptional Structure Census
 //!
 //! - Binary: `albert-algebra-structure-census`
-//! - Input: 
+//! - Input:
 //! - Output: (none)
 //! - Deterministic: `false`
 //! - GPU: `false`
@@ -374,7 +374,7 @@
 //! ## E-023: Composition Algebra Taxonomy: Two-Axis Classification Framework
 //!
 //! - Binary: `composition-algebra-taxonomy`
-//! - Input: 
+//! - Input:
 //! - Output: (none)
 //! - Deterministic: `false`
 //! - GPU: `false`
@@ -391,7 +391,7 @@
 //! ## E-024: Registry Event Tracking Infrastructure
 //!
 //! - Binary: `registry-event-tracker`
-//! - Input: 
+//! - Input:
 //! - Output: (none)
 //! - Deterministic: `false`
 //! - GPU: `false`
@@ -408,7 +408,7 @@
 //! ## E-026: Third-Party Source Verification Infrastructure
 //!
 //! - Binary: `third-party-source-verifier`
-//! - Input: 
+//! - Input:
 //! - Output: (none)
 //! - Deterministic: `false`
 //! - GPU: `false`
@@ -3457,7 +3457,7 @@
 //! ## E-208: Associator Flux Measurement Around Zero Divisors in 16D, 32D, and 64D
 //!
 //! - Binary: ``
-//! - Input: 
+//! - Input:
 //! - Output: (none)
 //! - Deterministic: `false`
 //! - GPU: `false`
@@ -3474,7 +3474,7 @@
 //! ## E-209: CKM selector pair scan: 420 combos, Rayon-parallel
 //!
 //! - Binary: ``
-//! - Input: 
+//! - Input:
 //! - Output: (none)
 //! - Deterministic: `false`
 //! - GPU: `false`
@@ -3491,7 +3491,7 @@
 //! ## E-210: PMNS neutrino mixing selector pair scan
 //!
 //! - Binary: ``
-//! - Input: 
+//! - Input:
 //! - Output: (none)
 //! - Deterministic: `false`
 //! - GPU: `false`
@@ -3508,7 +3508,7 @@
 //! ## E-211: 3-blade zero-divisor friction scan (455 triples)
 //!
 //! - Binary: ``
-//! - Input: 
+//! - Input:
 //! - Output: (none)
 //! - Deterministic: `false`
 //! - GPU: `false`
@@ -3525,7 +3525,7 @@
 //! ## E-212: Electroweak mixing angle from associator flux ratio
 //!
 //! - Binary: ``
-//! - Input: 
+//! - Input:
 //! - Output: (none)
 //! - Deterministic: `false`
 //! - GPU: `false`
@@ -3542,7 +3542,7 @@
 //! ## E-213: G2 stabilizer extraction via thin-SVD with u(3) embedding verification
 //!
 //! - Binary: ``
-//! - Input: 
+//! - Input:
 //! - Output: (none)
 //! - Deterministic: `false`
 //! - GPU: `false`
@@ -3559,7 +3559,7 @@
 //! ## E-214: Constructive SU(3) realization and standard Gell-Mann alignment from octonionic stabilizer
 //!
 //! - Binary: ``
-//! - Input: 
+//! - Input:
 //! - Output: (none)
 //! - Deterministic: `false`
 //! - GPU: `false`
@@ -3576,7 +3576,7 @@
 //! ## E-215: Physics bridge: SU(5) SU(3)-sector cross-validation and real-part projection
 //!
 //! - Binary: ``
-//! - Input: 
+//! - Input:
 //! - Output: (none)
 //! - Deterministic: `false`
 //! - GPU: `false`
@@ -3593,7 +3593,7 @@
 //! ## E-216: PMD CPD 7.12.0 codebase duplication baseline scan
 //!
 //! - Binary: ``
-//! - Input: 
+//! - Input:
 //! - Output: (none)
 //! - Deterministic: `false`
 //! - GPU: `false`
@@ -3610,7 +3610,7 @@
 //! ## E-217: Materials data architecture decision: optical_database.rs + crystal_symmetry.rs migration path
 //!
 //! - Binary: ``
-//! - Input: 
+//! - Input:
 //! - Output: (none)
 //! - Deterministic: `false`
 //! - GPU: `false`
@@ -3661,7 +3661,7 @@
 //! ## E-220: TurboQuant WHT/E8 rotation benchmark and KIVI comparison (d=128, 3-bit)
 //!
 //! - Binary: ``
-//! - Input: 
+//! - Input:
 //! - Output: (none)
 //! - Deterministic: `false`
 //! - GPU: `false`
@@ -3678,7 +3678,7 @@
 //! ## E-221: TurboQuant adaptive bit allocation via CD associator (d=32, 3-bit)
 //!
 //! - Binary: ``
-//! - Input: 
+//! - Input:
 //! - Output: (none)
 //! - Deterministic: `false`
 //! - GPU: `false`
@@ -3695,7 +3695,7 @@
 //! ## E-222: TurboQuant QJL correction crossover analysis (2-4 bit)
 //!
 //! - Binary: ``
-//! - Input: 
+//! - Input:
 //! - Output: (none)
 //! - Deterministic: `false`
 //! - GPU: `false`
@@ -3712,7 +3712,7 @@
 //! ## E-223: TurboQuant E8 lattice root system and rotation roundtrip validation
 //!
 //! - Binary: ``
-//! - Input: 
+//! - Input:
 //! - Output: (none)
 //! - Deterministic: `false`
 //! - GPU: `false`

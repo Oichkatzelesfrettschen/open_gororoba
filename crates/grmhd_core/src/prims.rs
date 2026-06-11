@@ -1,14 +1,14 @@
 //! Primitive variables for ideal GRMHD.
 //!
 //! The 8 primitive variables are:
-//!   P[0] = rho     (rest-mass density)
-//!   P[1] = u       (internal energy density)
-//!   P[2] = v1      (contravariant 3-velocity, r-direction)
-//!   P[3] = v2      (contravariant 3-velocity, theta-direction)
-//!   P[4] = v3      (contravariant 3-velocity, phi-direction)
-//!   P[5] = B1      (magnetic field, r-component)
-//!   P[6] = B2      (magnetic field, theta-component)
-//!   P[7] = B3      (magnetic field, phi-component)
+//!   `P[0] = rho`     (rest-mass density)
+//!   `P[1] = u`       (internal energy density)
+//!   `P[2] = v1`      (contravariant 3-velocity, r-direction)
+//!   `P[3] = v2`      (contravariant 3-velocity, theta-direction)
+//!   `P[4] = v3`      (contravariant 3-velocity, phi-direction)
+//!   `P[5] = B1`      (magnetic field, r-component)
+//!   `P[6] = B2`      (magnetic field, theta-component)
+//!   `P[7] = B3`      (magnetic field, phi-component)
 //!
 //! The 3-velocity v^i is defined as u^i / u^t where u^mu is the 4-velocity.
 //! B^i is the magnetic field in the fluid frame (actually the lab-frame

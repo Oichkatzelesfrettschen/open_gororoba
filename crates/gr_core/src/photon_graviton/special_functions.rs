@@ -52,7 +52,7 @@ const BERNOULLI: [f64; 31] = [
     8615841276005.0 / 14322.0, // B_30
 ];
 
-/// Bernoulli number B_n for n in [0, 30].
+/// Bernoulli number B_n for n in `[0, 30]`.
 ///
 /// Returns 0.0 for odd n >= 3 (they vanish identically).
 /// Panics if n > 30.

@@ -8,7 +8,15 @@ status_token = "ACTIVE"
 alias_count = 14
 
 [dataset_label_aliases.schema]
-required_alias_fields = ["id", "label", "label_normalized", "canonical_dataset_id", "status", "status_token", "notes"]
+required_alias_fields = [
+    "id",
+    "label",
+    "label_normalized",
+    "canonical_dataset_id",
+    "status",
+    "status_token",
+    "notes",
+]
 
 [[alias]]
 id = "DLA-001"

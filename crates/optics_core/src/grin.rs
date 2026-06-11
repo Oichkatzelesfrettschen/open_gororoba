@@ -115,8 +115,8 @@ where
 
 /// One RK4 step for the ray equation (real n).
 ///
-/// y = [pos, dir]
-/// dy/ds = [dir, (grad_n - (dir.grad_n)*dir) / n]
+/// y = `[pos, dir]`
+/// dy/ds = `[dir, (grad_n - (dir.grad_n)*dir) / n]`
 pub fn rk4_step<M: GrinMedium>(ray: Ray, dt: f64, medium: &M) -> Ray {
     // Derivative function
     let get_derivatives = |p: Vec3, d: Vec3| -> (Vec3, Vec3) {

@@ -3,7 +3,7 @@
 //! Parses the GWTC-3 confident events CSV from GWOSC (Gravitational Wave
 //! Open Science Center).
 //!
-//! Source: https://gwosc.org/eventapi/json/GWTC-3-confident/
+//! Source: <https://gwosc.org/eventapi/json/GWTC-3-confident/>
 //! Reference: Abbott et al. (2023), PRX 13, 041039
 
 use crate::{fetcher::FetchError, parse::parse_f64_or_zero};

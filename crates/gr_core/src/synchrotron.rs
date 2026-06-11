@@ -22,21 +22,21 @@ use std::f64::consts::PI;
 /// Fine structure constant alpha ~ 1/137.
 pub const ALPHA_FINE: f64 = 7.297_352_569_3e-3;
 
-/// Classical electron radius r_e = e^2/(m_e c^2) [cm].
+/// Classical electron radius r_e = e^2/(m_e c^2) `[cm]`.
 pub const R_ELECTRON: f64 = 2.817_940_326_2e-13;
 
 // ============================================================================
 // Electron gyration
 // ============================================================================
 
-/// Electron gyrofrequency (cyclotron frequency) [Hz].
+/// Electron gyrofrequency (cyclotron frequency) `[Hz]`.
 ///
 /// nu_B = eB / (2 pi m_e c)
 pub fn gyrofrequency(b_gauss: f64) -> f64 {
     E_CHARGE_CGS * b_gauss.abs() / (2.0 * PI * M_ELECTRON_CGS * C_CGS)
 }
 
-/// Electron gyroradius (Larmor radius) [cm].
+/// Electron gyroradius (Larmor radius) `[cm]`.
 ///
 /// r_L = gamma m_e c^2 / (eB) for ultrarelativistic electrons (v ~ c).
 ///
@@ -54,7 +54,7 @@ pub fn gyroradius(gamma: f64, b_gauss: f64) -> f64 {
 // Synchrotron emission
 // ============================================================================
 
-/// Synchrotron critical frequency [Hz].
+/// Synchrotron critical frequency `[Hz]`.
 ///
 /// nu_c = (3/4pi) (eB)/(m_e c) gamma^2 sin(alpha)
 ///
@@ -67,14 +67,14 @@ pub fn critical_frequency(gamma: f64, b_gauss: f64, pitch_angle: f64) -> f64 {
         * sin_a
 }
 
-/// Peak synchrotron frequency [Hz].
+/// Peak synchrotron frequency `[Hz]`.
 ///
 /// nu_peak ~ 0.29 * nu_c (where the synchrotron function F(x) peaks).
 pub fn peak_frequency(gamma: f64, b_gauss: f64) -> f64 {
     0.29 * critical_frequency(gamma, b_gauss, PI / 2.0)
 }
 
-/// Synchrotron power radiated by a single electron [erg/s].
+/// Synchrotron power radiated by a single electron `[erg/s]`.
 ///
 /// P = (4/3) sigma_T c gamma^2 beta^2 U_B
 ///
@@ -85,7 +85,7 @@ pub fn power_single_electron(gamma: f64, b_gauss: f64) -> f64 {
     (4.0 / 3.0) * SIGMA_THOMSON * C_CGS * gamma * gamma * beta_sq * u_b
 }
 
-/// Synchrotron cooling time [s].
+/// Synchrotron cooling time `[s]`.
 ///
 /// t_cool = gamma m_e c^2 / P
 ///
@@ -228,7 +228,7 @@ pub fn absorption_coefficient(nu: f64, b_gauss: f64, n_e: f64, p: f64) -> f64 {
     prefactor * nu_b.powf((p + 2.0) / 2.0) * nu.powf(exponent)
 }
 
-/// Self-absorption frequency where optical depth = 1 [Hz].
+/// Self-absorption frequency where optical depth = 1 `[Hz]`.
 ///
 /// nu_a ~ nu_B * (n_e R / 10^20)^{2/(p+4)} (approximate).
 pub fn self_absorption_frequency(b_gauss: f64, n_e: f64, source_r_cm: f64, p: f64) -> f64 {

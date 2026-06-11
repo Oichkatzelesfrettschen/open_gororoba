@@ -4,7 +4,7 @@
 //! complement to TSIS-1.
 //!
 //! Source: LASP LISIRD / SORCE data archive
-//! https://lasp.colorado.edu/lisird/data/sorce_tsi_24hr_l3
+//! <https://lasp.colorado.edu/lisird/data/sorce_tsi_24hr_l3>
 //!
 //! The old LaTiS endpoint (`sorce_tsi_24hr`) was renamed to `sorce_tsi_24hr_l3`
 //! (Level 3 suffix). The most stable URL is the direct file link at

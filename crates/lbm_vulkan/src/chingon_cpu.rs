@@ -3,7 +3,7 @@
 //! WHY: The Vulkan, CUDA, and cubecl chingon paths need a deterministic
 //! oracle. The contraction is:
 //!
-//!   force[m] += alpha * v[i] * v[j] * sign * inv_n_viol
+//!   `force[m] += alpha * v[i] * v[j] * sign * inv_n_viol`
 //!
 //! for each bit-packed violation `(i, j, m, sign)`. The CPU reference
 //! evaluates the contraction exactly in serial f64 (then narrowed to

@@ -111,7 +111,7 @@ impl std::fmt::Display for KernelTier {
 ///
 /// When the `cuda` feature is enabled, this delegates to the
 /// consolidated `gororoba_gpu_cuda::DeviceProbe::query` helper and
-/// adapts its fields onto the local [`CudaDeviceProps`] shape (which
+/// adapts its fields onto the local `CudaDeviceProps` shape (which
 /// retains the domain-specific `KernelTier` companion).
 #[cfg(feature = "cuda")]
 pub fn probe_device() -> Option<CudaDeviceProps> {

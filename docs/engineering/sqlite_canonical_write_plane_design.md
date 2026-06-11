@@ -21,17 +21,17 @@ A May 2026 research pass confirmed the workspace already pins the right
 crates for this problem class. No version bumps are needed before
 implementation:
 
-| Crate                | Version    | Role                                       |
-|----------------------|------------|--------------------------------------------|
-| rusqlite             | 0.39       | Synchronous, single-process SQLite driver  |
-| rusqlite_migration   | 2.5        | Versioned migrations (uses user_version)   |
-| toml                 | 1.1        | Read-only ingest of TOML payloads          |
-| toml_edit            | 0.25       | Round-trip preservation of comments/order  |
-| clap                 | 4.5 derive | CLI argument parsing                       |
-| jsonschema           | 0.30       | Pre-INSERT row validation                  |
-| schemars             | latest     | Derive JSON Schema from Rust structs       |
-| blake3               | 1.8        | Internal content-addressing                |
-| sha2                 | 0.11       | Existing content_sha256 fields             |
+| Crate              | Version    | Role                                      |
+| ------------------ | ---------- | ----------------------------------------- |
+| rusqlite           | 0.39       | Synchronous, single-process SQLite driver |
+| rusqlite_migration | 2.5        | Versioned migrations (uses user_version)  |
+| toml               | 1.1        | Read-only ingest of TOML payloads         |
+| toml_edit          | 0.25       | Round-trip preservation of comments/order |
+| clap               | 4.5 derive | CLI argument parsing                      |
+| jsonschema         | 0.30       | Pre-INSERT row validation                 |
+| schemars           | latest     | Derive JSON Schema from Rust structs      |
+| blake3             | 1.8        | Internal content-addressing               |
+| sha2               | 0.11       | Existing content_sha256 fields            |
 
 Rationale for keeping rusqlite over sqlx/sea-orm/diesel:
 

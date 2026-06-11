@@ -13,7 +13,7 @@ use std::f64::consts::PI;
 /// Phase-matching function F(L) = sin(dk * L / 2) / (dk / 2).
 ///
 /// For small dk*L, F(L) -> L (perfect phase matching).
-/// Units: if dk is in [1/um] and L in [um], F is in [um].
+/// Units: if dk is in `[1/um]` and L in `[um]`, F is in `[um]`.
 pub fn phase_matching_function(delta_k: f64, thickness: f64) -> f64 {
     let arg = delta_k * thickness / 2.0;
     if arg.abs() < 1e-12 {
@@ -23,7 +23,7 @@ pub fn phase_matching_function(delta_k: f64, thickness: f64) -> f64 {
     }
 }
 
-/// Coherence length L_coh = pi / |dk| [same units as 1/dk].
+/// Coherence length L_coh = pi / |dk| `[same units as 1/dk]`.
 pub fn coherence_length(delta_k: f64) -> f64 {
     PI / delta_k.abs()
 }
@@ -31,13 +31,13 @@ pub fn coherence_length(delta_k: f64) -> f64 {
 /// Result of an SFWM dominance check at a given crystal thickness.
 #[derive(Debug, Clone)]
 pub struct SfwmDominanceResult {
-    /// Crystal thickness [um].
+    /// Crystal thickness `[um]`.
     pub thickness_um: f64,
-    /// SFWM coherence length [um].
+    /// SFWM coherence length `[um]`.
     pub l_coh_sfwm_um: f64,
-    /// SHG coherence length [um].
+    /// SHG coherence length `[um]`.
     pub l_coh_shg_um: f64,
-    /// SPDC coherence length [um].
+    /// SPDC coherence length `[um]`.
     pub l_coh_spdc_um: f64,
     /// Phase-matching function for SFWM.
     pub f_sfwm: f64,
@@ -98,11 +98,11 @@ pub fn thickness_sweep(thicknesses_um: &[f64]) -> Vec<SfwmDominanceResult> {
 /// Wavevector mismatches for the three processes.
 #[derive(Debug, Clone, Copy)]
 pub struct WavevectorMismatches {
-    /// SFWM: dk = 2*k_pump - k_signal - k_idler [1/um].
+    /// SFWM: dk = 2*k_pump - k_signal - k_idler `[1/um]`.
     pub dk_sfwm: f64,
-    /// SHG: dk = 2*k_pump - k_sh [1/um].
+    /// SHG: dk = 2*k_pump - k_sh `[1/um]`.
     pub dk_shg: f64,
-    /// SPDC: dk = k_sh - k_signal - k_idler [1/um].
+    /// SPDC: dk = k_sh - k_signal - k_idler `[1/um]`.
     pub dk_spdc: f64,
 }
 
@@ -112,11 +112,11 @@ pub struct WavevectorMismatches {
 /// absolute values cancel in R_cas/R_dir.
 #[derive(Debug, Clone)]
 pub struct SfwmMaterialParams {
-    /// Effective chi(2) for SHG [arb. units].
+    /// Effective chi(2) for SHG `[arb. units]`.
     pub chi2_shg: f64,
-    /// Effective chi(2) for SPDC [arb. units].
+    /// Effective chi(2) for SPDC `[arb. units]`.
     pub chi2_spdc: f64,
-    /// Effective chi(3) for direct SFWM [arb. units].
+    /// Effective chi(3) for direct SFWM `[arb. units]`.
     pub chi3_sfwm: f64,
     /// Refractive index at pump wavelength.
     pub n_pump: f64,
@@ -126,13 +126,13 @@ pub struct SfwmMaterialParams {
     pub n_idler: f64,
     /// Refractive index at second-harmonic wavelength.
     pub n_sh: f64,
-    /// Pump wavelength [um].
+    /// Pump wavelength `[um]`.
     pub lambda_pump: f64,
-    /// Signal wavelength [um].
+    /// Signal wavelength `[um]`.
     pub lambda_signal: f64,
-    /// Idler wavelength [um].
+    /// Idler wavelength `[um]`.
     pub lambda_idler: f64,
-    /// Crystal thickness [um].
+    /// Crystal thickness `[um]`.
     pub thickness: f64,
 }
 
@@ -140,7 +140,7 @@ impl SfwmMaterialParams {
     /// Construct parameters for 10 um LiNbO3 as in Son & Chekhova (2026).
     ///
     /// Pump: 1030 nm, Signal: 770 nm, Idler: 1550 nm (nearly degenerate
-    /// energy conservation: 2/1.030 ~ 1/0.770 + 1/1.550 [in 1/um]).
+    /// energy conservation: 2/1.030 ~ 1/0.770 + 1/1.550 `[in 1/um]`).
     ///
     /// Uses paper wavevector mismatches for consistency:
     ///   dk_SFWM ~ 0.094 um^-1 (L_coh ~ 33 um)
@@ -240,7 +240,7 @@ pub struct SfwmRateResult {
 
 /// Cascaded amplitude squared |A_cas|^2 (Eq. 6 of Son & Chekhova 2026).
 ///
-/// A_cas ~ chi2_shg * chi2_spdc * [exp(i*dk_SHG*L/2) * F_SFWM(L) - F_SPDC(L)]
+/// A_cas ~ chi2_shg * chi2_spdc * `[exp(i*dk_SHG*L/2) * F_SFWM(L) - F_SPDC(L)]`
 ///
 /// The bracket is computed as a complex magnitude.
 /// Uses Sellmeier-derived wavevector mismatches.
@@ -410,15 +410,15 @@ pub fn polarization_dependence(theta: f64) -> f64 {
 /// Substrate SFWM contribution result.
 #[derive(Debug, Clone)]
 pub struct SubstrateSfwmResult {
-    /// SFWM wavevector mismatch dk_SFWM in substrate [1/um].
+    /// SFWM wavevector mismatch dk_SFWM in substrate `[1/um]`.
     pub dk_sfwm: f64,
-    /// Phase-matching function F(dk, L) [um].
+    /// Phase-matching function F(dk, L) `[um]`.
     pub f_sfwm: f64,
     /// |F|^2 * chi3^2 (proportional to SFWM rate).
     pub rate_proxy: f64,
-    /// Substrate thickness [um].
+    /// Substrate thickness `[um]`.
     pub thickness_um: f64,
-    /// Coherence length L_coh = pi/|dk| [um].
+    /// Coherence length L_coh = pi/|dk| `[um]`.
     pub l_coh_sfwm_um: f64,
     /// Whether the substrate contributes nonzero SFWM.
     pub has_contribution: bool,
@@ -433,15 +433,15 @@ pub struct SubstrateSfwmParams {
     pub n_signal: f64,
     /// Refractive index at idler wavelength.
     pub n_idler: f64,
-    /// Pump wavelength [um].
+    /// Pump wavelength `[um]`.
     pub lambda_pump: f64,
-    /// Signal wavelength [um].
+    /// Signal wavelength `[um]`.
     pub lambda_signal: f64,
-    /// Idler wavelength [um].
+    /// Idler wavelength `[um]`.
     pub lambda_idler: f64,
-    /// Third-order susceptibility chi(3) [m^2/V^2].
+    /// Third-order susceptibility chi(3) `[m^2/V^2]`.
     pub chi3: f64,
-    /// Substrate thickness [um].
+    /// Substrate thickness `[um]`.
     pub thickness_um: f64,
 }
 

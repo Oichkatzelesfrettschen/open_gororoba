@@ -80,7 +80,7 @@ fn pantheon_baseline_window_compatibility() {
         specific_nuclear_energy: 0.0,
     };
 
-    let mut solver = SniaCoreSolver::new(
+    let mut solver = SniaCoreSolver::from_initial_state(
         config,
         WhiteDwarfEos::default(),
         HllcFlux1D::default(),

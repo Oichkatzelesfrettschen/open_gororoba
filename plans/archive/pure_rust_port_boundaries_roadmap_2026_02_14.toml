@@ -22,9 +22,9 @@ horizon = "short_term"
 window = "0_to_2_sprints"
 goal = "Freeze boundaries, wire acceptance hooks, and prevent forbidden coupling."
 deliverable_focus = [
-  "boundary_contract_freeze",
-  "acceptance_hook_activation",
-  "coupling_guardrails",
+    "boundary_contract_freeze",
+    "acceptance_hook_activation",
+    "coupling_guardrails",
 ]
 
 [[phase]]
@@ -33,9 +33,9 @@ horizon = "medium_term"
 window = "3_to_6_sprints"
 goal = "Implement modular extraction and deterministic integration across ownership crates."
 deliverable_focus = [
-  "module_extraction",
-  "engine_level_integration",
-  "regression_and_performance_controls",
+    "module_extraction",
+    "engine_level_integration",
+    "regression_and_performance_controls",
 ]
 
 [[deliverable]]
@@ -44,17 +44,17 @@ phase = "PH-SHORT"
 title = "Boundary contract freeze and ownership confirmation"
 boundaries = ["PB-001", "PB-002", "PB-003", "PB-004", "PB-005", "PB-006"]
 outputs = [
-  "reports/pure_rust_port_boundaries_2026_02_14.toml",
-  "plans/pure_rust_port_boundaries_roadmap_2026_02_14.toml",
+    "reports/pure_rust_port_boundaries_2026_02_14.toml",
+    "plans/pure_rust_port_boundaries_roadmap_2026_02_14.toml",
 ]
 acceptance_hooks = [
-  "python3 -c \"import tomllib, pathlib; tomllib.load(pathlib.Path('reports/pure_rust_port_boundaries_2026_02_14.toml').open('rb')); print('ok')\"",
-  "python3 -c \"import tomllib, pathlib; tomllib.load(pathlib.Path('plans/pure_rust_port_boundaries_roadmap_2026_02_14.toml').open('rb')); print('ok')\"",
+    "python3 -c \"import tomllib, pathlib; tomllib.load(pathlib.Path('reports/pure_rust_port_boundaries_2026_02_14.toml').open('rb')); print('ok')\"",
+    "python3 -c \"import tomllib, pathlib; tomllib.load(pathlib.Path('plans/pure_rust_port_boundaries_roadmap_2026_02_14.toml').open('rb')); print('ok')\"",
 ]
 dependencies = []
 risk_controls = [
-  "Require crate-owner sign-off before changing any boundary contract field.",
-  "Treat external paths as behavioral references only; no code copy.",
+    "Require crate-owner sign-off before changing any boundary contract field.",
+    "Treat external paths as behavioral references only; no code copy.",
 ]
 exit_criteria = "Both NA-023 files parse as TOML and boundary IDs are stable for downstream tasks."
 
@@ -64,18 +64,18 @@ phase = "PH-SHORT"
 title = "Targeted acceptance harness activation for algebra and fluid kernels"
 boundaries = ["PB-001", "PB-002", "PB-003"]
 outputs = [
-  "crate-scoped test command set for lbm_core, sign_imbalance, and gororoba_algebra",
-  "recorded pass/fail hook status in NA-023 execution notes",
+    "crate-scoped test command set for lbm_core, sign_imbalance, and gororoba_algebra",
+    "recorded pass/fail hook status in NA-023 execution notes",
 ]
 acceptance_hooks = [
-  "cargo test -p lbm_core test_mass_conservation",
-  "cargo test -p sign_imbalance test_scalar_imbalance_bridge_integration",
-  "cargo test -p gororoba_algebra test_all_signatures_dim16_commutativity",
+    "cargo test -p lbm_core test_mass_conservation",
+    "cargo test -p sign_imbalance test_scalar_imbalance_bridge_integration",
+    "cargo test -p gororoba_algebra test_all_signatures_dim16_commutativity",
 ]
 dependencies = ["NA023-D001"]
 risk_controls = [
-  "Use crate-targeted filters to avoid unrelated concurrent-worktree noise.",
-  "Pin deterministic seeds and explicit tolerances for nondeterministic paths.",
+    "Use crate-targeted filters to avoid unrelated concurrent-worktree noise.",
+    "Pin deterministic seeds and explicit tolerances for nondeterministic paths.",
 ]
 exit_criteria = "Each kernel boundary has at least one passing high-signal acceptance hook."
 
@@ -85,18 +85,18 @@ phase = "PH-SHORT"
 title = "Migration-lane acceptance harness for equation catalog and typed-term data"
 boundaries = ["PB-004", "PB-005"]
 outputs = [
-  "docpipe equation catalog hook set",
-  "neural_homotopy training-data and integration hook set",
+    "docpipe equation catalog hook set",
+    "neural_homotopy training-data and integration hook set",
 ]
 acceptance_hooks = [
-  "cargo test -p docpipe dedupe_and_classification_behavior",
-  "cargo test -p docpipe parity_and_gap_reports_are_stable",
-  "cargo test -p neural_homotopy test_samples_cover_full_basis_product_space",
+    "cargo test -p docpipe dedupe_and_classification_behavior",
+    "cargo test -p docpipe parity_and_gap_reports_are_stable",
+    "cargo test -p neural_homotopy test_samples_cover_full_basis_product_space",
 ]
 dependencies = ["NA023-D001"]
 risk_controls = [
-  "Fixture-first validation to prevent schema drift in equation catalogs.",
-  "Keep training data generation deterministic and bounded in size.",
+    "Fixture-first validation to prevent schema drift in equation catalogs.",
+    "Keep training data generation deterministic and bounded in size.",
 ]
 exit_criteria = "Both migration lanes have deterministic fixture tests wired and passing."
 
@@ -106,17 +106,17 @@ phase = "PH-SHORT"
 title = "PEPS CPU/GPU boundary split hardening"
 boundaries = ["PB-006"]
 outputs = [
-  "explicit CPU fallback contract for PEPS row contraction",
-  "feature-gated GPU acceptance command and expected behavior notes",
+    "explicit CPU fallback contract for PEPS row contraction",
+    "feature-gated GPU acceptance command and expected behavior notes",
 ]
 acceptance_hooks = [
-  "cargo test -p quantum_core test_peps_product_state_entropy_zero",
-  "cargo test -p quantum_core --features gpu test_gpu_contract_rows_correctness",
+    "cargo test -p quantum_core test_peps_product_state_entropy_zero",
+    "cargo test -p quantum_core --features gpu test_gpu_contract_rows_correctness",
 ]
 dependencies = ["NA023-D001"]
 risk_controls = [
-  "GPU path must remain optional and never block baseline CPU correctness.",
-  "Document mismatch-input behavior to avoid silent API drift.",
+    "GPU path must remain optional and never block baseline CPU correctness.",
+    "Document mismatch-input behavior to avoid silent API drift.",
 ]
 exit_criteria = "PEPS boundary tests pass on CPU path and GPU path remains explicitly gated."
 
@@ -126,16 +126,16 @@ phase = "PH-MEDIUM"
 title = "Module extraction and API fencing in ownership crates"
 boundaries = ["PB-001", "PB-002", "PB-003", "PB-004", "PB-005", "PB-006"]
 outputs = [
-  "public API fences for boundary entrypoints in each ownership crate",
-  "private-internal helper split where forbidden coupling risk is currently high",
+    "public API fences for boundary entrypoints in each ownership crate",
+    "private-internal helper split where forbidden coupling risk is currently high",
 ]
 acceptance_hooks = [
-  "cargo clippy -p lbm_core -p sign_imbalance -p gororoba_algebra -p docpipe -p neural_homotopy -p quantum_core -- -D warnings",
+    "cargo clippy -p lbm_core -p sign_imbalance -p gororoba_algebra -p docpipe -p neural_homotopy -p quantum_core -- -D warnings",
 ]
 dependencies = ["NA023-D002", "NA023-D003", "NA023-D004"]
 risk_controls = [
-  "Use compile-time visibility boundaries to stop accidental cross-crate leakage.",
-  "Block runtime registry writes from kernel modules via review checklist.",
+    "Use compile-time visibility boundaries to stop accidental cross-crate leakage.",
+    "Block runtime registry writes from kernel modules via review checklist.",
 ]
 exit_criteria = "All boundary entrypoints are isolated behind crate-owned public interfaces."
 
@@ -145,16 +145,16 @@ phase = "PH-MEDIUM"
 title = "Deterministic engine-level adapter for boundary outputs"
 boundaries = ["PB-001", "PB-002", "PB-005", "PB-006"]
 outputs = [
-  "adapter contract between ownership crates and gororoba_engine pipeline state",
-  "deterministic end-to-end smoke path for representative boundary outputs",
+    "adapter contract between ownership crates and gororoba_engine pipeline state",
+    "deterministic end-to-end smoke path for representative boundary outputs",
 ]
 acceptance_hooks = [
-  "cargo test -p gororoba_engine test_engine_end_to_end_execution",
+    "cargo test -p gororoba_engine test_engine_end_to_end_execution",
 ]
 dependencies = ["NA023-D005"]
 risk_controls = [
-  "Integrate via typed structs only; avoid leaking crate-private types.",
-  "Require deterministic replay on repeated runs before promotion.",
+    "Integrate via typed structs only; avoid leaking crate-private types.",
+    "Require deterministic replay on repeated runs before promotion.",
 ]
 exit_criteria = "Engine smoke test remains stable with boundary-backed adapter data."
 
@@ -164,19 +164,19 @@ phase = "PH-MEDIUM"
 title = "Regression and performance controls for clean-room boundaries"
 boundaries = ["PB-001", "PB-002", "PB-003", "PB-006"]
 outputs = [
-  "baseline metrics for correctness-sensitive kernels",
-  "regression thresholds for acceptance hook outputs",
+    "baseline metrics for correctness-sensitive kernels",
+    "regression thresholds for acceptance hook outputs",
 ]
 acceptance_hooks = [
-  "cargo test -p lbm_core test_poiseuille_accuracy",
-  "cargo test -p sign_imbalance test_imbalance_density_par_matches_sequential",
-  "cargo test -p gororoba_algebra test_find_zero_divisors_sedenion",
-  "cargo test -p quantum_core test_peps_entropy_boundary_cases",
+    "cargo test -p lbm_core test_poiseuille_accuracy",
+    "cargo test -p sign_imbalance test_imbalance_density_par_matches_sequential",
+    "cargo test -p gororoba_algebra test_find_zero_divisors_sedenion",
+    "cargo test -p quantum_core test_peps_entropy_boundary_cases",
 ]
 dependencies = ["NA023-D005"]
 risk_controls = [
-  "Use fixed tolerances to prevent flaky false positives.",
-  "Capture baseline deltas before any optimization attempts.",
+    "Use fixed tolerances to prevent flaky false positives.",
+    "Capture baseline deltas before any optimization attempts.",
 ]
 exit_criteria = "Regression thresholds are documented and enforced by targeted hooks."
 
@@ -186,17 +186,17 @@ phase = "PH-MEDIUM"
 title = "NA-023 closure packet and go/no-go decision"
 boundaries = ["PB-001", "PB-002", "PB-003", "PB-004", "PB-005", "PB-006"]
 outputs = [
-  "closure summary with completed deliverables and open risks",
-  "recommendation for NA-023 status update in registry/next_actions.toml",
+    "closure summary with completed deliverables and open risks",
+    "recommendation for NA-023 status update in registry/next_actions.toml",
 ]
 acceptance_hooks = [
-  "manual_review: verify all PH-SHORT deliverables are complete",
-  "manual_review: verify medium-term risk controls are in place or explicitly deferred",
+    "manual_review: verify all PH-SHORT deliverables are complete",
+    "manual_review: verify medium-term risk controls are in place or explicitly deferred",
 ]
 dependencies = ["NA023-D006", "NA023-D007"]
 risk_controls = [
-  "Do not mark NA-023 done while NA-021 license gate remains unresolved for direct imports.",
-  "Keep unresolved coupling or determinism risks explicitly listed with owners.",
+    "Do not mark NA-023 done while NA-021 license gate remains unresolved for direct imports.",
+    "Keep unresolved coupling or determinism risks explicitly listed with owners.",
 ]
 exit_criteria = "Closure packet is complete, with explicit go/no-go status and residual risk ledger."
 
@@ -206,12 +206,12 @@ name = "license_contamination"
 severity = "high"
 description = "External candidate code or structure could leak directly into clean-room implementations."
 controls = [
-  "Clean-room-only policy with behavior-level references.",
-  "NA-021 gate remains hard dependency for any import policy change.",
+    "Clean-room-only policy with behavior-level references.",
+    "NA-021 gate remains hard dependency for any import policy change.",
 ]
 watch_items = [
-  "new vendored source files from external repositories",
-  "commit diffs containing copied external code blocks",
+    "new vendored source files from external repositories",
+    "commit diffs containing copied external code blocks",
 ]
 
 [[risk]]
@@ -220,12 +220,12 @@ name = "forbidden_coupling_drift"
 severity = "high"
 description = "Boundary code may start depending on unrelated crate internals."
 controls = [
-  "API fencing in ownership crates.",
-  "Targeted clippy and crate-level review checklist for dependency edges.",
+    "API fencing in ownership crates.",
+    "Targeted clippy and crate-level review checklist for dependency edges.",
 ]
 watch_items = [
-  "new non-public cross-crate imports",
-  "runtime registry mutations in kernel paths",
+    "new non-public cross-crate imports",
+    "runtime registry mutations in kernel paths",
 ]
 
 [[risk]]
@@ -234,12 +234,12 @@ name = "nondeterministic_regressions"
 severity = "medium"
 description = "Kernel and training outputs may drift without explicit seed and tolerance contracts."
 controls = [
-  "Deterministic fixture-based tests for each boundary.",
-  "Pinned tolerances and replay checks in acceptance hooks.",
+    "Deterministic fixture-based tests for each boundary.",
+    "Pinned tolerances and replay checks in acceptance hooks.",
 ]
 watch_items = [
-  "flaky test outcomes across repeated runs",
-  "unseeded random initialization in boundary entrypoints",
+    "flaky test outcomes across repeated runs",
+    "unseeded random initialization in boundary entrypoints",
 ]
 
 [[risk]]
@@ -248,12 +248,12 @@ name = "performance_regression_without_visibility"
 severity = "medium"
 description = "Boundary modularization can degrade throughput if not tracked with explicit baselines."
 controls = [
-  "Capture baseline metrics before optimization changes.",
-  "Enforce regression thresholds in medium-term hooks.",
+    "Capture baseline metrics before optimization changes.",
+    "Enforce regression thresholds in medium-term hooks.",
 ]
 watch_items = [
-  "increasing runtime on key acceptance commands",
-  "unstable GPU fallback behavior",
+    "increasing runtime on key acceptance commands",
+    "unstable GPU fallback behavior",
 ]
 
 [path_cross_reference]

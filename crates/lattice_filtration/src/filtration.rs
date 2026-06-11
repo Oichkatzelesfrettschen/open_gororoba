@@ -262,7 +262,7 @@ pub struct ShellReturnStats {
 ///
 /// **Physical model**: a particle performs a random walk on a 3D periodic
 /// lattice (torus), where each step is derived from a sedenion product
-/// c = a * b. The three imaginary components (c[1], c[2], c[3]) provide
+/// `c = a * b`. The three imaginary components (`c[1]`, `c[2]`, `c[3]`) provide
 /// the displacement vector, incorporating the non-associative structure
 /// of the CD algebra into the diffusion process.
 ///

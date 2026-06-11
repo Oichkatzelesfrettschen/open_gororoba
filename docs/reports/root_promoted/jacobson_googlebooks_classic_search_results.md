@@ -1,8 +1,8 @@
 - generic [active] [ref=e1]:
   - iframe [ref=e2]:
-    
+
   - iframe [ref=e3]:
-    
+
   - generic [ref=e5]:
     - generic [ref=e7]:
       - button "Google apps" [ref=e10] [cursor=pointer]

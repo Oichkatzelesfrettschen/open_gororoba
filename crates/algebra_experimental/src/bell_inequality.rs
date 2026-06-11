@@ -217,8 +217,8 @@ pub fn known_sedenion_zd_pairs() -> Vec<([f64; 16], [f64; 16])> {
 ///
 /// The rotation is strictly confined to this 2D subplane, preventing the
 /// rotated element from escaping the ZD graph structure:
-///   x'[axis_a] = x[axis_a] * cos(theta) - x[axis_b] * sin(theta)
-///   x'[axis_b] = x[axis_a] * sin(theta) + x[axis_b] * cos(theta)
+///   `x'[axis_a] = x[axis_a] * cos(theta) - x[axis_b] * sin(theta)`
+///   `x'[axis_b] = x[axis_a] * sin(theta) + x[axis_b] * cos(theta)`
 #[allow(dead_code)]
 fn rotate_in_plane(x: &[f64], axis_a: usize, axis_b: usize, theta: f64) -> Vec<f64> {
     let mut result = x.to_vec();
@@ -235,7 +235,7 @@ fn rotate_in_plane(x: &[f64], axis_a: usize, axis_b: usize, theta: f64) -> Vec<f
 /// Precomputed sign table for sparse CD arithmetic.
 ///
 /// Graduated from local SignTableCache to cd_kernel::SignTable (bitvec, 8x more
-/// memory-efficient: 32 KB at 512D vs 1 MB for the former Vec<i32> layout).
+/// memory-efficient: 32 KB at 512D vs 1 MB for the former `Vec<i32>` layout).
 /// `sparse_multiply` and `sparse_associator_sum` live on SignTable in cd_kernel.
 pub type SignTableCache = SignTable;
 

@@ -21,18 +21,18 @@
 //! # Q16.16 format
 //!
 //! A Q16.16 number is a 32-bit integer where:
-//!   - bits [31:16] = integer part (signed, range -32768 to 32767)
-//!   - bits [15:0]  = fractional part (65536 subdivisions)
+//!   - bits `[31:16]` = integer part (signed, range -32768 to 32767)
+//!   - bits `[15:0]`  = fractional part (65536 subdivisions)
 //!   - Resolution: 1/65536 = 1.53e-5
-//!   - Range: approximately [-32768.0, 32767.99998]
+//!   - Range: approximately `[-32768.0, 32767.99998]`
 //!
 //! # Q32.32 format
 //!
 //! A Q32.32 number is a 64-bit integer where:
-//!   - bits [63:32] = integer part (signed, range -2^31 to 2^31-1)
-//!   - bits [31:0]  = fractional part (2^32 subdivisions)
+//!   - bits `[63:32]` = integer part (signed, range -2^31 to 2^31-1)
+//!   - bits `[31:0]`  = fractional part (2^32 subdivisions)
 //!   - Resolution: 1/2^32 = 2.33e-10
-//!   - Range: approximately [-2.1e9, 2.1e9]
+//!   - Range: approximately `[-2.1e9, 2.1e9]`
 
 /// Q16.16 fixed-point number (32-bit integer representation).
 ///
@@ -160,7 +160,7 @@ pub fn codebook_to_q32(centroids: &[f32]) -> Vec<Q32_32> {
         .collect()
 }
 
-/// Fixed-point dot product: <query, codebook[indices]> using Q16.16 arithmetic.
+/// Fixed-point dot product: <query, codebook`[indices]`> using Q16.16 arithmetic.
 ///
 /// The key operation for TurboQuant dequant+dot.
 /// Integer accumulation guarantees order-independent results.

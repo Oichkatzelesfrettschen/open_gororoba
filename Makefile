@@ -121,6 +121,12 @@ DOCS_RUSTDOC_DIR ?= $(DOCS_SITE_DIR)/rustdoc
 DOCS_CARGO_TARGET_DIR ?= $(CURDIR)/target/docs-target
 DOCS_CARGO_BUILD_DIR ?= $(REPO_TMP_CARGO_ROOT)/docs
 DOCS_CARGO_ENV = CARGO_HOME=$(REPO_CARGO_HOME) CARGO_TARGET_DIR=$(DOCS_CARGO_TARGET_DIR) CARGO_BUILD_BUILD_DIR=$(DOCS_CARGO_BUILD_DIR) CARGO_BUILD_JOBS=$(CARGO_JOBS) RAYON_NUM_THREADS=$(RAYON_THREADS) RUST_TEST_THREADS=$(RUST_TEST_THREADS)
+SEMVER_BASELINE_REV ?= v1.0-methods
+SEMVER_BASELINE_SHA := $(shell git rev-parse --short=12 $(SEMVER_BASELINE_REV) 2>/dev/null || echo unknown)
+SEMVER_BASELINE_ROOT ?= $(CURDIR)/.cache/semver-baselines/$(SEMVER_BASELINE_REV)-$(SEMVER_BASELINE_SHA)
+SEMVER_CARGO_TARGET_DIR ?= $(CURDIR)/.cache/semver-target
+SEMVER_CARGO_BUILD_DIR ?= $(CURDIR)/.cache/semver-cbuild/$(REPO_PATH_HASH)
+SEMVER_TMPDIR ?= $(CURDIR)/.cache/semver-tmp
 MD_BOOK ?= mdbook
 PGO_DIR ?= /tmp/pgo-data
 SYNTHESIS_CONTRACT_DATE ?= 2026_02_14
@@ -181,11 +187,12 @@ lint: rust-clippy
 # ---- Formatting (dprint) ----
 # Unified formatting for Rust (.rs via rustfmt), TOML, JSON, and Markdown.
 # Install: cargo install dprint
+DPRINT_CACHE_DIR ?= $(CURDIR)/.cache/dprint
 fmt:
-	dprint fmt
+	DPRINT_CACHE_DIR=$(DPRINT_CACHE_DIR) dprint fmt
 
 fmt-check:
-	dprint check
+	DPRINT_CACHE_DIR=$(DPRINT_CACHE_DIR) dprint check
 
 # ---- Parallelized lint gates ----
 # Tier 1: lightweight checks (no cargo compilation, safe to parallelize).
@@ -239,7 +246,7 @@ supply-chain-gate:
 gate-fast:
 	@echo "=== gate-fast: parallel zero-compile checks ==="
 	@fail=0; \
-	dprint check || { echo "FAIL: dprint check"; fail=1; }; \
+	DPRINT_CACHE_DIR=$(DPRINT_CACHE_DIR) dprint check || { echo "FAIL: dprint check"; fail=1; }; \
 	cargo machete || { echo "FAIL: cargo-machete (unused deps detected)"; fail=1; }; \
 	typos || echo "WARN: typos found issues (review above, non-blocking for now)"; \
 	if [ "$$fail" -ne 0 ]; then echo "=== gate-fast: FAILED ==="; exit 1; fi
@@ -817,21 +824,26 @@ rust-clippy:
 
 rust-semver-check:
 	@echo "[semver-check] Checking public API SemVer compliance against v1.0-methods..."
-	@# WHY: crates are private (not on crates.io). --baseline-rev compares against the
+	@# WHY: crates are private (not on crates.io). --baseline-root compares against the
 	@# most recent git tag so we catch accidental public-API breakage since that tag.
-	@# To advance the baseline after deliberate breaking changes: git tag -f v1.0-methods HEAD
+	@# To advance the baseline after deliberate breaking changes: git tag -f $(SEMVER_BASELINE_REV) HEAD
 	@#
-	@# KNOWN LIMITATION: fwht = { path = "../cratesgororobas/fwht" } in the root Cargo.toml
-	@# is an external sibling-directory path dep.  cargo-semver-checks clones the baseline
-	@# tag into a temp dir where ../cratesgororobas/ does not exist, so the baseline build
-	@# fails for every crate that transitively depends on fwht.  This makes the target
-	@# non-functional until fwht is moved to crates.io (see TODO at Cargo.toml line 211).
-	@# Run standalone for investigation; do NOT add to audit-deep or CI gates yet.
+	@# cargo-semver-checks --baseline-rev cannot clone the current baseline tag on
+	@# ext4: two generated registry_mirrors filenames have 238+ byte components,
+	@# and cargo-semver-checks appends a temp suffix during checkout. Extracting
+	@# the tag with git archive preserves the legal filename component and lets
+	@# cargo-semver-checks reach actual API compatibility analysis.
 	@#
-	@# Excluded: CLI/binary crates (no public library API) and build.rs crates (CUDA bindgen,
-	@# data codegen) whose baselines fail to compile with the current toolchain.
-	$(CARGO_ENV) cargo semver-checks check-release --workspace \
-		--baseline-rev v1.0-methods \
+	@# Excluded: CLI/binary crates (no public library API), build.rs crates
+	@# (CUDA bindgen, data codegen), and crates added after the baseline tag.
+	@if [ ! -f "$(SEMVER_BASELINE_ROOT)/Cargo.toml" ]; then \
+		echo "[semver-check] Extracting $(SEMVER_BASELINE_REV) to $(SEMVER_BASELINE_ROOT)"; \
+		mkdir -p "$(SEMVER_BASELINE_ROOT)"; \
+		git archive "$(SEMVER_BASELINE_REV)" | tar -x -C "$(SEMVER_BASELINE_ROOT)"; \
+	fi
+	@mkdir -p "$(SEMVER_TMPDIR)"
+	$(CARGO_ENV) TMPDIR=$(SEMVER_TMPDIR) CARGO_TARGET_DIR=$(SEMVER_CARGO_TARGET_DIR) CARGO_BUILD_BUILD_DIR=$(SEMVER_CARGO_BUILD_DIR) cargo semver-checks check-release --workspace \
+		--baseline-root "$(SEMVER_BASELINE_ROOT)" \
 		--exclude gororoba_cli \
 		--exclude gororoba_cli_algebra \
 		--exclude gororoba_cli_data \
@@ -841,10 +853,17 @@ rust-semver-check:
 		--exclude gororoba_cli_quantum \
 		--exclude gororoba_cli_warp \
 		--exclude gororoba_db \
+		--exclude fixed_point_lbm \
+		--exclude gororoba_gpu_cubecl \
+		--exclude gororoba_gpu_cuda \
+		--exclude gororoba_gpu_vulkan \
+		--exclude grmhd_core \
 		--exclude lbm_3d_cuda \
 		--exclude gororoba_engine \
 		--exclude materials_data \
 		--exclude materials_core \
+		--exclude repo_utilities \
+		--exclude data_artifacts_core \
 		--exclude cd_spin_bridge
 	@echo "[semver-check] Done. All checked crates pass SemVer compliance."
 
@@ -1890,7 +1909,8 @@ docs-book:
 	$(MD_BOOK) build docs/book -d "$(DOCS_BOOK_DIR)"
 	@echo "OK: mdBook staged to $(DOCS_BOOK_DIR)."
 
-docs-site: docs-rustdoc docs-book
+docs-site: docs-rustdoc
+	@command -v $(MD_BOOK) >/dev/null 2>&1 || { echo "ERROR: mdbook not found. Run: cargo install --locked --force mdbook"; exit 1; }
 	@rm -rf "$(DOCS_SITE_DIR)"
 	@mkdir -p "$(DOCS_SITE_DIR)"
 	@printf '%s\n' \
@@ -1915,6 +1935,86 @@ docs-site: docs-rustdoc docs-book
 		'  </body>' \
 		'</html>' \
 		> "$(DOCS_SITE_DIR)/index.html"
+	@printf '%s\n' \
+		'<!doctype html>' \
+		'<html lang="en">' \
+		'  <head>' \
+		'    <meta charset="utf-8" />' \
+		'    <meta http-equiv="refresh" content="0; url=./book/" />' \
+		'    <title>open_gororoba book redirect</title>' \
+		'  </head>' \
+		'  <body><a href="./book/">mdBook narrative documentation</a></body>' \
+		'</html>' \
+		> "$(DOCS_SITE_DIR)/book.html"
+	@printf '%s\n' \
+		'<!doctype html>' \
+		'<html lang="en">' \
+		'  <head>' \
+		'    <meta charset="utf-8" />' \
+		'    <meta http-equiv="refresh" content="0; url=./rustdoc/" />' \
+		'    <title>open_gororoba rustdoc redirect</title>' \
+		'  </head>' \
+		'  <body><a href="./rustdoc/">Rust API documentation</a></body>' \
+		'</html>' \
+		> "$(DOCS_SITE_DIR)/rustdoc.html"
+	@printf '%s\n' \
+		'<!doctype html>' \
+		'<html lang="en">' \
+		'  <head>' \
+		'    <meta charset="utf-8" />' \
+		'    <title>open_gororoba docs redirect</title>' \
+		'    <script>' \
+		'      (function () {' \
+		'        var path = window.location.pathname;' \
+		'        var root = "/";' \
+		'        var first = path.replace(/^\/+/, "").split("/")[0];' \
+		'        if (first && first !== "book" && first !== "rustdoc") {' \
+		'          root = "/" + first + "/";' \
+		'        }' \
+		'        var legacyPrefixes = [' \
+		'          "/.cache/cargo-default-target/doc",' \
+		'          "/cache/cargo-default-target/doc",' \
+		'          "/.cache/gate-target/doc",' \
+		'          "/cache/gate-target/doc",' \
+		'          "/target/docs-target/doc",' \
+		'          "/target/doc"' \
+		'        ];' \
+		'        for (var i = 0; i < legacyPrefixes.length; i += 1) {' \
+		'          var prefix = legacyPrefixes[i];' \
+		'          var idx = path.indexOf(prefix);' \
+		'          if (idx !== -1) {' \
+		'            var prefixPart = path.slice(0, idx);' \
+		'            var redirectRoot = "/";' \
+		'            if (prefixPart && prefixPart !== "/") {' \
+		'              redirectRoot = prefixPart.replace(/\/+$/, "") + "/";' \
+		'            }' \
+		'            window.location.replace(redirectRoot + "rustdoc" + path.slice(idx + prefix.length));' \
+		'            return;' \
+		'          }' \
+		'        }' \
+		'        if (path === root || path === root + "book" || path === root + "book/") {' \
+		'          window.location.replace(root + "book/");' \
+		'          return;' \
+		'        }' \
+		'        if (path === root + "rustdoc" || path === root + "rustdoc/") {' \
+		'          window.location.replace(root + "rustdoc/");' \
+		'          return;' \
+		'        }' \
+		'        window.location.replace(root);' \
+		'      }());' \
+		'    </script>' \
+		'  </head>' \
+		'  <body><a href="./">open_gororoba documentation</a></body>' \
+		'</html>' \
+		> "$(DOCS_SITE_DIR)/404.html"
+	@if [ -d "$(DOCS_CARGO_TARGET_DIR)/doc" ]; then \
+		mkdir -p "$(DOCS_RUSTDOC_DIR)"; \
+		cp -R "$(DOCS_CARGO_TARGET_DIR)/doc/." "$(DOCS_RUSTDOC_DIR)/"; \
+	else \
+		echo "ERROR: rustdoc output missing at $(DOCS_CARGO_TARGET_DIR)/doc"; \
+		exit 1; \
+	fi
+	$(MD_BOOK) build docs/book -d "$(DOCS_BOOK_DIR)"
 	@touch "$(DOCS_SITE_DIR)/.nojekyll"
 	@echo "OK: docs site staged to $(DOCS_SITE_DIR)."
 
@@ -2246,16 +2346,19 @@ cpd-audit:
 # and the limitations of the regex-on-stripped-source approach.
 REPO_AUDIT_OUT ?= data/output/audit/repo_audit
 REPO_AUDIT_BASELINE ?= data/output/debt_baseline_2026_05_09.toml
+REPO_AUDIT_TMPDIR ?= $(CURDIR)/.cache/repo-audit-tmp
 
 repo-audit:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin repo-audit -- \
+	@mkdir -p "$(REPO_AUDIT_TMPDIR)"
+	TMPDIR=$(REPO_AUDIT_TMPDIR) $(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin repo-audit -- \
 		--output-dir $(REPO_AUDIT_OUT)
 
 # CI gate: re-run the audit and fail if any debt class grew vs the
 # committed baseline. SAFETY-positive classes (more SAFETY comments) are
 # allowed to grow; everything else may not.
 repo-audit-strict:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin repo-audit -- \
+	@mkdir -p "$(REPO_AUDIT_TMPDIR)"
+	TMPDIR=$(REPO_AUDIT_TMPDIR) $(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin repo-audit -- \
 		--output-dir $(REPO_AUDIT_OUT) \
 		--baseline-compare $(REPO_AUDIT_BASELINE) \
 		--strict
@@ -2267,7 +2370,8 @@ repo-audit-strict:
 # docs/engineering/repo_audit_metric_taxonomy.md for the policy).
 # `proofs/` is excluded indirectly by the `crates/`-only roots default.
 repo-audit-strict-unjustified:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin repo-audit -- \
+	@mkdir -p "$(REPO_AUDIT_TMPDIR)"
+	TMPDIR=$(REPO_AUDIT_TMPDIR) $(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin repo-audit -- \
 		--output-dir $(REPO_AUDIT_OUT) \
 		--root crates \
 		--strict-unjustified-per-root 0

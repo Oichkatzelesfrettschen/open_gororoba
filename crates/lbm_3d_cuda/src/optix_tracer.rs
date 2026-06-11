@@ -70,9 +70,9 @@ impl Default for OptiXTracerConfig {
 #[repr(C)]
 #[derive(Clone, Copy, Debug)]
 pub struct LbmSbtData {
-    /// Velocity field device pointer (SoA: u_out[3*N]).
+    /// Velocity field device pointer (SoA: `u_out[3*N]`).
     pub velocity_field_ptr: u64,
-    /// Density field device pointer (rho_out[N]).
+    /// Density field device pointer (`rho_out[N]`).
     pub density_field_ptr: u64,
     pub nx: i32,
     pub ny: i32,

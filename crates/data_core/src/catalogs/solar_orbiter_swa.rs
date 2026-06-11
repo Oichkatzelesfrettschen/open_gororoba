@@ -26,6 +26,9 @@ pub struct SolarOrbiterSwaRecord {
     pub proton_temperature: f64,
 }
 
+#[cfg(feature = "fetch")]
+pub use super::solar_orbiter_swa_fetch::SolarOrbiterSwaProvider;
+
 #[derive(Default)]
 struct SwaAccumulator {
     density_sum: f64,

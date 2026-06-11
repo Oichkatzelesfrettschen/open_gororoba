@@ -3,7 +3,7 @@
 //! `ReleaseArg` + `InputFormatArg` ValueEnums and their label()
 //! impl helpers.
 //!
-//! Fields are pub(crate). Uses #[path] indirection because this
+//! Fields are pub(crate). Uses `#[path]` indirection because this
 //! binary has an explicit Cargo.toml path.
 
 use clap::{Parser, Subcommand, ValueEnum};
@@ -28,7 +28,7 @@ pub(crate) enum Cmd {
     Download {
         #[arg(long)]
         release: ReleaseArg,
-        /// Output path override (default: data/external/radio_surveys/lotss_<release>.fits).
+        /// Output path override (default: `data/external/radio_surveys/lotss_<release>.fits`).
         #[arg(long)]
         output: Option<PathBuf>,
     },
@@ -45,7 +45,7 @@ pub(crate) enum Cmd {
         /// Search radius (degrees).
         #[arg(long, default_value = "1.0")]
         radius: f64,
-        /// Output path override (default: data/external/radio_surveys/lotss_dr3_tile_<ra>_<dec>.xml).
+        /// Output path override (default: `data/external/radio_surveys/lotss_dr3_tile_<ra>_<dec>.xml`).
         #[arg(long)]
         output: Option<PathBuf>,
     },
@@ -118,10 +118,10 @@ pub(crate) enum Cmd {
         /// Match radius in arcseconds.
         #[arg(long, default_value = "3.0")]
         radius_arcsec: f64,
-        /// Output crossmatch CSV (default: data/external/manga/manga_lotss_xmatch_<release>.csv).
+        /// Output crossmatch CSV (default: `data/external/manga/manga_lotss_xmatch_<release>.csv`).
         #[arg(long)]
         output: Option<PathBuf>,
-        /// Output report TOML (default: reports/lotss_manga_crossmatch_<release>_YYYY-MM-DD.toml).
+        /// Output report TOML (default: `reports/lotss_manga_crossmatch_<release>_YYYY-MM-DD.toml`).
         #[arg(long)]
         report: Option<PathBuf>,
         /// DR3 footprint summary TOML. Required for strict DR3 tile analysis unless --allow-partial.

@@ -93,7 +93,34 @@ pub struct SniaInitialState {
 }
 
 impl SniaCoreSolver {
+    // Constructor compatibility keeps existing call sites stable; from_initial_state
+    // carries the typed bundle used by new solver code.
+    #[allow(clippy::too_many_arguments)]
     pub fn new(
+        config: SolverConfig,
+        eos: WhiteDwarfEos,
+        hydro_solver: HllcFlux1D,
+        burner: CarbonBurnModel,
+        yield_model: NickelYieldModel,
+        initial_hydro: HydroState1D,
+        initial_temperature: f64,
+        initial_burn: BurnState,
+    ) -> Result<Self, SniaError> {
+        Self::from_initial_state(
+            config,
+            eos,
+            hydro_solver,
+            burner,
+            yield_model,
+            SniaInitialState {
+                hydro: initial_hydro,
+                temperature: initial_temperature,
+                burn: initial_burn,
+            },
+        )
+    }
+
+    pub fn from_initial_state(
         config: SolverConfig,
         eos: WhiteDwarfEos,
         hydro_solver: HllcFlux1D,
@@ -310,7 +337,7 @@ mod tests {
             pressure: 3.0e23,
             specific_internal_energy: 1.0e17,
         };
-        let mut solver = SniaCoreSolver::new(
+        let mut solver = SniaCoreSolver::from_initial_state(
             config,
             WhiteDwarfEos::default(),
             HllcFlux1D::default(),

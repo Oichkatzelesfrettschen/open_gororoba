@@ -2,9 +2,9 @@
 
 # Navigator: Conceptual Map of the open_gororoba Research Space
 
-**Date:** 2026-03-15  
-**Status:** Active navigation reference  
-**Relevant claims:** C-001-C-041, C-1013, C-1045-C-1050, C-1137-C-1142  
+**Date:** 2026-03-15\
+**Status:** Active navigation reference\
+**Relevant claims:** C-001-C-041, C-1013, C-1045-C-1050, C-1137-C-1142\
 **Related documents:** `docs/GRAND_SYNTHESIS.md`, `docs/EXCEPTIONAL_COSMOLOGY.md`
 
 ---
@@ -21,16 +21,16 @@ This document is a conceptual roadmap for traversing the claims, experiments, an
 
 The entire research programme rests on Cayley-Dickson algebra. All other layers inherit structure from the CD tower.
 
-| Concept | Key claims | Code |
-|---------|-----------|------|
-| CD non-associativity onset | C-001, C-002 | `crates/algebra_analysis/src/cd_mul.rs` |
-| 42 assessors / 7 box-kites | C-003, C-013 | `src/boxkites.rs`, `src/reggiani.rs` |
-| PSL(2,7) symmetry | C-004 | `src/boxkites.rs` |
-| Annihilator geometry (S^3) | C-014 | `src/annihilator.rs` |
-| Hurwitz theorem | C-031 | `crates/algebra_analysis/src/hurwitz.rs` |
-| Quantised gap (dim=16,32) | C-1137, C-1140 | `crates/algebra_analysis/src/phase_transition.rs` |
-| ZD graph structure | C-1141 | `crates/algebra_analysis/src/phase_transition.rs` |
-| XOR scatter-gather duality | C-1142 | `crates/gororoba_algebra/src/gpu/tensor_avt/` |
+| Concept                    | Key claims     | Code                                              |
+| -------------------------- | -------------- | ------------------------------------------------- |
+| CD non-associativity onset | C-001, C-002   | `crates/algebra_analysis/src/cd_mul.rs`           |
+| 42 assessors / 7 box-kites | C-003, C-013   | `src/boxkites.rs`, `src/reggiani.rs`              |
+| PSL(2,7) symmetry          | C-004          | `src/boxkites.rs`                                 |
+| Annihilator geometry (S^3) | C-014          | `src/annihilator.rs`                              |
+| Hurwitz theorem            | C-031          | `crates/algebra_analysis/src/hurwitz.rs`          |
+| Quantised gap (dim=16,32)  | C-1137, C-1140 | `crates/algebra_analysis/src/phase_transition.rs` |
+| ZD graph structure         | C-1141         | `crates/algebra_analysis/src/phase_transition.rs` |
+| XOR scatter-gather duality | C-1142         | `crates/gororoba_algebra/src/gpu/tensor_avt/`     |
 
 **Falsification threshold:** Any claim that requires sedenions to be associative or zero-divisor-free is automatically refuted (C-001, C-002 are Rocq-verified and not revisable).
 
@@ -40,13 +40,13 @@ The entire research programme rests on Cayley-Dickson algebra. All other layers 
 
 **Entry point:** `crates/materials_core/`, `crates/quantum_core/`, `crates/optics_core/`
 
-| Concept | Key claims | Code | Status |
-|---------|-----------|------|--------|
-| Nonlocal metamaterial topology | C-010 | `crates/materials_core/src/nonlocal_metamaterial.rs` | Closed/Negative-Result |
-| Pathion metamaterial mapping | C-053 | -- | Verified/Toy |
-| Tight-binding sedenion basis | -- | `crates/materials_core/src/tight_binding.rs` | Active |
-| Magnonic crystal modes | -- | `crates/quantum_core/src/magnonic_crystal.rs` | Active |
-| AFLOW/NOMAD integration | -- | `crates/data_core/src/catalogs/` | Active |
+| Concept                        | Key claims | Code                                                 | Status                 |
+| ------------------------------ | ---------- | ---------------------------------------------------- | ---------------------- |
+| Nonlocal metamaterial topology | C-010      | `crates/materials_core/src/nonlocal_metamaterial.rs` | Closed/Negative-Result |
+| Pathion metamaterial mapping   | C-053      | --                                                   | Verified/Toy           |
+| Tight-binding sedenion basis   | --         | `crates/materials_core/src/tight_binding.rs`         | Active                 |
+| Magnonic crystal modes         | --         | `crates/quantum_core/src/magnonic_crystal.rs`        | Active                 |
+| AFLOW/NOMAD integration        | --         | `crates/data_core/src/catalogs/`                     | Active                 |
 
 **Key lesson:** The 7-clique ZD topology requires explicit non-local coupling bridges. Local lattice models alone cannot reproduce holographic mode selection.
 
@@ -56,13 +56,13 @@ The entire research programme rests on Cayley-Dickson algebra. All other layers 
 
 **Entry point:** `crates/cosmology_core/`, `crates/qgp_scaling/`, `crates/quantum_core/`
 
-| Concept | Key claims | Code | Status |
-|---------|-----------|------|--------|
-| Gravastar-sedenion bridge | C-011 | `src/gravastar.rs`, `src/tov.rs` | Closed/Obstructed |
-| MERA logarithmic entropy | C-052 | `crates/quantum_core/` | Verified |
-| Sedenion eigenspectra vs PDG | -- | -- | Closed/Analogy |
-| Negative dimension dark energy | C-012 | `crates/spectral_core/src/neg_dim.rs` | Refuted |
-| R_AA straggling (QGP) | -- | `crates/qgp_scaling/src/straggling.rs` | Active |
+| Concept                        | Key claims | Code                                   | Status            |
+| ------------------------------ | ---------- | -------------------------------------- | ----------------- |
+| Gravastar-sedenion bridge      | C-011      | `src/gravastar.rs`, `src/tov.rs`       | Closed/Obstructed |
+| MERA logarithmic entropy       | C-052      | `crates/quantum_core/`                 | Verified          |
+| Sedenion eigenspectra vs PDG   | --         | --                                     | Closed/Analogy    |
+| Negative dimension dark energy | C-012      | `crates/spectral_core/src/neg_dim.rs`  | Refuted           |
+| R_AA straggling (QGP)          | --         | `crates/qgp_scaling/src/straggling.rs` | Active            |
 
 ---
 
@@ -70,16 +70,17 @@ The entire research programme rests on Cayley-Dickson algebra. All other layers 
 
 **Entry point:** `crates/data_core/src/catalogs/`, `crates/gr_core/`
 
-| Concept | Key claims | Code | Status |
-|---------|-----------|------|--------|
-| Parker spiral validation | C-1162 | `crates/data_core/` | Verified |
-| GCR modulation potential | C-1171, C-1210 | -- | Verified |
-| DM null invariance | C-1156 | -- | Verified |
-| LBM Knudsen boundary | C-1159 | `crates/lbm_core/` | Verified |
-| Pioneer merged data | -- | `src/catalogs/pioneer.rs` | Active |
-| Voyager merged data | -- | `src/catalogs/voyager.rs` | Active |
+| Concept                  | Key claims     | Code                      | Status   |
+| ------------------------ | -------------- | ------------------------- | -------- |
+| Parker spiral validation | C-1162         | `crates/data_core/`       | Verified |
+| GCR modulation potential | C-1171, C-1210 | --                        | Verified |
+| DM null invariance       | C-1156         | --                        | Verified |
+| LBM Knudsen boundary     | C-1159         | `crates/lbm_core/`        | Verified |
+| Pioneer merged data      | --             | `src/catalogs/pioneer.rs` | Active   |
+| Voyager merged data      | --             | `src/catalogs/voyager.rs` | Active   |
 
 **Data dependency chain:**
+
 ```
 SPDF/PDS-PPI -> data_core parsers -> OMNI-merged hourly CSV
     -> heliospheric claims (C-1013, C-1045, C-1047, C-1048)
@@ -91,13 +92,13 @@ SPDF/PDS-PPI -> data_core parsers -> OMNI-merged hourly CSV
 
 **Entry point:** `crates/gr_core/src/fractal_metric.rs`, `crates/gr_core/src/nbody_integration.rs`
 
-| Concept | Key claims | Code | Status |
-|---------|-----------|------|--------|
-| Pioneer fractal metric fit | -- | `crates/gr_core/src/fractal_metric.rs` | Provisional |
-| Flyby anomaly Chingon coupling | C-952 | -- | Provisional |
-| JPL DE440 ephemeris | C-953 | `crates/gr_core/src/nbody_integration.rs` | Verified |
+| Concept                        | Key claims | Code                                      | Status      |
+| ------------------------------ | ---------- | ----------------------------------------- | ----------- |
+| Pioneer fractal metric fit     | --         | `crates/gr_core/src/fractal_metric.rs`    | Provisional |
+| Flyby anomaly Chingon coupling | C-952      | --                                        | Provisional |
+| JPL DE440 ephemeris            | C-953      | `crates/gr_core/src/nbody_integration.rs` | Verified    |
 
-**Known magnitude problem:** The D_f ~ 2.7 metric gives the correct sign for the Pioneer anomaly but is ~4 orders of magnitude too large. The thermal-recoil explanation (Turyshev et al. 2012) accounts for the observed magnitude. The fractal hypothesis is *not* presented as an alternative solution, but as a structural curiosity warranting investigation.
+**Known magnitude problem:** The D_f ~ 2.7 metric gives the correct sign for the Pioneer anomaly but is ~4 orders of magnitude too large. The thermal-recoil explanation (Turyshev et al. 2012) accounts for the observed magnitude. The fractal hypothesis is _not_ presented as an alternative solution, but as a structural curiosity warranting investigation.
 
 ---
 
@@ -105,14 +106,14 @@ SPDF/PDS-PPI -> data_core parsers -> OMNI-merged hourly CSV
 
 **Entry point:** `crates/cosmology_core/`, `crates/spectral_core/`
 
-| Concept | Key claims | Code | Status |
-|---------|-----------|------|--------|
-| Spectral dimension running | C-039 | `crates/cosmology_core/src/spectral.rs` | Verified (toy) |
-| Exceptional cosmology (E8/F4) | C-035-C-041 | -- | See below |
-| GWTC-3 BH mass multimodality | C-025 | `src/scripts/gwtc3_*.py` | Active |
-| CMB Planck constraints | -- | `crates/cosmology_core/` | Active |
-| Orthoplex heat kernel | C-931 | -- | Verified |
-| Dark energy EOS (orthoplex) | C-932 | -- | Verified/Toy |
+| Concept                       | Key claims  | Code                                    | Status         |
+| ----------------------------- | ----------- | --------------------------------------- | -------------- |
+| Spectral dimension running    | C-039       | `crates/cosmology_core/src/spectral.rs` | Verified (toy) |
+| Exceptional cosmology (E8/F4) | C-035-C-041 | --                                      | See below      |
+| GWTC-3 BH mass multimodality  | C-025       | `src/scripts/gwtc3_*.py`                | Active         |
+| CMB Planck constraints        | --          | `crates/cosmology_core/`                | Active         |
+| Orthoplex heat kernel         | C-931       | --                                      | Verified       |
+| Dark energy EOS (orthoplex)   | C-932       | --                                      | Verified/Toy   |
 
 **Exceptional cosmology status:**
 
@@ -146,27 +147,27 @@ LBM galaxy sims (L5)
 
 ## Quick Reference: Claim Status by Domain
 
-| Domain | Verified | Refuted | Provisional |
-|--------|----------|---------|-------------|
-| CD algebra | C-001-C-004, C-013-C-014, C-031, C-1137-C-1142 | -- | gap universality |
-| Materials | C-053 | C-010 (negative result) | 7-bridge design |
-| Particle/field | C-052 | C-012, C-011 (obstructed) | |
-| Heliosphere | C-1162, C-1156, C-1159, C-1171, C-1210 | -- | LBM fractal boundary |
-| Solar system | C-953 | -- | C-952, Pioneer fit |
-| Cosmology | C-035, C-039 | C-036-C-038, C-040, C-041 | D_f floor, GWTC-3 |
+| Domain         | Verified                                       | Refuted                   | Provisional          |
+| -------------- | ---------------------------------------------- | ------------------------- | -------------------- |
+| CD algebra     | C-001-C-004, C-013-C-014, C-031, C-1137-C-1142 | --                        | gap universality     |
+| Materials      | C-053                                          | C-010 (negative result)   | 7-bridge design      |
+| Particle/field | C-052                                          | C-012, C-011 (obstructed) |                      |
+| Heliosphere    | C-1162, C-1156, C-1159, C-1171, C-1210         | --                        | LBM fractal boundary |
+| Solar system   | C-953                                          | --                        | C-952, Pioneer fit   |
+| Cosmology      | C-035, C-039                                   | C-036-C-038, C-040, C-041 | D_f floor, GWTC-3    |
 
 ---
 
 ## Discovering Modules
 
-There is no built-in `cargo` subcommand that lists Rust *modules* (only crates,
+There is no built-in `cargo` subcommand that lists Rust _modules_ (only crates,
 via `cargo tree`). Three idiomatic options:
 
-| Tool | Scope | Install | Output |
-|------|-------|---------|--------|
-| `make modules-tree` | One crate, one screen | Just `make` | Hierarchical module tree (uses `cargo-modules` when installed; falls back to a `find` walk) |
-| `make modules-doc` | One crate, full HTML | None (uses stock `cargo doc`) | Browsable rustdoc with `--document-private-items` |
-| `cargo install cargo-modules && cargo modules structure --package <crate>` | Direct | `cargo install` once | Same tree as `make modules-tree`, with extra flags for fns/traits/types |
+| Tool                                                                       | Scope                 | Install                       | Output                                                                                      |
+| -------------------------------------------------------------------------- | --------------------- | ----------------------------- | ------------------------------------------------------------------------------------------- |
+| `make modules-tree`                                                        | One crate, one screen | Just `make`                   | Hierarchical module tree (uses `cargo-modules` when installed; falls back to a `find` walk) |
+| `make modules-doc`                                                         | One crate, full HTML  | None (uses stock `cargo doc`) | Browsable rustdoc with `--document-private-items`                                           |
+| `cargo install cargo-modules && cargo modules structure --package <crate>` | Direct                | `cargo install` once          | Same tree as `make modules-tree`, with extra flags for fns/traits/types                     |
 
 The default crate is `gororoba_algebra`. Override with `CRATE=<name>`, e.g.
 `make modules-tree CRATE=cd_kernel`.
@@ -205,17 +206,17 @@ mod lie: pub #[cfg(feature = "lie")]
 
 **Quick lookups for the Lie/exceptional-algebra cluster:**
 
-| Symbol or path | Location |
-|---|---|
-| `lie::e6::{root_system,casimir}` | `crates/gororoba_algebra/src/lie/e6/` |
-| `lie::e7::{geometry,structure}` | `crates/gororoba_algebra/src/lie/e7/` |
-| `lie::e8::{root_system,magic_square,atlas_bridge,heterotic}` | `crates/gororoba_algebra/src/lie/e8/` |
-| `lie::f4::casimir` | `crates/gororoba_algebra/src/lie/f4/casimir.rs` |
-| `lie::g2::{stabilizer,su3_representation}` | `crates/gororoba_algebra/src/lie/g2/` |
-| `lie::kac_moody::{cartans,roots,e_series}` | `crates/gororoba_algebra/src/lie/kac_moody/` |
-| Sedenion ZD-pair detector | `crates/algebra_experimental/src/novel_algorithms/sedenion_zd_pair.rs` |
-| TurboQuant E8/F4 rotations (separate `E8Root` type) | `crates/cd_kernel/src/turboquant/{e8_rotation,f4_rotation}.rs` |
+| Symbol or path                                               | Location                                                               |
+| ------------------------------------------------------------ | ---------------------------------------------------------------------- |
+| `lie::e6::{root_system,casimir}`                             | `crates/gororoba_algebra/src/lie/e6/`                                  |
+| `lie::e7::{geometry,structure}`                              | `crates/gororoba_algebra/src/lie/e7/`                                  |
+| `lie::e8::{root_system,magic_square,atlas_bridge,heterotic}` | `crates/gororoba_algebra/src/lie/e8/`                                  |
+| `lie::f4::casimir`                                           | `crates/gororoba_algebra/src/lie/f4/casimir.rs`                        |
+| `lie::g2::{stabilizer,su3_representation}`                   | `crates/gororoba_algebra/src/lie/g2/`                                  |
+| `lie::kac_moody::{cartans,roots,e_series}`                   | `crates/gororoba_algebra/src/lie/kac_moody/`                           |
+| Sedenion ZD-pair detector                                    | `crates/algebra_experimental/src/novel_algorithms/sedenion_zd_pair.rs` |
+| TurboQuant E8/F4 rotations (separate `E8Root` type)          | `crates/cd_kernel/src/turboquant/{e8_rotation,f4_rotation}.rs`         |
 
 ---
 
-*For full claim text, see `registry/claims.toml`. For experiment data, see `registry/experiments.toml`.*
+_For full claim text, see `registry/claims.toml`. For experiment data, see `registry/experiments.toml`._

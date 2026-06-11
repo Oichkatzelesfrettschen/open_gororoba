@@ -1,4 +1,4 @@
-//! kerr-pathion-sweep: Sweep spin parameter a=[0.9..0.9999] comparing
+//! kerr-pathion-sweep: Sweep spin parameter `a=[0.9..0.9999]` comparing
 //! control (no sink) vs eigenvalue-modulated Pathion sink stabilization.
 //!
 //! Produces CSV output: a_star, max_rho_ctrl, max_rho_sink, accum_energy, stability_index

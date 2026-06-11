@@ -8,11 +8,9 @@
 //! 2. Compact phase: parallel gather edges into pre-allocated output array
 
 #[cfg(feature = "gpu")]
-use cudarc::driver::{CudaContext, LaunchConfig, PushKernelArg};
+use cudarc::driver::PushKernelArg;
 #[cfg(feature = "gpu")]
-use cudarc::nvrtc::compile_ptx;
-#[cfg(feature = "gpu")]
-use std::sync::Arc;
+use gororoba_gpu_cuda::{Buffer, CompileOptions, LaunchConfig, ModuleRegistry};
 
 /// GPU-accelerated component graph constructor.
 pub struct GraphConstructorGpu;
@@ -24,6 +22,8 @@ const GRAPH_KERNEL_SRC: &str = r#"
 // Phase 1: Count matching edges from eta matrix
 extern "C" __global__ void count_edges(
     const unsigned char* __restrict__ eta,
+    const unsigned char* __restrict__ node_a,
+    const unsigned char* __restrict__ node_b,
     unsigned int dim_half,
     unsigned int n_nodes,
     int* __restrict__ count_out
@@ -42,10 +42,20 @@ extern "C" __global__ void count_edges(
         }
         unsigned int j = i + 1 + remaining;
 
-        // For cross-assessor nodes, eta condition for edge detection
-        // (Simplified: check if eta forms valid zero-product pair)
-        // In practice, this checks specific eta patterns from anti-diagonal parity theorem
-        unsigned int eta_check = 1;  // Placeholder: GPU kernel will be parameterized
+        unsigned int ai = node_a[i];
+        unsigned int bi = node_b[i];
+        unsigned int aj = node_a[j];
+        unsigned int bj = node_b[j];
+
+        unsigned int eta_check = 0;
+        if (ai < dim_half && bi < dim_half && aj < dim_half && bj < dim_half) {
+            unsigned int eta_sum =
+                eta[ai * dim_half + aj] +
+                eta[bi * dim_half + bj] +
+                eta[ai * dim_half + bj] +
+                eta[bi * dim_half + aj];
+            eta_check = (eta_sum == 2 || eta_sum == 4) ? 1 : 0;
+        }
 
         if (eta_check) {
             atomicAdd(count_out, 1);
@@ -56,6 +66,8 @@ extern "C" __global__ void count_edges(
 // Phase 2: Compact edges into dense output arrays
 extern "C" __global__ void compact_edges(
     const unsigned char* __restrict__ eta,
+    const unsigned char* __restrict__ node_a,
+    const unsigned char* __restrict__ node_b,
     unsigned int dim_half,
     unsigned int n_nodes,
     unsigned int* __restrict__ edge_i_out,
@@ -75,8 +87,20 @@ extern "C" __global__ void compact_edges(
         }
         unsigned int j = i + 1 + remaining;
 
-        // Same edge detection logic as count phase
-        unsigned int eta_check = 1;  // Placeholder
+        unsigned int ai = node_a[i];
+        unsigned int bi = node_b[i];
+        unsigned int aj = node_a[j];
+        unsigned int bj = node_b[j];
+
+        unsigned int eta_check = 0;
+        if (ai < dim_half && bi < dim_half && aj < dim_half && bj < dim_half) {
+            unsigned int eta_sum =
+                eta[ai * dim_half + aj] +
+                eta[bi * dim_half + bj] +
+                eta[ai * dim_half + bj] +
+                eta[bi * dim_half + aj];
+            eta_check = (eta_sum == 2 || eta_sum == 4) ? 1 : 0;
+        }
 
         if (eta_check) {
             // Atomic increment to get unique position
@@ -90,6 +114,61 @@ extern "C" __global__ void compact_edges(
 }
 "#;
 
+fn validate_graph_input(
+    dim: usize,
+    eta_matrix: &[u8],
+    nodes: &[(u8, u8)],
+) -> Result<(usize, usize), String> {
+    if dim < 2 {
+        return Err(format!(
+            "graph construction dimension must be >= 2, got {dim}"
+        ));
+    }
+    if !dim.is_power_of_two() {
+        return Err(format!(
+            "graph construction dimension must be a power of two, got {dim}"
+        ));
+    }
+    let dim_half = dim / 2;
+    let expected_eta_len = dim_half
+        .checked_mul(dim_half)
+        .ok_or_else(|| format!("graph construction dimension {dim} overflows eta shape"))?;
+    if eta_matrix.len() != expected_eta_len {
+        return Err(format!(
+            "graph construction eta length {} does not match expected {} for dim {dim}",
+            eta_matrix.len(),
+            expected_eta_len
+        ));
+    }
+    if let Some(&other) = eta_matrix.iter().find(|&&value| value != 0 && value != 1) {
+        return Err(format!(
+            "graph construction eta value must be 0 or 1, got {other}"
+        ));
+    }
+    if dim_half > u32::MAX as usize {
+        return Err(format!(
+            "graph construction dim_half {dim_half} exceeds u32"
+        ));
+    }
+    if nodes.len() > u32::MAX as usize {
+        return Err(format!(
+            "graph construction node count {} exceeds u32",
+            nodes.len()
+        ));
+    }
+    let tri_total = nodes
+        .len()
+        .checked_mul(nodes.len().saturating_sub(1))
+        .and_then(|value| value.checked_div(2))
+        .ok_or_else(|| "graph construction triangular pair count overflows".to_string())?;
+    if tri_total > u32::MAX as usize {
+        return Err(format!(
+            "graph construction pair count {tri_total} exceeds u32 dispatch"
+        ));
+    }
+    Ok((dim_half, tri_total))
+}
+
 impl GraphConstructorGpu {
     /// Find zero-product edges (uses GPU if available, falls back to CPU).
     ///
@@ -99,7 +178,7 @@ impl GraphConstructorGpu {
     /// * `nodes` - List of node IDs (cross-assessor pairs)
     ///
     /// # Returns
-    /// Vector of edges (i_idx, j_idx) where nodes[i] and nodes[j] form zero-product
+    /// Vector of edges (i_idx, j_idx) where `nodes[i]` and `nodes[j]` form zero-product.
     pub fn find_edges(
         dim: usize,
         eta_matrix: &[u8],
@@ -123,7 +202,7 @@ impl GraphConstructorGpu {
         eta_matrix: &[u8],
         nodes: &[(u8, u8)],
     ) -> Result<Vec<(usize, usize)>, String> {
-        let dim_half = dim / 2;
+        let (dim_half, _) = validate_graph_input(dim, eta_matrix, nodes)?;
         let mut edges = Vec::new();
 
         for i in 0..nodes.len() {
@@ -162,52 +241,61 @@ impl GraphConstructorGpu {
         eta_matrix: &[u8],
         nodes: &[(u8, u8)],
     ) -> Result<Vec<(usize, usize)>, String> {
-        let ctx = Arc::new(CudaContext::new(0).map_err(|e| format!("CUDA init: {}", e))?);
+        let (dim_half, tri_total) = validate_graph_input(dim, eta_matrix, nodes)?;
+        if tri_total == 0 {
+            return Ok(Vec::new());
+        }
+        let dim_half_u32 = u32::try_from(dim_half)
+            .map_err(|_| format!("graph construction dim_half {dim_half} exceeds u32"))?;
+        let n_nodes = u32::try_from(nodes.len())
+            .map_err(|_| format!("graph construction node count {} exceeds u32", nodes.len()))?;
+        let tri_total_u32 = u32::try_from(tri_total).map_err(|_| {
+            format!("graph construction pair count {tri_total} exceeds u32 dispatch")
+        })?;
+
+        let ctx = gororoba_gpu_cuda::Context::with_default_device()
+            .map_err(|e| format!("CUDA init: {}", e))?;
         let stream = ctx.default_stream();
 
-        let ptx = compile_ptx(GRAPH_KERNEL_SRC).map_err(|e| format!("NVRTC compile: {}", e))?;
+        let opts = CompileOptions::empty();
+        let ptx = CompileOptions::compile_ptx(GRAPH_KERNEL_SRC, &opts)
+            .map_err(|e| format!("NVRTC compile: {}", e))?;
 
-        let module = ctx
-            .load_module(ptx)
+        let registry = ModuleRegistry::load(ctx.raw(), ptx, &["count_edges", "compact_edges"])
             .map_err(|e| format!("Module load: {}", e))?;
 
-        let count_kernel = module
-            .load_function("count_edges")
+        let count_kernel = registry
+            .get("count_edges")
             .map_err(|e| format!("Count kernel load: {}", e))?;
 
-        let compact_kernel = module
-            .load_function("compact_edges")
+        let compact_kernel = registry
+            .get("compact_edges")
             .map_err(|e| format!("Compact kernel load: {}", e))?;
 
-        let dim_half = (dim / 2) as u32;
-        let n_nodes = nodes.len() as u32;
-        let tri_total = (nodes.len() * (nodes.len() - 1)) / 2;
-        let tri_total_u32 = tri_total as u32;
+        let node_a: Vec<u8> = nodes.iter().map(|&(a, _)| a).collect();
+        let node_b: Vec<u8> = nodes.iter().map(|&(_, b)| b).collect();
 
         // Allocate device memory for eta
-        let eta_dev = stream
-            .clone_htod(eta_matrix)
-            .map_err(|e| format!("Upload eta: {}", e))?;
+        let eta_dev =
+            Buffer::htod(&stream, eta_matrix).map_err(|e| format!("Upload eta: {}", e))?;
+        let node_a_dev =
+            Buffer::htod(&stream, &node_a).map_err(|e| format!("Upload node_a: {}", e))?;
+        let node_b_dev =
+            Buffer::htod(&stream, &node_b).map_err(|e| format!("Upload node_b: {}", e))?;
 
         // Phase 1: Count edges
-        let mut count_dev = stream
-            .alloc_zeros::<i32>(1)
-            .map_err(|e| format!("Alloc count: {}", e))?;
+        let mut count_dev =
+            Buffer::<i32>::alloc_zeros(&stream, 1).map_err(|e| format!("Alloc count: {}", e))?;
 
-        let block_size = 256u32;
-        let grid_size = tri_total_u32.div_ceil(block_size);
-
-        let cfg = LaunchConfig {
-            grid_dim: (grid_size, 1, 1),
-            block_dim: (block_size, 1, 1),
-            shared_mem_bytes: 0,
-        };
+        let cfg = LaunchConfig::launch_1d(tri_total_u32);
 
         let mut builder = stream.launch_builder(&count_kernel);
-        builder.arg(&eta_dev);
-        builder.arg(&dim_half);
+        builder.arg(eta_dev.raw());
+        builder.arg(node_a_dev.raw());
+        builder.arg(node_b_dev.raw());
+        builder.arg(&dim_half_u32);
         builder.arg(&n_nodes);
-        builder.arg(&mut count_dev);
+        builder.arg(count_dev.raw_mut());
 
         unsafe {
             builder
@@ -215,11 +303,12 @@ impl GraphConstructorGpu {
                 .map_err(|e| format!("Count launch: {}", e))?;
         }
 
-        let counts: Vec<i32> = stream
-            .clone_dtoh(&count_dev)
+        let counts: Vec<i32> = count_dev
+            .dtoh_vec()
             .map_err(|e| format!("Copy count: {}", e))?;
 
-        let num_edges = counts[0] as usize;
+        let num_edges = usize::try_from(counts[0])
+            .map_err(|_| format!("Count kernel returned negative edge count {}", counts[0]))?;
 
         if num_edges == 0 {
             return Ok(Vec::new());
@@ -227,22 +316,26 @@ impl GraphConstructorGpu {
 
         // Phase 2: Compact edges
         // Allocate output arrays (with extra element for atomic counter)
-        let edge_i_dev = stream
-            .alloc_zeros::<u32>(num_edges + 1)
+        let edge_i_len = num_edges
+            .checked_add(1)
+            .ok_or_else(|| "graph construction edge_i allocation length overflows".to_string())?;
+        let mut edge_i_dev = Buffer::<u32>::alloc_zeros(&stream, edge_i_len)
             .map_err(|e| format!("Alloc edge_i: {}", e))?;
 
-        let edge_j_dev = stream
-            .alloc_zeros::<u32>(num_edges)
+        let mut edge_j_dev = Buffer::<u32>::alloc_zeros(&stream, num_edges)
             .map_err(|e| format!("Alloc edge_j: {}", e))?;
 
-        let num_edges_u32 = num_edges as u32;
+        let num_edges_u32 = u32::try_from(num_edges)
+            .map_err(|_| format!("graph construction edge count {num_edges} exceeds u32"))?;
 
         let mut builder = stream.launch_builder(&compact_kernel);
-        builder.arg(&eta_dev);
-        builder.arg(&dim_half);
+        builder.arg(eta_dev.raw());
+        builder.arg(node_a_dev.raw());
+        builder.arg(node_b_dev.raw());
+        builder.arg(&dim_half_u32);
         builder.arg(&n_nodes);
-        builder.arg(&edge_i_dev);
-        builder.arg(&edge_j_dev);
+        builder.arg(edge_i_dev.raw_mut());
+        builder.arg(edge_j_dev.raw_mut());
         builder.arg(&num_edges_u32);
 
         unsafe {
@@ -251,12 +344,12 @@ impl GraphConstructorGpu {
                 .map_err(|e| format!("Compact launch: {}", e))?;
         }
 
-        let edge_i_host: Vec<u32> = stream
-            .clone_dtoh(&edge_i_dev)
+        let edge_i_host: Vec<u32> = edge_i_dev
+            .dtoh_vec()
             .map_err(|e| format!("Copy edge_i: {}", e))?;
 
-        let edge_j_host: Vec<u32> = stream
-            .clone_dtoh(&edge_j_dev)
+        let edge_j_host: Vec<u32> = edge_j_dev
+            .dtoh_vec()
             .map_err(|e| format!("Copy edge_j: {}", e))?;
 
         // Convert to edge list
@@ -304,5 +397,52 @@ mod tests {
         let result = GraphConstructorGpu::find_edges(dim, &eta_matrix, &nodes);
         assert!(result.is_ok());
         eprintln!("GPU/CPU fallback test passed");
+    }
+
+    #[cfg(feature = "gpu")]
+    #[test]
+    fn test_gpu_matches_cpu_edge_finding() {
+        use crate::gpu::is_gpu_available;
+
+        if !is_gpu_available() {
+            eprintln!("GPU not available; skipping graph construction GPU parity test");
+            return;
+        }
+
+        let dim = 8;
+        let dim_half = dim / 2;
+        let mut checkerboard_eta = vec![0u8; dim_half * dim_half];
+        let mut diagonal_eta = vec![0u8; dim_half * dim_half];
+        for row in 0..dim_half {
+            for col in 0..dim_half {
+                checkerboard_eta[row * dim_half + col] = ((row + col) % 2) as u8;
+            }
+            diagonal_eta[row * dim_half + row] = 1;
+        }
+
+        let zero_eta = vec![0u8; dim_half * dim_half];
+        let cases = [
+            ("zero_eta", &zero_eta[..], vec![(0, 1), (2, 3), (1, 2)]),
+            (
+                "checkerboard",
+                &checkerboard_eta[..],
+                vec![(0, 1), (2, 3), (0, 2), (1, 3)],
+            ),
+            (
+                "skips_out_of_half_nodes",
+                &diagonal_eta[..],
+                vec![(0, 1), (2, 3), (4, 0), (1, 2)],
+            ),
+        ];
+
+        for (label, eta, nodes) in cases {
+            let mut cpu = GraphConstructorGpu::find_edges_cpu(dim, eta, &nodes)
+                .unwrap_or_else(|err| panic!("{label}: CPU graph construction failed: {err}"));
+            let mut gpu = GraphConstructorGpu::find_edges_gpu(dim, eta, &nodes)
+                .unwrap_or_else(|err| panic!("{label}: GPU graph construction failed: {err}"));
+            cpu.sort_unstable();
+            gpu.sort_unstable();
+            assert_eq!(gpu, cpu, "{label}: CUDA edge list mismatch");
+        }
     }
 }

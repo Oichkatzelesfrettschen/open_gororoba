@@ -43,23 +43,23 @@ hardware-specific tables are replaced with the scientific stack.
 
 ## High-value entry points
 
-| Path | Why it matters |
-|------|----------------|
-| `Cargo.toml` (root) | Workspace members + `[workspace.lints]` (warnings-as-errors source of truth) |
-| `rust-toolchain.toml` | Nightly pin; do not bump without coordinating the gate. |
-| `.githooks/pre-push` | Six-gate chain (lfs, cache, ansi, terminology, rust-regression, governance). |
-| `Makefile` | Top-level lanes (`make rust-clippy`, `make integrity`, `make cpd-audit`). |
-| `registry/canonical/control_plane.sqlite3` | Canonical write target for the claim/insight/experiment registry. |
-| `registry/*.toml` | AUTO-GENERATED read-only compat exports. Do NOT hand-edit. |
-| `crates/gororoba_gpu_bridge/` | Canonical type vocabulary (`ComputeBackend`, `HardwareCaps`, `StoragePrecision`). |
-| `crates/gororoba_gpu_vulkan/` | Shared Vulkan helpers (Instance, Adapter, Device, ShaderModule, DispatchScope). |
-| `crates/gororoba_gpu_cubecl/` | Shared cubecl-wgpu probe + test-support macros. |
-| `crates/gororoba_gpu_cuda/` | Shared CUDA helpers (Context, DeviceProbe, CompileOptions, ModuleRegistry, LaunchConfig, Telemetry, OptiX). |
-| `crates/cd_kernel/` | Cayley-Dickson tower (8D..1024D), TurboQuant, multi-backend kernels. |
-| `crates/lbm_3d/` | CPU D3Q19 reference solver (BGK + MRT). |
-| `crates/lbm_vulkan/` + `crates/lbm_3d_cuda/` | GPU LBM backends. |
-| `proofs/` | Rocq 9.1.1 formal proofs; `make -C proofs vos` for interface check, `make -C proofs vok` for body check. |
-| `docs/engineering/registry_canonical_architecture.md` | Four-layer registry flow: SQLite -> compat TOMLs -> Rust mirrors -> docs. |
+| Path                                                  | Why it matters                                                                                              |
+| ----------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `Cargo.toml` (root)                                   | Workspace members + `[workspace.lints]` (warnings-as-errors source of truth)                                |
+| `rust-toolchain.toml`                                 | Nightly pin; do not bump without coordinating the gate.                                                     |
+| `.githooks/pre-push`                                  | Six-gate chain (lfs, cache, ansi, terminology, rust-regression, governance).                                |
+| `Makefile`                                            | Top-level lanes (`make rust-clippy`, `make integrity`, `make cpd-audit`).                                   |
+| `registry/canonical/control_plane.sqlite3`            | Canonical write target for the claim/insight/experiment registry.                                           |
+| `registry/*.toml`                                     | AUTO-GENERATED read-only compat exports. Do NOT hand-edit.                                                  |
+| `crates/gororoba_gpu_bridge/`                         | Canonical type vocabulary (`ComputeBackend`, `HardwareCaps`, `StoragePrecision`).                           |
+| `crates/gororoba_gpu_vulkan/`                         | Shared Vulkan helpers (Instance, Adapter, Device, ShaderModule, DispatchScope).                             |
+| `crates/gororoba_gpu_cubecl/`                         | Shared cubecl-wgpu probe + test-support macros.                                                             |
+| `crates/gororoba_gpu_cuda/`                           | Shared CUDA helpers (Context, DeviceProbe, CompileOptions, ModuleRegistry, LaunchConfig, Telemetry, OptiX). |
+| `crates/cd_kernel/`                                   | Cayley-Dickson tower (8D..1024D), TurboQuant, multi-backend kernels.                                        |
+| `crates/lbm_3d/`                                      | CPU D3Q19 reference solver (BGK + MRT).                                                                     |
+| `crates/lbm_vulkan/` + `crates/lbm_3d_cuda/`          | GPU LBM backends.                                                                                           |
+| `proofs/`                                             | Rocq 9.1.1 formal proofs; `make -C proofs vos` for interface check, `make -C proofs vok` for body check.    |
+| `docs/engineering/registry_canonical_architecture.md` | Four-layer registry flow: SQLite -> compat TOMLs -> Rust mirrors -> docs.                                   |
 
 ## Top-line operating rules
 
@@ -109,14 +109,14 @@ CARGO_TARGET_DIR=.cache/gate-target cargo nextest run -p <crate> --lib --cargo-p
 
 ### Pre-push 6-gate chain
 
-| # | Gate | Purpose |
-|---|---|---|
-| 1 | git-lfs handoff | Pre-push hook chains to lfs |
-| 2 | cache-check | Soft cap (150G) + hard cap (200G) on `.cache/` |
-| 3 | terminology-gate | 8 banned legacy terms; prefer `sign_imbalance` for the renamed crate vocabulary. |
-| 4 | ansi-check | Reject non-ASCII bytes |
-| 5 | rust-regression-scoped | Scoped clippy + nextest on changed-crate closure |
-| 6 | governance-gate-readonly | Verify registry `schema_signatures.toml` matches checked-in TOMLs |
+| # | Gate                     | Purpose                                                                          |
+| - | ------------------------ | -------------------------------------------------------------------------------- |
+| 1 | git-lfs handoff          | Pre-push hook chains to lfs                                                      |
+| 2 | cache-check              | Soft cap (150G) + hard cap (200G) on `.cache/`                                   |
+| 3 | terminology-gate         | 8 banned legacy terms; prefer `sign_imbalance` for the renamed crate vocabulary. |
+| 4 | ansi-check               | Reject non-ASCII bytes                                                           |
+| 5 | rust-regression-scoped   | Scoped clippy + nextest on changed-crate closure                                 |
+| 6 | governance-gate-readonly | Verify registry `schema_signatures.toml` matches checked-in TOMLs                |
 
 Verify hook state: `git config --get core.hooksPath` should print
 `.githooks`. The file at `.git/hooks/pre-push` is an unused git-lfs
@@ -155,11 +155,11 @@ content_sha mismatches at the next governance-gate run.
 The workspace consolidates Vulkan / cubecl-wgpu / CUDA call sites
 through three helper crates:
 
-| Helper crate | What it owns | Replaces |
-|---|---|---|
-| `gororoba_gpu_vulkan` (`ash` feature) | `InstanceBuilder`, `Adapter::pick`, `DeviceBuilder`, `ShaderModule::from_wgsl`, `DescriptorSetLayoutSpec`, `ComputePipelineBuilder`, `DispatchScope`. | 10+ hand-rolled Entry::load + create_instance + queue-family scan sites. |
-| `gororoba_gpu_cubecl` (`cubecl` feature) | `Runtime::probe` (panic-safe wgpu adapter probe); `test_support::skip_if_unavailable!` macro. | 4 hand-rolled 11-line `catch_unwind` probes. |
-| `gororoba_gpu_cuda` (`cudarc` feature) | `Context::with_default_device`, `DeviceProbe::query`, `CompileOptions::for_arch`, `ModuleRegistry::load`, `Buffer<T>`, `ManagedBuffer<T>`, `LaunchConfig::launch_1d/2d/3d`, `telemetry::Telemetry`, `optix::PipelineBuilder`. | 48+ ad-hoc `CudaContext::new(0)` + 35+ NVRTC compile-options + 28+ PTX-load sites. |
+| Helper crate                             | What it owns                                                                                                                                                                                                                  | Replaces                                                                           |
+| ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| `gororoba_gpu_vulkan` (`ash` feature)    | `InstanceBuilder`, `Adapter::pick`, `DeviceBuilder`, `ShaderModule::from_wgsl`, `DescriptorSetLayoutSpec`, `ComputePipelineBuilder`, `DispatchScope`.                                                                         | 10+ hand-rolled Entry::load + create_instance + queue-family scan sites.           |
+| `gororoba_gpu_cubecl` (`cubecl` feature) | `Runtime::probe` (panic-safe wgpu adapter probe); `test_support::skip_if_unavailable!` macro.                                                                                                                                 | 4 hand-rolled 11-line `catch_unwind` probes.                                       |
+| `gororoba_gpu_cuda` (`cudarc` feature)   | `Context::with_default_device`, `DeviceProbe::query`, `CompileOptions::for_arch`, `ModuleRegistry::load`, `Buffer<T>`, `ManagedBuffer<T>`, `LaunchConfig::launch_1d/2d/3d`, `telemetry::Telemetry`, `optix::PipelineBuilder`. | 48+ ad-hoc `CudaContext::new(0)` + 35+ NVRTC compile-options + 28+ PTX-load sites. |
 
 All three crates default to no-op (empty `default` features).
 Enabling the SDK feature pulls in the relevant deps. New code MUST
@@ -216,21 +216,21 @@ repo.
 
 ### Source code MUST NOT contain
 
-| Banned pattern | Example | Move to |
-|---|---|---|
-| Task references | `// task #143` | commit message |
-| Issue references | `// see issue #157` | commit message |
-| PR numbers | `// PR #25` | commit message or `Closes #25:` trailer |
-| Companion-PR breadcrumbs | `// companion to PR #...` | commit message |
-| Phase labels | `// Phase 4.4` | commit message |
-| Step-of-phase labels | `// Step 1 of Phase 3` | commit message |
-| Wave labels in code | `// Wave C2.1 migration` | commit message |
-| Session dates | `// (2026-05-15)` | commit message |
-| Deictic time | `// as of today`, `currently`, `previously` | rewrite absolute |
-| Cross-phase breadcrumbs | `// will be exercised when Wave E lands` | commit message |
-| Author tags | `// (eirikr)`, `// @claude` | delete entirely |
-| Deictic refs | `// this CD algebra`, `// our LBM solver` | rewrite with the exact crate / module / type name |
-| Internal-repo paths | `// per data/output/audit/2026-04-30/foo.csv` | rewrite by content, not by path |
+| Banned pattern                           | Example                                        | Move to                                             |
+| ---------------------------------------- | ---------------------------------------------- | --------------------------------------------------- |
+| Task references                          | `// task #143`                                 | commit message                                      |
+| Issue references                         | `// see issue #157`                            | commit message                                      |
+| PR numbers                               | `// PR #25`                                    | commit message or `Closes #25:` trailer             |
+| Companion-PR breadcrumbs                 | `// companion to PR #...`                      | commit message                                      |
+| Phase labels                             | `// Phase 4.4`                                 | commit message                                      |
+| Step-of-phase labels                     | `// Step 1 of Phase 3`                         | commit message                                      |
+| Wave labels in code                      | `// Wave C2.1 migration`                       | commit message                                      |
+| Session dates                            | `// (2026-05-15)`                              | commit message                                      |
+| Deictic time                             | `// as of today`, `currently`, `previously`    | rewrite absolute                                    |
+| Cross-phase breadcrumbs                  | `// will be exercised when Wave E lands`       | commit message                                      |
+| Author tags                              | `// (eirikr)`, `// @claude`                    | delete entirely                                     |
+| Deictic refs                             | `// this CD algebra`, `// our LBM solver`      | rewrite with the exact crate / module / type name   |
+| Internal-repo paths                      | `// per data/output/audit/2026-04-30/foo.csv`  | rewrite by content, not by path                     |
 | NEW personal-name copyright on new files | `// Copyright (c) 2026 <git config user.name>` | use the project-collective form below, or SPDX-only |
 
 The `ansi-check` + `terminology-gate` hooks catch the encoding and
@@ -242,14 +242,14 @@ are reviewer-enforced for now (lint TBD).
 - Absolute identifiers (crate name + module path) for any
   cross-crate citation, so the reader can navigate without context:
 
-| Subject | Canonical form |
-|---|---|
-| Cayley-Dickson dimension | "8D (octonions)", "16D (sedenions)", "32D (pathions)" |
-| LBM lattice | "D3Q19 BGK", "D3Q27 MRT" |
-| Backend | "Vulkan (ash)", "cubecl-wgpu", "CUDA (cudarc)" |
-| Precision tier | "FP32", "FP16", "BF16", "FP8 e4m3", "INT8 SoA" |
-| Claim / Insight / Experiment / Binary | `C-1234`, `I-0042`, `E-201`, `B-bin_name` (matches registry IDs) |
-| Rocq theorem | `Brown1972ChapterIII::brown_3_1_trace`, `Moreno1997::theorem_1_16` |
+| Subject                               | Canonical form                                                     |
+| ------------------------------------- | ------------------------------------------------------------------ |
+| Cayley-Dickson dimension              | "8D (octonions)", "16D (sedenions)", "32D (pathions)"              |
+| LBM lattice                           | "D3Q19 BGK", "D3Q27 MRT"                                           |
+| Backend                               | "Vulkan (ash)", "cubecl-wgpu", "CUDA (cudarc)"                     |
+| Precision tier                        | "FP32", "FP16", "BF16", "FP8 e4m3", "INT8 SoA"                     |
+| Claim / Insight / Experiment / Binary | `C-1234`, `I-0042`, `E-201`, `B-bin_name` (matches registry IDs)   |
+| Rocq theorem                          | `Brown1972ChapterIII::brown_3_1_trace`, `Moreno1997::theorem_1_16` |
 
 - Bit-field / SoA layout commentary
   (`SoA: f[channel * n_cells + cell_idx]`).
@@ -259,10 +259,10 @@ are reviewer-enforced for now (lint TBD).
 - Reference citation by name + chapter/section, not by line number
   or internal-repo path:
 
-| WRONG (internal) | RIGHT (public) |
-|---|---|
+| WRONG (internal)                                    | RIGHT (public)                                                                                                      |
+| --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
 | `// per data/sources/moreno_1997_zd_paper.txt:1572` | `// per Moreno (1997), "Zero divisors of the Cayley-Dickson algebras over the reals", J. Algebra 196, Theorem 1.16` |
-| `// see audit_2026_04_30.csv row 12` | `// see DEBT-DUPLICATION class in plans/repo_debt_roadmap_2026_04_11.toml` |
+| `// see audit_2026_04_30.csv row 12`                | `// see DEBT-DUPLICATION class in plans/repo_debt_roadmap_2026_04_11.toml`                                          |
 
 ### Markdown finding-doc rules
 
@@ -272,10 +272,10 @@ ordered predecessors). That is intentional.
 
 PR# / task# references MUST triangulate with a durable identifier:
 
-| WRONG (PR# alone) | RIGHT (durable primary + PR# cross-link) |
-|---|---|
+| WRONG (PR# alone)           | RIGHT (durable primary + PR# cross-link)                                                                                                                           |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `the fix landed via PR #38` | `landed in commit f79a37fa (cd_kernel/turboquant/cuda migration to gpu_cuda); PR #38 / branch session/wave-c2-cd-kernel-turboquant-cuda-2026-05-15 for cross-link` |
-| `see issue #157` | `see CLAIMS.md row C-1234 (issue #157 if still open)` |
+| `see issue #157`            | `see CLAIMS.md row C-1234 (issue #157 if still open)`                                                                                                              |
 
 ### File-header rules
 

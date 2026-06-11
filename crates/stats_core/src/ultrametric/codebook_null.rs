@@ -78,7 +78,7 @@ pub fn extract_zd_basis_pairs(dim: usize) -> Vec<(usize, usize)> {
 /// Convert an encoding dictionary to column-major f64 data.
 ///
 /// Returns a flat array of size dim * 8, laid out as:
-///   data[col * dim + row] = lattice_vec[col] for basis element `row`.
+///   `data[col * dim + row] = lattice_vec[col]` for basis element `row`.
 pub fn dictionary_to_column_major(dict: &EncodingDictionary) -> Vec<f64> {
     let n = dict.dim();
     let d = 8;

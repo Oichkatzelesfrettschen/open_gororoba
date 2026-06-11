@@ -17,8 +17,7 @@
 // Seeded ChaCha8 (explicit u64 seed) keeps the test bit-for-bit reproducible
 // on every run and backend, per the numerical-reproducibility discipline.
 
-use cd_kernel::mult_table::CdMultTable;
-use cd_kernel::{cd_multiply, cd_multiply_simd};
+use cd_kernel::{cd_multiply, cd_multiply_simd, mult_table::CdMultTable};
 use rand::prelude::*;
 use rand_chacha::ChaCha8Rng;
 

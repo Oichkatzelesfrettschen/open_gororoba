@@ -16,9 +16,9 @@ use cd_kernel::cayley_dickson::cd_multiply;
 
 /// The three types of unordered associativity (Wilmot Table 1).
 ///
-/// Type 1: [b,a,c] ~ [b,d,c] ~ [a,b,d] ~ [a,c,d]
-/// Type 2: [a,b,c] ~ [b,c,d] ~ [b,a,d] ~ [a,d,c]
-/// Type 3: [a,c,b] ~ [c,b,d] ~ [a,d,b] ~ [c,a,d]
+/// Type 1: `[b,a,c] ~ [b,d,c] ~ [a,b,d] ~ [a,c,d]`
+/// Type 2: `[a,b,c] ~ [b,c,d] ~ [b,a,d] ~ [a,d,c]`
+/// Type 3: `[a,c,b] ~ [c,b,d] ~ [a,d,b] ~ [c,a,d]`
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum AssociativityType {
     /// All three types zero -- the triad is fully associative.

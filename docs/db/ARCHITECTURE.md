@@ -24,11 +24,11 @@ All canonical values live in `registry/canonical/control_plane.sqlite3`. The
 CLI and tooling interact with this database as the source of truth for queries,
 checks, and reproducible outputs.
 
-| Component | Why it matters |
-|-----------|----------------|
-| Canonical store | SQLite file with signed migrations and deterministic schema |
+| Component           | Why it matters                                                  |
+| ------------------- | --------------------------------------------------------------- |
+| Canonical store     | SQLite file with signed migrations and deterministic schema     |
 | Verification target | `make governance-gate` verifies source integrity and references |
-| Query performance | FTS5 and indexed relational paths for fast interactive use |
+| Query performance   | FTS5 and indexed relational paths for fast interactive use      |
 
 ## Layer 2: Compatibility TOML Layer
 
@@ -36,15 +36,15 @@ Compatibility TOML files in `registry/` are managed as a controlled migration
 surface and interoperability layer. `registry/source_manifest.toml` tracks those
 files for rebuild and export consistency.
 
-| Category | Files | Examples |
-|----------|-------|---------|
-| Core research | 6 | claims.toml, insights.toml, experiments.toml, binaries.toml |
-| Evidence graph | 6 | bibliography.toml, claims_evidence_edges.toml, lacunae.toml |
-| Data governance | 7 | artifact_source_of_truth.toml, data_governance.toml |
-| Narrative content | 6 | research_narratives.toml, book_docs.toml |
-| Project config | 7 | roadmap.toml, terminology_standards.toml |
-| Infrastructure | 2 | agents_contract.toml, mcp_server_matrix.toml |
-| Governance lock | 1 | schema_signatures.toml |
+| Category          | Files | Examples                                                    |
+| ----------------- | ----- | ----------------------------------------------------------- |
+| Core research     | 6     | claims.toml, insights.toml, experiments.toml, binaries.toml |
+| Evidence graph    | 6     | bibliography.toml, claims_evidence_edges.toml, lacunae.toml |
+| Data governance   | 7     | artifact_source_of_truth.toml, data_governance.toml         |
+| Narrative content | 6     | research_narratives.toml, book_docs.toml                    |
+| Project config    | 7     | roadmap.toml, terminology_standards.toml                    |
+| Infrastructure    | 2     | agents_contract.toml, mcp_server_matrix.toml                |
+| Governance lock   | 1     | schema_signatures.toml                                      |
 
 The build step still ingests compatibility TOMLs where migration is incomplete,
 but DB-backed lanes now round-trip through SQLite before their compatibility
@@ -105,18 +105,18 @@ gororoba-db schema
 
 14 migrations in `db/migrations/`:
 
-| Layer | Tables | Migration |
-|-------|--------|-----------|
-| Provenance | artifacts, documents, lanes, mirrors | 0001 |
-| Control Plane | claims, insights, experiments_cp, binaries_cp, theorems | 0002-0004 |
-| Downloads | download_jobs, download_attempts, download_campaigns | 0005-0008 |
-| External Sources | external_source_contracts, external_source_dossiers | 0009 |
-| Knowledge | equation_atoms, proof_skeletons, derivation_steps | 0010 |
-| Planning | roadmap_items, todo_items, next_action_items | 0010, 0013 |
-| Requirements | requirements_registry_meta, requirements_modules, requirements_coverage_gaps | 0014 |
-| Narratives | research_narratives (+ FTS5 search) | 0010 |
-| FTS5 + Crossrefs | claims_fts, insights_fts, bibliography_fts, evidence_edges, crossref tables | 0011 |
-| Literature Verification | literature_verification_runs, literature_verification_results, literature_novelty_similar_papers | 0012 |
+| Layer                   | Tables                                                                                           | Migration  |
+| ----------------------- | ------------------------------------------------------------------------------------------------ | ---------- |
+| Provenance              | artifacts, documents, lanes, mirrors                                                             | 0001       |
+| Control Plane           | claims, insights, experiments_cp, binaries_cp, theorems                                          | 0002-0004  |
+| Downloads               | download_jobs, download_attempts, download_campaigns                                             | 0005-0008  |
+| External Sources        | external_source_contracts, external_source_dossiers                                              | 0009       |
+| Knowledge               | equation_atoms, proof_skeletons, derivation_steps                                                | 0010       |
+| Planning                | roadmap_items, todo_items, next_action_items                                                     | 0010, 0013 |
+| Requirements            | requirements_registry_meta, requirements_modules, requirements_coverage_gaps                     | 0014       |
+| Narratives              | research_narratives (+ FTS5 search)                                                              | 0010       |
+| FTS5 + Crossrefs        | claims_fts, insights_fts, bibliography_fts, evidence_edges, crossref tables                      | 0011       |
+| Literature Verification | literature_verification_runs, literature_verification_results, literature_novelty_similar_papers | 0012       |
 
 ## Governance Gate
 
@@ -133,15 +133,15 @@ Regenerate with `make integrity-resolution`.
 
 ## Technology Stack
 
-| Component | Choice | Rationale |
-|-----------|--------|-----------|
-| Canonical source | SQLite 3 (WAL mode) | Fast queries, transactional consistency |
-| Compatibility export | TOML | Human-readable, review-friendly, git-mergeable |
-| Rust bindings | rusqlite 0.38 | Embedded SQLite, zero external deps |
-| Migrations | rusqlite_migration 2.4 | Sequential SQL files |
-| CLI | clap 4 (derive) | Subcommand dispatch |
-| Full-text search | SQLite FTS5 | Built-in, BM25 ranking |
-| Hashing | blake3 | Fast content fingerprinting |
+| Component            | Choice                 | Rationale                                      |
+| -------------------- | ---------------------- | ---------------------------------------------- |
+| Canonical source     | SQLite 3 (WAL mode)    | Fast queries, transactional consistency        |
+| Compatibility export | TOML                   | Human-readable, review-friendly, git-mergeable |
+| Rust bindings        | rusqlite 0.38          | Embedded SQLite, zero external deps            |
+| Migrations           | rusqlite_migration 2.4 | Sequential SQL files                           |
+| CLI                  | clap 4 (derive)        | Subcommand dispatch                            |
+| Full-text search     | SQLite FTS5            | Built-in, BM25 ranking                         |
+| Hashing              | blake3                 | Fast content fingerprinting                    |
 
 ## Workflow
 

@@ -1,10 +1,10 @@
 //! Conservative variables and primitive-to-conservative conversion.
 //!
 //! The GRMHD system conserves:
-//!   U[0] = sqrt(-g) * rho * u^t                    (mass)
-//!   U[1] = sqrt(-g) * (T^t_t + rho * u^t)          (energy, with rest-mass subtracted)
-//!   U[2..4] = sqrt(-g) * T^t_i                      (momentum, covariant)
-//!   U[5..7] = sqrt(-g) * B^i                         (magnetic field)
+//!   `U[0] = sqrt(-g) * rho * u^t`                    (mass)
+//!   `U[1] = sqrt(-g) * (T^t_t + rho * u^t)`          (energy, with rest-mass subtracted)
+//!   `U[2..4] = sqrt(-g) * T^t_i`                      (momentum, covariant)
+//!   `U[5..7] = sqrt(-g) * B^i`                         (magnetic field)
 //!
 //! where T^mu_nu is the MHD stress-energy tensor:
 //!   T^mu_nu = (rho + u + p + b^2) u^mu u_nu + (p + b^2/2) delta^mu_nu - b^mu b_nu

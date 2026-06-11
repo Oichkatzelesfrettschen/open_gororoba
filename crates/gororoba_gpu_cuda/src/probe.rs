@@ -23,6 +23,8 @@ pub struct DeviceProbe {
     /// Shared memory per block in bytes (uses `sharedMemPerBlockOptin`
     /// when larger).
     pub shared_mem_per_block: usize,
+    /// Streaming multiprocessor count.
+    pub sm_count: u32,
     /// Total global memory in bytes.
     pub total_global_mem: usize,
     /// Native BF16 support (SM 8.0+, Ampere onward).
@@ -59,6 +61,7 @@ impl DeviceProbe {
         let minor = prop.minor.max(0) as u32;
         let l2_bytes = prop.l2CacheSize.max(0) as usize;
         let shared_mem_per_block = prop.sharedMemPerBlockOptin.max(prop.sharedMemPerBlock);
+        let sm_count = prop.multiProcessorCount.max(0) as u32;
         let total_global_mem = prop.totalGlobalMem;
 
         let bf16_native = major >= 8;
@@ -79,6 +82,7 @@ impl DeviceProbe {
             minor,
             l2_bytes,
             shared_mem_per_block,
+            sm_count,
             total_global_mem,
             bf16_native,
             fp8_native,

@@ -26,7 +26,7 @@ use ode_solvers::{SVector, System, dopri5::Dopri5};
 use rayon::prelude::*;
 use std::f64::consts::PI;
 
-/// State for geodesic integration: [t, r, theta, phi, v_r, v_theta].
+/// State for geodesic integration: `[t, r, theta, phi, v_r, v_theta]`.
 #[derive(Debug, Clone, Copy)]
 pub struct GeodesicState {
     pub t: f64,

@@ -10,9 +10,9 @@
 //! # Architecture
 //!
 //! ```text
-//! Prefill:  [tok_0, tok_1, ..., tok_n]  -- batch quantize (parallel)
-//! Decode:   [tok_{n+1}]                 -- single-token quantize (streaming)
-//!           [tok_{n+2}]
+//! Prefill:  `[tok_0, tok_1, ..., tok_n]`  -- batch quantize (parallel)
+//! Decode:   `[tok_{n+1}]`                 -- single-token quantize (streaming)
+//!           `[tok_{n+2}]`
 //!           ...
 //! ```
 //!

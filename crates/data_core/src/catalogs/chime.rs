@@ -150,7 +150,7 @@ pub fn parse_chime_csv(path: &Path) -> Result<Vec<FrbEvent>, FetchError> {
     Ok(events)
 }
 
-/// Extract repeater groups: repeater_name -> Vec<FrbEvent>, sorted by MJD.
+/// Extract repeater groups: repeater_name -> `Vec<FrbEvent>`, sorted by MJD.
 pub fn extract_repeaters(events: &[FrbEvent]) -> Vec<(String, Vec<&FrbEvent>)> {
     use std::collections::BTreeMap;
     let mut groups: BTreeMap<String, Vec<&FrbEvent>> = BTreeMap::new();

@@ -40,9 +40,9 @@ pub struct CubeclCapabilities {
 /// Probe cubecl backend availability.
 ///
 /// Returns `None` when the `cubecl` Cargo feature is disabled. When
-/// enabled, returns a [`CubeclCapabilities`] populated as follows:
+/// enabled, returns a `CubeclCapabilities` populated as follows:
 ///
-/// - `wgpu_available`: probed live via [`launcher::is_available`],
+/// - `wgpu_available`: probed live via `launcher::is_available`,
 ///   which constructs a `WgpuDevice::default()` + a `WgpuRuntime`
 ///   client and returns `true` iff that handshake succeeds. This is the
 ///   only backend with a real probe today.
@@ -84,7 +84,7 @@ pub mod quantize_kernel;
 #[cfg(feature = "cubecl")]
 pub mod launcher;
 
-/// Planned cubecl kernel signatures (to be implemented with #[cube] macro):
+/// Planned cubecl kernel signatures (to be implemented with #`[cube]` macro):
 ///
 /// 1. `cubecl_quantize_boundary`: boundary-search quantization
 ///    Input: f32 values, f32 boundaries

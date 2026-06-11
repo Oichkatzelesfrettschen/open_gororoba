@@ -23,13 +23,13 @@ can verify bit-for-bit that a re-run produces the same result.
 
 A string token from the controlled vocabulary below.
 
-| Token            | Meaning                                                                 |
-|------------------|-------------------------------------------------------------------------|
-| `bit_exact`      | A re-run on identical inputs at the same `code_commit_sha` produces byte-identical outputs. |
-| `numeric_close`  | Outputs match within a published `numeric_tolerance` (relative or absolute, declared per output). |
-| `statistical`    | Outputs match within a declared statistical envelope (chi-squared, KS-distance, etc.). |
-| `inferential`    | The qualitative conclusion (claim verdict) is preserved; raw outputs may differ. |
-| `external_only`  | Reproducibility depends on third-party data that may change; cite the snapshot date. |
+| Token           | Meaning                                                                                           |
+| --------------- | ------------------------------------------------------------------------------------------------- |
+| `bit_exact`     | A re-run on identical inputs at the same `code_commit_sha` produces byte-identical outputs.       |
+| `numeric_close` | Outputs match within a published `numeric_tolerance` (relative or absolute, declared per output). |
+| `statistical`   | Outputs match within a declared statistical envelope (chi-squared, KS-distance, etc.).            |
+| `inferential`   | The qualitative conclusion (claim verdict) is preserved; raw outputs may differ.                  |
+| `external_only` | Reproducibility depends on third-party data that may change; cite the snapshot date.              |
 
 Default: `numeric_close` for floating-point pipelines, `bit_exact` for
 deterministic integer/symbolic pipelines.

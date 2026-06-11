@@ -1,7 +1,6 @@
-use cudarc::driver::CudaContext;
 use gororoba_algebra::gpu::voudon::Cd256FrustrationKernel;
+use gororoba_gpu_cuda::Context as CudaContextHelper;
 use lbm_3d_cuda::{LbmSolver3DCuda, Precision};
-use std::sync::Arc;
 
 fn main() -> anyhow::Result<()> {
     println!("--- Voudon-LBM Bridge: CUDA-Accelerated 256D Turbulence ---");
@@ -29,7 +28,7 @@ fn main() -> anyhow::Result<()> {
     let mut solver = LbmSolver3DCuda::new(nx, ny, nz, 0.8, Precision::FP32)?;
 
     // 3. Upload Frustration Field to GPU for LBM modulation
-    let ctx = Arc::new(CudaContext::new(0)?);
+    let ctx = CudaContextHelper::with_default_device()?;
     let stream = ctx.default_stream();
     let d_frustration = stream.clone_htod(&frustration_host)?;
 

@@ -130,7 +130,7 @@ pub fn peak_temperature_radius(a_star: f64) -> f64 {
     1.5 * isco_radius(a_star)
 }
 
-/// Integrated luminosity L = eta * Mdot * c^2 [erg/s].
+/// Integrated luminosity L = eta * Mdot * c^2 `[erg/s]`.
 pub fn integrated_luminosity(mdot_edd: f64, a_star: f64, mass_solar: f64) -> f64 {
     let eta = radiative_efficiency(a_star);
     let l_edd = 4.0 * PI * G_CGS * mass_solar * M_SUN_CGS * M_PROTON_CGS * C_CGS / SIGMA_THOMSON;
@@ -138,14 +138,14 @@ pub fn integrated_luminosity(mdot_edd: f64, a_star: f64, mass_solar: f64) -> f64
     eta * mdot_edd * mdot_edd_cgs * C_CGS * C_CGS
 }
 
-/// Eddington luminosity for a given mass [erg/s].
+/// Eddington luminosity for a given mass `[erg/s]`.
 ///
 /// L_Edd = 4 pi G M m_p c / sigma_T
 pub fn eddington_luminosity(mass_solar: f64) -> f64 {
     4.0 * PI * G_CGS * mass_solar * M_SUN_CGS * M_PROTON_CGS * C_CGS / SIGMA_THOMSON
 }
 
-/// Eddington accretion rate for a given mass and spin [g/s].
+/// Eddington accretion rate for a given mass and spin `[g/s]`.
 ///
 /// Mdot_Edd = L_Edd / (eta * c^2)
 pub fn eddington_accretion_rate(mass_solar: f64, a_star: f64) -> f64 {
@@ -254,7 +254,7 @@ pub fn disk_flux_observed(
 // Disk spectrum
 // ============================================================================
 
-/// Disk spectrum L_nu at frequency nu [Hz], integrated over annuli.
+/// Disk spectrum L_nu at frequency nu `[Hz]`, integrated over annuli.
 ///
 /// L_nu = 4*pi*cos(i) * integral_{r_in}^{r_out} B_nu(T(r)) * 2*pi*r_cgs * dr_cgs
 ///
@@ -311,11 +311,11 @@ pub struct DiskProfilePoint {
     pub r_m: f64,
     /// Surface flux [erg cm^-2 s^-1].
     pub flux: f64,
-    /// Temperature [K].
+    /// Temperature `[K]`.
     pub temperature: f64,
     /// Orbital velocity as fraction of c.
     pub beta: f64,
-    /// Angular velocity [units of 1/M].
+    /// Angular velocity `[units of 1/M]`.
     pub omega: f64,
     /// Gravitational redshift factor g = sqrt(1 - 3/r).
     pub redshift_factor: f64,

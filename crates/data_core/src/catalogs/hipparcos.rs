@@ -4,7 +4,7 @@
 //! cross-calibration and long-baseline astrometry comparisons.
 //!
 //! Source: CDS catalog I/239
-//! https://cdsarc.cds.unistra.fr/ftp/I/239/
+//! <https://cdsarc.cds.unistra.fr/ftp/I/239/>
 //!
 //! The CDS FTP layout changed (2025): `/ftp/cats/I/239/` -> `/ftp/I/239/`.
 //! The `.gz` variant is no longer served; we download the uncompressed `.dat`.

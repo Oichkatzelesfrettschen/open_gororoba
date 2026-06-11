@@ -154,7 +154,7 @@ fn fresh_solver(n: usize, tau: f64, mode: CollisionMode, contrast: f64) -> LbmSo
     solver
 }
 
-/// Extract per-cell distribution function as [f64; 19].
+/// Extract per-cell distribution function as `[f64; 19]`.
 fn get_f_cell(solver: &LbmSolver3D, cell: usize) -> [f64; 19] {
     let mut f = [0.0; 19];
     for (dir, slot) in f.iter_mut().enumerate() {
