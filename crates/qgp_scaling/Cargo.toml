@@ -2,8 +2,8 @@
 name = "qgp_scaling"
 version = "0.1.0"
 edition = { workspace = true }
-description = "QGP parton energy-loss path-length scaling (Arleo-Falmagne reproduction)"
 license = "MIT"
+description = "QGP parton energy-loss path-length scaling (Arleo-Falmagne reproduction)"
 
 [dependencies]
 gauss-quad = { workspace = true }

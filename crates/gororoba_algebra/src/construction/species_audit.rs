@@ -6,7 +6,7 @@
 //!
 //! # Falsifiable Theses (T1-T12)
 //!
-//! T1: Quadratic identity (CD[n] is quadratic)
+//! T1: Quadratic identity (CD`[n]` is quadratic)
 //! T2: Power-associativity follows operationally
 //! T3: Flexibility holds for CD process algebras
 //! T4: Alternativity breaks at n>=4 in the standard real chain

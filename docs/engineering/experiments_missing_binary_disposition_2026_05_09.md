@@ -27,7 +27,7 @@ but the work product was a library function or a notebook-style invocation
 of existing CLIs rather than a standalone binary.
 
 | ID    | Title                                                                                  |
-|-------|----------------------------------------------------------------------------------------|
+| ----- | -------------------------------------------------------------------------------------- |
 | E-073 | Numerical Photon-Graviton Mixing Amplitude: Convergence and Ward Identity Verification |
 | E-078 | Immirzi Bridge Imbalance-Entropy Mapping                                               |
 | E-085 | Associator entropy mechanism decomposition                                             |
@@ -51,15 +51,15 @@ the experiment's epistemic status without scaffolding placeholder binaries.
 Sprint 76-78 plan. Each entry awaits a data source (AMDA, SPDF V2, OMNI2,
 Helios corefit, or NASA published-value cross-checks). None has been run.
 
-| ID    | Title                                                                            |
-|-------|----------------------------------------------------------------------------------|
-| E-128 | Bartol vs AMDA cross-validation for Voyager 2 B-field (1990-1995)                |
-| E-129 | Pioneer AMDA MAG-only radial B-field profile (5-80 AU)                           |
-| E-130 | PSP AMDA inner heliosphere perihelion pass validation                            |
+| ID    | Title                                                                           |
+| ----- | ------------------------------------------------------------------------------- |
+| E-128 | Bartol vs AMDA cross-validation for Voyager 2 B-field (1990-1995)               |
+| E-129 | Pioneer AMDA MAG-only radial B-field profile (5-80 AU)                          |
+| E-130 | PSP AMDA inner heliosphere perihelion pass validation                           |
 | E-131 | Helios corefit radial gradient (0.3-1.0 AU) vs Voyager at matched distances     |
-| E-132 | Ulysses AMDA vs SPDF cross-validation for polar wind data                        |
+| E-132 | Ulysses AMDA vs SPDF cross-validation for polar wind data                       |
 | E-133 | Juno cruise AMDA B-field validation against Connerney et al. published values   |
-| E-134 | Wind AMDA vs OMNI2 L1 cross-check for 2024                                       |
+| E-134 | Wind AMDA vs OMNI2 L1 cross-check for 2024                                      |
 | E-135 | Pioneer/Flyby governed benchmark staging and verification (active, not planned) |
 
 **Recommended disposition**: keep status=planned for E-128..E-134 and add
@@ -73,23 +73,23 @@ Sprint 80-84 era. Binaries may have been written but not linked to the
 experiment record, or the binaries are short-lived analysis scripts that
 were folded into the report-generation pipeline.
 
-| ID    | Title                                                                                                |
-|-------|------------------------------------------------------------------------------------------------------|
-| E-135 | Pioneer/Flyby governed benchmark staging and verification                                            |
-| E-140 | Euclid Q1 Zenodo catalog discovery and ingestion                                                     |
-| E-141 | YSU-engine GPU technique distillation into lbm_3d_cuda                                               |
-| E-179 | Falsification of slope_ratio = 42^2/10000 claim (C-1329)                                             |
-| E-181 | x87 FP-80 vs DD vs nalgebra eigenvalue solver benchmark                                              |
-| E-208 | Associator Flux Measurement Around Zero Divisors in 16D, 32D, and 64D                                |
-| E-209 | CKM selector pair scan: 420 combos, Rayon-parallel                                                   |
-| E-210 | PMNS neutrino mixing selector pair scan                                                              |
-| E-211 | 3-blade zero-divisor friction scan (455 triples)                                                     |
-| E-212 | Electroweak mixing angle from associator flux ratio                                                  |
-| E-213 | G2 stabilizer extraction via thin-SVD with u(3) embedding verification                               |
-| E-214 | Constructive SU(3) realization and standard Gell-Mann alignment from octonionic stabilizer           |
-| E-215 | Physics bridge: SU(5) SU(3)-sector cross-validation and real-part projection                         |
-| E-216 | PMD CPD 7.12.0 codebase duplication baseline scan                                                    |
-| E-217 | Materials data architecture decision: optical_database.rs + crystal_symmetry.rs migration path       |
+| ID    | Title                                                                                          |
+| ----- | ---------------------------------------------------------------------------------------------- |
+| E-135 | Pioneer/Flyby governed benchmark staging and verification                                      |
+| E-140 | Euclid Q1 Zenodo catalog discovery and ingestion                                               |
+| E-141 | YSU-engine GPU technique distillation into lbm_3d_cuda                                         |
+| E-179 | Falsification of slope_ratio = 42^2/10000 claim (C-1329)                                       |
+| E-181 | x87 FP-80 vs DD vs nalgebra eigenvalue solver benchmark                                        |
+| E-208 | Associator Flux Measurement Around Zero Divisors in 16D, 32D, and 64D                          |
+| E-209 | CKM selector pair scan: 420 combos, Rayon-parallel                                             |
+| E-210 | PMNS neutrino mixing selector pair scan                                                        |
+| E-211 | 3-blade zero-divisor friction scan (455 triples)                                               |
+| E-212 | Electroweak mixing angle from associator flux ratio                                            |
+| E-213 | G2 stabilizer extraction via thin-SVD with u(3) embedding verification                         |
+| E-214 | Constructive SU(3) realization and standard Gell-Mann alignment from octonionic stabilizer     |
+| E-215 | Physics bridge: SU(5) SU(3)-sector cross-validation and real-part projection                   |
+| E-216 | PMD CPD 7.12.0 codebase duplication baseline scan                                              |
+| E-217 | Materials data architecture decision: optical_database.rs + crystal_symmetry.rs migration path |
 
 **Recommended disposition**: per-experiment audit. For each, search the
 binaries lane (`registry/binaries.toml` and `crates/*/Cargo.toml [[bin]]`)

@@ -7,7 +7,7 @@
 //!   - Mandala struts (all regime-address bits = 0) maintain 100% fill
 //!     at every level.
 //!   - Sky struts gain one extra regime-address prefix per level
-//!     (always [0]).
+//!     (always `[0]`).
 //!   - DMZ growth ratio converges to 4 as K grows (addressable cells
 //!     ~4x per doubling).
 //!   - Theorem 11 embedding holds at every transition.

@@ -1,7 +1,7 @@
 //! # The Topology of 42: Octahedral Box-Kites
 //!
 //! This section elucidates the origin of the "42" invariant within the Sedenion
-//! vacuum and its link to the $[[7,1,3]]$ Steane code.
+//! vacuum and its link to the `[[7,1,3]]` Steane code.
 //!
 //! ## 1. The Octahedral Component ($K_{2,2,2}$)
 //!

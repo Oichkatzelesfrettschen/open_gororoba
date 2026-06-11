@@ -62,7 +62,7 @@ pub fn quat_neg(q: &Quat) -> Quat {
     quat_scale(-1.0, q)
 }
 
-/// Quaternion associator: [a,b,c] = (a*b)*c - a*(b*c).
+/// Quaternion associator: `[a,b,c] = (a*b)*c - a*(b*c)`.
 /// Returns zero for quaternions (H is associative).
 pub fn quat_assoc(a: &Quat, b: &Quat, c: &Quat) -> Quat {
     let lhs = quat_mul(&quat_mul(a, b), c);

@@ -2,9 +2,9 @@
 name = "gororoba_optix"
 version = "0.1.0"
 edition = { workspace = true }
-description = "Reusable OptiX runtime and FFI boundary for gororoba GPU workloads"
 license = "GPL-2.0-or-later"
 repository = "https://github.com/Oichkatzelesfrettschen/open_gororoba"
+description = "Reusable OptiX runtime and FFI boundary for gororoba GPU workloads"
 
 [dependencies]
 anyhow = { workspace = true }

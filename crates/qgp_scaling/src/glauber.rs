@@ -196,8 +196,8 @@ pub fn total_inelastic_cross_section(
 }
 
 /// Build a table of cumulative inelastic cross-section vs impact parameter.
-/// Returns (b_values, cumulative_sigma) where cumulative_sigma[i] =
-/// integral_0^{b_values[i]} 2*pi*b' * P(b') db'.
+/// Returns `(b_values, cumulative_sigma)` where `cumulative_sigma[i]` =
+/// `integral_0^{b_values[i]} 2*pi*b' * P(b') db'`.
 fn build_sigma_cdf(
     sigma: &SigmaNN,
     nuc_a: &NucleusParams,
@@ -364,7 +364,7 @@ pub fn avg_path_length(b: f64, nuc_a: &NucleusParams, nuc_b: &NucleusParams, n_g
 ///
 /// epsilon = (<y^2> - <x^2>) / (<y^2> + <x^2>)
 ///
-/// where moments are T_AB-weighted: <f> = integral f * T_A * T_B d^2s / integral T_A * T_B d^2s.
+/// where moments are T_AB-weighted: `<f> = integral f * T_A * T_B d^2s / integral T_A * T_B d^2s`.
 /// x is along the impact parameter direction (reaction plane).
 #[must_use]
 #[allow(clippy::needless_range_loop)] // 2D quadrature stencil: index used for paired (node, weight)

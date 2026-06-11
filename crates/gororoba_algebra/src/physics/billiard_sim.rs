@@ -27,7 +27,7 @@ use crate::lie::kac_moody::{E10RootSystem, KacMoodyRoot};
 
 /// A 10-dimensional vector with Lorentzian metric signature (9,1).
 ///
-/// coords[0..9] are spacelike (+), coords[9] is timelike (-).
+/// coords`[0..9]` are spacelike (+), coords`[9]` is timelike (-).
 /// Inner product: <x,y> = sum(x_i*y_i, i=0..9) - x_9*y_9.
 #[derive(Debug, Clone)]
 pub struct LorentzVec {
@@ -97,7 +97,7 @@ impl LorentzVec {
 
     /// Convert from KacMoodyRoot (E10).
     ///
-    /// Mapping: coords[0..8] = finite_part, coords[8] = lorentz[0], coords[9] = lorentz[1].
+    /// Mapping: coords`[0..8]` = finite_part, coords`[8]` = lorentz`[0]`, coords`[9]` = lorentz`[1]`.
     pub fn from_kac_moody(root: &KacMoodyRoot) -> Self {
         let mut c = [0.0; 10];
         for (i, &v) in root.finite_part.iter().enumerate().take(8) {

@@ -111,7 +111,7 @@ extern "C" __global__ void compute_flux_kernel(
 
     // Decode 3D index (k varies fastest for phi-periodic coalescing)
     int tmp = cell;
-    int k = tmp % N3; tmp /= N3;
+    tmp /= N3;
     int j = tmp % N2; tmp /= N2;
     int i = tmp;
 
@@ -161,10 +161,10 @@ extern "C" __global__ void compute_flux_kernel(
     double ptot = pressure + 0.5 * bsq;
 
     // u^dir and b^dir (contravariant spatial)
-    double v_arr[3] = {v1, v2, v3};
-    double b_arr[3] = {b1, b2, b3};
-    double u_cov[3] = {u_r, u_th, u_ph};
-    double g_diag[3] = {g_rr, g_thth, g_phph};
+    const double v_arr[3] = {v1, v2, v3};
+    const double b_arr[3] = {b1, b2, b3};
+    const double u_cov[3] = {u_r, u_th, u_ph};
+    const double g_diag[3] = {g_rr, g_thth, g_phph};
 
     double v_dir = v_arr[dir];
     double u_up_dir = ut * v_dir;
@@ -213,7 +213,7 @@ extern "C" __global__ void prim2con_kernel(
     if (cell >= N_total) return;
 
     int tmp = cell;
-    int _k = tmp % N3; tmp /= N3;
+    tmp /= N3;
     int j = tmp % N2; tmp /= N2;
     int i = tmp;
     int met_idx = i * N2 + j;
@@ -303,25 +303,22 @@ extern "C" __global__ void flux_divergence_kernel(
     int tmp = cell;
     int k = tmp % N3; tmp /= N3;
     int j = tmp % N2; tmp /= N2;
-    int i = tmp;
 
-    // Strides for each direction
-    int stride;
     int idx_m, idx_p;
     bool at_boundary;
 
     if (dir == 0) {
-        stride = N2 * N3;
+        int i = tmp;
+        int stride = N2 * N3;
         at_boundary = (i == 0 || i >= N1 - 1);
         idx_m = cell - stride;
         idx_p = cell + stride;
     } else if (dir == 1) {
-        stride = N3;
+        int stride = N3;
         at_boundary = (j == 0 || j >= N2 - 1);
         idx_m = cell - stride;
         idx_p = cell + stride;
     } else {
-        stride = 1;
         // Periodic in phi
         at_boundary = false;
         idx_m = (k == 0) ? (cell + N3 - 1) : (cell - 1);

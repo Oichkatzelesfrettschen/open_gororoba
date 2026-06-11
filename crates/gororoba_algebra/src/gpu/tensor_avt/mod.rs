@@ -17,6 +17,8 @@
 
 mod api;
 mod cpu;
+#[cfg(feature = "cubecl")]
+mod cubecl;
 mod cuda;
 mod policy;
 mod sessions;
@@ -25,9 +27,13 @@ mod tests;
 mod vulkan;
 
 pub use api::TensorAVT;
+#[cfg(feature = "cubecl")]
+pub use cubecl::{TensorAvtCubeclKernel, tensor_avt_cubecl_available};
 #[cfg(feature = "gpu")]
 pub use cuda::{TensorAvtMulGpuWorkspace, TensorAvtNormGpuWorkspace};
 pub use policy::{
     TensorAvtAutoConfig, TensorAvtAutoResult, TensorAvtCalibrationMode, TensorAvtThresholdOverrides,
 };
 pub use sessions::{TensorAvtMulSession, TensorAvtNormSession};
+#[cfg(feature = "vulkan")]
+pub use vulkan::{TensorAvtVulkanKernel, tensor_avt_vulkan_available};

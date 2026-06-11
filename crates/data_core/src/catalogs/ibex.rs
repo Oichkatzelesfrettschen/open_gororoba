@@ -44,6 +44,9 @@ pub struct IbexEnaPixel {
     pub flux_err: f64,
 }
 
+#[cfg(feature = "fetch")]
+pub use super::ibex_fetch::{IbexOrbitProvider, IbexProvider};
+
 /// IBEX ENA sky map for one energy channel and one orbit.
 #[derive(Debug, Clone)]
 pub struct IbexEnaMap {

@@ -790,8 +790,8 @@ impl LbmSolver3D {
     /// on the flow itself.
     ///
     /// The viscosity update at each cell follows:
-    ///   nu_eff = nu_base * (1 + coupling[i] * (|gamma_dot| + eps)^(power_index - 1))
-    ///   tau_new = 3 * nu_eff + 0.5, clamped to [tau_min, tau_max]
+    ///   `nu_eff = nu_base * (1 + coupling[i] * (|gamma_dot| + eps)^(power_index - 1))`
+    ///   `tau_new = 3 * nu_eff + 0.5`, clamped to `[tau_min, tau_max]`
     ///
     /// # Arguments
     /// * `num_steps` - Number of timesteps to evolve

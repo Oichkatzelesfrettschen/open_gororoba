@@ -5,13 +5,13 @@ edition = "2021"
 license.workspace = true
 
 [dependencies]
-quantum_core = { path = "../quantum_core" }
-optics_core = { path = "../optics_core" }
 anyhow = "1.0"
 clap = { workspace = true }
-num-complex.workspace = true
 image.workspace = true
+num-complex.workspace = true
+optics_core = { path = "../optics_core" }
 plotters.workspace = true
+quantum_core = { path = "../quantum_core" }
 rand.workspace = true
 
 [[bin]]

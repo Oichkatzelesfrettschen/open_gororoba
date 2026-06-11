@@ -23,7 +23,7 @@ pub struct McmcChain {
     pub weights: Vec<f64>,
     /// Negative log-likelihood values (column 1 of chain files).
     pub neg_log_like: Vec<f64>,
-    /// Parameter values: param_values[sample_idx][param_idx].
+    /// Parameter values: `param_values[sample_idx][param_idx]`.
     pub param_values: Vec<Vec<f64>>,
 }
 

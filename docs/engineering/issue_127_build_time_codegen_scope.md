@@ -7,7 +7,7 @@ Parent: #127 "PH-MOD: convert crystal_symmetry.rs + optical_database.rs to build
 
 `optical_database.rs` and `crystal_symmetry.rs` were monoliths because Rust
 forced data definitions to be inline. The PH-MOD splits (commits 3a265bcc -
-7c420319) carved the monoliths into single-domain submodules but the *data*
+7c420319) carved the monoliths into single-domain submodules but the _data_
 (material parameters, character tables, structure entries) still lives in
 Rust source files. Build-time codegen moves that data into machine-readable
 TOML/CSV registries that:
@@ -24,6 +24,7 @@ TOML/CSV registries that:
 ## WHAT (recursive scope)
 
 Phases 2-4 of `materials_data` build-time codegen are already complete:
+
 - Phase 2 (n,k tables, #56): COMPLETE
 - Phase 3 (Drude + Lorentz optical params, #57): COMPLETE
 - Phase 4 (230 ITA space groups, #58): COMPLETE
@@ -37,6 +38,7 @@ Status: PARTIAL. tourmaline already codegen'd via lorentz_models.toml
 Rust-source-only.
 
 Scope:
+
 - New file `crates/materials_data/data/optical/mineral_metadata.toml`.
 - One `[[mineral]]` entry per accessor with all 12 MineralMetadata fields.
 - `build.rs::emit_mineral_metadata()` to emit `pub static <NAME>_METADATA:
@@ -52,6 +54,7 @@ Estimate: 35 entries × 12 fields TOML; ~300 lines of build.rs codegen.
 Status: NOT STARTED. 109 entries currently inline as Rust `make()` calls.
 
 Scope:
+
 - New file `crates/materials_data/data/crystal/crystal_structures.toml`.
 - One `[[structure]]` entry per structure with all 15 CrystalStructureInfo
   fields (name, sg_num, sg_sym, point_group, lattice_system, centering,
@@ -69,6 +72,7 @@ Status: NOT STARTED. 1865 lines in `character_tables.rs` are the largest
 remaining hardcoded data block in the workspace.
 
 Scope:
+
 - TOML schema: per point group, list of conjugacy classes (name, count,
   representative), list of irreducible representations (label, dimension,
   functions), characters matrix (one Vec<(re, im)> per (irrep, class)).
@@ -86,6 +90,7 @@ Status: NOT STARTED. Sellmeier dispersion models for LiNbO3, fused silica
 etc. are currently inline in optical_database.rs.
 
 Scope:
+
 - New file `crates/materials_data/data/optical/sellmeier_models.toml`.
 - Per material: `[[sellmeier]] name + a + b + c arrays`.
 - `materials_core` constructors call the codegen consts.
@@ -120,6 +125,7 @@ Each phase is a self-contained PR that:
 ## Acceptance criteria
 
 For each phase:
+
 - `cargo nextest run -p materials_core --lib` passes with no value drift.
 - `cargo clippy -- -D warnings` clean.
 - Workspace inheritance preserved in any new Cargo.toml entries.

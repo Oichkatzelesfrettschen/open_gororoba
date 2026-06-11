@@ -115,7 +115,7 @@ fn event_midpoint_unix(ev: &MmsEventInterval) -> i64 {
 ///
 /// Uses the power iteration method to find the top eigenvector of the
 /// covariance matrix without forming the full dim x dim matrix explicitly.
-/// Returns variance_pc1 / variance_total in [0, 1].
+/// Returns variance_pc1 / variance_total in `[0, 1]`.
 fn pca_leading_variance_ratio(window: &[Vec<f64>], dim: usize, n_iter: usize) -> f64 {
     if window.len() < 2 {
         return 0.0;

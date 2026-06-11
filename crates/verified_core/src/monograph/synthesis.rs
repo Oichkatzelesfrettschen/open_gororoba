@@ -11,7 +11,7 @@
 //!
 //! 2. **Box-Kite Topology $\leftrightarrow$ Quantum Error Correction:**
 //!    The $PSL(2,7)$ symmetry of the 7 box-kites corresponds to the symmetry
-//!    of the $[[7,1,3]]$ Steane code, suggesting a link between CD algebra
+//!    of the `[[7,1,3]]` Steane code, suggesting a link between CD algebra
 //!    and topological quantum memory.
 //!
 //! 3. **Ultrametricity $\leftrightarrow$ Effective Spacetime Dimension:**

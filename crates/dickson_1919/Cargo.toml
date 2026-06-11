@@ -2,8 +2,8 @@
 name = "dickson_1919"
 version = "0.1.0"
 edition = { workspace = true }
-description = "Dickson (1919) Cayley-Dickson process -- verified Rust implementation"
 license = "GPL-2.0-or-later"
+description = "Dickson (1919) Cayley-Dickson process -- verified Rust implementation"
 
 # Source: Dickson, L.E. (1919) "On Quaternions and Their Generalization and the
 # History of the Eight Square Theorem", Annals of Math., 20(3), pp. 155-171.

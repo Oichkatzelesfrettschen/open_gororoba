@@ -70,7 +70,7 @@ short form for Claude-authored commits:
   git history / docs. Code patterns, file paths, and recent commits
   are derivable; don't duplicate them.
 - For feedback memories (corrections + confirmations), record the
-  *why* so future-you can judge edge cases. The "rule" alone rots
+  _why_ so future-you can judge edge cases. The "rule" alone rots
   faster than "rule + reason + when-to-apply".
 - For project memories, convert relative dates to absolute on save
   ("Thursday" -> "2026-05-22").

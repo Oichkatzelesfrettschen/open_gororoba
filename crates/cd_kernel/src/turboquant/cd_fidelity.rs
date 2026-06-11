@@ -1,6 +1,6 @@
 //! CD fidelity metric: phase-geometry preservation through quantization.
 //!
-//! The Cayley-Dickson associator ||[a,b,c]|| measures three-way phase coupling
+//! The Cayley-Dickson associator ||`[a,b,c]`|| measures three-way phase coupling
 //! in non-associative algebra.  When computed on direction-normalized vectors
 //! (unit vectors), it isolates angular/phase relationships from magnitude.
 //!
@@ -32,7 +32,7 @@ use crate::cd_associator_norm;
 /// Given original vectors (a, b, c) and their quantized versions (a', b', c'),
 /// both direction-normalized to unit vectors:
 ///
-///   fidelity = ||[a', b', c']|| / ||[a, b, c]||
+///   fidelity = ||`[a', b', c']`|| / ||`[a, b, c]`||
 ///
 /// Returns (fidelity_ratio, a_pre, a_post).
 /// If a_pre is near zero (phase-locked original), returns (1.0, a_pre, a_post).
@@ -71,7 +71,7 @@ pub fn cd_fidelity_ratio(
 
 /// Compute CD fidelity across a sequence of vectors (sliding window of 3).
 ///
-/// For each consecutive triplet (v[i], v[i+1], v[i+2]), computes the
+/// For each consecutive triplet (v`[i]`, v`[i+1]`, v`[i+2]`), computes the
 /// fidelity ratio between original and quantized sequences.
 ///
 /// Returns Vec of (fidelity_ratio, a_pre, a_post) per triplet.
@@ -156,7 +156,7 @@ pub fn fidelity_summary(fidelities: &[(f64, f64, f64)]) -> FidelitySummary {
 /// as one element of the triplet.  Tokens with high residual associator
 /// have structure that sign projections capture poorly -> need more bits.
 ///
-/// Uses the Takens-style embedding: (r[t], r[t+1], r[t+2]) in CD algebra.
+/// Uses the Takens-style embedding: (r`[t]`, r`[t+1]`, r`[t+2]`) in CD algebra.
 pub fn residual_associator_per_token(residuals: &[Vec<f64>], dim: usize) -> Vec<f64> {
     let n = residuals.len();
     if n < 3 {

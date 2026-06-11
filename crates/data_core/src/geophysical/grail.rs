@@ -4,7 +4,7 @@
 //! from the GRAIL mission. Full model is degree 1200 (~84 MB); available
 //! in ICGEM .gfc format. ICGEM allows subset queries by max_degree.
 //!
-//! Source: ICGEM, http://icgem.gfz-potsdam.de/
+//! Source: ICGEM, <http://icgem.gfz-potsdam.de/>
 //! Reference: Lemoine et al. (2014), JGR Planets 119, 1698
 
 /// ICGEM URL for GRGM1200B truncated to degree 360 (~3 MB).

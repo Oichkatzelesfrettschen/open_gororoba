@@ -7,7 +7,7 @@
 //! - No duplicate IDs in any registry
 //! - Status values are from valid enum set
 //! - Claim count matches project.toml
-//! - Binary registry matches actual workspace [[bin]] sections in Cargo.toml
+//! - Binary registry matches actual workspace `[[bin]]` sections in Cargo.toml
 //! - Experiment->binary cross-references resolve
 
 use std::{
@@ -230,7 +230,7 @@ struct ExperimentsRegistry {
     experiment: Vec<ExperimentEntry>,
 }
 
-/// Header section [experiments] in experiments.toml.
+/// Header section `[experiments]` in experiments.toml.
 // Constructed by serde::Deserialize; not all fields read by this binary.
 #[derive(serde::Deserialize)]
 #[allow(dead_code)]
@@ -985,7 +985,7 @@ fn main() {
                 }
                 match args.compat_export_policy {
                     CompatExportPolicy::On => {
-                        if let Err(err) = store.verify_control_plane_compat_exports(
+                        if let Err(err) = store.verify_control_plane_compat_exports_paths(
                             &repo_root,
                             provenance_store::CompatExportPaths {
                                 claims: &claims_path,

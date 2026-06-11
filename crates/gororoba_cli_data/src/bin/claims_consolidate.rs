@@ -350,7 +350,7 @@ fn sync_control_plane_after_claim_write(
         eprintln!("ERROR: reindex canonical control plane after claims write: {err}");
         std::process::exit(1);
     }
-    if let Err(err) = store.export_control_plane_compat(
+    if let Err(err) = store.export_control_plane_compat_paths(
         paths.repo_root,
         provenance_store::CompatExportPaths {
             claims: paths.default_path,

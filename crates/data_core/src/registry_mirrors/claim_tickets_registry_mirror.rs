@@ -182,8 +182,8 @@
 //!
 //! - Source markdown: `docs/tickets/INDEX.md`
 //! - Kind: `GENERAL`
-//! - Owner: 
-//! - Created: 
+//! - Owner:
+//! - Created:
 //! - Status: `` ()
 //! - Claim range: 0..0
 //! - Checkbox progress: done=0, open=0
@@ -209,8 +209,8 @@
 //!
 //! - Source markdown: `docs/tickets/TICKET_PIONEER_FLYBY_FRACTAL_BRIDGE.md`
 //! - Kind: `GENERAL`
-//! - Owner: 
-//! - Created: 
+//! - Owner:
+//! - Created:
 //! - Status: `` ()
 //! - Claim range: 0..0
 //! - Checkbox progress: done=0, open=0

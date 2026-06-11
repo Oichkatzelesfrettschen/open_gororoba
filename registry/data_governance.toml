@@ -13,8 +13,15 @@ strict = true
 cleanable = true
 gitignore_required = true
 naming_policy = "mixed_transition"
-required_manifests = ["data/artifacts/ARTIFACTS_MANIFEST.csv", "data/artifacts/PROVENANCE.local.json"]
-gitignore_allowlist = ["data/artifacts/ARTIFACTS_MANIFEST.csv", "data/artifacts/README.md", "data/artifacts/PROVENANCE.local.json"]
+required_manifests = [
+    "data/artifacts/ARTIFACTS_MANIFEST.csv",
+    "data/artifacts/PROVENANCE.local.json",
+]
+gitignore_allowlist = [
+    "data/artifacts/ARTIFACTS_MANIFEST.csv",
+    "data/artifacts/README.md",
+    "data/artifacts/PROVENANCE.local.json",
+]
 
 [[lane]]
 id = "external"
@@ -25,7 +32,11 @@ cleanable = false
 gitignore_required = true
 naming_policy = "mixed_vendor_allowed"
 required_manifests = ["data/external/PROVENANCE.local.json", "data/external/SOURCES.toml"]
-gitignore_allowlist = ["data/external/PROVENANCE.local.json", "data/external/README.md", "data/external/SOURCES.toml"]
+gitignore_allowlist = [
+    "data/external/PROVENANCE.local.json",
+    "data/external/README.md",
+    "data/external/SOURCES.toml",
+]
 
 [[lane]]
 id = "evidence"
@@ -46,7 +57,12 @@ strict = false
 cleanable = true
 gitignore_required = true
 naming_policy = "mixed_transition"
-required_manifests = ["data/csv/README.md", "registry/project_csv_generated_artifacts.toml", "registry/external_csv_holding_datasets.toml", "registry/data_generated_patterns.toml"]
+required_manifests = [
+    "data/csv/README.md",
+    "registry/project_csv_generated_artifacts.toml",
+    "registry/external_csv_holding_datasets.toml",
+    "registry/data_generated_patterns.toml",
+]
 gitignore_allowlist = ["data/csv/README.md", "data/csv/bl_6equj5_gbt_manifest.csv"]
 
 [[lane]]
@@ -258,7 +274,10 @@ strict = false
 cleanable = true
 gitignore_required = true
 naming_policy = "mixed_transition"
-required_manifests = ["registry/data_generated_patterns.toml", "data/csv/bl_6equj5_gbt_manifest.csv"]
+required_manifests = [
+    "registry/data_generated_patterns.toml",
+    "data/csv/bl_6equj5_gbt_manifest.csv",
+]
 gitignore_allowlist = []
 forbidden_globs = ["data/bl_6equj5_gbt/*.py", "data/bl_6equj5_gbt/**/*.py"]
 

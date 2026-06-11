@@ -187,7 +187,6 @@ __device__ void tensor_core_mma_16x16(
     float* __restrict__ c_smem,       /* 16x16 row-major output */
     bool accumulate                   /* true = add to existing C */
 ) {
-    int lane = threadIdx.x & 31;
     int warp_id = threadIdx.x >> 5;
 
     if (warp_id == 0) {

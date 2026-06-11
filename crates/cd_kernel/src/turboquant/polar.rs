@@ -10,7 +10,7 @@
 //!   theta_i = atan2(x_{2i+1}, x_{2i})
 //!
 //! After random rotation, the angles theta_i follow a known, data-independent
-//! distribution (approximately uniform on [-pi, pi] for Gaussian inputs).
+//! distribution (approximately uniform on `[-pi, pi]` for Gaussian inputs).
 //! This enables a shared codebook without calibration.
 //!
 //! The recursion applies log2(d) levels, halving the dimension each time:
@@ -70,7 +70,7 @@ pub fn polar_reconstruct_level(pairs: &[PolarPair]) -> Vec<f64> {
 /// Full hierarchical polar decomposition: d coordinates -> log2(d) levels.
 ///
 /// Returns (all_angles, final_radius) where:
-/// - all_angles[level] contains the angles at that decomposition level
+/// - all_angles`[level]` contains the angles at that decomposition level
 /// - final_radius is the single remaining radius after all levels
 ///
 /// Requires d to be a power of 2.
@@ -121,7 +121,7 @@ pub fn hierarchical_reconstruct(all_angles: &[Vec<f64>], final_radius: f64) -> V
 
 /// Quantize angles uniformly (data-independent for rotated inputs).
 ///
-/// Angles in [-pi, pi] are quantized to 2^bits uniform levels.
+/// Angles in `[-pi, pi]` are quantized to 2^bits uniform levels.
 pub fn quantize_angle(angle: f64, bits: u32) -> u16 {
     let n_levels = 1u32 << bits;
     let normalized = (angle + std::f64::consts::PI) / (2.0 * std::f64::consts::PI);
@@ -129,7 +129,7 @@ pub fn quantize_angle(angle: f64, bits: u32) -> u16 {
     (clamped * n_levels as f64) as u16
 }
 
-/// Dequantize angle: uniform level -> angle in [-pi, pi].
+/// Dequantize angle: uniform level -> angle in `[-pi, pi]`.
 pub fn dequantize_angle(index: u16, bits: u32) -> f64 {
     let n_levels = 1u32 << bits;
     let frac = (index as f64 + 0.5) / n_levels as f64;

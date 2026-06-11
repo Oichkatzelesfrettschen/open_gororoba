@@ -61,6 +61,12 @@ pub struct WindMfiRecord {
     pub n_points: u32,
 }
 
+#[cfg(feature = "fetch")]
+pub use super::wind_swe_fetch::{
+    WindAmdaMagRecord, WindAmdaPlasmaRecord, WindAmdaProvider, WindMfiProvider, WindSweProvider,
+    merge_wind_amda, parse_wind_amda_mfi, parse_wind_amda_swe,
+};
+
 /// SPDF fill value for all WIND MFI fields.
 const FILL_SPDF: f64 = -1.0e31;
 

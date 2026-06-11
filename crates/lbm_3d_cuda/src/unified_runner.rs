@@ -24,23 +24,35 @@
 
 use crate::bench_kernels::KERNEL_SLICE_SRC;
 use anyhow::Result;
-use cudarc::driver::{
-    CudaContext, CudaFunction, CudaStream, LaunchConfig, PushKernelArg, UnifiedSlice,
+use cudarc::driver::{CudaStream, PushKernelArg, UnifiedSlice};
+use gororoba_gpu_cuda::{
+    Buffer, CompileOptions, Context as CudaContextHelper, KernelHandle, LaunchConfig,
+    ModuleRegistry,
 };
 use std::sync::Arc;
 
+fn compile_options_for_detected_arch() -> CompileOptions {
+    crate::probe_cuda_device_props()
+        .map(|props| CompileOptions::for_arch(props.major, props.minor))
+        .unwrap_or_else(|| CompileOptions::for_arch(7, 5))
+}
+
 /// Minimal INT8 MRT solver using Unified Memory for 1024^3+ grids.
 pub struct UnifiedInt8Runner {
-    ctx: Arc<CudaContext>,
+    ctx: CudaContextHelper,
     stream: Arc<CudaStream>,
     /// Distribution buffer in Unified Memory (pages between VRAM and system RAM).
     d_f: UnifiedSlice<u8>,
     /// Tau field in Unified Memory (uniform value, pages on demand).
     d_tau: UnifiedSlice<f32>,
+    /// Step/init kernel module lifetime owner.
+    _step_module_registry: ModuleRegistry,
     /// Step kernel function.
-    step_kernel: CudaFunction,
+    step_kernel: KernelHandle,
+    /// Lazy slice kernel module lifetime owner.
+    slice_module_registry: Option<ModuleRegistry>,
     /// Slice extraction kernel.
-    slice_kernel: Option<CudaFunction>,
+    slice_kernel: Option<KernelHandle>,
     /// Grid dimensions.
     pub nx: i32,
     pub ny: i32,
@@ -57,24 +69,25 @@ impl UnifiedInt8Runner {
     /// The distribution buffer is allocated via `cuMemAllocManaged` and
     /// can exceed GPU VRAM -- the driver pages transparently.
     pub fn new(nx: usize, ny: usize, nz: usize, tau: f32) -> Result<Self> {
-        let ctx = CudaContext::new(0)?;
+        let ctx = CudaContextHelper::with_default_device()?;
         let stream = ctx.default_stream();
 
         // Compile INT8 SoA MRT kernel
         let src = include_str!("kernels_int8_soa.cu");
-        let arch = crate::probe_cuda_device_props()
-            .map(|p| p.compile_arch())
-            .unwrap_or("sm_75");
-        let opts = cudarc::nvrtc::CompileOptions {
-            arch: Some(arch),
-            ..Default::default()
-        };
-        let ptx = cudarc::nvrtc::compile_ptx_with_opts(src, opts)?;
-        let module = ctx.load_module(ptx)?;
+        let opts = compile_options_for_detected_arch();
+        let ptx = CompileOptions::compile_ptx(src, &opts)?;
+        let step_module_registry = ModuleRegistry::load(
+            ctx.raw(),
+            ptx,
+            &[
+                "lbm_step_int8_soa_mrt_aa_ephemeral_kernel",
+                "initialize_int8_soa_ephemeral_kernel",
+            ],
+        )?;
         // A-A streaming with ephemeral macroscopic fields: single-buffer
         // parity-toggle, rho/u computed in registers only (no global writes).
         // This eliminates the need for 17.2 GB of rho/u buffers at 1024^3.
-        let step_kernel = module.load_function("lbm_step_int8_soa_mrt_aa_ephemeral_kernel")?;
+        let step_kernel = step_module_registry.get("lbm_step_int8_soa_mrt_aa_ephemeral_kernel")?;
 
         let n_cells = nx * ny * nz;
         let f_bytes = n_cells * 19; // 1 byte per distribution (INT8)
@@ -82,25 +95,20 @@ impl UnifiedInt8Runner {
         // Allocate distribution buffer in Unified Memory
         // Safety: the buffer is used exclusively by CUDA kernels (no concurrent
         // host access during kernel execution).
-        let mut d_f = unsafe { ctx.alloc_unified::<u8>(f_bytes, true) }?;
+        let mut d_f = unsafe { ctx.raw().alloc_unified::<u8>(f_bytes, true) }?;
 
         // Prefetch to device for initial write
         d_f.prefetch()?;
 
         // Tau buffer in unified memory (pages on demand at 1024^3 = 4.3 GB)
-        let mut d_tau = unsafe { ctx.alloc_unified::<f32>(n_cells, true) }?;
+        let mut d_tau = unsafe { ctx.raw().alloc_unified::<f32>(n_cells, true) }?;
 
         // Lightweight init: writes only f and tau (no temporary rho/u buffers).
         // At 1024^3 this saves 17.2 GB of GPU allocations vs the full init kernel.
-        let init_kernel = module.load_function("initialize_int8_soa_ephemeral_kernel")?;
+        let init_kernel = step_module_registry.get("initialize_int8_soa_ephemeral_kernel")?;
         let (nx_i, ny_i, nz_i) = (nx as i32, ny as i32, nz as i32);
 
-        let blocks = (n_cells as u32).div_ceil(128);
-        let cfg = LaunchConfig {
-            grid_dim: (blocks, 1, 1),
-            block_dim: (128, 1, 1),
-            shared_mem_bytes: 0,
-        };
+        let cfg = LaunchConfig::launch_1d_with_block(n_cells as u32, 128);
         {
             let mut b = stream.launch_builder(&init_kernel);
             b.arg(&mut d_f)
@@ -111,14 +119,16 @@ impl UnifiedInt8Runner {
                 .arg(&nz_i);
             unsafe { b.launch(cfg) }?;
         }
-        ctx.synchronize()?;
+        ctx.raw().synchronize()?;
 
         Ok(Self {
             ctx,
             stream,
             d_f,
             d_tau,
+            _step_module_registry: step_module_registry,
             step_kernel,
+            slice_module_registry: None,
             slice_kernel: None,
             nx: nx_i,
             ny: ny_i,
@@ -134,12 +144,7 @@ impl UnifiedInt8Runner {
     /// The kernel sees the same device pointer -- Unified Memory is
     /// transparently GPU-accessible.
     pub fn step_n(&mut self, n: usize) -> Result<()> {
-        let blocks = (self.n_cells as u32).div_ceil(128);
-        let cfg = LaunchConfig {
-            grid_dim: (blocks, 1, 1),
-            block_dim: (128, 1, 1),
-            shared_mem_bytes: 0,
-        };
+        let cfg = LaunchConfig::launch_1d_with_block(self.n_cells as u32, 128);
 
         let force_null: u64 = 0; // null pointer -- kernel checks force != NULL
 
@@ -165,16 +170,13 @@ impl UnifiedInt8Runner {
     pub fn read_slice(&mut self, slice_axis: i32, slice_idx: i32) -> Result<(Vec<f32>, Vec<f32>)> {
         // Lazy-compile slice kernel
         if self.slice_kernel.is_none() {
-            let arch = crate::probe_cuda_device_props()
-                .map(|p| p.compile_arch())
-                .unwrap_or("sm_75");
-            let opts = cudarc::nvrtc::CompileOptions {
-                arch: Some(arch),
-                ..Default::default()
-            };
-            let ptx = cudarc::nvrtc::compile_ptx_with_opts(KERNEL_SLICE_SRC, opts)?;
-            let module = self.ctx.load_module(ptx)?;
-            self.slice_kernel = Some(module.load_function("read_slice_int8_soa")?);
+            let opts = compile_options_for_detected_arch();
+            let ptx = CompileOptions::compile_ptx(KERNEL_SLICE_SRC, &opts)?;
+            let module_registry =
+                ModuleRegistry::load(self.ctx.raw(), ptx, &["read_slice_int8_soa"])?;
+            let slice_kernel = module_registry.get("read_slice_int8_soa")?;
+            self.slice_kernel = Some(slice_kernel);
+            self.slice_module_registry = Some(module_registry);
         }
 
         let (sw, sh) = match slice_axis {
@@ -184,22 +186,17 @@ impl UnifiedInt8Runner {
         };
         let slice_size = sw * sh;
 
-        let mut d_rho_slice = self.stream.alloc_zeros::<f32>(slice_size)?;
-        let mut d_vel_slice = self.stream.alloc_zeros::<f32>(slice_size)?;
+        let mut d_rho_slice = Buffer::<f32>::alloc_zeros(&self.stream, slice_size)?;
+        let mut d_vel_slice = Buffer::<f32>::alloc_zeros(&self.stream, slice_size)?;
 
-        let blocks = (slice_size as u32).div_ceil(128);
-        let cfg = LaunchConfig {
-            grid_dim: (blocks, 1, 1),
-            block_dim: (128, 1, 1),
-            shared_mem_bytes: 0,
-        };
+        let cfg = LaunchConfig::launch_1d_with_block(slice_size as u32, 128);
         {
             let mut b = self
                 .stream
                 .launch_builder(self.slice_kernel.as_ref().unwrap());
             b.arg(&self.d_f)
-                .arg(&mut d_rho_slice)
-                .arg(&mut d_vel_slice)
+                .arg(d_rho_slice.raw_mut())
+                .arg(d_vel_slice.raw_mut())
                 .arg(&self.nx)
                 .arg(&self.ny)
                 .arg(&self.nz)
@@ -208,8 +205,8 @@ impl UnifiedInt8Runner {
             unsafe { b.launch(cfg) }?;
         }
 
-        let rho_slice = self.stream.clone_dtoh(&d_rho_slice)?;
-        let vel_slice = self.stream.clone_dtoh(&d_vel_slice)?;
+        let rho_slice = d_rho_slice.dtoh_vec()?;
+        let vel_slice = d_vel_slice.dtoh_vec()?;
         Ok((rho_slice, vel_slice))
     }
 

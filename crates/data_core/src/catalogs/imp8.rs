@@ -34,6 +34,9 @@ pub struct Imp8HourlyRecord {
     pub temperature_k: f64,
 }
 
+#[cfg(feature = "fetch")]
+pub use super::imp8_fetch::Imp8Provider;
+
 #[derive(Default)]
 struct HourAccumulator {
     x_re_sum: f64,

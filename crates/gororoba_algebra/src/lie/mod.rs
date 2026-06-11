@@ -55,9 +55,14 @@
 
 pub mod e6;
 pub mod e7;
+pub mod e7_geometry;
+pub mod e7_structure;
 pub mod e8;
+pub mod e8_lattice;
 pub mod f4;
 pub mod g2;
+pub mod g2_stabilizer;
+pub mod g2_su3_representation;
 pub mod group_theory;
 pub mod kac_moody;
 pub mod lyndon_basis;

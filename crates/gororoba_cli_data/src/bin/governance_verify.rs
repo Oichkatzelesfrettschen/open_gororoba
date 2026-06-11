@@ -2282,7 +2282,7 @@ struct CrossRefSets<'a> {
 
 /// Regex bundle for the cross-reference checker. Bundling the 7 ID-prefix
 /// detector regexes into one struct keeps `check_dependency` under
-/// clippy::too_many_arguments without resorting to #[allow]; each regex is
+/// clippy::too_many_arguments without resorting to `#[allow]`; each regex is
 /// borrowed so call sites can build it once and reuse.
 struct CrossRefRegexes<'a> {
     workstream: &'a Regex,

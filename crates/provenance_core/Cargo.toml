@@ -7,8 +7,8 @@ repository = { workspace = true }
 description = "Typed provenance and citation models for open_gororoba"
 
 [dependencies]
-serde = { workspace = true }
 camino = { workspace = true, features = ["serde1"] }
+serde = { workspace = true }
 
 [lints]
 workspace = true

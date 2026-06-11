@@ -47,12 +47,12 @@ pub struct TowerLevel {
 ///
 /// At each doubling, the new components are the "detail" coefficients.
 /// The decomposition splits the vector into components at each scale:
-///   - coords [0..4]:   quaternion core (most robust)
-///   - coords [4..8]:   octonion extension
-///   - coords [8..16]:  sedenion extension
-///   - coords [16..32]: pathion extension
-///   - coords [32..64]: chingon extension
-///   - coords [64..128]: routon extension (most fragile)
+///   - coords `[0..4]`:   quaternion core (most robust)
+///   - coords `[4..8]`:   octonion extension
+///   - coords `[8..16]`:  sedenion extension
+///   - coords `[16..32]`: pathion extension
+///   - coords `[32..64]`: chingon extension
+///   - coords `[64..128]`: routon extension (most fragile)
 ///
 /// This is a coordinate-aligned decomposition matching the CD tower
 /// structure, NOT a random projection.

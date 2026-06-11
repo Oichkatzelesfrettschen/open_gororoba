@@ -27,7 +27,7 @@ use super::{
 /// Compute the tree-level amplitude for a given helicity channel.
 ///
 /// For a pure magnetic field B along z with photon propagating at angle theta:
-/// - k = omega * (sin(theta), 0, cos(theta), i) [Euclidean 4-momentum]
+/// - k = omega * (sin(theta), 0, cos(theta), i) `[Euclidean 4-momentum]`
 /// - F has only F^{12} = -F^{21} = B components
 ///
 /// The amplitude reduces to kinematic factors times B*omega^2*sin(theta).

@@ -26,6 +26,11 @@ pub struct SolarOrbiterRpwTnrRecord {
     pub band_count: usize,
 }
 
+#[cfg(feature = "fetch")]
+pub use super::solar_orbiter_rpw_tnr_fetch::{
+    SolarOrbiterRpwTnrProvider, parse_solar_orbiter_rpw_tnr_file,
+};
+
 #[derive(Default)]
 pub(crate) struct TnrAccumulator {
     pub r_sum: f64,

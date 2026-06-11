@@ -4,7 +4,7 @@
 //!   `_RocqProject` text file, extracts each `verified/*.v` entry,
 //!   computes the theorem stem, and indexes the entries by both stem
 //!   and the normalized claim id (`C-<digits>`) derived from the stem.
-//! - `load_theorems_from_inventory`: builds Vec<TheoremRecord> from the
+//! - `load_theorems_from_inventory`: builds `Vec<TheoremRecord>` from the
 //!   inventory, attaching claim-link backreferences and using the
 //!   referenced claim's statement as the theorem title when one
 //!   matches, else falling back to a humanized stem.

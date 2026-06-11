@@ -47,10 +47,11 @@ pub use physics::clifford::{kron, kron2, pauli_matrices};
 pub mod lie;
 
 // -- gpu -----------------------------------------------------------------
-#[cfg(feature = "gpu")]
+#[cfg(any(feature = "gpu", feature = "vulkan", feature = "cubecl"))]
 pub mod gpu;
 
 // -- types ---------------------------------------------------------------
+#[cfg(feature = "core")]
 pub use construction::{
     auxiliary::{Rational, padic_distance},
     padic::vp_int,

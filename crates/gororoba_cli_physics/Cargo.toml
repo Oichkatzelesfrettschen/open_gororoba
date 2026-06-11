@@ -918,7 +918,6 @@ algebra_experimental = { workspace = true }
 anise = { workspace = true }
 anyhow = { workspace = true }
 arrow-array = { workspace = true }
-ort = { workspace = true, optional = true }
 arrow-ipc = { workspace = true }
 arrow-schema = { workspace = true }
 ash = { version = "0.38.0", features = ["debug"] }
@@ -958,6 +957,7 @@ netcdf3 = { workspace = true, optional = true }
 neural_homotopy = { path = "../neural_homotopy" }
 num-complex = { workspace = true }
 optics_core = { path = "../optics_core" }
+ort = { workspace = true, optional = true }
 pathion_ellip = { version = "0.1.0", path = "../pathion_ellip" }
 plotters = { workspace = true }
 qgp_scaling = { path = "../qgp_scaling" }

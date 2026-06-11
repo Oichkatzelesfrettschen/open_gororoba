@@ -2,32 +2,36 @@
 name = "algebra_experimental"
 version = "0.1.0"
 edition = { workspace = true }
-description = "Experimental algebraic structures: emanation tables, E10-octonion bridge, billiard statistics, moonshine, Golay/Leech, algebraic dynamics"
 license = "GPL-2.0-or-later"
+description = "Experimental algebraic structures: emanation tables, E10-octonion bridge, billiard statistics, moonshine, Golay/Leech, algebraic dynamics"
 
 [dependencies]
-cd_kernel = { workspace = true }
 algebra_analysis = { workspace = true }
+argmin = { workspace = true }
+argmin-math = { workspace = true }
+cd_kernel = { workspace = true }
+cubecl = { workspace = true, optional = true }
+cubecl-wgpu = { workspace = true, optional = true }
+cudarc = { workspace = true, optional = true }
+faer.workspace = true
+flavor_lifts = { path = "../flavor_lifts" }
 # Needed for e10_octonion (lie::e8::root_system, physics::octonion_field)
 # and billiard_stats (SedenionZdSystem uses gororoba_algebra types).
 gororoba_algebra = { path = "../gororoba_algebra", features = ["lie", "physics", "physics-sm", "analysis"] }
-num-complex = { workspace = true }
-wide = { workspace = true }
+gororoba_gpu_cubecl = { workspace = true, optional = true }
+gororoba_gpu_cuda = { workspace = true, optional = true }
+gororoba_gpu_vulkan = { workspace = true, optional = true }
 nalgebra = { workspace = true }
+num-bigint = { workspace = true }
+num-complex = { workspace = true }
+petgraph = { workspace = true }
 rand.workspace = true
-rayon = { workspace = true }
 rand_chacha = { workspace = true }
 rand_distr = { workspace = true }
-num-bigint = { workspace = true }
-petgraph = { workspace = true }
+rayon = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
-cudarc = { workspace = true, optional = true }
-gororoba_gpu_cuda = { workspace = true, optional = true }
-faer.workspace = true
-flavor_lifts = { path = "../flavor_lifts" }
-argmin = { workspace = true }
-argmin-math = { workspace = true }
+wide = { workspace = true }
 
 [features]
 # `gpu` chains gororoba_algebra/gpu and gororoba_gpu_cuda/cudarc so the
@@ -38,6 +42,16 @@ gpu = [
     "dep:cudarc",
     "dep:gororoba_gpu_cuda",
     "gororoba_gpu_cuda/cudarc",
+]
+cubecl = [
+    "dep:cubecl",
+    "dep:cubecl-wgpu",
+    "dep:gororoba_gpu_cubecl",
+    "gororoba_gpu_cubecl/cubecl",
+]
+vulkan = [
+    "dep:gororoba_gpu_vulkan",
+    "gororoba_gpu_vulkan/ash",
 ]
 
 [dev-dependencies]

@@ -3,9 +3,9 @@
 //! # Purpose and call sites
 //!
 //! Bridges the `#[cube(launch_unchecked)]` kernel defined in
-//! [`super::quantize_kernel::quantize_kernel`] to a runnable host-side
+//! `super::quantize_kernel::quantize_kernel` to a runnable host-side
 //! Rust function. Called from
-//! [`crate::turboquant::backend::BackendQuantizer::quantize`]
+//! `crate::turboquant::backend::BackendQuantizer::quantize`
 //! when `Backend::CubeCL` is selected and the `cubecl` crate feature
 //! is on.
 //!
@@ -21,7 +21,7 @@
 //! - The kernel launch via `quantize_kernel::launch_unchecked::<WgpuRuntime>`.
 //! - Readback of the u32 counts via `client.read_one_unchecked(handle)`.
 //!
-//! Delegates to [`crate::turboquant::gpu_backend_shared`]:
+//! Delegates to `crate::turboquant::gpu_backend_shared`:
 //! - Input validation (boundary count, output length, bits in 1..=8).
 //! - The lossless `u32 -> u8` narrowing of GPU counts to caller's
 //!   output buffer.
@@ -31,7 +31,7 @@
 //!
 //! # Why cubecl when we already have Vulkan?
 //!
-//! The hand-rolled [`crate::turboquant::vulkan::quantizer::VulkanQuantizer`]
+//! The hand-rolled `crate::turboquant::vulkan::quantizer::VulkanQuantizer`
 //! is bit-identical to the CPU reference and lower-overhead on Linux
 //! because it skips `wgpu`/`naga` translation. The cubecl path's value
 //! is *cross-platform portability*: the same kernel source runs on
@@ -60,10 +60,10 @@
 //!
 //! # Cross-references
 //!
-//! - Kernel: [`super::quantize_kernel`]
+//! - Kernel: `super::quantize_kernel`
 //! - SPIR-V counterpart: `vulkan/shaders/quantize.comp`
-//! - Validation/pack helpers: [`crate::turboquant::gpu_backend_shared`]
-//! - Backend dispatch: [`crate::turboquant::backend::BackendQuantizer`]
+//! - Validation/pack helpers: `crate::turboquant::gpu_backend_shared`
+//! - Backend dispatch: `crate::turboquant::backend::BackendQuantizer`
 
 #![cfg(feature = "cubecl")]
 
@@ -158,13 +158,13 @@ pub fn is_available() -> bool {
 ///         ScalarArg::new(req.boundaries.len() as u32),
 ///     )?;
 ///  6. let counts_bytes = client.read_one_unchecked(i_handle)
-///  7. let counts: Vec<u32> = bytemuck::cast_slice(&counts_bytes).to_vec()
+///  7. let counts: `Vec<u32>` = bytemuck::cast_slice(&counts_bytes).to_vec()
 ///  8. pack_u32_counts_to_u8(&counts, out)    // shared module
 /// ```
 ///
 /// # Errors
 ///
-/// See [`CubeclQuantizerError`].
+/// See `CubeclQuantizerError`.
 ///
 /// # Performance
 ///

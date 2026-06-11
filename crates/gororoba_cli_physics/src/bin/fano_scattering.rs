@@ -74,7 +74,7 @@ fn main() {
 
 /// Figure 1: Lossless analytical Fano
 ///
-/// x = (omega - omega_0) / gamma in range [-10, 10]
+/// x = (omega - omega_0) / gamma in range `[-10, 10]`
 /// phi = 0, pi/2, pi
 /// gamma_0 = 0 (lossless)
 fn generate_fig1(out_dir: &Path) {
@@ -107,7 +107,7 @@ fn generate_fig1(out_dir: &Path) {
 
 /// Figure 2: Lossy analytical Fano
 ///
-/// x = (omega - omega_0) / gamma in range [-10, 10]
+/// x = (omega - omega_0) / gamma in range `[-10, 10]`
 /// phi = 0, pi/2, pi
 /// gamma_0 = gamma (equal radiative and non-radiative damping)
 fn generate_fig2(out_dir: &Path) {

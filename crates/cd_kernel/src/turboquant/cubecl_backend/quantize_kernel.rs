@@ -5,7 +5,7 @@
 //! mirrors the algorithm in vulkan/shaders/quantize.comp:
 //!   - One thread per input value
 //!   - Each thread counts how many boundaries are <= its value
-//!   - Writes the per-thread u32 count into indices[gid]
+//!   - Writes the per-thread u32 count into indices`[gid]`
 //!   - CPU-side wrapper packs u32s into u8 bytes after readback
 //!     (avoids cubecl atomic surface for portability across runtimes)
 
@@ -17,7 +17,7 @@ use cubecl::prelude::*;
 ///
 /// `values[i]` is the f32 input; `boundaries[0..n_boundaries]` are the
 /// sorted thresholds (length = 2^bits - 1); `indices[i]` receives the
-/// u32 count of how many boundaries are < values[i] (the boundary
+/// u32 count of how many boundaries are < values`[i]` (the boundary
 /// search index).
 #[cube(launch_unchecked)]
 pub fn quantize_kernel(

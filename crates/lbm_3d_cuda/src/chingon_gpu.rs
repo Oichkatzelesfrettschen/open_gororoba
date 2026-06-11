@@ -11,10 +11,11 @@
 //   GPU -> CPU: 3D force vector (12 bytes)
 
 use anyhow::{Context, Result};
-use cudarc::driver::{
-    CudaContext, CudaFunction, CudaSlice, CudaStream, LaunchConfig, PushKernelArg,
-};
+use cudarc::driver::{CudaFunction, CudaStream, PushKernelArg};
 use gororoba_algebra::construction::chingon::PackedAvt;
+use gororoba_gpu_cuda::{
+    Buffer, CompileOptions, Context as CudaContextHelper, LaunchConfig, ModuleRegistry,
+};
 use gr_core::forces::chingon_bivector_drag::block_layout;
 use std::sync::Arc;
 
@@ -28,18 +29,19 @@ const KERNEL_SRC: &str = include_str!("kernels_chingon.cu");
 /// Dimension-parametric: the `dim` field determines buffer sizes and
 /// block layout. All kernels receive block boundaries as arguments.
 pub struct ChingonGpuPipeline {
-    _ctx: Arc<CudaContext>,
+    _ctx: CudaContextHelper,
     stream: Arc<CudaStream>,
+    _module_registry: ModuleRegistry,
     // Kernels
     build_state_kernel: CudaFunction,
     contraction_kernel: CudaFunction,
     project_kernel: CudaFunction,
     zero_kernel: CudaFunction,
     // Device buffers (persistent across calls)
-    d_packed_avt: CudaSlice<u32>,
-    d_v_nd: CudaSlice<f32>,
-    d_force_nd: CudaSlice<f32>,
-    d_force_3d: CudaSlice<f32>,
+    d_packed_avt: Buffer<u32>,
+    d_v_nd: Buffer<f32>,
+    d_force_nd: Buffer<f32>,
+    d_force_3d: Buffer<f32>,
     // Metadata
     dim: u32,
     index_bits: u32,
@@ -61,21 +63,29 @@ impl ChingonGpuPipeline {
     /// Call this once at program startup. The packed AVT data is uploaded
     /// to device memory and persists for the lifetime of the pipeline.
     pub fn new(packed: &PackedAvt) -> Result<Self> {
-        let ctx = CudaContext::new(0).context("CUDA init for Chingon pipeline")?;
+        let ctx =
+            CudaContextHelper::with_default_device().context("CUDA init for Chingon pipeline")?;
         let stream = ctx.default_stream();
 
-        let opts = cudarc::nvrtc::CompileOptions {
-            arch: Some(crate::preferred_cuda_arch()),
-            ..Default::default()
-        };
-        let ptx = cudarc::nvrtc::compile_ptx_with_opts(KERNEL_SRC, opts)
+        let opts = CompileOptions::with_arch(crate::preferred_cuda_arch());
+        let ptx = CompileOptions::compile_ptx(KERNEL_SRC, &opts)
             .context("NVRTC compile kernels_chingon.cu")?;
-        let module = ctx.load_module(ptx).context("Load Chingon CUDA module")?;
+        let module_registry = ModuleRegistry::load(
+            ctx.raw(),
+            ptx,
+            &[
+                "chingon_build_state_3body",
+                "chingon_avt_contraction",
+                "chingon_project_3body",
+                "chingon_zero_buffer",
+            ],
+        )
+        .context("Load Chingon CUDA module")?;
 
-        let build_state_kernel = module.load_function("chingon_build_state_3body")?;
-        let contraction_kernel = module.load_function("chingon_avt_contraction")?;
-        let project_kernel = module.load_function("chingon_project_3body")?;
-        let zero_kernel = module.load_function("chingon_zero_buffer")?;
+        let build_state_kernel = module_registry.get("chingon_build_state_3body")?;
+        let contraction_kernel = module_registry.get("chingon_avt_contraction")?;
+        let project_kernel = module_registry.get("chingon_project_3body")?;
+        let zero_kernel = module_registry.get("chingon_zero_buffer")?;
 
         let dim = packed.dim as usize;
 
@@ -84,20 +94,13 @@ impl ChingonGpuPipeline {
         let n_phases_b3 = b3sz.div_ceil(3);
 
         // Upload packed AVT (read-only for entire simulation)
-        let d_packed_avt = stream
-            .clone_htod(&packed.data)
-            .context("Upload packed AVT to GPU")?;
+        let d_packed_avt =
+            Buffer::htod(&stream, &packed.data).context("Upload packed AVT to GPU")?;
 
         // Allocate working buffers
-        let d_v_nd = stream
-            .alloc_zeros::<f32>(dim)
-            .context("Alloc v_Nd buffer")?;
-        let d_force_nd = stream
-            .alloc_zeros::<f32>(dim)
-            .context("Alloc force_Nd buffer")?;
-        let d_force_3d = stream
-            .alloc_zeros::<f32>(3)
-            .context("Alloc force_3d buffer")?;
+        let d_v_nd = Buffer::alloc_zeros(&stream, dim).context("Alloc v_Nd buffer")?;
+        let d_force_nd = Buffer::alloc_zeros(&stream, dim).context("Alloc force_Nd buffer")?;
+        let d_force_3d = Buffer::alloc_zeros(&stream, 3).context("Alloc force_3d buffer")?;
 
         let n_violations = packed.violation_count;
         let inv_n_viol = 1.0f32 / (n_violations.max(1) as f32);
@@ -105,6 +108,7 @@ impl ChingonGpuPipeline {
         Ok(Self {
             _ctx: ctx,
             stream,
+            _module_registry: module_registry,
             build_state_kernel,
             contraction_kernel,
             project_kernel,
@@ -164,10 +168,7 @@ impl ChingonGpuPipeline {
         )?;
 
         // Step 5: Read back 3D force
-        let force: Vec<f32> = self
-            .stream
-            .clone_dtoh(&self.d_force_3d)
-            .context("Read back force_3d")?;
+        let force: Vec<f32> = self.d_force_3d.dtoh_vec().context("Read back force_3d")?;
 
         Ok([force[0] as f64, force[1] as f64, force[2] as f64])
     }
@@ -179,11 +180,7 @@ impl ChingonGpuPipeline {
         // Launch enough threads to cover all axes
         let threads = 256u32.min(self.dim);
         let blocks = self.dim.div_ceil(threads);
-        let cfg = LaunchConfig {
-            grid_dim: (blocks, 1, 1),
-            block_dim: (threads, 1, 1),
-            shared_mem_bytes: 0,
-        };
+        let cfg = LaunchConfig::launch_blocks_1d(blocks, threads);
 
         let triad_earth = &params.triad_earth;
         let triad_lunar = &params.triad_lunar;
@@ -237,7 +234,7 @@ impl ChingonGpuPipeline {
         let cs = params.cross_sign as f32;
 
         let mut builder = self.stream.launch_builder(&self.build_state_kernel);
-        builder.arg(&mut self.d_v_nd);
+        builder.arg(self.d_v_nd.raw_mut());
         // Block layout parameters
         builder.arg(&self.dim);
         builder.arg(&self.block_size);
@@ -307,16 +304,13 @@ impl ChingonGpuPipeline {
         let grid_size = (self.n_violations.div_ceil(block_size)).clamp(1, 4096);
         let shared_bytes = self.dim * 4; // sizeof(float) * dim
 
-        let cfg = LaunchConfig {
-            grid_dim: (grid_size, 1, 1),
-            block_dim: (block_size, 1, 1),
-            shared_mem_bytes: shared_bytes,
-        };
+        let mut cfg = LaunchConfig::launch_blocks_1d(grid_size, block_size);
+        cfg.shared_mem_bytes = shared_bytes;
 
         let mut builder = self.stream.launch_builder(&self.contraction_kernel);
-        builder.arg(&self.d_packed_avt);
-        builder.arg(&self.d_v_nd);
-        builder.arg(&mut self.d_force_nd);
+        builder.arg(self.d_packed_avt.raw());
+        builder.arg(self.d_v_nd.raw());
+        builder.arg(self.d_force_nd.raw_mut());
         builder.arg(&self.n_violations);
         builder.arg(&self.dim);
         builder.arg(&self.index_bits);
@@ -335,11 +329,7 @@ impl ChingonGpuPipeline {
         h_earth_norm: f64,
         cross_sign: f64,
     ) -> Result<()> {
-        let cfg = LaunchConfig {
-            grid_dim: (1, 1, 1),
-            block_dim: (1, 1, 1),
-            shared_mem_bytes: 0,
-        };
+        let cfg = LaunchConfig::launch_blocks_1d(1, 1);
 
         let e_v_solar_x = triad_solar[0][0] as f32;
         let e_v_solar_y = triad_solar[0][1] as f32;
@@ -360,8 +350,8 @@ impl ChingonGpuPipeline {
         let cs = cross_sign as f32;
 
         let mut builder = self.stream.launch_builder(&self.project_kernel);
-        builder.arg(&self.d_force_nd);
-        builder.arg(&mut self.d_force_3d);
+        builder.arg(self.d_force_nd.raw());
+        builder.arg(self.d_force_3d.raw_mut());
         // Block layout
         builder.arg(&self.dim);
         builder.arg(&self.b3_start);
@@ -392,14 +382,12 @@ impl ChingonGpuPipeline {
 
     /// Read the raw N-D force vector from GPU (for debugging/validation).
     pub fn read_force_nd(&self) -> Result<Vec<f32>> {
-        self.stream
-            .clone_dtoh(&self.d_force_nd)
-            .context("Read force_Nd")
+        self.d_force_nd.dtoh_vec().context("Read force_Nd")
     }
 
     /// Read the N-D state vector from GPU (for debugging/validation).
     pub fn read_state_nd(&self) -> Result<Vec<f32>> {
-        self.stream.clone_dtoh(&self.d_v_nd).context("Read v_Nd")
+        self.d_v_nd.dtoh_vec().context("Read v_Nd")
     }
 }
 
@@ -410,17 +398,13 @@ impl ChingonGpuPipeline {
 fn zero_device_buffer(
     stream: &Arc<CudaStream>,
     kernel: &CudaFunction,
-    buf: &mut CudaSlice<f32>,
+    buf: &mut Buffer<f32>,
     n: usize,
 ) -> Result<()> {
     let n_u32 = n as u32;
-    let cfg = LaunchConfig {
-        grid_dim: (n_u32.div_ceil(256), 1, 1),
-        block_dim: (256, 1, 1),
-        shared_mem_bytes: 0,
-    };
+    let cfg = LaunchConfig::launch_1d(n_u32);
     let mut builder = stream.launch_builder(kernel);
-    builder.arg(buf);
+    builder.arg(buf.raw_mut());
     builder.arg(&n_u32);
     unsafe { builder.launch(cfg).context("Launch zero_buffer")? };
     Ok(())

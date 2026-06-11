@@ -147,7 +147,7 @@ impl BaireEncoder {
         ((v - min) / (max - min)).clamp(0.0, 1.0)
     }
 
-    /// Quantize a [0,1] value into `n_digits` digits in the given base.
+    /// Quantize a `[0,1]` value into `n_digits` digits in the given base.
     fn quantize(&self, val: f64) -> Vec<u64> {
         let mut digits = Vec::with_capacity(self.n_digits);
         let mut remainder = val.clamp(0.0, 1.0 - 1e-15);
@@ -188,7 +188,7 @@ pub fn baire_distance_matrix(encoder: &BaireEncoder, data: &[Vec<f64>]) -> Vec<f
 
 /// Compute normalized Euclidean distance matrix in multi-attribute space.
 ///
-/// Each attribute is normalized to [0,1] using the encoder's attribute specs
+/// Each attribute is normalized to `[0,1]` using the encoder's attribute specs
 /// (respecting log_scale settings), then standard Euclidean distance is computed.
 /// Returns a flat upper-triangle distance matrix.
 pub fn euclidean_distance_matrix(encoder: &BaireEncoder, data: &[Vec<f64>]) -> Vec<f64> {
@@ -387,7 +387,7 @@ pub struct BaireTestResult {
 // Matrix-free ultrametric tests: O(N*d) memory instead of O(N^2)
 // ---------------------------------------------------------------------------
 
-/// Normalize a full dataset into [0,1]^d using the encoder's attribute specs.
+/// Normalize a full dataset into `[0,1]^d` using the encoder's attribute specs.
 ///
 /// Returns a flat column-major array: `normalized[col * n + row]` for SIMD-
 /// friendly column access during distance computation.

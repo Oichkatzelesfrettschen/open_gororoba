@@ -25,9 +25,9 @@
 
 use ash::vk;
 use gororoba_gpu_vulkan::{
-    Adapter, ComputePipeline, ComputePipelineBuilder, DescriptorSetLayout,
-    DescriptorSetLayoutSpec, Device, DeviceBuilder, DispatchScope, Instance, InstanceBuilder,
-    QueueFamilyRequirement, ShaderModule, ValidationPolicy, VulkanError,
+    Adapter, ComputePipeline, ComputePipelineBuilder, DescriptorSetLayout, DescriptorSetLayoutSpec,
+    Device, DeviceBuilder, DispatchScope, Instance, InstanceBuilder, QueueFamilyRequirement,
+    ShaderModule, ValidationPolicy, VulkanError,
 };
 
 const VISC_WGSL: &str = include_str!("../shaders/dark_halo_viscosity.wgsl");
@@ -231,8 +231,8 @@ pub struct DarkHaloVulkan {
 impl DarkHaloVulkan {
     /// Allocate all Vulkan resources for an nx*ny*nz periodic D3Q19 grid.
     ///
-    /// The initial f field is the equilibrium rest state (f[i,cell] = w_i).
-    /// Inject a custom state via the `f_init` argument to [`run`].
+    /// The initial f field is the equilibrium rest state (`f[i,cell] = w_i`).
+    /// Inject a custom state via the `f_init` argument to `run`.
     pub fn new(nx: usize, ny: usize, nz: usize) -> Result<Self, DarkHaloError> {
         if nx == 0 || ny == 0 || nz == 0 {
             return Err(DarkHaloError::EmptyGrid { nx, ny, nz });
@@ -374,7 +374,15 @@ impl DarkHaloVulkan {
         bind_visc_set(&device, visc_set, &tau_buf, &visc_ubo);
         bind_lbm_step_set(&device, lbm_sets[0], &f_buf0, &f_buf1, &tau_buf, &lbm_ubo);
         bind_lbm_step_set(&device, lbm_sets[1], &f_buf1, &f_buf0, &tau_buf, &lbm_ubo);
-        bind_detector_set(&device, detector_set, &tau_buf, &rho_buf, &u_buf, &halo_mask_buf, &halo_ubo);
+        bind_detector_set(
+            &device,
+            detector_set,
+            &tau_buf,
+            &rho_buf,
+            &u_buf,
+            &halo_mask_buf,
+            &halo_ubo,
+        );
 
         let dispatch = DispatchScope::new(&device)?;
 
@@ -581,7 +589,9 @@ fn d3q19_weights_f32() -> [f32; 19] {
     const W0: f32 = 1.0 / 3.0;
     const W1: f32 = 1.0 / 18.0;
     const W2: f32 = 1.0 / 36.0;
-    [W0, W1, W1, W1, W1, W1, W1, W2, W2, W2, W2, W2, W2, W2, W2, W2, W2, W2, W2]
+    [
+        W0, W1, W1, W1, W1, W1, W1, W2, W2, W2, W2, W2, W2, W2, W2, W2, W2, W2, W2,
+    ]
 }
 
 // ---- Vulkan memory helpers (identical contract to lbm_d3q19_vulkan.rs) ----
@@ -592,7 +602,13 @@ fn allocate_storage_buffer(
     instance: &Instance,
     size: vk::DeviceSize,
 ) -> Result<DeviceBuffer, DarkHaloError> {
-    allocate_buffer(device, adapter, instance, size, vk::BufferUsageFlags::STORAGE_BUFFER)
+    allocate_buffer(
+        device,
+        adapter,
+        instance,
+        size,
+        vk::BufferUsageFlags::STORAGE_BUFFER,
+    )
 }
 
 fn allocate_uniform_buffer(
@@ -601,7 +617,13 @@ fn allocate_uniform_buffer(
     instance: &Instance,
     size: vk::DeviceSize,
 ) -> Result<DeviceBuffer, DarkHaloError> {
-    allocate_buffer(device, adapter, instance, size, vk::BufferUsageFlags::UNIFORM_BUFFER)
+    allocate_buffer(
+        device,
+        adapter,
+        instance,
+        size,
+        vk::BufferUsageFlags::UNIFORM_BUFFER,
+    )
 }
 
 fn allocate_buffer(
@@ -892,12 +914,14 @@ mod tests {
     fn compute_macroscopic_cpu_rest_state() {
         let n = 8usize;
         let weights = d3q19_weights_f32();
-        let f: Vec<f32> = (0..n * D3Q19_CHANNELS)
-            .map(|k| weights[k / n])
-            .collect();
+        let f: Vec<f32> = (0..n * D3Q19_CHANNELS).map(|k| weights[k / n]).collect();
         let (rho, u_flat, rho_mean) = compute_macroscopic_cpu(&f, n);
         for cell in 0..n {
-            assert!((rho[cell] - 1.0).abs() < 1e-6, "rho[{cell}] = {}", rho[cell]);
+            assert!(
+                (rho[cell] - 1.0).abs() < 1e-6,
+                "rho[{cell}] = {}",
+                rho[cell]
+            );
             assert!(u_flat[cell].abs() < 1e-6, "ux[{cell}] non-zero");
             assert!(u_flat[n + cell].abs() < 1e-6, "uy[{cell}] non-zero");
             assert!(u_flat[2 * n + cell].abs() < 1e-6, "uz[{cell}] non-zero");

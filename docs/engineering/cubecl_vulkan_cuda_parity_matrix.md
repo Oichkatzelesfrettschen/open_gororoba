@@ -32,51 +32,46 @@ runtime adapter probe, ChaCha20-seeded inputs, byte-exact comparison.
 
 ## Parity Matrix
 
-| Kernel / Subsystem                  | Crate                 | CPU | CUDA | Vulkan | cubecl | Parity Test |
-|-------------------------------------|-----------------------|-----|------|--------|--------|-------------|
-| TurboQuant quantize (3-bit, 128-d)  | cd_kernel             | YES | n/a  | YES    | YES    | YES (both) |
-| LBM D3Q19 stream + collide          | lbm_vulkan / lbm_3d   | YES | YES  | YES    | YES    | YES (CPU-vs-Vulkan, CPU-vs-cubecl, 3-way in lbm_d3q19_parity.rs) |
-| LBM MRT collision                   | lbm_vulkan / lbm_3d_cuda / lbm_3d | YES | YES  | YES    | YES    | YES (CPU-vs-Vulkan in lbm_mrt_d3q19_vulkan_parity.rs, CPU-vs-cubecl in lbm_mrt_d3q19_cubecl_parity.rs, 3-way in lbm_mrt_d3q19_parity.rs) |
-| Sparse-grid LBM                     | lbm_3d_cuda           | n/a | YES  | NO     | NO     | NO         |
-| Box-counting fractal dimension      | lbm_3d_cuda + lbm_vulkan | YES | YES  | YES    | YES    | YES (CPU vs cubecl in lbm_vulkan; CUDA + Vulkan oracles share box_counting_cpu) |
-| Chingon (anisotropy operator)       | lbm_3d_cuda + lbm_vulkan | YES | YES  | YES    | YES    | YES (CPU oracle + cubecl in lbm_vulkan) |
-| Alignment / orientation projection  | lbm_3d_cuda + lbm_vulkan | YES | YES  | YES    | YES    | YES (CPU-vs-cubecl in lbm_vulkan/tests/alignment_cubecl_parity.rs) |
-| Besag-Clifford GMRF                 | sign_imbalance + lbm_vulkan | YES | YES  | YES    | YES    | YES (CPU-vs-cubecl in besag_clifford_cubecl_parity.rs: exact PCG shuffle + 1e-5 transform) |
-| Dark-halo Monte Carlo               | lbm_3d_cuda + lbm_vulkan | n/a | YES  | YES    | NO     | YES (CPU-ZD-oracle vs Vulkan in dark_halo_vulkan_parity.rs) |
-| Kubo transport conductivity         | sign_imbalance        | YES | YES  | n/a    | n/a    | NO (cuSOLVER/cuBLAS; not a portable compute shader) |
-| Algebraic lensing                   | optics_core           | YES | YES  | NO     | NO     | NO         |
-| Voudon stabilizer                   | algebra_experimental  | YES | YES  | NO     | NO     | NO         |
-| GRMHD GPU advance                   | grmhd_core            | YES | YES  | NO     | NO     | NO         |
-| Coop-matrix probe (Vulkan-only)     | lbm_vulkan            | n/a | NO   | YES    | NO     | n/a (Vulkan-only feature; no equivalent in cudarc) |
-| OptiX BVH ray-tracing               | lbm_3d_cuda + gororoba_optix | n/a | YES  | NO     | NO     | n/a (OptiX is NVIDIA-only by design) |
+| Kernel / Subsystem                 | Crate                             | CPU | CUDA | Vulkan | cubecl | Parity Test                                                                                                                              |
+| ---------------------------------- | --------------------------------- | --- | ---- | ------ | ------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| TurboQuant quantize (3-bit, 128-d) | cd_kernel                         | YES | n/a  | YES    | YES    | YES (both)                                                                                                                               |
+| LBM D3Q19 stream + collide         | lbm_vulkan / lbm_3d               | YES | YES  | YES    | YES    | YES (CPU-vs-Vulkan, CPU-vs-cubecl, 3-way in lbm_d3q19_parity.rs)                                                                         |
+| LBM MRT collision                  | lbm_vulkan / lbm_3d_cuda / lbm_3d | YES | YES  | YES    | YES    | YES (CPU-vs-Vulkan in lbm_mrt_d3q19_vulkan_parity.rs, CPU-vs-cubecl in lbm_mrt_d3q19_cubecl_parity.rs, 3-way in lbm_mrt_d3q19_parity.rs) |
+| Sparse-grid LBM direct active bricks | lbm_3d_cuda + lbm_vulkan         | YES | YES  | YES    | YES    | YES (CPU-vs-Vulkan in sparse_lbm_vulkan_parity.rs, CPU-vs-cubecl in sparse_lbm_cubecl_parity.rs)                                        |
+| Box-counting fractal dimension     | lbm_3d_cuda + lbm_vulkan          | YES | YES  | YES    | YES    | YES (CPU vs cubecl in lbm_vulkan; CUDA + Vulkan oracles share box_counting_cpu)                                                          |
+| Chingon (anisotropy operator)      | lbm_3d_cuda + lbm_vulkan          | YES | YES  | YES    | YES    | YES (CPU oracle + cubecl in lbm_vulkan)                                                                                                  |
+| Alignment / orientation projection | lbm_3d_cuda + lbm_vulkan          | YES | YES  | YES    | YES    | YES (CPU-vs-cubecl in lbm_vulkan/tests/alignment_cubecl_parity.rs)                                                                       |
+| Besag-Clifford GMRF                | sign_imbalance + lbm_vulkan       | YES | YES  | YES    | YES    | YES (CPU-vs-cubecl in besag_clifford_cubecl_parity.rs: exact PCG shuffle + 1e-5 transform)                                               |
+| Dark-halo ZD viscosity/count       | lbm_3d_cuda + lbm_vulkan          | YES | YES  | YES    | YES    | YES (CPU-ZD-oracle vs Vulkan in dark_halo_vulkan_parity.rs, CPU-vs-cubecl in dark_halo_cubecl_parity.rs)                                 |
+| Kubo transport conductivity        | sign_imbalance                    | YES | YES  | n/a    | n/a    | NO (cuSOLVER/cuBLAS; not a portable compute shader)                                                                                      |
+| Algebraic lensing                  | optics_core                       | YES | YES  | YES    | YES    | YES (CPU-vs-Vulkan in algebraic_lensing_gpu.rs; CPU-vs-cubecl in algebraic_lensing_cubecl_parity.rs)                                    |
+| Voudon stabilizer                  | algebra_experimental              | YES | YES  | YES    | YES    | YES (CPU-vs-Vulkan and CPU-vs-cubecl row counts in voudon_vulkan_parity.rs and voudon_cubecl_parity.rs)                                  |
+| GRMHD GPU advance                  | grmhd_core                        | YES | YES  | YES    | YES    | YES (CPU-vs-Vulkan and CPU-vs-cubecl in grmhd_core parity tests)                                                                         |
+| Tensor AVT dense multiply/norm     | gororoba_algebra                  | YES | YES  | YES    | YES    | YES (CPU-vs-Vulkan and CPU-vs-cubecl in tensor_avt_vulkan_parity.rs and tensor_avt_cubecl_parity.rs)                                     |
+| Coop-matrix probe (Vulkan-only)    | lbm_vulkan                        | n/a | NO   | YES    | NO     | n/a (Vulkan-only feature; no equivalent in cudarc)                                                                                       |
+| OptiX BVH ray-tracing              | lbm_3d_cuda + gororoba_optix      | n/a | YES  | NO     | NO     | n/a (OptiX is NVIDIA-only by design)                                                                                                     |
 
 Legend:
+
 - YES = implementation exists and is wired into the public API.
-- NO  = implementation absent; needs to be written for parity.
+- NO = implementation absent; needs to be written for parity.
 - n/a = the kernel does not make sense for this backend.
-- PARTIAL = some variants done, some missing.
 
 ## Quantitative Gap Summary
 
-- Total kernels enumerated: 15
-- Full 3-way parity (CPU + CUDA + Vulkan, ideally also cubecl): 4 / 15
-  (TurboQuant + Box-counting + Chingon + LBM D3Q19 BGK).
-  LBM D3Q19 completed: Vulkan in PR #51 (Wave D), cubecl in PR #52 (Wave E),
-  3-way parity test in PR #54 (Wave F).
-- CPU + cubecl partial (no full Vulkan device-pipeline): 1 / 15
-  (transform_viscosity -- besag_clifford sub-kernel; shader exists but
-   device-pipeline not wired up for non-besag callers).
-- CPU + cubecl (CUDA + Vulkan also present, no 3-way test yet): 1 / 15 (alignment)
-- CUDA + Vulkan + cubecl present: besag-clifford (Wave G5 -- shuffle + transform GPU,
-  regional correlation on CPU; parity test at besag_clifford_cubecl_parity.rs)
-- CUDA + Vulkan present (no cubecl): 1 / 15 (dark-halo; cubecl RNG not yet ported)
+- Total kernels enumerated: 16
+- CPU + Vulkan + cubecl parity rows: TurboQuant, LBM D3Q19, LBM MRT,
+  sparse-grid LBM direct active bricks, box-counting, Chingon, alignment,
+  Besag-Clifford, dark-halo, algebraic lensing, Voudon stabilizer, GRMHD,
+  and Tensor AVT.
+- CUDA + Vulkan present without cubecl: none in the parity rows.
 - See docs/engineering/issue_136_phase2_finalization.md for the
   per-cell deferral rationale.
-- CUDA only: 5 / 15 (sparse LBM, lensing, voudon, GRMHD, MRT)
+- CUDA-only custom-compute row: none in the parity rows.
   Kubo is n/a for Vulkan/cubecl (uses cuSOLVER symmetric eigensolver + cuBLAS DGEMM,
   not portable compute shaders; implementing from scratch is out of scope for #136).
-- Vulkan only: 1 / 15 (coop-matrix probe; structurally NVIDIA-incompatible)
-- OptiX (NVIDIA-only, expected): 1 / 15
+- Vulkan only: 1 / 16 (coop-matrix probe; structurally NVIDIA-incompatible)
+- OptiX (NVIDIA-only, expected): 1 / 16
 
 ## Phase 2 Recommended Build Order
 
@@ -124,10 +119,9 @@ Highest expected ROI (closes parity for the most-used kernels first):
 
 Lower-priority (more specialized):
 
-7. Algebraic lensing Vulkan port -- needed only for GPU-accelerated
-   `optics_core::algebraic_lensing`; CPU path is acceptable for now.
-8. Voudon stabilizer Vulkan -- speculative algebra path, low usage.
-9. GRMHD GPU Vulkan -- the CPU path remains the production target for now.
+7. No portable custom-compute rows remain below the direct active-brick sparse
+   LBM surface. CUDA-only sparse residency variants, OptiX ray tracing, and
+   vendor BLAS/eigensolver calls remain separate API or memory-policy surfaces.
 
 ## Implementation Notes
 
@@ -182,7 +176,7 @@ For each kernel in the matrix, parity is achieved when:
 ## Out of Scope for #136
 
 - Performance parity (CUDA vs Vulkan absolute throughput). The objective
-  is *feature* parity (correctness across backends), not equal-FLOPS
+  is _feature_ parity (correctness across backends), not equal-FLOPS
   optimisation.
 - OptiX BVH-tracing pipelines. The OptiX pipeline in `gororoba_optix`
   is by design NVIDIA-only; reproducing its ray-tracing semantics in

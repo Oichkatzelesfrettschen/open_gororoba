@@ -48,7 +48,7 @@ use std::f64::consts::PI;
 ///
 /// # Arguments
 /// * `eb` -- eB in natural units (= B / B_cr)
-/// * `theta` -- angle between photon propagation and B field [radians]
+/// * `theta` -- angle between photon propagation and B field `[radians]`
 pub fn refractive_index_parallel(eb: f64, theta: f64) -> f64 {
     let sin2 = theta.sin().powi(2);
     1.0 + (8.0 * ALPHA_EM * ALPHA_EM / 45.0) * eb * eb * sin2
@@ -74,7 +74,7 @@ pub fn refractive_index_perpendicular(eb: f64, theta: f64) -> f64 {
 ///
 /// # Arguments
 /// * `eb` -- eB in natural units
-/// * `theta` -- propagation angle [radians]
+/// * `theta` -- propagation angle `[radians]`
 pub fn vacuum_birefringence(eb: f64, theta: f64) -> f64 {
     let sin2 = theta.sin().powi(2);
     (2.0 * ALPHA_EM * ALPHA_EM / 15.0) * eb * eb * sin2
@@ -86,7 +86,7 @@ pub fn vacuum_birefringence(eb: f64, theta: f64) -> f64 {
 ///
 /// # Arguments
 /// * `b_tesla` -- magnetic field in Tesla
-/// * `theta` -- propagation angle [radians]
+/// * `theta` -- propagation angle `[radians]`
 pub fn vacuum_birefringence_si(b_tesla: f64, theta: f64) -> f64 {
     let eb = tesla_to_natural(b_tesla);
     vacuum_birefringence(eb, theta)
@@ -228,7 +228,7 @@ pub fn decoherence_length(eb: f64, omega: f64) -> f64 {
     45.0 / (14.0 * ALPHA_EM * ALPHA_EM * b_phys * b_phys * omega)
 }
 
-/// Decoherence length in SI units [meters].
+/// Decoherence length in SI units `[meters]`.
 ///
 /// # Arguments
 /// * `b_tesla` -- magnetic field in Tesla

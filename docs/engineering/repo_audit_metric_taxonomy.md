@@ -36,6 +36,7 @@ the lint is trying to catch:
 ## Metric reference
 
 ### File counts
+
 - `rust_files`: total `.rs` files walked.
 - `rocq_files`: total `.v` files walked.
 - `other_files`: every other file under the walked roots.

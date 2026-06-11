@@ -5,7 +5,7 @@
 //! formation energy and band gap prediction.
 //!
 //! Usage:
-//!   materials-baseline [--data-dir data/external] [--seed 42]
+//!   `materials-baseline [--data-dir data/external] [--seed 42]`
 
 use clap::Parser;
 use data_core::catalogs::{aflow, jarvis};

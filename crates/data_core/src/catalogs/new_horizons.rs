@@ -83,6 +83,9 @@ pub fn parse_nh_swap(content: &str) -> Vec<SpdfMergedRecord> {
     NH_SWAP_MISSION.parse_merged(content)
 }
 
+#[cfg(feature = "fetch")]
+pub use super::new_horizons_fetch::NhSwapProvider;
+
 /// Parse New Horizons SWAP hourly data from a file.
 pub fn parse_nh_swap_file(path: &std::path::Path) -> Result<Vec<SpdfMergedRecord>, FetchError> {
     let content = std::fs::read_to_string(path)

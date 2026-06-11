@@ -5,8 +5,7 @@
 //! Migrated from bin/doctor.py.
 
 use anyhow::Result;
-use std::process::Command;
-use std::path::Path;
+use std::{path::Path, process::Command};
 
 struct Check {
     name: &'static str,
@@ -15,11 +14,31 @@ struct Check {
 }
 
 const BINARY_CHECKS: &[Check] = &[
-    Check { name: "rustc", cmd: "rustc", args: &["--version"] },
-    Check { name: "cargo", cmd: "cargo", args: &["--version"] },
-    Check { name: "docker", cmd: "docker", args: &["--version"] },
-    Check { name: "coqc", cmd: "coqc", args: &["--version"] },
-    Check { name: "latexmk", cmd: "latexmk", args: &["--version"] },
+    Check {
+        name: "rustc",
+        cmd: "rustc",
+        args: &["--version"],
+    },
+    Check {
+        name: "cargo",
+        cmd: "cargo",
+        args: &["--version"],
+    },
+    Check {
+        name: "docker",
+        cmd: "docker",
+        args: &["--version"],
+    },
+    Check {
+        name: "coqc",
+        cmd: "coqc",
+        args: &["--version"],
+    },
+    Check {
+        name: "latexmk",
+        cmd: "latexmk",
+        args: &["--version"],
+    },
 ];
 
 fn main() -> Result<()> {
@@ -27,10 +46,8 @@ fn main() -> Result<()> {
 
     println!("\nSystem Binaries:");
     for check in BINARY_CHECKS {
-        let status = Command::new(check.cmd)
-            .args(check.args)
-            .output();
-        
+        let status = Command::new(check.cmd).args(check.args).output();
+
         match status {
             Ok(output) if output.status.success() => {
                 let version = String::from_utf8_lossy(&output.stdout)
@@ -59,6 +76,6 @@ fn main() -> Result<()> {
     println!("\nNext steps:");
     println!("  - Core: `make test` or `cargo test`.");
     println!("  - Docs: `cargo run -p xtask -- db-docs`.");
-    
+
     Ok(())
 }

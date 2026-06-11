@@ -6,8 +6,10 @@
 //! fallback. This crate exposes only the NVML mode; callers needing the
 //! subprocess fallback retain the warp_telemetry implementation.
 
-use nvml_wrapper::Nvml;
-use nvml_wrapper::enum_wrappers::device::{Clock, TemperatureSensor};
+use nvml_wrapper::{
+    Nvml,
+    enum_wrappers::device::{Clock, TemperatureSensor},
+};
 
 use crate::error::{CudaError, Result};
 

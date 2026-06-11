@@ -92,7 +92,7 @@ pub use cayley_dickson::{
 };
 
 /// Unified dispatch: compute sliding associator norms at the requested precision.
-/// Returns Vec<f64> regardless of internal precision (f32 results promoted to f64).
+/// Returns `Vec<f64>` regardless of internal precision (f32 results promoted to f64).
 ///
 /// The f32 path uses the workspace-based fast associator (AssociatorWorkspace +
 /// cd_multiply_f32_fused) for zero heap allocation during the hot loop. At 128D

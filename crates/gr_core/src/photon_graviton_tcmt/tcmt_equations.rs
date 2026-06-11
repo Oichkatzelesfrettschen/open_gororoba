@@ -2,8 +2,8 @@
 //!
 //! Solves the coupled-mode equations:
 //! ```text
-//! d/dt [a_ph]   = [-i*\omega_0,ph - \gamma_ph/2    -i*\kappa] [a_ph]
-//!       [a_grav]   [-i*\kappa                 -i*\omega_0,grav - \gamma_grav/2] [a_grav]
+//! d/dt `[a_ph]`   = [-i*\omega_0,ph - \gamma_ph/2    -i*\kappa] `[a_ph]`
+//!       `[a_grav]`   [-i*\kappa                 -i*\omega_0,grav - \gamma_grav/2] `[a_grav]`
 //! ```
 //! using RK4 integration with adaptive timesteps.
 
@@ -14,13 +14,13 @@ use num_complex::Complex64 as C64;
 #[derive(Clone, Copy, Debug)]
 pub struct TCMTSystem {
     pub coupling: GravitationalCoupling,
-    /// Hamiltonian matrix H[0,0]
+    /// Hamiltonian matrix H`[0,0]`
     pub h00: C64,
-    /// Hamiltonian matrix H[0,1]
+    /// Hamiltonian matrix H`[0,1]`
     pub h01: C64,
-    /// Hamiltonian matrix H[1,0]
+    /// Hamiltonian matrix H`[1,0]`
     pub h10: C64,
-    /// Hamiltonian matrix H[1,1]
+    /// Hamiltonian matrix H`[1,1]`
     pub h11: C64,
 }
 
@@ -55,7 +55,7 @@ impl TCMTSystem {
         }
     }
 
-    /// Compute time derivative: d[a_ph, a_grav]^T / dt = H * [a_ph, a_grav]^T
+    /// Compute time derivative: d`[a_ph, a_grav]`^T / dt = H * `[a_ph, a_grav]`^T
     pub fn time_derivative(&self, state: TCMTState) -> (C64, C64) {
         let da_ph = self.h00 * state.a_photon + self.h01 * state.a_graviton;
         let da_grav = self.h10 * state.a_photon + self.h11 * state.a_graviton;

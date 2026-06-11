@@ -15,9 +15,9 @@ use nalgebra::Vector3;
 /// Three blocks of 21 axes each (total 63 imaginary dimensions + 1 real = 64):
 ///
 /// 1. **Angular momentum block (axes 1-21)**: h projected into orbital triad
-///    (always [0, 1, 0] in this frame, so this block encodes h_norm only).
+///    (always `[0, 1, 0]` in this frame, so this block encodes h_norm only).
 /// 2. **Velocity block (axes 22-42)**: v_rel projected into orbital triad
-///    (always [|v_rel|, 0, 0] in this frame).
+///    (always `[|v_rel|, 0, 0]` in this frame).
 /// 3. **Cross-coupling block (axes 43-63)**: sign(h . v_wind) * mixed terms.
 ///    This block is the only one sensitive to the spacecraft's hemisphere
 ///    relative to the dark matter wind.
@@ -204,19 +204,19 @@ fn chingon_bivector_drag_core(
 /// Extracted from `compute_chingon_bivector_drag_3body` so that both
 /// the CPU and GPU contraction paths can share the same geometry computation.
 pub struct ThreeBodyOrbitalParams {
-    /// Earth triad: [e_v, e_h, e_n] as row-major 3x3.
+    /// Earth triad: `[e_v, e_h, e_n]` as row-major 3x3.
     pub triad_earth: [[f64; 3]; 3],
     /// Lunar triad.
     pub triad_lunar: [[f64; 3]; 3],
     /// Solar triad.
     pub triad_solar: [[f64; 3]; 3],
-    /// h_earth projected into Earth triad [3].
+    /// h_earth projected into Earth triad `[3]`.
     pub h_triad_earth: [f64; 3],
-    /// v_rel projected into Lunar triad [3].
+    /// v_rel projected into Lunar triad `[3]`.
     pub vrel_triad_lunar: [f64; 3],
-    /// h_earth projected into Solar triad [3].
+    /// h_earth projected into Solar triad `[3]`.
     pub h_triad_solar: [f64; 3],
-    /// v_hat projected into Solar triad [3].
+    /// v_hat projected into Solar triad `[3]`.
     pub vhat_triad_solar: [f64; 3],
     /// Magnitude of h_earth.
     pub h_earth_norm: f64,

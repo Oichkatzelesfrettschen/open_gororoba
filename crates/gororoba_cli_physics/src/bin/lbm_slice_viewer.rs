@@ -8,10 +8,10 @@
 //! ```text
 //! CUDA SMs:  LBM MRT collision+streaming (N steps per frame)
 //!     |
-//!     v  sync_to_host() readback rho[N] + u[3*N]
+//!     v  sync_to_host() readback `rho[N] + u[3*N]`
 //! CPU SIMD:  rayon parallel rows + colormap (viridis LUT)
 //!     |
-//!     v  framebuffer[1280*960] u32 ARGB
+//!     v  `framebuffer[1280*960]` u32 ARGB
 //! minifb:  window display at 60 FPS
 //! ```
 //!

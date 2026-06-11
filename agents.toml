@@ -8,9 +8,9 @@ source_comment = "agents.toml"
 rust_first_heading = "Rust First"
 rust_first_intro = "This repository is a pure Rust codebase first and foremost."
 rust_first_rules = [
-  "All new automation, analysis, verification, ingestion, artifact generation, and claim-support implementations MUST be written in Rust crates, Rust binaries, or Rust tests.",
-  "Python, notebooks, and ad hoc scripting are migration debt, not acceptable end states for new work.",
-  "If a workflow currently exists only in a non-Rust form, the required action is to migrate it to Rust rather than add another non-Rust layer beside it.",
+    "All new automation, analysis, verification, ingestion, artifact generation, and claim-support implementations MUST be written in Rust crates, Rust binaries, or Rust tests.",
+    "Python, notebooks, and ad hoc scripting are migration debt, not acceptable end states for new work.",
+    "If a workflow currently exists only in a non-Rust form, the required action is to migrate it to Rust rather than add another non-Rust layer beside it.",
 ]
 policy_link_heading = "Policy Link"
 policy_link_body = "`agents.toml` is the canonical machine-readable policy file for this repo.\nRead it with this file, keep the two in sync, and follow the stricter Rust-first interpretation if they ever drift."
@@ -268,25 +268,58 @@ purpose = "checkpoint push for high-frequency iteration after focused crate gate
 order = 1
 name = "foundation"
 description = "Core numerical and algorithmic crates with no internal tier dependency requirements."
-crates = ["gororoba_algebra", "stats_core", "spectral_core", "lbm_core", "data_core", "control_core", "optics_core", "scrolls_core", "docpipe"]
+crates = [
+    "gororoba_algebra",
+    "stats_core",
+    "spectral_core",
+    "lbm_core",
+    "data_core",
+    "control_core",
+    "optics_core",
+    "scrolls_core",
+    "docpipe",
+]
 
 [[shared.architecture_tier]]
 order = 2
 name = "domain_physics"
 description = "Physics and domain models built on foundation crates."
-crates = ["gr_core", "cosmology_core", "materials_core", "quantum_core", "snia_core", "spin_tomography_core", "qgp_scaling"]
+crates = [
+    "gr_core",
+    "cosmology_core",
+    "materials_core",
+    "quantum_core",
+    "snia_core",
+    "spin_tomography_core",
+    "qgp_scaling",
+]
 
 [[shared.architecture_tier]]
 order = 3
 name = "synthesis"
 description = "Cross-domain synthesis and high-fidelity simulation lanes."
-crates = ["sign_imbalance", "lattice_filtration", "neural_homotopy", "lbm_3d", "lbm_3d_cuda", "lbm_vulkan", "cosmic_scheduler", "cd_spin_bridge"]
+crates = [
+    "sign_imbalance",
+    "lattice_filtration",
+    "neural_homotopy",
+    "lbm_3d",
+    "lbm_3d_cuda",
+    "lbm_vulkan",
+    "cosmic_scheduler",
+    "cd_spin_bridge",
+]
 
 [[shared.architecture_tier]]
 order = 4
 name = "orchestration"
 description = "Execution surface and integration boundaries."
-crates = ["gororoba_pipeline", "gororoba_gpu_bridge", "gororoba_engine", "gororoba_cli", "gororoba_contracts"]
+crates = [
+    "gororoba_pipeline",
+    "gororoba_gpu_bridge",
+    "gororoba_engine",
+    "gororoba_cli",
+    "gororoba_contracts",
+]
 
 [[shared.four_thesis_pipeline]]
 order = 1
@@ -582,7 +615,12 @@ role = "default_coding_agent"
 
 [agents.codex.guidance]
 style = "concise_repo_specific_contributor_guide"
-emphasis = ["project_structure", "daily_build_test_commands", "coding_conventions", "commit_and_pr_hygiene"]
+emphasis = [
+    "project_structure",
+    "daily_build_test_commands",
+    "coding_conventions",
+    "commit_and_pr_hygiene",
+]
 
 [agents.claude]
 entry_stub = "CLAUDE.md"
@@ -592,7 +630,13 @@ role = "operational_quickstart_overlay"
 
 [agents.claude.guidance]
 style = "command_first_architecture_aware"
-emphasis = ["daily_driver_commands", "architecture_tiers", "registry_workflow", "common_pitfalls", "cross_references"]
+emphasis = [
+    "daily_driver_commands",
+    "architecture_tiers",
+    "registry_workflow",
+    "common_pitfalls",
+    "cross_references",
+]
 
 [agents.gemini]
 entry_stub = "GEMINI.md"
@@ -602,7 +646,13 @@ role = "analysis_context_overlay"
 
 [agents.gemini.guidance]
 style = "high_level_system_map_with_execution_hooks"
-emphasis = ["project_overview", "four_thesis_pipeline", "technology_stack", "quality_gates", "operational_constraints"]
+emphasis = [
+    "project_overview",
+    "four_thesis_pipeline",
+    "technology_stack",
+    "quality_gates",
+    "operational_constraints",
+]
 
 [rust_native_policy_bottom]
 enforced = true

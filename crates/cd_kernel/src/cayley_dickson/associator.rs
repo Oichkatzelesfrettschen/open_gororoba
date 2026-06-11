@@ -1,7 +1,7 @@
 //! CD associator: the core diagnostic measuring non-associativity.
 //!
-//! # Prerequisite modules: [`arith`] (multiply, norm), [`signs`] (basis product)
-//! # Depended on by: [`fast_associator`], [`symmetry`], all analysis binaries
+//! # Prerequisite modules: `arith` (multiply, norm), `signs` (basis product)
+//! # Depended on by: `fast_associator`, `symmetry`, all analysis binaries
 //!
 //! # Mathematical definition
 //!
@@ -139,7 +139,7 @@ pub fn batch_associator_norms_parallel(
 
 /// Batch compute sedenion associator norms for a sequence of 16D vectors.
 ///
-/// Uses sliding window of 3: Assoc(v[i], v[i+1], v[i+2]).
+/// Uses sliding window of 3: `Assoc(v[i], v[i+1], v[i+2])`.
 /// Optimized with AVX2+FMA if detected at runtime.
 pub fn batch_sedenion_associator_norms(vectors: &[[f64; 16]]) -> Vec<f64> {
     if vectors.len() < 3 {
@@ -246,7 +246,7 @@ pub fn batch_sliding_associator_norms(vectors: &[Vec<f64>], dim: usize) -> Vec<f
         .collect()
 }
 
-/// Parallel variant of [`batch_sliding_associator_norms`].
+/// Parallel variant of `batch_sliding_associator_norms`.
 ///
 /// Uses Rayon for multi-core scaling. For dim=16, 32, and 64, leverages
 /// AVX2+FMA SIMD via the sedenion/pathion/chingon fast paths.

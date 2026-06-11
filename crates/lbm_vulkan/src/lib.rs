@@ -25,12 +25,12 @@ use ash::{Device, Entry, Instance, vk};
 use gpu_allocator::vulkan::*;
 use std::{ffi::CStr, sync::Arc};
 
-pub mod alignment_vulkan;
 #[cfg(feature = "cubecl")]
 pub mod alignment_cubecl;
-pub mod besag_clifford_vulkan;
+pub mod alignment_vulkan;
 #[cfg(feature = "cubecl")]
 pub mod besag_clifford_cubecl;
+pub mod besag_clifford_vulkan;
 pub mod box_counting_cpu;
 #[cfg(feature = "cubecl")]
 pub mod box_counting_cubecl;
@@ -41,6 +41,8 @@ pub mod chingon_cubecl;
 pub mod chingon_vulkan;
 pub mod compute;
 pub mod coop_matrix_probe;
+#[cfg(feature = "cubecl")]
+pub mod dark_halo_cubecl;
 pub mod dark_halo_vulkan;
 #[cfg(feature = "cubecl")]
 pub mod lbm_d3q19_cubecl;
@@ -49,6 +51,10 @@ pub mod lbm_d3q19_vulkan;
 pub mod lbm_mrt_d3q19_cubecl;
 pub mod lbm_mrt_d3q19_vulkan;
 pub mod precision_dispatch;
+pub mod sparse_lbm_common;
+#[cfg(feature = "cubecl")]
+pub mod sparse_lbm_cubecl;
+pub mod sparse_lbm_vulkan;
 pub mod swapchain;
 pub mod transform_viscosity_cpu;
 #[cfg(feature = "cubecl")]

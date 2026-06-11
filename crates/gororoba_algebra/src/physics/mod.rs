@@ -5,6 +5,7 @@ pub mod clifford;
 pub mod crystallography;
 pub mod dft_mapping;
 pub mod experimental_protocols;
+pub mod heterotic_e8;
 pub mod laws;
 pub mod m3;
 pub mod octonion_e8_theory;

@@ -36,7 +36,7 @@ pub struct AlgebraicAdmState {
     pub quaternion_frame: [f64; 4],
     /// Local octonion field value (8 components).
     pub octonion_field: [f64; 8],
-    /// Sedenion imbalance density at this point (in [0, 0.5]).
+    /// Sedenion imbalance density at this point (in `[0, 0.5]`).
     pub sedenion_imbalance: f64,
     /// Associator norm of the local algebraic field.
     pub associator_norm: f64,
@@ -122,7 +122,7 @@ pub fn quaternion_frame_from_spatial_metric(gamma: &SpatialMetric) -> [f64; 4] {
 ///
 /// Maps octonion non-associativity (associator norm) to a correction
 /// for the trace-free K_{ij}:
-///   delta_A_{ij} = alpha_oct * ||[a,b,c]|| * A_{ij} / ||A||
+///   delta_A_{ij} = alpha_oct * ||`[a,b,c]`|| * A_{ij} / ||A||
 ///
 /// where alpha_oct is a dimensionless coupling constant.
 /// At zero coupling or zero associator: delta = 0.

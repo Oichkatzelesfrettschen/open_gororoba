@@ -1,7 +1,6 @@
 use algebra_experimental::voudon_stabilizer::Cd256StabilizerKernel;
-use cudarc::driver::CudaContext;
+use gororoba_gpu_cuda::Context as CudaContextHelper;
 use lbm_3d_cuda::{LbmSolver3DCuda, Precision};
-use std::sync::Arc;
 
 fn main() -> anyhow::Result<()> {
     println!("--- Voudon Stabilizer Demo: GPU-Accelerated Topological Search ---");
@@ -46,7 +45,7 @@ fn main() -> anyhow::Result<()> {
         stabilizer_field[idx] = 1.0;
     }
 
-    let ctx = Arc::new(CudaContext::new(0)?);
+    let ctx = CudaContextHelper::with_default_device()?;
     let stream = ctx.default_stream();
     let d_stabilizer = stream.clone_htod(&stabilizer_field)?;
 

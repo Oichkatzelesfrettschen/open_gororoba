@@ -2,8 +2,8 @@
 name = "brown_1972"
 version = "0.1.0"
 edition = { workspace = true }
-description = "Brown (1972) Zero Divisor Structure in CD Algebras -- verified Rust implementation"
 license = "GPL-2.0-or-later"
+description = "Brown (1972) Zero Divisor Structure in CD Algebras -- verified Rust implementation"
 
 # Source: Brown, H.C. (1972) "Structure of zero divisors, and other algebraic
 # structures, in higher dimensional real Cayley-Dickson algebras",

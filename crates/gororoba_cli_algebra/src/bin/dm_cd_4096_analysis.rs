@@ -44,7 +44,7 @@ fn random_cd_element(dim: usize, rng: &mut ChaCha8Rng) -> Vec<f64> {
     (0..dim).map(|_| rng.random_range(-1.0..1.0)).collect()
 }
 
-/// Compute the associator [a,b,c] = (ab)c - a(bc).
+/// Compute the associator `[a,b,c] = (ab)c - a(bc)`.
 fn associator(a: &[f64], b: &[f64], c: &[f64]) -> Vec<f64> {
     let ab = cd_multiply(a, b);
     let bc = cd_multiply(b, c);

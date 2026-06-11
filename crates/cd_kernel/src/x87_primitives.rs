@@ -90,16 +90,16 @@
 /// ```text
 /// FLDZ x2 -> ST(0)=accB=0, ST(1)=accA=0
 /// Loop (2 elements per iteration):
-///   FLD [p+0]            -> ST: [e0, accB, accA]
-///   FADDP %st, %st(2)    -> accA += e0, pop; ST: [accB, accA']
-///   FLD [p+8]            -> ST: [e1, accB, accA']
-///   FADDP %st, %st(1)    -> accB += e1, pop; ST: [accB', accA']
+///   FLD `[p+0]`            -> ST: `[e0, accB, accA]`
+///   FADDP %st, %st(2)    -> accA += e0, pop; ST: `[accB, accA']`
+///   FLD `[p+8]`            -> ST: `[e1, accB, accA']`
+///   FADDP %st, %st(1)    -> accB += e1, pop; ST: `[accB', accA']`
 ///   ADD p, 16; DEC pairs; JNZ
 /// Remainder (n odd):
-///   FLD [p]; FADDP %st, %st(1) -> accB' += last; ST: [accB'', accA']
+///   FLD `[p]`; FADDP %st, %st(1) -> accB' += last; ST: `[accB'', accA']`
 /// Merge (highest-index-first):
-///   FADDP %st, %st(1)    -> accA' += accB'', pop; ST: [total]
-///   FSTP [out]           -> store total, stack empty
+///   FADDP %st, %st(1)    -> accA' += accB'', pop; ST: `[total]`
+///   FSTP `[out]`           -> store total, stack empty
 /// ```
 ///
 /// The merge targets ST(1) (index 1) from a 2-element stack: this IS highest-index-first
@@ -161,7 +161,7 @@ pub fn x87_sum(a: &[f64]) -> f64 {
 
 /// Compute the dot product of `a[0..n]` and `b[0..n]` using x87 80-bit precision.
 ///
-/// Each term `a[i] * b[i]` is computed with `fldl a[i]; fmull [b+i*8]` which
+/// Each term `a[i] * b[i]` is computed with `fldl a[i]; fmull [b+i*8]`, which
 /// keeps the product in ST(0) before accumulation. `FMUL qword ptr [mem]` is the
 /// memory-form multiply: ST(0) *= mem, without an extra push/pop pair.
 ///
@@ -235,10 +235,10 @@ pub fn x87_dot(a: &[f64], b: &[f64]) -> f64 {
 ///
 /// Per group of 4 (indices describe the state AFTER the preceding pop):
 /// ```text
-/// FLD a[i];   FMUL ST(0),ST(0);  FADDP %st,%st(4)  -> accA += a[i]^2,   pop; 4 deep
-/// FLD a[i+1]; FMUL ST(0),ST(0);  FADDP %st,%st(3)  -> accB += a[i+1]^2, pop; 4 deep
-/// FLD a[i+2]; FMUL ST(0),ST(0);  FADDP %st,%st(2)  -> accC += a[i+2]^2, pop; 4 deep
-/// FLD a[i+3]; FMUL ST(0),ST(0);  FADDP %st,%st(1)  -> accD += a[i+3]^2, pop; 4 deep
+/// FLD a`[i]`;   FMUL ST(0),ST(0);  FADDP %st,%st(4)  -> accA += a`[i]`^2,   pop; 4 deep
+/// FLD a`[i+1]`; FMUL ST(0),ST(0);  FADDP %st,%st(3)  -> accB += a`[i+1]`^2, pop; 4 deep
+/// FLD a`[i+2]`; FMUL ST(0),ST(0);  FADDP %st,%st(2)  -> accC += a`[i+2]`^2, pop; 4 deep
+/// FLD a`[i+3]`; FMUL ST(0),ST(0);  FADDP %st,%st(1)  -> accD += a`[i+3]`^2, pop; 4 deep
 /// ```
 ///
 /// The FLD temporarily pushes the stack to 5 deep; accA is at ST(4). After FADDP and pop
@@ -247,10 +247,10 @@ pub fn x87_dot(a: &[f64], b: &[f64]) -> f64 {
 ///
 /// Merge uses highest-index-first order, making the post-pop rename explicit in operands:
 /// ```text
-/// Stack: [accD, accC, accB, accA]  (accA at ST(3) = highest live index)
-/// faddp %st, %st(3)  -> accA += accD, pop; ST: [accC, accB, accA']
-/// faddp %st, %st(2)  -> accA' += accC, pop; ST: [accB, accA'']
-/// faddp %st, %st(1)  -> accA'' += accB = total, pop; ST: [total]
+/// Stack: `[accD, accC, accB, accA]`  (accA at ST(3) = highest live index)
+/// faddp %st, %st(3)  -> accA += accD, pop; ST: `[accC, accB, accA']`
+/// faddp %st, %st(2)  -> accA' += accC, pop; ST: `[accB, accA'']`
+/// faddp %st, %st(1)  -> accA'' += accB = total, pop; ST: `[total]`
 /// ```
 #[cfg(target_arch = "x86_64")]
 pub fn x87_norm_sq(a: &[f64]) -> f64 {
@@ -422,7 +422,7 @@ pub fn x87_norm_sq_16(a: &[f64; 16]) -> f64 {
 
 /// Evaluate polynomial using Horner's method entirely in x87 80-bit arithmetic.
 ///
-/// Evaluates p(x) = coeffs[0] + coeffs[1]*x + ... + coeffs[n-1]*x^(n-1).
+/// Evaluates p(x) = coeffs`[0]` + coeffs`[1]`*x + ... + coeffs`[n-1]`*x^(n-1).
 ///
 /// # Why Horner in x87
 ///
@@ -438,10 +438,10 @@ pub fn x87_norm_sq_16(a: &[f64; 16]) -> f64 {
 /// # Stack trace
 ///
 /// ```text
-/// fldl a[n-1]        ; ST(0) = a[n-1]
+/// fldl a`[n-1]`        ; ST(0) = a`[n-1]`
 /// loop n-1 times:
 ///   fmull (x_ptr)    ; ST(0) = ST(0) * x  (memory form: no push/pop)
-///   faddl (p)        ; ST(0) = ST(0) + a[i]  (memory form: no push/pop)
+///   faddl (p)        ; ST(0) = ST(0) + a`[i]`  (memory form: no push/pop)
 ///   p -= 8
 /// fstpl (out)        ; *out = ST(0); pop
 /// ```
@@ -887,7 +887,7 @@ pub fn x87_is_exact_zero_vec(v: &[f64]) -> bool {
 /// true zero products.
 /// Compute one component of a CD product in x87 80-bit precision.
 ///
-/// result[t] = sum_q sign(t^q, q) * a[t^q] * b[q]
+/// result`[t]` = sum_q sign(t^q, q) * a`[t^q]` * b`[q]`
 ///
 /// The entire sum is accumulated in a single x87 asm! block, keeping
 /// the running total in ST(0) at 80-bit precision. Each term uses

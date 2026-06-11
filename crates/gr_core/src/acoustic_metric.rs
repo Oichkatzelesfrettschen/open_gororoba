@@ -82,8 +82,8 @@ pub fn acoustic_hawking_temperature(kappa: f64) -> f64 {
 ///
 /// # Arguments
 /// * `kappa` - Surface gravity [s^-1]
-/// * `hbar` - Reduced Planck constant [J*s]
-/// * `k_b` - Boltzmann constant [J/K]
+/// * `hbar` - Reduced Planck constant `[J*s]`
+/// * `k_b` - Boltzmann constant `[J/K]`
 pub fn acoustic_hawking_temperature_physical(kappa: f64, hbar: f64, k_b: f64) -> f64 {
     hbar * kappa / (2.0 * PI * k_b)
 }

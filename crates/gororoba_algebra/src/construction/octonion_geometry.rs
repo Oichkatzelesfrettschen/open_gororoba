@@ -6,7 +6,7 @@
 //! the Desargues theorem fails due to octonion non-associativity.
 //!
 //! Key structures:
-//! - OP^2 points: equivalence classes [a:b:c] with octonionic homogeneous coordinates
+//! - OP^2 points: equivalence classes `[a:b:c]` with octonionic homogeneous coordinates
 //! - OP^2 lines: defined by incidence relation using the Hermitian inner product
 //! - Moufang loop: unit octonions S^7 form a Moufang loop (not a group)
 //! - Moufang identities: a(x(ay)) = (axa)y, ((xa)y)a = x(aya), (ax)(ya) = a(xy)a
@@ -31,9 +31,9 @@ use super::{albert::AlbertElement, octonion::Octonion};
 /// Equivalently, P = v v^* / (v^* v) for some non-zero v in O^3.
 ///
 /// We store the Hermitian matrix entries directly:
-///   P = [[xi_1,    conj(x_3), conj(x_2)],
-///        [x_3,     xi_2,      conj(x_1)],
-///        [x_2,     x_1,       xi_3     ]]
+///   P = `[[xi_1,    conj(x_3), conj(x_2)]`,
+///        `[x_3,     xi_2,      conj(x_1)]`,
+///        `[x_2,     x_1,       xi_3     ]`]
 /// where xi_i are real and x_i are octonionic.
 #[derive(Clone, Debug)]
 pub struct CayleyPlanePoint {
@@ -44,7 +44,7 @@ pub struct CayleyPlanePoint {
 }
 
 impl CayleyPlanePoint {
-    /// Create a point from homogeneous coordinates [a:b:c] in O^3.
+    /// Create a point from homogeneous coordinates `[a:b:c]` in O^3.
     /// Constructs the rank-1 Hermitian matrix P = v v^* / (v^* v).
     pub fn from_homogeneous(a: &Octonion, b: &Octonion, c: &Octonion) -> Self {
         let norm_sq = a.norm_squared() + b.norm_squared() + c.norm_squared();
@@ -71,7 +71,7 @@ impl CayleyPlanePoint {
         CayleyPlanePoint { xi, x }
     }
 
-    /// Create a "standard" point: [1:0:0], [0:1:0], or [0:0:1].
+    /// Create a "standard" point: `[1:0:0]`, `[0:1:0]`, or `[0:0:1]`.
     pub fn standard(index: usize) -> Self {
         assert!(index < 3, "Standard point index must be 0, 1, or 2");
         let mut xi = [0.0; 3];

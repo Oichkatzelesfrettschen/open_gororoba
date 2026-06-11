@@ -34,7 +34,7 @@
 
 /// A 3x3 Hermitian octonionic matrix (27-dimensional Albert algebra element).
 ///
-/// Layout: [a, b, c, x[0..8], y[0..8], z[0..8]] = 3 + 3*8 = 27 components.
+/// Layout: `[a, b, c, x[0..8]`, y`[0..8]`, z`[0..8]`] = 3 + 3*8 = 27 components.
 #[derive(Clone, Debug)]
 pub struct AlbertElement {
     /// Diagonal reals (a, b, c).
@@ -112,9 +112,9 @@ impl AlbertElement {
     /// Project a 64D vector into the Albert algebra structure.
     ///
     /// Maps d=64 attention head dimension to 2 Albert elements + 10D residual:
-    ///   v[0..27]  -> AlbertElement 1
-    ///   v[27..54] -> AlbertElement 2
-    ///   v[54..64] -> residual (outside Albert structure)
+    ///   v`[0..27]`  -> AlbertElement 1
+    ///   v`[27..54]` -> AlbertElement 2
+    ///   v`[54..64]` -> residual (outside Albert structure)
     ///
     /// This reveals how much of the attention key's structure is captured
     /// by the Albert algebra -- if most energy is in the first 54 components,

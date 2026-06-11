@@ -15,7 +15,43 @@ title = "Artifact Source of Truth"
 status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = []
-path_refs = [".bib", ".bibtex", ".md", ".rst", ".toml", ".txt", "archive/", "data/", "data/external/intake/**/fetch_results*_normalized.tsv", "data/external/intake/**/link_audit_results*.tsv", "data/external/intake/**/mirror_retry_results*.tsv", "data/external/intake/**/pdf_success_added.tsv", "data/papers/", "docs/", "papers/", "refs.bib", "registry/", "registry/artifact_source_of_truth.toml", "registry/embedded_markdown_*.toml", "registry/knowledge/", "registry/knowledge/artifacts/", "registry/markdown_payload*.toml", "registry/source_infrastructure.toml", "registry/source_lanes/*.toml", "registry/source_lanes/datasets.toml", "registry/source_lanes/papers_pdf.toml", "registry/source_lanes/slides_artifacts.toml", "registry/source_lanes/web_references.toml", "reports/", "reports/artifact_blocked_links_2026_02_15.tsv", "reports/artifact_missing_minimum_2026_02_15.tsv", "reports/artifact_source_of_truth_reconciliation_2026_02_15.toml", "reports/blocked_artifact_recovery_attempts_2026_02_15.tsv", "reports/blocked_artifact_retry_plan_2026_02_15.toml", "reports/source_infrastructure_reconciliation_2026_02_15.toml"]
+path_refs = [
+    ".bib",
+    ".bibtex",
+    ".md",
+    ".rst",
+    ".toml",
+    ".txt",
+    "archive/",
+    "data/",
+    "data/external/intake/**/fetch_results*_normalized.tsv",
+    "data/external/intake/**/link_audit_results*.tsv",
+    "data/external/intake/**/mirror_retry_results*.tsv",
+    "data/external/intake/**/pdf_success_added.tsv",
+    "data/papers/",
+    "docs/",
+    "papers/",
+    "refs.bib",
+    "registry/",
+    "registry/artifact_source_of_truth.toml",
+    "registry/embedded_markdown_*.toml",
+    "registry/knowledge/",
+    "registry/knowledge/artifacts/",
+    "registry/markdown_payload*.toml",
+    "registry/source_infrastructure.toml",
+    "registry/source_lanes/*.toml",
+    "registry/source_lanes/datasets.toml",
+    "registry/source_lanes/papers_pdf.toml",
+    "registry/source_lanes/slides_artifacts.toml",
+    "registry/source_lanes/web_references.toml",
+    "reports/",
+    "reports/artifact_blocked_links_2026_02_15.tsv",
+    "reports/artifact_missing_minimum_2026_02_15.tsv",
+    "reports/artifact_source_of_truth_reconciliation_2026_02_15.toml",
+    "reports/blocked_artifact_recovery_attempts_2026_02_15.tsv",
+    "reports/blocked_artifact_retry_plan_2026_02_15.toml",
+    "reports/source_infrastructure_reconciliation_2026_02_15.toml",
+]
 line_count = 87
 body_markdown = '''
 # Artifact Source of Truth
@@ -114,7 +150,19 @@ title = "C-010 Non-Local Algebraic Metamaterials"
 status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = ["C-010"]
-path_refs = [">= 0.02", ">= 0.95", "benchmark_summary.toml", "crates/algebra_analysis/src/crystal_bands.rs", "crates/algebra_analysis/src/reggiani.rs", "crates/cosmology_core/src/sersic.rs", "crates/gororoba_cli_physics/src/bin/nonlocal_algebraic_metamaterial.rs", "crates/materials_core/src/nonlocal_metamaterial.rs", "crates/quantum_core/src/magnonic_crystal.rs", "crates/quantum_core/src/tight_binding.rs", "data/csv/c010_nonlocal_material_calibrations.csv"]
+path_refs = [
+    ">= 0.02",
+    ">= 0.95",
+    "benchmark_summary.toml",
+    "crates/algebra_analysis/src/crystal_bands.rs",
+    "crates/algebra_analysis/src/reggiani.rs",
+    "crates/cosmology_core/src/sersic.rs",
+    "crates/gororoba_cli_physics/src/bin/nonlocal_algebraic_metamaterial.rs",
+    "crates/materials_core/src/nonlocal_metamaterial.rs",
+    "crates/quantum_core/src/magnonic_crystal.rs",
+    "crates/quantum_core/src/tight_binding.rs",
+    "data/csv/c010_nonlocal_material_calibrations.csv",
+]
 line_count = 139
 body_markdown = '''
 # C-010 Non-Local Algebraic Metamaterials
@@ -271,7 +319,14 @@ title = "E-027 Phase 2 Execution Plan: Grid Upscaling and Lambda Sweep"
 status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = ["C-657", "C-658", "C-659", "E-027"]
-path_refs = ["data/e027/e027_results.toml", "data/e027/lambda_sweep/gpu_sweep_v2.log", "data/e027/lambda_sweep_phase2_128/", "reports/e027_decision_protocol.toml", "reports/e027_negative_result_2026_02_16.toml", "sign_imbalance/src/percolation.rs"]
+path_refs = [
+    "data/e027/e027_results.toml",
+    "data/e027/lambda_sweep/gpu_sweep_v2.log",
+    "data/e027/lambda_sweep_phase2_128/",
+    "reports/e027_decision_protocol.toml",
+    "reports/e027_negative_result_2026_02_16.toml",
+    "sign_imbalance/src/percolation.rs",
+]
 line_count = 173
 body_markdown = '''
 # E-027 Phase 2 Execution Plan: Grid Upscaling and Lambda Sweep
@@ -456,7 +511,24 @@ title = "MCP Servers for open_gororoba"
 status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = ["DOC-0122"]
-path_refs = ["PYTHONWARNINGS=error cargo run --release --bin src/verification/verify_mcp_smoke.py", "clients/{codex,claude,gemini}", "docs/engineering/MCP_SKILLS_AUDIT_2026-02-09.md", "docs/engineering/user_local_bootstrap.txt", "make bootstrap-user-local-xdg", "registry/agents_contract.toml", "registry/knowledge/docs/DOC-0122.toml", "registry/mcp_server_matrix.toml", "reports/claude_dotfiles_gap_audit_2026_02_14.toml", "scripts/bootstrap_user_local_xdg.sh", "src/verification/verify_mcp_smoke.py", "verify_mcp_smoke.py", "~/.claude/.mcp.json", "~/.codex/config.toml", "~/.codex/mcp-config.json", "~/.gemini/settings.json"]
+path_refs = [
+    "PYTHONWARNINGS=error cargo run --release --bin src/verification/verify_mcp_smoke.py",
+    "clients/{codex,claude,gemini}",
+    "docs/engineering/MCP_SKILLS_AUDIT_2026-02-09.md",
+    "docs/engineering/user_local_bootstrap.txt",
+    "make bootstrap-user-local-xdg",
+    "registry/agents_contract.toml",
+    "registry/knowledge/docs/DOC-0122.toml",
+    "registry/mcp_server_matrix.toml",
+    "reports/claude_dotfiles_gap_audit_2026_02_14.toml",
+    "scripts/bootstrap_user_local_xdg.sh",
+    "src/verification/verify_mcp_smoke.py",
+    "verify_mcp_smoke.py",
+    "~/.claude/.mcp.json",
+    "~/.codex/config.toml",
+    "~/.codex/mcp-config.json",
+    "~/.gemini/settings.json",
+]
 line_count = 44
 body_markdown = '''
 # MCP Servers for open_gororoba
@@ -511,8 +583,34 @@ slug = "phase1_remaining_roadmap"
 title = "Phase 1 Remaining Work: Comprehensive Roadmap (Phases 1.4-1.9)"
 status_token = "NARRATIVE"
 content_kind = "status_note"
-claim_refs = ["C-657", "C-660", "C-661", "C-662", "C-663", "C-664", "C-670", "E-027", "I-064", "I-065", "I-066", "I-067", "I-068"]
-path_refs = ["crates/lbm_3d/tests/test_chapman_enskog_verification.rs", "crates/sign_imbalance/src/analytical.rs", "crates/sign_imbalance/src/spatial_analysis.rs", "data/e027/grid_sweep_results.csv", "data/e027/lambda_sweep_results.csv", "data/e027/spatial_analysis_results.csv", "docs/ANALYTICAL_SYNTHESIS.md", "docs/LAMBDA_DERIVATION.md", "docs/PARAMETER_SWEEP_SYNTHESIS.md", "docs/STRONG_LAMBDA_VALIDATION.md", "registry/experiments.toml"]
+claim_refs = [
+    "C-657",
+    "C-660",
+    "C-661",
+    "C-662",
+    "C-663",
+    "C-664",
+    "C-670",
+    "E-027",
+    "I-064",
+    "I-065",
+    "I-066",
+    "I-067",
+    "I-068",
+]
+path_refs = [
+    "crates/lbm_3d/tests/test_chapman_enskog_verification.rs",
+    "crates/sign_imbalance/src/analytical.rs",
+    "crates/sign_imbalance/src/spatial_analysis.rs",
+    "data/e027/grid_sweep_results.csv",
+    "data/e027/lambda_sweep_results.csv",
+    "data/e027/spatial_analysis_results.csv",
+    "docs/ANALYTICAL_SYNTHESIS.md",
+    "docs/LAMBDA_DERIVATION.md",
+    "docs/PARAMETER_SWEEP_SYNTHESIS.md",
+    "docs/STRONG_LAMBDA_VALIDATION.md",
+    "registry/experiments.toml",
+]
 line_count = 539
 body_markdown = '''
 # Phase 1 Remaining Work: Comprehensive Roadmap (Phases 1.4-1.9)
@@ -1063,7 +1161,12 @@ title = "Provenance SQLite Architecture"
 status_token = "NARRATIVE"
 content_kind = "provenance_note"
 claim_refs = []
-path_refs = [".gitignore", "registry/artifact_source_of_truth.toml", "registry/source_infrastructure.toml", "registry/source_lanes/*.toml"]
+path_refs = [
+    ".gitignore",
+    "registry/artifact_source_of_truth.toml",
+    "registry/source_infrastructure.toml",
+    "registry/source_lanes/*.toml",
+]
 line_count = 177
 body_markdown = '''
 # Provenance SQLite Architecture
@@ -1252,7 +1355,12 @@ title = "Real Materials Integration for E-027"
 status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = ["E-027"]
-path_refs = ["nu_lattice = nu / (dx^2/dt) = 2.18e-8 / (1e-12 / 1e-8) = 2.18e-4", "registry/materials_viscosity.toml", "sign_imbalance/src/imbalance_energy.rs", "tau = 3*nu_lattice + 0.5 = 3*(2.18e-4) + 0.5 = 0.500654"]
+path_refs = [
+    "nu_lattice = nu / (dx^2/dt) = 2.18e-8 / (1e-12 / 1e-8) = 2.18e-4",
+    "registry/materials_viscosity.toml",
+    "sign_imbalance/src/imbalance_energy.rs",
+    "tau = 3*nu_lattice + 0.5 = 3*(2.18e-4) + 0.5 = 0.500654",
+]
 line_count = 311
 body_markdown = '''
 # Real Materials Integration for E-027
@@ -1575,7 +1683,11 @@ title = "Scope Guardrails: What open_gororoba Does and Does Not Claim"
 status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = ["C-012", "C-084", "C-430", "C-441", "C-678", "C-679", "C-680", "C-681", "I-087"]
-path_refs = ["crates/cosmology_core/src/flrw.rs", "crates/gr_core/src/cosmology_algebra_bridge.rs", "crates/sign_imbalance/src/bridge.rs:357"]
+path_refs = [
+    "crates/cosmology_core/src/flrw.rs",
+    "crates/gr_core/src/cosmology_algebra_bridge.rs",
+    "crates/sign_imbalance/src/bridge.rs:357",
+]
 line_count = 212
 body_markdown = '''
 # Scope Guardrails: What open_gororoba Does and Does Not Claim
@@ -1799,7 +1911,13 @@ title = "Source Infrastructure Best Practices (Toml-First, Rust-First)"
 status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = []
-path_refs = ["CITATION.cff", "data/external/intake/...", "registry/artifact_source_of_truth.toml", "registry/source_lanes/*.toml", "reports/..."]
+path_refs = [
+    "CITATION.cff",
+    "data/external/intake/...",
+    "registry/artifact_source_of_truth.toml",
+    "registry/source_lanes/*.toml",
+    "reports/...",
+]
 line_count = 50
 body_markdown = '''
 # Source Infrastructure Best Practices (Toml-First, Rust-First)
@@ -1860,8 +1978,44 @@ slug = "synthesis_pipeline_progress"
 title = "Physics Synthesis Pipeline: Overall Progress Tracker"
 status_token = "NARRATIVE"
 content_kind = "analysis_note"
-claim_refs = ["C-001", "C-632", "C-657", "C-658", "C-659", "C-660", "C-664", "C-670", "CRI-001", "CRI-002", "CRI-003", "E-001", "E-026", "E-027", "E-028", "E-029", "I-001", "I-063", "I-064", "I-065", "I-068"]
-path_refs = ["benches/gpu_exhaustive.rs", "benches/gpu_performance.rs", "crates/cosmic_scheduler", "crates/lbm_3d", "crates/lbm_3d_cuda", "crates/sign_imbalance/src/balance.rs", "crates/sign_imbalance/src/bridge.rs", "crates/sign_imbalance/src/signed_graph.rs", "registry/lbm_gpu_performance.toml", "src/kernels.cu", "src/lib.rs", "tests/test_debug_init.rs", "tests/test_gpu_cpu_equivalence.rs"]
+claim_refs = [
+    "C-001",
+    "C-632",
+    "C-657",
+    "C-658",
+    "C-659",
+    "C-660",
+    "C-664",
+    "C-670",
+    "CRI-001",
+    "CRI-002",
+    "CRI-003",
+    "E-001",
+    "E-026",
+    "E-027",
+    "E-028",
+    "E-029",
+    "I-001",
+    "I-063",
+    "I-064",
+    "I-065",
+    "I-068",
+]
+path_refs = [
+    "benches/gpu_exhaustive.rs",
+    "benches/gpu_performance.rs",
+    "crates/cosmic_scheduler",
+    "crates/lbm_3d",
+    "crates/lbm_3d_cuda",
+    "crates/sign_imbalance/src/balance.rs",
+    "crates/sign_imbalance/src/bridge.rs",
+    "crates/sign_imbalance/src/signed_graph.rs",
+    "registry/lbm_gpu_performance.toml",
+    "src/kernels.cu",
+    "src/lib.rs",
+    "tests/test_debug_init.rs",
+    "tests/test_gpu_cpu_equivalence.rs",
+]
 line_count = 510
 body_markdown = '''
 # Physics Synthesis Pipeline: Overall Progress Tracker
@@ -3098,7 +3252,18 @@ slug = "tcmt_synthesis_index"
 title = "Fano TCMT and Photon-Graviton Synthesis: Complete Index"
 status_token = "NARRATIVE"
 content_kind = "analysis_note"
-claim_refs = ["C-823", "C-824", "C-827", "C-828", "C-830", "C-831", "C-833", "E-073", "E-074", "E-075"]
+claim_refs = [
+    "C-823",
+    "C-824",
+    "C-827",
+    "C-828",
+    "C-830",
+    "C-831",
+    "C-833",
+    "E-073",
+    "E-074",
+    "E-075",
+]
 path_refs = ["crates/gr_core/src/photon_graviton_tcmt.rs"]
 line_count = 291
 body_markdown = '''
@@ -3402,7 +3567,21 @@ title = "Warp Ring N^3: Physics, Numerics, And What The Data Means"
 status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = []
-path_refs = ["(1 - 1/(2*tau))", "*.h5", "0.08", "1.0", "64.0", "gpu_telemetry.csv", "tau > 0.5", "timing_*.toml", "timing_128_BF16_300s.toml", "warp_ring_128_...", "warp_ring_128_BF16_300s.h5", "warp_ring_256_...", "warp_ring_32_..."]
+path_refs = [
+    "(1 - 1/(2*tau))",
+    "*.h5",
+    "0.08",
+    "1.0",
+    "64.0",
+    "gpu_telemetry.csv",
+    "tau > 0.5",
+    "timing_*.toml",
+    "timing_128_BF16_300s.toml",
+    "warp_ring_128_...",
+    "warp_ring_128_BF16_300s.h5",
+    "warp_ring_256_...",
+    "warp_ring_32_...",
+]
 line_count = 353
 body_markdown = '''
 # Warp Ring N^3: Physics, Numerics, And What The Data Means
@@ -3767,7 +3946,15 @@ title = "Engine Optimizations"
 status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = []
-path_refs = ["crates/casimir_core/src/energy.rs", "crates/cosmology_core/src/observational.rs", "crates/cosmology_core/src/orthoplex_diffusion.rs", "crates/lbm_3d/src/boundary.rs", "crates/lbm_3d/src/solver.rs", "crates/lbm_vulkan/src/compute.rs", "f_i_new = f_i - (f_i - f_eq_i) / tau"]
+path_refs = [
+    "crates/casimir_core/src/energy.rs",
+    "crates/cosmology_core/src/observational.rs",
+    "crates/cosmology_core/src/orthoplex_diffusion.rs",
+    "crates/lbm_3d/src/boundary.rs",
+    "crates/lbm_3d/src/solver.rs",
+    "crates/lbm_vulkan/src/compute.rs",
+    "f_i_new = f_i - (f_i - f_eq_i) / tau",
+]
 line_count = 145
 body_markdown = '''
 # Engine Optimizations
@@ -4038,7 +4225,15 @@ title = "Physical Claim Boundaries"
 status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = ["C-010", "C-011"]
-path_refs = ["crates/algebra_experimental/src/majorana_braiding.rs", "crates/materials_core/src/nonlocal_metamaterial.rs", "crates/cosmology_core/src/harmonic_halos.rs", "crates/cosmology_core/src/homotopy_bridge.rs", "proofs/verified/C1313_Thesis42Arithmetic.v", "proofs/verified/C1363_HarmonicHaloExactRecovery.v", "proofs/verified/C1364_HomotopyBridgeLaw.v"]
+path_refs = [
+    "crates/algebra_experimental/src/majorana_braiding.rs",
+    "crates/materials_core/src/nonlocal_metamaterial.rs",
+    "crates/cosmology_core/src/harmonic_halos.rs",
+    "crates/cosmology_core/src/homotopy_bridge.rs",
+    "proofs/verified/C1313_Thesis42Arithmetic.v",
+    "proofs/verified/C1363_HarmonicHaloExactRecovery.v",
+    "proofs/verified/C1364_HomotopyBridgeLaw.v",
+]
 line_count = 116
 body_markdown = '''
 # Physical Claim Boundaries
@@ -4167,7 +4362,16 @@ title = "Thesis 42 Support"
 status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = ["C-010", "C-011"]
-path_refs = ["data/evidence/thesis_42_support/summary.toml", "data/evidence/thesis_42_support/nonlocal_topologies.csv", "data/evidence/thesis_42_support/majorana_friction_sweep.csv", "data/evidence/thesis_42_support/harmonic_halo_reference.csv", "data/evidence/thesis_42_support/gravastar_bridge_model.csv", "proofs/verified/C1313_Thesis42Arithmetic.v", "proofs/verified/C1363_HarmonicHaloExactRecovery.v", "proofs/verified/C1364_HomotopyBridgeLaw.v"]
+path_refs = [
+    "data/evidence/thesis_42_support/summary.toml",
+    "data/evidence/thesis_42_support/nonlocal_topologies.csv",
+    "data/evidence/thesis_42_support/majorana_friction_sweep.csv",
+    "data/evidence/thesis_42_support/harmonic_halo_reference.csv",
+    "data/evidence/thesis_42_support/gravastar_bridge_model.csv",
+    "proofs/verified/C1313_Thesis42Arithmetic.v",
+    "proofs/verified/C1363_HarmonicHaloExactRecovery.v",
+    "proofs/verified/C1364_HomotopyBridgeLaw.v",
+]
 line_count = 83
 body_markdown = '''
 # Thesis 42 Support

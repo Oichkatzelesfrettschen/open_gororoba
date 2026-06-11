@@ -49,12 +49,41 @@ pub struct RoadmapItem<'a> {
     pub primary_outputs_json: &'a str,
     pub evidence_refs_json: &'a str,
     pub lacunae_json: &'a str,
+}
+
+/// Extended roadmap row for upserts that preserve claim and insight links.
+pub struct RoadmapItemWithLinks<'a> {
+    pub id: &'a str,
+    pub name: &'a str,
+    pub priority: &'a str,
+    pub status: &'a str,
+    pub status_token: &'a str,
+    pub description: &'a str,
+    pub sprint: &'a str,
+    pub dependencies_json: &'a str,
+    pub acceptance_criteria_json: &'a str,
+    pub primary_outputs_json: &'a str,
+    pub evidence_refs_json: &'a str,
+    pub lacunae_json: &'a str,
     pub claims_json: &'a str,
     pub insight: &'a str,
 }
 
 /// Row struct for todo / next-action item upserts.
 pub struct ActionItem<'a> {
+    pub id: &'a str,
+    pub area: &'a str,
+    pub title: &'a str,
+    pub description: &'a str,
+    pub priority: &'a str,
+    pub status: &'a str,
+    pub status_token: &'a str,
+    pub dependencies_json: &'a str,
+    pub acceptance_criteria_json: &'a str,
+}
+
+/// Extended action row for upserts that preserve evidence references.
+pub struct ActionItemWithEvidence<'a> {
     pub id: &'a str,
     pub area: &'a str,
     pub title: &'a str,
@@ -135,6 +164,25 @@ pub struct ActionCompatRow {
     pub dependencies_json: String,
     pub acceptance_criteria_json: String,
     pub evidence_refs_json: String,
+}
+
+pub(crate) struct InsightCompatRecord {
+    pub id: String,
+    pub title: String,
+    pub status: String,
+    pub claim_refs: Vec<String>,
+    pub status_note: Option<String>,
+    pub compat_toml_text: String,
+}
+
+pub(crate) struct ExperimentCompatRecord {
+    pub id: String,
+    pub title: String,
+    pub status: String,
+    pub binary: Option<String>,
+    pub claim_refs: Vec<String>,
+    pub status_note: Option<String>,
+    pub compat_toml_text: String,
 }
 
 pub struct RequirementsMetaCompatRow {
@@ -239,7 +287,7 @@ pub struct CompatExportPaths<'a> {
 
 /// SQL-identifier bundle for the generic per-column updater. Bundling the
 /// four `&str` identifiers into one parameter keeps `entity_update_field`
-/// under clippy::too_many_arguments without resorting to #[allow]; each
+/// under clippy::too_many_arguments without resorting to `#[allow]`; each
 /// field MUST be a trusted constant from the call site (never user input)
 /// because they are interpolated directly into SQL.
 #[derive(Debug, Clone, Copy)]

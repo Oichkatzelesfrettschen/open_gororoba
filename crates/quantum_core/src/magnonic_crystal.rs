@@ -104,7 +104,7 @@ impl InversionBreakingParams {
 pub struct MagnonicBandResult {
     /// Cumulative k-distances along the high-symmetry path.
     pub k_distances: Vec<f64>,
-    /// Band energies: band_energies[band_idx][k_idx] in GHz.
+    /// Band energies: `band_energies[band_idx][k_idx]` in GHz.
     pub band_energies: Vec<Vec<f64>>,
     /// High-symmetry point labels and their k-distance positions.
     pub symmetry_labels: Vec<(String, f64)>,

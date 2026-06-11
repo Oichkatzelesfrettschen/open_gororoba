@@ -188,7 +188,7 @@ report.
 
 - **Editing `registry/*.toml` by hand.** The `# AUTO-GENERATED` header
   is the warning. If you edit anyway and run `make integrity-resolution`,
-  your edit *will* land in `schema_signatures.toml` -- and then be
+  your edit _will_ land in `schema_signatures.toml` -- and then be
   silently overwritten the next time anyone runs
   `provenance export-control-plane`. Always edit Layer 1.
 

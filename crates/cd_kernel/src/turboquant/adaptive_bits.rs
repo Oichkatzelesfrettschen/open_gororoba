@@ -1,6 +1,6 @@
 //! Per-token adaptive bit allocation via CD associator.
 //!
-//! Tokens with high residual associator norm (||[r_t, r_{t+1}, r_{t+2}]||)
+//! Tokens with high residual associator norm (||`[r_t, r_{t+1}, r_{t+2}]`||)
 //! have phase-coupling structure that sign projections capture poorly.
 //! Allocating more bits to these tokens improves attention fidelity at
 //! the same average bit budget.
@@ -144,7 +144,7 @@ pub fn compute_rotated_variances(vectors: &[Vec<f64>], tq: &TurboQuantMSE) -> Ve
 /// Multi-precision bit allocation: allocate 2, 3, or 4 bits per token
 /// based on the closed-form Lagrange solver.
 ///
-/// Returns (allocation, avg_bits) where allocation[i] is the bit-width for token i.
+/// Returns (allocation, avg_bits) where allocation`[i]` is the bit-width for token i.
 pub fn multi_precision_allocate(
     vectors: &[Vec<f64>],
     base_bits: u32,

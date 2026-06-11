@@ -12,7 +12,7 @@
 //! - Centaurus A 2017 (radio galaxy jet, 2021-D03-01)
 //! - M87* 2011-2013 legacy monitoring (pre-EHT array, 2020-D03-01)
 //!
-//! Reference: https://eventhorizontelescope.org/for-astronomers/data
+//! Reference: <https://eventhorizontelescope.org/for-astronomers/data>
 
 use crate::fetcher::FetchError;
 use flate2::read::GzDecoder;
@@ -35,6 +35,12 @@ pub fn tgz_member_count(path: &Path) -> Result<usize, FetchError> {
     }
     Ok(count)
 }
+
+#[cfg(feature = "fetch")]
+pub use super::eht_fetch::{
+    Eht3c279Provider, EhtCenAProvider, EhtM87_2017Provider, EhtM87LegacyProvider, EhtM87Provider,
+    EhtSgrAProvider,
+};
 
 /// List filenames in a .tgz archive.
 pub fn list_tgz_members(path: &Path) -> Result<Vec<String>, FetchError> {

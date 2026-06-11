@@ -99,7 +99,7 @@ impl EncodingDictionary {
         })
     }
 
-    /// Build from a basis_index -> Vec<i32> map (bridge from cd_external).
+    /// Build from a basis_index -> `Vec<i32>` map (bridge from cd_external).
     /// Fails if the resulting carrier set is not a valid bijection.
     pub fn try_from_i32_map(
         dim: usize,

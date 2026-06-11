@@ -12,7 +12,7 @@
 //! is the canonical record of "how much measurable debt does the repo
 //! carry today" across these classes:
 //!   - unsafe blocks (with SAFETY-comment coverage)
-//!   - #[ignore] / #[allow(clippy::*)] / #[allow(dead_code)] attrs
+//!   - `#[ignore]` / `#[allow(clippy::*)]` / `#[allow(dead_code)]` attrs
 //!   - unimplemented! / todo! / unreachable! macro calls
 //!   - TODO / FIXME / XXX / HACK in code-comment context
 //!   - Rocq Admitted / admit / Axiom / Parameter (strict + indented)
@@ -50,7 +50,7 @@ struct Args {
     /// Root directories to walk (repeat to add multiple).
     #[arg(long = "root", default_values_t = vec![String::from("crates"), String::from("proofs"), String::from("xtask")])]
     roots: Vec<String>,
-    /// Output directory; the file is named repo_audit_anchored_<date>.toml.
+    /// Output directory; the file is named `repo_audit_anchored_<date>.toml`.
     #[arg(long, default_value = "data/output/audit/repo_audit")]
     output_dir: PathBuf,
     /// Print results to stdout in addition to writing the file.

@@ -7,20 +7,20 @@ which should be fixed properly.
 
 ## Distribution by lint
 
-| Count | Lint                                | Disposition (default)         |
-|------:|-------------------------------------|-------------------------------|
-|    69 | clippy::needless_range_loop          | usually defensible: index-arithmetic clarity in physics loops |
-|    54 | clippy::too_many_arguments           | usually defensible: simulation parameter packs; consider struct refactor only when the call site is hot |
-|     7 | clippy::type_complexity              | review: most are generics in mid-level abstractions; bundle a type alias |
-|     6 | clippy::approx_constant              | KEEP: literal values like 0.318 that look like 1/pi but are measurement errors; comment is required |
-|     4 | clippy::should_implement_trait       | KEEP: methods named `from`/`into`/`add`/`mul` with custom non-trait semantics |
-|     3 | clippy::mem_replace_with_uninit      | review: unsafe mem swaps; verify alignment-safety hand-written |
-|     3 | clippy::large_enum_variant           | review: physics result enums with one variant carrying a big array; box if hot |
-|     2 | clippy::excessive_precision          | KEEP: scientific constants where the trailing digits matter |
-|     1 | clippy::manual_abs_diff              | review: trivial fix to `.abs_diff()` if available |
-|     1 | clippy::items_after_test_module      | KEEP: test module organization choice |
-|     1 | clippy::cast_sign_loss               | KEEP: documented narrowing in known-positive math |
-|     1 | (other / multi-line)                 | inspect manually |
+| Count | Lint                            | Disposition (default)                                                                                   |
+| ----: | ------------------------------- | ------------------------------------------------------------------------------------------------------- |
+|    69 | clippy::needless_range_loop     | usually defensible: index-arithmetic clarity in physics loops                                           |
+|    54 | clippy::too_many_arguments      | usually defensible: simulation parameter packs; consider struct refactor only when the call site is hot |
+|     7 | clippy::type_complexity         | review: most are generics in mid-level abstractions; bundle a type alias                                |
+|     6 | clippy::approx_constant         | KEEP: literal values like 0.318 that look like 1/pi but are measurement errors; comment is required     |
+|     4 | clippy::should_implement_trait  | KEEP: methods named `from`/`into`/`add`/`mul` with custom non-trait semantics                           |
+|     3 | clippy::mem_replace_with_uninit | review: unsafe mem swaps; verify alignment-safety hand-written                                          |
+|     3 | clippy::large_enum_variant      | review: physics result enums with one variant carrying a big array; box if hot                          |
+|     2 | clippy::excessive_precision     | KEEP: scientific constants where the trailing digits matter                                             |
+|     1 | clippy::manual_abs_diff         | review: trivial fix to `.abs_diff()` if available                                                       |
+|     1 | clippy::items_after_test_module | KEEP: test module organization choice                                                                   |
+|     1 | clippy::cast_sign_loss          | KEEP: documented narrowing in known-positive math                                                       |
+|     1 | (other / multi-line)            | inspect manually                                                                                        |
 
 Total: 152 entries (anchored grep). The repo-audit count of 143 differs by
 9 due to multi-line `#[cfg_attr(..., allow(clippy::...))]` forms and other

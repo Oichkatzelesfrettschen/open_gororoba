@@ -2,9 +2,9 @@
 name = "gororoba_view_core"
 version = "0.1.0"
 edition = { workspace = true }
-description = "Backend-neutral viewer contracts for gororoba simulation frontends"
 license = "GPL-2.0-or-later"
 repository = "https://github.com/Oichkatzelesfrettschen/open_gororoba"
+description = "Backend-neutral viewer contracts for gororoba simulation frontends"
 
 [dependencies]
 anyhow = { workspace = true }

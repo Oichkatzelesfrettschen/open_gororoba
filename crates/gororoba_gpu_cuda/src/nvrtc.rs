@@ -12,8 +12,7 @@
 
 use cudarc::nvrtc::{CompileOptions as NvrtcOptions, Ptx, compile_ptx_with_opts};
 
-use crate::error::Result;
-use crate::probe::DeviceProbe;
+use crate::{error::Result, probe::DeviceProbe};
 
 /// Builder for NVRTC compile options.
 ///
@@ -33,8 +32,14 @@ use crate::probe::DeviceProbe;
 #[derive(Clone, Debug)]
 pub struct CompileOptions {
     arch: Option<&'static str>,
+    include_paths: Vec<String>,
     lineinfo: bool,
     fast_math: bool,
+    prec_div: Option<bool>,
+    prec_sqrt: Option<bool>,
+    ftz: Option<bool>,
+    fmad: Option<bool>,
+    extra_options: Vec<String>,
 }
 
 impl CompileOptions {
@@ -43,8 +48,14 @@ impl CompileOptions {
     pub fn empty() -> Self {
         Self {
             arch: None,
+            include_paths: Vec::new(),
             lineinfo: false,
             fast_math: false,
+            prec_div: None,
+            prec_sqrt: None,
+            ftz: None,
+            fmad: None,
+            extra_options: Vec::new(),
         }
     }
 
@@ -58,18 +69,40 @@ impl CompileOptions {
             (8, m) if (6..=8).contains(&m) => "sm_86",
             (8, _) => "sm_80",
             (7, m) if m >= 5 => "sm_75",
+            (7, _) => "sm_70",
             _ => "sm_52",
         };
         Self {
             arch: Some(arch),
+            include_paths: Vec::new(),
             lineinfo: false,
             fast_math: false,
+            prec_div: None,
+            prec_sqrt: None,
+            ftz: None,
+            fmad: None,
+            extra_options: Vec::new(),
         }
     }
 
     /// Options targeted at the device probed via `DeviceProbe::query`.
     pub fn for_device(probe: &DeviceProbe) -> Self {
         Self::for_arch(probe.major, probe.minor)
+    }
+
+    /// Options targeted at a preselected CUDA architecture string.
+    pub fn with_arch(arch: &'static str) -> Self {
+        Self {
+            arch: Some(arch),
+            include_paths: Vec::new(),
+            lineinfo: false,
+            fast_math: false,
+            prec_div: None,
+            prec_sqrt: None,
+            ftz: None,
+            fmad: None,
+            extra_options: Vec::new(),
+        }
     }
 
     /// Set `--lineinfo` (debug-friendly PTX line mapping).
@@ -84,16 +117,63 @@ impl CompileOptions {
         self
     }
 
+    /// Set NVRTC precise-division behavior.
+    pub fn prec_div(mut self, enabled: bool) -> Self {
+        self.prec_div = Some(enabled);
+        self
+    }
+
+    /// Set NVRTC precise-square-root behavior.
+    pub fn prec_sqrt(mut self, enabled: bool) -> Self {
+        self.prec_sqrt = Some(enabled);
+        self
+    }
+
+    /// Set NVRTC flush-to-zero behavior.
+    pub fn ftz(mut self, enabled: bool) -> Self {
+        self.ftz = Some(enabled);
+        self
+    }
+
+    /// Set NVRTC fused-multiply-add behavior.
+    pub fn fmad(mut self, enabled: bool) -> Self {
+        self.fmad = Some(enabled);
+        self
+    }
+
+    /// Add a header search path passed through NVRTC's include path list.
+    pub fn include_path(mut self, path: impl Into<String>) -> Self {
+        self.include_paths.push(path.into());
+        self
+    }
+
+    /// Add a `-DNAME=value` define to the NVRTC command line.
+    pub fn define(mut self, name: &str, value: impl std::fmt::Display) -> Self {
+        self.extra_options.push(format!("-D{name}={value}"));
+        self
+    }
+
+    /// Add an arbitrary NVRTC command-line option.
+    pub fn option(mut self, option: impl Into<String>) -> Self {
+        self.extra_options.push(option.into());
+        self
+    }
+
     /// Materialize the underlying cudarc `CompileOptions`.
     pub fn build(self) -> NvrtcOptions {
         let mut extra_options = Vec::new();
         if self.lineinfo {
             extra_options.push("--generate-line-info".to_string());
         }
+        extra_options.extend(self.extra_options);
         NvrtcOptions {
             arch: self.arch,
-            include_paths: Vec::new(),
+            include_paths: self.include_paths,
             use_fast_math: if self.fast_math { Some(true) } else { None },
+            prec_div: self.prec_div,
+            prec_sqrt: self.prec_sqrt,
+            ftz: self.ftz,
+            fmad: self.fmad,
             options: extra_options,
             ..Default::default()
         }
@@ -112,4 +192,3 @@ impl Default for CompileOptions {
         Self::empty()
     }
 }
-

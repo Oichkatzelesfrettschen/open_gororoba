@@ -39,6 +39,7 @@ pub mod e10_octonion;
 pub mod emanation;
 pub mod exact_chsh_bound;
 pub mod experimental_predictions;
+pub mod f4_casimir;
 pub mod fractal_dimension;
 pub mod golay_code;
 pub mod higher_cd;

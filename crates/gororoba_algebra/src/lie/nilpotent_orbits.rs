@@ -216,7 +216,7 @@ fn kernel_dimension(m: &DMatrix<f64>, tolerance: f64) -> usize {
 /// use gororoba_algebra::jordan_type_nilpotent;
 /// use nalgebra::DMatrix;
 ///
-/// // Jordan block J_3: [[0,1,0],[0,0,1],[0,0,0]]
+/// // Jordan block J_3: [[0,1,0], [0,0,1], [0,0,0]]
 /// let j3 = DMatrix::from_row_slice(3, 3, &[
 ///     0.0, 1.0, 0.0,
 ///     0.0, 0.0, 1.0,
@@ -379,7 +379,7 @@ pub fn partition_count(n: usize) -> usize {
 
 /// Compare two Jordan types by dominance order.
 ///
-/// Type A dominates B if sum(A[1..k]) >= sum(B[1..k]) for all k.
+/// Type A dominates B if sum(A`[1..k]`) >= sum(B`[1..k]`) for all k.
 /// Returns:
 /// - Some(Ordering::Greater) if A dominates B strictly
 /// - Some(Ordering::Less) if B dominates A strictly

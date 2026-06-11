@@ -28,7 +28,7 @@ pub fn cfl_dt(grid: &Grid, max_signal_speed: f64, cfl: f64) -> f64 {
 
 /// Apply a forward Euler update to conservative variables.
 ///
-/// U_new[k] = U_old[k] + dt * rhs[k]
+/// `U_new[k] = U_old[k] + dt * rhs[k]`
 /// where rhs = -div(F) + source terms.
 pub fn euler_update(u_old: &[f64], rhs: &[f64], dt: f64, u_new: &mut [f64]) {
     for (i, (old, r)) in u_old.iter().zip(rhs.iter()).enumerate() {

@@ -171,6 +171,9 @@ pub enum VoyagerSpacecraft {
     V2,
 }
 
+#[cfg(feature = "fetch")]
+pub use super::voyager_fetch::{VoyagerMag48Provider, VoyagerProvider};
+
 /// `SpdfMission` config for Voyager 1 merged hourly data (SE coordinates).
 pub static VOYAGER1_MISSION: SpdfMission = SpdfMission {
     layout: &VOYAGER1_LAYOUT,

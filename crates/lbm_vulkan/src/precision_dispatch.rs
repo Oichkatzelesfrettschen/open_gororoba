@@ -43,21 +43,23 @@ pub enum PrecisionTier {
 }
 
 // Bridge to the canonical workspace precision vocabulary
-// (gororoba_gpu_bridge::StoragePrecision). PrecisionTier maps 1:1 to
-// StoragePrecision for every shader tier. The reverse TryFrom is total over
-// StoragePrecision MINUS DdFp128 (PrecisionTier has no >64-bit variant).
-impl From<PrecisionTier> for gororoba_gpu_bridge::StoragePrecision {
-    fn from(value: PrecisionTier) -> Self {
+// (gororoba_gpu_bridge::StoragePrecision). INT4 remains local to the Vulkan
+// shader tier because adding it to the stable bridge enum would break
+// downstream exhaustive matches.
+impl TryFrom<PrecisionTier> for gororoba_gpu_bridge::StoragePrecision {
+    type Error = &'static str;
+
+    fn try_from(value: PrecisionTier) -> Result<Self, Self::Error> {
         match value {
-            PrecisionTier::Fp32 => Self::Fp32,
-            PrecisionTier::Fp64 => Self::Fp64,
-            PrecisionTier::Fp16 => Self::Fp16,
-            PrecisionTier::Bf16 => Self::Bf16,
-            PrecisionTier::Int8 => Self::Int8,
-            PrecisionTier::Int16 => Self::Int16,
-            PrecisionTier::Int4 => Self::Int4,
-            PrecisionTier::Fp8E4m3 => Self::Fp8E4m3,
-            PrecisionTier::Fp8E5m2 => Self::Fp8E5m2,
+            PrecisionTier::Fp32 => Ok(Self::Fp32),
+            PrecisionTier::Fp64 => Ok(Self::Fp64),
+            PrecisionTier::Fp16 => Ok(Self::Fp16),
+            PrecisionTier::Bf16 => Ok(Self::Bf16),
+            PrecisionTier::Int8 => Ok(Self::Int8),
+            PrecisionTier::Int16 => Ok(Self::Int16),
+            PrecisionTier::Int4 => Err("StoragePrecision has no stable Int4 variant"),
+            PrecisionTier::Fp8E4m3 => Ok(Self::Fp8E4m3),
+            PrecisionTier::Fp8E5m2 => Ok(Self::Fp8E5m2),
         }
     }
 }
@@ -73,7 +75,6 @@ impl TryFrom<gororoba_gpu_bridge::StoragePrecision> for PrecisionTier {
             SP::Bf16 => Ok(Self::Bf16),
             SP::Int8 => Ok(Self::Int8),
             SP::Int16 => Ok(Self::Int16),
-            SP::Int4 => Ok(Self::Int4),
             SP::Fp8E4m3 => Ok(Self::Fp8E4m3),
             SP::Fp8E5m2 => Ok(Self::Fp8E5m2),
             SP::DdFp128 => Err("PrecisionTier has no DdFp128 equivalent"),
@@ -337,10 +338,9 @@ mod tests {
     }
 
     #[test]
-    fn precision_tier_int4_round_trips_through_storage_precision() {
-        let storage = gororoba_gpu_bridge::StoragePrecision::from(PrecisionTier::Int4);
-        assert_eq!(storage, gororoba_gpu_bridge::StoragePrecision::Int4);
-        assert_eq!(PrecisionTier::try_from(storage), Ok(PrecisionTier::Int4));
+    fn precision_tier_int4_stays_vulkan_local() {
+        let storage = gororoba_gpu_bridge::StoragePrecision::try_from(PrecisionTier::Int4);
+        assert_eq!(storage, Err("StoragePrecision has no stable Int4 variant"));
     }
 
     #[test]

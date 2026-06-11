@@ -47,7 +47,7 @@ pub struct GpeResult {
     pub density: Vec<f64>,
     /// L2 norm of psi (should be ~1 for normalized).
     pub norm: f64,
-    /// Total energy <H>.
+    /// Total energy `<H>`.
     pub energy: f64,
 }
 

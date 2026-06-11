@@ -3,7 +3,7 @@
 //! DESI DR1 provides BAO distance scale measurements across 7 redshift
 //! bins using different tracers (BGS, LRG, ELG, QSO, Lya).
 //!
-//! Source: https://github.com/CobayaSampler/bao_data
+//! Source: <https://github.com/CobayaSampler/bao_data>
 //! Reference: DESI Collaboration (2024), arXiv:2404.03002
 
 use crate::fetcher::FetchError;
@@ -37,6 +37,9 @@ pub struct BaoMeasurement {
     /// Tracer type (BGS, LRG, ELG, QSO, Lya).
     pub tracer: String,
 }
+
+#[cfg(feature = "fetch")]
+pub use super::desi_bao_fetch::DesiBaoProvider;
 
 /// Hardcoded DESI DR1 BAO results from DESI Collaboration (2024) Table 1.
 ///

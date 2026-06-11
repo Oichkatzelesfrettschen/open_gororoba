@@ -1,8 +1,7 @@
 use algebra_analysis::phase_transition::{AlgebraicPhase, PhaseTransitionAnalyzer};
-use cudarc::driver::CudaContext;
 use gororoba_algebra::gpu::voudon::Cd256FrustrationKernel;
+use gororoba_gpu_cuda::Context as CudaContextHelper;
 use lbm_3d_cuda::{LbmSolver3DCuda, Precision};
-use std::sync::Arc;
 
 fn main() -> anyhow::Result<()> {
     println!("--- 256D Algebraic Phase Transition Analysis: GPU-Accelerated ---");
@@ -57,7 +56,7 @@ fn main() -> anyhow::Result<()> {
     println!("\nInitializing CUDA LBM for phase-modulated flow...");
     let mut solver = LbmSolver3DCuda::new(nx, ny, nz, 0.8, Precision::FP32)?;
 
-    let ctx = Arc::new(CudaContext::new(0)?);
+    let ctx = CudaContextHelper::with_default_device()?;
     let stream = ctx.default_stream();
     let d_frustration = stream.clone_htod(&frustration_host)?;
 

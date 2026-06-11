@@ -36,7 +36,7 @@ pub fn get_quaternion_subalgebras() -> QuaternionSubalgebras {
     (q_gamma, q_theta, q_u, q_v, q_w)
 }
 
-/// Standard (strict) associator: [a,b,c] = (a*b)*c - a*(b*c).
+/// Standard (strict) associator: `[a,b,c] = (a*b)*c - a*(b*c)`.
 /// Returns the norm of the associator vector.
 pub fn assoc_strict(dim: usize, a: usize, b: usize, c: usize) -> f64 {
     use cd_kernel::cayley_dickson::cd_multiply;
@@ -57,11 +57,11 @@ pub fn assoc_strict(dim: usize, a: usize, b: usize, c: usize) -> f64 {
         .sqrt()
 }
 
-/// Wilmot triple associator: T(b,c,d) = [b,d,c] - [d,c,b] + [c,b,d].
+/// Wilmot triple associator: `T(b,c,d) = [b,d,c] - [d,c,b] + [c,b,d]`.
 ///
 /// From Wilmot (arXiv:2505.11747, Sec 3): T = 0 defines "associative" triads
 /// in Wilmot's classification. This is WEAKER than strict associativity
-/// (all individual [x,y,z] = 0). A triad can be Wilmot-associative while
+/// (all individual `[x,y,z] = 0`). A triad can be Wilmot-associative while
 /// having nonzero individual associators.
 ///
 /// Returns the norm of the triple associator vector.

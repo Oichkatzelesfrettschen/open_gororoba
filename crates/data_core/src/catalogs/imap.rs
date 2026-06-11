@@ -33,6 +33,13 @@ pub struct ImapHelio1hrRecord {
     pub lon_deg: f64,
 }
 
+#[cfg(feature = "fetch")]
+pub use super::imap_fetch::{
+    ImapHelio1hrProvider, ImapHiL2H90Provider, ImapIalirtRealtimeProvider,
+    parse_imap_helio1hr_file, parse_imap_hi_h90_file, parse_imap_ialirt_file,
+    parse_imap_ialirt_live_day,
+};
+
 #[derive(Debug, Clone)]
 pub struct ImapHiH90Summary {
     pub year: u16,

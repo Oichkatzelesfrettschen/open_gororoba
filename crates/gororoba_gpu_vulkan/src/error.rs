@@ -36,6 +36,10 @@ pub enum VulkanError {
     #[error("SPIR-V emit error: {0}")]
     SpirvEmit(String),
 
+    /// A named WGSL override could not be mapped to a Vulkan constant ID.
+    #[error("Pipeline override error: {0}")]
+    PipelineOverride(String),
+
     /// No physical device matched the requested QueueFamilyRequirement.
     #[error("No physical device matched queue family requirement: {0:?}")]
     NoMatchingPhysicalDevice(crate::QueueFamilyRequirement),
@@ -49,6 +53,13 @@ pub enum VulkanError {
     /// A required Vulkan extension or feature is unsupported on the device.
     #[error("Unsupported Vulkan feature: {0}")]
     UnsupportedFeature(&'static str),
+
+    /// Host-visible buffer mapping would exceed the allocation.
+    #[error("Buffer bounds exceeded: requested {requested} bytes, available {available} bytes")]
+    BufferBounds {
+        requested: ash::vk::DeviceSize,
+        available: ash::vk::DeviceSize,
+    },
 
     /// A timeout was hit waiting on a fence or queue submission.
     #[error("Vulkan operation timed out after {timeout_ns} ns: {context}")]

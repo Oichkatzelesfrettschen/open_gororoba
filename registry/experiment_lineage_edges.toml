@@ -13,7 +13,6 @@ edge_types = ["derives_from", "extends", "refutes", "complements", "replaces"]
 # ---- Edge Type Definitions ----
 
 [edge_type_definitions]
-
 derives_from = """
   Source experiment directly enables target through output/input coupling.
   Strength metric: 0.0-1.0 based on data flow completeness.
@@ -122,19 +121,19 @@ complements_count = 2
 refutes_count = 0
 replaces_count = 0
 average_strength = 0.80
-high_strength_edges = 3  # >= 0.80
+high_strength_edges = 3 # >= 0.80
 median_strength = 0.82
 
 # ---- Lineage Structure ----
 
 [lineage_structure]
-root_experiments = ["E-001", "E-002", "E-011"]  # No incoming derives_from edges
-leaf_experiments = ["E-023"]  # Phase 10.3 synthesis experiment
+root_experiments = ["E-001", "E-002", "E-011"] # No incoming derives_from edges
+leaf_experiments = ["E-023"] # Phase 10.3 synthesis experiment
 primary_path = "E-001 -> E-023 (derives_from, strength 0.85)"
 secondary_paths = [
-  "E-002 -> E-023 (extends, strength 0.72)",
-  "E-011 -> E-023 (complements, strength 0.88)",
-  "E-007 -> E-023 (extends, strength 0.81)"
+    "E-002 -> E-023 (extends, strength 0.72)",
+    "E-011 -> E-023 (complements, strength 0.88)",
+    "E-007 -> E-023 (extends, strength 0.81)",
 ]
 convergence_point = "E-023 (synthesis of Phase 8/9/11 lineage)"
 

@@ -4,7 +4,7 @@
 //! coefficients from 1900 to 2025, with predictive secular variation
 //! to 2025. Degree/order up to 13.
 //!
-//! Source: NOAA/NCEI, https://www.ngdc.noaa.gov/IAGA/vmod/igrf.html
+//! Source: NOAA/NCEI, <https://www.ngdc.noaa.gov/IAGA/vmod/igrf.html>
 //! Reference: Alken et al. (2021), Earth, Planets and Space 73, 49
 
 /// IGRF-13 coefficient file URLs.

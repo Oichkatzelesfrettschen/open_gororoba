@@ -2,8 +2,8 @@
 name = "moreno_1997"
 version = "0.1.0"
 edition = { workspace = true }
-description = "Moreno (1997) Zero divisors of real Cayley-Dickson algebras -- verified Rust implementation"
 license = "GPL-2.0-or-later"
+description = "Moreno (1997) Zero divisors of real Cayley-Dickson algebras -- verified Rust implementation"
 
 # Source: Moreno, G. (1997) "The zero divisors of the Cayley-Dickson algebras
 # over the real numbers", arXiv:q-alg/9710013v1.

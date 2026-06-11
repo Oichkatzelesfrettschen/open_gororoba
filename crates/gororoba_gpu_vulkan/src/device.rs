@@ -112,8 +112,7 @@ impl DeviceBuilder {
         let mut storage_16bit = vk::PhysicalDeviceVulkan11Features::default();
         let mut storage_8bit_features = vk::PhysicalDevice8BitStorageFeatures::default();
         let mut shader_f16_i8_features = vk::PhysicalDeviceShaderFloat16Int8Features::default();
-        let mut dynamic_rendering_features =
-            vk::PhysicalDeviceDynamicRenderingFeatures::default();
+        let mut dynamic_rendering_features = vk::PhysicalDeviceDynamicRenderingFeatures::default();
 
         if self.features.fp16_storage {
             storage_16bit.storage_buffer16_bit_access = vk::TRUE;

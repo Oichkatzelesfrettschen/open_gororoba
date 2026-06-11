@@ -3,9 +3,10 @@
 
 use anyhow::{Context, Result};
 use cudarc::driver::{
-    CudaContext, CudaFunction, CudaSlice, CudaStream, DevicePtr, DeviceSlice, LaunchConfig,
-    PushKernelArg, UnifiedSlice, result, sys,
+    CudaContext, CudaFunction, CudaSlice, CudaStream, DevicePtr, DeviceSlice, PushKernelArg,
+    UnifiedSlice, result, sys,
 };
+use gororoba_gpu_cuda::{CompileOptions, LaunchConfig, ModuleRegistry};
 use gororoba_sparse_grid::{
     ActiveBrickWindow, BrickGrid3d, BrickShape3d, LogicalGrid3d, OccupancyBitsetStats,
 };
@@ -46,18 +47,18 @@ impl SparseBrickMap {
         d_geometry_mask: &CudaSlice<u8>,
     ) -> Result<Self> {
         // Compile kernels
-        let opts = cudarc::nvrtc::CompileOptions {
-            arch: Some(crate::preferred_cuda_arch()),
-            ..Default::default()
-        };
-        let ptx = cudarc::nvrtc::compile_ptx_with_opts(KERNEL_SPARSE_MAP_SRC, opts)
+        let opts = CompileOptions::with_arch(crate::preferred_cuda_arch());
+        let ptx = CompileOptions::compile_ptx(KERNEL_SPARSE_MAP_SRC, &opts)
             .context("Failed to compile kernels_sparse_map.cu")?;
-        let module = ctx
-            .load_module(ptx)
-            .context("Failed to load sparse map module")?;
+        let module_registry = ModuleRegistry::load(
+            &ctx,
+            ptx,
+            &["generate_occupancy_bitmask", "compact_bitmask_atomic"],
+        )
+        .context("Failed to load sparse map module")?;
 
-        let generate_occupancy_kernel = module.load_function("generate_occupancy_bitmask")?;
-        let compact_bitmask_kernel = module.load_function("compact_bitmask_atomic")?;
+        let generate_occupancy_kernel = module_registry.get("generate_occupancy_bitmask")?;
+        let compact_bitmask_kernel = module_registry.get("compact_bitmask_atomic")?;
 
         let brick_grid = BrickGrid3d::from_logical_grid(
             LogicalGrid3d {
@@ -91,11 +92,7 @@ impl SparseBrickMap {
             (ny as u32).div_ceil(block.1),
             (nz as u32).div_ceil(block.2),
         );
-        let cfg = LaunchConfig {
-            grid_dim: grid,
-            block_dim: block,
-            shared_mem_bytes: 0,
-        };
+        let cfg = LaunchConfig::launch_blocks_3d(grid.0, grid.1, grid.2, block.0, block.1, block.2);
         let nx_i = nx as i32;
         let ny_i = ny as i32;
         let nz_i = nz as i32;
@@ -124,13 +121,7 @@ impl SparseBrickMap {
             .arg(&mut d_active_brick_ids)
             .arg(&mut d_active_brick_count)
             .arg(&n_bricks_i);
-        unsafe {
-            b2.launch(LaunchConfig {
-                grid_dim: (grid2, 1, 1),
-                block_dim: (block2, 1, 1),
-                shared_mem_bytes: 0,
-            })
-        }?;
+        unsafe { b2.launch(LaunchConfig::launch_blocks_1d(grid2, block2)) }?;
 
         // 3. Read back only the active-brick count; compaction itself stayed on GPU.
         let h_active_counts = stream.clone_dtoh(&d_active_brick_count)?;
@@ -248,6 +239,7 @@ pub struct SparseLbmSolver {
     memory_mode: SparseMemoryMode,
     kernel_variant: SparseKernelVariant,
     prefetch_stream: Option<Arc<CudaStream>>,
+    _module_registry: ModuleRegistry,
 
     pub step: usize,
 
@@ -297,22 +289,18 @@ impl SparseLbmSolver {
             SparseFieldBuffer::alloc_zeroed(&ctx, &stream, 3 * n_active_cells, memory_mode)?;
 
         // Compile kernel
-        let opts = cudarc::nvrtc::CompileOptions {
-            arch: Some(crate::preferred_cuda_arch()),
-            ..Default::default()
-        };
-        let ptx = cudarc::nvrtc::compile_ptx_with_opts(KERNEL_SPARSE_LBM_SRC, opts)
+        let opts = CompileOptions::with_arch(crate::preferred_cuda_arch());
+        let ptx = CompileOptions::compile_ptx(KERNEL_SPARSE_LBM_SRC, &opts)
             .context("Failed to compile kernels_sparse_lbm.cu")?;
-        let module = map
-            .ctx
-            .load_module(ptx)
-            .context("Failed to load sparse lbm module")?;
-
         let kernel_variant = preferred_sparse_kernel_variant();
-        let lbm_step_kernel = module.load_function(match kernel_variant {
+        let kernel_name = match kernel_variant {
             SparseKernelVariant::DirectGlobal => "lbm_step_sparse_aa",
             SparseKernelVariant::SharedHaloTiled => "lbm_step_sparse_aa_tiled",
-        })?;
+        };
+        let module_registry = ModuleRegistry::load(&map.ctx, ptx, &[kernel_name])
+            .context("Failed to load sparse lbm module")?;
+
+        let lbm_step_kernel = module_registry.get(kernel_name)?;
         let prefetch_stream = match memory_mode {
             SparseMemoryMode::ManagedUnifiedTilePrefetch => Some(
                 map.ctx
@@ -332,6 +320,7 @@ impl SparseLbmSolver {
             memory_mode,
             kernel_variant,
             prefetch_stream,
+            _module_registry: module_registry,
             step: 0,
             lbm_step_kernel,
         })
@@ -535,14 +524,10 @@ impl SparseLbmSolver {
     }
 }
 
-fn launch_cfg_for_cells(active_cell_count: usize) -> LaunchConfig {
+fn launch_cfg_for_cells(active_cell_count: usize) -> cudarc::driver::LaunchConfig {
     let block = CELLS_PER_BRICK as u32;
     let grid = (active_cell_count as u32).div_ceil(block);
-    LaunchConfig {
-        grid_dim: (grid, 1, 1),
-        block_dim: (block, 1, 1),
-        shared_mem_bytes: 0,
-    }
+    LaunchConfig::launch_blocks_1d(grid, block)
 }
 
 fn preferred_sparse_kernel_variant() -> SparseKernelVariant {

@@ -4,13 +4,17 @@
 //! sites that each track function handles manually. The registry caches
 //! the loaded module and exposes typed lookups.
 
-use std::collections::BTreeMap;
-use std::sync::Arc;
+use std::{collections::BTreeMap, sync::Arc};
 
-use cudarc::driver::{CudaContext, CudaFunction, CudaModule};
-use cudarc::nvrtc::Ptx;
+use cudarc::{
+    driver::{CudaContext, CudaFunction, CudaModule},
+    nvrtc::Ptx,
+};
 
-use crate::error::{CudaError, Result};
+use crate::{
+    error::{CudaError, Result},
+    nvrtc::CompileOptions,
+};
 
 /// Owned kernel function handle.
 pub type KernelHandle = CudaFunction;
@@ -22,6 +26,18 @@ pub struct ModuleRegistry {
 }
 
 impl ModuleRegistry {
+    /// Compile CUDA C source with the workspace NVRTC wrapper and load all
+    /// requested kernels into the given context.
+    pub fn compile_and_load(
+        ctx: &Arc<CudaContext>,
+        source: &str,
+        opts: &CompileOptions,
+        kernel_names: &[&str],
+    ) -> Result<Self> {
+        let ptx = CompileOptions::compile_ptx(source, opts)?;
+        Self::load(ctx, ptx, kernel_names)
+    }
+
     /// Load a PTX module into the given context and pre-resolve a set
     /// of named kernel functions.
     pub fn load(ctx: &Arc<CudaContext>, ptx: Ptx, kernel_names: &[&str]) -> Result<Self> {
@@ -30,7 +46,9 @@ impl ModuleRegistry {
         for name in kernel_names {
             let func = module
                 .load_function(name)
-                .map_err(|_| CudaError::KernelNotFound { name: (*name).to_string() })?;
+                .map_err(|_| CudaError::KernelNotFound {
+                    name: (*name).to_string(),
+                })?;
             functions.insert((*name).to_string(), func);
         }
         Ok(Self { module, functions })
@@ -41,7 +59,9 @@ impl ModuleRegistry {
         self.functions
             .get(name)
             .cloned()
-            .ok_or_else(|| CudaError::KernelNotFound { name: name.to_string() })
+            .ok_or_else(|| CudaError::KernelNotFound {
+                name: name.to_string(),
+            })
     }
 
     /// Borrow the underlying `Arc<CudaModule>` (for cudarc APIs that

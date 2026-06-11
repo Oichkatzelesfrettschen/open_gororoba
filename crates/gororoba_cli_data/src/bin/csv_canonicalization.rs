@@ -1633,7 +1633,7 @@ fn render_scroll_pipeline(
 /// action / priority), two prioritized path lists, and the wave summary
 /// form one logical unit -- a snapshot of the migration progress at a
 /// point in time. Bundling keeps the renderer under
-/// clippy::too_many_arguments without #[allow] suppression.
+/// clippy::too_many_arguments without `#[allow]` suppression.
 struct MigrationScopeInputs<'a> {
     inventory_path: &'a str,
     document_count: usize,
@@ -2265,7 +2265,7 @@ fn policy(_path: &str, zone: &str) -> (String, String, String) {
 /// `policy_with_progress`. Eight `BTreeSet<String>` membership
 /// checks (one per zone-and-status combination) plus a classification
 /// map. Bundling keeps the helper under clippy::too_many_arguments
-/// without #[allow] suppression and makes the progress surface explicit
+/// without `#[allow]` suppression and makes the progress surface explicit
 /// at the call site.
 struct CsvCanonicalProgress<'a> {
     legacy_canonical_paths: &'a BTreeSet<String>,

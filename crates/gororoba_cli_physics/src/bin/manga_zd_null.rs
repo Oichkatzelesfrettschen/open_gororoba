@@ -8,10 +8,12 @@
 
 use anyhow::Result;
 use clap::Parser;
-use cosmology_core::manga_analysis::{
-    run_baryonic_baseline, run_harmonic_stacking, run_multi_algebra_dft, run_nfw_baseline,
+use cosmology_core::{
+    manga_analysis::{
+        run_baryonic_baseline, run_harmonic_stacking, run_multi_algebra_dft, run_nfw_baseline,
+    },
+    manga_sim::{MangaSimParams, generate_synthetic_manga},
 };
-use cosmology_core::manga_sim::{generate_synthetic_manga, MangaSimParams};
 use std::time::Instant;
 
 #[derive(Parser)]

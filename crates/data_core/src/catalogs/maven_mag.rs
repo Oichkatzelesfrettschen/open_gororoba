@@ -30,6 +30,9 @@ pub struct MavenMagMinuteRecord {
     pub b_magnitude: f64,
 }
 
+#[cfg(feature = "fetch")]
+pub use super::maven_mag_fetch::MavenMagProvider;
+
 /// Parse MAVEN MAG HAPI CSV into minute-averaged records.
 pub fn parse_maven_mag_hapi_csv_minutes(content: &str) -> Vec<MavenMagMinuteRecord> {
     let mut reader = ReaderBuilder::new()

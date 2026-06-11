@@ -554,8 +554,8 @@
 //!
 //! ## I-064: The Bit-to-Physics Pipeline as Scientific Paradigm
 //!
-//! - Date: 
-//! - Status: 
+//! - Date:
+//! - Status:
 //! - Sprint: 36
 //! - Claims: (none)
 //!
@@ -563,8 +563,8 @@
 //!
 //! ## I-065: Cross-Thesis Non-Monotonic Coupling Reveals Optimal Imbalance Regime
 //!
-//! - Date: 
-//! - Status: 
+//! - Date:
+//! - Status:
 //! - Sprint: 39
 //! - Claims: (none)
 //!
@@ -572,8 +572,8 @@
 //!
 //! ## I-066: Neural Initialization Escapes Associator Basin in Pentagon Optimization
 //!
-//! - Date: 
-//! - Status: 
+//! - Date:
+//! - Status:
 //! - Sprint: 40
 //! - Claims: (none)
 //!
@@ -581,8 +581,8 @@
 //!
 //! ## I-067: First-Principles Kubo Coupling Replaces Tautological Viscosity Postulate
 //!
-//! - Date: 
-//! - Status: 
+//! - Date:
+//! - Status:
 //! - Sprint: 41
 //! - Claims: (none)
 //!
@@ -591,7 +591,7 @@
 //! ## I-068: Varma Mechanism Explains Polarized-Regime Transport Enhancement
 //!
 //! - Date: 2026-02-13
-//! - Status: 
+//! - Status:
 //! - Sprint: 41
 //! - Claims: (none)
 //!
@@ -600,7 +600,7 @@
 //! ## I-069: Stolpp Lifshitz-Point Mechanism: Microscopic Origin of High-Field Transport Enhancement
 //!
 //! - Date: 2026-02-13
-//! - Status: 
+//! - Status:
 //! - Sprint: 41
 //! - Claims: (none)
 //!
@@ -609,7 +609,7 @@
 //! ## I-070: Wavelet reservoir bridging as Mori-Zwanzig exponential-memory closure
 //!
 //! - Date: 2026-02-17
-//! - Status: 
+//! - Status:
 //! - Sprint: 43
 //! - Claims: (none)
 //!
@@ -618,7 +618,7 @@
 //! ## I-071: Meltdown gating as control-theoretic adaptive concurrency regulation
 //!
 //! - Date: 2026-02-17
-//! - Status: 
+//! - Status:
 //! - Sprint: 43
 //! - Claims: (none)
 //!
@@ -627,7 +627,7 @@
 //! ## I-072: Tensor permittivity requires polycrystalline averaging for scalar Casimir
 //!
 //! - Date: 2026-02-17
-//! - Status: 
+//! - Status:
 //! - Sprint: 44
 //! - Claims: (none)
 //!
@@ -636,7 +636,7 @@
 //! ## I-073: Oxygen vacancy concentration controls plasmon frequency in WO3-x
 //!
 //! - Date: 2026-02-17
-//! - Status: 
+//! - Status:
 //! - Sprint: 44
 //! - Claims: (none)
 //!
@@ -645,7 +645,7 @@
 //! ## I-074: Lorentz oscillator sign convention requires absolute-value guards in derived properties
 //!
 //! - Date: 2026-02-17
-//! - Status: 
+//! - Status:
 //! - Sprint: 44
 //! - Claims: (none)
 //!
@@ -654,7 +654,7 @@
 //! ## I-075: Matsubara frequencies bridge optical spectroscopy to Casimir force calculations
 //!
 //! - Date: 2026-02-17
-//! - Status: 
+//! - Status:
 //! - Sprint: 44
 //! - Claims: (none)
 //!
@@ -663,7 +663,7 @@
 //! ## I-076: Lorentzian vs Urbach tails determine optical gap finder reliability
 //!
 //! - Date: 2026-02-17
-//! - Status: 
+//! - Status:
 //! - Sprint: 44
 //! - Claims: (none)
 //!
@@ -672,7 +672,7 @@
 //! ## I-077: Optical sum rules as self-consistency diagnostics for Drude-Lorentz models
 //!
 //! - Date: 2026-02-17
-//! - Status: 
+//! - Status:
 //! - Sprint: 44
 //! - Claims: (none)
 //!
@@ -681,7 +681,7 @@
 //! ## I-078: Kramers-Kronig self-consistency of Drude-Lorentz models: baseline and subtraction
 //!
 //! - Date: 2026-02-17
-//! - Status: 
+//! - Status:
 //! - Sprint: 44
 //! - Claims: (none)
 //!
@@ -690,7 +690,7 @@
 //! ## I-079: Temperature-dependent optical response and effective medium composites
 //!
 //! - Date: 2026-02-17
-//! - Status: 
+//! - Status:
 //! - Sprint: 44
 //! - Claims: (none)
 //!
@@ -699,7 +699,7 @@
 //! ## I-080: Nonlinear optics from linear Drude-Lorentz: scope and limits of Miller's rule
 //!
 //! - Date: 2026-02-17
-//! - Status: 
+//! - Status:
 //! - Sprint: 44
 //! - Claims: (none)
 //!
@@ -708,7 +708,7 @@
 //! ## I-081: Surface plasmon physics from Drude-Lorentz models: parameterization vs reality
 //!
 //! - Date: 2026-02-17
-//! - Status: 
+//! - Status:
 //! - Sprint: 44
 //! - Claims: (none)
 //!
@@ -717,7 +717,7 @@
 //! ## I-082: Magneto-optical response and transport diagnostics from Drude parameters
 //!
 //! - Date: 2026-02-17
-//! - Status: 
+//! - Status:
 //! - Sprint: 44
 //! - Claims: (none)
 //!
@@ -726,7 +726,7 @@
 //! ## I-083: Ellipsometry, thermal emission, and ENZ physics from Drude-Lorentz: measurement connections
 //!
 //! - Date: 2026-02-17
-//! - Status: 
+//! - Status:
 //! - Sprint: 44
 //! - Claims: (none)
 //!
@@ -735,7 +735,7 @@
 //! ## I-084: EELS, LDOS, and absorption engineering: from fundamental response to device design
 //!
 //! - Date: 2026-02-17
-//! - Status: 
+//! - Status:
 //! - Sprint: 44
 //! - Claims: (none)
 //!
@@ -744,7 +744,7 @@
 //! ## I-085: Quality metrics and coherence: bridging optics to device performance
 //!
 //! - Date: 2026-02-17
-//! - Status: 
+//! - Status:
 //! - Sprint: 44
 //! - Claims: (none)
 //!
@@ -753,7 +753,7 @@
 //! ## I-086: Photovoltaic metrics and selective thermal emission: from material response to energy harvesting
 //!
 //! - Date: 2026-02-17
-//! - Status: 
+//! - Status:
 //! - Sprint: 44
 //! - Claims: (none)
 //!
@@ -762,7 +762,7 @@
 //! ## I-087: Sensor-fusion audit: cosmological constant claims vs codebase reality
 //!
 //! - Date: 2026-02-17
-//! - Status: 
+//! - Status:
 //! - Sprint: 46
 //! - Claims: (none)
 //!
@@ -771,7 +771,7 @@
 //! ## I-088: From bulk dielectric to photonic devices: waveguide, sensing, and thin-film design from a single DL model
 //!
 //! - Date: 2026-02-17
-//! - Status: 
+//! - Status:
 //! - Sprint: 44
 //! - Claims: (none)
 //!
@@ -780,7 +780,7 @@
 //! ## I-089: Phonon polaritonics and carrier dynamics: infrared nanophotonics and ultrafast response
 //!
 //! - Date: 2026-02-17
-//! - Status: 
+//! - Status:
 //! - Sprint: 44
 //! - Claims: (none)
 //!
@@ -789,7 +789,7 @@
 //! ## I-090: Scattering, fluctuation, and advanced optical methods complete the DL toolkit
 //!
 //! - Date: 2026-02-17
-//! - Status: 
+//! - Status:
 //! - Sprint: 44
 //! - Claims: (none)
 //!
@@ -1076,8 +1076,8 @@
 //!
 //! ## I-122: Concentration-mass anti-correlation: UDG halos are denser than MW halos
 //!
-//! - Date: 
-//! - Status: 
+//! - Date:
+//! - Status:
 //! - Sprint: 77
 //! - Claims: C-1176
 //!
@@ -1256,8 +1256,8 @@
 //!
 //! ## I-168: Assessor fraction 0.5 is an algebraic identity, not empirical
 //!
-//! - Date: 
-//! - Status: 
+//! - Date:
+//! - Status:
 //! - Sprint: 0
 //! - Claims: C-1341, C-1342, C-1343
 //!
@@ -1265,8 +1265,8 @@
 //!
 //! ## I-169: THINGS dropped from harmonic halo pipeline: N=34 insufficient, no rotation curves in VizieR catalog
 //!
-//! - Date: 
-//! - Status: 
+//! - Date:
+//! - Status:
 //! - Sprint: 0
 //! - Claims: C-1345
 //!
@@ -1274,8 +1274,8 @@
 //!
 //! ## I-170: CD dimension sweep null result: stacking physics is dimension-invariant at finite N
 //!
-//! - Date: 
-//! - Status: 
+//! - Date:
+//! - Status:
 //! - Sprint: 0
 //! - Claims: C-1344, C-1341
 //!
@@ -1283,8 +1283,8 @@
 //!
 //! ## I-171: MaNGA two-stage pipeline: DAPall Guillotine + MAPS pseudo-slit replaces THINGS
 //!
-//! - Date: 
-//! - Status: 
+//! - Date:
+//! - Status:
 //! - Sprint: 0
 //! - Claims: C-1346, C-1347, C-1348
 //!
@@ -1292,8 +1292,8 @@
 //!
 //! ## I-172: x87 accumulation oracle: entire loop in asm! prevents LLVM spill truncation
 //!
-//! - Date: 
-//! - Status: 
+//! - Date:
+//! - Status:
 //! - Sprint: 0
 //! - Claims: C-1349
 //!
@@ -1301,8 +1301,8 @@
 //!
 //! ## I-173: 42-physics thesis reliability gradient: algebra >> computation >> observation >> cosmology
 //!
-//! - Date: 
-//! - Status: 
+//! - Date:
+//! - Status:
 //! - Sprint: 0
 //! - Claims: C-1350, C-1351, C-1352, C-1353, C-1354, C-1355, C-1356, C-1357
 //!
@@ -1310,8 +1310,8 @@
 //!
 //! ## I-174: Three-thesis audit summary: algebraic 42 is real, physical 42 is absent
 //!
-//! - Date: 
-//! - Status: 
+//! - Date:
+//! - Status:
 //! - Sprint: 0
 //! - Claims: C-1350, C-1351, C-1352, C-1353, C-1354, C-1355, C-1356, C-1357, C-1331
 //!
@@ -1319,8 +1319,8 @@
 //!
 //! ## I-175: m_3 associator at D=16 is low-rank-dominated: spectral radius ~ Frobenius/dim^1.5
 //!
-//! - Date: 
-//! - Status: 
+//! - Date:
+//! - Status:
 //! - Sprint: 0
 //! - Claims: C-1358, C-1357
 //!
@@ -1328,8 +1328,8 @@
 //!
 //! ## I-176: x87 Givens rotation: fdivr+fucompp idioms and single-truncation half-angle pattern
 //!
-//! - Date: 
-//! - Status: 
+//! - Date:
+//! - Status:
 //! - Sprint: 0
 //! - Claims: C-1359, C-1349
 //!
@@ -1337,8 +1337,8 @@
 //!
 //! ## I-177: AVX2+FMA vs x87 FP-80 precision cascade: single-rounding FMA bridges the gap
 //!
-//! - Date: 
-//! - Status: 
+//! - Date:
+//! - Status:
 //! - Sprint: 0
 //! - Claims: C-1360, C-1359, C-1349
 //!
@@ -1346,8 +1346,8 @@
 //!
 //! ## I-178: Strategic x87/AVX2 interlacing: double-double preferred over x87 for precision scalars in SIMD functions
 //!
-//! - Date: 
-//! - Status: 
+//! - Date:
+//! - Status:
 //! - Sprint: 0
 //! - Claims: C-1362, C-1361, C-1349
 //!
@@ -1355,8 +1355,8 @@
 //!
 //! ## I-179: MaNGA inner halo baryonic systematics: bulge excess, cusp trough, IFU projection spike
 //!
-//! - Date: 
-//! - Status: 
+//! - Date:
+//! - Status:
 //! - Sprint: 0
 //! - Claims: C-1369, C-1370, C-1371, C-1372
 //!
@@ -1364,8 +1364,8 @@
 //!
 //! ## I-180: E-183 Fourier spectrum is baryonic red noise: DC-dominated, monotonically falling through all ZD modes
 //!
-//! - Date: 
-//! - Status: 
+//! - Date:
+//! - Status:
 //! - Sprint: 0
 //! - Claims: C-1372, C-1369, C-1370, C-1371
 //!
@@ -1373,8 +1373,8 @@
 //!
 //! ## I-181: Inclination SNR gradient proves optical projection origin: ZD forcing would be inclination-invariant
 //!
-//! - Date: 
-//! - Status: 
+//! - Date:
+//! - Status:
 //! - Sprint: 0
 //! - Claims: C-1369, C-1372
 //!
@@ -1382,8 +1382,8 @@
 //!
 //! ## I-182: E-183 synthesis: inner halo baryonic-limited, SKA/Euclid outer halo required for ZD detection
 //!
-//! - Date: 
-//! - Status: 
+//! - Date:
+//! - Status:
 //! - Sprint: 0
 //! - Claims: C-1372, C-1373
 //!
@@ -1391,8 +1391,8 @@
 //!
 //! ## I-183: Non-static analysis toolkit: STFT spectrogram + derivative stacking + jackknife Rayleigh R test
 //!
-//! - Date: 
-//! - Status: 
+//! - Date:
+//! - Status:
 //! - Sprint: 0
 //! - Claims: C-1373
 //!
@@ -1400,8 +1400,8 @@
 //!
 //! ## I-184: CUDA D3Q19 LBM precision-tier decision table: MLUPS, bandwidth, and VRAM across 7 tiers on Ada SM 8.9
 //!
-//! - Date: 
-//! - Status: 
+//! - Date:
+//! - Status:
 //! - Sprint: 0
 //! - Claims: C-1300, C-1304, C-1305
 //!
@@ -1409,8 +1409,8 @@
 //!
 //! ## I-185: AoS scatter-write bottleneck for diagonal directions: i-major SoA pull-scheme fix achieves expected 4x bandwidth reduction
 //!
-//! - Date: 
-//! - Status: 
+//! - Date:
+//! - Status:
 //! - Sprint: 0
 //! - Claims: C-1304, C-1305
 //!
@@ -1418,8 +1418,8 @@
 //!
 //! ## I-186: INT4 nibble-packed D3Q19: bandwidth ceiling test design and physical viability constraint
 //!
-//! - Date: 
-//! - Status: 
+//! - Date:
+//! - Status:
 //! - Sprint: 0
 //! - Claims: (none)
 //!
@@ -1427,8 +1427,8 @@
 //!
 //! ## I-187: BF16 WMMA TC throughput parity with FP16 on Ada SM 8.9: same 16x16x16 shape, same hardware datapath
 //!
-//! - Date: 
-//! - Status: 
+//! - Date:
+//! - Status:
 //! - Sprint: 0
 //! - Claims: (none)
 //!
@@ -1436,8 +1436,8 @@
 //!
 //! ## I-188: FP8 e5m2 vs e4m3 for LBM: dynamic range vs mantissa precision tradeoff on Ada SM 8.9
 //!
-//! - Date: 
-//! - Status: 
+//! - Date:
+//! - Status:
 //! - Sprint: 0
 //! - Claims: (none)
 //!
@@ -1445,8 +1445,8 @@
 //!
 //! ## I-189: INT16 SoA beats FP16 SoA by 3% on Ada: integer load path avoids FP16 conversion pipeline
 //!
-//! - Date: 
-//! - Status: 
+//! - Date:
+//! - Status:
 //! - Sprint: 0
 //! - Claims: C-1379, C-1380
 //!
@@ -1454,8 +1454,8 @@
 //!
 //! ## I-190: BF16 SoA scalar throughput 7.5% below FP16 SoA on Ada despite equal element size
 //!
-//! - Date: 
-//! - Status: 
+//! - Date:
+//! - Status:
 //! - Sprint: 0
 //! - Claims: C-1381
 //!
@@ -1463,8 +1463,8 @@
 //!
 //! ## I-191: __stcs cache-streaming stores provide <3% LBM gain at 128^3 (L2 too small for 304 MB ping buffer)
 //!
-//! - Date: 
-//! - Status: 
+//! - Date:
+//! - Status:
 //! - Sprint: 0
 //! - Claims: C-1382
 //!
@@ -1472,8 +1472,8 @@
 //!
 //! ## I-192: FP16 SoA half2 ILP 2-cells/thread gives +9.8% MLUPS at 128^3 via Ada dual-issue scheduling
 //!
-//! - Date: 
-//! - Status: 
+//! - Date:
+//! - Status:
 //! - Sprint: 0
 //! - Claims: C-1383
 //!
@@ -1481,8 +1481,8 @@
 //!
 //! ## I-193: Full D3Q19 precision tier Pareto analysis at 128^3: INT8 SoA is Pareto-optimal production tier
 //!
-//! - Date: 
-//! - Status: 
+//! - Date:
+//! - Status:
 //! - Sprint: 0
 //! - Claims: C-1385, C-1386, C-1387
 //!
@@ -1490,8 +1490,8 @@
 //!
 //! ## I-194: Degenerate REFINE cycle convergence: deterministic null pipeline has analytic fixed-point SNR
 //!
-//! - Date: 
-//! - Status: 
+//! - Date:
+//! - Status:
 //! - Sprint: 0
 //! - Claims: C-1415, C-1411, C-1412
 //!
@@ -1499,8 +1499,8 @@
 //!
 //! ## I-195: Injection recovery destructive interference: exp(-x) envelope collides with baryonic bulge at x~0.5
 //!
-//! - Date: 
-//! - Status: 
+//! - Date:
+//! - Status:
 //! - Sprint: 0
 //! - Claims: C-1412, C-1415
 //!
@@ -1508,8 +1508,8 @@
 //!
 //! ## I-196: Paper-code discrepancy: M=7 harmonic subtraction described in paper but absent from pipeline code
 //!
-//! - Date: 
-//! - Status: 
+//! - Date:
+//! - Status:
 //! - Sprint: 0
 //! - Claims: C-1412, C-1365
 //!
@@ -1517,8 +1517,8 @@
 //!
 //! ## I-197: Literature synthesis: six clusters, seven gaps, three narrative threads for GHOST MaNGA null
 //!
-//! - Date: 
-//! - Status: 
+//! - Date:
+//! - Status:
 //! - Sprint: 0
 //! - Claims: C-1365, C-1372, C-1367, C-1368
 //!
@@ -1526,8 +1526,8 @@
 //!
 //! ## I-198: Six prioritized opportunities from GHOST literature synthesis: SKA forecast highest, simulation validation lowest
 //!
-//! - Date: 
-//! - Status: 
+//! - Date:
+//! - Status:
 //! - Sprint: 0
 //! - Claims: C-1372, C-1365, C-1412
 //!
@@ -1535,8 +1535,8 @@
 //!
 //! ## I-199: Higher-order statistics quadruple falsification: persistence, bispectral, dip, and MI all confirm baryonic null
 //!
-//! - Date: 
-//! - Status: 
+//! - Date:
+//! - Status:
 //! - Sprint: 0
 //! - Claims: C-1419, C-1420, C-1421, C-1422
 //!
@@ -1544,8 +1544,8 @@
 //!
 //! ## I-200: Extreme non-Gaussianity in per-galaxy Fourier power: kurtosis ~284, bimodal population effect
 //!
-//! - Date: 
-//! - Status: 
+//! - Date:
+//! - Status:
 //! - Sprint: 0
 //! - Claims: C-1421
 //!
@@ -1553,8 +1553,8 @@
 //!
 //! ## I-201: Practical ML engineer triple confirmation: matched filter, GP model selection, and stratified phase all null
 //!
-//! - Date: 
-//! - Status: 
+//! - Date:
+//! - Status:
 //! - Sprint: 0
 //! - Claims: C-1423, C-1424, C-1425
 //!
@@ -1562,8 +1562,8 @@
 //!
 //! ## I-202: Whitened matched filter trap: pre-whitening without red-noise correction creates 500x false sensitivity
 //!
-//! - Date: 
-//! - Status: 
+//! - Date:
+//! - Status:
 //! - Sprint: 0
 //! - Claims: C-1423
 //!
@@ -1571,8 +1571,8 @@
 //!
 //! ## I-203: Devil's advocate: window function refuted, outlier domination confirmed as most consequential finding
 //!
-//! - Date: 
-//! - Status: 
+//! - Date:
+//! - Status:
 //! - Sprint: 0
 //! - Claims: C-1426, C-1427
 //!
@@ -1580,8 +1580,8 @@
 //!
 //! ## I-204: Outlier-dominated stacking: 5% of galaxies contribute 67% of DFT power, driving both kurtosis and null result
 //!
-//! - Date: 
-//! - Status: 
+//! - Date:
+//! - Status:
 //! - Sprint: 0
 //! - Claims: C-1427, C-1421
 //!
@@ -1589,8 +1589,8 @@
 //!
 //! ## I-205: Three-perspective synthesis: robust null, intrinsic spectral floor, outlier-dominated estimator
 //!
-//! - Date: 
-//! - Status: 
+//! - Date:
+//! - Status:
 //! - Sprint: 0
 //! - Claims: C-1428, C-1429, C-1427, C-1423, C-1426
 //!
@@ -1598,8 +1598,8 @@
 //!
 //! ## I-206: E-201/E-202 decisive experiment: inclination-dependent spectral slope, Q3 artifact falsified, algebra-universal null
 //!
-//! - Date: 
-//! - Status: 
+//! - Date:
+//! - Status:
 //! - Sprint: 0
 //! - Claims: C-1430, C-1431, C-1432, C-1433, C-1434, C-1435, C-1436, C-1437, C-1438, C-1439
 //!

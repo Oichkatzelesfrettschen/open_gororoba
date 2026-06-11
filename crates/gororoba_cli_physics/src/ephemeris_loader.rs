@@ -6,7 +6,7 @@
 //! Zero frame rotation = zero geometric risk for the h(t).v_wind cross-product.
 //!
 //! Thread safety: all query methods take `&self`, safe inside rayon par_iter.
-//! anise Vector3 is nalgebra::Vector3<f64> -- no conversion needed.
+//! anise Vector3 is `nalgebra::Vector3<f64>` -- no conversion needed.
 
 use anise::{
     almanac::Almanac,

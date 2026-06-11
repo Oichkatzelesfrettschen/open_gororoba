@@ -20,9 +20,9 @@
 //! Lambda(C) = { x in Z^24 : x mod 2 in C }
 //! ```
 //!
-//! For C = C_24 (the extended Golay code, [24,12,8]), this yields the Leech
+//! For C = C_24 (the extended Golay code, `[24,12,8]`), this yields the Leech
 //! lattice after scaling by 1/2.  The generator matrix is therefore
-//! `(1/2) * [I_24 + 2*G_golay]` where G_golay = [I_12 | P] in systematic form.
+//! `(1/2) * [I_24 + 2*G_golay]` where G_golay = `[I_12 | P]` in systematic form.
 //!
 //! This is why the two modules are co-located: `leech_lattice` depends on
 //! `golay_code` for the generator matrix and the codeword membership test.
@@ -87,7 +87,7 @@ pub struct LeechBasis {
     gs_basis: [Point24; 24],
     /// Squared norms of Gram-Schmidt vectors.
     gs_norms_sq: [f64; 24],
-    /// Gram-Schmidt coefficients: mu[i][j] for j < i.
+    /// Gram-Schmidt coefficients: mu`[i]``[j]` for j < i.
     mu: [[f64; 24]; 24],
 }
 
@@ -138,7 +138,7 @@ fn add24(a: &Point24, b: &Point24) -> Point24 {
 /// concrete basis that generates the correct lattice.
 ///
 /// The standard basis from Conway & Sloane uses:
-///   - Row 0..11: 2*e_i + sum_j P[i][j] * e_{12+j}  (from Golay systematic form)
+///   - Row 0..11: 2*e_i + sum_j P`[i]``[j]` * e_{12+j}  (from Golay systematic form)
 ///   - Row 12..23: 2*e_{12+j}                         (even coordinate shifts)
 ///
 /// After scaling by 1/sqrt(8), this generates Lambda_24 with min norm 4/8 = 0.5.

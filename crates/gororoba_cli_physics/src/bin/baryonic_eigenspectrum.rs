@@ -88,7 +88,7 @@ fn parse_dc14_csv(path: &std::path::Path) -> anyhow::Result<Vec<Dc14Bin>> {
 }
 
 /// Build design matrix A for given wavenumbers and mode weights.
-/// A[i][j] = w_j * cos(k_j * x_i) * envelope(x_i)
+/// `A[i][j] = w_j * cos(k_j * x_i) * envelope(x_i)`
 fn build_design_matrix(
     x_values: &[f64],
     wavenumbers: &[f64],

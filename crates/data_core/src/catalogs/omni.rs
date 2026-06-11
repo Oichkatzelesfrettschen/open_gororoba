@@ -76,6 +76,9 @@ pub struct OmniRecord {
     pub lon_deg: f64,
 }
 
+#[cfg(feature = "fetch")]
+pub use super::omni_fetch::OmniProvider;
+
 // Fill values from the OMNI2 format specification.
 // These are the exact sentinel values NASA uses for missing data.
 const FILL_B: f64 = 999.9;

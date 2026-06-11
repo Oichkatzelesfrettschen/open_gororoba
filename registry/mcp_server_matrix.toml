@@ -14,24 +14,24 @@ copilot_secondary = "/home/eirikr/.copilot/config/settings.json"
 [policy]
 critical_servers = ["filesystem", "git", "ripgrep", "rust", "rust-docs", "github", "time"]
 on_demand_servers = [
-  "arxiv",
-  "bash",
-  "calculator",
-  "chrome-devtools",
-  "context7",
-  "desktop-commander",
-  "dotfiles-orchestrator",
-  "file-finder",
-  "markitdown",
-  "math",
-  "memory",
-  "ollama",
-  "playwright",
-  "puppeteer",
-  "python",
-  "semgrep",
-  "sequential-thinking",
-  "sqlite",
+    "arxiv",
+    "bash",
+    "calculator",
+    "chrome-devtools",
+    "context7",
+    "desktop-commander",
+    "dotfiles-orchestrator",
+    "file-finder",
+    "markitdown",
+    "math",
+    "memory",
+    "ollama",
+    "playwright",
+    "puppeteer",
+    "python",
+    "semgrep",
+    "sequential-thinking",
+    "sqlite",
 ]
 recommended_servers = ["context7", "sqlite"]
 fallback_rule = "if MCP transport fails, use deterministic shell fallback and record failure"
@@ -42,47 +42,47 @@ expected_disabled_count = 23
 [gpu_relevance]
 primary_servers = ["rust", "rust-docs", "bash", "github", "context7", "playwright", "puppeteer"]
 notes = [
-  "Use rust/rust-docs for crate and API selection in CUDA/OpenCL/Vulkan paths.",
-  "Use containers only when a valid compose service exists; currently disabled in shared configs.",
-  "Use bash for local GPU diagnostics (nvidia-smi, vulkaninfo, clinfo) when available.",
+    "Use rust/rust-docs for crate and API selection in CUDA/OpenCL/Vulkan paths.",
+    "Use containers only when a valid compose service exists; currently disabled in shared configs.",
+    "Use bash for local GPU diagnostics (nvidia-smi, vulkaninfo, clinfo) when available.",
 ]
 
 [all_detected_servers]
 names = [
-  "filesystem",
-  "git",
-  "github",
-  "ripgrep",
-  "rust",
-  "rust-docs",
-  "time",
+    "filesystem",
+    "git",
+    "github",
+    "ripgrep",
+    "rust",
+    "rust-docs",
+    "time",
 ]
 
 [disabled_servers_2026_02_11]
 names = [
-  "arxiv",
-  "bash",
-  "calculator",
-  "chrome-devtools",
-  "containers",
-  "context7",
-  "desktop-commander",
-  "dotfiles-orchestrator",
-  "fetch",
-  "file-finder",
-  "markitdown",
-  "math",
-  "memory",
-  "ollama",
-  "playwright",
-  "postgres",
-  "puppeteer",
-  "python",
-  "semgrep",
-  "sequential-thinking",
-  "shell",
-  "sqlite",
-  "youtube-transcript",
+    "arxiv",
+    "bash",
+    "calculator",
+    "chrome-devtools",
+    "containers",
+    "context7",
+    "desktop-commander",
+    "dotfiles-orchestrator",
+    "fetch",
+    "file-finder",
+    "markitdown",
+    "math",
+    "memory",
+    "ollama",
+    "playwright",
+    "postgres",
+    "puppeteer",
+    "python",
+    "semgrep",
+    "sequential-thinking",
+    "shell",
+    "sqlite",
+    "youtube-transcript",
 ]
 reason = "Disabled by default across Codex/Gemini/Claude/Copilot to keep a small baseline enabled set; enable on-demand per task. Truly broken servers remain disabled until fixed."
 
@@ -300,33 +300,33 @@ youtube_transcript_get_transcript = "FAIL_LIST_TRANSCRIPTS_ATTR_MISSING"
 checked_utc = "2026-02-16T01:56:18Z"
 command = "PYTHONWARNINGS=error cargo run --release --bin src/verification/verify_mcp_smoke.py"
 pass = [
-  "filesystem",
-  "git",
-  "github",
-  "ripgrep",
-  "rust",
-  "rust-docs",
-  "time",
+    "filesystem",
+    "git",
+    "github",
+    "ripgrep",
+    "rust",
+    "rust-docs",
+    "time",
 ]
 disabled_on_demand = [
-  "arxiv",
-  "bash",
-  "calculator",
-  "chrome-devtools",
-  "context7",
-  "desktop-commander",
-  "dotfiles-orchestrator",
-  "file-finder",
-  "markitdown",
-  "math",
-  "memory",
-  "ollama",
-  "playwright",
-  "puppeteer",
-  "python",
-  "semgrep",
-  "sequential-thinking",
-  "sqlite",
+    "arxiv",
+    "bash",
+    "calculator",
+    "chrome-devtools",
+    "context7",
+    "desktop-commander",
+    "dotfiles-orchestrator",
+    "file-finder",
+    "markitdown",
+    "math",
+    "memory",
+    "ollama",
+    "playwright",
+    "puppeteer",
+    "python",
+    "semgrep",
+    "sequential-thinking",
+    "sqlite",
 ]
 fail = ["containers", "fetch", "postgres", "shell", "youtube-transcript"]
 
@@ -352,34 +352,34 @@ app_store_glama = 503
 rust_sdk_repo = "https://github.com/modelcontextprotocol/rust-sdk"
 reference_servers_repo = "https://github.com/modelcontextprotocol/servers"
 notes = [
-  "Prefer Rust MCP for workspace introspection and quality gates.",
-  "Use MCP Git and GitHub for sync/review workflows.",
-  "Use shell fallback only when MCP transport/server is unavailable.",
+    "Prefer Rust MCP for workspace introspection and quality gates.",
+    "Use MCP Git and GitHub for sync/review workflows.",
+    "Use shell fallback only when MCP transport/server is unavailable.",
 ]
 
 [mcp_expansion_targets]
 new_server_docs = [
-  "/home/eirikr/.codex/config.toml",
-  "/home/eirikr/.codex/mcp-config.json",
-  "/home/eirikr/.claude/.mcp.json",
-  "/home/eirikr/.gemini/settings.json",
-  "/home/eirikr/.copilot/mcp-config.json",
-  "/home/eirikr/.copilot/config/settings.json",
+    "/home/eirikr/.codex/config.toml",
+    "/home/eirikr/.codex/mcp-config.json",
+    "/home/eirikr/.claude/.mcp.json",
+    "/home/eirikr/.gemini/settings.json",
+    "/home/eirikr/.copilot/mcp-config.json",
+    "/home/eirikr/.copilot/config/settings.json",
 ]
 install_rule = "add servers to all four clients when repo-fit is critical and runtime is available"
 
 [candidate_servers_2026_02_11]
 selection_rule = "prefer official or actively maintained repos; add only after smoke test in local client runtime"
 repos = [
-  "https://github.com/yoda-digital/mcp-gitlab-server",
-  "https://github.com/motherduckdb/mcp-server-motherduck",
-  "https://github.com/Govcraft/rust-docs-mcp-server",
-  "https://github.com/terhechte/cursor-rust-tools",
-  "https://github.com/semgrep/mcp",
+    "https://github.com/yoda-digital/mcp-gitlab-server",
+    "https://github.com/motherduckdb/mcp-server-motherduck",
+    "https://github.com/Govcraft/rust-docs-mcp-server",
+    "https://github.com/terhechte/cursor-rust-tools",
+    "https://github.com/semgrep/mcp",
 ]
 notes = [
-  "GitLab MCP is useful if GitLab mirroring and package workflows increase.",
-  "MotherDuck/DuckDB MCP is useful for large TOML/CSV artifact analytics.",
-  "Alternative Rust docs/cargo MCP stacks are useful if current rust-docs gaps appear.",
-  "Semgrep MCP is already present and passing; keep as security lane.",
+    "GitLab MCP is useful if GitLab mirroring and package workflows increase.",
+    "MotherDuck/DuckDB MCP is useful for large TOML/CSV artifact analytics.",
+    "Alternative Rust docs/cargo MCP stacks are useful if current rust-docs gaps appear.",
+    "Semgrep MCP is already present and passing; keep as security lane.",
 ]

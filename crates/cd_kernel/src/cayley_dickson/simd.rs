@@ -1,7 +1,7 @@
 //! SIMD-optimized Cayley-Dickson multiplication for 4D through 256D.
 //!
-//! # Prerequisite modules: [`arith`] (scalar multiply), [`signs`] (basis product)
-//! # Depended on by: [`fast_associator`], [`soa_cache`]
+//! # Prerequisite modules: `arith` (scalar multiply), `signs` (basis product)
+//! # Depended on by: `fast_associator`, `soa_cache`
 //!
 //! # Why this module is the kernel
 //!
@@ -173,10 +173,10 @@ pub fn cd_multiply_simd(a: &[f64], b: &[f64]) -> Vec<f64> {
 /// The CD quaternion product `p = q * r` can be expressed as the matrix-vector
 /// product `p = M(q) * r` where:
 /// ```text
-/// M(q) = [[q0, -q1, -q2, -q3],
-///          [q1,  q0, -q3,  q2],
-///          [q2,  q3,  q0, -q1],
-///          [q3, -q2,  q1,  q0]]
+/// M(q) = `[[q0, -q1, -q2, -q3]`,
+///          `[q1,  q0, -q3,  q2]`,
+///          `[q2,  q3,  q0, -q1]`,
+///          `[q3, -q2,  q1,  q0]`]
 /// ```
 /// This decomposes into 4 broadcast-scale-accumulate operations on shuffled
 /// copies of `r`, fitting naturally into 256-bit SIMD (f64x4 = one quaternion).
@@ -361,7 +361,7 @@ fn conjugate_16(x: &[f64; 16]) -> [f64; 16] {
 
 /// Flat pathion (32D CD) multiply using sedenion_multiply_flat.
 /// CD doubling: (a_l, a_r) * (b_l, b_r) = (a_l*b_l - conj(b_r)*a_r, b_r*a_l + a_r*conj(b_l))
-/// Zero heap allocation -- everything in fixed [f64; 32] arrays.
+/// Zero heap allocation -- everything in fixed `[f64; 32]` arrays.
 #[inline]
 pub fn pathion_multiply_flat(a: &[f64; 32], b: &[f64; 32]) -> [f64; 32] {
     let a_l: [f64; 16] = a[..16].try_into().unwrap();
@@ -559,7 +559,7 @@ pub fn octonion_multiply_scalar_flat(a: &[f64; 8], b: &[f64; 8]) -> [f64; 8] {
 // Slice-based flat multiply API (zero-copy from sub-slices)
 // ---------------------------------------------------------------------------
 
-/// CD multiply on sub-slices: `out[..dim] = a[..dim] * b[..dim]`.
+/// CD multiply on sub-slices: `out`[..dim]` = a`[..dim]` * b[..dim]`.
 pub fn cd_multiply_flat_into(a: &[f64], b: &[f64], out: &mut [f64], dim: usize) {
     debug_assert!(a.len() >= dim && b.len() >= dim && out.len() >= dim);
     match dim {

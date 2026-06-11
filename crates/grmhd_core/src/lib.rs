@@ -27,6 +27,8 @@
 pub mod con2prim;
 pub mod cons;
 pub mod ct;
+#[cfg(feature = "cubecl")]
+pub mod cubecl;
 pub mod eos;
 pub mod evolve;
 pub mod flux;
@@ -39,3 +41,5 @@ pub mod recon;
 pub mod riemann;
 pub mod source;
 pub mod torus;
+#[cfg(feature = "vulkan")]
+pub mod vulkan;

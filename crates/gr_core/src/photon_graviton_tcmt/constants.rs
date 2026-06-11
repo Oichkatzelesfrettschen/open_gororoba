@@ -70,11 +70,11 @@ pub const SOLVER_CONVERGENCE_TOLERANCE: f64 = 1e-12;
 pub const MAX_SOLVER_ITERATIONS: usize = 10000;
 
 /// Minimal coupling strength to avoid numerical issues
-/// Units: [frequency], anything below this is treated as zero
+/// Units: `[frequency]`, anything below this is treated as zero
 pub const MIN_COUPLING_STRENGTH: f64 = 1e-20;
 
 /// Minimal decay rate to avoid division by zero
-/// Units: [frequency]
+/// Units: `[frequency]`
 pub const MIN_DECAY_RATE: f64 = 1e-20;
 
 #[cfg(test)]

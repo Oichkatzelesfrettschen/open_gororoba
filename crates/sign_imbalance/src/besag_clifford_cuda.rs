@@ -23,9 +23,10 @@
 //! - stats_core::ultrametric::adaptive for CPU baseline
 
 use anyhow::{Context, Result};
-use cudarc::{
-    driver::{CudaContext, CudaFunction, CudaSlice, CudaStream, LaunchConfig, PushKernelArg},
-    nvrtc::compile_ptx,
+use cudarc::driver::{CudaStream, PushKernelArg};
+use gororoba_gpu_cuda::{
+    Buffer, CompileOptions, Context as CudaContextHelper, KernelHandle, LaunchConfig,
+    ModuleRegistry,
 };
 use std::sync::Arc;
 
@@ -65,19 +66,73 @@ pub struct GpuBesagCliffordTester {
     batch_size: usize,
 
     // CUDA context
-    _ctx: Arc<CudaContext>,
+    _ctx: CudaContextHelper,
     stream: Arc<CudaStream>,
 
     // Device buffers (persistent across batches)
-    d_imbalance: CudaSlice<f64>,       // Original imbalance field
-    d_shuffled_batch: CudaSlice<f64>,  // Batch of shuffled fields
-    d_viscosity_batch: CudaSlice<f64>, // Batch of viscosity fields
-    d_t_statistics: CudaSlice<f64>,    // Batch of t-statistics
+    buffers: BesagCliffordBuffers,
 
     // Compiled kernels
-    shuffle_kernel: CudaFunction,
-    viscosity_kernel: CudaFunction,
-    count_extreme_kernel: CudaFunction,
+    kernels: BesagCliffordKernels,
+}
+
+struct BesagCliffordBuffers {
+    imbalance: Buffer<f64>,       // Original imbalance field
+    shuffled_batch: Buffer<f64>,  // Batch of shuffled fields
+    viscosity_batch: Buffer<f64>, // Batch of viscosity fields
+    t_statistics: Buffer<f64>,    // Batch of t-statistics
+}
+
+struct BesagCliffordKernels {
+    shuffle: KernelHandle,
+    viscosity: KernelHandle,
+    count_extreme: KernelHandle,
+}
+
+fn load_kernels(ctx: &CudaContextHelper) -> Result<BesagCliffordKernels> {
+    let opts = CompileOptions::empty();
+    let ptx = CompileOptions::compile_ptx(BESAG_CLIFFORD_KERNELS, &opts)
+        .context("Failed to compile CUDA kernels")?;
+    let registry = ModuleRegistry::load(
+        ctx.raw(),
+        ptx,
+        &[
+            "shuffle_imbalance_batch_kernel",
+            "transform_to_viscosity_batch_kernel",
+            "count_extreme_batch_kernel",
+        ],
+    )
+    .context("Failed to load Besag-Clifford CUDA module")?;
+
+    Ok(BesagCliffordKernels {
+        shuffle: registry
+            .get("shuffle_imbalance_batch_kernel")
+            .context("Failed to get shuffle kernel function")?,
+        viscosity: registry
+            .get("transform_to_viscosity_batch_kernel")
+            .context("Failed to get viscosity kernel function")?,
+        count_extreme: registry
+            .get("count_extreme_batch_kernel")
+            .context("Failed to get count extreme kernel function")?,
+    })
+}
+
+fn allocate_buffers(
+    stream: &Arc<CudaStream>,
+    batch_size: usize,
+    n_cells: usize,
+    imbalance_field: &[f64],
+) -> Result<BesagCliffordBuffers> {
+    Ok(BesagCliffordBuffers {
+        imbalance: Buffer::htod(stream, imbalance_field)
+            .context("Failed to upload imbalance field to GPU")?,
+        shuffled_batch: Buffer::alloc_zeros(stream, batch_size * n_cells)
+            .context("Failed to allocate shuffled batch buffer")?,
+        viscosity_batch: Buffer::alloc_zeros(stream, batch_size * n_cells)
+            .context("Failed to allocate viscosity batch buffer")?,
+        t_statistics: Buffer::alloc_zeros(stream, batch_size)
+            .context("Failed to allocate t-statistics buffer")?,
+    })
 }
 
 impl GpuBesagCliffordTester {
@@ -94,58 +149,19 @@ impl GpuBesagCliffordTester {
             );
         }
 
-        // Initialize CUDA via the consolidated gpu_cuda::Context helper
-        // (one-line replacement for CudaContext::new(0) -- centralises the
-        // get_count + ordinal-range checks across 13+ workspace crates).
-        let ctx_wrapper = gororoba_gpu_cuda::Context::with_default_device()
+        let ctx = CudaContextHelper::with_default_device()
             .context("Failed to initialize CUDA context")?;
-        let ctx = ctx_wrapper.raw().clone();
         let stream = ctx.default_stream();
-
-        // Upload imbalance field (persistent)
-        let d_imbalance = stream
-            .clone_htod(imbalance_field)
-            .context("Failed to upload imbalance field to GPU")?;
-
-        // Allocate batch buffers
-        let d_shuffled_batch = stream
-            .alloc_zeros::<f64>(batch_size * n_cells)
-            .context("Failed to allocate shuffled batch buffer")?;
-        let d_viscosity_batch = stream
-            .alloc_zeros::<f64>(batch_size * n_cells)
-            .context("Failed to allocate viscosity batch buffer")?;
-        let d_t_statistics = stream
-            .alloc_zeros::<f64>(batch_size)
-            .context("Failed to allocate t-statistics buffer")?;
-
-        // Compile CUDA kernels from source
-        let ptx = compile_ptx(BESAG_CLIFFORD_KERNELS).context("Failed to compile CUDA kernels")?;
-
-        let module = ctx.load_module(ptx).context("Failed to load PTX module")?;
-
-        // Get kernel functions
-        let shuffle_kernel = module
-            .load_function("shuffle_imbalance_batch_kernel")
-            .context("Failed to get shuffle kernel function")?;
-        let viscosity_kernel = module
-            .load_function("transform_to_viscosity_batch_kernel")
-            .context("Failed to get viscosity kernel function")?;
-        let count_extreme_kernel = module
-            .load_function("count_extreme_batch_kernel")
-            .context("Failed to get count extreme kernel function")?;
+        let buffers = allocate_buffers(&stream, batch_size, n_cells, imbalance_field)?;
+        let kernels = load_kernels(&ctx)?;
 
         Ok(Self {
             n_cells,
             batch_size,
             _ctx: ctx,
             stream,
-            d_imbalance,
-            d_shuffled_batch,
-            d_viscosity_batch,
-            d_t_statistics,
-            shuffle_kernel,
-            viscosity_kernel,
-            count_extreme_kernel,
+            buffers,
+            kernels,
         })
     }
 
@@ -171,12 +187,11 @@ impl GpuBesagCliffordTester {
             // Step 2: Transform to viscosity batch (GPU kernel)
             self.transform_to_viscosity_batch(current_batch_size, nu_base, lambda)?;
 
-            // Step 3: Run LBM batch (most complex step - requires coordination)
-            // Deferred (L-790): batch LBM integration is post-publication future work.
-            // The Besag-Clifford GPU permutation test works standalone.
+            // Batch LBM integration is not represented in this kernel
+            // argument surface. The GPU path exercises permutation and
+            // viscosity transforms before applying the t-statistic oracle.
 
-            // Step 4: Compute correlation batch (GPU kernel)
-            // Deferred (L-790): percolation detection integration is post-publication.
+            // Percolation detection is not part of this CUDA module.
 
             // Step 5: Count extreme t-statistics (GPU kernel)
             let batch_extreme = self.count_extreme_batch(current_batch_size, observed_t)?;
@@ -241,19 +256,12 @@ impl GpuBesagCliffordTester {
     /// Shuffle imbalance field batch (GPU kernel)
     fn shuffle_imbalance_batch(&mut self, batch_size: usize, seed: u64) -> Result<()> {
         // Launch configuration: 1 thread per batch item (each thread does full shuffle)
-        let block_size = 256;
-        let grid_size = batch_size.div_ceil(block_size);
-
-        let config = LaunchConfig {
-            grid_dim: (grid_size as u32, 1, 1),
-            block_dim: (block_size as u32, 1, 1),
-            shared_mem_bytes: 0,
-        };
+        let config = LaunchConfig::launch_1d(batch_size as u32);
 
         // Build kernel launch with arguments
-        let mut builder = self.stream.launch_builder(&self.shuffle_kernel);
-        builder.arg(&self.d_imbalance);
-        builder.arg(&self.d_shuffled_batch);
+        let mut builder = self.stream.launch_builder(&self.kernels.shuffle);
+        builder.arg(self.buffers.imbalance.raw());
+        builder.arg(self.buffers.shuffled_batch.raw_mut());
         let n_cells_i32 = self.n_cells as i32;
         let batch_size_i32 = batch_size as i32;
         builder.arg(&n_cells_i32);
@@ -284,19 +292,12 @@ impl GpuBesagCliffordTester {
     ) -> Result<()> {
         // Launch configuration: parallel over all elements (batch_size * n_cells)
         let total_elements = batch_size * self.n_cells;
-        let block_size = 256;
-        let grid_size = total_elements.div_ceil(block_size);
-
-        let config = LaunchConfig {
-            grid_dim: (grid_size as u32, 1, 1),
-            block_dim: (block_size as u32, 1, 1),
-            shared_mem_bytes: 0,
-        };
+        let config = LaunchConfig::launch_1d(total_elements as u32);
 
         // Build kernel launch with arguments
-        let mut builder = self.stream.launch_builder(&self.viscosity_kernel);
-        builder.arg(&self.d_shuffled_batch);
-        builder.arg(&self.d_viscosity_batch);
+        let mut builder = self.stream.launch_builder(&self.kernels.viscosity);
+        builder.arg(self.buffers.shuffled_batch.raw());
+        builder.arg(self.buffers.viscosity_batch.raw_mut());
         let n_cells_i32 = self.n_cells as i32;
         let batch_size_i32 = batch_size as i32;
         builder.arg(&n_cells_i32);
@@ -322,29 +323,20 @@ impl GpuBesagCliffordTester {
     /// Count extreme t-statistics (GPU kernel)
     fn count_extreme_batch(&mut self, batch_size: usize, observed_t: f64) -> Result<usize> {
         // Allocate device memory for count result
-        let d_count = self
-            .stream
-            .alloc_zeros::<i32>(1)
+        let mut d_count = Buffer::<i32>::alloc_zeros(&self.stream, 1)
             .context("Failed to allocate count buffer")?;
 
         // Launch configuration: parallel over batch_size
-        let block_size = 256;
-        let grid_size = batch_size.div_ceil(block_size);
-
-        let config = LaunchConfig {
-            grid_dim: (grid_size as u32, 1, 1),
-            block_dim: (block_size as u32, 1, 1),
-            shared_mem_bytes: 0,
-        };
+        let config = LaunchConfig::launch_1d(batch_size as u32);
 
         // Build kernel launch with arguments
-        let mut builder = self.stream.launch_builder(&self.count_extreme_kernel);
-        builder.arg(&self.d_t_statistics);
+        let mut builder = self.stream.launch_builder(&self.kernels.count_extreme);
+        builder.arg(self.buffers.t_statistics.raw());
         let batch_size_i32 = batch_size as i32;
         let observed_t_abs = observed_t.abs();
         builder.arg(&batch_size_i32);
         builder.arg(&observed_t_abs);
-        builder.arg(&d_count);
+        builder.arg(d_count.raw_mut());
 
         // Launch kernel
         unsafe {
@@ -359,9 +351,8 @@ impl GpuBesagCliffordTester {
             .context("Failed to synchronize after count extreme")?;
 
         // Download result
-        let h_count = self
-            .stream
-            .clone_dtoh(&d_count)
+        let h_count = d_count
+            .dtoh_vec()
             .context("Failed to download count result")?;
 
         Ok(h_count[0] as usize)

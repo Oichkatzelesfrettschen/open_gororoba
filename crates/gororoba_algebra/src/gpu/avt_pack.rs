@@ -8,7 +8,7 @@
 //! # Bit layout
 //!
 //! For dimension D, each violation is packed into one `u32`:
-//!   `[m: bits] [j: bits] [i: bits] [sign_positive: 1]`
+//!   `[m: bits] `[j: bits]` `[i: bits]` [sign_positive: 1]`
 //! where `bits = ceil(log2(D))`.
 //!
 //! | Dim  | bits | total bits used |

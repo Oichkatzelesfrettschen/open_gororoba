@@ -23,6 +23,11 @@ pub struct PspFieldsMagRecord {
     pub b_magnitude: f64,
 }
 
+#[cfg(feature = "fetch")]
+pub use super::psp_fields_fetch::{
+    PspFieldsProvider, parse_psp_fields_cdf_file, parse_psp_fields_file,
+};
+
 #[derive(Default)]
 pub(crate) struct MagAccumulator {
     pub br_sum: f64,

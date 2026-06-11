@@ -77,7 +77,7 @@ pub const N_BINS: usize = 30;
 /// A single frequency bin from the NANOGrav 15-year free spectrum.
 #[derive(Debug, Clone, Copy)]
 pub struct FreqBin {
-    /// Frequency [Hz], nanohertz range.
+    /// Frequency `[Hz]`, nanohertz range.
     pub f_hz: f64,
     /// Median log_1_0(\rho) (characteristic strain power).
     pub log10_rho: f64,

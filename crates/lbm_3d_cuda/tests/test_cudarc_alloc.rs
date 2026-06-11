@@ -1,20 +1,22 @@
-use cudarc::driver::*;
+use gororoba_gpu_cuda::Context;
 use lbm_3d_cuda::sparse::{SparseBrickMap, SparseLbmSolver, SparseMemoryMode};
 
 #[test]
 fn test_alloc() {
-    let Ok(ctx) = CudaContext::new(0) else {
+    let Ok(cuda) = Context::with_default_device() else {
         return;
     };
+    let ctx = cuda.raw();
     let _ = unsafe { ctx.alloc_unified::<u8>(10, false) };
 }
 
 #[test]
 fn test_sparse_managed_mode_smoke() {
-    let Ok(ctx) = CudaContext::new(0) else {
+    let Ok(cuda) = Context::with_default_device() else {
         return;
     };
-    let stream = ctx.default_stream();
+    let ctx = cuda.raw().clone();
+    let stream = cuda.default_stream();
     let mask = vec![1u8; 8 * 8 * 8];
     let d_mask = stream.clone_htod(&mask).expect("upload test mask");
     let map = SparseBrickMap::new_from_geometry(ctx.clone(), stream.clone(), 8, 8, 8, &d_mask)
@@ -30,10 +32,11 @@ fn test_sparse_managed_mode_smoke() {
 
 #[test]
 fn test_sparse_managed_tiled_mode_smoke() {
-    let Ok(ctx) = CudaContext::new(0) else {
+    let Ok(cuda) = Context::with_default_device() else {
         return;
     };
-    let stream = ctx.default_stream();
+    let ctx = cuda.raw().clone();
+    let stream = cuda.default_stream();
     let mask = vec![1u8; 16 * 8 * 8];
     let d_mask = stream.clone_htod(&mask).expect("upload test mask");
     let map = SparseBrickMap::new_from_geometry(ctx.clone(), stream.clone(), 16, 8, 8, &d_mask)

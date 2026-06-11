@@ -1,23 +1,23 @@
 [package]
 name = "lbm_3d_cuda"
 version = "0.1.0"
-edition = { workspace = true }
 authors = ["open_gororoba contributors"]
-description = "GPU-accelerated Lattice Boltzmann Method (D3Q19) with CUDA"
+edition = { workspace = true }
 license = "MIT OR Apache-2.0"
+description = "GPU-accelerated Lattice Boltzmann Method (D3Q19) with CUDA"
 
 [dependencies]
-lbm_3d = { path = "../lbm_3d" }
+anyhow = { workspace = true }
+cudarc = { workspace = true }
 gororoba_algebra = { path = "../gororoba_algebra" }
 gororoba_gpu_bridge = { workspace = true }
 gororoba_gpu_cuda = { workspace = true, features = ["cudarc"] }
 gororoba_gpu_readback = { workspace = true }
-gororoba_sparse_grid = { workspace = true }
 gororoba_optix = { workspace = true }
+gororoba_sparse_grid = { workspace = true }
 gr_core = { path = "../gr_core" }
-cudarc = { workspace = true }
 half = { workspace = true }
-anyhow = { workspace = true }
+lbm_3d = { path = "../lbm_3d" }
 rayon = { workspace = true }
 wide = { workspace = true }
 
@@ -28,7 +28,7 @@ cosmology_core = { path = "../cosmology_core" }
 [features]
 default = []
 cufft = ["cudarc/cufft"]
-aot-cubin = []  # AOT .cubin compilation via build.rs (reclaims ~1.5 GB VRAM)
+aot-cubin = [] # AOT .cubin compilation via build.rs (reclaims ~1.5 GB VRAM)
 
 [[bench]]
 name = "gpu_performance"

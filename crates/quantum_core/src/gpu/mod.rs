@@ -1,22 +1,35 @@
 //! GPU-accelerated tensor contractions for quantum tensor networks.
 //!
-//! This module provides CUDA-based acceleration for expensive tensor operations,
-//! with automatic CPU fallback when no GPU is available.
+//! The CUDA feature keeps the FP64 PEPS contraction path. The cubecl and
+//! Vulkan features add portable PEPS row kernels with explicit FP32 precision
+//! contracts.
 //!
 //! # Feature Gate
 //!
-//! GPU support is optional and controlled by the `gpu` feature flag.
-//! Compile with `--features gpu` to enable GPU acceleration.
+//! GPU support is optional. Compile with `--features gpu` for CUDA,
+//! `--features cubecl` for the cubecl-wgpu path, or `--features vulkan` for
+//! Vulkan compute.
 //!
 //! # Architecture
 //!
-//! - Uses cudarc with dynamic CUDA loading (no build-time CUDA requirement)
-//! - NVRTC compiles kernels at runtime
-//! - Graceful fallback to CPU implementations if no device found
-//! - Per-module feature gating to isolate GPU code
+//! - CUDA uses cudarc with dynamic loading and NVRTC runtime compilation.
+//! - cubecl uses cubecl-wgpu runtime compilation.
+//! - Vulkan uses the workspace ash helper crate.
+//! - Both paths preserve CPU fallback when no GPU device is available.
+//! - Per-module feature gating isolates backend code.
 
-#![cfg(feature = "gpu")]
+#![cfg(any(feature = "gpu", feature = "cubecl", feature = "vulkan"))]
 
+#[cfg(feature = "gpu")]
 pub mod peps;
+#[cfg(feature = "cubecl")]
+pub mod peps_cubecl;
+#[cfg(feature = "vulkan")]
+pub mod peps_vulkan;
 
+#[cfg(feature = "gpu")]
 pub use peps::gpu_contract_rows_peps;
+#[cfg(feature = "cubecl")]
+pub use peps_cubecl::cubecl_contract_rows_peps_fp32;
+#[cfg(feature = "vulkan")]
+pub use peps_vulkan::vulkan_contract_rows_peps_fp32;

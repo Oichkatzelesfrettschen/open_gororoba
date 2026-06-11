@@ -19,8 +19,8 @@ scope_guardrails = "docs/SCOPE_GUARDRAILS.md"
 # Baseline / milestone tags created by the debt-resolution program.
 # Plan reference: plans/elucidate-and-build-out-nested-hollerith.md
 baseline_tags = [
-  { tag = "debt-baseline-v0", date = "2026-04-30", commit = "d00b1bff", purpose = "Phase 0 T-100 snapshot of code/registry/cache/proof/data debt before any change; deltas measured against this point" },
-  { tag = "gate-optimization-v1", date = "2026-05-12", commit = "55d8e848", purpose = "Pre-push gate at 11x speedup over wave-6 baseline (16min -> 88s pure-Rust, 1s branch deletes). Tier-1..7: mold linker, --lib-only nextest, run_check flag, cached gate-tool binaries, cache-check memoization, SSH multiplex, sccache, xtask gate-local driver with JSONL telemetry, gate-lock, age-based cache-sweep, pre-push hook skips deletions. See docs/engineering/pre_push_gate_optimization.md." },
+    { tag = "debt-baseline-v0", date = "2026-04-30", commit = "d00b1bff", purpose = "Phase 0 T-100 snapshot of code/registry/cache/proof/data debt before any change; deltas measured against this point" },
+    { tag = "gate-optimization-v1", date = "2026-05-12", commit = "55d8e848", purpose = "Pre-push gate at 11x speedup over wave-6 baseline (16min -> 88s pure-Rust, 1s branch deletes). Tier-1..7: mold linker, --lib-only nextest, run_check flag, cached gate-tool binaries, cache-check memoization, SSH multiplex, sccache, xtask gate-local driver with JSONL telemetry, gate-lock, age-based cache-sweep, pre-push hook skips deletions. See docs/engineering/pre_push_gate_optimization.md." },
 ]
 
 [sprints.s83]

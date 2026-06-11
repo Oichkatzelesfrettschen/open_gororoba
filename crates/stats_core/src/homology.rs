@@ -29,7 +29,7 @@ pub type Simplex = BTreeSet<usize>;
 #[derive(Debug, Clone)]
 pub struct SimplicialComplex {
     /// All simplices, grouped by dimension.
-    /// simplices[k] contains the k-simplices (k+1 vertices each).
+    /// `simplices[k]` contains the k-simplices (k+1 vertices each).
     simplices: Vec<Vec<Simplex>>,
     /// Maximum dimension of any simplex.
     max_dim: usize,
@@ -110,7 +110,7 @@ impl SimplicialComplex {
     /// Compute the boundary matrix d_k: C_k -> C_{k-1} over Z_2.
     ///
     /// Returns a (rows x cols) binary matrix where rows index (k-1)-simplices
-    /// and cols index k-simplices. Entry [i][j] = 1 iff the i-th (k-1)-simplex
+    /// and cols index k-simplices. Entry `[i][j] = 1` iff the i-th (k-1)-simplex
     /// is a face of the j-th k-simplex.
     pub fn boundary_matrix_z2(&self, k: usize) -> Vec<Vec<u8>> {
         if k == 0 || k >= self.simplices.len() {

@@ -4,7 +4,7 @@
 //! provides DFT-computed material properties for thousands of structures.
 //!
 //! Source: Figshare article 6815699
-//! https://figshare.com/articles/dataset/jdft_3d-7-7-2018_json/6815699
+//! <https://figshare.com/articles/dataset/jdft_3d-7-7-2018_json/6815699>
 
 use crate::fetcher::FetchError;
 use std::{
@@ -31,6 +31,9 @@ pub struct JarvisMaterial {
     pub density: Option<f64>,
     pub volume: Option<f64>,
 }
+
+#[cfg(feature = "fetch")]
+pub use super::jarvis_fetch::{JarvisProvider, fetch_jarvis_json, list_figshare_files};
 
 /// Figshare file metadata.
 #[derive(Debug, Clone)]

@@ -6,7 +6,7 @@
 //! phi(r) as a function of heliocentric distance (V1: up to 157 AU, V2: up to 134 AU).
 //!
 //! SPDF CRS data path (daily ASCII files):
-//!   https://spdf.gsfc.nasa.gov/pub/data/voyager/voyager{1|2}/particle/crs/
+//!   `https://spdf.gsfc.nasa.gov/pub/data/voyager/voyager{1|2}/particle/crs/`
 //!
 //! File naming: vy{N}crs_{YEAR}.asc
 //!

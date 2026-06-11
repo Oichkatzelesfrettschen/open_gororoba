@@ -53,7 +53,7 @@ pub struct Subspace {
 /// Create a subspace from a set of spanning vectors.
 ///
 /// Performs QR decomposition to orthonormalize the vectors.
-/// Vectors are given as rows: each inner Vec<f64> is one vector.
+/// Vectors are given as rows: each inner `Vec<f64>` is one vector.
 ///
 /// # Panics
 ///

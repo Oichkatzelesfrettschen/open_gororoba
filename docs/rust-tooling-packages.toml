@@ -287,4 +287,3 @@ version = "latest"
 track = "requested"
 desc = "Code coverage tool for Rust projects."
 why = "Measurement of test suite thoroughness."
-

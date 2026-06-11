@@ -8,7 +8,7 @@
 //! # Algorithm
 //!
 //! Given operator size `n` and a set of (power, coefficient) pairs defining
-//!   A = sum_k  coeffs[k] * L^{powers[k]}
+//!   `A = sum_k  coeffs[k] * L^{powers[k]}`
 //! where L is the n x n Dirichlet Laplacian, this module:
 //!   1. Builds L numerically (tridiagonal, Dirichlet BCs).
 //!   2. Computes the symmetric eigendecomposition L = U diag(w) U^T via faer.

@@ -68,8 +68,8 @@ Responsibilities:
 ## Refresh cadence
 
 - Monthly at a minimum.
-- Manually triggered:  `make heasarc-catalog-refresh`
-- CI-gated drift check:  `make heasarc-catalog-verify` reads the
+- Manually triggered: `make heasarc-catalog-refresh`
+- CI-gated drift check: `make heasarc-catalog-verify` reads the
   snapshot, hits `/tables`, verifies SHA256 still matches; fails on
   drift. Run weekly in scheduled CI.
 
@@ -77,10 +77,10 @@ Responsibilities:
 
 Plan P6A.S5.T1 wires the snapshot into:
 
-- `ndlb-gate`:  every row in `registry/datasets.toml` whose
+- `ndlb-gate`: every row in `registry/datasets.toml` whose
   `server_ref = "heasarc_w3browse"` must cite a table that exists
   in `registry/heasarc_catalogs.toml`.
-- `data_servers_xref`:  flip `catalog_enumeration` from `partial`
+- `data_servers_xref`: flip `catalog_enumeration` from `partial`
   to `full` in `data_servers.toml#heasarc_w3browse` once a walker
   run produces >=500 rows.
 

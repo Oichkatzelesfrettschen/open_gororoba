@@ -27,6 +27,9 @@ pub struct VoyagerCrsFluxRecord {
     pub fill_flag: bool,
 }
 
+#[cfg(feature = "fetch")]
+pub use super::voyager_crs_flux_fetch::VoyagerCrsFluxProvider;
+
 #[cfg(any(feature = "fetch", test))]
 pub(crate) fn parse_voyager_archive_flux(
     data: &str,

@@ -21,7 +21,7 @@ use crate::{
 ///
 /// Uses finite differences on the metric to approximate dg_{mu nu}/dx^j.
 ///
-/// Returns the source vector S (NCONS components). S[0] = 0 (mass conserved).
+/// Returns the source vector S (NCONS components). `S[0] = 0` (mass conserved).
 pub fn geometric_source(
     p: &Prim,
     metric: &KerrMetric,

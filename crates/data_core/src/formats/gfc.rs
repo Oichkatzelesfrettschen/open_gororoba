@@ -4,7 +4,7 @@
 //! header metadata and coefficient data lines. Used by GRACE, GOCE, GRAIL,
 //! and other gravity missions.
 //!
-//! Format specification: http://icgem.gfz-potsdam.de/ICGEM-Format-2023.pdf
+//! Format specification: <http://icgem.gfz-potsdam.de/ICGEM-Format-2023.pdf>
 
 use crate::fetcher::FetchError;
 use std::path::Path;

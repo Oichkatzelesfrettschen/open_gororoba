@@ -18,12 +18,15 @@
 
 #![cfg(feature = "cubecl")]
 
-use lbm_3d::lattice::D3Q19Lattice;
-use lbm_3d::solver::LbmSolver3D;
-use lbm_vulkan::lbm_d3q19_cubecl::{evolve_d3q19_cubecl, is_available};
-use lbm_vulkan::lbm_d3q19_vulkan::LbmD3Q19Vulkan;
-use rand::SeedableRng;
-use rand::distr::{Distribution, Uniform};
+use lbm_3d::{lattice::D3Q19Lattice, solver::LbmSolver3D};
+use lbm_vulkan::{
+    lbm_d3q19_cubecl::{evolve_d3q19_cubecl, is_available},
+    lbm_d3q19_vulkan::LbmD3Q19Vulkan,
+};
+use rand::{
+    SeedableRng,
+    distr::{Distribution, Uniform},
+};
 use rand_chacha::ChaCha20Rng;
 
 const NX: usize = 16;
@@ -127,12 +130,13 @@ fn three_way_parity_16cubed_10steps() {
                         }
                         let inv_r = 1.0 / r;
                         let g = |i: usize| f_out[i * n_cells + cell];
-                        let mx = g(1) - g(2) + g(7) - g(8) + g(9) - g(10)
-                            + g(11) - g(12) + g(13) - g(14);
-                        let my = g(3) - g(4) + g(7) - g(8) - g(9) + g(10)
-                            + g(15) - g(16) + g(17) - g(18);
-                        let mz = g(5) - g(6) + g(11) - g(12) - g(13) + g(14)
-                            + g(15) - g(16) - g(17) + g(18);
+                        let mx = g(1) - g(2) + g(7) - g(8) + g(9) - g(10) + g(11) - g(12) + g(13)
+                            - g(14);
+                        let my = g(3) - g(4) + g(7) - g(8) - g(9) + g(10) + g(15) - g(16) + g(17)
+                            - g(18);
+                        let mz =
+                            g(5) - g(6) + g(11) - g(12) - g(13) + g(14) + g(15) - g(16) - g(17)
+                                + g(18);
                         (
                             r as f64,
                             [
@@ -212,9 +216,7 @@ fn three_way_parity_16cubed_10steps() {
                 &mut max_vv_u,
             );
         }
-        eprintln!(
-            "Vulkan-vs-cubecl: max_rho_err={max_vv_rho:.3e}, max_u_err={max_vv_u:.3e}"
-        );
+        eprintln!("Vulkan-vs-cubecl: max_rho_err={max_vv_rho:.3e}, max_u_err={max_vv_u:.3e}");
     }
 
     if vulkan_result.is_some() {

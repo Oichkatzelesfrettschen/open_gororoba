@@ -17,7 +17,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         specific_internal_energy: 1.2e17,
     };
 
-    let mut solver = SniaCoreSolver::new(
+    let mut solver = SniaCoreSolver::from_initial_state(
         config,
         WhiteDwarfEos::default(),
         HllcFlux1D::default(),

@@ -52,15 +52,15 @@ pub fn classify_generator(gen_index: usize) -> GeneratorType {
 ///
 /// # Callers
 ///
-/// - [`test_cp_violation_phase_only`]: primary CP violation pipeline
-/// - [`test_cp_violation_jk_dimension_comparison`]: 6D-vs-16D diagnostic
-/// - [`test_cp_violation_joint_3d_scan`]: 3D optimiser for J_max (C-1497 AMENDED)
-/// - [`test_complex_pmns_alpha_scan`]: fine alpha_CP scan (origin of this
+/// - `test_cp_violation_phase_only`: primary CP violation pipeline
+/// - `test_cp_violation_jk_dimension_comparison`: 6D-vs-16D diagnostic
+/// - `test_cp_violation_joint_3d_scan`: 3D optimiser for J_max (C-1497 AMENDED)
+/// - `test_complex_pmns_alpha_scan`: fine alpha_CP scan (origin of this
 ///   implementation, extracted from closure at former line 6508)
 ///
 /// # Panics
 ///
-/// Via [`Octonion::basis`]: panics if `k >= 8`.  Caller must ensure
+/// Via `Octonion::basis`: panics if `k >= 8`.  Caller must ensure
 /// `k in 1..=7` (the seven imaginary octonion units).
 ///
 /// # Concrete example

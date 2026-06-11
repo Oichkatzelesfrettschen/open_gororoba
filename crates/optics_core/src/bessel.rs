@@ -83,9 +83,9 @@ fn digamma_int(n: usize) -> f64 {
 /// Bessel function of the second kind Y_n(z) for integer order n >= 0.
 ///
 /// Uses the integer-order limiting form (DLMF 10.2.3):
-///   Y_n(z) = (2/pi)*[ln(z/2) + gamma]*J_n(z)
+///   Y_n(z) = (2/pi)*`[ln(z/2) + gamma]`*J_n(z)
 ///          - (1/pi)*(z/2)^{-n} * sum_{k=0}^{n-1} (n-k-1)!/k! * (z^2/4)^k
-///          - (1/pi)*(z/2)^n * sum_{k=0}^inf (-1)^k [psi(k+1)+psi(n+k+1)] * (z^2/4)^k / (k!*(n+k)!)
+///          - (1/pi)*(z/2)^n * sum_{k=0}^inf (-1)^k `[psi(k+1)+psi(n+k+1)]` * (z^2/4)^k / (k!*(n+k)!)
 pub fn bessel_y(n: i32, z: Complex64) -> Complex64 {
     let n_abs = n.unsigned_abs() as usize;
 

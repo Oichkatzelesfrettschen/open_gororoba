@@ -46,11 +46,11 @@ impl Default for BransDickeParams {
 /// scalar degree of freedom in BD theory.
 #[derive(Clone, Copy, Debug)]
 pub struct JunctionCondition {
-    /// Jump in extrinsic curvature trace [K].
+    /// Jump in extrinsic curvature trace `[K]`.
     pub delta_k_trace: f64,
     /// Surface stress-energy trace S = h^{ij} S_{ij}.
     pub surface_stress_trace: f64,
-    /// Normal derivative jump of scalar field [d_perp phi].
+    /// Normal derivative jump of scalar field `[d_perp phi]`.
     pub scalar_normal_jump: f64,
 }
 
@@ -81,7 +81,7 @@ pub fn fifth_force_alpha(omega: f64) -> f64 {
 /// Junction scalar normal derivative jump from surface stress.
 ///
 /// In BD theory, the scalar field equation across a thin shell gives:
-///   [d_perp phi] = -(8*pi / (3 + 2*omega)) * S
+///   `[d_perp phi]` = -(8*pi / (3 + 2*omega)) * S
 ///
 /// where S is the trace of the surface stress-energy tensor.
 /// Rodal (2025) Eq. 13.

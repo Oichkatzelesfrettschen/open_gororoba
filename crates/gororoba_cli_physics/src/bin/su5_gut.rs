@@ -1,6 +1,6 @@
 //! su5-gut: SU(5) GUT generator decomposition and verification.
 //!
-//! Usage: su5-gut [--format table|json] [--verbose] [--only generators|fermions|verify]
+//! Usage: `su5-gut [--format table|json] [--verbose] [--only generators|fermions|verify]`
 
 use std::process::ExitCode;
 

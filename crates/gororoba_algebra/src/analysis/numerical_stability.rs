@@ -11,7 +11,7 @@ pub fn estimate_norm_error_growth(dim: usize) -> f64 {
     (dim as f64).sqrt()
 }
 
-/// Computes the magnitude of the associator [a, b, c] = (ab)c - a(bc).
+/// Computes the magnitude of the associator `[a, b, c]` = (ab)c - a(bc).
 /// High associator magnitudes indicate strong non-associativity.
 pub fn associator_magnitude(a: &[f64], b: &[f64], c: &[f64]) -> f64 {
     let assoc = cd_associator(a, b, c);

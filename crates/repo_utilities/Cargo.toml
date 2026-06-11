@@ -2,8 +2,8 @@
 name = "repo_utilities"
 version = "0.1.0"
 edition = { workspace = true }
-description = "Repo hygiene CLI: ansi-check, terminology-gate, verify-artifacts. Standalone (no workspace-crate deps) so gate-time rebuilds are isolated from the main workspace's reverse-closure invalidations."
 license = "MIT"
+description = "Repo hygiene CLI: ansi-check, terminology-gate, verify-artifacts. Standalone (no workspace-crate deps) so gate-time rebuilds are isolated from the main workspace's reverse-closure invalidations."
 
 [[bin]]
 name = "repo-utilities"
@@ -14,6 +14,7 @@ anstyle = { workspace = true }
 anyhow = { workspace = true }
 clap = { workspace = true, features = ["derive"] }
 regex = { workspace = true }
+serde_json = { workspace = true }
 toml = { workspace = true }
 unicode-normalization = { workspace = true }
 walkdir = { workspace = true }

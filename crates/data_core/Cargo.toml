@@ -2,47 +2,48 @@
 name = "data_core"
 version = "0.1.0"
 edition = { workspace = true }
-description = "Dataset acquisition, validation, and caching for cosmological catalogs"
 license = "MIT"
+description = "Dataset acquisition, validation, and caching for cosmological catalogs"
 
 [dependencies]
-csv = { workspace = true }
-serde = { workspace = true }
-serde_json = { workspace = true }
-toml = { workspace = true }
-sha2 = { workspace = true }
-reqwest = { workspace = true, optional = true }
-backon = { workspace = true, optional = true }
-ureq = { workspace = true, optional = true }
+anise = { workspace = true, optional = true }
 anyhow = { workspace = true }
-thiserror = { workspace = true }
-url = { workspace = true, optional = true }
-flate2 = { workspace = true }
-zip = { workspace = true }
-tar = { workspace = true }
-rand = { workspace = true }
-rand_distr = { workspace = true }
-nalgebra = { workspace = true }
-log = { workspace = true }
-chrono = { workspace = true }
-hifitime = { workspace = true }
-regex = { workspace = true }
+backon = { workspace = true, optional = true }
+cd_kernel = { workspace = true }
 cdf = { workspace = true }
+chrono = { workspace = true }
+core_affinity = { workspace = true }
+csv = { workspace = true }
+faer = { workspace = true, optional = true }
+fitsio = { workspace = true, optional = true }
+flate2 = { workspace = true }
+gororoba_contracts = { path = "../gororoba_contracts" }
 gororoba_sparse_grid = { workspace = true }
 hdf5 = { workspace = true, optional = true }
-netcdf3 = { workspace = true, optional = true }
-netcdf-reader = { workspace = true, optional = true }
-polars = { workspace = true, optional = true }
-faer = { workspace = true, optional = true }
-anise = { workspace = true, optional = true }
-fitsio = { workspace = true, optional = true }
-quick-xml = { workspace = true, optional = true }
+hifitime = { workspace = true }
+log = { workspace = true }
 memmap2 = "0.9.10"
-wide.workspace = true
+nalgebra = { workspace = true }
+netcdf-reader = { workspace = true, optional = true }
+netcdf3 = { workspace = true, optional = true }
+polars = { workspace = true, optional = true }
+quick-xml = { workspace = true, optional = true }
+rand = { workspace = true }
+rand_distr = { workspace = true }
 rayon = { workspace = true }
-core_affinity = { workspace = true }
-cd_kernel = { workspace = true }
+regex = { workspace = true }
+reqwest = { workspace = true, optional = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+sha2 = { workspace = true }
+tar = { workspace = true }
+thiserror = { workspace = true }
+toml = { workspace = true }
+ureq = { workspace = true, optional = true }
+url = { workspace = true, optional = true }
 verified_core = { version = "0.1.0", path = "../verified_core" }
+wide.workspace = true
+zip = { workspace = true }
 
 [features]
 # WHY: default is empty so that pure data-model consumers (structs, parsing,

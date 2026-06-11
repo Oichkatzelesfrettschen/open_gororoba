@@ -2,12 +2,12 @@
 name = "tensor_core"
 version = "0.1.0"
 edition = "2021"
-description = "Tensor-Train (TT) and CUR decompositions for high-dimensional scientific computing"
 license = "MIT"
+description = "Tensor-Train (TT) and CUR decompositions for high-dimensional scientific computing"
 
 [dependencies]
-ndarray = { workspace = true }
 faer = { workspace = true }
+ndarray = { workspace = true }
 
 [lints]
 workspace = true

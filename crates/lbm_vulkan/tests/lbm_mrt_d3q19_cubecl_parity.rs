@@ -12,11 +12,12 @@
 
 #![cfg(feature = "cubecl")]
 
-use lbm_3d::lattice::D3Q19Lattice;
-use lbm_3d::solver::LbmSolver3D;
+use lbm_3d::{lattice::D3Q19Lattice, solver::LbmSolver3D};
 use lbm_vulkan::lbm_mrt_d3q19_cubecl::{evolve_mrt_d3q19_cubecl, is_available};
-use rand::SeedableRng;
-use rand::distr::{Distribution, Uniform};
+use rand::{
+    SeedableRng,
+    distr::{Distribution, Uniform},
+};
 use rand_chacha::ChaCha20Rng;
 
 const NX: usize = 16;
@@ -66,8 +67,7 @@ fn cpu_vs_cubecl_mrt_16cubed_10steps() {
             let c = lattice.velocity(i);
             let cu = (c[0] as f32) * ux + (c[1] as f32) * uy + (c[2] as f32) * uz;
             let w_i = lattice.weight(i) as f32;
-            f_init[i * n_cells + cell] =
-                w_i * rho * (1.0 + 3.0 * cu + 4.5 * cu * cu - 1.5 * u_sq);
+            f_init[i * n_cells + cell] = w_i * rho * (1.0 + 3.0 * cu + 4.5 * cu * cu - 1.5 * u_sq);
         }
     }
 

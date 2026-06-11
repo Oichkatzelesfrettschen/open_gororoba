@@ -46,7 +46,7 @@
 
 /// Cassini Shapiro delay bound on PPN gamma deviation.
 ///
-/// |gamma - 1| < 2.3e-5 [Bertotti et al. 2003, Nature 425, 374].
+/// |gamma - 1| < 2.3e-5 `[Bertotti et al. 2003, Nature 425, 374]`.
 pub const CASSINI_GAMMA_DEVIATION_BOUND: f64 = 2.3e-5;
 
 /// Cassini-derived lower bound on Brans-Dicke omega parameter.
@@ -58,38 +58,38 @@ pub const CASSINI_OMEGA_BD_LOWER: f64 = 43_000.0;
 
 /// Lunar Laser Ranging (LLR) Nordtvedt parameter bound.
 ///
-/// |eta_N| < 5e-4 [Williams et al. 2004, Phys. Rev. Lett. 93, 261101].
+/// |eta_N| < 5e-4 `[Williams et al. 2004, Phys. Rev. Lett. 93, 261101]`.
 pub const LLR_NORDTVEDT_BOUND: f64 = 5e-4;
 
 /// PSR J0337+1715 triple-system Nordtvedt parameter bound.
 ///
-/// |eta_N| < 2e-6 [Archibald et al. 2018, Nature 559, 73].
+/// |eta_N| < 2e-6 `[Archibald et al. 2018, Nature 559, 73]`.
 /// This is ~250x more stringent than LLR.
 pub const PULSAR_NORDTVEDT_BOUND: f64 = 2e-6;
 
 /// MICROSCOPE Weak Equivalence Principle (WEP) Eotvos parameter bound.
 ///
-/// |eta| < 1.1e-15 [Touboul et al. 2022, Phys. Rev. Lett. 129, 121102].
+/// |eta| < 1.1e-15 `[Touboul et al. 2022, Phys. Rev. Lett. 129, 121102]`.
 pub const MICROSCOPE_EOTVOS_BOUND: f64 = 1.1e-15;
 
 /// Torsion-balance Yukawa fifth-force bound at lambda ~ 1 cm.
 ///
-/// |alpha| < 1.8e-2 [Hoyle et al. 2004, Phys. Rev. D 70, 042004].
+/// |alpha| < 1.8e-2 `[Hoyle et al. 2004, Phys. Rev. D 70, 042004]`.
 pub const HOYLE_YUKAWA_ALPHA_BOUND: f64 = 1.8e-2;
 
 /// Torsion-balance Yukawa range bound for alpha = 1.
 ///
-/// lambda < 38.6 um [Lee et al. 2020, Phys. Rev. Lett. 124, 101101].
+/// lambda < 38.6 um `[Lee et al. 2020, Phys. Rev. Lett. 124, 101101]`.
 pub const LEE_YUKAWA_LAMBDA_BOUND_UM: f64 = 38.6;
 
 /// GW170817 gravitational wave speed bound.
 ///
-/// |c_g/c - 1| < 3e-15 [Abbott et al. 2017, Phys. Rev. Lett. 119, 161101].
+/// |c_g/c - 1| < 3e-15 `[Abbott et al. 2017, Phys. Rev. Lett. 119, 161101]`.
 pub const GW_SPEED_BOUND: f64 = 3e-15;
 
 /// Pulsar timing bound on time variation of G.
 ///
-/// |Gdot/G| < 1e-13 yr^-1 [Archibald et al. 2018, Nature 559, 73].
+/// |Gdot/G| < 1e-13 yr^-1 `[Archibald et al. 2018, Nature 559, 73]`.
 pub const GDOT_OVER_G_BOUND: f64 = 1e-13;
 
 // ---------------------------------------------------------------------------
@@ -107,7 +107,7 @@ pub const VLBI_GAMMA_DEVIATION_BOUND: f64 = 1.2e-4;
 /// Mercury perihelion precession bound on PPN beta.
 ///
 /// |beta - 1| < 8e-5 when combined with Cassini gamma.
-/// [Park et al. 2017, AJ 153, 121], using MESSENGER ranging data.
+/// `[Park et al. 2017, AJ 153, 121]`, using MESSENGER ranging data.
 /// The perihelion rate depends on (2 + 2*gamma - beta)/3 * GR_rate.
 pub const MERCURY_BETA_DEVIATION_BOUND: f64 = 8e-5;
 
@@ -119,7 +119,7 @@ pub const ALPHA1_BOUND: f64 = 1e-4;
 
 /// Preferred-frame parameter alpha_2 bound.
 ///
-/// |alpha_2| < 2e-9 [Shao et al. 2013, Class. Quantum Grav. 30, 165019].
+/// |alpha_2| < 2e-9 `[Shao et al. 2013, Class. Quantum Grav. 30, 165019]`.
 /// From non-detection of spin precession of solitary pulsars around
 /// the preferred-frame direction.
 pub const ALPHA2_BOUND: f64 = 2e-9;
@@ -132,20 +132,20 @@ pub const ALPHA3_BOUND: f64 = 4e-20;
 
 /// Whitehead parameter xi bound.
 ///
-/// |xi| < 3.9e-9 [Shao et al. 2013, from solitary pulsar profiles].
+/// |xi| < 3.9e-9 `[Shao et al. 2013, from solitary pulsar profiles]`.
 pub const XI_BOUND: f64 = 3.9e-9;
 
 /// Gravity Probe B geodetic precession measurement.
 ///
 /// Geodetic drift rate = -6601.8 +/- 18.3 mas/yr vs GR prediction -6606.1 mas/yr.
 /// This constrains the combination (1 + gamma)/2 to 0.25% precision.
-/// [Everitt et al. 2011, Phys. Rev. Lett. 106, 221101].
+/// `[Everitt et al. 2011, Phys. Rev. Lett. 106, 221101]`.
 pub const GPB_GEODETIC_PRECISION: f64 = 0.0028;
 
 /// Double pulsar orbital decay agreement with GR quadrupole formula.
 ///
 /// Observed/predicted ratio = 0.999963(+63,-63) for PSR J0737-3039A/B.
-/// [Kramer et al. 2021, Phys. Rev. X 11, 041050].
+/// `[Kramer et al. 2021, Phys. Rev. X 11, 041050]`.
 /// Constrains dipole radiation: any scalar dipole contribution must
 /// be < 3.7e-5 of the GR quadrupole flux.
 pub const DOUBLE_PULSAR_PDOT_AGREEMENT: f64 = 3.7e-5;
@@ -158,13 +158,13 @@ pub const HULSE_TAYLOR_PDOT_RATIO: f64 = 0.997;
 
 /// LIGO/Virgo O3 graviton mass upper bound [eV/c^2].
 ///
-/// m_g < 1.27e-23 eV/c^2 [Abbott et al. 2022, Phys. Rev. D 105, 122001].
+/// m_g < 1.27e-23 eV/c^2 `[Abbott et al. 2022, Phys. Rev. D 105, 122001]`.
 /// From modified dispersion relation analysis of GWTC-3 events.
 pub const LIGO_O3_GRAVITON_MASS_EV: f64 = 1.27e-23;
 
-/// NANOGrav 15-year graviton mass upper bound [eV].
+/// NANOGrav 15-year graviton mass upper bound `[eV]`.
 ///
-/// m_g < 9.1e-31 eV [NANOGrav Collaboration 2023, ApJL 951, L11].
+/// m_g < 9.1e-31 eV `[NANOGrav Collaboration 2023, ApJL 951, L11]`.
 /// From gravitational wave background dispersion. 8 orders of magnitude
 /// more stringent than LIGO but from very different frequency band.
 pub const NANOGRAV_GRAVITON_MASS_EV: f64 = 9.1e-31;
@@ -172,10 +172,10 @@ pub const NANOGRAV_GRAVITON_MASS_EV: f64 = 9.1e-31;
 /// Gravitational constant in SI units [m^3 kg^-1 s^-2].
 const G_SI: f64 = 6.674_30e-11;
 
-/// Speed of light [m/s].
+/// Speed of light `[m/s]`.
 const C_SI: f64 = 2.997_924_58e8;
 
-/// Reduced Planck constant [J s].
+/// Reduced Planck constant `[J s]`.
 const HBAR_SI: f64 = 1.054_571_817e-34;
 
 // ---------------------------------------------------------------------------
@@ -288,7 +288,7 @@ pub fn ppn_zeta4_bd() -> f64 {
 // Perihelion precession
 // ---------------------------------------------------------------------------
 
-/// Perihelion precession rate per orbit in PPN formalism [radians/orbit].
+/// Perihelion precession rate per orbit in PPN formalism `[radians/orbit]`.
 ///
 /// delta_phi = (6 * pi * G * M) / (a * c^2 * (1 - e^2))
 ///             * (2 + 2*gamma - beta) / 3
@@ -375,7 +375,7 @@ pub fn bd_scalar_sensitivity(omega: f64) -> f64 {
 // Graviton mass and dispersion
 // ---------------------------------------------------------------------------
 
-/// Compton wavelength of a massive graviton [meters].
+/// Compton wavelength of a massive graviton `[meters]`.
 ///
 /// lambda_g = hbar / (m_g * c)
 ///

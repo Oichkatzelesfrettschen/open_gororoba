@@ -41,7 +41,7 @@ pub type Pathion = [f64; 32];
 
 /// Build structure constant table from Fano plane.
 ///
-/// Returns table[i][j] = (sign, k) for e_i * e_j = sign * e_k.
+/// Returns table`[i]``[j]` = (sign, k) for e_i * e_j = sign * e_k.
 pub fn build_structure_constants() -> [[Option<(i8, usize)>; 8]; 8] {
     let mut sc = [[None; 8]; 8];
 

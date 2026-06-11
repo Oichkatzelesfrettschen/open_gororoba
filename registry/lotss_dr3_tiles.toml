@@ -11,7 +11,7 @@
 updated = "2026-04-17"
 radius_deg = 2
 step_deg = 1
-hetdex_bounds = [ 150, 250, 45, 60 ]
+hetdex_bounds = [150, 250, 45, 60]
 tile_count = 1616
 lotss_vo_dataset_refs = [
     "radio_surveys",
@@ -11328,4 +11328,3 @@ ra = 250.000000
 dec = 60.000000
 radius = 2.000000
 source = "hetdex_grid"
-

@@ -206,7 +206,10 @@ fn main() -> anyhow::Result<()> {
     let vf = void_count as f64 / total_cells as f64;
     // vf is a fraction of grid cells, so it must lie in [0, 1]; a value
     // outside that range means void_count or total_cells was miscomputed.
-    debug_assert!((0.0..=1.0).contains(&vf), "void fraction out of range: {vf}");
+    debug_assert!(
+        (0.0..=1.0).contains(&vf),
+        "void fraction out of range: {vf}"
+    );
     eprintln!("Void Generation Complete.");
     eprintln!("  Threshold: {}", args.threshold);
     eprintln!("  Void fraction (vf = exclusion):           {:.6}", vf);

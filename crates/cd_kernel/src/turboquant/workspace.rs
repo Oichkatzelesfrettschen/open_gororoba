@@ -5,7 +5,7 @@
 //! - Quantized indices (d elements, u8)
 //! - Residual computation (d elements)
 //!
-//! Without a workspace, each call allocates 3-5 Vec<f64> on the heap.
+//! Without a workspace, each call allocates 3-5 `Vec<f64>` on the heap.
 //! With dyn-stack, these are allocated ONCE and reused across calls.
 //! With aligned-vec, the buffers are SIMD-aligned for f64x4/f32x8 ops.
 

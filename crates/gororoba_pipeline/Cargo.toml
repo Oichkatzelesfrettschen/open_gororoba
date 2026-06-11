@@ -2,8 +2,8 @@
 name = "gororoba_pipeline"
 version = "0.1.0"
 edition = { workspace = true }
-description = "Pipeline trait definitions and pure-logic layer implementations for the gororoba engine"
 license = "GPL-2.0-or-later"
+description = "Pipeline trait definitions and pure-logic layer implementations for the gororoba engine"
 
 [dependencies]
 serde = { workspace = true, features = ["derive"] }

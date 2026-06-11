@@ -26,15 +26,15 @@
 //!
 //! **RECOMMENDATION:** Use GPU dispatch only for BATCHED PEPS simulations.
 //! For exploratory single-contraction analysis, CPU is vastly faster.
-//! See `/memory/phase5a_gpu_benchmarks.md` for detailed analysis.
 //!
 //! # Graceful Fallback
 //!
 //! If no CUDA device is available, automatically falls back to CPU implementation.
 
-use cudarc::{
-    driver::{CudaContext, CudaStream, LaunchConfig, PushKernelArg},
-    nvrtc::compile_ptx,
+use cudarc::driver::{CudaStream, PushKernelArg};
+use gororoba_gpu_cuda::{
+    Buffer, CompileOptions, Context as CudaContextHelper, KernelHandle, LaunchConfig,
+    ModuleRegistry,
 };
 use std::sync::Arc;
 
@@ -42,7 +42,7 @@ use faer::c64;
 
 /// CUDA kernel: element-wise complex multiplication of two row arrays.
 ///
-/// Computes result[i] = upper[i] * lower[i] for all i in parallel.
+/// Computes `result[i] = upper[i] * lower[i]` for all i in parallel.
 /// Output stored in-place in the result buffer.
 const KERNEL_SRC: &str = r#"
 extern "C" __global__ void peps_contract_rows_kernel(
@@ -78,9 +78,9 @@ extern "C" __global__ void peps_contract_rows_kernel(
 ///
 /// Manages CUDA device lifecycle with automatic fallback if no device available.
 pub struct PepsGpuContext {
-    _ctx: Arc<CudaContext>,
+    _ctx: CudaContextHelper,
     stream: Arc<CudaStream>,
-    kernel: cudarc::driver::CudaFunction,
+    kernel: KernelHandle,
 }
 
 impl PepsGpuContext {
@@ -88,17 +88,9 @@ impl PepsGpuContext {
     ///
     /// Returns `None` if CUDA device not found or compilation fails.
     pub fn init() -> Option<Self> {
-        // Try to create a CUDA context through the consolidated
-        // gpu_cuda::Context helper (None on missing-device, same as
-        // the prior `.ok()?` short-circuit).
-        let ctx_wrapper = gororoba_gpu_cuda::Context::with_default_device().ok()?;
-        let ctx = ctx_wrapper.raw().clone();
+        let ctx = CudaContextHelper::with_default_device().ok()?;
         let stream = ctx.default_stream();
-
-        // Compile kernel at initialization time
-        let ptx = compile_ptx(KERNEL_SRC).ok()?;
-        let module = ctx.load_module(ptx).ok()?;
-        let kernel = module.load_function("peps_contract_rows_kernel").ok()?;
+        let kernel = load_kernel(&ctx)?;
 
         Some(PepsGpuContext {
             _ctx: ctx,
@@ -134,34 +126,28 @@ impl PepsGpuContext {
         let lower_im: Vec<f64> = lower.iter().map(|c| c.im).collect();
 
         // Upload data to GPU device memory
-        let upper_re_gpu = self.stream.clone_htod(&upper_re).ok()?;
-        let upper_im_gpu = self.stream.clone_htod(&upper_im).ok()?;
-        let lower_re_gpu = self.stream.clone_htod(&lower_re).ok()?;
-        let lower_im_gpu = self.stream.clone_htod(&lower_im).ok()?;
+        let upper_re_gpu = Buffer::htod(&self.stream, &upper_re).ok()?;
+        let upper_im_gpu = Buffer::htod(&self.stream, &upper_im).ok()?;
+        let lower_re_gpu = Buffer::htod(&self.stream, &lower_re).ok()?;
+        let lower_im_gpu = Buffer::htod(&self.stream, &lower_im).ok()?;
 
         // Allocate device memory for result
-        let result_re_gpu = self.stream.alloc_zeros::<f64>(n).ok()?;
-        let result_im_gpu = self.stream.alloc_zeros::<f64>(n).ok()?;
+        let mut result_re_gpu = Buffer::alloc_zeros(&self.stream, n).ok()?;
+        let mut result_im_gpu = Buffer::alloc_zeros(&self.stream, n).ok()?;
 
         // Configure kernel launch: aim for ~256 threads per block, adaptive grid
-        let threads_per_block = 256u32;
-        let blocks = (n as u32).div_ceil(threads_per_block);
-        let cfg = LaunchConfig {
-            grid_dim: (blocks, 1, 1),
-            block_dim: (threads_per_block, 1, 1),
-            shared_mem_bytes: 0,
-        };
+        let cfg = LaunchConfig::launch_1d(n as u32);
 
         // Launch kernel using builder pattern
         let n_u64 = n as u64;
         unsafe {
             let mut builder = self.stream.launch_builder(&self.kernel);
-            builder.arg(&upper_re_gpu);
-            builder.arg(&upper_im_gpu);
-            builder.arg(&lower_re_gpu);
-            builder.arg(&lower_im_gpu);
-            builder.arg(&result_re_gpu);
-            builder.arg(&result_im_gpu);
+            builder.arg(upper_re_gpu.raw());
+            builder.arg(upper_im_gpu.raw());
+            builder.arg(lower_re_gpu.raw());
+            builder.arg(lower_im_gpu.raw());
+            builder.arg(result_re_gpu.raw_mut());
+            builder.arg(result_im_gpu.raw_mut());
             builder.arg(&n_u64);
 
             builder.launch(cfg).ok()?;
@@ -171,8 +157,8 @@ impl PepsGpuContext {
         self.stream.synchronize().ok()?;
 
         // Download results from device
-        let result_re = self.stream.clone_dtoh(&result_re_gpu).ok()?;
-        let result_im = self.stream.clone_dtoh(&result_im_gpu).ok()?;
+        let result_re = result_re_gpu.dtoh_vec().ok()?;
+        let result_im = result_im_gpu.dtoh_vec().ok()?;
 
         // Reconstruct complex numbers
         let result = result_re
@@ -183,6 +169,13 @@ impl PepsGpuContext {
 
         Some(result)
     }
+}
+
+fn load_kernel(ctx: &CudaContextHelper) -> Option<KernelHandle> {
+    let opts = CompileOptions::empty();
+    let ptx = CompileOptions::compile_ptx(KERNEL_SRC, &opts).ok()?;
+    let registry = ModuleRegistry::load(ctx.raw(), ptx, &["peps_contract_rows_kernel"]).ok()?;
+    registry.get("peps_contract_rows_kernel").ok()
 }
 
 /// GPU-accelerated PEPS row contraction wrapper.

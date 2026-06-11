@@ -811,7 +811,7 @@ fn test_gourlay_psi_zd_preservation() {
 /// Concrete formulas (eqs 29-32 of the paper):
 ///   A_{123} = sg_{12}
 ///   A_{1234} = (sg_{23}*sg_{41} + sg_{12}*sg_{34}) / 2
-///   A_{12345} = (1/4)[8 terms of sg products]
+///   A_{12345} = (1/4)`[8 terms of sg products]`
 ///
 /// Our cd_basis_mul_sign(dim=2^n, p, q) also produces {+1,-1} via a
 /// recursive halving. The question: is there an index map such that
@@ -1141,7 +1141,7 @@ fn test_high_dim_sign_table_verification() {
 /// Investigate whether A_3(Q_p) remains a division algebra.
 ///
 /// Bales (2003, arXiv:1107.1375) shows CD algebras are twisted group
-/// algebras [G, alpha, F] over (Z/2)^n with twist alpha(p,q).
+/// algebras `[G, alpha, F]` over (Z/2)^n with twist alpha(p,q).
 /// The construction works over ANY field F, giving A_n(F) immediately.
 ///
 /// Over R: A_3(R) = octonions (division, no ZDs).
@@ -1262,7 +1262,7 @@ fn test_padic_cd_bales_sign_comparison() {
 ///   T = {(da, db) : da*b_0 + a_0*db = 0}
 ///
 /// This is a linear system: the Jacobian of F(a,b) = a*b at (a_0, b_0)
-/// is the 16x32 matrix [L_{b_0} | R_{a_0}] where L_b is left multiplication
+/// is the 16x32 matrix `[L_{b_0} | R_{a_0}]` where L_b is left multiplication
 /// by b and R_a is right multiplication by a.
 ///
 /// The tangent space dimension reveals the local geometry of the ZD manifold.

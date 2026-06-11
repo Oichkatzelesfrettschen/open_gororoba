@@ -3,7 +3,7 @@
 //! The Fermi Gamma-ray Burst Monitor (GBM) catalog contains GRBs detected
 //! by the Fermi satellite. Fetched via the HEASARC Xamin API.
 //!
-//! Source: https://heasarc.gsfc.nasa.gov/W3Browse/fermi/fermigbrst.html
+//! Source: <https://heasarc.gsfc.nasa.gov/W3Browse/fermi/fermigbrst.html>
 
 use crate::{fetcher::FetchError, parse::parse_f64_or_nan};
 use std::path::Path;
@@ -41,6 +41,9 @@ pub struct GrbEvent {
     /// HEASARC column: `pflx_best_fitting_model`.
     pub pflx_best_fitting_model: String,
 }
+
+#[cfg(feature = "fetch")]
+pub use super::fermi_gbm_fetch::FermiGbmProvider;
 
 /// Parse Fermi GBM burst catalog CSV.
 pub fn parse_fermi_gbm_csv(path: &Path) -> Result<Vec<GrbEvent>, FetchError> {

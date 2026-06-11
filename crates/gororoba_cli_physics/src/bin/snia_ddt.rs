@@ -268,7 +268,7 @@ fn run(args: Args) -> Result<(), Box<dyn Error>> {
     let initial_hydro = initial_hydro_for_mode(args.mode);
     let initial_temperature = initial_temperature_for_mode(args.mode);
 
-    let mut solver = SniaCoreSolver::new(
+    let mut solver = SniaCoreSolver::from_initial_state(
         config,
         WhiteDwarfEos::default(),
         HllcFlux1D::default(),

@@ -336,7 +336,7 @@ mod tests {
 
     /// Verify that e8_cartan() is exactly the Gram matrix of the E8 simple root vectors.
     ///
-    /// This is the canonical consistency check: C[i][j] must equal <alpha_i, alpha_j>
+    /// This is the canonical consistency check: C`[i]``[j]` must equal <alpha_i, alpha_j>
     /// for the root vectors defined in E9RootSystem::new().
     #[test]
     fn test_e8_cartan_matches_root_vector_gram_matrix() {

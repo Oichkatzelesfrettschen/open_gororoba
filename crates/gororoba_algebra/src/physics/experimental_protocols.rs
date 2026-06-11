@@ -14,7 +14,7 @@ use crate::{
 /// Results of an octonionic tensor mapping experiment (Protocol C.1.1).
 #[derive(Debug, Clone)]
 pub struct OctonionicMappingResult {
-    /// Fitted octonionic coefficients [d0, d1, ..., d7]
+    /// Fitted octonionic coefficients `[d0, d1, ..., d7]`
     pub coefficients: Octonion,
     /// Mean squared error of the fit
     pub mse: f64,

@@ -380,7 +380,7 @@ impl DmForceField {
     /// Compute drag force using precomputed kappa (lattice-native, no per-cell conversion).
     ///
     /// Uses kappa_drag and v_dm_lattice precomputed at construction time.
-    /// Inner loop: drag[idx] = kappa * |v_rel| * v_rel_hat (all in lattice units).
+    /// Inner loop: `drag[idx] = kappa * |v_rel| * v_rel_hat` (all in lattice units).
     ///
     /// Returns zero-filled vec when sigma_chi_b <= 0.
     pub fn drag_force_lattice(&self, baryon_velocity: &[[f64; 3]]) -> Vec<[f64; 3]> {

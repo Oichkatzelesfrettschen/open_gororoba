@@ -1,10 +1,10 @@
 [package]
 name = "gororoba_cli"
 version = "0.1.0"
-edition = { workspace = true }
-description = "CLI tools for gororoba physics simulation library"
-license = "MIT"
 autobins = false
+edition = { workspace = true }
+license = "MIT"
+description = "CLI tools for gororoba physics simulation library"
 
 # ---- Residual: dispatcher + thesis + ZD resonance + orchestration ----
 
@@ -140,55 +140,55 @@ path = "src/bin/makew.rs"
 
 [dependencies]
 # Workspace domain crates (used by dispatcher + thesis + orchestration bins)
-gororoba_algebra = { path = "../gororoba_algebra", features = ["lie"] }
 algebra_analysis = { workspace = true }
 algebra_experimental = { path = "../algebra_experimental" }
+anyhow = { workspace = true }
+ash = { version = "0.38.0", features = ["debug"] }
+axum = { workspace = true }
 cd_kernel = { path = "../cd_kernel" }
+chrono = { workspace = true }
+clap = { workspace = true }
 cosmology_core = { path = "../cosmology_core" }
-gr_core = { path = "../gr_core" }
-materials_core = { path = "../materials_core" }
-optics_core = { path = "../optics_core" }
-quantum_core = { path = "../quantum_core" }
-spectral_core = { path = "../spectral_core" }
-lbm_core = { path = "../lbm_core" }
-lbm_3d = { path = "../lbm_3d" }
-lbm_3d_cuda = { path = "../lbm_3d_cuda", optional = true }
-stats_core = { path = "../stats_core" }
+csv = { workspace = true }
 data_artifacts_core = { path = "../data_artifacts_core" }
-sign_imbalance = { path = "../sign_imbalance" }
-neural_homotopy = { path = "../neural_homotopy" }
-lattice_filtration = { path = "../lattice_filtration" }
+env_logger = { workspace = true }
+glob = { workspace = true }
+gororoba_algebra = { path = "../gororoba_algebra", features = ["lie"] }
+gororoba_cli_physics = { path = "../gororoba_cli_physics" }
 gororoba_engine = { path = "../gororoba_engine" }
 gororoba_view_raster = { path = "../gororoba_view_raster" }
-gororoba_cli_physics = { path = "../gororoba_cli_physics" }
-provenance_ops = { path = "../provenance_ops" }
-provenance_store = { path = "../provenance_store" }
-tda = { workspace = true, optional = true }
+gr_core = { path = "../gr_core" }
+lattice_filtration = { path = "../lattice_filtration" }
+lbm_3d = { path = "../lbm_3d" }
+lbm_3d_cuda = { path = "../lbm_3d_cuda", optional = true }
+lbm_core = { path = "../lbm_core" }
 lbm_vulkan = { version = "0.1.0", path = "../lbm_vulkan" }
-ash = { version = "0.38.0", features = ["debug"] }
+log = { workspace = true }
+materials_core = { path = "../materials_core" }
 # External crates
 nalgebra033 = { package = "nalgebra", version = "0.33", optional = true }
 ndarray = { workspace = true }
-anyhow = { workspace = true }
+neural_homotopy = { path = "../neural_homotopy" }
+optics_core = { path = "../optics_core" }
+pgfplots = { workspace = true }
+plotters = { workspace = true }
+provenance_ops = { path = "../provenance_ops" }
+provenance_store = { path = "../provenance_store" }
+quantum_core = { path = "../quantum_core" }
 rand = { workspace = true }
-clap = { workspace = true }
+regex = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
-axum = { workspace = true }
-tokio = { workspace = true }
-csv = { workspace = true }
-plotters = { workspace = true }
 sha2 = { workspace = true }
-regex = { workspace = true }
-toml = { workspace = true }
-walkdir = { workspace = true }
-glob = { workspace = true }
-log = { workspace = true }
-env_logger = { workspace = true }
-pgfplots = { workspace = true }
-chrono = { workspace = true }
+sign_imbalance = { path = "../sign_imbalance" }
+spectral_core = { path = "../spectral_core" }
+stats_core = { path = "../stats_core" }
 strsim = { workspace = true }
+tda = { workspace = true, optional = true }
+tokio = { workspace = true }
+toml = { workspace = true }
 ureq.workspace = true
+walkdir = { workspace = true }
 
 [dev-dependencies]
 tempfile = { workspace = true }
@@ -198,7 +198,6 @@ default = []
 gpu = [
     "lbm_3d_cuda",
     "lbm_3d_cuda/cufft",
-
 
     "gororoba_algebra/gpu",
     "quantum_core/gpu",

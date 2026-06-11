@@ -66,7 +66,7 @@ impl TypedCarrier {
         }
     }
 
-    /// Convert from the Vec<i32> representation used in cd_external.
+    /// Convert from the `Vec<i32>` representation used in cd_external.
     /// Returns None if any coordinate is outside [-1, 1] or the vector
     /// does not have exactly 8 components.
     pub fn from_i32_vec(basis_index: usize, v: &[i32]) -> Option<Self> {

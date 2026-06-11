@@ -24,13 +24,15 @@
 
 #![cfg(feature = "cubecl")]
 
-use algebra_analysis::boxkite_alignment::{
-    box_kite_alignment_scan_cpu, generate_psl_2_7_permutations_16d,
+use algebra_analysis::{
+    boxkite_alignment::{box_kite_alignment_scan_cpu, generate_psl_2_7_permutations_16d},
+    boxkites::cached_sedenion_boxkites,
 };
-use algebra_analysis::boxkites::cached_sedenion_boxkites;
 use lbm_vulkan::alignment_cubecl::{box_kite_alignment_scan_cubecl, is_available};
-use rand::SeedableRng;
-use rand::distr::{Distribution, Uniform};
+use rand::{
+    SeedableRng,
+    distr::{Distribution, Uniform},
+};
 use rand_chacha::ChaCha20Rng;
 
 const N_VECTORS: usize = 64;
@@ -69,7 +71,8 @@ fn cpu_vs_cubecl_boxkite_alignment_64vectors() {
     assert_eq!(boxkites.len(), 7, "expected exactly 7 sedenion box-kites");
 
     // CPU oracle.
-    let (cpu_max, cpu_best) = box_kite_alignment_scan_cpu(&vectors_f64, &orientations_usize, boxkites);
+    let (cpu_max, cpu_best) =
+        box_kite_alignment_scan_cpu(&vectors_f64, &orientations_usize, boxkites);
     assert_eq!(cpu_max.len(), N_VECTORS);
     assert_eq!(cpu_best.len(), N_VECTORS);
 
@@ -93,15 +96,20 @@ fn cpu_vs_cubecl_boxkite_alignment_64vectors() {
                 indices.insert(a.high);
             }
             let v: Vec<u32> = indices.into_iter().map(|i| i as u32).collect();
-            assert_eq!(v.len(), 12, "each box-kite must have exactly 12 unique basis indices");
+            assert_eq!(
+                v.len(),
+                12,
+                "each box-kite must have exactly 12 unique basis indices"
+            );
             v
         })
         .collect();
     assert_eq!(bk_basis.len(), 84);
 
     // cubecl path.
-    let (cl_max, cl_best) = box_kite_alignment_scan_cubecl(&vectors_f32, &orientations_u32, &bk_basis)
-        .expect("cubecl alignment scan succeeds");
+    let (cl_max, cl_best) =
+        box_kite_alignment_scan_cubecl(&vectors_f32, &orientations_u32, &bk_basis)
+            .expect("cubecl alignment scan succeeds");
     assert_eq!(cl_max.len(), N_VECTORS);
     assert_eq!(cl_best.len(), N_VECTORS);
 

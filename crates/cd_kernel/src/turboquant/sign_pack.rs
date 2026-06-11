@@ -14,7 +14,7 @@
 /// Bit set = +1, bit clear = -1.
 #[derive(Clone, Debug)]
 pub struct BitPackedSigns {
-    /// Packed bits: bit i set means sign[i] = +1, clear means -1.
+    /// Packed bits: bit i set means sign`[i]` = +1, clear means -1.
     words: Vec<u64>,
     /// Number of signs stored.
     len: usize,

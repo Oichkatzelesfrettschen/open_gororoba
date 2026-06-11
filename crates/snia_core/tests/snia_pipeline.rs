@@ -12,7 +12,7 @@ fn short_pipeline_produces_snapshot() {
         ..SolverConfig::default()
     };
 
-    let mut solver = SniaCoreSolver::new(
+    let mut solver = SniaCoreSolver::from_initial_state(
         config,
         WhiteDwarfEos::default(),
         HllcFlux1D::default(),

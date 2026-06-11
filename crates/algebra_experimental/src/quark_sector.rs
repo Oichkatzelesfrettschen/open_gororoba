@@ -72,8 +72,8 @@ pub fn get_subalgebras(scheme: SubalgebraScheme) -> [Vec<usize>; 3] {
 ///
 /// Holds the 3x3 Gram matrices for SU(3) and SU(2) Casimir operators
 /// projected onto the three octonionic subalgebras:
-///   c_su3[i,j] = Re(C_SU3_i^* C_SU3_j)
-///   c_su2[i,j] = Re(C_SU2_i^* C_SU2_j)
+///   `c_su3[i,j] = Re(C_SU3_i^* C_SU3_j)`
+///   `c_su2[i,j] = Re(C_SU2_i^* C_SU2_j)`
 ///
 /// Sector-specific conventions (e.g., M_up = c_su3 + c_su2 for quarks)
 /// belong in the assembler, not here.
@@ -272,7 +272,7 @@ pub fn construct_quark_ladder_operators(
 /// M_{ij} = Re(<C_2|O_i> . <C_2|O_j>*) where C_2 is the SU(3) quadratic Casimir
 /// and |O_k> denotes projection onto the k-th subalgebra.
 ///
-/// Returns (M_up, M_down) as 3x3 faer::Mat<f64>.
+/// Returns (M_up, M_down) as 3x3 `faer::Mat<f64>`.
 pub fn construct_quark_mass_matrices(
     basis: &[Sedenion; 16],
     complex_structure: &Sedenion,
@@ -676,8 +676,8 @@ impl AlignedPmns {
 ///
 /// The PDG PMNS convention assigns nu_1 as the state with the largest |Ue|^2
 /// (solar mixing partner), and nu_3 as the state with the smallest |Ue|^2
-/// (reactor angle). Sorting columns by descending |U[0,j]| enforces this,
-/// ensuring theta_13 = asin(|U[0,2]|) is the smallest angle.
+/// (reactor angle). Sorting columns by descending `|U[0,j]|` enforces this,
+/// ensuring `theta_13 = asin(|U[0,2]|)` is the smallest angle.
 ///
 /// Returns an `AlignedPmns` whose `.col_perm()` records which original column
 /// ended up in each position.

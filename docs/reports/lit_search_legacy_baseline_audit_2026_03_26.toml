@@ -6,14 +6,14 @@ authoritative_runtime = "lit_search"
 
 shared_tier0 = ["openalex", "semantic_scholar", "arxiv"]
 shared_tier1 = [
-  "crossref",
-  "europepmc",
-  "hal",
-  "datacite",
-  "scielo",
-  "inspirehep",
-  "dblp",
-  "jstage",
+    "crossref",
+    "europepmc",
+    "hal",
+    "datacite",
+    "scielo",
+    "inspirehep",
+    "dblp",
+    "jstage",
 ]
 shared_tier2 = ["core", "ads", "cinii", "lens"]
 rust_only_query_sources = ["google_scholar"]
@@ -21,20 +21,20 @@ legacy_only_query_sources = []
 augment_only_sources = ["unpaywall"]
 
 legacy_functions = [
-  "search_papers",
-  "search_papers_parallel",
-  "search_papers_multi_query",
-  "search_papers_multi_query_parallel",
+    "search_papers",
+    "search_papers_parallel",
+    "search_papers_multi_query",
+    "search_papers_multi_query_parallel",
 ]
 rust_functions_present = [
-  "search",
-  "search_topic",
-  "search_by_doi",
-  "search_queries",
-  "search_queries_parallel",
+    "search",
+    "search_topic",
+    "search_by_doi",
+    "search_queries",
+    "search_queries_parallel",
 ]
 rust_missing_behaviors = [
-  "explicit_per_call_source_selection",
-  "per_source_result_stats",
-  "diagnostic_multi_query_return_surface",
+    "explicit_per_call_source_selection",
+    "per_source_result_stats",
+    "diagnostic_multi_query_return_surface",
 ]

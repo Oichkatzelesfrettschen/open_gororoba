@@ -5,7 +5,7 @@
 //! and per-topology metrics.
 //!
 //! Usage:
-//!   cargo run --release --bin absorber-topology-benchmark [-- --full]
+//!   `cargo run --release --bin absorber-topology-benchmark [-- --full]`
 //!
 //! Options:
 //!   --full    Run with 7 x K6 (42 nodes) instead of 2 x K3 (6 nodes)

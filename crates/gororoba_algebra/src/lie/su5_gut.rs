@@ -155,7 +155,7 @@ fn hypercharge_generator() -> Mat5 {
     m
 }
 
-/// [A, B] = AB - BA.
+/// `[A, B]` = AB - BA.
 fn commutator(a: &Mat5, b: &Mat5) -> Mat5 {
     a * b - b * a
 }
@@ -170,7 +170,7 @@ fn anticommutator10(a: &Mat10, b: &Mat10) -> Mat10 {
     a * b + b * a
 }
 
-/// Compute structure constants f^{abc} = -2i Tr([T^a,T^b] T^c).
+/// Compute structure constants f^{abc} = -2i Tr(`[T^a,T^b]` T^c).
 pub(crate) fn structure_constants(generators: &[Mat5; 24]) -> Box<[[[f64; 24]; 24]; 24]> {
     let mut f = Box::new([[[0.0_f64; 24]; 24]; 24]);
     for a in 0..24 {
@@ -767,7 +767,7 @@ fn check_tracelessness(generators: &[Mat5; 24]) -> VerificationResult {
     }
 }
 
-/// Check 4: [T^a,T^b] = i f^{abc} T^c with f totally antisymmetric and Jacobi identity.
+/// Check 4: `[T^a,T^b]` = i f^{abc} T^c with f totally antisymmetric and Jacobi identity.
 fn check_commutation(generators: &[Mat5; 24]) -> VerificationResult {
     let f = structure_constants(generators);
 
@@ -828,7 +828,7 @@ fn check_commutation(generators: &[Mat5; 24]) -> VerificationResult {
     }
 }
 
-/// Check 5: [SU(3), SU(3)] is contained in SU(3).
+/// Check 5: `[SU(3), SU(3)]` is contained in SU(3).
 fn check_su3_closure(generators: &[Mat5; 24]) -> VerificationResult {
     let su3_idx: Vec<usize> = (0..8).collect();
     let non_su3_idx: Vec<usize> = (8..24).collect();
@@ -849,7 +849,7 @@ fn check_su3_closure(generators: &[Mat5; 24]) -> VerificationResult {
     }
 }
 
-/// Check 6: [SU(2), SU(2)] is contained in SU(2).
+/// Check 6: `[SU(2), SU(2)]` is contained in SU(2).
 fn check_su2_closure(generators: &[Mat5; 24]) -> VerificationResult {
     let su2_idx = [8, 9, 10];
     let non_su2_idx: Vec<usize> = (0..24).filter(|i| !su2_idx.contains(i)).collect();
@@ -870,7 +870,7 @@ fn check_su2_closure(generators: &[Mat5; 24]) -> VerificationResult {
     }
 }
 
-/// Check 7: [U(1), SU(3)+SU(2)] = 0.
+/// Check 7: `[U(1), SU(3)+SU(2)]` = 0.
 fn check_u1_commutation(generators: &[Mat5; 24]) -> VerificationResult {
     let u1_gm = &generators[11];
     let mut max_err = 0.0_f64;
@@ -887,7 +887,7 @@ fn check_u1_commutation(generators: &[Mat5; 24]) -> VerificationResult {
     }
 }
 
-/// Check 8: [LQ, LQ] generates SU(3)+SU(2)+U(1).
+/// Check 8: `[LQ, LQ]` generates SU(3)+SU(2)+U(1).
 fn check_leptoquark_algebra(generators: &[Mat5; 24]) -> VerificationResult {
     let lq_idx: Vec<usize> = (12..24).collect();
     let mut has_su3 = false;

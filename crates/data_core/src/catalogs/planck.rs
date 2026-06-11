@@ -5,7 +5,7 @@
 //! Archive.
 //!
 //! Best-fit: Planck Collaboration VI (2020), A&A 641, A6
-//! Chains: https://pla.esac.esa.int/
+//! Chains: <https://pla.esac.esa.int/>
 
 /// Planck 2018 TT,TE,EE+lowE+lensing best-fit parameters.
 /// Source: Planck 2018 VI, Table 2, Column 6 (TT,TE,EE+lowE+lensing).
@@ -45,6 +45,9 @@ pub mod bestfit {
     /// Redshift at reionization.
     pub const Z_RE: f64 = 7.67;
 }
+
+#[cfg(feature = "fetch")]
+pub use super::planck_fetch::{PlanckChainsProvider, PlanckSummaryProvider, Wmap9ChainsProvider};
 
 /// WMAP 9-year best-fit parameters for comparison.
 /// Source: Hinshaw et al. (2013), ApJS 208, 19 (Table 4, WMAP-only column).

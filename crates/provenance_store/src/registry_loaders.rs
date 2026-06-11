@@ -12,13 +12,14 @@
 //!   table verbatim as the compat_toml_text via `render_toml_table`.
 
 use anyhow::{Context, Result};
-use provenance_core::{ClaimRecord, ExperimentRecord, InsightRecord};
+use provenance_core::ClaimRecord;
 use toml::Value;
 
 use super::{
     claim_proofs::render_normalized_insight_compat_toml,
     status_normalize::{normalize_claim_record, normalize_insight_status},
     toml_helpers::{optional_string_field, render_toml_table, string_array_field, string_field},
+    types::{ExperimentCompatRecord, InsightCompatRecord},
 };
 
 pub(crate) fn load_claims_from_registry(raw: &str) -> Result<Vec<ClaimRecord>> {
@@ -46,7 +47,7 @@ pub(crate) fn load_claims_from_registry(raw: &str) -> Result<Vec<ClaimRecord>> {
     Ok(out)
 }
 
-pub(crate) fn load_insights_from_registry(raw: &str) -> Result<Vec<InsightRecord>> {
+pub(crate) fn load_insights_from_registry(raw: &str) -> Result<Vec<InsightCompatRecord>> {
     let value: Value = toml::from_str(raw).context("parse insights registry")?;
     let insights = value
         .get("insight")
@@ -68,7 +69,7 @@ pub(crate) fn load_insights_from_registry(raw: &str) -> Result<Vec<InsightRecord
         claim_refs.extend(string_array_field(table, "related_claims"));
         claim_refs.sort();
         claim_refs.dedup();
-        out.push(InsightRecord {
+        out.push(InsightCompatRecord {
             id: string_field(table, "id"),
             title,
             status,
@@ -80,7 +81,7 @@ pub(crate) fn load_insights_from_registry(raw: &str) -> Result<Vec<InsightRecord
     Ok(out)
 }
 
-pub(crate) fn load_experiments_from_registry(raw: &str) -> Result<Vec<ExperimentRecord>> {
+pub(crate) fn load_experiments_from_registry(raw: &str) -> Result<Vec<ExperimentCompatRecord>> {
     let value: Value = toml::from_str(raw).context("parse experiments registry")?;
     let experiments = value
         .get("experiment")
@@ -100,7 +101,7 @@ pub(crate) fn load_experiments_from_registry(raw: &str) -> Result<Vec<Experiment
         claim_refs.extend(string_array_field(table, "claim_refs"));
         claim_refs.sort();
         claim_refs.dedup();
-        out.push(ExperimentRecord {
+        out.push(ExperimentCompatRecord {
             id: string_field(table, "id"),
             title,
             status,

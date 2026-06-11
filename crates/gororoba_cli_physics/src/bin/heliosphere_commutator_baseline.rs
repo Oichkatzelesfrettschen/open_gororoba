@@ -1,8 +1,8 @@
 //! Commutator baseline for the CD associator dimensional ablation.
 //!
 //! WHY: Pre-registration (ablation-preregistered-v1) requires a commutator baseline
-//! to test whether the three-argument structure of the CD associator [x,y,z] adds
-//! information beyond the two-argument commutator [x,y] = x*y - y*x.
+//! to test whether the three-argument structure of the CD associator `[x,y,z]` adds
+//! information beyond the two-argument commutator `[x,y] = x*y - y*x`.
 //! The commutator measures non-commutativity directly; for octonions/sedenions it
 //! is pure-imaginary and its norm equals the cross-product-like "rotation" between
 //! two embedding vectors.  If the commutator matches CD performance, the

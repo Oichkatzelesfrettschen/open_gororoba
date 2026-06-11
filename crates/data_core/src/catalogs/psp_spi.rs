@@ -26,6 +26,9 @@ pub struct PspSpiMomRecord {
     pub temperature_k: f64,
 }
 
+#[cfg(feature = "fetch")]
+pub use super::psp_spi_fetch::{PspSpiMomProvider, parse_psp_spi_mom_file};
+
 #[derive(Default)]
 pub(crate) struct SpiHourAccumulator {
     pub density_sum: f64,

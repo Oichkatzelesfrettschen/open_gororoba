@@ -186,12 +186,18 @@ fn emit_sellmeier_models(out: &mut File, path: &PathBuf) {
 
     for entry in entries {
         let name = entry.get("name").and_then(|v| v.as_str()).expect("name");
-        let b_coeffs = entry.get("b_coeffs").and_then(|v| v.as_array()).unwrap_or_else(|| {
-            panic!("sellmeier model `{name}`: missing or non-array `b_coeffs` field")
-        });
-        let c_coeffs_raw = entry.get("c_coeffs").and_then(|v| v.as_array()).unwrap_or_else(|| {
-            panic!("sellmeier model `{name}`: missing or non-array `c_coeffs` field")
-        });
+        let b_coeffs = entry
+            .get("b_coeffs")
+            .and_then(|v| v.as_array())
+            .unwrap_or_else(|| {
+                panic!("sellmeier model `{name}`: missing or non-array `b_coeffs` field")
+            });
+        let c_coeffs_raw = entry
+            .get("c_coeffs")
+            .and_then(|v| v.as_array())
+            .unwrap_or_else(|| {
+                panic!("sellmeier model `{name}`: missing or non-array `c_coeffs` field")
+            });
         let c_form = entry
             .get("c_form")
             .and_then(|v| v.as_str())

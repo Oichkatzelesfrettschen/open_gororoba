@@ -73,6 +73,9 @@ pub fn parse_juno_cruise(content: &str) -> Vec<SpdfMergedRecord> {
     JUNO_MISSION.parse_merged(content)
 }
 
+#[cfg(feature = "fetch")]
+pub use super::juno_fetch::{JunoAmdaProvider, JunoCruiseProvider};
+
 /// Parse Juno cruise merged hourly data from a file.
 pub fn parse_juno_cruise_file(path: &std::path::Path) -> Result<Vec<SpdfMergedRecord>, FetchError> {
     let content = std::fs::read_to_string(path)

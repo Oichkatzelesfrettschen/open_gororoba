@@ -3,7 +3,7 @@
 //! The Landsat image archive is very large, so this provider fetches a stable
 //! metadata item JSON that can anchor reproducible downstream pipelines.
 //!
-//! Source: https://landsatlook.usgs.gov/stac-server
+//! Source: <https://landsatlook.usgs.gov/stac-server>
 
 use crate::fetcher::FetchError;
 use std::path::Path;

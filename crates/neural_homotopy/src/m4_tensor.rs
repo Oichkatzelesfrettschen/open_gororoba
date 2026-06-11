@@ -5,7 +5,7 @@
 //!   m_3(e_i, e_j, e_k) = e_i*(e_j*e_k) - (e_i*e_j)*e_k
 //!
 //! The correction tensor is stored as a 16x16x16x16 array where
-//! tensor[i][j][k][l] is the coefficient of e_l in m_3(e_i, e_j, e_k).
+//! `tensor[i][j][k][l]` is the coefficient of e_l in m_3(e_i, e_j, e_k).
 //!
 //! The pentagon violation measures the A-infinity A_4 relation,
 //! which determines whether a higher correction m_4 is needed.

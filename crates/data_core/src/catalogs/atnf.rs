@@ -6,8 +6,8 @@
 //! coordinates (`lii`, `bii`), so the parser derives J2000 equatorial
 //! coordinates as a pure-Rust fallback for downstream crossmatch use.
 //!
-//! Source: https://www.atnf.csiro.au/research/pulsar/psrcat/
-//! HEASARC mirror: https://heasarc.gsfc.nasa.gov/xamin/
+//! Source: <https://www.atnf.csiro.au/research/pulsar/psrcat/>
+//! HEASARC mirror: <https://heasarc.gsfc.nasa.gov/xamin/>
 
 use crate::{
     fetcher::FetchError,

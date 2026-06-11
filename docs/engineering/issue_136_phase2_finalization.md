@@ -22,24 +22,24 @@ full-feature-parity". The work decomposes into:
 
 ## Final parity matrix status
 
-| Kernel                              | CPU | CUDA | Vulkan | cubecl | 3-way parity test |
-|-------------------------------------|-----|------|--------|--------|-------------------|
-| TurboQuant quantize                 | YES | n/a  | YES    | YES    | YES (cd_kernel) |
-| Box-counting fractal dim            | YES | YES  | YES    | YES    | YES (lbm_vulkan) |
-| Chingon AVT contraction             | YES | YES  | YES    | YES    | YES (lbm_vulkan) |
-| Transform viscosity (Besag pointwise) | YES | n/a  | YES (in shader) | YES | partial (CPU oracle + cubecl) |
-| LBM D3Q19 stream + collide          | YES | YES  | NO     | NO     | NO (deferred -- big port) |
-| LBM MRT collision                   | YES | YES  | NO     | NO     | NO (deferred) |
-| Sparse-grid LBM                     | n/a | YES  | NO     | NO     | NO (deferred -- CUDA-spec algorithm) |
-| Box-kite alignment                  | NO  | YES  | YES (f64) | NO | NO (cubecl-wgpu f64 fragility) |
-| Besag-Clifford GMRF (full pipeline) | NO  | YES  | YES    | NO     | NO (deferred -- atomic-CAS + RNG) |
-| Dark-halo Monte Carlo               | NO  | YES  | NO     | NO     | NO (deferred -- Philox RNG port) |
-| Kubo transport (eig + GEMM)         | YES | YES  | NO     | NO     | NO (NVIDIA-specific cuSOLVER/cuBLAS) |
-| Algebraic lensing                   | YES | YES  | NO     | NO     | NO (low-priority) |
-| Voudon stabilizer                   | YES | YES  | NO     | NO     | NO (low-priority) |
-| GRMHD GPU advance                   | YES | YES  | NO     | NO     | NO (deferred -- CPU is production) |
-| Coop-matrix probe                   | n/a | NO   | YES    | NO     | n/a (Vulkan-only by design) |
-| OptiX BVH ray-tracing               | n/a | YES  | NO     | NO     | n/a (NVIDIA-only by design) |
+| Kernel                                | CPU | CUDA | Vulkan          | cubecl | 3-way parity test                    |
+| ------------------------------------- | --- | ---- | --------------- | ------ | ------------------------------------ |
+| TurboQuant quantize                   | YES | n/a  | YES             | YES    | YES (cd_kernel)                      |
+| Box-counting fractal dim              | YES | YES  | YES             | YES    | YES (lbm_vulkan)                     |
+| Chingon AVT contraction               | YES | YES  | YES             | YES    | YES (lbm_vulkan)                     |
+| Transform viscosity (Besag pointwise) | YES | n/a  | YES (in shader) | YES    | partial (CPU oracle + cubecl)        |
+| LBM D3Q19 stream + collide            | YES | YES  | NO              | NO     | NO (deferred -- big port)            |
+| LBM MRT collision                     | YES | YES  | NO              | NO     | NO (deferred)                        |
+| Sparse-grid LBM                       | n/a | YES  | NO              | NO     | NO (deferred -- CUDA-spec algorithm) |
+| Box-kite alignment                    | NO  | YES  | YES (f64)       | NO     | NO (cubecl-wgpu f64 fragility)       |
+| Besag-Clifford GMRF (full pipeline)   | NO  | YES  | YES             | NO     | NO (deferred -- atomic-CAS + RNG)    |
+| Dark-halo Monte Carlo                 | NO  | YES  | NO              | NO     | NO (deferred -- Philox RNG port)     |
+| Kubo transport (eig + GEMM)           | YES | YES  | NO              | NO     | NO (NVIDIA-specific cuSOLVER/cuBLAS) |
+| Algebraic lensing                     | YES | YES  | NO              | NO     | NO (low-priority)                    |
+| Voudon stabilizer                     | YES | YES  | NO              | NO     | NO (low-priority)                    |
+| GRMHD GPU advance                     | YES | YES  | NO              | NO     | NO (deferred -- CPU is production)   |
+| Coop-matrix probe                     | n/a | NO   | YES             | NO     | n/a (Vulkan-only by design)          |
+| OptiX BVH ray-tracing                 | n/a | YES  | NO              | NO     | n/a (NVIDIA-only by design)          |
 
 **Result**: 3 of 15 kernels have full 3-way parity with seeded integration
 tests. 1 additional (transform_viscosity) has CPU + cubecl with the Vulkan
@@ -67,10 +67,10 @@ Each deferred cell has a documented technical reason:
   but loses precision; deferred.
 
 - **Besag-Clifford GMRF (full pipeline)**: 4-entry-point shader (shuffle
-  + transform_viscosity + regional correlation + extreme count). Each
-  entry needs its own cubecl port; transform_viscosity (the simplest)
-  is done by this commit. The remaining 3 use atomic-CAS + PCG RNG;
-  deferred individually.
+  - transform_viscosity + regional correlation + extreme count). Each
+    entry needs its own cubecl port; transform_viscosity (the simplest)
+    is done by this commit. The remaining 3 use atomic-CAS + PCG RNG;
+    deferred individually.
 
 - **Dark-halo Monte Carlo**: needs a Philox PRNG in WGSL/cubecl. The
   port itself is ~200 lines but the validation is non-trivial (need

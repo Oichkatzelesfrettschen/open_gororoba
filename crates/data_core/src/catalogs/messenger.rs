@@ -29,6 +29,9 @@ pub struct MessengerMagMinuteRecord {
     pub b_magnitude: f64,
 }
 
+#[cfg(feature = "fetch")]
+pub use super::messenger_fetch::MessengerMagProvider;
+
 /// Parse MESSENGER MAG HAPI CSV into minute-averaged records.
 pub fn parse_messenger_mag_hapi_csv_minutes(content: &str) -> Vec<MessengerMagMinuteRecord> {
     let mut reader = ReaderBuilder::new()

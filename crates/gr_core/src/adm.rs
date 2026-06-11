@@ -570,7 +570,7 @@ impl SpacetimeMetric for PainleveGullstrand {
 // Cartesian Minkowski (for warp metric testing)
 // ============================================================================
 
-/// Flat Minkowski spacetime in Cartesian coordinates [t, x, y, z].
+/// Flat Minkowski spacetime in Cartesian coordinates `[t, x, y, z]`.
 ///
 /// ds^2 = -dt^2 + dx^2 + dy^2 + dz^2
 ///

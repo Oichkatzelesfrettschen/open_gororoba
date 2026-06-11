@@ -3,7 +3,7 @@
 //! Fetches planetary positions via the JPL Horizons REST API in CSV format.
 //! Much simpler than downloading and parsing SPK binary files (31+ MB).
 //!
-//! Source: JPL Horizons, https://ssd.jpl.nasa.gov/horizons/
+//! Source: JPL Horizons, <https://ssd.jpl.nasa.gov/horizons/>
 //! Reference: Giorgini et al. (1996), Bull. AAS 28, 1158
 
 use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_to_string};

@@ -20,12 +20,14 @@
 
 #![cfg(feature = "cubecl")]
 
-use lbm_vulkan::besag_clifford_cubecl::{
-    is_available, shuffle_and_transform_cubecl, shuffle_imbalance_cubecl,
+use lbm_vulkan::{
+    besag_clifford_cubecl::{is_available, shuffle_and_transform_cubecl, shuffle_imbalance_cubecl},
+    transform_viscosity_cpu::{ViscosityTransformInputs, transform_viscosity_cpu},
 };
-use lbm_vulkan::transform_viscosity_cpu::{transform_viscosity_cpu, ViscosityTransformInputs};
-use rand::SeedableRng;
-use rand::distr::{Distribution, Uniform};
+use rand::{
+    SeedableRng,
+    distr::{Distribution, Uniform},
+};
 use rand_chacha::ChaCha20Rng;
 
 const NX: u32 = 16;
@@ -43,7 +45,9 @@ const REL_TOL: f32 = 1e-4;
 
 /// CPU reference: PCG hash matching besag_clifford.wgsl::pcg_hash.
 fn pcg_hash_cpu(input: u32) -> u32 {
-    let state = input.wrapping_mul(747796405_u32).wrapping_add(2891336453_u32);
+    let state = input
+        .wrapping_mul(747796405_u32)
+        .wrapping_add(2891336453_u32);
     let word = ((state >> ((state >> 28) + 4)) ^ state).wrapping_mul(277803737_u32);
     (word >> 22) ^ word
 }
@@ -127,10 +131,9 @@ fn shuffle_and_transform_matches_cpu() {
         phi_mean: PHI_MEAN,
     });
 
-    let gpu_tau = shuffle_and_transform_cubecl(
-        &imbalance, NU_BASE, LAMBDA, PHI_MEAN, SEED, BATCH_IDX,
-    )
-    .expect("shuffle_and_transform_cubecl succeeds");
+    let gpu_tau =
+        shuffle_and_transform_cubecl(&imbalance, NU_BASE, LAMBDA, PHI_MEAN, SEED, BATCH_IDX)
+            .expect("shuffle_and_transform_cubecl succeeds");
 
     assert_eq!(cpu_tau.len(), gpu_tau.len(), "output length mismatch");
 
@@ -142,9 +145,7 @@ fn shuffle_and_transform_matches_cpu() {
         if abs_err > ABS_TOL && rel_err > REL_TOL {
             n_fail += 1;
             if n_fail <= 3 {
-                eprintln!(
-                    "cell {i}: cpu={c:.8e} gpu={g:.8e} abs={abs_err:.3e} rel={rel_err:.3e}"
-                );
+                eprintln!("cell {i}: cpu={c:.8e} gpu={g:.8e} abs={abs_err:.3e} rel={rel_err:.3e}");
             }
         }
         max_abs_err = max_abs_err.max(abs_err);

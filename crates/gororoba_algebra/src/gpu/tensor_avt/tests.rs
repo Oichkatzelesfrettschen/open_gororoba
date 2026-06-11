@@ -413,25 +413,47 @@ fn test_norm_session_cpu_scalar_matches_explicit_path() {
 }
 
 #[test]
-fn test_vulkan_sessions_are_rejected() {
+#[cfg(not(feature = "vulkan"))]
+fn test_vulkan_sessions_require_vulkan_feature() {
     let avt = TensorAVT::new(16);
     let mul_err = match avt.new_mul_session(ComputeBackend::Vulkan, 1) {
-        Ok(_) => panic!("Vulkan mul session must be unsupported"),
+        Ok(_) => panic!("Vulkan mul session must require the Vulkan feature"),
         Err(err) => err,
     };
     assert!(
-        mul_err.contains("Vulkan backend is not implemented"),
+        mul_err.contains("requires building gororoba_algebra with --features vulkan"),
         "unexpected mul session error: {mul_err}"
     );
 
     let norm_err = match avt.new_norm_session(ComputeBackend::Vulkan, 1) {
-        Ok(_) => panic!("Vulkan norm session must be unsupported"),
+        Ok(_) => panic!("Vulkan norm session must require the Vulkan feature"),
         Err(err) => err,
     };
     assert!(
-        norm_err.contains("Vulkan backend is not implemented"),
+        norm_err.contains("requires building gororoba_algebra with --features vulkan"),
         "unexpected norm session error: {norm_err}"
     );
+}
+
+#[test]
+#[cfg(feature = "vulkan")]
+#[ignore = "requires local Vulkan compute device"]
+fn test_vulkan_sessions_create_or_report_adapter_unavailable() {
+    let avt = TensorAVT::new(16);
+    match avt.new_mul_session(ComputeBackend::Vulkan, 1) {
+        Ok(session) => assert_eq!(session.backend(), ComputeBackend::Vulkan),
+        Err(err) => assert!(
+            err.contains("Vulkan backend unavailable"),
+            "unexpected mul session error: {err}"
+        ),
+    }
+    match avt.new_norm_session(ComputeBackend::Vulkan, 1) {
+        Ok(session) => assert_eq!(session.backend(), ComputeBackend::Vulkan),
+        Err(err) => assert!(
+            err.contains("Vulkan backend unavailable"),
+            "unexpected norm session error: {err}"
+        ),
+    }
 }
 
 #[test]

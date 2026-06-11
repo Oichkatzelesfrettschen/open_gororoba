@@ -154,7 +154,7 @@ impl Fp8E5M2 {
 /// (FP8 scale only, symmetric groups assumed after rotation).
 ///
 /// Scales are pre-multiplied by 16.0 before FP8 encoding to shift the
-/// typical range [0.01, 0.5] into [0.16, 8.0] which fits E4M3 precision.
+/// typical range `[0.01, 0.5]` into `[0.16, 8.0]` which fits E4M3 precision.
 ///
 /// At d=128, group_size=16: 8 groups * 8 bits = 64 bits metadata.
 /// Effective: (256 data + 64 meta + 16 norm) / 128 = 2.62 bits/coord.

@@ -7,16 +7,17 @@ repository = "https://github.com/Oichkatzelesfrettschen/open_gororoba"
 
 [dependencies]
 ash = { workspace = true, features = ["debug", "libloading", "loaded"] }
-gpu-allocator = { workspace = true, features = ["vulkan"] }
+bytemuck = { workspace = true }
+env_logger = { workspace = true }
 gororoba_gpu_bridge = { workspace = true }
 gororoba_gpu_readback = { workspace = true }
 gororoba_gpu_vulkan = { workspace = true, features = ["ash"] }
-log = { workspace = true }
+gororoba_sparse_grid = { workspace = true }
+gpu-allocator = { workspace = true, features = ["vulkan"] }
 image = { workspace = true }
+log = { workspace = true }
 naga = { workspace = true, features = ["wgsl-in", "spv-out"] }
-env_logger = { workspace = true }
 thiserror = { workspace = true }
-bytemuck = { workspace = true }
 
 # cubecl: portable kernel-source-once, runs on Vulkan/Metal/CUDA/DX12/WebGPU.
 # Gated behind the `cubecl` feature so non-cubecl builds (e.g. CI on minimal
@@ -27,19 +28,25 @@ cubecl-wgpu = { workspace = true, optional = true }
 gororoba_gpu_cubecl = { workspace = true, optional = true }
 
 [dev-dependencies]
-winit = { workspace = true }
-raw-window-handle = { workspace = true }
+algebra_analysis = { workspace = true }
+approx = { workspace = true }
+lbm_3d = { path = "../lbm_3d" }
 rand = { workspace = true }
 rand_chacha = { workspace = true }
-lbm_3d = { path = "../lbm_3d" }
-approx = { workspace = true }
-algebra_analysis = { workspace = true }
+raw-window-handle = { workspace = true }
+winit = { workspace = true }
 
 [features]
 default = []
 # Enables the cubecl-wgpu backend for box-counting + the 3-way parity test.
 # Mirrors the cubecl gating used by cd_kernel (commit 8f8d90e4 era).
-cubecl = ["dep:cubecl", "dep:cubecl-core", "dep:cubecl-wgpu", "dep:gororoba_gpu_cubecl", "gororoba_gpu_cubecl/cubecl"]
+cubecl = [
+    "dep:cubecl",
+    "dep:cubecl-core",
+    "dep:cubecl-wgpu",
+    "dep:gororoba_gpu_cubecl",
+    "gororoba_gpu_cubecl/cubecl",
+]
 
 # cubecl-core, cubecl-wgpu are conditionally enabled via the `cubecl`
 # feature; cargo machete / unused-dep checks must ignore them in builds

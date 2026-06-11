@@ -19,8 +19,9 @@
 //!     // Use pre-compiled module (zero JIT overhead)
 //! } else {
 //!     // Fall back to NVRTC
-//!     let ptx = cudarc::nvrtc::compile_ptx_with_opts(src, opts)?;
-//!     let module = ctx.load_module(ptx)?;
+//!     let opts = gororoba_gpu_cuda::CompileOptions::with_arch(arch);
+//!     let ptx = gororoba_gpu_cuda::CompileOptions::compile_ptx(src, &opts)?;
+//!     let registry = gororoba_gpu_cuda::ModuleRegistry::load(&ctx, ptx, kernel_names)?;
 //! }
 //! ```
 

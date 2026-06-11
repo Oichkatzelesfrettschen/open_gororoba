@@ -72,7 +72,7 @@ fn l_a_squared(a: &[f64], dim: usize) -> DMatrix<f64> {
     &la * &la
 }
 
-/// Extract column j from a DMatrix as a Vec<f64>.
+/// Extract column j from a DMatrix as a `Vec<f64>`.
 fn col_vec(m: &DMatrix<f64>, j: usize) -> Vec<f64> {
     m.column(j).iter().copied().collect()
 }
@@ -285,7 +285,7 @@ pub fn h_a_perp_basis(a: &[f64], dim: usize, atol: f64) -> DMatrix<f64> {
 #[derive(Debug, Clone)]
 pub struct MorenoDecomposition {
     pub dim: usize,
-    /// H_a subspace: 4D copy of H. Basis: [e0, a, tilde_a, tilde_e0].
+    /// H_a subspace: 4D copy of H. Basis: `[e0, a, tilde_a, tilde_e0]`.
     pub h_a_dim: usize,
     /// V_0 = Ker(L_a) = Ker(R_a): the annihilator subspace.
     pub ker_l_a: DMatrix<f64>,

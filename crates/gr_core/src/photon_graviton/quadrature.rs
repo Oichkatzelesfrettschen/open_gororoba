@@ -1,7 +1,7 @@
 //! Integration utilities for worldline proper-time integrals.
 //!
 //! Uses Gauss-Legendre quadrature from `gauss_quad` for both the proper-time
-//! variable T in [t_min, t_max] and the worldline modulus u in [0, 1].
+//! variable T in `[t_min, t_max]` and the worldline modulus u in `[0, 1]`.
 //!
 //! Strategy: the exp(-m^2 T) damping makes the proper-time integral converge
 //! rapidly. With t_max = 30/m^2, truncation error is exp(-30) < 1e-13.
@@ -14,7 +14,7 @@ use std::num::NonZeroUsize;
 /// Configuration for numerical quadrature.
 #[derive(Debug, Clone, Copy)]
 pub struct QuadratureConfig {
-    /// Number of GL nodes for the u-integral [0, 1].
+    /// Number of GL nodes for the u-integral `[0, 1]`.
     pub n_u: usize,
     /// Number of GL nodes for the proper-time integral.
     pub n_t: usize,
@@ -57,14 +57,14 @@ impl QuadratureConfig {
     }
 }
 
-/// Gauss-Legendre quadrature of a real function over [a, b].
+/// Gauss-Legendre quadrature of a real function over `[a, b]`.
 pub fn gl_integrate<F: Fn(f64) -> f64>(f: F, a: f64, b: f64, degree: usize) -> f64 {
     let quad =
         GaussLegendre::new(NonZeroUsize::new(degree).expect("quadrature degree must be non-zero"));
     quad.integrate(a, b, f)
 }
 
-/// Gauss-Legendre quadrature of a complex function over [a, b].
+/// Gauss-Legendre quadrature of a complex function over `[a, b]`.
 pub fn gl_integrate_complex<F: Fn(f64) -> Complex64>(
     f: F,
     a: f64,
@@ -106,7 +106,7 @@ pub fn proper_time_integral<F: Fn(f64) -> Complex64>(
     )
 }
 
-/// Double integral over proper-time T and worldline modulus u in [0, 1]:
+/// Double integral over proper-time T and worldline modulus u in `[0, 1]`:
 ///
 ///   integral dT/T^power * exp(-m^2 T) * integral_0^1 du * f(T, u)
 pub fn double_integral<F: Fn(f64, f64) -> Complex64>(

@@ -2,8 +2,8 @@
 name = "lbm_core"
 version = "0.1.0"
 edition = { workspace = true }
-description = "D2Q9 Lattice Boltzmann Method (BGK) solver"
 license = "MIT"
+description = "D2Q9 Lattice Boltzmann Method (BGK) solver"
 
 [dependencies]
 ndarray = { workspace = true }

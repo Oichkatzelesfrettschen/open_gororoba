@@ -19,9 +19,9 @@ pub fn minmod(a: f64, b: f64) -> f64 {
 
 /// Reconstruct left and right states at the i+1/2 interface.
 ///
-/// Given cell-centered values q[i-1], q[i], q[i+1]:
-///   q_L = q[i] + 0.5 * minmod(q[i]-q[i-1], q[i+1]-q[i])
-///   q_R = q[i+1] - 0.5 * minmod(q[i+1]-q[i], q[i+2]-q[i+1])
+/// Given cell-centered values `q[i-1]`, `q[i]`, `q[i+1]`:
+///   `q_L = q[i] + 0.5 * minmod(q[i]-q[i-1], q[i+1]-q[i])`
+///   `q_R = q[i+1] - 0.5 * minmod(q[i+1]-q[i], q[i+2]-q[i+1])`
 ///
 /// Returns (q_left, q_right) at the i+1/2 face.
 #[inline]

@@ -44,6 +44,9 @@ pub struct AceMagRecord {
     pub weight: u32,
 }
 
+#[cfg(feature = "fetch")]
+pub use super::ace_mag_fetch::AceMagProvider;
+
 /// Hourly-averaged ACE MAG record.
 #[derive(Debug, Clone)]
 pub struct AceMagHourly {

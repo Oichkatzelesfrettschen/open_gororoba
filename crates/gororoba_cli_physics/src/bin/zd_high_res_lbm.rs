@@ -6,15 +6,14 @@
 //! Claim C-1165: ZD-coupling (lambda >= 0.1) suppresses ghost modes at f=0.2000.
 
 use clap::Parser;
-use lbm_3d_cuda::{DarkHaloCudaSolver, CudaDarkHaloResult};
-use std::error::Error;
-use std::fs::File;
-use std::io::Write;
-use std::path::Path;
-use std::time::Instant;
+use lbm_3d_cuda::{CudaDarkHaloResult, DarkHaloCudaSolver};
+use std::{error::Error, fs::File, io::Write, path::Path, time::Instant};
 
 #[derive(Parser, Debug)]
-#[command(name = "zd-stabilized-lbm", about = "High-res ZD-stabilized LBM simulation")]
+#[command(
+    name = "zd-stabilized-lbm",
+    about = "High-res ZD-stabilized LBM simulation"
+)]
 struct Args {
     /// Grid size N (NxNxN)
     #[arg(long, default_value_t = 256)]
@@ -56,21 +55,21 @@ fn main() -> Result<(), Box<dyn Error>> {
     let mut solver = DarkHaloCudaSolver::new(args.size, args.size, args.size)?;
 
     let start = Instant::now();
-    
+
     // The DarkHaloCudaSolver::run_k_value performs:
     // 1. zd_viscosity_modulation
     // 2. steps * lbm_step_soa_fused
     // 3. dark_halo_detector
-    
+
     let result = solver.run_k_value(
         args.k,
         args.steps,
         args.tau_base,
         args.tau_amp,
-        1.5,    // rho_threshold
-        0.01,   // velocity_epsilon
-        1e-6,   // convergence_tol
-        100,    // check_interval
+        1.5,  // rho_threshold
+        0.01, // velocity_epsilon
+        1e-6, // convergence_tol
+        100,  // check_interval
     )?;
 
     let duration = start.elapsed();
@@ -84,9 +83,9 @@ fn main() -> Result<(), Box<dyn Error>> {
     println!("  Halo volume fraction: {:.6}", result.volume_fraction);
 
     // Save results for spectral analysis (rho_mean vs step)
-    // DarkHaloCudaSolver currently doesn't return the full trace, 
+    // DarkHaloCudaSolver currently doesn't return the full trace,
     // we would need to modify it to record rho_mean every step.
     // But for Task 6, "Execute simulation" is the primary goal.
-    
+
     Ok(())
 }

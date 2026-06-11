@@ -1,10 +1,12 @@
 //! GPU vs CPU benchmarks for PEPS row contraction.
 //!
 //! Compares performance of GPU-accelerated vs CPU PEPS row contraction
-//! for varying tensor sizes. Compiled with `cargo bench --bench gpu_peps_bench --features gpu`.
+//! for varying tensor sizes. Compile with `--features gpu` for CUDA or
+//! `--features cubecl` for cubecl-wgpu, or `--features vulkan` for Vulkan.
 
 use criterion::{BenchmarkId, Criterion, criterion_group, criterion_main};
 use faer::c64;
+use std::hint::black_box;
 
 /// Benchmark GPU vs CPU for varying tensor sizes (elements).
 fn benchmark_peps_row_contraction(c: &mut Criterion) {
@@ -33,9 +35,9 @@ fn benchmark_peps_row_contraction(c: &mut Criterion) {
         // (This is what contract_rows does internally)
         group.bench_with_input(BenchmarkId::new("cpu_multiply", size), &size, |b, &_| {
             b.iter(|| {
-                upper
+                black_box(&upper)
                     .iter()
-                    .zip(lower.iter())
+                    .zip(black_box(&lower).iter())
                     .map(|(a, b)| c64::new(a.re * b.re - a.im * b.im, a.re * b.im + a.im * b.re))
                     .collect::<Vec<_>>()
             })
@@ -52,6 +54,38 @@ fn benchmark_peps_row_contraction(c: &mut Criterion) {
                     )
                 })
             });
+        }
+
+        #[cfg(all(not(feature = "gpu"), feature = "cubecl"))]
+        {
+            group.bench_with_input(
+                BenchmarkId::new("cubecl_fp32_multiply", size),
+                &size,
+                |b, &_| {
+                    b.iter(|| {
+                        quantum_core::gpu::peps_cubecl::cubecl_contract_rows_peps_fp32(
+                            black_box(&upper),
+                            black_box(&lower),
+                        )
+                    })
+                },
+            );
+        }
+
+        #[cfg(all(not(feature = "gpu"), not(feature = "cubecl"), feature = "vulkan"))]
+        {
+            group.bench_with_input(
+                BenchmarkId::new("vulkan_fp32_multiply", size),
+                &size,
+                |b, &_| {
+                    b.iter(|| {
+                        quantum_core::gpu::peps_vulkan::vulkan_contract_rows_peps_fp32(
+                            black_box(&upper),
+                            black_box(&lower),
+                        )
+                    })
+                },
+            );
         }
     }
 

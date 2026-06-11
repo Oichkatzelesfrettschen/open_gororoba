@@ -110,6 +110,43 @@ struct HostProfile {
 
 const INLINE_TEST_MARKERS: &[&str] = &["#[test]", "#[cfg(test)]", "mod tests"];
 const GATE_AUDIT_TAIL_LINE_COUNT: usize = 20;
+const XTASK_COMMANDS: &[(&str, &str)] = &[
+    ("db-docs", "Generate or check database documentation."),
+    ("host-profile", "Print host worker-budget settings."),
+    (
+        "local-nextest-plan",
+        "Run a package-aware grouped local nextest plan.",
+    ),
+    (
+        "gate-local",
+        "Run the local pre-push gate with timing JSONL.",
+    ),
+    ("gate-tools-status", "Inspect cached gate-tool freshness."),
+    (
+        "gate-timing-summary",
+        "Aggregate gate-local timing JSONL files.",
+    ),
+    (
+        "gate-timing-regression-check",
+        "Check latest gate timing against baseline medians.",
+    ),
+    ("gate-audit", "Run the structured fast gate audit."),
+    ("audit-deep", "Run the structured deep audit composite."),
+    (
+        "registry-emit-all-mirrors",
+        "Emit all registry markdown mirrors.",
+    ),
+    ("sparse-profile", "Profile sparse-runner scenarios."),
+    ("gpu-profile", "Profile GPU-runner scenarios."),
+    ("ci-route", "Print CI routing decisions."),
+    ("ascii-check", "Check ASCII policy, optionally with --fix."),
+    ("ascii-cleanup", "Normalize ASCII-policy text with --fix."),
+    ("coq-stub", "Generate a Rocq stub from a source path."),
+    ("convos-chunk", "Chunk a conversation transcript."),
+    ("terminology-gate", "Run the terminology gate."),
+    ("cpd-file-list", "Write the CPD source-file list."),
+    ("worker-budget", "Print worker-budget settings."),
+];
 
 #[derive(Debug, Serialize)]
 struct GateAuditStepRecord {
@@ -164,7 +201,7 @@ struct GateLocalCli {
     #[arg(long)]
     routing_bin: Option<PathBuf>,
     /// Write timing JSONL to this path. Default:
-    /// data/output/audit/<YYYY-MM-DD>/gate-timing-<unix-ts>.jsonl
+    /// `data/output/audit/<YYYY-MM-DD>/gate-timing-<unix-ts>.jsonl`
     #[arg(long)]
     timing_json: Option<PathBuf>,
     /// Force run rust-regression-scoped regardless of routing.
@@ -419,11 +456,13 @@ impl TimingRecorder {
 fn main() -> Result<()> {
     let mut args = env::args().skip(1);
     let Some(command) = args.next() else {
-        println!(
-            "{HEADER_STYLE}usage: cargo run -p xtask -- <db-docs|host-profile|local-nextest-plan|gate-local|gate-tools-status|gate-timing-summary|gate-timing-regression-check|gate-audit|audit-deep|registry-emit-all-mirrors|sparse-profile|gpu-profile|ci-route|ascii-check|ascii-cleanup|coq-stub|convos-chunk|terminology-gate|cpd-file-list|worker-budget> [args]{RESET}"
-        );
+        print_xtask_help();
         return Ok(());
     };
+    if matches!(command.as_str(), "--help" | "-h" | "help") {
+        print_xtask_help();
+        return Ok(());
+    }
     match command.as_str() {
         "db-docs" => run_db_docs(args.any(|arg| arg == "--check")),
         "host-profile" => {
@@ -543,7 +582,16 @@ fn main() -> Result<()> {
             run_cpd_file_list(&output)
         }
         "worker-budget" => run_worker_budget(),
-        other => bail!("unknown xtask command: {other}"),
+        other => bail!("unknown xtask command: {other}; run `cargo run -p xtask -- --help`"),
+    }
+}
+
+fn print_xtask_help() {
+    println!("{HEADER_STYLE}usage:{RESET} cargo run -p xtask -- <command> [args]");
+    println!();
+    println!("{HEADER_STYLE}commands:{RESET}");
+    for (name, description) in XTASK_COMMANDS {
+        println!("  {name:<32} {description}");
     }
 }
 

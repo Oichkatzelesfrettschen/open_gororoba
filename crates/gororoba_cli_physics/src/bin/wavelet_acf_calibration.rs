@@ -1,7 +1,7 @@
 //! Thesis 3: Unresolved wavelet energy has single-exponential ACF (R2 >= 0.95).
 //!
 //! Runs forced-diffusion surrogate, collects residual wavelet energy at each step,
-//! computes ACF over lag window [0, 0.4] (= 200 steps at dt=2e-3), fits
+//! computes ACF over lag window `[0, 0.4]` (= 200 steps at dt=2e-3), fits
 //! log(R(tau)) ~ -kappa*tau*dt via OLS on positive-R lags.
 //!
 //! PASS criterion: R2 >= 0.50 for eps in {1e-2, 3e-2}.

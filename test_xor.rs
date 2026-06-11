@@ -1,4 +1,4 @@
-use cd_kernel::cayley_dickson::{cd_multiply};
+use cd_kernel::cayley_dickson::cd_multiply;
 fn main() {
     let dim = 16;
     for i in 0..dim {

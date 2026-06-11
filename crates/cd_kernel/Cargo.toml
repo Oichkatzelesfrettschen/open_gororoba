@@ -2,38 +2,38 @@
 name = "cd_kernel"
 version = "0.1.0"
 edition = { workspace = true }
-description = "Pure Cayley-Dickson arithmetic kernel: recursive multiplication, conjugation, norm, zero-divisor search, associator computation, and SIMD variants"
 license = "GPL-2.0-or-later"
+description = "Pure Cayley-Dickson arithmetic kernel: recursive multiplication, conjugation, norm, zero-divisor search, associator computation, and SIMD variants"
 
 [dependencies]
-core_affinity = { workspace = true }
-gororoba_gpu_bridge = { workspace = true }
-rayon = { workspace = true }
-wide = { workspace = true }
-pulp = { workspace = true }
-fwht = { workspace = true }
-bytemuck = { workspace = true }
-smallvec = { workspace = true }
 aligned-vec = { workspace = true }
-dyn-stack = { workspace = true }
-crossbeam-utils = { workspace = true }
-simsimd = { workspace = true }
+ash = { version = "0.38.0", optional = true }
 bitvec = { workspace = true }
+bytemuck = { workspace = true }
+core_affinity = { workspace = true }
+crossbeam-utils = { workspace = true }
+cubecl = { workspace = true, optional = true }
+cubecl-core = { workspace = true, optional = true }
+cubecl-wgpu = { workspace = true, optional = true }
+cudarc = { workspace = true, optional = true }
+dyn-stack = { workspace = true }
+fwht = { workspace = true }
+gauss-quad = { workspace = true }
+gororoba_gpu_bridge = { workspace = true }
+gororoba_gpu_cubecl = { workspace = true, optional = true }
+gororoba_gpu_cuda = { workspace = true, optional = true }
+gororoba_gpu_vulkan = { workspace = true, optional = true }
+pulp = { workspace = true }
 rand = { workspace = true }
 rand_chacha = { workspace = true }
 rand_distr = { workspace = true }
+rayon = { workspace = true }
 sha2 = { workspace = true }
+simsimd = { workspace = true }
+smallvec = { workspace = true }
 thiserror = { workspace = true }
 verified_core = { path = "../verified_core" }
-gauss-quad = { workspace = true }
-cudarc = { workspace = true, optional = true }
-gororoba_gpu_cuda = { workspace = true, optional = true }
-ash = { version = "0.38.0", optional = true }
-gororoba_gpu_vulkan = { workspace = true, optional = true }
-cubecl-core = { workspace = true, optional = true }
-cubecl = { workspace = true, optional = true }
-cubecl-wgpu = { workspace = true, optional = true }
-gororoba_gpu_cubecl = { workspace = true, optional = true }
+wide = { workspace = true }
 
 [features]
 default = []

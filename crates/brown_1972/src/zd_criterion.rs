@@ -155,7 +155,7 @@ pub fn verify_jordan_subalgebra_property(a: &[f64], b: &[f64]) -> (f64, f64, f64
 /// Verify Theorem 7.13: Properties of mutual zero divisors.
 ///
 /// If A and B are mutual ZDs:
-///   i) T([a1*a2]*b1) = T([a1*a2]*b2) = 0
+///   i) `T([a1*a2]*b1) = T([a1*a2]*b2) = 0`
 ///   ii) a1 = ±a2 implies a1*b1 = a1*b2 = 0
 ///   iii) a1 and a2 are not both real numbers
 ///   iv) a1 = 0 implies a2*b1 = a2*b2 = 0

@@ -18,8 +18,8 @@ use crate::{grid::Grid, prims};
 
 /// Face-centered (staggered) magnetic field storage.
 ///
-/// B^r[i][j] lives at the right face of cell (i, j): position (i+1/2, j).
-/// B^th[i][j] lives at the top face of cell (i, j): position (i, j+1/2).
+/// `B^r[i][j]` lives at the right face of cell (i, j): position (i+1/2, j).
+/// `B^th[i][j]` lives at the top face of cell (i, j): position (i, j+1/2).
 ///
 /// This ensures that the discrete divergence:
 ///   div(B) = (B^r_{i+1/2,j} - B^r_{i-1/2,j})/dr + (B^th_{i,j+1/2} - B^th_{i,j-1/2})/dtheta
@@ -55,8 +55,8 @@ impl StaggeredB {
 
     /// Initialize from cell-centered B-field (simple averaging to faces).
     ///
-    /// B^r at (i+1/2, j) = 0.5 * (B^r_center[i] + B^r_center[i+1])
-    /// B^th at (i, j+1/2) = 0.5 * (B^th_center[j] + B^th_center[j+1])
+    /// `B^r at (i+1/2, j) = 0.5 * (B^r_center[i] + B^r_center[i+1])`
+    /// `B^th at (i, j+1/2) = 0.5 * (B^th_center[j] + B^th_center[j+1])`
     pub fn init_from_cell_centered(&mut self, prims: &crate::prims::PrimGrid, grid: &Grid) {
         let ng = grid.ng;
         for i in 0..self.n1t - 1 {
@@ -83,8 +83,8 @@ impl StaggeredB {
 
     /// Interpolate face-centered B to cell centers.
     ///
-    /// B^r_center[i] = 0.5 * (B^r_{i-1/2} + B^r_{i+1/2})
-    /// B^th_center[j] = 0.5 * (B^th_{j-1/2} + B^th_{j+1/2})
+    /// `B^r_center[i] = 0.5 * (B^r_{i-1/2} + B^r_{i+1/2})`
+    /// `B^th_center[j] = 0.5 * (B^th_{j-1/2} + B^th_{j+1/2})`
     pub fn to_cell_centered(&self, prims: &mut crate::prims::PrimGrid, grid: &Grid) {
         let ng = grid.ng;
         for i in ng..ng + grid.n1 {
@@ -113,8 +113,8 @@ impl StaggeredB {
     ///   EMF_phi = -(v^r * B^theta_face - v^theta * B^r_face)
     ///
     /// At corner (i+1/2, j+1/2), average from 2 adjacent faces:
-    ///   EMF = -0.5 * (v_r_face[j] * B^th[j] + v_r_face[j+1] * B^th[j+1])
-    ///       + 0.5 * (v_th_face[i] * B^r[i] + v_th_face[i+1] * B^r[i+1])
+    ///   `EMF = -0.5 * (v_r_face[j] * B^th[j] + v_r_face[j+1] * B^th[j+1])`
+    ///       `+ 0.5 * (v_th_face[i] * B^r[i] + v_th_face[i+1] * B^r[i+1])`
     ///
     /// This is the "flux-CT" approach (Toth 2000, simplified).
     pub fn ct_update(&mut self, prims: &crate::prims::PrimGrid, grid: &Grid, dt: f64) {

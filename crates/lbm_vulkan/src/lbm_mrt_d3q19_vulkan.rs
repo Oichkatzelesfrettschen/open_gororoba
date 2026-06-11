@@ -17,9 +17,9 @@ use std::sync::Arc;
 
 use ash::vk;
 use gororoba_gpu_vulkan::{
-    Adapter, ComputePipeline, ComputePipelineBuilder, DescriptorSetLayout,
-    DescriptorSetLayoutSpec, Device, DeviceBuilder, DispatchScope, Instance, InstanceBuilder,
-    QueueFamilyRequirement, ShaderModule, ValidationPolicy, VulkanError,
+    Adapter, ComputePipeline, ComputePipelineBuilder, DescriptorSetLayout, DescriptorSetLayoutSpec,
+    Device, DeviceBuilder, DispatchScope, Instance, InstanceBuilder, QueueFamilyRequirement,
+    ShaderModule, ValidationPolicy, VulkanError,
 };
 
 use crate::MacroFields;
@@ -294,10 +294,8 @@ impl LbmMrtD3Q19Vulkan {
             let inv_r = 1.0 / r;
             let g = |i: usize| f[i * n + cell];
             let mx = g(1) - g(2) + g(7) - g(8) + g(9) - g(10) + g(11) - g(12) + g(13) - g(14);
-            let my =
-                g(3) - g(4) + g(7) - g(8) - g(9) + g(10) + g(15) - g(16) + g(17) - g(18);
-            let mz =
-                g(5) - g(6) + g(11) - g(12) - g(13) + g(14) + g(15) - g(16) - g(17) + g(18);
+            let my = g(3) - g(4) + g(7) - g(8) - g(9) + g(10) + g(15) - g(16) + g(17) - g(18);
+            let mz = g(5) - g(6) + g(11) - g(12) - g(13) + g(14) + g(15) - g(16) - g(17) + g(18);
             rho[cell] = r;
             ux[cell] = mx * inv_r;
             uy[cell] = my * inv_r;
@@ -468,10 +466,7 @@ fn upload_pod<T: bytemuck::Pod>(
     Ok(())
 }
 
-fn download_f32_slice(
-    device: &Device,
-    buf: &DeviceBuffer,
-) -> Result<Vec<f32>, LbmMrtD3Q19Error> {
+fn download_f32_slice(device: &Device, buf: &DeviceBuffer) -> Result<Vec<f32>, LbmMrtD3Q19Error> {
     let bytes_len = buf.size as usize;
     let mut out = vec![0.0_f32; bytes_len / std::mem::size_of::<f32>()];
     // SAFETY: HOST_VISIBLE + HOST_COHERENT; size matches buf.size.

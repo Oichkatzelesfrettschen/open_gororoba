@@ -3,7 +3,7 @@
 //! Fetches a short, reproducible sample via the VirES HAPI endpoint for
 //! magnetic field vectors and total intensity.
 //!
-//! Source: https://vires.services/
+//! Source: <https://vires.services/>
 //!
 //! HAPI CSV format: ISO 8601 timestamp, then parameter columns.
 

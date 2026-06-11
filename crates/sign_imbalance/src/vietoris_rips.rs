@@ -772,7 +772,7 @@ fn augment(
 
 /// Hungarian algorithm for minimum-cost perfect matching on a square cost matrix.
 ///
-/// Returns assignment[i] = column matched to row i.
+/// Returns `assignment[i] = column matched to row i`.
 /// O(n^3) time, sufficient for our diagram sizes (typically < 500 points).
 fn hungarian_algorithm(cost: &[Vec<f64>]) -> Vec<usize> {
     let n = cost.len();

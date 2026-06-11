@@ -18,7 +18,7 @@ fn run_once() -> snia_core::SimulationResult {
     };
     let burn = BurnState::default();
 
-    let mut solver = SniaCoreSolver::new(
+    let mut solver = SniaCoreSolver::from_initial_state(
         config,
         WhiteDwarfEos::default(),
         HllcFlux1D::default(),

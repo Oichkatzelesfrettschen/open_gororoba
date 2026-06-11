@@ -365,7 +365,7 @@ pub fn thermodynamic_quantities(
 /// Total spin current: J_S = sum_{(i,j)} j^S_{ij}
 /// This is real and antisymmetric (purely imaginary matrix elements become real after i factor).
 ///
-/// Returns the matrix in the computational basis as a flat Vec<f64>.
+/// Returns the matrix in the computational basis as a flat `Vec<f64>`.
 pub fn build_spin_current_operator(model: &HeisenbergModel) -> Vec<f64> {
     let n = model.n_sites;
     let dim = 1usize << n;
@@ -797,7 +797,7 @@ pub fn drude_weight(
 /// This captures the finite-frequency contributions that the Drude weight misses.
 /// For finite-size systems, the delta functions are broadened into Lorentzians.
 ///
-/// Eq. 16 from arXiv:1809.08429: I_{E[S]}(omega) = integral of Re L^reg d_omega'
+/// Eq. 16 from arXiv:1809.08429: `I_{E[S]}(omega) = integral of Re L^reg d_omega'`
 pub fn integrated_spectral_weight(
     ed: &ExactDiagResult,
     current_op: &[f64],

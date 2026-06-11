@@ -17,11 +17,11 @@ use cd_kernel::cayley_dickson::{cd_basis_mul_sign, cd_multiply};
 
 /// Compute the commutativity matrix for a Cayley-Dickson algebra.
 ///
-/// Returns a `dim x dim` matrix C where C[i][j] = true iff
+/// Returns a `dim x dim` matrix C where `C[i][j] = true` iff
 /// `e_i * e_j = e_j * e_i` (the basis elements commute).
 ///
-/// For i=0 or j=0, the identity always commutes, so C[i][j] = true.
-/// For i=j (diagonal), trivially C[i][j] = true.
+/// For i=0 or j=0, the identity always commutes, so `C[i][j] = true`.
+/// For i=j (diagonal), trivially `C[i][j] = true`.
 ///
 /// For all other pairs, commutativity iff s(i,j) = s(j,i) where
 /// s(i,j) = cd_basis_mul_sign(dim, i, j).
@@ -43,7 +43,7 @@ pub fn commutativity_matrix(dim: usize) -> Vec<Vec<bool>> {
 
 /// Compute the anti-commutativity matrix for a Cayley-Dickson algebra.
 ///
-/// Returns C where C[i][j] = true iff e_i and e_j anti-commute
+/// Returns C where `C[i][j] = true` iff e_i and e_j anti-commute
 /// (both non-identity, non-equal, and s(i,j) = -s(j,i)).
 pub fn anti_commutativity_matrix(dim: usize) -> Vec<Vec<bool>> {
     let mut mat = vec![vec![false; dim]; dim];
@@ -61,7 +61,7 @@ pub fn anti_commutativity_matrix(dim: usize) -> Vec<Vec<bool>> {
 
 /// Compute the same-parity adjacency matrix (what the legacy CSVs contain).
 ///
-/// A[i][j] = 1 iff i and j have the same parity (both even or both odd)
+/// `A[i][j] = 1` iff i and j have the same parity (both even or both odd)
 /// and i != j.
 pub fn same_parity_adjacency(dim: usize) -> Vec<Vec<u8>> {
     let mut mat = vec![vec![0u8; dim]; dim];

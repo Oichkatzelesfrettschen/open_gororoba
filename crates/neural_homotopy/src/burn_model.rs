@@ -33,6 +33,19 @@ pub struct CorrectionTensorModel<B: Backend> {
     activation: Relu,
 }
 
+impl<B: Backend> std::panic::RefUnwindSafe for CorrectionTensorModel<B> {}
+impl<B: Backend> std::panic::UnwindSafe for CorrectionTensorModel<B> {}
+impl<B: Backend> std::panic::RefUnwindSafe for CorrectionTensorModelRecord<B> {}
+impl<B: Backend> std::panic::UnwindSafe for CorrectionTensorModelRecord<B> {}
+impl<B: Backend, S: burn::record::PrecisionSettings> std::panic::RefUnwindSafe
+    for CorrectionTensorModelRecordItem<B, S>
+{
+}
+impl<B: Backend, S: burn::record::PrecisionSettings> std::panic::UnwindSafe
+    for CorrectionTensorModelRecordItem<B, S>
+{
+}
+
 /// Configuration for the correction tensor neural network.
 #[derive(Config, Debug)]
 pub struct CorrectionTensorModelConfig {
@@ -110,7 +123,7 @@ impl<B: Backend> CorrectionTensorModel<B> {
     /// Assemble the full correction tensor from model predictions.
     ///
     /// Queries the model for all 256 pairs and builds a CorrectionTensor.
-    /// The tensor m_3[i][j][k][l] is set from the model's output for
+    /// The tensor `m_3[i][j][k][l]` is set from the model's output for
     /// pair (i,j) at position l, replicated across k (the third index
     /// is filled uniformly since the model predicts per-pair corrections).
     pub fn assemble_correction_tensor(
@@ -189,7 +202,7 @@ pub struct BurnTrainingResult {
 /// assemble a correction tensor and measure pentagon violation.
 ///
 /// Training targets: for each (i,j) pair, the target 16-vector is the
-/// mean of m3[i][j][k][:] across all k. This compresses the 4D associator
+/// mean of `m3[i][j][k][:]` across all k. This compresses the 4D associator
 /// tensor into a learnable 2D mapping.
 ///
 /// Returns the trained tensor plus training diagnostics.
