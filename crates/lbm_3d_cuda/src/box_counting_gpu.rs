@@ -77,11 +77,10 @@ struct BoxCountingBuffers {
 impl GpuBoxCounter {
     fn load_kernels(ctx: &Arc<CudaContext>) -> Result<BoxCountingKernels> {
         let opts = CompileOptions::empty();
-        let ptx = CompileOptions::compile_ptx(KERNEL_BOX_COUNTING_SRC, &opts)
-            .context("NVRTC compilation of box-counting kernels")?;
-        let module_registry = ModuleRegistry::load(
+        let module_registry = ModuleRegistry::compile_and_load(
             ctx,
-            ptx,
+            KERNEL_BOX_COUNTING_SRC,
+            &opts,
             &[
                 BOX_COUNT_AT_SCALE_KERNEL,
                 ZERO_U32_KERNEL,
@@ -90,7 +89,7 @@ impl GpuBoxCounter {
                 ZERO_HISTOGRAM_KERNEL,
             ],
         )
-        .context("Load box-counting CUDA module")?;
+        .context("Compile/load box-counting CUDA module")?;
 
         let kernel = module_registry
             .get(BOX_COUNT_AT_SCALE_KERNEL)

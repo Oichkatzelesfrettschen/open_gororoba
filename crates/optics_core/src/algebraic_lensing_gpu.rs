@@ -1140,8 +1140,8 @@ impl AlgebraicLensingGpu {
         let stream = ctx.default_stream();
 
         let opts = CompileOptions::for_arch(8, 9).include_path("/opt/cuda/include");
-        let ptx = CompileOptions::compile_ptx(KERNEL_SRC, &opts)?;
-        let registry = ModuleRegistry::load(ctx.raw(), ptx, &["trace_rays_kernel"])?;
+        let registry =
+            ModuleRegistry::compile_and_load(ctx.raw(), KERNEL_SRC, &opts, &["trace_rays_kernel"])?;
         let trace_kernel = registry.get("trace_rays_kernel")?;
 
         Ok(Self {

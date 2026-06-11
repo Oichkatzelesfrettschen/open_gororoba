@@ -3,9 +3,9 @@
 //! For high-dimensional Cayley-Dickson algebras, checking all pairs of cross-assessors
 //! to find zero-product edges is O(n^2). GPU parallelization gives 10-100x speedup.
 //!
-//! Two-phase pattern (count+compact) avoids variable-length output allocation:
-//! 1. Count phase: atomic increment to find total number of edges
-//! 2. Compact phase: parallel gather edges into pre-allocated output array
+//! Count-then-compact execution avoids variable-length output allocation:
+//! 1. Count pass: atomic increment to find total number of edges
+//! 2. Compact pass: parallel gather edges into pre-allocated output array
 
 #[cfg(feature = "gpu")]
 use cudarc::driver::PushKernelArg;
@@ -16,10 +16,10 @@ use gororoba_gpu_cuda::{Buffer, CompileOptions, LaunchConfig, ModuleRegistry};
 pub struct GraphConstructorGpu;
 
 /// NVRTC CUDA kernel source for parallel edge detection.
-/// Two-phase pattern: count matching edges, then gather into dense array.
+/// Count-then-compact pattern: count matching edges, then gather into dense array.
 #[cfg(feature = "gpu")]
 const GRAPH_KERNEL_SRC: &str = r#"
-// Phase 1: Count matching edges from eta matrix
+// Count matching edges from eta matrix.
 extern "C" __global__ void count_edges(
     const unsigned char* __restrict__ eta,
     const unsigned char* __restrict__ node_a,
@@ -63,7 +63,7 @@ extern "C" __global__ void count_edges(
     }
 }
 
-// Phase 2: Compact edges into dense output arrays
+// Compact edges into dense output arrays.
 extern "C" __global__ void compact_edges(
     const unsigned char* __restrict__ eta,
     const unsigned char* __restrict__ node_a,
@@ -258,11 +258,13 @@ impl GraphConstructorGpu {
         let stream = ctx.default_stream();
 
         let opts = CompileOptions::empty();
-        let ptx = CompileOptions::compile_ptx(GRAPH_KERNEL_SRC, &opts)
-            .map_err(|e| format!("NVRTC compile: {}", e))?;
-
-        let registry = ModuleRegistry::load(ctx.raw(), ptx, &["count_edges", "compact_edges"])
-            .map_err(|e| format!("Module load: {}", e))?;
+        let registry = ModuleRegistry::compile_and_load(
+            ctx.raw(),
+            GRAPH_KERNEL_SRC,
+            &opts,
+            &["count_edges", "compact_edges"],
+        )
+        .map_err(|e| format!("Module compile/load: {}", e))?;
 
         let count_kernel = registry
             .get("count_edges")
@@ -283,7 +285,7 @@ impl GraphConstructorGpu {
         let node_b_dev =
             Buffer::htod(&stream, &node_b).map_err(|e| format!("Upload node_b: {}", e))?;
 
-        // Phase 1: Count edges
+        // Count edges before allocating the compact output arrays.
         let mut count_dev =
             Buffer::<i32>::alloc_zeros(&stream, 1).map_err(|e| format!("Alloc count: {}", e))?;
 
@@ -314,7 +316,7 @@ impl GraphConstructorGpu {
             return Ok(Vec::new());
         }
 
-        // Phase 2: Compact edges
+        // Compact edges into dense output arrays.
         // Allocate output arrays (with extra element for atomic counter)
         let edge_i_len = num_edges
             .checked_add(1)

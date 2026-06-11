@@ -302,8 +302,8 @@ pub enum Precision {
 
 // Bridge to the canonical workspace precision vocabulary
 // (gororoba_gpu_bridge::StoragePrecision). Consumers should migrate to
-// StoragePrecision directly; this enum is slated for removal in the
-// Wave C-tail cleanup PR after all consumers migrate.
+// StoragePrecision directly; this enum remains as a compatibility shim
+// until all consumers use the shared vocabulary.
 impl From<Precision> for gororoba_gpu_bridge::StoragePrecision {
     fn from(value: Precision) -> Self {
         match value {
@@ -390,15 +390,15 @@ pub struct LbmSolver3DCuda {
     #[allow(dead_code)]
     soa_batch_init_kernel: Option<CudaFunction>,
     soa_mrt_step_kernel: Option<CudaFunction>,
-    /// Thread-coarsened BGK kernel (1 thread = 2 cells, Phase 8).
+    /// Thread-coarsened BGK kernel (1 thread = 2 cells).
     soa_coarsened_step_kernel: Option<CudaFunction>,
-    /// Thread-coarsened MRT kernel (1 thread = 2 cells, Phase 8).
+    /// Thread-coarsened MRT kernel (1 thread = 2 cells).
     soa_mrt_coarsened_step_kernel: Option<CudaFunction>,
-    /// GPU max-speed reduction kernel (Phase 12: Mach telemetry).
+    /// GPU max-speed reduction kernel for Mach telemetry.
     reduce_max_speed_kernel: Option<CudaFunction>,
-    /// Pull-streaming BGK kernel (Phase 5: coalesced writes).
+    /// Pull-streaming BGK kernel for coalesced writes.
     soa_pull_step_kernel: Option<CudaFunction>,
-    /// Pull-streaming MRT kernel (Phase 5: coalesced writes).
+    /// Pull-streaming MRT kernel for coalesced writes.
     soa_mrt_pull_step_kernel: Option<CudaFunction>,
     /// Shared-memory tiled BGK kernel (8x8x4 tile + halo, pull-scheme).
     soa_tiled_step_kernel: Option<CudaFunction>,
@@ -564,7 +564,6 @@ impl LbmSolver3DCuda {
         } else {
             CudaCompileOptions::with_arch(arch_str)
         };
-        let ptx = CudaCompileOptions::compile_ptx(src, &opts)?;
         let lbm_step_name = match precision {
             Precision::BF16 => "lbm_step_fused_bf16_kernel",
             Precision::FP64 => "lbm_step_fused_fp64_kernel",
@@ -633,7 +632,8 @@ impl LbmSolver3DCuda {
         if precision == Precision::FP32 {
             core_kernel_names.push("update_tau_from_voudon_frustration_kernel");
         }
-        let module_registry = ModuleRegistry::load(&ctx, ptx, &core_kernel_names)?;
+        let module_registry =
+            ModuleRegistry::compile_and_load(&ctx, src, &opts, &core_kernel_names)?;
 
         let lbm_step_fused_kernel = module_registry.get(lbm_step_name)?;
         let lbm_step_fused_4d_kernel = if precision == Precision::BF16 {
@@ -678,7 +678,6 @@ impl LbmSolver3DCuda {
             soa_module_registry,
         ) = if precision == Precision::FP32 {
             let soa_opts = CudaCompileOptions::with_arch(arch_str);
-            let soa_ptx = CudaCompileOptions::compile_ptx(KERNEL_SOA_SRC, &soa_opts)?;
             let coarsened_step_name = if cuda_props
                 .map(|caps| caps.is_ada() || caps.sparse_tile_preferred)
                 .unwrap_or(false)
@@ -706,7 +705,12 @@ impl LbmSolver3DCuda {
                 "lbm_step_soa_aa",
                 "lbm_step_soa_mrt_aa",
             ];
-            let soa_module_registry = ModuleRegistry::load(&ctx, soa_ptx, &soa_kernel_names)?;
+            let soa_module_registry = ModuleRegistry::compile_and_load(
+                &ctx,
+                KERNEL_SOA_SRC,
+                &soa_opts,
+                &soa_kernel_names,
+            )?;
             (
                 Some(soa_module_registry.get("lbm_step_soa_fused")?),
                 Some(soa_module_registry.get("initialize_uniform_soa_kernel")?),
@@ -1802,7 +1806,7 @@ impl LbmSolver3DCuda {
         v_max / cs
     }
 
-    /// Maximum Mach number computed entirely on GPU (Phase 12).
+    /// Maximum Mach number computed entirely on GPU.
     ///
     /// Two-pass max-reduction over d_u SoA velocity field. Reads back a single
     /// f32 (4 bytes PCIe) instead of the full 24 MB velocity buffer.
@@ -1819,7 +1823,7 @@ impl LbmSolver3DCuda {
         let threads = 128u32;
         let blocks_pass1 = (self.n_cells as u32).div_ceil(threads);
 
-        // Pass 1: N cells -> blocks_pass1 per-block maxima (written to d_buf).
+        // First pass: N cells -> blocks_pass1 per-block maxima written to d_buf.
         let config1 = CudaLaunchConfig::launch_blocks_1d(blocks_pass1, threads);
         {
             let d_buf = self
@@ -1831,10 +1835,10 @@ impl LbmSolver3DCuda {
             unsafe { b1.launch(config1) }?;
         }
 
-        // Pass 2: read back per-block maxima and reduce on host.
+        // Second pass: read back per-block maxima and reduce on host.
         // blocks_pass1 floats = 64 KB at 128^3 (vs 24 MB for full sync_to_host).
         // The reduce_max_speed_f32 kernel computes sqrt(ux^2+uy^2+uz^2) internally,
-        // so pass-2 would need a separate scalar-max kernel. Host reduction of
+        // so a device-only second pass would need a separate scalar-max kernel. Host reduction of
         // 16K floats is ~5us -- negligible compared to the PCIe transfer.
         let d_buf = self
             .d_reduction_buffer_f32
@@ -1858,12 +1862,12 @@ impl LbmSolver3DCuda {
         self.use_coarsening = enabled;
     }
 
-    /// Whether thread coarsening is currently enabled.
+    /// Whether thread coarsening is enabled.
     pub fn use_coarsening(&self) -> bool {
         self.use_coarsening
     }
 
-    /// Enable or disable pull-streaming (Phase 5: coalesced writes).
+    /// Enable or disable pull-streaming for coalesced writes.
     ///
     /// Pull-streaming reverses the data flow: each thread reads from
     /// opposite-direction neighbors (scattered reads) and writes to itself
@@ -1880,7 +1884,7 @@ impl LbmSolver3DCuda {
         }
     }
 
-    /// Whether pull-streaming is currently enabled.
+    /// Whether pull-streaming is enabled.
     pub fn use_pull_streaming(&self) -> bool {
         self.use_pull_stream
     }
@@ -1898,7 +1902,7 @@ impl LbmSolver3DCuda {
         }
     }
 
-    /// Whether shared-memory tiling is currently enabled.
+    /// Whether shared-memory tiling is enabled.
     pub fn use_tiling(&self) -> bool {
         self.use_tiling
     }
@@ -1920,7 +1924,7 @@ impl LbmSolver3DCuda {
         }
     }
 
-    /// Whether A-A streaming is currently enabled.
+    /// Whether A-A streaming is enabled.
     pub fn use_aa_streaming(&self) -> bool {
         self.use_aa
     }
@@ -1952,7 +1956,7 @@ impl LbmSolver3DCuda {
         self.precision
     }
 
-    /// Returns whether the solver currently uses a structure-of-arrays working
+    /// Returns whether the solver uses a structure-of-arrays working
     /// layout on device.
     #[must_use]
     pub fn uses_soa_layout(&self) -> bool {
