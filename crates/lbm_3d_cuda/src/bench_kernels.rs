@@ -116,8 +116,8 @@ fn compile_and_load(
     if cuda_include {
         opts = opts.include_path("/opt/cuda/include");
     }
-    let ptx = CudaCompileOptions::compile_ptx(src, &opts)?;
-    let module_registry = ModuleRegistry::load(ctx, ptx, &[step_name, init_name])?;
+    let module_registry =
+        ModuleRegistry::compile_and_load(ctx, src, &opts, &[step_name, init_name])?;
     let step_k = module_registry
         .get(step_name)
         .with_context(|| format!("load step kernel '{step_name}'"))?;
@@ -1002,8 +1002,8 @@ impl SoaBenchRunner {
         } else {
             "read_slice_fp32_soa"
         };
-        let ptx = CudaCompileOptions::compile_ptx(KERNEL_SLICE_SRC, &opts)?;
-        let module_registry = ModuleRegistry::load(&self.ctx, ptx, &[kernel_name])?;
+        let module_registry =
+            ModuleRegistry::compile_and_load(&self.ctx, KERNEL_SLICE_SRC, &opts, &[kernel_name])?;
         let slice_kernel = module_registry.get(kernel_name)?;
 
         let (sw, sh) = match slice_axis {
@@ -1093,10 +1093,10 @@ impl Int4BenchRunner {
         let arch = arch_static();
 
         let opts = CudaCompileOptions::with_arch(arch);
-        let ptx = CudaCompileOptions::compile_ptx(KERNEL_INT4_SRC, &opts)?;
-        let module_registry = ModuleRegistry::load(
+        let module_registry = ModuleRegistry::compile_and_load(
             &ctx,
-            ptx,
+            KERNEL_INT4_SRC,
+            &opts,
             &[
                 "lbm_step_fused_int4_kernel",
                 "initialize_uniform_int4_kernel",
@@ -1240,10 +1240,10 @@ impl Fp4BenchRunner {
         let arch = arch_static();
 
         let opts = CudaCompileOptions::with_arch(arch);
-        let ptx = CudaCompileOptions::compile_ptx(KERNEL_FP4_SRC, &opts)?;
-        let module_registry = ModuleRegistry::load(
+        let module_registry = ModuleRegistry::compile_and_load(
             &ctx,
-            ptx,
+            KERNEL_FP4_SRC,
+            &opts,
             &["lbm_step_fp4_kernel", "initialize_uniform_fp4_kernel"],
         )?;
         let step_kernel = module_registry.get("lbm_step_fp4_kernel")?;
@@ -1378,10 +1378,10 @@ impl DdBenchSolver {
         let arch = arch_static();
 
         let opts = CudaCompileOptions::with_arch(arch);
-        let ptx = CudaCompileOptions::compile_ptx(KERNEL_DD_SRC, &opts)?;
-        let module_registry = ModuleRegistry::load(
+        let module_registry = ModuleRegistry::compile_and_load(
             &ctx,
-            ptx,
+            KERNEL_DD_SRC,
+            &opts,
             &["lbm_step_fused_dd_kernel", "initialize_uniform_dd_kernel"],
         )?;
         let step_kernel = module_registry.get("lbm_step_fused_dd_kernel")?;
@@ -1534,10 +1534,10 @@ impl TensorCoreProbe {
 
         let module_result: anyhow::Result<ModuleRegistry> = (|| {
             let opts = CudaCompileOptions::with_arch(arch).include_path("/opt/cuda/include");
-            let ptx = CudaCompileOptions::compile_ptx(KERNEL_TC_SRC, &opts)?;
-            Ok(ModuleRegistry::load(
+            Ok(ModuleRegistry::compile_and_load(
                 &ctx,
-                ptx,
+                KERNEL_TC_SRC,
+                &opts,
                 &[
                     "tensor_core_tf32_proxy",
                     "tensor_core_fp16_proxy",
